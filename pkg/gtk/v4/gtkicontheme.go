@@ -230,7 +230,7 @@ type IconTheme interface {
 	// Icons that are directly placed in the resource path instead of a
 	// subdirectory are also considered as ultimate fallback, but they are
 	// treated like unthemed icons.
-	SetResourcePathIconTheme(path string)
+	SetResourcePathIconTheme(path *string)
 	// SetSearchPathIconTheme sets the search path for the icon theme object.
 	//
 	// When looking for an icon theme, GTK will search for a subdirectory of one
@@ -513,7 +513,7 @@ func (s iconTheme) LookupIconIconTheme(iconName string, fallbacks []string, size
 	return _iconPaintable
 }
 
-func (s iconTheme) SetResourcePathIconTheme(path string) {
+func (s iconTheme) SetResourcePathIconTheme(path *string) {
 	var _arg0 *C.GtkIconTheme // out
 	var _arg1 **C.char        // out
 

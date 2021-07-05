@@ -179,7 +179,7 @@ type Toplevel interface {
 	//
 	// Presenting is asynchronous and the specified layout parameters are not
 	// guaranteed to be respected.
-	Present(layout ToplevelLayout)
+	Present(layout *ToplevelLayout)
 	// RestoreSystemShortcuts: restore default system keyboard shortcuts which
 	// were previously inhibited.
 	//
@@ -364,7 +364,7 @@ func (t toplevel) Minimize() bool {
 	return _ok
 }
 
-func (t toplevel) Present(layout ToplevelLayout) {
+func (t toplevel) Present(layout *ToplevelLayout) {
 	var _arg0 *C.GdkToplevel       // out
 	var _arg1 *C.GdkToplevelLayout // out
 

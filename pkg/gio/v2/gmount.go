@@ -274,7 +274,7 @@ func (m mount) Eject(flags MountUnmountFlags, cancellable Cancellable, callback 
 func (m mount) EjectFinish(result AsyncResult) error {
 	var _arg0 *C.GMount       // out
 	var _arg1 *C.GAsyncResult // out
-	var _cerr **C.GError      // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
@@ -283,16 +283,7 @@ func (m mount) EjectFinish(result AsyncResult) error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
@@ -318,7 +309,7 @@ func (m mount) EjectWithOperation(flags MountUnmountFlags, mountOperation MountO
 func (m mount) EjectWithOperationFinish(result AsyncResult) error {
 	var _arg0 *C.GMount       // out
 	var _arg1 *C.GAsyncResult // out
-	var _cerr **C.GError      // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
@@ -327,16 +318,7 @@ func (m mount) EjectWithOperationFinish(result AsyncResult) error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
@@ -500,7 +482,7 @@ func (m mount) GuessContentTypeFinish(result AsyncResult) ([]string, error) {
 	var _arg0 *C.GMount       // out
 	var _arg1 *C.GAsyncResult // out
 	var _cret **C.gchar
-	var _cerr **C.GError // in
+	var _cerr *C.GError // in
 
 	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
@@ -524,16 +506,7 @@ func (m mount) GuessContentTypeFinish(result AsyncResult) ([]string, error) {
 			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _utf8s, _goerr
 }
@@ -543,7 +516,7 @@ func (m mount) GuessContentTypeSync(forceRescan bool, cancellable Cancellable) (
 	var _arg1 C.gboolean      // out
 	var _arg2 *C.GCancellable // out
 	var _cret **C.gchar
-	var _cerr **C.GError // in
+	var _cerr *C.GError // in
 
 	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
 	if forceRescan {
@@ -570,16 +543,7 @@ func (m mount) GuessContentTypeSync(forceRescan bool, cancellable Cancellable) (
 			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _utf8s, _goerr
 }
@@ -622,7 +586,7 @@ func (m mount) Remount(flags MountMountFlags, mountOperation MountOperation, can
 func (m mount) RemountFinish(result AsyncResult) error {
 	var _arg0 *C.GMount       // out
 	var _arg1 *C.GAsyncResult // out
-	var _cerr **C.GError      // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
@@ -631,16 +595,7 @@ func (m mount) RemountFinish(result AsyncResult) error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
@@ -672,7 +627,7 @@ func (m mount) Unmount(flags MountUnmountFlags, cancellable Cancellable, callbac
 func (m mount) UnmountFinish(result AsyncResult) error {
 	var _arg0 *C.GMount       // out
 	var _arg1 *C.GAsyncResult // out
-	var _cerr **C.GError      // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
@@ -681,16 +636,7 @@ func (m mount) UnmountFinish(result AsyncResult) error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
@@ -716,7 +662,7 @@ func (m mount) UnmountWithOperation(flags MountUnmountFlags, mountOperation Moun
 func (m mount) UnmountWithOperationFinish(result AsyncResult) error {
 	var _arg0 *C.GMount       // out
 	var _arg1 *C.GAsyncResult // out
-	var _cerr **C.GError      // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
@@ -725,16 +671,7 @@ func (m mount) UnmountWithOperationFinish(result AsyncResult) error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }

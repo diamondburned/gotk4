@@ -75,15 +75,15 @@ func marshalKeyFile(p uintptr) (interface{}, error) {
 }
 
 // NewKeyFile constructs a struct KeyFile.
-func NewKeyFile() KeyFile {
+func NewKeyFile() *KeyFile {
 	var _cret *C.GKeyFile // in
 
 	_cret = C.g_key_file_new()
 
-	var _keyFile KeyFile // out
+	var _keyFile *KeyFile // out
 
-	_keyFile = (KeyFile)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_keyFile, func(v KeyFile) {
+	_keyFile = (*KeyFile)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_keyFile, func(v *KeyFile) {
 		C.g_key_file_unref((*C.GKeyFile)(unsafe.Pointer(v)))
 	})
 
@@ -106,7 +106,7 @@ func (k *KeyFile) Boolean(groupName string, key string) error {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 *C.gchar    // out
 	var _arg2 *C.gchar    // out
-	var _cerr **C.GError  // in
+	var _cerr *C.GError   // in
 
 	_arg0 = (*C.GKeyFile)(unsafe.Pointer(k))
 	_arg1 = (*C.gchar)(C.CString(groupName))
@@ -118,16 +118,7 @@ func (k *KeyFile) Boolean(groupName string, key string) error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
@@ -144,7 +135,7 @@ func (k *KeyFile) Comment(groupName string, key string) (string, error) {
 	var _arg1 *C.gchar    // out
 	var _arg2 *C.gchar    // out
 	var _cret *C.gchar    // in
-	var _cerr **C.GError  // in
+	var _cerr *C.GError   // in
 
 	_arg0 = (*C.GKeyFile)(unsafe.Pointer(k))
 	_arg1 = (*C.gchar)(C.CString(groupName))
@@ -159,16 +150,7 @@ func (k *KeyFile) Comment(groupName string, key string) (string, error) {
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _utf8, _goerr
 }
@@ -185,7 +167,7 @@ func (k *KeyFile) Double(groupName string, key string) (float64, error) {
 	var _arg1 *C.gchar    // out
 	var _arg2 *C.gchar    // out
 	var _cret C.gdouble   // in
-	var _cerr **C.GError  // in
+	var _cerr *C.GError   // in
 
 	_arg0 = (*C.GKeyFile)(unsafe.Pointer(k))
 	_arg1 = (*C.gchar)(C.CString(groupName))
@@ -199,16 +181,7 @@ func (k *KeyFile) Double(groupName string, key string) (float64, error) {
 	var _goerr error     // out
 
 	_gdouble = float64(_cret)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _gdouble, _goerr
 }
@@ -217,7 +190,7 @@ func (k *KeyFile) Double(groupName string, key string) (float64, error) {
 // returned groups will be nil-terminated, so @length may optionally be nil.
 func (k *KeyFile) Groups() (uint, []string) {
 	var _arg0 *C.GKeyFile // out
-	var _arg1 *C.gsize    // in
+	var _arg1 C.gsize     // in
 	var _cret **C.gchar
 
 	_arg0 = (*C.GKeyFile)(unsafe.Pointer(k))
@@ -254,7 +227,7 @@ func (k *KeyFile) Int64(groupName string, key string) (int64, error) {
 	var _arg1 *C.gchar    // out
 	var _arg2 *C.gchar    // out
 	var _cret C.gint64    // in
-	var _cerr **C.GError  // in
+	var _cerr *C.GError   // in
 
 	_arg0 = (*C.GKeyFile)(unsafe.Pointer(k))
 	_arg1 = (*C.gchar)(C.CString(groupName))
@@ -268,16 +241,7 @@ func (k *KeyFile) Int64(groupName string, key string) (int64, error) {
 	var _goerr error  // out
 
 	_gint64 = int64(_cret)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _gint64, _goerr
 }
@@ -294,7 +258,7 @@ func (k *KeyFile) Integer(groupName string, key string) (int, error) {
 	var _arg1 *C.gchar    // out
 	var _arg2 *C.gchar    // out
 	var _cret C.gint      // in
-	var _cerr **C.GError  // in
+	var _cerr *C.GError   // in
 
 	_arg0 = (*C.GKeyFile)(unsafe.Pointer(k))
 	_arg1 = (*C.gchar)(C.CString(groupName))
@@ -308,16 +272,7 @@ func (k *KeyFile) Integer(groupName string, key string) (int, error) {
 	var _goerr error // out
 
 	_gint = int(_cret)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _gint, _goerr
 }
@@ -329,9 +284,9 @@ func (k *KeyFile) Integer(groupName string, key string) (int, error) {
 func (k *KeyFile) Keys(groupName string) (uint, []string, error) {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 *C.gchar    // out
-	var _arg2 *C.gsize    // in
+	var _arg2 C.gsize     // in
 	var _cret **C.gchar
-	var _cerr **C.GError // in
+	var _cerr *C.GError // in
 
 	_arg0 = (*C.GKeyFile)(unsafe.Pointer(k))
 	_arg1 = (*C.gchar)(C.CString(groupName))
@@ -358,16 +313,7 @@ func (k *KeyFile) Keys(groupName string) (uint, []string, error) {
 			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _length, _utf8s, _goerr
 }
@@ -423,7 +369,7 @@ func (k *KeyFile) LocaleString(groupName string, key string, locale string) (str
 	var _arg2 *C.gchar    // out
 	var _arg3 *C.gchar    // out
 	var _cret *C.gchar    // in
-	var _cerr **C.GError  // in
+	var _cerr *C.GError   // in
 
 	_arg0 = (*C.GKeyFile)(unsafe.Pointer(k))
 	_arg1 = (*C.gchar)(C.CString(groupName))
@@ -440,16 +386,7 @@ func (k *KeyFile) LocaleString(groupName string, key string, locale string) (str
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _utf8, _goerr
 }
@@ -483,7 +420,7 @@ func (k *KeyFile) String(groupName string, key string) (string, error) {
 	var _arg1 *C.gchar    // out
 	var _arg2 *C.gchar    // out
 	var _cret *C.gchar    // in
-	var _cerr **C.GError  // in
+	var _cerr *C.GError   // in
 
 	_arg0 = (*C.GKeyFile)(unsafe.Pointer(k))
 	_arg1 = (*C.gchar)(C.CString(groupName))
@@ -498,16 +435,7 @@ func (k *KeyFile) String(groupName string, key string) (string, error) {
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _utf8, _goerr
 }
@@ -520,7 +448,7 @@ func (k *KeyFile) Uint64(groupName string, key string) (uint64, error) {
 	var _arg1 *C.gchar    // out
 	var _arg2 *C.gchar    // out
 	var _cret C.guint64   // in
-	var _cerr **C.GError  // in
+	var _cerr *C.GError   // in
 
 	_arg0 = (*C.GKeyFile)(unsafe.Pointer(k))
 	_arg1 = (*C.gchar)(C.CString(groupName))
@@ -534,16 +462,7 @@ func (k *KeyFile) Uint64(groupName string, key string) (uint64, error) {
 	var _goerr error    // out
 
 	_guint64 = uint64(_cret)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _guint64, _goerr
 }
@@ -559,7 +478,7 @@ func (k *KeyFile) Value(groupName string, key string) (string, error) {
 	var _arg1 *C.gchar    // out
 	var _arg2 *C.gchar    // out
 	var _cret *C.gchar    // in
-	var _cerr **C.GError  // in
+	var _cerr *C.GError   // in
 
 	_arg0 = (*C.GKeyFile)(unsafe.Pointer(k))
 	_arg1 = (*C.gchar)(C.CString(groupName))
@@ -574,16 +493,7 @@ func (k *KeyFile) Value(groupName string, key string) (string, error) {
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _utf8, _goerr
 }
@@ -616,7 +526,7 @@ func (k *KeyFile) LoadFromData(data string, length uint, flags KeyFileFlags) err
 	var _arg1 *C.gchar        // out
 	var _arg2 C.gsize         // out
 	var _arg3 C.GKeyFileFlags // out
-	var _cerr **C.GError      // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GKeyFile)(unsafe.Pointer(k))
 	_arg1 = (*C.gchar)(C.CString(data))
@@ -628,16 +538,7 @@ func (k *KeyFile) LoadFromData(data string, length uint, flags KeyFileFlags) err
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
@@ -649,9 +550,9 @@ func (k *KeyFile) LoadFromData(data string, length uint, flags KeyFileFlags) err
 func (k *KeyFile) LoadFromDataDirs(file string, flags KeyFileFlags) (string, error) {
 	var _arg0 *C.GKeyFile     // out
 	var _arg1 *C.gchar        // out
-	var _arg2 **C.gchar       // in
+	var _arg2 *C.gchar        // in
 	var _arg3 C.GKeyFileFlags // out
-	var _cerr **C.GError      // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GKeyFile)(unsafe.Pointer(k))
 	_arg1 = (*C.gchar)(C.CString(file))
@@ -663,27 +564,9 @@ func (k *KeyFile) LoadFromDataDirs(file string, flags KeyFileFlags) (string, err
 	var _fullPath string // out
 	var _goerr error     // out
 
-	{
-		var refTmpIn *C.gchar
-		var refTmpOut string
-
-		refTmpIn = *_arg2
-
-		refTmpOut = C.GoString(refTmpIn)
-		defer C.free(unsafe.Pointer(refTmpIn))
-
-		_fullPath = refTmpOut
-	}
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_fullPath = C.GoString(_arg2)
+	defer C.free(unsafe.Pointer(_arg2))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _fullPath, _goerr
 }
@@ -701,9 +584,9 @@ func (k *KeyFile) LoadFromDirs(file string, searchDirs []string, flags KeyFileFl
 	var _arg0 *C.GKeyFile // out
 	var _arg1 *C.gchar    // out
 	var _arg2 **C.gchar
-	var _arg3 **C.gchar       // in
+	var _arg3 *C.gchar        // in
 	var _arg4 C.GKeyFileFlags // out
-	var _cerr **C.GError      // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GKeyFile)(unsafe.Pointer(k))
 	_arg1 = (*C.gchar)(C.CString(file))
@@ -724,27 +607,9 @@ func (k *KeyFile) LoadFromDirs(file string, searchDirs []string, flags KeyFileFl
 	var _fullPath string // out
 	var _goerr error     // out
 
-	{
-		var refTmpIn *C.gchar
-		var refTmpOut string
-
-		refTmpIn = *_arg3
-
-		refTmpOut = C.GoString(refTmpIn)
-		defer C.free(unsafe.Pointer(refTmpIn))
-
-		_fullPath = refTmpOut
-	}
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_fullPath = C.GoString(_arg3)
+	defer C.free(unsafe.Pointer(_arg3))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _fullPath, _goerr
 }
@@ -761,7 +626,7 @@ func (k *KeyFile) LoadFromFile(file string, flags KeyFileFlags) error {
 	var _arg0 *C.GKeyFile     // out
 	var _arg1 *C.gchar        // out
 	var _arg2 C.GKeyFileFlags // out
-	var _cerr **C.GError      // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GKeyFile)(unsafe.Pointer(k))
 	_arg1 = (*C.gchar)(C.CString(file))
@@ -772,16 +637,7 @@ func (k *KeyFile) LoadFromFile(file string, flags KeyFileFlags) error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
@@ -793,7 +649,7 @@ func (k *KeyFile) RemoveComment(groupName string, key string) error {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 *C.gchar    // out
 	var _arg2 *C.gchar    // out
-	var _cerr **C.GError  // in
+	var _cerr *C.GError   // in
 
 	_arg0 = (*C.GKeyFile)(unsafe.Pointer(k))
 	_arg1 = (*C.gchar)(C.CString(groupName))
@@ -805,16 +661,7 @@ func (k *KeyFile) RemoveComment(groupName string, key string) error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
@@ -823,7 +670,7 @@ func (k *KeyFile) RemoveComment(groupName string, key string) error {
 func (k *KeyFile) RemoveGroup(groupName string) error {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 *C.gchar    // out
-	var _cerr **C.GError  // in
+	var _cerr *C.GError   // in
 
 	_arg0 = (*C.GKeyFile)(unsafe.Pointer(k))
 	_arg1 = (*C.gchar)(C.CString(groupName))
@@ -833,16 +680,7 @@ func (k *KeyFile) RemoveGroup(groupName string) error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
@@ -852,7 +690,7 @@ func (k *KeyFile) RemoveKey(groupName string, key string) error {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 *C.gchar    // out
 	var _arg2 *C.gchar    // out
-	var _cerr **C.GError  // in
+	var _cerr *C.GError   // in
 
 	_arg0 = (*C.GKeyFile)(unsafe.Pointer(k))
 	_arg1 = (*C.gchar)(C.CString(groupName))
@@ -864,16 +702,7 @@ func (k *KeyFile) RemoveKey(groupName string, key string) error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
@@ -888,7 +717,7 @@ func (k *KeyFile) RemoveKey(groupName string, key string) error {
 func (k *KeyFile) SaveToFile(filename string) error {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 *C.gchar    // out
-	var _cerr **C.GError  // in
+	var _cerr *C.GError   // in
 
 	_arg0 = (*C.GKeyFile)(unsafe.Pointer(k))
 	_arg1 = (*C.gchar)(C.CString(filename))
@@ -898,16 +727,7 @@ func (k *KeyFile) SaveToFile(filename string) error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
@@ -966,7 +786,7 @@ func (k *KeyFile) SetComment(groupName string, key string, comment string) error
 	var _arg1 *C.gchar    // out
 	var _arg2 *C.gchar    // out
 	var _arg3 *C.gchar    // out
-	var _cerr **C.GError  // in
+	var _cerr *C.GError   // in
 
 	_arg0 = (*C.GKeyFile)(unsafe.Pointer(k))
 	_arg1 = (*C.gchar)(C.CString(groupName))
@@ -980,16 +800,7 @@ func (k *KeyFile) SetComment(groupName string, key string, comment string) error
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
@@ -1251,9 +1062,9 @@ func (k *KeyFile) SetValue(groupName string, key string, value string) {
 // @error.
 func (k *KeyFile) ToData() (uint, string, error) {
 	var _arg0 *C.GKeyFile // out
-	var _arg1 *C.gsize    // in
+	var _arg1 C.gsize     // in
 	var _cret *C.gchar    // in
-	var _cerr **C.GError  // in
+	var _cerr *C.GError   // in
 
 	_arg0 = (*C.GKeyFile)(unsafe.Pointer(k))
 
@@ -1266,16 +1077,7 @@ func (k *KeyFile) ToData() (uint, string, error) {
 	_length = uint(_arg1)
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _length, _utf8, _goerr
 }

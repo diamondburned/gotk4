@@ -310,7 +310,7 @@ func LogStructuredArray(logLevel LogLevelFlags, fields []LogField) {
 //
 // For more details on its usage and about the parameters, see
 // g_log_structured().
-func LogVariant(logDomain string, logLevel LogLevelFlags, fields Variant) {
+func LogVariant(logDomain string, logLevel LogLevelFlags, fields *Variant) {
 	var _arg1 *C.gchar         // out
 	var _arg2 C.GLogLevelFlags // out
 	var _arg3 *C.GVariant      // out

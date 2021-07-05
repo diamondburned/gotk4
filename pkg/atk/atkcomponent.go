@@ -199,10 +199,10 @@ func (c component) Alpha() float64 {
 
 func (c component) Extents(coordType CoordType) (x int, y int, width int, height int) {
 	var _arg0 *C.AtkComponent // out
-	var _arg1 *C.gint         // in
-	var _arg2 *C.gint         // in
-	var _arg3 *C.gint         // in
-	var _arg4 *C.gint         // in
+	var _arg1 C.gint          // in
+	var _arg2 C.gint          // in
+	var _arg3 C.gint          // in
+	var _arg4 C.gint          // in
 	var _arg5 C.AtkCoordType  // out
 
 	_arg0 = (*C.AtkComponent)(unsafe.Pointer(c.Native()))
@@ -255,8 +255,8 @@ func (c component) MDIZOrder() int {
 
 func (c component) Position(coordType CoordType) (x int, y int) {
 	var _arg0 *C.AtkComponent // out
-	var _arg1 *C.gint         // in
-	var _arg2 *C.gint         // in
+	var _arg1 C.gint          // in
+	var _arg2 C.gint          // in
 	var _arg3 C.AtkCoordType  // out
 
 	_arg0 = (*C.AtkComponent)(unsafe.Pointer(c.Native()))
@@ -275,8 +275,8 @@ func (c component) Position(coordType CoordType) (x int, y int) {
 
 func (c component) Size() (width int, height int) {
 	var _arg0 *C.AtkComponent // out
-	var _arg1 *C.gint         // in
-	var _arg2 *C.gint         // in
+	var _arg1 C.gint          // in
+	var _arg2 C.gint          // in
 
 	_arg0 = (*C.AtkComponent)(unsafe.Pointer(c.Native()))
 

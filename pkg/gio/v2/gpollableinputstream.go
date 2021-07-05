@@ -56,7 +56,7 @@ type PollableInputStream interface {
 	// stream may not actually be readable even after the source triggers, so
 	// you should use g_pollable_input_stream_read_nonblocking() rather than
 	// g_input_stream_read() from the callback.
-	CreateSource(cancellable Cancellable) glib.Source
+	CreateSource(cancellable Cancellable) *glib.Source
 	// IsReadable checks if @stream can be read.
 	//
 	// Note that some stream types may not be able to implement this 100%
@@ -117,7 +117,7 @@ func (s pollableInputStream) CanPoll() bool {
 	return _ok
 }
 
-func (s pollableInputStream) CreateSource(cancellable Cancellable) glib.Source {
+func (s pollableInputStream) CreateSource(cancellable Cancellable) *glib.Source {
 	var _arg0 *C.GPollableInputStream // out
 	var _arg1 *C.GCancellable         // out
 	var _cret *C.GSource              // in
@@ -127,10 +127,10 @@ func (s pollableInputStream) CreateSource(cancellable Cancellable) glib.Source {
 
 	_cret = C.g_pollable_input_stream_create_source(_arg0, _arg1)
 
-	var _source glib.Source // out
+	var _source *glib.Source // out
 
-	_source = (glib.Source)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_source, func(v glib.Source) {
+	_source = (*glib.Source)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_source, func(v *glib.Source) {
 		C.g_source_unref((*C.GSource)(unsafe.Pointer(v)))
 	})
 
@@ -160,7 +160,7 @@ func (s pollableInputStream) ReadNonblocking(buffer []byte, cancellable Cancella
 	var _arg2 C.gsize
 	var _arg3 *C.GCancellable // out
 	var _cret C.gssize        // in
-	var _cerr **C.GError      // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GPollableInputStream)(unsafe.Pointer(s.Native()))
 	_arg2 = C.gsize(len(buffer))
@@ -173,16 +173,7 @@ func (s pollableInputStream) ReadNonblocking(buffer []byte, cancellable Cancella
 	var _goerr error // out
 
 	_gssize = int(_cret)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _gssize, _goerr
 }

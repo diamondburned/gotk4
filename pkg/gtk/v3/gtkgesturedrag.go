@@ -78,8 +78,8 @@ func NewGestureDrag(widget Widget) GestureDrag {
 
 func (g gestureDrag) Offset() (x float64, y float64, ok bool) {
 	var _arg0 *C.GtkGestureDrag // out
-	var _arg1 *C.gdouble        // in
-	var _arg2 *C.gdouble        // in
+	var _arg1 C.gdouble         // in
+	var _arg2 C.gdouble         // in
 	var _cret C.gboolean        // in
 
 	_arg0 = (*C.GtkGestureDrag)(unsafe.Pointer(g.Native()))
@@ -101,8 +101,8 @@ func (g gestureDrag) Offset() (x float64, y float64, ok bool) {
 
 func (g gestureDrag) StartPoint() (x float64, y float64, ok bool) {
 	var _arg0 *C.GtkGestureDrag // out
-	var _arg1 *C.gdouble        // in
-	var _arg2 *C.gdouble        // in
+	var _arg1 C.gdouble         // in
+	var _arg2 C.gdouble         // in
 	var _cret C.gboolean        // in
 
 	_arg0 = (*C.GtkGestureDrag)(unsafe.Pointer(g.Native()))

@@ -267,12 +267,12 @@ func (b box) PackStartBox(child Widget, expand bool, fill bool, padding uint) {
 }
 
 func (b box) QueryChildPackingBox(child Widget) (expand bool, fill bool, padding uint, packType PackType) {
-	var _arg0 *C.GtkBox      // out
-	var _arg1 *C.GtkWidget   // out
-	var _arg2 *C.gboolean    // in
-	var _arg3 *C.gboolean    // in
-	var _arg4 *C.guint       // in
-	var _arg5 *C.GtkPackType // in
+	var _arg0 *C.GtkBox     // out
+	var _arg1 *C.GtkWidget  // out
+	var _arg2 C.gboolean    // in
+	var _arg3 C.gboolean    // in
+	var _arg4 C.guint       // in
+	var _arg5 C.GtkPackType // in
 
 	_arg0 = (*C.GtkBox)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
@@ -284,41 +284,14 @@ func (b box) QueryChildPackingBox(child Widget) (expand bool, fill bool, padding
 	var _padding uint      // out
 	var _packType PackType // out
 
-	{
-		var refTmpIn C.gboolean
-		var refTmpOut bool
-
-		refTmpIn = *_arg2
-
-		if refTmpIn != 0 {
-			refTmpOut = true
-		}
-
-		_expand = refTmpOut
+	if _arg2 != 0 {
+		_expand = true
 	}
-	{
-		var refTmpIn C.gboolean
-		var refTmpOut bool
-
-		refTmpIn = *_arg3
-
-		if refTmpIn != 0 {
-			refTmpOut = true
-		}
-
-		_fill = refTmpOut
+	if _arg3 != 0 {
+		_fill = true
 	}
 	_padding = uint(_arg4)
-	{
-		var refTmpIn C.GtkPackType
-		var refTmpOut PackType
-
-		refTmpIn = *_arg5
-
-		refTmpOut = PackType(refTmpIn)
-
-		_packType = refTmpOut
-	}
+	_packType = PackType(_arg5)
 
 	return _expand, _fill, _padding, _packType
 }

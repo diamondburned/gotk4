@@ -145,8 +145,8 @@ func (m monitor) Display() Display {
 }
 
 func (m monitor) Geometry() Rectangle {
-	var _arg0 *C.GdkMonitor   // out
-	var _arg1 *C.GdkRectangle // in
+	var _arg0 *C.GdkMonitor  // out
+	var _arg1 C.GdkRectangle // in
 
 	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
 
@@ -154,7 +154,17 @@ func (m monitor) Geometry() Rectangle {
 
 	var _geometry Rectangle // out
 
-	_geometry = (Rectangle)(unsafe.Pointer(_arg1))
+	{
+		var refTmpIn *C.GdkRectangle
+		var refTmpOut *Rectangle
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_geometry = *refTmpOut
+	}
 
 	return _geometry
 }
@@ -265,8 +275,8 @@ func (m monitor) WidthMm() int {
 }
 
 func (m monitor) Workarea() Rectangle {
-	var _arg0 *C.GdkMonitor   // out
-	var _arg1 *C.GdkRectangle // in
+	var _arg0 *C.GdkMonitor  // out
+	var _arg1 C.GdkRectangle // in
 
 	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
 
@@ -274,7 +284,17 @@ func (m monitor) Workarea() Rectangle {
 
 	var _workarea Rectangle // out
 
-	_workarea = (Rectangle)(unsafe.Pointer(_arg1))
+	{
+		var refTmpIn *C.GdkRectangle
+		var refTmpOut *Rectangle
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_workarea = *refTmpOut
+	}
 
 	return _workarea
 }

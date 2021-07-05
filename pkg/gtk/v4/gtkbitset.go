@@ -76,7 +76,7 @@ func (i *BitsetIter) IsValid() bool {
 // and @iter is invalidated.
 func (i *BitsetIter) Next() (uint, bool) {
 	var _arg0 *C.GtkBitsetIter // out
-	var _arg1 *C.guint         // in
+	var _arg1 C.guint          // in
 	var _cret C.gboolean       // in
 
 	_arg0 = (*C.GtkBitsetIter)(unsafe.Pointer(i))
@@ -100,7 +100,7 @@ func (i *BitsetIter) Next() (uint, bool) {
 // and @iter is invalidated.
 func (i *BitsetIter) Previous() (uint, bool) {
 	var _arg0 *C.GtkBitsetIter // out
-	var _arg1 *C.guint         // in
+	var _arg1 C.guint          // in
 	var _cret C.gboolean       // in
 
 	_arg0 = (*C.GtkBitsetIter)(unsafe.Pointer(i))

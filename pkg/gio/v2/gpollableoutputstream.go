@@ -56,7 +56,7 @@ type PollableOutputStream interface {
 	// stream may not actually be writable even after the source triggers, so
 	// you should use g_pollable_output_stream_write_nonblocking() rather than
 	// g_output_stream_write() from the callback.
-	CreateSource(cancellable Cancellable) glib.Source
+	CreateSource(cancellable Cancellable) *glib.Source
 	// IsWritable checks if @stream can be written.
 	//
 	// Note that some stream types may not be able to implement this 100%
@@ -139,7 +139,7 @@ func (s pollableOutputStream) CanPoll() bool {
 	return _ok
 }
 
-func (s pollableOutputStream) CreateSource(cancellable Cancellable) glib.Source {
+func (s pollableOutputStream) CreateSource(cancellable Cancellable) *glib.Source {
 	var _arg0 *C.GPollableOutputStream // out
 	var _arg1 *C.GCancellable          // out
 	var _cret *C.GSource               // in
@@ -149,10 +149,10 @@ func (s pollableOutputStream) CreateSource(cancellable Cancellable) glib.Source 
 
 	_cret = C.g_pollable_output_stream_create_source(_arg0, _arg1)
 
-	var _source glib.Source // out
+	var _source *glib.Source // out
 
-	_source = (glib.Source)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_source, func(v glib.Source) {
+	_source = (*glib.Source)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_source, func(v *glib.Source) {
 		C.g_source_unref((*C.GSource)(unsafe.Pointer(v)))
 	})
 
@@ -182,7 +182,7 @@ func (s pollableOutputStream) WriteNonblocking(buffer []byte, cancellable Cancel
 	var _arg2 C.gsize
 	var _arg3 *C.GCancellable // out
 	var _cret C.gssize        // in
-	var _cerr **C.GError      // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GPollableOutputStream)(unsafe.Pointer(s.Native()))
 	_arg2 = C.gsize(len(buffer))
@@ -195,16 +195,7 @@ func (s pollableOutputStream) WriteNonblocking(buffer []byte, cancellable Cancel
 	var _goerr error // out
 
 	_gssize = int(_cret)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _gssize, _goerr
 }
@@ -213,10 +204,10 @@ func (s pollableOutputStream) WritevNonblocking(vectors []OutputVector, cancella
 	var _arg0 *C.GPollableOutputStream // out
 	var _arg1 *C.GOutputVector
 	var _arg2 C.gsize
-	var _arg3 *C.gsize          // in
+	var _arg3 C.gsize           // in
 	var _arg4 *C.GCancellable   // out
 	var _cret C.GPollableReturn // in
-	var _cerr **C.GError        // in
+	var _cerr *C.GError         // in
 
 	_arg0 = (*C.GPollableOutputStream)(unsafe.Pointer(s.Native()))
 	_arg2 = C.gsize(len(vectors))
@@ -231,16 +222,7 @@ func (s pollableOutputStream) WritevNonblocking(vectors []OutputVector, cancella
 
 	_bytesWritten = uint(_arg3)
 	_pollableReturn = PollableReturn(_cret)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _bytesWritten, _pollableReturn, _goerr
 }

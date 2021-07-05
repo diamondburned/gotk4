@@ -217,8 +217,8 @@ func (p paintable) ComputeConcreteSize(specifiedWidth float64, specifiedHeight f
 	var _arg2 C.double        // out
 	var _arg3 C.double        // out
 	var _arg4 C.double        // out
-	var _arg5 *C.double       // in
-	var _arg6 *C.double       // in
+	var _arg5 C.double        // in
+	var _arg6 C.double        // in
 
 	_arg0 = (*C.GdkPaintable)(unsafe.Pointer(p.Native()))
 	_arg1 = C.double(specifiedWidth)

@@ -429,7 +429,7 @@ func (s simpleAsyncResult) OpResGssize() int {
 
 func (s simpleAsyncResult) PropagateErrorSimpleAsyncResult() error {
 	var _arg0 *C.GSimpleAsyncResult // out
-	var _cerr **C.GError            // in
+	var _cerr *C.GError             // in
 
 	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer(s.Native()))
 
@@ -437,16 +437,7 @@ func (s simpleAsyncResult) PropagateErrorSimpleAsyncResult() error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }

@@ -186,9 +186,9 @@ func (c calendar) ClearMarksCalendar() {
 
 func (c calendar) Date() (year uint, month uint, day uint) {
 	var _arg0 *C.GtkCalendar // out
-	var _arg1 *C.guint       // in
-	var _arg2 *C.guint       // in
-	var _arg3 *C.guint       // in
+	var _arg1 C.guint        // in
+	var _arg2 C.guint        // in
+	var _arg3 C.guint        // in
 
 	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(c.Native()))
 

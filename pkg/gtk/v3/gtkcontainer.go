@@ -275,7 +275,7 @@ type Container interface {
 	FocusVAdjustment() Adjustment
 	// PathForChild returns a newly created widget path representing all the
 	// widget hierarchy from the toplevel down to and including @child.
-	PathForChild(child Widget) WidgetPath
+	PathForChild(child Widget) *WidgetPath
 	// ResizeMode returns the resize mode for the container. See
 	// gtk_container_set_resize_mode ().
 	//
@@ -296,7 +296,7 @@ type Container interface {
 	// In most cases, a container can simply either inherit the Widget::draw
 	// implementation from Container, or do some drawing and then chain to the
 	// ::draw implementation from Container.
-	PropagateDrawContainer(child Widget, cr cairo.Context)
+	PropagateDrawContainer(child Widget, cr *cairo.Context)
 	// RemoveContainer removes @widget from @container. @widget must be inside
 	// @container. Note that @container will own a reference to @widget, and
 	// that this may be the last reference held; so removing a widget from its
@@ -551,7 +551,7 @@ func (c container) FocusVAdjustment() Adjustment {
 	return _adjustment
 }
 
-func (c container) PathForChild(child Widget) WidgetPath {
+func (c container) PathForChild(child Widget) *WidgetPath {
 	var _arg0 *C.GtkContainer  // out
 	var _arg1 *C.GtkWidget     // out
 	var _cret *C.GtkWidgetPath // in
@@ -561,10 +561,10 @@ func (c container) PathForChild(child Widget) WidgetPath {
 
 	_cret = C.gtk_container_get_path_for_child(_arg0, _arg1)
 
-	var _widgetPath WidgetPath // out
+	var _widgetPath *WidgetPath // out
 
-	_widgetPath = (WidgetPath)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_widgetPath, func(v WidgetPath) {
+	_widgetPath = (*WidgetPath)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_widgetPath, func(v *WidgetPath) {
 		C.gtk_widget_path_unref((*C.GtkWidgetPath)(unsafe.Pointer(v)))
 	})
 
@@ -586,7 +586,7 @@ func (c container) ResizeMode() ResizeMode {
 	return _resizeMode
 }
 
-func (c container) PropagateDrawContainer(child Widget, cr cairo.Context) {
+func (c container) PropagateDrawContainer(child Widget, cr *cairo.Context) {
 	var _arg0 *C.GtkContainer // out
 	var _arg1 *C.GtkWidget    // out
 	var _arg2 *C.cairo_t      // out

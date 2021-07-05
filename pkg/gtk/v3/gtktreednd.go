@@ -34,10 +34,10 @@ func init() {
 // get memory corruption. In the TreeDragDest drag_data_received handler, you
 // can assume that selection data of type GTK_TREE_MODEL_ROW is in from the
 // current process. The returned path must be freed with gtk_tree_path_free().
-func TreeGetRowDragData(selectionData SelectionData) (TreeModel, *TreePath, bool) {
+func TreeGetRowDragData(selectionData *SelectionData) (TreeModel, *TreePath, bool) {
 	var _arg1 *C.GtkSelectionData // out
-	var _arg2 **C.GtkTreeModel    // in
-	var _arg3 **C.GtkTreePath     // in
+	var _arg2 *C.GtkTreeModel     // in
+	var _arg3 *C.GtkTreePath      // in
 	var _cret C.gboolean          // in
 
 	_arg1 = (*C.GtkSelectionData)(unsafe.Pointer(selectionData))
@@ -48,29 +48,11 @@ func TreeGetRowDragData(selectionData SelectionData) (TreeModel, *TreePath, bool
 	var _path *TreePath      // out
 	var _ok bool             // out
 
-	{
-		var refTmpIn *C.GtkTreeModel
-		var refTmpOut treeModel
-
-		refTmpIn = *_arg2
-
-		refTmpOut = gextras.CastObject(externglib.Take(unsafe.Pointer(refTmpIn))).(treeModel)
-
-		_treeModel = refTmpOut
-	}
-	{
-		var refTmpIn *C.GtkTreePath
-		var refTmpOut *TreePath
-
-		refTmpIn = *_arg3
-
-		refTmpOut = (*TreePath)(unsafe.Pointer(refTmpIn))
-		runtime.SetFinalizer(refTmpOut, func(v *TreePath) {
-			C.gtk_tree_path_free((*C.GtkTreePath)(unsafe.Pointer(v)))
-		})
-
-		_path = refTmpOut
-	}
+	_treeModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg2))).(TreeModel)
+	_path = (*TreePath)(unsafe.Pointer(_arg3))
+	runtime.SetFinalizer(_path, func(v *TreePath) {
+		C.gtk_tree_path_free((*C.GtkTreePath)(unsafe.Pointer(v)))
+	})
 	if _cret != 0 {
 		_ok = true
 	}
@@ -80,7 +62,7 @@ func TreeGetRowDragData(selectionData SelectionData) (TreeModel, *TreePath, bool
 
 // TreeSetRowDragData sets selection data of target type GTK_TREE_MODEL_ROW.
 // Normally used in a drag_data_get handler.
-func TreeSetRowDragData(selectionData SelectionData, treeModel TreeModel, path TreePath) bool {
+func TreeSetRowDragData(selectionData *SelectionData, treeModel TreeModel, path *TreePath) bool {
 	var _arg1 *C.GtkSelectionData // out
 	var _arg2 *C.GtkTreeModel     // out
 	var _arg3 *C.GtkTreePath      // out
@@ -110,13 +92,13 @@ type TreeDragDest interface {
 	// returned. Also, false may be returned if the new row is not created for
 	// some model-specific reason. Should robustly handle a @dest no longer
 	// found in the model!
-	DragDataReceived(dest TreePath, selectionData SelectionData) bool
+	DragDataReceived(dest *TreePath, selectionData *SelectionData) bool
 	// RowDropPossible determines whether a drop is possible before the given
 	// @dest_path, at the same depth as @dest_path. i.e., can we drop the data
 	// in @selection_data at that location. @dest_path does not have to exist;
 	// the return value will almost certainly be false if the parent of
 	// @dest_path doesn’t exist, though.
-	RowDropPossible(destPath TreePath, selectionData SelectionData) bool
+	RowDropPossible(destPath *TreePath, selectionData *SelectionData) bool
 }
 
 // treeDragDest implements the TreeDragDest interface.
@@ -140,7 +122,7 @@ func marshalTreeDragDest(p uintptr) (interface{}, error) {
 	return WrapTreeDragDest(obj), nil
 }
 
-func (d treeDragDest) DragDataReceived(dest TreePath, selectionData SelectionData) bool {
+func (d treeDragDest) DragDataReceived(dest *TreePath, selectionData *SelectionData) bool {
 	var _arg0 *C.GtkTreeDragDest  // out
 	var _arg1 *C.GtkTreePath      // out
 	var _arg2 *C.GtkSelectionData // out
@@ -161,7 +143,7 @@ func (d treeDragDest) DragDataReceived(dest TreePath, selectionData SelectionDat
 	return _ok
 }
 
-func (d treeDragDest) RowDropPossible(destPath TreePath, selectionData SelectionData) bool {
+func (d treeDragDest) RowDropPossible(destPath *TreePath, selectionData *SelectionData) bool {
 	var _arg0 *C.GtkTreeDragDest  // out
 	var _arg1 *C.GtkTreePath      // out
 	var _arg2 *C.GtkSelectionData // out
@@ -190,16 +172,16 @@ type TreeDragSource interface {
 	// the deletion fails because @path no longer exists, or for some
 	// model-specific reason. Should robustly handle a @path no longer found in
 	// the model!
-	DragDataDelete(path TreePath) bool
+	DragDataDelete(path *TreePath) bool
 	// DragDataGet asks the TreeDragSource to fill in @selection_data with a
 	// representation of the row at @path. @selection_data->target gives the
 	// required type of the data. Should robustly handle a @path no longer found
 	// in the model!
-	DragDataGet(path TreePath, selectionData SelectionData) bool
+	DragDataGet(path *TreePath, selectionData *SelectionData) bool
 	// RowDraggable asks the TreeDragSource whether a particular row can be used
 	// as the source of a DND operation. If the source doesn’t implement this
 	// interface, the row is assumed draggable.
-	RowDraggable(path TreePath) bool
+	RowDraggable(path *TreePath) bool
 }
 
 // treeDragSource implements the TreeDragSource interface.
@@ -223,7 +205,7 @@ func marshalTreeDragSource(p uintptr) (interface{}, error) {
 	return WrapTreeDragSource(obj), nil
 }
 
-func (d treeDragSource) DragDataDelete(path TreePath) bool {
+func (d treeDragSource) DragDataDelete(path *TreePath) bool {
 	var _arg0 *C.GtkTreeDragSource // out
 	var _arg1 *C.GtkTreePath       // out
 	var _cret C.gboolean           // in
@@ -242,7 +224,7 @@ func (d treeDragSource) DragDataDelete(path TreePath) bool {
 	return _ok
 }
 
-func (d treeDragSource) DragDataGet(path TreePath, selectionData SelectionData) bool {
+func (d treeDragSource) DragDataGet(path *TreePath, selectionData *SelectionData) bool {
 	var _arg0 *C.GtkTreeDragSource // out
 	var _arg1 *C.GtkTreePath       // out
 	var _arg2 *C.GtkSelectionData  // out
@@ -263,7 +245,7 @@ func (d treeDragSource) DragDataGet(path TreePath, selectionData SelectionData) 
 	return _ok
 }
 
-func (d treeDragSource) RowDraggable(path TreePath) bool {
+func (d treeDragSource) RowDraggable(path *TreePath) bool {
 	var _arg0 *C.GtkTreeDragSource // out
 	var _arg1 *C.GtkTreePath       // out
 	var _cret C.gboolean           // in

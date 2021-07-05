@@ -404,10 +404,10 @@ func (g grid) InsertRowGrid(position int) {
 func (g grid) QueryChildGrid(child Widget) (column int, row int, width int, height int) {
 	var _arg0 *C.GtkGrid   // out
 	var _arg1 *C.GtkWidget // out
-	var _arg2 *C.int       // in
-	var _arg3 *C.int       // in
-	var _arg4 *C.int       // in
-	var _arg5 *C.int       // in
+	var _arg2 C.int        // in
+	var _arg3 C.int        // in
+	var _arg4 C.int        // in
+	var _arg5 C.int        // in
 
 	_arg0 = (*C.GtkGrid)(unsafe.Pointer(g.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))

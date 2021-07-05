@@ -97,7 +97,7 @@ type Text interface {
 	ActivatesDefault() bool
 	// Attributes gets the attribute list that was set on the `GtkText` using
 	// gtk_text_set_attributes().
-	Attributes() pango.AttrList
+	Attributes() *pango.AttrList
 	// Buffer: get the `GtkEntryBuffer` object which holds the text for this
 	// self.
 	Buffer() EntryBuffer
@@ -134,7 +134,7 @@ type Text interface {
 	PropagateTextWidth() bool
 	// Tabs gets the tabstops that were set on the `GtkText` using
 	// gtk_text_set_tabs().
-	Tabs() pango.TabArray
+	Tabs() *pango.TabArray
 	// TextLength retrieves the current length of the text in @self.
 	//
 	// This is equivalent to getting @self's `GtkEntryBuffer` and calling
@@ -159,7 +159,7 @@ type Text interface {
 	// closed, since the default widget is usually one of the dialog buttons.
 	SetActivatesDefaultText(activates bool)
 	// SetAttributesText sets attributes that are applied to the text.
-	SetAttributesText(attrs pango.AttrList)
+	SetAttributesText(attrs *pango.AttrList)
 	// SetBufferText: set the `GtkEntryBuffer` object which holds the text for
 	// this widget.
 	SetBufferText(buffer EntryBuffer)
@@ -208,7 +208,7 @@ type Text interface {
 	// shrink with the content.
 	SetPropagateTextWidthText(propagateTextWidth bool)
 	// SetTabsText sets tabstops that are applied to the text.
-	SetTabsText(tabs pango.TabArray)
+	SetTabsText(tabs *pango.TabArray)
 	// SetTruncateMultilineText sets whether the `GtkText` should truncate
 	// multi-line text that is pasted into the widget.
 	SetTruncateMultilineText(truncateMultiline bool)
@@ -299,7 +299,7 @@ func (s text) ActivatesDefault() bool {
 	return _ok
 }
 
-func (s text) Attributes() pango.AttrList {
+func (s text) Attributes() *pango.AttrList {
 	var _arg0 *C.GtkText       // out
 	var _cret *C.PangoAttrList // in
 
@@ -307,9 +307,9 @@ func (s text) Attributes() pango.AttrList {
 
 	_cret = C.gtk_text_get_attributes(_arg0)
 
-	var _attrList pango.AttrList // out
+	var _attrList *pango.AttrList // out
 
-	_attrList = (pango.AttrList)(unsafe.Pointer(_cret))
+	_attrList = (*pango.AttrList)(unsafe.Pointer(_cret))
 	C.pango_attr_list_ref(_cret)
 
 	return _attrList
@@ -471,7 +471,7 @@ func (s text) PropagateTextWidth() bool {
 	return _ok
 }
 
-func (s text) Tabs() pango.TabArray {
+func (s text) Tabs() *pango.TabArray {
 	var _arg0 *C.GtkText       // out
 	var _cret *C.PangoTabArray // in
 
@@ -479,9 +479,9 @@ func (s text) Tabs() pango.TabArray {
 
 	_cret = C.gtk_text_get_tabs(_arg0)
 
-	var _tabArray pango.TabArray // out
+	var _tabArray *pango.TabArray // out
 
-	_tabArray = (pango.TabArray)(unsafe.Pointer(_cret))
+	_tabArray = (*pango.TabArray)(unsafe.Pointer(_cret))
 
 	return _tabArray
 }
@@ -564,7 +564,7 @@ func (s text) SetActivatesDefaultText(activates bool) {
 	C.gtk_text_set_activates_default(_arg0, _arg1)
 }
 
-func (s text) SetAttributesText(attrs pango.AttrList) {
+func (s text) SetAttributesText(attrs *pango.AttrList) {
 	var _arg0 *C.GtkText       // out
 	var _arg1 *C.PangoAttrList // out
 
@@ -681,7 +681,7 @@ func (s text) SetPropagateTextWidthText(propagateTextWidth bool) {
 	C.gtk_text_set_propagate_text_width(_arg0, _arg1)
 }
 
-func (s text) SetTabsText(tabs pango.TabArray) {
+func (s text) SetTabsText(tabs *pango.TabArray) {
 	var _arg0 *C.GtkText       // out
 	var _arg1 *C.PangoTabArray // out
 

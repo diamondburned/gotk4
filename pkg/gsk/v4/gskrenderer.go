@@ -59,7 +59,7 @@ type Renderer interface {
 	//
 	// The @renderer will acquire a reference on the `GskRenderNode` tree while
 	// the rendering is in progress.
-	RenderRenderer(root RenderNode, region cairo.Region)
+	RenderRenderer(root RenderNode, region *cairo.Region)
 	// RenderTextureRenderer renders the scene graph, described by a tree of
 	// `GskRenderNode` instances, to a `GdkTexture`.
 	//
@@ -68,7 +68,7 @@ type Renderer interface {
 	//
 	// If you want to apply any transformations to @root, you should put it into
 	// a transform node and pass that node instead.
-	RenderTextureRenderer(root RenderNode, viewport graphene.Rect) gdk.Texture
+	RenderTextureRenderer(root RenderNode, viewport *graphene.Rect) gdk.Texture
 	// UnrealizeRenderer releases all the resources created by
 	// gsk_renderer_realize().
 	UnrealizeRenderer()
@@ -151,7 +151,7 @@ func (r renderer) IsRealizedRenderer() bool {
 func (r renderer) RealizeRenderer(surface gdk.Surface) error {
 	var _arg0 *C.GskRenderer // out
 	var _arg1 *C.GdkSurface  // out
-	var _cerr **C.GError     // in
+	var _cerr *C.GError      // in
 
 	_arg0 = (*C.GskRenderer)(unsafe.Pointer(r.Native()))
 	_arg1 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
@@ -160,21 +160,12 @@ func (r renderer) RealizeRenderer(surface gdk.Surface) error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
 
-func (r renderer) RenderRenderer(root RenderNode, region cairo.Region) {
+func (r renderer) RenderRenderer(root RenderNode, region *cairo.Region) {
 	var _arg0 *C.GskRenderer    // out
 	var _arg1 *C.GskRenderNode  // out
 	var _arg2 *C.cairo_region_t // out
@@ -186,7 +177,7 @@ func (r renderer) RenderRenderer(root RenderNode, region cairo.Region) {
 	C.gsk_renderer_render(_arg0, _arg1, _arg2)
 }
 
-func (r renderer) RenderTextureRenderer(root RenderNode, viewport graphene.Rect) gdk.Texture {
+func (r renderer) RenderTextureRenderer(root RenderNode, viewport *graphene.Rect) gdk.Texture {
 	var _arg0 *C.GskRenderer     // out
 	var _arg1 *C.GskRenderNode   // out
 	var _arg2 *C.graphene_rect_t // out

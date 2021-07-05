@@ -111,7 +111,7 @@ type RecentManager interface {
 	// description of the item; whether the item should be considered private -
 	// that is, should be displayed only by the applications that have
 	// registered it.
-	AddFullRecentManager(uri string, recentData RecentData) bool
+	AddFullRecentManager(uri string, recentData *RecentData) bool
 	// AddItemRecentManager adds a new resource, pointed by @uri, into the
 	// recently used resources list.
 	//
@@ -128,7 +128,7 @@ type RecentManager interface {
 	// LookupItemRecentManager searches for a URI inside the recently used
 	// resources list, and returns a `GtkRecentInfo` containing information
 	// about the resource like its MIME type, or its display name.
-	LookupItemRecentManager(uri string) (RecentInfo, error)
+	LookupItemRecentManager(uri string) (*RecentInfo, error)
 	// MoveItemRecentManager changes the location of a recently used resource
 	// from @uri to @new_uri.
 	//
@@ -183,7 +183,7 @@ func NewRecentManager() RecentManager {
 	return _recentManager
 }
 
-func (m recentManager) AddFullRecentManager(uri string, recentData RecentData) bool {
+func (m recentManager) AddFullRecentManager(uri string, recentData *RecentData) bool {
 	var _arg0 *C.GtkRecentManager // out
 	var _arg1 *C.char             // out
 	var _arg2 *C.GtkRecentData    // out
@@ -245,11 +245,11 @@ func (m recentManager) HasItemRecentManager(uri string) bool {
 	return _ok
 }
 
-func (m recentManager) LookupItemRecentManager(uri string) (RecentInfo, error) {
+func (m recentManager) LookupItemRecentManager(uri string) (*RecentInfo, error) {
 	var _arg0 *C.GtkRecentManager // out
 	var _arg1 *C.char             // out
 	var _cret *C.GtkRecentInfo    // in
-	var _cerr **C.GError          // in
+	var _cerr *C.GError           // in
 
 	_arg0 = (*C.GtkRecentManager)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.char)(C.CString(uri))
@@ -257,23 +257,14 @@ func (m recentManager) LookupItemRecentManager(uri string) (RecentInfo, error) {
 
 	_cret = C.gtk_recent_manager_lookup_item(_arg0, _arg1, &_cerr)
 
-	var _recentInfo RecentInfo // out
-	var _goerr error           // out
+	var _recentInfo *RecentInfo // out
+	var _goerr error            // out
 
-	_recentInfo = (RecentInfo)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_recentInfo, func(v RecentInfo) {
+	_recentInfo = (*RecentInfo)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_recentInfo, func(v *RecentInfo) {
 		C.gtk_recent_info_unref((*C.GtkRecentInfo)(unsafe.Pointer(v)))
 	})
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _recentInfo, _goerr
 }
@@ -282,7 +273,7 @@ func (m recentManager) MoveItemRecentManager(uri string, newUri string) error {
 	var _arg0 *C.GtkRecentManager // out
 	var _arg1 *C.char             // out
 	var _arg2 *C.char             // out
-	var _cerr **C.GError          // in
+	var _cerr *C.GError           // in
 
 	_arg0 = (*C.GtkRecentManager)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.char)(C.CString(uri))
@@ -294,16 +285,7 @@ func (m recentManager) MoveItemRecentManager(uri string, newUri string) error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
@@ -311,7 +293,7 @@ func (m recentManager) MoveItemRecentManager(uri string, newUri string) error {
 func (m recentManager) PurgeItemsRecentManager() (int, error) {
 	var _arg0 *C.GtkRecentManager // out
 	var _cret C.int               // in
-	var _cerr **C.GError          // in
+	var _cerr *C.GError           // in
 
 	_arg0 = (*C.GtkRecentManager)(unsafe.Pointer(m.Native()))
 
@@ -321,16 +303,7 @@ func (m recentManager) PurgeItemsRecentManager() (int, error) {
 	var _goerr error // out
 
 	_gint = int(_cret)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _gint, _goerr
 }
@@ -338,7 +311,7 @@ func (m recentManager) PurgeItemsRecentManager() (int, error) {
 func (m recentManager) RemoveItemRecentManager(uri string) error {
 	var _arg0 *C.GtkRecentManager // out
 	var _arg1 *C.char             // out
-	var _cerr **C.GError          // in
+	var _cerr *C.GError           // in
 
 	_arg0 = (*C.GtkRecentManager)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.char)(C.CString(uri))
@@ -348,16 +321,7 @@ func (m recentManager) RemoveItemRecentManager(uri string) error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
@@ -648,7 +612,7 @@ func (i *RecentInfo) LastApplication() string {
 }
 
 // Match checks whether two `GtkRecentInfo` point to the same resource.
-func (i *RecentInfo) Match(infoB RecentInfo) bool {
+func (i *RecentInfo) Match(infoB *RecentInfo) bool {
 	var _arg0 *C.GtkRecentInfo // out
 	var _arg1 *C.GtkRecentInfo // out
 	var _cret C.gboolean       // in
@@ -668,7 +632,7 @@ func (i *RecentInfo) Match(infoB RecentInfo) bool {
 }
 
 // Ref increases the reference count of @recent_info by one.
-func (i *RecentInfo) Ref() RecentInfo {
+func (i *RecentInfo) Ref() *RecentInfo {
 	var _arg0 *C.GtkRecentInfo // out
 	var _cret *C.GtkRecentInfo // in
 
@@ -676,10 +640,10 @@ func (i *RecentInfo) Ref() RecentInfo {
 
 	_cret = C.gtk_recent_info_ref(_arg0)
 
-	var _recentInfo RecentInfo // out
+	var _recentInfo *RecentInfo // out
 
-	_recentInfo = (RecentInfo)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_recentInfo, func(v RecentInfo) {
+	_recentInfo = (*RecentInfo)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_recentInfo, func(v *RecentInfo) {
 		C.gtk_recent_info_unref((*C.GtkRecentInfo)(unsafe.Pointer(v)))
 	})
 

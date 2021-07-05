@@ -160,7 +160,7 @@ type Popover interface {
 	// SetPointingToPopover sets the rectangle that @popover will point to, in
 	// the coordinate space of the widget @popover is attached to, see
 	// gtk_popover_set_relative_to().
-	SetPointingToPopover(rect gdk.Rectangle)
+	SetPointingToPopover(rect *gdk.Rectangle)
 	// SetPositionPopover sets the preferred position for @popover to appear. If
 	// the @popover is currently visible, it will be immediately updated.
 	//
@@ -305,9 +305,9 @@ func (p popover) Modal() bool {
 }
 
 func (p popover) PointingTo() (gdk.Rectangle, bool) {
-	var _arg0 *C.GtkPopover   // out
-	var _arg1 *C.GdkRectangle // in
-	var _cret C.gboolean      // in
+	var _arg0 *C.GtkPopover  // out
+	var _arg1 C.GdkRectangle // in
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
 
@@ -316,7 +316,17 @@ func (p popover) PointingTo() (gdk.Rectangle, bool) {
 	var _rect gdk.Rectangle // out
 	var _ok bool            // out
 
-	_rect = (gdk.Rectangle)(unsafe.Pointer(_arg1))
+	{
+		var refTmpIn *C.GdkRectangle
+		var refTmpOut *gdk.Rectangle
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*gdk.Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_rect = *refTmpOut
+	}
 	if _cret != 0 {
 		_ok = true
 	}
@@ -419,7 +429,7 @@ func (p popover) SetModalPopover(modal bool) {
 	C.gtk_popover_set_modal(_arg0, _arg1)
 }
 
-func (p popover) SetPointingToPopover(rect gdk.Rectangle) {
+func (p popover) SetPointingToPopover(rect *gdk.Rectangle) {
 	var _arg0 *C.GtkPopover   // out
 	var _arg1 *C.GdkRectangle // out
 

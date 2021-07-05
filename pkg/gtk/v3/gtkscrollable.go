@@ -102,7 +102,7 @@ func marshalScrollable(p uintptr) (interface{}, error) {
 
 func (s scrollable) Border() (Border, bool) {
 	var _arg0 *C.GtkScrollable // out
-	var _arg1 *C.GtkBorder     // in
+	var _arg1 C.GtkBorder      // in
 	var _cret C.gboolean       // in
 
 	_arg0 = (*C.GtkScrollable)(unsafe.Pointer(s.Native()))
@@ -112,7 +112,17 @@ func (s scrollable) Border() (Border, bool) {
 	var _border Border // out
 	var _ok bool       // out
 
-	_border = (Border)(unsafe.Pointer(_arg1))
+	{
+		var refTmpIn *C.GtkBorder
+		var refTmpOut *Border
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Border)(unsafe.Pointer(refTmpIn))
+
+		_border = *refTmpOut
+	}
 	if _cret != 0 {
 		_ok = true
 	}

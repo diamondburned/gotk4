@@ -59,7 +59,7 @@ type CellView interface {
 
 	// DisplayedRow returns a TreePath referring to the currently displayed row.
 	// If no row is currently displayed, nil is returned.
-	DisplayedRow() TreePath
+	DisplayedRow() *TreePath
 	// DrawSensitive gets whether @cell_view is configured to draw all of its
 	// cells in a sensitive state.
 	DrawSensitive() bool
@@ -74,7 +74,7 @@ type CellView interface {
 	// cellview “stick” at their last value; this is not normally a desired
 	// result, but may be a needed intermediate state if say, the model for the
 	// CellView becomes temporarily empty.
-	SetDisplayedRowCellView(path TreePath)
+	SetDisplayedRowCellView(path *TreePath)
 	// SetDrawSensitiveCellView sets whether @cell_view should draw all of its
 	// cells in a sensitive state, this is used by ComboBox menus to ensure that
 	// rows with insensitive cells that contain children appear sensitive in the
@@ -202,7 +202,7 @@ func NewCellViewWithTexture(texture gdk.Texture) CellView {
 	return _cellView
 }
 
-func (c cellView) DisplayedRow() TreePath {
+func (c cellView) DisplayedRow() *TreePath {
 	var _arg0 *C.GtkCellView // out
 	var _cret *C.GtkTreePath // in
 
@@ -210,10 +210,10 @@ func (c cellView) DisplayedRow() TreePath {
 
 	_cret = C.gtk_cell_view_get_displayed_row(_arg0)
 
-	var _treePath TreePath // out
+	var _treePath *TreePath // out
 
-	_treePath = (TreePath)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_treePath, func(v TreePath) {
+	_treePath = (*TreePath)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_treePath, func(v *TreePath) {
 		C.gtk_tree_path_free((*C.GtkTreePath)(unsafe.Pointer(v)))
 	})
 
@@ -269,7 +269,7 @@ func (c cellView) Model() TreeModel {
 	return _treeModel
 }
 
-func (c cellView) SetDisplayedRowCellView(path TreePath) {
+func (c cellView) SetDisplayedRowCellView(path *TreePath) {
 	var _arg0 *C.GtkCellView // out
 	var _arg1 *C.GtkTreePath // out
 

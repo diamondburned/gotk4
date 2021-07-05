@@ -47,7 +47,7 @@ func (r *RGBA) Native() unsafe.Pointer {
 // Copy makes a copy of a RGBA.
 //
 // The result must be freed through gdk_rgba_free().
-func (r *RGBA) Copy() RGBA {
+func (r *RGBA) Copy() *RGBA {
 	var _arg0 *C.GdkRGBA // out
 	var _cret *C.GdkRGBA // in
 
@@ -55,10 +55,10 @@ func (r *RGBA) Copy() RGBA {
 
 	_cret = C.gdk_rgba_copy(_arg0)
 
-	var _rgbA RGBA // out
+	var _rgbA *RGBA // out
 
-	_rgbA = (RGBA)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_rgbA, func(v RGBA) {
+	_rgbA = (*RGBA)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_rgbA, func(v *RGBA) {
 		C.gdk_rgba_free((*C.GdkRGBA)(unsafe.Pointer(v)))
 	})
 

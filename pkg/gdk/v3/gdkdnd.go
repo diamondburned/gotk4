@@ -173,13 +173,13 @@ func DragDropSucceeded(context DragContext) bool {
 // This function is called by the drag source to obtain the @dest_window and
 // @protocol parameters for gdk_drag_motion().
 func DragFindWindowForScreen(context DragContext, dragWindow Window, screen Screen, xRoot int, yRoot int) (Window, DragProtocol) {
-	var _arg1 *C.GdkDragContext  // out
-	var _arg2 *C.GdkWindow       // out
-	var _arg3 *C.GdkScreen       // out
-	var _arg4 C.gint             // out
-	var _arg5 C.gint             // out
-	var _arg6 **C.GdkWindow      // in
-	var _arg7 *C.GdkDragProtocol // in
+	var _arg1 *C.GdkDragContext // out
+	var _arg2 *C.GdkWindow      // out
+	var _arg3 *C.GdkScreen      // out
+	var _arg4 C.gint            // out
+	var _arg5 C.gint            // out
+	var _arg6 *C.GdkWindow      // in
+	var _arg7 C.GdkDragProtocol // in
 
 	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
 	_arg2 = (*C.GdkWindow)(unsafe.Pointer(dragWindow.Native()))
@@ -192,26 +192,8 @@ func DragFindWindowForScreen(context DragContext, dragWindow Window, screen Scre
 	var _destWindow Window     // out
 	var _protocol DragProtocol // out
 
-	{
-		var refTmpIn *C.GdkWindow
-		var refTmpOut window
-
-		refTmpIn = *_arg6
-
-		refTmpOut = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(refTmpIn))).(window)
-
-		_destWindow = refTmpOut
-	}
-	{
-		var refTmpIn C.GdkDragProtocol
-		var refTmpOut DragProtocol
-
-		refTmpIn = *_arg7
-
-		refTmpOut = DragProtocol(refTmpIn)
-
-		_protocol = refTmpOut
-	}
+	_destWindow = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_arg6))).(Window)
+	_protocol = DragProtocol(_arg7)
 
 	return _destWindow, _protocol
 }

@@ -212,7 +212,7 @@ func (i tlsInteraction) AskPasswordTLSInteraction(password TLSPassword, cancella
 	var _arg1 *C.GTlsPassword         // out
 	var _arg2 *C.GCancellable         // out
 	var _cret C.GTlsInteractionResult // in
-	var _cerr **C.GError              // in
+	var _cerr *C.GError               // in
 
 	_arg0 = (*C.GTlsInteraction)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.GTlsPassword)(unsafe.Pointer(password.Native()))
@@ -224,16 +224,7 @@ func (i tlsInteraction) AskPasswordTLSInteraction(password TLSPassword, cancella
 	var _goerr error                               // out
 
 	_tlsInteractionResult = TLSInteractionResult(_cret)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _tlsInteractionResult, _goerr
 }
@@ -258,7 +249,7 @@ func (i tlsInteraction) AskPasswordFinishTLSInteraction(result AsyncResult) (TLS
 	var _arg0 *C.GTlsInteraction      // out
 	var _arg1 *C.GAsyncResult         // out
 	var _cret C.GTlsInteractionResult // in
-	var _cerr **C.GError              // in
+	var _cerr *C.GError               // in
 
 	_arg0 = (*C.GTlsInteraction)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
@@ -269,16 +260,7 @@ func (i tlsInteraction) AskPasswordFinishTLSInteraction(result AsyncResult) (TLS
 	var _goerr error                               // out
 
 	_tlsInteractionResult = TLSInteractionResult(_cret)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _tlsInteractionResult, _goerr
 }
@@ -288,7 +270,7 @@ func (i tlsInteraction) InvokeAskPasswordTLSInteraction(password TLSPassword, ca
 	var _arg1 *C.GTlsPassword         // out
 	var _arg2 *C.GCancellable         // out
 	var _cret C.GTlsInteractionResult // in
-	var _cerr **C.GError              // in
+	var _cerr *C.GError               // in
 
 	_arg0 = (*C.GTlsInteraction)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.GTlsPassword)(unsafe.Pointer(password.Native()))
@@ -300,16 +282,7 @@ func (i tlsInteraction) InvokeAskPasswordTLSInteraction(password TLSPassword, ca
 	var _goerr error                               // out
 
 	_tlsInteractionResult = TLSInteractionResult(_cret)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _tlsInteractionResult, _goerr
 }
@@ -320,7 +293,7 @@ func (i tlsInteraction) InvokeRequestCertificateTLSInteraction(connection TLSCon
 	var _arg2 C.GTlsCertificateRequestFlags // out
 	var _arg3 *C.GCancellable               // out
 	var _cret C.GTlsInteractionResult       // in
-	var _cerr **C.GError                    // in
+	var _cerr *C.GError                     // in
 
 	_arg0 = (*C.GTlsInteraction)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.GTlsConnection)(unsafe.Pointer(connection.Native()))
@@ -333,16 +306,7 @@ func (i tlsInteraction) InvokeRequestCertificateTLSInteraction(connection TLSCon
 	var _goerr error                               // out
 
 	_tlsInteractionResult = TLSInteractionResult(_cret)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _tlsInteractionResult, _goerr
 }
@@ -353,7 +317,7 @@ func (i tlsInteraction) RequestCertificateTLSInteraction(connection TLSConnectio
 	var _arg2 C.GTlsCertificateRequestFlags // out
 	var _arg3 *C.GCancellable               // out
 	var _cret C.GTlsInteractionResult       // in
-	var _cerr **C.GError                    // in
+	var _cerr *C.GError                     // in
 
 	_arg0 = (*C.GTlsInteraction)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.GTlsConnection)(unsafe.Pointer(connection.Native()))
@@ -366,16 +330,7 @@ func (i tlsInteraction) RequestCertificateTLSInteraction(connection TLSConnectio
 	var _goerr error                               // out
 
 	_tlsInteractionResult = TLSInteractionResult(_cret)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _tlsInteractionResult, _goerr
 }
@@ -402,7 +357,7 @@ func (i tlsInteraction) RequestCertificateFinishTLSInteraction(result AsyncResul
 	var _arg0 *C.GTlsInteraction      // out
 	var _arg1 *C.GAsyncResult         // out
 	var _cret C.GTlsInteractionResult // in
-	var _cerr **C.GError              // in
+	var _cerr *C.GError               // in
 
 	_arg0 = (*C.GTlsInteraction)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
@@ -413,16 +368,7 @@ func (i tlsInteraction) RequestCertificateFinishTLSInteraction(result AsyncResul
 	var _goerr error                               // out
 
 	_tlsInteractionResult = TLSInteractionResult(_cret)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _tlsInteractionResult, _goerr
 }

@@ -366,8 +366,8 @@ func (d display) DeviceManager() DeviceManager {
 
 func (d display) MaximalCursorSize() (width uint, height uint) {
 	var _arg0 *C.GdkDisplay // out
-	var _arg1 *C.guint      // in
-	var _arg2 *C.guint      // in
+	var _arg1 C.guint       // in
+	var _arg2 C.guint       // in
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
@@ -481,11 +481,11 @@ func (d display) Name() string {
 }
 
 func (d display) Pointer() (screen Screen, x int, y int, mask ModifierType) {
-	var _arg0 *C.GdkDisplay      // out
-	var _arg1 **C.GdkScreen      // in
-	var _arg2 *C.gint            // in
-	var _arg3 *C.gint            // in
-	var _arg4 *C.GdkModifierType // in
+	var _arg0 *C.GdkDisplay     // out
+	var _arg1 *C.GdkScreen      // in
+	var _arg2 C.gint            // in
+	var _arg3 C.gint            // in
+	var _arg4 C.GdkModifierType // in
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
@@ -496,28 +496,10 @@ func (d display) Pointer() (screen Screen, x int, y int, mask ModifierType) {
 	var _y int             // out
 	var _mask ModifierType // out
 
-	{
-		var refTmpIn *C.GdkScreen
-		var refTmpOut screen
-
-		refTmpIn = *_arg1
-
-		refTmpOut = gextras.CastObject(externglib.Take(unsafe.Pointer(refTmpIn))).(screen)
-
-		_screen = refTmpOut
-	}
+	_screen = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg1))).(Screen)
 	_x = int(_arg2)
 	_y = int(_arg3)
-	{
-		var refTmpIn C.GdkModifierType
-		var refTmpOut ModifierType
-
-		refTmpIn = *_arg4
-
-		refTmpOut = ModifierType(refTmpIn)
-
-		_mask = refTmpOut
-	}
+	_mask = ModifierType(_arg4)
 
 	return _screen, _x, _y, _mask
 }
@@ -556,8 +538,8 @@ func (d display) Screen(screenNum int) Screen {
 
 func (d display) WindowAtPointer() (winX int, winY int, window Window) {
 	var _arg0 *C.GdkDisplay // out
-	var _arg1 *C.gint       // in
-	var _arg2 *C.gint       // in
+	var _arg1 C.gint        // in
+	var _arg2 C.gint        // in
 	var _cret *C.GdkWindow  // in
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))

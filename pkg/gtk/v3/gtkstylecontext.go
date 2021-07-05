@@ -53,7 +53,7 @@ func marshalStyleContextPrintFlags(p uintptr) (interface{}, error) {
 // cursor shape.
 //
 // Deprecated: since version 3.4.
-func DrawInsertionCursor(widget Widget, cr cairo.Context, location gdk.Rectangle, isPrimary bool, direction TextDirection, drawArrow bool) {
+func DrawInsertionCursor(widget Widget, cr *cairo.Context, location *gdk.Rectangle, isPrimary bool, direction TextDirection, drawArrow bool) {
 	var _arg1 *C.GtkWidget       // out
 	var _arg2 *C.cairo_t         // out
 	var _arg3 *C.GdkRectangle    // out
@@ -77,7 +77,7 @@ func DrawInsertionCursor(widget Widget, cr cairo.Context, location gdk.Rectangle
 
 // RenderInsertionCursor draws a text caret on @cr at the specified index of
 // @layout.
-func RenderInsertionCursor(context StyleContext, cr cairo.Context, x float64, y float64, layout pango.Layout, index int, direction pango.Direction) {
+func RenderInsertionCursor(context StyleContext, cr *cairo.Context, x float64, y float64, layout pango.Layout, index int, direction pango.Direction) {
 	var _arg1 *C.GtkStyleContext // out
 	var _arg2 *C.cairo_t         // out
 	var _arg3 C.gdouble          // out
@@ -245,7 +245,7 @@ type StyleContext interface {
 	// happens.
 	//
 	// Deprecated: since version 3.8.
-	Font(state StateFlags) pango.FontDescription
+	Font(state StateFlags) *pango.FontDescription
 	// FrameClock returns the FrameClock to which @context is attached.
 	FrameClock() gdk.FrameClock
 	// JunctionSides returns the sides where rendered elements connect visually
@@ -261,7 +261,7 @@ type StyleContext interface {
 	// See that function for details.
 	Parent() StyleContext
 	// Path returns the widget path used for style matching.
-	Path() WidgetPath
+	Path() *WidgetPath
 	// Property gets a style property from @context for the given state.
 	//
 	// Note that not all CSS properties that are supported by GTK+ can be
@@ -291,7 +291,7 @@ type StyleContext interface {
 	//
 	// Shorthand CSS properties cannot be queried for a location and will always
 	// return nil.
-	Section(property string) CSSSection
+	Section(property string) *CSSSection
 	// State returns the state used for style matching.
 	//
 	// This method should only be used to retrieve the StateFlags to pass to
@@ -326,7 +326,7 @@ type StyleContext interface {
 	// set if found, otherwise nil.
 	//
 	// Deprecated: since version 3.10.
-	LookupIconSetStyleContext(stockId string) IconSet
+	LookupIconSetStyleContext(stockId string) *IconSet
 	// NotifyStateChangeStyleContext notifies a state change on @context, so if
 	// the current style makes use of transition animations, one will be started
 	// so all rendered elements under @region_id are animated for state @state
@@ -444,7 +444,7 @@ type StyleContext interface {
 	//
 	// If you are using a StyleContext returned from
 	// gtk_widget_get_style_context(), you do not need to call this yourself.
-	SetPathStyleContext(path WidgetPath)
+	SetPathStyleContext(path *WidgetPath)
 	// SetScaleStyleContext sets the scale to use when getting image assets for
 	// the style.
 	SetScaleStyleContext(scale int)
@@ -569,7 +569,7 @@ func (c styleContext) CancelAnimationsStyleContext(regionId interface{}) {
 func (c styleContext) BackgroundColor(state StateFlags) gdk.RGBA {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 C.GtkStateFlags    // out
-	var _arg2 *C.GdkRGBA         // in
+	var _arg2 C.GdkRGBA          // in
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
 	_arg1 = C.GtkStateFlags(state)
@@ -578,7 +578,17 @@ func (c styleContext) BackgroundColor(state StateFlags) gdk.RGBA {
 
 	var _color gdk.RGBA // out
 
-	_color = (gdk.RGBA)(unsafe.Pointer(_arg2))
+	{
+		var refTmpIn *C.GdkRGBA
+		var refTmpOut *gdk.RGBA
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*gdk.RGBA)(unsafe.Pointer(refTmpIn))
+
+		_color = *refTmpOut
+	}
 
 	return _color
 }
@@ -586,7 +596,7 @@ func (c styleContext) BackgroundColor(state StateFlags) gdk.RGBA {
 func (c styleContext) Border(state StateFlags) Border {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 C.GtkStateFlags    // out
-	var _arg2 *C.GtkBorder       // in
+	var _arg2 C.GtkBorder        // in
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
 	_arg1 = C.GtkStateFlags(state)
@@ -595,7 +605,17 @@ func (c styleContext) Border(state StateFlags) Border {
 
 	var _border Border // out
 
-	_border = (Border)(unsafe.Pointer(_arg2))
+	{
+		var refTmpIn *C.GtkBorder
+		var refTmpOut *Border
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Border)(unsafe.Pointer(refTmpIn))
+
+		_border = *refTmpOut
+	}
 
 	return _border
 }
@@ -603,7 +623,7 @@ func (c styleContext) Border(state StateFlags) Border {
 func (c styleContext) BorderColor(state StateFlags) gdk.RGBA {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 C.GtkStateFlags    // out
-	var _arg2 *C.GdkRGBA         // in
+	var _arg2 C.GdkRGBA          // in
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
 	_arg1 = C.GtkStateFlags(state)
@@ -612,7 +632,17 @@ func (c styleContext) BorderColor(state StateFlags) gdk.RGBA {
 
 	var _color gdk.RGBA // out
 
-	_color = (gdk.RGBA)(unsafe.Pointer(_arg2))
+	{
+		var refTmpIn *C.GdkRGBA
+		var refTmpOut *gdk.RGBA
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*gdk.RGBA)(unsafe.Pointer(refTmpIn))
+
+		_color = *refTmpOut
+	}
 
 	return _color
 }
@@ -620,7 +650,7 @@ func (c styleContext) BorderColor(state StateFlags) gdk.RGBA {
 func (c styleContext) Color(state StateFlags) gdk.RGBA {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 C.GtkStateFlags    // out
-	var _arg2 *C.GdkRGBA         // in
+	var _arg2 C.GdkRGBA          // in
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
 	_arg1 = C.GtkStateFlags(state)
@@ -629,7 +659,17 @@ func (c styleContext) Color(state StateFlags) gdk.RGBA {
 
 	var _color gdk.RGBA // out
 
-	_color = (gdk.RGBA)(unsafe.Pointer(_arg2))
+	{
+		var refTmpIn *C.GdkRGBA
+		var refTmpOut *gdk.RGBA
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*gdk.RGBA)(unsafe.Pointer(refTmpIn))
+
+		_color = *refTmpOut
+	}
 
 	return _color
 }
@@ -649,7 +689,7 @@ func (c styleContext) Direction() TextDirection {
 	return _textDirection
 }
 
-func (c styleContext) Font(state StateFlags) pango.FontDescription {
+func (c styleContext) Font(state StateFlags) *pango.FontDescription {
 	var _arg0 *C.GtkStyleContext      // out
 	var _arg1 C.GtkStateFlags         // out
 	var _cret *C.PangoFontDescription // in
@@ -659,9 +699,9 @@ func (c styleContext) Font(state StateFlags) pango.FontDescription {
 
 	_cret = C.gtk_style_context_get_font(_arg0, _arg1)
 
-	var _fontDescription pango.FontDescription // out
+	var _fontDescription *pango.FontDescription // out
 
-	_fontDescription = (pango.FontDescription)(unsafe.Pointer(_cret))
+	_fontDescription = (*pango.FontDescription)(unsafe.Pointer(_cret))
 
 	return _fontDescription
 }
@@ -699,7 +739,7 @@ func (c styleContext) JunctionSides() JunctionSides {
 func (c styleContext) Margin(state StateFlags) Border {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 C.GtkStateFlags    // out
-	var _arg2 *C.GtkBorder       // in
+	var _arg2 C.GtkBorder        // in
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
 	_arg1 = C.GtkStateFlags(state)
@@ -708,7 +748,17 @@ func (c styleContext) Margin(state StateFlags) Border {
 
 	var _margin Border // out
 
-	_margin = (Border)(unsafe.Pointer(_arg2))
+	{
+		var refTmpIn *C.GtkBorder
+		var refTmpOut *Border
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Border)(unsafe.Pointer(refTmpIn))
+
+		_margin = *refTmpOut
+	}
 
 	return _margin
 }
@@ -716,7 +766,7 @@ func (c styleContext) Margin(state StateFlags) Border {
 func (c styleContext) Padding(state StateFlags) Border {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 C.GtkStateFlags    // out
-	var _arg2 *C.GtkBorder       // in
+	var _arg2 C.GtkBorder        // in
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
 	_arg1 = C.GtkStateFlags(state)
@@ -725,7 +775,17 @@ func (c styleContext) Padding(state StateFlags) Border {
 
 	var _padding Border // out
 
-	_padding = (Border)(unsafe.Pointer(_arg2))
+	{
+		var refTmpIn *C.GtkBorder
+		var refTmpOut *Border
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Border)(unsafe.Pointer(refTmpIn))
+
+		_padding = *refTmpOut
+	}
 
 	return _padding
 }
@@ -745,7 +805,7 @@ func (c styleContext) Parent() StyleContext {
 	return _styleContext
 }
 
-func (c styleContext) Path() WidgetPath {
+func (c styleContext) Path() *WidgetPath {
 	var _arg0 *C.GtkStyleContext // out
 	var _cret *C.GtkWidgetPath   // in
 
@@ -753,9 +813,9 @@ func (c styleContext) Path() WidgetPath {
 
 	_cret = C.gtk_style_context_get_path(_arg0)
 
-	var _widgetPath WidgetPath // out
+	var _widgetPath *WidgetPath // out
 
-	_widgetPath = (WidgetPath)(unsafe.Pointer(_cret))
+	_widgetPath = (*WidgetPath)(unsafe.Pointer(_cret))
 	C.gtk_widget_path_ref(_cret)
 
 	return _widgetPath
@@ -765,21 +825,31 @@ func (c styleContext) Property(property string, state StateFlags) externglib.Val
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 *C.gchar           // out
 	var _arg2 C.GtkStateFlags    // out
-	var _arg3 *C.GValue          // in
+	var _arg3 C.GValue           // in
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.gchar)(C.CString(property))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GtkStateFlags(state)
 
-	C.gtk_style_context_get_property(_arg0, _arg1, _arg2, _arg3)
+	C.gtk_style_context_get_property(_arg0, _arg1, _arg2, &_arg3)
 
 	var _value externglib.Value // out
 
-	_value = externglib.ValueFromNative(unsafe.Pointer(_arg3))
-	runtime.SetFinalizer(_value, func(v *externglib.Value) {
-		C.g_value_unset((*C.GValue)(v.GValue))
-	})
+	{
+		var refTmpIn *C.GValue
+		var refTmpOut *externglib.Value
+
+		in0 := &_arg3
+		refTmpIn = in0
+
+		refTmpOut = externglib.ValueFromNative(unsafe.Pointer(refTmpIn))
+		runtime.SetFinalizer(refTmpOut, func(v *externglib.Value) {
+			C.g_value_unset((*C.GValue)(v.GValue))
+		})
+
+		_value = *refTmpOut
+	}
 
 	return _value
 }
@@ -814,7 +884,7 @@ func (c styleContext) Screen() gdk.Screen {
 	return _screen
 }
 
-func (c styleContext) Section(property string) CSSSection {
+func (c styleContext) Section(property string) *CSSSection {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 *C.gchar           // out
 	var _cret *C.GtkCssSection   // in
@@ -825,9 +895,9 @@ func (c styleContext) Section(property string) CSSSection {
 
 	_cret = C.gtk_style_context_get_section(_arg0, _arg1)
 
-	var _cssSection CSSSection // out
+	var _cssSection *CSSSection // out
 
-	_cssSection = (CSSSection)(unsafe.Pointer(_cret))
+	_cssSection = (*CSSSection)(unsafe.Pointer(_cret))
 	C.gtk_css_section_ref(_cret)
 
 	return _cssSection
@@ -884,7 +954,7 @@ func (c styleContext) HasClassStyleContext(className string) bool {
 func (c styleContext) HasRegionStyleContext(regionName string) (RegionFlags, bool) {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 *C.gchar           // out
-	var _arg2 *C.GtkRegionFlags  // in
+	var _arg2 C.GtkRegionFlags   // in
 	var _cret C.gboolean         // in
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
@@ -896,16 +966,7 @@ func (c styleContext) HasRegionStyleContext(regionName string) (RegionFlags, boo
 	var _flagsReturn RegionFlags // out
 	var _ok bool                 // out
 
-	{
-		var refTmpIn C.GtkRegionFlags
-		var refTmpOut RegionFlags
-
-		refTmpIn = *_arg2
-
-		refTmpOut = RegionFlags(refTmpIn)
-
-		_flagsReturn = refTmpOut
-	}
+	_flagsReturn = RegionFlags(_arg2)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -924,7 +985,7 @@ func (c styleContext) InvalidateStyleContext() {
 func (c styleContext) LookupColorStyleContext(colorName string) (gdk.RGBA, bool) {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 *C.gchar           // out
-	var _arg2 *C.GdkRGBA         // in
+	var _arg2 C.GdkRGBA          // in
 	var _cret C.gboolean         // in
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
@@ -936,7 +997,17 @@ func (c styleContext) LookupColorStyleContext(colorName string) (gdk.RGBA, bool)
 	var _color gdk.RGBA // out
 	var _ok bool        // out
 
-	_color = (gdk.RGBA)(unsafe.Pointer(_arg2))
+	{
+		var refTmpIn *C.GdkRGBA
+		var refTmpOut *gdk.RGBA
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*gdk.RGBA)(unsafe.Pointer(refTmpIn))
+
+		_color = *refTmpOut
+	}
 	if _cret != 0 {
 		_ok = true
 	}
@@ -944,7 +1015,7 @@ func (c styleContext) LookupColorStyleContext(colorName string) (gdk.RGBA, bool)
 	return _color, _ok
 }
 
-func (c styleContext) LookupIconSetStyleContext(stockId string) IconSet {
+func (c styleContext) LookupIconSetStyleContext(stockId string) *IconSet {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 *C.gchar           // out
 	var _cret *C.GtkIconSet      // in
@@ -955,9 +1026,9 @@ func (c styleContext) LookupIconSetStyleContext(stockId string) IconSet {
 
 	_cret = C.gtk_style_context_lookup_icon_set(_arg0, _arg1)
 
-	var _iconSet IconSet // out
+	var _iconSet *IconSet // out
 
-	_iconSet = (IconSet)(unsafe.Pointer(_cret))
+	_iconSet = (*IconSet)(unsafe.Pointer(_cret))
 	C.gtk_icon_set_ref(_cret)
 
 	return _iconSet
@@ -1111,7 +1182,7 @@ func (c styleContext) SetParentStyleContext(parent StyleContext) {
 	C.gtk_style_context_set_parent(_arg0, _arg1)
 }
 
-func (c styleContext) SetPathStyleContext(path WidgetPath) {
+func (c styleContext) SetPathStyleContext(path *WidgetPath) {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 *C.GtkWidgetPath   // out
 
@@ -1154,7 +1225,7 @@ func (c styleContext) SetStateStyleContext(flags StateFlags) {
 func (c styleContext) StateIsRunningStyleContext(state StateType) (float64, bool) {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 C.GtkStateType     // out
-	var _arg2 *C.gdouble         // in
+	var _arg2 C.gdouble          // in
 	var _cret C.gboolean         // in
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))

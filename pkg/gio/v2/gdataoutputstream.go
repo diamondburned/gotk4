@@ -123,7 +123,7 @@ func (s dataOutputStream) PutByteDataOutputStream(data byte, cancellable Cancell
 	var _arg0 *C.GDataOutputStream // out
 	var _arg1 C.guchar             // out
 	var _arg2 *C.GCancellable      // out
-	var _cerr **C.GError           // in
+	var _cerr *C.GError            // in
 
 	_arg0 = (*C.GDataOutputStream)(unsafe.Pointer(s.Native()))
 	_arg1 = C.guchar(data)
@@ -133,16 +133,7 @@ func (s dataOutputStream) PutByteDataOutputStream(data byte, cancellable Cancell
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
@@ -151,7 +142,7 @@ func (s dataOutputStream) PutInt16DataOutputStream(data int16, cancellable Cance
 	var _arg0 *C.GDataOutputStream // out
 	var _arg1 C.gint16             // out
 	var _arg2 *C.GCancellable      // out
-	var _cerr **C.GError           // in
+	var _cerr *C.GError            // in
 
 	_arg0 = (*C.GDataOutputStream)(unsafe.Pointer(s.Native()))
 	_arg1 = C.gint16(data)
@@ -161,16 +152,7 @@ func (s dataOutputStream) PutInt16DataOutputStream(data int16, cancellable Cance
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
@@ -179,7 +161,7 @@ func (s dataOutputStream) PutInt32DataOutputStream(data int32, cancellable Cance
 	var _arg0 *C.GDataOutputStream // out
 	var _arg1 C.gint32             // out
 	var _arg2 *C.GCancellable      // out
-	var _cerr **C.GError           // in
+	var _cerr *C.GError            // in
 
 	_arg0 = (*C.GDataOutputStream)(unsafe.Pointer(s.Native()))
 	_arg1 = C.gint32(data)
@@ -189,16 +171,7 @@ func (s dataOutputStream) PutInt32DataOutputStream(data int32, cancellable Cance
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
@@ -207,7 +180,7 @@ func (s dataOutputStream) PutInt64DataOutputStream(data int64, cancellable Cance
 	var _arg0 *C.GDataOutputStream // out
 	var _arg1 C.gint64             // out
 	var _arg2 *C.GCancellable      // out
-	var _cerr **C.GError           // in
+	var _cerr *C.GError            // in
 
 	_arg0 = (*C.GDataOutputStream)(unsafe.Pointer(s.Native()))
 	_arg1 = C.gint64(data)
@@ -217,16 +190,7 @@ func (s dataOutputStream) PutInt64DataOutputStream(data int64, cancellable Cance
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
@@ -235,7 +199,7 @@ func (s dataOutputStream) PutStringDataOutputStream(str string, cancellable Canc
 	var _arg0 *C.GDataOutputStream // out
 	var _arg1 *C.char              // out
 	var _arg2 *C.GCancellable      // out
-	var _cerr **C.GError           // in
+	var _cerr *C.GError            // in
 
 	_arg0 = (*C.GDataOutputStream)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.char)(C.CString(str))
@@ -246,16 +210,7 @@ func (s dataOutputStream) PutStringDataOutputStream(str string, cancellable Canc
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
@@ -264,7 +219,7 @@ func (s dataOutputStream) PutUint16DataOutputStream(data uint16, cancellable Can
 	var _arg0 *C.GDataOutputStream // out
 	var _arg1 C.guint16            // out
 	var _arg2 *C.GCancellable      // out
-	var _cerr **C.GError           // in
+	var _cerr *C.GError            // in
 
 	_arg0 = (*C.GDataOutputStream)(unsafe.Pointer(s.Native()))
 	_arg1 = C.guint16(data)
@@ -274,16 +229,7 @@ func (s dataOutputStream) PutUint16DataOutputStream(data uint16, cancellable Can
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
@@ -292,7 +238,7 @@ func (s dataOutputStream) PutUint32DataOutputStream(data uint32, cancellable Can
 	var _arg0 *C.GDataOutputStream // out
 	var _arg1 C.guint32            // out
 	var _arg2 *C.GCancellable      // out
-	var _cerr **C.GError           // in
+	var _cerr *C.GError            // in
 
 	_arg0 = (*C.GDataOutputStream)(unsafe.Pointer(s.Native()))
 	_arg1 = C.guint32(data)
@@ -302,16 +248,7 @@ func (s dataOutputStream) PutUint32DataOutputStream(data uint32, cancellable Can
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
@@ -320,7 +257,7 @@ func (s dataOutputStream) PutUint64DataOutputStream(data uint64, cancellable Can
 	var _arg0 *C.GDataOutputStream // out
 	var _arg1 C.guint64            // out
 	var _arg2 *C.GCancellable      // out
-	var _cerr **C.GError           // in
+	var _cerr *C.GError            // in
 
 	_arg0 = (*C.GDataOutputStream)(unsafe.Pointer(s.Native()))
 	_arg1 = C.guint64(data)
@@ -330,16 +267,7 @@ func (s dataOutputStream) PutUint64DataOutputStream(data uint64, cancellable Can
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }

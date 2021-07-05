@@ -86,10 +86,10 @@ func NewHSV() HSV {
 }
 
 func (h hsV) Color() (h float64, s float64, v float64) {
-	var _arg0 *C.GtkHSV  // out
-	var _arg1 *C.gdouble // in
-	var _arg2 *C.gdouble // in
-	var _arg3 *C.gdouble // in
+	var _arg0 *C.GtkHSV // out
+	var _arg1 C.gdouble // in
+	var _arg2 C.gdouble // in
+	var _arg3 C.gdouble // in
 
 	_arg0 = (*C.GtkHSV)(unsafe.Pointer(h.Native()))
 
@@ -108,8 +108,8 @@ func (h hsV) Color() (h float64, s float64, v float64) {
 
 func (h hsV) Metrics() (size int, ringWidth int) {
 	var _arg0 *C.GtkHSV // out
-	var _arg1 *C.gint   // in
-	var _arg2 *C.gint   // in
+	var _arg1 C.gint    // in
+	var _arg2 C.gint    // in
 
 	_arg0 = (*C.GtkHSV)(unsafe.Pointer(h.Native()))
 

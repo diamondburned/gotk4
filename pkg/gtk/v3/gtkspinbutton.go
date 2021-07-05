@@ -308,8 +308,8 @@ func (s spinButton) Digits() uint {
 
 func (s spinButton) Increments() (step float64, page float64) {
 	var _arg0 *C.GtkSpinButton // out
-	var _arg1 *C.gdouble       // in
-	var _arg2 *C.gdouble       // in
+	var _arg1 C.gdouble        // in
+	var _arg2 C.gdouble        // in
 
 	_arg0 = (*C.GtkSpinButton)(unsafe.Pointer(s.Native()))
 
@@ -343,8 +343,8 @@ func (s spinButton) Numeric() bool {
 
 func (s spinButton) Range() (min float64, max float64) {
 	var _arg0 *C.GtkSpinButton // out
-	var _arg1 *C.gdouble       // in
-	var _arg2 *C.gdouble       // in
+	var _arg1 C.gdouble        // in
+	var _arg2 C.gdouble        // in
 
 	_arg0 = (*C.GtkSpinButton)(unsafe.Pointer(s.Native()))
 

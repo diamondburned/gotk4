@@ -76,7 +76,7 @@ type Fixed interface {
 	ChildPosition(widget Widget) (x float64, y float64)
 	// ChildTransform retrieves the transformation for @widget set using
 	// gtk_fixed_set_child_transform().
-	ChildTransform(widget Widget) gsk.Transform
+	ChildTransform(widget Widget) *gsk.Transform
 	// MoveFixed sets a translation transformation to the given @x and @y
 	// coordinates to the child @widget of the `GtkFixed`.
 	MoveFixed(widget Widget, x float64, y float64)
@@ -89,7 +89,7 @@ type Fixed interface {
 	// This is a convenience function that retrieves the
 	// [class@Gtk.FixedLayoutChild] instance associated to @widget and calls
 	// [method@Gtk.FixedLayoutChild.set_transform].
-	SetChildTransformFixed(widget Widget, transform gsk.Transform)
+	SetChildTransformFixed(widget Widget, transform *gsk.Transform)
 }
 
 // fixed implements the Fixed class.
@@ -127,8 +127,8 @@ func NewFixed() Fixed {
 func (f fixed) ChildPosition(widget Widget) (x float64, y float64) {
 	var _arg0 *C.GtkFixed  // out
 	var _arg1 *C.GtkWidget // out
-	var _arg2 *C.double    // in
-	var _arg3 *C.double    // in
+	var _arg2 C.double     // in
+	var _arg3 C.double     // in
 
 	_arg0 = (*C.GtkFixed)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
@@ -144,7 +144,7 @@ func (f fixed) ChildPosition(widget Widget) (x float64, y float64) {
 	return _x, _y
 }
 
-func (f fixed) ChildTransform(widget Widget) gsk.Transform {
+func (f fixed) ChildTransform(widget Widget) *gsk.Transform {
 	var _arg0 *C.GtkFixed     // out
 	var _arg1 *C.GtkWidget    // out
 	var _cret *C.GskTransform // in
@@ -154,9 +154,9 @@ func (f fixed) ChildTransform(widget Widget) gsk.Transform {
 
 	_cret = C.gtk_fixed_get_child_transform(_arg0, _arg1)
 
-	var _transform gsk.Transform // out
+	var _transform *gsk.Transform // out
 
-	_transform = (gsk.Transform)(unsafe.Pointer(_cret))
+	_transform = (*gsk.Transform)(unsafe.Pointer(_cret))
 	C.gsk_transform_ref(_cret)
 
 	return _transform
@@ -200,7 +200,7 @@ func (f fixed) RemoveFixed(widget Widget) {
 	C.gtk_fixed_remove(_arg0, _arg1)
 }
 
-func (f fixed) SetChildTransformFixed(widget Widget, transform gsk.Transform) {
+func (f fixed) SetChildTransformFixed(widget Widget, transform *gsk.Transform) {
 	var _arg0 *C.GtkFixed     // out
 	var _arg1 *C.GtkWidget    // out
 	var _arg2 *C.GskTransform // out

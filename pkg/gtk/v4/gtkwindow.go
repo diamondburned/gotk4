@@ -592,8 +592,8 @@ func (w window) Decorated() bool {
 
 func (w window) DefaultSize() (width int, height int) {
 	var _arg0 *C.GtkWindow // out
-	var _arg1 *C.int       // in
-	var _arg2 *C.int       // in
+	var _arg1 C.int        // in
+	var _arg2 C.int        // in
 
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 

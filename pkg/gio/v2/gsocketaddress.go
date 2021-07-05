@@ -129,7 +129,7 @@ func (a socketAddress) ToNativeSocketAddress(dest interface{}, destlen uint) err
 	var _arg0 *C.GSocketAddress // out
 	var _arg1 C.gpointer        // out
 	var _arg2 C.gsize           // out
-	var _cerr **C.GError        // in
+	var _cerr *C.GError         // in
 
 	_arg0 = (*C.GSocketAddress)(unsafe.Pointer(a.Native()))
 	_arg1 = C.gpointer(box.Assign(dest))
@@ -139,16 +139,7 @@ func (a socketAddress) ToNativeSocketAddress(dest interface{}, destlen uint) err
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }

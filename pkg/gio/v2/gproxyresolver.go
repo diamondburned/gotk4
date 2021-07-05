@@ -115,7 +115,7 @@ func (r proxyResolver) Lookup(uri string, cancellable Cancellable) ([]string, er
 	var _arg1 *C.gchar          // out
 	var _arg2 *C.GCancellable   // out
 	var _cret **C.gchar
-	var _cerr **C.GError // in
+	var _cerr *C.GError // in
 
 	_arg0 = (*C.GProxyResolver)(unsafe.Pointer(r.Native()))
 	_arg1 = (*C.gchar)(C.CString(uri))
@@ -141,16 +141,7 @@ func (r proxyResolver) Lookup(uri string, cancellable Cancellable) ([]string, er
 			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _utf8s, _goerr
 }
@@ -176,7 +167,7 @@ func (r proxyResolver) LookupFinish(result AsyncResult) ([]string, error) {
 	var _arg0 *C.GProxyResolver // out
 	var _arg1 *C.GAsyncResult   // out
 	var _cret **C.gchar
-	var _cerr **C.GError // in
+	var _cerr *C.GError // in
 
 	_arg0 = (*C.GProxyResolver)(unsafe.Pointer(r.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
@@ -200,16 +191,7 @@ func (r proxyResolver) LookupFinish(result AsyncResult) ([]string, error) {
 			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _utf8s, _goerr
 }

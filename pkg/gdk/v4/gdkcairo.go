@@ -33,7 +33,7 @@ import "C"
 // alpha components, so make sure you use TEXTURE if using alpha.
 //
 // Calling this may change the current GL context.
-func CairoDrawFromGL(cr cairo.Context, surface Surface, source int, sourceType int, bufferScale int, x int, y int, width int, height int) {
+func CairoDrawFromGL(cr *cairo.Context, surface Surface, source int, sourceType int, bufferScale int, x int, y int, width int, height int) {
 	var _arg1 *C.cairo_t    // out
 	var _arg2 *C.GdkSurface // out
 	var _arg3 C.int         // out
@@ -58,7 +58,7 @@ func CairoDrawFromGL(cr cairo.Context, surface Surface, source int, sourceType i
 }
 
 // CairoRectangle adds the given rectangle to the current path of @cr.
-func CairoRectangle(cr cairo.Context, rectangle Rectangle) {
+func CairoRectangle(cr *cairo.Context, rectangle *Rectangle) {
 	var _arg1 *C.cairo_t      // out
 	var _arg2 *C.GdkRectangle // out
 
@@ -69,7 +69,7 @@ func CairoRectangle(cr cairo.Context, rectangle Rectangle) {
 }
 
 // CairoRegion adds the given region to the current path of @cr.
-func CairoRegion(cr cairo.Context, region cairo.Region) {
+func CairoRegion(cr *cairo.Context, region *cairo.Region) {
 	var _arg1 *C.cairo_t        // out
 	var _arg2 *C.cairo_region_t // out
 
@@ -84,7 +84,7 @@ func CairoRegion(cr cairo.Context, region cairo.Region) {
 //
 // This function takes into account device offsets that might be set with
 // cairo_surface_set_device_offset().
-func CairoRegionCreateFromSurface(surface cairo.Surface) cairo.Region {
+func CairoRegionCreateFromSurface(surface *cairo.Surface) *cairo.Region {
 	var _arg1 *C.cairo_surface_t // out
 	var _cret *C.cairo_region_t  // in
 
@@ -92,10 +92,10 @@ func CairoRegionCreateFromSurface(surface cairo.Surface) cairo.Region {
 
 	_cret = C.gdk_cairo_region_create_from_surface(_arg1)
 
-	var _region cairo.Region // out
+	var _region *cairo.Region // out
 
-	_region = (cairo.Region)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_region, func(v cairo.Region) {
+	_region = (*cairo.Region)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_region, func(v *cairo.Region) {
 		C.free(unsafe.Pointer(v))
 	})
 
@@ -106,7 +106,7 @@ func CairoRegionCreateFromSurface(surface cairo.Surface) cairo.Region {
 //
 // The pattern has an extend mode of CAIRO_EXTEND_NONE and is aligned so that
 // the origin of @pixbuf is @pixbuf_x, @pixbuf_y.
-func CairoSetSourcePixbuf(cr cairo.Context, pixbuf gdkpixbuf.Pixbuf, pixbufX float64, pixbufY float64) {
+func CairoSetSourcePixbuf(cr *cairo.Context, pixbuf gdkpixbuf.Pixbuf, pixbufX float64, pixbufY float64) {
 	var _arg1 *C.cairo_t   // out
 	var _arg2 *C.GdkPixbuf // out
 	var _arg3 C.double     // out
@@ -121,7 +121,7 @@ func CairoSetSourcePixbuf(cr cairo.Context, pixbuf gdkpixbuf.Pixbuf, pixbufX flo
 }
 
 // CairoSetSourceRGBA sets the specified RGBA as the source color of @cr.
-func CairoSetSourceRGBA(cr cairo.Context, rgba RGBA) {
+func CairoSetSourceRGBA(cr *cairo.Context, rgba *RGBA) {
 	var _arg1 *C.cairo_t // out
 	var _arg2 *C.GdkRGBA // out
 

@@ -191,7 +191,7 @@ func (c coverage) SetCoverage(index_ int, level CoverageLevel) {
 func (c coverage) ToBytesCoverage() []byte {
 	var _arg0 *C.PangoCoverage // out
 	var _arg1 *C.guchar
-	var _arg2 *C.int // in
+	var _arg2 C.int // in
 
 	_arg0 = (*C.PangoCoverage)(unsafe.Pointer(c.Native()))
 

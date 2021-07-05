@@ -144,7 +144,7 @@ func marshalDBusObjectManagerClient(p uintptr) (interface{}, error) {
 func NewDBusObjectManagerClientFinish(res AsyncResult) (DBusObjectManagerClient, error) {
 	var _arg1 *C.GAsyncResult       // out
 	var _cret *C.GDBusObjectManager // in
-	var _cerr **C.GError            // in
+	var _cerr *C.GError             // in
 
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
@@ -154,16 +154,7 @@ func NewDBusObjectManagerClientFinish(res AsyncResult) (DBusObjectManagerClient,
 	var _goerr error                                     // out
 
 	_dBusObjectManagerClient = WrapDBusObjectManagerClient(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _dBusObjectManagerClient, _goerr
 }
@@ -173,7 +164,7 @@ func NewDBusObjectManagerClientFinish(res AsyncResult) (DBusObjectManagerClient,
 func NewDBusObjectManagerClientForBusFinish(res AsyncResult) (DBusObjectManagerClient, error) {
 	var _arg1 *C.GAsyncResult       // out
 	var _cret *C.GDBusObjectManager // in
-	var _cerr **C.GError            // in
+	var _cerr *C.GError             // in
 
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
@@ -183,16 +174,7 @@ func NewDBusObjectManagerClientForBusFinish(res AsyncResult) (DBusObjectManagerC
 	var _goerr error                                     // out
 
 	_dBusObjectManagerClient = WrapDBusObjectManagerClient(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _dBusObjectManagerClient, _goerr
 }

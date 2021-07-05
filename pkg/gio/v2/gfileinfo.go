@@ -178,7 +178,7 @@ type FileInfo interface {
 	SetAttributeInt64FileInfo(attribute string, attrValue int64)
 	// SetAttributeMaskFileInfo sets @mask on @info to match specific attribute
 	// types.
-	SetAttributeMaskFileInfo(mask FileAttributeMatcher)
+	SetAttributeMaskFileInfo(mask *FileAttributeMatcher)
 	// SetAttributeObjectFileInfo sets the @attribute to contain the given
 	// @attr_value, if possible.
 	SetAttributeObjectFileInfo(attribute string, attrValue gextras.Objector)
@@ -229,7 +229,7 @@ type FileInfo interface {
 	// given time value.
 	//
 	// Deprecated: since version 2.62.
-	SetModificationTimeFileInfo(mtime glib.TimeVal)
+	SetModificationTimeFileInfo(mtime *glib.TimeVal)
 	// SetNameFileInfo sets the name attribute for the current Info. See
 	// G_FILE_ATTRIBUTE_STANDARD_NAME.
 	SetNameFileInfo(name string)
@@ -374,45 +374,27 @@ func (i fileInfo) AttributeByteString(attribute string) string {
 }
 
 func (i fileInfo) AttributeData(attribute string) (FileAttributeType, interface{}, FileAttributeStatus, bool) {
-	var _arg0 *C.GFileInfo            // out
-	var _arg1 *C.char                 // out
-	var _arg2 *C.GFileAttributeType   // in
-	var _arg3 *C.gpointer             // in
-	var _arg4 *C.GFileAttributeStatus // in
-	var _cret C.gboolean              // in
+	var _arg0 *C.GFileInfo           // out
+	var _arg1 *C.char                // out
+	var _arg2 C.GFileAttributeType   // in
+	var _arg3 C.gpointer             // in
+	var _arg4 C.GFileAttributeStatus // in
+	var _cret C.gboolean             // in
 
 	_arg0 = (*C.GFileInfo)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.char)(C.CString(attribute))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	_cret = C.g_file_info_get_attribute_data(_arg0, _arg1, &_arg2, _arg3, &_arg4)
+	_cret = C.g_file_info_get_attribute_data(_arg0, _arg1, &_arg2, &_arg3, &_arg4)
 
 	var _typ FileAttributeType      // out
 	var _valuePp interface{}        // out
 	var _status FileAttributeStatus // out
 	var _ok bool                    // out
 
-	{
-		var refTmpIn C.GFileAttributeType
-		var refTmpOut FileAttributeType
-
-		refTmpIn = *_arg2
-
-		refTmpOut = FileAttributeType(refTmpIn)
-
-		_typ = refTmpOut
-	}
+	_typ = FileAttributeType(_arg2)
 	_valuePp = box.Get(uintptr(_arg3))
-	{
-		var refTmpIn C.GFileAttributeStatus
-		var refTmpOut FileAttributeStatus
-
-		refTmpIn = *_arg4
-
-		refTmpOut = FileAttributeStatus(refTmpIn)
-
-		_status = refTmpOut
-	}
+	_status = FileAttributeStatus(_arg4)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -737,7 +719,7 @@ func (i fileInfo) IsSymlink() bool {
 
 func (i fileInfo) ModificationTime() glib.TimeVal {
 	var _arg0 *C.GFileInfo // out
-	var _arg1 *C.GTimeVal  // in
+	var _arg1 C.GTimeVal   // in
 
 	_arg0 = (*C.GFileInfo)(unsafe.Pointer(i.Native()))
 
@@ -745,7 +727,17 @@ func (i fileInfo) ModificationTime() glib.TimeVal {
 
 	var _result glib.TimeVal // out
 
-	_result = (glib.TimeVal)(unsafe.Pointer(_arg1))
+	{
+		var refTmpIn *C.GTimeVal
+		var refTmpOut *glib.TimeVal
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*glib.TimeVal)(unsafe.Pointer(refTmpIn))
+
+		_result = *refTmpOut
+	}
 
 	return _result
 }
@@ -977,7 +969,7 @@ func (i fileInfo) SetAttributeInt64FileInfo(attribute string, attrValue int64) {
 	C.g_file_info_set_attribute_int64(_arg0, _arg1, _arg2)
 }
 
-func (i fileInfo) SetAttributeMaskFileInfo(mask FileAttributeMatcher) {
+func (i fileInfo) SetAttributeMaskFileInfo(mask *FileAttributeMatcher) {
 	var _arg0 *C.GFileInfo             // out
 	var _arg1 *C.GFileAttributeMatcher // out
 
@@ -1160,7 +1152,7 @@ func (i fileInfo) SetIsSymlinkFileInfo(isSymlink bool) {
 	C.g_file_info_set_is_symlink(_arg0, _arg1)
 }
 
-func (i fileInfo) SetModificationTimeFileInfo(mtime glib.TimeVal) {
+func (i fileInfo) SetModificationTimeFileInfo(mtime *glib.TimeVal) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.GTimeVal  // out
 

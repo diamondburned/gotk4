@@ -221,7 +221,7 @@ func (i asyncInitable) InitAsync(ioPriority int, cancellable Cancellable, callba
 func (i asyncInitable) InitFinish(res AsyncResult) error {
 	var _arg0 *C.GAsyncInitable // out
 	var _arg1 *C.GAsyncResult   // out
-	var _cerr **C.GError        // in
+	var _cerr *C.GError         // in
 
 	_arg0 = (*C.GAsyncInitable)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
@@ -230,16 +230,7 @@ func (i asyncInitable) InitFinish(res AsyncResult) error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
@@ -248,7 +239,7 @@ func (i asyncInitable) NewFinish(res AsyncResult) (gextras.Objector, error) {
 	var _arg0 *C.GAsyncInitable // out
 	var _arg1 *C.GAsyncResult   // out
 	var _cret *C.GObject        // in
-	var _cerr **C.GError        // in
+	var _cerr *C.GError         // in
 
 	_arg0 = (*C.GAsyncInitable)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
@@ -259,16 +250,7 @@ func (i asyncInitable) NewFinish(res AsyncResult) (gextras.Objector, error) {
 	var _goerr error             // out
 
 	_object = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(gextras.Objector)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _object, _goerr
 }

@@ -140,18 +140,18 @@ type Gesture interface {
 	// Note that the returned pointer is only valid as long as the @sequence is
 	// still interpreted by the @gesture. If in doubt, you should make a copy of
 	// the event.
-	LastEvent(sequence gdk.EventSequence) gdk.Event
+	LastEvent(sequence *gdk.EventSequence) gdk.Event
 	// LastUpdatedSequence returns the `GdkEventSequence` that was last updated
 	// on @gesture.
-	LastUpdatedSequence() gdk.EventSequence
+	LastUpdatedSequence() *gdk.EventSequence
 	// Point: if @sequence is currently being interpreted by @gesture, returns
 	// true and fills in @x and @y with the last coordinates stored for that
 	// event sequence.
 	//
 	// The coordinates are always relative to the widget allocation.
-	Point(sequence gdk.EventSequence) (x float64, y float64, ok bool)
+	Point(sequence *gdk.EventSequence) (x float64, y float64, ok bool)
 	// SequenceState returns the @sequence state, as seen by @gesture.
-	SequenceState(sequence gdk.EventSequence) EventSequenceState
+	SequenceState(sequence *gdk.EventSequence) EventSequenceState
 	// GroupGesture adds @gesture to the same group than @group_gesture.
 	//
 	// Gestures are by default isolated in their own groups.
@@ -171,7 +171,7 @@ type Gesture interface {
 	GroupGesture(gesture Gesture)
 	// HandlesSequenceGesture returns true if @gesture is currently handling
 	// events corresponding to @sequence.
-	HandlesSequenceGesture(sequence gdk.EventSequence) bool
+	HandlesSequenceGesture(sequence *gdk.EventSequence) bool
 	// IsActiveGesture returns true if the gesture is currently active.
 	//
 	// A gesture is active while there are touch sequences interacting with it.
@@ -214,7 +214,7 @@ type Gesture interface {
 	// If both gestures are in the same group, just set the state on the gesture
 	// emitting the event, the sequence will be already be initialized to the
 	// group's global state when the second gesture processes the event.
-	SetSequenceStateGesture(sequence gdk.EventSequence, state EventSequenceState) bool
+	SetSequenceStateGesture(sequence *gdk.EventSequence, state EventSequenceState) bool
 	// SetStateGesture sets the state of all sequences that @gesture is
 	// currently interacting with.
 	//
@@ -245,9 +245,9 @@ func marshalGesture(p uintptr) (interface{}, error) {
 }
 
 func (g gesture) BoundingBox() (gdk.Rectangle, bool) {
-	var _arg0 *C.GtkGesture   // out
-	var _arg1 *C.GdkRectangle // in
-	var _cret C.gboolean      // in
+	var _arg0 *C.GtkGesture  // out
+	var _arg1 C.GdkRectangle // in
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkGesture)(unsafe.Pointer(g.Native()))
 
@@ -256,7 +256,17 @@ func (g gesture) BoundingBox() (gdk.Rectangle, bool) {
 	var _rect gdk.Rectangle // out
 	var _ok bool            // out
 
-	_rect = (gdk.Rectangle)(unsafe.Pointer(_arg1))
+	{
+		var refTmpIn *C.GdkRectangle
+		var refTmpOut *gdk.Rectangle
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*gdk.Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_rect = *refTmpOut
+	}
 	if _cret != 0 {
 		_ok = true
 	}
@@ -266,8 +276,8 @@ func (g gesture) BoundingBox() (gdk.Rectangle, bool) {
 
 func (g gesture) BoundingBoxCenter() (x float64, y float64, ok bool) {
 	var _arg0 *C.GtkGesture // out
-	var _arg1 *C.double     // in
-	var _arg2 *C.double     // in
+	var _arg1 C.double      // in
+	var _arg2 C.double      // in
 	var _cret C.gboolean    // in
 
 	_arg0 = (*C.GtkGesture)(unsafe.Pointer(g.Native()))
@@ -302,7 +312,7 @@ func (g gesture) Device() gdk.Device {
 	return _device
 }
 
-func (g gesture) LastEvent(sequence gdk.EventSequence) gdk.Event {
+func (g gesture) LastEvent(sequence *gdk.EventSequence) gdk.Event {
 	var _arg0 *C.GtkGesture       // out
 	var _arg1 *C.GdkEventSequence // out
 	var _cret *C.GdkEvent         // in
@@ -319,7 +329,7 @@ func (g gesture) LastEvent(sequence gdk.EventSequence) gdk.Event {
 	return _event
 }
 
-func (g gesture) LastUpdatedSequence() gdk.EventSequence {
+func (g gesture) LastUpdatedSequence() *gdk.EventSequence {
 	var _arg0 *C.GtkGesture       // out
 	var _cret *C.GdkEventSequence // in
 
@@ -327,18 +337,18 @@ func (g gesture) LastUpdatedSequence() gdk.EventSequence {
 
 	_cret = C.gtk_gesture_get_last_updated_sequence(_arg0)
 
-	var _eventSequence gdk.EventSequence // out
+	var _eventSequence *gdk.EventSequence // out
 
-	_eventSequence = (gdk.EventSequence)(unsafe.Pointer(_cret))
+	_eventSequence = (*gdk.EventSequence)(unsafe.Pointer(_cret))
 
 	return _eventSequence
 }
 
-func (g gesture) Point(sequence gdk.EventSequence) (x float64, y float64, ok bool) {
+func (g gesture) Point(sequence *gdk.EventSequence) (x float64, y float64, ok bool) {
 	var _arg0 *C.GtkGesture       // out
 	var _arg1 *C.GdkEventSequence // out
-	var _arg2 *C.double           // in
-	var _arg3 *C.double           // in
+	var _arg2 C.double            // in
+	var _arg3 C.double            // in
 	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GtkGesture)(unsafe.Pointer(g.Native()))
@@ -359,7 +369,7 @@ func (g gesture) Point(sequence gdk.EventSequence) (x float64, y float64, ok boo
 	return _x, _y, _ok
 }
 
-func (g gesture) SequenceState(sequence gdk.EventSequence) EventSequenceState {
+func (g gesture) SequenceState(sequence *gdk.EventSequence) EventSequenceState {
 	var _arg0 *C.GtkGesture           // out
 	var _arg1 *C.GdkEventSequence     // out
 	var _cret C.GtkEventSequenceState // in
@@ -386,7 +396,7 @@ func (g gesture) GroupGesture(gesture Gesture) {
 	C.gtk_gesture_group(_arg0, _arg1)
 }
 
-func (g gesture) HandlesSequenceGesture(sequence gdk.EventSequence) bool {
+func (g gesture) HandlesSequenceGesture(sequence *gdk.EventSequence) bool {
 	var _arg0 *C.GtkGesture       // out
 	var _arg1 *C.GdkEventSequence // out
 	var _cret C.gboolean          // in
@@ -458,7 +468,7 @@ func (g gesture) IsRecognizedGesture() bool {
 	return _ok
 }
 
-func (g gesture) SetSequenceStateGesture(sequence gdk.EventSequence, state EventSequenceState) bool {
+func (g gesture) SetSequenceStateGesture(sequence *gdk.EventSequence, state EventSequenceState) bool {
 	var _arg0 *C.GtkGesture           // out
 	var _arg1 *C.GdkEventSequence     // out
 	var _arg2 C.GtkEventSequenceState // out

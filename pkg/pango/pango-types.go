@@ -32,7 +32,7 @@ type Glyph = uint32
 // @inclusive. If you want two touching-but-not-overlapping rectangles stay
 // touching-but-not-overlapping after rounding to device units, pass them in as
 // @nearest.
-func ExtentsToPixels(inclusive Rectangle, nearest Rectangle) {
+func ExtentsToPixels(inclusive *Rectangle, nearest *Rectangle) {
 	var _arg1 *C.PangoRectangle // out
 	var _arg2 *C.PangoRectangle // out
 

@@ -354,11 +354,11 @@ func NewStatusIconFromStock(stockId string) StatusIcon {
 }
 
 func (s statusIcon) Geometry() (gdk.Screen, gdk.Rectangle, Orientation, bool) {
-	var _arg0 *C.GtkStatusIcon  // out
-	var _arg1 **C.GdkScreen     // in
-	var _arg2 *C.GdkRectangle   // in
-	var _arg3 *C.GtkOrientation // in
-	var _cret C.gboolean        // in
+	var _arg0 *C.GtkStatusIcon // out
+	var _arg1 *C.GdkScreen     // in
+	var _arg2 C.GdkRectangle   // in
+	var _arg3 C.GtkOrientation // in
+	var _cret C.gboolean       // in
 
 	_arg0 = (*C.GtkStatusIcon)(unsafe.Pointer(s.Native()))
 
@@ -369,27 +369,19 @@ func (s statusIcon) Geometry() (gdk.Screen, gdk.Rectangle, Orientation, bool) {
 	var _orientation Orientation // out
 	var _ok bool                 // out
 
+	_screen = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg1))).(gdk.Screen)
 	{
-		var refTmpIn *C.GdkScreen
-		var refTmpOut gdk.screen
+		var refTmpIn *C.GdkRectangle
+		var refTmpOut *gdk.Rectangle
 
-		refTmpIn = *_arg1
+		in0 := &_arg2
+		refTmpIn = in0
 
-		refTmpOut = gextras.CastObject(externglib.Take(unsafe.Pointer(refTmpIn))).(gdk.screen)
+		refTmpOut = (*gdk.Rectangle)(unsafe.Pointer(refTmpIn))
 
-		_screen = refTmpOut
+		_area = *refTmpOut
 	}
-	_area = (gdk.Rectangle)(unsafe.Pointer(_arg2))
-	{
-		var refTmpIn C.GtkOrientation
-		var refTmpOut Orientation
-
-		refTmpIn = *_arg3
-
-		refTmpOut = Orientation(refTmpIn)
-
-		_orientation = refTmpOut
-	}
+	_orientation = Orientation(_arg3)
 	if _cret != 0 {
 		_ok = true
 	}

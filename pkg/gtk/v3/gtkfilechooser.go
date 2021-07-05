@@ -556,7 +556,7 @@ func (c fileChooser) AddFilter(filter FileFilter) {
 func (c fileChooser) AddShortcutFolder(folder string) error {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 *C.char           // out
-	var _cerr **C.GError        // in
+	var _cerr *C.GError         // in
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.char)(C.CString(folder))
@@ -566,16 +566,7 @@ func (c fileChooser) AddShortcutFolder(folder string) error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
@@ -583,7 +574,7 @@ func (c fileChooser) AddShortcutFolder(folder string) error {
 func (c fileChooser) AddShortcutFolderURI(uri string) error {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 *C.char           // out
-	var _cerr **C.GError        // in
+	var _cerr *C.GError         // in
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.char)(C.CString(uri))
@@ -593,16 +584,7 @@ func (c fileChooser) AddShortcutFolderURI(uri string) error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
@@ -940,7 +922,7 @@ func (c fileChooser) RemoveFilter(filter FileFilter) {
 func (c fileChooser) RemoveShortcutFolder(folder string) error {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 *C.char           // out
-	var _cerr **C.GError        // in
+	var _cerr *C.GError         // in
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.char)(C.CString(folder))
@@ -950,16 +932,7 @@ func (c fileChooser) RemoveShortcutFolder(folder string) error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
@@ -967,7 +940,7 @@ func (c fileChooser) RemoveShortcutFolder(folder string) error {
 func (c fileChooser) RemoveShortcutFolderURI(uri string) error {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 *C.char           // out
-	var _cerr **C.GError        // in
+	var _cerr *C.GError         // in
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.char)(C.CString(uri))
@@ -977,16 +950,7 @@ func (c fileChooser) RemoveShortcutFolderURI(uri string) error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }

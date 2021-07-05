@@ -83,7 +83,7 @@ func NewInetAddressMask(addr InetAddress, length uint) (InetAddressMask, error) 
 	var _arg1 *C.GInetAddress     // out
 	var _arg2 C.guint             // out
 	var _cret *C.GInetAddressMask // in
-	var _cerr **C.GError          // in
+	var _cerr *C.GError           // in
 
 	_arg1 = (*C.GInetAddress)(unsafe.Pointer(addr.Native()))
 	_arg2 = C.guint(length)
@@ -94,16 +94,7 @@ func NewInetAddressMask(addr InetAddress, length uint) (InetAddressMask, error) 
 	var _goerr error                     // out
 
 	_inetAddressMask = WrapInetAddressMask(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _inetAddressMask, _goerr
 }
@@ -115,7 +106,7 @@ func NewInetAddressMask(addr InetAddress, length uint) (InetAddressMask, error) 
 func NewInetAddressMaskFromString(maskString string) (InetAddressMask, error) {
 	var _arg1 *C.gchar            // out
 	var _cret *C.GInetAddressMask // in
-	var _cerr **C.GError          // in
+	var _cerr *C.GError           // in
 
 	_arg1 = (*C.gchar)(C.CString(maskString))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -126,16 +117,7 @@ func NewInetAddressMaskFromString(maskString string) (InetAddressMask, error) {
 	var _goerr error                     // out
 
 	_inetAddressMask = WrapInetAddressMask(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _inetAddressMask, _goerr
 }

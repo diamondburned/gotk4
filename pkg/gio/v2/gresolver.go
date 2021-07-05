@@ -145,7 +145,7 @@ func (r resolver) LookupByAddressResolver(address InetAddress, cancellable Cance
 	var _arg1 *C.GInetAddress // out
 	var _arg2 *C.GCancellable // out
 	var _cret *C.gchar        // in
-	var _cerr **C.GError      // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GResolver)(unsafe.Pointer(r.Native()))
 	_arg1 = (*C.GInetAddress)(unsafe.Pointer(address.Native()))
@@ -158,16 +158,7 @@ func (r resolver) LookupByAddressResolver(address InetAddress, cancellable Cance
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _utf8, _goerr
 }
@@ -192,7 +183,7 @@ func (r resolver) LookupByAddressFinishResolver(result AsyncResult) (string, err
 	var _arg0 *C.GResolver    // out
 	var _arg1 *C.GAsyncResult // out
 	var _cret *C.gchar        // in
-	var _cerr **C.GError      // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GResolver)(unsafe.Pointer(r.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
@@ -204,16 +195,7 @@ func (r resolver) LookupByAddressFinishResolver(result AsyncResult) (string, err
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _utf8, _goerr
 }

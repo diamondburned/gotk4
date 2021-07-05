@@ -163,8 +163,8 @@ func (l layout) HAdjustment() Adjustment {
 
 func (l layout) Size() (width uint, height uint) {
 	var _arg0 *C.GtkLayout // out
-	var _arg1 *C.guint     // in
-	var _arg2 *C.guint     // in
+	var _arg1 C.guint      // in
+	var _arg2 C.guint      // in
 
 	_arg0 = (*C.GtkLayout)(unsafe.Pointer(l.Native()))
 

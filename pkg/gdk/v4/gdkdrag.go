@@ -83,7 +83,7 @@ type Drag interface {
 	// drag operation is over.
 	DragSurface() Surface
 	// Formats retrieves the formats supported by this `GdkDrag` object.
-	Formats() ContentFormats
+	Formats() *ContentFormats
 	// SelectedAction determines the action chosen by the drag destination.
 	SelectedAction() DragAction
 	// Surface returns the `GdkSurface` where the drag originates.
@@ -201,7 +201,7 @@ func (d drag) DragSurface() Surface {
 	return _surface
 }
 
-func (d drag) Formats() ContentFormats {
+func (d drag) Formats() *ContentFormats {
 	var _arg0 *C.GdkDrag           // out
 	var _cret *C.GdkContentFormats // in
 
@@ -209,9 +209,9 @@ func (d drag) Formats() ContentFormats {
 
 	_cret = C.gdk_drag_get_formats(_arg0)
 
-	var _contentFormats ContentFormats // out
+	var _contentFormats *ContentFormats // out
 
-	_contentFormats = (ContentFormats)(unsafe.Pointer(_cret))
+	_contentFormats = (*ContentFormats)(unsafe.Pointer(_cret))
 	C.gdk_content_formats_ref(_cret)
 
 	return _contentFormats

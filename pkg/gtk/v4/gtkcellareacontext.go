@@ -162,8 +162,8 @@ func (c cellAreaContext) AllocateCellAreaContext(width int, height int) {
 
 func (c cellAreaContext) Allocation() (width int, height int) {
 	var _arg0 *C.GtkCellAreaContext // out
-	var _arg1 *C.int                // in
-	var _arg2 *C.int                // in
+	var _arg1 C.int                 // in
+	var _arg2 C.int                 // in
 
 	_arg0 = (*C.GtkCellAreaContext)(unsafe.Pointer(c.Native()))
 
@@ -195,8 +195,8 @@ func (c cellAreaContext) Area() CellArea {
 
 func (c cellAreaContext) PreferredHeight() (minimumHeight int, naturalHeight int) {
 	var _arg0 *C.GtkCellAreaContext // out
-	var _arg1 *C.int                // in
-	var _arg2 *C.int                // in
+	var _arg1 C.int                 // in
+	var _arg2 C.int                 // in
 
 	_arg0 = (*C.GtkCellAreaContext)(unsafe.Pointer(c.Native()))
 
@@ -214,8 +214,8 @@ func (c cellAreaContext) PreferredHeight() (minimumHeight int, naturalHeight int
 func (c cellAreaContext) PreferredHeightForWidth(width int) (minimumHeight int, naturalHeight int) {
 	var _arg0 *C.GtkCellAreaContext // out
 	var _arg1 C.int                 // out
-	var _arg2 *C.int                // in
-	var _arg3 *C.int                // in
+	var _arg2 C.int                 // in
+	var _arg3 C.int                 // in
 
 	_arg0 = (*C.GtkCellAreaContext)(unsafe.Pointer(c.Native()))
 	_arg1 = C.int(width)
@@ -233,8 +233,8 @@ func (c cellAreaContext) PreferredHeightForWidth(width int) (minimumHeight int, 
 
 func (c cellAreaContext) PreferredWidth() (minimumWidth int, naturalWidth int) {
 	var _arg0 *C.GtkCellAreaContext // out
-	var _arg1 *C.int                // in
-	var _arg2 *C.int                // in
+	var _arg1 C.int                 // in
+	var _arg2 C.int                 // in
 
 	_arg0 = (*C.GtkCellAreaContext)(unsafe.Pointer(c.Native()))
 
@@ -252,8 +252,8 @@ func (c cellAreaContext) PreferredWidth() (minimumWidth int, naturalWidth int) {
 func (c cellAreaContext) PreferredWidthForHeight(height int) (minimumWidth int, naturalWidth int) {
 	var _arg0 *C.GtkCellAreaContext // out
 	var _arg1 C.int                 // out
-	var _arg2 *C.int                // in
-	var _arg3 *C.int                // in
+	var _arg2 C.int                 // in
+	var _arg3 C.int                 // in
 
 	_arg0 = (*C.GtkCellAreaContext)(unsafe.Pointer(c.Native()))
 	_arg1 = C.int(height)

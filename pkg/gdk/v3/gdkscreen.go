@@ -56,7 +56,7 @@ type Screen interface {
 	Display() Display
 	// FontOptions gets any options previously set with
 	// gdk_screen_set_font_options().
-	FontOptions() cairo.FontOptions
+	FontOptions() *cairo.FontOptions
 	// Height gets the height of @screen in pixels. The returned size is in
 	// ”application pixels”, not in ”device pixels” (see
 	// gdk_screen_get_monitor_scale_factor()).
@@ -215,7 +215,7 @@ type Screen interface {
 	// options will be set on any Context’s newly created with
 	// gdk_pango_context_get_for_screen(). Changing the default set of font
 	// options does not affect contexts that have already been created.
-	SetFontOptionsScreen(options cairo.FontOptions)
+	SetFontOptionsScreen(options *cairo.FontOptions)
 	// SetResolutionScreen sets the resolution for font handling on the screen.
 	// This is a scale factor between points specified in a FontDescription and
 	// cairo units. The default value is 96, meaning that a 10 point font will
@@ -272,7 +272,7 @@ func (s screen) Display() Display {
 	return _display
 }
 
-func (s screen) FontOptions() cairo.FontOptions {
+func (s screen) FontOptions() *cairo.FontOptions {
 	var _arg0 *C.GdkScreen            // out
 	var _cret *C.cairo_font_options_t // in
 
@@ -280,9 +280,9 @@ func (s screen) FontOptions() cairo.FontOptions {
 
 	_cret = C.gdk_screen_get_font_options(_arg0)
 
-	var _fontOptions cairo.FontOptions // out
+	var _fontOptions *cairo.FontOptions // out
 
-	_fontOptions = (cairo.FontOptions)(unsafe.Pointer(_cret))
+	_fontOptions = (*cairo.FontOptions)(unsafe.Pointer(_cret))
 
 	return _fontOptions
 }
@@ -354,9 +354,9 @@ func (s screen) MonitorAtWindow(window Window) int {
 }
 
 func (s screen) MonitorGeometry(monitorNum int) Rectangle {
-	var _arg0 *C.GdkScreen    // out
-	var _arg1 C.gint          // out
-	var _arg2 *C.GdkRectangle // in
+	var _arg0 *C.GdkScreen   // out
+	var _arg1 C.gint         // out
+	var _arg2 C.GdkRectangle // in
 
 	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
 	_arg1 = C.gint(monitorNum)
@@ -365,7 +365,17 @@ func (s screen) MonitorGeometry(monitorNum int) Rectangle {
 
 	var _dest Rectangle // out
 
-	_dest = (Rectangle)(unsafe.Pointer(_arg2))
+	{
+		var refTmpIn *C.GdkRectangle
+		var refTmpOut *Rectangle
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_dest = *refTmpOut
+	}
 
 	return _dest
 }
@@ -440,9 +450,9 @@ func (s screen) MonitorWidthMm(monitorNum int) int {
 }
 
 func (s screen) MonitorWorkarea(monitorNum int) Rectangle {
-	var _arg0 *C.GdkScreen    // out
-	var _arg1 C.gint          // out
-	var _arg2 *C.GdkRectangle // in
+	var _arg0 *C.GdkScreen   // out
+	var _arg1 C.gint         // out
+	var _arg2 C.GdkRectangle // in
 
 	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
 	_arg1 = C.gint(monitorNum)
@@ -451,7 +461,17 @@ func (s screen) MonitorWorkarea(monitorNum int) Rectangle {
 
 	var _dest Rectangle // out
 
-	_dest = (Rectangle)(unsafe.Pointer(_arg2))
+	{
+		var refTmpIn *C.GdkRectangle
+		var refTmpOut *Rectangle
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_dest = *refTmpOut
+	}
 
 	return _dest
 }
@@ -646,7 +666,7 @@ func (s screen) MakeDisplayNameScreen() string {
 	return _utf8
 }
 
-func (s screen) SetFontOptionsScreen(options cairo.FontOptions) {
+func (s screen) SetFontOptionsScreen(options *cairo.FontOptions) {
 	var _arg0 *C.GdkScreen            // out
 	var _arg1 *C.cairo_font_options_t // out
 

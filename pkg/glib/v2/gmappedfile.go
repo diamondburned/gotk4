@@ -42,11 +42,11 @@ func marshalMappedFile(p uintptr) (interface{}, error) {
 }
 
 // NewMappedFile constructs a struct MappedFile.
-func NewMappedFile(filename string, writable bool) (MappedFile, error) {
+func NewMappedFile(filename string, writable bool) (*MappedFile, error) {
 	var _arg1 *C.gchar       // out
 	var _arg2 C.gboolean     // out
 	var _cret *C.GMappedFile // in
-	var _cerr **C.GError     // in
+	var _cerr *C.GError      // in
 
 	_arg1 = (*C.gchar)(C.CString(filename))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -56,33 +56,24 @@ func NewMappedFile(filename string, writable bool) (MappedFile, error) {
 
 	_cret = C.g_mapped_file_new(_arg1, _arg2, &_cerr)
 
-	var _mappedFile MappedFile // out
-	var _goerr error           // out
+	var _mappedFile *MappedFile // out
+	var _goerr error            // out
 
-	_mappedFile = (MappedFile)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_mappedFile, func(v MappedFile) {
+	_mappedFile = (*MappedFile)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_mappedFile, func(v *MappedFile) {
 		C.g_mapped_file_unref((*C.GMappedFile)(unsafe.Pointer(v)))
 	})
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _mappedFile, _goerr
 }
 
 // NewMappedFileFromFd constructs a struct MappedFile.
-func NewMappedFileFromFd(fd int, writable bool) (MappedFile, error) {
+func NewMappedFileFromFd(fd int, writable bool) (*MappedFile, error) {
 	var _arg1 C.gint         // out
 	var _arg2 C.gboolean     // out
 	var _cret *C.GMappedFile // in
-	var _cerr **C.GError     // in
+	var _cerr *C.GError      // in
 
 	_arg1 = C.gint(fd)
 	if writable {
@@ -91,23 +82,14 @@ func NewMappedFileFromFd(fd int, writable bool) (MappedFile, error) {
 
 	_cret = C.g_mapped_file_new_from_fd(_arg1, _arg2, &_cerr)
 
-	var _mappedFile MappedFile // out
-	var _goerr error           // out
+	var _mappedFile *MappedFile // out
+	var _goerr error            // out
 
-	_mappedFile = (MappedFile)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_mappedFile, func(v MappedFile) {
+	_mappedFile = (*MappedFile)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_mappedFile, func(v *MappedFile) {
 		C.g_mapped_file_unref((*C.GMappedFile)(unsafe.Pointer(v)))
 	})
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _mappedFile, _goerr
 }
@@ -169,7 +151,7 @@ func (f *MappedFile) Length() uint {
 
 // Ref increments the reference count of @file by one. It is safe to call this
 // function from any thread.
-func (f *MappedFile) Ref() MappedFile {
+func (f *MappedFile) Ref() *MappedFile {
 	var _arg0 *C.GMappedFile // out
 	var _cret *C.GMappedFile // in
 
@@ -177,10 +159,10 @@ func (f *MappedFile) Ref() MappedFile {
 
 	_cret = C.g_mapped_file_ref(_arg0)
 
-	var _mappedFile MappedFile // out
+	var _mappedFile *MappedFile // out
 
-	_mappedFile = (MappedFile)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_mappedFile, func(v MappedFile) {
+	_mappedFile = (*MappedFile)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_mappedFile, func(v *MappedFile) {
 		C.g_mapped_file_unref((*C.GMappedFile)(unsafe.Pointer(v)))
 	})
 

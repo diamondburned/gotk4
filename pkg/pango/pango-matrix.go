@@ -53,7 +53,7 @@ func (m *Matrix) Native() unsafe.Pointer {
 // Concat changes the transformation represented by @matrix to be the
 // transformation given by first applying transformation given by @new_matrix
 // then applying the original transformation.
-func (m *Matrix) Concat(newMatrix Matrix) {
+func (m *Matrix) Concat(newMatrix *Matrix) {
 	var _arg0 *C.PangoMatrix // out
 	var _arg1 *C.PangoMatrix // out
 
@@ -64,7 +64,7 @@ func (m *Matrix) Concat(newMatrix Matrix) {
 }
 
 // Copy copies a `PangoMatrix`.
-func (m *Matrix) Copy() Matrix {
+func (m *Matrix) Copy() *Matrix {
 	var _arg0 *C.PangoMatrix // out
 	var _cret *C.PangoMatrix // in
 
@@ -72,10 +72,10 @@ func (m *Matrix) Copy() Matrix {
 
 	_cret = C.pango_matrix_copy(_arg0)
 
-	var _ret Matrix // out
+	var _ret *Matrix // out
 
-	_ret = (Matrix)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_ret, func(v Matrix) {
+	_ret = (*Matrix)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_ret, func(v *Matrix) {
 		C.pango_matrix_free((*C.PangoMatrix)(unsafe.Pointer(v)))
 	})
 
@@ -122,8 +122,8 @@ func (m *Matrix) FontScaleFactor() float64 {
 // Note that output numbers will always be non-negative.
 func (m *Matrix) FontScaleFactors() (xscale float64, yscale float64) {
 	var _arg0 *C.PangoMatrix // out
-	var _arg1 *C.double      // in
-	var _arg2 *C.double      // in
+	var _arg1 C.double       // in
+	var _arg2 C.double       // in
 
 	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(m))
 

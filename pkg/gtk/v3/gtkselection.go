@@ -90,7 +90,7 @@ func marshalTargetEntry(p uintptr) (interface{}, error) {
 }
 
 // NewTargetEntry constructs a struct TargetEntry.
-func NewTargetEntry(target string, flags uint, info uint) TargetEntry {
+func NewTargetEntry(target string, flags uint, info uint) *TargetEntry {
 	var _arg1 *C.gchar          // out
 	var _arg2 C.guint           // out
 	var _arg3 C.guint           // out
@@ -103,10 +103,10 @@ func NewTargetEntry(target string, flags uint, info uint) TargetEntry {
 
 	_cret = C.gtk_target_entry_new(_arg1, _arg2, _arg3)
 
-	var _targetEntry TargetEntry // out
+	var _targetEntry *TargetEntry // out
 
-	_targetEntry = (TargetEntry)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_targetEntry, func(v TargetEntry) {
+	_targetEntry = (*TargetEntry)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_targetEntry, func(v *TargetEntry) {
 		C.gtk_target_entry_free((*C.GtkTargetEntry)(unsafe.Pointer(v)))
 	})
 
@@ -119,7 +119,7 @@ func (t *TargetEntry) Native() unsafe.Pointer {
 }
 
 // Copy makes a copy of a TargetEntry and its data.
-func (d *TargetEntry) Copy() TargetEntry {
+func (d *TargetEntry) Copy() *TargetEntry {
 	var _arg0 *C.GtkTargetEntry // out
 	var _cret *C.GtkTargetEntry // in
 
@@ -127,10 +127,10 @@ func (d *TargetEntry) Copy() TargetEntry {
 
 	_cret = C.gtk_target_entry_copy(_arg0)
 
-	var _targetEntry TargetEntry // out
+	var _targetEntry *TargetEntry // out
 
-	_targetEntry = (TargetEntry)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_targetEntry, func(v TargetEntry) {
+	_targetEntry = (*TargetEntry)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_targetEntry, func(v *TargetEntry) {
 		C.gtk_target_entry_free((*C.GtkTargetEntry)(unsafe.Pointer(v)))
 	})
 
@@ -165,7 +165,7 @@ func marshalTargetList(p uintptr) (interface{}, error) {
 }
 
 // NewTargetList constructs a struct TargetList.
-func NewTargetList(targets []TargetEntry) TargetList {
+func NewTargetList(targets []TargetEntry) *TargetList {
 	var _arg1 *C.GtkTargetEntry
 	var _arg2 C.guint
 	var _cret *C.GtkTargetList // in
@@ -175,10 +175,10 @@ func NewTargetList(targets []TargetEntry) TargetList {
 
 	_cret = C.gtk_target_list_new(_arg1, _arg2)
 
-	var _targetList TargetList // out
+	var _targetList *TargetList // out
 
-	_targetList = (TargetList)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_targetList, func(v TargetList) {
+	_targetList = (*TargetList)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_targetList, func(v *TargetList) {
 		C.gtk_target_list_unref((*C.GtkTargetList)(unsafe.Pointer(v)))
 	})
 
@@ -264,7 +264,7 @@ func (l *TargetList) AddURITargets(info uint) {
 }
 
 // Ref increases the reference count of a TargetList by one.
-func (l *TargetList) Ref() TargetList {
+func (l *TargetList) Ref() *TargetList {
 	var _arg0 *C.GtkTargetList // out
 	var _cret *C.GtkTargetList // in
 
@@ -272,10 +272,10 @@ func (l *TargetList) Ref() TargetList {
 
 	_cret = C.gtk_target_list_ref(_arg0)
 
-	var _targetList TargetList // out
+	var _targetList *TargetList // out
 
-	_targetList = (TargetList)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_targetList, func(v TargetList) {
+	_targetList = (*TargetList)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_targetList, func(v *TargetList) {
 		C.gtk_target_list_unref((*C.GtkTargetList)(unsafe.Pointer(v)))
 	})
 

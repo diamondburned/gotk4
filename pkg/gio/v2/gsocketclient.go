@@ -355,7 +355,7 @@ func (c socketClient) ConnectSocketClient(connectable SocketConnectable, cancell
 	var _arg1 *C.GSocketConnectable // out
 	var _arg2 *C.GCancellable       // out
 	var _cret *C.GSocketConnection  // in
-	var _cerr **C.GError            // in
+	var _cerr *C.GError             // in
 
 	_arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GSocketConnectable)(unsafe.Pointer(connectable.Native()))
@@ -367,16 +367,7 @@ func (c socketClient) ConnectSocketClient(connectable SocketConnectable, cancell
 	var _goerr error                       // out
 
 	_socketConnection = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(SocketConnection)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _socketConnection, _goerr
 }
@@ -401,7 +392,7 @@ func (c socketClient) ConnectFinishSocketClient(result AsyncResult) (SocketConne
 	var _arg0 *C.GSocketClient     // out
 	var _arg1 *C.GAsyncResult      // out
 	var _cret *C.GSocketConnection // in
-	var _cerr **C.GError           // in
+	var _cerr *C.GError            // in
 
 	_arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
@@ -412,16 +403,7 @@ func (c socketClient) ConnectFinishSocketClient(result AsyncResult) (SocketConne
 	var _goerr error                       // out
 
 	_socketConnection = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(SocketConnection)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _socketConnection, _goerr
 }
@@ -432,7 +414,7 @@ func (c socketClient) ConnectToHostSocketClient(hostAndPort string, defaultPort 
 	var _arg2 C.guint16            // out
 	var _arg3 *C.GCancellable      // out
 	var _cret *C.GSocketConnection // in
-	var _cerr **C.GError           // in
+	var _cerr *C.GError            // in
 
 	_arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.gchar)(C.CString(hostAndPort))
@@ -446,16 +428,7 @@ func (c socketClient) ConnectToHostSocketClient(hostAndPort string, defaultPort 
 	var _goerr error                       // out
 
 	_socketConnection = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(SocketConnection)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _socketConnection, _goerr
 }
@@ -483,7 +456,7 @@ func (c socketClient) ConnectToHostFinishSocketClient(result AsyncResult) (Socke
 	var _arg0 *C.GSocketClient     // out
 	var _arg1 *C.GAsyncResult      // out
 	var _cret *C.GSocketConnection // in
-	var _cerr **C.GError           // in
+	var _cerr *C.GError            // in
 
 	_arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
@@ -494,16 +467,7 @@ func (c socketClient) ConnectToHostFinishSocketClient(result AsyncResult) (Socke
 	var _goerr error                       // out
 
 	_socketConnection = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(SocketConnection)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _socketConnection, _goerr
 }
@@ -514,7 +478,7 @@ func (c socketClient) ConnectToServiceSocketClient(domain string, service string
 	var _arg2 *C.gchar             // out
 	var _arg3 *C.GCancellable      // out
 	var _cret *C.GSocketConnection // in
-	var _cerr **C.GError           // in
+	var _cerr *C.GError            // in
 
 	_arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.gchar)(C.CString(domain))
@@ -529,16 +493,7 @@ func (c socketClient) ConnectToServiceSocketClient(domain string, service string
 	var _goerr error                       // out
 
 	_socketConnection = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(SocketConnection)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _socketConnection, _goerr
 }
@@ -567,7 +522,7 @@ func (c socketClient) ConnectToServiceFinishSocketClient(result AsyncResult) (So
 	var _arg0 *C.GSocketClient     // out
 	var _arg1 *C.GAsyncResult      // out
 	var _cret *C.GSocketConnection // in
-	var _cerr **C.GError           // in
+	var _cerr *C.GError            // in
 
 	_arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
@@ -578,16 +533,7 @@ func (c socketClient) ConnectToServiceFinishSocketClient(result AsyncResult) (So
 	var _goerr error                       // out
 
 	_socketConnection = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(SocketConnection)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _socketConnection, _goerr
 }
@@ -598,7 +544,7 @@ func (c socketClient) ConnectToURISocketClient(uri string, defaultPort uint16, c
 	var _arg2 C.guint16            // out
 	var _arg3 *C.GCancellable      // out
 	var _cret *C.GSocketConnection // in
-	var _cerr **C.GError           // in
+	var _cerr *C.GError            // in
 
 	_arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.gchar)(C.CString(uri))
@@ -612,16 +558,7 @@ func (c socketClient) ConnectToURISocketClient(uri string, defaultPort uint16, c
 	var _goerr error                       // out
 
 	_socketConnection = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(SocketConnection)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _socketConnection, _goerr
 }
@@ -649,7 +586,7 @@ func (c socketClient) ConnectToURIFinishSocketClient(result AsyncResult) (Socket
 	var _arg0 *C.GSocketClient     // out
 	var _arg1 *C.GAsyncResult      // out
 	var _cret *C.GSocketConnection // in
-	var _cerr **C.GError           // in
+	var _cerr *C.GError            // in
 
 	_arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
@@ -660,16 +597,7 @@ func (c socketClient) ConnectToURIFinishSocketClient(result AsyncResult) (Socket
 	var _goerr error                       // out
 
 	_socketConnection = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(SocketConnection)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _socketConnection, _goerr
 }

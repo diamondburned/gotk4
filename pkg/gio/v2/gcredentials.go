@@ -144,7 +144,7 @@ func NewCredentials() Credentials {
 func (c credentials) UnixPid() (int, error) {
 	var _arg0 *C.GCredentials // out
 	var _cret C.pid_t         // in
-	var _cerr **C.GError      // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GCredentials)(unsafe.Pointer(c.Native()))
 
@@ -154,16 +154,7 @@ func (c credentials) UnixPid() (int, error) {
 	var _goerr error // out
 
 	_gint = int(_cret)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _gint, _goerr
 }
@@ -171,7 +162,7 @@ func (c credentials) UnixPid() (int, error) {
 func (c credentials) UnixUser() (uint, error) {
 	var _arg0 *C.GCredentials // out
 	var _cret C.uid_t         // in
-	var _cerr **C.GError      // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GCredentials)(unsafe.Pointer(c.Native()))
 
@@ -181,16 +172,7 @@ func (c credentials) UnixUser() (uint, error) {
 	var _goerr error // out
 
 	_guint = uint(_cret)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _guint, _goerr
 }
@@ -198,7 +180,7 @@ func (c credentials) UnixUser() (uint, error) {
 func (c credentials) IsSameUserCredentials(otherCredentials Credentials) error {
 	var _arg0 *C.GCredentials // out
 	var _arg1 *C.GCredentials // out
-	var _cerr **C.GError      // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GCredentials)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GCredentials)(unsafe.Pointer(otherCredentials.Native()))
@@ -207,16 +189,7 @@ func (c credentials) IsSameUserCredentials(otherCredentials Credentials) error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
@@ -236,7 +209,7 @@ func (c credentials) SetNativeCredentials(nativeType CredentialsType, native int
 func (c credentials) SetUnixUserCredentials(uid uint) error {
 	var _arg0 *C.GCredentials // out
 	var _arg1 C.uid_t         // out
-	var _cerr **C.GError      // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GCredentials)(unsafe.Pointer(c.Native()))
 	_arg1 = C.uid_t(uid)
@@ -245,16 +218,7 @@ func (c credentials) SetUnixUserCredentials(uid uint) error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }

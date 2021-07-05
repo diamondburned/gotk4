@@ -27,9 +27,9 @@ func init() {
 // KeyvalConvertCase obtains the upper- and lower-case versions of the keyval
 // @symbol. Examples of keyvals are K_KEY_a, K_KEY_Enter, K_KEY_F1, etc.
 func KeyvalConvertCase(symbol uint) (lower uint, upper uint) {
-	var _arg1 C.guint  // out
-	var _arg2 *C.guint // in
-	var _arg3 *C.guint // in
+	var _arg1 C.guint // out
+	var _arg2 C.guint // in
+	var _arg3 C.guint // in
 
 	_arg1 = C.guint(symbol)
 
@@ -237,7 +237,7 @@ type Keymap interface {
 	// you want to use gdk_keymap_translate_keyboard_state() instead of this
 	// function, since the effective group/level may not be the same as the
 	// current keyboard state.
-	LookupKeyKeymap(key KeymapKey) uint
+	LookupKeyKeymap(key *KeymapKey) uint
 	// TranslateKeyboardStateKeymap translates the contents of a EventKey into a
 	// keyval, effective group, and level. Modifiers that affected the
 	// translation and are thus unavailable for application use are returned in
@@ -325,9 +325,9 @@ func (k keymap) EntriesForKeycode(hardwareKeycode uint) ([]KeymapKey, []uint, bo
 	var _arg0 *C.GdkKeymap // out
 	var _arg1 C.guint      // out
 	var _arg2 *C.GdkKeymapKey
-	var _arg4 *C.gint // in
+	var _arg4 C.gint // in
 	var _arg3 *C.guint
-	var _arg4 *C.gint    // in
+	var _arg4 C.gint     // in
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(k.Native()))
@@ -358,7 +358,7 @@ func (k keymap) EntriesForKeyval(keyval uint) ([]KeymapKey, bool) {
 	var _arg0 *C.GdkKeymap // out
 	var _arg1 C.guint      // out
 	var _arg2 *C.GdkKeymapKey
-	var _arg3 *C.gint    // in
+	var _arg3 C.gint     // in
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(k.Native()))
@@ -463,7 +463,7 @@ func (k keymap) HaveBidiLayoutsKeymap() bool {
 	return _ok
 }
 
-func (k keymap) LookupKeyKeymap(key KeymapKey) uint {
+func (k keymap) LookupKeyKeymap(key *KeymapKey) uint {
 	var _arg0 *C.GdkKeymap    // out
 	var _arg1 *C.GdkKeymapKey // out
 	var _cret C.guint         // in
@@ -481,15 +481,15 @@ func (k keymap) LookupKeyKeymap(key KeymapKey) uint {
 }
 
 func (k keymap) TranslateKeyboardStateKeymap(hardwareKeycode uint, state ModifierType, group int) (keyval uint, effectiveGroup int, level int, consumedModifiers ModifierType, ok bool) {
-	var _arg0 *C.GdkKeymap       // out
-	var _arg1 C.guint            // out
-	var _arg2 C.GdkModifierType  // out
-	var _arg3 C.gint             // out
-	var _arg4 *C.guint           // in
-	var _arg5 *C.gint            // in
-	var _arg6 *C.gint            // in
-	var _arg7 *C.GdkModifierType // in
-	var _cret C.gboolean         // in
+	var _arg0 *C.GdkKeymap      // out
+	var _arg1 C.guint           // out
+	var _arg2 C.GdkModifierType // out
+	var _arg3 C.gint            // out
+	var _arg4 C.guint           // in
+	var _arg5 C.gint            // in
+	var _arg6 C.gint            // in
+	var _arg7 C.GdkModifierType // in
+	var _cret C.gboolean        // in
 
 	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(k.Native()))
 	_arg1 = C.guint(hardwareKeycode)
@@ -507,16 +507,7 @@ func (k keymap) TranslateKeyboardStateKeymap(hardwareKeycode uint, state Modifie
 	_keyval = uint(_arg4)
 	_effectiveGroup = int(_arg5)
 	_level = int(_arg6)
-	{
-		var refTmpIn C.GdkModifierType
-		var refTmpOut ModifierType
-
-		refTmpIn = *_arg7
-
-		refTmpOut = ModifierType(refTmpIn)
-
-		_consumedModifiers = refTmpOut
-	}
+	_consumedModifiers = ModifierType(_arg7)
 	if _cret != 0 {
 		_ok = true
 	}

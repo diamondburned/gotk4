@@ -149,7 +149,7 @@ func (c unixConnection) ReceiveCredentialsUnixConnection(cancellable Cancellable
 	var _arg0 *C.GUnixConnection // out
 	var _arg1 *C.GCancellable    // out
 	var _cret *C.GCredentials    // in
-	var _cerr **C.GError         // in
+	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GUnixConnection)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
@@ -160,16 +160,7 @@ func (c unixConnection) ReceiveCredentialsUnixConnection(cancellable Cancellable
 	var _goerr error             // out
 
 	_credentials = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Credentials)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _credentials, _goerr
 }
@@ -192,7 +183,7 @@ func (c unixConnection) ReceiveCredentialsFinishUnixConnection(result AsyncResul
 	var _arg0 *C.GUnixConnection // out
 	var _arg1 *C.GAsyncResult    // out
 	var _cret *C.GCredentials    // in
-	var _cerr **C.GError         // in
+	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GUnixConnection)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
@@ -203,16 +194,7 @@ func (c unixConnection) ReceiveCredentialsFinishUnixConnection(result AsyncResul
 	var _goerr error             // out
 
 	_credentials = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Credentials)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _credentials, _goerr
 }
@@ -221,7 +203,7 @@ func (c unixConnection) ReceiveFdUnixConnection(cancellable Cancellable) (int, e
 	var _arg0 *C.GUnixConnection // out
 	var _arg1 *C.GCancellable    // out
 	var _cret C.gint             // in
-	var _cerr **C.GError         // in
+	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GUnixConnection)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
@@ -232,16 +214,7 @@ func (c unixConnection) ReceiveFdUnixConnection(cancellable Cancellable) (int, e
 	var _goerr error // out
 
 	_gint = int(_cret)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _gint, _goerr
 }
@@ -249,7 +222,7 @@ func (c unixConnection) ReceiveFdUnixConnection(cancellable Cancellable) (int, e
 func (c unixConnection) SendCredentialsUnixConnection(cancellable Cancellable) error {
 	var _arg0 *C.GUnixConnection // out
 	var _arg1 *C.GCancellable    // out
-	var _cerr **C.GError         // in
+	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GUnixConnection)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
@@ -258,16 +231,7 @@ func (c unixConnection) SendCredentialsUnixConnection(cancellable Cancellable) e
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
@@ -289,7 +253,7 @@ func (c unixConnection) SendCredentialsAsyncUnixConnection(cancellable Cancellab
 func (c unixConnection) SendCredentialsFinishUnixConnection(result AsyncResult) error {
 	var _arg0 *C.GUnixConnection // out
 	var _arg1 *C.GAsyncResult    // out
-	var _cerr **C.GError         // in
+	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GUnixConnection)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
@@ -298,16 +262,7 @@ func (c unixConnection) SendCredentialsFinishUnixConnection(result AsyncResult) 
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
@@ -316,7 +271,7 @@ func (c unixConnection) SendFdUnixConnection(fd int, cancellable Cancellable) er
 	var _arg0 *C.GUnixConnection // out
 	var _arg1 C.gint             // out
 	var _arg2 *C.GCancellable    // out
-	var _cerr **C.GError         // in
+	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GUnixConnection)(unsafe.Pointer(c.Native()))
 	_arg1 = C.gint(fd)
@@ -326,16 +281,7 @@ func (c unixConnection) SendFdUnixConnection(fd int, cancellable Cancellable) er
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }

@@ -132,7 +132,7 @@ func (s fileIOStream) QueryInfoFileIOStream(attributes string, cancellable Cance
 	var _arg1 *C.char          // out
 	var _arg2 *C.GCancellable  // out
 	var _cret *C.GFileInfo     // in
-	var _cerr **C.GError       // in
+	var _cerr *C.GError        // in
 
 	_arg0 = (*C.GFileIOStream)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.char)(C.CString(attributes))
@@ -145,16 +145,7 @@ func (s fileIOStream) QueryInfoFileIOStream(attributes string, cancellable Cance
 	var _goerr error       // out
 
 	_fileInfo = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(FileInfo)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _fileInfo, _goerr
 }
@@ -182,7 +173,7 @@ func (s fileIOStream) QueryInfoFinishFileIOStream(result AsyncResult) (FileInfo,
 	var _arg0 *C.GFileIOStream // out
 	var _arg1 *C.GAsyncResult  // out
 	var _cret *C.GFileInfo     // in
-	var _cerr **C.GError       // in
+	var _cerr *C.GError        // in
 
 	_arg0 = (*C.GFileIOStream)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
@@ -193,16 +184,7 @@ func (s fileIOStream) QueryInfoFinishFileIOStream(result AsyncResult) (FileInfo,
 	var _goerr error       // out
 
 	_fileInfo = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(FileInfo)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _fileInfo, _goerr
 }

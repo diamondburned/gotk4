@@ -144,7 +144,7 @@ func (s seekable) Seek(offset int64, typ glib.SeekType, cancellable Cancellable)
 	var _arg1 C.goffset       // out
 	var _arg2 C.GSeekType     // out
 	var _arg3 *C.GCancellable // out
-	var _cerr **C.GError      // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GSeekable)(unsafe.Pointer(s.Native()))
 	_arg1 = C.goffset(offset)
@@ -155,16 +155,7 @@ func (s seekable) Seek(offset int64, typ glib.SeekType, cancellable Cancellable)
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
@@ -188,7 +179,7 @@ func (s seekable) Truncate(offset int64, cancellable Cancellable) error {
 	var _arg0 *C.GSeekable    // out
 	var _arg1 C.goffset       // out
 	var _arg2 *C.GCancellable // out
-	var _cerr **C.GError      // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GSeekable)(unsafe.Pointer(s.Native()))
 	_arg1 = C.goffset(offset)
@@ -198,16 +189,7 @@ func (s seekable) Truncate(offset int64, cancellable Cancellable) error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }

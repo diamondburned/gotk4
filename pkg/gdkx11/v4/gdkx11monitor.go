@@ -52,8 +52,8 @@ func marshalX11Monitor(p uintptr) (interface{}, error) {
 }
 
 func (m x11Monitor) Workarea() gdk.Rectangle {
-	var _arg0 *C.GdkMonitor   // out
-	var _arg1 *C.GdkRectangle // in
+	var _arg0 *C.GdkMonitor  // out
+	var _arg1 C.GdkRectangle // in
 
 	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
 
@@ -61,7 +61,17 @@ func (m x11Monitor) Workarea() gdk.Rectangle {
 
 	var _workarea gdk.Rectangle // out
 
-	_workarea = (gdk.Rectangle)(unsafe.Pointer(_arg1))
+	{
+		var refTmpIn *C.GdkRectangle
+		var refTmpOut *gdk.Rectangle
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*gdk.Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_workarea = *refTmpOut
+	}
 
 	return _workarea
 }

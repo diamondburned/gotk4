@@ -161,7 +161,7 @@ type ComboBox interface {
 	// referenced by @iter.
 	//
 	// If @iter is nil, the active item is unset.
-	SetActiveIterComboBox(iter TreeIter)
+	SetActiveIterComboBox(iter *TreeIter)
 	// SetButtonSensitivityComboBox sets whether the dropdown button of the
 	// combo box should update its sensitivity depending on the model contents.
 	SetButtonSensitivityComboBox(sensitivity SensitivityType)
@@ -309,7 +309,7 @@ func (c comboBox) ActiveID() string {
 
 func (c comboBox) ActiveIter() (TreeIter, bool) {
 	var _arg0 *C.GtkComboBox // out
-	var _arg1 *C.GtkTreeIter // in
+	var _arg1 C.GtkTreeIter  // in
 	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
@@ -319,7 +319,17 @@ func (c comboBox) ActiveIter() (TreeIter, bool) {
 	var _iter TreeIter // out
 	var _ok bool       // out
 
-	_iter = (TreeIter)(unsafe.Pointer(_arg1))
+	{
+		var refTmpIn *C.GtkTreeIter
+		var refTmpOut *TreeIter
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*TreeIter)(unsafe.Pointer(refTmpIn))
+
+		_iter = *refTmpOut
+	}
 	if _cret != 0 {
 		_ok = true
 	}
@@ -492,7 +502,7 @@ func (c comboBox) SetActiveIDComboBox(activeId string) bool {
 	return _ok
 }
 
-func (c comboBox) SetActiveIterComboBox(iter TreeIter) {
+func (c comboBox) SetActiveIterComboBox(iter *TreeIter) {
 	var _arg0 *C.GtkComboBox // out
 	var _arg1 *C.GtkTreeIter // out
 

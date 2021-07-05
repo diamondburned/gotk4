@@ -34,7 +34,7 @@ func init() {
 //
 // For example, if @model is a product catalogue, then a compare function for
 // the “price” column could be one which returns `price_of(@a) - price_of(@b)`.
-type TreeIterCompareFunc func(model TreeModel, a TreeIter, b TreeIter) (gint int)
+type TreeIterCompareFunc func(model TreeModel, a *TreeIter, b *TreeIter) (gint int)
 
 //export gotk4_TreeIterCompareFunc
 func gotk4_TreeIterCompareFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 *C.GtkTreeIter, arg3 C.gpointer) C.gint {
@@ -44,12 +44,12 @@ func gotk4_TreeIterCompareFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 *
 	}
 
 	var model TreeModel // out
-	var a TreeIter      // out
-	var b TreeIter      // out
+	var a *TreeIter     // out
+	var b *TreeIter     // out
 
 	model = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0))).(TreeModel)
-	a = (TreeIter)(unsafe.Pointer(arg1))
-	b = (TreeIter)(unsafe.Pointer(arg2))
+	a = (*TreeIter)(unsafe.Pointer(arg1))
+	b = (*TreeIter)(unsafe.Pointer(arg2))
 
 	fn := v.(TreeIterCompareFunc)
 	gint := fn(model, a, b)
@@ -114,8 +114,8 @@ func marshalTreeSortable(p uintptr) (interface{}, error) {
 
 func (s treeSortable) SortColumnID() (int, SortType, bool) {
 	var _arg0 *C.GtkTreeSortable // out
-	var _arg1 *C.gint            // in
-	var _arg2 *C.GtkSortType     // in
+	var _arg1 C.gint             // in
+	var _arg2 C.GtkSortType      // in
 	var _cret C.gboolean         // in
 
 	_arg0 = (*C.GtkTreeSortable)(unsafe.Pointer(s.Native()))
@@ -127,16 +127,7 @@ func (s treeSortable) SortColumnID() (int, SortType, bool) {
 	var _ok bool          // out
 
 	_sortColumnId = int(_arg1)
-	{
-		var refTmpIn C.GtkSortType
-		var refTmpOut SortType
-
-		refTmpIn = *_arg2
-
-		refTmpOut = SortType(refTmpIn)
-
-		_order = refTmpOut
-	}
+	_order = SortType(_arg2)
 	if _cret != 0 {
 		_ok = true
 	}

@@ -56,7 +56,7 @@ type CellView interface {
 
 	// DisplayedRow returns a TreePath referring to the currently displayed row.
 	// If no row is currently displayed, nil is returned.
-	DisplayedRow() TreePath
+	DisplayedRow() *TreePath
 	// DrawSensitive gets whether @cell_view is configured to draw all of its
 	// cells in a sensitive state.
 	DrawSensitive() bool
@@ -70,19 +70,19 @@ type CellView interface {
 	// the model row pointed to by @path.
 	//
 	// Deprecated: since version 3.0.
-	SizeOfRow(path TreePath) (Requisition, bool)
+	SizeOfRow(path *TreePath) (Requisition, bool)
 	// SetBackgroundColorCellView sets the background color of @view.
 	//
 	// Deprecated: since version 3.4.
-	SetBackgroundColorCellView(color gdk.Color)
+	SetBackgroundColorCellView(color *gdk.Color)
 	// SetBackgroundRGBACellView sets the background color of @cell_view.
-	SetBackgroundRGBACellView(rgba gdk.RGBA)
+	SetBackgroundRGBACellView(rgba *gdk.RGBA)
 	// SetDisplayedRowCellView sets the row of the model that is currently
 	// displayed by the CellView. If the path is unset, then the contents of the
 	// cellview “stick” at their last value; this is not normally a desired
 	// result, but may be a needed intermediate state if say, the model for the
 	// CellView becomes temporarily empty.
-	SetDisplayedRowCellView(path TreePath)
+	SetDisplayedRowCellView(path *TreePath)
 	// SetDrawSensitiveCellView sets whether @cell_view should draw all of its
 	// cells in a sensitive state, this is used by ComboBox menus to ensure that
 	// rows with insensitive cells that contain children appear sensitive in the
@@ -210,7 +210,7 @@ func NewCellViewWithText(text string) CellView {
 	return _cellView
 }
 
-func (c cellView) DisplayedRow() TreePath {
+func (c cellView) DisplayedRow() *TreePath {
 	var _arg0 *C.GtkCellView // out
 	var _cret *C.GtkTreePath // in
 
@@ -218,10 +218,10 @@ func (c cellView) DisplayedRow() TreePath {
 
 	_cret = C.gtk_cell_view_get_displayed_row(_arg0)
 
-	var _treePath TreePath // out
+	var _treePath *TreePath // out
 
-	_treePath = (TreePath)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_treePath, func(v TreePath) {
+	_treePath = (*TreePath)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_treePath, func(v *TreePath) {
 		C.gtk_tree_path_free((*C.GtkTreePath)(unsafe.Pointer(v)))
 	})
 
@@ -277,11 +277,11 @@ func (c cellView) Model() TreeModel {
 	return _treeModel
 }
 
-func (c cellView) SizeOfRow(path TreePath) (Requisition, bool) {
-	var _arg0 *C.GtkCellView    // out
-	var _arg1 *C.GtkTreePath    // out
-	var _arg2 *C.GtkRequisition // in
-	var _cret C.gboolean        // in
+func (c cellView) SizeOfRow(path *TreePath) (Requisition, bool) {
+	var _arg0 *C.GtkCellView   // out
+	var _arg1 *C.GtkTreePath   // out
+	var _arg2 C.GtkRequisition // in
+	var _cret C.gboolean       // in
 
 	_arg0 = (*C.GtkCellView)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(path))
@@ -291,7 +291,17 @@ func (c cellView) SizeOfRow(path TreePath) (Requisition, bool) {
 	var _requisition Requisition // out
 	var _ok bool                 // out
 
-	_requisition = (Requisition)(unsafe.Pointer(_arg2))
+	{
+		var refTmpIn *C.GtkRequisition
+		var refTmpOut *Requisition
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Requisition)(unsafe.Pointer(refTmpIn))
+
+		_requisition = *refTmpOut
+	}
 	if _cret != 0 {
 		_ok = true
 	}
@@ -299,7 +309,7 @@ func (c cellView) SizeOfRow(path TreePath) (Requisition, bool) {
 	return _requisition, _ok
 }
 
-func (c cellView) SetBackgroundColorCellView(color gdk.Color) {
+func (c cellView) SetBackgroundColorCellView(color *gdk.Color) {
 	var _arg0 *C.GtkCellView // out
 	var _arg1 *C.GdkColor    // out
 
@@ -309,7 +319,7 @@ func (c cellView) SetBackgroundColorCellView(color gdk.Color) {
 	C.gtk_cell_view_set_background_color(_arg0, _arg1)
 }
 
-func (c cellView) SetBackgroundRGBACellView(rgba gdk.RGBA) {
+func (c cellView) SetBackgroundRGBACellView(rgba *gdk.RGBA) {
 	var _arg0 *C.GtkCellView // out
 	var _arg1 *C.GdkRGBA     // out
 
@@ -319,7 +329,7 @@ func (c cellView) SetBackgroundRGBACellView(rgba gdk.RGBA) {
 	C.gtk_cell_view_set_background_rgba(_arg0, _arg1)
 }
 
-func (c cellView) SetDisplayedRowCellView(path TreePath) {
+func (c cellView) SetDisplayedRowCellView(path *TreePath) {
 	var _arg0 *C.GtkCellView // out
 	var _arg1 *C.GtkTreePath // out
 

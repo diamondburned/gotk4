@@ -47,7 +47,7 @@ func (c *CSSSection) Native() unsafe.Pointer {
 }
 
 // EndLocation returns the location in the CSS document where this section ends.
-func (s *CSSSection) EndLocation() CSSLocation {
+func (s *CSSSection) EndLocation() *CSSLocation {
 	var _arg0 *C.GtkCssSection  // out
 	var _cret *C.GtkCssLocation // in
 
@@ -55,9 +55,9 @@ func (s *CSSSection) EndLocation() CSSLocation {
 
 	_cret = C.gtk_css_section_get_end_location(_arg0)
 
-	var _cssLocation CSSLocation // out
+	var _cssLocation *CSSLocation // out
 
-	_cssLocation = (CSSLocation)(unsafe.Pointer(_cret))
+	_cssLocation = (*CSSLocation)(unsafe.Pointer(_cret))
 
 	return _cssLocation
 }
@@ -70,7 +70,7 @@ func (s *CSSSection) EndLocation() CSSLocation {
 // [method@Gtk.CssProvider.load_from_file] or a section of type
 // `GTK_CSS_SECTION_IMPORT` if it was loaded with an `@import` rule from a
 // different file.
-func (s *CSSSection) Parent() CSSSection {
+func (s *CSSSection) Parent() *CSSSection {
 	var _arg0 *C.GtkCssSection // out
 	var _cret *C.GtkCssSection // in
 
@@ -78,9 +78,9 @@ func (s *CSSSection) Parent() CSSSection {
 
 	_cret = C.gtk_css_section_get_parent(_arg0)
 
-	var _cssSection CSSSection // out
+	var _cssSection *CSSSection // out
 
-	_cssSection = (CSSSection)(unsafe.Pointer(_cret))
+	_cssSection = (*CSSSection)(unsafe.Pointer(_cret))
 	C.gtk_css_section_ref(_cret)
 
 	return _cssSection
@@ -88,7 +88,7 @@ func (s *CSSSection) Parent() CSSSection {
 
 // StartLocation returns the location in the CSS document where this section
 // starts.
-func (s *CSSSection) StartLocation() CSSLocation {
+func (s *CSSSection) StartLocation() *CSSLocation {
 	var _arg0 *C.GtkCssSection  // out
 	var _cret *C.GtkCssLocation // in
 
@@ -96,15 +96,15 @@ func (s *CSSSection) StartLocation() CSSLocation {
 
 	_cret = C.gtk_css_section_get_start_location(_arg0)
 
-	var _cssLocation CSSLocation // out
+	var _cssLocation *CSSLocation // out
 
-	_cssLocation = (CSSLocation)(unsafe.Pointer(_cret))
+	_cssLocation = (*CSSLocation)(unsafe.Pointer(_cret))
 
 	return _cssLocation
 }
 
 // Ref increments the reference count on `section`.
-func (s *CSSSection) Ref() CSSSection {
+func (s *CSSSection) Ref() *CSSSection {
 	var _arg0 *C.GtkCssSection // out
 	var _cret *C.GtkCssSection // in
 
@@ -112,10 +112,10 @@ func (s *CSSSection) Ref() CSSSection {
 
 	_cret = C.gtk_css_section_ref(_arg0)
 
-	var _cssSection CSSSection // out
+	var _cssSection *CSSSection // out
 
-	_cssSection = (CSSSection)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_cssSection, func(v CSSSection) {
+	_cssSection = (*CSSSection)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_cssSection, func(v *CSSSection) {
 		C.gtk_css_section_unref((*C.GtkCssSection)(unsafe.Pointer(v)))
 	})
 

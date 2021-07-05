@@ -62,7 +62,7 @@ func (d *DBusAnnotationInfo) Native() unsafe.Pointer {
 
 // Ref: if @info is statically allocated does nothing. Otherwise increases the
 // reference count.
-func (i *DBusAnnotationInfo) Ref() DBusAnnotationInfo {
+func (i *DBusAnnotationInfo) Ref() *DBusAnnotationInfo {
 	var _arg0 *C.GDBusAnnotationInfo // out
 	var _cret *C.GDBusAnnotationInfo // in
 
@@ -70,10 +70,10 @@ func (i *DBusAnnotationInfo) Ref() DBusAnnotationInfo {
 
 	_cret = C.g_dbus_annotation_info_ref(_arg0)
 
-	var _dBusAnnotationInfo DBusAnnotationInfo // out
+	var _dBusAnnotationInfo *DBusAnnotationInfo // out
 
-	_dBusAnnotationInfo = (DBusAnnotationInfo)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_dBusAnnotationInfo, func(v DBusAnnotationInfo) {
+	_dBusAnnotationInfo = (*DBusAnnotationInfo)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_dBusAnnotationInfo, func(v *DBusAnnotationInfo) {
 		C.g_dbus_annotation_info_unref((*C.GDBusAnnotationInfo)(unsafe.Pointer(v)))
 	})
 
@@ -114,7 +114,7 @@ func (d *DBusArgInfo) Native() unsafe.Pointer {
 
 // Ref: if @info is statically allocated does nothing. Otherwise increases the
 // reference count.
-func (i *DBusArgInfo) Ref() DBusArgInfo {
+func (i *DBusArgInfo) Ref() *DBusArgInfo {
 	var _arg0 *C.GDBusArgInfo // out
 	var _cret *C.GDBusArgInfo // in
 
@@ -122,10 +122,10 @@ func (i *DBusArgInfo) Ref() DBusArgInfo {
 
 	_cret = C.g_dbus_arg_info_ref(_arg0)
 
-	var _dBusArgInfo DBusArgInfo // out
+	var _dBusArgInfo *DBusArgInfo // out
 
-	_dBusArgInfo = (DBusArgInfo)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_dBusArgInfo, func(v DBusArgInfo) {
+	_dBusArgInfo = (*DBusArgInfo)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_dBusArgInfo, func(v *DBusArgInfo) {
 		C.g_dbus_arg_info_unref((*C.GDBusArgInfo)(unsafe.Pointer(v)))
 	})
 
@@ -196,7 +196,7 @@ func (i *DBusInterfaceInfo) CacheRelease() {
 //
 // The cost of this function is O(n) in number of methods unless
 // g_dbus_interface_info_cache_build() has been used on @info.
-func (i *DBusInterfaceInfo) LookupMethod(name string) DBusMethodInfo {
+func (i *DBusInterfaceInfo) LookupMethod(name string) *DBusMethodInfo {
 	var _arg0 *C.GDBusInterfaceInfo // out
 	var _arg1 *C.gchar              // out
 	var _cret *C.GDBusMethodInfo    // in
@@ -207,9 +207,9 @@ func (i *DBusInterfaceInfo) LookupMethod(name string) DBusMethodInfo {
 
 	_cret = C.g_dbus_interface_info_lookup_method(_arg0, _arg1)
 
-	var _dBusMethodInfo DBusMethodInfo // out
+	var _dBusMethodInfo *DBusMethodInfo // out
 
-	_dBusMethodInfo = (DBusMethodInfo)(unsafe.Pointer(_cret))
+	_dBusMethodInfo = (*DBusMethodInfo)(unsafe.Pointer(_cret))
 	C.g_dbus_method_info_ref(_cret)
 
 	return _dBusMethodInfo
@@ -219,7 +219,7 @@ func (i *DBusInterfaceInfo) LookupMethod(name string) DBusMethodInfo {
 //
 // The cost of this function is O(n) in number of properties unless
 // g_dbus_interface_info_cache_build() has been used on @info.
-func (i *DBusInterfaceInfo) LookupProperty(name string) DBusPropertyInfo {
+func (i *DBusInterfaceInfo) LookupProperty(name string) *DBusPropertyInfo {
 	var _arg0 *C.GDBusInterfaceInfo // out
 	var _arg1 *C.gchar              // out
 	var _cret *C.GDBusPropertyInfo  // in
@@ -230,9 +230,9 @@ func (i *DBusInterfaceInfo) LookupProperty(name string) DBusPropertyInfo {
 
 	_cret = C.g_dbus_interface_info_lookup_property(_arg0, _arg1)
 
-	var _dBusPropertyInfo DBusPropertyInfo // out
+	var _dBusPropertyInfo *DBusPropertyInfo // out
 
-	_dBusPropertyInfo = (DBusPropertyInfo)(unsafe.Pointer(_cret))
+	_dBusPropertyInfo = (*DBusPropertyInfo)(unsafe.Pointer(_cret))
 	C.g_dbus_property_info_ref(_cret)
 
 	return _dBusPropertyInfo
@@ -242,7 +242,7 @@ func (i *DBusInterfaceInfo) LookupProperty(name string) DBusPropertyInfo {
 //
 // The cost of this function is O(n) in number of signals unless
 // g_dbus_interface_info_cache_build() has been used on @info.
-func (i *DBusInterfaceInfo) LookupSignal(name string) DBusSignalInfo {
+func (i *DBusInterfaceInfo) LookupSignal(name string) *DBusSignalInfo {
 	var _arg0 *C.GDBusInterfaceInfo // out
 	var _arg1 *C.gchar              // out
 	var _cret *C.GDBusSignalInfo    // in
@@ -253,9 +253,9 @@ func (i *DBusInterfaceInfo) LookupSignal(name string) DBusSignalInfo {
 
 	_cret = C.g_dbus_interface_info_lookup_signal(_arg0, _arg1)
 
-	var _dBusSignalInfo DBusSignalInfo // out
+	var _dBusSignalInfo *DBusSignalInfo // out
 
-	_dBusSignalInfo = (DBusSignalInfo)(unsafe.Pointer(_cret))
+	_dBusSignalInfo = (*DBusSignalInfo)(unsafe.Pointer(_cret))
 	C.g_dbus_signal_info_ref(_cret)
 
 	return _dBusSignalInfo
@@ -263,7 +263,7 @@ func (i *DBusInterfaceInfo) LookupSignal(name string) DBusSignalInfo {
 
 // Ref: if @info is statically allocated does nothing. Otherwise increases the
 // reference count.
-func (i *DBusInterfaceInfo) Ref() DBusInterfaceInfo {
+func (i *DBusInterfaceInfo) Ref() *DBusInterfaceInfo {
 	var _arg0 *C.GDBusInterfaceInfo // out
 	var _cret *C.GDBusInterfaceInfo // in
 
@@ -271,10 +271,10 @@ func (i *DBusInterfaceInfo) Ref() DBusInterfaceInfo {
 
 	_cret = C.g_dbus_interface_info_ref(_arg0)
 
-	var _dBusInterfaceInfo DBusInterfaceInfo // out
+	var _dBusInterfaceInfo *DBusInterfaceInfo // out
 
-	_dBusInterfaceInfo = (DBusInterfaceInfo)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_dBusInterfaceInfo, func(v DBusInterfaceInfo) {
+	_dBusInterfaceInfo = (*DBusInterfaceInfo)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_dBusInterfaceInfo, func(v *DBusInterfaceInfo) {
 		C.g_dbus_interface_info_unref((*C.GDBusInterfaceInfo)(unsafe.Pointer(v)))
 	})
 
@@ -315,7 +315,7 @@ func (d *DBusMethodInfo) Native() unsafe.Pointer {
 
 // Ref: if @info is statically allocated does nothing. Otherwise increases the
 // reference count.
-func (i *DBusMethodInfo) Ref() DBusMethodInfo {
+func (i *DBusMethodInfo) Ref() *DBusMethodInfo {
 	var _arg0 *C.GDBusMethodInfo // out
 	var _cret *C.GDBusMethodInfo // in
 
@@ -323,10 +323,10 @@ func (i *DBusMethodInfo) Ref() DBusMethodInfo {
 
 	_cret = C.g_dbus_method_info_ref(_arg0)
 
-	var _dBusMethodInfo DBusMethodInfo // out
+	var _dBusMethodInfo *DBusMethodInfo // out
 
-	_dBusMethodInfo = (DBusMethodInfo)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_dBusMethodInfo, func(v DBusMethodInfo) {
+	_dBusMethodInfo = (*DBusMethodInfo)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_dBusMethodInfo, func(v *DBusMethodInfo) {
 		C.g_dbus_method_info_unref((*C.GDBusMethodInfo)(unsafe.Pointer(v)))
 	})
 
@@ -361,33 +361,24 @@ func marshalDBusNodeInfo(p uintptr) (interface{}, error) {
 }
 
 // NewDBusNodeInfoForXML constructs a struct DBusNodeInfo.
-func NewDBusNodeInfoForXML(xmlData string) (DBusNodeInfo, error) {
+func NewDBusNodeInfoForXML(xmlData string) (*DBusNodeInfo, error) {
 	var _arg1 *C.gchar         // out
 	var _cret *C.GDBusNodeInfo // in
-	var _cerr **C.GError       // in
+	var _cerr *C.GError        // in
 
 	_arg1 = (*C.gchar)(C.CString(xmlData))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_dbus_node_info_new_for_xml(_arg1, &_cerr)
 
-	var _dBusNodeInfo DBusNodeInfo // out
-	var _goerr error               // out
+	var _dBusNodeInfo *DBusNodeInfo // out
+	var _goerr error                // out
 
-	_dBusNodeInfo = (DBusNodeInfo)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_dBusNodeInfo, func(v DBusNodeInfo) {
+	_dBusNodeInfo = (*DBusNodeInfo)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_dBusNodeInfo, func(v *DBusNodeInfo) {
 		C.g_dbus_node_info_unref((*C.GDBusNodeInfo)(unsafe.Pointer(v)))
 	})
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _dBusNodeInfo, _goerr
 }
@@ -400,7 +391,7 @@ func (d *DBusNodeInfo) Native() unsafe.Pointer {
 // LookupInterface looks up information about an interface.
 //
 // The cost of this function is O(n) in number of interfaces.
-func (i *DBusNodeInfo) LookupInterface(name string) DBusInterfaceInfo {
+func (i *DBusNodeInfo) LookupInterface(name string) *DBusInterfaceInfo {
 	var _arg0 *C.GDBusNodeInfo      // out
 	var _arg1 *C.gchar              // out
 	var _cret *C.GDBusInterfaceInfo // in
@@ -411,9 +402,9 @@ func (i *DBusNodeInfo) LookupInterface(name string) DBusInterfaceInfo {
 
 	_cret = C.g_dbus_node_info_lookup_interface(_arg0, _arg1)
 
-	var _dBusInterfaceInfo DBusInterfaceInfo // out
+	var _dBusInterfaceInfo *DBusInterfaceInfo // out
 
-	_dBusInterfaceInfo = (DBusInterfaceInfo)(unsafe.Pointer(_cret))
+	_dBusInterfaceInfo = (*DBusInterfaceInfo)(unsafe.Pointer(_cret))
 	C.g_dbus_interface_info_ref(_cret)
 
 	return _dBusInterfaceInfo
@@ -421,7 +412,7 @@ func (i *DBusNodeInfo) LookupInterface(name string) DBusInterfaceInfo {
 
 // Ref: if @info is statically allocated does nothing. Otherwise increases the
 // reference count.
-func (i *DBusNodeInfo) Ref() DBusNodeInfo {
+func (i *DBusNodeInfo) Ref() *DBusNodeInfo {
 	var _arg0 *C.GDBusNodeInfo // out
 	var _cret *C.GDBusNodeInfo // in
 
@@ -429,10 +420,10 @@ func (i *DBusNodeInfo) Ref() DBusNodeInfo {
 
 	_cret = C.g_dbus_node_info_ref(_arg0)
 
-	var _dBusNodeInfo DBusNodeInfo // out
+	var _dBusNodeInfo *DBusNodeInfo // out
 
-	_dBusNodeInfo = (DBusNodeInfo)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_dBusNodeInfo, func(v DBusNodeInfo) {
+	_dBusNodeInfo = (*DBusNodeInfo)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_dBusNodeInfo, func(v *DBusNodeInfo) {
 		C.g_dbus_node_info_unref((*C.GDBusNodeInfo)(unsafe.Pointer(v)))
 	})
 
@@ -473,7 +464,7 @@ func (d *DBusPropertyInfo) Native() unsafe.Pointer {
 
 // Ref: if @info is statically allocated does nothing. Otherwise increases the
 // reference count.
-func (i *DBusPropertyInfo) Ref() DBusPropertyInfo {
+func (i *DBusPropertyInfo) Ref() *DBusPropertyInfo {
 	var _arg0 *C.GDBusPropertyInfo // out
 	var _cret *C.GDBusPropertyInfo // in
 
@@ -481,10 +472,10 @@ func (i *DBusPropertyInfo) Ref() DBusPropertyInfo {
 
 	_cret = C.g_dbus_property_info_ref(_arg0)
 
-	var _dBusPropertyInfo DBusPropertyInfo // out
+	var _dBusPropertyInfo *DBusPropertyInfo // out
 
-	_dBusPropertyInfo = (DBusPropertyInfo)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_dBusPropertyInfo, func(v DBusPropertyInfo) {
+	_dBusPropertyInfo = (*DBusPropertyInfo)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_dBusPropertyInfo, func(v *DBusPropertyInfo) {
 		C.g_dbus_property_info_unref((*C.GDBusPropertyInfo)(unsafe.Pointer(v)))
 	})
 
@@ -525,7 +516,7 @@ func (d *DBusSignalInfo) Native() unsafe.Pointer {
 
 // Ref: if @info is statically allocated does nothing. Otherwise increases the
 // reference count.
-func (i *DBusSignalInfo) Ref() DBusSignalInfo {
+func (i *DBusSignalInfo) Ref() *DBusSignalInfo {
 	var _arg0 *C.GDBusSignalInfo // out
 	var _cret *C.GDBusSignalInfo // in
 
@@ -533,10 +524,10 @@ func (i *DBusSignalInfo) Ref() DBusSignalInfo {
 
 	_cret = C.g_dbus_signal_info_ref(_arg0)
 
-	var _dBusSignalInfo DBusSignalInfo // out
+	var _dBusSignalInfo *DBusSignalInfo // out
 
-	_dBusSignalInfo = (DBusSignalInfo)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_dBusSignalInfo, func(v DBusSignalInfo) {
+	_dBusSignalInfo = (*DBusSignalInfo)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_dBusSignalInfo, func(v *DBusSignalInfo) {
 		C.g_dbus_signal_info_unref((*C.GDBusSignalInfo)(unsafe.Pointer(v)))
 	})
 

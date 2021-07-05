@@ -155,7 +155,7 @@ type ApplicationCommandLine interface {
 	//
 	// If no options were sent then an empty dictionary is returned so that you
 	// don't need to check for nil.
-	OptionsDict() glib.VariantDict
+	OptionsDict() *glib.VariantDict
 	// PlatformData gets the platform data associated with the invocation of
 	// @cmdline.
 	//
@@ -164,7 +164,7 @@ type ApplicationCommandLine interface {
 	// the current working directory and the startup notification ID.
 	//
 	// For local invocation, it will be nil.
-	PlatformData() glib.Variant
+	PlatformData() *glib.Variant
 	// Stdin gets the stdin of the invoking process.
 	//
 	// The Stream can be used to read data passed to the standard input of the
@@ -322,7 +322,7 @@ func (c applicationCommandLine) IsRemote() bool {
 	return _ok
 }
 
-func (c applicationCommandLine) OptionsDict() glib.VariantDict {
+func (c applicationCommandLine) OptionsDict() *glib.VariantDict {
 	var _arg0 *C.GApplicationCommandLine // out
 	var _cret *C.GVariantDict            // in
 
@@ -330,15 +330,15 @@ func (c applicationCommandLine) OptionsDict() glib.VariantDict {
 
 	_cret = C.g_application_command_line_get_options_dict(_arg0)
 
-	var _variantDict glib.VariantDict // out
+	var _variantDict *glib.VariantDict // out
 
-	_variantDict = (glib.VariantDict)(unsafe.Pointer(_cret))
+	_variantDict = (*glib.VariantDict)(unsafe.Pointer(_cret))
 	C.g_variant_dict_ref(_cret)
 
 	return _variantDict
 }
 
-func (c applicationCommandLine) PlatformData() glib.Variant {
+func (c applicationCommandLine) PlatformData() *glib.Variant {
 	var _arg0 *C.GApplicationCommandLine // out
 	var _cret *C.GVariant                // in
 
@@ -346,10 +346,10 @@ func (c applicationCommandLine) PlatformData() glib.Variant {
 
 	_cret = C.g_application_command_line_get_platform_data(_arg0)
 
-	var _variant glib.Variant // out
+	var _variant *glib.Variant // out
 
-	_variant = (glib.Variant)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_variant, func(v glib.Variant) {
+	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
 	})
 

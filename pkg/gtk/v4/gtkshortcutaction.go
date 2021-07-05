@@ -48,7 +48,7 @@ func marshalShortcutActionFlags(p uintptr) (interface{}, error) {
 }
 
 // ShortcutFunc: prototype for shortcuts based on user callbacks.
-type ShortcutFunc func(widget Widget, args glib.Variant) (ok bool)
+type ShortcutFunc func(widget Widget, args *glib.Variant) (ok bool)
 
 //export gotk4_ShortcutFunc
 func gotk4_ShortcutFunc(arg0 *C.GtkWidget, arg1 *C.GVariant, arg2 C.gpointer) C.gboolean {
@@ -57,11 +57,11 @@ func gotk4_ShortcutFunc(arg0 *C.GtkWidget, arg1 *C.GVariant, arg2 C.gpointer) C.
 		panic(`callback not found`)
 	}
 
-	var widget Widget     // out
-	var args glib.Variant // out
+	var widget Widget      // out
+	var args *glib.Variant // out
 
 	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0))).(Widget)
-	args = (glib.Variant)(unsafe.Pointer(arg1))
+	args = (*glib.Variant)(unsafe.Pointer(arg1))
 	C.g_variant_ref(arg1)
 
 	fn := v.(ShortcutFunc)
@@ -276,7 +276,7 @@ type ShortcutAction interface {
 	// Activation of an action can fail for various reasons. If the action is
 	// not supported by the @widget, if the @args don't match the action or if
 	// the activation otherwise had no effect, false will be returned.
-	ActivateShortcutAction(flags ShortcutActionFlags, widget Widget, args glib.Variant) bool
+	ActivateShortcutAction(flags ShortcutActionFlags, widget Widget, args *glib.Variant) bool
 	// String prints the given action into a human-readable string.
 	//
 	// This is a small wrapper around [method@Gtk.ShortcutAction.print] to help
@@ -330,7 +330,7 @@ func NewShortcutActionParseString(_string string) ShortcutAction {
 	return _shortcutAction
 }
 
-func (s shortcutAction) ActivateShortcutAction(flags ShortcutActionFlags, widget Widget, args glib.Variant) bool {
+func (s shortcutAction) ActivateShortcutAction(flags ShortcutActionFlags, widget Widget, args *glib.Variant) bool {
 	var _arg0 *C.GtkShortcutAction     // out
 	var _arg1 C.GtkShortcutActionFlags // out
 	var _arg2 *C.GtkWidget             // out

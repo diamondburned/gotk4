@@ -224,7 +224,7 @@ func RCFindModuleInPath(moduleFile string) string {
 // returns nil.
 //
 // Deprecated: since version 3.0.
-func RCFindPixmapInPath(settings Settings, scanner glib.Scanner, pixmapFile string) string {
+func RCFindPixmapInPath(settings Settings, scanner *glib.Scanner, pixmapFile string) string {
 	var _arg1 *C.GtkSettings // out
 	var _arg2 *C.GScanner    // out
 	var _arg3 *C.gchar       // out
@@ -422,9 +422,9 @@ func RCParse(filename string) {
 // support symbolic colors.
 //
 // Deprecated: since version 3.0.
-func RCParseColor(scanner glib.Scanner) (gdk.Color, uint) {
+func RCParseColor(scanner *glib.Scanner) (gdk.Color, uint) {
 	var _arg1 *C.GScanner // out
-	var _arg2 *C.GdkColor // in
+	var _arg2 C.GdkColor  // in
 	var _cret C.guint     // in
 
 	_arg1 = (*C.GScanner)(unsafe.Pointer(scanner))
@@ -434,7 +434,17 @@ func RCParseColor(scanner glib.Scanner) (gdk.Color, uint) {
 	var _color gdk.Color // out
 	var _guint uint      // out
 
-	_color = (gdk.Color)(unsafe.Pointer(_arg2))
+	{
+		var refTmpIn *C.GdkColor
+		var refTmpOut *gdk.Color
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*gdk.Color)(unsafe.Pointer(refTmpIn))
+
+		_color = *refTmpOut
+	}
 	_guint = uint(_cret)
 
 	return _color, _guint
@@ -445,10 +455,10 @@ func RCParseColor(scanner glib.Scanner) (gdk.Color, uint) {
 // colors.
 //
 // Deprecated: since version 3.0.
-func RCParseColorFull(scanner glib.Scanner, style RCStyle) (gdk.Color, uint) {
+func RCParseColorFull(scanner *glib.Scanner, style RCStyle) (gdk.Color, uint) {
 	var _arg1 *C.GScanner   // out
 	var _arg2 *C.GtkRcStyle // out
-	var _arg3 *C.GdkColor   // in
+	var _arg3 C.GdkColor    // in
 	var _cret C.guint       // in
 
 	_arg1 = (*C.GScanner)(unsafe.Pointer(scanner))
@@ -459,7 +469,17 @@ func RCParseColorFull(scanner glib.Scanner, style RCStyle) (gdk.Color, uint) {
 	var _color gdk.Color // out
 	var _guint uint      // out
 
-	_color = (gdk.Color)(unsafe.Pointer(_arg3))
+	{
+		var refTmpIn *C.GdkColor
+		var refTmpOut *gdk.Color
+
+		in0 := &_arg3
+		refTmpIn = in0
+
+		refTmpOut = (*gdk.Color)(unsafe.Pointer(refTmpIn))
+
+		_color = *refTmpOut
+	}
 	_guint = uint(_cret)
 
 	return _color, _guint
@@ -469,7 +489,7 @@ func RCParseColorFull(scanner glib.Scanner, style RCStyle) (gdk.Color, uint) {
 // in a RC file.
 //
 // Deprecated: since version 3.0.
-func RCParsePriority(scanner glib.Scanner, priority PathPriorityType) uint {
+func RCParsePriority(scanner *glib.Scanner, priority *PathPriorityType) uint {
 	var _arg1 *C.GScanner            // out
 	var _arg2 *C.GtkPathPriorityType // out
 	var _cret C.guint                // in
@@ -479,7 +499,7 @@ func RCParsePriority(scanner glib.Scanner, priority PathPriorityType) uint {
 		var refTmpIn PathPriorityType
 		var refTmpOut C.GtkPathPriorityType
 
-		refTmpIn = priority
+		refTmpIn = *priority
 
 		refTmpOut = C.GtkPathPriorityType(refTmpIn)
 
@@ -500,10 +520,10 @@ func RCParsePriority(scanner glib.Scanner, priority PathPriorityType) uint {
 // file.
 //
 // Deprecated: since version 3.0.
-func RCParseState(scanner glib.Scanner) (StateType, uint) {
-	var _arg1 *C.GScanner     // out
-	var _arg2 *C.GtkStateType // in
-	var _cret C.guint         // in
+func RCParseState(scanner *glib.Scanner) (StateType, uint) {
+	var _arg1 *C.GScanner    // out
+	var _arg2 C.GtkStateType // in
+	var _cret C.guint        // in
 
 	_arg1 = (*C.GScanner)(unsafe.Pointer(scanner))
 
@@ -512,16 +532,7 @@ func RCParseState(scanner glib.Scanner) (StateType, uint) {
 	var _state StateType // out
 	var _guint uint      // out
 
-	{
-		var refTmpIn C.GtkStateType
-		var refTmpOut StateType
-
-		refTmpIn = *_arg2
-
-		refTmpOut = StateType(refTmpIn)
-
-		_state = refTmpOut
-	}
+	_state = StateType(_arg2)
 	_guint = uint(_cret)
 
 	return _state, _guint

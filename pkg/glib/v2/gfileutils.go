@@ -309,8 +309,8 @@ func FileErrorFromErrno(errNo int) FileError {
 func FileGetContents(filename string) ([]byte, error) {
 	var _arg1 *C.gchar // out
 	var _arg2 *C.gchar
-	var _arg3 *C.gsize   // in
-	var _cerr **C.GError // in
+	var _arg3 C.gsize   // in
+	var _cerr *C.GError // in
 
 	_arg1 = (*C.gchar)(C.CString(filename))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -324,16 +324,7 @@ func FileGetContents(filename string) ([]byte, error) {
 	runtime.SetFinalizer(&_contents, func(v *[]byte) {
 		C.free(unsafe.Pointer(&(*v)[0]))
 	})
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _contents, _goerr
 }
@@ -353,10 +344,10 @@ func FileGetContents(filename string) ([]byte, error) {
 // in @name_used. This string should be freed with g_free() when not needed any
 // longer. The returned name is in the GLib file name encoding.
 func FileOpenTmp(tmpl string) (string, int, error) {
-	var _arg1 *C.gchar   // out
-	var _arg2 **C.gchar  // in
-	var _cret C.gint     // in
-	var _cerr **C.GError // in
+	var _arg1 *C.gchar  // out
+	var _arg2 *C.gchar  // in
+	var _cret C.gint    // in
+	var _cerr *C.GError // in
 
 	_arg1 = (*C.gchar)(C.CString(tmpl))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -367,28 +358,10 @@ func FileOpenTmp(tmpl string) (string, int, error) {
 	var _gint int        // out
 	var _goerr error     // out
 
-	{
-		var refTmpIn *C.gchar
-		var refTmpOut string
-
-		refTmpIn = *_arg2
-
-		refTmpOut = C.GoString(refTmpIn)
-		defer C.free(unsafe.Pointer(refTmpIn))
-
-		_nameUsed = refTmpOut
-	}
+	_nameUsed = C.GoString(_arg2)
+	defer C.free(unsafe.Pointer(_arg2))
 	_gint = int(_cret)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _nameUsed, _gint, _goerr
 }
@@ -397,9 +370,9 @@ func FileOpenTmp(tmpl string) (string, int, error) {
 // readlink() function. The returned string is in the encoding used for
 // filenames. Use g_filename_to_utf8() to convert it to UTF-8.
 func FileReadLink(filename string) (string, error) {
-	var _arg1 *C.gchar   // out
-	var _cret *C.gchar   // in
-	var _cerr **C.GError // in
+	var _arg1 *C.gchar  // out
+	var _cret *C.gchar  // in
+	var _cerr *C.GError // in
 
 	_arg1 = (*C.gchar)(C.CString(filename))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -411,16 +384,7 @@ func FileReadLink(filename string) (string, error) {
 
 	_ret = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _ret, _goerr
 }
@@ -433,7 +397,7 @@ func FileSetContents(filename string, contents []byte) error {
 	var _arg1 *C.gchar // out
 	var _arg2 *C.gchar
 	var _arg3 C.gssize
-	var _cerr **C.GError // in
+	var _cerr *C.GError // in
 
 	_arg1 = (*C.gchar)(C.CString(filename))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -444,16 +408,7 @@ func FileSetContents(filename string, contents []byte) error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
@@ -519,7 +474,7 @@ func FileSetContentsFull(filename string, contents []byte, flags FileSetContents
 	var _arg3 C.gssize
 	var _arg4 C.GFileSetContentsFlags // out
 	var _arg5 C.int                   // out
-	var _cerr **C.GError              // in
+	var _cerr *C.GError               // in
 
 	_arg1 = (*C.gchar)(C.CString(filename))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -532,16 +487,7 @@ func FileSetContentsFull(filename string, contents []byte, flags FileSetContents
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }

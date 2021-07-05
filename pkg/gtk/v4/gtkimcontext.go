@@ -158,7 +158,7 @@ type IMContext interface {
 	// cursor position has been made.
 	//
 	// The location is relative to the client window.
-	SetCursorLocationIMContext(area gdk.Rectangle)
+	SetCursorLocationIMContext(area *gdk.Rectangle)
 	// SetSurroundingIMContext sets surrounding context around the insertion
 	// point and preedit string.
 	//
@@ -291,10 +291,10 @@ func (c imContext) FocusOutIMContext() {
 }
 
 func (c imContext) PreeditString() (string, *pango.AttrList, int) {
-	var _arg0 *C.GtkIMContext   // out
-	var _arg1 **C.char          // in
-	var _arg2 **C.PangoAttrList // in
-	var _arg3 *C.int            // in
+	var _arg0 *C.GtkIMContext  // out
+	var _arg1 *C.char          // in
+	var _arg2 *C.PangoAttrList // in
+	var _arg3 C.int            // in
 
 	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(c.Native()))
 
@@ -304,30 +304,12 @@ func (c imContext) PreeditString() (string, *pango.AttrList, int) {
 	var _attrs *pango.AttrList // out
 	var _cursorPos int         // out
 
-	{
-		var refTmpIn *C.char
-		var refTmpOut string
-
-		refTmpIn = *_arg1
-
-		refTmpOut = C.GoString(refTmpIn)
-		defer C.free(unsafe.Pointer(refTmpIn))
-
-		_str = refTmpOut
-	}
-	{
-		var refTmpIn *C.PangoAttrList
-		var refTmpOut *pango.AttrList
-
-		refTmpIn = *_arg2
-
-		refTmpOut = (*pango.AttrList)(unsafe.Pointer(refTmpIn))
-		runtime.SetFinalizer(refTmpOut, func(v *pango.AttrList) {
-			C.pango_attr_list_unref((*C.PangoAttrList)(unsafe.Pointer(v)))
-		})
-
-		_attrs = refTmpOut
-	}
+	_str = C.GoString(_arg1)
+	defer C.free(unsafe.Pointer(_arg1))
+	_attrs = (*pango.AttrList)(unsafe.Pointer(_arg2))
+	runtime.SetFinalizer(_attrs, func(v *pango.AttrList) {
+		C.pango_attr_list_unref((*C.PangoAttrList)(unsafe.Pointer(v)))
+	})
 	_cursorPos = int(_arg3)
 
 	return _str, _attrs, _cursorPos
@@ -335,8 +317,8 @@ func (c imContext) PreeditString() (string, *pango.AttrList, int) {
 
 func (c imContext) Surrounding() (string, int, bool) {
 	var _arg0 *C.GtkIMContext // out
-	var _arg1 **C.char        // in
-	var _arg2 *C.int          // in
+	var _arg1 *C.char         // in
+	var _arg2 C.int           // in
 	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(c.Native()))
@@ -347,17 +329,8 @@ func (c imContext) Surrounding() (string, int, bool) {
 	var _cursorIndex int // out
 	var _ok bool         // out
 
-	{
-		var refTmpIn *C.char
-		var refTmpOut string
-
-		refTmpIn = *_arg1
-
-		refTmpOut = C.GoString(refTmpIn)
-		defer C.free(unsafe.Pointer(refTmpIn))
-
-		_text = refTmpOut
-	}
+	_text = C.GoString(_arg1)
+	defer C.free(unsafe.Pointer(_arg1))
 	_cursorIndex = int(_arg2)
 	if _cret != 0 {
 		_ok = true
@@ -368,9 +341,9 @@ func (c imContext) Surrounding() (string, int, bool) {
 
 func (c imContext) SurroundingWithSelection() (text string, cursorIndex int, anchorIndex int, ok bool) {
 	var _arg0 *C.GtkIMContext // out
-	var _arg1 **C.char        // in
-	var _arg2 *C.int          // in
-	var _arg3 *C.int          // in
+	var _arg1 *C.char         // in
+	var _arg2 C.int           // in
+	var _arg3 C.int           // in
 	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(c.Native()))
@@ -382,17 +355,8 @@ func (c imContext) SurroundingWithSelection() (text string, cursorIndex int, anc
 	var _anchorIndex int // out
 	var _ok bool         // out
 
-	{
-		var refTmpIn *C.char
-		var refTmpOut string
-
-		refTmpIn = *_arg1
-
-		refTmpOut = C.GoString(refTmpIn)
-		defer C.free(unsafe.Pointer(refTmpIn))
-
-		_text = refTmpOut
-	}
+	_text = C.GoString(_arg1)
+	defer C.free(unsafe.Pointer(_arg1))
 	_cursorIndex = int(_arg2)
 	_anchorIndex = int(_arg3)
 	if _cret != 0 {
@@ -420,7 +384,7 @@ func (c imContext) SetClientWidgetIMContext(widget Widget) {
 	C.gtk_im_context_set_client_widget(_arg0, _arg1)
 }
 
-func (c imContext) SetCursorLocationIMContext(area gdk.Rectangle) {
+func (c imContext) SetCursorLocationIMContext(area *gdk.Rectangle) {
 	var _arg0 *C.GtkIMContext // out
 	var _arg1 *C.GdkRectangle // out
 

@@ -58,7 +58,7 @@ type DrawContext interface {
 	// gdk_draw_context_begin_frame() and gdk_draw_context_end_frame() via the
 	// use of [class@Gsk.Renderer]s, so application code does not need to call
 	// these functions explicitly.
-	BeginFrameDrawContext(region cairo.Region)
+	BeginFrameDrawContext(region *cairo.Region)
 	// EndFrameDrawContext ends a drawing operation started with
 	// gdk_draw_context_begin_frame().
 	//
@@ -80,7 +80,7 @@ type DrawContext interface {
 	// If @context is not in between calls to
 	// [method@Gdk.DrawContext.begin_frame] and
 	// [method@Gdk.DrawContext.end_frame], nil will be returned.
-	FrameRegion() cairo.Region
+	FrameRegion() *cairo.Region
 	// Surface retrieves the surface that @context is bound to.
 	Surface() Surface
 	// IsInFrameDrawContext returns true if @context is in the process of
@@ -111,7 +111,7 @@ func marshalDrawContext(p uintptr) (interface{}, error) {
 	return WrapDrawContext(obj), nil
 }
 
-func (c drawContext) BeginFrameDrawContext(region cairo.Region) {
+func (c drawContext) BeginFrameDrawContext(region *cairo.Region) {
 	var _arg0 *C.GdkDrawContext // out
 	var _arg1 *C.cairo_region_t // out
 
@@ -144,7 +144,7 @@ func (c drawContext) Display() Display {
 	return _display
 }
 
-func (c drawContext) FrameRegion() cairo.Region {
+func (c drawContext) FrameRegion() *cairo.Region {
 	var _arg0 *C.GdkDrawContext // out
 	var _cret *C.cairo_region_t // in
 
@@ -152,9 +152,9 @@ func (c drawContext) FrameRegion() cairo.Region {
 
 	_cret = C.gdk_draw_context_get_frame_region(_arg0)
 
-	var _region cairo.Region // out
+	var _region *cairo.Region // out
 
-	_region = (cairo.Region)(unsafe.Pointer(_cret))
+	_region = (*cairo.Region)(unsafe.Pointer(_cret))
 
 	return _region
 }

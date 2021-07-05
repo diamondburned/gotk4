@@ -86,8 +86,8 @@ func (c tableCell) ColumnSpan() int {
 
 func (c tableCell) Position() (row int, column int, ok bool) {
 	var _arg0 *C.AtkTableCell // out
-	var _arg1 *C.gint         // in
-	var _arg2 *C.gint         // in
+	var _arg1 C.gint          // in
+	var _arg2 C.gint          // in
 	var _cret C.gboolean      // in
 
 	_arg0 = (*C.AtkTableCell)(unsafe.Pointer(c.Native()))
@@ -109,10 +109,10 @@ func (c tableCell) Position() (row int, column int, ok bool) {
 
 func (c tableCell) RowColumnSpan() (row int, column int, rowSpan int, columnSpan int, ok bool) {
 	var _arg0 *C.AtkTableCell // out
-	var _arg1 *C.gint         // in
-	var _arg2 *C.gint         // in
-	var _arg3 *C.gint         // in
-	var _arg4 *C.gint         // in
+	var _arg1 C.gint          // in
+	var _arg2 C.gint          // in
+	var _arg3 C.gint          // in
+	var _arg4 C.gint          // in
 	var _cret C.gboolean      // in
 
 	_arg0 = (*C.AtkTableCell)(unsafe.Pointer(c.Native()))

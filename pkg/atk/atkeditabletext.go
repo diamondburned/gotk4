@@ -42,7 +42,7 @@ type EditableText interface {
 	// DeleteText: delete text @start_pos up to, but not including @end_pos.
 	DeleteText(startPos int, endPos int)
 	// InsertText: insert text at a given position.
-	InsertText(_string string, length int, position int)
+	InsertText(_string string, length int, position *int)
 	// PasteText: paste text from clipboard to specified @position.
 	PasteText(position int)
 	// SetTextContents: set text contents of @text.
@@ -106,7 +106,7 @@ func (t editableText) DeleteText(startPos int, endPos int) {
 	C.atk_editable_text_delete_text(_arg0, _arg1, _arg2)
 }
 
-func (t editableText) InsertText(_string string, length int, position int) {
+func (t editableText) InsertText(_string string, length int, position *int) {
 	var _arg0 *C.AtkEditableText // out
 	var _arg1 *C.gchar           // out
 	var _arg2 C.gint             // out
@@ -116,7 +116,7 @@ func (t editableText) InsertText(_string string, length int, position int) {
 	_arg1 = (*C.gchar)(C.CString(_string))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint(length)
-	_arg3 = *C.gint(position)
+	_arg3 = (*C.gint)(unsafe.Pointer(position))
 
 	C.atk_editable_text_insert_text(_arg0, _arg1, _arg2, _arg3)
 }

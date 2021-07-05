@@ -25,7 +25,7 @@ func init() {
 
 // CellLayoutDataFunc: function which should set the value of @cell_layout’s
 // cell renderer(s) as appropriate.
-type CellLayoutDataFunc func(cellLayout CellLayout, cell CellRenderer, treeModel TreeModel, iter TreeIter)
+type CellLayoutDataFunc func(cellLayout CellLayout, cell CellRenderer, treeModel TreeModel, iter *TreeIter)
 
 //export gotk4_CellLayoutDataFunc
 func gotk4_CellLayoutDataFunc(arg0 *C.GtkCellLayout, arg1 *C.GtkCellRenderer, arg2 *C.GtkTreeModel, arg3 *C.GtkTreeIter, arg4 C.gpointer) {
@@ -37,12 +37,12 @@ func gotk4_CellLayoutDataFunc(arg0 *C.GtkCellLayout, arg1 *C.GtkCellRenderer, ar
 	var cellLayout CellLayout // out
 	var cell CellRenderer     // out
 	var treeModel TreeModel   // out
-	var iter TreeIter         // out
+	var iter *TreeIter        // out
 
 	cellLayout = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0))).(CellLayout)
 	cell = gextras.CastObject(externglib.Take(unsafe.Pointer(arg1))).(CellRenderer)
 	treeModel = gextras.CastObject(externglib.Take(unsafe.Pointer(arg2))).(TreeModel)
-	iter = (TreeIter)(unsafe.Pointer(arg3))
+	iter = (*TreeIter)(unsafe.Pointer(arg3))
 
 	fn := v.(CellLayoutDataFunc)
 	fn(cellLayout, cell, treeModel, iter)

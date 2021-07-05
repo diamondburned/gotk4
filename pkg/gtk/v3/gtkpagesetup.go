@@ -94,7 +94,7 @@ type PageSetup interface {
 	// consideration. See gtk_page_setup_get_page_height().
 	PaperHeight(unit Unit) float64
 	// PaperSize gets the paper size of the PageSetup.
-	PaperSize() PaperSize
+	PaperSize() *PaperSize
 	// PaperWidth returns the paper width in units of @unit.
 	//
 	// Note that this function takes orientation, but not margins into
@@ -109,7 +109,7 @@ type PageSetup interface {
 	LoadFilePageSetup(fileName string) error
 	// LoadKeyFilePageSetup reads the page setup from the group @group_name in
 	// the key file @key_file.
-	LoadKeyFilePageSetup(keyFile glib.KeyFile, groupName string) error
+	LoadKeyFilePageSetup(keyFile *glib.KeyFile, groupName string) error
 	// SetBottomMarginPageSetup sets the bottom margin of the PageSetup.
 	SetBottomMarginPageSetup(margin float64, unit Unit)
 	// SetLeftMarginPageSetup sets the left margin of the PageSetup.
@@ -119,10 +119,10 @@ type PageSetup interface {
 	// SetPaperSizePageSetup sets the paper size of the PageSetup without
 	// changing the margins. See
 	// gtk_page_setup_set_paper_size_and_default_margins().
-	SetPaperSizePageSetup(size PaperSize)
+	SetPaperSizePageSetup(size *PaperSize)
 	// SetPaperSizeAndDefaultMarginsPageSetup sets the paper size of the
 	// PageSetup and modifies the margins according to the new paper size.
-	SetPaperSizeAndDefaultMarginsPageSetup(size PaperSize)
+	SetPaperSizeAndDefaultMarginsPageSetup(size *PaperSize)
 	// SetRightMarginPageSetup sets the right margin of the PageSetup.
 	SetRightMarginPageSetup(margin float64, unit Unit)
 	// SetTopMarginPageSetup sets the top margin of the PageSetup.
@@ -131,10 +131,10 @@ type PageSetup interface {
 	// @file_name.
 	ToFilePageSetup(fileName string) error
 	// ToGVariantPageSetup: serialize page setup to an a{sv} variant.
-	ToGVariantPageSetup() glib.Variant
+	ToGVariantPageSetup() *glib.Variant
 	// ToKeyFilePageSetup: this function adds the page setup from @setup to
 	// @key_file.
-	ToKeyFilePageSetup(keyFile glib.KeyFile, groupName string)
+	ToKeyFilePageSetup(keyFile *glib.KeyFile, groupName string)
 }
 
 // pageSetup implements the PageSetup class.
@@ -175,7 +175,7 @@ func NewPageSetup() PageSetup {
 func NewPageSetupFromFile(fileName string) (PageSetup, error) {
 	var _arg1 *C.gchar        // out
 	var _cret *C.GtkPageSetup // in
-	var _cerr **C.GError      // in
+	var _cerr *C.GError       // in
 
 	_arg1 = (*C.gchar)(C.CString(fileName))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -186,23 +186,14 @@ func NewPageSetupFromFile(fileName string) (PageSetup, error) {
 	var _goerr error         // out
 
 	_pageSetup = WrapPageSetup(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _pageSetup, _goerr
 }
 
 // NewPageSetupFromGVariant: desrialize a page setup from an a{sv} variant in
 // the format produced by gtk_page_setup_to_gvariant().
-func NewPageSetupFromGVariant(variant glib.Variant) PageSetup {
+func NewPageSetupFromGVariant(variant *glib.Variant) PageSetup {
 	var _arg1 *C.GVariant     // out
 	var _cret *C.GtkPageSetup // in
 
@@ -220,11 +211,11 @@ func NewPageSetupFromGVariant(variant glib.Variant) PageSetup {
 // NewPageSetupFromKeyFile reads the page setup from the group @group_name in
 // the key file @key_file. Returns a new PageSetup object with the restored page
 // setup, or nil if an error occurred.
-func NewPageSetupFromKeyFile(keyFile glib.KeyFile, groupName string) (PageSetup, error) {
+func NewPageSetupFromKeyFile(keyFile *glib.KeyFile, groupName string) (PageSetup, error) {
 	var _arg1 *C.GKeyFile     // out
 	var _arg2 *C.gchar        // out
 	var _cret *C.GtkPageSetup // in
-	var _cerr **C.GError      // in
+	var _cerr *C.GError       // in
 
 	_arg1 = (*C.GKeyFile)(unsafe.Pointer(keyFile))
 	_arg2 = (*C.gchar)(C.CString(groupName))
@@ -236,16 +227,7 @@ func NewPageSetupFromKeyFile(keyFile glib.KeyFile, groupName string) (PageSetup,
 	var _goerr error         // out
 
 	_pageSetup = WrapPageSetup(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _pageSetup, _goerr
 }
@@ -365,7 +347,7 @@ func (s pageSetup) PaperHeight(unit Unit) float64 {
 	return _gdouble
 }
 
-func (s pageSetup) PaperSize() PaperSize {
+func (s pageSetup) PaperSize() *PaperSize {
 	var _arg0 *C.GtkPageSetup // out
 	var _cret *C.GtkPaperSize // in
 
@@ -373,9 +355,9 @@ func (s pageSetup) PaperSize() PaperSize {
 
 	_cret = C.gtk_page_setup_get_paper_size(_arg0)
 
-	var _paperSize PaperSize // out
+	var _paperSize *PaperSize // out
 
-	_paperSize = (PaperSize)(unsafe.Pointer(_cret))
+	_paperSize = (*PaperSize)(unsafe.Pointer(_cret))
 
 	return _paperSize
 }
@@ -434,7 +416,7 @@ func (s pageSetup) TopMargin(unit Unit) float64 {
 func (s pageSetup) LoadFilePageSetup(fileName string) error {
 	var _arg0 *C.GtkPageSetup // out
 	var _arg1 *C.char         // out
-	var _cerr **C.GError      // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.char)(C.CString(fileName))
@@ -444,25 +426,16 @@ func (s pageSetup) LoadFilePageSetup(fileName string) error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
 
-func (s pageSetup) LoadKeyFilePageSetup(keyFile glib.KeyFile, groupName string) error {
+func (s pageSetup) LoadKeyFilePageSetup(keyFile *glib.KeyFile, groupName string) error {
 	var _arg0 *C.GtkPageSetup // out
 	var _arg1 *C.GKeyFile     // out
 	var _arg2 *C.gchar        // out
-	var _cerr **C.GError      // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GKeyFile)(unsafe.Pointer(keyFile))
@@ -473,16 +446,7 @@ func (s pageSetup) LoadKeyFilePageSetup(keyFile glib.KeyFile, groupName string) 
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
@@ -521,7 +485,7 @@ func (s pageSetup) SetOrientationPageSetup(orientation PageOrientation) {
 	C.gtk_page_setup_set_orientation(_arg0, _arg1)
 }
 
-func (s pageSetup) SetPaperSizePageSetup(size PaperSize) {
+func (s pageSetup) SetPaperSizePageSetup(size *PaperSize) {
 	var _arg0 *C.GtkPageSetup // out
 	var _arg1 *C.GtkPaperSize // out
 
@@ -531,7 +495,7 @@ func (s pageSetup) SetPaperSizePageSetup(size PaperSize) {
 	C.gtk_page_setup_set_paper_size(_arg0, _arg1)
 }
 
-func (s pageSetup) SetPaperSizeAndDefaultMarginsPageSetup(size PaperSize) {
+func (s pageSetup) SetPaperSizeAndDefaultMarginsPageSetup(size *PaperSize) {
 	var _arg0 *C.GtkPageSetup // out
 	var _arg1 *C.GtkPaperSize // out
 
@@ -568,7 +532,7 @@ func (s pageSetup) SetTopMarginPageSetup(margin float64, unit Unit) {
 func (s pageSetup) ToFilePageSetup(fileName string) error {
 	var _arg0 *C.GtkPageSetup // out
 	var _arg1 *C.char         // out
-	var _cerr **C.GError      // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.char)(C.CString(fileName))
@@ -578,21 +542,12 @@ func (s pageSetup) ToFilePageSetup(fileName string) error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
 
-func (s pageSetup) ToGVariantPageSetup() glib.Variant {
+func (s pageSetup) ToGVariantPageSetup() *glib.Variant {
 	var _arg0 *C.GtkPageSetup // out
 	var _cret *C.GVariant     // in
 
@@ -600,15 +555,15 @@ func (s pageSetup) ToGVariantPageSetup() glib.Variant {
 
 	_cret = C.gtk_page_setup_to_gvariant(_arg0)
 
-	var _variant glib.Variant // out
+	var _variant *glib.Variant // out
 
-	_variant = (glib.Variant)(unsafe.Pointer(_cret))
+	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
 	C.g_variant_ref(_cret)
 
 	return _variant
 }
 
-func (s pageSetup) ToKeyFilePageSetup(keyFile glib.KeyFile, groupName string) {
+func (s pageSetup) ToKeyFilePageSetup(keyFile *glib.KeyFile, groupName string) {
 	var _arg0 *C.GtkPageSetup // out
 	var _arg1 *C.GKeyFile     // out
 	var _arg2 *C.gchar        // out

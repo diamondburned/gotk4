@@ -375,7 +375,7 @@ type Widget interface {
 	//
 	// The arguments must match the actions expected parameter type, as returned
 	// by `g_action_get_parameter_type()`.
-	ActivateActionVariantWidget(name string, args glib.Variant) bool
+	ActivateActionVariantWidget(name string, args *glib.Variant) bool
 	// ActivateDefaultWidget activates the `default.activate` action from
 	// @widget.
 	ActivateDefaultWidget()
@@ -410,7 +410,7 @@ type Widget interface {
 	//
 	// For a version that does not take a transform, see
 	// [method@Gtk.Widget.size_allocate].
-	AllocateWidget(width int, height int, baseline int, transform gsk.Transform)
+	AllocateWidget(width int, height int, baseline int, transform *gsk.Transform)
 	// ChildFocusWidget: called by widgets as the user moves around the window
 	// using keyboard shortcuts.
 	//
@@ -463,7 +463,7 @@ type Widget interface {
 	//
 	// In order to perform this operation, both widgets must share a common
 	// ancestor.
-	ComputePointWidget(target Widget, point graphene.Point) (graphene.Point, bool)
+	ComputePointWidget(target Widget, point *graphene.Point) (graphene.Point, bool)
 	// ComputeTransformWidget computes a matrix suitable to describe a
 	// transformation from @widget's coordinate system into @target's coordinate
 	// system.
@@ -591,7 +591,7 @@ type Widget interface {
 	//
 	// When not set, the defaults font options for the `GdkDisplay` will be
 	// used.
-	FontOptions() cairo.FontOptions
+	FontOptions() *cairo.FontOptions
 	// FrameClock obtains the frame clock for a widget.
 	//
 	// The frame clock is a global “ticker” that can be used to drive animations
@@ -1217,7 +1217,7 @@ type Widget interface {
 	// rendering in this widget.
 	//
 	// When not set, the default font options for the `GdkDisplay` will be used.
-	SetFontOptionsWidget(options cairo.FontOptions)
+	SetFontOptionsWidget(options *cairo.FontOptions)
 	// SetHalignWidget sets the horizontal alignment of @widget.
 	SetHalignWidget(align Align)
 	// SetHasTooltipWidget sets the `has-tooltip` property on @widget to
@@ -1533,7 +1533,7 @@ func (w widget) ActivateWidget() bool {
 	return _ok
 }
 
-func (w widget) ActivateActionVariantWidget(name string, args glib.Variant) bool {
+func (w widget) ActivateActionVariantWidget(name string, args *glib.Variant) bool {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.char      // out
 	var _arg2 *C.GVariant  // out
@@ -1594,7 +1594,7 @@ func (w widget) AddMnemonicLabelWidget(label Widget) {
 	C.gtk_widget_add_mnemonic_label(_arg0, _arg1)
 }
 
-func (w widget) AllocateWidget(width int, height int, baseline int, transform gsk.Transform) {
+func (w widget) AllocateWidget(width int, height int, baseline int, transform *gsk.Transform) {
 	var _arg0 *C.GtkWidget    // out
 	var _arg1 C.int           // out
 	var _arg2 C.int           // out
@@ -1630,10 +1630,10 @@ func (w widget) ChildFocusWidget(direction DirectionType) bool {
 }
 
 func (w widget) ComputeBoundsWidget(target Widget) (graphene.Rect, bool) {
-	var _arg0 *C.GtkWidget       // out
-	var _arg1 *C.GtkWidget       // out
-	var _arg2 *C.graphene_rect_t // in
-	var _cret C.gboolean         // in
+	var _arg0 *C.GtkWidget      // out
+	var _arg1 *C.GtkWidget      // out
+	var _arg2 C.graphene_rect_t // in
+	var _cret C.gboolean        // in
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(target.Native()))
@@ -1643,7 +1643,17 @@ func (w widget) ComputeBoundsWidget(target Widget) (graphene.Rect, bool) {
 	var _outBounds graphene.Rect // out
 	var _ok bool                 // out
 
-	_outBounds = (graphene.Rect)(unsafe.Pointer(_arg2))
+	{
+		var refTmpIn *C.graphene_rect_t
+		var refTmpOut *graphene.Rect
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*graphene.Rect)(unsafe.Pointer(refTmpIn))
+
+		_outBounds = *refTmpOut
+	}
 	if _cret != 0 {
 		_ok = true
 	}
@@ -1670,11 +1680,11 @@ func (w widget) ComputeExpandWidget(orientation Orientation) bool {
 	return _ok
 }
 
-func (w widget) ComputePointWidget(target Widget, point graphene.Point) (graphene.Point, bool) {
+func (w widget) ComputePointWidget(target Widget, point *graphene.Point) (graphene.Point, bool) {
 	var _arg0 *C.GtkWidget        // out
 	var _arg1 *C.GtkWidget        // out
 	var _arg2 *C.graphene_point_t // out
-	var _arg3 *C.graphene_point_t // in
+	var _arg3 C.graphene_point_t  // in
 	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
@@ -1686,7 +1696,17 @@ func (w widget) ComputePointWidget(target Widget, point graphene.Point) (graphen
 	var _outPoint graphene.Point // out
 	var _ok bool                 // out
 
-	_outPoint = (graphene.Point)(unsafe.Pointer(_arg3))
+	{
+		var refTmpIn *C.graphene_point_t
+		var refTmpOut *graphene.Point
+
+		in0 := &_arg3
+		refTmpIn = in0
+
+		refTmpOut = (*graphene.Point)(unsafe.Pointer(refTmpIn))
+
+		_outPoint = *refTmpOut
+	}
 	if _cret != 0 {
 		_ok = true
 	}
@@ -1695,10 +1715,10 @@ func (w widget) ComputePointWidget(target Widget, point graphene.Point) (graphen
 }
 
 func (w widget) ComputeTransformWidget(target Widget) (graphene.Matrix, bool) {
-	var _arg0 *C.GtkWidget         // out
-	var _arg1 *C.GtkWidget         // out
-	var _arg2 *C.graphene_matrix_t // in
-	var _cret C.gboolean           // in
+	var _arg0 *C.GtkWidget        // out
+	var _arg1 *C.GtkWidget        // out
+	var _arg2 C.graphene_matrix_t // in
+	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(target.Native()))
@@ -1708,7 +1728,17 @@ func (w widget) ComputeTransformWidget(target Widget) (graphene.Matrix, bool) {
 	var _outTransform graphene.Matrix // out
 	var _ok bool                      // out
 
-	_outTransform = (graphene.Matrix)(unsafe.Pointer(_arg2))
+	{
+		var refTmpIn *C.graphene_matrix_t
+		var refTmpOut *graphene.Matrix
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*graphene.Matrix)(unsafe.Pointer(refTmpIn))
+
+		_outTransform = *refTmpOut
+	}
 	if _cret != 0 {
 		_ok = true
 	}
@@ -2098,7 +2128,7 @@ func (w widget) FontMap() pango.FontMap {
 	return _fontMap
 }
 
-func (w widget) FontOptions() cairo.FontOptions {
+func (w widget) FontOptions() *cairo.FontOptions {
 	var _arg0 *C.GtkWidget            // out
 	var _cret *C.cairo_font_options_t // in
 
@@ -2106,9 +2136,9 @@ func (w widget) FontOptions() cairo.FontOptions {
 
 	_cret = C.gtk_widget_get_font_options(_arg0)
 
-	var _fontOptions cairo.FontOptions // out
+	var _fontOptions *cairo.FontOptions // out
 
-	_fontOptions = (cairo.FontOptions)(unsafe.Pointer(_cret))
+	_fontOptions = (*cairo.FontOptions)(unsafe.Pointer(_cret))
 
 	return _fontOptions
 }
@@ -2422,9 +2452,9 @@ func (w widget) Parent() Widget {
 }
 
 func (w widget) PreferredSize() (minimumSize Requisition, naturalSize Requisition) {
-	var _arg0 *C.GtkWidget      // out
-	var _arg1 *C.GtkRequisition // in
-	var _arg2 *C.GtkRequisition // in
+	var _arg0 *C.GtkWidget     // out
+	var _arg1 C.GtkRequisition // in
+	var _arg2 C.GtkRequisition // in
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
 
@@ -2433,8 +2463,28 @@ func (w widget) PreferredSize() (minimumSize Requisition, naturalSize Requisitio
 	var _minimumSize Requisition // out
 	var _naturalSize Requisition // out
 
-	_minimumSize = (Requisition)(unsafe.Pointer(_arg1))
-	_naturalSize = (Requisition)(unsafe.Pointer(_arg2))
+	{
+		var refTmpIn *C.GtkRequisition
+		var refTmpOut *Requisition
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Requisition)(unsafe.Pointer(refTmpIn))
+
+		_minimumSize = *refTmpOut
+	}
+	{
+		var refTmpIn *C.GtkRequisition
+		var refTmpOut *Requisition
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Requisition)(unsafe.Pointer(refTmpIn))
+
+		_naturalSize = *refTmpOut
+	}
 
 	return _minimumSize, _naturalSize
 }
@@ -2599,8 +2649,8 @@ func (w widget) Size(orientation Orientation) int {
 
 func (w widget) SizeRequest() (width int, height int) {
 	var _arg0 *C.GtkWidget // out
-	var _arg1 *C.int       // in
-	var _arg2 *C.int       // in
+	var _arg1 C.int        // in
+	var _arg2 C.int        // in
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
 
@@ -3039,10 +3089,10 @@ func (w widget) MeasureWidget(orientation Orientation, forSize int) (minimum int
 	var _arg0 *C.GtkWidget     // out
 	var _arg1 C.GtkOrientation // out
 	var _arg2 C.int            // out
-	var _arg3 *C.int           // in
-	var _arg4 *C.int           // in
-	var _arg5 *C.int           // in
-	var _arg6 *C.int           // in
+	var _arg3 C.int            // in
+	var _arg4 C.int            // in
+	var _arg5 C.int            // in
+	var _arg6 C.int            // in
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
 	_arg1 = C.GtkOrientation(orientation)
@@ -3307,7 +3357,7 @@ func (w widget) SetFontMapWidget(fontMap pango.FontMap) {
 	C.gtk_widget_set_font_map(_arg0, _arg1)
 }
 
-func (w widget) SetFontOptionsWidget(options cairo.FontOptions) {
+func (w widget) SetFontOptionsWidget(options *cairo.FontOptions) {
 	var _arg0 *C.GtkWidget            // out
 	var _arg1 *C.cairo_font_options_t // out
 
@@ -3614,8 +3664,8 @@ func (s widget) TranslateCoordinatesWidget(destWidget Widget, srcX float64, srcY
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.double     // out
 	var _arg3 C.double     // out
-	var _arg4 *C.double    // in
-	var _arg5 *C.double    // in
+	var _arg4 C.double     // in
+	var _arg5 C.double     // in
 	var _cret C.gboolean   // in
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(s.Native()))
@@ -3710,15 +3760,15 @@ func marshalRequisition(p uintptr) (interface{}, error) {
 }
 
 // NewRequisition constructs a struct Requisition.
-func NewRequisition() Requisition {
+func NewRequisition() *Requisition {
 	var _cret *C.GtkRequisition // in
 
 	_cret = C.gtk_requisition_new()
 
-	var _requisition Requisition // out
+	var _requisition *Requisition // out
 
-	_requisition = (Requisition)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_requisition, func(v Requisition) {
+	_requisition = (*Requisition)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_requisition, func(v *Requisition) {
 		C.gtk_requisition_free((*C.GtkRequisition)(unsafe.Pointer(v)))
 	})
 
@@ -3731,7 +3781,7 @@ func (r *Requisition) Native() unsafe.Pointer {
 }
 
 // Copy copies a `GtkRequisition`.
-func (r *Requisition) Copy() Requisition {
+func (r *Requisition) Copy() *Requisition {
 	var _arg0 *C.GtkRequisition // out
 	var _cret *C.GtkRequisition // in
 
@@ -3739,10 +3789,10 @@ func (r *Requisition) Copy() Requisition {
 
 	_cret = C.gtk_requisition_copy(_arg0)
 
-	var _ret Requisition // out
+	var _ret *Requisition // out
 
-	_ret = (Requisition)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_ret, func(v Requisition) {
+	_ret = (*Requisition)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_ret, func(v *Requisition) {
 		C.gtk_requisition_free((*C.GtkRequisition)(unsafe.Pointer(v)))
 	})
 

@@ -185,7 +185,7 @@ func (s ioStream) ClearPendingIOStream() {
 func (s ioStream) CloseIOStream(cancellable Cancellable) error {
 	var _arg0 *C.GIOStream    // out
 	var _arg1 *C.GCancellable // out
-	var _cerr **C.GError      // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GIOStream)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
@@ -194,16 +194,7 @@ func (s ioStream) CloseIOStream(cancellable Cancellable) error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
@@ -227,7 +218,7 @@ func (s ioStream) CloseAsyncIOStream(ioPriority int, cancellable Cancellable, ca
 func (s ioStream) CloseFinishIOStream(result AsyncResult) error {
 	var _arg0 *C.GIOStream    // out
 	var _arg1 *C.GAsyncResult // out
-	var _cerr **C.GError      // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GIOStream)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
@@ -236,16 +227,7 @@ func (s ioStream) CloseFinishIOStream(result AsyncResult) error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
@@ -316,7 +298,7 @@ func (s ioStream) IsClosedIOStream() bool {
 
 func (s ioStream) SetPendingIOStream() error {
 	var _arg0 *C.GIOStream // out
-	var _cerr **C.GError   // in
+	var _cerr *C.GError    // in
 
 	_arg0 = (*C.GIOStream)(unsafe.Pointer(s.Native()))
 
@@ -324,16 +306,7 @@ func (s ioStream) SetPendingIOStream() error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }

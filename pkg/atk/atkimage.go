@@ -110,8 +110,8 @@ func (i image) ImageLocale() string {
 
 func (i image) ImagePosition(coordType CoordType) (x int, y int) {
 	var _arg0 *C.AtkImage    // out
-	var _arg1 *C.gint        // in
-	var _arg2 *C.gint        // in
+	var _arg1 C.gint         // in
+	var _arg2 C.gint         // in
 	var _arg3 C.AtkCoordType // out
 
 	_arg0 = (*C.AtkImage)(unsafe.Pointer(i.Native()))
@@ -130,8 +130,8 @@ func (i image) ImagePosition(coordType CoordType) (x int, y int) {
 
 func (i image) ImageSize() (width int, height int) {
 	var _arg0 *C.AtkImage // out
-	var _arg1 *C.gint     // in
-	var _arg2 *C.gint     // in
+	var _arg1 C.gint      // in
+	var _arg2 C.gint      // in
 
 	_arg0 = (*C.AtkImage)(unsafe.Pointer(i.Native()))
 

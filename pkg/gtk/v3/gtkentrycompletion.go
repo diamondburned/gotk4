@@ -31,7 +31,7 @@ func init() {
 // g_utf8_normalize() and g_utf8_casefold()). If this is not appropriate, match
 // functions have access to the unmodified key via `gtk_entry_get_text
 // (GTK_ENTRY (gtk_entry_completion_get_entry ()))`.
-type EntryCompletionMatchFunc func(completion EntryCompletion, key string, iter TreeIter) (ok bool)
+type EntryCompletionMatchFunc func(completion EntryCompletion, key string, iter *TreeIter) (ok bool)
 
 //export gotk4_EntryCompletionMatchFunc
 func gotk4_EntryCompletionMatchFunc(arg0 *C.GtkEntryCompletion, arg1 *C.gchar, arg2 *C.GtkTreeIter, arg3 C.gpointer) C.gboolean {
@@ -42,11 +42,11 @@ func gotk4_EntryCompletionMatchFunc(arg0 *C.GtkEntryCompletion, arg1 *C.gchar, a
 
 	var completion EntryCompletion // out
 	var key string                 // out
-	var iter TreeIter              // out
+	var iter *TreeIter             // out
 
 	completion = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0))).(EntryCompletion)
 	key = C.GoString(arg1)
-	iter = (TreeIter)(unsafe.Pointer(arg2))
+	iter = (*TreeIter)(unsafe.Pointer(arg2))
 
 	fn := v.(EntryCompletionMatchFunc)
 	ok := fn(completion, key, iter)

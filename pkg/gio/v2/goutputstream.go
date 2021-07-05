@@ -383,7 +383,7 @@ func (s outputStream) ClearPendingOutputStream() {
 func (s outputStream) CloseOutputStream(cancellable Cancellable) error {
 	var _arg0 *C.GOutputStream // out
 	var _arg1 *C.GCancellable  // out
-	var _cerr **C.GError       // in
+	var _cerr *C.GError        // in
 
 	_arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
@@ -392,16 +392,7 @@ func (s outputStream) CloseOutputStream(cancellable Cancellable) error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
@@ -425,7 +416,7 @@ func (s outputStream) CloseAsyncOutputStream(ioPriority int, cancellable Cancell
 func (s outputStream) CloseFinishOutputStream(result AsyncResult) error {
 	var _arg0 *C.GOutputStream // out
 	var _arg1 *C.GAsyncResult  // out
-	var _cerr **C.GError       // in
+	var _cerr *C.GError        // in
 
 	_arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
@@ -434,16 +425,7 @@ func (s outputStream) CloseFinishOutputStream(result AsyncResult) error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
@@ -451,7 +433,7 @@ func (s outputStream) CloseFinishOutputStream(result AsyncResult) error {
 func (s outputStream) FlushOutputStream(cancellable Cancellable) error {
 	var _arg0 *C.GOutputStream // out
 	var _arg1 *C.GCancellable  // out
-	var _cerr **C.GError       // in
+	var _cerr *C.GError        // in
 
 	_arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
@@ -460,16 +442,7 @@ func (s outputStream) FlushOutputStream(cancellable Cancellable) error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
@@ -493,7 +466,7 @@ func (s outputStream) FlushAsyncOutputStream(ioPriority int, cancellable Cancell
 func (s outputStream) FlushFinishOutputStream(result AsyncResult) error {
 	var _arg0 *C.GOutputStream // out
 	var _arg1 *C.GAsyncResult  // out
-	var _cerr **C.GError       // in
+	var _cerr *C.GError        // in
 
 	_arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
@@ -502,16 +475,7 @@ func (s outputStream) FlushFinishOutputStream(result AsyncResult) error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
@@ -569,7 +533,7 @@ func (s outputStream) IsClosingOutputStream() bool {
 
 func (s outputStream) SetPendingOutputStream() error {
 	var _arg0 *C.GOutputStream // out
-	var _cerr **C.GError       // in
+	var _cerr *C.GError        // in
 
 	_arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
 
@@ -577,16 +541,7 @@ func (s outputStream) SetPendingOutputStream() error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
@@ -597,7 +552,7 @@ func (s outputStream) SpliceOutputStream(source InputStream, flags OutputStreamS
 	var _arg2 C.GOutputStreamSpliceFlags // out
 	var _arg3 *C.GCancellable            // out
 	var _cret C.gssize                   // in
-	var _cerr **C.GError                 // in
+	var _cerr *C.GError                  // in
 
 	_arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GInputStream)(unsafe.Pointer(source.Native()))
@@ -610,16 +565,7 @@ func (s outputStream) SpliceOutputStream(source InputStream, flags OutputStreamS
 	var _goerr error // out
 
 	_gssize = int(_cret)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _gssize, _goerr
 }
@@ -648,7 +594,7 @@ func (s outputStream) SpliceFinishOutputStream(result AsyncResult) (int, error) 
 	var _arg0 *C.GOutputStream // out
 	var _arg1 *C.GAsyncResult  // out
 	var _cret C.gssize         // in
-	var _cerr **C.GError       // in
+	var _cerr *C.GError        // in
 
 	_arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
@@ -659,16 +605,7 @@ func (s outputStream) SpliceFinishOutputStream(result AsyncResult) (int, error) 
 	var _goerr error // out
 
 	_gssize = int(_cret)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _gssize, _goerr
 }
@@ -679,7 +616,7 @@ func (s outputStream) WriteOutputStream(buffer []byte, cancellable Cancellable) 
 	var _arg2 C.gsize
 	var _arg3 *C.GCancellable // out
 	var _cret C.gssize        // in
-	var _cerr **C.GError      // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
 	_arg2 = C.gsize(len(buffer))
@@ -692,16 +629,7 @@ func (s outputStream) WriteOutputStream(buffer []byte, cancellable Cancellable) 
 	var _goerr error // out
 
 	_gssize = int(_cret)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _gssize, _goerr
 }
@@ -710,9 +638,9 @@ func (s outputStream) WriteAllOutputStream(buffer []byte, cancellable Cancellabl
 	var _arg0 *C.GOutputStream // out
 	var _arg1 *C.void
 	var _arg2 C.gsize
-	var _arg3 *C.gsize        // in
+	var _arg3 C.gsize         // in
 	var _arg4 *C.GCancellable // out
-	var _cerr **C.GError      // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
 	_arg2 = C.gsize(len(buffer))
@@ -725,16 +653,7 @@ func (s outputStream) WriteAllOutputStream(buffer []byte, cancellable Cancellabl
 	var _goerr error       // out
 
 	_bytesWritten = uint(_arg3)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _bytesWritten, _goerr
 }
@@ -762,8 +681,8 @@ func (s outputStream) WriteAllAsyncOutputStream(buffer []byte, ioPriority int, c
 func (s outputStream) WriteAllFinishOutputStream(result AsyncResult) (uint, error) {
 	var _arg0 *C.GOutputStream // out
 	var _arg1 *C.GAsyncResult  // out
-	var _arg2 *C.gsize         // in
-	var _cerr **C.GError       // in
+	var _arg2 C.gsize          // in
+	var _cerr *C.GError        // in
 
 	_arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
@@ -774,16 +693,7 @@ func (s outputStream) WriteAllFinishOutputStream(result AsyncResult) (uint, erro
 	var _goerr error       // out
 
 	_bytesWritten = uint(_arg2)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _bytesWritten, _goerr
 }
@@ -812,7 +722,7 @@ func (s outputStream) WriteBytesFinishOutputStream(result AsyncResult) (int, err
 	var _arg0 *C.GOutputStream // out
 	var _arg1 *C.GAsyncResult  // out
 	var _cret C.gssize         // in
-	var _cerr **C.GError       // in
+	var _cerr *C.GError        // in
 
 	_arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
@@ -823,16 +733,7 @@ func (s outputStream) WriteBytesFinishOutputStream(result AsyncResult) (int, err
 	var _goerr error // out
 
 	_gssize = int(_cret)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _gssize, _goerr
 }
@@ -841,7 +742,7 @@ func (s outputStream) WriteFinishOutputStream(result AsyncResult) (int, error) {
 	var _arg0 *C.GOutputStream // out
 	var _arg1 *C.GAsyncResult  // out
 	var _cret C.gssize         // in
-	var _cerr **C.GError       // in
+	var _cerr *C.GError        // in
 
 	_arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
@@ -852,16 +753,7 @@ func (s outputStream) WriteFinishOutputStream(result AsyncResult) (int, error) {
 	var _goerr error // out
 
 	_gssize = int(_cret)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _gssize, _goerr
 }
@@ -870,9 +762,9 @@ func (s outputStream) WritevOutputStream(vectors []OutputVector, cancellable Can
 	var _arg0 *C.GOutputStream // out
 	var _arg1 *C.GOutputVector
 	var _arg2 C.gsize
-	var _arg3 *C.gsize        // in
+	var _arg3 C.gsize         // in
 	var _arg4 *C.GCancellable // out
-	var _cerr **C.GError      // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
 	_arg2 = C.gsize(len(vectors))
@@ -885,16 +777,7 @@ func (s outputStream) WritevOutputStream(vectors []OutputVector, cancellable Can
 	var _goerr error       // out
 
 	_bytesWritten = uint(_arg3)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _bytesWritten, _goerr
 }
@@ -903,9 +786,9 @@ func (s outputStream) WritevAllOutputStream(vectors []OutputVector, cancellable 
 	var _arg0 *C.GOutputStream // out
 	var _arg1 *C.GOutputVector
 	var _arg2 C.gsize
-	var _arg3 *C.gsize        // in
+	var _arg3 C.gsize         // in
 	var _arg4 *C.GCancellable // out
-	var _cerr **C.GError      // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
 	_arg2 = C.gsize(len(vectors))
@@ -918,16 +801,7 @@ func (s outputStream) WritevAllOutputStream(vectors []OutputVector, cancellable 
 	var _goerr error       // out
 
 	_bytesWritten = uint(_arg3)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _bytesWritten, _goerr
 }
@@ -955,8 +829,8 @@ func (s outputStream) WritevAllAsyncOutputStream(vectors []OutputVector, ioPrior
 func (s outputStream) WritevAllFinishOutputStream(result AsyncResult) (uint, error) {
 	var _arg0 *C.GOutputStream // out
 	var _arg1 *C.GAsyncResult  // out
-	var _arg2 *C.gsize         // in
-	var _cerr **C.GError       // in
+	var _arg2 C.gsize          // in
+	var _cerr *C.GError        // in
 
 	_arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
@@ -967,16 +841,7 @@ func (s outputStream) WritevAllFinishOutputStream(result AsyncResult) (uint, err
 	var _goerr error       // out
 
 	_bytesWritten = uint(_arg2)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _bytesWritten, _goerr
 }
@@ -1004,8 +869,8 @@ func (s outputStream) WritevAsyncOutputStream(vectors []OutputVector, ioPriority
 func (s outputStream) WritevFinishOutputStream(result AsyncResult) (uint, error) {
 	var _arg0 *C.GOutputStream // out
 	var _arg1 *C.GAsyncResult  // out
-	var _arg2 *C.gsize         // in
-	var _cerr **C.GError       // in
+	var _arg2 C.gsize          // in
+	var _cerr *C.GError        // in
 
 	_arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
@@ -1016,16 +881,7 @@ func (s outputStream) WritevFinishOutputStream(result AsyncResult) (uint, error)
 	var _goerr error       // out
 
 	_bytesWritten = uint(_arg2)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _bytesWritten, _goerr
 }

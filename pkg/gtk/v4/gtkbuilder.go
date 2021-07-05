@@ -481,7 +481,7 @@ func NewBuilderFromString(_string string, length int) Builder {
 func (b builder) AddFromFileBuilder(filename string) error {
 	var _arg0 *C.GtkBuilder // out
 	var _arg1 *C.char       // out
-	var _cerr **C.GError    // in
+	var _cerr *C.GError     // in
 
 	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.char)(C.CString(filename))
@@ -491,16 +491,7 @@ func (b builder) AddFromFileBuilder(filename string) error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
@@ -508,7 +499,7 @@ func (b builder) AddFromFileBuilder(filename string) error {
 func (b builder) AddFromResourceBuilder(resourcePath string) error {
 	var _arg0 *C.GtkBuilder // out
 	var _arg1 *C.char       // out
-	var _cerr **C.GError    // in
+	var _cerr *C.GError     // in
 
 	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.char)(C.CString(resourcePath))
@@ -518,16 +509,7 @@ func (b builder) AddFromResourceBuilder(resourcePath string) error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
@@ -536,7 +518,7 @@ func (b builder) AddFromStringBuilder(buffer string, length int) error {
 	var _arg0 *C.GtkBuilder // out
 	var _arg1 *C.char       // out
 	var _arg2 C.gssize      // out
-	var _cerr **C.GError    // in
+	var _cerr *C.GError     // in
 
 	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.char)(C.CString(buffer))
@@ -547,16 +529,7 @@ func (b builder) AddFromStringBuilder(buffer string, length int) error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
@@ -565,7 +538,7 @@ func (b builder) AddObjectsFromFileBuilder(filename string, objectIds []string) 
 	var _arg0 *C.GtkBuilder // out
 	var _arg1 *C.char       // out
 	var _arg2 **C.char
-	var _cerr **C.GError // in
+	var _cerr *C.GError // in
 
 	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.char)(C.CString(filename))
@@ -584,16 +557,7 @@ func (b builder) AddObjectsFromFileBuilder(filename string, objectIds []string) 
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
@@ -602,7 +566,7 @@ func (b builder) AddObjectsFromResourceBuilder(resourcePath string, objectIds []
 	var _arg0 *C.GtkBuilder // out
 	var _arg1 *C.char       // out
 	var _arg2 **C.char
-	var _cerr **C.GError // in
+	var _cerr *C.GError // in
 
 	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.char)(C.CString(resourcePath))
@@ -621,16 +585,7 @@ func (b builder) AddObjectsFromResourceBuilder(resourcePath string, objectIds []
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
@@ -640,7 +595,7 @@ func (b builder) AddObjectsFromStringBuilder(buffer string, length int, objectId
 	var _arg1 *C.char       // out
 	var _arg2 C.gssize      // out
 	var _arg3 **C.char
-	var _cerr **C.GError // in
+	var _cerr *C.GError // in
 
 	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.char)(C.CString(buffer))
@@ -660,16 +615,7 @@ func (b builder) AddObjectsFromStringBuilder(buffer string, length int, objectId
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
@@ -693,7 +639,7 @@ func (b builder) ExtendWithTemplateBuilder(object gextras.Objector, templateType
 	var _arg2 C.GType       // out
 	var _arg3 *C.char       // out
 	var _arg4 C.gssize      // out
-	var _cerr **C.GError    // in
+	var _cerr *C.GError     // in
 
 	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.GObject)(unsafe.Pointer(object.Native()))
@@ -706,16 +652,7 @@ func (b builder) ExtendWithTemplateBuilder(object gextras.Objector, templateType
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
@@ -836,30 +773,31 @@ func (b builder) ValueFromStringTypeBuilder(typ externglib.Type, _string string)
 	var _arg0 *C.GtkBuilder // out
 	var _arg1 C.GType       // out
 	var _arg2 *C.char       // out
-	var _arg3 *C.GValue     // in
-	var _cerr **C.GError    // in
+	var _arg3 C.GValue      // in
+	var _cerr *C.GError     // in
 
 	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
 	_arg1 = (C.GType)(typ)
 	_arg2 = (*C.char)(C.CString(_string))
 	defer C.free(unsafe.Pointer(_arg2))
 
-	C.gtk_builder_value_from_string_type(_arg0, _arg1, _arg2, _arg3, &_cerr)
+	C.gtk_builder_value_from_string_type(_arg0, _arg1, _arg2, &_arg3, &_cerr)
 
 	var _value externglib.Value // out
 	var _goerr error            // out
 
-	_value = externglib.ValueFromNative(unsafe.Pointer(_arg3))
 	{
-		var refTmpIn *C.GError
-		var refTmpOut error
+		var refTmpIn *C.GValue
+		var refTmpOut *externglib.Value
 
-		refTmpIn = *_cerr
+		in0 := &_arg3
+		refTmpIn = in0
 
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+		refTmpOut = externglib.ValueFromNative(unsafe.Pointer(refTmpIn))
 
-		_goerr = refTmpOut
+		_value = *refTmpOut
 	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _value, _goerr
 }

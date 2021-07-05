@@ -54,7 +54,7 @@ func marshalRecentFilterFlags(p uintptr) (interface{}, error) {
 
 // RecentFilterFunc: the type of function that is used with custom filters, see
 // gtk_recent_filter_add_custom().
-type RecentFilterFunc func(filterInfo RecentFilterInfo) (ok bool)
+type RecentFilterFunc func(filterInfo *RecentFilterInfo) (ok bool)
 
 //export gotk4_RecentFilterFunc
 func gotk4_RecentFilterFunc(arg0 *C.GtkRecentFilterInfo, arg1 C.gpointer) C.gboolean {
@@ -63,9 +63,9 @@ func gotk4_RecentFilterFunc(arg0 *C.GtkRecentFilterInfo, arg1 C.gpointer) C.gboo
 		panic(`callback not found`)
 	}
 
-	var filterInfo RecentFilterInfo // out
+	var filterInfo *RecentFilterInfo // out
 
-	filterInfo = (RecentFilterInfo)(unsafe.Pointer(arg0))
+	filterInfo = (*RecentFilterInfo)(unsafe.Pointer(arg0))
 
 	fn := v.(RecentFilterFunc)
 	ok := fn(filterInfo)
@@ -157,7 +157,7 @@ type RecentFilter interface {
 	//
 	// This function will not typically be used by applications; it is intended
 	// principally for use in the implementation of RecentChooser.
-	FilterRecentFilter(filterInfo RecentFilterInfo) bool
+	FilterRecentFilter(filterInfo *RecentFilterInfo) bool
 	// Name gets the human-readable name for the filter. See
 	// gtk_recent_filter_set_name().
 	Name() string
@@ -275,7 +275,7 @@ func (f recentFilter) AddPixbufFormatsRecentFilter() {
 	C.gtk_recent_filter_add_pixbuf_formats(_arg0)
 }
 
-func (f recentFilter) FilterRecentFilter(filterInfo RecentFilterInfo) bool {
+func (f recentFilter) FilterRecentFilter(filterInfo *RecentFilterInfo) bool {
 	var _arg0 *C.GtkRecentFilter     // out
 	var _arg1 *C.GtkRecentFilterInfo // out
 	var _cret C.gboolean             // in

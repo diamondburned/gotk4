@@ -32,7 +32,7 @@ import "C"
 // SourceFunc. The new source does not actually do anything on its own; use
 // g_source_add_child_source() to add other sources to it to cause it to
 // trigger.
-func NewPollableSource(pollableStream gextras.Objector) glib.Source {
+func NewPollableSource(pollableStream gextras.Objector) *glib.Source {
 	var _arg1 *C.GObject // out
 	var _cret *C.GSource // in
 
@@ -40,10 +40,10 @@ func NewPollableSource(pollableStream gextras.Objector) glib.Source {
 
 	_cret = C.g_pollable_source_new(_arg1)
 
-	var _source glib.Source // out
+	var _source *glib.Source // out
 
-	_source = (glib.Source)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_source, func(v glib.Source) {
+	_source = (*glib.Source)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_source, func(v *glib.Source) {
 		C.g_source_unref((*C.GSource)(unsafe.Pointer(v)))
 	})
 
@@ -54,7 +54,7 @@ func NewPollableSource(pollableStream gextras.Objector) glib.Source {
 // implementations. Creates a new #GSource, as with g_pollable_source_new(), but
 // also attaching @child_source (with a dummy callback), and @cancellable, if
 // they are non-nil.
-func PollableSourceNewFull(pollableStream gextras.Objector, childSource glib.Source, cancellable Cancellable) glib.Source {
+func PollableSourceNewFull(pollableStream gextras.Objector, childSource *glib.Source, cancellable Cancellable) *glib.Source {
 	var _arg1 C.gpointer      // out
 	var _arg2 *C.GSource      // out
 	var _arg3 *C.GCancellable // out
@@ -66,10 +66,10 @@ func PollableSourceNewFull(pollableStream gextras.Objector, childSource glib.Sou
 
 	_cret = C.g_pollable_source_new_full(_arg1, _arg2, _arg3)
 
-	var _source glib.Source // out
+	var _source *glib.Source // out
 
-	_source = (glib.Source)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_source, func(v glib.Source) {
+	_source = (*glib.Source)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_source, func(v *glib.Source) {
 		C.g_source_unref((*C.GSource)(unsafe.Pointer(v)))
 	})
 
@@ -92,7 +92,7 @@ func PollableStreamRead(stream InputStream, buffer []byte, blocking bool, cancel
 	var _arg4 C.gboolean      // out
 	var _arg5 *C.GCancellable // out
 	var _cret C.gssize        // in
-	var _cerr **C.GError      // in
+	var _cerr *C.GError       // in
 
 	_arg1 = (*C.GInputStream)(unsafe.Pointer(stream.Native()))
 	_arg3 = C.gsize(len(buffer))
@@ -108,16 +108,7 @@ func PollableStreamRead(stream InputStream, buffer []byte, blocking bool, cancel
 	var _goerr error // out
 
 	_gssize = int(_cret)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _gssize, _goerr
 }
@@ -139,7 +130,7 @@ func PollableStreamWrite(stream OutputStream, buffer []byte, blocking bool, canc
 	var _arg4 C.gboolean      // out
 	var _arg5 *C.GCancellable // out
 	var _cret C.gssize        // in
-	var _cerr **C.GError      // in
+	var _cerr *C.GError       // in
 
 	_arg1 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
 	_arg3 = C.gsize(len(buffer))
@@ -155,16 +146,7 @@ func PollableStreamWrite(stream OutputStream, buffer []byte, blocking bool, canc
 	var _goerr error // out
 
 	_gssize = int(_cret)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _gssize, _goerr
 }
@@ -190,9 +172,9 @@ func PollableStreamWriteAll(stream OutputStream, buffer []byte, blocking bool, c
 	var _arg2 *C.void
 	var _arg3 C.gsize
 	var _arg4 C.gboolean      // out
-	var _arg5 *C.gsize        // in
+	var _arg5 C.gsize         // in
 	var _arg6 *C.GCancellable // out
-	var _cerr **C.GError      // in
+	var _cerr *C.GError       // in
 
 	_arg1 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
 	_arg3 = C.gsize(len(buffer))
@@ -208,16 +190,7 @@ func PollableStreamWriteAll(stream OutputStream, buffer []byte, blocking bool, c
 	var _goerr error       // out
 
 	_bytesWritten = uint(_arg5)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _bytesWritten, _goerr
 }

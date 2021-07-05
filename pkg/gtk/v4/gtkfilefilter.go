@@ -88,7 +88,7 @@ type FileFilter interface {
 	// a selectable list of filters.
 	SetNameFileFilter(name string)
 	// ToGVariantFileFilter: serialize a file filter to an `a{sv}` variant.
-	ToGVariantFileFilter() glib.Variant
+	ToGVariantFileFilter() *glib.Variant
 }
 
 // fileFilter implements the FileFilter class.
@@ -135,7 +135,7 @@ func NewFileFilter() FileFilter {
 //
 // The variant must be in the format produced by
 // [method@Gtk.FileFilter.to_gvariant].
-func NewFileFilterFromGVariant(variant glib.Variant) FileFilter {
+func NewFileFilterFromGVariant(variant *glib.Variant) FileFilter {
 	var _arg1 *C.GVariant      // out
 	var _cret *C.GtkFileFilter // in
 
@@ -233,7 +233,7 @@ func (f fileFilter) SetNameFileFilter(name string) {
 	C.gtk_file_filter_set_name(_arg0, _arg1)
 }
 
-func (f fileFilter) ToGVariantFileFilter() glib.Variant {
+func (f fileFilter) ToGVariantFileFilter() *glib.Variant {
 	var _arg0 *C.GtkFileFilter // out
 	var _cret *C.GVariant      // in
 
@@ -241,9 +241,9 @@ func (f fileFilter) ToGVariantFileFilter() glib.Variant {
 
 	_cret = C.gtk_file_filter_to_gvariant(_arg0)
 
-	var _variant glib.Variant // out
+	var _variant *glib.Variant // out
 
-	_variant = (glib.Variant)(unsafe.Pointer(_cret))
+	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
 	C.g_variant_ref(_cret)
 
 	return _variant

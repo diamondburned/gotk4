@@ -99,7 +99,7 @@ type PrintContext interface {
 	CreatePangoLayoutPrintContext() pango.Layout
 	// CairoContext obtains the cairo context that is associated with the
 	// `GtkPrintContext`.
-	CairoContext() cairo.Context
+	CairoContext() *cairo.Context
 	// DPIX obtains the horizontal resolution of the `GtkPrintContext`, in dots
 	// per inch.
 	DPIX() float64
@@ -124,7 +124,7 @@ type PrintContext interface {
 	// This function is intended to be used when implementing an internal print
 	// preview, it is not needed for printing, since GTK itself creates a
 	// suitable cairo context in that case.
-	SetCairoContextPrintContext(cr cairo.Context, dpiX float64, dpiY float64)
+	SetCairoContextPrintContext(cr *cairo.Context, dpiX float64, dpiY float64)
 }
 
 // printContext implements the PrintContext class.
@@ -176,7 +176,7 @@ func (c printContext) CreatePangoLayoutPrintContext() pango.Layout {
 	return _layout
 }
 
-func (c printContext) CairoContext() cairo.Context {
+func (c printContext) CairoContext() *cairo.Context {
 	var _arg0 *C.GtkPrintContext // out
 	var _cret *C.cairo_t         // in
 
@@ -184,9 +184,9 @@ func (c printContext) CairoContext() cairo.Context {
 
 	_cret = C.gtk_print_context_get_cairo_context(_arg0)
 
-	var _ret cairo.Context // out
+	var _ret *cairo.Context // out
 
-	_ret = (cairo.Context)(unsafe.Pointer(_cret))
+	_ret = (*cairo.Context)(unsafe.Pointer(_cret))
 
 	return _ret
 }
@@ -223,10 +223,10 @@ func (c printContext) DPIY() float64 {
 
 func (c printContext) HardMargins() (top float64, bottom float64, left float64, right float64, ok bool) {
 	var _arg0 *C.GtkPrintContext // out
-	var _arg1 *C.double          // in
-	var _arg2 *C.double          // in
-	var _arg3 *C.double          // in
-	var _arg4 *C.double          // in
+	var _arg1 C.double           // in
+	var _arg2 C.double           // in
+	var _arg3 C.double           // in
+	var _arg4 C.double           // in
 	var _cret C.gboolean         // in
 
 	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(c.Native()))
@@ -310,7 +310,7 @@ func (c printContext) Width() float64 {
 	return _gdouble
 }
 
-func (c printContext) SetCairoContextPrintContext(cr cairo.Context, dpiX float64, dpiY float64) {
+func (c printContext) SetCairoContextPrintContext(cr *cairo.Context, dpiX float64, dpiY float64) {
 	var _arg0 *C.GtkPrintContext // out
 	var _arg1 *C.cairo_t         // out
 	var _arg2 C.double           // out

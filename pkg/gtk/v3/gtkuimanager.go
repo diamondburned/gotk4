@@ -466,7 +466,7 @@ func (m uiManager) AddUiFromFileUIManager(filename string) (uint, error) {
 	var _arg0 *C.GtkUIManager // out
 	var _arg1 *C.gchar        // out
 	var _cret C.guint         // in
-	var _cerr **C.GError      // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.gchar)(C.CString(filename))
@@ -478,16 +478,7 @@ func (m uiManager) AddUiFromFileUIManager(filename string) (uint, error) {
 	var _goerr error // out
 
 	_guint = uint(_cret)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _guint, _goerr
 }
@@ -496,7 +487,7 @@ func (m uiManager) AddUiFromResourceUIManager(resourcePath string) (uint, error)
 	var _arg0 *C.GtkUIManager // out
 	var _arg1 *C.gchar        // out
 	var _cret C.guint         // in
-	var _cerr **C.GError      // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.gchar)(C.CString(resourcePath))
@@ -508,16 +499,7 @@ func (m uiManager) AddUiFromResourceUIManager(resourcePath string) (uint, error)
 	var _goerr error // out
 
 	_guint = uint(_cret)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _guint, _goerr
 }
@@ -527,7 +509,7 @@ func (m uiManager) AddUiFromStringUIManager(buffer string, length int) (uint, er
 	var _arg1 *C.gchar        // out
 	var _arg2 C.gssize        // out
 	var _cret C.guint         // in
-	var _cerr **C.GError      // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.gchar)(C.CString(buffer))
@@ -540,16 +522,7 @@ func (m uiManager) AddUiFromStringUIManager(buffer string, length int) (uint, er
 	var _goerr error // out
 
 	_guint = uint(_cret)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _guint, _goerr
 }

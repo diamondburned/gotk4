@@ -64,7 +64,7 @@ func marshalKeyEventType(p uintptr) (interface{}, error) {
 // occurs, if registered via atk_add_key_event_listener. It allows for
 // pre-emptive interception of key events via the return code as described
 // below.
-type KeySnoopFunc func(event KeyEventStruct) (gint int)
+type KeySnoopFunc func(event *KeyEventStruct) (gint int)
 
 //export gotk4_KeySnoopFunc
 func gotk4_KeySnoopFunc(arg0 *C.AtkKeyEventStruct, arg1 C.gpointer) C.gint {
@@ -73,9 +73,9 @@ func gotk4_KeySnoopFunc(arg0 *C.AtkKeyEventStruct, arg1 C.gpointer) C.gint {
 		panic(`callback not found`)
 	}
 
-	var event KeyEventStruct // out
+	var event *KeyEventStruct // out
 
-	event = (KeyEventStruct)(unsafe.Pointer(arg0))
+	event = (*KeyEventStruct)(unsafe.Pointer(arg0))
 
 	fn := v.(KeySnoopFunc)
 	gint := fn(event)

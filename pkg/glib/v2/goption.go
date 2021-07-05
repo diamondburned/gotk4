@@ -178,7 +178,7 @@ func (g *OptionGroup) Free() {
 }
 
 // Ref increments the reference count of @group by one.
-func (g *OptionGroup) Ref() OptionGroup {
+func (g *OptionGroup) Ref() *OptionGroup {
 	var _arg0 *C.GOptionGroup // out
 	var _cret *C.GOptionGroup // in
 
@@ -186,10 +186,10 @@ func (g *OptionGroup) Ref() OptionGroup {
 
 	_cret = C.g_option_group_ref(_arg0)
 
-	var _optionGroup OptionGroup // out
+	var _optionGroup *OptionGroup // out
 
-	_optionGroup = (OptionGroup)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_optionGroup, func(v OptionGroup) {
+	_optionGroup = (*OptionGroup)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_optionGroup, func(v *OptionGroup) {
 		C.g_option_group_unref((*C.GOptionGroup)(unsafe.Pointer(v)))
 	})
 

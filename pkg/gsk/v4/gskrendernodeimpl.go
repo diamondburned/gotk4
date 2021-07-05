@@ -231,9 +231,9 @@ type BorderNode interface {
 	RenderNode
 
 	// Colors retrieves the colors of the border.
-	Colors() gdk.RGBA
+	Colors() *gdk.RGBA
 	// Outline retrieves the outline of the border.
-	Outline() RoundedRect
+	Outline() *RoundedRect
 	// Widths retrieves the stroke widths of the border.
 	Widths() [4]float32
 }
@@ -261,7 +261,7 @@ func marshalBorderNode(p uintptr) (interface{}, error) {
 // inside the given @outline.
 //
 // The 4 sides of the border can have different widths and colors.
-func NewBorderNode(outline RoundedRect, borderWidth [4]float32, borderColor [4]gdk.RGBA) BorderNode {
+func NewBorderNode(outline *RoundedRect, borderWidth [4]float32, borderColor [4]gdk.RGBA) BorderNode {
 	var _arg1 *C.GskRoundedRect // out
 	var _arg2 *C.float
 	var _arg3 *C.GdkRGBA
@@ -280,7 +280,7 @@ func NewBorderNode(outline RoundedRect, borderWidth [4]float32, borderColor [4]g
 	return _borderNode
 }
 
-func (n borderNode) Colors() gdk.RGBA {
+func (n borderNode) Colors() *gdk.RGBA {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GdkRGBA       // in
 
@@ -288,14 +288,14 @@ func (n borderNode) Colors() gdk.RGBA {
 
 	_cret = C.gsk_border_node_get_colors(_arg0)
 
-	var _rgbA gdk.RGBA // out
+	var _rgbA *gdk.RGBA // out
 
-	_rgbA = (gdk.RGBA)(unsafe.Pointer(_cret))
+	_rgbA = (*gdk.RGBA)(unsafe.Pointer(_cret))
 
 	return _rgbA
 }
 
-func (n borderNode) Outline() RoundedRect {
+func (n borderNode) Outline() *RoundedRect {
 	var _arg0 *C.GskRenderNode  // out
 	var _cret *C.GskRoundedRect // in
 
@@ -303,9 +303,9 @@ func (n borderNode) Outline() RoundedRect {
 
 	_cret = C.gsk_border_node_get_outline(_arg0)
 
-	var _roundedRect RoundedRect // out
+	var _roundedRect *RoundedRect // out
 
-	_roundedRect = (RoundedRect)(unsafe.Pointer(_cret))
+	_roundedRect = (*RoundedRect)(unsafe.Pointer(_cret))
 
 	return _roundedRect
 }
@@ -334,9 +334,9 @@ type CairoNode interface {
 	//
 	// If no surface exists yet, a surface will be created optimized for
 	// rendering to @renderer.
-	DrawContext() cairo.Context
+	DrawContext() *cairo.Context
 	// Surface retrieves the Cairo surface used by the render node.
-	Surface() cairo.Surface
+	Surface() *cairo.Surface
 }
 
 // cairoNode implements the CairoNode class.
@@ -363,7 +363,7 @@ func marshalCairoNode(p uintptr) (interface{}, error) {
 //
 // You can draw to the cairo surface using
 // [method@Gsk.CairoNode.get_draw_context].
-func NewCairoNode(bounds graphene.Rect) CairoNode {
+func NewCairoNode(bounds *graphene.Rect) CairoNode {
 	var _arg1 *C.graphene_rect_t // out
 	var _cret *C.GskRenderNode   // in
 
@@ -378,7 +378,7 @@ func NewCairoNode(bounds graphene.Rect) CairoNode {
 	return _cairoNode
 }
 
-func (n cairoNode) DrawContext() cairo.Context {
+func (n cairoNode) DrawContext() *cairo.Context {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.cairo_t       // in
 
@@ -386,17 +386,17 @@ func (n cairoNode) DrawContext() cairo.Context {
 
 	_cret = C.gsk_cairo_node_get_draw_context(_arg0)
 
-	var _context cairo.Context // out
+	var _context *cairo.Context // out
 
-	_context = (cairo.Context)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_context, func(v cairo.Context) {
+	_context = (*cairo.Context)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_context, func(v *cairo.Context) {
 		C.free(unsafe.Pointer(v))
 	})
 
 	return _context
 }
 
-func (n cairoNode) Surface() cairo.Surface {
+func (n cairoNode) Surface() *cairo.Surface {
 	var _arg0 *C.GskRenderNode   // out
 	var _cret *C.cairo_surface_t // in
 
@@ -404,9 +404,9 @@ func (n cairoNode) Surface() cairo.Surface {
 
 	_cret = C.gsk_cairo_node_get_surface(_arg0)
 
-	var _surface cairo.Surface // out
+	var _surface *cairo.Surface // out
 
-	_surface = (cairo.Surface)(unsafe.Pointer(_cret))
+	_surface = (*cairo.Surface)(unsafe.Pointer(_cret))
 
 	return _surface
 }
@@ -418,7 +418,7 @@ type ClipNode interface {
 	// Child gets the child node that is getting clipped by the given @node.
 	Child() RenderNode
 	// Clip retrieves the clip rectangle for @node.
-	Clip() graphene.Rect
+	Clip() *graphene.Rect
 }
 
 // clipNode implements the ClipNode class.
@@ -442,7 +442,7 @@ func marshalClipNode(p uintptr) (interface{}, error) {
 
 // NewClipNode creates a `GskRenderNode` that will clip the @child to the area
 // given by @clip.
-func NewClipNode(child RenderNode, clip graphene.Rect) ClipNode {
+func NewClipNode(child RenderNode, clip *graphene.Rect) ClipNode {
 	var _arg1 *C.GskRenderNode   // out
 	var _arg2 *C.graphene_rect_t // out
 	var _cret *C.GskRenderNode   // in
@@ -474,7 +474,7 @@ func (n clipNode) Child() RenderNode {
 	return _renderNode
 }
 
-func (n clipNode) Clip() graphene.Rect {
+func (n clipNode) Clip() *graphene.Rect {
 	var _arg0 *C.GskRenderNode   // out
 	var _cret *C.graphene_rect_t // in
 
@@ -482,9 +482,9 @@ func (n clipNode) Clip() graphene.Rect {
 
 	_cret = C.gsk_clip_node_get_clip(_arg0)
 
-	var _rect graphene.Rect // out
+	var _rect *graphene.Rect // out
 
-	_rect = (graphene.Rect)(unsafe.Pointer(_cret))
+	_rect = (*graphene.Rect)(unsafe.Pointer(_cret))
 
 	return _rect
 }
@@ -498,9 +498,9 @@ type ColorMatrixNode interface {
 	// given @node.
 	Child() RenderNode
 	// ColorMatrix retrieves the color matrix used by the @node.
-	ColorMatrix() graphene.Matrix
+	ColorMatrix() *graphene.Matrix
 	// ColorOffset retrieves the color offset used by the @node.
-	ColorOffset() graphene.Vec4
+	ColorOffset() *graphene.Vec4
 }
 
 // colorMatrixNode implements the ColorMatrixNode class.
@@ -530,7 +530,7 @@ func marshalColorMatrixNode(p uintptr) (interface{}, error) {
 //    pixel = color_matrix * pixel + color_offset
 //
 // for every pixel.
-func NewColorMatrixNode(child RenderNode, colorMatrix graphene.Matrix, colorOffset graphene.Vec4) ColorMatrixNode {
+func NewColorMatrixNode(child RenderNode, colorMatrix *graphene.Matrix, colorOffset *graphene.Vec4) ColorMatrixNode {
 	var _arg1 *C.GskRenderNode     // out
 	var _arg2 *C.graphene_matrix_t // out
 	var _arg3 *C.graphene_vec4_t   // out
@@ -564,7 +564,7 @@ func (n colorMatrixNode) Child() RenderNode {
 	return _renderNode
 }
 
-func (n colorMatrixNode) ColorMatrix() graphene.Matrix {
+func (n colorMatrixNode) ColorMatrix() *graphene.Matrix {
 	var _arg0 *C.GskRenderNode     // out
 	var _cret *C.graphene_matrix_t // in
 
@@ -572,14 +572,14 @@ func (n colorMatrixNode) ColorMatrix() graphene.Matrix {
 
 	_cret = C.gsk_color_matrix_node_get_color_matrix(_arg0)
 
-	var _matrix graphene.Matrix // out
+	var _matrix *graphene.Matrix // out
 
-	_matrix = (graphene.Matrix)(unsafe.Pointer(_cret))
+	_matrix = (*graphene.Matrix)(unsafe.Pointer(_cret))
 
 	return _matrix
 }
 
-func (n colorMatrixNode) ColorOffset() graphene.Vec4 {
+func (n colorMatrixNode) ColorOffset() *graphene.Vec4 {
 	var _arg0 *C.GskRenderNode   // out
 	var _cret *C.graphene_vec4_t // in
 
@@ -587,9 +587,9 @@ func (n colorMatrixNode) ColorOffset() graphene.Vec4 {
 
 	_cret = C.gsk_color_matrix_node_get_color_offset(_arg0)
 
-	var _vec4 graphene.Vec4 // out
+	var _vec4 *graphene.Vec4 // out
 
-	_vec4 = (graphene.Vec4)(unsafe.Pointer(_cret))
+	_vec4 = (*graphene.Vec4)(unsafe.Pointer(_cret))
 
 	return _vec4
 }
@@ -599,7 +599,7 @@ type ColorNode interface {
 	RenderNode
 
 	// Color retrieves the color of the given @node.
-	Color() gdk.RGBA
+	Color() *gdk.RGBA
 }
 
 // colorNode implements the ColorNode class.
@@ -623,7 +623,7 @@ func marshalColorNode(p uintptr) (interface{}, error) {
 
 // NewColorNode creates a `GskRenderNode` that will render the color specified
 // by @rgba into the area given by @bounds.
-func NewColorNode(rgba gdk.RGBA, bounds graphene.Rect) ColorNode {
+func NewColorNode(rgba *gdk.RGBA, bounds *graphene.Rect) ColorNode {
 	var _arg1 *C.GdkRGBA         // out
 	var _arg2 *C.graphene_rect_t // out
 	var _cret *C.GskRenderNode   // in
@@ -640,7 +640,7 @@ func NewColorNode(rgba gdk.RGBA, bounds graphene.Rect) ColorNode {
 	return _colorNode
 }
 
-func (n colorNode) Color() gdk.RGBA {
+func (n colorNode) Color() *gdk.RGBA {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GdkRGBA       // in
 
@@ -648,9 +648,9 @@ func (n colorNode) Color() gdk.RGBA {
 
 	_cret = C.gsk_color_node_get_color(_arg0)
 
-	var _rgbA gdk.RGBA // out
+	var _rgbA *gdk.RGBA // out
 
-	_rgbA = (gdk.RGBA)(unsafe.Pointer(_cret))
+	_rgbA = (*gdk.RGBA)(unsafe.Pointer(_cret))
 
 	return _rgbA
 }
@@ -668,7 +668,7 @@ type ConicGradientNode interface {
 	//    angle = 90 - gsk_conic_gradient_node_get_rotation()
 	Angle() float32
 	// Center retrieves the center pointer for the gradient.
-	Center() graphene.Point
+	Center() *graphene.Point
 	// NColorStops retrieves the number of color stops in the gradient.
 	NColorStops() uint
 	// Rotation retrieves the rotation for the gradient in degrees.
@@ -699,7 +699,7 @@ func marshalConicGradientNode(p uintptr) (interface{}, error) {
 // The conic gradient starts around @center in the direction of @rotation. A
 // rotation of 0 means that the gradient points up. Color stops are then added
 // clockwise.
-func NewConicGradientNode(bounds graphene.Rect, center graphene.Point, rotation float32, colorStops []ColorStop) ConicGradientNode {
+func NewConicGradientNode(bounds *graphene.Rect, center *graphene.Point, rotation float32, colorStops []ColorStop) ConicGradientNode {
 	var _arg1 *C.graphene_rect_t  // out
 	var _arg2 *C.graphene_point_t // out
 	var _arg3 C.float             // out
@@ -737,7 +737,7 @@ func (n conicGradientNode) Angle() float32 {
 	return _gfloat
 }
 
-func (n conicGradientNode) Center() graphene.Point {
+func (n conicGradientNode) Center() *graphene.Point {
 	var _arg0 *C.GskRenderNode    // out
 	var _cret *C.graphene_point_t // in
 
@@ -745,9 +745,9 @@ func (n conicGradientNode) Center() graphene.Point {
 
 	_cret = C.gsk_conic_gradient_node_get_center(_arg0)
 
-	var _point graphene.Point // out
+	var _point *graphene.Point // out
 
-	_point = (graphene.Point)(unsafe.Pointer(_cret))
+	_point = (*graphene.Point)(unsafe.Pointer(_cret))
 
 	return _point
 }
@@ -1136,13 +1136,13 @@ type InsetShadowNode interface {
 	// BlurRadius retrieves the blur radius to apply to the shadow.
 	BlurRadius() float32
 	// Color retrieves the color of the inset shadow.
-	Color() gdk.RGBA
+	Color() *gdk.RGBA
 	// Dx retrieves the horizontal offset of the inset shadow.
 	Dx() float32
 	// Dy retrieves the vertical offset of the inset shadow.
 	Dy() float32
 	// Outline retrieves the outline rectangle of the inset shadow.
-	Outline() RoundedRect
+	Outline() *RoundedRect
 	// Spread retrieves how much the shadow spreads inwards.
 	Spread() float32
 }
@@ -1168,7 +1168,7 @@ func marshalInsetShadowNode(p uintptr) (interface{}, error) {
 
 // NewInsetShadowNode creates a `GskRenderNode` that will render an inset shadow
 // into the box given by @outline.
-func NewInsetShadowNode(outline RoundedRect, color gdk.RGBA, dx float32, dy float32, spread float32, blurRadius float32) InsetShadowNode {
+func NewInsetShadowNode(outline *RoundedRect, color *gdk.RGBA, dx float32, dy float32, spread float32, blurRadius float32) InsetShadowNode {
 	var _arg1 *C.GskRoundedRect // out
 	var _arg2 *C.GdkRGBA        // out
 	var _arg3 C.float           // out
@@ -1208,7 +1208,7 @@ func (n insetShadowNode) BlurRadius() float32 {
 	return _gfloat
 }
 
-func (n insetShadowNode) Color() gdk.RGBA {
+func (n insetShadowNode) Color() *gdk.RGBA {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GdkRGBA       // in
 
@@ -1216,9 +1216,9 @@ func (n insetShadowNode) Color() gdk.RGBA {
 
 	_cret = C.gsk_inset_shadow_node_get_color(_arg0)
 
-	var _rgbA gdk.RGBA // out
+	var _rgbA *gdk.RGBA // out
 
-	_rgbA = (gdk.RGBA)(unsafe.Pointer(_cret))
+	_rgbA = (*gdk.RGBA)(unsafe.Pointer(_cret))
 
 	return _rgbA
 }
@@ -1253,7 +1253,7 @@ func (n insetShadowNode) Dy() float32 {
 	return _gfloat
 }
 
-func (n insetShadowNode) Outline() RoundedRect {
+func (n insetShadowNode) Outline() *RoundedRect {
 	var _arg0 *C.GskRenderNode  // out
 	var _cret *C.GskRoundedRect // in
 
@@ -1261,9 +1261,9 @@ func (n insetShadowNode) Outline() RoundedRect {
 
 	_cret = C.gsk_inset_shadow_node_get_outline(_arg0)
 
-	var _roundedRect RoundedRect // out
+	var _roundedRect *RoundedRect // out
 
-	_roundedRect = (RoundedRect)(unsafe.Pointer(_cret))
+	_roundedRect = (*RoundedRect)(unsafe.Pointer(_cret))
 
 	return _roundedRect
 }
@@ -1288,11 +1288,11 @@ type LinearGradientNode interface {
 	RenderNode
 
 	// End retrieves the final point of the linear gradient.
-	End() graphene.Point
+	End() *graphene.Point
 	// NColorStops retrieves the number of color stops in the gradient.
 	NColorStops() uint
 	// Start retrieves the initial point of the linear gradient.
-	Start() graphene.Point
+	Start() *graphene.Point
 }
 
 // linearGradientNode implements the LinearGradientNode class.
@@ -1317,7 +1317,7 @@ func marshalLinearGradientNode(p uintptr) (interface{}, error) {
 // NewLinearGradientNode creates a `GskRenderNode` that will create a linear
 // gradient from the given points and color stops, and render that into the area
 // given by @bounds.
-func NewLinearGradientNode(bounds graphene.Rect, start graphene.Point, end graphene.Point, colorStops []ColorStop) LinearGradientNode {
+func NewLinearGradientNode(bounds *graphene.Rect, start *graphene.Point, end *graphene.Point, colorStops []ColorStop) LinearGradientNode {
 	var _arg1 *C.graphene_rect_t  // out
 	var _arg2 *C.graphene_point_t // out
 	var _arg3 *C.graphene_point_t // out
@@ -1340,7 +1340,7 @@ func NewLinearGradientNode(bounds graphene.Rect, start graphene.Point, end graph
 	return _linearGradientNode
 }
 
-func (n linearGradientNode) End() graphene.Point {
+func (n linearGradientNode) End() *graphene.Point {
 	var _arg0 *C.GskRenderNode    // out
 	var _cret *C.graphene_point_t // in
 
@@ -1348,9 +1348,9 @@ func (n linearGradientNode) End() graphene.Point {
 
 	_cret = C.gsk_linear_gradient_node_get_end(_arg0)
 
-	var _point graphene.Point // out
+	var _point *graphene.Point // out
 
-	_point = (graphene.Point)(unsafe.Pointer(_cret))
+	_point = (*graphene.Point)(unsafe.Pointer(_cret))
 
 	return _point
 }
@@ -1370,7 +1370,7 @@ func (n linearGradientNode) NColorStops() uint {
 	return _gsize
 }
 
-func (n linearGradientNode) Start() graphene.Point {
+func (n linearGradientNode) Start() *graphene.Point {
 	var _arg0 *C.GskRenderNode    // out
 	var _cret *C.graphene_point_t // in
 
@@ -1378,9 +1378,9 @@ func (n linearGradientNode) Start() graphene.Point {
 
 	_cret = C.gsk_linear_gradient_node_get_start(_arg0)
 
-	var _point graphene.Point // out
+	var _point *graphene.Point // out
 
-	_point = (graphene.Point)(unsafe.Pointer(_cret))
+	_point = (*graphene.Point)(unsafe.Pointer(_cret))
 
 	return _point
 }
@@ -1470,13 +1470,13 @@ type OutsetShadowNode interface {
 	// BlurRadius retrieves the blur radius of the shadow.
 	BlurRadius() float32
 	// Color retrieves the color of the outset shadow.
-	Color() gdk.RGBA
+	Color() *gdk.RGBA
 	// Dx retrieves the horizontal offset of the outset shadow.
 	Dx() float32
 	// Dy retrieves the vertical offset of the outset shadow.
 	Dy() float32
 	// Outline retrieves the outline rectangle of the outset shadow.
-	Outline() RoundedRect
+	Outline() *RoundedRect
 	// Spread retrieves how much the shadow spreads outwards.
 	Spread() float32
 }
@@ -1502,7 +1502,7 @@ func marshalOutsetShadowNode(p uintptr) (interface{}, error) {
 
 // NewOutsetShadowNode creates a `GskRenderNode` that will render an outset
 // shadow around the box given by @outline.
-func NewOutsetShadowNode(outline RoundedRect, color gdk.RGBA, dx float32, dy float32, spread float32, blurRadius float32) OutsetShadowNode {
+func NewOutsetShadowNode(outline *RoundedRect, color *gdk.RGBA, dx float32, dy float32, spread float32, blurRadius float32) OutsetShadowNode {
 	var _arg1 *C.GskRoundedRect // out
 	var _arg2 *C.GdkRGBA        // out
 	var _arg3 C.float           // out
@@ -1542,7 +1542,7 @@ func (n outsetShadowNode) BlurRadius() float32 {
 	return _gfloat
 }
 
-func (n outsetShadowNode) Color() gdk.RGBA {
+func (n outsetShadowNode) Color() *gdk.RGBA {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GdkRGBA       // in
 
@@ -1550,9 +1550,9 @@ func (n outsetShadowNode) Color() gdk.RGBA {
 
 	_cret = C.gsk_outset_shadow_node_get_color(_arg0)
 
-	var _rgbA gdk.RGBA // out
+	var _rgbA *gdk.RGBA // out
 
-	_rgbA = (gdk.RGBA)(unsafe.Pointer(_cret))
+	_rgbA = (*gdk.RGBA)(unsafe.Pointer(_cret))
 
 	return _rgbA
 }
@@ -1587,7 +1587,7 @@ func (n outsetShadowNode) Dy() float32 {
 	return _gfloat
 }
 
-func (n outsetShadowNode) Outline() RoundedRect {
+func (n outsetShadowNode) Outline() *RoundedRect {
 	var _arg0 *C.GskRenderNode  // out
 	var _cret *C.GskRoundedRect // in
 
@@ -1595,9 +1595,9 @@ func (n outsetShadowNode) Outline() RoundedRect {
 
 	_cret = C.gsk_outset_shadow_node_get_outline(_arg0)
 
-	var _roundedRect RoundedRect // out
+	var _roundedRect *RoundedRect // out
 
-	_roundedRect = (RoundedRect)(unsafe.Pointer(_cret))
+	_roundedRect = (*RoundedRect)(unsafe.Pointer(_cret))
 
 	return _roundedRect
 }
@@ -1622,7 +1622,7 @@ type RadialGradientNode interface {
 	RenderNode
 
 	// Center retrieves the center pointer for the gradient.
-	Center() graphene.Point
+	Center() *graphene.Point
 	// End retrieves the end value for the gradient.
 	End() float32
 	// Hradius retrieves the horizonal radius for the gradient.
@@ -1659,7 +1659,7 @@ func marshalRadialGradientNode(p uintptr) (interface{}, error) {
 // The radial gradient starts around @center. The size of the gradient is
 // dictated by @hradius in horizontal orientation and by @vradius in vertial
 // orientation.
-func NewRadialGradientNode(bounds graphene.Rect, center graphene.Point, hradius float32, vradius float32, start float32, end float32, colorStops []ColorStop) RadialGradientNode {
+func NewRadialGradientNode(bounds *graphene.Rect, center *graphene.Point, hradius float32, vradius float32, start float32, end float32, colorStops []ColorStop) RadialGradientNode {
 	var _arg1 *C.graphene_rect_t  // out
 	var _arg2 *C.graphene_point_t // out
 	var _arg3 C.float             // out
@@ -1688,7 +1688,7 @@ func NewRadialGradientNode(bounds graphene.Rect, center graphene.Point, hradius 
 	return _radialGradientNode
 }
 
-func (n radialGradientNode) Center() graphene.Point {
+func (n radialGradientNode) Center() *graphene.Point {
 	var _arg0 *C.GskRenderNode    // out
 	var _cret *C.graphene_point_t // in
 
@@ -1696,9 +1696,9 @@ func (n radialGradientNode) Center() graphene.Point {
 
 	_cret = C.gsk_radial_gradient_node_get_center(_arg0)
 
-	var _point graphene.Point // out
+	var _point *graphene.Point // out
 
-	_point = (graphene.Point)(unsafe.Pointer(_cret))
+	_point = (*graphene.Point)(unsafe.Pointer(_cret))
 
 	return _point
 }
@@ -1785,7 +1785,7 @@ type RepeatNode interface {
 	// Child retrieves the child of @node.
 	Child() RenderNode
 	// ChildBounds retrieves the bounding rectangle of the child of @node.
-	ChildBounds() graphene.Rect
+	ChildBounds() *graphene.Rect
 }
 
 // repeatNode implements the RepeatNode class.
@@ -1809,7 +1809,7 @@ func marshalRepeatNode(p uintptr) (interface{}, error) {
 
 // NewRepeatNode creates a `GskRenderNode` that will repeat the drawing of
 // @child across the given @bounds.
-func NewRepeatNode(bounds graphene.Rect, child RenderNode, childBounds graphene.Rect) RepeatNode {
+func NewRepeatNode(bounds *graphene.Rect, child RenderNode, childBounds *graphene.Rect) RepeatNode {
 	var _arg1 *C.graphene_rect_t // out
 	var _arg2 *C.GskRenderNode   // out
 	var _arg3 *C.graphene_rect_t // out
@@ -1843,7 +1843,7 @@ func (n repeatNode) Child() RenderNode {
 	return _renderNode
 }
 
-func (n repeatNode) ChildBounds() graphene.Rect {
+func (n repeatNode) ChildBounds() *graphene.Rect {
 	var _arg0 *C.GskRenderNode   // out
 	var _cret *C.graphene_rect_t // in
 
@@ -1851,9 +1851,9 @@ func (n repeatNode) ChildBounds() graphene.Rect {
 
 	_cret = C.gsk_repeat_node_get_child_bounds(_arg0)
 
-	var _rect graphene.Rect // out
+	var _rect *graphene.Rect // out
 
-	_rect = (graphene.Rect)(unsafe.Pointer(_cret))
+	_rect = (*graphene.Rect)(unsafe.Pointer(_cret))
 
 	return _rect
 }
@@ -1885,7 +1885,7 @@ func marshalRepeatingLinearGradientNode(p uintptr) (interface{}, error) {
 // NewRepeatingLinearGradientNode creates a `GskRenderNode` that will create a
 // repeating linear gradient from the given points and color stops, and render
 // that into the area given by @bounds.
-func NewRepeatingLinearGradientNode(bounds graphene.Rect, start graphene.Point, end graphene.Point, colorStops []ColorStop) RepeatingLinearGradientNode {
+func NewRepeatingLinearGradientNode(bounds *graphene.Rect, start *graphene.Point, end *graphene.Point, colorStops []ColorStop) RepeatingLinearGradientNode {
 	var _arg1 *C.graphene_rect_t  // out
 	var _arg2 *C.graphene_point_t // out
 	var _arg3 *C.graphene_point_t // out
@@ -1938,7 +1938,7 @@ func marshalRepeatingRadialGradientNode(p uintptr) (interface{}, error) {
 // The radial gradient starts around @center. The size of the gradient is
 // dictated by @hradius in horizontal orientation and by @vradius in vertial
 // orientation.
-func NewRepeatingRadialGradientNode(bounds graphene.Rect, center graphene.Point, hradius float32, vradius float32, start float32, end float32, colorStops []ColorStop) RepeatingRadialGradientNode {
+func NewRepeatingRadialGradientNode(bounds *graphene.Rect, center *graphene.Point, hradius float32, vradius float32, start float32, end float32, colorStops []ColorStop) RepeatingRadialGradientNode {
 	var _arg1 *C.graphene_rect_t  // out
 	var _arg2 *C.graphene_point_t // out
 	var _arg3 C.float             // out
@@ -1976,7 +1976,7 @@ type RoundedClipNode interface {
 	Child() RenderNode
 	// Clip retrieves the rounded rectangle used to clip the contents of the
 	// @node.
-	Clip() RoundedRect
+	Clip() *RoundedRect
 }
 
 // roundedClipNode implements the RoundedClipNode class.
@@ -2000,7 +2000,7 @@ func marshalRoundedClipNode(p uintptr) (interface{}, error) {
 
 // NewRoundedClipNode creates a `GskRenderNode` that will clip the @child to the
 // area given by @clip.
-func NewRoundedClipNode(child RenderNode, clip RoundedRect) RoundedClipNode {
+func NewRoundedClipNode(child RenderNode, clip *RoundedRect) RoundedClipNode {
 	var _arg1 *C.GskRenderNode  // out
 	var _arg2 *C.GskRoundedRect // out
 	var _cret *C.GskRenderNode  // in
@@ -2032,7 +2032,7 @@ func (n roundedClipNode) Child() RenderNode {
 	return _renderNode
 }
 
-func (n roundedClipNode) Clip() RoundedRect {
+func (n roundedClipNode) Clip() *RoundedRect {
 	var _arg0 *C.GskRenderNode  // out
 	var _cret *C.GskRoundedRect // in
 
@@ -2040,9 +2040,9 @@ func (n roundedClipNode) Clip() RoundedRect {
 
 	_cret = C.gsk_rounded_clip_node_get_clip(_arg0)
 
-	var _roundedRect RoundedRect // out
+	var _roundedRect *RoundedRect // out
 
-	_roundedRect = (RoundedRect)(unsafe.Pointer(_cret))
+	_roundedRect = (*RoundedRect)(unsafe.Pointer(_cret))
 
 	return _roundedRect
 }
@@ -2057,7 +2057,7 @@ type ShadowNode interface {
 	// NShadows retrieves the number of shadows in the @node.
 	NShadows() uint
 	// Shadow retrieves the shadow data at the given index @i.
-	Shadow(i uint) Shadow
+	Shadow(i uint) *Shadow
 }
 
 // shadowNode implements the ShadowNode class.
@@ -2130,7 +2130,7 @@ func (n shadowNode) NShadows() uint {
 	return _gsize
 }
 
-func (n shadowNode) Shadow(i uint) Shadow {
+func (n shadowNode) Shadow(i uint) *Shadow {
 	var _arg0 *C.GskRenderNode // out
 	var _arg1 C.gsize          // out
 	var _cret *C.GskShadow     // in
@@ -2140,9 +2140,9 @@ func (n shadowNode) Shadow(i uint) Shadow {
 
 	_cret = C.gsk_shadow_node_get_shadow(_arg0, _arg1)
 
-	var _shadow Shadow // out
+	var _shadow *Shadow // out
 
-	_shadow = (Shadow)(unsafe.Pointer(_cret))
+	_shadow = (*Shadow)(unsafe.Pointer(_cret))
 
 	return _shadow
 }
@@ -2152,13 +2152,13 @@ type TextNode interface {
 	RenderNode
 
 	// Color retrieves the color used by the text @node.
-	Color() gdk.RGBA
+	Color() *gdk.RGBA
 	// Font returns the font used by the text @node.
 	Font() pango.Font
 	// NumGlyphs retrieves the number of glyphs in the text node.
 	NumGlyphs() uint
 	// Offset retrieves the offset applied to the text.
-	Offset() graphene.Point
+	Offset() *graphene.Point
 	// HasColorGlyphsTextNode checks whether the text @node has color glyphs.
 	HasColorGlyphsTextNode() bool
 }
@@ -2185,7 +2185,7 @@ func marshalTextNode(p uintptr) (interface{}, error) {
 // NewTextNode creates a render node that renders the given glyphs.
 //
 // Note that @color may not be used if the font contains color glyphs.
-func NewTextNode(font pango.Font, glyphs pango.GlyphString, color gdk.RGBA, offset graphene.Point) TextNode {
+func NewTextNode(font pango.Font, glyphs *pango.GlyphString, color *gdk.RGBA, offset *graphene.Point) TextNode {
 	var _arg1 *C.PangoFont        // out
 	var _arg2 *C.PangoGlyphString // out
 	var _arg3 *C.GdkRGBA          // out
@@ -2206,7 +2206,7 @@ func NewTextNode(font pango.Font, glyphs pango.GlyphString, color gdk.RGBA, offs
 	return _textNode
 }
 
-func (n textNode) Color() gdk.RGBA {
+func (n textNode) Color() *gdk.RGBA {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GdkRGBA       // in
 
@@ -2214,9 +2214,9 @@ func (n textNode) Color() gdk.RGBA {
 
 	_cret = C.gsk_text_node_get_color(_arg0)
 
-	var _rgbA gdk.RGBA // out
+	var _rgbA *gdk.RGBA // out
 
-	_rgbA = (gdk.RGBA)(unsafe.Pointer(_cret))
+	_rgbA = (*gdk.RGBA)(unsafe.Pointer(_cret))
 
 	return _rgbA
 }
@@ -2251,7 +2251,7 @@ func (n textNode) NumGlyphs() uint {
 	return _guint
 }
 
-func (n textNode) Offset() graphene.Point {
+func (n textNode) Offset() *graphene.Point {
 	var _arg0 *C.GskRenderNode    // out
 	var _cret *C.graphene_point_t // in
 
@@ -2259,9 +2259,9 @@ func (n textNode) Offset() graphene.Point {
 
 	_cret = C.gsk_text_node_get_offset(_arg0)
 
-	var _point graphene.Point // out
+	var _point *graphene.Point // out
 
-	_point = (graphene.Point)(unsafe.Pointer(_cret))
+	_point = (*graphene.Point)(unsafe.Pointer(_cret))
 
 	return _point
 }
@@ -2313,7 +2313,7 @@ func marshalTextureNode(p uintptr) (interface{}, error) {
 
 // NewTextureNode creates a `GskRenderNode` that will render the given @texture
 // into the area given by @bounds.
-func NewTextureNode(texture gdk.Texture, bounds graphene.Rect) TextureNode {
+func NewTextureNode(texture gdk.Texture, bounds *graphene.Rect) TextureNode {
 	var _arg1 *C.GdkTexture      // out
 	var _arg2 *C.graphene_rect_t // out
 	var _cret *C.GskRenderNode   // in
@@ -2353,7 +2353,7 @@ type TransformNode interface {
 	// Child gets the child node that is getting transformed by the given @node.
 	Child() RenderNode
 	// Transform retrieves the `GskTransform` used by the @node.
-	Transform() Transform
+	Transform() *Transform
 }
 
 // transformNode implements the TransformNode class.
@@ -2377,7 +2377,7 @@ func marshalTransformNode(p uintptr) (interface{}, error) {
 
 // NewTransformNode creates a `GskRenderNode` that will transform the given
 // @child with the given @transform.
-func NewTransformNode(child RenderNode, transform Transform) TransformNode {
+func NewTransformNode(child RenderNode, transform *Transform) TransformNode {
 	var _arg1 *C.GskRenderNode // out
 	var _arg2 *C.GskTransform  // out
 	var _cret *C.GskRenderNode // in
@@ -2409,7 +2409,7 @@ func (n transformNode) Child() RenderNode {
 	return _renderNode
 }
 
-func (n transformNode) Transform() Transform {
+func (n transformNode) Transform() *Transform {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GskTransform  // in
 
@@ -2417,9 +2417,9 @@ func (n transformNode) Transform() Transform {
 
 	_cret = C.gsk_transform_node_get_transform(_arg0)
 
-	var _transform Transform // out
+	var _transform *Transform // out
 
-	_transform = (Transform)(unsafe.Pointer(_cret))
+	_transform = (*Transform)(unsafe.Pointer(_cret))
 	C.gsk_transform_ref(_cret)
 
 	return _transform

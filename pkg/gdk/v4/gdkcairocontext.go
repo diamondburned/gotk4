@@ -40,7 +40,7 @@ type CairoContext interface {
 	//
 	// The returned context is guaranteed to be valid until
 	// [method@Gdk.DrawContext.end_frame] is called.
-	CairoCreateCairoContext() cairo.Context
+	CairoCreateCairoContext() *cairo.Context
 }
 
 // cairoContext implements the CairoContext class.
@@ -62,7 +62,7 @@ func marshalCairoContext(p uintptr) (interface{}, error) {
 	return WrapCairoContext(obj), nil
 }
 
-func (s cairoContext) CairoCreateCairoContext() cairo.Context {
+func (s cairoContext) CairoCreateCairoContext() *cairo.Context {
 	var _arg0 *C.GdkCairoContext // out
 	var _cret *C.cairo_t         // in
 
@@ -70,10 +70,10 @@ func (s cairoContext) CairoCreateCairoContext() cairo.Context {
 
 	_cret = C.gdk_cairo_context_cairo_create(_arg0)
 
-	var _context cairo.Context // out
+	var _context *cairo.Context // out
 
-	_context = (cairo.Context)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_context, func(v cairo.Context) {
+	_context = (*cairo.Context)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_context, func(v *cairo.Context) {
 		C.free(unsafe.Pointer(v))
 	})
 

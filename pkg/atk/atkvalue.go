@@ -171,7 +171,7 @@ type Value interface {
 	// Deprecated: since version .
 	MinimumValue() externglib.Value
 	// Range gets the range of this object.
-	Range() Range
+	Range() *Range
 	// ValueAndText gets the current value and the human readable text
 	// alternative of @obj. @text is a newly created string, that must be freed
 	// by the caller. Can be NULL if no descriptor is available.
@@ -219,15 +219,25 @@ func marshalValue(p uintptr) (interface{}, error) {
 
 func (o value) CurrentValue() externglib.Value {
 	var _arg0 *C.AtkValue // out
-	var _arg1 *C.GValue   // in
+	var _arg1 C.GValue    // in
 
 	_arg0 = (*C.AtkValue)(unsafe.Pointer(o.Native()))
 
-	C.atk_value_get_current_value(_arg0, _arg1)
+	C.atk_value_get_current_value(_arg0, &_arg1)
 
 	var _value externglib.Value // out
 
-	_value = externglib.ValueFromNative(unsafe.Pointer(_arg1))
+	{
+		var refTmpIn *C.GValue
+		var refTmpOut *externglib.Value
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = externglib.ValueFromNative(unsafe.Pointer(refTmpIn))
+
+		_value = *refTmpOut
+	}
 
 	return _value
 }
@@ -249,50 +259,80 @@ func (o value) Increment() float64 {
 
 func (o value) MaximumValue() externglib.Value {
 	var _arg0 *C.AtkValue // out
-	var _arg1 *C.GValue   // in
+	var _arg1 C.GValue    // in
 
 	_arg0 = (*C.AtkValue)(unsafe.Pointer(o.Native()))
 
-	C.atk_value_get_maximum_value(_arg0, _arg1)
+	C.atk_value_get_maximum_value(_arg0, &_arg1)
 
 	var _value externglib.Value // out
 
-	_value = externglib.ValueFromNative(unsafe.Pointer(_arg1))
+	{
+		var refTmpIn *C.GValue
+		var refTmpOut *externglib.Value
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = externglib.ValueFromNative(unsafe.Pointer(refTmpIn))
+
+		_value = *refTmpOut
+	}
 
 	return _value
 }
 
 func (o value) MinimumIncrement() externglib.Value {
 	var _arg0 *C.AtkValue // out
-	var _arg1 *C.GValue   // in
+	var _arg1 C.GValue    // in
 
 	_arg0 = (*C.AtkValue)(unsafe.Pointer(o.Native()))
 
-	C.atk_value_get_minimum_increment(_arg0, _arg1)
+	C.atk_value_get_minimum_increment(_arg0, &_arg1)
 
 	var _value externglib.Value // out
 
-	_value = externglib.ValueFromNative(unsafe.Pointer(_arg1))
+	{
+		var refTmpIn *C.GValue
+		var refTmpOut *externglib.Value
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = externglib.ValueFromNative(unsafe.Pointer(refTmpIn))
+
+		_value = *refTmpOut
+	}
 
 	return _value
 }
 
 func (o value) MinimumValue() externglib.Value {
 	var _arg0 *C.AtkValue // out
-	var _arg1 *C.GValue   // in
+	var _arg1 C.GValue    // in
 
 	_arg0 = (*C.AtkValue)(unsafe.Pointer(o.Native()))
 
-	C.atk_value_get_minimum_value(_arg0, _arg1)
+	C.atk_value_get_minimum_value(_arg0, &_arg1)
 
 	var _value externglib.Value // out
 
-	_value = externglib.ValueFromNative(unsafe.Pointer(_arg1))
+	{
+		var refTmpIn *C.GValue
+		var refTmpOut *externglib.Value
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = externglib.ValueFromNative(unsafe.Pointer(refTmpIn))
+
+		_value = *refTmpOut
+	}
 
 	return _value
 }
 
-func (o value) Range() Range {
+func (o value) Range() *Range {
 	var _arg0 *C.AtkValue // out
 	var _cret *C.AtkRange // in
 
@@ -300,10 +340,10 @@ func (o value) Range() Range {
 
 	_cret = C.atk_value_get_range(_arg0)
 
-	var __range Range // out
+	var __range *Range // out
 
-	__range = (Range)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(__range, func(v Range) {
+	__range = (*Range)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(__range, func(v *Range) {
 		C.atk_range_free((*C.AtkRange)(unsafe.Pointer(v)))
 	})
 
@@ -312,8 +352,8 @@ func (o value) Range() Range {
 
 func (o value) ValueAndText() (float64, string) {
 	var _arg0 *C.AtkValue // out
-	var _arg1 *C.gdouble  // in
-	var _arg2 **C.gchar   // in
+	var _arg1 C.gdouble   // in
+	var _arg2 *C.gchar    // in
 
 	_arg0 = (*C.AtkValue)(unsafe.Pointer(o.Native()))
 
@@ -323,17 +363,8 @@ func (o value) ValueAndText() (float64, string) {
 	var _text string   // out
 
 	_value = float64(_arg1)
-	{
-		var refTmpIn *C.gchar
-		var refTmpOut string
-
-		refTmpIn = *_arg2
-
-		refTmpOut = C.GoString(refTmpIn)
-		defer C.free(unsafe.Pointer(refTmpIn))
-
-		_text = refTmpOut
-	}
+	_text = C.GoString(_arg2)
+	defer C.free(unsafe.Pointer(_arg2))
 
 	return _value, _text
 }

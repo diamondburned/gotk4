@@ -54,15 +54,15 @@ func marshalBitset(p uintptr) (interface{}, error) {
 }
 
 // NewBitsetEmpty constructs a struct Bitset.
-func NewBitsetEmpty() Bitset {
+func NewBitsetEmpty() *Bitset {
 	var _cret *C.GtkBitset // in
 
 	_cret = C.gtk_bitset_new_empty()
 
-	var _bitset Bitset // out
+	var _bitset *Bitset // out
 
-	_bitset = (Bitset)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_bitset, func(v Bitset) {
+	_bitset = (*Bitset)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_bitset, func(v *Bitset) {
 		C.gtk_bitset_unref((*C.GtkBitset)(unsafe.Pointer(v)))
 	})
 
@@ -70,7 +70,7 @@ func NewBitsetEmpty() Bitset {
 }
 
 // NewBitsetRange constructs a struct Bitset.
-func NewBitsetRange(start uint, nItems uint) Bitset {
+func NewBitsetRange(start uint, nItems uint) *Bitset {
 	var _arg1 C.guint      // out
 	var _arg2 C.guint      // out
 	var _cret *C.GtkBitset // in
@@ -80,10 +80,10 @@ func NewBitsetRange(start uint, nItems uint) Bitset {
 
 	_cret = C.gtk_bitset_new_range(_arg1, _arg2)
 
-	var _bitset Bitset // out
+	var _bitset *Bitset // out
 
-	_bitset = (Bitset)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_bitset, func(v Bitset) {
+	_bitset = (*Bitset)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_bitset, func(v *Bitset) {
 		C.gtk_bitset_unref((*C.GtkBitset)(unsafe.Pointer(v)))
 	})
 
@@ -183,7 +183,7 @@ func (s *Bitset) Contains(value uint) bool {
 }
 
 // Copy creates a copy of @self.
-func (s *Bitset) Copy() Bitset {
+func (s *Bitset) Copy() *Bitset {
 	var _arg0 *C.GtkBitset // out
 	var _cret *C.GtkBitset // in
 
@@ -191,10 +191,10 @@ func (s *Bitset) Copy() Bitset {
 
 	_cret = C.gtk_bitset_copy(_arg0)
 
-	var _bitset Bitset // out
+	var _bitset *Bitset // out
 
-	_bitset = (Bitset)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_bitset, func(v Bitset) {
+	_bitset = (*Bitset)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_bitset, func(v *Bitset) {
 		C.gtk_bitset_unref((*C.GtkBitset)(unsafe.Pointer(v)))
 	})
 
@@ -209,7 +209,7 @@ func (s *Bitset) Copy() Bitset {
 //
 // It is allowed for @self and @other to be the same bitset. The bitset will be
 // emptied in that case.
-func (s *Bitset) Difference(other Bitset) {
+func (s *Bitset) Difference(other *Bitset) {
 	var _arg0 *C.GtkBitset // out
 	var _arg1 *C.GtkBitset // out
 
@@ -220,7 +220,7 @@ func (s *Bitset) Difference(other Bitset) {
 }
 
 // Equals returns true if @self and @other contain the same values.
-func (s *Bitset) Equals(other Bitset) bool {
+func (s *Bitset) Equals(other *Bitset) bool {
 	var _arg0 *C.GtkBitset // out
 	var _arg1 *C.GtkBitset // out
 	var _cret C.gboolean   // in
@@ -348,7 +348,7 @@ func (s *Bitset) SizeInRange(first uint, last uint) uint64 {
 //
 // It is allowed for @self and @other to be the same bitset. Nothing will happen
 // in that case.
-func (s *Bitset) Intersect(other Bitset) {
+func (s *Bitset) Intersect(other *Bitset) {
 	var _arg0 *C.GtkBitset // out
 	var _arg1 *C.GtkBitset // out
 
@@ -377,7 +377,7 @@ func (s *Bitset) IsEmpty() bool {
 }
 
 // Ref acquires a reference on the given `GtkBitset`.
-func (s *Bitset) Ref() Bitset {
+func (s *Bitset) Ref() *Bitset {
 	var _arg0 *C.GtkBitset // out
 	var _cret *C.GtkBitset // in
 
@@ -385,9 +385,9 @@ func (s *Bitset) Ref() Bitset {
 
 	_cret = C.gtk_bitset_ref(_arg0)
 
-	var _bitset Bitset // out
+	var _bitset *Bitset // out
 
-	_bitset = (Bitset)(unsafe.Pointer(_cret))
+	_bitset = (*Bitset)(unsafe.Pointer(_cret))
 	C.gtk_bitset_ref(_cret)
 
 	return _bitset
@@ -525,7 +525,7 @@ func (s *Bitset) Splice(position uint, removed uint, added uint) {
 //
 // It is allowed for @self and @other to be the same bitset. The bitset will be
 // emptied in that case.
-func (s *Bitset) Subtract(other Bitset) {
+func (s *Bitset) Subtract(other *Bitset) {
 	var _arg0 *C.GtkBitset // out
 	var _arg1 *C.GtkBitset // out
 
@@ -541,7 +541,7 @@ func (s *Bitset) Subtract(other Bitset) {
 //
 // It is allowed for @self and @other to be the same bitset. Nothing will happen
 // in that case.
-func (s *Bitset) Union(other Bitset) {
+func (s *Bitset) Union(other *Bitset) {
 	var _arg0 *C.GtkBitset // out
 	var _arg1 *C.GtkBitset // out
 

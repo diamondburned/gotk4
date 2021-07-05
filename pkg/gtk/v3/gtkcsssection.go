@@ -136,7 +136,7 @@ func (s *CSSSection) EndPosition() uint {
 // original CSS document that was loaded by gtk_css_provider_load_from_file() or
 // a section of type K_CSS_SECTION_IMPORT if it was loaded with an import rule
 // from a different file.
-func (s *CSSSection) Parent() CSSSection {
+func (s *CSSSection) Parent() *CSSSection {
 	var _arg0 *C.GtkCssSection // out
 	var _cret *C.GtkCssSection // in
 
@@ -144,9 +144,9 @@ func (s *CSSSection) Parent() CSSSection {
 
 	_cret = C.gtk_css_section_get_parent(_arg0)
 
-	var _cssSection CSSSection // out
+	var _cssSection *CSSSection // out
 
-	_cssSection = (CSSSection)(unsafe.Pointer(_cret))
+	_cssSection = (*CSSSection)(unsafe.Pointer(_cret))
 	C.gtk_css_section_ref(_cret)
 
 	return _cssSection
@@ -203,7 +203,7 @@ func (s *CSSSection) StartPosition() uint {
 }
 
 // Ref increments the reference count on @section.
-func (s *CSSSection) Ref() CSSSection {
+func (s *CSSSection) Ref() *CSSSection {
 	var _arg0 *C.GtkCssSection // out
 	var _cret *C.GtkCssSection // in
 
@@ -211,10 +211,10 @@ func (s *CSSSection) Ref() CSSSection {
 
 	_cret = C.gtk_css_section_ref(_arg0)
 
-	var _cssSection CSSSection // out
+	var _cssSection *CSSSection // out
 
-	_cssSection = (CSSSection)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_cssSection, func(v CSSSection) {
+	_cssSection = (*CSSSection)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_cssSection, func(v *CSSSection) {
 		C.gtk_css_section_unref((*C.GtkCssSection)(unsafe.Pointer(v)))
 	})
 

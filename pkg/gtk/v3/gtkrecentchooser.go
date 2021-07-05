@@ -64,7 +64,7 @@ func marshalRecentSortType(p uintptr) (interface{}, error) {
 	return RecentSortType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-type RecentSortFunc func(a RecentInfo, b RecentInfo) (gint int)
+type RecentSortFunc func(a *RecentInfo, b *RecentInfo) (gint int)
 
 //export gotk4_RecentSortFunc
 func gotk4_RecentSortFunc(arg0 *C.GtkRecentInfo, arg1 *C.GtkRecentInfo, arg2 C.gpointer) C.gint {
@@ -73,12 +73,12 @@ func gotk4_RecentSortFunc(arg0 *C.GtkRecentInfo, arg1 *C.GtkRecentInfo, arg2 C.g
 		panic(`callback not found`)
 	}
 
-	var a RecentInfo // out
-	var b RecentInfo // out
+	var a *RecentInfo // out
+	var b *RecentInfo // out
 
-	a = (RecentInfo)(unsafe.Pointer(arg0))
+	a = (*RecentInfo)(unsafe.Pointer(arg0))
 	C.gtk_recent_info_ref(arg0)
-	b = (RecentInfo)(unsafe.Pointer(arg1))
+	b = (*RecentInfo)(unsafe.Pointer(arg1))
 	C.gtk_recent_info_ref(arg1)
 
 	fn := v.(RecentSortFunc)
@@ -107,7 +107,7 @@ type RecentChooser interface {
 	// gtk_recent_chooser_set_filter().
 	AddFilter(filter RecentFilter)
 	// CurrentItem gets the RecentInfo currently selected by @chooser.
-	CurrentItem() RecentInfo
+	CurrentItem() *RecentInfo
 	// CurrentURI gets the URI currently selected by @chooser.
 	CurrentURI() string
 	// Filter gets the RecentFilter object currently used by @chooser to affect
@@ -211,7 +211,7 @@ func (c recentChooser) AddFilter(filter RecentFilter) {
 	C.gtk_recent_chooser_add_filter(_arg0, _arg1)
 }
 
-func (c recentChooser) CurrentItem() RecentInfo {
+func (c recentChooser) CurrentItem() *RecentInfo {
 	var _arg0 *C.GtkRecentChooser // out
 	var _cret *C.GtkRecentInfo    // in
 
@@ -219,10 +219,10 @@ func (c recentChooser) CurrentItem() RecentInfo {
 
 	_cret = C.gtk_recent_chooser_get_current_item(_arg0)
 
-	var _recentInfo RecentInfo // out
+	var _recentInfo *RecentInfo // out
 
-	_recentInfo = (RecentInfo)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_recentInfo, func(v RecentInfo) {
+	_recentInfo = (*RecentInfo)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_recentInfo, func(v *RecentInfo) {
 		C.gtk_recent_info_unref((*C.GtkRecentInfo)(unsafe.Pointer(v)))
 	})
 
@@ -413,7 +413,7 @@ func (c recentChooser) SelectAll() {
 func (c recentChooser) SelectURI(uri string) error {
 	var _arg0 *C.GtkRecentChooser // out
 	var _arg1 *C.gchar            // out
-	var _cerr **C.GError          // in
+	var _cerr *C.GError           // in
 
 	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.gchar)(C.CString(uri))
@@ -423,16 +423,7 @@ func (c recentChooser) SelectURI(uri string) error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
@@ -440,7 +431,7 @@ func (c recentChooser) SelectURI(uri string) error {
 func (c recentChooser) SetCurrentURI(uri string) error {
 	var _arg0 *C.GtkRecentChooser // out
 	var _arg1 *C.gchar            // out
-	var _cerr **C.GError          // in
+	var _cerr *C.GError           // in
 
 	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.gchar)(C.CString(uri))
@@ -450,16 +441,7 @@ func (c recentChooser) SetCurrentURI(uri string) error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }

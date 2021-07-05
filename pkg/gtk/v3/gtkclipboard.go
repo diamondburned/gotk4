@@ -54,7 +54,7 @@ func gotk4_ClipboardImageReceivedFunc(arg0 *C.GtkClipboard, arg1 *C.GdkPixbuf, a
 
 // ClipboardReceivedFunc: function to be called when the results of
 // gtk_clipboard_request_contents() are received, or when the request fails.
-type ClipboardReceivedFunc func(clipboard Clipboard, selectionData SelectionData)
+type ClipboardReceivedFunc func(clipboard Clipboard, selectionData *SelectionData)
 
 //export gotk4_ClipboardReceivedFunc
 func gotk4_ClipboardReceivedFunc(arg0 *C.GtkClipboard, arg1 *C.GtkSelectionData, arg2 C.gpointer) {
@@ -63,11 +63,11 @@ func gotk4_ClipboardReceivedFunc(arg0 *C.GtkClipboard, arg1 *C.GtkSelectionData,
 		panic(`callback not found`)
 	}
 
-	var clipboard Clipboard         // out
-	var selectionData SelectionData // out
+	var clipboard Clipboard          // out
+	var selectionData *SelectionData // out
 
 	clipboard = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0))).(Clipboard)
-	selectionData = (SelectionData)(unsafe.Pointer(arg1))
+	selectionData = (*SelectionData)(unsafe.Pointer(arg1))
 
 	fn := v.(ClipboardReceivedFunc)
 	fn(clipboard, selectionData)

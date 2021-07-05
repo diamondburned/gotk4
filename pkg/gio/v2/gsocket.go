@@ -674,7 +674,7 @@ func NewSocket(family SocketFamily, typ SocketType, protocol SocketProtocol) (So
 	var _arg2 C.GSocketType     // out
 	var _arg3 C.GSocketProtocol // out
 	var _cret *C.GSocket        // in
-	var _cerr **C.GError        // in
+	var _cerr *C.GError         // in
 
 	_arg1 = C.GSocketFamily(family)
 	_arg2 = C.GSocketType(typ)
@@ -686,16 +686,7 @@ func NewSocket(family SocketFamily, typ SocketType, protocol SocketProtocol) (So
 	var _goerr error   // out
 
 	_socket = WrapSocket(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _socket, _goerr
 }
@@ -715,7 +706,7 @@ func NewSocket(family SocketFamily, typ SocketType, protocol SocketProtocol) (So
 func NewSocketFromFd(fd int) (Socket, error) {
 	var _arg1 C.gint     // out
 	var _cret *C.GSocket // in
-	var _cerr **C.GError // in
+	var _cerr *C.GError  // in
 
 	_arg1 = C.gint(fd)
 
@@ -725,16 +716,7 @@ func NewSocketFromFd(fd int) (Socket, error) {
 	var _goerr error   // out
 
 	_socket = WrapSocket(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _socket, _goerr
 }
@@ -743,7 +725,7 @@ func (s socket) AcceptSocket(cancellable Cancellable) (Socket, error) {
 	var _arg0 *C.GSocket      // out
 	var _arg1 *C.GCancellable // out
 	var _cret *C.GSocket      // in
-	var _cerr **C.GError      // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GSocket)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
@@ -754,16 +736,7 @@ func (s socket) AcceptSocket(cancellable Cancellable) (Socket, error) {
 	var _goerr error // out
 
 	_ret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Socket)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _ret, _goerr
 }
@@ -772,7 +745,7 @@ func (s socket) BindSocket(address SocketAddress, allowReuse bool) error {
 	var _arg0 *C.GSocket        // out
 	var _arg1 *C.GSocketAddress // out
 	var _arg2 C.gboolean        // out
-	var _cerr **C.GError        // in
+	var _cerr *C.GError         // in
 
 	_arg0 = (*C.GSocket)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GSocketAddress)(unsafe.Pointer(address.Native()))
@@ -784,23 +757,14 @@ func (s socket) BindSocket(address SocketAddress, allowReuse bool) error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
 
 func (s socket) CheckConnectResultSocket() error {
 	var _arg0 *C.GSocket // out
-	var _cerr **C.GError // in
+	var _cerr *C.GError  // in
 
 	_arg0 = (*C.GSocket)(unsafe.Pointer(s.Native()))
 
@@ -808,23 +772,14 @@ func (s socket) CheckConnectResultSocket() error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
 
 func (s socket) CloseSocket() error {
 	var _arg0 *C.GSocket // out
-	var _cerr **C.GError // in
+	var _cerr *C.GError  // in
 
 	_arg0 = (*C.GSocket)(unsafe.Pointer(s.Native()))
 
@@ -832,16 +787,7 @@ func (s socket) CloseSocket() error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
@@ -868,7 +814,7 @@ func (s socket) ConditionTimedWaitSocket(condition glib.IOCondition, timeoutUs i
 	var _arg1 C.GIOCondition  // out
 	var _arg2 C.gint64        // out
 	var _arg3 *C.GCancellable // out
-	var _cerr **C.GError      // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GSocket)(unsafe.Pointer(s.Native()))
 	_arg1 = C.GIOCondition(condition)
@@ -879,16 +825,7 @@ func (s socket) ConditionTimedWaitSocket(condition glib.IOCondition, timeoutUs i
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
@@ -897,7 +834,7 @@ func (s socket) ConditionWaitSocket(condition glib.IOCondition, cancellable Canc
 	var _arg0 *C.GSocket      // out
 	var _arg1 C.GIOCondition  // out
 	var _arg2 *C.GCancellable // out
-	var _cerr **C.GError      // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GSocket)(unsafe.Pointer(s.Native()))
 	_arg1 = C.GIOCondition(condition)
@@ -907,16 +844,7 @@ func (s socket) ConditionWaitSocket(condition glib.IOCondition, cancellable Canc
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
@@ -925,7 +853,7 @@ func (s socket) ConnectSocket(address SocketAddress, cancellable Cancellable) er
 	var _arg0 *C.GSocket        // out
 	var _arg1 *C.GSocketAddress // out
 	var _arg2 *C.GCancellable   // out
-	var _cerr **C.GError        // in
+	var _cerr *C.GError         // in
 
 	_arg0 = (*C.GSocket)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GSocketAddress)(unsafe.Pointer(address.Native()))
@@ -935,16 +863,7 @@ func (s socket) ConnectSocket(address SocketAddress, cancellable Cancellable) er
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
@@ -1016,7 +935,7 @@ func (s socket) Broadcast() bool {
 func (s socket) Credentials() (Credentials, error) {
 	var _arg0 *C.GSocket      // out
 	var _cret *C.GCredentials // in
-	var _cerr **C.GError      // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GSocket)(unsafe.Pointer(s.Native()))
 
@@ -1026,16 +945,7 @@ func (s socket) Credentials() (Credentials, error) {
 	var _goerr error             // out
 
 	_credentials = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Credentials)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _credentials, _goerr
 }
@@ -1105,7 +1015,7 @@ func (s socket) ListenBacklog() int {
 func (s socket) LocalAddress() (SocketAddress, error) {
 	var _arg0 *C.GSocket        // out
 	var _cret *C.GSocketAddress // in
-	var _cerr **C.GError        // in
+	var _cerr *C.GError         // in
 
 	_arg0 = (*C.GSocket)(unsafe.Pointer(s.Native()))
 
@@ -1115,16 +1025,7 @@ func (s socket) LocalAddress() (SocketAddress, error) {
 	var _goerr error                 // out
 
 	_socketAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(SocketAddress)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _socketAddress, _goerr
 }
@@ -1165,8 +1066,8 @@ func (s socket) Option(level int, optname int) (int, error) {
 	var _arg0 *C.GSocket // out
 	var _arg1 C.gint     // out
 	var _arg2 C.gint     // out
-	var _arg3 *C.gint    // in
-	var _cerr **C.GError // in
+	var _arg3 C.gint     // in
+	var _cerr *C.GError  // in
 
 	_arg0 = (*C.GSocket)(unsafe.Pointer(s.Native()))
 	_arg1 = C.gint(level)
@@ -1178,16 +1079,7 @@ func (s socket) Option(level int, optname int) (int, error) {
 	var _goerr error // out
 
 	_value = int(_arg3)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _value, _goerr
 }
@@ -1210,7 +1102,7 @@ func (s socket) Protocol() SocketProtocol {
 func (s socket) RemoteAddress() (SocketAddress, error) {
 	var _arg0 *C.GSocket        // out
 	var _cret *C.GSocketAddress // in
-	var _cerr **C.GError        // in
+	var _cerr *C.GError         // in
 
 	_arg0 = (*C.GSocket)(unsafe.Pointer(s.Native()))
 
@@ -1220,16 +1112,7 @@ func (s socket) RemoteAddress() (SocketAddress, error) {
 	var _goerr error                 // out
 
 	_socketAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(SocketAddress)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _socketAddress, _goerr
 }
@@ -1318,7 +1201,7 @@ func (s socket) JoinMulticastGroupSocket(group InetAddress, sourceSpecific bool,
 	var _arg1 *C.GInetAddress // out
 	var _arg2 C.gboolean      // out
 	var _arg3 *C.gchar        // out
-	var _cerr **C.GError      // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GSocket)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GInetAddress)(unsafe.Pointer(group.Native()))
@@ -1332,16 +1215,7 @@ func (s socket) JoinMulticastGroupSocket(group InetAddress, sourceSpecific bool,
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
@@ -1351,7 +1225,7 @@ func (s socket) JoinMulticastGroupSSMSocket(group InetAddress, sourceSpecific In
 	var _arg1 *C.GInetAddress // out
 	var _arg2 *C.GInetAddress // out
 	var _arg3 *C.gchar        // out
-	var _cerr **C.GError      // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GSocket)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GInetAddress)(unsafe.Pointer(group.Native()))
@@ -1363,16 +1237,7 @@ func (s socket) JoinMulticastGroupSSMSocket(group InetAddress, sourceSpecific In
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
@@ -1382,7 +1247,7 @@ func (s socket) LeaveMulticastGroupSocket(group InetAddress, sourceSpecific bool
 	var _arg1 *C.GInetAddress // out
 	var _arg2 C.gboolean      // out
 	var _arg3 *C.gchar        // out
-	var _cerr **C.GError      // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GSocket)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GInetAddress)(unsafe.Pointer(group.Native()))
@@ -1396,16 +1261,7 @@ func (s socket) LeaveMulticastGroupSocket(group InetAddress, sourceSpecific bool
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
@@ -1415,7 +1271,7 @@ func (s socket) LeaveMulticastGroupSSMSocket(group InetAddress, sourceSpecific I
 	var _arg1 *C.GInetAddress // out
 	var _arg2 *C.GInetAddress // out
 	var _arg3 *C.gchar        // out
-	var _cerr **C.GError      // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GSocket)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GInetAddress)(unsafe.Pointer(group.Native()))
@@ -1427,23 +1283,14 @@ func (s socket) LeaveMulticastGroupSSMSocket(group InetAddress, sourceSpecific I
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
 
 func (s socket) ListenSocket() error {
 	var _arg0 *C.GSocket // out
-	var _cerr **C.GError // in
+	var _cerr *C.GError  // in
 
 	_arg0 = (*C.GSocket)(unsafe.Pointer(s.Native()))
 
@@ -1451,16 +1298,7 @@ func (s socket) ListenSocket() error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
@@ -1472,7 +1310,7 @@ func (s socket) ReceiveMessagesSocket(messages []InputMessage, flags int, cancel
 	var _arg3 C.gint          // out
 	var _arg4 *C.GCancellable // out
 	var _cret C.gint          // in
-	var _cerr **C.GError      // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GSocket)(unsafe.Pointer(s.Native()))
 	_arg2 = C.guint(len(messages))
@@ -1486,16 +1324,7 @@ func (s socket) ReceiveMessagesSocket(messages []InputMessage, flags int, cancel
 	var _goerr error // out
 
 	_gint = int(_cret)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _gint, _goerr
 }
@@ -1506,7 +1335,7 @@ func (s socket) SendSocket(buffer []byte, cancellable Cancellable) (int, error) 
 	var _arg2 C.gsize
 	var _arg3 *C.GCancellable // out
 	var _cret C.gssize        // in
-	var _cerr **C.GError      // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GSocket)(unsafe.Pointer(s.Native()))
 	_arg2 = C.gsize(len(buffer))
@@ -1519,16 +1348,7 @@ func (s socket) SendSocket(buffer []byte, cancellable Cancellable) (int, error) 
 	var _goerr error // out
 
 	_gssize = int(_cret)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _gssize, _goerr
 }
@@ -1543,7 +1363,7 @@ func (s socket) SendMessageSocket(address SocketAddress, vectors []OutputVector,
 	var _arg6 C.gint          // out
 	var _arg7 *C.GCancellable // out
 	var _cret C.gssize        // in
-	var _cerr **C.GError      // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GSocket)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GSocketAddress)(unsafe.Pointer(address.Native()))
@@ -1567,16 +1387,7 @@ func (s socket) SendMessageSocket(address SocketAddress, vectors []OutputVector,
 	var _goerr error // out
 
 	_gssize = int(_cret)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _gssize, _goerr
 }
@@ -1590,10 +1401,10 @@ func (s socket) SendMessageWithTimeoutSocket(address SocketAddress, vectors []Ou
 	var _arg5 C.gint
 	var _arg6 C.gint            // out
 	var _arg7 C.gint64          // out
-	var _arg8 *C.gsize          // in
+	var _arg8 C.gsize           // in
 	var _arg9 *C.GCancellable   // out
 	var _cret C.GPollableReturn // in
-	var _cerr **C.GError        // in
+	var _cerr *C.GError         // in
 
 	_arg0 = (*C.GSocket)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GSocketAddress)(unsafe.Pointer(address.Native()))
@@ -1620,16 +1431,7 @@ func (s socket) SendMessageWithTimeoutSocket(address SocketAddress, vectors []Ou
 
 	_bytesWritten = uint(_arg8)
 	_pollableReturn = PollableReturn(_cret)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _bytesWritten, _pollableReturn, _goerr
 }
@@ -1641,7 +1443,7 @@ func (s socket) SendMessagesSocket(messages []OutputMessage, flags int, cancella
 	var _arg3 C.gint          // out
 	var _arg4 *C.GCancellable // out
 	var _cret C.gint          // in
-	var _cerr **C.GError      // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GSocket)(unsafe.Pointer(s.Native()))
 	_arg2 = C.guint(len(messages))
@@ -1655,16 +1457,7 @@ func (s socket) SendMessagesSocket(messages []OutputMessage, flags int, cancella
 	var _goerr error // out
 
 	_gint = int(_cret)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _gint, _goerr
 }
@@ -1676,7 +1469,7 @@ func (s socket) SendToSocket(address SocketAddress, buffer []byte, cancellable C
 	var _arg3 C.gsize
 	var _arg4 *C.GCancellable // out
 	var _cret C.gssize        // in
-	var _cerr **C.GError      // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GSocket)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GSocketAddress)(unsafe.Pointer(address.Native()))
@@ -1690,16 +1483,7 @@ func (s socket) SendToSocket(address SocketAddress, buffer []byte, cancellable C
 	var _goerr error // out
 
 	_gssize = int(_cret)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _gssize, _goerr
 }
@@ -1711,7 +1495,7 @@ func (s socket) SendWithBlockingSocket(buffer []byte, blocking bool, cancellable
 	var _arg3 C.gboolean      // out
 	var _arg4 *C.GCancellable // out
 	var _cret C.gssize        // in
-	var _cerr **C.GError      // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GSocket)(unsafe.Pointer(s.Native()))
 	_arg2 = C.gsize(len(buffer))
@@ -1727,16 +1511,7 @@ func (s socket) SendWithBlockingSocket(buffer []byte, blocking bool, cancellable
 	var _goerr error // out
 
 	_gssize = int(_cret)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _gssize, _goerr
 }
@@ -1814,7 +1589,7 @@ func (s socket) SetOptionSocket(level int, optname int, value int) error {
 	var _arg1 C.gint     // out
 	var _arg2 C.gint     // out
 	var _arg3 C.gint     // out
-	var _cerr **C.GError // in
+	var _cerr *C.GError  // in
 
 	_arg0 = (*C.GSocket)(unsafe.Pointer(s.Native()))
 	_arg1 = C.gint(level)
@@ -1825,16 +1600,7 @@ func (s socket) SetOptionSocket(level int, optname int, value int) error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
@@ -1863,7 +1629,7 @@ func (s socket) ShutdownSocket(shutdownRead bool, shutdownWrite bool) error {
 	var _arg0 *C.GSocket // out
 	var _arg1 C.gboolean // out
 	var _arg2 C.gboolean // out
-	var _cerr **C.GError // in
+	var _cerr *C.GError  // in
 
 	_arg0 = (*C.GSocket)(unsafe.Pointer(s.Native()))
 	if shutdownRead {
@@ -1877,16 +1643,7 @@ func (s socket) ShutdownSocket(shutdownRead bool, shutdownWrite bool) error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }

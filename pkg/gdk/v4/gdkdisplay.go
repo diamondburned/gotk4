@@ -442,9 +442,9 @@ func (d display) MapKeycodeDisplay(keycode uint) ([]KeymapKey, []uint, bool) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 C.guint       // out
 	var _arg2 *C.GdkKeymapKey
-	var _arg4 *C.int // in
+	var _arg4 C.int // in
 	var _arg3 *C.guint
-	var _arg4 *C.int     // in
+	var _arg4 C.int      // in
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
@@ -475,7 +475,7 @@ func (d display) MapKeyvalDisplay(keyval uint) ([]KeymapKey, bool) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 C.guint       // out
 	var _arg2 *C.GdkKeymapKey
-	var _arg3 *C.int     // in
+	var _arg3 C.int      // in
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
@@ -544,15 +544,15 @@ func (d display) SyncDisplay() {
 }
 
 func (d display) TranslateKeyDisplay(keycode uint, state ModifierType, group int) (keyval uint, effectiveGroup int, level int, consumed ModifierType, ok bool) {
-	var _arg0 *C.GdkDisplay      // out
-	var _arg1 C.guint            // out
-	var _arg2 C.GdkModifierType  // out
-	var _arg3 C.int              // out
-	var _arg4 *C.guint           // in
-	var _arg5 *C.int             // in
-	var _arg6 *C.int             // in
-	var _arg7 *C.GdkModifierType // in
-	var _cret C.gboolean         // in
+	var _arg0 *C.GdkDisplay     // out
+	var _arg1 C.guint           // out
+	var _arg2 C.GdkModifierType // out
+	var _arg3 C.int             // out
+	var _arg4 C.guint           // in
+	var _arg5 C.int             // in
+	var _arg6 C.int             // in
+	var _arg7 C.GdkModifierType // in
+	var _cret C.gboolean        // in
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 	_arg1 = C.guint(keycode)
@@ -570,16 +570,7 @@ func (d display) TranslateKeyDisplay(keycode uint, state ModifierType, group int
 	_keyval = uint(_arg4)
 	_effectiveGroup = int(_arg5)
 	_level = int(_arg6)
-	{
-		var refTmpIn C.GdkModifierType
-		var refTmpOut ModifierType
-
-		refTmpIn = *_arg7
-
-		refTmpOut = ModifierType(refTmpIn)
-
-		_consumed = refTmpOut
-	}
+	_consumed = ModifierType(_arg7)
 	if _cret != 0 {
 		_ok = true
 	}

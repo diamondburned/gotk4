@@ -42,7 +42,7 @@ type DBusInterface interface {
 	DupObject() DBusObject
 	// Info gets D-Bus introspection information for the D-Bus interface
 	// implemented by @interface_.
-	Info() DBusInterfaceInfo
+	Info() *DBusInterfaceInfo
 	// SetObject sets the BusObject for @interface_ to @object.
 	//
 	// Note that @interface_ will hold a weak reference to @object.
@@ -85,7 +85,7 @@ func (i dBusInterface) DupObject() DBusObject {
 	return _dBusObject
 }
 
-func (i dBusInterface) Info() DBusInterfaceInfo {
+func (i dBusInterface) Info() *DBusInterfaceInfo {
 	var _arg0 *C.GDBusInterface     // out
 	var _cret *C.GDBusInterfaceInfo // in
 
@@ -93,9 +93,9 @@ func (i dBusInterface) Info() DBusInterfaceInfo {
 
 	_cret = C.g_dbus_interface_get_info(_arg0)
 
-	var _dBusInterfaceInfo DBusInterfaceInfo // out
+	var _dBusInterfaceInfo *DBusInterfaceInfo // out
 
-	_dBusInterfaceInfo = (DBusInterfaceInfo)(unsafe.Pointer(_cret))
+	_dBusInterfaceInfo = (*DBusInterfaceInfo)(unsafe.Pointer(_cret))
 	C.g_dbus_interface_info_ref(_cret)
 
 	return _dBusInterfaceInfo

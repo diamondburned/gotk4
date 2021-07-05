@@ -141,7 +141,7 @@ type Entry interface {
 	// Attributes gets the attribute list of the `GtkEntry`.
 	//
 	// See [method@Gtk.Entry.set_attributes].
-	Attributes() pango.AttrList
+	Attributes() *pango.AttrList
 	// Buffer: get the `GtkEntryBuffer` object which holds the text for this
 	// widget.
 	Buffer() EntryBuffer
@@ -217,7 +217,7 @@ type Entry interface {
 	// Tabs gets the tabstops of the `GtkEntry.
 	//
 	// See [method@Gtk.Entry.set_tabs].
-	Tabs() pango.TabArray
+	Tabs() *pango.TabArray
 	// TextLength retrieves the current length of the text in @entry.
 	//
 	// This is equivalent to getting @entry's `GtkEntryBuffer` and calling
@@ -267,7 +267,7 @@ type Entry interface {
 	//
 	// Since the attributes will be applies to text that changes as the user
 	// types, it makes most sense to use attributes with unlimited extent.
-	SetAttributesEntry(attrs pango.AttrList)
+	SetAttributesEntry(attrs *pango.AttrList)
 	// SetBufferEntry: set the `GtkEntryBuffer` object which holds the text for
 	// this widget.
 	SetBufferEntry(buffer EntryBuffer)
@@ -373,7 +373,7 @@ type Entry interface {
 	// SetTabsEntry sets a `PangoTabArray`.
 	//
 	// The tabstops in the array are applied to the entry text.
-	SetTabsEntry(tabs pango.TabArray)
+	SetTabsEntry(tabs *pango.TabArray)
 	// SetVisibilityEntry sets whether the contents of the entry are visible or
 	// not.
 	//
@@ -475,7 +475,7 @@ func (e entry) Alignment() float32 {
 	return _gfloat
 }
 
-func (e entry) Attributes() pango.AttrList {
+func (e entry) Attributes() *pango.AttrList {
 	var _arg0 *C.GtkEntry      // out
 	var _cret *C.PangoAttrList // in
 
@@ -483,9 +483,9 @@ func (e entry) Attributes() pango.AttrList {
 
 	_cret = C.gtk_entry_get_attributes(_arg0)
 
-	var _attrList pango.AttrList // out
+	var _attrList *pango.AttrList // out
 
-	_attrList = (pango.AttrList)(unsafe.Pointer(_cret))
+	_attrList = (*pango.AttrList)(unsafe.Pointer(_cret))
 	C.pango_attr_list_ref(_cret)
 
 	return _attrList
@@ -590,7 +590,7 @@ func (e entry) IconActivatable(iconPos EntryIconPosition) bool {
 func (e entry) IconArea(iconPos EntryIconPosition) gdk.Rectangle {
 	var _arg0 *C.GtkEntry            // out
 	var _arg1 C.GtkEntryIconPosition // out
-	var _arg2 *C.GdkRectangle        // in
+	var _arg2 C.GdkRectangle         // in
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 	_arg1 = C.GtkEntryIconPosition(iconPos)
@@ -599,7 +599,17 @@ func (e entry) IconArea(iconPos EntryIconPosition) gdk.Rectangle {
 
 	var _iconArea gdk.Rectangle // out
 
-	_iconArea = (gdk.Rectangle)(unsafe.Pointer(_arg2))
+	{
+		var refTmpIn *C.GdkRectangle
+		var refTmpOut *gdk.Rectangle
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*gdk.Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_iconArea = *refTmpOut
+	}
 
 	return _iconArea
 }
@@ -834,7 +844,7 @@ func (e entry) ProgressPulseStep() float64 {
 	return _gdouble
 }
 
-func (e entry) Tabs() pango.TabArray {
+func (e entry) Tabs() *pango.TabArray {
 	var _arg0 *C.GtkEntry      // out
 	var _cret *C.PangoTabArray // in
 
@@ -842,9 +852,9 @@ func (e entry) Tabs() pango.TabArray {
 
 	_cret = C.gtk_entry_get_tabs(_arg0)
 
-	var _tabArray pango.TabArray // out
+	var _tabArray *pango.TabArray // out
 
-	_tabArray = (pango.TabArray)(unsafe.Pointer(_cret))
+	_tabArray = (*pango.TabArray)(unsafe.Pointer(_cret))
 
 	return _tabArray
 }
@@ -936,7 +946,7 @@ func (e entry) SetAlignmentEntry(xalign float32) {
 	C.gtk_entry_set_alignment(_arg0, _arg1)
 }
 
-func (e entry) SetAttributesEntry(attrs pango.AttrList) {
+func (e entry) SetAttributesEntry(attrs *pango.AttrList) {
 	var _arg0 *C.GtkEntry      // out
 	var _arg1 *C.PangoAttrList // out
 
@@ -1152,7 +1162,7 @@ func (e entry) SetProgressPulseStepEntry(fraction float64) {
 	C.gtk_entry_set_progress_pulse_step(_arg0, _arg1)
 }
 
-func (e entry) SetTabsEntry(tabs pango.TabArray) {
+func (e entry) SetTabsEntry(tabs *pango.TabArray) {
 	var _arg0 *C.GtkEntry      // out
 	var _arg1 *C.PangoTabArray // out
 

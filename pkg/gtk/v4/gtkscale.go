@@ -349,8 +349,8 @@ func (s scale) Layout() pango.Layout {
 
 func (s scale) LayoutOffsets() (x int, y int) {
 	var _arg0 *C.GtkScale // out
-	var _arg1 *C.int      // in
-	var _arg2 *C.int      // in
+	var _arg1 C.int       // in
+	var _arg2 C.int       // in
 
 	_arg0 = (*C.GtkScale)(unsafe.Pointer(s.Native()))
 

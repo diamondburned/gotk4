@@ -51,7 +51,7 @@ func (c *Color) Native() unsafe.Pointer {
 // The result must be freed using gdk_color_free().
 //
 // Deprecated: since version 3.14.
-func (c *Color) Copy() Color {
+func (c *Color) Copy() *Color {
 	var _arg0 *C.GdkColor // out
 	var _cret *C.GdkColor // in
 
@@ -59,10 +59,10 @@ func (c *Color) Copy() Color {
 
 	_cret = C.gdk_color_copy(_arg0)
 
-	var _ret Color // out
+	var _ret *Color // out
 
-	_ret = (Color)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_ret, func(v Color) {
+	_ret = (*Color)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_ret, func(v *Color) {
 		C.gdk_color_free((*C.GdkColor)(unsafe.Pointer(v)))
 	})
 
@@ -72,7 +72,7 @@ func (c *Color) Copy() Color {
 // Equal compares two colors.
 //
 // Deprecated: since version 3.14.
-func (c *Color) Equal(colorb Color) bool {
+func (c *Color) Equal(colorb *Color) bool {
 	var _arg0 *C.GdkColor // out
 	var _arg1 *C.GdkColor // out
 	var _cret C.gboolean  // in

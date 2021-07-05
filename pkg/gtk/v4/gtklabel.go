@@ -199,7 +199,7 @@ type Label interface {
 	// [method@Gtk.Label.set_markup]). If you want to get the effective
 	// attributes for the label, use `pango_layout_get_attribute
 	// (gtk_label_get_layout (self))`.
-	Attributes() pango.AttrList
+	Attributes() *pango.AttrList
 	// CurrentURI returns the URI for the currently active link in the label.
 	//
 	// The active link is the one under the mouse pointer or, in a selectable
@@ -320,7 +320,7 @@ type Label interface {
 	// properties. While it is not recommended to mix markup strings with
 	// manually set attributes, if you must; know that the attributes will be
 	// applied to the label after the markup string is parsed.
-	SetAttributesLabel(attrs pango.AttrList)
+	SetAttributesLabel(attrs *pango.AttrList)
 	// SetEllipsizeLabel sets the mode used to ellipsizei the text.
 	//
 	// The text will be ellipsized if there is not enough space to render the
@@ -540,7 +540,7 @@ func NewLabelWithMnemonic(str string) Label {
 	return _label
 }
 
-func (s label) Attributes() pango.AttrList {
+func (s label) Attributes() *pango.AttrList {
 	var _arg0 *C.GtkLabel      // out
 	var _cret *C.PangoAttrList // in
 
@@ -548,9 +548,9 @@ func (s label) Attributes() pango.AttrList {
 
 	_cret = C.gtk_label_get_attributes(_arg0)
 
-	var _attrList pango.AttrList // out
+	var _attrList *pango.AttrList // out
 
-	_attrList = (pango.AttrList)(unsafe.Pointer(_cret))
+	_attrList = (*pango.AttrList)(unsafe.Pointer(_cret))
 	C.pango_attr_list_ref(_cret)
 
 	return _attrList
@@ -648,8 +648,8 @@ func (s label) Layout() pango.Layout {
 
 func (s label) LayoutOffsets() (x int, y int) {
 	var _arg0 *C.GtkLabel // out
-	var _arg1 *C.int      // in
-	var _arg2 *C.int      // in
+	var _arg1 C.int       // in
+	var _arg2 C.int       // in
 
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(s.Native()))
 
@@ -743,8 +743,8 @@ func (s label) Selectable() bool {
 
 func (s label) SelectionBounds() (start int, end int, ok bool) {
 	var _arg0 *C.GtkLabel // out
-	var _arg1 *C.int      // in
-	var _arg2 *C.int      // in
+	var _arg1 C.int       // in
+	var _arg2 C.int       // in
 	var _cret C.gboolean  // in
 
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(s.Native()))
@@ -919,7 +919,7 @@ func (s label) SelectRegionLabel(startOffset int, endOffset int) {
 	C.gtk_label_select_region(_arg0, _arg1, _arg2)
 }
 
-func (s label) SetAttributesLabel(attrs pango.AttrList) {
+func (s label) SetAttributesLabel(attrs *pango.AttrList) {
 	var _arg0 *C.GtkLabel      // out
 	var _arg1 *C.PangoAttrList // out
 

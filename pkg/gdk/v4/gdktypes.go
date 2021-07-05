@@ -283,7 +283,7 @@ func marshalContentFormats(p uintptr) (interface{}, error) {
 }
 
 // NewContentFormats constructs a struct ContentFormats.
-func NewContentFormats(mimeTypes []string) ContentFormats {
+func NewContentFormats(mimeTypes []string) *ContentFormats {
 	var _arg1 **C.char
 	var _arg2 C.guint
 	var _cret *C.GdkContentFormats // in
@@ -301,10 +301,10 @@ func NewContentFormats(mimeTypes []string) ContentFormats {
 
 	_cret = C.gdk_content_formats_new(_arg1, _arg2)
 
-	var _contentFormats ContentFormats // out
+	var _contentFormats *ContentFormats // out
 
-	_contentFormats = (ContentFormats)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_contentFormats, func(v ContentFormats) {
+	_contentFormats = (*ContentFormats)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_contentFormats, func(v *ContentFormats) {
 		C.gdk_content_formats_unref((*C.GdkContentFormats)(unsafe.Pointer(v)))
 	})
 
@@ -312,7 +312,7 @@ func NewContentFormats(mimeTypes []string) ContentFormats {
 }
 
 // NewContentFormatsForGType constructs a struct ContentFormats.
-func NewContentFormatsForGType(typ externglib.Type) ContentFormats {
+func NewContentFormatsForGType(typ externglib.Type) *ContentFormats {
 	var _arg1 C.GType              // out
 	var _cret *C.GdkContentFormats // in
 
@@ -320,10 +320,10 @@ func NewContentFormatsForGType(typ externglib.Type) ContentFormats {
 
 	_cret = C.gdk_content_formats_new_for_gtype(_arg1)
 
-	var _contentFormats ContentFormats // out
+	var _contentFormats *ContentFormats // out
 
-	_contentFormats = (ContentFormats)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_contentFormats, func(v ContentFormats) {
+	_contentFormats = (*ContentFormats)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_contentFormats, func(v *ContentFormats) {
 		C.gdk_content_formats_unref((*C.GdkContentFormats)(unsafe.Pointer(v)))
 	})
 
@@ -377,7 +377,7 @@ func (f *ContentFormats) ContainMIMEType(mimeType string) bool {
 }
 
 // Match checks if @first and @second have any matching formats.
-func (f *ContentFormats) Match(second ContentFormats) bool {
+func (f *ContentFormats) Match(second *ContentFormats) bool {
 	var _arg0 *C.GdkContentFormats // out
 	var _arg1 *C.GdkContentFormats // out
 	var _cret C.gboolean           // in
@@ -400,7 +400,7 @@ func (f *ContentFormats) Match(second ContentFormats) bool {
 // @second.
 //
 // If no matching `GType` is found, G_TYPE_INVALID is returned.
-func (f *ContentFormats) MatchGType(second ContentFormats) externglib.Type {
+func (f *ContentFormats) MatchGType(second *ContentFormats) externglib.Type {
 	var _arg0 *C.GdkContentFormats // out
 	var _arg1 *C.GdkContentFormats // out
 	var _cret C.GType              // in
@@ -421,7 +421,7 @@ func (f *ContentFormats) MatchGType(second ContentFormats) externglib.Type {
 // @second.
 //
 // If no matching mime type is found, nil is returned.
-func (f *ContentFormats) MatchMIMEType(second ContentFormats) string {
+func (f *ContentFormats) MatchMIMEType(second *ContentFormats) string {
 	var _arg0 *C.GdkContentFormats // out
 	var _arg1 *C.GdkContentFormats // out
 	var _cret *C.char              // in
@@ -439,7 +439,7 @@ func (f *ContentFormats) MatchMIMEType(second ContentFormats) string {
 }
 
 // Ref increases the reference count of a `GdkContentFormats` by one.
-func (f *ContentFormats) Ref() ContentFormats {
+func (f *ContentFormats) Ref() *ContentFormats {
 	var _arg0 *C.GdkContentFormats // out
 	var _cret *C.GdkContentFormats // in
 
@@ -447,10 +447,10 @@ func (f *ContentFormats) Ref() ContentFormats {
 
 	_cret = C.gdk_content_formats_ref(_arg0)
 
-	var _contentFormats ContentFormats // out
+	var _contentFormats *ContentFormats // out
 
-	_contentFormats = (ContentFormats)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_contentFormats, func(v ContentFormats) {
+	_contentFormats = (*ContentFormats)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_contentFormats, func(v *ContentFormats) {
 		C.gdk_content_formats_unref((*C.GdkContentFormats)(unsafe.Pointer(v)))
 	})
 
@@ -479,7 +479,7 @@ func (f *ContentFormats) String() string {
 
 // Union: append all missing types from @second to @first, in the order they had
 // in @second.
-func (f *ContentFormats) Union(second ContentFormats) ContentFormats {
+func (f *ContentFormats) Union(second *ContentFormats) *ContentFormats {
 	var _arg0 *C.GdkContentFormats // out
 	var _arg1 *C.GdkContentFormats // out
 	var _cret *C.GdkContentFormats // in
@@ -489,10 +489,10 @@ func (f *ContentFormats) Union(second ContentFormats) ContentFormats {
 
 	_cret = C.gdk_content_formats_union(_arg0, _arg1)
 
-	var _contentFormats ContentFormats // out
+	var _contentFormats *ContentFormats // out
 
-	_contentFormats = (ContentFormats)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_contentFormats, func(v ContentFormats) {
+	_contentFormats = (*ContentFormats)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_contentFormats, func(v *ContentFormats) {
 		C.gdk_content_formats_unref((*C.GdkContentFormats)(unsafe.Pointer(v)))
 	})
 
@@ -501,7 +501,7 @@ func (f *ContentFormats) Union(second ContentFormats) ContentFormats {
 
 // UnionDeserializeGTypes: add GTypes for mime types in @formats for which
 // deserializers are registered.
-func (f *ContentFormats) UnionDeserializeGTypes() ContentFormats {
+func (f *ContentFormats) UnionDeserializeGTypes() *ContentFormats {
 	var _arg0 *C.GdkContentFormats // out
 	var _cret *C.GdkContentFormats // in
 
@@ -509,10 +509,10 @@ func (f *ContentFormats) UnionDeserializeGTypes() ContentFormats {
 
 	_cret = C.gdk_content_formats_union_deserialize_gtypes(_arg0)
 
-	var _contentFormats ContentFormats // out
+	var _contentFormats *ContentFormats // out
 
-	_contentFormats = (ContentFormats)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_contentFormats, func(v ContentFormats) {
+	_contentFormats = (*ContentFormats)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_contentFormats, func(v *ContentFormats) {
 		C.gdk_content_formats_unref((*C.GdkContentFormats)(unsafe.Pointer(v)))
 	})
 
@@ -521,7 +521,7 @@ func (f *ContentFormats) UnionDeserializeGTypes() ContentFormats {
 
 // UnionDeserializeMIMETypes: add mime types for GTypes in @formats for which
 // deserializers are registered.
-func (f *ContentFormats) UnionDeserializeMIMETypes() ContentFormats {
+func (f *ContentFormats) UnionDeserializeMIMETypes() *ContentFormats {
 	var _arg0 *C.GdkContentFormats // out
 	var _cret *C.GdkContentFormats // in
 
@@ -529,10 +529,10 @@ func (f *ContentFormats) UnionDeserializeMIMETypes() ContentFormats {
 
 	_cret = C.gdk_content_formats_union_deserialize_mime_types(_arg0)
 
-	var _contentFormats ContentFormats // out
+	var _contentFormats *ContentFormats // out
 
-	_contentFormats = (ContentFormats)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_contentFormats, func(v ContentFormats) {
+	_contentFormats = (*ContentFormats)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_contentFormats, func(v *ContentFormats) {
 		C.gdk_content_formats_unref((*C.GdkContentFormats)(unsafe.Pointer(v)))
 	})
 
@@ -541,7 +541,7 @@ func (f *ContentFormats) UnionDeserializeMIMETypes() ContentFormats {
 
 // UnionSerializeGTypes: add GTypes for the mime types in @formats for which
 // serializers are registered.
-func (f *ContentFormats) UnionSerializeGTypes() ContentFormats {
+func (f *ContentFormats) UnionSerializeGTypes() *ContentFormats {
 	var _arg0 *C.GdkContentFormats // out
 	var _cret *C.GdkContentFormats // in
 
@@ -549,10 +549,10 @@ func (f *ContentFormats) UnionSerializeGTypes() ContentFormats {
 
 	_cret = C.gdk_content_formats_union_serialize_gtypes(_arg0)
 
-	var _contentFormats ContentFormats // out
+	var _contentFormats *ContentFormats // out
 
-	_contentFormats = (ContentFormats)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_contentFormats, func(v ContentFormats) {
+	_contentFormats = (*ContentFormats)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_contentFormats, func(v *ContentFormats) {
 		C.gdk_content_formats_unref((*C.GdkContentFormats)(unsafe.Pointer(v)))
 	})
 
@@ -561,7 +561,7 @@ func (f *ContentFormats) UnionSerializeGTypes() ContentFormats {
 
 // UnionSerializeMIMETypes: add mime types for GTypes in @formats for which
 // serializers are registered.
-func (f *ContentFormats) UnionSerializeMIMETypes() ContentFormats {
+func (f *ContentFormats) UnionSerializeMIMETypes() *ContentFormats {
 	var _arg0 *C.GdkContentFormats // out
 	var _cret *C.GdkContentFormats // in
 
@@ -569,10 +569,10 @@ func (f *ContentFormats) UnionSerializeMIMETypes() ContentFormats {
 
 	_cret = C.gdk_content_formats_union_serialize_mime_types(_arg0)
 
-	var _contentFormats ContentFormats // out
+	var _contentFormats *ContentFormats // out
 
-	_contentFormats = (ContentFormats)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_contentFormats, func(v ContentFormats) {
+	_contentFormats = (*ContentFormats)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_contentFormats, func(v *ContentFormats) {
 		C.gdk_content_formats_unref((*C.GdkContentFormats)(unsafe.Pointer(v)))
 	})
 
@@ -664,7 +664,7 @@ func (r *Rectangle) ContainsPoint(x int, y int) bool {
 }
 
 // Equal checks if the two given rectangles are equal.
-func (r *Rectangle) Equal(rect2 Rectangle) bool {
+func (r *Rectangle) Equal(rect2 *Rectangle) bool {
 	var _arg0 *C.GdkRectangle // out
 	var _arg1 *C.GdkRectangle // out
 	var _cret C.gboolean      // in
@@ -690,10 +690,10 @@ func (r *Rectangle) Equal(rect2 Rectangle) bool {
 // and y values are undefined. If you are only interested in whether the
 // rectangles intersect, but not in the intersecting area itself, pass nil for
 // @dest.
-func (s *Rectangle) Intersect(src2 Rectangle) (Rectangle, bool) {
+func (s *Rectangle) Intersect(src2 *Rectangle) (Rectangle, bool) {
 	var _arg0 *C.GdkRectangle // out
 	var _arg1 *C.GdkRectangle // out
-	var _arg2 *C.GdkRectangle // in
+	var _arg2 C.GdkRectangle  // in
 	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GdkRectangle)(unsafe.Pointer(s))
@@ -704,7 +704,17 @@ func (s *Rectangle) Intersect(src2 Rectangle) (Rectangle, bool) {
 	var _dest Rectangle // out
 	var _ok bool        // out
 
-	_dest = (Rectangle)(unsafe.Pointer(_arg2))
+	{
+		var refTmpIn *C.GdkRectangle
+		var refTmpOut *Rectangle
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_dest = *refTmpOut
+	}
 	if _cret != 0 {
 		_ok = true
 	}
@@ -720,10 +730,10 @@ func (s *Rectangle) Intersect(src2 Rectangle) (Rectangle, bool) {
 //
 // Note that this function does not ignore 'empty' rectangles (ie. with zero
 // width or height).
-func (s *Rectangle) Union(src2 Rectangle) Rectangle {
+func (s *Rectangle) Union(src2 *Rectangle) Rectangle {
 	var _arg0 *C.GdkRectangle // out
 	var _arg1 *C.GdkRectangle // out
-	var _arg2 *C.GdkRectangle // in
+	var _arg2 C.GdkRectangle  // in
 
 	_arg0 = (*C.GdkRectangle)(unsafe.Pointer(s))
 	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(src2))
@@ -732,7 +742,17 @@ func (s *Rectangle) Union(src2 Rectangle) Rectangle {
 
 	var _dest Rectangle // out
 
-	_dest = (Rectangle)(unsafe.Pointer(_arg2))
+	{
+		var refTmpIn *C.GdkRectangle
+		var refTmpOut *Rectangle
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_dest = *refTmpOut
+	}
 
 	return _dest
 }

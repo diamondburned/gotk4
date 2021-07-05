@@ -336,8 +336,8 @@ func (t table) RowSpacing(row uint) uint {
 
 func (t table) Size() (rows uint, columns uint) {
 	var _arg0 *C.GtkTable // out
-	var _arg1 *C.guint    // in
-	var _arg2 *C.guint    // in
+	var _arg1 C.guint     // in
+	var _arg2 C.guint     // in
 
 	_arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
 

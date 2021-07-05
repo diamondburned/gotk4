@@ -75,7 +75,7 @@ type Fontset interface {
 	// Unicode character.
 	Font(wc uint) Font
 	// Metrics: get overall metric information for the fonts in the fontset.
-	Metrics() FontMetrics
+	Metrics() *FontMetrics
 }
 
 // fontset implements the Fontset class.
@@ -126,7 +126,7 @@ func (f fontset) Font(wc uint) Font {
 	return _font
 }
 
-func (f fontset) Metrics() FontMetrics {
+func (f fontset) Metrics() *FontMetrics {
 	var _arg0 *C.PangoFontset     // out
 	var _cret *C.PangoFontMetrics // in
 
@@ -134,10 +134,10 @@ func (f fontset) Metrics() FontMetrics {
 
 	_cret = C.pango_fontset_get_metrics(_arg0)
 
-	var _fontMetrics FontMetrics // out
+	var _fontMetrics *FontMetrics // out
 
-	_fontMetrics = (FontMetrics)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_fontMetrics, func(v FontMetrics) {
+	_fontMetrics = (*FontMetrics)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_fontMetrics, func(v *FontMetrics) {
 		C.pango_font_metrics_unref((*C.PangoFontMetrics)(unsafe.Pointer(v)))
 	})
 
@@ -178,7 +178,7 @@ func marshalFontsetSimple(p uintptr) (interface{}, error) {
 }
 
 // NewFontsetSimple creates a new `PangoFontsetSimple` for the given language.
-func NewFontsetSimple(language Language) FontsetSimple {
+func NewFontsetSimple(language *Language) FontsetSimple {
 	var _arg1 *C.PangoLanguage      // out
 	var _cret *C.PangoFontsetSimple // in
 

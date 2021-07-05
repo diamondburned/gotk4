@@ -176,7 +176,7 @@ func NewPixbufLoader() PixbufLoader {
 func NewPixbufLoaderWithMIMEType(mimeType string) (PixbufLoader, error) {
 	var _arg1 *C.char            // out
 	var _cret *C.GdkPixbufLoader // in
-	var _cerr **C.GError         // in
+	var _cerr *C.GError          // in
 
 	_arg1 = (*C.char)(C.CString(mimeType))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -187,16 +187,7 @@ func NewPixbufLoaderWithMIMEType(mimeType string) (PixbufLoader, error) {
 	var _goerr error               // out
 
 	_pixbufLoader = WrapPixbufLoader(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _pixbufLoader, _goerr
 }
@@ -217,7 +208,7 @@ func NewPixbufLoaderWithMIMEType(mimeType string) (PixbufLoader, error) {
 func NewPixbufLoaderWithType(imageType string) (PixbufLoader, error) {
 	var _arg1 *C.char            // out
 	var _cret *C.GdkPixbufLoader // in
-	var _cerr **C.GError         // in
+	var _cerr *C.GError          // in
 
 	_arg1 = (*C.char)(C.CString(imageType))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -228,23 +219,14 @@ func NewPixbufLoaderWithType(imageType string) (PixbufLoader, error) {
 	var _goerr error               // out
 
 	_pixbufLoader = WrapPixbufLoader(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _pixbufLoader, _goerr
 }
 
 func (l pixbufLoader) ClosePixbufLoader() error {
 	var _arg0 *C.GdkPixbufLoader // out
-	var _cerr **C.GError         // in
+	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer(l.Native()))
 
@@ -252,16 +234,7 @@ func (l pixbufLoader) ClosePixbufLoader() error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
@@ -312,7 +285,7 @@ func (l pixbufLoader) WritePixbufLoader(buf []byte) error {
 	var _arg0 *C.GdkPixbufLoader // out
 	var _arg1 *C.guchar
 	var _arg2 C.gsize
-	var _cerr **C.GError // in
+	var _cerr *C.GError // in
 
 	_arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer(l.Native()))
 	_arg2 = C.gsize(len(buf))
@@ -322,16 +295,7 @@ func (l pixbufLoader) WritePixbufLoader(buf []byte) error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }

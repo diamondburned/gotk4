@@ -100,7 +100,7 @@ func (e socketAddressEnumerator) NextSocketAddressEnumerator(cancellable Cancell
 	var _arg0 *C.GSocketAddressEnumerator // out
 	var _arg1 *C.GCancellable             // out
 	var _cret *C.GSocketAddress           // in
-	var _cerr **C.GError                  // in
+	var _cerr *C.GError                   // in
 
 	_arg0 = (*C.GSocketAddressEnumerator)(unsafe.Pointer(e.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
@@ -111,16 +111,7 @@ func (e socketAddressEnumerator) NextSocketAddressEnumerator(cancellable Cancell
 	var _goerr error                 // out
 
 	_socketAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(SocketAddress)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _socketAddress, _goerr
 }
@@ -143,7 +134,7 @@ func (e socketAddressEnumerator) NextFinishSocketAddressEnumerator(result AsyncR
 	var _arg0 *C.GSocketAddressEnumerator // out
 	var _arg1 *C.GAsyncResult             // out
 	var _cret *C.GSocketAddress           // in
-	var _cerr **C.GError                  // in
+	var _cerr *C.GError                   // in
 
 	_arg0 = (*C.GSocketAddressEnumerator)(unsafe.Pointer(e.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
@@ -154,16 +145,7 @@ func (e socketAddressEnumerator) NextFinishSocketAddressEnumerator(result AsyncR
 	var _goerr error                 // out
 
 	_socketAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(SocketAddress)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _socketAddress, _goerr
 }

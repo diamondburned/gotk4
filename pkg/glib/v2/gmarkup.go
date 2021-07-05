@@ -171,7 +171,7 @@ func (m *MarkupParseContext) Native() unsafe.Pointer {
 // elements are still open.
 func (c *MarkupParseContext) EndParse() error {
 	var _arg0 *C.GMarkupParseContext // out
-	var _cerr **C.GError             // in
+	var _cerr *C.GError              // in
 
 	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c))
 
@@ -179,16 +179,7 @@ func (c *MarkupParseContext) EndParse() error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
@@ -231,8 +222,8 @@ func (c *MarkupParseContext) Element() string {
 // could come up with for error messages."
 func (c *MarkupParseContext) Position() (lineNumber int, charNumber int) {
 	var _arg0 *C.GMarkupParseContext // out
-	var _arg1 *C.gint                // in
-	var _arg2 *C.gint                // in
+	var _arg1 C.gint                 // in
+	var _arg2 C.gint                 // in
 
 	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c))
 
@@ -280,7 +271,7 @@ func (c *MarkupParseContext) Parse(text string, textLen int) error {
 	var _arg0 *C.GMarkupParseContext // out
 	var _arg1 *C.gchar               // out
 	var _arg2 C.gssize               // out
-	var _cerr **C.GError             // in
+	var _cerr *C.GError              // in
 
 	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c))
 	_arg1 = (*C.gchar)(C.CString(text))
@@ -291,16 +282,7 @@ func (c *MarkupParseContext) Parse(text string, textLen int) error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
@@ -375,7 +357,7 @@ func (c *MarkupParseContext) Pop() interface{} {
 //
 //      // else, handle other tags...
 //    }
-func (c *MarkupParseContext) Push(parser MarkupParser, userData interface{}) {
+func (c *MarkupParseContext) Push(parser *MarkupParser, userData interface{}) {
 	var _arg0 *C.GMarkupParseContext // out
 	var _arg1 *C.GMarkupParser       // out
 	var _arg2 C.gpointer             // out
@@ -388,7 +370,7 @@ func (c *MarkupParseContext) Push(parser MarkupParser, userData interface{}) {
 }
 
 // Ref increases the reference count of @context.
-func (c *MarkupParseContext) Ref() MarkupParseContext {
+func (c *MarkupParseContext) Ref() *MarkupParseContext {
 	var _arg0 *C.GMarkupParseContext // out
 	var _cret *C.GMarkupParseContext // in
 
@@ -396,10 +378,10 @@ func (c *MarkupParseContext) Ref() MarkupParseContext {
 
 	_cret = C.g_markup_parse_context_ref(_arg0)
 
-	var _markupParseContext MarkupParseContext // out
+	var _markupParseContext *MarkupParseContext // out
 
-	_markupParseContext = (MarkupParseContext)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_markupParseContext, func(v MarkupParseContext) {
+	_markupParseContext = (*MarkupParseContext)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_markupParseContext, func(v *MarkupParseContext) {
 		C.g_markup_parse_context_unref((*C.GMarkupParseContext)(unsafe.Pointer(v)))
 	})
 

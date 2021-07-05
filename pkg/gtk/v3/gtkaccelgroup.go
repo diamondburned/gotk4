@@ -193,9 +193,9 @@ func AcceleratorNameWithKeycode(display gdk.Display, acceleratorKey uint, keycod
 // If the parse fails, @accelerator_key and @accelerator_mods will be set to 0
 // (zero).
 func AcceleratorParse(accelerator string) (uint, gdk.ModifierType) {
-	var _arg1 *C.gchar           // out
-	var _arg2 *C.guint           // in
-	var _arg3 *C.GdkModifierType // in
+	var _arg1 *C.gchar          // out
+	var _arg2 C.guint           // in
+	var _arg3 C.GdkModifierType // in
 
 	_arg1 = (*C.gchar)(C.CString(accelerator))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -206,16 +206,7 @@ func AcceleratorParse(accelerator string) (uint, gdk.ModifierType) {
 	var _acceleratorMods gdk.ModifierType // out
 
 	_acceleratorKey = uint(_arg2)
-	{
-		var refTmpIn C.GdkModifierType
-		var refTmpOut gdk.ModifierType
-
-		refTmpIn = *_arg3
-
-		refTmpOut = gdk.ModifierType(refTmpIn)
-
-		_acceleratorMods = refTmpOut
-	}
+	_acceleratorMods = gdk.ModifierType(_arg3)
 
 	return _acceleratorKey, _acceleratorMods
 }
@@ -235,9 +226,9 @@ func AcceleratorParse(accelerator string) (uint, gdk.ModifierType) {
 // @accelerator_codes will be set to 0 (zero).
 func AcceleratorParseWithKeycode(accelerator string) (uint, []uint, gdk.ModifierType) {
 	var _arg1 *C.gchar // out
-	var _arg2 *C.guint // in
+	var _arg2 C.guint  // in
 	var _arg3 *C.guint
-	var _arg4 *C.GdkModifierType // in
+	var _arg4 C.GdkModifierType // in
 
 	_arg1 = (*C.gchar)(C.CString(accelerator))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -251,7 +242,7 @@ func AcceleratorParseWithKeycode(accelerator string) (uint, []uint, gdk.Modifier
 	_acceleratorKey = uint(_arg2)
 	{
 		var i int
-		var z *C.guint
+		var z C.guint
 		for p := _arg3; *p != z; p = &unsafe.Slice(p, i+1)[i] {
 			i++
 		}
@@ -262,16 +253,7 @@ func AcceleratorParseWithKeycode(accelerator string) (uint, []uint, gdk.Modifier
 			_acceleratorCodes[i] = uint(src[i])
 		}
 	}
-	{
-		var refTmpIn C.GdkModifierType
-		var refTmpOut gdk.ModifierType
-
-		refTmpIn = *_arg4
-
-		refTmpOut = gdk.ModifierType(refTmpIn)
-
-		_acceleratorMods = refTmpOut
-	}
+	_acceleratorMods = gdk.ModifierType(_arg4)
 
 	return _acceleratorKey, _acceleratorCodes, _acceleratorMods
 }

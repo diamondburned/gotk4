@@ -235,7 +235,7 @@ func (s levelBar) Mode() LevelBarMode {
 func (s levelBar) OffsetValue(name string) (float64, bool) {
 	var _arg0 *C.GtkLevelBar // out
 	var _arg1 *C.gchar       // out
-	var _arg2 *C.gdouble     // in
+	var _arg2 C.gdouble      // in
 	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(s.Native()))

@@ -102,7 +102,7 @@ func marshalTLSCertificate(p uintptr) (interface{}, error) {
 func NewTLSCertificateFromFile(file string) (TLSCertificate, error) {
 	var _arg1 *C.gchar           // out
 	var _cret *C.GTlsCertificate // in
-	var _cerr **C.GError         // in
+	var _cerr *C.GError          // in
 
 	_arg1 = (*C.gchar)(C.CString(file))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -113,16 +113,7 @@ func NewTLSCertificateFromFile(file string) (TLSCertificate, error) {
 	var _goerr error                   // out
 
 	_tlsCertificate = WrapTLSCertificate(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _tlsCertificate, _goerr
 }
@@ -142,7 +133,7 @@ func NewTLSCertificateFromFiles(certFile string, keyFile string) (TLSCertificate
 	var _arg1 *C.gchar           // out
 	var _arg2 *C.gchar           // out
 	var _cret *C.GTlsCertificate // in
-	var _cerr **C.GError         // in
+	var _cerr *C.GError          // in
 
 	_arg1 = (*C.gchar)(C.CString(certFile))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -155,16 +146,7 @@ func NewTLSCertificateFromFiles(certFile string, keyFile string) (TLSCertificate
 	var _goerr error                   // out
 
 	_tlsCertificate = WrapTLSCertificate(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _tlsCertificate, _goerr
 }
@@ -186,7 +168,7 @@ func NewTLSCertificateFromPem(data string, length int) (TLSCertificate, error) {
 	var _arg1 *C.gchar           // out
 	var _arg2 C.gssize           // out
 	var _cret *C.GTlsCertificate // in
-	var _cerr **C.GError         // in
+	var _cerr *C.GError          // in
 
 	_arg1 = (*C.gchar)(C.CString(data))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -198,16 +180,7 @@ func NewTLSCertificateFromPem(data string, length int) (TLSCertificate, error) {
 	var _goerr error                   // out
 
 	_tlsCertificate = WrapTLSCertificate(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _tlsCertificate, _goerr
 }
@@ -238,7 +211,7 @@ func NewTLSCertificateFromPkcs11Uris(pkcs11Uri string, privateKeyPkcs11Uri strin
 	var _arg1 *C.gchar           // out
 	var _arg2 *C.gchar           // out
 	var _cret *C.GTlsCertificate // in
-	var _cerr **C.GError         // in
+	var _cerr *C.GError          // in
 
 	_arg1 = (*C.gchar)(C.CString(pkcs11Uri))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -251,16 +224,7 @@ func NewTLSCertificateFromPkcs11Uris(pkcs11Uri string, privateKeyPkcs11Uri strin
 	var _goerr error                   // out
 
 	_tlsCertificate = WrapTLSCertificate(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _tlsCertificate, _goerr
 }

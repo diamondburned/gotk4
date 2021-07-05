@@ -93,11 +93,11 @@ type Table interface {
 	// SelectedColumns gets the selected columns of the table by initializing
 	// **selected with the selected column numbers. This array should be freed
 	// by the caller.
-	SelectedColumns(selected *int) int
+	SelectedColumns(selected **int) int
 	// SelectedRows gets the selected rows of the table by initializing
 	// **selected with the selected row numbers. This array should be freed by
 	// the caller.
-	SelectedRows(selected *int) int
+	SelectedRows(selected **int) int
 	// Summary gets the summary description of the table.
 	Summary() Object
 	// IsColumnSelected gets a boolean value indicating whether the specified
@@ -395,7 +395,7 @@ func (t table) RowHeader(row int) Object {
 	return _object
 }
 
-func (t table) SelectedColumns(selected *int) int {
+func (t table) SelectedColumns(selected **int) int {
 	var _arg0 *C.AtkTable // out
 	var _arg1 **C.gint    // out
 	var _cret C.gint      // in
@@ -412,7 +412,7 @@ func (t table) SelectedColumns(selected *int) int {
 	return _gint
 }
 
-func (t table) SelectedRows(selected *int) int {
+func (t table) SelectedRows(selected **int) int {
 	var _arg0 *C.AtkTable // out
 	var _arg1 **C.gint    // out
 	var _cret C.gint      // in

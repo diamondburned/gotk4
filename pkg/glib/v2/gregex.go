@@ -383,7 +383,7 @@ func (m *MatchInfo) ExpandReferences(stringToExpand string) (string, error) {
 	var _arg0 *C.GMatchInfo // out
 	var _arg1 *C.gchar      // out
 	var _cret *C.gchar      // in
-	var _cerr **C.GError    // in
+	var _cerr *C.GError     // in
 
 	_arg0 = (*C.GMatchInfo)(unsafe.Pointer(m))
 	_arg1 = (*C.gchar)(C.CString(stringToExpand))
@@ -396,16 +396,7 @@ func (m *MatchInfo) ExpandReferences(stringToExpand string) (string, error) {
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _utf8, _goerr
 }
@@ -521,8 +512,8 @@ func (m *MatchInfo) FetchNamed(name string) string {
 func (m *MatchInfo) FetchNamedPos(name string) (startPos int, endPos int, ok bool) {
 	var _arg0 *C.GMatchInfo // out
 	var _arg1 *C.gchar      // out
-	var _arg2 *C.gint       // in
-	var _arg3 *C.gint       // in
+	var _arg2 C.gint        // in
+	var _arg3 C.gint        // in
 	var _cret C.gboolean    // in
 
 	_arg0 = (*C.GMatchInfo)(unsafe.Pointer(m))
@@ -559,8 +550,8 @@ func (m *MatchInfo) FetchNamedPos(name string) (startPos int, endPos int, ok boo
 func (m *MatchInfo) FetchPos(matchNum int) (startPos int, endPos int, ok bool) {
 	var _arg0 *C.GMatchInfo // out
 	var _arg1 C.gint        // out
-	var _arg2 *C.gint       // in
-	var _arg3 *C.gint       // in
+	var _arg2 C.gint        // in
+	var _arg3 C.gint        // in
 	var _cret C.gboolean    // in
 
 	_arg0 = (*C.GMatchInfo)(unsafe.Pointer(m))
@@ -617,7 +608,7 @@ func (m *MatchInfo) MatchCount() int {
 // Regex returns #GRegex object used in @match_info. It belongs to Glib and must
 // not be freed. Use g_regex_ref() if you need to keep it after you free
 // @match_info object.
-func (m *MatchInfo) Regex() Regex {
+func (m *MatchInfo) Regex() *Regex {
 	var _arg0 *C.GMatchInfo // out
 	var _cret *C.GRegex     // in
 
@@ -625,10 +616,10 @@ func (m *MatchInfo) Regex() Regex {
 
 	_cret = C.g_match_info_get_regex(_arg0)
 
-	var _regex Regex // out
+	var _regex *Regex // out
 
-	_regex = (Regex)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_regex, func(v Regex) {
+	_regex = (*Regex)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_regex, func(v *Regex) {
 		C.g_regex_unref((*C.GRegex)(unsafe.Pointer(v)))
 	})
 
@@ -726,7 +717,7 @@ func (m *MatchInfo) Matches() bool {
 // free it before calling this function.
 func (m *MatchInfo) Next() error {
 	var _arg0 *C.GMatchInfo // out
-	var _cerr **C.GError    // in
+	var _cerr *C.GError     // in
 
 	_arg0 = (*C.GMatchInfo)(unsafe.Pointer(m))
 
@@ -734,22 +725,13 @@ func (m *MatchInfo) Next() error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
 
 // Ref increases reference count of @match_info by 1.
-func (m *MatchInfo) Ref() MatchInfo {
+func (m *MatchInfo) Ref() *MatchInfo {
 	var _arg0 *C.GMatchInfo // out
 	var _cret *C.GMatchInfo // in
 
@@ -757,10 +739,10 @@ func (m *MatchInfo) Ref() MatchInfo {
 
 	_cret = C.g_match_info_ref(_arg0)
 
-	var _matchInfo MatchInfo // out
+	var _matchInfo *MatchInfo // out
 
-	_matchInfo = (MatchInfo)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_matchInfo, func(v MatchInfo) {
+	_matchInfo = (*MatchInfo)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_matchInfo, func(v *MatchInfo) {
 		C.g_match_info_unref((*C.GMatchInfo)(unsafe.Pointer(v)))
 	})
 
@@ -852,12 +834,12 @@ func marshalRegex(p uintptr) (interface{}, error) {
 }
 
 // NewRegex constructs a struct Regex.
-func NewRegex(pattern string, compileOptions RegexCompileFlags, matchOptions RegexMatchFlags) (Regex, error) {
+func NewRegex(pattern string, compileOptions RegexCompileFlags, matchOptions RegexMatchFlags) (*Regex, error) {
 	var _arg1 *C.gchar             // out
 	var _arg2 C.GRegexCompileFlags // out
 	var _arg3 C.GRegexMatchFlags   // out
 	var _cret *C.GRegex            // in
-	var _cerr **C.GError           // in
+	var _cerr *C.GError            // in
 
 	_arg1 = (*C.gchar)(C.CString(pattern))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -866,23 +848,14 @@ func NewRegex(pattern string, compileOptions RegexCompileFlags, matchOptions Reg
 
 	_cret = C.g_regex_new(_arg1, _arg2, _arg3, &_cerr)
 
-	var _regex Regex // out
-	var _goerr error // out
+	var _regex *Regex // out
+	var _goerr error  // out
 
-	_regex = (Regex)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_regex, func(v Regex) {
+	_regex = (*Regex)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_regex, func(v *Regex) {
 		C.g_regex_unref((*C.GRegex)(unsafe.Pointer(v)))
 	})
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _regex, _goerr
 }
@@ -1075,7 +1048,7 @@ func (r *Regex) Match(_string string, matchOptions RegexMatchFlags) (*MatchInfo,
 	var _arg0 *C.GRegex          // out
 	var _arg1 *C.gchar           // out
 	var _arg2 C.GRegexMatchFlags // out
-	var _arg3 **C.GMatchInfo     // in
+	var _arg3 *C.GMatchInfo      // in
 	var _cret C.gboolean         // in
 
 	_arg0 = (*C.GRegex)(unsafe.Pointer(r))
@@ -1088,19 +1061,10 @@ func (r *Regex) Match(_string string, matchOptions RegexMatchFlags) (*MatchInfo,
 	var _matchInfo *MatchInfo // out
 	var _ok bool              // out
 
-	{
-		var refTmpIn *C.GMatchInfo
-		var refTmpOut *MatchInfo
-
-		refTmpIn = *_arg3
-
-		refTmpOut = (*MatchInfo)(unsafe.Pointer(refTmpIn))
-		runtime.SetFinalizer(refTmpOut, func(v *MatchInfo) {
-			C.g_match_info_unref((*C.GMatchInfo)(unsafe.Pointer(v)))
-		})
-
-		_matchInfo = refTmpOut
-	}
+	_matchInfo = (*MatchInfo)(unsafe.Pointer(_arg3))
+	runtime.SetFinalizer(_matchInfo, func(v *MatchInfo) {
+		C.g_match_info_unref((*C.GMatchInfo)(unsafe.Pointer(v)))
+	})
 	if _cret != 0 {
 		_ok = true
 	}
@@ -1125,7 +1089,7 @@ func (r *Regex) MatchAll(_string string, matchOptions RegexMatchFlags) (*MatchIn
 	var _arg0 *C.GRegex          // out
 	var _arg1 *C.gchar           // out
 	var _arg2 C.GRegexMatchFlags // out
-	var _arg3 **C.GMatchInfo     // in
+	var _arg3 *C.GMatchInfo      // in
 	var _cret C.gboolean         // in
 
 	_arg0 = (*C.GRegex)(unsafe.Pointer(r))
@@ -1138,19 +1102,10 @@ func (r *Regex) MatchAll(_string string, matchOptions RegexMatchFlags) (*MatchIn
 	var _matchInfo *MatchInfo // out
 	var _ok bool              // out
 
-	{
-		var refTmpIn *C.GMatchInfo
-		var refTmpOut *MatchInfo
-
-		refTmpIn = *_arg3
-
-		refTmpOut = (*MatchInfo)(unsafe.Pointer(refTmpIn))
-		runtime.SetFinalizer(refTmpOut, func(v *MatchInfo) {
-			C.g_match_info_unref((*C.GMatchInfo)(unsafe.Pointer(v)))
-		})
-
-		_matchInfo = refTmpOut
-	}
+	_matchInfo = (*MatchInfo)(unsafe.Pointer(_arg3))
+	runtime.SetFinalizer(_matchInfo, func(v *MatchInfo) {
+		C.g_match_info_unref((*C.GMatchInfo)(unsafe.Pointer(v)))
+	})
 	if _cret != 0 {
 		_ok = true
 	}
@@ -1198,8 +1153,8 @@ func (r *Regex) MatchAllFull(_string []byte, startPosition int, matchOptions Reg
 	var _arg2 C.gssize
 	var _arg3 C.gint             // out
 	var _arg4 C.GRegexMatchFlags // out
-	var _arg5 **C.GMatchInfo     // in
-	var _cerr **C.GError         // in
+	var _arg5 *C.GMatchInfo      // in
+	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GRegex)(unsafe.Pointer(r))
 	_arg2 = C.gssize(len(_string))
@@ -1212,29 +1167,11 @@ func (r *Regex) MatchAllFull(_string []byte, startPosition int, matchOptions Reg
 	var _matchInfo *MatchInfo // out
 	var _goerr error          // out
 
-	{
-		var refTmpIn *C.GMatchInfo
-		var refTmpOut *MatchInfo
-
-		refTmpIn = *_arg5
-
-		refTmpOut = (*MatchInfo)(unsafe.Pointer(refTmpIn))
-		runtime.SetFinalizer(refTmpOut, func(v *MatchInfo) {
-			C.g_match_info_unref((*C.GMatchInfo)(unsafe.Pointer(v)))
-		})
-
-		_matchInfo = refTmpOut
-	}
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_matchInfo = (*MatchInfo)(unsafe.Pointer(_arg5))
+	runtime.SetFinalizer(_matchInfo, func(v *MatchInfo) {
+		C.g_match_info_unref((*C.GMatchInfo)(unsafe.Pointer(v)))
+	})
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _matchInfo, _goerr
 }
@@ -1293,8 +1230,8 @@ func (r *Regex) MatchFull(_string []byte, startPosition int, matchOptions RegexM
 	var _arg2 C.gssize
 	var _arg3 C.gint             // out
 	var _arg4 C.GRegexMatchFlags // out
-	var _arg5 **C.GMatchInfo     // in
-	var _cerr **C.GError         // in
+	var _arg5 *C.GMatchInfo      // in
+	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GRegex)(unsafe.Pointer(r))
 	_arg2 = C.gssize(len(_string))
@@ -1307,35 +1244,17 @@ func (r *Regex) MatchFull(_string []byte, startPosition int, matchOptions RegexM
 	var _matchInfo *MatchInfo // out
 	var _goerr error          // out
 
-	{
-		var refTmpIn *C.GMatchInfo
-		var refTmpOut *MatchInfo
-
-		refTmpIn = *_arg5
-
-		refTmpOut = (*MatchInfo)(unsafe.Pointer(refTmpIn))
-		runtime.SetFinalizer(refTmpOut, func(v *MatchInfo) {
-			C.g_match_info_unref((*C.GMatchInfo)(unsafe.Pointer(v)))
-		})
-
-		_matchInfo = refTmpOut
-	}
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_matchInfo = (*MatchInfo)(unsafe.Pointer(_arg5))
+	runtime.SetFinalizer(_matchInfo, func(v *MatchInfo) {
+		C.g_match_info_unref((*C.GMatchInfo)(unsafe.Pointer(v)))
+	})
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _matchInfo, _goerr
 }
 
 // Ref increases reference count of @regex by 1.
-func (r *Regex) Ref() Regex {
+func (r *Regex) Ref() *Regex {
 	var _arg0 *C.GRegex // out
 	var _cret *C.GRegex // in
 
@@ -1343,10 +1262,10 @@ func (r *Regex) Ref() Regex {
 
 	_cret = C.g_regex_ref(_arg0)
 
-	var _ret Regex // out
+	var _ret *Regex // out
 
-	_ret = (Regex)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_ret, func(v Regex) {
+	_ret = (*Regex)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_ret, func(v *Regex) {
 		C.g_regex_unref((*C.GRegex)(unsafe.Pointer(v)))
 	})
 
@@ -1384,7 +1303,7 @@ func (r *Regex) Replace(_string []byte, startPosition int, replacement string, m
 	var _arg4 *C.gchar           // out
 	var _arg5 C.GRegexMatchFlags // out
 	var _cret *C.gchar           // in
-	var _cerr **C.GError         // in
+	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GRegex)(unsafe.Pointer(r))
 	_arg2 = C.gssize(len(_string))
@@ -1401,16 +1320,7 @@ func (r *Regex) Replace(_string []byte, startPosition int, replacement string, m
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _utf8, _goerr
 }
@@ -1430,7 +1340,7 @@ func (r *Regex) ReplaceLiteral(_string []byte, startPosition int, replacement st
 	var _arg4 *C.gchar           // out
 	var _arg5 C.GRegexMatchFlags // out
 	var _cret *C.gchar           // in
-	var _cerr **C.GError         // in
+	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GRegex)(unsafe.Pointer(r))
 	_arg2 = C.gssize(len(_string))
@@ -1447,16 +1357,7 @@ func (r *Regex) ReplaceLiteral(_string []byte, startPosition int, replacement st
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _utf8, _goerr
 }
@@ -1538,7 +1439,7 @@ func (r *Regex) SplitFull(_string []byte, startPosition int, matchOptions RegexM
 	var _arg4 C.GRegexMatchFlags // out
 	var _arg5 C.gint             // out
 	var _cret **C.gchar
-	var _cerr **C.GError // in
+	var _cerr *C.GError // in
 
 	_arg0 = (*C.GRegex)(unsafe.Pointer(r))
 	_arg2 = C.gssize(len(_string))
@@ -1566,16 +1467,7 @@ func (r *Regex) SplitFull(_string []byte, startPosition int, matchOptions RegexM
 			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _utf8s, _goerr
 }

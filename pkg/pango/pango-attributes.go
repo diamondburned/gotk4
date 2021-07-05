@@ -212,7 +212,7 @@ func gotk4_AttrDataCopyFunc(arg0 C.gconstpointer) C.gpointer {
 }
 
 // AttrFilterFunc: type of a function filtering a list of attributes.
-type AttrFilterFunc func(attribute Attribute) (ok bool)
+type AttrFilterFunc func(attribute *Attribute) (ok bool)
 
 //export gotk4_AttrFilterFunc
 func gotk4_AttrFilterFunc(arg0 *C.PangoAttribute, arg1 C.gpointer) C.gboolean {
@@ -221,9 +221,9 @@ func gotk4_AttrFilterFunc(arg0 *C.PangoAttribute, arg1 C.gpointer) C.gboolean {
 		panic(`callback not found`)
 	}
 
-	var attribute Attribute // out
+	var attribute *Attribute // out
 
-	attribute = (Attribute)(unsafe.Pointer(arg0))
+	attribute = (*Attribute)(unsafe.Pointer(arg0))
 
 	fn := v.(AttrFilterFunc)
 	ok := fn(attribute)
@@ -241,7 +241,7 @@ func gotk4_AttrFilterFunc(arg0 *C.PangoAttribute, arg1 C.gpointer) C.gboolean {
 //
 // If breaks are disabled, the range will be kept in a single run, as far as
 // possible.
-func NewAttrAllowBreaks(allowBreaks bool) Attribute {
+func NewAttrAllowBreaks(allowBreaks bool) *Attribute {
 	var _arg1 C.gboolean        // out
 	var _cret *C.PangoAttribute // in
 
@@ -251,10 +251,10 @@ func NewAttrAllowBreaks(allowBreaks bool) Attribute {
 
 	_cret = C.pango_attr_allow_breaks_new(_arg1)
 
-	var _attribute Attribute // out
+	var _attribute *Attribute // out
 
-	_attribute = (Attribute)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_attribute, func(v Attribute) {
+	_attribute = (*Attribute)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_attribute, func(v *Attribute) {
 		C.free(unsafe.Pointer(v))
 	})
 
@@ -262,7 +262,7 @@ func NewAttrAllowBreaks(allowBreaks bool) Attribute {
 }
 
 // NewAttrBackgroundAlpha: create a new background alpha attribute.
-func NewAttrBackgroundAlpha(alpha uint16) Attribute {
+func NewAttrBackgroundAlpha(alpha uint16) *Attribute {
 	var _arg1 C.guint16         // out
 	var _cret *C.PangoAttribute // in
 
@@ -270,10 +270,10 @@ func NewAttrBackgroundAlpha(alpha uint16) Attribute {
 
 	_cret = C.pango_attr_background_alpha_new(_arg1)
 
-	var _attribute Attribute // out
+	var _attribute *Attribute // out
 
-	_attribute = (Attribute)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_attribute, func(v Attribute) {
+	_attribute = (*Attribute)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_attribute, func(v *Attribute) {
 		C.free(unsafe.Pointer(v))
 	})
 
@@ -281,7 +281,7 @@ func NewAttrBackgroundAlpha(alpha uint16) Attribute {
 }
 
 // NewAttrBackground: create a new background color attribute.
-func NewAttrBackground(red uint16, green uint16, blue uint16) Attribute {
+func NewAttrBackground(red uint16, green uint16, blue uint16) *Attribute {
 	var _arg1 C.guint16         // out
 	var _arg2 C.guint16         // out
 	var _arg3 C.guint16         // out
@@ -293,10 +293,10 @@ func NewAttrBackground(red uint16, green uint16, blue uint16) Attribute {
 
 	_cret = C.pango_attr_background_new(_arg1, _arg2, _arg3)
 
-	var _attribute Attribute // out
+	var _attribute *Attribute // out
 
-	_attribute = (Attribute)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_attribute, func(v Attribute) {
+	_attribute = (*Attribute)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_attribute, func(v *Attribute) {
 		C.free(unsafe.Pointer(v))
 	})
 
@@ -308,7 +308,7 @@ func NewAttrBackground(red uint16, green uint16, blue uint16) Attribute {
 // If fallback is disabled, characters will only be used from the closest
 // matching font on the system. No fallback will be done to other fonts on the
 // system that might contain the characters in the text.
-func NewAttrFallback(enableFallback bool) Attribute {
+func NewAttrFallback(enableFallback bool) *Attribute {
 	var _arg1 C.gboolean        // out
 	var _cret *C.PangoAttribute // in
 
@@ -318,10 +318,10 @@ func NewAttrFallback(enableFallback bool) Attribute {
 
 	_cret = C.pango_attr_fallback_new(_arg1)
 
-	var _attribute Attribute // out
+	var _attribute *Attribute // out
 
-	_attribute = (Attribute)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_attribute, func(v Attribute) {
+	_attribute = (*Attribute)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_attribute, func(v *Attribute) {
 		C.free(unsafe.Pointer(v))
 	})
 
@@ -329,7 +329,7 @@ func NewAttrFallback(enableFallback bool) Attribute {
 }
 
 // NewAttrFamily: create a new font family attribute.
-func NewAttrFamily(family string) Attribute {
+func NewAttrFamily(family string) *Attribute {
 	var _arg1 *C.char           // out
 	var _cret *C.PangoAttribute // in
 
@@ -338,10 +338,10 @@ func NewAttrFamily(family string) Attribute {
 
 	_cret = C.pango_attr_family_new(_arg1)
 
-	var _attribute Attribute // out
+	var _attribute *Attribute // out
 
-	_attribute = (Attribute)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_attribute, func(v Attribute) {
+	_attribute = (*Attribute)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_attribute, func(v *Attribute) {
 		C.free(unsafe.Pointer(v))
 	})
 
@@ -349,7 +349,7 @@ func NewAttrFamily(family string) Attribute {
 }
 
 // NewAttrForegroundAlpha: create a new foreground alpha attribute.
-func NewAttrForegroundAlpha(alpha uint16) Attribute {
+func NewAttrForegroundAlpha(alpha uint16) *Attribute {
 	var _arg1 C.guint16         // out
 	var _cret *C.PangoAttribute // in
 
@@ -357,10 +357,10 @@ func NewAttrForegroundAlpha(alpha uint16) Attribute {
 
 	_cret = C.pango_attr_foreground_alpha_new(_arg1)
 
-	var _attribute Attribute // out
+	var _attribute *Attribute // out
 
-	_attribute = (Attribute)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_attribute, func(v Attribute) {
+	_attribute = (*Attribute)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_attribute, func(v *Attribute) {
 		C.free(unsafe.Pointer(v))
 	})
 
@@ -368,7 +368,7 @@ func NewAttrForegroundAlpha(alpha uint16) Attribute {
 }
 
 // NewAttrForeground: create a new foreground color attribute.
-func NewAttrForeground(red uint16, green uint16, blue uint16) Attribute {
+func NewAttrForeground(red uint16, green uint16, blue uint16) *Attribute {
 	var _arg1 C.guint16         // out
 	var _arg2 C.guint16         // out
 	var _arg3 C.guint16         // out
@@ -380,10 +380,10 @@ func NewAttrForeground(red uint16, green uint16, blue uint16) Attribute {
 
 	_cret = C.pango_attr_foreground_new(_arg1, _arg2, _arg3)
 
-	var _attribute Attribute // out
+	var _attribute *Attribute // out
 
-	_attribute = (Attribute)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_attribute, func(v Attribute) {
+	_attribute = (*Attribute)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_attribute, func(v *Attribute) {
 		C.free(unsafe.Pointer(v))
 	})
 
@@ -391,7 +391,7 @@ func NewAttrForeground(red uint16, green uint16, blue uint16) Attribute {
 }
 
 // NewAttrGravityHint: create a new gravity hint attribute.
-func NewAttrGravityHint(hint GravityHint) Attribute {
+func NewAttrGravityHint(hint GravityHint) *Attribute {
 	var _arg1 C.PangoGravityHint // out
 	var _cret *C.PangoAttribute  // in
 
@@ -399,10 +399,10 @@ func NewAttrGravityHint(hint GravityHint) Attribute {
 
 	_cret = C.pango_attr_gravity_hint_new(_arg1)
 
-	var _attribute Attribute // out
+	var _attribute *Attribute // out
 
-	_attribute = (Attribute)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_attribute, func(v Attribute) {
+	_attribute = (*Attribute)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_attribute, func(v *Attribute) {
 		C.free(unsafe.Pointer(v))
 	})
 
@@ -410,7 +410,7 @@ func NewAttrGravityHint(hint GravityHint) Attribute {
 }
 
 // NewAttrGravity: create a new gravity attribute.
-func NewAttrGravity(gravity Gravity) Attribute {
+func NewAttrGravity(gravity Gravity) *Attribute {
 	var _arg1 C.PangoGravity    // out
 	var _cret *C.PangoAttribute // in
 
@@ -418,10 +418,10 @@ func NewAttrGravity(gravity Gravity) Attribute {
 
 	_cret = C.pango_attr_gravity_new(_arg1)
 
-	var _attribute Attribute // out
+	var _attribute *Attribute // out
 
-	_attribute = (Attribute)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_attribute, func(v Attribute) {
+	_attribute = (*Attribute)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_attribute, func(v *Attribute) {
 		C.free(unsafe.Pointer(v))
 	})
 
@@ -432,7 +432,7 @@ func NewAttrGravity(gravity Gravity) Attribute {
 //
 // Pango will insert hyphens when breaking lines in the middle of a word. This
 // attribute can be used to suppress the hyphen.
-func NewAttrInsertHyphens(insertHyphens bool) Attribute {
+func NewAttrInsertHyphens(insertHyphens bool) *Attribute {
 	var _arg1 C.gboolean        // out
 	var _cret *C.PangoAttribute // in
 
@@ -442,10 +442,10 @@ func NewAttrInsertHyphens(insertHyphens bool) Attribute {
 
 	_cret = C.pango_attr_insert_hyphens_new(_arg1)
 
-	var _attribute Attribute // out
+	var _attribute *Attribute // out
 
-	_attribute = (Attribute)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_attribute, func(v Attribute) {
+	_attribute = (*Attribute)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_attribute, func(v *Attribute) {
 		C.free(unsafe.Pointer(v))
 	})
 
@@ -453,7 +453,7 @@ func NewAttrInsertHyphens(insertHyphens bool) Attribute {
 }
 
 // NewAttrLetterSpacing: create a new letter-spacing attribute.
-func NewAttrLetterSpacing(letterSpacing int) Attribute {
+func NewAttrLetterSpacing(letterSpacing int) *Attribute {
 	var _arg1 C.int             // out
 	var _cret *C.PangoAttribute // in
 
@@ -461,10 +461,10 @@ func NewAttrLetterSpacing(letterSpacing int) Attribute {
 
 	_cret = C.pango_attr_letter_spacing_new(_arg1)
 
-	var _attribute Attribute // out
+	var _attribute *Attribute // out
 
-	_attribute = (Attribute)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_attribute, func(v Attribute) {
+	_attribute = (*Attribute)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_attribute, func(v *Attribute) {
 		C.free(unsafe.Pointer(v))
 	})
 
@@ -475,7 +475,7 @@ func NewAttrLetterSpacing(letterSpacing int) Attribute {
 //
 // This attribute modifies the color of overlines. If not set, overlines will
 // use the foreground color.
-func NewAttrOverlineColor(red uint16, green uint16, blue uint16) Attribute {
+func NewAttrOverlineColor(red uint16, green uint16, blue uint16) *Attribute {
 	var _arg1 C.guint16         // out
 	var _arg2 C.guint16         // out
 	var _arg3 C.guint16         // out
@@ -487,10 +487,10 @@ func NewAttrOverlineColor(red uint16, green uint16, blue uint16) Attribute {
 
 	_cret = C.pango_attr_overline_color_new(_arg1, _arg2, _arg3)
 
-	var _attribute Attribute // out
+	var _attribute *Attribute // out
 
-	_attribute = (Attribute)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_attribute, func(v Attribute) {
+	_attribute = (*Attribute)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_attribute, func(v *Attribute) {
 		C.free(unsafe.Pointer(v))
 	})
 
@@ -498,7 +498,7 @@ func NewAttrOverlineColor(red uint16, green uint16, blue uint16) Attribute {
 }
 
 // NewAttrOverline: create a new overline-style attribute.
-func NewAttrOverline(overline Overline) Attribute {
+func NewAttrOverline(overline Overline) *Attribute {
 	var _arg1 C.PangoOverline   // out
 	var _cret *C.PangoAttribute // in
 
@@ -506,10 +506,10 @@ func NewAttrOverline(overline Overline) Attribute {
 
 	_cret = C.pango_attr_overline_new(_arg1)
 
-	var _attribute Attribute // out
+	var _attribute *Attribute // out
 
-	_attribute = (Attribute)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_attribute, func(v Attribute) {
+	_attribute = (*Attribute)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_attribute, func(v *Attribute) {
 		C.free(unsafe.Pointer(v))
 	})
 
@@ -517,7 +517,7 @@ func NewAttrOverline(overline Overline) Attribute {
 }
 
 // NewAttrRise: create a new baseline displacement attribute.
-func NewAttrRise(rise int) Attribute {
+func NewAttrRise(rise int) *Attribute {
 	var _arg1 C.int             // out
 	var _cret *C.PangoAttribute // in
 
@@ -525,10 +525,10 @@ func NewAttrRise(rise int) Attribute {
 
 	_cret = C.pango_attr_rise_new(_arg1)
 
-	var _attribute Attribute // out
+	var _attribute *Attribute // out
 
-	_attribute = (Attribute)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_attribute, func(v Attribute) {
+	_attribute = (*Attribute)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_attribute, func(v *Attribute) {
 		C.free(unsafe.Pointer(v))
 	})
 
@@ -539,7 +539,7 @@ func NewAttrRise(rise int) Attribute {
 //
 // The base font for the affected text will have its size multiplied by
 // @scale_factor.
-func NewAttrScale(scaleFactor float64) Attribute {
+func NewAttrScale(scaleFactor float64) *Attribute {
 	var _arg1 C.double          // out
 	var _cret *C.PangoAttribute // in
 
@@ -547,10 +547,10 @@ func NewAttrScale(scaleFactor float64) Attribute {
 
 	_cret = C.pango_attr_scale_new(_arg1)
 
-	var _attribute Attribute // out
+	var _attribute *Attribute // out
 
-	_attribute = (Attribute)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_attribute, func(v Attribute) {
+	_attribute = (*Attribute)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_attribute, func(v *Attribute) {
 		C.free(unsafe.Pointer(v))
 	})
 
@@ -559,7 +559,7 @@ func NewAttrScale(scaleFactor float64) Attribute {
 
 // NewAttrShow: create a new attribute that influences how invisible characters
 // are rendered.
-func NewAttrShow(flags ShowFlags) Attribute {
+func NewAttrShow(flags ShowFlags) *Attribute {
 	var _arg1 C.PangoShowFlags  // out
 	var _cret *C.PangoAttribute // in
 
@@ -567,10 +567,10 @@ func NewAttrShow(flags ShowFlags) Attribute {
 
 	_cret = C.pango_attr_show_new(_arg1)
 
-	var _attribute Attribute // out
+	var _attribute *Attribute // out
 
-	_attribute = (Attribute)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_attribute, func(v Attribute) {
+	_attribute = (*Attribute)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_attribute, func(v *Attribute) {
 		C.free(unsafe.Pointer(v))
 	})
 
@@ -578,7 +578,7 @@ func NewAttrShow(flags ShowFlags) Attribute {
 }
 
 // NewAttrStretch: create a new font stretch attribute.
-func NewAttrStretch(stretch Stretch) Attribute {
+func NewAttrStretch(stretch Stretch) *Attribute {
 	var _arg1 C.PangoStretch    // out
 	var _cret *C.PangoAttribute // in
 
@@ -586,10 +586,10 @@ func NewAttrStretch(stretch Stretch) Attribute {
 
 	_cret = C.pango_attr_stretch_new(_arg1)
 
-	var _attribute Attribute // out
+	var _attribute *Attribute // out
 
-	_attribute = (Attribute)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_attribute, func(v Attribute) {
+	_attribute = (*Attribute)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_attribute, func(v *Attribute) {
 		C.free(unsafe.Pointer(v))
 	})
 
@@ -600,7 +600,7 @@ func NewAttrStretch(stretch Stretch) Attribute {
 //
 // This attribute modifies the color of strikethrough lines. If not set,
 // strikethrough lines will use the foreground color.
-func NewAttrStrikethroughColor(red uint16, green uint16, blue uint16) Attribute {
+func NewAttrStrikethroughColor(red uint16, green uint16, blue uint16) *Attribute {
 	var _arg1 C.guint16         // out
 	var _arg2 C.guint16         // out
 	var _arg3 C.guint16         // out
@@ -612,10 +612,10 @@ func NewAttrStrikethroughColor(red uint16, green uint16, blue uint16) Attribute 
 
 	_cret = C.pango_attr_strikethrough_color_new(_arg1, _arg2, _arg3)
 
-	var _attribute Attribute // out
+	var _attribute *Attribute // out
 
-	_attribute = (Attribute)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_attribute, func(v Attribute) {
+	_attribute = (*Attribute)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_attribute, func(v *Attribute) {
 		C.free(unsafe.Pointer(v))
 	})
 
@@ -623,7 +623,7 @@ func NewAttrStrikethroughColor(red uint16, green uint16, blue uint16) Attribute 
 }
 
 // NewAttrStrikethrough: create a new strike-through attribute.
-func NewAttrStrikethrough(strikethrough bool) Attribute {
+func NewAttrStrikethrough(strikethrough bool) *Attribute {
 	var _arg1 C.gboolean        // out
 	var _cret *C.PangoAttribute // in
 
@@ -633,10 +633,10 @@ func NewAttrStrikethrough(strikethrough bool) Attribute {
 
 	_cret = C.pango_attr_strikethrough_new(_arg1)
 
-	var _attribute Attribute // out
+	var _attribute *Attribute // out
 
-	_attribute = (Attribute)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_attribute, func(v Attribute) {
+	_attribute = (*Attribute)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_attribute, func(v *Attribute) {
 		C.free(unsafe.Pointer(v))
 	})
 
@@ -644,7 +644,7 @@ func NewAttrStrikethrough(strikethrough bool) Attribute {
 }
 
 // NewAttrStyle: create a new font slant style attribute.
-func NewAttrStyle(style Style) Attribute {
+func NewAttrStyle(style Style) *Attribute {
 	var _arg1 C.PangoStyle      // out
 	var _cret *C.PangoAttribute // in
 
@@ -652,10 +652,10 @@ func NewAttrStyle(style Style) Attribute {
 
 	_cret = C.pango_attr_style_new(_arg1)
 
-	var _attribute Attribute // out
+	var _attribute *Attribute // out
 
-	_attribute = (Attribute)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_attribute, func(v Attribute) {
+	_attribute = (*Attribute)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_attribute, func(v *Attribute) {
 		C.free(unsafe.Pointer(v))
 	})
 
@@ -666,7 +666,7 @@ func NewAttrStyle(style Style) Attribute {
 //
 // This attribute modifies the color of underlines. If not set, underlines will
 // use the foreground color.
-func NewAttrUnderlineColor(red uint16, green uint16, blue uint16) Attribute {
+func NewAttrUnderlineColor(red uint16, green uint16, blue uint16) *Attribute {
 	var _arg1 C.guint16         // out
 	var _arg2 C.guint16         // out
 	var _arg3 C.guint16         // out
@@ -678,10 +678,10 @@ func NewAttrUnderlineColor(red uint16, green uint16, blue uint16) Attribute {
 
 	_cret = C.pango_attr_underline_color_new(_arg1, _arg2, _arg3)
 
-	var _attribute Attribute // out
+	var _attribute *Attribute // out
 
-	_attribute = (Attribute)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_attribute, func(v Attribute) {
+	_attribute = (*Attribute)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_attribute, func(v *Attribute) {
 		C.free(unsafe.Pointer(v))
 	})
 
@@ -689,7 +689,7 @@ func NewAttrUnderlineColor(red uint16, green uint16, blue uint16) Attribute {
 }
 
 // NewAttrUnderline: create a new underline-style attribute.
-func NewAttrUnderline(underline Underline) Attribute {
+func NewAttrUnderline(underline Underline) *Attribute {
 	var _arg1 C.PangoUnderline  // out
 	var _cret *C.PangoAttribute // in
 
@@ -697,10 +697,10 @@ func NewAttrUnderline(underline Underline) Attribute {
 
 	_cret = C.pango_attr_underline_new(_arg1)
 
-	var _attribute Attribute // out
+	var _attribute *Attribute // out
 
-	_attribute = (Attribute)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_attribute, func(v Attribute) {
+	_attribute = (*Attribute)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_attribute, func(v *Attribute) {
 		C.free(unsafe.Pointer(v))
 	})
 
@@ -708,7 +708,7 @@ func NewAttrUnderline(underline Underline) Attribute {
 }
 
 // NewAttrVariant: create a new font variant attribute (normal or small caps).
-func NewAttrVariant(variant Variant) Attribute {
+func NewAttrVariant(variant Variant) *Attribute {
 	var _arg1 C.PangoVariant    // out
 	var _cret *C.PangoAttribute // in
 
@@ -716,10 +716,10 @@ func NewAttrVariant(variant Variant) Attribute {
 
 	_cret = C.pango_attr_variant_new(_arg1)
 
-	var _attribute Attribute // out
+	var _attribute *Attribute // out
 
-	_attribute = (Attribute)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_attribute, func(v Attribute) {
+	_attribute = (*Attribute)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_attribute, func(v *Attribute) {
 		C.free(unsafe.Pointer(v))
 	})
 
@@ -727,7 +727,7 @@ func NewAttrVariant(variant Variant) Attribute {
 }
 
 // NewAttrWeight: create a new font weight attribute.
-func NewAttrWeight(weight Weight) Attribute {
+func NewAttrWeight(weight Weight) *Attribute {
 	var _arg1 C.PangoWeight     // out
 	var _cret *C.PangoAttribute // in
 
@@ -735,10 +735,10 @@ func NewAttrWeight(weight Weight) Attribute {
 
 	_cret = C.pango_attr_weight_new(_arg1)
 
-	var _attribute Attribute // out
+	var _attribute *Attribute // out
 
-	_attribute = (Attribute)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_attribute, func(v Attribute) {
+	_attribute = (*Attribute)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_attribute, func(v *Attribute) {
 		C.free(unsafe.Pointer(v))
 	})
 
@@ -751,12 +751,12 @@ func NewAttrWeight(weight Weight) Attribute {
 // g_markup_parse_context_parse(), use this function to get the list of
 // attributes and text out of the markup. This function will not free @context,
 // use g_markup_parse_context_free() to do so.
-func MarkupParserFinish(context glib.MarkupParseContext) (*AttrList, string, uint32, error) {
+func MarkupParserFinish(context *glib.MarkupParseContext) (*AttrList, string, uint32, error) {
 	var _arg1 *C.GMarkupParseContext // out
-	var _arg2 **C.PangoAttrList      // in
-	var _arg3 **C.char               // in
-	var _arg4 *C.gunichar            // in
-	var _cerr **C.GError             // in
+	var _arg2 *C.PangoAttrList       // in
+	var _arg3 *C.char                // in
+	var _arg4 C.gunichar             // in
+	var _cerr *C.GError              // in
 
 	_arg1 = (*C.GMarkupParseContext)(unsafe.Pointer(context))
 
@@ -767,41 +767,14 @@ func MarkupParserFinish(context glib.MarkupParseContext) (*AttrList, string, uin
 	var _accelChar uint32   // out
 	var _goerr error        // out
 
-	{
-		var refTmpIn *C.PangoAttrList
-		var refTmpOut *AttrList
-
-		refTmpIn = *_arg2
-
-		refTmpOut = (*AttrList)(unsafe.Pointer(refTmpIn))
-		runtime.SetFinalizer(refTmpOut, func(v *AttrList) {
-			C.pango_attr_list_unref((*C.PangoAttrList)(unsafe.Pointer(v)))
-		})
-
-		_attrList = refTmpOut
-	}
-	{
-		var refTmpIn *C.char
-		var refTmpOut string
-
-		refTmpIn = *_arg3
-
-		refTmpOut = C.GoString(refTmpIn)
-		defer C.free(unsafe.Pointer(refTmpIn))
-
-		_text = refTmpOut
-	}
+	_attrList = (*AttrList)(unsafe.Pointer(_arg2))
+	runtime.SetFinalizer(_attrList, func(v *AttrList) {
+		C.pango_attr_list_unref((*C.PangoAttrList)(unsafe.Pointer(v)))
+	})
+	_text = C.GoString(_arg3)
+	defer C.free(unsafe.Pointer(_arg3))
 	_accelChar = uint32(_arg4)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _attrList, _text, _accelChar, _goerr
 }
@@ -828,7 +801,7 @@ func MarkupParserFinish(context glib.MarkupParseContext) (*AttrList, string, uin
 // This function is designed for applications that read Pango markup from
 // streams. To simply parse a string containing Pango markup, the
 // [func@parse_markup] API is recommended instead.
-func NewMarkupParser(accelMarker uint32) glib.MarkupParseContext {
+func NewMarkupParser(accelMarker uint32) *glib.MarkupParseContext {
 	var _arg1 C.gunichar             // out
 	var _cret *C.GMarkupParseContext // in
 
@@ -836,9 +809,9 @@ func NewMarkupParser(accelMarker uint32) glib.MarkupParseContext {
 
 	_cret = C.pango_markup_parser_new(_arg1)
 
-	var _markupParseContext glib.MarkupParseContext // out
+	var _markupParseContext *glib.MarkupParseContext // out
 
-	_markupParseContext = (glib.MarkupParseContext)(unsafe.Pointer(_cret))
+	_markupParseContext = (*glib.MarkupParseContext)(unsafe.Pointer(_cret))
 	C.g_markup_parse_context_ref(_cret)
 
 	return _markupParseContext
@@ -863,13 +836,13 @@ func NewMarkupParser(accelMarker uint32) glib.MarkupParseContext {
 // If any error happens, none of the output arguments are touched except for
 // @error.
 func ParseMarkup(markupText string, length int, accelMarker uint32) (*AttrList, string, uint32, error) {
-	var _arg1 *C.char           // out
-	var _arg2 C.int             // out
-	var _arg3 C.gunichar        // out
-	var _arg4 **C.PangoAttrList // in
-	var _arg5 **C.char          // in
-	var _arg6 *C.gunichar       // in
-	var _cerr **C.GError        // in
+	var _arg1 *C.char          // out
+	var _arg2 C.int            // out
+	var _arg3 C.gunichar       // out
+	var _arg4 *C.PangoAttrList // in
+	var _arg5 *C.char          // in
+	var _arg6 C.gunichar       // in
+	var _cerr *C.GError        // in
 
 	_arg1 = (*C.char)(C.CString(markupText))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -883,41 +856,14 @@ func ParseMarkup(markupText string, length int, accelMarker uint32) (*AttrList, 
 	var _accelChar uint32   // out
 	var _goerr error        // out
 
-	{
-		var refTmpIn *C.PangoAttrList
-		var refTmpOut *AttrList
-
-		refTmpIn = *_arg4
-
-		refTmpOut = (*AttrList)(unsafe.Pointer(refTmpIn))
-		runtime.SetFinalizer(refTmpOut, func(v *AttrList) {
-			C.pango_attr_list_unref((*C.PangoAttrList)(unsafe.Pointer(v)))
-		})
-
-		_attrList = refTmpOut
-	}
-	{
-		var refTmpIn *C.char
-		var refTmpOut string
-
-		refTmpIn = *_arg5
-
-		refTmpOut = C.GoString(refTmpIn)
-		defer C.free(unsafe.Pointer(refTmpIn))
-
-		_text = refTmpOut
-	}
+	_attrList = (*AttrList)(unsafe.Pointer(_arg4))
+	runtime.SetFinalizer(_attrList, func(v *AttrList) {
+		C.pango_attr_list_unref((*C.PangoAttrList)(unsafe.Pointer(v)))
+	})
+	_text = C.GoString(_arg5)
+	defer C.free(unsafe.Pointer(_arg5))
 	_accelChar = uint32(_arg6)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _attrList, _text, _accelChar, _goerr
 }
@@ -1036,7 +982,7 @@ func (a *AttrIterator) Native() unsafe.Pointer {
 }
 
 // Copy a `PangoAttrIterator`.
-func (i *AttrIterator) Copy() AttrIterator {
+func (i *AttrIterator) Copy() *AttrIterator {
 	var _arg0 *C.PangoAttrIterator // out
 	var _cret *C.PangoAttrIterator // in
 
@@ -1044,10 +990,10 @@ func (i *AttrIterator) Copy() AttrIterator {
 
 	_cret = C.pango_attr_iterator_copy(_arg0)
 
-	var _attrIterator AttrIterator // out
+	var _attrIterator *AttrIterator // out
 
-	_attrIterator = (AttrIterator)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_attrIterator, func(v AttrIterator) {
+	_attrIterator = (*AttrIterator)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_attrIterator, func(v *AttrIterator) {
 		C.free(unsafe.Pointer(v))
 	})
 
@@ -1066,7 +1012,7 @@ func (i *AttrIterator) Destroy() {
 // Get: find the current attribute of a particular type at the iterator
 // location. When multiple attributes of the same type overlap, the attribute
 // whose range starts closest to the current location is used.
-func (i *AttrIterator) Get(typ AttrType) Attribute {
+func (i *AttrIterator) Get(typ AttrType) *Attribute {
 	var _arg0 *C.PangoAttrIterator // out
 	var _arg1 C.PangoAttrType      // out
 	var _cret *C.PangoAttribute    // in
@@ -1076,9 +1022,9 @@ func (i *AttrIterator) Get(typ AttrType) Attribute {
 
 	_cret = C.pango_attr_iterator_get(_arg0, _arg1)
 
-	var _attribute Attribute // out
+	var _attribute *Attribute // out
 
-	_attribute = (Attribute)(unsafe.Pointer(_cret))
+	_attribute = (*Attribute)(unsafe.Pointer(_cret))
 
 	return _attribute
 }
@@ -1107,8 +1053,8 @@ func (i *AttrIterator) Next() bool {
 // integer are clamped to G_MAXINT.
 func (i *AttrIterator) Range() (start int, end int) {
 	var _arg0 *C.PangoAttrIterator // out
-	var _arg1 *C.gint              // in
-	var _arg2 *C.gint              // in
+	var _arg1 C.gint               // in
+	var _arg2 C.gint               // in
 
 	_arg0 = (*C.PangoAttrIterator)(unsafe.Pointer(i))
 
@@ -1167,15 +1113,15 @@ func marshalAttrList(p uintptr) (interface{}, error) {
 }
 
 // NewAttrList constructs a struct AttrList.
-func NewAttrList() AttrList {
+func NewAttrList() *AttrList {
 	var _cret *C.PangoAttrList // in
 
 	_cret = C.pango_attr_list_new()
 
-	var _attrList AttrList // out
+	var _attrList *AttrList // out
 
-	_attrList = (AttrList)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_attrList, func(v AttrList) {
+	_attrList = (*AttrList)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_attrList, func(v *AttrList) {
 		C.pango_attr_list_unref((*C.PangoAttrList)(unsafe.Pointer(v)))
 	})
 
@@ -1196,7 +1142,7 @@ func (a *AttrList) Native() unsafe.Pointer {
 // attribute list in order (potentially much slower for large lists). However,
 // [method@Pango.AttrList.insert] is not suitable for continually changing a set
 // of attributes since it never removes or combines existing attributes.
-func (l *AttrList) Change(attr Attribute) {
+func (l *AttrList) Change(attr *Attribute) {
 	var _arg0 *C.PangoAttrList  // out
 	var _arg1 *C.PangoAttribute // out
 
@@ -1208,7 +1154,7 @@ func (l *AttrList) Change(attr Attribute) {
 }
 
 // Copy @list and return an identical new list.
-func (l *AttrList) Copy() AttrList {
+func (l *AttrList) Copy() *AttrList {
 	var _arg0 *C.PangoAttrList // out
 	var _cret *C.PangoAttrList // in
 
@@ -1216,10 +1162,10 @@ func (l *AttrList) Copy() AttrList {
 
 	_cret = C.pango_attr_list_copy(_arg0)
 
-	var _attrList AttrList // out
+	var _attrList *AttrList // out
 
-	_attrList = (AttrList)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_attrList, func(v AttrList) {
+	_attrList = (*AttrList)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_attrList, func(v *AttrList) {
 		C.pango_attr_list_unref((*C.PangoAttrList)(unsafe.Pointer(v)))
 	})
 
@@ -1229,7 +1175,7 @@ func (l *AttrList) Copy() AttrList {
 // Equal checks whether @list and @other_list contain the same attributes and
 // whether those attributes apply to the same ranges. Beware that this will
 // return wrong values if any list contains duplicates.
-func (l *AttrList) Equal(otherList AttrList) bool {
+func (l *AttrList) Equal(otherList *AttrList) bool {
 	var _arg0 *C.PangoAttrList // out
 	var _arg1 *C.PangoAttrList // out
 	var _cret C.gboolean       // in
@@ -1250,7 +1196,7 @@ func (l *AttrList) Equal(otherList AttrList) bool {
 
 // Filter: given a `PangoAttrList` and callback function, removes any elements
 // of @list for which @func returns true and inserts them into a new list.
-func (l *AttrList) Filter(fn AttrFilterFunc) AttrList {
+func (l *AttrList) Filter(fn AttrFilterFunc) *AttrList {
 	var _arg0 *C.PangoAttrList      // out
 	var _arg1 C.PangoAttrFilterFunc // out
 	var _arg2 C.gpointer
@@ -1262,10 +1208,10 @@ func (l *AttrList) Filter(fn AttrFilterFunc) AttrList {
 
 	_cret = C.pango_attr_list_filter(_arg0, _arg1, _arg2)
 
-	var _attrList AttrList // out
+	var _attrList *AttrList // out
 
-	_attrList = (AttrList)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_attrList, func(v AttrList) {
+	_attrList = (*AttrList)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_attrList, func(v *AttrList) {
 		C.pango_attr_list_unref((*C.PangoAttrList)(unsafe.Pointer(v)))
 	})
 
@@ -1274,7 +1220,7 @@ func (l *AttrList) Filter(fn AttrFilterFunc) AttrList {
 
 // Iterator: create a iterator initialized to the beginning of the list. @list
 // must not be modified until this iterator is freed.
-func (l *AttrList) Iterator() AttrIterator {
+func (l *AttrList) Iterator() *AttrIterator {
 	var _arg0 *C.PangoAttrList     // out
 	var _cret *C.PangoAttrIterator // in
 
@@ -1282,10 +1228,10 @@ func (l *AttrList) Iterator() AttrIterator {
 
 	_cret = C.pango_attr_list_get_iterator(_arg0)
 
-	var _attrIterator AttrIterator // out
+	var _attrIterator *AttrIterator // out
 
-	_attrIterator = (AttrIterator)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_attrIterator, func(v AttrIterator) {
+	_attrIterator = (*AttrIterator)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_attrIterator, func(v *AttrIterator) {
 		C.free(unsafe.Pointer(v))
 	})
 
@@ -1295,7 +1241,7 @@ func (l *AttrList) Iterator() AttrIterator {
 // Insert the given attribute into the `PangoAttrList`.
 //
 // It will be inserted after all other attributes with a matching @start_index.
-func (l *AttrList) Insert(attr Attribute) {
+func (l *AttrList) Insert(attr *Attribute) {
 	var _arg0 *C.PangoAttrList  // out
 	var _arg1 *C.PangoAttribute // out
 
@@ -1309,7 +1255,7 @@ func (l *AttrList) Insert(attr Attribute) {
 // InsertBefore: insert the given attribute into the `PangoAttrList`.
 //
 // It will be inserted before all other attributes with a matching @start_index.
-func (l *AttrList) InsertBefore(attr Attribute) {
+func (l *AttrList) InsertBefore(attr *Attribute) {
 	var _arg0 *C.PangoAttrList  // out
 	var _arg1 *C.PangoAttribute // out
 
@@ -1321,7 +1267,7 @@ func (l *AttrList) InsertBefore(attr Attribute) {
 }
 
 // Ref: increase the reference count of the given attribute list by one.
-func (l *AttrList) Ref() AttrList {
+func (l *AttrList) Ref() *AttrList {
 	var _arg0 *C.PangoAttrList // out
 	var _cret *C.PangoAttrList // in
 
@@ -1329,10 +1275,10 @@ func (l *AttrList) Ref() AttrList {
 
 	_cret = C.pango_attr_list_ref(_arg0)
 
-	var _attrList AttrList // out
+	var _attrList *AttrList // out
 
-	_attrList = (AttrList)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_attrList, func(v AttrList) {
+	_attrList = (*AttrList)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_attrList, func(v *AttrList) {
 		C.pango_attr_list_unref((*C.PangoAttrList)(unsafe.Pointer(v)))
 	})
 
@@ -1349,7 +1295,7 @@ func (l *AttrList) Ref() AttrList {
 //
 // This operation proves useful for, for instance, inserting a pre-edit string
 // in the middle of an edit buffer.
-func (l *AttrList) Splice(other AttrList, pos int, len int) {
+func (l *AttrList) Splice(other *AttrList, pos int, len int) {
 	var _arg0 *C.PangoAttrList // out
 	var _arg1 *C.PangoAttrList // out
 	var _arg2 C.gint           // out
@@ -1480,7 +1426,7 @@ func (a *Attribute) Native() unsafe.Pointer {
 }
 
 // Copy: make a copy of an attribute.
-func (a *Attribute) Copy() Attribute {
+func (a *Attribute) Copy() *Attribute {
 	var _arg0 *C.PangoAttribute // out
 	var _cret *C.PangoAttribute // in
 
@@ -1488,10 +1434,10 @@ func (a *Attribute) Copy() Attribute {
 
 	_cret = C.pango_attribute_copy(_arg0)
 
-	var _attribute Attribute // out
+	var _attribute *Attribute // out
 
-	_attribute = (Attribute)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_attribute, func(v Attribute) {
+	_attribute = (*Attribute)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_attribute, func(v *Attribute) {
 		C.free(unsafe.Pointer(v))
 	})
 
@@ -1509,7 +1455,7 @@ func (a *Attribute) Destroy() {
 
 // Equal: compare two attributes for equality. This compares only the actual
 // value of the two attributes and not the ranges that the attributes apply to.
-func (a *Attribute) Equal(attr2 Attribute) bool {
+func (a *Attribute) Equal(attr2 *Attribute) bool {
 	var _arg0 *C.PangoAttribute // out
 	var _arg1 *C.PangoAttribute // out
 	var _cret C.gboolean        // in
@@ -1555,7 +1501,7 @@ func (c *Color) Native() unsafe.Pointer {
 // The copy should be freed with pango_color_free(). Primarily used by language
 // bindings, not that useful otherwise (since colors can just be copied by
 // assignment in C).
-func (s *Color) Copy() Color {
+func (s *Color) Copy() *Color {
 	var _arg0 *C.PangoColor // out
 	var _cret *C.PangoColor // in
 
@@ -1563,10 +1509,10 @@ func (s *Color) Copy() Color {
 
 	_cret = C.pango_color_copy(_arg0)
 
-	var _color Color // out
+	var _color *Color // out
 
-	_color = (Color)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_color, func(v Color) {
+	_color = (*Color)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_color, func(v *Color) {
 		C.pango_color_free((*C.PangoColor)(unsafe.Pointer(v)))
 	})
 
@@ -1625,7 +1571,7 @@ func (c *Color) Parse(spec string) bool {
 // @alpha is set to 0xffff (for a solid color).
 func (c *Color) ParseWithAlpha(spec string) (uint16, bool) {
 	var _arg0 *C.PangoColor // out
-	var _arg1 *C.guint16    // in
+	var _arg1 C.guint16     // in
 	var _arg2 *C.char       // out
 	var _cret C.gboolean    // in
 

@@ -374,8 +374,8 @@ func (d device) Source() InputSource {
 
 func (d device) SurfaceAtPosition() (winX float64, winY float64, surface Surface) {
 	var _arg0 *C.GdkDevice  // out
-	var _arg1 *C.double     // in
-	var _arg2 *C.double     // in
+	var _arg1 C.double      // in
+	var _arg2 C.double      // in
 	var _cret *C.GdkSurface // in
 
 	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))

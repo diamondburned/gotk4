@@ -139,7 +139,7 @@ const (
 // On Windows, polling a #GSource created to watch a channel for a socket puts
 // the socket in non-blocking mode. This is a side-effect of the implementation
 // and unavoidable.
-func IOCreateWatch(channel IOChannel, condition IOCondition) Source {
+func IOCreateWatch(channel *IOChannel, condition IOCondition) *Source {
 	var _arg1 *C.GIOChannel  // out
 	var _arg2 C.GIOCondition // out
 	var _cret *C.GSource     // in
@@ -149,10 +149,10 @@ func IOCreateWatch(channel IOChannel, condition IOCondition) Source {
 
 	_cret = C.g_io_create_watch(_arg1, _arg2)
 
-	var _source Source // out
+	var _source *Source // out
 
-	_source = (Source)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_source, func(v Source) {
+	_source = (*Source)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_source, func(v *Source) {
 		C.g_source_unref((*C.GSource)(unsafe.Pointer(v)))
 	})
 
@@ -177,11 +177,11 @@ func marshalIOChannel(p uintptr) (interface{}, error) {
 }
 
 // NewIOChannelFile constructs a struct IOChannel.
-func NewIOChannelFile(filename string, mode string) (IOChannel, error) {
+func NewIOChannelFile(filename string, mode string) (*IOChannel, error) {
 	var _arg1 *C.gchar      // out
 	var _arg2 *C.gchar      // out
 	var _cret *C.GIOChannel // in
-	var _cerr **C.GError    // in
+	var _cerr *C.GError     // in
 
 	_arg1 = (*C.gchar)(C.CString(filename))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -190,29 +190,20 @@ func NewIOChannelFile(filename string, mode string) (IOChannel, error) {
 
 	_cret = C.g_io_channel_new_file(_arg1, _arg2, &_cerr)
 
-	var _ioChannel IOChannel // out
-	var _goerr error         // out
+	var _ioChannel *IOChannel // out
+	var _goerr error          // out
 
-	_ioChannel = (IOChannel)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_ioChannel, func(v IOChannel) {
+	_ioChannel = (*IOChannel)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_ioChannel, func(v *IOChannel) {
 		C.g_io_channel_unref((*C.GIOChannel)(unsafe.Pointer(v)))
 	})
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _ioChannel, _goerr
 }
 
 // NewIOChannelUnix constructs a struct IOChannel.
-func NewIOChannelUnix(fd int) IOChannel {
+func NewIOChannelUnix(fd int) *IOChannel {
 	var _arg1 C.int         // out
 	var _cret *C.GIOChannel // in
 
@@ -220,10 +211,10 @@ func NewIOChannelUnix(fd int) IOChannel {
 
 	_cret = C.g_io_channel_unix_new(_arg1)
 
-	var _ioChannel IOChannel // out
+	var _ioChannel *IOChannel // out
 
-	_ioChannel = (IOChannel)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_ioChannel, func(v IOChannel) {
+	_ioChannel = (*IOChannel)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_ioChannel, func(v *IOChannel) {
 		C.g_io_channel_unref((*C.GIOChannel)(unsafe.Pointer(v)))
 	})
 
@@ -252,7 +243,7 @@ func (c *IOChannel) Close() {
 func (c *IOChannel) Flush() (IOStatus, error) {
 	var _arg0 *C.GIOChannel // out
 	var _cret C.GIOStatus   // in
-	var _cerr **C.GError    // in
+	var _cerr *C.GError     // in
 
 	_arg0 = (*C.GIOChannel)(unsafe.Pointer(c))
 
@@ -262,16 +253,7 @@ func (c *IOChannel) Flush() (IOStatus, error) {
 	var _goerr error       // out
 
 	_ioStatus = IOStatus(_cret)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _ioStatus, _goerr
 }
@@ -392,13 +374,13 @@ func (c *IOChannel) Flags() IOFlags {
 
 // LineTerm: this returns the string that OChannel uses to determine where in
 // the file a line break occurs. A value of nil indicates autodetection.
-func (c *IOChannel) LineTerm(length int) string {
+func (c *IOChannel) LineTerm(length *int) string {
 	var _arg0 *C.GIOChannel // out
 	var _arg1 *C.gint       // out
 	var _cret *C.gchar      // in
 
 	_arg0 = (*C.GIOChannel)(unsafe.Pointer(c))
-	_arg1 = *C.gint(length)
+	_arg1 = (*C.gint)(unsafe.Pointer(length))
 
 	_cret = C.g_io_channel_get_line_term(_arg0, _arg1)
 
@@ -425,7 +407,7 @@ func (c *IOChannel) Init() {
 // Read reads data from a OChannel.
 //
 // Deprecated: since version 2.2.
-func (c *IOChannel) Read(buf string, count uint, bytesRead uint) IOError {
+func (c *IOChannel) Read(buf string, count uint, bytesRead *uint) IOError {
 	var _arg0 *C.GIOChannel // out
 	var _arg1 *C.gchar      // out
 	var _arg2 C.gsize       // out
@@ -436,7 +418,7 @@ func (c *IOChannel) Read(buf string, count uint, bytesRead uint) IOError {
 	_arg1 = (*C.gchar)(C.CString(buf))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gsize(count)
-	_arg3 = *C.gsize(bytesRead)
+	_arg3 = (*C.gsize)(unsafe.Pointer(bytesRead))
 
 	_cret = C.g_io_channel_read(_arg0, _arg1, _arg2, _arg3)
 
@@ -452,11 +434,11 @@ func (c *IOChannel) Read(buf string, count uint, bytesRead uint) IOError {
 // memory if the return is G_IO_STATUS_NORMAL.
 func (c *IOChannel) ReadLine() (strReturn string, length uint, terminatorPos uint, ioStatus IOStatus, goerr error) {
 	var _arg0 *C.GIOChannel // out
-	var _arg1 **C.gchar     // in
-	var _arg2 *C.gsize      // in
-	var _arg3 *C.gsize      // in
+	var _arg1 *C.gchar      // in
+	var _arg2 C.gsize       // in
+	var _arg3 C.gsize       // in
 	var _cret C.GIOStatus   // in
-	var _cerr **C.GError    // in
+	var _cerr *C.GError     // in
 
 	_arg0 = (*C.GIOChannel)(unsafe.Pointer(c))
 
@@ -468,30 +450,12 @@ func (c *IOChannel) ReadLine() (strReturn string, length uint, terminatorPos uin
 	var _ioStatus IOStatus  // out
 	var _goerr error        // out
 
-	{
-		var refTmpIn *C.gchar
-		var refTmpOut string
-
-		refTmpIn = *_arg1
-
-		refTmpOut = C.GoString(refTmpIn)
-		defer C.free(unsafe.Pointer(refTmpIn))
-
-		_strReturn = refTmpOut
-	}
+	_strReturn = C.GoString(_arg1)
+	defer C.free(unsafe.Pointer(_arg1))
 	_length = uint(_arg2)
 	_terminatorPos = uint(_arg3)
 	_ioStatus = IOStatus(_cret)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _strReturn, _length, _terminatorPos, _ioStatus, _goerr
 }
@@ -500,9 +464,9 @@ func (c *IOChannel) ReadLine() (strReturn string, length uint, terminatorPos uin
 func (c *IOChannel) ReadToEnd() ([]byte, IOStatus, error) {
 	var _arg0 *C.GIOChannel // out
 	var _arg1 *C.gchar
-	var _arg2 *C.gsize    // in
+	var _arg2 C.gsize     // in
 	var _cret C.GIOStatus // in
-	var _cerr **C.GError  // in
+	var _cerr *C.GError   // in
 
 	_arg0 = (*C.GIOChannel)(unsafe.Pointer(c))
 
@@ -517,16 +481,7 @@ func (c *IOChannel) ReadToEnd() ([]byte, IOStatus, error) {
 		C.free(unsafe.Pointer(&(*v)[0]))
 	})
 	_ioStatus = IOStatus(_cret)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _strReturn, _ioStatus, _goerr
 }
@@ -535,9 +490,9 @@ func (c *IOChannel) ReadToEnd() ([]byte, IOStatus, error) {
 // called on a channel with nil encoding.
 func (c *IOChannel) ReadUnichar() (uint32, IOStatus, error) {
 	var _arg0 *C.GIOChannel // out
-	var _arg1 *C.gunichar   // in
+	var _arg1 C.gunichar    // in
 	var _cret C.GIOStatus   // in
-	var _cerr **C.GError    // in
+	var _cerr *C.GError     // in
 
 	_arg0 = (*C.GIOChannel)(unsafe.Pointer(c))
 
@@ -549,22 +504,13 @@ func (c *IOChannel) ReadUnichar() (uint32, IOStatus, error) {
 
 	_thechar = uint32(_arg1)
 	_ioStatus = IOStatus(_cret)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _thechar, _ioStatus, _goerr
 }
 
 // Ref increments the reference count of a OChannel.
-func (c *IOChannel) Ref() IOChannel {
+func (c *IOChannel) Ref() *IOChannel {
 	var _arg0 *C.GIOChannel // out
 	var _cret *C.GIOChannel // in
 
@@ -572,10 +518,10 @@ func (c *IOChannel) Ref() IOChannel {
 
 	_cret = C.g_io_channel_ref(_arg0)
 
-	var _ioChannel IOChannel // out
+	var _ioChannel *IOChannel // out
 
-	_ioChannel = (IOChannel)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_ioChannel, func(v IOChannel) {
+	_ioChannel = (*IOChannel)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_ioChannel, func(v *IOChannel) {
 		C.g_io_channel_unref((*C.GIOChannel)(unsafe.Pointer(v)))
 	})
 
@@ -611,7 +557,7 @@ func (c *IOChannel) SeekPosition(offset int64, typ SeekType) (IOStatus, error) {
 	var _arg1 C.gint64      // out
 	var _arg2 C.GSeekType   // out
 	var _cret C.GIOStatus   // in
-	var _cerr **C.GError    // in
+	var _cerr *C.GError     // in
 
 	_arg0 = (*C.GIOChannel)(unsafe.Pointer(c))
 	_arg1 = C.gint64(offset)
@@ -623,16 +569,7 @@ func (c *IOChannel) SeekPosition(offset int64, typ SeekType) (IOStatus, error) {
 	var _goerr error       // out
 
 	_ioStatus = IOStatus(_cret)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _ioStatus, _goerr
 }
@@ -730,7 +667,7 @@ func (c *IOChannel) SetEncoding(encoding string) (IOStatus, error) {
 	var _arg0 *C.GIOChannel // out
 	var _arg1 *C.gchar      // out
 	var _cret C.GIOStatus   // in
-	var _cerr **C.GError    // in
+	var _cerr *C.GError     // in
 
 	_arg0 = (*C.GIOChannel)(unsafe.Pointer(c))
 	_arg1 = (*C.gchar)(C.CString(encoding))
@@ -742,16 +679,7 @@ func (c *IOChannel) SetEncoding(encoding string) (IOStatus, error) {
 	var _goerr error       // out
 
 	_ioStatus = IOStatus(_cret)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _ioStatus, _goerr
 }
@@ -762,7 +690,7 @@ func (c *IOChannel) SetFlags(flags IOFlags) (IOStatus, error) {
 	var _arg0 *C.GIOChannel // out
 	var _arg1 C.GIOFlags    // out
 	var _cret C.GIOStatus   // in
-	var _cerr **C.GError    // in
+	var _cerr *C.GError     // in
 
 	_arg0 = (*C.GIOChannel)(unsafe.Pointer(c))
 	_arg1 = C.GIOFlags(flags)
@@ -773,16 +701,7 @@ func (c *IOChannel) SetFlags(flags IOFlags) (IOStatus, error) {
 	var _goerr error       // out
 
 	_ioStatus = IOStatus(_cret)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _ioStatus, _goerr
 }
@@ -809,7 +728,7 @@ func (c *IOChannel) Shutdown(flush bool) (IOStatus, error) {
 	var _arg0 *C.GIOChannel // out
 	var _arg1 C.gboolean    // out
 	var _cret C.GIOStatus   // in
-	var _cerr **C.GError    // in
+	var _cerr *C.GError     // in
 
 	_arg0 = (*C.GIOChannel)(unsafe.Pointer(c))
 	if flush {
@@ -822,16 +741,7 @@ func (c *IOChannel) Shutdown(flush bool) (IOStatus, error) {
 	var _goerr error       // out
 
 	_ioStatus = IOStatus(_cret)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _ioStatus, _goerr
 }
@@ -867,7 +777,7 @@ func (c *IOChannel) Unref() {
 // Write writes data to a OChannel.
 //
 // Deprecated: since version 2.2.
-func (c *IOChannel) Write(buf string, count uint, bytesWritten uint) IOError {
+func (c *IOChannel) Write(buf string, count uint, bytesWritten *uint) IOError {
 	var _arg0 *C.GIOChannel // out
 	var _arg1 *C.gchar      // out
 	var _arg2 C.gsize       // out
@@ -878,7 +788,7 @@ func (c *IOChannel) Write(buf string, count uint, bytesWritten uint) IOError {
 	_arg1 = (*C.gchar)(C.CString(buf))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gsize(count)
-	_arg3 = *C.gsize(bytesWritten)
+	_arg3 = (*C.gsize)(unsafe.Pointer(bytesWritten))
 
 	_cret = C.g_io_channel_write(_arg0, _arg1, _arg2, _arg3)
 
@@ -899,9 +809,9 @@ func (c *IOChannel) WriteChars(buf []byte, count int) (uint, IOStatus, error) {
 	var _arg0 *C.GIOChannel // out
 	var _arg1 *C.gchar
 	var _arg2 C.gssize    // out
-	var _arg3 *C.gsize    // in
+	var _arg3 C.gsize     // in
 	var _cret C.GIOStatus // in
-	var _cerr **C.GError  // in
+	var _cerr *C.GError   // in
 
 	_arg0 = (*C.GIOChannel)(unsafe.Pointer(c))
 	_arg1 = (*C.gchar)(unsafe.Pointer(&buf[0]))
@@ -915,16 +825,7 @@ func (c *IOChannel) WriteChars(buf []byte, count int) (uint, IOStatus, error) {
 
 	_bytesWritten = uint(_arg3)
 	_ioStatus = IOStatus(_cret)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _bytesWritten, _ioStatus, _goerr
 }
@@ -935,7 +836,7 @@ func (c *IOChannel) WriteUnichar(thechar uint32) (IOStatus, error) {
 	var _arg0 *C.GIOChannel // out
 	var _arg1 C.gunichar    // out
 	var _cret C.GIOStatus   // in
-	var _cerr **C.GError    // in
+	var _cerr *C.GError     // in
 
 	_arg0 = (*C.GIOChannel)(unsafe.Pointer(c))
 	_arg1 = C.gunichar(thechar)
@@ -946,16 +847,7 @@ func (c *IOChannel) WriteUnichar(thechar uint32) (IOStatus, error) {
 	var _goerr error       // out
 
 	_ioStatus = IOStatus(_cret)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _ioStatus, _goerr
 }

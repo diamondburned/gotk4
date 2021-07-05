@@ -182,7 +182,7 @@ func marshalAppInfo(p uintptr) (interface{}, error) {
 func (a appInfo) AddSupportsType(contentType string) error {
 	var _arg0 *C.GAppInfo // out
 	var _arg1 *C.char     // out
-	var _cerr **C.GError  // in
+	var _cerr *C.GError   // in
 
 	_arg0 = (*C.GAppInfo)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.char)(C.CString(contentType))
@@ -192,16 +192,7 @@ func (a appInfo) AddSupportsType(contentType string) error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
@@ -426,7 +417,7 @@ func (a appInfo) SupportedTypes() []string {
 func (a appInfo) LaunchUrisFinish(result AsyncResult) error {
 	var _arg0 *C.GAppInfo     // out
 	var _arg1 *C.GAsyncResult // out
-	var _cerr **C.GError      // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GAppInfo)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
@@ -435,16 +426,7 @@ func (a appInfo) LaunchUrisFinish(result AsyncResult) error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
@@ -452,7 +434,7 @@ func (a appInfo) LaunchUrisFinish(result AsyncResult) error {
 func (a appInfo) RemoveSupportsType(contentType string) error {
 	var _arg0 *C.GAppInfo // out
 	var _arg1 *C.char     // out
-	var _cerr **C.GError  // in
+	var _cerr *C.GError   // in
 
 	_arg0 = (*C.GAppInfo)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.char)(C.CString(contentType))
@@ -462,16 +444,7 @@ func (a appInfo) RemoveSupportsType(contentType string) error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
@@ -479,7 +452,7 @@ func (a appInfo) RemoveSupportsType(contentType string) error {
 func (a appInfo) SetAsDefaultForExtension(extension string) error {
 	var _arg0 *C.GAppInfo // out
 	var _arg1 *C.char     // out
-	var _cerr **C.GError  // in
+	var _cerr *C.GError   // in
 
 	_arg0 = (*C.GAppInfo)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.char)(C.CString(extension))
@@ -489,16 +462,7 @@ func (a appInfo) SetAsDefaultForExtension(extension string) error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
@@ -506,7 +470,7 @@ func (a appInfo) SetAsDefaultForExtension(extension string) error {
 func (a appInfo) SetAsDefaultForType(contentType string) error {
 	var _arg0 *C.GAppInfo // out
 	var _arg1 *C.char     // out
-	var _cerr **C.GError  // in
+	var _cerr *C.GError   // in
 
 	_arg0 = (*C.GAppInfo)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.char)(C.CString(contentType))
@@ -516,16 +480,7 @@ func (a appInfo) SetAsDefaultForType(contentType string) error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
@@ -533,7 +488,7 @@ func (a appInfo) SetAsDefaultForType(contentType string) error {
 func (a appInfo) SetAsLastUsedForType(contentType string) error {
 	var _arg0 *C.GAppInfo // out
 	var _arg1 *C.char     // out
-	var _cerr **C.GError  // in
+	var _cerr *C.GError   // in
 
 	_arg0 = (*C.GAppInfo)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.char)(C.CString(contentType))
@@ -543,16 +498,7 @@ func (a appInfo) SetAsLastUsedForType(contentType string) error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }

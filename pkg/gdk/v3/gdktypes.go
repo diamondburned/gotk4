@@ -504,7 +504,7 @@ func (r *Rectangle) Native() unsafe.Pointer {
 }
 
 // Equal checks if the two given rectangles are equal.
-func (r *Rectangle) Equal(rect2 Rectangle) bool {
+func (r *Rectangle) Equal(rect2 *Rectangle) bool {
 	var _arg0 *C.GdkRectangle // out
 	var _arg1 *C.GdkRectangle // out
 	var _cret C.gboolean      // in
@@ -528,10 +528,10 @@ func (r *Rectangle) Equal(rect2 Rectangle) bool {
 // intersect, @dest’s width and height is set to 0 and its x and y values are
 // undefined. If you are only interested in whether the rectangles intersect,
 // but not in the intersecting area itself, pass nil for @dest.
-func (s *Rectangle) Intersect(src2 Rectangle) (Rectangle, bool) {
+func (s *Rectangle) Intersect(src2 *Rectangle) (Rectangle, bool) {
 	var _arg0 *C.GdkRectangle // out
 	var _arg1 *C.GdkRectangle // out
-	var _arg2 *C.GdkRectangle // in
+	var _arg2 C.GdkRectangle  // in
 	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GdkRectangle)(unsafe.Pointer(s))
@@ -542,7 +542,17 @@ func (s *Rectangle) Intersect(src2 Rectangle) (Rectangle, bool) {
 	var _dest Rectangle // out
 	var _ok bool        // out
 
-	_dest = (Rectangle)(unsafe.Pointer(_arg2))
+	{
+		var refTmpIn *C.GdkRectangle
+		var refTmpOut *Rectangle
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_dest = *refTmpOut
+	}
 	if _cret != 0 {
 		_ok = true
 	}
@@ -556,10 +566,10 @@ func (s *Rectangle) Intersect(src2 Rectangle) (Rectangle, bool) {
 //
 // Note that this function does not ignore 'empty' rectangles (ie. with zero
 // width or height).
-func (s *Rectangle) Union(src2 Rectangle) Rectangle {
+func (s *Rectangle) Union(src2 *Rectangle) Rectangle {
 	var _arg0 *C.GdkRectangle // out
 	var _arg1 *C.GdkRectangle // out
-	var _arg2 *C.GdkRectangle // in
+	var _arg2 C.GdkRectangle  // in
 
 	_arg0 = (*C.GdkRectangle)(unsafe.Pointer(s))
 	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(src2))
@@ -568,7 +578,17 @@ func (s *Rectangle) Union(src2 Rectangle) Rectangle {
 
 	var _dest Rectangle // out
 
-	_dest = (Rectangle)(unsafe.Pointer(_arg2))
+	{
+		var refTmpIn *C.GdkRectangle
+		var refTmpOut *Rectangle
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_dest = *refTmpOut
+	}
 
 	return _dest
 }

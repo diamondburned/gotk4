@@ -86,8 +86,8 @@ func marshalMisc(p uintptr) (interface{}, error) {
 
 func (m misc) Alignment() (xalign float32, yalign float32) {
 	var _arg0 *C.GtkMisc // out
-	var _arg1 *C.gfloat  // in
-	var _arg2 *C.gfloat  // in
+	var _arg1 C.gfloat   // in
+	var _arg2 C.gfloat   // in
 
 	_arg0 = (*C.GtkMisc)(unsafe.Pointer(m.Native()))
 
@@ -104,8 +104,8 @@ func (m misc) Alignment() (xalign float32, yalign float32) {
 
 func (m misc) Padding() (xpad int, ypad int) {
 	var _arg0 *C.GtkMisc // out
-	var _arg1 *C.gint    // in
-	var _arg2 *C.gint    // in
+	var _arg1 C.gint     // in
+	var _arg2 C.gint     // in
 
 	_arg0 = (*C.GtkMisc)(unsafe.Pointer(m.Native()))
 

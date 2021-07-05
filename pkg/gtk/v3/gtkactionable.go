@@ -46,7 +46,7 @@ type Actionable interface {
 	// ActionTargetValue gets the current target value of @actionable.
 	//
 	// See gtk_actionable_set_action_target_value() for more information.
-	ActionTargetValue() glib.Variant
+	ActionTargetValue() *glib.Variant
 	// SetActionName specifies the name of the action with which this widget
 	// should be associated. If @action_name is nil then the widget will be
 	// unassociated from any previous action.
@@ -76,7 +76,7 @@ type Actionable interface {
 	// state to change to that value. Since the action’s state is now equal to
 	// the target value of the button, the button will now be rendered as active
 	// (and the other buttons, with different targets, rendered inactive).
-	SetActionTargetValue(targetValue glib.Variant)
+	SetActionTargetValue(targetValue *glib.Variant)
 	// SetDetailedActionName sets the action-name and associated string target
 	// value of an actionable widget.
 	//
@@ -126,7 +126,7 @@ func (a actionable) ActionName() string {
 	return _utf8
 }
 
-func (a actionable) ActionTargetValue() glib.Variant {
+func (a actionable) ActionTargetValue() *glib.Variant {
 	var _arg0 *C.GtkActionable // out
 	var _cret *C.GVariant      // in
 
@@ -134,9 +134,9 @@ func (a actionable) ActionTargetValue() glib.Variant {
 
 	_cret = C.gtk_actionable_get_action_target_value(_arg0)
 
-	var _variant glib.Variant // out
+	var _variant *glib.Variant // out
 
-	_variant = (glib.Variant)(unsafe.Pointer(_cret))
+	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
 	C.g_variant_ref(_cret)
 
 	return _variant
@@ -153,7 +153,7 @@ func (a actionable) SetActionName(actionName string) {
 	C.gtk_actionable_set_action_name(_arg0, _arg1)
 }
 
-func (a actionable) SetActionTargetValue(targetValue glib.Variant) {
+func (a actionable) SetActionTargetValue(targetValue *glib.Variant) {
 	var _arg0 *C.GtkActionable // out
 	var _arg1 *C.GVariant      // out
 

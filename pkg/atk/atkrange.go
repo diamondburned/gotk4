@@ -42,7 +42,7 @@ func marshalRange(p uintptr) (interface{}, error) {
 }
 
 // NewRange constructs a struct Range.
-func NewRange(lowerLimit float64, upperLimit float64, description string) Range {
+func NewRange(lowerLimit float64, upperLimit float64, description string) *Range {
 	var _arg1 C.gdouble   // out
 	var _arg2 C.gdouble   // out
 	var _arg3 *C.gchar    // out
@@ -55,10 +55,10 @@ func NewRange(lowerLimit float64, upperLimit float64, description string) Range 
 
 	_cret = C.atk_range_new(_arg1, _arg2, _arg3)
 
-	var __range Range // out
+	var __range *Range // out
 
-	__range = (Range)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(__range, func(v Range) {
+	__range = (*Range)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(__range, func(v *Range) {
 		C.atk_range_free((*C.AtkRange)(unsafe.Pointer(v)))
 	})
 
@@ -71,7 +71,7 @@ func (r *Range) Native() unsafe.Pointer {
 }
 
 // Copy returns a new Range that is a exact copy of @src
-func (s *Range) Copy() Range {
+func (s *Range) Copy() *Range {
 	var _arg0 *C.AtkRange // out
 	var _cret *C.AtkRange // in
 
@@ -79,10 +79,10 @@ func (s *Range) Copy() Range {
 
 	_cret = C.atk_range_copy(_arg0)
 
-	var __range Range // out
+	var __range *Range // out
 
-	__range = (Range)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(__range, func(v Range) {
+	__range = (*Range)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(__range, func(v *Range) {
 		C.atk_range_free((*C.AtkRange)(unsafe.Pointer(v)))
 	})
 

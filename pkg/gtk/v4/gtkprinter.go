@@ -147,7 +147,7 @@ type Printer interface {
 	// Note: This will not succeed unless the printer’s details are available,
 	// see [method@Gtk.Printer.has_details] and
 	// [method@Gtk.Printer.request_details].
-	HardMarginsForPaperSize(paperSize PaperSize) (top float64, bottom float64, left float64, right float64, ok bool)
+	HardMarginsForPaperSize(paperSize *PaperSize) (top float64, bottom float64, left float64, right float64, ok bool)
 	// IconName gets the name of the icon to use for the printer.
 	IconName() string
 	// JobCount gets the number of jobs currently queued on the printer.
@@ -300,10 +300,10 @@ func (p printer) Description() string {
 
 func (p printer) HardMargins() (top float64, bottom float64, left float64, right float64, ok bool) {
 	var _arg0 *C.GtkPrinter // out
-	var _arg1 *C.double     // in
-	var _arg2 *C.double     // in
-	var _arg3 *C.double     // in
-	var _arg4 *C.double     // in
+	var _arg1 C.double      // in
+	var _arg2 C.double      // in
+	var _arg3 C.double      // in
+	var _arg4 C.double      // in
 	var _cret C.gboolean    // in
 
 	_arg0 = (*C.GtkPrinter)(unsafe.Pointer(p.Native()))
@@ -327,13 +327,13 @@ func (p printer) HardMargins() (top float64, bottom float64, left float64, right
 	return _top, _bottom, _left, _right, _ok
 }
 
-func (p printer) HardMarginsForPaperSize(paperSize PaperSize) (top float64, bottom float64, left float64, right float64, ok bool) {
+func (p printer) HardMarginsForPaperSize(paperSize *PaperSize) (top float64, bottom float64, left float64, right float64, ok bool) {
 	var _arg0 *C.GtkPrinter   // out
 	var _arg1 *C.GtkPaperSize // out
-	var _arg2 *C.double       // in
-	var _arg3 *C.double       // in
-	var _arg4 *C.double       // in
-	var _arg5 *C.double       // in
+	var _arg2 C.double        // in
+	var _arg3 C.double        // in
+	var _arg4 C.double        // in
+	var _arg5 C.double        // in
 	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GtkPrinter)(unsafe.Pointer(p.Native()))

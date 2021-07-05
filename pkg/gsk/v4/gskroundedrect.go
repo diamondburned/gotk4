@@ -43,7 +43,7 @@ func (r *RoundedRect) Native() unsafe.Pointer {
 }
 
 // ContainsPoint checks if the given @point is inside the rounded rectangle.
-func (s *RoundedRect) ContainsPoint(point graphene.Point) bool {
+func (s *RoundedRect) ContainsPoint(point *graphene.Point) bool {
 	var _arg0 *C.GskRoundedRect   // out
 	var _arg1 *C.graphene_point_t // out
 	var _cret C.gboolean          // in
@@ -64,7 +64,7 @@ func (s *RoundedRect) ContainsPoint(point graphene.Point) bool {
 
 // ContainsRect checks if the given @rect is contained inside the rounded
 // rectangle.
-func (s *RoundedRect) ContainsRect(rect graphene.Rect) bool {
+func (s *RoundedRect) ContainsRect(rect *graphene.Rect) bool {
 	var _arg0 *C.GskRoundedRect  // out
 	var _arg1 *C.graphene_rect_t // out
 	var _cret C.gboolean         // in
@@ -87,7 +87,7 @@ func (s *RoundedRect) ContainsRect(rect graphene.Rect) bool {
 //
 // This function will implicitly normalize the `GskRoundedRect` before
 // returning.
-func (s *RoundedRect) Init(bounds graphene.Rect, topLeft graphene.Size, topRight graphene.Size, bottomRight graphene.Size, bottomLeft graphene.Size) RoundedRect {
+func (s *RoundedRect) Init(bounds *graphene.Rect, topLeft *graphene.Size, topRight *graphene.Size, bottomRight *graphene.Size, bottomLeft *graphene.Size) *RoundedRect {
 	var _arg0 *C.GskRoundedRect  // out
 	var _arg1 *C.graphene_rect_t // out
 	var _arg2 *C.graphene_size_t // out
@@ -105,9 +105,9 @@ func (s *RoundedRect) Init(bounds graphene.Rect, topLeft graphene.Size, topRight
 
 	_cret = C.gsk_rounded_rect_init(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 
-	var _roundedRect RoundedRect // out
+	var _roundedRect *RoundedRect // out
 
-	_roundedRect = (RoundedRect)(unsafe.Pointer(_cret))
+	_roundedRect = (*RoundedRect)(unsafe.Pointer(_cret))
 
 	return _roundedRect
 }
@@ -116,7 +116,7 @@ func (s *RoundedRect) Init(bounds graphene.Rect, topLeft graphene.Size, topRight
 //
 // This function will not normalize the `GskRoundedRect`, so make sure the
 // source is normalized.
-func (s *RoundedRect) InitCopy(src RoundedRect) RoundedRect {
+func (s *RoundedRect) InitCopy(src *RoundedRect) *RoundedRect {
 	var _arg0 *C.GskRoundedRect // out
 	var _arg1 *C.GskRoundedRect // out
 	var _cret *C.GskRoundedRect // in
@@ -126,16 +126,16 @@ func (s *RoundedRect) InitCopy(src RoundedRect) RoundedRect {
 
 	_cret = C.gsk_rounded_rect_init_copy(_arg0, _arg1)
 
-	var _roundedRect RoundedRect // out
+	var _roundedRect *RoundedRect // out
 
-	_roundedRect = (RoundedRect)(unsafe.Pointer(_cret))
+	_roundedRect = (*RoundedRect)(unsafe.Pointer(_cret))
 
 	return _roundedRect
 }
 
 // InitFromRect initializes @self to the given @bounds and sets the radius of
 // all four corners to @radius.
-func (s *RoundedRect) InitFromRect(bounds graphene.Rect, radius float32) RoundedRect {
+func (s *RoundedRect) InitFromRect(bounds *graphene.Rect, radius float32) *RoundedRect {
 	var _arg0 *C.GskRoundedRect  // out
 	var _arg1 *C.graphene_rect_t // out
 	var _arg2 C.float            // out
@@ -147,16 +147,16 @@ func (s *RoundedRect) InitFromRect(bounds graphene.Rect, radius float32) Rounded
 
 	_cret = C.gsk_rounded_rect_init_from_rect(_arg0, _arg1, _arg2)
 
-	var _roundedRect RoundedRect // out
+	var _roundedRect *RoundedRect // out
 
-	_roundedRect = (RoundedRect)(unsafe.Pointer(_cret))
+	_roundedRect = (*RoundedRect)(unsafe.Pointer(_cret))
 
 	return _roundedRect
 }
 
 // IntersectsRect checks if part of the given @rect is contained inside the
 // rounded rectangle.
-func (s *RoundedRect) IntersectsRect(rect graphene.Rect) bool {
+func (s *RoundedRect) IntersectsRect(rect *graphene.Rect) bool {
 	var _arg0 *C.GskRoundedRect  // out
 	var _arg1 *C.graphene_rect_t // out
 	var _cret C.gboolean         // in
@@ -201,7 +201,7 @@ func (s *RoundedRect) IsRectilinear() bool {
 //
 // This function will ensure that the bounds of the rectangle are normalized and
 // ensure that the corner values are positive and the corners do not overlap.
-func (s *RoundedRect) Normalize() RoundedRect {
+func (s *RoundedRect) Normalize() *RoundedRect {
 	var _arg0 *C.GskRoundedRect // out
 	var _cret *C.GskRoundedRect // in
 
@@ -209,9 +209,9 @@ func (s *RoundedRect) Normalize() RoundedRect {
 
 	_cret = C.gsk_rounded_rect_normalize(_arg0)
 
-	var _roundedRect RoundedRect // out
+	var _roundedRect *RoundedRect // out
 
-	_roundedRect = (RoundedRect)(unsafe.Pointer(_cret))
+	_roundedRect = (*RoundedRect)(unsafe.Pointer(_cret))
 
 	return _roundedRect
 }
@@ -219,7 +219,7 @@ func (s *RoundedRect) Normalize() RoundedRect {
 // Offset offsets the bound's origin by @dx and @dy.
 //
 // The size and corners of the rectangle are unchanged.
-func (s *RoundedRect) Offset(dx float32, dy float32) RoundedRect {
+func (s *RoundedRect) Offset(dx float32, dy float32) *RoundedRect {
 	var _arg0 *C.GskRoundedRect // out
 	var _arg1 C.float           // out
 	var _arg2 C.float           // out
@@ -231,9 +231,9 @@ func (s *RoundedRect) Offset(dx float32, dy float32) RoundedRect {
 
 	_cret = C.gsk_rounded_rect_offset(_arg0, _arg1, _arg2)
 
-	var _roundedRect RoundedRect // out
+	var _roundedRect *RoundedRect // out
 
-	_roundedRect = (RoundedRect)(unsafe.Pointer(_cret))
+	_roundedRect = (*RoundedRect)(unsafe.Pointer(_cret))
 
 	return _roundedRect
 }
@@ -246,7 +246,7 @@ func (s *RoundedRect) Offset(dx float32, dy float32) RoundedRect {
 //
 // This function also works for growing rectangles if you pass negative values
 // for the @top, @right, @bottom or @left.
-func (s *RoundedRect) Shrink(top float32, right float32, bottom float32, left float32) RoundedRect {
+func (s *RoundedRect) Shrink(top float32, right float32, bottom float32, left float32) *RoundedRect {
 	var _arg0 *C.GskRoundedRect // out
 	var _arg1 C.float           // out
 	var _arg2 C.float           // out
@@ -262,9 +262,9 @@ func (s *RoundedRect) Shrink(top float32, right float32, bottom float32, left fl
 
 	_cret = C.gsk_rounded_rect_shrink(_arg0, _arg1, _arg2, _arg3, _arg4)
 
-	var _roundedRect RoundedRect // out
+	var _roundedRect *RoundedRect // out
 
-	_roundedRect = (RoundedRect)(unsafe.Pointer(_cret))
+	_roundedRect = (*RoundedRect)(unsafe.Pointer(_cret))
 
 	return _roundedRect
 }

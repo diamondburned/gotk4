@@ -110,10 +110,10 @@ func NewAlignment(xalign float32, yalign float32, xscale float32, yscale float32
 
 func (a alignment) Padding() (paddingTop uint, paddingBottom uint, paddingLeft uint, paddingRight uint) {
 	var _arg0 *C.GtkAlignment // out
-	var _arg1 *C.guint        // in
-	var _arg2 *C.guint        // in
-	var _arg3 *C.guint        // in
-	var _arg4 *C.guint        // in
+	var _arg1 C.guint         // in
+	var _arg2 C.guint         // in
+	var _arg3 C.guint         // in
+	var _arg4 C.guint         // in
 
 	_arg0 = (*C.GtkAlignment)(unsafe.Pointer(a.Native()))
 

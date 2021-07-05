@@ -266,7 +266,7 @@ func marshalTouchpadGesturePhase(p uintptr) (interface{}, error) {
 func EventsGetAngle(event1 Event, event2 Event) (float64, bool) {
 	var _arg1 *C.GdkEvent // out
 	var _arg2 *C.GdkEvent // out
-	var _arg3 *C.double   // in
+	var _arg3 C.double    // in
 	var _cret C.gboolean  // in
 
 	_arg1 = (*C.GdkEvent)(unsafe.Pointer(event1.Native()))
@@ -292,8 +292,8 @@ func EventsGetAngle(event1 Event, event2 Event) (float64, bool) {
 func EventsGetCenter(event1 Event, event2 Event) (x float64, y float64, ok bool) {
 	var _arg1 *C.GdkEvent // out
 	var _arg2 *C.GdkEvent // out
-	var _arg3 *C.double   // in
-	var _arg4 *C.double   // in
+	var _arg3 C.double    // in
+	var _arg4 C.double    // in
 	var _cret C.gboolean  // in
 
 	_arg1 = (*C.GdkEvent)(unsafe.Pointer(event1.Native()))
@@ -321,7 +321,7 @@ func EventsGetCenter(event1 Event, event2 Event) (x float64, y float64, ok bool)
 func EventsGetDistance(event1 Event, event2 Event) (float64, bool) {
 	var _arg1 *C.GdkEvent // out
 	var _arg2 *C.GdkEvent // out
-	var _arg3 *C.double   // in
+	var _arg3 C.double    // in
 	var _cret C.gboolean  // in
 
 	_arg1 = (*C.GdkEvent)(unsafe.Pointer(event1.Native()))
@@ -558,7 +558,7 @@ type Event interface {
 	//
 	// Related touch events are connected in a sequence. Other events typically
 	// don't have event sequence information.
-	EventSequence() EventSequence
+	EventSequence() *EventSequence
 	// EventType retrieves the type of the event.
 	EventType() EventType
 	// ModifierState returns the modifier state field of an event.
@@ -618,7 +618,7 @@ func marshalEvent(p uintptr) (interface{}, error) {
 func (e event) Axes() ([]float64, bool) {
 	var _arg0 *C.GdkEvent // out
 	var _arg1 *C.double
-	var _arg2 *C.guint   // in
+	var _arg2 C.guint    // in
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.GdkEvent)(unsafe.Pointer(e.Native()))
@@ -640,7 +640,7 @@ func (e event) Axes() ([]float64, bool) {
 func (e event) Axis(axisUse AxisUse) (float64, bool) {
 	var _arg0 *C.GdkEvent  // out
 	var _arg1 C.GdkAxisUse // out
-	var _arg2 *C.double    // in
+	var _arg2 C.double     // in
 	var _cret C.gboolean   // in
 
 	_arg0 = (*C.GdkEvent)(unsafe.Pointer(e.Native()))
@@ -704,7 +704,7 @@ func (e event) Display() Display {
 	return _display
 }
 
-func (e event) EventSequence() EventSequence {
+func (e event) EventSequence() *EventSequence {
 	var _arg0 *C.GdkEvent         // out
 	var _cret *C.GdkEventSequence // in
 
@@ -712,9 +712,9 @@ func (e event) EventSequence() EventSequence {
 
 	_cret = C.gdk_event_get_event_sequence(_arg0)
 
-	var _eventSequence EventSequence // out
+	var _eventSequence *EventSequence // out
 
-	_eventSequence = (EventSequence)(unsafe.Pointer(_cret))
+	_eventSequence = (*EventSequence)(unsafe.Pointer(_cret))
 
 	return _eventSequence
 }
@@ -768,8 +768,8 @@ func (e event) PointerEmulated() bool {
 
 func (e event) Position() (x float64, y float64, ok bool) {
 	var _arg0 *C.GdkEvent // out
-	var _arg1 *C.double   // in
-	var _arg2 *C.double   // in
+	var _arg1 C.double    // in
+	var _arg2 C.double    // in
 	var _cret C.gboolean  // in
 
 	_arg0 = (*C.GdkEvent)(unsafe.Pointer(e.Native()))
@@ -1106,10 +1106,10 @@ func (e keyEvent) Level() uint {
 }
 
 func (e keyEvent) Match() (uint, ModifierType, bool) {
-	var _arg0 *C.GdkEvent        // out
-	var _arg1 *C.guint           // in
-	var _arg2 *C.GdkModifierType // in
-	var _cret C.gboolean         // in
+	var _arg0 *C.GdkEvent       // out
+	var _arg1 C.guint           // in
+	var _arg2 C.GdkModifierType // in
+	var _cret C.gboolean        // in
 
 	_arg0 = (*C.GdkEvent)(unsafe.Pointer(e.Native()))
 
@@ -1120,16 +1120,7 @@ func (e keyEvent) Match() (uint, ModifierType, bool) {
 	var _ok bool                // out
 
 	_keyval = uint(_arg1)
-	{
-		var refTmpIn C.GdkModifierType
-		var refTmpOut ModifierType
-
-		refTmpIn = *_arg2
-
-		refTmpOut = ModifierType(refTmpIn)
-
-		_modifiers = refTmpOut
-	}
+	_modifiers = ModifierType(_arg2)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -1230,8 +1221,8 @@ func marshalPadEvent(p uintptr) (interface{}, error) {
 
 func (e padEvent) AxisValue() (uint, float64) {
 	var _arg0 *C.GdkEvent // out
-	var _arg1 *C.guint    // in
-	var _arg2 *C.double   // in
+	var _arg1 C.guint     // in
+	var _arg2 C.double    // in
 
 	_arg0 = (*C.GdkEvent)(unsafe.Pointer(e.Native()))
 
@@ -1263,8 +1254,8 @@ func (e padEvent) Button() uint {
 
 func (e padEvent) GroupMode() (group uint, mode uint) {
 	var _arg0 *C.GdkEvent // out
-	var _arg1 *C.guint    // in
-	var _arg2 *C.guint    // in
+	var _arg1 C.guint     // in
+	var _arg2 C.guint     // in
 
 	_arg0 = (*C.GdkEvent)(unsafe.Pointer(e.Native()))
 
@@ -1345,8 +1336,8 @@ func marshalScrollEvent(p uintptr) (interface{}, error) {
 
 func (e scrollEvent) Deltas() (deltaX float64, deltaY float64) {
 	var _arg0 *C.GdkEvent // out
-	var _arg1 *C.double   // in
-	var _arg2 *C.double   // in
+	var _arg1 C.double    // in
+	var _arg2 C.double    // in
 
 	_arg0 = (*C.GdkEvent)(unsafe.Pointer(e.Native()))
 
@@ -1480,8 +1471,8 @@ func marshalTouchpadEvent(p uintptr) (interface{}, error) {
 
 func (e touchpadEvent) Deltas() (dx float64, dy float64) {
 	var _arg0 *C.GdkEvent // out
-	var _arg1 *C.double   // in
-	var _arg2 *C.double   // in
+	var _arg1 C.double    // in
+	var _arg2 C.double    // in
 
 	_arg0 = (*C.GdkEvent)(unsafe.Pointer(e.Native()))
 

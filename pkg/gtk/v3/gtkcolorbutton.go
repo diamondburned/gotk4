@@ -67,7 +67,7 @@ type ColorButton interface {
 	// SetColorColorButton sets the current color to be @color.
 	//
 	// Deprecated: since version .
-	SetColorColorButton(color gdk.Color)
+	SetColorColorButton(color *gdk.Color)
 	// SetTitleColorButton sets the title for the color selection dialog.
 	SetTitleColorButton(title string)
 	// SetUseAlphaColorButton sets whether or not the color button should use
@@ -117,7 +117,7 @@ func NewColorButton() ColorButton {
 // NewColorButtonWithColor creates a new color button.
 //
 // Deprecated: since version 3.4.
-func NewColorButtonWithColor(color gdk.Color) ColorButton {
+func NewColorButtonWithColor(color *gdk.Color) ColorButton {
 	var _arg1 *C.GdkColor  // out
 	var _cret *C.GtkWidget // in
 
@@ -133,7 +133,7 @@ func NewColorButtonWithColor(color gdk.Color) ColorButton {
 }
 
 // NewColorButtonWithRGBA creates a new color button.
-func NewColorButtonWithRGBA(rgba gdk.RGBA) ColorButton {
+func NewColorButtonWithRGBA(rgba *gdk.RGBA) ColorButton {
 	var _arg1 *C.GdkRGBA   // out
 	var _cret *C.GtkWidget // in
 
@@ -165,7 +165,7 @@ func (b colorButton) Alpha() uint16 {
 
 func (b colorButton) Color() gdk.Color {
 	var _arg0 *C.GtkColorButton // out
-	var _arg1 *C.GdkColor       // in
+	var _arg1 C.GdkColor        // in
 
 	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(b.Native()))
 
@@ -173,7 +173,17 @@ func (b colorButton) Color() gdk.Color {
 
 	var _color gdk.Color // out
 
-	_color = (gdk.Color)(unsafe.Pointer(_arg1))
+	{
+		var refTmpIn *C.GdkColor
+		var refTmpOut *gdk.Color
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*gdk.Color)(unsafe.Pointer(refTmpIn))
+
+		_color = *refTmpOut
+	}
 
 	return _color
 }
@@ -220,7 +230,7 @@ func (b colorButton) SetAlphaColorButton(alpha uint16) {
 	C.gtk_color_button_set_alpha(_arg0, _arg1)
 }
 
-func (b colorButton) SetColorColorButton(color gdk.Color) {
+func (b colorButton) SetColorColorButton(color *gdk.Color) {
 	var _arg0 *C.GtkColorButton // out
 	var _arg1 *C.GdkColor       // out
 

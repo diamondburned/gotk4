@@ -289,7 +289,7 @@ func (c tlsConnection) ChannelBindingData(typ TLSChannelBindingType) ([]byte, er
 	var _arg0 *C.GTlsConnection        // out
 	var _arg1 C.GTlsChannelBindingType // out
 	var _arg2 C.GByteArray
-	var _cerr **C.GError // in
+	var _cerr *C.GError // in
 
 	_arg0 = (*C.GTlsConnection)(unsafe.Pointer(c.Native()))
 	_arg1 = C.GTlsChannelBindingType(typ)
@@ -301,16 +301,7 @@ func (c tlsConnection) ChannelBindingData(typ TLSChannelBindingType) ([]byte, er
 
 	_data = make([]byte, _arg2.len)
 	copy(_data, unsafe.Slice((*byte)(_arg2.data), _arg2.len))
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _data, _goerr
 }
@@ -442,7 +433,7 @@ func (c tlsConnection) UseSystemCertdb() bool {
 func (c tlsConnection) HandshakeTLSConnection(cancellable Cancellable) error {
 	var _arg0 *C.GTlsConnection // out
 	var _arg1 *C.GCancellable   // out
-	var _cerr **C.GError        // in
+	var _cerr *C.GError         // in
 
 	_arg0 = (*C.GTlsConnection)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
@@ -451,16 +442,7 @@ func (c tlsConnection) HandshakeTLSConnection(cancellable Cancellable) error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
@@ -484,7 +466,7 @@ func (c tlsConnection) HandshakeAsyncTLSConnection(ioPriority int, cancellable C
 func (c tlsConnection) HandshakeFinishTLSConnection(result AsyncResult) error {
 	var _arg0 *C.GTlsConnection // out
 	var _arg1 *C.GAsyncResult   // out
-	var _cerr **C.GError        // in
+	var _cerr *C.GError         // in
 
 	_arg0 = (*C.GTlsConnection)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
@@ -493,16 +475,7 @@ func (c tlsConnection) HandshakeFinishTLSConnection(result AsyncResult) error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }

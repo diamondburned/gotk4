@@ -100,7 +100,7 @@ func (n *Node) ChildIndex(data interface{}) int {
 // ChildPosition gets the position of a #GNode with respect to its siblings.
 // @child must be a child of @node. The first child is numbered 0, the second 1,
 // and so on.
-func (n *Node) ChildPosition(child Node) int {
+func (n *Node) ChildPosition(child *Node) int {
 	var _arg0 *C.GNode // out
 	var _arg1 *C.GNode // out
 	var _cret C.gint   // in
@@ -149,7 +149,7 @@ func (r *Node) Destroy() {
 // IsAncestor returns true if @node is an ancestor of @descendant. This is true
 // if node is the parent of @descendant, or if node is the grandparent of
 // @descendant etc.
-func (n *Node) IsAncestor(descendant Node) bool {
+func (n *Node) IsAncestor(descendant *Node) bool {
 	var _arg0 *C.GNode   // out
 	var _arg1 *C.GNode   // out
 	var _cret C.gboolean // in

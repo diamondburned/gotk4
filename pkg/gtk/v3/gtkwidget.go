@@ -110,7 +110,7 @@ func gotk4_TickCallback(arg0 *C.GtkWidget, arg1 *C.GdkFrameClock, arg2 C.gpointe
 // system this function will return true for all windows, so you need to draw
 // the bottommost window first. Also, do not use “else if” statements to check
 // which window should be drawn.
-func CairoShouldDrawWindow(cr cairo.Context, window gdk.Window) bool {
+func CairoShouldDrawWindow(cr *cairo.Context, window gdk.Window) bool {
 	var _arg1 *C.cairo_t   // out
 	var _arg2 *C.GdkWindow // out
 	var _cret C.gboolean   // in
@@ -138,7 +138,7 @@ func CairoShouldDrawWindow(cr cairo.Context, window gdk.Window) bool {
 // expose event to be emitted with the Widget::draw signal. It is intended to
 // help porting multiwindow widgets from GTK+ 2 to the rendering architecture of
 // GTK+ 3.
-func CairoTransformToWindow(cr cairo.Context, widget Widget, window gdk.Window) {
+func CairoTransformToWindow(cr *cairo.Context, widget Widget, window gdk.Window) {
 	var _arg1 *C.cairo_t   // out
 	var _arg2 *C.GtkWidget // out
 	var _arg3 *C.GdkWindow // out
@@ -399,7 +399,7 @@ type Widget interface {
 	DragDestAddURITargetsWidget()
 	// DragDestGetTargetListWidget returns the list of targets this widget can
 	// accept from drag-and-drop.
-	DragDestGetTargetListWidget() TargetList
+	DragDestGetTargetListWidget() *TargetList
 	// DragDestGetTrackMotionWidget returns whether the widget has been
 	// configured to always emit Widget::drag-motion signals.
 	DragDestGetTrackMotionWidget() bool
@@ -451,7 +451,7 @@ type Widget interface {
 	// DragDestSetTargetListWidget sets the target types that this widget can
 	// accept from drag-and-drop. The widget must first be made into a drag
 	// destination with gtk_drag_dest_set().
-	DragDestSetTargetListWidget(targetList TargetList)
+	DragDestSetTargetListWidget(targetList *TargetList)
 	// DragDestSetTrackMotionWidget tells the widget to emit Widget::drag-motion
 	// and Widget::drag-leave events regardless of the targets and the
 	// GTK_DEST_DEFAULT_MOTION flag.
@@ -485,7 +485,7 @@ type Widget interface {
 	DragSourceAddURITargetsWidget()
 	// DragSourceGetTargetListWidget gets the list of targets this widget can
 	// provide for drag-and-drop.
-	DragSourceGetTargetListWidget() TargetList
+	DragSourceGetTargetListWidget() *TargetList
 	// DragSourceSetWidget sets up a widget so that GTK+ will start a drag
 	// operation when the user clicks and drags on the widget. The widget must
 	// have a window.
@@ -506,7 +506,7 @@ type Widget interface {
 	// DragSourceSetTargetListWidget changes the target types that this widget
 	// offers for drag-and-drop. The widget must first be made into a drag
 	// source with gtk_drag_source_set().
-	DragSourceSetTargetListWidget(targetList TargetList)
+	DragSourceSetTargetListWidget(targetList *TargetList)
 	// DragSourceUnsetWidget undoes the effects of gtk_drag_source_set().
 	DragSourceUnsetWidget()
 	// DragUnhighlightWidget removes a highlight set by gtk_drag_highlight()
@@ -527,7 +527,7 @@ type Widget interface {
 	// Note that special-purpose widgets may contain special code for rendering
 	// to the screen and might appear differently on screen and when rendered
 	// using gtk_widget_draw().
-	DrawWidget(cr cairo.Context)
+	DrawWidget(cr *cairo.Context)
 	// EnsureStyleWidget ensures that @widget has a style (@widget->style).
 	//
 	// Not a very useful function; most of the time, if you want the style, the
@@ -671,7 +671,7 @@ type Widget interface {
 	FontMap() pango.FontMap
 	// FontOptions returns the #cairo_font_options_t used for Pango rendering.
 	// When not set, the defaults font options for the Screen will be used.
-	FontOptions() cairo.FontOptions
+	FontOptions() *cairo.FontOptions
 	// FrameClock obtains the frame clock for a widget. The frame clock is a
 	// global “ticker” that can be used to drive animations and repaints. The
 	// most common reason to get the frame clock is to call
@@ -793,7 +793,7 @@ type Widget interface {
 	ParentWindow() gdk.Window
 	// GetPath returns the WidgetPath representing @widget, if the widget is not
 	// connected to a toplevel widget, a partial path will be created.
-	GetPath() WidgetPath
+	GetPath() *WidgetPath
 	// Pointer obtains the location of the mouse pointer in widget coordinates.
 	// Widget coordinates are a bit odd; for historical reasons, they are
 	// defined as @widget->window coordinates for widgets that return true for
@@ -1143,7 +1143,7 @@ type Widget interface {
 	// window. This allows for windows which react to mouse click in a
 	// nonrectangular region, see gdk_window_input_shape_combine_region() for
 	// more information.
-	InputShapeCombineRegionWidget(region cairo.Region)
+	InputShapeCombineRegionWidget(region *cairo.Region)
 	// InsertActionGroupWidget inserts @group into @widget. Children of @widget
 	// that implement Actionable can then be associated with actions in @group
 	// by setting their “action-name” to @prefix.`action-name`.
@@ -1155,7 +1155,7 @@ type Widget interface {
 	// storing the intersection in @intersection, and returns true if there was
 	// an intersection. @intersection may be nil if you’re only interested in
 	// whether there was an intersection.
-	IntersectWidget(area gdk.Rectangle) (gdk.Rectangle, bool)
+	IntersectWidget(area *gdk.Rectangle) (gdk.Rectangle, bool)
 	// IsAncestorWidget determines whether @widget is somewhere inside
 	// @ancestor, possibly with intermediate containers.
 	IsAncestorWidget(ancestor Widget) bool
@@ -1242,7 +1242,7 @@ type Widget interface {
 	// base color on that.
 	//
 	// Deprecated: since version 3.0.
-	ModifyBaseWidget(state StateType, color gdk.Color)
+	ModifyBaseWidget(state StateType, color *gdk.Color)
 	// ModifyBgWidget sets the background color for a widget in a particular
 	// state.
 	//
@@ -1258,7 +1258,7 @@ type Widget interface {
 	// the background color on that.
 	//
 	// Deprecated: since version 3.0.
-	ModifyBgWidget(state StateType, color gdk.Color)
+	ModifyBgWidget(state StateType, color *gdk.Color)
 	// ModifyCursorWidget sets the cursor color to use in a widget, overriding
 	// the Widget cursor-color and secondary-cursor-color style properties.
 	//
@@ -1266,7 +1266,7 @@ type Widget interface {
 	// gtk_widget_modify_style().
 	//
 	// Deprecated: since version 3.0.
-	ModifyCursorWidget(primary gdk.Color, secondary gdk.Color)
+	ModifyCursorWidget(primary *gdk.Color, secondary *gdk.Color)
 	// ModifyFgWidget sets the foreground color for a widget in a particular
 	// state.
 	//
@@ -1274,14 +1274,14 @@ type Widget interface {
 	// gtk_widget_modify_style().
 	//
 	// Deprecated: since version 3.0.
-	ModifyFgWidget(state StateType, color gdk.Color)
+	ModifyFgWidget(state StateType, color *gdk.Color)
 	// ModifyFontWidget sets the font to use for a widget.
 	//
 	// All other style values are left untouched. See also
 	// gtk_widget_modify_style().
 	//
 	// Deprecated: since version 3.0.
-	ModifyFontWidget(fontDesc pango.FontDescription)
+	ModifyFontWidget(fontDesc *pango.FontDescription)
 	// ModifyStyleWidget modifies style values on the widget.
 	//
 	// Modifications made using this technique take precedence over style values
@@ -1310,7 +1310,7 @@ type Widget interface {
 	// also gtk_widget_modify_style().
 	//
 	// Deprecated: since version 3.0.
-	ModifyTextWidget(state StateType, color gdk.Color)
+	ModifyTextWidget(state StateType, color *gdk.Color)
 	// OverrideBackgroundColorWidget sets the background color to use for a
 	// widget.
 	//
@@ -1318,7 +1318,7 @@ type Widget interface {
 	// gtk_widget_override_color().
 	//
 	// Deprecated: since version 3.16.
-	OverrideBackgroundColorWidget(state StateFlags, color gdk.RGBA)
+	OverrideBackgroundColorWidget(state StateFlags, color *gdk.RGBA)
 	// OverrideColorWidget sets the color to use for a widget.
 	//
 	// All other style values are left untouched.
@@ -1344,7 +1344,7 @@ type Widget interface {
 	// GTK_STYLE_PROVIDER_PRIORITY_APPLICATION priority.
 	//
 	// Deprecated: since version 3.16.
-	OverrideColorWidget(state StateFlags, color gdk.RGBA)
+	OverrideColorWidget(state StateFlags, color *gdk.RGBA)
 	// OverrideCursorWidget sets the cursor color to use in a widget, overriding
 	// the cursor-color and secondary-cursor-color style properties. All other
 	// style values are left untouched. See also gtk_widget_modify_style().
@@ -1353,12 +1353,12 @@ type Widget interface {
 	// value in @primary and @secondary will be ignored.
 	//
 	// Deprecated: since version 3.16.
-	OverrideCursorWidget(cursor gdk.RGBA, secondaryCursor gdk.RGBA)
+	OverrideCursorWidget(cursor *gdk.RGBA, secondaryCursor *gdk.RGBA)
 	// OverrideFontWidget sets the font to use for a widget. All other style
 	// values are left untouched. See gtk_widget_override_color().
 	//
 	// Deprecated: since version 3.16.
-	OverrideFontWidget(fontDesc pango.FontDescription)
+	OverrideFontWidget(fontDesc *pango.FontDescription)
 	// OverrideSymbolicColorWidget sets a symbolic color for a widget.
 	//
 	// All other style values are left untouched. See
@@ -1366,7 +1366,7 @@ type Widget interface {
 	// color.
 	//
 	// Deprecated: since version 3.16.
-	OverrideSymbolicColorWidget(name string, color gdk.RGBA)
+	OverrideSymbolicColorWidget(name string, color *gdk.RGBA)
 	// PathWidget obtains the full path to @widget. The path is simply the name
 	// of a widget and all its parents in the container hierarchy, separated by
 	// periods. The name of a widget comes from gtk_widget_get_name(). Paths are
@@ -1421,7 +1421,7 @@ type Widget interface {
 	// Normally you would only use this function in widget implementations. You
 	// might also use it to schedule a redraw of a DrawingArea or some portion
 	// thereof.
-	QueueDrawRegionWidget(region cairo.Region)
+	QueueDrawRegionWidget(region *cairo.Region)
 	// QueueResizeWidget: this function is only for use in widget
 	// implementations. Flags a widget to have its size renegotiated; should be
 	// called when a widget for some reason has a new size request. For example,
@@ -1458,7 +1458,7 @@ type Widget interface {
 	// cairo_region_is_empty() to check.
 	//
 	// Deprecated: since version 3.14.
-	RegionIntersectWidget(region cairo.Region) cairo.Region
+	RegionIntersectWidget(region *cairo.Region) *cairo.Region
 	// RegisterWindowWidget registers a Window with the widget and sets it up so
 	// that the widget receives events for it. Call
 	// gtk_widget_unregister_window() when destroying the window.
@@ -1661,7 +1661,7 @@ type Widget interface {
 	// SetFontOptionsWidget sets the #cairo_font_options_t used for Pango
 	// rendering in this widget. When not set, the default font options for the
 	// Screen will be used.
-	SetFontOptionsWidget(options cairo.FontOptions)
+	SetFontOptionsWidget(options *cairo.FontOptions)
 	// SetHalignWidget sets the horizontal alignment of @widget. See the
 	// Widget:halign property.
 	SetHalignWidget(align Align)
@@ -1945,7 +1945,7 @@ type Widget interface {
 	// ShapeCombineRegionWidget sets a shape for this widget’s GDK window. This
 	// allows for transparent windows etc., see
 	// gdk_window_shape_combine_region() for more information.
-	ShapeCombineRegionWidget(region cairo.Region)
+	ShapeCombineRegionWidget(region *cairo.Region)
 	// ShowWidget flags a widget to be displayed. Any widget that isn’t shown
 	// will not appear on the screen. If you want to show all the widgets in a
 	// container, it’s easier to call gtk_widget_show_all() on the container,
@@ -2168,9 +2168,9 @@ func (w widget) ChildNotifyWidget(childProperty string) {
 
 func (w widget) ClassPathWidget() (pathLength uint, path string, pathReversed string) {
 	var _arg0 *C.GtkWidget // out
-	var _arg1 *C.guint     // in
-	var _arg2 **C.gchar    // in
-	var _arg3 **C.gchar    // in
+	var _arg1 C.guint      // in
+	var _arg2 *C.gchar     // in
+	var _arg3 *C.gchar     // in
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
 
@@ -2181,28 +2181,10 @@ func (w widget) ClassPathWidget() (pathLength uint, path string, pathReversed st
 	var _pathReversed string // out
 
 	_pathLength = uint(_arg1)
-	{
-		var refTmpIn *C.gchar
-		var refTmpOut string
-
-		refTmpIn = *_arg2
-
-		refTmpOut = C.GoString(refTmpIn)
-		defer C.free(unsafe.Pointer(refTmpIn))
-
-		_path = refTmpOut
-	}
-	{
-		var refTmpIn *C.gchar
-		var refTmpOut string
-
-		refTmpIn = *_arg3
-
-		refTmpOut = C.GoString(refTmpIn)
-		defer C.free(unsafe.Pointer(refTmpIn))
-
-		_pathReversed = refTmpOut
-	}
+	_path = C.GoString(_arg2)
+	defer C.free(unsafe.Pointer(_arg2))
+	_pathReversed = C.GoString(_arg3)
+	defer C.free(unsafe.Pointer(_arg3))
 
 	return _pathLength, _path, _pathReversed
 }
@@ -2335,7 +2317,7 @@ func (w widget) DragDestAddURITargetsWidget() {
 	C.gtk_drag_dest_add_uri_targets(_arg0)
 }
 
-func (w widget) DragDestGetTargetListWidget() TargetList {
+func (w widget) DragDestGetTargetListWidget() *TargetList {
 	var _arg0 *C.GtkWidget     // out
 	var _cret *C.GtkTargetList // in
 
@@ -2343,9 +2325,9 @@ func (w widget) DragDestGetTargetListWidget() TargetList {
 
 	_cret = C.gtk_drag_dest_get_target_list(_arg0)
 
-	var _targetList TargetList // out
+	var _targetList *TargetList // out
 
-	_targetList = (TargetList)(unsafe.Pointer(_cret))
+	_targetList = (*TargetList)(unsafe.Pointer(_cret))
 	C.gtk_target_list_ref(_cret)
 
 	return _targetList
@@ -2400,7 +2382,7 @@ func (w widget) DragDestSetProxyWidget(proxyWindow gdk.Window, protocol gdk.Drag
 	C.gtk_drag_dest_set_proxy(_arg0, _arg1, _arg2, _arg3)
 }
 
-func (w widget) DragDestSetTargetListWidget(targetList TargetList) {
+func (w widget) DragDestSetTargetListWidget(targetList *TargetList) {
 	var _arg0 *C.GtkWidget     // out
 	var _arg1 *C.GtkTargetList // out
 
@@ -2462,7 +2444,7 @@ func (w widget) DragSourceAddURITargetsWidget() {
 	C.gtk_drag_source_add_uri_targets(_arg0)
 }
 
-func (w widget) DragSourceGetTargetListWidget() TargetList {
+func (w widget) DragSourceGetTargetListWidget() *TargetList {
 	var _arg0 *C.GtkWidget     // out
 	var _cret *C.GtkTargetList // in
 
@@ -2470,9 +2452,9 @@ func (w widget) DragSourceGetTargetListWidget() TargetList {
 
 	_cret = C.gtk_drag_source_get_target_list(_arg0)
 
-	var _targetList TargetList // out
+	var _targetList *TargetList // out
 
-	_targetList = (TargetList)(unsafe.Pointer(_cret))
+	_targetList = (*TargetList)(unsafe.Pointer(_cret))
 	C.gtk_target_list_ref(_cret)
 
 	return _targetList
@@ -2526,7 +2508,7 @@ func (w widget) DragSourceSetIconStockWidget(stockId string) {
 	C.gtk_drag_source_set_icon_stock(_arg0, _arg1)
 }
 
-func (w widget) DragSourceSetTargetListWidget(targetList TargetList) {
+func (w widget) DragSourceSetTargetListWidget(targetList *TargetList) {
 	var _arg0 *C.GtkWidget     // out
 	var _arg1 *C.GtkTargetList // out
 
@@ -2552,7 +2534,7 @@ func (w widget) DragUnhighlightWidget() {
 	C.gtk_drag_unhighlight(_arg0)
 }
 
-func (w widget) DrawWidget(cr cairo.Context) {
+func (w widget) DrawWidget(cr *cairo.Context) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.cairo_t   // out
 
@@ -2733,8 +2715,8 @@ func (w widget) CanFocus() bool {
 }
 
 func (w widget) ChildRequisition() Requisition {
-	var _arg0 *C.GtkWidget      // out
-	var _arg1 *C.GtkRequisition // in
+	var _arg0 *C.GtkWidget     // out
+	var _arg1 C.GtkRequisition // in
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
 
@@ -2742,7 +2724,17 @@ func (w widget) ChildRequisition() Requisition {
 
 	var _requisition Requisition // out
 
-	_requisition = (Requisition)(unsafe.Pointer(_arg1))
+	{
+		var refTmpIn *C.GtkRequisition
+		var refTmpOut *Requisition
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Requisition)(unsafe.Pointer(refTmpIn))
+
+		_requisition = *refTmpOut
+	}
 
 	return _requisition
 }
@@ -2910,7 +2902,7 @@ func (w widget) FontMap() pango.FontMap {
 	return _fontMap
 }
 
-func (w widget) FontOptions() cairo.FontOptions {
+func (w widget) FontOptions() *cairo.FontOptions {
 	var _arg0 *C.GtkWidget            // out
 	var _cret *C.cairo_font_options_t // in
 
@@ -2918,9 +2910,9 @@ func (w widget) FontOptions() cairo.FontOptions {
 
 	_cret = C.gtk_widget_get_font_options(_arg0)
 
-	var _fontOptions cairo.FontOptions // out
+	var _fontOptions *cairo.FontOptions // out
 
-	_fontOptions = (cairo.FontOptions)(unsafe.Pointer(_cret))
+	_fontOptions = (*cairo.FontOptions)(unsafe.Pointer(_cret))
 
 	return _fontOptions
 }
@@ -3254,7 +3246,7 @@ func (w widget) ParentWindow() gdk.Window {
 	return _window
 }
 
-func (w widget) GetPath() WidgetPath {
+func (w widget) GetPath() *WidgetPath {
 	var _arg0 *C.GtkWidget     // out
 	var _cret *C.GtkWidgetPath // in
 
@@ -3262,9 +3254,9 @@ func (w widget) GetPath() WidgetPath {
 
 	_cret = C.gtk_widget_get_path(_arg0)
 
-	var _widgetPath WidgetPath // out
+	var _widgetPath *WidgetPath // out
 
-	_widgetPath = (WidgetPath)(unsafe.Pointer(_cret))
+	_widgetPath = (*WidgetPath)(unsafe.Pointer(_cret))
 	C.gtk_widget_path_ref(_cret)
 
 	return _widgetPath
@@ -3272,8 +3264,8 @@ func (w widget) GetPath() WidgetPath {
 
 func (w widget) Pointer() (x int, y int) {
 	var _arg0 *C.GtkWidget // out
-	var _arg1 *C.gint      // in
-	var _arg2 *C.gint      // in
+	var _arg1 C.gint       // in
+	var _arg2 C.gint       // in
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
 
@@ -3290,8 +3282,8 @@ func (w widget) Pointer() (x int, y int) {
 
 func (w widget) PreferredHeight() (minimumHeight int, naturalHeight int) {
 	var _arg0 *C.GtkWidget // out
-	var _arg1 *C.gint      // in
-	var _arg2 *C.gint      // in
+	var _arg1 C.gint       // in
+	var _arg2 C.gint       // in
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
 
@@ -3309,10 +3301,10 @@ func (w widget) PreferredHeight() (minimumHeight int, naturalHeight int) {
 func (w widget) PreferredHeightAndBaselineForWidth(width int) (minimumHeight int, naturalHeight int, minimumBaseline int, naturalBaseline int) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gint       // out
-	var _arg2 *C.gint      // in
-	var _arg3 *C.gint      // in
-	var _arg4 *C.gint      // in
-	var _arg5 *C.gint      // in
+	var _arg2 C.gint       // in
+	var _arg3 C.gint       // in
+	var _arg4 C.gint       // in
+	var _arg5 C.gint       // in
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
 	_arg1 = C.gint(width)
@@ -3335,8 +3327,8 @@ func (w widget) PreferredHeightAndBaselineForWidth(width int) (minimumHeight int
 func (w widget) PreferredHeightForWidth(width int) (minimumHeight int, naturalHeight int) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gint       // out
-	var _arg2 *C.gint      // in
-	var _arg3 *C.gint      // in
+	var _arg2 C.gint       // in
+	var _arg3 C.gint       // in
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
 	_arg1 = C.gint(width)
@@ -3353,9 +3345,9 @@ func (w widget) PreferredHeightForWidth(width int) (minimumHeight int, naturalHe
 }
 
 func (w widget) PreferredSize() (minimumSize Requisition, naturalSize Requisition) {
-	var _arg0 *C.GtkWidget      // out
-	var _arg1 *C.GtkRequisition // in
-	var _arg2 *C.GtkRequisition // in
+	var _arg0 *C.GtkWidget     // out
+	var _arg1 C.GtkRequisition // in
+	var _arg2 C.GtkRequisition // in
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
 
@@ -3364,16 +3356,36 @@ func (w widget) PreferredSize() (minimumSize Requisition, naturalSize Requisitio
 	var _minimumSize Requisition // out
 	var _naturalSize Requisition // out
 
-	_minimumSize = (Requisition)(unsafe.Pointer(_arg1))
-	_naturalSize = (Requisition)(unsafe.Pointer(_arg2))
+	{
+		var refTmpIn *C.GtkRequisition
+		var refTmpOut *Requisition
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Requisition)(unsafe.Pointer(refTmpIn))
+
+		_minimumSize = *refTmpOut
+	}
+	{
+		var refTmpIn *C.GtkRequisition
+		var refTmpOut *Requisition
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Requisition)(unsafe.Pointer(refTmpIn))
+
+		_naturalSize = *refTmpOut
+	}
 
 	return _minimumSize, _naturalSize
 }
 
 func (w widget) PreferredWidth() (minimumWidth int, naturalWidth int) {
 	var _arg0 *C.GtkWidget // out
-	var _arg1 *C.gint      // in
-	var _arg2 *C.gint      // in
+	var _arg1 C.gint       // in
+	var _arg2 C.gint       // in
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
 
@@ -3391,8 +3403,8 @@ func (w widget) PreferredWidth() (minimumWidth int, naturalWidth int) {
 func (w widget) PreferredWidthForHeight(height int) (minimumWidth int, naturalWidth int) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gint       // out
-	var _arg2 *C.gint      // in
-	var _arg3 *C.gint      // in
+	var _arg2 C.gint       // in
+	var _arg3 C.gint       // in
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
 	_arg1 = C.gint(height)
@@ -3458,8 +3470,8 @@ func (w widget) RequestMode() SizeRequestMode {
 }
 
 func (w widget) Requisition() Requisition {
-	var _arg0 *C.GtkWidget      // out
-	var _arg1 *C.GtkRequisition // in
+	var _arg0 *C.GtkWidget     // out
+	var _arg1 C.GtkRequisition // in
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
 
@@ -3467,7 +3479,17 @@ func (w widget) Requisition() Requisition {
 
 	var _requisition Requisition // out
 
-	_requisition = (Requisition)(unsafe.Pointer(_arg1))
+	{
+		var refTmpIn *C.GtkRequisition
+		var refTmpOut *Requisition
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Requisition)(unsafe.Pointer(refTmpIn))
+
+		_requisition = *refTmpOut
+	}
 
 	return _requisition
 }
@@ -3551,8 +3573,8 @@ func (w widget) Settings() Settings {
 
 func (w widget) GetSizeRequest() (width int, height int) {
 	var _arg0 *C.GtkWidget // out
-	var _arg1 *C.gint      // in
-	var _arg2 *C.gint      // in
+	var _arg1 C.gint       // in
+	var _arg2 C.gint       // in
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
 
@@ -4021,7 +4043,7 @@ func (w widget) InitTemplateWidget() {
 	C.gtk_widget_init_template(_arg0)
 }
 
-func (w widget) InputShapeCombineRegionWidget(region cairo.Region) {
+func (w widget) InputShapeCombineRegionWidget(region *cairo.Region) {
 	var _arg0 *C.GtkWidget      // out
 	var _arg1 *C.cairo_region_t // out
 
@@ -4044,10 +4066,10 @@ func (w widget) InsertActionGroupWidget(name string, group gio.ActionGroup) {
 	C.gtk_widget_insert_action_group(_arg0, _arg1, _arg2)
 }
 
-func (w widget) IntersectWidget(area gdk.Rectangle) (gdk.Rectangle, bool) {
+func (w widget) IntersectWidget(area *gdk.Rectangle) (gdk.Rectangle, bool) {
 	var _arg0 *C.GtkWidget    // out
 	var _arg1 *C.GdkRectangle // out
-	var _arg2 *C.GdkRectangle // in
+	var _arg2 C.GdkRectangle  // in
 	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
@@ -4058,7 +4080,17 @@ func (w widget) IntersectWidget(area gdk.Rectangle) (gdk.Rectangle, bool) {
 	var _intersection gdk.Rectangle // out
 	var _ok bool                    // out
 
-	_intersection = (gdk.Rectangle)(unsafe.Pointer(_arg2))
+	{
+		var refTmpIn *C.GdkRectangle
+		var refTmpOut *gdk.Rectangle
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*gdk.Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_intersection = *refTmpOut
+	}
 	if _cret != 0 {
 		_ok = true
 	}
@@ -4262,7 +4294,7 @@ func (w widget) MnemonicActivateWidget(groupCycling bool) bool {
 	return _ok
 }
 
-func (w widget) ModifyBaseWidget(state StateType, color gdk.Color) {
+func (w widget) ModifyBaseWidget(state StateType, color *gdk.Color) {
 	var _arg0 *C.GtkWidget   // out
 	var _arg1 C.GtkStateType // out
 	var _arg2 *C.GdkColor    // out
@@ -4274,7 +4306,7 @@ func (w widget) ModifyBaseWidget(state StateType, color gdk.Color) {
 	C.gtk_widget_modify_base(_arg0, _arg1, _arg2)
 }
 
-func (w widget) ModifyBgWidget(state StateType, color gdk.Color) {
+func (w widget) ModifyBgWidget(state StateType, color *gdk.Color) {
 	var _arg0 *C.GtkWidget   // out
 	var _arg1 C.GtkStateType // out
 	var _arg2 *C.GdkColor    // out
@@ -4286,7 +4318,7 @@ func (w widget) ModifyBgWidget(state StateType, color gdk.Color) {
 	C.gtk_widget_modify_bg(_arg0, _arg1, _arg2)
 }
 
-func (w widget) ModifyCursorWidget(primary gdk.Color, secondary gdk.Color) {
+func (w widget) ModifyCursorWidget(primary *gdk.Color, secondary *gdk.Color) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.GdkColor  // out
 	var _arg2 *C.GdkColor  // out
@@ -4298,7 +4330,7 @@ func (w widget) ModifyCursorWidget(primary gdk.Color, secondary gdk.Color) {
 	C.gtk_widget_modify_cursor(_arg0, _arg1, _arg2)
 }
 
-func (w widget) ModifyFgWidget(state StateType, color gdk.Color) {
+func (w widget) ModifyFgWidget(state StateType, color *gdk.Color) {
 	var _arg0 *C.GtkWidget   // out
 	var _arg1 C.GtkStateType // out
 	var _arg2 *C.GdkColor    // out
@@ -4310,7 +4342,7 @@ func (w widget) ModifyFgWidget(state StateType, color gdk.Color) {
 	C.gtk_widget_modify_fg(_arg0, _arg1, _arg2)
 }
 
-func (w widget) ModifyFontWidget(fontDesc pango.FontDescription) {
+func (w widget) ModifyFontWidget(fontDesc *pango.FontDescription) {
 	var _arg0 *C.GtkWidget            // out
 	var _arg1 *C.PangoFontDescription // out
 
@@ -4330,7 +4362,7 @@ func (w widget) ModifyStyleWidget(style RCStyle) {
 	C.gtk_widget_modify_style(_arg0, _arg1)
 }
 
-func (w widget) ModifyTextWidget(state StateType, color gdk.Color) {
+func (w widget) ModifyTextWidget(state StateType, color *gdk.Color) {
 	var _arg0 *C.GtkWidget   // out
 	var _arg1 C.GtkStateType // out
 	var _arg2 *C.GdkColor    // out
@@ -4342,7 +4374,7 @@ func (w widget) ModifyTextWidget(state StateType, color gdk.Color) {
 	C.gtk_widget_modify_text(_arg0, _arg1, _arg2)
 }
 
-func (w widget) OverrideBackgroundColorWidget(state StateFlags, color gdk.RGBA) {
+func (w widget) OverrideBackgroundColorWidget(state StateFlags, color *gdk.RGBA) {
 	var _arg0 *C.GtkWidget    // out
 	var _arg1 C.GtkStateFlags // out
 	var _arg2 *C.GdkRGBA      // out
@@ -4354,7 +4386,7 @@ func (w widget) OverrideBackgroundColorWidget(state StateFlags, color gdk.RGBA) 
 	C.gtk_widget_override_background_color(_arg0, _arg1, _arg2)
 }
 
-func (w widget) OverrideColorWidget(state StateFlags, color gdk.RGBA) {
+func (w widget) OverrideColorWidget(state StateFlags, color *gdk.RGBA) {
 	var _arg0 *C.GtkWidget    // out
 	var _arg1 C.GtkStateFlags // out
 	var _arg2 *C.GdkRGBA      // out
@@ -4366,7 +4398,7 @@ func (w widget) OverrideColorWidget(state StateFlags, color gdk.RGBA) {
 	C.gtk_widget_override_color(_arg0, _arg1, _arg2)
 }
 
-func (w widget) OverrideCursorWidget(cursor gdk.RGBA, secondaryCursor gdk.RGBA) {
+func (w widget) OverrideCursorWidget(cursor *gdk.RGBA, secondaryCursor *gdk.RGBA) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.GdkRGBA   // out
 	var _arg2 *C.GdkRGBA   // out
@@ -4378,7 +4410,7 @@ func (w widget) OverrideCursorWidget(cursor gdk.RGBA, secondaryCursor gdk.RGBA) 
 	C.gtk_widget_override_cursor(_arg0, _arg1, _arg2)
 }
 
-func (w widget) OverrideFontWidget(fontDesc pango.FontDescription) {
+func (w widget) OverrideFontWidget(fontDesc *pango.FontDescription) {
 	var _arg0 *C.GtkWidget            // out
 	var _arg1 *C.PangoFontDescription // out
 
@@ -4388,7 +4420,7 @@ func (w widget) OverrideFontWidget(fontDesc pango.FontDescription) {
 	C.gtk_widget_override_font(_arg0, _arg1)
 }
 
-func (w widget) OverrideSymbolicColorWidget(name string, color gdk.RGBA) {
+func (w widget) OverrideSymbolicColorWidget(name string, color *gdk.RGBA) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.gchar     // out
 	var _arg2 *C.GdkRGBA   // out
@@ -4403,9 +4435,9 @@ func (w widget) OverrideSymbolicColorWidget(name string, color gdk.RGBA) {
 
 func (w widget) PathWidget() (pathLength uint, path string, pathReversed string) {
 	var _arg0 *C.GtkWidget // out
-	var _arg1 *C.guint     // in
-	var _arg2 **C.gchar    // in
-	var _arg3 **C.gchar    // in
+	var _arg1 C.guint      // in
+	var _arg2 *C.gchar     // in
+	var _arg3 *C.gchar     // in
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
 
@@ -4416,28 +4448,10 @@ func (w widget) PathWidget() (pathLength uint, path string, pathReversed string)
 	var _pathReversed string // out
 
 	_pathLength = uint(_arg1)
-	{
-		var refTmpIn *C.gchar
-		var refTmpOut string
-
-		refTmpIn = *_arg2
-
-		refTmpOut = C.GoString(refTmpIn)
-		defer C.free(unsafe.Pointer(refTmpIn))
-
-		_path = refTmpOut
-	}
-	{
-		var refTmpIn *C.gchar
-		var refTmpOut string
-
-		refTmpIn = *_arg3
-
-		refTmpOut = C.GoString(refTmpIn)
-		defer C.free(unsafe.Pointer(refTmpIn))
-
-		_pathReversed = refTmpOut
-	}
+	_path = C.GoString(_arg2)
+	defer C.free(unsafe.Pointer(_arg2))
+	_pathReversed = C.GoString(_arg3)
+	defer C.free(unsafe.Pointer(_arg3))
 
 	return _pathLength, _path, _pathReversed
 }
@@ -4482,7 +4496,7 @@ func (w widget) QueueDrawAreaWidget(x int, y int, width int, height int) {
 	C.gtk_widget_queue_draw_area(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
-func (w widget) QueueDrawRegionWidget(region cairo.Region) {
+func (w widget) QueueDrawRegionWidget(region *cairo.Region) {
 	var _arg0 *C.GtkWidget      // out
 	var _arg1 *C.cairo_region_t // out
 
@@ -4516,7 +4530,7 @@ func (w widget) RealizeWidget() {
 	C.gtk_widget_realize(_arg0)
 }
 
-func (w widget) RegionIntersectWidget(region cairo.Region) cairo.Region {
+func (w widget) RegionIntersectWidget(region *cairo.Region) *cairo.Region {
 	var _arg0 *C.GtkWidget      // out
 	var _arg1 *C.cairo_region_t // out
 	var _cret *C.cairo_region_t // in
@@ -4526,10 +4540,10 @@ func (w widget) RegionIntersectWidget(region cairo.Region) cairo.Region {
 
 	_cret = C.gtk_widget_region_intersect(_arg0, _arg1)
 
-	var _ret cairo.Region // out
+	var _ret *cairo.Region // out
 
-	_ret = (cairo.Region)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_ret, func(v cairo.Region) {
+	_ret = (*cairo.Region)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_ret, func(v *cairo.Region) {
 		C.free(unsafe.Pointer(v))
 	})
 
@@ -4810,7 +4824,7 @@ func (w widget) SetFontMapWidget(fontMap pango.FontMap) {
 	C.gtk_widget_set_font_map(_arg0, _arg1)
 }
 
-func (w widget) SetFontOptionsWidget(options cairo.FontOptions) {
+func (w widget) SetFontOptionsWidget(options *cairo.FontOptions) {
 	var _arg0 *C.GtkWidget            // out
 	var _arg1 *C.cairo_font_options_t // out
 
@@ -5207,7 +5221,7 @@ func (w widget) SetWindowWidget(window gdk.Window) {
 	C.gtk_widget_set_window(_arg0, _arg1)
 }
 
-func (w widget) ShapeCombineRegionWidget(region cairo.Region) {
+func (w widget) ShapeCombineRegionWidget(region *cairo.Region) {
 	var _arg0 *C.GtkWidget      // out
 	var _arg1 *C.cairo_region_t // out
 
@@ -5242,8 +5256,8 @@ func (w widget) ShowNowWidget() {
 }
 
 func (w widget) SizeRequestWidget() Requisition {
-	var _arg0 *C.GtkWidget      // out
-	var _arg1 *C.GtkRequisition // in
+	var _arg0 *C.GtkWidget     // out
+	var _arg1 C.GtkRequisition // in
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
 
@@ -5251,7 +5265,17 @@ func (w widget) SizeRequestWidget() Requisition {
 
 	var _requisition Requisition // out
 
-	_requisition = (Requisition)(unsafe.Pointer(_arg1))
+	{
+		var refTmpIn *C.GtkRequisition
+		var refTmpOut *Requisition
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Requisition)(unsafe.Pointer(refTmpIn))
+
+		_requisition = *refTmpOut
+	}
 
 	return _requisition
 }
@@ -5290,8 +5314,8 @@ func (s widget) TranslateCoordinatesWidget(destWidget Widget, srcX int, srcY int
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.gint       // out
 	var _arg3 C.gint       // out
-	var _arg4 *C.gint      // in
-	var _arg5 *C.gint      // in
+	var _arg4 C.gint       // in
+	var _arg5 C.gint       // in
 	var _cret C.gboolean   // in
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(s.Native()))
@@ -5388,15 +5412,15 @@ func marshalRequisition(p uintptr) (interface{}, error) {
 }
 
 // NewRequisition constructs a struct Requisition.
-func NewRequisition() Requisition {
+func NewRequisition() *Requisition {
 	var _cret *C.GtkRequisition // in
 
 	_cret = C.gtk_requisition_new()
 
-	var _requisition Requisition // out
+	var _requisition *Requisition // out
 
-	_requisition = (Requisition)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_requisition, func(v Requisition) {
+	_requisition = (*Requisition)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_requisition, func(v *Requisition) {
 		C.gtk_requisition_free((*C.GtkRequisition)(unsafe.Pointer(v)))
 	})
 
@@ -5409,7 +5433,7 @@ func (r *Requisition) Native() unsafe.Pointer {
 }
 
 // Copy copies a Requisition.
-func (r *Requisition) Copy() Requisition {
+func (r *Requisition) Copy() *Requisition {
 	var _arg0 *C.GtkRequisition // out
 	var _cret *C.GtkRequisition // in
 
@@ -5417,10 +5441,10 @@ func (r *Requisition) Copy() Requisition {
 
 	_cret = C.gtk_requisition_copy(_arg0)
 
-	var _ret Requisition // out
+	var _ret *Requisition // out
 
-	_ret = (Requisition)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_ret, func(v Requisition) {
+	_ret = (*Requisition)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_ret, func(v *Requisition) {
 		C.gtk_requisition_free((*C.GtkRequisition)(unsafe.Pointer(v)))
 	})
 

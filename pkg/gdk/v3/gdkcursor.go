@@ -222,7 +222,7 @@ type Cursor interface {
 	// Note that depending on the capabilities of the windowing system and on
 	// the cursor, GDK may not be able to obtain the image data. In this case,
 	// nil is returned.
-	Surface() (xHot float64, yHot float64, surface cairo.Surface)
+	Surface() (xHot float64, yHot float64, surface *cairo.Surface)
 	// RefCursor adds a reference to @cursor.
 	//
 	// Deprecated: since version 3.0.
@@ -379,7 +379,7 @@ func NewCursorFromPixbuf(display Display, pixbuf gdkpixbuf.Pixbuf, x int, y int)
 //
 // On the X backend, support for RGBA cursors requires a sufficently new version
 // of the X Render extension.
-func NewCursorFromSurface(display Display, surface cairo.Surface, x float64, y float64) Cursor {
+func NewCursorFromSurface(display Display, surface *cairo.Surface, x float64, y float64) Cursor {
 	var _arg1 *C.GdkDisplay      // out
 	var _arg2 *C.cairo_surface_t // out
 	var _arg3 C.gdouble          // out
@@ -445,24 +445,24 @@ func (c cursor) Image() gdkpixbuf.Pixbuf {
 	return _pixbuf
 }
 
-func (c cursor) Surface() (xHot float64, yHot float64, surface cairo.Surface) {
+func (c cursor) Surface() (xHot float64, yHot float64, surface *cairo.Surface) {
 	var _arg0 *C.GdkCursor       // out
-	var _arg1 *C.gdouble         // in
-	var _arg2 *C.gdouble         // in
+	var _arg1 C.gdouble          // in
+	var _arg2 C.gdouble          // in
 	var _cret *C.cairo_surface_t // in
 
 	_arg0 = (*C.GdkCursor)(unsafe.Pointer(c.Native()))
 
 	_cret = C.gdk_cursor_get_surface(_arg0, &_arg1, &_arg2)
 
-	var _xHot float64          // out
-	var _yHot float64          // out
-	var _surface cairo.Surface // out
+	var _xHot float64           // out
+	var _yHot float64           // out
+	var _surface *cairo.Surface // out
 
 	_xHot = float64(_arg1)
 	_yHot = float64(_arg2)
-	_surface = (cairo.Surface)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_surface, func(v cairo.Surface) {
+	_surface = (*cairo.Surface)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_surface, func(v *cairo.Surface) {
 		C.free(unsafe.Pointer(v))
 	})
 

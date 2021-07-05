@@ -88,7 +88,7 @@ type PrintJob interface {
 	Status() PrintStatus
 	// Surface gets a cairo surface onto which the pages of the print job should
 	// be rendered.
-	Surface() (cairo.Surface, error)
+	Surface() (*cairo.Surface, error)
 	// Title gets the job title.
 	Title() string
 	// TrackPrintStatus returns whether jobs will be tracked after printing.
@@ -374,29 +374,20 @@ func (j printJob) Status() PrintStatus {
 	return _printStatus
 }
 
-func (j printJob) Surface() (cairo.Surface, error) {
+func (j printJob) Surface() (*cairo.Surface, error) {
 	var _arg0 *C.GtkPrintJob     // out
 	var _cret *C.cairo_surface_t // in
-	var _cerr **C.GError         // in
+	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
 
 	_cret = C.gtk_print_job_get_surface(_arg0, &_cerr)
 
-	var _surface cairo.Surface // out
-	var _goerr error           // out
+	var _surface *cairo.Surface // out
+	var _goerr error            // out
 
-	_surface = (cairo.Surface)(unsafe.Pointer(_cret))
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_surface = (*cairo.Surface)(unsafe.Pointer(_cret))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _surface, _goerr
 }
@@ -561,7 +552,7 @@ func (j printJob) SetScalePrintJob(scale float64) {
 func (j printJob) SetSourceFdPrintJob(fd int) error {
 	var _arg0 *C.GtkPrintJob // out
 	var _arg1 C.int          // out
-	var _cerr **C.GError     // in
+	var _cerr *C.GError      // in
 
 	_arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
 	_arg1 = C.int(fd)
@@ -570,16 +561,7 @@ func (j printJob) SetSourceFdPrintJob(fd int) error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
@@ -587,7 +569,7 @@ func (j printJob) SetSourceFdPrintJob(fd int) error {
 func (j printJob) SetSourceFilePrintJob(filename string) error {
 	var _arg0 *C.GtkPrintJob // out
 	var _arg1 *C.char        // out
-	var _cerr **C.GError     // in
+	var _cerr *C.GError      // in
 
 	_arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
 	_arg1 = (*C.char)(C.CString(filename))
@@ -597,16 +579,7 @@ func (j printJob) SetSourceFilePrintJob(filename string) error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }

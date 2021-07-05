@@ -49,7 +49,7 @@ type ContentProvider interface {
 	Value(value externglib.Value) error
 	// RefFormatsContentProvider gets the formats that the provider can provide
 	// its current contents in.
-	RefFormatsContentProvider() ContentFormats
+	RefFormatsContentProvider() *ContentFormats
 	// RefStorableFormatsContentProvider gets the formats that the provider
 	// suggests other applications to store the data in.
 	//
@@ -57,7 +57,7 @@ type ContentProvider interface {
 	//
 	// This can be assumed to be a subset of
 	// [method@Gdk.ContentProvider.ref_formats].
-	RefStorableFormatsContentProvider() ContentFormats
+	RefStorableFormatsContentProvider() *ContentFormats
 }
 
 // contentProvider implements the ContentProvider class.
@@ -142,7 +142,7 @@ func (p contentProvider) ContentChangedContentProvider() {
 func (p contentProvider) Value(value externglib.Value) error {
 	var _arg0 *C.GdkContentProvider // out
 	var _arg1 *C.GValue             // out
-	var _cerr **C.GError            // in
+	var _cerr *C.GError             // in
 
 	_arg0 = (*C.GdkContentProvider)(unsafe.Pointer(p.Native()))
 	_arg1 = (*C.GValue)(unsafe.Pointer(&value.GValue))
@@ -151,21 +151,12 @@ func (p contentProvider) Value(value externglib.Value) error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
 
-func (p contentProvider) RefFormatsContentProvider() ContentFormats {
+func (p contentProvider) RefFormatsContentProvider() *ContentFormats {
 	var _arg0 *C.GdkContentProvider // out
 	var _cret *C.GdkContentFormats  // in
 
@@ -173,17 +164,17 @@ func (p contentProvider) RefFormatsContentProvider() ContentFormats {
 
 	_cret = C.gdk_content_provider_ref_formats(_arg0)
 
-	var _contentFormats ContentFormats // out
+	var _contentFormats *ContentFormats // out
 
-	_contentFormats = (ContentFormats)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_contentFormats, func(v ContentFormats) {
+	_contentFormats = (*ContentFormats)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_contentFormats, func(v *ContentFormats) {
 		C.gdk_content_formats_unref((*C.GdkContentFormats)(unsafe.Pointer(v)))
 	})
 
 	return _contentFormats
 }
 
-func (p contentProvider) RefStorableFormatsContentProvider() ContentFormats {
+func (p contentProvider) RefStorableFormatsContentProvider() *ContentFormats {
 	var _arg0 *C.GdkContentProvider // out
 	var _cret *C.GdkContentFormats  // in
 
@@ -191,10 +182,10 @@ func (p contentProvider) RefStorableFormatsContentProvider() ContentFormats {
 
 	_cret = C.gdk_content_provider_ref_storable_formats(_arg0)
 
-	var _contentFormats ContentFormats // out
+	var _contentFormats *ContentFormats // out
 
-	_contentFormats = (ContentFormats)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_contentFormats, func(v ContentFormats) {
+	_contentFormats = (*ContentFormats)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_contentFormats, func(v *ContentFormats) {
 		C.gdk_content_formats_unref((*C.GdkContentFormats)(unsafe.Pointer(v)))
 	})
 

@@ -77,8 +77,8 @@ func NewGestureSwipe() GestureSwipe {
 
 func (g gestureSwipe) Velocity() (velocityX float64, velocityY float64, ok bool) {
 	var _arg0 *C.GtkGestureSwipe // out
-	var _arg1 *C.double          // in
-	var _arg2 *C.double          // in
+	var _arg1 C.double           // in
+	var _arg2 C.double           // in
 	var _cret C.gboolean         // in
 
 	_arg0 = (*C.GtkGestureSwipe)(unsafe.Pointer(g.Native()))

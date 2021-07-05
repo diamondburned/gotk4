@@ -375,11 +375,11 @@ func (d device) HasCursor() bool {
 }
 
 func (d device) Key(index_ uint) (uint, ModifierType, bool) {
-	var _arg0 *C.GdkDevice       // out
-	var _arg1 C.guint            // out
-	var _arg2 *C.guint           // in
-	var _arg3 *C.GdkModifierType // in
-	var _cret C.gboolean         // in
+	var _arg0 *C.GdkDevice      // out
+	var _arg1 C.guint           // out
+	var _arg2 C.guint           // in
+	var _arg3 C.GdkModifierType // in
+	var _cret C.gboolean        // in
 
 	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
 	_arg1 = C.guint(index_)
@@ -391,16 +391,7 @@ func (d device) Key(index_ uint) (uint, ModifierType, bool) {
 	var _ok bool                // out
 
 	_keyval = uint(_arg2)
-	{
-		var refTmpIn C.GdkModifierType
-		var refTmpOut ModifierType
-
-		refTmpIn = *_arg3
-
-		refTmpOut = ModifierType(refTmpIn)
-
-		_modifiers = refTmpOut
-	}
+	_modifiers = ModifierType(_arg3)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -484,10 +475,10 @@ func (d device) Name() string {
 }
 
 func (d device) Position() (screen Screen, x int, y int) {
-	var _arg0 *C.GdkDevice  // out
-	var _arg1 **C.GdkScreen // in
-	var _arg2 *C.gint       // in
-	var _arg3 *C.gint       // in
+	var _arg0 *C.GdkDevice // out
+	var _arg1 *C.GdkScreen // in
+	var _arg2 C.gint       // in
+	var _arg3 C.gint       // in
 
 	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
 
@@ -497,16 +488,7 @@ func (d device) Position() (screen Screen, x int, y int) {
 	var _x int         // out
 	var _y int         // out
 
-	{
-		var refTmpIn *C.GdkScreen
-		var refTmpOut screen
-
-		refTmpIn = *_arg1
-
-		refTmpOut = gextras.CastObject(externglib.Take(unsafe.Pointer(refTmpIn))).(screen)
-
-		_screen = refTmpOut
-	}
+	_screen = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg1))).(Screen)
 	_x = int(_arg2)
 	_y = int(_arg3)
 
@@ -514,10 +496,10 @@ func (d device) Position() (screen Screen, x int, y int) {
 }
 
 func (d device) PositionDouble() (screen Screen, x float64, y float64) {
-	var _arg0 *C.GdkDevice  // out
-	var _arg1 **C.GdkScreen // in
-	var _arg2 *C.gdouble    // in
-	var _arg3 *C.gdouble    // in
+	var _arg0 *C.GdkDevice // out
+	var _arg1 *C.GdkScreen // in
+	var _arg2 C.gdouble    // in
+	var _arg3 C.gdouble    // in
 
 	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
 
@@ -527,16 +509,7 @@ func (d device) PositionDouble() (screen Screen, x float64, y float64) {
 	var _x float64     // out
 	var _y float64     // out
 
-	{
-		var refTmpIn *C.GdkScreen
-		var refTmpOut screen
-
-		refTmpIn = *_arg1
-
-		refTmpOut = gextras.CastObject(externglib.Take(unsafe.Pointer(refTmpIn))).(screen)
-
-		_screen = refTmpOut
-	}
+	_screen = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg1))).(Screen)
 	_x = float64(_arg2)
 	_y = float64(_arg3)
 
@@ -605,8 +578,8 @@ func (d device) VendorID() string {
 
 func (d device) WindowAtPosition() (winX int, winY int, window Window) {
 	var _arg0 *C.GdkDevice // out
-	var _arg1 *C.gint      // in
-	var _arg2 *C.gint      // in
+	var _arg1 C.gint       // in
+	var _arg2 C.gint       // in
 	var _cret *C.GdkWindow // in
 
 	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
@@ -626,8 +599,8 @@ func (d device) WindowAtPosition() (winX int, winY int, window Window) {
 
 func (d device) WindowAtPositionDouble() (winX float64, winY float64, window Window) {
 	var _arg0 *C.GdkDevice // out
-	var _arg1 *C.gdouble   // in
-	var _arg2 *C.gdouble   // in
+	var _arg1 C.gdouble    // in
+	var _arg2 C.gdouble    // in
 	var _cret *C.GdkWindow // in
 
 	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))

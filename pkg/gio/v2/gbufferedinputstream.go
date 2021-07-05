@@ -178,7 +178,7 @@ func (s bufferedInputStream) FillBufferedInputStream(count int, cancellable Canc
 	var _arg1 C.gssize                // out
 	var _arg2 *C.GCancellable         // out
 	var _cret C.gssize                // in
-	var _cerr **C.GError              // in
+	var _cerr *C.GError               // in
 
 	_arg0 = (*C.GBufferedInputStream)(unsafe.Pointer(s.Native()))
 	_arg1 = C.gssize(count)
@@ -190,16 +190,7 @@ func (s bufferedInputStream) FillBufferedInputStream(count int, cancellable Canc
 	var _goerr error // out
 
 	_gssize = int(_cret)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _gssize, _goerr
 }
@@ -226,7 +217,7 @@ func (s bufferedInputStream) FillFinishBufferedInputStream(result AsyncResult) (
 	var _arg0 *C.GBufferedInputStream // out
 	var _arg1 *C.GAsyncResult         // out
 	var _cret C.gssize                // in
-	var _cerr **C.GError              // in
+	var _cerr *C.GError               // in
 
 	_arg0 = (*C.GBufferedInputStream)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
@@ -237,16 +228,7 @@ func (s bufferedInputStream) FillFinishBufferedInputStream(result AsyncResult) (
 	var _goerr error // out
 
 	_gssize = int(_cret)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _gssize, _goerr
 }
@@ -306,7 +288,7 @@ func (s bufferedInputStream) ReadByteBufferedInputStream(cancellable Cancellable
 	var _arg0 *C.GBufferedInputStream // out
 	var _arg1 *C.GCancellable         // out
 	var _cret C.int                   // in
-	var _cerr **C.GError              // in
+	var _cerr *C.GError               // in
 
 	_arg0 = (*C.GBufferedInputStream)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
@@ -317,16 +299,7 @@ func (s bufferedInputStream) ReadByteBufferedInputStream(cancellable Cancellable
 	var _goerr error // out
 
 	_gint = int(_cret)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _gint, _goerr
 }

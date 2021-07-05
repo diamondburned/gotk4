@@ -98,7 +98,7 @@ type Tooltip interface {
 	// For setting tooltips on TreeView, please refer to the convenience
 	// functions for this: gtk_tree_view_set_tooltip_row() and
 	// gtk_tree_view_set_tooltip_cell().
-	SetTipAreaTooltip(rect gdk.Rectangle)
+	SetTipAreaTooltip(rect *gdk.Rectangle)
 }
 
 // tooltip implements the Tooltip class.
@@ -188,7 +188,7 @@ func (t tooltip) SetTextTooltip(text string) {
 	C.gtk_tooltip_set_text(_arg0, _arg1)
 }
 
-func (t tooltip) SetTipAreaTooltip(rect gdk.Rectangle) {
+func (t tooltip) SetTipAreaTooltip(rect *gdk.Rectangle) {
 	var _arg0 *C.GtkTooltip   // out
 	var _arg1 *C.GdkRectangle // out
 

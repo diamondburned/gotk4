@@ -106,15 +106,15 @@ func marshalGlyphString(p uintptr) (interface{}, error) {
 }
 
 // NewGlyphString constructs a struct GlyphString.
-func NewGlyphString() GlyphString {
+func NewGlyphString() *GlyphString {
 	var _cret *C.PangoGlyphString // in
 
 	_cret = C.pango_glyph_string_new()
 
-	var _glyphString GlyphString // out
+	var _glyphString *GlyphString // out
 
-	_glyphString = (GlyphString)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_glyphString, func(v GlyphString) {
+	_glyphString = (*GlyphString)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_glyphString, func(v *GlyphString) {
 		C.pango_glyph_string_free((*C.PangoGlyphString)(unsafe.Pointer(v)))
 	})
 
@@ -127,7 +127,7 @@ func (g *GlyphString) Native() unsafe.Pointer {
 }
 
 // Copy a glyph string and associated storage.
-func (s *GlyphString) Copy() GlyphString {
+func (s *GlyphString) Copy() *GlyphString {
 	var _arg0 *C.PangoGlyphString // out
 	var _cret *C.PangoGlyphString // in
 
@@ -135,10 +135,10 @@ func (s *GlyphString) Copy() GlyphString {
 
 	_cret = C.pango_glyph_string_copy(_arg0)
 
-	var _glyphString GlyphString // out
+	var _glyphString *GlyphString // out
 
-	_glyphString = (GlyphString)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_glyphString, func(v GlyphString) {
+	_glyphString = (*GlyphString)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_glyphString, func(v *GlyphString) {
 		C.pango_glyph_string_free((*C.PangoGlyphString)(unsafe.Pointer(v)))
 	})
 
@@ -156,8 +156,8 @@ func (s *GlyphString) Copy() GlyphString {
 func (g *GlyphString) Extents(font Font) (inkRect Rectangle, logicalRect Rectangle) {
 	var _arg0 *C.PangoGlyphString // out
 	var _arg1 *C.PangoFont        // out
-	var _arg2 *C.PangoRectangle   // in
-	var _arg3 *C.PangoRectangle   // in
+	var _arg2 C.PangoRectangle    // in
+	var _arg3 C.PangoRectangle    // in
 
 	_arg0 = (*C.PangoGlyphString)(unsafe.Pointer(g))
 	_arg1 = (*C.PangoFont)(unsafe.Pointer(font.Native()))
@@ -167,8 +167,28 @@ func (g *GlyphString) Extents(font Font) (inkRect Rectangle, logicalRect Rectang
 	var _inkRect Rectangle     // out
 	var _logicalRect Rectangle // out
 
-	_inkRect = (Rectangle)(unsafe.Pointer(_arg2))
-	_logicalRect = (Rectangle)(unsafe.Pointer(_arg3))
+	{
+		var refTmpIn *C.PangoRectangle
+		var refTmpOut *Rectangle
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_inkRect = *refTmpOut
+	}
+	{
+		var refTmpIn *C.PangoRectangle
+		var refTmpOut *Rectangle
+
+		in0 := &_arg3
+		refTmpIn = in0
+
+		refTmpOut = (*Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_logicalRect = *refTmpOut
+	}
 
 	return _inkRect, _logicalRect
 }
@@ -183,8 +203,8 @@ func (g *GlyphString) ExtentsRange(start int, end int, font Font) (inkRect Recta
 	var _arg1 C.int               // out
 	var _arg2 C.int               // out
 	var _arg3 *C.PangoFont        // out
-	var _arg4 *C.PangoRectangle   // in
-	var _arg5 *C.PangoRectangle   // in
+	var _arg4 C.PangoRectangle    // in
+	var _arg5 C.PangoRectangle    // in
 
 	_arg0 = (*C.PangoGlyphString)(unsafe.Pointer(g))
 	_arg1 = C.int(start)
@@ -196,8 +216,28 @@ func (g *GlyphString) ExtentsRange(start int, end int, font Font) (inkRect Recta
 	var _inkRect Rectangle     // out
 	var _logicalRect Rectangle // out
 
-	_inkRect = (Rectangle)(unsafe.Pointer(_arg4))
-	_logicalRect = (Rectangle)(unsafe.Pointer(_arg5))
+	{
+		var refTmpIn *C.PangoRectangle
+		var refTmpOut *Rectangle
+
+		in0 := &_arg4
+		refTmpIn = in0
+
+		refTmpOut = (*Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_inkRect = *refTmpOut
+	}
+	{
+		var refTmpIn *C.PangoRectangle
+		var refTmpOut *Rectangle
+
+		in0 := &_arg5
+		refTmpIn = in0
+
+		refTmpOut = (*Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_logicalRect = *refTmpOut
+	}
 
 	return _inkRect, _logicalRect
 }

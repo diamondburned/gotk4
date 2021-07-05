@@ -172,7 +172,7 @@ type Popover interface {
 	// SetPointingToPopover sets the rectangle that @popover points to.
 	//
 	// This is in the coordinate space of the @popover parent.
-	SetPointingToPopover(rect gdk.Rectangle)
+	SetPointingToPopover(rect *gdk.Rectangle)
 	// SetPositionPopover sets the preferred position for @popover to appear.
 	//
 	// If the @popover is currently visible, it will be immediately updated.
@@ -300,8 +300,8 @@ func (p popover) MnemonicsVisible() bool {
 
 func (p popover) Offset() (xOffset int, yOffset int) {
 	var _arg0 *C.GtkPopover // out
-	var _arg1 *C.int        // in
-	var _arg2 *C.int        // in
+	var _arg1 C.int         // in
+	var _arg2 C.int         // in
 
 	_arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
 
@@ -317,9 +317,9 @@ func (p popover) Offset() (xOffset int, yOffset int) {
 }
 
 func (p popover) PointingTo() (gdk.Rectangle, bool) {
-	var _arg0 *C.GtkPopover   // out
-	var _arg1 *C.GdkRectangle // in
-	var _cret C.gboolean      // in
+	var _arg0 *C.GtkPopover  // out
+	var _arg1 C.GdkRectangle // in
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
 
@@ -328,7 +328,17 @@ func (p popover) PointingTo() (gdk.Rectangle, bool) {
 	var _rect gdk.Rectangle // out
 	var _ok bool            // out
 
-	_rect = (gdk.Rectangle)(unsafe.Pointer(_arg1))
+	{
+		var refTmpIn *C.GdkRectangle
+		var refTmpOut *gdk.Rectangle
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*gdk.Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_rect = *refTmpOut
+	}
 	if _cret != 0 {
 		_ok = true
 	}
@@ -455,7 +465,7 @@ func (p popover) SetOffsetPopover(xOffset int, yOffset int) {
 	C.gtk_popover_set_offset(_arg0, _arg1, _arg2)
 }
 
-func (p popover) SetPointingToPopover(rect gdk.Rectangle) {
+func (p popover) SetPointingToPopover(rect *gdk.Rectangle) {
 	var _arg0 *C.GtkPopover   // out
 	var _arg1 *C.GdkRectangle // out
 

@@ -115,7 +115,7 @@ func NewUnixFDMessageWithFdList(fdList UnixFDList) UnixFDMessage {
 func (m unixFDMessage) AppendFdUnixFDMessage(fd int) error {
 	var _arg0 *C.GUnixFDMessage // out
 	var _arg1 C.gint            // out
-	var _cerr **C.GError        // in
+	var _cerr *C.GError         // in
 
 	_arg0 = (*C.GUnixFDMessage)(unsafe.Pointer(m.Native()))
 	_arg1 = C.gint(fd)
@@ -124,16 +124,7 @@ func (m unixFDMessage) AppendFdUnixFDMessage(fd int) error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }

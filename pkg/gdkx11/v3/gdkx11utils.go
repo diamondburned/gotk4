@@ -20,15 +20,15 @@ import "C"
 // compositing is not available. Otherwise behaves like a transparent pattern.
 //
 // Deprecated: since version 3.24.
-func X11GetParentRelativePattern() cairo.Pattern {
+func X11GetParentRelativePattern() *cairo.Pattern {
 	var _cret *C.cairo_pattern_t // in
 
 	_cret = C.gdk_x11_get_parent_relative_pattern()
 
-	var _pattern cairo.Pattern // out
+	var _pattern *cairo.Pattern // out
 
-	_pattern = (cairo.Pattern)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_pattern, func(v cairo.Pattern) {
+	_pattern = (*cairo.Pattern)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_pattern, func(v *cairo.Pattern) {
 		C.free(unsafe.Pointer(v))
 	})
 

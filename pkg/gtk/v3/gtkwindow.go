@@ -147,7 +147,7 @@ type Window interface {
 	// This is normally called by the default ::key_press_event handler for
 	// toplevel windows, however in some cases it may be useful to call this
 	// directly when overriding the standard key handling for a toplevel window.
-	ActivateKeyWindow(event gdk.EventKey) bool
+	ActivateKeyWindow(event *gdk.EventKey) bool
 	// AddAccelGroupWindow: associate @accel_group with @window, such that
 	// calling gtk_accel_groups_activate() on @window will activate accelerators
 	// in @accel_group.
@@ -554,7 +554,7 @@ type Window interface {
 	// ::key_release_event handlers for toplevel windows, however in some cases
 	// it may be useful to call this directly when overriding the standard key
 	// handling for a toplevel window.
-	PropagateKeyEventWindow(event gdk.EventKey) bool
+	PropagateKeyEventWindow(event *gdk.EventKey) bool
 	// RemoveAccelGroupWindow reverses the effects of
 	// gtk_window_add_accel_group().
 	RemoveAccelGroupWindow(accelGroup AccelGroup)
@@ -728,7 +728,7 @@ type Window interface {
 	// can be resized by the user. You can set a minimum and maximum size;
 	// allowed resize increments (e.g. for xterm, you can only resize by the
 	// size of a character); aspect ratios; and more. See the Geometry struct.
-	SetGeometryHintsWindow(geometryWidget Widget, geometry gdk.Geometry, geomMask gdk.WindowHints)
+	SetGeometryHintsWindow(geometryWidget Widget, geometry *gdk.Geometry, geomMask gdk.WindowHints)
 	// SetGravityWindow: window gravity defines the meaning of coordinates
 	// passed to gtk_window_move(). See gtk_window_move() and Gravity for more
 	// details.
@@ -1088,7 +1088,7 @@ func (w window) ActivateFocusWindow() bool {
 	return _ok
 }
 
-func (w window) ActivateKeyWindow(event gdk.EventKey) bool {
+func (w window) ActivateKeyWindow(event *gdk.EventKey) bool {
 	var _arg0 *C.GtkWindow   // out
 	var _arg1 *C.GdkEventKey // out
 	var _cret C.gboolean     // in
@@ -1265,8 +1265,8 @@ func (w window) Decorated() bool {
 
 func (w window) DefaultSize() (width int, height int) {
 	var _arg0 *C.GtkWindow // out
-	var _arg1 *C.gint      // in
-	var _arg2 *C.gint      // in
+	var _arg1 C.gint       // in
+	var _arg2 C.gint       // in
 
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 
@@ -1539,8 +1539,8 @@ func (w window) Opacity() float64 {
 
 func (w window) Position() (rootX int, rootY int) {
 	var _arg0 *C.GtkWindow // out
-	var _arg1 *C.gint      // in
-	var _arg2 *C.gint      // in
+	var _arg1 C.gint       // in
+	var _arg2 C.gint       // in
 
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 
@@ -1573,9 +1573,9 @@ func (w window) Resizable() bool {
 }
 
 func (w window) ResizeGripArea() (gdk.Rectangle, bool) {
-	var _arg0 *C.GtkWindow    // out
-	var _arg1 *C.GdkRectangle // in
-	var _cret C.gboolean      // in
+	var _arg0 *C.GtkWindow   // out
+	var _arg1 C.GdkRectangle // in
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 
@@ -1584,7 +1584,17 @@ func (w window) ResizeGripArea() (gdk.Rectangle, bool) {
 	var _rect gdk.Rectangle // out
 	var _ok bool            // out
 
-	_rect = (gdk.Rectangle)(unsafe.Pointer(_arg1))
+	{
+		var refTmpIn *C.GdkRectangle
+		var refTmpOut *gdk.Rectangle
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*gdk.Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_rect = *refTmpOut
+	}
 	if _cret != 0 {
 		_ok = true
 	}
@@ -1624,8 +1634,8 @@ func (w window) Screen() gdk.Screen {
 
 func (w window) Size() (width int, height int) {
 	var _arg0 *C.GtkWindow // out
-	var _arg1 *C.gint      // in
-	var _arg2 *C.gint      // in
+	var _arg1 C.gint       // in
+	var _arg2 C.gint       // in
 
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 
@@ -1921,7 +1931,7 @@ func (w window) PresentWithTimeWindow(timestamp uint32) {
 	C.gtk_window_present_with_time(_arg0, _arg1)
 }
 
-func (w window) PropagateKeyEventWindow(event gdk.EventKey) bool {
+func (w window) PropagateKeyEventWindow(event *gdk.EventKey) bool {
 	var _arg0 *C.GtkWindow   // out
 	var _arg1 *C.GdkEventKey // out
 	var _cret C.gboolean     // in
@@ -2147,7 +2157,7 @@ func (w window) SetFocusVisibleWindow(setting bool) {
 	C.gtk_window_set_focus_visible(_arg0, _arg1)
 }
 
-func (w window) SetGeometryHintsWindow(geometryWidget Widget, geometry gdk.Geometry, geomMask gdk.WindowHints) {
+func (w window) SetGeometryHintsWindow(geometryWidget Widget, geometry *gdk.Geometry, geomMask gdk.WindowHints) {
 	var _arg0 *C.GtkWindow     // out
 	var _arg1 *C.GtkWidget     // out
 	var _arg2 *C.GdkGeometry   // out
@@ -2220,7 +2230,7 @@ func (w window) SetIconWindow(icon gdkpixbuf.Pixbuf) {
 func (w window) SetIconFromFileWindow(filename string) error {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 *C.gchar     // out
-	var _cerr **C.GError   // in
+	var _cerr *C.GError    // in
 
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 	_arg1 = (*C.gchar)(C.CString(filename))
@@ -2230,16 +2240,7 @@ func (w window) SetIconFromFileWindow(filename string) error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }

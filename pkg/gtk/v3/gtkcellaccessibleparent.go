@@ -104,7 +104,7 @@ func (p cellAccessibleParent) ExpandCollapse(cell CellAccessible) {
 func (p cellAccessibleParent) CellArea(cell CellAccessible) gdk.Rectangle {
 	var _arg0 *C.GtkCellAccessibleParent // out
 	var _arg1 *C.GtkCellAccessible       // out
-	var _arg2 *C.GdkRectangle            // in
+	var _arg2 C.GdkRectangle             // in
 
 	_arg0 = (*C.GtkCellAccessibleParent)(unsafe.Pointer(p.Native()))
 	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(cell.Native()))
@@ -113,7 +113,17 @@ func (p cellAccessibleParent) CellArea(cell CellAccessible) gdk.Rectangle {
 
 	var _cellRect gdk.Rectangle // out
 
-	_cellRect = (gdk.Rectangle)(unsafe.Pointer(_arg2))
+	{
+		var refTmpIn *C.GdkRectangle
+		var refTmpOut *gdk.Rectangle
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*gdk.Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_cellRect = *refTmpOut
+	}
 
 	return _cellRect
 }
@@ -121,10 +131,10 @@ func (p cellAccessibleParent) CellArea(cell CellAccessible) gdk.Rectangle {
 func (p cellAccessibleParent) CellExtents(cell CellAccessible, coordType atk.CoordType) (x int, y int, width int, height int) {
 	var _arg0 *C.GtkCellAccessibleParent // out
 	var _arg1 *C.GtkCellAccessible       // out
-	var _arg2 *C.gint                    // in
-	var _arg3 *C.gint                    // in
-	var _arg4 *C.gint                    // in
-	var _arg5 *C.gint                    // in
+	var _arg2 C.gint                     // in
+	var _arg3 C.gint                     // in
+	var _arg4 C.gint                     // in
+	var _arg5 C.gint                     // in
 	var _arg6 C.AtkCoordType             // out
 
 	_arg0 = (*C.GtkCellAccessibleParent)(unsafe.Pointer(p.Native()))
@@ -149,8 +159,8 @@ func (p cellAccessibleParent) CellExtents(cell CellAccessible, coordType atk.Coo
 func (p cellAccessibleParent) CellPosition(cell CellAccessible) (row int, column int) {
 	var _arg0 *C.GtkCellAccessibleParent // out
 	var _arg1 *C.GtkCellAccessible       // out
-	var _arg2 *C.gint                    // in
-	var _arg3 *C.gint                    // in
+	var _arg2 C.gint                     // in
+	var _arg3 C.gint                     // in
 
 	_arg0 = (*C.GtkCellAccessibleParent)(unsafe.Pointer(p.Native()))
 	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(cell.Native()))

@@ -39,15 +39,15 @@ func marshalSphere(p uintptr) (interface{}, error) {
 }
 
 // NewSphereAlloc constructs a struct Sphere.
-func NewSphereAlloc() Sphere {
+func NewSphereAlloc() *Sphere {
 	var _cret *C.graphene_sphere_t // in
 
 	_cret = C.graphene_sphere_alloc()
 
-	var _sphere Sphere // out
+	var _sphere *Sphere // out
 
-	_sphere = (Sphere)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_sphere, func(v Sphere) {
+	_sphere = (*Sphere)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_sphere, func(v *Sphere) {
 		C.graphene_sphere_free((*C.graphene_sphere_t)(unsafe.Pointer(v)))
 	})
 
@@ -61,7 +61,7 @@ func (s *Sphere) Native() unsafe.Pointer {
 
 // ContainsPoint checks whether the given @point is contained in the volume of a
 // #graphene_sphere_t.
-func (s *Sphere) ContainsPoint(point Point3D) bool {
+func (s *Sphere) ContainsPoint(point *Point3D) bool {
 	var _arg0 *C.graphene_sphere_t  // out
 	var _arg1 *C.graphene_point3d_t // out
 	var _cret C._Bool               // in
@@ -82,7 +82,7 @@ func (s *Sphere) ContainsPoint(point Point3D) bool {
 
 // Distance computes the distance of the given @point from the surface of a
 // #graphene_sphere_t.
-func (s *Sphere) Distance(point Point3D) float32 {
+func (s *Sphere) Distance(point *Point3D) float32 {
 	var _arg0 *C.graphene_sphere_t  // out
 	var _arg1 *C.graphene_point3d_t // out
 	var _cret C.float               // in
@@ -100,7 +100,7 @@ func (s *Sphere) Distance(point Point3D) float32 {
 }
 
 // Equal checks whether two #graphene_sphere_t are equal.
-func (a *Sphere) Equal(b Sphere) bool {
+func (a *Sphere) Equal(b *Sphere) bool {
 	var _arg0 *C.graphene_sphere_t // out
 	var _arg1 *C.graphene_sphere_t // out
 	var _cret C._Bool              // in
@@ -132,7 +132,7 @@ func (s *Sphere) Free() {
 // #graphene_sphere_t.
 func (s *Sphere) BoundingBox() Box {
 	var _arg0 *C.graphene_sphere_t // out
-	var _arg1 *C.graphene_box_t    // in
+	var _arg1 C.graphene_box_t     // in
 
 	_arg0 = (*C.graphene_sphere_t)(unsafe.Pointer(s))
 
@@ -140,15 +140,25 @@ func (s *Sphere) BoundingBox() Box {
 
 	var _box Box // out
 
-	_box = (Box)(unsafe.Pointer(_arg1))
+	{
+		var refTmpIn *C.graphene_box_t
+		var refTmpOut *Box
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Box)(unsafe.Pointer(refTmpIn))
+
+		_box = *refTmpOut
+	}
 
 	return _box
 }
 
 // Center retrieves the coordinates of the center of a #graphene_sphere_t.
 func (s *Sphere) Center() Point3D {
-	var _arg0 *C.graphene_sphere_t  // out
-	var _arg1 *C.graphene_point3d_t // in
+	var _arg0 *C.graphene_sphere_t // out
+	var _arg1 C.graphene_point3d_t // in
 
 	_arg0 = (*C.graphene_sphere_t)(unsafe.Pointer(s))
 
@@ -156,7 +166,17 @@ func (s *Sphere) Center() Point3D {
 
 	var _center Point3D // out
 
-	_center = (Point3D)(unsafe.Pointer(_arg1))
+	{
+		var refTmpIn *C.graphene_point3d_t
+		var refTmpOut *Point3D
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Point3D)(unsafe.Pointer(refTmpIn))
+
+		_center = *refTmpOut
+	}
 
 	return _center
 }
@@ -179,7 +199,7 @@ func (s *Sphere) Radius() float32 {
 
 // Init initializes the given #graphene_sphere_t with the given @center and
 // @radius.
-func (s *Sphere) Init(center Point3D, radius float32) Sphere {
+func (s *Sphere) Init(center *Point3D, radius float32) *Sphere {
 	var _arg0 *C.graphene_sphere_t  // out
 	var _arg1 *C.graphene_point3d_t // out
 	var _arg2 C.float               // out
@@ -191,9 +211,9 @@ func (s *Sphere) Init(center Point3D, radius float32) Sphere {
 
 	_cret = C.graphene_sphere_init(_arg0, _arg1, _arg2)
 
-	var _sphere Sphere // out
+	var _sphere *Sphere // out
 
-	_sphere = (Sphere)(unsafe.Pointer(_cret))
+	_sphere = (*Sphere)(unsafe.Pointer(_cret))
 
 	return _sphere
 }
@@ -203,7 +223,7 @@ func (s *Sphere) Init(center Point3D, radius float32) Sphere {
 //
 // The center of the sphere can either be specified, or will be center of the 3D
 // volume that encompasses all @points.
-func (s *Sphere) InitFromPoints(points []Point3D, center Point3D) Sphere {
+func (s *Sphere) InitFromPoints(points []Point3D, center *Point3D) *Sphere {
 	var _arg0 *C.graphene_sphere_t // out
 	var _arg2 *C.graphene_point3d_t
 	var _arg1 C.uint
@@ -217,9 +237,9 @@ func (s *Sphere) InitFromPoints(points []Point3D, center Point3D) Sphere {
 
 	_cret = C.graphene_sphere_init_from_points(_arg0, _arg1, _arg2, _arg3)
 
-	var _sphere Sphere // out
+	var _sphere *Sphere // out
 
-	_sphere = (Sphere)(unsafe.Pointer(_cret))
+	_sphere = (*Sphere)(unsafe.Pointer(_cret))
 
 	return _sphere
 }
@@ -229,7 +249,7 @@ func (s *Sphere) InitFromPoints(points []Point3D, center Point3D) Sphere {
 //
 // The center of the sphere can either be specified, or will be center of the 3D
 // volume that encompasses all @vectors.
-func (s *Sphere) InitFromVectors(vectors []Vec3, center Point3D) Sphere {
+func (s *Sphere) InitFromVectors(vectors []Vec3, center *Point3D) *Sphere {
 	var _arg0 *C.graphene_sphere_t // out
 	var _arg2 *C.graphene_vec3_t
 	var _arg1 C.uint
@@ -243,9 +263,9 @@ func (s *Sphere) InitFromVectors(vectors []Vec3, center Point3D) Sphere {
 
 	_cret = C.graphene_sphere_init_from_vectors(_arg0, _arg1, _arg2, _arg3)
 
-	var _sphere Sphere // out
+	var _sphere *Sphere // out
 
-	_sphere = (Sphere)(unsafe.Pointer(_cret))
+	_sphere = (*Sphere)(unsafe.Pointer(_cret))
 
 	return _sphere
 }
@@ -270,10 +290,10 @@ func (s *Sphere) IsEmpty() bool {
 
 // Translate translates the center of the given #graphene_sphere_t using the
 // @point coordinates as the delta of the translation.
-func (s *Sphere) Translate(point Point3D) Sphere {
+func (s *Sphere) Translate(point *Point3D) Sphere {
 	var _arg0 *C.graphene_sphere_t  // out
 	var _arg1 *C.graphene_point3d_t // out
-	var _arg2 *C.graphene_sphere_t  // in
+	var _arg2 C.graphene_sphere_t   // in
 
 	_arg0 = (*C.graphene_sphere_t)(unsafe.Pointer(s))
 	_arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(point))
@@ -282,7 +302,17 @@ func (s *Sphere) Translate(point Point3D) Sphere {
 
 	var _res Sphere // out
 
-	_res = (Sphere)(unsafe.Pointer(_arg2))
+	{
+		var refTmpIn *C.graphene_sphere_t
+		var refTmpOut *Sphere
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Sphere)(unsafe.Pointer(refTmpIn))
+
+		_res = *refTmpOut
+	}
 
 	return _res
 }

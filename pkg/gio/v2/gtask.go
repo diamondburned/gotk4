@@ -209,7 +209,7 @@ type Task interface {
 	//
 	// This will always return a non-nil value, even if the task's context is
 	// the default Context.
-	Context() glib.MainContext
+	Context() *glib.MainContext
 	// Name gets @task’s name. See g_task_set_name().
 	Name() string
 	// Priority gets @task's priority
@@ -465,7 +465,7 @@ func (t task) Completed() bool {
 	return _ok
 }
 
-func (t task) Context() glib.MainContext {
+func (t task) Context() *glib.MainContext {
 	var _arg0 *C.GTask        // out
 	var _cret *C.GMainContext // in
 
@@ -473,9 +473,9 @@ func (t task) Context() glib.MainContext {
 
 	_cret = C.g_task_get_context(_arg0)
 
-	var _mainContext glib.MainContext // out
+	var _mainContext *glib.MainContext // out
 
-	_mainContext = (glib.MainContext)(unsafe.Pointer(_cret))
+	_mainContext = (*glib.MainContext)(unsafe.Pointer(_cret))
 	C.g_main_context_ref(_cret)
 
 	return _mainContext
@@ -591,8 +591,8 @@ func (t task) HadErrorTask() bool {
 }
 
 func (t task) PropagateBooleanTask() error {
-	var _arg0 *C.GTask   // out
-	var _cerr **C.GError // in
+	var _arg0 *C.GTask  // out
+	var _cerr *C.GError // in
 
 	_arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
 
@@ -600,24 +600,15 @@ func (t task) PropagateBooleanTask() error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
 
 func (t task) PropagateIntTask() (int, error) {
-	var _arg0 *C.GTask   // out
-	var _cret C.gssize   // in
-	var _cerr **C.GError // in
+	var _arg0 *C.GTask  // out
+	var _cret C.gssize  // in
+	var _cerr *C.GError // in
 
 	_arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
 
@@ -627,16 +618,7 @@ func (t task) PropagateIntTask() (int, error) {
 	var _goerr error // out
 
 	_gssize = int(_cret)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _gssize, _goerr
 }
@@ -644,7 +626,7 @@ func (t task) PropagateIntTask() (int, error) {
 func (t task) PropagatePointerTask() (interface{}, error) {
 	var _arg0 *C.GTask   // out
 	var _cret C.gpointer // in
-	var _cerr **C.GError // in
+	var _cerr *C.GError  // in
 
 	_arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
 
@@ -654,43 +636,35 @@ func (t task) PropagatePointerTask() (interface{}, error) {
 	var _goerr error          // out
 
 	_gpointer = box.Get(uintptr(_cret))
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _gpointer, _goerr
 }
 
 func (t task) PropagateValueTask() (externglib.Value, error) {
-	var _arg0 *C.GTask   // out
-	var _arg1 *C.GValue  // in
-	var _cerr **C.GError // in
+	var _arg0 *C.GTask  // out
+	var _arg1 C.GValue  // in
+	var _cerr *C.GError // in
 
 	_arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
 
-	C.g_task_propagate_value(_arg0, _arg1, &_cerr)
+	C.g_task_propagate_value(_arg0, &_arg1, &_cerr)
 
 	var _value externglib.Value // out
 	var _goerr error            // out
 
-	_value = externglib.ValueFromNative(unsafe.Pointer(_arg1))
 	{
-		var refTmpIn *C.GError
-		var refTmpOut error
+		var refTmpIn *C.GValue
+		var refTmpOut *externglib.Value
 
-		refTmpIn = *_cerr
+		in0 := &_arg1
+		refTmpIn = in0
 
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+		refTmpOut = externglib.ValueFromNative(unsafe.Pointer(refTmpIn))
 
-		_goerr = refTmpOut
+		_value = *refTmpOut
 	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _value, _goerr
 }

@@ -127,7 +127,7 @@ func (m networkMonitor) CanReach(connectable SocketConnectable, cancellable Canc
 	var _arg0 *C.GNetworkMonitor    // out
 	var _arg1 *C.GSocketConnectable // out
 	var _arg2 *C.GCancellable       // out
-	var _cerr **C.GError            // in
+	var _cerr *C.GError             // in
 
 	_arg0 = (*C.GNetworkMonitor)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.GSocketConnectable)(unsafe.Pointer(connectable.Native()))
@@ -137,16 +137,7 @@ func (m networkMonitor) CanReach(connectable SocketConnectable, cancellable Canc
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
@@ -170,7 +161,7 @@ func (m networkMonitor) CanReachAsync(connectable SocketConnectable, cancellable
 func (m networkMonitor) CanReachFinish(result AsyncResult) error {
 	var _arg0 *C.GNetworkMonitor // out
 	var _arg1 *C.GAsyncResult    // out
-	var _cerr **C.GError         // in
+	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GNetworkMonitor)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
@@ -179,16 +170,7 @@ func (m networkMonitor) CanReachFinish(result AsyncResult) error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }

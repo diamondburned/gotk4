@@ -34,12 +34,12 @@ type StyleProvider interface {
 	// nil if none is defined.
 	//
 	// Deprecated: since version 3.8.
-	IconFactory(path WidgetPath) IconFactory
+	IconFactory(path *WidgetPath) IconFactory
 	// Style returns the style settings affecting a widget defined by @path, or
 	// nil if @provider doesn’t contemplate styling @path.
 	//
 	// Deprecated: since version 3.8.
-	Style(path WidgetPath) StyleProperties
+	Style(path *WidgetPath) StyleProperties
 }
 
 // styleProvider implements the StyleProvider interface.
@@ -63,7 +63,7 @@ func marshalStyleProvider(p uintptr) (interface{}, error) {
 	return WrapStyleProvider(obj), nil
 }
 
-func (p styleProvider) IconFactory(path WidgetPath) IconFactory {
+func (p styleProvider) IconFactory(path *WidgetPath) IconFactory {
 	var _arg0 *C.GtkStyleProvider // out
 	var _arg1 *C.GtkWidgetPath    // out
 	var _cret *C.GtkIconFactory   // in
@@ -80,7 +80,7 @@ func (p styleProvider) IconFactory(path WidgetPath) IconFactory {
 	return _iconFactory
 }
 
-func (p styleProvider) Style(path WidgetPath) StyleProperties {
+func (p styleProvider) Style(path *WidgetPath) StyleProperties {
 	var _arg0 *C.GtkStyleProvider   // out
 	var _arg1 *C.GtkWidgetPath      // out
 	var _cret *C.GtkStyleProperties // in

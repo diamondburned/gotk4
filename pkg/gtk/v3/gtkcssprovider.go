@@ -134,7 +134,7 @@ func (c cssProvider) LoadFromDataCSSProvider(data []byte) error {
 	var _arg0 *C.GtkCssProvider // out
 	var _arg1 *C.gchar
 	var _arg2 C.gssize
-	var _cerr **C.GError // in
+	var _cerr *C.GError // in
 
 	_arg0 = (*C.GtkCssProvider)(unsafe.Pointer(c.Native()))
 	_arg2 = C.gssize(len(data))
@@ -144,16 +144,7 @@ func (c cssProvider) LoadFromDataCSSProvider(data []byte) error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
@@ -161,7 +152,7 @@ func (c cssProvider) LoadFromDataCSSProvider(data []byte) error {
 func (c cssProvider) LoadFromPathCSSProvider(path string) error {
 	var _arg0 *C.GtkCssProvider // out
 	var _arg1 *C.gchar          // out
-	var _cerr **C.GError        // in
+	var _cerr *C.GError         // in
 
 	_arg0 = (*C.GtkCssProvider)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.gchar)(C.CString(path))
@@ -171,16 +162,7 @@ func (c cssProvider) LoadFromPathCSSProvider(path string) error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }

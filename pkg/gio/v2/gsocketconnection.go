@@ -111,7 +111,7 @@ func (c socketConnection) ConnectSocketConnection(address SocketAddress, cancell
 	var _arg0 *C.GSocketConnection // out
 	var _arg1 *C.GSocketAddress    // out
 	var _arg2 *C.GCancellable      // out
-	var _cerr **C.GError           // in
+	var _cerr *C.GError            // in
 
 	_arg0 = (*C.GSocketConnection)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GSocketAddress)(unsafe.Pointer(address.Native()))
@@ -121,16 +121,7 @@ func (c socketConnection) ConnectSocketConnection(address SocketAddress, cancell
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
@@ -154,7 +145,7 @@ func (c socketConnection) ConnectAsyncSocketConnection(address SocketAddress, ca
 func (c socketConnection) ConnectFinishSocketConnection(result AsyncResult) error {
 	var _arg0 *C.GSocketConnection // out
 	var _arg1 *C.GAsyncResult      // out
-	var _cerr **C.GError           // in
+	var _cerr *C.GError            // in
 
 	_arg0 = (*C.GSocketConnection)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
@@ -163,16 +154,7 @@ func (c socketConnection) ConnectFinishSocketConnection(result AsyncResult) erro
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
@@ -180,7 +162,7 @@ func (c socketConnection) ConnectFinishSocketConnection(result AsyncResult) erro
 func (c socketConnection) LocalAddress() (SocketAddress, error) {
 	var _arg0 *C.GSocketConnection // out
 	var _cret *C.GSocketAddress    // in
-	var _cerr **C.GError           // in
+	var _cerr *C.GError            // in
 
 	_arg0 = (*C.GSocketConnection)(unsafe.Pointer(c.Native()))
 
@@ -190,16 +172,7 @@ func (c socketConnection) LocalAddress() (SocketAddress, error) {
 	var _goerr error                 // out
 
 	_socketAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(SocketAddress)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _socketAddress, _goerr
 }
@@ -207,7 +180,7 @@ func (c socketConnection) LocalAddress() (SocketAddress, error) {
 func (c socketConnection) RemoteAddress() (SocketAddress, error) {
 	var _arg0 *C.GSocketConnection // out
 	var _cret *C.GSocketAddress    // in
-	var _cerr **C.GError           // in
+	var _cerr *C.GError            // in
 
 	_arg0 = (*C.GSocketConnection)(unsafe.Pointer(c.Native()))
 
@@ -217,16 +190,7 @@ func (c socketConnection) RemoteAddress() (SocketAddress, error) {
 	var _goerr error                 // out
 
 	_socketAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(SocketAddress)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _socketAddress, _goerr
 }

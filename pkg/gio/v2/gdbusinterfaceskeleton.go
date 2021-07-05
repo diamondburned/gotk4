@@ -68,11 +68,11 @@ type DBusInterfaceSkeleton interface {
 	Flags() DBusInterfaceSkeletonFlags
 	// Info gets D-Bus introspection information for the D-Bus interface
 	// implemented by @interface_.
-	Info() DBusInterfaceInfo
+	Info() *DBusInterfaceInfo
 	// ObjectPath gets the object path that @interface_ is exported on, if any.
 	ObjectPath() string
 	// Properties gets all D-Bus properties for @interface_.
-	Properties() glib.Variant
+	Properties() *glib.Variant
 	// HasConnectionDBusInterfaceSkeleton checks if @interface_ is exported on
 	// @connection.
 	HasConnectionDBusInterfaceSkeleton(connection DBusConnection) bool
@@ -116,7 +116,7 @@ func (i dBusInterfaceSkeleton) ExportDBusInterfaceSkeleton(connection DBusConnec
 	var _arg0 *C.GDBusInterfaceSkeleton // out
 	var _arg1 *C.GDBusConnection        // out
 	var _arg2 *C.gchar                  // out
-	var _cerr **C.GError                // in
+	var _cerr *C.GError                 // in
 
 	_arg0 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.GDBusConnection)(unsafe.Pointer(connection.Native()))
@@ -127,16 +127,7 @@ func (i dBusInterfaceSkeleton) ExportDBusInterfaceSkeleton(connection DBusConnec
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
@@ -179,7 +170,7 @@ func (i dBusInterfaceSkeleton) Flags() DBusInterfaceSkeletonFlags {
 	return _dBusInterfaceSkeletonFlags
 }
 
-func (i dBusInterfaceSkeleton) Info() DBusInterfaceInfo {
+func (i dBusInterfaceSkeleton) Info() *DBusInterfaceInfo {
 	var _arg0 *C.GDBusInterfaceSkeleton // out
 	var _cret *C.GDBusInterfaceInfo     // in
 
@@ -187,9 +178,9 @@ func (i dBusInterfaceSkeleton) Info() DBusInterfaceInfo {
 
 	_cret = C.g_dbus_interface_skeleton_get_info(_arg0)
 
-	var _dBusInterfaceInfo DBusInterfaceInfo // out
+	var _dBusInterfaceInfo *DBusInterfaceInfo // out
 
-	_dBusInterfaceInfo = (DBusInterfaceInfo)(unsafe.Pointer(_cret))
+	_dBusInterfaceInfo = (*DBusInterfaceInfo)(unsafe.Pointer(_cret))
 	C.g_dbus_interface_info_ref(_cret)
 
 	return _dBusInterfaceInfo
@@ -210,7 +201,7 @@ func (i dBusInterfaceSkeleton) ObjectPath() string {
 	return _utf8
 }
 
-func (i dBusInterfaceSkeleton) Properties() glib.Variant {
+func (i dBusInterfaceSkeleton) Properties() *glib.Variant {
 	var _arg0 *C.GDBusInterfaceSkeleton // out
 	var _cret *C.GVariant               // in
 
@@ -218,10 +209,10 @@ func (i dBusInterfaceSkeleton) Properties() glib.Variant {
 
 	_cret = C.g_dbus_interface_skeleton_get_properties(_arg0)
 
-	var _variant glib.Variant // out
+	var _variant *glib.Variant // out
 
-	_variant = (glib.Variant)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_variant, func(v glib.Variant) {
+	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
 	})
 

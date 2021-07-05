@@ -43,9 +43,9 @@ type DrawingContext interface {
 	// The returned context is guaranteed to be valid as long as the
 	// DrawingContext is valid, that is between a call to
 	// gdk_window_begin_draw_frame() and gdk_window_end_draw_frame().
-	CairoContext() cairo.Context
+	CairoContext() *cairo.Context
 	// Clip retrieves a copy of the clip region used when creating the @context.
-	Clip() cairo.Region
+	Clip() *cairo.Region
 	// Window retrieves the window that created the drawing @context.
 	Window() Window
 	// IsValidDrawingContext checks whether the given DrawingContext is valid.
@@ -71,7 +71,7 @@ func marshalDrawingContext(p uintptr) (interface{}, error) {
 	return WrapDrawingContext(obj), nil
 }
 
-func (c drawingContext) CairoContext() cairo.Context {
+func (c drawingContext) CairoContext() *cairo.Context {
 	var _arg0 *C.GdkDrawingContext // out
 	var _cret *C.cairo_t           // in
 
@@ -79,14 +79,14 @@ func (c drawingContext) CairoContext() cairo.Context {
 
 	_cret = C.gdk_drawing_context_get_cairo_context(_arg0)
 
-	var _ret cairo.Context // out
+	var _ret *cairo.Context // out
 
-	_ret = (cairo.Context)(unsafe.Pointer(_cret))
+	_ret = (*cairo.Context)(unsafe.Pointer(_cret))
 
 	return _ret
 }
 
-func (c drawingContext) Clip() cairo.Region {
+func (c drawingContext) Clip() *cairo.Region {
 	var _arg0 *C.GdkDrawingContext // out
 	var _cret *C.cairo_region_t    // in
 
@@ -94,10 +94,10 @@ func (c drawingContext) Clip() cairo.Region {
 
 	_cret = C.gdk_drawing_context_get_clip(_arg0)
 
-	var _region cairo.Region // out
+	var _region *cairo.Region // out
 
-	_region = (cairo.Region)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_region, func(v cairo.Region) {
+	_region = (*cairo.Region)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_region, func(v *cairo.Region) {
 		C.free(unsafe.Pointer(v))
 	})
 

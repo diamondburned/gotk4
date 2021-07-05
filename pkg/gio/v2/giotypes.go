@@ -332,7 +332,7 @@ func marshalFileAttributeMatcher(p uintptr) (interface{}, error) {
 }
 
 // NewFileAttributeMatcher constructs a struct FileAttributeMatcher.
-func NewFileAttributeMatcher(attributes string) FileAttributeMatcher {
+func NewFileAttributeMatcher(attributes string) *FileAttributeMatcher {
 	var _arg1 *C.char                  // out
 	var _cret *C.GFileAttributeMatcher // in
 
@@ -341,10 +341,10 @@ func NewFileAttributeMatcher(attributes string) FileAttributeMatcher {
 
 	_cret = C.g_file_attribute_matcher_new(_arg1)
 
-	var _fileAttributeMatcher FileAttributeMatcher // out
+	var _fileAttributeMatcher *FileAttributeMatcher // out
 
-	_fileAttributeMatcher = (FileAttributeMatcher)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_fileAttributeMatcher, func(v FileAttributeMatcher) {
+	_fileAttributeMatcher = (*FileAttributeMatcher)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_fileAttributeMatcher, func(v *FileAttributeMatcher) {
 		C.g_file_attribute_matcher_unref((*C.GFileAttributeMatcher)(unsafe.Pointer(v)))
 	})
 
@@ -444,7 +444,7 @@ func (m *FileAttributeMatcher) MatchesOnly(attribute string) bool {
 }
 
 // Ref references a file attribute matcher.
-func (m *FileAttributeMatcher) Ref() FileAttributeMatcher {
+func (m *FileAttributeMatcher) Ref() *FileAttributeMatcher {
 	var _arg0 *C.GFileAttributeMatcher // out
 	var _cret *C.GFileAttributeMatcher // in
 
@@ -452,10 +452,10 @@ func (m *FileAttributeMatcher) Ref() FileAttributeMatcher {
 
 	_cret = C.g_file_attribute_matcher_ref(_arg0)
 
-	var _fileAttributeMatcher FileAttributeMatcher // out
+	var _fileAttributeMatcher *FileAttributeMatcher // out
 
-	_fileAttributeMatcher = (FileAttributeMatcher)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_fileAttributeMatcher, func(v FileAttributeMatcher) {
+	_fileAttributeMatcher = (*FileAttributeMatcher)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_fileAttributeMatcher, func(v *FileAttributeMatcher) {
 		C.g_file_attribute_matcher_unref((*C.GFileAttributeMatcher)(unsafe.Pointer(v)))
 	})
 
@@ -469,7 +469,7 @@ func (m *FileAttributeMatcher) Ref() FileAttributeMatcher {
 // @matcher matches the whole namespace - or remove a namespace or attribute
 // when the matcher matches everything. This is a limitation of the current
 // implementation, but may be fixed in the future.
-func (m *FileAttributeMatcher) Subtract(subtract FileAttributeMatcher) FileAttributeMatcher {
+func (m *FileAttributeMatcher) Subtract(subtract *FileAttributeMatcher) *FileAttributeMatcher {
 	var _arg0 *C.GFileAttributeMatcher // out
 	var _arg1 *C.GFileAttributeMatcher // out
 	var _cret *C.GFileAttributeMatcher // in
@@ -479,10 +479,10 @@ func (m *FileAttributeMatcher) Subtract(subtract FileAttributeMatcher) FileAttri
 
 	_cret = C.g_file_attribute_matcher_subtract(_arg0, _arg1)
 
-	var _fileAttributeMatcher FileAttributeMatcher // out
+	var _fileAttributeMatcher *FileAttributeMatcher // out
 
-	_fileAttributeMatcher = (FileAttributeMatcher)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_fileAttributeMatcher, func(v FileAttributeMatcher) {
+	_fileAttributeMatcher = (*FileAttributeMatcher)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_fileAttributeMatcher, func(v *FileAttributeMatcher) {
 		C.g_file_attribute_matcher_unref((*C.GFileAttributeMatcher)(unsafe.Pointer(v)))
 	})
 
@@ -792,7 +792,7 @@ func (r *Resource) EnumerateChildren(path string, lookupFlags ResourceLookupFlag
 	var _arg1 *C.char                // out
 	var _arg2 C.GResourceLookupFlags // out
 	var _cret **C.char
-	var _cerr **C.GError // in
+	var _cerr *C.GError // in
 
 	_arg0 = (*C.GResource)(unsafe.Pointer(r))
 	_arg1 = (*C.char)(C.CString(path))
@@ -818,16 +818,7 @@ func (r *Resource) EnumerateChildren(path string, lookupFlags ResourceLookupFlag
 			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _utf8s, _goerr
 }
@@ -840,9 +831,9 @@ func (r *Resource) Info(path string, lookupFlags ResourceLookupFlags) (uint, uin
 	var _arg0 *C.GResource           // out
 	var _arg1 *C.char                // out
 	var _arg2 C.GResourceLookupFlags // out
-	var _arg3 *C.gsize               // in
-	var _arg4 *C.guint32             // in
-	var _cerr **C.GError             // in
+	var _arg3 C.gsize                // in
+	var _arg4 C.guint32              // in
+	var _cerr *C.GError              // in
 
 	_arg0 = (*C.GResource)(unsafe.Pointer(r))
 	_arg1 = (*C.char)(C.CString(path))
@@ -857,16 +848,7 @@ func (r *Resource) Info(path string, lookupFlags ResourceLookupFlags) (uint, uin
 
 	_size = uint(_arg3)
 	_flags = uint32(_arg4)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _size, _flags, _goerr
 }
@@ -880,7 +862,7 @@ func (r *Resource) OpenStream(path string, lookupFlags ResourceLookupFlags) (Inp
 	var _arg1 *C.char                // out
 	var _arg2 C.GResourceLookupFlags // out
 	var _cret *C.GInputStream        // in
-	var _cerr **C.GError             // in
+	var _cerr *C.GError              // in
 
 	_arg0 = (*C.GResource)(unsafe.Pointer(r))
 	_arg1 = (*C.char)(C.CString(path))
@@ -893,23 +875,14 @@ func (r *Resource) OpenStream(path string, lookupFlags ResourceLookupFlags) (Inp
 	var _goerr error             // out
 
 	_inputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(InputStream)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _inputStream, _goerr
 }
 
 // Ref: atomically increments the reference count of @resource by one. This
 // function is MT-safe and may be called from any thread.
-func (r *Resource) Ref() Resource {
+func (r *Resource) Ref() *Resource {
 	var _arg0 *C.GResource // out
 	var _cret *C.GResource // in
 
@@ -917,10 +890,10 @@ func (r *Resource) Ref() Resource {
 
 	_cret = C.g_resource_ref(_arg0)
 
-	var _ret Resource // out
+	var _ret *Resource // out
 
-	_ret = (Resource)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_ret, func(v Resource) {
+	_ret = (*Resource)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_ret, func(v *Resource) {
 		C.g_resource_unref((*C.GResource)(unsafe.Pointer(v)))
 	})
 
@@ -966,7 +939,7 @@ func marshalSrvTarget(p uintptr) (interface{}, error) {
 }
 
 // NewSrvTarget constructs a struct SrvTarget.
-func NewSrvTarget(hostname string, port uint16, priority uint16, weight uint16) SrvTarget {
+func NewSrvTarget(hostname string, port uint16, priority uint16, weight uint16) *SrvTarget {
 	var _arg1 *C.gchar      // out
 	var _arg2 C.guint16     // out
 	var _arg3 C.guint16     // out
@@ -981,10 +954,10 @@ func NewSrvTarget(hostname string, port uint16, priority uint16, weight uint16) 
 
 	_cret = C.g_srv_target_new(_arg1, _arg2, _arg3, _arg4)
 
-	var _srvTarget SrvTarget // out
+	var _srvTarget *SrvTarget // out
 
-	_srvTarget = (SrvTarget)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_srvTarget, func(v SrvTarget) {
+	_srvTarget = (*SrvTarget)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_srvTarget, func(v *SrvTarget) {
 		C.g_srv_target_free((*C.GSrvTarget)(unsafe.Pointer(v)))
 	})
 
@@ -997,7 +970,7 @@ func (s *SrvTarget) Native() unsafe.Pointer {
 }
 
 // Copy copies @target
-func (t *SrvTarget) Copy() SrvTarget {
+func (t *SrvTarget) Copy() *SrvTarget {
 	var _arg0 *C.GSrvTarget // out
 	var _cret *C.GSrvTarget // in
 
@@ -1005,10 +978,10 @@ func (t *SrvTarget) Copy() SrvTarget {
 
 	_cret = C.g_srv_target_copy(_arg0)
 
-	var _srvTarget SrvTarget // out
+	var _srvTarget *SrvTarget // out
 
-	_srvTarget = (SrvTarget)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_srvTarget, func(v SrvTarget) {
+	_srvTarget = (*SrvTarget)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_srvTarget, func(v *SrvTarget) {
 		C.g_srv_target_free((*C.GSrvTarget)(unsafe.Pointer(v)))
 	})
 

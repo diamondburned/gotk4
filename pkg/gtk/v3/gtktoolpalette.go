@@ -104,7 +104,7 @@ type ToolPalette interface {
 	AddDragDestToolPalette(widget Widget, flags DestDefaults, targets ToolPaletteDragTargets, actions gdk.DragAction)
 	// DragItem: get the dragged item from the selection. This could be a
 	// ToolItem or a ToolItemGroup.
-	DragItem(selection SelectionData) Widget
+	DragItem(selection *SelectionData) Widget
 	// DropGroup gets the group at position (x, y).
 	DropGroup(x int, y int) ToolItemGroup
 	// DropItem gets the item at position (x, y). See
@@ -208,7 +208,7 @@ func (p toolPalette) AddDragDestToolPalette(widget Widget, flags DestDefaults, t
 	C.gtk_tool_palette_add_drag_dest(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
-func (p toolPalette) DragItem(selection SelectionData) Widget {
+func (p toolPalette) DragItem(selection *SelectionData) Widget {
 	var _arg0 *C.GtkToolPalette   // out
 	var _arg1 *C.GtkSelectionData // out
 	var _cret *C.GtkWidget        // in

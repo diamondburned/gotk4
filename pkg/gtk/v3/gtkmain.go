@@ -24,7 +24,7 @@ import "C"
 
 // KeySnoopFunc: key snooper functions are called before normal event delivery.
 // They can be used to implement custom key event handling.
-type KeySnoopFunc func(grabWidget Widget, event gdk.EventKey) (gint int)
+type KeySnoopFunc func(grabWidget Widget, event *gdk.EventKey) (gint int)
 
 //export gotk4_KeySnoopFunc
 func gotk4_KeySnoopFunc(arg0 *C.GtkWidget, arg1 *C.GdkEventKey, arg2 C.gpointer) C.gint {
@@ -33,11 +33,11 @@ func gotk4_KeySnoopFunc(arg0 *C.GtkWidget, arg1 *C.GdkEventKey, arg2 C.gpointer)
 		panic(`callback not found`)
 	}
 
-	var grabWidget Widget  // out
-	var event gdk.EventKey // out
+	var grabWidget Widget   // out
+	var event *gdk.EventKey // out
 
 	grabWidget = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0))).(Widget)
-	event = (gdk.EventKey)(unsafe.Pointer(arg1))
+	event = (*gdk.EventKey)(unsafe.Pointer(arg1))
 
 	fn := v.(KeySnoopFunc)
 	gint := fn(grabWidget, event)
@@ -203,24 +203,15 @@ func GetCurrentEventDevice() gdk.Device {
 // GetCurrentEventState: if there is a current event and it has a state field,
 // place that state field in @state and return true, otherwise return false.
 func GetCurrentEventState() (gdk.ModifierType, bool) {
-	var _arg1 *C.GdkModifierType // in
-	var _cret C.gboolean         // in
+	var _arg1 C.GdkModifierType // in
+	var _cret C.gboolean        // in
 
 	_cret = C.gtk_get_current_event_state(&_arg1)
 
 	var _state gdk.ModifierType // out
 	var _ok bool                // out
 
-	{
-		var refTmpIn C.GdkModifierType
-		var refTmpOut gdk.ModifierType
-
-		refTmpIn = *_arg1
-
-		refTmpOut = gdk.ModifierType(refTmpIn)
-
-		_state = refTmpOut
-	}
+	_state = gdk.ModifierType(_arg1)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -249,14 +240,14 @@ func GetCurrentEventTime() uint32 {
 //
 // This function is equivalent to pango_language_get_default(). See that
 // function for details.
-func GetDefaultLanguage() pango.Language {
+func GetDefaultLanguage() *pango.Language {
 	var _cret *C.PangoLanguage // in
 
 	_cret = C.gtk_get_default_language()
 
-	var _language pango.Language // out
+	var _language *pango.Language // out
 
-	_language = (pango.Language)(unsafe.Pointer(_cret))
+	_language = (*pango.Language)(unsafe.Pointer(_cret))
 
 	return _language
 }
@@ -369,7 +360,7 @@ func GetMinorVersion() uint {
 // You should add this group to your Context with g_option_context_add_group(),
 // if you are using g_option_context_parse() to parse your commandline
 // arguments.
-func GetOptionGroup(openDefaultDisplay bool) glib.OptionGroup {
+func GetOptionGroup(openDefaultDisplay bool) *glib.OptionGroup {
 	var _arg1 C.gboolean      // out
 	var _cret *C.GOptionGroup // in
 
@@ -379,10 +370,10 @@ func GetOptionGroup(openDefaultDisplay bool) glib.OptionGroup {
 
 	_cret = C.gtk_get_option_group(_arg1)
 
-	var _optionGroup glib.OptionGroup // out
+	var _optionGroup *glib.OptionGroup // out
 
-	_optionGroup = (glib.OptionGroup)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_optionGroup, func(v glib.OptionGroup) {
+	_optionGroup = (*glib.OptionGroup)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_optionGroup, func(v *glib.OptionGroup) {
 		C.g_option_group_unref((*C.GOptionGroup)(unsafe.Pointer(v)))
 	})
 

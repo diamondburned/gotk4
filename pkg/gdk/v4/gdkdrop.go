@@ -69,7 +69,7 @@ type Drop interface {
 	Drag() Drag
 	// Formats returns the `GdkContentFormats` that the drop offers the data to
 	// be read in.
-	Formats() ContentFormats
+	Formats() *ContentFormats
 	// Surface returns the `GdkSurface` performing the drop.
 	Surface() Surface
 	// StatusDrop selects all actions that are potentially supported by the
@@ -178,7 +178,7 @@ func (s drop) Drag() Drag {
 	return _drag
 }
 
-func (s drop) Formats() ContentFormats {
+func (s drop) Formats() *ContentFormats {
 	var _arg0 *C.GdkDrop           // out
 	var _cret *C.GdkContentFormats // in
 
@@ -186,9 +186,9 @@ func (s drop) Formats() ContentFormats {
 
 	_cret = C.gdk_drop_get_formats(_arg0)
 
-	var _contentFormats ContentFormats // out
+	var _contentFormats *ContentFormats // out
 
-	_contentFormats = (ContentFormats)(unsafe.Pointer(_cret))
+	_contentFormats = (*ContentFormats)(unsafe.Pointer(_cret))
 	C.gdk_content_formats_ref(_cret)
 
 	return _contentFormats

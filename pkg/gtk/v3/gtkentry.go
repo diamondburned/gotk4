@@ -126,7 +126,7 @@ type Entry interface {
 	Alignment() float32
 	// Attributes gets the attribute list that was set on the entry using
 	// gtk_entry_set_attributes(), if any.
-	Attributes() pango.AttrList
+	Attributes() *pango.AttrList
 	// Buffer: get the EntryBuffer object which holds the text for this widget.
 	Buffer() EntryBuffer
 	// Completion returns the auxiliary completion object currently in use by
@@ -191,7 +191,7 @@ type Entry interface {
 	// property. See gtk_entry_set_inner_border() for more information.
 	//
 	// Deprecated: since version 3.4.
-	InnerBorder() Border
+	InnerBorder() *Border
 	// InputHints gets the value of the Entry:input-hints property.
 	InputHints() InputHints
 	// InputPurpose gets the value of the Entry:input-purpose property.
@@ -250,7 +250,7 @@ type Entry interface {
 	ProgressPulseStep() float64
 	// Tabs gets the tabstops that were set on the entry using
 	// gtk_entry_set_tabs(), if any.
-	Tabs() pango.TabArray
+	Tabs() *pango.TabArray
 	// Text retrieves the contents of the entry widget. See also
 	// gtk_editable_get_chars().
 	//
@@ -291,7 +291,7 @@ type Entry interface {
 	// to insert your own key handling between the input method and the default
 	// key event handling of the Entry. See gtk_text_view_reset_im_context() for
 	// an example of use.
-	ImContextFilterKeypressEntry(event gdk.EventKey) bool
+	ImContextFilterKeypressEntry(event *gdk.EventKey) bool
 	// LayoutIndexToTextIndexEntry converts from a position in the entry’s
 	// Layout (returned by gtk_entry_get_layout()) to a position in the entry
 	// contents (returned by gtk_entry_get_text()).
@@ -324,7 +324,7 @@ type Entry interface {
 	SetAlignmentEntry(xalign float32)
 	// SetAttributesEntry sets a AttrList; the attributes in the list are
 	// applied to the entry text.
-	SetAttributesEntry(attrs pango.AttrList)
+	SetAttributesEntry(attrs *pango.AttrList)
 	// SetBufferEntry: set the EntryBuffer object which holds the text for this
 	// widget.
 	SetBufferEntry(buffer EntryBuffer)
@@ -357,7 +357,7 @@ type Entry interface {
 	// Widget::drag-begin signal to set a different icon. Note that you have to
 	// use g_signal_connect_after() to ensure that your signal handler gets
 	// executed after the default handler.
-	SetIconDragSourceEntry(iconPos EntryIconPosition, targetList TargetList, actions gdk.DragAction)
+	SetIconDragSourceEntry(iconPos EntryIconPosition, targetList *TargetList, actions gdk.DragAction)
 	// SetIconFromIconNameEntry sets the icon shown in the entry at the
 	// specified position from the current icon theme.
 	//
@@ -414,7 +414,7 @@ type Entry interface {
 	// pixel-exact positioning of the entry is important.
 	//
 	// Deprecated: since version 3.4.
-	SetInnerBorderEntry(border Border)
+	SetInnerBorderEntry(border *Border)
 	// SetInputHintsEntry sets the Entry:input-hints property, which allows
 	// input methods to fine-tune their behaviour.
 	SetInputHintsEntry(hints InputHints)
@@ -461,7 +461,7 @@ type Entry interface {
 	SetProgressPulseStepEntry(fraction float64)
 	// SetTabsEntry sets a TabArray; the tabstops in the array are applied to
 	// the entry text.
-	SetTabsEntry(tabs pango.TabArray)
+	SetTabsEntry(tabs *pango.TabArray)
 	// SetTextEntry sets the text in the widget to the given value, replacing
 	// the current contents.
 	//
@@ -577,7 +577,7 @@ func (e entry) Alignment() float32 {
 	return _gfloat
 }
 
-func (e entry) Attributes() pango.AttrList {
+func (e entry) Attributes() *pango.AttrList {
 	var _arg0 *C.GtkEntry      // out
 	var _cret *C.PangoAttrList // in
 
@@ -585,9 +585,9 @@ func (e entry) Attributes() pango.AttrList {
 
 	_cret = C.gtk_entry_get_attributes(_arg0)
 
-	var _attrList pango.AttrList // out
+	var _attrList *pango.AttrList // out
 
-	_attrList = (pango.AttrList)(unsafe.Pointer(_cret))
+	_attrList = (*pango.AttrList)(unsafe.Pointer(_cret))
 	C.pango_attr_list_ref(_cret)
 
 	return _attrList
@@ -692,7 +692,7 @@ func (e entry) IconActivatable(iconPos EntryIconPosition) bool {
 func (e entry) IconArea(iconPos EntryIconPosition) gdk.Rectangle {
 	var _arg0 *C.GtkEntry            // out
 	var _arg1 C.GtkEntryIconPosition // out
-	var _arg2 *C.GdkRectangle        // in
+	var _arg2 C.GdkRectangle         // in
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 	_arg1 = C.GtkEntryIconPosition(iconPos)
@@ -701,7 +701,17 @@ func (e entry) IconArea(iconPos EntryIconPosition) gdk.Rectangle {
 
 	var _iconArea gdk.Rectangle // out
 
-	_iconArea = (gdk.Rectangle)(unsafe.Pointer(_arg2))
+	{
+		var refTmpIn *C.GdkRectangle
+		var refTmpOut *gdk.Rectangle
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*gdk.Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_iconArea = *refTmpOut
+	}
 
 	return _iconArea
 }
@@ -848,7 +858,7 @@ func (e entry) IconTooltipText(iconPos EntryIconPosition) string {
 	return _utf8
 }
 
-func (e entry) InnerBorder() Border {
+func (e entry) InnerBorder() *Border {
 	var _arg0 *C.GtkEntry  // out
 	var _cret *C.GtkBorder // in
 
@@ -856,9 +866,9 @@ func (e entry) InnerBorder() Border {
 
 	_cret = C.gtk_entry_get_inner_border(_arg0)
 
-	var _border Border // out
+	var _border *Border // out
 
-	_border = (Border)(unsafe.Pointer(_cret))
+	_border = (*Border)(unsafe.Pointer(_cret))
 
 	return _border
 }
@@ -925,8 +935,8 @@ func (e entry) Layout() pango.Layout {
 
 func (e entry) LayoutOffsets() (x int, y int) {
 	var _arg0 *C.GtkEntry // out
-	var _arg1 *C.gint     // in
-	var _arg2 *C.gint     // in
+	var _arg1 C.gint      // in
+	var _arg2 C.gint      // in
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 
@@ -1033,7 +1043,7 @@ func (e entry) ProgressPulseStep() float64 {
 	return _gdouble
 }
 
-func (e entry) Tabs() pango.TabArray {
+func (e entry) Tabs() *pango.TabArray {
 	var _arg0 *C.GtkEntry      // out
 	var _cret *C.PangoTabArray // in
 
@@ -1041,9 +1051,9 @@ func (e entry) Tabs() pango.TabArray {
 
 	_cret = C.gtk_entry_get_tabs(_arg0)
 
-	var _tabArray pango.TabArray // out
+	var _tabArray *pango.TabArray // out
 
-	_tabArray = (pango.TabArray)(unsafe.Pointer(_cret))
+	_tabArray = (*pango.TabArray)(unsafe.Pointer(_cret))
 
 	return _tabArray
 }
@@ -1064,8 +1074,8 @@ func (e entry) Text() string {
 }
 
 func (e entry) TextArea() gdk.Rectangle {
-	var _arg0 *C.GtkEntry     // out
-	var _arg1 *C.GdkRectangle // in
+	var _arg0 *C.GtkEntry    // out
+	var _arg1 C.GdkRectangle // in
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 
@@ -1073,7 +1083,17 @@ func (e entry) TextArea() gdk.Rectangle {
 
 	var _textArea gdk.Rectangle // out
 
-	_textArea = (gdk.Rectangle)(unsafe.Pointer(_arg1))
+	{
+		var refTmpIn *C.GdkRectangle
+		var refTmpOut *gdk.Rectangle
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*gdk.Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_textArea = *refTmpOut
+	}
 
 	return _textArea
 }
@@ -1133,7 +1153,7 @@ func (e entry) GrabFocusWithoutSelectingEntry() {
 	C.gtk_entry_grab_focus_without_selecting(_arg0)
 }
 
-func (e entry) ImContextFilterKeypressEntry(event gdk.EventKey) bool {
+func (e entry) ImContextFilterKeypressEntry(event *gdk.EventKey) bool {
 	var _arg0 *C.GtkEntry    // out
 	var _arg1 *C.GdkEventKey // out
 	var _cret C.gboolean     // in
@@ -1207,7 +1227,7 @@ func (e entry) SetAlignmentEntry(xalign float32) {
 	C.gtk_entry_set_alignment(_arg0, _arg1)
 }
 
-func (e entry) SetAttributesEntry(attrs pango.AttrList) {
+func (e entry) SetAttributesEntry(attrs *pango.AttrList) {
 	var _arg0 *C.GtkEntry      // out
 	var _arg1 *C.PangoAttrList // out
 
@@ -1273,7 +1293,7 @@ func (e entry) SetIconActivatableEntry(iconPos EntryIconPosition, activatable bo
 	C.gtk_entry_set_icon_activatable(_arg0, _arg1, _arg2)
 }
 
-func (e entry) SetIconDragSourceEntry(iconPos EntryIconPosition, targetList TargetList, actions gdk.DragAction) {
+func (e entry) SetIconDragSourceEntry(iconPos EntryIconPosition, targetList *TargetList, actions gdk.DragAction) {
 	var _arg0 *C.GtkEntry            // out
 	var _arg1 C.GtkEntryIconPosition // out
 	var _arg2 *C.GtkTargetList       // out
@@ -1365,7 +1385,7 @@ func (e entry) SetIconTooltipTextEntry(iconPos EntryIconPosition, tooltip string
 	C.gtk_entry_set_icon_tooltip_text(_arg0, _arg1, _arg2)
 }
 
-func (e entry) SetInnerBorderEntry(border Border) {
+func (e entry) SetInnerBorderEntry(border *Border) {
 	var _arg0 *C.GtkEntry  // out
 	var _arg1 *C.GtkBorder // out
 
@@ -1468,7 +1488,7 @@ func (e entry) SetProgressPulseStepEntry(fraction float64) {
 	C.gtk_entry_set_progress_pulse_step(_arg0, _arg1)
 }
 
-func (e entry) SetTabsEntry(tabs pango.TabArray) {
+func (e entry) SetTabsEntry(tabs *pango.TabArray) {
 	var _arg0 *C.GtkEntry      // out
 	var _arg1 *C.PangoTabArray // out
 

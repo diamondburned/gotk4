@@ -40,13 +40,13 @@ type ConstraintGuide interface {
 	AsConstraintTarget() ConstraintTarget
 
 	// MaxSize gets the maximum size of @guide.
-	MaxSize(width int, height int)
+	MaxSize(width *int, height *int)
 	// MinSize gets the minimum size of @guide.
-	MinSize(width int, height int)
+	MinSize(width *int, height *int)
 	// Name retrieves the name set using gtk_constraint_guide_set_name().
 	Name() string
 	// NatSize gets the natural size of @guide.
-	NatSize(width int, height int)
+	NatSize(width *int, height *int)
 	// Strength retrieves the strength set using
 	// gtk_constraint_guide_set_strength().
 	Strength() ConstraintStrength
@@ -106,26 +106,26 @@ func NewConstraintGuide() ConstraintGuide {
 	return _constraintGuide
 }
 
-func (g constraintGuide) MaxSize(width int, height int) {
+func (g constraintGuide) MaxSize(width *int, height *int) {
 	var _arg0 *C.GtkConstraintGuide // out
 	var _arg1 *C.int                // out
 	var _arg2 *C.int                // out
 
 	_arg0 = (*C.GtkConstraintGuide)(unsafe.Pointer(g.Native()))
-	_arg1 = *C.int(width)
-	_arg2 = *C.int(height)
+	_arg1 = (*C.int)(unsafe.Pointer(width))
+	_arg2 = (*C.int)(unsafe.Pointer(height))
 
 	C.gtk_constraint_guide_get_max_size(_arg0, _arg1, _arg2)
 }
 
-func (g constraintGuide) MinSize(width int, height int) {
+func (g constraintGuide) MinSize(width *int, height *int) {
 	var _arg0 *C.GtkConstraintGuide // out
 	var _arg1 *C.int                // out
 	var _arg2 *C.int                // out
 
 	_arg0 = (*C.GtkConstraintGuide)(unsafe.Pointer(g.Native()))
-	_arg1 = *C.int(width)
-	_arg2 = *C.int(height)
+	_arg1 = (*C.int)(unsafe.Pointer(width))
+	_arg2 = (*C.int)(unsafe.Pointer(height))
 
 	C.gtk_constraint_guide_get_min_size(_arg0, _arg1, _arg2)
 }
@@ -145,14 +145,14 @@ func (g constraintGuide) Name() string {
 	return _utf8
 }
 
-func (g constraintGuide) NatSize(width int, height int) {
+func (g constraintGuide) NatSize(width *int, height *int) {
 	var _arg0 *C.GtkConstraintGuide // out
 	var _arg1 *C.int                // out
 	var _arg2 *C.int                // out
 
 	_arg0 = (*C.GtkConstraintGuide)(unsafe.Pointer(g.Native()))
-	_arg1 = *C.int(width)
-	_arg2 = *C.int(height)
+	_arg1 = (*C.int)(unsafe.Pointer(width))
+	_arg2 = (*C.int)(unsafe.Pointer(height))
 
 	C.gtk_constraint_guide_get_nat_size(_arg0, _arg1, _arg2)
 }

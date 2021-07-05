@@ -56,7 +56,7 @@ func marshalTabArray(p uintptr) (interface{}, error) {
 }
 
 // NewTabArray constructs a struct TabArray.
-func NewTabArray(initialSize int, positionsInPixels bool) TabArray {
+func NewTabArray(initialSize int, positionsInPixels bool) *TabArray {
 	var _arg1 C.gint           // out
 	var _arg2 C.gboolean       // out
 	var _cret *C.PangoTabArray // in
@@ -68,10 +68,10 @@ func NewTabArray(initialSize int, positionsInPixels bool) TabArray {
 
 	_cret = C.pango_tab_array_new(_arg1, _arg2)
 
-	var _tabArray TabArray // out
+	var _tabArray *TabArray // out
 
-	_tabArray = (TabArray)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_tabArray, func(v TabArray) {
+	_tabArray = (*TabArray)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_tabArray, func(v *TabArray) {
 		C.pango_tab_array_free((*C.PangoTabArray)(unsafe.Pointer(v)))
 	})
 
@@ -84,7 +84,7 @@ func (t *TabArray) Native() unsafe.Pointer {
 }
 
 // Copy copies a `PangoTabArray`.
-func (s *TabArray) Copy() TabArray {
+func (s *TabArray) Copy() *TabArray {
 	var _arg0 *C.PangoTabArray // out
 	var _cret *C.PangoTabArray // in
 
@@ -92,10 +92,10 @@ func (s *TabArray) Copy() TabArray {
 
 	_cret = C.pango_tab_array_copy(_arg0)
 
-	var _tabArray TabArray // out
+	var _tabArray *TabArray // out
 
-	_tabArray = (TabArray)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_tabArray, func(v TabArray) {
+	_tabArray = (*TabArray)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_tabArray, func(v *TabArray) {
 		C.pango_tab_array_free((*C.PangoTabArray)(unsafe.Pointer(v)))
 	})
 
@@ -150,8 +150,8 @@ func (t *TabArray) Size() int {
 func (t *TabArray) Tab(tabIndex int) (TabAlign, int) {
 	var _arg0 *C.PangoTabArray // out
 	var _arg1 C.gint           // out
-	var _arg2 *C.PangoTabAlign // in
-	var _arg3 *C.gint          // in
+	var _arg2 C.PangoTabAlign  // in
+	var _arg3 C.gint           // in
 
 	_arg0 = (*C.PangoTabArray)(unsafe.Pointer(t))
 	_arg1 = C.gint(tabIndex)
@@ -161,16 +161,7 @@ func (t *TabArray) Tab(tabIndex int) (TabAlign, int) {
 	var _alignment TabAlign // out
 	var _location int       // out
 
-	{
-		var refTmpIn C.PangoTabAlign
-		var refTmpOut TabAlign
-
-		refTmpIn = *_arg2
-
-		refTmpOut = TabAlign(refTmpIn)
-
-		_alignment = refTmpOut
-	}
+	_alignment = TabAlign(_arg2)
 	_location = int(_arg3)
 
 	return _alignment, _location

@@ -42,15 +42,15 @@ func marshalItem(p uintptr) (interface{}, error) {
 }
 
 // NewItem constructs a struct Item.
-func NewItem() Item {
+func NewItem() *Item {
 	var _cret *C.PangoItem // in
 
 	_cret = C.pango_item_new()
 
-	var _item Item // out
+	var _item *Item // out
 
-	_item = (Item)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_item, func(v Item) {
+	_item = (*Item)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_item, func(v *Item) {
 		C.pango_item_free((*C.PangoItem)(unsafe.Pointer(v)))
 	})
 
@@ -72,7 +72,7 @@ func (i *Item) Native() unsafe.Pointer {
 // The @iter should be positioned before the range of the item, and will be
 // advanced past it. This function is meant to be called in a loop over the
 // items resulting from itemization, while passing the iter to each call.
-func (i *Item) ApplyAttrs(iter AttrIterator) {
+func (i *Item) ApplyAttrs(iter *AttrIterator) {
 	var _arg0 *C.PangoItem         // out
 	var _arg1 *C.PangoAttrIterator // out
 
@@ -83,7 +83,7 @@ func (i *Item) ApplyAttrs(iter AttrIterator) {
 }
 
 // Copy an existing `PangoItem` structure.
-func (i *Item) Copy() Item {
+func (i *Item) Copy() *Item {
 	var _arg0 *C.PangoItem // out
 	var _cret *C.PangoItem // in
 
@@ -91,10 +91,10 @@ func (i *Item) Copy() Item {
 
 	_cret = C.pango_item_copy(_arg0)
 
-	var _ret Item // out
+	var _ret *Item // out
 
-	_ret = (Item)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_ret, func(v Item) {
+	_ret = (*Item)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_ret, func(v *Item) {
 		C.pango_item_free((*C.PangoItem)(unsafe.Pointer(v)))
 	})
 
@@ -120,7 +120,7 @@ func (i *Item) Free() {
 // the first item in chars, and must be provided because the text used to
 // generate the item isn't available, so `pango_item_split()` can't count the
 // char length of the split items itself.
-func (o *Item) Split(splitIndex int, splitOffset int) Item {
+func (o *Item) Split(splitIndex int, splitOffset int) *Item {
 	var _arg0 *C.PangoItem // out
 	var _arg1 C.int        // out
 	var _arg2 C.int        // out
@@ -132,10 +132,10 @@ func (o *Item) Split(splitIndex int, splitOffset int) Item {
 
 	_cret = C.pango_item_split(_arg0, _arg1, _arg2)
 
-	var _item Item // out
+	var _item *Item // out
 
-	_item = (Item)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_item, func(v Item) {
+	_item = (*Item)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_item, func(v *Item) {
 		C.pango_item_free((*C.PangoItem)(unsafe.Pointer(v)))
 	})
 

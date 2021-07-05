@@ -42,15 +42,15 @@ func marshalBorder(p uintptr) (interface{}, error) {
 }
 
 // NewBorder constructs a struct Border.
-func NewBorder() Border {
+func NewBorder() *Border {
 	var _cret *C.GtkBorder // in
 
 	_cret = C.gtk_border_new()
 
-	var _border Border // out
+	var _border *Border // out
 
-	_border = (Border)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_border, func(v Border) {
+	_border = (*Border)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_border, func(v *Border) {
 		C.gtk_border_free((*C.GtkBorder)(unsafe.Pointer(v)))
 	})
 
@@ -63,7 +63,7 @@ func (b *Border) Native() unsafe.Pointer {
 }
 
 // Copy copies a Border-struct.
-func (b *Border) Copy() Border {
+func (b *Border) Copy() *Border {
 	var _arg0 *C.GtkBorder // out
 	var _cret *C.GtkBorder // in
 
@@ -71,10 +71,10 @@ func (b *Border) Copy() Border {
 
 	_cret = C.gtk_border_copy(_arg0)
 
-	var _border Border // out
+	var _border *Border // out
 
-	_border = (Border)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_border, func(v Border) {
+	_border = (*Border)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_border, func(v *Border) {
 		C.gtk_border_free((*C.GtkBorder)(unsafe.Pointer(v)))
 	})
 

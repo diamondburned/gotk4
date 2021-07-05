@@ -110,7 +110,7 @@ func marshalChecksum(p uintptr) (interface{}, error) {
 }
 
 // NewChecksum constructs a struct Checksum.
-func NewChecksum(checksumType ChecksumType) Checksum {
+func NewChecksum(checksumType ChecksumType) *Checksum {
 	var _arg1 C.GChecksumType // out
 	var _cret *C.GChecksum    // in
 
@@ -118,10 +118,10 @@ func NewChecksum(checksumType ChecksumType) Checksum {
 
 	_cret = C.g_checksum_new(_arg1)
 
-	var _checksum Checksum // out
+	var _checksum *Checksum // out
 
-	_checksum = (Checksum)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_checksum, func(v Checksum) {
+	_checksum = (*Checksum)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_checksum, func(v *Checksum) {
 		C.g_checksum_free((*C.GChecksum)(unsafe.Pointer(v)))
 	})
 
@@ -136,7 +136,7 @@ func (c *Checksum) Native() unsafe.Pointer {
 // Copy copies a #GChecksum. If @checksum has been closed, by calling
 // g_checksum_get_string() or g_checksum_get_digest(), the copied checksum will
 // be closed as well.
-func (c *Checksum) Copy() Checksum {
+func (c *Checksum) Copy() *Checksum {
 	var _arg0 *C.GChecksum // out
 	var _cret *C.GChecksum // in
 
@@ -144,10 +144,10 @@ func (c *Checksum) Copy() Checksum {
 
 	_cret = C.g_checksum_copy(_arg0)
 
-	var _ret Checksum // out
+	var _ret *Checksum // out
 
-	_ret = (Checksum)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_ret, func(v Checksum) {
+	_ret = (*Checksum)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_ret, func(v *Checksum) {
 		C.g_checksum_free((*C.GChecksum)(unsafe.Pointer(v)))
 	})
 

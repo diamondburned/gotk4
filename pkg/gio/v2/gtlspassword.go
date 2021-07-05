@@ -45,7 +45,7 @@ type TLSPassword interface {
 	// filled in with the length of the password value. (Note that the password
 	// value is not nul-terminated, so you can only pass nil for @length in
 	// contexts where you know the password will have a certain fixed length.)
-	Value(length uint) byte
+	Value(length *uint) *byte
 	// Warning: get a user readable translated warning. Usually this warning is
 	// a representation of the password flags returned from
 	// g_tls_password_get_flags().
@@ -137,19 +137,19 @@ func (p tlsPassword) Flags() TLSPasswordFlags {
 	return _tlsPasswordFlags
 }
 
-func (p tlsPassword) Value(length uint) byte {
+func (p tlsPassword) Value(length *uint) *byte {
 	var _arg0 *C.GTlsPassword // out
 	var _arg1 *C.gsize        // out
 	var _cret *C.guchar       // in
 
 	_arg0 = (*C.GTlsPassword)(unsafe.Pointer(p.Native()))
-	_arg1 = *C.gsize(length)
+	_arg1 = (*C.gsize)(unsafe.Pointer(length))
 
 	_cret = C.g_tls_password_get_value(_arg0, _arg1)
 
-	var _guint8 byte // out
+	var _guint8 *byte // out
 
-	_guint8 = byte(_cret)
+	_guint8 = (*byte)(unsafe.Pointer(_cret))
 
 	return _guint8
 }

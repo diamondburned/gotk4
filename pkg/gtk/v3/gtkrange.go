@@ -279,8 +279,8 @@ func (r _range) MinSliderSize() int {
 }
 
 func (r _range) RangeRect() gdk.Rectangle {
-	var _arg0 *C.GtkRange     // out
-	var _arg1 *C.GdkRectangle // in
+	var _arg0 *C.GtkRange    // out
+	var _arg1 C.GdkRectangle // in
 
 	_arg0 = (*C.GtkRange)(unsafe.Pointer(r.Native()))
 
@@ -288,7 +288,17 @@ func (r _range) RangeRect() gdk.Rectangle {
 
 	var _rangeRect gdk.Rectangle // out
 
-	_rangeRect = (gdk.Rectangle)(unsafe.Pointer(_arg1))
+	{
+		var refTmpIn *C.GdkRectangle
+		var refTmpOut *gdk.Rectangle
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*gdk.Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_rangeRect = *refTmpOut
+	}
 
 	return _rangeRect
 }
@@ -344,8 +354,8 @@ func (r _range) ShowFillLevel() bool {
 
 func (r _range) SliderRange() (sliderStart int, sliderEnd int) {
 	var _arg0 *C.GtkRange // out
-	var _arg1 *C.gint     // in
-	var _arg2 *C.gint     // in
+	var _arg1 C.gint      // in
+	var _arg2 C.gint      // in
 
 	_arg0 = (*C.GtkRange)(unsafe.Pointer(r.Native()))
 

@@ -155,8 +155,8 @@ func (f frame) Label() string {
 
 func (f frame) LabelAlign() (xalign float32, yalign float32) {
 	var _arg0 *C.GtkFrame // out
-	var _arg1 *C.gfloat   // in
-	var _arg2 *C.gfloat   // in
+	var _arg1 C.gfloat    // in
+	var _arg2 C.gfloat    // in
 
 	_arg0 = (*C.GtkFrame)(unsafe.Pointer(f.Native()))
 

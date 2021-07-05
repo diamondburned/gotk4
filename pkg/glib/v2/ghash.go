@@ -345,7 +345,7 @@ func (h *HashTableIter) Native() unsafe.Pointer {
 //      {
 //        // do something with key and value
 //      }
-func (i *HashTableIter) Init(hashTable HashTable) {
+func (i *HashTableIter) Init(hashTable *HashTable) {
 	var _arg0 *C.GHashTableIter // out
 	var _arg1 *C.GHashTable     // out
 
@@ -360,13 +360,13 @@ func (i *HashTableIter) Init(hashTable HashTable) {
 // not set, and the iterator becomes invalid.
 func (i *HashTableIter) Next() (key interface{}, value interface{}, ok bool) {
 	var _arg0 *C.GHashTableIter // out
-	var _arg1 *C.gpointer       // in
-	var _arg2 *C.gpointer       // in
+	var _arg1 C.gpointer        // in
+	var _arg2 C.gpointer        // in
 	var _cret C.gboolean        // in
 
 	_arg0 = (*C.GHashTableIter)(unsafe.Pointer(i))
 
-	_cret = C.g_hash_table_iter_next(_arg0, _arg1, _arg2)
+	_cret = C.g_hash_table_iter_next(_arg0, &_arg1, &_arg2)
 
 	var _key interface{}   // out
 	var _value interface{} // out

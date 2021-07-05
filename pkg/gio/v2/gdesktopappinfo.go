@@ -246,7 +246,7 @@ func NewDesktopAppInfoFromFilename(filename string) DesktopAppInfo {
 }
 
 // NewDesktopAppInfoFromKeyfile creates a new AppInfo.
-func NewDesktopAppInfoFromKeyfile(keyFile glib.KeyFile) DesktopAppInfo {
+func NewDesktopAppInfoFromKeyfile(keyFile *glib.KeyFile) DesktopAppInfo {
 	var _arg1 *C.GKeyFile        // out
 	var _cret *C.GDesktopAppInfo // in
 

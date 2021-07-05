@@ -207,7 +207,7 @@ func (r asyncResult) IsTagged(sourceTag interface{}) bool {
 
 func (r asyncResult) LegacyPropagateError() error {
 	var _arg0 *C.GAsyncResult // out
-	var _cerr **C.GError      // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GAsyncResult)(unsafe.Pointer(r.Native()))
 
@@ -215,16 +215,7 @@ func (r asyncResult) LegacyPropagateError() error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }

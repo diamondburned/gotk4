@@ -114,8 +114,8 @@ func (s native) Surface() gdk.Surface {
 
 func (s native) SurfaceTransform() (x float64, y float64) {
 	var _arg0 *C.GtkNative // out
-	var _arg1 *C.double    // in
-	var _arg2 *C.double    // in
+	var _arg1 C.double     // in
+	var _arg2 C.double     // in
 
 	_arg0 = (*C.GtkNative)(unsafe.Pointer(s.Native()))
 

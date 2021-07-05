@@ -119,7 +119,7 @@ func DBusGenerateGuid() string {
 //
 // See the g_dbus_gvariant_to_gvalue() function for how to convert a #GVariant
 // to a #GValue.
-func DBusGValueToGVariant(gvalue externglib.Value, typ glib.VariantType) glib.Variant {
+func DBusGValueToGVariant(gvalue externglib.Value, typ *glib.VariantType) *glib.Variant {
 	var _arg1 *C.GValue       // out
 	var _arg2 *C.GVariantType // out
 	var _cret *C.GVariant     // in
@@ -129,10 +129,10 @@ func DBusGValueToGVariant(gvalue externglib.Value, typ glib.VariantType) glib.Va
 
 	_cret = C.g_dbus_gvalue_to_gvariant(_arg1, _arg2)
 
-	var _variant glib.Variant // out
+	var _variant *glib.Variant // out
 
-	_variant = (glib.Variant)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_variant, func(v glib.Variant) {
+	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
 	})
 
@@ -150,17 +150,27 @@ func DBusGValueToGVariant(gvalue externglib.Value, typ glib.VariantType) glib.Va
 //
 // The conversion never fails - a valid #GValue is always returned in
 // @out_gvalue.
-func DBusGVariantToGValue(value glib.Variant) externglib.Value {
+func DBusGVariantToGValue(value *glib.Variant) externglib.Value {
 	var _arg1 *C.GVariant // out
-	var _arg2 *C.GValue   // in
+	var _arg2 C.GValue    // in
 
 	_arg1 = (*C.GVariant)(unsafe.Pointer(value))
 
-	C.g_dbus_gvariant_to_gvalue(_arg1, _arg2)
+	C.g_dbus_gvariant_to_gvalue(_arg1, &_arg2)
 
 	var _outGvalue externglib.Value // out
 
-	_outGvalue = externglib.ValueFromNative(unsafe.Pointer(_arg2))
+	{
+		var refTmpIn *C.GValue
+		var refTmpOut *externglib.Value
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = externglib.ValueFromNative(unsafe.Pointer(refTmpIn))
+
+		_outGvalue = *refTmpOut
+	}
 
 	return _outGvalue
 }

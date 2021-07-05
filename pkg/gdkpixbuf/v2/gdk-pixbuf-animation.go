@@ -76,7 +76,7 @@ type PixbufAnimation interface {
 	// should be reinstalled after any area_updated signal.
 	//
 	// A delay time of -1 is possible, indicating "infinite".
-	Iter(startTime glib.TimeVal) PixbufAnimationIter
+	Iter(startTime *glib.TimeVal) PixbufAnimationIter
 	// StaticImage retrieves a static image for the animation.
 	//
 	// If an animation is really just a plain image (has only one frame), this
@@ -131,7 +131,7 @@ func marshalPixbufAnimation(p uintptr) (interface{}, error) {
 func NewPixbufAnimationFromFile(filename string) (PixbufAnimation, error) {
 	var _arg1 *C.char               // out
 	var _cret *C.GdkPixbufAnimation // in
-	var _cerr **C.GError            // in
+	var _cerr *C.GError             // in
 
 	_arg1 = (*C.char)(C.CString(filename))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -142,16 +142,7 @@ func NewPixbufAnimationFromFile(filename string) (PixbufAnimation, error) {
 	var _goerr error                     // out
 
 	_pixbufAnimation = WrapPixbufAnimation(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _pixbufAnimation, _goerr
 }
@@ -164,7 +155,7 @@ func NewPixbufAnimationFromFile(filename string) (PixbufAnimation, error) {
 func NewPixbufAnimationFromResource(resourcePath string) (PixbufAnimation, error) {
 	var _arg1 *C.char               // out
 	var _cret *C.GdkPixbufAnimation // in
-	var _cerr **C.GError            // in
+	var _cerr *C.GError             // in
 
 	_arg1 = (*C.char)(C.CString(resourcePath))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -175,16 +166,7 @@ func NewPixbufAnimationFromResource(resourcePath string) (PixbufAnimation, error
 	var _goerr error                     // out
 
 	_pixbufAnimation = WrapPixbufAnimation(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _pixbufAnimation, _goerr
 }
@@ -206,7 +188,7 @@ func NewPixbufAnimationFromStream(stream gio.InputStream, cancellable gio.Cancel
 	var _arg1 *C.GInputStream       // out
 	var _arg2 *C.GCancellable       // out
 	var _cret *C.GdkPixbufAnimation // in
-	var _cerr **C.GError            // in
+	var _cerr *C.GError             // in
 
 	_arg1 = (*C.GInputStream)(unsafe.Pointer(stream.Native()))
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
@@ -217,16 +199,7 @@ func NewPixbufAnimationFromStream(stream gio.InputStream, cancellable gio.Cancel
 	var _goerr error                     // out
 
 	_pixbufAnimation = WrapPixbufAnimation(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _pixbufAnimation, _goerr
 }
@@ -246,7 +219,7 @@ func (a pixbufAnimation) Height() int {
 	return _gint
 }
 
-func (a pixbufAnimation) Iter(startTime glib.TimeVal) PixbufAnimationIter {
+func (a pixbufAnimation) Iter(startTime *glib.TimeVal) PixbufAnimationIter {
 	var _arg0 *C.GdkPixbufAnimation     // out
 	var _arg1 *C.GTimeVal               // out
 	var _cret *C.GdkPixbufAnimationIter // in
@@ -336,7 +309,7 @@ type PixbufAnimationIter interface {
 	// display, assuming the display had been rendered prior to advancing; if
 	// `TRUE`, you need to call gdk_pixbuf_animation_iter_get_pixbuf() and
 	// update the display with the new pixbuf.
-	AdvancePixbufAnimationIter(currentTime glib.TimeVal) bool
+	AdvancePixbufAnimationIter(currentTime *glib.TimeVal) bool
 	// DelayTime gets the number of milliseconds the current pixbuf should be
 	// displayed, or -1 if the current pixbuf should be displayed forever.
 	//
@@ -392,7 +365,7 @@ func marshalPixbufAnimationIter(p uintptr) (interface{}, error) {
 	return WrapPixbufAnimationIter(obj), nil
 }
 
-func (i pixbufAnimationIter) AdvancePixbufAnimationIter(currentTime glib.TimeVal) bool {
+func (i pixbufAnimationIter) AdvancePixbufAnimationIter(currentTime *glib.TimeVal) bool {
 	var _arg0 *C.GdkPixbufAnimationIter // out
 	var _arg1 *C.GTimeVal               // out
 	var _cret C.gboolean                // in

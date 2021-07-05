@@ -105,7 +105,7 @@ type Cancellable interface {
 	// You are not supposed to read from the fd yourself, just check for
 	// readable status. Reading to unset the readable status is done with
 	// g_cancellable_reset().
-	MakePollfdCancellable(pollfd glib.PollFD) bool
+	MakePollfdCancellable(pollfd *glib.PollFD) bool
 	// PopCurrentCancellable pops @cancellable off the cancellable stack
 	// (verifying that @cancellable is on the top of the stack).
 	PopCurrentCancellable()
@@ -153,7 +153,7 @@ type Cancellable interface {
 	// case the source will never trigger.
 	//
 	// The new #GSource will hold a reference to the #GCancellable.
-	NewSourceCancellable() glib.Source
+	NewSourceCancellable() *glib.Source
 }
 
 // cancellable implements the Cancellable class.
@@ -244,7 +244,7 @@ func (c cancellable) IsCancelledCancellable() bool {
 	return _ok
 }
 
-func (c cancellable) MakePollfdCancellable(pollfd glib.PollFD) bool {
+func (c cancellable) MakePollfdCancellable(pollfd *glib.PollFD) bool {
 	var _arg0 *C.GCancellable // out
 	var _arg1 *C.GPollFD      // out
 	var _cret C.gboolean      // in
@@ -297,7 +297,7 @@ func (c cancellable) ResetCancellable() {
 
 func (c cancellable) SetErrorIfCancelledCancellable() error {
 	var _arg0 *C.GCancellable // out
-	var _cerr **C.GError      // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
 
@@ -305,21 +305,12 @@ func (c cancellable) SetErrorIfCancelledCancellable() error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
 
-func (c cancellable) NewSourceCancellable() glib.Source {
+func (c cancellable) NewSourceCancellable() *glib.Source {
 	var _arg0 *C.GCancellable // out
 	var _cret *C.GSource      // in
 
@@ -327,10 +318,10 @@ func (c cancellable) NewSourceCancellable() glib.Source {
 
 	_cret = C.g_cancellable_source_new(_arg0)
 
-	var _source glib.Source // out
+	var _source *glib.Source // out
 
-	_source = (glib.Source)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_source, func(v glib.Source) {
+	_source = (*glib.Source)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_source, func(v *glib.Source) {
 		C.g_source_unref((*C.GSource)(unsafe.Pointer(v)))
 	})
 

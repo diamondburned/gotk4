@@ -49,7 +49,7 @@ type GestureSingle interface {
 	// CurrentSequence returns the event sequence currently interacting with
 	// @gesture. This is only meaningful if gtk_gesture_is_active() returns
 	// true.
-	CurrentSequence() gdk.EventSequence
+	CurrentSequence() *gdk.EventSequence
 	// Exclusive gets whether a gesture is exclusive. For more information, see
 	// gtk_gesture_single_set_exclusive().
 	Exclusive() bool
@@ -119,7 +119,7 @@ func (g gestureSingle) CurrentButton() uint {
 	return _guint
 }
 
-func (g gestureSingle) CurrentSequence() gdk.EventSequence {
+func (g gestureSingle) CurrentSequence() *gdk.EventSequence {
 	var _arg0 *C.GtkGestureSingle // out
 	var _cret *C.GdkEventSequence // in
 
@@ -127,10 +127,10 @@ func (g gestureSingle) CurrentSequence() gdk.EventSequence {
 
 	_cret = C.gtk_gesture_single_get_current_sequence(_arg0)
 
-	var _eventSequence gdk.EventSequence // out
+	var _eventSequence *gdk.EventSequence // out
 
-	_eventSequence = (gdk.EventSequence)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_eventSequence, func(v gdk.EventSequence) {
+	_eventSequence = (*gdk.EventSequence)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_eventSequence, func(v *gdk.EventSequence) {
 		C.free(unsafe.Pointer(v))
 	})
 

@@ -81,9 +81,9 @@ func StockAddStatic(items []StockItem) {
 //
 // Deprecated: since version 3.10.
 func StockLookup(stockId string) (StockItem, bool) {
-	var _arg1 *C.gchar        // out
-	var _arg2 *C.GtkStockItem // in
-	var _cret C.gboolean      // in
+	var _arg1 *C.gchar       // out
+	var _arg2 C.GtkStockItem // in
+	var _cret C.gboolean     // in
 
 	_arg1 = (*C.gchar)(C.CString(stockId))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -93,7 +93,17 @@ func StockLookup(stockId string) (StockItem, bool) {
 	var _item StockItem // out
 	var _ok bool        // out
 
-	_item = (StockItem)(unsafe.Pointer(_arg2))
+	{
+		var refTmpIn *C.GtkStockItem
+		var refTmpOut *StockItem
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*StockItem)(unsafe.Pointer(refTmpIn))
+
+		_item = *refTmpOut
+	}
 	if _cret != 0 {
 		_ok = true
 	}

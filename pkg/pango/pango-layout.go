@@ -135,7 +135,7 @@ type Layout interface {
 	// positioned within the horizontal space available.
 	Alignment() Alignment
 	// Attributes gets the attribute list for the layout, if any.
-	Attributes() AttrList
+	Attributes() *AttrList
 	// AutoDir gets whether to calculate the base direction for the layout
 	// according to its contents.
 	//
@@ -179,7 +179,7 @@ type Layout interface {
 	// coordinates begin at the top left corner of the layout.
 	Extents() (inkRect Rectangle, logicalRect Rectangle)
 	// FontDescription gets the font description for the layout, if any.
-	FontDescription() FontDescription
+	FontDescription() *FontDescription
 	// Height gets the height of layout used for ellipsization.
 	//
 	// See [method@Pango.Layout.set_height] for details.
@@ -190,7 +190,7 @@ type Layout interface {
 	Indent() int
 	// Iter returns an iterator to iterate over the visual extents of the
 	// layout.
-	Iter() LayoutIter
+	Iter() *LayoutIter
 	// Justify gets whether each complete line should be stretched to fill the
 	// entire width of the layout.
 	Justify() bool
@@ -249,7 +249,7 @@ type Layout interface {
 	// nil is returned. Default tabs are every 8 spaces.
 	//
 	// The return value should be freed with [method@Pango.TabArray.free].
-	Tabs() TabArray
+	Tabs() *TabArray
 	// Text gets the text in the layout. The returned text should not be freed
 	// or modified.
 	Text() string
@@ -315,7 +315,7 @@ type Layout interface {
 	SetAlignmentLayout(alignment Alignment)
 	// SetAttributesLayout sets the text attributes for a layout object.
 	// References @attrs, so the caller can unref its reference.
-	SetAttributesLayout(attrs AttrList)
+	SetAttributesLayout(attrs *AttrList)
 	// SetAutoDirLayout sets whether to calculate the base direction for the
 	// layout according to its contents.
 	//
@@ -352,7 +352,7 @@ type Layout interface {
 	//
 	// If no font description is set on the layout, the font description from
 	// the layout's context is used.
-	SetFontDescriptionLayout(desc FontDescription)
+	SetFontDescriptionLayout(desc *FontDescription)
 	// SetHeightLayout sets the height to which the `PangoLayout` should be
 	// ellipsized at.
 	//
@@ -461,7 +461,7 @@ type Layout interface {
 	// By default, tabs are every 8 spaces. If @tabs is nil, the default tabs
 	// are reinstated. @tabs is copied into the layout; you must free your copy
 	// of @tabs yourself.
-	SetTabsLayout(tabs TabArray)
+	SetTabsLayout(tabs *TabArray)
 	// SetTextLayout sets the text of the layout.
 	//
 	// This function validates @text and renders invalid UTF-8 with a
@@ -570,7 +570,7 @@ func (l layout) Alignment() Alignment {
 	return _alignment
 }
 
-func (l layout) Attributes() AttrList {
+func (l layout) Attributes() *AttrList {
 	var _arg0 *C.PangoLayout   // out
 	var _cret *C.PangoAttrList // in
 
@@ -578,9 +578,9 @@ func (l layout) Attributes() AttrList {
 
 	_cret = C.pango_layout_get_attributes(_arg0)
 
-	var _attrList AttrList // out
+	var _attrList *AttrList // out
 
-	_attrList = (AttrList)(unsafe.Pointer(_cret))
+	_attrList = (*AttrList)(unsafe.Pointer(_cret))
 	C.pango_attr_list_ref(_cret)
 
 	return _attrList
@@ -649,10 +649,10 @@ func (l layout) Context() Context {
 }
 
 func (l layout) CursorPos(index_ int) (strongPos Rectangle, weakPos Rectangle) {
-	var _arg0 *C.PangoLayout    // out
-	var _arg1 C.int             // out
-	var _arg2 *C.PangoRectangle // in
-	var _arg3 *C.PangoRectangle // in
+	var _arg0 *C.PangoLayout   // out
+	var _arg1 C.int            // out
+	var _arg2 C.PangoRectangle // in
+	var _arg3 C.PangoRectangle // in
 
 	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 	_arg1 = C.int(index_)
@@ -662,8 +662,28 @@ func (l layout) CursorPos(index_ int) (strongPos Rectangle, weakPos Rectangle) {
 	var _strongPos Rectangle // out
 	var _weakPos Rectangle   // out
 
-	_strongPos = (Rectangle)(unsafe.Pointer(_arg2))
-	_weakPos = (Rectangle)(unsafe.Pointer(_arg3))
+	{
+		var refTmpIn *C.PangoRectangle
+		var refTmpOut *Rectangle
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_strongPos = *refTmpOut
+	}
+	{
+		var refTmpIn *C.PangoRectangle
+		var refTmpOut *Rectangle
+
+		in0 := &_arg3
+		refTmpIn = in0
+
+		refTmpOut = (*Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_weakPos = *refTmpOut
+	}
 
 	return _strongPos, _weakPos
 }
@@ -701,9 +721,9 @@ func (l layout) Ellipsize() EllipsizeMode {
 }
 
 func (l layout) Extents() (inkRect Rectangle, logicalRect Rectangle) {
-	var _arg0 *C.PangoLayout    // out
-	var _arg1 *C.PangoRectangle // in
-	var _arg2 *C.PangoRectangle // in
+	var _arg0 *C.PangoLayout   // out
+	var _arg1 C.PangoRectangle // in
+	var _arg2 C.PangoRectangle // in
 
 	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 
@@ -712,13 +732,33 @@ func (l layout) Extents() (inkRect Rectangle, logicalRect Rectangle) {
 	var _inkRect Rectangle     // out
 	var _logicalRect Rectangle // out
 
-	_inkRect = (Rectangle)(unsafe.Pointer(_arg1))
-	_logicalRect = (Rectangle)(unsafe.Pointer(_arg2))
+	{
+		var refTmpIn *C.PangoRectangle
+		var refTmpOut *Rectangle
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_inkRect = *refTmpOut
+	}
+	{
+		var refTmpIn *C.PangoRectangle
+		var refTmpOut *Rectangle
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_logicalRect = *refTmpOut
+	}
 
 	return _inkRect, _logicalRect
 }
 
-func (l layout) FontDescription() FontDescription {
+func (l layout) FontDescription() *FontDescription {
 	var _arg0 *C.PangoLayout          // out
 	var _cret *C.PangoFontDescription // in
 
@@ -726,9 +766,9 @@ func (l layout) FontDescription() FontDescription {
 
 	_cret = C.pango_layout_get_font_description(_arg0)
 
-	var _fontDescription FontDescription // out
+	var _fontDescription *FontDescription // out
 
-	_fontDescription = (FontDescription)(unsafe.Pointer(_cret))
+	_fontDescription = (*FontDescription)(unsafe.Pointer(_cret))
 
 	return _fontDescription
 }
@@ -763,7 +803,7 @@ func (l layout) Indent() int {
 	return _gint
 }
 
-func (l layout) Iter() LayoutIter {
+func (l layout) Iter() *LayoutIter {
 	var _arg0 *C.PangoLayout     // out
 	var _cret *C.PangoLayoutIter // in
 
@@ -771,10 +811,10 @@ func (l layout) Iter() LayoutIter {
 
 	_cret = C.pango_layout_get_iter(_arg0)
 
-	var _layoutIter LayoutIter // out
+	var _layoutIter *LayoutIter // out
 
-	_layoutIter = (LayoutIter)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_layoutIter, func(v LayoutIter) {
+	_layoutIter = (*LayoutIter)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_layoutIter, func(v *LayoutIter) {
 		C.pango_layout_iter_free((*C.PangoLayoutIter)(unsafe.Pointer(v)))
 	})
 
@@ -831,7 +871,7 @@ func (l layout) LineSpacing() float32 {
 func (l layout) LogAttrs() []LogAttr {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 *C.PangoLogAttr
-	var _arg2 *C.gint // in
+	var _arg2 C.gint // in
 
 	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 
@@ -848,9 +888,9 @@ func (l layout) LogAttrs() []LogAttr {
 }
 
 func (l layout) PixelExtents() (inkRect Rectangle, logicalRect Rectangle) {
-	var _arg0 *C.PangoLayout    // out
-	var _arg1 *C.PangoRectangle // in
-	var _arg2 *C.PangoRectangle // in
+	var _arg0 *C.PangoLayout   // out
+	var _arg1 C.PangoRectangle // in
+	var _arg2 C.PangoRectangle // in
 
 	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 
@@ -859,16 +899,36 @@ func (l layout) PixelExtents() (inkRect Rectangle, logicalRect Rectangle) {
 	var _inkRect Rectangle     // out
 	var _logicalRect Rectangle // out
 
-	_inkRect = (Rectangle)(unsafe.Pointer(_arg1))
-	_logicalRect = (Rectangle)(unsafe.Pointer(_arg2))
+	{
+		var refTmpIn *C.PangoRectangle
+		var refTmpOut *Rectangle
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_inkRect = *refTmpOut
+	}
+	{
+		var refTmpIn *C.PangoRectangle
+		var refTmpOut *Rectangle
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_logicalRect = *refTmpOut
+	}
 
 	return _inkRect, _logicalRect
 }
 
 func (l layout) PixelSize() (width int, height int) {
 	var _arg0 *C.PangoLayout // out
-	var _arg1 *C.int         // in
-	var _arg2 *C.int         // in
+	var _arg1 C.int          // in
+	var _arg2 C.int          // in
 
 	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 
@@ -917,8 +977,8 @@ func (l layout) SingleParagraphMode() bool {
 
 func (l layout) Size() (width int, height int) {
 	var _arg0 *C.PangoLayout // out
-	var _arg1 *C.int         // in
-	var _arg2 *C.int         // in
+	var _arg1 C.int          // in
+	var _arg2 C.int          // in
 
 	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 
@@ -948,7 +1008,7 @@ func (l layout) Spacing() int {
 	return _gint
 }
 
-func (l layout) Tabs() TabArray {
+func (l layout) Tabs() *TabArray {
 	var _arg0 *C.PangoLayout   // out
 	var _cret *C.PangoTabArray // in
 
@@ -956,10 +1016,10 @@ func (l layout) Tabs() TabArray {
 
 	_cret = C.pango_layout_get_tabs(_arg0)
 
-	var _tabArray TabArray // out
+	var _tabArray *TabArray // out
 
-	_tabArray = (TabArray)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_tabArray, func(v TabArray) {
+	_tabArray = (*TabArray)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_tabArray, func(v *TabArray) {
 		C.pango_tab_array_free((*C.PangoTabArray)(unsafe.Pointer(v)))
 	})
 
@@ -1030,8 +1090,8 @@ func (l layout) IndexToLineXLayout(index_ int, trailing bool) (line int, xPos in
 	var _arg0 *C.PangoLayout // out
 	var _arg1 C.int          // out
 	var _arg2 C.gboolean     // out
-	var _arg3 *C.int         // in
-	var _arg4 *C.int         // in
+	var _arg3 C.int          // in
+	var _arg4 C.int          // in
 
 	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 	_arg1 = C.int(index_)
@@ -1051,9 +1111,9 @@ func (l layout) IndexToLineXLayout(index_ int, trailing bool) (line int, xPos in
 }
 
 func (l layout) IndexToPosLayout(index_ int) Rectangle {
-	var _arg0 *C.PangoLayout    // out
-	var _arg1 C.int             // out
-	var _arg2 *C.PangoRectangle // in
+	var _arg0 *C.PangoLayout   // out
+	var _arg1 C.int            // out
+	var _arg2 C.PangoRectangle // in
 
 	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 	_arg1 = C.int(index_)
@@ -1062,7 +1122,17 @@ func (l layout) IndexToPosLayout(index_ int) Rectangle {
 
 	var _pos Rectangle // out
 
-	_pos = (Rectangle)(unsafe.Pointer(_arg2))
+	{
+		var refTmpIn *C.PangoRectangle
+		var refTmpOut *Rectangle
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_pos = *refTmpOut
+	}
 
 	return _pos
 }
@@ -1107,8 +1177,8 @@ func (l layout) MoveCursorVisuallyLayout(strong bool, oldIndex int, oldTrailing 
 	var _arg2 C.int          // out
 	var _arg3 C.int          // out
 	var _arg4 C.int          // out
-	var _arg5 *C.int         // in
-	var _arg6 *C.int         // in
+	var _arg5 C.int          // in
+	var _arg6 C.int          // in
 
 	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 	if strong {
@@ -1139,7 +1209,7 @@ func (l layout) SetAlignmentLayout(alignment Alignment) {
 	C.pango_layout_set_alignment(_arg0, _arg1)
 }
 
-func (l layout) SetAttributesLayout(attrs AttrList) {
+func (l layout) SetAttributesLayout(attrs *AttrList) {
 	var _arg0 *C.PangoLayout   // out
 	var _arg1 *C.PangoAttrList // out
 
@@ -1171,7 +1241,7 @@ func (l layout) SetEllipsizeLayout(ellipsize EllipsizeMode) {
 	C.pango_layout_set_ellipsize(_arg0, _arg1)
 }
 
-func (l layout) SetFontDescriptionLayout(desc FontDescription) {
+func (l layout) SetFontDescriptionLayout(desc *FontDescription) {
 	var _arg0 *C.PangoLayout          // out
 	var _arg1 *C.PangoFontDescription // out
 
@@ -1241,7 +1311,7 @@ func (l layout) SetMarkupWithAccelLayout(markup string, length int, accelMarker 
 	var _arg1 *C.char        // out
 	var _arg2 C.int          // out
 	var _arg3 C.gunichar     // out
-	var _arg4 *C.gunichar    // in
+	var _arg4 C.gunichar     // in
 
 	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 	_arg1 = (*C.char)(C.CString(markup))
@@ -1280,7 +1350,7 @@ func (l layout) SetSpacingLayout(spacing int) {
 	C.pango_layout_set_spacing(_arg0, _arg1)
 }
 
-func (l layout) SetTabsLayout(tabs TabArray) {
+func (l layout) SetTabsLayout(tabs *TabArray) {
 	var _arg0 *C.PangoLayout   // out
 	var _arg1 *C.PangoTabArray // out
 
@@ -1327,8 +1397,8 @@ func (l layout) XYToIndexLayout(x int, y int) (index_ int, trailing int, ok bool
 	var _arg0 *C.PangoLayout // out
 	var _arg1 C.int          // out
 	var _arg2 C.int          // out
-	var _arg3 *C.int         // in
-	var _arg4 *C.int         // in
+	var _arg3 C.int          // in
+	var _arg4 C.int          // in
 	var _cret C.gboolean     // in
 
 	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
@@ -1395,7 +1465,7 @@ func (i *LayoutIter) AtLastLine() bool {
 }
 
 // Copy copies a `PangoLayoutIter`.
-func (i *LayoutIter) Copy() LayoutIter {
+func (i *LayoutIter) Copy() *LayoutIter {
 	var _arg0 *C.PangoLayoutIter // out
 	var _cret *C.PangoLayoutIter // in
 
@@ -1403,10 +1473,10 @@ func (i *LayoutIter) Copy() LayoutIter {
 
 	_cret = C.pango_layout_iter_copy(_arg0)
 
-	var _layoutIter LayoutIter // out
+	var _layoutIter *LayoutIter // out
 
-	_layoutIter = (LayoutIter)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_layoutIter, func(v LayoutIter) {
+	_layoutIter = (*LayoutIter)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_layoutIter, func(v *LayoutIter) {
 		C.pango_layout_iter_free((*C.PangoLayoutIter)(unsafe.Pointer(v)))
 	})
 
@@ -1445,7 +1515,7 @@ func (i *LayoutIter) Baseline() int {
 // level of clusters.
 func (i *LayoutIter) CharExtents() Rectangle {
 	var _arg0 *C.PangoLayoutIter // out
-	var _arg1 *C.PangoRectangle  // in
+	var _arg1 C.PangoRectangle   // in
 
 	_arg0 = (*C.PangoLayoutIter)(unsafe.Pointer(i))
 
@@ -1453,7 +1523,17 @@ func (i *LayoutIter) CharExtents() Rectangle {
 
 	var _logicalRect Rectangle // out
 
-	_logicalRect = (Rectangle)(unsafe.Pointer(_arg1))
+	{
+		var refTmpIn *C.PangoRectangle
+		var refTmpOut *Rectangle
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_logicalRect = *refTmpOut
+	}
 
 	return _logicalRect
 }
@@ -1462,8 +1542,8 @@ func (i *LayoutIter) CharExtents() Rectangle {
 // (origin is the top left of the entire layout).
 func (i *LayoutIter) ClusterExtents() (inkRect Rectangle, logicalRect Rectangle) {
 	var _arg0 *C.PangoLayoutIter // out
-	var _arg1 *C.PangoRectangle  // in
-	var _arg2 *C.PangoRectangle  // in
+	var _arg1 C.PangoRectangle   // in
+	var _arg2 C.PangoRectangle   // in
 
 	_arg0 = (*C.PangoLayoutIter)(unsafe.Pointer(i))
 
@@ -1472,8 +1552,28 @@ func (i *LayoutIter) ClusterExtents() (inkRect Rectangle, logicalRect Rectangle)
 	var _inkRect Rectangle     // out
 	var _logicalRect Rectangle // out
 
-	_inkRect = (Rectangle)(unsafe.Pointer(_arg1))
-	_logicalRect = (Rectangle)(unsafe.Pointer(_arg2))
+	{
+		var refTmpIn *C.PangoRectangle
+		var refTmpOut *Rectangle
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_inkRect = *refTmpOut
+	}
+	{
+		var refTmpIn *C.PangoRectangle
+		var refTmpOut *Rectangle
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_logicalRect = *refTmpOut
+	}
 
 	return _inkRect, _logicalRect
 }
@@ -1517,8 +1617,8 @@ func (i *LayoutIter) Layout() Layout {
 // @ink_rect or @logical_rect can be nil if you aren't interested in them.
 func (i *LayoutIter) LayoutExtents() (inkRect Rectangle, logicalRect Rectangle) {
 	var _arg0 *C.PangoLayoutIter // out
-	var _arg1 *C.PangoRectangle  // in
-	var _arg2 *C.PangoRectangle  // in
+	var _arg1 C.PangoRectangle   // in
+	var _arg2 C.PangoRectangle   // in
 
 	_arg0 = (*C.PangoLayoutIter)(unsafe.Pointer(i))
 
@@ -1527,8 +1627,28 @@ func (i *LayoutIter) LayoutExtents() (inkRect Rectangle, logicalRect Rectangle) 
 	var _inkRect Rectangle     // out
 	var _logicalRect Rectangle // out
 
-	_inkRect = (Rectangle)(unsafe.Pointer(_arg1))
-	_logicalRect = (Rectangle)(unsafe.Pointer(_arg2))
+	{
+		var refTmpIn *C.PangoRectangle
+		var refTmpOut *Rectangle
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_inkRect = *refTmpOut
+	}
+	{
+		var refTmpIn *C.PangoRectangle
+		var refTmpOut *Rectangle
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_logicalRect = *refTmpOut
+	}
 
 	return _inkRect, _logicalRect
 }
@@ -1541,8 +1661,8 @@ func (i *LayoutIter) LayoutExtents() (inkRect Rectangle, logicalRect Rectangle) 
 // [method@Pango.LayoutLine.get_extents].
 func (i *LayoutIter) LineExtents() (inkRect Rectangle, logicalRect Rectangle) {
 	var _arg0 *C.PangoLayoutIter // out
-	var _arg1 *C.PangoRectangle  // in
-	var _arg2 *C.PangoRectangle  // in
+	var _arg1 C.PangoRectangle   // in
+	var _arg2 C.PangoRectangle   // in
 
 	_arg0 = (*C.PangoLayoutIter)(unsafe.Pointer(i))
 
@@ -1551,8 +1671,28 @@ func (i *LayoutIter) LineExtents() (inkRect Rectangle, logicalRect Rectangle) {
 	var _inkRect Rectangle     // out
 	var _logicalRect Rectangle // out
 
-	_inkRect = (Rectangle)(unsafe.Pointer(_arg1))
-	_logicalRect = (Rectangle)(unsafe.Pointer(_arg2))
+	{
+		var refTmpIn *C.PangoRectangle
+		var refTmpOut *Rectangle
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_inkRect = *refTmpOut
+	}
+	{
+		var refTmpIn *C.PangoRectangle
+		var refTmpOut *Rectangle
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_logicalRect = *refTmpOut
+	}
 
 	return _inkRect, _logicalRect
 }
@@ -1568,8 +1708,8 @@ func (i *LayoutIter) LineExtents() (inkRect Rectangle, logicalRect Rectangle) {
 // gaps between the ranges returned by this function.
 func (i *LayoutIter) LineYrange() (y0 int, y1 int) {
 	var _arg0 *C.PangoLayoutIter // out
-	var _arg1 *C.int             // in
-	var _arg2 *C.int             // in
+	var _arg1 C.int              // in
+	var _arg2 C.int              // in
 
 	_arg0 = (*C.PangoLayoutIter)(unsafe.Pointer(i))
 
@@ -1588,8 +1728,8 @@ func (i *LayoutIter) LineYrange() (y0 int, y1 int) {
 // is the top left of the entire layout).
 func (i *LayoutIter) RunExtents() (inkRect Rectangle, logicalRect Rectangle) {
 	var _arg0 *C.PangoLayoutIter // out
-	var _arg1 *C.PangoRectangle  // in
-	var _arg2 *C.PangoRectangle  // in
+	var _arg1 C.PangoRectangle   // in
+	var _arg2 C.PangoRectangle   // in
 
 	_arg0 = (*C.PangoLayoutIter)(unsafe.Pointer(i))
 
@@ -1598,8 +1738,28 @@ func (i *LayoutIter) RunExtents() (inkRect Rectangle, logicalRect Rectangle) {
 	var _inkRect Rectangle     // out
 	var _logicalRect Rectangle // out
 
-	_inkRect = (Rectangle)(unsafe.Pointer(_arg1))
-	_logicalRect = (Rectangle)(unsafe.Pointer(_arg2))
+	{
+		var refTmpIn *C.PangoRectangle
+		var refTmpOut *Rectangle
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_inkRect = *refTmpOut
+	}
+	{
+		var refTmpIn *C.PangoRectangle
+		var refTmpOut *Rectangle
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_logicalRect = *refTmpOut
+	}
 
 	return _inkRect, _logicalRect
 }

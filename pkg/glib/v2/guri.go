@@ -469,12 +469,12 @@ func (u *URI) Userinfo() string {
 // URI][relative-absolute-uris], resolves it relative to @base_uri. If the
 // result is not a valid absolute URI, it will be discarded, and an error
 // returned.
-func (b *URI) ParseRelative(uriRef string, flags URIFlags) (URI, error) {
+func (b *URI) ParseRelative(uriRef string, flags URIFlags) (*URI, error) {
 	var _arg0 *C.GUri     // out
 	var _arg1 *C.gchar    // out
 	var _arg2 C.GUriFlags // out
 	var _cret *C.GUri     // in
-	var _cerr **C.GError  // in
+	var _cerr *C.GError   // in
 
 	_arg0 = (*C.GUri)(unsafe.Pointer(b))
 	_arg1 = (*C.gchar)(C.CString(uriRef))
@@ -483,23 +483,14 @@ func (b *URI) ParseRelative(uriRef string, flags URIFlags) (URI, error) {
 
 	_cret = C.g_uri_parse_relative(_arg0, _arg1, _arg2, &_cerr)
 
-	var _uri URI     // out
+	var _uri *URI    // out
 	var _goerr error // out
 
-	_uri = (URI)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_uri, func(v URI) {
+	_uri = (*URI)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_uri, func(v *URI) {
 		C.free(unsafe.Pointer(v))
 	})
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _uri, _goerr
 }
@@ -635,9 +626,9 @@ func (i *URIParamsIter) Init(params string, length int, separators string, flags
 // allow repeated attributes.
 func (i *URIParamsIter) Next() (attribute string, value string, goerr error) {
 	var _arg0 *C.GUriParamsIter // out
-	var _arg1 **C.gchar         // in
-	var _arg2 **C.gchar         // in
-	var _cerr **C.GError        // in
+	var _arg1 *C.gchar          // in
+	var _arg2 *C.gchar          // in
+	var _cerr *C.GError         // in
 
 	_arg0 = (*C.GUriParamsIter)(unsafe.Pointer(i))
 
@@ -647,38 +638,11 @@ func (i *URIParamsIter) Next() (attribute string, value string, goerr error) {
 	var _value string     // out
 	var _goerr error      // out
 
-	{
-		var refTmpIn *C.gchar
-		var refTmpOut string
-
-		refTmpIn = *_arg1
-
-		refTmpOut = C.GoString(refTmpIn)
-		defer C.free(unsafe.Pointer(refTmpIn))
-
-		_attribute = refTmpOut
-	}
-	{
-		var refTmpIn *C.gchar
-		var refTmpOut string
-
-		refTmpIn = *_arg2
-
-		refTmpOut = C.GoString(refTmpIn)
-		defer C.free(unsafe.Pointer(refTmpIn))
-
-		_value = refTmpOut
-	}
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_attribute = C.GoString(_arg1)
+	defer C.free(unsafe.Pointer(_arg1))
+	_value = C.GoString(_arg2)
+	defer C.free(unsafe.Pointer(_arg2))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _attribute, _value, _goerr
 }

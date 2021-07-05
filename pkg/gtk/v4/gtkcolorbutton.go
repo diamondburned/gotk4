@@ -98,7 +98,7 @@ func NewColorButton() ColorButton {
 }
 
 // NewColorButtonWithRGBA creates a new color button showing the given color.
-func NewColorButtonWithRGBA(rgba gdk.RGBA) ColorButton {
+func NewColorButtonWithRGBA(rgba *gdk.RGBA) ColorButton {
 	var _arg1 *C.GdkRGBA   // out
 	var _cret *C.GtkWidget // in
 

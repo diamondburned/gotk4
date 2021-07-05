@@ -248,7 +248,7 @@ type Application interface {
 	// to be parsed, but it does not cause you to be "opted in" to the new
 	// functionality whereby unrecognised options are rejected even if
 	// G_APPLICATION_HANDLES_COMMAND_LINE was given.
-	AddOptionGroupApplication(group glib.OptionGroup)
+	AddOptionGroupApplication(group *glib.OptionGroup)
 	// BindBusyPropertyApplication marks @application as busy (see
 	// g_application_mark_busy()) while @property on @object is true.
 	//
@@ -710,7 +710,7 @@ func (a application) AddMainOptionEntriesApplication(entries []glib.OptionEntry)
 	C.g_application_add_main_option_entries(_arg0, _arg1)
 }
 
-func (a application) AddOptionGroupApplication(group glib.OptionGroup) {
+func (a application) AddOptionGroupApplication(group *glib.OptionGroup) {
 	var _arg0 *C.GApplication // out
 	var _arg1 *C.GOptionGroup // out
 
@@ -923,7 +923,7 @@ func (a application) QuitApplication() {
 func (a application) RegisterApplication(cancellable Cancellable) error {
 	var _arg0 *C.GApplication // out
 	var _arg1 *C.GCancellable // out
-	var _cerr **C.GError      // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
@@ -932,16 +932,7 @@ func (a application) RegisterApplication(cancellable Cancellable) error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }

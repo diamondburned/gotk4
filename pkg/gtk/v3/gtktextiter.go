@@ -105,7 +105,7 @@ func (t *TextIter) Native() unsafe.Pointer {
 // Assign assigns the value of @other to @iter. This function is not useful in
 // applications, because iterators can be assigned with `GtkTextIter i = j;`.
 // The function is used by language bindings.
-func (i *TextIter) Assign(other TextIter) {
+func (i *TextIter) Assign(other *TextIter) {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 *C.GtkTextIter // out
 
@@ -203,7 +203,7 @@ func (i *TextIter) BackwardCursorPositions(count int) bool {
 
 // BackwardFindChar: same as gtk_text_iter_forward_find_char(), but goes
 // backward from @iter.
-func (i *TextIter) BackwardFindChar(pred TextCharPredicate, limit TextIter) bool {
+func (i *TextIter) BackwardFindChar(pred TextCharPredicate, limit *TextIter) bool {
 	var _arg0 *C.GtkTextIter         // out
 	var _arg1 C.GtkTextCharPredicate // out
 	var _arg2 C.gpointer
@@ -279,12 +279,12 @@ func (i *TextIter) BackwardLines(count int) bool {
 //
 // @match_end will never be set to a TextIter located after @iter, even if there
 // is a possible @match_start before or at @iter.
-func (i *TextIter) BackwardSearch(str string, flags TextSearchFlags, limit TextIter) (matchStart TextIter, matchEnd TextIter, ok bool) {
+func (i *TextIter) BackwardSearch(str string, flags TextSearchFlags, limit *TextIter) (matchStart TextIter, matchEnd TextIter, ok bool) {
 	var _arg0 *C.GtkTextIter       // out
 	var _arg1 *C.gchar             // out
 	var _arg2 C.GtkTextSearchFlags // out
-	var _arg3 *C.GtkTextIter       // in
-	var _arg4 *C.GtkTextIter       // in
+	var _arg3 C.GtkTextIter        // in
+	var _arg4 C.GtkTextIter        // in
 	var _arg5 *C.GtkTextIter       // out
 	var _cret C.gboolean           // in
 
@@ -300,8 +300,28 @@ func (i *TextIter) BackwardSearch(str string, flags TextSearchFlags, limit TextI
 	var _matchEnd TextIter   // out
 	var _ok bool             // out
 
-	_matchStart = (TextIter)(unsafe.Pointer(_arg3))
-	_matchEnd = (TextIter)(unsafe.Pointer(_arg4))
+	{
+		var refTmpIn *C.GtkTextIter
+		var refTmpOut *TextIter
+
+		in0 := &_arg3
+		refTmpIn = in0
+
+		refTmpOut = (*TextIter)(unsafe.Pointer(refTmpIn))
+
+		_matchStart = *refTmpOut
+	}
+	{
+		var refTmpIn *C.GtkTextIter
+		var refTmpOut *TextIter
+
+		in0 := &_arg4
+		refTmpIn = in0
+
+		refTmpOut = (*TextIter)(unsafe.Pointer(refTmpIn))
+
+		_matchEnd = *refTmpOut
+	}
 	if _cret != 0 {
 		_ok = true
 	}
@@ -611,7 +631,7 @@ func (i *TextIter) CanInsert(defaultEditability bool) bool {
 // @rhs, positive if @lhs is greater than @rhs, and 0 if they’re equal. Ordering
 // is in character offset order, i.e. the first character in the buffer is less
 // than the second character in the buffer.
-func (l *TextIter) Compare(rhs TextIter) int {
+func (l *TextIter) Compare(rhs *TextIter) int {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 *C.GtkTextIter // out
 	var _cret C.gint         // in
@@ -631,7 +651,7 @@ func (l *TextIter) Compare(rhs TextIter) int {
 // Copy creates a dynamically-allocated copy of an iterator. This function is
 // not useful in applications, because iterators can be copied with a simple
 // assignment (`GtkTextIter i = j;`). The function is used by language bindings.
-func (i *TextIter) Copy() TextIter {
+func (i *TextIter) Copy() *TextIter {
 	var _arg0 *C.GtkTextIter // out
 	var _cret *C.GtkTextIter // in
 
@@ -639,10 +659,10 @@ func (i *TextIter) Copy() TextIter {
 
 	_cret = C.gtk_text_iter_copy(_arg0)
 
-	var _textIter TextIter // out
+	var _textIter *TextIter // out
 
-	_textIter = (TextIter)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_textIter, func(v TextIter) {
+	_textIter = (*TextIter)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_textIter, func(v *TextIter) {
 		C.gtk_text_iter_free((*C.GtkTextIter)(unsafe.Pointer(v)))
 	})
 
@@ -776,7 +796,7 @@ func (i *TextIter) EndsWord() bool {
 // mechanism. This function is very fast; you can expect it to perform better
 // than e.g. getting the character offset for each iterator and comparing the
 // offsets yourself. Also, it’s a bit faster than gtk_text_iter_compare().
-func (l *TextIter) Equal(rhs TextIter) bool {
+func (l *TextIter) Equal(rhs *TextIter) bool {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 *C.GtkTextIter // out
 	var _cret C.gboolean     // in
@@ -894,7 +914,7 @@ func (i *TextIter) ForwardCursorPositions(count int) bool {
 // ForwardFindChar advances @iter, calling @pred on each character. If @pred
 // returns true, returns true and stops scanning. If @pred never returns true,
 // @iter is set to @limit if @limit is non-nil, otherwise to the end iterator.
-func (i *TextIter) ForwardFindChar(pred TextCharPredicate, limit TextIter) bool {
+func (i *TextIter) ForwardFindChar(pred TextCharPredicate, limit *TextIter) bool {
 	var _arg0 *C.GtkTextIter         // out
 	var _arg1 C.GtkTextCharPredicate // out
 	var _arg2 C.gpointer
@@ -971,12 +991,12 @@ func (i *TextIter) ForwardLines(count int) bool {
 //
 // @match_start will never be set to a TextIter located before @iter, even if
 // there is a possible @match_end after or at @iter.
-func (i *TextIter) ForwardSearch(str string, flags TextSearchFlags, limit TextIter) (matchStart TextIter, matchEnd TextIter, ok bool) {
+func (i *TextIter) ForwardSearch(str string, flags TextSearchFlags, limit *TextIter) (matchStart TextIter, matchEnd TextIter, ok bool) {
 	var _arg0 *C.GtkTextIter       // out
 	var _arg1 *C.gchar             // out
 	var _arg2 C.GtkTextSearchFlags // out
-	var _arg3 *C.GtkTextIter       // in
-	var _arg4 *C.GtkTextIter       // in
+	var _arg3 C.GtkTextIter        // in
+	var _arg4 C.GtkTextIter        // in
 	var _arg5 *C.GtkTextIter       // out
 	var _cret C.gboolean           // in
 
@@ -992,8 +1012,28 @@ func (i *TextIter) ForwardSearch(str string, flags TextSearchFlags, limit TextIt
 	var _matchEnd TextIter   // out
 	var _ok bool             // out
 
-	_matchStart = (TextIter)(unsafe.Pointer(_arg3))
-	_matchEnd = (TextIter)(unsafe.Pointer(_arg4))
+	{
+		var refTmpIn *C.GtkTextIter
+		var refTmpOut *TextIter
+
+		in0 := &_arg3
+		refTmpIn = in0
+
+		refTmpOut = (*TextIter)(unsafe.Pointer(refTmpIn))
+
+		_matchStart = *refTmpOut
+	}
+	{
+		var refTmpIn *C.GtkTextIter
+		var refTmpOut *TextIter
+
+		in0 := &_arg4
+		refTmpIn = in0
+
+		refTmpOut = (*TextIter)(unsafe.Pointer(refTmpIn))
+
+		_matchEnd = *refTmpOut
+	}
 	if _cret != 0 {
 		_ok = true
 	}
@@ -1294,9 +1334,9 @@ func (i *TextIter) Free() {
 // any tags present at @iter. If any tags affected @values, the function returns
 // true.
 func (i *TextIter) Attributes() (TextAttributes, bool) {
-	var _arg0 *C.GtkTextIter       // out
-	var _arg1 *C.GtkTextAttributes // in
-	var _cret C.gboolean           // in
+	var _arg0 *C.GtkTextIter      // out
+	var _arg1 C.GtkTextAttributes // in
+	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GtkTextIter)(unsafe.Pointer(i))
 
@@ -1305,8 +1345,18 @@ func (i *TextIter) Attributes() (TextAttributes, bool) {
 	var _values TextAttributes // out
 	var _ok bool               // out
 
-	_values = (TextAttributes)(unsafe.Pointer(_arg1))
-	C.gtk_text_attributes_ref(_arg1)
+	{
+		var refTmpIn *C.GtkTextAttributes
+		var refTmpOut *TextAttributes
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*TextAttributes)(unsafe.Pointer(refTmpIn))
+		C.gtk_text_attributes_ref(refTmpIn)
+
+		_values = *refTmpOut
+	}
 	if _cret != 0 {
 		_ok = true
 	}
@@ -1406,7 +1456,7 @@ func (i *TextIter) ChildAnchor() TextChildAnchor {
 // returns the language in effect at @iter. If no tags affecting language apply
 // to @iter, the return value is identical to that of
 // gtk_get_default_language().
-func (i *TextIter) Language() pango.Language {
+func (i *TextIter) Language() *pango.Language {
 	var _arg0 *C.GtkTextIter   // out
 	var _cret *C.PangoLanguage // in
 
@@ -1414,10 +1464,10 @@ func (i *TextIter) Language() pango.Language {
 
 	_cret = C.gtk_text_iter_get_language(_arg0)
 
-	var _language pango.Language // out
+	var _language *pango.Language // out
 
-	_language = (pango.Language)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_language, func(v pango.Language) {
+	_language = (*pango.Language)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_language, func(v *pango.Language) {
 		C.free(unsafe.Pointer(v))
 	})
 
@@ -1520,7 +1570,7 @@ func (i *TextIter) Pixbuf() gdkpixbuf.Pixbuf {
 // returned array will correspond to byte offsets in the text buffer. Note that
 // 0xFFFC can occur in normal text as well, so it is not a reliable indicator
 // that a pixbuf or widget is in the buffer.
-func (s *TextIter) Slice(end TextIter) string {
+func (s *TextIter) Slice(end *TextIter) string {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 *C.GtkTextIter // out
 	var _cret *C.gchar       // in
@@ -1542,7 +1592,7 @@ func (s *TextIter) Slice(end TextIter) string {
 // such as images, the character and byte offsets in the returned string will
 // not correspond to character and byte offsets in the buffer. If you want
 // offsets to correspond, see gtk_text_iter_get_slice().
-func (s *TextIter) Text(end TextIter) string {
+func (s *TextIter) Text(end *TextIter) string {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 *C.GtkTextIter // out
 	var _cret *C.gchar       // in
@@ -1599,7 +1649,7 @@ func (i *TextIter) VisibleLineOffset() int {
 // VisibleSlice: like gtk_text_iter_get_slice(), but invisible text is not
 // included. Invisible text is usually invisible because a TextTag with the
 // “invisible” attribute turned on has been applied to it.
-func (s *TextIter) VisibleSlice(end TextIter) string {
+func (s *TextIter) VisibleSlice(end *TextIter) string {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 *C.GtkTextIter // out
 	var _cret *C.gchar       // in
@@ -1620,7 +1670,7 @@ func (s *TextIter) VisibleSlice(end TextIter) string {
 // VisibleText: like gtk_text_iter_get_text(), but invisible text is not
 // included. Invisible text is usually invisible because a TextTag with the
 // “invisible” attribute turned on has been applied to it.
-func (s *TextIter) VisibleText(end TextIter) string {
+func (s *TextIter) VisibleText(end *TextIter) string {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 *C.GtkTextIter // out
 	var _cret *C.gchar       // in
@@ -1662,7 +1712,7 @@ func (i *TextIter) HasTag(tag TextTag) bool {
 
 // InRange checks whether @iter falls in the range [@start, @end). @start and
 // @end must be in ascending order.
-func (i *TextIter) InRange(start TextIter, end TextIter) bool {
+func (i *TextIter) InRange(start *TextIter, end *TextIter) bool {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 *C.GtkTextIter // out
 	var _arg2 *C.GtkTextIter // out
@@ -1793,7 +1843,7 @@ func (i *TextIter) IsStart() bool {
 // behalf, so there’s no real reason to call it yourself in those cases. There
 // are some exceptions, such as gtk_text_iter_in_range(), that expect a
 // pre-sorted range.
-func (f *TextIter) Order(second TextIter) {
+func (f *TextIter) Order(second *TextIter) {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 *C.GtkTextIter // out
 

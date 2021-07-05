@@ -51,7 +51,7 @@ func marshalTreeViewColumnSizing(p uintptr) (interface{}, error) {
 // “text” attribute of “cell” by converting it to its written equivalent.
 //
 // See also: gtk_tree_view_column_set_cell_data_func()
-type TreeCellDataFunc func(treeColumn TreeViewColumn, cell CellRenderer, treeModel TreeModel, iter TreeIter)
+type TreeCellDataFunc func(treeColumn TreeViewColumn, cell CellRenderer, treeModel TreeModel, iter *TreeIter)
 
 //export gotk4_TreeCellDataFunc
 func gotk4_TreeCellDataFunc(arg0 *C.GtkTreeViewColumn, arg1 *C.GtkCellRenderer, arg2 *C.GtkTreeModel, arg3 *C.GtkTreeIter, arg4 C.gpointer) {
@@ -63,12 +63,12 @@ func gotk4_TreeCellDataFunc(arg0 *C.GtkTreeViewColumn, arg1 *C.GtkCellRenderer, 
 	var treeColumn TreeViewColumn // out
 	var cell CellRenderer         // out
 	var treeModel TreeModel       // out
-	var iter TreeIter             // out
+	var iter *TreeIter            // out
 
 	treeColumn = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0))).(TreeViewColumn)
 	cell = gextras.CastObject(externglib.Take(unsafe.Pointer(arg1))).(CellRenderer)
 	treeModel = gextras.CastObject(externglib.Take(unsafe.Pointer(arg2))).(TreeModel)
-	iter = (TreeIter)(unsafe.Pointer(arg3))
+	iter = (*TreeIter)(unsafe.Pointer(arg3))
 
 	fn := v.(TreeCellDataFunc)
 	fn(treeColumn, cell, treeModel, iter)
@@ -116,7 +116,7 @@ type TreeViewColumn interface {
 	// @tree_column, it will get a value from the set column on the @iter, and
 	// use that value to set the attribute on the cell renderer. This is used
 	// primarily by the TreeView.
-	CellSetCellDataTreeViewColumn(treeModel TreeModel, iter TreeIter, isExpander bool, isExpanded bool)
+	CellSetCellDataTreeViewColumn(treeModel TreeModel, iter *TreeIter, isExpander bool, isExpanded bool)
 	// ClearTreeViewColumn unsets all the mappings on all renderers on the
 	// @tree_column.
 	ClearTreeViewColumn()
@@ -346,8 +346,8 @@ func (t treeViewColumn) AddAttributeTreeViewColumn(cellRenderer CellRenderer, at
 func (t treeViewColumn) CellGetPositionTreeViewColumn(cellRenderer CellRenderer) (xOffset int, width int, ok bool) {
 	var _arg0 *C.GtkTreeViewColumn // out
 	var _arg1 *C.GtkCellRenderer   // out
-	var _arg2 *C.int               // in
-	var _arg3 *C.int               // in
+	var _arg2 C.int                // in
+	var _arg3 C.int                // in
 	var _cret C.gboolean           // in
 
 	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(t.Native()))
@@ -370,10 +370,10 @@ func (t treeViewColumn) CellGetPositionTreeViewColumn(cellRenderer CellRenderer)
 
 func (t treeViewColumn) CellGetSizeTreeViewColumn() (xOffset int, yOffset int, width int, height int) {
 	var _arg0 *C.GtkTreeViewColumn // out
-	var _arg1 *C.int               // in
-	var _arg2 *C.int               // in
-	var _arg3 *C.int               // in
-	var _arg4 *C.int               // in
+	var _arg1 C.int                // in
+	var _arg2 C.int                // in
+	var _arg3 C.int                // in
+	var _arg4 C.int                // in
 
 	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(t.Native()))
 
@@ -409,7 +409,7 @@ func (t treeViewColumn) CellIsVisibleTreeViewColumn() bool {
 	return _ok
 }
 
-func (t treeViewColumn) CellSetCellDataTreeViewColumn(treeModel TreeModel, iter TreeIter, isExpander bool, isExpanded bool) {
+func (t treeViewColumn) CellSetCellDataTreeViewColumn(treeModel TreeModel, iter *TreeIter, isExpander bool, isExpanded bool) {
 	var _arg0 *C.GtkTreeViewColumn // out
 	var _arg1 *C.GtkTreeModel      // out
 	var _arg2 *C.GtkTreeIter       // out

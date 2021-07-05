@@ -155,7 +155,7 @@ func (s listStore) AppendListStore(item gextras.Objector) {
 func (s listStore) FindListStore(item gextras.Objector) (uint, bool) {
 	var _arg0 *C.GListStore // out
 	var _arg1 C.gpointer    // out
-	var _arg2 *C.guint      // in
+	var _arg2 C.guint       // in
 	var _cret C.gboolean    // in
 
 	_arg0 = (*C.GListStore)(unsafe.Pointer(s.Native()))

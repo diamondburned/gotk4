@@ -400,8 +400,8 @@ func (e editable) Position() int {
 
 func (e editable) SelectionBounds() (startPos int, endPos int, ok bool) {
 	var _arg0 *C.GtkEditable // out
-	var _arg1 *C.int         // in
-	var _arg2 *C.int         // in
+	var _arg1 C.int          // in
+	var _arg2 C.int          // in
 	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))

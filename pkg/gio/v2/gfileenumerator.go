@@ -199,7 +199,7 @@ func marshalFileEnumerator(p uintptr) (interface{}, error) {
 func (e fileEnumerator) CloseFileEnumerator(cancellable Cancellable) error {
 	var _arg0 *C.GFileEnumerator // out
 	var _arg1 *C.GCancellable    // out
-	var _cerr **C.GError         // in
+	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(e.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
@@ -208,16 +208,7 @@ func (e fileEnumerator) CloseFileEnumerator(cancellable Cancellable) error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
@@ -241,7 +232,7 @@ func (e fileEnumerator) CloseAsyncFileEnumerator(ioPriority int, cancellable Can
 func (e fileEnumerator) CloseFinishFileEnumerator(result AsyncResult) error {
 	var _arg0 *C.GFileEnumerator // out
 	var _arg1 *C.GAsyncResult    // out
-	var _cerr **C.GError         // in
+	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(e.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
@@ -250,16 +241,7 @@ func (e fileEnumerator) CloseFinishFileEnumerator(result AsyncResult) error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
@@ -332,10 +314,10 @@ func (e fileEnumerator) IsClosedFileEnumerator() bool {
 
 func (d fileEnumerator) IterateFileEnumerator(cancellable Cancellable) (FileInfo, File, error) {
 	var _arg0 *C.GFileEnumerator // out
-	var _arg1 **C.GFileInfo      // in
-	var _arg2 **C.GFile          // in
+	var _arg1 *C.GFileInfo       // in
+	var _arg2 *C.GFile           // in
 	var _arg3 *C.GCancellable    // out
-	var _cerr **C.GError         // in
+	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(d.Native()))
 	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
@@ -346,36 +328,9 @@ func (d fileEnumerator) IterateFileEnumerator(cancellable Cancellable) (FileInfo
 	var _outChild File    // out
 	var _goerr error      // out
 
-	{
-		var refTmpIn *C.GFileInfo
-		var refTmpOut fileInfo
-
-		refTmpIn = *_arg1
-
-		refTmpOut = gextras.CastObject(externglib.Take(unsafe.Pointer(refTmpIn))).(fileInfo)
-
-		_outInfo = refTmpOut
-	}
-	{
-		var refTmpIn *C.GFile
-		var refTmpOut file
-
-		refTmpIn = *_arg2
-
-		refTmpOut = gextras.CastObject(externglib.Take(unsafe.Pointer(refTmpIn))).(file)
-
-		_outChild = refTmpOut
-	}
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_outInfo = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg1))).(FileInfo)
+	_outChild = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg2))).(File)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _outInfo, _outChild, _goerr
 }
@@ -384,7 +339,7 @@ func (e fileEnumerator) NextFileFileEnumerator(cancellable Cancellable) (FileInf
 	var _arg0 *C.GFileEnumerator // out
 	var _arg1 *C.GCancellable    // out
 	var _cret *C.GFileInfo       // in
-	var _cerr **C.GError         // in
+	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(e.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
@@ -395,16 +350,7 @@ func (e fileEnumerator) NextFileFileEnumerator(cancellable Cancellable) (FileInf
 	var _goerr error       // out
 
 	_fileInfo = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(FileInfo)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _fileInfo, _goerr
 }

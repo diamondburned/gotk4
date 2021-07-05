@@ -47,15 +47,15 @@ func marshalIconSet(p uintptr) (interface{}, error) {
 }
 
 // NewIconSet constructs a struct IconSet.
-func NewIconSet() IconSet {
+func NewIconSet() *IconSet {
 	var _cret *C.GtkIconSet // in
 
 	_cret = C.gtk_icon_set_new()
 
-	var _iconSet IconSet // out
+	var _iconSet *IconSet // out
 
-	_iconSet = (IconSet)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_iconSet, func(v IconSet) {
+	_iconSet = (*IconSet)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_iconSet, func(v *IconSet) {
 		C.gtk_icon_set_unref((*C.GtkIconSet)(unsafe.Pointer(v)))
 	})
 
@@ -63,7 +63,7 @@ func NewIconSet() IconSet {
 }
 
 // NewIconSetFromPixbuf constructs a struct IconSet.
-func NewIconSetFromPixbuf(pixbuf gdkpixbuf.Pixbuf) IconSet {
+func NewIconSetFromPixbuf(pixbuf gdkpixbuf.Pixbuf) *IconSet {
 	var _arg1 *C.GdkPixbuf  // out
 	var _cret *C.GtkIconSet // in
 
@@ -71,10 +71,10 @@ func NewIconSetFromPixbuf(pixbuf gdkpixbuf.Pixbuf) IconSet {
 
 	_cret = C.gtk_icon_set_new_from_pixbuf(_arg1)
 
-	var _iconSet IconSet // out
+	var _iconSet *IconSet // out
 
-	_iconSet = (IconSet)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_iconSet, func(v IconSet) {
+	_iconSet = (*IconSet)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_iconSet, func(v *IconSet) {
 		C.gtk_icon_set_unref((*C.GtkIconSet)(unsafe.Pointer(v)))
 	})
 
@@ -111,7 +111,7 @@ func (i *IconSet) Native() unsafe.Pointer {
 // source based on the given pixbuf.
 //
 // Deprecated: since version 3.10.
-func (i *IconSet) AddSource(source IconSource) {
+func (i *IconSet) AddSource(source *IconSource) {
 	var _arg0 *C.GtkIconSet    // out
 	var _arg1 *C.GtkIconSource // out
 
@@ -124,7 +124,7 @@ func (i *IconSet) AddSource(source IconSource) {
 // Copy copies @icon_set by value.
 //
 // Deprecated: since version 3.10.
-func (i *IconSet) Copy() IconSet {
+func (i *IconSet) Copy() *IconSet {
 	var _arg0 *C.GtkIconSet // out
 	var _cret *C.GtkIconSet // in
 
@@ -132,10 +132,10 @@ func (i *IconSet) Copy() IconSet {
 
 	_cret = C.gtk_icon_set_copy(_arg0)
 
-	var _iconSet IconSet // out
+	var _iconSet *IconSet // out
 
-	_iconSet = (IconSet)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_iconSet, func(v IconSet) {
+	_iconSet = (*IconSet)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_iconSet, func(v *IconSet) {
 		C.gtk_icon_set_unref((*C.GtkIconSet)(unsafe.Pointer(v)))
 	})
 
@@ -149,7 +149,7 @@ func (i *IconSet) Copy() IconSet {
 func (i *IconSet) Sizes() []int {
 	var _arg0 *C.GtkIconSet // out
 	var _arg1 *C.GtkIconSize
-	var _arg2 *C.gint // in
+	var _arg2 C.gint // in
 
 	_arg0 = (*C.GtkIconSet)(unsafe.Pointer(i))
 
@@ -168,7 +168,7 @@ func (i *IconSet) Sizes() []int {
 // Ref increments the reference count on @icon_set.
 //
 // Deprecated: since version 3.10.
-func (i *IconSet) Ref() IconSet {
+func (i *IconSet) Ref() *IconSet {
 	var _arg0 *C.GtkIconSet // out
 	var _cret *C.GtkIconSet // in
 
@@ -176,10 +176,10 @@ func (i *IconSet) Ref() IconSet {
 
 	_cret = C.gtk_icon_set_ref(_arg0)
 
-	var _iconSet IconSet // out
+	var _iconSet *IconSet // out
 
-	_iconSet = (IconSet)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_iconSet, func(v IconSet) {
+	_iconSet = (*IconSet)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_iconSet, func(v *IconSet) {
 		C.gtk_icon_set_unref((*C.GtkIconSet)(unsafe.Pointer(v)))
 	})
 
@@ -256,7 +256,7 @@ func (i *IconSet) RenderIconPixbuf(context StyleContext, size int) gdkpixbuf.Pix
 // returned instead.
 //
 // Deprecated: since version 3.10.
-func (i *IconSet) RenderIconSurface(context StyleContext, size int, scale int, forWindow gdk.Window) cairo.Surface {
+func (i *IconSet) RenderIconSurface(context StyleContext, size int, scale int, forWindow gdk.Window) *cairo.Surface {
 	var _arg0 *C.GtkIconSet      // out
 	var _arg1 *C.GtkStyleContext // out
 	var _arg2 C.GtkIconSize      // out
@@ -272,10 +272,10 @@ func (i *IconSet) RenderIconSurface(context StyleContext, size int, scale int, f
 
 	_cret = C.gtk_icon_set_render_icon_surface(_arg0, _arg1, _arg2, _arg3, _arg4)
 
-	var _surface cairo.Surface // out
+	var _surface *cairo.Surface // out
 
-	_surface = (cairo.Surface)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_surface, func(v cairo.Surface) {
+	_surface = (*cairo.Surface)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_surface, func(v *cairo.Surface) {
 		C.free(unsafe.Pointer(v))
 	})
 
@@ -310,15 +310,15 @@ func marshalIconSource(p uintptr) (interface{}, error) {
 }
 
 // NewIconSource constructs a struct IconSource.
-func NewIconSource() IconSource {
+func NewIconSource() *IconSource {
 	var _cret *C.GtkIconSource // in
 
 	_cret = C.gtk_icon_source_new()
 
-	var _iconSource IconSource // out
+	var _iconSource *IconSource // out
 
-	_iconSource = (IconSource)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_iconSource, func(v IconSource) {
+	_iconSource = (*IconSource)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_iconSource, func(v *IconSource) {
 		C.gtk_icon_source_free((*C.GtkIconSource)(unsafe.Pointer(v)))
 	})
 
@@ -333,7 +333,7 @@ func (i *IconSource) Native() unsafe.Pointer {
 // Copy creates a copy of @source; mostly useful for language bindings.
 //
 // Deprecated: since version 3.10.
-func (s *IconSource) Copy() IconSource {
+func (s *IconSource) Copy() *IconSource {
 	var _arg0 *C.GtkIconSource // out
 	var _cret *C.GtkIconSource // in
 
@@ -341,10 +341,10 @@ func (s *IconSource) Copy() IconSource {
 
 	_cret = C.gtk_icon_source_copy(_arg0)
 
-	var _iconSource IconSource // out
+	var _iconSource *IconSource // out
 
-	_iconSource = (IconSource)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_iconSource, func(v IconSource) {
+	_iconSource = (*IconSource)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_iconSource, func(v *IconSource) {
 		C.gtk_icon_source_free((*C.GtkIconSource)(unsafe.Pointer(v)))
 	})
 
@@ -736,7 +736,7 @@ func (s *SelectionData) Native() unsafe.Pointer {
 }
 
 // Copy makes a copy of a SelectionData-struct and its data.
-func (d *SelectionData) Copy() SelectionData {
+func (d *SelectionData) Copy() *SelectionData {
 	var _arg0 *C.GtkSelectionData // out
 	var _cret *C.GtkSelectionData // in
 
@@ -744,10 +744,10 @@ func (d *SelectionData) Copy() SelectionData {
 
 	_cret = C.gtk_selection_data_copy(_arg0)
 
-	var _selectionData SelectionData // out
+	var _selectionData *SelectionData // out
 
-	_selectionData = (SelectionData)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_selectionData, func(v SelectionData) {
+	_selectionData = (*SelectionData)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_selectionData, func(v *SelectionData) {
 		C.gtk_selection_data_free((*C.GtkSelectionData)(unsafe.Pointer(v)))
 	})
 
@@ -1076,15 +1076,15 @@ func marshalWidgetPath(p uintptr) (interface{}, error) {
 }
 
 // NewWidgetPath constructs a struct WidgetPath.
-func NewWidgetPath() WidgetPath {
+func NewWidgetPath() *WidgetPath {
 	var _cret *C.GtkWidgetPath // in
 
 	_cret = C.gtk_widget_path_new()
 
-	var _widgetPath WidgetPath // out
+	var _widgetPath *WidgetPath // out
 
-	_widgetPath = (WidgetPath)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_widgetPath, func(v WidgetPath) {
+	_widgetPath = (*WidgetPath)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_widgetPath, func(v *WidgetPath) {
 		C.gtk_widget_path_unref((*C.GtkWidgetPath)(unsafe.Pointer(v)))
 	})
 
@@ -1143,7 +1143,7 @@ func (p *WidgetPath) AppendType(typ externglib.Type) int {
 // requires a lot more care in widget implementations as widgets need to make
 // sure to call gtk_widget_reset_style() on all involved widgets when the
 // @siblings path changes.
-func (p *WidgetPath) AppendWithSiblings(siblings WidgetPath, siblingIndex uint) int {
+func (p *WidgetPath) AppendWithSiblings(siblings *WidgetPath, siblingIndex uint) int {
 	var _arg0 *C.GtkWidgetPath // out
 	var _arg1 *C.GtkWidgetPath // out
 	var _arg2 C.guint          // out
@@ -1163,7 +1163,7 @@ func (p *WidgetPath) AppendWithSiblings(siblings WidgetPath, siblingIndex uint) 
 }
 
 // Copy returns a copy of @path
-func (p *WidgetPath) Copy() WidgetPath {
+func (p *WidgetPath) Copy() *WidgetPath {
 	var _arg0 *C.GtkWidgetPath // out
 	var _cret *C.GtkWidgetPath // in
 
@@ -1171,10 +1171,10 @@ func (p *WidgetPath) Copy() WidgetPath {
 
 	_cret = C.gtk_widget_path_copy(_arg0)
 
-	var _widgetPath WidgetPath // out
+	var _widgetPath *WidgetPath // out
 
-	_widgetPath = (WidgetPath)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_widgetPath, func(v WidgetPath) {
+	_widgetPath = (*WidgetPath)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_widgetPath, func(v *WidgetPath) {
 		C.gtk_widget_path_unref((*C.GtkWidgetPath)(unsafe.Pointer(v)))
 	})
 
@@ -1393,7 +1393,7 @@ func (p *WidgetPath) IterGetSiblingIndex(pos int) uint {
 
 // IterGetSiblings returns the list of siblings for the element at @pos. If the
 // element was not added with siblings, nil is returned.
-func (p *WidgetPath) IterGetSiblings(pos int) WidgetPath {
+func (p *WidgetPath) IterGetSiblings(pos int) *WidgetPath {
 	var _arg0 *C.GtkWidgetPath // out
 	var _arg1 C.gint           // out
 	var _cret *C.GtkWidgetPath // in
@@ -1403,9 +1403,9 @@ func (p *WidgetPath) IterGetSiblings(pos int) WidgetPath {
 
 	_cret = C.gtk_widget_path_iter_get_siblings(_arg0, _arg1)
 
-	var _widgetPath WidgetPath // out
+	var _widgetPath *WidgetPath // out
 
-	_widgetPath = (WidgetPath)(unsafe.Pointer(_cret))
+	_widgetPath = (*WidgetPath)(unsafe.Pointer(_cret))
 	C.gtk_widget_path_ref(_cret)
 
 	return _widgetPath
@@ -1483,11 +1483,11 @@ func (p *WidgetPath) IterHasName(pos int, name string) bool {
 //
 // Deprecated: since version 3.14.
 func (p *WidgetPath) IterHasRegion(pos int, name string) (RegionFlags, bool) {
-	var _arg0 *C.GtkWidgetPath  // out
-	var _arg1 C.gint            // out
-	var _arg2 *C.gchar          // out
-	var _arg3 *C.GtkRegionFlags // in
-	var _cret C.gboolean        // in
+	var _arg0 *C.GtkWidgetPath // out
+	var _arg1 C.gint           // out
+	var _arg2 *C.gchar         // out
+	var _arg3 C.GtkRegionFlags // in
+	var _cret C.gboolean       // in
 
 	_arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(p))
 	_arg1 = C.gint(pos)
@@ -1499,16 +1499,7 @@ func (p *WidgetPath) IterHasRegion(pos int, name string) (RegionFlags, bool) {
 	var _flags RegionFlags // out
 	var _ok bool           // out
 
-	{
-		var refTmpIn C.GtkRegionFlags
-		var refTmpOut RegionFlags
-
-		refTmpIn = *_arg3
-
-		refTmpOut = RegionFlags(refTmpIn)
-
-		_flags = refTmpOut
-	}
+	_flags = RegionFlags(_arg3)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -1645,7 +1636,7 @@ func (p *WidgetPath) PrependType(typ externglib.Type) {
 }
 
 // Ref increments the reference count on @path.
-func (p *WidgetPath) Ref() WidgetPath {
+func (p *WidgetPath) Ref() *WidgetPath {
 	var _arg0 *C.GtkWidgetPath // out
 	var _cret *C.GtkWidgetPath // in
 
@@ -1653,10 +1644,10 @@ func (p *WidgetPath) Ref() WidgetPath {
 
 	_cret = C.gtk_widget_path_ref(_arg0)
 
-	var _widgetPath WidgetPath // out
+	var _widgetPath *WidgetPath // out
 
-	_widgetPath = (WidgetPath)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_widgetPath, func(v WidgetPath) {
+	_widgetPath = (*WidgetPath)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_widgetPath, func(v *WidgetPath) {
 		C.gtk_widget_path_unref((*C.GtkWidgetPath)(unsafe.Pointer(v)))
 	})
 

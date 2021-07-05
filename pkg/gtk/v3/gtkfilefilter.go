@@ -49,7 +49,7 @@ func marshalFileFilterFlags(p uintptr) (interface{}, error) {
 
 // FileFilterFunc: the type of function that is used with custom filters, see
 // gtk_file_filter_add_custom().
-type FileFilterFunc func(filterInfo FileFilterInfo) (ok bool)
+type FileFilterFunc func(filterInfo *FileFilterInfo) (ok bool)
 
 //export gotk4_FileFilterFunc
 func gotk4_FileFilterFunc(arg0 *C.GtkFileFilterInfo, arg1 C.gpointer) C.gboolean {
@@ -58,9 +58,9 @@ func gotk4_FileFilterFunc(arg0 *C.GtkFileFilterInfo, arg1 C.gpointer) C.gboolean
 		panic(`callback not found`)
 	}
 
-	var filterInfo FileFilterInfo // out
+	var filterInfo *FileFilterInfo // out
 
-	filterInfo = (FileFilterInfo)(unsafe.Pointer(arg0))
+	filterInfo = (*FileFilterInfo)(unsafe.Pointer(arg0))
 
 	fn := v.(FileFilterFunc)
 	ok := fn(filterInfo)
@@ -130,7 +130,7 @@ type FileFilter interface {
 	//
 	// This function will not typically be used by applications; it is intended
 	// principally for use in the implementation of FileChooser.
-	FilterFileFilter(filterInfo FileFilterInfo) bool
+	FilterFileFilter(filterInfo *FileFilterInfo) bool
 	// Name gets the human-readable name for the filter. See
 	// gtk_file_filter_set_name().
 	Name() string
@@ -145,7 +145,7 @@ type FileFilter interface {
 	// there is a selectable list of filters.
 	SetNameFileFilter(name string)
 	// ToGVariantFileFilter: serialize a file filter to an a{sv} variant.
-	ToGVariantFileFilter() glib.Variant
+	ToGVariantFileFilter() *glib.Variant
 }
 
 // fileFilter implements the FileFilter class.
@@ -188,7 +188,7 @@ func NewFileFilter() FileFilter {
 
 // NewFileFilterFromGVariant: deserialize a file filter from an a{sv} variant in
 // the format produced by gtk_file_filter_to_gvariant().
-func NewFileFilterFromGVariant(variant glib.Variant) FileFilter {
+func NewFileFilterFromGVariant(variant *glib.Variant) FileFilter {
 	var _arg1 *C.GVariant      // out
 	var _cret *C.GtkFileFilter // in
 
@@ -233,7 +233,7 @@ func (f fileFilter) AddPixbufFormatsFileFilter() {
 	C.gtk_file_filter_add_pixbuf_formats(_arg0)
 }
 
-func (f fileFilter) FilterFileFilter(filterInfo FileFilterInfo) bool {
+func (f fileFilter) FilterFileFilter(filterInfo *FileFilterInfo) bool {
 	var _arg0 *C.GtkFileFilter     // out
 	var _arg1 *C.GtkFileFilterInfo // out
 	var _cret C.gboolean           // in
@@ -293,7 +293,7 @@ func (f fileFilter) SetNameFileFilter(name string) {
 	C.gtk_file_filter_set_name(_arg0, _arg1)
 }
 
-func (f fileFilter) ToGVariantFileFilter() glib.Variant {
+func (f fileFilter) ToGVariantFileFilter() *glib.Variant {
 	var _arg0 *C.GtkFileFilter // out
 	var _cret *C.GVariant      // in
 
@@ -301,9 +301,9 @@ func (f fileFilter) ToGVariantFileFilter() glib.Variant {
 
 	_cret = C.gtk_file_filter_to_gvariant(_arg0)
 
-	var _variant glib.Variant // out
+	var _variant *glib.Variant // out
 
-	_variant = (glib.Variant)(unsafe.Pointer(_cret))
+	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
 	C.g_variant_ref(_cret)
 
 	return _variant

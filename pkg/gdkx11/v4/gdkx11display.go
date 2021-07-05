@@ -131,7 +131,7 @@ type X11Display interface {
 	// as it is stored in a property into an array of strings in the encoding of
 	// the current locale. (The elements of the array represent the
 	// nul-separated elements of the original text string.)
-	TextPropertyToTextListX11Display(encoding string, format int, text byte, length int, list *string) int
+	TextPropertyToTextListX11Display(encoding string, format int, text *byte, length int, list **string) int
 	// UngrabX11Display: ungrab @display after it has been grabbed with
 	// gdk_x11_display_grab().
 	UngrabX11Display()
@@ -206,8 +206,8 @@ func (d x11Display) DefaultGroup() gdk.Surface {
 
 func (d x11Display) GlxVersion() (major int, minor int, ok bool) {
 	var _arg0 *C.GdkDisplay // out
-	var _arg1 *C.int        // in
-	var _arg2 *C.int        // in
+	var _arg1 C.int         // in
+	var _arg2 C.int         // in
 	var _cret C.gboolean    // in
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
@@ -332,11 +332,11 @@ func (d x11Display) SetSurfaceScaleX11Display(scale int) {
 func (d x11Display) StringToCompoundTextX11Display(str string) (encoding string, format int, ctext []byte, gint int) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.char       // out
-	var _arg2 **C.char      // in
-	var _arg3 *C.int        // in
+	var _arg2 *C.char       // in
+	var _arg3 C.int         // in
 	var _arg4 *C.guchar
-	var _arg5 *C.int // in
-	var _cret C.int  // in
+	var _arg5 C.int // in
+	var _cret C.int // in
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 	_arg1 = (*C.char)(C.CString(str))
@@ -349,16 +349,7 @@ func (d x11Display) StringToCompoundTextX11Display(str string) (encoding string,
 	var _ctext []byte
 	var _gint int // out
 
-	{
-		var refTmpIn *C.char
-		var refTmpOut string
-
-		refTmpIn = *_arg2
-
-		refTmpOut = C.GoString(refTmpIn)
-
-		_encoding = refTmpOut
-	}
+	_encoding = C.GoString(_arg2)
 	_format = int(_arg3)
 	_ctext = unsafe.Slice((*byte)(unsafe.Pointer(_arg4)), _arg5)
 	runtime.SetFinalizer(&_ctext, func(v *[]byte) {
@@ -369,7 +360,7 @@ func (d x11Display) StringToCompoundTextX11Display(str string) (encoding string,
 	return _encoding, _format, _ctext, _gint
 }
 
-func (d x11Display) TextPropertyToTextListX11Display(encoding string, format int, text byte, length int, list *string) int {
+func (d x11Display) TextPropertyToTextListX11Display(encoding string, format int, text *byte, length int, list **string) int {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.char       // out
 	var _arg2 C.int         // out
@@ -382,7 +373,7 @@ func (d x11Display) TextPropertyToTextListX11Display(encoding string, format int
 	_arg1 = (*C.char)(C.CString(encoding))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(format)
-	_arg3 = *C.guchar(text)
+	_arg3 = (*C.guchar)(unsafe.Pointer(text))
 	_arg4 = C.int(length)
 	{
 		var refTmpIn string
@@ -418,10 +409,10 @@ func (d x11Display) UngrabX11Display() {
 func (d x11Display) UTF8ToCompoundTextX11Display(str string) (string, int, []byte, bool) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.char       // out
-	var _arg2 **C.char      // in
-	var _arg3 *C.int        // in
+	var _arg2 *C.char       // in
+	var _arg3 C.int         // in
 	var _arg4 *C.guchar
-	var _arg5 *C.int     // in
+	var _arg5 C.int      // in
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
@@ -435,16 +426,7 @@ func (d x11Display) UTF8ToCompoundTextX11Display(str string) (string, int, []byt
 	var _ctext []byte
 	var _ok bool // out
 
-	{
-		var refTmpIn *C.char
-		var refTmpOut string
-
-		refTmpIn = *_arg2
-
-		refTmpOut = C.GoString(refTmpIn)
-
-		_encoding = refTmpOut
-	}
+	_encoding = C.GoString(_arg2)
 	_format = int(_arg3)
 	_ctext = unsafe.Slice((*byte)(unsafe.Pointer(_arg4)), _arg5)
 	runtime.SetFinalizer(&_ctext, func(v *[]byte) {

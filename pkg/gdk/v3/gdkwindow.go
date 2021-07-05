@@ -381,7 +381,7 @@ func OffscreenWindowGetEmbedder(window Window) Window {
 // OffscreenWindowGetSurface gets the offscreen surface that an offscreen window
 // renders into. If you need to keep this around over window resizes, you need
 // to add a reference to it.
-func OffscreenWindowGetSurface(window Window) cairo.Surface {
+func OffscreenWindowGetSurface(window Window) *cairo.Surface {
 	var _arg1 *C.GdkWindow       // out
 	var _cret *C.cairo_surface_t // in
 
@@ -389,9 +389,9 @@ func OffscreenWindowGetSurface(window Window) cairo.Surface {
 
 	_cret = C.gdk_offscreen_window_get_surface(_arg1)
 
-	var _surface cairo.Surface // out
+	var _surface *cairo.Surface // out
 
-	_surface = (cairo.Surface)(unsafe.Pointer(_cret))
+	_surface = (*cairo.Surface)(unsafe.Pointer(_cret))
 
 	return _surface
 }
@@ -445,7 +445,7 @@ type Window interface {
 	// cleared background, is already set as the clip region, and already has a
 	// backing store. Therefore in most cases, application code in GTK does not
 	// need to call gdk_window_begin_draw_frame() explicitly.
-	BeginDrawFrameWindow(region cairo.Region) DrawingContext
+	BeginDrawFrameWindow(region *cairo.Region) DrawingContext
 	// BeginMoveDragWindow begins a window move operation (for a toplevel
 	// window).
 	//
@@ -465,7 +465,7 @@ type Window interface {
 	// you. See gdk_window_begin_paint_region() for details.
 	//
 	// Deprecated: since version 3.22.
-	BeginPaintRectWindow(rectangle Rectangle)
+	BeginPaintRectWindow(rectangle *Rectangle)
 	// BeginPaintRegionWindow indicates that you are beginning the process of
 	// redrawing @region. A backing store (offscreen buffer) large enough to
 	// contain @region will be created. The backing store will be initialized
@@ -504,7 +504,7 @@ type Window interface {
 	// required for each call to gdk_window_begin_paint_region().
 	//
 	// Deprecated: since version 3.22.
-	BeginPaintRegionWindow(region cairo.Region)
+	BeginPaintRegionWindow(region *cairo.Region)
 	// BeginResizeDragWindow begins a window resize operation (for a toplevel
 	// window).
 	//
@@ -591,7 +591,7 @@ type Window interface {
 	// Note that unlike cairo_surface_create_similar_image(), the new surface's
 	// device scale is set to @scale, or to the scale factor of @window if
 	// @scale is 0.
-	CreateSimilarImageSurfaceWindow(format cairo.Format, width int, height int, scale int) cairo.Surface
+	CreateSimilarImageSurfaceWindow(format cairo.Format, width int, height int, scale int) *cairo.Surface
 	// CreateSimilarSurfaceWindow: create a new surface that is as compatible as
 	// possible with the given @window. For example the new surface will have
 	// the same fallback resolution and font options as @window. Generally, the
@@ -601,7 +601,7 @@ type Window interface {
 	//
 	// Initially the surface contents are all 0 (transparent if contents have
 	// transparency, black otherwise.)
-	CreateSimilarSurfaceWindow(content cairo.Content, width int, height int) cairo.Surface
+	CreateSimilarSurfaceWindow(content cairo.Content, width int, height int) *cairo.Surface
 	// DeiconifyWindow: attempt to deiconify (unminimize) @window. On X11 the
 	// window manager may choose to ignore the request to deiconify. When using
 	// GTK+, use gtk_window_deiconify() instead of the Window variant. Or better
@@ -707,12 +707,12 @@ type Window interface {
 	// @window.
 	//
 	// Deprecated: since version 3.22.
-	BackgroundPattern() cairo.Pattern
+	BackgroundPattern() *cairo.Pattern
 	// ClipRegion computes the region of a window that potentially can be
 	// written to by drawing primitives. This region may not take into account
 	// other factors such as if the window is obscured by other windows, but no
 	// area outside of this region will be affected by drawing primitives.
-	ClipRegion() cairo.Region
+	ClipRegion() *cairo.Region
 	// Composited determines whether @window is composited.
 	//
 	// See gdk_window_set_composited().
@@ -900,14 +900,14 @@ type Window interface {
 	// from @window and handed to you. If a window has no update area,
 	// gdk_window_get_update_area() returns nil. You are responsible for calling
 	// cairo_region_destroy() on the returned region if it’s non-nil.
-	UpdateArea() cairo.Region
+	UpdateArea() *cairo.Region
 	// UserData retrieves the user data for @window, which is normally the
 	// widget that @window belongs to. See gdk_window_set_user_data().
 	UserData() interface{}
 	// VisibleRegion computes the region of the @window that is potentially
 	// visible. This does not necessarily take into account if the window is
 	// obscured by other windows, but no area outside of this region is visible.
-	VisibleRegion() cairo.Region
+	VisibleRegion() *cairo.Region
 	// Visual gets the Visual describing the pixel format of @window.
 	Visual() Visual
 	// Width returns the width of the given @window.
@@ -947,7 +947,7 @@ type Window interface {
 	//
 	// On the Win32 platform, this functionality is not present and the function
 	// does nothing.
-	InputShapeCombineRegionWindow(shapeRegion cairo.Region, offsetX int, offsetY int)
+	InputShapeCombineRegionWindow(shapeRegion *cairo.Region, offsetX int, offsetY int)
 	// InvalidateMaybeRecurseWindow adds @region to the update area for @window.
 	// The update area is the region that needs to be redrawn, or “dirty
 	// region.” The call gdk_window_process_updates() sends one or more expose
@@ -963,11 +963,11 @@ type Window interface {
 	// The @child_func parameter controls whether the region of each child
 	// window that intersects @region will also be invalidated. Only children
 	// for which @child_func returns UE will have the area invalidated.
-	InvalidateMaybeRecurseWindow(region cairo.Region, childFunc WindowChildFunc)
+	InvalidateMaybeRecurseWindow(region *cairo.Region, childFunc WindowChildFunc)
 	// InvalidateRectWindow: convenience wrapper around
 	// gdk_window_invalidate_region() which invalidates a rectangular region.
 	// See gdk_window_invalidate_region() for details.
-	InvalidateRectWindow(rect Rectangle, invalidateChildren bool)
+	InvalidateRectWindow(rect *Rectangle, invalidateChildren bool)
 	// InvalidateRegionWindow adds @region to the update area for @window. The
 	// update area is the region that needs to be redrawn, or “dirty region.”
 	// The call gdk_window_process_updates() sends one or more expose events to
@@ -985,7 +985,7 @@ type Window interface {
 	// then the update area for child windows will remain unaffected. See
 	// gdk_window_invalidate_maybe_recurse if you need fine grained control over
 	// which children are invalidated.
-	InvalidateRegionWindow(region cairo.Region, invalidateChildren bool)
+	InvalidateRegionWindow(region *cairo.Region, invalidateChildren bool)
 	// IsDestroyedWindow: check to see if a window is destroyed..
 	IsDestroyedWindow() bool
 	// IsInputOnlyWindow determines whether or not the window is an input only
@@ -1020,7 +1020,7 @@ type Window interface {
 	//
 	// This is typically called automatically by GTK+ and you don't need to care
 	// about this.
-	MarkPaintFromClipWindow(cr cairo.Context)
+	MarkPaintFromClipWindow(cr *cairo.Context)
 	// MaximizeWindow maximizes the window. If the window was already maximized,
 	// then this function does nothing.
 	//
@@ -1066,7 +1066,7 @@ type Window interface {
 	// invalidated.
 	//
 	// Child windows are not moved.
-	MoveRegionWindow(region cairo.Region, dx int, dy int)
+	MoveRegionWindow(region *cairo.Region, dx int, dy int)
 	// MoveResizeWindow: equivalent to calling gdk_window_move() and
 	// gdk_window_resize(), except that both operations are performed at once,
 	// avoiding strange visual effects. (i.e. the user may be able to see the
@@ -1088,7 +1088,7 @@ type Window interface {
 	//
 	// Connect to the Window::moved-to-rect signal to find out how it was
 	// actually positioned.
-	MoveToRectWindow(rect Rectangle, rectAnchor Gravity, windowAnchor Gravity, anchorHints AnchorHints, rectAnchorDx int, rectAnchorDy int)
+	MoveToRectWindow(rect *Rectangle, rectAnchor Gravity, windowAnchor Gravity, anchorHints AnchorHints, rectAnchorDx int, rectAnchorDy int)
 	// ProcessUpdatesWindow sends one or more expose events to @window. The
 	// areas in each expose event will cover the entire update area for the
 	// window (see gdk_window_invalidate_region() for details). Normally GDK
@@ -1160,7 +1160,7 @@ type Window interface {
 	// widget.
 	//
 	// Deprecated: since version 3.4.
-	SetBackgroundWindow(color Color)
+	SetBackgroundWindow(color *Color)
 	// SetBackgroundPatternWindow sets the background of @window.
 	//
 	// A background of nil means that the window won't have any background. On
@@ -1171,13 +1171,13 @@ type Window interface {
 	// the window is obscured then exposed.
 	//
 	// Deprecated: since version 3.22.
-	SetBackgroundPatternWindow(pattern cairo.Pattern)
+	SetBackgroundPatternWindow(pattern *cairo.Pattern)
 	// SetBackgroundRGBAWindow sets the background color of @window.
 	//
 	// See also gdk_window_set_background_pattern().
 	//
 	// Deprecated: since version 3.22.
-	SetBackgroundRGBAWindow(rgba RGBA)
+	SetBackgroundRGBAWindow(rgba *RGBA)
 	// SetChildInputShapesWindow sets the input shape mask of @window to the
 	// union of input shape masks for all children of @window, ignoring the
 	// input shape mask of @window itself. Contrast with
@@ -1327,7 +1327,7 @@ type Window interface {
 	// Since you can’t count on the windowing system doing the constraints for
 	// programmatic resizes, you should generally call
 	// gdk_window_constrain_size() yourself to determine appropriate sizes.
-	SetGeometryHintsWindow(geometry Geometry, geomMask WindowHints)
+	SetGeometryHintsWindow(geometry *Geometry, geomMask WindowHints)
 	// SetGroupWindow sets the group leader window for @window. By default, GDK
 	// sets the group leader for all toplevel windows to a global window
 	// implicitly created by GDK. With this function you can override this
@@ -1413,7 +1413,7 @@ type Window interface {
 	// opaque, as we know where the opaque regions are. If your window
 	// background is not opaque, please update this property in your
 	// Widget::style-updated handler.
-	SetOpaqueRegionWindow(region cairo.Region)
+	SetOpaqueRegionWindow(region *cairo.Region)
 	// SetOverrideRedirectWindow: override redirect window is not under the
 	// control of the window manager. This means it won’t have a titlebar, won’t
 	// be minimizable, etc. - it will be entirely under the control of the
@@ -1545,7 +1545,7 @@ type Window interface {
 	// without the shape extension, this function will do nothing.
 	//
 	// This function works on both toplevel and child windows.
-	ShapeCombineRegionWindow(shapeRegion cairo.Region, offsetX int, offsetY int)
+	ShapeCombineRegionWindow(shapeRegion *cairo.Region, offsetX int, offsetY int)
 	// ShowWindow: like gdk_window_show_unraised(), but also raises the window
 	// to the top of the window stack (moves the window to the front of the
 	// Z-order).
@@ -1638,7 +1638,7 @@ func marshalWindow(p uintptr) (interface{}, error) {
 // NewWindow creates a new Window using the attributes from @attributes. See
 // WindowAttr and WindowAttributesType for more details. Note: to use this on
 // displays other than the default display, @parent must be specified.
-func NewWindow(parent Window, attributes WindowAttr, attributesMask WindowAttributesType) Window {
+func NewWindow(parent Window, attributes *WindowAttr, attributesMask WindowAttributesType) Window {
 	var _arg1 *C.GdkWindow     // out
 	var _arg2 *C.GdkWindowAttr // out
 	var _arg3 C.gint           // out
@@ -1665,7 +1665,7 @@ func (w window) BeepWindow() {
 	C.gdk_window_beep(_arg0)
 }
 
-func (w window) BeginDrawFrameWindow(region cairo.Region) DrawingContext {
+func (w window) BeginDrawFrameWindow(region *cairo.Region) DrawingContext {
 	var _arg0 *C.GdkWindow         // out
 	var _arg1 *C.cairo_region_t    // out
 	var _cret *C.GdkDrawingContext // in
@@ -1716,7 +1716,7 @@ func (w window) BeginMoveDragForDeviceWindow(device Device, button int, rootX in
 	C.gdk_window_begin_move_drag_for_device(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
 
-func (w window) BeginPaintRectWindow(rectangle Rectangle) {
+func (w window) BeginPaintRectWindow(rectangle *Rectangle) {
 	var _arg0 *C.GdkWindow    // out
 	var _arg1 *C.GdkRectangle // out
 
@@ -1726,7 +1726,7 @@ func (w window) BeginPaintRectWindow(rectangle Rectangle) {
 	C.gdk_window_begin_paint_rect(_arg0, _arg1)
 }
 
-func (w window) BeginPaintRegionWindow(region cairo.Region) {
+func (w window) BeginPaintRegionWindow(region *cairo.Region) {
 	var _arg0 *C.GdkWindow      // out
 	var _arg1 *C.cairo_region_t // out
 
@@ -1786,8 +1786,8 @@ func (w window) CoordsFromParentWindow(parentX float64, parentY float64) (x floa
 	var _arg0 *C.GdkWindow // out
 	var _arg1 C.gdouble    // out
 	var _arg2 C.gdouble    // out
-	var _arg3 *C.gdouble   // in
-	var _arg4 *C.gdouble   // in
+	var _arg3 C.gdouble    // in
+	var _arg4 C.gdouble    // in
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	_arg1 = C.gdouble(parentX)
@@ -1808,8 +1808,8 @@ func (w window) CoordsToParentWindow(x float64, y float64) (parentX float64, par
 	var _arg0 *C.GdkWindow // out
 	var _arg1 C.gdouble    // out
 	var _arg2 C.gdouble    // out
-	var _arg3 *C.gdouble   // in
-	var _arg4 *C.gdouble   // in
+	var _arg3 C.gdouble    // in
+	var _arg4 C.gdouble    // in
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	_arg1 = C.gdouble(x)
@@ -1829,7 +1829,7 @@ func (w window) CoordsToParentWindow(x float64, y float64) (parentX float64, par
 func (w window) CreateGLContextWindow() (GLContext, error) {
 	var _arg0 *C.GdkWindow    // out
 	var _cret *C.GdkGLContext // in
-	var _cerr **C.GError      // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
@@ -1839,21 +1839,12 @@ func (w window) CreateGLContextWindow() (GLContext, error) {
 	var _goerr error         // out
 
 	_glContext = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(GLContext)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _glContext, _goerr
 }
 
-func (w window) CreateSimilarImageSurfaceWindow(format cairo.Format, width int, height int, scale int) cairo.Surface {
+func (w window) CreateSimilarImageSurfaceWindow(format cairo.Format, width int, height int, scale int) *cairo.Surface {
 	var _arg0 *C.GdkWindow       // out
 	var _arg1 C.cairo_format_t   // out
 	var _arg2 C.int              // out
@@ -1869,17 +1860,17 @@ func (w window) CreateSimilarImageSurfaceWindow(format cairo.Format, width int, 
 
 	_cret = C.gdk_window_create_similar_image_surface(_arg0, _arg1, _arg2, _arg3, _arg4)
 
-	var _surface cairo.Surface // out
+	var _surface *cairo.Surface // out
 
-	_surface = (cairo.Surface)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_surface, func(v cairo.Surface) {
+	_surface = (*cairo.Surface)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_surface, func(v *cairo.Surface) {
 		C.free(unsafe.Pointer(v))
 	})
 
 	return _surface
 }
 
-func (w window) CreateSimilarSurfaceWindow(content cairo.Content, width int, height int) cairo.Surface {
+func (w window) CreateSimilarSurfaceWindow(content cairo.Content, width int, height int) *cairo.Surface {
 	var _arg0 *C.GdkWindow       // out
 	var _arg1 C.cairo_content_t  // out
 	var _arg2 C.int              // out
@@ -1893,10 +1884,10 @@ func (w window) CreateSimilarSurfaceWindow(content cairo.Content, width int, hei
 
 	_cret = C.gdk_window_create_similar_surface(_arg0, _arg1, _arg2, _arg3)
 
-	var _surface cairo.Surface // out
+	var _surface *cairo.Surface // out
 
-	_surface = (cairo.Surface)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_surface, func(v cairo.Surface) {
+	_surface = (*cairo.Surface)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_surface, func(v *cairo.Surface) {
 		C.free(unsafe.Pointer(v))
 	})
 
@@ -2047,7 +2038,7 @@ func (w window) AcceptFocus() bool {
 	return _ok
 }
 
-func (w window) BackgroundPattern() cairo.Pattern {
+func (w window) BackgroundPattern() *cairo.Pattern {
 	var _arg0 *C.GdkWindow       // out
 	var _cret *C.cairo_pattern_t // in
 
@@ -2055,14 +2046,14 @@ func (w window) BackgroundPattern() cairo.Pattern {
 
 	_cret = C.gdk_window_get_background_pattern(_arg0)
 
-	var _pattern cairo.Pattern // out
+	var _pattern *cairo.Pattern // out
 
-	_pattern = (cairo.Pattern)(unsafe.Pointer(_cret))
+	_pattern = (*cairo.Pattern)(unsafe.Pointer(_cret))
 
 	return _pattern
 }
 
-func (w window) ClipRegion() cairo.Region {
+func (w window) ClipRegion() *cairo.Region {
 	var _arg0 *C.GdkWindow      // out
 	var _cret *C.cairo_region_t // in
 
@@ -2070,10 +2061,10 @@ func (w window) ClipRegion() cairo.Region {
 
 	_cret = C.gdk_window_get_clip_region(_arg0)
 
-	var _region cairo.Region // out
+	var _region *cairo.Region // out
 
-	_region = (cairo.Region)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_region, func(v cairo.Region) {
+	_region = (*cairo.Region)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_region, func(v *cairo.Region) {
 		C.free(unsafe.Pointer(v))
 	})
 
@@ -2113,9 +2104,9 @@ func (w window) Cursor() Cursor {
 }
 
 func (w window) Decorations() (WMDecoration, bool) {
-	var _arg0 *C.GdkWindow       // out
-	var _arg1 *C.GdkWMDecoration // in
-	var _cret C.gboolean         // in
+	var _arg0 *C.GdkWindow      // out
+	var _arg1 C.GdkWMDecoration // in
+	var _cret C.gboolean        // in
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
@@ -2124,16 +2115,7 @@ func (w window) Decorations() (WMDecoration, bool) {
 	var _decorations WMDecoration // out
 	var _ok bool                  // out
 
-	{
-		var refTmpIn C.GdkWMDecoration
-		var refTmpOut WMDecoration
-
-		refTmpIn = *_arg1
-
-		refTmpOut = WMDecoration(refTmpIn)
-
-		_decorations = refTmpOut
-	}
+	_decorations = WMDecoration(_arg1)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -2176,12 +2158,12 @@ func (w window) DeviceEvents(device Device) EventMask {
 }
 
 func (w window) DevicePosition(device Device) (x int, y int, mask ModifierType, ret Window) {
-	var _arg0 *C.GdkWindow       // out
-	var _arg1 *C.GdkDevice       // out
-	var _arg2 *C.gint            // in
-	var _arg3 *C.gint            // in
-	var _arg4 *C.GdkModifierType // in
-	var _cret *C.GdkWindow       // in
+	var _arg0 *C.GdkWindow      // out
+	var _arg1 *C.GdkDevice      // out
+	var _arg2 C.gint            // in
+	var _arg3 C.gint            // in
+	var _arg4 C.GdkModifierType // in
+	var _cret *C.GdkWindow      // in
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
@@ -2195,28 +2177,19 @@ func (w window) DevicePosition(device Device) (x int, y int, mask ModifierType, 
 
 	_x = int(_arg2)
 	_y = int(_arg3)
-	{
-		var refTmpIn C.GdkModifierType
-		var refTmpOut ModifierType
-
-		refTmpIn = *_arg4
-
-		refTmpOut = ModifierType(refTmpIn)
-
-		_mask = refTmpOut
-	}
+	_mask = ModifierType(_arg4)
 	_ret = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Window)
 
 	return _x, _y, _mask, _ret
 }
 
 func (w window) DevicePositionDouble(device Device) (x float64, y float64, mask ModifierType, ret Window) {
-	var _arg0 *C.GdkWindow       // out
-	var _arg1 *C.GdkDevice       // out
-	var _arg2 *C.gdouble         // in
-	var _arg3 *C.gdouble         // in
-	var _arg4 *C.GdkModifierType // in
-	var _cret *C.GdkWindow       // in
+	var _arg0 *C.GdkWindow      // out
+	var _arg1 *C.GdkDevice      // out
+	var _arg2 C.gdouble         // in
+	var _arg3 C.gdouble         // in
+	var _arg4 C.GdkModifierType // in
+	var _cret *C.GdkWindow      // in
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
@@ -2230,16 +2203,7 @@ func (w window) DevicePositionDouble(device Device) (x float64, y float64, mask 
 
 	_x = float64(_arg2)
 	_y = float64(_arg3)
-	{
-		var refTmpIn C.GdkModifierType
-		var refTmpOut ModifierType
-
-		refTmpIn = *_arg4
-
-		refTmpOut = ModifierType(refTmpIn)
-
-		_mask = refTmpOut
-	}
+	_mask = ModifierType(_arg4)
 	_ret = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Window)
 
 	return _x, _y, _mask, _ret
@@ -2262,7 +2226,7 @@ func (w window) Display() Display {
 
 func (w window) DragProtocol() (Window, DragProtocol) {
 	var _arg0 *C.GdkWindow      // out
-	var _arg1 **C.GdkWindow     // in
+	var _arg1 *C.GdkWindow      // in
 	var _cret C.GdkDragProtocol // in
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
@@ -2272,16 +2236,7 @@ func (w window) DragProtocol() (Window, DragProtocol) {
 	var _target Window             // out
 	var _dragProtocol DragProtocol // out
 
-	{
-		var refTmpIn *C.GdkWindow
-		var refTmpOut window
-
-		refTmpIn = *_arg1
-
-		refTmpOut = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(refTmpIn))).(window)
-
-		_target = refTmpOut
-	}
+	_target = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_arg1))).(Window)
 	_dragProtocol = DragProtocol(_cret)
 
 	return _target, _dragProtocol
@@ -2382,8 +2337,8 @@ func (w window) FrameClock() FrameClock {
 }
 
 func (w window) FrameExtents() Rectangle {
-	var _arg0 *C.GdkWindow    // out
-	var _arg1 *C.GdkRectangle // in
+	var _arg0 *C.GdkWindow   // out
+	var _arg1 C.GdkRectangle // in
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
@@ -2391,7 +2346,17 @@ func (w window) FrameExtents() Rectangle {
 
 	var _rect Rectangle // out
 
-	_rect = (Rectangle)(unsafe.Pointer(_arg1))
+	{
+		var refTmpIn *C.GdkRectangle
+		var refTmpOut *Rectangle
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_rect = *refTmpOut
+	}
 
 	return _rect
 }
@@ -2413,10 +2378,10 @@ func (w window) FullscreenMode() FullscreenMode {
 
 func (w window) Geometry() (x int, y int, width int, height int) {
 	var _arg0 *C.GdkWindow // out
-	var _arg1 *C.gint      // in
-	var _arg2 *C.gint      // in
-	var _arg3 *C.gint      // in
-	var _arg4 *C.gint      // in
+	var _arg1 C.gint       // in
+	var _arg2 C.gint       // in
+	var _arg3 C.gint       // in
+	var _arg4 C.gint       // in
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
@@ -2484,8 +2449,8 @@ func (w window) ModalHint() bool {
 
 func (w window) Origin() (x int, y int, gint int) {
 	var _arg0 *C.GdkWindow // out
-	var _arg1 *C.gint      // in
-	var _arg2 *C.gint      // in
+	var _arg1 C.gint       // in
+	var _arg2 C.gint       // in
 	var _cret C.gint       // in
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
@@ -2536,11 +2501,11 @@ func (w window) PassThrough() bool {
 }
 
 func (w window) Pointer() (x int, y int, mask ModifierType, ret Window) {
-	var _arg0 *C.GdkWindow       // out
-	var _arg1 *C.gint            // in
-	var _arg2 *C.gint            // in
-	var _arg3 *C.GdkModifierType // in
-	var _cret *C.GdkWindow       // in
+	var _arg0 *C.GdkWindow      // out
+	var _arg1 C.gint            // in
+	var _arg2 C.gint            // in
+	var _arg3 C.GdkModifierType // in
+	var _cret *C.GdkWindow      // in
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
@@ -2553,16 +2518,7 @@ func (w window) Pointer() (x int, y int, mask ModifierType, ret Window) {
 
 	_x = int(_arg1)
 	_y = int(_arg2)
-	{
-		var refTmpIn C.GdkModifierType
-		var refTmpOut ModifierType
-
-		refTmpIn = *_arg3
-
-		refTmpOut = ModifierType(refTmpIn)
-
-		_mask = refTmpOut
-	}
+	_mask = ModifierType(_arg3)
 	_ret = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Window)
 
 	return _x, _y, _mask, _ret
@@ -2570,8 +2526,8 @@ func (w window) Pointer() (x int, y int, mask ModifierType, ret Window) {
 
 func (w window) Position() (x int, y int) {
 	var _arg0 *C.GdkWindow // out
-	var _arg1 *C.gint      // in
-	var _arg2 *C.gint      // in
+	var _arg1 C.gint       // in
+	var _arg2 C.gint       // in
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
@@ -2590,8 +2546,8 @@ func (w window) RootCoords(x int, y int) (rootX int, rootY int) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 C.gint       // out
 	var _arg2 C.gint       // out
-	var _arg3 *C.gint      // in
-	var _arg4 *C.gint      // in
+	var _arg3 C.gint       // in
+	var _arg4 C.gint       // in
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	_arg1 = C.gint(x)
@@ -2610,8 +2566,8 @@ func (w window) RootCoords(x int, y int) (rootX int, rootY int) {
 
 func (w window) RootOrigin() (x int, y int) {
 	var _arg0 *C.GdkWindow // out
-	var _arg1 *C.gint      // in
-	var _arg2 *C.gint      // in
+	var _arg1 C.gint       // in
+	var _arg2 C.gint       // in
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
@@ -2735,7 +2691,7 @@ func (w window) TypeHint() WindowTypeHint {
 	return _windowTypeHint
 }
 
-func (w window) UpdateArea() cairo.Region {
+func (w window) UpdateArea() *cairo.Region {
 	var _arg0 *C.GdkWindow      // out
 	var _cret *C.cairo_region_t // in
 
@@ -2743,10 +2699,10 @@ func (w window) UpdateArea() cairo.Region {
 
 	_cret = C.gdk_window_get_update_area(_arg0)
 
-	var _region cairo.Region // out
+	var _region *cairo.Region // out
 
-	_region = (cairo.Region)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_region, func(v cairo.Region) {
+	_region = (*cairo.Region)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_region, func(v *cairo.Region) {
 		C.free(unsafe.Pointer(v))
 	})
 
@@ -2755,11 +2711,11 @@ func (w window) UpdateArea() cairo.Region {
 
 func (w window) UserData() interface{} {
 	var _arg0 *C.GdkWindow // out
-	var _arg1 *C.gpointer  // in
+	var _arg1 C.gpointer   // in
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
-	C.gdk_window_get_user_data(_arg0, _arg1)
+	C.gdk_window_get_user_data(_arg0, &_arg1)
 
 	var _data interface{} // out
 
@@ -2768,7 +2724,7 @@ func (w window) UserData() interface{} {
 	return _data
 }
 
-func (w window) VisibleRegion() cairo.Region {
+func (w window) VisibleRegion() *cairo.Region {
 	var _arg0 *C.GdkWindow      // out
 	var _cret *C.cairo_region_t // in
 
@@ -2776,10 +2732,10 @@ func (w window) VisibleRegion() cairo.Region {
 
 	_cret = C.gdk_window_get_visible_region(_arg0)
 
-	var _region cairo.Region // out
+	var _region *cairo.Region // out
 
-	_region = (cairo.Region)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_region, func(v cairo.Region) {
+	_region = (*cairo.Region)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_region, func(v *cairo.Region) {
 		C.free(unsafe.Pointer(v))
 	})
 
@@ -2864,7 +2820,7 @@ func (w window) IconifyWindow() {
 	C.gdk_window_iconify(_arg0)
 }
 
-func (w window) InputShapeCombineRegionWindow(shapeRegion cairo.Region, offsetX int, offsetY int) {
+func (w window) InputShapeCombineRegionWindow(shapeRegion *cairo.Region, offsetX int, offsetY int) {
 	var _arg0 *C.GdkWindow      // out
 	var _arg1 *C.cairo_region_t // out
 	var _arg2 C.gint            // out
@@ -2878,7 +2834,7 @@ func (w window) InputShapeCombineRegionWindow(shapeRegion cairo.Region, offsetX 
 	C.gdk_window_input_shape_combine_region(_arg0, _arg1, _arg2, _arg3)
 }
 
-func (w window) InvalidateMaybeRecurseWindow(region cairo.Region, childFunc WindowChildFunc) {
+func (w window) InvalidateMaybeRecurseWindow(region *cairo.Region, childFunc WindowChildFunc) {
 	var _arg0 *C.GdkWindow         // out
 	var _arg1 *C.cairo_region_t    // out
 	var _arg2 C.GdkWindowChildFunc // out
@@ -2892,7 +2848,7 @@ func (w window) InvalidateMaybeRecurseWindow(region cairo.Region, childFunc Wind
 	C.gdk_window_invalidate_maybe_recurse(_arg0, _arg1, _arg2, _arg3)
 }
 
-func (w window) InvalidateRectWindow(rect Rectangle, invalidateChildren bool) {
+func (w window) InvalidateRectWindow(rect *Rectangle, invalidateChildren bool) {
 	var _arg0 *C.GdkWindow    // out
 	var _arg1 *C.GdkRectangle // out
 	var _arg2 C.gboolean      // out
@@ -2906,7 +2862,7 @@ func (w window) InvalidateRectWindow(rect Rectangle, invalidateChildren bool) {
 	C.gdk_window_invalidate_rect(_arg0, _arg1, _arg2)
 }
 
-func (w window) InvalidateRegionWindow(region cairo.Region, invalidateChildren bool) {
+func (w window) InvalidateRegionWindow(region *cairo.Region, invalidateChildren bool) {
 	var _arg0 *C.GdkWindow      // out
 	var _arg1 *C.cairo_region_t // out
 	var _arg2 C.gboolean        // out
@@ -3013,7 +2969,7 @@ func (w window) LowerWindow() {
 	C.gdk_window_lower(_arg0)
 }
 
-func (w window) MarkPaintFromClipWindow(cr cairo.Context) {
+func (w window) MarkPaintFromClipWindow(cr *cairo.Context) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 *C.cairo_t   // out
 
@@ -3059,7 +3015,7 @@ func (w window) MoveWindow(x int, y int) {
 	C.gdk_window_move(_arg0, _arg1, _arg2)
 }
 
-func (w window) MoveRegionWindow(region cairo.Region, dx int, dy int) {
+func (w window) MoveRegionWindow(region *cairo.Region, dx int, dy int) {
 	var _arg0 *C.GdkWindow      // out
 	var _arg1 *C.cairo_region_t // out
 	var _arg2 C.gint            // out
@@ -3089,7 +3045,7 @@ func (w window) MoveResizeWindow(x int, y int, width int, height int) {
 	C.gdk_window_move_resize(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
-func (w window) MoveToRectWindow(rect Rectangle, rectAnchor Gravity, windowAnchor Gravity, anchorHints AnchorHints, rectAnchorDx int, rectAnchorDy int) {
+func (w window) MoveToRectWindow(rect *Rectangle, rectAnchor Gravity, windowAnchor Gravity, anchorHints AnchorHints, rectAnchorDx int, rectAnchorDy int) {
 	var _arg0 *C.GdkWindow     // out
 	var _arg1 *C.GdkRectangle  // out
 	var _arg2 C.GdkGravity     // out
@@ -3201,7 +3157,7 @@ func (w window) SetAcceptFocusWindow(acceptFocus bool) {
 	C.gdk_window_set_accept_focus(_arg0, _arg1)
 }
 
-func (w window) SetBackgroundWindow(color Color) {
+func (w window) SetBackgroundWindow(color *Color) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 *C.GdkColor  // out
 
@@ -3211,7 +3167,7 @@ func (w window) SetBackgroundWindow(color Color) {
 	C.gdk_window_set_background(_arg0, _arg1)
 }
 
-func (w window) SetBackgroundPatternWindow(pattern cairo.Pattern) {
+func (w window) SetBackgroundPatternWindow(pattern *cairo.Pattern) {
 	var _arg0 *C.GdkWindow       // out
 	var _arg1 *C.cairo_pattern_t // out
 
@@ -3221,7 +3177,7 @@ func (w window) SetBackgroundPatternWindow(pattern cairo.Pattern) {
 	C.gdk_window_set_background_pattern(_arg0, _arg1)
 }
 
-func (w window) SetBackgroundRGBAWindow(rgba RGBA) {
+func (w window) SetBackgroundRGBAWindow(rgba *RGBA) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 *C.GdkRGBA   // out
 
@@ -3357,7 +3313,7 @@ func (w window) SetFunctionsWindow(functions WMFunction) {
 	C.gdk_window_set_functions(_arg0, _arg1)
 }
 
-func (w window) SetGeometryHintsWindow(geometry Geometry, geomMask WindowHints) {
+func (w window) SetGeometryHintsWindow(geometry *Geometry, geomMask WindowHints) {
 	var _arg0 *C.GdkWindow     // out
 	var _arg1 *C.GdkGeometry   // out
 	var _arg2 C.GdkWindowHints // out
@@ -3436,7 +3392,7 @@ func (w window) SetOpacityWindow(opacity float64) {
 	C.gdk_window_set_opacity(_arg0, _arg1)
 }
 
-func (w window) SetOpaqueRegionWindow(region cairo.Region) {
+func (w window) SetOpaqueRegionWindow(region *cairo.Region) {
 	var _arg0 *C.GdkWindow      // out
 	var _arg1 *C.cairo_region_t // out
 
@@ -3630,7 +3586,7 @@ func (w window) SetUserDataWindow(userData gextras.Objector) {
 	C.gdk_window_set_user_data(_arg0, _arg1)
 }
 
-func (w window) ShapeCombineRegionWindow(shapeRegion cairo.Region, offsetX int, offsetY int) {
+func (w window) ShapeCombineRegionWindow(shapeRegion *cairo.Region, offsetX int, offsetY int) {
 	var _arg0 *C.GdkWindow      // out
 	var _arg1 *C.cairo_region_t // out
 	var _arg2 C.gint            // out

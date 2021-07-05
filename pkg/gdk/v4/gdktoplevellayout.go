@@ -47,15 +47,15 @@ func marshalToplevelLayout(p uintptr) (interface{}, error) {
 }
 
 // NewToplevelLayout constructs a struct ToplevelLayout.
-func NewToplevelLayout() ToplevelLayout {
+func NewToplevelLayout() *ToplevelLayout {
 	var _cret *C.GdkToplevelLayout // in
 
 	_cret = C.gdk_toplevel_layout_new()
 
-	var _toplevelLayout ToplevelLayout // out
+	var _toplevelLayout *ToplevelLayout // out
 
-	_toplevelLayout = (ToplevelLayout)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_toplevelLayout, func(v ToplevelLayout) {
+	_toplevelLayout = (*ToplevelLayout)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_toplevelLayout, func(v *ToplevelLayout) {
 		C.gdk_toplevel_layout_unref((*C.GdkToplevelLayout)(unsafe.Pointer(v)))
 	})
 
@@ -68,7 +68,7 @@ func (t *ToplevelLayout) Native() unsafe.Pointer {
 }
 
 // Copy: create a new ToplevelLayout and copy the contents of @layout into it.
-func (l *ToplevelLayout) Copy() ToplevelLayout {
+func (l *ToplevelLayout) Copy() *ToplevelLayout {
 	var _arg0 *C.GdkToplevelLayout // out
 	var _cret *C.GdkToplevelLayout // in
 
@@ -76,10 +76,10 @@ func (l *ToplevelLayout) Copy() ToplevelLayout {
 
 	_cret = C.gdk_toplevel_layout_copy(_arg0)
 
-	var _toplevelLayout ToplevelLayout // out
+	var _toplevelLayout *ToplevelLayout // out
 
-	_toplevelLayout = (ToplevelLayout)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_toplevelLayout, func(v ToplevelLayout) {
+	_toplevelLayout = (*ToplevelLayout)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_toplevelLayout, func(v *ToplevelLayout) {
 		C.gdk_toplevel_layout_unref((*C.GdkToplevelLayout)(unsafe.Pointer(v)))
 	})
 
@@ -87,7 +87,7 @@ func (l *ToplevelLayout) Copy() ToplevelLayout {
 }
 
 // Equal: check whether @layout and @other has identical layout properties.
-func (l *ToplevelLayout) Equal(other ToplevelLayout) bool {
+func (l *ToplevelLayout) Equal(other *ToplevelLayout) bool {
 	var _arg0 *C.GdkToplevelLayout // out
 	var _arg1 *C.GdkToplevelLayout // out
 	var _cret C.gboolean           // in
@@ -111,7 +111,7 @@ func (l *ToplevelLayout) Equal(other ToplevelLayout) bool {
 // go fullscreen, or false, if it should go unfullscreen.
 func (l *ToplevelLayout) Fullscreen() (fullscreen bool, ok bool) {
 	var _arg0 *C.GdkToplevelLayout // out
-	var _arg1 *C.gboolean          // in
+	var _arg1 C.gboolean           // in
 	var _cret C.gboolean           // in
 
 	_arg0 = (*C.GdkToplevelLayout)(unsafe.Pointer(l))
@@ -121,17 +121,8 @@ func (l *ToplevelLayout) Fullscreen() (fullscreen bool, ok bool) {
 	var _fullscreen bool // out
 	var _ok bool         // out
 
-	{
-		var refTmpIn C.gboolean
-		var refTmpOut bool
-
-		refTmpIn = *_arg1
-
-		if refTmpIn != 0 {
-			refTmpOut = true
-		}
-
-		_fullscreen = refTmpOut
+	if _arg1 != 0 {
+		_fullscreen = true
 	}
 	if _cret != 0 {
 		_ok = true
@@ -162,7 +153,7 @@ func (l *ToplevelLayout) FullscreenMonitor() Monitor {
 // fullscreen, or false, if it should go unmaximized.
 func (l *ToplevelLayout) Maximized() (maximized bool, ok bool) {
 	var _arg0 *C.GdkToplevelLayout // out
-	var _arg1 *C.gboolean          // in
+	var _arg1 C.gboolean           // in
 	var _cret C.gboolean           // in
 
 	_arg0 = (*C.GdkToplevelLayout)(unsafe.Pointer(l))
@@ -172,17 +163,8 @@ func (l *ToplevelLayout) Maximized() (maximized bool, ok bool) {
 	var _maximized bool // out
 	var _ok bool        // out
 
-	{
-		var refTmpIn C.gboolean
-		var refTmpOut bool
-
-		refTmpIn = *_arg1
-
-		if refTmpIn != 0 {
-			refTmpOut = true
-		}
-
-		_maximized = refTmpOut
+	if _arg1 != 0 {
+		_maximized = true
 	}
 	if _cret != 0 {
 		_ok = true
@@ -211,7 +193,7 @@ func (l *ToplevelLayout) Resizable() bool {
 }
 
 // Ref increases the reference count of @layout.
-func (l *ToplevelLayout) Ref() ToplevelLayout {
+func (l *ToplevelLayout) Ref() *ToplevelLayout {
 	var _arg0 *C.GdkToplevelLayout // out
 	var _cret *C.GdkToplevelLayout // in
 
@@ -219,10 +201,10 @@ func (l *ToplevelLayout) Ref() ToplevelLayout {
 
 	_cret = C.gdk_toplevel_layout_ref(_arg0)
 
-	var _toplevelLayout ToplevelLayout // out
+	var _toplevelLayout *ToplevelLayout // out
 
-	_toplevelLayout = (ToplevelLayout)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_toplevelLayout, func(v ToplevelLayout) {
+	_toplevelLayout = (*ToplevelLayout)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_toplevelLayout, func(v *ToplevelLayout) {
 		C.gdk_toplevel_layout_unref((*C.GdkToplevelLayout)(unsafe.Pointer(v)))
 	})
 

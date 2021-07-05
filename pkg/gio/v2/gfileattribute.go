@@ -66,15 +66,15 @@ func marshalFileAttributeInfoList(p uintptr) (interface{}, error) {
 }
 
 // NewFileAttributeInfoList constructs a struct FileAttributeInfoList.
-func NewFileAttributeInfoList() FileAttributeInfoList {
+func NewFileAttributeInfoList() *FileAttributeInfoList {
 	var _cret *C.GFileAttributeInfoList // in
 
 	_cret = C.g_file_attribute_info_list_new()
 
-	var _fileAttributeInfoList FileAttributeInfoList // out
+	var _fileAttributeInfoList *FileAttributeInfoList // out
 
-	_fileAttributeInfoList = (FileAttributeInfoList)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_fileAttributeInfoList, func(v FileAttributeInfoList) {
+	_fileAttributeInfoList = (*FileAttributeInfoList)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_fileAttributeInfoList, func(v *FileAttributeInfoList) {
 		C.g_file_attribute_info_list_unref((*C.GFileAttributeInfoList)(unsafe.Pointer(v)))
 	})
 
@@ -104,7 +104,7 @@ func (l *FileAttributeInfoList) Add(name string, typ FileAttributeType, flags Fi
 }
 
 // Dup makes a duplicate of a file attribute info list.
-func (l *FileAttributeInfoList) Dup() FileAttributeInfoList {
+func (l *FileAttributeInfoList) Dup() *FileAttributeInfoList {
 	var _arg0 *C.GFileAttributeInfoList // out
 	var _cret *C.GFileAttributeInfoList // in
 
@@ -112,10 +112,10 @@ func (l *FileAttributeInfoList) Dup() FileAttributeInfoList {
 
 	_cret = C.g_file_attribute_info_list_dup(_arg0)
 
-	var _fileAttributeInfoList FileAttributeInfoList // out
+	var _fileAttributeInfoList *FileAttributeInfoList // out
 
-	_fileAttributeInfoList = (FileAttributeInfoList)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_fileAttributeInfoList, func(v FileAttributeInfoList) {
+	_fileAttributeInfoList = (*FileAttributeInfoList)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_fileAttributeInfoList, func(v *FileAttributeInfoList) {
 		C.g_file_attribute_info_list_unref((*C.GFileAttributeInfoList)(unsafe.Pointer(v)))
 	})
 
@@ -123,7 +123,7 @@ func (l *FileAttributeInfoList) Dup() FileAttributeInfoList {
 }
 
 // Lookup gets the file attribute with the name @name from @list.
-func (l *FileAttributeInfoList) Lookup(name string) FileAttributeInfo {
+func (l *FileAttributeInfoList) Lookup(name string) *FileAttributeInfo {
 	var _arg0 *C.GFileAttributeInfoList // out
 	var _arg1 *C.char                   // out
 	var _cret *C.GFileAttributeInfo     // in
@@ -134,15 +134,15 @@ func (l *FileAttributeInfoList) Lookup(name string) FileAttributeInfo {
 
 	_cret = C.g_file_attribute_info_list_lookup(_arg0, _arg1)
 
-	var _fileAttributeInfo FileAttributeInfo // out
+	var _fileAttributeInfo *FileAttributeInfo // out
 
-	_fileAttributeInfo = (FileAttributeInfo)(unsafe.Pointer(_cret))
+	_fileAttributeInfo = (*FileAttributeInfo)(unsafe.Pointer(_cret))
 
 	return _fileAttributeInfo
 }
 
 // Ref references a file attribute info list.
-func (l *FileAttributeInfoList) Ref() FileAttributeInfoList {
+func (l *FileAttributeInfoList) Ref() *FileAttributeInfoList {
 	var _arg0 *C.GFileAttributeInfoList // out
 	var _cret *C.GFileAttributeInfoList // in
 
@@ -150,10 +150,10 @@ func (l *FileAttributeInfoList) Ref() FileAttributeInfoList {
 
 	_cret = C.g_file_attribute_info_list_ref(_arg0)
 
-	var _fileAttributeInfoList FileAttributeInfoList // out
+	var _fileAttributeInfoList *FileAttributeInfoList // out
 
-	_fileAttributeInfoList = (FileAttributeInfoList)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_fileAttributeInfoList, func(v FileAttributeInfoList) {
+	_fileAttributeInfoList = (*FileAttributeInfoList)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_fileAttributeInfoList, func(v *FileAttributeInfoList) {
 		C.g_file_attribute_info_list_unref((*C.GFileAttributeInfoList)(unsafe.Pointer(v)))
 	})
 

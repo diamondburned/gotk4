@@ -57,7 +57,7 @@ type ColorChooser interface {
 	// UseAlpha returns whether the color chooser shows the alpha channel.
 	UseAlpha() bool
 	// SetRGBA sets the color.
-	SetRGBA(color gdk.RGBA)
+	SetRGBA(color *gdk.RGBA)
 	// SetUseAlpha sets whether or not the color chooser should use the alpha
 	// channel.
 	SetUseAlpha(useAlpha bool)
@@ -102,7 +102,7 @@ func (c colorChooser) AddPalette(orientation Orientation, colorsPerLine int, col
 
 func (c colorChooser) RGBA() gdk.RGBA {
 	var _arg0 *C.GtkColorChooser // out
-	var _arg1 *C.GdkRGBA         // in
+	var _arg1 C.GdkRGBA          // in
 
 	_arg0 = (*C.GtkColorChooser)(unsafe.Pointer(c.Native()))
 
@@ -110,7 +110,17 @@ func (c colorChooser) RGBA() gdk.RGBA {
 
 	var _color gdk.RGBA // out
 
-	_color = (gdk.RGBA)(unsafe.Pointer(_arg1))
+	{
+		var refTmpIn *C.GdkRGBA
+		var refTmpOut *gdk.RGBA
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*gdk.RGBA)(unsafe.Pointer(refTmpIn))
+
+		_color = *refTmpOut
+	}
 
 	return _color
 }
@@ -132,7 +142,7 @@ func (c colorChooser) UseAlpha() bool {
 	return _ok
 }
 
-func (c colorChooser) SetRGBA(color gdk.RGBA) {
+func (c colorChooser) SetRGBA(color *gdk.RGBA) {
 	var _arg0 *C.GtkColorChooser // out
 	var _arg1 *C.GdkRGBA         // out
 

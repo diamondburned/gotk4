@@ -28,7 +28,7 @@ func init() {
 
 // ParseErrorFunc: type of callback that is called when an error occurs during
 // node deserialization.
-type ParseErrorFunc func(start ParseLocation, end ParseLocation, err error)
+type ParseErrorFunc func(start *ParseLocation, end *ParseLocation, err error)
 
 //export gotk4_ParseErrorFunc
 func gotk4_ParseErrorFunc(arg0 *C.GskParseLocation, arg1 *C.GskParseLocation, arg2 *C.GError, arg3 C.gpointer) {
@@ -37,12 +37,12 @@ func gotk4_ParseErrorFunc(arg0 *C.GskParseLocation, arg1 *C.GskParseLocation, ar
 		panic(`callback not found`)
 	}
 
-	var start ParseLocation // out
-	var end ParseLocation   // out
-	var err error           // out
+	var start *ParseLocation // out
+	var end *ParseLocation   // out
+	var err error            // out
 
-	start = (ParseLocation)(unsafe.Pointer(arg0))
-	end = (ParseLocation)(unsafe.Pointer(arg1))
+	start = (*ParseLocation)(unsafe.Pointer(arg0))
+	end = (*ParseLocation)(unsafe.Pointer(arg1))
 	err = gerror.Take(unsafe.Pointer(arg2))
 
 	fn := v.(ParseErrorFunc)
@@ -73,7 +73,7 @@ type RenderNode interface {
 	//
 	// For advanced nodes that cannot be supported using Cairo, in particular
 	// for nodes doing 3D operations, this function may fail.
-	DrawRenderNode(cr cairo.Context)
+	DrawRenderNode(cr *cairo.Context)
 	// Bounds retrieves the boundaries of the @node.
 	//
 	// The node will not draw outside of its boundaries.
@@ -116,7 +116,7 @@ func marshalRenderNode(p uintptr) (interface{}, error) {
 	return WrapRenderNode(obj), nil
 }
 
-func (n renderNode) DrawRenderNode(cr cairo.Context) {
+func (n renderNode) DrawRenderNode(cr *cairo.Context) {
 	var _arg0 *C.GskRenderNode // out
 	var _arg1 *C.cairo_t       // out
 
@@ -127,8 +127,8 @@ func (n renderNode) DrawRenderNode(cr cairo.Context) {
 }
 
 func (n renderNode) Bounds() graphene.Rect {
-	var _arg0 *C.GskRenderNode   // out
-	var _arg1 *C.graphene_rect_t // in
+	var _arg0 *C.GskRenderNode  // out
+	var _arg1 C.graphene_rect_t // in
 
 	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(n.Native()))
 
@@ -136,7 +136,17 @@ func (n renderNode) Bounds() graphene.Rect {
 
 	var _bounds graphene.Rect // out
 
-	_bounds = (graphene.Rect)(unsafe.Pointer(_arg1))
+	{
+		var refTmpIn *C.graphene_rect_t
+		var refTmpOut *graphene.Rect
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*graphene.Rect)(unsafe.Pointer(refTmpIn))
+
+		_bounds = *refTmpOut
+	}
 
 	return _bounds
 }
@@ -182,7 +192,7 @@ func (n renderNode) UnrefRenderNode() {
 func (n renderNode) WriteToFileRenderNode(filename string) error {
 	var _arg0 *C.GskRenderNode // out
 	var _arg1 *C.char          // out
-	var _cerr **C.GError       // in
+	var _cerr *C.GError        // in
 
 	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(n.Native()))
 	_arg1 = (*C.char)(C.CString(filename))
@@ -192,16 +202,7 @@ func (n renderNode) WriteToFileRenderNode(filename string) error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }

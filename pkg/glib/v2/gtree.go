@@ -121,14 +121,14 @@ func (t *Tree) Lookup(key interface{}) interface{} {
 func (t *Tree) LookupExtended(lookupKey interface{}) (origKey interface{}, value interface{}, ok bool) {
 	var _arg0 *C.GTree        // out
 	var _arg1 C.gconstpointer // out
-	var _arg2 *C.gpointer     // in
-	var _arg3 *C.gpointer     // in
+	var _arg2 C.gpointer      // in
+	var _arg3 C.gpointer      // in
 	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GTree)(unsafe.Pointer(t))
 	_arg1 = C.gconstpointer(box.Assign(lookupKey))
 
-	_cret = C.g_tree_lookup_extended(_arg0, _arg1, _arg2, _arg3)
+	_cret = C.g_tree_lookup_extended(_arg0, _arg1, &_arg2, &_arg3)
 
 	var _origKey interface{} // out
 	var _value interface{}   // out
@@ -162,7 +162,7 @@ func (t *Tree) Nnodes() int {
 // Ref increments the reference count of @tree by one.
 //
 // It is safe to call this function from any thread.
-func (t *Tree) Ref() Tree {
+func (t *Tree) Ref() *Tree {
 	var _arg0 *C.GTree // out
 	var _cret *C.GTree // in
 
@@ -170,10 +170,10 @@ func (t *Tree) Ref() Tree {
 
 	_cret = C.g_tree_ref(_arg0)
 
-	var _ret Tree // out
+	var _ret *Tree // out
 
-	_ret = (Tree)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_ret, func(v Tree) {
+	_ret = (*Tree)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_ret, func(v *Tree) {
 		C.g_tree_unref((*C.GTree)(unsafe.Pointer(v)))
 	})
 

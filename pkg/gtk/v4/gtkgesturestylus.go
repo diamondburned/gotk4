@@ -96,7 +96,7 @@ func NewGestureStylus() GestureStylus {
 func (g gestureStylus) Axis(axis gdk.AxisUse) (float64, bool) {
 	var _arg0 *C.GtkGestureStylus // out
 	var _arg1 C.GdkAxisUse        // out
-	var _arg2 *C.double           // in
+	var _arg2 C.double            // in
 	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GtkGestureStylus)(unsafe.Pointer(g.Native()))
@@ -118,7 +118,7 @@ func (g gestureStylus) Axis(axis gdk.AxisUse) (float64, bool) {
 func (g gestureStylus) Backlog() ([]gdk.TimeCoord, bool) {
 	var _arg0 *C.GtkGestureStylus // out
 	var _arg1 *C.GdkTimeCoord
-	var _arg2 *C.guint   // in
+	var _arg2 C.guint    // in
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.GtkGestureStylus)(unsafe.Pointer(g.Native()))

@@ -135,7 +135,7 @@ func (l unixFDList) AppendUnixFDList(fd int) (int, error) {
 	var _arg0 *C.GUnixFDList // out
 	var _arg1 C.gint         // out
 	var _cret C.gint         // in
-	var _cerr **C.GError     // in
+	var _cerr *C.GError      // in
 
 	_arg0 = (*C.GUnixFDList)(unsafe.Pointer(l.Native()))
 	_arg1 = C.gint(fd)
@@ -146,16 +146,7 @@ func (l unixFDList) AppendUnixFDList(fd int) (int, error) {
 	var _goerr error // out
 
 	_gint = int(_cret)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _gint, _goerr
 }
@@ -164,7 +155,7 @@ func (l unixFDList) GetUnixFDList(index_ int) (int, error) {
 	var _arg0 *C.GUnixFDList // out
 	var _arg1 C.gint         // out
 	var _cret C.gint         // in
-	var _cerr **C.GError     // in
+	var _cerr *C.GError      // in
 
 	_arg0 = (*C.GUnixFDList)(unsafe.Pointer(l.Native()))
 	_arg1 = C.gint(index_)
@@ -175,16 +166,7 @@ func (l unixFDList) GetUnixFDList(index_ int) (int, error) {
 	var _goerr error // out
 
 	_gint = int(_cret)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _gint, _goerr
 }

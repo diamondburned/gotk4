@@ -54,7 +54,7 @@ type OffscreenWindow interface {
 	// Surface retrieves a snapshot of the contained widget in the form of a
 	// #cairo_surface_t. If you need to keep this around over window resizes
 	// then you should add a reference to it.
-	Surface() cairo.Surface
+	Surface() *cairo.Surface
 }
 
 // offscreenWindow implements the OffscreenWindow class.
@@ -105,7 +105,7 @@ func (o offscreenWindow) Pixbuf() gdkpixbuf.Pixbuf {
 	return _pixbuf
 }
 
-func (o offscreenWindow) Surface() cairo.Surface {
+func (o offscreenWindow) Surface() *cairo.Surface {
 	var _arg0 *C.GtkOffscreenWindow // out
 	var _cret *C.cairo_surface_t    // in
 
@@ -113,9 +113,9 @@ func (o offscreenWindow) Surface() cairo.Surface {
 
 	_cret = C.gtk_offscreen_window_get_surface(_arg0)
 
-	var _surface cairo.Surface // out
+	var _surface *cairo.Surface // out
 
-	_surface = (cairo.Surface)(unsafe.Pointer(_cret))
+	_surface = (*cairo.Surface)(unsafe.Pointer(_cret))
 
 	return _surface
 }

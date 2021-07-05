@@ -70,7 +70,7 @@ type Icon interface {
 	// makes sense to transfer the #GVariant between processes on the same
 	// machine, (as opposed to over the network), and within the same file
 	// system namespace.
-	Serialize() glib.Variant
+	Serialize() *glib.Variant
 	// String generates a textual representation of @icon that can be used for
 	// serialization such as when passing @icon to a different process or saving
 	// it to persistent storage. Use g_icon_new_for_string() to get @icon back
@@ -129,7 +129,7 @@ func (i icon) Equal(icon2 Icon) bool {
 	return _ok
 }
 
-func (i icon) Serialize() glib.Variant {
+func (i icon) Serialize() *glib.Variant {
 	var _arg0 *C.GIcon    // out
 	var _cret *C.GVariant // in
 
@@ -137,10 +137,10 @@ func (i icon) Serialize() glib.Variant {
 
 	_cret = C.g_icon_serialize(_arg0)
 
-	var _variant glib.Variant // out
+	var _variant *glib.Variant // out
 
-	_variant = (glib.Variant)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_variant, func(v glib.Variant) {
+	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
 	})
 

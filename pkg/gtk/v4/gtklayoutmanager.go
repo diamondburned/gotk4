@@ -191,10 +191,10 @@ func (m layoutManager) MeasureLayoutManager(widget Widget, orientation Orientati
 	var _arg1 *C.GtkWidget        // out
 	var _arg2 C.GtkOrientation    // out
 	var _arg3 C.int               // out
-	var _arg4 *C.int              // in
-	var _arg5 *C.int              // in
-	var _arg6 *C.int              // in
-	var _arg7 *C.int              // in
+	var _arg4 C.int               // in
+	var _arg5 C.int               // in
+	var _arg6 C.int               // in
+	var _arg7 C.int               // in
 
 	_arg0 = (*C.GtkLayoutManager)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))

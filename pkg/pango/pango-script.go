@@ -297,7 +297,7 @@ func marshalScriptIter(p uintptr) (interface{}, error) {
 }
 
 // NewScriptIter constructs a struct ScriptIter.
-func NewScriptIter(text string, length int) ScriptIter {
+func NewScriptIter(text string, length int) *ScriptIter {
 	var _arg1 *C.char            // out
 	var _arg2 C.int              // out
 	var _cret *C.PangoScriptIter // in
@@ -308,10 +308,10 @@ func NewScriptIter(text string, length int) ScriptIter {
 
 	_cret = C.pango_script_iter_new(_arg1, _arg2)
 
-	var _scriptIter ScriptIter // out
+	var _scriptIter *ScriptIter // out
 
-	_scriptIter = (ScriptIter)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_scriptIter, func(v ScriptIter) {
+	_scriptIter = (*ScriptIter)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_scriptIter, func(v *ScriptIter) {
 		C.pango_script_iter_free((*C.PangoScriptIter)(unsafe.Pointer(v)))
 	})
 
@@ -341,9 +341,9 @@ func (i *ScriptIter) Free() {
 // must be prepared to handle unknown values.
 func (i *ScriptIter) Range() (start string, end string, script Script) {
 	var _arg0 *C.PangoScriptIter // out
-	var _arg1 **C.char           // in
-	var _arg2 **C.char           // in
-	var _arg3 *C.PangoScript     // in
+	var _arg1 *C.char            // in
+	var _arg2 *C.char            // in
+	var _arg3 C.PangoScript      // in
 
 	_arg0 = (*C.PangoScriptIter)(unsafe.Pointer(i))
 
@@ -353,38 +353,11 @@ func (i *ScriptIter) Range() (start string, end string, script Script) {
 	var _end string    // out
 	var _script Script // out
 
-	{
-		var refTmpIn *C.char
-		var refTmpOut string
-
-		refTmpIn = *_arg1
-
-		refTmpOut = C.GoString(refTmpIn)
-		defer C.free(unsafe.Pointer(refTmpIn))
-
-		_start = refTmpOut
-	}
-	{
-		var refTmpIn *C.char
-		var refTmpOut string
-
-		refTmpIn = *_arg2
-
-		refTmpOut = C.GoString(refTmpIn)
-		defer C.free(unsafe.Pointer(refTmpIn))
-
-		_end = refTmpOut
-	}
-	{
-		var refTmpIn C.PangoScript
-		var refTmpOut Script
-
-		refTmpIn = *_arg3
-
-		refTmpOut = Script(refTmpIn)
-
-		_script = refTmpOut
-	}
+	_start = C.GoString(_arg1)
+	defer C.free(unsafe.Pointer(_arg1))
+	_end = C.GoString(_arg2)
+	defer C.free(unsafe.Pointer(_arg2))
+	_script = Script(_arg3)
 
 	return _start, _end, _script
 }

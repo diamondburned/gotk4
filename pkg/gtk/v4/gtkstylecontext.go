@@ -227,7 +227,7 @@ func (c styleContext) AddProviderStyleContext(provider StyleProvider, priority u
 
 func (c styleContext) Border() Border {
 	var _arg0 *C.GtkStyleContext // out
-	var _arg1 *C.GtkBorder       // in
+	var _arg1 C.GtkBorder        // in
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
 
@@ -235,14 +235,24 @@ func (c styleContext) Border() Border {
 
 	var _border Border // out
 
-	_border = (Border)(unsafe.Pointer(_arg1))
+	{
+		var refTmpIn *C.GtkBorder
+		var refTmpOut *Border
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Border)(unsafe.Pointer(refTmpIn))
+
+		_border = *refTmpOut
+	}
 
 	return _border
 }
 
 func (c styleContext) Color() gdk.RGBA {
 	var _arg0 *C.GtkStyleContext // out
-	var _arg1 *C.GdkRGBA         // in
+	var _arg1 C.GdkRGBA          // in
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
 
@@ -250,7 +260,17 @@ func (c styleContext) Color() gdk.RGBA {
 
 	var _color gdk.RGBA // out
 
-	_color = (gdk.RGBA)(unsafe.Pointer(_arg1))
+	{
+		var refTmpIn *C.GdkRGBA
+		var refTmpOut *gdk.RGBA
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*gdk.RGBA)(unsafe.Pointer(refTmpIn))
+
+		_color = *refTmpOut
+	}
 
 	return _color
 }
@@ -272,7 +292,7 @@ func (c styleContext) Display() gdk.Display {
 
 func (c styleContext) Margin() Border {
 	var _arg0 *C.GtkStyleContext // out
-	var _arg1 *C.GtkBorder       // in
+	var _arg1 C.GtkBorder        // in
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
 
@@ -280,14 +300,24 @@ func (c styleContext) Margin() Border {
 
 	var _margin Border // out
 
-	_margin = (Border)(unsafe.Pointer(_arg1))
+	{
+		var refTmpIn *C.GtkBorder
+		var refTmpOut *Border
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Border)(unsafe.Pointer(refTmpIn))
+
+		_margin = *refTmpOut
+	}
 
 	return _margin
 }
 
 func (c styleContext) Padding() Border {
 	var _arg0 *C.GtkStyleContext // out
-	var _arg1 *C.GtkBorder       // in
+	var _arg1 C.GtkBorder        // in
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
 
@@ -295,7 +325,17 @@ func (c styleContext) Padding() Border {
 
 	var _padding Border // out
 
-	_padding = (Border)(unsafe.Pointer(_arg1))
+	{
+		var refTmpIn *C.GtkBorder
+		var refTmpOut *Border
+
+		in0 := &_arg1
+		refTmpIn = in0
+
+		refTmpOut = (*Border)(unsafe.Pointer(refTmpIn))
+
+		_padding = *refTmpOut
+	}
 
 	return _padding
 }
@@ -353,7 +393,7 @@ func (c styleContext) HasClassStyleContext(className string) bool {
 func (c styleContext) LookupColorStyleContext(colorName string) (gdk.RGBA, bool) {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 *C.char            // out
-	var _arg2 *C.GdkRGBA         // in
+	var _arg2 C.GdkRGBA          // in
 	var _cret C.gboolean         // in
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
@@ -365,7 +405,17 @@ func (c styleContext) LookupColorStyleContext(colorName string) (gdk.RGBA, bool)
 	var _color gdk.RGBA // out
 	var _ok bool        // out
 
-	_color = (gdk.RGBA)(unsafe.Pointer(_arg2))
+	{
+		var refTmpIn *C.GdkRGBA
+		var refTmpOut *gdk.RGBA
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*gdk.RGBA)(unsafe.Pointer(refTmpIn))
+
+		_color = *refTmpOut
+	}
 	if _cret != 0 {
 		_ok = true
 	}

@@ -221,7 +221,7 @@ type Text interface {
 	// AddSelection adds a selection bounded by the specified offsets.
 	AddSelection(startOffset int, endOffset int) bool
 	// BoundedRanges: get the ranges of text in the specified bounding box.
-	BoundedRanges(rect TextRectangle, coordType CoordType, xClipType TextClipType, yClipType TextClipType) []TextRange
+	BoundedRanges(rect *TextRectangle, coordType CoordType, xClipType TextClipType, yClipType TextClipType) []*TextRange
 	// CaretOffset gets the offset of the position of the caret (cursor).
 	CaretOffset() int
 	// CharacterAtOffset gets the specified text.
@@ -388,7 +388,7 @@ func (t text) AddSelection(startOffset int, endOffset int) bool {
 	return _ok
 }
 
-func (t text) BoundedRanges(rect TextRectangle, coordType CoordType, xClipType TextClipType, yClipType TextClipType) []TextRange {
+func (t text) BoundedRanges(rect *TextRectangle, coordType CoordType, xClipType TextClipType, yClipType TextClipType) []*TextRange {
 	var _arg0 *C.AtkText          // out
 	var _arg1 *C.AtkTextRectangle // out
 	var _arg2 C.AtkCoordType      // out
@@ -404,7 +404,7 @@ func (t text) BoundedRanges(rect TextRectangle, coordType CoordType, xClipType T
 
 	_cret = C.atk_text_get_bounded_ranges(_arg0, _arg1, _arg2, _arg3, _arg4)
 
-	var _textRanges []TextRange
+	var _textRanges []*TextRange
 
 	{
 		var i int
@@ -414,10 +414,10 @@ func (t text) BoundedRanges(rect TextRectangle, coordType CoordType, xClipType T
 		}
 
 		src := unsafe.Slice(_cret, i)
-		_textRanges = make([]TextRange, i)
+		_textRanges = make([]*TextRange, i)
 		for i := range src {
-			_textRanges[i] = (TextRange)(unsafe.Pointer(src[i]))
-			runtime.SetFinalizer(_textRanges[i], func(v TextRange) {
+			_textRanges[i] = (*TextRange)(unsafe.Pointer(src[i]))
+			runtime.SetFinalizer(_textRanges[i], func(v *TextRange) {
 				C.free(unsafe.Pointer(v))
 			})
 		}
@@ -476,10 +476,10 @@ func (t text) CharacterCount() int {
 func (t text) CharacterExtents(offset int, coords CoordType) (x int, y int, width int, height int) {
 	var _arg0 *C.AtkText     // out
 	var _arg1 C.gint         // out
-	var _arg2 *C.gint        // in
-	var _arg3 *C.gint        // in
-	var _arg4 *C.gint        // in
-	var _arg5 *C.gint        // in
+	var _arg2 C.gint         // in
+	var _arg3 C.gint         // in
+	var _arg4 C.gint         // in
+	var _arg5 C.gint         // in
 	var _arg6 C.AtkCoordType // out
 
 	_arg0 = (*C.AtkText)(unsafe.Pointer(t.Native()))
@@ -538,11 +538,11 @@ func (t text) OffsetAtPoint(x int, y int, coords CoordType) int {
 }
 
 func (t text) RangeExtents(startOffset int, endOffset int, coordType CoordType) TextRectangle {
-	var _arg0 *C.AtkText          // out
-	var _arg1 C.gint              // out
-	var _arg2 C.gint              // out
-	var _arg3 C.AtkCoordType      // out
-	var _arg4 *C.AtkTextRectangle // in
+	var _arg0 *C.AtkText         // out
+	var _arg1 C.gint             // out
+	var _arg2 C.gint             // out
+	var _arg3 C.AtkCoordType     // out
+	var _arg4 C.AtkTextRectangle // in
 
 	_arg0 = (*C.AtkText)(unsafe.Pointer(t.Native()))
 	_arg1 = C.gint(startOffset)
@@ -553,7 +553,17 @@ func (t text) RangeExtents(startOffset int, endOffset int, coordType CoordType) 
 
 	var _rect TextRectangle // out
 
-	_rect = (TextRectangle)(unsafe.Pointer(_arg4))
+	{
+		var refTmpIn *C.AtkTextRectangle
+		var refTmpOut *TextRectangle
+
+		in0 := &_arg4
+		refTmpIn = in0
+
+		refTmpOut = (*TextRectangle)(unsafe.Pointer(refTmpIn))
+
+		_rect = *refTmpOut
+	}
 
 	return _rect
 }
@@ -561,8 +571,8 @@ func (t text) RangeExtents(startOffset int, endOffset int, coordType CoordType) 
 func (t text) Selection(selectionNum int) (startOffset int, endOffset int, utf8 string) {
 	var _arg0 *C.AtkText // out
 	var _arg1 C.gint     // out
-	var _arg2 *C.gint    // in
-	var _arg3 *C.gint    // in
+	var _arg2 C.gint     // in
+	var _arg3 C.gint     // in
 	var _cret *C.gchar   // in
 
 	_arg0 = (*C.AtkText)(unsafe.Pointer(t.Native()))
@@ -586,8 +596,8 @@ func (t text) StringAtOffset(offset int, granularity TextGranularity) (startOffs
 	var _arg0 *C.AtkText           // out
 	var _arg1 C.gint               // out
 	var _arg2 C.AtkTextGranularity // out
-	var _arg3 *C.gint              // in
-	var _arg4 *C.gint              // in
+	var _arg3 C.gint               // in
+	var _arg4 C.gint               // in
 	var _cret *C.gchar             // in
 
 	_arg0 = (*C.AtkText)(unsafe.Pointer(t.Native()))
@@ -632,8 +642,8 @@ func (t text) TextAfterOffset(offset int, boundaryType TextBoundary) (startOffse
 	var _arg0 *C.AtkText        // out
 	var _arg1 C.gint            // out
 	var _arg2 C.AtkTextBoundary // out
-	var _arg3 *C.gint           // in
-	var _arg4 *C.gint           // in
+	var _arg3 C.gint            // in
+	var _arg4 C.gint            // in
 	var _cret *C.gchar          // in
 
 	_arg0 = (*C.AtkText)(unsafe.Pointer(t.Native()))
@@ -658,8 +668,8 @@ func (t text) TextAtOffset(offset int, boundaryType TextBoundary) (startOffset i
 	var _arg0 *C.AtkText        // out
 	var _arg1 C.gint            // out
 	var _arg2 C.AtkTextBoundary // out
-	var _arg3 *C.gint           // in
-	var _arg4 *C.gint           // in
+	var _arg3 C.gint            // in
+	var _arg4 C.gint            // in
 	var _cret *C.gchar          // in
 
 	_arg0 = (*C.AtkText)(unsafe.Pointer(t.Native()))
@@ -684,8 +694,8 @@ func (t text) TextBeforeOffset(offset int, boundaryType TextBoundary) (startOffs
 	var _arg0 *C.AtkText        // out
 	var _arg1 C.gint            // out
 	var _arg2 C.AtkTextBoundary // out
-	var _arg3 *C.gint           // in
-	var _arg4 *C.gint           // in
+	var _arg3 C.gint            // in
+	var _arg4 C.gint            // in
 	var _cret *C.gchar          // in
 
 	_arg0 = (*C.AtkText)(unsafe.Pointer(t.Native()))

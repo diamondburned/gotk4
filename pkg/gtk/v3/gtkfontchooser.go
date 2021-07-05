@@ -108,7 +108,7 @@ type FontChooser interface {
 	//
 	// Use pango_font_description_equal() if you want to compare two font
 	// descriptions.
-	FontDesc() pango.FontDescription
+	FontDesc() *pango.FontDescription
 	// FontFace gets the FontFace representing the selected font group details
 	// (i.e. family, slant, weight, width, etc).
 	//
@@ -137,7 +137,7 @@ type FontChooser interface {
 	// SetFont sets the currently-selected font.
 	SetFont(fontname string)
 	// SetFontDesc sets the currently-selected font from @font_desc.
-	SetFontDesc(fontDesc pango.FontDescription)
+	SetFontDesc(fontDesc *pango.FontDescription)
 	// SetFontMap sets a custom font map to use for this font chooser widget. A
 	// custom font map can be used to present application-specific fonts instead
 	// of or in addition to the normal system fonts.
@@ -207,7 +207,7 @@ func (f fontChooser) Font() string {
 	return _utf8
 }
 
-func (f fontChooser) FontDesc() pango.FontDescription {
+func (f fontChooser) FontDesc() *pango.FontDescription {
 	var _arg0 *C.GtkFontChooser       // out
 	var _cret *C.PangoFontDescription // in
 
@@ -215,10 +215,10 @@ func (f fontChooser) FontDesc() pango.FontDescription {
 
 	_cret = C.gtk_font_chooser_get_font_desc(_arg0)
 
-	var _fontDescription pango.FontDescription // out
+	var _fontDescription *pango.FontDescription // out
 
-	_fontDescription = (pango.FontDescription)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_fontDescription, func(v pango.FontDescription) {
+	_fontDescription = (*pango.FontDescription)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_fontDescription, func(v *pango.FontDescription) {
 		C.pango_font_description_free((*C.PangoFontDescription)(unsafe.Pointer(v)))
 	})
 
@@ -376,7 +376,7 @@ func (f fontChooser) SetFont(fontname string) {
 	C.gtk_font_chooser_set_font(_arg0, _arg1)
 }
 
-func (f fontChooser) SetFontDesc(fontDesc pango.FontDescription) {
+func (f fontChooser) SetFontDesc(fontDesc *pango.FontDescription) {
 	var _arg0 *C.GtkFontChooser       // out
 	var _arg1 *C.PangoFontDescription // out
 

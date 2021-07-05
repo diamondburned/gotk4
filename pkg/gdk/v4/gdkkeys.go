@@ -17,9 +17,9 @@ import "C"
 //
 // Examples of keyvals are K_KEY_a, K_KEY_Enter, K_KEY_F1, etc.
 func KeyvalConvertCase(symbol uint) (lower uint, upper uint) {
-	var _arg1 C.guint  // out
-	var _arg2 *C.guint // in
-	var _arg3 *C.guint // in
+	var _arg1 C.guint // out
+	var _arg2 C.guint // in
+	var _arg3 C.guint // in
 
 	_arg1 = C.guint(symbol)
 

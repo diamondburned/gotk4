@@ -66,10 +66,10 @@ type FontMap interface {
 	ListFamiliesFontMap() []FontFamily
 	// LoadFontFontMap: load the font in the fontmap that is the closest match
 	// for @desc.
-	LoadFontFontMap(context Context, desc FontDescription) Font
+	LoadFontFontMap(context Context, desc *FontDescription) Font
 	// LoadFontsetFontMap: load a set of fonts in the fontmap that can be used
 	// to render a font matching @desc.
-	LoadFontsetFontMap(context Context, desc FontDescription, language Language) Fontset
+	LoadFontsetFontMap(context Context, desc *FontDescription, language *Language) Fontset
 }
 
 // fontMap implements the FontMap class.
@@ -150,7 +150,7 @@ func (f fontMap) Serial() uint {
 func (f fontMap) ListFamiliesFontMap() []FontFamily {
 	var _arg0 *C.PangoFontMap // out
 	var _arg1 **C.PangoFontFamily
-	var _arg2 *C.int // in
+	var _arg2 C.int // in
 
 	_arg0 = (*C.PangoFontMap)(unsafe.Pointer(f.Native()))
 
@@ -163,23 +163,14 @@ func (f fontMap) ListFamiliesFontMap() []FontFamily {
 		src := unsafe.Slice(_arg1, _arg2)
 		_families = make([]FontFamily, _arg2)
 		for i := 0; i < int(_arg2); i++ {
-			{
-				var refTmpIn *C.PangoFontFamily
-				var refTmpOut fontFamily
-
-				refTmpIn = *src[i]
-
-				refTmpOut = gextras.CastObject(externglib.Take(unsafe.Pointer(refTmpIn))).(fontFamily)
-
-				_families[i] = refTmpOut
-			}
+			_families[i] = gextras.CastObject(externglib.Take(unsafe.Pointer(src[i]))).(FontFamily)
 		}
 	}
 
 	return _families
 }
 
-func (f fontMap) LoadFontFontMap(context Context, desc FontDescription) Font {
+func (f fontMap) LoadFontFontMap(context Context, desc *FontDescription) Font {
 	var _arg0 *C.PangoFontMap         // out
 	var _arg1 *C.PangoContext         // out
 	var _arg2 *C.PangoFontDescription // out
@@ -198,7 +189,7 @@ func (f fontMap) LoadFontFontMap(context Context, desc FontDescription) Font {
 	return _font
 }
 
-func (f fontMap) LoadFontsetFontMap(context Context, desc FontDescription, language Language) Fontset {
+func (f fontMap) LoadFontsetFontMap(context Context, desc *FontDescription, language *Language) Fontset {
 	var _arg0 *C.PangoFontMap         // out
 	var _arg1 *C.PangoContext         // out
 	var _arg2 *C.PangoFontDescription // out

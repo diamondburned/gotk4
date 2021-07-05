@@ -108,10 +108,10 @@ type CellRenderer interface {
 	// ActivateCellRenderer passes an activate event to the cell renderer for
 	// possible processing. Some cell renderers may use events; for example,
 	// CellRendererToggle toggles when it gets a mouse click.
-	ActivateCellRenderer(event gdk.Event, widget Widget, path string, backgroundArea gdk.Rectangle, cellArea gdk.Rectangle, flags CellRendererState) bool
+	ActivateCellRenderer(event gdk.Event, widget Widget, path string, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState) bool
 	// AlignedArea gets the aligned area used by @cell inside @cell_area. Used
 	// for finding the appropriate edit and focus rectangle.
-	AlignedArea(widget Widget, flags CellRendererState, cellArea gdk.Rectangle) gdk.Rectangle
+	AlignedArea(widget Widget, flags CellRendererState, cellArea *gdk.Rectangle) gdk.Rectangle
 	// Alignment fills in @xalign and @yalign with the appropriate values of
 	// @cell.
 	Alignment() (xalign float32, yalign float32)
@@ -176,11 +176,11 @@ type CellRenderer interface {
 	// @background_area includes the blank space around the cell, and also the
 	// area containing the tree expander; so the @background_area rectangles for
 	// all cells tile to cover the entire @window.
-	SnapshotCellRenderer(snapshot Snapshot, widget Widget, backgroundArea gdk.Rectangle, cellArea gdk.Rectangle, flags CellRendererState)
+	SnapshotCellRenderer(snapshot Snapshot, widget Widget, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState)
 	// StartEditingCellRenderer starts editing the contents of this @cell,
 	// through a new CellEditable widget created by the
 	// CellRendererClass.start_editing virtual function.
-	StartEditingCellRenderer(event gdk.Event, widget Widget, path string, backgroundArea gdk.Rectangle, cellArea gdk.Rectangle, flags CellRendererState) CellEditable
+	StartEditingCellRenderer(event gdk.Event, widget Widget, path string, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState) CellEditable
 	// StopEditingCellRenderer informs the cell renderer that the editing is
 	// stopped. If @canceled is true, the cell renderer will emit the
 	// CellRenderer::editing-canceled signal.
@@ -209,7 +209,7 @@ func marshalCellRenderer(p uintptr) (interface{}, error) {
 	return WrapCellRenderer(obj), nil
 }
 
-func (c cellRenderer) ActivateCellRenderer(event gdk.Event, widget Widget, path string, backgroundArea gdk.Rectangle, cellArea gdk.Rectangle, flags CellRendererState) bool {
+func (c cellRenderer) ActivateCellRenderer(event gdk.Event, widget Widget, path string, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState) bool {
 	var _arg0 *C.GtkCellRenderer     // out
 	var _arg1 *C.GdkEvent            // out
 	var _arg2 *C.GtkWidget           // out
@@ -239,12 +239,12 @@ func (c cellRenderer) ActivateCellRenderer(event gdk.Event, widget Widget, path 
 	return _ok
 }
 
-func (c cellRenderer) AlignedArea(widget Widget, flags CellRendererState, cellArea gdk.Rectangle) gdk.Rectangle {
+func (c cellRenderer) AlignedArea(widget Widget, flags CellRendererState, cellArea *gdk.Rectangle) gdk.Rectangle {
 	var _arg0 *C.GtkCellRenderer     // out
 	var _arg1 *C.GtkWidget           // out
 	var _arg2 C.GtkCellRendererState // out
 	var _arg3 *C.GdkRectangle        // out
-	var _arg4 *C.GdkRectangle        // in
+	var _arg4 C.GdkRectangle         // in
 
 	_arg0 = (*C.GtkCellRenderer)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
@@ -255,15 +255,25 @@ func (c cellRenderer) AlignedArea(widget Widget, flags CellRendererState, cellAr
 
 	var _alignedArea gdk.Rectangle // out
 
-	_alignedArea = (gdk.Rectangle)(unsafe.Pointer(_arg4))
+	{
+		var refTmpIn *C.GdkRectangle
+		var refTmpOut *gdk.Rectangle
+
+		in0 := &_arg4
+		refTmpIn = in0
+
+		refTmpOut = (*gdk.Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_alignedArea = *refTmpOut
+	}
 
 	return _alignedArea
 }
 
 func (c cellRenderer) Alignment() (xalign float32, yalign float32) {
 	var _arg0 *C.GtkCellRenderer // out
-	var _arg1 *C.float           // in
-	var _arg2 *C.float           // in
+	var _arg1 C.float            // in
+	var _arg2 C.float            // in
 
 	_arg0 = (*C.GtkCellRenderer)(unsafe.Pointer(c.Native()))
 
@@ -280,8 +290,8 @@ func (c cellRenderer) Alignment() (xalign float32, yalign float32) {
 
 func (c cellRenderer) FixedSize() (width int, height int) {
 	var _arg0 *C.GtkCellRenderer // out
-	var _arg1 *C.int             // in
-	var _arg2 *C.int             // in
+	var _arg1 C.int              // in
+	var _arg2 C.int              // in
 
 	_arg0 = (*C.GtkCellRenderer)(unsafe.Pointer(c.Native()))
 
@@ -332,8 +342,8 @@ func (c cellRenderer) IsExpander() bool {
 
 func (c cellRenderer) Padding() (xpad int, ypad int) {
 	var _arg0 *C.GtkCellRenderer // out
-	var _arg1 *C.int             // in
-	var _arg2 *C.int             // in
+	var _arg1 C.int              // in
+	var _arg2 C.int              // in
 
 	_arg0 = (*C.GtkCellRenderer)(unsafe.Pointer(c.Native()))
 
@@ -351,8 +361,8 @@ func (c cellRenderer) Padding() (xpad int, ypad int) {
 func (c cellRenderer) PreferredHeight(widget Widget) (minimumSize int, naturalSize int) {
 	var _arg0 *C.GtkCellRenderer // out
 	var _arg1 *C.GtkWidget       // out
-	var _arg2 *C.int             // in
-	var _arg3 *C.int             // in
+	var _arg2 C.int              // in
+	var _arg3 C.int              // in
 
 	_arg0 = (*C.GtkCellRenderer)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
@@ -372,8 +382,8 @@ func (c cellRenderer) PreferredHeightForWidth(widget Widget, width int) (minimum
 	var _arg0 *C.GtkCellRenderer // out
 	var _arg1 *C.GtkWidget       // out
 	var _arg2 C.int              // out
-	var _arg3 *C.int             // in
-	var _arg4 *C.int             // in
+	var _arg3 C.int              // in
+	var _arg4 C.int              // in
 
 	_arg0 = (*C.GtkCellRenderer)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
@@ -393,8 +403,8 @@ func (c cellRenderer) PreferredHeightForWidth(widget Widget, width int) (minimum
 func (c cellRenderer) PreferredSize(widget Widget) (minimumSize Requisition, naturalSize Requisition) {
 	var _arg0 *C.GtkCellRenderer // out
 	var _arg1 *C.GtkWidget       // out
-	var _arg2 *C.GtkRequisition  // in
-	var _arg3 *C.GtkRequisition  // in
+	var _arg2 C.GtkRequisition   // in
+	var _arg3 C.GtkRequisition   // in
 
 	_arg0 = (*C.GtkCellRenderer)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
@@ -404,8 +414,28 @@ func (c cellRenderer) PreferredSize(widget Widget) (minimumSize Requisition, nat
 	var _minimumSize Requisition // out
 	var _naturalSize Requisition // out
 
-	_minimumSize = (Requisition)(unsafe.Pointer(_arg2))
-	_naturalSize = (Requisition)(unsafe.Pointer(_arg3))
+	{
+		var refTmpIn *C.GtkRequisition
+		var refTmpOut *Requisition
+
+		in0 := &_arg2
+		refTmpIn = in0
+
+		refTmpOut = (*Requisition)(unsafe.Pointer(refTmpIn))
+
+		_minimumSize = *refTmpOut
+	}
+	{
+		var refTmpIn *C.GtkRequisition
+		var refTmpOut *Requisition
+
+		in0 := &_arg3
+		refTmpIn = in0
+
+		refTmpOut = (*Requisition)(unsafe.Pointer(refTmpIn))
+
+		_naturalSize = *refTmpOut
+	}
 
 	return _minimumSize, _naturalSize
 }
@@ -413,8 +443,8 @@ func (c cellRenderer) PreferredSize(widget Widget) (minimumSize Requisition, nat
 func (c cellRenderer) PreferredWidth(widget Widget) (minimumSize int, naturalSize int) {
 	var _arg0 *C.GtkCellRenderer // out
 	var _arg1 *C.GtkWidget       // out
-	var _arg2 *C.int             // in
-	var _arg3 *C.int             // in
+	var _arg2 C.int              // in
+	var _arg3 C.int              // in
 
 	_arg0 = (*C.GtkCellRenderer)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
@@ -434,8 +464,8 @@ func (c cellRenderer) PreferredWidthForHeight(widget Widget, height int) (minimu
 	var _arg0 *C.GtkCellRenderer // out
 	var _arg1 *C.GtkWidget       // out
 	var _arg2 C.int              // out
-	var _arg3 *C.int             // in
-	var _arg4 *C.int             // in
+	var _arg3 C.int              // in
+	var _arg4 C.int              // in
 
 	_arg0 = (*C.GtkCellRenderer)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
@@ -621,7 +651,7 @@ func (c cellRenderer) SetVisibleCellRenderer(visible bool) {
 	C.gtk_cell_renderer_set_visible(_arg0, _arg1)
 }
 
-func (c cellRenderer) SnapshotCellRenderer(snapshot Snapshot, widget Widget, backgroundArea gdk.Rectangle, cellArea gdk.Rectangle, flags CellRendererState) {
+func (c cellRenderer) SnapshotCellRenderer(snapshot Snapshot, widget Widget, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState) {
 	var _arg0 *C.GtkCellRenderer     // out
 	var _arg1 *C.GtkSnapshot         // out
 	var _arg2 *C.GtkWidget           // out
@@ -639,7 +669,7 @@ func (c cellRenderer) SnapshotCellRenderer(snapshot Snapshot, widget Widget, bac
 	C.gtk_cell_renderer_snapshot(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
 
-func (c cellRenderer) StartEditingCellRenderer(event gdk.Event, widget Widget, path string, backgroundArea gdk.Rectangle, cellArea gdk.Rectangle, flags CellRendererState) CellEditable {
+func (c cellRenderer) StartEditingCellRenderer(event gdk.Event, widget Widget, path string, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState) CellEditable {
 	var _arg0 *C.GtkCellRenderer     // out
 	var _arg1 *C.GdkEvent            // out
 	var _arg2 *C.GtkWidget           // out

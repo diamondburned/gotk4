@@ -143,7 +143,7 @@ func DragSetIconStock(context gdk.DragContext, stockId string, hotX int, hotY in
 // To position the surface relative to the mouse, use
 // cairo_surface_set_device_offset() on @surface. The mouse cursor will be
 // positioned at the (0,0) coordinate of the surface.
-func DragSetIconSurface(context gdk.DragContext, surface cairo.Surface) {
+func DragSetIconSurface(context gdk.DragContext, surface *cairo.Surface) {
 	var _arg1 *C.GdkDragContext  // out
 	var _arg2 *C.cairo_surface_t // out
 

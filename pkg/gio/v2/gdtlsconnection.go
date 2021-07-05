@@ -289,7 +289,7 @@ func marshalDTLSConnection(p uintptr) (interface{}, error) {
 func (c dtlsConnection) Close(cancellable Cancellable) error {
 	var _arg0 *C.GDtlsConnection // out
 	var _arg1 *C.GCancellable    // out
-	var _cerr **C.GError         // in
+	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
@@ -298,16 +298,7 @@ func (c dtlsConnection) Close(cancellable Cancellable) error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
@@ -331,7 +322,7 @@ func (c dtlsConnection) CloseAsync(ioPriority int, cancellable Cancellable, call
 func (c dtlsConnection) CloseFinish(result AsyncResult) error {
 	var _arg0 *C.GDtlsConnection // out
 	var _arg1 *C.GAsyncResult    // out
-	var _cerr **C.GError         // in
+	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
@@ -340,16 +331,7 @@ func (c dtlsConnection) CloseFinish(result AsyncResult) error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
@@ -394,7 +376,7 @@ func (c dtlsConnection) ChannelBindingData(typ TLSChannelBindingType) ([]byte, e
 	var _arg0 *C.GDtlsConnection       // out
 	var _arg1 C.GTlsChannelBindingType // out
 	var _arg2 C.GByteArray
-	var _cerr **C.GError // in
+	var _cerr *C.GError // in
 
 	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(c.Native()))
 	_arg1 = C.GTlsChannelBindingType(typ)
@@ -406,16 +388,7 @@ func (c dtlsConnection) ChannelBindingData(typ TLSChannelBindingType) ([]byte, e
 
 	_data = make([]byte, _arg2.len)
 	copy(_data, unsafe.Slice((*byte)(_arg2.data), _arg2.len))
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _data, _goerr
 }
@@ -530,7 +503,7 @@ func (c dtlsConnection) RequireCloseNotify() bool {
 func (c dtlsConnection) Handshake(cancellable Cancellable) error {
 	var _arg0 *C.GDtlsConnection // out
 	var _arg1 *C.GCancellable    // out
-	var _cerr **C.GError         // in
+	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
@@ -539,16 +512,7 @@ func (c dtlsConnection) Handshake(cancellable Cancellable) error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
@@ -572,7 +536,7 @@ func (c dtlsConnection) HandshakeAsync(ioPriority int, cancellable Cancellable, 
 func (c dtlsConnection) HandshakeFinish(result AsyncResult) error {
 	var _arg0 *C.GDtlsConnection // out
 	var _arg1 *C.GAsyncResult    // out
-	var _cerr **C.GError         // in
+	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
@@ -581,16 +545,7 @@ func (c dtlsConnection) HandshakeFinish(result AsyncResult) error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
@@ -670,7 +625,7 @@ func (c dtlsConnection) Shutdown(shutdownRead bool, shutdownWrite bool, cancella
 	var _arg1 C.gboolean         // out
 	var _arg2 C.gboolean         // out
 	var _arg3 *C.GCancellable    // out
-	var _cerr **C.GError         // in
+	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(c.Native()))
 	if shutdownRead {
@@ -685,16 +640,7 @@ func (c dtlsConnection) Shutdown(shutdownRead bool, shutdownWrite bool, cancella
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
@@ -726,7 +672,7 @@ func (c dtlsConnection) ShutdownAsync(shutdownRead bool, shutdownWrite bool, ioP
 func (c dtlsConnection) ShutdownFinish(result AsyncResult) error {
 	var _arg0 *C.GDtlsConnection // out
 	var _arg1 *C.GAsyncResult    // out
-	var _cerr **C.GError         // in
+	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
@@ -735,16 +681,7 @@ func (c dtlsConnection) ShutdownFinish(result AsyncResult) error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }

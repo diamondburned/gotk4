@@ -207,7 +207,7 @@ func (s tlsDatabase) LookupCertificateForHandleTLSDatabase(handle string, intera
 	var _arg3 C.GTlsDatabaseLookupFlags // out
 	var _arg4 *C.GCancellable           // out
 	var _cret *C.GTlsCertificate        // in
-	var _cerr **C.GError                // in
+	var _cerr *C.GError                 // in
 
 	_arg0 = (*C.GTlsDatabase)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(handle))
@@ -222,16 +222,7 @@ func (s tlsDatabase) LookupCertificateForHandleTLSDatabase(handle string, intera
 	var _goerr error                   // out
 
 	_tlsCertificate = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(TLSCertificate)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _tlsCertificate, _goerr
 }
@@ -261,7 +252,7 @@ func (s tlsDatabase) LookupCertificateForHandleFinishTLSDatabase(result AsyncRes
 	var _arg0 *C.GTlsDatabase    // out
 	var _arg1 *C.GAsyncResult    // out
 	var _cret *C.GTlsCertificate // in
-	var _cerr **C.GError         // in
+	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GTlsDatabase)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
@@ -272,16 +263,7 @@ func (s tlsDatabase) LookupCertificateForHandleFinishTLSDatabase(result AsyncRes
 	var _goerr error                   // out
 
 	_tlsCertificate = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(TLSCertificate)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _tlsCertificate, _goerr
 }
@@ -293,7 +275,7 @@ func (s tlsDatabase) LookupCertificateIssuerTLSDatabase(certificate TLSCertifica
 	var _arg3 C.GTlsDatabaseLookupFlags // out
 	var _arg4 *C.GCancellable           // out
 	var _cret *C.GTlsCertificate        // in
-	var _cerr **C.GError                // in
+	var _cerr *C.GError                 // in
 
 	_arg0 = (*C.GTlsDatabase)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GTlsCertificate)(unsafe.Pointer(certificate.Native()))
@@ -307,16 +289,7 @@ func (s tlsDatabase) LookupCertificateIssuerTLSDatabase(certificate TLSCertifica
 	var _goerr error                   // out
 
 	_tlsCertificate = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(TLSCertificate)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _tlsCertificate, _goerr
 }
@@ -345,7 +318,7 @@ func (s tlsDatabase) LookupCertificateIssuerFinishTLSDatabase(result AsyncResult
 	var _arg0 *C.GTlsDatabase    // out
 	var _arg1 *C.GAsyncResult    // out
 	var _cret *C.GTlsCertificate // in
-	var _cerr **C.GError         // in
+	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GTlsDatabase)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
@@ -356,16 +329,7 @@ func (s tlsDatabase) LookupCertificateIssuerFinishTLSDatabase(result AsyncResult
 	var _goerr error                   // out
 
 	_tlsCertificate = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(TLSCertificate)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _tlsCertificate, _goerr
 }
@@ -400,7 +364,7 @@ func (s tlsDatabase) VerifyChainTLSDatabase(chain TLSCertificate, purpose string
 	var _arg5 C.GTlsDatabaseVerifyFlags // out
 	var _arg6 *C.GCancellable           // out
 	var _cret C.GTlsCertificateFlags    // in
-	var _cerr **C.GError                // in
+	var _cerr *C.GError                 // in
 
 	_arg0 = (*C.GTlsDatabase)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GTlsCertificate)(unsafe.Pointer(chain.Native()))
@@ -417,16 +381,7 @@ func (s tlsDatabase) VerifyChainTLSDatabase(chain TLSCertificate, purpose string
 	var _goerr error                             // out
 
 	_tlsCertificateFlags = TLSCertificateFlags(_cret)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _tlsCertificateFlags, _goerr
 }
@@ -460,7 +415,7 @@ func (s tlsDatabase) VerifyChainFinishTLSDatabase(result AsyncResult) (TLSCertif
 	var _arg0 *C.GTlsDatabase        // out
 	var _arg1 *C.GAsyncResult        // out
 	var _cret C.GTlsCertificateFlags // in
-	var _cerr **C.GError             // in
+	var _cerr *C.GError              // in
 
 	_arg0 = (*C.GTlsDatabase)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
@@ -471,16 +426,7 @@ func (s tlsDatabase) VerifyChainFinishTLSDatabase(result AsyncResult) (TLSCertif
 	var _goerr error                             // out
 
 	_tlsCertificateFlags = TLSCertificateFlags(_cret)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _tlsCertificateFlags, _goerr
 }

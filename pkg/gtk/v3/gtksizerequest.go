@@ -20,7 +20,7 @@ import "C"
 // The remaining space will be added to the @minimum_size member of the
 // GtkRequestedSize struct. If all sizes reach their natural size then the
 // remaining space is returned.
-func DistributeNaturalAllocation(extraSpace int, nRequestedSizes uint, sizes RequestedSize) int {
+func DistributeNaturalAllocation(extraSpace int, nRequestedSizes uint, sizes *RequestedSize) int {
 	var _arg1 C.gint              // out
 	var _arg2 C.guint             // out
 	var _arg3 *C.GtkRequestedSize // out

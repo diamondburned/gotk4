@@ -342,7 +342,7 @@ type Expression interface {
 	//
 	// Note that this function takes ownership of `self`. If you want to keep it
 	// around, you should [method@Gtk.Expression.ref] it beforehand.
-	BindExpression(target gextras.Objector, property string, this_ gextras.Objector) ExpressionWatch
+	BindExpression(target gextras.Objector, property string, this_ gextras.Objector) *ExpressionWatch
 	// EvaluateExpression evaluates the given expression and on success stores
 	// the result in @value.
 	//
@@ -395,7 +395,7 @@ func marshalExpression(p uintptr) (interface{}, error) {
 	return WrapExpression(obj), nil
 }
 
-func (s expression) BindExpression(target gextras.Objector, property string, this_ gextras.Objector) ExpressionWatch {
+func (s expression) BindExpression(target gextras.Objector, property string, this_ gextras.Objector) *ExpressionWatch {
 	var _arg0 *C.GtkExpression      // out
 	var _arg1 C.gpointer            // out
 	var _arg2 *C.char               // out
@@ -410,9 +410,9 @@ func (s expression) BindExpression(target gextras.Objector, property string, thi
 
 	_cret = C.gtk_expression_bind(_arg0, _arg1, _arg2, _arg3)
 
-	var _expressionWatch ExpressionWatch // out
+	var _expressionWatch *ExpressionWatch // out
 
-	_expressionWatch = (ExpressionWatch)(unsafe.Pointer(_cret))
+	_expressionWatch = (*ExpressionWatch)(unsafe.Pointer(_cret))
 	C.gtk_expression_watch_ref(_cret)
 
 	return _expressionWatch
@@ -680,7 +680,7 @@ func (w *ExpressionWatch) Evaluate(value externglib.Value) bool {
 }
 
 // Ref acquires a reference on the given `GtkExpressionWatch`.
-func (w *ExpressionWatch) Ref() ExpressionWatch {
+func (w *ExpressionWatch) Ref() *ExpressionWatch {
 	var _arg0 *C.GtkExpressionWatch // out
 	var _cret *C.GtkExpressionWatch // in
 
@@ -688,10 +688,10 @@ func (w *ExpressionWatch) Ref() ExpressionWatch {
 
 	_cret = C.gtk_expression_watch_ref(_arg0)
 
-	var _expressionWatch ExpressionWatch // out
+	var _expressionWatch *ExpressionWatch // out
 
-	_expressionWatch = (ExpressionWatch)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_expressionWatch, func(v ExpressionWatch) {
+	_expressionWatch = (*ExpressionWatch)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_expressionWatch, func(v *ExpressionWatch) {
 		C.gtk_expression_watch_unref((*C.GtkExpressionWatch)(unsafe.Pointer(v)))
 	})
 

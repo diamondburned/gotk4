@@ -123,7 +123,7 @@ type PrintSettings interface {
 	PaperHeight(unit Unit) float64
 	// PaperSize gets the value of GTK_PRINT_SETTINGS_PAPER_FORMAT, converted to
 	// a PaperSize.
-	PaperSize() PaperSize
+	PaperSize() *PaperSize
 	// PaperWidth gets the value of GTK_PRINT_SETTINGS_PAPER_WIDTH, converted to
 	// @unit.
 	PaperWidth(unit Unit) float64
@@ -157,7 +157,7 @@ type PrintSettings interface {
 	// LoadKeyFilePrintSettings reads the print settings from the group
 	// @group_name in @key_file. If the file could not be loaded then error is
 	// set to either a Error or FileError.
-	LoadKeyFilePrintSettings(keyFile glib.KeyFile, groupName string) error
+	LoadKeyFilePrintSettings(keyFile *glib.KeyFile, groupName string) error
 	// SetPrintSettings associates @value with @key.
 	SetPrintSettings(key string, value string)
 	// SetBoolPrintSettings sets @key to a boolean value.
@@ -209,7 +209,7 @@ type PrintSettings interface {
 	// SetPaperSizePrintSettings sets the value of
 	// GTK_PRINT_SETTINGS_PAPER_FORMAT, GTK_PRINT_SETTINGS_PAPER_WIDTH and
 	// GTK_PRINT_SETTINGS_PAPER_HEIGHT.
-	SetPaperSizePrintSettings(paperSize PaperSize)
+	SetPaperSizePrintSettings(paperSize *PaperSize)
 	// SetPaperWidthPrintSettings sets the value of
 	// GTK_PRINT_SETTINGS_PAPER_WIDTH.
 	SetPaperWidthPrintSettings(width float64, unit Unit)
@@ -243,10 +243,10 @@ type PrintSettings interface {
 	// set to either a Error or FileError.
 	ToFilePrintSettings(fileName string) error
 	// ToGVariantPrintSettings: serialize print settings to an a{sv} variant.
-	ToGVariantPrintSettings() glib.Variant
+	ToGVariantPrintSettings() *glib.Variant
 	// ToKeyFilePrintSettings: this function adds the print settings from
 	// @settings to @key_file.
-	ToKeyFilePrintSettings(keyFile glib.KeyFile, groupName string)
+	ToKeyFilePrintSettings(keyFile *glib.KeyFile, groupName string)
 	// UnsetPrintSettings removes any value associated with @key. This has the
 	// same effect as setting the value to nil.
 	UnsetPrintSettings(key string)
@@ -291,7 +291,7 @@ func NewPrintSettings() PrintSettings {
 func NewPrintSettingsFromFile(fileName string) (PrintSettings, error) {
 	var _arg1 *C.gchar            // out
 	var _cret *C.GtkPrintSettings // in
-	var _cerr **C.GError          // in
+	var _cerr *C.GError           // in
 
 	_arg1 = (*C.gchar)(C.CString(fileName))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -302,23 +302,14 @@ func NewPrintSettingsFromFile(fileName string) (PrintSettings, error) {
 	var _goerr error                 // out
 
 	_printSettings = WrapPrintSettings(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _printSettings, _goerr
 }
 
 // NewPrintSettingsFromGVariant: deserialize print settings from an a{sv}
 // variant in the format produced by gtk_print_settings_to_gvariant().
-func NewPrintSettingsFromGVariant(variant glib.Variant) PrintSettings {
+func NewPrintSettingsFromGVariant(variant *glib.Variant) PrintSettings {
 	var _arg1 *C.GVariant         // out
 	var _cret *C.GtkPrintSettings // in
 
@@ -337,11 +328,11 @@ func NewPrintSettingsFromGVariant(variant glib.Variant) PrintSettings {
 // @group_name in @key_file. Returns a new PrintSettings object with the
 // restored settings, or nil if an error occurred. If the file could not be
 // loaded then error is set to either a Error or FileError.
-func NewPrintSettingsFromKeyFile(keyFile glib.KeyFile, groupName string) (PrintSettings, error) {
+func NewPrintSettingsFromKeyFile(keyFile *glib.KeyFile, groupName string) (PrintSettings, error) {
 	var _arg1 *C.GKeyFile         // out
 	var _arg2 *C.gchar            // out
 	var _cret *C.GtkPrintSettings // in
-	var _cerr **C.GError          // in
+	var _cerr *C.GError           // in
 
 	_arg1 = (*C.GKeyFile)(unsafe.Pointer(keyFile))
 	_arg2 = (*C.gchar)(C.CString(groupName))
@@ -353,16 +344,7 @@ func NewPrintSettingsFromKeyFile(keyFile glib.KeyFile, groupName string) (PrintS
 	var _goerr error                 // out
 
 	_printSettings = WrapPrintSettings(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _printSettings, _goerr
 }
@@ -727,7 +709,7 @@ func (s printSettings) PaperHeight(unit Unit) float64 {
 	return _gdouble
 }
 
-func (s printSettings) PaperSize() PaperSize {
+func (s printSettings) PaperSize() *PaperSize {
 	var _arg0 *C.GtkPrintSettings // out
 	var _cret *C.GtkPaperSize     // in
 
@@ -735,10 +717,10 @@ func (s printSettings) PaperSize() PaperSize {
 
 	_cret = C.gtk_print_settings_get_paper_size(_arg0)
 
-	var _paperSize PaperSize // out
+	var _paperSize *PaperSize // out
 
-	_paperSize = (PaperSize)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_paperSize, func(v PaperSize) {
+	_paperSize = (*PaperSize)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_paperSize, func(v *PaperSize) {
 		C.gtk_paper_size_free((*C.GtkPaperSize)(unsafe.Pointer(v)))
 	})
 
@@ -939,7 +921,7 @@ func (s printSettings) HasKeyPrintSettings(key string) bool {
 func (s printSettings) LoadFilePrintSettings(fileName string) error {
 	var _arg0 *C.GtkPrintSettings // out
 	var _arg1 *C.gchar            // out
-	var _cerr **C.GError          // in
+	var _cerr *C.GError           // in
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(fileName))
@@ -949,25 +931,16 @@ func (s printSettings) LoadFilePrintSettings(fileName string) error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
 
-func (s printSettings) LoadKeyFilePrintSettings(keyFile glib.KeyFile, groupName string) error {
+func (s printSettings) LoadKeyFilePrintSettings(keyFile *glib.KeyFile, groupName string) error {
 	var _arg0 *C.GtkPrintSettings // out
 	var _arg1 *C.GKeyFile         // out
 	var _arg2 *C.gchar            // out
-	var _cerr **C.GError          // in
+	var _cerr *C.GError           // in
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GKeyFile)(unsafe.Pointer(keyFile))
@@ -978,16 +951,7 @@ func (s printSettings) LoadKeyFilePrintSettings(keyFile glib.KeyFile, groupName 
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
@@ -1213,7 +1177,7 @@ func (s printSettings) SetPaperHeightPrintSettings(height float64, unit Unit) {
 	C.gtk_print_settings_set_paper_height(_arg0, _arg1, _arg2)
 }
 
-func (s printSettings) SetPaperSizePrintSettings(paperSize PaperSize) {
+func (s printSettings) SetPaperSizePrintSettings(paperSize *PaperSize) {
 	var _arg0 *C.GtkPrintSettings // out
 	var _arg1 *C.GtkPaperSize     // out
 
@@ -1335,7 +1299,7 @@ func (s printSettings) SetUseColorPrintSettings(useColor bool) {
 func (s printSettings) ToFilePrintSettings(fileName string) error {
 	var _arg0 *C.GtkPrintSettings // out
 	var _arg1 *C.gchar            // out
-	var _cerr **C.GError          // in
+	var _cerr *C.GError           // in
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(fileName))
@@ -1345,21 +1309,12 @@ func (s printSettings) ToFilePrintSettings(fileName string) error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
 
-func (s printSettings) ToGVariantPrintSettings() glib.Variant {
+func (s printSettings) ToGVariantPrintSettings() *glib.Variant {
 	var _arg0 *C.GtkPrintSettings // out
 	var _cret *C.GVariant         // in
 
@@ -1367,15 +1322,15 @@ func (s printSettings) ToGVariantPrintSettings() glib.Variant {
 
 	_cret = C.gtk_print_settings_to_gvariant(_arg0)
 
-	var _variant glib.Variant // out
+	var _variant *glib.Variant // out
 
-	_variant = (glib.Variant)(unsafe.Pointer(_cret))
+	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
 	C.g_variant_ref(_cret)
 
 	return _variant
 }
 
-func (s printSettings) ToKeyFilePrintSettings(keyFile glib.KeyFile, groupName string) {
+func (s printSettings) ToKeyFilePrintSettings(keyFile *glib.KeyFile, groupName string) {
 	var _arg0 *C.GtkPrintSettings // out
 	var _arg1 *C.GKeyFile         // out
 	var _arg2 *C.gchar            // out

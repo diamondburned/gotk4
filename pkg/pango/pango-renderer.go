@@ -90,10 +90,10 @@ type Renderer interface {
 	//
 	// The default implementation of this method simply falls back to
 	// [method@Pango.Renderer.draw_glyphs].
-	DrawGlyphItemRenderer(text string, glyphItem GlyphItem, x int, y int)
+	DrawGlyphItemRenderer(text string, glyphItem *GlyphItem, x int, y int)
 	// DrawGlyphsRenderer draws the glyphs in @glyphs with the specified
 	// `PangoRenderer`.
-	DrawGlyphsRenderer(font Font, glyphs GlyphString, x int, y int)
+	DrawGlyphsRenderer(font Font, glyphs *GlyphString, x int, y int)
 	// DrawLayoutRenderer draws @layout with the specified `PangoRenderer`.
 	DrawLayoutRenderer(layout Layout, x int, y int)
 	// DrawRectangleRenderer draws an axis-aligned rectangle in user space
@@ -109,7 +109,7 @@ type Renderer interface {
 	// Alpha gets the current alpha for the specified part.
 	Alpha(part RenderPart) uint16
 	// Color gets the current rendering color for the specified part.
-	Color(part RenderPart) Color
+	Color(part RenderPart) *Color
 	// Layout gets the layout currently being rendered using @renderer.
 	//
 	// Calling this function only makes sense from inside a subclass's methods,
@@ -121,7 +121,7 @@ type Renderer interface {
 	// rendering.
 	//
 	// See [method@Pango.Renderer.set_matrix].
-	Matrix() Matrix
+	Matrix() *Matrix
 	// PartChangedRenderer informs Pango that the way that the rendering is done
 	// for @part has changed.
 	//
@@ -144,10 +144,10 @@ type Renderer interface {
 	// SetColorRenderer sets the color for part of the rendering.
 	//
 	// Also see [method@Pango.Renderer.set_alpha].
-	SetColorRenderer(part RenderPart, color Color)
+	SetColorRenderer(part RenderPart, color *Color)
 	// SetMatrixRenderer sets the transformation matrix that will be applied
 	// when rendering.
-	SetMatrixRenderer(matrix Matrix)
+	SetMatrixRenderer(matrix *Matrix)
 }
 
 // renderer implements the Renderer class.
@@ -201,7 +201,7 @@ func (r renderer) DrawErrorUnderlineRenderer(x int, y int, width int, height int
 	C.pango_renderer_draw_error_underline(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
-func (r renderer) DrawGlyphItemRenderer(text string, glyphItem GlyphItem, x int, y int) {
+func (r renderer) DrawGlyphItemRenderer(text string, glyphItem *GlyphItem, x int, y int) {
 	var _arg0 *C.PangoRenderer  // out
 	var _arg1 *C.char           // out
 	var _arg2 *C.PangoGlyphItem // out
@@ -218,7 +218,7 @@ func (r renderer) DrawGlyphItemRenderer(text string, glyphItem GlyphItem, x int,
 	C.pango_renderer_draw_glyph_item(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
-func (r renderer) DrawGlyphsRenderer(font Font, glyphs GlyphString, x int, y int) {
+func (r renderer) DrawGlyphsRenderer(font Font, glyphs *GlyphString, x int, y int) {
 	var _arg0 *C.PangoRenderer    // out
 	var _arg1 *C.PangoFont        // out
 	var _arg2 *C.PangoGlyphString // out
@@ -305,7 +305,7 @@ func (r renderer) Alpha(part RenderPart) uint16 {
 	return _guint16
 }
 
-func (r renderer) Color(part RenderPart) Color {
+func (r renderer) Color(part RenderPart) *Color {
 	var _arg0 *C.PangoRenderer  // out
 	var _arg1 C.PangoRenderPart // out
 	var _cret *C.PangoColor     // in
@@ -315,9 +315,9 @@ func (r renderer) Color(part RenderPart) Color {
 
 	_cret = C.pango_renderer_get_color(_arg0, _arg1)
 
-	var _color Color // out
+	var _color *Color // out
 
-	_color = (Color)(unsafe.Pointer(_cret))
+	_color = (*Color)(unsafe.Pointer(_cret))
 
 	return _color
 }
@@ -337,7 +337,7 @@ func (r renderer) Layout() Layout {
 	return _layout
 }
 
-func (r renderer) Matrix() Matrix {
+func (r renderer) Matrix() *Matrix {
 	var _arg0 *C.PangoRenderer // out
 	var _cret *C.PangoMatrix   // in
 
@@ -345,9 +345,9 @@ func (r renderer) Matrix() Matrix {
 
 	_cret = C.pango_renderer_get_matrix(_arg0)
 
-	var _matrix Matrix // out
+	var _matrix *Matrix // out
 
-	_matrix = (Matrix)(unsafe.Pointer(_cret))
+	_matrix = (*Matrix)(unsafe.Pointer(_cret))
 
 	return _matrix
 }
@@ -374,7 +374,7 @@ func (r renderer) SetAlphaRenderer(part RenderPart, alpha uint16) {
 	C.pango_renderer_set_alpha(_arg0, _arg1, _arg2)
 }
 
-func (r renderer) SetColorRenderer(part RenderPart, color Color) {
+func (r renderer) SetColorRenderer(part RenderPart, color *Color) {
 	var _arg0 *C.PangoRenderer  // out
 	var _arg1 C.PangoRenderPart // out
 	var _arg2 *C.PangoColor     // out
@@ -386,7 +386,7 @@ func (r renderer) SetColorRenderer(part RenderPart, color Color) {
 	C.pango_renderer_set_color(_arg0, _arg1, _arg2)
 }
 
-func (r renderer) SetMatrixRenderer(matrix Matrix) {
+func (r renderer) SetMatrixRenderer(matrix *Matrix) {
 	var _arg0 *C.PangoRenderer // out
 	var _arg1 *C.PangoMatrix   // out
 

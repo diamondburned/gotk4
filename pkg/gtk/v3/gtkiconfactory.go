@@ -109,7 +109,7 @@ type IconFactory interface {
 	// is unreferenced and replaced with the new @icon_set.
 	//
 	// Deprecated: since version 3.10.
-	AddIconFactory(stockId string, iconSet IconSet)
+	AddIconFactory(stockId string, iconSet *IconSet)
 	// AddDefaultIconFactory adds an icon factory to the list of icon factories
 	// searched by gtk_style_lookup_icon_set(). This means that, for example,
 	// gtk_image_new_from_stock() will be able to find icons in @factory. There
@@ -126,7 +126,7 @@ type IconFactory interface {
 	// taken into account.
 	//
 	// Deprecated: since version 3.10.
-	LookupIconFactory(stockId string) IconSet
+	LookupIconFactory(stockId string) *IconSet
 	// RemoveDefaultIconFactory removes an icon factory from the list of default
 	// icon factories. Not normally used; you might use it for a library that
 	// can be unloaded or shut down.
@@ -179,7 +179,7 @@ func NewIconFactory() IconFactory {
 	return _iconFactory
 }
 
-func (f iconFactory) AddIconFactory(stockId string, iconSet IconSet) {
+func (f iconFactory) AddIconFactory(stockId string, iconSet *IconSet) {
 	var _arg0 *C.GtkIconFactory // out
 	var _arg1 *C.gchar          // out
 	var _arg2 *C.GtkIconSet     // out
@@ -200,7 +200,7 @@ func (f iconFactory) AddDefaultIconFactory() {
 	C.gtk_icon_factory_add_default(_arg0)
 }
 
-func (f iconFactory) LookupIconFactory(stockId string) IconSet {
+func (f iconFactory) LookupIconFactory(stockId string) *IconSet {
 	var _arg0 *C.GtkIconFactory // out
 	var _arg1 *C.gchar          // out
 	var _cret *C.GtkIconSet     // in
@@ -211,9 +211,9 @@ func (f iconFactory) LookupIconFactory(stockId string) IconSet {
 
 	_cret = C.gtk_icon_factory_lookup(_arg0, _arg1)
 
-	var _iconSet IconSet // out
+	var _iconSet *IconSet // out
 
-	_iconSet = (IconSet)(unsafe.Pointer(_cret))
+	_iconSet = (*IconSet)(unsafe.Pointer(_cret))
 	C.gtk_icon_set_ref(_cret)
 
 	return _iconSet

@@ -70,7 +70,7 @@ type Action interface {
 	// then @parameter must also be nil.
 	//
 	// If the @parameter GVariant is floating, it is consumed.
-	Activate(parameter glib.Variant)
+	Activate(parameter *glib.Variant)
 	// ChangeState: request for the state of @action to be changed to @value.
 	//
 	// The action must be stateful and @value must be of the correct type. See
@@ -81,7 +81,7 @@ type Action interface {
 	// g_action_get_state_hint().
 	//
 	// If the @value GVariant is floating, it is consumed.
-	ChangeState(value glib.Variant)
+	ChangeState(value *glib.Variant)
 	// Enabled checks if @action is currently enabled.
 	//
 	// An action must be enabled in order to be activated or in order to have
@@ -97,7 +97,7 @@ type Action interface {
 	//
 	// In the case that this function returns nil, you must not give any
 	// #GVariant, but nil instead.
-	ParameterType() glib.VariantType
+	ParameterType() *glib.VariantType
 	// State queries the current state of @action.
 	//
 	// If the action is not stateful then nil will be returned. If the action is
@@ -106,7 +106,7 @@ type Action interface {
 	//
 	// The return value (if non-nil) should be freed with g_variant_unref() when
 	// it is no longer required.
-	State() glib.Variant
+	State() *glib.Variant
 	// StateHint requests a hint about the valid range of values for the state
 	// of @action.
 	//
@@ -125,7 +125,7 @@ type Action interface {
 	//
 	// The return value (if non-nil) should be freed with g_variant_unref() when
 	// it is no longer required.
-	StateHint() glib.Variant
+	StateHint() *glib.Variant
 	// StateType queries the type of the state of @action.
 	//
 	// If the action is stateful (e.g. created with
@@ -137,7 +137,7 @@ type Action interface {
 	// If the action is not stateful (e.g. created with g_simple_action_new())
 	// then this function will return nil. In that case, g_action_get_state()
 	// will return nil and you must not call g_action_change_state().
-	StateType() glib.VariantType
+	StateType() *glib.VariantType
 }
 
 // action implements the Action interface.
@@ -161,7 +161,7 @@ func marshalAction(p uintptr) (interface{}, error) {
 	return WrapAction(obj), nil
 }
 
-func (a action) Activate(parameter glib.Variant) {
+func (a action) Activate(parameter *glib.Variant) {
 	var _arg0 *C.GAction  // out
 	var _arg1 *C.GVariant // out
 
@@ -171,7 +171,7 @@ func (a action) Activate(parameter glib.Variant) {
 	C.g_action_activate(_arg0, _arg1)
 }
 
-func (a action) ChangeState(value glib.Variant) {
+func (a action) ChangeState(value *glib.Variant) {
 	var _arg0 *C.GAction  // out
 	var _arg1 *C.GVariant // out
 
@@ -213,7 +213,7 @@ func (a action) Name() string {
 	return _utf8
 }
 
-func (a action) ParameterType() glib.VariantType {
+func (a action) ParameterType() *glib.VariantType {
 	var _arg0 *C.GAction      // out
 	var _cret *C.GVariantType // in
 
@@ -221,14 +221,14 @@ func (a action) ParameterType() glib.VariantType {
 
 	_cret = C.g_action_get_parameter_type(_arg0)
 
-	var _variantType glib.VariantType // out
+	var _variantType *glib.VariantType // out
 
-	_variantType = (glib.VariantType)(unsafe.Pointer(_cret))
+	_variantType = (*glib.VariantType)(unsafe.Pointer(_cret))
 
 	return _variantType
 }
 
-func (a action) State() glib.Variant {
+func (a action) State() *glib.Variant {
 	var _arg0 *C.GAction  // out
 	var _cret *C.GVariant // in
 
@@ -236,17 +236,17 @@ func (a action) State() glib.Variant {
 
 	_cret = C.g_action_get_state(_arg0)
 
-	var _variant glib.Variant // out
+	var _variant *glib.Variant // out
 
-	_variant = (glib.Variant)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_variant, func(v glib.Variant) {
+	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
 	})
 
 	return _variant
 }
 
-func (a action) StateHint() glib.Variant {
+func (a action) StateHint() *glib.Variant {
 	var _arg0 *C.GAction  // out
 	var _cret *C.GVariant // in
 
@@ -254,17 +254,17 @@ func (a action) StateHint() glib.Variant {
 
 	_cret = C.g_action_get_state_hint(_arg0)
 
-	var _variant glib.Variant // out
+	var _variant *glib.Variant // out
 
-	_variant = (glib.Variant)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_variant, func(v glib.Variant) {
+	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
 	})
 
 	return _variant
 }
 
-func (a action) StateType() glib.VariantType {
+func (a action) StateType() *glib.VariantType {
 	var _arg0 *C.GAction      // out
 	var _cret *C.GVariantType // in
 
@@ -272,9 +272,9 @@ func (a action) StateType() glib.VariantType {
 
 	_cret = C.g_action_get_state_type(_arg0)
 
-	var _variantType glib.VariantType // out
+	var _variantType *glib.VariantType // out
 
-	_variantType = (glib.VariantType)(unsafe.Pointer(_cret))
+	_variantType = (*glib.VariantType)(unsafe.Pointer(_cret))
 
 	return _variantType
 }

@@ -29,7 +29,7 @@ func init() {
 //
 // This function should exclusively redraw the contents of the drawing area and
 // must not call any widget functions that cause changes.
-type DrawingAreaDrawFunc func(drawingArea DrawingArea, cr cairo.Context, width int, height int)
+type DrawingAreaDrawFunc func(drawingArea DrawingArea, cr *cairo.Context, width int, height int)
 
 //export gotk4_DrawingAreaDrawFunc
 func gotk4_DrawingAreaDrawFunc(arg0 *C.GtkDrawingArea, arg1 *C.cairo_t, arg2 C.int, arg3 C.int, arg4 C.gpointer) {
@@ -39,12 +39,12 @@ func gotk4_DrawingAreaDrawFunc(arg0 *C.GtkDrawingArea, arg1 *C.cairo_t, arg2 C.i
 	}
 
 	var drawingArea DrawingArea // out
-	var cr cairo.Context        // out
+	var cr *cairo.Context       // out
 	var width int               // out
 	var height int              // out
 
 	drawingArea = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0))).(DrawingArea)
-	cr = (cairo.Context)(unsafe.Pointer(arg1))
+	cr = (*cairo.Context)(unsafe.Pointer(arg1))
 	width = int(arg2)
 	height = int(arg3)
 

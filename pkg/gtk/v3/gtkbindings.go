@@ -42,7 +42,7 @@ func BindingsActivate(object gextras.Objector, keyval uint, modifiers gdk.Modifi
 
 // BindingsActivateEvent looks up key bindings for @object to find one matching
 // @event, and if one was found, activate it.
-func BindingsActivateEvent(object gextras.Objector, event gdk.EventKey) bool {
+func BindingsActivateEvent(object gextras.Objector, event *gdk.EventKey) bool {
 	var _arg1 *C.GObject     // out
 	var _arg2 *C.GdkEventKey // out
 	var _cret C.gboolean     // in

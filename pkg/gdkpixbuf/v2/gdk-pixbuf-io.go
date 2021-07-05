@@ -68,7 +68,7 @@ func gotk4_PixbufModulePreparedFunc(arg0 *C.GdkPixbuf, arg1 *C.GdkPixbufAnimatio
 // this as a hint that it will be closed soon and shouldn't allocate further
 // resources. This convention is used to implement gdk_pixbuf_get_file_info()
 // efficiently.
-type PixbufModuleSizeFunc func(width int, height int)
+type PixbufModuleSizeFunc func(width *int, height *int)
 
 //export gotk4_PixbufModuleSizeFunc
 func gotk4_PixbufModuleSizeFunc(arg0 *C.gint, arg1 *C.gint, arg2 C.gpointer) {
@@ -77,11 +77,11 @@ func gotk4_PixbufModuleSizeFunc(arg0 *C.gint, arg1 *C.gint, arg2 C.gpointer) {
 		panic(`callback not found`)
 	}
 
-	var width int  // out
-	var height int // out
+	var width *int  // out
+	var height *int // out
 
-	width = int(arg0)
-	height = int(arg1)
+	width = (*int)(unsafe.Pointer(arg0))
+	height = (*int)(unsafe.Pointer(arg1))
 
 	fn := v.(PixbufModuleSizeFunc)
 	fn(width, height)

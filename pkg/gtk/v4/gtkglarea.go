@@ -338,8 +338,8 @@ func (a glArea) HasStencilBuffer() bool {
 
 func (a glArea) RequiredVersion() (major int, minor int) {
 	var _arg0 *C.GtkGLArea // out
-	var _arg1 *C.int       // in
-	var _arg2 *C.int       // in
+	var _arg1 C.int        // in
+	var _arg2 C.int        // in
 
 	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(a.Native()))
 

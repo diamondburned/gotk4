@@ -562,7 +562,7 @@ func (o printOperation) EmbedPageSetup() bool {
 
 func (o printOperation) Error() error {
 	var _arg0 *C.GtkPrintOperation // out
-	var _cerr **C.GError           // in
+	var _cerr *C.GError            // in
 
 	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
 
@@ -570,16 +570,7 @@ func (o printOperation) Error() error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
@@ -700,7 +691,7 @@ func (o printOperation) RunPrintOperation(action PrintOperationAction, parent Wi
 	var _arg1 C.GtkPrintOperationAction // out
 	var _arg2 *C.GtkWindow              // out
 	var _cret C.GtkPrintOperationResult // in
-	var _cerr **C.GError                // in
+	var _cerr *C.GError                 // in
 
 	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
 	_arg1 = C.GtkPrintOperationAction(action)
@@ -712,16 +703,7 @@ func (o printOperation) RunPrintOperation(action PrintOperationAction, parent Wi
 	var _goerr error                               // out
 
 	_printOperationResult = PrintOperationResult(_cret)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _printOperationResult, _goerr
 }

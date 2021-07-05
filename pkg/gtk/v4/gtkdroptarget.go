@@ -97,7 +97,7 @@ type DropTarget interface {
 	// Formats gets the data formats that this drop target accepts.
 	//
 	// If the result is nil, all formats are expected to be supported.
-	Formats() gdk.ContentFormats
+	Formats() *gdk.ContentFormats
 	// Preload gets whether data should be preloaded on hover.
 	Preload() bool
 	// Value gets the current drop data, as a `GValue`.
@@ -188,7 +188,7 @@ func (s dropTarget) Drop() gdk.Drop {
 	return _drop
 }
 
-func (s dropTarget) Formats() gdk.ContentFormats {
+func (s dropTarget) Formats() *gdk.ContentFormats {
 	var _arg0 *C.GtkDropTarget     // out
 	var _cret *C.GdkContentFormats // in
 
@@ -196,10 +196,10 @@ func (s dropTarget) Formats() gdk.ContentFormats {
 
 	_cret = C.gtk_drop_target_get_formats(_arg0)
 
-	var _contentFormats gdk.ContentFormats // out
+	var _contentFormats *gdk.ContentFormats // out
 
-	_contentFormats = (gdk.ContentFormats)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_contentFormats, func(v gdk.ContentFormats) {
+	_contentFormats = (*gdk.ContentFormats)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_contentFormats, func(v *gdk.ContentFormats) {
 		C.gdk_content_formats_unref((*C.GdkContentFormats)(unsafe.Pointer(v)))
 	})
 

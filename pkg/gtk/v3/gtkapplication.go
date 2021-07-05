@@ -150,7 +150,7 @@ type Application interface {
 	// calling this function for each accelerator.
 	//
 	// Deprecated: since version 3.14.
-	AddAcceleratorApplication(accelerator string, actionName string, parameter glib.Variant)
+	AddAcceleratorApplication(accelerator string, actionName string, parameter *glib.Variant)
 	// AddWindowApplication adds a window to @application.
 	//
 	// This call can only happen after the @application has started; typically,
@@ -275,7 +275,7 @@ type Application interface {
 	// previously added with gtk_application_add_accelerator().
 	//
 	// Deprecated: since version 3.14.
-	RemoveAcceleratorApplication(actionName string, parameter glib.Variant)
+	RemoveAcceleratorApplication(actionName string, parameter *glib.Variant)
 	// RemoveWindowApplication: remove a window from @application.
 	//
 	// If @window belongs to @application then this call is equivalent to
@@ -396,7 +396,7 @@ func NewApplication(applicationId string, flags gio.ApplicationFlags) Applicatio
 	return _application
 }
 
-func (a application) AddAcceleratorApplication(accelerator string, actionName string, parameter glib.Variant) {
+func (a application) AddAcceleratorApplication(accelerator string, actionName string, parameter *glib.Variant) {
 	var _arg0 *C.GtkApplication // out
 	var _arg1 *C.gchar          // out
 	var _arg2 *C.gchar          // out
@@ -650,7 +650,7 @@ func (a application) PrefersAppMenuApplication() bool {
 	return _ok
 }
 
-func (a application) RemoveAcceleratorApplication(actionName string, parameter glib.Variant) {
+func (a application) RemoveAcceleratorApplication(actionName string, parameter *glib.Variant) {
 	var _arg0 *C.GtkApplication // out
 	var _arg1 *C.gchar          // out
 	var _arg2 *C.GVariant       // out

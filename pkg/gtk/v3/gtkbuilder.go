@@ -500,7 +500,7 @@ func (b builder) AddFromFileBuilder(filename string) (uint, error) {
 	var _arg0 *C.GtkBuilder // out
 	var _arg1 *C.gchar      // out
 	var _cret C.guint       // in
-	var _cerr **C.GError    // in
+	var _cerr *C.GError     // in
 
 	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.gchar)(C.CString(filename))
@@ -512,16 +512,7 @@ func (b builder) AddFromFileBuilder(filename string) (uint, error) {
 	var _goerr error // out
 
 	_guint = uint(_cret)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _guint, _goerr
 }
@@ -530,7 +521,7 @@ func (b builder) AddFromResourceBuilder(resourcePath string) (uint, error) {
 	var _arg0 *C.GtkBuilder // out
 	var _arg1 *C.gchar      // out
 	var _cret C.guint       // in
-	var _cerr **C.GError    // in
+	var _cerr *C.GError     // in
 
 	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.gchar)(C.CString(resourcePath))
@@ -542,16 +533,7 @@ func (b builder) AddFromResourceBuilder(resourcePath string) (uint, error) {
 	var _goerr error // out
 
 	_guint = uint(_cret)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _guint, _goerr
 }
@@ -561,7 +543,7 @@ func (b builder) AddFromStringBuilder(buffer string, length uint) (uint, error) 
 	var _arg1 *C.gchar      // out
 	var _arg2 C.gsize       // out
 	var _cret C.guint       // in
-	var _cerr **C.GError    // in
+	var _cerr *C.GError     // in
 
 	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.gchar)(C.CString(buffer))
@@ -574,16 +556,7 @@ func (b builder) AddFromStringBuilder(buffer string, length uint) (uint, error) 
 	var _goerr error // out
 
 	_guint = uint(_cret)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _guint, _goerr
 }
@@ -592,8 +565,8 @@ func (b builder) AddObjectsFromFileBuilder(filename string, objectIds []string) 
 	var _arg0 *C.GtkBuilder // out
 	var _arg1 *C.gchar      // out
 	var _arg2 **C.gchar
-	var _cret C.guint    // in
-	var _cerr **C.GError // in
+	var _cret C.guint   // in
+	var _cerr *C.GError // in
 
 	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.gchar)(C.CString(filename))
@@ -614,16 +587,7 @@ func (b builder) AddObjectsFromFileBuilder(filename string, objectIds []string) 
 	var _goerr error // out
 
 	_guint = uint(_cret)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _guint, _goerr
 }
@@ -632,8 +596,8 @@ func (b builder) AddObjectsFromResourceBuilder(resourcePath string, objectIds []
 	var _arg0 *C.GtkBuilder // out
 	var _arg1 *C.gchar      // out
 	var _arg2 **C.gchar
-	var _cret C.guint    // in
-	var _cerr **C.GError // in
+	var _cret C.guint   // in
+	var _cerr *C.GError // in
 
 	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.gchar)(C.CString(resourcePath))
@@ -654,16 +618,7 @@ func (b builder) AddObjectsFromResourceBuilder(resourcePath string, objectIds []
 	var _goerr error // out
 
 	_guint = uint(_cret)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _guint, _goerr
 }
@@ -673,8 +628,8 @@ func (b builder) AddObjectsFromStringBuilder(buffer string, length uint, objectI
 	var _arg1 *C.gchar      // out
 	var _arg2 C.gsize       // out
 	var _arg3 **C.gchar
-	var _cret C.guint    // in
-	var _cerr **C.GError // in
+	var _cret C.guint   // in
+	var _cerr *C.GError // in
 
 	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.gchar)(C.CString(buffer))
@@ -696,16 +651,7 @@ func (b builder) AddObjectsFromStringBuilder(buffer string, length uint, objectI
 	var _goerr error // out
 
 	_guint = uint(_cret)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _guint, _goerr
 }
@@ -740,7 +686,7 @@ func (b builder) ExtendWithTemplateBuilder(widget Widget, templateType externgli
 	var _arg3 *C.gchar      // out
 	var _arg4 C.gsize       // out
 	var _cret C.guint       // in
-	var _cerr **C.GError    // in
+	var _cerr *C.GError     // in
 
 	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
@@ -755,16 +701,7 @@ func (b builder) ExtendWithTemplateBuilder(widget Widget, templateType externgli
 	var _goerr error // out
 
 	_guint = uint(_cret)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _guint, _goerr
 }
@@ -860,30 +797,31 @@ func (b builder) ValueFromStringTypeBuilder(typ externglib.Type, _string string)
 	var _arg0 *C.GtkBuilder // out
 	var _arg1 C.GType       // out
 	var _arg2 *C.gchar      // out
-	var _arg3 *C.GValue     // in
-	var _cerr **C.GError    // in
+	var _arg3 C.GValue      // in
+	var _cerr *C.GError     // in
 
 	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
 	_arg1 = (C.GType)(typ)
 	_arg2 = (*C.gchar)(C.CString(_string))
 	defer C.free(unsafe.Pointer(_arg2))
 
-	C.gtk_builder_value_from_string_type(_arg0, _arg1, _arg2, _arg3, &_cerr)
+	C.gtk_builder_value_from_string_type(_arg0, _arg1, _arg2, &_arg3, &_cerr)
 
 	var _value externglib.Value // out
 	var _goerr error            // out
 
-	_value = externglib.ValueFromNative(unsafe.Pointer(_arg3))
 	{
-		var refTmpIn *C.GError
-		var refTmpOut error
+		var refTmpIn *C.GValue
+		var refTmpOut *externglib.Value
 
-		refTmpIn = *_cerr
+		in0 := &_arg3
+		refTmpIn = in0
 
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+		refTmpOut = externglib.ValueFromNative(unsafe.Pointer(refTmpIn))
 
-		_goerr = refTmpOut
+		_value = *refTmpOut
 	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _value, _goerr
 }

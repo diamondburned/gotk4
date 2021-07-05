@@ -23,7 +23,7 @@ import "C"
 
 // RenderActivity renders an activity indicator (such as in Spinner). The state
 // GTK_STATE_FLAG_CHECKED determines whether there is activity going on.
-func RenderActivity(context StyleContext, cr cairo.Context, x float64, y float64, width float64, height float64) {
+func RenderActivity(context StyleContext, cr *cairo.Context, x float64, y float64, width float64, height float64) {
 	var _arg1 *C.GtkStyleContext // out
 	var _arg2 *C.cairo_t         // out
 	var _arg3 C.gdouble          // out
@@ -46,7 +46,7 @@ func RenderActivity(context StyleContext, cr cairo.Context, x float64, y float64
 // Typical arrow rendering at 0, 1⁄2 π;, π; and 3⁄2 π:
 //
 // ! (arrows.png)
-func RenderArrow(context StyleContext, cr cairo.Context, angle float64, x float64, y float64, size float64) {
+func RenderArrow(context StyleContext, cr *cairo.Context, angle float64, x float64, y float64, size float64) {
 	var _arg1 *C.GtkStyleContext // out
 	var _arg2 *C.cairo_t         // out
 	var _arg3 C.gdouble          // out
@@ -70,7 +70,7 @@ func RenderArrow(context StyleContext, cr cairo.Context, angle float64, x float6
 // `border-width` and `border-radius`:
 //
 // ! (background.png)
-func RenderBackground(context StyleContext, cr cairo.Context, x float64, y float64, width float64, height float64) {
+func RenderBackground(context StyleContext, cr *cairo.Context, x float64, y float64, width float64, height float64) {
 	var _arg1 *C.GtkStyleContext // out
 	var _arg2 *C.cairo_t         // out
 	var _arg3 C.gdouble          // out
@@ -97,7 +97,7 @@ func RenderBackgroundGetClip(context StyleContext, x float64, y float64, width f
 	var _arg3 C.gdouble          // out
 	var _arg4 C.gdouble          // out
 	var _arg5 C.gdouble          // out
-	var _arg6 *C.GdkRectangle    // in
+	var _arg6 C.GdkRectangle     // in
 
 	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 	_arg2 = C.gdouble(x)
@@ -109,7 +109,17 @@ func RenderBackgroundGetClip(context StyleContext, x float64, y float64, width f
 
 	var _outClip gdk.Rectangle // out
 
-	_outClip = (gdk.Rectangle)(unsafe.Pointer(_arg6))
+	{
+		var refTmpIn *C.GdkRectangle
+		var refTmpOut *gdk.Rectangle
+
+		in0 := &_arg6
+		refTmpIn = in0
+
+		refTmpOut = (*gdk.Rectangle)(unsafe.Pointer(refTmpIn))
+
+		_outClip = *refTmpOut
+	}
 
 	return _outClip
 }
@@ -123,7 +133,7 @@ func RenderBackgroundGetClip(context StyleContext, x float64, y float64, width f
 // Typical checkmark rendering:
 //
 // ! (checks.png)
-func RenderCheck(context StyleContext, cr cairo.Context, x float64, y float64, width float64, height float64) {
+func RenderCheck(context StyleContext, cr *cairo.Context, x float64, y float64, width float64, height float64) {
 	var _arg1 *C.GtkStyleContext // out
 	var _arg2 *C.cairo_t         // out
 	var _arg3 C.gdouble          // out
@@ -148,7 +158,7 @@ func RenderCheck(context StyleContext, cr cairo.Context, x float64, y float64, w
 // Typical expander rendering:
 //
 // ! (expanders.png)
-func RenderExpander(context StyleContext, cr cairo.Context, x float64, y float64, width float64, height float64) {
+func RenderExpander(context StyleContext, cr *cairo.Context, x float64, y float64, width float64, height float64) {
 	var _arg1 *C.GtkStyleContext // out
 	var _arg2 *C.cairo_t         // out
 	var _arg3 C.gdouble          // out
@@ -173,7 +183,7 @@ func RenderExpander(context StyleContext, cr cairo.Context, x float64, y float64
 // Typical extension rendering:
 //
 // ! (extensions.png)
-func RenderExtension(context StyleContext, cr cairo.Context, x float64, y float64, width float64, height float64, gapSide PositionType) {
+func RenderExtension(context StyleContext, cr *cairo.Context, x float64, y float64, width float64, height float64, gapSide PositionType) {
 	var _arg1 *C.GtkStyleContext // out
 	var _arg2 *C.cairo_t         // out
 	var _arg3 C.gdouble          // out
@@ -199,7 +209,7 @@ func RenderExtension(context StyleContext, cr cairo.Context, x float64, y float6
 // Typical focus rendering:
 //
 // ! (focus.png)
-func RenderFocus(context StyleContext, cr cairo.Context, x float64, y float64, width float64, height float64) {
+func RenderFocus(context StyleContext, cr *cairo.Context, x float64, y float64, width float64, height float64) {
 	var _arg1 *C.GtkStyleContext // out
 	var _arg2 *C.cairo_t         // out
 	var _arg3 C.gdouble          // out
@@ -224,7 +234,7 @@ func RenderFocus(context StyleContext, cr cairo.Context, x float64, y float64, w
 // `border-color`, `border-width`, `border-radius` and junctions:
 //
 // ! (frames.png)
-func RenderFrame(context StyleContext, cr cairo.Context, x float64, y float64, width float64, height float64) {
+func RenderFrame(context StyleContext, cr *cairo.Context, x float64, y float64, width float64, height float64) {
 	var _arg1 *C.GtkStyleContext // out
 	var _arg2 *C.cairo_t         // out
 	var _arg3 C.gdouble          // out
@@ -252,7 +262,7 @@ func RenderFrame(context StyleContext, cr cairo.Context, x float64, y float64, w
 // ! (frame-gap.png)
 //
 // Deprecated: since version 3.24.
-func RenderFrameGap(context StyleContext, cr cairo.Context, x float64, y float64, width float64, height float64, gapSide PositionType, xy0Gap float64, xy1Gap float64) {
+func RenderFrameGap(context StyleContext, cr *cairo.Context, x float64, y float64, width float64, height float64, gapSide PositionType, xy0Gap float64, xy1Gap float64) {
 	var _arg1 *C.GtkStyleContext // out
 	var _arg2 *C.cairo_t         // out
 	var _arg3 C.gdouble          // out
@@ -282,7 +292,7 @@ func RenderFrameGap(context StyleContext, cr cairo.Context, x float64, y float64
 // Handles rendered for the paned and grip classes:
 //
 // ! (handles.png)
-func RenderHandle(context StyleContext, cr cairo.Context, x float64, y float64, width float64, height float64) {
+func RenderHandle(context StyleContext, cr *cairo.Context, x float64, y float64, width float64, height float64) {
 	var _arg1 *C.GtkStyleContext // out
 	var _arg2 *C.cairo_t         // out
 	var _arg3 C.gdouble          // out
@@ -309,7 +319,7 @@ func RenderHandle(context StyleContext, cr cairo.Context, x float64, y float64, 
 //
 // You probably want to use gtk_render_icon_surface() instead, if you already
 // have a Cairo surface.
-func RenderIcon(context StyleContext, cr cairo.Context, pixbuf gdkpixbuf.Pixbuf, x float64, y float64) {
+func RenderIcon(context StyleContext, cr *cairo.Context, pixbuf gdkpixbuf.Pixbuf, x float64, y float64) {
 	var _arg1 *C.GtkStyleContext // out
 	var _arg2 *C.cairo_t         // out
 	var _arg3 *C.GdkPixbuf       // out
@@ -329,7 +339,7 @@ func RenderIcon(context StyleContext, cr cairo.Context, pixbuf gdkpixbuf.Pixbuf,
 // returning the result in a pixbuf.
 //
 // Deprecated: since version 3.10.
-func RenderIconPixbuf(context StyleContext, source IconSource, size int) gdkpixbuf.Pixbuf {
+func RenderIconPixbuf(context StyleContext, source *IconSource, size int) gdkpixbuf.Pixbuf {
 	var _arg1 *C.GtkStyleContext // out
 	var _arg2 *C.GtkIconSource   // out
 	var _arg3 C.GtkIconSize      // out
@@ -350,7 +360,7 @@ func RenderIconPixbuf(context StyleContext, source IconSource, size int) gdkpixb
 
 // RenderIconSurface renders the icon in @surface at the specified @x and @y
 // coordinates.
-func RenderIconSurface(context StyleContext, cr cairo.Context, surface cairo.Surface, x float64, y float64) {
+func RenderIconSurface(context StyleContext, cr *cairo.Context, surface *cairo.Surface, x float64, y float64) {
 	var _arg1 *C.GtkStyleContext // out
 	var _arg2 *C.cairo_t         // out
 	var _arg3 *C.cairo_surface_t // out
@@ -367,7 +377,7 @@ func RenderIconSurface(context StyleContext, cr cairo.Context, surface cairo.Sur
 }
 
 // RenderLayout renders @layout on the coordinates @x, @y
-func RenderLayout(context StyleContext, cr cairo.Context, x float64, y float64, layout pango.Layout) {
+func RenderLayout(context StyleContext, cr *cairo.Context, x float64, y float64, layout pango.Layout) {
 	var _arg1 *C.GtkStyleContext // out
 	var _arg2 *C.cairo_t         // out
 	var _arg3 C.gdouble          // out
@@ -384,7 +394,7 @@ func RenderLayout(context StyleContext, cr cairo.Context, x float64, y float64, 
 }
 
 // RenderLine renders a line from (x0, y0) to (x1, y1).
-func RenderLine(context StyleContext, cr cairo.Context, x0 float64, y0 float64, x1 float64, y1 float64) {
+func RenderLine(context StyleContext, cr *cairo.Context, x0 float64, y0 float64, x1 float64, y1 float64) {
 	var _arg1 *C.GtkStyleContext // out
 	var _arg2 *C.cairo_t         // out
 	var _arg3 C.gdouble          // out
@@ -409,7 +419,7 @@ func RenderLine(context StyleContext, cr cairo.Context, x0 float64, y0 float64, 
 // Typical option mark rendering:
 //
 // ! (options.png)
-func RenderOption(context StyleContext, cr cairo.Context, x float64, y float64, width float64, height float64) {
+func RenderOption(context StyleContext, cr *cairo.Context, x float64, y float64, width float64, height float64) {
 	var _arg1 *C.GtkStyleContext // out
 	var _arg2 *C.cairo_t         // out
 	var _arg3 C.gdouble          // out
@@ -434,7 +444,7 @@ func RenderOption(context StyleContext, cr cairo.Context, x float64, y float64, 
 // Typical slider rendering:
 //
 // ! (sliders.png)
-func RenderSlider(context StyleContext, cr cairo.Context, x float64, y float64, width float64, height float64, orientation Orientation) {
+func RenderSlider(context StyleContext, cr *cairo.Context, x float64, y float64, width float64, height float64, orientation Orientation) {
 	var _arg1 *C.GtkStyleContext // out
 	var _arg2 *C.cairo_t         // out
 	var _arg3 C.gdouble          // out

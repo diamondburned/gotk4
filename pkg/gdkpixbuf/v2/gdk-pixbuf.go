@@ -275,7 +275,7 @@ type Pixbuf interface {
 	// have been attached to the `pixbuf` when it was loaded, or that may have
 	// been attached by another function using
 	// [method@GdkPixbuf.Pixbuf.set_option].
-	Options() glib.HashTable
+	Options() *glib.HashTable
 	// Rowstride queries the rowstride of a pixbuf, which is the number of bytes
 	// between the start of a row and the start of the next row.
 	Rowstride() int
@@ -295,7 +295,7 @@ type Pixbuf interface {
 	//
 	// This function allows skipping the implicit copy that must be made if
 	// gdk_pixbuf_get_pixels() is called on a read-only pixbuf.
-	ReadPixelsPixbuf() byte
+	ReadPixelsPixbuf() *byte
 	// RemoveOptionPixbuf removes the key/value pair option attached to a
 	// `GdkPixbuf`.
 	RemoveOptionPixbuf(key string) bool
@@ -457,7 +457,7 @@ func NewPixbuf(colorspace Colorspace, hasAlpha bool, bitsPerSample int, width in
 func NewPixbufFromFile(filename string) (Pixbuf, error) {
 	var _arg1 *C.char      // out
 	var _cret *C.GdkPixbuf // in
-	var _cerr **C.GError   // in
+	var _cerr *C.GError    // in
 
 	_arg1 = (*C.char)(C.CString(filename))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -468,16 +468,7 @@ func NewPixbufFromFile(filename string) (Pixbuf, error) {
 	var _goerr error   // out
 
 	_pixbuf = WrapPixbuf(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _pixbuf, _goerr
 }
@@ -510,7 +501,7 @@ func NewPixbufFromFileAtScale(filename string, width int, height int, preserveAs
 	var _arg3 C.int        // out
 	var _arg4 C.gboolean   // out
 	var _cret *C.GdkPixbuf // in
-	var _cerr **C.GError   // in
+	var _cerr *C.GError    // in
 
 	_arg1 = (*C.char)(C.CString(filename))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -526,16 +517,7 @@ func NewPixbufFromFileAtScale(filename string, width int, height int, preserveAs
 	var _goerr error   // out
 
 	_pixbuf = WrapPixbuf(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _pixbuf, _goerr
 }
@@ -563,7 +545,7 @@ func NewPixbufFromFileAtSize(filename string, width int, height int) (Pixbuf, er
 	var _arg2 C.int        // out
 	var _arg3 C.int        // out
 	var _cret *C.GdkPixbuf // in
-	var _cerr **C.GError   // in
+	var _cerr *C.GError    // in
 
 	_arg1 = (*C.char)(C.CString(filename))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -576,16 +558,7 @@ func NewPixbufFromFileAtSize(filename string, width int, height int) (Pixbuf, er
 	var _goerr error   // out
 
 	_pixbuf = WrapPixbuf(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _pixbuf, _goerr
 }
@@ -625,7 +598,7 @@ func NewPixbufFromInline(data []byte, copyPixels bool) (Pixbuf, error) {
 	var _arg1 C.gint
 	var _arg3 C.gboolean   // out
 	var _cret *C.GdkPixbuf // in
-	var _cerr **C.GError   // in
+	var _cerr *C.GError    // in
 
 	_arg1 = C.gint(len(data))
 	_arg2 = (*C.guint8)(unsafe.Pointer(&data[0]))
@@ -639,16 +612,7 @@ func NewPixbufFromInline(data []byte, copyPixels bool) (Pixbuf, error) {
 	var _goerr error   // out
 
 	_pixbuf = WrapPixbuf(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _pixbuf, _goerr
 }
@@ -661,7 +625,7 @@ func NewPixbufFromInline(data []byte, copyPixels bool) (Pixbuf, error) {
 func NewPixbufFromResource(resourcePath string) (Pixbuf, error) {
 	var _arg1 *C.char      // out
 	var _cret *C.GdkPixbuf // in
-	var _cerr **C.GError   // in
+	var _cerr *C.GError    // in
 
 	_arg1 = (*C.char)(C.CString(resourcePath))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -672,16 +636,7 @@ func NewPixbufFromResource(resourcePath string) (Pixbuf, error) {
 	var _goerr error   // out
 
 	_pixbuf = WrapPixbuf(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _pixbuf, _goerr
 }
@@ -706,7 +661,7 @@ func NewPixbufFromResourceAtScale(resourcePath string, width int, height int, pr
 	var _arg3 C.int        // out
 	var _arg4 C.gboolean   // out
 	var _cret *C.GdkPixbuf // in
-	var _cerr **C.GError   // in
+	var _cerr *C.GError    // in
 
 	_arg1 = (*C.char)(C.CString(resourcePath))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -722,16 +677,7 @@ func NewPixbufFromResourceAtScale(resourcePath string, width int, height int, pr
 	var _goerr error   // out
 
 	_pixbuf = WrapPixbuf(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _pixbuf, _goerr
 }
@@ -753,7 +699,7 @@ func NewPixbufFromStream(stream gio.InputStream, cancellable gio.Cancellable) (P
 	var _arg1 *C.GInputStream // out
 	var _arg2 *C.GCancellable // out
 	var _cret *C.GdkPixbuf    // in
-	var _cerr **C.GError      // in
+	var _cerr *C.GError       // in
 
 	_arg1 = (*C.GInputStream)(unsafe.Pointer(stream.Native()))
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
@@ -764,16 +710,7 @@ func NewPixbufFromStream(stream gio.InputStream, cancellable gio.Cancellable) (P
 	var _goerr error   // out
 
 	_pixbuf = WrapPixbuf(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _pixbuf, _goerr
 }
@@ -807,7 +744,7 @@ func NewPixbufFromStreamAtScale(stream gio.InputStream, width int, height int, p
 	var _arg4 C.gboolean      // out
 	var _arg5 *C.GCancellable // out
 	var _cret *C.GdkPixbuf    // in
-	var _cerr **C.GError      // in
+	var _cerr *C.GError       // in
 
 	_arg1 = (*C.GInputStream)(unsafe.Pointer(stream.Native()))
 	_arg2 = C.gint(width)
@@ -823,16 +760,7 @@ func NewPixbufFromStreamAtScale(stream gio.InputStream, width int, height int, p
 	var _goerr error   // out
 
 	_pixbuf = WrapPixbuf(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _pixbuf, _goerr
 }
@@ -1198,7 +1126,7 @@ func (p pixbuf) Option(key string) string {
 	return _utf8
 }
 
-func (p pixbuf) Options() glib.HashTable {
+func (p pixbuf) Options() *glib.HashTable {
 	var _arg0 *C.GdkPixbuf  // out
 	var _cret *C.GHashTable // in
 
@@ -1206,10 +1134,10 @@ func (p pixbuf) Options() glib.HashTable {
 
 	_cret = C.gdk_pixbuf_get_options(_arg0)
 
-	var _hashTable glib.HashTable // out
+	var _hashTable *glib.HashTable // out
 
-	_hashTable = (glib.HashTable)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_hashTable, func(v glib.HashTable) {
+	_hashTable = (*glib.HashTable)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_hashTable, func(v *glib.HashTable) {
 		C.free(unsafe.Pointer(v))
 	})
 
@@ -1269,7 +1197,7 @@ func (s pixbuf) NewSubpixbufPixbuf(srcX int, srcY int, width int, height int) Pi
 	return _pixbuf
 }
 
-func (p pixbuf) ReadPixelsPixbuf() byte {
+func (p pixbuf) ReadPixelsPixbuf() *byte {
 	var _arg0 *C.GdkPixbuf // out
 	var _cret *C.guint8    // in
 
@@ -1277,9 +1205,9 @@ func (p pixbuf) ReadPixelsPixbuf() byte {
 
 	_cret = C.gdk_pixbuf_read_pixels(_arg0)
 
-	var _guint8 byte // out
+	var _guint8 *byte // out
 
-	_guint8 = byte(_cret)
+	_guint8 = (*byte)(unsafe.Pointer(_cret))
 
 	return _guint8
 }
@@ -1340,11 +1268,11 @@ func (s pixbuf) SaturateAndPixelatePixbuf(dest Pixbuf, saturation float32, pixel
 func (p pixbuf) SaveToBuffervPixbuf(typ string, optionKeys []string, optionValues []string) ([]byte, error) {
 	var _arg0 *C.GdkPixbuf // out
 	var _arg1 *C.gchar
-	var _arg2 *C.gsize // in
-	var _arg3 *C.char  // out
+	var _arg2 C.gsize // in
+	var _arg3 *C.char // out
 	var _arg4 **C.char
 	var _arg5 **C.char
-	var _cerr **C.GError // in
+	var _cerr *C.GError // in
 
 	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(p.Native()))
 	_arg3 = (*C.char)(C.CString(typ))
@@ -1377,16 +1305,7 @@ func (p pixbuf) SaveToBuffervPixbuf(typ string, optionKeys []string, optionValue
 	runtime.SetFinalizer(&_buffer, func(v *[]byte) {
 		C.free(unsafe.Pointer(&(*v)[0]))
 	})
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _buffer, _goerr
 }
@@ -1398,7 +1317,7 @@ func (p pixbuf) SaveToCallbackvPixbuf(saveFunc PixbufSaveFunc, typ string, optio
 	var _arg3 *C.char // out
 	var _arg4 **C.char
 	var _arg5 **C.char
-	var _cerr **C.GError // in
+	var _cerr *C.GError // in
 
 	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(p.Native()))
 	_arg1 = (*[0]byte)(C.gotk4_PixbufSaveFunc)
@@ -1428,16 +1347,7 @@ func (p pixbuf) SaveToCallbackvPixbuf(saveFunc PixbufSaveFunc, typ string, optio
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
@@ -1449,7 +1359,7 @@ func (p pixbuf) SaveToStreamvPixbuf(stream gio.OutputStream, typ string, optionK
 	var _arg3 **C.char
 	var _arg4 **C.char
 	var _arg5 *C.GCancellable // out
-	var _cerr **C.GError      // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(p.Native()))
 	_arg1 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
@@ -1479,16 +1389,7 @@ func (p pixbuf) SaveToStreamvPixbuf(stream gio.OutputStream, typ string, optionK
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
@@ -1499,7 +1400,7 @@ func (p pixbuf) SavevPixbuf(filename string, typ string, optionKeys []string, op
 	var _arg2 *C.char      // out
 	var _arg3 **C.char
 	var _arg4 **C.char
-	var _cerr **C.GError // in
+	var _cerr *C.GError // in
 
 	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(p.Native()))
 	_arg1 = (*C.char)(C.CString(filename))
@@ -1529,16 +1430,7 @@ func (p pixbuf) SavevPixbuf(filename string, typ string, optionKeys []string, op
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }

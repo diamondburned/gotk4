@@ -75,7 +75,7 @@ func NewCharsetConverter(toCharset string, fromCharset string) (CharsetConverter
 	var _arg1 *C.gchar             // out
 	var _arg2 *C.gchar             // out
 	var _cret *C.GCharsetConverter // in
-	var _cerr **C.GError           // in
+	var _cerr *C.GError            // in
 
 	_arg1 = (*C.gchar)(C.CString(toCharset))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -88,16 +88,7 @@ func NewCharsetConverter(toCharset string, fromCharset string) (CharsetConverter
 	var _goerr error                       // out
 
 	_charsetConverter = WrapCharsetConverter(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _charsetConverter, _goerr
 }

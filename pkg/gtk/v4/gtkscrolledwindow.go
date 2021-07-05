@@ -507,8 +507,8 @@ func (s scrolledWindow) Placement() CornerType {
 
 func (s scrolledWindow) Policy() (hscrollbarPolicy PolicyType, vscrollbarPolicy PolicyType) {
 	var _arg0 *C.GtkScrolledWindow // out
-	var _arg1 *C.GtkPolicyType     // in
-	var _arg2 *C.GtkPolicyType     // in
+	var _arg1 C.GtkPolicyType      // in
+	var _arg2 C.GtkPolicyType      // in
 
 	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
 
@@ -517,26 +517,8 @@ func (s scrolledWindow) Policy() (hscrollbarPolicy PolicyType, vscrollbarPolicy 
 	var _hscrollbarPolicy PolicyType // out
 	var _vscrollbarPolicy PolicyType // out
 
-	{
-		var refTmpIn C.GtkPolicyType
-		var refTmpOut PolicyType
-
-		refTmpIn = *_arg1
-
-		refTmpOut = PolicyType(refTmpIn)
-
-		_hscrollbarPolicy = refTmpOut
-	}
-	{
-		var refTmpIn C.GtkPolicyType
-		var refTmpOut PolicyType
-
-		refTmpIn = *_arg2
-
-		refTmpOut = PolicyType(refTmpIn)
-
-		_vscrollbarPolicy = refTmpOut
-	}
+	_hscrollbarPolicy = PolicyType(_arg1)
+	_vscrollbarPolicy = PolicyType(_arg2)
 
 	return _hscrollbarPolicy, _vscrollbarPolicy
 }

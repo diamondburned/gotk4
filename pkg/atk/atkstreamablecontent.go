@@ -48,7 +48,7 @@ type StreamableContent interface {
 	// NMIMETypes gets the number of mime types supported by this object.
 	NMIMETypes() int
 	// Stream gets the content in the specified mime type.
-	Stream(mimeType string) glib.IOChannel
+	Stream(mimeType string) *glib.IOChannel
 	// URI: get a string representing a URI in IETF standard format (see
 	// http://www.ietf.org/rfc/rfc2396.txt) from which the object's content may
 	// be streamed in the specified mime-type, if one is available. If mime_type
@@ -113,7 +113,7 @@ func (s streamableContent) NMIMETypes() int {
 	return _gint
 }
 
-func (s streamableContent) Stream(mimeType string) glib.IOChannel {
+func (s streamableContent) Stream(mimeType string) *glib.IOChannel {
 	var _arg0 *C.AtkStreamableContent // out
 	var _arg1 *C.gchar                // out
 	var _cret *C.GIOChannel           // in
@@ -124,10 +124,10 @@ func (s streamableContent) Stream(mimeType string) glib.IOChannel {
 
 	_cret = C.atk_streamable_content_get_stream(_arg0, _arg1)
 
-	var _ioChannel glib.IOChannel // out
+	var _ioChannel *glib.IOChannel // out
 
-	_ioChannel = (glib.IOChannel)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_ioChannel, func(v glib.IOChannel) {
+	_ioChannel = (*glib.IOChannel)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_ioChannel, func(v *glib.IOChannel) {
 		C.g_io_channel_unref((*C.GIOChannel)(unsafe.Pointer(v)))
 	})
 

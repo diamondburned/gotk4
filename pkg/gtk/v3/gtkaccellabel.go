@@ -128,9 +128,9 @@ func NewAccelLabel(_string string) AccelLabel {
 }
 
 func (a accelLabel) Accel() (uint, gdk.ModifierType) {
-	var _arg0 *C.GtkAccelLabel   // out
-	var _arg1 *C.guint           // in
-	var _arg2 *C.GdkModifierType // in
+	var _arg0 *C.GtkAccelLabel  // out
+	var _arg1 C.guint           // in
+	var _arg2 C.GdkModifierType // in
 
 	_arg0 = (*C.GtkAccelLabel)(unsafe.Pointer(a.Native()))
 
@@ -140,16 +140,7 @@ func (a accelLabel) Accel() (uint, gdk.ModifierType) {
 	var _acceleratorMods gdk.ModifierType // out
 
 	_acceleratorKey = uint(_arg1)
-	{
-		var refTmpIn C.GdkModifierType
-		var refTmpOut gdk.ModifierType
-
-		refTmpIn = *_arg2
-
-		refTmpOut = gdk.ModifierType(refTmpIn)
-
-		_acceleratorMods = refTmpOut
-	}
+	_acceleratorMods = gdk.ModifierType(_arg2)
 
 	return _acceleratorKey, _acceleratorMods
 }

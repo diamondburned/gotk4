@@ -169,7 +169,7 @@ type Image interface {
 	// SetFromIconSetImage: see gtk_image_new_from_icon_set() for details.
 	//
 	// Deprecated: since version 3.10.
-	SetFromIconSetImage(iconSet IconSet, size int)
+	SetFromIconSetImage(iconSet *IconSet, size int)
 	// SetFromPixbufImage: see gtk_image_new_from_pixbuf() for details.
 	SetFromPixbufImage(pixbuf gdkpixbuf.Pixbuf)
 	// SetFromResourceImage: see gtk_image_new_from_resource() for details.
@@ -179,7 +179,7 @@ type Image interface {
 	// Deprecated: since version 3.10.
 	SetFromStockImage(stockId string, size int)
 	// SetFromSurfaceImage: see gtk_image_new_from_surface() for details.
-	SetFromSurfaceImage(surface cairo.Surface)
+	SetFromSurfaceImage(surface *cairo.Surface)
 	// SetPixelSizeImage sets the pixel size to use for named icons. If the
 	// pixel size is set to a value != -1, it is used instead of the icon size
 	// set by gtk_image_set_from_icon_name().
@@ -306,7 +306,7 @@ func NewImageFromIconName(iconName string, size int) Image {
 // adopting yours.
 //
 // Deprecated: since version 3.10.
-func NewImageFromIconSet(iconSet IconSet, size int) Image {
+func NewImageFromIconSet(iconSet *IconSet, size int) Image {
 	var _arg1 *C.GtkIconSet // out
 	var _arg2 C.GtkIconSize // out
 	var _cret *C.GtkWidget  // in
@@ -403,7 +403,7 @@ func NewImageFromStock(stockId string, size int) Image {
 // NewImageFromSurface creates a new Image displaying @surface. The Image does
 // not assume a reference to the surface; you still need to unref it if you own
 // references. Image will add its own reference rather than adopting yours.
-func NewImageFromSurface(surface cairo.Surface) Image {
+func NewImageFromSurface(surface *cairo.Surface) Image {
 	var _arg1 *C.cairo_surface_t // out
 	var _cret *C.GtkWidget       // in
 
@@ -442,9 +442,9 @@ func (i image) Animation() gdkpixbuf.PixbufAnimation {
 }
 
 func (i image) IconName() (string, int) {
-	var _arg0 *C.GtkImage    // out
-	var _arg1 **C.gchar      // in
-	var _arg2 *C.GtkIconSize // in
+	var _arg0 *C.GtkImage   // out
+	var _arg1 *C.gchar      // in
+	var _arg2 C.GtkIconSize // in
 
 	_arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
 
@@ -453,25 +453,16 @@ func (i image) IconName() (string, int) {
 	var _iconName string // out
 	var _size int        // out
 
-	{
-		var refTmpIn *C.gchar
-		var refTmpOut string
-
-		refTmpIn = *_arg1
-
-		refTmpOut = C.GoString(refTmpIn)
-
-		_iconName = refTmpOut
-	}
+	_iconName = C.GoString(_arg1)
 	_size = int(_arg2)
 
 	return _iconName, _size
 }
 
 func (i image) IconSet() (*IconSet, int) {
-	var _arg0 *C.GtkImage    // out
-	var _arg1 **C.GtkIconSet // in
-	var _arg2 *C.GtkIconSize // in
+	var _arg0 *C.GtkImage   // out
+	var _arg1 *C.GtkIconSet // in
+	var _arg2 C.GtkIconSize // in
 
 	_arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
 
@@ -480,17 +471,8 @@ func (i image) IconSet() (*IconSet, int) {
 	var _iconSet *IconSet // out
 	var _size int         // out
 
-	{
-		var refTmpIn *C.GtkIconSet
-		var refTmpOut *IconSet
-
-		refTmpIn = *_arg1
-
-		refTmpOut = (*IconSet)(unsafe.Pointer(refTmpIn))
-		C.gtk_icon_set_ref(refTmpIn)
-
-		_iconSet = refTmpOut
-	}
+	_iconSet = (*IconSet)(unsafe.Pointer(_arg1))
+	C.gtk_icon_set_ref(_arg1)
 	_size = int(_arg2)
 
 	return _iconSet, _size
@@ -527,9 +509,9 @@ func (i image) PixelSize() int {
 }
 
 func (i image) Stock() (string, int) {
-	var _arg0 *C.GtkImage    // out
-	var _arg1 **C.gchar      // in
-	var _arg2 *C.GtkIconSize // in
+	var _arg0 *C.GtkImage   // out
+	var _arg1 *C.gchar      // in
+	var _arg2 C.GtkIconSize // in
 
 	_arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
 
@@ -538,16 +520,7 @@ func (i image) Stock() (string, int) {
 	var _stockId string // out
 	var _size int       // out
 
-	{
-		var refTmpIn *C.gchar
-		var refTmpOut string
-
-		refTmpIn = *_arg1
-
-		refTmpOut = C.GoString(refTmpIn)
-
-		_stockId = refTmpOut
-	}
+	_stockId = C.GoString(_arg1)
 	_size = int(_arg2)
 
 	return _stockId, _size
@@ -602,7 +575,7 @@ func (i image) SetFromIconNameImage(iconName string, size int) {
 	C.gtk_image_set_from_icon_name(_arg0, _arg1, _arg2)
 }
 
-func (i image) SetFromIconSetImage(iconSet IconSet, size int) {
+func (i image) SetFromIconSetImage(iconSet *IconSet, size int) {
 	var _arg0 *C.GtkImage   // out
 	var _arg1 *C.GtkIconSet // out
 	var _arg2 C.GtkIconSize // out
@@ -648,7 +621,7 @@ func (i image) SetFromStockImage(stockId string, size int) {
 	C.gtk_image_set_from_stock(_arg0, _arg1, _arg2)
 }
 
-func (i image) SetFromSurfaceImage(surface cairo.Surface) {
+func (i image) SetFromSurfaceImage(surface *cairo.Surface) {
 	var _arg0 *C.GtkImage        // out
 	var _arg1 *C.cairo_surface_t // out
 

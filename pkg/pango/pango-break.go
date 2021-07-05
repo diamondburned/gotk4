@@ -26,8 +26,8 @@ import "C"
 func FindParagraphBoundary(text string, length int) (paragraphDelimiterIndex int, nextParagraphStart int) {
 	var _arg1 *C.gchar // out
 	var _arg2 C.gint   // out
-	var _arg3 *C.gint  // in
-	var _arg4 *C.gint  // in
+	var _arg3 C.gint   // in
+	var _arg4 C.gint   // in
 
 	_arg1 = (*C.gchar)(C.CString(text))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -51,7 +51,7 @@ func FindParagraphBoundary(text string, length int) (paragraphDelimiterIndex int
 // position at the end of the text. @text should be an entire paragraph; logical
 // attributes can't be computed without context (for example you need to see
 // spaces on either side of a word to know the word is a word).
-func GetLogAttrs(text string, length int, level int, language Language, logAttrs []LogAttr) {
+func GetLogAttrs(text string, length int, level int, language *Language, logAttrs []LogAttr) {
 	var _arg1 *C.char          // out
 	var _arg2 C.int            // out
 	var _arg3 C.int            // out

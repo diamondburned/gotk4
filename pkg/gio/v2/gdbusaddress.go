@@ -62,7 +62,7 @@ func DBusAddressGetForBusSync(busType BusType, cancellable Cancellable) (string,
 	var _arg1 C.GBusType      // out
 	var _arg2 *C.GCancellable // out
 	var _cret *C.gchar        // in
-	var _cerr **C.GError      // in
+	var _cerr *C.GError       // in
 
 	_arg1 = C.GBusType(busType)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
@@ -74,16 +74,7 @@ func DBusAddressGetForBusSync(busType BusType, cancellable Cancellable) (string,
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _utf8, _goerr
 }
@@ -121,9 +112,9 @@ func DBusAddressGetStream(address string, cancellable Cancellable, callback Asyn
 // on success.
 func DBusAddressGetStreamFinish(res AsyncResult) (string, IOStream, error) {
 	var _arg1 *C.GAsyncResult // out
-	var _arg2 **C.gchar       // in
+	var _arg2 *C.gchar        // in
 	var _cret *C.GIOStream    // in
-	var _cerr **C.GError      // in
+	var _cerr *C.GError       // in
 
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
@@ -133,28 +124,10 @@ func DBusAddressGetStreamFinish(res AsyncResult) (string, IOStream, error) {
 	var _ioStream IOStream // out
 	var _goerr error       // out
 
-	{
-		var refTmpIn *C.gchar
-		var refTmpOut string
-
-		refTmpIn = *_arg2
-
-		refTmpOut = C.GoString(refTmpIn)
-		defer C.free(unsafe.Pointer(refTmpIn))
-
-		_outGuid = refTmpOut
-	}
+	_outGuid = C.GoString(_arg2)
+	defer C.free(unsafe.Pointer(_arg2))
 	_ioStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(IOStream)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _outGuid, _ioStream, _goerr
 }
@@ -172,10 +145,10 @@ func DBusAddressGetStreamFinish(res AsyncResult) (string, IOStream, error) {
 // the asynchronous version.
 func DBusAddressGetStreamSync(address string, cancellable Cancellable) (string, IOStream, error) {
 	var _arg1 *C.gchar        // out
-	var _arg2 **C.gchar       // in
+	var _arg2 *C.gchar        // in
 	var _arg3 *C.GCancellable // out
 	var _cret *C.GIOStream    // in
-	var _cerr **C.GError      // in
+	var _cerr *C.GError       // in
 
 	_arg1 = (*C.gchar)(C.CString(address))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -187,28 +160,10 @@ func DBusAddressGetStreamSync(address string, cancellable Cancellable) (string, 
 	var _ioStream IOStream // out
 	var _goerr error       // out
 
-	{
-		var refTmpIn *C.gchar
-		var refTmpOut string
-
-		refTmpIn = *_arg2
-
-		refTmpOut = C.GoString(refTmpIn)
-		defer C.free(unsafe.Pointer(refTmpIn))
-
-		_outGuid = refTmpOut
-	}
+	_outGuid = C.GoString(_arg2)
+	defer C.free(unsafe.Pointer(_arg2))
 	_ioStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(IOStream)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _outGuid, _ioStream, _goerr
 }
@@ -241,8 +196,8 @@ func DBusIsAddress(_string string) bool {
 // transport are valid. See the specification of the D-Bus address format
 // (https://dbus.freedesktop.org/doc/dbus-specification.html#addresses).
 func DBusIsSupportedAddress(_string string) error {
-	var _arg1 *C.gchar   // out
-	var _cerr **C.GError // in
+	var _arg1 *C.gchar  // out
+	var _cerr *C.GError // in
 
 	_arg1 = (*C.gchar)(C.CString(_string))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -251,16 +206,7 @@ func DBusIsSupportedAddress(_string string) error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }

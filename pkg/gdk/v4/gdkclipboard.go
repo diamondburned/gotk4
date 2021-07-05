@@ -51,7 +51,7 @@ type Clipboard interface {
 	Display() Display
 	// Formats gets the formats that the clipboard can provide its current
 	// contents in.
-	Formats() ContentFormats
+	Formats() *ContentFormats
 	// IsLocalClipboard returns if the clipboard is local.
 	//
 	// A clipboard is considered local if it was last claimed by the running
@@ -126,7 +126,7 @@ func (c clipboard) Display() Display {
 	return _display
 }
 
-func (c clipboard) Formats() ContentFormats {
+func (c clipboard) Formats() *ContentFormats {
 	var _arg0 *C.GdkClipboard      // out
 	var _cret *C.GdkContentFormats // in
 
@@ -134,9 +134,9 @@ func (c clipboard) Formats() ContentFormats {
 
 	_cret = C.gdk_clipboard_get_formats(_arg0)
 
-	var _contentFormats ContentFormats // out
+	var _contentFormats *ContentFormats // out
 
-	_contentFormats = (ContentFormats)(unsafe.Pointer(_cret))
+	_contentFormats = (*ContentFormats)(unsafe.Pointer(_cret))
 	C.gdk_content_formats_ref(_cret)
 
 	return _contentFormats

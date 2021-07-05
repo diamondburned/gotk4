@@ -201,7 +201,7 @@ func NewGLShaderFromResource(resourcePath string) GLShader {
 func (s glShader) CompileGLShader(renderer Renderer) error {
 	var _arg0 *C.GskGLShader // out
 	var _arg1 *C.GskRenderer // out
-	var _cerr **C.GError     // in
+	var _cerr *C.GError      // in
 
 	_arg0 = (*C.GskGLShader)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GskRenderer)(unsafe.Pointer(renderer.Native()))
@@ -210,16 +210,7 @@ func (s glShader) CompileGLShader(renderer Renderer) error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
@@ -375,7 +366,7 @@ func (s *ShaderArgsBuilder) Native() unsafe.Pointer {
 }
 
 // Ref increases the reference count of a `GskShaderArgsBuilder` by one.
-func (b *ShaderArgsBuilder) Ref() ShaderArgsBuilder {
+func (b *ShaderArgsBuilder) Ref() *ShaderArgsBuilder {
 	var _arg0 *C.GskShaderArgsBuilder // out
 	var _cret *C.GskShaderArgsBuilder // in
 
@@ -383,10 +374,10 @@ func (b *ShaderArgsBuilder) Ref() ShaderArgsBuilder {
 
 	_cret = C.gsk_shader_args_builder_ref(_arg0)
 
-	var _shaderArgsBuilder ShaderArgsBuilder // out
+	var _shaderArgsBuilder *ShaderArgsBuilder // out
 
-	_shaderArgsBuilder = (ShaderArgsBuilder)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_shaderArgsBuilder, func(v ShaderArgsBuilder) {
+	_shaderArgsBuilder = (*ShaderArgsBuilder)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_shaderArgsBuilder, func(v *ShaderArgsBuilder) {
 		C.gsk_shader_args_builder_unref((*C.GskShaderArgsBuilder)(unsafe.Pointer(v)))
 	})
 
@@ -458,7 +449,7 @@ func (b *ShaderArgsBuilder) SetUint(idx int, value uint32) {
 // SetVec2 sets the value of the uniform @idx.
 //
 // The uniform must be of vec2 type.
-func (b *ShaderArgsBuilder) SetVec2(idx int, value graphene.Vec2) {
+func (b *ShaderArgsBuilder) SetVec2(idx int, value *graphene.Vec2) {
 	var _arg0 *C.GskShaderArgsBuilder // out
 	var _arg1 C.int                   // out
 	var _arg2 *C.graphene_vec2_t      // out
@@ -473,7 +464,7 @@ func (b *ShaderArgsBuilder) SetVec2(idx int, value graphene.Vec2) {
 // SetVec3 sets the value of the uniform @idx.
 //
 // The uniform must be of vec3 type.
-func (b *ShaderArgsBuilder) SetVec3(idx int, value graphene.Vec3) {
+func (b *ShaderArgsBuilder) SetVec3(idx int, value *graphene.Vec3) {
 	var _arg0 *C.GskShaderArgsBuilder // out
 	var _arg1 C.int                   // out
 	var _arg2 *C.graphene_vec3_t      // out
@@ -488,7 +479,7 @@ func (b *ShaderArgsBuilder) SetVec3(idx int, value graphene.Vec3) {
 // SetVec4 sets the value of the uniform @idx.
 //
 // The uniform must be of vec4 type.
-func (b *ShaderArgsBuilder) SetVec4(idx int, value graphene.Vec4) {
+func (b *ShaderArgsBuilder) SetVec4(idx int, value *graphene.Vec4) {
 	var _arg0 *C.GskShaderArgsBuilder // out
 	var _arg1 C.int                   // out
 	var _arg2 *C.graphene_vec4_t      // out

@@ -62,7 +62,7 @@ func marshalVisualType(p uintptr) (interface{}, error) {
 // Deprecated: since version 3.22.
 func QueryDepths() []int {
 	var _arg1 *C.gint
-	var _arg2 *C.gint // in
+	var _arg2 C.gint // in
 
 	C.gdk_query_depths(&_arg1, &_arg2)
 
@@ -83,7 +83,7 @@ func QueryDepths() []int {
 // Deprecated: since version 3.22.
 func QueryVisualTypes() []VisualType {
 	var _arg1 *C.GdkVisualType
-	var _arg2 *C.gint // in
+	var _arg2 C.gint // in
 
 	C.gdk_query_visual_types(&_arg1, &_arg2)
 
@@ -93,16 +93,7 @@ func QueryVisualTypes() []VisualType {
 		src := unsafe.Slice(_arg1, _arg2)
 		_visualTypes = make([]VisualType, _arg2)
 		for i := 0; i < int(_arg2); i++ {
-			{
-				var refTmpIn C.GdkVisualType
-				var refTmpOut VisualType
-
-				refTmpIn = *src[i]
-
-				refTmpOut = VisualType(refTmpIn)
-
-				_visualTypes[i] = refTmpOut
-			}
+			_visualTypes[i] = VisualType(src[i])
 		}
 	}
 
@@ -200,9 +191,9 @@ func (v visual) BitsPerRGB() int {
 
 func (v visual) BluePixelDetails() (mask uint32, shift int, precision int) {
 	var _arg0 *C.GdkVisual // out
-	var _arg1 *C.guint32   // in
-	var _arg2 *C.gint      // in
-	var _arg3 *C.gint      // in
+	var _arg1 C.guint32    // in
+	var _arg2 C.gint       // in
+	var _arg3 C.gint       // in
 
 	_arg0 = (*C.GdkVisual)(unsafe.Pointer(v.Native()))
 
@@ -266,9 +257,9 @@ func (v visual) Depth() int {
 
 func (v visual) GreenPixelDetails() (mask uint32, shift int, precision int) {
 	var _arg0 *C.GdkVisual // out
-	var _arg1 *C.guint32   // in
-	var _arg2 *C.gint      // in
-	var _arg3 *C.gint      // in
+	var _arg1 C.guint32    // in
+	var _arg2 C.gint       // in
+	var _arg3 C.gint       // in
 
 	_arg0 = (*C.GdkVisual)(unsafe.Pointer(v.Native()))
 
@@ -287,9 +278,9 @@ func (v visual) GreenPixelDetails() (mask uint32, shift int, precision int) {
 
 func (v visual) RedPixelDetails() (mask uint32, shift int, precision int) {
 	var _arg0 *C.GdkVisual // out
-	var _arg1 *C.guint32   // in
-	var _arg2 *C.gint      // in
-	var _arg3 *C.gint      // in
+	var _arg1 C.guint32    // in
+	var _arg2 C.gint       // in
+	var _arg3 C.gint       // in
 
 	_arg0 = (*C.GdkVisual)(unsafe.Pointer(v.Native()))
 

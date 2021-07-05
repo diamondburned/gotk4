@@ -545,52 +545,43 @@ const (
 
 // UCS4ToUTF16: convert a string from UCS-4 to UTF-16. A 0 character will be
 // added to the result after the converted text.
-func UCS4ToUTF16(str uint32, len int32) (itemsRead int32, itemsWritten int32, guint16 uint16, goerr error) {
+func UCS4ToUTF16(str *uint32, len int32) (itemsRead int32, itemsWritten int32, guint16 *uint16, goerr error) {
 	var _arg1 *C.gunichar  // out
 	var _arg2 C.glong      // out
-	var _arg3 *C.glong     // in
-	var _arg4 *C.glong     // in
+	var _arg3 C.glong      // in
+	var _arg4 C.glong      // in
 	var _cret *C.gunichar2 // in
-	var _cerr **C.GError   // in
+	var _cerr *C.GError    // in
 
-	_arg1 = *C.gunichar(str)
+	_arg1 = (*C.gunichar)(unsafe.Pointer(str))
 	_arg2 = C.glong(len)
 
 	_cret = C.g_ucs4_to_utf16(_arg1, _arg2, &_arg3, &_arg4, &_cerr)
 
 	var _itemsRead int32    // out
 	var _itemsWritten int32 // out
-	var _guint16 uint16     // out
+	var _guint16 *uint16    // out
 	var _goerr error        // out
 
 	_itemsRead = int32(_arg3)
 	_itemsWritten = int32(_arg4)
-	_guint16 = uint16(_cret)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_guint16 = (*uint16)(unsafe.Pointer(_cret))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _itemsRead, _itemsWritten, _guint16, _goerr
 }
 
 // UCS4ToUTF8: convert a string from a 32-bit fixed width representation as
 // UCS-4. to UTF-8. The result will be terminated with a 0 byte.
-func UCS4ToUTF8(str uint32, len int32) (itemsRead int32, itemsWritten int32, utf8 string, goerr error) {
+func UCS4ToUTF8(str *uint32, len int32) (itemsRead int32, itemsWritten int32, utf8 string, goerr error) {
 	var _arg1 *C.gunichar // out
 	var _arg2 C.glong     // out
-	var _arg3 *C.glong    // in
-	var _arg4 *C.glong    // in
+	var _arg3 C.glong     // in
+	var _arg4 C.glong     // in
 	var _cret *C.gchar    // in
-	var _cerr **C.GError  // in
+	var _cerr *C.GError   // in
 
-	_arg1 = *C.gunichar(str)
+	_arg1 = (*C.gunichar)(unsafe.Pointer(str))
 	_arg2 = C.glong(len)
 
 	_cret = C.g_ucs4_to_utf8(_arg1, _arg2, &_arg3, &_arg4, &_cerr)
@@ -604,16 +595,7 @@ func UCS4ToUTF8(str uint32, len int32) (itemsRead int32, itemsWritten int32, utf
 	_itemsWritten = int32(_arg4)
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _itemsRead, _itemsWritten, _utf8, _goerr
 }
@@ -670,10 +652,10 @@ func UnicharCombiningClass(uc uint32) int {
 //
 // See UAX#15 (http://unicode.org/reports/tr15/) for details.
 func UnicharCompose(a uint32, b uint32) (uint32, bool) {
-	var _arg1 C.gunichar  // out
-	var _arg2 C.gunichar  // out
-	var _arg3 *C.gunichar // in
-	var _cret C.gboolean  // in
+	var _arg1 C.gunichar // out
+	var _arg2 C.gunichar // out
+	var _arg3 C.gunichar // in
+	var _cret C.gboolean // in
 
 	_arg1 = C.gunichar(a)
 	_arg2 = C.gunichar(b)
@@ -708,10 +690,10 @@ func UnicharCompose(a uint32, b uint32) (uint32, bool) {
 //
 // See UAX#15 (http://unicode.org/reports/tr15/) for details.
 func UnicharDecompose(ch uint32) (a uint32, b uint32, ok bool) {
-	var _arg1 C.gunichar  // out
-	var _arg2 *C.gunichar // in
-	var _arg3 *C.gunichar // in
-	var _cret C.gboolean  // in
+	var _arg1 C.gunichar // out
+	var _arg2 C.gunichar // in
+	var _arg3 C.gunichar // in
+	var _cret C.gboolean // in
 
 	_arg1 = C.gunichar(ch)
 
@@ -762,11 +744,11 @@ func UnicharDigitValue(c uint32) int {
 //
 // See UAX#15 (http://unicode.org/reports/tr15/) for details.
 func UnicharFullyDecompose(ch uint32, compat bool, resultLen uint) (uint32, uint) {
-	var _arg1 C.gunichar  // out
-	var _arg2 C.gboolean  // out
-	var _arg3 *C.gunichar // in
-	var _arg4 C.gsize     // out
-	var _cret C.gsize     // in
+	var _arg1 C.gunichar // out
+	var _arg2 C.gboolean // out
+	var _arg3 C.gunichar // in
+	var _arg4 C.gsize    // out
+	var _cret C.gsize    // in
 
 	_arg1 = C.gunichar(ch)
 	if compat {
@@ -794,13 +776,13 @@ func UnicharFullyDecompose(ch uint32, compat bool, resultLen uint) (uint32, uint
 // character that typically has a glyph that is the mirror image of @ch's glyph
 // and @mirrored_ch is set, it puts that character in the address pointed to by
 // @mirrored_ch. Otherwise the original character is put.
-func UnicharGetMirrorChar(ch uint32, mirroredCh uint32) bool {
+func UnicharGetMirrorChar(ch uint32, mirroredCh *uint32) bool {
 	var _arg1 C.gunichar  // out
 	var _arg2 *C.gunichar // out
 	var _cret C.gboolean  // in
 
 	_arg1 = C.gunichar(ch)
-	_arg2 = *C.gunichar(mirroredCh)
+	_arg2 = (*C.gunichar)(unsafe.Pointer(mirroredCh))
 
 	_cret = C.g_unichar_get_mirror_char(_arg1, _arg2)
 
@@ -1290,19 +1272,19 @@ func UnicharXDigitValue(c uint32) int {
 // Unicode character.
 //
 // Deprecated: since version 2.30.
-func UnicodeCanonicalDecomposition(ch uint32, resultLen uint) uint32 {
+func UnicodeCanonicalDecomposition(ch uint32, resultLen *uint) *uint32 {
 	var _arg1 C.gunichar  // out
 	var _arg2 *C.gsize    // out
 	var _cret *C.gunichar // in
 
 	_arg1 = C.gunichar(ch)
-	_arg2 = *C.gsize(resultLen)
+	_arg2 = (*C.gsize)(unsafe.Pointer(resultLen))
 
 	_cret = C.g_unicode_canonical_decomposition(_arg1, _arg2)
 
-	var _gunichar uint32 // out
+	var _gunichar *uint32 // out
 
-	_gunichar = uint32(_cret)
+	_gunichar = (*uint32)(unsafe.Pointer(_cret))
 
 	return _gunichar
 }
@@ -1310,11 +1292,11 @@ func UnicodeCanonicalDecomposition(ch uint32, resultLen uint) uint32 {
 // UnicodeCanonicalOrdering computes the canonical ordering of a string
 // in-place. This rearranges decomposed characters in the string according to
 // their combining classes. See the Unicode manual for more information.
-func UnicodeCanonicalOrdering(_string uint32, len uint) {
+func UnicodeCanonicalOrdering(_string *uint32, len uint) {
 	var _arg1 *C.gunichar // out
 	var _arg2 C.gsize     // out
 
-	_arg1 = *C.gunichar(_string)
+	_arg1 = (*C.gunichar)(unsafe.Pointer(_string))
 	_arg2 = C.gsize(len)
 
 	C.g_unicode_canonical_ordering(_arg1, _arg2)
@@ -1368,37 +1350,28 @@ func UnicodeScriptToISO15924(script UnicodeScript) uint32 {
 
 // UTF16ToUCS4: convert a string from UTF-16 to UCS-4. The result will be
 // nul-terminated.
-func UTF16ToUCS4(str uint16, len int32) (itemsRead int32, itemsWritten int32, gunichar uint32, goerr error) {
+func UTF16ToUCS4(str *uint16, len int32) (itemsRead int32, itemsWritten int32, gunichar *uint32, goerr error) {
 	var _arg1 *C.gunichar2 // out
 	var _arg2 C.glong      // out
-	var _arg3 *C.glong     // in
-	var _arg4 *C.glong     // in
+	var _arg3 C.glong      // in
+	var _arg4 C.glong      // in
 	var _cret *C.gunichar  // in
-	var _cerr **C.GError   // in
+	var _cerr *C.GError    // in
 
-	_arg1 = *C.gunichar2(str)
+	_arg1 = (*C.gunichar2)(unsafe.Pointer(str))
 	_arg2 = C.glong(len)
 
 	_cret = C.g_utf16_to_ucs4(_arg1, _arg2, &_arg3, &_arg4, &_cerr)
 
 	var _itemsRead int32    // out
 	var _itemsWritten int32 // out
-	var _gunichar uint32    // out
+	var _gunichar *uint32   // out
 	var _goerr error        // out
 
 	_itemsRead = int32(_arg3)
 	_itemsWritten = int32(_arg4)
-	_gunichar = uint32(_cret)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_gunichar = (*uint32)(unsafe.Pointer(_cret))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _itemsRead, _itemsWritten, _gunichar, _goerr
 }
@@ -1414,15 +1387,15 @@ func UTF16ToUCS4(str uint16, len int32) (itemsRead int32, itemsWritten int32, gu
 // e.g. include embedded NUL characters. The only validation done by this
 // function is to ensure that the input can be correctly interpreted as UTF-16,
 // i.e. it doesn't contain unpaired surrogates or partial character sequences.
-func UTF16ToUTF8(str uint16, len int32) (itemsRead int32, itemsWritten int32, utf8 string, goerr error) {
+func UTF16ToUTF8(str *uint16, len int32) (itemsRead int32, itemsWritten int32, utf8 string, goerr error) {
 	var _arg1 *C.gunichar2 // out
 	var _arg2 C.glong      // out
-	var _arg3 *C.glong     // in
-	var _arg4 *C.glong     // in
+	var _arg3 C.glong      // in
+	var _arg4 C.glong      // in
 	var _cret *C.gchar     // in
-	var _cerr **C.GError   // in
+	var _cerr *C.GError    // in
 
-	_arg1 = *C.gunichar2(str)
+	_arg1 = (*C.gunichar2)(unsafe.Pointer(str))
 	_arg2 = C.glong(len)
 
 	_cret = C.g_utf16_to_utf8(_arg1, _arg2, &_arg3, &_arg4, &_cerr)
@@ -1436,16 +1409,7 @@ func UTF16ToUTF8(str uint16, len int32) (itemsRead int32, itemsWritten int32, ut
 	_itemsWritten = int32(_arg4)
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _itemsRead, _itemsWritten, _utf8, _goerr
 }
@@ -2002,13 +1966,13 @@ func UTF8Substring(str string, startPos int32, endPos int32) string {
 // UTF8ToUCS4: convert a string from UTF-8 to a 32-bit fixed width
 // representation as UCS-4. A trailing 0 character will be added to the string
 // after the converted text.
-func UTF8ToUCS4(str string, len int32) (itemsRead int32, itemsWritten int32, gunichar uint32, goerr error) {
+func UTF8ToUCS4(str string, len int32) (itemsRead int32, itemsWritten int32, gunichar *uint32, goerr error) {
 	var _arg1 *C.gchar    // out
 	var _arg2 C.glong     // out
-	var _arg3 *C.glong    // in
-	var _arg4 *C.glong    // in
+	var _arg3 C.glong     // in
+	var _arg4 C.glong     // in
 	var _cret *C.gunichar // in
-	var _cerr **C.GError  // in
+	var _cerr *C.GError   // in
 
 	_arg1 = (*C.gchar)(C.CString(str))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -2018,22 +1982,13 @@ func UTF8ToUCS4(str string, len int32) (itemsRead int32, itemsWritten int32, gun
 
 	var _itemsRead int32    // out
 	var _itemsWritten int32 // out
-	var _gunichar uint32    // out
+	var _gunichar *uint32   // out
 	var _goerr error        // out
 
 	_itemsRead = int32(_arg3)
 	_itemsWritten = int32(_arg4)
-	_gunichar = uint32(_cret)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_gunichar = (*uint32)(unsafe.Pointer(_cret))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _itemsRead, _itemsWritten, _gunichar, _goerr
 }
@@ -2042,10 +1997,10 @@ func UTF8ToUCS4(str string, len int32) (itemsRead int32, itemsWritten int32, gun
 // representation as UCS-4, assuming valid UTF-8 input. This function is roughly
 // twice as fast as g_utf8_to_ucs4() but does no error checking on the input. A
 // trailing 0 character will be added to the string after the converted text.
-func UTF8ToUCS4Fast(str string, len int32) (int32, uint32) {
+func UTF8ToUCS4Fast(str string, len int32) (int32, *uint32) {
 	var _arg1 *C.gchar    // out
 	var _arg2 C.glong     // out
-	var _arg3 *C.glong    // in
+	var _arg3 C.glong     // in
 	var _cret *C.gunichar // in
 
 	_arg1 = (*C.gchar)(C.CString(str))
@@ -2055,23 +2010,23 @@ func UTF8ToUCS4Fast(str string, len int32) (int32, uint32) {
 	_cret = C.g_utf8_to_ucs4_fast(_arg1, _arg2, &_arg3)
 
 	var _itemsWritten int32 // out
-	var _gunichar uint32    // out
+	var _gunichar *uint32   // out
 
 	_itemsWritten = int32(_arg3)
-	_gunichar = uint32(_cret)
+	_gunichar = (*uint32)(unsafe.Pointer(_cret))
 
 	return _itemsWritten, _gunichar
 }
 
 // UTF8ToUTF16: convert a string from UTF-8 to UTF-16. A 0 character will be
 // added to the result after the converted text.
-func UTF8ToUTF16(str string, len int32) (itemsRead int32, itemsWritten int32, guint16 uint16, goerr error) {
+func UTF8ToUTF16(str string, len int32) (itemsRead int32, itemsWritten int32, guint16 *uint16, goerr error) {
 	var _arg1 *C.gchar     // out
 	var _arg2 C.glong      // out
-	var _arg3 *C.glong     // in
-	var _arg4 *C.glong     // in
+	var _arg3 C.glong      // in
+	var _arg4 C.glong      // in
 	var _cret *C.gunichar2 // in
-	var _cerr **C.GError   // in
+	var _cerr *C.GError    // in
 
 	_arg1 = (*C.gchar)(C.CString(str))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -2081,22 +2036,13 @@ func UTF8ToUTF16(str string, len int32) (itemsRead int32, itemsWritten int32, gu
 
 	var _itemsRead int32    // out
 	var _itemsWritten int32 // out
-	var _guint16 uint16     // out
+	var _guint16 *uint16    // out
 	var _goerr error        // out
 
 	_itemsRead = int32(_arg3)
 	_itemsWritten = int32(_arg4)
-	_guint16 = uint16(_cret)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_guint16 = (*uint16)(unsafe.Pointer(_cret))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _itemsRead, _itemsWritten, _guint16, _goerr
 }
@@ -2117,7 +2063,7 @@ func UTF8ToUTF16(str string, len int32) (itemsRead int32, itemsWritten int32, gu
 func UTF8Validate(str []byte) (string, bool) {
 	var _arg1 *C.gchar
 	var _arg2 C.gssize
-	var _arg3 **C.gchar  // in
+	var _arg3 *C.gchar   // in
 	var _cret C.gboolean // in
 
 	_arg2 = C.gssize(len(str))
@@ -2128,16 +2074,7 @@ func UTF8Validate(str []byte) (string, bool) {
 	var _end string // out
 	var _ok bool    // out
 
-	{
-		var refTmpIn *C.gchar
-		var refTmpOut string
-
-		refTmpIn = *_arg3
-
-		refTmpOut = C.GoString(refTmpIn)
-
-		_end = refTmpOut
-	}
+	_end = C.GoString(_arg3)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -2152,7 +2089,7 @@ func UTF8Validate(str []byte) (string, bool) {
 func UTF8ValidateLen(str []byte) (string, bool) {
 	var _arg1 *C.gchar
 	var _arg2 C.gsize
-	var _arg3 **C.gchar  // in
+	var _arg3 *C.gchar   // in
 	var _cret C.gboolean // in
 
 	_arg2 = C.gsize(len(str))
@@ -2163,16 +2100,7 @@ func UTF8ValidateLen(str []byte) (string, bool) {
 	var _end string // out
 	var _ok bool    // out
 
-	{
-		var refTmpIn *C.gchar
-		var refTmpOut string
-
-		refTmpIn = *_arg3
-
-		refTmpOut = C.GoString(refTmpIn)
-
-		_end = refTmpOut
-	}
+	_end = C.GoString(_arg3)
 	if _cret != 0 {
 		_ok = true
 	}

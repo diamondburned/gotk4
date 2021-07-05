@@ -65,7 +65,7 @@ type Popup interface {
 	// Presenting may fail, for example if the @popup is set to autohide and is
 	// immediately hidden upon being presented. If presenting failed, the
 	// [signal@Gdk.Surface::layout] signal will not me emitted.
-	Present(width int, height int, layout PopupLayout) bool
+	Present(width int, height int, layout *PopupLayout) bool
 }
 
 // popup implements the Popup interface.
@@ -181,7 +181,7 @@ func (p popup) SurfaceAnchor() Gravity {
 	return _gravity
 }
 
-func (p popup) Present(width int, height int, layout PopupLayout) bool {
+func (p popup) Present(width int, height int, layout *PopupLayout) bool {
 	var _arg0 *C.GdkPopup       // out
 	var _arg1 C.int             // out
 	var _arg2 C.int             // out

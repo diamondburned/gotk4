@@ -301,8 +301,8 @@ func (b button) EnterButton() {
 
 func (b button) Alignment() (xalign float32, yalign float32) {
 	var _arg0 *C.GtkButton // out
-	var _arg1 *C.gfloat    // in
-	var _arg2 *C.gfloat    // in
+	var _arg1 C.gfloat     // in
+	var _arg2 C.gfloat     // in
 
 	_arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
 

@@ -143,7 +143,7 @@ type DatagramBased interface {
 	// likely 0 unless cancellation happened at the same time as a condition
 	// change). You can check for this in the callback using
 	// g_cancellable_is_cancelled().
-	CreateSource(condition glib.IOCondition, cancellable Cancellable) glib.Source
+	CreateSource(condition glib.IOCondition, cancellable Cancellable) *glib.Source
 	// ReceiveMessages: receive one or more data messages from @datagram_based
 	// in one go.
 	//
@@ -285,7 +285,7 @@ func (d datagramBased) ConditionWait(condition glib.IOCondition, timeout int64, 
 	var _arg1 C.GIOCondition    // out
 	var _arg2 C.gint64          // out
 	var _arg3 *C.GCancellable   // out
-	var _cerr **C.GError        // in
+	var _cerr *C.GError         // in
 
 	_arg0 = (*C.GDatagramBased)(unsafe.Pointer(d.Native()))
 	_arg1 = C.GIOCondition(condition)
@@ -296,21 +296,12 @@ func (d datagramBased) ConditionWait(condition glib.IOCondition, timeout int64, 
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }
 
-func (d datagramBased) CreateSource(condition glib.IOCondition, cancellable Cancellable) glib.Source {
+func (d datagramBased) CreateSource(condition glib.IOCondition, cancellable Cancellable) *glib.Source {
 	var _arg0 *C.GDatagramBased // out
 	var _arg1 C.GIOCondition    // out
 	var _arg2 *C.GCancellable   // out
@@ -322,10 +313,10 @@ func (d datagramBased) CreateSource(condition glib.IOCondition, cancellable Canc
 
 	_cret = C.g_datagram_based_create_source(_arg0, _arg1, _arg2)
 
-	var _source glib.Source // out
+	var _source *glib.Source // out
 
-	_source = (glib.Source)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_source, func(v glib.Source) {
+	_source = (*glib.Source)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_source, func(v *glib.Source) {
 		C.g_source_unref((*C.GSource)(unsafe.Pointer(v)))
 	})
 
@@ -340,7 +331,7 @@ func (d datagramBased) ReceiveMessages(messages []InputMessage, flags int, timeo
 	var _arg4 C.gint64        // out
 	var _arg5 *C.GCancellable // out
 	var _cret C.gint          // in
-	var _cerr **C.GError      // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GDatagramBased)(unsafe.Pointer(d.Native()))
 	_arg2 = C.guint(len(messages))
@@ -355,16 +346,7 @@ func (d datagramBased) ReceiveMessages(messages []InputMessage, flags int, timeo
 	var _goerr error // out
 
 	_gint = int(_cret)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _gint, _goerr
 }
@@ -377,7 +359,7 @@ func (d datagramBased) SendMessages(messages []OutputMessage, flags int, timeout
 	var _arg4 C.gint64        // out
 	var _arg5 *C.GCancellable // out
 	var _cret C.gint          // in
-	var _cerr **C.GError      // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GDatagramBased)(unsafe.Pointer(d.Native()))
 	_arg2 = C.guint(len(messages))
@@ -392,16 +374,7 @@ func (d datagramBased) SendMessages(messages []OutputMessage, flags int, timeout
 	var _goerr error // out
 
 	_gint = int(_cret)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _gint, _goerr
 }

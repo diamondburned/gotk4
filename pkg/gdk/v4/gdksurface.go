@@ -67,7 +67,7 @@ type Surface interface {
 	// This function always returns a valid pointer, but it will return a
 	// pointer to a “nil” surface if @other is already in an error state or any
 	// other error occurs.
-	CreateSimilarSurfaceSurface(content cairo.Content, width int, height int) cairo.Surface
+	CreateSimilarSurfaceSurface(content cairo.Content, width int, height int) *cairo.Surface
 	// CreateVulkanContextSurface creates a new `GdkVulkanContext` for rendering
 	// on @surface.
 	//
@@ -185,7 +185,7 @@ type Surface interface {
 	//
 	// Use [method@Gdk.Display.supports_input_shapes] to find out if a
 	// particular backend supports input regions.
-	SetInputRegionSurface(region cairo.Region)
+	SetInputRegionSurface(region *cairo.Region)
 	// SetOpaqueRegionSurface marks a region of the `GdkSurface` as opaque.
 	//
 	// For optimisation purposes, compositing window managers may like to not
@@ -200,7 +200,7 @@ type Surface interface {
 	// opaque, as we know where the opaque regions are. If your surface
 	// background is not opaque, please update this property in your
 	// WidgetClass.css_changed() handler.
-	SetOpaqueRegionSurface(region cairo.Region)
+	SetOpaqueRegionSurface(region *cairo.Region)
 }
 
 // surface implements the Surface class.
@@ -287,7 +287,7 @@ func (s surface) CreateCairoContextSurface() CairoContext {
 func (s surface) CreateGLContextSurface() (GLContext, error) {
 	var _arg0 *C.GdkSurface   // out
 	var _cret *C.GdkGLContext // in
-	var _cerr **C.GError      // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 
@@ -297,21 +297,12 @@ func (s surface) CreateGLContextSurface() (GLContext, error) {
 	var _goerr error         // out
 
 	_glContext = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(GLContext)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _glContext, _goerr
 }
 
-func (s surface) CreateSimilarSurfaceSurface(content cairo.Content, width int, height int) cairo.Surface {
+func (s surface) CreateSimilarSurfaceSurface(content cairo.Content, width int, height int) *cairo.Surface {
 	var _arg0 *C.GdkSurface      // out
 	var _arg1 C.cairo_content_t  // out
 	var _arg2 C.int              // out
@@ -325,10 +316,10 @@ func (s surface) CreateSimilarSurfaceSurface(content cairo.Content, width int, h
 
 	_cret = C.gdk_surface_create_similar_surface(_arg0, _arg1, _arg2, _arg3)
 
-	var _ret cairo.Surface // out
+	var _ret *cairo.Surface // out
 
-	_ret = (cairo.Surface)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_ret, func(v cairo.Surface) {
+	_ret = (*cairo.Surface)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_ret, func(v *cairo.Surface) {
 		C.free(unsafe.Pointer(v))
 	})
 
@@ -338,7 +329,7 @@ func (s surface) CreateSimilarSurfaceSurface(content cairo.Content, width int, h
 func (s surface) CreateVulkanContextSurface() (VulkanContext, error) {
 	var _arg0 *C.GdkSurface       // out
 	var _cret *C.GdkVulkanContext // in
-	var _cerr **C.GError          // in
+	var _cerr *C.GError           // in
 
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 
@@ -348,16 +339,7 @@ func (s surface) CreateVulkanContextSurface() (VulkanContext, error) {
 	var _goerr error                 // out
 
 	_vulkanContext = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(VulkanContext)
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _vulkanContext, _goerr
 }
@@ -403,12 +385,12 @@ func (s surface) DeviceCursor(device Device) Cursor {
 }
 
 func (s surface) DevicePosition(device Device) (x float64, y float64, mask ModifierType, ok bool) {
-	var _arg0 *C.GdkSurface      // out
-	var _arg1 *C.GdkDevice       // out
-	var _arg2 *C.double          // in
-	var _arg3 *C.double          // in
-	var _arg4 *C.GdkModifierType // in
-	var _cret C.gboolean         // in
+	var _arg0 *C.GdkSurface     // out
+	var _arg1 *C.GdkDevice      // out
+	var _arg2 C.double          // in
+	var _arg3 C.double          // in
+	var _arg4 C.GdkModifierType // in
+	var _cret C.gboolean        // in
 
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
@@ -422,16 +404,7 @@ func (s surface) DevicePosition(device Device) (x float64, y float64, mask Modif
 
 	_x = float64(_arg2)
 	_y = float64(_arg3)
-	{
-		var refTmpIn C.GdkModifierType
-		var refTmpOut ModifierType
-
-		refTmpIn = *_arg4
-
-		refTmpOut = ModifierType(refTmpIn)
-
-		_mask = refTmpOut
-	}
+	_mask = ModifierType(_arg4)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -594,7 +567,7 @@ func (s surface) SetDeviceCursorSurface(device Device, cursor Cursor) {
 	C.gdk_surface_set_device_cursor(_arg0, _arg1, _arg2)
 }
 
-func (s surface) SetInputRegionSurface(region cairo.Region) {
+func (s surface) SetInputRegionSurface(region *cairo.Region) {
 	var _arg0 *C.GdkSurface     // out
 	var _arg1 *C.cairo_region_t // out
 
@@ -604,7 +577,7 @@ func (s surface) SetInputRegionSurface(region cairo.Region) {
 	C.gdk_surface_set_input_region(_arg0, _arg1)
 }
 
-func (s surface) SetOpaqueRegionSurface(region cairo.Region) {
+func (s surface) SetOpaqueRegionSurface(region *cairo.Region) {
 	var _arg0 *C.GdkSurface     // out
 	var _arg1 *C.cairo_region_t // out
 

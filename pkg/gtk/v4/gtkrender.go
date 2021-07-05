@@ -18,7 +18,7 @@ import "C"
 
 // RenderActivity renders an activity indicator (such as in Spinner). The state
 // GTK_STATE_FLAG_CHECKED determines whether there is activity going on.
-func RenderActivity(context StyleContext, cr cairo.Context, x float64, y float64, width float64, height float64) {
+func RenderActivity(context StyleContext, cr *cairo.Context, x float64, y float64, width float64, height float64) {
 	var _arg1 *C.GtkStyleContext // out
 	var _arg2 *C.cairo_t         // out
 	var _arg3 C.double           // out
@@ -41,7 +41,7 @@ func RenderActivity(context StyleContext, cr cairo.Context, x float64, y float64
 // Typical arrow rendering at 0, 1⁄2 π;, π; and 3⁄2 π:
 //
 // ! (arrows.png)
-func RenderArrow(context StyleContext, cr cairo.Context, angle float64, x float64, y float64, size float64) {
+func RenderArrow(context StyleContext, cr *cairo.Context, angle float64, x float64, y float64, size float64) {
 	var _arg1 *C.GtkStyleContext // out
 	var _arg2 *C.cairo_t         // out
 	var _arg3 C.double           // out
@@ -65,7 +65,7 @@ func RenderArrow(context StyleContext, cr cairo.Context, angle float64, x float6
 // `border-width` and `border-radius`:
 //
 // ! (background.png)
-func RenderBackground(context StyleContext, cr cairo.Context, x float64, y float64, width float64, height float64) {
+func RenderBackground(context StyleContext, cr *cairo.Context, x float64, y float64, width float64, height float64) {
 	var _arg1 *C.GtkStyleContext // out
 	var _arg2 *C.cairo_t         // out
 	var _arg3 C.double           // out
@@ -92,7 +92,7 @@ func RenderBackground(context StyleContext, cr cairo.Context, x float64, y float
 // Typical checkmark rendering:
 //
 // ! (checks.png)
-func RenderCheck(context StyleContext, cr cairo.Context, x float64, y float64, width float64, height float64) {
+func RenderCheck(context StyleContext, cr *cairo.Context, x float64, y float64, width float64, height float64) {
 	var _arg1 *C.GtkStyleContext // out
 	var _arg2 *C.cairo_t         // out
 	var _arg3 C.double           // out
@@ -117,7 +117,7 @@ func RenderCheck(context StyleContext, cr cairo.Context, x float64, y float64, w
 // Typical expander rendering:
 //
 // ! (expanders.png)
-func RenderExpander(context StyleContext, cr cairo.Context, x float64, y float64, width float64, height float64) {
+func RenderExpander(context StyleContext, cr *cairo.Context, x float64, y float64, width float64, height float64) {
 	var _arg1 *C.GtkStyleContext // out
 	var _arg2 *C.cairo_t         // out
 	var _arg3 C.double           // out
@@ -141,7 +141,7 @@ func RenderExpander(context StyleContext, cr cairo.Context, x float64, y float64
 // Typical focus rendering:
 //
 // ! (focus.png)
-func RenderFocus(context StyleContext, cr cairo.Context, x float64, y float64, width float64, height float64) {
+func RenderFocus(context StyleContext, cr *cairo.Context, x float64, y float64, width float64, height float64) {
 	var _arg1 *C.GtkStyleContext // out
 	var _arg2 *C.cairo_t         // out
 	var _arg3 C.double           // out
@@ -166,7 +166,7 @@ func RenderFocus(context StyleContext, cr cairo.Context, x float64, y float64, w
 // `border-color`, `border-width`, `border-radius` and junctions:
 //
 // ! (frames.png)
-func RenderFrame(context StyleContext, cr cairo.Context, x float64, y float64, width float64, height float64) {
+func RenderFrame(context StyleContext, cr *cairo.Context, x float64, y float64, width float64, height float64) {
 	var _arg1 *C.GtkStyleContext // out
 	var _arg2 *C.cairo_t         // out
 	var _arg3 C.double           // out
@@ -190,7 +190,7 @@ func RenderFrame(context StyleContext, cr cairo.Context, x float64, y float64, w
 // Handles rendered for the paned and grip classes:
 //
 // ! (handles.png)
-func RenderHandle(context StyleContext, cr cairo.Context, x float64, y float64, width float64, height float64) {
+func RenderHandle(context StyleContext, cr *cairo.Context, x float64, y float64, width float64, height float64) {
 	var _arg1 *C.GtkStyleContext // out
 	var _arg2 *C.cairo_t         // out
 	var _arg3 C.double           // out
@@ -214,7 +214,7 @@ func RenderHandle(context StyleContext, cr cairo.Context, x float64, y float64, 
 // This function will render the icon in @texture at exactly its size,
 // regardless of scaling factors, which may not be appropriate when drawing on
 // displays with high pixel densities.
-func RenderIcon(context StyleContext, cr cairo.Context, texture gdk.Texture, x float64, y float64) {
+func RenderIcon(context StyleContext, cr *cairo.Context, texture gdk.Texture, x float64, y float64) {
 	var _arg1 *C.GtkStyleContext // out
 	var _arg2 *C.cairo_t         // out
 	var _arg3 *C.GdkTexture      // out
@@ -231,7 +231,7 @@ func RenderIcon(context StyleContext, cr cairo.Context, texture gdk.Texture, x f
 }
 
 // RenderLayout renders @layout on the coordinates @x, @y
-func RenderLayout(context StyleContext, cr cairo.Context, x float64, y float64, layout pango.Layout) {
+func RenderLayout(context StyleContext, cr *cairo.Context, x float64, y float64, layout pango.Layout) {
 	var _arg1 *C.GtkStyleContext // out
 	var _arg2 *C.cairo_t         // out
 	var _arg3 C.double           // out
@@ -248,7 +248,7 @@ func RenderLayout(context StyleContext, cr cairo.Context, x float64, y float64, 
 }
 
 // RenderLine renders a line from (x0, y0) to (x1, y1).
-func RenderLine(context StyleContext, cr cairo.Context, x0 float64, y0 float64, x1 float64, y1 float64) {
+func RenderLine(context StyleContext, cr *cairo.Context, x0 float64, y0 float64, x1 float64, y1 float64) {
 	var _arg1 *C.GtkStyleContext // out
 	var _arg2 *C.cairo_t         // out
 	var _arg3 C.double           // out
@@ -273,7 +273,7 @@ func RenderLine(context StyleContext, cr cairo.Context, x0 float64, y0 float64, 
 // Typical option mark rendering:
 //
 // ! (options.png)
-func RenderOption(context StyleContext, cr cairo.Context, x float64, y float64, width float64, height float64) {
+func RenderOption(context StyleContext, cr *cairo.Context, x float64, y float64, width float64, height float64) {
 	var _arg1 *C.GtkStyleContext // out
 	var _arg2 *C.cairo_t         // out
 	var _arg3 C.double           // out

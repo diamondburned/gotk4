@@ -60,7 +60,7 @@ func gotk4_SourceFunc(arg0 C.gpointer) C.gboolean {
 // You may find g_get_real_time() to be more convenient.
 //
 // Deprecated: since version 2.62.
-func GetCurrentTime(result TimeVal) {
+func GetCurrentTime(result *TimeVal) {
 	var _arg1 *C.GTimeVal // out
 
 	_arg1 = (*C.GTimeVal)(unsafe.Pointer(result))
@@ -133,15 +133,15 @@ func IdleRemoveByData(data interface{}) bool {
 // added to one with g_source_attach() before it will be executed. Note that the
 // default priority for idle sources is G_PRIORITY_DEFAULT_IDLE, as compared to
 // other sources which have a default priority of G_PRIORITY_DEFAULT.
-func NewIdleSource() Source {
+func NewIdleSource() *Source {
 	var _cret *C.GSource // in
 
 	_cret = C.g_idle_source_new()
 
-	var _source Source // out
+	var _source *Source // out
 
-	_source = (Source)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_source, func(v Source) {
+	_source = (*Source)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_source, func(v *Source) {
 		C.g_source_unref((*C.GSource)(unsafe.Pointer(v)))
 	})
 
@@ -149,14 +149,14 @@ func NewIdleSource() Source {
 }
 
 // MainCurrentSource returns the currently firing source for this thread.
-func MainCurrentSource() Source {
+func MainCurrentSource() *Source {
 	var _cret *C.GSource // in
 
 	_cret = C.g_main_current_source()
 
-	var _source Source // out
+	var _source *Source // out
 
-	_source = (Source)(unsafe.Pointer(_cret))
+	_source = (*Source)(unsafe.Pointer(_cret))
 	C.g_source_ref(_cret)
 
 	return _source
@@ -238,7 +238,7 @@ func MainDepth() int {
 //
 // The interval given is in terms of monotonic time, not wall clock time. See
 // g_get_monotonic_time().
-func NewTimeoutSource(interval uint) Source {
+func NewTimeoutSource(interval uint) *Source {
 	var _arg1 C.guint    // out
 	var _cret *C.GSource // in
 
@@ -246,10 +246,10 @@ func NewTimeoutSource(interval uint) Source {
 
 	_cret = C.g_timeout_source_new(_arg1)
 
-	var _source Source // out
+	var _source *Source // out
 
-	_source = (Source)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_source, func(v Source) {
+	_source = (*Source)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_source, func(v *Source) {
 		C.g_source_unref((*C.GSource)(unsafe.Pointer(v)))
 	})
 
@@ -266,7 +266,7 @@ func NewTimeoutSource(interval uint) Source {
 //
 // The interval given is in terms of monotonic time, not wall clock time. See
 // g_get_monotonic_time().
-func TimeoutSourceNewSeconds(interval uint) Source {
+func TimeoutSourceNewSeconds(interval uint) *Source {
 	var _arg1 C.guint    // out
 	var _cret *C.GSource // in
 
@@ -274,10 +274,10 @@ func TimeoutSourceNewSeconds(interval uint) Source {
 
 	_cret = C.g_timeout_source_new_seconds(_arg1)
 
-	var _source Source // out
+	var _source *Source // out
 
-	_source = (Source)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_source, func(v Source) {
+	_source = (*Source)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_source, func(v *Source) {
 		C.g_source_unref((*C.GSource)(unsafe.Pointer(v)))
 	})
 
@@ -302,15 +302,15 @@ func marshalMainContext(p uintptr) (interface{}, error) {
 }
 
 // NewMainContext constructs a struct MainContext.
-func NewMainContext() MainContext {
+func NewMainContext() *MainContext {
 	var _cret *C.GMainContext // in
 
 	_cret = C.g_main_context_new()
 
-	var _mainContext MainContext // out
+	var _mainContext *MainContext // out
 
-	_mainContext = (MainContext)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_mainContext, func(v MainContext) {
+	_mainContext = (*MainContext)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_mainContext, func(v *MainContext) {
 		C.g_main_context_unref((*C.GMainContext)(unsafe.Pointer(v)))
 	})
 
@@ -351,7 +351,7 @@ func (c *MainContext) Acquire() bool {
 // AddPoll adds a file descriptor to the set of file descriptors polled for this
 // context. This will very seldom be used directly. Instead a typical event
 // source will use g_source_add_unix_fd() instead.
-func (c *MainContext) AddPoll(fd PollFD, priority int) {
+func (c *MainContext) AddPoll(fd *PollFD, priority int) {
 	var _arg0 *C.GMainContext // out
 	var _arg1 *C.GPollFD      // out
 	var _arg2 C.gint          // out
@@ -408,7 +408,7 @@ func (c *MainContext) Dispatch() {
 // FindSourceByFuncsUserData finds a source with the given source functions and
 // user data. If multiple sources exist with the same source function and user
 // data, the first one found will be returned.
-func (c *MainContext) FindSourceByFuncsUserData(funcs SourceFuncs, userData interface{}) Source {
+func (c *MainContext) FindSourceByFuncsUserData(funcs *SourceFuncs, userData interface{}) *Source {
 	var _arg0 *C.GMainContext // out
 	var _arg1 *C.GSourceFuncs // out
 	var _arg2 C.gpointer      // out
@@ -420,9 +420,9 @@ func (c *MainContext) FindSourceByFuncsUserData(funcs SourceFuncs, userData inte
 
 	_cret = C.g_main_context_find_source_by_funcs_user_data(_arg0, _arg1, _arg2)
 
-	var _source Source // out
+	var _source *Source // out
 
-	_source = (Source)(unsafe.Pointer(_cret))
+	_source = (*Source)(unsafe.Pointer(_cret))
 	C.g_source_ref(_cret)
 
 	return _source
@@ -439,7 +439,7 @@ func (c *MainContext) FindSourceByFuncsUserData(funcs SourceFuncs, userData inte
 // been removed by the time this function is called on its (now invalid) source
 // ID. This source ID may have been reissued, leading to the operation being
 // performed against the wrong source.
-func (c *MainContext) FindSourceByID(sourceId uint) Source {
+func (c *MainContext) FindSourceByID(sourceId uint) *Source {
 	var _arg0 *C.GMainContext // out
 	var _arg1 C.guint         // out
 	var _cret *C.GSource      // in
@@ -449,9 +449,9 @@ func (c *MainContext) FindSourceByID(sourceId uint) Source {
 
 	_cret = C.g_main_context_find_source_by_id(_arg0, _arg1)
 
-	var _source Source // out
+	var _source *Source // out
 
-	_source = (Source)(unsafe.Pointer(_cret))
+	_source = (*Source)(unsafe.Pointer(_cret))
 	C.g_source_ref(_cret)
 
 	return _source
@@ -460,7 +460,7 @@ func (c *MainContext) FindSourceByID(sourceId uint) Source {
 // FindSourceByUserData finds a source with the given user data for the
 // callback. If multiple sources exist with the same user data, the first one
 // found will be returned.
-func (c *MainContext) FindSourceByUserData(userData interface{}) Source {
+func (c *MainContext) FindSourceByUserData(userData interface{}) *Source {
 	var _arg0 *C.GMainContext // out
 	var _arg1 C.gpointer      // out
 	var _cret *C.GSource      // in
@@ -470,9 +470,9 @@ func (c *MainContext) FindSourceByUserData(userData interface{}) Source {
 
 	_cret = C.g_main_context_find_source_by_user_data(_arg0, _arg1)
 
-	var _source Source // out
+	var _source *Source // out
 
-	_source = (Source)(unsafe.Pointer(_cret))
+	_source = (*Source)(unsafe.Pointer(_cret))
 	C.g_source_ref(_cret)
 
 	return _source
@@ -565,7 +565,7 @@ func (c *MainContext) PopThreadDefault() {
 // before you may call this function.
 func (c *MainContext) Prepare() (int, bool) {
 	var _arg0 *C.GMainContext // out
-	var _arg1 *C.gint         // in
+	var _arg1 C.gint          // in
 	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GMainContext)(unsafe.Pointer(c))
@@ -624,7 +624,7 @@ func (c *MainContext) PushThreadDefault() {
 }
 
 // Ref increases the reference count on a Context object by one.
-func (c *MainContext) Ref() MainContext {
+func (c *MainContext) Ref() *MainContext {
 	var _arg0 *C.GMainContext // out
 	var _cret *C.GMainContext // in
 
@@ -632,10 +632,10 @@ func (c *MainContext) Ref() MainContext {
 
 	_cret = C.g_main_context_ref(_arg0)
 
-	var _mainContext MainContext // out
+	var _mainContext *MainContext // out
 
-	_mainContext = (MainContext)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_mainContext, func(v MainContext) {
+	_mainContext = (*MainContext)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_mainContext, func(v *MainContext) {
 		C.g_main_context_unref((*C.GMainContext)(unsafe.Pointer(v)))
 	})
 
@@ -656,7 +656,7 @@ func (c *MainContext) Release() {
 
 // RemovePoll removes file descriptor from the set of file descriptors to be
 // polled for a particular context.
-func (c *MainContext) RemovePoll(fd PollFD) {
+func (c *MainContext) RemovePoll(fd *PollFD) {
 	var _arg0 *C.GMainContext // out
 	var _arg1 *C.GPollFD      // out
 
@@ -717,7 +717,7 @@ func marshalMainLoop(p uintptr) (interface{}, error) {
 }
 
 // NewMainLoop constructs a struct MainLoop.
-func NewMainLoop(context MainContext, isRunning bool) MainLoop {
+func NewMainLoop(context *MainContext, isRunning bool) *MainLoop {
 	var _arg1 *C.GMainContext // out
 	var _arg2 C.gboolean      // out
 	var _cret *C.GMainLoop    // in
@@ -729,10 +729,10 @@ func NewMainLoop(context MainContext, isRunning bool) MainLoop {
 
 	_cret = C.g_main_loop_new(_arg1, _arg2)
 
-	var _mainLoop MainLoop // out
+	var _mainLoop *MainLoop // out
 
-	_mainLoop = (MainLoop)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_mainLoop, func(v MainLoop) {
+	_mainLoop = (*MainLoop)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_mainLoop, func(v *MainLoop) {
 		C.g_main_loop_unref((*C.GMainLoop)(unsafe.Pointer(v)))
 	})
 
@@ -745,7 +745,7 @@ func (m *MainLoop) Native() unsafe.Pointer {
 }
 
 // Context returns the Context of @loop.
-func (l *MainLoop) Context() MainContext {
+func (l *MainLoop) Context() *MainContext {
 	var _arg0 *C.GMainLoop    // out
 	var _cret *C.GMainContext // in
 
@@ -753,9 +753,9 @@ func (l *MainLoop) Context() MainContext {
 
 	_cret = C.g_main_loop_get_context(_arg0)
 
-	var _mainContext MainContext // out
+	var _mainContext *MainContext // out
 
-	_mainContext = (MainContext)(unsafe.Pointer(_cret))
+	_mainContext = (*MainContext)(unsafe.Pointer(_cret))
 	C.g_main_context_ref(_cret)
 
 	return _mainContext
@@ -794,7 +794,7 @@ func (l *MainLoop) Quit() {
 }
 
 // Ref increases the reference count on a Loop object by one.
-func (l *MainLoop) Ref() MainLoop {
+func (l *MainLoop) Ref() *MainLoop {
 	var _arg0 *C.GMainLoop // out
 	var _cret *C.GMainLoop // in
 
@@ -802,10 +802,10 @@ func (l *MainLoop) Ref() MainLoop {
 
 	_cret = C.g_main_loop_ref(_arg0)
 
-	var _mainLoop MainLoop // out
+	var _mainLoop *MainLoop // out
 
-	_mainLoop = (MainLoop)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_mainLoop, func(v MainLoop) {
+	_mainLoop = (*MainLoop)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_mainLoop, func(v *MainLoop) {
 		C.g_main_loop_unref((*C.GMainLoop)(unsafe.Pointer(v)))
 	})
 
@@ -851,7 +851,7 @@ func marshalSource(p uintptr) (interface{}, error) {
 }
 
 // NewSource constructs a struct Source.
-func NewSource(sourceFuncs SourceFuncs, structSize uint) Source {
+func NewSource(sourceFuncs *SourceFuncs, structSize uint) *Source {
 	var _arg1 *C.GSourceFuncs // out
 	var _arg2 C.guint         // out
 	var _cret *C.GSource      // in
@@ -861,10 +861,10 @@ func NewSource(sourceFuncs SourceFuncs, structSize uint) Source {
 
 	_cret = C.g_source_new(_arg1, _arg2)
 
-	var _source Source // out
+	var _source *Source // out
 
-	_source = (Source)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_source, func(v Source) {
+	_source = (*Source)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_source, func(v *Source) {
 		C.g_source_unref((*C.GSource)(unsafe.Pointer(v)))
 	})
 
@@ -892,7 +892,7 @@ func (s *Source) Native() unsafe.Pointer {
 //
 // This API is only intended to be used by implementations of #GSource. Do not
 // call this API on a #GSource that you did not create.
-func (s *Source) AddChildSource(childSource Source) {
+func (s *Source) AddChildSource(childSource *Source) {
 	var _arg0 *C.GSource // out
 	var _arg1 *C.GSource // out
 
@@ -913,7 +913,7 @@ func (s *Source) AddChildSource(childSource Source) {
 // Using this API forces the linear scanning of event sources on each main loop
 // iteration. Newly-written event sources should try to use
 // g_source_add_unix_fd() instead of this API.
-func (s *Source) AddPoll(fd PollFD) {
+func (s *Source) AddPoll(fd *PollFD) {
 	var _arg0 *C.GSource // out
 	var _arg1 *C.GPollFD // out
 
@@ -960,7 +960,7 @@ func (s *Source) AddUnixFd(fd int, events IOCondition) interface{} {
 //
 // This function is safe to call from any thread, regardless of which thread the
 // @context is running in.
-func (s *Source) Attach(context MainContext) uint {
+func (s *Source) Attach(context *MainContext) uint {
 	var _arg0 *C.GSource      // out
 	var _arg1 *C.GMainContext // out
 	var _cret C.guint         // in
@@ -1020,7 +1020,7 @@ func (s *Source) CanRecurse() bool {
 // Context). In particular, you can always call this function on the source
 // returned from g_main_current_source(). But calling this function on a source
 // whose Context has been destroyed is an error.
-func (s *Source) Context() MainContext {
+func (s *Source) Context() *MainContext {
 	var _arg0 *C.GSource      // out
 	var _cret *C.GMainContext // in
 
@@ -1028,9 +1028,9 @@ func (s *Source) Context() MainContext {
 
 	_cret = C.g_source_get_context(_arg0)
 
-	var _mainContext MainContext // out
+	var _mainContext *MainContext // out
 
-	_mainContext = (MainContext)(unsafe.Pointer(_cret))
+	_mainContext = (*MainContext)(unsafe.Pointer(_cret))
 	C.g_main_context_ref(_cret)
 
 	return _mainContext
@@ -1040,7 +1040,7 @@ func (s *Source) Context() MainContext {
 // g_get_current_time().
 //
 // Deprecated: since version 2.28.
-func (s *Source) CurrentTime(timeval TimeVal) {
+func (s *Source) CurrentTime(timeval *TimeVal) {
 	var _arg0 *C.GSource  // out
 	var _arg1 *C.GTimeVal // out
 
@@ -1243,7 +1243,7 @@ func (s *Source) QueryUnixFd(tag interface{}) IOCondition {
 }
 
 // Ref increases the reference count on a source by one.
-func (s *Source) Ref() Source {
+func (s *Source) Ref() *Source {
 	var _arg0 *C.GSource // out
 	var _cret *C.GSource // in
 
@@ -1251,10 +1251,10 @@ func (s *Source) Ref() Source {
 
 	_cret = C.g_source_ref(_arg0)
 
-	var _ret Source // out
+	var _ret *Source // out
 
-	_ret = (Source)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_ret, func(v Source) {
+	_ret = (*Source)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_ret, func(v *Source) {
 		C.g_source_unref((*C.GSource)(unsafe.Pointer(v)))
 	})
 
@@ -1265,7 +1265,7 @@ func (s *Source) Ref() Source {
 //
 // This API is only intended to be used by implementations of #GSource. Do not
 // call this API on a #GSource that you did not create.
-func (s *Source) RemoveChildSource(childSource Source) {
+func (s *Source) RemoveChildSource(childSource *Source) {
 	var _arg0 *C.GSource // out
 	var _arg1 *C.GSource // out
 
@@ -1280,7 +1280,7 @@ func (s *Source) RemoveChildSource(childSource Source) {
 //
 // This API is only intended to be used by implementations of #GSource. Do not
 // call this API on a #GSource that you did not create.
-func (s *Source) RemovePoll(fd PollFD) {
+func (s *Source) RemovePoll(fd *PollFD) {
 	var _arg0 *C.GSource // out
 	var _arg1 *C.GPollFD // out
 
@@ -1320,7 +1320,7 @@ func (s *Source) RemoveUnixFd(tag interface{}) {
 // It is safe to call this function multiple times on a source which has already
 // been attached to a context. The changes will take effect for the next time
 // the source is dispatched after this call returns.
-func (s *Source) SetCallbackIndirect(callbackData interface{}, callbackFuncs SourceCallbackFuncs) {
+func (s *Source) SetCallbackIndirect(callbackData interface{}, callbackFuncs *SourceCallbackFuncs) {
 	var _arg0 *C.GSource              // out
 	var _arg1 C.gpointer              // out
 	var _arg2 *C.GSourceCallbackFuncs // out
@@ -1350,7 +1350,7 @@ func (s *Source) SetCanRecurse(canRecurse bool) {
 
 // SetFuncs sets the source functions (can be used to override default
 // implementations) of an unattached source.
-func (s *Source) SetFuncs(funcs SourceFuncs) {
+func (s *Source) SetFuncs(funcs *SourceFuncs) {
 	var _arg0 *C.GSource      // out
 	var _arg1 *C.GSourceFuncs // out
 

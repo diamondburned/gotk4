@@ -168,13 +168,13 @@ func (b buildable) CustomTagEnd(builder Builder, child gextras.Objector, tagname
 }
 
 func (b buildable) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	var _arg0 *C.GtkBuildable  // out
-	var _arg1 *C.GtkBuilder    // out
-	var _arg2 *C.GObject       // out
-	var _arg3 *C.gchar         // out
-	var _arg4 *C.GMarkupParser // in
-	var _arg5 *C.gpointer      // in
-	var _cret C.gboolean       // in
+	var _arg0 *C.GtkBuildable // out
+	var _arg1 *C.GtkBuilder   // out
+	var _arg2 *C.GObject      // out
+	var _arg3 *C.gchar        // out
+	var _arg4 C.GMarkupParser // in
+	var _arg5 C.gpointer      // in
+	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GtkBuildable)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
@@ -182,13 +182,23 @@ func (b buildable) CustomTagStart(builder Builder, child gextras.Objector, tagna
 	_arg3 = (*C.gchar)(C.CString(tagname))
 	defer C.free(unsafe.Pointer(_arg3))
 
-	_cret = C.gtk_buildable_custom_tag_start(_arg0, _arg1, _arg2, _arg3, &_arg4, _arg5)
+	_cret = C.gtk_buildable_custom_tag_start(_arg0, _arg1, _arg2, _arg3, &_arg4, &_arg5)
 
 	var _parser glib.MarkupParser // out
 	var _data interface{}         // out
 	var _ok bool                  // out
 
-	_parser = (glib.MarkupParser)(unsafe.Pointer(_arg4))
+	{
+		var refTmpIn *C.GMarkupParser
+		var refTmpOut *glib.MarkupParser
+
+		in0 := &_arg4
+		refTmpIn = in0
+
+		refTmpOut = (*glib.MarkupParser)(unsafe.Pointer(refTmpIn))
+
+		_parser = *refTmpOut
+	}
 	_data = box.Get(uintptr(_arg5))
 	if _cret != 0 {
 		_ok = true

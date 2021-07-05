@@ -215,8 +215,8 @@ func ContentTypeGuess(filename string, data []byte) (bool, string) {
 	var _arg1 *C.gchar // out
 	var _arg2 *C.guchar
 	var _arg3 C.gsize
-	var _arg4 *C.gboolean // in
-	var _cret *C.gchar    // in
+	var _arg4 C.gboolean // in
+	var _cret *C.gchar   // in
 
 	_arg1 = (*C.gchar)(C.CString(filename))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -228,17 +228,8 @@ func ContentTypeGuess(filename string, data []byte) (bool, string) {
 	var _resultUncertain bool // out
 	var _utf8 string          // out
 
-	{
-		var refTmpIn C.gboolean
-		var refTmpOut bool
-
-		refTmpIn = *_arg4
-
-		if refTmpIn != 0 {
-			refTmpOut = true
-		}
-
-		_resultUncertain = refTmpOut
+	if _arg4 != 0 {
+		_resultUncertain = true
 	}
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))

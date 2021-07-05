@@ -228,8 +228,8 @@ func (c glContext) ForwardCompatible() bool {
 
 func (c glContext) RequiredVersion() (major int, minor int) {
 	var _arg0 *C.GdkGLContext // out
-	var _arg1 *C.int          // in
-	var _arg2 *C.int          // in
+	var _arg1 C.int           // in
+	var _arg2 C.int           // in
 
 	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(c.Native()))
 
@@ -278,8 +278,8 @@ func (c glContext) UseES() bool {
 
 func (c glContext) Version() (major int, minor int) {
 	var _arg0 *C.GdkGLContext // out
-	var _arg1 *C.int          // in
-	var _arg2 *C.int          // in
+	var _arg1 C.int           // in
+	var _arg2 C.int           // in
 
 	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(c.Native()))
 
@@ -336,7 +336,7 @@ func (c glContext) MakeCurrentGLContext() {
 
 func (c glContext) RealizeGLContext() error {
 	var _arg0 *C.GdkGLContext // out
-	var _cerr **C.GError      // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(c.Native()))
 
@@ -344,16 +344,7 @@ func (c glContext) RealizeGLContext() error {
 
 	var _goerr error // out
 
-	{
-		var refTmpIn *C.GError
-		var refTmpOut error
-
-		refTmpIn = *_cerr
-
-		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
-
-		_goerr = refTmpOut
-	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
 }

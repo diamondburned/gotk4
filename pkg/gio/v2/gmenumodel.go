@@ -64,7 +64,7 @@ type MenuAttributeIter interface {
 	// Value gets the value of the attribute at the current iterator position.
 	//
 	// The iterator is not advanced.
-	Value() glib.Variant
+	Value() *glib.Variant
 	// NextMenuAttributeIter attempts to advance the iterator to the next
 	// (possibly first) attribute.
 	//
@@ -112,8 +112,8 @@ func (i menuAttributeIter) Name() string {
 
 func (i menuAttributeIter) GetNext() (string, *glib.Variant, bool) {
 	var _arg0 *C.GMenuAttributeIter // out
-	var _arg1 **C.gchar             // in
-	var _arg2 **C.GVariant          // in
+	var _arg1 *C.gchar              // in
+	var _arg2 *C.GVariant           // in
 	var _cret C.gboolean            // in
 
 	_arg0 = (*C.GMenuAttributeIter)(unsafe.Pointer(i.Native()))
@@ -124,29 +124,11 @@ func (i menuAttributeIter) GetNext() (string, *glib.Variant, bool) {
 	var _value *glib.Variant // out
 	var _ok bool             // out
 
-	{
-		var refTmpIn *C.gchar
-		var refTmpOut string
-
-		refTmpIn = *_arg1
-
-		refTmpOut = C.GoString(refTmpIn)
-
-		_outName = refTmpOut
-	}
-	{
-		var refTmpIn *C.GVariant
-		var refTmpOut *glib.Variant
-
-		refTmpIn = *_arg2
-
-		refTmpOut = (*glib.Variant)(unsafe.Pointer(refTmpIn))
-		runtime.SetFinalizer(refTmpOut, func(v *glib.Variant) {
-			C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
-		})
-
-		_value = refTmpOut
-	}
+	_outName = C.GoString(_arg1)
+	_value = (*glib.Variant)(unsafe.Pointer(_arg2))
+	runtime.SetFinalizer(_value, func(v *glib.Variant) {
+		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+	})
 	if _cret != 0 {
 		_ok = true
 	}
@@ -154,7 +136,7 @@ func (i menuAttributeIter) GetNext() (string, *glib.Variant, bool) {
 	return _outName, _value, _ok
 }
 
-func (i menuAttributeIter) Value() glib.Variant {
+func (i menuAttributeIter) Value() *glib.Variant {
 	var _arg0 *C.GMenuAttributeIter // out
 	var _cret *C.GVariant           // in
 
@@ -162,10 +144,10 @@ func (i menuAttributeIter) Value() glib.Variant {
 
 	_cret = C.g_menu_attribute_iter_get_value(_arg0)
 
-	var _variant glib.Variant // out
+	var _variant *glib.Variant // out
 
-	_variant = (glib.Variant)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_variant, func(v glib.Variant) {
+	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
 	})
 
@@ -264,8 +246,8 @@ func (i menuLinkIter) Name() string {
 
 func (i menuLinkIter) GetNext() (string, MenuModel, bool) {
 	var _arg0 *C.GMenuLinkIter // out
-	var _arg1 **C.gchar        // in
-	var _arg2 **C.GMenuModel   // in
+	var _arg1 *C.gchar         // in
+	var _arg2 *C.GMenuModel    // in
 	var _cret C.gboolean       // in
 
 	_arg0 = (*C.GMenuLinkIter)(unsafe.Pointer(i.Native()))
@@ -276,26 +258,8 @@ func (i menuLinkIter) GetNext() (string, MenuModel, bool) {
 	var _value MenuModel // out
 	var _ok bool         // out
 
-	{
-		var refTmpIn *C.gchar
-		var refTmpOut string
-
-		refTmpIn = *_arg1
-
-		refTmpOut = C.GoString(refTmpIn)
-
-		_outLink = refTmpOut
-	}
-	{
-		var refTmpIn *C.GMenuModel
-		var refTmpOut menuModel
-
-		refTmpIn = *_arg2
-
-		refTmpOut = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(refTmpIn))).(menuModel)
-
-		_value = refTmpOut
-	}
+	_outLink = C.GoString(_arg1)
+	_value = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_arg2))).(MenuModel)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -459,7 +423,7 @@ type MenuModel interface {
 	//
 	// If the attribute does not exist, or does not match the expected type then
 	// nil is returned.
-	ItemAttributeValue(itemIndex int, attribute string, expectedType glib.VariantType) glib.Variant
+	ItemAttributeValue(itemIndex int, attribute string, expectedType *glib.VariantType) *glib.Variant
 	// ItemLink queries the item at position @item_index in @model for the link
 	// specified by @link.
 	//
@@ -521,7 +485,7 @@ func marshalMenuModel(p uintptr) (interface{}, error) {
 	return WrapMenuModel(obj), nil
 }
 
-func (m menuModel) ItemAttributeValue(itemIndex int, attribute string, expectedType glib.VariantType) glib.Variant {
+func (m menuModel) ItemAttributeValue(itemIndex int, attribute string, expectedType *glib.VariantType) *glib.Variant {
 	var _arg0 *C.GMenuModel   // out
 	var _arg1 C.gint          // out
 	var _arg2 *C.gchar        // out
@@ -536,10 +500,10 @@ func (m menuModel) ItemAttributeValue(itemIndex int, attribute string, expectedT
 
 	_cret = C.g_menu_model_get_item_attribute_value(_arg0, _arg1, _arg2, _arg3)
 
-	var _variant glib.Variant // out
+	var _variant *glib.Variant // out
 
-	_variant = (glib.Variant)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_variant, func(v glib.Variant) {
+	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
 	})
 

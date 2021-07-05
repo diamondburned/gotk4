@@ -31,12 +31,20 @@ func init() {
 type SliceListModel interface {
 	gextras.Objector
 
+	// Offset gets the offset set via gtk_slice_list_model_set_offset().
 	Offset() uint
-
+	// Size gets the size set via gtk_slice_list_model_set_size().
 	Size() uint
-
+	// SetOffsetSliceListModel sets the offset into the original model for this
+	// slice.
+	//
+	// If the offset is too large for the sliced model, @self will end up empty.
 	SetOffsetSliceListModel(offset uint)
-
+	// SetSizeSliceListModel sets the maximum size. @self will never have more
+	// items than @size.
+	//
+	// It can however have fewer items if the offset is too large or the model
+	// sliced from doesn't have enough items.
 	SetSizeSliceListModel(size uint)
 }
 

@@ -55,13 +55,13 @@ func marshalFrameClockPhase(p uintptr) (interface{}, error) {
 	return FrameClockPhase(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// FrameClock: a FrameClock tells the application when to update and repaint a
-// window. This may be synced to the vertical refresh rate of the monitor, for
-// example. Even when the frame clock uses a simple timer rather than a
-// hardware-based vertical sync, the frame clock helps because it ensures
-// everything paints at the same time (reducing the total number of frames). The
-// frame clock can also automatically stop painting when it knows the frames
-// will not be visible, or scale back animation framerates.
+// FrameClock tells the application when to update and repaint a window. This
+// may be synced to the vertical refresh rate of the monitor, for example. Even
+// when the frame clock uses a simple timer rather than a hardware-based
+// vertical sync, the frame clock helps because it ensures everything paints at
+// the same time (reducing the total number of frames). The frame clock can also
+// automatically stop painting when it knows the frames will not be visible, or
+// scale back animation framerates.
 //
 // FrameClock is designed to be compatible with an OpenGL-based implementation
 // or with mozRequestAnimationFrame in Firefox, for example.
@@ -87,22 +87,52 @@ func marshalFrameClockPhase(p uintptr) (interface{}, error) {
 type FrameClock interface {
 	gextras.Objector
 
+	// BeginUpdatingFrameClock starts updates for an animation. Until a matching
+	// call to gdk_frame_clock_end_updating() is made, the frame clock will
+	// continually request a new frame with the GDK_FRAME_CLOCK_PHASE_UPDATE
+	// phase. This function may be called multiple times and frames will be
+	// requested until gdk_frame_clock_end_updating() is called the same number
+	// of times.
 	BeginUpdatingFrameClock()
-
+	// EndUpdatingFrameClock stops updates for an animation. See the
+	// documentation for gdk_frame_clock_begin_updating().
 	EndUpdatingFrameClock()
-
-	CurrentTimings() *FrameTimings
-
+	// CurrentTimings gets the frame timings for the current frame.
+	CurrentTimings() FrameTimings
+	// FrameCounter maintains a 64-bit counter that increments for each frame
+	// drawn.
 	FrameCounter() int64
-
+	// FrameTime gets the time that should currently be used for animations.
+	// Inside the processing of a frame, it’s the time used to compute the
+	// animation position of everything in a frame. Outside of a frame, it's the
+	// time of the conceptual “previous frame,” which may be either the actual
+	// previous frame time, or if that’s too old, an updated time.
 	FrameTime() int64
-
+	// HistoryStart internally keeps a history of FrameTimings objects for
+	// recent frames that can be retrieved with gdk_frame_clock_get_timings().
+	// The set of stored frames is the set from the counter values given by
+	// gdk_frame_clock_get_history_start() and
+	// gdk_frame_clock_get_frame_counter(), inclusive.
 	HistoryStart() int64
-
+	// RefreshInfo: using the frame history stored in the frame clock, finds the
+	// last known presentation time and refresh interval, and assuming that
+	// presentation times are separated by the refresh interval, predicts a
+	// presentation time that is a multiple of the refresh interval after the
+	// last presentation time, and later than @base_time.
 	RefreshInfo(baseTime int64) (refreshIntervalReturn int64, presentationTimeReturn int64)
-
-	Timings(frameCounter int64) *FrameTimings
-
+	// Timings retrieves a FrameTimings object holding timing information for
+	// the current frame or a recent frame. The FrameTimings object may not yet
+	// be complete: see gdk_frame_timings_get_complete().
+	Timings(frameCounter int64) FrameTimings
+	// RequestPhaseFrameClock asks the frame clock to run a particular phase.
+	// The signal corresponding the requested phase will be emitted the next
+	// time the frame clock processes. Multiple calls to
+	// gdk_frame_clock_request_phase() will be combined together and only one
+	// frame processed. If you are displaying animated content and want to
+	// continually request the GDK_FRAME_CLOCK_PHASE_UPDATE phase for a period
+	// of time, you should use gdk_frame_clock_begin_updating() instead, since
+	// this allows GTK+ to adjust system parameters to get maximally smooth
+	// animations.
 	RequestPhaseFrameClock(phase FrameClockPhase)
 }
 
@@ -141,7 +171,7 @@ func (f frameClock) EndUpdatingFrameClock() {
 	C.gdk_frame_clock_end_updating(_arg0)
 }
 
-func (f frameClock) CurrentTimings() *FrameTimings {
+func (f frameClock) CurrentTimings() FrameTimings {
 	var _arg0 *C.GdkFrameClock   // out
 	var _cret *C.GdkFrameTimings // in
 
@@ -149,9 +179,10 @@ func (f frameClock) CurrentTimings() *FrameTimings {
 
 	_cret = C.gdk_frame_clock_get_current_timings(_arg0)
 
-	var _frameTimings *FrameTimings // out
+	var _frameTimings FrameTimings // out
 
-	_frameTimings = (*FrameTimings)(unsafe.Pointer(_cret))
+	_frameTimings = (FrameTimings)(unsafe.Pointer(_cret))
+	C.gdk_frame_timings_ref(_cret)
 
 	return _frameTimings
 }
@@ -204,8 +235,8 @@ func (f frameClock) HistoryStart() int64 {
 func (f frameClock) RefreshInfo(baseTime int64) (refreshIntervalReturn int64, presentationTimeReturn int64) {
 	var _arg0 *C.GdkFrameClock // out
 	var _arg1 C.gint64         // out
-	var _arg2 C.gint64         // in
-	var _arg3 C.gint64         // in
+	var _arg2 *C.gint64        // in
+	var _arg3 *C.gint64        // in
 
 	_arg0 = (*C.GdkFrameClock)(unsafe.Pointer(f.Native()))
 	_arg1 = C.gint64(baseTime)
@@ -221,7 +252,7 @@ func (f frameClock) RefreshInfo(baseTime int64) (refreshIntervalReturn int64, pr
 	return _refreshIntervalReturn, _presentationTimeReturn
 }
 
-func (f frameClock) Timings(frameCounter int64) *FrameTimings {
+func (f frameClock) Timings(frameCounter int64) FrameTimings {
 	var _arg0 *C.GdkFrameClock   // out
 	var _arg1 C.gint64           // out
 	var _cret *C.GdkFrameTimings // in
@@ -231,9 +262,10 @@ func (f frameClock) Timings(frameCounter int64) *FrameTimings {
 
 	_cret = C.gdk_frame_clock_get_timings(_arg0, _arg1)
 
-	var _frameTimings *FrameTimings // out
+	var _frameTimings FrameTimings // out
 
-	_frameTimings = (*FrameTimings)(unsafe.Pointer(_cret))
+	_frameTimings = (FrameTimings)(unsafe.Pointer(_cret))
+	C.gdk_frame_timings_ref(_cret)
 
 	return _frameTimings
 }

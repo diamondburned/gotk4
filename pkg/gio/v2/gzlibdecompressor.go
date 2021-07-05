@@ -5,7 +5,6 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -35,8 +34,16 @@ func init() {
 
 // ZlibDecompressor: zlib decompression
 type ZlibDecompressor interface {
-	Converter
+	gextras.Objector
 
+	// AsConverter casts the class to the Converter interface.
+	AsConverter() Converter
+
+	// FileInfo retrieves the Info constructed from the GZIP header data of
+	// compressed data processed by @compressor, or nil if @decompressor's
+	// Decompressor:format property is not G_ZLIB_COMPRESSOR_FORMAT_GZIP, or the
+	// header data was not fully processed yet, or it not present in the data
+	// stream at all.
 	FileInfo() FileInfo
 }
 
@@ -59,6 +66,7 @@ func marshalZlibDecompressor(p uintptr) (interface{}, error) {
 	return WrapZlibDecompressor(obj), nil
 }
 
+// NewZlibDecompressor creates a new Decompressor.
 func NewZlibDecompressor(format ZlibCompressorFormat) ZlibDecompressor {
 	var _arg1 C.GZlibCompressorFormat // out
 	var _cret *C.GZlibDecompressor    // in
@@ -69,7 +77,7 @@ func NewZlibDecompressor(format ZlibCompressorFormat) ZlibDecompressor {
 
 	var _zlibDecompressor ZlibDecompressor // out
 
-	_zlibDecompressor = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(ZlibDecompressor)
+	_zlibDecompressor = WrapZlibDecompressor(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _zlibDecompressor
 }
@@ -89,10 +97,6 @@ func (d zlibDecompressor) FileInfo() FileInfo {
 	return _fileInfo
 }
 
-func (c zlibDecompressor) Convert(inbuf []byte, outbuf []byte, flags ConverterFlags) (bytesRead uint, bytesWritten uint, converterResult ConverterResult, goerr error) {
-	return WrapConverter(gextras.InternObject(c)).Convert(inbuf, outbuf, flags)
-}
-
-func (c zlibDecompressor) Reset() {
-	WrapConverter(gextras.InternObject(c)).Reset()
+func (z zlibDecompressor) AsConverter() Converter {
+	return WrapConverter(gextras.InternObject(z))
 }

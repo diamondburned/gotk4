@@ -38,28 +38,58 @@ func init() {
 // DBusInterfaceSkeleton: abstract base class for D-Bus interfaces on the
 // service side.
 type DBusInterfaceSkeleton interface {
-	DBusInterface
+	gextras.Objector
 
+	// AsDBusInterface casts the class to the DBusInterface interface.
+	AsDBusInterface() DBusInterface
+
+	// ExportDBusInterfaceSkeleton exports @interface_ at @object_path on
+	// @connection.
+	//
+	// This can be called multiple times to export the same @interface_ onto
+	// multiple connections however the @object_path provided must be the same
+	// for all connections.
+	//
+	// Use g_dbus_interface_skeleton_unexport() to unexport the object.
 	ExportDBusInterfaceSkeleton(connection DBusConnection, objectPath string) error
-
+	// FlushDBusInterfaceSkeleton: if @interface_ has outstanding changes,
+	// request for these changes to be emitted immediately.
+	//
+	// For example, an exported D-Bus interface may queue up property changes
+	// and emit the `org.freedesktop.DBus.Properties.PropertiesChanged` signal
+	// later (e.g. in an idle handler). This technique is useful for collapsing
+	// multiple property changes into one.
 	FlushDBusInterfaceSkeleton()
-
+	// Connection gets the first connection that @interface_ is exported on, if
+	// any.
 	Connection() DBusConnection
-
+	// Flags gets the BusInterfaceSkeletonFlags that describes what the behavior
+	// of @interface_
 	Flags() DBusInterfaceSkeletonFlags
-
-	GetInfo() *DBusInterfaceInfo
-
+	// Info gets D-Bus introspection information for the D-Bus interface
+	// implemented by @interface_.
+	Info() DBusInterfaceInfo
+	// ObjectPath gets the object path that @interface_ is exported on, if any.
 	ObjectPath() string
-
-	Properties() *glib.Variant
-
+	// Properties gets all D-Bus properties for @interface_.
+	Properties() glib.Variant
+	// HasConnectionDBusInterfaceSkeleton checks if @interface_ is exported on
+	// @connection.
 	HasConnectionDBusInterfaceSkeleton(connection DBusConnection) bool
-
+	// SetFlagsDBusInterfaceSkeleton sets flags describing what the behavior of
+	// @skeleton should be.
 	SetFlagsDBusInterfaceSkeleton(flags DBusInterfaceSkeletonFlags)
-
+	// UnexportDBusInterfaceSkeleton stops exporting @interface_ on all
+	// connections it is exported on.
+	//
+	// To unexport @interface_ from only a single connection, use
+	// g_dbus_interface_skeleton_unexport_from_connection()
 	UnexportDBusInterfaceSkeleton()
-
+	// UnexportFromConnectionDBusInterfaceSkeleton stops exporting @interface_
+	// on @connection.
+	//
+	// To stop exporting on all connections the interface is exported on, use
+	// g_dbus_interface_skeleton_unexport().
 	UnexportFromConnectionDBusInterfaceSkeleton(connection DBusConnection)
 }
 
@@ -86,7 +116,7 @@ func (i dBusInterfaceSkeleton) ExportDBusInterfaceSkeleton(connection DBusConnec
 	var _arg0 *C.GDBusInterfaceSkeleton // out
 	var _arg1 *C.GDBusConnection        // out
 	var _arg2 *C.gchar                  // out
-	var _cerr *C.GError                 // in
+	var _cerr **C.GError                // in
 
 	_arg0 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.GDBusConnection)(unsafe.Pointer(connection.Native()))
@@ -97,7 +127,16 @@ func (i dBusInterfaceSkeleton) ExportDBusInterfaceSkeleton(connection DBusConnec
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _goerr
 }
@@ -140,7 +179,7 @@ func (i dBusInterfaceSkeleton) Flags() DBusInterfaceSkeletonFlags {
 	return _dBusInterfaceSkeletonFlags
 }
 
-func (i dBusInterfaceSkeleton) GetInfo() *DBusInterfaceInfo {
+func (i dBusInterfaceSkeleton) Info() DBusInterfaceInfo {
 	var _arg0 *C.GDBusInterfaceSkeleton // out
 	var _cret *C.GDBusInterfaceInfo     // in
 
@@ -148,9 +187,10 @@ func (i dBusInterfaceSkeleton) GetInfo() *DBusInterfaceInfo {
 
 	_cret = C.g_dbus_interface_skeleton_get_info(_arg0)
 
-	var _dBusInterfaceInfo *DBusInterfaceInfo // out
+	var _dBusInterfaceInfo DBusInterfaceInfo // out
 
-	_dBusInterfaceInfo = (*DBusInterfaceInfo)(unsafe.Pointer(_cret))
+	_dBusInterfaceInfo = (DBusInterfaceInfo)(unsafe.Pointer(_cret))
+	C.g_dbus_interface_info_ref(_cret)
 
 	return _dBusInterfaceInfo
 }
@@ -170,7 +210,7 @@ func (i dBusInterfaceSkeleton) ObjectPath() string {
 	return _utf8
 }
 
-func (i dBusInterfaceSkeleton) Properties() *glib.Variant {
+func (i dBusInterfaceSkeleton) Properties() glib.Variant {
 	var _arg0 *C.GDBusInterfaceSkeleton // out
 	var _cret *C.GVariant               // in
 
@@ -178,11 +218,11 @@ func (i dBusInterfaceSkeleton) Properties() *glib.Variant {
 
 	_cret = C.g_dbus_interface_skeleton_get_properties(_arg0)
 
-	var _variant *glib.Variant // out
+	var _variant glib.Variant // out
 
-	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(&_variant, func(v **glib.Variant) {
-		C.free(unsafe.Pointer(v))
+	_variant = (glib.Variant)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_variant, func(v glib.Variant) {
+		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
 	})
 
 	return _variant
@@ -235,14 +275,6 @@ func (i dBusInterfaceSkeleton) UnexportFromConnectionDBusInterfaceSkeleton(conne
 	C.g_dbus_interface_skeleton_unexport_from_connection(_arg0, _arg1)
 }
 
-func (i dBusInterfaceSkeleton) DupObject() DBusObject {
-	return WrapDBusInterface(gextras.InternObject(i)).DupObject()
-}
-
-func (i dBusInterfaceSkeleton) Info() *DBusInterfaceInfo {
-	return WrapDBusInterface(gextras.InternObject(i)).Info()
-}
-
-func (i dBusInterfaceSkeleton) SetObject(object DBusObject) {
-	WrapDBusInterface(gextras.InternObject(i)).SetObject(object)
+func (d dBusInterfaceSkeleton) AsDBusInterface() DBusInterface {
+	return WrapDBusInterface(gextras.InternObject(d))
 }

@@ -5,9 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -47,30 +45,49 @@ func init() {
 // GtkAppChooserWidget has a single CSS node with name appchooser.
 type AppChooserWidget interface {
 	Box
-	AppChooser
 
+	// AsAppChooser casts the class to the AppChooser interface.
+	AsAppChooser() AppChooser
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsOrientable casts the class to the Orientable interface.
+	AsOrientable() Orientable
+
+	// DefaultText returns the text that is shown if there are not applications
+	// that can handle the content type.
 	DefaultText() string
-
+	// ShowAll returns the current value of the AppChooserWidget:show-all
+	// property.
 	ShowAll() bool
-
+	// ShowDefault returns the current value of the
+	// AppChooserWidget:show-default property.
 	ShowDefault() bool
-
+	// ShowFallback returns the current value of the
+	// AppChooserWidget:show-fallback property.
 	ShowFallback() bool
-
+	// ShowOther returns the current value of the AppChooserWidget:show-other
+	// property.
 	ShowOther() bool
-
+	// ShowRecommended returns the current value of the
+	// AppChooserWidget:show-recommended property.
 	ShowRecommended() bool
-
+	// SetDefaultTextAppChooserWidget sets the text that is shown if there are
+	// not applications that can handle the content type.
 	SetDefaultTextAppChooserWidget(text string)
-
+	// SetShowAllAppChooserWidget sets whether the app chooser should show all
+	// applications in a flat list.
 	SetShowAllAppChooserWidget(setting bool)
-
+	// SetShowDefaultAppChooserWidget sets whether the app chooser should show
+	// the default handler for the content type in a separate section.
 	SetShowDefaultAppChooserWidget(setting bool)
-
+	// SetShowFallbackAppChooserWidget sets whether the app chooser should show
+	// related applications for the content type in a separate section.
 	SetShowFallbackAppChooserWidget(setting bool)
-
+	// SetShowOtherAppChooserWidget sets whether the app chooser should show
+	// applications which are unrelated to the content type.
 	SetShowOtherAppChooserWidget(setting bool)
-
+	// SetShowRecommendedAppChooserWidget sets whether the app chooser should
+	// show recommended applications for the content type in a separate section.
 	SetShowRecommendedAppChooserWidget(setting bool)
 }
 
@@ -93,6 +110,8 @@ func marshalAppChooserWidget(p uintptr) (interface{}, error) {
 	return WrapAppChooserWidget(obj), nil
 }
 
+// NewAppChooserWidget creates a new AppChooserWidget for applications that can
+// handle content of the given type.
 func NewAppChooserWidget(contentType string) AppChooserWidget {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -104,7 +123,7 @@ func NewAppChooserWidget(contentType string) AppChooserWidget {
 
 	var _appChooserWidget AppChooserWidget // out
 
-	_appChooserWidget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(AppChooserWidget)
+	_appChooserWidget = WrapAppChooserWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _appChooserWidget
 }
@@ -280,98 +299,14 @@ func (s appChooserWidget) SetShowRecommendedAppChooserWidget(setting bool) {
 	C.gtk_app_chooser_widget_set_show_recommended(_arg0, _arg1)
 }
 
-func (b appChooserWidget) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+func (a appChooserWidget) AsAppChooser() AppChooser {
+	return WrapAppChooser(gextras.InternObject(a))
 }
 
-func (b appChooserWidget) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+func (a appChooserWidget) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(a))
 }
 
-func (b appChooserWidget) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b appChooserWidget) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b appChooserWidget) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b appChooserWidget) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b appChooserWidget) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b appChooserWidget) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b appChooserWidget) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b appChooserWidget) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (o appChooserWidget) Orientation() Orientation {
-	return WrapOrientable(gextras.InternObject(o)).Orientation()
-}
-
-func (o appChooserWidget) SetOrientation(orientation Orientation) {
-	WrapOrientable(gextras.InternObject(o)).SetOrientation(orientation)
-}
-
-func (s appChooserWidget) ContentType() string {
-	return WrapAppChooser(gextras.InternObject(s)).ContentType()
-}
-
-func (s appChooserWidget) Refresh() {
-	WrapAppChooser(gextras.InternObject(s)).Refresh()
-}
-
-func (b appChooserWidget) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
-}
-
-func (b appChooserWidget) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b appChooserWidget) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b appChooserWidget) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b appChooserWidget) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b appChooserWidget) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b appChooserWidget) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b appChooserWidget) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b appChooserWidget) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b appChooserWidget) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
+func (a appChooserWidget) AsOrientable() Orientable {
+	return WrapOrientable(gextras.InternObject(a))
 }

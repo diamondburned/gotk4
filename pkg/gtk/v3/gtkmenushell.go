@@ -5,10 +5,8 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -27,8 +25,8 @@ func init() {
 	})
 }
 
-// MenuShell: a MenuShell is the abstract base class used to derive the Menu and
-// MenuBar subclasses.
+// MenuShell is the abstract base class used to derive the Menu and MenuBar
+// subclasses.
 //
 // A MenuShell is a container of MenuItem objects arranged in a list which can
 // be navigated, selected, and activated by the user to perform application
@@ -54,32 +52,100 @@ func init() {
 type MenuShell interface {
 	Container
 
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+
+	// ActivateItemMenuShell activates the menu item within the menu shell.
 	ActivateItemMenuShell(menuItem Widget, forceDeactivate bool)
-
+	// AppendMenuShell adds a new MenuItem to the end of the menu shell's item
+	// list.
 	AppendMenuShell(child MenuItem)
-
+	// BindModelMenuShell establishes a binding between a MenuShell and a Model.
+	//
+	// The contents of @shell are removed and then refilled with menu items
+	// according to @model. When @model changes, @shell is updated. Calling this
+	// function twice on @shell with different @model will cause the first
+	// binding to be replaced with a binding to the new model. If @model is nil
+	// then any previous binding is undone and all children are removed.
+	//
+	// @with_separators determines if toplevel items (eg: sections) have
+	// separators inserted between them. This is typically desired for menus but
+	// doesn’t make sense for menubars.
+	//
+	// If @action_namespace is non-nil then the effect is as if all actions
+	// mentioned in the @model have their names prefixed with the namespace,
+	// plus a dot. For example, if the action “quit” is mentioned and
+	// @action_namespace is “app” then the effective action name is “app.quit”.
+	//
+	// This function uses Actionable to define the action name and target values
+	// on the created menu items. If you want to use an action group other than
+	// “app” and “win”, or if you want to use a MenuShell outside of a
+	// ApplicationWindow, then you will need to attach your own action group to
+	// the widget hierarchy using gtk_widget_insert_action_group(). As an
+	// example, if you created a group with a “quit” action and inserted it with
+	// the name “mygroup” then you would use the action name “mygroup.quit” in
+	// your Model.
+	//
+	// For most cases you are probably better off using
+	// gtk_menu_new_from_model() or gtk_menu_bar_new_from_model() or just
+	// directly passing the Model to gtk_application_set_app_menu() or
+	// gtk_application_set_menubar().
 	BindModelMenuShell(model gio.MenuModel, actionNamespace string, withSeparators bool)
-
+	// CancelMenuShell cancels the selection within the menu shell.
 	CancelMenuShell()
-
+	// DeactivateMenuShell deactivates the menu shell.
+	//
+	// Typically this results in the menu shell being erased from the screen.
 	DeactivateMenuShell()
-
+	// DeselectMenuShell deselects the currently selected item from the menu
+	// shell, if any.
 	DeselectMenuShell()
-
+	// ParentShell gets the parent menu shell.
+	//
+	// The parent menu shell of a submenu is the Menu or MenuBar from which it
+	// was opened up.
 	ParentShell() Widget
-
+	// SelectedItem gets the currently selected item.
 	SelectedItem() Widget
-
+	// TakeFocus returns true if the menu shell will take the keyboard focus on
+	// popup.
 	TakeFocus() bool
-
+	// InsertMenuShell adds a new MenuItem to the menu shell’s item list at the
+	// position indicated by @position.
 	InsertMenuShell(child Widget, position int)
-
+	// PrependMenuShell adds a new MenuItem to the beginning of the menu shell's
+	// item list.
 	PrependMenuShell(child Widget)
-
+	// SelectFirstMenuShell: select the first visible or selectable child of the
+	// menu shell; don’t select tearoff items unless the only item is a tearoff
+	// item.
 	SelectFirstMenuShell(searchSensitive bool)
-
+	// SelectItemMenuShell selects the menu item from the menu shell.
 	SelectItemMenuShell(menuItem Widget)
-
+	// SetTakeFocusMenuShell: if @take_focus is true (the default) the menu
+	// shell will take the keyboard focus so that it will receive all keyboard
+	// events which is needed to enable keyboard navigation in menus.
+	//
+	// Setting @take_focus to false is useful only for special applications like
+	// virtual keyboard implementations which should not take keyboard focus.
+	//
+	// The @take_focus state of a menu or menu bar is automatically propagated
+	// to submenus whenever a submenu is popped up, so you don’t have to worry
+	// about recursively setting it for your entire menu hierarchy. Only when
+	// programmatically picking a submenu and popping it up manually, the
+	// @take_focus property of the submenu needs to be set explicitly.
+	//
+	// Note that setting it to false has side-effects:
+	//
+	// If the focus is in some other app, it keeps the focus and keynav in the
+	// menu doesn’t work. Consequently, keynav on the menu will only work if the
+	// focus is on some toplevel owned by the onscreen keyboard.
+	//
+	// To avoid confusing the user, menus with @take_focus set to false should
+	// not display mnemonics or accelerators, since it cannot be guaranteed that
+	// they will work.
+	//
+	// See also gdk_keyboard_grab()
 	SetTakeFocusMenuShell(takeFocus bool)
 }
 
@@ -270,42 +336,6 @@ func (m menuShell) SetTakeFocusMenuShell(takeFocus bool) {
 	C.gtk_menu_shell_set_take_focus(_arg0, _arg1)
 }
 
-func (b menuShell) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
-}
-
-func (b menuShell) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b menuShell) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b menuShell) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b menuShell) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b menuShell) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b menuShell) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b menuShell) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b menuShell) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b menuShell) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
+func (m menuShell) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(m))
 }

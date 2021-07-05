@@ -6,7 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -68,7 +67,7 @@ func marshalSpinType(p uintptr) (interface{}, error) {
 	return SpinType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// SpinButton: a `GtkSpinButton` is an ideal way to allow the user to set the
+// SpinButton: `GtkSpinButton` is an ideal way to allow the user to set the
 // value of some attribute.
 //
 // !An example GtkSpinButton (spinbutton.png)
@@ -157,56 +156,101 @@ func marshalSpinType(p uintptr) (interface{}, error) {
 //
 // `GtkSpinButton` uses the GTK_ACCESSIBLE_ROLE_SPIN_BUTTON role.
 type SpinButton interface {
-	CellEditable
-	Editable
-	Orientable
+	Widget
 
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsCellEditable casts the class to the CellEditable interface.
+	AsCellEditable() CellEditable
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
+	// AsEditable casts the class to the Editable interface.
+	AsEditable() Editable
+	// AsOrientable casts the class to the Orientable interface.
+	AsOrientable() Orientable
+
+	// ConfigureSpinButton changes the properties of an existing spin button.
+	//
+	// The adjustment, climb rate, and number of decimal places are updated
+	// accordingly.
 	ConfigureSpinButton(adjustment Adjustment, climbRate float64, digits uint)
-
+	// Adjustment: get the adjustment associated with a `GtkSpinButton`.
 	Adjustment() Adjustment
-
+	// ClimbRate returns the acceleration rate for repeated changes.
 	ClimbRate() float64
-
+	// Digits fetches the precision of @spin_button.
 	Digits() uint
-
+	// Increments gets the current step and page the increments used by
+	// @spin_button.
+	//
+	// See [method@Gtk.SpinButton.set_increments].
 	Increments() (step float64, page float64)
-
+	// Numeric returns whether non-numeric text can be typed into the spin
+	// button.
 	Numeric() bool
-
+	// Range gets the range allowed for @spin_button.
+	//
+	// See [method@Gtk.SpinButton.set_range].
 	Range() (min float64, max float64)
-
+	// SnapToTicks returns whether the values are corrected to the nearest step.
 	SnapToTicks() bool
-
+	// UpdatePolicy gets the update behavior of a spin button.
+	//
+	// See [method@Gtk.SpinButton.set_update_policy].
 	UpdatePolicy() SpinButtonUpdatePolicy
-
+	// Value: get the value in the @spin_button.
 	Value() float64
-
+	// ValueAsInt: get the value @spin_button represented as an integer.
 	ValueAsInt() int
-
+	// Wrap returns whether the spin button’s value wraps around to the opposite
+	// limit when the upper or lower limit of the range is exceeded.
 	Wrap() bool
-
+	// SetAdjustmentSpinButton replaces the `GtkAdjustment` associated with
+	// @spin_button.
 	SetAdjustmentSpinButton(adjustment Adjustment)
-
+	// SetClimbRateSpinButton sets the acceleration rate for repeated changes
+	// when you hold down a button or key.
 	SetClimbRateSpinButton(climbRate float64)
-
+	// SetDigitsSpinButton: set the precision to be displayed by @spin_button.
+	//
+	// Up to 20 digit precision is allowed.
 	SetDigitsSpinButton(digits uint)
-
+	// SetIncrementsSpinButton sets the step and page increments for
+	// spin_button.
+	//
+	// This affects how quickly the value changes when the spin button’s arrows
+	// are activated.
 	SetIncrementsSpinButton(step float64, page float64)
-
+	// SetNumericSpinButton sets the flag that determines if non-numeric text
+	// can be typed into the spin button.
 	SetNumericSpinButton(numeric bool)
-
+	// SetRangeSpinButton sets the minimum and maximum allowable values for
+	// @spin_button.
+	//
+	// If the current value is outside this range, it will be adjusted to fit
+	// within the range, otherwise it will remain unchanged.
 	SetRangeSpinButton(min float64, max float64)
-
+	// SetSnapToTicksSpinButton sets the policy as to whether values are
+	// corrected to the nearest step increment when a spin button is activated
+	// after providing an invalid value.
 	SetSnapToTicksSpinButton(snapToTicks bool)
-
+	// SetUpdatePolicySpinButton sets the update behavior of a spin button.
+	//
+	// This determines whether the spin button is always updated or only when a
+	// valid value is set.
 	SetUpdatePolicySpinButton(policy SpinButtonUpdatePolicy)
-
+	// SetValueSpinButton sets the value of @spin_button.
 	SetValueSpinButton(value float64)
-
+	// SetWrapSpinButton sets the flag that determines if a spin button value
+	// wraps around to the opposite limit when the upper or lower limit of the
+	// range is exceeded.
 	SetWrapSpinButton(wrap bool)
-
+	// SpinSpinButton: increment or decrement a spin button’s value in a
+	// specified direction by a specified amount.
 	SpinSpinButton(direction SpinType, increment float64)
-
+	// UpdateSpinButton: manually force an update of the spin button.
 	UpdateSpinButton()
 }
 
@@ -229,6 +273,7 @@ func marshalSpinButton(p uintptr) (interface{}, error) {
 	return WrapSpinButton(obj), nil
 }
 
+// NewSpinButton creates a new `GtkSpinButton`.
 func NewSpinButton(adjustment Adjustment, climbRate float64, digits uint) SpinButton {
 	var _arg1 *C.GtkAdjustment // out
 	var _arg2 C.double         // out
@@ -243,11 +288,23 @@ func NewSpinButton(adjustment Adjustment, climbRate float64, digits uint) SpinBu
 
 	var _spinButton SpinButton // out
 
-	_spinButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(SpinButton)
+	_spinButton = WrapSpinButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _spinButton
 }
 
+// NewSpinButtonWithRange creates a new `GtkSpinButton` with the given
+// properties.
+//
+// This is a convenience constructor that allows creation of a numeric
+// `GtkSpinButton` without manually creating an adjustment. The value is
+// initially set to the minimum value and a page increment of 10 * @step is the
+// default. The precision of the spin button is equivalent to the precision of
+// @step.
+//
+// Note that the way in which the precision is derived works best if @step is a
+// power of ten. If the resulting precision is not suitable for your needs, use
+// [method@Gtk.SpinButton.set_digits] to correct it.
 func NewSpinButtonWithRange(min float64, max float64, step float64) SpinButton {
 	var _arg1 C.double     // out
 	var _arg2 C.double     // out
@@ -262,7 +319,7 @@ func NewSpinButtonWithRange(min float64, max float64, step float64) SpinButton {
 
 	var _spinButton SpinButton // out
 
-	_spinButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(SpinButton)
+	_spinButton = WrapSpinButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _spinButton
 }
@@ -328,8 +385,8 @@ func (s spinButton) Digits() uint {
 
 func (s spinButton) Increments() (step float64, page float64) {
 	var _arg0 *C.GtkSpinButton // out
-	var _arg1 C.double         // in
-	var _arg2 C.double         // in
+	var _arg1 *C.double        // in
+	var _arg2 *C.double        // in
 
 	_arg0 = (*C.GtkSpinButton)(unsafe.Pointer(s.Native()))
 
@@ -363,8 +420,8 @@ func (s spinButton) Numeric() bool {
 
 func (s spinButton) Range() (min float64, max float64) {
 	var _arg0 *C.GtkSpinButton // out
-	var _arg1 C.double         // in
-	var _arg2 C.double         // in
+	var _arg1 *C.double        // in
+	var _arg2 *C.double        // in
 
 	_arg0 = (*C.GtkSpinButton)(unsafe.Pointer(s.Native()))
 
@@ -588,174 +645,26 @@ func (s spinButton) UpdateSpinButton() {
 	C.gtk_spin_button_update(_arg0)
 }
 
-func (c spinButton) EditingDone() {
-	WrapCellEditable(gextras.InternObject(c)).EditingDone()
+func (s spinButton) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(s))
 }
 
-func (c spinButton) RemoveWidget() {
-	WrapCellEditable(gextras.InternObject(c)).RemoveWidget()
+func (s spinButton) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(s))
 }
 
-func (c spinButton) StartEditing(event gdk.Event) {
-	WrapCellEditable(gextras.InternObject(c)).StartEditing(event)
+func (s spinButton) AsCellEditable() CellEditable {
+	return WrapCellEditable(gextras.InternObject(s))
 }
 
-func (s spinButton) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
+func (s spinButton) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(s))
 }
 
-func (s spinButton) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
+func (s spinButton) AsEditable() Editable {
+	return WrapEditable(gextras.InternObject(s))
 }
 
-func (s spinButton) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
-}
-
-func (s spinButton) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s spinButton) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s spinButton) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s spinButton) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b spinButton) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
-}
-
-func (e spinButton) DeleteSelection() {
-	WrapEditable(gextras.InternObject(e)).DeleteSelection()
-}
-
-func (e spinButton) DeleteText(startPos int, endPos int) {
-	WrapEditable(gextras.InternObject(e)).DeleteText(startPos, endPos)
-}
-
-func (e spinButton) FinishDelegate() {
-	WrapEditable(gextras.InternObject(e)).FinishDelegate()
-}
-
-func (e spinButton) Alignment() float32 {
-	return WrapEditable(gextras.InternObject(e)).Alignment()
-}
-
-func (e spinButton) Chars(startPos int, endPos int) string {
-	return WrapEditable(gextras.InternObject(e)).Chars(startPos, endPos)
-}
-
-func (e spinButton) Delegate() Editable {
-	return WrapEditable(gextras.InternObject(e)).Delegate()
-}
-
-func (e spinButton) Editable() bool {
-	return WrapEditable(gextras.InternObject(e)).Editable()
-}
-
-func (e spinButton) EnableUndo() bool {
-	return WrapEditable(gextras.InternObject(e)).EnableUndo()
-}
-
-func (e spinButton) MaxWidthChars() int {
-	return WrapEditable(gextras.InternObject(e)).MaxWidthChars()
-}
-
-func (e spinButton) Position() int {
-	return WrapEditable(gextras.InternObject(e)).Position()
-}
-
-func (e spinButton) SelectionBounds() (startPos int, endPos int, ok bool) {
-	return WrapEditable(gextras.InternObject(e)).SelectionBounds()
-}
-
-func (e spinButton) Text() string {
-	return WrapEditable(gextras.InternObject(e)).Text()
-}
-
-func (e spinButton) WidthChars() int {
-	return WrapEditable(gextras.InternObject(e)).WidthChars()
-}
-
-func (e spinButton) InitDelegate() {
-	WrapEditable(gextras.InternObject(e)).InitDelegate()
-}
-
-func (e spinButton) SelectRegion(startPos int, endPos int) {
-	WrapEditable(gextras.InternObject(e)).SelectRegion(startPos, endPos)
-}
-
-func (e spinButton) SetAlignment(xalign float32) {
-	WrapEditable(gextras.InternObject(e)).SetAlignment(xalign)
-}
-
-func (e spinButton) SetEditable(isEditable bool) {
-	WrapEditable(gextras.InternObject(e)).SetEditable(isEditable)
-}
-
-func (e spinButton) SetEnableUndo(enableUndo bool) {
-	WrapEditable(gextras.InternObject(e)).SetEnableUndo(enableUndo)
-}
-
-func (e spinButton) SetMaxWidthChars(nChars int) {
-	WrapEditable(gextras.InternObject(e)).SetMaxWidthChars(nChars)
-}
-
-func (e spinButton) SetPosition(position int) {
-	WrapEditable(gextras.InternObject(e)).SetPosition(position)
-}
-
-func (e spinButton) SetText(text string) {
-	WrapEditable(gextras.InternObject(e)).SetText(text)
-}
-
-func (e spinButton) SetWidthChars(nChars int) {
-	WrapEditable(gextras.InternObject(e)).SetWidthChars(nChars)
-}
-
-func (s spinButton) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
-}
-
-func (s spinButton) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
-}
-
-func (s spinButton) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
-}
-
-func (s spinButton) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s spinButton) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s spinButton) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s spinButton) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b spinButton) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
-}
-
-func (o spinButton) Orientation() Orientation {
-	return WrapOrientable(gextras.InternObject(o)).Orientation()
-}
-
-func (o spinButton) SetOrientation(orientation Orientation) {
-	WrapOrientable(gextras.InternObject(o)).SetOrientation(orientation)
+func (s spinButton) AsOrientable() Orientable {
+	return WrapOrientable(gextras.InternObject(s))
 }

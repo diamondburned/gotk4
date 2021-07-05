@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -66,7 +67,9 @@ func marshalCSSSectionType(p uintptr) (interface{}, error) {
 // CSSSection defines a part of a CSS document. Because sections are nested into
 // one another, you can use gtk_css_section_get_parent() to get the containing
 // region.
-type CSSSection C.GtkCssSection
+type CSSSection struct {
+	native C.GtkCssSection
+}
 
 // WrapCSSSection wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -81,16 +84,21 @@ func marshalCSSSection(p uintptr) (interface{}, error) {
 
 // Native returns the underlying C source pointer.
 func (c *CSSSection) Native() unsafe.Pointer {
-	return unsafe.Pointer(c)
+	return unsafe.Pointer(&c.native)
 }
 
-// EndLine decrements the reference count on @section, freeing the structure if
-// the reference count reaches 0.
+// EndLine returns the line in the CSS document where this section end. The line
+// number is 0-indexed, so the first line of the document will return 0. This
+// value may change in future invocations of this function if @section is not
+// yet parsed completely. This will for example happen in the
+// GtkCssProvider::parsing-error signal. The end position and line may be
+// identical to the start position and line for sections which failed to parse
+// anything successfully.
 func (s *CSSSection) EndLine() uint {
 	var _arg0 *C.GtkCssSection // out
 	var _cret C.guint          // in
 
-	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(s))
 
 	_cret = C.gtk_css_section_get_end_line(_arg0)
 
@@ -101,13 +109,17 @@ func (s *CSSSection) EndLine() uint {
 	return _guint
 }
 
-// EndPosition decrements the reference count on @section, freeing the structure
-// if the reference count reaches 0.
+// EndPosition returns the offset in bytes from the start of the current line
+// returned via gtk_css_section_get_end_line(). This value may change in future
+// invocations of this function if @section is not yet parsed completely. This
+// will for example happen in the GtkCssProvider::parsing-error signal. The end
+// position and line may be identical to the start position and line for
+// sections which failed to parse anything successfully.
 func (s *CSSSection) EndPosition() uint {
 	var _arg0 *C.GtkCssSection // out
 	var _cret C.guint          // in
 
-	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(s))
 
 	_cret = C.gtk_css_section_get_end_position(_arg0)
 
@@ -118,30 +130,34 @@ func (s *CSSSection) EndPosition() uint {
 	return _guint
 }
 
-// Parent decrements the reference count on @section, freeing the structure if
-// the reference count reaches 0.
-func (s *CSSSection) Parent() *CSSSection {
+// Parent gets the parent section for the given @section. The parent section is
+// the section that contains this @section. A special case are sections of type
+// K_CSS_SECTION_DOCUMENT. Their parent will either be nil if they are the
+// original CSS document that was loaded by gtk_css_provider_load_from_file() or
+// a section of type K_CSS_SECTION_IMPORT if it was loaded with an import rule
+// from a different file.
+func (s *CSSSection) Parent() CSSSection {
 	var _arg0 *C.GtkCssSection // out
 	var _cret *C.GtkCssSection // in
 
-	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(s))
 
 	_cret = C.gtk_css_section_get_parent(_arg0)
 
-	var _cssSection *CSSSection // out
+	var _cssSection CSSSection // out
 
-	_cssSection = (*CSSSection)(unsafe.Pointer(_cret))
+	_cssSection = (CSSSection)(unsafe.Pointer(_cret))
+	C.gtk_css_section_ref(_cret)
 
 	return _cssSection
 }
 
-// SectionType decrements the reference count on @section, freeing the structure
-// if the reference count reaches 0.
+// SectionType gets the type of information that @section describes.
 func (s *CSSSection) SectionType() CSSSectionType {
 	var _arg0 *C.GtkCssSection    // out
 	var _cret C.GtkCssSectionType // in
 
-	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(s))
 
 	_cret = C.gtk_css_section_get_section_type(_arg0)
 
@@ -152,13 +168,13 @@ func (s *CSSSection) SectionType() CSSSectionType {
 	return _cssSectionType
 }
 
-// StartLine decrements the reference count on @section, freeing the structure
-// if the reference count reaches 0.
+// StartLine returns the line in the CSS document where this section starts. The
+// line number is 0-indexed, so the first line of the document will return 0.
 func (s *CSSSection) StartLine() uint {
 	var _arg0 *C.GtkCssSection // out
 	var _cret C.guint          // in
 
-	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(s))
 
 	_cret = C.gtk_css_section_get_start_line(_arg0)
 
@@ -169,13 +185,13 @@ func (s *CSSSection) StartLine() uint {
 	return _guint
 }
 
-// StartPosition decrements the reference count on @section, freeing the
-// structure if the reference count reaches 0.
+// StartPosition returns the offset in bytes from the start of the current line
+// returned via gtk_css_section_get_start_line().
 func (s *CSSSection) StartPosition() uint {
 	var _arg0 *C.GtkCssSection // out
 	var _cret C.guint          // in
 
-	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(s))
 
 	_cret = C.gtk_css_section_get_start_position(_arg0)
 
@@ -186,21 +202,20 @@ func (s *CSSSection) StartPosition() uint {
 	return _guint
 }
 
-// Ref decrements the reference count on @section, freeing the structure if the
-// reference count reaches 0.
-func (s *CSSSection) Ref() *CSSSection {
+// Ref increments the reference count on @section.
+func (s *CSSSection) Ref() CSSSection {
 	var _arg0 *C.GtkCssSection // out
 	var _cret *C.GtkCssSection // in
 
-	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(s))
 
 	_cret = C.gtk_css_section_ref(_arg0)
 
-	var _cssSection *CSSSection // out
+	var _cssSection CSSSection // out
 
-	_cssSection = (*CSSSection)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(&_cssSection, func(v **CSSSection) {
-		C.free(unsafe.Pointer(v))
+	_cssSection = (CSSSection)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_cssSection, func(v CSSSection) {
+		C.gtk_css_section_unref((*C.GtkCssSection)(unsafe.Pointer(v)))
 	})
 
 	return _cssSection
@@ -211,7 +226,7 @@ func (s *CSSSection) Ref() *CSSSection {
 func (s *CSSSection) Unref() {
 	var _arg0 *C.GtkCssSection // out
 
-	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(s))
 
 	C.gtk_css_section_unref(_arg0)
 }

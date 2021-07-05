@@ -58,21 +58,37 @@ func init() {
 // </patterns> </object> “`
 type FileFilter interface {
 	Filter
-	Buildable
 
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+
+	// AddMIMETypeFileFilter adds a rule allowing a given mime type to @filter.
 	AddMIMETypeFileFilter(mimeType string)
-
+	// AddPatternFileFilter adds a rule allowing a shell style glob to a filter.
 	AddPatternFileFilter(pattern string)
-
+	// AddPixbufFormatsFileFilter adds a rule allowing image files in the
+	// formats supported by GdkPixbuf.
+	//
+	// This is equivalent to calling [method@Gtk.FileFilter.add_mime_type] for
+	// all the supported mime types.
 	AddPixbufFormatsFileFilter()
-
+	// Attributes gets the attributes that need to be filled in for the
+	// `GFileInfo` passed to this filter.
+	//
+	// This function will not typically be used by applications; it is intended
+	// principally for use in the implementation of `GtkFileChooser`.
 	Attributes() []string
-
+	// Name gets the human-readable name for the filter.
+	//
+	// See [method@Gtk.FileFilter.set_name].
 	Name() string
-
+	// SetNameFileFilter sets a human-readable name of the filter.
+	//
+	// This is the string that will be displayed in the file chooser if there is
+	// a selectable list of filters.
 	SetNameFileFilter(name string)
-
-	ToGVariantFileFilter() *glib.Variant
+	// ToGVariantFileFilter: serialize a file filter to an `a{sv}` variant.
+	ToGVariantFileFilter() glib.Variant
 }
 
 // fileFilter implements the FileFilter class.
@@ -94,6 +110,15 @@ func marshalFileFilter(p uintptr) (interface{}, error) {
 	return WrapFileFilter(obj), nil
 }
 
+// NewFileFilter creates a new `GtkFileFilter` with no rules added to it.
+//
+// Such a filter doesn’t accept any files, so is not particularly useful until
+// you add rules with [method@Gtk.FileFilter.add_mime_type],
+// [method@Gtk.FileFilter.add_pattern], or
+// [method@Gtk.FileFilter.add_pixbuf_formats].
+//
+// To create a filter that accepts any file, use: “`c GtkFileFilter *filter =
+// gtk_file_filter_new (); gtk_file_filter_add_pattern (filter, "*"); “`
 func NewFileFilter() FileFilter {
 	var _cret *C.GtkFileFilter // in
 
@@ -101,22 +126,26 @@ func NewFileFilter() FileFilter {
 
 	var _fileFilter FileFilter // out
 
-	_fileFilter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(FileFilter)
+	_fileFilter = WrapFileFilter(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _fileFilter
 }
 
-func NewFileFilterFromGVariant(variant *glib.Variant) FileFilter {
+// NewFileFilterFromGVariant: deserialize a file filter from a `GVariant`.
+//
+// The variant must be in the format produced by
+// [method@Gtk.FileFilter.to_gvariant].
+func NewFileFilterFromGVariant(variant glib.Variant) FileFilter {
 	var _arg1 *C.GVariant      // out
 	var _cret *C.GtkFileFilter // in
 
-	_arg1 = (*C.GVariant)(unsafe.Pointer(variant.Native()))
+	_arg1 = (*C.GVariant)(unsafe.Pointer(variant))
 
 	_cret = C.gtk_file_filter_new_from_gvariant(_arg1)
 
 	var _fileFilter FileFilter // out
 
-	_fileFilter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(FileFilter)
+	_fileFilter = WrapFileFilter(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _fileFilter
 }
@@ -204,7 +233,7 @@ func (f fileFilter) SetNameFileFilter(name string) {
 	C.gtk_file_filter_set_name(_arg0, _arg1)
 }
 
-func (f fileFilter) ToGVariantFileFilter() *glib.Variant {
+func (f fileFilter) ToGVariantFileFilter() glib.Variant {
 	var _arg0 *C.GtkFileFilter // out
 	var _cret *C.GVariant      // in
 
@@ -212,13 +241,14 @@ func (f fileFilter) ToGVariantFileFilter() *glib.Variant {
 
 	_cret = C.gtk_file_filter_to_gvariant(_arg0)
 
-	var _variant *glib.Variant // out
+	var _variant glib.Variant // out
 
-	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	_variant = (glib.Variant)(unsafe.Pointer(_cret))
+	C.g_variant_ref(_cret)
 
 	return _variant
 }
 
-func (b fileFilter) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
+func (f fileFilter) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(f))
 }

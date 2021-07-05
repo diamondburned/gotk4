@@ -3,7 +3,6 @@
 package gdkx11
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
@@ -65,31 +64,80 @@ func X11SetSmClientID(smClientId string) {
 type X11Display interface {
 	gdk.Display
 
+	// ErrorTrapPopX11Display pops the error trap pushed by
+	// gdk_x11_display_error_trap_push(). Will XSync() if necessary and will
+	// always block until the error is known to have occurred or not occurred,
+	// so the error code can be returned.
+	//
+	// If you don’t need to use the return value,
+	// gdk_x11_display_error_trap_pop_ignored() would be more efficient.
+	//
+	// See gdk_error_trap_pop() for the all-displays-at-once equivalent.
 	ErrorTrapPopX11Display() int
-
+	// ErrorTrapPopIgnoredX11Display pops the error trap pushed by
+	// gdk_x11_display_error_trap_push(). Does not block to see if an error
+	// occurred; merely records the range of requests to ignore errors for, and
+	// ignores those errors if they arrive asynchronously.
+	//
+	// See gdk_error_trap_pop_ignored() for the all-displays-at-once equivalent.
 	ErrorTrapPopIgnoredX11Display()
-
+	// ErrorTrapPushX11Display begins a range of X requests on @display for
+	// which X error events will be ignored. Unignored errors (when no trap is
+	// pushed) will abort the application. Use gdk_x11_display_error_trap_pop()
+	// or gdk_x11_display_error_trap_pop_ignored()to lift a trap pushed with
+	// this function.
+	//
+	// See also gdk_error_trap_push() to push a trap on all displays.
 	ErrorTrapPushX11Display()
-
+	// StartupNotificationID gets the startup notification ID for a display.
 	StartupNotificationID() string
-
+	// UserTime returns the timestamp of the last user interaction on @display.
+	// The timestamp is taken from events caused by user interaction such as key
+	// presses or pointer movements. See gdk_x11_window_set_user_time().
 	UserTime() uint32
-
+	// GrabX11Display: call XGrabServer() on @display. To ungrab the display
+	// again, use gdk_x11_display_ungrab().
+	//
+	// gdk_x11_display_grab()/gdk_x11_display_ungrab() calls can be nested.
 	GrabX11Display()
-
+	// SetCursorThemeX11Display sets the cursor theme from which the images for
+	// cursor should be taken.
+	//
+	// If the windowing system supports it, existing cursors created with
+	// gdk_cursor_new(), gdk_cursor_new_for_display() and
+	// gdk_cursor_new_from_name() are updated to reflect the theme change.
+	// Custom cursors constructed with gdk_cursor_new_from_pixbuf() will have to
+	// be handled by the application (GTK+ applications can learn about cursor
+	// theme changes by listening for change notification for the corresponding
+	// Setting).
 	SetCursorThemeX11Display(theme string, size int)
-
+	// SetStartupNotificationIDX11Display sets the startup notification ID for a
+	// display.
+	//
+	// This is usually taken from the value of the DESKTOP_STARTUP_ID
+	// environment variable, but in some cases (such as the application not
+	// being launched using exec()) it can come from other sources.
+	//
+	// If the ID contains the string "_TIME" then the portion following that
+	// string is taken to be the X11 timestamp of the event that triggered the
+	// application to be launched and the GDK current event time is set
+	// accordingly.
+	//
+	// The startup ID is also what is used to signal that the startup is
+	// complete (for example, when opening a window or when calling
+	// gdk_notify_startup_complete()).
 	SetStartupNotificationIDX11Display(startupId string)
-
+	// SetWindowScaleX11Display forces a specific window scale for all windows
+	// on this display, instead of using the default or user configured scale.
+	// This is can be used to disable scaling support by setting @scale to 1, or
+	// to programmatically set the window scale.
+	//
+	// Once the scale is set by this call it will not change in response to
+	// later user configuration changes.
 	SetWindowScaleX11Display(scale int)
-
-	StringToCompoundTextX11Display(str string) (encoding gdk.Atom, format int, ctext []byte, gint int)
-
-	TextPropertyToTextListX11Display(encoding *gdk.Atom, format int, text *byte, length int, list **string) int
-
+	// UngrabX11Display: ungrab @display after it has been grabbed with
+	// gdk_x11_display_grab().
 	UngrabX11Display()
-
-	UTF8ToCompoundTextX11Display(str string) (gdk.Atom, int, []byte, bool)
 }
 
 // x11Display implements the X11Display class.
@@ -214,140 +262,10 @@ func (d x11Display) SetWindowScaleX11Display(scale int) {
 	C.gdk_x11_display_set_window_scale(_arg0, _arg1)
 }
 
-func (d x11Display) StringToCompoundTextX11Display(str string) (encoding gdk.Atom, format int, ctext []byte, gint int) {
-	var _arg0 *C.GdkDisplay // out
-	var _arg1 *C.gchar      // out
-	var _arg2 C.GdkAtom     // in
-	var _arg3 C.gint        // in
-	var _arg4 *C.guchar
-	var _arg5 C.gint // in
-	var _cret C.gint // in
-
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
-	_arg1 = (*C.gchar)(C.CString(str))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	_cret = C.gdk_x11_display_string_to_compound_text(_arg0, _arg1, &_arg2, &_arg3, &_arg4, &_arg5)
-
-	var _encoding gdk.Atom // out
-	var _format int        // out
-	var _ctext []byte
-	var _gint int // out
-
-	{
-		var refTmpIn *C.GdkAtom
-		var refTmpOut *gdk.Atom
-
-		in0 := &_arg2
-		refTmpIn = in0
-
-		refTmpOut = (*gdk.Atom)(unsafe.Pointer(refTmpIn))
-
-		_encoding = *refTmpOut
-	}
-	_format = int(_arg3)
-	_ctext = unsafe.Slice((*byte)(unsafe.Pointer(_arg4)), _arg5)
-	runtime.SetFinalizer(&_ctext, func(v *[]byte) {
-		C.free(unsafe.Pointer(&(*v)[0]))
-	})
-	_gint = int(_cret)
-
-	return _encoding, _format, _ctext, _gint
-}
-
-func (d x11Display) TextPropertyToTextListX11Display(encoding *gdk.Atom, format int, text *byte, length int, list **string) int {
-	var _arg0 *C.GdkDisplay // out
-	var _arg1 C.GdkAtom     // out
-	var _arg2 C.gint        // out
-	var _arg3 *C.guchar     // out
-	var _arg4 C.gint        // out
-	var _arg5 ***C.gchar    // out
-	var _cret C.gint        // in
-
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
-	{
-		var refTmpIn *gdk.Atom
-		var refTmpOut *C.GdkAtom
-
-		refTmpIn = encoding
-
-		refTmpOut = (*C.GdkAtom)(unsafe.Pointer(refTmpIn.Native()))
-
-		_arg1 = *refTmpOut
-	}
-	_arg2 = C.gint(format)
-	_arg3 = (*C.guchar)(unsafe.Pointer(text))
-	_arg4 = C.gint(length)
-	{
-		var refTmpIn string
-		var refTmpOut *C.gchar
-
-		refTmpIn = list
-
-		refTmpOut = (*C.gchar)(C.CString(refTmpIn))
-		defer C.free(unsafe.Pointer(refTmpOut))
-
-		out0 := &refTmpOut
-		out1 := &out0
-		_arg5 = out1
-	}
-
-	_cret = C.gdk_x11_display_text_property_to_text_list(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
-
-	var _gint int // out
-
-	_gint = int(_cret)
-
-	return _gint
-}
-
 func (d x11Display) UngrabX11Display() {
 	var _arg0 *C.GdkDisplay // out
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
 	C.gdk_x11_display_ungrab(_arg0)
-}
-
-func (d x11Display) UTF8ToCompoundTextX11Display(str string) (gdk.Atom, int, []byte, bool) {
-	var _arg0 *C.GdkDisplay // out
-	var _arg1 *C.gchar      // out
-	var _arg2 C.GdkAtom     // in
-	var _arg3 C.gint        // in
-	var _arg4 *C.guchar
-	var _arg5 C.gint     // in
-	var _cret C.gboolean // in
-
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
-	_arg1 = (*C.gchar)(C.CString(str))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	_cret = C.gdk_x11_display_utf8_to_compound_text(_arg0, _arg1, &_arg2, &_arg3, &_arg4, &_arg5)
-
-	var _encoding gdk.Atom // out
-	var _format int        // out
-	var _ctext []byte
-	var _ok bool // out
-
-	{
-		var refTmpIn *C.GdkAtom
-		var refTmpOut *gdk.Atom
-
-		in0 := &_arg2
-		refTmpIn = in0
-
-		refTmpOut = (*gdk.Atom)(unsafe.Pointer(refTmpIn))
-
-		_encoding = *refTmpOut
-	}
-	_format = int(_arg3)
-	_ctext = unsafe.Slice((*byte)(unsafe.Pointer(_arg4)), _arg5)
-	runtime.SetFinalizer(&_ctext, func(v *[]byte) {
-		C.free(unsafe.Pointer(&(*v)[0]))
-	})
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _encoding, _format, _ctext, _ok
 }

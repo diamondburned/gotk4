@@ -24,9 +24,9 @@ func init() {
 	})
 }
 
-// StreamableContent: an interface whereby an object allows its backing content
-// to be streamed to clients. Typical implementors would be images or icons,
-// HTML content, or multimedia display/rendering widgets.
+// StreamableContent: interface whereby an object allows its backing content to
+// be streamed to clients. Typical implementors would be images or icons, HTML
+// content, or multimedia display/rendering widgets.
 //
 // Negotiation of content type is allowed. Clients may examine the backing data
 // and transform, convert, or parse the content in order to present it in an
@@ -42,33 +42,13 @@ func init() {
 type StreamableContent interface {
 	gextras.Objector
 
-	// MIMEType: get a string representing a URI in IETF standard format (see
-	// http://www.ietf.org/rfc/rfc2396.txt) from which the object's content may
-	// be streamed in the specified mime-type, if one is available. If mime_type
-	// is NULL, the URI for the default (and possibly only) mime-type is
-	// returned.
-	//
-	// Note that it is possible for get_uri to return NULL but for get_stream to
-	// work nonetheless, since not all GIOChannels connect to URIs.
+	// MIMEType gets the character string of the specified mime type. The first
+	// mime type is at position 0, the second at position 1, and so on.
 	MIMEType(i int) string
-	// NMIMETypes: get a string representing a URI in IETF standard format (see
-	// http://www.ietf.org/rfc/rfc2396.txt) from which the object's content may
-	// be streamed in the specified mime-type, if one is available. If mime_type
-	// is NULL, the URI for the default (and possibly only) mime-type is
-	// returned.
-	//
-	// Note that it is possible for get_uri to return NULL but for get_stream to
-	// work nonetheless, since not all GIOChannels connect to URIs.
+	// NMIMETypes gets the number of mime types supported by this object.
 	NMIMETypes() int
-	// Stream: get a string representing a URI in IETF standard format (see
-	// http://www.ietf.org/rfc/rfc2396.txt) from which the object's content may
-	// be streamed in the specified mime-type, if one is available. If mime_type
-	// is NULL, the URI for the default (and possibly only) mime-type is
-	// returned.
-	//
-	// Note that it is possible for get_uri to return NULL but for get_stream to
-	// work nonetheless, since not all GIOChannels connect to URIs.
-	Stream(mimeType string) *glib.IOChannel
+	// Stream gets the content in the specified mime type.
+	Stream(mimeType string) glib.IOChannel
 	// URI: get a string representing a URI in IETF standard format (see
 	// http://www.ietf.org/rfc/rfc2396.txt) from which the object's content may
 	// be streamed in the specified mime-type, if one is available. If mime_type
@@ -133,7 +113,7 @@ func (s streamableContent) NMIMETypes() int {
 	return _gint
 }
 
-func (s streamableContent) Stream(mimeType string) *glib.IOChannel {
+func (s streamableContent) Stream(mimeType string) glib.IOChannel {
 	var _arg0 *C.AtkStreamableContent // out
 	var _arg1 *C.gchar                // out
 	var _cret *C.GIOChannel           // in
@@ -144,11 +124,11 @@ func (s streamableContent) Stream(mimeType string) *glib.IOChannel {
 
 	_cret = C.atk_streamable_content_get_stream(_arg0, _arg1)
 
-	var _ioChannel *glib.IOChannel // out
+	var _ioChannel glib.IOChannel // out
 
-	_ioChannel = (*glib.IOChannel)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(&_ioChannel, func(v **glib.IOChannel) {
-		C.free(unsafe.Pointer(v))
+	_ioChannel = (glib.IOChannel)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_ioChannel, func(v glib.IOChannel) {
+		C.g_io_channel_unref((*C.GIOChannel)(unsafe.Pointer(v)))
 	})
 
 	return _ioChannel

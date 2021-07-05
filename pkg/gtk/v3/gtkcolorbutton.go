@@ -5,10 +5,8 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -38,22 +36,44 @@ func init() {
 // from a plain Button, it gets the .color style class.
 type ColorButton interface {
 	Button
-	ColorChooser
 
+	// AsActionable casts the class to the Actionable interface.
+	AsActionable() Actionable
+	// AsActivatable casts the class to the Activatable interface.
+	AsActivatable() Activatable
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsColorChooser casts the class to the ColorChooser interface.
+	AsColorChooser() ColorChooser
+
+	// Alpha returns the current alpha value.
+	//
+	// Deprecated: since version 3.4.
 	Alpha() uint16
-
+	// Color sets @color to be the current color in the ColorButton widget.
+	//
+	// Deprecated: since version 3.4.
 	Color() gdk.Color
-
+	// Title gets the title of the color selection dialog.
 	Title() string
-
-	GetUseAlpha() bool
-
+	// UseAlpha does the color selection dialog use the alpha channel ?
+	//
+	// Deprecated: since version 3.4.
+	UseAlpha() bool
+	// SetAlphaColorButton sets the current opacity to be @alpha.
+	//
+	// Deprecated: since version 3.4.
 	SetAlphaColorButton(alpha uint16)
-
-	SetColorColorButton(color *gdk.Color)
-
+	// SetColorColorButton sets the current color to be @color.
+	//
+	// Deprecated: since version .
+	SetColorColorButton(color gdk.Color)
+	// SetTitleColorButton sets the title for the color selection dialog.
 	SetTitleColorButton(title string)
-
+	// SetUseAlphaColorButton sets whether or not the color button should use
+	// the alpha channel.
+	//
+	// Deprecated: since version 3.4.
 	SetUseAlphaColorButton(useAlpha bool)
 }
 
@@ -76,6 +96,12 @@ func marshalColorButton(p uintptr) (interface{}, error) {
 	return WrapColorButton(obj), nil
 }
 
+// NewColorButton creates a new color button.
+//
+// This returns a widget in the form of a small button containing a swatch
+// representing the current selected color. When the button is clicked, a
+// color-selection dialog will open, allowing the user to select a color. The
+// swatch will be updated to reflect the new color when the user finishes.
 func NewColorButton() ColorButton {
 	var _cret *C.GtkWidget // in
 
@@ -83,37 +109,41 @@ func NewColorButton() ColorButton {
 
 	var _colorButton ColorButton // out
 
-	_colorButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ColorButton)
+	_colorButton = WrapColorButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _colorButton
 }
 
-func NewColorButtonWithColor(color *gdk.Color) ColorButton {
+// NewColorButtonWithColor creates a new color button.
+//
+// Deprecated: since version 3.4.
+func NewColorButtonWithColor(color gdk.Color) ColorButton {
 	var _arg1 *C.GdkColor  // out
 	var _cret *C.GtkWidget // in
 
-	_arg1 = (*C.GdkColor)(unsafe.Pointer(color.Native()))
+	_arg1 = (*C.GdkColor)(unsafe.Pointer(color))
 
 	_cret = C.gtk_color_button_new_with_color(_arg1)
 
 	var _colorButton ColorButton // out
 
-	_colorButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ColorButton)
+	_colorButton = WrapColorButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _colorButton
 }
 
-func NewColorButtonWithRGBA(rgba *gdk.RGBA) ColorButton {
+// NewColorButtonWithRGBA creates a new color button.
+func NewColorButtonWithRGBA(rgba gdk.RGBA) ColorButton {
 	var _arg1 *C.GdkRGBA   // out
 	var _cret *C.GtkWidget // in
 
-	_arg1 = (*C.GdkRGBA)(unsafe.Pointer(rgba.Native()))
+	_arg1 = (*C.GdkRGBA)(unsafe.Pointer(rgba))
 
 	_cret = C.gtk_color_button_new_with_rgba(_arg1)
 
 	var _colorButton ColorButton // out
 
-	_colorButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ColorButton)
+	_colorButton = WrapColorButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _colorButton
 }
@@ -135,7 +165,7 @@ func (b colorButton) Alpha() uint16 {
 
 func (b colorButton) Color() gdk.Color {
 	var _arg0 *C.GtkColorButton // out
-	var _arg1 C.GdkColor        // in
+	var _arg1 *C.GdkColor       // in
 
 	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(b.Native()))
 
@@ -143,17 +173,7 @@ func (b colorButton) Color() gdk.Color {
 
 	var _color gdk.Color // out
 
-	{
-		var refTmpIn *C.GdkColor
-		var refTmpOut *gdk.Color
-
-		in0 := &_arg1
-		refTmpIn = in0
-
-		refTmpOut = (*gdk.Color)(unsafe.Pointer(refTmpIn))
-
-		_color = *refTmpOut
-	}
+	_color = (gdk.Color)(unsafe.Pointer(_arg1))
 
 	return _color
 }
@@ -173,7 +193,7 @@ func (b colorButton) Title() string {
 	return _utf8
 }
 
-func (b colorButton) GetUseAlpha() bool {
+func (b colorButton) UseAlpha() bool {
 	var _arg0 *C.GtkColorButton // out
 	var _cret C.gboolean        // in
 
@@ -200,12 +220,12 @@ func (b colorButton) SetAlphaColorButton(alpha uint16) {
 	C.gtk_color_button_set_alpha(_arg0, _arg1)
 }
 
-func (b colorButton) SetColorColorButton(color *gdk.Color) {
+func (b colorButton) SetColorColorButton(color gdk.Color) {
 	var _arg0 *C.GtkColorButton // out
 	var _arg1 *C.GdkColor       // out
 
 	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(b.Native()))
-	_arg1 = (*C.GdkColor)(unsafe.Pointer(color.Native()))
+	_arg1 = (*C.GdkColor)(unsafe.Pointer(color))
 
 	C.gtk_color_button_set_color(_arg0, _arg1)
 }
@@ -233,146 +253,18 @@ func (b colorButton) SetUseAlphaColorButton(useAlpha bool) {
 	C.gtk_color_button_set_use_alpha(_arg0, _arg1)
 }
 
-func (b colorButton) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+func (c colorButton) AsActionable() Actionable {
+	return WrapActionable(gextras.InternObject(c))
 }
 
-func (b colorButton) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+func (c colorButton) AsActivatable() Activatable {
+	return WrapActivatable(gextras.InternObject(c))
 }
 
-func (b colorButton) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+func (c colorButton) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(c))
 }
 
-func (b colorButton) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b colorButton) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b colorButton) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b colorButton) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b colorButton) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b colorButton) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b colorButton) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (a colorButton) ActionName() string {
-	return WrapActionable(gextras.InternObject(a)).ActionName()
-}
-
-func (a colorButton) ActionTargetValue() *glib.Variant {
-	return WrapActionable(gextras.InternObject(a)).ActionTargetValue()
-}
-
-func (a colorButton) SetActionName(actionName string) {
-	WrapActionable(gextras.InternObject(a)).SetActionName(actionName)
-}
-
-func (a colorButton) SetActionTargetValue(targetValue *glib.Variant) {
-	WrapActionable(gextras.InternObject(a)).SetActionTargetValue(targetValue)
-}
-
-func (a colorButton) SetDetailedActionName(detailedActionName string) {
-	WrapActionable(gextras.InternObject(a)).SetDetailedActionName(detailedActionName)
-}
-
-func (b colorButton) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
-}
-
-func (b colorButton) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b colorButton) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b colorButton) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b colorButton) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b colorButton) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b colorButton) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b colorButton) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b colorButton) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b colorButton) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (a colorButton) DoSetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).DoSetRelatedAction(action)
-}
-
-func (a colorButton) RelatedAction() Action {
-	return WrapActivatable(gextras.InternObject(a)).RelatedAction()
-}
-
-func (a colorButton) UseActionAppearance() bool {
-	return WrapActivatable(gextras.InternObject(a)).UseActionAppearance()
-}
-
-func (a colorButton) SetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SetRelatedAction(action)
-}
-
-func (a colorButton) SetUseActionAppearance(useAppearance bool) {
-	WrapActivatable(gextras.InternObject(a)).SetUseActionAppearance(useAppearance)
-}
-
-func (a colorButton) SyncActionProperties(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SyncActionProperties(action)
-}
-
-func (c colorButton) AddPalette(orientation Orientation, colorsPerLine int, colors []gdk.RGBA) {
-	WrapColorChooser(gextras.InternObject(c)).AddPalette(orientation, colorsPerLine, colors)
-}
-
-func (c colorButton) RGBA() gdk.RGBA {
-	return WrapColorChooser(gextras.InternObject(c)).RGBA()
-}
-
-func (c colorButton) UseAlpha() bool {
-	return WrapColorChooser(gextras.InternObject(c)).UseAlpha()
-}
-
-func (c colorButton) SetRGBA(color *gdk.RGBA) {
-	WrapColorChooser(gextras.InternObject(c)).SetRGBA(color)
-}
-
-func (c colorButton) SetUseAlpha(useAlpha bool) {
-	WrapColorChooser(gextras.InternObject(c)).SetUseAlpha(useAlpha)
+func (c colorButton) AsColorChooser() ColorChooser {
+	return WrapColorChooser(gextras.InternObject(c))
 }

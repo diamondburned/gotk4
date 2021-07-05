@@ -27,6 +27,11 @@ func init() {
 
 type MenuButtonAccessible interface {
 	ToggleButtonAccessible
+
+	// AsAction casts the class to the atk.Action interface.
+	AsAction() atk.Action
+	// AsImage casts the class to the atk.Image interface.
+	AsImage() atk.Image
 }
 
 // menuButtonAccessible implements the MenuButtonAccessible class.
@@ -48,50 +53,10 @@ func marshalMenuButtonAccessible(p uintptr) (interface{}, error) {
 	return WrapMenuButtonAccessible(obj), nil
 }
 
-func (a menuButtonAccessible) DoAction(i int) bool {
-	return atk.WrapAction(gextras.InternObject(a)).DoAction(i)
+func (m menuButtonAccessible) AsAction() atk.Action {
+	return atk.WrapAction(gextras.InternObject(m))
 }
 
-func (a menuButtonAccessible) Description(i int) string {
-	return atk.WrapAction(gextras.InternObject(a)).Description(i)
-}
-
-func (a menuButtonAccessible) Keybinding(i int) string {
-	return atk.WrapAction(gextras.InternObject(a)).Keybinding(i)
-}
-
-func (a menuButtonAccessible) LocalizedName(i int) string {
-	return atk.WrapAction(gextras.InternObject(a)).LocalizedName(i)
-}
-
-func (a menuButtonAccessible) NActions() int {
-	return atk.WrapAction(gextras.InternObject(a)).NActions()
-}
-
-func (a menuButtonAccessible) Name(i int) string {
-	return atk.WrapAction(gextras.InternObject(a)).Name(i)
-}
-
-func (a menuButtonAccessible) SetDescription(i int, desc string) bool {
-	return atk.WrapAction(gextras.InternObject(a)).SetDescription(i, desc)
-}
-
-func (i menuButtonAccessible) ImageDescription() string {
-	return atk.WrapImage(gextras.InternObject(i)).ImageDescription()
-}
-
-func (i menuButtonAccessible) ImageLocale() string {
-	return atk.WrapImage(gextras.InternObject(i)).ImageLocale()
-}
-
-func (i menuButtonAccessible) ImagePosition(coordType atk.CoordType) (x int, y int) {
-	return atk.WrapImage(gextras.InternObject(i)).ImagePosition(coordType)
-}
-
-func (i menuButtonAccessible) ImageSize() (width int, height int) {
-	return atk.WrapImage(gextras.InternObject(i)).ImageSize()
-}
-
-func (i menuButtonAccessible) SetImageDescription(description string) bool {
-	return atk.WrapImage(gextras.InternObject(i)).SetImageDescription(description)
+func (m menuButtonAccessible) AsImage() atk.Image {
+	return atk.WrapImage(gextras.InternObject(m))
 }

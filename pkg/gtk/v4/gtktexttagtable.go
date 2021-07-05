@@ -25,7 +25,7 @@ func init() {
 	})
 }
 
-// TextTagTableForeach: a function used with gtk_text_tag_table_foreach(), to
+// TextTagTableForeach: function used with gtk_text_tag_table_foreach(), to
 // iterate over every `GtkTextTag` inside a `GtkTextTagTable`.
 type TextTagTableForeach func(tag TextTag)
 
@@ -60,16 +60,33 @@ func gotk4_TextTagTableForeach(arg0 *C.GtkTextTag, arg1 C.gpointer) {
 // class="GtkTextTagTable"> <child type="tag"> <object class="GtkTextTag"/>
 // </child> </object> “`
 type TextTagTable interface {
-	Buildable
+	gextras.Objector
 
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+
+	// AddTextTagTable: add a tag to the table.
+	//
+	// The tag is assigned the highest priority in the table.
+	//
+	// @tag must not be in a tag table already, and may not have the same name
+	// as an already-added tag.
 	AddTextTagTable(tag TextTag) bool
-
+	// ForeachTextTagTable calls @func on each tag in @table, with user data
+	// @data.
+	//
+	// Note that the table may not be modified while iterating over it (you
+	// can’t add/remove tags).
 	ForeachTextTagTable(fn TextTagTableForeach)
-
+	// Size returns the size of the table (number of tags)
 	Size() int
-
+	// LookupTextTagTable: look up a named tag.
 	LookupTextTagTable(name string) TextTag
-
+	// RemoveTextTagTable: remove a tag from the table.
+	//
+	// If a `GtkTextBuffer` has @table as its tag table, the tag is removed from
+	// the buffer. The table’s reference to the tag is removed, so the tag will
+	// end up destroyed if you don’t have a reference to it.
 	RemoveTextTagTable(tag TextTag)
 }
 
@@ -92,6 +109,9 @@ func marshalTextTagTable(p uintptr) (interface{}, error) {
 	return WrapTextTagTable(obj), nil
 }
 
+// NewTextTagTable creates a new `GtkTextTagTable`.
+//
+// The table contains no tags by default.
 func NewTextTagTable() TextTagTable {
 	var _cret *C.GtkTextTagTable // in
 
@@ -99,7 +119,7 @@ func NewTextTagTable() TextTagTable {
 
 	var _textTagTable TextTagTable // out
 
-	_textTagTable = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(TextTagTable)
+	_textTagTable = WrapTextTagTable(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _textTagTable
 }
@@ -178,6 +198,6 @@ func (t textTagTable) RemoveTextTagTable(tag TextTag) {
 	C.gtk_text_tag_table_remove(_arg0, _arg1)
 }
 
-func (b textTagTable) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
+func (t textTagTable) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(t))
 }

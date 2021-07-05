@@ -5,10 +5,8 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -62,16 +60,34 @@ func init() {
 type AccelLabel interface {
 	Label
 
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+
+	// Accel gets the keyval and modifier mask set with
+	// gtk_accel_label_set_accel().
 	Accel() (uint, gdk.ModifierType)
-
+	// AccelWidget fetches the widget monitored by this accelerator label. See
+	// gtk_accel_label_set_accel_widget().
 	AccelWidget() Widget
-
+	// AccelWidth returns the width needed to display the accelerator key(s).
+	// This is used by menus to align all of the MenuItem widgets, and shouldn't
+	// be needed by applications.
 	AccelWidth() uint
-
+	// RefetchAccelLabel recreates the string representing the accelerator keys.
+	// This should not be needed since the string is automatically updated
+	// whenever accelerators are added or removed from the associated widget.
 	RefetchAccelLabel() bool
-
+	// SetAccelAccelLabel: manually sets a keyval and modifier mask as the
+	// accelerator rendered by @accel_label.
+	//
+	// If a keyval and modifier are explicitly set then these values are used
+	// regardless of any associated accel closure or widget.
+	//
+	// Providing an @accelerator_key of 0 removes the manual setting.
 	SetAccelAccelLabel(acceleratorKey uint, acceleratorMods gdk.ModifierType)
-
+	// SetAccelWidgetAccelLabel sets the widget to be monitored by this
+	// accelerator label. Passing nil for @accel_widget will dissociate
+	// @accel_label from its current widget, if any.
 	SetAccelWidgetAccelLabel(accelWidget Widget)
 }
 
@@ -94,6 +110,7 @@ func marshalAccelLabel(p uintptr) (interface{}, error) {
 	return WrapAccelLabel(obj), nil
 }
 
+// NewAccelLabel creates a new AccelLabel.
 func NewAccelLabel(_string string) AccelLabel {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -105,15 +122,15 @@ func NewAccelLabel(_string string) AccelLabel {
 
 	var _accelLabel AccelLabel // out
 
-	_accelLabel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(AccelLabel)
+	_accelLabel = WrapAccelLabel(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _accelLabel
 }
 
 func (a accelLabel) Accel() (uint, gdk.ModifierType) {
-	var _arg0 *C.GtkAccelLabel  // out
-	var _arg1 C.guint           // in
-	var _arg2 C.GdkModifierType // in
+	var _arg0 *C.GtkAccelLabel   // out
+	var _arg1 *C.guint           // in
+	var _arg2 *C.GdkModifierType // in
 
 	_arg0 = (*C.GtkAccelLabel)(unsafe.Pointer(a.Native()))
 
@@ -123,7 +140,16 @@ func (a accelLabel) Accel() (uint, gdk.ModifierType) {
 	var _acceleratorMods gdk.ModifierType // out
 
 	_acceleratorKey = uint(_arg1)
-	_acceleratorMods = gdk.ModifierType(_arg2)
+	{
+		var refTmpIn C.GdkModifierType
+		var refTmpOut gdk.ModifierType
+
+		refTmpIn = *_arg2
+
+		refTmpOut = gdk.ModifierType(refTmpIn)
+
+		_acceleratorMods = refTmpOut
+	}
 
 	return _acceleratorKey, _acceleratorMods
 }
@@ -197,42 +223,6 @@ func (a accelLabel) SetAccelWidgetAccelLabel(accelWidget Widget) {
 	C.gtk_accel_label_set_accel_widget(_arg0, _arg1)
 }
 
-func (b accelLabel) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
-}
-
-func (b accelLabel) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b accelLabel) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b accelLabel) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b accelLabel) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b accelLabel) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b accelLabel) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b accelLabel) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b accelLabel) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b accelLabel) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
+func (a accelLabel) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(a))
 }

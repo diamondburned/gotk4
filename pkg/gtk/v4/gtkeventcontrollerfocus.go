@@ -33,8 +33,11 @@ func init() {
 type EventControllerFocus interface {
 	EventController
 
+	// ContainsFocusEventControllerFocus returns true if focus is within @self
+	// or one of its children.
 	ContainsFocusEventControllerFocus() bool
-
+	// IsFocusEventControllerFocus returns true if focus is within @self, but
+	// not one of its children.
 	IsFocusEventControllerFocus() bool
 }
 
@@ -57,6 +60,8 @@ func marshalEventControllerFocus(p uintptr) (interface{}, error) {
 	return WrapEventControllerFocus(obj), nil
 }
 
+// NewEventControllerFocus creates a new event controller that will handle focus
+// events.
 func NewEventControllerFocus() EventControllerFocus {
 	var _cret *C.GtkEventController // in
 
@@ -64,7 +69,7 @@ func NewEventControllerFocus() EventControllerFocus {
 
 	var _eventControllerFocus EventControllerFocus // out
 
-	_eventControllerFocus = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(EventControllerFocus)
+	_eventControllerFocus = WrapEventControllerFocus(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _eventControllerFocus
 }

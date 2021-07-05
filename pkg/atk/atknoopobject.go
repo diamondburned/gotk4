@@ -3,10 +3,8 @@
 package atk
 
 import (
-	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -24,23 +22,36 @@ func init() {
 	})
 }
 
-// NoOpObject: an AtkNoOpObject is an AtkObject which purports to implement all
-// ATK interfaces. It is the type of AtkObject which is created if an accessible
-// object is requested for an object type for which no factory type is
-// specified.
+// NoOpObject is an AtkObject which purports to implement all ATK interfaces. It
+// is the type of AtkObject which is created if an accessible object is
+// requested for an object type for which no factory type is specified.
 type NoOpObject interface {
-	Action
-	Component
-	Document
-	EditableText
-	Hypertext
-	Image
-	Selection
-	Table
-	TableCell
-	Text
-	Value
-	Window
+	Object
+
+	// AsAction casts the class to the Action interface.
+	AsAction() Action
+	// AsComponent casts the class to the Component interface.
+	AsComponent() Component
+	// AsDocument casts the class to the Document interface.
+	AsDocument() Document
+	// AsEditableText casts the class to the EditableText interface.
+	AsEditableText() EditableText
+	// AsHypertext casts the class to the Hypertext interface.
+	AsHypertext() Hypertext
+	// AsImage casts the class to the Image interface.
+	AsImage() Image
+	// AsSelection casts the class to the Selection interface.
+	AsSelection() Selection
+	// AsTable casts the class to the Table interface.
+	AsTable() Table
+	// AsTableCell casts the class to the TableCell interface.
+	AsTableCell() TableCell
+	// AsText casts the class to the Text interface.
+	AsText() Text
+	// AsValue casts the class to the Value interface.
+	AsValue() Value
+	// AsWindow casts the class to the Window interface.
+	AsWindow() Window
 }
 
 // noOpObject implements the NoOpObject class.
@@ -62,6 +73,8 @@ func marshalNoOpObject(p uintptr) (interface{}, error) {
 	return WrapNoOpObject(obj), nil
 }
 
+// NewNoOpObject provides a default (non-functioning stub) Object. Application
+// maintainers should not use this method.
 func NewNoOpObject(obj gextras.Objector) NoOpObject {
 	var _arg1 *C.GObject   // out
 	var _cret *C.AtkObject // in
@@ -72,459 +85,55 @@ func NewNoOpObject(obj gextras.Objector) NoOpObject {
 
 	var _noOpObject NoOpObject // out
 
-	_noOpObject = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(NoOpObject)
+	_noOpObject = WrapNoOpObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _noOpObject
 }
 
-func (a noOpObject) DoAction(i int) bool {
-	return WrapAction(gextras.InternObject(a)).DoAction(i)
+func (n noOpObject) AsAction() Action {
+	return WrapAction(gextras.InternObject(n))
 }
 
-func (a noOpObject) Description(i int) string {
-	return WrapAction(gextras.InternObject(a)).Description(i)
+func (n noOpObject) AsComponent() Component {
+	return WrapComponent(gextras.InternObject(n))
 }
 
-func (a noOpObject) Keybinding(i int) string {
-	return WrapAction(gextras.InternObject(a)).Keybinding(i)
+func (n noOpObject) AsDocument() Document {
+	return WrapDocument(gextras.InternObject(n))
 }
 
-func (a noOpObject) LocalizedName(i int) string {
-	return WrapAction(gextras.InternObject(a)).LocalizedName(i)
+func (n noOpObject) AsEditableText() EditableText {
+	return WrapEditableText(gextras.InternObject(n))
 }
 
-func (a noOpObject) NActions() int {
-	return WrapAction(gextras.InternObject(a)).NActions()
+func (n noOpObject) AsHypertext() Hypertext {
+	return WrapHypertext(gextras.InternObject(n))
 }
 
-func (a noOpObject) Name(i int) string {
-	return WrapAction(gextras.InternObject(a)).Name(i)
+func (n noOpObject) AsImage() Image {
+	return WrapImage(gextras.InternObject(n))
 }
 
-func (a noOpObject) SetDescription(i int, desc string) bool {
-	return WrapAction(gextras.InternObject(a)).SetDescription(i, desc)
+func (n noOpObject) AsSelection() Selection {
+	return WrapSelection(gextras.InternObject(n))
 }
 
-func (c noOpObject) Contains(x int, y int, coordType CoordType) bool {
-	return WrapComponent(gextras.InternObject(c)).Contains(x, y, coordType)
+func (n noOpObject) AsTable() Table {
+	return WrapTable(gextras.InternObject(n))
 }
 
-func (c noOpObject) Alpha() float64 {
-	return WrapComponent(gextras.InternObject(c)).Alpha()
+func (n noOpObject) AsTableCell() TableCell {
+	return WrapTableCell(gextras.InternObject(n))
 }
 
-func (c noOpObject) Extents(coordType CoordType) (x int, y int, width int, height int) {
-	return WrapComponent(gextras.InternObject(c)).Extents(coordType)
+func (n noOpObject) AsText() Text {
+	return WrapText(gextras.InternObject(n))
 }
 
-func (c noOpObject) Layer() Layer {
-	return WrapComponent(gextras.InternObject(c)).Layer()
+func (n noOpObject) AsValue() Value {
+	return WrapValue(gextras.InternObject(n))
 }
 
-func (c noOpObject) MdiZorder() int {
-	return WrapComponent(gextras.InternObject(c)).MdiZorder()
-}
-
-func (c noOpObject) Position(coordType CoordType) (x int, y int) {
-	return WrapComponent(gextras.InternObject(c)).Position(coordType)
-}
-
-func (c noOpObject) Size() (width int, height int) {
-	return WrapComponent(gextras.InternObject(c)).Size()
-}
-
-func (c noOpObject) GrabFocus() bool {
-	return WrapComponent(gextras.InternObject(c)).GrabFocus()
-}
-
-func (c noOpObject) RefAccessibleAtPoint(x int, y int, coordType CoordType) Object {
-	return WrapComponent(gextras.InternObject(c)).RefAccessibleAtPoint(x, y, coordType)
-}
-
-func (c noOpObject) RemoveFocusHandler(handlerId uint) {
-	WrapComponent(gextras.InternObject(c)).RemoveFocusHandler(handlerId)
-}
-
-func (c noOpObject) ScrollTo(typ ScrollType) bool {
-	return WrapComponent(gextras.InternObject(c)).ScrollTo(typ)
-}
-
-func (c noOpObject) ScrollToPoint(coords CoordType, x int, y int) bool {
-	return WrapComponent(gextras.InternObject(c)).ScrollToPoint(coords, x, y)
-}
-
-func (c noOpObject) SetExtents(x int, y int, width int, height int, coordType CoordType) bool {
-	return WrapComponent(gextras.InternObject(c)).SetExtents(x, y, width, height, coordType)
-}
-
-func (c noOpObject) SetPosition(x int, y int, coordType CoordType) bool {
-	return WrapComponent(gextras.InternObject(c)).SetPosition(x, y, coordType)
-}
-
-func (c noOpObject) SetSize(width int, height int) bool {
-	return WrapComponent(gextras.InternObject(c)).SetSize(width, height)
-}
-
-func (d noOpObject) AttributeValue(attributeName string) string {
-	return WrapDocument(gextras.InternObject(d)).AttributeValue(attributeName)
-}
-
-func (d noOpObject) CurrentPageNumber() int {
-	return WrapDocument(gextras.InternObject(d)).CurrentPageNumber()
-}
-
-func (d noOpObject) Document() interface{} {
-	return WrapDocument(gextras.InternObject(d)).Document()
-}
-
-func (d noOpObject) DocumentType() string {
-	return WrapDocument(gextras.InternObject(d)).DocumentType()
-}
-
-func (d noOpObject) Locale() string {
-	return WrapDocument(gextras.InternObject(d)).Locale()
-}
-
-func (d noOpObject) PageCount() int {
-	return WrapDocument(gextras.InternObject(d)).PageCount()
-}
-
-func (d noOpObject) SetAttributeValue(attributeName string, attributeValue string) bool {
-	return WrapDocument(gextras.InternObject(d)).SetAttributeValue(attributeName, attributeValue)
-}
-
-func (t noOpObject) CopyText(startPos int, endPos int) {
-	WrapEditableText(gextras.InternObject(t)).CopyText(startPos, endPos)
-}
-
-func (t noOpObject) CutText(startPos int, endPos int) {
-	WrapEditableText(gextras.InternObject(t)).CutText(startPos, endPos)
-}
-
-func (t noOpObject) DeleteText(startPos int, endPos int) {
-	WrapEditableText(gextras.InternObject(t)).DeleteText(startPos, endPos)
-}
-
-func (t noOpObject) InsertText(_string string, length int, position *int) {
-	WrapEditableText(gextras.InternObject(t)).InsertText(_string, length, position)
-}
-
-func (t noOpObject) PasteText(position int) {
-	WrapEditableText(gextras.InternObject(t)).PasteText(position)
-}
-
-func (t noOpObject) SetTextContents(_string string) {
-	WrapEditableText(gextras.InternObject(t)).SetTextContents(_string)
-}
-
-func (h noOpObject) Link(linkIndex int) Hyperlink {
-	return WrapHypertext(gextras.InternObject(h)).Link(linkIndex)
-}
-
-func (h noOpObject) LinkIndex(charIndex int) int {
-	return WrapHypertext(gextras.InternObject(h)).LinkIndex(charIndex)
-}
-
-func (h noOpObject) NLinks() int {
-	return WrapHypertext(gextras.InternObject(h)).NLinks()
-}
-
-func (i noOpObject) ImageDescription() string {
-	return WrapImage(gextras.InternObject(i)).ImageDescription()
-}
-
-func (i noOpObject) ImageLocale() string {
-	return WrapImage(gextras.InternObject(i)).ImageLocale()
-}
-
-func (i noOpObject) ImagePosition(coordType CoordType) (x int, y int) {
-	return WrapImage(gextras.InternObject(i)).ImagePosition(coordType)
-}
-
-func (i noOpObject) ImageSize() (width int, height int) {
-	return WrapImage(gextras.InternObject(i)).ImageSize()
-}
-
-func (i noOpObject) SetImageDescription(description string) bool {
-	return WrapImage(gextras.InternObject(i)).SetImageDescription(description)
-}
-
-func (s noOpObject) AddSelection(i int) bool {
-	return WrapSelection(gextras.InternObject(s)).AddSelection(i)
-}
-
-func (s noOpObject) ClearSelection() bool {
-	return WrapSelection(gextras.InternObject(s)).ClearSelection()
-}
-
-func (s noOpObject) SelectionCount() int {
-	return WrapSelection(gextras.InternObject(s)).SelectionCount()
-}
-
-func (s noOpObject) IsChildSelected(i int) bool {
-	return WrapSelection(gextras.InternObject(s)).IsChildSelected(i)
-}
-
-func (s noOpObject) RefSelection(i int) Object {
-	return WrapSelection(gextras.InternObject(s)).RefSelection(i)
-}
-
-func (s noOpObject) RemoveSelection(i int) bool {
-	return WrapSelection(gextras.InternObject(s)).RemoveSelection(i)
-}
-
-func (s noOpObject) SelectAllSelection() bool {
-	return WrapSelection(gextras.InternObject(s)).SelectAllSelection()
-}
-
-func (t noOpObject) AddColumnSelection(column int) bool {
-	return WrapTable(gextras.InternObject(t)).AddColumnSelection(column)
-}
-
-func (t noOpObject) AddRowSelection(row int) bool {
-	return WrapTable(gextras.InternObject(t)).AddRowSelection(row)
-}
-
-func (t noOpObject) Caption() Object {
-	return WrapTable(gextras.InternObject(t)).Caption()
-}
-
-func (t noOpObject) ColumnAtIndex(index_ int) int {
-	return WrapTable(gextras.InternObject(t)).ColumnAtIndex(index_)
-}
-
-func (t noOpObject) ColumnDescription(column int) string {
-	return WrapTable(gextras.InternObject(t)).ColumnDescription(column)
-}
-
-func (t noOpObject) ColumnExtentAt(row int, column int) int {
-	return WrapTable(gextras.InternObject(t)).ColumnExtentAt(row, column)
-}
-
-func (t noOpObject) ColumnHeader(column int) Object {
-	return WrapTable(gextras.InternObject(t)).ColumnHeader(column)
-}
-
-func (t noOpObject) IndexAt(row int, column int) int {
-	return WrapTable(gextras.InternObject(t)).IndexAt(row, column)
-}
-
-func (t noOpObject) NColumns() int {
-	return WrapTable(gextras.InternObject(t)).NColumns()
-}
-
-func (t noOpObject) NRows() int {
-	return WrapTable(gextras.InternObject(t)).NRows()
-}
-
-func (t noOpObject) RowAtIndex(index_ int) int {
-	return WrapTable(gextras.InternObject(t)).RowAtIndex(index_)
-}
-
-func (t noOpObject) RowDescription(row int) string {
-	return WrapTable(gextras.InternObject(t)).RowDescription(row)
-}
-
-func (t noOpObject) RowExtentAt(row int, column int) int {
-	return WrapTable(gextras.InternObject(t)).RowExtentAt(row, column)
-}
-
-func (t noOpObject) RowHeader(row int) Object {
-	return WrapTable(gextras.InternObject(t)).RowHeader(row)
-}
-
-func (t noOpObject) SelectedColumns(selected **int) int {
-	return WrapTable(gextras.InternObject(t)).SelectedColumns(selected)
-}
-
-func (t noOpObject) SelectedRows(selected **int) int {
-	return WrapTable(gextras.InternObject(t)).SelectedRows(selected)
-}
-
-func (t noOpObject) Summary() Object {
-	return WrapTable(gextras.InternObject(t)).Summary()
-}
-
-func (t noOpObject) IsColumnSelected(column int) bool {
-	return WrapTable(gextras.InternObject(t)).IsColumnSelected(column)
-}
-
-func (t noOpObject) IsRowSelected(row int) bool {
-	return WrapTable(gextras.InternObject(t)).IsRowSelected(row)
-}
-
-func (t noOpObject) IsSelected(row int, column int) bool {
-	return WrapTable(gextras.InternObject(t)).IsSelected(row, column)
-}
-
-func (t noOpObject) RefAt(row int, column int) Object {
-	return WrapTable(gextras.InternObject(t)).RefAt(row, column)
-}
-
-func (t noOpObject) RemoveColumnSelection(column int) bool {
-	return WrapTable(gextras.InternObject(t)).RemoveColumnSelection(column)
-}
-
-func (t noOpObject) RemoveRowSelection(row int) bool {
-	return WrapTable(gextras.InternObject(t)).RemoveRowSelection(row)
-}
-
-func (t noOpObject) SetCaption(caption Object) {
-	WrapTable(gextras.InternObject(t)).SetCaption(caption)
-}
-
-func (t noOpObject) SetColumnDescription(column int, description string) {
-	WrapTable(gextras.InternObject(t)).SetColumnDescription(column, description)
-}
-
-func (t noOpObject) SetColumnHeader(column int, header Object) {
-	WrapTable(gextras.InternObject(t)).SetColumnHeader(column, header)
-}
-
-func (t noOpObject) SetRowDescription(row int, description string) {
-	WrapTable(gextras.InternObject(t)).SetRowDescription(row, description)
-}
-
-func (t noOpObject) SetRowHeader(row int, header Object) {
-	WrapTable(gextras.InternObject(t)).SetRowHeader(row, header)
-}
-
-func (t noOpObject) SetSummary(accessible Object) {
-	WrapTable(gextras.InternObject(t)).SetSummary(accessible)
-}
-
-func (c noOpObject) ColumnSpan() int {
-	return WrapTableCell(gextras.InternObject(c)).ColumnSpan()
-}
-
-func (c noOpObject) Position() (row int, column int, ok bool) {
-	return WrapTableCell(gextras.InternObject(c)).Position()
-}
-
-func (c noOpObject) RowColumnSpan() (row int, column int, rowSpan int, columnSpan int, ok bool) {
-	return WrapTableCell(gextras.InternObject(c)).RowColumnSpan()
-}
-
-func (c noOpObject) RowSpan() int {
-	return WrapTableCell(gextras.InternObject(c)).RowSpan()
-}
-
-func (c noOpObject) Table() Object {
-	return WrapTableCell(gextras.InternObject(c)).Table()
-}
-
-func (t noOpObject) AddSelection(startOffset int, endOffset int) bool {
-	return WrapText(gextras.InternObject(t)).AddSelection(startOffset, endOffset)
-}
-
-func (t noOpObject) BoundedRanges(rect *TextRectangle, coordType CoordType, xClipType TextClipType, yClipType TextClipType) []*TextRange {
-	return WrapText(gextras.InternObject(t)).BoundedRanges(rect, coordType, xClipType, yClipType)
-}
-
-func (t noOpObject) CaretOffset() int {
-	return WrapText(gextras.InternObject(t)).CaretOffset()
-}
-
-func (t noOpObject) CharacterAtOffset(offset int) uint32 {
-	return WrapText(gextras.InternObject(t)).CharacterAtOffset(offset)
-}
-
-func (t noOpObject) CharacterCount() int {
-	return WrapText(gextras.InternObject(t)).CharacterCount()
-}
-
-func (t noOpObject) CharacterExtents(offset int, coords CoordType) (x int, y int, width int, height int) {
-	return WrapText(gextras.InternObject(t)).CharacterExtents(offset, coords)
-}
-
-func (t noOpObject) NSelections() int {
-	return WrapText(gextras.InternObject(t)).NSelections()
-}
-
-func (t noOpObject) OffsetAtPoint(x int, y int, coords CoordType) int {
-	return WrapText(gextras.InternObject(t)).OffsetAtPoint(x, y, coords)
-}
-
-func (t noOpObject) RangeExtents(startOffset int, endOffset int, coordType CoordType) TextRectangle {
-	return WrapText(gextras.InternObject(t)).RangeExtents(startOffset, endOffset, coordType)
-}
-
-func (t noOpObject) Selection(selectionNum int) (startOffset int, endOffset int, utf8 string) {
-	return WrapText(gextras.InternObject(t)).Selection(selectionNum)
-}
-
-func (t noOpObject) StringAtOffset(offset int, granularity TextGranularity) (startOffset int, endOffset int, utf8 string) {
-	return WrapText(gextras.InternObject(t)).StringAtOffset(offset, granularity)
-}
-
-func (t noOpObject) Text(startOffset int, endOffset int) string {
-	return WrapText(gextras.InternObject(t)).Text(startOffset, endOffset)
-}
-
-func (t noOpObject) TextAfterOffset(offset int, boundaryType TextBoundary) (startOffset int, endOffset int, utf8 string) {
-	return WrapText(gextras.InternObject(t)).TextAfterOffset(offset, boundaryType)
-}
-
-func (t noOpObject) TextAtOffset(offset int, boundaryType TextBoundary) (startOffset int, endOffset int, utf8 string) {
-	return WrapText(gextras.InternObject(t)).TextAtOffset(offset, boundaryType)
-}
-
-func (t noOpObject) TextBeforeOffset(offset int, boundaryType TextBoundary) (startOffset int, endOffset int, utf8 string) {
-	return WrapText(gextras.InternObject(t)).TextBeforeOffset(offset, boundaryType)
-}
-
-func (t noOpObject) RemoveSelection(selectionNum int) bool {
-	return WrapText(gextras.InternObject(t)).RemoveSelection(selectionNum)
-}
-
-func (t noOpObject) ScrollSubstringTo(startOffset int, endOffset int, typ ScrollType) bool {
-	return WrapText(gextras.InternObject(t)).ScrollSubstringTo(startOffset, endOffset, typ)
-}
-
-func (t noOpObject) ScrollSubstringToPoint(startOffset int, endOffset int, coords CoordType, x int, y int) bool {
-	return WrapText(gextras.InternObject(t)).ScrollSubstringToPoint(startOffset, endOffset, coords, x, y)
-}
-
-func (t noOpObject) SetCaretOffset(offset int) bool {
-	return WrapText(gextras.InternObject(t)).SetCaretOffset(offset)
-}
-
-func (t noOpObject) SetSelection(selectionNum int, startOffset int, endOffset int) bool {
-	return WrapText(gextras.InternObject(t)).SetSelection(selectionNum, startOffset, endOffset)
-}
-
-func (o noOpObject) CurrentValue() externglib.Value {
-	return WrapValue(gextras.InternObject(o)).CurrentValue()
-}
-
-func (o noOpObject) Increment() float64 {
-	return WrapValue(gextras.InternObject(o)).Increment()
-}
-
-func (o noOpObject) MaximumValue() externglib.Value {
-	return WrapValue(gextras.InternObject(o)).MaximumValue()
-}
-
-func (o noOpObject) MinimumIncrement() externglib.Value {
-	return WrapValue(gextras.InternObject(o)).MinimumIncrement()
-}
-
-func (o noOpObject) MinimumValue() externglib.Value {
-	return WrapValue(gextras.InternObject(o)).MinimumValue()
-}
-
-func (o noOpObject) Range() *Range {
-	return WrapValue(gextras.InternObject(o)).Range()
-}
-
-func (o noOpObject) ValueAndText() (float64, string) {
-	return WrapValue(gextras.InternObject(o)).ValueAndText()
-}
-
-func (o noOpObject) SetCurrentValue(value externglib.Value) bool {
-	return WrapValue(gextras.InternObject(o)).SetCurrentValue(value)
-}
-
-func (o noOpObject) SetValue(newValue float64) {
-	WrapValue(gextras.InternObject(o)).SetValue(newValue)
+func (n noOpObject) AsWindow() Window {
+	return WrapWindow(gextras.InternObject(n))
 }

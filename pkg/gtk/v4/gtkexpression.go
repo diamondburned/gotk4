@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/box"
@@ -104,7 +105,7 @@ func ValueTakeExpression(value externglib.Value, expression Expression) {
 	C.gtk_value_take_expression(_arg1, _arg2)
 }
 
-// CClosureExpression: a variant of `GtkClosureExpression` using a C closure.
+// CClosureExpression: variant of `GtkClosureExpression` using a C closure.
 type CClosureExpression interface {
 	Expression
 }
@@ -128,8 +129,8 @@ func marshalCClosureExpression(p uintptr) (interface{}, error) {
 	return WrapCClosureExpression(obj), nil
 }
 
-// ClosureExpression: an expression using a custom `GClosure` to compute the
-// value from its parameters.
+// ClosureExpression: expression using a custom `GClosure` to compute the value
+// from its parameters.
 type ClosureExpression interface {
 	Expression
 }
@@ -153,10 +154,11 @@ func marshalClosureExpression(p uintptr) (interface{}, error) {
 	return WrapClosureExpression(obj), nil
 }
 
-// ConstantExpression: a constant value in a `GtkExpression`.
+// ConstantExpression: constant value in a `GtkExpression`.
 type ConstantExpression interface {
 	Expression
 
+	// Value gets the value that a constant expression evaluates to.
 	Value() externglib.Value
 }
 
@@ -179,6 +181,8 @@ func marshalConstantExpression(p uintptr) (interface{}, error) {
 	return WrapConstantExpression(obj), nil
 }
 
+// NewConstantExpressionForValue creates an expression that always evaluates to
+// the given `value`.
 func NewConstantExpressionForValue(value externglib.Value) ConstantExpression {
 	var _arg1 *C.GValue        // out
 	var _cret *C.GtkExpression // in
@@ -189,7 +193,7 @@ func NewConstantExpressionForValue(value externglib.Value) ConstantExpression {
 
 	var _constantExpression ConstantExpression // out
 
-	_constantExpression = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(ConstantExpression)
+	_constantExpression = WrapConstantExpression(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _constantExpression
 }
@@ -327,16 +331,48 @@ func (e constantExpression) Value() externglib.Value {
 type Expression interface {
 	gextras.Objector
 
-	BindExpression(target gextras.Objector, property string, this_ gextras.Objector) *ExpressionWatch
-
+	// BindExpression: bind `target`'s property named `property` to `self`.
+	//
+	// The value that `self` evaluates to is set via `g_object_set()` on
+	// `target`. This is repeated whenever `self` changes to ensure that the
+	// object's property stays synchronized with `self`.
+	//
+	// If `self`'s evaluation fails, `target`'s `property` is not updated. You
+	// can ensure that this doesn't happen by using a fallback expression.
+	//
+	// Note that this function takes ownership of `self`. If you want to keep it
+	// around, you should [method@Gtk.Expression.ref] it beforehand.
+	BindExpression(target gextras.Objector, property string, this_ gextras.Objector) ExpressionWatch
+	// EvaluateExpression evaluates the given expression and on success stores
+	// the result in @value.
+	//
+	// The `GType` of `value` will be the type given by
+	// [method@Gtk.Expression.get_value_type].
+	//
+	// It is possible that expressions cannot be evaluated - for example when
+	// the expression references objects that have been destroyed or set to
+	// `NULL`. In that case `value` will remain empty and `FALSE` will be
+	// returned.
 	EvaluateExpression(this_ gextras.Objector, value externglib.Value) bool
-
+	// ValueType gets the `GType` that this expression evaluates to.
+	//
+	// This type is constant and will not change over the lifetime of this
+	// expression.
 	ValueType() externglib.Type
-
+	// IsStaticExpression checks if the expression is static.
+	//
+	// A static expression will never change its result when
+	// [method@Gtk.Expression.evaluate] is called on it with the same arguments.
+	//
+	// That means a call to [method@Gtk.Expression.watch] is not necessary
+	// because it will never trigger a notify.
 	IsStaticExpression() bool
-
+	// RefExpression acquires a reference on the given `GtkExpression`.
 	RefExpression() Expression
-
+	// UnrefExpression releases a reference on the given `GtkExpression`.
+	//
+	// If the reference was the last, the resources associated to the `self` are
+	// freed.
 	UnrefExpression()
 }
 
@@ -359,7 +395,7 @@ func marshalExpression(p uintptr) (interface{}, error) {
 	return WrapExpression(obj), nil
 }
 
-func (s expression) BindExpression(target gextras.Objector, property string, this_ gextras.Objector) *ExpressionWatch {
+func (s expression) BindExpression(target gextras.Objector, property string, this_ gextras.Objector) ExpressionWatch {
 	var _arg0 *C.GtkExpression      // out
 	var _arg1 C.gpointer            // out
 	var _arg2 *C.char               // out
@@ -374,9 +410,10 @@ func (s expression) BindExpression(target gextras.Objector, property string, thi
 
 	_cret = C.gtk_expression_bind(_arg0, _arg1, _arg2, _arg3)
 
-	var _expressionWatch *ExpressionWatch // out
+	var _expressionWatch ExpressionWatch // out
 
-	_expressionWatch = (*ExpressionWatch)(unsafe.Pointer(_cret))
+	_expressionWatch = (ExpressionWatch)(unsafe.Pointer(_cret))
+	C.gtk_expression_watch_ref(_cret)
 
 	return _expressionWatch
 }
@@ -457,10 +494,11 @@ func (s expression) UnrefExpression() {
 	C.gtk_expression_unref(_arg0)
 }
 
-// ObjectExpression: a `GObject` value in a `GtkExpression`.
+// ObjectExpression: `GObject` value in a `GtkExpression`.
 type ObjectExpression interface {
 	Expression
 
+	// Object gets the object that the expression evaluates to.
 	Object() gextras.Objector
 }
 
@@ -483,6 +521,15 @@ func marshalObjectExpression(p uintptr) (interface{}, error) {
 	return WrapObjectExpression(obj), nil
 }
 
+// NewObjectExpression creates an expression evaluating to the given `object`
+// with a weak reference.
+//
+// Once the `object` is disposed, it will fail to evaluate.
+//
+// This expression is meant to break reference cycles.
+//
+// If you want to keep a reference to `object`, use
+// [ctor@Gtk.ConstantExpression.new].
 func NewObjectExpression(object gextras.Objector) ObjectExpression {
 	var _arg1 *C.GObject       // out
 	var _cret *C.GtkExpression // in
@@ -493,7 +540,7 @@ func NewObjectExpression(object gextras.Objector) ObjectExpression {
 
 	var _objectExpression ObjectExpression // out
 
-	_objectExpression = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(ObjectExpression)
+	_objectExpression = WrapObjectExpression(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _objectExpression
 }
@@ -513,10 +560,12 @@ func (e objectExpression) Object() gextras.Objector {
 	return _object
 }
 
-// PropertyExpression: a `GObject` property value in a `GtkExpression`.
+// PropertyExpression: `GObject` property value in a `GtkExpression`.
 type PropertyExpression interface {
 	Expression
 
+	// GetExpression gets the expression specifying the object of a property
+	// expression.
 	GetExpression() Expression
 }
 
@@ -539,6 +588,14 @@ func marshalPropertyExpression(p uintptr) (interface{}, error) {
 	return WrapPropertyExpression(obj), nil
 }
 
+// NewPropertyExpression creates an expression that looks up a property via the
+// given `expression` or the `this` argument when `expression` is `NULL`.
+//
+// If the resulting object conforms to `this_type`, its property named
+// `property_name` will be queried. Otherwise, this expression's evaluation will
+// fail.
+//
+// The given `this_type` must have a property with `property_name`.
 func NewPropertyExpression(thisType externglib.Type, expression Expression, propertyName string) PropertyExpression {
 	var _arg1 C.GType          // out
 	var _arg2 *C.GtkExpression // out
@@ -554,7 +611,7 @@ func NewPropertyExpression(thisType externglib.Type, expression Expression, prop
 
 	var _propertyExpression PropertyExpression // out
 
-	_propertyExpression = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(PropertyExpression)
+	_propertyExpression = WrapPropertyExpression(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _propertyExpression
 }
@@ -574,11 +631,13 @@ func (e propertyExpression) GetExpression() Expression {
 	return _ret
 }
 
-// ExpressionWatch: an opaque structure representing a watched `GtkExpression`.
+// ExpressionWatch: opaque structure representing a watched `GtkExpression`.
 //
 // The contents of `GtkExpressionWatch` should only be accessed through the
 // provided API.
-type ExpressionWatch C.GtkExpressionWatch
+type ExpressionWatch struct {
+	native C.GtkExpressionWatch
+}
 
 // WrapExpressionWatch wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -593,18 +652,20 @@ func marshalExpressionWatch(p uintptr) (interface{}, error) {
 
 // Native returns the underlying C source pointer.
 func (e *ExpressionWatch) Native() unsafe.Pointer {
-	return unsafe.Pointer(e)
+	return unsafe.Pointer(&e.native)
 }
 
-// Evaluate stops watching an expression.
+// Evaluate evaluates the watched expression and on success stores the result in
+// `value`.
 //
-// See [method@Gtk.Expression.watch] for how the watch was established.
+// This is equivalent to calling [method@Gtk.Expression.evaluate] with the
+// expression and this pointer originally used to create `watch`.
 func (w *ExpressionWatch) Evaluate(value externglib.Value) bool {
 	var _arg0 *C.GtkExpressionWatch // out
 	var _arg1 *C.GValue             // out
 	var _cret C.gboolean            // in
 
-	_arg0 = (*C.GtkExpressionWatch)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkExpressionWatch)(unsafe.Pointer(w))
 	_arg1 = (*C.GValue)(unsafe.Pointer(&value.GValue))
 
 	_cret = C.gtk_expression_watch_evaluate(_arg0, _arg1)
@@ -618,34 +679,32 @@ func (w *ExpressionWatch) Evaluate(value externglib.Value) bool {
 	return _ok
 }
 
-// Ref stops watching an expression.
-//
-// See [method@Gtk.Expression.watch] for how the watch was established.
-func (w *ExpressionWatch) Ref() *ExpressionWatch {
+// Ref acquires a reference on the given `GtkExpressionWatch`.
+func (w *ExpressionWatch) Ref() ExpressionWatch {
 	var _arg0 *C.GtkExpressionWatch // out
 	var _cret *C.GtkExpressionWatch // in
 
-	_arg0 = (*C.GtkExpressionWatch)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkExpressionWatch)(unsafe.Pointer(w))
 
 	_cret = C.gtk_expression_watch_ref(_arg0)
 
-	var _expressionWatch *ExpressionWatch // out
+	var _expressionWatch ExpressionWatch // out
 
-	_expressionWatch = (*ExpressionWatch)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(&_expressionWatch, func(v **ExpressionWatch) {
-		C.free(unsafe.Pointer(v))
+	_expressionWatch = (ExpressionWatch)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_expressionWatch, func(v ExpressionWatch) {
+		C.gtk_expression_watch_unref((*C.GtkExpressionWatch)(unsafe.Pointer(v)))
 	})
 
 	return _expressionWatch
 }
 
-// Unref stops watching an expression.
+// Unref releases a reference on the given `GtkExpressionWatch`.
 //
-// See [method@Gtk.Expression.watch] for how the watch was established.
+// If the reference was the last, the resources associated to `self` are freed.
 func (w *ExpressionWatch) Unref() {
 	var _arg0 *C.GtkExpressionWatch // out
 
-	_arg0 = (*C.GtkExpressionWatch)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkExpressionWatch)(unsafe.Pointer(w))
 
 	C.gtk_expression_watch_unref(_arg0)
 }
@@ -656,7 +715,7 @@ func (w *ExpressionWatch) Unref() {
 func (w *ExpressionWatch) Unwatch() {
 	var _arg0 *C.GtkExpressionWatch // out
 
-	_arg0 = (*C.GtkExpressionWatch)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkExpressionWatch)(unsafe.Pointer(w))
 
 	C.gtk_expression_watch_unwatch(_arg0)
 }

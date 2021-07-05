@@ -39,7 +39,7 @@ func init() {
 //
 // The client should return a reference to the new file that has been created
 // for @uri, or nil to continue with the default implementation.
-type VFSFileLookupFunc func(vfs VFS, identifier string, file File)
+type VFSFileLookupFunc func(vfs VFS, identifier string) (file File)
 
 //export gotk4_VFSFileLookupFunc
 func gotk4_VFSFileLookupFunc(arg0 *C.GVfs, arg1 *C.char, arg2 C.gpointer) *C.GFile {
@@ -68,16 +68,24 @@ func gotk4_VFSFileLookupFunc(arg0 *C.GVfs, arg1 *C.char, arg2 C.gpointer) *C.GFi
 type VFS interface {
 	gextras.Objector
 
+	// FileForPath gets a #GFile for @path.
 	FileForPath(path string) File
-
+	// FileForURI gets a #GFile for @uri.
+	//
+	// This operation never fails, but the returned object might not support any
+	// I/O operation if the URI is malformed or if the URI scheme is not
+	// supported.
 	FileForURI(uri string) File
-
+	// SupportedURISchemes gets a list of URI schemes supported by @vfs.
 	SupportedURISchemes() []string
-
+	// IsActiveVFS checks if the VFS is active.
 	IsActiveVFS() bool
-
+	// ParseNameVFS: this operation never fails, but the returned object might
+	// not support any I/O operations if the @parse_name cannot be parsed by the
+	// #GVfs module.
 	ParseNameVFS(parseName string) File
-
+	// UnregisterURISchemeVFS unregisters the URI handler for @scheme previously
+	// registered with g_vfs_register_uri_scheme().
 	UnregisterURISchemeVFS(scheme string) bool
 }
 

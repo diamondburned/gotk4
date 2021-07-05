@@ -5,10 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
-	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -44,7 +41,7 @@ func marshalToolbarSpaceStyle(p uintptr) (interface{}, error) {
 	return ToolbarSpaceStyle(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// Toolbar: a toolbar is created with a call to gtk_toolbar_new().
+// Toolbar: toolbar is created with a call to gtk_toolbar_new().
 //
 // A toolbar can contain instances of a subclass of ToolItem. To add a ToolItem
 // to the a toolbar, use gtk_toolbar_insert(). To remove an item from the
@@ -70,37 +67,79 @@ func marshalToolbarSpaceStyle(p uintptr) (interface{}, error) {
 // GtkToolbar has a single CSS node with name toolbar.
 type Toolbar interface {
 	Container
-	Orientable
-	ToolShell
 
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsOrientable casts the class to the Orientable interface.
+	AsOrientable() Orientable
+	// AsToolShell casts the class to the ToolShell interface.
+	AsToolShell() ToolShell
+
+	// DropIndex returns the position corresponding to the indicated point on
+	// @toolbar. This is useful when dragging items to the toolbar: this
+	// function returns the position a new item should be inserted.
+	//
+	// @x and @y are in @toolbar coordinates.
 	DropIndex(x int, y int) int
-
-	GetIconSize() IconSize
-
+	// IconSize retrieves the icon size for the toolbar. See
+	// gtk_toolbar_set_icon_size().
+	IconSize() IconSize
+	// ItemIndex returns the position of @item on the toolbar, starting from 0.
+	// It is an error if @item is not a child of the toolbar.
 	ItemIndex(item ToolItem) int
-
+	// NItems returns the number of items on the toolbar.
 	NItems() int
-
+	// NthItem returns the @n'th item on @toolbar, or nil if the toolbar does
+	// not contain an @n'th item.
 	NthItem(n int) ToolItem
-
-	GetReliefStyle() ReliefStyle
-
+	// ReliefStyle returns the relief style of buttons on @toolbar. See
+	// gtk_button_set_relief().
+	ReliefStyle() ReliefStyle
+	// ShowArrow returns whether the toolbar has an overflow menu. See
+	// gtk_toolbar_set_show_arrow().
 	ShowArrow() bool
-
-	GetStyle() ToolbarStyle
-
+	// Style retrieves whether the toolbar has text, icons, or both . See
+	// gtk_toolbar_set_style().
+	Style() ToolbarStyle
+	// InsertToolbar: insert a ToolItem into the toolbar at position @pos. If
+	// @pos is 0 the item is prepended to the start of the toolbar. If @pos is
+	// negative, the item is appended to the end of the toolbar.
 	InsertToolbar(item ToolItem, pos int)
-
+	// SetDropHighlightItemToolbar highlights @toolbar to give an idea of what
+	// it would look like if @item was added to @toolbar at the position
+	// indicated by @index_. If @item is nil, highlighting is turned off. In
+	// that case @index_ is ignored.
+	//
+	// The @tool_item passed to this function must not be part of any widget
+	// hierarchy. When an item is set as drop highlight item it can not added to
+	// any widget hierarchy or used as highlight item for another toolbar.
 	SetDropHighlightItemToolbar(toolItem ToolItem, index_ int)
-
+	// SetIconSizeToolbar: this function sets the size of stock icons in the
+	// toolbar. You can call it both before you add the icons and after they’ve
+	// been added. The size you set will override user preferences for the
+	// default icon size.
+	//
+	// This should only be used for special-purpose toolbars, normal application
+	// toolbars should respect the user preferences for the size of icons.
 	SetIconSizeToolbar(iconSize IconSize)
-
+	// SetShowArrowToolbar sets whether to show an overflow menu when @toolbar
+	// isn’t allocated enough size to show all of its items. If true, items
+	// which can’t fit in @toolbar, and which have a proxy menu item set by
+	// gtk_tool_item_set_proxy_menu_item() or ToolItem::create-menu-proxy, will
+	// be available in an overflow menu, which can be opened by an added arrow
+	// button. If false, @toolbar will request enough size to fit all of its
+	// child items without any overflow.
 	SetShowArrowToolbar(showArrow bool)
-
+	// SetStyleToolbar alters the view of @toolbar to display either icons only,
+	// text only, or both.
 	SetStyleToolbar(style ToolbarStyle)
-
+	// UnsetIconSizeToolbar unsets toolbar icon size set with
+	// gtk_toolbar_set_icon_size(), so that user preferences will be used to
+	// determine the icon size.
 	UnsetIconSizeToolbar()
-
+	// UnsetStyleToolbar unsets a toolbar style set with
+	// gtk_toolbar_set_style(), so that user preferences will be used to
+	// determine the toolbar style.
 	UnsetStyleToolbar()
 }
 
@@ -123,6 +162,7 @@ func marshalToolbar(p uintptr) (interface{}, error) {
 	return WrapToolbar(obj), nil
 }
 
+// NewToolbar creates a new toolbar.
 func NewToolbar() Toolbar {
 	var _cret *C.GtkWidget // in
 
@@ -130,7 +170,7 @@ func NewToolbar() Toolbar {
 
 	var _toolbar Toolbar // out
 
-	_toolbar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Toolbar)
+	_toolbar = WrapToolbar(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _toolbar
 }
@@ -154,7 +194,7 @@ func (t toolbar) DropIndex(x int, y int) int {
 	return _gint
 }
 
-func (t toolbar) GetIconSize() IconSize {
+func (t toolbar) IconSize() IconSize {
 	var _arg0 *C.GtkToolbar // out
 	var _cret C.GtkIconSize // in
 
@@ -218,7 +258,7 @@ func (t toolbar) NthItem(n int) ToolItem {
 	return _toolItem
 }
 
-func (t toolbar) GetReliefStyle() ReliefStyle {
+func (t toolbar) ReliefStyle() ReliefStyle {
 	var _arg0 *C.GtkToolbar    // out
 	var _cret C.GtkReliefStyle // in
 
@@ -250,7 +290,7 @@ func (t toolbar) ShowArrow() bool {
 	return _ok
 }
 
-func (t toolbar) GetStyle() ToolbarStyle {
+func (t toolbar) Style() ToolbarStyle {
 	var _arg0 *C.GtkToolbar     // out
 	var _cret C.GtkToolbarStyle // in
 
@@ -337,126 +377,14 @@ func (t toolbar) UnsetStyleToolbar() {
 	C.gtk_toolbar_unset_style(_arg0)
 }
 
-func (b toolbar) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+func (t toolbar) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(t))
 }
 
-func (b toolbar) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+func (t toolbar) AsOrientable() Orientable {
+	return WrapOrientable(gextras.InternObject(t))
 }
 
-func (b toolbar) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b toolbar) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b toolbar) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b toolbar) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b toolbar) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b toolbar) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b toolbar) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b toolbar) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (o toolbar) Orientation() Orientation {
-	return WrapOrientable(gextras.InternObject(o)).Orientation()
-}
-
-func (o toolbar) SetOrientation(orientation Orientation) {
-	WrapOrientable(gextras.InternObject(o)).SetOrientation(orientation)
-}
-
-func (s toolbar) EllipsizeMode() pango.EllipsizeMode {
-	return WrapToolShell(gextras.InternObject(s)).EllipsizeMode()
-}
-
-func (s toolbar) IconSize() int {
-	return WrapToolShell(gextras.InternObject(s)).IconSize()
-}
-
-func (s toolbar) Orientation() Orientation {
-	return WrapToolShell(gextras.InternObject(s)).Orientation()
-}
-
-func (s toolbar) ReliefStyle() ReliefStyle {
-	return WrapToolShell(gextras.InternObject(s)).ReliefStyle()
-}
-
-func (s toolbar) Style() ToolbarStyle {
-	return WrapToolShell(gextras.InternObject(s)).Style()
-}
-
-func (s toolbar) TextAlignment() float32 {
-	return WrapToolShell(gextras.InternObject(s)).TextAlignment()
-}
-
-func (s toolbar) TextOrientation() Orientation {
-	return WrapToolShell(gextras.InternObject(s)).TextOrientation()
-}
-
-func (s toolbar) TextSizeGroup() SizeGroup {
-	return WrapToolShell(gextras.InternObject(s)).TextSizeGroup()
-}
-
-func (s toolbar) RebuildMenu() {
-	WrapToolShell(gextras.InternObject(s)).RebuildMenu()
-}
-
-func (b toolbar) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
-}
-
-func (b toolbar) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b toolbar) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b toolbar) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b toolbar) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b toolbar) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b toolbar) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b toolbar) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b toolbar) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b toolbar) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
+func (t toolbar) AsToolShell() ToolShell {
+	return WrapToolShell(gextras.InternObject(t))
 }

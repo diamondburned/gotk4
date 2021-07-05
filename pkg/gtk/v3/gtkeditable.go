@@ -60,97 +60,55 @@ func init() {
 type Editable interface {
 	gextras.Objector
 
-	// CopyClipboard sets the cursor position in the editable to the given
-	// value.
-	//
-	// The cursor is displayed before the character with the given (base 0)
-	// index in the contents of the editable. The value must be less than or
-	// equal to the number of characters in the editable. A value of -1
-	// indicates that the position should be set after the last character of the
-	// editable. Note that @position is in characters, not in bytes.
+	// CopyClipboard copies the contents of the currently selected content in
+	// the editable and puts it on the clipboard.
 	CopyClipboard()
-	// CutClipboard sets the cursor position in the editable to the given value.
-	//
-	// The cursor is displayed before the character with the given (base 0)
-	// index in the contents of the editable. The value must be less than or
-	// equal to the number of characters in the editable. A value of -1
-	// indicates that the position should be set after the last character of the
-	// editable. Note that @position is in characters, not in bytes.
+	// CutClipboard removes the contents of the currently selected content in
+	// the editable and puts it on the clipboard.
 	CutClipboard()
-	// DeleteSelection sets the cursor position in the editable to the given
-	// value.
-	//
-	// The cursor is displayed before the character with the given (base 0)
-	// index in the contents of the editable. The value must be less than or
-	// equal to the number of characters in the editable. A value of -1
-	// indicates that the position should be set after the last character of the
-	// editable. Note that @position is in characters, not in bytes.
+	// DeleteSelection deletes the currently selected text of the editable. This
+	// call doesn’t do anything if there is no selected text.
 	DeleteSelection()
-	// DeleteText sets the cursor position in the editable to the given value.
+	// DeleteText deletes a sequence of characters. The characters that are
+	// deleted are those characters at positions from @start_pos up to, but not
+	// including @end_pos. If @end_pos is negative, then the characters deleted
+	// are those from @start_pos to the end of the text.
 	//
-	// The cursor is displayed before the character with the given (base 0)
-	// index in the contents of the editable. The value must be less than or
-	// equal to the number of characters in the editable. A value of -1
-	// indicates that the position should be set after the last character of the
-	// editable. Note that @position is in characters, not in bytes.
+	// Note that the positions are specified in characters, not bytes.
 	DeleteText(startPos int, endPos int)
-	// Chars sets the cursor position in the editable to the given value.
+	// Chars retrieves a sequence of characters. The characters that are
+	// retrieved are those characters at positions from @start_pos up to, but
+	// not including @end_pos. If @end_pos is negative, then the characters
+	// retrieved are those characters from @start_pos to the end of the text.
 	//
-	// The cursor is displayed before the character with the given (base 0)
-	// index in the contents of the editable. The value must be less than or
-	// equal to the number of characters in the editable. A value of -1
-	// indicates that the position should be set after the last character of the
-	// editable. Note that @position is in characters, not in bytes.
+	// Note that positions are specified in characters, not bytes.
 	Chars(startPos int, endPos int) string
-	// Editable sets the cursor position in the editable to the given value.
-	//
-	// The cursor is displayed before the character with the given (base 0)
-	// index in the contents of the editable. The value must be less than or
-	// equal to the number of characters in the editable. A value of -1
-	// indicates that the position should be set after the last character of the
-	// editable. Note that @position is in characters, not in bytes.
+	// Editable retrieves whether @editable is editable. See
+	// gtk_editable_set_editable().
 	Editable() bool
-	// Position sets the cursor position in the editable to the given value.
+	// Position retrieves the current position of the cursor relative to the
+	// start of the content of the editable.
 	//
-	// The cursor is displayed before the character with the given (base 0)
-	// index in the contents of the editable. The value must be less than or
-	// equal to the number of characters in the editable. A value of -1
-	// indicates that the position should be set after the last character of the
-	// editable. Note that @position is in characters, not in bytes.
+	// Note that this position is in characters, not in bytes.
 	Position() int
-	// SelectionBounds sets the cursor position in the editable to the given
-	// value.
+	// SelectionBounds retrieves the selection bound of the editable. start_pos
+	// will be filled with the start of the selection and @end_pos with end. If
+	// no text was selected both will be identical and false will be returned.
 	//
-	// The cursor is displayed before the character with the given (base 0)
-	// index in the contents of the editable. The value must be less than or
-	// equal to the number of characters in the editable. A value of -1
-	// indicates that the position should be set after the last character of the
-	// editable. Note that @position is in characters, not in bytes.
+	// Note that positions are specified in characters, not bytes.
 	SelectionBounds() (startPos int, endPos int, ok bool)
-	// PasteClipboard sets the cursor position in the editable to the given
-	// value.
-	//
-	// The cursor is displayed before the character with the given (base 0)
-	// index in the contents of the editable. The value must be less than or
-	// equal to the number of characters in the editable. A value of -1
-	// indicates that the position should be set after the last character of the
-	// editable. Note that @position is in characters, not in bytes.
+	// PasteClipboard pastes the content of the clipboard to the current
+	// position of the cursor in the editable.
 	PasteClipboard()
-	// SelectRegion sets the cursor position in the editable to the given value.
+	// SelectRegion selects a region of text. The characters that are selected
+	// are those characters at positions from @start_pos up to, but not
+	// including @end_pos. If @end_pos is negative, then the characters selected
+	// are those characters from @start_pos to the end of the text.
 	//
-	// The cursor is displayed before the character with the given (base 0)
-	// index in the contents of the editable. The value must be less than or
-	// equal to the number of characters in the editable. A value of -1
-	// indicates that the position should be set after the last character of the
-	// editable. Note that @position is in characters, not in bytes.
+	// Note that positions are specified in characters, not bytes.
 	SelectRegion(startPos int, endPos int)
-	// SetEditable sets the cursor position in the editable to the given value.
-	//
-	// The cursor is displayed before the character with the given (base 0)
-	// index in the contents of the editable. The value must be less than or
-	// equal to the number of characters in the editable. A value of -1
-	// indicates that the position should be set after the last character of the
-	// editable. Note that @position is in characters, not in bytes.
+	// SetEditable determines if the user can edit the text in the editable
+	// widget or not.
 	SetEditable(isEditable bool)
 	// SetPosition sets the cursor position in the editable to the given value.
 	//
@@ -273,8 +231,8 @@ func (e editable) Position() int {
 
 func (e editable) SelectionBounds() (startPos int, endPos int, ok bool) {
 	var _arg0 *C.GtkEditable // out
-	var _arg1 C.gint         // in
-	var _arg2 C.gint         // in
+	var _arg1 *C.gint        // in
+	var _arg2 *C.gint        // in
 	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))

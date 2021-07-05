@@ -42,28 +42,67 @@ func X11GetServerTime(surface X11Surface) uint32 {
 type X11Surface interface {
 	gdk.Surface
 
+	// Desktop gets the number of the workspace @surface is on.
 	Desktop() uint32
-
+	// Group returns the group this surface belongs to.
 	Group() gdk.Surface
-
+	// MoveToCurrentDesktopX11Surface moves the surface to the correct workspace
+	// when running under a window manager that supports multiple workspaces, as
+	// described in the Extended Window Manager Hints
+	// (http://www.freedesktop.org/Standards/wm-spec) specification. Will not do
+	// anything if the surface is already on all workspaces.
 	MoveToCurrentDesktopX11Surface()
-
+	// MoveToDesktopX11Surface moves the surface to the given workspace when
+	// running unde a window manager that supports multiple workspaces, as
+	// described in the Extended Window Manager Hints
+	// (http://www.freedesktop.org/Standards/wm-spec) specification.
 	MoveToDesktopX11Surface(desktop uint32)
-
+	// SetFrameSyncEnabledX11Surface: this function can be used to disable frame
+	// synchronization for a surface. Normally frame synchronziation will be
+	// enabled or disabled based on whether the system has a compositor that
+	// supports frame synchronization, but if the surface is not directly
+	// managed by the window manager, then frame synchronziation may need to be
+	// disabled. This is the case for a surface embedded via the XEMBED
+	// protocol.
 	SetFrameSyncEnabledX11Surface(frameSyncEnabled bool)
-
+	// SetGroupX11Surface sets the group leader of @surface to be @leader. See
+	// the ICCCM for details.
 	SetGroupX11Surface(leader gdk.Surface)
-
+	// SetSkipPagerHintX11Surface sets a hint on @surface that pagers should not
+	// display it. See the EWMH for details.
 	SetSkipPagerHintX11Surface(skipsPager bool)
-
+	// SetSkipTaskbarHintX11Surface sets a hint on @surface that taskbars should
+	// not display it. See the EWMH for details.
 	SetSkipTaskbarHintX11Surface(skipsTaskbar bool)
-
+	// SetThemeVariantX11Surface: GTK applications can request a dark theme
+	// variant. In order to make other applications - namely window managers
+	// using GTK for themeing - aware of this choice, GTK uses this function to
+	// export the requested theme variant as _GTK_THEME_VARIANT property on
+	// toplevel surfaces.
+	//
+	// Note that this property is automatically updated by GTK, so this function
+	// should only be used by applications which do not use GTK to create
+	// toplevel surfaces.
 	SetThemeVariantX11Surface(variant string)
-
+	// SetUrgencyHintX11Surface sets a hint on @surface that it needs user
+	// attention. See the ICCCM for details.
 	SetUrgencyHintX11Surface(urgent bool)
-
+	// SetUserTimeX11Surface: the application can use this call to update the
+	// _NET_WM_USER_TIME property on a toplevel surface. This property stores an
+	// Xserver time which represents the time of the last user input event
+	// received for this surface. This property may be used by the window
+	// manager to alter the focus, stacking, and/or placement behavior of
+	// surfaces when they are mapped depending on whether the new surface was
+	// created by a user action or is a "pop-up" surface activated by a timer or
+	// some other event.
+	//
+	// Note that this property is automatically updated by GDK, so this function
+	// should only be used by applications which handle input events bypassing
+	// GDK.
 	SetUserTimeX11Surface(timestamp uint32)
-
+	// SetUTF8PropertYX11Surface: this function modifies or removes an arbitrary
+	// X11 window property of type UTF8_STRING. If the given @surface is not a
+	// toplevel surface, it is ignored.
 	SetUTF8PropertyX11Surface(name string, value string)
 }
 

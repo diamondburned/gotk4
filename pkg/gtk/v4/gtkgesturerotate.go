@@ -28,6 +28,11 @@ func init() {
 type GestureRotate interface {
 	Gesture
 
+	// AngleDelta gets the angle delta in radians.
+	//
+	// If @gesture is active, this function returns the angle difference in
+	// radians since the gesture was first recognized. If @gesture is not
+	// active, 0 is returned.
 	AngleDelta() float64
 }
 
@@ -50,6 +55,8 @@ func marshalGestureRotate(p uintptr) (interface{}, error) {
 	return WrapGestureRotate(obj), nil
 }
 
+// NewGestureRotate returns a newly created `GtkGesture` that recognizes 2-touch
+// rotation gestures.
 func NewGestureRotate() GestureRotate {
 	var _cret *C.GtkGesture // in
 
@@ -57,7 +64,7 @@ func NewGestureRotate() GestureRotate {
 
 	var _gestureRotate GestureRotate // out
 
-	_gestureRotate = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(GestureRotate)
+	_gestureRotate = WrapGestureRotate(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _gestureRotate
 }

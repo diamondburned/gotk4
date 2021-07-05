@@ -42,32 +42,41 @@ func init() {
 type InetAddress interface {
 	gextras.Objector
 
+	// EqualInetAddress checks if two Address instances are equal, e.g. the same
+	// address.
 	EqualInetAddress(otherAddress InetAddress) bool
-
+	// Family gets @address's family
 	Family() SocketFamily
-
+	// IsAny tests whether @address is the "any" address for its family.
 	IsAny() bool
-
+	// IsLinkLocal tests whether @address is a link-local address (that is, if
+	// it identifies a host on a local network that is not connected to the
+	// Internet).
 	IsLinkLocal() bool
-
+	// IsLoopback tests whether @address is the loopback address for its family.
 	IsLoopback() bool
-
+	// IsMcGlobal tests whether @address is a global multicast address.
 	IsMcGlobal() bool
-
+	// IsMcLinkLocal tests whether @address is a link-local multicast address.
 	IsMcLinkLocal() bool
-
+	// IsMcNodeLocal tests whether @address is a node-local multicast address.
 	IsMcNodeLocal() bool
-
+	// IsMcOrgLocal tests whether @address is an organization-local multicast
+	// address.
 	IsMcOrgLocal() bool
-
+	// IsMcSiteLocal tests whether @address is a site-local multicast address.
 	IsMcSiteLocal() bool
-
+	// IsMulticast tests whether @address is a multicast address.
 	IsMulticast() bool
-
+	// IsSiteLocal tests whether @address is a site-local address such as
+	// 10.0.0.1 (that is, the address identifies a host on a local network that
+	// can not be reached directly from the Internet, but which may have
+	// outgoing Internet connectivity via a NAT or firewall).
 	IsSiteLocal() bool
-
+	// NativeSize gets the size of the native raw binary address for @address.
+	// This is the size of the data that you get from g_inet_address_to_bytes().
 	NativeSize() uint
-
+	// String converts @address to string form.
 	String() string
 }
 
@@ -90,6 +99,8 @@ func marshalInetAddress(p uintptr) (interface{}, error) {
 	return WrapInetAddress(obj), nil
 }
 
+// NewInetAddressAny creates a Address for the "any" address (unassigned/"don't
+// care") for @family.
 func NewInetAddressAny(family SocketFamily) InetAddress {
 	var _arg1 C.GSocketFamily // out
 	var _cret *C.GInetAddress // in
@@ -100,11 +111,13 @@ func NewInetAddressAny(family SocketFamily) InetAddress {
 
 	var _inetAddress InetAddress // out
 
-	_inetAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(InetAddress)
+	_inetAddress = WrapInetAddress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _inetAddress
 }
 
+// NewInetAddressFromString parses @string as an IP address and creates a new
+// Address.
 func NewInetAddressFromString(_string string) InetAddress {
 	var _arg1 *C.gchar        // out
 	var _cret *C.GInetAddress // in
@@ -116,11 +129,13 @@ func NewInetAddressFromString(_string string) InetAddress {
 
 	var _inetAddress InetAddress // out
 
-	_inetAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(InetAddress)
+	_inetAddress = WrapInetAddress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _inetAddress
 }
 
+// NewInetAddressLoopback creates a Address for the loopback address for
+// @family.
 func NewInetAddressLoopback(family SocketFamily) InetAddress {
 	var _arg1 C.GSocketFamily // out
 	var _cret *C.GInetAddress // in
@@ -131,7 +146,7 @@ func NewInetAddressLoopback(family SocketFamily) InetAddress {
 
 	var _inetAddress InetAddress // out
 
-	_inetAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(InetAddress)
+	_inetAddress = WrapInetAddress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _inetAddress
 }

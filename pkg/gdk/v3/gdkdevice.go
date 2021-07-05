@@ -45,7 +45,7 @@ func marshalDeviceType(p uintptr) (interface{}, error) {
 	return DeviceType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// InputMode: an enumeration that describes the mode of an input device.
+// InputMode: enumeration that describes the mode of an input device.
 type InputMode int
 
 const (
@@ -65,7 +65,7 @@ func marshalInputMode(p uintptr) (interface{}, error) {
 	return InputMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// InputSource: an enumeration describing the type of an input device in general
+// InputSource: enumeration describing the type of an input device in general
 // terms.
 type InputSource int
 
@@ -108,56 +108,156 @@ func marshalInputSource(p uintptr) (interface{}, error) {
 type Device interface {
 	gextras.Objector
 
+	// AssociatedDevice returns the associated device to @device, if @device is
+	// of type GDK_DEVICE_TYPE_MASTER, it will return the paired pointer or
+	// keyboard.
+	//
+	// If @device is of type GDK_DEVICE_TYPE_SLAVE, it will return the master
+	// device to which @device is attached to.
+	//
+	// If @device is of type GDK_DEVICE_TYPE_FLOATING, nil will be returned, as
+	// there is no associated device.
 	AssociatedDevice() Device
-
+	// Axes returns the axes currently available on the device.
 	Axes() AxisFlags
-
+	// AxisUse returns the axis use for @index_.
 	AxisUse(index_ uint) AxisUse
-
+	// DeviceType returns the device type for @device.
 	DeviceType() DeviceType
-
+	// Display returns the Display to which @device pertains.
 	Display() Display
-
+	// HasCursor determines whether the pointer follows device motion. This is
+	// not meaningful for keyboard devices, which don't have a pointer.
 	HasCursor() bool
-
+	// Key: if @index_ has a valid keyval, this function will return true and
+	// fill in @keyval and @modifiers with the keyval settings.
 	Key(index_ uint) (uint, ModifierType, bool)
-
+	// LastEventWindow gets information about which window the given pointer
+	// device is in, based on events that have been received so far from the
+	// display server. If another application has a pointer grab, or this
+	// application has a grab with owner_events = false, nil may be returned
+	// even if the pointer is physically over one of this application's windows.
 	LastEventWindow() Window
-
+	// Mode determines the mode of the device.
 	Mode() InputMode
-
+	// NAxes returns the number of axes the device currently has.
 	NAxes() int
-
+	// NKeys returns the number of keys the device currently has.
 	NKeys() int
-
+	// Name determines the name of the device.
 	Name() string
-
+	// Position gets the current location of @device. As a slave device
+	// coordinates are those of its master pointer, This function may not be
+	// called on devices of type GDK_DEVICE_TYPE_SLAVE, unless there is an
+	// ongoing grab on them, see gdk_device_grab().
 	Position() (screen Screen, x int, y int)
-
+	// PositionDouble gets the current location of @device in double precision.
+	// As a slave device's coordinates are those of its master pointer, this
+	// function may not be called on devices of type GDK_DEVICE_TYPE_SLAVE,
+	// unless there is an ongoing grab on them. See gdk_device_grab().
 	PositionDouble() (screen Screen, x float64, y float64)
-
+	// ProductID returns the product ID of this device, or nil if this
+	// information couldn't be obtained. This ID is retrieved from the device,
+	// and is thus constant for it. See gdk_device_get_vendor_id() for more
+	// information.
 	ProductID() string
-
+	// Seat returns the Seat the device belongs to.
 	Seat() Seat
-
+	// Source determines the type of the device.
 	Source() InputSource
-
+	// VendorID returns the vendor ID of this device, or nil if this information
+	// couldn't be obtained. This ID is retrieved from the device, and is thus
+	// constant for it.
+	//
+	// This function, together with gdk_device_get_product_id(), can be used to
+	// eg. compose #GSettings paths to store settings for this device.
+	//
+	//     static GSettings *
+	//     get_device_settings (GdkDevice *device)
+	//     {
+	//       const gchar *vendor, *product;
+	//       GSettings *settings;
+	//       GdkDevice *device;
+	//       gchar *path;
+	//
+	//       vendor = gdk_device_get_vendor_id (device);
+	//       product = gdk_device_get_product_id (device);
+	//
+	//       path = g_strdup_printf ("/org/example/app/devices/s:s/", vendor, product);
+	//       settings = g_settings_new_with_path (DEVICE_SCHEMA, path);
+	//       g_free (path);
+	//
+	//       return settings;
+	//     }
 	VendorID() string
-
+	// WindowAtPosition obtains the window underneath @device, returning the
+	// location of the device in @win_x and @win_y. Returns nil if the window
+	// tree under @device is not known to GDK (for example, belongs to another
+	// application).
+	//
+	// As a slave device coordinates are those of its master pointer, This
+	// function may not be called on devices of type GDK_DEVICE_TYPE_SLAVE,
+	// unless there is an ongoing grab on them, see gdk_device_grab().
 	WindowAtPosition() (winX int, winY int, window Window)
-
+	// WindowAtPositionDouble obtains the window underneath @device, returning
+	// the location of the device in @win_x and @win_y in double precision.
+	// Returns nil if the window tree under @device is not known to GDK (for
+	// example, belongs to another application).
+	//
+	// As a slave device coordinates are those of its master pointer, This
+	// function may not be called on devices of type GDK_DEVICE_TYPE_SLAVE,
+	// unless there is an ongoing grab on them, see gdk_device_grab().
 	WindowAtPositionDouble() (winX float64, winY float64, window Window)
-
+	// GrabDevice grabs the device so that all events coming from this device
+	// are passed to this application until the device is ungrabbed with
+	// gdk_device_ungrab(), or the window becomes unviewable. This overrides any
+	// previous grab on the device by this client.
+	//
+	// Note that @device and @window need to be on the same display.
+	//
+	// Device grabs are used for operations which need complete control over the
+	// given device events (either pointer or keyboard). For example in GTK+
+	// this is used for Drag and Drop operations, popup menus and such.
+	//
+	// Note that if the event mask of an X window has selected both button press
+	// and button release events, then a button press event will cause an
+	// automatic pointer grab until the button is released. X does this
+	// automatically since most applications expect to receive button press and
+	// release events in pairs. It is equivalent to a pointer grab on the window
+	// with @owner_events set to true.
+	//
+	// If you set up anything at the time you take the grab that needs to be
+	// cleaned up when the grab ends, you should handle the EventGrabBroken
+	// events that are emitted when the grab ends unvoluntarily.
+	//
+	// Deprecated: since version 3.20..
 	GrabDevice(window Window, grabOwnership GrabOwnership, ownerEvents bool, eventMask EventMask, cursor Cursor, time_ uint32) GrabStatus
-
+	// SetAxisUseDevice specifies how an axis of a device is used.
 	SetAxisUseDevice(index_ uint, use AxisUse)
-
+	// SetKeyDevice specifies the X key event to generate when a macro button of
+	// a device is pressed.
 	SetKeyDevice(index_ uint, keyval uint, modifiers ModifierType)
-
+	// SetModeDevice sets a the mode of an input device. The mode controls if
+	// the device is active and whether the device’s range is mapped to the
+	// entire screen or to a single window.
+	//
+	// Note: This is only meaningful for floating devices, master devices (and
+	// slaves connected to these) drive the pointer cursor, which is not limited
+	// by the input mode.
 	SetModeDevice(mode InputMode) bool
-
+	// UngrabDevice: release any grab on @device.
+	//
+	// Deprecated: since version 3.20..
 	UngrabDevice(time_ uint32)
-
+	// WarpDevice warps @device in @display to the point @x,@y on the screen
+	// @screen, unless the device is confined to a window by a grab, in which
+	// case it will be moved as far as allowed by the grab. Warping the pointer
+	// creates events as if the user had moved the mouse instantaneously to the
+	// destination.
+	//
+	// Note that the pointer should normally be under the control of the user.
+	// This function was added to cover some rare use cases like keyboard
+	// navigation support for the color picker in the ColorSelectionDialog.
 	WarpDevice(screen Screen, x int, y int)
 }
 
@@ -275,11 +375,11 @@ func (d device) HasCursor() bool {
 }
 
 func (d device) Key(index_ uint) (uint, ModifierType, bool) {
-	var _arg0 *C.GdkDevice      // out
-	var _arg1 C.guint           // out
-	var _arg2 C.guint           // in
-	var _arg3 C.GdkModifierType // in
-	var _cret C.gboolean        // in
+	var _arg0 *C.GdkDevice       // out
+	var _arg1 C.guint            // out
+	var _arg2 *C.guint           // in
+	var _arg3 *C.GdkModifierType // in
+	var _cret C.gboolean         // in
 
 	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
 	_arg1 = C.guint(index_)
@@ -291,7 +391,16 @@ func (d device) Key(index_ uint) (uint, ModifierType, bool) {
 	var _ok bool                // out
 
 	_keyval = uint(_arg2)
-	_modifiers = ModifierType(_arg3)
+	{
+		var refTmpIn C.GdkModifierType
+		var refTmpOut ModifierType
+
+		refTmpIn = *_arg3
+
+		refTmpOut = ModifierType(refTmpIn)
+
+		_modifiers = refTmpOut
+	}
 	if _cret != 0 {
 		_ok = true
 	}
@@ -375,10 +484,10 @@ func (d device) Name() string {
 }
 
 func (d device) Position() (screen Screen, x int, y int) {
-	var _arg0 *C.GdkDevice // out
-	var _arg1 *C.GdkScreen // in
-	var _arg2 C.gint       // in
-	var _arg3 C.gint       // in
+	var _arg0 *C.GdkDevice  // out
+	var _arg1 **C.GdkScreen // in
+	var _arg2 *C.gint       // in
+	var _arg3 *C.gint       // in
 
 	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
 
@@ -388,7 +497,16 @@ func (d device) Position() (screen Screen, x int, y int) {
 	var _x int         // out
 	var _y int         // out
 
-	_screen = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg1))).(Screen)
+	{
+		var refTmpIn *C.GdkScreen
+		var refTmpOut screen
+
+		refTmpIn = *_arg1
+
+		refTmpOut = gextras.CastObject(externglib.Take(unsafe.Pointer(refTmpIn))).(screen)
+
+		_screen = refTmpOut
+	}
 	_x = int(_arg2)
 	_y = int(_arg3)
 
@@ -396,10 +514,10 @@ func (d device) Position() (screen Screen, x int, y int) {
 }
 
 func (d device) PositionDouble() (screen Screen, x float64, y float64) {
-	var _arg0 *C.GdkDevice // out
-	var _arg1 *C.GdkScreen // in
-	var _arg2 C.gdouble    // in
-	var _arg3 C.gdouble    // in
+	var _arg0 *C.GdkDevice  // out
+	var _arg1 **C.GdkScreen // in
+	var _arg2 *C.gdouble    // in
+	var _arg3 *C.gdouble    // in
 
 	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
 
@@ -409,7 +527,16 @@ func (d device) PositionDouble() (screen Screen, x float64, y float64) {
 	var _x float64     // out
 	var _y float64     // out
 
-	_screen = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg1))).(Screen)
+	{
+		var refTmpIn *C.GdkScreen
+		var refTmpOut screen
+
+		refTmpIn = *_arg1
+
+		refTmpOut = gextras.CastObject(externglib.Take(unsafe.Pointer(refTmpIn))).(screen)
+
+		_screen = refTmpOut
+	}
 	_x = float64(_arg2)
 	_y = float64(_arg3)
 
@@ -478,8 +605,8 @@ func (d device) VendorID() string {
 
 func (d device) WindowAtPosition() (winX int, winY int, window Window) {
 	var _arg0 *C.GdkDevice // out
-	var _arg1 C.gint       // in
-	var _arg2 C.gint       // in
+	var _arg1 *C.gint      // in
+	var _arg2 *C.gint      // in
 	var _cret *C.GdkWindow // in
 
 	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
@@ -499,8 +626,8 @@ func (d device) WindowAtPosition() (winX int, winY int, window Window) {
 
 func (d device) WindowAtPositionDouble() (winX float64, winY float64, window Window) {
 	var _arg0 *C.GdkDevice // out
-	var _arg1 C.gdouble    // in
-	var _arg2 C.gdouble    // in
+	var _arg1 *C.gdouble   // in
+	var _arg2 *C.gdouble   // in
 	var _cret *C.GdkWindow // in
 
 	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
@@ -616,8 +743,10 @@ func (d device) WarpDevice(screen Screen, x int, y int) {
 	C.gdk_device_warp(_arg0, _arg1, _arg2, _arg3)
 }
 
-// TimeCoord: a TimeCoord stores a single event in a motion history.
-type TimeCoord C.GdkTimeCoord
+// TimeCoord stores a single event in a motion history.
+type TimeCoord struct {
+	native C.GdkTimeCoord
+}
 
 // WrapTimeCoord wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -627,5 +756,5 @@ func WrapTimeCoord(ptr unsafe.Pointer) *TimeCoord {
 
 // Native returns the underlying C source pointer.
 func (t *TimeCoord) Native() unsafe.Pointer {
-	return unsafe.Pointer(t)
+	return unsafe.Pointer(&t.native)
 }

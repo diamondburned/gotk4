@@ -41,7 +41,15 @@ func init() {
 // `GtkSeparator` uses the K_ACCESSIBLE_ROLE_SEPARATOR role.
 type Separator interface {
 	Widget
-	Orientable
+
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
+	// AsOrientable casts the class to the Orientable interface.
+	AsOrientable() Orientable
 }
 
 // separator implements the Separator class.
@@ -63,6 +71,7 @@ func marshalSeparator(p uintptr) (interface{}, error) {
 	return WrapSeparator(obj), nil
 }
 
+// NewSeparator creates a new `GtkSeparator` with the given orientation.
 func NewSeparator(orientation Orientation) Separator {
 	var _arg1 C.GtkOrientation // out
 	var _cret *C.GtkWidget     // in
@@ -73,47 +82,23 @@ func NewSeparator(orientation Orientation) Separator {
 
 	var _separator Separator // out
 
-	_separator = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Separator)
+	_separator = WrapSeparator(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _separator
 }
 
-func (s separator) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
+func (s separator) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(s))
 }
 
-func (s separator) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
+func (s separator) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(s))
 }
 
-func (s separator) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
+func (s separator) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(s))
 }
 
-func (s separator) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s separator) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s separator) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s separator) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b separator) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
-}
-
-func (o separator) Orientation() Orientation {
-	return WrapOrientable(gextras.InternObject(o)).Orientation()
-}
-
-func (o separator) SetOrientation(orientation Orientation) {
-	WrapOrientable(gextras.InternObject(o)).SetOrientation(orientation)
+func (s separator) AsOrientable() Orientable {
+	return WrapOrientable(gextras.InternObject(s))
 }

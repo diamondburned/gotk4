@@ -3,11 +3,9 @@
 package gio
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -41,13 +39,17 @@ func init() {
 // Note that Icon allows no control over the position of the emblems. See also
 // #GEmblem for more information.
 type EmblemedIcon interface {
-	Icon
+	gextras.Objector
 
+	// AsIcon casts the class to the Icon interface.
+	AsIcon() Icon
+
+	// AddEmblemEmblemedIcon adds @emblem to the #GList of #GEmblems.
 	AddEmblemEmblemedIcon(emblem Emblem)
-
+	// ClearEmblemsEmblemedIcon removes all the emblems from @icon.
 	ClearEmblemsEmblemedIcon()
-
-	GetIcon() Icon
+	// Icon gets the main icon for @emblemed.
+	Icon() Icon
 }
 
 // emblemedIcon implements the EmblemedIcon class.
@@ -69,6 +71,8 @@ func marshalEmblemedIcon(p uintptr) (interface{}, error) {
 	return WrapEmblemedIcon(obj), nil
 }
 
+// NewEmblemedIcon creates a new emblemed icon for @icon with the emblem
+// @emblem.
 func NewEmblemedIcon(icon Icon, emblem Emblem) EmblemedIcon {
 	var _arg1 *C.GIcon   // out
 	var _arg2 *C.GEmblem // out
@@ -81,7 +85,7 @@ func NewEmblemedIcon(icon Icon, emblem Emblem) EmblemedIcon {
 
 	var _emblemedIcon EmblemedIcon // out
 
-	_emblemedIcon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(EmblemedIcon)
+	_emblemedIcon = WrapEmblemedIcon(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _emblemedIcon
 }
@@ -104,7 +108,7 @@ func (e emblemedIcon) ClearEmblemsEmblemedIcon() {
 	C.g_emblemed_icon_clear_emblems(_arg0)
 }
 
-func (e emblemedIcon) GetIcon() Icon {
+func (e emblemedIcon) Icon() Icon {
 	var _arg0 *C.GEmblemedIcon // out
 	var _cret *C.GIcon         // in
 
@@ -119,14 +123,6 @@ func (e emblemedIcon) GetIcon() Icon {
 	return _icon
 }
 
-func (i emblemedIcon) Equal(icon2 Icon) bool {
-	return WrapIcon(gextras.InternObject(i)).Equal(icon2)
-}
-
-func (i emblemedIcon) Serialize() *glib.Variant {
-	return WrapIcon(gextras.InternObject(i)).Serialize()
-}
-
-func (i emblemedIcon) String() string {
-	return WrapIcon(gextras.InternObject(i)).String()
+func (e emblemedIcon) AsIcon() Icon {
+	return WrapIcon(gextras.InternObject(e))
 }

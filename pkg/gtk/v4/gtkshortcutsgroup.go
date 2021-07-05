@@ -22,7 +22,7 @@ func init() {
 	})
 }
 
-// ShortcutsGroup: a `GtkShortcutsGroup` represents a group of related keyboard
+// ShortcutsGroup: `GtkShortcutsGroup` represents a group of related keyboard
 // shortcuts or gestures.
 //
 // The group has a title. It may optionally be associated with a view of the
@@ -32,6 +32,15 @@ func init() {
 // This widget is only meant to be used with [class@Gtk.ShortcutsWindow].
 type ShortcutsGroup interface {
 	Box
+
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
+	// AsOrientable casts the class to the Orientable interface.
+	AsOrientable() Orientable
 }
 
 // shortcutsGroup implements the ShortcutsGroup class.
@@ -53,42 +62,18 @@ func marshalShortcutsGroup(p uintptr) (interface{}, error) {
 	return WrapShortcutsGroup(obj), nil
 }
 
-func (s shortcutsGroup) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
+func (s shortcutsGroup) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(s))
 }
 
-func (s shortcutsGroup) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
+func (s shortcutsGroup) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(s))
 }
 
-func (s shortcutsGroup) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
+func (s shortcutsGroup) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(s))
 }
 
-func (s shortcutsGroup) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s shortcutsGroup) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s shortcutsGroup) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s shortcutsGroup) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b shortcutsGroup) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
-}
-
-func (o shortcutsGroup) Orientation() Orientation {
-	return WrapOrientable(gextras.InternObject(o)).Orientation()
-}
-
-func (o shortcutsGroup) SetOrientation(orientation Orientation) {
-	WrapOrientable(gextras.InternObject(o)).SetOrientation(orientation)
+func (s shortcutsGroup) AsOrientable() Orientable {
+	return WrapOrientable(gextras.InternObject(s))
 }

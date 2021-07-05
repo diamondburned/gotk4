@@ -33,7 +33,9 @@ func init() {
 // positive values. All functions taking a #graphene_rect_t as an argument will
 // internally operate on a normalized copy; all functions returning a
 // #graphene_rect_t will always return a normalized rectangle.
-type Rect C.graphene_rect_t
+type Rect struct {
+	native C.graphene_rect_t
+}
 
 // WrapRect wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -48,21 +50,18 @@ func marshalRect(p uintptr) (interface{}, error) {
 
 // Native returns the underlying C source pointer.
 func (r *Rect) Native() unsafe.Pointer {
-	return unsafe.Pointer(r)
+	return unsafe.Pointer(&r.native)
 }
 
-// ContainsPoint computes the union of the two given rectangles.
-//
-// ! (rectangle-union.png)
-//
-// The union in the image above is the blue outline.
-func (a *Rect) ContainsPoint(p *Point) bool {
+// ContainsPoint checks whether a #graphene_rect_t contains the given
+// coordinates.
+func (r *Rect) ContainsPoint(p Point) bool {
 	var _arg0 *C.graphene_rect_t  // out
 	var _arg1 *C.graphene_point_t // out
 	var _cret C._Bool             // in
 
-	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
-	_arg1 = (*C.graphene_point_t)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r))
+	_arg1 = (*C.graphene_point_t)(unsafe.Pointer(p))
 
 	_cret = C.graphene_rect_contains_point(_arg0, _arg1)
 
@@ -75,18 +74,15 @@ func (a *Rect) ContainsPoint(p *Point) bool {
 	return _ok
 }
 
-// ContainsRect computes the union of the two given rectangles.
-//
-// ! (rectangle-union.png)
-//
-// The union in the image above is the blue outline.
-func (a *Rect) ContainsRect(b *Rect) bool {
+// ContainsRect checks whether a #graphene_rect_t fully contains the given
+// rectangle.
+func (a *Rect) ContainsRect(b Rect) bool {
 	var _arg0 *C.graphene_rect_t // out
 	var _arg1 *C.graphene_rect_t // out
 	var _cret C._Bool            // in
 
-	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(a.Native()))
-	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(a))
+	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(b))
 
 	_cret = C.graphene_rect_contains_rect(_arg0, _arg1)
 
@@ -99,18 +95,14 @@ func (a *Rect) ContainsRect(b *Rect) bool {
 	return _ok
 }
 
-// Equal computes the union of the two given rectangles.
-//
-// ! (rectangle-union.png)
-//
-// The union in the image above is the blue outline.
-func (a *Rect) Equal(b *Rect) bool {
+// Equal checks whether the two given rectangle are equal.
+func (a *Rect) Equal(b Rect) bool {
 	var _arg0 *C.graphene_rect_t // out
 	var _arg1 *C.graphene_rect_t // out
 	var _cret C._Bool            // in
 
-	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(a.Native()))
-	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(a))
+	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(b))
 
 	_cret = C.graphene_rect_equal(_arg0, _arg1)
 
@@ -123,61 +115,39 @@ func (a *Rect) Equal(b *Rect) bool {
 	return _ok
 }
 
-// Expand computes the union of the two given rectangles.
-//
-// ! (rectangle-union.png)
-//
-// The union in the image above is the blue outline.
-func (a *Rect) Expand(p *Point) Rect {
+// Expand expands a #graphene_rect_t to contain the given #graphene_point_t.
+func (r *Rect) Expand(p Point) Rect {
 	var _arg0 *C.graphene_rect_t  // out
 	var _arg1 *C.graphene_point_t // out
-	var _arg2 C.graphene_rect_t   // in
+	var _arg2 *C.graphene_rect_t  // in
 
-	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
-	_arg1 = (*C.graphene_point_t)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r))
+	_arg1 = (*C.graphene_point_t)(unsafe.Pointer(p))
 
 	C.graphene_rect_expand(_arg0, _arg1, &_arg2)
 
 	var _res Rect // out
 
-	{
-		var refTmpIn *C.graphene_rect_t
-		var refTmpOut *Rect
-
-		in0 := &_arg2
-		refTmpIn = in0
-
-		refTmpOut = (*Rect)(unsafe.Pointer(refTmpIn))
-
-		_res = *refTmpOut
-	}
+	_res = (Rect)(unsafe.Pointer(_arg2))
 
 	return _res
 }
 
-// Free computes the union of the two given rectangles.
-//
-// ! (rectangle-union.png)
-//
-// The union in the image above is the blue outline.
-func (a *Rect) Free() {
+// Free frees the resources allocated by graphene_rect_alloc().
+func (r *Rect) Free() {
 	var _arg0 *C.graphene_rect_t // out
 
-	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r))
 
 	C.graphene_rect_free(_arg0)
 }
 
-// Area computes the union of the two given rectangles.
-//
-// ! (rectangle-union.png)
-//
-// The union in the image above is the blue outline.
-func (a *Rect) Area() float32 {
+// Area: compute the area of given normalized rectangle.
+func (r *Rect) Area() float32 {
 	var _arg0 *C.graphene_rect_t // out
 	var _cret C.float            // in
 
-	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r))
 
 	_cret = C.graphene_rect_get_area(_arg0)
 
@@ -188,106 +158,62 @@ func (a *Rect) Area() float32 {
 	return _gfloat
 }
 
-// BottomLeft computes the union of the two given rectangles.
-//
-// ! (rectangle-union.png)
-//
-// The union in the image above is the blue outline.
-func (a *Rect) BottomLeft() Point {
-	var _arg0 *C.graphene_rect_t // out
-	var _arg1 C.graphene_point_t // in
+// BottomLeft retrieves the coordinates of the bottom-left corner of the given
+// rectangle.
+func (r *Rect) BottomLeft() Point {
+	var _arg0 *C.graphene_rect_t  // out
+	var _arg1 *C.graphene_point_t // in
 
-	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r))
 
 	C.graphene_rect_get_bottom_left(_arg0, &_arg1)
 
 	var _p Point // out
 
-	{
-		var refTmpIn *C.graphene_point_t
-		var refTmpOut *Point
-
-		in0 := &_arg1
-		refTmpIn = in0
-
-		refTmpOut = (*Point)(unsafe.Pointer(refTmpIn))
-
-		_p = *refTmpOut
-	}
+	_p = (Point)(unsafe.Pointer(_arg1))
 
 	return _p
 }
 
-// BottomRight computes the union of the two given rectangles.
-//
-// ! (rectangle-union.png)
-//
-// The union in the image above is the blue outline.
-func (a *Rect) BottomRight() Point {
-	var _arg0 *C.graphene_rect_t // out
-	var _arg1 C.graphene_point_t // in
+// BottomRight retrieves the coordinates of the bottom-right corner of the given
+// rectangle.
+func (r *Rect) BottomRight() Point {
+	var _arg0 *C.graphene_rect_t  // out
+	var _arg1 *C.graphene_point_t // in
 
-	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r))
 
 	C.graphene_rect_get_bottom_right(_arg0, &_arg1)
 
 	var _p Point // out
 
-	{
-		var refTmpIn *C.graphene_point_t
-		var refTmpOut *Point
-
-		in0 := &_arg1
-		refTmpIn = in0
-
-		refTmpOut = (*Point)(unsafe.Pointer(refTmpIn))
-
-		_p = *refTmpOut
-	}
+	_p = (Point)(unsafe.Pointer(_arg1))
 
 	return _p
 }
 
-// Center computes the union of the two given rectangles.
-//
-// ! (rectangle-union.png)
-//
-// The union in the image above is the blue outline.
-func (a *Rect) Center() Point {
-	var _arg0 *C.graphene_rect_t // out
-	var _arg1 C.graphene_point_t // in
+// Center retrieves the coordinates of the center of the given rectangle.
+func (r *Rect) Center() Point {
+	var _arg0 *C.graphene_rect_t  // out
+	var _arg1 *C.graphene_point_t // in
 
-	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r))
 
 	C.graphene_rect_get_center(_arg0, &_arg1)
 
 	var _p Point // out
 
-	{
-		var refTmpIn *C.graphene_point_t
-		var refTmpOut *Point
-
-		in0 := &_arg1
-		refTmpIn = in0
-
-		refTmpOut = (*Point)(unsafe.Pointer(refTmpIn))
-
-		_p = *refTmpOut
-	}
+	_p = (Point)(unsafe.Pointer(_arg1))
 
 	return _p
 }
 
-// Height computes the union of the two given rectangles.
-//
-// ! (rectangle-union.png)
-//
-// The union in the image above is the blue outline.
-func (a *Rect) Height() float32 {
+// Height retrieves the normalized height of the given rectangle.
+func (r *Rect) Height() float32 {
 	var _arg0 *C.graphene_rect_t // out
 	var _cret C.float            // in
 
-	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r))
 
 	_cret = C.graphene_rect_get_height(_arg0)
 
@@ -298,76 +224,46 @@ func (a *Rect) Height() float32 {
 	return _gfloat
 }
 
-// TopLeft computes the union of the two given rectangles.
-//
-// ! (rectangle-union.png)
-//
-// The union in the image above is the blue outline.
-func (a *Rect) TopLeft() Point {
-	var _arg0 *C.graphene_rect_t // out
-	var _arg1 C.graphene_point_t // in
+// TopLeft retrieves the coordinates of the top-left corner of the given
+// rectangle.
+func (r *Rect) TopLeft() Point {
+	var _arg0 *C.graphene_rect_t  // out
+	var _arg1 *C.graphene_point_t // in
 
-	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r))
 
 	C.graphene_rect_get_top_left(_arg0, &_arg1)
 
 	var _p Point // out
 
-	{
-		var refTmpIn *C.graphene_point_t
-		var refTmpOut *Point
-
-		in0 := &_arg1
-		refTmpIn = in0
-
-		refTmpOut = (*Point)(unsafe.Pointer(refTmpIn))
-
-		_p = *refTmpOut
-	}
+	_p = (Point)(unsafe.Pointer(_arg1))
 
 	return _p
 }
 
-// TopRight computes the union of the two given rectangles.
-//
-// ! (rectangle-union.png)
-//
-// The union in the image above is the blue outline.
-func (a *Rect) TopRight() Point {
-	var _arg0 *C.graphene_rect_t // out
-	var _arg1 C.graphene_point_t // in
+// TopRight retrieves the coordinates of the top-right corner of the given
+// rectangle.
+func (r *Rect) TopRight() Point {
+	var _arg0 *C.graphene_rect_t  // out
+	var _arg1 *C.graphene_point_t // in
 
-	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r))
 
 	C.graphene_rect_get_top_right(_arg0, &_arg1)
 
 	var _p Point // out
 
-	{
-		var refTmpIn *C.graphene_point_t
-		var refTmpOut *Point
-
-		in0 := &_arg1
-		refTmpIn = in0
-
-		refTmpOut = (*Point)(unsafe.Pointer(refTmpIn))
-
-		_p = *refTmpOut
-	}
+	_p = (Point)(unsafe.Pointer(_arg1))
 
 	return _p
 }
 
-// Vertices computes the union of the two given rectangles.
-//
-// ! (rectangle-union.png)
-//
-// The union in the image above is the blue outline.
-func (a *Rect) Vertices() [4]Vec2 {
+// Vertices computes the four vertices of a #graphene_rect_t.
+func (r *Rect) Vertices() [4]Vec2 {
 	var _arg0 *C.graphene_rect_t // out
 	var _arg1 [4]C.graphene_vec2_t
 
-	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r))
 
 	C.graphene_rect_get_vertices(_arg0, &_arg1[0])
 
@@ -378,16 +274,12 @@ func (a *Rect) Vertices() [4]Vec2 {
 	return _vertices
 }
 
-// Width computes the union of the two given rectangles.
-//
-// ! (rectangle-union.png)
-//
-// The union in the image above is the blue outline.
-func (a *Rect) Width() float32 {
+// Width retrieves the normalized width of the given rectangle.
+func (r *Rect) Width() float32 {
 	var _arg0 *C.graphene_rect_t // out
 	var _cret C.float            // in
 
-	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r))
 
 	_cret = C.graphene_rect_get_width(_arg0)
 
@@ -398,16 +290,12 @@ func (a *Rect) Width() float32 {
 	return _gfloat
 }
 
-// X computes the union of the two given rectangles.
-//
-// ! (rectangle-union.png)
-//
-// The union in the image above is the blue outline.
-func (a *Rect) X() float32 {
+// X retrieves the normalized X coordinate of the origin of the given rectangle.
+func (r *Rect) X() float32 {
 	var _arg0 *C.graphene_rect_t // out
 	var _cret C.float            // in
 
-	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r))
 
 	_cret = C.graphene_rect_get_x(_arg0)
 
@@ -418,16 +306,12 @@ func (a *Rect) X() float32 {
 	return _gfloat
 }
 
-// Y computes the union of the two given rectangles.
-//
-// ! (rectangle-union.png)
-//
-// The union in the image above is the blue outline.
-func (a *Rect) Y() float32 {
+// Y retrieves the normalized Y coordinate of the origin of the given rectangle.
+func (r *Rect) Y() float32 {
 	var _arg0 *C.graphene_rect_t // out
 	var _cret C.float            // in
 
-	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r))
 
 	_cret = C.graphene_rect_get_y(_arg0)
 
@@ -438,12 +322,11 @@ func (a *Rect) Y() float32 {
 	return _gfloat
 }
 
-// Init computes the union of the two given rectangles.
+// Init initializes the given #graphene_rect_t with the given values.
 //
-// ! (rectangle-union.png)
-//
-// The union in the image above is the blue outline.
-func (a *Rect) Init(x float32, y float32, width float32, height float32) *Rect {
+// This function will implicitly normalize the #graphene_rect_t before
+// returning.
+func (r *Rect) Init(x float32, y float32, width float32, height float32) Rect {
 	var _arg0 *C.graphene_rect_t // out
 	var _arg1 C.float            // out
 	var _arg2 C.float            // out
@@ -451,7 +334,7 @@ func (a *Rect) Init(x float32, y float32, width float32, height float32) *Rect {
 	var _arg4 C.float            // out
 	var _cret *C.graphene_rect_t // in
 
-	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r))
 	_arg1 = C.float(x)
 	_arg2 = C.float(y)
 	_arg3 = C.float(width)
@@ -459,71 +342,86 @@ func (a *Rect) Init(x float32, y float32, width float32, height float32) *Rect {
 
 	_cret = C.graphene_rect_init(_arg0, _arg1, _arg2, _arg3, _arg4)
 
-	var _rect *Rect // out
+	var _rect Rect // out
 
-	_rect = (*Rect)(unsafe.Pointer(_cret))
+	_rect = (Rect)(unsafe.Pointer(_cret))
 
 	return _rect
 }
 
-// InitFromRect computes the union of the two given rectangles.
+// InitFromRect initializes @r using the given @src rectangle.
 //
-// ! (rectangle-union.png)
-//
-// The union in the image above is the blue outline.
-func (a *Rect) InitFromRect(src *Rect) *Rect {
+// This function will implicitly normalize the #graphene_rect_t before
+// returning.
+func (r *Rect) InitFromRect(src Rect) Rect {
 	var _arg0 *C.graphene_rect_t // out
 	var _arg1 *C.graphene_rect_t // out
 	var _cret *C.graphene_rect_t // in
 
-	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
-	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(src.Native()))
+	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r))
+	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(src))
 
 	_cret = C.graphene_rect_init_from_rect(_arg0, _arg1)
 
-	var _rect *Rect // out
+	var _rect Rect // out
 
-	_rect = (*Rect)(unsafe.Pointer(_cret))
+	_rect = (Rect)(unsafe.Pointer(_cret))
 
 	return _rect
 }
 
-// Inset computes the union of the two given rectangles.
+// Inset changes the given rectangle to be smaller, or larger depending on the
+// given inset parameters.
 //
-// ! (rectangle-union.png)
+// To create an inset rectangle, use positive @d_x or @d_y values; to create a
+// larger, encompassing rectangle, use negative @d_x or @d_y values.
 //
-// The union in the image above is the blue outline.
-func (a *Rect) Inset(dX float32, dY float32) *Rect {
+// The origin of the rectangle is offset by @d_x and @d_y, while the size is
+// adjusted by `(2 * @d_x, 2 * @d_y)`. If @d_x and @d_y are positive values, the
+// size of the rectangle is decreased; if @d_x and @d_y are negative values, the
+// size of the rectangle is increased.
+//
+// If the size of the resulting inset rectangle has a negative width or height
+// then the size will be set to zero.
+func (r *Rect) Inset(dX float32, dY float32) Rect {
 	var _arg0 *C.graphene_rect_t // out
 	var _arg1 C.float            // out
 	var _arg2 C.float            // out
 	var _cret *C.graphene_rect_t // in
 
-	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r))
 	_arg1 = C.float(dX)
 	_arg2 = C.float(dY)
 
 	_cret = C.graphene_rect_inset(_arg0, _arg1, _arg2)
 
-	var _rect *Rect // out
+	var _rect Rect // out
 
-	_rect = (*Rect)(unsafe.Pointer(_cret))
+	_rect = (Rect)(unsafe.Pointer(_cret))
 
 	return _rect
 }
 
-// InsetR computes the union of the two given rectangles.
+// InsetR changes the given rectangle to be smaller, or larger depending on the
+// given inset parameters.
 //
-// ! (rectangle-union.png)
+// To create an inset rectangle, use positive @d_x or @d_y values; to create a
+// larger, encompassing rectangle, use negative @d_x or @d_y values.
 //
-// The union in the image above is the blue outline.
-func (a *Rect) InsetR(dX float32, dY float32) Rect {
+// The origin of the rectangle is offset by @d_x and @d_y, while the size is
+// adjusted by `(2 * @d_x, 2 * @d_y)`. If @d_x and @d_y are positive values, the
+// size of the rectangle is decreased; if @d_x and @d_y are negative values, the
+// size of the rectangle is increased.
+//
+// If the size of the resulting inset rectangle has a negative width or height
+// then the size will be set to zero.
+func (r *Rect) InsetR(dX float32, dY float32) Rect {
 	var _arg0 *C.graphene_rect_t // out
 	var _arg1 C.float            // out
 	var _arg2 C.float            // out
-	var _arg3 C.graphene_rect_t  // in
+	var _arg3 *C.graphene_rect_t // in
 
-	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r))
 	_arg1 = C.float(dX)
 	_arg2 = C.float(dY)
 
@@ -531,85 +429,55 @@ func (a *Rect) InsetR(dX float32, dY float32) Rect {
 
 	var _res Rect // out
 
-	{
-		var refTmpIn *C.graphene_rect_t
-		var refTmpOut *Rect
-
-		in0 := &_arg3
-		refTmpIn = in0
-
-		refTmpOut = (*Rect)(unsafe.Pointer(refTmpIn))
-
-		_res = *refTmpOut
-	}
+	_res = (Rect)(unsafe.Pointer(_arg3))
 
 	return _res
 }
 
-// Interpolate computes the union of the two given rectangles.
-//
-// ! (rectangle-union.png)
-//
-// The union in the image above is the blue outline.
-func (a *Rect) Interpolate(b *Rect, factor float64) Rect {
+// Interpolate: linearly interpolates the origin and size of the two given
+// rectangles.
+func (a *Rect) Interpolate(b Rect, factor float64) Rect {
 	var _arg0 *C.graphene_rect_t // out
 	var _arg1 *C.graphene_rect_t // out
 	var _arg2 C.double           // out
-	var _arg3 C.graphene_rect_t  // in
+	var _arg3 *C.graphene_rect_t // in
 
-	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(a.Native()))
-	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(a))
+	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(b))
 	_arg2 = C.double(factor)
 
 	C.graphene_rect_interpolate(_arg0, _arg1, _arg2, &_arg3)
 
 	var _res Rect // out
 
-	{
-		var refTmpIn *C.graphene_rect_t
-		var refTmpOut *Rect
-
-		in0 := &_arg3
-		refTmpIn = in0
-
-		refTmpOut = (*Rect)(unsafe.Pointer(refTmpIn))
-
-		_res = *refTmpOut
-	}
+	_res = (Rect)(unsafe.Pointer(_arg3))
 
 	return _res
 }
 
-// Intersection computes the union of the two given rectangles.
+// Intersection computes the intersection of the two given rectangles.
 //
-// ! (rectangle-union.png)
+// ! (rectangle-intersection.png)
 //
-// The union in the image above is the blue outline.
-func (a *Rect) Intersection(b *Rect) (Rect, bool) {
+// The intersection in the image above is the blue outline.
+//
+// If the two rectangles do not intersect, @res will contain a degenerate
+// rectangle with origin in (0, 0) and a size of 0.
+func (a *Rect) Intersection(b Rect) (Rect, bool) {
 	var _arg0 *C.graphene_rect_t // out
 	var _arg1 *C.graphene_rect_t // out
-	var _arg2 C.graphene_rect_t  // in
+	var _arg2 *C.graphene_rect_t // in
 	var _cret C._Bool            // in
 
-	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(a.Native()))
-	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(a))
+	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(b))
 
 	_cret = C.graphene_rect_intersection(_arg0, _arg1, &_arg2)
 
 	var _res Rect // out
 	var _ok bool  // out
 
-	{
-		var refTmpIn *C.graphene_rect_t
-		var refTmpOut *Rect
-
-		in0 := &_arg2
-		refTmpIn = in0
-
-		refTmpOut = (*Rect)(unsafe.Pointer(refTmpIn))
-
-		_res = *refTmpOut
-	}
+	_res = (Rect)(unsafe.Pointer(_arg2))
 	if _cret {
 		_ok = true
 	}
@@ -617,92 +485,76 @@ func (a *Rect) Intersection(b *Rect) (Rect, bool) {
 	return _res, _ok
 }
 
-// Normalize computes the union of the two given rectangles.
+// Normalize normalizes the passed rectangle.
 //
-// ! (rectangle-union.png)
-//
-// The union in the image above is the blue outline.
-func (a *Rect) Normalize() *Rect {
+// This function ensures that the size of the rectangle is made of positive
+// values, and that the origin is the top-left corner of the rectangle.
+func (r *Rect) Normalize() Rect {
 	var _arg0 *C.graphene_rect_t // out
 	var _cret *C.graphene_rect_t // in
 
-	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r))
 
 	_cret = C.graphene_rect_normalize(_arg0)
 
-	var _rect *Rect // out
+	var _rect Rect // out
 
-	_rect = (*Rect)(unsafe.Pointer(_cret))
+	_rect = (Rect)(unsafe.Pointer(_cret))
 
 	return _rect
 }
 
-// NormalizeR computes the union of the two given rectangles.
+// NormalizeR normalizes the passed rectangle.
 //
-// ! (rectangle-union.png)
-//
-// The union in the image above is the blue outline.
-func (a *Rect) NormalizeR() Rect {
+// This function ensures that the size of the rectangle is made of positive
+// values, and that the origin is in the top-left corner of the rectangle.
+func (r *Rect) NormalizeR() Rect {
 	var _arg0 *C.graphene_rect_t // out
-	var _arg1 C.graphene_rect_t  // in
+	var _arg1 *C.graphene_rect_t // in
 
-	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r))
 
 	C.graphene_rect_normalize_r(_arg0, &_arg1)
 
 	var _res Rect // out
 
-	{
-		var refTmpIn *C.graphene_rect_t
-		var refTmpOut *Rect
-
-		in0 := &_arg1
-		refTmpIn = in0
-
-		refTmpOut = (*Rect)(unsafe.Pointer(refTmpIn))
-
-		_res = *refTmpOut
-	}
+	_res = (Rect)(unsafe.Pointer(_arg1))
 
 	return _res
 }
 
-// Offset computes the union of the two given rectangles.
+// Offset offsets the origin by @d_x and @d_y.
 //
-// ! (rectangle-union.png)
-//
-// The union in the image above is the blue outline.
-func (a *Rect) Offset(dX float32, dY float32) *Rect {
+// The size of the rectangle is unchanged.
+func (r *Rect) Offset(dX float32, dY float32) Rect {
 	var _arg0 *C.graphene_rect_t // out
 	var _arg1 C.float            // out
 	var _arg2 C.float            // out
 	var _cret *C.graphene_rect_t // in
 
-	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r))
 	_arg1 = C.float(dX)
 	_arg2 = C.float(dY)
 
 	_cret = C.graphene_rect_offset(_arg0, _arg1, _arg2)
 
-	var _rect *Rect // out
+	var _rect Rect // out
 
-	_rect = (*Rect)(unsafe.Pointer(_cret))
+	_rect = (Rect)(unsafe.Pointer(_cret))
 
 	return _rect
 }
 
-// OffsetR computes the union of the two given rectangles.
+// OffsetR offsets the origin of the given rectangle by @d_x and @d_y.
 //
-// ! (rectangle-union.png)
-//
-// The union in the image above is the blue outline.
-func (a *Rect) OffsetR(dX float32, dY float32) Rect {
+// The size of the rectangle is left unchanged.
+func (r *Rect) OffsetR(dX float32, dY float32) Rect {
 	var _arg0 *C.graphene_rect_t // out
 	var _arg1 C.float            // out
 	var _arg2 C.float            // out
-	var _arg3 C.graphene_rect_t  // in
+	var _arg3 *C.graphene_rect_t // in
 
-	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r))
 	_arg1 = C.float(dX)
 	_arg2 = C.float(dY)
 
@@ -710,113 +562,97 @@ func (a *Rect) OffsetR(dX float32, dY float32) Rect {
 
 	var _res Rect // out
 
-	{
-		var refTmpIn *C.graphene_rect_t
-		var refTmpOut *Rect
-
-		in0 := &_arg3
-		refTmpIn = in0
-
-		refTmpOut = (*Rect)(unsafe.Pointer(refTmpIn))
-
-		_res = *refTmpOut
-	}
+	_res = (Rect)(unsafe.Pointer(_arg3))
 
 	return _res
 }
 
-// Round computes the union of the two given rectangles.
+// Round rounds the origin and size of the given rectangle to their nearest
+// integer values; the rounding is guaranteed to be large enough to have an area
+// bigger or equal to the original rectangle, but might not fully contain its
+// extents. Use graphene_rect_round_extents() in case you need to round to a
+// rectangle that covers fully the original one.
 //
-// ! (rectangle-union.png)
+// This function is the equivalent of calling `floor` on the coordinates of the
+// origin, and `ceil` on the size.
 //
-// The union in the image above is the blue outline.
-func (a *Rect) Round() Rect {
+// Deprecated: since version 1.10.
+func (r *Rect) Round() Rect {
 	var _arg0 *C.graphene_rect_t // out
-	var _arg1 C.graphene_rect_t  // in
+	var _arg1 *C.graphene_rect_t // in
 
-	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r))
 
 	C.graphene_rect_round(_arg0, &_arg1)
 
 	var _res Rect // out
 
-	{
-		var refTmpIn *C.graphene_rect_t
-		var refTmpOut *Rect
-
-		in0 := &_arg1
-		refTmpIn = in0
-
-		refTmpOut = (*Rect)(unsafe.Pointer(refTmpIn))
-
-		_res = *refTmpOut
-	}
+	_res = (Rect)(unsafe.Pointer(_arg1))
 
 	return _res
 }
 
-// RoundExtents computes the union of the two given rectangles.
+// RoundExtents rounds the origin of the given rectangle to its nearest integer
+// value and and recompute the size so that the rectangle is large enough to
+// contain all the conrners of the original rectangle.
 //
-// ! (rectangle-union.png)
+// This function is the equivalent of calling `floor` on the coordinates of the
+// origin, and recomputing the size calling `ceil` on the bottom-right
+// coordinates.
 //
-// The union in the image above is the blue outline.
-func (a *Rect) RoundExtents() Rect {
+// If you want to be sure that the rounded rectangle completely covers the area
+// that was covered by the original rectangle — i.e. you want to cover the area
+// including all its corners — this function will make sure that the size is
+// recomputed taking into account the ceiling of the coordinates of the
+// bottom-right corner. If the difference between the original coordinates and
+// the coordinates of the rounded rectangle is greater than the difference
+// between the original size and and the rounded size, then the move of the
+// origin would not be compensated by a move in the anti-origin, leaving the
+// corners of the original rectangle outside the rounded one.
+func (r *Rect) RoundExtents() Rect {
 	var _arg0 *C.graphene_rect_t // out
-	var _arg1 C.graphene_rect_t  // in
+	var _arg1 *C.graphene_rect_t // in
 
-	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r))
 
 	C.graphene_rect_round_extents(_arg0, &_arg1)
 
 	var _res Rect // out
 
-	{
-		var refTmpIn *C.graphene_rect_t
-		var refTmpOut *Rect
-
-		in0 := &_arg1
-		refTmpIn = in0
-
-		refTmpOut = (*Rect)(unsafe.Pointer(refTmpIn))
-
-		_res = *refTmpOut
-	}
+	_res = (Rect)(unsafe.Pointer(_arg1))
 
 	return _res
 }
 
-// RoundToPixel computes the union of the two given rectangles.
+// RoundToPixel rounds the origin and the size of the given rectangle to their
+// nearest integer values; the rounding is guaranteed to be large enough to
+// contain the original rectangle.
 //
-// ! (rectangle-union.png)
-//
-// The union in the image above is the blue outline.
-func (a *Rect) RoundToPixel() *Rect {
+// Deprecated: since version 1.4.
+func (r *Rect) RoundToPixel() Rect {
 	var _arg0 *C.graphene_rect_t // out
 	var _cret *C.graphene_rect_t // in
 
-	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r))
 
 	_cret = C.graphene_rect_round_to_pixel(_arg0)
 
-	var _rect *Rect // out
+	var _rect Rect // out
 
-	_rect = (*Rect)(unsafe.Pointer(_cret))
+	_rect = (Rect)(unsafe.Pointer(_cret))
 
 	return _rect
 }
 
-// Scale computes the union of the two given rectangles.
-//
-// ! (rectangle-union.png)
-//
-// The union in the image above is the blue outline.
-func (a *Rect) Scale(sH float32, sV float32) Rect {
+// Scale scales the size and origin of a rectangle horizontaly by @s_h, and
+// vertically by @s_v. The result @res is normalized.
+func (r *Rect) Scale(sH float32, sV float32) Rect {
 	var _arg0 *C.graphene_rect_t // out
 	var _arg1 C.float            // out
 	var _arg2 C.float            // out
-	var _arg3 C.graphene_rect_t  // in
+	var _arg3 *C.graphene_rect_t // in
 
-	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r))
 	_arg1 = C.float(sH)
 	_arg2 = C.float(sV)
 
@@ -824,17 +660,7 @@ func (a *Rect) Scale(sH float32, sV float32) Rect {
 
 	var _res Rect // out
 
-	{
-		var refTmpIn *C.graphene_rect_t
-		var refTmpOut *Rect
-
-		in0 := &_arg3
-		refTmpIn = in0
-
-		refTmpOut = (*Rect)(unsafe.Pointer(refTmpIn))
-
-		_res = *refTmpOut
-	}
+	_res = (Rect)(unsafe.Pointer(_arg3))
 
 	return _res
 }
@@ -844,29 +670,19 @@ func (a *Rect) Scale(sH float32, sV float32) Rect {
 // ! (rectangle-union.png)
 //
 // The union in the image above is the blue outline.
-func (a *Rect) Union(b *Rect) Rect {
+func (a *Rect) Union(b Rect) Rect {
 	var _arg0 *C.graphene_rect_t // out
 	var _arg1 *C.graphene_rect_t // out
-	var _arg2 C.graphene_rect_t  // in
+	var _arg2 *C.graphene_rect_t // in
 
-	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(a.Native()))
-	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(a))
+	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(b))
 
 	C.graphene_rect_union(_arg0, _arg1, &_arg2)
 
 	var _res Rect // out
 
-	{
-		var refTmpIn *C.graphene_rect_t
-		var refTmpOut *Rect
-
-		in0 := &_arg2
-		refTmpIn = in0
-
-		refTmpOut = (*Rect)(unsafe.Pointer(refTmpIn))
-
-		_res = *refTmpOut
-	}
+	_res = (Rect)(unsafe.Pointer(_arg2))
 
 	return _res
 }

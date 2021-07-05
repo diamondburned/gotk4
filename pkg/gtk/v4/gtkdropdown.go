@@ -54,26 +54,53 @@ func init() {
 type DropDown interface {
 	Widget
 
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
+
+	// EnableSearch returns whether search is enabled.
 	EnableSearch() bool
-
+	// Expression gets the expression set that is used to obtain strings from
+	// items.
+	//
+	// See [method@Gtk.DropDown.set_expression].
 	Expression() Expression
-
+	// Factory gets the factory that's currently used to populate list items.
+	//
+	// The factory returned by this function is always used for the item in the
+	// button. It is also used for items in the popup if
+	// [property@Gtk.DropDown:list-factory] is not set.
 	Factory() ListItemFactory
-
+	// ListFactory gets the factory that's currently used to populate list items
+	// in the popup.
 	ListFactory() ListItemFactory
-
+	// Selected gets the position of the selected item.
 	Selected() uint
-
+	// SelectedItem gets the selected item. If no item is selected, nil is
+	// returned.
 	SelectedItem() gextras.Objector
-
+	// SetEnableSearchDropDown sets whether a search entry will be shown in the
+	// popup that allows to search for items in the list.
+	//
+	// Note that [property@Gtk.DropDown:expression] must be set for search to
+	// work.
 	SetEnableSearchDropDown(enableSearch bool)
-
+	// SetExpressionDropDown sets the expression that gets evaluated to obtain
+	// strings from items.
+	//
+	// This is used for search in the popup. The expression must have a value
+	// type of G_TYPE_STRING.
 	SetExpressionDropDown(expression Expression)
-
+	// SetFactoryDropDown sets the `GtkListItemFactory` to use for populating
+	// list items.
 	SetFactoryDropDown(factory ListItemFactory)
-
+	// SetListFactoryDropDown sets the `GtkListItemFactory` to use for
+	// populating list items in the popup.
 	SetListFactoryDropDown(factory ListItemFactory)
-
+	// SetSelectedDropDown selects the item at the given position.
 	SetSelectedDropDown(position uint)
 }
 
@@ -96,6 +123,8 @@ func marshalDropDown(p uintptr) (interface{}, error) {
 	return WrapDropDown(obj), nil
 }
 
+// NewDropDownFromStrings creates a new `GtkDropDown` that is populated with the
+// strings.
 func NewDropDownFromStrings(strings []string) DropDown {
 	var _arg1 **C.char
 	var _cret *C.GtkWidget // in
@@ -114,7 +143,7 @@ func NewDropDownFromStrings(strings []string) DropDown {
 
 	var _dropDown DropDown // out
 
-	_dropDown = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(DropDown)
+	_dropDown = WrapDropDown(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _dropDown
 }
@@ -263,34 +292,14 @@ func (s dropDown) SetSelectedDropDown(position uint) {
 	C.gtk_drop_down_set_selected(_arg0, _arg1)
 }
 
-func (s dropDown) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
+func (d dropDown) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(d))
 }
 
-func (s dropDown) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
+func (d dropDown) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(d))
 }
 
-func (s dropDown) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
-}
-
-func (s dropDown) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s dropDown) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s dropDown) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s dropDown) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b dropDown) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
+func (d dropDown) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(d))
 }

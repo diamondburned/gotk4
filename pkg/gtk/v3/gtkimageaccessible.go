@@ -27,7 +27,9 @@ func init() {
 
 type ImageAccessible interface {
 	WidgetAccessible
-	atk.Image
+
+	// AsImage casts the class to the atk.Image interface.
+	AsImage() atk.Image
 }
 
 // imageAccessible implements the ImageAccessible class.
@@ -49,22 +51,6 @@ func marshalImageAccessible(p uintptr) (interface{}, error) {
 	return WrapImageAccessible(obj), nil
 }
 
-func (i imageAccessible) ImageDescription() string {
-	return atk.WrapImage(gextras.InternObject(i)).ImageDescription()
-}
-
-func (i imageAccessible) ImageLocale() string {
-	return atk.WrapImage(gextras.InternObject(i)).ImageLocale()
-}
-
-func (i imageAccessible) ImagePosition(coordType atk.CoordType) (x int, y int) {
-	return atk.WrapImage(gextras.InternObject(i)).ImagePosition(coordType)
-}
-
-func (i imageAccessible) ImageSize() (width int, height int) {
-	return atk.WrapImage(gextras.InternObject(i)).ImageSize()
-}
-
-func (i imageAccessible) SetImageDescription(description string) bool {
-	return atk.WrapImage(gextras.InternObject(i)).SetImageDescription(description)
+func (i imageAccessible) AsImage() atk.Image {
+	return atk.WrapImage(gextras.InternObject(i))
 }

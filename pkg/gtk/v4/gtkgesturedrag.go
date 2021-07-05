@@ -31,8 +31,16 @@ func init() {
 type GestureDrag interface {
 	GestureSingle
 
+	// Offset gets the offset from the start point.
+	//
+	// If the @gesture is active, this function returns true and fills in @x and
+	// @y with the coordinates of the current point, as an offset to the
+	// starting drag point.
 	Offset() (x float64, y float64, ok bool)
-
+	// StartPoint gets the point where the drag started.
+	//
+	// If the @gesture is active, this function returns true and fills in @x and
+	// @y with the drag start coordinates, in surface-relative coordinates.
 	StartPoint() (x float64, y float64, ok bool)
 }
 
@@ -55,6 +63,7 @@ func marshalGestureDrag(p uintptr) (interface{}, error) {
 	return WrapGestureDrag(obj), nil
 }
 
+// NewGestureDrag returns a newly created `GtkGesture` that recognizes drags.
 func NewGestureDrag() GestureDrag {
 	var _cret *C.GtkGesture // in
 
@@ -62,15 +71,15 @@ func NewGestureDrag() GestureDrag {
 
 	var _gestureDrag GestureDrag // out
 
-	_gestureDrag = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(GestureDrag)
+	_gestureDrag = WrapGestureDrag(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _gestureDrag
 }
 
 func (g gestureDrag) Offset() (x float64, y float64, ok bool) {
 	var _arg0 *C.GtkGestureDrag // out
-	var _arg1 C.double          // in
-	var _arg2 C.double          // in
+	var _arg1 *C.double         // in
+	var _arg2 *C.double         // in
 	var _cret C.gboolean        // in
 
 	_arg0 = (*C.GtkGestureDrag)(unsafe.Pointer(g.Native()))
@@ -92,8 +101,8 @@ func (g gestureDrag) Offset() (x float64, y float64, ok bool) {
 
 func (g gestureDrag) StartPoint() (x float64, y float64, ok bool) {
 	var _arg0 *C.GtkGestureDrag // out
-	var _arg1 C.double          // in
-	var _arg2 C.double          // in
+	var _arg1 *C.double         // in
+	var _arg2 *C.double         // in
 	var _cret C.gboolean        // in
 
 	_arg0 = (*C.GtkGestureDrag)(unsafe.Pointer(g.Native()))

@@ -6,10 +6,8 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/cairo"
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -28,11 +26,10 @@ func init() {
 	})
 }
 
-// OffscreenWindow: gtkOffscreenWindow is strictly intended to be used for
-// obtaining snapshots of widgets that are not part of a normal widget
-// hierarchy. Since OffscreenWindow is a toplevel widget you cannot obtain
-// snapshots of a full window with it since you cannot pack a toplevel widget in
-// another toplevel.
+// OffscreenWindow is strictly intended to be used for obtaining snapshots of
+// widgets that are not part of a normal widget hierarchy. Since OffscreenWindow
+// is a toplevel widget you cannot obtain snapshots of a full window with it
+// since you cannot pack a toplevel widget in another toplevel.
 //
 // The idea is to take a widget and manually set the state of it, add it to a
 // GtkOffscreenWindow and then retrieve the snapshot as a #cairo_surface_t or
@@ -47,9 +44,17 @@ func init() {
 type OffscreenWindow interface {
 	Window
 
-	Pixbuf() gdkpixbuf.Pixbuf
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
 
-	Surface() *cairo.Surface
+	// Pixbuf retrieves a snapshot of the contained widget in the form of a
+	// Pixbuf. This is a new pixbuf with a reference count of 1, and the
+	// application should unreference it once it is no longer needed.
+	Pixbuf() gdkpixbuf.Pixbuf
+	// Surface retrieves a snapshot of the contained widget in the form of a
+	// #cairo_surface_t. If you need to keep this around over window resizes
+	// then you should add a reference to it.
+	Surface() cairo.Surface
 }
 
 // offscreenWindow implements the OffscreenWindow class.
@@ -71,6 +76,8 @@ func marshalOffscreenWindow(p uintptr) (interface{}, error) {
 	return WrapOffscreenWindow(obj), nil
 }
 
+// NewOffscreenWindow creates a toplevel container widget that is used to
+// retrieve snapshots of widgets without showing them on the screen.
 func NewOffscreenWindow() OffscreenWindow {
 	var _cret *C.GtkWidget // in
 
@@ -78,7 +85,7 @@ func NewOffscreenWindow() OffscreenWindow {
 
 	var _offscreenWindow OffscreenWindow // out
 
-	_offscreenWindow = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(OffscreenWindow)
+	_offscreenWindow = WrapOffscreenWindow(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _offscreenWindow
 }
@@ -98,7 +105,7 @@ func (o offscreenWindow) Pixbuf() gdkpixbuf.Pixbuf {
 	return _pixbuf
 }
 
-func (o offscreenWindow) Surface() *cairo.Surface {
+func (o offscreenWindow) Surface() cairo.Surface {
 	var _arg0 *C.GtkOffscreenWindow // out
 	var _cret *C.cairo_surface_t    // in
 
@@ -106,49 +113,13 @@ func (o offscreenWindow) Surface() *cairo.Surface {
 
 	_cret = C.gtk_offscreen_window_get_surface(_arg0)
 
-	var _surface *cairo.Surface // out
+	var _surface cairo.Surface // out
 
-	_surface = (*cairo.Surface)(unsafe.Pointer(_cret))
+	_surface = (cairo.Surface)(unsafe.Pointer(_cret))
 
 	return _surface
 }
 
-func (b offscreenWindow) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
-}
-
-func (b offscreenWindow) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b offscreenWindow) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b offscreenWindow) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b offscreenWindow) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b offscreenWindow) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b offscreenWindow) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b offscreenWindow) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b offscreenWindow) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b offscreenWindow) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
+func (o offscreenWindow) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(o))
 }

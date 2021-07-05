@@ -29,10 +29,17 @@ func init() {
 type ObjectFactory interface {
 	gextras.Objector
 
+	// CreateAccessibleObjectFactory provides an Object that implements an
+	// accessibility interface on behalf of @obj
 	CreateAccessibleObjectFactory(obj gextras.Objector) Object
-
+	// AccessibleType gets the GType of the accessible which is created by the
+	// factory.
 	AccessibleType() externglib.Type
-
+	// InvalidateObjectFactory: inform @factory that it is no longer being used
+	// to create accessibles. When called, @factory may need to inform Objects
+	// which it has created that they need to be re-instantiated. Note:
+	// primarily used for runtime replacement of ObjectFactorys in object
+	// registries.
 	InvalidateObjectFactory()
 }
 

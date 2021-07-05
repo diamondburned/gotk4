@@ -26,11 +26,10 @@ func init() {
 	})
 }
 
-// PrintContext: a GtkPrintContext encapsulates context information that is
-// required when drawing pages for printing, such as the cairo context and
-// important parameters like page size and resolution. It also lets you easily
-// create Layout and Context objects that match the font metrics of the cairo
-// surface.
+// PrintContext encapsulates context information that is required when drawing
+// pages for printing, such as the cairo context and important parameters like
+// page size and resolution. It also lets you easily create Layout and Context
+// objects that match the font metrics of the cairo surface.
 //
 // GtkPrintContext objects gets passed to the PrintOperation::begin-print,
 // PrintOperation::end-print, PrintOperation::request-page-setup and
@@ -94,27 +93,40 @@ func init() {
 type PrintContext interface {
 	gextras.Objector
 
+	// CreatePangoContextPrintContext creates a new Context that can be used
+	// with the PrintContext.
 	CreatePangoContextPrintContext() pango.Context
-
+	// CreatePangoLayoutPrintContext creates a new Layout that is suitable for
+	// use with the PrintContext.
 	CreatePangoLayoutPrintContext() pango.Layout
-
-	CairoContext() *cairo.Context
-
+	// CairoContext obtains the cairo context that is associated with the
+	// PrintContext.
+	CairoContext() cairo.Context
+	// DPIX obtains the horizontal resolution of the PrintContext, in dots per
+	// inch.
 	DPIX() float64
-
+	// DPIY obtains the vertical resolution of the PrintContext, in dots per
+	// inch.
 	DPIY() float64
-
+	// HardMargins obtains the hardware printer margins of the PrintContext, in
+	// units.
 	HardMargins() (top float64, bottom float64, left float64, right float64, ok bool)
-
+	// Height obtains the height of the PrintContext, in pixels.
 	Height() float64
-
+	// PageSetup obtains the PageSetup that determines the page dimensions of
+	// the PrintContext.
 	PageSetup() PageSetup
-
+	// PangoFontmap returns a FontMap that is suitable for use with the
+	// PrintContext.
 	PangoFontmap() pango.FontMap
-
+	// Width obtains the width of the PrintContext, in pixels.
 	Width() float64
-
-	SetCairoContextPrintContext(cr *cairo.Context, dpiX float64, dpiY float64)
+	// SetCairoContextPrintContext sets a new cairo context on a print context.
+	//
+	// This function is intended to be used when implementing an internal print
+	// preview, it is not needed for printing, since GTK+ itself creates a
+	// suitable cairo context in that case.
+	SetCairoContextPrintContext(cr cairo.Context, dpiX float64, dpiY float64)
 }
 
 // printContext implements the PrintContext class.
@@ -166,7 +178,7 @@ func (c printContext) CreatePangoLayoutPrintContext() pango.Layout {
 	return _layout
 }
 
-func (c printContext) CairoContext() *cairo.Context {
+func (c printContext) CairoContext() cairo.Context {
 	var _arg0 *C.GtkPrintContext // out
 	var _cret *C.cairo_t         // in
 
@@ -174,9 +186,9 @@ func (c printContext) CairoContext() *cairo.Context {
 
 	_cret = C.gtk_print_context_get_cairo_context(_arg0)
 
-	var _ret *cairo.Context // out
+	var _ret cairo.Context // out
 
-	_ret = (*cairo.Context)(unsafe.Pointer(_cret))
+	_ret = (cairo.Context)(unsafe.Pointer(_cret))
 
 	return _ret
 }
@@ -213,10 +225,10 @@ func (c printContext) DPIY() float64 {
 
 func (c printContext) HardMargins() (top float64, bottom float64, left float64, right float64, ok bool) {
 	var _arg0 *C.GtkPrintContext // out
-	var _arg1 C.gdouble          // in
-	var _arg2 C.gdouble          // in
-	var _arg3 C.gdouble          // in
-	var _arg4 C.gdouble          // in
+	var _arg1 *C.gdouble         // in
+	var _arg2 *C.gdouble         // in
+	var _arg3 *C.gdouble         // in
+	var _arg4 *C.gdouble         // in
 	var _cret C.gboolean         // in
 
 	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(c.Native()))
@@ -300,14 +312,14 @@ func (c printContext) Width() float64 {
 	return _gdouble
 }
 
-func (c printContext) SetCairoContextPrintContext(cr *cairo.Context, dpiX float64, dpiY float64) {
+func (c printContext) SetCairoContextPrintContext(cr cairo.Context, dpiX float64, dpiY float64) {
 	var _arg0 *C.GtkPrintContext // out
 	var _arg1 *C.cairo_t         // out
 	var _arg2 C.double           // out
 	var _arg3 C.double           // out
 
 	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(c.Native()))
-	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
+	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr))
 	_arg2 = C.double(dpiX)
 	_arg3 = C.double(dpiY)
 

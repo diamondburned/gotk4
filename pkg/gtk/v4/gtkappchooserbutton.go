@@ -52,26 +52,50 @@ func init() {
 //
 // `GtkAppChooserButton` has a single CSS node with the name “appchooserbutton”.
 type AppChooserButton interface {
-	AppChooser
+	Widget
 
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsAppChooser casts the class to the AppChooser interface.
+	AsAppChooser() AppChooser
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
+
+	// AppendSeparatorAppChooserButton appends a separator to the list of
+	// applications that is shown in the popup.
 	AppendSeparatorAppChooserButton()
-
+	// Heading returns the text to display at the top of the dialog.
 	Heading() string
-
+	// Modal gets whether the dialog is modal.
 	Modal() bool
-
+	// ShowDefaultItem returns whether the dropdown menu should show the default
+	// application at the top.
 	ShowDefaultItem() bool
-
+	// ShowDialogItem returns whether the dropdown menu shows an item for a
+	// `GtkAppChooserDialog`.
 	ShowDialogItem() bool
-
+	// SetActiveCustomItemAppChooserButton selects a custom item.
+	//
+	// See [method@Gtk.AppChooserButton.append_custom_item].
+	//
+	// Use [method@Gtk.AppChooser.refresh] to bring the selection to its initial
+	// state.
 	SetActiveCustomItemAppChooserButton(name string)
-
+	// SetHeadingAppChooserButton sets the text to display at the top of the
+	// dialog.
+	//
+	// If the heading is not set, the dialog displays a default text.
 	SetHeadingAppChooserButton(heading string)
-
+	// SetModalAppChooserButton sets whether the dialog should be modal.
 	SetModalAppChooserButton(modal bool)
-
+	// SetShowDefaultItemAppChooserButton sets whether the dropdown menu of this
+	// button should show the default application for the given content type at
+	// top.
 	SetShowDefaultItemAppChooserButton(setting bool)
-
+	// SetShowDialogItemAppChooserButton sets whether the dropdown menu of this
+	// button should show an entry to trigger a `GtkAppChooserDialog`.
 	SetShowDialogItemAppChooserButton(setting bool)
 }
 
@@ -94,6 +118,8 @@ func marshalAppChooserButton(p uintptr) (interface{}, error) {
 	return WrapAppChooserButton(obj), nil
 }
 
+// NewAppChooserButton creates a new `GtkAppChooserButton` for applications that
+// can handle content of the given type.
 func NewAppChooserButton(contentType string) AppChooserButton {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in
@@ -105,7 +131,7 @@ func NewAppChooserButton(contentType string) AppChooserButton {
 
 	var _appChooserButton AppChooserButton // out
 
-	_appChooserButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(AppChooserButton)
+	_appChooserButton = WrapAppChooserButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _appChooserButton
 }
@@ -242,42 +268,18 @@ func (s appChooserButton) SetShowDialogItemAppChooserButton(setting bool) {
 	C.gtk_app_chooser_button_set_show_dialog_item(_arg0, _arg1)
 }
 
-func (s appChooserButton) ContentType() string {
-	return WrapAppChooser(gextras.InternObject(s)).ContentType()
+func (a appChooserButton) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(a))
 }
 
-func (s appChooserButton) Refresh() {
-	WrapAppChooser(gextras.InternObject(s)).Refresh()
+func (a appChooserButton) AsAppChooser() AppChooser {
+	return WrapAppChooser(gextras.InternObject(a))
 }
 
-func (s appChooserButton) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
+func (a appChooserButton) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(a))
 }
 
-func (s appChooserButton) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
-}
-
-func (s appChooserButton) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
-}
-
-func (s appChooserButton) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s appChooserButton) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s appChooserButton) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s appChooserButton) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b appChooserButton) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
+func (a appChooserButton) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(a))
 }

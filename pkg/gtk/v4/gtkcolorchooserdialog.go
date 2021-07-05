@@ -6,8 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/gdk/v4"
-	"github.com/diamondburned/gotk4/pkg/gsk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -24,7 +22,7 @@ func init() {
 	})
 }
 
-// ColorChooserDialog: a dialog for choosing a color.
+// ColorChooserDialog: dialog for choosing a color.
 //
 // !An example GtkColorChooserDialog (colorchooser.png)
 //
@@ -38,7 +36,21 @@ func init() {
 // [method@Gtk.ColorChooser.get_rgba].
 type ColorChooserDialog interface {
 	Dialog
-	ColorChooser
+
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsColorChooser casts the class to the ColorChooser interface.
+	AsColorChooser() ColorChooser
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
+	// AsNative casts the class to the Native interface.
+	AsNative() Native
+	// AsRoot casts the class to the Root interface.
+	AsRoot() Root
+	// AsShortcutManager casts the class to the ShortcutManager interface.
+	AsShortcutManager() ShortcutManager
 }
 
 // colorChooserDialog implements the ColorChooserDialog class.
@@ -60,6 +72,7 @@ func marshalColorChooserDialog(p uintptr) (interface{}, error) {
 	return WrapColorChooserDialog(obj), nil
 }
 
+// NewColorChooserDialog creates a new `GtkColorChooserDialog`.
 func NewColorChooserDialog(title string, parent Window) ColorChooserDialog {
 	var _arg1 *C.char      // out
 	var _arg2 *C.GtkWindow // out
@@ -73,91 +86,35 @@ func NewColorChooserDialog(title string, parent Window) ColorChooserDialog {
 
 	var _colorChooserDialog ColorChooserDialog // out
 
-	_colorChooserDialog = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ColorChooserDialog)
+	_colorChooserDialog = WrapColorChooserDialog(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _colorChooserDialog
 }
 
-func (s colorChooserDialog) Display() gdk.Display {
-	return WrapRoot(gextras.InternObject(s)).Display()
+func (c colorChooserDialog) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(c))
 }
 
-func (s colorChooserDialog) Focus() Widget {
-	return WrapRoot(gextras.InternObject(s)).Focus()
+func (c colorChooserDialog) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(c))
 }
 
-func (s colorChooserDialog) SetFocus(focus Widget) {
-	WrapRoot(gextras.InternObject(s)).SetFocus(focus)
+func (c colorChooserDialog) AsColorChooser() ColorChooser {
+	return WrapColorChooser(gextras.InternObject(c))
 }
 
-func (s colorChooserDialog) Renderer() gsk.Renderer {
-	return WrapNative(gextras.InternObject(s)).Renderer()
+func (c colorChooserDialog) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(c))
 }
 
-func (s colorChooserDialog) Surface() gdk.Surface {
-	return WrapNative(gextras.InternObject(s)).Surface()
+func (c colorChooserDialog) AsNative() Native {
+	return WrapNative(gextras.InternObject(c))
 }
 
-func (s colorChooserDialog) SurfaceTransform() (x float64, y float64) {
-	return WrapNative(gextras.InternObject(s)).SurfaceTransform()
+func (c colorChooserDialog) AsRoot() Root {
+	return WrapRoot(gextras.InternObject(c))
 }
 
-func (s colorChooserDialog) Realize() {
-	WrapNative(gextras.InternObject(s)).Realize()
-}
-
-func (s colorChooserDialog) Unrealize() {
-	WrapNative(gextras.InternObject(s)).Unrealize()
-}
-
-func (s colorChooserDialog) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
-}
-
-func (s colorChooserDialog) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
-}
-
-func (s colorChooserDialog) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
-}
-
-func (s colorChooserDialog) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s colorChooserDialog) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s colorChooserDialog) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s colorChooserDialog) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b colorChooserDialog) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
-}
-
-func (c colorChooserDialog) AddPalette(orientation Orientation, colorsPerLine int, colors []gdk.RGBA) {
-	WrapColorChooser(gextras.InternObject(c)).AddPalette(orientation, colorsPerLine, colors)
-}
-
-func (c colorChooserDialog) RGBA() gdk.RGBA {
-	return WrapColorChooser(gextras.InternObject(c)).RGBA()
-}
-
-func (c colorChooserDialog) UseAlpha() bool {
-	return WrapColorChooser(gextras.InternObject(c)).UseAlpha()
-}
-
-func (c colorChooserDialog) SetRGBA(color *gdk.RGBA) {
-	WrapColorChooser(gextras.InternObject(c)).SetRGBA(color)
-}
-
-func (c colorChooserDialog) SetUseAlpha(useAlpha bool) {
-	WrapColorChooser(gextras.InternObject(c)).SetUseAlpha(useAlpha)
+func (c colorChooserDialog) AsShortcutManager() ShortcutManager {
+	return WrapShortcutManager(gextras.InternObject(c))
 }

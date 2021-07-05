@@ -22,8 +22,8 @@ func init() {
 	})
 }
 
-// TextMark: a `GtkTextMark` is a position in a `GtkTextbuffer` that is
-// preserved across modifications.
+// TextMark: `GtkTextMark` is a position in a `GtkTextbuffer` that is preserved
+// across modifications.
 //
 // You may wish to begin by reading the text widget conceptual overview
 // (section-text-widget.html), which gives an overview of all the objects and
@@ -56,14 +56,24 @@ func init() {
 type TextMark interface {
 	gextras.Objector
 
+	// Buffer gets the buffer this mark is located inside.
+	//
+	// Returns nil if the mark is deleted.
 	Buffer() TextBuffer
-
+	// Deleted returns true if the mark has been removed from its buffer.
+	//
+	// See [method@Gtk.TextBuffer.add_mark] for a way to add it to a buffer
+	// again.
 	Deleted() bool
-
+	// LeftGravity determines whether the mark has left gravity.
 	LeftGravity() bool
-
+	// Name returns the mark name.
+	//
+	// Returns nil for anonymous marks.
 	Name() string
-
+	// Visible returns true if the mark is visible.
+	//
+	// A cursor is displayed for visible marks.
 	Visible() bool
 
 	SetVisibleTextMark(setting bool)
@@ -88,6 +98,16 @@ func marshalTextMark(p uintptr) (interface{}, error) {
 	return WrapTextMark(obj), nil
 }
 
+// NewTextMark creates a text mark.
+//
+// Add it to a buffer using [method@Gtk.TextBuffer.add_mark]. If @name is nil,
+// the mark is anonymous; otherwise, the mark can be retrieved by name using
+// [method@Gtk.TextBuffer.get_mark]. If a mark has left gravity, and text is
+// inserted at the mark’s current location, the mark will be moved to the left
+// of the newly-inserted text. If the mark has right gravity (@left_gravity =
+// false), the mark will end up on the right of newly-inserted text. The
+// standard left-to-right cursor is a mark with right gravity (when you type,
+// the cursor stays on the right side of the text you’re typing).
 func NewTextMark(name string, leftGravity bool) TextMark {
 	var _arg1 *C.char        // out
 	var _arg2 C.gboolean     // out
@@ -103,7 +123,7 @@ func NewTextMark(name string, leftGravity bool) TextMark {
 
 	var _textMark TextMark // out
 
-	_textMark = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(TextMark)
+	_textMark = WrapTextMark(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _textMark
 }

@@ -26,8 +26,8 @@ import "C"
 func FindParagraphBoundary(text string, length int) (paragraphDelimiterIndex int, nextParagraphStart int) {
 	var _arg1 *C.gchar // out
 	var _arg2 C.gint   // out
-	var _arg3 C.gint   // in
-	var _arg4 C.gint   // in
+	var _arg3 *C.gint  // in
+	var _arg4 *C.gint  // in
 
 	_arg1 = (*C.gchar)(C.CString(text))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -51,7 +51,7 @@ func FindParagraphBoundary(text string, length int) (paragraphDelimiterIndex int
 // position at the end of the text. @text should be an entire paragraph; logical
 // attributes can't be computed without context (for example you need to see
 // spaces on either side of a word to know the word is a word).
-func GetLogAttrs(text string, length int, level int, language *Language, logAttrs []LogAttr) {
+func GetLogAttrs(text string, length int, level int, language Language, logAttrs []LogAttr) {
 	var _arg1 *C.char          // out
 	var _arg2 C.int            // out
 	var _arg3 C.int            // out
@@ -63,7 +63,7 @@ func GetLogAttrs(text string, length int, level int, language *Language, logAttr
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(length)
 	_arg3 = C.int(level)
-	_arg4 = (*C.PangoLanguage)(unsafe.Pointer(language.Native()))
+	_arg4 = (*C.PangoLanguage)(unsafe.Pointer(language))
 	_arg6 = C.int(len(logAttrs))
 	_arg5 = (*C.PangoLogAttr)(unsafe.Pointer(&logAttrs[0]))
 
@@ -72,7 +72,9 @@ func GetLogAttrs(text string, length int, level int, language *Language, logAttr
 
 // LogAttr: the `PangoLogAttr` structure stores information about the attributes
 // of a single character.
-type LogAttr C.PangoLogAttr
+type LogAttr struct {
+	native C.PangoLogAttr
+}
 
 // WrapLogAttr wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -82,5 +84,5 @@ func WrapLogAttr(ptr unsafe.Pointer) *LogAttr {
 
 // Native returns the underlying C source pointer.
 func (l *LogAttr) Native() unsafe.Pointer {
-	return unsafe.Pointer(l)
+	return unsafe.Pointer(&l.native)
 }

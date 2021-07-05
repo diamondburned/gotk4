@@ -15,7 +15,9 @@ import (
 import "C"
 
 // IMContextInfo: bookkeeping information about a loadable input method.
-type IMContextInfo C.GtkIMContextInfo
+type IMContextInfo struct {
+	native C.GtkIMContextInfo
+}
 
 // WrapIMContextInfo wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -25,5 +27,5 @@ func WrapIMContextInfo(ptr unsafe.Pointer) *IMContextInfo {
 
 // Native returns the underlying C source pointer.
 func (i *IMContextInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(i)
+	return unsafe.Pointer(&i.native)
 }

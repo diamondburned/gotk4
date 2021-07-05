@@ -5,9 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -26,8 +24,8 @@ func init() {
 	})
 }
 
-// Expander: a Expander allows the user to hide or show its child by clicking on
-// an expander triangle similar to the triangles used in a TreeView.
+// Expander allows the user to hide or show its child by clicking on an expander
+// triangle similar to the triangles used in a TreeView.
 //
 // Normally you use an expander as you would use any other descendant of Bin;
 // you create the child widget and use gtk_container_add() to add it to the
@@ -56,36 +54,76 @@ func init() {
 type Expander interface {
 	Bin
 
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+
+	// Expanded queries a Expander and returns its current state. Returns true
+	// if the child widget is revealed.
+	//
+	// See gtk_expander_set_expanded().
 	Expanded() bool
-
+	// Label fetches the text from a label widget including any embedded
+	// underlines indicating mnemonics and Pango markup, as set by
+	// gtk_expander_set_label(). If the label text has not been set the return
+	// value will be nil. This will be the case if you create an empty button
+	// with gtk_button_new() to use as a container.
+	//
+	// Note that this function behaved differently in versions prior to 2.14 and
+	// used to return the label text stripped of embedded underlines indicating
+	// mnemonics and Pango markup. This problem can be avoided by fetching the
+	// label text directly from the label widget.
 	Label() string
-
+	// LabelFill returns whether the label widget will fill all available
+	// horizontal space allocated to @expander.
 	LabelFill() bool
-
+	// LabelWidget retrieves the label widget for the frame. See
+	// gtk_expander_set_label_widget().
 	LabelWidget() Widget
-
+	// ResizeToplevel returns whether the expander will resize the toplevel
+	// widget containing the expander upon resizing and collpasing.
 	ResizeToplevel() bool
-
+	// Spacing gets the value set by gtk_expander_set_spacing().
+	//
+	// Deprecated: since version 3.20.
 	Spacing() int
-
+	// UseMarkup returns whether the label’s text is interpreted as marked up
+	// with the [Pango text markup language][PangoMarkupFormat]. See
+	// gtk_expander_set_use_markup().
 	UseMarkup() bool
-
+	// UseUnderline returns whether an embedded underline in the expander label
+	// indicates a mnemonic. See gtk_expander_set_use_underline().
 	UseUnderline() bool
-
+	// SetExpandedExpander sets the state of the expander. Set to true, if you
+	// want the child widget to be revealed, and false if you want the child
+	// widget to be hidden.
 	SetExpandedExpander(expanded bool)
-
+	// SetLabelExpander sets the text of the label of the expander to @label.
+	//
+	// This will also clear any previously set labels.
 	SetLabelExpander(label string)
-
+	// SetLabelFillExpander sets whether the label widget should fill all
+	// available horizontal space allocated to @expander.
+	//
+	// Note that this function has no effect since 3.20.
 	SetLabelFillExpander(labelFill bool)
-
+	// SetLabelWidgetExpander: set the label widget for the expander. This is
+	// the widget that will appear embedded alongside the expander arrow.
 	SetLabelWidgetExpander(labelWidget Widget)
-
+	// SetResizeToplevelExpander sets whether the expander will resize the
+	// toplevel widget containing the expander upon resizing and collpasing.
 	SetResizeToplevelExpander(resizeToplevel bool)
-
+	// SetSpacingExpander sets the spacing field of @expander, which is the
+	// number of pixels to place between expander and the child.
+	//
+	// Deprecated: since version 3.20.
 	SetSpacingExpander(spacing int)
-
+	// SetUseMarkupExpander sets whether the text of the label contains markup
+	// in [Pango’s text markup language][PangoMarkupFormat]. See
+	// gtk_label_set_markup().
 	SetUseMarkupExpander(useMarkup bool)
-
+	// SetUseUnderlineExpander: if true, an underline in the text of the
+	// expander label indicates the next character should be used for the
+	// mnemonic accelerator key.
 	SetUseUnderlineExpander(useUnderline bool)
 }
 
@@ -108,6 +146,7 @@ func marshalExpander(p uintptr) (interface{}, error) {
 	return WrapExpander(obj), nil
 }
 
+// NewExpander creates a new expander using @label as the text of the label.
 func NewExpander(label string) Expander {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -119,11 +158,17 @@ func NewExpander(label string) Expander {
 
 	var _expander Expander // out
 
-	_expander = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Expander)
+	_expander = WrapExpander(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _expander
 }
 
+// NewExpanderWithMnemonic creates a new expander using @label as the text of
+// the label. If characters in @label are preceded by an underscore, they are
+// underlined. If you need a literal underscore character in a label, use “__”
+// (two underscores). The first underlined character represents a keyboard
+// accelerator called a mnemonic. Pressing Alt and that key activates the
+// button.
 func NewExpanderWithMnemonic(label string) Expander {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -135,7 +180,7 @@ func NewExpanderWithMnemonic(label string) Expander {
 
 	var _expander Expander // out
 
-	_expander = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Expander)
+	_expander = WrapExpander(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _expander
 }
@@ -361,42 +406,6 @@ func (e expander) SetUseUnderlineExpander(useUnderline bool) {
 	C.gtk_expander_set_use_underline(_arg0, _arg1)
 }
 
-func (b expander) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
-}
-
-func (b expander) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b expander) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b expander) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b expander) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b expander) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b expander) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b expander) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b expander) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b expander) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
+func (e expander) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(e))
 }

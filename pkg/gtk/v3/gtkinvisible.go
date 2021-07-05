@@ -5,10 +5,8 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -35,8 +33,13 @@ func init() {
 type Invisible interface {
 	Widget
 
-	Screen() gdk.Screen
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
 
+	// Screen returns the Screen object associated with @invisible
+	Screen() gdk.Screen
+	// SetScreenInvisible sets the Screen where the Invisible object will be
+	// displayed.
 	SetScreenInvisible(screen gdk.Screen)
 }
 
@@ -59,6 +62,7 @@ func marshalInvisible(p uintptr) (interface{}, error) {
 	return WrapInvisible(obj), nil
 }
 
+// NewInvisible creates a new Invisible.
 func NewInvisible() Invisible {
 	var _cret *C.GtkWidget // in
 
@@ -66,11 +70,12 @@ func NewInvisible() Invisible {
 
 	var _invisible Invisible // out
 
-	_invisible = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Invisible)
+	_invisible = WrapInvisible(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _invisible
 }
 
+// NewInvisibleForScreen creates a new Invisible object for a specified screen
 func NewInvisibleForScreen(screen gdk.Screen) Invisible {
 	var _arg1 *C.GdkScreen // out
 	var _cret *C.GtkWidget // in
@@ -81,7 +86,7 @@ func NewInvisibleForScreen(screen gdk.Screen) Invisible {
 
 	var _invisible Invisible // out
 
-	_invisible = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Invisible)
+	_invisible = WrapInvisible(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _invisible
 }
@@ -111,42 +116,6 @@ func (i invisible) SetScreenInvisible(screen gdk.Screen) {
 	C.gtk_invisible_set_screen(_arg0, _arg1)
 }
 
-func (b invisible) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
-}
-
-func (b invisible) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b invisible) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b invisible) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b invisible) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b invisible) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b invisible) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b invisible) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b invisible) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b invisible) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
+func (i invisible) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(i))
 }

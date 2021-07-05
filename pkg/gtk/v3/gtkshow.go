@@ -17,7 +17,7 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
-// ShowURI: a convenience function for launching the default application to show
+// ShowURI: convenience function for launching the default application to show
 // the uri. Like gtk_show_uri_on_window(), but takes a screen as transient
 // parent instead of a window.
 //
@@ -30,7 +30,7 @@ func ShowURI(screen gdk.Screen, uri string, timestamp uint32) error {
 	var _arg1 *C.GdkScreen // out
 	var _arg2 *C.gchar     // out
 	var _arg3 C.guint32    // out
-	var _cerr *C.GError    // in
+	var _cerr **C.GError   // in
 
 	_arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
 	_arg2 = (*C.gchar)(C.CString(uri))
@@ -41,7 +41,16 @@ func ShowURI(screen gdk.Screen, uri string, timestamp uint32) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _goerr
 }
@@ -62,7 +71,7 @@ func ShowURIOnWindow(parent Window, uri string, timestamp uint32) error {
 	var _arg1 *C.GtkWindow // out
 	var _arg2 *C.char      // out
 	var _arg3 C.guint32    // out
-	var _cerr *C.GError    // in
+	var _cerr **C.GError   // in
 
 	_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
 	_arg2 = (*C.char)(C.CString(uri))
@@ -73,7 +82,16 @@ func ShowURIOnWindow(parent Window, uri string, timestamp uint32) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _goerr
 }

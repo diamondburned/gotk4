@@ -5,9 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -71,32 +69,96 @@ func marshalAttachOptions(p uintptr) (interface{}, error) {
 type Table interface {
 	Container
 
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+
+	// AttachTable adds a widget to a table. The number of “cells” that a widget
+	// will occupy is specified by @left_attach, @right_attach, @top_attach and
+	// @bottom_attach. These each represent the leftmost, rightmost, uppermost
+	// and lowest column and row numbers of the table. (Columns and rows are
+	// indexed from zero).
+	//
+	// To make a button occupy the lower right cell of a 2x2 table, use
+	//
+	//    gtk_table_attach (table, button,
+	//                      1, 2, // left, right attach
+	//                      1, 2, // top, bottom attach
+	//                      xoptions, yoptions,
+	//                      xpadding, ypadding);
+	//
+	// If you want to make the button span the entire bottom row, use
+	// @left_attach == 0 and @right_attach = 2 instead.
+	//
+	// Deprecated: since version 3.4.
 	AttachTable(child Widget, leftAttach uint, rightAttach uint, topAttach uint, bottomAttach uint, xoptions AttachOptions, yoptions AttachOptions, xpadding uint, ypadding uint)
-
+	// AttachDefaultsTable as there are many options associated with
+	// gtk_table_attach(), this convenience function provides the programmer
+	// with a means to add children to a table with identical padding and
+	// expansion options. The values used for the AttachOptions are `GTK_EXPAND
+	// | GTK_FILL`, and the padding is set to 0.
+	//
+	// Deprecated: since version 3.4.
 	AttachDefaultsTable(widget Widget, leftAttach uint, rightAttach uint, topAttach uint, bottomAttach uint)
-
+	// ColSpacing gets the amount of space between column @col, and column @col
+	// + 1. See gtk_table_set_col_spacing().
+	//
+	// Deprecated: since version 3.4.
 	ColSpacing(column uint) uint
-
+	// DefaultColSpacing gets the default column spacing for the table. This is
+	// the spacing that will be used for newly added columns. (See
+	// gtk_table_set_col_spacings())
+	//
+	// Deprecated: since version 3.4.
 	DefaultColSpacing() uint
-
+	// DefaultRowSpacing gets the default row spacing for the table. This is the
+	// spacing that will be used for newly added rows. (See
+	// gtk_table_set_row_spacings())
+	//
+	// Deprecated: since version 3.4.
 	DefaultRowSpacing() uint
-
+	// Homogeneous returns whether the table cells are all constrained to the
+	// same width and height. (See gtk_table_set_homogeneous ())
+	//
+	// Deprecated: since version 3.4.
 	Homogeneous() bool
-
+	// RowSpacing gets the amount of space between row @row, and row @row + 1.
+	// See gtk_table_set_row_spacing().
+	//
+	// Deprecated: since version 3.4.
 	RowSpacing(row uint) uint
-
+	// Size gets the number of rows and columns in the table.
+	//
+	// Deprecated: since version 3.4.
 	Size() (rows uint, columns uint)
-
+	// ResizeTable: if you need to change a table’s size after it has been
+	// created, this function allows you to do so.
+	//
+	// Deprecated: since version 3.4.
 	ResizeTable(rows uint, columns uint)
-
+	// SetColSpacingTable alters the amount of space between a given table
+	// column and the following column.
+	//
+	// Deprecated: since version 3.4.
 	SetColSpacingTable(column uint, spacing uint)
-
+	// SetColSpacingsTable sets the space between every column in @table equal
+	// to @spacing.
+	//
+	// Deprecated: since version 3.4.
 	SetColSpacingsTable(spacing uint)
-
+	// SetHomogeneousTable changes the homogenous property of table cells, ie.
+	// whether all cells are an equal size or not.
+	//
+	// Deprecated: since version 3.4.
 	SetHomogeneousTable(homogeneous bool)
-
+	// SetRowSpacingTable changes the space between a given table row and the
+	// subsequent row.
+	//
+	// Deprecated: since version 3.4.
 	SetRowSpacingTable(row uint, spacing uint)
-
+	// SetRowSpacingsTable sets the space between every row in @table equal to
+	// @spacing.
+	//
+	// Deprecated: since version 3.4.
 	SetRowSpacingsTable(spacing uint)
 }
 
@@ -119,6 +181,13 @@ func marshalTable(p uintptr) (interface{}, error) {
 	return WrapTable(obj), nil
 }
 
+// NewTable: used to create a new table widget. An initial size must be given by
+// specifying how many rows and columns the table should have, although this can
+// be changed later with gtk_table_resize(). @rows and @columns must both be in
+// the range 1 .. 65535. For historical reasons, 0 is accepted as well and is
+// silently interpreted as 1.
+//
+// Deprecated: since version 3.4.
 func NewTable(rows uint, columns uint, homogeneous bool) Table {
 	var _arg1 C.guint      // out
 	var _arg2 C.guint      // out
@@ -135,7 +204,7 @@ func NewTable(rows uint, columns uint, homogeneous bool) Table {
 
 	var _table Table // out
 
-	_table = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Table)
+	_table = WrapTable(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _table
 }
@@ -267,8 +336,8 @@ func (t table) RowSpacing(row uint) uint {
 
 func (t table) Size() (rows uint, columns uint) {
 	var _arg0 *C.GtkTable // out
-	var _arg1 C.guint     // in
-	var _arg2 C.guint     // in
+	var _arg1 *C.guint    // in
+	var _arg2 *C.guint    // in
 
 	_arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
 
@@ -351,47 +420,13 @@ func (t table) SetRowSpacingsTable(spacing uint) {
 	C.gtk_table_set_row_spacings(_arg0, _arg1)
 }
 
-func (b table) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+func (t table) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(t))
 }
 
-func (b table) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+type TableChild struct {
+	native C.GtkTableChild
 }
-
-func (b table) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b table) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b table) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b table) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b table) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b table) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b table) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b table) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-type TableChild C.GtkTableChild
 
 // WrapTableChild wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -401,10 +436,12 @@ func WrapTableChild(ptr unsafe.Pointer) *TableChild {
 
 // Native returns the underlying C source pointer.
 func (t *TableChild) Native() unsafe.Pointer {
-	return unsafe.Pointer(t)
+	return unsafe.Pointer(&t.native)
 }
 
-type TableRowCol C.GtkTableRowCol
+type TableRowCol struct {
+	native C.GtkTableRowCol
+}
 
 // WrapTableRowCol wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -414,5 +451,5 @@ func WrapTableRowCol(ptr unsafe.Pointer) *TableRowCol {
 
 // Native returns the underlying C source pointer.
 func (t *TableRowCol) Native() unsafe.Pointer {
-	return unsafe.Pointer(t)
+	return unsafe.Pointer(&t.native)
 }

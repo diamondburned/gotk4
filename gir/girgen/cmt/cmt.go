@@ -46,6 +46,9 @@ func getField(value reflect.Value, field string) interface{} {
 	if v == (reflect.Value{}) {
 		return nil
 	}
+	if v.Type().Kind() == reflect.Ptr {
+		return v.Interface()
+	}
 	if v.CanAddr() {
 		return v.Addr().Interface()
 	}
@@ -58,7 +61,7 @@ func getField(value reflect.Value, field string) interface{} {
 func GetInfoFields(v interface{}) InfoFields {
 	value := reflect.Indirect(reflect.ValueOf(v))
 	if value.Kind() != reflect.Struct {
-		return InfoFields{}
+		panic("given value is not a struct")
 	}
 
 	var inf InfoFields
@@ -83,6 +86,9 @@ func EnsureInfoFields(v interface{}) struct{} {
 		if !ok {
 			log.Panicf("type %v missing field %s", typ, name)
 		}
+		if field.Type.Kind() == reflect.Ptr {
+			field.Type = field.Type.Elem()
+		}
 		if field.Type != fieldTyp {
 			log.Panicf("type %v field %s got type %v, expected %v", typ, name, field.Type, fieldTyp)
 		}
@@ -94,18 +100,32 @@ func EnsureInfoFields(v interface{}) struct{} {
 	return struct{}{}
 }
 
+var (
+	_ = EnsureInfoFields((*gir.Alias)(nil))
+	_ = EnsureInfoFields((*gir.Bitfield)(nil))
+	_ = EnsureInfoFields((*gir.Callback)(nil))
+	_ = EnsureInfoFields((*gir.Class)(nil))
+	_ = EnsureInfoFields((*gir.Enum)(nil))
+	_ = EnsureInfoFields((*gir.Function)(nil))
+	_ = EnsureInfoFields((*gir.Interface)(nil))
+	_ = EnsureInfoFields((*gir.Record)(nil))
+	_ = EnsureInfoFields((*gir.Union)(nil))
+)
+
 // Option defines possible options for GoDoc.
 type Option interface{ opts() }
 
 type (
 	overrideSelfName string
+	originalTypeName string
 )
+
+func (overrideSelfName) opts() {}
+func (originalTypeName) opts() {}
 
 // OverrideSelfName overrides the Go type name that's implicitly converted
 // automatically by GoDoc.
 func OverrideSelfName(self string) Option { return overrideSelfName(self) }
-
-func (overrideSelfName) opts() {}
 
 func isLower(s string) bool {
 	return strings.IndexFunc(s, unicode.IsUpper) == -1
@@ -117,11 +137,15 @@ func GoDoc(v interface{}, indentLvl int, opts ...Option) string {
 	inf := GetInfoFields(v)
 
 	var self string
+	var orig string
+
 	if inf.Name != nil {
-		if strings.Contains(*inf.Name, "_") && isLower(*inf.Name) {
-			self = strcases.SnakeToGo(true, *inf.Name)
+		orig = *inf.Name
+
+		if strings.Contains(orig, "_") && isLower(orig) {
+			self = strcases.SnakeToGo(true, orig)
 		} else {
-			self = strcases.PascalToGo(*inf.Name)
+			self = strcases.PascalToGo(orig)
 		}
 	}
 
@@ -144,7 +168,11 @@ func GoDoc(v interface{}, indentLvl int, opts ...Option) string {
 		}
 	}
 
-	return CommentReflowLinesIndent(indentLvl, self, doc.String())
+	return CommentReflowLinesIndent(
+		indentLvl, self, doc.String(),
+		// options
+		originalTypeName(orig),
+	)
 }
 
 // nthWord returns the nth word, or an empty string if none.
@@ -171,9 +199,18 @@ func lowerFirstWord(paragraph string) string {
 	return string(paragraph)
 }
 
+// popFirstWord pops the first word off.
+func popFirstWord(paragraph string) string {
+	parts := strings.SplitN(paragraph, " ", 2)
+	if len(parts) < 2 {
+		return ""
+	}
+	return parts[1]
+}
+
 // CommentReflowLinesIndent reflows the given cmt paragraphs into idiomatic Go
 // comment strings. It is automatically indented.
-func CommentReflowLinesIndent(indentLvl int, self, cmt string) string {
+func CommentReflowLinesIndent(indentLvl int, self, cmt string, opts ...Option) string {
 	if cmt == "" {
 		return ""
 	}
@@ -181,10 +218,29 @@ func CommentReflowLinesIndent(indentLvl int, self, cmt string) string {
 	cmt = html.UnescapeString(cmt)
 
 	if self != "" {
+		switch strings.ToLower(nthWord(cmt, 0)) {
+		case "a", "an":
+			cmt = popFirstWord(cmt)
+		}
+
+		var typeNamed bool
+	optLoop:
+		for _, opt := range opts {
+			switch opt := opt.(type) {
+			case originalTypeName:
+				if opt != "" && strings.HasSuffix(nthWord(cmt, 0), string(opt)) {
+					typeNamed = true
+					break optLoop
+				}
+			}
+		}
+
 		switch {
+		case typeNamed:
+			fallthrough
 		case strings.HasPrefix(cmt, "#") && nthWord(cmt, 1) != "":
 			// Trim the first word away and replace it with the Go name.
-			cmt = self + " " + strings.SplitN(cmt, " ", 2)[1]
+			cmt = self + " " + popFirstWord(cmt)
 		case nthWordSimplePresent(cmt, 0):
 			cmt = self + " " + lowerFirstWord(cmt)
 		default:

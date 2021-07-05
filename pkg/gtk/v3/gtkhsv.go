@@ -5,9 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -35,14 +33,23 @@ func init() {
 type HSV interface {
 	Widget
 
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+
+	// Color queries the current color in an HSV color selector. Returned values
+	// will be in the [0.0, 1.0] range.
 	Color() (h float64, s float64, v float64)
-
+	// Metrics queries the size and ring width of an HSV color selector.
 	Metrics() (size int, ringWidth int)
-
+	// IsAdjustingHSV: HSV color selector can be said to be adjusting if
+	// multiple rapid changes are being made to its value, for example, when the
+	// user is adjusting the value with the mouse. This function queries whether
+	// the HSV color selector is being adjusted or not.
 	IsAdjustingHSV() bool
-
+	// SetColorHSV sets the current color in an HSV color selector. Color
+	// component values must be in the [0.0, 1.0] range.
 	SetColorHSV(h float64, s float64, v float64)
-
+	// SetMetricsHSV sets the size and ring width of an HSV color selector.
 	SetMetricsHSV(size int, ringWidth int)
 }
 
@@ -65,6 +72,7 @@ func marshalHSV(p uintptr) (interface{}, error) {
 	return WrapHSV(obj), nil
 }
 
+// NewHSV creates a new HSV color selector.
 func NewHSV() HSV {
 	var _cret *C.GtkWidget // in
 
@@ -72,16 +80,16 @@ func NewHSV() HSV {
 
 	var _hsV HSV // out
 
-	_hsV = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(HSV)
+	_hsV = WrapHSV(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _hsV
 }
 
 func (h hsV) Color() (h float64, s float64, v float64) {
-	var _arg0 *C.GtkHSV // out
-	var _arg1 C.gdouble // in
-	var _arg2 C.gdouble // in
-	var _arg3 C.gdouble // in
+	var _arg0 *C.GtkHSV  // out
+	var _arg1 *C.gdouble // in
+	var _arg2 *C.gdouble // in
+	var _arg3 *C.gdouble // in
 
 	_arg0 = (*C.GtkHSV)(unsafe.Pointer(h.Native()))
 
@@ -100,8 +108,8 @@ func (h hsV) Color() (h float64, s float64, v float64) {
 
 func (h hsV) Metrics() (size int, ringWidth int) {
 	var _arg0 *C.GtkHSV // out
-	var _arg1 C.gint    // in
-	var _arg2 C.gint    // in
+	var _arg1 *C.gint   // in
+	var _arg2 *C.gint   // in
 
 	_arg0 = (*C.GtkHSV)(unsafe.Pointer(h.Native()))
 
@@ -159,42 +167,6 @@ func (h hsV) SetMetricsHSV(size int, ringWidth int) {
 	C.gtk_hsv_set_metrics(_arg0, _arg1, _arg2)
 }
 
-func (b hsV) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
-}
-
-func (b hsV) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b hsV) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b hsV) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b hsV) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b hsV) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b hsV) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b hsV) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b hsV) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b hsV) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
+func (h hsV) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(h))
 }

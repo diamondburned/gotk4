@@ -36,34 +36,38 @@ func init() {
 type TLSBackend interface {
 	gextras.Objector
 
-	// CertificateType checks if TLS is supported; if this returns false for the
-	// default Backend, it means no "real" TLS backend is available.
+	// CertificateType gets the #GType of @backend's Certificate implementation.
 	CertificateType() externglib.Type
-	// ClientConnectionType checks if TLS is supported; if this returns false
-	// for the default Backend, it means no "real" TLS backend is available.
+	// ClientConnectionType gets the #GType of @backend's ClientConnection
+	// implementation.
 	ClientConnectionType() externglib.Type
-	// DefaultDatabase checks if TLS is supported; if this returns false for the
-	// default Backend, it means no "real" TLS backend is available.
+	// DefaultDatabase gets the default Database used to verify TLS connections.
 	DefaultDatabase() TLSDatabase
-	// DTLSClientConnectionType checks if TLS is supported; if this returns
-	// false for the default Backend, it means no "real" TLS backend is
-	// available.
+	// DTLSClientConnectionType gets the #GType of @backend’s ClientConnection
+	// implementation.
 	DTLSClientConnectionType() externglib.Type
-	// DTLSServerConnectionType checks if TLS is supported; if this returns
-	// false for the default Backend, it means no "real" TLS backend is
-	// available.
+	// DTLSServerConnectionType gets the #GType of @backend’s ServerConnection
+	// implementation.
 	DTLSServerConnectionType() externglib.Type
-	// FileDatabaseType checks if TLS is supported; if this returns false for
-	// the default Backend, it means no "real" TLS backend is available.
+	// FileDatabaseType gets the #GType of @backend's FileDatabase
+	// implementation.
 	FileDatabaseType() externglib.Type
-	// ServerConnectionType checks if TLS is supported; if this returns false
-	// for the default Backend, it means no "real" TLS backend is available.
+	// ServerConnectionType gets the #GType of @backend's ServerConnection
+	// implementation.
 	ServerConnectionType() externglib.Type
-	// SetDefaultDatabase checks if TLS is supported; if this returns false for
-	// the default Backend, it means no "real" TLS backend is available.
+	// SetDefaultDatabase: set the default Database used to verify TLS
+	// connections
+	//
+	// Any subsequent call to g_tls_backend_get_default_database() will return
+	// the database set in this call. Existing databases and connections are not
+	// modified.
+	//
+	// Setting a nil default database will reset to using the system default
+	// database as if g_tls_backend_set_default_database() had never been
+	// called.
 	SetDefaultDatabase(database TLSDatabase)
-	// SupportsDTLS checks if TLS is supported; if this returns false for the
-	// default Backend, it means no "real" TLS backend is available.
+	// SupportsDTLS checks if DTLS is supported. DTLS support may not be
+	// available even if TLS support is available, and vice-versa.
 	SupportsDTLS() bool
 	// SupportsTLS checks if TLS is supported; if this returns false for the
 	// default Backend, it means no "real" TLS backend is available.

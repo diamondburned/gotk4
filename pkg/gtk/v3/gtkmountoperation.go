@@ -31,14 +31,19 @@ func init() {
 type MountOperation interface {
 	gio.MountOperation
 
+	// Parent gets the transient parent used by the MountOperation
 	Parent() Window
-
+	// Screen gets the screen on which windows of the MountOperation will be
+	// shown.
 	Screen() gdk.Screen
-
+	// IsShowingMountOperation returns whether the MountOperation is currently
+	// displaying a window.
 	IsShowingMountOperation() bool
-
+	// SetParentMountOperation sets the transient parent for windows shown by
+	// the MountOperation.
 	SetParentMountOperation(parent Window)
-
+	// SetScreenMountOperation sets the screen to show windows of the
+	// MountOperation on.
 	SetScreenMountOperation(screen gdk.Screen)
 }
 
@@ -61,6 +66,7 @@ func marshalMountOperation(p uintptr) (interface{}, error) {
 	return WrapMountOperation(obj), nil
 }
 
+// NewMountOperation creates a new MountOperation
 func NewMountOperation(parent Window) MountOperation {
 	var _arg1 *C.GtkWindow       // out
 	var _cret *C.GMountOperation // in
@@ -71,7 +77,7 @@ func NewMountOperation(parent Window) MountOperation {
 
 	var _mountOperation MountOperation // out
 
-	_mountOperation = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(MountOperation)
+	_mountOperation = WrapMountOperation(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _mountOperation
 }

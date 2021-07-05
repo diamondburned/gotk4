@@ -6,7 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -56,26 +55,56 @@ func init() {
 //
 // `GtkButton` uses the GTK_ACCESSIBLE_ROLE_BUTTON role.
 type Button interface {
-	Actionable
+	Widget
 
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsActionable casts the class to the Actionable interface.
+	AsActionable() Actionable
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
+
+	// Child gets the child widget of @button.
 	Child() Widget
-
+	// HasFrame returns whether the button has a frame.
 	HasFrame() bool
-
+	// IconName returns the icon name of the button.
+	//
+	// If the icon name has not been set with [method@Gtk.Button.set_icon_name]
+	// the return value will be nil. This will be the case if you create an
+	// empty button with [ctor@Gtk.Button.new] to use as a container.
 	IconName() string
-
+	// Label fetches the text from the label of the button.
+	//
+	// If the label text has not been set with [method@Gtk.Button.set_label] the
+	// return value will be nil. This will be the case if you create an empty
+	// button with [ctor@Gtk.Button.new] to use as a container.
 	Label() string
-
+	// UseUnderline gets whether underlines are interpreted as mnemonics.
+	//
+	// See [method@Gtk.Button.set_use_underline].
 	UseUnderline() bool
-
+	// SetChildButton sets the child widget of @button.
 	SetChildButton(child Widget)
-
+	// SetHasFrameButton sets the style of the button.
+	//
+	// Buttons can has a flat appearance or have a frame drawn around them.
 	SetHasFrameButton(hasFrame bool)
-
+	// SetIconNameButton adds a `GtkImage` with the given icon name as a child.
+	//
+	// If @button already contains a child widget, that child widget will be
+	// removed and replaced with the image.
 	SetIconNameButton(iconName string)
-
+	// SetLabelButton sets the text of the label of the button to @label.
+	//
+	// This will also clear any previously set labels.
 	SetLabelButton(label string)
-
+	// SetUseUnderlineButton sets whether to use underlines as mnemonics.
+	//
+	// If true, an underline in the text of the button label indicates the next
+	// character should be used for the mnemonic accelerator key.
 	SetUseUnderlineButton(useUnderline bool)
 }
 
@@ -98,6 +127,9 @@ func marshalButton(p uintptr) (interface{}, error) {
 	return WrapButton(obj), nil
 }
 
+// NewButton creates a new `GtkButton` widget.
+//
+// To add a child widget to the button, use [method@Gtk.Button.set_child].
 func NewButton() Button {
 	var _cret *C.GtkWidget // in
 
@@ -105,11 +137,17 @@ func NewButton() Button {
 
 	var _button Button // out
 
-	_button = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Button)
+	_button = WrapButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _button
 }
 
+// NewButtonFromIconName creates a new button containing an icon from the
+// current icon theme.
+//
+// If the icon name isn’t known, a “broken image” icon will be displayed
+// instead. If the current icon theme is changed, the icon will be updated
+// appropriately.
 func NewButtonFromIconName(iconName string) Button {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in
@@ -121,11 +159,12 @@ func NewButtonFromIconName(iconName string) Button {
 
 	var _button Button // out
 
-	_button = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Button)
+	_button = WrapButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _button
 }
 
+// NewButtonWithLabel creates a `GtkButton` widget with a `GtkLabel` child.
 func NewButtonWithLabel(label string) Button {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in
@@ -137,11 +176,18 @@ func NewButtonWithLabel(label string) Button {
 
 	var _button Button // out
 
-	_button = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Button)
+	_button = WrapButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _button
 }
 
+// NewButtonWithMnemonic creates a new `GtkButton` containing a label.
+//
+// If characters in @label are preceded by an underscore, they are underlined.
+// If you need a literal underscore character in a label, use “__” (two
+// underscores). The first underlined character represents a keyboard
+// accelerator called a mnemonic. Pressing Alt and that key activates the
+// button.
 func NewButtonWithMnemonic(label string) Button {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in
@@ -153,7 +199,7 @@ func NewButtonWithMnemonic(label string) Button {
 
 	var _button Button // out
 
-	_button = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Button)
+	_button = WrapButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _button
 }
@@ -293,54 +339,18 @@ func (b button) SetUseUnderlineButton(useUnderline bool) {
 	C.gtk_button_set_use_underline(_arg0, _arg1)
 }
 
-func (a button) ActionName() string {
-	return WrapActionable(gextras.InternObject(a)).ActionName()
+func (b button) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(b))
 }
 
-func (a button) ActionTargetValue() *glib.Variant {
-	return WrapActionable(gextras.InternObject(a)).ActionTargetValue()
+func (b button) AsActionable() Actionable {
+	return WrapActionable(gextras.InternObject(b))
 }
 
-func (a button) SetActionName(actionName string) {
-	WrapActionable(gextras.InternObject(a)).SetActionName(actionName)
+func (b button) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(b))
 }
 
-func (a button) SetActionTargetValue(targetValue *glib.Variant) {
-	WrapActionable(gextras.InternObject(a)).SetActionTargetValue(targetValue)
-}
-
-func (a button) SetDetailedActionName(detailedActionName string) {
-	WrapActionable(gextras.InternObject(a)).SetDetailedActionName(detailedActionName)
-}
-
-func (s button) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
-}
-
-func (s button) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
-}
-
-func (s button) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
-}
-
-func (s button) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s button) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s button) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s button) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b button) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
+func (b button) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(b))
 }

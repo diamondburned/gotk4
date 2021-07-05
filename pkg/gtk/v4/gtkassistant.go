@@ -7,8 +7,6 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/gdk/v4"
-	"github.com/diamondburned/gotk4/pkg/gsk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -73,7 +71,7 @@ func marshalAssistantPageType(p uintptr) (interface{}, error) {
 // “forward” button and for handling the behavior of the “last” button.
 //
 // See [method@Gtk.Assistant.set_forward_page_func].
-type AssistantPageFunc func(currentPage int, gint int)
+type AssistantPageFunc func(currentPage int) (gint int)
 
 //export gotk4_AssistantPageFunc
 func gotk4_AssistantPageFunc(arg0 C.int, arg1 C.gpointer) C.int {
@@ -137,46 +135,102 @@ func gotk4_AssistantPageFunc(arg0 C.int, arg1 C.gpointer) C.int {
 type Assistant interface {
 	Window
 
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
+	// AsNative casts the class to the Native interface.
+	AsNative() Native
+	// AsRoot casts the class to the Root interface.
+	AsRoot() Root
+	// AsShortcutManager casts the class to the ShortcutManager interface.
+	AsShortcutManager() ShortcutManager
+
+	// AddActionWidgetAssistant adds a widget to the action area of a
+	// `GtkAssistant`.
 	AddActionWidgetAssistant(child Widget)
-
+	// AppendPageAssistant appends a page to the @assistant.
 	AppendPageAssistant(page Widget) int
-
+	// CommitAssistant erases the visited page history.
+	//
+	// GTK will then hide the back button on the current page, and removes the
+	// cancel button from subsequent pages.
+	//
+	// Use this when the information provided up to the current page is
+	// hereafter deemed permanent and cannot be modified or undone. For example,
+	// showing a progress page to track a long-running, unreversible operation
+	// after the user has clicked apply on a confirmation page.
 	CommitAssistant()
-
+	// CurrentPage returns the page number of the current page.
 	CurrentPage() int
-
+	// NPages returns the number of pages in the @assistant
 	NPages() int
-
+	// NthPage returns the child widget contained in page number @page_num.
 	NthPage(pageNum int) Widget
-
+	// Page returns the `GtkAssistantPage` object for @child.
 	Page(child Widget) AssistantPage
-
+	// PageComplete gets whether @page is complete.
 	PageComplete(page Widget) bool
-
+	// PageTitle gets the title for @page.
 	PageTitle(page Widget) string
-
+	// PageType gets the page type of @page.
 	PageType(page Widget) AssistantPageType
-
+	// InsertPageAssistant inserts a page in the @assistant at a given position.
 	InsertPageAssistant(page Widget, position int) int
-
+	// NextPageAssistant: navigate to the next page.
+	//
+	// It is a programming error to call this function when there is no next
+	// page.
+	//
+	// This function is for use when creating pages of the
+	// GTK_ASSISTANT_PAGE_CUSTOM type.
 	NextPageAssistant()
-
+	// PrependPageAssistant prepends a page to the @assistant.
 	PrependPageAssistant(page Widget) int
-
+	// PreviousPageAssistant: navigate to the previous visited page.
+	//
+	// It is a programming error to call this function when no previous page is
+	// available.
+	//
+	// This function is for use when creating pages of the
+	// GTK_ASSISTANT_PAGE_CUSTOM type.
 	PreviousPageAssistant()
-
+	// RemoveActionWidgetAssistant removes a widget from the action area of a
+	// `GtkAssistant`.
 	RemoveActionWidgetAssistant(child Widget)
-
+	// RemovePageAssistant removes the @page_num’s page from @assistant.
 	RemovePageAssistant(pageNum int)
-
+	// SetCurrentPageAssistant switches the page to @page_num.
+	//
+	// Note that this will only be necessary in custom buttons, as the
+	// @assistant flow can be set with gtk_assistant_set_forward_page_func().
 	SetCurrentPageAssistant(pageNum int)
-
+	// SetPageCompleteAssistant sets whether @page contents are complete.
+	//
+	// This will make @assistant update the buttons state to be able to continue
+	// the task.
 	SetPageCompleteAssistant(page Widget, complete bool)
-
+	// SetPageTitleAssistant sets a title for @page.
+	//
+	// The title is displayed in the header area of the assistant when @page is
+	// the current page.
 	SetPageTitleAssistant(page Widget, title string)
-
+	// SetPageTypeAssistant sets the page type for @page.
+	//
+	// The page type determines the page behavior in the @assistant.
 	SetPageTypeAssistant(page Widget, typ AssistantPageType)
-
+	// UpdateButtonsStateAssistant forces @assistant to recompute the buttons
+	// state.
+	//
+	// GTK automatically takes care of this in most situations, e.g. when the
+	// user goes to a different page, or when the visibility or completeness of
+	// a page changes.
+	//
+	// One situation where it can be necessary to call this function is when
+	// changing a value on the current page affects the future page flow of the
+	// assistant.
 	UpdateButtonsStateAssistant()
 }
 
@@ -199,6 +253,7 @@ func marshalAssistant(p uintptr) (interface{}, error) {
 	return WrapAssistant(obj), nil
 }
 
+// NewAssistant creates a new `GtkAssistant`.
 func NewAssistant() Assistant {
 	var _cret *C.GtkWidget // in
 
@@ -206,7 +261,7 @@ func NewAssistant() Assistant {
 
 	var _assistant Assistant // out
 
-	_assistant = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Assistant)
+	_assistant = WrapAssistant(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _assistant
 }
@@ -492,68 +547,28 @@ func (a assistant) UpdateButtonsStateAssistant() {
 	C.gtk_assistant_update_buttons_state(_arg0)
 }
 
-func (s assistant) Display() gdk.Display {
-	return WrapRoot(gextras.InternObject(s)).Display()
+func (a assistant) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(a))
 }
 
-func (s assistant) Focus() Widget {
-	return WrapRoot(gextras.InternObject(s)).Focus()
+func (a assistant) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(a))
 }
 
-func (s assistant) SetFocus(focus Widget) {
-	WrapRoot(gextras.InternObject(s)).SetFocus(focus)
+func (a assistant) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(a))
 }
 
-func (s assistant) Renderer() gsk.Renderer {
-	return WrapNative(gextras.InternObject(s)).Renderer()
+func (a assistant) AsNative() Native {
+	return WrapNative(gextras.InternObject(a))
 }
 
-func (s assistant) Surface() gdk.Surface {
-	return WrapNative(gextras.InternObject(s)).Surface()
+func (a assistant) AsRoot() Root {
+	return WrapRoot(gextras.InternObject(a))
 }
 
-func (s assistant) SurfaceTransform() (x float64, y float64) {
-	return WrapNative(gextras.InternObject(s)).SurfaceTransform()
-}
-
-func (s assistant) Realize() {
-	WrapNative(gextras.InternObject(s)).Realize()
-}
-
-func (s assistant) Unrealize() {
-	WrapNative(gextras.InternObject(s)).Unrealize()
-}
-
-func (s assistant) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
-}
-
-func (s assistant) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
-}
-
-func (s assistant) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
-}
-
-func (s assistant) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s assistant) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s assistant) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s assistant) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b assistant) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
+func (a assistant) AsShortcutManager() ShortcutManager {
+	return WrapShortcutManager(gextras.InternObject(a))
 }
 
 // AssistantPage: `GtkAssistantPage` is an auxiliary object used by
@@ -561,6 +576,7 @@ func (b assistant) BuildableID() string {
 type AssistantPage interface {
 	gextras.Objector
 
+	// Child returns the child to which @page belongs.
 	Child() Widget
 }
 

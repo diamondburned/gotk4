@@ -115,30 +115,138 @@ func marshalApplicationInhibitFlags(p uintptr) (interface{}, error) {
 type Application interface {
 	gio.Application
 
+	// AddWindowApplication adds a window to `application`.
+	//
+	// This call can only happen after the `application` has started; typically,
+	// you should add new application windows in response to the emission of the
+	// `GApplication::activate` signal.
+	//
+	// This call is equivalent to setting the [property@Gtk.Window:application]
+	// property of `window` to `application`.
+	//
+	// Normally, the connection between the application and the window will
+	// remain until the window is destroyed, but you can explicitly remove it
+	// with [method@Gtk.Application.remove_window].
+	//
+	// GTK will keep the `application` running as long as it has any windows.
 	AddWindowApplication(window Window)
-
+	// AccelsForAction gets the accelerators that are currently associated with
+	// the given action.
 	AccelsForAction(detailedActionName string) []string
-
+	// ActionsForAccel returns the list of actions (possibly empty) that `accel`
+	// maps to.
+	//
+	// Each item in the list is a detailed action name in the usual form.
+	//
+	// This might be useful to discover if an accel already exists in order to
+	// prevent installation of a conflicting accelerator (from an accelerator
+	// editor or a plugin system, for example). Note that having more than one
+	// action per accelerator may not be a bad thing and might make sense in
+	// cases where the actions never appear in the same context.
+	//
+	// In case there are no actions for a given accelerator, an empty array is
+	// returned. `NULL` is never returned.
+	//
+	// It is a programmer error to pass an invalid accelerator string.
+	//
+	// If you are unsure, check it with [func@Gtk.accelerator_parse] first.
 	ActionsForAccel(accel string) []string
-
+	// ActiveWindow gets the “active” window for the application.
+	//
+	// The active window is the one that was most recently focused (within the
+	// application). This window may not have the focus at the moment if another
+	// application has it — this is just the most recently-focused window within
+	// this application.
 	ActiveWindow() Window
-
+	// MenuByID gets a menu from automatically loaded resources.
+	//
+	// See the section on Automatic resources
+	// (class.Application.html#automatic-resources) for more information.
 	MenuByID(id string) gio.Menu
-
+	// Menubar returns the menu model that has been set with
+	// [method@Gtk.Application.set_menubar].
 	Menubar() gio.MenuModel
-
+	// WindowByID returns the [class@Gtk.ApplicationWindow] with the given ID.
+	//
+	// The ID of a `GtkApplicationWindow` can be retrieved with
+	// [method@Gtk.ApplicationWindow.get_id].
 	WindowByID(id uint) Window
-
+	// InhibitApplication: inform the session manager that certain types of
+	// actions should be inhibited.
+	//
+	// This is not guaranteed to work on all platforms and for all types of
+	// actions.
+	//
+	// Applications should invoke this method when they begin an operation that
+	// should not be interrupted, such as creating a CD or DVD. The types of
+	// actions that may be blocked are specified by the `flags` parameter. When
+	// the application completes the operation it should call
+	// [method@Gtk.Application.uninhibit] to remove the inhibitor. Note that an
+	// application can have multiple inhibitors, and all of them must be
+	// individually removed. Inhibitors are also cleared when the application
+	// exits.
+	//
+	// Applications should not expect that they will always be able to block the
+	// action. In most cases, users will be given the option to force the action
+	// to take place.
+	//
+	// The `reason` message should be short and to the point.
+	//
+	// If `window` is given, the session manager may point the user to this
+	// window to find out more about why the action is inhibited.
 	InhibitApplication(window Window, flags ApplicationInhibitFlags, reason string) uint
-
+	// ListActionDescriptionsApplication lists the detailed action names which
+	// have associated accelerators.
+	//
+	// See [method@Gtk.Application.set_accels_for_action].
 	ListActionDescriptionsApplication() []string
-
+	// RemoveWindowApplication: remove a window from `application`.
+	//
+	// If `window` belongs to `application` then this call is equivalent to
+	// setting the [property@Gtk.Window:application] property of `window` to
+	// `NULL`.
+	//
+	// The application may stop running as a result of a call to this function,
+	// if `window` was the last window of the `application`.
 	RemoveWindowApplication(window Window)
-
+	// SetAccelsForActionApplication sets zero or more keyboard accelerators
+	// that will trigger the given action.
+	//
+	// The first item in `accels` will be the primary accelerator, which may be
+	// displayed in the UI.
+	//
+	// To remove all accelerators for an action, use an empty, zero-terminated
+	// array for `accels`.
+	//
+	// For the `detailed_action_name`, see `g_action_parse_detailed_name()` and
+	// `g_action_print_detailed_name()`.
 	SetAccelsForActionApplication(detailedActionName string, accels []string)
-
+	// SetMenubarApplication sets or unsets the menubar for windows of
+	// `application`.
+	//
+	// This is a menubar in the traditional sense.
+	//
+	// This can only be done in the primary instance of the application, after
+	// it has been registered. `GApplication::startup` is a good place to call
+	// this.
+	//
+	// Depending on the desktop environment, this may appear at the top of each
+	// window, or at the top of the screen. In some environments, if both the
+	// application menu and the menubar are set, the application menu will be
+	// presented as if it were the first item of the menubar. Other environments
+	// treat the two as completely separate — for example, the application menu
+	// may be rendered by the desktop shell while the menubar (if set) remains
+	// in each individual window.
+	//
+	// Use the base `GActionMap` interface to add actions, to respond to the
+	// user selecting these menu items.
 	SetMenubarApplication(menubar gio.MenuModel)
-
+	// UninhibitApplication removes an inhibitor that has been previously
+	// established.
+	//
+	// See [method@Gtk.Application.inhibit].
+	//
+	// Inhibitors are also cleared when the application exits.
 	UninhibitApplication(cookie uint)
 }
 
@@ -161,6 +269,24 @@ func marshalApplication(p uintptr) (interface{}, error) {
 	return WrapApplication(obj), nil
 }
 
+// NewApplication creates a new `GtkApplication` instance.
+//
+// When using `GtkApplication`, it is not necessary to call [func@Gtk.init]
+// manually. It is called as soon as the application gets registered as the
+// primary instance.
+//
+// Concretely, [func@Gtk.init] is called in the default handler for the
+// `GApplication::startup` signal. Therefore, `GtkApplication` subclasses should
+// always chain up in their `GApplication::startup` handler before using any GTK
+// API.
+//
+// Note that commandline arguments are not passed to [func@Gtk.init].
+//
+// If `application_id` is not nil, then it must be valid. See
+// `g_application_id_is_valid()`.
+//
+// If no application ID is given then some features (most notably application
+// uniqueness) will be disabled.
 func NewApplication(applicationId string, flags gio.ApplicationFlags) Application {
 	var _arg1 *C.char             // out
 	var _arg2 C.GApplicationFlags // out
@@ -174,7 +300,7 @@ func NewApplication(applicationId string, flags gio.ApplicationFlags) Applicatio
 
 	var _application Application // out
 
-	_application = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Application)
+	_application = WrapApplication(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _application
 }

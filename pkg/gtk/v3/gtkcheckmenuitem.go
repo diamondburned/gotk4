@@ -5,9 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -26,9 +24,8 @@ func init() {
 	})
 }
 
-// CheckMenuItem: a CheckMenuItem is a menu item that maintains the state of a
-// boolean value in addition to a MenuItem usual role in activating application
-// code.
+// CheckMenuItem is a menu item that maintains the state of a boolean value in
+// addition to a MenuItem usual role in activating application code.
 //
 // A check box indicating the state of the boolean value is displayed at the
 // left side of the MenuItem. Activating the MenuItem toggles the value.
@@ -44,18 +41,37 @@ func init() {
 type CheckMenuItem interface {
 	MenuItem
 
+	// AsActionable casts the class to the Actionable interface.
+	AsActionable() Actionable
+	// AsActivatable casts the class to the Activatable interface.
+	AsActivatable() Activatable
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+
+	// Active returns whether the check menu item is active. See
+	// gtk_check_menu_item_set_active ().
 	Active() bool
-
+	// DrawAsRadio returns whether @check_menu_item looks like a RadioMenuItem
 	DrawAsRadio() bool
-
+	// Inconsistent retrieves the value set by
+	// gtk_check_menu_item_set_inconsistent().
 	Inconsistent() bool
-
+	// SetActiveCheckMenuItem sets the active state of the menu item’s check
+	// box.
 	SetActiveCheckMenuItem(isActive bool)
-
+	// SetDrawAsRadioCheckMenuItem sets whether @check_menu_item is drawn like a
+	// RadioMenuItem
 	SetDrawAsRadioCheckMenuItem(drawAsRadio bool)
-
+	// SetInconsistentCheckMenuItem: if the user has selected a range of
+	// elements (such as some text or spreadsheet cells) that are affected by a
+	// boolean setting, and the current values in that range are inconsistent,
+	// you may want to display the check in an “in between” state. This function
+	// turns on “in between” display. Normally you would turn off the
+	// inconsistent state again if the user explicitly selects a setting. This
+	// has to be done manually, gtk_check_menu_item_set_inconsistent() only
+	// affects visual appearance, it doesn’t affect the semantics of the widget.
 	SetInconsistentCheckMenuItem(setting bool)
-
+	// ToggledCheckMenuItem emits the CheckMenuItem::toggled signal.
 	ToggledCheckMenuItem()
 }
 
@@ -78,6 +94,7 @@ func marshalCheckMenuItem(p uintptr) (interface{}, error) {
 	return WrapCheckMenuItem(obj), nil
 }
 
+// NewCheckMenuItem creates a new CheckMenuItem.
 func NewCheckMenuItem() CheckMenuItem {
 	var _cret *C.GtkWidget // in
 
@@ -85,11 +102,12 @@ func NewCheckMenuItem() CheckMenuItem {
 
 	var _checkMenuItem CheckMenuItem // out
 
-	_checkMenuItem = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(CheckMenuItem)
+	_checkMenuItem = WrapCheckMenuItem(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _checkMenuItem
 }
 
+// NewCheckMenuItemWithLabel creates a new CheckMenuItem with a label.
 func NewCheckMenuItemWithLabel(label string) CheckMenuItem {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -101,11 +119,14 @@ func NewCheckMenuItemWithLabel(label string) CheckMenuItem {
 
 	var _checkMenuItem CheckMenuItem // out
 
-	_checkMenuItem = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(CheckMenuItem)
+	_checkMenuItem = WrapCheckMenuItem(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _checkMenuItem
 }
 
+// NewCheckMenuItemWithMnemonic creates a new CheckMenuItem containing a label.
+// The label will be created using gtk_label_new_with_mnemonic(), so underscores
+// in @label indicate the mnemonic for the menu item.
 func NewCheckMenuItemWithMnemonic(label string) CheckMenuItem {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -117,7 +138,7 @@ func NewCheckMenuItemWithMnemonic(label string) CheckMenuItem {
 
 	var _checkMenuItem CheckMenuItem // out
 
-	_checkMenuItem = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(CheckMenuItem)
+	_checkMenuItem = WrapCheckMenuItem(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _checkMenuItem
 }
@@ -217,126 +238,14 @@ func (c checkMenuItem) ToggledCheckMenuItem() {
 	C.gtk_check_menu_item_toggled(_arg0)
 }
 
-func (b checkMenuItem) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+func (c checkMenuItem) AsActionable() Actionable {
+	return WrapActionable(gextras.InternObject(c))
 }
 
-func (b checkMenuItem) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+func (c checkMenuItem) AsActivatable() Activatable {
+	return WrapActivatable(gextras.InternObject(c))
 }
 
-func (b checkMenuItem) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b checkMenuItem) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b checkMenuItem) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b checkMenuItem) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b checkMenuItem) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b checkMenuItem) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b checkMenuItem) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b checkMenuItem) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (a checkMenuItem) ActionName() string {
-	return WrapActionable(gextras.InternObject(a)).ActionName()
-}
-
-func (a checkMenuItem) ActionTargetValue() *glib.Variant {
-	return WrapActionable(gextras.InternObject(a)).ActionTargetValue()
-}
-
-func (a checkMenuItem) SetActionName(actionName string) {
-	WrapActionable(gextras.InternObject(a)).SetActionName(actionName)
-}
-
-func (a checkMenuItem) SetActionTargetValue(targetValue *glib.Variant) {
-	WrapActionable(gextras.InternObject(a)).SetActionTargetValue(targetValue)
-}
-
-func (a checkMenuItem) SetDetailedActionName(detailedActionName string) {
-	WrapActionable(gextras.InternObject(a)).SetDetailedActionName(detailedActionName)
-}
-
-func (b checkMenuItem) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
-}
-
-func (b checkMenuItem) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b checkMenuItem) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b checkMenuItem) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b checkMenuItem) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b checkMenuItem) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b checkMenuItem) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b checkMenuItem) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b checkMenuItem) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b checkMenuItem) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (a checkMenuItem) DoSetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).DoSetRelatedAction(action)
-}
-
-func (a checkMenuItem) RelatedAction() Action {
-	return WrapActivatable(gextras.InternObject(a)).RelatedAction()
-}
-
-func (a checkMenuItem) UseActionAppearance() bool {
-	return WrapActivatable(gextras.InternObject(a)).UseActionAppearance()
-}
-
-func (a checkMenuItem) SetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SetRelatedAction(action)
-}
-
-func (a checkMenuItem) SetUseActionAppearance(useAppearance bool) {
-	WrapActivatable(gextras.InternObject(a)).SetUseActionAppearance(useAppearance)
-}
-
-func (a checkMenuItem) SyncActionProperties(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SyncActionProperties(action)
+func (c checkMenuItem) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(c))
 }

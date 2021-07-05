@@ -21,7 +21,7 @@ func init() {
 	})
 }
 
-// VulkanRenderer: a GSK renderer that is using Vulkan.
+// VulkanRenderer: GSK renderer that is using Vulkan.
 type VulkanRenderer interface {
 	Renderer
 }
@@ -52,7 +52,7 @@ func NewVulkanRenderer() VulkanRenderer {
 
 	var _vulkanRenderer VulkanRenderer // out
 
-	_vulkanRenderer = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(VulkanRenderer)
+	_vulkanRenderer = WrapVulkanRenderer(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _vulkanRenderer
 }

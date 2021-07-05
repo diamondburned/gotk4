@@ -50,12 +50,25 @@ func init() {
 type PopoverMenuBar interface {
 	Widget
 
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
+
+	// AddChildPopoverMenuBar adds a custom widget to a generated menubar.
+	//
+	// For this to work, the menu model of @bar must have an item with a
+	// `custom` attribute that matches @id.
 	AddChildPopoverMenuBar(child Widget, id string) bool
-
+	// MenuModel returns the model from which the contents of @bar are taken.
 	MenuModel() gio.MenuModel
-
+	// RemoveChildPopoverMenuBar removes a widget that has previously been added
+	// with gtk_popover_menu_bar_add_child().
 	RemoveChildPopoverMenuBar(child Widget) bool
-
+	// SetMenuModelPopoverMenuBar sets a menu model from which @bar should take
+	// its contents.
 	SetMenuModelPopoverMenuBar(model gio.MenuModel)
 }
 
@@ -78,6 +91,7 @@ func marshalPopoverMenuBar(p uintptr) (interface{}, error) {
 	return WrapPopoverMenuBar(obj), nil
 }
 
+// NewPopoverMenuBarFromModel creates a `GtkPopoverMenuBar` from a `GMenuModel`.
 func NewPopoverMenuBarFromModel(model gio.MenuModel) PopoverMenuBar {
 	var _arg1 *C.GMenuModel // out
 	var _cret *C.GtkWidget  // in
@@ -88,7 +102,7 @@ func NewPopoverMenuBarFromModel(model gio.MenuModel) PopoverMenuBar {
 
 	var _popoverMenuBar PopoverMenuBar // out
 
-	_popoverMenuBar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(PopoverMenuBar)
+	_popoverMenuBar = WrapPopoverMenuBar(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _popoverMenuBar
 }
@@ -159,34 +173,14 @@ func (b popoverMenuBar) SetMenuModelPopoverMenuBar(model gio.MenuModel) {
 	C.gtk_popover_menu_bar_set_menu_model(_arg0, _arg1)
 }
 
-func (s popoverMenuBar) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
+func (p popoverMenuBar) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(p))
 }
 
-func (s popoverMenuBar) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
+func (p popoverMenuBar) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(p))
 }
 
-func (s popoverMenuBar) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
-}
-
-func (s popoverMenuBar) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s popoverMenuBar) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s popoverMenuBar) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s popoverMenuBar) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b popoverMenuBar) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
+func (p popoverMenuBar) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(p))
 }

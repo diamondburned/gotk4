@@ -53,24 +53,51 @@ func init() {
 type GridView interface {
 	ListBase
 
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
+	// AsOrientable casts the class to the Orientable interface.
+	AsOrientable() Orientable
+	// AsScrollable casts the class to the Scrollable interface.
+	AsScrollable() Scrollable
+
+	// EnableRubberband returns whether rows can be selected by dragging with
+	// the mouse.
 	EnableRubberband() bool
-
+	// Factory gets the factory that's currently used to populate list items.
 	Factory() ListItemFactory
-
+	// MaxColumns gets the maximum number of columns that the grid will use.
 	MaxColumns() uint
-
+	// MinColumns gets the minimum number of columns that the grid will use.
 	MinColumns() uint
-
+	// SingleClickActivate returns whether items will be activated on single
+	// click and selected on hover.
 	SingleClickActivate() bool
-
+	// SetEnableRubberbandGridView sets whether selections can be changed by
+	// dragging with the mouse.
 	SetEnableRubberbandGridView(enableRubberband bool)
-
+	// SetFactoryGridView sets the `GtkListItemFactory` to use for populating
+	// list items.
 	SetFactoryGridView(factory ListItemFactory)
-
+	// SetMaxColumnsGridView sets the maximum number of columns to use.
+	//
+	// This number must be at least 1.
+	//
+	// If @max_columns is smaller than the minimum set via
+	// [method@Gtk.GridView.set_min_columns], that value is used instead.
 	SetMaxColumnsGridView(maxColumns uint)
-
+	// SetMinColumnsGridView sets the minimum number of columns to use.
+	//
+	// This number must be at least 1.
+	//
+	// If @min_columns is smaller than the minimum set via
+	// [method@Gtk.GridView.set_max_columns], that value is ignored.
 	SetMinColumnsGridView(minColumns uint)
-
+	// SetSingleClickActivateGridView sets whether items should be activated on
+	// single click and selected on hover.
 	SetSingleClickActivateGridView(singleClickActivate bool)
 }
 
@@ -226,78 +253,22 @@ func (s gridView) SetSingleClickActivateGridView(singleClickActivate bool) {
 	C.gtk_grid_view_set_single_click_activate(_arg0, _arg1)
 }
 
-func (s gridView) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
+func (g gridView) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(g))
 }
 
-func (s gridView) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
+func (g gridView) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(g))
 }
 
-func (s gridView) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
+func (g gridView) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(g))
 }
 
-func (s gridView) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
+func (g gridView) AsOrientable() Orientable {
+	return WrapOrientable(gextras.InternObject(g))
 }
 
-func (s gridView) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s gridView) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s gridView) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b gridView) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
-}
-
-func (o gridView) Orientation() Orientation {
-	return WrapOrientable(gextras.InternObject(o)).Orientation()
-}
-
-func (o gridView) SetOrientation(orientation Orientation) {
-	WrapOrientable(gextras.InternObject(o)).SetOrientation(orientation)
-}
-
-func (s gridView) Border() (Border, bool) {
-	return WrapScrollable(gextras.InternObject(s)).Border()
-}
-
-func (s gridView) HAdjustment() Adjustment {
-	return WrapScrollable(gextras.InternObject(s)).HAdjustment()
-}
-
-func (s gridView) HScrollPolicy() ScrollablePolicy {
-	return WrapScrollable(gextras.InternObject(s)).HScrollPolicy()
-}
-
-func (s gridView) VAdjustment() Adjustment {
-	return WrapScrollable(gextras.InternObject(s)).VAdjustment()
-}
-
-func (s gridView) VScrollPolicy() ScrollablePolicy {
-	return WrapScrollable(gextras.InternObject(s)).VScrollPolicy()
-}
-
-func (s gridView) SetHAdjustment(hadjustment Adjustment) {
-	WrapScrollable(gextras.InternObject(s)).SetHAdjustment(hadjustment)
-}
-
-func (s gridView) SetHScrollPolicy(policy ScrollablePolicy) {
-	WrapScrollable(gextras.InternObject(s)).SetHScrollPolicy(policy)
-}
-
-func (s gridView) SetVAdjustment(vadjustment Adjustment) {
-	WrapScrollable(gextras.InternObject(s)).SetVAdjustment(vadjustment)
-}
-
-func (s gridView) SetVScrollPolicy(policy ScrollablePolicy) {
-	WrapScrollable(gextras.InternObject(s)).SetVScrollPolicy(policy)
+func (g gridView) AsScrollable() Scrollable {
+	return WrapScrollable(gextras.InternObject(g))
 }

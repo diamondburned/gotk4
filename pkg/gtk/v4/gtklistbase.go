@@ -25,8 +25,17 @@ func init() {
 // ListBase: `GtkListBase` is the abstract base class for GTK's list widgets.
 type ListBase interface {
 	Widget
-	Orientable
-	Scrollable
+
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
+	// AsOrientable casts the class to the Orientable interface.
+	AsOrientable() Orientable
+	// AsScrollable casts the class to the Scrollable interface.
+	AsScrollable() Scrollable
 }
 
 // listBase implements the ListBase class.
@@ -48,78 +57,22 @@ func marshalListBase(p uintptr) (interface{}, error) {
 	return WrapListBase(obj), nil
 }
 
-func (s listBase) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
+func (l listBase) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(l))
 }
 
-func (s listBase) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
+func (l listBase) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(l))
 }
 
-func (s listBase) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
+func (l listBase) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(l))
 }
 
-func (s listBase) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
+func (l listBase) AsOrientable() Orientable {
+	return WrapOrientable(gextras.InternObject(l))
 }
 
-func (s listBase) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s listBase) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s listBase) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b listBase) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
-}
-
-func (o listBase) Orientation() Orientation {
-	return WrapOrientable(gextras.InternObject(o)).Orientation()
-}
-
-func (o listBase) SetOrientation(orientation Orientation) {
-	WrapOrientable(gextras.InternObject(o)).SetOrientation(orientation)
-}
-
-func (s listBase) Border() (Border, bool) {
-	return WrapScrollable(gextras.InternObject(s)).Border()
-}
-
-func (s listBase) HAdjustment() Adjustment {
-	return WrapScrollable(gextras.InternObject(s)).HAdjustment()
-}
-
-func (s listBase) HScrollPolicy() ScrollablePolicy {
-	return WrapScrollable(gextras.InternObject(s)).HScrollPolicy()
-}
-
-func (s listBase) VAdjustment() Adjustment {
-	return WrapScrollable(gextras.InternObject(s)).VAdjustment()
-}
-
-func (s listBase) VScrollPolicy() ScrollablePolicy {
-	return WrapScrollable(gextras.InternObject(s)).VScrollPolicy()
-}
-
-func (s listBase) SetHAdjustment(hadjustment Adjustment) {
-	WrapScrollable(gextras.InternObject(s)).SetHAdjustment(hadjustment)
-}
-
-func (s listBase) SetHScrollPolicy(policy ScrollablePolicy) {
-	WrapScrollable(gextras.InternObject(s)).SetHScrollPolicy(policy)
-}
-
-func (s listBase) SetVAdjustment(vadjustment Adjustment) {
-	WrapScrollable(gextras.InternObject(s)).SetVAdjustment(vadjustment)
-}
-
-func (s listBase) SetVScrollPolicy(policy ScrollablePolicy) {
-	WrapScrollable(gextras.InternObject(s)).SetVScrollPolicy(policy)
+func (l listBase) AsScrollable() Scrollable {
+	return WrapScrollable(gextras.InternObject(l))
 }

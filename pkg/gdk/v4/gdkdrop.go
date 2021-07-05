@@ -39,20 +39,53 @@ func init() {
 type Drop interface {
 	gextras.Objector
 
+	// FinishDrop ends the drag operation after a drop.
+	//
+	// The @action must be a single action selected from the actions available
+	// via [method@Gdk.Drop.get_actions].
 	FinishDrop(action DragAction)
-
+	// Actions returns the possible actions for this `GdkDrop`.
+	//
+	// If this value contains multiple actions - i.e.
+	// [func@Gdk.DragAction.is_unique] returns false for the result -
+	// [method@Gdk.Drop.finish] must choose the action to use when accepting the
+	// drop. This will only happen if you passed GDK_ACTION_ASK as one of the
+	// possible actions in [method@Gdk.Drop.status]. GDK_ACTION_ASK itself will
+	// not be included in the actions returned by this function.
+	//
+	// This value may change over the lifetime of the [class@Gdk.Drop] both as a
+	// response to source side actions as well as to calls to
+	// [method@Gdk.Drop.status] or [method@Gdk.Drop.finish]. The source side
+	// will not change this value anymore once a drop has started.
 	Actions() DragAction
-
+	// Device returns the `GdkDevice` performing the drop.
 	Device() Device
-
+	// Display gets the `GdkDisplay` that @self was created for.
 	Display() Display
-
+	// Drag: if this is an in-app drag-and-drop operation, returns the `GdkDrag`
+	// that corresponds to this drop.
+	//
+	// If it is not, nil is returned.
 	Drag() Drag
-
-	Formats() *ContentFormats
-
+	// Formats returns the `GdkContentFormats` that the drop offers the data to
+	// be read in.
+	Formats() ContentFormats
+	// Surface returns the `GdkSurface` performing the drop.
 	Surface() Surface
-
+	// StatusDrop selects all actions that are potentially supported by the
+	// destination.
+	//
+	// When calling this function, do not restrict the passed in actions to the
+	// ones provided by [method@Gdk.Drop.get_actions]. Those actions may change
+	// in the future, even depending on the actions you provide here.
+	//
+	// The @preferred action is a hint to the drag'n'drop mechanism about which
+	// action to use when multiple actions are possible.
+	//
+	// This function should be called by drag destinations in response to
+	// GDK_DRAG_ENTER or GDK_DRAG_MOTION events. If the destination does not yet
+	// know the exact actions it supports, it should set any possible actions
+	// first and then later call this function again.
 	StatusDrop(actions DragAction, preferred DragAction)
 }
 
@@ -145,7 +178,7 @@ func (s drop) Drag() Drag {
 	return _drag
 }
 
-func (s drop) Formats() *ContentFormats {
+func (s drop) Formats() ContentFormats {
 	var _arg0 *C.GdkDrop           // out
 	var _cret *C.GdkContentFormats // in
 
@@ -153,9 +186,10 @@ func (s drop) Formats() *ContentFormats {
 
 	_cret = C.gdk_drop_get_formats(_arg0)
 
-	var _contentFormats *ContentFormats // out
+	var _contentFormats ContentFormats // out
 
-	_contentFormats = (*ContentFormats)(unsafe.Pointer(_cret))
+	_contentFormats = (ContentFormats)(unsafe.Pointer(_cret))
+	C.gdk_content_formats_ref(_cret)
 
 	return _contentFormats
 }

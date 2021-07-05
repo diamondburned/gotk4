@@ -7,6 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -23,7 +24,7 @@ func init() {
 	})
 }
 
-// CellView: a widget displaying a single row of a GtkTreeModel
+// CellView: widget displaying a single row of a GtkTreeModel
 //
 // A CellView displays a single row of a TreeModel using a CellArea and
 // CellAreaContext. A CellAreaContext can be provided to the CellView at
@@ -44,23 +45,51 @@ func init() {
 // GtkCellView has a single CSS node with name cellview.
 type CellView interface {
 	Widget
-	CellLayout
-	Orientable
 
-	DisplayedRow() *TreePath
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsCellLayout casts the class to the CellLayout interface.
+	AsCellLayout() CellLayout
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
+	// AsOrientable casts the class to the Orientable interface.
+	AsOrientable() Orientable
 
+	// DisplayedRow returns a TreePath referring to the currently displayed row.
+	// If no row is currently displayed, nil is returned.
+	DisplayedRow() TreePath
+	// DrawSensitive gets whether @cell_view is configured to draw all of its
+	// cells in a sensitive state.
 	DrawSensitive() bool
-
+	// FitModel gets whether @cell_view is configured to request space to fit
+	// the entire TreeModel.
 	FitModel() bool
-
+	// Model returns the model for @cell_view. If no model is used nil is
+	// returned.
 	Model() TreeModel
-
-	SetDisplayedRowCellView(path *TreePath)
-
+	// SetDisplayedRowCellView sets the row of the model that is currently
+	// displayed by the CellView. If the path is unset, then the contents of the
+	// cellview “stick” at their last value; this is not normally a desired
+	// result, but may be a needed intermediate state if say, the model for the
+	// CellView becomes temporarily empty.
+	SetDisplayedRowCellView(path TreePath)
+	// SetDrawSensitiveCellView sets whether @cell_view should draw all of its
+	// cells in a sensitive state, this is used by ComboBox menus to ensure that
+	// rows with insensitive cells that contain children appear sensitive in the
+	// parent menu item.
 	SetDrawSensitiveCellView(drawSensitive bool)
-
+	// SetFitModelCellView sets whether @cell_view should request space to fit
+	// the entire TreeModel.
+	//
+	// This is used by ComboBox to ensure that the cell view displayed on the
+	// combo box’s button always gets enough space and does not resize when
+	// selection changes.
 	SetFitModelCellView(fitModel bool)
-
+	// SetModelCellView sets the model for @cell_view. If @cell_view already has
+	// a model set, it will remove it before setting the new model. If @model is
+	// nil, then it will unset the old model.
 	SetModelCellView(model TreeModel)
 }
 
@@ -83,6 +112,7 @@ func marshalCellView(p uintptr) (interface{}, error) {
 	return WrapCellView(obj), nil
 }
 
+// NewCellView creates a new CellView widget.
 func NewCellView() CellView {
 	var _cret *C.GtkWidget // in
 
@@ -90,11 +120,17 @@ func NewCellView() CellView {
 
 	var _cellView CellView // out
 
-	_cellView = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(CellView)
+	_cellView = WrapCellView(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _cellView
 }
 
+// NewCellViewWithContext creates a new CellView widget with a specific CellArea
+// to layout cells and a specific CellAreaContext.
+//
+// Specifying the same context for a handful of cells lets the underlying area
+// synchronize the geometry for those cells, in this way alignments with
+// cellviews for other rows are possible.
 func NewCellViewWithContext(area CellArea, context CellAreaContext) CellView {
 	var _arg1 *C.GtkCellArea        // out
 	var _arg2 *C.GtkCellAreaContext // out
@@ -107,11 +143,14 @@ func NewCellViewWithContext(area CellArea, context CellAreaContext) CellView {
 
 	var _cellView CellView // out
 
-	_cellView = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(CellView)
+	_cellView = WrapCellView(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _cellView
 }
 
+// NewCellViewWithMarkup creates a new CellView widget, adds a CellRendererText
+// to it, and makes it show @markup. The text can be marked up with the [Pango
+// text markup language][PangoMarkupFormat].
 func NewCellViewWithMarkup(markup string) CellView {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in
@@ -123,11 +162,13 @@ func NewCellViewWithMarkup(markup string) CellView {
 
 	var _cellView CellView // out
 
-	_cellView = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(CellView)
+	_cellView = WrapCellView(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _cellView
 }
 
+// NewCellViewWithText creates a new CellView widget, adds a CellRendererText to
+// it, and makes it show @text.
 func NewCellViewWithText(text string) CellView {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in
@@ -139,11 +180,13 @@ func NewCellViewWithText(text string) CellView {
 
 	var _cellView CellView // out
 
-	_cellView = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(CellView)
+	_cellView = WrapCellView(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _cellView
 }
 
+// NewCellViewWithTexture creates a new CellView widget, adds a
+// CellRendererPixbuf to it, and makes it show @texture.
 func NewCellViewWithTexture(texture gdk.Texture) CellView {
 	var _arg1 *C.GdkTexture // out
 	var _cret *C.GtkWidget  // in
@@ -154,12 +197,12 @@ func NewCellViewWithTexture(texture gdk.Texture) CellView {
 
 	var _cellView CellView // out
 
-	_cellView = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(CellView)
+	_cellView = WrapCellView(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _cellView
 }
 
-func (c cellView) DisplayedRow() *TreePath {
+func (c cellView) DisplayedRow() TreePath {
 	var _arg0 *C.GtkCellView // out
 	var _cret *C.GtkTreePath // in
 
@@ -167,11 +210,11 @@ func (c cellView) DisplayedRow() *TreePath {
 
 	_cret = C.gtk_cell_view_get_displayed_row(_arg0)
 
-	var _treePath *TreePath // out
+	var _treePath TreePath // out
 
-	_treePath = (*TreePath)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(&_treePath, func(v **TreePath) {
-		C.free(unsafe.Pointer(v))
+	_treePath = (TreePath)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_treePath, func(v TreePath) {
+		C.gtk_tree_path_free((*C.GtkTreePath)(unsafe.Pointer(v)))
 	})
 
 	return _treePath
@@ -226,12 +269,12 @@ func (c cellView) Model() TreeModel {
 	return _treeModel
 }
 
-func (c cellView) SetDisplayedRowCellView(path *TreePath) {
+func (c cellView) SetDisplayedRowCellView(path TreePath) {
 	var _arg0 *C.GtkCellView // out
 	var _arg1 *C.GtkTreePath // out
 
 	_arg0 = (*C.GtkCellView)(unsafe.Pointer(c.Native()))
-	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(path.Native()))
+	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(path))
 
 	C.gtk_cell_view_set_displayed_row(_arg0, _arg1)
 }
@@ -270,70 +313,22 @@ func (c cellView) SetModelCellView(model TreeModel) {
 	C.gtk_cell_view_set_model(_arg0, _arg1)
 }
 
-func (s cellView) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
+func (c cellView) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(c))
 }
 
-func (s cellView) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
+func (c cellView) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(c))
 }
 
-func (s cellView) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
+func (c cellView) AsCellLayout() CellLayout {
+	return WrapCellLayout(gextras.InternObject(c))
 }
 
-func (s cellView) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
+func (c cellView) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(c))
 }
 
-func (s cellView) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s cellView) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s cellView) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b cellView) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
-}
-
-func (c cellView) AddAttribute(cell CellRenderer, attribute string, column int) {
-	WrapCellLayout(gextras.InternObject(c)).AddAttribute(cell, attribute, column)
-}
-
-func (c cellView) Clear() {
-	WrapCellLayout(gextras.InternObject(c)).Clear()
-}
-
-func (c cellView) ClearAttributes(cell CellRenderer) {
-	WrapCellLayout(gextras.InternObject(c)).ClearAttributes(cell)
-}
-
-func (c cellView) Area() CellArea {
-	return WrapCellLayout(gextras.InternObject(c)).Area()
-}
-
-func (c cellView) PackEnd(cell CellRenderer, expand bool) {
-	WrapCellLayout(gextras.InternObject(c)).PackEnd(cell, expand)
-}
-
-func (c cellView) PackStart(cell CellRenderer, expand bool) {
-	WrapCellLayout(gextras.InternObject(c)).PackStart(cell, expand)
-}
-
-func (c cellView) Reorder(cell CellRenderer, position int) {
-	WrapCellLayout(gextras.InternObject(c)).Reorder(cell, position)
-}
-
-func (o cellView) Orientation() Orientation {
-	return WrapOrientable(gextras.InternObject(o)).Orientation()
-}
-
-func (o cellView) SetOrientation(orientation Orientation) {
-	WrapOrientable(gextras.InternObject(o)).SetOrientation(orientation)
+func (c cellView) AsOrientable() Orientable {
+	return WrapOrientable(gextras.InternObject(c))
 }

@@ -5,9 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -73,32 +71,59 @@ func init() {
 // regardless of text direction.
 type Box interface {
 	Container
-	Orientable
 
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsOrientable casts the class to the Orientable interface.
+	AsOrientable() Orientable
+
+	// BaselinePosition gets the value set by gtk_box_set_baseline_position().
 	BaselinePosition() BaselinePosition
-
+	// CenterWidget retrieves the center widget of the box.
 	CenterWidget() Widget
-
+	// Homogeneous returns whether the box is homogeneous (all children are the
+	// same size). See gtk_box_set_homogeneous().
 	Homogeneous() bool
-
+	// Spacing gets the value set by gtk_box_set_spacing().
 	Spacing() int
-
+	// PackEndBox adds @child to @box, packed with reference to the end of @box.
+	// The @child is packed after (away from end of) any other child packed with
+	// reference to the end of @box.
 	PackEndBox(child Widget, expand bool, fill bool, padding uint)
-
+	// PackStartBox adds @child to @box, packed with reference to the start of
+	// @box. The @child is packed after any other child packed with reference to
+	// the start of @box.
 	PackStartBox(child Widget, expand bool, fill bool, padding uint)
-
+	// QueryChildPackingBox obtains information about how @child is packed into
+	// @box.
 	QueryChildPackingBox(child Widget) (expand bool, fill bool, padding uint, packType PackType)
-
+	// ReorderChildBox moves @child to a new @position in the list of @box
+	// children. The list contains widgets packed K_PACK_START as well as
+	// widgets packed K_PACK_END, in the order that these widgets were added to
+	// @box.
+	//
+	// A widget’s position in the @box children list determines where the widget
+	// is packed into @box. A child widget at some position in the list will be
+	// packed just after all other widgets of the same packing type that appear
+	// earlier in the list.
 	ReorderChildBox(child Widget, position int)
-
+	// SetBaselinePositionBox sets the baseline position of a box. This affects
+	// only horizontal boxes with at least one baseline aligned child. If there
+	// is more vertical space available than requested, and the baseline is not
+	// allocated by the parent then @position is used to allocate the baseline
+	// wrt the extra space available.
 	SetBaselinePositionBox(position BaselinePosition)
-
+	// SetCenterWidgetBox sets a center widget; that is a child widget that will
+	// be centered with respect to the full width of the box, even if the
+	// children at either side take up different amounts of space.
 	SetCenterWidgetBox(widget Widget)
-
+	// SetChildPackingBox sets the way @child is packed into @box.
 	SetChildPackingBox(child Widget, expand bool, fill bool, padding uint, packType PackType)
-
+	// SetHomogeneousBox sets the Box:homogeneous property of @box, controlling
+	// whether or not all children of @box are given equal space in the box.
 	SetHomogeneousBox(homogeneous bool)
-
+	// SetSpacingBox sets the Box:spacing property of @box, which is the number
+	// of pixels to place between children of @box.
 	SetSpacingBox(spacing int)
 }
 
@@ -121,6 +146,7 @@ func marshalBox(p uintptr) (interface{}, error) {
 	return WrapBox(obj), nil
 }
 
+// NewBox creates a new Box.
 func NewBox(orientation Orientation, spacing int) Box {
 	var _arg1 C.GtkOrientation // out
 	var _arg2 C.gint           // out
@@ -133,7 +159,7 @@ func NewBox(orientation Orientation, spacing int) Box {
 
 	var _box Box // out
 
-	_box = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Box)
+	_box = WrapBox(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _box
 }
@@ -241,12 +267,12 @@ func (b box) PackStartBox(child Widget, expand bool, fill bool, padding uint) {
 }
 
 func (b box) QueryChildPackingBox(child Widget) (expand bool, fill bool, padding uint, packType PackType) {
-	var _arg0 *C.GtkBox     // out
-	var _arg1 *C.GtkWidget  // out
-	var _arg2 C.gboolean    // in
-	var _arg3 C.gboolean    // in
-	var _arg4 C.guint       // in
-	var _arg5 C.GtkPackType // in
+	var _arg0 *C.GtkBox      // out
+	var _arg1 *C.GtkWidget   // out
+	var _arg2 *C.gboolean    // in
+	var _arg3 *C.gboolean    // in
+	var _arg4 *C.guint       // in
+	var _arg5 *C.GtkPackType // in
 
 	_arg0 = (*C.GtkBox)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
@@ -258,14 +284,41 @@ func (b box) QueryChildPackingBox(child Widget) (expand bool, fill bool, padding
 	var _padding uint      // out
 	var _packType PackType // out
 
-	if _arg2 != 0 {
-		_expand = true
+	{
+		var refTmpIn C.gboolean
+		var refTmpOut bool
+
+		refTmpIn = *_arg2
+
+		if refTmpIn != 0 {
+			refTmpOut = true
+		}
+
+		_expand = refTmpOut
 	}
-	if _arg3 != 0 {
-		_fill = true
+	{
+		var refTmpIn C.gboolean
+		var refTmpOut bool
+
+		refTmpIn = *_arg3
+
+		if refTmpIn != 0 {
+			refTmpOut = true
+		}
+
+		_fill = refTmpOut
 	}
 	_padding = uint(_arg4)
-	_packType = PackType(_arg5)
+	{
+		var refTmpIn C.GtkPackType
+		var refTmpOut PackType
+
+		refTmpIn = *_arg5
+
+		refTmpOut = PackType(refTmpIn)
+
+		_packType = refTmpOut
+	}
 
 	return _expand, _fill, _padding, _packType
 }
@@ -346,50 +399,10 @@ func (b box) SetSpacingBox(spacing int) {
 	C.gtk_box_set_spacing(_arg0, _arg1)
 }
 
-func (b box) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+func (b box) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(b))
 }
 
-func (b box) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b box) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b box) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b box) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b box) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b box) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b box) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b box) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b box) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (o box) Orientation() Orientation {
-	return WrapOrientable(gextras.InternObject(o)).Orientation()
-}
-
-func (o box) SetOrientation(orientation Orientation) {
-	WrapOrientable(gextras.InternObject(o)).SetOrientation(orientation)
+func (b box) AsOrientable() Orientable {
+	return WrapOrientable(gextras.InternObject(b))
 }

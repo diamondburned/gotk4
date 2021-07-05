@@ -8,10 +8,10 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/diamondburned/gotk4/gir/girgen/pen"
 	"github.com/diamondburned/gotk4/gir/girgen/file"
 	"github.com/diamondburned/gotk4/gir/girgen/generators"
 	"github.com/diamondburned/gotk4/gir/girgen/logger"
+	"github.com/diamondburned/gotk4/gir/girgen/pen"
 	"github.com/diamondburned/gotk4/gir/girgen/types"
 	"github.com/pkg/errors"
 )
@@ -74,8 +74,12 @@ func (f *FileGenerator) Generate() ([]byte, error) {
 	}
 
 	if f.header.CallbackDelete {
-		f.header.ImportCore("box")
+		// C headers are per-file.
 		f.header.AddCallbackHeader("extern void callbackDelete(gpointer);")
+
+		if f.isRoot {
+			f.header.ImportCore("box")
+		}
 	}
 
 	fpen := pen.NewPaperBufferSize(4096 + f.pen.Len()) // 4KB + pen

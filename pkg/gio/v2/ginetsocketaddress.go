@@ -32,17 +32,23 @@ func init() {
 	})
 }
 
-// InetSocketAddress: an IPv4 or IPv6 socket address; that is, the combination
-// of a Address and a port number.
+// InetSocketAddress: IPv4 or IPv6 socket address; that is, the combination of a
+// Address and a port number.
 type InetSocketAddress interface {
 	SocketAddress
 
+	// AsSocketConnectable casts the class to the SocketConnectable interface.
+	AsSocketConnectable() SocketConnectable
+
+	// Address gets @address's Address.
 	Address() InetAddress
-
+	// Flowinfo gets the `sin6_flowinfo` field from @address, which must be an
+	// IPv6 address.
 	Flowinfo() uint32
-
+	// Port gets @address's port.
 	Port() uint16
-
+	// ScopeID gets the `sin6_scope_id` field from @address, which must be an
+	// IPv6 address.
 	ScopeID() uint32
 }
 
@@ -65,6 +71,7 @@ func marshalInetSocketAddress(p uintptr) (interface{}, error) {
 	return WrapInetSocketAddress(obj), nil
 }
 
+// NewInetSocketAddress creates a new SocketAddress for @address and @port.
 func NewInetSocketAddress(address InetAddress, port uint16) InetSocketAddress {
 	var _arg1 *C.GInetAddress   // out
 	var _arg2 C.guint16         // out
@@ -77,11 +84,16 @@ func NewInetSocketAddress(address InetAddress, port uint16) InetSocketAddress {
 
 	var _inetSocketAddress InetSocketAddress // out
 
-	_inetSocketAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(InetSocketAddress)
+	_inetSocketAddress = WrapInetSocketAddress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _inetSocketAddress
 }
 
+// NewInetSocketAddressFromString creates a new SocketAddress for @address and
+// @port.
+//
+// If @address is an IPv6 address, it can also contain a scope ID (separated
+// from the address by a `%`).
 func NewInetSocketAddressFromString(address string, port uint) InetSocketAddress {
 	var _arg1 *C.char           // out
 	var _arg2 C.guint           // out
@@ -95,7 +107,7 @@ func NewInetSocketAddressFromString(address string, port uint) InetSocketAddress
 
 	var _inetSocketAddress InetSocketAddress // out
 
-	_inetSocketAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(InetSocketAddress)
+	_inetSocketAddress = WrapInetSocketAddress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _inetSocketAddress
 }
@@ -160,14 +172,6 @@ func (a inetSocketAddress) ScopeID() uint32 {
 	return _guint32
 }
 
-func (c inetSocketAddress) Enumerate() SocketAddressEnumerator {
-	return WrapSocketConnectable(gextras.InternObject(c)).Enumerate()
-}
-
-func (c inetSocketAddress) ProxyEnumerate() SocketAddressEnumerator {
-	return WrapSocketConnectable(gextras.InternObject(c)).ProxyEnumerate()
-}
-
-func (c inetSocketAddress) String() string {
-	return WrapSocketConnectable(gextras.InternObject(c)).String()
+func (i inetSocketAddress) AsSocketConnectable() SocketConnectable {
+	return WrapSocketConnectable(gextras.InternObject(i))
 }

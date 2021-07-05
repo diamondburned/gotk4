@@ -3,13 +3,9 @@
 package gtk
 
 import (
-	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
-	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -38,30 +34,54 @@ func init() {
 // GtkFontButton has a single CSS node with name button and style class .font.
 type FontButton interface {
 	Button
-	FontChooser
 
+	// AsActionable casts the class to the Actionable interface.
+	AsActionable() Actionable
+	// AsActivatable casts the class to the Activatable interface.
+	AsActivatable() Activatable
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsFontChooser casts the class to the FontChooser interface.
+	AsFontChooser() FontChooser
+
+	// FontName retrieves the name of the currently selected font. This name
+	// includes style and size information as well. If you want to render
+	// something with the font, use this string with
+	// pango_font_description_from_string() . If you’re interested in peeking
+	// certain values (family name, style, size, weight) just query these
+	// properties from the FontDescription object.
+	//
+	// Deprecated: since version 3.22.
 	FontName() string
-
+	// ShowSize returns whether the font size will be shown in the label.
 	ShowSize() bool
-
+	// ShowStyle returns whether the name of the font style will be shown in the
+	// label.
 	ShowStyle() bool
-
+	// Title retrieves the title of the font chooser dialog.
 	Title() string
-
+	// UseFont returns whether the selected font is used in the label.
 	UseFont() bool
-
+	// UseSize returns whether the selected size is used in the label.
 	UseSize() bool
-
+	// SetFontNameFontButton sets or updates the currently-displayed font in
+	// font picker dialog.
+	//
+	// Deprecated: since version 3.22.
 	SetFontNameFontButton(fontname string) bool
-
+	// SetShowSizeFontButton: if @show_size is true, the font size will be
+	// displayed along with the name of the selected font.
 	SetShowSizeFontButton(showSize bool)
-
+	// SetShowStyleFontButton: if @show_style is true, the font style will be
+	// displayed along with name of the selected font.
 	SetShowStyleFontButton(showStyle bool)
-
+	// SetTitleFontButton sets the title for the font chooser dialog.
 	SetTitleFontButton(title string)
-
+	// SetUseFontFontButton: if @use_font is true, the font name will be written
+	// using the selected font.
 	SetUseFontFontButton(useFont bool)
-
+	// SetUseSizeFontButton: if @use_size is true, the font name will be written
+	// using the selected size.
 	SetUseSizeFontButton(useSize bool)
 }
 
@@ -84,6 +104,7 @@ func marshalFontButton(p uintptr) (interface{}, error) {
 	return WrapFontButton(obj), nil
 }
 
+// NewFontButton creates a new font picker widget.
 func NewFontButton() FontButton {
 	var _cret *C.GtkWidget // in
 
@@ -91,11 +112,12 @@ func NewFontButton() FontButton {
 
 	var _fontButton FontButton // out
 
-	_fontButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(FontButton)
+	_fontButton = WrapFontButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _fontButton
 }
 
+// NewFontButtonWithFont creates a new font picker widget.
 func NewFontButtonWithFont(fontname string) FontButton {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -107,7 +129,7 @@ func NewFontButtonWithFont(fontname string) FontButton {
 
 	var _fontButton FontButton // out
 
-	_fontButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(FontButton)
+	_fontButton = WrapFontButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _fontButton
 }
@@ -289,198 +311,18 @@ func (f fontButton) SetUseSizeFontButton(useSize bool) {
 	C.gtk_font_button_set_use_size(_arg0, _arg1)
 }
 
-func (b fontButton) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+func (f fontButton) AsActionable() Actionable {
+	return WrapActionable(gextras.InternObject(f))
 }
 
-func (b fontButton) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+func (f fontButton) AsActivatable() Activatable {
+	return WrapActivatable(gextras.InternObject(f))
 }
 
-func (b fontButton) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+func (f fontButton) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(f))
 }
 
-func (b fontButton) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b fontButton) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b fontButton) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b fontButton) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b fontButton) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b fontButton) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b fontButton) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (a fontButton) ActionName() string {
-	return WrapActionable(gextras.InternObject(a)).ActionName()
-}
-
-func (a fontButton) ActionTargetValue() *glib.Variant {
-	return WrapActionable(gextras.InternObject(a)).ActionTargetValue()
-}
-
-func (a fontButton) SetActionName(actionName string) {
-	WrapActionable(gextras.InternObject(a)).SetActionName(actionName)
-}
-
-func (a fontButton) SetActionTargetValue(targetValue *glib.Variant) {
-	WrapActionable(gextras.InternObject(a)).SetActionTargetValue(targetValue)
-}
-
-func (a fontButton) SetDetailedActionName(detailedActionName string) {
-	WrapActionable(gextras.InternObject(a)).SetDetailedActionName(detailedActionName)
-}
-
-func (b fontButton) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
-}
-
-func (b fontButton) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b fontButton) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b fontButton) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b fontButton) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b fontButton) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b fontButton) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b fontButton) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b fontButton) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b fontButton) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (a fontButton) DoSetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).DoSetRelatedAction(action)
-}
-
-func (a fontButton) RelatedAction() Action {
-	return WrapActivatable(gextras.InternObject(a)).RelatedAction()
-}
-
-func (a fontButton) UseActionAppearance() bool {
-	return WrapActivatable(gextras.InternObject(a)).UseActionAppearance()
-}
-
-func (a fontButton) SetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SetRelatedAction(action)
-}
-
-func (a fontButton) SetUseActionAppearance(useAppearance bool) {
-	WrapActivatable(gextras.InternObject(a)).SetUseActionAppearance(useAppearance)
-}
-
-func (a fontButton) SyncActionProperties(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SyncActionProperties(action)
-}
-
-func (f fontButton) Font() string {
-	return WrapFontChooser(gextras.InternObject(f)).Font()
-}
-
-func (f fontButton) FontDesc() *pango.FontDescription {
-	return WrapFontChooser(gextras.InternObject(f)).FontDesc()
-}
-
-func (f fontButton) FontFace() pango.FontFace {
-	return WrapFontChooser(gextras.InternObject(f)).FontFace()
-}
-
-func (f fontButton) FontFamily() pango.FontFamily {
-	return WrapFontChooser(gextras.InternObject(f)).FontFamily()
-}
-
-func (f fontButton) FontFeatures() string {
-	return WrapFontChooser(gextras.InternObject(f)).FontFeatures()
-}
-
-func (f fontButton) FontMap() pango.FontMap {
-	return WrapFontChooser(gextras.InternObject(f)).FontMap()
-}
-
-func (f fontButton) FontSize() int {
-	return WrapFontChooser(gextras.InternObject(f)).FontSize()
-}
-
-func (f fontButton) Language() string {
-	return WrapFontChooser(gextras.InternObject(f)).Language()
-}
-
-func (f fontButton) Level() FontChooserLevel {
-	return WrapFontChooser(gextras.InternObject(f)).Level()
-}
-
-func (f fontButton) PreviewText() string {
-	return WrapFontChooser(gextras.InternObject(f)).PreviewText()
-}
-
-func (f fontButton) ShowPreviewEntry() bool {
-	return WrapFontChooser(gextras.InternObject(f)).ShowPreviewEntry()
-}
-
-func (f fontButton) SetFont(fontname string) {
-	WrapFontChooser(gextras.InternObject(f)).SetFont(fontname)
-}
-
-func (f fontButton) SetFontDesc(fontDesc *pango.FontDescription) {
-	WrapFontChooser(gextras.InternObject(f)).SetFontDesc(fontDesc)
-}
-
-func (f fontButton) SetFontMap(fontmap pango.FontMap) {
-	WrapFontChooser(gextras.InternObject(f)).SetFontMap(fontmap)
-}
-
-func (f fontButton) SetLanguage(language string) {
-	WrapFontChooser(gextras.InternObject(f)).SetLanguage(language)
-}
-
-func (f fontButton) SetLevel(level FontChooserLevel) {
-	WrapFontChooser(gextras.InternObject(f)).SetLevel(level)
-}
-
-func (f fontButton) SetPreviewText(text string) {
-	WrapFontChooser(gextras.InternObject(f)).SetPreviewText(text)
-}
-
-func (f fontButton) SetShowPreviewEntry(showPreviewEntry bool) {
-	WrapFontChooser(gextras.InternObject(f)).SetShowPreviewEntry(showPreviewEntry)
+func (f fontButton) AsFontChooser() FontChooser {
+	return WrapFontChooser(gextras.InternObject(f))
 }

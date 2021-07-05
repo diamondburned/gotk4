@@ -25,10 +25,28 @@ func init() {
 // Plug: see Socket
 type Plug interface {
 	Object
-	Component
 
+	// AsComponent casts the class to the Component interface.
+	AsComponent() Component
+
+	// ID gets the unique ID of an Plug object, which can be used to embed
+	// inside of an Socket using atk_socket_embed().
+	//
+	// Internally, this calls a class function that should be registered by the
+	// IPC layer (usually at-spi2-atk). The implementor of an Plug object should
+	// call this function (after atk-bridge is loaded) and pass the value to the
+	// process implementing the Socket, so it could embed the plug.
 	ID() string
-
+	// SetChildPlug sets @child as accessible child of @plug and @plug as
+	// accessible parent of @child. @child can be NULL.
+	//
+	// In some cases, one can not use the AtkPlug type directly as accessible
+	// object for the toplevel widget of the application. For instance in the
+	// gtk case, GtkPlugAccessible can not inherit both from GtkWindowAccessible
+	// and from AtkPlug. In such a case, one can create, in addition to the
+	// standard accessible object for the toplevel widget, an AtkPlug object,
+	// and make the former the child of the latter by calling
+	// atk_plug_set_child().
 	SetChildPlug(child Object)
 }
 
@@ -51,6 +69,7 @@ func marshalPlug(p uintptr) (interface{}, error) {
 	return WrapPlug(obj), nil
 }
 
+// NewPlug creates a new Plug instance.
 func NewPlug() Plug {
 	var _cret *C.AtkObject // in
 
@@ -58,7 +77,7 @@ func NewPlug() Plug {
 
 	var _plug Plug // out
 
-	_plug = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Plug)
+	_plug = WrapPlug(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _plug
 }
@@ -89,62 +108,6 @@ func (p plug) SetChildPlug(child Object) {
 	C.atk_plug_set_child(_arg0, _arg1)
 }
 
-func (c plug) Contains(x int, y int, coordType CoordType) bool {
-	return WrapComponent(gextras.InternObject(c)).Contains(x, y, coordType)
-}
-
-func (c plug) Alpha() float64 {
-	return WrapComponent(gextras.InternObject(c)).Alpha()
-}
-
-func (c plug) Extents(coordType CoordType) (x int, y int, width int, height int) {
-	return WrapComponent(gextras.InternObject(c)).Extents(coordType)
-}
-
-func (c plug) Layer() Layer {
-	return WrapComponent(gextras.InternObject(c)).Layer()
-}
-
-func (c plug) MdiZorder() int {
-	return WrapComponent(gextras.InternObject(c)).MdiZorder()
-}
-
-func (c plug) Position(coordType CoordType) (x int, y int) {
-	return WrapComponent(gextras.InternObject(c)).Position(coordType)
-}
-
-func (c plug) Size() (width int, height int) {
-	return WrapComponent(gextras.InternObject(c)).Size()
-}
-
-func (c plug) GrabFocus() bool {
-	return WrapComponent(gextras.InternObject(c)).GrabFocus()
-}
-
-func (c plug) RefAccessibleAtPoint(x int, y int, coordType CoordType) Object {
-	return WrapComponent(gextras.InternObject(c)).RefAccessibleAtPoint(x, y, coordType)
-}
-
-func (c plug) RemoveFocusHandler(handlerId uint) {
-	WrapComponent(gextras.InternObject(c)).RemoveFocusHandler(handlerId)
-}
-
-func (c plug) ScrollTo(typ ScrollType) bool {
-	return WrapComponent(gextras.InternObject(c)).ScrollTo(typ)
-}
-
-func (c plug) ScrollToPoint(coords CoordType, x int, y int) bool {
-	return WrapComponent(gextras.InternObject(c)).ScrollToPoint(coords, x, y)
-}
-
-func (c plug) SetExtents(x int, y int, width int, height int, coordType CoordType) bool {
-	return WrapComponent(gextras.InternObject(c)).SetExtents(x, y, width, height, coordType)
-}
-
-func (c plug) SetPosition(x int, y int, coordType CoordType) bool {
-	return WrapComponent(gextras.InternObject(c)).SetPosition(x, y, coordType)
-}
-
-func (c plug) SetSize(width int, height int) bool {
-	return WrapComponent(gextras.InternObject(c)).SetSize(width, height)
+func (p plug) AsComponent() Component {
+	return WrapComponent(gextras.InternObject(p))
 }

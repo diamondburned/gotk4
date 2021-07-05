@@ -5,9 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -46,10 +44,24 @@ func init() {
 type Alignment interface {
 	Bin
 
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+
+	// Padding gets the padding on the different sides of the widget. See
+	// gtk_alignment_set_padding ().
+	//
+	// Deprecated: since version 3.14.
 	Padding() (paddingTop uint, paddingBottom uint, paddingLeft uint, paddingRight uint)
-
+	// SetAlignment sets the Alignment values.
+	//
+	// Deprecated: since version 3.14.
 	SetAlignment(xalign float32, yalign float32, xscale float32, yscale float32)
-
+	// SetPaddingAlignment sets the padding on the different sides of the
+	// widget. The padding adds blank space to the sides of the widget. For
+	// instance, this can be used to indent the child widget towards the right
+	// by adding padding on the left.
+	//
+	// Deprecated: since version 3.14.
 	SetPaddingAlignment(paddingTop uint, paddingBottom uint, paddingLeft uint, paddingRight uint)
 }
 
@@ -72,6 +84,9 @@ func marshalAlignment(p uintptr) (interface{}, error) {
 	return WrapAlignment(obj), nil
 }
 
+// NewAlignment creates a new Alignment.
+//
+// Deprecated: since version 3.14.
 func NewAlignment(xalign float32, yalign float32, xscale float32, yscale float32) Alignment {
 	var _arg1 C.gfloat     // out
 	var _arg2 C.gfloat     // out
@@ -88,17 +103,17 @@ func NewAlignment(xalign float32, yalign float32, xscale float32, yscale float32
 
 	var _alignment Alignment // out
 
-	_alignment = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Alignment)
+	_alignment = WrapAlignment(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _alignment
 }
 
 func (a alignment) Padding() (paddingTop uint, paddingBottom uint, paddingLeft uint, paddingRight uint) {
 	var _arg0 *C.GtkAlignment // out
-	var _arg1 C.guint         // in
-	var _arg2 C.guint         // in
-	var _arg3 C.guint         // in
-	var _arg4 C.guint         // in
+	var _arg1 *C.guint        // in
+	var _arg2 *C.guint        // in
+	var _arg3 *C.guint        // in
+	var _arg4 *C.guint        // in
 
 	_arg0 = (*C.GtkAlignment)(unsafe.Pointer(a.Native()))
 
@@ -149,42 +164,6 @@ func (a alignment) SetPaddingAlignment(paddingTop uint, paddingBottom uint, padd
 	C.gtk_alignment_set_padding(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
-func (b alignment) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
-}
-
-func (b alignment) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b alignment) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b alignment) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b alignment) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b alignment) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b alignment) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b alignment) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b alignment) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b alignment) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
+func (a alignment) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(a))
 }

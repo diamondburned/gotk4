@@ -35,19 +35,17 @@ func init() {
 // DTLSClientConnection is the client-side subclass of Connection, representing
 // a client-side DTLS connection.
 type DTLSClientConnection interface {
+	DatagramBased
 	DTLSConnection
 
-	// ServerIdentity sets @conn's validation flags, to override the default set
-	// of checks performed when validating a server certificate. By default,
-	// G_TLS_CERTIFICATE_VALIDATE_ALL is used.
+	// ServerIdentity gets @conn's expected server identity
 	ServerIdentity() SocketConnectable
-	// ValidationFlags sets @conn's validation flags, to override the default
-	// set of checks performed when validating a server certificate. By default,
-	// G_TLS_CERTIFICATE_VALIDATE_ALL is used.
+	// ValidationFlags gets @conn's validation flags
 	ValidationFlags() TLSCertificateFlags
-	// SetServerIdentity sets @conn's validation flags, to override the default
-	// set of checks performed when validating a server certificate. By default,
-	// G_TLS_CERTIFICATE_VALIDATE_ALL is used.
+	// SetServerIdentity sets @conn's expected server identity, which is used
+	// both to tell servers on virtual hosts which certificate to present, and
+	// also to let @conn know what name to look for in the certificate when
+	// performing G_TLS_CERTIFICATE_BAD_IDENTITY validation, if enabled.
 	SetServerIdentity(identity SocketConnectable)
 	// SetValidationFlags sets @conn's validation flags, to override the default
 	// set of checks performed when validating a server certificate. By default,
@@ -57,6 +55,7 @@ type DTLSClientConnection interface {
 
 // dtlsClientConnection implements the DTLSClientConnection interface.
 type dtlsClientConnection struct {
+	DatagramBased
 	DTLSConnection
 }
 
@@ -66,6 +65,7 @@ var _ DTLSClientConnection = (*dtlsClientConnection)(nil)
 // interface DTLSClientConnection. It is primarily used internally.
 func WrapDTLSClientConnection(obj *externglib.Object) DTLSClientConnection {
 	return dtlsClientConnection{
+		DatagramBased:  WrapDatagramBased(obj),
 		DTLSConnection: WrapDTLSConnection(obj),
 	}
 }

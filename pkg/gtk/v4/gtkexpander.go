@@ -98,32 +98,61 @@ func init() {
 type Expander interface {
 	Widget
 
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
+
+	// Child gets the child widget of @expander.
 	Child() Widget
-
+	// Expanded queries a Expander and returns its current state.
+	//
+	// Returns true if the child widget is revealed.
 	Expanded() bool
-
+	// Label fetches the text from a label widget.
+	//
+	// This is including any embedded underlines indicating mnemonics and Pango
+	// markup, as set by [method@Gtk.Expander.set_label]. If the label text has
+	// not been set the return value will be nil. This will be the case if you
+	// create an empty button with gtk_button_new() to use as a container.
 	Label() string
-
+	// LabelWidget retrieves the label widget for the frame.
 	LabelWidget() Widget
-
+	// ResizeToplevel returns whether the expander will resize the toplevel
+	// widget containing the expander upon resizing and collpasing.
 	ResizeToplevel() bool
-
+	// UseMarkup returns whether the label’s text is interpreted as Pango
+	// markup.
 	UseMarkup() bool
-
+	// UseUnderline returns whether an underline in the text indicates a
+	// mnemonic.
 	UseUnderline() bool
-
+	// SetChildExpander sets the child widget of @expander.
 	SetChildExpander(child Widget)
-
+	// SetExpandedExpander sets the state of the expander.
+	//
+	// Set to true, if you want the child widget to be revealed, and false if
+	// you want the child widget to be hidden.
 	SetExpandedExpander(expanded bool)
-
+	// SetLabelExpander sets the text of the label of the expander to @label.
+	//
+	// This will also clear any previously set labels.
 	SetLabelExpander(label string)
-
+	// SetLabelWidgetExpander: set the label widget for the expander.
+	//
+	// This is the widget that will appear embedded alongside the expander
+	// arrow.
 	SetLabelWidgetExpander(labelWidget Widget)
-
+	// SetResizeToplevelExpander sets whether the expander will resize the
+	// toplevel widget containing the expander upon resizing and collpasing.
 	SetResizeToplevelExpander(resizeToplevel bool)
-
+	// SetUseMarkupExpander sets whether the text of the label contains Pango
+	// markup.
 	SetUseMarkupExpander(useMarkup bool)
-
+	// SetUseUnderlineExpander: if true, an underline in the text indicates a
+	// mnemonic.
 	SetUseUnderlineExpander(useUnderline bool)
 }
 
@@ -146,6 +175,7 @@ func marshalExpander(p uintptr) (interface{}, error) {
 	return WrapExpander(obj), nil
 }
 
+// NewExpander creates a new expander using @label as the text of the label.
 func NewExpander(label string) Expander {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in
@@ -157,11 +187,20 @@ func NewExpander(label string) Expander {
 
 	var _expander Expander // out
 
-	_expander = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Expander)
+	_expander = WrapExpander(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _expander
 }
 
+// NewExpanderWithMnemonic creates a new expander using @label as the text of
+// the label.
+//
+// If characters in @label are preceded by an underscore, they are underlined.
+// If you need a literal underscore character in a label, use “__” (two
+// underscores). The first underlined character represents a keyboard
+// accelerator called a mnemonic.
+//
+// Pressing Alt and that key activates the button.
 func NewExpanderWithMnemonic(label string) Expander {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in
@@ -173,7 +212,7 @@ func NewExpanderWithMnemonic(label string) Expander {
 
 	var _expander Expander // out
 
-	_expander = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Expander)
+	_expander = WrapExpander(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _expander
 }
@@ -370,34 +409,14 @@ func (e expander) SetUseUnderlineExpander(useUnderline bool) {
 	C.gtk_expander_set_use_underline(_arg0, _arg1)
 }
 
-func (s expander) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
+func (e expander) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(e))
 }
 
-func (s expander) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
+func (e expander) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(e))
 }
 
-func (s expander) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
-}
-
-func (s expander) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s expander) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s expander) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s expander) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b expander) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
+func (e expander) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(e))
 }

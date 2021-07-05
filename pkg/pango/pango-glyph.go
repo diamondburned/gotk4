@@ -3,6 +3,7 @@
 package pango
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -52,7 +53,9 @@ func marshalShapeFlags(p uintptr) (interface{}, error) {
 
 // GlyphGeometry: the `PangoGlyphGeometry` structure contains width and
 // positioning information for a single glyph.
-type GlyphGeometry C.PangoGlyphGeometry
+type GlyphGeometry struct {
+	native C.PangoGlyphGeometry
+}
 
 // WrapGlyphGeometry wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -62,12 +65,14 @@ func WrapGlyphGeometry(ptr unsafe.Pointer) *GlyphGeometry {
 
 // Native returns the underlying C source pointer.
 func (g *GlyphGeometry) Native() unsafe.Pointer {
-	return unsafe.Pointer(g)
+	return unsafe.Pointer(&g.native)
 }
 
-// GlyphInfo: a `PangoGlyphInfo` structure represents a single glyph with
+// GlyphInfo: `PangoGlyphInfo` structure represents a single glyph with
 // positioning information and visual attributes.
-type GlyphInfo C.PangoGlyphInfo
+type GlyphInfo struct {
+	native C.PangoGlyphInfo
+}
 
 // WrapGlyphInfo wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -77,15 +82,17 @@ func WrapGlyphInfo(ptr unsafe.Pointer) *GlyphInfo {
 
 // Native returns the underlying C source pointer.
 func (g *GlyphInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(g)
+	return unsafe.Pointer(&g.native)
 }
 
-// GlyphString: a `PangoGlyphString` is used to store strings of glyphs with
+// GlyphString: `PangoGlyphString` is used to store strings of glyphs with
 // geometry and visual attribute information.
 //
 // The storage for the glyph information is owned by the structure which
 // simplifies memory management.
-type GlyphString C.PangoGlyphString
+type GlyphString struct {
+	native C.PangoGlyphString
+}
 
 // WrapGlyphString wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -99,16 +106,16 @@ func marshalGlyphString(p uintptr) (interface{}, error) {
 }
 
 // NewGlyphString constructs a struct GlyphString.
-func NewGlyphString() *GlyphString {
+func NewGlyphString() GlyphString {
 	var _cret *C.PangoGlyphString // in
 
 	_cret = C.pango_glyph_string_new()
 
-	var _glyphString *GlyphString // out
+	var _glyphString GlyphString // out
 
-	_glyphString = (*GlyphString)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(&_glyphString, func(v **GlyphString) {
-		C.free(unsafe.Pointer(v))
+	_glyphString = (GlyphString)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_glyphString, func(v GlyphString) {
+		C.pango_glyph_string_free((*C.PangoGlyphString)(unsafe.Pointer(v)))
 	})
 
 	return _glyphString
@@ -116,48 +123,43 @@ func NewGlyphString() *GlyphString {
 
 // Native returns the underlying C source pointer.
 func (g *GlyphString) Native() unsafe.Pointer {
-	return unsafe.Pointer(g)
+	return unsafe.Pointer(&g.native)
 }
 
-// Copy: convert from x offset to character position.
-//
-// Character positions are computed by dividing up each cluster into equal
-// portions. In scripts where positioning within a cluster is not allowed (such
-// as Thai), the returned value may not be a valid cursor position; the caller
-// must combine the result with the logical attributes for the text to compute
-// the valid cursor position.
-func (g *GlyphString) Copy() *GlyphString {
+// Copy a glyph string and associated storage.
+func (s *GlyphString) Copy() GlyphString {
 	var _arg0 *C.PangoGlyphString // out
 	var _cret *C.PangoGlyphString // in
 
-	_arg0 = (*C.PangoGlyphString)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.PangoGlyphString)(unsafe.Pointer(s))
 
 	_cret = C.pango_glyph_string_copy(_arg0)
 
-	var _glyphString *GlyphString // out
+	var _glyphString GlyphString // out
 
-	_glyphString = (*GlyphString)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(&_glyphString, func(v **GlyphString) {
-		C.free(unsafe.Pointer(v))
+	_glyphString = (GlyphString)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_glyphString, func(v GlyphString) {
+		C.pango_glyph_string_free((*C.PangoGlyphString)(unsafe.Pointer(v)))
 	})
 
 	return _glyphString
 }
 
-// Extents: convert from x offset to character position.
+// Extents: compute the logical and ink extents of a glyph string.
 //
-// Character positions are computed by dividing up each cluster into equal
-// portions. In scripts where positioning within a cluster is not allowed (such
-// as Thai), the returned value may not be a valid cursor position; the caller
-// must combine the result with the logical attributes for the text to compute
-// the valid cursor position.
+// See the documentation for [method@Pango.Font.get_glyph_extents] for details
+// about the interpretation of the rectangles.
+//
+// Examples of logical (red) and ink (green) rects:
+//
+// ! (rects1.png) ! (rects2.png)
 func (g *GlyphString) Extents(font Font) (inkRect Rectangle, logicalRect Rectangle) {
 	var _arg0 *C.PangoGlyphString // out
 	var _arg1 *C.PangoFont        // out
-	var _arg2 C.PangoRectangle    // in
-	var _arg3 C.PangoRectangle    // in
+	var _arg2 *C.PangoRectangle   // in
+	var _arg3 *C.PangoRectangle   // in
 
-	_arg0 = (*C.PangoGlyphString)(unsafe.Pointer(g.Native()))
+	_arg0 = (*C.PangoGlyphString)(unsafe.Pointer(g))
 	_arg1 = (*C.PangoFont)(unsafe.Pointer(font.Native()))
 
 	C.pango_glyph_string_extents(_arg0, _arg1, &_arg2, &_arg3)
@@ -165,48 +167,26 @@ func (g *GlyphString) Extents(font Font) (inkRect Rectangle, logicalRect Rectang
 	var _inkRect Rectangle     // out
 	var _logicalRect Rectangle // out
 
-	{
-		var refTmpIn *C.PangoRectangle
-		var refTmpOut *Rectangle
-
-		in0 := &_arg2
-		refTmpIn = in0
-
-		refTmpOut = (*Rectangle)(unsafe.Pointer(refTmpIn))
-
-		_inkRect = *refTmpOut
-	}
-	{
-		var refTmpIn *C.PangoRectangle
-		var refTmpOut *Rectangle
-
-		in0 := &_arg3
-		refTmpIn = in0
-
-		refTmpOut = (*Rectangle)(unsafe.Pointer(refTmpIn))
-
-		_logicalRect = *refTmpOut
-	}
+	_inkRect = (Rectangle)(unsafe.Pointer(_arg2))
+	_logicalRect = (Rectangle)(unsafe.Pointer(_arg3))
 
 	return _inkRect, _logicalRect
 }
 
-// ExtentsRange: convert from x offset to character position.
+// ExtentsRange computes the extents of a sub-portion of a glyph string.
 //
-// Character positions are computed by dividing up each cluster into equal
-// portions. In scripts where positioning within a cluster is not allowed (such
-// as Thai), the returned value may not be a valid cursor position; the caller
-// must combine the result with the logical attributes for the text to compute
-// the valid cursor position.
+// The extents are relative to the start of the glyph string range (the origin
+// of their coordinate system is at the start of the range, not at the start of
+// the entire glyph string).
 func (g *GlyphString) ExtentsRange(start int, end int, font Font) (inkRect Rectangle, logicalRect Rectangle) {
 	var _arg0 *C.PangoGlyphString // out
 	var _arg1 C.int               // out
 	var _arg2 C.int               // out
 	var _arg3 *C.PangoFont        // out
-	var _arg4 C.PangoRectangle    // in
-	var _arg5 C.PangoRectangle    // in
+	var _arg4 *C.PangoRectangle   // in
+	var _arg5 *C.PangoRectangle   // in
 
-	_arg0 = (*C.PangoGlyphString)(unsafe.Pointer(g.Native()))
+	_arg0 = (*C.PangoGlyphString)(unsafe.Pointer(g))
 	_arg1 = C.int(start)
 	_arg2 = C.int(end)
 	_arg3 = (*C.PangoFont)(unsafe.Pointer(font.Native()))
@@ -216,59 +196,32 @@ func (g *GlyphString) ExtentsRange(start int, end int, font Font) (inkRect Recta
 	var _inkRect Rectangle     // out
 	var _logicalRect Rectangle // out
 
-	{
-		var refTmpIn *C.PangoRectangle
-		var refTmpOut *Rectangle
-
-		in0 := &_arg4
-		refTmpIn = in0
-
-		refTmpOut = (*Rectangle)(unsafe.Pointer(refTmpIn))
-
-		_inkRect = *refTmpOut
-	}
-	{
-		var refTmpIn *C.PangoRectangle
-		var refTmpOut *Rectangle
-
-		in0 := &_arg5
-		refTmpIn = in0
-
-		refTmpOut = (*Rectangle)(unsafe.Pointer(refTmpIn))
-
-		_logicalRect = *refTmpOut
-	}
+	_inkRect = (Rectangle)(unsafe.Pointer(_arg4))
+	_logicalRect = (Rectangle)(unsafe.Pointer(_arg5))
 
 	return _inkRect, _logicalRect
 }
 
-// Free: convert from x offset to character position.
-//
-// Character positions are computed by dividing up each cluster into equal
-// portions. In scripts where positioning within a cluster is not allowed (such
-// as Thai), the returned value may not be a valid cursor position; the caller
-// must combine the result with the logical attributes for the text to compute
-// the valid cursor position.
-func (g *GlyphString) Free() {
+// Free a glyph string and associated storage.
+func (s *GlyphString) Free() {
 	var _arg0 *C.PangoGlyphString // out
 
-	_arg0 = (*C.PangoGlyphString)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.PangoGlyphString)(unsafe.Pointer(s))
 
 	C.pango_glyph_string_free(_arg0)
 }
 
-// Width: convert from x offset to character position.
+// Width computes the logical width of the glyph string.
 //
-// Character positions are computed by dividing up each cluster into equal
-// portions. In scripts where positioning within a cluster is not allowed (such
-// as Thai), the returned value may not be a valid cursor position; the caller
-// must combine the result with the logical attributes for the text to compute
-// the valid cursor position.
+// This can also be computed using [method@Pango.GlyphString.extents]. However,
+// since this only computes the width, it's much faster. This is in fact only a
+// convenience function that computes the sum of @geometry.width for each glyph
+// in the @glyphs.
 func (g *GlyphString) Width() int {
 	var _arg0 *C.PangoGlyphString // out
 	var _cret C.int               // in
 
-	_arg0 = (*C.PangoGlyphString)(unsafe.Pointer(g.Native()))
+	_arg0 = (*C.PangoGlyphString)(unsafe.Pointer(g))
 
 	_cret = C.pango_glyph_string_get_width(_arg0)
 
@@ -279,29 +232,25 @@ func (g *GlyphString) Width() int {
 	return _gint
 }
 
-// SetSize: convert from x offset to character position.
-//
-// Character positions are computed by dividing up each cluster into equal
-// portions. In scripts where positioning within a cluster is not allowed (such
-// as Thai), the returned value may not be a valid cursor position; the caller
-// must combine the result with the logical attributes for the text to compute
-// the valid cursor position.
-func (g *GlyphString) SetSize(newLen int) {
+// SetSize: resize a glyph string to the given length.
+func (s *GlyphString) SetSize(newLen int) {
 	var _arg0 *C.PangoGlyphString // out
 	var _arg1 C.gint              // out
 
-	_arg0 = (*C.PangoGlyphString)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.PangoGlyphString)(unsafe.Pointer(s))
 	_arg1 = C.gint(newLen)
 
 	C.pango_glyph_string_set_size(_arg0, _arg1)
 }
 
-// GlyphVisAttr: a `PangoGlyphVisAttr` structure communicates information
-// between the shaping and rendering phases.
+// GlyphVisAttr: `PangoGlyphVisAttr` structure communicates information between
+// the shaping and rendering phases.
 //
 // Currently, it contains only cluster start information. yMore attributes may
 // be added in the future.
-type GlyphVisAttr C.PangoGlyphVisAttr
+type GlyphVisAttr struct {
+	native C.PangoGlyphVisAttr
+}
 
 // WrapGlyphVisAttr wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -311,5 +260,5 @@ func WrapGlyphVisAttr(ptr unsafe.Pointer) *GlyphVisAttr {
 
 // Native returns the underlying C source pointer.
 func (g *GlyphVisAttr) Native() unsafe.Pointer {
-	return unsafe.Pointer(g)
+	return unsafe.Pointer(&g.native)
 }

@@ -5,9 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -48,39 +46,84 @@ func init() {
 // .right style class.
 type MenuItem interface {
 	Bin
-	Actionable
-	Activatable
 
+	// AsActionable casts the class to the Actionable interface.
+	AsActionable() Actionable
+	// AsActivatable casts the class to the Activatable interface.
+	AsActivatable() Activatable
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+
+	// ActivateMenuItem emits the MenuItem::activate signal on the given item
 	ActivateMenuItem()
-
+	// DeselectMenuItem emits the MenuItem::deselect signal on the given item.
 	DeselectMenuItem()
-
+	// AccelPath: retrieve the accelerator path that was previously set on
+	// @menu_item.
+	//
+	// See gtk_menu_item_set_accel_path() for details.
 	AccelPath() string
-
+	// Label sets @text on the @menu_item label
 	Label() string
-
+	// ReserveIndicator returns whether the @menu_item reserves space for the
+	// submenu indicator, regardless if it has a submenu or not.
 	ReserveIndicator() bool
-
+	// RightJustified gets whether the menu item appears justified at the right
+	// side of the menu bar.
+	//
+	// Deprecated: since version 3.2.
 	RightJustified() bool
-
+	// Submenu gets the submenu underneath this menu item, if any. See
+	// gtk_menu_item_set_submenu().
 	Submenu() Widget
-
+	// UseUnderline checks if an underline in the text indicates the next
+	// character should be used for the mnemonic accelerator key.
 	UseUnderline() bool
-
+	// SelectMenuItem emits the MenuItem::select signal on the given item.
 	SelectMenuItem()
-
+	// SetAccelPathMenuItem: set the accelerator path on @menu_item, through
+	// which runtime changes of the menu item’s accelerator caused by the user
+	// can be identified and saved to persistent storage (see
+	// gtk_accel_map_save() on this). To set up a default accelerator for this
+	// menu item, call gtk_accel_map_add_entry() with the same @accel_path. See
+	// also gtk_accel_map_add_entry() on the specifics of accelerator paths, and
+	// gtk_menu_set_accel_path() for a more convenient variant of this function.
+	//
+	// This function is basically a convenience wrapper that handles calling
+	// gtk_widget_set_accel_path() with the appropriate accelerator group for
+	// the menu item.
+	//
+	// Note that you do need to set an accelerator on the parent menu with
+	// gtk_menu_set_accel_group() for this to work.
+	//
+	// Note that @accel_path string will be stored in a #GQuark. Therefore, if
+	// you pass a static string, you can save some memory by interning it first
+	// with g_intern_static_string().
 	SetAccelPathMenuItem(accelPath string)
-
+	// SetLabelMenuItem sets @text on the @menu_item label
 	SetLabelMenuItem(label string)
-
+	// SetReserveIndicatorMenuItem sets whether the @menu_item should reserve
+	// space for the submenu indicator, regardless if it actually has a submenu
+	// or not.
+	//
+	// There should be little need for applications to call this functions.
 	SetReserveIndicatorMenuItem(reserve bool)
-
+	// SetRightJustifiedMenuItem sets whether the menu item appears justified at
+	// the right side of a menu bar. This was traditionally done for “Help” menu
+	// items, but is now considered a bad idea. (If the widget layout is
+	// reversed for a right-to-left language like Hebrew or Arabic,
+	// right-justified-menu-items appear at the left.)
+	//
+	// Deprecated: since version 3.2.
 	SetRightJustifiedMenuItem(rightJustified bool)
-
+	// SetSubmenuMenuItem sets or replaces the menu item’s submenu, or removes
+	// it when a nil submenu is passed.
 	SetSubmenuMenuItem(submenu Menu)
-
+	// SetUseUnderlineMenuItem: if true, an underline in the text indicates the
+	// next character should be used for the mnemonic accelerator key.
 	SetUseUnderlineMenuItem(setting bool)
-
+	// ToggleSizeAllocateMenuItem emits the MenuItem::toggle-size-allocate
+	// signal on the given item.
 	ToggleSizeAllocateMenuItem(allocation int)
 }
 
@@ -103,6 +146,7 @@ func marshalMenuItem(p uintptr) (interface{}, error) {
 	return WrapMenuItem(obj), nil
 }
 
+// NewMenuItem creates a new MenuItem.
 func NewMenuItem() MenuItem {
 	var _cret *C.GtkWidget // in
 
@@ -110,11 +154,12 @@ func NewMenuItem() MenuItem {
 
 	var _menuItem MenuItem // out
 
-	_menuItem = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(MenuItem)
+	_menuItem = WrapMenuItem(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _menuItem
 }
 
+// NewMenuItemWithLabel creates a new MenuItem whose child is a Label.
 func NewMenuItemWithLabel(label string) MenuItem {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -126,11 +171,15 @@ func NewMenuItemWithLabel(label string) MenuItem {
 
 	var _menuItem MenuItem // out
 
-	_menuItem = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(MenuItem)
+	_menuItem = WrapMenuItem(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _menuItem
 }
 
+// NewMenuItemWithMnemonic creates a new MenuItem containing a label.
+//
+// The label will be created using gtk_label_new_with_mnemonic(), so underscores
+// in @label indicate the mnemonic for the menu item.
 func NewMenuItemWithMnemonic(label string) MenuItem {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -142,7 +191,7 @@ func NewMenuItemWithMnemonic(label string) MenuItem {
 
 	var _menuItem MenuItem // out
 
-	_menuItem = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(MenuItem)
+	_menuItem = WrapMenuItem(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _menuItem
 }
@@ -345,126 +394,14 @@ func (m menuItem) ToggleSizeAllocateMenuItem(allocation int) {
 	C.gtk_menu_item_toggle_size_allocate(_arg0, _arg1)
 }
 
-func (b menuItem) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+func (m menuItem) AsActionable() Actionable {
+	return WrapActionable(gextras.InternObject(m))
 }
 
-func (b menuItem) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+func (m menuItem) AsActivatable() Activatable {
+	return WrapActivatable(gextras.InternObject(m))
 }
 
-func (b menuItem) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b menuItem) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b menuItem) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b menuItem) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b menuItem) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b menuItem) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b menuItem) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b menuItem) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (a menuItem) ActionName() string {
-	return WrapActionable(gextras.InternObject(a)).ActionName()
-}
-
-func (a menuItem) ActionTargetValue() *glib.Variant {
-	return WrapActionable(gextras.InternObject(a)).ActionTargetValue()
-}
-
-func (a menuItem) SetActionName(actionName string) {
-	WrapActionable(gextras.InternObject(a)).SetActionName(actionName)
-}
-
-func (a menuItem) SetActionTargetValue(targetValue *glib.Variant) {
-	WrapActionable(gextras.InternObject(a)).SetActionTargetValue(targetValue)
-}
-
-func (a menuItem) SetDetailedActionName(detailedActionName string) {
-	WrapActionable(gextras.InternObject(a)).SetDetailedActionName(detailedActionName)
-}
-
-func (b menuItem) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
-}
-
-func (b menuItem) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b menuItem) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b menuItem) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b menuItem) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b menuItem) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b menuItem) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b menuItem) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b menuItem) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b menuItem) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (a menuItem) DoSetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).DoSetRelatedAction(action)
-}
-
-func (a menuItem) RelatedAction() Action {
-	return WrapActivatable(gextras.InternObject(a)).RelatedAction()
-}
-
-func (a menuItem) UseActionAppearance() bool {
-	return WrapActivatable(gextras.InternObject(a)).UseActionAppearance()
-}
-
-func (a menuItem) SetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SetRelatedAction(action)
-}
-
-func (a menuItem) SetUseActionAppearance(useAppearance bool) {
-	WrapActivatable(gextras.InternObject(a)).SetUseActionAppearance(useAppearance)
-}
-
-func (a menuItem) SyncActionProperties(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SyncActionProperties(action)
+func (m menuItem) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(m))
 }

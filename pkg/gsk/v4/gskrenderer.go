@@ -40,16 +40,37 @@ func init() {
 type Renderer interface {
 	gextras.Objector
 
+	// Surface retrieves the `GdkSurface` set using gsk_enderer_realize().
+	//
+	// If the renderer has not been realized yet, nil will be returned.
 	Surface() gdk.Surface
-
+	// IsRealizedRenderer checks whether the @renderer is realized or not.
 	IsRealizedRenderer() bool
-
+	// RealizeRenderer creates the resources needed by the @renderer to render
+	// the scene graph.
 	RealizeRenderer(surface gdk.Surface) error
-
-	RenderRenderer(root RenderNode, region *cairo.Region)
-
-	RenderTextureRenderer(root RenderNode, viewport *graphene.Rect) gdk.Texture
-
+	// RenderRenderer renders the scene graph, described by a tree of
+	// `GskRenderNode` instances, ensuring that the given @region gets redrawn.
+	//
+	// Renderers must ensure that changes of the contents given by the @root
+	// node as well as the area given by @region are redrawn. They are however
+	// free to not redraw any pixel outside of @region if they can guarantee
+	// that it didn't change.
+	//
+	// The @renderer will acquire a reference on the `GskRenderNode` tree while
+	// the rendering is in progress.
+	RenderRenderer(root RenderNode, region cairo.Region)
+	// RenderTextureRenderer renders the scene graph, described by a tree of
+	// `GskRenderNode` instances, to a `GdkTexture`.
+	//
+	// The @renderer will acquire a reference on the `GskRenderNode` tree while
+	// the rendering is in progress.
+	//
+	// If you want to apply any transformations to @root, you should put it into
+	// a transform node and pass that node instead.
+	RenderTextureRenderer(root RenderNode, viewport graphene.Rect) gdk.Texture
+	// UnrealizeRenderer releases all the resources created by
+	// gsk_renderer_realize().
 	UnrealizeRenderer()
 }
 
@@ -72,6 +93,14 @@ func marshalRenderer(p uintptr) (interface{}, error) {
 	return WrapRenderer(obj), nil
 }
 
+// NewRendererForSurface creates an appropriate `GskRenderer` instance for the
+// given @surface.
+//
+// If the `GSK_RENDERER` environment variable is set, GSK will try that renderer
+// first, before trying the backend-specific default. The ultimate fallback is
+// the cairo renderer.
+//
+// The renderer will be realized before it is returned.
 func NewRendererForSurface(surface gdk.Surface) Renderer {
 	var _arg1 *C.GdkSurface  // out
 	var _cret *C.GskRenderer // in
@@ -82,7 +111,7 @@ func NewRendererForSurface(surface gdk.Surface) Renderer {
 
 	var _renderer Renderer // out
 
-	_renderer = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Renderer)
+	_renderer = WrapRenderer(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _renderer
 }
@@ -122,7 +151,7 @@ func (r renderer) IsRealizedRenderer() bool {
 func (r renderer) RealizeRenderer(surface gdk.Surface) error {
 	var _arg0 *C.GskRenderer // out
 	var _arg1 *C.GdkSurface  // out
-	var _cerr *C.GError      // in
+	var _cerr **C.GError     // in
 
 	_arg0 = (*C.GskRenderer)(unsafe.Pointer(r.Native()))
 	_arg1 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
@@ -131,24 +160,33 @@ func (r renderer) RealizeRenderer(surface gdk.Surface) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _goerr
 }
 
-func (r renderer) RenderRenderer(root RenderNode, region *cairo.Region) {
+func (r renderer) RenderRenderer(root RenderNode, region cairo.Region) {
 	var _arg0 *C.GskRenderer    // out
 	var _arg1 *C.GskRenderNode  // out
 	var _arg2 *C.cairo_region_t // out
 
 	_arg0 = (*C.GskRenderer)(unsafe.Pointer(r.Native()))
 	_arg1 = (*C.GskRenderNode)(unsafe.Pointer(root.Native()))
-	_arg2 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
+	_arg2 = (*C.cairo_region_t)(unsafe.Pointer(region))
 
 	C.gsk_renderer_render(_arg0, _arg1, _arg2)
 }
 
-func (r renderer) RenderTextureRenderer(root RenderNode, viewport *graphene.Rect) gdk.Texture {
+func (r renderer) RenderTextureRenderer(root RenderNode, viewport graphene.Rect) gdk.Texture {
 	var _arg0 *C.GskRenderer     // out
 	var _arg1 *C.GskRenderNode   // out
 	var _arg2 *C.graphene_rect_t // out
@@ -156,7 +194,7 @@ func (r renderer) RenderTextureRenderer(root RenderNode, viewport *graphene.Rect
 
 	_arg0 = (*C.GskRenderer)(unsafe.Pointer(r.Native()))
 	_arg1 = (*C.GskRenderNode)(unsafe.Pointer(root.Native()))
-	_arg2 = (*C.graphene_rect_t)(unsafe.Pointer(viewport.Native()))
+	_arg2 = (*C.graphene_rect_t)(unsafe.Pointer(viewport))
 
 	_cret = C.gsk_renderer_render_texture(_arg0, _arg1, _arg2)
 

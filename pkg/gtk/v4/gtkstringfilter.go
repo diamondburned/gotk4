@@ -56,20 +56,26 @@ func marshalStringFilterMatchMode(p uintptr) (interface{}, error) {
 type StringFilter interface {
 	Filter
 
+	// Expression gets the expression that the string filter uses to obtain
+	// strings from items.
 	Expression() Expression
-
+	// IgnoreCase returns whether the filter ignores case differences.
 	IgnoreCase() bool
-
+	// MatchMode returns the match mode that the filter is using.
 	MatchMode() StringFilterMatchMode
-
+	// Search gets the search term.
 	Search() string
-
+	// SetExpressionStringFilter sets the expression that the string filter uses
+	// to obtain strings from items.
+	//
+	// The expression must have a value type of G_TYPE_STRING.
 	SetExpressionStringFilter(expression Expression)
-
+	// SetIgnoreCaseStringFilter sets whether the filter ignores case
+	// differences.
 	SetIgnoreCaseStringFilter(ignoreCase bool)
-
+	// SetMatchModeStringFilter sets the match mode for the filter.
 	SetMatchModeStringFilter(mode StringFilterMatchMode)
-
+	// SetSearchStringFilter sets the string to search for.
 	SetSearchStringFilter(search string)
 }
 
@@ -92,6 +98,10 @@ func marshalStringFilter(p uintptr) (interface{}, error) {
 	return WrapStringFilter(obj), nil
 }
 
+// NewStringFilter creates a new string filter.
+//
+// You will want to set up the filter by providing a string to search for and by
+// providing a property to look up on the item.
 func NewStringFilter(expression Expression) StringFilter {
 	var _arg1 *C.GtkExpression   // out
 	var _cret *C.GtkStringFilter // in
@@ -102,7 +112,7 @@ func NewStringFilter(expression Expression) StringFilter {
 
 	var _stringFilter StringFilter // out
 
-	_stringFilter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(StringFilter)
+	_stringFilter = WrapStringFilter(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _stringFilter
 }

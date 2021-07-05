@@ -5,9 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -58,16 +56,38 @@ func marshalButtonBoxStyle(p uintptr) (interface{}, error) {
 type ButtonBox interface {
 	Box
 
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsOrientable casts the class to the Orientable interface.
+	AsOrientable() Orientable
+
+	// ChildNonHomogeneous returns whether the child is exempted from homogenous
+	// sizing.
 	ChildNonHomogeneous(child Widget) bool
-
+	// ChildSecondary returns whether @child should appear in a secondary group
+	// of children.
 	ChildSecondary(child Widget) bool
-
+	// Layout retrieves the method being used to arrange the buttons in a button
+	// box.
 	Layout() ButtonBoxStyle
-
+	// SetChildNonHomogeneousButtonBox sets whether the child is exempted from
+	// homogeous sizing.
 	SetChildNonHomogeneousButtonBox(child Widget, nonHomogeneous bool)
-
+	// SetChildSecondaryButtonBox sets whether @child should appear in a
+	// secondary group of children. A typical use of a secondary child is the
+	// help button in a dialog.
+	//
+	// This group appears after the other children if the style is
+	// GTK_BUTTONBOX_START, GTK_BUTTONBOX_SPREAD or GTK_BUTTONBOX_EDGE, and
+	// before the other children if the style is GTK_BUTTONBOX_END. For
+	// horizontal button boxes, the definition of before/after depends on
+	// direction of the widget (see gtk_widget_set_direction()). If the style is
+	// GTK_BUTTONBOX_START or GTK_BUTTONBOX_END, then the secondary children are
+	// aligned at the other end of the button box from the main children. For
+	// the other styles, they appear immediately next to the main children.
 	SetChildSecondaryButtonBox(child Widget, isSecondary bool)
-
+	// SetLayoutButtonBox changes the way buttons are arranged in their
+	// container.
 	SetLayoutButtonBox(layoutStyle ButtonBoxStyle)
 }
 
@@ -90,6 +110,7 @@ func marshalButtonBox(p uintptr) (interface{}, error) {
 	return WrapButtonBox(obj), nil
 }
 
+// NewButtonBox creates a new ButtonBox.
 func NewButtonBox(orientation Orientation) ButtonBox {
 	var _arg1 C.GtkOrientation // out
 	var _cret *C.GtkWidget     // in
@@ -100,7 +121,7 @@ func NewButtonBox(orientation Orientation) ButtonBox {
 
 	var _buttonBox ButtonBox // out
 
-	_buttonBox = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ButtonBox)
+	_buttonBox = WrapButtonBox(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _buttonBox
 }
@@ -196,50 +217,10 @@ func (w buttonBox) SetLayoutButtonBox(layoutStyle ButtonBoxStyle) {
 	C.gtk_button_box_set_layout(_arg0, _arg1)
 }
 
-func (b buttonBox) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+func (b buttonBox) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(b))
 }
 
-func (b buttonBox) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b buttonBox) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b buttonBox) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b buttonBox) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b buttonBox) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b buttonBox) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b buttonBox) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b buttonBox) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b buttonBox) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (o buttonBox) Orientation() Orientation {
-	return WrapOrientable(gextras.InternObject(o)).Orientation()
-}
-
-func (o buttonBox) SetOrientation(orientation Orientation) {
-	WrapOrientable(gextras.InternObject(o)).SetOrientation(orientation)
+func (b buttonBox) AsOrientable() Orientable {
+	return WrapOrientable(gextras.InternObject(b))
 }

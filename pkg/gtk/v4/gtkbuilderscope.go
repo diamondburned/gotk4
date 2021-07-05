@@ -82,7 +82,7 @@ func marshalBuilderScope(p uintptr) (interface{}, error) {
 	return WrapBuilderScope(obj), nil
 }
 
-// BuilderCScope: a `GtkBuilderScope` implementation for the C language.
+// BuilderCScope: `GtkBuilderScope` implementation for the C language.
 //
 // `GtkBuilderCScope` instances use symbols explicitly added to @builder with
 // prior calls to [method@Gtk.BuilderCScope.add_callback_symbol]. If developers
@@ -98,7 +98,10 @@ func marshalBuilderScope(p uintptr) (interface{}, error) {
 // all signal callbacks which are referenced by the loaded XML, this
 // functionality will require that `GModule` be supported on the platform.
 type BuilderCScope interface {
-	BuilderScope
+	gextras.Objector
+
+	// AsBuilderScope casts the class to the BuilderScope interface.
+	AsBuilderScope() BuilderScope
 }
 
 // builderCScope implements the BuilderCScope class.
@@ -120,6 +123,11 @@ func marshalBuilderCScope(p uintptr) (interface{}, error) {
 	return WrapBuilderCScope(obj), nil
 }
 
+// NewBuilderCScope creates a new `GtkBuilderCScope` object to use with future
+// `GtkBuilder` instances.
+//
+// Calling this function is only necessary if you want to add custom callbacks
+// via [method@Gtk.BuilderCScope.add_callback_symbol].
 func NewBuilderCScope() BuilderCScope {
 	var _cret *C.GtkBuilderScope // in
 
@@ -127,7 +135,11 @@ func NewBuilderCScope() BuilderCScope {
 
 	var _builderCScope BuilderCScope // out
 
-	_builderCScope = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(BuilderCScope)
+	_builderCScope = WrapBuilderCScope(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _builderCScope
+}
+
+func (b builderCScope) AsBuilderScope() BuilderScope {
+	return WrapBuilderScope(gextras.InternObject(b))
 }

@@ -4,8 +4,6 @@ package glib
 
 import (
 	"unsafe"
-
-	"github.com/diamondburned/gotk4/pkg/core/box"
 )
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
@@ -640,15 +638,6 @@ func GetUserSpecialDir(directory UserDirectory) string {
 	return _filename
 }
 
-// NullifyPointer: set the pointer at the specified location to nil.
-func NullifyPointer(nullifyLocation *interface{}) {
-	var _arg1 *C.gpointer // out
-
-	_arg1 = *C.gpointer(box.Assign(unsafe.Pointer(nullifyLocation)))
-
-	C.g_nullify_pointer(_arg1)
-}
-
 // ParseDebugString parses a string containing debugging options into a guint
 // containing bit flags. This is used within GDK and GTK+ to parse the debug
 // options passed on the command line or through environment variables.
@@ -729,7 +718,9 @@ func SetPrgname(prgname string) {
 }
 
 // DebugKey associates a string with a bit flag. Used in g_parse_debug_string().
-type DebugKey C.GDebugKey
+type DebugKey struct {
+	native C.GDebugKey
+}
 
 // WrapDebugKey wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -739,5 +730,5 @@ func WrapDebugKey(ptr unsafe.Pointer) *DebugKey {
 
 // Native returns the underlying C source pointer.
 func (d *DebugKey) Native() unsafe.Pointer {
-	return unsafe.Pointer(d)
+	return unsafe.Pointer(&d.native)
 }

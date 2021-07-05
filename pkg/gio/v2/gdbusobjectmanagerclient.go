@@ -5,7 +5,6 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -26,8 +25,6 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 // #include <glib-object.h>
-//
-// void gotk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 func init() {
@@ -100,16 +97,26 @@ func init() {
 // the same context and, consequently, will deliver signals in the same main
 // loop.
 type DBusObjectManagerClient interface {
-	AsyncInitable
-	DBusObjectManager
-	Initable
+	gextras.Objector
 
+	// AsAsyncInitable casts the class to the AsyncInitable interface.
+	AsAsyncInitable() AsyncInitable
+	// AsDBusObjectManager casts the class to the DBusObjectManager interface.
+	AsDBusObjectManager() DBusObjectManager
+	// AsInitable casts the class to the Initable interface.
+	AsInitable() Initable
+
+	// Connection gets the BusConnection used by @manager.
 	Connection() DBusConnection
-
+	// Flags gets the flags that @manager was constructed with.
 	Flags() DBusObjectManagerClientFlags
-
+	// Name gets the name that @manager is for, or nil if not a message bus
+	// connection.
 	Name() string
-
+	// NameOwner: the unique name that owns the name that @manager is for or nil
+	// if no-one currently owns that name. You can connect to the
+	// #GObject::notify signal to track changes to the
+	// BusObjectManagerClient:name-owner property.
 	NameOwner() string
 }
 
@@ -132,10 +139,12 @@ func marshalDBusObjectManagerClient(p uintptr) (interface{}, error) {
 	return WrapDBusObjectManagerClient(obj), nil
 }
 
+// NewDBusObjectManagerClientFinish finishes an operation started with
+// g_dbus_object_manager_client_new().
 func NewDBusObjectManagerClientFinish(res AsyncResult) (DBusObjectManagerClient, error) {
 	var _arg1 *C.GAsyncResult       // out
 	var _cret *C.GDBusObjectManager // in
-	var _cerr *C.GError             // in
+	var _cerr **C.GError            // in
 
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
@@ -144,16 +153,27 @@ func NewDBusObjectManagerClientFinish(res AsyncResult) (DBusObjectManagerClient,
 	var _dBusObjectManagerClient DBusObjectManagerClient // out
 	var _goerr error                                     // out
 
-	_dBusObjectManagerClient = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(DBusObjectManagerClient)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	_dBusObjectManagerClient = WrapDBusObjectManagerClient(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _dBusObjectManagerClient, _goerr
 }
 
+// NewDBusObjectManagerClientForBusFinish finishes an operation started with
+// g_dbus_object_manager_client_new_for_bus().
 func NewDBusObjectManagerClientForBusFinish(res AsyncResult) (DBusObjectManagerClient, error) {
 	var _arg1 *C.GAsyncResult       // out
 	var _cret *C.GDBusObjectManager // in
-	var _cerr *C.GError             // in
+	var _cerr **C.GError            // in
 
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
@@ -162,8 +182,17 @@ func NewDBusObjectManagerClientForBusFinish(res AsyncResult) (DBusObjectManagerC
 	var _dBusObjectManagerClient DBusObjectManagerClient // out
 	var _goerr error                                     // out
 
-	_dBusObjectManagerClient = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(DBusObjectManagerClient)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	_dBusObjectManagerClient = WrapDBusObjectManagerClient(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _dBusObjectManagerClient, _goerr
 }
@@ -229,30 +258,14 @@ func (m dBusObjectManagerClient) NameOwner() string {
 	return _utf8
 }
 
-func (i dBusObjectManagerClient) InitAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
-	WrapAsyncInitable(gextras.InternObject(i)).InitAsync(ioPriority, cancellable, callback)
+func (d dBusObjectManagerClient) AsAsyncInitable() AsyncInitable {
+	return WrapAsyncInitable(gextras.InternObject(d))
 }
 
-func (i dBusObjectManagerClient) InitFinish(res AsyncResult) error {
-	return WrapAsyncInitable(gextras.InternObject(i)).InitFinish(res)
+func (d dBusObjectManagerClient) AsDBusObjectManager() DBusObjectManager {
+	return WrapDBusObjectManager(gextras.InternObject(d))
 }
 
-func (i dBusObjectManagerClient) NewFinish(res AsyncResult) (gextras.Objector, error) {
-	return WrapAsyncInitable(gextras.InternObject(i)).NewFinish(res)
-}
-
-func (m dBusObjectManagerClient) Interface(objectPath string, interfaceName string) DBusInterface {
-	return WrapDBusObjectManager(gextras.InternObject(m)).Interface(objectPath, interfaceName)
-}
-
-func (m dBusObjectManagerClient) Object(objectPath string) DBusObject {
-	return WrapDBusObjectManager(gextras.InternObject(m)).Object(objectPath)
-}
-
-func (m dBusObjectManagerClient) ObjectPath() string {
-	return WrapDBusObjectManager(gextras.InternObject(m)).ObjectPath()
-}
-
-func (i dBusObjectManagerClient) Init(cancellable Cancellable) error {
-	return WrapInitable(gextras.InternObject(i)).Init(cancellable)
+func (d dBusObjectManagerClient) AsInitable() Initable {
+	return WrapInitable(gextras.InternObject(d))
 }

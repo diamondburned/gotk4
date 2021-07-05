@@ -3,8 +3,11 @@
 package glib
 
 import (
+	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -45,7 +48,7 @@ const (
 	MarkupErrorMissingAttribute MarkupError = 6
 )
 
-// MarkupCollectType: a mixed enumerated type and flags field. You must specify
+// MarkupCollectType: mixed enumerated type and flags field. You must specify
 // one type (string, strdup, boolean, tristate). Additionally, you may
 // optionally bitwise OR the type with the flag G_MARKUP_COLLECT_OPTIONAL.
 //
@@ -137,11 +140,13 @@ func MarkupEscapeText(text string, length int) string {
 	return _utf8
 }
 
-// MarkupParseContext: a parse context is used to parse a stream of bytes that
-// you expect to contain marked-up text.
+// MarkupParseContext: parse context is used to parse a stream of bytes that you
+// expect to contain marked-up text.
 //
 // See g_markup_parse_context_new(), Parser, and so on for more details.
-type MarkupParseContext C.GMarkupParseContext
+type MarkupParseContext struct {
+	native C.GMarkupParseContext
+}
 
 // WrapMarkupParseContext wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -156,43 +161,60 @@ func marshalMarkupParseContext(p uintptr) (interface{}, error) {
 
 // Native returns the underlying C source pointer.
 func (m *MarkupParseContext) Native() unsafe.Pointer {
-	return unsafe.Pointer(m)
+	return unsafe.Pointer(&m.native)
 }
 
-// EndParse decreases the reference count of @context. When its reference count
-// drops to 0, it is freed.
+// EndParse signals to the ParseContext that all data has been fed into the
+// parse context with g_markup_parse_context_parse().
+//
+// This function reports an error if the document isn't complete, for example if
+// elements are still open.
 func (c *MarkupParseContext) EndParse() error {
 	var _arg0 *C.GMarkupParseContext // out
-	var _cerr *C.GError              // in
+	var _cerr **C.GError             // in
 
-	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c))
 
 	C.g_markup_parse_context_end_parse(_arg0, &_cerr)
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _goerr
 }
 
-// Free decreases the reference count of @context. When its reference count
-// drops to 0, it is freed.
+// Free frees a ParseContext.
+//
+// This function can't be called from inside one of the Parser functions or
+// while a subparser is pushed.
 func (c *MarkupParseContext) Free() {
 	var _arg0 *C.GMarkupParseContext // out
 
-	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c))
 
 	C.g_markup_parse_context_free(_arg0)
 }
 
-// Element decreases the reference count of @context. When its reference count
-// drops to 0, it is freed.
+// Element retrieves the name of the currently open element.
+//
+// If called from the start_element or end_element handlers this will give the
+// element_name as passed to those functions. For the parent elements, see
+// g_markup_parse_context_get_element_stack().
 func (c *MarkupParseContext) Element() string {
 	var _arg0 *C.GMarkupParseContext // out
 	var _cret *C.gchar               // in
 
-	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c))
 
 	_cret = C.g_markup_parse_context_get_element(_arg0)
 
@@ -203,14 +225,16 @@ func (c *MarkupParseContext) Element() string {
 	return _utf8
 }
 
-// Position decreases the reference count of @context. When its reference count
-// drops to 0, it is freed.
+// Position retrieves the current line number and the number of the character on
+// that line. Intended for use in error messages; there are no strict semantics
+// for what constitutes the "current" line number other than "the best number we
+// could come up with for error messages."
 func (c *MarkupParseContext) Position() (lineNumber int, charNumber int) {
 	var _arg0 *C.GMarkupParseContext // out
-	var _arg1 C.gint                 // in
-	var _arg2 C.gint                 // in
+	var _arg1 *C.gint                // in
+	var _arg2 *C.gint                // in
 
-	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c))
 
 	C.g_markup_parse_context_get_position(_arg0, &_arg1, &_arg2)
 
@@ -223,13 +247,16 @@ func (c *MarkupParseContext) Position() (lineNumber int, charNumber int) {
 	return _lineNumber, _charNumber
 }
 
-// UserData decreases the reference count of @context. When its reference count
-// drops to 0, it is freed.
+// UserData returns the user_data associated with @context.
+//
+// This will either be the user_data that was provided to
+// g_markup_parse_context_new() or to the most recent call of
+// g_markup_parse_context_push().
 func (c *MarkupParseContext) UserData() interface{} {
 	var _arg0 *C.GMarkupParseContext // out
 	var _cret C.gpointer             // in
 
-	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c))
 
 	_cret = C.g_markup_parse_context_get_user_data(_arg0)
 
@@ -240,15 +267,22 @@ func (c *MarkupParseContext) UserData() interface{} {
 	return _gpointer
 }
 
-// Parse decreases the reference count of @context. When its reference count
-// drops to 0, it is freed.
+// Parse: feed some data to the ParseContext.
+//
+// The data need not be valid UTF-8; an error will be signaled if it's invalid.
+// The data need not be an entire document; you can feed a document into the
+// parser incrementally, via multiple calls to this function. Typically, as you
+// receive data from a network connection or file, you feed each received chunk
+// of data into this function, aborting the process if an error occurs. Once an
+// error is reported, no further data may be fed to the ParseContext; all errors
+// are fatal.
 func (c *MarkupParseContext) Parse(text string, textLen int) error {
 	var _arg0 *C.GMarkupParseContext // out
 	var _arg1 *C.gchar               // out
 	var _arg2 C.gssize               // out
-	var _cerr *C.GError              // in
+	var _cerr **C.GError             // in
 
-	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c))
 	_arg1 = (*C.gchar)(C.CString(text))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gssize(textLen)
@@ -257,18 +291,37 @@ func (c *MarkupParseContext) Parse(text string, textLen int) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _goerr
 }
 
-// Pop decreases the reference count of @context. When its reference count drops
-// to 0, it is freed.
+// Pop completes the process of a temporary sub-parser redirection.
+//
+// This function exists to collect the user_data allocated by a matching call to
+// g_markup_parse_context_push(). It must be called in the end_element handler
+// corresponding to the start_element handler during which
+// g_markup_parse_context_push() was called. You must not call this function
+// from the error callback -- the @user_data is provided directly to the
+// callback in that case.
+//
+// This function is not intended to be directly called by users interested in
+// invoking subparsers. Instead, it is intended to be used by the subparsers
+// themselves to implement a higher-level interface.
 func (c *MarkupParseContext) Pop() interface{} {
 	var _arg0 *C.GMarkupParseContext // out
 	var _cret C.gpointer             // in
 
-	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c))
 
 	_cret = C.g_markup_parse_context_pop(_arg0)
 
@@ -279,35 +332,75 @@ func (c *MarkupParseContext) Pop() interface{} {
 	return _gpointer
 }
 
-// Push decreases the reference count of @context. When its reference count
-// drops to 0, it is freed.
-func (c *MarkupParseContext) Push(parser *MarkupParser, userData interface{}) {
+// Push: temporarily redirects markup data to a sub-parser.
+//
+// This function may only be called from the start_element handler of a Parser.
+// It must be matched with a corresponding call to g_markup_parse_context_pop()
+// in the matching end_element handler (except in the case that the parser
+// aborts due to an error).
+//
+// All tags, text and other data between the matching tags is redirected to the
+// subparser given by @parser. @user_data is used as the user_data for that
+// parser. @user_data is also passed to the error callback in the event that an
+// error occurs. This includes errors that occur in subparsers of the subparser.
+//
+// The end tag matching the start tag for which this call was made is handled by
+// the previous parser (which is given its own user_data) which is why
+// g_markup_parse_context_pop() is provided to allow "one last access" to the
+// @user_data provided to this function. In the case of error, the @user_data
+// provided here is passed directly to the error callback of the subparser and
+// g_markup_parse_context_pop() should not be called. In either case, if
+// @user_data was allocated then it ought to be freed from both of these
+// locations.
+//
+// This function is not intended to be directly called by users interested in
+// invoking subparsers. Instead, it is intended to be used by the subparsers
+// themselves to implement a higher-level interface.
+//
+// As an example, see the following implementation of a simple parser that
+// counts the number of tags encountered.
+//
+//    static void start_element (context, element_name, ...)
+//    {
+//      if (strcmp (element_name, "count-these") == 0)
+//        start_counting (context);
+//
+//      // else, handle other tags...
+//    }
+//
+//    static void end_element (context, element_name, ...)
+//    {
+//      if (strcmp (element_name, "count-these") == 0)
+//        g_print ("Counted d tags\n", end_counting (context));
+//
+//      // else, handle other tags...
+//    }
+func (c *MarkupParseContext) Push(parser MarkupParser, userData interface{}) {
 	var _arg0 *C.GMarkupParseContext // out
 	var _arg1 *C.GMarkupParser       // out
 	var _arg2 C.gpointer             // out
 
-	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c.Native()))
-	_arg1 = (*C.GMarkupParser)(unsafe.Pointer(parser.Native()))
-	_arg2 = C.gpointer(box.Assign(unsafe.Pointer(userData)))
+	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c))
+	_arg1 = (*C.GMarkupParser)(unsafe.Pointer(parser))
+	_arg2 = C.gpointer(box.Assign(userData))
 
 	C.g_markup_parse_context_push(_arg0, _arg1, _arg2)
 }
 
-// Ref decreases the reference count of @context. When its reference count drops
-// to 0, it is freed.
-func (c *MarkupParseContext) Ref() *MarkupParseContext {
+// Ref increases the reference count of @context.
+func (c *MarkupParseContext) Ref() MarkupParseContext {
 	var _arg0 *C.GMarkupParseContext // out
 	var _cret *C.GMarkupParseContext // in
 
-	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c))
 
 	_cret = C.g_markup_parse_context_ref(_arg0)
 
-	var _markupParseContext *MarkupParseContext // out
+	var _markupParseContext MarkupParseContext // out
 
-	_markupParseContext = (*MarkupParseContext)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(&_markupParseContext, func(v **MarkupParseContext) {
-		C.free(unsafe.Pointer(v))
+	_markupParseContext = (MarkupParseContext)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_markupParseContext, func(v MarkupParseContext) {
+		C.g_markup_parse_context_unref((*C.GMarkupParseContext)(unsafe.Pointer(v)))
 	})
 
 	return _markupParseContext
@@ -318,7 +411,7 @@ func (c *MarkupParseContext) Ref() *MarkupParseContext {
 func (c *MarkupParseContext) Unref() {
 	var _arg0 *C.GMarkupParseContext // out
 
-	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c))
 
 	C.g_markup_parse_context_unref(_arg0)
 }
@@ -330,7 +423,9 @@ func (c *MarkupParseContext) Unref() {
 // are intended to be set from these callbacks. If you set an error from a
 // callback, g_markup_parse_context_parse() will report that error back to its
 // caller.
-type MarkupParser C.GMarkupParser
+type MarkupParser struct {
+	native C.GMarkupParser
+}
 
 // WrapMarkupParser wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -340,5 +435,5 @@ func WrapMarkupParser(ptr unsafe.Pointer) *MarkupParser {
 
 // Native returns the underlying C source pointer.
 func (m *MarkupParser) Native() unsafe.Pointer {
-	return unsafe.Pointer(m)
+	return unsafe.Pointer(&m.native)
 }

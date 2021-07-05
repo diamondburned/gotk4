@@ -3,6 +3,7 @@
 package glib
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -154,7 +155,9 @@ func init() {
 // to G_VARIANT_TYPE_DICTIONARY. Note that, due to the restriction that the key
 // of a dictionary entry must be a basic type, "{**}" is not a valid type
 // string.
-type VariantType C.GVariantType
+type VariantType struct {
+	native C.GVariantType
+}
 
 // WrapVariantType wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -168,7 +171,7 @@ func marshalVariantType(p uintptr) (interface{}, error) {
 }
 
 // NewVariantType constructs a struct VariantType.
-func NewVariantType(typeString string) *VariantType {
+func NewVariantType(typeString string) VariantType {
 	var _arg1 *C.gchar        // out
 	var _cret *C.GVariantType // in
 
@@ -177,77 +180,77 @@ func NewVariantType(typeString string) *VariantType {
 
 	_cret = C.g_variant_type_new(_arg1)
 
-	var _variantType *VariantType // out
+	var _variantType VariantType // out
 
-	_variantType = (*VariantType)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(&_variantType, func(v **VariantType) {
-		C.free(unsafe.Pointer(v))
+	_variantType = (VariantType)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_variantType, func(v VariantType) {
+		C.g_variant_type_free((*C.GVariantType)(unsafe.Pointer(v)))
 	})
 
 	return _variantType
 }
 
 // NewVariantTypeArray constructs a struct VariantType.
-func NewVariantTypeArray(element *VariantType) *VariantType {
+func NewVariantTypeArray(element VariantType) VariantType {
 	var _arg1 *C.GVariantType // out
 	var _cret *C.GVariantType // in
 
-	_arg1 = (*C.GVariantType)(unsafe.Pointer(element.Native()))
+	_arg1 = (*C.GVariantType)(unsafe.Pointer(element))
 
 	_cret = C.g_variant_type_new_array(_arg1)
 
-	var _variantType *VariantType // out
+	var _variantType VariantType // out
 
-	_variantType = (*VariantType)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(&_variantType, func(v **VariantType) {
-		C.free(unsafe.Pointer(v))
+	_variantType = (VariantType)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_variantType, func(v VariantType) {
+		C.g_variant_type_free((*C.GVariantType)(unsafe.Pointer(v)))
 	})
 
 	return _variantType
 }
 
 // NewVariantTypeDictEntry constructs a struct VariantType.
-func NewVariantTypeDictEntry(key *VariantType, value *VariantType) *VariantType {
+func NewVariantTypeDictEntry(key VariantType, value VariantType) VariantType {
 	var _arg1 *C.GVariantType // out
 	var _arg2 *C.GVariantType // out
 	var _cret *C.GVariantType // in
 
-	_arg1 = (*C.GVariantType)(unsafe.Pointer(key.Native()))
-	_arg2 = (*C.GVariantType)(unsafe.Pointer(value.Native()))
+	_arg1 = (*C.GVariantType)(unsafe.Pointer(key))
+	_arg2 = (*C.GVariantType)(unsafe.Pointer(value))
 
 	_cret = C.g_variant_type_new_dict_entry(_arg1, _arg2)
 
-	var _variantType *VariantType // out
+	var _variantType VariantType // out
 
-	_variantType = (*VariantType)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(&_variantType, func(v **VariantType) {
-		C.free(unsafe.Pointer(v))
+	_variantType = (VariantType)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_variantType, func(v VariantType) {
+		C.g_variant_type_free((*C.GVariantType)(unsafe.Pointer(v)))
 	})
 
 	return _variantType
 }
 
 // NewVariantTypeMaybe constructs a struct VariantType.
-func NewVariantTypeMaybe(element *VariantType) *VariantType {
+func NewVariantTypeMaybe(element VariantType) VariantType {
 	var _arg1 *C.GVariantType // out
 	var _cret *C.GVariantType // in
 
-	_arg1 = (*C.GVariantType)(unsafe.Pointer(element.Native()))
+	_arg1 = (*C.GVariantType)(unsafe.Pointer(element))
 
 	_cret = C.g_variant_type_new_maybe(_arg1)
 
-	var _variantType *VariantType // out
+	var _variantType VariantType // out
 
-	_variantType = (*VariantType)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(&_variantType, func(v **VariantType) {
-		C.free(unsafe.Pointer(v))
+	_variantType = (VariantType)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_variantType, func(v VariantType) {
+		C.g_variant_type_free((*C.GVariantType)(unsafe.Pointer(v)))
 	})
 
 	return _variantType
 }
 
 // NewVariantTypeTuple constructs a struct VariantType.
-func NewVariantTypeTuple(items []*VariantType) *VariantType {
+func NewVariantTypeTuple(items []VariantType) VariantType {
 	var _arg1 **C.GVariantType
 	var _arg2 C.gint
 	var _cret *C.GVariantType // in
@@ -257,11 +260,11 @@ func NewVariantTypeTuple(items []*VariantType) *VariantType {
 
 	_cret = C.g_variant_type_new_tuple(_arg1, _arg2)
 
-	var _variantType *VariantType // out
+	var _variantType VariantType // out
 
-	_variantType = (*VariantType)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(&_variantType, func(v **VariantType) {
-		C.free(unsafe.Pointer(v))
+	_variantType = (VariantType)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_variantType, func(v VariantType) {
+		C.g_variant_type_free((*C.GVariantType)(unsafe.Pointer(v)))
 	})
 
 	return _variantType
@@ -269,38 +272,37 @@ func NewVariantTypeTuple(items []*VariantType) *VariantType {
 
 // Native returns the underlying C source pointer.
 func (v *VariantType) Native() unsafe.Pointer {
-	return unsafe.Pointer(v)
+	return unsafe.Pointer(&v.native)
 }
 
-// Copy determines the value type of a dictionary entry type.
-//
-// This function may only be used with a dictionary entry type.
-func (t *VariantType) Copy() *VariantType {
+// Copy makes a copy of a Type. It is appropriate to call g_variant_type_free()
+// on the return value. @type may not be nil.
+func (t *VariantType) Copy() VariantType {
 	var _arg0 *C.GVariantType // out
 	var _cret *C.GVariantType // in
 
-	_arg0 = (*C.GVariantType)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GVariantType)(unsafe.Pointer(t))
 
 	_cret = C.g_variant_type_copy(_arg0)
 
-	var _variantType *VariantType // out
+	var _variantType VariantType // out
 
-	_variantType = (*VariantType)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(&_variantType, func(v **VariantType) {
-		C.free(unsafe.Pointer(v))
+	_variantType = (VariantType)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_variantType, func(v VariantType) {
+		C.g_variant_type_free((*C.GVariantType)(unsafe.Pointer(v)))
 	})
 
 	return _variantType
 }
 
-// DupString determines the value type of a dictionary entry type.
-//
-// This function may only be used with a dictionary entry type.
+// DupString returns a newly-allocated copy of the type string corresponding to
+// @type. The returned string is nul-terminated. It is appropriate to call
+// g_free() on the return value.
 func (t *VariantType) DupString() string {
 	var _arg0 *C.GVariantType // out
 	var _cret *C.gchar        // in
 
-	_arg0 = (*C.GVariantType)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GVariantType)(unsafe.Pointer(t))
 
 	_cret = C.g_variant_type_dup_string(_arg0)
 
@@ -312,34 +314,41 @@ func (t *VariantType) DupString() string {
 	return _utf8
 }
 
-// Element determines the value type of a dictionary entry type.
+// Element determines the element type of an array or maybe type.
 //
-// This function may only be used with a dictionary entry type.
-func (t *VariantType) Element() *VariantType {
+// This function may only be used with array or maybe types.
+func (t *VariantType) Element() VariantType {
 	var _arg0 *C.GVariantType // out
 	var _cret *C.GVariantType // in
 
-	_arg0 = (*C.GVariantType)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GVariantType)(unsafe.Pointer(t))
 
 	_cret = C.g_variant_type_element(_arg0)
 
-	var _variantType *VariantType // out
+	var _variantType VariantType // out
 
-	_variantType = (*VariantType)(unsafe.Pointer(_cret))
+	_variantType = (VariantType)(unsafe.Pointer(_cret))
 
 	return _variantType
 }
 
-// Equal determines the value type of a dictionary entry type.
+// Equal compares @type1 and @type2 for equality.
 //
-// This function may only be used with a dictionary entry type.
-func (t *VariantType) Equal(type2 *VariantType) bool {
+// Only returns true if the types are exactly equal. Even if one type is an
+// indefinite type and the other is a subtype of it, false will be returned if
+// they are not exactly equal. If you want to check for subtypes, use
+// g_variant_type_is_subtype_of().
+//
+// The argument types of @type1 and @type2 are only #gconstpointer to allow use
+// with Table without function pointer casting. For both arguments, a valid Type
+// must be provided.
+func (t *VariantType) Equal(type2 VariantType) bool {
 	var _arg0 C.gconstpointer // out
 	var _arg1 C.gconstpointer // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (C.gconstpointer)(unsafe.Pointer(t.Native()))
-	_arg1 = (C.gconstpointer)(unsafe.Pointer(type2.Native()))
+	_arg0 = (C.gconstpointer)(unsafe.Pointer(t))
+	_arg1 = (C.gconstpointer)(unsafe.Pointer(type2))
 
 	_cret = C.g_variant_type_equal(_arg0, _arg1)
 
@@ -352,43 +361,54 @@ func (t *VariantType) Equal(type2 *VariantType) bool {
 	return _ok
 }
 
-// First determines the value type of a dictionary entry type.
+// First determines the first item type of a tuple or dictionary entry type.
 //
-// This function may only be used with a dictionary entry type.
-func (t *VariantType) First() *VariantType {
+// This function may only be used with tuple or dictionary entry types, but must
+// not be used with the generic tuple type G_VARIANT_TYPE_TUPLE.
+//
+// In the case of a dictionary entry type, this returns the type of the key.
+//
+// nil is returned in case of @type being G_VARIANT_TYPE_UNIT.
+//
+// This call, together with g_variant_type_next() provides an iterator interface
+// over tuple and dictionary entry types.
+func (t *VariantType) First() VariantType {
 	var _arg0 *C.GVariantType // out
 	var _cret *C.GVariantType // in
 
-	_arg0 = (*C.GVariantType)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GVariantType)(unsafe.Pointer(t))
 
 	_cret = C.g_variant_type_first(_arg0)
 
-	var _variantType *VariantType // out
+	var _variantType VariantType // out
 
-	_variantType = (*VariantType)(unsafe.Pointer(_cret))
+	_variantType = (VariantType)(unsafe.Pointer(_cret))
 
 	return _variantType
 }
 
-// Free determines the value type of a dictionary entry type.
+// Free frees a Type that was allocated with g_variant_type_copy(),
+// g_variant_type_new() or one of the container type constructor functions.
 //
-// This function may only be used with a dictionary entry type.
+// In the case that @type is nil, this function does nothing.
+//
+// Since 2.24
 func (t *VariantType) Free() {
 	var _arg0 *C.GVariantType // out
 
-	_arg0 = (*C.GVariantType)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GVariantType)(unsafe.Pointer(t))
 
 	C.g_variant_type_free(_arg0)
 }
 
-// StringLength determines the value type of a dictionary entry type.
-//
-// This function may only be used with a dictionary entry type.
+// StringLength returns the length of the type string corresponding to the given
+// @type. This function must be used to determine the valid extent of the memory
+// region returned by g_variant_type_peek_string().
 func (t *VariantType) StringLength() uint {
 	var _arg0 *C.GVariantType // out
 	var _cret C.gsize         // in
 
-	_arg0 = (*C.GVariantType)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GVariantType)(unsafe.Pointer(t))
 
 	_cret = C.g_variant_type_get_string_length(_arg0)
 
@@ -399,14 +419,15 @@ func (t *VariantType) StringLength() uint {
 	return _gsize
 }
 
-// Hash determines the value type of a dictionary entry type.
+// Hash hashes @type.
 //
-// This function may only be used with a dictionary entry type.
+// The argument type of @type is only #gconstpointer to allow use with Table
+// without function pointer casting. A valid Type must be provided.
 func (t *VariantType) Hash() uint {
 	var _arg0 C.gconstpointer // out
 	var _cret C.guint         // in
 
-	_arg0 = (C.gconstpointer)(unsafe.Pointer(t.Native()))
+	_arg0 = (C.gconstpointer)(unsafe.Pointer(t))
 
 	_cret = C.g_variant_type_hash(_arg0)
 
@@ -417,14 +438,16 @@ func (t *VariantType) Hash() uint {
 	return _guint
 }
 
-// IsArray determines the value type of a dictionary entry type.
+// IsArray determines if the given @type is an array type. This is true if the
+// type string for @type starts with an 'a'.
 //
-// This function may only be used with a dictionary entry type.
+// This function returns true for any indefinite type for which every definite
+// subtype is an array type -- G_VARIANT_TYPE_ARRAY, for example.
 func (t *VariantType) IsArray() bool {
 	var _arg0 *C.GVariantType // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GVariantType)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GVariantType)(unsafe.Pointer(t))
 
 	_cret = C.g_variant_type_is_array(_arg0)
 
@@ -437,14 +460,20 @@ func (t *VariantType) IsArray() bool {
 	return _ok
 }
 
-// IsBasic determines the value type of a dictionary entry type.
+// IsBasic determines if the given @type is a basic type.
 //
-// This function may only be used with a dictionary entry type.
+// Basic types are booleans, bytes, integers, doubles, strings, object paths and
+// signatures.
+//
+// Only a basic type may be used as the key of a dictionary entry.
+//
+// This function returns false for all indefinite types except
+// G_VARIANT_TYPE_BASIC.
 func (t *VariantType) IsBasic() bool {
 	var _arg0 *C.GVariantType // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GVariantType)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GVariantType)(unsafe.Pointer(t))
 
 	_cret = C.g_variant_type_is_basic(_arg0)
 
@@ -457,14 +486,18 @@ func (t *VariantType) IsBasic() bool {
 	return _ok
 }
 
-// IsContainer determines the value type of a dictionary entry type.
+// IsContainer determines if the given @type is a container type.
 //
-// This function may only be used with a dictionary entry type.
+// Container types are any array, maybe, tuple, or dictionary entry types plus
+// the variant type.
+//
+// This function returns true for any indefinite type for which every definite
+// subtype is a container -- G_VARIANT_TYPE_ARRAY, for example.
 func (t *VariantType) IsContainer() bool {
 	var _arg0 *C.GVariantType // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GVariantType)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GVariantType)(unsafe.Pointer(t))
 
 	_cret = C.g_variant_type_is_container(_arg0)
 
@@ -477,14 +510,20 @@ func (t *VariantType) IsContainer() bool {
 	return _ok
 }
 
-// IsDefinite determines the value type of a dictionary entry type.
+// IsDefinite determines if the given @type is definite (ie: not indefinite).
 //
-// This function may only be used with a dictionary entry type.
+// A type is definite if its type string does not contain any indefinite type
+// characters ('*', '?', or 'r').
+//
+// A #GVariant instance may not have an indefinite type, so calling this
+// function on the result of g_variant_get_type() will always result in true
+// being returned. Calling this function on an indefinite type like
+// G_VARIANT_TYPE_ARRAY, however, will result in false being returned.
 func (t *VariantType) IsDefinite() bool {
 	var _arg0 *C.GVariantType // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GVariantType)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GVariantType)(unsafe.Pointer(t))
 
 	_cret = C.g_variant_type_is_definite(_arg0)
 
@@ -497,14 +536,16 @@ func (t *VariantType) IsDefinite() bool {
 	return _ok
 }
 
-// IsDictEntry determines the value type of a dictionary entry type.
+// IsDictEntry determines if the given @type is a dictionary entry type. This is
+// true if the type string for @type starts with a '{'.
 //
-// This function may only be used with a dictionary entry type.
+// This function returns true for any indefinite type for which every definite
+// subtype is a dictionary entry type -- G_VARIANT_TYPE_DICT_ENTRY, for example.
 func (t *VariantType) IsDictEntry() bool {
 	var _arg0 *C.GVariantType // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GVariantType)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GVariantType)(unsafe.Pointer(t))
 
 	_cret = C.g_variant_type_is_dict_entry(_arg0)
 
@@ -517,14 +558,16 @@ func (t *VariantType) IsDictEntry() bool {
 	return _ok
 }
 
-// IsMaybe determines the value type of a dictionary entry type.
+// IsMaybe determines if the given @type is a maybe type. This is true if the
+// type string for @type starts with an 'm'.
 //
-// This function may only be used with a dictionary entry type.
+// This function returns true for any indefinite type for which every definite
+// subtype is a maybe type -- G_VARIANT_TYPE_MAYBE, for example.
 func (t *VariantType) IsMaybe() bool {
 	var _arg0 *C.GVariantType // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GVariantType)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GVariantType)(unsafe.Pointer(t))
 
 	_cret = C.g_variant_type_is_maybe(_arg0)
 
@@ -537,16 +580,18 @@ func (t *VariantType) IsMaybe() bool {
 	return _ok
 }
 
-// IsSubtypeOf determines the value type of a dictionary entry type.
+// IsSubtypeOf checks if @type is a subtype of @supertype.
 //
-// This function may only be used with a dictionary entry type.
-func (t *VariantType) IsSubtypeOf(supertype *VariantType) bool {
+// This function returns true if @type is a subtype of @supertype. All types are
+// considered to be subtypes of themselves. Aside from that, only indefinite
+// types can have subtypes.
+func (t *VariantType) IsSubtypeOf(supertype VariantType) bool {
 	var _arg0 *C.GVariantType // out
 	var _arg1 *C.GVariantType // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GVariantType)(unsafe.Pointer(t.Native()))
-	_arg1 = (*C.GVariantType)(unsafe.Pointer(supertype.Native()))
+	_arg0 = (*C.GVariantType)(unsafe.Pointer(t))
+	_arg1 = (*C.GVariantType)(unsafe.Pointer(supertype))
 
 	_cret = C.g_variant_type_is_subtype_of(_arg0, _arg1)
 
@@ -559,14 +604,16 @@ func (t *VariantType) IsSubtypeOf(supertype *VariantType) bool {
 	return _ok
 }
 
-// IsTuple determines the value type of a dictionary entry type.
+// IsTuple determines if the given @type is a tuple type. This is true if the
+// type string for @type starts with a '(' or if @type is G_VARIANT_TYPE_TUPLE.
 //
-// This function may only be used with a dictionary entry type.
+// This function returns true for any indefinite type for which every definite
+// subtype is a tuple type -- G_VARIANT_TYPE_TUPLE, for example.
 func (t *VariantType) IsTuple() bool {
 	var _arg0 *C.GVariantType // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GVariantType)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GVariantType)(unsafe.Pointer(t))
 
 	_cret = C.g_variant_type_is_tuple(_arg0)
 
@@ -579,14 +626,12 @@ func (t *VariantType) IsTuple() bool {
 	return _ok
 }
 
-// IsVariant determines the value type of a dictionary entry type.
-//
-// This function may only be used with a dictionary entry type.
+// IsVariant determines if the given @type is the variant type.
 func (t *VariantType) IsVariant() bool {
 	var _arg0 *C.GVariantType // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GVariantType)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GVariantType)(unsafe.Pointer(t))
 
 	_cret = C.g_variant_type_is_variant(_arg0)
 
@@ -599,32 +644,37 @@ func (t *VariantType) IsVariant() bool {
 	return _ok
 }
 
-// Key determines the value type of a dictionary entry type.
+// Key determines the key type of a dictionary entry type.
 //
-// This function may only be used with a dictionary entry type.
-func (t *VariantType) Key() *VariantType {
+// This function may only be used with a dictionary entry type. Other than the
+// additional restriction, this call is equivalent to g_variant_type_first().
+func (t *VariantType) Key() VariantType {
 	var _arg0 *C.GVariantType // out
 	var _cret *C.GVariantType // in
 
-	_arg0 = (*C.GVariantType)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GVariantType)(unsafe.Pointer(t))
 
 	_cret = C.g_variant_type_key(_arg0)
 
-	var _variantType *VariantType // out
+	var _variantType VariantType // out
 
-	_variantType = (*VariantType)(unsafe.Pointer(_cret))
+	_variantType = (VariantType)(unsafe.Pointer(_cret))
 
 	return _variantType
 }
 
-// NItems determines the value type of a dictionary entry type.
+// NItems determines the number of items contained in a tuple or dictionary
+// entry type.
 //
-// This function may only be used with a dictionary entry type.
+// This function may only be used with tuple or dictionary entry types, but must
+// not be used with the generic tuple type G_VARIANT_TYPE_TUPLE.
+//
+// In the case of a dictionary entry type, this function will always return 2.
 func (t *VariantType) NItems() uint {
 	var _arg0 *C.GVariantType // out
 	var _cret C.gsize         // in
 
-	_arg0 = (*C.GVariantType)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GVariantType)(unsafe.Pointer(t))
 
 	_cret = C.g_variant_type_n_items(_arg0)
 
@@ -635,20 +685,27 @@ func (t *VariantType) NItems() uint {
 	return _gsize
 }
 
-// Next determines the value type of a dictionary entry type.
+// Next determines the next item type of a tuple or dictionary entry type.
 //
-// This function may only be used with a dictionary entry type.
-func (t *VariantType) Next() *VariantType {
+// @type must be the result of a previous call to g_variant_type_first() or
+// g_variant_type_next().
+//
+// If called on the key type of a dictionary entry then this call returns the
+// value type. If called on the value type of a dictionary entry then this call
+// returns nil.
+//
+// For tuples, nil is returned when @type is the last item in a tuple.
+func (t *VariantType) Next() VariantType {
 	var _arg0 *C.GVariantType // out
 	var _cret *C.GVariantType // in
 
-	_arg0 = (*C.GVariantType)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GVariantType)(unsafe.Pointer(t))
 
 	_cret = C.g_variant_type_next(_arg0)
 
-	var _variantType *VariantType // out
+	var _variantType VariantType // out
 
-	_variantType = (*VariantType)(unsafe.Pointer(_cret))
+	_variantType = (VariantType)(unsafe.Pointer(_cret))
 
 	return _variantType
 }
@@ -656,17 +713,17 @@ func (t *VariantType) Next() *VariantType {
 // Value determines the value type of a dictionary entry type.
 //
 // This function may only be used with a dictionary entry type.
-func (t *VariantType) Value() *VariantType {
+func (t *VariantType) Value() VariantType {
 	var _arg0 *C.GVariantType // out
 	var _cret *C.GVariantType // in
 
-	_arg0 = (*C.GVariantType)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GVariantType)(unsafe.Pointer(t))
 
 	_cret = C.g_variant_type_value(_arg0)
 
-	var _variantType *VariantType // out
+	var _variantType VariantType // out
 
-	_variantType = (*VariantType)(unsafe.Pointer(_cret))
+	_variantType = (VariantType)(unsafe.Pointer(_cret))
 
 	return _variantType
 }

@@ -5,9 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -26,14 +24,14 @@ func init() {
 	})
 }
 
-// Overlay: gtkOverlay is a container which contains a single main child, on top
-// of which it can place “overlay” widgets. The position of each overlay widget
-// is determined by its Widget:halign and Widget:valign properties. E.g. a
-// widget with both alignments set to GTK_ALIGN_START will be placed at the top
-// left corner of the GtkOverlay container, whereas an overlay with halign set
-// to GTK_ALIGN_CENTER and valign set to GTK_ALIGN_END will be placed a the
-// bottom edge of the GtkOverlay, horizontally centered. The position can be
-// adjusted by setting the margin properties of the child to non-zero values.
+// Overlay is a container which contains a single main child, on top of which it
+// can place “overlay” widgets. The position of each overlay widget is
+// determined by its Widget:halign and Widget:valign properties. E.g. a widget
+// with both alignments set to GTK_ALIGN_START will be placed at the top left
+// corner of the GtkOverlay container, whereas an overlay with halign set to
+// GTK_ALIGN_CENTER and valign set to GTK_ALIGN_END will be placed a the bottom
+// edge of the GtkOverlay, horizontally centered. The position can be adjusted
+// by setting the margin properties of the child to non-zero values.
 //
 // More complicated placement of overlays is possible by connecting to the
 // Overlay::get-child-position signal.
@@ -57,12 +55,30 @@ func init() {
 type Overlay interface {
 	Bin
 
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+
+	// AddOverlayOverlay adds @widget to @overlay.
+	//
+	// The widget will be stacked on top of the main widget added with
+	// gtk_container_add().
+	//
+	// The position at which @widget is placed is determined from its
+	// Widget:halign and Widget:valign properties.
 	AddOverlayOverlay(widget Widget)
-
+	// OverlayPassThrough: convenience function to get the value of the
+	// Overlay:pass-through child property for @widget.
 	OverlayPassThrough(widget Widget) bool
-
+	// ReorderOverlayOverlay moves @child to a new @index in the list of
+	// @overlay children. The list contains overlays in the order that these
+	// were added to @overlay by default. See also Overlay:index.
+	//
+	// A widget’s index in the @overlay children list determines which order the
+	// children are drawn if they overlap. The first child is drawn at the
+	// bottom. It also affects the default focus chain order.
 	ReorderOverlayOverlay(child Widget, index_ int)
-
+	// SetOverlayPassThroughOverlay: convenience function to set the value of
+	// the Overlay:pass-through child property for @widget.
 	SetOverlayPassThroughOverlay(widget Widget, passThrough bool)
 }
 
@@ -85,6 +101,7 @@ func marshalOverlay(p uintptr) (interface{}, error) {
 	return WrapOverlay(obj), nil
 }
 
+// NewOverlay creates a new Overlay.
 func NewOverlay() Overlay {
 	var _cret *C.GtkWidget // in
 
@@ -92,7 +109,7 @@ func NewOverlay() Overlay {
 
 	var _overlay Overlay // out
 
-	_overlay = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Overlay)
+	_overlay = WrapOverlay(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _overlay
 }
@@ -152,42 +169,6 @@ func (o overlay) SetOverlayPassThroughOverlay(widget Widget, passThrough bool) {
 	C.gtk_overlay_set_overlay_pass_through(_arg0, _arg1, _arg2)
 }
 
-func (b overlay) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
-}
-
-func (b overlay) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b overlay) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b overlay) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b overlay) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b overlay) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b overlay) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b overlay) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b overlay) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b overlay) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
+func (o overlay) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(o))
 }

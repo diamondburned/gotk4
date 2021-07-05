@@ -39,28 +39,49 @@ func init() {
 type GridLayout interface {
 	LayoutManager
 
+	// BaselineRow retrieves the row set with
+	// gtk_grid_layout_set_baseline_row().
 	BaselineRow() int
-
+	// ColumnHomogeneous checks whether all columns of @grid should have the
+	// same width.
 	ColumnHomogeneous() bool
-
+	// ColumnSpacing retrieves the spacing set with
+	// gtk_grid_layout_set_column_spacing().
 	ColumnSpacing() uint
-
+	// RowBaselinePosition returns the baseline position of @row.
+	//
+	// If no value has been set with
+	// [method@Gtk.GridLayout.set_row_baseline_position], the default value of
+	// GTK_BASELINE_POSITION_CENTER is returned.
 	RowBaselinePosition(row int) BaselinePosition
-
+	// RowHomogeneous checks whether all rows of @grid should have the same
+	// height.
 	RowHomogeneous() bool
-
+	// RowSpacing retrieves the spacing set with
+	// gtk_grid_layout_set_row_spacing().
 	RowSpacing() uint
-
+	// SetBaselineRowGridLayout sets which row defines the global baseline for
+	// the entire grid.
+	//
+	// Each row in the grid can have its own local baseline, but only one of
+	// those is global, meaning it will be the baseline in the parent of the
+	// @grid.
 	SetBaselineRowGridLayout(row int)
-
+	// SetColumnHomogeneousGridLayout sets whether all columns of @grid should
+	// have the same width.
 	SetColumnHomogeneousGridLayout(homogeneous bool)
-
+	// SetColumnSpacingGridLayout sets the amount of space to insert between
+	// consecutive columns.
 	SetColumnSpacingGridLayout(spacing uint)
-
+	// SetRowBaselinePositionGridLayout sets how the baseline should be
+	// positioned on @row of the grid, in case that row is assigned more space
+	// than is requested.
 	SetRowBaselinePositionGridLayout(row int, pos BaselinePosition)
-
+	// SetRowHomogeneousGridLayout sets whether all rows of @grid should have
+	// the same height.
 	SetRowHomogeneousGridLayout(homogeneous bool)
-
+	// SetRowSpacingGridLayout sets the amount of space to insert between
+	// consecutive rows.
 	SetRowSpacingGridLayout(spacing uint)
 }
 
@@ -83,6 +104,7 @@ func marshalGridLayout(p uintptr) (interface{}, error) {
 	return WrapGridLayout(obj), nil
 }
 
+// NewGridLayout creates a new `GtkGridLayout`.
 func NewGridLayout() GridLayout {
 	var _cret *C.GtkLayoutManager // in
 
@@ -90,7 +112,7 @@ func NewGridLayout() GridLayout {
 
 	var _gridLayout GridLayout // out
 
-	_gridLayout = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(GridLayout)
+	_gridLayout = WrapGridLayout(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _gridLayout
 }
@@ -261,20 +283,23 @@ func (g gridLayout) SetRowSpacingGridLayout(spacing uint) {
 type GridLayoutChild interface {
 	LayoutChild
 
+	// Column retrieves the column number to which @child attaches its left
+	// side.
 	Column() int
-
+	// ColumnSpan retrieves the number of columns that @child spans to.
 	ColumnSpan() int
-
+	// Row retrieves the row number to which @child attaches its top side.
 	Row() int
-
+	// RowSpan retrieves the number of rows that @child spans to.
 	RowSpan() int
-
+	// SetColumnGridLayoutChild sets the column number to attach the left side
+	// of @child.
 	SetColumnGridLayoutChild(column int)
-
+	// SetColumnSpanGridLayoutChild sets the number of columns @child spans to.
 	SetColumnSpanGridLayoutChild(span int)
-
+	// SetRowGridLayoutChild sets the row to place @child in.
 	SetRowGridLayoutChild(row int)
-
+	// SetRowSpanGridLayoutChild sets the number of rows @child spans to.
 	SetRowSpanGridLayoutChild(span int)
 }
 

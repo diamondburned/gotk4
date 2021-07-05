@@ -81,8 +81,21 @@ func marshalPadActionType(p uintptr) (interface{}, error) {
 type PadController interface {
 	EventController
 
+	// SetActionPadController adds an individual action to @controller.
+	//
+	// This action will only be activated if the given button/ring/strip number
+	// in @index is interacted while the current mode is @mode. -1 may be used
+	// for simple cases, so the action is triggered on all modes.
+	//
+	// The given @label should be considered user-visible, so
+	// internationalization rules apply. Some windowing systems may be able to
+	// use those for user feedback.
 	SetActionPadController(typ PadActionType, index int, mode int, label string, actionName string)
-
+	// SetActionEntriesPadController: convenience function to add a group of
+	// action entries on @controller.
+	//
+	// See [struct@Gtk.PadActionEntry] and
+	// [method@Gtk.PadController.set_action].
 	SetActionEntriesPadController(entries []PadActionEntry)
 }
 
@@ -138,7 +151,9 @@ func (c padController) SetActionEntriesPadController(entries []PadActionEntry) {
 }
 
 // PadActionEntry: struct defining a pad action entry.
-type PadActionEntry C.GtkPadActionEntry
+type PadActionEntry struct {
+	native C.GtkPadActionEntry
+}
 
 // WrapPadActionEntry wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -148,5 +163,5 @@ func WrapPadActionEntry(ptr unsafe.Pointer) *PadActionEntry {
 
 // Native returns the underlying C source pointer.
 func (p *PadActionEntry) Native() unsafe.Pointer {
-	return unsafe.Pointer(p)
+	return unsafe.Pointer(&p.native)
 }

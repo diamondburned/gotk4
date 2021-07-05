@@ -43,17 +43,53 @@ func init() {
 type ActionMap interface {
 	gextras.Objector
 
-	// AddAction removes the named action from the action map.
+	// AddAction adds an action to the @action_map.
 	//
-	// If no action of this name is in the map then nothing happens.
+	// If the action map already contains an action with the same name as
+	// @action then the old action is dropped from the action map.
+	//
+	// The action map takes its own reference on @action.
 	AddAction(action Action)
-	// AddActionEntries removes the named action from the action map.
+	// AddActionEntries: convenience function for creating multiple Action
+	// instances and adding them to a Map.
 	//
-	// If no action of this name is in the map then nothing happens.
+	// Each action is constructed as per one Entry.
+	//
+	//    static void
+	//    activate_quit (GSimpleAction *simple,
+	//                   GVariant      *parameter,
+	//                   gpointer       user_data)
+	//    {
+	//      exit (0);
+	//    }
+	//
+	//    static void
+	//    activate_print_string (GSimpleAction *simple,
+	//                           GVariant      *parameter,
+	//                           gpointer       user_data)
+	//    {
+	//      g_print ("s\n", g_variant_get_string (parameter, NULL));
+	//    }
+	//
+	//    static GActionGroup *
+	//    create_action_group (void)
+	//    {
+	//      const GActionEntry entries[] = {
+	//        { "quit",         activate_quit              },
+	//        { "print-string", activate_print_string, "s" }
+	//      };
+	//      GSimpleActionGroup *group;
+	//
+	//      group = g_simple_action_group_new ();
+	//      g_action_map_add_action_entries (G_ACTION_MAP (group), entries, G_N_ELEMENTS (entries), NULL);
+	//
+	//      return G_ACTION_GROUP (group);
+	//    }
 	AddActionEntries(entries []ActionEntry, userData interface{})
-	// LookupAction removes the named action from the action map.
+	// LookupAction looks up the action with the name @action_name in
+	// @action_map.
 	//
-	// If no action of this name is in the map then nothing happens.
+	// If no such action exists, returns nil.
 	LookupAction(actionName string) Action
 	// RemoveAction removes the named action from the action map.
 	//
@@ -101,7 +137,7 @@ func (a actionMap) AddActionEntries(entries []ActionEntry, userData interface{})
 	_arg0 = (*C.GActionMap)(unsafe.Pointer(a.Native()))
 	_arg2 = C.gint(len(entries))
 	_arg1 = (*C.GActionEntry)(unsafe.Pointer(&entries[0]))
-	_arg3 = C.gpointer(box.Assign(unsafe.Pointer(userData)))
+	_arg3 = C.gpointer(box.Assign(userData))
 
 	C.g_action_map_add_action_entries(_arg0, _arg1, _arg2, _arg3)
 }
@@ -144,7 +180,9 @@ func (a actionMap) RemoveAction(actionName string) {
 // Additional optional fields may be added in the future.
 //
 // See g_action_map_add_action_entries() for an example.
-type ActionEntry C.GActionEntry
+type ActionEntry struct {
+	native C.GActionEntry
+}
 
 // WrapActionEntry wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -154,5 +192,5 @@ func WrapActionEntry(ptr unsafe.Pointer) *ActionEntry {
 
 // Native returns the underlying C source pointer.
 func (a *ActionEntry) Native() unsafe.Pointer {
-	return unsafe.Pointer(a)
+	return unsafe.Pointer(&a.native)
 }

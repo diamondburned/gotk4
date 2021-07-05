@@ -3,13 +3,9 @@
 package gio
 
 import (
-	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
-	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -28,8 +24,6 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 // #include <glib-object.h>
-//
-// void gotk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 func init() {
@@ -40,8 +34,14 @@ func init() {
 
 // FileIcon specifies an icon by pointing to an image file to be used as icon.
 type FileIcon interface {
-	LoadableIcon
+	gextras.Objector
 
+	// AsIcon casts the class to the Icon interface.
+	AsIcon() Icon
+	// AsLoadableIcon casts the class to the LoadableIcon interface.
+	AsLoadableIcon() LoadableIcon
+
+	// File gets the #GFile associated with the given @icon.
 	File() File
 }
 
@@ -64,6 +64,7 @@ func marshalFileIcon(p uintptr) (interface{}, error) {
 	return WrapFileIcon(obj), nil
 }
 
+// NewFileIcon creates a new icon for a file.
 func NewFileIcon(file File) FileIcon {
 	var _arg1 *C.GFile // out
 	var _cret *C.GIcon // in
@@ -74,7 +75,7 @@ func NewFileIcon(file File) FileIcon {
 
 	var _fileIcon FileIcon // out
 
-	_fileIcon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(FileIcon)
+	_fileIcon = WrapFileIcon(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _fileIcon
 }
@@ -94,26 +95,10 @@ func (i fileIcon) File() File {
 	return _file
 }
 
-func (i fileIcon) Load(size int, cancellable Cancellable) (string, InputStream, error) {
-	return WrapLoadableIcon(gextras.InternObject(i)).Load(size, cancellable)
+func (f fileIcon) AsIcon() Icon {
+	return WrapIcon(gextras.InternObject(f))
 }
 
-func (i fileIcon) LoadAsync(size int, cancellable Cancellable, callback AsyncReadyCallback) {
-	WrapLoadableIcon(gextras.InternObject(i)).LoadAsync(size, cancellable, callback)
-}
-
-func (i fileIcon) LoadFinish(res AsyncResult) (string, InputStream, error) {
-	return WrapLoadableIcon(gextras.InternObject(i)).LoadFinish(res)
-}
-
-func (i fileIcon) Equal(icon2 Icon) bool {
-	return WrapIcon(gextras.InternObject(i)).Equal(icon2)
-}
-
-func (i fileIcon) Serialize() *glib.Variant {
-	return WrapIcon(gextras.InternObject(i)).Serialize()
-}
-
-func (i fileIcon) String() string {
-	return WrapIcon(gextras.InternObject(i)).String()
+func (f fileIcon) AsLoadableIcon() LoadableIcon {
+	return WrapLoadableIcon(gextras.InternObject(f))
 }

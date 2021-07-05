@@ -85,8 +85,10 @@ func marshalEventControllerScrollFlags(p uintptr) (interface{}, error) {
 type EventControllerScroll interface {
 	EventController
 
+	// Flags gets the flags conditioning the scroll controller behavior.
 	Flags() EventControllerScrollFlags
-
+	// SetFlagsEventControllerScroll sets the flags conditioning scroll
+	// controller behavior.
 	SetFlagsEventControllerScroll(flags EventControllerScrollFlags)
 }
 
@@ -109,6 +111,8 @@ func marshalEventControllerScroll(p uintptr) (interface{}, error) {
 	return WrapEventControllerScroll(obj), nil
 }
 
+// NewEventControllerScroll creates a new event controller that will handle
+// scroll events.
 func NewEventControllerScroll(flags EventControllerScrollFlags) EventControllerScroll {
 	var _arg1 C.GtkEventControllerScrollFlags // out
 	var _cret *C.GtkEventController           // in
@@ -119,7 +123,7 @@ func NewEventControllerScroll(flags EventControllerScrollFlags) EventControllerS
 
 	var _eventControllerScroll EventControllerScroll // out
 
-	_eventControllerScroll = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(EventControllerScroll)
+	_eventControllerScroll = WrapEventControllerScroll(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _eventControllerScroll
 }

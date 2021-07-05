@@ -30,67 +30,37 @@ func init() {
 type ToolShell interface {
 	Widget
 
-	// EllipsizeMode: calling this function signals the tool shell that the
-	// overflow menu item for tool items have changed. If there is an overflow
-	// menu and if it is visible when this function it called, the menu will be
-	// rebuilt.
-	//
+	// EllipsizeMode retrieves the current ellipsize mode for the tool shell.
 	// Tool items must not call this function directly, but rely on
-	// gtk_tool_item_rebuild_menu() instead.
+	// gtk_tool_item_get_ellipsize_mode() instead.
 	EllipsizeMode() pango.EllipsizeMode
-	// IconSize: calling this function signals the tool shell that the overflow
-	// menu item for tool items have changed. If there is an overflow menu and
-	// if it is visible when this function it called, the menu will be rebuilt.
-	//
-	// Tool items must not call this function directly, but rely on
-	// gtk_tool_item_rebuild_menu() instead.
+	// IconSize retrieves the icon size for the tool shell. Tool items must not
+	// call this function directly, but rely on gtk_tool_item_get_icon_size()
+	// instead.
 	IconSize() int
-	// Orientation: calling this function signals the tool shell that the
-	// overflow menu item for tool items have changed. If there is an overflow
-	// menu and if it is visible when this function it called, the menu will be
-	// rebuilt.
-	//
-	// Tool items must not call this function directly, but rely on
-	// gtk_tool_item_rebuild_menu() instead.
+	// Orientation retrieves the current orientation for the tool shell. Tool
+	// items must not call this function directly, but rely on
+	// gtk_tool_item_get_orientation() instead.
 	Orientation() Orientation
-	// ReliefStyle: calling this function signals the tool shell that the
-	// overflow menu item for tool items have changed. If there is an overflow
-	// menu and if it is visible when this function it called, the menu will be
-	// rebuilt.
-	//
-	// Tool items must not call this function directly, but rely on
-	// gtk_tool_item_rebuild_menu() instead.
+	// ReliefStyle returns the relief style of buttons on @shell. Tool items
+	// must not call this function directly, but rely on
+	// gtk_tool_item_get_relief_style() instead.
 	ReliefStyle() ReliefStyle
-	// Style: calling this function signals the tool shell that the overflow
-	// menu item for tool items have changed. If there is an overflow menu and
-	// if it is visible when this function it called, the menu will be rebuilt.
-	//
-	// Tool items must not call this function directly, but rely on
-	// gtk_tool_item_rebuild_menu() instead.
+	// Style retrieves whether the tool shell has text, icons, or both. Tool
+	// items must not call this function directly, but rely on
+	// gtk_tool_item_get_toolbar_style() instead.
 	Style() ToolbarStyle
-	// TextAlignment: calling this function signals the tool shell that the
-	// overflow menu item for tool items have changed. If there is an overflow
-	// menu and if it is visible when this function it called, the menu will be
-	// rebuilt.
-	//
+	// TextAlignment retrieves the current text alignment for the tool shell.
 	// Tool items must not call this function directly, but rely on
-	// gtk_tool_item_rebuild_menu() instead.
+	// gtk_tool_item_get_text_alignment() instead.
 	TextAlignment() float32
-	// TextOrientation: calling this function signals the tool shell that the
-	// overflow menu item for tool items have changed. If there is an overflow
-	// menu and if it is visible when this function it called, the menu will be
-	// rebuilt.
-	//
-	// Tool items must not call this function directly, but rely on
-	// gtk_tool_item_rebuild_menu() instead.
+	// TextOrientation retrieves the current text orientation for the tool
+	// shell. Tool items must not call this function directly, but rely on
+	// gtk_tool_item_get_text_orientation() instead.
 	TextOrientation() Orientation
-	// TextSizeGroup: calling this function signals the tool shell that the
-	// overflow menu item for tool items have changed. If there is an overflow
-	// menu and if it is visible when this function it called, the menu will be
-	// rebuilt.
-	//
+	// TextSizeGroup retrieves the current text size group for the tool shell.
 	// Tool items must not call this function directly, but rely on
-	// gtk_tool_item_rebuild_menu() instead.
+	// gtk_tool_item_get_text_size_group() instead.
 	TextSizeGroup() SizeGroup
 	// RebuildMenu: calling this function signals the tool shell that the
 	// overflow menu item for tool items have changed. If there is an overflow

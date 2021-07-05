@@ -64,7 +64,7 @@ func marshalRecentSortType(p uintptr) (interface{}, error) {
 	return RecentSortType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-type RecentSortFunc func(a *RecentInfo, b *RecentInfo, gint int)
+type RecentSortFunc func(a RecentInfo, b RecentInfo) (gint int)
 
 //export gotk4_RecentSortFunc
 func gotk4_RecentSortFunc(arg0 *C.GtkRecentInfo, arg1 *C.GtkRecentInfo, arg2 C.gpointer) C.gint {
@@ -73,11 +73,13 @@ func gotk4_RecentSortFunc(arg0 *C.GtkRecentInfo, arg1 *C.GtkRecentInfo, arg2 C.g
 		panic(`callback not found`)
 	}
 
-	var a *RecentInfo // out
-	var b *RecentInfo // out
+	var a RecentInfo // out
+	var b RecentInfo // out
 
-	a = (*RecentInfo)(unsafe.Pointer(arg0))
-	b = (*RecentInfo)(unsafe.Pointer(arg1))
+	a = (RecentInfo)(unsafe.Pointer(arg0))
+	C.gtk_recent_info_ref(arg0)
+	b = (RecentInfo)(unsafe.Pointer(arg1))
+	C.gtk_recent_info_ref(arg1)
 
 	fn := v.(RecentSortFunc)
 	gint := fn(a, b)
@@ -98,57 +100,81 @@ func gotk4_RecentSortFunc(arg0 *C.GtkRecentInfo, arg1 *C.GtkRecentInfo, arg2 C.g
 type RecentChooser interface {
 	gextras.Objector
 
-	// AddFilter unselects @uri inside @chooser.
+	// AddFilter adds @filter to the list of RecentFilter objects held by
+	// @chooser.
+	//
+	// If no previous filter objects were defined, this function will call
+	// gtk_recent_chooser_set_filter().
 	AddFilter(filter RecentFilter)
-	// CurrentItem unselects @uri inside @chooser.
-	CurrentItem() *RecentInfo
-	// CurrentURI unselects @uri inside @chooser.
+	// CurrentItem gets the RecentInfo currently selected by @chooser.
+	CurrentItem() RecentInfo
+	// CurrentURI gets the URI currently selected by @chooser.
 	CurrentURI() string
-	// Filter unselects @uri inside @chooser.
+	// Filter gets the RecentFilter object currently used by @chooser to affect
+	// the display of the recently used resources.
 	Filter() RecentFilter
-	// Limit unselects @uri inside @chooser.
+	// Limit gets the number of items returned by gtk_recent_chooser_get_items()
+	// and gtk_recent_chooser_get_uris().
 	Limit() int
-	// LocalOnly unselects @uri inside @chooser.
+	// LocalOnly gets whether only local resources should be shown in the
+	// recently used resources selector. See gtk_recent_chooser_set_local_only()
 	LocalOnly() bool
-	// SelectMultiple unselects @uri inside @chooser.
+	// SelectMultiple gets whether @chooser can select multiple items.
 	SelectMultiple() bool
-	// ShowIcons unselects @uri inside @chooser.
+	// ShowIcons retrieves whether @chooser should show an icon near the
+	// resource.
 	ShowIcons() bool
-	// ShowNotFound unselects @uri inside @chooser.
+	// ShowNotFound retrieves whether @chooser should show the recently used
+	// resources that were not found.
 	ShowNotFound() bool
-	// ShowPrivate unselects @uri inside @chooser.
+	// ShowPrivate returns whether @chooser should display recently used
+	// resources registered as private.
 	ShowPrivate() bool
-	// ShowTips unselects @uri inside @chooser.
+	// ShowTips gets whether @chooser should display tooltips containing the
+	// full path of a recently user resource.
 	ShowTips() bool
-	// SortType unselects @uri inside @chooser.
+	// SortType gets the value set by gtk_recent_chooser_set_sort_type().
 	SortType() RecentSortType
-	// RemoveFilter unselects @uri inside @chooser.
+	// RemoveFilter removes @filter from the list of RecentFilter objects held
+	// by @chooser.
 	RemoveFilter(filter RecentFilter)
-	// SelectAll unselects @uri inside @chooser.
+	// SelectAll selects all the items inside @chooser, if the @chooser supports
+	// multiple selection.
 	SelectAll()
-	// SelectURI unselects @uri inside @chooser.
+	// SelectURI selects @uri inside @chooser.
 	SelectURI(uri string) error
-	// SetCurrentURI unselects @uri inside @chooser.
+	// SetCurrentURI sets @uri as the current URI for @chooser.
 	SetCurrentURI(uri string) error
-	// SetFilter unselects @uri inside @chooser.
+	// SetFilter sets @filter as the current RecentFilter object used by
+	// @chooser to affect the displayed recently used resources.
 	SetFilter(filter RecentFilter)
-	// SetLimit unselects @uri inside @chooser.
+	// SetLimit sets the number of items that should be returned by
+	// gtk_recent_chooser_get_items() and gtk_recent_chooser_get_uris().
 	SetLimit(limit int)
-	// SetLocalOnly unselects @uri inside @chooser.
+	// SetLocalOnly sets whether only local resources, that is resources using
+	// the file:// URI scheme, should be shown in the recently used resources
+	// selector. If @local_only is true (the default) then the shown resources
+	// are guaranteed to be accessible through the operating system native file
+	// system.
 	SetLocalOnly(localOnly bool)
-	// SetSelectMultiple unselects @uri inside @chooser.
+	// SetSelectMultiple sets whether @chooser can select multiple items.
 	SetSelectMultiple(selectMultiple bool)
-	// SetShowIcons unselects @uri inside @chooser.
+	// SetShowIcons sets whether @chooser should show an icon near the resource
+	// when displaying it.
 	SetShowIcons(showIcons bool)
-	// SetShowNotFound unselects @uri inside @chooser.
+	// SetShowNotFound sets whether @chooser should display the recently used
+	// resources that it didn’t find. This only applies to local resources.
 	SetShowNotFound(showNotFound bool)
-	// SetShowPrivate unselects @uri inside @chooser.
+	// SetShowPrivate: whether to show recently used resources marked registered
+	// as private.
 	SetShowPrivate(showPrivate bool)
-	// SetShowTips unselects @uri inside @chooser.
+	// SetShowTips sets whether to show a tooltips containing the full path of
+	// each recently used resource in a RecentChooser widget.
 	SetShowTips(showTips bool)
-	// SetSortType unselects @uri inside @chooser.
+	// SetSortType changes the sorting order of the recently used resources list
+	// displayed by @chooser.
 	SetSortType(sortType RecentSortType)
-	// UnselectAll unselects @uri inside @chooser.
+	// UnselectAll unselects all the items inside @chooser.
 	UnselectAll()
 	// UnselectURI unselects @uri inside @chooser.
 	UnselectURI(uri string)
@@ -185,7 +211,7 @@ func (c recentChooser) AddFilter(filter RecentFilter) {
 	C.gtk_recent_chooser_add_filter(_arg0, _arg1)
 }
 
-func (c recentChooser) CurrentItem() *RecentInfo {
+func (c recentChooser) CurrentItem() RecentInfo {
 	var _arg0 *C.GtkRecentChooser // out
 	var _cret *C.GtkRecentInfo    // in
 
@@ -193,11 +219,11 @@ func (c recentChooser) CurrentItem() *RecentInfo {
 
 	_cret = C.gtk_recent_chooser_get_current_item(_arg0)
 
-	var _recentInfo *RecentInfo // out
+	var _recentInfo RecentInfo // out
 
-	_recentInfo = (*RecentInfo)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(&_recentInfo, func(v **RecentInfo) {
-		C.free(unsafe.Pointer(v))
+	_recentInfo = (RecentInfo)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_recentInfo, func(v RecentInfo) {
+		C.gtk_recent_info_unref((*C.GtkRecentInfo)(unsafe.Pointer(v)))
 	})
 
 	return _recentInfo
@@ -387,7 +413,7 @@ func (c recentChooser) SelectAll() {
 func (c recentChooser) SelectURI(uri string) error {
 	var _arg0 *C.GtkRecentChooser // out
 	var _arg1 *C.gchar            // out
-	var _cerr *C.GError           // in
+	var _cerr **C.GError          // in
 
 	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.gchar)(C.CString(uri))
@@ -397,7 +423,16 @@ func (c recentChooser) SelectURI(uri string) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _goerr
 }
@@ -405,7 +440,7 @@ func (c recentChooser) SelectURI(uri string) error {
 func (c recentChooser) SetCurrentURI(uri string) error {
 	var _arg0 *C.GtkRecentChooser // out
 	var _arg1 *C.gchar            // out
-	var _cerr *C.GError           // in
+	var _cerr **C.GError          // in
 
 	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.gchar)(C.CString(uri))
@@ -415,7 +450,16 @@ func (c recentChooser) SetCurrentURI(uri string) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _goerr
 }

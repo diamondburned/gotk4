@@ -21,44 +21,6 @@ func init() {
 	})
 }
 
-type PixbufNonAnim interface {
-	PixbufAnimation
-}
-
-// pixbufNonAnim implements the PixbufNonAnim class.
-type pixbufNonAnim struct {
-	PixbufAnimation
-}
-
-// WrapPixbufNonAnim wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapPixbufNonAnim(obj *externglib.Object) PixbufNonAnim {
-	return pixbufNonAnim{
-		PixbufAnimation: WrapPixbufAnimation(obj),
-	}
-}
-
-func marshalPixbufNonAnim(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapPixbufNonAnim(obj), nil
-}
-
-func NewPixbufNonAnim(pixbuf Pixbuf) PixbufNonAnim {
-	var _arg1 *C.GdkPixbuf          // out
-	var _cret *C.GdkPixbufAnimation // in
-
-	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
-
-	_cret = C.gdk_pixbuf_non_anim_new(_arg1)
-
-	var _pixbufNonAnim PixbufNonAnim // out
-
-	_pixbufNonAnim = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(PixbufNonAnim)
-
-	return _pixbufNonAnim
-}
-
 type PixbufSimpleAnimIter interface {
 	PixbufAnimationIter
 }

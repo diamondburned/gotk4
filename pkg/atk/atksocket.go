@@ -44,10 +44,21 @@ func init() {
 // layer.
 type Socket interface {
 	Object
-	Component
 
+	// AsComponent casts the class to the Component interface.
+	AsComponent() Component
+
+	// EmbedSocket embeds the children of an Plug as the children of the Socket.
+	// The plug may be in the same process or in a different process.
+	//
+	// The class item used by this function should be filled in by the IPC layer
+	// (usually at-spi2-atk). The implementor of the AtkSocket should call this
+	// function and pass the id for the plug as returned by atk_plug_get_id().
+	// It is the responsibility of the application to pass the plug id on to the
+	// process implementing the Socket as needed.
 	EmbedSocket(plugId string)
-
+	// IsOccupiedSocket determines whether or not the socket has an embedded
+	// plug.
 	IsOccupiedSocket() bool
 }
 
@@ -70,6 +81,7 @@ func marshalSocket(p uintptr) (interface{}, error) {
 	return WrapSocket(obj), nil
 }
 
+// NewSocket creates a new Socket.
 func NewSocket() Socket {
 	var _cret *C.AtkObject // in
 
@@ -77,7 +89,7 @@ func NewSocket() Socket {
 
 	var _socket Socket // out
 
-	_socket = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Socket)
+	_socket = WrapSocket(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _socket
 }
@@ -110,62 +122,6 @@ func (o socket) IsOccupiedSocket() bool {
 	return _ok
 }
 
-func (c socket) Contains(x int, y int, coordType CoordType) bool {
-	return WrapComponent(gextras.InternObject(c)).Contains(x, y, coordType)
-}
-
-func (c socket) Alpha() float64 {
-	return WrapComponent(gextras.InternObject(c)).Alpha()
-}
-
-func (c socket) Extents(coordType CoordType) (x int, y int, width int, height int) {
-	return WrapComponent(gextras.InternObject(c)).Extents(coordType)
-}
-
-func (c socket) Layer() Layer {
-	return WrapComponent(gextras.InternObject(c)).Layer()
-}
-
-func (c socket) MdiZorder() int {
-	return WrapComponent(gextras.InternObject(c)).MdiZorder()
-}
-
-func (c socket) Position(coordType CoordType) (x int, y int) {
-	return WrapComponent(gextras.InternObject(c)).Position(coordType)
-}
-
-func (c socket) Size() (width int, height int) {
-	return WrapComponent(gextras.InternObject(c)).Size()
-}
-
-func (c socket) GrabFocus() bool {
-	return WrapComponent(gextras.InternObject(c)).GrabFocus()
-}
-
-func (c socket) RefAccessibleAtPoint(x int, y int, coordType CoordType) Object {
-	return WrapComponent(gextras.InternObject(c)).RefAccessibleAtPoint(x, y, coordType)
-}
-
-func (c socket) RemoveFocusHandler(handlerId uint) {
-	WrapComponent(gextras.InternObject(c)).RemoveFocusHandler(handlerId)
-}
-
-func (c socket) ScrollTo(typ ScrollType) bool {
-	return WrapComponent(gextras.InternObject(c)).ScrollTo(typ)
-}
-
-func (c socket) ScrollToPoint(coords CoordType, x int, y int) bool {
-	return WrapComponent(gextras.InternObject(c)).ScrollToPoint(coords, x, y)
-}
-
-func (c socket) SetExtents(x int, y int, width int, height int, coordType CoordType) bool {
-	return WrapComponent(gextras.InternObject(c)).SetExtents(x, y, width, height, coordType)
-}
-
-func (c socket) SetPosition(x int, y int, coordType CoordType) bool {
-	return WrapComponent(gextras.InternObject(c)).SetPosition(x, y, coordType)
-}
-
-func (c socket) SetSize(width int, height int) bool {
-	return WrapComponent(gextras.InternObject(c)).SetSize(width, height)
+func (s socket) AsComponent() Component {
+	return WrapComponent(gextras.InternObject(s))
 }

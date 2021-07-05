@@ -65,16 +65,34 @@ func init() {
 type LayoutManager interface {
 	gextras.Objector
 
+	// AllocateLayoutManager assigns the given @width, @height, and @baseline to
+	// a @widget, and computes the position and sizes of the children of the
+	// @widget using the layout management policy of @manager.
 	AllocateLayoutManager(widget Widget, width int, height int, baseline int)
-
+	// LayoutChild retrieves a `GtkLayoutChild` instance for the
+	// `GtkLayoutManager`, creating one if necessary.
+	//
+	// The @child widget must be a child of the widget using @manager.
+	//
+	// The `GtkLayoutChild` instance is owned by the `GtkLayoutManager`, and is
+	// guaranteed to exist as long as @child is a child of the `GtkWidget` using
+	// the given `GtkLayoutManager`.
 	LayoutChild(child Widget) LayoutChild
-
+	// RequestMode retrieves the request mode of @manager.
 	RequestMode() SizeRequestMode
-
+	// Widget retrieves the `GtkWidget` using the given `GtkLayoutManager`.
 	Widget() Widget
-
+	// LayoutChangedLayoutManager queues a resize on the `GtkWidget` using
+	// @manager, if any.
+	//
+	// This function should be called by subclasses of `GtkLayoutManager` in
+	// response to changes to their layout management policies.
 	LayoutChangedLayoutManager()
-
+	// MeasureLayoutManager measures the size of the @widget using @manager, for
+	// the given @orientation and size.
+	//
+	// See the [class@Gtk.Widget] documentation on layout management for more
+	// details.
 	MeasureLayoutManager(widget Widget, orientation Orientation, forSize int) (minimum int, natural int, minimumBaseline int, naturalBaseline int)
 }
 
@@ -173,10 +191,10 @@ func (m layoutManager) MeasureLayoutManager(widget Widget, orientation Orientati
 	var _arg1 *C.GtkWidget        // out
 	var _arg2 C.GtkOrientation    // out
 	var _arg3 C.int               // out
-	var _arg4 C.int               // in
-	var _arg5 C.int               // in
-	var _arg6 C.int               // in
-	var _arg7 C.int               // in
+	var _arg4 *C.int              // in
+	var _arg5 *C.int              // in
+	var _arg6 *C.int              // in
+	var _arg7 *C.int              // in
 
 	_arg0 = (*C.GtkLayoutManager)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))

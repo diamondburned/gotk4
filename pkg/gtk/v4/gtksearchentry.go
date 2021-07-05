@@ -66,10 +66,35 @@ func init() {
 //
 // `GtkSearchEntry` uses the GTK_ACCESSIBLE_ROLE_SEARCH_BOX role.
 type SearchEntry interface {
-	Editable
+	Widget
 
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
+	// AsEditable casts the class to the Editable interface.
+	AsEditable() Editable
+
+	// KeyCaptureWidget gets the widget that @entry is capturing key events
+	// from.
 	KeyCaptureWidget() Widget
-
+	// SetKeyCaptureWidgetSearchEntry sets @widget as the widget that @entry
+	// will capture key events from.
+	//
+	// Key events are consumed by the search entry to start or continue a
+	// search.
+	//
+	// If the entry is part of a `GtkSearchBar`, it is preferable to call
+	// [method@Gtk.SearchBar.set_key_capture_widget] instead, which will reveal
+	// the entry in addition to triggering the search entry.
+	//
+	// Note that despite the name of this function, the events are only
+	// 'captured' in the bubble phase, which means that editable child widgets
+	// of @widget will receive text input before it gets captured. If that is
+	// not desired, you can capture and forward the events yourself with
+	// [method@Gtk.EventControllerKey.forward].
 	SetKeyCaptureWidgetSearchEntry(widget Widget)
 }
 
@@ -92,6 +117,7 @@ func marshalSearchEntry(p uintptr) (interface{}, error) {
 	return WrapSearchEntry(obj), nil
 }
 
+// NewSearchEntry creates a `GtkSearchEntry`.
 func NewSearchEntry() SearchEntry {
 	var _cret *C.GtkWidget // in
 
@@ -99,7 +125,7 @@ func NewSearchEntry() SearchEntry {
 
 	var _searchEntry SearchEntry // out
 
-	_searchEntry = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(SearchEntry)
+	_searchEntry = WrapSearchEntry(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _searchEntry
 }
@@ -129,122 +155,18 @@ func (e searchEntry) SetKeyCaptureWidgetSearchEntry(widget Widget) {
 	C.gtk_search_entry_set_key_capture_widget(_arg0, _arg1)
 }
 
-func (e searchEntry) DeleteSelection() {
-	WrapEditable(gextras.InternObject(e)).DeleteSelection()
+func (s searchEntry) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(s))
 }
 
-func (e searchEntry) DeleteText(startPos int, endPos int) {
-	WrapEditable(gextras.InternObject(e)).DeleteText(startPos, endPos)
+func (s searchEntry) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(s))
 }
 
-func (e searchEntry) FinishDelegate() {
-	WrapEditable(gextras.InternObject(e)).FinishDelegate()
+func (s searchEntry) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(s))
 }
 
-func (e searchEntry) Alignment() float32 {
-	return WrapEditable(gextras.InternObject(e)).Alignment()
-}
-
-func (e searchEntry) Chars(startPos int, endPos int) string {
-	return WrapEditable(gextras.InternObject(e)).Chars(startPos, endPos)
-}
-
-func (e searchEntry) Delegate() Editable {
-	return WrapEditable(gextras.InternObject(e)).Delegate()
-}
-
-func (e searchEntry) Editable() bool {
-	return WrapEditable(gextras.InternObject(e)).Editable()
-}
-
-func (e searchEntry) EnableUndo() bool {
-	return WrapEditable(gextras.InternObject(e)).EnableUndo()
-}
-
-func (e searchEntry) MaxWidthChars() int {
-	return WrapEditable(gextras.InternObject(e)).MaxWidthChars()
-}
-
-func (e searchEntry) Position() int {
-	return WrapEditable(gextras.InternObject(e)).Position()
-}
-
-func (e searchEntry) SelectionBounds() (startPos int, endPos int, ok bool) {
-	return WrapEditable(gextras.InternObject(e)).SelectionBounds()
-}
-
-func (e searchEntry) Text() string {
-	return WrapEditable(gextras.InternObject(e)).Text()
-}
-
-func (e searchEntry) WidthChars() int {
-	return WrapEditable(gextras.InternObject(e)).WidthChars()
-}
-
-func (e searchEntry) InitDelegate() {
-	WrapEditable(gextras.InternObject(e)).InitDelegate()
-}
-
-func (e searchEntry) SelectRegion(startPos int, endPos int) {
-	WrapEditable(gextras.InternObject(e)).SelectRegion(startPos, endPos)
-}
-
-func (e searchEntry) SetAlignment(xalign float32) {
-	WrapEditable(gextras.InternObject(e)).SetAlignment(xalign)
-}
-
-func (e searchEntry) SetEditable(isEditable bool) {
-	WrapEditable(gextras.InternObject(e)).SetEditable(isEditable)
-}
-
-func (e searchEntry) SetEnableUndo(enableUndo bool) {
-	WrapEditable(gextras.InternObject(e)).SetEnableUndo(enableUndo)
-}
-
-func (e searchEntry) SetMaxWidthChars(nChars int) {
-	WrapEditable(gextras.InternObject(e)).SetMaxWidthChars(nChars)
-}
-
-func (e searchEntry) SetPosition(position int) {
-	WrapEditable(gextras.InternObject(e)).SetPosition(position)
-}
-
-func (e searchEntry) SetText(text string) {
-	WrapEditable(gextras.InternObject(e)).SetText(text)
-}
-
-func (e searchEntry) SetWidthChars(nChars int) {
-	WrapEditable(gextras.InternObject(e)).SetWidthChars(nChars)
-}
-
-func (s searchEntry) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
-}
-
-func (s searchEntry) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
-}
-
-func (s searchEntry) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
-}
-
-func (s searchEntry) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s searchEntry) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s searchEntry) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s searchEntry) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b searchEntry) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
+func (s searchEntry) AsEditable() Editable {
+	return WrapEditable(gextras.InternObject(s))
 }

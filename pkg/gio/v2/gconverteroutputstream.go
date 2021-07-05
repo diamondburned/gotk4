@@ -3,12 +3,9 @@
 package gio
 
 import (
-	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -41,8 +38,11 @@ func init() {
 // As of GLib 2.34, OutputStream implements OutputStream.
 type ConverterOutputStream interface {
 	FilterOutputStream
-	PollableOutputStream
 
+	// AsPollableOutputStream casts the class to the PollableOutputStream interface.
+	AsPollableOutputStream() PollableOutputStream
+
+	// Converter gets the #GConverter that is used by @converter_stream.
 	Converter() Converter
 }
 
@@ -65,6 +65,8 @@ func marshalConverterOutputStream(p uintptr) (interface{}, error) {
 	return WrapConverterOutputStream(obj), nil
 }
 
+// NewConverterOutputStream creates a new converter output stream for the
+// @base_stream.
 func NewConverterOutputStream(baseStream OutputStream, converter Converter) ConverterOutputStream {
 	var _arg1 *C.GOutputStream // out
 	var _arg2 *C.GConverter    // out
@@ -77,7 +79,7 @@ func NewConverterOutputStream(baseStream OutputStream, converter Converter) Conv
 
 	var _converterOutputStream ConverterOutputStream // out
 
-	_converterOutputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(ConverterOutputStream)
+	_converterOutputStream = WrapConverterOutputStream(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _converterOutputStream
 }
@@ -97,22 +99,6 @@ func (c converterOutputStream) Converter() Converter {
 	return _converter
 }
 
-func (s converterOutputStream) CanPoll() bool {
-	return WrapPollableOutputStream(gextras.InternObject(s)).CanPoll()
-}
-
-func (s converterOutputStream) CreateSource(cancellable Cancellable) *glib.Source {
-	return WrapPollableOutputStream(gextras.InternObject(s)).CreateSource(cancellable)
-}
-
-func (s converterOutputStream) IsWritable() bool {
-	return WrapPollableOutputStream(gextras.InternObject(s)).IsWritable()
-}
-
-func (s converterOutputStream) WriteNonblocking(buffer []byte, cancellable Cancellable) (int, error) {
-	return WrapPollableOutputStream(gextras.InternObject(s)).WriteNonblocking(buffer, cancellable)
-}
-
-func (s converterOutputStream) WritevNonblocking(vectors []OutputVector, cancellable Cancellable) (uint, PollableReturn, error) {
-	return WrapPollableOutputStream(gextras.InternObject(s)).WritevNonblocking(vectors, cancellable)
+func (c converterOutputStream) AsPollableOutputStream() PollableOutputStream {
+	return WrapPollableOutputStream(gextras.InternObject(c))
 }

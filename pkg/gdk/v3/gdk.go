@@ -41,10 +41,20 @@ func marshalStatus(p uintptr) (interface{}, error) {
 type DeviceTool interface {
 	gextras.Objector
 
+	// HardwareID gets the hardware ID of this tool, or 0 if it's not known.
+	// When non-zero, the identificator is unique for the given tool model,
+	// meaning that two identical tools will share the same @hardware_id, but
+	// will have different serial numbers (see gdk_device_tool_get_serial()).
+	//
+	// This is a more concrete (and device specific) method to identify a
+	// DeviceTool than gdk_device_tool_get_tool_type(), as a tablet may support
+	// multiple devices with the same DeviceToolType, but having different
+	// hardware identificators.
 	HardwareID() uint64
-
+	// Serial gets the serial of this tool, this value can be used to identify a
+	// physical tool (eg. a tablet pen) across program executions.
 	Serial() uint64
-
+	// ToolType gets the DeviceToolType of the tool.
 	ToolType() DeviceToolType
 }
 
@@ -115,26 +125,49 @@ func (t deviceTool) ToolType() DeviceToolType {
 type DragContext interface {
 	gextras.Objector
 
+	// Actions determines the bitmask of actions proposed by the source if
+	// gdk_drag_context_get_suggested_action() returns GDK_ACTION_ASK.
 	Actions() DragAction
-
+	// DestWindow returns the destination window for the DND operation.
 	DestWindow() Window
-
+	// Device returns the Device associated to the drag context.
 	Device() Device
-
+	// DragWindow returns the window on which the drag icon should be rendered
+	// during the drag operation. Note that the window may not be available
+	// until the drag operation has begun. GDK will move the window in
+	// accordance with the ongoing drag operation. The window is owned by
+	// @context and will be destroyed when the drag operation is over.
 	DragWindow() Window
-
+	// Protocol returns the drag protocol that is used by this context.
 	Protocol() DragProtocol
-
+	// SelectedAction determines the action chosen by the drag destination.
 	SelectedAction() DragAction
-
+	// SourceWindow returns the Window where the DND operation started.
 	SourceWindow() Window
-
+	// SuggestedAction determines the suggested drag action of the context.
 	SuggestedAction() DragAction
-
+	// ManageDndDragContext requests the drag and drop operation to be managed
+	// by @context. When a drag and drop operation becomes managed, the
+	// DragContext will internally handle all input and source-side EventDND
+	// events as required by the windowing system.
+	//
+	// Once the drag and drop operation is managed, the drag context will emit
+	// the following signals: - The DragContext::action-changed signal whenever
+	// the final action to be performed by the drag and drop operation changes.
+	// - The DragContext::drop-performed signal after the user performs the drag
+	// and drop gesture (typically by releasing the mouse button). - The
+	// DragContext::dnd-finished signal after the drag and drop operation
+	// concludes (after all Selection transfers happen). - The
+	// DragContext::cancel signal if the drag and drop operation is finished but
+	// doesn't happen over an accepting destination, or is cancelled through
+	// other means.
 	ManageDndDragContext(ipcWindow Window, actions DragAction) bool
-
+	// SetDeviceDragContext associates a Device to @context, so all Drag and
+	// Drop events for @context are emitted as if they came from this device.
 	SetDeviceDragContext(device Device)
-
+	// SetHotspotDragContext sets the position of the drag window that will be
+	// kept under the cursor hotspot. Initially, the hotspot is at the top left
+	// corner of the drag window.
 	SetHotspotDragContext(hotX int, hotY int)
 }
 

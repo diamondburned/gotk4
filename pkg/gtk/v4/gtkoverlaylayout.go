@@ -52,6 +52,7 @@ func marshalOverlayLayout(p uintptr) (interface{}, error) {
 	return WrapOverlayLayout(obj), nil
 }
 
+// NewOverlayLayout creates a new `GtkOverlayLayout` instance.
 func NewOverlayLayout() OverlayLayout {
 	var _cret *C.GtkLayoutManager // in
 
@@ -59,7 +60,7 @@ func NewOverlayLayout() OverlayLayout {
 
 	var _overlayLayout OverlayLayout // out
 
-	_overlayLayout = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(OverlayLayout)
+	_overlayLayout = WrapOverlayLayout(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _overlayLayout
 }
@@ -69,12 +70,13 @@ func NewOverlayLayout() OverlayLayout {
 type OverlayLayoutChild interface {
 	LayoutChild
 
+	// ClipOverlay retrieves whether the child is clipped.
 	ClipOverlay() bool
-
+	// Measure retrieves whether the child is measured.
 	Measure() bool
-
+	// SetClipOverlayOverlayLayoutChild sets whether to clip this child.
 	SetClipOverlayOverlayLayoutChild(clipOverlay bool)
-
+	// SetMeasureOverlayLayoutChild sets whether to measure this child.
 	SetMeasureOverlayLayoutChild(measure bool)
 }
 

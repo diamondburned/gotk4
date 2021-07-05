@@ -3,10 +3,8 @@
 package gio
 
 import (
-	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
@@ -36,11 +34,10 @@ func init() {
 	})
 }
 
-// Application: a #GApplication is the foundation of an application. It wraps
-// some low-level platform-specific services and is intended to act as the
-// foundation for higher-level application classes such as Application or
-// Application. In general, you should not use this class outside of a higher
-// level framework.
+// Application is the foundation of an application. It wraps some low-level
+// platform-specific services and is intended to act as the foundation for
+// higher-level application classes such as Application or Application. In
+// general, you should not use this class outside of a higher level framework.
 //
 // GApplication provides convenient life cycle management by maintaining a "use
 // count" for the primary application instance. The use count can be changed
@@ -146,75 +143,481 @@ func init() {
 // gapplication-example-dbushooks.c
 // (https://git.gnome.org/browse/glib/tree/gio/tests/gapplication-example-dbushooks.c).
 type Application interface {
-	ActionGroup
-	ActionMap
+	gextras.Objector
 
+	// AsActionGroup casts the class to the ActionGroup interface.
+	AsActionGroup() ActionGroup
+	// AsActionMap casts the class to the ActionMap interface.
+	AsActionMap() ActionMap
+
+	// ActivateApplication activates the application.
+	//
+	// In essence, this results in the #GApplication::activate signal being
+	// emitted in the primary instance.
+	//
+	// The application must be registered before calling this function.
 	ActivateApplication()
-
+	// AddMainOptionApplication: add an option to be handled by @application.
+	//
+	// Calling this function is the equivalent of calling
+	// g_application_add_main_option_entries() with a single Entry that has its
+	// arg_data member set to nil.
+	//
+	// The parsed arguments will be packed into a Dict which is passed to
+	// #GApplication::handle-local-options. If
+	// G_APPLICATION_HANDLES_COMMAND_LINE is set, then it will also be sent to
+	// the primary instance. See g_application_add_main_option_entries() for
+	// more details.
+	//
+	// See Entry for more documentation of the arguments.
 	AddMainOptionApplication(longName string, shortName byte, flags glib.OptionFlags, arg glib.OptionArg, description string, argDescription string)
-
+	// AddMainOptionEntriesApplication adds main option entries to be handled by
+	// @application.
+	//
+	// This function is comparable to g_option_context_add_main_entries().
+	//
+	// After the commandline arguments are parsed, the
+	// #GApplication::handle-local-options signal will be emitted. At this
+	// point, the application can inspect the values pointed to by @arg_data in
+	// the given Entrys.
+	//
+	// Unlike Context, #GApplication supports giving a nil @arg_data for a
+	// non-callback Entry. This results in the argument in question being packed
+	// into a Dict which is also passed to #GApplication::handle-local-options,
+	// where it can be inspected and modified. If
+	// G_APPLICATION_HANDLES_COMMAND_LINE is set, then the resulting dictionary
+	// is sent to the primary instance, where
+	// g_application_command_line_get_options_dict() will return it. This
+	// "packing" is done according to the type of the argument -- booleans for
+	// normal flags, strings for strings, bytestrings for filenames, etc. The
+	// packing only occurs if the flag is given (ie: we do not pack a "false"
+	// #GVariant in the case that a flag is missing).
+	//
+	// In general, it is recommended that all commandline arguments are parsed
+	// locally. The options dictionary should then be used to transmit the
+	// result of the parsing to the primary instance, where
+	// g_variant_dict_lookup() can be used. For local options, it is possible to
+	// either use @arg_data in the usual way, or to consult (and potentially
+	// remove) the option from the options dictionary.
+	//
+	// This function is new in GLib 2.40. Before then, the only real choice was
+	// to send all of the commandline arguments (options and all) to the primary
+	// instance for handling. #GApplication ignored them completely on the local
+	// side. Calling this function "opts in" to the new behaviour, and in
+	// particular, means that unrecognised options will be treated as errors.
+	// Unrecognised options have never been ignored when
+	// G_APPLICATION_HANDLES_COMMAND_LINE is unset.
+	//
+	// If #GApplication::handle-local-options needs to see the list of
+	// filenames, then the use of G_OPTION_REMAINING is recommended. If
+	// @arg_data is nil then G_OPTION_REMAINING can be used as a key into the
+	// options dictionary. If you do use G_OPTION_REMAINING then you need to
+	// handle these arguments for yourself because once they are consumed, they
+	// will no longer be visible to the default handling (which treats them as
+	// filenames to be opened).
+	//
+	// It is important to use the proper GVariant format when retrieving the
+	// options with g_variant_dict_lookup(): - for G_OPTION_ARG_NONE, use `b` -
+	// for G_OPTION_ARG_STRING, use `&s` - for G_OPTION_ARG_INT, use `i` - for
+	// G_OPTION_ARG_INT64, use `x` - for G_OPTION_ARG_DOUBLE, use `d` - for
+	// G_OPTION_ARG_FILENAME, use `^&ay` - for G_OPTION_ARG_STRING_ARRAY, use
+	// `^a&s` - for G_OPTION_ARG_FILENAME_ARRAY, use `^a&ay`
 	AddMainOptionEntriesApplication(entries []glib.OptionEntry)
-
-	AddOptionGroupApplication(group *glib.OptionGroup)
-
+	// AddOptionGroupApplication adds a Group to the commandline handling of
+	// @application.
+	//
+	// This function is comparable to g_option_context_add_group().
+	//
+	// Unlike g_application_add_main_option_entries(), this function does not
+	// deal with nil @arg_data and never transmits options to the primary
+	// instance.
+	//
+	// The reason for that is because, by the time the options arrive at the
+	// primary instance, it is typically too late to do anything with them.
+	// Taking the GTK option group as an example: GTK will already have been
+	// initialised by the time the #GApplication::command-line handler runs. In
+	// the case that this is not the first-running instance of the application,
+	// the existing instance may already have been running for a very long time.
+	//
+	// This means that the options from Group are only really usable in the case
+	// that the instance of the application being run is the first instance.
+	// Passing options like `--display=` or `--gdk-debug=` on future runs will
+	// have no effect on the existing primary instance.
+	//
+	// Calling this function will cause the options in the supplied option group
+	// to be parsed, but it does not cause you to be "opted in" to the new
+	// functionality whereby unrecognised options are rejected even if
+	// G_APPLICATION_HANDLES_COMMAND_LINE was given.
+	AddOptionGroupApplication(group glib.OptionGroup)
+	// BindBusyPropertyApplication marks @application as busy (see
+	// g_application_mark_busy()) while @property on @object is true.
+	//
+	// The binding holds a reference to @application while it is active, but not
+	// to @object. Instead, the binding is destroyed when @object is finalized.
 	BindBusyPropertyApplication(object gextras.Objector, property string)
-
+	// ApplicationID gets the unique identifier for @application.
 	ApplicationID() string
-
+	// DBusConnection gets the BusConnection being used by the application, or
+	// nil.
+	//
+	// If #GApplication is using its D-Bus backend then this function will
+	// return the BusConnection being used for uniqueness and communication with
+	// the desktop environment and other instances of the application.
+	//
+	// If #GApplication is not using D-Bus then this function will return nil.
+	// This includes the situation where the D-Bus backend would normally be in
+	// use but we were unable to connect to the bus.
+	//
+	// This function must not be called before the application has been
+	// registered. See g_application_get_is_registered().
 	DBusConnection() DBusConnection
-
+	// DBusObjectPath gets the D-Bus object path being used by the application,
+	// or nil.
+	//
+	// If #GApplication is using its D-Bus backend then this function will
+	// return the D-Bus object path that #GApplication is using. If the
+	// application is the primary instance then there is an object published at
+	// this path. If the application is not the primary instance then the result
+	// of this function is undefined.
+	//
+	// If #GApplication is not using D-Bus then this function will return nil.
+	// This includes the situation where the D-Bus backend would normally be in
+	// use but we were unable to connect to the bus.
+	//
+	// This function must not be called before the application has been
+	// registered. See g_application_get_is_registered().
 	DBusObjectPath() string
-
+	// Flags gets the flags for @application.
+	//
+	// See Flags.
 	Flags() ApplicationFlags
-
+	// InactivityTimeout gets the current inactivity timeout for the
+	// application.
+	//
+	// This is the amount of time (in milliseconds) after the last call to
+	// g_application_release() before the application stops running.
 	InactivityTimeout() uint
-
+	// IsBusy gets the application's current busy state, as set through
+	// g_application_mark_busy() or g_application_bind_busy_property().
 	IsBusy() bool
-
+	// IsRegistered checks if @application is registered.
+	//
+	// An application is registered if g_application_register() has been
+	// successfully called.
 	IsRegistered() bool
-
+	// IsRemote checks if @application is remote.
+	//
+	// If @application is remote then it means that another instance of
+	// application already exists (the 'primary' instance). Calls to perform
+	// actions on @application will result in the actions being performed by the
+	// primary instance.
+	//
+	// The value of this property cannot be accessed before
+	// g_application_register() has been called. See
+	// g_application_get_is_registered().
 	IsRemote() bool
-
+	// ResourceBasePath gets the resource base path of @application.
+	//
+	// See g_application_set_resource_base_path() for more information.
 	ResourceBasePath() string
-
+	// HoldApplication increases the use count of @application.
+	//
+	// Use this function to indicate that the application has a reason to
+	// continue to run. For example, g_application_hold() is called by GTK+ when
+	// a toplevel window is on the screen.
+	//
+	// To cancel the hold, call g_application_release().
 	HoldApplication()
-
+	// MarkBusyApplication increases the busy count of @application.
+	//
+	// Use this function to indicate that the application is busy, for instance
+	// while a long running operation is pending.
+	//
+	// The busy state will be exposed to other processes, so a session shell
+	// will use that information to indicate the state to the user (e.g. with a
+	// spinner).
+	//
+	// To cancel the busy indication, use g_application_unmark_busy().
 	MarkBusyApplication()
-
+	// OpenApplication opens the given files.
+	//
+	// In essence, this results in the #GApplication::open signal being emitted
+	// in the primary instance.
+	//
+	// @n_files must be greater than zero.
+	//
+	// @hint is simply passed through to the ::open signal. It is intended to be
+	// used by applications that have multiple modes for opening files (eg:
+	// "view" vs "edit", etc). Unless you have a need for this functionality,
+	// you should use "".
+	//
+	// The application must be registered before calling this function and it
+	// must have the G_APPLICATION_HANDLES_OPEN flag set.
 	OpenApplication(files []File, hint string)
-
+	// QuitApplication: immediately quits the application.
+	//
+	// Upon return to the mainloop, g_application_run() will return, calling
+	// only the 'shutdown' function before doing so.
+	//
+	// The hold count is ignored. Take care if your code has called
+	// g_application_hold() on the application and is therefore still expecting
+	// it to exist. (Note that you may have called g_application_hold()
+	// indirectly, for example through gtk_application_add_window().)
+	//
+	// The result of calling g_application_run() again after it returns is
+	// unspecified.
 	QuitApplication()
-
+	// RegisterApplication attempts registration of the application.
+	//
+	// This is the point at which the application discovers if it is the primary
+	// instance or merely acting as a remote for an already-existing primary
+	// instance. This is implemented by attempting to acquire the application
+	// identifier as a unique bus name on the session bus using GDBus.
+	//
+	// If there is no application ID or if G_APPLICATION_NON_UNIQUE was given,
+	// then this process will always become the primary instance.
+	//
+	// Due to the internal architecture of GDBus, method calls can be dispatched
+	// at any time (even if a main loop is not running). For this reason, you
+	// must ensure that any object paths that you wish to register are
+	// registered before calling this function.
+	//
+	// If the application has already been registered then true is returned with
+	// no work performed.
+	//
+	// The #GApplication::startup signal is emitted if registration succeeds and
+	// @application is the primary instance (including the non-unique case).
+	//
+	// In the event of an error (such as @cancellable being cancelled, or a
+	// failure to connect to the session bus), false is returned and @error is
+	// set appropriately.
+	//
+	// Note: the return value of this function is not an indicator that this
+	// instance is or is not the primary instance of the application. See
+	// g_application_get_is_remote() for that.
 	RegisterApplication(cancellable Cancellable) error
-
+	// ReleaseApplication: decrease the use count of @application.
+	//
+	// When the use count reaches zero, the application will stop running.
+	//
+	// Never call this function except to cancel the effect of a previous call
+	// to g_application_hold().
 	ReleaseApplication()
-
+	// RunApplication runs the application.
+	//
+	// This function is intended to be run from main() and its return value is
+	// intended to be returned by main(). Although you are expected to pass the
+	// @argc, @argv parameters from main() to this function, it is possible to
+	// pass nil if @argv is not available or commandline handling is not
+	// required. Note that on Windows, @argc and @argv are ignored, and
+	// g_win32_get_command_line() is called internally (for proper support of
+	// Unicode commandline arguments).
+	//
+	// #GApplication will attempt to parse the commandline arguments. You can
+	// add commandline flags to the list of recognised options by way of
+	// g_application_add_main_option_entries(). After this, the
+	// #GApplication::handle-local-options signal is emitted, from which the
+	// application can inspect the values of its Entrys.
+	//
+	// #GApplication::handle-local-options is a good place to handle options
+	// such as `--version`, where an immediate reply from the local process is
+	// desired (instead of communicating with an already-running instance). A
+	// #GApplication::handle-local-options handler can stop further processing
+	// by returning a non-negative value, which then becomes the exit status of
+	// the process.
+	//
+	// What happens next depends on the flags: if
+	// G_APPLICATION_HANDLES_COMMAND_LINE was specified then the remaining
+	// commandline arguments are sent to the primary instance, where a
+	// #GApplication::command-line signal is emitted. Otherwise, the remaining
+	// commandline arguments are assumed to be a list of files. If there are no
+	// files listed, the application is activated via the
+	// #GApplication::activate signal. If there are one or more files, and
+	// G_APPLICATION_HANDLES_OPEN was specified then the files are opened via
+	// the #GApplication::open signal.
+	//
+	// If you are interested in doing more complicated local handling of the
+	// commandline then you should implement your own #GApplication subclass and
+	// override local_command_line(). In this case, you most likely want to
+	// return true from your local_command_line() implementation to suppress the
+	// default handling. See
+	// [gapplication-example-cmdline2.c][gapplication-example-cmdline2] for an
+	// example.
+	//
+	// If, after the above is done, the use count of the application is zero
+	// then the exit status is returned immediately. If the use count is
+	// non-zero then the default main context is iterated until the use count
+	// falls to zero, at which point 0 is returned.
+	//
+	// If the G_APPLICATION_IS_SERVICE flag is set, then the service will run
+	// for as much as 10 seconds with a use count of zero while waiting for the
+	// message that caused the activation to arrive. After that, if the use
+	// count falls to zero the application will exit immediately, except in the
+	// case that g_application_set_inactivity_timeout() is in use.
+	//
+	// This function sets the prgname (g_set_prgname()), if not already set, to
+	// the basename of argv[0].
+	//
+	// Much like g_main_loop_run(), this function will acquire the main context
+	// for the duration that the application is running.
+	//
+	// Since 2.40, applications that are not explicitly flagged as services or
+	// launchers (ie: neither G_APPLICATION_IS_SERVICE or
+	// G_APPLICATION_IS_LAUNCHER are given as flags) will check (from the
+	// default handler for local_command_line) if "--gapplication-service" was
+	// given in the command line. If this flag is present then normal
+	// commandline processing is interrupted and the G_APPLICATION_IS_SERVICE
+	// flag is set. This provides a "compromise" solution whereby running an
+	// application directly from the commandline will invoke it in the normal
+	// way (which can be useful for debugging) while still allowing applications
+	// to be D-Bus activated in service mode. The D-Bus service file should
+	// invoke the executable with "--gapplication-service" as the sole
+	// commandline argument. This approach is suitable for use by most graphical
+	// applications but should not be used from applications like editors that
+	// need precise control over when processes invoked via the commandline will
+	// exit and what their exit status will be.
 	RunApplication(argv []string) int
-
+	// SendNotificationApplication sends a notification on behalf of
+	// @application to the desktop shell. There is no guarantee that the
+	// notification is displayed immediately, or even at all.
+	//
+	// Notifications may persist after the application exits. It will be
+	// D-Bus-activated when the notification or one of its actions is activated.
+	//
+	// Modifying @notification after this call has no effect. However, the
+	// object can be reused for a later call to this function.
+	//
+	// @id may be any string that uniquely identifies the event for the
+	// application. It does not need to be in any special format. For example,
+	// "new-message" might be appropriate for a notification about new messages.
+	//
+	// If a previous notification was sent with the same @id, it will be
+	// replaced with @notification and shown again as if it was a new
+	// notification. This works even for notifications sent from a previous
+	// execution of the application, as long as @id is the same string.
+	//
+	// @id may be nil, but it is impossible to replace or withdraw notifications
+	// without an id.
+	//
+	// If @notification is no longer relevant, it can be withdrawn with
+	// g_application_withdraw_notification().
 	SendNotificationApplication(id string, notification Notification)
-
+	// SetActionGroupApplication: this used to be how actions were associated
+	// with a #GApplication. Now there is Map for that.
+	//
+	// Deprecated: since version 2.32.
 	SetActionGroupApplication(actionGroup ActionGroup)
-
+	// SetApplicationIDApplication sets the unique identifier for @application.
+	//
+	// The application id can only be modified if @application has not yet been
+	// registered.
+	//
+	// If non-nil, the application id must be valid. See
+	// g_application_id_is_valid().
 	SetApplicationIDApplication(applicationId string)
-
+	// SetDefaultApplication sets or unsets the default application for the
+	// process, as returned by g_application_get_default().
+	//
+	// This function does not take its own reference on @application. If
+	// @application is destroyed then the default application will revert back
+	// to nil.
 	SetDefaultApplication()
-
+	// SetFlagsApplication sets the flags for @application.
+	//
+	// The flags can only be modified if @application has not yet been
+	// registered.
+	//
+	// See Flags.
 	SetFlagsApplication(flags ApplicationFlags)
-
+	// SetInactivityTimeoutApplication sets the current inactivity timeout for
+	// the application.
+	//
+	// This is the amount of time (in milliseconds) after the last call to
+	// g_application_release() before the application stops running.
+	//
+	// This call has no side effects of its own. The value set here is only used
+	// for next time g_application_release() drops the use count to zero. Any
+	// timeouts currently in progress are not impacted.
 	SetInactivityTimeoutApplication(inactivityTimeout uint)
-
+	// SetOptionContextDescriptionApplication adds a description to the
+	// @application option context.
+	//
+	// See g_option_context_set_description() for more information.
 	SetOptionContextDescriptionApplication(description string)
-
+	// SetOptionContextParameterStringApplication sets the parameter string to
+	// be used by the commandline handling of @application.
+	//
+	// This function registers the argument to be passed to
+	// g_option_context_new() when the internal Context of @application is
+	// created.
+	//
+	// See g_option_context_new() for more information about @parameter_string.
 	SetOptionContextParameterStringApplication(parameterString string)
-
+	// SetOptionContextSummaryApplication adds a summary to the @application
+	// option context.
+	//
+	// See g_option_context_set_summary() for more information.
 	SetOptionContextSummaryApplication(summary string)
-
+	// SetResourceBasePathApplication sets (or unsets) the base resource path of
+	// @application.
+	//
+	// The path is used to automatically load various [application
+	// resources][gresource] such as menu layouts and action descriptions. The
+	// various types of resources will be found at fixed names relative to the
+	// given base path.
+	//
+	// By default, the resource base path is determined from the application ID
+	// by prefixing '/' and replacing each '.' with '/'. This is done at the
+	// time that the #GApplication object is constructed. Changes to the
+	// application ID after that point will not have an impact on the resource
+	// base path.
+	//
+	// As an example, if the application has an ID of "org.example.app" then the
+	// default resource base path will be "/org/example/app". If this is a
+	// Application (and you have not manually changed the path) then Gtk will
+	// then search for the menus of the application at
+	// "/org/example/app/gtk/menus.ui".
+	//
+	// See #GResource for more information about adding resources to your
+	// application.
+	//
+	// You can disable automatic resource loading functionality by setting the
+	// path to nil.
+	//
+	// Changing the resource base path once the application is running is not
+	// recommended. The point at which the resource path is consulted for
+	// forming paths for various purposes is unspecified. When writing a
+	// sub-class of #GApplication you should either set the
+	// #GApplication:resource-base-path property at construction time, or call
+	// this function during the instance initialization. Alternatively, you can
+	// call this function in the Class.startup virtual function, before chaining
+	// up to the parent implementation.
 	SetResourceBasePathApplication(resourcePath string)
-
+	// UnbindBusyPropertyApplication destroys a binding between @property and
+	// the busy state of @application that was previously created with
+	// g_application_bind_busy_property().
 	UnbindBusyPropertyApplication(object gextras.Objector, property string)
-
+	// UnmarkBusyApplication decreases the busy count of @application.
+	//
+	// When the busy count reaches zero, the new state will be propagated to
+	// other processes.
+	//
+	// This function must only be called to cancel the effect of a previous call
+	// to g_application_mark_busy().
 	UnmarkBusyApplication()
-
+	// WithdrawNotificationApplication withdraws a notification that was sent
+	// with g_application_send_notification().
+	//
+	// This call does nothing if a notification with @id doesn't exist or the
+	// notification was never sent.
+	//
+	// This function works even for notifications sent in previous executions of
+	// this application, as long @id is the same as it was for the sent
+	// notification.
+	//
+	// Note that notifications are dismissed when the user clicks on one of the
+	// buttons in a notification or triggers its default action, so there is no
+	// need to explicitly withdraw the notification in that case.
 	WithdrawNotificationApplication(id string)
 }
 
@@ -237,6 +640,13 @@ func marshalApplication(p uintptr) (interface{}, error) {
 	return WrapApplication(obj), nil
 }
 
+// NewApplication creates a new #GApplication instance.
+//
+// If non-nil, the application id must be valid. See
+// g_application_id_is_valid().
+//
+// If no application ID is given then some features of #GApplication (most
+// notably application uniqueness) will be disabled.
 func NewApplication(applicationId string, flags ApplicationFlags) Application {
 	var _arg1 *C.gchar            // out
 	var _arg2 C.GApplicationFlags // out
@@ -250,7 +660,7 @@ func NewApplication(applicationId string, flags ApplicationFlags) Application {
 
 	var _application Application // out
 
-	_application = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Application)
+	_application = WrapApplication(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _application
 }
@@ -300,12 +710,12 @@ func (a application) AddMainOptionEntriesApplication(entries []glib.OptionEntry)
 	C.g_application_add_main_option_entries(_arg0, _arg1)
 }
 
-func (a application) AddOptionGroupApplication(group *glib.OptionGroup) {
+func (a application) AddOptionGroupApplication(group glib.OptionGroup) {
 	var _arg0 *C.GApplication // out
 	var _arg1 *C.GOptionGroup // out
 
 	_arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
-	_arg1 = (*C.GOptionGroup)(unsafe.Pointer(group.Native()))
+	_arg1 = (*C.GOptionGroup)(unsafe.Pointer(group))
 
 	C.g_application_add_option_group(_arg0, _arg1)
 }
@@ -513,7 +923,7 @@ func (a application) QuitApplication() {
 func (a application) RegisterApplication(cancellable Cancellable) error {
 	var _arg0 *C.GApplication // out
 	var _arg1 *C.GCancellable // out
-	var _cerr *C.GError       // in
+	var _cerr **C.GError      // in
 
 	_arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
@@ -522,7 +932,16 @@ func (a application) RegisterApplication(cancellable Cancellable) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _goerr
 }
@@ -700,74 +1119,10 @@ func (a application) WithdrawNotificationApplication(id string) {
 	C.g_application_withdraw_notification(_arg0, _arg1)
 }
 
-func (a application) ActionAdded(actionName string) {
-	WrapActionGroup(gextras.InternObject(a)).ActionAdded(actionName)
+func (a application) AsActionGroup() ActionGroup {
+	return WrapActionGroup(gextras.InternObject(a))
 }
 
-func (a application) ActionEnabledChanged(actionName string, enabled bool) {
-	WrapActionGroup(gextras.InternObject(a)).ActionEnabledChanged(actionName, enabled)
-}
-
-func (a application) ActionRemoved(actionName string) {
-	WrapActionGroup(gextras.InternObject(a)).ActionRemoved(actionName)
-}
-
-func (a application) ActionStateChanged(actionName string, state *glib.Variant) {
-	WrapActionGroup(gextras.InternObject(a)).ActionStateChanged(actionName, state)
-}
-
-func (a application) ActivateAction(actionName string, parameter *glib.Variant) {
-	WrapActionGroup(gextras.InternObject(a)).ActivateAction(actionName, parameter)
-}
-
-func (a application) ChangeActionState(actionName string, value *glib.Variant) {
-	WrapActionGroup(gextras.InternObject(a)).ChangeActionState(actionName, value)
-}
-
-func (a application) ActionEnabled(actionName string) bool {
-	return WrapActionGroup(gextras.InternObject(a)).ActionEnabled(actionName)
-}
-
-func (a application) ActionParameterType(actionName string) *glib.VariantType {
-	return WrapActionGroup(gextras.InternObject(a)).ActionParameterType(actionName)
-}
-
-func (a application) ActionState(actionName string) *glib.Variant {
-	return WrapActionGroup(gextras.InternObject(a)).ActionState(actionName)
-}
-
-func (a application) ActionStateHint(actionName string) *glib.Variant {
-	return WrapActionGroup(gextras.InternObject(a)).ActionStateHint(actionName)
-}
-
-func (a application) ActionStateType(actionName string) *glib.VariantType {
-	return WrapActionGroup(gextras.InternObject(a)).ActionStateType(actionName)
-}
-
-func (a application) HasAction(actionName string) bool {
-	return WrapActionGroup(gextras.InternObject(a)).HasAction(actionName)
-}
-
-func (a application) ListActions() []string {
-	return WrapActionGroup(gextras.InternObject(a)).ListActions()
-}
-
-func (a application) QueryAction(actionName string) (enabled bool, parameterType *glib.VariantType, stateType *glib.VariantType, stateHint *glib.Variant, state *glib.Variant, ok bool) {
-	return WrapActionGroup(gextras.InternObject(a)).QueryAction(actionName)
-}
-
-func (a application) AddAction(action Action) {
-	WrapActionMap(gextras.InternObject(a)).AddAction(action)
-}
-
-func (a application) AddActionEntries(entries []ActionEntry, userData interface{}) {
-	WrapActionMap(gextras.InternObject(a)).AddActionEntries(entries, userData)
-}
-
-func (a application) LookupAction(actionName string) Action {
-	return WrapActionMap(gextras.InternObject(a)).LookupAction(actionName)
-}
-
-func (a application) RemoveAction(actionName string) {
-	WrapActionMap(gextras.InternObject(a)).RemoveAction(actionName)
+func (a application) AsActionMap() ActionMap {
+	return WrapActionMap(gextras.InternObject(a))
 }

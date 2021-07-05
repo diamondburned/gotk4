@@ -33,14 +33,14 @@ func DisableSetlocale() {
 //
 // This function is equivalent to pango_language_get_default(). See that
 // function for details.
-func GetDefaultLanguage() *pango.Language {
+func GetDefaultLanguage() pango.Language {
 	var _cret *C.PangoLanguage // in
 
 	_cret = C.gtk_get_default_language()
 
-	var _language *pango.Language // out
+	var _language pango.Language // out
 
-	_language = (*pango.Language)(unsafe.Pointer(_cret))
+	_language = (pango.Language)(unsafe.Pointer(_cret))
 
 	return _language
 }

@@ -37,7 +37,7 @@ type typeRenamer struct {
 // name must not. The GIR type is absolutely matched, similarly to
 // AbsoluteFilter.
 func TypeRenamer(girType, newName string) Preprocessor {
-	namespace, girType := gir.SplitGIRType(girType)
+	namespace, _ := gir.SplitGIRType(girType)
 
 	// Verify that the namespace is present.
 	_, version := gir.ParseVersionName(namespace)
@@ -54,10 +54,44 @@ func TypeRenamer(girType, newName string) Preprocessor {
 func (ren typeRenamer) Preprocess(repos gir.Repositories) {
 	result := repos.FindFullType(ren.from)
 	if result == nil {
-		log.Printf("GIR type %q not found", ren.from)
+		log.Panicf("GIR type %q not found", ren.from)
 	}
 
 	result.SetName(ren.to)
+}
+
+type modifyCallable struct {
+	girType string
+	modFunc func(*gir.CallableAttrs)
+}
+
+// ModifyCallable is a preprocessor that modifies an existing callable. It only
+// does Function or Callback.
+//
+// TODO: add Method, Virtual Method and Constructor support.
+func ModifyCallable(girType string, f func(c *gir.CallableAttrs)) Preprocessor {
+	return modifyCallable{girType, f}
+}
+
+func (m modifyCallable) Preprocess(repos gir.Repositories) {
+	result := repos.FindFullType(m.girType)
+	if result == nil {
+		log.Panicf("GIR type %q not found", m.girType)
+	}
+
+	var callable *gir.CallableAttrs
+	switch v := result.Type.(type) {
+	case *gir.Function:
+		callable = &v.CallableAttrs
+	case *gir.Callback:
+		callable = &v.CallableAttrs
+	}
+
+	if callable == nil {
+		log.Panicf("GIR type %q has no callable", m.girType)
+	}
+
+	m.modFunc(callable)
 }
 
 // FilterMatcher describes a filter for a GIR type.
@@ -70,11 +104,14 @@ type FilterMatcher interface {
 // Filter returns true if the given GIR and/or C type should be omitted from the
 // given generator.
 func Filter(gen FileGenerator, gir, c string) (omit bool) {
+	gir = EnsureNamespace(gen.Namespace(), gir)
+
 	for _, filter := range gen.Filters() {
 		if filter.Filter(gen, gir, c) {
 			return true
 		}
 	}
+
 	return false
 }
 
@@ -190,7 +227,7 @@ func (ff fileFilter) Filter(gen FileGenerator, girT, cT string) (omit bool) {
 
 	info := cmt.GetInfoFields(res.Type)
 	if info.Elements == nil {
-		return false
+		log.Panicf("type %T missing info.Elements", res.Type)
 	}
 
 	if info.Elements.SourcePosition != nil {

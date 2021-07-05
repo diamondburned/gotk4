@@ -30,8 +30,17 @@ func init() {
 type MediaControls interface {
 	Widget
 
-	MediaStream() MediaStream
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
 
+	// MediaStream gets the media stream managed by @controls or nil if none.
+	MediaStream() MediaStream
+	// SetMediaStreamMediaControls sets the stream that is controlled by
+	// @controls.
 	SetMediaStreamMediaControls(stream MediaStream)
 }
 
@@ -54,6 +63,8 @@ func marshalMediaControls(p uintptr) (interface{}, error) {
 	return WrapMediaControls(obj), nil
 }
 
+// NewMediaControls creates a new `GtkMediaControls` managing the @stream passed
+// to it.
 func NewMediaControls(stream MediaStream) MediaControls {
 	var _arg1 *C.GtkMediaStream // out
 	var _cret *C.GtkWidget      // in
@@ -64,7 +75,7 @@ func NewMediaControls(stream MediaStream) MediaControls {
 
 	var _mediaControls MediaControls // out
 
-	_mediaControls = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(MediaControls)
+	_mediaControls = WrapMediaControls(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _mediaControls
 }
@@ -94,34 +105,14 @@ func (c mediaControls) SetMediaStreamMediaControls(stream MediaStream) {
 	C.gtk_media_controls_set_media_stream(_arg0, _arg1)
 }
 
-func (s mediaControls) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
+func (m mediaControls) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(m))
 }
 
-func (s mediaControls) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
+func (m mediaControls) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(m))
 }
 
-func (s mediaControls) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
-}
-
-func (s mediaControls) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s mediaControls) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s mediaControls) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s mediaControls) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b mediaControls) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
+func (m mediaControls) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(m))
 }

@@ -41,84 +41,174 @@ func init() {
 type Display interface {
 	gextras.Objector
 
+	// BeepDisplay emits a short beep on @display
 	BeepDisplay()
-
+	// CloseDisplay closes the connection to the windowing system for the given
+	// display, and cleans up associated resources.
 	CloseDisplay()
-
+	// DeviceIsGrabbedDisplay returns true if there is an ongoing grab on
+	// @device for @display.
 	DeviceIsGrabbedDisplay(device Device) bool
-
+	// FlushDisplay flushes any requests queued for the windowing system; this
+	// happens automatically when the main loop blocks waiting for new events,
+	// but if your application is drawing without returning control to the main
+	// loop, you may need to call this function explicitly. A common case where
+	// this function needs to be called is when an application is executing
+	// drawing commands from a thread other than the thread where the main loop
+	// is running.
+	//
+	// This is most useful for X11. On windowing systems where requests are
+	// handled synchronously, this function will do nothing.
 	FlushDisplay()
-
+	// AppLaunchContext returns a AppLaunchContext suitable for launching
+	// applications on the given display.
 	AppLaunchContext() AppLaunchContext
-
+	// DefaultCursorSize returns the default size to use for cursors on
+	// @display.
 	DefaultCursorSize() uint
-
+	// DefaultGroup returns the default group leader window for all toplevel
+	// windows on @display. This window is implicitly created by GDK. See
+	// gdk_window_set_group().
 	DefaultGroup() Window
-
+	// DefaultScreen: get the default Screen for @display.
 	DefaultScreen() Screen
-
+	// DefaultSeat returns the default Seat for this display.
 	DefaultSeat() Seat
-
+	// DeviceManager returns the DeviceManager associated to @display.
+	//
+	// Deprecated: since version 3.20..
 	DeviceManager() DeviceManager
-
+	// MaximalCursorSize gets the maximal size to use for cursors on @display.
 	MaximalCursorSize() (width uint, height uint)
-
+	// Monitor gets a monitor associated with this display.
 	Monitor(monitorNum int) Monitor
-
+	// MonitorAtPoint gets the monitor in which the point (@x, @y) is located,
+	// or a nearby monitor if the point is not in any monitor.
 	MonitorAtPoint(x int, y int) Monitor
-
+	// MonitorAtWindow gets the monitor in which the largest area of @window
+	// resides, or a monitor close to @window if it is outside of all monitors.
 	MonitorAtWindow(window Window) Monitor
-
+	// NMonitors gets the number of monitors that belong to @display.
+	//
+	// The returned number is valid until the next emission of the
+	// Display::monitor-added or Display::monitor-removed signal.
 	NMonitors() int
-
+	// NScreens gets the number of screen managed by the @display.
+	//
+	// Deprecated: since version 3.10.
 	NScreens() int
-
+	// Name gets the name of the display.
 	Name() string
-
+	// Pointer gets the current location of the pointer and the current modifier
+	// mask for a given display.
+	//
+	// Deprecated: since version 3.0.
 	Pointer() (screen Screen, x int, y int, mask ModifierType)
-
+	// PrimaryMonitor gets the primary monitor for the display.
+	//
+	// The primary monitor is considered the monitor where the “main desktop”
+	// lives. While normal application windows typically allow the window
+	// manager to place the windows, specialized desktop applications such as
+	// panels should place themselves on the primary monitor.
 	PrimaryMonitor() Monitor
-
+	// Screen returns a screen object for one of the screens of the display.
+	//
+	// Deprecated: since version 3.20.
 	Screen(screenNum int) Screen
-
+	// WindowAtPointer obtains the window underneath the mouse pointer,
+	// returning the location of the pointer in that window in @win_x, @win_y
+	// for @screen. Returns nil if the window under the mouse pointer is not
+	// known to GDK (for example, belongs to another application).
+	//
+	// Deprecated: since version 3.0.
 	WindowAtPointer() (winX int, winY int, window Window)
-
+	// HasPendingDisplay returns whether the display has events that are waiting
+	// to be processed.
 	HasPendingDisplay() bool
-
+	// IsClosedDisplay finds out if the display has been closed.
 	IsClosedDisplay() bool
-
+	// KeyboardUngrabDisplay: release any keyboard grab
+	//
+	// Deprecated: since version 3.0.
 	KeyboardUngrabDisplay(time_ uint32)
-
+	// NotifyStartupCompleteDisplay indicates to the GUI environment that the
+	// application has finished loading, using a given identifier.
+	//
+	// GTK+ will call this function automatically for Window with custom
+	// startup-notification identifier unless
+	// gtk_window_set_auto_startup_notification() is called to disable that
+	// feature.
 	NotifyStartupCompleteDisplay(startupId string)
-
+	// PointerIsGrabbedDisplay: test if the pointer is grabbed.
+	//
+	// Deprecated: since version 3.0.
 	PointerIsGrabbedDisplay() bool
-
+	// PointerUngrabDisplay: release any pointer grab.
+	//
+	// Deprecated: since version 3.0.
 	PointerUngrabDisplay(time_ uint32)
-
-	RequestSelectionNotificationDisplay(selection *Atom) bool
-
+	// SetDoubleClickDistanceDisplay sets the double click distance (two clicks
+	// within this distance count as a double click and result in a
+	// K_2BUTTON_PRESS event). See also gdk_display_set_double_click_time().
+	// Applications should not set this, it is a global user-configured setting.
 	SetDoubleClickDistanceDisplay(distance uint)
-
+	// SetDoubleClickTimeDisplay sets the double click time (two clicks within
+	// this time interval count as a double click and result in a
+	// K_2BUTTON_PRESS event). Applications should not set this, it is a global
+	// user-configured setting.
 	SetDoubleClickTimeDisplay(msec uint)
-
-	StoreClipboardDisplay(clipboardWindow Window, time_ uint32, targets []*Atom)
-
+	// SupportsClipboardPersistenceDisplay returns whether the speicifed display
+	// supports clipboard persistance; i.e. if it’s possible to store the
+	// clipboard data after an application has quit. On X11 this checks if a
+	// clipboard daemon is running.
 	SupportsClipboardPersistenceDisplay() bool
-
+	// SupportsCompositeDisplay returns true if gdk_window_set_composited() can
+	// be used to redirect drawing on the window using compositing.
+	//
+	// Currently this only works on X11 with XComposite and XDamage extensions
+	// available.
+	//
+	// Deprecated: since version 3.16.
 	SupportsCompositeDisplay() bool
-
+	// SupportsCursorAlphaDisplay returns true if cursors can use an 8bit alpha
+	// channel on @display. Otherwise, cursors are restricted to bilevel alpha
+	// (i.e. a mask).
 	SupportsCursorAlphaDisplay() bool
-
+	// SupportsCursorColorDisplay returns true if multicolored cursors are
+	// supported on @display. Otherwise, cursors have only a forground and a
+	// background color.
 	SupportsCursorColorDisplay() bool
-
+	// SupportsInputShapesDisplay returns true if
+	// gdk_window_input_shape_combine_mask() can be used to modify the input
+	// shape of windows on @display.
 	SupportsInputShapesDisplay() bool
-
+	// SupportsSelectionNotificationDisplay returns whether EventOwnerChange
+	// events will be sent when the owner of a selection changes.
 	SupportsSelectionNotificationDisplay() bool
-
+	// SupportsShapesDisplay returns true if gdk_window_shape_combine_mask() can
+	// be used to create shaped windows on @display.
 	SupportsShapesDisplay() bool
-
+	// SyncDisplay flushes any requests queued for the windowing system and
+	// waits until all requests have been handled. This is often used for making
+	// sure that the display is synchronized with the current state of the
+	// program. Calling gdk_display_sync() before gdk_error_trap_pop() makes
+	// sure that any errors generated from earlier requests are handled before
+	// the error trap is removed.
+	//
+	// This is most useful for X11. On windowing systems where requests are
+	// handled synchronously, this function will do nothing.
 	SyncDisplay()
-
+	// WarpPointerDisplay warps the pointer of @display to the point @x,@y on
+	// the screen @screen, unless the pointer is confined to a window by a grab,
+	// in which case it will be moved as far as allowed by the grab. Warping the
+	// pointer creates events as if the user had moved the mouse instantaneously
+	// to the destination.
+	//
+	// Note that the pointer should normally be under the control of the user.
+	// This function was added to cover some rare use cases like keyboard
+	// navigation support for the color picker in the ColorSelectionDialog.
+	//
+	// Deprecated: since version 3.0.
 	WarpPointerDisplay(screen Screen, x int, y int)
 }
 
@@ -276,8 +366,8 @@ func (d display) DeviceManager() DeviceManager {
 
 func (d display) MaximalCursorSize() (width uint, height uint) {
 	var _arg0 *C.GdkDisplay // out
-	var _arg1 C.guint       // in
-	var _arg2 C.guint       // in
+	var _arg1 *C.guint      // in
+	var _arg2 *C.guint      // in
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
@@ -391,11 +481,11 @@ func (d display) Name() string {
 }
 
 func (d display) Pointer() (screen Screen, x int, y int, mask ModifierType) {
-	var _arg0 *C.GdkDisplay     // out
-	var _arg1 *C.GdkScreen      // in
-	var _arg2 C.gint            // in
-	var _arg3 C.gint            // in
-	var _arg4 C.GdkModifierType // in
+	var _arg0 *C.GdkDisplay      // out
+	var _arg1 **C.GdkScreen      // in
+	var _arg2 *C.gint            // in
+	var _arg3 *C.gint            // in
+	var _arg4 *C.GdkModifierType // in
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
@@ -406,10 +496,28 @@ func (d display) Pointer() (screen Screen, x int, y int, mask ModifierType) {
 	var _y int             // out
 	var _mask ModifierType // out
 
-	_screen = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg1))).(Screen)
+	{
+		var refTmpIn *C.GdkScreen
+		var refTmpOut screen
+
+		refTmpIn = *_arg1
+
+		refTmpOut = gextras.CastObject(externglib.Take(unsafe.Pointer(refTmpIn))).(screen)
+
+		_screen = refTmpOut
+	}
 	_x = int(_arg2)
 	_y = int(_arg3)
-	_mask = ModifierType(_arg4)
+	{
+		var refTmpIn C.GdkModifierType
+		var refTmpOut ModifierType
+
+		refTmpIn = *_arg4
+
+		refTmpOut = ModifierType(refTmpIn)
+
+		_mask = refTmpOut
+	}
 
 	return _screen, _x, _y, _mask
 }
@@ -448,8 +556,8 @@ func (d display) Screen(screenNum int) Screen {
 
 func (d display) WindowAtPointer() (winX int, winY int, window Window) {
 	var _arg0 *C.GdkDisplay // out
-	var _arg1 C.gint        // in
-	var _arg2 C.gint        // in
+	var _arg1 *C.gint       // in
+	var _arg2 *C.gint       // in
 	var _cret *C.GdkWindow  // in
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
@@ -549,34 +657,6 @@ func (d display) PointerUngrabDisplay(time_ uint32) {
 	C.gdk_display_pointer_ungrab(_arg0, _arg1)
 }
 
-func (d display) RequestSelectionNotificationDisplay(selection *Atom) bool {
-	var _arg0 *C.GdkDisplay // out
-	var _arg1 C.GdkAtom     // out
-	var _cret C.gboolean    // in
-
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
-	{
-		var refTmpIn *Atom
-		var refTmpOut *C.GdkAtom
-
-		refTmpIn = selection
-
-		refTmpOut = (*C.GdkAtom)(unsafe.Pointer(refTmpIn.Native()))
-
-		_arg1 = *refTmpOut
-	}
-
-	_cret = C.gdk_display_request_selection_notification(_arg0, _arg1)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
 func (d display) SetDoubleClickDistanceDisplay(distance uint) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 C.guint       // out
@@ -595,22 +675,6 @@ func (d display) SetDoubleClickTimeDisplay(msec uint) {
 	_arg1 = C.guint(msec)
 
 	C.gdk_display_set_double_click_time(_arg0, _arg1)
-}
-
-func (d display) StoreClipboardDisplay(clipboardWindow Window, time_ uint32, targets []*Atom) {
-	var _arg0 *C.GdkDisplay // out
-	var _arg1 *C.GdkWindow  // out
-	var _arg2 C.guint32     // out
-	var _arg3 *C.GdkAtom
-	var _arg4 C.gint
-
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer(clipboardWindow.Native()))
-	_arg2 = C.guint32(time_)
-	_arg4 = C.gint(len(targets))
-	_arg3 = (*C.GdkAtom)(unsafe.Pointer(&targets[0]))
-
-	C.gdk_display_store_clipboard(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
 func (d display) SupportsClipboardPersistenceDisplay() bool {

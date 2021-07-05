@@ -28,7 +28,9 @@ func init() {
 // Additionally, it can display a text on top of the progress bar.
 type CellRendererProgress interface {
 	CellRenderer
-	Orientable
+
+	// AsOrientable casts the class to the Orientable interface.
+	AsOrientable() Orientable
 }
 
 // cellRendererProgress implements the CellRendererProgress class.
@@ -50,6 +52,7 @@ func marshalCellRendererProgress(p uintptr) (interface{}, error) {
 	return WrapCellRendererProgress(obj), nil
 }
 
+// NewCellRendererProgress creates a new CellRendererProgress.
 func NewCellRendererProgress() CellRendererProgress {
 	var _cret *C.GtkCellRenderer // in
 
@@ -57,15 +60,11 @@ func NewCellRendererProgress() CellRendererProgress {
 
 	var _cellRendererProgress CellRendererProgress // out
 
-	_cellRendererProgress = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(CellRendererProgress)
+	_cellRendererProgress = WrapCellRendererProgress(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _cellRendererProgress
 }
 
-func (o cellRendererProgress) Orientation() Orientation {
-	return WrapOrientable(gextras.InternObject(o)).Orientation()
-}
-
-func (o cellRendererProgress) SetOrientation(orientation Orientation) {
-	WrapOrientable(gextras.InternObject(o)).SetOrientation(orientation)
+func (c cellRendererProgress) AsOrientable() Orientable {
+	return WrapOrientable(gextras.InternObject(c))
 }

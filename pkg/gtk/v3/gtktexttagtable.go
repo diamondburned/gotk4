@@ -7,7 +7,6 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -63,16 +62,29 @@ func gotk4_TextTagTableForeach(arg0 *C.GtkTextTag, arg1 C.gpointer) {
 //     </child>
 //    </object>
 type TextTagTable interface {
-	Buildable
+	gextras.Objector
 
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+
+	// AddTextTagTable: add a tag to the table. The tag is assigned the highest
+	// priority in the table.
+	//
+	// @tag must not be in a tag table already, and may not have the same name
+	// as an already-added tag.
 	AddTextTagTable(tag TextTag) bool
-
+	// ForeachTextTagTable calls @func on each tag in @table, with user data
+	// @data. Note that the table may not be modified while iterating over it
+	// (you can’t add/remove tags).
 	ForeachTextTagTable(fn TextTagTableForeach)
-
+	// Size returns the size of the table (number of tags)
 	Size() int
-
+	// LookupTextTagTable: look up a named tag.
 	LookupTextTagTable(name string) TextTag
-
+	// RemoveTextTagTable: remove a tag from the table. If a TextBuffer has
+	// @table as its tag table, the tag is removed from the buffer. The table’s
+	// reference to the tag is removed, so the tag will end up destroyed if you
+	// don’t have a reference to it.
 	RemoveTextTagTable(tag TextTag)
 }
 
@@ -95,6 +107,8 @@ func marshalTextTagTable(p uintptr) (interface{}, error) {
 	return WrapTextTagTable(obj), nil
 }
 
+// NewTextTagTable creates a new TextTagTable. The table contains no tags by
+// default.
 func NewTextTagTable() TextTagTable {
 	var _cret *C.GtkTextTagTable // in
 
@@ -102,7 +116,7 @@ func NewTextTagTable() TextTagTable {
 
 	var _textTagTable TextTagTable // out
 
-	_textTagTable = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(TextTagTable)
+	_textTagTable = WrapTextTagTable(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _textTagTable
 }
@@ -181,42 +195,6 @@ func (t textTagTable) RemoveTextTagTable(tag TextTag) {
 	C.gtk_text_tag_table_remove(_arg0, _arg1)
 }
 
-func (b textTagTable) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
-}
-
-func (b textTagTable) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b textTagTable) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b textTagTable) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b textTagTable) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b textTagTable) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b textTagTable) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b textTagTable) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b textTagTable) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b textTagTable) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
+func (t textTagTable) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(t))
 }

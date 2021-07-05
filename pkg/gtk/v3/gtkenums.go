@@ -95,7 +95,7 @@ const (
 	AlignStart Align = 1
 	// end: snap to right or bottom side, leaving space on left or top
 	AlignEnd Align = 2
-	// center: center natural width of widget inside the allocation
+	// center natural width of widget inside the allocation
 	AlignCenter Align = 3
 	// baseline: align the widget according to the baseline. Since 3.10.
 	AlignBaseline Align = 4
@@ -151,7 +151,7 @@ type BorderStyle int
 const (
 	// none: no visible border
 	BorderStyleNone BorderStyle = 0
-	// solid: a single line segment
+	// solid: single line segment
 	BorderStyleSolid BorderStyle = 1
 	// inset looks as if the content is sunken into the canvas
 	BorderStyleInset BorderStyle = 2
@@ -159,9 +159,9 @@ const (
 	BorderStyleOutset BorderStyle = 3
 	// hidden: same as @GTK_BORDER_STYLE_NONE
 	BorderStyleHidden BorderStyle = 4
-	// dotted: a series of round dots
+	// dotted series of round dots
 	BorderStyleDotted BorderStyle = 5
-	// dashed: a series of square-ended dashes
+	// dashed series of square-ended dashes
 	BorderStyleDashed BorderStyle = 6
 	// double: two parallel lines with some space between them
 	BorderStyleDouble BorderStyle = 7
@@ -412,7 +412,7 @@ func marshalLevelBarMode(p uintptr) (interface{}, error) {
 	return LevelBarMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// MenuDirectionType: an enumeration representing directional movements within a
+// MenuDirectionType: enumeration representing directional movements within a
 // menu.
 type MenuDirectionType int
 
@@ -704,8 +704,7 @@ type ReliefStyle int
 const (
 	// normal: draw a normal relief.
 	ReliefStyleNormal ReliefStyle = 0
-	// half: a half relief. Deprecated in 3.14, does the same as
-	// @GTK_RELIEF_NORMAL
+	// half relief. Deprecated in 3.14, does the same as @GTK_RELIEF_NORMAL
 	ReliefStyleHalf ReliefStyle = 1
 	// none: no relief.
 	ReliefStyleNone ReliefStyle = 2

@@ -62,38 +62,15 @@ func init() {
 type Icon interface {
 	gextras.Objector
 
-	// Equal generates a textual representation of @icon that can be used for
-	// serialization such as when passing @icon to a different process or saving
-	// it to persistent storage. Use g_icon_new_for_string() to get @icon back
-	// from the returned string.
-	//
-	// The encoding of the returned string is proprietary to #GIcon except in
-	// the following two cases
-	//
-	// - If @icon is a Icon, the returned string is a native path (such as
-	// `/path/to/my icon.png`) without escaping if the #GFile for @icon is a
-	// native file. If the file is not native, the returned string is the result
-	// of g_file_get_uri() (such as `sftp://path/to/my20icon.png`).
-	//
-	// - If @icon is a Icon with exactly one name and no fallbacks, the encoding
-	// is simply the name (such as `network-server`).
+	// Equal checks if two icons are equal.
 	Equal(icon2 Icon) bool
-	// Serialize generates a textual representation of @icon that can be used
-	// for serialization such as when passing @icon to a different process or
-	// saving it to persistent storage. Use g_icon_new_for_string() to get @icon
-	// back from the returned string.
-	//
-	// The encoding of the returned string is proprietary to #GIcon except in
-	// the following two cases
-	//
-	// - If @icon is a Icon, the returned string is a native path (such as
-	// `/path/to/my icon.png`) without escaping if the #GFile for @icon is a
-	// native file. If the file is not native, the returned string is the result
-	// of g_file_get_uri() (such as `sftp://path/to/my20icon.png`).
-	//
-	// - If @icon is a Icon with exactly one name and no fallbacks, the encoding
-	// is simply the name (such as `network-server`).
-	Serialize() *glib.Variant
+	// Serialize serializes a #GIcon into a #GVariant. An equivalent #GIcon can
+	// be retrieved back by calling g_icon_deserialize() on the returned value.
+	// As serialization will avoid using raw icon data when possible, it only
+	// makes sense to transfer the #GVariant between processes on the same
+	// machine, (as opposed to over the network), and within the same file
+	// system namespace.
+	Serialize() glib.Variant
 	// String generates a textual representation of @icon that can be used for
 	// serialization such as when passing @icon to a different process or saving
 	// it to persistent storage. Use g_icon_new_for_string() to get @icon back
@@ -152,7 +129,7 @@ func (i icon) Equal(icon2 Icon) bool {
 	return _ok
 }
 
-func (i icon) Serialize() *glib.Variant {
+func (i icon) Serialize() glib.Variant {
 	var _arg0 *C.GIcon    // out
 	var _cret *C.GVariant // in
 
@@ -160,11 +137,11 @@ func (i icon) Serialize() *glib.Variant {
 
 	_cret = C.g_icon_serialize(_arg0)
 
-	var _variant *glib.Variant // out
+	var _variant glib.Variant // out
 
-	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(&_variant, func(v **glib.Variant) {
-		C.free(unsafe.Pointer(v))
+	_variant = (glib.Variant)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_variant, func(v glib.Variant) {
+		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
 	})
 
 	return _variant

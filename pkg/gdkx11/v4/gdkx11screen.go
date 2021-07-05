@@ -25,14 +25,33 @@ func init() {
 type X11Screen interface {
 	gextras.Objector
 
+	// CurrentDesktop returns the current workspace for @screen when running
+	// under a window manager that supports multiple workspaces, as described in
+	// the Extended Window Manager Hints
+	// (http://www.freedesktop.org/Standards/wm-spec) specification.
 	CurrentDesktop() uint32
-
+	// NumberOfDesktops returns the number of workspaces for @screen when
+	// running under a window manager that supports multiple workspaces, as
+	// described in the Extended Window Manager Hints
+	// (http://www.freedesktop.org/Standards/wm-spec) specification.
 	NumberOfDesktops() uint32
-
+	// ScreenNumber returns the index of a X11Screen.
 	ScreenNumber() int
-
+	// WindowManagerName returns the name of the window manager for @screen.
 	WindowManagerName() string
-
+	// SupportsNetWmHintX11Screen: this function is specific to the X11 backend
+	// of GDK, and indicates whether the window manager supports a certain hint
+	// from the Extended Window Manager Hints
+	// (http://www.freedesktop.org/Standards/wm-spec) specification.
+	//
+	// When using this function, keep in mind that the window manager can change
+	// over time; so you shouldn’t use this function in a way that impacts
+	// persistent application state. A common bug is that your application can
+	// start up before the window manager does when the user logs in, and before
+	// the window manager starts gdk_x11_screen_supports_net_wm_hint() will
+	// return false for every property. You can monitor the
+	// window_manager_changed signal on X11Screen to detect a window manager
+	// change.
 	SupportsNetWmHintX11Screen(propertyName string) bool
 }
 

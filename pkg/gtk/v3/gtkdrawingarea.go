@@ -5,9 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -104,6 +102,9 @@ func init() {
 // the focus indicator. See gtk_render_focus() for one way to draw focus.
 type DrawingArea interface {
 	Widget
+
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
 }
 
 // drawingArea implements the DrawingArea class.
@@ -125,6 +126,7 @@ func marshalDrawingArea(p uintptr) (interface{}, error) {
 	return WrapDrawingArea(obj), nil
 }
 
+// NewDrawingArea creates a new drawing area.
 func NewDrawingArea() DrawingArea {
 	var _cret *C.GtkWidget // in
 
@@ -132,47 +134,11 @@ func NewDrawingArea() DrawingArea {
 
 	var _drawingArea DrawingArea // out
 
-	_drawingArea = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(DrawingArea)
+	_drawingArea = WrapDrawingArea(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _drawingArea
 }
 
-func (b drawingArea) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
-}
-
-func (b drawingArea) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b drawingArea) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b drawingArea) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b drawingArea) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b drawingArea) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b drawingArea) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b drawingArea) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b drawingArea) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b drawingArea) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
+func (d drawingArea) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(d))
 }

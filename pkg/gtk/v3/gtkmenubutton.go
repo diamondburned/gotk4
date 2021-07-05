@@ -5,10 +5,8 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -111,28 +109,79 @@ func init() {
 type MenuButton interface {
 	ToggleButton
 
+	// AsActionable casts the class to the Actionable interface.
+	AsActionable() Actionable
+	// AsActivatable casts the class to the Activatable interface.
+	AsActivatable() Activatable
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+
+	// AlignWidget returns the parent Widget to use to line up with menu.
 	AlignWidget() Widget
-
+	// Direction returns the direction the popup will be pointing at when popped
+	// up.
 	Direction() ArrowType
-
+	// MenuModel returns the Model used to generate the popup.
 	MenuModel() gio.MenuModel
-
+	// Popover returns the Popover that pops out of the button. If the button is
+	// not using a Popover, this function returns nil.
 	Popover() Popover
-
+	// Popup returns the Menu that pops out of the button. If the button does
+	// not use a Menu, this function returns nil.
 	Popup() Menu
-
+	// UsePopover returns whether a Popover or a Menu will be constructed from
+	// the menu model.
 	UsePopover() bool
-
+	// SetAlignWidgetMenuButton sets the Widget to use to line the menu with
+	// when popped up. Note that the @align_widget must contain the MenuButton
+	// itself.
+	//
+	// Setting it to nil means that the menu will be aligned with the button
+	// itself.
+	//
+	// Note that this property is only used with menus currently, and not for
+	// popovers.
 	SetAlignWidgetMenuButton(alignWidget Widget)
-
+	// SetDirectionMenuButton sets the direction in which the popup will be
+	// popped up, as well as changing the arrow’s direction. The child will not
+	// be changed to an arrow if it was customized.
+	//
+	// If the does not fit in the available space in the given direction, GTK+
+	// will its best to keep it inside the screen and fully visible.
+	//
+	// If you pass GTK_ARROW_NONE for a @direction, the popup will behave as if
+	// you passed GTK_ARROW_DOWN (although you won’t see any arrows).
 	SetDirectionMenuButton(direction ArrowType)
-
+	// SetMenuModelMenuButton sets the Model from which the popup will be
+	// constructed, or nil to dissociate any existing menu model and disable the
+	// button.
+	//
+	// Depending on the value of MenuButton:use-popover, either a Menu will be
+	// created with gtk_menu_new_from_model(), or a Popover with
+	// gtk_popover_new_from_model(). In either case, actions will be connected
+	// as documented for these functions.
+	//
+	// If MenuButton:popup or MenuButton:popover are already set, those widgets
+	// are dissociated from the @menu_button, and those properties are set to
+	// nil.
 	SetMenuModelMenuButton(menuModel gio.MenuModel)
-
+	// SetPopoverMenuButton sets the Popover that will be popped up when the
+	// @menu_button is clicked, or nil to dissociate any existing popover and
+	// disable the button.
+	//
+	// If MenuButton:menu-model or MenuButton:popup are set, those objects are
+	// dissociated from the @menu_button, and those properties are set to nil.
 	SetPopoverMenuButton(popover Widget)
-
+	// SetPopupMenuButton sets the Menu that will be popped up when the
+	// @menu_button is clicked, or nil to dissociate any existing menu and
+	// disable the button.
+	//
+	// If MenuButton:menu-model or MenuButton:popover are set, those objects are
+	// dissociated from the @menu_button, and those properties are set to nil.
 	SetPopupMenuButton(menu Widget)
-
+	// SetUsePopoverMenuButton sets whether to construct a Popover instead of
+	// Menu when gtk_menu_button_set_menu_model() is called. Note that this
+	// property is only consulted when a new menu model is set.
 	SetUsePopoverMenuButton(usePopover bool)
 }
 
@@ -155,6 +204,9 @@ func marshalMenuButton(p uintptr) (interface{}, error) {
 	return WrapMenuButton(obj), nil
 }
 
+// NewMenuButton creates a new MenuButton widget with downwards-pointing arrow
+// as the only child. You can replace the child widget with another Widget
+// should you wish to.
 func NewMenuButton() MenuButton {
 	var _cret *C.GtkWidget // in
 
@@ -162,7 +214,7 @@ func NewMenuButton() MenuButton {
 
 	var _menuButton MenuButton // out
 
-	_menuButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(MenuButton)
+	_menuButton = WrapMenuButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _menuButton
 }
@@ -321,126 +373,14 @@ func (m menuButton) SetUsePopoverMenuButton(usePopover bool) {
 	C.gtk_menu_button_set_use_popover(_arg0, _arg1)
 }
 
-func (b menuButton) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+func (m menuButton) AsActionable() Actionable {
+	return WrapActionable(gextras.InternObject(m))
 }
 
-func (b menuButton) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+func (m menuButton) AsActivatable() Activatable {
+	return WrapActivatable(gextras.InternObject(m))
 }
 
-func (b menuButton) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b menuButton) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b menuButton) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b menuButton) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b menuButton) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b menuButton) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b menuButton) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b menuButton) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (a menuButton) ActionName() string {
-	return WrapActionable(gextras.InternObject(a)).ActionName()
-}
-
-func (a menuButton) ActionTargetValue() *glib.Variant {
-	return WrapActionable(gextras.InternObject(a)).ActionTargetValue()
-}
-
-func (a menuButton) SetActionName(actionName string) {
-	WrapActionable(gextras.InternObject(a)).SetActionName(actionName)
-}
-
-func (a menuButton) SetActionTargetValue(targetValue *glib.Variant) {
-	WrapActionable(gextras.InternObject(a)).SetActionTargetValue(targetValue)
-}
-
-func (a menuButton) SetDetailedActionName(detailedActionName string) {
-	WrapActionable(gextras.InternObject(a)).SetDetailedActionName(detailedActionName)
-}
-
-func (b menuButton) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
-}
-
-func (b menuButton) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b menuButton) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b menuButton) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b menuButton) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b menuButton) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b menuButton) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b menuButton) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b menuButton) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b menuButton) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (a menuButton) DoSetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).DoSetRelatedAction(action)
-}
-
-func (a menuButton) RelatedAction() Action {
-	return WrapActivatable(gextras.InternObject(a)).RelatedAction()
-}
-
-func (a menuButton) UseActionAppearance() bool {
-	return WrapActivatable(gextras.InternObject(a)).UseActionAppearance()
-}
-
-func (a menuButton) SetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SetRelatedAction(action)
-}
-
-func (a menuButton) SetUseActionAppearance(useAppearance bool) {
-	WrapActivatable(gextras.InternObject(a)).SetUseActionAppearance(useAppearance)
-}
-
-func (a menuButton) SyncActionProperties(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SyncActionProperties(action)
+func (m menuButton) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(m))
 }

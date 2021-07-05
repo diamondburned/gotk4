@@ -48,9 +48,8 @@ func marshalCSSProviderError(p uintptr) (interface{}, error) {
 	return CSSProviderError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// CSSProvider: gtkCssProvider is an object implementing the StyleProvider
-// interface. It is able to parse [CSS-like][css-overview] input in order to
-// style widgets.
+// CSSProvider is an object implementing the StyleProvider interface. It is able
+// to parse [CSS-like][css-overview] input in order to style widgets.
 //
 // An application can make GTK+ parse a specific CSS style sheet by calling
 // gtk_css_provider_load_from_file() or gtk_css_provider_load_from_resource()
@@ -73,14 +72,29 @@ func marshalCSSProviderError(p uintptr) (interface{}, error) {
 // In the same way, GTK+ tries to load a gtk-keys.css file for the current key
 // theme, as defined by Settings:gtk-key-theme-name.
 type CSSProvider interface {
-	StyleProvider
+	gextras.Objector
 
+	// AsStyleProvider casts the class to the StyleProvider interface.
+	AsStyleProvider() StyleProvider
+
+	// LoadFromDataCSSProvider loads @data into @css_provider, and by doing so
+	// clears any previously loaded information.
 	LoadFromDataCSSProvider(data []byte) error
-
+	// LoadFromPathCSSProvider loads the data contained in @path into
+	// @css_provider, making it clear any previously loaded information.
 	LoadFromPathCSSProvider(path string) error
-
+	// LoadFromResourceCSSProvider loads the data contained in the resource at
+	// @resource_path into the CssProvider, clearing any previously loaded
+	// information.
+	//
+	// To track errors while loading CSS, connect to the
+	// CssProvider::parsing-error signal.
 	LoadFromResourceCSSProvider(resourcePath string)
-
+	// String converts the @provider into a string representation in CSS format.
+	//
+	// Using gtk_css_provider_load_from_data() with the return value from this
+	// function on a new provider created with gtk_css_provider_new() will
+	// basically create a duplicate of this @provider.
 	String() string
 }
 
@@ -103,6 +117,7 @@ func marshalCSSProvider(p uintptr) (interface{}, error) {
 	return WrapCSSProvider(obj), nil
 }
 
+// NewCSSProvider returns a newly created CssProvider.
 func NewCSSProvider() CSSProvider {
 	var _cret *C.GtkCssProvider // in
 
@@ -110,7 +125,7 @@ func NewCSSProvider() CSSProvider {
 
 	var _cssProvider CSSProvider // out
 
-	_cssProvider = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(CSSProvider)
+	_cssProvider = WrapCSSProvider(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _cssProvider
 }
@@ -119,7 +134,7 @@ func (c cssProvider) LoadFromDataCSSProvider(data []byte) error {
 	var _arg0 *C.GtkCssProvider // out
 	var _arg1 *C.gchar
 	var _arg2 C.gssize
-	var _cerr *C.GError // in
+	var _cerr **C.GError // in
 
 	_arg0 = (*C.GtkCssProvider)(unsafe.Pointer(c.Native()))
 	_arg2 = C.gssize(len(data))
@@ -129,7 +144,16 @@ func (c cssProvider) LoadFromDataCSSProvider(data []byte) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _goerr
 }
@@ -137,7 +161,7 @@ func (c cssProvider) LoadFromDataCSSProvider(data []byte) error {
 func (c cssProvider) LoadFromPathCSSProvider(path string) error {
 	var _arg0 *C.GtkCssProvider // out
 	var _arg1 *C.gchar          // out
-	var _cerr *C.GError         // in
+	var _cerr **C.GError        // in
 
 	_arg0 = (*C.GtkCssProvider)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.gchar)(C.CString(path))
@@ -147,7 +171,16 @@ func (c cssProvider) LoadFromPathCSSProvider(path string) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _goerr
 }
@@ -179,10 +212,6 @@ func (p cssProvider) String() string {
 	return _utf8
 }
 
-func (p cssProvider) IconFactory(path *WidgetPath) IconFactory {
-	return WrapStyleProvider(gextras.InternObject(p)).IconFactory(path)
-}
-
-func (p cssProvider) Style(path *WidgetPath) StyleProperties {
-	return WrapStyleProvider(gextras.InternObject(p)).Style(path)
+func (c cssProvider) AsStyleProvider() StyleProvider {
+	return WrapStyleProvider(gextras.InternObject(c))
 }

@@ -32,13 +32,14 @@ func init() {
 	})
 }
 
-// TCPWrapperConnection: a WrapperConnection can be used to wrap a OStream that
-// is based on a #GSocket, but which is not actually a Connection. This is used
-// by Client so that it can always return a Connection, even when the connection
-// it has actually created is not directly a Connection.
+// TCPWrapperConnection can be used to wrap a OStream that is based on a
+// #GSocket, but which is not actually a Connection. This is used by Client so
+// that it can always return a Connection, even when the connection it has
+// actually created is not directly a Connection.
 type TCPWrapperConnection interface {
 	TCPConnection
 
+	// BaseIOStream gets @conn's base OStream
 	BaseIOStream() IOStream
 }
 
@@ -61,6 +62,8 @@ func marshalTCPWrapperConnection(p uintptr) (interface{}, error) {
 	return WrapTCPWrapperConnection(obj), nil
 }
 
+// NewTCPWrapperConnection wraps @base_io_stream and @socket together as a
+// Connection.
 func NewTCPWrapperConnection(baseIoStream IOStream, socket Socket) TCPWrapperConnection {
 	var _arg1 *C.GIOStream         // out
 	var _arg2 *C.GSocket           // out
@@ -73,7 +76,7 @@ func NewTCPWrapperConnection(baseIoStream IOStream, socket Socket) TCPWrapperCon
 
 	var _tcpWrapperConnection TCPWrapperConnection // out
 
-	_tcpWrapperConnection = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(TCPWrapperConnection)
+	_tcpWrapperConnection = WrapTCPWrapperConnection(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _tcpWrapperConnection
 }

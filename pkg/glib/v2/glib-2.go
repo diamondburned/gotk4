@@ -21,8 +21,8 @@ func init() {
 	})
 }
 
-// IOCondition: a bitwise combination representing a condition to watch for on
-// an event source.
+// IOCondition: bitwise combination representing a condition to watch for on an
+// event source.
 type IOCondition int
 
 const (

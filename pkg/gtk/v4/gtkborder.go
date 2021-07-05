@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -21,10 +22,12 @@ func init() {
 	})
 }
 
-// Border: a struct that specifies a border around a rectangular area.
+// Border: struct that specifies a border around a rectangular area.
 //
 // Each side can have different width.
-type Border C.GtkBorder
+type Border struct {
+	native C.GtkBorder
+}
 
 // WrapBorder wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -38,16 +41,16 @@ func marshalBorder(p uintptr) (interface{}, error) {
 }
 
 // NewBorder constructs a struct Border.
-func NewBorder() *Border {
+func NewBorder() Border {
 	var _cret *C.GtkBorder // in
 
 	_cret = C.gtk_border_new()
 
-	var _border *Border // out
+	var _border Border // out
 
-	_border = (*Border)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(&_border, func(v **Border) {
-		C.free(unsafe.Pointer(v))
+	_border = (Border)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_border, func(v Border) {
+		C.gtk_border_free((*C.GtkBorder)(unsafe.Pointer(v)))
 	})
 
 	return _border
@@ -55,23 +58,23 @@ func NewBorder() *Border {
 
 // Native returns the underlying C source pointer.
 func (b *Border) Native() unsafe.Pointer {
-	return unsafe.Pointer(b)
+	return unsafe.Pointer(&b.native)
 }
 
-// Copy frees a Border-struct.
-func (b *Border) Copy() *Border {
+// Copy copies a Border-struct.
+func (b *Border) Copy() Border {
 	var _arg0 *C.GtkBorder // out
 	var _cret *C.GtkBorder // in
 
-	_arg0 = (*C.GtkBorder)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkBorder)(unsafe.Pointer(b))
 
 	_cret = C.gtk_border_copy(_arg0)
 
-	var _border *Border // out
+	var _border Border // out
 
-	_border = (*Border)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(&_border, func(v **Border) {
-		C.free(unsafe.Pointer(v))
+	_border = (Border)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_border, func(v Border) {
+		C.gtk_border_free((*C.GtkBorder)(unsafe.Pointer(v)))
 	})
 
 	return _border
@@ -81,7 +84,7 @@ func (b *Border) Copy() *Border {
 func (b *Border) Free() {
 	var _arg0 *C.GtkBorder // out
 
-	_arg0 = (*C.GtkBorder)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkBorder)(unsafe.Pointer(b))
 
 	C.gtk_border_free(_arg0)
 }

@@ -27,7 +27,9 @@ func init() {
 
 type SwitchAccessible interface {
 	WidgetAccessible
-	atk.Action
+
+	// AsAction casts the class to the atk.Action interface.
+	AsAction() atk.Action
 }
 
 // switchAccessible implements the SwitchAccessible class.
@@ -49,30 +51,6 @@ func marshalSwitchAccessible(p uintptr) (interface{}, error) {
 	return WrapSwitchAccessible(obj), nil
 }
 
-func (a switchAccessible) DoAction(i int) bool {
-	return atk.WrapAction(gextras.InternObject(a)).DoAction(i)
-}
-
-func (a switchAccessible) Description(i int) string {
-	return atk.WrapAction(gextras.InternObject(a)).Description(i)
-}
-
-func (a switchAccessible) Keybinding(i int) string {
-	return atk.WrapAction(gextras.InternObject(a)).Keybinding(i)
-}
-
-func (a switchAccessible) LocalizedName(i int) string {
-	return atk.WrapAction(gextras.InternObject(a)).LocalizedName(i)
-}
-
-func (a switchAccessible) NActions() int {
-	return atk.WrapAction(gextras.InternObject(a)).NActions()
-}
-
-func (a switchAccessible) Name(i int) string {
-	return atk.WrapAction(gextras.InternObject(a)).Name(i)
-}
-
-func (a switchAccessible) SetDescription(i int, desc string) bool {
-	return atk.WrapAction(gextras.InternObject(a)).SetDescription(i, desc)
+func (s switchAccessible) AsAction() atk.Action {
+	return atk.WrapAction(gextras.InternObject(s))
 }

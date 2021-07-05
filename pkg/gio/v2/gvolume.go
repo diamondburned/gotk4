@@ -72,45 +72,80 @@ func init() {
 type Volume interface {
 	gextras.Objector
 
-	// CanEject returns whether the volume should be automatically mounted.
+	// CanEject checks if a volume can be ejected.
 	CanEject() bool
-	// CanMount returns whether the volume should be automatically mounted.
+	// CanMount checks if a volume can be mounted.
 	CanMount() bool
-	// Eject returns whether the volume should be automatically mounted.
+	// Eject ejects a volume. This is an asynchronous operation, and is finished
+	// by calling g_volume_eject_finish() with the @volume and Result returned
+	// in the @callback.
+	//
+	// Deprecated: since version 2.22.
 	Eject(flags MountUnmountFlags, cancellable Cancellable, callback AsyncReadyCallback)
-	// EjectFinish returns whether the volume should be automatically mounted.
+	// EjectFinish finishes ejecting a volume. If any errors occurred during the
+	// operation, @error will be set to contain the errors and false will be
+	// returned.
+	//
+	// Deprecated: since version 2.22.
 	EjectFinish(result AsyncResult) error
-	// EjectWithOperation returns whether the volume should be automatically
-	// mounted.
+	// EjectWithOperation ejects a volume. This is an asynchronous operation,
+	// and is finished by calling g_volume_eject_with_operation_finish() with
+	// the @volume and Result data returned in the @callback.
 	EjectWithOperation(flags MountUnmountFlags, mountOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback)
-	// EjectWithOperationFinish returns whether the volume should be
-	// automatically mounted.
+	// EjectWithOperationFinish finishes ejecting a volume. If any errors
+	// occurred during the operation, @error will be set to contain the errors
+	// and false will be returned.
 	EjectWithOperationFinish(result AsyncResult) error
-	// EnumerateIdentifiers returns whether the volume should be automatically
-	// mounted.
+	// EnumerateIdentifiers gets the kinds of [identifiers][volume-identifier]
+	// that @volume has. Use g_volume_get_identifier() to obtain the identifiers
+	// themselves.
 	EnumerateIdentifiers() []string
-	// ActivationRoot returns whether the volume should be automatically
-	// mounted.
+	// ActivationRoot gets the activation root for a #GVolume if it is known
+	// ahead of mount time. Returns nil otherwise. If not nil and if @volume is
+	// mounted, then the result of g_mount_get_root() on the #GMount object
+	// obtained from g_volume_get_mount() will always either be equal or a
+	// prefix of what this function returns. In other words, in code
+	//
+	//    (g_file_has_prefix (volume_activation_root, mount_root) ||
+	//     g_file_equal (volume_activation_root, mount_root))
+	//
+	// will always be true.
+	//
+	// Activation roots are typically used in Monitor implementations to find
+	// the underlying mount to shadow, see g_mount_is_shadowed() for more
+	// details.
 	ActivationRoot() File
-	// Drive returns whether the volume should be automatically mounted.
+	// Drive gets the drive for the @volume.
 	Drive() Drive
-	// Icon returns whether the volume should be automatically mounted.
+	// Icon gets the icon for @volume.
 	Icon() Icon
-	// Identifier returns whether the volume should be automatically mounted.
+	// Identifier gets the identifier of the given kind for @volume. See the
+	// [introduction][volume-identifier] for more information about volume
+	// identifiers.
 	Identifier(kind string) string
-	// GetMount returns whether the volume should be automatically mounted.
+	// GetMount gets the mount for the @volume.
 	GetMount() Mount
-	// Name returns whether the volume should be automatically mounted.
+	// Name gets the name of @volume.
 	Name() string
-	// SortKey returns whether the volume should be automatically mounted.
+	// SortKey gets the sort key for @volume, if any.
 	SortKey() string
-	// SymbolicIcon returns whether the volume should be automatically mounted.
+	// SymbolicIcon gets the symbolic icon for @volume.
 	SymbolicIcon() Icon
-	// UUID returns whether the volume should be automatically mounted.
+	// UUID gets the UUID for the @volume. The reference is typically based on
+	// the file system UUID for the volume in question and should be considered
+	// an opaque string. Returns nil if there is no UUID available.
 	UUID() string
-	// Mount returns whether the volume should be automatically mounted.
+	// Mount mounts a volume. This is an asynchronous operation, and is finished
+	// by calling g_volume_mount_finish() with the @volume and Result returned
+	// in the @callback.
 	Mount(flags MountMountFlags, mountOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback)
-	// MountFinish returns whether the volume should be automatically mounted.
+	// MountFinish finishes mounting a volume. If any errors occurred during the
+	// operation, @error will be set to contain the errors and false will be
+	// returned.
+	//
+	// If the mount operation succeeded, g_volume_get_mount() on @volume is
+	// guaranteed to return the mount right after calling this function; there's
+	// no need to listen for the 'mount-added' signal on Monitor.
 	MountFinish(result AsyncResult) error
 	// ShouldAutomount returns whether the volume should be automatically
 	// mounted.
@@ -191,7 +226,7 @@ func (v volume) Eject(flags MountUnmountFlags, cancellable Cancellable, callback
 func (v volume) EjectFinish(result AsyncResult) error {
 	var _arg0 *C.GVolume      // out
 	var _arg1 *C.GAsyncResult // out
-	var _cerr *C.GError       // in
+	var _cerr **C.GError      // in
 
 	_arg0 = (*C.GVolume)(unsafe.Pointer(v.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
@@ -200,7 +235,16 @@ func (v volume) EjectFinish(result AsyncResult) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _goerr
 }
@@ -226,7 +270,7 @@ func (v volume) EjectWithOperation(flags MountUnmountFlags, mountOperation Mount
 func (v volume) EjectWithOperationFinish(result AsyncResult) error {
 	var _arg0 *C.GVolume      // out
 	var _arg1 *C.GAsyncResult // out
-	var _cerr *C.GError       // in
+	var _cerr **C.GError      // in
 
 	_arg0 = (*C.GVolume)(unsafe.Pointer(v.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
@@ -235,7 +279,16 @@ func (v volume) EjectWithOperationFinish(result AsyncResult) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _goerr
 }
@@ -430,7 +483,7 @@ func (v volume) Mount(flags MountMountFlags, mountOperation MountOperation, canc
 func (v volume) MountFinish(result AsyncResult) error {
 	var _arg0 *C.GVolume      // out
 	var _arg1 *C.GAsyncResult // out
-	var _cerr *C.GError       // in
+	var _cerr **C.GError      // in
 
 	_arg0 = (*C.GVolume)(unsafe.Pointer(v.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
@@ -439,7 +492,16 @@ func (v volume) MountFinish(result AsyncResult) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _goerr
 }

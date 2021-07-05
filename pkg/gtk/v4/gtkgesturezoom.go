@@ -30,6 +30,11 @@ func init() {
 type GestureZoom interface {
 	Gesture
 
+	// ScaleDelta gets the scale delta.
+	//
+	// If @gesture is active, this function returns the zooming difference since
+	// the gesture was recognized (hence the starting point is considered 1:1).
+	// If @gesture is not active, 1 is returned.
 	ScaleDelta() float64
 }
 
@@ -52,6 +57,8 @@ func marshalGestureZoom(p uintptr) (interface{}, error) {
 	return WrapGestureZoom(obj), nil
 }
 
+// NewGestureZoom returns a newly created `GtkGesture` that recognizes
+// pinch/zoom gestures.
 func NewGestureZoom() GestureZoom {
 	var _cret *C.GtkGesture // in
 
@@ -59,7 +66,7 @@ func NewGestureZoom() GestureZoom {
 
 	var _gestureZoom GestureZoom // out
 
-	_gestureZoom = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(GestureZoom)
+	_gestureZoom = WrapGestureZoom(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _gestureZoom
 }

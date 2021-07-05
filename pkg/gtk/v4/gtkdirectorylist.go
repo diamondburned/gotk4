@@ -49,20 +49,53 @@ func init() {
 type DirectoryList interface {
 	gextras.Objector
 
+	// Attributes gets the attributes queried on the children.
 	Attributes() string
-
+	// Error gets the loading error, if any.
+	//
+	// If an error occurs during the loading process, the loading process will
+	// finish and this property allows querying the error that happened. This
+	// error will persist until a file is loaded again.
+	//
+	// An error being set does not mean that no files were loaded, and all
+	// successfully queried files will remain in the list.
 	Error() error
-
+	// IOPriority gets the IO priority set via
+	// gtk_directory_list_set_io_priority().
 	IOPriority() int
-
+	// Monitored returns whether the directory list is monitoring the directory
+	// for changes.
 	Monitored() bool
-
+	// IsLoadingDirectoryList returns true if the children enumeration is
+	// currently in progress.
+	//
+	// Files will be added to @self from time to time while loading is going on.
+	// The order in which are added is undefined and may change in between runs.
 	IsLoadingDirectoryList() bool
-
+	// SetAttributesDirectoryList sets the @attributes to be enumerated and
+	// starts the enumeration.
+	//
+	// If @attributes is nil, no attributes will be queried, but a list of
+	// `GFileInfo`s will still be created.
 	SetAttributesDirectoryList(attributes string)
-
+	// SetIOPriorityDirectoryList sets the IO priority to use while loading
+	// directories.
+	//
+	// Setting the priority while @self is loading will reprioritize the ongoing
+	// load as soon as possible.
+	//
+	// The default IO priority is G_PRIORITY_DEFAULT, which is higher than the
+	// GTK redraw priority. If you are loading a lot of directories in parallel,
+	// lowering it to something like G_PRIORITY_DEFAULT_IDLE may increase
+	// responsiveness.
 	SetIOPriorityDirectoryList(ioPriority int)
-
+	// SetMonitoredDirectoryList sets whether the directory list will monitor
+	// the directory for changes. If monitoring is enabled, the ::items-changed
+	// signal will be emitted when the directory contents change.
+	//
+	// When monitoring is turned on after the initial creation of the directory
+	// list, the directory is reloaded to avoid missing files that appeared
+	// between the initial loading and when monitoring was turned on.
 	SetMonitoredDirectoryList(monitored bool)
 }
 

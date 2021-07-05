@@ -41,18 +41,32 @@ func init() {
 type ActionBar interface {
 	Widget
 
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
+
+	// CenterWidget retrieves the center bar widget of the bar.
 	CenterWidget() Widget
-
+	// Revealed gets whether the contents of the action bar are revealed.
 	Revealed() bool
-
+	// PackEndActionBar adds @child to @action_bar, packed with reference to the
+	// end of the @action_bar.
 	PackEndActionBar(child Widget)
-
+	// PackStartActionBar adds @child to @action_bar, packed with reference to
+	// the start of the @action_bar.
 	PackStartActionBar(child Widget)
-
+	// RemoveActionBar removes a child from @action_bar.
 	RemoveActionBar(child Widget)
-
+	// SetCenterWidgetActionBar sets the center widget for the `GtkActionBar`.
 	SetCenterWidgetActionBar(centerWidget Widget)
-
+	// SetRevealedActionBar reveals or conceals the content of the action bar.
+	//
+	// Note: this does not show or hide @action_bar in the
+	// [property@Gtk.Widget:visible] sense, so revealing has no effect if the
+	// action bar is hidden.
 	SetRevealedActionBar(revealed bool)
 }
 
@@ -75,6 +89,7 @@ func marshalActionBar(p uintptr) (interface{}, error) {
 	return WrapActionBar(obj), nil
 }
 
+// NewActionBar creates a new `GtkActionBar` widget.
 func NewActionBar() ActionBar {
 	var _cret *C.GtkWidget // in
 
@@ -82,7 +97,7 @@ func NewActionBar() ActionBar {
 
 	var _actionBar ActionBar // out
 
-	_actionBar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ActionBar)
+	_actionBar = WrapActionBar(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _actionBar
 }
@@ -171,34 +186,14 @@ func (a actionBar) SetRevealedActionBar(revealed bool) {
 	C.gtk_action_bar_set_revealed(_arg0, _arg1)
 }
 
-func (s actionBar) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
+func (a actionBar) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(a))
 }
 
-func (s actionBar) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
+func (a actionBar) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(a))
 }
 
-func (s actionBar) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
-}
-
-func (s actionBar) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s actionBar) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s actionBar) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s actionBar) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b actionBar) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
+func (a actionBar) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(a))
 }

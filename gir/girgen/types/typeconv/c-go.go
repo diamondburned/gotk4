@@ -80,7 +80,7 @@ func (conv *Converter) cgoArrayConverter(value *ValueConverted) bool {
 		// Detect if the underlying is a compatible Go primitive type that isn't
 		// a string. If it is, then we can directly cast the fixed-size array
 		// pointer.
-		if inner.resolved.CanCast() {
+		if inner.Resolved.CanCast() {
 			value.p.Linef(
 				"%s = *(*%s)(unsafe.Pointer(&%s))",
 				value.OutName, value.OutType, value.InName)
@@ -118,7 +118,7 @@ func (conv *Converter) cgoArrayConverter(value *ValueConverted) bool {
 		// TODO: record conversion should handle ownership: if
 		// transfer-ownership is none, then the native pointer should probably
 		// not be freed.
-		if value.isTransferring() && inner.resolved.CanCast() {
+		if value.isTransferring() && inner.Resolved.CanCast() {
 			value.header.Import("runtime")
 
 			value.p.Linef("%s = unsafe.Slice((*%s)(unsafe.Pointer(%s)), %s)",
@@ -137,7 +137,7 @@ func (conv *Converter) cgoArrayConverter(value *ValueConverted) bool {
 			value.p.Linef("defer C.free(unsafe.Pointer(%s))", value.InName)
 		}
 
-		if inner.resolved.CanCast() {
+		if inner.Resolved.CanCast() {
 			// We can cast directly, which means no conversion is needed. Use
 			// the faster built-in copy() for this.
 			value.p.Linef("%s = make(%s, %s)", value.OutName, value.OutType, length.InName)
@@ -237,12 +237,12 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 	}
 
 	switch {
-	case value.resolved.IsBuiltin("interface{}"):
+	case value.Resolved.IsBuiltin("interface{}"):
 		value.header.ImportCore("box")
 		value.p.Linef("%s = box.Get(uintptr(%s))", value.OutName, value.InName)
 		return true
 
-	case value.resolved.IsBuiltin("string"):
+	case value.Resolved.IsBuiltin("string"):
 		if !value.isPtr(1) {
 			return conv.convertRef(value, 1, 0)
 		}
@@ -255,12 +255,12 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 		}
 		return true
 
-	case value.resolved.IsBuiltin("bool"):
+	case value.Resolved.IsBuiltin("bool"):
 		if !value.isPtr(0) {
 			return conv.convertRef(value, 0, 0)
 		}
 
-		switch types.CleanCType(value.resolved.CType, true) {
+		switch types.CleanCType(value.Resolved.CType, true) {
 		case "gboolean":
 			// gboolean is resolved to C type int, so we have to do regular int
 			// comparison.
@@ -273,7 +273,7 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 		}
 		return true
 
-	case value.resolved.IsBuiltin("error"):
+	case value.Resolved.IsBuiltin("error"):
 		if !value.isPtr(1) {
 			return conv.convertRef(value, 1, 0)
 		}
@@ -284,10 +284,10 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 		value.p.Linef("%s = gerror.Take(unsafe.Pointer(%s))", value.OutName, value.InName)
 		return true
 
-	case value.resolved.IsPrimitive():
+	case value.Resolved.IsPrimitive():
 		// Don't use the convertRef routine, because we might want to preserve
 		// the pointer in case the API is weird.
-		if value.resolved.Ptr > 0 {
+		if value.Resolved.Ptr > 0 {
 			value.header.Import("unsafe")
 			value.p.Linef(
 				"%s = (%s)(unsafe.Pointer(%s))",
@@ -302,9 +302,9 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 
 	// Only add these imports afterwards, since all imports above are manually
 	// resolved.
-	if value.needsNamespace {
+	if value.NeedsNamespace {
 		// We're using the PublicType, so add that import.
-		value.header.ImportPubl(value.resolved)
+		value.header.ImportPubl(value.Resolved)
 	}
 
 	// Resolve special-case GLib types.
@@ -357,11 +357,11 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 	// doable.
 	// TODO: handle unions.
 
-	if value.resolved.Extern == nil {
+	if value.Resolved.Extern == nil {
 		return false
 	}
 
-	switch value.resolved.Extern.Type.(type) {
+	switch v := value.Resolved.Extern.Type.(type) {
 	case *gir.Enum, *gir.Bitfield:
 		if !value.isPtr(0) {
 			return conv.convertRef(value, 0, 0)
@@ -382,7 +382,7 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 		// // We can slightly cheat here. Since Go structs are declared by wrapping
 		// // the C type, we can directly cast to the C type if this is an output
 		// // parameter. This saves us a copy.
-		// if value.resolved.Ptr < 2 && value.outputAllocs() {
+		// if value.Resolved.Ptr < 2 && value.outputAllocs() {
 		// 	value.header.Import("unsafe")
 
 		// 	value.outDecl.Reset()
@@ -403,34 +403,36 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 		value.header.Import("unsafe")
 		value.p.Linef("%s = (%s)(unsafe.Pointer(%s))", value.OutName, value.OutType, value.InName)
 
+		if !value.isTransferring() {
+			if ref := types.RecordHasRef(v); ref != nil {
+				value.p.Linef("C.%s(%s)", ref.CIdentifier, value.InName)
+			}
+		}
+
 		if value.isTransferring() {
 			value.header.Import("runtime")
+			value.p.Linef("runtime.SetFinalizer(%s, func(v %s) {", value.OutName, value.OutType)
 
-			value.p.Linef("runtime.SetFinalizer(&%s, func(v *%s) {", value.OutName, value.OutType)
-			value.p.Linef("  C.free(unsafe.Pointer(v))")
+			if free := types.RecordHasFree(v); free != nil {
+				value.p.Linef("C.%s((%s)(unsafe.Pointer(v)))", free.CIdentifier, value.InType)
+			} else {
+				value.p.Linef("C.free(unsafe.Pointer(v))")
+			}
+
 			value.p.Linef("})")
 		}
+
 		return true
 
 	case *gir.Alias:
-		// underlying := conv.ng.FindType(result.Alias.Name)
-		// if underlying == nil {
-		// 	conv.fail()
-		// 	return
-		// }
-
-		// resolved := conv.ng.ResolveType(underlying)
-
-		// TODO: find a way to construct the output wrapper. Easiest way is to
-		// output to a tmp variable and convert back, but this would require
-		// putting this inside a block.
-
-		// TODO
-		// return false
-
-		// case value.AllowNone:
-		// 	value.outDecl.Linef("var %s %s // unsupported", value.OutName, value.OutType)
-		// 	return true
+		result := conv.convertType(
+			value,
+			value.InName,
+			value.OutName,
+			v.Type.AnyType,
+			value.TransferOwnership.TransferOwnership,
+		)
+		return result != nil
 	}
 
 	return false

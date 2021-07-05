@@ -32,6 +32,13 @@ func init() {
 type WaylandDevice interface {
 	gdk.Device
 
+	// NodePath returns the `/dev/input/event*` path of this device.
+	//
+	// For `GdkDevice`s that possibly coalesce multiple hardware devices (eg.
+	// mouse, keyboard, touch,...), this function will return nil.
+	//
+	// This is most notably implemented for devices of type GDK_SOURCE_PEN,
+	// GDK_SOURCE_TABLET_PAD.
 	NodePath() string
 }
 

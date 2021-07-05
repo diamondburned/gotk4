@@ -56,6 +56,12 @@ func marshalCellRendererCombo(p uintptr) (interface{}, error) {
 	return WrapCellRendererCombo(obj), nil
 }
 
+// NewCellRendererCombo creates a new CellRendererCombo. Adjust how text is
+// drawn using object properties. Object properties can be set globally (with
+// g_object_set()). Also, with TreeViewColumn, you can bind a property to a
+// value in a TreeModel. For example, you can bind the “text” property on the
+// cell renderer to a string value in the model, thus rendering a different
+// string in each row of the TreeView.
 func NewCellRendererCombo() CellRendererCombo {
 	var _cret *C.GtkCellRenderer // in
 
@@ -63,7 +69,7 @@ func NewCellRendererCombo() CellRendererCombo {
 
 	var _cellRendererCombo CellRendererCombo // out
 
-	_cellRendererCombo = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(CellRendererCombo)
+	_cellRendererCombo = WrapCellRendererCombo(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _cellRendererCombo
 }

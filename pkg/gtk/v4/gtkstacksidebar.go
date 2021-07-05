@@ -22,7 +22,7 @@ func init() {
 	})
 }
 
-// StackSidebar: a `GtkStackSidebar` uses a sidebar to switch between `GtkStack`
+// StackSidebar: `GtkStackSidebar` uses a sidebar to switch between `GtkStack`
 // pages.
 //
 // In order to use a `GtkStackSidebar`, you simply use a `GtkStack` to organize
@@ -41,8 +41,20 @@ func init() {
 type StackSidebar interface {
 	Widget
 
-	Stack() Stack
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
 
+	// Stack retrieves the stack.
+	Stack() Stack
+	// SetStackStackSidebar: set the `GtkStack` associated with this
+	// `GtkStackSidebar`.
+	//
+	// The sidebar widget will automatically update according to the order and
+	// items within the given `GtkStack`.
 	SetStackStackSidebar(stack Stack)
 }
 
@@ -65,6 +77,7 @@ func marshalStackSidebar(p uintptr) (interface{}, error) {
 	return WrapStackSidebar(obj), nil
 }
 
+// NewStackSidebar creates a new `GtkStackSidebar`.
 func NewStackSidebar() StackSidebar {
 	var _cret *C.GtkWidget // in
 
@@ -72,7 +85,7 @@ func NewStackSidebar() StackSidebar {
 
 	var _stackSidebar StackSidebar // out
 
-	_stackSidebar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(StackSidebar)
+	_stackSidebar = WrapStackSidebar(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _stackSidebar
 }
@@ -102,34 +115,14 @@ func (s stackSidebar) SetStackStackSidebar(stack Stack) {
 	C.gtk_stack_sidebar_set_stack(_arg0, _arg1)
 }
 
-func (s stackSidebar) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
+func (s stackSidebar) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(s))
 }
 
-func (s stackSidebar) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
+func (s stackSidebar) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(s))
 }
 
-func (s stackSidebar) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
-}
-
-func (s stackSidebar) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s stackSidebar) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s stackSidebar) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s stackSidebar) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b stackSidebar) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
+func (s stackSidebar) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(s))
 }

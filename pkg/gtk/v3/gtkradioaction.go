@@ -5,9 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -26,16 +24,44 @@ func init() {
 	})
 }
 
-// RadioAction: a RadioAction is similar to RadioMenuItem. A number of radio
-// actions can be linked together so that only one may be active at any one
-// time.
+// RadioAction is similar to RadioMenuItem. A number of radio actions can be
+// linked together so that only one may be active at any one time.
 type RadioAction interface {
 	ToggleAction
 
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+
+	// CurrentValue obtains the value property of the currently active member of
+	// the group to which @action belongs.
+	//
+	// Deprecated: since version 3.10.
 	CurrentValue() int
-
+	// JoinGroupRadioAction joins a radio action object to the group of another
+	// radio action object.
+	//
+	// Use this in language bindings instead of the gtk_radio_action_get_group()
+	// and gtk_radio_action_set_group() methods
+	//
+	// A common way to set up a group of radio actions is the following:
+	//
+	//     GtkRadioAction *action;
+	//     GtkRadioAction *last_action;
+	//
+	//     while ( ...more actions to add... /)
+	//       {
+	//          action = gtk_radio_action_new (...);
+	//
+	//          gtk_radio_action_join_group (action, last_action);
+	//          last_action = action;
+	//       }
+	//
+	// Deprecated: since version 3.10.
 	JoinGroupRadioAction(groupSource RadioAction)
-
+	// SetCurrentValueRadioAction sets the currently active group member to the
+	// member with value property @current_value.
+	//
+	// Deprecated: since version 3.10.
 	SetCurrentValueRadioAction(currentValue int)
 }
 
@@ -58,6 +84,11 @@ func marshalRadioAction(p uintptr) (interface{}, error) {
 	return WrapRadioAction(obj), nil
 }
 
+// NewRadioAction creates a new RadioAction object. To add the action to a
+// ActionGroup and set the accelerator for the action, call
+// gtk_action_group_add_action_with_accel().
+//
+// Deprecated: since version 3.10.
 func NewRadioAction(name string, label string, tooltip string, stockId string, value int) RadioAction {
 	var _arg1 *C.gchar          // out
 	var _arg2 *C.gchar          // out
@@ -80,7 +111,7 @@ func NewRadioAction(name string, label string, tooltip string, stockId string, v
 
 	var _radioAction RadioAction // out
 
-	_radioAction = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(RadioAction)
+	_radioAction = WrapRadioAction(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _radioAction
 }
@@ -120,42 +151,6 @@ func (a radioAction) SetCurrentValueRadioAction(currentValue int) {
 	C.gtk_radio_action_set_current_value(_arg0, _arg1)
 }
 
-func (b radioAction) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
-}
-
-func (b radioAction) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b radioAction) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b radioAction) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b radioAction) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b radioAction) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b radioAction) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b radioAction) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b radioAction) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b radioAction) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
+func (r radioAction) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(r))
 }

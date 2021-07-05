@@ -5,9 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -26,10 +24,10 @@ func init() {
 	})
 }
 
-// Separator: gtkSeparator is a horizontal or vertical separator widget,
-// depending on the value of the Orientable:orientation property, used to group
-// the widgets within a window. It displays a line with a shadow to make it
-// appear sunken into the interface.
+// Separator is a horizontal or vertical separator widget, depending on the
+// value of the Orientable:orientation property, used to group the widgets
+// within a window. It displays a line with a shadow to make it appear sunken
+// into the interface.
 //
 //
 // CSS nodes
@@ -38,7 +36,11 @@ func init() {
 // the .horizontal or .vertical style classes.
 type Separator interface {
 	Widget
-	Orientable
+
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsOrientable casts the class to the Orientable interface.
+	AsOrientable() Orientable
 }
 
 // separator implements the Separator class.
@@ -60,6 +62,7 @@ func marshalSeparator(p uintptr) (interface{}, error) {
 	return WrapSeparator(obj), nil
 }
 
+// NewSeparator creates a new Separator with the given orientation.
 func NewSeparator(orientation Orientation) Separator {
 	var _arg1 C.GtkOrientation // out
 	var _cret *C.GtkWidget     // in
@@ -70,55 +73,15 @@ func NewSeparator(orientation Orientation) Separator {
 
 	var _separator Separator // out
 
-	_separator = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Separator)
+	_separator = WrapSeparator(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _separator
 }
 
-func (b separator) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+func (s separator) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(s))
 }
 
-func (b separator) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b separator) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b separator) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b separator) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b separator) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b separator) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b separator) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b separator) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b separator) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (o separator) Orientation() Orientation {
-	return WrapOrientable(gextras.InternObject(o)).Orientation()
-}
-
-func (o separator) SetOrientation(orientation Orientation) {
-	WrapOrientable(gextras.InternObject(o)).SetOrientation(orientation)
+func (s separator) AsOrientable() Orientable {
+	return WrapOrientable(gextras.InternObject(s))
 }

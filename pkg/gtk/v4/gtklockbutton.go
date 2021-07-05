@@ -7,7 +7,6 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -64,8 +63,19 @@ func init() {
 type LockButton interface {
 	Button
 
-	Permission() gio.Permission
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsActionable casts the class to the Actionable interface.
+	AsActionable() Actionable
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
 
+	// Permission obtains the `GPermission` object that controls @button.
+	Permission() gio.Permission
+	// SetPermissionLockButton sets the `GPermission` object that controls
+	// @button.
 	SetPermissionLockButton(permission gio.Permission)
 }
 
@@ -88,6 +98,7 @@ func marshalLockButton(p uintptr) (interface{}, error) {
 	return WrapLockButton(obj), nil
 }
 
+// NewLockButton creates a new lock button which reflects the @permission.
 func NewLockButton(permission gio.Permission) LockButton {
 	var _arg1 *C.GPermission // out
 	var _cret *C.GtkWidget   // in
@@ -98,7 +109,7 @@ func NewLockButton(permission gio.Permission) LockButton {
 
 	var _lockButton LockButton // out
 
-	_lockButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(LockButton)
+	_lockButton = WrapLockButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _lockButton
 }
@@ -128,54 +139,18 @@ func (b lockButton) SetPermissionLockButton(permission gio.Permission) {
 	C.gtk_lock_button_set_permission(_arg0, _arg1)
 }
 
-func (a lockButton) ActionName() string {
-	return WrapActionable(gextras.InternObject(a)).ActionName()
+func (l lockButton) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(l))
 }
 
-func (a lockButton) ActionTargetValue() *glib.Variant {
-	return WrapActionable(gextras.InternObject(a)).ActionTargetValue()
+func (l lockButton) AsActionable() Actionable {
+	return WrapActionable(gextras.InternObject(l))
 }
 
-func (a lockButton) SetActionName(actionName string) {
-	WrapActionable(gextras.InternObject(a)).SetActionName(actionName)
+func (l lockButton) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(l))
 }
 
-func (a lockButton) SetActionTargetValue(targetValue *glib.Variant) {
-	WrapActionable(gextras.InternObject(a)).SetActionTargetValue(targetValue)
-}
-
-func (a lockButton) SetDetailedActionName(detailedActionName string) {
-	WrapActionable(gextras.InternObject(a)).SetDetailedActionName(detailedActionName)
-}
-
-func (s lockButton) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
-}
-
-func (s lockButton) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
-}
-
-func (s lockButton) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
-}
-
-func (s lockButton) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s lockButton) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s lockButton) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s lockButton) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b lockButton) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
+func (l lockButton) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(l))
 }

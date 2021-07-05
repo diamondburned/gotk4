@@ -25,7 +25,7 @@ func init() {
 	})
 }
 
-// ContentSerializer: a `GdkContentSerializer` is used to serialize content for
+// ContentSerializer: `GdkContentSerializer` is used to serialize content for
 // inter-application data transfers.
 //
 // The `GdkContentSerializer` transforms an object that is identified by a GType
@@ -40,24 +40,38 @@ func init() {
 type ContentSerializer interface {
 	gextras.Objector
 
+	// Cancellable gets the cancellable for the current operation.
+	//
+	// This is the `GCancellable` that was passed to [content_serialize_async].
 	Cancellable() gio.Cancellable
-
+	// GType gets the `GType` to of the object to serialize.
 	GType() externglib.Type
-
+	// MIMEType gets the mime type to serialize to.
 	MIMEType() string
-
+	// OutputStream gets the output stream for the current operation.
+	//
+	// This is the stream that was passed to [func@content_serialize_async].
 	OutputStream() gio.OutputStream
-
+	// Priority gets the I/O priority for the current operation.
+	//
+	// This is the priority that was passed to [func@content_serialize_async].
 	Priority() int
-
+	// TaskData gets the data that was associated with the current operation.
+	//
+	// See [method@Gdk.ContentSerializer.set_task_data].
 	TaskData() interface{}
-
+	// UserData gets the user data that was passed when the serializer was
+	// registered.
 	UserData() interface{}
-
+	// Value gets the `GValue` to read the object to serialize from.
 	Value() externglib.Value
-
+	// ReturnErrorContentSerializer: indicate that the serialization has ended
+	// with an error.
+	//
+	// This function consumes @error.
 	ReturnErrorContentSerializer(err error)
-
+	// ReturnSuccessContentSerializer: indicate that the serialization has been
+	// successfully completed.
 	ReturnSuccessContentSerializer()
 }
 

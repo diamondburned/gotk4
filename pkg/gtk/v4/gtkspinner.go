@@ -22,7 +22,7 @@ func init() {
 	})
 }
 
-// Spinner: a `GtkSpinner` widget displays an icon-size spinning animation.
+// Spinner: `GtkSpinner` widget displays an icon-size spinning animation.
 //
 // It is often used as an alternative to a [class@Gtk.ProgressBar] for
 // displaying indefinite activity, instead of actual progress.
@@ -40,12 +40,20 @@ func init() {
 type Spinner interface {
 	Widget
 
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
+
+	// Spinning returns whether the spinner is spinning.
 	Spinning() bool
-
+	// SetSpinningSpinner sets the activity of the spinner.
 	SetSpinningSpinner(spinning bool)
-
+	// StartSpinner starts the animation of the spinner.
 	StartSpinner()
-
+	// StopSpinner stops the animation of the spinner.
 	StopSpinner()
 }
 
@@ -68,6 +76,7 @@ func marshalSpinner(p uintptr) (interface{}, error) {
 	return WrapSpinner(obj), nil
 }
 
+// NewSpinner returns a new spinner widget. Not yet started.
 func NewSpinner() Spinner {
 	var _cret *C.GtkWidget // in
 
@@ -75,7 +84,7 @@ func NewSpinner() Spinner {
 
 	var _spinner Spinner // out
 
-	_spinner = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Spinner)
+	_spinner = WrapSpinner(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _spinner
 }
@@ -125,34 +134,14 @@ func (s spinner) StopSpinner() {
 	C.gtk_spinner_stop(_arg0)
 }
 
-func (s spinner) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
+func (s spinner) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(s))
 }
 
-func (s spinner) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
+func (s spinner) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(s))
 }
 
-func (s spinner) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
-}
-
-func (s spinner) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s spinner) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s spinner) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s spinner) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b spinner) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
+func (s spinner) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(s))
 }

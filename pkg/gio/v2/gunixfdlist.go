@@ -33,8 +33,8 @@ func init() {
 	})
 }
 
-// UnixFDList: a FDList contains a list of file descriptors. It owns the file
-// descriptors that it contains, closing them when finalized.
+// UnixFDList contains a list of file descriptors. It owns the file descriptors
+// that it contains, closing them when finalized.
 //
 // It may be wrapped in a FDMessage and sent over a #GSocket in the
 // G_SOCKET_FAMILY_UNIX family by using g_socket_send_message() and received
@@ -45,10 +45,33 @@ func init() {
 type UnixFDList interface {
 	gextras.Objector
 
+	// AppendUnixFDList adds a file descriptor to @list.
+	//
+	// The file descriptor is duplicated using dup(). You keep your copy of the
+	// descriptor and the copy contained in @list will be closed when @list is
+	// finalized.
+	//
+	// A possible cause of failure is exceeding the per-process or system-wide
+	// file descriptor limit.
+	//
+	// The index of the file descriptor in the list is returned. If you use this
+	// index with g_unix_fd_list_get() then you will receive back a duplicated
+	// copy of the same file descriptor.
 	AppendUnixFDList(fd int) (int, error)
-
+	// GetUnixFDList gets a file descriptor out of @list.
+	//
+	// @index_ specifies the index of the file descriptor to get. It is a
+	// programmer error for @index_ to be out of range; see
+	// g_unix_fd_list_get_length().
+	//
+	// The file descriptor is duplicated using dup() and set as close-on-exec
+	// before being returned. You must call close() on it when you are done.
+	//
+	// A possible cause of failure is exceeding the per-process or system-wide
+	// file descriptor limit.
 	GetUnixFDList(index_ int) (int, error)
-
+	// Length gets the length of @list (ie: the number of file descriptors
+	// contained within).
 	Length() int
 }
 
@@ -71,6 +94,7 @@ func marshalUnixFDList(p uintptr) (interface{}, error) {
 	return WrapUnixFDList(obj), nil
 }
 
+// NewUnixFDList creates a new FDList containing no file descriptors.
 func NewUnixFDList() UnixFDList {
 	var _cret *C.GUnixFDList // in
 
@@ -78,11 +102,18 @@ func NewUnixFDList() UnixFDList {
 
 	var _unixFDList UnixFDList // out
 
-	_unixFDList = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(UnixFDList)
+	_unixFDList = WrapUnixFDList(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _unixFDList
 }
 
+// NewUnixFDListFromArray creates a new FDList containing the file descriptors
+// given in @fds. The file descriptors become the property of the new list and
+// may no longer be used by the caller. The array itself is owned by the caller.
+//
+// Each file descriptor in the array should be set to close-on-exec.
+//
+// If @n_fds is -1 then @fds must be terminated with -1.
 func NewUnixFDListFromArray(fds []int) UnixFDList {
 	var _arg1 *C.gint
 	var _arg2 C.gint
@@ -95,7 +126,7 @@ func NewUnixFDListFromArray(fds []int) UnixFDList {
 
 	var _unixFDList UnixFDList // out
 
-	_unixFDList = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(UnixFDList)
+	_unixFDList = WrapUnixFDList(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _unixFDList
 }
@@ -104,7 +135,7 @@ func (l unixFDList) AppendUnixFDList(fd int) (int, error) {
 	var _arg0 *C.GUnixFDList // out
 	var _arg1 C.gint         // out
 	var _cret C.gint         // in
-	var _cerr *C.GError      // in
+	var _cerr **C.GError     // in
 
 	_arg0 = (*C.GUnixFDList)(unsafe.Pointer(l.Native()))
 	_arg1 = C.gint(fd)
@@ -115,7 +146,16 @@ func (l unixFDList) AppendUnixFDList(fd int) (int, error) {
 	var _goerr error // out
 
 	_gint = int(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _gint, _goerr
 }
@@ -124,7 +164,7 @@ func (l unixFDList) GetUnixFDList(index_ int) (int, error) {
 	var _arg0 *C.GUnixFDList // out
 	var _arg1 C.gint         // out
 	var _cret C.gint         // in
-	var _cerr *C.GError      // in
+	var _cerr **C.GError     // in
 
 	_arg0 = (*C.GUnixFDList)(unsafe.Pointer(l.Native()))
 	_arg1 = C.gint(index_)
@@ -135,7 +175,16 @@ func (l unixFDList) GetUnixFDList(index_ int) (int, error) {
 	var _goerr error // out
 
 	_gint = int(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _gint, _goerr
 }

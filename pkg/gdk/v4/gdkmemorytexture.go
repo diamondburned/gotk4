@@ -68,9 +68,12 @@ func marshalMemoryFormat(p uintptr) (interface{}, error) {
 	return MemoryFormat(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// MemoryTexture: a `GdkTexture` representing image data in memory.
+// MemoryTexture: `GdkTexture` representing image data in memory.
 type MemoryTexture interface {
 	Texture
+
+	// AsPaintable casts the class to the Paintable interface.
+	AsPaintable() Paintable
 }
 
 // memoryTexture implements the MemoryTexture class.
@@ -92,38 +95,6 @@ func marshalMemoryTexture(p uintptr) (interface{}, error) {
 	return WrapMemoryTexture(obj), nil
 }
 
-func (p memoryTexture) ComputeConcreteSize(specifiedWidth float64, specifiedHeight float64, defaultWidth float64, defaultHeight float64) (concreteWidth float64, concreteHeight float64) {
-	return WrapPaintable(gextras.InternObject(p)).ComputeConcreteSize(specifiedWidth, specifiedHeight, defaultWidth, defaultHeight)
-}
-
-func (p memoryTexture) CurrentImage() Paintable {
-	return WrapPaintable(gextras.InternObject(p)).CurrentImage()
-}
-
-func (p memoryTexture) Flags() PaintableFlags {
-	return WrapPaintable(gextras.InternObject(p)).Flags()
-}
-
-func (p memoryTexture) IntrinsicAspectRatio() float64 {
-	return WrapPaintable(gextras.InternObject(p)).IntrinsicAspectRatio()
-}
-
-func (p memoryTexture) IntrinsicHeight() int {
-	return WrapPaintable(gextras.InternObject(p)).IntrinsicHeight()
-}
-
-func (p memoryTexture) IntrinsicWidth() int {
-	return WrapPaintable(gextras.InternObject(p)).IntrinsicWidth()
-}
-
-func (p memoryTexture) InvalidateContents() {
-	WrapPaintable(gextras.InternObject(p)).InvalidateContents()
-}
-
-func (p memoryTexture) InvalidateSize() {
-	WrapPaintable(gextras.InternObject(p)).InvalidateSize()
-}
-
-func (p memoryTexture) Snapshot(snapshot Snapshot, width float64, height float64) {
-	WrapPaintable(gextras.InternObject(p)).Snapshot(snapshot, width, height)
+func (m memoryTexture) AsPaintable() Paintable {
+	return WrapPaintable(gextras.InternObject(m))
 }

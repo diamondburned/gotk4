@@ -3,6 +3,7 @@
 package glib
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -90,10 +91,12 @@ func ComputeChecksumForString(checksumType ChecksumType, str string, length int)
 	return _utf8
 }
 
-// Checksum: an opaque structure representing a checksumming operation. To
-// create a new GChecksum, use g_checksum_new(). To free a GChecksum, use
+// Checksum: opaque structure representing a checksumming operation. To create a
+// new GChecksum, use g_checksum_new(). To free a GChecksum, use
 // g_checksum_free().
-type Checksum C.GChecksum
+type Checksum struct {
+	native C.GChecksum
+}
 
 // WrapChecksum wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -107,7 +110,7 @@ func marshalChecksum(p uintptr) (interface{}, error) {
 }
 
 // NewChecksum constructs a struct Checksum.
-func NewChecksum(checksumType ChecksumType) *Checksum {
+func NewChecksum(checksumType ChecksumType) Checksum {
 	var _arg1 C.GChecksumType // out
 	var _cret *C.GChecksum    // in
 
@@ -115,11 +118,11 @@ func NewChecksum(checksumType ChecksumType) *Checksum {
 
 	_cret = C.g_checksum_new(_arg1)
 
-	var _checksum *Checksum // out
+	var _checksum Checksum // out
 
-	_checksum = (*Checksum)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(&_checksum, func(v **Checksum) {
-		C.free(unsafe.Pointer(v))
+	_checksum = (Checksum)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_checksum, func(v Checksum) {
+		C.g_checksum_free((*C.GChecksum)(unsafe.Pointer(v)))
 	})
 
 	return _checksum
@@ -127,49 +130,50 @@ func NewChecksum(checksumType ChecksumType) *Checksum {
 
 // Native returns the underlying C source pointer.
 func (c *Checksum) Native() unsafe.Pointer {
-	return unsafe.Pointer(c)
+	return unsafe.Pointer(&c.native)
 }
 
-// Copy feeds @data into an existing #GChecksum. The checksum must still be
-// open, that is g_checksum_get_string() or g_checksum_get_digest() must not
-// have been called on @checksum.
-func (c *Checksum) Copy() *Checksum {
+// Copy copies a #GChecksum. If @checksum has been closed, by calling
+// g_checksum_get_string() or g_checksum_get_digest(), the copied checksum will
+// be closed as well.
+func (c *Checksum) Copy() Checksum {
 	var _arg0 *C.GChecksum // out
 	var _cret *C.GChecksum // in
 
-	_arg0 = (*C.GChecksum)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GChecksum)(unsafe.Pointer(c))
 
 	_cret = C.g_checksum_copy(_arg0)
 
-	var _ret *Checksum // out
+	var _ret Checksum // out
 
-	_ret = (*Checksum)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(&_ret, func(v **Checksum) {
-		C.free(unsafe.Pointer(v))
+	_ret = (Checksum)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_ret, func(v Checksum) {
+		C.g_checksum_free((*C.GChecksum)(unsafe.Pointer(v)))
 	})
 
 	return _ret
 }
 
-// Free feeds @data into an existing #GChecksum. The checksum must still be
-// open, that is g_checksum_get_string() or g_checksum_get_digest() must not
-// have been called on @checksum.
+// Free frees the memory allocated for @checksum.
 func (c *Checksum) Free() {
 	var _arg0 *C.GChecksum // out
 
-	_arg0 = (*C.GChecksum)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GChecksum)(unsafe.Pointer(c))
 
 	C.g_checksum_free(_arg0)
 }
 
-// String feeds @data into an existing #GChecksum. The checksum must still be
-// open, that is g_checksum_get_string() or g_checksum_get_digest() must not
-// have been called on @checksum.
+// String gets the digest as a hexadecimal string.
+//
+// Once this function has been called the #GChecksum can no longer be updated
+// with g_checksum_update().
+//
+// The hexadecimal characters will be lower case.
 func (c *Checksum) String() string {
 	var _arg0 *C.GChecksum // out
 	var _cret *C.gchar     // in
 
-	_arg0 = (*C.GChecksum)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GChecksum)(unsafe.Pointer(c))
 
 	_cret = C.g_checksum_get_string(_arg0)
 
@@ -180,13 +184,11 @@ func (c *Checksum) String() string {
 	return _utf8
 }
 
-// Reset feeds @data into an existing #GChecksum. The checksum must still be
-// open, that is g_checksum_get_string() or g_checksum_get_digest() must not
-// have been called on @checksum.
+// Reset resets the state of the @checksum back to its initial state.
 func (c *Checksum) Reset() {
 	var _arg0 *C.GChecksum // out
 
-	_arg0 = (*C.GChecksum)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GChecksum)(unsafe.Pointer(c))
 
 	C.g_checksum_reset(_arg0)
 }
@@ -199,7 +201,7 @@ func (c *Checksum) Update(data []byte) {
 	var _arg1 *C.guchar
 	var _arg2 C.gssize
 
-	_arg0 = (*C.GChecksum)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GChecksum)(unsafe.Pointer(c))
 	_arg2 = C.gssize(len(data))
 	_arg1 = (*C.guchar)(unsafe.Pointer(&data[0]))
 

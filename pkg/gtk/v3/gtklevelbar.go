@@ -5,9 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -61,32 +59,50 @@ func init() {
 // regardless of text direction.
 type LevelBar interface {
 	Widget
-	Orientable
 
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsOrientable casts the class to the Orientable interface.
+	AsOrientable() Orientable
+
+	// AddOffsetValueLevelBar adds a new offset marker on @self at the position
+	// specified by @value. When the bar value is in the interval topped by
+	// @value (or between @value and LevelBar:max-value in case the offset is
+	// the last one on the bar) a style class named `level-`@name will be
+	// applied when rendering the level bar fill. If another offset marker named
+	// @name exists, its value will be replaced by @value.
 	AddOffsetValueLevelBar(name string, value float64)
-
+	// Inverted: return the value of the LevelBar:inverted property.
 	Inverted() bool
-
+	// MaxValue returns the value of the LevelBar:max-value property.
 	MaxValue() float64
-
+	// MinValue returns the value of the LevelBar:min-value property.
 	MinValue() float64
-
+	// Mode returns the value of the LevelBar:mode property.
 	Mode() LevelBarMode
-
+	// OffsetValue fetches the value specified for the offset marker @name in
+	// @self, returning true in case an offset named @name was found.
 	OffsetValue(name string) (float64, bool)
-
+	// Value returns the value of the LevelBar:value property.
 	Value() float64
-
+	// RemoveOffsetValueLevelBar removes an offset marker previously added with
+	// gtk_level_bar_add_offset_value().
 	RemoveOffsetValueLevelBar(name string)
-
+	// SetInvertedLevelBar sets the value of the LevelBar:inverted property.
 	SetInvertedLevelBar(inverted bool)
-
+	// SetMaxValueLevelBar sets the value of the LevelBar:max-value property.
+	//
+	// You probably want to update preexisting level offsets after calling this
+	// function.
 	SetMaxValueLevelBar(value float64)
-
+	// SetMinValueLevelBar sets the value of the LevelBar:min-value property.
+	//
+	// You probably want to update preexisting level offsets after calling this
+	// function.
 	SetMinValueLevelBar(value float64)
-
+	// SetModeLevelBar sets the value of the LevelBar:mode property.
 	SetModeLevelBar(mode LevelBarMode)
-
+	// SetValueLevelBar sets the value of the LevelBar:value property.
 	SetValueLevelBar(value float64)
 }
 
@@ -109,6 +125,7 @@ func marshalLevelBar(p uintptr) (interface{}, error) {
 	return WrapLevelBar(obj), nil
 }
 
+// NewLevelBar creates a new LevelBar.
 func NewLevelBar() LevelBar {
 	var _cret *C.GtkWidget // in
 
@@ -116,11 +133,13 @@ func NewLevelBar() LevelBar {
 
 	var _levelBar LevelBar // out
 
-	_levelBar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(LevelBar)
+	_levelBar = WrapLevelBar(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _levelBar
 }
 
+// NewLevelBarForInterval: utility constructor that creates a new LevelBar for
+// the specified interval.
 func NewLevelBarForInterval(minValue float64, maxValue float64) LevelBar {
 	var _arg1 C.gdouble    // out
 	var _arg2 C.gdouble    // out
@@ -133,7 +152,7 @@ func NewLevelBarForInterval(minValue float64, maxValue float64) LevelBar {
 
 	var _levelBar LevelBar // out
 
-	_levelBar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(LevelBar)
+	_levelBar = WrapLevelBar(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _levelBar
 }
@@ -216,7 +235,7 @@ func (s levelBar) Mode() LevelBarMode {
 func (s levelBar) OffsetValue(name string) (float64, bool) {
 	var _arg0 *C.GtkLevelBar // out
 	var _arg1 *C.gchar       // out
-	var _arg2 C.gdouble      // in
+	var _arg2 *C.gdouble     // in
 	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(s.Native()))
@@ -314,50 +333,10 @@ func (s levelBar) SetValueLevelBar(value float64) {
 	C.gtk_level_bar_set_value(_arg0, _arg1)
 }
 
-func (b levelBar) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+func (l levelBar) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(l))
 }
 
-func (b levelBar) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b levelBar) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b levelBar) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b levelBar) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b levelBar) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b levelBar) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b levelBar) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b levelBar) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b levelBar) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (o levelBar) Orientation() Orientation {
-	return WrapOrientable(gextras.InternObject(o)).Orientation()
-}
-
-func (o levelBar) SetOrientation(orientation Orientation) {
-	WrapOrientable(gextras.InternObject(o)).SetOrientation(orientation)
+func (l levelBar) AsOrientable() Orientable {
+	return WrapOrientable(gextras.InternObject(l))
 }

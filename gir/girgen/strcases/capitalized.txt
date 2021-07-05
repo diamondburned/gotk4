@@ -21,6 +21,7 @@ Url
 Ttl
 Css
 Dpi
+Mdi
 Ltr
 Rtl
 Gtk

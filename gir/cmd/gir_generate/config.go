@@ -47,6 +47,8 @@ var filters = []FilterMatcher{
 	FileFilter("gsk/broadway/gskbroadwayrenderer.h"),
 	// Output buffer parameter is not actually array.
 	AbsoluteFilter("GLib.unichar_to_utf8"),
+	// This is useless.
+	AbsoluteFilter("GLib.nullify_pointer"),
 	// Requires special header, is optional function.
 	AbsoluteFilter("Gio.networking_init"),
 	// Not an array type but expects an array.

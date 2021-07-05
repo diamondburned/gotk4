@@ -6,7 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -51,7 +50,15 @@ func init() {
 // `GtkColorChooserWidget` has a single CSS node with name colorchooser.
 type ColorChooserWidget interface {
 	Widget
-	ColorChooser
+
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsColorChooser casts the class to the ColorChooser interface.
+	AsColorChooser() ColorChooser
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
 }
 
 // colorChooserWidget implements the ColorChooserWidget class.
@@ -73,6 +80,7 @@ func marshalColorChooserWidget(p uintptr) (interface{}, error) {
 	return WrapColorChooserWidget(obj), nil
 }
 
+// NewColorChooserWidget creates a new `GtkColorChooserWidget`.
 func NewColorChooserWidget() ColorChooserWidget {
 	var _cret *C.GtkWidget // in
 
@@ -80,59 +88,23 @@ func NewColorChooserWidget() ColorChooserWidget {
 
 	var _colorChooserWidget ColorChooserWidget // out
 
-	_colorChooserWidget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ColorChooserWidget)
+	_colorChooserWidget = WrapColorChooserWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _colorChooserWidget
 }
 
-func (s colorChooserWidget) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
+func (c colorChooserWidget) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(c))
 }
 
-func (s colorChooserWidget) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
+func (c colorChooserWidget) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(c))
 }
 
-func (s colorChooserWidget) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
+func (c colorChooserWidget) AsColorChooser() ColorChooser {
+	return WrapColorChooser(gextras.InternObject(c))
 }
 
-func (s colorChooserWidget) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s colorChooserWidget) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s colorChooserWidget) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s colorChooserWidget) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b colorChooserWidget) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
-}
-
-func (c colorChooserWidget) AddPalette(orientation Orientation, colorsPerLine int, colors []gdk.RGBA) {
-	WrapColorChooser(gextras.InternObject(c)).AddPalette(orientation, colorsPerLine, colors)
-}
-
-func (c colorChooserWidget) RGBA() gdk.RGBA {
-	return WrapColorChooser(gextras.InternObject(c)).RGBA()
-}
-
-func (c colorChooserWidget) UseAlpha() bool {
-	return WrapColorChooser(gextras.InternObject(c)).UseAlpha()
-}
-
-func (c colorChooserWidget) SetRGBA(color *gdk.RGBA) {
-	WrapColorChooser(gextras.InternObject(c)).SetRGBA(color)
-}
-
-func (c colorChooserWidget) SetUseAlpha(useAlpha bool) {
-	WrapColorChooser(gextras.InternObject(c)).SetUseAlpha(useAlpha)
+func (c colorChooserWidget) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(c))
 }

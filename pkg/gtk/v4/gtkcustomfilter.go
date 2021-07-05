@@ -28,7 +28,7 @@ func init() {
 //
 // If the filter matches the item, this function must return true. If the item
 // should be filtered out, false must be returned.
-type CustomFilterFunc func(item gextras.Objector, ok bool)
+type CustomFilterFunc func(item gextras.Objector) (ok bool)
 
 //export gotk4_CustomFilterFunc
 func gotk4_CustomFilterFunc(arg0 C.gpointer, arg1 C.gpointer) C.gboolean {

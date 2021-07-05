@@ -5,10 +5,10 @@ import (
 	"log"
 	"strings"
 
-	"github.com/diamondburned/gotk4/gir/girgen/pen"
 	"github.com/diamondburned/gotk4/gir"
 	"github.com/diamondburned/gotk4/gir/girgen/file"
 	"github.com/diamondburned/gotk4/gir/girgen/logger"
+	"github.com/diamondburned/gotk4/gir/girgen/pen"
 	"github.com/diamondburned/gotk4/gir/girgen/strcases"
 	"github.com/diamondburned/gotk4/gir/girgen/types"
 )
@@ -58,11 +58,6 @@ type ConversionValue struct {
 	InName  string
 	OutName string
 
-	// WrapObject, if not empty, will make the converter directly wrap to the
-	// object type instead of wrapping it in a Box. This should only be used for
-	// converting within types of the same package.
-	WrapObject string
-
 	// Direction is the direction of conversion.
 	Direction ConversionDirection
 
@@ -70,6 +65,10 @@ type ConversionValue struct {
 	// with the given index clues from the GIR files, such as closure, destroy
 	// or length.
 	ParameterIndex ConversionValueIndex
+
+	// ManualCast, if true, will make GObject conversions from C to Go use the
+	// return type given instead of using the value wrapper.
+	ManualCast bool
 }
 
 // NewValue creates a new ConversionValue from the given parameter attributes.
@@ -208,15 +207,15 @@ type ValueConverted struct {
 
 	Conversion string
 
+	// internal states
+	Resolved       *types.Resolved // only for type conversions
+	NeedsNamespace bool
+
 	// output writers
 	p       *pen.PaperString
 	inDecl  *pen.PaperString
 	outDecl *pen.PaperString
-
-	// internal states
-	header         *file.Header
-	resolved       *types.Resolved // only for type conversions
-	needsNamespace bool
+	header  file.Header
 }
 
 func newValueConverted(conv *Converter, value *ConversionValue) ValueConverted {
@@ -228,9 +227,11 @@ func newValueConverted(conv *Converter, value *ConversionValue) ValueConverted {
 		p:       pen.NewPaperStringSize(1024), // 1KB
 		inDecl:  pen.NewPaperStringSize(128),  // 0.1KB
 		outDecl: pen.NewPaperStringSize(128),  // 0.1KB
-		header:  &conv.header,
 	}
 }
+
+// Header returns the header of the current value.
+func (value *ValueConverted) Header() *file.Header { return &value.header }
 
 func (value *ValueConverted) finalize() {
 	value.InDeclare = value.inDecl.String()
@@ -259,7 +260,7 @@ func (value *ValueConverted) resolveType(conv *Converter) bool {
 		return false
 	}
 
-	if value.resolved != nil {
+	if value.Resolved != nil {
 		// already resolved
 		return true
 	}
@@ -268,8 +269,8 @@ func (value *ValueConverted) resolveType(conv *Converter) bool {
 	typ := *value.AnyType.Type
 
 	// Proritize hard-coded types over ignored types.
-	value.resolved = types.Resolve(types.OverrideNamespace(conv.fgen, conv.sourceNamespace), typ)
-	if value.resolved == nil {
+	value.Resolved = types.Resolve(types.OverrideNamespace(conv.fgen, conv.sourceNamespace), typ)
+	if value.Resolved == nil {
 		conv.Logln(logger.Debug, "can't resolve", types.AnyTypeCGo(value.AnyType), typ.Name)
 		return false
 	}
@@ -278,20 +279,20 @@ func (value *ValueConverted) resolveType(conv *Converter) bool {
 	// copy, so it's fine.
 	value.AnyType.Type = &typ
 
-	if value.resolved.IsCallback() {
-		value.header.AddCallback(value.resolved.Extern.Type.(*gir.Callback))
+	if value.Resolved.IsCallback() {
+		value.header.AddCallback(value.Resolved.Extern.Type.(*gir.Callback))
 	}
 
 	// If this is the output parameter, then the pointer count should be less.
 	// This only affects the Go type.
-	if value.Direction == ConvertCToGo && value.ParameterIsOutput() && value.resolved.Ptr > 0 {
-		value.resolved.Ptr--
+	if value.Direction == ConvertCToGo && value.ParameterIsOutput() && value.Resolved.Ptr > 0 {
+		value.Resolved.Ptr--
 	}
 
-	value.needsNamespace = value.resolved.NeedsNamespace(conv.currentNamespace)
+	value.NeedsNamespace = value.Resolved.NeedsNamespace(conv.currentNamespace)
 
-	cgoType := value.resolved.CGoType()
-	goType := value.resolved.PublicType(value.needsNamespace)
+	cgoType := value.Resolved.CGoType()
+	goType := value.Resolved.PublicType(value.NeedsNamespace)
 
 	if value.Direction == ConvertCToGo {
 		value.InType = cgoType
@@ -329,13 +330,13 @@ func (value *ValueConverted) cgoSetObject() {
 	value.header.NeedsExternGLib()
 	value.header.Import("unsafe")
 
-	if value.WrapObject != "" {
+	if value.ManualCast {
 		// This is only ever used for local constructors, so we don't need to
 		// mess with namespaces.
 		// TODO: maybe not make such a bad assumption.
 		value.p.Linef(
-			"%s = %s(externglib.%s(unsafe.Pointer(%s)))",
-			value.OutName, value.WrapObject, gobjectFunction, value.InName,
+			"%s = Wrap%s(externglib.%s(unsafe.Pointer(%s)))",
+			value.OutName, value.Resolved.PublicType(false), gobjectFunction, value.InName,
 		)
 		return
 	}
@@ -362,12 +363,12 @@ func (value *ValueConverted) csizeof() string {
 		return value.ptrsz()
 	}
 
-	if value.resolved == nil {
+	if value.Resolved == nil {
 		// Erroneous case.
 		return value.ptrsz()
 	}
 
-	return "C.sizeof_" + value.resolved.CType
+	return "C.sizeof_" + value.Resolved.CType
 }
 
 func (value *ValueConverted) ptrsz() string {
@@ -379,9 +380,9 @@ func (value *ValueConverted) ptrsz() string {
 func (value *ValueConverted) logPrefix() string {
 	switch value.Direction {
 	case ConvertCToGo:
-		return "C->Go"
+		return fmt.Sprintf("C %s -> Go %s", value.InName, value.OutName)
 	case ConvertGoToC:
-		return "Go->C"
+		return fmt.Sprintf("Go %s -> C %s", value.InName, value.OutName)
 	default:
 		return ""
 	}
@@ -391,7 +392,7 @@ func (value *ValueConverted) logPrefix() string {
 // guarantee that conversion routines get what they expect.
 func (value *ValueConverted) isPtr(wantC int) bool {
 	// See this same piece of code in convertRef for more information.
-	if types.IsGpointer(value.resolved.CType) && wantC > 0 {
+	if types.IsGpointer(value.Resolved.CType) && wantC > 0 {
 		wantC--
 	}
 

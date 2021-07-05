@@ -5,10 +5,8 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -51,55 +49,114 @@ func init() {
 // themselves from a plain GtkButton.
 type Button interface {
 	Bin
-	Actionable
-	Activatable
 
+	// AsActionable casts the class to the Actionable interface.
+	AsActionable() Actionable
+	// AsActivatable casts the class to the Activatable interface.
+	AsActivatable() Activatable
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+
+	// ClickedButton emits a Button::clicked signal to the given Button.
 	ClickedButton()
-
+	// EnterButton emits a Button::enter signal to the given Button.
+	//
+	// Deprecated: since version 2.20.
 	EnterButton()
-
+	// Alignment gets the alignment of the child in the button.
+	//
+	// Deprecated: since version 3.14.
 	Alignment() (xalign float32, yalign float32)
-
+	// AlwaysShowImage returns whether the button will ignore the
+	// Settings:gtk-button-images setting and always show the image, if
+	// available.
 	AlwaysShowImage() bool
-
+	// EventWindow returns the button’s event window if it is realized, nil
+	// otherwise. This function should be rarely needed.
 	EventWindow() gdk.Window
-
+	// FocusOnClick returns whether the button grabs focus when it is clicked
+	// with the mouse. See gtk_button_set_focus_on_click().
+	//
+	// Deprecated: since version 3.20.
 	FocusOnClick() bool
-
+	// Image gets the widget that is currenty set as the image of @button. This
+	// may have been explicitly set by gtk_button_set_image() or constructed by
+	// gtk_button_new_from_stock().
 	Image() Widget
-
+	// ImagePosition gets the position of the image relative to the text inside
+	// the button.
 	ImagePosition() PositionType
-
+	// Label fetches the text from the label of the button, as set by
+	// gtk_button_set_label(). If the label text has not been set the return
+	// value will be nil. This will be the case if you create an empty button
+	// with gtk_button_new() to use as a container.
 	Label() string
-
+	// Relief returns the current relief style of the given Button.
 	Relief() ReliefStyle
-
+	// UseStock returns whether the button label is a stock item.
+	//
+	// Deprecated: since version 3.10.
 	UseStock() bool
-
+	// UseUnderline returns whether an embedded underline in the button label
+	// indicates a mnemonic. See gtk_button_set_use_underline ().
 	UseUnderline() bool
-
+	// LeaveButton emits a Button::leave signal to the given Button.
+	//
+	// Deprecated: since version 2.20.
 	LeaveButton()
-
+	// PressedButton emits a Button::pressed signal to the given Button.
+	//
+	// Deprecated: since version 2.20.
 	PressedButton()
-
+	// ReleasedButton emits a Button::released signal to the given Button.
+	//
+	// Deprecated: since version 2.20.
 	ReleasedButton()
-
+	// SetAlignmentButton sets the alignment of the child. This property has no
+	// effect unless the child is a Misc or a Alignment.
+	//
+	// Deprecated: since version 3.14.
 	SetAlignmentButton(xalign float32, yalign float32)
-
+	// SetAlwaysShowImageButton: if true, the button will ignore the
+	// Settings:gtk-button-images setting and always show the image, if
+	// available.
+	//
+	// Use this property if the button would be useless or hard to use without
+	// the image.
 	SetAlwaysShowImageButton(alwaysShow bool)
-
+	// SetFocusOnClickButton sets whether the button will grab focus when it is
+	// clicked with the mouse. Making mouse clicks not grab focus is useful in
+	// places like toolbars where you don’t want the keyboard focus removed from
+	// the main area of the application.
+	//
+	// Deprecated: since version 3.20.
 	SetFocusOnClickButton(focusOnClick bool)
-
+	// SetImageButton: set the image of @button to the given widget. The image
+	// will be displayed if the label text is nil or if Button:always-show-image
+	// is true. You don’t have to call gtk_widget_show() on @image yourself.
 	SetImageButton(image Widget)
-
+	// SetImagePositionButton sets the position of the image relative to the
+	// text inside the button.
 	SetImagePositionButton(position PositionType)
-
+	// SetLabelButton sets the text of the label of the button to @str. This
+	// text is also used to select the stock item if gtk_button_set_use_stock()
+	// is used.
+	//
+	// This will also clear any previously set labels.
 	SetLabelButton(label string)
-
+	// SetReliefButton sets the relief style of the edges of the given Button
+	// widget. Two styles exist, GTK_RELIEF_NORMAL and GTK_RELIEF_NONE. The
+	// default style is, as one can guess, GTK_RELIEF_NORMAL. The deprecated
+	// value GTK_RELIEF_HALF behaves the same as GTK_RELIEF_NORMAL.
 	SetReliefButton(relief ReliefStyle)
-
+	// SetUseStockButton: if true, the label set on the button is used as a
+	// stock id to select the stock item for the button.
+	//
+	// Deprecated: since version 3.10.
 	SetUseStockButton(useStock bool)
-
+	// SetUseUnderlineButton: if true, an underline in the text of the button
+	// label indicates the next character should be used for the mnemonic
+	// accelerator key.
 	SetUseUnderlineButton(useUnderline bool)
 }
 
@@ -122,6 +179,8 @@ func marshalButton(p uintptr) (interface{}, error) {
 	return WrapButton(obj), nil
 }
 
+// NewButton creates a new Button widget. To add a child widget to the button,
+// use gtk_container_add().
 func NewButton() Button {
 	var _cret *C.GtkWidget // in
 
@@ -129,11 +188,20 @@ func NewButton() Button {
 
 	var _button Button // out
 
-	_button = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Button)
+	_button = WrapButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _button
 }
 
+// NewButtonFromIconName creates a new button containing an icon from the
+// current icon theme.
+//
+// If the icon name isn’t known, a “broken image” icon will be displayed
+// instead. If the current icon theme is changed, the icon will be updated
+// appropriately.
+//
+// This function is a convenience wrapper around gtk_button_new() and
+// gtk_button_set_image().
 func NewButtonFromIconName(iconName string, size int) Button {
 	var _arg1 *C.gchar      // out
 	var _arg2 C.GtkIconSize // out
@@ -147,11 +215,19 @@ func NewButtonFromIconName(iconName string, size int) Button {
 
 	var _button Button // out
 
-	_button = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Button)
+	_button = WrapButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _button
 }
 
+// NewButtonFromStock creates a new Button containing the image and text from a
+// [stock item][gtkstock]. Some stock ids have preprocessor macros like
+// K_STOCK_OK and K_STOCK_APPLY.
+//
+// If @stock_id is unknown, then it will be treated as a mnemonic label (as for
+// gtk_button_new_with_mnemonic()).
+//
+// Deprecated: since version 3.10.
 func NewButtonFromStock(stockId string) Button {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -163,11 +239,13 @@ func NewButtonFromStock(stockId string) Button {
 
 	var _button Button // out
 
-	_button = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Button)
+	_button = WrapButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _button
 }
 
+// NewButtonWithLabel creates a Button widget with a Label child containing the
+// given text.
 func NewButtonWithLabel(label string) Button {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -179,11 +257,16 @@ func NewButtonWithLabel(label string) Button {
 
 	var _button Button // out
 
-	_button = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Button)
+	_button = WrapButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _button
 }
 
+// NewButtonWithMnemonic creates a new Button containing a label. If characters
+// in @label are preceded by an underscore, they are underlined. If you need a
+// literal underscore character in a label, use “__” (two underscores). The
+// first underlined character represents a keyboard accelerator called a
+// mnemonic. Pressing Alt and that key activates the button.
 func NewButtonWithMnemonic(label string) Button {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -195,7 +278,7 @@ func NewButtonWithMnemonic(label string) Button {
 
 	var _button Button // out
 
-	_button = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Button)
+	_button = WrapButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _button
 }
@@ -218,8 +301,8 @@ func (b button) EnterButton() {
 
 func (b button) Alignment() (xalign float32, yalign float32) {
 	var _arg0 *C.GtkButton // out
-	var _arg1 C.gfloat     // in
-	var _arg2 C.gfloat     // in
+	var _arg1 *C.gfloat    // in
+	var _arg2 *C.gfloat    // in
 
 	_arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
 
@@ -502,126 +585,14 @@ func (b button) SetUseUnderlineButton(useUnderline bool) {
 	C.gtk_button_set_use_underline(_arg0, _arg1)
 }
 
-func (b button) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+func (b button) AsActionable() Actionable {
+	return WrapActionable(gextras.InternObject(b))
 }
 
-func (b button) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+func (b button) AsActivatable() Activatable {
+	return WrapActivatable(gextras.InternObject(b))
 }
 
-func (b button) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b button) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b button) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b button) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b button) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b button) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b button) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b button) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (a button) ActionName() string {
-	return WrapActionable(gextras.InternObject(a)).ActionName()
-}
-
-func (a button) ActionTargetValue() *glib.Variant {
-	return WrapActionable(gextras.InternObject(a)).ActionTargetValue()
-}
-
-func (a button) SetActionName(actionName string) {
-	WrapActionable(gextras.InternObject(a)).SetActionName(actionName)
-}
-
-func (a button) SetActionTargetValue(targetValue *glib.Variant) {
-	WrapActionable(gextras.InternObject(a)).SetActionTargetValue(targetValue)
-}
-
-func (a button) SetDetailedActionName(detailedActionName string) {
-	WrapActionable(gextras.InternObject(a)).SetDetailedActionName(detailedActionName)
-}
-
-func (b button) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
-}
-
-func (b button) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b button) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b button) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b button) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b button) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b button) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b button) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b button) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b button) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (a button) DoSetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).DoSetRelatedAction(action)
-}
-
-func (a button) RelatedAction() Action {
-	return WrapActivatable(gextras.InternObject(a)).RelatedAction()
-}
-
-func (a button) UseActionAppearance() bool {
-	return WrapActivatable(gextras.InternObject(a)).UseActionAppearance()
-}
-
-func (a button) SetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SetRelatedAction(action)
-}
-
-func (a button) SetUseActionAppearance(useAppearance bool) {
-	WrapActivatable(gextras.InternObject(a)).SetUseActionAppearance(useAppearance)
-}
-
-func (a button) SyncActionProperties(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SyncActionProperties(action)
+func (b button) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(b))
 }

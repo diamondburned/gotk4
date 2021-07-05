@@ -40,14 +40,23 @@ func init() {
 // style class.
 type ColorButton interface {
 	Widget
-	ColorChooser
 
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsColorChooser casts the class to the ColorChooser interface.
+	AsColorChooser() ColorChooser
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
+
+	// Modal gets whether the dialog is modal.
 	Modal() bool
-
+	// Title gets the title of the color chooser dialog.
 	Title() string
-
+	// SetModalColorButton sets whether the dialog should be modal.
 	SetModalColorButton(modal bool)
-
+	// SetTitleColorButton sets the title for the color chooser dialog.
 	SetTitleColorButton(title string)
 }
 
@@ -70,6 +79,12 @@ func marshalColorButton(p uintptr) (interface{}, error) {
 	return WrapColorButton(obj), nil
 }
 
+// NewColorButton creates a new color button.
+//
+// This returns a widget in the form of a small button containing a swatch
+// representing the current selected color. When the button is clicked, a color
+// chooser dialog will open, allowing the user to select a color. The swatch
+// will be updated to reflect the new color when the user finishes.
 func NewColorButton() ColorButton {
 	var _cret *C.GtkWidget // in
 
@@ -77,22 +92,23 @@ func NewColorButton() ColorButton {
 
 	var _colorButton ColorButton // out
 
-	_colorButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ColorButton)
+	_colorButton = WrapColorButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _colorButton
 }
 
-func NewColorButtonWithRGBA(rgba *gdk.RGBA) ColorButton {
+// NewColorButtonWithRGBA creates a new color button showing the given color.
+func NewColorButtonWithRGBA(rgba gdk.RGBA) ColorButton {
 	var _arg1 *C.GdkRGBA   // out
 	var _cret *C.GtkWidget // in
 
-	_arg1 = (*C.GdkRGBA)(unsafe.Pointer(rgba.Native()))
+	_arg1 = (*C.GdkRGBA)(unsafe.Pointer(rgba))
 
 	_cret = C.gtk_color_button_new_with_rgba(_arg1)
 
 	var _colorButton ColorButton // out
 
-	_colorButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ColorButton)
+	_colorButton = WrapColorButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _colorButton
 }
@@ -152,54 +168,18 @@ func (b colorButton) SetTitleColorButton(title string) {
 	C.gtk_color_button_set_title(_arg0, _arg1)
 }
 
-func (s colorButton) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
+func (c colorButton) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(c))
 }
 
-func (s colorButton) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
+func (c colorButton) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(c))
 }
 
-func (s colorButton) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
+func (c colorButton) AsColorChooser() ColorChooser {
+	return WrapColorChooser(gextras.InternObject(c))
 }
 
-func (s colorButton) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s colorButton) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s colorButton) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s colorButton) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b colorButton) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
-}
-
-func (c colorButton) AddPalette(orientation Orientation, colorsPerLine int, colors []gdk.RGBA) {
-	WrapColorChooser(gextras.InternObject(c)).AddPalette(orientation, colorsPerLine, colors)
-}
-
-func (c colorButton) RGBA() gdk.RGBA {
-	return WrapColorChooser(gextras.InternObject(c)).RGBA()
-}
-
-func (c colorButton) UseAlpha() bool {
-	return WrapColorChooser(gextras.InternObject(c)).UseAlpha()
-}
-
-func (c colorButton) SetRGBA(color *gdk.RGBA) {
-	WrapColorChooser(gextras.InternObject(c)).SetRGBA(color)
-}
-
-func (c colorButton) SetUseAlpha(useAlpha bool) {
-	WrapColorChooser(gextras.InternObject(c)).SetUseAlpha(useAlpha)
+func (c colorButton) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(c))
 }

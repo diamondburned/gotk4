@@ -6,9 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
-	"github.com/diamondburned/gotk4/pkg/gsk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -131,12 +129,31 @@ func marshalPopoverMenuFlags(p uintptr) (interface{}, error) {
 type PopoverMenu interface {
 	Popover
 
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
+	// AsNative casts the class to the Native interface.
+	AsNative() Native
+	// AsShortcutManager casts the class to the ShortcutManager interface.
+	AsShortcutManager() ShortcutManager
+
+	// AddChildPopoverMenu adds a custom widget to a generated menu.
+	//
+	// For this to work, the menu model of @popover must have an item with a
+	// `custom` attribute that matches @id.
 	AddChildPopoverMenu(child Widget, id string) bool
-
+	// MenuModel returns the menu model used to populate the popover.
 	MenuModel() gio.MenuModel
-
+	// RemoveChildPopoverMenu removes a widget that has previously been added
+	// with gtk_popover_menu_add_child().
 	RemoveChildPopoverMenu(child Widget) bool
-
+	// SetMenuModelPopoverMenu sets a new menu model on @popover.
+	//
+	// The existing contents of @popover are removed, and the @popover is
+	// populated with new contents according to @model.
 	SetMenuModelPopoverMenu(model gio.MenuModel)
 }
 
@@ -159,6 +176,19 @@ func marshalPopoverMenu(p uintptr) (interface{}, error) {
 	return WrapPopoverMenu(obj), nil
 }
 
+// NewPopoverMenuFromModel creates a `GtkPopoverMenu` and populates it according
+// to @model.
+//
+// The created buttons are connected to actions found in the
+// `GtkApplicationWindow` to which the popover belongs - typically by means of
+// being attached to a widget that is contained within the
+// `GtkApplicationWindow`s widget hierarchy.
+//
+// Actions can also be added using [method@Gtk.Widget.insert_action_group] on
+// the menus attach widget or on any of its parent widgets.
+//
+// This function creates menus with sliding submenus. See
+// [ctor@Gtk.PopoverMenu.new_from_model_full] for a way to control this.
 func NewPopoverMenuFromModel(model gio.MenuModel) PopoverMenu {
 	var _arg1 *C.GMenuModel // out
 	var _cret *C.GtkWidget  // in
@@ -169,11 +199,23 @@ func NewPopoverMenuFromModel(model gio.MenuModel) PopoverMenu {
 
 	var _popoverMenu PopoverMenu // out
 
-	_popoverMenu = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(PopoverMenu)
+	_popoverMenu = WrapPopoverMenu(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _popoverMenu
 }
 
+// NewPopoverMenuFromModelFull creates a `GtkPopoverMenu` and populates it
+// according to @model.
+//
+// The created buttons are connected to actions found in the action groups that
+// are accessible from the parent widget. This includes the
+// `GtkApplicationWindow` to which the popover belongs. Actions can also be
+// added using [method@Gtk.Widget.insert_action_group] on the parent widget or
+// on any of its parent widgets.
+//
+// The only flag that is supported currently is GTK_POPOVER_MENU_NESTED, which
+// makes GTK create traditional, nested submenus instead of the default sliding
+// submenus.
 func NewPopoverMenuFromModelFull(model gio.MenuModel, flags PopoverMenuFlags) PopoverMenu {
 	var _arg1 *C.GMenuModel         // out
 	var _arg2 C.GtkPopoverMenuFlags // out
@@ -186,7 +228,7 @@ func NewPopoverMenuFromModelFull(model gio.MenuModel, flags PopoverMenuFlags) Po
 
 	var _popoverMenu PopoverMenu // out
 
-	_popoverMenu = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(PopoverMenu)
+	_popoverMenu = WrapPopoverMenu(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _popoverMenu
 }
@@ -257,54 +299,22 @@ func (p popoverMenu) SetMenuModelPopoverMenu(model gio.MenuModel) {
 	C.gtk_popover_menu_set_menu_model(_arg0, _arg1)
 }
 
-func (s popoverMenu) Renderer() gsk.Renderer {
-	return WrapNative(gextras.InternObject(s)).Renderer()
+func (p popoverMenu) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(p))
 }
 
-func (s popoverMenu) Surface() gdk.Surface {
-	return WrapNative(gextras.InternObject(s)).Surface()
+func (p popoverMenu) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(p))
 }
 
-func (s popoverMenu) SurfaceTransform() (x float64, y float64) {
-	return WrapNative(gextras.InternObject(s)).SurfaceTransform()
+func (p popoverMenu) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(p))
 }
 
-func (s popoverMenu) Realize() {
-	WrapNative(gextras.InternObject(s)).Realize()
+func (p popoverMenu) AsNative() Native {
+	return WrapNative(gextras.InternObject(p))
 }
 
-func (s popoverMenu) Unrealize() {
-	WrapNative(gextras.InternObject(s)).Unrealize()
-}
-
-func (s popoverMenu) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
-}
-
-func (s popoverMenu) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
-}
-
-func (s popoverMenu) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
-}
-
-func (s popoverMenu) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s popoverMenu) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s popoverMenu) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s popoverMenu) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b popoverMenu) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
+func (p popoverMenu) AsShortcutManager() ShortcutManager {
+	return WrapShortcutManager(gextras.InternObject(p))
 }

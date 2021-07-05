@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -36,12 +37,22 @@ func init() {
 // `GdkTexture` is an immutable object: That means you cannot change anything
 // about it other than increasing the reference count via g_object_ref().
 type Texture interface {
-	Paintable
+	gextras.Objector
 
+	// AsPaintable casts the class to the Paintable interface.
+	AsPaintable() Paintable
+
+	// Height returns the height of the @texture, in pixels.
 	Height() int
-
+	// Width returns the width of @texture, in pixels.
 	Width() int
-
+	// SaveToPngTexture: store the given @texture to the @filename as a PNG
+	// file.
+	//
+	// This is a utility function intended for debugging and testing. If you
+	// want more control over formats, proper error handling or want to store to
+	// a `GFile` or other location, you might want to look into using the
+	// gdk-pixbuf library.
 	SaveToPngTexture(filename string) bool
 }
 
@@ -64,6 +75,8 @@ func marshalTexture(p uintptr) (interface{}, error) {
 	return WrapTexture(obj), nil
 }
 
+// NewTextureForPixbuf creates a new texture object representing the
+// `GdkPixbuf`.
 func NewTextureForPixbuf(pixbuf gdkpixbuf.Pixbuf) Texture {
 	var _arg1 *C.GdkPixbuf  // out
 	var _cret *C.GdkTexture // in
@@ -74,11 +87,20 @@ func NewTextureForPixbuf(pixbuf gdkpixbuf.Pixbuf) Texture {
 
 	var _texture Texture // out
 
-	_texture = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Texture)
+	_texture = WrapTexture(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _texture
 }
 
+// NewTextureFromResource creates a new texture by loading an image from a
+// resource.
+//
+// The file format is detected automatically. The supported formats are PNG and
+// JPEG, though more formats might be available.
+//
+// It is a fatal error if @resource_path does not specify a valid image resource
+// and the program will abort if that happens. If you are unsure about the
+// validity of a resource, use [ctor@Gdk.Texture.new_from_file] to load it.
 func NewTextureFromResource(resourcePath string) Texture {
 	var _arg1 *C.char       // out
 	var _cret *C.GdkTexture // in
@@ -90,7 +112,7 @@ func NewTextureFromResource(resourcePath string) Texture {
 
 	var _texture Texture // out
 
-	_texture = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Texture)
+	_texture = WrapTexture(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _texture
 }
@@ -145,38 +167,6 @@ func (t texture) SaveToPngTexture(filename string) bool {
 	return _ok
 }
 
-func (p texture) ComputeConcreteSize(specifiedWidth float64, specifiedHeight float64, defaultWidth float64, defaultHeight float64) (concreteWidth float64, concreteHeight float64) {
-	return WrapPaintable(gextras.InternObject(p)).ComputeConcreteSize(specifiedWidth, specifiedHeight, defaultWidth, defaultHeight)
-}
-
-func (p texture) CurrentImage() Paintable {
-	return WrapPaintable(gextras.InternObject(p)).CurrentImage()
-}
-
-func (p texture) Flags() PaintableFlags {
-	return WrapPaintable(gextras.InternObject(p)).Flags()
-}
-
-func (p texture) IntrinsicAspectRatio() float64 {
-	return WrapPaintable(gextras.InternObject(p)).IntrinsicAspectRatio()
-}
-
-func (p texture) IntrinsicHeight() int {
-	return WrapPaintable(gextras.InternObject(p)).IntrinsicHeight()
-}
-
-func (p texture) IntrinsicWidth() int {
-	return WrapPaintable(gextras.InternObject(p)).IntrinsicWidth()
-}
-
-func (p texture) InvalidateContents() {
-	WrapPaintable(gextras.InternObject(p)).InvalidateContents()
-}
-
-func (p texture) InvalidateSize() {
-	WrapPaintable(gextras.InternObject(p)).InvalidateSize()
-}
-
-func (p texture) Snapshot(snapshot Snapshot, width float64, height float64) {
-	WrapPaintable(gextras.InternObject(p)).Snapshot(snapshot, width, height)
+func (t texture) AsPaintable() Paintable {
+	return WrapPaintable(gextras.InternObject(t))
 }

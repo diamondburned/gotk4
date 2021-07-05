@@ -57,135 +57,141 @@ func init() {
 type Mount interface {
 	gextras.Objector
 
-	// CanEject decrements the shadow count on @mount. Usually used by Monitor
-	// implementations when destroying a shadow mount for @mount, see
-	// g_mount_is_shadowed() for more information. The caller will need to emit
-	// the #GMount::changed signal on @mount manually.
+	// CanEject checks if @mount can be ejected.
 	CanEject() bool
-	// CanUnmount decrements the shadow count on @mount. Usually used by Monitor
-	// implementations when destroying a shadow mount for @mount, see
-	// g_mount_is_shadowed() for more information. The caller will need to emit
-	// the #GMount::changed signal on @mount manually.
+	// CanUnmount checks if @mount can be unmounted.
 	CanUnmount() bool
-	// Eject decrements the shadow count on @mount. Usually used by Monitor
-	// implementations when destroying a shadow mount for @mount, see
-	// g_mount_is_shadowed() for more information. The caller will need to emit
-	// the #GMount::changed signal on @mount manually.
+	// Eject ejects a mount. This is an asynchronous operation, and is finished
+	// by calling g_mount_eject_finish() with the @mount and Result data
+	// returned in the @callback.
+	//
+	// Deprecated: since version 2.22.
 	Eject(flags MountUnmountFlags, cancellable Cancellable, callback AsyncReadyCallback)
-	// EjectFinish decrements the shadow count on @mount. Usually used by
-	// Monitor implementations when destroying a shadow mount for @mount, see
-	// g_mount_is_shadowed() for more information. The caller will need to emit
-	// the #GMount::changed signal on @mount manually.
+	// EjectFinish finishes ejecting a mount. If any errors occurred during the
+	// operation, @error will be set to contain the errors and false will be
+	// returned.
+	//
+	// Deprecated: since version 2.22.
 	EjectFinish(result AsyncResult) error
-	// EjectWithOperation decrements the shadow count on @mount. Usually used by
-	// Monitor implementations when destroying a shadow mount for @mount, see
-	// g_mount_is_shadowed() for more information. The caller will need to emit
-	// the #GMount::changed signal on @mount manually.
+	// EjectWithOperation ejects a mount. This is an asynchronous operation, and
+	// is finished by calling g_mount_eject_with_operation_finish() with the
+	// @mount and Result data returned in the @callback.
 	EjectWithOperation(flags MountUnmountFlags, mountOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback)
-	// EjectWithOperationFinish decrements the shadow count on @mount. Usually
-	// used by Monitor implementations when destroying a shadow mount for
-	// @mount, see g_mount_is_shadowed() for more information. The caller will
-	// need to emit the #GMount::changed signal on @mount manually.
+	// EjectWithOperationFinish finishes ejecting a mount. If any errors
+	// occurred during the operation, @error will be set to contain the errors
+	// and false will be returned.
 	EjectWithOperationFinish(result AsyncResult) error
-	// DefaultLocation decrements the shadow count on @mount. Usually used by
-	// Monitor implementations when destroying a shadow mount for @mount, see
-	// g_mount_is_shadowed() for more information. The caller will need to emit
-	// the #GMount::changed signal on @mount manually.
+	// DefaultLocation gets the default location of @mount. The default location
+	// of the given @mount is a path that reflects the main entry point for the
+	// user (e.g. the home directory, or the root of the volume).
 	DefaultLocation() File
-	// Drive decrements the shadow count on @mount. Usually used by Monitor
-	// implementations when destroying a shadow mount for @mount, see
-	// g_mount_is_shadowed() for more information. The caller will need to emit
-	// the #GMount::changed signal on @mount manually.
+	// Drive gets the drive for the @mount.
+	//
+	// This is a convenience method for getting the #GVolume and then using that
+	// object to get the #GDrive.
 	Drive() Drive
-	// Icon decrements the shadow count on @mount. Usually used by Monitor
-	// implementations when destroying a shadow mount for @mount, see
-	// g_mount_is_shadowed() for more information. The caller will need to emit
-	// the #GMount::changed signal on @mount manually.
+	// Icon gets the icon for @mount.
 	Icon() Icon
-	// Name decrements the shadow count on @mount. Usually used by Monitor
-	// implementations when destroying a shadow mount for @mount, see
-	// g_mount_is_shadowed() for more information. The caller will need to emit
-	// the #GMount::changed signal on @mount manually.
+	// Name gets the name of @mount.
 	Name() string
-	// Root decrements the shadow count on @mount. Usually used by Monitor
-	// implementations when destroying a shadow mount for @mount, see
-	// g_mount_is_shadowed() for more information. The caller will need to emit
-	// the #GMount::changed signal on @mount manually.
+	// Root gets the root directory on @mount.
 	Root() File
-	// SortKey decrements the shadow count on @mount. Usually used by Monitor
-	// implementations when destroying a shadow mount for @mount, see
-	// g_mount_is_shadowed() for more information. The caller will need to emit
-	// the #GMount::changed signal on @mount manually.
+	// SortKey gets the sort key for @mount, if any.
 	SortKey() string
-	// SymbolicIcon decrements the shadow count on @mount. Usually used by
-	// Monitor implementations when destroying a shadow mount for @mount, see
-	// g_mount_is_shadowed() for more information. The caller will need to emit
-	// the #GMount::changed signal on @mount manually.
+	// SymbolicIcon gets the symbolic icon for @mount.
 	SymbolicIcon() Icon
-	// UUID decrements the shadow count on @mount. Usually used by Monitor
-	// implementations when destroying a shadow mount for @mount, see
-	// g_mount_is_shadowed() for more information. The caller will need to emit
-	// the #GMount::changed signal on @mount manually.
+	// UUID gets the UUID for the @mount. The reference is typically based on
+	// the file system UUID for the mount in question and should be considered
+	// an opaque string. Returns nil if there is no UUID available.
 	UUID() string
-	// Volume decrements the shadow count on @mount. Usually used by Monitor
-	// implementations when destroying a shadow mount for @mount, see
-	// g_mount_is_shadowed() for more information. The caller will need to emit
-	// the #GMount::changed signal on @mount manually.
+	// Volume gets the volume for the @mount.
 	Volume() Volume
-	// GuessContentType decrements the shadow count on @mount. Usually used by
-	// Monitor implementations when destroying a shadow mount for @mount, see
-	// g_mount_is_shadowed() for more information. The caller will need to emit
-	// the #GMount::changed signal on @mount manually.
+	// GuessContentType tries to guess the type of content stored on @mount.
+	// Returns one or more textual identifiers of well-known content types
+	// (typically prefixed with "x-content/"), e.g. x-content/image-dcf for
+	// camera memory cards. See the shared-mime-info
+	// (http://www.freedesktop.org/wiki/Specifications/shared-mime-info-spec)
+	// specification for more on x-content types.
+	//
+	// This is an asynchronous operation (see g_mount_guess_content_type_sync()
+	// for the synchronous version), and is finished by calling
+	// g_mount_guess_content_type_finish() with the @mount and Result data
+	// returned in the @callback.
 	GuessContentType(forceRescan bool, cancellable Cancellable, callback AsyncReadyCallback)
-	// GuessContentTypeFinish decrements the shadow count on @mount. Usually
-	// used by Monitor implementations when destroying a shadow mount for
-	// @mount, see g_mount_is_shadowed() for more information. The caller will
-	// need to emit the #GMount::changed signal on @mount manually.
+	// GuessContentTypeFinish finishes guessing content types of @mount. If any
+	// errors occurred during the operation, @error will be set to contain the
+	// errors and false will be returned. In particular, you may get an
+	// G_IO_ERROR_NOT_SUPPORTED if the mount does not support content guessing.
 	GuessContentTypeFinish(result AsyncResult) ([]string, error)
-	// GuessContentTypeSync decrements the shadow count on @mount. Usually used
-	// by Monitor implementations when destroying a shadow mount for @mount, see
-	// g_mount_is_shadowed() for more information. The caller will need to emit
-	// the #GMount::changed signal on @mount manually.
+	// GuessContentTypeSync tries to guess the type of content stored on @mount.
+	// Returns one or more textual identifiers of well-known content types
+	// (typically prefixed with "x-content/"), e.g. x-content/image-dcf for
+	// camera memory cards. See the shared-mime-info
+	// (http://www.freedesktop.org/wiki/Specifications/shared-mime-info-spec)
+	// specification for more on x-content types.
+	//
+	// This is a synchronous operation and as such may block doing IO; see
+	// g_mount_guess_content_type() for the asynchronous version.
 	GuessContentTypeSync(forceRescan bool, cancellable Cancellable) ([]string, error)
-	// IsShadowed decrements the shadow count on @mount. Usually used by Monitor
-	// implementations when destroying a shadow mount for @mount, see
-	// g_mount_is_shadowed() for more information. The caller will need to emit
-	// the #GMount::changed signal on @mount manually.
+	// IsShadowed determines if @mount is shadowed. Applications or libraries
+	// should avoid displaying @mount in the user interface if it is shadowed.
+	//
+	// A mount is said to be shadowed if there exists one or more user visible
+	// objects (currently #GMount objects) with a root that is inside the root
+	// of @mount.
+	//
+	// One application of shadow mounts is when exposing a single file system
+	// that is used to address several logical volumes. In this situation, a
+	// Monitor implementation would create two #GVolume objects (for example,
+	// one for the camera functionality of the device and one for a SD card
+	// reader on the device) with activation URIs
+	// `gphoto2://[usb:001,002]/store1/` and `gphoto2://[usb:001,002]/store2/`.
+	// When the underlying mount (with root `gphoto2://[usb:001,002]/`) is
+	// mounted, said Monitor implementation would create two #GMount objects
+	// (each with their root matching the corresponding volume activation root)
+	// that would shadow the original mount.
+	//
+	// The proxy monitor in GVfs 2.26 and later, automatically creates and
+	// manage shadow mounts (and shadows the underlying mount) if the activation
+	// root on a #GVolume is set.
 	IsShadowed() bool
-	// Remount decrements the shadow count on @mount. Usually used by Monitor
-	// implementations when destroying a shadow mount for @mount, see
-	// g_mount_is_shadowed() for more information. The caller will need to emit
-	// the #GMount::changed signal on @mount manually.
+	// Remount remounts a mount. This is an asynchronous operation, and is
+	// finished by calling g_mount_remount_finish() with the @mount and Results
+	// data returned in the @callback.
+	//
+	// Remounting is useful when some setting affecting the operation of the
+	// volume has been changed, as these may need a remount to take affect.
+	// While this is semantically equivalent with unmounting and then remounting
+	// not all backends might need to actually be unmounted.
 	Remount(flags MountMountFlags, mountOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback)
-	// RemountFinish decrements the shadow count on @mount. Usually used by
-	// Monitor implementations when destroying a shadow mount for @mount, see
-	// g_mount_is_shadowed() for more information. The caller will need to emit
-	// the #GMount::changed signal on @mount manually.
+	// RemountFinish finishes remounting a mount. If any errors occurred during
+	// the operation, @error will be set to contain the errors and false will be
+	// returned.
 	RemountFinish(result AsyncResult) error
-	// Shadow decrements the shadow count on @mount. Usually used by Monitor
-	// implementations when destroying a shadow mount for @mount, see
+	// Shadow increments the shadow count on @mount. Usually used by Monitor
+	// implementations when creating a shadow mount for @mount, see
 	// g_mount_is_shadowed() for more information. The caller will need to emit
 	// the #GMount::changed signal on @mount manually.
 	Shadow()
-	// Unmount decrements the shadow count on @mount. Usually used by Monitor
-	// implementations when destroying a shadow mount for @mount, see
-	// g_mount_is_shadowed() for more information. The caller will need to emit
-	// the #GMount::changed signal on @mount manually.
+	// Unmount unmounts a mount. This is an asynchronous operation, and is
+	// finished by calling g_mount_unmount_finish() with the @mount and Result
+	// data returned in the @callback.
+	//
+	// Deprecated: since version 2.22.
 	Unmount(flags MountUnmountFlags, cancellable Cancellable, callback AsyncReadyCallback)
-	// UnmountFinish decrements the shadow count on @mount. Usually used by
-	// Monitor implementations when destroying a shadow mount for @mount, see
-	// g_mount_is_shadowed() for more information. The caller will need to emit
-	// the #GMount::changed signal on @mount manually.
+	// UnmountFinish finishes unmounting a mount. If any errors occurred during
+	// the operation, @error will be set to contain the errors and false will be
+	// returned.
+	//
+	// Deprecated: since version 2.22.
 	UnmountFinish(result AsyncResult) error
-	// UnmountWithOperation decrements the shadow count on @mount. Usually used
-	// by Monitor implementations when destroying a shadow mount for @mount, see
-	// g_mount_is_shadowed() for more information. The caller will need to emit
-	// the #GMount::changed signal on @mount manually.
+	// UnmountWithOperation unmounts a mount. This is an asynchronous operation,
+	// and is finished by calling g_mount_unmount_with_operation_finish() with
+	// the @mount and Result data returned in the @callback.
 	UnmountWithOperation(flags MountUnmountFlags, mountOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback)
-	// UnmountWithOperationFinish decrements the shadow count on @mount. Usually
-	// used by Monitor implementations when destroying a shadow mount for
-	// @mount, see g_mount_is_shadowed() for more information. The caller will
-	// need to emit the #GMount::changed signal on @mount manually.
+	// UnmountWithOperationFinish finishes unmounting a mount. If any errors
+	// occurred during the operation, @error will be set to contain the errors
+	// and false will be returned.
 	UnmountWithOperationFinish(result AsyncResult) error
 	// Unshadow decrements the shadow count on @mount. Usually used by Monitor
 	// implementations when destroying a shadow mount for @mount, see
@@ -268,7 +274,7 @@ func (m mount) Eject(flags MountUnmountFlags, cancellable Cancellable, callback 
 func (m mount) EjectFinish(result AsyncResult) error {
 	var _arg0 *C.GMount       // out
 	var _arg1 *C.GAsyncResult // out
-	var _cerr *C.GError       // in
+	var _cerr **C.GError      // in
 
 	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
@@ -277,7 +283,16 @@ func (m mount) EjectFinish(result AsyncResult) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _goerr
 }
@@ -303,7 +318,7 @@ func (m mount) EjectWithOperation(flags MountUnmountFlags, mountOperation MountO
 func (m mount) EjectWithOperationFinish(result AsyncResult) error {
 	var _arg0 *C.GMount       // out
 	var _arg1 *C.GAsyncResult // out
-	var _cerr *C.GError       // in
+	var _cerr **C.GError      // in
 
 	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
@@ -312,7 +327,16 @@ func (m mount) EjectWithOperationFinish(result AsyncResult) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _goerr
 }
@@ -476,7 +500,7 @@ func (m mount) GuessContentTypeFinish(result AsyncResult) ([]string, error) {
 	var _arg0 *C.GMount       // out
 	var _arg1 *C.GAsyncResult // out
 	var _cret **C.gchar
-	var _cerr *C.GError // in
+	var _cerr **C.GError // in
 
 	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
@@ -500,7 +524,16 @@ func (m mount) GuessContentTypeFinish(result AsyncResult) ([]string, error) {
 			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _utf8s, _goerr
 }
@@ -510,7 +543,7 @@ func (m mount) GuessContentTypeSync(forceRescan bool, cancellable Cancellable) (
 	var _arg1 C.gboolean      // out
 	var _arg2 *C.GCancellable // out
 	var _cret **C.gchar
-	var _cerr *C.GError // in
+	var _cerr **C.GError // in
 
 	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
 	if forceRescan {
@@ -537,7 +570,16 @@ func (m mount) GuessContentTypeSync(forceRescan bool, cancellable Cancellable) (
 			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _utf8s, _goerr
 }
@@ -580,7 +622,7 @@ func (m mount) Remount(flags MountMountFlags, mountOperation MountOperation, can
 func (m mount) RemountFinish(result AsyncResult) error {
 	var _arg0 *C.GMount       // out
 	var _arg1 *C.GAsyncResult // out
-	var _cerr *C.GError       // in
+	var _cerr **C.GError      // in
 
 	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
@@ -589,7 +631,16 @@ func (m mount) RemountFinish(result AsyncResult) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _goerr
 }
@@ -621,7 +672,7 @@ func (m mount) Unmount(flags MountUnmountFlags, cancellable Cancellable, callbac
 func (m mount) UnmountFinish(result AsyncResult) error {
 	var _arg0 *C.GMount       // out
 	var _arg1 *C.GAsyncResult // out
-	var _cerr *C.GError       // in
+	var _cerr **C.GError      // in
 
 	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
@@ -630,7 +681,16 @@ func (m mount) UnmountFinish(result AsyncResult) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _goerr
 }
@@ -656,7 +716,7 @@ func (m mount) UnmountWithOperation(flags MountUnmountFlags, mountOperation Moun
 func (m mount) UnmountWithOperationFinish(result AsyncResult) error {
 	var _arg0 *C.GMount       // out
 	var _arg1 *C.GAsyncResult // out
-	var _cerr *C.GError       // in
+	var _cerr **C.GError      // in
 
 	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
@@ -665,7 +725,16 @@ func (m mount) UnmountWithOperationFinish(result AsyncResult) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _goerr
 }

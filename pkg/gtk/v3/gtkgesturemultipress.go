@@ -36,9 +36,19 @@ func init() {
 type GestureMultiPress interface {
 	GestureSingle
 
+	// Area: if an area was set through gtk_gesture_multi_press_set_area(), this
+	// function will return true and fill in @rect with the press area. See
+	// gtk_gesture_multi_press_set_area() for more details on what the press
+	// area represents.
 	Area() (gdk.Rectangle, bool)
-
-	SetAreaGestureMultiPress(rect *gdk.Rectangle)
+	// SetAreaGestureMultiPress: if @rect is non-nil, the press area will be
+	// checked to be confined within the rectangle, otherwise the button count
+	// will be reset so the press is seen as being the first one. If @rect is
+	// nil, the area will be reset to an unrestricted state.
+	//
+	// Note: The rectangle is only used to determine whether any non-first click
+	// falls within the expected area. This is not akin to an input shape.
+	SetAreaGestureMultiPress(rect gdk.Rectangle)
 }
 
 // gestureMultiPress implements the GestureMultiPress class.
@@ -60,6 +70,8 @@ func marshalGestureMultiPress(p uintptr) (interface{}, error) {
 	return WrapGestureMultiPress(obj), nil
 }
 
+// NewGestureMultiPress returns a newly created Gesture that recognizes single
+// and multiple presses.
 func NewGestureMultiPress(widget Widget) GestureMultiPress {
 	var _arg1 *C.GtkWidget  // out
 	var _cret *C.GtkGesture // in
@@ -70,14 +82,14 @@ func NewGestureMultiPress(widget Widget) GestureMultiPress {
 
 	var _gestureMultiPress GestureMultiPress // out
 
-	_gestureMultiPress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(GestureMultiPress)
+	_gestureMultiPress = WrapGestureMultiPress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _gestureMultiPress
 }
 
 func (g gestureMultiPress) Area() (gdk.Rectangle, bool) {
 	var _arg0 *C.GtkGestureMultiPress // out
-	var _arg1 C.GdkRectangle          // in
+	var _arg1 *C.GdkRectangle         // in
 	var _cret C.gboolean              // in
 
 	_arg0 = (*C.GtkGestureMultiPress)(unsafe.Pointer(g.Native()))
@@ -87,17 +99,7 @@ func (g gestureMultiPress) Area() (gdk.Rectangle, bool) {
 	var _rect gdk.Rectangle // out
 	var _ok bool            // out
 
-	{
-		var refTmpIn *C.GdkRectangle
-		var refTmpOut *gdk.Rectangle
-
-		in0 := &_arg1
-		refTmpIn = in0
-
-		refTmpOut = (*gdk.Rectangle)(unsafe.Pointer(refTmpIn))
-
-		_rect = *refTmpOut
-	}
+	_rect = (gdk.Rectangle)(unsafe.Pointer(_arg1))
 	if _cret != 0 {
 		_ok = true
 	}
@@ -105,12 +107,12 @@ func (g gestureMultiPress) Area() (gdk.Rectangle, bool) {
 	return _rect, _ok
 }
 
-func (g gestureMultiPress) SetAreaGestureMultiPress(rect *gdk.Rectangle) {
+func (g gestureMultiPress) SetAreaGestureMultiPress(rect gdk.Rectangle) {
 	var _arg0 *C.GtkGestureMultiPress // out
 	var _arg1 *C.GdkRectangle         // out
 
 	_arg0 = (*C.GtkGestureMultiPress)(unsafe.Pointer(g.Native()))
-	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(rect.Native()))
+	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(rect))
 
 	C.gtk_gesture_multi_press_set_area(_arg0, _arg1)
 }

@@ -38,6 +38,7 @@ type ResolvedImport struct {
 var goContainerTypes = []string{
 	"error",
 	"string",
+	"interface{}",
 }
 
 // builtinType is a convenient function to make a new resolvedType.

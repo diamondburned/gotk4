@@ -49,7 +49,7 @@ func marshalFileFilterFlags(p uintptr) (interface{}, error) {
 
 // FileFilterFunc: the type of function that is used with custom filters, see
 // gtk_file_filter_add_custom().
-type FileFilterFunc func(filterInfo *FileFilterInfo, ok bool)
+type FileFilterFunc func(filterInfo FileFilterInfo) (ok bool)
 
 //export gotk4_FileFilterFunc
 func gotk4_FileFilterFunc(arg0 *C.GtkFileFilterInfo, arg1 C.gpointer) C.gboolean {
@@ -58,9 +58,9 @@ func gotk4_FileFilterFunc(arg0 *C.GtkFileFilterInfo, arg1 C.gpointer) C.gboolean
 		panic(`callback not found`)
 	}
 
-	var filterInfo *FileFilterInfo // out
+	var filterInfo FileFilterInfo // out
 
-	filterInfo = (*FileFilterInfo)(unsafe.Pointer(arg0))
+	filterInfo = (FileFilterInfo)(unsafe.Pointer(arg0))
 
 	fn := v.(FileFilterFunc)
 	ok := fn(filterInfo)
@@ -74,8 +74,8 @@ func gotk4_FileFilterFunc(arg0 *C.GtkFileFilterInfo, arg1 C.gpointer) C.gboolean
 	return cret
 }
 
-// FileFilter: a GtkFileFilter can be used to restrict the files being shown in
-// a FileChooser. Files can be filtered based on their name (with
+// FileFilter can be used to restrict the files being shown in a FileChooser.
+// Files can be filtered based on their name (with
 // gtk_file_filter_add_pattern()), on their mime type (with
 // gtk_file_filter_add_mime_type()), or by a custom filter function (with
 // gtk_file_filter_add_custom()).
@@ -112,23 +112,40 @@ func gotk4_FileFilterFunc(arg0 *C.GtkFileFilterInfo, arg1 C.gpointer) C.gboolean
 //      </patterns>
 //    </object>
 type FileFilter interface {
-	Buildable
+	gextras.Objector
 
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+
+	// AddMIMETypeFileFilter adds a rule allowing a given mime type to @filter.
 	AddMIMETypeFileFilter(mimeType string)
-
+	// AddPatternFileFilter adds a rule allowing a shell style glob to a filter.
 	AddPatternFileFilter(pattern string)
-
+	// AddPixbufFormatsFileFilter adds a rule allowing image files in the
+	// formats supported by GdkPixbuf.
 	AddPixbufFormatsFileFilter()
-
-	FilterFileFilter(filterInfo *FileFilterInfo) bool
-
-	GetName() string
-
+	// FilterFileFilter tests whether a file should be displayed according to
+	// @filter. The FileFilterInfo @filter_info should include the fields
+	// returned from gtk_file_filter_get_needed().
+	//
+	// This function will not typically be used by applications; it is intended
+	// principally for use in the implementation of FileChooser.
+	FilterFileFilter(filterInfo FileFilterInfo) bool
+	// Name gets the human-readable name for the filter. See
+	// gtk_file_filter_set_name().
+	Name() string
+	// Needed gets the fields that need to be filled in for the FileFilterInfo
+	// passed to gtk_file_filter_filter()
+	//
+	// This function will not typically be used by applications; it is intended
+	// principally for use in the implementation of FileChooser.
 	Needed() FileFilterFlags
-
+	// SetNameFileFilter sets the human-readable name of the filter; this is the
+	// string that will be displayed in the file selector user interface if
+	// there is a selectable list of filters.
 	SetNameFileFilter(name string)
-
-	ToGVariantFileFilter() *glib.Variant
+	// ToGVariantFileFilter: serialize a file filter to an a{sv} variant.
+	ToGVariantFileFilter() glib.Variant
 }
 
 // fileFilter implements the FileFilter class.
@@ -150,6 +167,13 @@ func marshalFileFilter(p uintptr) (interface{}, error) {
 	return WrapFileFilter(obj), nil
 }
 
+// NewFileFilter creates a new FileFilter with no rules added to it. Such a
+// filter doesn’t accept any files, so is not particularly useful until you add
+// rules with gtk_file_filter_add_mime_type(), gtk_file_filter_add_pattern(), or
+// gtk_file_filter_add_custom(). To create a filter that accepts any file, use:
+//
+//    GtkFileFilter *filter = gtk_file_filter_new ();
+//    gtk_file_filter_add_pattern (filter, "*");
 func NewFileFilter() FileFilter {
 	var _cret *C.GtkFileFilter // in
 
@@ -157,22 +181,24 @@ func NewFileFilter() FileFilter {
 
 	var _fileFilter FileFilter // out
 
-	_fileFilter = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(FileFilter)
+	_fileFilter = WrapFileFilter(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _fileFilter
 }
 
-func NewFileFilterFromGVariant(variant *glib.Variant) FileFilter {
+// NewFileFilterFromGVariant: deserialize a file filter from an a{sv} variant in
+// the format produced by gtk_file_filter_to_gvariant().
+func NewFileFilterFromGVariant(variant glib.Variant) FileFilter {
 	var _arg1 *C.GVariant      // out
 	var _cret *C.GtkFileFilter // in
 
-	_arg1 = (*C.GVariant)(unsafe.Pointer(variant.Native()))
+	_arg1 = (*C.GVariant)(unsafe.Pointer(variant))
 
 	_cret = C.gtk_file_filter_new_from_gvariant(_arg1)
 
 	var _fileFilter FileFilter // out
 
-	_fileFilter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(FileFilter)
+	_fileFilter = WrapFileFilter(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _fileFilter
 }
@@ -207,13 +233,13 @@ func (f fileFilter) AddPixbufFormatsFileFilter() {
 	C.gtk_file_filter_add_pixbuf_formats(_arg0)
 }
 
-func (f fileFilter) FilterFileFilter(filterInfo *FileFilterInfo) bool {
+func (f fileFilter) FilterFileFilter(filterInfo FileFilterInfo) bool {
 	var _arg0 *C.GtkFileFilter     // out
 	var _arg1 *C.GtkFileFilterInfo // out
 	var _cret C.gboolean           // in
 
 	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(f.Native()))
-	_arg1 = (*C.GtkFileFilterInfo)(unsafe.Pointer(filterInfo.Native()))
+	_arg1 = (*C.GtkFileFilterInfo)(unsafe.Pointer(filterInfo))
 
 	_cret = C.gtk_file_filter_filter(_arg0, _arg1)
 
@@ -226,7 +252,7 @@ func (f fileFilter) FilterFileFilter(filterInfo *FileFilterInfo) bool {
 	return _ok
 }
 
-func (f fileFilter) GetName() string {
+func (f fileFilter) Name() string {
 	var _arg0 *C.GtkFileFilter // out
 	var _cret *C.gchar         // in
 
@@ -267,7 +293,7 @@ func (f fileFilter) SetNameFileFilter(name string) {
 	C.gtk_file_filter_set_name(_arg0, _arg1)
 }
 
-func (f fileFilter) ToGVariantFileFilter() *glib.Variant {
+func (f fileFilter) ToGVariantFileFilter() glib.Variant {
 	var _arg0 *C.GtkFileFilter // out
 	var _cret *C.GVariant      // in
 
@@ -275,56 +301,23 @@ func (f fileFilter) ToGVariantFileFilter() *glib.Variant {
 
 	_cret = C.gtk_file_filter_to_gvariant(_arg0)
 
-	var _variant *glib.Variant // out
+	var _variant glib.Variant // out
 
-	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	_variant = (glib.Variant)(unsafe.Pointer(_cret))
+	C.g_variant_ref(_cret)
 
 	return _variant
 }
 
-func (b fileFilter) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+func (f fileFilter) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(f))
 }
 
-func (b fileFilter) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+// FileFilterInfo is used to pass information about the tested file to
+// gtk_file_filter_filter().
+type FileFilterInfo struct {
+	native C.GtkFileFilterInfo
 }
-
-func (b fileFilter) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b fileFilter) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b fileFilter) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b fileFilter) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b fileFilter) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b fileFilter) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b fileFilter) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b fileFilter) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-// FileFilterInfo: a FileFilterInfo-struct is used to pass information about the
-// tested file to gtk_file_filter_filter().
-type FileFilterInfo C.GtkFileFilterInfo
 
 // WrapFileFilterInfo wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -334,5 +327,5 @@ func WrapFileFilterInfo(ptr unsafe.Pointer) *FileFilterInfo {
 
 // Native returns the underlying C source pointer.
 func (f *FileFilterInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(f)
+	return unsafe.Pointer(&f.native)
 }

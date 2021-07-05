@@ -5,9 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -51,6 +49,13 @@ func init() {
 // gtk_search_entry_handle_event() to pass events.
 type SearchEntry interface {
 	Entry
+
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsCellEditable casts the class to the CellEditable interface.
+	AsCellEditable() CellEditable
+	// AsEditable casts the class to the Editable interface.
+	AsEditable() Editable
 }
 
 // searchEntry implements the SearchEntry class.
@@ -72,6 +77,8 @@ func marshalSearchEntry(p uintptr) (interface{}, error) {
 	return WrapSearchEntry(obj), nil
 }
 
+// NewSearchEntry creates a SearchEntry, with a find icon when the search field
+// is empty, and a clear icon when it isn't.
 func NewSearchEntry() SearchEntry {
 	var _cret *C.GtkWidget // in
 
@@ -79,103 +86,19 @@ func NewSearchEntry() SearchEntry {
 
 	var _searchEntry SearchEntry // out
 
-	_searchEntry = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(SearchEntry)
+	_searchEntry = WrapSearchEntry(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _searchEntry
 }
 
-func (c searchEntry) EditingDone() {
-	WrapCellEditable(gextras.InternObject(c)).EditingDone()
+func (s searchEntry) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(s))
 }
 
-func (c searchEntry) RemoveWidget() {
-	WrapCellEditable(gextras.InternObject(c)).RemoveWidget()
+func (s searchEntry) AsCellEditable() CellEditable {
+	return WrapCellEditable(gextras.InternObject(s))
 }
 
-func (b searchEntry) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
-}
-
-func (b searchEntry) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b searchEntry) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b searchEntry) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b searchEntry) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b searchEntry) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b searchEntry) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b searchEntry) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b searchEntry) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b searchEntry) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (e searchEntry) CopyClipboard() {
-	WrapEditable(gextras.InternObject(e)).CopyClipboard()
-}
-
-func (e searchEntry) CutClipboard() {
-	WrapEditable(gextras.InternObject(e)).CutClipboard()
-}
-
-func (e searchEntry) DeleteSelection() {
-	WrapEditable(gextras.InternObject(e)).DeleteSelection()
-}
-
-func (e searchEntry) DeleteText(startPos int, endPos int) {
-	WrapEditable(gextras.InternObject(e)).DeleteText(startPos, endPos)
-}
-
-func (e searchEntry) Chars(startPos int, endPos int) string {
-	return WrapEditable(gextras.InternObject(e)).Chars(startPos, endPos)
-}
-
-func (e searchEntry) Editable() bool {
-	return WrapEditable(gextras.InternObject(e)).Editable()
-}
-
-func (e searchEntry) Position() int {
-	return WrapEditable(gextras.InternObject(e)).Position()
-}
-
-func (e searchEntry) SelectionBounds() (startPos int, endPos int, ok bool) {
-	return WrapEditable(gextras.InternObject(e)).SelectionBounds()
-}
-
-func (e searchEntry) PasteClipboard() {
-	WrapEditable(gextras.InternObject(e)).PasteClipboard()
-}
-
-func (e searchEntry) SelectRegion(startPos int, endPos int) {
-	WrapEditable(gextras.InternObject(e)).SelectRegion(startPos, endPos)
-}
-
-func (e searchEntry) SetEditable(isEditable bool) {
-	WrapEditable(gextras.InternObject(e)).SetEditable(isEditable)
-}
-
-func (e searchEntry) SetPosition(position int) {
-	WrapEditable(gextras.InternObject(e)).SetPosition(position)
+func (s searchEntry) AsEditable() Editable {
+	return WrapEditable(gextras.InternObject(s))
 }

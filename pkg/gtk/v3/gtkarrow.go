@@ -5,9 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -26,11 +24,10 @@ func init() {
 	})
 }
 
-// Arrow: gtkArrow should be used to draw simple arrows that need to point in
-// one of the four cardinal directions (up, down, left, or right). The style of
-// the arrow can be one of shadow in, shadow out, etched in, or etched out. Note
-// that these directions and style types may be amended in versions of GTK+ to
-// come.
+// Arrow should be used to draw simple arrows that need to point in one of the
+// four cardinal directions (up, down, left, or right). The style of the arrow
+// can be one of shadow in, shadow out, etched in, or etched out. Note that
+// these directions and style types may be amended in versions of GTK+ to come.
 //
 // GtkArrow will fill any space alloted to it, but since it is inherited from
 // Misc, it can be padded and/or aligned, to fill exactly the space the
@@ -48,6 +45,12 @@ func init() {
 type Arrow interface {
 	Misc
 
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+
+	// SetArrow sets the direction and style of the Arrow, @arrow.
+	//
+	// Deprecated: since version 3.14.
 	SetArrow(arrowType ArrowType, shadowType ShadowType)
 }
 
@@ -70,6 +73,9 @@ func marshalArrow(p uintptr) (interface{}, error) {
 	return WrapArrow(obj), nil
 }
 
+// NewArrow creates a new Arrow widget.
+//
+// Deprecated: since version 3.14.
 func NewArrow(arrowType ArrowType, shadowType ShadowType) Arrow {
 	var _arg1 C.GtkArrowType  // out
 	var _arg2 C.GtkShadowType // out
@@ -82,7 +88,7 @@ func NewArrow(arrowType ArrowType, shadowType ShadowType) Arrow {
 
 	var _arrow Arrow // out
 
-	_arrow = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Arrow)
+	_arrow = WrapArrow(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _arrow
 }
@@ -99,42 +105,6 @@ func (a arrow) SetArrow(arrowType ArrowType, shadowType ShadowType) {
 	C.gtk_arrow_set(_arg0, _arg1, _arg2)
 }
 
-func (b arrow) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
-}
-
-func (b arrow) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b arrow) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b arrow) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b arrow) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b arrow) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b arrow) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b arrow) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b arrow) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b arrow) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
+func (a arrow) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(a))
 }

@@ -39,8 +39,16 @@ func init() {
 type WindowHandle interface {
 	Widget
 
-	Child() Widget
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
 
+	// Child gets the child widget of @self.
+	Child() Widget
+	// SetChildWindowHandle sets the child widget of @self.
 	SetChildWindowHandle(child Widget)
 }
 
@@ -63,6 +71,7 @@ func marshalWindowHandle(p uintptr) (interface{}, error) {
 	return WrapWindowHandle(obj), nil
 }
 
+// NewWindowHandle creates a new `GtkWindowHandle`.
 func NewWindowHandle() WindowHandle {
 	var _cret *C.GtkWidget // in
 
@@ -70,7 +79,7 @@ func NewWindowHandle() WindowHandle {
 
 	var _windowHandle WindowHandle // out
 
-	_windowHandle = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(WindowHandle)
+	_windowHandle = WrapWindowHandle(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _windowHandle
 }
@@ -100,34 +109,14 @@ func (s windowHandle) SetChildWindowHandle(child Widget) {
 	C.gtk_window_handle_set_child(_arg0, _arg1)
 }
 
-func (s windowHandle) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
+func (w windowHandle) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(w))
 }
 
-func (s windowHandle) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
+func (w windowHandle) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(w))
 }
 
-func (s windowHandle) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
-}
-
-func (s windowHandle) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s windowHandle) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s windowHandle) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s windowHandle) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b windowHandle) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
+func (w windowHandle) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(w))
 }

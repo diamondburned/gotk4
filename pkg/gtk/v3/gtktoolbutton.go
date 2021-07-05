@@ -5,9 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -49,30 +47,77 @@ func init() {
 // GtkToolButton has a single CSS node with name toolbutton.
 type ToolButton interface {
 	ToolItem
-	Actionable
 
+	// AsActionable casts the class to the Actionable interface.
+	AsActionable() Actionable
+	// AsActivatable casts the class to the Activatable interface.
+	AsActivatable() Activatable
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+
+	// IconName returns the name of the themed icon for the tool button, see
+	// gtk_tool_button_set_icon_name().
 	IconName() string
-
+	// IconWidget: return the widget used as icon widget on @button. See
+	// gtk_tool_button_set_icon_widget().
 	IconWidget() Widget
-
+	// Label returns the label used by the tool button, or nil if the tool
+	// button doesn’t have a label. or uses a the label from a stock item. The
+	// returned string is owned by GTK+, and must not be modified or freed.
 	Label() string
-
+	// LabelWidget returns the widget used as label on @button. See
+	// gtk_tool_button_set_label_widget().
 	LabelWidget() Widget
-
+	// StockID returns the name of the stock item. See
+	// gtk_tool_button_set_stock_id(). The returned string is owned by GTK+ and
+	// must not be freed or modifed.
+	//
+	// Deprecated: since version 3.10.
 	StockID() string
-
+	// UseUnderline returns whether underscores in the label property are used
+	// as mnemonics on menu items on the overflow menu. See
+	// gtk_tool_button_set_use_underline().
 	UseUnderline() bool
-
+	// SetIconNameToolButton sets the icon for the tool button from a named
+	// themed icon. See the docs for IconTheme for more details. The
+	// ToolButton:icon-name property only has an effect if not overridden by
+	// non-nil ToolButton:label-widget, ToolButton:icon-widget and
+	// ToolButton:stock-id properties.
 	SetIconNameToolButton(iconName string)
-
+	// SetIconWidgetToolButton sets @icon as the widget used as icon on @button.
+	// If @icon_widget is nil the icon is determined by the ToolButton:stock-id
+	// property. If the ToolButton:stock-id property is also nil, @button will
+	// not have an icon.
 	SetIconWidgetToolButton(iconWidget Widget)
-
+	// SetLabelToolButton sets @label as the label used for the tool button. The
+	// ToolButton:label property only has an effect if not overridden by a
+	// non-nil ToolButton:label-widget property. If both the
+	// ToolButton:label-widget and ToolButton:label properties are nil, the
+	// label is determined by the ToolButton:stock-id property. If the
+	// ToolButton:stock-id property is also nil, @button will not have a label.
 	SetLabelToolButton(label string)
-
+	// SetLabelWidgetToolButton sets @label_widget as the widget that will be
+	// used as the label for @button. If @label_widget is nil the
+	// ToolButton:label property is used as label. If ToolButton:label is also
+	// nil, the label in the stock item determined by the ToolButton:stock-id
+	// property is used as label. If ToolButton:stock-id is also nil, @button
+	// does not have a label.
 	SetLabelWidgetToolButton(labelWidget Widget)
-
+	// SetStockIDToolButton sets the name of the stock item. See
+	// gtk_tool_button_new_from_stock(). The stock_id property only has an
+	// effect if not overridden by non-nil ToolButton:label-widget and
+	// ToolButton:icon-widget properties.
+	//
+	// Deprecated: since version 3.10.
 	SetStockIDToolButton(stockId string)
-
+	// SetUseUnderlineToolButton: if set, an underline in the label property
+	// indicates that the next character should be used for the mnemonic
+	// accelerator key in the overflow menu. For example, if the label property
+	// is “_Open” and @use_underline is true, the label on the tool button will
+	// be “Open” and the item on the overflow menu will have an underlined “O”.
+	//
+	// Labels shown on tool buttons never have mnemonics on them; this property
+	// only affects the menu item on the overflow menu.
 	SetUseUnderlineToolButton(useUnderline bool)
 }
 
@@ -95,6 +140,8 @@ func marshalToolButton(p uintptr) (interface{}, error) {
 	return WrapToolButton(obj), nil
 }
 
+// NewToolButton creates a new ToolButton using @icon_widget as contents and
+// @label as label.
 func NewToolButton(iconWidget Widget, label string) ToolButton {
 	var _arg1 *C.GtkWidget   // out
 	var _arg2 *C.gchar       // out
@@ -108,11 +155,18 @@ func NewToolButton(iconWidget Widget, label string) ToolButton {
 
 	var _toolButton ToolButton // out
 
-	_toolButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ToolButton)
+	_toolButton = WrapToolButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _toolButton
 }
 
+// NewToolButtonFromStock creates a new ToolButton containing the image and text
+// from a stock item. Some stock ids have preprocessor macros like K_STOCK_OK
+// and K_STOCK_APPLY.
+//
+// It is an error if @stock_id is not a name of a stock item.
+//
+// Deprecated: since version 3.10.
 func NewToolButtonFromStock(stockId string) ToolButton {
 	var _arg1 *C.gchar       // out
 	var _cret *C.GtkToolItem // in
@@ -124,7 +178,7 @@ func NewToolButtonFromStock(stockId string) ToolButton {
 
 	var _toolButton ToolButton // out
 
-	_toolButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ToolButton)
+	_toolButton = WrapToolButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _toolButton
 }
@@ -286,126 +340,14 @@ func (b toolButton) SetUseUnderlineToolButton(useUnderline bool) {
 	C.gtk_tool_button_set_use_underline(_arg0, _arg1)
 }
 
-func (b toolButton) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+func (t toolButton) AsActionable() Actionable {
+	return WrapActionable(gextras.InternObject(t))
 }
 
-func (b toolButton) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+func (t toolButton) AsActivatable() Activatable {
+	return WrapActivatable(gextras.InternObject(t))
 }
 
-func (b toolButton) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b toolButton) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b toolButton) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b toolButton) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b toolButton) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b toolButton) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b toolButton) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b toolButton) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (a toolButton) DoSetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).DoSetRelatedAction(action)
-}
-
-func (a toolButton) RelatedAction() Action {
-	return WrapActivatable(gextras.InternObject(a)).RelatedAction()
-}
-
-func (a toolButton) UseActionAppearance() bool {
-	return WrapActivatable(gextras.InternObject(a)).UseActionAppearance()
-}
-
-func (a toolButton) SetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SetRelatedAction(action)
-}
-
-func (a toolButton) SetUseActionAppearance(useAppearance bool) {
-	WrapActivatable(gextras.InternObject(a)).SetUseActionAppearance(useAppearance)
-}
-
-func (a toolButton) SyncActionProperties(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SyncActionProperties(action)
-}
-
-func (a toolButton) ActionName() string {
-	return WrapActionable(gextras.InternObject(a)).ActionName()
-}
-
-func (a toolButton) ActionTargetValue() *glib.Variant {
-	return WrapActionable(gextras.InternObject(a)).ActionTargetValue()
-}
-
-func (a toolButton) SetActionName(actionName string) {
-	WrapActionable(gextras.InternObject(a)).SetActionName(actionName)
-}
-
-func (a toolButton) SetActionTargetValue(targetValue *glib.Variant) {
-	WrapActionable(gextras.InternObject(a)).SetActionTargetValue(targetValue)
-}
-
-func (a toolButton) SetDetailedActionName(detailedActionName string) {
-	WrapActionable(gextras.InternObject(a)).SetDetailedActionName(detailedActionName)
-}
-
-func (b toolButton) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
-}
-
-func (b toolButton) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b toolButton) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b toolButton) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b toolButton) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b toolButton) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b toolButton) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b toolButton) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b toolButton) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b toolButton) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
+func (t toolButton) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(t))
 }

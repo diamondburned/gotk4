@@ -5,9 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -26,9 +24,8 @@ func init() {
 	})
 }
 
-// MenuToolButton: a MenuToolButton is a ToolItem that contains a button and a
-// small additional button with an arrow. When clicked, the arrow button pops up
-// a dropdown menu.
+// MenuToolButton is a ToolItem that contains a button and a small additional
+// button with an arrow. When clicked, the arrow button pops up a dropdown menu.
 //
 // Use gtk_menu_tool_button_new() to create a new MenuToolButton.
 //
@@ -49,12 +46,28 @@ func init() {
 type MenuToolButton interface {
 	ToolButton
 
+	// AsActionable casts the class to the Actionable interface.
+	AsActionable() Actionable
+	// AsActivatable casts the class to the Activatable interface.
+	AsActivatable() Activatable
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+
+	// Menu gets the Menu associated with MenuToolButton.
 	Menu() Widget
-
+	// SetArrowTooltipMarkupMenuToolButton sets the tooltip markup text to be
+	// used as tooltip for the arrow button which pops up the menu. See
+	// gtk_tool_item_set_tooltip_text() for setting a tooltip on the whole
+	// MenuToolButton.
 	SetArrowTooltipMarkupMenuToolButton(markup string)
-
+	// SetArrowTooltipTextMenuToolButton sets the tooltip text to be used as
+	// tooltip for the arrow button which pops up the menu. See
+	// gtk_tool_item_set_tooltip_text() for setting a tooltip on the whole
+	// MenuToolButton.
 	SetArrowTooltipTextMenuToolButton(text string)
-
+	// SetMenuMenuToolButton sets the Menu that is popped up when the user
+	// clicks on the arrow. If @menu is NULL, the arrow button becomes
+	// insensitive.
 	SetMenuMenuToolButton(menu Widget)
 }
 
@@ -77,6 +90,8 @@ func marshalMenuToolButton(p uintptr) (interface{}, error) {
 	return WrapMenuToolButton(obj), nil
 }
 
+// NewMenuToolButton creates a new MenuToolButton using @icon_widget as icon and
+// @label as label.
 func NewMenuToolButton(iconWidget Widget, label string) MenuToolButton {
 	var _arg1 *C.GtkWidget   // out
 	var _arg2 *C.gchar       // out
@@ -90,11 +105,16 @@ func NewMenuToolButton(iconWidget Widget, label string) MenuToolButton {
 
 	var _menuToolButton MenuToolButton // out
 
-	_menuToolButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(MenuToolButton)
+	_menuToolButton = WrapMenuToolButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _menuToolButton
 }
 
+// NewMenuToolButtonFromStock creates a new MenuToolButton. The new
+// MenuToolButton will contain an icon and label from the stock item indicated
+// by @stock_id.
+//
+// Deprecated: since version 3.10.
 func NewMenuToolButtonFromStock(stockId string) MenuToolButton {
 	var _arg1 *C.gchar       // out
 	var _cret *C.GtkToolItem // in
@@ -106,7 +126,7 @@ func NewMenuToolButtonFromStock(stockId string) MenuToolButton {
 
 	var _menuToolButton MenuToolButton // out
 
-	_menuToolButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(MenuToolButton)
+	_menuToolButton = WrapMenuToolButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _menuToolButton
 }
@@ -158,126 +178,14 @@ func (b menuToolButton) SetMenuMenuToolButton(menu Widget) {
 	C.gtk_menu_tool_button_set_menu(_arg0, _arg1)
 }
 
-func (b menuToolButton) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+func (m menuToolButton) AsActionable() Actionable {
+	return WrapActionable(gextras.InternObject(m))
 }
 
-func (b menuToolButton) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+func (m menuToolButton) AsActivatable() Activatable {
+	return WrapActivatable(gextras.InternObject(m))
 }
 
-func (b menuToolButton) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b menuToolButton) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b menuToolButton) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b menuToolButton) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b menuToolButton) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b menuToolButton) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b menuToolButton) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b menuToolButton) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (a menuToolButton) DoSetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).DoSetRelatedAction(action)
-}
-
-func (a menuToolButton) RelatedAction() Action {
-	return WrapActivatable(gextras.InternObject(a)).RelatedAction()
-}
-
-func (a menuToolButton) UseActionAppearance() bool {
-	return WrapActivatable(gextras.InternObject(a)).UseActionAppearance()
-}
-
-func (a menuToolButton) SetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SetRelatedAction(action)
-}
-
-func (a menuToolButton) SetUseActionAppearance(useAppearance bool) {
-	WrapActivatable(gextras.InternObject(a)).SetUseActionAppearance(useAppearance)
-}
-
-func (a menuToolButton) SyncActionProperties(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SyncActionProperties(action)
-}
-
-func (a menuToolButton) ActionName() string {
-	return WrapActionable(gextras.InternObject(a)).ActionName()
-}
-
-func (a menuToolButton) ActionTargetValue() *glib.Variant {
-	return WrapActionable(gextras.InternObject(a)).ActionTargetValue()
-}
-
-func (a menuToolButton) SetActionName(actionName string) {
-	WrapActionable(gextras.InternObject(a)).SetActionName(actionName)
-}
-
-func (a menuToolButton) SetActionTargetValue(targetValue *glib.Variant) {
-	WrapActionable(gextras.InternObject(a)).SetActionTargetValue(targetValue)
-}
-
-func (a menuToolButton) SetDetailedActionName(detailedActionName string) {
-	WrapActionable(gextras.InternObject(a)).SetDetailedActionName(detailedActionName)
-}
-
-func (b menuToolButton) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
-}
-
-func (b menuToolButton) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b menuToolButton) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b menuToolButton) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b menuToolButton) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b menuToolButton) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b menuToolButton) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b menuToolButton) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b menuToolButton) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b menuToolButton) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
+func (m menuToolButton) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(m))
 }

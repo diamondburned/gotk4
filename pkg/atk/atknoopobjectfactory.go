@@ -47,6 +47,8 @@ func marshalNoOpObjectFactory(p uintptr) (interface{}, error) {
 	return WrapNoOpObjectFactory(obj), nil
 }
 
+// NewNoOpObjectFactory creates an instance of an ObjectFactory which generates
+// primitive (non-functioning) Objects.
 func NewNoOpObjectFactory() NoOpObjectFactory {
 	var _cret *C.AtkObjectFactory // in
 
@@ -54,7 +56,7 @@ func NewNoOpObjectFactory() NoOpObjectFactory {
 
 	var _noOpObjectFactory NoOpObjectFactory // out
 
-	_noOpObjectFactory = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(NoOpObjectFactory)
+	_noOpObjectFactory = WrapNoOpObjectFactory(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _noOpObjectFactory
 }

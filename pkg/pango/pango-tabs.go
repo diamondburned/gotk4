@@ -3,6 +3,7 @@
 package pango
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -35,11 +36,13 @@ func marshalTabAlign(p uintptr) (interface{}, error) {
 	return TabAlign(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// TabArray: a `PangoTabArray` contains an array of tab stops.
+// TabArray: `PangoTabArray` contains an array of tab stops.
 //
 // `PangoTabArray` can be used to set tab stops in a `PangoLayout`. Each tab
 // stop has an alignment and a position.
-type TabArray C.PangoTabArray
+type TabArray struct {
+	native C.PangoTabArray
+}
 
 // WrapTabArray wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -53,7 +56,7 @@ func marshalTabArray(p uintptr) (interface{}, error) {
 }
 
 // NewTabArray constructs a struct TabArray.
-func NewTabArray(initialSize int, positionsInPixels bool) *TabArray {
+func NewTabArray(initialSize int, positionsInPixels bool) TabArray {
 	var _arg1 C.gint           // out
 	var _arg2 C.gboolean       // out
 	var _cret *C.PangoTabArray // in
@@ -65,11 +68,11 @@ func NewTabArray(initialSize int, positionsInPixels bool) *TabArray {
 
 	_cret = C.pango_tab_array_new(_arg1, _arg2)
 
-	var _tabArray *TabArray // out
+	var _tabArray TabArray // out
 
-	_tabArray = (*TabArray)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(&_tabArray, func(v **TabArray) {
-		C.free(unsafe.Pointer(v))
+	_tabArray = (TabArray)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_tabArray, func(v TabArray) {
+		C.pango_tab_array_free((*C.PangoTabArray)(unsafe.Pointer(v)))
 	})
 
 	return _tabArray
@@ -77,49 +80,44 @@ func NewTabArray(initialSize int, positionsInPixels bool) *TabArray {
 
 // Native returns the underlying C source pointer.
 func (t *TabArray) Native() unsafe.Pointer {
-	return unsafe.Pointer(t)
+	return unsafe.Pointer(&t.native)
 }
 
-// Copy sets the alignment and location of a tab stop.
-//
-// @alignment must always be PANGO_TAB_LEFT in the current implementation.
-func (t *TabArray) Copy() *TabArray {
+// Copy copies a `PangoTabArray`.
+func (s *TabArray) Copy() TabArray {
 	var _arg0 *C.PangoTabArray // out
 	var _cret *C.PangoTabArray // in
 
-	_arg0 = (*C.PangoTabArray)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.PangoTabArray)(unsafe.Pointer(s))
 
 	_cret = C.pango_tab_array_copy(_arg0)
 
-	var _tabArray *TabArray // out
+	var _tabArray TabArray // out
 
-	_tabArray = (*TabArray)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(&_tabArray, func(v **TabArray) {
-		C.free(unsafe.Pointer(v))
+	_tabArray = (TabArray)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_tabArray, func(v TabArray) {
+		C.pango_tab_array_free((*C.PangoTabArray)(unsafe.Pointer(v)))
 	})
 
 	return _tabArray
 }
 
-// Free sets the alignment and location of a tab stop.
-//
-// @alignment must always be PANGO_TAB_LEFT in the current implementation.
+// Free frees a tab array and associated resources.
 func (t *TabArray) Free() {
 	var _arg0 *C.PangoTabArray // out
 
-	_arg0 = (*C.PangoTabArray)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.PangoTabArray)(unsafe.Pointer(t))
 
 	C.pango_tab_array_free(_arg0)
 }
 
-// PositionsInPixels sets the alignment and location of a tab stop.
-//
-// @alignment must always be PANGO_TAB_LEFT in the current implementation.
+// PositionsInPixels returns true if the tab positions are in pixels, false if
+// they are in Pango units.
 func (t *TabArray) PositionsInPixels() bool {
 	var _arg0 *C.PangoTabArray // out
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.PangoTabArray)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.PangoTabArray)(unsafe.Pointer(t))
 
 	_cret = C.pango_tab_array_get_positions_in_pixels(_arg0)
 
@@ -132,14 +130,12 @@ func (t *TabArray) PositionsInPixels() bool {
 	return _ok
 }
 
-// Size sets the alignment and location of a tab stop.
-//
-// @alignment must always be PANGO_TAB_LEFT in the current implementation.
+// Size gets the number of tab stops in @tab_array.
 func (t *TabArray) Size() int {
 	var _arg0 *C.PangoTabArray // out
 	var _cret C.gint           // in
 
-	_arg0 = (*C.PangoTabArray)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.PangoTabArray)(unsafe.Pointer(t))
 
 	_cret = C.pango_tab_array_get_size(_arg0)
 
@@ -150,16 +146,14 @@ func (t *TabArray) Size() int {
 	return _gint
 }
 
-// Tab sets the alignment and location of a tab stop.
-//
-// @alignment must always be PANGO_TAB_LEFT in the current implementation.
+// Tab gets the alignment and position of a tab stop.
 func (t *TabArray) Tab(tabIndex int) (TabAlign, int) {
 	var _arg0 *C.PangoTabArray // out
 	var _arg1 C.gint           // out
-	var _arg2 C.PangoTabAlign  // in
-	var _arg3 C.gint           // in
+	var _arg2 *C.PangoTabAlign // in
+	var _arg3 *C.gint          // in
 
-	_arg0 = (*C.PangoTabArray)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.PangoTabArray)(unsafe.Pointer(t))
 	_arg1 = C.gint(tabIndex)
 
 	C.pango_tab_array_get_tab(_arg0, _arg1, &_arg2, &_arg3)
@@ -167,20 +161,30 @@ func (t *TabArray) Tab(tabIndex int) (TabAlign, int) {
 	var _alignment TabAlign // out
 	var _location int       // out
 
-	_alignment = TabAlign(_arg2)
+	{
+		var refTmpIn C.PangoTabAlign
+		var refTmpOut TabAlign
+
+		refTmpIn = *_arg2
+
+		refTmpOut = TabAlign(refTmpIn)
+
+		_alignment = refTmpOut
+	}
 	_location = int(_arg3)
 
 	return _alignment, _location
 }
 
-// Resize sets the alignment and location of a tab stop.
+// Resize resizes a tab array.
 //
-// @alignment must always be PANGO_TAB_LEFT in the current implementation.
+// You must subsequently initialize any tabs that were added as a result of
+// growing the array.
 func (t *TabArray) Resize(newSize int) {
 	var _arg0 *C.PangoTabArray // out
 	var _arg1 C.gint           // out
 
-	_arg0 = (*C.PangoTabArray)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.PangoTabArray)(unsafe.Pointer(t))
 	_arg1 = C.gint(newSize)
 
 	C.pango_tab_array_resize(_arg0, _arg1)
@@ -195,7 +199,7 @@ func (t *TabArray) SetTab(tabIndex int, alignment TabAlign, location int) {
 	var _arg2 C.PangoTabAlign  // out
 	var _arg3 C.gint           // out
 
-	_arg0 = (*C.PangoTabArray)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.PangoTabArray)(unsafe.Pointer(t))
 	_arg1 = C.gint(tabIndex)
 	_arg2 = C.PangoTabAlign(alignment)
 	_arg3 = C.gint(location)

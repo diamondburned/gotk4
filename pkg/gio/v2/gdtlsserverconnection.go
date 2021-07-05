@@ -34,11 +34,13 @@ func init() {
 // DTLSServerConnection is the server-side subclass of Connection, representing
 // a server-side DTLS connection.
 type DTLSServerConnection interface {
+	DatagramBased
 	DTLSConnection
 }
 
 // dtlsServerConnection implements the DTLSServerConnection interface.
 type dtlsServerConnection struct {
+	DatagramBased
 	DTLSConnection
 }
 
@@ -48,6 +50,7 @@ var _ DTLSServerConnection = (*dtlsServerConnection)(nil)
 // interface DTLSServerConnection. It is primarily used internally.
 func WrapDTLSServerConnection(obj *externglib.Object) DTLSServerConnection {
 	return dtlsServerConnection{
+		DatagramBased:  WrapDatagramBased(obj),
 		DTLSConnection: WrapDTLSConnection(obj),
 	}
 }

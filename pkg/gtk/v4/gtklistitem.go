@@ -40,22 +40,56 @@ func init() {
 type ListItem interface {
 	gextras.Objector
 
+	// Activatable checks if a list item has been set to be activatable via
+	// gtk_list_item_set_activatable().
 	Activatable() bool
-
+	// Child gets the child previously set via gtk_list_item_set_child() or nil
+	// if none was set.
 	Child() Widget
-
+	// Item gets the model item that associated with @self.
+	//
+	// If @self is unbound, this function returns nil.
 	Item() gextras.Objector
-
+	// Position gets the position in the model that @self currently displays.
+	//
+	// If @self is unbound, GTK_INVALID_LIST_POSITION is returned.
 	Position() uint
-
+	// Selectable checks if a list item has been set to be selectable via
+	// gtk_list_item_set_selectable().
+	//
+	// Do not confuse this function with [method@Gtk.ListItem.get_selected].
 	Selectable() bool
-
+	// Selected checks if the item is displayed as selected.
+	//
+	// The selected state is maintained by the liste widget and its model and
+	// cannot be set otherwise.
 	Selected() bool
-
+	// SetActivatableListItem sets @self to be activatable.
+	//
+	// If an item is activatable, double-clicking on the item, using the Return
+	// key or calling gtk_widget_activate() will activate the item. Activating
+	// instructs the containing view to handle activation. `GtkListView` for
+	// example will be emitting the [signal@Gtk.ListView::activate] signal.
+	//
+	// By default, list items are activatable.
 	SetActivatableListItem(activatable bool)
-
+	// SetChildListItem sets the child to be used for this listitem.
+	//
+	// This function is typically called by applications when setting up a
+	// listitem so that the widget can be reused when binding it multiple times.
 	SetChildListItem(child Widget)
-
+	// SetSelectableListItem sets @self to be selectable.
+	//
+	// If an item is selectable, clicking on the item or using the keyboard will
+	// try to select or unselect the item. If this succeeds is up to the model
+	// to determine, as it is managing the selected state.
+	//
+	// Note that this means that making an item non-selectable has no influence
+	// on the selected state at all. A non-selectable item may still be
+	// selected.
+	//
+	// By default, list items are selectable. When rebinding them to a new item,
+	// they will also be reset to be selectable by GTK.
 	SetSelectableListItem(selectable bool)
 }
 

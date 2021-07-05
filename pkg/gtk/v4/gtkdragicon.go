@@ -6,8 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/gdk/v4"
-	"github.com/diamondburned/gotk4/pkg/gsk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -36,10 +34,22 @@ func init() {
 //
 // Keep in mind that drag icons do not allow user input.
 type DragIcon interface {
-	Root
+	Widget
 
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
+	// AsNative casts the class to the Native interface.
+	AsNative() Native
+	// AsRoot casts the class to the Root interface.
+	AsRoot() Root
+
+	// Child gets the widget currently used as drag icon.
 	Child() Widget
-
+	// SetChildDragIcon sets the widget to display as the drag icon.
 	SetChildDragIcon(child Widget)
 }
 
@@ -87,66 +97,22 @@ func (s dragIcon) SetChildDragIcon(child Widget) {
 	C.gtk_drag_icon_set_child(_arg0, _arg1)
 }
 
-func (s dragIcon) Display() gdk.Display {
-	return WrapRoot(gextras.InternObject(s)).Display()
+func (d dragIcon) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(d))
 }
 
-func (s dragIcon) Focus() Widget {
-	return WrapRoot(gextras.InternObject(s)).Focus()
+func (d dragIcon) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(d))
 }
 
-func (s dragIcon) SetFocus(focus Widget) {
-	WrapRoot(gextras.InternObject(s)).SetFocus(focus)
+func (d dragIcon) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(d))
 }
 
-func (s dragIcon) Renderer() gsk.Renderer {
-	return WrapNative(gextras.InternObject(s)).Renderer()
+func (d dragIcon) AsNative() Native {
+	return WrapNative(gextras.InternObject(d))
 }
 
-func (s dragIcon) Surface() gdk.Surface {
-	return WrapNative(gextras.InternObject(s)).Surface()
-}
-
-func (s dragIcon) SurfaceTransform() (x float64, y float64) {
-	return WrapNative(gextras.InternObject(s)).SurfaceTransform()
-}
-
-func (s dragIcon) Realize() {
-	WrapNative(gextras.InternObject(s)).Realize()
-}
-
-func (s dragIcon) Unrealize() {
-	WrapNative(gextras.InternObject(s)).Unrealize()
-}
-
-func (s dragIcon) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
-}
-
-func (s dragIcon) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
-}
-
-func (s dragIcon) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
-}
-
-func (s dragIcon) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s dragIcon) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s dragIcon) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s dragIcon) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b dragIcon) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
+func (d dragIcon) AsRoot() Root {
+	return WrapRoot(gextras.InternObject(d))
 }

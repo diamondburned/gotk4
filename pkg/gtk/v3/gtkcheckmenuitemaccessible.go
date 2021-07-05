@@ -27,6 +27,9 @@ func init() {
 
 type CheckMenuItemAccessible interface {
 	MenuItemAccessible
+
+	// AsAction casts the class to the atk.Action interface.
+	AsAction() atk.Action
 }
 
 // checkMenuItemAccessible implements the CheckMenuItemAccessible class.
@@ -48,30 +51,6 @@ func marshalCheckMenuItemAccessible(p uintptr) (interface{}, error) {
 	return WrapCheckMenuItemAccessible(obj), nil
 }
 
-func (a checkMenuItemAccessible) DoAction(i int) bool {
-	return atk.WrapAction(gextras.InternObject(a)).DoAction(i)
-}
-
-func (a checkMenuItemAccessible) Description(i int) string {
-	return atk.WrapAction(gextras.InternObject(a)).Description(i)
-}
-
-func (a checkMenuItemAccessible) Keybinding(i int) string {
-	return atk.WrapAction(gextras.InternObject(a)).Keybinding(i)
-}
-
-func (a checkMenuItemAccessible) LocalizedName(i int) string {
-	return atk.WrapAction(gextras.InternObject(a)).LocalizedName(i)
-}
-
-func (a checkMenuItemAccessible) NActions() int {
-	return atk.WrapAction(gextras.InternObject(a)).NActions()
-}
-
-func (a checkMenuItemAccessible) Name(i int) string {
-	return atk.WrapAction(gextras.InternObject(a)).Name(i)
-}
-
-func (a checkMenuItemAccessible) SetDescription(i int, desc string) bool {
-	return atk.WrapAction(gextras.InternObject(a)).SetDescription(i, desc)
+func (c checkMenuItemAccessible) AsAction() atk.Action {
+	return atk.WrapAction(gextras.InternObject(c))
 }

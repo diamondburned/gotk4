@@ -6,8 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/gdk/v4"
-	"github.com/diamondburned/gotk4/pkg/gsk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -85,14 +83,41 @@ func init() {
 type ApplicationWindow interface {
 	Window
 
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
+	// AsNative casts the class to the Native interface.
+	AsNative() Native
+	// AsRoot casts the class to the Root interface.
+	AsRoot() Root
+	// AsShortcutManager casts the class to the ShortcutManager interface.
+	AsShortcutManager() ShortcutManager
+
+	// HelpOverlay gets the `GtkShortcutsWindow` that is associated with
+	// @window.
+	//
+	// See [method@Gtk.ApplicationWindow.set_help_overlay].
 	HelpOverlay() ShortcutsWindow
-
+	// ID returns the unique ID of the window.
+	//
+	//    If the window has not yet been added to a `GtkApplication`, returns `0`.
 	ID() uint
-
+	// ShowMenubar returns whether the window will display a menubar for the app
+	// menu and menubar as needed.
 	ShowMenubar() bool
-
+	// SetHelpOverlayApplicationWindow associates a shortcuts window with the
+	// application window.
+	//
+	// Additionally, sets up an action with the name `win.show-help-overlay` to
+	// present it.
+	//
+	// @window takes responsibility for destroying @help_overlay.
 	SetHelpOverlayApplicationWindow(helpOverlay ShortcutsWindow)
-
+	// SetShowMenubarApplicationWindow sets whether the window will display a
+	// menubar for the app menu and menubar as needed.
 	SetShowMenubarApplicationWindow(showMenubar bool)
 }
 
@@ -115,6 +140,7 @@ func marshalApplicationWindow(p uintptr) (interface{}, error) {
 	return WrapApplicationWindow(obj), nil
 }
 
+// NewApplicationWindow creates a new `GtkApplicationWindow`.
 func NewApplicationWindow(application Application) ApplicationWindow {
 	var _arg1 *C.GtkApplication // out
 	var _cret *C.GtkWidget      // in
@@ -125,7 +151,7 @@ func NewApplicationWindow(application Application) ApplicationWindow {
 
 	var _applicationWindow ApplicationWindow // out
 
-	_applicationWindow = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ApplicationWindow)
+	_applicationWindow = WrapApplicationWindow(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _applicationWindow
 }
@@ -199,66 +225,26 @@ func (w applicationWindow) SetShowMenubarApplicationWindow(showMenubar bool) {
 	C.gtk_application_window_set_show_menubar(_arg0, _arg1)
 }
 
-func (s applicationWindow) Display() gdk.Display {
-	return WrapRoot(gextras.InternObject(s)).Display()
+func (a applicationWindow) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(a))
 }
 
-func (s applicationWindow) Focus() Widget {
-	return WrapRoot(gextras.InternObject(s)).Focus()
+func (a applicationWindow) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(a))
 }
 
-func (s applicationWindow) SetFocus(focus Widget) {
-	WrapRoot(gextras.InternObject(s)).SetFocus(focus)
+func (a applicationWindow) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(a))
 }
 
-func (s applicationWindow) Renderer() gsk.Renderer {
-	return WrapNative(gextras.InternObject(s)).Renderer()
+func (a applicationWindow) AsNative() Native {
+	return WrapNative(gextras.InternObject(a))
 }
 
-func (s applicationWindow) Surface() gdk.Surface {
-	return WrapNative(gextras.InternObject(s)).Surface()
+func (a applicationWindow) AsRoot() Root {
+	return WrapRoot(gextras.InternObject(a))
 }
 
-func (s applicationWindow) SurfaceTransform() (x float64, y float64) {
-	return WrapNative(gextras.InternObject(s)).SurfaceTransform()
-}
-
-func (s applicationWindow) Realize() {
-	WrapNative(gextras.InternObject(s)).Realize()
-}
-
-func (s applicationWindow) Unrealize() {
-	WrapNative(gextras.InternObject(s)).Unrealize()
-}
-
-func (s applicationWindow) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
-}
-
-func (s applicationWindow) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
-}
-
-func (s applicationWindow) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
-}
-
-func (s applicationWindow) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s applicationWindow) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s applicationWindow) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s applicationWindow) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b applicationWindow) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
+func (a applicationWindow) AsShortcutManager() ShortcutManager {
+	return WrapShortcutManager(gextras.InternObject(a))
 }

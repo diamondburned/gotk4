@@ -4,12 +4,12 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/diamondburned/gotk4/gir/girgen/pen"
 	"github.com/diamondburned/gotk4/gir"
 	"github.com/diamondburned/gotk4/gir/girgen/file"
 	"github.com/diamondburned/gotk4/gir/girgen/generators/callable"
 	"github.com/diamondburned/gotk4/gir/girgen/gotmpl"
 	"github.com/diamondburned/gotk4/gir/girgen/logger"
+	"github.com/diamondburned/gotk4/gir/girgen/pen"
 	"github.com/diamondburned/gotk4/gir/girgen/strcases"
 	"github.com/diamondburned/gotk4/gir/girgen/types"
 	"github.com/diamondburned/gotk4/gir/girgen/types/typeconv"
@@ -34,7 +34,9 @@ var recordIgnoreSuffixes = []string{
 
 var recordTmpl = gotmpl.NewGoTemplate(`
 	{{ GoDoc . 0 }}
-	type {{ .GoName }} C.{{ .CType }}
+	type {{ .GoName }} struct {
+		native C.{{ .CType }}
+	}
 
 	// Wrap{{ .GoName }} wraps the C unsafe.Pointer to be the right type. It is
 	// primarily used internally.
@@ -60,7 +62,7 @@ var recordTmpl = gotmpl.NewGoTemplate(`
 
 	// Native returns the underlying C source pointer.
 	func ({{ $recv }} *{{ .GoName }}) Native() unsafe.Pointer {
-		return unsafe.Pointer({{ FirstLetter .GoName }})
+		return unsafe.Pointer(&{{ FirstLetter .GoName }}.native)
 	}
 
 	{{ range .Getters }}
@@ -83,6 +85,11 @@ func CanGenerateRecord(gen FileGenerator, rec *gir.Record) bool {
 
 	if !rec.IsIntrospectable() {
 		log("not introspectable")
+		return false
+	}
+
+	if rec.Disguised {
+		log("disguised")
 		return false
 	}
 
@@ -116,6 +123,7 @@ func CanGenerateRecord(gen FileGenerator, rec *gir.Record) bool {
 
 	if types.Filter(gen, rec.Name, rec.CType) {
 		log("filtered out")
+		return false
 	}
 
 	return true
@@ -149,6 +157,9 @@ func GenerateRecord(gen FileGeneratorWriter, record *gir.Record) bool {
 	}
 
 	writer.Pen().WriteTmpl(recordTmpl, &recordGen)
+	// Write the header after using the template to ensure that UseConstructor
+	// registers everything.
+	file.ApplyHeader(writer, &recordGen)
 	return true
 }
 
@@ -192,6 +203,11 @@ func (rg *RecordGenerator) Use(rec *gir.Record) bool {
 		return false
 	}
 
+	if rec.GLibGetType != "" {
+		// Need this for g_value_get_boxed().
+		rg.hdr.NeedsGLibObject()
+	}
+
 	rg.Record = rec
 	rg.GoName = strcases.PascalToGo(rec.Name)
 	rg.Methods = rg.methods()
@@ -205,6 +221,7 @@ func (rg *RecordGenerator) UseConstructor(ctor *gir.Constructor, className strin
 		return false
 	}
 
+	file.ApplyHeader(rg, &rg.Callable)
 	rg.Callable.Name = strings.TrimPrefix(rg.Callable.Name, "New")
 	rg.Callable.Name = "New" + rg.GoName + rg.Callable.Name
 
@@ -214,12 +231,15 @@ func (rg *RecordGenerator) UseConstructor(ctor *gir.Constructor, className strin
 func (rg *RecordGenerator) methods() []callable.Generator {
 	callables := callable.Grow(rg.Methods, len(rg.Record.Methods))
 
-	for _, method := range rg.Record.Methods {
+	for i := range rg.Record.Methods {
+		method := &rg.Record.Methods[i]
+
 		cbgen := callable.NewGenerator(rg.gen)
 		if !cbgen.Use(&method.CallableAttrs) {
 			continue
 		}
 
+		file.ApplyHeader(rg, &cbgen)
 		callables = append(callables, cbgen)
 	}
 
@@ -262,14 +282,13 @@ func (rg *RecordGenerator) getters() []recordGetter {
 	converter := typeconv.NewConverter(rg.gen, fields)
 	converter.UseLogger(rg)
 
-	// Add all imports once we've gone over conversion of all fields.
-	defer file.ApplyHeader(rg, converter)
-
 	for i := range fields {
 		converted := converter.Convert(i)
 		if converted == nil {
 			continue
 		}
+
+		file.ApplyHeader(rg, converted)
 
 		b := pen.NewBlock()
 		b.Linef(converted.OutDeclare)

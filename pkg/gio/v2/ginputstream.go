@@ -50,30 +50,130 @@ func init() {
 type InputStream interface {
 	gextras.Objector
 
+	// ClearPendingInputStream clears the pending flag on @stream.
 	ClearPendingInputStream()
-
+	// CloseInputStream closes the stream, releasing resources related to it.
+	//
+	// Once the stream is closed, all other operations will return
+	// G_IO_ERROR_CLOSED. Closing a stream multiple times will not return an
+	// error.
+	//
+	// Streams will be automatically closed when the last reference is dropped,
+	// but you might want to call this function to make sure resources are
+	// released as early as possible.
+	//
+	// Some streams might keep the backing store of the stream (e.g. a file
+	// descriptor) open after the stream is closed. See the documentation for
+	// the individual stream for details.
+	//
+	// On failure the first error that happened will be reported, but the close
+	// operation will finish as much as possible. A stream that failed to close
+	// will still return G_IO_ERROR_CLOSED for all operations. Still, it is
+	// important to check and report the error to the user.
+	//
+	// If @cancellable is not nil, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+	// Cancelling a close will still leave the stream closed, but some streams
+	// can use a faster close that doesn't block to e.g. check errors.
 	CloseInputStream(cancellable Cancellable) error
-
+	// CloseAsyncInputStream requests an asynchronous closes of the stream,
+	// releasing resources related to it. When the operation is finished
+	// @callback will be called. You can then call g_input_stream_close_finish()
+	// to get the result of the operation.
+	//
+	// For behaviour details see g_input_stream_close().
+	//
+	// The asynchronous methods have a default fallback that uses threads to
+	// implement asynchronicity, so they are optional for inheriting classes.
+	// However, if you override one you must override all.
 	CloseAsyncInputStream(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
-
+	// CloseFinishInputStream finishes closing a stream asynchronously, started
+	// from g_input_stream_close_async().
 	CloseFinishInputStream(result AsyncResult) error
-
+	// HasPendingInputStream checks if an input stream has pending actions.
 	HasPendingInputStream() bool
-
+	// IsClosedInputStream checks if an input stream is closed.
 	IsClosedInputStream() bool
-
+	// ReadAllFinishInputStream finishes an asynchronous stream read operation
+	// started with g_input_stream_read_all_async().
+	//
+	// As a special exception to the normal conventions for functions that use
+	// #GError, if this function returns false (and sets @error) then
+	// @bytes_read will be set to the number of bytes that were successfully
+	// read before the error was encountered. This functionality is only
+	// available from C. If you need it from another language then you must
+	// write your own loop around g_input_stream_read_async().
 	ReadAllFinishInputStream(result AsyncResult) (uint, error)
-
+	// ReadBytesAsyncInputStream: request an asynchronous read of @count bytes
+	// from the stream into a new #GBytes. When the operation is finished
+	// @callback will be called. You can then call
+	// g_input_stream_read_bytes_finish() to get the result of the operation.
+	//
+	// During an async request no other sync and async calls are allowed on
+	// @stream, and will result in G_IO_ERROR_PENDING errors.
+	//
+	// A value of @count larger than G_MAXSSIZE will cause a
+	// G_IO_ERROR_INVALID_ARGUMENT error.
+	//
+	// On success, the new #GBytes will be passed to the callback. It is not an
+	// error if this is smaller than the requested size, as it can happen e.g.
+	// near the end of a file, but generally we try to read as many bytes as
+	// requested. Zero is returned on end of file (or if @count is zero), but
+	// never otherwise.
+	//
+	// Any outstanding I/O request with higher priority (lower numerical value)
+	// will be executed before an outstanding request with lower priority.
+	// Default priority is G_PRIORITY_DEFAULT.
 	ReadBytesAsyncInputStream(count uint, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
-
+	// ReadFinishInputStream finishes an asynchronous stream read operation.
 	ReadFinishInputStream(result AsyncResult) (int, error)
-
+	// SetPendingInputStream sets @stream to have actions pending. If the
+	// pending flag is already set or @stream is closed, it will return false
+	// and set @error.
 	SetPendingInputStream() error
-
+	// SkipInputStream tries to skip @count bytes from the stream. Will block
+	// during the operation.
+	//
+	// This is identical to g_input_stream_read(), from a behaviour standpoint,
+	// but the bytes that are skipped are not returned to the user. Some streams
+	// have an implementation that is more efficient than reading the data.
+	//
+	// This function is optional for inherited classes, as the default
+	// implementation emulates it using read.
+	//
+	// If @cancellable is not nil, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned. If an
+	// operation was partially finished when the operation was cancelled the
+	// partial result will be returned, without an error.
 	SkipInputStream(count uint, cancellable Cancellable) (int, error)
-
+	// SkipAsyncInputStream: request an asynchronous skip of @count bytes from
+	// the stream. When the operation is finished @callback will be called. You
+	// can then call g_input_stream_skip_finish() to get the result of the
+	// operation.
+	//
+	// During an async request no other sync and async calls are allowed, and
+	// will result in G_IO_ERROR_PENDING errors.
+	//
+	// A value of @count larger than G_MAXSSIZE will cause a
+	// G_IO_ERROR_INVALID_ARGUMENT error.
+	//
+	// On success, the number of bytes skipped will be passed to the callback.
+	// It is not an error if this is not the same as the requested size, as it
+	// can happen e.g. near the end of a file, but generally we try to skip as
+	// many bytes as requested. Zero is returned on end of file (or if @count is
+	// zero), but never otherwise.
+	//
+	// Any outstanding i/o request with higher priority (lower numerical value)
+	// will be executed before an outstanding request with lower priority.
+	// Default priority is G_PRIORITY_DEFAULT.
+	//
+	// The asynchronous methods have a default fallback that uses threads to
+	// implement asynchronicity, so they are optional for inheriting classes.
+	// However, if you override one, you must override all.
 	SkipAsyncInputStream(count uint, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
-
+	// SkipFinishInputStream finishes a stream skip operation.
 	SkipFinishInputStream(result AsyncResult) (int, error)
 }
 
@@ -107,7 +207,7 @@ func (s inputStream) ClearPendingInputStream() {
 func (s inputStream) CloseInputStream(cancellable Cancellable) error {
 	var _arg0 *C.GInputStream // out
 	var _arg1 *C.GCancellable // out
-	var _cerr *C.GError       // in
+	var _cerr **C.GError      // in
 
 	_arg0 = (*C.GInputStream)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
@@ -116,7 +216,16 @@ func (s inputStream) CloseInputStream(cancellable Cancellable) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _goerr
 }
@@ -140,7 +249,7 @@ func (s inputStream) CloseAsyncInputStream(ioPriority int, cancellable Cancellab
 func (s inputStream) CloseFinishInputStream(result AsyncResult) error {
 	var _arg0 *C.GInputStream // out
 	var _arg1 *C.GAsyncResult // out
-	var _cerr *C.GError       // in
+	var _cerr **C.GError      // in
 
 	_arg0 = (*C.GInputStream)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
@@ -149,7 +258,16 @@ func (s inputStream) CloseFinishInputStream(result AsyncResult) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _goerr
 }
@@ -191,8 +309,8 @@ func (s inputStream) IsClosedInputStream() bool {
 func (s inputStream) ReadAllFinishInputStream(result AsyncResult) (uint, error) {
 	var _arg0 *C.GInputStream // out
 	var _arg1 *C.GAsyncResult // out
-	var _arg2 C.gsize         // in
-	var _cerr *C.GError       // in
+	var _arg2 *C.gsize        // in
+	var _cerr **C.GError      // in
 
 	_arg0 = (*C.GInputStream)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
@@ -203,7 +321,16 @@ func (s inputStream) ReadAllFinishInputStream(result AsyncResult) (uint, error) 
 	var _goerr error    // out
 
 	_bytesRead = uint(_arg2)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _bytesRead, _goerr
 }
@@ -230,7 +357,7 @@ func (s inputStream) ReadFinishInputStream(result AsyncResult) (int, error) {
 	var _arg0 *C.GInputStream // out
 	var _arg1 *C.GAsyncResult // out
 	var _cret C.gssize        // in
-	var _cerr *C.GError       // in
+	var _cerr **C.GError      // in
 
 	_arg0 = (*C.GInputStream)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
@@ -241,14 +368,23 @@ func (s inputStream) ReadFinishInputStream(result AsyncResult) (int, error) {
 	var _goerr error // out
 
 	_gssize = int(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _gssize, _goerr
 }
 
 func (s inputStream) SetPendingInputStream() error {
 	var _arg0 *C.GInputStream // out
-	var _cerr *C.GError       // in
+	var _cerr **C.GError      // in
 
 	_arg0 = (*C.GInputStream)(unsafe.Pointer(s.Native()))
 
@@ -256,7 +392,16 @@ func (s inputStream) SetPendingInputStream() error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _goerr
 }
@@ -266,7 +411,7 @@ func (s inputStream) SkipInputStream(count uint, cancellable Cancellable) (int, 
 	var _arg1 C.gsize         // out
 	var _arg2 *C.GCancellable // out
 	var _cret C.gssize        // in
-	var _cerr *C.GError       // in
+	var _cerr **C.GError      // in
 
 	_arg0 = (*C.GInputStream)(unsafe.Pointer(s.Native()))
 	_arg1 = C.gsize(count)
@@ -278,7 +423,16 @@ func (s inputStream) SkipInputStream(count uint, cancellable Cancellable) (int, 
 	var _goerr error // out
 
 	_gssize = int(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _gssize, _goerr
 }
@@ -305,7 +459,7 @@ func (s inputStream) SkipFinishInputStream(result AsyncResult) (int, error) {
 	var _arg0 *C.GInputStream // out
 	var _arg1 *C.GAsyncResult // out
 	var _cret C.gssize        // in
-	var _cerr *C.GError       // in
+	var _cerr **C.GError      // in
 
 	_arg0 = (*C.GInputStream)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
@@ -316,7 +470,16 @@ func (s inputStream) SkipFinishInputStream(result AsyncResult) (int, error) {
 	var _goerr error // out
 
 	_gssize = int(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _gssize, _goerr
 }

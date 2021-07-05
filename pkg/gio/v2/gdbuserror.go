@@ -23,7 +23,9 @@ import (
 import "C"
 
 // DBusErrorEntry: struct used in g_dbus_error_register_error_domain().
-type DBusErrorEntry C.GDBusErrorEntry
+type DBusErrorEntry struct {
+	native C.GDBusErrorEntry
+}
 
 // WrapDBusErrorEntry wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -33,5 +35,5 @@ func WrapDBusErrorEntry(ptr unsafe.Pointer) *DBusErrorEntry {
 
 // Native returns the underlying C source pointer.
 func (d *DBusErrorEntry) Native() unsafe.Pointer {
-	return unsafe.Pointer(d)
+	return unsafe.Pointer(&d.native)
 }

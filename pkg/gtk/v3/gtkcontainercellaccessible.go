@@ -28,6 +28,9 @@ func init() {
 type ContainerCellAccessible interface {
 	CellAccessible
 
+	// AsAction casts the class to the atk.Action interface.
+	AsAction() atk.Action
+
 	AddChildContainerCellAccessible(child CellAccessible)
 
 	RemoveChildContainerCellAccessible(child CellAccessible)
@@ -59,7 +62,7 @@ func NewContainerCellAccessible() ContainerCellAccessible {
 
 	var _containerCellAccessible ContainerCellAccessible // out
 
-	_containerCellAccessible = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(ContainerCellAccessible)
+	_containerCellAccessible = WrapContainerCellAccessible(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _containerCellAccessible
 }
@@ -84,30 +87,6 @@ func (c containerCellAccessible) RemoveChildContainerCellAccessible(child CellAc
 	C.gtk_container_cell_accessible_remove_child(_arg0, _arg1)
 }
 
-func (a containerCellAccessible) DoAction(i int) bool {
-	return atk.WrapAction(gextras.InternObject(a)).DoAction(i)
-}
-
-func (a containerCellAccessible) Description(i int) string {
-	return atk.WrapAction(gextras.InternObject(a)).Description(i)
-}
-
-func (a containerCellAccessible) Keybinding(i int) string {
-	return atk.WrapAction(gextras.InternObject(a)).Keybinding(i)
-}
-
-func (a containerCellAccessible) LocalizedName(i int) string {
-	return atk.WrapAction(gextras.InternObject(a)).LocalizedName(i)
-}
-
-func (a containerCellAccessible) NActions() int {
-	return atk.WrapAction(gextras.InternObject(a)).NActions()
-}
-
-func (a containerCellAccessible) Name(i int) string {
-	return atk.WrapAction(gextras.InternObject(a)).Name(i)
-}
-
-func (a containerCellAccessible) SetDescription(i int, desc string) bool {
-	return atk.WrapAction(gextras.InternObject(a)).SetDescription(i, desc)
+func (c containerCellAccessible) AsAction() atk.Action {
+	return atk.WrapAction(gextras.InternObject(c))
 }

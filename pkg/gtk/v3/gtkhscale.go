@@ -5,9 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -35,6 +33,11 @@ func init() {
 // GtkHScale has been deprecated, use Scale instead.
 type HScale interface {
 	Scale
+
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsOrientable casts the class to the Orientable interface.
+	AsOrientable() Orientable
 }
 
 // hScale implements the HScale class.
@@ -56,6 +59,9 @@ func marshalHScale(p uintptr) (interface{}, error) {
 	return WrapHScale(obj), nil
 }
 
+// NewHScale creates a new HScale.
+//
+// Deprecated: since version 3.2.
 func NewHScale(adjustment Adjustment) HScale {
 	var _arg1 *C.GtkAdjustment // out
 	var _cret *C.GtkWidget     // in
@@ -66,11 +72,21 @@ func NewHScale(adjustment Adjustment) HScale {
 
 	var _hScale HScale // out
 
-	_hScale = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(HScale)
+	_hScale = WrapHScale(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _hScale
 }
 
+// NewHScaleWithRange creates a new horizontal scale widget that lets the user
+// input a number between @min and @max (including @min and @max) with the
+// increment @step. @step must be nonzero; it’s the distance the slider moves
+// when using the arrow keys to adjust the scale value.
+//
+// Note that the way in which the precision is derived works best if @step is a
+// power of ten. If the resulting precision is not suitable for your needs, use
+// gtk_scale_set_digits() to correct it.
+//
+// Deprecated: since version 3.2.
 func NewHScaleWithRange(min float64, max float64, step float64) HScale {
 	var _arg1 C.gdouble    // out
 	var _arg2 C.gdouble    // out
@@ -85,55 +101,15 @@ func NewHScaleWithRange(min float64, max float64, step float64) HScale {
 
 	var _hScale HScale // out
 
-	_hScale = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(HScale)
+	_hScale = WrapHScale(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _hScale
 }
 
-func (b hScale) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+func (h hScale) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(h))
 }
 
-func (b hScale) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b hScale) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b hScale) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b hScale) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b hScale) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b hScale) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b hScale) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b hScale) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b hScale) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (o hScale) Orientation() Orientation {
-	return WrapOrientable(gextras.InternObject(o)).Orientation()
-}
-
-func (o hScale) SetOrientation(orientation Orientation) {
-	WrapOrientable(gextras.InternObject(o)).SetOrientation(orientation)
+func (h hScale) AsOrientable() Orientable {
+	return WrapOrientable(gextras.InternObject(h))
 }

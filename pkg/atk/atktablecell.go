@@ -30,14 +30,19 @@ func init() {
 type TableCell interface {
 	Object
 
-	// ColumnSpan returns a reference to the accessible of the containing table.
+	// ColumnSpan returns the number of columns occupied by this cell
+	// accessible.
 	ColumnSpan() int
-	// Position returns a reference to the accessible of the containing table.
+	// Position retrieves the tabular position of this cell.
 	Position() (row int, column int, ok bool)
-	// RowColumnSpan returns a reference to the accessible of the containing
-	// table.
+	// RowColumnSpan gets the row and column indexes and span of this cell
+	// accessible.
+	//
+	// Note: If the object does not implement this function, then, by default,
+	// atk will implement this function by calling get_row_span and
+	// get_column_span on the object.
 	RowColumnSpan() (row int, column int, rowSpan int, columnSpan int, ok bool)
-	// RowSpan returns a reference to the accessible of the containing table.
+	// RowSpan returns the number of rows occupied by this cell accessible.
 	RowSpan() int
 	// Table returns a reference to the accessible of the containing table.
 	Table() Object
@@ -81,8 +86,8 @@ func (c tableCell) ColumnSpan() int {
 
 func (c tableCell) Position() (row int, column int, ok bool) {
 	var _arg0 *C.AtkTableCell // out
-	var _arg1 C.gint          // in
-	var _arg2 C.gint          // in
+	var _arg1 *C.gint         // in
+	var _arg2 *C.gint         // in
 	var _cret C.gboolean      // in
 
 	_arg0 = (*C.AtkTableCell)(unsafe.Pointer(c.Native()))
@@ -104,10 +109,10 @@ func (c tableCell) Position() (row int, column int, ok bool) {
 
 func (c tableCell) RowColumnSpan() (row int, column int, rowSpan int, columnSpan int, ok bool) {
 	var _arg0 *C.AtkTableCell // out
-	var _arg1 C.gint          // in
-	var _arg2 C.gint          // in
-	var _arg3 C.gint          // in
-	var _arg4 C.gint          // in
+	var _arg1 *C.gint         // in
+	var _arg2 *C.gint         // in
+	var _arg3 *C.gint         // in
+	var _arg4 *C.gint         // in
 	var _cret C.gboolean      // in
 
 	_arg0 = (*C.AtkTableCell)(unsafe.Pointer(c.Native()))

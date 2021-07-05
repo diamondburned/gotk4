@@ -39,20 +39,42 @@ func init() {
 type Video interface {
 	Widget
 
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
+
+	// Autoplay returns true if videos have been set to loop.
 	Autoplay() bool
-
+	// Loop returns true if videos have been set to loop.
 	Loop() bool
-
+	// MediaStream gets the media stream managed by @self or nil if none.
 	MediaStream() MediaStream
-
+	// SetAutoplayVideo sets whether @self automatically starts playback when it
+	// becomes visible or when a new file gets loaded.
 	SetAutoplayVideo(autoplay bool)
-
+	// SetFilenameVideo makes @self play the given @filename.
+	//
+	// This is a utility function that calls gtk_video_set_file(),
 	SetFilenameVideo(filename string)
-
+	// SetLoopVideo sets whether new files loaded by @self should be set to
+	// loop.
 	SetLoopVideo(loop bool)
-
+	// SetMediaStreamVideo sets the media stream to be played back.
+	//
+	// @self will take full control of managing the media stream. If you want to
+	// manage a media stream yourself, consider using a [class@Gtk.Picture] for
+	// display.
+	//
+	// If you want to display a file, consider using [method@Gtk.Video.set_file]
+	// instead.
 	SetMediaStreamVideo(stream MediaStream)
-
+	// SetResourceVideo makes @self play the resource at the given
+	// @resource_path.
+	//
+	// This is a utility function that calls [method@Gtk.Video.set_file].
 	SetResourceVideo(resourcePath string)
 }
 
@@ -75,6 +97,7 @@ func marshalVideo(p uintptr) (interface{}, error) {
 	return WrapVideo(obj), nil
 }
 
+// NewVideo creates a new empty `GtkVideo`.
 func NewVideo() Video {
 	var _cret *C.GtkWidget // in
 
@@ -82,11 +105,15 @@ func NewVideo() Video {
 
 	var _video Video // out
 
-	_video = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Video)
+	_video = WrapVideo(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _video
 }
 
+// NewVideoForFilename creates a `GtkVideo` to play back the given @filename.
+//
+// This is a utility function that calls [ctor@Gtk.Video.new_for_file], See that
+// function for details.
 func NewVideoForFilename(filename string) Video {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in
@@ -98,11 +125,12 @@ func NewVideoForFilename(filename string) Video {
 
 	var _video Video // out
 
-	_video = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Video)
+	_video = WrapVideo(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _video
 }
 
+// NewVideoForMediaStream creates a `GtkVideo` to play back the given @stream.
 func NewVideoForMediaStream(stream MediaStream) Video {
 	var _arg1 *C.GtkMediaStream // out
 	var _cret *C.GtkWidget      // in
@@ -113,11 +141,15 @@ func NewVideoForMediaStream(stream MediaStream) Video {
 
 	var _video Video // out
 
-	_video = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Video)
+	_video = WrapVideo(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _video
 }
 
+// NewVideoForResource creates a `GtkVideo` to play back the resource at the
+// given @resource_path.
+//
+// This is a utility function that calls [ctor@Gtk.Video.new_for_file].
 func NewVideoForResource(resourcePath string) Video {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in
@@ -129,7 +161,7 @@ func NewVideoForResource(resourcePath string) Video {
 
 	var _video Video // out
 
-	_video = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Video)
+	_video = WrapVideo(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _video
 }
@@ -239,34 +271,14 @@ func (s video) SetResourceVideo(resourcePath string) {
 	C.gtk_video_set_resource(_arg0, _arg1)
 }
 
-func (s video) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
+func (v video) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(v))
 }
 
-func (s video) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
+func (v video) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(v))
 }
 
-func (s video) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
-}
-
-func (s video) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s video) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s video) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s video) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b video) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
+func (v video) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(v))
 }

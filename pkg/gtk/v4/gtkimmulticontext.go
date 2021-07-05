@@ -30,8 +30,12 @@ func init() {
 type IMMulticontext interface {
 	IMContext
 
+	// ContextID gets the id of the currently active delegate of the @context.
 	ContextID() string
-
+	// SetContextIDIMMulticontext sets the context id for @context.
+	//
+	// This causes the currently active delegate of @context to be replaced by
+	// the delegate corresponding to the new context id.
 	SetContextIDIMMulticontext(contextId string)
 }
 
@@ -54,6 +58,7 @@ func marshalIMMulticontext(p uintptr) (interface{}, error) {
 	return WrapIMMulticontext(obj), nil
 }
 
+// NewIMMulticontext creates a new `GtkIMMulticontext`.
 func NewIMMulticontext() IMMulticontext {
 	var _cret *C.GtkIMContext // in
 
@@ -61,7 +66,7 @@ func NewIMMulticontext() IMMulticontext {
 
 	var _imMulticontext IMMulticontext // out
 
-	_imMulticontext = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(IMMulticontext)
+	_imMulticontext = WrapIMMulticontext(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _imMulticontext
 }

@@ -51,6 +51,7 @@ func marshalBinLayout(p uintptr) (interface{}, error) {
 	return WrapBinLayout(obj), nil
 }
 
+// NewBinLayout creates a new `GtkBinLayout` instance.
 func NewBinLayout() BinLayout {
 	var _cret *C.GtkLayoutManager // in
 
@@ -58,7 +59,7 @@ func NewBinLayout() BinLayout {
 
 	var _binLayout BinLayout // out
 
-	_binLayout = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(BinLayout)
+	_binLayout = WrapBinLayout(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _binLayout
 }

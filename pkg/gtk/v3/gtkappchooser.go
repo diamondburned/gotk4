@@ -42,7 +42,8 @@ func init() {
 type AppChooser interface {
 	Widget
 
-	// ContentType reloads the list of applications.
+	// ContentType returns the current value of the AppChooser:content-type
+	// property.
 	ContentType() string
 	// Refresh reloads the list of applications.
 	Refresh()

@@ -6,8 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/gdk/v4"
-	"github.com/diamondburned/gotk4/pkg/gsk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -47,6 +45,17 @@ func init() {
 // .emoji-section style class and gets the .emoji-toolbar style class itself.
 type EmojiChooser interface {
 	Popover
+
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
+	// AsNative casts the class to the Native interface.
+	AsNative() Native
+	// AsShortcutManager casts the class to the ShortcutManager interface.
+	AsShortcutManager() ShortcutManager
 }
 
 // emojiChooser implements the EmojiChooser class.
@@ -68,6 +77,7 @@ func marshalEmojiChooser(p uintptr) (interface{}, error) {
 	return WrapEmojiChooser(obj), nil
 }
 
+// NewEmojiChooser creates a new `GtkEmojiChooser`.
 func NewEmojiChooser() EmojiChooser {
 	var _cret *C.GtkWidget // in
 
@@ -75,59 +85,27 @@ func NewEmojiChooser() EmojiChooser {
 
 	var _emojiChooser EmojiChooser // out
 
-	_emojiChooser = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(EmojiChooser)
+	_emojiChooser = WrapEmojiChooser(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _emojiChooser
 }
 
-func (s emojiChooser) Renderer() gsk.Renderer {
-	return WrapNative(gextras.InternObject(s)).Renderer()
+func (e emojiChooser) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(e))
 }
 
-func (s emojiChooser) Surface() gdk.Surface {
-	return WrapNative(gextras.InternObject(s)).Surface()
+func (e emojiChooser) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(e))
 }
 
-func (s emojiChooser) SurfaceTransform() (x float64, y float64) {
-	return WrapNative(gextras.InternObject(s)).SurfaceTransform()
+func (e emojiChooser) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(e))
 }
 
-func (s emojiChooser) Realize() {
-	WrapNative(gextras.InternObject(s)).Realize()
+func (e emojiChooser) AsNative() Native {
+	return WrapNative(gextras.InternObject(e))
 }
 
-func (s emojiChooser) Unrealize() {
-	WrapNative(gextras.InternObject(s)).Unrealize()
-}
-
-func (s emojiChooser) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
-}
-
-func (s emojiChooser) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
-}
-
-func (s emojiChooser) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
-}
-
-func (s emojiChooser) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s emojiChooser) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s emojiChooser) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s emojiChooser) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b emojiChooser) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
+func (e emojiChooser) AsShortcutManager() ShortcutManager {
+	return WrapShortcutManager(gextras.InternObject(e))
 }

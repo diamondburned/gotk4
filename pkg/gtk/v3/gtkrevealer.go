@@ -5,9 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -67,18 +65,36 @@ func marshalRevealerTransitionType(p uintptr) (interface{}, error) {
 type Revealer interface {
 	Bin
 
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+
+	// ChildRevealed returns whether the child is fully revealed, in other words
+	// whether the transition to the revealed state is completed.
 	ChildRevealed() bool
-
+	// RevealChild returns whether the child is currently revealed. See
+	// gtk_revealer_set_reveal_child().
+	//
+	// This function returns true as soon as the transition is to the revealed
+	// state is started. To learn whether the child is fully revealed (ie the
+	// transition is completed), use gtk_revealer_get_child_revealed().
 	RevealChild() bool
-
+	// TransitionDuration returns the amount of time (in milliseconds) that
+	// transitions will take.
 	TransitionDuration() uint
-
+	// TransitionType gets the type of animation that will be used for
+	// transitions in @revealer.
 	TransitionType() RevealerTransitionType
-
+	// SetRevealChildRevealer tells the Revealer to reveal or conceal its child.
+	//
+	// The transition will be animated with the current transition type of
+	// @revealer.
 	SetRevealChildRevealer(revealChild bool)
-
+	// SetTransitionDurationRevealer sets the duration that transitions will
+	// take.
 	SetTransitionDurationRevealer(duration uint)
-
+	// SetTransitionTypeRevealer sets the type of animation that will be used
+	// for transitions in @revealer. Available types include various kinds of
+	// fades and slides.
 	SetTransitionTypeRevealer(transition RevealerTransitionType)
 }
 
@@ -101,6 +117,7 @@ func marshalRevealer(p uintptr) (interface{}, error) {
 	return WrapRevealer(obj), nil
 }
 
+// NewRevealer creates a new Revealer.
 func NewRevealer() Revealer {
 	var _cret *C.GtkWidget // in
 
@@ -108,7 +125,7 @@ func NewRevealer() Revealer {
 
 	var _revealer Revealer // out
 
-	_revealer = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Revealer)
+	_revealer = WrapRevealer(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _revealer
 }
@@ -209,42 +226,6 @@ func (r revealer) SetTransitionTypeRevealer(transition RevealerTransitionType) {
 	C.gtk_revealer_set_transition_type(_arg0, _arg1)
 }
 
-func (b revealer) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
-}
-
-func (b revealer) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b revealer) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b revealer) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b revealer) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b revealer) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b revealer) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b revealer) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b revealer) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b revealer) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
+func (r revealer) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(r))
 }

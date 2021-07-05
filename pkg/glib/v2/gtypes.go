@@ -18,7 +18,7 @@ import "C"
 // two values. The function should return a negative integer if the first value
 // comes before the second, 0 if they are equal, or a positive integer if the
 // first value comes after the second.
-type CompareDataFunc func(a interface{}, b interface{}, gint int)
+type CompareDataFunc func(a interface{}, b interface{}) (gint int)
 
 //export gotk4_CompareDataFunc
 func gotk4_CompareDataFunc(arg0 C.gconstpointer, arg1 C.gconstpointer, arg2 C.gpointer) C.gint {
@@ -93,7 +93,9 @@ func gotk4_HFunc(arg0 C.gpointer, arg1 C.gpointer, arg2 C.gpointer) {
 // 32-bit systems `GTimeVal` is subject to the year 2038 problem.
 //
 // Deprecated: since version 2.62.
-type TimeVal C.GTimeVal
+type TimeVal struct {
+	native C.GTimeVal
+}
 
 // WrapTimeVal wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -103,47 +105,18 @@ func WrapTimeVal(ptr unsafe.Pointer) *TimeVal {
 
 // Native returns the underlying C source pointer.
 func (t *TimeVal) Native() unsafe.Pointer {
-	return unsafe.Pointer(t)
+	return unsafe.Pointer(&t.native)
 }
 
-// Add converts @time_ into an RFC 3339 encoded string, relative to the
-// Coordinated Universal Time (UTC). This is one of the many formats allowed by
-// ISO 8601.
-//
-// ISO 8601 allows a large number of date/time formats, with or without
-// punctuation and optional elements. The format returned by this function is a
-// complete date and time, with optional punctuation included, the UTC time zone
-// represented as "Z", and the @tv_usec part included if and only if it is
-// nonzero, i.e. either "YYYY-MM-DDTHH:MM:SSZ" or "YYYY-MM-DDTHH:MM:SS.fffffZ".
-//
-// This corresponds to the Internet date/time format defined by RFC 3339
-// (https://www.ietf.org/rfc/rfc3339.txt), and to either of the two most-precise
-// formats defined by the W3C Note Date and Time Formats
-// (http://www.w3.org/TR/NOTE-datetime-19980827). Both of these documents are
-// profiles of ISO 8601.
-//
-// Use g_date_time_format() or g_strdup_printf() if a different variation of ISO
-// 8601 format is required.
-//
-// If @time_ represents a date which is too large to fit into a `struct tm`, nil
-// will be returned. This is platform dependent. Note also that since `GTimeVal`
-// stores the number of seconds as a `glong`, on 32-bit systems it is subject to
-// the year 2038 problem. Accordingly, since GLib 2.62, this function has been
-// deprecated. Equivalent functionality is available using:
-//
-//    GDateTime *dt = g_date_time_new_from_unix_utc (time_val);
-//    iso8601_string = g_date_time_format_iso8601 (dt);
-//    g_date_time_unref (dt);
-//
-// The return value of g_time_val_to_iso8601() has been nullable since GLib
-// 2.54; before then, GLib would crash under the same conditions.
+// Add adds the given number of microseconds to @time_. @microseconds can also
+// be negative to decrease the value of @time_.
 //
 // Deprecated: since version 2.62.
 func (t *TimeVal) Add(microseconds int32) {
 	var _arg0 *C.GTimeVal // out
 	var _arg1 C.glong     // out
 
-	_arg0 = (*C.GTimeVal)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GTimeVal)(unsafe.Pointer(t))
 	_arg1 = C.glong(microseconds)
 
 	C.g_time_val_add(_arg0, _arg1)
@@ -186,7 +159,7 @@ func (t *TimeVal) ToISO8601() string {
 	var _arg0 *C.GTimeVal // out
 	var _cret *C.gchar    // in
 
-	_arg0 = (*C.GTimeVal)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GTimeVal)(unsafe.Pointer(t))
 
 	_cret = C.g_time_val_to_iso8601(_arg0)
 

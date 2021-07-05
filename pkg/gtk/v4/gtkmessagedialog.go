@@ -6,8 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/gdk/v4"
-	"github.com/diamondburned/gotk4/pkg/gsk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -38,11 +36,11 @@ type ButtonsType int
 const (
 	// none: no buttons at all
 	ButtonsTypeNone ButtonsType = 0
-	// ok: an OK button
+	// ok: OK button
 	ButtonsTypeOk ButtonsType = 1
-	// close: a Close button
+	// close: close button
 	ButtonsTypeClose ButtonsType = 2
-	// cancel: a Cancel button
+	// cancel: cancel button
 	ButtonsTypeCancel ButtonsType = 3
 	// YesNo yes and No buttons
 	ButtonsTypeYesNo ButtonsType = 4
@@ -96,8 +94,27 @@ func marshalButtonsType(p uintptr) (interface{}, error) {
 type MessageDialog interface {
 	Dialog
 
-	MessageArea() Widget
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
+	// AsNative casts the class to the Native interface.
+	AsNative() Native
+	// AsRoot casts the class to the Root interface.
+	AsRoot() Root
+	// AsShortcutManager casts the class to the ShortcutManager interface.
+	AsShortcutManager() ShortcutManager
 
+	// MessageArea returns the message area of the dialog.
+	//
+	// This is the box where the dialog’s primary and secondary labels are
+	// packed. You can add your own extra content to that box and it will appear
+	// below those labels. See [method@Gtk.Dialog.get_content_area] for the
+	// corresponding function in the parent [class@Gtk.Dialog].
+	MessageArea() Widget
+	// SetMarkupMessageDialog sets the text of the message dialog.
 	SetMarkupMessageDialog(str string)
 }
 
@@ -146,66 +163,26 @@ func (m messageDialog) SetMarkupMessageDialog(str string) {
 	C.gtk_message_dialog_set_markup(_arg0, _arg1)
 }
 
-func (s messageDialog) Display() gdk.Display {
-	return WrapRoot(gextras.InternObject(s)).Display()
+func (m messageDialog) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(m))
 }
 
-func (s messageDialog) Focus() Widget {
-	return WrapRoot(gextras.InternObject(s)).Focus()
+func (m messageDialog) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(m))
 }
 
-func (s messageDialog) SetFocus(focus Widget) {
-	WrapRoot(gextras.InternObject(s)).SetFocus(focus)
+func (m messageDialog) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(m))
 }
 
-func (s messageDialog) Renderer() gsk.Renderer {
-	return WrapNative(gextras.InternObject(s)).Renderer()
+func (m messageDialog) AsNative() Native {
+	return WrapNative(gextras.InternObject(m))
 }
 
-func (s messageDialog) Surface() gdk.Surface {
-	return WrapNative(gextras.InternObject(s)).Surface()
+func (m messageDialog) AsRoot() Root {
+	return WrapRoot(gextras.InternObject(m))
 }
 
-func (s messageDialog) SurfaceTransform() (x float64, y float64) {
-	return WrapNative(gextras.InternObject(s)).SurfaceTransform()
-}
-
-func (s messageDialog) Realize() {
-	WrapNative(gextras.InternObject(s)).Realize()
-}
-
-func (s messageDialog) Unrealize() {
-	WrapNative(gextras.InternObject(s)).Unrealize()
-}
-
-func (s messageDialog) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
-}
-
-func (s messageDialog) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
-}
-
-func (s messageDialog) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
-}
-
-func (s messageDialog) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s messageDialog) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s messageDialog) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s messageDialog) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b messageDialog) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
+func (m messageDialog) AsShortcutManager() ShortcutManager {
+	return WrapShortcutManager(gextras.InternObject(m))
 }

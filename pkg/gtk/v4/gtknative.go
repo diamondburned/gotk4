@@ -42,19 +42,16 @@ func init() {
 type Native interface {
 	Widget
 
-	// Renderer unrealizes a `GtkNative`.
-	//
-	// This should only be used by subclasses.
+	// Renderer returns the renderer that is used for this `GtkNative`.
 	Renderer() gsk.Renderer
-	// Surface unrealizes a `GtkNative`.
-	//
-	// This should only be used by subclasses.
+	// Surface returns the surface of this `GtkNative`.
 	Surface() gdk.Surface
-	// SurfaceTransform unrealizes a `GtkNative`.
+	// SurfaceTransform retrieves the surface transform of @self.
 	//
-	// This should only be used by subclasses.
+	// This is the translation from @self's surface coordinates into @self's
+	// widget coordinates.
 	SurfaceTransform() (x float64, y float64)
-	// Realize unrealizes a `GtkNative`.
+	// Realize realizes a `GtkNative`.
 	//
 	// This should only be used by subclasses.
 	Realize()
@@ -117,8 +114,8 @@ func (s native) Surface() gdk.Surface {
 
 func (s native) SurfaceTransform() (x float64, y float64) {
 	var _arg0 *C.GtkNative // out
-	var _arg1 C.double     // in
-	var _arg2 C.double     // in
+	var _arg1 *C.double    // in
+	var _arg2 *C.double    // in
 
 	_arg0 = (*C.GtkNative)(unsafe.Pointer(s.Native()))
 

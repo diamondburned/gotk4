@@ -46,12 +46,19 @@ func init() {
 type FileMonitor interface {
 	gextras.Objector
 
+	// CancelFileMonitor cancels a file monitor.
 	CancelFileMonitor() bool
-
+	// EmitEventFileMonitor emits the Monitor::changed signal if a change has
+	// taken place. Should be called from file monitor implementations only.
+	//
+	// Implementations are responsible to call this method from the
+	// [thread-default main context][g-main-context-push-thread-default] of the
+	// thread that the monitor was created in.
 	EmitEventFileMonitor(child File, otherFile File, eventType FileMonitorEvent)
-
+	// IsCancelledFileMonitor returns whether the monitor is canceled.
 	IsCancelledFileMonitor() bool
-
+	// SetRateLimitFileMonitor sets the rate limit to which the @monitor will
+	// report consecutive change events to the same file.
 	SetRateLimitFileMonitor(limitMsecs int)
 }
 

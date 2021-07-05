@@ -42,5 +42,9 @@ func OverrideNamespace(gen FileGenerator, nsp *gir.NamespaceFindResult) FileGene
 
 // Find finds the given GIR type from the given generator.
 func Find(gen FileGenerator, girType string) *gir.TypeFindResult {
+	if girType == "\x00" {
+		return nil
+	}
+
 	return gen.Repositories().FindType(gen.Namespace(), girType)
 }

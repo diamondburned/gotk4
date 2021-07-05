@@ -75,14 +75,15 @@ func gotk4_SeatGrabPrepareFunc(arg0 *C.GdkSeat, arg1 *C.GdkWindow, arg2 C.gpoint
 type Seat interface {
 	gextras.Objector
 
+	// Capabilities returns the capabilities this Seat currently has.
 	Capabilities() SeatCapabilities
-
+	// Display returns the Display this seat belongs to.
 	Display() Display
-
+	// Keyboard returns the master device that routes keyboard events.
 	Keyboard() Device
-
+	// Pointer returns the master device that routes pointer events.
 	Pointer() Device
-
+	// UngrabSeat releases a grab added through gdk_seat_grab().
 	UngrabSeat()
 }
 

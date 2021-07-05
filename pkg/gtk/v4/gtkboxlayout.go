@@ -38,18 +38,29 @@ func init() {
 // use the [property@Gtk.BoxLayout:spacing] property.
 type BoxLayout interface {
 	LayoutManager
-	Orientable
 
+	// AsOrientable casts the class to the Orientable interface.
+	AsOrientable() Orientable
+
+	// BaselinePosition gets the value set by
+	// gtk_box_layout_set_baseline_position().
 	BaselinePosition() BaselinePosition
-
+	// Homogeneous returns whether the layout is set to be homogeneous.
 	Homogeneous() bool
-
+	// Spacing returns the space that @box_layout puts between children.
 	Spacing() uint
-
+	// SetBaselinePositionBoxLayout sets the baseline position of a box layout.
+	//
+	// The baseline position affects only horizontal boxes with at least one
+	// baseline aligned child. If there is more vertical space available than
+	// requested, and the baseline is not allocated by the parent then the given
+	// @position is used to allocate the baseline within the extra space
+	// available.
 	SetBaselinePositionBoxLayout(position BaselinePosition)
-
+	// SetHomogeneousBoxLayout sets whether the box layout will allocate the
+	// same size to all children.
 	SetHomogeneousBoxLayout(homogeneous bool)
-
+	// SetSpacingBoxLayout sets how much spacing to put between children.
 	SetSpacingBoxLayout(spacing uint)
 }
 
@@ -72,6 +83,7 @@ func marshalBoxLayout(p uintptr) (interface{}, error) {
 	return WrapBoxLayout(obj), nil
 }
 
+// NewBoxLayout creates a new `GtkBoxLayout`.
 func NewBoxLayout(orientation Orientation) BoxLayout {
 	var _arg1 C.GtkOrientation    // out
 	var _cret *C.GtkLayoutManager // in
@@ -82,7 +94,7 @@ func NewBoxLayout(orientation Orientation) BoxLayout {
 
 	var _boxLayout BoxLayout // out
 
-	_boxLayout = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(BoxLayout)
+	_boxLayout = WrapBoxLayout(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _boxLayout
 }
@@ -166,10 +178,6 @@ func (b boxLayout) SetSpacingBoxLayout(spacing uint) {
 	C.gtk_box_layout_set_spacing(_arg0, _arg1)
 }
 
-func (o boxLayout) Orientation() Orientation {
-	return WrapOrientable(gextras.InternObject(o)).Orientation()
-}
-
-func (o boxLayout) SetOrientation(orientation Orientation) {
-	WrapOrientable(gextras.InternObject(o)).SetOrientation(orientation)
+func (b boxLayout) AsOrientable() Orientable {
+	return WrapOrientable(gextras.InternObject(b))
 }

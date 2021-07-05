@@ -3,6 +3,7 @@
 package gdk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -21,9 +22,11 @@ func init() {
 	})
 }
 
-// RGBA: a RGBA is used to represent a (possibly translucent) color, in a way
-// that is compatible with cairo’s notion of color.
-type RGBA C.GdkRGBA
+// RGBA is used to represent a (possibly translucent) color, in a way that is
+// compatible with cairo’s notion of color.
+type RGBA struct {
+	native C.GdkRGBA
+}
 
 // WrapRGBA wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -38,58 +41,38 @@ func marshalRGBA(p uintptr) (interface{}, error) {
 
 // Native returns the underlying C source pointer.
 func (r *RGBA) Native() unsafe.Pointer {
-	return unsafe.Pointer(r)
+	return unsafe.Pointer(&r.native)
 }
 
-// Copy returns a textual specification of @rgba in the form `rgb(r,g,b)` or
-// `rgba(r g,b,a)`, where “r”, “g”, “b” and “a” represent the red, green, blue
-// and alpha values respectively. “r”, “g”, and “b” are represented as integers
-// in the range 0 to 255, and “a” is represented as a floating point value in
-// the range 0 to 1.
+// Copy makes a copy of a RGBA.
 //
-// These string forms are string forms that are supported by the CSS3 colors
-// module, and can be parsed by gdk_rgba_parse().
-//
-// Note that this string representation may lose some precision, since “r”, “g”
-// and “b” are represented as 8-bit integers. If this is a concern, you should
-// use a different representation.
-func (r *RGBA) Copy() *RGBA {
+// The result must be freed through gdk_rgba_free().
+func (r *RGBA) Copy() RGBA {
 	var _arg0 *C.GdkRGBA // out
 	var _cret *C.GdkRGBA // in
 
-	_arg0 = (*C.GdkRGBA)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.GdkRGBA)(unsafe.Pointer(r))
 
 	_cret = C.gdk_rgba_copy(_arg0)
 
-	var _rgbA *RGBA // out
+	var _rgbA RGBA // out
 
-	_rgbA = (*RGBA)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(&_rgbA, func(v **RGBA) {
-		C.free(unsafe.Pointer(v))
+	_rgbA = (RGBA)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_rgbA, func(v RGBA) {
+		C.gdk_rgba_free((*C.GdkRGBA)(unsafe.Pointer(v)))
 	})
 
 	return _rgbA
 }
 
-// Equal returns a textual specification of @rgba in the form `rgb(r,g,b)` or
-// `rgba(r g,b,a)`, where “r”, “g”, “b” and “a” represent the red, green, blue
-// and alpha values respectively. “r”, “g”, and “b” are represented as integers
-// in the range 0 to 255, and “a” is represented as a floating point value in
-// the range 0 to 1.
-//
-// These string forms are string forms that are supported by the CSS3 colors
-// module, and can be parsed by gdk_rgba_parse().
-//
-// Note that this string representation may lose some precision, since “r”, “g”
-// and “b” are represented as 8-bit integers. If this is a concern, you should
-// use a different representation.
-func (r *RGBA) Equal(p2 RGBA) bool {
+// Equal compares two RGBA colors.
+func (p *RGBA) Equal(p2 RGBA) bool {
 	var _arg0 C.gconstpointer // out
 	var _arg1 C.gconstpointer // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (C.gconstpointer)(unsafe.Pointer(p.Native()))
-	_arg1 = (C.gconstpointer)(unsafe.Pointer(p2.Native()))
+	_arg0 = (C.gconstpointer)(unsafe.Pointer(p))
+	_arg1 = (C.gconstpointer)(unsafe.Pointer(p2))
 
 	_cret = C.gdk_rgba_equal(_arg0, _arg1)
 
@@ -102,43 +85,21 @@ func (r *RGBA) Equal(p2 RGBA) bool {
 	return _ok
 }
 
-// Free returns a textual specification of @rgba in the form `rgb(r,g,b)` or
-// `rgba(r g,b,a)`, where “r”, “g”, “b” and “a” represent the red, green, blue
-// and alpha values respectively. “r”, “g”, and “b” are represented as integers
-// in the range 0 to 255, and “a” is represented as a floating point value in
-// the range 0 to 1.
-//
-// These string forms are string forms that are supported by the CSS3 colors
-// module, and can be parsed by gdk_rgba_parse().
-//
-// Note that this string representation may lose some precision, since “r”, “g”
-// and “b” are represented as 8-bit integers. If this is a concern, you should
-// use a different representation.
+// Free frees a RGBA created with gdk_rgba_copy()
 func (r *RGBA) Free() {
 	var _arg0 *C.GdkRGBA // out
 
-	_arg0 = (*C.GdkRGBA)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.GdkRGBA)(unsafe.Pointer(r))
 
 	C.gdk_rgba_free(_arg0)
 }
 
-// Hash returns a textual specification of @rgba in the form `rgb(r,g,b)` or
-// `rgba(r g,b,a)`, where “r”, “g”, “b” and “a” represent the red, green, blue
-// and alpha values respectively. “r”, “g”, and “b” are represented as integers
-// in the range 0 to 255, and “a” is represented as a floating point value in
-// the range 0 to 1.
-//
-// These string forms are string forms that are supported by the CSS3 colors
-// module, and can be parsed by gdk_rgba_parse().
-//
-// Note that this string representation may lose some precision, since “r”, “g”
-// and “b” are represented as 8-bit integers. If this is a concern, you should
-// use a different representation.
-func (r *RGBA) Hash() uint {
+// Hash: hash function suitable for using for a hash table that stores RGBAs.
+func (p *RGBA) Hash() uint {
 	var _arg0 C.gconstpointer // out
 	var _cret C.guint         // in
 
-	_arg0 = (C.gconstpointer)(unsafe.Pointer(p.Native()))
+	_arg0 = (C.gconstpointer)(unsafe.Pointer(p))
 
 	_cret = C.gdk_rgba_hash(_arg0)
 
@@ -149,24 +110,25 @@ func (r *RGBA) Hash() uint {
 	return _guint
 }
 
-// Parse returns a textual specification of @rgba in the form `rgb(r,g,b)` or
-// `rgba(r g,b,a)`, where “r”, “g”, “b” and “a” represent the red, green, blue
-// and alpha values respectively. “r”, “g”, and “b” are represented as integers
-// in the range 0 to 255, and “a” is represented as a floating point value in
-// the range 0 to 1.
+// Parse parses a textual representation of a color, filling in the @red,
+// @green, @blue and @alpha fields of the @rgba RGBA.
 //
-// These string forms are string forms that are supported by the CSS3 colors
-// module, and can be parsed by gdk_rgba_parse().
+// The string can be either one of: - A standard name (Taken from the X11
+// rgb.txt file). - A hexadecimal value in the form “\#rgb”, “\#rrggbb”,
+// “\#rrrgggbbb” or ”\#rrrrggggbbbb” - A RGB color in the form “rgb(r,g,b)” (In
+// this case the color will have full opacity) - A RGBA color in the form
+// “rgba(r,g,b,a)”
 //
-// Note that this string representation may lose some precision, since “r”, “g”
-// and “b” are represented as 8-bit integers. If this is a concern, you should
-// use a different representation.
+// Where “r”, “g”, “b” and “a” are respectively the red, green, blue and alpha
+// color values. In the last two cases, “r”, “g”, and “b” are either integers in
+// the range 0 to 255 or percentage values in the range 0% to 100%, and a is a
+// floating point value in the range 0 to 1.
 func (r *RGBA) Parse(spec string) bool {
 	var _arg0 *C.GdkRGBA // out
 	var _arg1 *C.gchar   // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GdkRGBA)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.GdkRGBA)(unsafe.Pointer(r))
 	_arg1 = (*C.gchar)(C.CString(spec))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -197,7 +159,7 @@ func (r *RGBA) String() string {
 	var _arg0 *C.GdkRGBA // out
 	var _cret *C.gchar   // in
 
-	_arg0 = (*C.GdkRGBA)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.GdkRGBA)(unsafe.Pointer(r))
 
 	_cret = C.gdk_rgba_to_string(_arg0)
 

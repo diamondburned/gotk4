@@ -40,62 +40,197 @@ func init() {
 type MediaStream interface {
 	gextras.Objector
 
+	// EndedMediaStream pauses the media stream and marks it as ended.
+	//
+	// This is a hint only, calls to GtkMediaStream.play() may still happen.
+	//
+	// The media stream must be prepared when this function is called.
 	EndedMediaStream()
-
+	// GerrorMediaStream sets @self into an error state.
+	//
+	// This will pause the stream (you can check for an error via
+	// [method@Gtk.MediaStream.get_error] in your GtkMediaStream.pause()
+	// implementation), abort pending seeks and mark the stream as prepared.
+	//
+	// if the stream is already in an error state, this call will be ignored and
+	// the existing error will be retained.
+	//
+	// To unset an error, the stream must be reset via a call to
+	// [method@Gtk.MediaStream.unprepared].
 	GerrorMediaStream(err error)
-
+	// Duration gets the duration of the stream.
+	//
+	// If the duration is not known, 0 will be returned.
 	Duration() int64
-
+	// Ended returns whether the streams playback is finished.
 	Ended() bool
-
+	// Error: if the stream is in an error state, returns the `GError`
+	// explaining that state.
+	//
+	// Any type of error can be reported here depending on the implementation of
+	// the media stream.
+	//
+	// A media stream in an error cannot be operated on, calls like
+	// [method@Gtk.MediaStream.play] or [method@Gtk.MediaStream.seek] will not
+	// have any effect.
+	//
+	// `GtkMediaStream` itself does not provide a way to unset an error, but
+	// implementations may provide options. For example, a [class@Gtk.MediaFile]
+	// will unset errors when a new source is set, e.g. with
+	// [method@Gtk.MediaFile.set_file].
 	Error() error
-
+	// Loop returns whether the stream is set to loop.
+	//
+	// See [method@Gtk.MediaStream.set_loop] for details.
 	Loop() bool
-
+	// Muted returns whether the audio for the stream is muted.
+	//
+	// See [method@Gtk.MediaStream.set_muted] for details.
 	Muted() bool
-
+	// Playing: return whether the stream is currently playing.
 	Playing() bool
-
+	// Timestamp returns the current presentation timestamp in microseconds.
 	Timestamp() int64
-
+	// Volume returns the volume of the audio for the stream.
+	//
+	// See [method@Gtk.MediaStream.set_volume] for details.
 	Volume() float64
-
+	// HasAudioMediaStream returns whether the stream has audio.
 	HasAudioMediaStream() bool
-
+	// HasVideoMediaStream returns whether the stream has video.
 	HasVideoMediaStream() bool
-
+	// IsPreparedMediaStream returns whether the stream has finished
+	// initializing.
+	//
+	// At this point the existence of audio and video is known.
 	IsPreparedMediaStream() bool
-
+	// IsSeekableMediaStream checks if a stream may be seekable.
+	//
+	// This is meant to be a hint. Streams may not allow seeking even if this
+	// function returns true. However, if this function returns false, streams
+	// are guaranteed to not be seekable and user interfaces may hide controls
+	// that allow seeking.
+	//
+	// It is allowed to call [method@Gtk.MediaStream.seek] on a non-seekable
+	// stream, though it will not do anything.
 	IsSeekableMediaStream() bool
-
+	// IsSeekingMediaStream checks if there is currently a seek operation going
+	// on.
 	IsSeekingMediaStream() bool
-
+	// PauseMediaStream pauses playback of the stream.
+	//
+	// If the stream is not playing, do nothing.
 	PauseMediaStream()
-
+	// PlayMediaStream starts playing the stream.
+	//
+	// If the stream is in error or already playing, do nothing.
 	PlayMediaStream()
-
+	// PreparedMediaStream: called by `GtkMediaStream` implementations to
+	// advertise the stream being ready to play and providing details about the
+	// stream.
+	//
+	// Note that the arguments are hints. If the stream implementation cannot
+	// determine the correct values, it is better to err on the side of caution
+	// and return true. User interfaces will use those values to determine what
+	// controls to show.
+	//
+	// This function may not be called again until the stream has been reset via
+	// [method@Gtk.MediaStream.unprepared].
 	PreparedMediaStream(hasAudio bool, hasVideo bool, seekable bool, duration int64)
-
+	// RealizeMediaStream: called by users to attach the media stream to a
+	// `GdkSurface` they manage.
+	//
+	// The stream can then access the resources of @surface for its rendering
+	// purposes. In particular, media streams might want to create a
+	// `GdkGLContext` or sync to the `GdkFrameClock`.
+	//
+	// Whoever calls this function is responsible for calling
+	// [method@Gtk.MediaStream.unrealize] before either the stream or @surface
+	// get destroyed.
+	//
+	// Multiple calls to this function may happen from different users of the
+	// video, even with the same @surface. Each of these calls must be followed
+	// by its own call to [method@Gtk.MediaStream.unrealize].
+	//
+	// It is not required to call this function to make a media stream work.
 	RealizeMediaStream(surface gdk.Surface)
-
+	// SeekMediaStream: start a seek operation on @self to @timestamp.
+	//
+	// If @timestamp is out of range, it will be clamped.
+	//
+	// Seek operations may not finish instantly. While a seek operation is in
+	// process, the [property@Gtk.MediaStream:seeking] property will be set.
+	//
+	// When calling gtk_media_stream_seek() during an ongoing seek operation,
+	// the new seek will override any pending seek.
 	SeekMediaStream(timestamp int64)
-
+	// SeekFailedMediaStream ends a seek operation started via
+	// GtkMediaStream.seek() as a failure.
+	//
+	// This will not cause an error on the stream and will assume that playback
+	// continues as if no seek had happened.
+	//
+	// See [method@Gtk.MediaStream.seek_success] for the other way of ending a
+	// seek.
 	SeekFailedMediaStream()
-
+	// SeekSuccessMediaStream ends a seek operation started via
+	// GtkMediaStream.seek() successfully.
+	//
+	// This function will unset the GtkMediaStream:ended property if it was set.
+	//
+	// See [method@Gtk.MediaStream.seek_failed] for the other way of ending a
+	// seek.
 	SeekSuccessMediaStream()
-
+	// SetLoopMediaStream sets whether the stream should loop.
+	//
+	// In this case, it will attempt to restart playback from the beginning
+	// instead of stopping at the end.
+	//
+	// Not all streams may support looping, in particular non-seekable streams.
+	// Those streams will ignore the loop setting and just end.
 	SetLoopMediaStream(loop bool)
-
+	// SetMutedMediaStream sets whether the audio stream should be muted.
+	//
+	// Muting a stream will cause no audio to be played, but it does not modify
+	// the volume. This means that muting and then unmuting the stream will
+	// restore the volume settings.
+	//
+	// If the stream has no audio, calling this function will still work but it
+	// will not have an audible effect.
 	SetMutedMediaStream(muted bool)
-
+	// SetPlayingMediaStream starts or pauses playback of the stream.
 	SetPlayingMediaStream(playing bool)
-
+	// SetVolumeMediaStream sets the volume of the audio stream.
+	//
+	// This function call will work even if the stream is muted.
+	//
+	// The given @volume should range from 0.0 for silence to 1.0 for as loud as
+	// possible. Values outside of this range will be clamped to the nearest
+	// value.
+	//
+	// If the stream has no audio or is muted, calling this function will still
+	// work but it will not have an immediate audible effect. When the stream is
+	// unmuted, the new volume setting will take effect.
 	SetVolumeMediaStream(volume float64)
-
+	// UnpreparedMediaStream resets a given media stream implementation.
+	//
+	// [method@Gtk.MediaStream.prepared] can then be called again.
+	//
+	// This function will also reset any error state the stream was in.
 	UnpreparedMediaStream()
-
+	// UnrealizeMediaStream undoes a previous call to
+	// gtk_media_stream_realize().
+	//
+	// This causes the stream to release all resources it had allocated from
+	// @surface.
 	UnrealizeMediaStream(surface gdk.Surface)
-
+	// UpdateMediaStream: media stream implementations should regularly call
+	// this function to update the timestamp reported by the stream.
+	//
+	// It is up to implementations to call this at the frequency they deem
+	// appropriate.
+	//
+	// The media stream must be prepared when this function is called.
 	UpdateMediaStream(timestamp int64)
 }
 

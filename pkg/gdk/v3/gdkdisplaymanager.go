@@ -60,10 +60,11 @@ func init() {
 type DisplayManager interface {
 	gextras.Objector
 
+	// DefaultDisplay gets the default Display.
 	DefaultDisplay() Display
-
+	// OpenDisplayDisplayManager opens a display.
 	OpenDisplayDisplayManager(name string) Display
-
+	// SetDefaultDisplayDisplayManager sets @display as the default display.
 	SetDefaultDisplayDisplayManager(display Display)
 }
 

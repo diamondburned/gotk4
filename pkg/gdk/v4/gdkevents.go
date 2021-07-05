@@ -85,13 +85,13 @@ const (
 	EventTypeDelete EventType = 0
 	// MotionNotify: the pointer (usually a mouse) has moved.
 	EventTypeMotionNotify EventType = 1
-	// ButtonPress: a mouse button has been pressed.
+	// ButtonPress: mouse button has been pressed.
 	EventTypeButtonPress EventType = 2
-	// ButtonRelease: a mouse button has been released.
+	// ButtonRelease: mouse button has been released.
 	EventTypeButtonRelease EventType = 3
-	// KeyPress: a key has been pressed.
+	// KeyPress: key has been pressed.
 	EventTypeKeyPress EventType = 4
-	// KeyRelease: a key has been released.
+	// KeyRelease: key has been released.
 	EventTypeKeyRelease EventType = 5
 	// EnterNotify: the pointer has entered the surface.
 	EventTypeEnterNotify EventType = 6
@@ -99,10 +99,10 @@ const (
 	EventTypeLeaveNotify EventType = 7
 	// FocusChange: the keyboard focus has entered or left the surface.
 	EventTypeFocusChange EventType = 8
-	// ProximityIn: an input device has moved into contact with a sensing
-	// surface (e.g. a touchscreen or graphics tablet).
+	// ProximityIn: input device has moved into contact with a sensing surface
+	// (e.g. a touchscreen or graphics tablet).
 	EventTypeProximityIn EventType = 9
-	// ProximityOut: an input device has moved out of contact with a sensing
+	// ProximityOut: input device has moved out of contact with a sensing
 	// surface.
 	EventTypeProximityOut EventType = 10
 	// DragEnter: the mouse has entered the surface while a drag is in progress.
@@ -112,35 +112,35 @@ const (
 	// DragMotion: the mouse has moved in the surface while a drag is in
 	// progress.
 	EventTypeDragMotion EventType = 13
-	// DropStart: a drop operation onto the surface has started.
+	// DropStart: drop operation onto the surface has started.
 	EventTypeDropStart EventType = 14
 	// scroll: the scroll wheel was turned
 	EventTypeScroll EventType = 15
-	// GrabBroken: a pointer or keyboard grab was broken.
+	// GrabBroken: pointer or keyboard grab was broken.
 	EventTypeGrabBroken EventType = 16
-	// TouchBegin: a new touch event sequence has just started.
+	// TouchBegin: new touch event sequence has just started.
 	EventTypeTouchBegin EventType = 17
-	// TouchUpdate: a touch event sequence has been updated.
+	// TouchUpdate: touch event sequence has been updated.
 	EventTypeTouchUpdate EventType = 18
-	// TouchEnd: a touch event sequence has finished.
+	// TouchEnd: touch event sequence has finished.
 	EventTypeTouchEnd EventType = 19
-	// TouchCancel: a touch event sequence has been canceled.
+	// TouchCancel: touch event sequence has been canceled.
 	EventTypeTouchCancel EventType = 20
-	// TouchpadSwipe: a touchpad swipe gesture event, the current state is
+	// TouchpadSwipe: touchpad swipe gesture event, the current state is
 	// determined by its phase field.
 	EventTypeTouchpadSwipe EventType = 21
-	// TouchpadPinch: a touchpad pinch gesture event, the current state is
+	// TouchpadPinch: touchpad pinch gesture event, the current state is
 	// determined by its phase field.
 	EventTypeTouchpadPinch EventType = 22
-	// PadButtonPress: a tablet pad button press event.
+	// PadButtonPress: tablet pad button press event.
 	EventTypePadButtonPress EventType = 23
-	// PadButtonRelease: a tablet pad button release event.
+	// PadButtonRelease: tablet pad button release event.
 	EventTypePadButtonRelease EventType = 24
-	// PadRing: a tablet pad axis event from a "ring".
+	// PadRing: tablet pad axis event from a "ring".
 	EventTypePadRing EventType = 25
-	// PadStrip: a tablet pad axis event from a "strip".
+	// PadStrip: tablet pad axis event from a "strip".
 	EventTypePadStrip EventType = 26
-	// PadGroupMode: a tablet pad group mode change.
+	// PadGroupMode: tablet pad group mode change.
 	EventTypePadGroupMode EventType = 27
 	// EventLast marks the end of the GdkEventType enumeration.
 	EventTypeEventLast EventType = 28
@@ -192,7 +192,7 @@ const (
 	// ancestors of each other and the surface is part of the ancestor chain
 	// between one of these surfaces and their least common ancestor.
 	NotifyTypeNonlinearVirtual NotifyType = 4
-	// unknown: an unknown type of enter/leave event occurred.
+	// unknown type of enter/leave event occurred.
 	NotifyTypeUnknown NotifyType = 5
 )
 
@@ -266,7 +266,7 @@ func marshalTouchpadGesturePhase(p uintptr) (interface{}, error) {
 func EventsGetAngle(event1 Event, event2 Event) (float64, bool) {
 	var _arg1 *C.GdkEvent // out
 	var _arg2 *C.GdkEvent // out
-	var _arg3 C.double    // in
+	var _arg3 *C.double   // in
 	var _cret C.gboolean  // in
 
 	_arg1 = (*C.GdkEvent)(unsafe.Pointer(event1.Native()))
@@ -292,8 +292,8 @@ func EventsGetAngle(event1 Event, event2 Event) (float64, bool) {
 func EventsGetCenter(event1 Event, event2 Event) (x float64, y float64, ok bool) {
 	var _arg1 *C.GdkEvent // out
 	var _arg2 *C.GdkEvent // out
-	var _arg3 C.double    // in
-	var _arg4 C.double    // in
+	var _arg3 *C.double   // in
+	var _arg4 *C.double   // in
 	var _cret C.gboolean  // in
 
 	_arg1 = (*C.GdkEvent)(unsafe.Pointer(event1.Native()))
@@ -321,7 +321,7 @@ func EventsGetCenter(event1 Event, event2 Event) (x float64, y float64, ok bool)
 func EventsGetDistance(event1 Event, event2 Event) (float64, bool) {
 	var _arg1 *C.GdkEvent // out
 	var _arg2 *C.GdkEvent // out
-	var _arg3 C.double    // in
+	var _arg3 *C.double   // in
 	var _cret C.gboolean  // in
 
 	_arg1 = (*C.GdkEvent)(unsafe.Pointer(event1.Native()))
@@ -340,10 +340,11 @@ func EventsGetDistance(event1 Event, event2 Event) (float64, bool) {
 	return _distance, _ok
 }
 
-// ButtonEvent: an event related to a button on a pointer device.
+// ButtonEvent: event related to a button on a pointer device.
 type ButtonEvent interface {
 	Event
 
+	// Button: extract the button number from a button event.
 	Button() uint
 }
 
@@ -381,14 +382,15 @@ func (e buttonEvent) Button() uint {
 	return _guint
 }
 
-// CrossingEvent: an event caused by a pointing device moving between surfaces.
+// CrossingEvent: event caused by a pointing device moving between surfaces.
 type CrossingEvent interface {
 	Event
 
+	// Detail extracts the notify detail from a crossing event.
 	Detail() NotifyType
-
+	// Focus checks if the @event surface is the focus surface.
 	Focus() bool
-
+	// Mode extracts the crossing mode from a crossing event.
 	Mode() CrossingMode
 }
 
@@ -458,10 +460,11 @@ func (e crossingEvent) Mode() CrossingMode {
 	return _crossingMode
 }
 
-// DNDEvent: an event related to drag and drop operations.
+// DNDEvent: event related to drag and drop operations.
 type DNDEvent interface {
 	Event
 
+	// Drop gets the `GdkDrop` object from a DND event.
 	Drop() Drop
 }
 
@@ -499,7 +502,7 @@ func (e dndEvent) Drop() Drop {
 	return _drop
 }
 
-// DeleteEvent: an event related to closing a top-level surface.
+// DeleteEvent: event related to closing a top-level surface.
 type DeleteEvent interface {
 	Event
 }
@@ -532,36 +535,64 @@ func marshalDeleteEvent(p uintptr) (interface{}, error) {
 type Event interface {
 	gextras.Objector
 
+	// Axes extracts all axis values from an event.
 	Axes() ([]float64, bool)
-
+	// Axis: extract the axis value for a particular axis use from an event
+	// structure.
 	Axis(axisUse AxisUse) (float64, bool)
-
+	// Device returns the device of an event.
 	Device() Device
-
+	// DeviceTool returns a `GdkDeviceTool` representing the tool that caused
+	// the event.
+	//
+	// If the was not generated by a device that supports different tools (such
+	// as a tablet), this function will return nil.
+	//
+	// Note: the `GdkDeviceTool` will be constant during the application
+	// lifetime, if settings must be stored persistently across runs, see
+	// [method@Gdk.DeviceTool.get_serial].
 	DeviceTool() DeviceTool
-
+	// Display retrieves the display associated to the @event.
 	Display() Display
-
-	EventSequence() *EventSequence
-
+	// EventSequence retuns the event sequence to which the event belongs.
+	//
+	// Related touch events are connected in a sequence. Other events typically
+	// don't have event sequence information.
+	EventSequence() EventSequence
+	// EventType retrieves the type of the event.
 	EventType() EventType
-
+	// ModifierState returns the modifier state field of an event.
 	ModifierState() ModifierType
-
+	// PointerEmulated returns whether this event is an 'emulated' pointer
+	// event.
+	//
+	// Emulated pointer events typically originate from a touch events.
 	PointerEmulated() bool
-
+	// Position: extract the event surface relative x/y coordinates from an
+	// event.
 	Position() (x float64, y float64, ok bool)
-
+	// Seat returns the seat that originated the event.
 	Seat() Seat
-
+	// Surface extracts the surface associated with an event.
 	Surface() Surface
-
+	// Time returns the timestamp of @event.
+	//
+	// Not all events have timestamps. In that case, this function returns
+	// GDK_CURRENT_TIME.
 	Time() uint32
-
+	// RefEvent: increase the ref count of @event.
 	RefEvent() Event
-
+	// TriggersContextMenuEvent returns whether a `GdkEvent` should trigger a
+	// context menu, according to platform conventions.
+	//
+	// The right mouse button typically triggers context menus.
+	//
+	// This function should always be used instead of simply checking for
+	// event->button == GDK_BUTTON_SECONDARY.
 	TriggersContextMenuEvent() bool
-
+	// UnrefEvent: decrease the ref count of @event.
+	//
+	// If the last reference is dropped, the structure is freed.
 	UnrefEvent()
 }
 
@@ -587,7 +618,7 @@ func marshalEvent(p uintptr) (interface{}, error) {
 func (e event) Axes() ([]float64, bool) {
 	var _arg0 *C.GdkEvent // out
 	var _arg1 *C.double
-	var _arg2 C.guint    // in
+	var _arg2 *C.guint   // in
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.GdkEvent)(unsafe.Pointer(e.Native()))
@@ -609,7 +640,7 @@ func (e event) Axes() ([]float64, bool) {
 func (e event) Axis(axisUse AxisUse) (float64, bool) {
 	var _arg0 *C.GdkEvent  // out
 	var _arg1 C.GdkAxisUse // out
-	var _arg2 C.double     // in
+	var _arg2 *C.double    // in
 	var _cret C.gboolean   // in
 
 	_arg0 = (*C.GdkEvent)(unsafe.Pointer(e.Native()))
@@ -673,7 +704,7 @@ func (e event) Display() Display {
 	return _display
 }
 
-func (e event) EventSequence() *EventSequence {
+func (e event) EventSequence() EventSequence {
 	var _arg0 *C.GdkEvent         // out
 	var _cret *C.GdkEventSequence // in
 
@@ -681,9 +712,9 @@ func (e event) EventSequence() *EventSequence {
 
 	_cret = C.gdk_event_get_event_sequence(_arg0)
 
-	var _eventSequence *EventSequence // out
+	var _eventSequence EventSequence // out
 
-	_eventSequence = (*EventSequence)(unsafe.Pointer(_cret))
+	_eventSequence = (EventSequence)(unsafe.Pointer(_cret))
 
 	return _eventSequence
 }
@@ -737,8 +768,8 @@ func (e event) PointerEmulated() bool {
 
 func (e event) Position() (x float64, y float64, ok bool) {
 	var _arg0 *C.GdkEvent // out
-	var _arg1 C.double    // in
-	var _arg2 C.double    // in
+	var _arg1 *C.double   // in
+	var _arg2 *C.double   // in
 	var _cret C.gboolean  // in
 
 	_arg0 = (*C.GdkEvent)(unsafe.Pointer(e.Native()))
@@ -843,10 +874,12 @@ func (e event) UnrefEvent() {
 	C.gdk_event_unref(_arg0)
 }
 
-// FocusEvent: an event related to a keyboard focus change.
+// FocusEvent: event related to a keyboard focus change.
 type FocusEvent interface {
 	Event
 
+	// In extracts whether this event is about focus entering or leaving the
+	// surface.
 	In() bool
 }
 
@@ -886,12 +919,13 @@ func (e focusEvent) In() bool {
 	return _ok
 }
 
-// GrabBrokenEvent: an event related to a broken windowing system grab.
+// GrabBrokenEvent: event related to a broken windowing system grab.
 type GrabBrokenEvent interface {
 	Event
 
+	// GrabSurface extracts the grab surface from a grab broken event.
 	GrabSurface() Surface
-
+	// Implicit checks whether the grab broken event is for an implicit grab.
 	Implicit() bool
 }
 
@@ -946,24 +980,34 @@ func (e grabBrokenEvent) Implicit() bool {
 	return _ok
 }
 
-// KeyEvent: an event related to a key-based device.
+// KeyEvent: event related to a key-based device.
 type KeyEvent interface {
 	Event
 
+	// ConsumedModifiers extracts the consumed modifiers from a key event.
 	ConsumedModifiers() ModifierType
-
+	// Keycode extracts the keycode from a key event.
 	Keycode() uint
-
+	// Keyval extracts the keyval from a key event.
 	Keyval() uint
-
+	// Layout extracts the layout from a key event.
 	Layout() uint
-
+	// Level extracts the shift level from a key event.
 	Level() uint
-
+	// Match gets a keyval and modifier combination that will match the event.
+	//
+	// See [method@Gdk.KeyEvent.matches].
 	Match() (uint, ModifierType, bool)
-
+	// IsModifierKeyEvent extracts whether the key event is for a modifier key.
 	IsModifierKeyEvent() bool
-
+	// MatchesKeyEvent matches a key event against a keyval and modifiers.
+	//
+	// This is typically used to trigger keyboard shortcuts such as Ctrl-C.
+	//
+	// Partial matches are possible where the combination matches if the
+	// currently active group is ignored.
+	//
+	// Note that we ignore Caps Lock for matching.
 	MatchesKeyEvent(keyval uint, modifiers ModifierType) KeyMatch
 }
 
@@ -1062,10 +1106,10 @@ func (e keyEvent) Level() uint {
 }
 
 func (e keyEvent) Match() (uint, ModifierType, bool) {
-	var _arg0 *C.GdkEvent       // out
-	var _arg1 C.guint           // in
-	var _arg2 C.GdkModifierType // in
-	var _cret C.gboolean        // in
+	var _arg0 *C.GdkEvent        // out
+	var _arg1 *C.guint           // in
+	var _arg2 *C.GdkModifierType // in
+	var _cret C.gboolean         // in
 
 	_arg0 = (*C.GdkEvent)(unsafe.Pointer(e.Native()))
 
@@ -1076,7 +1120,16 @@ func (e keyEvent) Match() (uint, ModifierType, bool) {
 	var _ok bool                // out
 
 	_keyval = uint(_arg1)
-	_modifiers = ModifierType(_arg2)
+	{
+		var refTmpIn C.GdkModifierType
+		var refTmpOut ModifierType
+
+		refTmpIn = *_arg2
+
+		refTmpOut = ModifierType(refTmpIn)
+
+		_modifiers = refTmpOut
+	}
 	if _cret != 0 {
 		_ok = true
 	}
@@ -1120,7 +1173,7 @@ func (e keyEvent) MatchesKeyEvent(keyval uint, modifiers ModifierType) KeyMatch 
 	return _keyMatch
 }
 
-// MotionEvent: an event related to a pointer or touch device motion.
+// MotionEvent: event related to a pointer or touch device motion.
 type MotionEvent interface {
 	Event
 }
@@ -1144,14 +1197,15 @@ func marshalMotionEvent(p uintptr) (interface{}, error) {
 	return WrapMotionEvent(obj), nil
 }
 
-// PadEvent: an event related to a pad-based device.
+// PadEvent: event related to a pad-based device.
 type PadEvent interface {
 	Event
 
+	// AxisValue extracts the information from a pad strip or ring event.
 	AxisValue() (uint, float64)
-
+	// Button extracts information about the pressed button from a pad event.
 	Button() uint
-
+	// GroupMode extracts group and mode information from a pad event.
 	GroupMode() (group uint, mode uint)
 }
 
@@ -1176,8 +1230,8 @@ func marshalPadEvent(p uintptr) (interface{}, error) {
 
 func (e padEvent) AxisValue() (uint, float64) {
 	var _arg0 *C.GdkEvent // out
-	var _arg1 C.guint     // in
-	var _arg2 C.double    // in
+	var _arg1 *C.guint    // in
+	var _arg2 *C.double   // in
 
 	_arg0 = (*C.GdkEvent)(unsafe.Pointer(e.Native()))
 
@@ -1209,8 +1263,8 @@ func (e padEvent) Button() uint {
 
 func (e padEvent) GroupMode() (group uint, mode uint) {
 	var _arg0 *C.GdkEvent // out
-	var _arg1 C.guint     // in
-	var _arg2 C.guint     // in
+	var _arg1 *C.guint    // in
+	var _arg2 *C.guint    // in
 
 	_arg0 = (*C.GdkEvent)(unsafe.Pointer(e.Native()))
 
@@ -1225,7 +1279,7 @@ func (e padEvent) GroupMode() (group uint, mode uint) {
 	return _group, _mode
 }
 
-// ProximityEvent: an event related to the proximity of a tool to a device.
+// ProximityEvent: event related to the proximity of a tool to a device.
 type ProximityEvent interface {
 	Event
 }
@@ -1249,14 +1303,24 @@ func marshalProximityEvent(p uintptr) (interface{}, error) {
 	return WrapProximityEvent(obj), nil
 }
 
-// ScrollEvent: an event related to a scrolling motion.
+// ScrollEvent: event related to a scrolling motion.
 type ScrollEvent interface {
 	Event
 
+	// Deltas extracts the scroll deltas of a scroll event.
+	//
+	// The deltas will be zero unless the scroll direction is GDK_SCROLL_SMOOTH.
 	Deltas() (deltaX float64, deltaY float64)
-
+	// Direction extracts the direction of a scroll event.
 	Direction() ScrollDirection
-
+	// IsStopScrollEvent: check whether a scroll event is a stop scroll event.
+	//
+	// Scroll sequences with smooth scroll information may provide a stop scroll
+	// event once the interaction with the device finishes, e.g. by lifting a
+	// finger. This stop scroll event is the signal that a widget may trigger
+	// kinetic scrolling based on the current velocity.
+	//
+	// Stop scroll events always have a delta of 0/0.
 	IsStopScrollEvent() bool
 }
 
@@ -1281,8 +1345,8 @@ func marshalScrollEvent(p uintptr) (interface{}, error) {
 
 func (e scrollEvent) Deltas() (deltaX float64, deltaY float64) {
 	var _arg0 *C.GdkEvent // out
-	var _arg1 C.double    // in
-	var _arg2 C.double    // in
+	var _arg1 *C.double   // in
+	var _arg2 *C.double   // in
 
 	_arg0 = (*C.GdkEvent)(unsafe.Pointer(e.Native()))
 
@@ -1329,10 +1393,12 @@ func (e scrollEvent) IsStopScrollEvent() bool {
 	return _ok
 }
 
-// TouchEvent: an event related to a touch-based device.
+// TouchEvent: event related to a touch-based device.
 type TouchEvent interface {
 	Event
 
+	// EmulatingPointer extracts whether a touch event is emulating a pointer
+	// event.
 	EmulatingPointer() bool
 }
 
@@ -1372,7 +1438,7 @@ func (e touchEvent) EmulatingPointer() bool {
 	return _ok
 }
 
-// TouchpadEvent: an event related to a gesture on a touchpad device.
+// TouchpadEvent: event related to a gesture on a touchpad device.
 //
 // Unlike touchscreens, where the windowing system sends basic sequences of
 // begin, update, end events, and leaves gesture recognition to the clients,
@@ -1381,14 +1447,15 @@ func (e touchEvent) EmulatingPointer() bool {
 type TouchpadEvent interface {
 	Event
 
+	// Deltas extracts delta information from a touchpad event.
 	Deltas() (dx float64, dy float64)
-
+	// GesturePhase extracts the touchpad gesture phase from a touchpad event.
 	GesturePhase() TouchpadGesturePhase
-
+	// NFingers extracts the number of fingers from a touchpad event.
 	NFingers() uint
-
+	// PinchAngleDelta extracts the angle delta from a touchpad pinch event.
 	PinchAngleDelta() float64
-
+	// PinchScale extracts the scale from a touchpad pinch event.
 	PinchScale() float64
 }
 
@@ -1413,8 +1480,8 @@ func marshalTouchpadEvent(p uintptr) (interface{}, error) {
 
 func (e touchpadEvent) Deltas() (dx float64, dy float64) {
 	var _arg0 *C.GdkEvent // out
-	var _arg1 C.double    // in
-	var _arg2 C.double    // in
+	var _arg1 *C.double   // in
+	var _arg2 *C.double   // in
 
 	_arg0 = (*C.GdkEvent)(unsafe.Pointer(e.Native()))
 
@@ -1491,7 +1558,9 @@ func (e touchpadEvent) PinchScale() float64 {
 
 // EventSequence: `GdkEventSequence` is an opaque type representing a sequence
 // of related touch events.
-type EventSequence C.GdkEventSequence
+type EventSequence struct {
+	native C.GdkEventSequence
+}
 
 // WrapEventSequence wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -1506,5 +1575,5 @@ func marshalEventSequence(p uintptr) (interface{}, error) {
 
 // Native returns the underlying C source pointer.
 func (e *EventSequence) Native() unsafe.Pointer {
-	return unsafe.Pointer(e)
+	return unsafe.Pointer(&e.native)
 }

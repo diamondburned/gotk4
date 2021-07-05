@@ -27,7 +27,9 @@ func init() {
 
 type ComboBoxAccessible interface {
 	ContainerAccessible
-	atk.Action
+
+	// AsAction casts the class to the atk.Action interface.
+	AsAction() atk.Action
 }
 
 // comboBoxAccessible implements the ComboBoxAccessible class.
@@ -49,30 +51,6 @@ func marshalComboBoxAccessible(p uintptr) (interface{}, error) {
 	return WrapComboBoxAccessible(obj), nil
 }
 
-func (a comboBoxAccessible) DoAction(i int) bool {
-	return atk.WrapAction(gextras.InternObject(a)).DoAction(i)
-}
-
-func (a comboBoxAccessible) Description(i int) string {
-	return atk.WrapAction(gextras.InternObject(a)).Description(i)
-}
-
-func (a comboBoxAccessible) Keybinding(i int) string {
-	return atk.WrapAction(gextras.InternObject(a)).Keybinding(i)
-}
-
-func (a comboBoxAccessible) LocalizedName(i int) string {
-	return atk.WrapAction(gextras.InternObject(a)).LocalizedName(i)
-}
-
-func (a comboBoxAccessible) NActions() int {
-	return atk.WrapAction(gextras.InternObject(a)).NActions()
-}
-
-func (a comboBoxAccessible) Name(i int) string {
-	return atk.WrapAction(gextras.InternObject(a)).Name(i)
-}
-
-func (a comboBoxAccessible) SetDescription(i int, desc string) bool {
-	return atk.WrapAction(gextras.InternObject(a)).SetDescription(i, desc)
+func (c comboBoxAccessible) AsAction() atk.Action {
+	return atk.WrapAction(gextras.InternObject(c))
 }

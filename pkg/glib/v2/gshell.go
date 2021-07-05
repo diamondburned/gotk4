@@ -37,8 +37,8 @@ const (
 func ShellParseArgv(commandLine string) ([]string, error) {
 	var _arg1 *C.gchar // out
 	var _arg3 **C.gchar
-	var _arg2 C.gint    // in
-	var _cerr *C.GError // in
+	var _arg2 *C.gint    // in
+	var _cerr **C.GError // in
 
 	_arg1 = (*C.gchar)(C.CString(commandLine))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -53,11 +53,29 @@ func ShellParseArgv(commandLine string) ([]string, error) {
 		src := unsafe.Slice(_arg3, _arg2)
 		_argvp = make([]string, _arg2)
 		for i := 0; i < int(_arg2); i++ {
-			_argvp[i] = C.GoString(src[i])
-			defer C.free(unsafe.Pointer(src[i]))
+			{
+				var refTmpIn *C.gchar
+				var refTmpOut string
+
+				refTmpIn = *src[i]
+
+				refTmpOut = C.GoString(refTmpIn)
+				defer C.free(unsafe.Pointer(refTmpIn))
+
+				_argvp[i] = refTmpOut
+			}
 		}
 	}
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _argvp, _goerr
 }
@@ -103,9 +121,9 @@ func ShellQuote(unquotedString string) string {
 // quotes allow $, `, ", \, and newline to be escaped with backslash. Otherwise
 // double quotes preserve things literally.
 func ShellUnquote(quotedString string) (string, error) {
-	var _arg1 *C.gchar  // out
-	var _cret *C.gchar  // in
-	var _cerr *C.GError // in
+	var _arg1 *C.gchar   // out
+	var _cret *C.gchar   // in
+	var _cerr **C.GError // in
 
 	_arg1 = (*C.gchar)(C.CString(quotedString))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -117,7 +135,16 @@ func ShellUnquote(quotedString string) (string, error) {
 
 	_filename = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _filename, _goerr
 }

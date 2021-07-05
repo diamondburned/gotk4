@@ -5,9 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -26,9 +24,9 @@ func init() {
 	})
 }
 
-// LinkButton: a GtkLinkButton is a Button with a hyperlink, similar to the one
-// used by web browsers, which triggers an action when clicked. It is useful to
-// show quick links to resources.
+// LinkButton is a Button with a hyperlink, similar to the one used by web
+// browsers, which triggers an action when clicked. It is useful to show quick
+// links to resources.
 //
 // A link button is created by calling either gtk_link_button_new() or
 // gtk_link_button_new_with_label(). If using the former, the URI you pass to
@@ -49,12 +47,26 @@ func init() {
 type LinkButton interface {
 	Button
 
+	// AsActionable casts the class to the Actionable interface.
+	AsActionable() Actionable
+	// AsActivatable casts the class to the Activatable interface.
+	AsActivatable() Activatable
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+
+	// URI retrieves the URI set using gtk_link_button_set_uri().
 	URI() string
-
+	// Visited retrieves the “visited” state of the URI where the LinkButton
+	// points. The button becomes visited when it is clicked. If the URI is
+	// changed on the button, the “visited” state is unset again.
+	//
+	// The state may also be changed using gtk_link_button_set_visited().
 	Visited() bool
-
+	// SetURILinkButton sets @uri as the URI where the LinkButton points. As a
+	// side-effect this unsets the “visited” state of the button.
 	SetURILinkButton(uri string)
-
+	// SetVisitedLinkButton sets the “visited” state of the URI where the
+	// LinkButton points. See gtk_link_button_get_visited() for more details.
 	SetVisitedLinkButton(visited bool)
 }
 
@@ -77,6 +89,7 @@ func marshalLinkButton(p uintptr) (interface{}, error) {
 	return WrapLinkButton(obj), nil
 }
 
+// NewLinkButton creates a new LinkButton with the URI as its text.
 func NewLinkButton(uri string) LinkButton {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -88,11 +101,12 @@ func NewLinkButton(uri string) LinkButton {
 
 	var _linkButton LinkButton // out
 
-	_linkButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(LinkButton)
+	_linkButton = WrapLinkButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _linkButton
 }
 
+// NewLinkButtonWithLabel creates a new LinkButton containing a label.
 func NewLinkButtonWithLabel(uri string, label string) LinkButton {
 	var _arg1 *C.gchar     // out
 	var _arg2 *C.gchar     // out
@@ -107,7 +121,7 @@ func NewLinkButtonWithLabel(uri string, label string) LinkButton {
 
 	var _linkButton LinkButton // out
 
-	_linkButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(LinkButton)
+	_linkButton = WrapLinkButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _linkButton
 }
@@ -167,126 +181,14 @@ func (l linkButton) SetVisitedLinkButton(visited bool) {
 	C.gtk_link_button_set_visited(_arg0, _arg1)
 }
 
-func (b linkButton) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+func (l linkButton) AsActionable() Actionable {
+	return WrapActionable(gextras.InternObject(l))
 }
 
-func (b linkButton) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+func (l linkButton) AsActivatable() Activatable {
+	return WrapActivatable(gextras.InternObject(l))
 }
 
-func (b linkButton) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b linkButton) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b linkButton) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b linkButton) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b linkButton) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b linkButton) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b linkButton) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b linkButton) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (a linkButton) ActionName() string {
-	return WrapActionable(gextras.InternObject(a)).ActionName()
-}
-
-func (a linkButton) ActionTargetValue() *glib.Variant {
-	return WrapActionable(gextras.InternObject(a)).ActionTargetValue()
-}
-
-func (a linkButton) SetActionName(actionName string) {
-	WrapActionable(gextras.InternObject(a)).SetActionName(actionName)
-}
-
-func (a linkButton) SetActionTargetValue(targetValue *glib.Variant) {
-	WrapActionable(gextras.InternObject(a)).SetActionTargetValue(targetValue)
-}
-
-func (a linkButton) SetDetailedActionName(detailedActionName string) {
-	WrapActionable(gextras.InternObject(a)).SetDetailedActionName(detailedActionName)
-}
-
-func (b linkButton) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
-}
-
-func (b linkButton) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b linkButton) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b linkButton) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b linkButton) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b linkButton) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b linkButton) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b linkButton) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b linkButton) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b linkButton) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (a linkButton) DoSetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).DoSetRelatedAction(action)
-}
-
-func (a linkButton) RelatedAction() Action {
-	return WrapActivatable(gextras.InternObject(a)).RelatedAction()
-}
-
-func (a linkButton) UseActionAppearance() bool {
-	return WrapActivatable(gextras.InternObject(a)).UseActionAppearance()
-}
-
-func (a linkButton) SetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SetRelatedAction(action)
-}
-
-func (a linkButton) SetUseActionAppearance(useAppearance bool) {
-	WrapActivatable(gextras.InternObject(a)).SetUseActionAppearance(useAppearance)
-}
-
-func (a linkButton) SyncActionProperties(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SyncActionProperties(action)
+func (l linkButton) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(l))
 }

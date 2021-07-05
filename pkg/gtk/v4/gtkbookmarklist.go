@@ -32,16 +32,29 @@ func init() {
 type BookmarkList interface {
 	gextras.Objector
 
+	// Attributes gets the attributes queried on the children.
 	Attributes() string
-
+	// Filename returns the filename of the bookmark file that this list is
+	// loading.
 	Filename() string
-
+	// IOPriority gets the IO priority to use while loading file.
 	IOPriority() int
-
+	// IsLoadingBookmarkList returns true if the files are currently being
+	// loaded.
+	//
+	// Files will be added to @self from time to time while loading is going on.
+	// The order in which are added is undefined and may change in between runs.
 	IsLoadingBookmarkList() bool
-
+	// SetAttributesBookmarkList sets the @attributes to be enumerated and
+	// starts the enumeration.
+	//
+	// If @attributes is nil, no attributes will be queried, but a list of Infos
+	// will still be created.
 	SetAttributesBookmarkList(attributes string)
-
+	// SetIOPriorityBookmarkList sets the IO priority to use while loading
+	// files.
+	//
+	// The default IO priority is G_PRIORITY_DEFAULT.
 	SetIOPriorityBookmarkList(ioPriority int)
 }
 
@@ -64,6 +77,7 @@ func marshalBookmarkList(p uintptr) (interface{}, error) {
 	return WrapBookmarkList(obj), nil
 }
 
+// NewBookmarkList creates a new `GtkBookmarkList` with the given @attributes.
 func NewBookmarkList(filename string, attributes string) BookmarkList {
 	var _arg1 *C.char            // out
 	var _arg2 *C.char            // out
@@ -78,7 +92,7 @@ func NewBookmarkList(filename string, attributes string) BookmarkList {
 
 	var _bookmarkList BookmarkList // out
 
-	_bookmarkList = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(BookmarkList)
+	_bookmarkList = WrapBookmarkList(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _bookmarkList
 }

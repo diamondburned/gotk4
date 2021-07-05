@@ -5,10 +5,8 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -30,39 +28,79 @@ func init() {
 type ColorSelection interface {
 	Box
 
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsOrientable casts the class to the Orientable interface.
+	AsOrientable() Orientable
+
+	// CurrentAlpha returns the current alpha value.
 	CurrentAlpha() uint16
-
+	// CurrentColor sets @color to be the current color in the GtkColorSelection
+	// widget.
+	//
+	// Deprecated: since version 3.4.
 	CurrentColor() gdk.Color
-
+	// CurrentRGBA sets @rgba to be the current color in the GtkColorSelection
+	// widget.
 	CurrentRGBA() gdk.RGBA
-
+	// HasOpacityControl determines whether the colorsel has an opacity control.
 	HasOpacityControl() bool
-
+	// HasPalette determines whether the color selector has a color palette.
 	HasPalette() bool
-
+	// PreviousAlpha returns the previous alpha value.
 	PreviousAlpha() uint16
-
+	// PreviousColor fills @color in with the original color value.
+	//
+	// Deprecated: since version 3.4.
 	PreviousColor() gdk.Color
-
+	// PreviousRGBA fills @rgba in with the original color value.
 	PreviousRGBA() gdk.RGBA
-
+	// IsAdjustingColorSelection gets the current state of the @colorsel.
 	IsAdjustingColorSelection() bool
-
+	// SetCurrentAlphaColorSelection sets the current opacity to be @alpha.
+	//
+	// The first time this is called, it will also set the original opacity to
+	// be @alpha too.
 	SetCurrentAlphaColorSelection(alpha uint16)
-
-	SetCurrentColorColorSelection(color *gdk.Color)
-
-	SetCurrentRGBAColorSelection(rgba *gdk.RGBA)
-
+	// SetCurrentColorColorSelection sets the current color to be @color.
+	//
+	// The first time this is called, it will also set the original color to be
+	// @color too.
+	//
+	// Deprecated: since version 3.4.
+	SetCurrentColorColorSelection(color gdk.Color)
+	// SetCurrentRGBAColorSelection sets the current color to be @rgba.
+	//
+	// The first time this is called, it will also set the original color to be
+	// @rgba too.
+	SetCurrentRGBAColorSelection(rgba gdk.RGBA)
+	// SetHasOpacityControlColorSelection sets the @colorsel to use or not use
+	// opacity.
 	SetHasOpacityControlColorSelection(hasOpacity bool)
-
+	// SetHasPaletteColorSelection shows and hides the palette based upon the
+	// value of @has_palette.
 	SetHasPaletteColorSelection(hasPalette bool)
-
+	// SetPreviousAlphaColorSelection sets the “previous” alpha to be @alpha.
+	//
+	// This function should be called with some hesitations, as it might seem
+	// confusing to have that alpha change.
 	SetPreviousAlphaColorSelection(alpha uint16)
-
-	SetPreviousColorColorSelection(color *gdk.Color)
-
-	SetPreviousRGBAColorSelection(rgba *gdk.RGBA)
+	// SetPreviousColorColorSelection sets the “previous” color to be @color.
+	//
+	// This function should be called with some hesitations, as it might seem
+	// confusing to have that color change. Calling
+	// gtk_color_selection_set_current_color() will also set this color the
+	// first time it is called.
+	//
+	// Deprecated: since version 3.4.
+	SetPreviousColorColorSelection(color gdk.Color)
+	// SetPreviousRGBAColorSelection sets the “previous” color to be @rgba.
+	//
+	// This function should be called with some hesitations, as it might seem
+	// confusing to have that color change. Calling
+	// gtk_color_selection_set_current_rgba() will also set this color the first
+	// time it is called.
+	SetPreviousRGBAColorSelection(rgba gdk.RGBA)
 }
 
 // colorSelection implements the ColorSelection class.
@@ -84,6 +122,7 @@ func marshalColorSelection(p uintptr) (interface{}, error) {
 	return WrapColorSelection(obj), nil
 }
 
+// NewColorSelection creates a new GtkColorSelection.
 func NewColorSelection() ColorSelection {
 	var _cret *C.GtkWidget // in
 
@@ -91,7 +130,7 @@ func NewColorSelection() ColorSelection {
 
 	var _colorSelection ColorSelection // out
 
-	_colorSelection = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ColorSelection)
+	_colorSelection = WrapColorSelection(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _colorSelection
 }
@@ -113,7 +152,7 @@ func (c colorSelection) CurrentAlpha() uint16 {
 
 func (c colorSelection) CurrentColor() gdk.Color {
 	var _arg0 *C.GtkColorSelection // out
-	var _arg1 C.GdkColor           // in
+	var _arg1 *C.GdkColor          // in
 
 	_arg0 = (*C.GtkColorSelection)(unsafe.Pointer(c.Native()))
 
@@ -121,24 +160,14 @@ func (c colorSelection) CurrentColor() gdk.Color {
 
 	var _color gdk.Color // out
 
-	{
-		var refTmpIn *C.GdkColor
-		var refTmpOut *gdk.Color
-
-		in0 := &_arg1
-		refTmpIn = in0
-
-		refTmpOut = (*gdk.Color)(unsafe.Pointer(refTmpIn))
-
-		_color = *refTmpOut
-	}
+	_color = (gdk.Color)(unsafe.Pointer(_arg1))
 
 	return _color
 }
 
 func (c colorSelection) CurrentRGBA() gdk.RGBA {
 	var _arg0 *C.GtkColorSelection // out
-	var _arg1 C.GdkRGBA            // in
+	var _arg1 *C.GdkRGBA           // in
 
 	_arg0 = (*C.GtkColorSelection)(unsafe.Pointer(c.Native()))
 
@@ -146,17 +175,7 @@ func (c colorSelection) CurrentRGBA() gdk.RGBA {
 
 	var _rgba gdk.RGBA // out
 
-	{
-		var refTmpIn *C.GdkRGBA
-		var refTmpOut *gdk.RGBA
-
-		in0 := &_arg1
-		refTmpIn = in0
-
-		refTmpOut = (*gdk.RGBA)(unsafe.Pointer(refTmpIn))
-
-		_rgba = *refTmpOut
-	}
+	_rgba = (gdk.RGBA)(unsafe.Pointer(_arg1))
 
 	return _rgba
 }
@@ -212,7 +231,7 @@ func (c colorSelection) PreviousAlpha() uint16 {
 
 func (c colorSelection) PreviousColor() gdk.Color {
 	var _arg0 *C.GtkColorSelection // out
-	var _arg1 C.GdkColor           // in
+	var _arg1 *C.GdkColor          // in
 
 	_arg0 = (*C.GtkColorSelection)(unsafe.Pointer(c.Native()))
 
@@ -220,24 +239,14 @@ func (c colorSelection) PreviousColor() gdk.Color {
 
 	var _color gdk.Color // out
 
-	{
-		var refTmpIn *C.GdkColor
-		var refTmpOut *gdk.Color
-
-		in0 := &_arg1
-		refTmpIn = in0
-
-		refTmpOut = (*gdk.Color)(unsafe.Pointer(refTmpIn))
-
-		_color = *refTmpOut
-	}
+	_color = (gdk.Color)(unsafe.Pointer(_arg1))
 
 	return _color
 }
 
 func (c colorSelection) PreviousRGBA() gdk.RGBA {
 	var _arg0 *C.GtkColorSelection // out
-	var _arg1 C.GdkRGBA            // in
+	var _arg1 *C.GdkRGBA           // in
 
 	_arg0 = (*C.GtkColorSelection)(unsafe.Pointer(c.Native()))
 
@@ -245,17 +254,7 @@ func (c colorSelection) PreviousRGBA() gdk.RGBA {
 
 	var _rgba gdk.RGBA // out
 
-	{
-		var refTmpIn *C.GdkRGBA
-		var refTmpOut *gdk.RGBA
-
-		in0 := &_arg1
-		refTmpIn = in0
-
-		refTmpOut = (*gdk.RGBA)(unsafe.Pointer(refTmpIn))
-
-		_rgba = *refTmpOut
-	}
+	_rgba = (gdk.RGBA)(unsafe.Pointer(_arg1))
 
 	return _rgba
 }
@@ -287,22 +286,22 @@ func (c colorSelection) SetCurrentAlphaColorSelection(alpha uint16) {
 	C.gtk_color_selection_set_current_alpha(_arg0, _arg1)
 }
 
-func (c colorSelection) SetCurrentColorColorSelection(color *gdk.Color) {
+func (c colorSelection) SetCurrentColorColorSelection(color gdk.Color) {
 	var _arg0 *C.GtkColorSelection // out
 	var _arg1 *C.GdkColor          // out
 
 	_arg0 = (*C.GtkColorSelection)(unsafe.Pointer(c.Native()))
-	_arg1 = (*C.GdkColor)(unsafe.Pointer(color.Native()))
+	_arg1 = (*C.GdkColor)(unsafe.Pointer(color))
 
 	C.gtk_color_selection_set_current_color(_arg0, _arg1)
 }
 
-func (c colorSelection) SetCurrentRGBAColorSelection(rgba *gdk.RGBA) {
+func (c colorSelection) SetCurrentRGBAColorSelection(rgba gdk.RGBA) {
 	var _arg0 *C.GtkColorSelection // out
 	var _arg1 *C.GdkRGBA           // out
 
 	_arg0 = (*C.GtkColorSelection)(unsafe.Pointer(c.Native()))
-	_arg1 = (*C.GdkRGBA)(unsafe.Pointer(rgba.Native()))
+	_arg1 = (*C.GdkRGBA)(unsafe.Pointer(rgba))
 
 	C.gtk_color_selection_set_current_rgba(_arg0, _arg1)
 }
@@ -341,70 +340,30 @@ func (c colorSelection) SetPreviousAlphaColorSelection(alpha uint16) {
 	C.gtk_color_selection_set_previous_alpha(_arg0, _arg1)
 }
 
-func (c colorSelection) SetPreviousColorColorSelection(color *gdk.Color) {
+func (c colorSelection) SetPreviousColorColorSelection(color gdk.Color) {
 	var _arg0 *C.GtkColorSelection // out
 	var _arg1 *C.GdkColor          // out
 
 	_arg0 = (*C.GtkColorSelection)(unsafe.Pointer(c.Native()))
-	_arg1 = (*C.GdkColor)(unsafe.Pointer(color.Native()))
+	_arg1 = (*C.GdkColor)(unsafe.Pointer(color))
 
 	C.gtk_color_selection_set_previous_color(_arg0, _arg1)
 }
 
-func (c colorSelection) SetPreviousRGBAColorSelection(rgba *gdk.RGBA) {
+func (c colorSelection) SetPreviousRGBAColorSelection(rgba gdk.RGBA) {
 	var _arg0 *C.GtkColorSelection // out
 	var _arg1 *C.GdkRGBA           // out
 
 	_arg0 = (*C.GtkColorSelection)(unsafe.Pointer(c.Native()))
-	_arg1 = (*C.GdkRGBA)(unsafe.Pointer(rgba.Native()))
+	_arg1 = (*C.GdkRGBA)(unsafe.Pointer(rgba))
 
 	C.gtk_color_selection_set_previous_rgba(_arg0, _arg1)
 }
 
-func (b colorSelection) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+func (c colorSelection) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(c))
 }
 
-func (b colorSelection) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b colorSelection) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b colorSelection) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b colorSelection) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b colorSelection) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b colorSelection) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b colorSelection) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b colorSelection) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b colorSelection) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (o colorSelection) Orientation() Orientation {
-	return WrapOrientable(gextras.InternObject(o)).Orientation()
-}
-
-func (o colorSelection) SetOrientation(orientation Orientation) {
-	WrapOrientable(gextras.InternObject(o)).SetOrientation(orientation)
+func (c colorSelection) AsOrientable() Orientable {
+	return WrapOrientable(gextras.InternObject(c))
 }

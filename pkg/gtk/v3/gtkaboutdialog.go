@@ -5,10 +5,8 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -36,7 +34,7 @@ type License int
 const (
 	// unknown: no license specified
 	LicenseUnknown License = 0
-	// custom: a license text is going to be specified by the developer
+	// custom: license text is going to be specified by the developer
 	LicenseCustom License = 1
 	// GPL20: the GNU General Public License, version 2.0 or later
 	LicenseGPL20 License = 2
@@ -119,66 +117,109 @@ func marshalLicense(p uintptr) (interface{}, error) {
 type AboutDialog interface {
 	Dialog
 
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+
+	// AddCreditSectionAboutDialog creates a new section in the Credits page.
 	AddCreditSectionAboutDialog(sectionName string, people []string)
-
+	// Artists returns the string which are displayed in the artists tab of the
+	// secondary credits dialog.
 	Artists() []string
-
+	// Authors returns the string which are displayed in the authors tab of the
+	// secondary credits dialog.
 	Authors() []string
-
+	// Comments returns the comments string.
 	Comments() string
-
+	// Copyright returns the copyright string.
 	Copyright() string
-
+	// Documenters returns the string which are displayed in the documenters tab
+	// of the secondary credits dialog.
 	Documenters() []string
-
+	// License returns the license information.
 	License() string
-
+	// LicenseType retrieves the license set using
+	// gtk_about_dialog_set_license_type()
 	LicenseType() License
-
+	// Logo returns the pixbuf displayed as logo in the about dialog.
 	Logo() gdkpixbuf.Pixbuf
-
+	// LogoIconName returns the icon name displayed as logo in the about dialog.
 	LogoIconName() string
-
+	// ProgramName returns the program name displayed in the about dialog.
 	ProgramName() string
-
+	// TranslatorCredits returns the translator credits string which is
+	// displayed in the translators tab of the secondary credits dialog.
 	TranslatorCredits() string
-
+	// Version returns the version string.
 	Version() string
-
+	// Website returns the website URL.
 	Website() string
-
+	// WebsiteLabel returns the label used for the website link.
 	WebsiteLabel() string
-
+	// WrapLicense returns whether the license text in @about is automatically
+	// wrapped.
 	WrapLicense() bool
-
+	// SetArtistsAboutDialog sets the strings which are displayed in the artists
+	// tab of the secondary credits dialog.
 	SetArtistsAboutDialog(artists []string)
-
+	// SetAuthorsAboutDialog sets the strings which are displayed in the authors
+	// tab of the secondary credits dialog.
 	SetAuthorsAboutDialog(authors []string)
-
+	// SetCommentsAboutDialog sets the comments string to display in the about
+	// dialog. This should be a short string of one or two lines.
 	SetCommentsAboutDialog(comments string)
-
+	// SetCopyrightAboutDialog sets the copyright string to display in the about
+	// dialog. This should be a short string of one or two lines.
 	SetCopyrightAboutDialog(copyright string)
-
+	// SetDocumentersAboutDialog sets the strings which are displayed in the
+	// documenters tab of the secondary credits dialog.
 	SetDocumentersAboutDialog(documenters []string)
-
+	// SetLicenseAboutDialog sets the license information to be displayed in the
+	// secondary license dialog. If @license is nil, the license button is
+	// hidden.
 	SetLicenseAboutDialog(license string)
-
+	// SetLicenseTypeAboutDialog sets the license of the application showing the
+	// @about dialog from a list of known licenses.
+	//
+	// This function overrides the license set using
+	// gtk_about_dialog_set_license().
 	SetLicenseTypeAboutDialog(licenseType License)
-
+	// SetLogoAboutDialog sets the pixbuf to be displayed as logo in the about
+	// dialog. If it is nil, the default window icon set with
+	// gtk_window_set_default_icon() will be used.
 	SetLogoAboutDialog(logo gdkpixbuf.Pixbuf)
-
+	// SetLogoIconNameAboutDialog sets the pixbuf to be displayed as logo in the
+	// about dialog. If it is nil, the default window icon set with
+	// gtk_window_set_default_icon() will be used.
 	SetLogoIconNameAboutDialog(iconName string)
-
+	// SetProgramNameAboutDialog sets the name to display in the about dialog.
+	// If this is not set, it defaults to g_get_application_name().
 	SetProgramNameAboutDialog(name string)
-
+	// SetTranslatorCreditsAboutDialog sets the translator credits string which
+	// is displayed in the translators tab of the secondary credits dialog.
+	//
+	// The intended use for this string is to display the translator of the
+	// language which is currently used in the user interface. Using gettext(),
+	// a simple way to achieve that is to mark the string for translation:
+	//
+	//    GtkWidget *about = gtk_about_dialog_new ();
+	//    gtk_about_dialog_set_translator_credits (GTK_ABOUT_DIALOG (about),
+	//                                             _("translator-credits"));
+	//
+	// It is a good idea to use the customary msgid “translator-credits” for
+	// this purpose, since translators will already know the purpose of that
+	// msgid, and since AboutDialog will detect if “translator-credits” is
+	// untranslated and hide the tab.
 	SetTranslatorCreditsAboutDialog(translatorCredits string)
-
+	// SetVersionAboutDialog sets the version string to display in the about
+	// dialog.
 	SetVersionAboutDialog(version string)
-
+	// SetWebsiteAboutDialog sets the URL to use for the website link.
 	SetWebsiteAboutDialog(website string)
-
+	// SetWebsiteLabelAboutDialog sets the label to be used for the website
+	// link.
 	SetWebsiteLabelAboutDialog(websiteLabel string)
-
+	// SetWrapLicenseAboutDialog sets whether the license text in @about is
+	// automatically wrapped.
 	SetWrapLicenseAboutDialog(wrapLicense bool)
 }
 
@@ -201,6 +242,7 @@ func marshalAboutDialog(p uintptr) (interface{}, error) {
 	return WrapAboutDialog(obj), nil
 }
 
+// NewAboutDialog creates a new AboutDialog.
 func NewAboutDialog() AboutDialog {
 	var _cret *C.GtkWidget // in
 
@@ -208,7 +250,7 @@ func NewAboutDialog() AboutDialog {
 
 	var _aboutDialog AboutDialog // out
 
-	_aboutDialog = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(AboutDialog)
+	_aboutDialog = WrapAboutDialog(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _aboutDialog
 }
@@ -682,42 +724,6 @@ func (a aboutDialog) SetWrapLicenseAboutDialog(wrapLicense bool) {
 	C.gtk_about_dialog_set_wrap_license(_arg0, _arg1)
 }
 
-func (b aboutDialog) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
-}
-
-func (b aboutDialog) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b aboutDialog) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b aboutDialog) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b aboutDialog) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b aboutDialog) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b aboutDialog) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b aboutDialog) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b aboutDialog) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b aboutDialog) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
+func (a aboutDialog) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(a))
 }

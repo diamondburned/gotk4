@@ -5,9 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -26,8 +24,8 @@ func init() {
 	})
 }
 
-// ComboBoxText: a GtkComboBoxText is a simple variant of ComboBox that hides
-// the model-view complexity for simple text-only use cases.
+// ComboBoxText is a simple variant of ComboBox that hides the model-view
+// complexity for simple text-only use cases.
 //
 // To create a GtkComboBoxText, use gtk_combo_box_text_new() or
 // gtk_combo_box_text_new_with_entry().
@@ -76,22 +74,59 @@ func init() {
 type ComboBoxText interface {
 	ComboBox
 
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsCellEditable casts the class to the CellEditable interface.
+	AsCellEditable() CellEditable
+	// AsCellLayout casts the class to the CellLayout interface.
+	AsCellLayout() CellLayout
+
+	// AppendComboBoxText appends @text to the list of strings stored in
+	// @combo_box. If @id is non-nil then it is used as the ID of the row.
+	//
+	// This is the same as calling gtk_combo_box_text_insert() with a position
+	// of -1.
 	AppendComboBoxText(id string, text string)
-
+	// AppendTextComboBoxText appends @text to the list of strings stored in
+	// @combo_box.
+	//
+	// This is the same as calling gtk_combo_box_text_insert_text() with a
+	// position of -1.
 	AppendTextComboBoxText(text string)
-
+	// ActiveText returns the currently active string in @combo_box, or nil if
+	// none is selected. If @combo_box contains an entry, this function will
+	// return its contents (which will not necessarily be an item from the
+	// list).
 	ActiveText() string
-
+	// InsertComboBoxText inserts @text at @position in the list of strings
+	// stored in @combo_box. If @id is non-nil then it is used as the ID of the
+	// row. See ComboBox:id-column.
+	//
+	// If @position is negative then @text is appended.
 	InsertComboBoxText(position int, id string, text string)
-
+	// InsertTextComboBoxText inserts @text at @position in the list of strings
+	// stored in @combo_box.
+	//
+	// If @position is negative then @text is appended.
+	//
+	// This is the same as calling gtk_combo_box_text_insert() with a nil ID
+	// string.
 	InsertTextComboBoxText(position int, text string)
-
+	// PrependComboBoxText prepends @text to the list of strings stored in
+	// @combo_box. If @id is non-nil then it is used as the ID of the row.
+	//
+	// This is the same as calling gtk_combo_box_text_insert() with a position
+	// of 0.
 	PrependComboBoxText(id string, text string)
-
+	// PrependTextComboBoxText prepends @text to the list of strings stored in
+	// @combo_box.
+	//
+	// This is the same as calling gtk_combo_box_text_insert_text() with a
+	// position of 0.
 	PrependTextComboBoxText(text string)
-
+	// RemoveComboBoxText removes the string at @position from @combo_box.
 	RemoveComboBoxText(position int)
-
+	// RemoveAllComboBoxText removes all the text entries from the combo box.
 	RemoveAllComboBoxText()
 }
 
@@ -114,6 +149,8 @@ func marshalComboBoxText(p uintptr) (interface{}, error) {
 	return WrapComboBoxText(obj), nil
 }
 
+// NewComboBoxText creates a new ComboBoxText, which is a ComboBox just
+// displaying strings.
 func NewComboBoxText() ComboBoxText {
 	var _cret *C.GtkWidget // in
 
@@ -121,11 +158,13 @@ func NewComboBoxText() ComboBoxText {
 
 	var _comboBoxText ComboBoxText // out
 
-	_comboBoxText = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ComboBoxText)
+	_comboBoxText = WrapComboBoxText(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _comboBoxText
 }
 
+// NewComboBoxTextWithEntry creates a new ComboBoxText, which is a ComboBox just
+// displaying strings. The combo box created by this function has an entry.
 func NewComboBoxTextWithEntry() ComboBoxText {
 	var _cret *C.GtkWidget // in
 
@@ -133,7 +172,7 @@ func NewComboBoxTextWithEntry() ComboBoxText {
 
 	var _comboBoxText ComboBoxText // out
 
-	_comboBoxText = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ComboBoxText)
+	_comboBoxText = WrapComboBoxText(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _comboBoxText
 }
@@ -251,118 +290,14 @@ func (c comboBoxText) RemoveAllComboBoxText() {
 	C.gtk_combo_box_text_remove_all(_arg0)
 }
 
-func (b comboBoxText) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+func (c comboBoxText) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(c))
 }
 
-func (b comboBoxText) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+func (c comboBoxText) AsCellEditable() CellEditable {
+	return WrapCellEditable(gextras.InternObject(c))
 }
 
-func (b comboBoxText) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b comboBoxText) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b comboBoxText) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b comboBoxText) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b comboBoxText) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b comboBoxText) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b comboBoxText) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b comboBoxText) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (c comboBoxText) EditingDone() {
-	WrapCellEditable(gextras.InternObject(c)).EditingDone()
-}
-
-func (c comboBoxText) RemoveWidget() {
-	WrapCellEditable(gextras.InternObject(c)).RemoveWidget()
-}
-
-func (b comboBoxText) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
-}
-
-func (b comboBoxText) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b comboBoxText) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b comboBoxText) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b comboBoxText) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b comboBoxText) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b comboBoxText) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b comboBoxText) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b comboBoxText) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b comboBoxText) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (c comboBoxText) AddAttribute(cell CellRenderer, attribute string, column int) {
-	WrapCellLayout(gextras.InternObject(c)).AddAttribute(cell, attribute, column)
-}
-
-func (c comboBoxText) Clear() {
-	WrapCellLayout(gextras.InternObject(c)).Clear()
-}
-
-func (c comboBoxText) ClearAttributes(cell CellRenderer) {
-	WrapCellLayout(gextras.InternObject(c)).ClearAttributes(cell)
-}
-
-func (c comboBoxText) Area() CellArea {
-	return WrapCellLayout(gextras.InternObject(c)).Area()
-}
-
-func (c comboBoxText) PackEnd(cell CellRenderer, expand bool) {
-	WrapCellLayout(gextras.InternObject(c)).PackEnd(cell, expand)
-}
-
-func (c comboBoxText) PackStart(cell CellRenderer, expand bool) {
-	WrapCellLayout(gextras.InternObject(c)).PackStart(cell, expand)
-}
-
-func (c comboBoxText) Reorder(cell CellRenderer, position int) {
-	WrapCellLayout(gextras.InternObject(c)).Reorder(cell, position)
+func (c comboBoxText) AsCellLayout() CellLayout {
+	return WrapCellLayout(gextras.InternObject(c))
 }

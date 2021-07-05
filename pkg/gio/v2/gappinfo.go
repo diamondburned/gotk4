@@ -79,68 +79,79 @@ func init() {
 type AppInfo interface {
 	gextras.Objector
 
-	// AddSupportsType checks if the application supports reading files and
-	// directories from URIs.
+	// AddSupportsType adds a content type to the application information to
+	// indicate the application is capable of opening files with the given
+	// content type.
 	AddSupportsType(contentType string) error
-	// CanDelete checks if the application supports reading files and
-	// directories from URIs.
+	// CanDelete obtains the information whether the Info can be deleted. See
+	// g_app_info_delete().
 	CanDelete() bool
-	// CanRemoveSupportsType checks if the application supports reading files
-	// and directories from URIs.
+	// CanRemoveSupportsType checks if a supported content type can be removed
+	// from an application.
 	CanRemoveSupportsType() bool
-	// Delete checks if the application supports reading files and directories
-	// from URIs.
+	// Delete tries to delete a Info.
+	//
+	// On some platforms, there may be a difference between user-defined Infos
+	// which can be deleted, and system-wide ones which cannot. See
+	// g_app_info_can_delete().
 	Delete() bool
-	// Dup checks if the application supports reading files and directories from
-	// URIs.
+	// Dup creates a duplicate of a Info.
 	Dup() AppInfo
-	// Equal checks if the application supports reading files and directories
-	// from URIs.
+	// Equal checks if two Infos are equal.
+	//
+	// Note that the check *may not* compare each individual field, and only
+	// does an identity check. In case detecting changes in the contents is
+	// needed, program code must additionally compare relevant fields.
 	Equal(appinfo2 AppInfo) bool
-	// Commandline checks if the application supports reading files and
-	// directories from URIs.
+	// Commandline gets the commandline with which the application will be
+	// started.
 	Commandline() string
-	// Description checks if the application supports reading files and
-	// directories from URIs.
+	// Description gets a human-readable description of an installed
+	// application.
 	Description() string
-	// DisplayName checks if the application supports reading files and
-	// directories from URIs.
+	// DisplayName gets the display name of the application. The display name is
+	// often more descriptive to the user than the name itself.
 	DisplayName() string
-	// Executable checks if the application supports reading files and
-	// directories from URIs.
+	// Executable gets the executable's name for the installed application.
 	Executable() string
-	// Icon checks if the application supports reading files and directories
-	// from URIs.
+	// Icon gets the icon for the application.
 	Icon() Icon
-	// ID checks if the application supports reading files and directories from
-	// URIs.
+	// ID gets the ID of an application. An id is a string that identifies the
+	// application. The exact format of the id is platform dependent. For
+	// instance, on Unix this is the desktop file id from the xdg menu
+	// specification.
+	//
+	// Note that the returned ID may be nil, depending on how the @appinfo has
+	// been constructed.
 	ID() string
-	// Name checks if the application supports reading files and directories
-	// from URIs.
+	// Name gets the installed name of the application.
 	Name() string
-	// SupportedTypes checks if the application supports reading files and
-	// directories from URIs.
+	// SupportedTypes retrieves the list of content types that @app_info claims
+	// to support. If this information is not provided by the environment, this
+	// function will return nil. This function does not take in consideration
+	// associations added with g_app_info_add_supports_type(), but only those
+	// exported directly by the application.
 	SupportedTypes() []string
-	// LaunchUrisFinish checks if the application supports reading files and
-	// directories from URIs.
+	// LaunchUrisFinish finishes a g_app_info_launch_uris_async() operation.
 	LaunchUrisFinish(result AsyncResult) error
-	// RemoveSupportsType checks if the application supports reading files and
-	// directories from URIs.
+	// RemoveSupportsType removes a supported type from an application, if
+	// possible.
 	RemoveSupportsType(contentType string) error
-	// SetAsDefaultForExtension checks if the application supports reading files
-	// and directories from URIs.
+	// SetAsDefaultForExtension sets the application as the default handler for
+	// the given file extension.
 	SetAsDefaultForExtension(extension string) error
-	// SetAsDefaultForType checks if the application supports reading files and
-	// directories from URIs.
+	// SetAsDefaultForType sets the application as the default handler for a
+	// given type.
 	SetAsDefaultForType(contentType string) error
-	// SetAsLastUsedForType checks if the application supports reading files and
-	// directories from URIs.
+	// SetAsLastUsedForType sets the application as the last used application
+	// for a given type. This will make the application appear as first in the
+	// list returned by g_app_info_get_recommended_for_type(), regardless of the
+	// default application for that content type.
 	SetAsLastUsedForType(contentType string) error
-	// ShouldShow checks if the application supports reading files and
-	// directories from URIs.
+	// ShouldShow checks if the application info should be shown in menus that
+	// list available applications.
 	ShouldShow() bool
-	// SupportsFiles checks if the application supports reading files and
-	// directories from URIs.
+	// SupportsFiles checks if the application accepts files as arguments.
 	SupportsFiles() bool
 	// SupportsUris checks if the application supports reading files and
 	// directories from URIs.
@@ -171,7 +182,7 @@ func marshalAppInfo(p uintptr) (interface{}, error) {
 func (a appInfo) AddSupportsType(contentType string) error {
 	var _arg0 *C.GAppInfo // out
 	var _arg1 *C.char     // out
-	var _cerr *C.GError   // in
+	var _cerr **C.GError  // in
 
 	_arg0 = (*C.GAppInfo)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.char)(C.CString(contentType))
@@ -181,7 +192,16 @@ func (a appInfo) AddSupportsType(contentType string) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _goerr
 }
@@ -406,7 +426,7 @@ func (a appInfo) SupportedTypes() []string {
 func (a appInfo) LaunchUrisFinish(result AsyncResult) error {
 	var _arg0 *C.GAppInfo     // out
 	var _arg1 *C.GAsyncResult // out
-	var _cerr *C.GError       // in
+	var _cerr **C.GError      // in
 
 	_arg0 = (*C.GAppInfo)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
@@ -415,7 +435,16 @@ func (a appInfo) LaunchUrisFinish(result AsyncResult) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _goerr
 }
@@ -423,7 +452,7 @@ func (a appInfo) LaunchUrisFinish(result AsyncResult) error {
 func (a appInfo) RemoveSupportsType(contentType string) error {
 	var _arg0 *C.GAppInfo // out
 	var _arg1 *C.char     // out
-	var _cerr *C.GError   // in
+	var _cerr **C.GError  // in
 
 	_arg0 = (*C.GAppInfo)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.char)(C.CString(contentType))
@@ -433,7 +462,16 @@ func (a appInfo) RemoveSupportsType(contentType string) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _goerr
 }
@@ -441,7 +479,7 @@ func (a appInfo) RemoveSupportsType(contentType string) error {
 func (a appInfo) SetAsDefaultForExtension(extension string) error {
 	var _arg0 *C.GAppInfo // out
 	var _arg1 *C.char     // out
-	var _cerr *C.GError   // in
+	var _cerr **C.GError  // in
 
 	_arg0 = (*C.GAppInfo)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.char)(C.CString(extension))
@@ -451,7 +489,16 @@ func (a appInfo) SetAsDefaultForExtension(extension string) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _goerr
 }
@@ -459,7 +506,7 @@ func (a appInfo) SetAsDefaultForExtension(extension string) error {
 func (a appInfo) SetAsDefaultForType(contentType string) error {
 	var _arg0 *C.GAppInfo // out
 	var _arg1 *C.char     // out
-	var _cerr *C.GError   // in
+	var _cerr **C.GError  // in
 
 	_arg0 = (*C.GAppInfo)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.char)(C.CString(contentType))
@@ -469,7 +516,16 @@ func (a appInfo) SetAsDefaultForType(contentType string) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _goerr
 }
@@ -477,7 +533,7 @@ func (a appInfo) SetAsDefaultForType(contentType string) error {
 func (a appInfo) SetAsLastUsedForType(contentType string) error {
 	var _arg0 *C.GAppInfo // out
 	var _arg1 *C.char     // out
-	var _cerr *C.GError   // in
+	var _cerr **C.GError  // in
 
 	_arg0 = (*C.GAppInfo)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.char)(C.CString(contentType))
@@ -487,7 +543,16 @@ func (a appInfo) SetAsLastUsedForType(contentType string) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _goerr
 }
@@ -549,12 +614,20 @@ func (a appInfo) SupportsUris() bool {
 type AppLaunchContext interface {
 	gextras.Objector
 
+	// Environment gets the complete environment variable list to be passed to
+	// the child process when @context is used to launch an application. This is
+	// a nil-terminated array of strings, where each string has the form
+	// `KEY=VALUE`.
 	Environment() []string
-
+	// LaunchFailedAppLaunchContext: called when an application has failed to
+	// launch, so that it can cancel the application startup notification
+	// started in g_app_launch_context_get_startup_notify_id().
 	LaunchFailedAppLaunchContext(startupNotifyId string)
-
+	// SetenvAppLaunchContext arranges for @variable to be set to @value in the
+	// child's environment when @context is used to launch an application.
 	SetenvAppLaunchContext(variable string, value string)
-
+	// UnsetenvAppLaunchContext arranges for @variable to be unset in the
+	// child's environment when @context is used to launch an application.
 	UnsetenvAppLaunchContext(variable string)
 }
 
@@ -577,6 +650,9 @@ func marshalAppLaunchContext(p uintptr) (interface{}, error) {
 	return WrapAppLaunchContext(obj), nil
 }
 
+// NewAppLaunchContext creates a new application launch context. This is not
+// normally used, instead you instantiate a subclass of this, such as
+// AppLaunchContext.
 func NewAppLaunchContext() AppLaunchContext {
 	var _cret *C.GAppLaunchContext // in
 
@@ -584,7 +660,7 @@ func NewAppLaunchContext() AppLaunchContext {
 
 	var _appLaunchContext AppLaunchContext // out
 
-	_appLaunchContext = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(AppLaunchContext)
+	_appLaunchContext = WrapAppLaunchContext(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _appLaunchContext
 }

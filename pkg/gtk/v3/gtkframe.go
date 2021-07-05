@@ -5,9 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -68,20 +66,38 @@ func init() {
 type Frame interface {
 	Bin
 
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+
+	// Label: if the frame’s label widget is a Label, returns the text in the
+	// label widget. (The frame will have a Label for the label widget if a
+	// non-nil argument was passed to gtk_frame_new().)
 	Label() string
-
+	// LabelAlign retrieves the X and Y alignment of the frame’s label. See
+	// gtk_frame_set_label_align().
 	LabelAlign() (xalign float32, yalign float32)
-
+	// LabelWidget retrieves the label widget for the frame. See
+	// gtk_frame_set_label_widget().
 	LabelWidget() Widget
-
+	// ShadowType retrieves the shadow type of the frame. See
+	// gtk_frame_set_shadow_type().
 	ShadowType() ShadowType
-
+	// SetLabelFrame removes the current Frame:label-widget. If @label is not
+	// nil, creates a new Label with that text and adds it as the
+	// Frame:label-widget.
 	SetLabelFrame(label string)
-
+	// SetLabelAlignFrame sets the alignment of the frame widget’s label. The
+	// default values for a newly created frame are 0.0 and 0.5.
 	SetLabelAlignFrame(xalign float32, yalign float32)
-
+	// SetLabelWidgetFrame sets the Frame:label-widget for the frame. This is
+	// the widget that will appear embedded in the top edge of the frame as a
+	// title.
 	SetLabelWidgetFrame(labelWidget Widget)
-
+	// SetShadowTypeFrame sets the Frame:shadow-type for @frame, i.e. whether it
+	// is drawn without (GTK_SHADOW_NONE) or with (other values) a visible
+	// border. Values other than GTK_SHADOW_NONE are treated identically by
+	// GtkFrame. The chosen type is applied by removing or adding the .flat
+	// class to the CSS node named border.
 	SetShadowTypeFrame(typ ShadowType)
 }
 
@@ -104,6 +120,8 @@ func marshalFrame(p uintptr) (interface{}, error) {
 	return WrapFrame(obj), nil
 }
 
+// NewFrame creates a new Frame, with optional label @label. If @label is nil,
+// the label is omitted.
 func NewFrame(label string) Frame {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -115,7 +133,7 @@ func NewFrame(label string) Frame {
 
 	var _frame Frame // out
 
-	_frame = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Frame)
+	_frame = WrapFrame(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _frame
 }
@@ -137,8 +155,8 @@ func (f frame) Label() string {
 
 func (f frame) LabelAlign() (xalign float32, yalign float32) {
 	var _arg0 *C.GtkFrame // out
-	var _arg1 C.gfloat    // in
-	var _arg2 C.gfloat    // in
+	var _arg1 *C.gfloat   // in
+	var _arg2 *C.gfloat   // in
 
 	_arg0 = (*C.GtkFrame)(unsafe.Pointer(f.Native()))
 
@@ -226,42 +244,6 @@ func (f frame) SetShadowTypeFrame(typ ShadowType) {
 	C.gtk_frame_set_shadow_type(_arg0, _arg1)
 }
 
-func (b frame) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
-}
-
-func (b frame) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b frame) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b frame) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b frame) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b frame) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b frame) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b frame) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b frame) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b frame) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
+func (f frame) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(f))
 }

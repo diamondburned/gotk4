@@ -3,11 +3,9 @@
 package gio
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -41,12 +39,24 @@ func init() {
 // should be used to resolve the list of names so that fallback icons work
 // nicely with themes that inherit other themes.
 type ThemedIcon interface {
-	Icon
+	gextras.Objector
 
+	// AsIcon casts the class to the Icon interface.
+	AsIcon() Icon
+
+	// AppendNameThemedIcon: append a name to the list of icons from within
+	// @icon.
+	//
+	// Note that doing so invalidates the hash computed by prior calls to
+	// g_icon_hash().
 	AppendNameThemedIcon(iconname string)
-
+	// Names gets the names of icons from within @icon.
 	Names() []string
-
+	// PrependNameThemedIcon: prepend a name to the list of icons from within
+	// @icon.
+	//
+	// Note that doing so invalidates the hash computed by prior calls to
+	// g_icon_hash().
 	PrependNameThemedIcon(iconname string)
 }
 
@@ -69,6 +79,7 @@ func marshalThemedIcon(p uintptr) (interface{}, error) {
 	return WrapThemedIcon(obj), nil
 }
 
+// NewThemedIcon creates a new themed icon for @iconname.
 func NewThemedIcon(iconname string) ThemedIcon {
 	var _arg1 *C.char  // out
 	var _cret *C.GIcon // in
@@ -80,11 +91,12 @@ func NewThemedIcon(iconname string) ThemedIcon {
 
 	var _themedIcon ThemedIcon // out
 
-	_themedIcon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(ThemedIcon)
+	_themedIcon = WrapThemedIcon(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _themedIcon
 }
 
+// NewThemedIconFromNames creates a new themed icon for @iconnames.
 func NewThemedIconFromNames(iconnames []string) ThemedIcon {
 	var _arg1 **C.char
 	var _arg2 C.int
@@ -105,11 +117,26 @@ func NewThemedIconFromNames(iconnames []string) ThemedIcon {
 
 	var _themedIcon ThemedIcon // out
 
-	_themedIcon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(ThemedIcon)
+	_themedIcon = WrapThemedIcon(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _themedIcon
 }
 
+// NewThemedIconWithDefaultFallbacks creates a new themed icon for @iconname,
+// and all the names that can be created by shortening @iconname at '-'
+// characters.
+//
+// In the following example, @icon1 and @icon2 are equivalent:
+//
+//    const char *names[] = {
+//      "gnome-dev-cdrom-audio",
+//      "gnome-dev-cdrom",
+//      "gnome-dev",
+//      "gnome"
+//    };
+//
+//    icon1 = g_themed_icon_new_from_names (names, 4);
+//    icon2 = g_themed_icon_new_with_default_fallbacks ("gnome-dev-cdrom-audio");
 func NewThemedIconWithDefaultFallbacks(iconname string) ThemedIcon {
 	var _arg1 *C.char  // out
 	var _cret *C.GIcon // in
@@ -121,7 +148,7 @@ func NewThemedIconWithDefaultFallbacks(iconname string) ThemedIcon {
 
 	var _themedIcon ThemedIcon // out
 
-	_themedIcon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(ThemedIcon)
+	_themedIcon = WrapThemedIcon(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _themedIcon
 }
@@ -175,14 +202,6 @@ func (i themedIcon) PrependNameThemedIcon(iconname string) {
 	C.g_themed_icon_prepend_name(_arg0, _arg1)
 }
 
-func (i themedIcon) Equal(icon2 Icon) bool {
-	return WrapIcon(gextras.InternObject(i)).Equal(icon2)
-}
-
-func (i themedIcon) Serialize() *glib.Variant {
-	return WrapIcon(gextras.InternObject(i)).Serialize()
-}
-
-func (i themedIcon) String() string {
-	return WrapIcon(gextras.InternObject(i)).String()
+func (t themedIcon) AsIcon() Icon {
+	return WrapIcon(gextras.InternObject(t))
 }

@@ -33,8 +33,11 @@ func init() {
 type EventControllerMotion interface {
 	EventController
 
+	// ContainsPointerEventControllerMotion returns if a pointer is within @self
+	// or one of its children.
 	ContainsPointerEventControllerMotion() bool
-
+	// IsPointerEventControllerMotion returns if a pointer is within @self, but
+	// not one of its children.
 	IsPointerEventControllerMotion() bool
 }
 
@@ -57,6 +60,8 @@ func marshalEventControllerMotion(p uintptr) (interface{}, error) {
 	return WrapEventControllerMotion(obj), nil
 }
 
+// NewEventControllerMotion creates a new event controller that will handle
+// motion events.
 func NewEventControllerMotion() EventControllerMotion {
 	var _cret *C.GtkEventController // in
 
@@ -64,7 +69,7 @@ func NewEventControllerMotion() EventControllerMotion {
 
 	var _eventControllerMotion EventControllerMotion // out
 
-	_eventControllerMotion = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(EventControllerMotion)
+	_eventControllerMotion = WrapEventControllerMotion(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _eventControllerMotion
 }

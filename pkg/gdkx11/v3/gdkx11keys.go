@@ -25,8 +25,16 @@ func init() {
 type X11Keymap interface {
 	gdk.Keymap
 
+	// GroupForState extracts the group from the state field sent in an X Key
+	// event. This is only needed for code processing raw X events, since
+	// EventKey directly includes an is_modifier field.
 	GroupForState(state uint) int
-
+	// KeyIsModifierX11Keymap determines whether a particular key code
+	// represents a key that is a modifier. That is, it’s a key that normally
+	// just affects the keyboard state and the behavior of other keys rather
+	// than producing a direct effect itself. This is only needed for code
+	// processing raw X events, since EventKey directly includes an is_modifier
+	// field.
 	KeyIsModifierX11Keymap(keycode uint) bool
 }
 

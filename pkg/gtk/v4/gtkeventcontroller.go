@@ -39,28 +39,44 @@ func init() {
 type EventController interface {
 	gextras.Objector
 
+	// CurrentEvent returns the event that is currently being handled by the
+	// controller, and nil at other times.
 	CurrentEvent() gdk.Event
-
+	// CurrentEventDevice returns the device of the event that is currently
+	// being handled by the controller, and nil otherwise.
 	CurrentEventDevice() gdk.Device
-
+	// CurrentEventState returns the modifier state of the event that is
+	// currently being handled by the controller, and 0 otherwise.
 	CurrentEventState() gdk.ModifierType
-
+	// CurrentEventTime returns the timestamp of the event that is currently
+	// being handled by the controller, and 0 otherwise.
 	CurrentEventTime() uint32
-
+	// Name gets the name of @controller.
 	Name() string
-
+	// PropagationLimit gets the propagation limit of the event controller.
 	PropagationLimit() PropagationLimit
-
+	// PropagationPhase gets the propagation phase at which @controller handles
+	// events.
 	PropagationPhase() PropagationPhase
-
+	// Widget returns the Widget this controller relates to.
 	Widget() Widget
-
+	// ResetEventController resets the @controller to a clean state.
 	ResetEventController()
-
+	// SetNameEventController sets a name on the controller that can be used for
+	// debugging.
 	SetNameEventController(name string)
-
+	// SetPropagationLimitEventController sets the event propagation limit on
+	// the event controller.
+	//
+	// If the limit is set to GTK_LIMIT_SAME_NATIVE, the controller won't handle
+	// events that are targeted at widgets on a different surface, such as
+	// popovers.
 	SetPropagationLimitEventController(limit PropagationLimit)
-
+	// SetPropagationPhaseEventController sets the propagation phase at which a
+	// controller handles events.
+	//
+	// If @phase is GTK_PHASE_NONE, no automatic event handling will be
+	// performed, but other additional gesture maintenance will.
 	SetPropagationPhaseEventController(phase PropagationPhase)
 }
 

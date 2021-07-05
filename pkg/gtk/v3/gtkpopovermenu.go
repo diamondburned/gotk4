@@ -5,9 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -26,11 +24,11 @@ func init() {
 	})
 }
 
-// PopoverMenu: gtkPopoverMenu is a subclass of Popover that treats its children
-// like menus and allows switching between them. It is meant to be used
-// primarily together with ModelButton, but any widget can be used, such as
-// SpinButton or Scale. In this respect, GtkPopoverMenu is more flexible than
-// popovers that are created from a Model with gtk_popover_new_from_model().
+// PopoverMenu is a subclass of Popover that treats its children like menus and
+// allows switching between them. It is meant to be used primarily together with
+// ModelButton, but any widget can be used, such as SpinButton or Scale. In this
+// respect, GtkPopoverMenu is more flexible than popovers that are created from
+// a Model with gtk_popover_new_from_model().
 //
 // To add a child as a submenu, set the PopoverMenu:submenu child property to
 // the name of the submenu. To let the user open this submenu, add a ModelButton
@@ -97,6 +95,16 @@ func init() {
 type PopoverMenu interface {
 	Popover
 
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+
+	// OpenSubmenuPopoverMenu opens a submenu of the @popover. The @name must be
+	// one of the names given to the submenus of @popover with
+	// PopoverMenu:submenu, or "main" to switch back to the main menu.
+	//
+	// ModelButton will open submenus automatically when the
+	// ModelButton:menu-name property is set, so this function is only needed
+	// when you are using other kinds of widgets to initiate menu changes.
 	OpenSubmenuPopoverMenu(name string)
 }
 
@@ -119,6 +127,7 @@ func marshalPopoverMenu(p uintptr) (interface{}, error) {
 	return WrapPopoverMenu(obj), nil
 }
 
+// NewPopoverMenu creates a new popover menu.
 func NewPopoverMenu() PopoverMenu {
 	var _cret *C.GtkWidget // in
 
@@ -126,7 +135,7 @@ func NewPopoverMenu() PopoverMenu {
 
 	var _popoverMenu PopoverMenu // out
 
-	_popoverMenu = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(PopoverMenu)
+	_popoverMenu = WrapPopoverMenu(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _popoverMenu
 }
@@ -142,42 +151,6 @@ func (p popoverMenu) OpenSubmenuPopoverMenu(name string) {
 	C.gtk_popover_menu_open_submenu(_arg0, _arg1)
 }
 
-func (b popoverMenu) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
-}
-
-func (b popoverMenu) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b popoverMenu) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b popoverMenu) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b popoverMenu) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b popoverMenu) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b popoverMenu) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b popoverMenu) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b popoverMenu) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b popoverMenu) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
+func (p popoverMenu) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(p))
 }

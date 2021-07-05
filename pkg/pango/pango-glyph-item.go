@@ -3,6 +3,7 @@
 package pango
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -22,13 +23,15 @@ func init() {
 	})
 }
 
-// GlyphItem: a `PangoGlyphItem` is a pair of a `PangoItem` and the glyphs
+// GlyphItem: `PangoGlyphItem` is a pair of a `PangoItem` and the glyphs
 // resulting from shaping the items text.
 //
 // As an example of the usage of `PangoGlyphItem`, the results of shaping text
 // with `PangoLayout` is a list of `PangoLayoutLine`, each of which contains a
 // list of `PangoGlyphItem`.
-type GlyphItem C.PangoGlyphItem
+type GlyphItem struct {
+	native C.PangoGlyphItem
+}
 
 // WrapGlyphItem wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -43,51 +46,33 @@ func marshalGlyphItem(p uintptr) (interface{}, error) {
 
 // Native returns the underlying C source pointer.
 func (g *GlyphItem) Native() unsafe.Pointer {
-	return unsafe.Pointer(g)
+	return unsafe.Pointer(&g.native)
 }
 
-// Copy modifies @orig to cover only the text after @split_index, and returns a
-// new item that covers the text before @split_index that used to be in @orig.
-//
-// You can think of @split_index as the length of the returned item.
-// @split_index may not be 0, and it may not be greater than or equal to the
-// length of @orig (that is, there must be at least one byte assigned to each
-// item, you can't create a zero-length item).
-//
-// This function is similar in function to pango_item_split() (and uses it
-// internally.)
-func (o *GlyphItem) Copy() *GlyphItem {
+// Copy: make a deep copy of an existing `PangoGlyphItem` structure.
+func (o *GlyphItem) Copy() GlyphItem {
 	var _arg0 *C.PangoGlyphItem // out
 	var _cret *C.PangoGlyphItem // in
 
-	_arg0 = (*C.PangoGlyphItem)(unsafe.Pointer(o.Native()))
+	_arg0 = (*C.PangoGlyphItem)(unsafe.Pointer(o))
 
 	_cret = C.pango_glyph_item_copy(_arg0)
 
-	var _glyphItem *GlyphItem // out
+	var _glyphItem GlyphItem // out
 
-	_glyphItem = (*GlyphItem)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(&_glyphItem, func(v **GlyphItem) {
-		C.free(unsafe.Pointer(v))
+	_glyphItem = (GlyphItem)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_glyphItem, func(v GlyphItem) {
+		C.pango_glyph_item_free((*C.PangoGlyphItem)(unsafe.Pointer(v)))
 	})
 
 	return _glyphItem
 }
 
-// Free modifies @orig to cover only the text after @split_index, and returns a
-// new item that covers the text before @split_index that used to be in @orig.
-//
-// You can think of @split_index as the length of the returned item.
-// @split_index may not be 0, and it may not be greater than or equal to the
-// length of @orig (that is, there must be at least one byte assigned to each
-// item, you can't create a zero-length item).
-//
-// This function is similar in function to pango_item_split() (and uses it
-// internally.)
-func (o *GlyphItem) Free() {
+// Free frees a `PangoGlyphItem` and resources to which it points.
+func (g *GlyphItem) Free() {
 	var _arg0 *C.PangoGlyphItem // out
 
-	_arg0 = (*C.PangoGlyphItem)(unsafe.Pointer(g.Native()))
+	_arg0 = (*C.PangoGlyphItem)(unsafe.Pointer(g))
 
 	C.pango_glyph_item_free(_arg0)
 }
@@ -102,30 +87,30 @@ func (o *GlyphItem) Free() {
 //
 // This function is similar in function to pango_item_split() (and uses it
 // internally.)
-func (o *GlyphItem) Split(text string, splitIndex int) *GlyphItem {
+func (o *GlyphItem) Split(text string, splitIndex int) GlyphItem {
 	var _arg0 *C.PangoGlyphItem // out
 	var _arg1 *C.char           // out
 	var _arg2 C.int             // out
 	var _cret *C.PangoGlyphItem // in
 
-	_arg0 = (*C.PangoGlyphItem)(unsafe.Pointer(o.Native()))
+	_arg0 = (*C.PangoGlyphItem)(unsafe.Pointer(o))
 	_arg1 = (*C.char)(C.CString(text))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(splitIndex)
 
 	_cret = C.pango_glyph_item_split(_arg0, _arg1, _arg2)
 
-	var _glyphItem *GlyphItem // out
+	var _glyphItem GlyphItem // out
 
-	_glyphItem = (*GlyphItem)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(&_glyphItem, func(v **GlyphItem) {
-		C.free(unsafe.Pointer(v))
+	_glyphItem = (GlyphItem)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_glyphItem, func(v GlyphItem) {
+		C.pango_glyph_item_free((*C.PangoGlyphItem)(unsafe.Pointer(v)))
 	})
 
 	return _glyphItem
 }
 
-// GlyphItemIter: a `PangoGlyphItemIter` is an iterator over the clusters in a
+// GlyphItemIter: `PangoGlyphItemIter` is an iterator over the clusters in a
 // `PangoGlyphItem`.
 //
 // The *forward direction* of the iterator is the logical direction of text.
@@ -157,7 +142,9 @@ func (o *GlyphItem) Split(text string, splitIndex int) *GlyphItem {
 // variables is not.
 //
 // None of the members of a `PangoGlyphItemIter` should be modified manually.
-type GlyphItemIter C.PangoGlyphItemIter
+type GlyphItemIter struct {
+	native C.PangoGlyphItemIter
+}
 
 // WrapGlyphItemIter wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -172,49 +159,49 @@ func marshalGlyphItemIter(p uintptr) (interface{}, error) {
 
 // Native returns the underlying C source pointer.
 func (g *GlyphItemIter) Native() unsafe.Pointer {
-	return unsafe.Pointer(g)
+	return unsafe.Pointer(&g.native)
 }
 
-// Copy moves the iterator to the preceding cluster in the glyph item. See
-// `PangoGlyphItemIter` for details of cluster orders.
-func (i *GlyphItemIter) Copy() *GlyphItemIter {
+// Copy: make a shallow copy of an existing `PangoGlyphItemIter` structure.
+func (o *GlyphItemIter) Copy() GlyphItemIter {
 	var _arg0 *C.PangoGlyphItemIter // out
 	var _cret *C.PangoGlyphItemIter // in
 
-	_arg0 = (*C.PangoGlyphItemIter)(unsafe.Pointer(o.Native()))
+	_arg0 = (*C.PangoGlyphItemIter)(unsafe.Pointer(o))
 
 	_cret = C.pango_glyph_item_iter_copy(_arg0)
 
-	var _glyphItemIter *GlyphItemIter // out
+	var _glyphItemIter GlyphItemIter // out
 
-	_glyphItemIter = (*GlyphItemIter)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(&_glyphItemIter, func(v **GlyphItemIter) {
-		C.free(unsafe.Pointer(v))
+	_glyphItemIter = (GlyphItemIter)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_glyphItemIter, func(v GlyphItemIter) {
+		C.pango_glyph_item_iter_free((*C.PangoGlyphItemIter)(unsafe.Pointer(v)))
 	})
 
 	return _glyphItemIter
 }
 
-// Free moves the iterator to the preceding cluster in the glyph item. See
-// `PangoGlyphItemIter` for details of cluster orders.
+// Free frees a `PangoGlyphItem`Iter.
 func (i *GlyphItemIter) Free() {
 	var _arg0 *C.PangoGlyphItemIter // out
 
-	_arg0 = (*C.PangoGlyphItemIter)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.PangoGlyphItemIter)(unsafe.Pointer(i))
 
 	C.pango_glyph_item_iter_free(_arg0)
 }
 
-// InitEnd moves the iterator to the preceding cluster in the glyph item. See
-// `PangoGlyphItemIter` for details of cluster orders.
-func (i *GlyphItemIter) InitEnd(glyphItem *GlyphItem, text string) bool {
+// InitEnd initializes a `PangoGlyphItemIter` structure to point to the last
+// cluster in a glyph item.
+//
+// See `PangoGlyphItemIter` for details of cluster orders.
+func (i *GlyphItemIter) InitEnd(glyphItem GlyphItem, text string) bool {
 	var _arg0 *C.PangoGlyphItemIter // out
 	var _arg1 *C.PangoGlyphItem     // out
 	var _arg2 *C.char               // out
 	var _cret C.gboolean            // in
 
-	_arg0 = (*C.PangoGlyphItemIter)(unsafe.Pointer(i.Native()))
-	_arg1 = (*C.PangoGlyphItem)(unsafe.Pointer(glyphItem.Native()))
+	_arg0 = (*C.PangoGlyphItemIter)(unsafe.Pointer(i))
+	_arg1 = (*C.PangoGlyphItem)(unsafe.Pointer(glyphItem))
 	_arg2 = (*C.char)(C.CString(text))
 	defer C.free(unsafe.Pointer(_arg2))
 
@@ -229,16 +216,18 @@ func (i *GlyphItemIter) InitEnd(glyphItem *GlyphItem, text string) bool {
 	return _ok
 }
 
-// InitStart moves the iterator to the preceding cluster in the glyph item. See
-// `PangoGlyphItemIter` for details of cluster orders.
-func (i *GlyphItemIter) InitStart(glyphItem *GlyphItem, text string) bool {
+// InitStart initializes a `PangoGlyphItemIter` structure to point to the first
+// cluster in a glyph item.
+//
+// See `PangoGlyphItemIter` for details of cluster orders.
+func (i *GlyphItemIter) InitStart(glyphItem GlyphItem, text string) bool {
 	var _arg0 *C.PangoGlyphItemIter // out
 	var _arg1 *C.PangoGlyphItem     // out
 	var _arg2 *C.char               // out
 	var _cret C.gboolean            // in
 
-	_arg0 = (*C.PangoGlyphItemIter)(unsafe.Pointer(i.Native()))
-	_arg1 = (*C.PangoGlyphItem)(unsafe.Pointer(glyphItem.Native()))
+	_arg0 = (*C.PangoGlyphItemIter)(unsafe.Pointer(i))
+	_arg1 = (*C.PangoGlyphItem)(unsafe.Pointer(glyphItem))
 	_arg2 = (*C.char)(C.CString(text))
 	defer C.free(unsafe.Pointer(_arg2))
 
@@ -253,13 +242,14 @@ func (i *GlyphItemIter) InitStart(glyphItem *GlyphItem, text string) bool {
 	return _ok
 }
 
-// NextCluster moves the iterator to the preceding cluster in the glyph item.
+// NextCluster advances the iterator to the next cluster in the glyph item.
+//
 // See `PangoGlyphItemIter` for details of cluster orders.
 func (i *GlyphItemIter) NextCluster() bool {
 	var _arg0 *C.PangoGlyphItemIter // out
 	var _cret C.gboolean            // in
 
-	_arg0 = (*C.PangoGlyphItemIter)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.PangoGlyphItemIter)(unsafe.Pointer(i))
 
 	_cret = C.pango_glyph_item_iter_next_cluster(_arg0)
 
@@ -278,7 +268,7 @@ func (i *GlyphItemIter) PrevCluster() bool {
 	var _arg0 *C.PangoGlyphItemIter // out
 	var _cret C.gboolean            // in
 
-	_arg0 = (*C.PangoGlyphItemIter)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.PangoGlyphItemIter)(unsafe.Pointer(i))
 
 	_cret = C.pango_glyph_item_iter_prev_cluster(_arg0)
 

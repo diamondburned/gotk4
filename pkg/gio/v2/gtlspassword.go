@@ -36,20 +36,36 @@ func init() {
 type TLSPassword interface {
 	gextras.Objector
 
+	// Description: get a description string about what the password will be
+	// used for.
 	Description() string
-
+	// Flags: get flags about the password.
 	Flags() TLSPasswordFlags
-
-	Value(length *uint) *byte
-
+	// Value: get the password value. If @length is not nil then it will be
+	// filled in with the length of the password value. (Note that the password
+	// value is not nul-terminated, so you can only pass nil for @length in
+	// contexts where you know the password will have a certain fixed length.)
+	Value(length uint) byte
+	// Warning: get a user readable translated warning. Usually this warning is
+	// a representation of the password flags returned from
+	// g_tls_password_get_flags().
 	Warning() string
-
+	// SetDescriptionTLSPassword: set a description string about what the
+	// password will be used for.
 	SetDescriptionTLSPassword(description string)
-
+	// SetFlagsTLSPassword: set flags about the password.
 	SetFlagsTLSPassword(flags TLSPasswordFlags)
-
+	// SetValueTLSPassword: set the value for this password. The @value will be
+	// copied by the password object.
+	//
+	// Specify the @length, for a non-nul-terminated password. Pass -1 as
+	// @length if using a nul-terminated password, and @length will be
+	// calculated automatically. (Note that the terminating nul is not
+	// considered part of the password in this case.)
 	SetValueTLSPassword(value []byte)
-
+	// SetWarningTLSPassword: set a user readable translated warning. Usually
+	// this warning is a representation of the password flags returned from
+	// g_tls_password_get_flags().
 	SetWarningTLSPassword(warning string)
 }
 
@@ -72,6 +88,7 @@ func marshalTLSPassword(p uintptr) (interface{}, error) {
 	return WrapTLSPassword(obj), nil
 }
 
+// NewTLSPassword: create a new Password object.
 func NewTLSPassword(flags TLSPasswordFlags, description string) TLSPassword {
 	var _arg1 C.GTlsPasswordFlags // out
 	var _arg2 *C.gchar            // out
@@ -85,7 +102,7 @@ func NewTLSPassword(flags TLSPasswordFlags, description string) TLSPassword {
 
 	var _tlsPassword TLSPassword // out
 
-	_tlsPassword = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(TLSPassword)
+	_tlsPassword = WrapTLSPassword(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _tlsPassword
 }
@@ -120,19 +137,19 @@ func (p tlsPassword) Flags() TLSPasswordFlags {
 	return _tlsPasswordFlags
 }
 
-func (p tlsPassword) Value(length *uint) *byte {
+func (p tlsPassword) Value(length uint) byte {
 	var _arg0 *C.GTlsPassword // out
 	var _arg1 *C.gsize        // out
 	var _cret *C.guchar       // in
 
 	_arg0 = (*C.GTlsPassword)(unsafe.Pointer(p.Native()))
-	_arg1 = (*C.gsize)(unsafe.Pointer(length))
+	_arg1 = *C.gsize(length)
 
 	_cret = C.g_tls_password_get_value(_arg0, _arg1)
 
-	var _guint8 *byte // out
+	var _guint8 byte // out
 
-	_guint8 = (*byte)(unsafe.Pointer(_cret))
+	_guint8 = byte(_cret)
 
 	return _guint8
 }

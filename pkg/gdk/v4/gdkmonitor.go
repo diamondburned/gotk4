@@ -55,26 +55,52 @@ func marshalSubpixelLayout(p uintptr) (interface{}, error) {
 type Monitor interface {
 	gextras.Objector
 
+	// Connector gets the name of the monitor's connector, if available.
 	Connector() string
-
+	// Display gets the display that this monitor belongs to.
 	Display() Display
-
+	// Geometry retrieves the size and position of the monitor within the
+	// display coordinate space.
+	//
+	// The returned geometry is in ”application pixels”, not in ”device pixels”
+	// (see [method@Gdk.Monitor.get_scale_factor]).
 	Geometry() Rectangle
-
+	// HeightMm gets the height in millimeters of the monitor.
 	HeightMm() int
-
+	// Manufacturer gets the name or PNP ID of the monitor's manufacturer.
+	//
+	// Note that this value might also vary depending on actual display backend.
+	//
+	// The PNP ID registry is located at https://uefi.org/pnp_id_list
+	// (https://uefi.org/pnp_id_list).
 	Manufacturer() string
-
+	// Model gets the string identifying the monitor model, if available.
 	Model() string
-
+	// RefreshRate gets the refresh rate of the monitor, if available.
+	//
+	// The value is in milli-Hertz, so a refresh rate of 60Hz is returned as
+	// 60000.
 	RefreshRate() int
-
+	// ScaleFactor gets the internal scale factor that maps from monitor
+	// coordinates to device pixels.
+	//
+	// On traditional systems this is 1, but on very high density outputs it can
+	// be a higher value (often 2).
+	//
+	// This can be used if you want to create pixel based data for a particular
+	// monitor, but most of the time you’re drawing to a surface where it is
+	// better to use [method@Gdk.Surface.get_scale_factor] instead.
 	ScaleFactor() int
-
+	// SubpixelLayout gets information about the layout of red, green and blue
+	// primaries for pixels.
 	SubpixelLayout() SubpixelLayout
-
+	// WidthMm gets the width in millimeters of the monitor.
 	WidthMm() int
-
+	// IsValidMonitor returns true if the @monitor object corresponds to a
+	// physical monitor.
+	//
+	// The @monitor becomes invalid when the physical monitor is unplugged or
+	// removed.
 	IsValidMonitor() bool
 }
 
@@ -128,8 +154,8 @@ func (m monitor) Display() Display {
 }
 
 func (m monitor) Geometry() Rectangle {
-	var _arg0 *C.GdkMonitor  // out
-	var _arg1 C.GdkRectangle // in
+	var _arg0 *C.GdkMonitor   // out
+	var _arg1 *C.GdkRectangle // in
 
 	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
 
@@ -137,17 +163,7 @@ func (m monitor) Geometry() Rectangle {
 
 	var _geometry Rectangle // out
 
-	{
-		var refTmpIn *C.GdkRectangle
-		var refTmpOut *Rectangle
-
-		in0 := &_arg1
-		refTmpIn = in0
-
-		refTmpOut = (*Rectangle)(unsafe.Pointer(refTmpIn))
-
-		_geometry = *refTmpOut
-	}
+	_geometry = (Rectangle)(unsafe.Pointer(_arg1))
 
 	return _geometry
 }

@@ -136,11 +136,45 @@ func init() {
 type AsyncInitable interface {
 	gextras.Objector
 
-	// InitAsync finishes the async construction for the various
-	// g_async_initable_new calls, returning the created object or nil on error.
+	// InitAsync starts asynchronous initialization of the object implementing
+	// the interface. This must be done before any real use of the object after
+	// initial construction. If the object also implements #GInitable you can
+	// optionally call g_initable_init() instead.
+	//
+	// This method is intended for language bindings. If writing in C,
+	// g_async_initable_new_async() should typically be used instead.
+	//
+	// When the initialization is finished, @callback will be called. You can
+	// then call g_async_initable_init_finish() to get the result of the
+	// initialization.
+	//
+	// Implementations may also support cancellation. If @cancellable is not
+	// nil, then initialization can be cancelled by triggering the cancellable
+	// object from another thread. If the operation was cancelled, the error
+	// G_IO_ERROR_CANCELLED will be returned. If @cancellable is not nil, and
+	// the object doesn't support cancellable initialization, the error
+	// G_IO_ERROR_NOT_SUPPORTED will be returned.
+	//
+	// As with #GInitable, if the object is not initialized, or initialization
+	// returns with an error, then all operations on the object except
+	// g_object_ref() and g_object_unref() are considered to be invalid, and
+	// have undefined behaviour. They will often fail with g_critical() or
+	// g_warning(), but this must not be relied on.
+	//
+	// Callers should not assume that a class which implements Initable can be
+	// initialized multiple times; for more information, see g_initable_init().
+	// If a class explicitly supports being initialized multiple times,
+	// implementation requires yielding all subsequent calls to init_async() on
+	// the results of the first call.
+	//
+	// For classes that also support the #GInitable interface, the default
+	// implementation of this method will run the g_initable_init() function in
+	// a thread, so if you want to support asynchronous initialization via
+	// threads, just implement the Initable interface without overriding any
+	// interface methods.
 	InitAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
-	// InitFinish finishes the async construction for the various
-	// g_async_initable_new calls, returning the created object or nil on error.
+	// InitFinish finishes asynchronous initialization and returns the result.
+	// See g_async_initable_init_async().
 	InitFinish(res AsyncResult) error
 	// NewFinish finishes the async construction for the various
 	// g_async_initable_new calls, returning the created object or nil on error.
@@ -187,7 +221,7 @@ func (i asyncInitable) InitAsync(ioPriority int, cancellable Cancellable, callba
 func (i asyncInitable) InitFinish(res AsyncResult) error {
 	var _arg0 *C.GAsyncInitable // out
 	var _arg1 *C.GAsyncResult   // out
-	var _cerr *C.GError         // in
+	var _cerr **C.GError        // in
 
 	_arg0 = (*C.GAsyncInitable)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
@@ -196,7 +230,16 @@ func (i asyncInitable) InitFinish(res AsyncResult) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _goerr
 }
@@ -205,7 +248,7 @@ func (i asyncInitable) NewFinish(res AsyncResult) (gextras.Objector, error) {
 	var _arg0 *C.GAsyncInitable // out
 	var _arg1 *C.GAsyncResult   // out
 	var _cret *C.GObject        // in
-	var _cerr *C.GError         // in
+	var _cerr **C.GError        // in
 
 	_arg0 = (*C.GAsyncInitable)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
@@ -216,7 +259,16 @@ func (i asyncInitable) NewFinish(res AsyncResult) (gextras.Objector, error) {
 	var _goerr error             // out
 
 	_object = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(gextras.Objector)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _object, _goerr
 }

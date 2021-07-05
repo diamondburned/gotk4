@@ -5,10 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/gdk/v3"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -31,7 +28,11 @@ func init() {
 // color. It implements the ColorChooser interface.
 type ColorChooserDialog interface {
 	Dialog
-	ColorChooser
+
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsColorChooser casts the class to the ColorChooser interface.
+	AsColorChooser() ColorChooser
 }
 
 // colorChooserDialog implements the ColorChooserDialog class.
@@ -53,6 +54,7 @@ func marshalColorChooserDialog(p uintptr) (interface{}, error) {
 	return WrapColorChooserDialog(obj), nil
 }
 
+// NewColorChooserDialog creates a new ColorChooserDialog.
 func NewColorChooserDialog(title string, parent Window) ColorChooserDialog {
 	var _arg1 *C.gchar     // out
 	var _arg2 *C.GtkWindow // out
@@ -66,67 +68,15 @@ func NewColorChooserDialog(title string, parent Window) ColorChooserDialog {
 
 	var _colorChooserDialog ColorChooserDialog // out
 
-	_colorChooserDialog = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ColorChooserDialog)
+	_colorChooserDialog = WrapColorChooserDialog(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _colorChooserDialog
 }
 
-func (b colorChooserDialog) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+func (c colorChooserDialog) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(c))
 }
 
-func (b colorChooserDialog) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b colorChooserDialog) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b colorChooserDialog) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b colorChooserDialog) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b colorChooserDialog) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b colorChooserDialog) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b colorChooserDialog) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b colorChooserDialog) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b colorChooserDialog) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (c colorChooserDialog) AddPalette(orientation Orientation, colorsPerLine int, colors []gdk.RGBA) {
-	WrapColorChooser(gextras.InternObject(c)).AddPalette(orientation, colorsPerLine, colors)
-}
-
-func (c colorChooserDialog) RGBA() gdk.RGBA {
-	return WrapColorChooser(gextras.InternObject(c)).RGBA()
-}
-
-func (c colorChooserDialog) UseAlpha() bool {
-	return WrapColorChooser(gextras.InternObject(c)).UseAlpha()
-}
-
-func (c colorChooserDialog) SetRGBA(color *gdk.RGBA) {
-	WrapColorChooser(gextras.InternObject(c)).SetRGBA(color)
-}
-
-func (c colorChooserDialog) SetUseAlpha(useAlpha bool) {
-	WrapColorChooser(gextras.InternObject(c)).SetUseAlpha(useAlpha)
+func (c colorChooserDialog) AsColorChooser() ColorChooser {
+	return WrapColorChooser(gextras.InternObject(c))
 }

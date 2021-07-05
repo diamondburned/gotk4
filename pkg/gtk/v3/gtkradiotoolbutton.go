@@ -5,9 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -26,9 +24,9 @@ func init() {
 	})
 }
 
-// RadioToolButton: a RadioToolButton is a ToolItem that contains a radio
-// button, that is, a button that is part of a group of toggle buttons where
-// only one button can be active at a time.
+// RadioToolButton is a ToolItem that contains a radio button, that is, a button
+// that is part of a group of toggle buttons where only one button can be active
+// at a time.
 //
 // Use gtk_radio_tool_button_new() to create a new GtkRadioToolButton. Use
 // gtk_radio_tool_button_new_from_widget() to create a new GtkRadioToolButton
@@ -40,6 +38,13 @@ func init() {
 // GtkRadioToolButton has a single CSS node with name toolbutton.
 type RadioToolButton interface {
 	ToggleToolButton
+
+	// AsActionable casts the class to the Actionable interface.
+	AsActionable() Actionable
+	// AsActivatable casts the class to the Activatable interface.
+	AsActivatable() Activatable
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
 }
 
 // radioToolButton implements the RadioToolButton class.
@@ -61,6 +66,8 @@ func marshalRadioToolButton(p uintptr) (interface{}, error) {
 	return WrapRadioToolButton(obj), nil
 }
 
+// NewRadioToolButtonFromWidget creates a new RadioToolButton adding it to the
+// same group as @gruup
 func NewRadioToolButtonFromWidget(group RadioToolButton) RadioToolButton {
 	var _arg1 *C.GtkRadioToolButton // out
 	var _cret *C.GtkToolItem        // in
@@ -71,11 +78,16 @@ func NewRadioToolButtonFromWidget(group RadioToolButton) RadioToolButton {
 
 	var _radioToolButton RadioToolButton // out
 
-	_radioToolButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(RadioToolButton)
+	_radioToolButton = WrapRadioToolButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _radioToolButton
 }
 
+// NewRadioToolButtonWithStockFromWidget creates a new RadioToolButton adding it
+// to the same group as @group. The new RadioToolButton will contain an icon and
+// label from the stock item indicated by @stock_id.
+//
+// Deprecated: since version 3.10.
 func NewRadioToolButtonWithStockFromWidget(group RadioToolButton, stockId string) RadioToolButton {
 	var _arg1 *C.GtkRadioToolButton // out
 	var _arg2 *C.gchar              // out
@@ -89,131 +101,19 @@ func NewRadioToolButtonWithStockFromWidget(group RadioToolButton, stockId string
 
 	var _radioToolButton RadioToolButton // out
 
-	_radioToolButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(RadioToolButton)
+	_radioToolButton = WrapRadioToolButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _radioToolButton
 }
 
-func (b radioToolButton) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+func (r radioToolButton) AsActionable() Actionable {
+	return WrapActionable(gextras.InternObject(r))
 }
 
-func (b radioToolButton) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+func (r radioToolButton) AsActivatable() Activatable {
+	return WrapActivatable(gextras.InternObject(r))
 }
 
-func (b radioToolButton) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b radioToolButton) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b radioToolButton) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b radioToolButton) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b radioToolButton) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b radioToolButton) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b radioToolButton) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b radioToolButton) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (a radioToolButton) DoSetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).DoSetRelatedAction(action)
-}
-
-func (a radioToolButton) RelatedAction() Action {
-	return WrapActivatable(gextras.InternObject(a)).RelatedAction()
-}
-
-func (a radioToolButton) UseActionAppearance() bool {
-	return WrapActivatable(gextras.InternObject(a)).UseActionAppearance()
-}
-
-func (a radioToolButton) SetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SetRelatedAction(action)
-}
-
-func (a radioToolButton) SetUseActionAppearance(useAppearance bool) {
-	WrapActivatable(gextras.InternObject(a)).SetUseActionAppearance(useAppearance)
-}
-
-func (a radioToolButton) SyncActionProperties(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SyncActionProperties(action)
-}
-
-func (a radioToolButton) ActionName() string {
-	return WrapActionable(gextras.InternObject(a)).ActionName()
-}
-
-func (a radioToolButton) ActionTargetValue() *glib.Variant {
-	return WrapActionable(gextras.InternObject(a)).ActionTargetValue()
-}
-
-func (a radioToolButton) SetActionName(actionName string) {
-	WrapActionable(gextras.InternObject(a)).SetActionName(actionName)
-}
-
-func (a radioToolButton) SetActionTargetValue(targetValue *glib.Variant) {
-	WrapActionable(gextras.InternObject(a)).SetActionTargetValue(targetValue)
-}
-
-func (a radioToolButton) SetDetailedActionName(detailedActionName string) {
-	WrapActionable(gextras.InternObject(a)).SetDetailedActionName(detailedActionName)
-}
-
-func (b radioToolButton) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
-}
-
-func (b radioToolButton) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b radioToolButton) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b radioToolButton) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b radioToolButton) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b radioToolButton) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b radioToolButton) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b radioToolButton) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b radioToolButton) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b radioToolButton) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
+func (r radioToolButton) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(r))
 }

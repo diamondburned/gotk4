@@ -7,7 +7,6 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -57,7 +56,7 @@ func marshalCalendarDisplayOptions(p uintptr) (interface{}, error) {
 // CalendarDetailFunc: this kind of functions provide Pango markup with detail
 // information for the specified day. Examples for such details are holidays or
 // appointments. The function returns nil when no information is available.
-type CalendarDetailFunc func(calendar Calendar, year uint, month uint, day uint, utf8 string)
+type CalendarDetailFunc func(calendar Calendar, year uint, month uint, day uint) (utf8 string)
 
 //export gotk4_CalendarDetailFunc
 func gotk4_CalendarDetailFunc(arg0 *C.GtkCalendar, arg1 C.guint, arg2 C.guint, arg3 C.guint, arg4 C.gpointer) *C.gchar {
@@ -109,30 +108,39 @@ func gotk4_CalendarDetailFunc(arg0 *C.GtkCalendar, arg1 C.guint, arg2 C.guint, a
 type Calendar interface {
 	Widget
 
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+
+	// ClearMarksCalendar: remove all visual markers.
 	ClearMarksCalendar()
-
+	// Date obtains the selected date from a Calendar.
 	Date() (year uint, month uint, day uint)
-
+	// DayIsMarked returns if the @day of the @calendar is already marked.
 	DayIsMarked(day uint) bool
-
+	// DetailHeightRows queries the height of detail cells, in rows. See
+	// Calendar:detail-width-chars.
 	DetailHeightRows() int
-
+	// DetailWidthChars queries the width of detail cells, in characters. See
+	// Calendar:detail-width-chars.
 	DetailWidthChars() int
-
+	// DisplayOptions returns the current display options of @calendar.
 	DisplayOptions() CalendarDisplayOptions
-
+	// MarkDayCalendar places a visual marker on a particular day.
 	MarkDayCalendar(day uint)
-
+	// SelectDayCalendar selects a day from the current month.
 	SelectDayCalendar(day uint)
-
+	// SelectMonthCalendar shifts the calendar to a different month.
 	SelectMonthCalendar(month uint, year uint)
-
+	// SetDetailHeightRowsCalendar updates the height of detail cells. See
+	// Calendar:detail-height-rows.
 	SetDetailHeightRowsCalendar(rows int)
-
+	// SetDetailWidthCharsCalendar updates the width of detail cells. See
+	// Calendar:detail-width-chars.
 	SetDetailWidthCharsCalendar(chars int)
-
+	// SetDisplayOptionsCalendar sets display options (whether to display the
+	// heading and the month headings).
 	SetDisplayOptionsCalendar(flags CalendarDisplayOptions)
-
+	// UnmarkDayCalendar removes the visual marker from a particular day.
 	UnmarkDayCalendar(day uint)
 }
 
@@ -155,6 +163,7 @@ func marshalCalendar(p uintptr) (interface{}, error) {
 	return WrapCalendar(obj), nil
 }
 
+// NewCalendar creates a new calendar, with the current date being selected.
 func NewCalendar() Calendar {
 	var _cret *C.GtkWidget // in
 
@@ -162,7 +171,7 @@ func NewCalendar() Calendar {
 
 	var _calendar Calendar // out
 
-	_calendar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Calendar)
+	_calendar = WrapCalendar(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _calendar
 }
@@ -177,9 +186,9 @@ func (c calendar) ClearMarksCalendar() {
 
 func (c calendar) Date() (year uint, month uint, day uint) {
 	var _arg0 *C.GtkCalendar // out
-	var _arg1 C.guint        // in
-	var _arg2 C.guint        // in
-	var _arg3 C.guint        // in
+	var _arg1 *C.guint       // in
+	var _arg2 *C.guint       // in
+	var _arg3 *C.guint       // in
 
 	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(c.Native()))
 
@@ -332,42 +341,6 @@ func (c calendar) UnmarkDayCalendar(day uint) {
 	C.gtk_calendar_unmark_day(_arg0, _arg1)
 }
 
-func (b calendar) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
-}
-
-func (b calendar) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b calendar) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b calendar) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b calendar) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b calendar) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b calendar) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b calendar) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b calendar) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b calendar) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
+func (c calendar) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(c))
 }

@@ -27,23 +27,12 @@ func init() {
 type PrintOperationPreview interface {
 	gextras.Objector
 
-	// EndPreview renders a page to the preview, using the print context that
-	// was passed to the PrintOperation::preview handler together with @preview.
+	// EndPreview ends a preview.
 	//
-	// A custom iprint preview should use this function in its ::expose handler
-	// to render the currently selected page.
-	//
-	// Note that this function requires a suitable cairo context to be
-	// associated with the print context.
+	// This function must be called to finish a custom print preview.
 	EndPreview()
-	// IsSelected renders a page to the preview, using the print context that
-	// was passed to the PrintOperation::preview handler together with @preview.
-	//
-	// A custom iprint preview should use this function in its ::expose handler
-	// to render the currently selected page.
-	//
-	// Note that this function requires a suitable cairo context to be
-	// associated with the print context.
+	// IsSelected returns whether the given page is included in the set of pages
+	// that have been selected for printing.
 	IsSelected(pageNr int) bool
 	// RenderPage renders a page to the preview, using the print context that
 	// was passed to the PrintOperation::preview handler together with @preview.

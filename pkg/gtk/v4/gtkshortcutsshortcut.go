@@ -23,8 +23,7 @@ func init() {
 	})
 }
 
-// ShortcutType: gtkShortcutType specifies the kind of shortcut that is being
-// described.
+// ShortcutType specifies the kind of shortcut that is being described.
 //
 // More values may be added to this enumeration over time.
 type ShortcutType int
@@ -66,12 +65,19 @@ func marshalShortcutType(p uintptr) (interface{}, error) {
 	return ShortcutType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// ShortcutsShortcut: a `GtkShortcutsShortcut` represents a single keyboard
+// ShortcutsShortcut: `GtkShortcutsShortcut` represents a single keyboard
 // shortcut or gesture with a short text.
 //
 // This widget is only meant to be used with `GtkShortcutsWindow`.
 type ShortcutsShortcut interface {
 	Widget
+
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
 }
 
 // shortcutsShortcut implements the ShortcutsShortcut class.
@@ -93,34 +99,14 @@ func marshalShortcutsShortcut(p uintptr) (interface{}, error) {
 	return WrapShortcutsShortcut(obj), nil
 }
 
-func (s shortcutsShortcut) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
+func (s shortcutsShortcut) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(s))
 }
 
-func (s shortcutsShortcut) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
+func (s shortcutsShortcut) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(s))
 }
 
-func (s shortcutsShortcut) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
-}
-
-func (s shortcutsShortcut) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s shortcutsShortcut) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s shortcutsShortcut) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s shortcutsShortcut) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b shortcutsShortcut) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
+func (s shortcutsShortcut) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(s))
 }

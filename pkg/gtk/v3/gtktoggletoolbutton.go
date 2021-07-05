@@ -5,9 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -26,8 +24,7 @@ func init() {
 	})
 }
 
-// ToggleToolButton: a ToggleToolButton is a ToolItem that contains a toggle
-// button.
+// ToggleToolButton is a ToolItem that contains a toggle button.
 //
 // Use gtk_toggle_tool_button_new() to create a new GtkToggleToolButton.
 //
@@ -38,8 +35,19 @@ func init() {
 type ToggleToolButton interface {
 	ToolButton
 
-	Active() bool
+	// AsActionable casts the class to the Actionable interface.
+	AsActionable() Actionable
+	// AsActivatable casts the class to the Activatable interface.
+	AsActivatable() Activatable
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
 
+	// Active queries a ToggleToolButton and returns its current state. Returns
+	// true if the toggle button is pressed in and false if it is raised.
+	Active() bool
+	// SetActiveToggleToolButton sets the status of the toggle tool button. Set
+	// to true if you want the GtkToggleButton to be “pressed in”, and false to
+	// raise it. This action causes the toggled signal to be emitted.
 	SetActiveToggleToolButton(isActive bool)
 }
 
@@ -62,6 +70,7 @@ func marshalToggleToolButton(p uintptr) (interface{}, error) {
 	return WrapToggleToolButton(obj), nil
 }
 
+// NewToggleToolButton returns a new ToggleToolButton
 func NewToggleToolButton() ToggleToolButton {
 	var _cret *C.GtkToolItem // in
 
@@ -69,11 +78,18 @@ func NewToggleToolButton() ToggleToolButton {
 
 	var _toggleToolButton ToggleToolButton // out
 
-	_toggleToolButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ToggleToolButton)
+	_toggleToolButton = WrapToggleToolButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _toggleToolButton
 }
 
+// NewToggleToolButtonFromStock creates a new ToggleToolButton containing the
+// image and text from a stock item. Some stock ids have preprocessor macros
+// like K_STOCK_OK and K_STOCK_APPLY.
+//
+// It is an error if @stock_id is not a name of a stock item.
+//
+// Deprecated: since version 3.10.
 func NewToggleToolButtonFromStock(stockId string) ToggleToolButton {
 	var _arg1 *C.gchar       // out
 	var _cret *C.GtkToolItem // in
@@ -85,7 +101,7 @@ func NewToggleToolButtonFromStock(stockId string) ToggleToolButton {
 
 	var _toggleToolButton ToggleToolButton // out
 
-	_toggleToolButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ToggleToolButton)
+	_toggleToolButton = WrapToggleToolButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _toggleToolButton
 }
@@ -119,126 +135,14 @@ func (b toggleToolButton) SetActiveToggleToolButton(isActive bool) {
 	C.gtk_toggle_tool_button_set_active(_arg0, _arg1)
 }
 
-func (b toggleToolButton) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+func (t toggleToolButton) AsActionable() Actionable {
+	return WrapActionable(gextras.InternObject(t))
 }
 
-func (b toggleToolButton) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+func (t toggleToolButton) AsActivatable() Activatable {
+	return WrapActivatable(gextras.InternObject(t))
 }
 
-func (b toggleToolButton) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b toggleToolButton) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b toggleToolButton) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b toggleToolButton) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b toggleToolButton) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b toggleToolButton) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b toggleToolButton) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b toggleToolButton) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (a toggleToolButton) DoSetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).DoSetRelatedAction(action)
-}
-
-func (a toggleToolButton) RelatedAction() Action {
-	return WrapActivatable(gextras.InternObject(a)).RelatedAction()
-}
-
-func (a toggleToolButton) UseActionAppearance() bool {
-	return WrapActivatable(gextras.InternObject(a)).UseActionAppearance()
-}
-
-func (a toggleToolButton) SetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SetRelatedAction(action)
-}
-
-func (a toggleToolButton) SetUseActionAppearance(useAppearance bool) {
-	WrapActivatable(gextras.InternObject(a)).SetUseActionAppearance(useAppearance)
-}
-
-func (a toggleToolButton) SyncActionProperties(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SyncActionProperties(action)
-}
-
-func (a toggleToolButton) ActionName() string {
-	return WrapActionable(gextras.InternObject(a)).ActionName()
-}
-
-func (a toggleToolButton) ActionTargetValue() *glib.Variant {
-	return WrapActionable(gextras.InternObject(a)).ActionTargetValue()
-}
-
-func (a toggleToolButton) SetActionName(actionName string) {
-	WrapActionable(gextras.InternObject(a)).SetActionName(actionName)
-}
-
-func (a toggleToolButton) SetActionTargetValue(targetValue *glib.Variant) {
-	WrapActionable(gextras.InternObject(a)).SetActionTargetValue(targetValue)
-}
-
-func (a toggleToolButton) SetDetailedActionName(detailedActionName string) {
-	WrapActionable(gextras.InternObject(a)).SetDetailedActionName(detailedActionName)
-}
-
-func (b toggleToolButton) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
-}
-
-func (b toggleToolButton) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b toggleToolButton) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b toggleToolButton) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b toggleToolButton) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b toggleToolButton) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b toggleToolButton) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b toggleToolButton) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b toggleToolButton) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b toggleToolButton) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
+func (t toggleToolButton) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(t))
 }

@@ -22,10 +22,18 @@ func init() {
 	})
 }
 
-// GLTexture: a GdkTexture representing a GL texture object.
+// GLTexture: gdkTexture representing a GL texture object.
 type GLTexture interface {
 	Texture
 
+	// AsPaintable casts the class to the Paintable interface.
+	AsPaintable() Paintable
+
+	// ReleaseGLTexture releases the GL resources held by a `GdkGLTexture`.
+	//
+	// The texture contents are still available via the
+	// [method@Gdk.Texture.download] function, after this function has been
+	// called.
 	ReleaseGLTexture()
 }
 
@@ -56,38 +64,6 @@ func (s glTexture) ReleaseGLTexture() {
 	C.gdk_gl_texture_release(_arg0)
 }
 
-func (p glTexture) ComputeConcreteSize(specifiedWidth float64, specifiedHeight float64, defaultWidth float64, defaultHeight float64) (concreteWidth float64, concreteHeight float64) {
-	return WrapPaintable(gextras.InternObject(p)).ComputeConcreteSize(specifiedWidth, specifiedHeight, defaultWidth, defaultHeight)
-}
-
-func (p glTexture) CurrentImage() Paintable {
-	return WrapPaintable(gextras.InternObject(p)).CurrentImage()
-}
-
-func (p glTexture) Flags() PaintableFlags {
-	return WrapPaintable(gextras.InternObject(p)).Flags()
-}
-
-func (p glTexture) IntrinsicAspectRatio() float64 {
-	return WrapPaintable(gextras.InternObject(p)).IntrinsicAspectRatio()
-}
-
-func (p glTexture) IntrinsicHeight() int {
-	return WrapPaintable(gextras.InternObject(p)).IntrinsicHeight()
-}
-
-func (p glTexture) IntrinsicWidth() int {
-	return WrapPaintable(gextras.InternObject(p)).IntrinsicWidth()
-}
-
-func (p glTexture) InvalidateContents() {
-	WrapPaintable(gextras.InternObject(p)).InvalidateContents()
-}
-
-func (p glTexture) InvalidateSize() {
-	WrapPaintable(gextras.InternObject(p)).InvalidateSize()
-}
-
-func (p glTexture) Snapshot(snapshot Snapshot, width float64, height float64) {
-	WrapPaintable(gextras.InternObject(p)).Snapshot(snapshot, width, height)
+func (g glTexture) AsPaintable() Paintable {
+	return WrapPaintable(gextras.InternObject(g))
 }

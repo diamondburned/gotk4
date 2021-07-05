@@ -27,6 +27,11 @@ func init() {
 
 type LockButtonAccessible interface {
 	ButtonAccessible
+
+	// AsAction casts the class to the atk.Action interface.
+	AsAction() atk.Action
+	// AsImage casts the class to the atk.Image interface.
+	AsImage() atk.Image
 }
 
 // lockButtonAccessible implements the LockButtonAccessible class.
@@ -48,50 +53,10 @@ func marshalLockButtonAccessible(p uintptr) (interface{}, error) {
 	return WrapLockButtonAccessible(obj), nil
 }
 
-func (a lockButtonAccessible) DoAction(i int) bool {
-	return atk.WrapAction(gextras.InternObject(a)).DoAction(i)
+func (l lockButtonAccessible) AsAction() atk.Action {
+	return atk.WrapAction(gextras.InternObject(l))
 }
 
-func (a lockButtonAccessible) Description(i int) string {
-	return atk.WrapAction(gextras.InternObject(a)).Description(i)
-}
-
-func (a lockButtonAccessible) Keybinding(i int) string {
-	return atk.WrapAction(gextras.InternObject(a)).Keybinding(i)
-}
-
-func (a lockButtonAccessible) LocalizedName(i int) string {
-	return atk.WrapAction(gextras.InternObject(a)).LocalizedName(i)
-}
-
-func (a lockButtonAccessible) NActions() int {
-	return atk.WrapAction(gextras.InternObject(a)).NActions()
-}
-
-func (a lockButtonAccessible) Name(i int) string {
-	return atk.WrapAction(gextras.InternObject(a)).Name(i)
-}
-
-func (a lockButtonAccessible) SetDescription(i int, desc string) bool {
-	return atk.WrapAction(gextras.InternObject(a)).SetDescription(i, desc)
-}
-
-func (i lockButtonAccessible) ImageDescription() string {
-	return atk.WrapImage(gextras.InternObject(i)).ImageDescription()
-}
-
-func (i lockButtonAccessible) ImageLocale() string {
-	return atk.WrapImage(gextras.InternObject(i)).ImageLocale()
-}
-
-func (i lockButtonAccessible) ImagePosition(coordType atk.CoordType) (x int, y int) {
-	return atk.WrapImage(gextras.InternObject(i)).ImagePosition(coordType)
-}
-
-func (i lockButtonAccessible) ImageSize() (width int, height int) {
-	return atk.WrapImage(gextras.InternObject(i)).ImageSize()
-}
-
-func (i lockButtonAccessible) SetImageDescription(description string) bool {
-	return atk.WrapImage(gextras.InternObject(i)).SetImageDescription(description)
+func (l lockButtonAccessible) AsImage() atk.Image {
+	return atk.WrapImage(gextras.InternObject(l))
 }

@@ -6,8 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/gdk/v4"
-	"github.com/diamondburned/gotk4/pkg/gsk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -24,7 +22,7 @@ func init() {
 	})
 }
 
-// ShortcutsWindow: a `GtkShortcutsWindow` shows information about the keyboard
+// ShortcutsWindow: `GtkShortcutsWindow` shows information about the keyboard
 // shortcuts and gestures of an application.
 //
 // The shortcuts can be grouped, and you can have multiple sections in this
@@ -70,6 +68,19 @@ func init() {
 // (https://gitlab.gnome.org/GNOME/gtk/tree/master/demos/gtk-demo/shortcuts-builder.ui).
 type ShortcutsWindow interface {
 	Window
+
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
+	// AsNative casts the class to the Native interface.
+	AsNative() Native
+	// AsRoot casts the class to the Root interface.
+	AsRoot() Root
+	// AsShortcutManager casts the class to the ShortcutManager interface.
+	AsShortcutManager() ShortcutManager
 }
 
 // shortcutsWindow implements the ShortcutsWindow class.
@@ -91,66 +102,26 @@ func marshalShortcutsWindow(p uintptr) (interface{}, error) {
 	return WrapShortcutsWindow(obj), nil
 }
 
-func (s shortcutsWindow) Display() gdk.Display {
-	return WrapRoot(gextras.InternObject(s)).Display()
+func (s shortcutsWindow) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(s))
 }
 
-func (s shortcutsWindow) Focus() Widget {
-	return WrapRoot(gextras.InternObject(s)).Focus()
+func (s shortcutsWindow) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(s))
 }
 
-func (s shortcutsWindow) SetFocus(focus Widget) {
-	WrapRoot(gextras.InternObject(s)).SetFocus(focus)
+func (s shortcutsWindow) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(s))
 }
 
-func (s shortcutsWindow) Renderer() gsk.Renderer {
-	return WrapNative(gextras.InternObject(s)).Renderer()
+func (s shortcutsWindow) AsNative() Native {
+	return WrapNative(gextras.InternObject(s))
 }
 
-func (s shortcutsWindow) Surface() gdk.Surface {
-	return WrapNative(gextras.InternObject(s)).Surface()
+func (s shortcutsWindow) AsRoot() Root {
+	return WrapRoot(gextras.InternObject(s))
 }
 
-func (s shortcutsWindow) SurfaceTransform() (x float64, y float64) {
-	return WrapNative(gextras.InternObject(s)).SurfaceTransform()
-}
-
-func (s shortcutsWindow) Realize() {
-	WrapNative(gextras.InternObject(s)).Realize()
-}
-
-func (s shortcutsWindow) Unrealize() {
-	WrapNative(gextras.InternObject(s)).Unrealize()
-}
-
-func (s shortcutsWindow) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
-}
-
-func (s shortcutsWindow) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
-}
-
-func (s shortcutsWindow) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
-}
-
-func (s shortcutsWindow) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s shortcutsWindow) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s shortcutsWindow) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s shortcutsWindow) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b shortcutsWindow) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
+func (s shortcutsWindow) AsShortcutManager() ShortcutManager {
+	return WrapShortcutManager(gextras.InternObject(s))
 }

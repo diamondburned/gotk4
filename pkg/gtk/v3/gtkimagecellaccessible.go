@@ -27,7 +27,11 @@ func init() {
 
 type ImageCellAccessible interface {
 	RendererCellAccessible
-	atk.Image
+
+	// AsAction casts the class to the atk.Action interface.
+	AsAction() atk.Action
+	// AsImage casts the class to the atk.Image interface.
+	AsImage() atk.Image
 }
 
 // imageCellAccessible implements the ImageCellAccessible class.
@@ -49,50 +53,10 @@ func marshalImageCellAccessible(p uintptr) (interface{}, error) {
 	return WrapImageCellAccessible(obj), nil
 }
 
-func (a imageCellAccessible) DoAction(i int) bool {
-	return atk.WrapAction(gextras.InternObject(a)).DoAction(i)
+func (i imageCellAccessible) AsAction() atk.Action {
+	return atk.WrapAction(gextras.InternObject(i))
 }
 
-func (a imageCellAccessible) Description(i int) string {
-	return atk.WrapAction(gextras.InternObject(a)).Description(i)
-}
-
-func (a imageCellAccessible) Keybinding(i int) string {
-	return atk.WrapAction(gextras.InternObject(a)).Keybinding(i)
-}
-
-func (a imageCellAccessible) LocalizedName(i int) string {
-	return atk.WrapAction(gextras.InternObject(a)).LocalizedName(i)
-}
-
-func (a imageCellAccessible) NActions() int {
-	return atk.WrapAction(gextras.InternObject(a)).NActions()
-}
-
-func (a imageCellAccessible) Name(i int) string {
-	return atk.WrapAction(gextras.InternObject(a)).Name(i)
-}
-
-func (a imageCellAccessible) SetDescription(i int, desc string) bool {
-	return atk.WrapAction(gextras.InternObject(a)).SetDescription(i, desc)
-}
-
-func (i imageCellAccessible) ImageDescription() string {
-	return atk.WrapImage(gextras.InternObject(i)).ImageDescription()
-}
-
-func (i imageCellAccessible) ImageLocale() string {
-	return atk.WrapImage(gextras.InternObject(i)).ImageLocale()
-}
-
-func (i imageCellAccessible) ImagePosition(coordType atk.CoordType) (x int, y int) {
-	return atk.WrapImage(gextras.InternObject(i)).ImagePosition(coordType)
-}
-
-func (i imageCellAccessible) ImageSize() (width int, height int) {
-	return atk.WrapImage(gextras.InternObject(i)).ImageSize()
-}
-
-func (i imageCellAccessible) SetImageDescription(description string) bool {
-	return atk.WrapImage(gextras.InternObject(i)).SetImageDescription(description)
+func (i imageCellAccessible) AsImage() atk.Image {
+	return atk.WrapImage(gextras.InternObject(i))
 }

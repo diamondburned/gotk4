@@ -47,30 +47,52 @@ func init() {
 //
 // `GtkAppChooserWidget` has a single CSS node with name appchooser.
 type AppChooserWidget interface {
-	AppChooser
+	Widget
 
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsAppChooser casts the class to the AppChooser interface.
+	AsAppChooser() AppChooser
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
+
+	// DefaultText returns the text that is shown if there are not applications
+	// that can handle the content type.
 	DefaultText() string
-
+	// ShowAll gets whether the app chooser should show all applications in a
+	// flat list.
 	ShowAll() bool
-
+	// ShowDefault gets whether the app chooser should show the default handler
+	// for the content type in a separate section.
 	ShowDefault() bool
-
+	// ShowFallback gets whether the app chooser should show related
+	// applications for the content type in a separate section.
 	ShowFallback() bool
-
+	// ShowOther gets whether the app chooser should show applications which are
+	// unrelated to the content type.
 	ShowOther() bool
-
+	// ShowRecommended gets whether the app chooser should show recommended
+	// applications for the content type in a separate section.
 	ShowRecommended() bool
-
+	// SetDefaultTextAppChooserWidget sets the text that is shown if there are
+	// not applications that can handle the content type.
 	SetDefaultTextAppChooserWidget(text string)
-
+	// SetShowAllAppChooserWidget sets whether the app chooser should show all
+	// applications in a flat list.
 	SetShowAllAppChooserWidget(setting bool)
-
+	// SetShowDefaultAppChooserWidget sets whether the app chooser should show
+	// the default handler for the content type in a separate section.
 	SetShowDefaultAppChooserWidget(setting bool)
-
+	// SetShowFallbackAppChooserWidget sets whether the app chooser should show
+	// related applications for the content type in a separate section.
 	SetShowFallbackAppChooserWidget(setting bool)
-
+	// SetShowOtherAppChooserWidget sets whether the app chooser should show
+	// applications which are unrelated to the content type.
 	SetShowOtherAppChooserWidget(setting bool)
-
+	// SetShowRecommendedAppChooserWidget sets whether the app chooser should
+	// show recommended applications for the content type in a separate section.
 	SetShowRecommendedAppChooserWidget(setting bool)
 }
 
@@ -93,6 +115,8 @@ func marshalAppChooserWidget(p uintptr) (interface{}, error) {
 	return WrapAppChooserWidget(obj), nil
 }
 
+// NewAppChooserWidget creates a new `GtkAppChooserWidget` for applications that
+// can handle content of the given type.
 func NewAppChooserWidget(contentType string) AppChooserWidget {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in
@@ -104,7 +128,7 @@ func NewAppChooserWidget(contentType string) AppChooserWidget {
 
 	var _appChooserWidget AppChooserWidget // out
 
-	_appChooserWidget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(AppChooserWidget)
+	_appChooserWidget = WrapAppChooserWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _appChooserWidget
 }
@@ -280,42 +304,18 @@ func (s appChooserWidget) SetShowRecommendedAppChooserWidget(setting bool) {
 	C.gtk_app_chooser_widget_set_show_recommended(_arg0, _arg1)
 }
 
-func (s appChooserWidget) ContentType() string {
-	return WrapAppChooser(gextras.InternObject(s)).ContentType()
+func (a appChooserWidget) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(a))
 }
 
-func (s appChooserWidget) Refresh() {
-	WrapAppChooser(gextras.InternObject(s)).Refresh()
+func (a appChooserWidget) AsAppChooser() AppChooser {
+	return WrapAppChooser(gextras.InternObject(a))
 }
 
-func (s appChooserWidget) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
+func (a appChooserWidget) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(a))
 }
 
-func (s appChooserWidget) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
-}
-
-func (s appChooserWidget) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
-}
-
-func (s appChooserWidget) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s appChooserWidget) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s appChooserWidget) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s appChooserWidget) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b appChooserWidget) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
+func (a appChooserWidget) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(a))
 }

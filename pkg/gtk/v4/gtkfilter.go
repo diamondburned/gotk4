@@ -70,7 +70,7 @@ func marshalFilterMatch(p uintptr) (interface{}, error) {
 	return FilterMatch(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// Filter: a `GtkFilter` object describes the filtering to be performed by a
+// Filter: `GtkFilter` object describes the filtering to be performed by a
 // `GtkFilterListModel`.
 //
 // The model will use the filter to determine if it should include items or not
@@ -91,10 +91,25 @@ func marshalFilterMatch(p uintptr) (interface{}, error) {
 type Filter interface {
 	gextras.Objector
 
+	// ChangedFilter emits the Filter::changed signal to notify all users of the
+	// filter that the filter changed. Users of the filter should then check
+	// items again via gtk_filter_match().
+	//
+	// Depending on the @change parameter, not all items need to be changed, but
+	// only some. Refer to the FilterChange documentation for details.
+	//
+	// This function is intended for implementors of Filter subclasses and
+	// should not be called from other functions.
 	ChangedFilter(change FilterChange)
-
+	// Strictness gets the known strictness of @filters. If the strictness is
+	// not known, GTK_FILTER_MATCH_SOME is returned.
+	//
+	// This value may change after emission of the Filter::changed signal.
+	//
+	// This function is meant purely for optimization purposes, filters can
+	// choose to omit implementing it, but FilterListModel uses it.
 	Strictness() FilterMatch
-
+	// MatchFilter checks if the given @item is matched by the filter or not.
 	MatchFilter(item gextras.Objector) bool
 }
 

@@ -5,9 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -28,6 +26,11 @@ func init() {
 
 type HButtonBox interface {
 	ButtonBox
+
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsOrientable casts the class to the Orientable interface.
+	AsOrientable() Orientable
 }
 
 // hButtonBox implements the HButtonBox class.
@@ -49,6 +52,9 @@ func marshalHButtonBox(p uintptr) (interface{}, error) {
 	return WrapHButtonBox(obj), nil
 }
 
+// NewHButtonBox creates a new horizontal button box.
+//
+// Deprecated: since version 3.2.
 func NewHButtonBox() HButtonBox {
 	var _cret *C.GtkWidget // in
 
@@ -56,55 +62,15 @@ func NewHButtonBox() HButtonBox {
 
 	var _hButtonBox HButtonBox // out
 
-	_hButtonBox = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(HButtonBox)
+	_hButtonBox = WrapHButtonBox(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _hButtonBox
 }
 
-func (b hButtonBox) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+func (h hButtonBox) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(h))
 }
 
-func (b hButtonBox) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b hButtonBox) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b hButtonBox) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b hButtonBox) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b hButtonBox) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b hButtonBox) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b hButtonBox) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b hButtonBox) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b hButtonBox) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (o hButtonBox) Orientation() Orientation {
-	return WrapOrientable(gextras.InternObject(o)).Orientation()
-}
-
-func (o hButtonBox) SetOrientation(orientation Orientation) {
-	WrapOrientable(gextras.InternObject(o)).SetOrientation(orientation)
+func (h hButtonBox) AsOrientable() Orientable {
+	return WrapOrientable(gextras.InternObject(h))
 }

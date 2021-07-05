@@ -5,9 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -26,8 +24,8 @@ func init() {
 	})
 }
 
-// TearoffMenuItem: a TearoffMenuItem is a special MenuItem which is used to
-// tear off and reattach its menu.
+// TearoffMenuItem is a special MenuItem which is used to tear off and reattach
+// its menu.
 //
 // When its menu is shown normally, the TearoffMenuItem is drawn as a dotted
 // line indicating that the menu can be torn off. Activating it causes its menu
@@ -42,6 +40,13 @@ func init() {
 // code. Menus are not meant to be torn around.
 type TearoffMenuItem interface {
 	MenuItem
+
+	// AsActionable casts the class to the Actionable interface.
+	AsActionable() Actionable
+	// AsActivatable casts the class to the Activatable interface.
+	AsActivatable() Activatable
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
 }
 
 // tearoffMenuItem implements the TearoffMenuItem class.
@@ -63,6 +68,9 @@ func marshalTearoffMenuItem(p uintptr) (interface{}, error) {
 	return WrapTearoffMenuItem(obj), nil
 }
 
+// NewTearoffMenuItem creates a new TearoffMenuItem.
+//
+// Deprecated: since version 3.4.
 func NewTearoffMenuItem() TearoffMenuItem {
 	var _cret *C.GtkWidget // in
 
@@ -70,131 +78,19 @@ func NewTearoffMenuItem() TearoffMenuItem {
 
 	var _tearoffMenuItem TearoffMenuItem // out
 
-	_tearoffMenuItem = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(TearoffMenuItem)
+	_tearoffMenuItem = WrapTearoffMenuItem(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _tearoffMenuItem
 }
 
-func (b tearoffMenuItem) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+func (t tearoffMenuItem) AsActionable() Actionable {
+	return WrapActionable(gextras.InternObject(t))
 }
 
-func (b tearoffMenuItem) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+func (t tearoffMenuItem) AsActivatable() Activatable {
+	return WrapActivatable(gextras.InternObject(t))
 }
 
-func (b tearoffMenuItem) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b tearoffMenuItem) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b tearoffMenuItem) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b tearoffMenuItem) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b tearoffMenuItem) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b tearoffMenuItem) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b tearoffMenuItem) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b tearoffMenuItem) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (a tearoffMenuItem) ActionName() string {
-	return WrapActionable(gextras.InternObject(a)).ActionName()
-}
-
-func (a tearoffMenuItem) ActionTargetValue() *glib.Variant {
-	return WrapActionable(gextras.InternObject(a)).ActionTargetValue()
-}
-
-func (a tearoffMenuItem) SetActionName(actionName string) {
-	WrapActionable(gextras.InternObject(a)).SetActionName(actionName)
-}
-
-func (a tearoffMenuItem) SetActionTargetValue(targetValue *glib.Variant) {
-	WrapActionable(gextras.InternObject(a)).SetActionTargetValue(targetValue)
-}
-
-func (a tearoffMenuItem) SetDetailedActionName(detailedActionName string) {
-	WrapActionable(gextras.InternObject(a)).SetDetailedActionName(detailedActionName)
-}
-
-func (b tearoffMenuItem) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
-}
-
-func (b tearoffMenuItem) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b tearoffMenuItem) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b tearoffMenuItem) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b tearoffMenuItem) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b tearoffMenuItem) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b tearoffMenuItem) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b tearoffMenuItem) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b tearoffMenuItem) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b tearoffMenuItem) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (a tearoffMenuItem) DoSetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).DoSetRelatedAction(action)
-}
-
-func (a tearoffMenuItem) RelatedAction() Action {
-	return WrapActivatable(gextras.InternObject(a)).RelatedAction()
-}
-
-func (a tearoffMenuItem) UseActionAppearance() bool {
-	return WrapActivatable(gextras.InternObject(a)).UseActionAppearance()
-}
-
-func (a tearoffMenuItem) SetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SetRelatedAction(action)
-}
-
-func (a tearoffMenuItem) SetUseActionAppearance(useAppearance bool) {
-	WrapActivatable(gextras.InternObject(a)).SetUseActionAppearance(useAppearance)
-}
-
-func (a tearoffMenuItem) SyncActionProperties(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SyncActionProperties(action)
+func (t tearoffMenuItem) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(t))
 }

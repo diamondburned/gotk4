@@ -40,16 +40,23 @@ func init() {
 // See Target for more information about SRV records, and see Connectable for an
 // example of using the connectable interface.
 type NetworkService interface {
-	SocketConnectable
+	gextras.Objector
 
+	// AsSocketConnectable casts the class to the SocketConnectable interface.
+	AsSocketConnectable() SocketConnectable
+
+	// Domain gets the domain that @srv serves. This might be either UTF-8 or
+	// ASCII-encoded, depending on what @srv was created with.
 	Domain() string
-
+	// Protocol gets @srv's protocol name (eg, "tcp").
 	Protocol() string
-
+	// Scheme gets the URI scheme used to resolve proxies. By default, the
+	// service name is used as scheme.
 	Scheme() string
-
+	// Service gets @srv's service name (eg, "ldap").
 	Service() string
-
+	// SetSchemeNetworkService set's the URI scheme used to resolve proxies. By
+	// default, the service name is used as scheme.
 	SetSchemeNetworkService(scheme string)
 }
 
@@ -72,6 +79,9 @@ func marshalNetworkService(p uintptr) (interface{}, error) {
 	return WrapNetworkService(obj), nil
 }
 
+// NewNetworkService creates a new Service representing the given @service,
+// @protocol, and @domain. This will initially be unresolved; use the
+// Connectable interface to resolve it.
 func NewNetworkService(service string, protocol string, domain string) NetworkService {
 	var _arg1 *C.gchar              // out
 	var _arg2 *C.gchar              // out
@@ -89,7 +99,7 @@ func NewNetworkService(service string, protocol string, domain string) NetworkSe
 
 	var _networkService NetworkService // out
 
-	_networkService = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(NetworkService)
+	_networkService = WrapNetworkService(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _networkService
 }
@@ -165,14 +175,6 @@ func (s networkService) SetSchemeNetworkService(scheme string) {
 	C.g_network_service_set_scheme(_arg0, _arg1)
 }
 
-func (c networkService) Enumerate() SocketAddressEnumerator {
-	return WrapSocketConnectable(gextras.InternObject(c)).Enumerate()
-}
-
-func (c networkService) ProxyEnumerate() SocketAddressEnumerator {
-	return WrapSocketConnectable(gextras.InternObject(c)).ProxyEnumerate()
-}
-
-func (c networkService) String() string {
-	return WrapSocketConnectable(gextras.InternObject(c)).String()
+func (n networkService) AsSocketConnectable() SocketConnectable {
+	return WrapSocketConnectable(gextras.InternObject(n))
 }

@@ -23,7 +23,7 @@ func init() {
 	})
 }
 
-// Shortcut: a `GtkShortcut` describes a keyboard shortcut.
+// Shortcut: `GtkShortcut` describes a keyboard shortcut.
 //
 // It contains a description of how to trigger the shortcut via a
 // [class@Gtk.ShortcutTrigger] and a way to activate the shortcut on a widget
@@ -40,16 +40,19 @@ func init() {
 type Shortcut interface {
 	gextras.Objector
 
+	// Action gets the action that is activated by this shortcut.
 	Action() ShortcutAction
-
-	Arguments() *glib.Variant
-
+	// Arguments gets the arguments that are passed when activating the
+	// shortcut.
+	Arguments() glib.Variant
+	// Trigger gets the trigger used to trigger @self.
 	Trigger() ShortcutTrigger
-
+	// SetActionShortcut sets the new action for @self to be @action.
 	SetActionShortcut(action ShortcutAction)
-
-	SetArgumentsShortcut(args *glib.Variant)
-
+	// SetArgumentsShortcut sets the arguments to pass when activating the
+	// shortcut.
+	SetArgumentsShortcut(args glib.Variant)
+	// SetTriggerShortcut sets the new trigger for @self to be @trigger.
 	SetTriggerShortcut(trigger ShortcutTrigger)
 }
 
@@ -72,6 +75,8 @@ func marshalShortcut(p uintptr) (interface{}, error) {
 	return WrapShortcut(obj), nil
 }
 
+// NewShortcut creates a new `GtkShortcut` that is triggered by @trigger and
+// then activates @action.
 func NewShortcut(trigger ShortcutTrigger, action ShortcutAction) Shortcut {
 	var _arg1 *C.GtkShortcutTrigger // out
 	var _arg2 *C.GtkShortcutAction  // out
@@ -84,7 +89,7 @@ func NewShortcut(trigger ShortcutTrigger, action ShortcutAction) Shortcut {
 
 	var _shortcut Shortcut // out
 
-	_shortcut = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Shortcut)
+	_shortcut = WrapShortcut(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _shortcut
 }
@@ -104,7 +109,7 @@ func (s shortcut) Action() ShortcutAction {
 	return _shortcutAction
 }
 
-func (s shortcut) Arguments() *glib.Variant {
+func (s shortcut) Arguments() glib.Variant {
 	var _arg0 *C.GtkShortcut // out
 	var _cret *C.GVariant    // in
 
@@ -112,9 +117,10 @@ func (s shortcut) Arguments() *glib.Variant {
 
 	_cret = C.gtk_shortcut_get_arguments(_arg0)
 
-	var _variant *glib.Variant // out
+	var _variant glib.Variant // out
 
-	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	_variant = (glib.Variant)(unsafe.Pointer(_cret))
+	C.g_variant_ref(_cret)
 
 	return _variant
 }
@@ -144,12 +150,12 @@ func (s shortcut) SetActionShortcut(action ShortcutAction) {
 	C.gtk_shortcut_set_action(_arg0, _arg1)
 }
 
-func (s shortcut) SetArgumentsShortcut(args *glib.Variant) {
+func (s shortcut) SetArgumentsShortcut(args glib.Variant) {
 	var _arg0 *C.GtkShortcut // out
 	var _arg1 *C.GVariant    // out
 
 	_arg0 = (*C.GtkShortcut)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GVariant)(unsafe.Pointer(args.Native()))
+	_arg1 = (*C.GVariant)(unsafe.Pointer(args))
 
 	C.gtk_shortcut_set_arguments(_arg0, _arg1)
 }

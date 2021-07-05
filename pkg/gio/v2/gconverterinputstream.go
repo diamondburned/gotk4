@@ -3,12 +3,9 @@
 package gio
 
 import (
-	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -41,8 +38,11 @@ func init() {
 // As of GLib 2.34, InputStream implements InputStream.
 type ConverterInputStream interface {
 	FilterInputStream
-	PollableInputStream
 
+	// AsPollableInputStream casts the class to the PollableInputStream interface.
+	AsPollableInputStream() PollableInputStream
+
+	// Converter gets the #GConverter that is used by @converter_stream.
 	Converter() Converter
 }
 
@@ -65,6 +65,8 @@ func marshalConverterInputStream(p uintptr) (interface{}, error) {
 	return WrapConverterInputStream(obj), nil
 }
 
+// NewConverterInputStream creates a new converter input stream for the
+// @base_stream.
 func NewConverterInputStream(baseStream InputStream, converter Converter) ConverterInputStream {
 	var _arg1 *C.GInputStream // out
 	var _arg2 *C.GConverter   // out
@@ -77,7 +79,7 @@ func NewConverterInputStream(baseStream InputStream, converter Converter) Conver
 
 	var _converterInputStream ConverterInputStream // out
 
-	_converterInputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(ConverterInputStream)
+	_converterInputStream = WrapConverterInputStream(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _converterInputStream
 }
@@ -97,18 +99,6 @@ func (c converterInputStream) Converter() Converter {
 	return _converter
 }
 
-func (s converterInputStream) CanPoll() bool {
-	return WrapPollableInputStream(gextras.InternObject(s)).CanPoll()
-}
-
-func (s converterInputStream) CreateSource(cancellable Cancellable) *glib.Source {
-	return WrapPollableInputStream(gextras.InternObject(s)).CreateSource(cancellable)
-}
-
-func (s converterInputStream) IsReadable() bool {
-	return WrapPollableInputStream(gextras.InternObject(s)).IsReadable()
-}
-
-func (s converterInputStream) ReadNonblocking(buffer []byte, cancellable Cancellable) (int, error) {
-	return WrapPollableInputStream(gextras.InternObject(s)).ReadNonblocking(buffer, cancellable)
+func (c converterInputStream) AsPollableInputStream() PollableInputStream {
+	return WrapPollableInputStream(gextras.InternObject(c))
 }

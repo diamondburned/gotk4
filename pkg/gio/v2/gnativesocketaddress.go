@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -32,9 +33,12 @@ func init() {
 	})
 }
 
-// NativeSocketAddress: a socket address of some unknown native type.
+// NativeSocketAddress: socket address of some unknown native type.
 type NativeSocketAddress interface {
 	SocketAddress
+
+	// AsSocketConnectable casts the class to the SocketConnectable interface.
+	AsSocketConnectable() SocketConnectable
 }
 
 // nativeSocketAddress implements the NativeSocketAddress class.
@@ -56,31 +60,24 @@ func marshalNativeSocketAddress(p uintptr) (interface{}, error) {
 	return WrapNativeSocketAddress(obj), nil
 }
 
+// NewNativeSocketAddress creates a new SocketAddress for @native and @len.
 func NewNativeSocketAddress(native interface{}, len uint) NativeSocketAddress {
 	var _arg1 C.gpointer        // out
 	var _arg2 C.gsize           // out
 	var _cret *C.GSocketAddress // in
 
-	_arg1 = C.gpointer(box.Assign(unsafe.Pointer(native)))
+	_arg1 = C.gpointer(box.Assign(native))
 	_arg2 = C.gsize(len)
 
 	_cret = C.g_native_socket_address_new(_arg1, _arg2)
 
 	var _nativeSocketAddress NativeSocketAddress // out
 
-	_nativeSocketAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(NativeSocketAddress)
+	_nativeSocketAddress = WrapNativeSocketAddress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _nativeSocketAddress
 }
 
-func (c nativeSocketAddress) Enumerate() SocketAddressEnumerator {
-	return WrapSocketConnectable(gextras.InternObject(c)).Enumerate()
-}
-
-func (c nativeSocketAddress) ProxyEnumerate() SocketAddressEnumerator {
-	return WrapSocketConnectable(gextras.InternObject(c)).ProxyEnumerate()
-}
-
-func (c nativeSocketAddress) String() string {
-	return WrapSocketConnectable(gextras.InternObject(c)).String()
+func (n nativeSocketAddress) AsSocketConnectable() SocketConnectable {
+	return WrapSocketConnectable(gextras.InternObject(n))
 }

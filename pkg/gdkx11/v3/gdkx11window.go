@@ -41,22 +41,64 @@ func X11GetServerTime(window X11Window) uint32 {
 type X11Window interface {
 	gdk.Window
 
+	// Desktop gets the number of the workspace @window is on.
 	Desktop() uint32
-
+	// MoveToCurrentDesktopX11Window moves the window to the correct workspace
+	// when running under a window manager that supports multiple workspaces, as
+	// described in the Extended Window Manager Hints
+	// (http://www.freedesktop.org/Standards/wm-spec) specification. Will not do
+	// anything if the window is already on all workspaces.
 	MoveToCurrentDesktopX11Window()
-
+	// MoveToDesktopX11Window moves the window to the given workspace when
+	// running unde a window manager that supports multiple workspaces, as
+	// described in the Extended Window Manager Hints
+	// (http://www.freedesktop.org/Standards/wm-spec) specification.
 	MoveToDesktopX11Window(desktop uint32)
-
+	// SetFrameExtentsX11Window: this is the same as
+	// gdk_window_set_shadow_width() but it only works on GdkX11Window.
+	//
+	// Deprecated: since version 3.12.
 	SetFrameExtentsX11Window(left int, right int, top int, bottom int)
-
+	// SetFrameSyncEnabledX11Window: this function can be used to disable frame
+	// synchronization for a window. Normally frame synchronziation will be
+	// enabled or disabled based on whether the system has a compositor that
+	// supports frame synchronization, but if the window is not directly managed
+	// by the window manager, then frame synchronziation may need to be
+	// disabled. This is the case for a window embedded via the XEMBED protocol.
 	SetFrameSyncEnabledX11Window(frameSyncEnabled bool)
-
+	// SetHideTitlebarWhenMaximizedX11Window: set a hint for the window manager,
+	// requesting that the titlebar should be hidden when the window is
+	// maximized.
+	//
+	// Note that this property is automatically updated by GTK+, so this
+	// function should only be used by applications which do not use GTK+ to
+	// create toplevel windows.
 	SetHideTitlebarWhenMaximizedX11Window(hideTitlebarWhenMaximized bool)
-
+	// SetThemeVariantX11Window: GTK+ applications can request a dark theme
+	// variant. In order to make other applications - namely window managers
+	// using GTK+ for themeing - aware of this choice, GTK+ uses this function
+	// to export the requested theme variant as _GTK_THEME_VARIANT property on
+	// toplevel windows.
+	//
+	// Note that this property is automatically updated by GTK+, so this
+	// function should only be used by applications which do not use GTK+ to
+	// create toplevel windows.
 	SetThemeVariantX11Window(variant string)
-
+	// SetUserTimeX11Window: the application can use this call to update the
+	// _NET_WM_USER_TIME property on a toplevel window. This property stores an
+	// Xserver time which represents the time of the last user input event
+	// received for this window. This property may be used by the window manager
+	// to alter the focus, stacking, and/or placement behavior of windows when
+	// they are mapped depending on whether the new window was created by a user
+	// action or is a "pop-up" window activated by a timer or some other event.
+	//
+	// Note that this property is automatically updated by GDK, so this function
+	// should only be used by applications which handle input events bypassing
+	// GDK.
 	SetUserTimeX11Window(timestamp uint32)
-
+	// SetUTF8PropertYX11Window: this function modifies or removes an arbitrary
+	// X11 window property of type UTF8_STRING. If the given @window is not a
+	// toplevel window, it is ignored.
 	SetUTF8PropertyX11Window(name string, value string)
 }
 

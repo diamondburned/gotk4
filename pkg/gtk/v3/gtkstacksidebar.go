@@ -5,9 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -26,8 +24,8 @@ func init() {
 	})
 }
 
-// StackSidebar: a GtkStackSidebar enables you to quickly and easily provide a
-// consistent "sidebar" object for your user interface.
+// StackSidebar enables you to quickly and easily provide a consistent "sidebar"
+// object for your user interface.
 //
 // In order to use a GtkStackSidebar, you simply use a GtkStack to organize your
 // UI flow, and add the sidebar to your sidebar area. You can use
@@ -44,8 +42,15 @@ func init() {
 type StackSidebar interface {
 	Bin
 
-	Stack() Stack
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
 
+	// Stack retrieves the stack. See gtk_stack_sidebar_set_stack().
+	Stack() Stack
+	// SetStackStackSidebar: set the Stack associated with this StackSidebar.
+	//
+	// The sidebar widget will automatically update according to the order
+	// (packing) and items within the given Stack.
 	SetStackStackSidebar(stack Stack)
 }
 
@@ -68,6 +73,7 @@ func marshalStackSidebar(p uintptr) (interface{}, error) {
 	return WrapStackSidebar(obj), nil
 }
 
+// NewStackSidebar creates a new sidebar.
 func NewStackSidebar() StackSidebar {
 	var _cret *C.GtkWidget // in
 
@@ -75,7 +81,7 @@ func NewStackSidebar() StackSidebar {
 
 	var _stackSidebar StackSidebar // out
 
-	_stackSidebar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(StackSidebar)
+	_stackSidebar = WrapStackSidebar(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _stackSidebar
 }
@@ -105,42 +111,6 @@ func (s stackSidebar) SetStackStackSidebar(stack Stack) {
 	C.gtk_stack_sidebar_set_stack(_arg0, _arg1)
 }
 
-func (b stackSidebar) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
-}
-
-func (b stackSidebar) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b stackSidebar) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b stackSidebar) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b stackSidebar) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b stackSidebar) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b stackSidebar) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b stackSidebar) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b stackSidebar) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b stackSidebar) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
+func (s stackSidebar) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(s))
 }

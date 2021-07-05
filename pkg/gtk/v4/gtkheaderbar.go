@@ -80,22 +80,66 @@ func init() {
 type HeaderBar interface {
 	Widget
 
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
+
+	// DecorationLayout gets the decoration layout of the `GtkHeaderBar`.
 	DecorationLayout() string
-
+	// ShowTitleButtons returns whether this header bar shows the standard
+	// window title buttons.
 	ShowTitleButtons() bool
-
+	// TitleWidget retrieves the title widget of the header.
+	//
+	// See [method@Gtk.HeaderBar.set_title_widget].
 	TitleWidget() Widget
-
+	// PackEndHeaderBar adds @child to @bar, packed with reference to the end of
+	// the @bar.
 	PackEndHeaderBar(child Widget)
-
+	// PackStartHeaderBar adds @child to @bar, packed with reference to the
+	// start of the @bar.
 	PackStartHeaderBar(child Widget)
-
+	// RemoveHeaderBar removes a child from the `GtkHeaderBar`.
+	//
+	// The child must have been added with [method@Gtk.HeaderBar.pack_start],
+	// [method@Gtk.HeaderBar.pack_end] or
+	// [method@Gtk.HeaderBar.set_title_widget].
 	RemoveHeaderBar(child Widget)
-
+	// SetDecorationLayoutHeaderBar sets the decoration layout for this header
+	// bar.
+	//
+	// This property overrides the [property@Gtk.Settings:gtk-decoration-layout]
+	// setting.
+	//
+	// There can be valid reasons for overriding the setting, such as a header
+	// bar design that does not allow for buttons to take room on the right, or
+	// only offers room for a single close button. Split header bars are another
+	// example for overriding the setting.
+	//
+	// The format of the string is button names, separated by commas. A colon
+	// separates the buttons that should appear on the left from those on the
+	// right. Recognized button names are minimize, maximize, close and icon
+	// (the window icon).
+	//
+	// For example, “icon:minimize,maximize,close” specifies a icon on the left,
+	// and minimize, maximize and close buttons on the right.
 	SetDecorationLayoutHeaderBar(layout string)
-
+	// SetShowTitleButtonsHeaderBar sets whether this header bar shows the
+	// standard window title buttons.
 	SetShowTitleButtonsHeaderBar(setting bool)
-
+	// SetTitleWidgetHeaderBar sets the title for the `GtkHeaderBar`.
+	//
+	// When set to nil, the headerbar will display the title of the window it is
+	// contained in.
+	//
+	// The title should help a user identify the current view. To achieve the
+	// same style as the builtin title, use the “title” style class.
+	//
+	// You should set the title widget to nil, for the window title label to be
+	// visible again.
 	SetTitleWidgetHeaderBar(titleWidget Widget)
 }
 
@@ -118,6 +162,7 @@ func marshalHeaderBar(p uintptr) (interface{}, error) {
 	return WrapHeaderBar(obj), nil
 }
 
+// NewHeaderBar creates a new `GtkHeaderBar` widget.
 func NewHeaderBar() HeaderBar {
 	var _cret *C.GtkWidget // in
 
@@ -125,7 +170,7 @@ func NewHeaderBar() HeaderBar {
 
 	var _headerBar HeaderBar // out
 
-	_headerBar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(HeaderBar)
+	_headerBar = WrapHeaderBar(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _headerBar
 }
@@ -240,34 +285,14 @@ func (b headerBar) SetTitleWidgetHeaderBar(titleWidget Widget) {
 	C.gtk_header_bar_set_title_widget(_arg0, _arg1)
 }
 
-func (s headerBar) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
+func (h headerBar) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(h))
 }
 
-func (s headerBar) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
+func (h headerBar) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(h))
 }
 
-func (s headerBar) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
-}
-
-func (s headerBar) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s headerBar) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s headerBar) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s headerBar) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b headerBar) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
+func (h headerBar) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(h))
 }

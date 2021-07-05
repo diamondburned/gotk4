@@ -25,7 +25,9 @@ func init() {
 //
 // `PangoLanguage` pointers can be efficiently copied and compared with each
 // other.
-type Language C.PangoLanguage
+type Language struct {
+	native C.PangoLanguage
+}
 
 // WrapLanguage wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -40,16 +42,31 @@ func marshalLanguage(p uintptr) (interface{}, error) {
 
 // Native returns the underlying C source pointer.
 func (l *Language) Native() unsafe.Pointer {
-	return unsafe.Pointer(l)
+	return unsafe.Pointer(&l.native)
 }
 
-// SampleString gets the RFC-3066 format string representing the given language
-// tag.
+// SampleString: get a string that is representative of the characters needed to
+// render a particular language.
+//
+// The sample text may be a pangram, but is not necessarily. It is chosen to be
+// demonstrative of normal text in the language, as well as exposing font
+// feature requirements unique to the language. It is suitable for use as sample
+// text in a font selection dialog.
+//
+// If @language is nil, the default language as found by
+// [type_func@Pango.Language.get_default] is used.
+//
+// If Pango does not have a sample string for @language, the classic "The quick
+// brown fox..." is returned. This can be detected by comparing the returned
+// pointer value to that returned for (non-existent) language code "xx". That
+// is, compare to:
+//
+// “` pango_language_get_sample_string (pango_language_from_string ("xx")) “`
 func (l *Language) SampleString() string {
 	var _arg0 *C.PangoLanguage // out
 	var _cret *C.char          // in
 
-	_arg0 = (*C.PangoLanguage)(unsafe.Pointer(l.Native()))
+	_arg0 = (*C.PangoLanguage)(unsafe.Pointer(l))
 
 	_cret = C.pango_language_get_sample_string(_arg0)
 
@@ -60,14 +77,22 @@ func (l *Language) SampleString() string {
 	return _utf8
 }
 
-// IncludesScript gets the RFC-3066 format string representing the given
-// language tag.
+// IncludesScript determines if @script is one of the scripts used to write
+// @language. The returned value is conservative; if nothing is known about the
+// language tag @language, true will be returned, since, as far as Pango knows,
+// @script might be used to write @language.
+//
+// This routine is used in Pango's itemization process when determining if a
+// supplied language tag is relevant to a particular section of text. It
+// probably is not useful for applications in most circumstances.
+//
+// This function uses [method@Pango.Language.get_scripts] internally.
 func (l *Language) IncludesScript(script Script) bool {
 	var _arg0 *C.PangoLanguage // out
 	var _arg1 C.PangoScript    // out
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.PangoLanguage)(unsafe.Pointer(l.Native()))
+	_arg0 = (*C.PangoLanguage)(unsafe.Pointer(l))
 	_arg1 = C.PangoScript(script)
 
 	_cret = C.pango_language_includes_script(_arg0, _arg1)
@@ -81,13 +106,18 @@ func (l *Language) IncludesScript(script Script) bool {
 	return _ok
 }
 
-// Matches gets the RFC-3066 format string representing the given language tag.
+// Matches checks if a language tag matches one of the elements in a list of
+// language ranges.
+//
+// A language tag is considered to match a range in the list if the range is
+// '*', the range is exactly the tag, or the range is a prefix of the tag, and
+// the character after it in the tag is '-'.
 func (l *Language) Matches(rangeList string) bool {
 	var _arg0 *C.PangoLanguage // out
 	var _arg1 *C.char          // out
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.PangoLanguage)(unsafe.Pointer(l.Native()))
+	_arg0 = (*C.PangoLanguage)(unsafe.Pointer(l))
 	_arg1 = (*C.char)(C.CString(rangeList))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -107,7 +137,7 @@ func (l *Language) String() string {
 	var _arg0 *C.PangoLanguage // out
 	var _cret *C.char          // in
 
-	_arg0 = (*C.PangoLanguage)(unsafe.Pointer(l.Native()))
+	_arg0 = (*C.PangoLanguage)(unsafe.Pointer(l))
 
 	_cret = C.pango_language_to_string(_arg0)
 

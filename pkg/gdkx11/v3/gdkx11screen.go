@@ -38,15 +38,20 @@ func X11GetDefaultScreen() int {
 type X11Screen interface {
 	gdk.Screen
 
+	// CurrentDesktop returns the current workspace for @screen when running
+	// under a window manager that supports multiple workspaces, as described in
+	// the Extended Window Manager Hints
+	// (http://www.freedesktop.org/Standards/wm-spec) specification.
 	CurrentDesktop() uint32
-
+	// NumberOfDesktops returns the number of workspaces for @screen when
+	// running under a window manager that supports multiple workspaces, as
+	// described in the Extended Window Manager Hints
+	// (http://www.freedesktop.org/Standards/wm-spec) specification.
 	NumberOfDesktops() uint32
-
+	// ScreenNumber returns the index of a Screen.
 	ScreenNumber() int
-
+	// WindowManagerName returns the name of the window manager for @screen.
 	WindowManagerName() string
-
-	SupportsNetWmHintX11Screen(property *gdk.Atom) bool
 }
 
 // x11Screen implements the X11Screen class.
@@ -126,32 +131,4 @@ func (s x11Screen) WindowManagerName() string {
 	_utf8 = C.GoString(_cret)
 
 	return _utf8
-}
-
-func (s x11Screen) SupportsNetWmHintX11Screen(property *gdk.Atom) bool {
-	var _arg0 *C.GdkScreen // out
-	var _arg1 C.GdkAtom    // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
-	{
-		var refTmpIn *gdk.Atom
-		var refTmpOut *C.GdkAtom
-
-		refTmpIn = property
-
-		refTmpOut = (*C.GdkAtom)(unsafe.Pointer(refTmpIn.Native()))
-
-		_arg1 = *refTmpOut
-	}
-
-	_cret = C.gdk_x11_screen_supports_net_wm_hint(_arg0, _arg1)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
 }

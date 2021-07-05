@@ -184,94 +184,291 @@ func init() {
 type Label interface {
 	Widget
 
-	Attributes() *pango.AttrList
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
 
+	// Attributes gets the labels attribute list.
+	//
+	// This is the [struct@Pango.AttrList] that was set on the label using
+	// [method@Gtk.Label.set_attributes], if any. This function does not reflect
+	// attributes that come from the labels markup (see
+	// [method@Gtk.Label.set_markup]). If you want to get the effective
+	// attributes for the label, use `pango_layout_get_attribute
+	// (gtk_label_get_layout (self))`.
+	Attributes() pango.AttrList
+	// CurrentURI returns the URI for the currently active link in the label.
+	//
+	// The active link is the one under the mouse pointer or, in a selectable
+	// label, the link in which the text cursor is currently positioned.
+	//
+	// This function is intended for use in a [signal@Gtk.Label::activate-link]
+	// handler or for use in a [signal@Gtk.Widget::query-tooltip] handler.
 	CurrentURI() string
-
+	// Ellipsize returns the ellipsizing position of the label.
+	//
+	// See [method@Gtk.Label.set_ellipsize].
 	Ellipsize() pango.EllipsizeMode
-
+	// ExtraMenu gets the extra menu model of @label.
+	//
+	// See [method@Gtk.Label.set_extra_menu].
 	ExtraMenu() gio.MenuModel
-
+	// Justify returns the justification of the label.
+	//
+	// See [method@Gtk.Label.set_justify].
 	Justify() Justification
-
+	// Label fetches the text from a label.
+	//
+	// The returned text includes any embedded underlines indicating mnemonics
+	// and Pango markup. (See [method@Gtk.Label.get_text]).
 	Label() string
-
+	// Layout gets the `PangoLayout` used to display the label.
+	//
+	// The layout is useful to e.g. convert text positions to pixel positions,
+	// in combination with [method@Gtk.Label.get_layout_offsets]. The returned
+	// layout is owned by the @label so need not be freed by the caller. The
+	// @label is free to recreate its layout at any time, so it should be
+	// considered read-only.
 	Layout() pango.Layout
-
+	// LayoutOffsets obtains the coordinates where the label will draw its
+	// `PangoLayout`.
+	//
+	// The coordinates are useful to convert mouse events into coordinates
+	// inside the [class@Pango.Layout], e.g. to take some action if some part of
+	// the label is clicked. Remember when using the [class@Pango.Layout]
+	// functions you need to convert to and from pixels using PANGO_PIXELS() or
+	// [constant@Pango.SCALE].
 	LayoutOffsets() (x int, y int)
-
+	// Lines gets the number of lines to which an ellipsized, wrapping label
+	// should be limited.
+	//
+	// See [method@Gtk.Label.set_lines].
 	Lines() int
-
+	// MaxWidthChars retrieves the desired maximum width of @label, in
+	// characters.
+	//
+	// See [method@Gtk.Label.set_width_chars].
 	MaxWidthChars() int
-
+	// MnemonicKeyval: return the mnemonic accelerator.
+	//
+	// If the label has been set so that it has a mnemonic key this function
+	// returns the keyval used for the mnemonic accelerator. If there is no
+	// mnemonic set up it returns `GDK_KEY_VoidSymbol`.
 	MnemonicKeyval() uint
-
+	// MnemonicWidget retrieves the target of the mnemonic (keyboard shortcut)
+	// of this label.
+	//
+	// See [method@Gtk.Label.set_mnemonic_widget].
 	MnemonicWidget() Widget
-
+	// Selectable returns whether the label is selectable.
 	Selectable() bool
-
+	// SelectionBounds gets the selected range of characters in the label.
 	SelectionBounds() (start int, end int, ok bool)
-
+	// SingleLineMode returns whether the label is in single line mode.
 	SingleLineMode() bool
-
+	// Text fetches the text from a label.
+	//
+	// The returned text is as it appears on screen. This does not include any
+	// embedded underlines indicating mnemonics or Pango markup. (See
+	// [method@Gtk.Label.get_label])
 	Text() string
-
+	// UseMarkup returns whether the label’s text is interpreted as Pango
+	// markup.
+	//
+	// See [method@Gtk.Label.set_use_markup].
 	UseMarkup() bool
-
+	// UseUnderline returns whether an embedded underlines in the label indicate
+	// mnemonics.
+	//
+	// See [method@Gtk.Label.set_use_underline].
 	UseUnderline() bool
-
+	// WidthChars retrieves the desired width of @label, in characters.
+	//
+	// See [method@Gtk.Label.set_width_chars].
 	WidthChars() int
-
+	// Wrap returns whether lines in the label are automatically wrapped.
+	//
+	// See [method@Gtk.Label.set_wrap].
 	Wrap() bool
-
+	// WrapMode returns line wrap mode used by the label.
+	//
+	// See [method@Gtk.Label.set_wrap_mode].
 	WrapMode() pango.WrapMode
-
+	// Xalign gets the `xalign` of the label.
+	//
+	// See the [property@Gtk.Label:xalign] property.
 	Xalign() float32
-
+	// Yalign gets the `yalign` of the label.
+	//
+	// See the [property@Gtk.Label:yalign] property.
 	Yalign() float32
-
+	// SelectRegionLabel selects a range of characters in the label, if the
+	// label is selectable.
+	//
+	// See [method@Gtk.Label.set_selectable]. If the label is not selectable,
+	// this function has no effect. If @start_offset or @end_offset are -1, then
+	// the end of the label will be substituted.
 	SelectRegionLabel(startOffset int, endOffset int)
-
-	SetAttributesLabel(attrs *pango.AttrList)
-
+	// SetAttributesLabel: apply attributes to the label text.
+	//
+	// The attributes set with this function will be applied and merged with any
+	// other attributes previously effected by way of the
+	// [property@Gtk.Label:use-underline] or [property@Gtk.Label:use-markup]
+	// properties. While it is not recommended to mix markup strings with
+	// manually set attributes, if you must; know that the attributes will be
+	// applied to the label after the markup string is parsed.
+	SetAttributesLabel(attrs pango.AttrList)
+	// SetEllipsizeLabel sets the mode used to ellipsizei the text.
+	//
+	// The text will be ellipsized if there is not enough space to render the
+	// entire string.
 	SetEllipsizeLabel(mode pango.EllipsizeMode)
-
+	// SetExtraMenuLabel sets a menu model to add when constructing the context
+	// menu for @label.
 	SetExtraMenuLabel(model gio.MenuModel)
-
+	// SetJustifyLabel sets the alignment of the lines in the text of the label
+	// relative to each other.
+	//
+	// GTK_JUSTIFY_LEFT is the default value when the widget is first created
+	// with [ctor@Gtk.Label.new]. If you instead want to set the alignment of
+	// the label as a whole, use [method@Gtk.Widget.set_halign] instead.
+	// [method@Gtk.Label.set_justify] has no effect on labels containing only a
+	// single line.
 	SetJustifyLabel(jtype Justification)
-
+	// SetLabelLabel sets the text of the label.
+	//
+	// The label is interpreted as including embedded underlines and/or Pango
+	// markup depending on the values of the [property@Gtk.Label:use-underline]
+	// and [property@Gtk.Label:use-markup] properties.
 	SetLabelLabel(str string)
-
+	// SetLinesLabel sets the number of lines to which an ellipsized, wrapping
+	// label should be limited.
+	//
+	// This has no effect if the label is not wrapping or ellipsized. Set this
+	// to -1 if you don’t want to limit the number of lines.
 	SetLinesLabel(lines int)
-
+	// SetMarkupLabel sets the labels text and attributes from markup.
+	//
+	// The string must be marked up with Pango markup (see
+	// [func@Pango.parse_markup]).
+	//
+	// If the @str is external data, you may need to escape it with
+	// g_markup_escape_text() or g_markup_printf_escaped():
+	//
+	// “`c GtkWidget *self = gtk_label_new (NULL); const char *str = "...";
+	// const char *format = "<span style=\"italic\">\s</span>"; char *markup;
+	//
+	// markup = g_markup_printf_escaped (format, str); gtk_label_set_markup
+	// (GTK_LABEL (self), markup); g_free (markup); “`
+	//
+	// This function will set the [property@Gtk.Label:use-markup] property to
+	// true as a side effect.
+	//
+	// If you set the label contents using the [property@Gtk.Label:label]
+	// property you should also ensure that you set the
+	// [property@Gtk.Label:use-markup] property accordingly.
+	//
+	// See also: [method@Gtk.Label.set_text]
 	SetMarkupLabel(str string)
-
+	// SetMarkupWithMnemonicLabel sets the labels text, attributes and mnemonic
+	// from markup.
+	//
+	// Parses @str which is marked up with Pango markup (see
+	// [func@Pango.parse_markup]), setting the label’s text and attribute list
+	// based on the parse results. If characters in @str are preceded by an
+	// underscore, they are underlined indicating that they represent a keyboard
+	// accelerator called a mnemonic.
+	//
+	// The mnemonic key can be used to activate another widget, chosen
+	// automatically, or explicitly using method@Gtk.Label.set_mnemonic_widget].
 	SetMarkupWithMnemonicLabel(str string)
-
+	// SetMaxWidthCharsLabel sets the desired maximum width in characters of
+	// @label to @n_chars.
 	SetMaxWidthCharsLabel(nChars int)
-
+	// SetMnemonicWidgetLabel: associate the label with its mnemonic target.
+	//
+	// If the label has been set so that it has a mnemonic key (using i.e.
+	// [method@Gtk.Label.set_markup_with_mnemonic],
+	// [method@Gtk.Label.set_text_with_mnemonic],
+	// [ctor@Gtk.Label.new_with_mnemonic] or the
+	// [property@Gtk.Label:use_underline] property) the label can be associated
+	// with a widget that is the target of the mnemonic. When the label is
+	// inside a widget (like a [class@Gtk.Button] or a [class@Gtk.Notebook] tab)
+	// it is automatically associated with the correct widget, but sometimes
+	// (i.e. when the target is a [class@Gtk.Entry] next to the label) you need
+	// to set it explicitly using this function.
+	//
+	// The target widget will be accelerated by emitting the
+	// [signal@GtkWidget::mnemonic-activate] signal on it. The default handler
+	// for this signal will activate the widget if there are no mnemonic
+	// collisions and toggle focus between the colliding widgets otherwise.
 	SetMnemonicWidgetLabel(widget Widget)
-
+	// SetSelectableLabel makes text in the label selectable.
+	//
+	// Selectable labels allow the user to select text from the label, for
+	// copy-and-paste.
 	SetSelectableLabel(setting bool)
-
+	// SetSingleLineModeLabel sets whether the label is in single line mode.
 	SetSingleLineModeLabel(singleLineMode bool)
-
+	// SetTextLabel sets the text within the `GtkLabel` widget.
+	//
+	// It overwrites any text that was there before.
+	//
+	// This function will clear any previously set mnemonic accelerators, and
+	// set the [property@Gtk.Label:use-underline property] to false as a side
+	// effect.
+	//
+	// This function will set the [property@Gtk.Label:use-markup] property to
+	// false as a side effect.
+	//
+	// See also: [method@Gtk.Label.set_markup]
 	SetTextLabel(str string)
-
+	// SetTextWithMnemonicLabel sets the label’s text from the string @str.
+	//
+	// If characters in @str are preceded by an underscore, they are underlined
+	// indicating that they represent a keyboard accelerator called a mnemonic.
+	// The mnemonic key can be used to activate another widget, chosen
+	// automatically, or explicitly using
+	// [method@Gtk.Label.set_mnemonic_widget].
 	SetTextWithMnemonicLabel(str string)
-
+	// SetUseMarkupLabel sets whether the text of the label contains markup.
+	//
+	// See [method@Gtk.Label.set_markup].
 	SetUseMarkupLabel(setting bool)
-
+	// SetUseUnderlineLabel sets whether underlines in the text indicate
+	// mnemonics.
 	SetUseUnderlineLabel(setting bool)
-
+	// SetWidthCharsLabel sets the desired width in characters of @label to
+	// @n_chars.
 	SetWidthCharsLabel(nChars int)
-
+	// SetWrapLabel toggles line wrapping within the `GtkLabel` widget.
+	//
+	// true makes it break lines if text exceeds the widget’s size. false lets
+	// the text get cut off by the edge of the widget if it exceeds the widget
+	// size.
+	//
+	// Note that setting line wrapping to true does not make the label wrap at
+	// its parent container’s width, because GTK widgets conceptually can’t make
+	// their requisition depend on the parent container’s size. For a label that
+	// wraps at a specific position, set the label’s width using
+	// [method@Gtk.Widget.set_size_request].
 	SetWrapLabel(wrap bool)
-
+	// SetWrapModeLabel controls how line wrapping is done.
+	//
+	// This only affects the label if line wrapping is on. (See
+	// [method@Gtk.Label.set_wrap]) The default is PANGO_WRAP_WORD which means
+	// wrap on word boundaries.
 	SetWrapModeLabel(wrapMode pango.WrapMode)
-
+	// SetXalignLabel sets the `xalign` of the label.
+	//
+	// See the [property@Gtk.Label:xalign] property.
 	SetXalignLabel(xalign float32)
-
+	// SetYalignLabel sets the `yalign` of the label.
+	//
+	// See the [property@Gtk.Label:yalign] property.
 	SetYalignLabel(yalign float32)
 }
 
@@ -294,6 +491,9 @@ func marshalLabel(p uintptr) (interface{}, error) {
 	return WrapLabel(obj), nil
 }
 
+// NewLabel creates a new label with the given text inside it.
+//
+// You can pass nil to get an empty label widget.
 func NewLabel(str string) Label {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in
@@ -305,11 +505,25 @@ func NewLabel(str string) Label {
 
 	var _label Label // out
 
-	_label = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Label)
+	_label = WrapLabel(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _label
 }
 
+// NewLabelWithMnemonic creates a new `GtkLabel`, containing the text in @str.
+//
+// If characters in @str are preceded by an underscore, they are underlined. If
+// you need a literal underscore character in a label, use '__' (two
+// underscores). The first underlined character represents a keyboard
+// accelerator called a mnemonic. The mnemonic key can be used to activate
+// another widget, chosen automatically, or explicitly using
+// [method@Gtk.Label.set_mnemonic_widget].
+//
+// If [method@Gtk.Label.set_mnemonic_widget] is not called, then the first
+// activatable ancestor of the `GtkLabel` will be chosen as the mnemonic widget.
+// For instance, if the label is inside a button or menu item, the button or
+// menu item will automatically become the mnemonic widget and be activated by
+// the mnemonic.
 func NewLabelWithMnemonic(str string) Label {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in
@@ -321,12 +535,12 @@ func NewLabelWithMnemonic(str string) Label {
 
 	var _label Label // out
 
-	_label = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Label)
+	_label = WrapLabel(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _label
 }
 
-func (s label) Attributes() *pango.AttrList {
+func (s label) Attributes() pango.AttrList {
 	var _arg0 *C.GtkLabel      // out
 	var _cret *C.PangoAttrList // in
 
@@ -334,9 +548,10 @@ func (s label) Attributes() *pango.AttrList {
 
 	_cret = C.gtk_label_get_attributes(_arg0)
 
-	var _attrList *pango.AttrList // out
+	var _attrList pango.AttrList // out
 
-	_attrList = (*pango.AttrList)(unsafe.Pointer(_cret))
+	_attrList = (pango.AttrList)(unsafe.Pointer(_cret))
+	C.pango_attr_list_ref(_cret)
 
 	return _attrList
 }
@@ -433,8 +648,8 @@ func (s label) Layout() pango.Layout {
 
 func (s label) LayoutOffsets() (x int, y int) {
 	var _arg0 *C.GtkLabel // out
-	var _arg1 C.int       // in
-	var _arg2 C.int       // in
+	var _arg1 *C.int      // in
+	var _arg2 *C.int      // in
 
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(s.Native()))
 
@@ -528,8 +743,8 @@ func (s label) Selectable() bool {
 
 func (s label) SelectionBounds() (start int, end int, ok bool) {
 	var _arg0 *C.GtkLabel // out
-	var _arg1 C.int       // in
-	var _arg2 C.int       // in
+	var _arg1 *C.int      // in
+	var _arg2 *C.int      // in
 	var _cret C.gboolean  // in
 
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(s.Native()))
@@ -704,12 +919,12 @@ func (s label) SelectRegionLabel(startOffset int, endOffset int) {
 	C.gtk_label_select_region(_arg0, _arg1, _arg2)
 }
 
-func (s label) SetAttributesLabel(attrs *pango.AttrList) {
+func (s label) SetAttributesLabel(attrs pango.AttrList) {
 	var _arg0 *C.GtkLabel      // out
 	var _arg1 *C.PangoAttrList // out
 
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.PangoAttrList)(unsafe.Pointer(attrs.Native()))
+	_arg1 = (*C.PangoAttrList)(unsafe.Pointer(attrs))
 
 	C.gtk_label_set_attributes(_arg0, _arg1)
 }
@@ -929,34 +1144,14 @@ func (s label) SetYalignLabel(yalign float32) {
 	C.gtk_label_set_yalign(_arg0, _arg1)
 }
 
-func (s label) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
+func (l label) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(l))
 }
 
-func (s label) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
+func (l label) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(l))
 }
 
-func (s label) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
-}
-
-func (s label) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s label) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s label) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s label) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b label) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
+func (l label) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(l))
 }

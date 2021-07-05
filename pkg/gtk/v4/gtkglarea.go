@@ -120,36 +120,98 @@ func init() {
 type GLArea interface {
 	Widget
 
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
+
+	// AttachBuffersGLArea binds buffers to the framebuffer.
+	//
+	// Ensures that the @area framebuffer object is made the current draw and
+	// read target, and that all the required buffers for the @area are created
+	// and bound to the framebuffer.
+	//
+	// This function is automatically called before emitting the
+	// [signal@Gtk.GLArea::render] signal, and doesn't normally need to be
+	// called by application code.
 	AttachBuffersGLArea()
-
+	// AutoRender returns whether the area is in auto render mode or not.
 	AutoRender() bool
-
+	// Context retrieves the `GdkGLContext` used by @area.
 	Context() gdk.GLContext
-
+	// Error gets the current error set on the @area.
 	Error() error
-
+	// HasDepthBuffer returns whether the area has a depth buffer.
 	HasDepthBuffer() bool
-
+	// HasStencilBuffer returns whether the area has a stencil buffer.
 	HasStencilBuffer() bool
-
+	// RequiredVersion retrieves the required version of OpenGL.
+	//
+	// See [method@Gtk.GLArea.set_required_version].
 	RequiredVersion() (major int, minor int)
-
+	// UseES returns whether the `GtkGLArea` should use OpenGL ES.
+	//
+	// See [method@Gtk.GLArea.set_use_es].
 	UseES() bool
-
+	// MakeCurrentGLArea ensures that the `GdkGLContext` used by @area is
+	// associated with the `GtkGLArea`.
+	//
+	// This function is automatically called before emitting the
+	// [signal@Gtk.GLArea::render] signal, and doesn't normally need to be
+	// called by application code.
 	MakeCurrentGLArea()
-
+	// QueueRenderGLArea marks the currently rendered data (if any) as invalid,
+	// and queues a redraw of the widget.
+	//
+	// This ensures that the [signal@Gtk.GLArea::render] signal is emitted
+	// during the draw.
+	//
+	// This is only needed when [method@Gtk.GLArea.set_auto_render] has been
+	// called with a false value. The default behaviour is to emit
+	// [signal@Gtk.GLArea::render] on each draw.
 	QueueRenderGLArea()
-
+	// SetAutoRenderGLArea sets whether the `GtkGLArea` is in auto render mode.
+	//
+	// If @auto_render is true the [signal@Gtk.GLArea::render] signal will be
+	// emitted every time the widget draws. This is the default and is useful if
+	// drawing the widget is faster.
+	//
+	// If @auto_render is false the data from previous rendering is kept around
+	// and will be used for drawing the widget the next time, unless the window
+	// is resized. In order to force a rendering
+	// [method@Gtk.GLArea.queue_render] must be called. This mode is useful when
+	// the scene changes seldom, but takes a long time to redraw.
 	SetAutoRenderGLArea(autoRender bool)
-
+	// SetErrorGLArea sets an error on the area which will be shown instead of
+	// the GL rendering.
+	//
+	// This is useful in the [signal@Gtk.GLArea::create-context] signal if GL
+	// context creation fails.
 	SetErrorGLArea(err error)
-
+	// SetHasDepthBufferGLArea sets whether the `GtkGLArea` should use a depth
+	// buffer.
+	//
+	// If @has_depth_buffer is true the widget will allocate and enable a depth
+	// buffer for the target framebuffer. Otherwise there will be none.
 	SetHasDepthBufferGLArea(hasDepthBuffer bool)
-
+	// SetHasStencilBufferGLArea sets whether the `GtkGLArea` should use a
+	// stencil buffer.
+	//
+	// If @has_stencil_buffer is true the widget will allocate and enable a
+	// stencil buffer for the target framebuffer. Otherwise there will be none.
 	SetHasStencilBufferGLArea(hasStencilBuffer bool)
-
+	// SetRequiredVersionGLArea sets the required version of OpenGL to be used
+	// when creating the context for the widget.
+	//
+	// This function must be called before the area has been realized.
 	SetRequiredVersionGLArea(major int, minor int)
-
+	// SetUseESGLArea sets whether the @area should create an OpenGL or an
+	// OpenGL ES context.
+	//
+	// You should check the capabilities of the GLContext before drawing with
+	// either API.
 	SetUseESGLArea(useEs bool)
 }
 
@@ -172,6 +234,7 @@ func marshalGLArea(p uintptr) (interface{}, error) {
 	return WrapGLArea(obj), nil
 }
 
+// NewGLArea creates a new `GtkGLArea` widget.
 func NewGLArea() GLArea {
 	var _cret *C.GtkWidget // in
 
@@ -179,7 +242,7 @@ func NewGLArea() GLArea {
 
 	var _glArea GLArea // out
 
-	_glArea = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(GLArea)
+	_glArea = WrapGLArea(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _glArea
 }
@@ -275,8 +338,8 @@ func (a glArea) HasStencilBuffer() bool {
 
 func (a glArea) RequiredVersion() (major int, minor int) {
 	var _arg0 *C.GtkGLArea // out
-	var _arg1 C.int        // in
-	var _arg2 C.int        // in
+	var _arg1 *C.int       // in
+	var _arg2 *C.int       // in
 
 	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(a.Native()))
 
@@ -395,34 +458,14 @@ func (a glArea) SetUseESGLArea(useEs bool) {
 	C.gtk_gl_area_set_use_es(_arg0, _arg1)
 }
 
-func (s glArea) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
+func (g glArea) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(g))
 }
 
-func (s glArea) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
+func (g glArea) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(g))
 }
 
-func (s glArea) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
-}
-
-func (s glArea) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s glArea) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s glArea) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s glArea) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b glArea) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
+func (g glArea) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(g))
 }

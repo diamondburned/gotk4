@@ -3,10 +3,8 @@
 package gtk
 
 import (
-	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
@@ -130,44 +128,212 @@ func marshalApplicationInhibitFlags(p uintptr) (interface{}, error) {
 // (https://developer.gnome.org/gtk3/stable/gtk-getting-started.html#id-1.2.3.3)
 type Application interface {
 	gio.Application
-	gio.ActionGroup
 
-	AddAcceleratorApplication(accelerator string, actionName string, parameter *glib.Variant)
+	// AsActionGroup casts the class to the gio.ActionGroup interface.
+	AsActionGroup() gio.ActionGroup
 
+	// AddAcceleratorApplication installs an accelerator that will cause the
+	// named action to be activated when the key combination specificed by
+	// @accelerator is pressed.
+	//
+	// @accelerator must be a string that can be parsed by
+	// gtk_accelerator_parse(), e.g. "<Primary>q" or “<Control><Alt>p”.
+	//
+	// @action_name must be the name of an action as it would be used in the app
+	// menu, i.e. actions that have been added to the application are referred
+	// to with an “app.” prefix, and window-specific actions with a “win.”
+	// prefix.
+	//
+	// GtkApplication also extracts accelerators out of “accel” attributes in
+	// the Models passed to gtk_application_set_app_menu() and
+	// gtk_application_set_menubar(), which is usually more convenient than
+	// calling this function for each accelerator.
+	//
+	// Deprecated: since version 3.14.
+	AddAcceleratorApplication(accelerator string, actionName string, parameter glib.Variant)
+	// AddWindowApplication adds a window to @application.
+	//
+	// This call can only happen after the @application has started; typically,
+	// you should add new application windows in response to the emission of the
+	// #GApplication::activate signal.
+	//
+	// This call is equivalent to setting the Window:application property of
+	// @window to @application.
+	//
+	// Normally, the connection between the application and the window will
+	// remain until the window is destroyed, but you can explicitly remove it
+	// with gtk_application_remove_window().
+	//
+	// GTK+ will keep the @application running as long as it has any windows.
 	AddWindowApplication(window Window)
-
+	// AccelsForAction gets the accelerators that are currently associated with
+	// the given action.
 	AccelsForAction(detailedActionName string) []string
-
+	// ActionsForAccel returns the list of actions (possibly empty) that @accel
+	// maps to. Each item in the list is a detailed action name in the usual
+	// form.
+	//
+	// This might be useful to discover if an accel already exists in order to
+	// prevent installation of a conflicting accelerator (from an accelerator
+	// editor or a plugin system, for example). Note that having more than one
+	// action per accelerator may not be a bad thing and might make sense in
+	// cases where the actions never appear in the same context.
+	//
+	// In case there are no actions for a given accelerator, an empty array is
+	// returned. nil is never returned.
+	//
+	// It is a programmer error to pass an invalid accelerator string. If you
+	// are unsure, check it with gtk_accelerator_parse() first.
 	ActionsForAccel(accel string) []string
-
+	// ActiveWindow gets the “active” window for the application.
+	//
+	// The active window is the one that was most recently focused (within the
+	// application). This window may not have the focus at the moment if another
+	// application has it — this is just the most recently-focused window within
+	// this application.
 	ActiveWindow() Window
-
+	// AppMenu returns the menu model that has been set with
+	// gtk_application_set_app_menu().
 	AppMenu() gio.MenuModel
-
+	// MenuByID gets a menu from automatically loaded resources. See [Automatic
+	// resources][automatic-resources] for more information.
 	MenuByID(id string) gio.Menu
-
+	// Menubar returns the menu model that has been set with
+	// gtk_application_set_menubar().
 	Menubar() gio.MenuModel
-
+	// WindowByID returns the ApplicationWindow with the given ID.
+	//
+	// The ID of a ApplicationWindow can be retrieved with
+	// gtk_application_window_get_id().
 	WindowByID(id uint) Window
-
+	// InhibitApplication: inform the session manager that certain types of
+	// actions should be inhibited. This is not guaranteed to work on all
+	// platforms and for all types of actions.
+	//
+	// Applications should invoke this method when they begin an operation that
+	// should not be interrupted, such as creating a CD or DVD. The types of
+	// actions that may be blocked are specified by the @flags parameter. When
+	// the application completes the operation it should call
+	// gtk_application_uninhibit() to remove the inhibitor. Note that an
+	// application can have multiple inhibitors, and all of them must be
+	// individually removed. Inhibitors are also cleared when the application
+	// exits.
+	//
+	// Applications should not expect that they will always be able to block the
+	// action. In most cases, users will be given the option to force the action
+	// to take place.
+	//
+	// Reasons should be short and to the point.
+	//
+	// If @window is given, the session manager may point the user to this
+	// window to find out more about why the action is inhibited.
 	InhibitApplication(window Window, flags ApplicationInhibitFlags, reason string) uint
-
+	// IsInhibitedApplication determines if any of the actions specified in
+	// @flags are currently inhibited (possibly by another application).
+	//
+	// Note that this information may not be available (for example when the
+	// application is running in a sandbox).
 	IsInhibitedApplication(flags ApplicationInhibitFlags) bool
-
+	// ListActionDescriptionsApplication lists the detailed action names which
+	// have associated accelerators. See
+	// gtk_application_set_accels_for_action().
 	ListActionDescriptionsApplication() []string
-
+	// PrefersAppMenuApplication determines if the desktop environment in which
+	// the application is running would prefer an application menu be shown.
+	//
+	// If this function returns true then the application should call
+	// gtk_application_set_app_menu() with the contents of an application menu,
+	// which will be shown by the desktop environment. If it returns false then
+	// you should consider using an alternate approach, such as a menubar.
+	//
+	// The value returned by this function is purely advisory and you are free
+	// to ignore it. If you call gtk_application_set_app_menu() even if the
+	// desktop environment doesn't support app menus, then a fallback will be
+	// provided.
+	//
+	// Applications are similarly free not to set an app menu even if the
+	// desktop environment wants to show one. In that case, a fallback will also
+	// be created by the desktop environment (GNOME, for example, uses a menu
+	// with only a "Quit" item in it).
+	//
+	// The value returned by this function never changes. Once it returns a
+	// particular value, it is guaranteed to always return the same value.
+	//
+	// You may only call this function after the application has been registered
+	// and after the base startup handler has run. You're most likely to want to
+	// use this from your own startup handler. It may also make sense to consult
+	// this function while constructing UI (in activate, open or an action
+	// activation handler) in order to determine if you should show a gear menu
+	// or not.
+	//
+	// This function will return false on Mac OS and a default app menu will be
+	// created automatically with the "usual" contents of that menu typical to
+	// most Mac OS applications. If you call gtk_application_set_app_menu()
+	// anyway, then this menu will be replaced with your own.
 	PrefersAppMenuApplication() bool
-
-	RemoveAcceleratorApplication(actionName string, parameter *glib.Variant)
-
+	// RemoveAcceleratorApplication removes an accelerator that has been
+	// previously added with gtk_application_add_accelerator().
+	//
+	// Deprecated: since version 3.14.
+	RemoveAcceleratorApplication(actionName string, parameter glib.Variant)
+	// RemoveWindowApplication: remove a window from @application.
+	//
+	// If @window belongs to @application then this call is equivalent to
+	// setting the Window:application property of @window to nil.
+	//
+	// The application may stop running as a result of a call to this function.
 	RemoveWindowApplication(window Window)
-
+	// SetAccelsForActionApplication sets zero or more keyboard accelerators
+	// that will trigger the given action. The first item in @accels will be the
+	// primary accelerator, which may be displayed in the UI.
+	//
+	// To remove all accelerators for an action, use an empty, zero-terminated
+	// array for @accels.
+	//
+	// For the @detailed_action_name, see g_action_parse_detailed_name() and
+	// g_action_print_detailed_name().
 	SetAccelsForActionApplication(detailedActionName string, accels []string)
-
+	// SetAppMenuApplication sets or unsets the application menu for
+	// @application.
+	//
+	// This can only be done in the primary instance of the application, after
+	// it has been registered. #GApplication::startup is a good place to call
+	// this.
+	//
+	// The application menu is a single menu containing items that typically
+	// impact the application as a whole, rather than acting on a specific
+	// window or document. For example, you would expect to see “Preferences” or
+	// “Quit” in an application menu, but not “Save” or “Print”.
+	//
+	// If supported, the application menu will be rendered by the desktop
+	// environment.
+	//
+	// Use the base Map interface to add actions, to respond to the user
+	// selecting these menu items.
 	SetAppMenuApplication(appMenu gio.MenuModel)
-
+	// SetMenubarApplication sets or unsets the menubar for windows of
+	// @application.
+	//
+	// This is a menubar in the traditional sense.
+	//
+	// This can only be done in the primary instance of the application, after
+	// it has been registered. #GApplication::startup is a good place to call
+	// this.
+	//
+	// Depending on the desktop environment, this may appear at the top of each
+	// window, or at the top of the screen. In some environments, if both the
+	// application menu and the menubar are set, the application menu will be
+	// presented as if it were the first item of the menubar. Other environments
+	// treat the two as completely separate — for example, the application menu
+	// may be rendered by the desktop shell while the menubar (if set) remains
+	// in each individual window.
+	//
+	// Use the base Map interface to add actions, to respond to the user
+	// selecting these menu items.
 	SetMenubarApplication(menubar gio.MenuModel)
-
+	// UninhibitApplication removes an inhibitor that has been established with
+	// gtk_application_inhibit(). Inhibitors are also cleared when the
+	// application exits.
 	UninhibitApplication(cookie uint)
 }
 
@@ -190,6 +356,28 @@ func marshalApplication(p uintptr) (interface{}, error) {
 	return WrapApplication(obj), nil
 }
 
+// NewApplication creates a new Application instance.
+//
+// When using Application, it is not necessary to call gtk_init() manually. It
+// is called as soon as the application gets registered as the primary instance.
+//
+// Concretely, gtk_init() is called in the default handler for the
+// #GApplication::startup signal. Therefore, Application subclasses should chain
+// up in their #GApplication::startup handler before using any GTK+ API.
+//
+// Note that commandline arguments are not passed to gtk_init(). All GTK+
+// functionality that is available via commandline arguments can also be
+// achieved by setting suitable environment variables such as `G_DEBUG`, so this
+// should not be a big problem. If you absolutely must support GTK+ commandline
+// arguments, you can explicitly call gtk_init() before creating the application
+// instance.
+//
+// If non-nil, the application ID must be valid. See
+// g_application_id_is_valid().
+//
+// If no application ID is given then some features (most notably application
+// uniqueness) will be disabled. A null application ID is only allowed with GTK+
+// 3.6 or later.
 func NewApplication(applicationId string, flags gio.ApplicationFlags) Application {
 	var _arg1 *C.gchar            // out
 	var _arg2 C.GApplicationFlags // out
@@ -203,12 +391,12 @@ func NewApplication(applicationId string, flags gio.ApplicationFlags) Applicatio
 
 	var _application Application // out
 
-	_application = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Application)
+	_application = WrapApplication(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _application
 }
 
-func (a application) AddAcceleratorApplication(accelerator string, actionName string, parameter *glib.Variant) {
+func (a application) AddAcceleratorApplication(accelerator string, actionName string, parameter glib.Variant) {
 	var _arg0 *C.GtkApplication // out
 	var _arg1 *C.gchar          // out
 	var _arg2 *C.gchar          // out
@@ -219,7 +407,7 @@ func (a application) AddAcceleratorApplication(accelerator string, actionName st
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(C.CString(actionName))
 	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (*C.GVariant)(unsafe.Pointer(parameter.Native()))
+	_arg3 = (*C.GVariant)(unsafe.Pointer(parameter))
 
 	C.gtk_application_add_accelerator(_arg0, _arg1, _arg2, _arg3)
 }
@@ -462,7 +650,7 @@ func (a application) PrefersAppMenuApplication() bool {
 	return _ok
 }
 
-func (a application) RemoveAcceleratorApplication(actionName string, parameter *glib.Variant) {
+func (a application) RemoveAcceleratorApplication(actionName string, parameter glib.Variant) {
 	var _arg0 *C.GtkApplication // out
 	var _arg1 *C.gchar          // out
 	var _arg2 *C.GVariant       // out
@@ -470,7 +658,7 @@ func (a application) RemoveAcceleratorApplication(actionName string, parameter *
 	_arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.gchar)(C.CString(actionName))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GVariant)(unsafe.Pointer(parameter.Native()))
+	_arg2 = (*C.GVariant)(unsafe.Pointer(parameter))
 
 	C.gtk_application_remove_accelerator(_arg0, _arg1, _arg2)
 }
@@ -536,98 +724,6 @@ func (a application) UninhibitApplication(cookie uint) {
 	C.gtk_application_uninhibit(_arg0, _arg1)
 }
 
-func (b application) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
-}
-
-func (b application) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b application) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b application) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b application) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b application) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b application) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b application) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b application) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b application) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (a application) ActionAdded(actionName string) {
-	gio.WrapActionGroup(gextras.InternObject(a)).ActionAdded(actionName)
-}
-
-func (a application) ActionEnabledChanged(actionName string, enabled bool) {
-	gio.WrapActionGroup(gextras.InternObject(a)).ActionEnabledChanged(actionName, enabled)
-}
-
-func (a application) ActionRemoved(actionName string) {
-	gio.WrapActionGroup(gextras.InternObject(a)).ActionRemoved(actionName)
-}
-
-func (a application) ActionStateChanged(actionName string, state *glib.Variant) {
-	gio.WrapActionGroup(gextras.InternObject(a)).ActionStateChanged(actionName, state)
-}
-
-func (a application) ActivateAction(actionName string, parameter *glib.Variant) {
-	gio.WrapActionGroup(gextras.InternObject(a)).ActivateAction(actionName, parameter)
-}
-
-func (a application) ChangeActionState(actionName string, value *glib.Variant) {
-	gio.WrapActionGroup(gextras.InternObject(a)).ChangeActionState(actionName, value)
-}
-
-func (a application) ActionEnabled(actionName string) bool {
-	return gio.WrapActionGroup(gextras.InternObject(a)).ActionEnabled(actionName)
-}
-
-func (a application) ActionParameterType(actionName string) *glib.VariantType {
-	return gio.WrapActionGroup(gextras.InternObject(a)).ActionParameterType(actionName)
-}
-
-func (a application) ActionState(actionName string) *glib.Variant {
-	return gio.WrapActionGroup(gextras.InternObject(a)).ActionState(actionName)
-}
-
-func (a application) ActionStateHint(actionName string) *glib.Variant {
-	return gio.WrapActionGroup(gextras.InternObject(a)).ActionStateHint(actionName)
-}
-
-func (a application) ActionStateType(actionName string) *glib.VariantType {
-	return gio.WrapActionGroup(gextras.InternObject(a)).ActionStateType(actionName)
-}
-
-func (a application) HasAction(actionName string) bool {
-	return gio.WrapActionGroup(gextras.InternObject(a)).HasAction(actionName)
-}
-
-func (a application) ListActions() []string {
-	return gio.WrapActionGroup(gextras.InternObject(a)).ListActions()
-}
-
-func (a application) QueryAction(actionName string) (enabled bool, parameterType *glib.VariantType, stateType *glib.VariantType, stateHint *glib.Variant, state *glib.Variant, ok bool) {
-	return gio.WrapActionGroup(gextras.InternObject(a)).QueryAction(actionName)
+func (a application) AsActionGroup() gio.ActionGroup {
+	return gio.WrapActionGroup(gextras.InternObject(a))
 }

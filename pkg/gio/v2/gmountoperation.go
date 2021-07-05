@@ -55,42 +55,51 @@ func init() {
 type MountOperation interface {
 	gextras.Objector
 
+	// Anonymous: check to see whether the mount operation is being used for an
+	// anonymous user.
 	Anonymous() bool
-
+	// Choice gets a choice from the mount operation.
 	Choice() int
-
+	// Domain gets the domain of the mount operation.
 	Domain() string
-
+	// IsTcryptHiddenVolume: check to see whether the mount operation is being
+	// used for a TCRYPT hidden volume.
 	IsTcryptHiddenVolume() bool
-
+	// IsTcryptSystemVolume: check to see whether the mount operation is being
+	// used for a TCRYPT system volume.
 	IsTcryptSystemVolume() bool
-
+	// Password gets a password from the mount operation.
 	Password() string
-
+	// PasswordSave gets the state of saving passwords for the mount operation.
 	PasswordSave() PasswordSave
-
+	// Pim gets a PIM from the mount operation.
 	Pim() uint
-
+	// Username: get the user name from the mount operation.
 	Username() string
-
+	// ReplyMountOperation emits the Operation::reply signal.
 	ReplyMountOperation(result MountOperationResult)
-
+	// SetAnonymousMountOperation sets the mount operation to use an anonymous
+	// user if @anonymous is true.
 	SetAnonymousMountOperation(anonymous bool)
-
+	// SetChoiceMountOperation sets a default choice for the mount operation.
 	SetChoiceMountOperation(choice int)
-
+	// SetDomainMountOperation sets the mount operation's domain.
 	SetDomainMountOperation(domain string)
-
+	// SetIsTcryptHiddenVolumeMountOperation sets the mount operation to use a
+	// hidden volume if @hidden_volume is true.
 	SetIsTcryptHiddenVolumeMountOperation(hiddenVolume bool)
-
+	// SetIsTcryptSystemVolumeMountOperation sets the mount operation to use a
+	// system volume if @system_volume is true.
 	SetIsTcryptSystemVolumeMountOperation(systemVolume bool)
-
+	// SetPasswordMountOperation sets the mount operation's password to
+	// @password.
 	SetPasswordMountOperation(password string)
-
+	// SetPasswordSaveMountOperation sets the state of saving passwords for the
+	// mount operation.
 	SetPasswordSaveMountOperation(save PasswordSave)
-
+	// SetPimMountOperation sets the mount operation's PIM to @pim.
 	SetPimMountOperation(pim uint)
-
+	// SetUsernameMountOperation sets the user name within @op to @username.
 	SetUsernameMountOperation(username string)
 }
 
@@ -113,6 +122,7 @@ func marshalMountOperation(p uintptr) (interface{}, error) {
 	return WrapMountOperation(obj), nil
 }
 
+// NewMountOperation creates a new mount operation.
 func NewMountOperation() MountOperation {
 	var _cret *C.GMountOperation // in
 
@@ -120,7 +130,7 @@ func NewMountOperation() MountOperation {
 
 	var _mountOperation MountOperation // out
 
-	_mountOperation = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(MountOperation)
+	_mountOperation = WrapMountOperation(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _mountOperation
 }

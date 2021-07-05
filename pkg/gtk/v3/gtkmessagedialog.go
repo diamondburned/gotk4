@@ -5,9 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -39,11 +37,11 @@ type ButtonsType int
 const (
 	// none: no buttons at all
 	ButtonsTypeNone ButtonsType = 0
-	// ok: an OK button
+	// ok: OK button
 	ButtonsTypeOk ButtonsType = 1
-	// close: a Close button
+	// close: close button
 	ButtonsTypeClose ButtonsType = 2
-	// cancel: a Cancel button
+	// cancel: cancel button
 	ButtonsTypeCancel ButtonsType = 3
 	// YesNo yes and No buttons
 	ButtonsTypeYesNo ButtonsType = 4
@@ -94,12 +92,26 @@ func marshalButtonsType(p uintptr) (interface{}, error) {
 type MessageDialog interface {
 	Dialog
 
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+
+	// Image gets the dialog’s image.
+	//
+	// Deprecated: since version 3.12.
 	Image() Widget
-
+	// MessageArea returns the message area of the dialog. This is the box where
+	// the dialog’s primary and secondary labels are packed. You can add your
+	// own extra content to that box and it will appear below those labels. See
+	// gtk_dialog_get_content_area() for the corresponding function in the
+	// parent Dialog.
 	MessageArea() Widget
-
+	// SetImageMessageDialog sets the dialog’s image to @image.
+	//
+	// Deprecated: since version 3.12.
 	SetImageMessageDialog(image Widget)
-
+	// SetMarkupMessageDialog sets the text of the message dialog to be @str,
+	// which is marked up with the [Pango text markup
+	// language][PangoMarkupFormat].
 	SetMarkupMessageDialog(str string)
 }
 
@@ -173,42 +185,6 @@ func (m messageDialog) SetMarkupMessageDialog(str string) {
 	C.gtk_message_dialog_set_markup(_arg0, _arg1)
 }
 
-func (b messageDialog) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
-}
-
-func (b messageDialog) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b messageDialog) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b messageDialog) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b messageDialog) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b messageDialog) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b messageDialog) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b messageDialog) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b messageDialog) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b messageDialog) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
+func (m messageDialog) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(m))
 }

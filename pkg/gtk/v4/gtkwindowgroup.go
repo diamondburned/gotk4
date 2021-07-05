@@ -41,8 +41,9 @@ func init() {
 type WindowGroup interface {
 	gextras.Objector
 
+	// AddWindowWindowGroup adds a window to a `GtkWindowGroup`.
 	AddWindowWindowGroup(window Window)
-
+	// RemoveWindowWindowGroup removes a window from a `GtkWindowGroup`.
 	RemoveWindowWindowGroup(window Window)
 }
 
@@ -65,6 +66,9 @@ func marshalWindowGroup(p uintptr) (interface{}, error) {
 	return WrapWindowGroup(obj), nil
 }
 
+// NewWindowGroup creates a new `GtkWindowGroup` object.
+//
+// Modality of windows only affects windows within the same `GtkWindowGroup`.
 func NewWindowGroup() WindowGroup {
 	var _cret *C.GtkWindowGroup // in
 
@@ -72,7 +76,7 @@ func NewWindowGroup() WindowGroup {
 
 	var _windowGroup WindowGroup // out
 
-	_windowGroup = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(WindowGroup)
+	_windowGroup = WrapWindowGroup(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _windowGroup
 }

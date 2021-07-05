@@ -116,8 +116,8 @@ func NewInterfaceGenerator(gen FileGenerator) InterfaceGenerator {
 }
 
 func (g *InterfaceGenerator) Logln(lvl logger.Level, v ...interface{}) {
-	p := logger.Prefix(v, fmt.Sprintf("interface %s (C.%s):", g.InterfaceName, g.CType))
-	g.gen.Logln(lvl, p)
+	p := fmt.Sprintf("interface %s (C.%s):", g.InterfaceName, g.CType)
+	g.gen.Logln(lvl, logger.Prefix(v, p)...)
 }
 
 // Reset resets the callback generator.
@@ -161,29 +161,17 @@ func (g *InterfaceGenerator) Use(iface *gir.Interface) bool {
 	return true
 }
 
-// UseMethods sets only the VirtualMethods and Methods fields from the given
-// interface belonging to the given namespace.. It skips the type resolving
-// steps.
-func (g *InterfaceGenerator) UseMethods(iface *gir.Interface, n *gir.NamespaceFindResult) {
-	g.TypeTree.Reset()
-
-	g.Interface = iface
-	g.InterfaceName = strcases.PascalToGo(iface.Name)
-	g.StructName = strcases.UnexportPascal(g.InterfaceName)
-	g.source = n
-
-	g.updateMethods()
-}
-
 func (g *InterfaceGenerator) updateMethods() {
 	g.Methods = callable.Grow(g.Methods, len(g.Interface.Methods))
 	g.Virtuals = callable.Grow(g.Virtuals, len(g.Interface.VirtualMethods))
 
-	for _, vmethod := range g.Interface.VirtualMethods {
+	for i := range g.Interface.VirtualMethods {
 		gen := callable.NewGenerator(headeredFileGenerator{
 			FileGenerator: g.gen,
 			Headerer:      g,
 		})
+
+		vmethod := &g.Interface.VirtualMethods[i]
 		if !gen.UseFromNamespace(&vmethod.CallableAttrs, g.source) {
 			continue
 		}
@@ -192,11 +180,13 @@ func (g *InterfaceGenerator) updateMethods() {
 		g.Virtuals = append(g.Virtuals, gen)
 	}
 
-	for _, method := range g.Interface.Methods {
+	for i := range g.Interface.Methods {
 		gen := callable.NewGenerator(headeredFileGenerator{
 			FileGenerator: g.gen,
 			Headerer:      g,
 		})
+
+		method := &g.Interface.Methods[i]
 		if !gen.UseFromNamespace(&method.CallableAttrs, g.source) {
 			continue
 		}

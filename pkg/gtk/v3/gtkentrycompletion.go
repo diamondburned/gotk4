@@ -7,7 +7,6 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -26,13 +25,13 @@ func init() {
 	})
 }
 
-// EntryCompletionMatchFunc: a function which decides whether the row indicated
-// by @iter matches a given @key, and should be displayed as a possible
-// completion for @key. Note that @key is normalized and case-folded (see
+// EntryCompletionMatchFunc: function which decides whether the row indicated by
+// @iter matches a given @key, and should be displayed as a possible completion
+// for @key. Note that @key is normalized and case-folded (see
 // g_utf8_normalize() and g_utf8_casefold()). If this is not appropriate, match
 // functions have access to the unmodified key via `gtk_entry_get_text
 // (GTK_ENTRY (gtk_entry_completion_get_entry ()))`.
-type EntryCompletionMatchFunc func(completion EntryCompletion, key string, iter *TreeIter, ok bool)
+type EntryCompletionMatchFunc func(completion EntryCompletion, key string, iter TreeIter) (ok bool)
 
 //export gotk4_EntryCompletionMatchFunc
 func gotk4_EntryCompletionMatchFunc(arg0 *C.GtkEntryCompletion, arg1 *C.gchar, arg2 *C.GtkTreeIter, arg3 C.gpointer) C.gboolean {
@@ -43,11 +42,11 @@ func gotk4_EntryCompletionMatchFunc(arg0 *C.GtkEntryCompletion, arg1 *C.gchar, a
 
 	var completion EntryCompletion // out
 	var key string                 // out
-	var iter *TreeIter             // out
+	var iter TreeIter              // out
 
 	completion = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0))).(EntryCompletion)
 	key = C.GoString(arg1)
-	iter = (*TreeIter)(unsafe.Pointer(arg2))
+	iter = (TreeIter)(unsafe.Pointer(arg2))
 
 	fn := v.(EntryCompletionMatchFunc)
 	ok := fn(completion, key, iter)
@@ -100,55 +99,103 @@ func gotk4_EntryCompletionMatchFunc(arg0 *C.GtkEntryCompletion, arg1 *C.gchar, a
 // gtk_tree_model_filter_get_model(). Don’t forget to use
 // gtk_tree_model_filter_convert_iter_to_child_iter() to obtain a matching iter.
 type EntryCompletion interface {
-	Buildable
-	CellLayout
+	gextras.Objector
 
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsCellLayout casts the class to the CellLayout interface.
+	AsCellLayout() CellLayout
+
+	// CompleteEntryCompletion requests a completion operation, or in other
+	// words a refiltering of the current list with completions, using the
+	// current key. The completion list view will be updated accordingly.
 	CompleteEntryCompletion()
-
+	// ComputePrefixEntryCompletion computes the common prefix that is shared by
+	// all rows in @completion that start with @key. If no row matches @key, nil
+	// will be returned. Note that a text column must have been set for this
+	// function to work, see gtk_entry_completion_set_text_column() for details.
 	ComputePrefixEntryCompletion(key string) string
-
+	// DeleteActionEntryCompletion deletes the action at @index_ from
+	// @completion’s action list.
+	//
+	// Note that @index_ is a relative position and the position of an action
+	// may have changed since it was inserted.
 	DeleteActionEntryCompletion(index_ int)
-
+	// CompletionPrefix: get the original text entered by the user that
+	// triggered the completion or nil if there’s no completion ongoing.
 	CompletionPrefix() string
-
+	// Entry gets the entry @completion has been attached to.
 	Entry() Widget
-
+	// InlineCompletion returns whether the common prefix of the possible
+	// completions should be automatically inserted in the entry.
 	InlineCompletion() bool
-
+	// InlineSelection returns true if inline-selection mode is turned on.
 	InlineSelection() bool
-
+	// MinimumKeyLength returns the minimum key length as set for @completion.
 	MinimumKeyLength() int
-
+	// Model returns the model the EntryCompletion is using as data source.
+	// Returns nil if the model is unset.
 	Model() TreeModel
-
+	// PopupCompletion returns whether the completions should be presented in a
+	// popup window.
 	PopupCompletion() bool
-
+	// PopupSetWidth returns whether the completion popup window will be resized
+	// to the width of the entry.
 	PopupSetWidth() bool
-
+	// PopupSingleMatch returns whether the completion popup window will appear
+	// even if there is only a single match.
 	PopupSingleMatch() bool
-
+	// TextColumn returns the column in the model of @completion to get strings
+	// from.
 	TextColumn() int
-
+	// InsertActionMarkupEntryCompletion inserts an action in @completion’s
+	// action item list at position @index_ with markup @markup.
 	InsertActionMarkupEntryCompletion(index_ int, markup string)
-
+	// InsertActionTextEntryCompletion inserts an action in @completion’s action
+	// item list at position @index_ with text @text. If you want the action
+	// item to have markup, use gtk_entry_completion_insert_action_markup().
+	//
+	// Note that @index_ is a relative position in the list of actions and the
+	// position of an action can change when deleting a different action.
 	InsertActionTextEntryCompletion(index_ int, text string)
-
+	// InsertPrefixEntryCompletion requests a prefix insertion.
 	InsertPrefixEntryCompletion()
-
+	// SetInlineCompletionEntryCompletion sets whether the common prefix of the
+	// possible completions should be automatically inserted in the entry.
 	SetInlineCompletionEntryCompletion(inlineCompletion bool)
-
+	// SetInlineSelectionEntryCompletion sets whether it is possible to cycle
+	// through the possible completions inside the entry.
 	SetInlineSelectionEntryCompletion(inlineSelection bool)
-
+	// SetMinimumKeyLengthEntryCompletion requires the length of the search key
+	// for @completion to be at least @length. This is useful for long lists,
+	// where completing using a small key takes a lot of time and will come up
+	// with meaningless results anyway (ie, a too large dataset).
 	SetMinimumKeyLengthEntryCompletion(length int)
-
+	// SetModelEntryCompletion sets the model for a EntryCompletion. If
+	// @completion already has a model set, it will remove it before setting the
+	// new model. If model is nil, then it will unset the model.
 	SetModelEntryCompletion(model TreeModel)
-
+	// SetPopupCompletionEntryCompletion sets whether the completions should be
+	// presented in a popup window.
 	SetPopupCompletionEntryCompletion(popupCompletion bool)
-
+	// SetPopupSetWidthEntryCompletion sets whether the completion popup window
+	// will be resized to be the same width as the entry.
 	SetPopupSetWidthEntryCompletion(popupSetWidth bool)
-
+	// SetPopupSingleMatchEntryCompletion sets whether the completion popup
+	// window will appear even if there is only a single match. You may want to
+	// set this to false if you are using [inline
+	// completion][GtkEntryCompletion--inline-completion].
 	SetPopupSingleMatchEntryCompletion(popupSingleMatch bool)
-
+	// SetTextColumnEntryCompletion: convenience function for setting up the
+	// most used case of this code: a completion list with just strings. This
+	// function will set up @completion to have a list displaying all (and just)
+	// strings in the completion list, and to get those strings from @column in
+	// the model of @completion.
+	//
+	// This functions creates and adds a CellRendererText for the selected
+	// column. If you need to set the text column, but don't want the cell
+	// renderer, use g_object_set() to set the EntryCompletion:text-column
+	// property directly.
 	SetTextColumnEntryCompletion(column int)
 }
 
@@ -171,6 +218,7 @@ func marshalEntryCompletion(p uintptr) (interface{}, error) {
 	return WrapEntryCompletion(obj), nil
 }
 
+// NewEntryCompletion creates a new EntryCompletion object.
 func NewEntryCompletion() EntryCompletion {
 	var _cret *C.GtkEntryCompletion // in
 
@@ -178,11 +226,14 @@ func NewEntryCompletion() EntryCompletion {
 
 	var _entryCompletion EntryCompletion // out
 
-	_entryCompletion = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(EntryCompletion)
+	_entryCompletion = WrapEntryCompletion(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _entryCompletion
 }
 
+// NewEntryCompletionWithArea creates a new EntryCompletion object using the
+// specified @area to layout cells in the underlying TreeViewColumn for the
+// drop-down menu.
 func NewEntryCompletionWithArea(area CellArea) EntryCompletion {
 	var _arg1 *C.GtkCellArea        // out
 	var _cret *C.GtkEntryCompletion // in
@@ -193,7 +244,7 @@ func NewEntryCompletionWithArea(area CellArea) EntryCompletion {
 
 	var _entryCompletion EntryCompletion // out
 
-	_entryCompletion = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(EntryCompletion)
+	_entryCompletion = WrapEntryCompletion(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _entryCompletion
 }
@@ -519,70 +570,10 @@ func (c entryCompletion) SetTextColumnEntryCompletion(column int) {
 	C.gtk_entry_completion_set_text_column(_arg0, _arg1)
 }
 
-func (b entryCompletion) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+func (e entryCompletion) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(e))
 }
 
-func (b entryCompletion) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b entryCompletion) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b entryCompletion) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b entryCompletion) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b entryCompletion) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b entryCompletion) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b entryCompletion) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b entryCompletion) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b entryCompletion) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (c entryCompletion) AddAttribute(cell CellRenderer, attribute string, column int) {
-	WrapCellLayout(gextras.InternObject(c)).AddAttribute(cell, attribute, column)
-}
-
-func (c entryCompletion) Clear() {
-	WrapCellLayout(gextras.InternObject(c)).Clear()
-}
-
-func (c entryCompletion) ClearAttributes(cell CellRenderer) {
-	WrapCellLayout(gextras.InternObject(c)).ClearAttributes(cell)
-}
-
-func (c entryCompletion) Area() CellArea {
-	return WrapCellLayout(gextras.InternObject(c)).Area()
-}
-
-func (c entryCompletion) PackEnd(cell CellRenderer, expand bool) {
-	WrapCellLayout(gextras.InternObject(c)).PackEnd(cell, expand)
-}
-
-func (c entryCompletion) PackStart(cell CellRenderer, expand bool) {
-	WrapCellLayout(gextras.InternObject(c)).PackStart(cell, expand)
-}
-
-func (c entryCompletion) Reorder(cell CellRenderer, position int) {
-	WrapCellLayout(gextras.InternObject(c)).Reorder(cell, position)
+func (e entryCompletion) AsCellLayout() CellLayout {
+	return WrapCellLayout(gextras.InternObject(e))
 }

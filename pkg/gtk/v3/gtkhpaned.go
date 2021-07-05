@@ -5,9 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -33,6 +31,11 @@ func init() {
 // GtkHPaned has been deprecated, use Paned instead.
 type HPaned interface {
 	Paned
+
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsOrientable casts the class to the Orientable interface.
+	AsOrientable() Orientable
 }
 
 // hPaned implements the HPaned class.
@@ -54,6 +57,9 @@ func marshalHPaned(p uintptr) (interface{}, error) {
 	return WrapHPaned(obj), nil
 }
 
+// NewHPaned: create a new HPaned
+//
+// Deprecated: since version 3.2.
 func NewHPaned() HPaned {
 	var _cret *C.GtkWidget // in
 
@@ -61,55 +67,15 @@ func NewHPaned() HPaned {
 
 	var _hPaned HPaned // out
 
-	_hPaned = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(HPaned)
+	_hPaned = WrapHPaned(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _hPaned
 }
 
-func (b hPaned) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+func (h hPaned) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(h))
 }
 
-func (b hPaned) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b hPaned) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b hPaned) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b hPaned) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b hPaned) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b hPaned) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b hPaned) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b hPaned) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b hPaned) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (o hPaned) Orientation() Orientation {
-	return WrapOrientable(gextras.InternObject(o)).Orientation()
-}
-
-func (o hPaned) SetOrientation(orientation Orientation) {
-	WrapOrientable(gextras.InternObject(o)).SetOrientation(orientation)
+func (h hPaned) AsOrientable() Orientable {
+	return WrapOrientable(gextras.InternObject(h))
 }

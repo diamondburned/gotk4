@@ -3,14 +3,13 @@ package generators
 import (
 	"fmt"
 	"strconv"
-	"strings"
 
-	"github.com/diamondburned/gotk4/gir/girgen/pen"
 	"github.com/diamondburned/gotk4/gir"
 	"github.com/diamondburned/gotk4/gir/girgen/file"
 	"github.com/diamondburned/gotk4/gir/girgen/generators/callable"
 	"github.com/diamondburned/gotk4/gir/girgen/gotmpl"
 	"github.com/diamondburned/gotk4/gir/girgen/logger"
+	"github.com/diamondburned/gotk4/gir/girgen/pen"
 	"github.com/diamondburned/gotk4/gir/girgen/strcases"
 	"github.com/diamondburned/gotk4/gir/girgen/types"
 	"github.com/diamondburned/gotk4/gir/girgen/types/typeconv"
@@ -100,13 +99,13 @@ func (g *CallbackGenerator) Use(cb *gir.Callback) bool {
 		return false
 	}
 
-	// Don't generate destroy notifiers. It's an edge case that we handle
-	// separately and mostly manually. There are also no good ways to detect
-	// this.
-	if strings.HasSuffix(cb.Name, "DestroyNotify") {
-		g.Logln(logger.Debug, "skipping DestroyNotify-ish callback")
-		return false
-	}
+	// // Don't generate destroy notifiers. It's an edge case that we handle
+	// // separately and mostly manually. There are also no good ways to detect
+	// // this.
+	// if strings.HasSuffix(cb.Name, "DestroyNotify") {
+	// 	g.Logln(logger.Debug, "skipping DestroyNotify-ish callback")
+	// 	return false
+	// }
 
 	g.GoName = strcases.PascalToGo(cb.Name)
 
@@ -264,7 +263,7 @@ func (g *CallbackGenerator) renderBlock() bool {
 
 		case typeconv.ConvertGoToC:
 			goCallRets.Add(result.InCall)
-			goTypeArgs.Addf("%s %s", result.InName, result.InType)
+			goTypeRets.Addf("%s %s", result.InName, result.InType)
 
 			g.pen.Line(secOutputPre, result.OutDeclare)
 			g.pen.Line(secOutputConv, result.Conversion)

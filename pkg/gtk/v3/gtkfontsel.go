@@ -5,9 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -31,28 +29,75 @@ func init() {
 type FontSelection interface {
 	Box
 
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsOrientable casts the class to the Orientable interface.
+	AsOrientable() Orientable
+
+	// Face gets the FontFace representing the selected font group details (i.e.
+	// family, slant, weight, width, etc).
+	//
+	// Deprecated: since version 3.2.
 	Face() pango.FontFace
-
+	// FaceList: this returns the TreeView which lists all styles available for
+	// the selected font. For example, “Regular”, “Bold”, etc.
+	//
+	// Deprecated: since version 3.2.
 	FaceList() Widget
-
+	// Family gets the FontFamily representing the selected font family.
+	//
+	// Deprecated: since version 3.2.
 	Family() pango.FontFamily
-
+	// FamilyList: this returns the TreeView that lists font families, for
+	// example, “Sans”, “Serif”, etc.
+	//
+	// Deprecated: since version 3.2.
 	FamilyList() Widget
-
+	// FontName gets the currently-selected font name.
+	//
+	// Note that this can be a different string than what you set with
+	// gtk_font_selection_set_font_name(), as the font selection widget may
+	// normalize font names and thus return a string with a different structure.
+	// For example, “Helvetica Italic Bold 12” could be normalized to “Helvetica
+	// Bold Italic 12”. Use pango_font_description_equal() if you want to
+	// compare two font descriptions.
+	//
+	// Deprecated: since version 3.2.
 	FontName() string
-
+	// PreviewEntry: this returns the Entry used to display the font as a
+	// preview.
+	//
+	// Deprecated: since version 3.2.
 	PreviewEntry() Widget
-
+	// PreviewText gets the text displayed in the preview area.
+	//
+	// Deprecated: since version 3.2.
 	PreviewText() string
-
+	// Size: the selected font size.
+	//
+	// Deprecated: since version 3.2.
 	Size() int
-
+	// SizeEntry: this returns the Entry used to allow the user to edit the font
+	// number manually instead of selecting it from the list of font sizes.
+	//
+	// Deprecated: since version 3.2.
 	SizeEntry() Widget
-
+	// SizeList: this returns the TreeView used to list font sizes.
+	//
+	// Deprecated: since version 3.2.
 	SizeList() Widget
-
+	// SetFontNameFontSelection sets the currently-selected font.
+	//
+	// Note that the @fontsel needs to know the screen in which it will appear
+	// for this to work; this can be guaranteed by simply making sure that the
+	// @fontsel is inserted in a toplevel window before you call this function.
+	//
+	// Deprecated: since version 3.2.
 	SetFontNameFontSelection(fontname string) bool
-
+	// SetPreviewTextFontSelection sets the text displayed in the preview area.
+	// The @text is used to show how the selected font looks.
+	//
+	// Deprecated: since version 3.2.
 	SetPreviewTextFontSelection(text string)
 }
 
@@ -75,6 +120,9 @@ func marshalFontSelection(p uintptr) (interface{}, error) {
 	return WrapFontSelection(obj), nil
 }
 
+// NewFontSelection creates a new FontSelection.
+//
+// Deprecated: since version 3.2.
 func NewFontSelection() FontSelection {
 	var _cret *C.GtkWidget // in
 
@@ -82,7 +130,7 @@ func NewFontSelection() FontSelection {
 
 	var _fontSelection FontSelection // out
 
-	_fontSelection = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(FontSelection)
+	_fontSelection = WrapFontSelection(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _fontSelection
 }
@@ -269,69 +317,55 @@ func (f fontSelection) SetPreviewTextFontSelection(text string) {
 	C.gtk_font_selection_set_preview_text(_arg0, _arg1)
 }
 
-func (b fontSelection) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+func (f fontSelection) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(f))
 }
 
-func (b fontSelection) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b fontSelection) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b fontSelection) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b fontSelection) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b fontSelection) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b fontSelection) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b fontSelection) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b fontSelection) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b fontSelection) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (o fontSelection) Orientation() Orientation {
-	return WrapOrientable(gextras.InternObject(o)).Orientation()
-}
-
-func (o fontSelection) SetOrientation(orientation Orientation) {
-	WrapOrientable(gextras.InternObject(o)).SetOrientation(orientation)
+func (f fontSelection) AsOrientable() Orientable {
+	return WrapOrientable(gextras.InternObject(f))
 }
 
 type FontSelectionDialog interface {
 	Dialog
 
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+
+	// CancelButton gets the “Cancel” button.
+	//
+	// Deprecated: since version 3.2.
 	CancelButton() Widget
-
+	// FontName gets the currently-selected font name.
+	//
+	// Note that this can be a different string than what you set with
+	// gtk_font_selection_dialog_set_font_name(), as the font selection widget
+	// may normalize font names and thus return a string with a different
+	// structure. For example, “Helvetica Italic Bold 12” could be normalized to
+	// “Helvetica Bold Italic 12”. Use pango_font_description_equal() if you
+	// want to compare two font descriptions.
+	//
+	// Deprecated: since version 3.2.
 	FontName() string
-
+	// FontSelection retrieves the FontSelection widget embedded in the dialog.
+	//
+	// Deprecated: since version 3.2.
 	FontSelection() Widget
-
+	// OkButton gets the “OK” button.
+	//
+	// Deprecated: since version 3.2.
 	OkButton() Widget
-
+	// PreviewText gets the text displayed in the preview area.
+	//
+	// Deprecated: since version 3.2.
 	PreviewText() string
-
+	// SetFontNameFontSelectionDialog sets the currently selected font.
+	//
+	// Deprecated: since version 3.2.
 	SetFontNameFontSelectionDialog(fontname string) bool
-
+	// SetPreviewTextFontSelectionDialog sets the text displayed in the preview
+	// area.
+	//
+	// Deprecated: since version 3.2.
 	SetPreviewTextFontSelectionDialog(text string)
 }
 
@@ -354,6 +388,9 @@ func marshalFontSelectionDialog(p uintptr) (interface{}, error) {
 	return WrapFontSelectionDialog(obj), nil
 }
 
+// NewFontSelectionDialog creates a new FontSelectionDialog.
+//
+// Deprecated: since version 3.2.
 func NewFontSelectionDialog(title string) FontSelectionDialog {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -365,7 +402,7 @@ func NewFontSelectionDialog(title string) FontSelectionDialog {
 
 	var _fontSelectionDialog FontSelectionDialog // out
 
-	_fontSelectionDialog = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(FontSelectionDialog)
+	_fontSelectionDialog = WrapFontSelectionDialog(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _fontSelectionDialog
 }
@@ -477,42 +514,6 @@ func (f fontSelectionDialog) SetPreviewTextFontSelectionDialog(text string) {
 	C.gtk_font_selection_dialog_set_preview_text(_arg0, _arg1)
 }
 
-func (b fontSelectionDialog) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
-}
-
-func (b fontSelectionDialog) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b fontSelectionDialog) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b fontSelectionDialog) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b fontSelectionDialog) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b fontSelectionDialog) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b fontSelectionDialog) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b fontSelectionDialog) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b fontSelectionDialog) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b fontSelectionDialog) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
+func (f fontSelectionDialog) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(f))
 }

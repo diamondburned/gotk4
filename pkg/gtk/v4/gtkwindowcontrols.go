@@ -67,14 +67,39 @@ func init() {
 type WindowControls interface {
 	Widget
 
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
+
+	// DecorationLayout gets the decoration layout of this `GtkWindowControls`.
 	DecorationLayout() string
-
+	// Empty gets whether the widget has any window buttons.
 	Empty() bool
-
+	// Side gets the side to which this `GtkWindowControls` instance belongs.
 	Side() PackType
-
+	// SetDecorationLayoutWindowControls sets the decoration layout for the
+	// title buttons.
+	//
+	// This overrides the [property@Gtk.Settings:gtk-decoration-layout] setting.
+	//
+	// The format of the string is button names, separated by commas. A colon
+	// separates the buttons that should appear on the left from those on the
+	// right. Recognized button names are minimize, maximize, close and icon
+	// (the window icon).
+	//
+	// For example, “icon:minimize,maximize,close” specifies a icon on the left,
+	// and minimize, maximize and close buttons on the right.
+	//
+	// If [property@Gtk.WindowControls:side] value is @GTK_PACK_START, @self
+	// will display the part before the colon, otherwise after that.
 	SetDecorationLayoutWindowControls(layout string)
-
+	// SetSideWindowControls determines which part of decoration layout the
+	// `GtkWindowControls` uses.
+	//
+	// See [property@Gtk.WindowControls:decoration-layout].
 	SetSideWindowControls(side PackType)
 }
 
@@ -97,6 +122,7 @@ func marshalWindowControls(p uintptr) (interface{}, error) {
 	return WrapWindowControls(obj), nil
 }
 
+// NewWindowControls creates a new `GtkWindowControls`.
 func NewWindowControls(side PackType) WindowControls {
 	var _arg1 C.GtkPackType // out
 	var _cret *C.GtkWidget  // in
@@ -107,7 +133,7 @@ func NewWindowControls(side PackType) WindowControls {
 
 	var _windowControls WindowControls // out
 
-	_windowControls = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(WindowControls)
+	_windowControls = WrapWindowControls(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _windowControls
 }
@@ -180,34 +206,14 @@ func (s windowControls) SetSideWindowControls(side PackType) {
 	C.gtk_window_controls_set_side(_arg0, _arg1)
 }
 
-func (s windowControls) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
+func (w windowControls) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(w))
 }
 
-func (s windowControls) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
+func (w windowControls) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(w))
 }
 
-func (s windowControls) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
-}
-
-func (s windowControls) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s windowControls) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s windowControls) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s windowControls) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b windowControls) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
+func (w windowControls) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(w))
 }

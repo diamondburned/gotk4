@@ -33,12 +33,18 @@ func init() {
 type StringSorter interface {
 	Sorter
 
+	// Expression gets the expression that is evaluated to obtain strings from
+	// items.
 	Expression() Expression
-
+	// IgnoreCase gets whether the sorter ignores case differences.
 	IgnoreCase() bool
-
+	// SetExpressionStringSorter sets the expression that is evaluated to obtain
+	// strings from items.
+	//
+	// The expression must have the type G_TYPE_STRING.
 	SetExpressionStringSorter(expression Expression)
-
+	// SetIgnoreCaseStringSorter sets whether the sorter will ignore case
+	// differences.
 	SetIgnoreCaseStringSorter(ignoreCase bool)
 }
 
@@ -61,6 +67,11 @@ func marshalStringSorter(p uintptr) (interface{}, error) {
 	return WrapStringSorter(obj), nil
 }
 
+// NewStringSorter creates a new string sorter that compares items using the
+// given @expression.
+//
+// Unless an expression is set on it, this sorter will always compare items as
+// invalid.
 func NewStringSorter(expression Expression) StringSorter {
 	var _arg1 *C.GtkExpression   // out
 	var _cret *C.GtkStringSorter // in
@@ -71,7 +82,7 @@ func NewStringSorter(expression Expression) StringSorter {
 
 	var _stringSorter StringSorter // out
 
-	_stringSorter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(StringSorter)
+	_stringSorter = WrapStringSorter(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _stringSorter
 }

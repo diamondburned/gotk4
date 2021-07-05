@@ -25,9 +25,8 @@ func init() {
 	})
 }
 
-// WindowGroup: a WindowGroup restricts the effect of grabs to windows in the
-// same group, thereby making window groups almost behave like separate
-// applications.
+// WindowGroup restricts the effect of grabs to windows in the same group,
+// thereby making window groups almost behave like separate applications.
 //
 // A window can be a member in at most one window group at a time. Windows that
 // have not been explicitly assigned to a group are implicitly treated like
@@ -42,12 +41,15 @@ func init() {
 type WindowGroup interface {
 	gextras.Objector
 
+	// AddWindowWindowGroup adds a window to a WindowGroup.
 	AddWindowWindowGroup(window Window)
-
+	// CurrentDeviceGrab returns the current grab widget for @device, or nil if
+	// none.
 	CurrentDeviceGrab(device gdk.Device) Widget
-
+	// CurrentGrab gets the current grab widget of the given group, see
+	// gtk_grab_add().
 	CurrentGrab() Widget
-
+	// RemoveWindowWindowGroup removes a window from a WindowGroup.
 	RemoveWindowWindowGroup(window Window)
 }
 
@@ -70,6 +72,8 @@ func marshalWindowGroup(p uintptr) (interface{}, error) {
 	return WrapWindowGroup(obj), nil
 }
 
+// NewWindowGroup creates a new WindowGroup object. Grabs added with
+// gtk_grab_add() only affect windows within the same WindowGroup.
 func NewWindowGroup() WindowGroup {
 	var _cret *C.GtkWindowGroup // in
 
@@ -77,7 +81,7 @@ func NewWindowGroup() WindowGroup {
 
 	var _windowGroup WindowGroup // out
 
-	_windowGroup = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(WindowGroup)
+	_windowGroup = WrapWindowGroup(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _windowGroup
 }

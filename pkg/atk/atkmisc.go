@@ -22,13 +22,29 @@ func init() {
 	})
 }
 
-// Misc: a set of utility functions for thread locking. This interface and all
-// his related methods are deprecated since 2.12.
+// Misc: set of utility functions for thread locking. This interface and all his
+// related methods are deprecated since 2.12.
 type Misc interface {
 	gextras.Objector
 
+	// ThreadsEnterMisc: take the thread mutex for the GUI toolkit, if one
+	// exists. (This method is implemented by the toolkit ATK implementation
+	// layer; for instance, for GTK+, GAIL implements this via
+	// GDK_THREADS_ENTER).
+	//
+	// Deprecated: since version .
 	ThreadsEnterMisc()
-
+	// ThreadsLeaveMisc: release the thread mutex for the GUI toolkit, if one
+	// exists. This method, and atk_misc_threads_enter, are needed in some
+	// situations by threaded application code which services ATK requests,
+	// since fulfilling ATK requests often requires calling into the GUI
+	// toolkit. If a long-running or potentially blocking call takes place
+	// inside such a block, it should be bracketed by
+	// atk_misc_threads_leave/atk_misc_threads_enter calls. (This method is
+	// implemented by the toolkit ATK implementation layer; for instance, for
+	// GTK+, GAIL implements this via GDK_THREADS_LEAVE).
+	//
+	// Deprecated: since version .
 	ThreadsLeaveMisc()
 }
 

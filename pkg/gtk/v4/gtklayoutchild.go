@@ -34,8 +34,11 @@ func init() {
 type LayoutChild interface {
 	gextras.Objector
 
+	// ChildWidget retrieves the `GtkWidget` associated to the given
+	// @layout_child.
 	ChildWidget() Widget
-
+	// LayoutManager retrieves the `GtkLayoutManager` instance that created the
+	// given @layout_child.
 	LayoutManager() LayoutManager
 }
 

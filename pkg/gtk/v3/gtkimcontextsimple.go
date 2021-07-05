@@ -23,9 +23,9 @@ func init() {
 	})
 }
 
-// IMContextSimple: gtkIMContextSimple is a simple input method context
-// supporting table-based input methods. It has a built-in table of compose
-// sequences that is derived from the X11 Compose files.
+// IMContextSimple is a simple input method context supporting table-based input
+// methods. It has a built-in table of compose sequences that is derived from
+// the X11 Compose files.
 //
 // GtkIMContextSimple reads additional compose sequences from the first of the
 // following files that is found: ~/.config/gtk-3.0/Compose, ~/.XCompose,
@@ -43,6 +43,8 @@ func init() {
 type IMContextSimple interface {
 	IMContext
 
+	// AddComposeFileIMContextSimple adds an additional table from the X11
+	// compose file.
 	AddComposeFileIMContextSimple(composeFile string)
 }
 
@@ -65,6 +67,7 @@ func marshalIMContextSimple(p uintptr) (interface{}, error) {
 	return WrapIMContextSimple(obj), nil
 }
 
+// NewIMContextSimple creates a new IMContextSimple.
 func NewIMContextSimple() IMContextSimple {
 	var _cret *C.GtkIMContext // in
 
@@ -72,7 +75,7 @@ func NewIMContextSimple() IMContextSimple {
 
 	var _imContextSimple IMContextSimple // out
 
-	_imContextSimple = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(IMContextSimple)
+	_imContextSimple = WrapIMContextSimple(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _imContextSimple
 }

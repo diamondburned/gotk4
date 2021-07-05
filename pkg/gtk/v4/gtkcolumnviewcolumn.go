@@ -39,38 +39,66 @@ func init() {
 type ColumnViewColumn interface {
 	gextras.Objector
 
+	// ColumnView gets the column view that's currently displaying this column.
+	//
+	// If @self has not been added to a column view yet, nil is returned.
 	ColumnView() ColumnView
-
+	// Expand returns whether this column should expand.
 	Expand() bool
-
+	// Factory gets the factory that's currently used to populate list items for
+	// this column.
 	Factory() ListItemFactory
-
+	// FixedWidth gets the fixed width of the column.
 	FixedWidth() int
-
+	// HeaderMenu gets the menu model that is used to create the context menu
+	// for the column header.
 	HeaderMenu() gio.MenuModel
-
+	// Resizable returns whether this column is resizable.
 	Resizable() bool
-
+	// Sorter returns the sorter that is associated with the column.
 	Sorter() Sorter
-
+	// Title returns the title set with gtk_column_view_column_set_title().
 	Title() string
-
+	// Visible returns whether this column is visible.
 	Visible() bool
-
+	// SetExpandColumnViewColumn sets the column to take available extra space.
+	//
+	// The extra space is shared equally amongst all columns that have the
+	// expand set to true.
 	SetExpandColumnViewColumn(expand bool)
-
+	// SetFactoryColumnViewColumn sets the `GtkListItemFactory` to use for
+	// populating list items for this column.
 	SetFactoryColumnViewColumn(factory ListItemFactory)
-
+	// SetFixedWidthColumnViewColumn: if @fixed_width is not -1, sets the fixed
+	// width of @column; otherwise unsets it.
+	//
+	// Setting a fixed width overrides the automatically calculated width.
+	// Interactive resizing also sets the “fixed-width” property.
 	SetFixedWidthColumnViewColumn(fixedWidth int)
-
+	// SetHeaderMenuColumnViewColumn sets the menu model that is used to create
+	// the context menu for the column header.
 	SetHeaderMenuColumnViewColumn(menu gio.MenuModel)
-
+	// SetResizableColumnViewColumn sets whether this column should be resizable
+	// by dragging.
 	SetResizableColumnViewColumn(resizable bool)
-
+	// SetSorterColumnViewColumn associates a sorter with the column.
+	//
+	// If @sorter is nil, the column will not let users change the sorting by
+	// clicking on its header.
+	//
+	// This sorter can be made active by clicking on the column header, or by
+	// calling [method@Gtk.ColumnView.sort_by_column].
+	//
+	// See [method@Gtk.ColumnView.get_sorter] for the necessary steps for
+	// setting up customizable sorting for [class@Gtk.ColumnView].
 	SetSorterColumnViewColumn(sorter Sorter)
-
+	// SetTitleColumnViewColumn sets the title of this column.
+	//
+	// The title is displayed in the header of a `GtkColumnView` for this column
+	// and is therefore user-facing text that should be translated.
 	SetTitleColumnViewColumn(title string)
-
+	// SetVisibleColumnViewColumn sets whether this column should be visible in
+	// views.
 	SetVisibleColumnViewColumn(visible bool)
 }
 
@@ -93,6 +121,15 @@ func marshalColumnViewColumn(p uintptr) (interface{}, error) {
 	return WrapColumnViewColumn(obj), nil
 }
 
+// NewColumnViewColumn creates a new `GtkColumnViewColumn` that uses the given
+// @factory for mapping items to widgets.
+//
+// You most likely want to call [method@Gtk.ColumnView.append_column] next.
+//
+// The function takes ownership of the argument, so you can write code like:
+//
+// “`c column = gtk_column_view_column_new (_("Name"),
+// gtk_builder_list_item_factory_new_from_resource ("/name.ui")); “`
 func NewColumnViewColumn(title string, factory ListItemFactory) ColumnViewColumn {
 	var _arg1 *C.char                // out
 	var _arg2 *C.GtkListItemFactory  // out
@@ -106,7 +143,7 @@ func NewColumnViewColumn(title string, factory ListItemFactory) ColumnViewColumn
 
 	var _columnViewColumn ColumnViewColumn // out
 
-	_columnViewColumn = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(ColumnViewColumn)
+	_columnViewColumn = WrapColumnViewColumn(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _columnViewColumn
 }

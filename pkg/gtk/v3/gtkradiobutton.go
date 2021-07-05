@@ -5,9 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -26,7 +24,7 @@ func init() {
 	})
 }
 
-// RadioButton: a single radio button performs the same basic function as a
+// RadioButton: single radio button performs the same basic function as a
 // CheckButton, as its position in the object hierarchy reflects. It is only
 // when multiple radio buttons are grouped together that they become a different
 // user interface component in their own right.
@@ -89,6 +87,31 @@ func init() {
 type RadioButton interface {
 	CheckButton
 
+	// AsActionable casts the class to the Actionable interface.
+	AsActionable() Actionable
+	// AsActivatable casts the class to the Activatable interface.
+	AsActivatable() Activatable
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+
+	// JoinGroupRadioButton joins a RadioButton object to the group of another
+	// RadioButton object
+	//
+	// Use this in language bindings instead of the gtk_radio_button_get_group()
+	// and gtk_radio_button_set_group() methods
+	//
+	// A common way to set up a group of radio buttons is the following:
+	//
+	//      GtkRadioButton *radio_button;
+	//      GtkRadioButton *last_button;
+	//
+	//      while (some_condition)
+	//        {
+	//           radio_button = gtk_radio_button_new (NULL);
+	//
+	//           gtk_radio_button_join_group (radio_button, last_button);
+	//           last_button = radio_button;
+	//        }
 	JoinGroupRadioButton(groupSource RadioButton)
 }
 
@@ -111,6 +134,9 @@ func marshalRadioButton(p uintptr) (interface{}, error) {
 	return WrapRadioButton(obj), nil
 }
 
+// NewRadioButtonFromWidget creates a new RadioButton, adding it to the same
+// group as @radio_group_member. As with gtk_radio_button_new(), a widget should
+// be packed into the radio button.
 func NewRadioButtonFromWidget(radioGroupMember RadioButton) RadioButton {
 	var _arg1 *C.GtkRadioButton // out
 	var _cret *C.GtkWidget      // in
@@ -121,11 +147,13 @@ func NewRadioButtonFromWidget(radioGroupMember RadioButton) RadioButton {
 
 	var _radioButton RadioButton // out
 
-	_radioButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(RadioButton)
+	_radioButton = WrapRadioButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _radioButton
 }
 
+// NewRadioButtonWithLabelFromWidget creates a new RadioButton with a text
+// label, adding it to the same group as @radio_group_member.
 func NewRadioButtonWithLabelFromWidget(radioGroupMember RadioButton, label string) RadioButton {
 	var _arg1 *C.GtkRadioButton // out
 	var _arg2 *C.gchar          // out
@@ -139,11 +167,14 @@ func NewRadioButtonWithLabelFromWidget(radioGroupMember RadioButton, label strin
 
 	var _radioButton RadioButton // out
 
-	_radioButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(RadioButton)
+	_radioButton = WrapRadioButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _radioButton
 }
 
+// NewRadioButtonWithMnemonicFromWidget creates a new RadioButton containing a
+// label. The label will be created using gtk_label_new_with_mnemonic(), so
+// underscores in @label indicate the mnemonic for the button.
 func NewRadioButtonWithMnemonicFromWidget(radioGroupMember RadioButton, label string) RadioButton {
 	var _arg1 *C.GtkRadioButton // out
 	var _arg2 *C.gchar          // out
@@ -157,7 +188,7 @@ func NewRadioButtonWithMnemonicFromWidget(radioGroupMember RadioButton, label st
 
 	var _radioButton RadioButton // out
 
-	_radioButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(RadioButton)
+	_radioButton = WrapRadioButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _radioButton
 }
@@ -172,126 +203,14 @@ func (r radioButton) JoinGroupRadioButton(groupSource RadioButton) {
 	C.gtk_radio_button_join_group(_arg0, _arg1)
 }
 
-func (b radioButton) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+func (r radioButton) AsActionable() Actionable {
+	return WrapActionable(gextras.InternObject(r))
 }
 
-func (b radioButton) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+func (r radioButton) AsActivatable() Activatable {
+	return WrapActivatable(gextras.InternObject(r))
 }
 
-func (b radioButton) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b radioButton) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b radioButton) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b radioButton) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b radioButton) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b radioButton) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b radioButton) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b radioButton) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (a radioButton) ActionName() string {
-	return WrapActionable(gextras.InternObject(a)).ActionName()
-}
-
-func (a radioButton) ActionTargetValue() *glib.Variant {
-	return WrapActionable(gextras.InternObject(a)).ActionTargetValue()
-}
-
-func (a radioButton) SetActionName(actionName string) {
-	WrapActionable(gextras.InternObject(a)).SetActionName(actionName)
-}
-
-func (a radioButton) SetActionTargetValue(targetValue *glib.Variant) {
-	WrapActionable(gextras.InternObject(a)).SetActionTargetValue(targetValue)
-}
-
-func (a radioButton) SetDetailedActionName(detailedActionName string) {
-	WrapActionable(gextras.InternObject(a)).SetDetailedActionName(detailedActionName)
-}
-
-func (b radioButton) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
-}
-
-func (b radioButton) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b radioButton) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b radioButton) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b radioButton) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b radioButton) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b radioButton) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b radioButton) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b radioButton) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b radioButton) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (a radioButton) DoSetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).DoSetRelatedAction(action)
-}
-
-func (a radioButton) RelatedAction() Action {
-	return WrapActivatable(gextras.InternObject(a)).RelatedAction()
-}
-
-func (a radioButton) UseActionAppearance() bool {
-	return WrapActivatable(gextras.InternObject(a)).UseActionAppearance()
-}
-
-func (a radioButton) SetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SetRelatedAction(action)
-}
-
-func (a radioButton) SetUseActionAppearance(useAppearance bool) {
-	WrapActivatable(gextras.InternObject(a)).SetUseActionAppearance(useAppearance)
-}
-
-func (a radioButton) SyncActionProperties(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SyncActionProperties(action)
+func (r radioButton) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(r))
 }

@@ -38,18 +38,23 @@ func init() {
 // relevant for matching purposes. These are often given in string form. Eg,
 // "10.0.0.0/8", or "fe80::/10".
 type InetAddressMask interface {
-	Initable
+	gextras.Objector
 
+	// AsInitable casts the class to the Initable interface.
+	AsInitable() Initable
+
+	// EqualInetAddressMask tests if @mask and @mask2 are the same mask.
 	EqualInetAddressMask(mask2 InetAddressMask) bool
-
+	// Address gets @mask's base address
 	Address() InetAddress
-
+	// Family gets the Family of @mask's address
 	Family() SocketFamily
-
+	// Length gets @mask's length
 	Length() uint
-
+	// MatchesInetAddressMask tests if @address falls within the range described
+	// by @mask.
 	MatchesInetAddressMask(address InetAddress) bool
-
+	// String converts @mask back to its corresponding string form.
 	String() string
 }
 
@@ -72,11 +77,13 @@ func marshalInetAddressMask(p uintptr) (interface{}, error) {
 	return WrapInetAddressMask(obj), nil
 }
 
+// NewInetAddressMask creates a new AddressMask representing all addresses whose
+// first @length bits match @addr.
 func NewInetAddressMask(addr InetAddress, length uint) (InetAddressMask, error) {
 	var _arg1 *C.GInetAddress     // out
 	var _arg2 C.guint             // out
 	var _cret *C.GInetAddressMask // in
-	var _cerr *C.GError           // in
+	var _cerr **C.GError          // in
 
 	_arg1 = (*C.GInetAddress)(unsafe.Pointer(addr.Native()))
 	_arg2 = C.guint(length)
@@ -86,16 +93,29 @@ func NewInetAddressMask(addr InetAddress, length uint) (InetAddressMask, error) 
 	var _inetAddressMask InetAddressMask // out
 	var _goerr error                     // out
 
-	_inetAddressMask = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(InetAddressMask)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	_inetAddressMask = WrapInetAddressMask(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _inetAddressMask, _goerr
 }
 
+// NewInetAddressMaskFromString parses @mask_string as an IP address and
+// (optional) length, and creates a new AddressMask. The length, if present, is
+// delimited by a "/". If it is not present, then the length is assumed to be
+// the full length of the address.
 func NewInetAddressMaskFromString(maskString string) (InetAddressMask, error) {
 	var _arg1 *C.gchar            // out
 	var _cret *C.GInetAddressMask // in
-	var _cerr *C.GError           // in
+	var _cerr **C.GError          // in
 
 	_arg1 = (*C.gchar)(C.CString(maskString))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -105,8 +125,17 @@ func NewInetAddressMaskFromString(maskString string) (InetAddressMask, error) {
 	var _inetAddressMask InetAddressMask // out
 	var _goerr error                     // out
 
-	_inetAddressMask = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(InetAddressMask)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	_inetAddressMask = WrapInetAddressMask(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _inetAddressMask, _goerr
 }
@@ -210,6 +239,6 @@ func (m inetAddressMask) String() string {
 	return _utf8
 }
 
-func (i inetAddressMask) Init(cancellable Cancellable) error {
-	return WrapInitable(gextras.InternObject(i)).Init(cancellable)
+func (i inetAddressMask) AsInitable() Initable {
+	return WrapInitable(gextras.InternObject(i))
 }

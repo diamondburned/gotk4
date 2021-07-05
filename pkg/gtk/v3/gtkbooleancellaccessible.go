@@ -27,6 +27,9 @@ func init() {
 
 type BooleanCellAccessible interface {
 	RendererCellAccessible
+
+	// AsAction casts the class to the atk.Action interface.
+	AsAction() atk.Action
 }
 
 // booleanCellAccessible implements the BooleanCellAccessible class.
@@ -48,30 +51,6 @@ func marshalBooleanCellAccessible(p uintptr) (interface{}, error) {
 	return WrapBooleanCellAccessible(obj), nil
 }
 
-func (a booleanCellAccessible) DoAction(i int) bool {
-	return atk.WrapAction(gextras.InternObject(a)).DoAction(i)
-}
-
-func (a booleanCellAccessible) Description(i int) string {
-	return atk.WrapAction(gextras.InternObject(a)).Description(i)
-}
-
-func (a booleanCellAccessible) Keybinding(i int) string {
-	return atk.WrapAction(gextras.InternObject(a)).Keybinding(i)
-}
-
-func (a booleanCellAccessible) LocalizedName(i int) string {
-	return atk.WrapAction(gextras.InternObject(a)).LocalizedName(i)
-}
-
-func (a booleanCellAccessible) NActions() int {
-	return atk.WrapAction(gextras.InternObject(a)).NActions()
-}
-
-func (a booleanCellAccessible) Name(i int) string {
-	return atk.WrapAction(gextras.InternObject(a)).Name(i)
-}
-
-func (a booleanCellAccessible) SetDescription(i int, desc string) bool {
-	return atk.WrapAction(gextras.InternObject(a)).SetDescription(i, desc)
+func (b booleanCellAccessible) AsAction() atk.Action {
+	return atk.WrapAction(gextras.InternObject(b))
 }

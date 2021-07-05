@@ -113,19 +113,19 @@ type GLUniformType int
 const (
 	// none: no type, used for uninitialized or unspecified values.
 	GLUniformTypeNone GLUniformType = 0
-	// float: a float uniform
+	// float uniform
 	GLUniformTypeFloat GLUniformType = 1
-	// int: a GLSL int / gint32 uniform
+	// int: GLSL int / gint32 uniform
 	GLUniformTypeInt GLUniformType = 2
-	// uint: a GLSL uint / guint32 uniform
+	// uint: GLSL uint / guint32 uniform
 	GLUniformTypeUint GLUniformType = 3
-	// bool: a GLSL bool / gboolean uniform
+	// bool: GLSL bool / gboolean uniform
 	GLUniformTypeBool GLUniformType = 4
-	// vec2: a GLSL vec2 / graphene_vec2_t uniform
+	// vec2: GLSL vec2 / graphene_vec2_t uniform
 	GLUniformTypeVec2 GLUniformType = 5
-	// vec3: a GLSL vec3 / graphene_vec3_t uniform
+	// vec3: GLSL vec3 / graphene_vec3_t uniform
 	GLUniformTypeVec3 GLUniformType = 6
-	// vec4: a GLSL vec4 / graphene_vec4_t uniform
+	// vec4: GLSL vec4 / graphene_vec4_t uniform
 	GLUniformTypeVec4 GLUniformType = 7
 )
 
@@ -139,56 +139,56 @@ type RenderNodeType int
 const (
 	// NotARenderNode: error type. No node will ever have this type.
 	RenderNodeTypeNotARenderNode RenderNodeType = 0
-	// ContainerNode: a node containing a stack of children
+	// ContainerNode: node containing a stack of children
 	RenderNodeTypeContainerNode RenderNodeType = 1
-	// CairoNode: a node drawing a #cairo_surface_t
+	// CairoNode: node drawing a #cairo_surface_t
 	RenderNodeTypeCairoNode RenderNodeType = 2
-	// ColorNode: a node drawing a single color rectangle
+	// ColorNode: node drawing a single color rectangle
 	RenderNodeTypeColorNode RenderNodeType = 3
-	// LinearGradientNode: a node drawing a linear gradient
+	// LinearGradientNode: node drawing a linear gradient
 	RenderNodeTypeLinearGradientNode RenderNodeType = 4
-	// RepeatingLinearGradientNode: a node drawing a repeating linear gradient
+	// RepeatingLinearGradientNode: node drawing a repeating linear gradient
 	RenderNodeTypeRepeatingLinearGradientNode RenderNodeType = 5
-	// RadialGradientNode: a node drawing a radial gradient
+	// RadialGradientNode: node drawing a radial gradient
 	RenderNodeTypeRadialGradientNode RenderNodeType = 6
-	// RepeatingRadialGradientNode: a node drawing a repeating radial gradient
+	// RepeatingRadialGradientNode: node drawing a repeating radial gradient
 	RenderNodeTypeRepeatingRadialGradientNode RenderNodeType = 7
-	// ConicGradientNode: a node drawing a conic gradient
+	// ConicGradientNode: node drawing a conic gradient
 	RenderNodeTypeConicGradientNode RenderNodeType = 8
-	// BorderNode: a node stroking a border around an area
+	// BorderNode: node stroking a border around an area
 	RenderNodeTypeBorderNode RenderNodeType = 9
-	// TextureNode: a node drawing a Texture
+	// TextureNode: node drawing a Texture
 	RenderNodeTypeTextureNode RenderNodeType = 10
-	// InsetShadowNode: a node drawing an inset shadow
+	// InsetShadowNode: node drawing an inset shadow
 	RenderNodeTypeInsetShadowNode RenderNodeType = 11
-	// OutsetShadowNode: a node drawing an outset shadow
+	// OutsetShadowNode: node drawing an outset shadow
 	RenderNodeTypeOutsetShadowNode RenderNodeType = 12
-	// TransformNode: a node that renders its child after applying a matrix
+	// TransformNode: node that renders its child after applying a matrix
 	// transform
 	RenderNodeTypeTransformNode RenderNodeType = 13
-	// OpacityNode: a node that changes the opacity of its child
+	// OpacityNode: node that changes the opacity of its child
 	RenderNodeTypeOpacityNode RenderNodeType = 14
-	// ColorMatrixNode: a node that applies a color matrix to every pixel
+	// ColorMatrixNode: node that applies a color matrix to every pixel
 	RenderNodeTypeColorMatrixNode RenderNodeType = 15
-	// RepeatNode: a node that repeats the child's contents
+	// RepeatNode: node that repeats the child's contents
 	RenderNodeTypeRepeatNode RenderNodeType = 16
-	// ClipNode: a node that clips its child to a rectangular area
+	// ClipNode: node that clips its child to a rectangular area
 	RenderNodeTypeClipNode RenderNodeType = 17
-	// RoundedClipNode: a node that clips its child to a rounded rectangle
+	// RoundedClipNode: node that clips its child to a rounded rectangle
 	RenderNodeTypeRoundedClipNode RenderNodeType = 18
-	// ShadowNode: a node that draws a shadow below its child
+	// ShadowNode: node that draws a shadow below its child
 	RenderNodeTypeShadowNode RenderNodeType = 19
-	// BlendNode: a node that blends two children together
+	// BlendNode: node that blends two children together
 	RenderNodeTypeBlendNode RenderNodeType = 20
-	// CrossFadeNode: a node that cross-fades between two children
+	// CrossFadeNode: node that cross-fades between two children
 	RenderNodeTypeCrossFadeNode RenderNodeType = 21
-	// TextNode: a node containing a glyph string
+	// TextNode: node containing a glyph string
 	RenderNodeTypeTextNode RenderNodeType = 22
-	// BlurNode: a node that applies a blur
+	// BlurNode: node that applies a blur
 	RenderNodeTypeBlurNode RenderNodeType = 23
 	// DebugNode: debug information that does not affect the rendering
 	RenderNodeTypeDebugNode RenderNodeType = 24
-	// GLShaderNode: a node that uses OpenGL fragment shaders to render
+	// GLShaderNode: node that uses OpenGL fragment shaders to render
 	RenderNodeTypeGLShaderNode RenderNodeType = 25
 )
 
@@ -203,9 +203,9 @@ func marshalRenderNodeType(p uintptr) (interface{}, error) {
 type ScalingFilter int
 
 const (
-	// linear: linear interpolation filter
+	// linear interpolation filter
 	ScalingFilterLinear ScalingFilter = 0
-	// nearest: nearest neighbor interpolation filter
+	// nearest neighbor interpolation filter
 	ScalingFilterNearest ScalingFilter = 1
 	// trilinear: linear interpolation along each axis, plus mipmap generation,
 	// with linear interpolation along the mipmap levels

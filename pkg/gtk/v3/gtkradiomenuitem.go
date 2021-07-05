@@ -5,9 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -26,9 +24,8 @@ func init() {
 	})
 }
 
-// RadioMenuItem: a radio menu item is a check menu item that belongs to a
-// group. At each instant exactly one of the radio menu items from a group is
-// selected.
+// RadioMenuItem: radio menu item is a check menu item that belongs to a group.
+// At each instant exactly one of the radio menu items from a group is selected.
 //
 // The group list does not need to be freed, as each RadioMenuItem will remove
 // itself and its list item when it is destroyed.
@@ -47,6 +44,33 @@ func init() {
 type RadioMenuItem interface {
 	CheckMenuItem
 
+	// AsActionable casts the class to the Actionable interface.
+	AsActionable() Actionable
+	// AsActivatable casts the class to the Activatable interface.
+	AsActivatable() Activatable
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+
+	// JoinGroupRadioMenuItem joins a RadioMenuItem object to the group of
+	// another RadioMenuItem object.
+	//
+	// This function should be used by language bindings to avoid the memory
+	// manangement of the opaque List of gtk_radio_menu_item_get_group() and
+	// gtk_radio_menu_item_set_group().
+	//
+	// A common way to set up a group of RadioMenuItem instances is:
+	//
+	//      GtkRadioMenuItem *last_item = NULL;
+	//
+	//      while ( ...more items to add... )
+	//        {
+	//          GtkRadioMenuItem *radio_item;
+	//
+	//          radio_item = gtk_radio_menu_item_new (...);
+	//
+	//          gtk_radio_menu_item_join_group (radio_item, last_item);
+	//          last_item = radio_item;
+	//        }
 	JoinGroupRadioMenuItem(groupSource RadioMenuItem)
 }
 
@@ -69,6 +93,8 @@ func marshalRadioMenuItem(p uintptr) (interface{}, error) {
 	return WrapRadioMenuItem(obj), nil
 }
 
+// NewRadioMenuItemFromWidget creates a new RadioMenuItem adding it to the same
+// group as @group.
 func NewRadioMenuItemFromWidget(group RadioMenuItem) RadioMenuItem {
 	var _arg1 *C.GtkRadioMenuItem // out
 	var _cret *C.GtkWidget        // in
@@ -79,11 +105,14 @@ func NewRadioMenuItemFromWidget(group RadioMenuItem) RadioMenuItem {
 
 	var _radioMenuItem RadioMenuItem // out
 
-	_radioMenuItem = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(RadioMenuItem)
+	_radioMenuItem = WrapRadioMenuItem(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _radioMenuItem
 }
 
+// NewRadioMenuItemWithLabelFromWidget creates a new GtkRadioMenuItem whose
+// child is a simple GtkLabel. The new RadioMenuItem is added to the same group
+// as @group.
 func NewRadioMenuItemWithLabelFromWidget(group RadioMenuItem, label string) RadioMenuItem {
 	var _arg1 *C.GtkRadioMenuItem // out
 	var _arg2 *C.gchar            // out
@@ -97,11 +126,17 @@ func NewRadioMenuItemWithLabelFromWidget(group RadioMenuItem, label string) Radi
 
 	var _radioMenuItem RadioMenuItem // out
 
-	_radioMenuItem = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(RadioMenuItem)
+	_radioMenuItem = WrapRadioMenuItem(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _radioMenuItem
 }
 
+// NewRadioMenuItemWithMnemonicFromWidget creates a new GtkRadioMenuItem
+// containing a label. The label will be created using
+// gtk_label_new_with_mnemonic(), so underscores in label indicate the mnemonic
+// for the menu item.
+//
+// The new RadioMenuItem is added to the same group as @group.
 func NewRadioMenuItemWithMnemonicFromWidget(group RadioMenuItem, label string) RadioMenuItem {
 	var _arg1 *C.GtkRadioMenuItem // out
 	var _arg2 *C.gchar            // out
@@ -115,7 +150,7 @@ func NewRadioMenuItemWithMnemonicFromWidget(group RadioMenuItem, label string) R
 
 	var _radioMenuItem RadioMenuItem // out
 
-	_radioMenuItem = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(RadioMenuItem)
+	_radioMenuItem = WrapRadioMenuItem(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _radioMenuItem
 }
@@ -130,126 +165,14 @@ func (r radioMenuItem) JoinGroupRadioMenuItem(groupSource RadioMenuItem) {
 	C.gtk_radio_menu_item_join_group(_arg0, _arg1)
 }
 
-func (b radioMenuItem) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+func (r radioMenuItem) AsActionable() Actionable {
+	return WrapActionable(gextras.InternObject(r))
 }
 
-func (b radioMenuItem) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+func (r radioMenuItem) AsActivatable() Activatable {
+	return WrapActivatable(gextras.InternObject(r))
 }
 
-func (b radioMenuItem) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b radioMenuItem) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b radioMenuItem) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b radioMenuItem) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b radioMenuItem) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b radioMenuItem) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b radioMenuItem) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b radioMenuItem) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (a radioMenuItem) ActionName() string {
-	return WrapActionable(gextras.InternObject(a)).ActionName()
-}
-
-func (a radioMenuItem) ActionTargetValue() *glib.Variant {
-	return WrapActionable(gextras.InternObject(a)).ActionTargetValue()
-}
-
-func (a radioMenuItem) SetActionName(actionName string) {
-	WrapActionable(gextras.InternObject(a)).SetActionName(actionName)
-}
-
-func (a radioMenuItem) SetActionTargetValue(targetValue *glib.Variant) {
-	WrapActionable(gextras.InternObject(a)).SetActionTargetValue(targetValue)
-}
-
-func (a radioMenuItem) SetDetailedActionName(detailedActionName string) {
-	WrapActionable(gextras.InternObject(a)).SetDetailedActionName(detailedActionName)
-}
-
-func (b radioMenuItem) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
-}
-
-func (b radioMenuItem) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b radioMenuItem) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b radioMenuItem) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b radioMenuItem) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b radioMenuItem) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b radioMenuItem) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b radioMenuItem) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b radioMenuItem) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b radioMenuItem) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (a radioMenuItem) DoSetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).DoSetRelatedAction(action)
-}
-
-func (a radioMenuItem) RelatedAction() Action {
-	return WrapActivatable(gextras.InternObject(a)).RelatedAction()
-}
-
-func (a radioMenuItem) UseActionAppearance() bool {
-	return WrapActivatable(gextras.InternObject(a)).UseActionAppearance()
-}
-
-func (a radioMenuItem) SetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SetRelatedAction(action)
-}
-
-func (a radioMenuItem) SetUseActionAppearance(useAppearance bool) {
-	WrapActivatable(gextras.InternObject(a)).SetUseActionAppearance(useAppearance)
-}
-
-func (a radioMenuItem) SyncActionProperties(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SyncActionProperties(action)
+func (r radioMenuItem) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(r))
 }

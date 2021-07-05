@@ -43,11 +43,12 @@ func init() {
 type DBusObjectManager interface {
 	gextras.Objector
 
-	// Interface gets all BusObject objects known to @manager.
+	// Interface gets the interface proxy for @interface_name at @object_path,
+	// if any.
 	Interface(objectPath string, interfaceName string) DBusInterface
-	// Object gets all BusObject objects known to @manager.
+	// Object gets the BusObjectProxy at @object_path, if any.
 	Object(objectPath string) DBusObject
-	// ObjectPath gets all BusObject objects known to @manager.
+	// ObjectPath gets the object path that @manager is for.
 	ObjectPath() string
 }
 

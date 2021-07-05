@@ -25,6 +25,10 @@ func init() {
 type X11Monitor interface {
 	gdk.Monitor
 
+	// Workarea retrieves the size and position of the “work area” on a monitor
+	// within the display coordinate space. The returned geometry is in
+	// ”application pixels”, not in ”device pixels” (see
+	// gdk_monitor_get_scale_factor()).
 	Workarea() gdk.Rectangle
 }
 
@@ -48,8 +52,8 @@ func marshalX11Monitor(p uintptr) (interface{}, error) {
 }
 
 func (m x11Monitor) Workarea() gdk.Rectangle {
-	var _arg0 *C.GdkMonitor  // out
-	var _arg1 C.GdkRectangle // in
+	var _arg0 *C.GdkMonitor   // out
+	var _arg1 *C.GdkRectangle // in
 
 	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
 
@@ -57,17 +61,7 @@ func (m x11Monitor) Workarea() gdk.Rectangle {
 
 	var _workarea gdk.Rectangle // out
 
-	{
-		var refTmpIn *C.GdkRectangle
-		var refTmpOut *gdk.Rectangle
-
-		in0 := &_arg1
-		refTmpIn = in0
-
-		refTmpOut = (*gdk.Rectangle)(unsafe.Pointer(refTmpIn))
-
-		_workarea = *refTmpOut
-	}
+	_workarea = (gdk.Rectangle)(unsafe.Pointer(_arg1))
 
 	return _workarea
 }

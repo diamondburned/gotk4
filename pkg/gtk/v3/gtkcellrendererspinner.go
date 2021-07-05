@@ -23,10 +23,9 @@ func init() {
 	})
 }
 
-// CellRendererSpinner: gtkCellRendererSpinner renders a spinning animation in a
-// cell, very similar to Spinner. It can often be used as an alternative to a
-// CellRendererProgress for displaying indefinite activity, instead of actual
-// progress.
+// CellRendererSpinner renders a spinning animation in a cell, very similar to
+// Spinner. It can often be used as an alternative to a CellRendererProgress for
+// displaying indefinite activity, instead of actual progress.
 //
 // To start the animation in a cell, set the CellRendererSpinner:active property
 // to true and increment the CellRendererSpinner:pulse property at regular
@@ -56,6 +55,8 @@ func marshalCellRendererSpinner(p uintptr) (interface{}, error) {
 	return WrapCellRendererSpinner(obj), nil
 }
 
+// NewCellRendererSpinner returns a new cell renderer which will show a spinner
+// to indicate activity.
 func NewCellRendererSpinner() CellRendererSpinner {
 	var _cret *C.GtkCellRenderer // in
 
@@ -63,7 +64,7 @@ func NewCellRendererSpinner() CellRendererSpinner {
 
 	var _cellRendererSpinner CellRendererSpinner // out
 
-	_cellRendererSpinner = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(CellRendererSpinner)
+	_cellRendererSpinner = WrapCellRendererSpinner(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _cellRendererSpinner
 }

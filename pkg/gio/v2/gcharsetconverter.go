@@ -35,13 +35,19 @@ func init() {
 
 // CharsetConverter is an implementation of #GConverter based on GIConv.
 type CharsetConverter interface {
-	Converter
-	Initable
+	gextras.Objector
 
+	// AsConverter casts the class to the Converter interface.
+	AsConverter() Converter
+	// AsInitable casts the class to the Initable interface.
+	AsInitable() Initable
+
+	// NumFallbacks gets the number of fallbacks that @converter has applied so
+	// far.
 	NumFallbacks() uint
-
+	// UseFallback gets the Converter:use-fallback property.
 	UseFallback() bool
-
+	// SetUseFallbackCharsetConverter sets the Converter:use-fallback property.
 	SetUseFallbackCharsetConverter(useFallback bool)
 }
 
@@ -64,11 +70,12 @@ func marshalCharsetConverter(p uintptr) (interface{}, error) {
 	return WrapCharsetConverter(obj), nil
 }
 
+// NewCharsetConverter creates a new Converter.
 func NewCharsetConverter(toCharset string, fromCharset string) (CharsetConverter, error) {
 	var _arg1 *C.gchar             // out
 	var _arg2 *C.gchar             // out
 	var _cret *C.GCharsetConverter // in
-	var _cerr *C.GError            // in
+	var _cerr **C.GError           // in
 
 	_arg1 = (*C.gchar)(C.CString(toCharset))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -80,8 +87,17 @@ func NewCharsetConverter(toCharset string, fromCharset string) (CharsetConverter
 	var _charsetConverter CharsetConverter // out
 	var _goerr error                       // out
 
-	_charsetConverter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(CharsetConverter)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	_charsetConverter = WrapCharsetConverter(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _charsetConverter, _goerr
 }
@@ -130,14 +146,10 @@ func (c charsetConverter) SetUseFallbackCharsetConverter(useFallback bool) {
 	C.g_charset_converter_set_use_fallback(_arg0, _arg1)
 }
 
-func (c charsetConverter) Convert(inbuf []byte, outbuf []byte, flags ConverterFlags) (bytesRead uint, bytesWritten uint, converterResult ConverterResult, goerr error) {
-	return WrapConverter(gextras.InternObject(c)).Convert(inbuf, outbuf, flags)
+func (c charsetConverter) AsConverter() Converter {
+	return WrapConverter(gextras.InternObject(c))
 }
 
-func (c charsetConverter) Reset() {
-	WrapConverter(gextras.InternObject(c)).Reset()
-}
-
-func (i charsetConverter) Init(cancellable Cancellable) error {
-	return WrapInitable(gextras.InternObject(i)).Init(cancellable)
+func (c charsetConverter) AsInitable() Initable {
+	return WrapInitable(gextras.InternObject(c))
 }

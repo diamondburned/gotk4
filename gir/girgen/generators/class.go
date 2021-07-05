@@ -16,8 +16,11 @@ import (
 var classTmpl = gotmpl.NewGoTemplate(`
 	{{ GoDoc . 0 }}
 	type {{ .InterfaceName }} interface {
-		{{ range .Implements -}}
-		{{ . }}
+		{{ .ParentInterface }}
+
+		{{ range .Implements }}
+		// As{{.Name}} casts the class to the {{.Type}} interface.
+		As{{.Name}}() {{ .Type -}}
 		{{ end }}
 
 		{{ range .Methods }}
@@ -54,10 +57,10 @@ var classTmpl = gotmpl.NewGoTemplate(`
 	func ({{ .Recv }} {{ $.StructName }}) {{ .Name }}{{ .Tail }} {{ .Block }}
 	{{ end }}
 
-	{{ range .InheritedMethods }}
-	func ({{ .Recv }} {{ $.StructName }}) {{ .Name }}{{ .Tail }} {
-		{{ if .Return }} return {{ end -}}
-		{{ .Wrapper }}(gextras.InternObject({{ .Recv }})).{{ .Name }}({{ .CallParams }})
+	{{ $recv := (FirstLetter .StructName) }}
+	{{ range .Implements }}
+	func ({{ $recv }} {{ $.StructName }}) As{{.Name}}() {{ .Type }} {
+		return {{ .Wrapper }}(gextras.InternObject({{ $recv }}))
 	}
 	{{ end }}
 `)
@@ -84,26 +87,26 @@ func GenerateClass(gen FileGeneratorWriter, class *gir.Class) bool {
 }
 
 type classCallable struct {
-	Doc   *gir.Doc
+	InfoElements *gir.InfoElements
+	InfoAttrs    *gir.InfoAttrs
+
 	Recv  string
 	Name  string
 	Tail  string
 	Block string
 }
 
-// classInheritedMethod describes a method inherited from an interface (using
-// the implements thing). The Use function must add imports for the wrappers if
-// needed.
-type classInheritedMethod struct {
-	classCallable
-	Return     bool
-	Wrapper    string
-	CallParams string
+type classImplements struct {
+	Name    string
+	Type    string
+	Wrapper string
 }
 
 func newClassCallable(cgen *callable.Generator) classCallable {
 	return classCallable{
-		Doc:   cgen.Doc,
+		InfoElements: &cgen.InfoElements,
+		InfoAttrs:    &cgen.InfoAttrs,
+
 		Recv:  cgen.Recv(),
 		Name:  cgen.Name,
 		Tail:  cgen.Tail,
@@ -117,16 +120,14 @@ type ClassGenerator struct {
 	InterfaceName   string
 	ParentInterface string
 
-	Implements       []string // list of PUBLIC INTERFACE NAMES
-	Constructors     []classCallable
-	Methods          []classCallable
-	InheritedMethods []classInheritedMethod
+	Implements   []classImplements
+	Constructors []classCallable
+	Methods      []classCallable
 
 	Tree types.Tree // starts from current resolved type
 
 	header file.Header
 	gen    FileGenerator
-	igen   InterfaceGenerator
 	cgen   callable.Generator
 }
 
@@ -134,7 +135,6 @@ type ClassGenerator struct {
 func NewClassGenerator(gen FileGenerator) ClassGenerator {
 	classGenerator := ClassGenerator{
 		gen:  gen,
-		igen: NewInterfaceGenerator(gen),
 		Tree: types.NewTree(gen),
 	}
 	classGenerator.cgen = callable.NewGenerator(headeredFileGenerator{
@@ -152,13 +152,11 @@ func (cg *ClassGenerator) Logln(lvl logger.Level, v ...interface{}) {
 
 // Reset resets the callback generator.
 func (g *ClassGenerator) Reset() {
-	g.igen.Reset()
 	g.cgen.Reset()
 	g.Tree.Reset()
 
 	*g = ClassGenerator{
 		gen:  g.gen,
-		igen: g.igen,
 		cgen: g.cgen,
 		Tree: g.Tree,
 	}
@@ -185,73 +183,47 @@ func (cg *ClassGenerator) Use(class *gir.Class) bool {
 		return false
 	}
 
-	cg.Implements = cg.Tree.PublicEmbeds()
 	cg.ParentInterface = types.GoPublicType(cg.gen, cg.Tree.Requires[0].Resolved)
+	implements := cg.Tree.Requires[1:]
 
-	// Add imports for the parent class in the struct.
-	cg.header.ImportResolvedType(cg.Tree.Requires[0].PublImport)
-	// Add imports for the embedded interfaces.
-	for _, imp := range cg.Tree.Embeds {
+	// Add imports for the parent class and implemented interfaces.
+	for _, imp := range cg.Tree.Requires {
 		cg.header.ImportResolvedType(imp.PublImport)
 	}
 
 	cg.Methods = classCallableGrow(cg.Methods, len(class.Methods))
 	cg.Constructors = classCallableGrow(cg.Constructors, len(class.Constructors))
-	cg.InheritedMethods = cg.InheritedMethods[:0]
+	cg.Implements = cg.Implements[:0]
 
-	// Initialize the Callable constructor generator.
-	cg.cgen.ReturnWrap = "Wrap" + cg.InterfaceName
+	cg.cgen.Constructor = true
 
 	for _, ctor := range class.Constructors {
-		// Bodge this so the constructors and stuff are named properly. This
-		// copies things safely, so class is not modified.
+		// Copy and bodge this so the constructors and stuff are named properly.
+		// This copies things safely, so class is not modified.
 		ctor := bodgeClassCtor(class, ctor)
 		if !cg.cgen.Use(&ctor.CallableAttrs) {
 			continue
 		}
+
+		file.ApplyHeader(cg, &cg.cgen)
 		cg.Constructors = append(cg.Constructors, newClassCallable(&cg.cgen))
 	}
 
-	// Reset the ReturnWrap for methods.
-	cg.cgen.ReturnWrap = ""
+	cg.cgen.Constructor = false
 
-	// The first requirement type is always the parent class type.
-	cg.Tree.WalkPublInterfaces(func(typ *types.Resolved) {
-		// This fucking sucks. I fucking hate this. Because the GNOME people
-		// wants to maximize misery and make your life a fucking pain, the
-		// methods inside this interface aren't namespaced properly, so we have
-		// no choice but to override the global namespace.
-		//
-		// Ideally, once the file generator is restored, the type resolver
-		// should be decoupled from the namespace generator as a whole, and
-		// instead, the namespace should be overrideable by having TypeResolver
-		// returning the namespace we wants and ifaceGenerator (and everything
-		// else) to use TypeResolver for resolving and generating methods.
+	for _, impl := range implements {
+		needsNamespace := impl.NeedsNamespace(cg.gen.Namespace())
+		wrapper := impl.WrapName(needsNamespace)
 
-		cg.igen.UseMethods(typ.Extern.Type.(*gir.Interface), typ.Extern.NamespaceFindResult)
-		file.ApplyHeader(cg, &cg.igen)
+		cg.Implements = append(cg.Implements, classImplements{
+			Name:    impl.PublicType(false),
+			Type:    impl.PublicType(needsNamespace),
+			Wrapper: wrapper,
+		})
+	}
 
-		needsNamespace := typ.NeedsNamespace(cg.gen.Namespace())
-		wrapper := typ.WrapName(needsNamespace)
-
-		for _, method := range cg.igen.Methods {
-			// Parse the parameter values out of the function in a pretty hacky
-			// way by extracting the types out.
-			params := append([]string(nil), method.GoArgs.Joints()...)
-			for i, word := range params {
-				params[i] = strings.SplitN(word, " ", 2)[0]
-			}
-
-			cg.InheritedMethods = append(cg.InheritedMethods, classInheritedMethod{
-				classCallable: newClassCallable(&method),
-				Return:        method.GoRets.Len() > 0,
-				Wrapper:       wrapper,
-				CallParams:    strings.Join(params, ", "),
-			})
-		}
-	})
-
-	if len(cg.InheritedMethods) > 0 {
+	if len(cg.Implements) > 0 {
+		// Import gextras for InternObject.
 		cg.header.ImportCore("gextras")
 	}
 
@@ -259,13 +231,17 @@ func (cg *ClassGenerator) Use(class *gir.Class) bool {
 	// because we want the class to satisfy the inherited interfaces as a first
 	// priority, and then generate our methods down below. This way, we can also
 	// avoid method collisions.
-	for _, method := range class.Methods {
-		if types.FilterMethod(cg.gen, cg.Class.Name, &method) {
+	for i := range class.Methods {
+		method := &class.Methods[i]
+
+		if types.FilterMethod(cg.gen, cg.Class.Name, method) {
 			continue
 		}
+
 		if !cg.cgen.Use(&method.CallableAttrs) {
 			continue
 		}
+
 		file.ApplyHeader(cg, &cg.cgen)
 		cg.Methods = append(cg.Methods, newClassCallable(&cg.cgen))
 	}
@@ -296,17 +272,12 @@ func (cg *ClassGenerator) hasField(goName string) bool {
 		return true
 	}
 	for _, impl := range cg.Implements {
-		if impl == goName {
+		if "As"+impl.Name == goName {
 			return true
 		}
 	}
 	for _, callable := range cg.Methods {
 		if callable.Name == goName {
-			return true
-		}
-	}
-	for _, parent := range cg.InheritedMethods {
-		if parent.Name == goName {
 			return true
 		}
 	}

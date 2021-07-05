@@ -224,14 +224,14 @@ func RCFindModuleInPath(moduleFile string) string {
 // returns nil.
 //
 // Deprecated: since version 3.0.
-func RCFindPixmapInPath(settings Settings, scanner *glib.Scanner, pixmapFile string) string {
+func RCFindPixmapInPath(settings Settings, scanner glib.Scanner, pixmapFile string) string {
 	var _arg1 *C.GtkSettings // out
 	var _arg2 *C.GScanner    // out
 	var _arg3 *C.gchar       // out
 	var _cret *C.gchar       // in
 
 	_arg1 = (*C.GtkSettings)(unsafe.Pointer(settings.Native()))
-	_arg2 = (*C.GScanner)(unsafe.Pointer(scanner.Native()))
+	_arg2 = (*C.GScanner)(unsafe.Pointer(scanner))
 	_arg3 = (*C.gchar)(C.CString(pixmapFile))
 	defer C.free(unsafe.Pointer(_arg3))
 
@@ -422,29 +422,19 @@ func RCParse(filename string) {
 // support symbolic colors.
 //
 // Deprecated: since version 3.0.
-func RCParseColor(scanner *glib.Scanner) (gdk.Color, uint) {
+func RCParseColor(scanner glib.Scanner) (gdk.Color, uint) {
 	var _arg1 *C.GScanner // out
-	var _arg2 C.GdkColor  // in
+	var _arg2 *C.GdkColor // in
 	var _cret C.guint     // in
 
-	_arg1 = (*C.GScanner)(unsafe.Pointer(scanner.Native()))
+	_arg1 = (*C.GScanner)(unsafe.Pointer(scanner))
 
 	_cret = C.gtk_rc_parse_color(_arg1, &_arg2)
 
 	var _color gdk.Color // out
 	var _guint uint      // out
 
-	{
-		var refTmpIn *C.GdkColor
-		var refTmpOut *gdk.Color
-
-		in0 := &_arg2
-		refTmpIn = in0
-
-		refTmpOut = (*gdk.Color)(unsafe.Pointer(refTmpIn))
-
-		_color = *refTmpOut
-	}
+	_color = (gdk.Color)(unsafe.Pointer(_arg2))
 	_guint = uint(_cret)
 
 	return _color, _guint
@@ -455,13 +445,13 @@ func RCParseColor(scanner *glib.Scanner) (gdk.Color, uint) {
 // colors.
 //
 // Deprecated: since version 3.0.
-func RCParseColorFull(scanner *glib.Scanner, style RCStyle) (gdk.Color, uint) {
+func RCParseColorFull(scanner glib.Scanner, style RCStyle) (gdk.Color, uint) {
 	var _arg1 *C.GScanner   // out
 	var _arg2 *C.GtkRcStyle // out
-	var _arg3 C.GdkColor    // in
+	var _arg3 *C.GdkColor   // in
 	var _cret C.guint       // in
 
-	_arg1 = (*C.GScanner)(unsafe.Pointer(scanner.Native()))
+	_arg1 = (*C.GScanner)(unsafe.Pointer(scanner))
 	_arg2 = (*C.GtkRcStyle)(unsafe.Pointer(style.Native()))
 
 	_cret = C.gtk_rc_parse_color_full(_arg1, _arg2, &_arg3)
@@ -469,17 +459,7 @@ func RCParseColorFull(scanner *glib.Scanner, style RCStyle) (gdk.Color, uint) {
 	var _color gdk.Color // out
 	var _guint uint      // out
 
-	{
-		var refTmpIn *C.GdkColor
-		var refTmpOut *gdk.Color
-
-		in0 := &_arg3
-		refTmpIn = in0
-
-		refTmpOut = (*gdk.Color)(unsafe.Pointer(refTmpIn))
-
-		_color = *refTmpOut
-	}
+	_color = (gdk.Color)(unsafe.Pointer(_arg3))
 	_guint = uint(_cret)
 
 	return _color, _guint
@@ -489,17 +469,17 @@ func RCParseColorFull(scanner *glib.Scanner, style RCStyle) (gdk.Color, uint) {
 // in a RC file.
 //
 // Deprecated: since version 3.0.
-func RCParsePriority(scanner *glib.Scanner, priority *PathPriorityType) uint {
+func RCParsePriority(scanner glib.Scanner, priority PathPriorityType) uint {
 	var _arg1 *C.GScanner            // out
 	var _arg2 *C.GtkPathPriorityType // out
 	var _cret C.guint                // in
 
-	_arg1 = (*C.GScanner)(unsafe.Pointer(scanner.Native()))
+	_arg1 = (*C.GScanner)(unsafe.Pointer(scanner))
 	{
 		var refTmpIn PathPriorityType
 		var refTmpOut C.GtkPathPriorityType
 
-		refTmpIn = *priority
+		refTmpIn = priority
 
 		refTmpOut = C.GtkPathPriorityType(refTmpIn)
 
@@ -520,19 +500,28 @@ func RCParsePriority(scanner *glib.Scanner, priority *PathPriorityType) uint {
 // file.
 //
 // Deprecated: since version 3.0.
-func RCParseState(scanner *glib.Scanner) (StateType, uint) {
-	var _arg1 *C.GScanner    // out
-	var _arg2 C.GtkStateType // in
-	var _cret C.guint        // in
+func RCParseState(scanner glib.Scanner) (StateType, uint) {
+	var _arg1 *C.GScanner     // out
+	var _arg2 *C.GtkStateType // in
+	var _cret C.guint         // in
 
-	_arg1 = (*C.GScanner)(unsafe.Pointer(scanner.Native()))
+	_arg1 = (*C.GScanner)(unsafe.Pointer(scanner))
 
 	_cret = C.gtk_rc_parse_state(_arg1, &_arg2)
 
 	var _state StateType // out
 	var _guint uint      // out
 
-	_state = StateType(_arg2)
+	{
+		var refTmpIn C.GtkStateType
+		var refTmpOut StateType
+
+		refTmpIn = *_arg2
+
+		refTmpOut = StateType(refTmpIn)
+
+		_state = refTmpOut
+	}
 	_guint = uint(_cret)
 
 	return _state, _guint
@@ -639,6 +628,11 @@ func RCSetDefaultFiles(filenames []string) {
 type RCStyle interface {
 	gextras.Objector
 
+	// CopyRCStyle makes a copy of the specified RcStyle. This function will
+	// correctly copy an RC style that is a member of a class derived from
+	// RcStyle.
+	//
+	// Deprecated: since version 3.0.
 	CopyRCStyle() RCStyle
 }
 
@@ -661,6 +655,10 @@ func marshalRCStyle(p uintptr) (interface{}, error) {
 	return WrapRCStyle(obj), nil
 }
 
+// NewRCStyle creates a new RcStyle with no fields set and a reference count of
+// 1.
+//
+// Deprecated: since version 3.0.
 func NewRCStyle() RCStyle {
 	var _cret *C.GtkRcStyle // in
 
@@ -668,7 +666,7 @@ func NewRCStyle() RCStyle {
 
 	var _rcStyle RCStyle // out
 
-	_rcStyle = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(RCStyle)
+	_rcStyle = WrapRCStyle(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _rcStyle
 }
@@ -686,17 +684,4 @@ func (o rcStyle) CopyRCStyle() RCStyle {
 	_rcStyle = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(RCStyle)
 
 	return _rcStyle
-}
-
-type RCContext C.GtkRcContext
-
-// WrapRCContext wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapRCContext(ptr unsafe.Pointer) *RCContext {
-	return (*RCContext)(ptr)
-}
-
-// Native returns the underlying C source pointer.
-func (r *RCContext) Native() unsafe.Pointer {
-	return unsafe.Pointer(r)
 }

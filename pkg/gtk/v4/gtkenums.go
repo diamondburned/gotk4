@@ -113,9 +113,9 @@ const (
 	AccessibleInvalidStateFalse AccessibleInvalidState = 0
 	// true: the value entered by the user has failed validation
 	AccessibleInvalidStateTrue AccessibleInvalidState = 1
-	// grammar: a grammatical error was detected
+	// grammar: grammatical error was detected
 	AccessibleInvalidStateGrammar AccessibleInvalidState = 2
-	// spelling: a spelling error was detected
+	// spelling error was detected
 	AccessibleInvalidStateSpelling AccessibleInvalidState = 3
 )
 
@@ -274,35 +274,34 @@ func marshalAccessibleRelation(p uintptr) (interface{}, error) {
 type AccessibleRole int
 
 const (
-	// alert: an element with important, and usually time-sensitive, information
+	// alert: element with important, and usually time-sensitive, information
 	AccessibleRoleAlert AccessibleRole = 0
-	// AlertDialog: a type of dialog that contains an alert message
+	// AlertDialog: type of dialog that contains an alert message
 	AccessibleRoleAlertDialog AccessibleRole = 1
 	// banner: unused
 	AccessibleRoleBanner AccessibleRole = 2
-	// button: an input element that allows for user-triggered actions when
-	// clicked or pressed
+	// button: input element that allows for user-triggered actions when clicked
+	// or pressed
 	AccessibleRoleButton AccessibleRole = 3
 	// caption: unused
 	AccessibleRoleCaption AccessibleRole = 4
 	// cell: unused
 	AccessibleRoleCell AccessibleRole = 5
-	// checkbox: a checkable input element that has three possible values:
-	// `true`, `false`, or `mixed`
+	// checkbox: checkable input element that has three possible values: `true`,
+	// `false`, or `mixed`
 	AccessibleRoleCheckbox AccessibleRole = 6
-	// ColumnHeader: a header in a columned list.
+	// ColumnHeader: header in a columned list.
 	AccessibleRoleColumnHeader AccessibleRole = 7
-	// ComboBox: an input that controls another element, such as a list or a
-	// grid, that can dynamically pop up to help the user set the value of the
-	// input
+	// ComboBox: input that controls another element, such as a list or a grid,
+	// that can dynamically pop up to help the user set the value of the input
 	AccessibleRoleComboBox AccessibleRole = 8
 	// command: abstract role.
 	AccessibleRoleCommand AccessibleRole = 9
 	// composite: abstract role.
 	AccessibleRoleComposite AccessibleRole = 10
-	// dialog: a dialog is a window that is designed to interrupt the current
-	// processing of an application in order to prompt the user to enter
-	// information or require a response.
+	// dialog is a window that is designed to interrupt the current processing
+	// of an application in order to prompt the user to enter information or
+	// require a response.
 	AccessibleRoleDialog AccessibleRole = 11
 	// document: unused
 	AccessibleRoleDocument AccessibleRole = 12
@@ -312,32 +311,32 @@ const (
 	AccessibleRoleForm AccessibleRole = 14
 	// generic: unused
 	AccessibleRoleGeneric AccessibleRole = 15
-	// grid: a grid of items.
+	// grid of items.
 	AccessibleRoleGrid AccessibleRole = 16
-	// GridCell: an item in a grid or tree grid.
+	// GridCell: item in a grid or tree grid.
 	AccessibleRoleGridCell AccessibleRole = 17
-	// group: an element that groups multiple widgets. GTK uses this role for
+	// group: element that groups multiple widgets. GTK uses this role for
 	// various containers, like Box, Viewport, and HeaderBar.
 	AccessibleRoleGroup AccessibleRole = 18
 	// heading: unused
 	AccessibleRoleHeading AccessibleRole = 19
-	// img: an image.
+	// img: image.
 	AccessibleRoleImg AccessibleRole = 20
 	// input: abstract role.
 	AccessibleRoleInput AccessibleRole = 21
-	// label: a visible name or caption for a user interface component.
+	// label: visible name or caption for a user interface component.
 	AccessibleRoleLabel AccessibleRole = 22
 	// landmark: abstract role.
 	AccessibleRoleLandmark AccessibleRole = 23
 	// legend: unused
 	AccessibleRoleLegend AccessibleRole = 24
-	// link: a clickable link.
+	// link: clickable link.
 	AccessibleRoleLink AccessibleRole = 25
-	// list: a list of items.
+	// list of items.
 	AccessibleRoleList AccessibleRole = 26
 	// ListBox: unused.
 	AccessibleRoleListBox AccessibleRole = 27
-	// ListItem: an item in a list.
+	// ListItem: item in a list.
 	AccessibleRoleListItem AccessibleRole = 28
 	// log: unused
 	AccessibleRoleLog AccessibleRole = 29
@@ -347,33 +346,33 @@ const (
 	AccessibleRoleMarquee AccessibleRole = 31
 	// math: unused
 	AccessibleRoleMath AccessibleRole = 32
-	// meter: an element that represents a value within a known range.
+	// meter: element that represents a value within a known range.
 	AccessibleRoleMeter AccessibleRole = 33
-	// menu: a menu.
+	// menu: menu.
 	AccessibleRoleMenu AccessibleRole = 34
-	// MenuBar: a menubar.
+	// MenuBar: menubar.
 	AccessibleRoleMenuBar AccessibleRole = 35
-	// MenuItem: an item in a menu.
+	// MenuItem: item in a menu.
 	AccessibleRoleMenuItem AccessibleRole = 36
-	// MenuItemCheckbox: a check item in a menu.
+	// MenuItemCheckbox: check item in a menu.
 	AccessibleRoleMenuItemCheckbox AccessibleRole = 37
-	// MenuItemRadio: a radio item in a menu.
+	// MenuItemRadio: radio item in a menu.
 	AccessibleRoleMenuItemRadio AccessibleRole = 38
 	// navigation: unused
 	AccessibleRoleNavigation AccessibleRole = 39
-	// none: an element that is not represented to accessibility technologies.
+	// none: element that is not represented to accessibility technologies.
 	AccessibleRoleNone AccessibleRole = 40
 	// note: unused
 	AccessibleRoleNote AccessibleRole = 41
 	// option: unused
 	AccessibleRoleOption AccessibleRole = 42
-	// presentation: an element that is not represented to accessibility
+	// presentation: element that is not represented to accessibility
 	// technologies.
 	AccessibleRolePresentation AccessibleRole = 43
-	// ProgressBar: an element that displays the progress status for tasks that
+	// ProgressBar: element that displays the progress status for tasks that
 	// take a long time.
 	AccessibleRoleProgressBar AccessibleRole = 44
-	// radio: a checkable input in a group of radio roles, only one of which can
+	// radio: checkable input in a group of radio roles, only one of which can
 	// be checked at a time.
 	AccessibleRoleRadio AccessibleRole = 45
 	// RadioGroup: unused
@@ -382,19 +381,19 @@ const (
 	AccessibleRoleRange AccessibleRole = 47
 	// region: unused
 	AccessibleRoleRegion AccessibleRole = 48
-	// row: a row in a columned list.
+	// row in a columned list.
 	AccessibleRoleRow AccessibleRole = 49
 	// RowGroup: unused
 	AccessibleRoleRowGroup AccessibleRole = 50
 	// RowHeader: unused
 	AccessibleRoleRowHeader AccessibleRole = 51
-	// scrollbar: a graphical object that controls the scrolling of content
-	// within a viewing area, regardless of whether the content is fully
-	// displayed within the viewing area.
+	// scrollbar: graphical object that controls the scrolling of content within
+	// a viewing area, regardless of whether the content is fully displayed
+	// within the viewing area.
 	AccessibleRoleScrollbar AccessibleRole = 52
 	// search: unused
 	AccessibleRoleSearch AccessibleRole = 53
-	// SearchBox: a type of textbox intended for specifying search criteria.
+	// SearchBox: type of textbox intended for specifying search criteria.
 	AccessibleRoleSearchBox AccessibleRole = 54
 	// section: abstract role.
 	AccessibleRoleSection AccessibleRole = 55
@@ -402,31 +401,31 @@ const (
 	AccessibleRoleSectionHead AccessibleRole = 56
 	// select: abstract role.
 	AccessibleRoleSelect AccessibleRole = 57
-	// separator: a divider that separates and distinguishes sections of content
+	// separator: divider that separates and distinguishes sections of content
 	// or groups of menuitems.
 	AccessibleRoleSeparator AccessibleRole = 58
-	// slider: a user input where the user selects a value from within a given
+	// slider: user input where the user selects a value from within a given
 	// range.
 	AccessibleRoleSlider AccessibleRole = 59
-	// SpinButton: a form of range that expects the user to select from among
+	// SpinButton: form of range that expects the user to select from among
 	// discrete choices.
 	AccessibleRoleSpinButton AccessibleRole = 60
 	// status: unused
 	AccessibleRoleStatus AccessibleRole = 61
 	// structure: abstract role.
 	AccessibleRoleStructure AccessibleRole = 62
-	// switch: a type of checkbox that represents on/off values, as opposed to
+	// switch: type of checkbox that represents on/off values, as opposed to
 	// checked/unchecked values.
 	AccessibleRoleSwitch AccessibleRole = 63
-	// tab: an item in a list of tab used for switching pages.
+	// tab: item in a list of tab used for switching pages.
 	AccessibleRoleTab AccessibleRole = 64
 	// table: unused
 	AccessibleRoleTable AccessibleRole = 65
-	// TabList: a list of tabs for switching pages.
+	// TabList: list of tabs for switching pages.
 	AccessibleRoleTabList AccessibleRole = 66
-	// TabPanel: a page in a notebook or stack.
+	// TabPanel: page in a notebook or stack.
 	AccessibleRoleTabPanel AccessibleRole = 67
-	// TextBox: a type of input that allows free-form text as its value.
+	// TextBox: type of input that allows free-form text as its value.
 	AccessibleRoleTextBox AccessibleRole = 68
 	// time: unused
 	AccessibleRoleTime AccessibleRole = 69
@@ -438,14 +437,14 @@ const (
 	AccessibleRoleTooltip AccessibleRole = 72
 	// tree: unused
 	AccessibleRoleTree AccessibleRole = 73
-	// TreeGrid: a treeview-like, columned list.
+	// TreeGrid: treeview-like, columned list.
 	AccessibleRoleTreeGrid AccessibleRole = 74
 	// TreeItem: unused
 	AccessibleRoleTreeItem AccessibleRole = 75
-	// widget: an interactive component of a graphical user interface. This is
-	// the role that GTK uses by default for widgets.
+	// widget: interactive component of a graphical user interface. This is the
+	// role that GTK uses by default for widgets.
 	AccessibleRoleWidget AccessibleRole = 76
-	// window: an application window.
+	// window: application window.
 	AccessibleRoleWindow AccessibleRole = 77
 )
 
@@ -464,7 +463,7 @@ const (
 	AccessibleSortAscending AccessibleSort = 1
 	// descending items are sorted in descending order by this column.
 	AccessibleSortDescending AccessibleSort = 2
-	// other: a sort algorithm other than ascending or descending has been
+	// other: sort algorithm other than ascending or descending has been
 	// applied.
 	AccessibleSortOther AccessibleSort = 3
 )
@@ -477,30 +476,30 @@ func marshalAccessibleSort(p uintptr) (interface{}, error) {
 type AccessibleState int
 
 const (
-	// busy: a “busy” state. This state has boolean values
+	// busy: “busy” state. This state has boolean values
 	AccessibleStateBusy AccessibleState = 0
-	// checked: a “checked” state; indicates the current state of a CheckButton.
+	// checked: “checked” state; indicates the current state of a CheckButton.
 	// Value type: AccessibleTristate
 	AccessibleStateChecked AccessibleState = 1
-	// disabled: a “disabled” state; corresponds to the Widget:sensitive
-	// property on Widget. It indicates a UI element that is perceivable, but
-	// not editable or operable. Value type: boolean
+	// disabled: “disabled” state; corresponds to the Widget:sensitive property
+	// on Widget. It indicates a UI element that is perceivable, but not
+	// editable or operable. Value type: boolean
 	AccessibleStateDisabled AccessibleState = 2
-	// expanded: an “expanded” state; corresponds to the Expander:expanded
-	// property on Expander. Value type: boolean or undefined
+	// expanded: “expanded” state; corresponds to the Expander:expanded property
+	// on Expander. Value type: boolean or undefined
 	AccessibleStateExpanded AccessibleState = 3
-	// hidden: a “hidden” state; corresponds to the Widget:visible property on
+	// hidden: “hidden” state; corresponds to the Widget:visible property on
 	// Widget. You can use this state explicitly on UI elements that should not
 	// be exposed to an assistive technology. Value type: boolean See also:
 	// GTK_ACCESSIBLE_STATE_DISABLED
 	AccessibleStateHidden AccessibleState = 4
-	// invalid: an “invalid” state; set when a widget is showing an error. Value
+	// invalid: “invalid” state; set when a widget is showing an error. Value
 	// type: AccessibleInvalidState
 	AccessibleStateInvalid AccessibleState = 5
-	// pressed: a “pressed” state; indicates the current state of a
-	// ToggleButton. Value type: AccessibleTristate enumeration
+	// pressed: “pressed” state; indicates the current state of a ToggleButton.
+	// Value type: AccessibleTristate enumeration
 	AccessibleStatePressed AccessibleState = 6
-	// selected: a “selected” state; set when a widget is selected. Value type:
+	// selected: “selected” state; set when a widget is selected. Value type:
 	// boolean or undefined
 	AccessibleStateSelected AccessibleState = 7
 )
@@ -554,7 +553,7 @@ const (
 	AlignStart Align = 1
 	// end: snap to right or bottom side, leaving space on left or top
 	AlignEnd Align = 2
-	// center: center natural width of widget inside the allocation
+	// center natural width of widget inside the allocation
 	AlignCenter Align = 3
 	// baseline: align the widget according to the baseline. See Widget
 	AlignBaseline Align = 4
@@ -614,15 +613,15 @@ const (
 	BorderStyleNone BorderStyle = 0
 	// hidden: same as GTK_BORDER_STYLE_NONE
 	BorderStyleHidden BorderStyle = 1
-	// solid: a single line segment
+	// solid: single line segment
 	BorderStyleSolid BorderStyle = 2
 	// inset looks as if the content is sunken into the canvas
 	BorderStyleInset BorderStyle = 3
 	// outset looks as if the content is coming out of the canvas
 	BorderStyleOutset BorderStyle = 4
-	// dotted: a series of round dots
+	// dotted series of round dots
 	BorderStyleDotted BorderStyle = 5
-	// dashed: a series of square-ended dashes
+	// dashed series of square-ended dashes
 	BorderStyleDashed BorderStyle = 6
 	// double: two parallel lines with some space between them
 	BorderStyleDouble BorderStyle = 7
@@ -701,11 +700,11 @@ type ConstraintStrength int
 const (
 	// required: the constraint is required towards solving the layout
 	ConstraintStrengthRequired ConstraintStrength = 1001001000
-	// strong: a strong constraint
+	// strong constraint
 	ConstraintStrengthStrong ConstraintStrength = 1000000000
-	// medium: a medium constraint
+	// medium constraint
 	ConstraintStrengthMedium ConstraintStrength = 1000
-	// weak: a weak constraint
+	// weak constraint
 	ConstraintStrengthWeak ConstraintStrength = 1
 )
 

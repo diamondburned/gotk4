@@ -37,8 +37,11 @@ func init() {
 type GesturePan interface {
 	GestureDrag
 
+	// Orientation returns the orientation of the pan gestures that this
+	// @gesture expects.
 	Orientation() Orientation
-
+	// SetOrientationGesturePan sets the orientation to be expected on pan
+	// gestures.
 	SetOrientationGesturePan(orientation Orientation)
 }
 
@@ -61,6 +64,8 @@ func marshalGesturePan(p uintptr) (interface{}, error) {
 	return WrapGesturePan(obj), nil
 }
 
+// NewGesturePan returns a newly created `GtkGesture` that recognizes pan
+// gestures.
 func NewGesturePan(orientation Orientation) GesturePan {
 	var _arg1 C.GtkOrientation // out
 	var _cret *C.GtkGesture    // in
@@ -71,7 +76,7 @@ func NewGesturePan(orientation Orientation) GesturePan {
 
 	var _gesturePan GesturePan // out
 
-	_gesturePan = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(GesturePan)
+	_gesturePan = WrapGesturePan(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _gesturePan
 }

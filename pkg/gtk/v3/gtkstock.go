@@ -22,7 +22,7 @@ type Stock = string
 // and ActionGroup.
 //
 // Deprecated: since version 3.10.
-type TranslateFunc func(path string, utf8 string)
+type TranslateFunc func(path string) (utf8 string)
 
 //export gotk4_TranslateFunc
 func gotk4_TranslateFunc(arg0 *C.gchar, arg1 C.gpointer) *C.gchar {
@@ -81,9 +81,9 @@ func StockAddStatic(items []StockItem) {
 //
 // Deprecated: since version 3.10.
 func StockLookup(stockId string) (StockItem, bool) {
-	var _arg1 *C.gchar       // out
-	var _arg2 C.GtkStockItem // in
-	var _cret C.gboolean     // in
+	var _arg1 *C.gchar        // out
+	var _arg2 *C.GtkStockItem // in
+	var _cret C.gboolean      // in
 
 	_arg1 = (*C.gchar)(C.CString(stockId))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -93,17 +93,7 @@ func StockLookup(stockId string) (StockItem, bool) {
 	var _item StockItem // out
 	var _ok bool        // out
 
-	{
-		var refTmpIn *C.GtkStockItem
-		var refTmpOut *StockItem
-
-		in0 := &_arg2
-		refTmpIn = in0
-
-		refTmpOut = (*StockItem)(unsafe.Pointer(refTmpIn))
-
-		_item = *refTmpOut
-	}
+	_item = (StockItem)(unsafe.Pointer(_arg2))
 	if _cret != 0 {
 		_ok = true
 	}
@@ -112,7 +102,9 @@ func StockLookup(stockId string) (StockItem, bool) {
 }
 
 // StockItem: deprecated: since version 3.10.
-type StockItem C.GtkStockItem
+type StockItem struct {
+	native C.GtkStockItem
+}
 
 // WrapStockItem wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -122,7 +114,7 @@ func WrapStockItem(ptr unsafe.Pointer) *StockItem {
 
 // Native returns the underlying C source pointer.
 func (s *StockItem) Native() unsafe.Pointer {
-	return unsafe.Pointer(s)
+	return unsafe.Pointer(&s.native)
 }
 
 // Free frees a stock item allocated on the heap, such as one returned by
@@ -133,7 +125,7 @@ func (s *StockItem) Native() unsafe.Pointer {
 func (i *StockItem) Free() {
 	var _arg0 *C.GtkStockItem // out
 
-	_arg0 = (*C.GtkStockItem)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GtkStockItem)(unsafe.Pointer(i))
 
 	C.gtk_stock_item_free(_arg0)
 }

@@ -6,7 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -23,7 +22,7 @@ func init() {
 	})
 }
 
-// ToggleButton: a `GtkToggleButton` is a button which remains “pressed-in” when
+// ToggleButton: `GtkToggleButton` is a button which remains “pressed-in” when
 // clicked.
 //
 // Clicking again will cause the toggle button to return to its normal state.
@@ -89,12 +88,43 @@ func init() {
 type ToggleButton interface {
 	Button
 
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsActionable casts the class to the Actionable interface.
+	AsActionable() Actionable
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
+
+	// Active queries a `GtkToggleButton` and returns its current state.
+	//
+	// Returns true if the toggle button is pressed in and false if it is
+	// raised.
 	Active() bool
-
+	// SetActiveToggleButton sets the status of the toggle button.
+	//
+	// Set to true if you want the `GtkToggleButton` to be “pressed in”, and
+	// false to raise it.
+	//
+	// If the status of the button changes, this action causes the
+	// [signal@GtkToggleButton::toggled] signal to be emitted.
 	SetActiveToggleButton(isActive bool)
-
+	// SetGroupToggleButton adds @self to the group of @group.
+	//
+	// In a group of multiple toggle buttons, only one button can be active at a
+	// time.
+	//
+	// Setting up groups in a cycle leads to undefined behavior.
+	//
+	// Note that the same effect can be achieved via the
+	// [interface@Gtk.Actionable] API, by using the same action with parameter
+	// type and state type 's' for all buttons in the group, and giving each
+	// button its own target value.
 	SetGroupToggleButton(group ToggleButton)
-
+	// ToggledToggleButton emits the ::toggled signal on the `GtkToggleButton`.
+	//
+	// There is no good reason for an application ever to call this function.
 	ToggledToggleButton()
 }
 
@@ -117,6 +147,9 @@ func marshalToggleButton(p uintptr) (interface{}, error) {
 	return WrapToggleButton(obj), nil
 }
 
+// NewToggleButton creates a new toggle button.
+//
+// A widget should be packed into the button, as in [ctor@Gtk.Button.new].
 func NewToggleButton() ToggleButton {
 	var _cret *C.GtkWidget // in
 
@@ -124,11 +157,12 @@ func NewToggleButton() ToggleButton {
 
 	var _toggleButton ToggleButton // out
 
-	_toggleButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ToggleButton)
+	_toggleButton = WrapToggleButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _toggleButton
 }
 
+// NewToggleButtonWithLabel creates a new toggle button with a text label.
 func NewToggleButtonWithLabel(label string) ToggleButton {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in
@@ -140,11 +174,16 @@ func NewToggleButtonWithLabel(label string) ToggleButton {
 
 	var _toggleButton ToggleButton // out
 
-	_toggleButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ToggleButton)
+	_toggleButton = WrapToggleButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _toggleButton
 }
 
+// NewToggleButtonWithMnemonic creates a new `GtkToggleButton` containing a
+// label.
+//
+// The label will be created using [ctor@Gtk.Label.new_with_mnemonic], so
+// underscores in @label indicate the mnemonic for the button.
 func NewToggleButtonWithMnemonic(label string) ToggleButton {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in
@@ -156,7 +195,7 @@ func NewToggleButtonWithMnemonic(label string) ToggleButton {
 
 	var _toggleButton ToggleButton // out
 
-	_toggleButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ToggleButton)
+	_toggleButton = WrapToggleButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _toggleButton
 }
@@ -208,54 +247,18 @@ func (t toggleButton) ToggledToggleButton() {
 	C.gtk_toggle_button_toggled(_arg0)
 }
 
-func (a toggleButton) ActionName() string {
-	return WrapActionable(gextras.InternObject(a)).ActionName()
+func (t toggleButton) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(t))
 }
 
-func (a toggleButton) ActionTargetValue() *glib.Variant {
-	return WrapActionable(gextras.InternObject(a)).ActionTargetValue()
+func (t toggleButton) AsActionable() Actionable {
+	return WrapActionable(gextras.InternObject(t))
 }
 
-func (a toggleButton) SetActionName(actionName string) {
-	WrapActionable(gextras.InternObject(a)).SetActionName(actionName)
+func (t toggleButton) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(t))
 }
 
-func (a toggleButton) SetActionTargetValue(targetValue *glib.Variant) {
-	WrapActionable(gextras.InternObject(a)).SetActionTargetValue(targetValue)
-}
-
-func (a toggleButton) SetDetailedActionName(detailedActionName string) {
-	WrapActionable(gextras.InternObject(a)).SetDetailedActionName(detailedActionName)
-}
-
-func (s toggleButton) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
-}
-
-func (s toggleButton) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
-}
-
-func (s toggleButton) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
-}
-
-func (s toggleButton) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s toggleButton) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s toggleButton) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s toggleButton) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b toggleButton) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
+func (t toggleButton) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(t))
 }

@@ -5,9 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -39,6 +37,10 @@ func init() {
 type AspectFrame interface {
 	Frame
 
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+
+	// SetAspectFrame: set parameters for an existing AspectFrame.
 	SetAspectFrame(xalign float32, yalign float32, ratio float32, obeyChild bool)
 }
 
@@ -61,6 +63,7 @@ func marshalAspectFrame(p uintptr) (interface{}, error) {
 	return WrapAspectFrame(obj), nil
 }
 
+// NewAspectFrame: create a new AspectFrame.
 func NewAspectFrame(label string, xalign float32, yalign float32, ratio float32, obeyChild bool) AspectFrame {
 	var _arg1 *C.gchar     // out
 	var _arg2 C.gfloat     // out
@@ -82,7 +85,7 @@ func NewAspectFrame(label string, xalign float32, yalign float32, ratio float32,
 
 	var _aspectFrame AspectFrame // out
 
-	_aspectFrame = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(AspectFrame)
+	_aspectFrame = WrapAspectFrame(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _aspectFrame
 }
@@ -105,42 +108,6 @@ func (a aspectFrame) SetAspectFrame(xalign float32, yalign float32, ratio float3
 	C.gtk_aspect_frame_set(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
-func (b aspectFrame) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
-}
-
-func (b aspectFrame) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b aspectFrame) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b aspectFrame) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b aspectFrame) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b aspectFrame) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b aspectFrame) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b aspectFrame) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b aspectFrame) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b aspectFrame) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
+func (a aspectFrame) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(a))
 }

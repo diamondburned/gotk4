@@ -5,10 +5,8 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -68,28 +66,38 @@ func init() {
 //    gtk_widget_set_size_request (frame2, 50, -1);
 type Paned interface {
 	Container
-	Orientable
 
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsOrientable casts the class to the Orientable interface.
+	AsOrientable() Orientable
+
+	// Add1Paned adds a child to the top or left pane with default parameters.
+	// This is equivalent to `gtk_paned_pack1 (paned, child, FALSE, TRUE)`.
 	Add1Paned(child Widget)
-
+	// Add2Paned adds a child to the bottom or right pane with default
+	// parameters. This is equivalent to `gtk_paned_pack2 (paned, child, TRUE,
+	// TRUE)`.
 	Add2Paned(child Widget)
-
+	// Child1 obtains the first child of the paned widget.
 	Child1() Widget
-
+	// Child2 obtains the second child of the paned widget.
 	Child2() Widget
-
+	// HandleWindow returns the Window of the handle. This function is useful
+	// when handling button or motion events because it enables the callback to
+	// distinguish between the window of the paned, a child and the handle.
 	HandleWindow() gdk.Window
-
+	// Position obtains the position of the divider between the two panes.
 	Position() int
-
+	// WideHandle gets the Paned:wide-handle property.
 	WideHandle() bool
-
+	// Pack1Paned adds a child to the top or left pane.
 	Pack1Paned(child Widget, resize bool, shrink bool)
-
+	// Pack2Paned adds a child to the bottom or right pane.
 	Pack2Paned(child Widget, resize bool, shrink bool)
-
+	// SetPositionPaned sets the position of the divider between the two panes.
 	SetPositionPaned(position int)
-
+	// SetWideHandlePaned sets the Paned:wide-handle property.
 	SetWideHandlePaned(wide bool)
 }
 
@@ -112,6 +120,7 @@ func marshalPaned(p uintptr) (interface{}, error) {
 	return WrapPaned(obj), nil
 }
 
+// NewPaned creates a new Paned widget.
 func NewPaned(orientation Orientation) Paned {
 	var _arg1 C.GtkOrientation // out
 	var _cret *C.GtkWidget     // in
@@ -122,7 +131,7 @@ func NewPaned(orientation Orientation) Paned {
 
 	var _paned Paned // out
 
-	_paned = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Paned)
+	_paned = WrapPaned(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _paned
 }
@@ -282,50 +291,10 @@ func (p paned) SetWideHandlePaned(wide bool) {
 	C.gtk_paned_set_wide_handle(_arg0, _arg1)
 }
 
-func (b paned) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+func (p paned) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(p))
 }
 
-func (b paned) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b paned) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b paned) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b paned) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b paned) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b paned) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b paned) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b paned) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b paned) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (o paned) Orientation() Orientation {
-	return WrapOrientable(gextras.InternObject(o)).Orientation()
-}
-
-func (o paned) SetOrientation(orientation Orientation) {
-	WrapOrientable(gextras.InternObject(o)).SetOrientation(orientation)
+func (p paned) AsOrientable() Orientable {
+	return WrapOrientable(gextras.InternObject(p))
 }

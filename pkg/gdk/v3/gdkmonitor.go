@@ -46,8 +46,8 @@ func marshalSubpixelLayout(p uintptr) (interface{}, error) {
 	return SubpixelLayout(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// Monitor: gdkMonitor objects represent the individual outputs that are
-// associated with a Display. GdkDisplay has APIs to enumerate monitors with
+// Monitor objects represent the individual outputs that are associated with a
+// Display. GdkDisplay has APIs to enumerate monitors with
 // gdk_display_get_n_monitors() and gdk_display_get_monitor(), and to find
 // particular monitors with gdk_display_get_primary_monitor() or
 // gdk_display_get_monitor_at_window().
@@ -57,26 +57,56 @@ func marshalSubpixelLayout(p uintptr) (interface{}, error) {
 type Monitor interface {
 	gextras.Objector
 
+	// Display gets the display that this monitor belongs to.
 	Display() Display
-
+	// Geometry retrieves the size and position of an individual monitor within
+	// the display coordinate space. The returned geometry is in ”application
+	// pixels”, not in ”device pixels” (see gdk_monitor_get_scale_factor()).
 	Geometry() Rectangle
-
+	// HeightMm gets the height in millimeters of the monitor.
 	HeightMm() int
-
+	// Manufacturer gets the name or PNP ID of the monitor's manufacturer, if
+	// available.
+	//
+	// Note that this value might also vary depending on actual display backend.
+	//
+	// PNP ID registry is located at https://uefi.org/pnp_id_list
 	Manufacturer() string
-
+	// Model gets the a string identifying the monitor model, if available.
 	Model() string
-
+	// RefreshRate gets the refresh rate of the monitor, if available.
+	//
+	// The value is in milli-Hertz, so a refresh rate of 60Hz is returned as
+	// 60000.
 	RefreshRate() int
-
+	// ScaleFactor gets the internal scale factor that maps from monitor
+	// coordinates to the actual device pixels. On traditional systems this is
+	// 1, but on very high density outputs this can be a higher value (often 2).
+	//
+	// This can be used if you want to create pixel based data for a particular
+	// monitor, but most of the time you’re drawing to a window where it is
+	// better to use gdk_window_get_scale_factor() instead.
 	ScaleFactor() int
-
+	// SubpixelLayout gets information about the layout of red, green and blue
+	// primaries for each pixel in this monitor, if available.
 	SubpixelLayout() SubpixelLayout
-
+	// WidthMm gets the width in millimeters of the monitor.
 	WidthMm() int
-
+	// Workarea retrieves the size and position of the “work area” on a monitor
+	// within the display coordinate space. The returned geometry is in
+	// ”application pixels”, not in ”device pixels” (see
+	// gdk_monitor_get_scale_factor()).
+	//
+	// The work area should be considered when positioning menus and similar
+	// popups, to avoid placing them below panels, docks or other desktop
+	// components.
+	//
+	// Note that not all backends may have a concept of workarea. This function
+	// will return the monitor geometry if a workarea is not available, or does
+	// not apply.
 	Workarea() Rectangle
-
+	// IsPrimaryMonitor gets whether this monitor should be considered primary
+	// (see gdk_display_get_primary_monitor()).
 	IsPrimaryMonitor() bool
 }
 
@@ -115,8 +145,8 @@ func (m monitor) Display() Display {
 }
 
 func (m monitor) Geometry() Rectangle {
-	var _arg0 *C.GdkMonitor  // out
-	var _arg1 C.GdkRectangle // in
+	var _arg0 *C.GdkMonitor   // out
+	var _arg1 *C.GdkRectangle // in
 
 	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
 
@@ -124,17 +154,7 @@ func (m monitor) Geometry() Rectangle {
 
 	var _geometry Rectangle // out
 
-	{
-		var refTmpIn *C.GdkRectangle
-		var refTmpOut *Rectangle
-
-		in0 := &_arg1
-		refTmpIn = in0
-
-		refTmpOut = (*Rectangle)(unsafe.Pointer(refTmpIn))
-
-		_geometry = *refTmpOut
-	}
+	_geometry = (Rectangle)(unsafe.Pointer(_arg1))
 
 	return _geometry
 }
@@ -245,8 +265,8 @@ func (m monitor) WidthMm() int {
 }
 
 func (m monitor) Workarea() Rectangle {
-	var _arg0 *C.GdkMonitor  // out
-	var _arg1 C.GdkRectangle // in
+	var _arg0 *C.GdkMonitor   // out
+	var _arg1 *C.GdkRectangle // in
 
 	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
 
@@ -254,17 +274,7 @@ func (m monitor) Workarea() Rectangle {
 
 	var _workarea Rectangle // out
 
-	{
-		var refTmpIn *C.GdkRectangle
-		var refTmpOut *Rectangle
-
-		in0 := &_arg1
-		refTmpIn = in0
-
-		refTmpOut = (*Rectangle)(unsafe.Pointer(refTmpIn))
-
-		_workarea = *refTmpOut
-	}
+	_workarea = (Rectangle)(unsafe.Pointer(_arg1))
 
 	return _workarea
 }

@@ -44,6 +44,7 @@ func marshalNglRenderer(p uintptr) (interface{}, error) {
 	return WrapNglRenderer(obj), nil
 }
 
+// NewNglRenderer creates a new Renderer using the new OpenGL renderer.
 func NewNglRenderer() NglRenderer {
 	var _cret *C.GskRenderer // in
 
@@ -51,7 +52,7 @@ func NewNglRenderer() NglRenderer {
 
 	var _nglRenderer NglRenderer // out
 
-	_nglRenderer = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(NglRenderer)
+	_nglRenderer = WrapNglRenderer(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _nglRenderer
 }

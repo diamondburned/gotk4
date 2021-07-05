@@ -5,9 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -90,18 +88,40 @@ func init() {
 //      </widgets>
 //    </object>
 type SizeGroup interface {
-	Buildable
+	gextras.Objector
 
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+
+	// AddWidgetSizeGroup adds a widget to a SizeGroup. In the future, the
+	// requisition of the widget will be determined as the maximum of its
+	// requisition and the requisition of the other widgets in the size group.
+	// Whether this applies horizontally, vertically, or in both directions
+	// depends on the mode of the size group. See gtk_size_group_set_mode().
+	//
+	// When the widget is destroyed or no longer referenced elsewhere, it will
+	// be removed from the size group.
 	AddWidgetSizeGroup(widget Widget)
-
+	// IgnoreHidden returns if invisible widgets are ignored when calculating
+	// the size.
+	//
+	// Deprecated: since version 3.22.
 	IgnoreHidden() bool
-
+	// Mode gets the current mode of the size group. See
+	// gtk_size_group_set_mode().
 	Mode() SizeGroupMode
-
+	// RemoveWidgetSizeGroup removes a widget from a SizeGroup.
 	RemoveWidgetSizeGroup(widget Widget)
-
+	// SetIgnoreHiddenSizeGroup sets whether unmapped widgets should be ignored
+	// when calculating the size.
+	//
+	// Deprecated: since version 3.22.
 	SetIgnoreHiddenSizeGroup(ignoreHidden bool)
-
+	// SetModeSizeGroup sets the SizeGroupMode of the size group. The mode of
+	// the size group determines whether the widgets in the size group should
+	// all have the same horizontal requisition (GTK_SIZE_GROUP_HORIZONTAL) all
+	// have the same vertical requisition (GTK_SIZE_GROUP_VERTICAL), or should
+	// all have the same requisition in both directions (GTK_SIZE_GROUP_BOTH).
 	SetModeSizeGroup(mode SizeGroupMode)
 }
 
@@ -124,6 +144,7 @@ func marshalSizeGroup(p uintptr) (interface{}, error) {
 	return WrapSizeGroup(obj), nil
 }
 
+// NewSizeGroup: create a new SizeGroup.
 func NewSizeGroup(mode SizeGroupMode) SizeGroup {
 	var _arg1 C.GtkSizeGroupMode // out
 	var _cret *C.GtkSizeGroup    // in
@@ -134,7 +155,7 @@ func NewSizeGroup(mode SizeGroupMode) SizeGroup {
 
 	var _sizeGroup SizeGroup // out
 
-	_sizeGroup = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(SizeGroup)
+	_sizeGroup = WrapSizeGroup(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _sizeGroup
 }
@@ -213,42 +234,6 @@ func (s sizeGroup) SetModeSizeGroup(mode SizeGroupMode) {
 	C.gtk_size_group_set_mode(_arg0, _arg1)
 }
 
-func (b sizeGroup) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
-}
-
-func (b sizeGroup) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b sizeGroup) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b sizeGroup) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b sizeGroup) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b sizeGroup) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b sizeGroup) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b sizeGroup) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b sizeGroup) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b sizeGroup) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
+func (s sizeGroup) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(s))
 }

@@ -5,9 +5,7 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -50,14 +48,21 @@ func init() {
 // the buffer.
 type BufferedOutputStream interface {
 	FilterOutputStream
-	Seekable
 
+	// AsSeekable casts the class to the Seekable interface.
+	AsSeekable() Seekable
+
+	// AutoGrow checks if the buffer automatically grows as data is added.
 	AutoGrow() bool
-
+	// BufferSize gets the size of the buffer in the @stream.
 	BufferSize() uint
-
+	// SetAutoGrowBufferedOutputStream sets whether or not the @stream's buffer
+	// should automatically grow. If @auto_grow is true, then each write will
+	// just make the buffer larger, and you must manually flush the buffer to
+	// actually write out the data to the underlying stream.
 	SetAutoGrowBufferedOutputStream(autoGrow bool)
-
+	// SetBufferSizeBufferedOutputStream sets the size of the internal buffer to
+	// @size.
 	SetBufferSizeBufferedOutputStream(size uint)
 }
 
@@ -80,6 +85,8 @@ func marshalBufferedOutputStream(p uintptr) (interface{}, error) {
 	return WrapBufferedOutputStream(obj), nil
 }
 
+// NewBufferedOutputStream creates a new buffered output stream for a base
+// stream.
 func NewBufferedOutputStream(baseStream OutputStream) BufferedOutputStream {
 	var _arg1 *C.GOutputStream // out
 	var _cret *C.GOutputStream // in
@@ -90,11 +97,13 @@ func NewBufferedOutputStream(baseStream OutputStream) BufferedOutputStream {
 
 	var _bufferedOutputStream BufferedOutputStream // out
 
-	_bufferedOutputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(BufferedOutputStream)
+	_bufferedOutputStream = WrapBufferedOutputStream(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _bufferedOutputStream
 }
 
+// NewBufferedOutputStreamSized creates a new buffered output stream with a
+// given buffer size.
 func NewBufferedOutputStreamSized(baseStream OutputStream, size uint) BufferedOutputStream {
 	var _arg1 *C.GOutputStream // out
 	var _arg2 C.gsize          // out
@@ -107,7 +116,7 @@ func NewBufferedOutputStreamSized(baseStream OutputStream, size uint) BufferedOu
 
 	var _bufferedOutputStream BufferedOutputStream // out
 
-	_bufferedOutputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(BufferedOutputStream)
+	_bufferedOutputStream = WrapBufferedOutputStream(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _bufferedOutputStream
 }
@@ -166,22 +175,6 @@ func (s bufferedOutputStream) SetBufferSizeBufferedOutputStream(size uint) {
 	C.g_buffered_output_stream_set_buffer_size(_arg0, _arg1)
 }
 
-func (s bufferedOutputStream) CanSeek() bool {
-	return WrapSeekable(gextras.InternObject(s)).CanSeek()
-}
-
-func (s bufferedOutputStream) CanTruncate() bool {
-	return WrapSeekable(gextras.InternObject(s)).CanTruncate()
-}
-
-func (s bufferedOutputStream) Seek(offset int64, typ glib.SeekType, cancellable Cancellable) error {
-	return WrapSeekable(gextras.InternObject(s)).Seek(offset, typ, cancellable)
-}
-
-func (s bufferedOutputStream) Tell() int64 {
-	return WrapSeekable(gextras.InternObject(s)).Tell()
-}
-
-func (s bufferedOutputStream) Truncate(offset int64, cancellable Cancellable) error {
-	return WrapSeekable(gextras.InternObject(s)).Truncate(offset, cancellable)
+func (b bufferedOutputStream) AsSeekable() Seekable {
+	return WrapSeekable(gextras.InternObject(b))
 }

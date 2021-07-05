@@ -23,7 +23,9 @@ import "C"
 // line break is encountered. (CSS defines the C character sequences "\r\n",
 // "\r", "\n" and "\f" as newlines.) If your document uses different rules for
 // line breaking, you might want run into problems here.
-type CSSLocation C.GtkCssLocation
+type CSSLocation struct {
+	native C.GtkCssLocation
+}
 
 // WrapCSSLocation wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -33,5 +35,5 @@ func WrapCSSLocation(ptr unsafe.Pointer) *CSSLocation {
 
 // Native returns the underlying C source pointer.
 func (c *CSSLocation) Native() unsafe.Pointer {
-	return unsafe.Pointer(c)
+	return unsafe.Pointer(&c.native)
 }

@@ -3,6 +3,7 @@
 package gdk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -61,7 +62,7 @@ const (
 	AxisUseRotation AxisUse = 10
 	// slider: the axis is used for pen slider information
 	AxisUseSlider AxisUse = 11
-	// last: a constant equal to the numerically highest axis value.
+	// last: constant equal to the numerically highest axis value.
 	AxisUseLast AxisUse = 12
 )
 
@@ -203,8 +204,8 @@ type ModifierType int
 const (
 	// ModifierTypeShiftMask: the Shift key.
 	ModifierTypeShiftMask ModifierType = 0b1
-	// ModifierTypeLockMask: a Lock key (depending on the modifier mapping of
-	// the X server this may either be CapsLock or ShiftLock).
+	// ModifierTypeLockMask: lock key (depending on the modifier mapping of the
+	// X server this may either be CapsLock or ShiftLock).
 	ModifierTypeLockMask ModifierType = 0b10
 	// ModifierTypeControlMask: the Control key.
 	ModifierTypeControlMask ModifierType = 0b100
@@ -266,7 +267,9 @@ func marshalModifierType(p uintptr) (interface{}, error) {
 // the types it represents. Instead, new `GdkContentFormats` have to be created.
 // The [struct@Gdk.ContentFormatsBuilder]` structure is meant to help in this
 // endeavor.
-type ContentFormats C.GdkContentFormats
+type ContentFormats struct {
+	native C.GdkContentFormats
+}
 
 // WrapContentFormats wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -280,7 +283,7 @@ func marshalContentFormats(p uintptr) (interface{}, error) {
 }
 
 // NewContentFormats constructs a struct ContentFormats.
-func NewContentFormats(mimeTypes []string) *ContentFormats {
+func NewContentFormats(mimeTypes []string) ContentFormats {
 	var _arg1 **C.char
 	var _arg2 C.guint
 	var _cret *C.GdkContentFormats // in
@@ -298,18 +301,18 @@ func NewContentFormats(mimeTypes []string) *ContentFormats {
 
 	_cret = C.gdk_content_formats_new(_arg1, _arg2)
 
-	var _contentFormats *ContentFormats // out
+	var _contentFormats ContentFormats // out
 
-	_contentFormats = (*ContentFormats)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(&_contentFormats, func(v **ContentFormats) {
-		C.free(unsafe.Pointer(v))
+	_contentFormats = (ContentFormats)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_contentFormats, func(v ContentFormats) {
+		C.gdk_content_formats_unref((*C.GdkContentFormats)(unsafe.Pointer(v)))
 	})
 
 	return _contentFormats
 }
 
 // NewContentFormatsForGType constructs a struct ContentFormats.
-func NewContentFormatsForGType(typ externglib.Type) *ContentFormats {
+func NewContentFormatsForGType(typ externglib.Type) ContentFormats {
 	var _arg1 C.GType              // out
 	var _cret *C.GdkContentFormats // in
 
@@ -317,11 +320,11 @@ func NewContentFormatsForGType(typ externglib.Type) *ContentFormats {
 
 	_cret = C.gdk_content_formats_new_for_gtype(_arg1)
 
-	var _contentFormats *ContentFormats // out
+	var _contentFormats ContentFormats // out
 
-	_contentFormats = (*ContentFormats)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(&_contentFormats, func(v **ContentFormats) {
-		C.free(unsafe.Pointer(v))
+	_contentFormats = (ContentFormats)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_contentFormats, func(v ContentFormats) {
+		C.gdk_content_formats_unref((*C.GdkContentFormats)(unsafe.Pointer(v)))
 	})
 
 	return _contentFormats
@@ -329,18 +332,16 @@ func NewContentFormatsForGType(typ externglib.Type) *ContentFormats {
 
 // Native returns the underlying C source pointer.
 func (c *ContentFormats) Native() unsafe.Pointer {
-	return unsafe.Pointer(c)
+	return unsafe.Pointer(&c.native)
 }
 
-// ContainGType decreases the reference count of a `GdkContentFormats` by one.
-//
-// If the resulting reference count is zero, frees the formats.
+// ContainGType checks if a given `GType` is part of the given @formats.
 func (f *ContentFormats) ContainGType(typ externglib.Type) bool {
 	var _arg0 *C.GdkContentFormats // out
 	var _arg1 C.GType              // out
 	var _cret C.gboolean           // in
 
-	_arg0 = (*C.GdkContentFormats)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GdkContentFormats)(unsafe.Pointer(f))
 	_arg1 = (C.GType)(typ)
 
 	_cret = C.gdk_content_formats_contain_gtype(_arg0, _arg1)
@@ -354,16 +355,13 @@ func (f *ContentFormats) ContainGType(typ externglib.Type) bool {
 	return _ok
 }
 
-// ContainMIMEType decreases the reference count of a `GdkContentFormats` by
-// one.
-//
-// If the resulting reference count is zero, frees the formats.
+// ContainMIMEType checks if a given mime type is part of the given @formats.
 func (f *ContentFormats) ContainMIMEType(mimeType string) bool {
 	var _arg0 *C.GdkContentFormats // out
 	var _arg1 *C.char              // out
 	var _cret C.gboolean           // in
 
-	_arg0 = (*C.GdkContentFormats)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GdkContentFormats)(unsafe.Pointer(f))
 	_arg1 = (*C.char)(C.CString(mimeType))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -378,16 +376,14 @@ func (f *ContentFormats) ContainMIMEType(mimeType string) bool {
 	return _ok
 }
 
-// Match decreases the reference count of a `GdkContentFormats` by one.
-//
-// If the resulting reference count is zero, frees the formats.
-func (f *ContentFormats) Match(second *ContentFormats) bool {
+// Match checks if @first and @second have any matching formats.
+func (f *ContentFormats) Match(second ContentFormats) bool {
 	var _arg0 *C.GdkContentFormats // out
 	var _arg1 *C.GdkContentFormats // out
 	var _cret C.gboolean           // in
 
-	_arg0 = (*C.GdkContentFormats)(unsafe.Pointer(f.Native()))
-	_arg1 = (*C.GdkContentFormats)(unsafe.Pointer(second.Native()))
+	_arg0 = (*C.GdkContentFormats)(unsafe.Pointer(f))
+	_arg1 = (*C.GdkContentFormats)(unsafe.Pointer(second))
 
 	_cret = C.gdk_content_formats_match(_arg0, _arg1)
 
@@ -400,16 +396,17 @@ func (f *ContentFormats) Match(second *ContentFormats) bool {
 	return _ok
 }
 
-// MatchGType decreases the reference count of a `GdkContentFormats` by one.
+// MatchGType finds the first `GType` from @first that is also contained in
+// @second.
 //
-// If the resulting reference count is zero, frees the formats.
-func (f *ContentFormats) MatchGType(second *ContentFormats) externglib.Type {
+// If no matching `GType` is found, G_TYPE_INVALID is returned.
+func (f *ContentFormats) MatchGType(second ContentFormats) externglib.Type {
 	var _arg0 *C.GdkContentFormats // out
 	var _arg1 *C.GdkContentFormats // out
 	var _cret C.GType              // in
 
-	_arg0 = (*C.GdkContentFormats)(unsafe.Pointer(f.Native()))
-	_arg1 = (*C.GdkContentFormats)(unsafe.Pointer(second.Native()))
+	_arg0 = (*C.GdkContentFormats)(unsafe.Pointer(f))
+	_arg1 = (*C.GdkContentFormats)(unsafe.Pointer(second))
 
 	_cret = C.gdk_content_formats_match_gtype(_arg0, _arg1)
 
@@ -420,16 +417,17 @@ func (f *ContentFormats) MatchGType(second *ContentFormats) externglib.Type {
 	return _gType
 }
 
-// MatchMIMEType decreases the reference count of a `GdkContentFormats` by one.
+// MatchMIMEType finds the first mime type from @first that is also contained in
+// @second.
 //
-// If the resulting reference count is zero, frees the formats.
-func (f *ContentFormats) MatchMIMEType(second *ContentFormats) string {
+// If no matching mime type is found, nil is returned.
+func (f *ContentFormats) MatchMIMEType(second ContentFormats) string {
 	var _arg0 *C.GdkContentFormats // out
 	var _arg1 *C.GdkContentFormats // out
 	var _cret *C.char              // in
 
-	_arg0 = (*C.GdkContentFormats)(unsafe.Pointer(f.Native()))
-	_arg1 = (*C.GdkContentFormats)(unsafe.Pointer(second.Native()))
+	_arg0 = (*C.GdkContentFormats)(unsafe.Pointer(f))
+	_arg1 = (*C.GdkContentFormats)(unsafe.Pointer(second))
 
 	_cret = C.gdk_content_formats_match_mime_type(_arg0, _arg1)
 
@@ -440,35 +438,34 @@ func (f *ContentFormats) MatchMIMEType(second *ContentFormats) string {
 	return _utf8
 }
 
-// Ref decreases the reference count of a `GdkContentFormats` by one.
-//
-// If the resulting reference count is zero, frees the formats.
-func (f *ContentFormats) Ref() *ContentFormats {
+// Ref increases the reference count of a `GdkContentFormats` by one.
+func (f *ContentFormats) Ref() ContentFormats {
 	var _arg0 *C.GdkContentFormats // out
 	var _cret *C.GdkContentFormats // in
 
-	_arg0 = (*C.GdkContentFormats)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GdkContentFormats)(unsafe.Pointer(f))
 
 	_cret = C.gdk_content_formats_ref(_arg0)
 
-	var _contentFormats *ContentFormats // out
+	var _contentFormats ContentFormats // out
 
-	_contentFormats = (*ContentFormats)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(&_contentFormats, func(v **ContentFormats) {
-		C.free(unsafe.Pointer(v))
+	_contentFormats = (ContentFormats)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_contentFormats, func(v ContentFormats) {
+		C.gdk_content_formats_unref((*C.GdkContentFormats)(unsafe.Pointer(v)))
 	})
 
 	return _contentFormats
 }
 
-// String decreases the reference count of a `GdkContentFormats` by one.
+// String prints the given @formats into a human-readable string.
 //
-// If the resulting reference count is zero, frees the formats.
+// This is a small wrapper around [method@Gdk.ContentFormats.print] to help when
+// debugging.
 func (f *ContentFormats) String() string {
 	var _arg0 *C.GdkContentFormats // out
 	var _cret *C.char              // in
 
-	_arg0 = (*C.GdkContentFormats)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GdkContentFormats)(unsafe.Pointer(f))
 
 	_cret = C.gdk_content_formats_to_string(_arg0)
 
@@ -480,112 +477,103 @@ func (f *ContentFormats) String() string {
 	return _utf8
 }
 
-// Union decreases the reference count of a `GdkContentFormats` by one.
-//
-// If the resulting reference count is zero, frees the formats.
-func (f *ContentFormats) Union(second *ContentFormats) *ContentFormats {
+// Union: append all missing types from @second to @first, in the order they had
+// in @second.
+func (f *ContentFormats) Union(second ContentFormats) ContentFormats {
 	var _arg0 *C.GdkContentFormats // out
 	var _arg1 *C.GdkContentFormats // out
 	var _cret *C.GdkContentFormats // in
 
-	_arg0 = (*C.GdkContentFormats)(unsafe.Pointer(f.Native()))
-	_arg1 = (*C.GdkContentFormats)(unsafe.Pointer(second.Native()))
+	_arg0 = (*C.GdkContentFormats)(unsafe.Pointer(f))
+	_arg1 = (*C.GdkContentFormats)(unsafe.Pointer(second))
 
 	_cret = C.gdk_content_formats_union(_arg0, _arg1)
 
-	var _contentFormats *ContentFormats // out
+	var _contentFormats ContentFormats // out
 
-	_contentFormats = (*ContentFormats)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(&_contentFormats, func(v **ContentFormats) {
-		C.free(unsafe.Pointer(v))
+	_contentFormats = (ContentFormats)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_contentFormats, func(v ContentFormats) {
+		C.gdk_content_formats_unref((*C.GdkContentFormats)(unsafe.Pointer(v)))
 	})
 
 	return _contentFormats
 }
 
-// UnionDeserializeGTypes decreases the reference count of a `GdkContentFormats`
-// by one.
-//
-// If the resulting reference count is zero, frees the formats.
-func (f *ContentFormats) UnionDeserializeGTypes() *ContentFormats {
+// UnionDeserializeGTypes: add GTypes for mime types in @formats for which
+// deserializers are registered.
+func (f *ContentFormats) UnionDeserializeGTypes() ContentFormats {
 	var _arg0 *C.GdkContentFormats // out
 	var _cret *C.GdkContentFormats // in
 
-	_arg0 = (*C.GdkContentFormats)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GdkContentFormats)(unsafe.Pointer(f))
 
 	_cret = C.gdk_content_formats_union_deserialize_gtypes(_arg0)
 
-	var _contentFormats *ContentFormats // out
+	var _contentFormats ContentFormats // out
 
-	_contentFormats = (*ContentFormats)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(&_contentFormats, func(v **ContentFormats) {
-		C.free(unsafe.Pointer(v))
+	_contentFormats = (ContentFormats)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_contentFormats, func(v ContentFormats) {
+		C.gdk_content_formats_unref((*C.GdkContentFormats)(unsafe.Pointer(v)))
 	})
 
 	return _contentFormats
 }
 
-// UnionDeserializeMIMETypes decreases the reference count of a
-// `GdkContentFormats` by one.
-//
-// If the resulting reference count is zero, frees the formats.
-func (f *ContentFormats) UnionDeserializeMIMETypes() *ContentFormats {
+// UnionDeserializeMIMETypes: add mime types for GTypes in @formats for which
+// deserializers are registered.
+func (f *ContentFormats) UnionDeserializeMIMETypes() ContentFormats {
 	var _arg0 *C.GdkContentFormats // out
 	var _cret *C.GdkContentFormats // in
 
-	_arg0 = (*C.GdkContentFormats)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GdkContentFormats)(unsafe.Pointer(f))
 
 	_cret = C.gdk_content_formats_union_deserialize_mime_types(_arg0)
 
-	var _contentFormats *ContentFormats // out
+	var _contentFormats ContentFormats // out
 
-	_contentFormats = (*ContentFormats)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(&_contentFormats, func(v **ContentFormats) {
-		C.free(unsafe.Pointer(v))
+	_contentFormats = (ContentFormats)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_contentFormats, func(v ContentFormats) {
+		C.gdk_content_formats_unref((*C.GdkContentFormats)(unsafe.Pointer(v)))
 	})
 
 	return _contentFormats
 }
 
-// UnionSerializeGTypes decreases the reference count of a `GdkContentFormats`
-// by one.
-//
-// If the resulting reference count is zero, frees the formats.
-func (f *ContentFormats) UnionSerializeGTypes() *ContentFormats {
+// UnionSerializeGTypes: add GTypes for the mime types in @formats for which
+// serializers are registered.
+func (f *ContentFormats) UnionSerializeGTypes() ContentFormats {
 	var _arg0 *C.GdkContentFormats // out
 	var _cret *C.GdkContentFormats // in
 
-	_arg0 = (*C.GdkContentFormats)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GdkContentFormats)(unsafe.Pointer(f))
 
 	_cret = C.gdk_content_formats_union_serialize_gtypes(_arg0)
 
-	var _contentFormats *ContentFormats // out
+	var _contentFormats ContentFormats // out
 
-	_contentFormats = (*ContentFormats)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(&_contentFormats, func(v **ContentFormats) {
-		C.free(unsafe.Pointer(v))
+	_contentFormats = (ContentFormats)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_contentFormats, func(v ContentFormats) {
+		C.gdk_content_formats_unref((*C.GdkContentFormats)(unsafe.Pointer(v)))
 	})
 
 	return _contentFormats
 }
 
-// UnionSerializeMIMETypes decreases the reference count of a
-// `GdkContentFormats` by one.
-//
-// If the resulting reference count is zero, frees the formats.
-func (f *ContentFormats) UnionSerializeMIMETypes() *ContentFormats {
+// UnionSerializeMIMETypes: add mime types for GTypes in @formats for which
+// serializers are registered.
+func (f *ContentFormats) UnionSerializeMIMETypes() ContentFormats {
 	var _arg0 *C.GdkContentFormats // out
 	var _cret *C.GdkContentFormats // in
 
-	_arg0 = (*C.GdkContentFormats)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GdkContentFormats)(unsafe.Pointer(f))
 
 	_cret = C.gdk_content_formats_union_serialize_mime_types(_arg0)
 
-	var _contentFormats *ContentFormats // out
+	var _contentFormats ContentFormats // out
 
-	_contentFormats = (*ContentFormats)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(&_contentFormats, func(v **ContentFormats) {
-		C.free(unsafe.Pointer(v))
+	_contentFormats = (ContentFormats)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_contentFormats, func(v ContentFormats) {
+		C.gdk_content_formats_unref((*C.GdkContentFormats)(unsafe.Pointer(v)))
 	})
 
 	return _contentFormats
@@ -597,13 +585,15 @@ func (f *ContentFormats) UnionSerializeMIMETypes() *ContentFormats {
 func (f *ContentFormats) Unref() {
 	var _arg0 *C.GdkContentFormats // out
 
-	_arg0 = (*C.GdkContentFormats)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GdkContentFormats)(unsafe.Pointer(f))
 
 	C.gdk_content_formats_unref(_arg0)
 }
 
-// KeymapKey: a `GdkKeymapKey` is a hardware key that can be mapped to a keyval.
-type KeymapKey C.GdkKeymapKey
+// KeymapKey: `GdkKeymapKey` is a hardware key that can be mapped to a keyval.
+type KeymapKey struct {
+	native C.GdkKeymapKey
+}
 
 // WrapKeymapKey wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -613,10 +603,10 @@ func WrapKeymapKey(ptr unsafe.Pointer) *KeymapKey {
 
 // Native returns the underlying C source pointer.
 func (k *KeymapKey) Native() unsafe.Pointer {
-	return unsafe.Pointer(k)
+	return unsafe.Pointer(&k.native)
 }
 
-// Rectangle: a `GdkRectangle` data type for representing rectangles.
+// Rectangle: `GdkRectangle` data type for representing rectangles.
 //
 // `GdkRectangle` is identical to `cairo_rectangle_t`. Together with Cairo’s
 // `cairo_region_t` data type, these are the central types for representing sets
@@ -631,7 +621,9 @@ func (k *KeymapKey) Native() unsafe.Pointer {
 //
 // The Graphene library has a number of other data types for regions and volumes
 // in 2D and 3D.
-type Rectangle C.GdkRectangle
+type Rectangle struct {
+	native C.GdkRectangle
+}
 
 // WrapRectangle wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -646,24 +638,17 @@ func marshalRectangle(p uintptr) (interface{}, error) {
 
 // Native returns the underlying C source pointer.
 func (r *Rectangle) Native() unsafe.Pointer {
-	return unsafe.Pointer(r)
+	return unsafe.Pointer(&r.native)
 }
 
-// ContainsPoint calculates the union of two rectangles.
-//
-// The union of rectangles @src1 and @src2 is the smallest rectangle which
-// includes both @src1 and @src2 within it. It is allowed for @dest to be the
-// same as either @src1 or @src2.
-//
-// Note that this function does not ignore 'empty' rectangles (ie. with zero
-// width or height).
-func (s *Rectangle) ContainsPoint(x int, y int) bool {
+// ContainsPoint returns UE if @rect contains the point described by @x and @y.
+func (r *Rectangle) ContainsPoint(x int, y int) bool {
 	var _arg0 *C.GdkRectangle // out
 	var _arg1 C.int           // out
 	var _arg2 C.int           // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GdkRectangle)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.GdkRectangle)(unsafe.Pointer(r))
 	_arg1 = C.int(x)
 	_arg2 = C.int(y)
 
@@ -678,21 +663,14 @@ func (s *Rectangle) ContainsPoint(x int, y int) bool {
 	return _ok
 }
 
-// Equal calculates the union of two rectangles.
-//
-// The union of rectangles @src1 and @src2 is the smallest rectangle which
-// includes both @src1 and @src2 within it. It is allowed for @dest to be the
-// same as either @src1 or @src2.
-//
-// Note that this function does not ignore 'empty' rectangles (ie. with zero
-// width or height).
-func (s *Rectangle) Equal(rect2 *Rectangle) bool {
+// Equal checks if the two given rectangles are equal.
+func (r *Rectangle) Equal(rect2 Rectangle) bool {
 	var _arg0 *C.GdkRectangle // out
 	var _arg1 *C.GdkRectangle // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GdkRectangle)(unsafe.Pointer(r.Native()))
-	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(rect2.Native()))
+	_arg0 = (*C.GdkRectangle)(unsafe.Pointer(r))
+	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(rect2))
 
 	_cret = C.gdk_rectangle_equal(_arg0, _arg1)
 
@@ -705,39 +683,28 @@ func (s *Rectangle) Equal(rect2 *Rectangle) bool {
 	return _ok
 }
 
-// Intersect calculates the union of two rectangles.
+// Intersect calculates the intersection of two rectangles.
 //
-// The union of rectangles @src1 and @src2 is the smallest rectangle which
-// includes both @src1 and @src2 within it. It is allowed for @dest to be the
-// same as either @src1 or @src2.
-//
-// Note that this function does not ignore 'empty' rectangles (ie. with zero
-// width or height).
-func (s *Rectangle) Intersect(src2 *Rectangle) (Rectangle, bool) {
+// It is allowed for @dest to be the same as either @src1 or @src2. If the
+// rectangles do not intersect, @dest’s width and height is set to 0 and its x
+// and y values are undefined. If you are only interested in whether the
+// rectangles intersect, but not in the intersecting area itself, pass nil for
+// @dest.
+func (s *Rectangle) Intersect(src2 Rectangle) (Rectangle, bool) {
 	var _arg0 *C.GdkRectangle // out
 	var _arg1 *C.GdkRectangle // out
-	var _arg2 C.GdkRectangle  // in
+	var _arg2 *C.GdkRectangle // in
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GdkRectangle)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(src2.Native()))
+	_arg0 = (*C.GdkRectangle)(unsafe.Pointer(s))
+	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(src2))
 
 	_cret = C.gdk_rectangle_intersect(_arg0, _arg1, &_arg2)
 
 	var _dest Rectangle // out
 	var _ok bool        // out
 
-	{
-		var refTmpIn *C.GdkRectangle
-		var refTmpOut *Rectangle
-
-		in0 := &_arg2
-		refTmpIn = in0
-
-		refTmpOut = (*Rectangle)(unsafe.Pointer(refTmpIn))
-
-		_dest = *refTmpOut
-	}
+	_dest = (Rectangle)(unsafe.Pointer(_arg2))
 	if _cret != 0 {
 		_ok = true
 	}
@@ -753,29 +720,19 @@ func (s *Rectangle) Intersect(src2 *Rectangle) (Rectangle, bool) {
 //
 // Note that this function does not ignore 'empty' rectangles (ie. with zero
 // width or height).
-func (s *Rectangle) Union(src2 *Rectangle) Rectangle {
+func (s *Rectangle) Union(src2 Rectangle) Rectangle {
 	var _arg0 *C.GdkRectangle // out
 	var _arg1 *C.GdkRectangle // out
-	var _arg2 C.GdkRectangle  // in
+	var _arg2 *C.GdkRectangle // in
 
-	_arg0 = (*C.GdkRectangle)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(src2.Native()))
+	_arg0 = (*C.GdkRectangle)(unsafe.Pointer(s))
+	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(src2))
 
 	C.gdk_rectangle_union(_arg0, _arg1, &_arg2)
 
 	var _dest Rectangle // out
 
-	{
-		var refTmpIn *C.GdkRectangle
-		var refTmpOut *Rectangle
-
-		in0 := &_arg2
-		refTmpIn = in0
-
-		refTmpOut = (*Rectangle)(unsafe.Pointer(refTmpIn))
-
-		_dest = *refTmpOut
-	}
+	_dest = (Rectangle)(unsafe.Pointer(_arg2))
 
 	return _dest
 }

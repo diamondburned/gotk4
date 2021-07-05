@@ -3,6 +3,7 @@
 package pango
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -35,12 +36,12 @@ func init() {
 type Script int
 
 const (
-	// InvalidCode: a value never returned from pango_script_for_unichar()
+	// InvalidCode: value never returned from pango_script_for_unichar()
 	ScriptInvalidCode Script = -1
-	// common: a character used by multiple different scripts
+	// common: character used by multiple different scripts
 	ScriptCommon Script = 0
-	// inherited: a mark glyph that takes its script from the base glyph to
-	// which it is attached
+	// inherited: mark glyph that takes its script from the base glyph to which
+	// it is attached
 	ScriptInherited Script = 1
 	// arabic: arabic
 	ScriptArabic Script = 2
@@ -160,7 +161,7 @@ const (
 	ScriptOldPersian Script = 59
 	// kharoshthi: kharoshthi. Since 1.10
 	ScriptKharoshthi Script = 60
-	// unknown: an unassigned code point. Since 1.14
+	// unknown: unassigned code point. Since 1.14
 	ScriptUnknown Script = 61
 	// balinese: balinese. Since 1.14
 	ScriptBalinese Script = 62
@@ -278,9 +279,11 @@ func marshalScript(p uintptr) (interface{}, error) {
 	return Script(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// ScriptIter: a `PangoScriptIter` is used to iterate through a string and
+// ScriptIter: `PangoScriptIter` is used to iterate through a string and
 // identify ranges in different scripts.
-type ScriptIter C.PangoScriptIter
+type ScriptIter struct {
+	native C.PangoScriptIter
+}
 
 // WrapScriptIter wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -294,7 +297,7 @@ func marshalScriptIter(p uintptr) (interface{}, error) {
 }
 
 // NewScriptIter constructs a struct ScriptIter.
-func NewScriptIter(text string, length int) *ScriptIter {
+func NewScriptIter(text string, length int) ScriptIter {
 	var _arg1 *C.char            // out
 	var _arg2 C.int              // out
 	var _cret *C.PangoScriptIter // in
@@ -305,11 +308,11 @@ func NewScriptIter(text string, length int) *ScriptIter {
 
 	_cret = C.pango_script_iter_new(_arg1, _arg2)
 
-	var _scriptIter *ScriptIter // out
+	var _scriptIter ScriptIter // out
 
-	_scriptIter = (*ScriptIter)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(&_scriptIter, func(v **ScriptIter) {
-		C.free(unsafe.Pointer(v))
+	_scriptIter = (ScriptIter)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_scriptIter, func(v ScriptIter) {
+		C.pango_script_iter_free((*C.PangoScriptIter)(unsafe.Pointer(v)))
 	})
 
 	return _scriptIter
@@ -317,28 +320,32 @@ func NewScriptIter(text string, length int) *ScriptIter {
 
 // Native returns the underlying C source pointer.
 func (s *ScriptIter) Native() unsafe.Pointer {
-	return unsafe.Pointer(s)
+	return unsafe.Pointer(&s.native)
 }
 
-// Free advances a ScriptIter to the next range. If @iter is already at the end,
-// it is left unchanged and false is returned.
+// Free frees a ScriptIter created with pango_script_iter_new().
 func (i *ScriptIter) Free() {
 	var _arg0 *C.PangoScriptIter // out
 
-	_arg0 = (*C.PangoScriptIter)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.PangoScriptIter)(unsafe.Pointer(i))
 
 	C.pango_script_iter_free(_arg0)
 }
 
-// Range advances a ScriptIter to the next range. If @iter is already at the
-// end, it is left unchanged and false is returned.
+// Range gets information about the range to which @iter currently points. The
+// range is the set of locations p where *start <= p < *end. (That is, it
+// doesn't include the character stored at *end)
+//
+// Note that while the type of the @script argument is declared as PangoScript,
+// as of Pango 1.18, this function simply returns GUnicodeScript values. Callers
+// must be prepared to handle unknown values.
 func (i *ScriptIter) Range() (start string, end string, script Script) {
 	var _arg0 *C.PangoScriptIter // out
-	var _arg1 *C.char            // in
-	var _arg2 *C.char            // in
-	var _arg3 C.PangoScript      // in
+	var _arg1 **C.char           // in
+	var _arg2 **C.char           // in
+	var _arg3 *C.PangoScript     // in
 
-	_arg0 = (*C.PangoScriptIter)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.PangoScriptIter)(unsafe.Pointer(i))
 
 	C.pango_script_iter_get_range(_arg0, &_arg1, &_arg2, &_arg3)
 
@@ -346,11 +353,38 @@ func (i *ScriptIter) Range() (start string, end string, script Script) {
 	var _end string    // out
 	var _script Script // out
 
-	_start = C.GoString(_arg1)
-	defer C.free(unsafe.Pointer(_arg1))
-	_end = C.GoString(_arg2)
-	defer C.free(unsafe.Pointer(_arg2))
-	_script = Script(_arg3)
+	{
+		var refTmpIn *C.char
+		var refTmpOut string
+
+		refTmpIn = *_arg1
+
+		refTmpOut = C.GoString(refTmpIn)
+		defer C.free(unsafe.Pointer(refTmpIn))
+
+		_start = refTmpOut
+	}
+	{
+		var refTmpIn *C.char
+		var refTmpOut string
+
+		refTmpIn = *_arg2
+
+		refTmpOut = C.GoString(refTmpIn)
+		defer C.free(unsafe.Pointer(refTmpIn))
+
+		_end = refTmpOut
+	}
+	{
+		var refTmpIn C.PangoScript
+		var refTmpOut Script
+
+		refTmpIn = *_arg3
+
+		refTmpOut = Script(refTmpIn)
+
+		_script = refTmpOut
+	}
 
 	return _start, _end, _script
 }
@@ -361,7 +395,7 @@ func (i *ScriptIter) Next() bool {
 	var _arg0 *C.PangoScriptIter // out
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.PangoScriptIter)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.PangoScriptIter)(unsafe.Pointer(i))
 
 	_cret = C.pango_script_iter_next(_arg0)
 

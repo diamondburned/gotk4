@@ -106,20 +106,39 @@ func init() {
 type ListView interface {
 	ListBase
 
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
+	// AsOrientable casts the class to the Orientable interface.
+	AsOrientable() Orientable
+	// AsScrollable casts the class to the Scrollable interface.
+	AsScrollable() Scrollable
+
+	// EnableRubberband returns whether rows can be selected by dragging with
+	// the mouse.
 	EnableRubberband() bool
-
+	// Factory gets the factory that's currently used to populate list items.
 	Factory() ListItemFactory
-
+	// ShowSeparators returns whether the list box should show separators
+	// between rows.
 	ShowSeparators() bool
-
+	// SingleClickActivate returns whether rows will be activated on single
+	// click and selected on hover.
 	SingleClickActivate() bool
-
+	// SetEnableRubberbandListView sets whether selections can be changed by
+	// dragging with the mouse.
 	SetEnableRubberbandListView(enableRubberband bool)
-
+	// SetFactoryListView sets the `GtkListItemFactory` to use for populating
+	// list items.
 	SetFactoryListView(factory ListItemFactory)
-
+	// SetShowSeparatorsListView sets whether the list box should show
+	// separators between rows.
 	SetShowSeparatorsListView(showSeparators bool)
-
+	// SetSingleClickActivateListView sets whether rows should be activated on
+	// single click and selected on hover.
 	SetSingleClickActivateListView(singleClickActivate bool)
 }
 
@@ -254,78 +273,22 @@ func (s listView) SetSingleClickActivateListView(singleClickActivate bool) {
 	C.gtk_list_view_set_single_click_activate(_arg0, _arg1)
 }
 
-func (s listView) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
+func (l listView) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(l))
 }
 
-func (s listView) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
+func (l listView) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(l))
 }
 
-func (s listView) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
+func (l listView) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(l))
 }
 
-func (s listView) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
+func (l listView) AsOrientable() Orientable {
+	return WrapOrientable(gextras.InternObject(l))
 }
 
-func (s listView) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s listView) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s listView) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b listView) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
-}
-
-func (o listView) Orientation() Orientation {
-	return WrapOrientable(gextras.InternObject(o)).Orientation()
-}
-
-func (o listView) SetOrientation(orientation Orientation) {
-	WrapOrientable(gextras.InternObject(o)).SetOrientation(orientation)
-}
-
-func (s listView) Border() (Border, bool) {
-	return WrapScrollable(gextras.InternObject(s)).Border()
-}
-
-func (s listView) HAdjustment() Adjustment {
-	return WrapScrollable(gextras.InternObject(s)).HAdjustment()
-}
-
-func (s listView) HScrollPolicy() ScrollablePolicy {
-	return WrapScrollable(gextras.InternObject(s)).HScrollPolicy()
-}
-
-func (s listView) VAdjustment() Adjustment {
-	return WrapScrollable(gextras.InternObject(s)).VAdjustment()
-}
-
-func (s listView) VScrollPolicy() ScrollablePolicy {
-	return WrapScrollable(gextras.InternObject(s)).VScrollPolicy()
-}
-
-func (s listView) SetHAdjustment(hadjustment Adjustment) {
-	WrapScrollable(gextras.InternObject(s)).SetHAdjustment(hadjustment)
-}
-
-func (s listView) SetHScrollPolicy(policy ScrollablePolicy) {
-	WrapScrollable(gextras.InternObject(s)).SetHScrollPolicy(policy)
-}
-
-func (s listView) SetVAdjustment(vadjustment Adjustment) {
-	WrapScrollable(gextras.InternObject(s)).SetVAdjustment(vadjustment)
-}
-
-func (s listView) SetVScrollPolicy(policy ScrollablePolicy) {
-	WrapScrollable(gextras.InternObject(s)).SetVScrollPolicy(policy)
+func (l listView) AsScrollable() Scrollable {
+	return WrapScrollable(gextras.InternObject(l))
 }

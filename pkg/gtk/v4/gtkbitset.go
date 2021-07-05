@@ -12,13 +12,15 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
-// BitsetIter: an opaque, stack-allocated struct for iterating over the elements
-// of a `GtkBitset`.
+// BitsetIter: opaque, stack-allocated struct for iterating over the elements of
+// a `GtkBitset`.
 //
 // Before a `GtkBitsetIter` can be used, it needs to be initialized with
 // [func@Gtk.BitsetIter.init_first], [func@Gtk.BitsetIter.init_last] or
 // [func@Gtk.BitsetIter.init_at].
-type BitsetIter C.GtkBitsetIter
+type BitsetIter struct {
+	native C.GtkBitsetIter
+}
 
 // WrapBitsetIter wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -28,18 +30,18 @@ func WrapBitsetIter(ptr unsafe.Pointer) *BitsetIter {
 
 // Native returns the underlying C source pointer.
 func (b *BitsetIter) Native() unsafe.Pointer {
-	return unsafe.Pointer(b)
+	return unsafe.Pointer(&b.native)
 }
 
-// Value moves @iter to the previous value in the set.
+// Value gets the current value that @iter points to.
 //
-// If it was already pointing to the first value in the set, false is returned
-// and @iter is invalidated.
+// If @iter is not valid and [method@Gtk.BitsetIter.is_valid] returns false,
+// this function returns 0.
 func (i *BitsetIter) Value() uint {
 	var _arg0 *C.GtkBitsetIter // out
 	var _cret C.guint          // in
 
-	_arg0 = (*C.GtkBitsetIter)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GtkBitsetIter)(unsafe.Pointer(i))
 
 	_cret = C.gtk_bitset_iter_get_value(_arg0)
 
@@ -50,15 +52,12 @@ func (i *BitsetIter) Value() uint {
 	return _guint
 }
 
-// IsValid moves @iter to the previous value in the set.
-//
-// If it was already pointing to the first value in the set, false is returned
-// and @iter is invalidated.
+// IsValid checks if @iter points to a valid value.
 func (i *BitsetIter) IsValid() bool {
 	var _arg0 *C.GtkBitsetIter // out
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.GtkBitsetIter)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GtkBitsetIter)(unsafe.Pointer(i))
 
 	_cret = C.gtk_bitset_iter_is_valid(_arg0)
 
@@ -71,16 +70,16 @@ func (i *BitsetIter) IsValid() bool {
 	return _ok
 }
 
-// Next moves @iter to the previous value in the set.
+// Next moves @iter to the next value in the set.
 //
-// If it was already pointing to the first value in the set, false is returned
+// If it was already pointing to the last value in the set, false is returned
 // and @iter is invalidated.
 func (i *BitsetIter) Next() (uint, bool) {
 	var _arg0 *C.GtkBitsetIter // out
-	var _arg1 C.guint          // in
+	var _arg1 *C.guint         // in
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.GtkBitsetIter)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GtkBitsetIter)(unsafe.Pointer(i))
 
 	_cret = C.gtk_bitset_iter_next(_arg0, &_arg1)
 
@@ -101,10 +100,10 @@ func (i *BitsetIter) Next() (uint, bool) {
 // and @iter is invalidated.
 func (i *BitsetIter) Previous() (uint, bool) {
 	var _arg0 *C.GtkBitsetIter // out
-	var _arg1 C.guint          // in
+	var _arg1 *C.guint         // in
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.GtkBitsetIter)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GtkBitsetIter)(unsafe.Pointer(i))
 
 	_cret = C.gtk_bitset_iter_previous(_arg0, &_arg1)
 

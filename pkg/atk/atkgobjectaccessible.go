@@ -29,6 +29,7 @@ func init() {
 type GObjectAccessible interface {
 	Object
 
+	// GetObject gets the GObject for which @obj is the accessible object.
 	GetObject() gextras.Objector
 }
 

@@ -183,8 +183,8 @@ func gotk4_SpawnChildSetupFunc(arg0 C.gpointer) {
 // error message string; it may be translated and/or change in future versions
 // of GLib.
 func SpawnCheckExitStatus(exitStatus int) error {
-	var _arg1 C.gint    // out
-	var _cerr *C.GError // in
+	var _arg1 C.gint     // out
+	var _cerr **C.GError // in
 
 	_arg1 = C.gint(exitStatus)
 
@@ -192,12 +192,21 @@ func SpawnCheckExitStatus(exitStatus int) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _goerr
 }
 
-// SpawnCommandLineAsync: a simple version of g_spawn_async() that parses a
+// SpawnCommandLineAsync: simple version of g_spawn_async() that parses a
 // command line with g_shell_parse_argv() and passes it to g_spawn_async(). Runs
 // a command line in the background. Unlike g_spawn_async(), the
 // G_SPAWN_SEARCH_PATH flag is enabled, other flags are not. Note that
@@ -207,8 +216,8 @@ func SpawnCheckExitStatus(exitStatus int) error {
 //
 // The same concerns on Windows apply as for g_spawn_command_line_sync().
 func SpawnCommandLineAsync(commandLine string) error {
-	var _arg1 *C.gchar  // out
-	var _cerr *C.GError // in
+	var _arg1 *C.gchar   // out
+	var _cerr **C.GError // in
 
 	_arg1 = (*C.gchar)(C.CString(commandLine))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -217,12 +226,21 @@ func SpawnCommandLineAsync(commandLine string) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _goerr
 }
 
-// SpawnCommandLineSync: a simple version of g_spawn_sync() with little-used
+// SpawnCommandLineSync: simple version of g_spawn_sync() with little-used
 // parameters removed, taking a command line instead of an argument vector. See
 // g_spawn_sync() for full details. @command_line will be parsed by
 // g_shell_parse_argv(). Unlike g_spawn_sync(), the G_SPAWN_SEARCH_PATH flag is
@@ -246,8 +264,8 @@ func SpawnCommandLineSync(commandLine string) (standardOutput []byte, standardEr
 	var _arg1 *C.gchar // out
 	var _arg2 *C.gchar
 	var _arg3 *C.gchar
-	var _arg4 C.gint    // in
-	var _cerr *C.GError // in
+	var _arg4 *C.gint    // in
+	var _cerr **C.GError // in
 
 	_arg1 = (*C.gchar)(C.CString(commandLine))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -261,7 +279,7 @@ func SpawnCommandLineSync(commandLine string) (standardOutput []byte, standardEr
 
 	{
 		var i int
-		var z C.gchar
+		var z *C.gchar
 		for p := _arg2; *p != z; p = &unsafe.Slice(p, i+1)[i] {
 			i++
 		}
@@ -274,7 +292,7 @@ func SpawnCommandLineSync(commandLine string) (standardOutput []byte, standardEr
 	}
 	{
 		var i int
-		var z C.gchar
+		var z *C.gchar
 		for p := _arg3; *p != z; p = &unsafe.Slice(p, i+1)[i] {
 			i++
 		}
@@ -286,7 +304,16 @@ func SpawnCommandLineSync(commandLine string) (standardOutput []byte, standardEr
 		}
 	}
 	_exitStatus = int(_arg4)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _standardOutput, _standardError, _exitStatus, _goerr
 }
@@ -318,8 +345,8 @@ func SpawnSync(workingDirectory string, argv []string, envp []string, flags Spaw
 	var _arg6 C.gpointer
 	var _arg7 *C.gchar
 	var _arg8 *C.gchar
-	var _arg9 C.gint    // in
-	var _cerr *C.GError // in
+	var _arg9 *C.gint    // in
+	var _cerr **C.GError // in
 
 	_arg1 = (*C.gchar)(C.CString(workingDirectory))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -354,7 +381,7 @@ func SpawnSync(workingDirectory string, argv []string, envp []string, flags Spaw
 
 	{
 		var i int
-		var z C.gchar
+		var z *C.gchar
 		for p := _arg7; *p != z; p = &unsafe.Slice(p, i+1)[i] {
 			i++
 		}
@@ -367,7 +394,7 @@ func SpawnSync(workingDirectory string, argv []string, envp []string, flags Spaw
 	}
 	{
 		var i int
-		var z C.gchar
+		var z *C.gchar
 		for p := _arg8; *p != z; p = &unsafe.Slice(p, i+1)[i] {
 			i++
 		}
@@ -379,7 +406,16 @@ func SpawnSync(workingDirectory string, argv []string, envp []string, flags Spaw
 		}
 	}
 	_exitStatus = int(_arg9)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _standardOutput, _standardError, _exitStatus, _goerr
 }

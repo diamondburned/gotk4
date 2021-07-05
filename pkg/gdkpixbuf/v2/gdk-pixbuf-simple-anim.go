@@ -21,14 +21,18 @@ func init() {
 	})
 }
 
-// PixbufSimpleAnim: an opaque struct representing a simple animation.
+// PixbufSimpleAnim: opaque struct representing a simple animation.
 type PixbufSimpleAnim interface {
 	PixbufAnimation
 
+	// AddFramePixbufSimpleAnim adds a new frame to @animation. The @pixbuf must
+	// have the dimensions specified when the animation was constructed.
 	AddFramePixbufSimpleAnim(pixbuf Pixbuf)
-
+	// Loop gets whether @animation should loop indefinitely when it reaches the
+	// end.
 	Loop() bool
-
+	// SetLoopPixbufSimpleAnim sets whether @animation should loop indefinitely
+	// when it reaches the end.
 	SetLoopPixbufSimpleAnim(loop bool)
 }
 
@@ -51,6 +55,7 @@ func marshalPixbufSimpleAnim(p uintptr) (interface{}, error) {
 	return WrapPixbufSimpleAnim(obj), nil
 }
 
+// NewPixbufSimpleAnim creates a new, empty animation.
 func NewPixbufSimpleAnim(width int, height int, rate float32) PixbufSimpleAnim {
 	var _arg1 C.gint                 // out
 	var _arg2 C.gint                 // out
@@ -65,7 +70,7 @@ func NewPixbufSimpleAnim(width int, height int, rate float32) PixbufSimpleAnim {
 
 	var _pixbufSimpleAnim PixbufSimpleAnim // out
 
-	_pixbufSimpleAnim = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(PixbufSimpleAnim)
+	_pixbufSimpleAnim = WrapPixbufSimpleAnim(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _pixbufSimpleAnim
 }

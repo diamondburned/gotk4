@@ -36,34 +36,87 @@ func init() {
 type Adjustment interface {
 	gextras.Objector
 
+	// ClampPageAdjustment updates the value property to ensure that the range
+	// between @lower and @upper is in the current page.
+	//
+	// The current page goes from `value` to `value` + `page-size`. If the range
+	// is larger than the page size, then only the start of it will be in the
+	// current page.
+	//
+	// A [signal@Gtk.Adjustment::value-changed] signal will be emitted if the
+	// value is changed.
 	ClampPageAdjustment(lower float64, upper float64)
-
+	// ConfigureAdjustment sets all properties of the adjustment at once.
+	//
+	// Use this function to avoid multiple emissions of the
+	// [signal@Gtk.Adjustment::changed] signal. See
+	// [method@Gtk.Adjustment.set_lower] for an alternative way of compressing
+	// multiple emissions of [signal@Gtk.Adjustment::changed] into one.
 	ConfigureAdjustment(value float64, lower float64, upper float64, stepIncrement float64, pageIncrement float64, pageSize float64)
-
+	// Lower retrieves the minimum value of the adjustment.
 	Lower() float64
-
+	// MinimumIncrement gets the smaller of step increment and page increment.
 	MinimumIncrement() float64
-
+	// PageIncrement retrieves the page increment of the adjustment.
 	PageIncrement() float64
-
+	// PageSize retrieves the page size of the adjustment.
 	PageSize() float64
-
+	// StepIncrement retrieves the step increment of the adjustment.
 	StepIncrement() float64
-
+	// Upper retrieves the maximum value of the adjustment.
 	Upper() float64
-
+	// Value gets the current value of the adjustment.
 	Value() float64
-
+	// SetLowerAdjustment sets the minimum value of the adjustment.
+	//
+	// When setting multiple adjustment properties via their individual setters,
+	// multiple [signal@Gtk.Adjustment::changed] signals will be emitted.
+	// However, since the emission of the [signal@Gtk.Adjustment::changed]
+	// signal is tied to the emission of the ::notify signals of the changed
+	// properties, it’s possible to compress the
+	// [signal@Gtk.Adjustment::changed] signals into one by calling
+	// g_object_freeze_notify() and g_object_thaw_notify() around the calls to
+	// the individual setters.
+	//
+	// Alternatively, using a single g_object_set() for all the properties to
+	// change, or using [method@Gtk.Adjustment.configure] has the same effect.
 	SetLowerAdjustment(lower float64)
-
+	// SetPageIncrementAdjustment sets the page increment of the adjustment.
+	//
+	// See [method@Gtk.Adjustment.set_lower] about how to compress multiple
+	// emissions of the [signal@Gtk.Adjustment::changed] signal when setting
+	// multiple adjustment properties.
 	SetPageIncrementAdjustment(pageIncrement float64)
-
+	// SetPageSizeAdjustment sets the page size of the adjustment.
+	//
+	// See [method@Gtk.Adjustment.set_lower] about how to compress multiple
+	// emissions of the [signal@Gtk.Adjustment::changed] signal when setting
+	// multiple adjustment properties.
 	SetPageSizeAdjustment(pageSize float64)
-
+	// SetStepIncrementAdjustment sets the step increment of the adjustment.
+	//
+	// See [method@Gtk.Adjustment.set_lower] about how to compress multiple
+	// emissions of the [signal@Gtk.Adjustment::changed] signal when setting
+	// multiple adjustment properties.
 	SetStepIncrementAdjustment(stepIncrement float64)
-
+	// SetUpperAdjustment sets the maximum value of the adjustment.
+	//
+	// Note that values will be restricted by `upper - page-size` if the
+	// page-size property is nonzero.
+	//
+	// See [method@Gtk.Adjustment.set_lower] about how to compress multiple
+	// emissions of the [signal@Gtk.Adjustment::changed] signal when setting
+	// multiple adjustment properties.
 	SetUpperAdjustment(upper float64)
-
+	// SetValueAdjustment sets the `GtkAdjustment` value.
+	//
+	// The value is clamped to lie between [property@Gtk.Adjustment:lower] and
+	// [property@Gtk.Adjustment:upper].
+	//
+	// Note that for adjustments which are used in a `GtkScrollbar`, the
+	// effective range of allowed values goes from
+	// [property@Gtk.Adjustment:lower] to [property@Gtk.Adjustment:upper] -
+	// [property@Gtk.Adjustment:page-size].
 	SetValueAdjustment(value float64)
 }
 
@@ -86,6 +139,7 @@ func marshalAdjustment(p uintptr) (interface{}, error) {
 	return WrapAdjustment(obj), nil
 }
 
+// NewAdjustment creates a new `GtkAdjustment`.
 func NewAdjustment(value float64, lower float64, upper float64, stepIncrement float64, pageIncrement float64, pageSize float64) Adjustment {
 	var _arg1 C.double         // out
 	var _arg2 C.double         // out
@@ -106,7 +160,7 @@ func NewAdjustment(value float64, lower float64, upper float64, stepIncrement fl
 
 	var _adjustment Adjustment // out
 
-	_adjustment = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Adjustment)
+	_adjustment = WrapAdjustment(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _adjustment
 }

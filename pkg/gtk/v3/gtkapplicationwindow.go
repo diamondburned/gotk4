@@ -3,13 +3,10 @@
 package gtk
 
 import (
-	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -123,16 +120,29 @@ func init() {
 // user-visible string to display - "icon": icon name to display
 type ApplicationWindow interface {
 	Window
-	gio.ActionGroup
 
+	// AsActionGroup casts the class to the gio.ActionGroup interface.
+	AsActionGroup() gio.ActionGroup
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+
+	// HelpOverlay gets the ShortcutsWindow that has been set up with a prior
+	// call to gtk_application_window_set_help_overlay().
 	HelpOverlay() ShortcutsWindow
-
+	// ID returns the unique ID of the window. If the window has not yet been
+	// added to a Application, returns `0`.
 	ID() uint
-
+	// ShowMenubar returns whether the window will display a menubar for the app
+	// menu and menubar as needed.
 	ShowMenubar() bool
-
+	// SetHelpOverlayApplicationWindow associates a shortcuts window with the
+	// application window, and sets up an action with the name
+	// win.show-help-overlay to present it.
+	//
+	// @window takes resposibility for destroying @help_overlay.
 	SetHelpOverlayApplicationWindow(helpOverlay ShortcutsWindow)
-
+	// SetShowMenubarApplicationWindow sets whether the window will display a
+	// menubar for the app menu and menubar as needed.
 	SetShowMenubarApplicationWindow(showMenubar bool)
 }
 
@@ -155,6 +165,7 @@ func marshalApplicationWindow(p uintptr) (interface{}, error) {
 	return WrapApplicationWindow(obj), nil
 }
 
+// NewApplicationWindow creates a new ApplicationWindow.
 func NewApplicationWindow(application Application) ApplicationWindow {
 	var _arg1 *C.GtkApplication // out
 	var _cret *C.GtkWidget      // in
@@ -165,7 +176,7 @@ func NewApplicationWindow(application Application) ApplicationWindow {
 
 	var _applicationWindow ApplicationWindow // out
 
-	_applicationWindow = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ApplicationWindow)
+	_applicationWindow = WrapApplicationWindow(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _applicationWindow
 }
@@ -239,98 +250,10 @@ func (w applicationWindow) SetShowMenubarApplicationWindow(showMenubar bool) {
 	C.gtk_application_window_set_show_menubar(_arg0, _arg1)
 }
 
-func (b applicationWindow) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+func (a applicationWindow) AsActionGroup() gio.ActionGroup {
+	return gio.WrapActionGroup(gextras.InternObject(a))
 }
 
-func (b applicationWindow) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b applicationWindow) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b applicationWindow) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b applicationWindow) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b applicationWindow) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b applicationWindow) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b applicationWindow) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b applicationWindow) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b applicationWindow) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (a applicationWindow) ActionAdded(actionName string) {
-	gio.WrapActionGroup(gextras.InternObject(a)).ActionAdded(actionName)
-}
-
-func (a applicationWindow) ActionEnabledChanged(actionName string, enabled bool) {
-	gio.WrapActionGroup(gextras.InternObject(a)).ActionEnabledChanged(actionName, enabled)
-}
-
-func (a applicationWindow) ActionRemoved(actionName string) {
-	gio.WrapActionGroup(gextras.InternObject(a)).ActionRemoved(actionName)
-}
-
-func (a applicationWindow) ActionStateChanged(actionName string, state *glib.Variant) {
-	gio.WrapActionGroup(gextras.InternObject(a)).ActionStateChanged(actionName, state)
-}
-
-func (a applicationWindow) ActivateAction(actionName string, parameter *glib.Variant) {
-	gio.WrapActionGroup(gextras.InternObject(a)).ActivateAction(actionName, parameter)
-}
-
-func (a applicationWindow) ChangeActionState(actionName string, value *glib.Variant) {
-	gio.WrapActionGroup(gextras.InternObject(a)).ChangeActionState(actionName, value)
-}
-
-func (a applicationWindow) ActionEnabled(actionName string) bool {
-	return gio.WrapActionGroup(gextras.InternObject(a)).ActionEnabled(actionName)
-}
-
-func (a applicationWindow) ActionParameterType(actionName string) *glib.VariantType {
-	return gio.WrapActionGroup(gextras.InternObject(a)).ActionParameterType(actionName)
-}
-
-func (a applicationWindow) ActionState(actionName string) *glib.Variant {
-	return gio.WrapActionGroup(gextras.InternObject(a)).ActionState(actionName)
-}
-
-func (a applicationWindow) ActionStateHint(actionName string) *glib.Variant {
-	return gio.WrapActionGroup(gextras.InternObject(a)).ActionStateHint(actionName)
-}
-
-func (a applicationWindow) ActionStateType(actionName string) *glib.VariantType {
-	return gio.WrapActionGroup(gextras.InternObject(a)).ActionStateType(actionName)
-}
-
-func (a applicationWindow) HasAction(actionName string) bool {
-	return gio.WrapActionGroup(gextras.InternObject(a)).HasAction(actionName)
-}
-
-func (a applicationWindow) ListActions() []string {
-	return gio.WrapActionGroup(gextras.InternObject(a)).ListActions()
-}
-
-func (a applicationWindow) QueryAction(actionName string) (enabled bool, parameterType *glib.VariantType, stateType *glib.VariantType, stateHint *glib.Variant, state *glib.Variant, ok bool) {
-	return gio.WrapActionGroup(gextras.InternObject(a)).QueryAction(actionName)
+func (a applicationWindow) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(a))
 }

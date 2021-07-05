@@ -34,14 +34,28 @@ func init() {
 type MediaFile interface {
 	MediaStream
 
+	// ClearMediaFile resets the media file to be empty.
 	ClearMediaFile()
-
+	// InputStream returns the stream that @self is currently playing from.
+	//
+	// When @self is not playing or not playing from a stream, nil is returned.
 	InputStream() gio.InputStream
-
+	// SetFilenameMediaFile sets the `GtkMediaFile to play the given file.
+	//
+	// This is a utility function that converts the given @filename to a `GFile`
+	// and calls [method@Gtk.MediaFile.set_file].
 	SetFilenameMediaFile(filename string)
-
+	// SetInputStreamMediaFile sets the `GtkMediaFile` to play the given stream.
+	//
+	// If anything is still playing, stop playing it.
+	//
+	// Full control about the @stream is assumed for the duration of playback.
+	// The stream will not be closed.
 	SetInputStreamMediaFile(stream gio.InputStream)
-
+	// SetResourceMediaFile sets the `GtkMediaFile to play the given resource.
+	//
+	// This is a utility function that converts the given @resource_path to a
+	// `GFile` and calls [method@Gtk.MediaFile.set_file].
 	SetResourceMediaFile(resourcePath string)
 }
 
@@ -64,6 +78,7 @@ func marshalMediaFile(p uintptr) (interface{}, error) {
 	return WrapMediaFile(obj), nil
 }
 
+// NewMediaFile creates a new empty media file.
 func NewMediaFile() MediaFile {
 	var _cret *C.GtkMediaStream // in
 
@@ -71,11 +86,15 @@ func NewMediaFile() MediaFile {
 
 	var _mediaFile MediaFile // out
 
-	_mediaFile = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(MediaFile)
+	_mediaFile = WrapMediaFile(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _mediaFile
 }
 
+// NewMediaFileForFilename creates a new media file for the given filename.
+//
+// This is a utility function that converts the given @filename to a `GFile` and
+// calls [ctor@Gtk.MediaFile.new_for_file].
 func NewMediaFileForFilename(filename string) MediaFile {
 	var _arg1 *C.char           // out
 	var _cret *C.GtkMediaStream // in
@@ -87,11 +106,15 @@ func NewMediaFileForFilename(filename string) MediaFile {
 
 	var _mediaFile MediaFile // out
 
-	_mediaFile = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(MediaFile)
+	_mediaFile = WrapMediaFile(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _mediaFile
 }
 
+// NewMediaFileForInputStream creates a new media file to play @stream.
+//
+// If you want the resulting media to be seekable, the stream should implement
+// the `GSeekable` interface.
 func NewMediaFileForInputStream(stream gio.InputStream) MediaFile {
 	var _arg1 *C.GInputStream   // out
 	var _cret *C.GtkMediaStream // in
@@ -102,11 +125,15 @@ func NewMediaFileForInputStream(stream gio.InputStream) MediaFile {
 
 	var _mediaFile MediaFile // out
 
-	_mediaFile = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(MediaFile)
+	_mediaFile = WrapMediaFile(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _mediaFile
 }
 
+// NewMediaFileForResource creates a new new media file for the given resource.
+//
+// This is a utility function that converts the given @resource to a `GFile` and
+// calls [ctor@Gtk.MediaFile.new_for_file].
 func NewMediaFileForResource(resourcePath string) MediaFile {
 	var _arg1 *C.char           // out
 	var _cret *C.GtkMediaStream // in
@@ -118,7 +145,7 @@ func NewMediaFileForResource(resourcePath string) MediaFile {
 
 	var _mediaFile MediaFile // out
 
-	_mediaFile = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(MediaFile)
+	_mediaFile = WrapMediaFile(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _mediaFile
 }

@@ -27,6 +27,9 @@ func init() {
 
 type RadioMenuItemAccessible interface {
 	CheckMenuItemAccessible
+
+	// AsAction casts the class to the atk.Action interface.
+	AsAction() atk.Action
 }
 
 // radioMenuItemAccessible implements the RadioMenuItemAccessible class.
@@ -48,30 +51,6 @@ func marshalRadioMenuItemAccessible(p uintptr) (interface{}, error) {
 	return WrapRadioMenuItemAccessible(obj), nil
 }
 
-func (a radioMenuItemAccessible) DoAction(i int) bool {
-	return atk.WrapAction(gextras.InternObject(a)).DoAction(i)
-}
-
-func (a radioMenuItemAccessible) Description(i int) string {
-	return atk.WrapAction(gextras.InternObject(a)).Description(i)
-}
-
-func (a radioMenuItemAccessible) Keybinding(i int) string {
-	return atk.WrapAction(gextras.InternObject(a)).Keybinding(i)
-}
-
-func (a radioMenuItemAccessible) LocalizedName(i int) string {
-	return atk.WrapAction(gextras.InternObject(a)).LocalizedName(i)
-}
-
-func (a radioMenuItemAccessible) NActions() int {
-	return atk.WrapAction(gextras.InternObject(a)).NActions()
-}
-
-func (a radioMenuItemAccessible) Name(i int) string {
-	return atk.WrapAction(gextras.InternObject(a)).Name(i)
-}
-
-func (a radioMenuItemAccessible) SetDescription(i int, desc string) bool {
-	return atk.WrapAction(gextras.InternObject(a)).SetDescription(i, desc)
+func (r radioMenuItemAccessible) AsAction() atk.Action {
+	return atk.WrapAction(gextras.InternObject(r))
 }

@@ -25,7 +25,7 @@ func init() {
 	})
 }
 
-// Surface: a `GdkSurface` is a rectangular region on the screen.
+// Surface: `GdkSurface` is a rectangular region on the screen.
 //
 // It’s a low-level object, used to implement high-level objects such as
 // [class@Gtk.Window] or [class@Gtk.Dialog] in GTK.
@@ -37,51 +37,170 @@ func init() {
 type Surface interface {
 	gextras.Objector
 
+	// BeepSurface emits a short beep associated to @surface.
+	//
+	// If the display of @surface does not support per-surface beeps, emits a
+	// short beep on the display just as [method@Gdk.Display.beep].
 	BeepSurface()
-
+	// CreateCairoContextSurface creates a new `GdkCairoContext` for rendering
+	// on @surface.
 	CreateCairoContextSurface() CairoContext
-
+	// CreateGLContextSurface creates a new `GdkGLContext` for the `GdkSurface`.
+	//
+	// The context is disconnected from any particular surface or surface. If
+	// the creation of the `GdkGLContext` failed, @error will be set. Before
+	// using the returned `GdkGLContext`, you will need to call
+	// [method@Gdk.GLContext.make_current] or [method@Gdk.GLContext.realize].
 	CreateGLContextSurface() (GLContext, error)
-
-	CreateSimilarSurfaceSurface(content cairo.Content, width int, height int) *cairo.Surface
-
+	// CreateSimilarSurfaceSurface: create a new Cairo surface that is as
+	// compatible as possible with the given @surface.
+	//
+	// For example the new surface will have the same fallback resolution and
+	// font options as @surface. Generally, the new surface will also use the
+	// same backend as @surface, unless that is not possible for some reason.
+	// The type of the returned surface may be examined with
+	// cairo_surface_get_type().
+	//
+	// Initially the surface contents are all 0 (transparent if contents have
+	// transparency, black otherwise.)
+	//
+	// This function always returns a valid pointer, but it will return a
+	// pointer to a “nil” surface if @other is already in an error state or any
+	// other error occurs.
+	CreateSimilarSurfaceSurface(content cairo.Content, width int, height int) cairo.Surface
+	// CreateVulkanContextSurface creates a new `GdkVulkanContext` for rendering
+	// on @surface.
+	//
+	// If the creation of the `GdkVulkanContext` failed, @error will be set.
 	CreateVulkanContextSurface() (VulkanContext, error)
-
+	// DestroySurface destroys the window system resources associated with
+	// @surface and decrements @surface's reference count.
+	//
+	// The window system resources for all children of @surface are also
+	// destroyed, but the children’s reference counts are not decremented.
+	//
+	// Note that a surface will not be destroyed automatically when its
+	// reference count reaches zero. You must call this function yourself before
+	// that happens.
 	DestroySurface()
-
+	// Cursor retrieves a `GdkCursor` pointer for the cursor currently set on
+	// the `GdkSurface`.
+	//
+	// If the return value is nil then there is no custom cursor set on the
+	// surface, and it is using the cursor for its parent surface.
 	Cursor() Cursor
-
+	// DeviceCursor retrieves a `GdkCursor` pointer for the @device currently
+	// set on the specified `GdkSurface`.
+	//
+	// If the return value is nil then there is no custom cursor set on the
+	// specified surface, and it is using the cursor for its parent surface.
 	DeviceCursor(device Device) Cursor
-
+	// DevicePosition obtains the current device position and modifier state.
+	//
+	// The position is given in coordinates relative to the upper left corner of
+	// @surface.
 	DevicePosition(device Device) (x float64, y float64, mask ModifierType, ok bool)
-
+	// Display gets the `GdkDisplay` associated with a `GdkSurface`.
 	Display() Display
-
+	// FrameClock gets the frame clock for the surface.
+	//
+	// The frame clock for a surface never changes unless the surface is
+	// reparented to a new toplevel surface.
 	FrameClock() FrameClock
-
+	// Height returns the height of the given @surface.
+	//
+	// Surface size is reported in ”application pixels”, not ”device pixels”
+	// (see [method@Gdk.Surface.get_scale_factor]).
 	Height() int
-
+	// Mapped checks whether the surface has been mapped.
+	//
+	// A surface is mapped with [method@Gdk.Toplevel.present] or
+	// [method@Gdk.Popup.present].
 	Mapped() bool
-
+	// ScaleFactor returns the internal scale factor that maps from surface
+	// coordinates to the actual device pixels.
+	//
+	// On traditional systems this is 1, but on very high density outputs this
+	// can be a higher value (often 2). A higher value means that drawing is
+	// automatically scaled up to a higher resolution, so any code doing drawing
+	// will automatically look nicer. However, if you are supplying pixel-based
+	// data the scale value can be used to determine whether to use a pixel
+	// resource with higher resolution data.
+	//
+	// The scale of a surface may change during runtime.
 	ScaleFactor() int
-
+	// Width returns the width of the given @surface.
+	//
+	// Surface size is reported in ”application pixels”, not ”device pixels”
+	// (see [method@Gdk.Surface.get_scale_factor]).
 	Width() int
-
+	// HideSurface: hide the surface.
+	//
+	// For toplevel surfaces, withdraws them, so they will no longer be known to
+	// the window manager; for all surfaces, unmaps them, so they won’t be
+	// displayed. Normally done automatically as part of
+	// [method@Gtk.Widget.hide].
 	HideSurface()
-
+	// IsDestroyedSurface: check to see if a surface is destroyed.
 	IsDestroyedSurface() bool
-
+	// QueueRenderSurface forces a [signal@Gdk.Surface::render] signal emission
+	// for @surface to be scheduled.
+	//
+	// This function is useful for implementations that track invalid regions on
+	// their own.
 	QueueRenderSurface()
-
+	// RequestLayoutSurface: request a layout phase from the surface's frame
+	// clock.
+	//
+	// See [method@Gdk.FrameClock.request_phase].
 	RequestLayoutSurface()
-
+	// SetCursorSurface sets the default mouse pointer for a `GdkSurface`.
+	//
+	// Passing nil for the @cursor argument means that @surface will use the
+	// cursor of its parent surface. Most surfaces should use this default. Note
+	// that @cursor must be for the same display as @surface.
+	//
+	// Use [ctor@Gdk.Cursor.new_from_name] or [ctor@Gdk.Cursor.new_from_texture]
+	// to create the cursor. To make the cursor invisible, use GDK_BLANK_CURSOR.
 	SetCursorSurface(cursor Cursor)
-
+	// SetDeviceCursorSurface sets a specific `GdkCursor` for a given device
+	// when it gets inside @surface.
+	//
+	// Passing nil for the @cursor argument means that @surface will use the
+	// cursor of its parent surface. Most surfaces should use this default.
+	//
+	// Use [ctor@Gdk.Cursor.new_from_name] or [ctor@Gdk.Cursor.new_from_texture]
+	// to create the cursor. To make the cursor invisible, use GDK_BLANK_CURSOR.
 	SetDeviceCursorSurface(device Device, cursor Cursor)
-
-	SetInputRegionSurface(region *cairo.Region)
-
-	SetOpaqueRegionSurface(region *cairo.Region)
+	// SetInputRegionSurface: apply the region to the surface for the purpose of
+	// event handling.
+	//
+	// Mouse events which happen while the pointer position corresponds to an
+	// unset bit in the mask will be passed on the surface below @surface.
+	//
+	// An input region is typically used with RGBA surfaces. The alpha channel
+	// of the surface defines which pixels are invisible and allows for nicely
+	// antialiased borders, and the input region controls where the surface is
+	// “clickable”.
+	//
+	// Use [method@Gdk.Display.supports_input_shapes] to find out if a
+	// particular backend supports input regions.
+	SetInputRegionSurface(region cairo.Region)
+	// SetOpaqueRegionSurface marks a region of the `GdkSurface` as opaque.
+	//
+	// For optimisation purposes, compositing window managers may like to not
+	// draw obscured regions of surfaces, or turn off blending during for these
+	// regions. With RGB windows with no transparency, this is just the shape of
+	// the window, but with ARGB32 windows, the compositor does not know what
+	// regions of the window are transparent or not.
+	//
+	// This function only works for toplevel surfaces.
+	//
+	// GTK will update this property automatically if the @surface background is
+	// opaque, as we know where the opaque regions are. If your surface
+	// background is not opaque, please update this property in your
+	// WidgetClass.css_changed() handler.
+	SetOpaqueRegionSurface(region cairo.Region)
 }
 
 // surface implements the Surface class.
@@ -103,6 +222,10 @@ func marshalSurface(p uintptr) (interface{}, error) {
 	return WrapSurface(obj), nil
 }
 
+// NewSurfacePopup: create a new popup surface.
+//
+// The surface will be attached to @parent and can be positioned relative to it
+// using [method@Gdk.Popup.present].
 func NewSurfacePopup(parent Surface, autohide bool) Surface {
 	var _arg1 *C.GdkSurface // out
 	var _arg2 C.gboolean    // out
@@ -117,11 +240,12 @@ func NewSurfacePopup(parent Surface, autohide bool) Surface {
 
 	var _surface Surface // out
 
-	_surface = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Surface)
+	_surface = WrapSurface(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _surface
 }
 
+// NewSurfaceToplevel creates a new toplevel surface.
 func NewSurfaceToplevel(display Display) Surface {
 	var _arg1 *C.GdkDisplay // out
 	var _cret *C.GdkSurface // in
@@ -132,7 +256,7 @@ func NewSurfaceToplevel(display Display) Surface {
 
 	var _surface Surface // out
 
-	_surface = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Surface)
+	_surface = WrapSurface(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _surface
 }
@@ -163,7 +287,7 @@ func (s surface) CreateCairoContextSurface() CairoContext {
 func (s surface) CreateGLContextSurface() (GLContext, error) {
 	var _arg0 *C.GdkSurface   // out
 	var _cret *C.GdkGLContext // in
-	var _cerr *C.GError       // in
+	var _cerr **C.GError      // in
 
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 
@@ -173,12 +297,21 @@ func (s surface) CreateGLContextSurface() (GLContext, error) {
 	var _goerr error         // out
 
 	_glContext = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(GLContext)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _glContext, _goerr
 }
 
-func (s surface) CreateSimilarSurfaceSurface(content cairo.Content, width int, height int) *cairo.Surface {
+func (s surface) CreateSimilarSurfaceSurface(content cairo.Content, width int, height int) cairo.Surface {
 	var _arg0 *C.GdkSurface      // out
 	var _arg1 C.cairo_content_t  // out
 	var _arg2 C.int              // out
@@ -192,10 +325,10 @@ func (s surface) CreateSimilarSurfaceSurface(content cairo.Content, width int, h
 
 	_cret = C.gdk_surface_create_similar_surface(_arg0, _arg1, _arg2, _arg3)
 
-	var _ret *cairo.Surface // out
+	var _ret cairo.Surface // out
 
-	_ret = (*cairo.Surface)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(&_ret, func(v **cairo.Surface) {
+	_ret = (cairo.Surface)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_ret, func(v cairo.Surface) {
 		C.free(unsafe.Pointer(v))
 	})
 
@@ -205,7 +338,7 @@ func (s surface) CreateSimilarSurfaceSurface(content cairo.Content, width int, h
 func (s surface) CreateVulkanContextSurface() (VulkanContext, error) {
 	var _arg0 *C.GdkSurface       // out
 	var _cret *C.GdkVulkanContext // in
-	var _cerr *C.GError           // in
+	var _cerr **C.GError          // in
 
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 
@@ -215,7 +348,16 @@ func (s surface) CreateVulkanContextSurface() (VulkanContext, error) {
 	var _goerr error                 // out
 
 	_vulkanContext = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(VulkanContext)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _vulkanContext, _goerr
 }
@@ -261,12 +403,12 @@ func (s surface) DeviceCursor(device Device) Cursor {
 }
 
 func (s surface) DevicePosition(device Device) (x float64, y float64, mask ModifierType, ok bool) {
-	var _arg0 *C.GdkSurface     // out
-	var _arg1 *C.GdkDevice      // out
-	var _arg2 C.double          // in
-	var _arg3 C.double          // in
-	var _arg4 C.GdkModifierType // in
-	var _cret C.gboolean        // in
+	var _arg0 *C.GdkSurface      // out
+	var _arg1 *C.GdkDevice       // out
+	var _arg2 *C.double          // in
+	var _arg3 *C.double          // in
+	var _arg4 *C.GdkModifierType // in
+	var _cret C.gboolean         // in
 
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
@@ -280,7 +422,16 @@ func (s surface) DevicePosition(device Device) (x float64, y float64, mask Modif
 
 	_x = float64(_arg2)
 	_y = float64(_arg3)
-	_mask = ModifierType(_arg4)
+	{
+		var refTmpIn C.GdkModifierType
+		var refTmpOut ModifierType
+
+		refTmpIn = *_arg4
+
+		refTmpOut = ModifierType(refTmpIn)
+
+		_mask = refTmpOut
+	}
 	if _cret != 0 {
 		_ok = true
 	}
@@ -443,22 +594,22 @@ func (s surface) SetDeviceCursorSurface(device Device, cursor Cursor) {
 	C.gdk_surface_set_device_cursor(_arg0, _arg1, _arg2)
 }
 
-func (s surface) SetInputRegionSurface(region *cairo.Region) {
+func (s surface) SetInputRegionSurface(region cairo.Region) {
 	var _arg0 *C.GdkSurface     // out
 	var _arg1 *C.cairo_region_t // out
 
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
+	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region))
 
 	C.gdk_surface_set_input_region(_arg0, _arg1)
 }
 
-func (s surface) SetOpaqueRegionSurface(region *cairo.Region) {
+func (s surface) SetOpaqueRegionSurface(region cairo.Region) {
 	var _arg0 *C.GdkSurface     // out
 	var _arg1 *C.cairo_region_t // out
 
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
+	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region))
 
 	C.gdk_surface_set_opaque_region(_arg0, _arg1)
 }

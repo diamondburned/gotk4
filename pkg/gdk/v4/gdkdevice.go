@@ -24,7 +24,7 @@ func init() {
 	})
 }
 
-// InputSource: an enumeration describing the type of an input device in general
+// InputSource: enumeration describing the type of an input device in general
 // terms.
 type InputSource int
 
@@ -60,38 +60,93 @@ func marshalInputSource(p uintptr) (interface{}, error) {
 type Device interface {
 	gextras.Objector
 
+	// CapsLockState retrieves whether the Caps Lock modifier of the keyboard is
+	// locked.
+	//
+	// This is only relevant for keyboard devices.
 	CapsLockState() bool
-
+	// DeviceTool retrieves the current tool for @device.
 	DeviceTool() DeviceTool
-
+	// Direction returns the direction of effective layout of the keyboard.
+	//
+	// This is only relevant for keyboard devices.
+	//
+	// The direction of a layout is the direction of the majority of its
+	// symbols. See [func@Pango.unichar_direction].
 	Direction() pango.Direction
-
+	// Display returns the `GdkDisplay` to which @device pertains.
 	Display() Display
-
+	// HasCursor determines whether the pointer follows device motion.
+	//
+	// This is not meaningful for keyboard devices, which don't have a pointer.
 	HasCursor() bool
-
+	// ModifierState retrieves the current modifier state of the keyboard.
+	//
+	// This is only relevant for keyboard devices.
 	ModifierState() ModifierType
-
+	// Name: the name of the device, suitable for showing in a user interface.
 	Name() string
-
+	// NumLockState retrieves whether the Num Lock modifier of the keyboard is
+	// locked.
+	//
+	// This is only relevant for keyboard devices.
 	NumLockState() bool
-
+	// NumTouches retrieves the number of touch points associated to @device.
 	NumTouches() uint
-
+	// ProductID returns the product ID of this device.
+	//
+	// This ID is retrieved from the device, and does not change. See
+	// [method@Gdk.Device.get_vendor_id] for more information.
 	ProductID() string
-
+	// ScrollLockState retrieves whether the Scroll Lock modifier of the
+	// keyboard is locked.
+	//
+	// This is only relevant for keyboard devices.
 	ScrollLockState() bool
-
+	// Seat returns the `GdkSeat` the device belongs to.
 	Seat() Seat
-
+	// Source determines the type of the device.
 	Source() InputSource
-
+	// SurfaceAtPosition obtains the surface underneath @device, returning the
+	// location of the device in @win_x and @win_y
+	//
+	// Returns nil if the surface tree under @device is not known to GDK (for
+	// example, belongs to another application).
 	SurfaceAtPosition() (winX float64, winY float64, surface Surface)
-
+	// Timestamp returns the timestamp of the last activity for this device.
+	//
+	// In practice, this means the timestamp of the last event that was received
+	// from the OS for this device. (GTK may occasionally produce events for a
+	// device that are not received from the OS, and will not update the
+	// timestamp).
 	Timestamp() uint32
-
+	// VendorID returns the vendor ID of this device.
+	//
+	// This ID is retrieved from the device, and does not change.
+	//
+	// This function, together with [method@Gdk.Device.get_product_id], can be
+	// used to eg. compose `GSettings` paths to store settings for this device.
+	//
+	// “`c static GSettings * get_device_settings (GdkDevice *device) { const
+	// char *vendor, *product; GSettings *settings; GdkDevice *device; char
+	// *path;
+	//
+	//      vendor = gdk_device_get_vendor_id (device);
+	//      product = gdk_device_get_product_id (device);
+	//
+	//      path = g_strdup_printf ("/org/example/app/devices/s:s/", vendor, product);
+	//      settings = g_settings_new_with_path (DEVICE_SCHEMA, path);
+	//      g_free (path);
+	//
+	//      return settings;
+	//    }
+	//
+	// “`
 	VendorID() string
-
+	// HasBidiLayoutsDevice determines if layouts for both right-to-left and
+	// left-to-right languages are in use on the keyboard.
+	//
+	// This is only relevant for keyboard devices.
 	HasBidiLayoutsDevice() bool
 }
 
@@ -319,8 +374,8 @@ func (d device) Source() InputSource {
 
 func (d device) SurfaceAtPosition() (winX float64, winY float64, surface Surface) {
 	var _arg0 *C.GdkDevice  // out
-	var _arg1 C.double      // in
-	var _arg2 C.double      // in
+	var _arg1 *C.double     // in
+	var _arg2 *C.double     // in
 	var _cret *C.GdkSurface // in
 
 	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
@@ -385,8 +440,10 @@ func (d device) HasBidiLayoutsDevice() bool {
 	return _ok
 }
 
-// TimeCoord: a TimeCoord stores a single event in a motion history.
-type TimeCoord C.GdkTimeCoord
+// TimeCoord stores a single event in a motion history.
+type TimeCoord struct {
+	native C.GdkTimeCoord
+}
 
 // WrapTimeCoord wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -396,5 +453,5 @@ func WrapTimeCoord(ptr unsafe.Pointer) *TimeCoord {
 
 // Native returns the underlying C source pointer.
 func (t *TimeCoord) Native() unsafe.Pointer {
-	return unsafe.Pointer(t)
+	return unsafe.Pointer(&t.native)
 }

@@ -27,8 +27,11 @@ func init() {
 
 type ButtonAccessible interface {
 	ContainerAccessible
-	atk.Action
-	atk.Image
+
+	// AsAction casts the class to the atk.Action interface.
+	AsAction() atk.Action
+	// AsImage casts the class to the atk.Image interface.
+	AsImage() atk.Image
 }
 
 // buttonAccessible implements the ButtonAccessible class.
@@ -50,50 +53,10 @@ func marshalButtonAccessible(p uintptr) (interface{}, error) {
 	return WrapButtonAccessible(obj), nil
 }
 
-func (a buttonAccessible) DoAction(i int) bool {
-	return atk.WrapAction(gextras.InternObject(a)).DoAction(i)
+func (b buttonAccessible) AsAction() atk.Action {
+	return atk.WrapAction(gextras.InternObject(b))
 }
 
-func (a buttonAccessible) Description(i int) string {
-	return atk.WrapAction(gextras.InternObject(a)).Description(i)
-}
-
-func (a buttonAccessible) Keybinding(i int) string {
-	return atk.WrapAction(gextras.InternObject(a)).Keybinding(i)
-}
-
-func (a buttonAccessible) LocalizedName(i int) string {
-	return atk.WrapAction(gextras.InternObject(a)).LocalizedName(i)
-}
-
-func (a buttonAccessible) NActions() int {
-	return atk.WrapAction(gextras.InternObject(a)).NActions()
-}
-
-func (a buttonAccessible) Name(i int) string {
-	return atk.WrapAction(gextras.InternObject(a)).Name(i)
-}
-
-func (a buttonAccessible) SetDescription(i int, desc string) bool {
-	return atk.WrapAction(gextras.InternObject(a)).SetDescription(i, desc)
-}
-
-func (i buttonAccessible) ImageDescription() string {
-	return atk.WrapImage(gextras.InternObject(i)).ImageDescription()
-}
-
-func (i buttonAccessible) ImageLocale() string {
-	return atk.WrapImage(gextras.InternObject(i)).ImageLocale()
-}
-
-func (i buttonAccessible) ImagePosition(coordType atk.CoordType) (x int, y int) {
-	return atk.WrapImage(gextras.InternObject(i)).ImagePosition(coordType)
-}
-
-func (i buttonAccessible) ImageSize() (width int, height int) {
-	return atk.WrapImage(gextras.InternObject(i)).ImageSize()
-}
-
-func (i buttonAccessible) SetImageDescription(description string) bool {
-	return atk.WrapImage(gextras.InternObject(i)).SetImageDescription(description)
+func (b buttonAccessible) AsImage() atk.Image {
+	return atk.WrapImage(gextras.InternObject(b))
 }

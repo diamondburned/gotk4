@@ -62,7 +62,7 @@ func SetAllowedBackends(backends string) {
 	C.gdk_set_allowed_backends(_arg1)
 }
 
-// DisplayManager: a singleton object that offers notification when displays
+// DisplayManager: singleton object that offers notification when displays
 // appear or disappear.
 //
 // You can use [func@Gdk.DisplayManager.get] to obtain the `GdkDisplayManager`
@@ -94,10 +94,11 @@ func SetAllowedBackends(backends string) {
 type DisplayManager interface {
 	gextras.Objector
 
+	// DefaultDisplay gets the default `GdkDisplay`.
 	DefaultDisplay() Display
-
+	// OpenDisplayDisplayManager opens a display.
 	OpenDisplayDisplayManager(name string) Display
-
+	// SetDefaultDisplayDisplayManager sets @display as the default display.
 	SetDefaultDisplayDisplayManager(display Display)
 }
 

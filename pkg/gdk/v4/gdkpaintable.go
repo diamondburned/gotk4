@@ -89,60 +89,98 @@ func marshalPaintableFlags(p uintptr) (interface{}, error) {
 type Paintable interface {
 	gextras.Objector
 
-	// ComputeConcreteSize snapshots the given paintable with the given @width
-	// and @height.
+	// ComputeConcreteSize: compute a concrete size for the `GdkPaintable`.
 	//
-	// The paintable is drawn at the current (0,0) offset of the @snapshot. If
-	// @width and @height are not larger than zero, this function will do
-	// nothing.
+	// Applies the sizing algorithm outlined in the CSS Image spec
+	// (https://drafts.csswg.org/css-images-3/#default-sizing) to the given
+	// @paintable. See that link for more details.
+	//
+	// It is not necessary to call this function when both @specified_width and
+	// @specified_height are known, but it is useful to call this function in
+	// GtkWidget:measure implementations to compute the other dimension when
+	// only one dimension is given.
 	ComputeConcreteSize(specifiedWidth float64, specifiedHeight float64, defaultWidth float64, defaultHeight float64) (concreteWidth float64, concreteHeight float64)
-	// CurrentImage snapshots the given paintable with the given @width and
-	// @height.
+	// CurrentImage gets an immutable paintable for the current contents
+	// displayed by @paintable.
 	//
-	// The paintable is drawn at the current (0,0) offset of the @snapshot. If
-	// @width and @height are not larger than zero, this function will do
-	// nothing.
+	// This is useful when you want to retain the current state of an animation,
+	// for example to take a screenshot of a running animation.
+	//
+	// If the @paintable is already immutable, it will return itself.
 	CurrentImage() Paintable
-	// Flags snapshots the given paintable with the given @width and @height.
+	// Flags: get flags for the paintable.
 	//
-	// The paintable is drawn at the current (0,0) offset of the @snapshot. If
-	// @width and @height are not larger than zero, this function will do
-	// nothing.
+	// This is oftentimes useful for optimizations.
+	//
+	// See [flags@Gdk.PaintableFlags] for the flags and what they mean.
 	Flags() PaintableFlags
-	// IntrinsicAspectRatio snapshots the given paintable with the given @width
-	// and @height.
+	// IntrinsicAspectRatio gets the preferred aspect ratio the @paintable would
+	// like to be displayed at.
 	//
-	// The paintable is drawn at the current (0,0) offset of the @snapshot. If
-	// @width and @height are not larger than zero, this function will do
-	// nothing.
+	// The aspect ratio is the width divided by the height, so a value of 0.5
+	// means that the @paintable prefers to be displayed twice as high as it is
+	// wide. Consumers of this interface can use this to preserve aspect ratio
+	// when displaying the paintable.
+	//
+	// This is a purely informational value and does not in any way limit the
+	// values that may be passed to [method@Gdk.Paintable.snapshot].
+	//
+	// Usually when a @paintable returns nonzero values from
+	// [method@Gdk.Paintable.get_intrinsic_width] and
+	// [method@Gdk.Paintable.get_intrinsic_height] the aspect ratio should
+	// conform to those values, though that is not required.
+	//
+	// If the @paintable does not have a preferred aspect ratio, it returns 0.
+	// Negative values are never returned.
 	IntrinsicAspectRatio() float64
-	// IntrinsicHeight snapshots the given paintable with the given @width and
-	// @height.
+	// IntrinsicHeight gets the preferred height the @paintable would like to be
+	// displayed at.
 	//
-	// The paintable is drawn at the current (0,0) offset of the @snapshot. If
-	// @width and @height are not larger than zero, this function will do
-	// nothing.
+	// Consumers of this interface can use this to reserve enough space to draw
+	// the paintable.
+	//
+	// This is a purely informational value and does not in any way limit the
+	// values that may be passed to [method@Gdk.Paintable.snapshot].
+	//
+	// If the @paintable does not have a preferred height, it returns 0.
+	// Negative values are never returned.
 	IntrinsicHeight() int
-	// IntrinsicWidth snapshots the given paintable with the given @width and
-	// @height.
+	// IntrinsicWidth gets the preferred width the @paintable would like to be
+	// displayed at.
 	//
-	// The paintable is drawn at the current (0,0) offset of the @snapshot. If
-	// @width and @height are not larger than zero, this function will do
-	// nothing.
+	// Consumers of this interface can use this to reserve enough space to draw
+	// the paintable.
+	//
+	// This is a purely informational value and does not in any way limit the
+	// values that may be passed to [method@Gdk.Paintable.snapshot].
+	//
+	// If the @paintable does not have a preferred width, it returns 0. Negative
+	// values are never returned.
 	IntrinsicWidth() int
-	// InvalidateContents snapshots the given paintable with the given @width
-	// and @height.
+	// InvalidateContents: called by implementations of `GdkPaintable` to
+	// invalidate their contents.
 	//
-	// The paintable is drawn at the current (0,0) offset of the @snapshot. If
-	// @width and @height are not larger than zero, this function will do
-	// nothing.
+	// Unless the contents are invalidated, implementations must guarantee that
+	// multiple calls of [method@Gdk.Paintable.snapshot] produce the same
+	// output.
+	//
+	// This function will emit the [signal@Gdk.Paintable::invalidate-contents]
+	// signal.
+	//
+	// If a @paintable reports the GDK_PAINTABLE_STATIC_CONTENTS flag, it must
+	// not call this function.
 	InvalidateContents()
-	// InvalidateSize snapshots the given paintable with the given @width and
-	// @height.
+	// InvalidateSize: called by implementations of `GdkPaintable` to invalidate
+	// their size.
 	//
-	// The paintable is drawn at the current (0,0) offset of the @snapshot. If
-	// @width and @height are not larger than zero, this function will do
-	// nothing.
+	// As long as the size is not invalidated, @paintable must return the same
+	// values for its intrinsic width, height and aspect ratio.
+	//
+	// This function will emit the [signal@Gdk.Paintable::invalidate-size]
+	// signal.
+	//
+	// If a @paintable reports the GDK_PAINTABLE_STATIC_SIZE flag, it must not
+	// call this function.
 	InvalidateSize()
 	// Snapshot snapshots the given paintable with the given @width and @height.
 	//
@@ -179,8 +217,8 @@ func (p paintable) ComputeConcreteSize(specifiedWidth float64, specifiedHeight f
 	var _arg2 C.double        // out
 	var _arg3 C.double        // out
 	var _arg4 C.double        // out
-	var _arg5 C.double        // in
-	var _arg6 C.double        // in
+	var _arg5 *C.double       // in
+	var _arg6 *C.double       // in
 
 	_arg0 = (*C.GdkPaintable)(unsafe.Pointer(p.Native()))
 	_arg1 = C.double(specifiedWidth)

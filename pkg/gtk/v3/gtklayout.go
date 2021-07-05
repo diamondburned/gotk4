@@ -5,10 +5,8 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -41,24 +39,56 @@ func init() {
 // gtk_widget_get_window() as you would for a DrawingArea.
 type Layout interface {
 	Container
-	Scrollable
 
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsScrollable casts the class to the Scrollable interface.
+	AsScrollable() Scrollable
+
+	// BinWindow: retrieve the bin window of the layout used for drawing
+	// operations.
 	BinWindow() gdk.Window
-
-	GetHAdjustment() Adjustment
-
+	// HAdjustment: this function should only be called after the layout has
+	// been placed in a ScrolledWindow or otherwise configured for scrolling. It
+	// returns the Adjustment used for communication between the horizontal
+	// scrollbar and @layout.
+	//
+	// See ScrolledWindow, Scrollbar, Adjustment for details.
+	//
+	// Deprecated: since version 3.0.
+	HAdjustment() Adjustment
+	// Size gets the size that has been set on the layout, and that determines
+	// the total extents of the layout’s scrollbar area. See gtk_layout_set_size
+	// ().
 	Size() (width uint, height uint)
-
-	GetVAdjustment() Adjustment
-
+	// VAdjustment: this function should only be called after the layout has
+	// been placed in a ScrolledWindow or otherwise configured for scrolling. It
+	// returns the Adjustment used for communication between the vertical
+	// scrollbar and @layout.
+	//
+	// See ScrolledWindow, Scrollbar, Adjustment for details.
+	//
+	// Deprecated: since version 3.0.
+	VAdjustment() Adjustment
+	// MoveLayout moves a current child of @layout to a new position.
 	MoveLayout(childWidget Widget, x int, y int)
-
+	// PutLayout adds @child_widget to @layout, at position (@x,@y). @layout
+	// becomes the new parent container of @child_widget.
 	PutLayout(childWidget Widget, x int, y int)
-
+	// SetHAdjustmentLayout sets the horizontal scroll adjustment for the
+	// layout.
+	//
+	// See ScrolledWindow, Scrollbar, Adjustment for details.
+	//
+	// Deprecated: since version 3.0.
 	SetHAdjustmentLayout(adjustment Adjustment)
-
+	// SetSizeLayout sets the size of the scrollable area of the layout.
 	SetSizeLayout(width uint, height uint)
-
+	// SetVAdjustmentLayout sets the vertical scroll adjustment for the layout.
+	//
+	// See ScrolledWindow, Scrollbar, Adjustment for details.
+	//
+	// Deprecated: since version 3.0.
 	SetVAdjustmentLayout(adjustment Adjustment)
 }
 
@@ -81,6 +111,9 @@ func marshalLayout(p uintptr) (interface{}, error) {
 	return WrapLayout(obj), nil
 }
 
+// NewLayout creates a new Layout. Unless you have a specific adjustment you’d
+// like the layout to use for scrolling, pass nil for @hadjustment and
+// @vadjustment.
 func NewLayout(hadjustment Adjustment, vadjustment Adjustment) Layout {
 	var _arg1 *C.GtkAdjustment // out
 	var _arg2 *C.GtkAdjustment // out
@@ -93,7 +126,7 @@ func NewLayout(hadjustment Adjustment, vadjustment Adjustment) Layout {
 
 	var _layout Layout // out
 
-	_layout = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Layout)
+	_layout = WrapLayout(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _layout
 }
@@ -113,7 +146,7 @@ func (l layout) BinWindow() gdk.Window {
 	return _window
 }
 
-func (l layout) GetHAdjustment() Adjustment {
+func (l layout) HAdjustment() Adjustment {
 	var _arg0 *C.GtkLayout     // out
 	var _cret *C.GtkAdjustment // in
 
@@ -130,8 +163,8 @@ func (l layout) GetHAdjustment() Adjustment {
 
 func (l layout) Size() (width uint, height uint) {
 	var _arg0 *C.GtkLayout // out
-	var _arg1 C.guint      // in
-	var _arg2 C.guint      // in
+	var _arg1 *C.guint     // in
+	var _arg2 *C.guint     // in
 
 	_arg0 = (*C.GtkLayout)(unsafe.Pointer(l.Native()))
 
@@ -146,7 +179,7 @@ func (l layout) Size() (width uint, height uint) {
 	return _width, _height
 }
 
-func (l layout) GetVAdjustment() Adjustment {
+func (l layout) VAdjustment() Adjustment {
 	var _arg0 *C.GtkLayout     // out
 	var _cret *C.GtkAdjustment // in
 
@@ -221,78 +254,10 @@ func (l layout) SetVAdjustmentLayout(adjustment Adjustment) {
 	C.gtk_layout_set_vadjustment(_arg0, _arg1)
 }
 
-func (b layout) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+func (l layout) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(l))
 }
 
-func (b layout) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b layout) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b layout) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b layout) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b layout) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b layout) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b layout) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b layout) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b layout) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (s layout) Border() (Border, bool) {
-	return WrapScrollable(gextras.InternObject(s)).Border()
-}
-
-func (s layout) HAdjustment() Adjustment {
-	return WrapScrollable(gextras.InternObject(s)).HAdjustment()
-}
-
-func (s layout) HScrollPolicy() ScrollablePolicy {
-	return WrapScrollable(gextras.InternObject(s)).HScrollPolicy()
-}
-
-func (s layout) VAdjustment() Adjustment {
-	return WrapScrollable(gextras.InternObject(s)).VAdjustment()
-}
-
-func (s layout) VScrollPolicy() ScrollablePolicy {
-	return WrapScrollable(gextras.InternObject(s)).VScrollPolicy()
-}
-
-func (s layout) SetHAdjustment(hadjustment Adjustment) {
-	WrapScrollable(gextras.InternObject(s)).SetHAdjustment(hadjustment)
-}
-
-func (s layout) SetHScrollPolicy(policy ScrollablePolicy) {
-	WrapScrollable(gextras.InternObject(s)).SetHScrollPolicy(policy)
-}
-
-func (s layout) SetVAdjustment(vadjustment Adjustment) {
-	WrapScrollable(gextras.InternObject(s)).SetVAdjustment(vadjustment)
-}
-
-func (s layout) SetVScrollPolicy(policy ScrollablePolicy) {
-	WrapScrollable(gextras.InternObject(s)).SetVScrollPolicy(policy)
+func (l layout) AsScrollable() Scrollable {
+	return WrapScrollable(gextras.InternObject(l))
 }

@@ -3,6 +3,7 @@
 package pango
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -21,7 +22,7 @@ func init() {
 	})
 }
 
-// Matrix: a `PangoMatrix` specifies a transformation between user-space and
+// Matrix: `PangoMatrix` specifies a transformation between user-space and
 // device coordinates.
 //
 //
@@ -29,7 +30,9 @@ func init() {
 //
 // “` x_device = x_user * matrix->xx + y_user * matrix->xy + matrix->x0;
 // y_device = x_user * matrix->yx + y_user * matrix->yy + matrix->y0; “`
-type Matrix C.PangoMatrix
+type Matrix struct {
+	native C.PangoMatrix
+}
 
 // WrapMatrix wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -44,62 +47,61 @@ func marshalMatrix(p uintptr) (interface{}, error) {
 
 // Native returns the underlying C source pointer.
 func (m *Matrix) Native() unsafe.Pointer {
-	return unsafe.Pointer(m)
+	return unsafe.Pointer(&m.native)
 }
 
 // Concat changes the transformation represented by @matrix to be the
-// transformation given by first translating by (@tx, @ty) then applying the
-// original transformation.
-func (m *Matrix) Concat(newMatrix *Matrix) {
+// transformation given by first applying transformation given by @new_matrix
+// then applying the original transformation.
+func (m *Matrix) Concat(newMatrix Matrix) {
 	var _arg0 *C.PangoMatrix // out
 	var _arg1 *C.PangoMatrix // out
 
-	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(m.Native()))
-	_arg1 = (*C.PangoMatrix)(unsafe.Pointer(newMatrix.Native()))
+	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(m))
+	_arg1 = (*C.PangoMatrix)(unsafe.Pointer(newMatrix))
 
 	C.pango_matrix_concat(_arg0, _arg1)
 }
 
-// Copy changes the transformation represented by @matrix to be the
-// transformation given by first translating by (@tx, @ty) then applying the
-// original transformation.
-func (m *Matrix) Copy() *Matrix {
+// Copy copies a `PangoMatrix`.
+func (m *Matrix) Copy() Matrix {
 	var _arg0 *C.PangoMatrix // out
 	var _cret *C.PangoMatrix // in
 
-	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(m))
 
 	_cret = C.pango_matrix_copy(_arg0)
 
-	var _ret *Matrix // out
+	var _ret Matrix // out
 
-	_ret = (*Matrix)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(&_ret, func(v **Matrix) {
-		C.free(unsafe.Pointer(v))
+	_ret = (Matrix)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_ret, func(v Matrix) {
+		C.pango_matrix_free((*C.PangoMatrix)(unsafe.Pointer(v)))
 	})
 
 	return _ret
 }
 
-// Free changes the transformation represented by @matrix to be the
-// transformation given by first translating by (@tx, @ty) then applying the
-// original transformation.
+// Free a `PangoMatrix`.
 func (m *Matrix) Free() {
 	var _arg0 *C.PangoMatrix // out
 
-	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(m))
 
 	C.pango_matrix_free(_arg0)
 }
 
-// FontScaleFactor changes the transformation represented by @matrix to be the
-// transformation given by first translating by (@tx, @ty) then applying the
-// original transformation.
+// FontScaleFactor returns the scale factor of a matrix on the height of the
+// font.
+//
+// That is, the scale factor in the direction perpendicular to the vector that
+// the X coordinate is mapped to. If the scale in the X coordinate is needed as
+// well, use [method@Pango.Matrix.get_font_scale_factors].
 func (m *Matrix) FontScaleFactor() float64 {
 	var _arg0 *C.PangoMatrix // out
 	var _cret C.double       // in
 
-	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(m))
 
 	_cret = C.pango_matrix_get_font_scale_factor(_arg0)
 
@@ -110,15 +112,20 @@ func (m *Matrix) FontScaleFactor() float64 {
 	return _gdouble
 }
 
-// FontScaleFactors changes the transformation represented by @matrix to be the
-// transformation given by first translating by (@tx, @ty) then applying the
-// original transformation.
+// FontScaleFactors calculates the scale factor of a matrix on the width and
+// height of the font.
+//
+// That is, @xscale is the scale factor in the direction of the X coordinate,
+// and @yscale is the scale factor in the direction perpendicular to the vector
+// that the X coordinate is mapped to.
+//
+// Note that output numbers will always be non-negative.
 func (m *Matrix) FontScaleFactors() (xscale float64, yscale float64) {
 	var _arg0 *C.PangoMatrix // out
-	var _arg1 C.double       // in
-	var _arg2 C.double       // in
+	var _arg1 *C.double      // in
+	var _arg2 *C.double      // in
 
-	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(m))
 
 	C.pango_matrix_get_font_scale_factors(_arg0, &_arg1, &_arg2)
 
@@ -132,27 +139,27 @@ func (m *Matrix) FontScaleFactors() (xscale float64, yscale float64) {
 }
 
 // Rotate changes the transformation represented by @matrix to be the
-// transformation given by first translating by (@tx, @ty) then applying the
-// original transformation.
+// transformation given by first rotating by @degrees degrees counter-clockwise
+// then applying the original transformation.
 func (m *Matrix) Rotate(degrees float64) {
 	var _arg0 *C.PangoMatrix // out
 	var _arg1 C.double       // out
 
-	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(m))
 	_arg1 = C.double(degrees)
 
 	C.pango_matrix_rotate(_arg0, _arg1)
 }
 
 // Scale changes the transformation represented by @matrix to be the
-// transformation given by first translating by (@tx, @ty) then applying the
-// original transformation.
+// transformation given by first scaling by @sx in the X direction and @sy in
+// the Y direction then applying the original transformation.
 func (m *Matrix) Scale(scaleX float64, scaleY float64) {
 	var _arg0 *C.PangoMatrix // out
 	var _arg1 C.double       // out
 	var _arg2 C.double       // out
 
-	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(m))
 	_arg1 = C.double(scaleX)
 	_arg2 = C.double(scaleY)
 
@@ -167,7 +174,7 @@ func (m *Matrix) Translate(tx float64, ty float64) {
 	var _arg1 C.double       // out
 	var _arg2 C.double       // out
 
-	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(m))
 	_arg1 = C.double(tx)
 	_arg2 = C.double(ty)
 

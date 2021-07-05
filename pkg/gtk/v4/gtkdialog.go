@@ -6,8 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/gdk/v4"
-	"github.com/diamondburned/gotk4/pkg/gsk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -187,22 +185,63 @@ func marshalDialogFlags(p uintptr) (interface{}, error) {
 type Dialog interface {
 	Window
 
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
+	// AsNative casts the class to the Native interface.
+	AsNative() Native
+	// AsRoot casts the class to the Root interface.
+	AsRoot() Root
+	// AsShortcutManager casts the class to the ShortcutManager interface.
+	AsShortcutManager() ShortcutManager
+
+	// AddActionWidgetDialog adds an activatable widget to the action area of a
+	// `GtkDialog`.
+	//
+	// GTK connects a signal handler that will emit the
+	// [signal@Gtk.Dialog::response] signal on the dialog when the widget is
+	// activated. The widget is appended to the end of the dialog’s action area.
+	//
+	// If you want to add a non-activatable widget, simply pack it into the
+	// @action_area field of the `GtkDialog` struct.
 	AddActionWidgetDialog(child Widget, responseId int)
-
+	// AddButtonDialog adds a button with the given text.
+	//
+	// GTK arranges things so that clicking the button will emit the
+	// [signal@Gtk.Dialog::response] signal with the given @response_id. The
+	// button is appended to the end of the dialog’s action area. The button
+	// widget is returned, but usually you don’t need it.
 	AddButtonDialog(buttonText string, responseId int) Widget
-
+	// ContentArea returns the content area of @dialog.
 	ContentArea() Box
-
+	// HeaderBar returns the header bar of @dialog.
+	//
+	// Note that the headerbar is only used by the dialog if the
+	// [property@Gtk.Dialog:use-header-bar] property is true.
 	HeaderBar() HeaderBar
-
+	// ResponseForWidget gets the response id of a widget in the action area of
+	// a dialog.
 	ResponseForWidget(widget Widget) int
-
+	// WidgetForResponse gets the widget button that uses the given response ID
+	// in the action area of a dialog.
 	WidgetForResponse(responseId int) Widget
-
+	// ResponseDialog emits the ::response signal with the given response ID.
+	//
+	// Used to indicate that the user has responded to the dialog in some way.
 	ResponseDialog(responseId int)
-
+	// SetDefaultResponseDialog sets the default widget for the dialog based on
+	// the response ID.
+	//
+	// Pressing “Enter” normally activates the default widget.
 	SetDefaultResponseDialog(responseId int)
-
+	// SetResponseSensitiveDialog: convenient way to sensitize/desensitize
+	// dialog buttons.
+	//
+	// Calls `gtk_widget_set_sensitive (widget, @setting)` for each widget in
+	// the dialog’s action area with the given @response_id.
 	SetResponseSensitiveDialog(responseId int, setting bool)
 }
 
@@ -225,6 +264,10 @@ func marshalDialog(p uintptr) (interface{}, error) {
 	return WrapDialog(obj), nil
 }
 
+// NewDialog creates a new dialog box.
+//
+// Widgets should not be packed into the `GtkWindow` directly, but into the
+// @content_area and @action_area, as described above.
 func NewDialog() Dialog {
 	var _cret *C.GtkWidget // in
 
@@ -232,7 +275,7 @@ func NewDialog() Dialog {
 
 	var _dialog Dialog // out
 
-	_dialog = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Dialog)
+	_dialog = WrapDialog(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _dialog
 }
@@ -367,66 +410,26 @@ func (d dialog) SetResponseSensitiveDialog(responseId int, setting bool) {
 	C.gtk_dialog_set_response_sensitive(_arg0, _arg1, _arg2)
 }
 
-func (s dialog) Display() gdk.Display {
-	return WrapRoot(gextras.InternObject(s)).Display()
+func (d dialog) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(d))
 }
 
-func (s dialog) Focus() Widget {
-	return WrapRoot(gextras.InternObject(s)).Focus()
+func (d dialog) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(d))
 }
 
-func (s dialog) SetFocus(focus Widget) {
-	WrapRoot(gextras.InternObject(s)).SetFocus(focus)
+func (d dialog) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(d))
 }
 
-func (s dialog) Renderer() gsk.Renderer {
-	return WrapNative(gextras.InternObject(s)).Renderer()
+func (d dialog) AsNative() Native {
+	return WrapNative(gextras.InternObject(d))
 }
 
-func (s dialog) Surface() gdk.Surface {
-	return WrapNative(gextras.InternObject(s)).Surface()
+func (d dialog) AsRoot() Root {
+	return WrapRoot(gextras.InternObject(d))
 }
 
-func (s dialog) SurfaceTransform() (x float64, y float64) {
-	return WrapNative(gextras.InternObject(s)).SurfaceTransform()
-}
-
-func (s dialog) Realize() {
-	WrapNative(gextras.InternObject(s)).Realize()
-}
-
-func (s dialog) Unrealize() {
-	WrapNative(gextras.InternObject(s)).Unrealize()
-}
-
-func (s dialog) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
-}
-
-func (s dialog) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
-}
-
-func (s dialog) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
-}
-
-func (s dialog) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s dialog) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s dialog) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s dialog) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b dialog) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
+func (d dialog) AsShortcutManager() ShortcutManager {
+	return WrapShortcutManager(gextras.InternObject(d))
 }

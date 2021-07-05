@@ -5,9 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -26,11 +24,11 @@ func init() {
 	})
 }
 
-// Statusbar: a Statusbar is usually placed along the bottom of an application's
-// main Window. It may provide a regular commentary of the application's status
-// (as is usually the case in a web browser, for example), or may be used to
-// simply output a message when the status changes, (when an upload is complete
-// in an FTP client, for example).
+// Statusbar is usually placed along the bottom of an application's main Window.
+// It may provide a regular commentary of the application's status (as is
+// usually the case in a web browser, for example), or may be used to simply
+// output a message when the status changes, (when an upload is complete in an
+// FTP client, for example).
 //
 // Status bars in GTK+ maintain a stack of messages. The message at the top of
 // the each bar’s stack is the one that will currently be displayed.
@@ -61,16 +59,29 @@ func init() {
 type Statusbar interface {
 	Box
 
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsOrientable casts the class to the Orientable interface.
+	AsOrientable() Orientable
+
+	// ContextID returns a new context identifier, given a description of the
+	// actual context. Note that the description is not shown in the UI.
 	ContextID(contextDescription string) uint
-
+	// MessageArea retrieves the box containing the label widget.
 	MessageArea() Box
-
+	// PopStatusbar removes the first message in the Statusbar’s stack with the
+	// given context id.
+	//
+	// Note that this may not change the displayed message, if the message at
+	// the top of the stack has a different context id.
 	PopStatusbar(contextId uint)
-
+	// PushStatusbar pushes a new message onto a statusbar’s stack.
 	PushStatusbar(contextId uint, text string) uint
-
+	// RemoveStatusbar forces the removal of a message from a statusbar’s stack.
+	// The exact @context_id and @message_id must be specified.
 	RemoveStatusbar(contextId uint, messageId uint)
-
+	// RemoveAllStatusbar forces the removal of all messages from a statusbar's
+	// stack with the exact @context_id.
 	RemoveAllStatusbar(contextId uint)
 }
 
@@ -93,6 +104,7 @@ func marshalStatusbar(p uintptr) (interface{}, error) {
 	return WrapStatusbar(obj), nil
 }
 
+// NewStatusbar creates a new Statusbar ready for messages.
 func NewStatusbar() Statusbar {
 	var _cret *C.GtkWidget // in
 
@@ -100,7 +112,7 @@ func NewStatusbar() Statusbar {
 
 	var _statusbar Statusbar // out
 
-	_statusbar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Statusbar)
+	_statusbar = WrapStatusbar(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _statusbar
 }
@@ -190,50 +202,10 @@ func (s statusbar) RemoveAllStatusbar(contextId uint) {
 	C.gtk_statusbar_remove_all(_arg0, _arg1)
 }
 
-func (b statusbar) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+func (s statusbar) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(s))
 }
 
-func (b statusbar) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b statusbar) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b statusbar) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b statusbar) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b statusbar) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b statusbar) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b statusbar) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b statusbar) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b statusbar) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (o statusbar) Orientation() Orientation {
-	return WrapOrientable(gextras.InternObject(o)).Orientation()
-}
-
-func (o statusbar) SetOrientation(orientation Orientation) {
-	WrapOrientable(gextras.InternObject(o)).SetOrientation(orientation)
+func (s statusbar) AsOrientable() Orientable {
+	return WrapOrientable(gextras.InternObject(s))
 }

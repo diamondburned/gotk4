@@ -3,11 +3,11 @@
 package gdkpixbuf
 
 import (
-	"unsafe"
+"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
-	"github.com/diamondburned/gotk4/pkg/core/gerror"
-	externglib "github.com/gotk3/gotk3/glib"
+"github.com/diamondburned/gotk4/pkg/core/box"
+"github.com/diamondburned/gotk4/pkg/core/gerror"
+externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gdk-pixbuf-2.0
@@ -18,129 +18,137 @@ import (
 import "C"
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_colorspace_get_type()), F: marshalColorspace},
-		{T: externglib.Type(C.gdk_pixbuf_alpha_mode_get_type()), F: marshalPixbufAlphaMode},
-		{T: externglib.Type(C.gdk_pixbuf_error_get_type()), F: marshalPixbufError},
-	})
+  externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+{T: externglib.Type(C.gdk_colorspace_get_type()), F: marshalColorspace},
+{T: externglib.Type(C.gdk_pixbuf_alpha_mode_get_type()), F: marshalPixbufAlphaMode},
+{T: externglib.Type(C.gdk_pixbuf_error_get_type()), F: marshalPixbufError},
+  })
 }
 
-// Colorspace: this enumeration defines the color spaces that are supported by
+	// Colorspace: this enumeration defines the color spaces that are supported by
 // the gdk-pixbuf library.
-//
+// 
 // Currently only RGB is supported.
-type Colorspace int
+	type Colorspace int
 
-const (
-	// rgb indicates a red/green/blue additive color space.
-	ColorspaceRGB Colorspace = 0
-)
+	const (
+			// rgb indicates a red/green/blue additive color space.
+		ColorspaceRGB Colorspace = 0
+		)
 
-func marshalColorspace(p uintptr) (interface{}, error) {
-	return Colorspace(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
-}
+	
+	func marshalColorspace(p uintptr) (interface{}, error) {
+		return Colorspace(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	}
+	
 
-// PixbufAlphaMode: control the alpha channel for drawables.
-//
+
+	// PixbufAlphaMode: control the alpha channel for drawables.
+// 
 // These values can be passed to gdk_pixbuf_xlib_render_to_drawable_alpha() in
 // gdk-pixbuf-xlib to control how the alpha channel of an image should be
 // handled.
-//
+// 
 // This function can create a bilevel clipping mask (black and white) and use it
 // while painting the image.
-//
+// 
 // In the future, when the X Window System gets an alpha channel extension, it
 // will be possible to do full alpha compositing onto arbitrary drawables. For
 // now both cases fall back to a bilevel clipping mask.
-//
+// 
 // Deprecated: since version 2.42.
-type PixbufAlphaMode int
+	type PixbufAlphaMode int
 
-const (
-	// bilevel: a bilevel clipping mask (black and white) will be created and
-	// used to draw the image. Pixels below 0.5 opacity will be considered fully
-	// transparent, and all others will be considered fully opaque.
-	PixbufAlphaModeBilevel PixbufAlphaMode = 0
-	// full: for now falls back to K_PIXBUF_ALPHA_BILEVEL. In the future it will
+	const (
+			// bilevel clipping mask (black and white) will be created and used to draw
+	// the image. Pixels below 0.5 opacity will be considered fully transparent,
+	// and all others will be considered fully opaque.
+		PixbufAlphaModeBilevel PixbufAlphaMode = 0
+			// full: for now falls back to K_PIXBUF_ALPHA_BILEVEL. In the future it will
 	// do full alpha compositing.
-	PixbufAlphaModeFull PixbufAlphaMode = 1
-)
+		PixbufAlphaModeFull PixbufAlphaMode = 1
+		)
 
-func marshalPixbufAlphaMode(p uintptr) (interface{}, error) {
-	return PixbufAlphaMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
-}
+	
+	func marshalPixbufAlphaMode(p uintptr) (interface{}, error) {
+		return PixbufAlphaMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	}
+	
 
-// PixbufError: an error code in the `GDK_PIXBUF_ERROR` domain.
-//
+
+	// PixbufError: error code in the `GDK_PIXBUF_ERROR` domain.
+// 
 // Many gdk-pixbuf operations can cause errors in this domain, or in the
 // `G_FILE_ERROR` domain.
-type PixbufError int
+	type PixbufError int
 
-const (
-	// CorruptImage: an image file was broken somehow.
-	PixbufErrorCorruptImage PixbufError = 0
-	// InsufficientMemory: not enough memory.
-	PixbufErrorInsufficientMemory PixbufError = 1
-	// BadOption: a bad option was passed to a pixbuf save module.
-	PixbufErrorBadOption PixbufError = 2
-	// UnknownType: unknown image type.
-	PixbufErrorUnknownType PixbufError = 3
-	// UnsupportedOperation: don't know how to perform the given operation on
+	const (
+			// CorruptImage: image file was broken somehow.
+		PixbufErrorCorruptImage PixbufError = 0
+			// InsufficientMemory: not enough memory.
+		PixbufErrorInsufficientMemory PixbufError = 1
+			// BadOption: bad option was passed to a pixbuf save module.
+		PixbufErrorBadOption PixbufError = 2
+			// UnknownType: unknown image type.
+		PixbufErrorUnknownType PixbufError = 3
+			// UnsupportedOperation: don't know how to perform the given operation on
 	// the type of image at hand.
-	PixbufErrorUnsupportedOperation PixbufError = 4
-	// failed: generic failure code, something went wrong.
-	PixbufErrorFailed PixbufError = 5
-	// IncompleteAnimation: only part of the animation was loaded.
-	PixbufErrorIncompleteAnimation PixbufError = 6
-)
+		PixbufErrorUnsupportedOperation PixbufError = 4
+			// failed: generic failure code, something went wrong.
+		PixbufErrorFailed PixbufError = 5
+			// IncompleteAnimation: only part of the animation was loaded.
+		PixbufErrorIncompleteAnimation PixbufError = 6
+		)
 
-func marshalPixbufError(p uintptr) (interface{}, error) {
-	return PixbufError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
-}
+	
+	func marshalPixbufError(p uintptr) (interface{}, error) {
+		return PixbufError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	}
+	
 
-// PixbufSaveFunc: save functions used by
+
+	// PixbufSaveFunc: save functions used by
 // [method@GdkPixbuf.Pixbuf.save_to_callback].
-//
+// 
 // This function is called once for each block of bytes that is "written" by
 // `gdk_pixbuf_save_to_callback()`.
-//
+// 
 // If successful it should return `TRUE`; if an error occurs it should set
 // `error` and return `FALSE`, in which case `gdk_pixbuf_save_to_callback()`
 // will fail with the same error.
-type PixbufSaveFunc func(buf []byte, err *error, ok bool)
+	type PixbufSaveFunc func(buf []byte) (err error, ok bool)
 
-//export gotk4_PixbufSaveFunc
-func gotk4_PixbufSaveFunc(arg0 *C.gchar, arg1 C.gsize, arg2 **C.GError, arg3 C.gpointer) C.gboolean {
-	v := box.Get(uintptr(arg3))
-	if v == nil {
-		panic(`callback not found`)
-	}
+	//export gotk4_PixbufSaveFunc
+	func gotk4_PixbufSaveFunc(arg0 *C.gchar, arg1 C.gsize, arg2 **C.GError, arg3 C.gpointer) C.gboolean {
+v := box.Get(uintptr(arg3))
+if v == nil {
+  panic(`callback not found`)
+}
 
-	var buf []byte
 
-	buf = make([]byte, arg1)
-	copy(buf, unsafe.Slice((*byte)(unsafe.Pointer(arg0)), arg1))
+var buf []byte
 
-	fn := v.(PixbufSaveFunc)
-	err, ok := fn(buf)
+buf = make([]byte, arg1)
+copy(buf, unsafe.Slice((*byte)(unsafe.Pointer(arg0)), arg1))
 
-	var arg2 **C.GError // out
-	var cret C.gboolean // out
+fn := v.(PixbufSaveFunc)
+&err, ok := fn(buf)
 
-	{
-		var refTmpIn error
-		var refTmpOut *C.GError
+var arg2 **C.GError // out
+var cret C.gboolean // out
 
-		refTmpIn = err
+{
+var refTmpIn error
+var refTmpOut *C.GError
 
-		refTmpOut = (*C.GError)(gerror.New(refTmpIn))
+refTmpIn = err
 
-		out0 := &refTmpOut
-		arg2 = out0
-	}
-	if ok {
-		cret = C.TRUE
-	}
+refTmpOut = (*C.GError)(gerror.New(refTmpIn))
 
-	return cret
+out0 := &refTmpOut
+arg2 = out0
+}
+if ok { cret = C.TRUE }
+
+return cret
 }

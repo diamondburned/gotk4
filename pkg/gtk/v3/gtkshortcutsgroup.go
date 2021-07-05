@@ -5,9 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -26,14 +24,19 @@ func init() {
 	})
 }
 
-// ShortcutsGroup: a GtkShortcutsGroup represents a group of related keyboard
-// shortcuts or gestures. The group has a title. It may optionally be associated
-// with a view of the application, which can be used to show only relevant
-// shortcuts depending on the application context.
+// ShortcutsGroup represents a group of related keyboard shortcuts or gestures.
+// The group has a title. It may optionally be associated with a view of the
+// application, which can be used to show only relevant shortcuts depending on
+// the application context.
 //
 // This widget is only meant to be used with ShortcutsWindow.
 type ShortcutsGroup interface {
 	Box
+
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsOrientable casts the class to the Orientable interface.
+	AsOrientable() Orientable
 }
 
 // shortcutsGroup implements the ShortcutsGroup class.
@@ -55,50 +58,10 @@ func marshalShortcutsGroup(p uintptr) (interface{}, error) {
 	return WrapShortcutsGroup(obj), nil
 }
 
-func (b shortcutsGroup) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+func (s shortcutsGroup) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(s))
 }
 
-func (b shortcutsGroup) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b shortcutsGroup) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b shortcutsGroup) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b shortcutsGroup) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b shortcutsGroup) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b shortcutsGroup) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b shortcutsGroup) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b shortcutsGroup) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b shortcutsGroup) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (o shortcutsGroup) Orientation() Orientation {
-	return WrapOrientable(gextras.InternObject(o)).Orientation()
-}
-
-func (o shortcutsGroup) SetOrientation(orientation Orientation) {
-	WrapOrientable(gextras.InternObject(o)).SetOrientation(orientation)
+func (s shortcutsGroup) AsOrientable() Orientable {
+	return WrapOrientable(gextras.InternObject(s))
 }

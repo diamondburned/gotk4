@@ -60,6 +60,51 @@ func RecordIsOpaque(rec gir.Record) bool {
 	return len(rec.Fields) == 0 || rec.GLibGetType == "intern"
 }
 
+var acceptableFreeNames = []string{
+	"unref",
+	"free",
+}
+
+// methodCanCallDirectly returns true if the method is generated, has no
+// arguments (sans the receiver) and has no returns.
+func methodCanCallDirectly(method *gir.Method) bool {
+	return true &&
+		method.CIdentifier != "" &&
+		method.ShadowedBy == "" &&
+		method.MovedTo == "" &&
+		method.IsIntrospectable() &&
+		method.Parameters != nil &&
+		method.Parameters.InstanceParameter != nil &&
+		len(method.Parameters.Parameters) == 0
+}
+
+// RecordHasFree returns the free/unref method if it has one.
+func RecordHasFree(record *gir.Record) *gir.Method {
+	// Possibly slower searching but allows us to prefer "unref" over "free."
+	for _, name := range acceptableFreeNames {
+		for i, method := range record.Methods {
+			if method.Name == name && methodCanCallDirectly(&method) {
+				return &record.Methods[i]
+			}
+		}
+	}
+	return nil
+}
+
+var acceptableRefNames = []string{"ref"}
+
+// RecordHasRef returns the ref method if it has one.
+func RecordHasRef(record *gir.Record) *gir.Method {
+	for i, method := range record.Methods {
+		for _, name := range acceptableRefNames {
+			if name == method.Name && methodCanCallDirectly(&method) {
+				return &record.Methods[i]
+			}
+		}
+	}
+	return nil
+}
+
 // EnsureNamespace ensures that exported, non-primitive types have the namespace
 // prepended. This is useful for matching hard-coded types.
 func EnsureNamespace(nsp *gir.NamespaceFindResult, girType string) string {

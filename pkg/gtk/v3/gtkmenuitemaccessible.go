@@ -27,7 +27,9 @@ func init() {
 
 type MenuItemAccessible interface {
 	ContainerAccessible
-	atk.Action
+
+	// AsAction casts the class to the atk.Action interface.
+	AsAction() atk.Action
 }
 
 // menuItemAccessible implements the MenuItemAccessible class.
@@ -49,30 +51,6 @@ func marshalMenuItemAccessible(p uintptr) (interface{}, error) {
 	return WrapMenuItemAccessible(obj), nil
 }
 
-func (a menuItemAccessible) DoAction(i int) bool {
-	return atk.WrapAction(gextras.InternObject(a)).DoAction(i)
-}
-
-func (a menuItemAccessible) Description(i int) string {
-	return atk.WrapAction(gextras.InternObject(a)).Description(i)
-}
-
-func (a menuItemAccessible) Keybinding(i int) string {
-	return atk.WrapAction(gextras.InternObject(a)).Keybinding(i)
-}
-
-func (a menuItemAccessible) LocalizedName(i int) string {
-	return atk.WrapAction(gextras.InternObject(a)).LocalizedName(i)
-}
-
-func (a menuItemAccessible) NActions() int {
-	return atk.WrapAction(gextras.InternObject(a)).NActions()
-}
-
-func (a menuItemAccessible) Name(i int) string {
-	return atk.WrapAction(gextras.InternObject(a)).Name(i)
-}
-
-func (a menuItemAccessible) SetDescription(i int, desc string) bool {
-	return atk.WrapAction(gextras.InternObject(a)).SetDescription(i, desc)
+func (m menuItemAccessible) AsAction() atk.Action {
+	return atk.WrapAction(gextras.InternObject(m))
 }

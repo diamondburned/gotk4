@@ -48,7 +48,7 @@ func marshalShortcutActionFlags(p uintptr) (interface{}, error) {
 }
 
 // ShortcutFunc: prototype for shortcuts based on user callbacks.
-type ShortcutFunc func(widget Widget, args *glib.Variant, ok bool)
+type ShortcutFunc func(widget Widget, args glib.Variant) (ok bool)
 
 //export gotk4_ShortcutFunc
 func gotk4_ShortcutFunc(arg0 *C.GtkWidget, arg1 *C.GVariant, arg2 C.gpointer) C.gboolean {
@@ -57,11 +57,12 @@ func gotk4_ShortcutFunc(arg0 *C.GtkWidget, arg1 *C.GVariant, arg2 C.gpointer) C.
 		panic(`callback not found`)
 	}
 
-	var widget Widget      // out
-	var args *glib.Variant // out
+	var widget Widget     // out
+	var args glib.Variant // out
 
 	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0))).(Widget)
-	args = (*glib.Variant)(unsafe.Pointer(arg1))
+	args = (glib.Variant)(unsafe.Pointer(arg1))
+	C.g_variant_ref(arg1)
 
 	fn := v.(ShortcutFunc)
 	ok := fn(widget, args)
@@ -75,7 +76,7 @@ func gotk4_ShortcutFunc(arg0 *C.GtkWidget, arg1 *C.GVariant, arg2 C.gpointer) C.
 	return cret
 }
 
-// ActivateAction: a `GtkShortcutAction` that calls gtk_widget_activate().
+// ActivateAction: `GtkShortcutAction` that calls gtk_widget_activate().
 type ActivateAction interface {
 	ShortcutAction
 }
@@ -99,7 +100,7 @@ func marshalActivateAction(p uintptr) (interface{}, error) {
 	return WrapActivateAction(obj), nil
 }
 
-// CallbackAction: a `GtkShortcutAction` that invokes a callback.
+// CallbackAction: `GtkShortcutAction` that invokes a callback.
 type CallbackAction interface {
 	ShortcutAction
 }
@@ -123,7 +124,7 @@ func marshalCallbackAction(p uintptr) (interface{}, error) {
 	return WrapCallbackAction(obj), nil
 }
 
-// MnemonicAction: a `GtkShortcutAction` that calls
+// MnemonicAction: `GtkShortcutAction` that calls
 // gtk_widget_mnemonic_activate().
 type MnemonicAction interface {
 	ShortcutAction
@@ -148,10 +149,11 @@ func marshalMnemonicAction(p uintptr) (interface{}, error) {
 	return WrapMnemonicAction(obj), nil
 }
 
-// NamedAction: a `GtkShortcutAction` that activates an action by name.
+// NamedAction: `GtkShortcutAction` that activates an action by name.
 type NamedAction interface {
 	ShortcutAction
 
+	// ActionName returns the name of the action that will be activated.
 	ActionName() string
 }
 
@@ -174,6 +176,13 @@ func marshalNamedAction(p uintptr) (interface{}, error) {
 	return WrapNamedAction(obj), nil
 }
 
+// NewNamedAction creates an action that when activated, activates the named
+// action on the widget.
+//
+// It also passes the given arguments to it.
+//
+// See [method@Gtk.Widget.insert_action_group] for how to add actions to
+// widgets.
 func NewNamedAction(name string) NamedAction {
 	var _arg1 *C.char              // out
 	var _cret *C.GtkShortcutAction // in
@@ -185,7 +194,7 @@ func NewNamedAction(name string) NamedAction {
 
 	var _namedAction NamedAction // out
 
-	_namedAction = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(NamedAction)
+	_namedAction = WrapNamedAction(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _namedAction
 }
@@ -205,7 +214,7 @@ func (s namedAction) ActionName() string {
 	return _utf8
 }
 
-// NothingAction: a `GtkShortcutAction` that does nothing.
+// NothingAction: `GtkShortcutAction` that does nothing.
 type NothingAction interface {
 	ShortcutAction
 }
@@ -259,8 +268,19 @@ func marshalNothingAction(p uintptr) (interface{}, error) {
 type ShortcutAction interface {
 	gextras.Objector
 
-	ActivateShortcutAction(flags ShortcutActionFlags, widget Widget, args *glib.Variant) bool
-
+	// ActivateShortcutAction activates the action on the @widget with the given
+	// @args.
+	//
+	// Note that some actions ignore the passed in @flags, @widget or @args.
+	//
+	// Activation of an action can fail for various reasons. If the action is
+	// not supported by the @widget, if the @args don't match the action or if
+	// the activation otherwise had no effect, false will be returned.
+	ActivateShortcutAction(flags ShortcutActionFlags, widget Widget, args glib.Variant) bool
+	// String prints the given action into a human-readable string.
+	//
+	// This is a small wrapper around [method@Gtk.ShortcutAction.print] to help
+	// when debugging.
 	String() string
 }
 
@@ -283,6 +303,17 @@ func marshalShortcutAction(p uintptr) (interface{}, error) {
 	return WrapShortcutAction(obj), nil
 }
 
+// NewShortcutActionParseString tries to parse the given string into an action.
+//
+// On success, the parsed action is returned. When parsing failed, nil is
+// returned.
+//
+// The accepted strings are:
+//
+// - `nothing`, for `GtkNothingAction` - `activate`, for `GtkActivateAction` -
+// `mnemonic-activate`, for `GtkMnemonicAction` - `action(NAME)`, for a
+// `GtkNamedAction` for the action named `NAME` - `signal(NAME)`, for a
+// `GtkSignalAction` for the signal `NAME`
 func NewShortcutActionParseString(_string string) ShortcutAction {
 	var _arg1 *C.char              // out
 	var _cret *C.GtkShortcutAction // in
@@ -294,12 +325,12 @@ func NewShortcutActionParseString(_string string) ShortcutAction {
 
 	var _shortcutAction ShortcutAction // out
 
-	_shortcutAction = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(ShortcutAction)
+	_shortcutAction = WrapShortcutAction(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _shortcutAction
 }
 
-func (s shortcutAction) ActivateShortcutAction(flags ShortcutActionFlags, widget Widget, args *glib.Variant) bool {
+func (s shortcutAction) ActivateShortcutAction(flags ShortcutActionFlags, widget Widget, args glib.Variant) bool {
 	var _arg0 *C.GtkShortcutAction     // out
 	var _arg1 C.GtkShortcutActionFlags // out
 	var _arg2 *C.GtkWidget             // out
@@ -309,7 +340,7 @@ func (s shortcutAction) ActivateShortcutAction(flags ShortcutActionFlags, widget
 	_arg0 = (*C.GtkShortcutAction)(unsafe.Pointer(s.Native()))
 	_arg1 = C.GtkShortcutActionFlags(flags)
 	_arg2 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg3 = (*C.GVariant)(unsafe.Pointer(args.Native()))
+	_arg3 = (*C.GVariant)(unsafe.Pointer(args))
 
 	_cret = C.gtk_shortcut_action_activate(_arg0, _arg1, _arg2, _arg3)
 
@@ -338,13 +369,14 @@ func (s shortcutAction) String() string {
 	return _utf8
 }
 
-// SignalAction: a `GtkShortcut`Action that emits a signal.
+// SignalAction: `GtkShortcut`Action that emits a signal.
 //
 // Signals that are used in this way are referred to as keybinding signals, and
 // they are expected to be defined with the G_SIGNAL_ACTION flag.
 type SignalAction interface {
 	ShortcutAction
 
+	// SignalName returns the name of the signal that will be emitted.
 	SignalName() string
 }
 
@@ -367,6 +399,10 @@ func marshalSignalAction(p uintptr) (interface{}, error) {
 	return WrapSignalAction(obj), nil
 }
 
+// NewSignalAction creates an action that when activated, emits the given action
+// signal on the provided widget.
+//
+// It will also unpack the args into arguments passed to the signal.
 func NewSignalAction(signalName string) SignalAction {
 	var _arg1 *C.char              // out
 	var _cret *C.GtkShortcutAction // in
@@ -378,7 +414,7 @@ func NewSignalAction(signalName string) SignalAction {
 
 	var _signalAction SignalAction // out
 
-	_signalAction = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(SignalAction)
+	_signalAction = WrapSignalAction(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _signalAction
 }

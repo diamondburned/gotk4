@@ -50,6 +50,8 @@ func marshalEventControllerMotion(p uintptr) (interface{}, error) {
 	return WrapEventControllerMotion(obj), nil
 }
 
+// NewEventControllerMotion creates a new event controller that will handle
+// motion events for the given @widget.
 func NewEventControllerMotion(widget Widget) EventControllerMotion {
 	var _arg1 *C.GtkWidget          // out
 	var _cret *C.GtkEventController // in
@@ -60,7 +62,7 @@ func NewEventControllerMotion(widget Widget) EventControllerMotion {
 
 	var _eventControllerMotion EventControllerMotion // out
 
-	_eventControllerMotion = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(EventControllerMotion)
+	_eventControllerMotion = WrapEventControllerMotion(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _eventControllerMotion
 }

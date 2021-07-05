@@ -7,7 +7,6 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
-	"github.com/diamondburned/gotk4/pkg/gsk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -86,47 +85,101 @@ func init() {
 // border-radius, only one border width (border-bottom-width is used) and no
 // box-shadow.
 type Popover interface {
-	Native
-	ShortcutManager
+	Widget
 
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
+	// AsNative casts the class to the Native interface.
+	AsNative() Native
+	// AsShortcutManager casts the class to the ShortcutManager interface.
+	AsShortcutManager() ShortcutManager
+
+	// Autohide returns whether the popover is modal.
+	//
+	// See [method@Gtk.Popover.set_autohide] for the implications of this.
 	Autohide() bool
-
+	// CascadePopdown returns whether the popover will close after a modal child
+	// is closed.
 	CascadePopdown() bool
-
+	// Child gets the child widget of @popover.
 	Child() Widget
-
+	// HasArrow gets whether this popover is showing an arrow pointing at the
+	// widget that it is relative to.
 	HasArrow() bool
-
+	// MnemonicsVisible gets whether mnemonics are visible.
 	MnemonicsVisible() bool
-
+	// Offset gets the offset previous set with gtk_popover_set_offset().
 	Offset() (xOffset int, yOffset int)
-
+	// PointingTo gets the rectangle that the popover points to.
+	//
+	// If a rectangle to point to has been set, this function will return true
+	// and fill in @rect with such rectangle, otherwise it will return false and
+	// fill in @rect with the parent widget coordinates.
 	PointingTo() (gdk.Rectangle, bool)
-
+	// Position returns the preferred position of @popover.
 	Position() PositionType
-
+	// PopdownPopover pops @popover down.
+	//
+	// This is different from a [method@Gtk.Widget.hide] call in that it may
+	// show the popover with a transition. If you want to hide the popover
+	// without a transition, just use [method@Gtk.Widget.hide].
 	PopdownPopover()
-
+	// PopupPopover pops @popover up.
+	//
+	// This is different from a [method@Gtk.Widget.show() call in that it may
+	// show the popover with a transition. If you want to show the popover
+	// without a transition, just use [method@Gtk.Widget.show].
 	PopupPopover()
-
+	// PresentPopover presents the popover to the user.
 	PresentPopover()
-
+	// SetAutohidePopover sets whether @popover is modal.
+	//
+	// A modal popover will grab the keyboard focus on it when being displayed.
+	// Clicking outside the popover area or pressing Esc will dismiss the
+	// popover.
+	//
+	// Called this function on an already showing popup with a new autohide
+	// value different from the current one, will cause the popup to be hidden.
 	SetAutohidePopover(autohide bool)
-
+	// SetCascadePopdownPopover: if @cascade_popdown is true, the popover will
+	// be closed when a child modal popover is closed.
+	//
+	// If false, @popover will stay visible.
 	SetCascadePopdownPopover(cascadePopdown bool)
-
+	// SetChildPopover sets the child widget of @popover.
 	SetChildPopover(child Widget)
-
+	// SetDefaultWidgetPopover sets the default widget of a `GtkPopover`.
+	//
+	// The default widget is the widget that’s activated when the user presses
+	// Enter in a dialog (for example). This function sets or unsets the default
+	// widget for a `GtkPopover`.
 	SetDefaultWidgetPopover(widget Widget)
-
+	// SetHasArrowPopover sets whether this popover should draw an arrow
+	// pointing at the widget it is relative to.
 	SetHasArrowPopover(hasArrow bool)
-
+	// SetMnemonicsVisiblePopover sets whether mnemonics should be visible.
 	SetMnemonicsVisiblePopover(mnemonicsVisible bool)
-
+	// SetOffsetPopover sets the offset to use when calculating the position of
+	// the popover.
+	//
+	// These values are used when preparing the [struct@Gdk.PopupLayout] for
+	// positioning the popover.
 	SetOffsetPopover(xOffset int, yOffset int)
-
-	SetPointingToPopover(rect *gdk.Rectangle)
-
+	// SetPointingToPopover sets the rectangle that @popover points to.
+	//
+	// This is in the coordinate space of the @popover parent.
+	SetPointingToPopover(rect gdk.Rectangle)
+	// SetPositionPopover sets the preferred position for @popover to appear.
+	//
+	// If the @popover is currently visible, it will be immediately updated.
+	//
+	// This preference will be respected where possible, although on lack of
+	// space (eg. if close to the window edges), the `GtkPopover` may choose to
+	// appear on the opposite side.
 	SetPositionPopover(position PositionType)
 }
 
@@ -149,6 +202,7 @@ func marshalPopover(p uintptr) (interface{}, error) {
 	return WrapPopover(obj), nil
 }
 
+// NewPopover creates a new `GtkPopover`.
 func NewPopover() Popover {
 	var _cret *C.GtkWidget // in
 
@@ -156,7 +210,7 @@ func NewPopover() Popover {
 
 	var _popover Popover // out
 
-	_popover = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Popover)
+	_popover = WrapPopover(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _popover
 }
@@ -246,8 +300,8 @@ func (p popover) MnemonicsVisible() bool {
 
 func (p popover) Offset() (xOffset int, yOffset int) {
 	var _arg0 *C.GtkPopover // out
-	var _arg1 C.int         // in
-	var _arg2 C.int         // in
+	var _arg1 *C.int        // in
+	var _arg2 *C.int        // in
 
 	_arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
 
@@ -263,9 +317,9 @@ func (p popover) Offset() (xOffset int, yOffset int) {
 }
 
 func (p popover) PointingTo() (gdk.Rectangle, bool) {
-	var _arg0 *C.GtkPopover  // out
-	var _arg1 C.GdkRectangle // in
-	var _cret C.gboolean     // in
+	var _arg0 *C.GtkPopover   // out
+	var _arg1 *C.GdkRectangle // in
+	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
 
@@ -274,17 +328,7 @@ func (p popover) PointingTo() (gdk.Rectangle, bool) {
 	var _rect gdk.Rectangle // out
 	var _ok bool            // out
 
-	{
-		var refTmpIn *C.GdkRectangle
-		var refTmpOut *gdk.Rectangle
-
-		in0 := &_arg1
-		refTmpIn = in0
-
-		refTmpOut = (*gdk.Rectangle)(unsafe.Pointer(refTmpIn))
-
-		_rect = *refTmpOut
-	}
+	_rect = (gdk.Rectangle)(unsafe.Pointer(_arg1))
 	if _cret != 0 {
 		_ok = true
 	}
@@ -411,12 +455,12 @@ func (p popover) SetOffsetPopover(xOffset int, yOffset int) {
 	C.gtk_popover_set_offset(_arg0, _arg1, _arg2)
 }
 
-func (p popover) SetPointingToPopover(rect *gdk.Rectangle) {
+func (p popover) SetPointingToPopover(rect gdk.Rectangle) {
 	var _arg0 *C.GtkPopover   // out
 	var _arg1 *C.GdkRectangle // out
 
 	_arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
-	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(rect.Native()))
+	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(rect))
 
 	C.gtk_popover_set_pointing_to(_arg0, _arg1)
 }
@@ -431,54 +475,22 @@ func (p popover) SetPositionPopover(position PositionType) {
 	C.gtk_popover_set_position(_arg0, _arg1)
 }
 
-func (s popover) Renderer() gsk.Renderer {
-	return WrapNative(gextras.InternObject(s)).Renderer()
+func (p popover) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(p))
 }
 
-func (s popover) Surface() gdk.Surface {
-	return WrapNative(gextras.InternObject(s)).Surface()
+func (p popover) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(p))
 }
 
-func (s popover) SurfaceTransform() (x float64, y float64) {
-	return WrapNative(gextras.InternObject(s)).SurfaceTransform()
+func (p popover) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(p))
 }
 
-func (s popover) Realize() {
-	WrapNative(gextras.InternObject(s)).Realize()
+func (p popover) AsNative() Native {
+	return WrapNative(gextras.InternObject(p))
 }
 
-func (s popover) Unrealize() {
-	WrapNative(gextras.InternObject(s)).Unrealize()
-}
-
-func (s popover) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
-}
-
-func (s popover) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
-}
-
-func (s popover) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
-}
-
-func (s popover) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s popover) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s popover) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s popover) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b popover) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
+func (p popover) AsShortcutManager() ShortcutManager {
+	return WrapShortcutManager(gextras.InternObject(p))
 }

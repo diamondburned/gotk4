@@ -35,13 +35,13 @@ func init() {
 // descriptor, but the situation is much more complicated on Windows. If you
 // need to use g_poll() in code that has to run on Windows, the easiest solution
 // is to construct all of your FDs with g_io_channel_win32_make_pollfd().
-func Poll(fds *PollFD, nfds uint, timeout int) int {
+func Poll(fds PollFD, nfds uint, timeout int) int {
 	var _arg1 *C.GPollFD // out
 	var _arg2 C.guint    // out
 	var _arg3 C.gint     // out
 	var _cret C.gint     // in
 
-	_arg1 = (*C.GPollFD)(unsafe.Pointer(fds.Native()))
+	_arg1 = (*C.GPollFD)(unsafe.Pointer(fds))
 	_arg2 = C.guint(nfds)
 	_arg3 = C.gint(timeout)
 
@@ -56,7 +56,9 @@ func Poll(fds *PollFD, nfds uint, timeout int) int {
 
 // PollFD represents a file descriptor, which events to poll for, and which
 // events occurred.
-type PollFD C.GPollFD
+type PollFD struct {
+	native C.GPollFD
+}
 
 // WrapPollFD wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -71,5 +73,5 @@ func marshalPollFD(p uintptr) (interface{}, error) {
 
 // Native returns the underlying C source pointer.
 func (p *PollFD) Native() unsafe.Pointer {
-	return unsafe.Pointer(p)
+	return unsafe.Pointer(&p.native)
 }

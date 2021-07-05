@@ -24,7 +24,7 @@ func init() {
 	})
 }
 
-// ContentProvider: a `GdkContentProvider` is used to provide content for the
+// ContentProvider: `GdkContentProvider` is used to provide content for the
 // clipboard or for drag-and-drop operations in a number of formats.
 //
 // To create a `GdkContentProvider`, use
@@ -37,13 +37,27 @@ func init() {
 type ContentProvider interface {
 	gextras.Objector
 
+	// ContentChangedContentProvider emits the ::content-changed signal.
 	ContentChangedContentProvider()
-
+	// Value gets the contents of @provider stored in @value.
+	//
+	// The @value will have been initialized to the `GType` the value should be
+	// provided in. This given `GType` does not need to be listed in the formats
+	// returned by [method@Gdk.ContentProvider.ref_formats]. However, if the
+	// given `GType` is not supported, this operation can fail and
+	// IO_ERROR_NOT_SUPPORTED will be reported.
 	Value(value externglib.Value) error
-
-	RefFormatsContentProvider() *ContentFormats
-
-	RefStorableFormatsContentProvider() *ContentFormats
+	// RefFormatsContentProvider gets the formats that the provider can provide
+	// its current contents in.
+	RefFormatsContentProvider() ContentFormats
+	// RefStorableFormatsContentProvider gets the formats that the provider
+	// suggests other applications to store the data in.
+	//
+	// An example of such an application would be a clipboard manager.
+	//
+	// This can be assumed to be a subset of
+	// [method@Gdk.ContentProvider.ref_formats].
+	RefStorableFormatsContentProvider() ContentFormats
 }
 
 // contentProvider implements the ContentProvider class.
@@ -65,6 +79,8 @@ func marshalContentProvider(p uintptr) (interface{}, error) {
 	return WrapContentProvider(obj), nil
 }
 
+// NewContentProviderForValue: create a content provider that provides the given
+// @value.
 func NewContentProviderForValue(value externglib.Value) ContentProvider {
 	var _arg1 *C.GValue             // out
 	var _cret *C.GdkContentProvider // in
@@ -75,11 +91,23 @@ func NewContentProviderForValue(value externglib.Value) ContentProvider {
 
 	var _contentProvider ContentProvider // out
 
-	_contentProvider = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(ContentProvider)
+	_contentProvider = WrapContentProvider(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _contentProvider
 }
 
+// NewContentProviderUnion creates a content provider that represents all the
+// given @providers.
+//
+// Whenever data needs to be written, the union provider will try the given
+// @providers in the given order and the first one supporting a format will be
+// chosen to provide it.
+//
+// This allows an easy way to support providing data in different formats. For
+// example, an image may be provided by its file and by the image contents with
+// a call such as “`c gdk_content_provider_new_union ((GdkContentProvider *[2])
+// { gdk_content_provider_new_typed (G_TYPE_FILE, file),
+// gdk_content_provider_new_typed (G_TYPE_TEXTURE, texture) }, 2); “`
 func NewContentProviderUnion(providers []ContentProvider) ContentProvider {
 	var _arg1 **C.GdkContentProvider
 	var _arg2 C.gsize
@@ -98,7 +126,7 @@ func NewContentProviderUnion(providers []ContentProvider) ContentProvider {
 
 	var _contentProvider ContentProvider // out
 
-	_contentProvider = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(ContentProvider)
+	_contentProvider = WrapContentProvider(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _contentProvider
 }
@@ -114,7 +142,7 @@ func (p contentProvider) ContentChangedContentProvider() {
 func (p contentProvider) Value(value externglib.Value) error {
 	var _arg0 *C.GdkContentProvider // out
 	var _arg1 *C.GValue             // out
-	var _cerr *C.GError             // in
+	var _cerr **C.GError            // in
 
 	_arg0 = (*C.GdkContentProvider)(unsafe.Pointer(p.Native()))
 	_arg1 = (*C.GValue)(unsafe.Pointer(&value.GValue))
@@ -123,12 +151,21 @@ func (p contentProvider) Value(value externglib.Value) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _goerr
 }
 
-func (p contentProvider) RefFormatsContentProvider() *ContentFormats {
+func (p contentProvider) RefFormatsContentProvider() ContentFormats {
 	var _arg0 *C.GdkContentProvider // out
 	var _cret *C.GdkContentFormats  // in
 
@@ -136,17 +173,17 @@ func (p contentProvider) RefFormatsContentProvider() *ContentFormats {
 
 	_cret = C.gdk_content_provider_ref_formats(_arg0)
 
-	var _contentFormats *ContentFormats // out
+	var _contentFormats ContentFormats // out
 
-	_contentFormats = (*ContentFormats)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(&_contentFormats, func(v **ContentFormats) {
-		C.free(unsafe.Pointer(v))
+	_contentFormats = (ContentFormats)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_contentFormats, func(v ContentFormats) {
+		C.gdk_content_formats_unref((*C.GdkContentFormats)(unsafe.Pointer(v)))
 	})
 
 	return _contentFormats
 }
 
-func (p contentProvider) RefStorableFormatsContentProvider() *ContentFormats {
+func (p contentProvider) RefStorableFormatsContentProvider() ContentFormats {
 	var _arg0 *C.GdkContentProvider // out
 	var _cret *C.GdkContentFormats  // in
 
@@ -154,11 +191,11 @@ func (p contentProvider) RefStorableFormatsContentProvider() *ContentFormats {
 
 	_cret = C.gdk_content_provider_ref_storable_formats(_arg0)
 
-	var _contentFormats *ContentFormats // out
+	var _contentFormats ContentFormats // out
 
-	_contentFormats = (*ContentFormats)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(&_contentFormats, func(v **ContentFormats) {
-		C.free(unsafe.Pointer(v))
+	_contentFormats = (ContentFormats)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_contentFormats, func(v ContentFormats) {
+		C.gdk_content_formats_unref((*C.GdkContentFormats)(unsafe.Pointer(v)))
 	})
 
 	return _contentFormats

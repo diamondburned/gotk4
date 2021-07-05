@@ -30,7 +30,7 @@ func init() {
 type Orientable interface {
 	gextras.Objector
 
-	// Orientation sets the orientation of the @orientable.
+	// Orientation retrieves the orientation of the @orientable.
 	Orientation() Orientation
 	// SetOrientation sets the orientation of the @orientable.
 	SetOrientation(orientation Orientation)

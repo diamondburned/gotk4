@@ -34,23 +34,32 @@ func init() {
 type Selection interface {
 	gextras.Objector
 
-	// AddSelection causes every child of the object to be selected if the
-	// object supports multiple selections.
+	// AddSelection adds the specified accessible child of the object to the
+	// object's selection.
 	AddSelection(i int) bool
-	// ClearSelection causes every child of the object to be selected if the
-	// object supports multiple selections.
+	// ClearSelection clears the selection in the object so that no children in
+	// the object are selected.
 	ClearSelection() bool
-	// SelectionCount causes every child of the object to be selected if the
-	// object supports multiple selections.
+	// SelectionCount gets the number of accessible children currently selected.
+	// Note: callers should not rely on nil or on a zero value for indication of
+	// whether AtkSelectionIface is implemented, they should use type
+	// checking/interface checking macros or the atk_get_accessible_value()
+	// convenience method.
 	SelectionCount() int
-	// IsChildSelected causes every child of the object to be selected if the
-	// object supports multiple selections.
+	// IsChildSelected determines if the current child of this object is
+	// selected Note: callers should not rely on nil or on a zero value for
+	// indication of whether AtkSelectionIface is implemented, they should use
+	// type checking/interface checking macros or the atk_get_accessible_value()
+	// convenience method.
 	IsChildSelected(i int) bool
-	// RefSelection causes every child of the object to be selected if the
-	// object supports multiple selections.
+	// RefSelection gets a reference to the accessible object representing the
+	// specified selected child of the object. Note: callers should not rely on
+	// nil or on a zero value for indication of whether AtkSelectionIface is
+	// implemented, they should use type checking/interface checking macros or
+	// the atk_get_accessible_value() convenience method.
 	RefSelection(i int) Object
-	// RemoveSelection causes every child of the object to be selected if the
-	// object supports multiple selections.
+	// RemoveSelection removes the specified child of the object from the
+	// object's selection.
 	RemoveSelection(i int) bool
 	// SelectAllSelection causes every child of the object to be selected if the
 	// object supports multiple selections.

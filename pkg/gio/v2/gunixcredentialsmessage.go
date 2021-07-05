@@ -44,6 +44,7 @@ func init() {
 type UnixCredentialsMessage interface {
 	SocketControlMessage
 
+	// Credentials gets the credentials stored in @message.
 	Credentials() Credentials
 }
 
@@ -66,6 +67,8 @@ func marshalUnixCredentialsMessage(p uintptr) (interface{}, error) {
 	return WrapUnixCredentialsMessage(obj), nil
 }
 
+// NewUnixCredentialsMessage creates a new CredentialsMessage with credentials
+// matching the current processes.
 func NewUnixCredentialsMessage() UnixCredentialsMessage {
 	var _cret *C.GSocketControlMessage // in
 
@@ -73,11 +76,13 @@ func NewUnixCredentialsMessage() UnixCredentialsMessage {
 
 	var _unixCredentialsMessage UnixCredentialsMessage // out
 
-	_unixCredentialsMessage = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(UnixCredentialsMessage)
+	_unixCredentialsMessage = WrapUnixCredentialsMessage(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _unixCredentialsMessage
 }
 
+// NewUnixCredentialsMessageWithCredentials creates a new CredentialsMessage
+// holding @credentials.
 func NewUnixCredentialsMessageWithCredentials(credentials Credentials) UnixCredentialsMessage {
 	var _arg1 *C.GCredentials          // out
 	var _cret *C.GSocketControlMessage // in
@@ -88,7 +93,7 @@ func NewUnixCredentialsMessageWithCredentials(credentials Credentials) UnixCrede
 
 	var _unixCredentialsMessage UnixCredentialsMessage // out
 
-	_unixCredentialsMessage = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(UnixCredentialsMessage)
+	_unixCredentialsMessage = WrapUnixCredentialsMessage(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _unixCredentialsMessage
 }

@@ -3,8 +3,6 @@
 package gdk
 
 import (
-	"unsafe"
-
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -25,101 +23,4 @@ func ToplevelSizeGetType() externglib.Type {
 	_gType = externglib.Type(_cret)
 
 	return _gType
-}
-
-// ToplevelSize: the `GdkToplevelSize` struct contains information that is
-// useful to compute the size of a toplevel.
-type ToplevelSize C.GdkToplevelSize
-
-// WrapToplevelSize wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapToplevelSize(ptr unsafe.Pointer) *ToplevelSize {
-	return (*ToplevelSize)(ptr)
-}
-
-// Native returns the underlying C source pointer.
-func (t *ToplevelSize) Native() unsafe.Pointer {
-	return unsafe.Pointer(t)
-}
-
-// Bounds sets the size the toplevel prefers to be resized to.
-//
-// The size should be within the bounds (see
-// [method@Gdk.ToplevelSize.get_bounds]). The set size should be considered as a
-// hint, and should not be assumed to be respected by the windowing system, or
-// backend.
-func (s *ToplevelSize) Bounds() (boundsWidth int, boundsHeight int) {
-	var _arg0 *C.GdkToplevelSize // out
-	var _arg1 C.int              // in
-	var _arg2 C.int              // in
-
-	_arg0 = (*C.GdkToplevelSize)(unsafe.Pointer(s.Native()))
-
-	C.gdk_toplevel_size_get_bounds(_arg0, &_arg1, &_arg2)
-
-	var _boundsWidth int  // out
-	var _boundsHeight int // out
-
-	_boundsWidth = int(_arg1)
-	_boundsHeight = int(_arg2)
-
-	return _boundsWidth, _boundsHeight
-}
-
-// SetMinSize sets the size the toplevel prefers to be resized to.
-//
-// The size should be within the bounds (see
-// [method@Gdk.ToplevelSize.get_bounds]). The set size should be considered as a
-// hint, and should not be assumed to be respected by the windowing system, or
-// backend.
-func (s *ToplevelSize) SetMinSize(minWidth int, minHeight int) {
-	var _arg0 *C.GdkToplevelSize // out
-	var _arg1 C.int              // out
-	var _arg2 C.int              // out
-
-	_arg0 = (*C.GdkToplevelSize)(unsafe.Pointer(s.Native()))
-	_arg1 = C.int(minWidth)
-	_arg2 = C.int(minHeight)
-
-	C.gdk_toplevel_size_set_min_size(_arg0, _arg1, _arg2)
-}
-
-// SetShadowWidth sets the size the toplevel prefers to be resized to.
-//
-// The size should be within the bounds (see
-// [method@Gdk.ToplevelSize.get_bounds]). The set size should be considered as a
-// hint, and should not be assumed to be respected by the windowing system, or
-// backend.
-func (s *ToplevelSize) SetShadowWidth(left int, right int, top int, bottom int) {
-	var _arg0 *C.GdkToplevelSize // out
-	var _arg1 C.int              // out
-	var _arg2 C.int              // out
-	var _arg3 C.int              // out
-	var _arg4 C.int              // out
-
-	_arg0 = (*C.GdkToplevelSize)(unsafe.Pointer(s.Native()))
-	_arg1 = C.int(left)
-	_arg2 = C.int(right)
-	_arg3 = C.int(top)
-	_arg4 = C.int(bottom)
-
-	C.gdk_toplevel_size_set_shadow_width(_arg0, _arg1, _arg2, _arg3, _arg4)
-}
-
-// SetSize sets the size the toplevel prefers to be resized to.
-//
-// The size should be within the bounds (see
-// [method@Gdk.ToplevelSize.get_bounds]). The set size should be considered as a
-// hint, and should not be assumed to be respected by the windowing system, or
-// backend.
-func (s *ToplevelSize) SetSize(width int, height int) {
-	var _arg0 *C.GdkToplevelSize // out
-	var _arg1 C.int              // out
-	var _arg2 C.int              // out
-
-	_arg0 = (*C.GdkToplevelSize)(unsafe.Pointer(s.Native()))
-	_arg1 = C.int(width)
-	_arg2 = C.int(height)
-
-	C.gdk_toplevel_size_set_size(_arg0, _arg1, _arg2)
 }

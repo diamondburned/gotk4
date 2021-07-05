@@ -27,7 +27,7 @@ func init() {
 // together with the @user_data parameter passed to
 // g_hash_table_foreach_remove(). It should return true if the key/value pair
 // should be removed from the Table.
-type HRFunc func(key interface{}, value interface{}, ok bool)
+type HRFunc func(key interface{}, value interface{}) (ok bool)
 
 //export gotk4_HRFunc
 func gotk4_HRFunc(arg0 C.gpointer, arg1 C.gpointer, arg2 C.gpointer) C.gboolean {
@@ -66,8 +66,8 @@ func DirectEqual(v1 interface{}, v2 interface{}) bool {
 	var _arg2 C.gconstpointer // out
 	var _cret C.gboolean      // in
 
-	_arg1 = C.gconstpointer(box.Assign(unsafe.Pointer(v1)))
-	_arg2 = C.gconstpointer(box.Assign(unsafe.Pointer(v2)))
+	_arg1 = C.gconstpointer(box.Assign(v1))
+	_arg2 = C.gconstpointer(box.Assign(v2))
 
 	_cret = C.g_direct_equal(_arg1, _arg2)
 
@@ -90,7 +90,7 @@ func DirectHash(v interface{}) uint {
 	var _arg1 C.gconstpointer // out
 	var _cret C.guint         // in
 
-	_arg1 = C.gconstpointer(box.Assign(unsafe.Pointer(v)))
+	_arg1 = C.gconstpointer(box.Assign(v))
 
 	_cret = C.g_direct_hash(_arg1)
 
@@ -110,8 +110,8 @@ func DoubleEqual(v1 interface{}, v2 interface{}) bool {
 	var _arg2 C.gconstpointer // out
 	var _cret C.gboolean      // in
 
-	_arg1 = C.gconstpointer(box.Assign(unsafe.Pointer(v1)))
-	_arg2 = C.gconstpointer(box.Assign(unsafe.Pointer(v2)))
+	_arg1 = C.gconstpointer(box.Assign(v1))
+	_arg2 = C.gconstpointer(box.Assign(v2))
 
 	_cret = C.g_double_equal(_arg1, _arg2)
 
@@ -132,7 +132,7 @@ func DoubleHash(v interface{}) uint {
 	var _arg1 C.gconstpointer // out
 	var _cret C.guint         // in
 
-	_arg1 = C.gconstpointer(box.Assign(unsafe.Pointer(v)))
+	_arg1 = C.gconstpointer(box.Assign(v))
 
 	_cret = C.g_double_hash(_arg1)
 
@@ -152,8 +152,8 @@ func Int64Equal(v1 interface{}, v2 interface{}) bool {
 	var _arg2 C.gconstpointer // out
 	var _cret C.gboolean      // in
 
-	_arg1 = C.gconstpointer(box.Assign(unsafe.Pointer(v1)))
-	_arg2 = C.gconstpointer(box.Assign(unsafe.Pointer(v2)))
+	_arg1 = C.gconstpointer(box.Assign(v1))
+	_arg2 = C.gconstpointer(box.Assign(v2))
 
 	_cret = C.g_int64_equal(_arg1, _arg2)
 
@@ -174,7 +174,7 @@ func Int64Hash(v interface{}) uint {
 	var _arg1 C.gconstpointer // out
 	var _cret C.guint         // in
 
-	_arg1 = C.gconstpointer(box.Assign(unsafe.Pointer(v)))
+	_arg1 = C.gconstpointer(box.Assign(v))
 
 	_cret = C.g_int64_hash(_arg1)
 
@@ -197,8 +197,8 @@ func IntEqual(v1 interface{}, v2 interface{}) bool {
 	var _arg2 C.gconstpointer // out
 	var _cret C.gboolean      // in
 
-	_arg1 = C.gconstpointer(box.Assign(unsafe.Pointer(v1)))
-	_arg2 = C.gconstpointer(box.Assign(unsafe.Pointer(v2)))
+	_arg1 = C.gconstpointer(box.Assign(v1))
+	_arg2 = C.gconstpointer(box.Assign(v2))
 
 	_cret = C.g_int_equal(_arg1, _arg2)
 
@@ -222,7 +222,7 @@ func IntHash(v interface{}) uint {
 	var _arg1 C.gconstpointer // out
 	var _cret C.guint         // in
 
-	_arg1 = C.gconstpointer(box.Assign(unsafe.Pointer(v)))
+	_arg1 = C.gconstpointer(box.Assign(v))
 
 	_cret = C.g_int_hash(_arg1)
 
@@ -245,8 +245,8 @@ func StrEqual(v1 interface{}, v2 interface{}) bool {
 	var _arg2 C.gconstpointer // out
 	var _cret C.gboolean      // in
 
-	_arg1 = C.gconstpointer(box.Assign(unsafe.Pointer(v1)))
-	_arg2 = C.gconstpointer(box.Assign(unsafe.Pointer(v2)))
+	_arg1 = C.gconstpointer(box.Assign(v1))
+	_arg2 = C.gconstpointer(box.Assign(v2))
 
 	_cret = C.g_str_equal(_arg1, _arg2)
 
@@ -275,7 +275,7 @@ func StrHash(v interface{}) uint {
 	var _arg1 C.gconstpointer // out
 	var _cret C.guint         // in
 
-	_arg1 = C.gconstpointer(box.Assign(unsafe.Pointer(v)))
+	_arg1 = C.gconstpointer(box.Assign(v))
 
 	_cret = C.g_str_hash(_arg1)
 
@@ -289,7 +289,9 @@ func StrHash(v interface{}) uint {
 // HashTable: the Table struct is an opaque data structure to represent a [Hash
 // Table][glib-Hash-Tables]. It should only be accessed via the following
 // functions.
-type HashTable C.GHashTable
+type HashTable struct {
+	native C.GHashTable
+}
 
 // WrapHashTable wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -304,17 +306,18 @@ func marshalHashTable(p uintptr) (interface{}, error) {
 
 // Native returns the underlying C source pointer.
 func (h *HashTable) Native() unsafe.Pointer {
-	return unsafe.Pointer(h)
+	return unsafe.Pointer(&h.native)
 }
 
-// HashTableIter: a GHashTableIter structure represents an iterator that can be
-// used to iterate over the elements of a Table. GHashTableIter structures are
-// typically allocated on the stack and then initialized with
-// g_hash_table_iter_init().
+// HashTableIter structure represents an iterator that can be used to iterate
+// over the elements of a Table. GHashTableIter structures are typically
+// allocated on the stack and then initialized with g_hash_table_iter_init().
 //
 // The iteration order of a TableIter over the keys/values in a hash table is
 // not defined.
-type HashTableIter C.GHashTableIter
+type HashTableIter struct {
+	native C.GHashTableIter
+}
 
 // WrapHashTableIter wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -324,36 +327,46 @@ func WrapHashTableIter(ptr unsafe.Pointer) *HashTableIter {
 
 // Native returns the underlying C source pointer.
 func (h *HashTableIter) Native() unsafe.Pointer {
-	return unsafe.Pointer(h)
+	return unsafe.Pointer(&h.native)
 }
 
-// Init removes the key/value pair currently pointed to by the iterator from its
-// associated Table, without calling the key and value destroy functions. Can
-// only be called after g_hash_table_iter_next() returned true, and cannot be
-// called more than once for the same key/value pair.
-func (i *HashTableIter) Init(hashTable *HashTable) {
+// Init initializes a key/value pair iterator and associates it with
+// @hash_table. Modifying the hash table after calling this function invalidates
+// the returned iterator.
+//
+// The iteration order of a TableIter over the keys/values in a hash table is
+// not defined.
+//
+//    GHashTableIter iter;
+//    gpointer key, value;
+//
+//    g_hash_table_iter_init (&iter, hash_table);
+//    while (g_hash_table_iter_next (&iter, &key, &value))
+//      {
+//        // do something with key and value
+//      }
+func (i *HashTableIter) Init(hashTable HashTable) {
 	var _arg0 *C.GHashTableIter // out
 	var _arg1 *C.GHashTable     // out
 
-	_arg0 = (*C.GHashTableIter)(unsafe.Pointer(i.Native()))
-	_arg1 = (*C.GHashTable)(unsafe.Pointer(hashTable.Native()))
+	_arg0 = (*C.GHashTableIter)(unsafe.Pointer(i))
+	_arg1 = (*C.GHashTable)(unsafe.Pointer(hashTable))
 
 	C.g_hash_table_iter_init(_arg0, _arg1)
 }
 
-// Next removes the key/value pair currently pointed to by the iterator from its
-// associated Table, without calling the key and value destroy functions. Can
-// only be called after g_hash_table_iter_next() returned true, and cannot be
-// called more than once for the same key/value pair.
+// Next advances @iter and retrieves the key and/or value that are now pointed
+// to as a result of this advancement. If false is returned, @key and @value are
+// not set, and the iterator becomes invalid.
 func (i *HashTableIter) Next() (key interface{}, value interface{}, ok bool) {
 	var _arg0 *C.GHashTableIter // out
-	var _arg1 C.gpointer        // in
-	var _arg2 C.gpointer        // in
+	var _arg1 *C.gpointer       // in
+	var _arg2 *C.gpointer       // in
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GHashTableIter)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GHashTableIter)(unsafe.Pointer(i))
 
-	_cret = C.g_hash_table_iter_next(_arg0, &_arg1, &_arg2)
+	_cret = C.g_hash_table_iter_next(_arg0, _arg1, _arg2)
 
 	var _key interface{}   // out
 	var _value interface{} // out
@@ -369,27 +382,41 @@ func (i *HashTableIter) Next() (key interface{}, value interface{}, ok bool) {
 }
 
 // Remove removes the key/value pair currently pointed to by the iterator from
-// its associated Table, without calling the key and value destroy functions.
-// Can only be called after g_hash_table_iter_next() returned true, and cannot
-// be called more than once for the same key/value pair.
+// its associated Table. Can only be called after g_hash_table_iter_next()
+// returned true, and cannot be called more than once for the same key/value
+// pair.
+//
+// If the Table was created using g_hash_table_new_full(), the key and value are
+// freed using the supplied destroy functions, otherwise you have to make sure
+// that any dynamically allocated values are freed yourself.
+//
+// It is safe to continue iterating the Table afterward:
+//
+//    while (g_hash_table_iter_next (&iter, &key, &value))
+//      {
+//        if (condition)
+//          g_hash_table_iter_remove (&iter);
+//      }
 func (i *HashTableIter) Remove() {
 	var _arg0 *C.GHashTableIter // out
 
-	_arg0 = (*C.GHashTableIter)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GHashTableIter)(unsafe.Pointer(i))
 
 	C.g_hash_table_iter_remove(_arg0)
 }
 
-// Replace removes the key/value pair currently pointed to by the iterator from
-// its associated Table, without calling the key and value destroy functions.
-// Can only be called after g_hash_table_iter_next() returned true, and cannot
-// be called more than once for the same key/value pair.
+// Replace replaces the value currently pointed to by the iterator from its
+// associated Table. Can only be called after g_hash_table_iter_next() returned
+// true.
+//
+// If you supplied a @value_destroy_func when creating the Table, the old value
+// is freed using that function.
 func (i *HashTableIter) Replace(value interface{}) {
 	var _arg0 *C.GHashTableIter // out
 	var _arg1 C.gpointer        // out
 
-	_arg0 = (*C.GHashTableIter)(unsafe.Pointer(i.Native()))
-	_arg1 = C.gpointer(box.Assign(unsafe.Pointer(value)))
+	_arg0 = (*C.GHashTableIter)(unsafe.Pointer(i))
+	_arg1 = C.gpointer(box.Assign(value))
 
 	C.g_hash_table_iter_replace(_arg0, _arg1)
 }
@@ -401,7 +428,7 @@ func (i *HashTableIter) Replace(value interface{}) {
 func (i *HashTableIter) Steal() {
 	var _arg0 *C.GHashTableIter // out
 
-	_arg0 = (*C.GHashTableIter)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GHashTableIter)(unsafe.Pointer(i))
 
 	C.g_hash_table_iter_steal(_arg0)
 }

@@ -179,7 +179,7 @@ func Dpgettext2(domain string, context string, msgid string) string {
 	return _utf8
 }
 
-// StripContext: an auxiliary function for gettext() support (see Q_()).
+// StripContext: auxiliary function for gettext() support (see Q_()).
 func StripContext(msgid string, msgval string) string {
 	var _arg1 *C.gchar // out
 	var _arg2 *C.gchar // out

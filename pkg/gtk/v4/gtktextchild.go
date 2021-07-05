@@ -22,13 +22,20 @@ func init() {
 	})
 }
 
-// TextChildAnchor: a `GtkTextChildAnchor` is a spot in a `GtkTextBuffer` where
+// TextChildAnchor: `GtkTextChildAnchor` is a spot in a `GtkTextBuffer` where
 // child widgets can be “anchored”.
 //
 // The anchor can have multiple widgets anchored, to allow for multiple views.
 type TextChildAnchor interface {
 	gextras.Objector
 
+	// Deleted determines whether a child anchor has been deleted from the
+	// buffer.
+	//
+	// Keep in mind that the child anchor will be unreferenced when removed from
+	// the buffer, so you need to hold your own reference (with g_object_ref())
+	// if you plan to use this function — otherwise all deleted child anchors
+	// will also be finalized.
 	Deleted() bool
 }
 
@@ -51,6 +58,12 @@ func marshalTextChildAnchor(p uintptr) (interface{}, error) {
 	return WrapTextChildAnchor(obj), nil
 }
 
+// NewTextChildAnchor creates a new `GtkTextChildAnchor`.
+//
+// Usually you would then insert it into a `GtkTextBuffer` with
+// [method@Gtk.TextBuffer.insert_child_anchor]. To perform the creation and
+// insertion in one step, use the convenience function
+// [method@Gtk.TextBuffer.create_child_anchor].
 func NewTextChildAnchor() TextChildAnchor {
 	var _cret *C.GtkTextChildAnchor // in
 
@@ -58,7 +71,7 @@ func NewTextChildAnchor() TextChildAnchor {
 
 	var _textChildAnchor TextChildAnchor // out
 
-	_textChildAnchor = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(TextChildAnchor)
+	_textChildAnchor = WrapTextChildAnchor(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _textChildAnchor
 }

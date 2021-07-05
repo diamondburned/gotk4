@@ -67,16 +67,44 @@ func init() {
 type Credentials interface {
 	gextras.Objector
 
+	// UnixPid tries to get the UNIX process identifier from @credentials. This
+	// method is only available on UNIX platforms.
+	//
+	// This operation can fail if #GCredentials is not supported on the OS or if
+	// the native credentials type does not contain information about the UNIX
+	// process ID (for example this is the case for
+	// G_CREDENTIALS_TYPE_APPLE_XUCRED).
 	UnixPid() (int, error)
-
+	// UnixUser tries to get the UNIX user identifier from @credentials. This
+	// method is only available on UNIX platforms.
+	//
+	// This operation can fail if #GCredentials is not supported on the OS or if
+	// the native credentials type does not contain information about the UNIX
+	// user.
 	UnixUser() (uint, error)
-
+	// IsSameUserCredentials checks if @credentials and @other_credentials is
+	// the same user.
+	//
+	// This operation can fail if #GCredentials is not supported on the the OS.
 	IsSameUserCredentials(otherCredentials Credentials) error
-
+	// SetNativeCredentials copies the native credentials of type @native_type
+	// from @native into @credentials.
+	//
+	// It is a programming error (which will cause a warning to be logged) to
+	// use this method if there is no #GCredentials support for the OS or if
+	// @native_type isn't supported by the OS.
 	SetNativeCredentials(nativeType CredentialsType, native interface{})
-
+	// SetUnixUserCredentials tries to set the UNIX user identifier on
+	// @credentials. This method is only available on UNIX platforms.
+	//
+	// This operation can fail if #GCredentials is not supported on the OS or if
+	// the native credentials type does not contain information about the UNIX
+	// user. It can also fail if the OS does not allow the use of "spoofed"
+	// credentials.
 	SetUnixUserCredentials(uid uint) error
-
+	// String creates a human-readable textual representation of @credentials
+	// that can be used in logging and debug messages. The format of the
+	// returned string may change in future GLib release.
 	String() string
 }
 
@@ -99,6 +127,8 @@ func marshalCredentials(p uintptr) (interface{}, error) {
 	return WrapCredentials(obj), nil
 }
 
+// NewCredentials creates a new #GCredentials object with credentials matching
+// the the current process.
 func NewCredentials() Credentials {
 	var _cret *C.GCredentials // in
 
@@ -106,7 +136,7 @@ func NewCredentials() Credentials {
 
 	var _credentials Credentials // out
 
-	_credentials = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Credentials)
+	_credentials = WrapCredentials(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _credentials
 }
@@ -114,7 +144,7 @@ func NewCredentials() Credentials {
 func (c credentials) UnixPid() (int, error) {
 	var _arg0 *C.GCredentials // out
 	var _cret C.pid_t         // in
-	var _cerr *C.GError       // in
+	var _cerr **C.GError      // in
 
 	_arg0 = (*C.GCredentials)(unsafe.Pointer(c.Native()))
 
@@ -124,7 +154,16 @@ func (c credentials) UnixPid() (int, error) {
 	var _goerr error // out
 
 	_gint = int(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _gint, _goerr
 }
@@ -132,7 +171,7 @@ func (c credentials) UnixPid() (int, error) {
 func (c credentials) UnixUser() (uint, error) {
 	var _arg0 *C.GCredentials // out
 	var _cret C.uid_t         // in
-	var _cerr *C.GError       // in
+	var _cerr **C.GError      // in
 
 	_arg0 = (*C.GCredentials)(unsafe.Pointer(c.Native()))
 
@@ -142,7 +181,16 @@ func (c credentials) UnixUser() (uint, error) {
 	var _goerr error // out
 
 	_guint = uint(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _guint, _goerr
 }
@@ -150,7 +198,7 @@ func (c credentials) UnixUser() (uint, error) {
 func (c credentials) IsSameUserCredentials(otherCredentials Credentials) error {
 	var _arg0 *C.GCredentials // out
 	var _arg1 *C.GCredentials // out
-	var _cerr *C.GError       // in
+	var _cerr **C.GError      // in
 
 	_arg0 = (*C.GCredentials)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GCredentials)(unsafe.Pointer(otherCredentials.Native()))
@@ -159,7 +207,16 @@ func (c credentials) IsSameUserCredentials(otherCredentials Credentials) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _goerr
 }
@@ -171,7 +228,7 @@ func (c credentials) SetNativeCredentials(nativeType CredentialsType, native int
 
 	_arg0 = (*C.GCredentials)(unsafe.Pointer(c.Native()))
 	_arg1 = C.GCredentialsType(nativeType)
-	_arg2 = C.gpointer(box.Assign(unsafe.Pointer(native)))
+	_arg2 = C.gpointer(box.Assign(native))
 
 	C.g_credentials_set_native(_arg0, _arg1, _arg2)
 }
@@ -179,7 +236,7 @@ func (c credentials) SetNativeCredentials(nativeType CredentialsType, native int
 func (c credentials) SetUnixUserCredentials(uid uint) error {
 	var _arg0 *C.GCredentials // out
 	var _arg1 C.uid_t         // out
-	var _cerr *C.GError       // in
+	var _cerr **C.GError      // in
 
 	_arg0 = (*C.GCredentials)(unsafe.Pointer(c.Native()))
 	_arg1 = C.uid_t(uid)
@@ -188,7 +245,16 @@ func (c credentials) SetUnixUserCredentials(uid uint) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _goerr
 }

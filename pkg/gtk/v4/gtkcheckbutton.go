@@ -6,7 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -23,7 +22,7 @@ func init() {
 	})
 }
 
-// CheckButton: a `GtkCheckButton` places a label next to an indicator.
+// CheckButton: `GtkCheckButton` places a label next to an indicator.
 //
 // !Example GtkCheckButtons (check-button.png)
 //
@@ -75,24 +74,62 @@ func init() {
 //
 // `GtkCheckButton` uses the GTK_ACCESSIBLE_ROLE_CHECKBOX role.
 type CheckButton interface {
-	Actionable
+	Widget
 
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsActionable casts the class to the Actionable interface.
+	AsActionable() Actionable
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
+
+	// Active returns whether the check button is active.
 	Active() bool
-
+	// Inconsistent returns whether the check button is in an inconsistent
+	// state.
 	Inconsistent() bool
-
+	// Label returns the label of the check button.
 	Label() string
-
+	// UseUnderline returns whether underlines in the label indicate mnemonics.
 	UseUnderline() bool
-
+	// SetActiveCheckButton changes the check buttons active state.
 	SetActiveCheckButton(setting bool)
-
+	// SetGroupCheckButton adds @self to the group of @group.
+	//
+	// In a group of multiple check buttons, only one button can be active at a
+	// time. The behavior of a checkbutton in a group is also commonly known as
+	// a *radio button*.
+	//
+	// Setting the group of a check button also changes the css name of the
+	// indicator widget's CSS node to 'radio'.
+	//
+	// Setting up groups in a cycle leads to undefined behavior.
+	//
+	// Note that the same effect can be achieved via the
+	// [interface@Gtk.Actionable] API, by using the same action with parameter
+	// type and state type 's' for all buttons in the group, and giving each
+	// button its own target value.
 	SetGroupCheckButton(group CheckButton)
-
+	// SetInconsistentCheckButton sets the `GtkCheckButton` to inconsistent
+	// state.
+	//
+	// You shoud turn off the inconsistent state again if the user checks the
+	// check button. This has to be done manually.
 	SetInconsistentCheckButton(inconsistent bool)
-
+	// SetLabelCheckButton sets the text of @self.
+	//
+	// If [property@Gtk.CheckButton:use-underline] is true, an underscore in
+	// @label is interpreted as mnemonic indicator, see
+	// [method@Gtk.CheckButton.set_use_underline] for details on this behavior.
 	SetLabelCheckButton(label string)
-
+	// SetUseUnderlineCheckButton sets whether underlines in the label indicate
+	// mnemonics.
+	//
+	// If @setting is true, an underscore character in @self's label indicates a
+	// mnemonic accelerator key. This behavior is similar to
+	// [property@Gtk.Label:use-underline].
 	SetUseUnderlineCheckButton(setting bool)
 }
 
@@ -115,6 +152,7 @@ func marshalCheckButton(p uintptr) (interface{}, error) {
 	return WrapCheckButton(obj), nil
 }
 
+// NewCheckButton creates a new `GtkCheckButton`.
 func NewCheckButton() CheckButton {
 	var _cret *C.GtkWidget // in
 
@@ -122,11 +160,12 @@ func NewCheckButton() CheckButton {
 
 	var _checkButton CheckButton // out
 
-	_checkButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(CheckButton)
+	_checkButton = WrapCheckButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _checkButton
 }
 
+// NewCheckButtonWithLabel creates a new `GtkCheckButton` with the given text.
 func NewCheckButtonWithLabel(label string) CheckButton {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in
@@ -138,11 +177,13 @@ func NewCheckButtonWithLabel(label string) CheckButton {
 
 	var _checkButton CheckButton // out
 
-	_checkButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(CheckButton)
+	_checkButton = WrapCheckButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _checkButton
 }
 
+// NewCheckButtonWithMnemonic creates a new `GtkCheckButton` with the given text
+// and a mnemonic.
 func NewCheckButtonWithMnemonic(label string) CheckButton {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in
@@ -154,7 +195,7 @@ func NewCheckButtonWithMnemonic(label string) CheckButton {
 
 	var _checkButton CheckButton // out
 
-	_checkButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(CheckButton)
+	_checkButton = WrapCheckButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _checkButton
 }
@@ -282,54 +323,18 @@ func (s checkButton) SetUseUnderlineCheckButton(setting bool) {
 	C.gtk_check_button_set_use_underline(_arg0, _arg1)
 }
 
-func (a checkButton) ActionName() string {
-	return WrapActionable(gextras.InternObject(a)).ActionName()
+func (c checkButton) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(c))
 }
 
-func (a checkButton) ActionTargetValue() *glib.Variant {
-	return WrapActionable(gextras.InternObject(a)).ActionTargetValue()
+func (c checkButton) AsActionable() Actionable {
+	return WrapActionable(gextras.InternObject(c))
 }
 
-func (a checkButton) SetActionName(actionName string) {
-	WrapActionable(gextras.InternObject(a)).SetActionName(actionName)
+func (c checkButton) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(c))
 }
 
-func (a checkButton) SetActionTargetValue(targetValue *glib.Variant) {
-	WrapActionable(gextras.InternObject(a)).SetActionTargetValue(targetValue)
-}
-
-func (a checkButton) SetDetailedActionName(detailedActionName string) {
-	WrapActionable(gextras.InternObject(a)).SetDetailedActionName(detailedActionName)
-}
-
-func (s checkButton) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
-}
-
-func (s checkButton) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
-}
-
-func (s checkButton) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
-}
-
-func (s checkButton) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s checkButton) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s checkButton) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s checkButton) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b checkButton) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
+func (c checkButton) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(c))
 }

@@ -58,20 +58,42 @@ func init() {
 type Overlay interface {
 	Widget
 
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
+
+	// AddOverlayOverlay adds @widget to @overlay.
+	//
+	// The widget will be stacked on top of the main widget added with
+	// [method@Gtk.Overlay.set_child].
+	//
+	// The position at which @widget is placed is determined from its
+	// [property@Gtk.Widget:halign] and [property@Gtk.Widget:valign] properties.
 	AddOverlayOverlay(widget Widget)
-
+	// Child gets the child widget of @overlay.
 	Child() Widget
-
+	// ClipOverlay gets whether @widget should be clipped within the parent.
 	ClipOverlay(widget Widget) bool
-
+	// MeasureOverlay gets whether @widget's size is included in the measurement
+	// of @overlay.
 	MeasureOverlay(widget Widget) bool
-
+	// RemoveOverlayOverlay removes an overlay that was added with
+	// gtk_overlay_add_overlay().
 	RemoveOverlayOverlay(widget Widget)
-
+	// SetChildOverlay sets the child widget of @overlay.
 	SetChildOverlay(child Widget)
-
+	// SetClipOverlayOverlay sets whether @widget should be clipped within the
+	// parent.
 	SetClipOverlayOverlay(widget Widget, clipOverlay bool)
-
+	// SetMeasureOverlayOverlay sets whether @widget is included in the measured
+	// size of @overlay.
+	//
+	// The overlay will request the size of the largest child that has this
+	// property set to true. Children who are not included may be drawn outside
+	// of @overlay's allocation if they are too large.
 	SetMeasureOverlayOverlay(widget Widget, measure bool)
 }
 
@@ -94,6 +116,7 @@ func marshalOverlay(p uintptr) (interface{}, error) {
 	return WrapOverlay(obj), nil
 }
 
+// NewOverlay creates a new `GtkOverlay`.
 func NewOverlay() Overlay {
 	var _cret *C.GtkWidget // in
 
@@ -101,7 +124,7 @@ func NewOverlay() Overlay {
 
 	var _overlay Overlay // out
 
-	_overlay = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Overlay)
+	_overlay = WrapOverlay(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _overlay
 }
@@ -217,34 +240,14 @@ func (o overlay) SetMeasureOverlayOverlay(widget Widget, measure bool) {
 	C.gtk_overlay_set_measure_overlay(_arg0, _arg1, _arg2)
 }
 
-func (s overlay) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
+func (o overlay) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(o))
 }
 
-func (s overlay) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
+func (o overlay) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(o))
 }
 
-func (s overlay) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
-}
-
-func (s overlay) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s overlay) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s overlay) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s overlay) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b overlay) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
+func (o overlay) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(o))
 }

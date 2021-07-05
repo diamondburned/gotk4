@@ -29,16 +29,26 @@ func init() {
 type CellRendererToggle interface {
 	CellRenderer
 
+	// Activatable returns whether the cell renderer is activatable. See
+	// gtk_cell_renderer_toggle_set_activatable().
 	Activatable() bool
-
+	// Active returns whether the cell renderer is active. See
+	// gtk_cell_renderer_toggle_set_active().
 	Active() bool
-
+	// Radio returns whether we’re rendering radio toggles rather than
+	// checkboxes.
 	Radio() bool
-
+	// SetActivatableCellRendererToggle makes the cell renderer activatable.
 	SetActivatableCellRendererToggle(setting bool)
-
+	// SetActiveCellRendererToggle activates or deactivates a cell renderer.
 	SetActiveCellRendererToggle(setting bool)
-
+	// SetRadioCellRendererToggle: if @radio is true, the cell renderer renders
+	// a radio toggle (i.e. a toggle in a group of mutually-exclusive toggles).
+	// If false, it renders a check toggle (a standalone boolean option). This
+	// can be set globally for the cell renderer, or changed just before
+	// rendering each cell in the model (for TreeView, you set up a per-row
+	// setting using TreeViewColumn to associate model columns with cell
+	// renderer properties).
 	SetRadioCellRendererToggle(radio bool)
 }
 
@@ -61,6 +71,12 @@ func marshalCellRendererToggle(p uintptr) (interface{}, error) {
 	return WrapCellRendererToggle(obj), nil
 }
 
+// NewCellRendererToggle creates a new CellRendererToggle. Adjust rendering
+// parameters using object properties. Object properties can be set globally
+// (with g_object_set()). Also, with TreeViewColumn, you can bind a property to
+// a value in a TreeModel. For example, you can bind the “active” property on
+// the cell renderer to a boolean value in the model, thus causing the check
+// button to reflect the state of the model.
 func NewCellRendererToggle() CellRendererToggle {
 	var _cret *C.GtkCellRenderer // in
 
@@ -68,7 +84,7 @@ func NewCellRendererToggle() CellRendererToggle {
 
 	var _cellRendererToggle CellRendererToggle // out
 
-	_cellRendererToggle = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(CellRendererToggle)
+	_cellRendererToggle = WrapCellRendererToggle(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _cellRendererToggle
 }

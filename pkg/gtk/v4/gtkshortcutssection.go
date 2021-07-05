@@ -22,7 +22,7 @@ func init() {
 	})
 }
 
-// ShortcutsSection: a `GtkShortcutsSection` collects all the keyboard shortcuts
+// ShortcutsSection: `GtkShortcutsSection` collects all the keyboard shortcuts
 // and gestures for a major application mode.
 //
 // If your application needs multiple sections, you should give each section a
@@ -37,6 +37,15 @@ func init() {
 // This widget is only meant to be used with [class@Gtk.ShortcutsWindow].
 type ShortcutsSection interface {
 	Box
+
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
+	// AsOrientable casts the class to the Orientable interface.
+	AsOrientable() Orientable
 }
 
 // shortcutsSection implements the ShortcutsSection class.
@@ -58,42 +67,18 @@ func marshalShortcutsSection(p uintptr) (interface{}, error) {
 	return WrapShortcutsSection(obj), nil
 }
 
-func (s shortcutsSection) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
+func (s shortcutsSection) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(s))
 }
 
-func (s shortcutsSection) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
+func (s shortcutsSection) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(s))
 }
 
-func (s shortcutsSection) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
+func (s shortcutsSection) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(s))
 }
 
-func (s shortcutsSection) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s shortcutsSection) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s shortcutsSection) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s shortcutsSection) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b shortcutsSection) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
-}
-
-func (o shortcutsSection) Orientation() Orientation {
-	return WrapOrientable(gextras.InternObject(o)).Orientation()
-}
-
-func (o shortcutsSection) SetOrientation(orientation Orientation) {
-	WrapOrientable(gextras.InternObject(o)).SetOrientation(orientation)
+func (s shortcutsSection) AsOrientable() Orientable {
+	return WrapOrientable(gextras.InternObject(s))
 }

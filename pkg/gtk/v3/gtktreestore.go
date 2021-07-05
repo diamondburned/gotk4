@@ -3,12 +3,9 @@
 package gtk
 
 import (
-	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -19,8 +16,6 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-//
-// gboolean gotk4_TreeModelForeachFunc(GtkTreeModel*, GtkTreePath*, GtkTreeIter*, gpointer);
 import "C"
 
 func init() {
@@ -53,44 +48,111 @@ func init() {
 //      </columns>
 //    </object>
 type TreeStore interface {
-	Buildable
-	TreeDragDest
-	TreeDragSource
-	TreeSortable
+	gextras.Objector
 
-	AppendTreeStore(parent *TreeIter) TreeIter
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsTreeDragDest casts the class to the TreeDragDest interface.
+	AsTreeDragDest() TreeDragDest
+	// AsTreeDragSource casts the class to the TreeDragSource interface.
+	AsTreeDragSource() TreeDragSource
+	// AsTreeModel casts the class to the TreeModel interface.
+	AsTreeModel() TreeModel
+	// AsTreeSortable casts the class to the TreeSortable interface.
+	AsTreeSortable() TreeSortable
 
+	// AppendTreeStore appends a new row to @tree_store. If @parent is non-nil,
+	// then it will append the new row after the last child of @parent,
+	// otherwise it will append a row to the top level. @iter will be changed to
+	// point to this new row. The row will be empty after this function is
+	// called. To fill in values, you need to call gtk_tree_store_set() or
+	// gtk_tree_store_set_value().
+	AppendTreeStore(parent TreeIter) TreeIter
+	// ClearTreeStore removes all rows from @tree_store
 	ClearTreeStore()
-
-	InsertTreeStore(parent *TreeIter, position int) TreeIter
-
-	InsertAfterTreeStore(parent *TreeIter, sibling *TreeIter) TreeIter
-
-	InsertBeforeTreeStore(parent *TreeIter, sibling *TreeIter) TreeIter
-
-	InsertWithValuesvTreeStore(parent *TreeIter, position int, columns []int, values []externglib.Value) TreeIter
-
-	IsAncestorTreeStore(iter *TreeIter, descendant *TreeIter) bool
-
-	IterDepthTreeStore(iter *TreeIter) int
-
-	IterIsValidTreeStore(iter *TreeIter) bool
-
-	MoveAfterTreeStore(iter *TreeIter, position *TreeIter)
-
-	MoveBeforeTreeStore(iter *TreeIter, position *TreeIter)
-
-	PrependTreeStore(parent *TreeIter) TreeIter
-
-	RemoveTreeStore(iter *TreeIter) bool
-
+	// InsertTreeStore creates a new row at @position. If parent is non-nil,
+	// then the row will be made a child of @parent. Otherwise, the row will be
+	// created at the toplevel. If @position is -1 or is larger than the number
+	// of rows at that level, then the new row will be inserted to the end of
+	// the list. @iter will be changed to point to this new row. The row will be
+	// empty after this function is called. To fill in values, you need to call
+	// gtk_tree_store_set() or gtk_tree_store_set_value().
+	InsertTreeStore(parent TreeIter, position int) TreeIter
+	// InsertAfterTreeStore inserts a new row after @sibling. If @sibling is
+	// nil, then the row will be prepended to @parent ’s children. If @parent
+	// and @sibling are nil, then the row will be prepended to the toplevel. If
+	// both @sibling and @parent are set, then @parent must be the parent of
+	// @sibling. When @sibling is set, @parent is optional.
+	//
+	// @iter will be changed to point to this new row. The row will be empty
+	// after this function is called. To fill in values, you need to call
+	// gtk_tree_store_set() or gtk_tree_store_set_value().
+	InsertAfterTreeStore(parent TreeIter, sibling TreeIter) TreeIter
+	// InsertBeforeTreeStore inserts a new row before @sibling. If @sibling is
+	// nil, then the row will be appended to @parent ’s children. If @parent and
+	// @sibling are nil, then the row will be appended to the toplevel. If both
+	// @sibling and @parent are set, then @parent must be the parent of
+	// @sibling. When @sibling is set, @parent is optional.
+	//
+	// @iter will be changed to point to this new row. The row will be empty
+	// after this function is called. To fill in values, you need to call
+	// gtk_tree_store_set() or gtk_tree_store_set_value().
+	InsertBeforeTreeStore(parent TreeIter, sibling TreeIter) TreeIter
+	// InsertWithValuesvTreeStore: variant of
+	// gtk_tree_store_insert_with_values() which takes the columns and values as
+	// two arrays, instead of varargs. This function is mainly intended for
+	// language bindings.
+	InsertWithValuesvTreeStore(parent TreeIter, position int, columns []int, values []externglib.Value) TreeIter
+	// IsAncestorTreeStore returns true if @iter is an ancestor of @descendant.
+	// That is, @iter is the parent (or grandparent or great-grandparent) of
+	// @descendant.
+	IsAncestorTreeStore(iter TreeIter, descendant TreeIter) bool
+	// IterDepthTreeStore returns the depth of @iter. This will be 0 for
+	// anything on the root level, 1 for anything down a level, etc.
+	IterDepthTreeStore(iter TreeIter) int
+	// IterIsValidTreeStore: WARNING: This function is slow. Only use it for
+	// debugging and/or testing purposes.
+	//
+	// Checks if the given iter is a valid iter for this TreeStore.
+	IterIsValidTreeStore(iter TreeIter) bool
+	// MoveAfterTreeStore moves @iter in @tree_store to the position after
+	// @position. @iter and @position should be in the same level. Note that
+	// this function only works with unsorted stores. If @position is nil, @iter
+	// will be moved to the start of the level.
+	MoveAfterTreeStore(iter TreeIter, position TreeIter)
+	// MoveBeforeTreeStore moves @iter in @tree_store to the position before
+	// @position. @iter and @position should be in the same level. Note that
+	// this function only works with unsorted stores. If @position is nil, @iter
+	// will be moved to the end of the level.
+	MoveBeforeTreeStore(iter TreeIter, position TreeIter)
+	// PrependTreeStore prepends a new row to @tree_store. If @parent is
+	// non-nil, then it will prepend the new row before the first child of
+	// @parent, otherwise it will prepend a row to the top level. @iter will be
+	// changed to point to this new row. The row will be empty after this
+	// function is called. To fill in values, you need to call
+	// gtk_tree_store_set() or gtk_tree_store_set_value().
+	PrependTreeStore(parent TreeIter) TreeIter
+	// RemoveTreeStore removes @iter from @tree_store. After being removed,
+	// @iter is set to the next valid row at that level, or invalidated if it
+	// previously pointed to the last one.
+	RemoveTreeStore(iter TreeIter) bool
+	// SetColumnTypesTreeStore: this function is meant primarily for #GObjects
+	// that inherit from TreeStore, and should only be used when constructing a
+	// new TreeStore. It will not function after a row has been added, or a
+	// method on the TreeModel interface is called.
 	SetColumnTypesTreeStore(types []externglib.Type)
-
-	SetValueTreeStore(iter *TreeIter, column int, value externglib.Value)
-
-	SetValuesvTreeStore(iter *TreeIter, columns []int, values []externglib.Value)
-
-	SwapTreeStore(a *TreeIter, b *TreeIter)
+	// SetValueTreeStore sets the data in the cell specified by @iter and
+	// @column. The type of @value must be convertible to the type of the
+	// column.
+	SetValueTreeStore(iter TreeIter, column int, value externglib.Value)
+	// SetValuesvTreeStore: variant of gtk_tree_store_set_valist() which takes
+	// the columns and values as two arrays, instead of varargs. This function
+	// is mainly intended for language bindings or in case the number of columns
+	// to change is not known until run-time.
+	SetValuesvTreeStore(iter TreeIter, columns []int, values []externglib.Value)
+	// SwapTreeStore swaps @a and @b in the same level of @tree_store. Note that
+	// this function only works with unsorted stores.
+	SwapTreeStore(a TreeIter, b TreeIter)
 }
 
 // treeStore implements the TreeStore class.
@@ -112,6 +174,8 @@ func marshalTreeStore(p uintptr) (interface{}, error) {
 	return WrapTreeStore(obj), nil
 }
 
+// NewTreeStoreV: non vararg creation function. Used primarily by language
+// bindings.
 func NewTreeStoreV(types []externglib.Type) TreeStore {
 	var _arg2 *C.GType
 	var _arg1 C.gint
@@ -131,34 +195,24 @@ func NewTreeStoreV(types []externglib.Type) TreeStore {
 
 	var _treeStore TreeStore // out
 
-	_treeStore = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(TreeStore)
+	_treeStore = WrapTreeStore(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _treeStore
 }
 
-func (t treeStore) AppendTreeStore(parent *TreeIter) TreeIter {
+func (t treeStore) AppendTreeStore(parent TreeIter) TreeIter {
 	var _arg0 *C.GtkTreeStore // out
-	var _arg1 C.GtkTreeIter   // in
+	var _arg1 *C.GtkTreeIter  // in
 	var _arg2 *C.GtkTreeIter  // out
 
 	_arg0 = (*C.GtkTreeStore)(unsafe.Pointer(t.Native()))
-	_arg2 = (*C.GtkTreeIter)(unsafe.Pointer(parent.Native()))
+	_arg2 = (*C.GtkTreeIter)(unsafe.Pointer(parent))
 
 	C.gtk_tree_store_append(_arg0, &_arg1, _arg2)
 
 	var _iter TreeIter // out
 
-	{
-		var refTmpIn *C.GtkTreeIter
-		var refTmpOut *TreeIter
-
-		in0 := &_arg1
-		refTmpIn = in0
-
-		refTmpOut = (*TreeIter)(unsafe.Pointer(refTmpIn))
-
-		_iter = *refTmpOut
-	}
+	_iter = (TreeIter)(unsafe.Pointer(_arg1))
 
 	return _iter
 }
@@ -171,96 +225,66 @@ func (t treeStore) ClearTreeStore() {
 	C.gtk_tree_store_clear(_arg0)
 }
 
-func (t treeStore) InsertTreeStore(parent *TreeIter, position int) TreeIter {
+func (t treeStore) InsertTreeStore(parent TreeIter, position int) TreeIter {
 	var _arg0 *C.GtkTreeStore // out
-	var _arg1 C.GtkTreeIter   // in
+	var _arg1 *C.GtkTreeIter  // in
 	var _arg2 *C.GtkTreeIter  // out
 	var _arg3 C.gint          // out
 
 	_arg0 = (*C.GtkTreeStore)(unsafe.Pointer(t.Native()))
-	_arg2 = (*C.GtkTreeIter)(unsafe.Pointer(parent.Native()))
+	_arg2 = (*C.GtkTreeIter)(unsafe.Pointer(parent))
 	_arg3 = C.gint(position)
 
 	C.gtk_tree_store_insert(_arg0, &_arg1, _arg2, _arg3)
 
 	var _iter TreeIter // out
 
-	{
-		var refTmpIn *C.GtkTreeIter
-		var refTmpOut *TreeIter
-
-		in0 := &_arg1
-		refTmpIn = in0
-
-		refTmpOut = (*TreeIter)(unsafe.Pointer(refTmpIn))
-
-		_iter = *refTmpOut
-	}
+	_iter = (TreeIter)(unsafe.Pointer(_arg1))
 
 	return _iter
 }
 
-func (t treeStore) InsertAfterTreeStore(parent *TreeIter, sibling *TreeIter) TreeIter {
+func (t treeStore) InsertAfterTreeStore(parent TreeIter, sibling TreeIter) TreeIter {
 	var _arg0 *C.GtkTreeStore // out
-	var _arg1 C.GtkTreeIter   // in
+	var _arg1 *C.GtkTreeIter  // in
 	var _arg2 *C.GtkTreeIter  // out
 	var _arg3 *C.GtkTreeIter  // out
 
 	_arg0 = (*C.GtkTreeStore)(unsafe.Pointer(t.Native()))
-	_arg2 = (*C.GtkTreeIter)(unsafe.Pointer(parent.Native()))
-	_arg3 = (*C.GtkTreeIter)(unsafe.Pointer(sibling.Native()))
+	_arg2 = (*C.GtkTreeIter)(unsafe.Pointer(parent))
+	_arg3 = (*C.GtkTreeIter)(unsafe.Pointer(sibling))
 
 	C.gtk_tree_store_insert_after(_arg0, &_arg1, _arg2, _arg3)
 
 	var _iter TreeIter // out
 
-	{
-		var refTmpIn *C.GtkTreeIter
-		var refTmpOut *TreeIter
-
-		in0 := &_arg1
-		refTmpIn = in0
-
-		refTmpOut = (*TreeIter)(unsafe.Pointer(refTmpIn))
-
-		_iter = *refTmpOut
-	}
+	_iter = (TreeIter)(unsafe.Pointer(_arg1))
 
 	return _iter
 }
 
-func (t treeStore) InsertBeforeTreeStore(parent *TreeIter, sibling *TreeIter) TreeIter {
+func (t treeStore) InsertBeforeTreeStore(parent TreeIter, sibling TreeIter) TreeIter {
 	var _arg0 *C.GtkTreeStore // out
-	var _arg1 C.GtkTreeIter   // in
+	var _arg1 *C.GtkTreeIter  // in
 	var _arg2 *C.GtkTreeIter  // out
 	var _arg3 *C.GtkTreeIter  // out
 
 	_arg0 = (*C.GtkTreeStore)(unsafe.Pointer(t.Native()))
-	_arg2 = (*C.GtkTreeIter)(unsafe.Pointer(parent.Native()))
-	_arg3 = (*C.GtkTreeIter)(unsafe.Pointer(sibling.Native()))
+	_arg2 = (*C.GtkTreeIter)(unsafe.Pointer(parent))
+	_arg3 = (*C.GtkTreeIter)(unsafe.Pointer(sibling))
 
 	C.gtk_tree_store_insert_before(_arg0, &_arg1, _arg2, _arg3)
 
 	var _iter TreeIter // out
 
-	{
-		var refTmpIn *C.GtkTreeIter
-		var refTmpOut *TreeIter
-
-		in0 := &_arg1
-		refTmpIn = in0
-
-		refTmpOut = (*TreeIter)(unsafe.Pointer(refTmpIn))
-
-		_iter = *refTmpOut
-	}
+	_iter = (TreeIter)(unsafe.Pointer(_arg1))
 
 	return _iter
 }
 
-func (t treeStore) InsertWithValuesvTreeStore(parent *TreeIter, position int, columns []int, values []externglib.Value) TreeIter {
+func (t treeStore) InsertWithValuesvTreeStore(parent TreeIter, position int, columns []int, values []externglib.Value) TreeIter {
 	var _arg0 *C.GtkTreeStore // out
-	var _arg1 C.GtkTreeIter   // in
+	var _arg1 *C.GtkTreeIter  // in
 	var _arg2 *C.GtkTreeIter  // out
 	var _arg3 C.gint          // out
 	var _arg4 *C.gint
@@ -269,7 +293,7 @@ func (t treeStore) InsertWithValuesvTreeStore(parent *TreeIter, position int, co
 	var _arg6 C.gint
 
 	_arg0 = (*C.GtkTreeStore)(unsafe.Pointer(t.Native()))
-	_arg2 = (*C.GtkTreeIter)(unsafe.Pointer(parent.Native()))
+	_arg2 = (*C.GtkTreeIter)(unsafe.Pointer(parent))
 	_arg3 = C.gint(position)
 	_arg6 = C.gint(len(columns))
 	_arg4 = (*C.gint)(unsafe.Pointer(&columns[0]))
@@ -297,30 +321,20 @@ func (t treeStore) InsertWithValuesvTreeStore(parent *TreeIter, position int, co
 
 	var _iter TreeIter // out
 
-	{
-		var refTmpIn *C.GtkTreeIter
-		var refTmpOut *TreeIter
-
-		in0 := &_arg1
-		refTmpIn = in0
-
-		refTmpOut = (*TreeIter)(unsafe.Pointer(refTmpIn))
-
-		_iter = *refTmpOut
-	}
+	_iter = (TreeIter)(unsafe.Pointer(_arg1))
 
 	return _iter
 }
 
-func (t treeStore) IsAncestorTreeStore(iter *TreeIter, descendant *TreeIter) bool {
+func (t treeStore) IsAncestorTreeStore(iter TreeIter, descendant TreeIter) bool {
 	var _arg0 *C.GtkTreeStore // out
 	var _arg1 *C.GtkTreeIter  // out
 	var _arg2 *C.GtkTreeIter  // out
 	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GtkTreeStore)(unsafe.Pointer(t.Native()))
-	_arg1 = (*C.GtkTreeIter)(unsafe.Pointer(iter.Native()))
-	_arg2 = (*C.GtkTreeIter)(unsafe.Pointer(descendant.Native()))
+	_arg1 = (*C.GtkTreeIter)(unsafe.Pointer(iter))
+	_arg2 = (*C.GtkTreeIter)(unsafe.Pointer(descendant))
 
 	_cret = C.gtk_tree_store_is_ancestor(_arg0, _arg1, _arg2)
 
@@ -333,13 +347,13 @@ func (t treeStore) IsAncestorTreeStore(iter *TreeIter, descendant *TreeIter) boo
 	return _ok
 }
 
-func (t treeStore) IterDepthTreeStore(iter *TreeIter) int {
+func (t treeStore) IterDepthTreeStore(iter TreeIter) int {
 	var _arg0 *C.GtkTreeStore // out
 	var _arg1 *C.GtkTreeIter  // out
 	var _cret C.gint          // in
 
 	_arg0 = (*C.GtkTreeStore)(unsafe.Pointer(t.Native()))
-	_arg1 = (*C.GtkTreeIter)(unsafe.Pointer(iter.Native()))
+	_arg1 = (*C.GtkTreeIter)(unsafe.Pointer(iter))
 
 	_cret = C.gtk_tree_store_iter_depth(_arg0, _arg1)
 
@@ -350,13 +364,13 @@ func (t treeStore) IterDepthTreeStore(iter *TreeIter) int {
 	return _gint
 }
 
-func (t treeStore) IterIsValidTreeStore(iter *TreeIter) bool {
+func (t treeStore) IterIsValidTreeStore(iter TreeIter) bool {
 	var _arg0 *C.GtkTreeStore // out
 	var _arg1 *C.GtkTreeIter  // out
 	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GtkTreeStore)(unsafe.Pointer(t.Native()))
-	_arg1 = (*C.GtkTreeIter)(unsafe.Pointer(iter.Native()))
+	_arg1 = (*C.GtkTreeIter)(unsafe.Pointer(iter))
 
 	_cret = C.gtk_tree_store_iter_is_valid(_arg0, _arg1)
 
@@ -369,64 +383,54 @@ func (t treeStore) IterIsValidTreeStore(iter *TreeIter) bool {
 	return _ok
 }
 
-func (t treeStore) MoveAfterTreeStore(iter *TreeIter, position *TreeIter) {
+func (t treeStore) MoveAfterTreeStore(iter TreeIter, position TreeIter) {
 	var _arg0 *C.GtkTreeStore // out
 	var _arg1 *C.GtkTreeIter  // out
 	var _arg2 *C.GtkTreeIter  // out
 
 	_arg0 = (*C.GtkTreeStore)(unsafe.Pointer(t.Native()))
-	_arg1 = (*C.GtkTreeIter)(unsafe.Pointer(iter.Native()))
-	_arg2 = (*C.GtkTreeIter)(unsafe.Pointer(position.Native()))
+	_arg1 = (*C.GtkTreeIter)(unsafe.Pointer(iter))
+	_arg2 = (*C.GtkTreeIter)(unsafe.Pointer(position))
 
 	C.gtk_tree_store_move_after(_arg0, _arg1, _arg2)
 }
 
-func (t treeStore) MoveBeforeTreeStore(iter *TreeIter, position *TreeIter) {
+func (t treeStore) MoveBeforeTreeStore(iter TreeIter, position TreeIter) {
 	var _arg0 *C.GtkTreeStore // out
 	var _arg1 *C.GtkTreeIter  // out
 	var _arg2 *C.GtkTreeIter  // out
 
 	_arg0 = (*C.GtkTreeStore)(unsafe.Pointer(t.Native()))
-	_arg1 = (*C.GtkTreeIter)(unsafe.Pointer(iter.Native()))
-	_arg2 = (*C.GtkTreeIter)(unsafe.Pointer(position.Native()))
+	_arg1 = (*C.GtkTreeIter)(unsafe.Pointer(iter))
+	_arg2 = (*C.GtkTreeIter)(unsafe.Pointer(position))
 
 	C.gtk_tree_store_move_before(_arg0, _arg1, _arg2)
 }
 
-func (t treeStore) PrependTreeStore(parent *TreeIter) TreeIter {
+func (t treeStore) PrependTreeStore(parent TreeIter) TreeIter {
 	var _arg0 *C.GtkTreeStore // out
-	var _arg1 C.GtkTreeIter   // in
+	var _arg1 *C.GtkTreeIter  // in
 	var _arg2 *C.GtkTreeIter  // out
 
 	_arg0 = (*C.GtkTreeStore)(unsafe.Pointer(t.Native()))
-	_arg2 = (*C.GtkTreeIter)(unsafe.Pointer(parent.Native()))
+	_arg2 = (*C.GtkTreeIter)(unsafe.Pointer(parent))
 
 	C.gtk_tree_store_prepend(_arg0, &_arg1, _arg2)
 
 	var _iter TreeIter // out
 
-	{
-		var refTmpIn *C.GtkTreeIter
-		var refTmpOut *TreeIter
-
-		in0 := &_arg1
-		refTmpIn = in0
-
-		refTmpOut = (*TreeIter)(unsafe.Pointer(refTmpIn))
-
-		_iter = *refTmpOut
-	}
+	_iter = (TreeIter)(unsafe.Pointer(_arg1))
 
 	return _iter
 }
 
-func (t treeStore) RemoveTreeStore(iter *TreeIter) bool {
+func (t treeStore) RemoveTreeStore(iter TreeIter) bool {
 	var _arg0 *C.GtkTreeStore // out
 	var _arg1 *C.GtkTreeIter  // out
 	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GtkTreeStore)(unsafe.Pointer(t.Native()))
-	_arg1 = (*C.GtkTreeIter)(unsafe.Pointer(iter.Native()))
+	_arg1 = (*C.GtkTreeIter)(unsafe.Pointer(iter))
 
 	_cret = C.gtk_tree_store_remove(_arg0, _arg1)
 
@@ -458,21 +462,21 @@ func (t treeStore) SetColumnTypesTreeStore(types []externglib.Type) {
 	C.gtk_tree_store_set_column_types(_arg0, _arg1, _arg2)
 }
 
-func (t treeStore) SetValueTreeStore(iter *TreeIter, column int, value externglib.Value) {
+func (t treeStore) SetValueTreeStore(iter TreeIter, column int, value externglib.Value) {
 	var _arg0 *C.GtkTreeStore // out
 	var _arg1 *C.GtkTreeIter  // out
 	var _arg2 C.gint          // out
 	var _arg3 *C.GValue       // out
 
 	_arg0 = (*C.GtkTreeStore)(unsafe.Pointer(t.Native()))
-	_arg1 = (*C.GtkTreeIter)(unsafe.Pointer(iter.Native()))
+	_arg1 = (*C.GtkTreeIter)(unsafe.Pointer(iter))
 	_arg2 = C.gint(column)
 	_arg3 = (*C.GValue)(unsafe.Pointer(&value.GValue))
 
 	C.gtk_tree_store_set_value(_arg0, _arg1, _arg2, _arg3)
 }
 
-func (t treeStore) SetValuesvTreeStore(iter *TreeIter, columns []int, values []externglib.Value) {
+func (t treeStore) SetValuesvTreeStore(iter TreeIter, columns []int, values []externglib.Value) {
 	var _arg0 *C.GtkTreeStore // out
 	var _arg1 *C.GtkTreeIter  // out
 	var _arg2 *C.gint
@@ -481,7 +485,7 @@ func (t treeStore) SetValuesvTreeStore(iter *TreeIter, columns []int, values []e
 	var _arg4 C.gint
 
 	_arg0 = (*C.GtkTreeStore)(unsafe.Pointer(t.Native()))
-	_arg1 = (*C.GtkTreeIter)(unsafe.Pointer(iter.Native()))
+	_arg1 = (*C.GtkTreeIter)(unsafe.Pointer(iter))
 	_arg4 = C.gint(len(columns))
 	_arg2 = (*C.gint)(unsafe.Pointer(&columns[0]))
 	_arg4 = C.gint(len(values))
@@ -507,190 +511,34 @@ func (t treeStore) SetValuesvTreeStore(iter *TreeIter, columns []int, values []e
 	C.gtk_tree_store_set_valuesv(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
-func (t treeStore) SwapTreeStore(a *TreeIter, b *TreeIter) {
+func (t treeStore) SwapTreeStore(a TreeIter, b TreeIter) {
 	var _arg0 *C.GtkTreeStore // out
 	var _arg1 *C.GtkTreeIter  // out
 	var _arg2 *C.GtkTreeIter  // out
 
 	_arg0 = (*C.GtkTreeStore)(unsafe.Pointer(t.Native()))
-	_arg1 = (*C.GtkTreeIter)(unsafe.Pointer(a.Native()))
-	_arg2 = (*C.GtkTreeIter)(unsafe.Pointer(b.Native()))
+	_arg1 = (*C.GtkTreeIter)(unsafe.Pointer(a))
+	_arg2 = (*C.GtkTreeIter)(unsafe.Pointer(b))
 
 	C.gtk_tree_store_swap(_arg0, _arg1, _arg2)
 }
 
-func (b treeStore) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+func (t treeStore) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(t))
 }
 
-func (b treeStore) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+func (t treeStore) AsTreeDragDest() TreeDragDest {
+	return WrapTreeDragDest(gextras.InternObject(t))
 }
 
-func (b treeStore) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+func (t treeStore) AsTreeDragSource() TreeDragSource {
+	return WrapTreeDragSource(gextras.InternObject(t))
 }
 
-func (b treeStore) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+func (t treeStore) AsTreeModel() TreeModel {
+	return WrapTreeModel(gextras.InternObject(t))
 }
 
-func (b treeStore) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b treeStore) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b treeStore) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b treeStore) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b treeStore) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b treeStore) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (d treeStore) DragDataReceived(dest *TreePath, selectionData *SelectionData) bool {
-	return WrapTreeDragDest(gextras.InternObject(d)).DragDataReceived(dest, selectionData)
-}
-
-func (d treeStore) RowDropPossible(destPath *TreePath, selectionData *SelectionData) bool {
-	return WrapTreeDragDest(gextras.InternObject(d)).RowDropPossible(destPath, selectionData)
-}
-
-func (d treeStore) DragDataDelete(path *TreePath) bool {
-	return WrapTreeDragSource(gextras.InternObject(d)).DragDataDelete(path)
-}
-
-func (d treeStore) DragDataGet(path *TreePath, selectionData *SelectionData) bool {
-	return WrapTreeDragSource(gextras.InternObject(d)).DragDataGet(path, selectionData)
-}
-
-func (d treeStore) RowDraggable(path *TreePath) bool {
-	return WrapTreeDragSource(gextras.InternObject(d)).RowDraggable(path)
-}
-
-func (s treeStore) SortColumnID() (int, SortType, bool) {
-	return WrapTreeSortable(gextras.InternObject(s)).SortColumnID()
-}
-
-func (s treeStore) HasDefaultSortFunc() bool {
-	return WrapTreeSortable(gextras.InternObject(s)).HasDefaultSortFunc()
-}
-
-func (s treeStore) SetSortColumnID(sortColumnId int, order SortType) {
-	WrapTreeSortable(gextras.InternObject(s)).SetSortColumnID(sortColumnId, order)
-}
-
-func (s treeStore) SortColumnChanged() {
-	WrapTreeSortable(gextras.InternObject(s)).SortColumnChanged()
-}
-
-func (t treeStore) NewFilter(root *TreePath) TreeModel {
-	return WrapTreeModel(gextras.InternObject(t)).NewFilter(root)
-}
-
-func (t treeStore) Foreach(fn TreeModelForeachFunc) {
-	WrapTreeModel(gextras.InternObject(t)).Foreach(fn)
-}
-
-func (t treeStore) ColumnType(index_ int) externglib.Type {
-	return WrapTreeModel(gextras.InternObject(t)).ColumnType(index_)
-}
-
-func (t treeStore) Flags() TreeModelFlags {
-	return WrapTreeModel(gextras.InternObject(t)).Flags()
-}
-
-func (t treeStore) Iter(path *TreePath) (TreeIter, bool) {
-	return WrapTreeModel(gextras.InternObject(t)).Iter(path)
-}
-
-func (t treeStore) IterFirst() (TreeIter, bool) {
-	return WrapTreeModel(gextras.InternObject(t)).IterFirst()
-}
-
-func (t treeStore) IterFromString(pathString string) (TreeIter, bool) {
-	return WrapTreeModel(gextras.InternObject(t)).IterFromString(pathString)
-}
-
-func (t treeStore) NColumns() int {
-	return WrapTreeModel(gextras.InternObject(t)).NColumns()
-}
-
-func (t treeStore) Path(iter *TreeIter) *TreePath {
-	return WrapTreeModel(gextras.InternObject(t)).Path(iter)
-}
-
-func (t treeStore) StringFromIter(iter *TreeIter) string {
-	return WrapTreeModel(gextras.InternObject(t)).StringFromIter(iter)
-}
-
-func (t treeStore) Value(iter *TreeIter, column int) externglib.Value {
-	return WrapTreeModel(gextras.InternObject(t)).Value(iter, column)
-}
-
-func (t treeStore) IterChildren(parent *TreeIter) (TreeIter, bool) {
-	return WrapTreeModel(gextras.InternObject(t)).IterChildren(parent)
-}
-
-func (t treeStore) IterHasChild(iter *TreeIter) bool {
-	return WrapTreeModel(gextras.InternObject(t)).IterHasChild(iter)
-}
-
-func (t treeStore) IterNChildren(iter *TreeIter) int {
-	return WrapTreeModel(gextras.InternObject(t)).IterNChildren(iter)
-}
-
-func (t treeStore) IterNext(iter *TreeIter) bool {
-	return WrapTreeModel(gextras.InternObject(t)).IterNext(iter)
-}
-
-func (t treeStore) IterNthChild(parent *TreeIter, n int) (TreeIter, bool) {
-	return WrapTreeModel(gextras.InternObject(t)).IterNthChild(parent, n)
-}
-
-func (t treeStore) IterParent(child *TreeIter) (TreeIter, bool) {
-	return WrapTreeModel(gextras.InternObject(t)).IterParent(child)
-}
-
-func (t treeStore) IterPrevious(iter *TreeIter) bool {
-	return WrapTreeModel(gextras.InternObject(t)).IterPrevious(iter)
-}
-
-func (t treeStore) RefNode(iter *TreeIter) {
-	WrapTreeModel(gextras.InternObject(t)).RefNode(iter)
-}
-
-func (t treeStore) RowChanged(path *TreePath, iter *TreeIter) {
-	WrapTreeModel(gextras.InternObject(t)).RowChanged(path, iter)
-}
-
-func (t treeStore) RowDeleted(path *TreePath) {
-	WrapTreeModel(gextras.InternObject(t)).RowDeleted(path)
-}
-
-func (t treeStore) RowHasChildToggled(path *TreePath, iter *TreeIter) {
-	WrapTreeModel(gextras.InternObject(t)).RowHasChildToggled(path, iter)
-}
-
-func (t treeStore) RowInserted(path *TreePath, iter *TreeIter) {
-	WrapTreeModel(gextras.InternObject(t)).RowInserted(path, iter)
-}
-
-func (t treeStore) RowsReorderedWithLength(path *TreePath, iter *TreeIter, newOrder []int) {
-	WrapTreeModel(gextras.InternObject(t)).RowsReorderedWithLength(path, iter, newOrder)
-}
-
-func (t treeStore) UnrefNode(iter *TreeIter) {
-	WrapTreeModel(gextras.InternObject(t)).UnrefNode(iter)
+func (t treeStore) AsTreeSortable() TreeSortable {
+	return WrapTreeSortable(gextras.InternObject(t))
 }

@@ -110,90 +110,186 @@ func marshalNotebookTab(p uintptr) (interface{}, error) {
 type Notebook interface {
 	Widget
 
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
+
+	// AppendPageNotebook appends a page to @notebook.
 	AppendPageNotebook(child Widget, tabLabel Widget) int
-
+	// AppendPageMenuNotebook appends a page to @notebook, specifying the widget
+	// to use as the label in the popup menu.
 	AppendPageMenuNotebook(child Widget, tabLabel Widget, menuLabel Widget) int
-
+	// DetachTabNotebook removes the child from the notebook.
+	//
+	// This function is very similar to [method@Gtk.Notebook.remove_page], but
+	// additionally informs the notebook that the removal is happening as part
+	// of a tab DND operation, which should not be cancelled.
 	DetachTabNotebook(child Widget)
-
+	// ActionWidget gets one of the action widgets.
+	//
+	// See [method@Gtk.Notebook.set_action_widget].
 	ActionWidget(packType PackType) Widget
-
+	// CurrentPage returns the page number of the current page.
 	CurrentPage() int
-
+	// GroupName gets the current group name for @notebook.
 	GroupName() string
-
+	// MenuLabel retrieves the menu label widget of the page containing @child.
 	MenuLabel(child Widget) Widget
-
+	// MenuLabelText retrieves the text of the menu label for the page
+	// containing @child.
 	MenuLabelText(child Widget) string
-
+	// NPages gets the number of pages in a notebook.
 	NPages() int
-
+	// NthPage returns the child widget contained in page number @page_num.
 	NthPage(pageNum int) Widget
-
+	// Page returns the `GtkNotebookPage` for @child.
 	Page(child Widget) NotebookPage
-
+	// Scrollable returns whether the tab label area has arrows for scrolling.
 	Scrollable() bool
-
+	// ShowBorder returns whether a bevel will be drawn around the notebook
+	// pages.
 	ShowBorder() bool
-
+	// ShowTabs returns whether the tabs of the notebook are shown.
 	ShowTabs() bool
-
+	// TabDetachable returns whether the tab contents can be detached from
+	// @notebook.
 	TabDetachable(child Widget) bool
-
+	// TabLabel returns the tab label widget for the page @child.
+	//
+	// nil is returned if @child is not in @notebook or if no tab label has
+	// specifically been set for @child.
 	TabLabel(child Widget) Widget
-
+	// TabLabelText retrieves the text of the tab label for the page containing
+	// @child.
 	TabLabelText(child Widget) string
-
+	// TabPos gets the edge at which the tabs are drawn.
 	TabPos() PositionType
-
+	// TabReorderable gets whether the tab can be reordered via drag and drop or
+	// not.
 	TabReorderable(child Widget) bool
-
+	// InsertPageNotebook: insert a page into @notebook at the given position.
 	InsertPageNotebook(child Widget, tabLabel Widget, position int) int
-
+	// InsertPageMenuNotebook: insert a page into @notebook at the given
+	// position, specifying the widget to use as the label in the popup menu.
 	InsertPageMenuNotebook(child Widget, tabLabel Widget, menuLabel Widget, position int) int
-
+	// NextPageNotebook switches to the next page.
+	//
+	// Nothing happens if the current page is the last page.
 	NextPageNotebook()
-
+	// PageNumNotebook finds the index of the page which contains the given
+	// child widget.
 	PageNumNotebook(child Widget) int
-
+	// PopupDisableNotebook disables the popup menu.
 	PopupDisableNotebook()
-
+	// PopupEnableNotebook enables the popup menu.
+	//
+	// If the user clicks with the right mouse button on the tab labels, a menu
+	// with all the pages will be popped up.
 	PopupEnableNotebook()
-
+	// PrependPageNotebook prepends a page to @notebook.
 	PrependPageNotebook(child Widget, tabLabel Widget) int
-
+	// PrependPageMenuNotebook prepends a page to @notebook, specifying the
+	// widget to use as the label in the popup menu.
 	PrependPageMenuNotebook(child Widget, tabLabel Widget, menuLabel Widget) int
-
+	// PrevPageNotebook switches to the previous page.
+	//
+	// Nothing happens if the current page is the first page.
 	PrevPageNotebook()
-
+	// RemovePageNotebook removes a page from the notebook given its index in
+	// the notebook.
 	RemovePageNotebook(pageNum int)
-
+	// ReorderChildNotebook reorders the page containing @child, so that it
+	// appears in position @position.
+	//
+	// If @position is greater than or equal to the number of children in the
+	// list or negative, @child will be moved to the end of the list.
 	ReorderChildNotebook(child Widget, position int)
-
+	// SetActionWidgetNotebook sets @widget as one of the action widgets.
+	//
+	// Depending on the pack type the widget will be placed before or after the
+	// tabs. You can use a `GtkBox` if you need to pack more than one widget on
+	// the same side.
 	SetActionWidgetNotebook(widget Widget, packType PackType)
-
+	// SetCurrentPageNotebook switches to the page number @page_num.
+	//
+	// Note that due to historical reasons, GtkNotebook refuses to switch to a
+	// page unless the child widget is visible. Therefore, it is recommended to
+	// show child widgets before adding them to a notebook.
 	SetCurrentPageNotebook(pageNum int)
-
+	// SetGroupNameNotebook sets a group name for @notebook.
+	//
+	// Notebooks with the same name will be able to exchange tabs via drag and
+	// drop. A notebook with a nil group name will not be able to exchange tabs
+	// with any other notebook.
 	SetGroupNameNotebook(groupName string)
-
+	// SetMenuLabelNotebook changes the menu label for the page containing
+	// @child.
 	SetMenuLabelNotebook(child Widget, menuLabel Widget)
-
+	// SetMenuLabelTextNotebook creates a new label and sets it as the menu
+	// label of @child.
 	SetMenuLabelTextNotebook(child Widget, menuText string)
-
+	// SetScrollableNotebook sets whether the tab label area will have arrows
+	// for scrolling if there are too many tabs to fit in the area.
 	SetScrollableNotebook(scrollable bool)
-
+	// SetShowBorderNotebook sets whether a bevel will be drawn around the
+	// notebook pages.
+	//
+	// This only has a visual effect when the tabs are not shown.
 	SetShowBorderNotebook(showBorder bool)
-
+	// SetShowTabsNotebook sets whether to show the tabs for the notebook or
+	// not.
 	SetShowTabsNotebook(showTabs bool)
-
+	// SetTabDetachableNotebook sets whether the tab can be detached from
+	// @notebook to another notebook or widget.
+	//
+	// Note that two notebooks must share a common group identificator (see
+	// [method@Gtk.Notebook.set_group_name]) to allow automatic tabs interchange
+	// between them.
+	//
+	// If you want a widget to interact with a notebook through DnD (i.e.:
+	// accept dragged tabs from it) it must be set as a drop destination and
+	// accept the target “GTK_NOTEBOOK_TAB”. The notebook will fill the
+	// selection with a GtkWidget** pointing to the child widget that
+	// corresponds to the dropped tab.
+	//
+	// Note that you should use [method@Gtk.Notebook.detach_tab] instead of
+	// [method@Gtk.Notebook.remove_page] if you want to remove the tab from the
+	// source notebook as part of accepting a drop. Otherwise, the source
+	// notebook will think that the dragged tab was removed from underneath the
+	// ongoing drag operation, and will initiate a drag cancel animation.
+	//
+	// “`c static void on_drag_data_received (GtkWidget *widget, GdkDrop *drop,
+	// GtkSelectionData *data, guint time, gpointer user_data) { GtkDrag *drag;
+	// GtkWidget *notebook; GtkWidget **child;
+	//
+	//    drag = gtk_drop_get_drag (drop);
+	//    notebook = g_object_get_data (drag, "gtk-notebook-drag-origin");
+	//    child = (void*) gtk_selection_data_get_data (data);
+	//
+	//    // process_widget (*child);
+	//
+	//    gtk_notebook_detach_tab (GTK_NOTEBOOK (notebook), *child);
+	//
+	// } “`
+	//
+	// If you want a notebook to accept drags from other widgets, you will have
+	// to set your own DnD code to do it.
 	SetTabDetachableNotebook(child Widget, detachable bool)
-
+	// SetTabLabelNotebook changes the tab label for @child.
+	//
+	// If nil is specified for @tab_label, then the page will have the label
+	// “page N”.
 	SetTabLabelNotebook(child Widget, tabLabel Widget)
-
+	// SetTabLabelTextNotebook creates a new label and sets it as the tab label
+	// for the page containing @child.
 	SetTabLabelTextNotebook(child Widget, tabText string)
-
+	// SetTabPosNotebook sets the edge at which the tabs are drawn.
 	SetTabPosNotebook(pos PositionType)
-
+	// SetTabReorderableNotebook sets whether the notebook tab can be reordered
+	// via drag and drop or not.
 	SetTabReorderableNotebook(child Widget, reorderable bool)
 }
 
@@ -216,6 +312,7 @@ func marshalNotebook(p uintptr) (interface{}, error) {
 	return WrapNotebook(obj), nil
 }
 
+// NewNotebook creates a new `GtkNotebook` widget with no pages.
 func NewNotebook() Notebook {
 	var _cret *C.GtkWidget // in
 
@@ -223,7 +320,7 @@ func NewNotebook() Notebook {
 
 	var _notebook Notebook // out
 
-	_notebook = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Notebook)
+	_notebook = WrapNotebook(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _notebook
 }
@@ -858,42 +955,23 @@ func (n notebook) SetTabReorderableNotebook(child Widget, reorderable bool) {
 	C.gtk_notebook_set_tab_reorderable(_arg0, _arg1, _arg2)
 }
 
-func (s notebook) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
+func (n notebook) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(n))
 }
 
-func (s notebook) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
+func (n notebook) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(n))
 }
 
-func (s notebook) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
-}
-
-func (s notebook) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s notebook) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s notebook) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s notebook) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b notebook) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
+func (n notebook) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(n))
 }
 
 // NotebookPage: `GtkNotebookPage` is an auxiliary object used by `GtkNotebook`.
 type NotebookPage interface {
 	gextras.Objector
 
+	// Child returns the notebook child to which @page belongs.
 	Child() Widget
 }
 

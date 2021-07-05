@@ -35,22 +35,43 @@ func init() {
 // from a plain `GtkButton`, it gets the .scale style class.
 type ScaleButton interface {
 	Widget
-	Orientable
 
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
+	// AsOrientable casts the class to the Orientable interface.
+	AsOrientable() Orientable
+
+	// Adjustment gets the `GtkAdjustment` associated with the
+	// `GtkScaleButton`’s scale.
+	//
+	// See [method@Gtk.Range.get_adjustment] for details.
 	Adjustment() Adjustment
-
+	// MinusButton retrieves the minus button of the `GtkScaleButton`.
 	MinusButton() Button
-
+	// PlusButton retrieves the plus button of the `GtkScaleButton.`
 	PlusButton() Button
-
+	// Popup retrieves the popup of the `GtkScaleButton`.
 	Popup() Widget
-
+	// Value gets the current value of the scale button.
 	Value() float64
-
+	// SetAdjustmentScaleButton sets the `GtkAdjustment` to be used as a model
+	// for the `GtkScaleButton`’s scale.
+	//
+	// See [method@Gtk.Range.set_adjustment] for details.
 	SetAdjustmentScaleButton(adjustment Adjustment)
-
+	// SetIconsScaleButton sets the icons to be used by the scale button.
 	SetIconsScaleButton(icons []string)
-
+	// SetValueScaleButton sets the current value of the scale.
+	//
+	// If the value is outside the minimum or maximum range values, it will be
+	// clamped to fit inside them.
+	//
+	// The scale button emits the [signal@Gtk.ScaleButton::value-changed] signal
+	// if the value changes.
 	SetValueScaleButton(value float64)
 }
 
@@ -73,6 +94,10 @@ func marshalScaleButton(p uintptr) (interface{}, error) {
 	return WrapScaleButton(obj), nil
 }
 
+// NewScaleButton creates a `GtkScaleButton`.
+//
+// The new scale button has a range between @min and @max, with a stepping of
+// @step.
 func NewScaleButton(min float64, max float64, step float64, icons []string) ScaleButton {
 	var _arg1 C.double // out
 	var _arg2 C.double // out
@@ -97,7 +122,7 @@ func NewScaleButton(min float64, max float64, step float64, icons []string) Scal
 
 	var _scaleButton ScaleButton // out
 
-	_scaleButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ScaleButton)
+	_scaleButton = WrapScaleButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _scaleButton
 }
@@ -215,42 +240,18 @@ func (b scaleButton) SetValueScaleButton(value float64) {
 	C.gtk_scale_button_set_value(_arg0, _arg1)
 }
 
-func (s scaleButton) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
+func (s scaleButton) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(s))
 }
 
-func (s scaleButton) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
+func (s scaleButton) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(s))
 }
 
-func (s scaleButton) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
+func (s scaleButton) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(s))
 }
 
-func (s scaleButton) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s scaleButton) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s scaleButton) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s scaleButton) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b scaleButton) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
-}
-
-func (o scaleButton) Orientation() Orientation {
-	return WrapOrientable(gextras.InternObject(o)).Orientation()
-}
-
-func (o scaleButton) SetOrientation(orientation Orientation) {
-	WrapOrientable(gextras.InternObject(o)).SetOrientation(orientation)
+func (s scaleButton) AsOrientable() Orientable {
+	return WrapOrientable(gextras.InternObject(s))
 }

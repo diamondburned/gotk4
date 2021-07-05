@@ -8,7 +8,6 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -53,22 +52,69 @@ func init() {
 // the buffer.
 type BufferedInputStream interface {
 	FilterInputStream
-	Seekable
 
+	// AsSeekable casts the class to the Seekable interface.
+	AsSeekable() Seekable
+
+	// FillBufferedInputStream tries to read @count bytes from the stream into
+	// the buffer. Will block during this read.
+	//
+	// If @count is zero, returns zero and does nothing. A value of @count
+	// larger than G_MAXSSIZE will cause a G_IO_ERROR_INVALID_ARGUMENT error.
+	//
+	// On success, the number of bytes read into the buffer is returned. It is
+	// not an error if this is not the same as the requested size, as it can
+	// happen e.g. near the end of a file. Zero is returned on end of file (or
+	// if @count is zero), but never otherwise.
+	//
+	// If @count is -1 then the attempted read size is equal to the number of
+	// bytes that are required to fill the buffer.
+	//
+	// If @cancellable is not nil, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned. If an
+	// operation was partially finished when the operation was cancelled the
+	// partial result will be returned, without an error.
+	//
+	// On error -1 is returned and @error is set accordingly.
+	//
+	// For the asynchronous, non-blocking, version of this function, see
+	// g_buffered_input_stream_fill_async().
 	FillBufferedInputStream(count int, cancellable Cancellable) (int, error)
-
+	// FillAsyncBufferedInputStream reads data into @stream's buffer
+	// asynchronously, up to @count size. @io_priority can be used to prioritize
+	// reads. For the synchronous version of this function, see
+	// g_buffered_input_stream_fill().
+	//
+	// If @count is -1 then the attempted read size is equal to the number of
+	// bytes that are required to fill the buffer.
 	FillAsyncBufferedInputStream(count int, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
-
+	// FillFinishBufferedInputStream finishes an asynchronous read.
 	FillFinishBufferedInputStream(result AsyncResult) (int, error)
-
+	// Available gets the size of the available data within the stream.
 	Available() uint
-
+	// BufferSize gets the size of the input buffer.
 	BufferSize() uint
-
+	// PeekBufferedInputStream peeks in the buffer, copying data of size @count
+	// into @buffer, offset @offset bytes.
 	PeekBufferedInputStream(buffer []byte, offset uint) uint
-
+	// ReadByteBufferedInputStream tries to read a single byte from the stream
+	// or the buffer. Will block during this read.
+	//
+	// On success, the byte read from the stream is returned. On end of stream
+	// -1 is returned but it's not an exceptional error and @error is not set.
+	//
+	// If @cancellable is not nil, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned. If an
+	// operation was partially finished when the operation was cancelled the
+	// partial result will be returned, without an error.
+	//
+	// On error -1 is returned and @error is set accordingly.
 	ReadByteBufferedInputStream(cancellable Cancellable) (int, error)
-
+	// SetBufferSizeBufferedInputStream sets the size of the internal buffer of
+	// @stream to @size, or to the size of the contents of the buffer. The
+	// buffer can never be resized smaller than its current contents.
 	SetBufferSizeBufferedInputStream(size uint)
 }
 
@@ -91,6 +137,8 @@ func marshalBufferedInputStream(p uintptr) (interface{}, error) {
 	return WrapBufferedInputStream(obj), nil
 }
 
+// NewBufferedInputStream creates a new Stream from the given @base_stream, with
+// a buffer set to the default size (4 kilobytes).
 func NewBufferedInputStream(baseStream InputStream) BufferedInputStream {
 	var _arg1 *C.GInputStream // out
 	var _cret *C.GInputStream // in
@@ -101,11 +149,13 @@ func NewBufferedInputStream(baseStream InputStream) BufferedInputStream {
 
 	var _bufferedInputStream BufferedInputStream // out
 
-	_bufferedInputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(BufferedInputStream)
+	_bufferedInputStream = WrapBufferedInputStream(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _bufferedInputStream
 }
 
+// NewBufferedInputStreamSized creates a new InputStream from the given
+// @base_stream, with a buffer set to @size.
 func NewBufferedInputStreamSized(baseStream InputStream, size uint) BufferedInputStream {
 	var _arg1 *C.GInputStream // out
 	var _arg2 C.gsize         // out
@@ -118,7 +168,7 @@ func NewBufferedInputStreamSized(baseStream InputStream, size uint) BufferedInpu
 
 	var _bufferedInputStream BufferedInputStream // out
 
-	_bufferedInputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(BufferedInputStream)
+	_bufferedInputStream = WrapBufferedInputStream(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _bufferedInputStream
 }
@@ -128,7 +178,7 @@ func (s bufferedInputStream) FillBufferedInputStream(count int, cancellable Canc
 	var _arg1 C.gssize                // out
 	var _arg2 *C.GCancellable         // out
 	var _cret C.gssize                // in
-	var _cerr *C.GError               // in
+	var _cerr **C.GError              // in
 
 	_arg0 = (*C.GBufferedInputStream)(unsafe.Pointer(s.Native()))
 	_arg1 = C.gssize(count)
@@ -140,7 +190,16 @@ func (s bufferedInputStream) FillBufferedInputStream(count int, cancellable Canc
 	var _goerr error // out
 
 	_gssize = int(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _gssize, _goerr
 }
@@ -167,7 +226,7 @@ func (s bufferedInputStream) FillFinishBufferedInputStream(result AsyncResult) (
 	var _arg0 *C.GBufferedInputStream // out
 	var _arg1 *C.GAsyncResult         // out
 	var _cret C.gssize                // in
-	var _cerr *C.GError               // in
+	var _cerr **C.GError              // in
 
 	_arg0 = (*C.GBufferedInputStream)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
@@ -178,7 +237,16 @@ func (s bufferedInputStream) FillFinishBufferedInputStream(result AsyncResult) (
 	var _goerr error // out
 
 	_gssize = int(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _gssize, _goerr
 }
@@ -238,7 +306,7 @@ func (s bufferedInputStream) ReadByteBufferedInputStream(cancellable Cancellable
 	var _arg0 *C.GBufferedInputStream // out
 	var _arg1 *C.GCancellable         // out
 	var _cret C.int                   // in
-	var _cerr *C.GError               // in
+	var _cerr **C.GError              // in
 
 	_arg0 = (*C.GBufferedInputStream)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
@@ -249,7 +317,16 @@ func (s bufferedInputStream) ReadByteBufferedInputStream(cancellable Cancellable
 	var _goerr error // out
 
 	_gint = int(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _gint, _goerr
 }
@@ -264,22 +341,6 @@ func (s bufferedInputStream) SetBufferSizeBufferedInputStream(size uint) {
 	C.g_buffered_input_stream_set_buffer_size(_arg0, _arg1)
 }
 
-func (s bufferedInputStream) CanSeek() bool {
-	return WrapSeekable(gextras.InternObject(s)).CanSeek()
-}
-
-func (s bufferedInputStream) CanTruncate() bool {
-	return WrapSeekable(gextras.InternObject(s)).CanTruncate()
-}
-
-func (s bufferedInputStream) Seek(offset int64, typ glib.SeekType, cancellable Cancellable) error {
-	return WrapSeekable(gextras.InternObject(s)).Seek(offset, typ, cancellable)
-}
-
-func (s bufferedInputStream) Tell() int64 {
-	return WrapSeekable(gextras.InternObject(s)).Tell()
-}
-
-func (s bufferedInputStream) Truncate(offset int64, cancellable Cancellable) error {
-	return WrapSeekable(gextras.InternObject(s)).Truncate(offset, cancellable)
+func (b bufferedInputStream) AsSeekable() Seekable {
+	return WrapSeekable(gextras.InternObject(b))
 }

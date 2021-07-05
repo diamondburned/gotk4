@@ -5,9 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -26,8 +24,7 @@ func init() {
 	})
 }
 
-// ImageMenuItem: a GtkImageMenuItem is a menu item which has an icon next to
-// the text label.
+// ImageMenuItem is a menu item which has an icon next to the text label.
 //
 // This is functionally equivalent to:
 //
@@ -54,18 +51,57 @@ func init() {
 type ImageMenuItem interface {
 	MenuItem
 
+	// AsActionable casts the class to the Actionable interface.
+	AsActionable() Actionable
+	// AsActivatable casts the class to the Activatable interface.
+	AsActivatable() Activatable
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+
+	// AlwaysShowImage returns whether the menu item will ignore the
+	// Settings:gtk-menu-images setting and always show the image, if available.
+	//
+	// Deprecated: since version 3.10.
 	AlwaysShowImage() bool
-
+	// Image gets the widget that is currently set as the image of
+	// @image_menu_item. See gtk_image_menu_item_set_image().
+	//
+	// Deprecated: since version 3.10.
 	Image() Widget
-
+	// UseStock checks whether the label set in the menuitem is used as a stock
+	// id to select the stock item for the item.
+	//
+	// Deprecated: since version 3.10.
 	UseStock() bool
-
+	// SetAccelGroupImageMenuItem specifies an @accel_group to add the menu
+	// items accelerator to (this only applies to stock items so a stock item
+	// must already be set, make sure to call
+	// gtk_image_menu_item_set_use_stock() and gtk_menu_item_set_label() with a
+	// valid stock item first).
+	//
+	// If you want this menu item to have changeable accelerators then you
+	// shouldnt need this (see gtk_image_menu_item_new_from_stock()).
+	//
+	// Deprecated: since version 3.10.
 	SetAccelGroupImageMenuItem(accelGroup AccelGroup)
-
+	// SetAlwaysShowImageImageMenuItem: if true, the menu item will ignore the
+	// Settings:gtk-menu-images setting and always show the image, if available.
+	//
+	// Use this property if the menuitem would be useless or hard to use without
+	// the image.
+	//
+	// Deprecated: since version 3.10.
 	SetAlwaysShowImageImageMenuItem(alwaysShow bool)
-
+	// SetImageImageMenuItem sets the image of @image_menu_item to the given
+	// widget. Note that it depends on the show-menu-images setting whether the
+	// image will be displayed or not.
+	//
+	// Deprecated: since version 3.10.
 	SetImageImageMenuItem(image Widget)
-
+	// SetUseStockImageMenuItem: if true, the label set in the menuitem is used
+	// as a stock id to select the stock item for the item.
+	//
+	// Deprecated: since version 3.10.
 	SetUseStockImageMenuItem(useStock bool)
 }
 
@@ -88,6 +124,9 @@ func marshalImageMenuItem(p uintptr) (interface{}, error) {
 	return WrapImageMenuItem(obj), nil
 }
 
+// NewImageMenuItem creates a new ImageMenuItem with an empty label.
+//
+// Deprecated: since version 3.10.
 func NewImageMenuItem() ImageMenuItem {
 	var _cret *C.GtkWidget // in
 
@@ -95,11 +134,22 @@ func NewImageMenuItem() ImageMenuItem {
 
 	var _imageMenuItem ImageMenuItem // out
 
-	_imageMenuItem = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ImageMenuItem)
+	_imageMenuItem = WrapImageMenuItem(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _imageMenuItem
 }
 
+// NewImageMenuItemFromStock creates a new ImageMenuItem containing the image
+// and text from a stock item. Some stock ids have preprocessor macros like
+// K_STOCK_OK and K_STOCK_APPLY.
+//
+// If you want this menu item to have changeable accelerators, then pass in nil
+// for accel_group. Next call gtk_menu_item_set_accel_path() with an appropriate
+// path for the menu item, use gtk_stock_lookup() to look up the standard
+// accelerator for the stock item, and if one is found, call
+// gtk_accel_map_add_entry() to register it.
+//
+// Deprecated: since version 3.10.
 func NewImageMenuItemFromStock(stockId string, accelGroup AccelGroup) ImageMenuItem {
 	var _arg1 *C.gchar         // out
 	var _arg2 *C.GtkAccelGroup // out
@@ -113,11 +163,14 @@ func NewImageMenuItemFromStock(stockId string, accelGroup AccelGroup) ImageMenuI
 
 	var _imageMenuItem ImageMenuItem // out
 
-	_imageMenuItem = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ImageMenuItem)
+	_imageMenuItem = WrapImageMenuItem(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _imageMenuItem
 }
 
+// NewImageMenuItemWithLabel creates a new ImageMenuItem containing a label.
+//
+// Deprecated: since version 3.10.
 func NewImageMenuItemWithLabel(label string) ImageMenuItem {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -129,11 +182,16 @@ func NewImageMenuItemWithLabel(label string) ImageMenuItem {
 
 	var _imageMenuItem ImageMenuItem // out
 
-	_imageMenuItem = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ImageMenuItem)
+	_imageMenuItem = WrapImageMenuItem(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _imageMenuItem
 }
 
+// NewImageMenuItemWithMnemonic creates a new ImageMenuItem containing a label.
+// The label will be created using gtk_label_new_with_mnemonic(), so underscores
+// in @label indicate the mnemonic for the menu item.
+//
+// Deprecated: since version 3.10.
 func NewImageMenuItemWithMnemonic(label string) ImageMenuItem {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -145,7 +203,7 @@ func NewImageMenuItemWithMnemonic(label string) ImageMenuItem {
 
 	var _imageMenuItem ImageMenuItem // out
 
-	_imageMenuItem = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ImageMenuItem)
+	_imageMenuItem = WrapImageMenuItem(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _imageMenuItem
 }
@@ -243,126 +301,14 @@ func (i imageMenuItem) SetUseStockImageMenuItem(useStock bool) {
 	C.gtk_image_menu_item_set_use_stock(_arg0, _arg1)
 }
 
-func (b imageMenuItem) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+func (i imageMenuItem) AsActionable() Actionable {
+	return WrapActionable(gextras.InternObject(i))
 }
 
-func (b imageMenuItem) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+func (i imageMenuItem) AsActivatable() Activatable {
+	return WrapActivatable(gextras.InternObject(i))
 }
 
-func (b imageMenuItem) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b imageMenuItem) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b imageMenuItem) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b imageMenuItem) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b imageMenuItem) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b imageMenuItem) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b imageMenuItem) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b imageMenuItem) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (a imageMenuItem) ActionName() string {
-	return WrapActionable(gextras.InternObject(a)).ActionName()
-}
-
-func (a imageMenuItem) ActionTargetValue() *glib.Variant {
-	return WrapActionable(gextras.InternObject(a)).ActionTargetValue()
-}
-
-func (a imageMenuItem) SetActionName(actionName string) {
-	WrapActionable(gextras.InternObject(a)).SetActionName(actionName)
-}
-
-func (a imageMenuItem) SetActionTargetValue(targetValue *glib.Variant) {
-	WrapActionable(gextras.InternObject(a)).SetActionTargetValue(targetValue)
-}
-
-func (a imageMenuItem) SetDetailedActionName(detailedActionName string) {
-	WrapActionable(gextras.InternObject(a)).SetDetailedActionName(detailedActionName)
-}
-
-func (b imageMenuItem) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
-}
-
-func (b imageMenuItem) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b imageMenuItem) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b imageMenuItem) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b imageMenuItem) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b imageMenuItem) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b imageMenuItem) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b imageMenuItem) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b imageMenuItem) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b imageMenuItem) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (a imageMenuItem) DoSetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).DoSetRelatedAction(action)
-}
-
-func (a imageMenuItem) RelatedAction() Action {
-	return WrapActivatable(gextras.InternObject(a)).RelatedAction()
-}
-
-func (a imageMenuItem) UseActionAppearance() bool {
-	return WrapActivatable(gextras.InternObject(a)).UseActionAppearance()
-}
-
-func (a imageMenuItem) SetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SetRelatedAction(action)
-}
-
-func (a imageMenuItem) SetUseActionAppearance(useAppearance bool) {
-	WrapActivatable(gextras.InternObject(a)).SetUseActionAppearance(useAppearance)
-}
-
-func (a imageMenuItem) SyncActionProperties(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SyncActionProperties(action)
+func (i imageMenuItem) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(i))
 }

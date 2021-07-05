@@ -48,8 +48,18 @@ func init() {
 type UnixFDMessage interface {
 	SocketControlMessage
 
+	// AppendFdUnixFDMessage adds a file descriptor to @message.
+	//
+	// The file descriptor is duplicated using dup(). You keep your copy of the
+	// descriptor and the copy contained in @message will be closed when
+	// @message is finalized.
+	//
+	// A possible cause of failure is exceeding the per-process or system-wide
+	// file descriptor limit.
 	AppendFdUnixFDMessage(fd int) error
-
+	// FdList gets the FDList contained in @message. This function does not
+	// return a reference to the caller, but the returned list is valid for the
+	// lifetime of @message.
 	FdList() UnixFDList
 }
 
@@ -72,6 +82,8 @@ func marshalUnixFDMessage(p uintptr) (interface{}, error) {
 	return WrapUnixFDMessage(obj), nil
 }
 
+// NewUnixFDMessage creates a new FDMessage containing an empty file descriptor
+// list.
 func NewUnixFDMessage() UnixFDMessage {
 	var _cret *C.GSocketControlMessage // in
 
@@ -79,11 +91,12 @@ func NewUnixFDMessage() UnixFDMessage {
 
 	var _unixFDMessage UnixFDMessage // out
 
-	_unixFDMessage = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(UnixFDMessage)
+	_unixFDMessage = WrapUnixFDMessage(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _unixFDMessage
 }
 
+// NewUnixFDMessageWithFdList creates a new FDMessage containing @list.
 func NewUnixFDMessageWithFdList(fdList UnixFDList) UnixFDMessage {
 	var _arg1 *C.GUnixFDList           // out
 	var _cret *C.GSocketControlMessage // in
@@ -94,7 +107,7 @@ func NewUnixFDMessageWithFdList(fdList UnixFDList) UnixFDMessage {
 
 	var _unixFDMessage UnixFDMessage // out
 
-	_unixFDMessage = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(UnixFDMessage)
+	_unixFDMessage = WrapUnixFDMessage(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _unixFDMessage
 }
@@ -102,7 +115,7 @@ func NewUnixFDMessageWithFdList(fdList UnixFDList) UnixFDMessage {
 func (m unixFDMessage) AppendFdUnixFDMessage(fd int) error {
 	var _arg0 *C.GUnixFDMessage // out
 	var _arg1 C.gint            // out
-	var _cerr *C.GError         // in
+	var _cerr **C.GError        // in
 
 	_arg0 = (*C.GUnixFDMessage)(unsafe.Pointer(m.Native()))
 	_arg1 = C.gint(fd)
@@ -111,7 +124,16 @@ func (m unixFDMessage) AppendFdUnixFDMessage(fd int) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _goerr
 }

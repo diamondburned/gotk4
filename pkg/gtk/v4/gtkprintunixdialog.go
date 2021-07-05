@@ -6,8 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/gdk/v4"
-	"github.com/diamondburned/gotk4/pkg/gsk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -68,38 +66,74 @@ func init() {
 type PrintUnixDialog interface {
 	Dialog
 
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
+	// AsNative casts the class to the Native interface.
+	AsNative() Native
+	// AsRoot casts the class to the Root interface.
+	AsRoot() Root
+	// AsShortcutManager casts the class to the ShortcutManager interface.
+	AsShortcutManager() ShortcutManager
+
+	// AddCustomTabPrintUnixDialog adds a custom tab to the print dialog.
 	AddCustomTabPrintUnixDialog(child Widget, tabLabel Widget)
-
+	// CurrentPage gets the current page of the `GtkPrintUnixDialog`.
 	CurrentPage() int
-
+	// EmbedPageSetup gets whether to embed the page setup.
 	EmbedPageSetup() bool
-
+	// HasSelection gets whether there is a selection.
 	HasSelection() bool
-
+	// ManualCapabilities gets the capabilities that have been set on this
+	// `GtkPrintUnixDialog`.
 	ManualCapabilities() PrintCapabilities
-
+	// PageSetup gets the page setup that is used by the `GtkPrintUnixDialog`.
 	PageSetup() PageSetup
-
+	// PageSetupSet gets whether a page setup was set by the user.
 	PageSetupSet() bool
-
+	// SelectedPrinter gets the currently selected printer.
 	SelectedPrinter() Printer
-
+	// Settings gets a new `GtkPrintSettings` object that represents the current
+	// values in the print dialog.
+	//
+	// Note that this creates a new object, and you need to unref it if don’t
+	// want to keep it.
 	Settings() PrintSettings
-
+	// SupportSelection gets whether the print dialog allows user to print a
+	// selection.
 	SupportSelection() bool
-
+	// SetCurrentPagePrintUnixDialog sets the current page number.
+	//
+	// If @current_page is not -1, this enables the current page choice for the
+	// range of pages to print.
 	SetCurrentPagePrintUnixDialog(currentPage int)
-
+	// SetEmbedPageSetupPrintUnixDialog: embed page size combo box and
+	// orientation combo box into page setup page.
 	SetEmbedPageSetupPrintUnixDialog(embed bool)
-
+	// SetHasSelectionPrintUnixDialog sets whether a selection exists.
 	SetHasSelectionPrintUnixDialog(hasSelection bool)
-
+	// SetManualCapabilitiesPrintUnixDialog: this lets you specify the printing
+	// capabilities your application supports.
+	//
+	// For instance, if you can handle scaling the output then you pass
+	// GTK_PRINT_CAPABILITY_SCALE. If you don’t pass that, then the dialog will
+	// only let you select the scale if the printing system automatically
+	// handles scaling.
 	SetManualCapabilitiesPrintUnixDialog(capabilities PrintCapabilities)
-
+	// SetPageSetupPrintUnixDialog sets the page setup of the
+	// `GtkPrintUnixDialog`.
 	SetPageSetupPrintUnixDialog(pageSetup PageSetup)
-
+	// SetSettingsPrintUnixDialog sets the `GtkPrintSettings` for the
+	// `GtkPrintUnixDialog`.
+	//
+	// Typically, this is used to restore saved print settings from a previous
+	// print operation before the print dialog is shown.
 	SetSettingsPrintUnixDialog(settings PrintSettings)
-
+	// SetSupportSelectionPrintUnixDialog sets whether the print dialog allows
+	// user to print a selection.
 	SetSupportSelectionPrintUnixDialog(supportSelection bool)
 }
 
@@ -122,6 +156,7 @@ func marshalPrintUnixDialog(p uintptr) (interface{}, error) {
 	return WrapPrintUnixDialog(obj), nil
 }
 
+// NewPrintUnixDialog creates a new `GtkPrintUnixDialog`.
 func NewPrintUnixDialog(title string, parent Window) PrintUnixDialog {
 	var _arg1 *C.char      // out
 	var _arg2 *C.GtkWindow // out
@@ -135,7 +170,7 @@ func NewPrintUnixDialog(title string, parent Window) PrintUnixDialog {
 
 	var _printUnixDialog PrintUnixDialog // out
 
-	_printUnixDialog = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(PrintUnixDialog)
+	_printUnixDialog = WrapPrintUnixDialog(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _printUnixDialog
 }
@@ -371,66 +406,26 @@ func (d printUnixDialog) SetSupportSelectionPrintUnixDialog(supportSelection boo
 	C.gtk_print_unix_dialog_set_support_selection(_arg0, _arg1)
 }
 
-func (s printUnixDialog) Display() gdk.Display {
-	return WrapRoot(gextras.InternObject(s)).Display()
+func (p printUnixDialog) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(p))
 }
 
-func (s printUnixDialog) Focus() Widget {
-	return WrapRoot(gextras.InternObject(s)).Focus()
+func (p printUnixDialog) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(p))
 }
 
-func (s printUnixDialog) SetFocus(focus Widget) {
-	WrapRoot(gextras.InternObject(s)).SetFocus(focus)
+func (p printUnixDialog) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(p))
 }
 
-func (s printUnixDialog) Renderer() gsk.Renderer {
-	return WrapNative(gextras.InternObject(s)).Renderer()
+func (p printUnixDialog) AsNative() Native {
+	return WrapNative(gextras.InternObject(p))
 }
 
-func (s printUnixDialog) Surface() gdk.Surface {
-	return WrapNative(gextras.InternObject(s)).Surface()
+func (p printUnixDialog) AsRoot() Root {
+	return WrapRoot(gextras.InternObject(p))
 }
 
-func (s printUnixDialog) SurfaceTransform() (x float64, y float64) {
-	return WrapNative(gextras.InternObject(s)).SurfaceTransform()
-}
-
-func (s printUnixDialog) Realize() {
-	WrapNative(gextras.InternObject(s)).Realize()
-}
-
-func (s printUnixDialog) Unrealize() {
-	WrapNative(gextras.InternObject(s)).Unrealize()
-}
-
-func (s printUnixDialog) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
-}
-
-func (s printUnixDialog) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
-}
-
-func (s printUnixDialog) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
-}
-
-func (s printUnixDialog) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s printUnixDialog) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s printUnixDialog) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s printUnixDialog) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b printUnixDialog) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
+func (p printUnixDialog) AsShortcutManager() ShortcutManager {
+	return WrapShortcutManager(gextras.InternObject(p))
 }

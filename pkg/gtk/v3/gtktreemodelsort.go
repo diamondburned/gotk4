@@ -6,7 +6,6 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -18,8 +17,6 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-//
-// gboolean gotk4_TreeModelForeachFunc(GtkTreeModel*, GtkTreePath*, GtkTreeIter*, gpointer);
 import "C"
 
 func init() {
@@ -85,23 +82,53 @@ func init() {
 //      g_free (modified_data);
 //    }
 type TreeModelSort interface {
-	TreeDragSource
-	TreeSortable
+	gextras.Objector
 
+	// AsTreeDragSource casts the class to the TreeDragSource interface.
+	AsTreeDragSource() TreeDragSource
+	// AsTreeModel casts the class to the TreeModel interface.
+	AsTreeModel() TreeModel
+	// AsTreeSortable casts the class to the TreeSortable interface.
+	AsTreeSortable() TreeSortable
+
+	// ClearCacheTreeModelSort: this function should almost never be called. It
+	// clears the @tree_model_sort of any cached iterators that haven’t been
+	// reffed with gtk_tree_model_ref_node(). This might be useful if the child
+	// model being sorted is static (and doesn’t change often) and there has
+	// been a lot of unreffed access to nodes. As a side effect of this
+	// function, all unreffed iters will be invalid.
 	ClearCacheTreeModelSort()
-
-	ConvertChildIterToIterTreeModelSort(childIter *TreeIter) (TreeIter, bool)
-
-	ConvertChildPathToPathTreeModelSort(childPath *TreePath) *TreePath
-
-	ConvertIterToChildIterTreeModelSort(sortedIter *TreeIter) TreeIter
-
-	ConvertPathToChildPathTreeModelSort(sortedPath *TreePath) *TreePath
-
+	// ConvertChildIterToIterTreeModelSort sets @sort_iter to point to the row
+	// in @tree_model_sort that corresponds to the row pointed at by
+	// @child_iter. If @sort_iter was not set, false is returned. Note: a
+	// boolean is only returned since 2.14.
+	ConvertChildIterToIterTreeModelSort(childIter TreeIter) (TreeIter, bool)
+	// ConvertChildPathToPathTreeModelSort converts @child_path to a path
+	// relative to @tree_model_sort. That is, @child_path points to a path in
+	// the child model. The returned path will point to the same row in the
+	// sorted model. If @child_path isn’t a valid path on the child model, then
+	// nil is returned.
+	ConvertChildPathToPathTreeModelSort(childPath TreePath) TreePath
+	// ConvertIterToChildIterTreeModelSort sets @child_iter to point to the row
+	// pointed to by @sorted_iter.
+	ConvertIterToChildIterTreeModelSort(sortedIter TreeIter) TreeIter
+	// ConvertPathToChildPathTreeModelSort converts @sorted_path to a path on
+	// the child model of @tree_model_sort. That is, @sorted_path points to a
+	// location in @tree_model_sort. The returned path will point to the same
+	// location in the model not being sorted. If @sorted_path does not point to
+	// a location in the child model, nil is returned.
+	ConvertPathToChildPathTreeModelSort(sortedPath TreePath) TreePath
+	// Model returns the model the TreeModelSort is sorting.
 	Model() TreeModel
-
-	IterIsValidTreeModelSort(iter *TreeIter) bool
-
+	// IterIsValidTreeModelSort: > This function is slow. Only use it for
+	// debugging and/or testing > purposes.
+	//
+	// Checks if the given iter is a valid iter for this TreeModelSort.
+	IterIsValidTreeModelSort(iter TreeIter) bool
+	// ResetDefaultSortFuncTreeModelSort: this resets the default sort function
+	// to be in the “unsorted” state. That is, it is in the same order as the
+	// child model. It will re-sort the model to be in the same order as the
+	// child model only if the TreeModelSort is in “unsorted” state.
 	ResetDefaultSortFuncTreeModelSort()
 }
 
@@ -124,6 +151,8 @@ func marshalTreeModelSort(p uintptr) (interface{}, error) {
 	return WrapTreeModelSort(obj), nil
 }
 
+// NewTreeModelSortWithModel creates a new TreeModelSort, with @child_model as
+// the child model.
 func NewTreeModelSortWithModel(childModel TreeModel) TreeModelSort {
 	var _arg1 *C.GtkTreeModel // out
 	var _cret *C.GtkTreeModel // in
@@ -134,7 +163,7 @@ func NewTreeModelSortWithModel(childModel TreeModel) TreeModelSort {
 
 	var _treeModelSort TreeModelSort // out
 
-	_treeModelSort = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(TreeModelSort)
+	_treeModelSort = WrapTreeModelSort(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _treeModelSort
 }
@@ -147,31 +176,21 @@ func (t treeModelSort) ClearCacheTreeModelSort() {
 	C.gtk_tree_model_sort_clear_cache(_arg0)
 }
 
-func (t treeModelSort) ConvertChildIterToIterTreeModelSort(childIter *TreeIter) (TreeIter, bool) {
+func (t treeModelSort) ConvertChildIterToIterTreeModelSort(childIter TreeIter) (TreeIter, bool) {
 	var _arg0 *C.GtkTreeModelSort // out
-	var _arg1 C.GtkTreeIter       // in
+	var _arg1 *C.GtkTreeIter      // in
 	var _arg2 *C.GtkTreeIter      // out
 	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GtkTreeModelSort)(unsafe.Pointer(t.Native()))
-	_arg2 = (*C.GtkTreeIter)(unsafe.Pointer(childIter.Native()))
+	_arg2 = (*C.GtkTreeIter)(unsafe.Pointer(childIter))
 
 	_cret = C.gtk_tree_model_sort_convert_child_iter_to_iter(_arg0, &_arg1, _arg2)
 
 	var _sortIter TreeIter // out
 	var _ok bool           // out
 
-	{
-		var refTmpIn *C.GtkTreeIter
-		var refTmpOut *TreeIter
-
-		in0 := &_arg1
-		refTmpIn = in0
-
-		refTmpOut = (*TreeIter)(unsafe.Pointer(refTmpIn))
-
-		_sortIter = *refTmpOut
-	}
+	_sortIter = (TreeIter)(unsafe.Pointer(_arg1))
 	if _cret != 0 {
 		_ok = true
 	}
@@ -179,68 +198,58 @@ func (t treeModelSort) ConvertChildIterToIterTreeModelSort(childIter *TreeIter) 
 	return _sortIter, _ok
 }
 
-func (t treeModelSort) ConvertChildPathToPathTreeModelSort(childPath *TreePath) *TreePath {
+func (t treeModelSort) ConvertChildPathToPathTreeModelSort(childPath TreePath) TreePath {
 	var _arg0 *C.GtkTreeModelSort // out
 	var _arg1 *C.GtkTreePath      // out
 	var _cret *C.GtkTreePath      // in
 
 	_arg0 = (*C.GtkTreeModelSort)(unsafe.Pointer(t.Native()))
-	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(childPath.Native()))
+	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(childPath))
 
 	_cret = C.gtk_tree_model_sort_convert_child_path_to_path(_arg0, _arg1)
 
-	var _treePath *TreePath // out
+	var _treePath TreePath // out
 
-	_treePath = (*TreePath)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(&_treePath, func(v **TreePath) {
-		C.free(unsafe.Pointer(v))
+	_treePath = (TreePath)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_treePath, func(v TreePath) {
+		C.gtk_tree_path_free((*C.GtkTreePath)(unsafe.Pointer(v)))
 	})
 
 	return _treePath
 }
 
-func (t treeModelSort) ConvertIterToChildIterTreeModelSort(sortedIter *TreeIter) TreeIter {
+func (t treeModelSort) ConvertIterToChildIterTreeModelSort(sortedIter TreeIter) TreeIter {
 	var _arg0 *C.GtkTreeModelSort // out
-	var _arg1 C.GtkTreeIter       // in
+	var _arg1 *C.GtkTreeIter      // in
 	var _arg2 *C.GtkTreeIter      // out
 
 	_arg0 = (*C.GtkTreeModelSort)(unsafe.Pointer(t.Native()))
-	_arg2 = (*C.GtkTreeIter)(unsafe.Pointer(sortedIter.Native()))
+	_arg2 = (*C.GtkTreeIter)(unsafe.Pointer(sortedIter))
 
 	C.gtk_tree_model_sort_convert_iter_to_child_iter(_arg0, &_arg1, _arg2)
 
 	var _childIter TreeIter // out
 
-	{
-		var refTmpIn *C.GtkTreeIter
-		var refTmpOut *TreeIter
-
-		in0 := &_arg1
-		refTmpIn = in0
-
-		refTmpOut = (*TreeIter)(unsafe.Pointer(refTmpIn))
-
-		_childIter = *refTmpOut
-	}
+	_childIter = (TreeIter)(unsafe.Pointer(_arg1))
 
 	return _childIter
 }
 
-func (t treeModelSort) ConvertPathToChildPathTreeModelSort(sortedPath *TreePath) *TreePath {
+func (t treeModelSort) ConvertPathToChildPathTreeModelSort(sortedPath TreePath) TreePath {
 	var _arg0 *C.GtkTreeModelSort // out
 	var _arg1 *C.GtkTreePath      // out
 	var _cret *C.GtkTreePath      // in
 
 	_arg0 = (*C.GtkTreeModelSort)(unsafe.Pointer(t.Native()))
-	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(sortedPath.Native()))
+	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(sortedPath))
 
 	_cret = C.gtk_tree_model_sort_convert_path_to_child_path(_arg0, _arg1)
 
-	var _treePath *TreePath // out
+	var _treePath TreePath // out
 
-	_treePath = (*TreePath)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(&_treePath, func(v **TreePath) {
-		C.free(unsafe.Pointer(v))
+	_treePath = (TreePath)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_treePath, func(v TreePath) {
+		C.gtk_tree_path_free((*C.GtkTreePath)(unsafe.Pointer(v)))
 	})
 
 	return _treePath
@@ -261,13 +270,13 @@ func (t treeModelSort) Model() TreeModel {
 	return _treeModel
 }
 
-func (t treeModelSort) IterIsValidTreeModelSort(iter *TreeIter) bool {
+func (t treeModelSort) IterIsValidTreeModelSort(iter TreeIter) bool {
 	var _arg0 *C.GtkTreeModelSort // out
 	var _arg1 *C.GtkTreeIter      // out
 	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GtkTreeModelSort)(unsafe.Pointer(t.Native()))
-	_arg1 = (*C.GtkTreeIter)(unsafe.Pointer(iter.Native()))
+	_arg1 = (*C.GtkTreeIter)(unsafe.Pointer(iter))
 
 	_cret = C.gtk_tree_model_sort_iter_is_valid(_arg0, _arg1)
 
@@ -288,130 +297,14 @@ func (t treeModelSort) ResetDefaultSortFuncTreeModelSort() {
 	C.gtk_tree_model_sort_reset_default_sort_func(_arg0)
 }
 
-func (d treeModelSort) DragDataDelete(path *TreePath) bool {
-	return WrapTreeDragSource(gextras.InternObject(d)).DragDataDelete(path)
+func (t treeModelSort) AsTreeDragSource() TreeDragSource {
+	return WrapTreeDragSource(gextras.InternObject(t))
 }
 
-func (d treeModelSort) DragDataGet(path *TreePath, selectionData *SelectionData) bool {
-	return WrapTreeDragSource(gextras.InternObject(d)).DragDataGet(path, selectionData)
+func (t treeModelSort) AsTreeModel() TreeModel {
+	return WrapTreeModel(gextras.InternObject(t))
 }
 
-func (d treeModelSort) RowDraggable(path *TreePath) bool {
-	return WrapTreeDragSource(gextras.InternObject(d)).RowDraggable(path)
-}
-
-func (s treeModelSort) SortColumnID() (int, SortType, bool) {
-	return WrapTreeSortable(gextras.InternObject(s)).SortColumnID()
-}
-
-func (s treeModelSort) HasDefaultSortFunc() bool {
-	return WrapTreeSortable(gextras.InternObject(s)).HasDefaultSortFunc()
-}
-
-func (s treeModelSort) SetSortColumnID(sortColumnId int, order SortType) {
-	WrapTreeSortable(gextras.InternObject(s)).SetSortColumnID(sortColumnId, order)
-}
-
-func (s treeModelSort) SortColumnChanged() {
-	WrapTreeSortable(gextras.InternObject(s)).SortColumnChanged()
-}
-
-func (t treeModelSort) NewFilter(root *TreePath) TreeModel {
-	return WrapTreeModel(gextras.InternObject(t)).NewFilter(root)
-}
-
-func (t treeModelSort) Foreach(fn TreeModelForeachFunc) {
-	WrapTreeModel(gextras.InternObject(t)).Foreach(fn)
-}
-
-func (t treeModelSort) ColumnType(index_ int) externglib.Type {
-	return WrapTreeModel(gextras.InternObject(t)).ColumnType(index_)
-}
-
-func (t treeModelSort) Flags() TreeModelFlags {
-	return WrapTreeModel(gextras.InternObject(t)).Flags()
-}
-
-func (t treeModelSort) Iter(path *TreePath) (TreeIter, bool) {
-	return WrapTreeModel(gextras.InternObject(t)).Iter(path)
-}
-
-func (t treeModelSort) IterFirst() (TreeIter, bool) {
-	return WrapTreeModel(gextras.InternObject(t)).IterFirst()
-}
-
-func (t treeModelSort) IterFromString(pathString string) (TreeIter, bool) {
-	return WrapTreeModel(gextras.InternObject(t)).IterFromString(pathString)
-}
-
-func (t treeModelSort) NColumns() int {
-	return WrapTreeModel(gextras.InternObject(t)).NColumns()
-}
-
-func (t treeModelSort) Path(iter *TreeIter) *TreePath {
-	return WrapTreeModel(gextras.InternObject(t)).Path(iter)
-}
-
-func (t treeModelSort) StringFromIter(iter *TreeIter) string {
-	return WrapTreeModel(gextras.InternObject(t)).StringFromIter(iter)
-}
-
-func (t treeModelSort) Value(iter *TreeIter, column int) externglib.Value {
-	return WrapTreeModel(gextras.InternObject(t)).Value(iter, column)
-}
-
-func (t treeModelSort) IterChildren(parent *TreeIter) (TreeIter, bool) {
-	return WrapTreeModel(gextras.InternObject(t)).IterChildren(parent)
-}
-
-func (t treeModelSort) IterHasChild(iter *TreeIter) bool {
-	return WrapTreeModel(gextras.InternObject(t)).IterHasChild(iter)
-}
-
-func (t treeModelSort) IterNChildren(iter *TreeIter) int {
-	return WrapTreeModel(gextras.InternObject(t)).IterNChildren(iter)
-}
-
-func (t treeModelSort) IterNext(iter *TreeIter) bool {
-	return WrapTreeModel(gextras.InternObject(t)).IterNext(iter)
-}
-
-func (t treeModelSort) IterNthChild(parent *TreeIter, n int) (TreeIter, bool) {
-	return WrapTreeModel(gextras.InternObject(t)).IterNthChild(parent, n)
-}
-
-func (t treeModelSort) IterParent(child *TreeIter) (TreeIter, bool) {
-	return WrapTreeModel(gextras.InternObject(t)).IterParent(child)
-}
-
-func (t treeModelSort) IterPrevious(iter *TreeIter) bool {
-	return WrapTreeModel(gextras.InternObject(t)).IterPrevious(iter)
-}
-
-func (t treeModelSort) RefNode(iter *TreeIter) {
-	WrapTreeModel(gextras.InternObject(t)).RefNode(iter)
-}
-
-func (t treeModelSort) RowChanged(path *TreePath, iter *TreeIter) {
-	WrapTreeModel(gextras.InternObject(t)).RowChanged(path, iter)
-}
-
-func (t treeModelSort) RowDeleted(path *TreePath) {
-	WrapTreeModel(gextras.InternObject(t)).RowDeleted(path)
-}
-
-func (t treeModelSort) RowHasChildToggled(path *TreePath, iter *TreeIter) {
-	WrapTreeModel(gextras.InternObject(t)).RowHasChildToggled(path, iter)
-}
-
-func (t treeModelSort) RowInserted(path *TreePath, iter *TreeIter) {
-	WrapTreeModel(gextras.InternObject(t)).RowInserted(path, iter)
-}
-
-func (t treeModelSort) RowsReorderedWithLength(path *TreePath, iter *TreeIter, newOrder []int) {
-	WrapTreeModel(gextras.InternObject(t)).RowsReorderedWithLength(path, iter, newOrder)
-}
-
-func (t treeModelSort) UnrefNode(iter *TreeIter) {
-	WrapTreeModel(gextras.InternObject(t)).UnrefNode(iter)
+func (t treeModelSort) AsTreeSortable() TreeSortable {
+	return WrapTreeSortable(gextras.InternObject(t))
 }

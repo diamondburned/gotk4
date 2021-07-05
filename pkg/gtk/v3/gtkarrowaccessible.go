@@ -27,7 +27,9 @@ func init() {
 
 type ArrowAccessible interface {
 	WidgetAccessible
-	atk.Image
+
+	// AsImage casts the class to the atk.Image interface.
+	AsImage() atk.Image
 }
 
 // arrowAccessible implements the ArrowAccessible class.
@@ -49,22 +51,6 @@ func marshalArrowAccessible(p uintptr) (interface{}, error) {
 	return WrapArrowAccessible(obj), nil
 }
 
-func (i arrowAccessible) ImageDescription() string {
-	return atk.WrapImage(gextras.InternObject(i)).ImageDescription()
-}
-
-func (i arrowAccessible) ImageLocale() string {
-	return atk.WrapImage(gextras.InternObject(i)).ImageLocale()
-}
-
-func (i arrowAccessible) ImagePosition(coordType atk.CoordType) (x int, y int) {
-	return atk.WrapImage(gextras.InternObject(i)).ImagePosition(coordType)
-}
-
-func (i arrowAccessible) ImageSize() (width int, height int) {
-	return atk.WrapImage(gextras.InternObject(i)).ImageSize()
-}
-
-func (i arrowAccessible) SetImageDescription(description string) bool {
-	return atk.WrapImage(gextras.InternObject(i)).SetImageDescription(description)
+func (a arrowAccessible) AsImage() atk.Image {
+	return atk.WrapImage(gextras.InternObject(a))
 }

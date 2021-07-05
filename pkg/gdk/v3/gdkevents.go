@@ -83,7 +83,7 @@ func marshalCrossingMode(p uintptr) (interface{}, error) {
 type EventType int
 
 const (
-	// nothing: a special code to indicate a null event.
+	// nothing: special code to indicate a null event.
 	EventTypeNothing EventType = -1
 	// delete: the window manager has requested that the toplevel window be
 	// hidden or destroyed, usually when the user clicks on a special icon in
@@ -96,24 +96,24 @@ const (
 	EventTypeExpose EventType = 2
 	// MotionNotify: the pointer (usually a mouse) has moved.
 	EventTypeMotionNotify EventType = 3
-	// ButtonPress: a mouse button has been pressed.
+	// ButtonPress: mouse button has been pressed.
 	EventTypeButtonPress EventType = 4
-	// 2ButtonPress: a mouse button has been double-clicked (clicked twice
-	// within a short period of time). Note that each click also generates a
+	// 2ButtonPress: mouse button has been double-clicked (clicked twice within
+	// a short period of time). Note that each click also generates a
 	// GDK_BUTTON_PRESS event.
 	EventType2ButtonPress EventType = 5
 	// DoubleButtonPress alias for GDK_2BUTTON_PRESS, added in 3.6.
 	EventTypeDoubleButtonPress EventType = 5
-	// 3ButtonPress: a mouse button has been clicked 3 times in a short period
-	// of time. Note that each click also generates a GDK_BUTTON_PRESS event.
+	// 3ButtonPress: mouse button has been clicked 3 times in a short period of
+	// time. Note that each click also generates a GDK_BUTTON_PRESS event.
 	EventType3ButtonPress EventType = 6
 	// TripleButtonPress alias for GDK_3BUTTON_PRESS, added in 3.6.
 	EventTypeTripleButtonPress EventType = 6
-	// ButtonRelease: a mouse button has been released.
+	// ButtonRelease: mouse button has been released.
 	EventTypeButtonRelease EventType = 7
-	// KeyPress: a key has been pressed.
+	// KeyPress: key has been pressed.
 	EventTypeKeyPress EventType = 8
-	// KeyRelease: a key has been released.
+	// KeyRelease: key has been released.
 	EventTypeKeyRelease EventType = 9
 	// EnterNotify: the pointer has entered the window.
 	EventTypeEnterNotify EventType = 10
@@ -129,18 +129,18 @@ const (
 	EventTypeMap EventType = 14
 	// unmap: the window has been unmapped.
 	EventTypeUnmap EventType = 15
-	// PropertyNotify: a property on the window has been changed or deleted.
+	// PropertyNotify: property on the window has been changed or deleted.
 	EventTypePropertyNotify EventType = 16
 	// SelectionClear: the application has lost ownership of a selection.
 	EventTypeSelectionClear EventType = 17
 	// SelectionRequest: another application has requested a selection.
 	EventTypeSelectionRequest EventType = 18
-	// SelectionNotify: a selection has been received.
+	// SelectionNotify: selection has been received.
 	EventTypeSelectionNotify EventType = 19
-	// ProximityIn: an input device has moved into contact with a sensing
-	// surface (e.g. a touchscreen or graphics tablet).
+	// ProximityIn: input device has moved into contact with a sensing surface
+	// (e.g. a touchscreen or graphics tablet).
 	EventTypeProximityIn EventType = 20
-	// ProximityOut: an input device has moved out of contact with a sensing
+	// ProximityOut: input device has moved out of contact with a sensing
 	// surface.
 	EventTypeProximityOut EventType = 21
 	// DragEnter: the mouse has entered the window while a drag is in progress.
@@ -153,11 +153,11 @@ const (
 	// DragStatus: the status of the drag operation initiated by the window has
 	// changed.
 	EventTypeDragStatus EventType = 25
-	// DropStart: a drop operation onto the window has started.
+	// DropStart: drop operation onto the window has started.
 	EventTypeDropStart EventType = 26
 	// DropFinished: the drop operation initiated by the window has completed.
 	EventTypeDropFinished EventType = 27
-	// ClientEvent: a message has been received from another application.
+	// ClientEvent: message has been received from another application.
 	EventTypeClientEvent EventType = 28
 	// VisibilityNotify: the window visibility status has changed.
 	EventTypeVisibilityNotify EventType = 29
@@ -166,49 +166,49 @@ const (
 	// WindowState: the state of a window has changed. See WindowState for the
 	// possible window states
 	EventTypeWindowState EventType = 32
-	// setting: a setting has been modified.
+	// setting has been modified.
 	EventTypeSetting EventType = 33
 	// OwnerChange: the owner of a selection has changed. This event type was
 	// added in 2.6
 	EventTypeOwnerChange EventType = 34
-	// GrabBroken: a pointer or keyboard grab was broken. This event type was
+	// GrabBroken: pointer or keyboard grab was broken. This event type was
 	// added in 2.8.
 	EventTypeGrabBroken EventType = 35
 	// damage: the content of the window has been changed. This event type was
 	// added in 2.14.
 	EventTypeDamage EventType = 36
-	// TouchBegin: a new touch event sequence has just started. This event type
+	// TouchBegin: new touch event sequence has just started. This event type
 	// was added in 3.4.
 	EventTypeTouchBegin EventType = 37
-	// TouchUpdate: a touch event sequence has been updated. This event type was
+	// TouchUpdate: touch event sequence has been updated. This event type was
 	// added in 3.4.
 	EventTypeTouchUpdate EventType = 38
-	// TouchEnd: a touch event sequence has finished. This event type was added
-	// in 3.4.
+	// TouchEnd: touch event sequence has finished. This event type was added in
+	// 3.4.
 	EventTypeTouchEnd EventType = 39
-	// TouchCancel: a touch event sequence has been canceled. This event type
-	// was added in 3.4.
+	// TouchCancel: touch event sequence has been canceled. This event type was
+	// added in 3.4.
 	EventTypeTouchCancel EventType = 40
-	// TouchpadSwipe: a touchpad swipe gesture event, the current state is
+	// TouchpadSwipe: touchpad swipe gesture event, the current state is
 	// determined by its phase field. This event type was added in 3.18.
 	EventTypeTouchpadSwipe EventType = 41
-	// TouchpadPinch: a touchpad pinch gesture event, the current state is
+	// TouchpadPinch: touchpad pinch gesture event, the current state is
 	// determined by its phase field. This event type was added in 3.18.
 	EventTypeTouchpadPinch EventType = 42
-	// PadButtonPress: a tablet pad button press event. This event type was
-	// added in 3.22.
+	// PadButtonPress: tablet pad button press event. This event type was added
+	// in 3.22.
 	EventTypePadButtonPress EventType = 43
-	// PadButtonRelease: a tablet pad button release event. This event type was
+	// PadButtonRelease: tablet pad button release event. This event type was
 	// added in 3.22.
 	EventTypePadButtonRelease EventType = 44
-	// PadRing: a tablet pad axis event from a "ring". This event type was added
+	// PadRing: tablet pad axis event from a "ring". This event type was added
 	// in 3.22.
 	EventTypePadRing EventType = 45
-	// PadStrip: a tablet pad axis event from a "strip". This event type was
-	// added in 3.22.
-	EventTypePadStrip EventType = 46
-	// PadGroupMode: a tablet pad group mode change. This event type was added
+	// PadStrip: tablet pad axis event from a "strip". This event type was added
 	// in 3.22.
+	EventTypePadStrip EventType = 46
+	// PadGroupMode: tablet pad group mode change. This event type was added in
+	// 3.22.
 	EventTypePadGroupMode EventType = 47
 	// EventLast marks the end of the GdkEventType enumeration. Added in 2.18
 	EventTypeEventLast EventType = 48
@@ -258,7 +258,7 @@ const (
 	// ancestors of each other and the window is part of the ancestor chain
 	// between one of these windows and their least common ancestor.
 	NotifyTypeNonlinearVirtual NotifyType = 4
-	// unknown: an unknown type of enter/leave event occurred.
+	// unknown type of enter/leave event occurred.
 	NotifyTypeUnknown NotifyType = 5
 )
 
@@ -322,11 +322,11 @@ func marshalScrollDirection(p uintptr) (interface{}, error) {
 type SettingAction int
 
 const (
-	// new: a setting was added.
+	// new: setting was added.
 	SettingActionNew SettingAction = 0
-	// changed: a setting was changed.
+	// changed: setting was changed.
 	SettingActionChanged SettingAction = 1
-	// deleted: a setting was deleted.
+	// deleted: setting was deleted.
 	SettingActionDeleted SettingAction = 2
 )
 
@@ -502,7 +502,9 @@ func SettingGet(name string, value externglib.Value) bool {
 
 // EventAny contains the fields which are common to all event structs. Any event
 // pointer can safely be cast to a pointer to a EventAny to access these fields.
-type EventAny C.GdkEventAny
+type EventAny struct {
+	native C.GdkEventAny
+}
 
 // WrapEventAny wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -512,7 +514,7 @@ func WrapEventAny(ptr unsafe.Pointer) *EventAny {
 
 // Native returns the underlying C source pointer.
 func (e *EventAny) Native() unsafe.Pointer {
-	return unsafe.Pointer(e)
+	return unsafe.Pointer(&e.native)
 }
 
 // EventButton: used for button press and button release events. The @type field
@@ -540,7 +542,9 @@ func (e *EventAny) Native() unsafe.Pointer {
 // For a double click to occur, the second button press must occur within 1/4 of
 // a second of the first. For a triple click to occur, the third button press
 // must also occur within 1/2 second of the first button press.
-type EventButton C.GdkEventButton
+type EventButton struct {
+	native C.GdkEventButton
+}
 
 // WrapEventButton wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -550,11 +554,13 @@ func WrapEventButton(ptr unsafe.Pointer) *EventButton {
 
 // Native returns the underlying C source pointer.
 func (e *EventButton) Native() unsafe.Pointer {
-	return unsafe.Pointer(e)
+	return unsafe.Pointer(&e.native)
 }
 
 // EventConfigure: generated when a window size or position has changed.
-type EventConfigure C.GdkEventConfigure
+type EventConfigure struct {
+	native C.GdkEventConfigure
+}
 
 // WrapEventConfigure wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -564,11 +570,13 @@ func WrapEventConfigure(ptr unsafe.Pointer) *EventConfigure {
 
 // Native returns the underlying C source pointer.
 func (e *EventConfigure) Native() unsafe.Pointer {
-	return unsafe.Pointer(e)
+	return unsafe.Pointer(&e.native)
 }
 
 // EventCrossing: generated when the pointer enters or leaves a window.
-type EventCrossing C.GdkEventCrossing
+type EventCrossing struct {
+	native C.GdkEventCrossing
+}
 
 // WrapEventCrossing wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -578,11 +586,13 @@ func WrapEventCrossing(ptr unsafe.Pointer) *EventCrossing {
 
 // Native returns the underlying C source pointer.
 func (e *EventCrossing) Native() unsafe.Pointer {
-	return unsafe.Pointer(e)
+	return unsafe.Pointer(&e.native)
 }
 
 // EventDND: generated during DND operations.
-type EventDND C.GdkEventDND
+type EventDND struct {
+	native C.GdkEventDND
+}
 
 // WrapEventDND wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -592,12 +602,14 @@ func WrapEventDND(ptr unsafe.Pointer) *EventDND {
 
 // Native returns the underlying C source pointer.
 func (e *EventDND) Native() unsafe.Pointer {
-	return unsafe.Pointer(e)
+	return unsafe.Pointer(&e.native)
 }
 
 // EventExpose: generated when all or part of a window becomes visible and needs
 // to be redrawn.
-type EventExpose C.GdkEventExpose
+type EventExpose struct {
+	native C.GdkEventExpose
+}
 
 // WrapEventExpose wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -607,11 +619,13 @@ func WrapEventExpose(ptr unsafe.Pointer) *EventExpose {
 
 // Native returns the underlying C source pointer.
 func (e *EventExpose) Native() unsafe.Pointer {
-	return unsafe.Pointer(e)
+	return unsafe.Pointer(&e.native)
 }
 
 // EventFocus describes a change of keyboard focus.
-type EventFocus C.GdkEventFocus
+type EventFocus struct {
+	native C.GdkEventFocus
+}
 
 // WrapEventFocus wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -621,7 +635,7 @@ func WrapEventFocus(ptr unsafe.Pointer) *EventFocus {
 
 // Native returns the underlying C source pointer.
 func (e *EventFocus) Native() unsafe.Pointer {
-	return unsafe.Pointer(e)
+	return unsafe.Pointer(&e.native)
 }
 
 // EventGrabBroken: generated when a pointer or keyboard grab is broken. On X11,
@@ -629,7 +643,9 @@ func (e *EventFocus) Native() unsafe.Pointer {
 // ancestors is unmapped), or if the same application grabs the pointer or
 // keyboard again. Note that implicit grabs (which are initiated by button
 // presses) can also cause EventGrabBroken events.
-type EventGrabBroken C.GdkEventGrabBroken
+type EventGrabBroken struct {
+	native C.GdkEventGrabBroken
+}
 
 // WrapEventGrabBroken wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -639,11 +655,13 @@ func WrapEventGrabBroken(ptr unsafe.Pointer) *EventGrabBroken {
 
 // Native returns the underlying C source pointer.
 func (e *EventGrabBroken) Native() unsafe.Pointer {
-	return unsafe.Pointer(e)
+	return unsafe.Pointer(&e.native)
 }
 
 // EventKey describes a key press or key release event.
-type EventKey C.GdkEventKey
+type EventKey struct {
+	native C.GdkEventKey
+}
 
 // WrapEventKey wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -653,11 +671,13 @@ func WrapEventKey(ptr unsafe.Pointer) *EventKey {
 
 // Native returns the underlying C source pointer.
 func (e *EventKey) Native() unsafe.Pointer {
-	return unsafe.Pointer(e)
+	return unsafe.Pointer(&e.native)
 }
 
 // EventMotion: generated when the pointer moves.
-type EventMotion C.GdkEventMotion
+type EventMotion struct {
+	native C.GdkEventMotion
+}
 
 // WrapEventMotion wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -667,13 +687,15 @@ func WrapEventMotion(ptr unsafe.Pointer) *EventMotion {
 
 // Native returns the underlying C source pointer.
 func (e *EventMotion) Native() unsafe.Pointer {
-	return unsafe.Pointer(e)
+	return unsafe.Pointer(&e.native)
 }
 
 // EventOwnerChange: generated when the owner of a selection changes. On X11,
 // this information is only available if the X server supports the XFIXES
 // extension.
-type EventOwnerChange C.GdkEventOwnerChange
+type EventOwnerChange struct {
+	native C.GdkEventOwnerChange
+}
 
 // WrapEventOwnerChange wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -683,12 +705,14 @@ func WrapEventOwnerChange(ptr unsafe.Pointer) *EventOwnerChange {
 
 // Native returns the underlying C source pointer.
 func (e *EventOwnerChange) Native() unsafe.Pointer {
-	return unsafe.Pointer(e)
+	return unsafe.Pointer(&e.native)
 }
 
 // EventPadAxis: generated during GDK_SOURCE_TABLET_PAD interaction with tactile
 // sensors.
-type EventPadAxis C.GdkEventPadAxis
+type EventPadAxis struct {
+	native C.GdkEventPadAxis
+}
 
 // WrapEventPadAxis wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -698,12 +722,14 @@ func WrapEventPadAxis(ptr unsafe.Pointer) *EventPadAxis {
 
 // Native returns the underlying C source pointer.
 func (e *EventPadAxis) Native() unsafe.Pointer {
-	return unsafe.Pointer(e)
+	return unsafe.Pointer(&e.native)
 }
 
 // EventPadButton: generated during GDK_SOURCE_TABLET_PAD button presses and
 // releases.
-type EventPadButton C.GdkEventPadButton
+type EventPadButton struct {
+	native C.GdkEventPadButton
+}
 
 // WrapEventPadButton wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -713,12 +739,14 @@ func WrapEventPadButton(ptr unsafe.Pointer) *EventPadButton {
 
 // Native returns the underlying C source pointer.
 func (e *EventPadButton) Native() unsafe.Pointer {
-	return unsafe.Pointer(e)
+	return unsafe.Pointer(&e.native)
 }
 
 // EventPadGroupMode: generated during GDK_SOURCE_TABLET_PAD mode switches in a
 // group.
-type EventPadGroupMode C.GdkEventPadGroupMode
+type EventPadGroupMode struct {
+	native C.GdkEventPadGroupMode
+}
 
 // WrapEventPadGroupMode wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -728,11 +756,13 @@ func WrapEventPadGroupMode(ptr unsafe.Pointer) *EventPadGroupMode {
 
 // Native returns the underlying C source pointer.
 func (e *EventPadGroupMode) Native() unsafe.Pointer {
-	return unsafe.Pointer(e)
+	return unsafe.Pointer(&e.native)
 }
 
 // EventProperty describes a property change on a window.
-type EventProperty C.GdkEventProperty
+type EventProperty struct {
+	native C.GdkEventProperty
+}
 
 // WrapEventProperty wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -742,7 +772,7 @@ func WrapEventProperty(ptr unsafe.Pointer) *EventProperty {
 
 // Native returns the underlying C source pointer.
 func (e *EventProperty) Native() unsafe.Pointer {
-	return unsafe.Pointer(e)
+	return unsafe.Pointer(&e.native)
 }
 
 // EventProximity: proximity events are generated when using GDK’s wrapper for
@@ -754,7 +784,9 @@ func (e *EventProperty) Native() unsafe.Pointer {
 //
 // This event type will be used pretty rarely. It only is important for XInput
 // aware programs that are drawing their own cursor.
-type EventProximity C.GdkEventProximity
+type EventProximity struct {
+	native C.GdkEventProximity
+}
 
 // WrapEventProximity wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -764,7 +796,7 @@ func WrapEventProximity(ptr unsafe.Pointer) *EventProximity {
 
 // Native returns the underlying C source pointer.
 func (e *EventProximity) Native() unsafe.Pointer {
-	return unsafe.Pointer(e)
+	return unsafe.Pointer(&e.native)
 }
 
 // EventScroll: generated from button presses for the buttons 4 to 7. Wheel mice
@@ -774,7 +806,9 @@ func (e *EventProximity) Native() unsafe.Pointer {
 // Some GDK backends can also generate “smooth” scroll events, which can be
 // recognized by the GDK_SCROLL_SMOOTH scroll direction. For these, the scroll
 // deltas can be obtained with gdk_event_get_scroll_deltas().
-type EventScroll C.GdkEventScroll
+type EventScroll struct {
+	native C.GdkEventScroll
+}
 
 // WrapEventScroll wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -784,12 +818,14 @@ func WrapEventScroll(ptr unsafe.Pointer) *EventScroll {
 
 // Native returns the underlying C source pointer.
 func (e *EventScroll) Native() unsafe.Pointer {
-	return unsafe.Pointer(e)
+	return unsafe.Pointer(&e.native)
 }
 
 // EventSelection: generated when a selection is requested or ownership of a
 // selection is taken over by another client application.
-type EventSelection C.GdkEventSelection
+type EventSelection struct {
+	native C.GdkEventSelection
+}
 
 // WrapEventSelection wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -799,10 +835,12 @@ func WrapEventSelection(ptr unsafe.Pointer) *EventSelection {
 
 // Native returns the underlying C source pointer.
 func (e *EventSelection) Native() unsafe.Pointer {
-	return unsafe.Pointer(e)
+	return unsafe.Pointer(&e.native)
 }
 
-type EventSequence C.GdkEventSequence
+type EventSequence struct {
+	native C.GdkEventSequence
+}
 
 // WrapEventSequence wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -817,11 +855,13 @@ func marshalEventSequence(p uintptr) (interface{}, error) {
 
 // Native returns the underlying C source pointer.
 func (e *EventSequence) Native() unsafe.Pointer {
-	return unsafe.Pointer(e)
+	return unsafe.Pointer(&e.native)
 }
 
 // EventSetting: generated when a setting is modified.
-type EventSetting C.GdkEventSetting
+type EventSetting struct {
+	native C.GdkEventSetting
+}
 
 // WrapEventSetting wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -831,7 +871,7 @@ func WrapEventSetting(ptr unsafe.Pointer) *EventSetting {
 
 // Native returns the underlying C source pointer.
 func (e *EventSetting) Native() unsafe.Pointer {
-	return unsafe.Pointer(e)
+	return unsafe.Pointer(&e.native)
 }
 
 // EventTouch: used for touch events. @type field will be one of
@@ -843,7 +883,9 @@ func (e *EventSetting) Native() unsafe.Pointer {
 // GDK_TOUCH_UPDATE events, and ends with a GDK_TOUCH_END (or GDK_TOUCH_CANCEL)
 // event. With multitouch devices, there may be several active sequences at the
 // same time.
-type EventTouch C.GdkEventTouch
+type EventTouch struct {
+	native C.GdkEventTouch
+}
 
 // WrapEventTouch wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -853,11 +895,13 @@ func WrapEventTouch(ptr unsafe.Pointer) *EventTouch {
 
 // Native returns the underlying C source pointer.
 func (e *EventTouch) Native() unsafe.Pointer {
-	return unsafe.Pointer(e)
+	return unsafe.Pointer(&e.native)
 }
 
 // EventTouchpadPinch: generated during touchpad swipe gestures.
-type EventTouchpadPinch C.GdkEventTouchpadPinch
+type EventTouchpadPinch struct {
+	native C.GdkEventTouchpadPinch
+}
 
 // WrapEventTouchpadPinch wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -867,11 +911,13 @@ func WrapEventTouchpadPinch(ptr unsafe.Pointer) *EventTouchpadPinch {
 
 // Native returns the underlying C source pointer.
 func (e *EventTouchpadPinch) Native() unsafe.Pointer {
-	return unsafe.Pointer(e)
+	return unsafe.Pointer(&e.native)
 }
 
 // EventTouchpadSwipe: generated during touchpad swipe gestures.
-type EventTouchpadSwipe C.GdkEventTouchpadSwipe
+type EventTouchpadSwipe struct {
+	native C.GdkEventTouchpadSwipe
+}
 
 // WrapEventTouchpadSwipe wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -881,13 +927,15 @@ func WrapEventTouchpadSwipe(ptr unsafe.Pointer) *EventTouchpadSwipe {
 
 // Native returns the underlying C source pointer.
 func (e *EventTouchpadSwipe) Native() unsafe.Pointer {
-	return unsafe.Pointer(e)
+	return unsafe.Pointer(&e.native)
 }
 
 // EventVisibility: generated when the window visibility status has changed.
 //
 // Deprecated: since version 3.12.
-type EventVisibility C.GdkEventVisibility
+type EventVisibility struct {
+	native C.GdkEventVisibility
+}
 
 // WrapEventVisibility wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -897,11 +945,13 @@ func WrapEventVisibility(ptr unsafe.Pointer) *EventVisibility {
 
 // Native returns the underlying C source pointer.
 func (e *EventVisibility) Native() unsafe.Pointer {
-	return unsafe.Pointer(e)
+	return unsafe.Pointer(&e.native)
 }
 
 // EventWindowState: generated when the state of a toplevel window changes.
-type EventWindowState C.GdkEventWindowState
+type EventWindowState struct {
+	native C.GdkEventWindowState
+}
 
 // WrapEventWindowState wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -911,5 +961,5 @@ func WrapEventWindowState(ptr unsafe.Pointer) *EventWindowState {
 
 // Native returns the underlying C source pointer.
 func (e *EventWindowState) Native() unsafe.Pointer {
-	return unsafe.Pointer(e)
+	return unsafe.Pointer(&e.native)
 }

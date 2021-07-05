@@ -77,65 +77,23 @@ func init() {
 type ListModel interface {
 	gextras.Objector
 
-	// ItemType emits the Model::items-changed signal on @list.
+	// ItemType gets the type of the items in @list. All items returned from
+	// g_list_model_get_type() are of that type or a subtype, or are an
+	// implementation of that interface.
 	//
-	// This function should only be called by classes implementing Model. It has
-	// to be called after the internal representation of @list has been updated,
-	// because handlers connected to this signal might query the new state of
-	// the list.
-	//
-	// Implementations must only make changes to the model (as visible to its
-	// consumer) in places that will not cause problems for that consumer. For
-	// models that are driven directly by a write API (such as Store), changes
-	// can be reported in response to uses of that API. For models that
-	// represent remote data, changes should only be made from a fresh mainloop
-	// dispatch. It is particularly not permitted to make changes in response to
-	// a call to the Model consumer API.
-	//
-	// Stated another way: in general, it is assumed that code making a series
-	// of accesses to the model via the API, without returning to the mainloop,
-	// and without calling other code, will continue to view the same contents
-	// of the model.
+	// The item type of a Model can not change during the life of the model.
 	ItemType() externglib.Type
-	// NItems emits the Model::items-changed signal on @list.
+	// NItems gets the number of items in @list.
 	//
-	// This function should only be called by classes implementing Model. It has
-	// to be called after the internal representation of @list has been updated,
-	// because handlers connected to this signal might query the new state of
-	// the list.
-	//
-	// Implementations must only make changes to the model (as visible to its
-	// consumer) in places that will not cause problems for that consumer. For
-	// models that are driven directly by a write API (such as Store), changes
-	// can be reported in response to uses of that API. For models that
-	// represent remote data, changes should only be made from a fresh mainloop
-	// dispatch. It is particularly not permitted to make changes in response to
-	// a call to the Model consumer API.
-	//
-	// Stated another way: in general, it is assumed that code making a series
-	// of accesses to the model via the API, without returning to the mainloop,
-	// and without calling other code, will continue to view the same contents
-	// of the model.
+	// Depending on the model implementation, calling this function may be less
+	// efficient than iterating the list with increasing values for @position
+	// until g_list_model_get_item() returns nil.
 	NItems() uint
-	// Object emits the Model::items-changed signal on @list.
+	// Object: get the item at @position. If @position is greater than the
+	// number of items in @list, nil is returned.
 	//
-	// This function should only be called by classes implementing Model. It has
-	// to be called after the internal representation of @list has been updated,
-	// because handlers connected to this signal might query the new state of
-	// the list.
-	//
-	// Implementations must only make changes to the model (as visible to its
-	// consumer) in places that will not cause problems for that consumer. For
-	// models that are driven directly by a write API (such as Store), changes
-	// can be reported in response to uses of that API. For models that
-	// represent remote data, changes should only be made from a fresh mainloop
-	// dispatch. It is particularly not permitted to make changes in response to
-	// a call to the Model consumer API.
-	//
-	// Stated another way: in general, it is assumed that code making a series
-	// of accesses to the model via the API, without returning to the mainloop,
-	// and without calling other code, will continue to view the same contents
-	// of the model.
+	// nil is never returned for an index that is smaller than the length of the
+	// list. See g_list_model_get_n_items().
 	Object(position uint) gextras.Objector
 	// ItemsChanged emits the Model::items-changed signal on @list.
 	//

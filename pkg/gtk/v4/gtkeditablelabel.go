@@ -22,7 +22,7 @@ func init() {
 	})
 }
 
-// EditableLabel: a `GtkEditableLabel` is a label that allows users to edit the
+// EditableLabel: `GtkEditableLabel` is a label that allows users to edit the
 // text by switching to an “edit mode”.
 //
 // !An example GtkEditableLabel (editable-label.png)
@@ -45,12 +45,27 @@ func init() {
 // For all the subnodes added to the text node in various situations, see
 // [class@Gtk.Text].
 type EditableLabel interface {
-	Editable
+	Widget
 
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
+	// AsEditable casts the class to the Editable interface.
+	AsEditable() Editable
+
+	// Editing returns whether the label is currently in “editing mode”.
 	Editing() bool
-
+	// StartEditingEditableLabel switches the label into “editing mode”.
 	StartEditingEditableLabel()
-
+	// StopEditingEditableLabel switches the label out of “editing mode”.
+	//
+	// If @commit is true, the resulting text is kept as the
+	// [property@Gtk.Editable:text] property value, otherwise the resulting text
+	// is discarded and the label will keep its previous
+	// [property@Gtk.Editable:text] property value.
 	StopEditingEditableLabel(commit bool)
 }
 
@@ -73,6 +88,7 @@ func marshalEditableLabel(p uintptr) (interface{}, error) {
 	return WrapEditableLabel(obj), nil
 }
 
+// NewEditableLabel creates a new `GtkEditableLabel` widget.
 func NewEditableLabel(str string) EditableLabel {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in
@@ -84,7 +100,7 @@ func NewEditableLabel(str string) EditableLabel {
 
 	var _editableLabel EditableLabel // out
 
-	_editableLabel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(EditableLabel)
+	_editableLabel = WrapEditableLabel(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _editableLabel
 }
@@ -126,122 +142,18 @@ func (s editableLabel) StopEditingEditableLabel(commit bool) {
 	C.gtk_editable_label_stop_editing(_arg0, _arg1)
 }
 
-func (e editableLabel) DeleteSelection() {
-	WrapEditable(gextras.InternObject(e)).DeleteSelection()
+func (e editableLabel) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(e))
 }
 
-func (e editableLabel) DeleteText(startPos int, endPos int) {
-	WrapEditable(gextras.InternObject(e)).DeleteText(startPos, endPos)
+func (e editableLabel) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(e))
 }
 
-func (e editableLabel) FinishDelegate() {
-	WrapEditable(gextras.InternObject(e)).FinishDelegate()
+func (e editableLabel) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(e))
 }
 
-func (e editableLabel) Alignment() float32 {
-	return WrapEditable(gextras.InternObject(e)).Alignment()
-}
-
-func (e editableLabel) Chars(startPos int, endPos int) string {
-	return WrapEditable(gextras.InternObject(e)).Chars(startPos, endPos)
-}
-
-func (e editableLabel) Delegate() Editable {
-	return WrapEditable(gextras.InternObject(e)).Delegate()
-}
-
-func (e editableLabel) Editable() bool {
-	return WrapEditable(gextras.InternObject(e)).Editable()
-}
-
-func (e editableLabel) EnableUndo() bool {
-	return WrapEditable(gextras.InternObject(e)).EnableUndo()
-}
-
-func (e editableLabel) MaxWidthChars() int {
-	return WrapEditable(gextras.InternObject(e)).MaxWidthChars()
-}
-
-func (e editableLabel) Position() int {
-	return WrapEditable(gextras.InternObject(e)).Position()
-}
-
-func (e editableLabel) SelectionBounds() (startPos int, endPos int, ok bool) {
-	return WrapEditable(gextras.InternObject(e)).SelectionBounds()
-}
-
-func (e editableLabel) Text() string {
-	return WrapEditable(gextras.InternObject(e)).Text()
-}
-
-func (e editableLabel) WidthChars() int {
-	return WrapEditable(gextras.InternObject(e)).WidthChars()
-}
-
-func (e editableLabel) InitDelegate() {
-	WrapEditable(gextras.InternObject(e)).InitDelegate()
-}
-
-func (e editableLabel) SelectRegion(startPos int, endPos int) {
-	WrapEditable(gextras.InternObject(e)).SelectRegion(startPos, endPos)
-}
-
-func (e editableLabel) SetAlignment(xalign float32) {
-	WrapEditable(gextras.InternObject(e)).SetAlignment(xalign)
-}
-
-func (e editableLabel) SetEditable(isEditable bool) {
-	WrapEditable(gextras.InternObject(e)).SetEditable(isEditable)
-}
-
-func (e editableLabel) SetEnableUndo(enableUndo bool) {
-	WrapEditable(gextras.InternObject(e)).SetEnableUndo(enableUndo)
-}
-
-func (e editableLabel) SetMaxWidthChars(nChars int) {
-	WrapEditable(gextras.InternObject(e)).SetMaxWidthChars(nChars)
-}
-
-func (e editableLabel) SetPosition(position int) {
-	WrapEditable(gextras.InternObject(e)).SetPosition(position)
-}
-
-func (e editableLabel) SetText(text string) {
-	WrapEditable(gextras.InternObject(e)).SetText(text)
-}
-
-func (e editableLabel) SetWidthChars(nChars int) {
-	WrapEditable(gextras.InternObject(e)).SetWidthChars(nChars)
-}
-
-func (s editableLabel) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
-}
-
-func (s editableLabel) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
-}
-
-func (s editableLabel) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
-}
-
-func (s editableLabel) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s editableLabel) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s editableLabel) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s editableLabel) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b editableLabel) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
+func (e editableLabel) AsEditable() Editable {
+	return WrapEditable(gextras.InternObject(e))
 }

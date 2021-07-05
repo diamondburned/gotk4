@@ -27,6 +27,11 @@ func init() {
 
 type RadioButtonAccessible interface {
 	ToggleButtonAccessible
+
+	// AsAction casts the class to the atk.Action interface.
+	AsAction() atk.Action
+	// AsImage casts the class to the atk.Image interface.
+	AsImage() atk.Image
 }
 
 // radioButtonAccessible implements the RadioButtonAccessible class.
@@ -48,50 +53,10 @@ func marshalRadioButtonAccessible(p uintptr) (interface{}, error) {
 	return WrapRadioButtonAccessible(obj), nil
 }
 
-func (a radioButtonAccessible) DoAction(i int) bool {
-	return atk.WrapAction(gextras.InternObject(a)).DoAction(i)
+func (r radioButtonAccessible) AsAction() atk.Action {
+	return atk.WrapAction(gextras.InternObject(r))
 }
 
-func (a radioButtonAccessible) Description(i int) string {
-	return atk.WrapAction(gextras.InternObject(a)).Description(i)
-}
-
-func (a radioButtonAccessible) Keybinding(i int) string {
-	return atk.WrapAction(gextras.InternObject(a)).Keybinding(i)
-}
-
-func (a radioButtonAccessible) LocalizedName(i int) string {
-	return atk.WrapAction(gextras.InternObject(a)).LocalizedName(i)
-}
-
-func (a radioButtonAccessible) NActions() int {
-	return atk.WrapAction(gextras.InternObject(a)).NActions()
-}
-
-func (a radioButtonAccessible) Name(i int) string {
-	return atk.WrapAction(gextras.InternObject(a)).Name(i)
-}
-
-func (a radioButtonAccessible) SetDescription(i int, desc string) bool {
-	return atk.WrapAction(gextras.InternObject(a)).SetDescription(i, desc)
-}
-
-func (i radioButtonAccessible) ImageDescription() string {
-	return atk.WrapImage(gextras.InternObject(i)).ImageDescription()
-}
-
-func (i radioButtonAccessible) ImageLocale() string {
-	return atk.WrapImage(gextras.InternObject(i)).ImageLocale()
-}
-
-func (i radioButtonAccessible) ImagePosition(coordType atk.CoordType) (x int, y int) {
-	return atk.WrapImage(gextras.InternObject(i)).ImagePosition(coordType)
-}
-
-func (i radioButtonAccessible) ImageSize() (width int, height int) {
-	return atk.WrapImage(gextras.InternObject(i)).ImageSize()
-}
-
-func (i radioButtonAccessible) SetImageDescription(description string) bool {
-	return atk.WrapImage(gextras.InternObject(i)).SetImageDescription(description)
+func (r radioButtonAccessible) AsImage() atk.Image {
+	return atk.WrapImage(gextras.InternObject(r))
 }

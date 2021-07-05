@@ -2,10 +2,6 @@
 
 package glib
 
-import (
-	"unsafe"
-)
-
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 //
@@ -23,106 +19,4 @@ func Usleep(microseconds uint32) {
 	_arg1 = C.gulong(microseconds)
 
 	C.g_usleep(_arg1)
-}
-
-// Timer: opaque datatype that records a start time.
-type Timer C.GTimer
-
-// WrapTimer wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapTimer(ptr unsafe.Pointer) *Timer {
-	return (*Timer)(ptr)
-}
-
-// Native returns the underlying C source pointer.
-func (t *Timer) Native() unsafe.Pointer {
-	return unsafe.Pointer(t)
-}
-
-// Continue marks an end time, so calls to g_timer_elapsed() will return the
-// difference between this end time and the start time.
-func (t *Timer) Continue() {
-	var _arg0 *C.GTimer // out
-
-	_arg0 = (*C.GTimer)(unsafe.Pointer(t.Native()))
-
-	C.g_timer_continue(_arg0)
-}
-
-// Destroy marks an end time, so calls to g_timer_elapsed() will return the
-// difference between this end time and the start time.
-func (t *Timer) Destroy() {
-	var _arg0 *C.GTimer // out
-
-	_arg0 = (*C.GTimer)(unsafe.Pointer(t.Native()))
-
-	C.g_timer_destroy(_arg0)
-}
-
-// Elapsed marks an end time, so calls to g_timer_elapsed() will return the
-// difference between this end time and the start time.
-func (t *Timer) Elapsed(microseconds *uint32) float64 {
-	var _arg0 *C.GTimer // out
-	var _arg1 *C.gulong // out
-	var _cret C.gdouble // in
-
-	_arg0 = (*C.GTimer)(unsafe.Pointer(t.Native()))
-	_arg1 = (*C.gulong)(unsafe.Pointer(microseconds))
-
-	_cret = C.g_timer_elapsed(_arg0, _arg1)
-
-	var _gdouble float64 // out
-
-	_gdouble = float64(_cret)
-
-	return _gdouble
-}
-
-// IsActive marks an end time, so calls to g_timer_elapsed() will return the
-// difference between this end time and the start time.
-func (t *Timer) IsActive() bool {
-	var _arg0 *C.GTimer  // out
-	var _cret C.gboolean // in
-
-	_arg0 = (*C.GTimer)(unsafe.Pointer(t.Native()))
-
-	_cret = C.g_timer_is_active(_arg0)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// Reset marks an end time, so calls to g_timer_elapsed() will return the
-// difference between this end time and the start time.
-func (t *Timer) Reset() {
-	var _arg0 *C.GTimer // out
-
-	_arg0 = (*C.GTimer)(unsafe.Pointer(t.Native()))
-
-	C.g_timer_reset(_arg0)
-}
-
-// Start marks an end time, so calls to g_timer_elapsed() will return the
-// difference between this end time and the start time.
-func (t *Timer) Start() {
-	var _arg0 *C.GTimer // out
-
-	_arg0 = (*C.GTimer)(unsafe.Pointer(t.Native()))
-
-	C.g_timer_start(_arg0)
-}
-
-// Stop marks an end time, so calls to g_timer_elapsed() will return the
-// difference between this end time and the start time.
-func (t *Timer) Stop() {
-	var _arg0 *C.GTimer // out
-
-	_arg0 = (*C.GTimer)(unsafe.Pointer(t.Native()))
-
-	C.g_timer_stop(_arg0)
 }

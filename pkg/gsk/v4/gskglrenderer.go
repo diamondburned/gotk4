@@ -21,7 +21,7 @@ func init() {
 	})
 }
 
-// GLRenderer: a GSK renderer that is using OpenGL.
+// GLRenderer: GSK renderer that is using OpenGL.
 type GLRenderer interface {
 	Renderer
 }
@@ -45,6 +45,8 @@ func marshalGLRenderer(p uintptr) (interface{}, error) {
 	return WrapGLRenderer(obj), nil
 }
 
+// NewGLRenderer creates a new Renderer using OpenGL. This is the default
+// renderer used by GTK.
 func NewGLRenderer() GLRenderer {
 	var _cret *C.GskRenderer // in
 
@@ -52,7 +54,7 @@ func NewGLRenderer() GLRenderer {
 
 	var _glRenderer GLRenderer // out
 
-	_glRenderer = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(GLRenderer)
+	_glRenderer = WrapGLRenderer(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _glRenderer
 }

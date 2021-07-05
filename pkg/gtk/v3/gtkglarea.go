@@ -5,11 +5,9 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -86,40 +84,86 @@ func init() {
 type GLArea interface {
 	Widget
 
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+
+	// AttachBuffersGLArea ensures that the @area framebuffer object is made the
+	// current draw and read target, and that all the required buffers for the
+	// @area are created and bound to the frambuffer.
+	//
+	// This function is automatically called before emitting the GLArea::render
+	// signal, and doesn't normally need to be called by application code.
 	AttachBuffersGLArea()
-
+	// AutoRender returns whether the area is in auto render mode or not.
 	AutoRender() bool
-
+	// Context retrieves the GLContext used by @area.
 	Context() gdk.GLContext
-
+	// Error gets the current error set on the @area.
 	Error() error
-
+	// HasAlpha returns whether the area has an alpha component.
 	HasAlpha() bool
-
+	// HasDepthBuffer returns whether the area has a depth buffer.
 	HasDepthBuffer() bool
-
+	// HasStencilBuffer returns whether the area has a stencil buffer.
 	HasStencilBuffer() bool
-
+	// RequiredVersion retrieves the required version of OpenGL set using
+	// gtk_gl_area_set_required_version().
 	RequiredVersion() (major int, minor int)
-
+	// UseES retrieves the value set by gtk_gl_area_set_use_es().
 	UseES() bool
-
+	// MakeCurrentGLArea ensures that the GLContext used by @area is associated
+	// with the GLArea.
+	//
+	// This function is automatically called before emitting the GLArea::render
+	// signal, and doesn't normally need to be called by application code.
 	MakeCurrentGLArea()
-
+	// QueueRenderGLArea marks the currently rendered data (if any) as invalid,
+	// and queues a redraw of the widget, ensuring that the GLArea::render
+	// signal is emitted during the draw.
+	//
+	// This is only needed when the gtk_gl_area_set_auto_render() has been
+	// called with a false value. The default behaviour is to emit
+	// GLArea::render on each draw.
 	QueueRenderGLArea()
-
+	// SetAutoRenderGLArea: if @auto_render is true the GLArea::render signal
+	// will be emitted every time the widget draws. This is the default and is
+	// useful if drawing the widget is faster.
+	//
+	// If @auto_render is false the data from previous rendering is kept around
+	// and will be used for drawing the widget the next time, unless the window
+	// is resized. In order to force a rendering gtk_gl_area_queue_render() must
+	// be called. This mode is useful when the scene changes seldomly, but takes
+	// a long time to redraw.
 	SetAutoRenderGLArea(autoRender bool)
-
+	// SetErrorGLArea sets an error on the area which will be shown instead of
+	// the GL rendering. This is useful in the GLArea::create-context signal if
+	// GL context creation fails.
 	SetErrorGLArea(err error)
-
+	// SetHasAlphaGLArea: if @has_alpha is true the buffer allocated by the
+	// widget will have an alpha channel component, and when rendering to the
+	// window the result will be composited over whatever is below the widget.
+	//
+	// If @has_alpha is false there will be no alpha channel, and the buffer
+	// will fully replace anything below the widget.
 	SetHasAlphaGLArea(hasAlpha bool)
-
+	// SetHasDepthBufferGLArea: if @has_depth_buffer is true the widget will
+	// allocate and enable a depth buffer for the target framebuffer. Otherwise
+	// there will be none.
 	SetHasDepthBufferGLArea(hasDepthBuffer bool)
-
+	// SetHasStencilBufferGLArea: if @has_stencil_buffer is true the widget will
+	// allocate and enable a stencil buffer for the target framebuffer.
+	// Otherwise there will be none.
 	SetHasStencilBufferGLArea(hasStencilBuffer bool)
-
+	// SetRequiredVersionGLArea sets the required version of OpenGL to be used
+	// when creating the context for the widget.
+	//
+	// This function must be called before the area has been realized.
 	SetRequiredVersionGLArea(major int, minor int)
-
+	// SetUseESGLArea sets whether the @area should create an OpenGL or an
+	// OpenGL ES context.
+	//
+	// You should check the capabilities of the GLContext before drawing with
+	// either API.
 	SetUseESGLArea(useEs bool)
 }
 
@@ -142,6 +186,7 @@ func marshalGLArea(p uintptr) (interface{}, error) {
 	return WrapGLArea(obj), nil
 }
 
+// NewGLArea creates a new GLArea widget.
 func NewGLArea() GLArea {
 	var _cret *C.GtkWidget // in
 
@@ -149,7 +194,7 @@ func NewGLArea() GLArea {
 
 	var _glArea GLArea // out
 
-	_glArea = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(GLArea)
+	_glArea = WrapGLArea(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _glArea
 }
@@ -262,8 +307,8 @@ func (a glArea) HasStencilBuffer() bool {
 
 func (a glArea) RequiredVersion() (major int, minor int) {
 	var _arg0 *C.GtkGLArea // out
-	var _arg1 C.gint       // in
-	var _arg2 C.gint       // in
+	var _arg1 *C.gint      // in
+	var _arg2 *C.gint      // in
 
 	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(a.Native()))
 
@@ -394,42 +439,6 @@ func (a glArea) SetUseESGLArea(useEs bool) {
 	C.gtk_gl_area_set_use_es(_arg0, _arg1)
 }
 
-func (b glArea) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
-}
-
-func (b glArea) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b glArea) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b glArea) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b glArea) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b glArea) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b glArea) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b glArea) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b glArea) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b glArea) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
+func (g glArea) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(g))
 }

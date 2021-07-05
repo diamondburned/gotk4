@@ -31,7 +31,7 @@ func init() {
 	})
 }
 
-// AxisUse: an enumeration describing the way in which a device axis (valuator)
+// AxisUse: enumeration describing the way in which a device axis (valuator)
 // maps onto the predefined valuator types that GTK+ understands.
 //
 // Note that the X and Y axes are not really needed; pointer devices report
@@ -61,7 +61,7 @@ const (
 	AxisUseRotation AxisUse = 8
 	// slider: the axis is used for pen slider information. (Since: 3.22)
 	AxisUseSlider AxisUse = 9
-	// last: a constant equal to the numerically highest axis value.
+	// last: constant equal to the numerically highest axis value.
 	AxisUseLast AxisUse = 10
 )
 
@@ -69,7 +69,7 @@ func marshalAxisUse(p uintptr) (interface{}, error) {
 	return AxisUse(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// ByteOrder: a set of values describing the possible byte-orders for storing
+// ByteOrder: set of values describing the possible byte-orders for storing
 // pixel values in memory.
 type ByteOrder int
 
@@ -215,18 +215,17 @@ const (
 	WindowTypeHintDock WindowTypeHint = 6
 	// desktop: used for creating the desktop background window.
 	WindowTypeHintDesktop WindowTypeHint = 7
-	// DropdownMenu: a menu that belongs to a menubar.
+	// DropdownMenu: menu that belongs to a menubar.
 	WindowTypeHintDropdownMenu WindowTypeHint = 8
-	// PopupMenu: a menu that does not belong to a menubar, e.g. a context menu.
+	// PopupMenu: menu that does not belong to a menubar, e.g. a context menu.
 	WindowTypeHintPopupMenu WindowTypeHint = 9
-	// tooltip: a tooltip.
+	// tooltip: tooltip.
 	WindowTypeHintTooltip WindowTypeHint = 10
-	// notification: a notification - typically a “bubble” that belongs to a
-	// status icon.
+	// notification - typically a “bubble” that belongs to a status icon.
 	WindowTypeHintNotification WindowTypeHint = 11
-	// combo: a popup from a combo box.
+	// combo: popup from a combo box.
 	WindowTypeHintCombo WindowTypeHint = 12
-	// dnd: a window that is used to implement a DND cursor.
+	// dnd: window that is used to implement a DND cursor.
 	WindowTypeHintDnd WindowTypeHint = 13
 )
 
@@ -262,9 +261,8 @@ func marshalAxisFlags(p uintptr) (interface{}, error) {
 	return AxisFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// EventMask: a set of bit-flags to indicate which events a window is to
-// receive. Most of these masks map onto one or more of the EventType event
-// types above.
+// EventMask: set of bit-flags to indicate which events a window is to receive.
+// Most of these masks map onto one or more of the EventType event types above.
 //
 // See the [input handling overview][chap-input-handling] for details of [event
 // masks][event-masks] and [event propagation][event-propagation].
@@ -353,7 +351,7 @@ func marshalEventMask(p uintptr) (interface{}, error) {
 	return EventMask(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// ModifierType: a set of bit-flags to indicate the state of modifier keys and
+// ModifierType: set of bit-flags to indicate the state of modifier keys and
 // mouse buttons in various event types. Typical modifier keys are Shift,
 // Control, Meta, Super, Hyper, Alt, Compose, Apple, CapsLock or ShiftLock.
 //
@@ -375,8 +373,8 @@ type ModifierType int
 const (
 	// ModifierTypeShiftMask: the Shift key.
 	ModifierTypeShiftMask ModifierType = 0b1
-	// ModifierTypeLockMask: a Lock key (depending on the modifier mapping of
-	// the X server this may either be CapsLock or ShiftLock).
+	// ModifierTypeLockMask: lock key (depending on the modifier mapping of the
+	// X server this may either be CapsLock or ShiftLock).
 	ModifierTypeLockMask ModifierType = 0b10
 	// ModifierTypeControlMask: the Control key.
 	ModifierTypeControlMask ModifierType = 0b100
@@ -407,44 +405,44 @@ const (
 	ModifierTypeButton4Mask ModifierType = 0b100000000000
 	// ModifierTypeButton5Mask: the fifth mouse button.
 	ModifierTypeButton5Mask ModifierType = 0b1000000000000
-	// ModifierTypeModifierReserved13Mask: a reserved bit flag; do not use in
-	// your own code
+	// ModifierTypeModifierReserved13Mask: reserved bit flag; do not use in your
+	// own code
 	ModifierTypeModifierReserved13Mask ModifierType = 0b10000000000000
-	// ModifierTypeModifierReserved14Mask: a reserved bit flag; do not use in
-	// your own code
+	// ModifierTypeModifierReserved14Mask: reserved bit flag; do not use in your
+	// own code
 	ModifierTypeModifierReserved14Mask ModifierType = 0b100000000000000
-	// ModifierTypeModifierReserved15Mask: a reserved bit flag; do not use in
-	// your own code
+	// ModifierTypeModifierReserved15Mask: reserved bit flag; do not use in your
+	// own code
 	ModifierTypeModifierReserved15Mask ModifierType = 0b1000000000000000
-	// ModifierTypeModifierReserved16Mask: a reserved bit flag; do not use in
-	// your own code
+	// ModifierTypeModifierReserved16Mask: reserved bit flag; do not use in your
+	// own code
 	ModifierTypeModifierReserved16Mask ModifierType = 0b10000000000000000
-	// ModifierTypeModifierReserved17Mask: a reserved bit flag; do not use in
-	// your own code
+	// ModifierTypeModifierReserved17Mask: reserved bit flag; do not use in your
+	// own code
 	ModifierTypeModifierReserved17Mask ModifierType = 0b100000000000000000
-	// ModifierTypeModifierReserved18Mask: a reserved bit flag; do not use in
-	// your own code
+	// ModifierTypeModifierReserved18Mask: reserved bit flag; do not use in your
+	// own code
 	ModifierTypeModifierReserved18Mask ModifierType = 0b1000000000000000000
-	// ModifierTypeModifierReserved19Mask: a reserved bit flag; do not use in
-	// your own code
+	// ModifierTypeModifierReserved19Mask: reserved bit flag; do not use in your
+	// own code
 	ModifierTypeModifierReserved19Mask ModifierType = 0b10000000000000000000
-	// ModifierTypeModifierReserved20Mask: a reserved bit flag; do not use in
-	// your own code
+	// ModifierTypeModifierReserved20Mask: reserved bit flag; do not use in your
+	// own code
 	ModifierTypeModifierReserved20Mask ModifierType = 0b100000000000000000000
-	// ModifierTypeModifierReserved21Mask: a reserved bit flag; do not use in
-	// your own code
+	// ModifierTypeModifierReserved21Mask: reserved bit flag; do not use in your
+	// own code
 	ModifierTypeModifierReserved21Mask ModifierType = 0b1000000000000000000000
-	// ModifierTypeModifierReserved22Mask: a reserved bit flag; do not use in
-	// your own code
+	// ModifierTypeModifierReserved22Mask: reserved bit flag; do not use in your
+	// own code
 	ModifierTypeModifierReserved22Mask ModifierType = 0b10000000000000000000000
-	// ModifierTypeModifierReserved23Mask: a reserved bit flag; do not use in
-	// your own code
+	// ModifierTypeModifierReserved23Mask: reserved bit flag; do not use in your
+	// own code
 	ModifierTypeModifierReserved23Mask ModifierType = 0b100000000000000000000000
-	// ModifierTypeModifierReserved24Mask: a reserved bit flag; do not use in
-	// your own code
+	// ModifierTypeModifierReserved24Mask: reserved bit flag; do not use in your
+	// own code
 	ModifierTypeModifierReserved24Mask ModifierType = 0b1000000000000000000000000
-	// ModifierTypeModifierReserved25Mask: a reserved bit flag; do not use in
-	// your own code
+	// ModifierTypeModifierReserved25Mask: reserved bit flag; do not use in your
+	// own code
 	ModifierTypeModifierReserved25Mask ModifierType = 0b10000000000000000000000000
 	// ModifierTypeSuperMask: the Super modifier. Since 2.10
 	ModifierTypeSuperMask ModifierType = 0b100000000000000000000000000
@@ -452,14 +450,14 @@ const (
 	ModifierTypeHyperMask ModifierType = 0b1000000000000000000000000000
 	// ModifierTypeMetaMask: the Meta modifier. Since 2.10
 	ModifierTypeMetaMask ModifierType = 0b10000000000000000000000000000
-	// ModifierTypeModifierReserved29Mask: a reserved bit flag; do not use in
-	// your own code
+	// ModifierTypeModifierReserved29Mask: reserved bit flag; do not use in your
+	// own code
 	ModifierTypeModifierReserved29Mask ModifierType = 0b100000000000000000000000000000
 	// ModifierTypeReleaseMask: not used in GDK itself. GTK+ uses it to
 	// differentiate between (keyval, modifiers) pairs from key press and
 	// release events.
 	ModifierTypeReleaseMask ModifierType = 0b1000000000000000000000000000000
-	// ModifierTypeModifierMask: a mask covering all modifier types.
+	// ModifierTypeModifierMask: mask covering all modifier types.
 	ModifierTypeModifierMask ModifierType = 0b1011100000000000001111111111111
 )
 
@@ -467,49 +465,10 @@ func marshalModifierType(p uintptr) (interface{}, error) {
 	return ModifierType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// Atom: an opaque type representing a string as an index into a table of
-// strings on the X server.
-type Atom C.GdkAtom
-
-// WrapAtom wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapAtom(ptr unsafe.Pointer) *Atom {
-	return (*Atom)(ptr)
-}
-
-// Native returns the underlying C source pointer.
-func (a *Atom) Native() unsafe.Pointer {
-	return unsafe.Pointer(a)
-}
-
-// Name determines the string corresponding to an atom.
-func (a *Atom) Name() string {
-	var _arg0 C.GdkAtom // out
-	var _cret *C.gchar  // in
-
-	{
-		var refTmpIn *Atom
-		var refTmpOut *C.GdkAtom
-
-		refTmpIn = a
-
-		refTmpOut = (*C.GdkAtom)(unsafe.Pointer(refTmpIn.Native()))
-
-		_arg0 = *refTmpOut
-	}
-
-	_cret = C.gdk_atom_name(_arg0)
-
-	var _utf8 string // out
-
-	_utf8 = C.GoString(_cret)
-	defer C.free(unsafe.Pointer(_cret))
-
-	return _utf8
-}
-
 // Point defines the x and y coordinates of a point.
-type Point C.GdkPoint
+type Point struct {
+	native C.GdkPoint
+}
 
 // WrapPoint wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -519,12 +478,14 @@ func WrapPoint(ptr unsafe.Pointer) *Point {
 
 // Native returns the underlying C source pointer.
 func (p *Point) Native() unsafe.Pointer {
-	return unsafe.Pointer(p)
+	return unsafe.Pointer(&p.native)
 }
 
 // Rectangle defines the position and size of a rectangle. It is identical to
 // #cairo_rectangle_int_t.
-type Rectangle C.GdkRectangle
+type Rectangle struct {
+	native C.GdkRectangle
+}
 
 // WrapRectangle wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -539,22 +500,17 @@ func marshalRectangle(p uintptr) (interface{}, error) {
 
 // Native returns the underlying C source pointer.
 func (r *Rectangle) Native() unsafe.Pointer {
-	return unsafe.Pointer(r)
+	return unsafe.Pointer(&r.native)
 }
 
-// Equal calculates the union of two rectangles. The union of rectangles @src1
-// and @src2 is the smallest rectangle which includes both @src1 and @src2
-// within it. It is allowed for @dest to be the same as either @src1 or @src2.
-//
-// Note that this function does not ignore 'empty' rectangles (ie. with zero
-// width or height).
-func (s *Rectangle) Equal(rect2 *Rectangle) bool {
+// Equal checks if the two given rectangles are equal.
+func (r *Rectangle) Equal(rect2 Rectangle) bool {
 	var _arg0 *C.GdkRectangle // out
 	var _arg1 *C.GdkRectangle // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GdkRectangle)(unsafe.Pointer(r.Native()))
-	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(rect2.Native()))
+	_arg0 = (*C.GdkRectangle)(unsafe.Pointer(r))
+	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(rect2))
 
 	_cret = C.gdk_rectangle_equal(_arg0, _arg1)
 
@@ -567,37 +523,26 @@ func (s *Rectangle) Equal(rect2 *Rectangle) bool {
 	return _ok
 }
 
-// Intersect calculates the union of two rectangles. The union of rectangles
-// @src1 and @src2 is the smallest rectangle which includes both @src1 and @src2
-// within it. It is allowed for @dest to be the same as either @src1 or @src2.
-//
-// Note that this function does not ignore 'empty' rectangles (ie. with zero
-// width or height).
-func (s *Rectangle) Intersect(src2 *Rectangle) (Rectangle, bool) {
+// Intersect calculates the intersection of two rectangles. It is allowed for
+// @dest to be the same as either @src1 or @src2. If the rectangles do not
+// intersect, @dest’s width and height is set to 0 and its x and y values are
+// undefined. If you are only interested in whether the rectangles intersect,
+// but not in the intersecting area itself, pass nil for @dest.
+func (s *Rectangle) Intersect(src2 Rectangle) (Rectangle, bool) {
 	var _arg0 *C.GdkRectangle // out
 	var _arg1 *C.GdkRectangle // out
-	var _arg2 C.GdkRectangle  // in
+	var _arg2 *C.GdkRectangle // in
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GdkRectangle)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(src2.Native()))
+	_arg0 = (*C.GdkRectangle)(unsafe.Pointer(s))
+	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(src2))
 
 	_cret = C.gdk_rectangle_intersect(_arg0, _arg1, &_arg2)
 
 	var _dest Rectangle // out
 	var _ok bool        // out
 
-	{
-		var refTmpIn *C.GdkRectangle
-		var refTmpOut *Rectangle
-
-		in0 := &_arg2
-		refTmpIn = in0
-
-		refTmpOut = (*Rectangle)(unsafe.Pointer(refTmpIn))
-
-		_dest = *refTmpOut
-	}
+	_dest = (Rectangle)(unsafe.Pointer(_arg2))
 	if _cret != 0 {
 		_ok = true
 	}
@@ -611,29 +556,19 @@ func (s *Rectangle) Intersect(src2 *Rectangle) (Rectangle, bool) {
 //
 // Note that this function does not ignore 'empty' rectangles (ie. with zero
 // width or height).
-func (s *Rectangle) Union(src2 *Rectangle) Rectangle {
+func (s *Rectangle) Union(src2 Rectangle) Rectangle {
 	var _arg0 *C.GdkRectangle // out
 	var _arg1 *C.GdkRectangle // out
-	var _arg2 C.GdkRectangle  // in
+	var _arg2 *C.GdkRectangle // in
 
-	_arg0 = (*C.GdkRectangle)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(src2.Native()))
+	_arg0 = (*C.GdkRectangle)(unsafe.Pointer(s))
+	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(src2))
 
 	C.gdk_rectangle_union(_arg0, _arg1, &_arg2)
 
 	var _dest Rectangle // out
 
-	{
-		var refTmpIn *C.GdkRectangle
-		var refTmpOut *Rectangle
-
-		in0 := &_arg2
-		refTmpIn = in0
-
-		refTmpOut = (*Rectangle)(unsafe.Pointer(refTmpIn))
-
-		_dest = *refTmpOut
-	}
+	_dest = (Rectangle)(unsafe.Pointer(_arg2))
 
 	return _dest
 }

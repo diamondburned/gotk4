@@ -38,7 +38,8 @@ func init() {
 type DBusObject interface {
 	gextras.Objector
 
-	// Interface gets the object path for @object.
+	// Interface gets the D-Bus interface with name @interface_name associated
+	// with @object, if any.
 	Interface(interfaceName string) DBusInterface
 	// ObjectPath gets the object path for @object.
 	ObjectPath() string

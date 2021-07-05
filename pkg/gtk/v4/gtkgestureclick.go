@@ -51,6 +51,8 @@ func marshalGestureClick(p uintptr) (interface{}, error) {
 	return WrapGestureClick(obj), nil
 }
 
+// NewGestureClick returns a newly created `GtkGesture` that recognizes single
+// and multiple presses.
 func NewGestureClick() GestureClick {
 	var _cret *C.GtkGesture // in
 
@@ -58,7 +60,7 @@ func NewGestureClick() GestureClick {
 
 	var _gestureClick GestureClick // out
 
-	_gestureClick = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(GestureClick)
+	_gestureClick = WrapGestureClick(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _gestureClick
 }

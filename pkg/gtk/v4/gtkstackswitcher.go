@@ -53,8 +53,16 @@ func init() {
 type StackSwitcher interface {
 	Widget
 
-	Stack() Stack
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
 
+	// Stack retrieves the stack.
+	Stack() Stack
+	// SetStackStackSwitcher sets the stack to control.
 	SetStackStackSwitcher(stack Stack)
 }
 
@@ -77,6 +85,7 @@ func marshalStackSwitcher(p uintptr) (interface{}, error) {
 	return WrapStackSwitcher(obj), nil
 }
 
+// NewStackSwitcher: create a new `GtkStackSwitcher`.
 func NewStackSwitcher() StackSwitcher {
 	var _cret *C.GtkWidget // in
 
@@ -84,7 +93,7 @@ func NewStackSwitcher() StackSwitcher {
 
 	var _stackSwitcher StackSwitcher // out
 
-	_stackSwitcher = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(StackSwitcher)
+	_stackSwitcher = WrapStackSwitcher(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _stackSwitcher
 }
@@ -114,34 +123,14 @@ func (s stackSwitcher) SetStackStackSwitcher(stack Stack) {
 	C.gtk_stack_switcher_set_stack(_arg0, _arg1)
 }
 
-func (s stackSwitcher) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
+func (s stackSwitcher) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(s))
 }
 
-func (s stackSwitcher) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
+func (s stackSwitcher) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(s))
 }
 
-func (s stackSwitcher) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
-}
-
-func (s stackSwitcher) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s stackSwitcher) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s stackSwitcher) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s stackSwitcher) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b stackSwitcher) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
+func (s stackSwitcher) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(s))
 }

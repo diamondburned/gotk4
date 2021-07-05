@@ -30,10 +30,34 @@ func init() {
 type GestureStylus interface {
 	GestureSingle
 
+	// Axis returns the current value for the requested @axis.
+	//
+	// This function must be called from the handler of one of the
+	// [signal@Gtk.GestureStylus::down], [signal@Gtk.GestureStylus::motion],
+	// [signal@Gtk.GestureStylus::up] or [signal@Gtk.GestureStylus::proximity]
+	// signals.
 	Axis(axis gdk.AxisUse) (float64, bool)
-
+	// Backlog returns the accumulated backlog of tracking information.
+	//
+	// By default, GTK will limit rate of input events. On stylus input where
+	// accuracy of strokes is paramount, this function returns the accumulated
+	// coordinate/timing state before the emission of the current
+	// [Gtk.GestureStylus::motion] signal.
+	//
+	// This function may only be called within a
+	// [signal@Gtk.GestureStylus::motion] signal handler, the state given in
+	// this signal and obtainable through [method@Gtk.GestureStylus.get_axis]
+	// express the latest (most up-to-date) state in motion history.
+	//
+	// The @backlog is provided in chronological order.
 	Backlog() ([]gdk.TimeCoord, bool)
-
+	// DeviceTool returns the `GdkDeviceTool` currently driving input through
+	// this gesture.
+	//
+	// This function must be called from the handler of one of the
+	// [signal@Gtk.GestureStylus::down], [signal@Gtk.GestureStylus::motion],
+	// [signal@Gtk.GestureStylus::up] or [signal@Gtk.GestureStylus::proximity]
+	// signals.
 	DeviceTool() gdk.DeviceTool
 }
 
@@ -56,6 +80,7 @@ func marshalGestureStylus(p uintptr) (interface{}, error) {
 	return WrapGestureStylus(obj), nil
 }
 
+// NewGestureStylus creates a new `GtkGestureStylus`.
 func NewGestureStylus() GestureStylus {
 	var _cret *C.GtkGesture // in
 
@@ -63,7 +88,7 @@ func NewGestureStylus() GestureStylus {
 
 	var _gestureStylus GestureStylus // out
 
-	_gestureStylus = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(GestureStylus)
+	_gestureStylus = WrapGestureStylus(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _gestureStylus
 }
@@ -71,7 +96,7 @@ func NewGestureStylus() GestureStylus {
 func (g gestureStylus) Axis(axis gdk.AxisUse) (float64, bool) {
 	var _arg0 *C.GtkGestureStylus // out
 	var _arg1 C.GdkAxisUse        // out
-	var _arg2 C.double            // in
+	var _arg2 *C.double           // in
 	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GtkGestureStylus)(unsafe.Pointer(g.Native()))
@@ -93,7 +118,7 @@ func (g gestureStylus) Axis(axis gdk.AxisUse) (float64, bool) {
 func (g gestureStylus) Backlog() ([]gdk.TimeCoord, bool) {
 	var _arg0 *C.GtkGestureStylus // out
 	var _arg1 *C.GdkTimeCoord
-	var _arg2 C.guint    // in
+	var _arg2 *C.guint   // in
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.GtkGestureStylus)(unsafe.Pointer(g.Native()))

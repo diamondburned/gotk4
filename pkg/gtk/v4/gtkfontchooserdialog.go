@@ -3,13 +3,9 @@
 package gtk
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/gdk/v4"
-	"github.com/diamondburned/gotk4/pkg/gsk/v4"
-	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -43,7 +39,21 @@ func init() {
 // exposes the buttons with the names “select_button” and “cancel_button”.
 type FontChooserDialog interface {
 	Dialog
-	FontChooser
+
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
+	// AsFontChooser casts the class to the FontChooser interface.
+	AsFontChooser() FontChooser
+	// AsNative casts the class to the Native interface.
+	AsNative() Native
+	// AsRoot casts the class to the Root interface.
+	AsRoot() Root
+	// AsShortcutManager casts the class to the ShortcutManager interface.
+	AsShortcutManager() ShortcutManager
 }
 
 // fontChooserDialog implements the FontChooserDialog class.
@@ -65,6 +75,7 @@ func marshalFontChooserDialog(p uintptr) (interface{}, error) {
 	return WrapFontChooserDialog(obj), nil
 }
 
+// NewFontChooserDialog creates a new `GtkFontChooserDialog`.
 func NewFontChooserDialog(title string, parent Window) FontChooserDialog {
 	var _arg1 *C.char      // out
 	var _arg2 *C.GtkWindow // out
@@ -78,143 +89,35 @@ func NewFontChooserDialog(title string, parent Window) FontChooserDialog {
 
 	var _fontChooserDialog FontChooserDialog // out
 
-	_fontChooserDialog = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(FontChooserDialog)
+	_fontChooserDialog = WrapFontChooserDialog(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _fontChooserDialog
 }
 
-func (s fontChooserDialog) Display() gdk.Display {
-	return WrapRoot(gextras.InternObject(s)).Display()
+func (f fontChooserDialog) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(f))
 }
 
-func (s fontChooserDialog) Focus() Widget {
-	return WrapRoot(gextras.InternObject(s)).Focus()
+func (f fontChooserDialog) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(f))
 }
 
-func (s fontChooserDialog) SetFocus(focus Widget) {
-	WrapRoot(gextras.InternObject(s)).SetFocus(focus)
+func (f fontChooserDialog) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(f))
 }
 
-func (s fontChooserDialog) Renderer() gsk.Renderer {
-	return WrapNative(gextras.InternObject(s)).Renderer()
+func (f fontChooserDialog) AsFontChooser() FontChooser {
+	return WrapFontChooser(gextras.InternObject(f))
 }
 
-func (s fontChooserDialog) Surface() gdk.Surface {
-	return WrapNative(gextras.InternObject(s)).Surface()
+func (f fontChooserDialog) AsNative() Native {
+	return WrapNative(gextras.InternObject(f))
 }
 
-func (s fontChooserDialog) SurfaceTransform() (x float64, y float64) {
-	return WrapNative(gextras.InternObject(s)).SurfaceTransform()
+func (f fontChooserDialog) AsRoot() Root {
+	return WrapRoot(gextras.InternObject(f))
 }
 
-func (s fontChooserDialog) Realize() {
-	WrapNative(gextras.InternObject(s)).Realize()
-}
-
-func (s fontChooserDialog) Unrealize() {
-	WrapNative(gextras.InternObject(s)).Unrealize()
-}
-
-func (s fontChooserDialog) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
-}
-
-func (s fontChooserDialog) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
-}
-
-func (s fontChooserDialog) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
-}
-
-func (s fontChooserDialog) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s fontChooserDialog) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s fontChooserDialog) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s fontChooserDialog) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b fontChooserDialog) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
-}
-
-func (f fontChooserDialog) Font() string {
-	return WrapFontChooser(gextras.InternObject(f)).Font()
-}
-
-func (f fontChooserDialog) FontDesc() *pango.FontDescription {
-	return WrapFontChooser(gextras.InternObject(f)).FontDesc()
-}
-
-func (f fontChooserDialog) FontFace() pango.FontFace {
-	return WrapFontChooser(gextras.InternObject(f)).FontFace()
-}
-
-func (f fontChooserDialog) FontFamily() pango.FontFamily {
-	return WrapFontChooser(gextras.InternObject(f)).FontFamily()
-}
-
-func (f fontChooserDialog) FontFeatures() string {
-	return WrapFontChooser(gextras.InternObject(f)).FontFeatures()
-}
-
-func (f fontChooserDialog) FontMap() pango.FontMap {
-	return WrapFontChooser(gextras.InternObject(f)).FontMap()
-}
-
-func (f fontChooserDialog) FontSize() int {
-	return WrapFontChooser(gextras.InternObject(f)).FontSize()
-}
-
-func (f fontChooserDialog) Language() string {
-	return WrapFontChooser(gextras.InternObject(f)).Language()
-}
-
-func (f fontChooserDialog) Level() FontChooserLevel {
-	return WrapFontChooser(gextras.InternObject(f)).Level()
-}
-
-func (f fontChooserDialog) PreviewText() string {
-	return WrapFontChooser(gextras.InternObject(f)).PreviewText()
-}
-
-func (f fontChooserDialog) ShowPreviewEntry() bool {
-	return WrapFontChooser(gextras.InternObject(f)).ShowPreviewEntry()
-}
-
-func (f fontChooserDialog) SetFont(fontname string) {
-	WrapFontChooser(gextras.InternObject(f)).SetFont(fontname)
-}
-
-func (f fontChooserDialog) SetFontDesc(fontDesc *pango.FontDescription) {
-	WrapFontChooser(gextras.InternObject(f)).SetFontDesc(fontDesc)
-}
-
-func (f fontChooserDialog) SetFontMap(fontmap pango.FontMap) {
-	WrapFontChooser(gextras.InternObject(f)).SetFontMap(fontmap)
-}
-
-func (f fontChooserDialog) SetLanguage(language string) {
-	WrapFontChooser(gextras.InternObject(f)).SetLanguage(language)
-}
-
-func (f fontChooserDialog) SetLevel(level FontChooserLevel) {
-	WrapFontChooser(gextras.InternObject(f)).SetLevel(level)
-}
-
-func (f fontChooserDialog) SetPreviewText(text string) {
-	WrapFontChooser(gextras.InternObject(f)).SetPreviewText(text)
-}
-
-func (f fontChooserDialog) SetShowPreviewEntry(showPreviewEntry bool) {
-	WrapFontChooser(gextras.InternObject(f)).SetShowPreviewEntry(showPreviewEntry)
+func (f fontChooserDialog) AsShortcutManager() ShortcutManager {
+	return WrapShortcutManager(gextras.InternObject(f))
 }

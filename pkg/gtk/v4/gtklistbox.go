@@ -7,7 +7,6 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -30,7 +29,7 @@ func init() {
 // ListBoxCreateWidgetFunc: called for list boxes that are bound to a
 // `GListModel` with gtk_list_box_bind_model() for each item that gets added to
 // the model.
-type ListBoxCreateWidgetFunc func(item gextras.Objector, widget Widget)
+type ListBoxCreateWidgetFunc func(item gextras.Objector) (widget Widget)
 
 //export gotk4_ListBoxCreateWidgetFunc
 func gotk4_ListBoxCreateWidgetFunc(arg0 C.gpointer, arg1 C.gpointer) *C.GtkWidget {
@@ -55,7 +54,7 @@ func gotk4_ListBoxCreateWidgetFunc(arg0 C.gpointer, arg1 C.gpointer) *C.GtkWidge
 
 // ListBoxFilterFunc: will be called whenever the row changes or is added and
 // lets you control if the row should be visible or not.
-type ListBoxFilterFunc func(row ListBoxRow, ok bool)
+type ListBoxFilterFunc func(row ListBoxRow) (ok bool)
 
 //export gotk4_ListBoxFilterFunc
 func gotk4_ListBoxFilterFunc(arg0 *C.GtkListBoxRow, arg1 C.gpointer) C.gboolean {
@@ -80,7 +79,7 @@ func gotk4_ListBoxFilterFunc(arg0 *C.GtkListBoxRow, arg1 C.gpointer) C.gboolean 
 	return cret
 }
 
-// ListBoxForeachFunc: a function used by gtk_list_box_selected_foreach().
+// ListBoxForeachFunc: function used by gtk_list_box_selected_foreach().
 //
 // It will be called on every selected child of the @box.
 type ListBoxForeachFunc func(box ListBox, row ListBoxRow)
@@ -103,7 +102,7 @@ func gotk4_ListBoxForeachFunc(arg0 *C.GtkListBox, arg1 *C.GtkListBoxRow, arg2 C.
 }
 
 // ListBoxSortFunc: compare two rows to determine which should be first.
-type ListBoxSortFunc func(row1 ListBoxRow, row2 ListBoxRow, gint int)
+type ListBoxSortFunc func(row1 ListBoxRow, row2 ListBoxRow) (gint int)
 
 //export gotk4_ListBoxSortFunc
 func gotk4_ListBoxSortFunc(arg0 *C.GtkListBoxRow, arg1 *C.GtkListBoxRow, arg2 C.gpointer) C.int {
@@ -205,56 +204,120 @@ func gotk4_ListBoxUpdateHeaderFunc(arg0 *C.GtkListBoxRow, arg1 *C.GtkListBoxRow,
 type ListBox interface {
 	Widget
 
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
+
+	// AppendListBox: append a widget to the list.
+	//
+	// If a sort function is set, the widget will actually be inserted at the
+	// calculated position.
 	AppendListBox(child Widget)
-
+	// DragHighlightRowListBox: add a drag highlight to a row.
+	//
+	// This is a helper function for implementing DnD onto a `GtkListBox`. The
+	// passed in @row will be highlighted by setting the
+	// GTK_STATE_FLAG_DROP_ACTIVE state and any previously highlighted row will
+	// be unhighlighted.
+	//
+	// The row will also be unhighlighted when the widget gets a drag leave
+	// event.
 	DragHighlightRowListBox(row ListBoxRow)
-
+	// DragUnhighlightRowListBox: if a row has previously been highlighted via
+	// gtk_list_box_drag_highlight_row(), it will have the highlight removed.
 	DragUnhighlightRowListBox()
-
+	// ActivateOnSingleClick returns whether rows activate on single clicks.
 	ActivateOnSingleClick() bool
-
+	// Adjustment gets the adjustment (if any) that the widget uses to for
+	// vertical scrolling.
 	Adjustment() Adjustment
-
+	// RowAtIndex gets the n-th child in the list (not counting headers).
+	//
+	// If @index_ is negative or larger than the number of items in the list,
+	// nil is returned.
 	RowAtIndex(index_ int) ListBoxRow
-
+	// RowAtY gets the row at the @y position.
 	RowAtY(y int) ListBoxRow
-
+	// SelectedRow gets the selected row, or nil if no rows are selected.
+	//
+	// Note that the box may allow multiple selection, in which case you should
+	// use [method@Gtk.ListBox.selected_foreach] to find all selected rows.
 	SelectedRow() ListBoxRow
-
+	// SelectionMode gets the selection mode of the listbox.
 	SelectionMode() SelectionMode
-
+	// ShowSeparators returns whether the list box should show separators
+	// between rows.
 	ShowSeparators() bool
-
+	// InsertListBox: insert the @child into the @box at @position.
+	//
+	// If a sort function is set, the widget will actually be inserted at the
+	// calculated position.
+	//
+	// If @position is -1, or larger than the total number of items in the @box,
+	// then the @child will be appended to the end.
 	InsertListBox(child Widget, position int)
-
+	// InvalidateFilterListBox: update the filtering for all rows.
+	//
+	// Call this when result of the filter function on the @box is changed due
+	// to an external factor. For instance, this would be used if the filter
+	// function just looked for a specific search string and the entry with the
+	// search string has changed.
 	InvalidateFilterListBox()
-
+	// InvalidateHeadersListBox: update the separators for all rows.
+	//
+	// Call this when result of the header function on the @box is changed due
+	// to an external factor.
 	InvalidateHeadersListBox()
-
+	// InvalidateSortListBox: update the sorting for all rows.
+	//
+	// Call this when result of the sort function on the @box is changed due to
+	// an external factor.
 	InvalidateSortListBox()
-
+	// PrependListBox: prepend a widget to the list.
+	//
+	// If a sort function is set, the widget will actually be inserted at the
+	// calculated position.
 	PrependListBox(child Widget)
-
+	// RemoveListBox removes a child from @box.
 	RemoveListBox(child Widget)
-
+	// SelectAllListBox: select all children of @box, if the selection mode
+	// allows it.
 	SelectAllListBox()
-
+	// SelectRowListBox: make @row the currently selected row.
 	SelectRowListBox(row ListBoxRow)
-
+	// SelectedForeachListBox calls a function for each selected child.
+	//
+	// Note that the selection cannot be modified from within this function.
 	SelectedForeachListBox(fn ListBoxForeachFunc)
-
+	// SetActivateOnSingleClickListBox: if @single is true, rows will be
+	// activated when you click on them, otherwise you need to double-click.
 	SetActivateOnSingleClickListBox(single bool)
-
+	// SetAdjustmentListBox sets the adjustment (if any) that the widget uses to
+	// for vertical scrolling.
+	//
+	// For instance, this is used to get the page size for PageUp/Down key
+	// handling.
+	//
+	// In the normal case when the @box is packed inside a `GtkScrolledWindow`
+	// the adjustment from that will be picked up automatically, so there is no
+	// need to manually do that.
 	SetAdjustmentListBox(adjustment Adjustment)
-
+	// SetPlaceholderListBox sets the placeholder widget that is shown in the
+	// list when it doesn't display any visible children.
 	SetPlaceholderListBox(placeholder Widget)
-
+	// SetSelectionModeListBox sets how selection works in the listbox.
 	SetSelectionModeListBox(mode SelectionMode)
-
+	// SetShowSeparatorsListBox sets whether the list box should show separators
+	// between rows.
 	SetShowSeparatorsListBox(showSeparators bool)
-
+	// UnselectAllListBox: unselect all children of @box, if the selection mode
+	// allows it.
 	UnselectAllListBox()
-
+	// UnselectRowListBox unselects a single row of @box, if the selection mode
+	// allows it.
 	UnselectRowListBox(row ListBoxRow)
 }
 
@@ -277,6 +340,7 @@ func marshalListBox(p uintptr) (interface{}, error) {
 	return WrapListBox(obj), nil
 }
 
+// NewListBox creates a new `GtkListBox` container.
 func NewListBox() ListBox {
 	var _cret *C.GtkWidget // in
 
@@ -284,7 +348,7 @@ func NewListBox() ListBox {
 
 	var _listBox ListBox // out
 
-	_listBox = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ListBox)
+	_listBox = WrapListBox(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _listBox
 }
@@ -588,63 +652,77 @@ func (b listBox) UnselectRowListBox(row ListBoxRow) {
 	C.gtk_list_box_unselect_row(_arg0, _arg1)
 }
 
-func (s listBox) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
+func (l listBox) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(l))
 }
 
-func (s listBox) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
+func (l listBox) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(l))
 }
 
-func (s listBox) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
-}
-
-func (s listBox) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s listBox) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s listBox) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s listBox) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b listBox) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
+func (l listBox) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(l))
 }
 
 // ListBoxRow: `GtkListBoxRow` is the kind of widget that can be added to a
 // `GtkListBox`.
 type ListBoxRow interface {
-	Actionable
+	Widget
 
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsActionable casts the class to the Actionable interface.
+	AsActionable() Actionable
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
+
+	// ChangedListBoxRow marks @row as changed, causing any state that depends
+	// on this to be updated.
+	//
+	// This affects sorting, filtering and headers.
+	//
+	// Note that calls to this method must be in sync with the data used for the
+	// row functions. For instance, if the list is mirroring some external data
+	// set, and *two* rows changed in the external data set then when you call
+	// gtk_list_box_row_changed() on the first row the sort function must only
+	// read the new data for the first of the two changed rows, otherwise the
+	// resorting of the rows will be wrong.
+	//
+	// This generally means that if you don’t fully control the data model you
+	// have to duplicate the data that affects the listbox row functions into
+	// the row widgets themselves. Another alternative is to call
+	// [method@Gtk.ListBox.invalidate_sort] on any model change, but that is
+	// more expensive.
 	ChangedListBoxRow()
-
+	// Activatable gets whether the row is activatable.
 	Activatable() bool
-
+	// Child gets the child widget of @row.
 	Child() Widget
-
+	// Header returns the current header of the @row.
+	//
+	// This can be used in a [callback@Gtk.ListBoxUpdateHeaderFunc] to see if
+	// there is a header set already, and if so to update the state of it.
 	Header() Widget
-
+	// Index gets the current index of the @row in its `GtkListBox` container.
 	Index() int
-
+	// Selectable gets whether the row can be selected.
 	Selectable() bool
-
+	// IsSelectedListBoxRow returns whether the child is currently selected in
+	// its `GtkListBox` container.
 	IsSelectedListBoxRow() bool
-
+	// SetActivatableListBoxRow: set whether the row is activatable.
 	SetActivatableListBoxRow(activatable bool)
-
+	// SetChildListBoxRow sets the child widget of @self.
 	SetChildListBoxRow(child Widget)
-
+	// SetHeaderListBoxRow sets the current header of the @row.
+	//
+	// This is only allowed to be called from a
+	// [callback@Gtk.ListBoxUpdateHeaderFunc]. It will replace any existing
+	// header in the row, and be shown in front of the row in the listbox.
 	SetHeaderListBoxRow(header Widget)
-
+	// SetSelectableListBoxRow: set whether the row can be selected.
 	SetSelectableListBoxRow(selectable bool)
 }
 
@@ -667,6 +745,7 @@ func marshalListBoxRow(p uintptr) (interface{}, error) {
 	return WrapListBoxRow(obj), nil
 }
 
+// NewListBoxRow creates a new `GtkListBoxRow`.
 func NewListBoxRow() ListBoxRow {
 	var _cret *C.GtkWidget // in
 
@@ -674,7 +753,7 @@ func NewListBoxRow() ListBoxRow {
 
 	var _listBoxRow ListBoxRow // out
 
-	_listBoxRow = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ListBoxRow)
+	_listBoxRow = WrapListBoxRow(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _listBoxRow
 }
@@ -827,54 +906,18 @@ func (r listBoxRow) SetSelectableListBoxRow(selectable bool) {
 	C.gtk_list_box_row_set_selectable(_arg0, _arg1)
 }
 
-func (a listBoxRow) ActionName() string {
-	return WrapActionable(gextras.InternObject(a)).ActionName()
+func (l listBoxRow) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(l))
 }
 
-func (a listBoxRow) ActionTargetValue() *glib.Variant {
-	return WrapActionable(gextras.InternObject(a)).ActionTargetValue()
+func (l listBoxRow) AsActionable() Actionable {
+	return WrapActionable(gextras.InternObject(l))
 }
 
-func (a listBoxRow) SetActionName(actionName string) {
-	WrapActionable(gextras.InternObject(a)).SetActionName(actionName)
+func (l listBoxRow) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(l))
 }
 
-func (a listBoxRow) SetActionTargetValue(targetValue *glib.Variant) {
-	WrapActionable(gextras.InternObject(a)).SetActionTargetValue(targetValue)
-}
-
-func (a listBoxRow) SetDetailedActionName(detailedActionName string) {
-	WrapActionable(gextras.InternObject(a)).SetDetailedActionName(detailedActionName)
-}
-
-func (s listBoxRow) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
-}
-
-func (s listBoxRow) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
-}
-
-func (s listBoxRow) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
-}
-
-func (s listBoxRow) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s listBoxRow) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s listBoxRow) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s listBoxRow) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b listBoxRow) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
+func (l listBoxRow) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(l))
 }

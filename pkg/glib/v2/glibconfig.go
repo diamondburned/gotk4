@@ -8,7 +8,7 @@ package glib
 // #include <glib.h>
 import "C"
 
-// Pid: a type which is used to hold a process identification.
+// Pid: type which is used to hold a process identification.
 //
 // On UNIX, processes are identified by a process id (an integer), while Windows
 // uses process handles (which are pointers).

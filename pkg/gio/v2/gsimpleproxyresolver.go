@@ -5,8 +5,6 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
-	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -26,8 +24,6 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 // #include <glib-object.h>
-//
-// void gotk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 func init() {
@@ -44,10 +40,25 @@ func init() {
 // base class for another proxy resolver implementation, or it can be created
 // and used manually, such as with g_socket_client_set_proxy_resolver().
 type SimpleProxyResolver interface {
-	ProxyResolver
+	gextras.Objector
 
+	// AsProxyResolver casts the class to the ProxyResolver interface.
+	AsProxyResolver() ProxyResolver
+
+	// SetDefaultProxySimpleProxyResolver sets the default proxy on @resolver,
+	// to be used for any URIs that don't match ProxyResolver:ignore-hosts or a
+	// proxy set via g_simple_proxy_resolver_set_uri_proxy().
+	//
+	// If @default_proxy starts with "socks://", ProxyResolver will treat it as
+	// referring to all three of the socks5, socks4a, and socks4 proxy types.
 	SetDefaultProxySimpleProxyResolver(defaultProxy string)
-
+	// SetURIProxySimpleProxyResolver adds a URI-scheme-specific proxy to
+	// @resolver; URIs whose scheme matches @uri_scheme (and which don't match
+	// ProxyResolver:ignore-hosts) will be proxied via @proxy.
+	//
+	// As with ProxyResolver:default-proxy, if @proxy starts with "socks://",
+	// ProxyResolver will treat it as referring to all three of the socks5,
+	// socks4a, and socks4 proxy types.
 	SetURIProxySimpleProxyResolver(uriScheme string, proxy string)
 }
 
@@ -95,18 +106,6 @@ func (r simpleProxyResolver) SetURIProxySimpleProxyResolver(uriScheme string, pr
 	C.g_simple_proxy_resolver_set_uri_proxy(_arg0, _arg1, _arg2)
 }
 
-func (r simpleProxyResolver) IsSupported() bool {
-	return WrapProxyResolver(gextras.InternObject(r)).IsSupported()
-}
-
-func (r simpleProxyResolver) Lookup(uri string, cancellable Cancellable) ([]string, error) {
-	return WrapProxyResolver(gextras.InternObject(r)).Lookup(uri, cancellable)
-}
-
-func (r simpleProxyResolver) LookupAsync(uri string, cancellable Cancellable, callback AsyncReadyCallback) {
-	WrapProxyResolver(gextras.InternObject(r)).LookupAsync(uri, cancellable, callback)
-}
-
-func (r simpleProxyResolver) LookupFinish(result AsyncResult) ([]string, error) {
-	return WrapProxyResolver(gextras.InternObject(r)).LookupFinish(result)
+func (s simpleProxyResolver) AsProxyResolver() ProxyResolver {
+	return WrapProxyResolver(gextras.InternObject(s))
 }

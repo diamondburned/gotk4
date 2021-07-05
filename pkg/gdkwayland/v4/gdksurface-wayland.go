@@ -85,10 +85,27 @@ func marshalWaylandSurface(p uintptr) (interface{}, error) {
 type WaylandToplevel interface {
 	WaylandSurface
 
+	// SetApplicationIDWaylandToplevel sets the application id on a
+	// `GdkToplevel`.
 	SetApplicationIDWaylandToplevel(applicationId string)
-
+	// SetTransientForExportedWaylandToplevel marks @toplevel as transient for
+	// the surface to which the given @parent_handle_str refers.
+	//
+	// Typically, the handle will originate from a
+	// [method@GdkWayland.WaylandToplevel.export_handle] call in another
+	// process.
+	//
+	// Note that this API depends on an unstable Wayland protocol, and thus may
+	// require changes in the future.
 	SetTransientForExportedWaylandToplevel(parentHandleStr string) bool
-
+	// UnexportHandleWaylandToplevel destroys the handle that was obtained with
+	// gdk_wayland_toplevel_export_handle().
+	//
+	// It is an error to call this function on a surface that does not have a
+	// handle.
+	//
+	// Note that this API depends on an unstable Wayland protocol, and thus may
+	// require changes in the future.
 	UnexportHandleWaylandToplevel()
 }
 

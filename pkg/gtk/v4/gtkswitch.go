@@ -6,7 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -47,14 +46,30 @@ func init() {
 //
 // `GtkSwitch` uses the GTK_ACCESSIBLE_ROLE_SWITCH role.
 type Switch interface {
-	Actionable
+	Widget
 
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsActionable casts the class to the Actionable interface.
+	AsActionable() Actionable
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
+
+	// Active gets whether the `GtkSwitch` is in its “on” or “off” state.
 	Active() bool
-
+	// State gets the underlying state of the `GtkSwitch`.
 	State() bool
-
+	// SetActiveSwitch changes the state of @self to the desired one.
 	SetActiveSwitch(isActive bool)
-
+	// SetStateSwitch sets the underlying state of the `GtkSwitch`.
+	//
+	// Normally, this is the same as [property@Gtk.Switch:active], unless the
+	// switch is set up for delayed state changes. This function is typically
+	// called from a [signal@Gtk.Switch`::state-set] signal handler.
+	//
+	// See [signal@Gtk.Switch::state-set] for details.
 	SetStateSwitch(state bool)
 }
 
@@ -77,6 +92,7 @@ func marshalSwitch(p uintptr) (interface{}, error) {
 	return WrapSwitch(obj), nil
 }
 
+// NewSwitch creates a new `GtkSwitch` widget.
 func NewSwitch() Switch {
 	var _cret *C.GtkWidget // in
 
@@ -84,7 +100,7 @@ func NewSwitch() Switch {
 
 	var __switch Switch // out
 
-	__switch = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Switch)
+	__switch = WrapSwitch(externglib.Take(unsafe.Pointer(_cret)))
 
 	return __switch
 }
@@ -147,54 +163,18 @@ func (s _switch) SetStateSwitch(state bool) {
 	C.gtk_switch_set_state(_arg0, _arg1)
 }
 
-func (a _switch) ActionName() string {
-	return WrapActionable(gextras.InternObject(a)).ActionName()
+func (_ _switch) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(_))
 }
 
-func (a _switch) ActionTargetValue() *glib.Variant {
-	return WrapActionable(gextras.InternObject(a)).ActionTargetValue()
+func (_ _switch) AsActionable() Actionable {
+	return WrapActionable(gextras.InternObject(_))
 }
 
-func (a _switch) SetActionName(actionName string) {
-	WrapActionable(gextras.InternObject(a)).SetActionName(actionName)
+func (_ _switch) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(_))
 }
 
-func (a _switch) SetActionTargetValue(targetValue *glib.Variant) {
-	WrapActionable(gextras.InternObject(a)).SetActionTargetValue(targetValue)
-}
-
-func (a _switch) SetDetailedActionName(detailedActionName string) {
-	WrapActionable(gextras.InternObject(a)).SetDetailedActionName(detailedActionName)
-}
-
-func (s _switch) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
-}
-
-func (s _switch) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
-}
-
-func (s _switch) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
-}
-
-func (s _switch) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s _switch) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s _switch) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s _switch) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b _switch) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
+func (_ _switch) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(_))
 }

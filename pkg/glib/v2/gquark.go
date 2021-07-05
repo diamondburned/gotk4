@@ -12,8 +12,8 @@ import (
 // #include <glib.h>
 import "C"
 
-// Quark: a GQuark is a non-zero integer which uniquely identifies a particular
-// string. A GQuark value of zero is associated to nil.
+// Quark is a non-zero integer which uniquely identifies a particular string. A
+// GQuark value of zero is associated to nil.
 type Quark = uint32
 
 // InternStaticString returns a canonical representation for @string. Interned

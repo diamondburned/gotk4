@@ -22,8 +22,7 @@ func init() {
 	})
 }
 
-// EntryBuffer: a `GtkEntryBuffer` hold the text displayed in a `GtkText`
-// widget.
+// EntryBuffer: `GtkEntryBuffer` hold the text displayed in a `GtkText` widget.
 //
 // A single `GtkEntryBuffer` object can be shared by multiple widgets which will
 // then share the same text content, but not the cursor position, visibility
@@ -36,24 +35,56 @@ func init() {
 type EntryBuffer interface {
 	gextras.Objector
 
+	// DeleteTextEntryBuffer deletes a sequence of characters from the buffer.
+	//
+	// @n_chars characters are deleted starting at @position. If @n_chars is
+	// negative, then all characters until the end of the text are deleted.
+	//
+	// If @position or @n_chars are out of bounds, then they are coerced to sane
+	// values.
+	//
+	// Note that the positions are specified in characters, not bytes.
 	DeleteTextEntryBuffer(position uint, nChars int) uint
-
+	// EmitDeletedTextEntryBuffer: used when subclassing `GtkEntryBuffer`.
 	EmitDeletedTextEntryBuffer(position uint, nChars uint)
-
+	// EmitInsertedTextEntryBuffer: used when subclassing `GtkEntryBuffer`.
 	EmitInsertedTextEntryBuffer(position uint, chars string, nChars uint)
-
+	// Bytes retrieves the length in bytes of the buffer.
+	//
+	// See [method@Gtk.EntryBuffer.get_length].
 	Bytes() uint
-
+	// Length retrieves the length in characters of the buffer.
 	Length() uint
-
+	// MaxLength retrieves the maximum allowed length of the text in @buffer.
 	MaxLength() int
-
+	// Text retrieves the contents of the buffer.
+	//
+	// The memory pointer returned by this call will not change unless this
+	// object emits a signal, or is finalized.
 	Text() string
-
+	// InsertTextEntryBuffer inserts @n_chars characters of @chars into the
+	// contents of the buffer, at position @position.
+	//
+	// If @n_chars is negative, then characters from chars will be inserted
+	// until a null-terminator is found. If @position or @n_chars are out of
+	// bounds, or the maximum buffer text length is exceeded, then they are
+	// coerced to sane values.
+	//
+	// Note that the position and length are in characters, not in bytes.
 	InsertTextEntryBuffer(position uint, chars string, nChars int) uint
-
+	// SetMaxLengthEntryBuffer sets the maximum allowed length of the contents
+	// of the buffer.
+	//
+	// If the current contents are longer than the given length, then they will
+	// be truncated to fit.
 	SetMaxLengthEntryBuffer(maxLength int)
-
+	// SetTextEntryBuffer sets the text in the buffer.
+	//
+	// This is roughly equivalent to calling
+	// [method@Gtk.EntryBuffer.delete_text] and
+	// [method@Gtk.EntryBuffer.insert_text].
+	//
+	// Note that @n_chars is in characters, not in bytes.
 	SetTextEntryBuffer(chars string, nChars int)
 }
 
@@ -76,6 +107,9 @@ func marshalEntryBuffer(p uintptr) (interface{}, error) {
 	return WrapEntryBuffer(obj), nil
 }
 
+// NewEntryBuffer: create a new `GtkEntryBuffer` object.
+//
+// Optionally, specify initial text to set in the buffer.
 func NewEntryBuffer(initialChars string, nInitialChars int) EntryBuffer {
 	var _arg1 *C.char           // out
 	var _arg2 C.int             // out
@@ -89,7 +123,7 @@ func NewEntryBuffer(initialChars string, nInitialChars int) EntryBuffer {
 
 	var _entryBuffer EntryBuffer // out
 
-	_entryBuffer = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(EntryBuffer)
+	_entryBuffer = WrapEntryBuffer(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _entryBuffer
 }

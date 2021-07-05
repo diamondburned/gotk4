@@ -27,6 +27,9 @@ func init() {
 
 type TextCellAccessible interface {
 	RendererCellAccessible
+
+	// AsAction casts the class to the atk.Action interface.
+	AsAction() atk.Action
 }
 
 // textCellAccessible implements the TextCellAccessible class.
@@ -48,30 +51,6 @@ func marshalTextCellAccessible(p uintptr) (interface{}, error) {
 	return WrapTextCellAccessible(obj), nil
 }
 
-func (a textCellAccessible) DoAction(i int) bool {
-	return atk.WrapAction(gextras.InternObject(a)).DoAction(i)
-}
-
-func (a textCellAccessible) Description(i int) string {
-	return atk.WrapAction(gextras.InternObject(a)).Description(i)
-}
-
-func (a textCellAccessible) Keybinding(i int) string {
-	return atk.WrapAction(gextras.InternObject(a)).Keybinding(i)
-}
-
-func (a textCellAccessible) LocalizedName(i int) string {
-	return atk.WrapAction(gextras.InternObject(a)).LocalizedName(i)
-}
-
-func (a textCellAccessible) NActions() int {
-	return atk.WrapAction(gextras.InternObject(a)).NActions()
-}
-
-func (a textCellAccessible) Name(i int) string {
-	return atk.WrapAction(gextras.InternObject(a)).Name(i)
-}
-
-func (a textCellAccessible) SetDescription(i int, desc string) bool {
-	return atk.WrapAction(gextras.InternObject(a)).SetDescription(i, desc)
+func (t textCellAccessible) AsAction() atk.Action {
+	return atk.WrapAction(gextras.InternObject(t))
 }

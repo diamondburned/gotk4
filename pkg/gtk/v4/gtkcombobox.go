@@ -23,7 +23,7 @@ func init() {
 	})
 }
 
-// ComboBox: a `GtkComboBox` is a widget that allows the user to choose from a
+// ComboBox: `GtkComboBox` is a widget that allows the user to choose from a
 // list of valid choices.
 //
 // !An example GtkComboBox (combo-box.png)
@@ -70,51 +70,132 @@ func init() {
 //
 // `GtkComboBox` uses the GTK_ACCESSIBLE_ROLE_COMBO_BOX role.
 type ComboBox interface {
-	CellEditable
-	CellLayout
+	Widget
 
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsCellEditable casts the class to the CellEditable interface.
+	AsCellEditable() CellEditable
+	// AsCellLayout casts the class to the CellLayout interface.
+	AsCellLayout() CellLayout
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
+
+	// Active returns the index of the currently active item.
+	//
+	// If the model is a non-flat treemodel, and the active item is not an
+	// immediate child of the root of the tree, this function returns
+	// `gtk_tree_path_get_indices (path)[0]`, where `path` is the
+	// [struct@Gtk.TreePath] of the active item.
 	Active() int
-
+	// ActiveID returns the ID of the active row of @combo_box.
+	//
+	// This value is taken from the active row and the column specified by the
+	// [property@Gtk.ComboBox:id-column] property of @combo_box (see
+	// [method@Gtk.ComboBox.set_id_column]).
+	//
+	// The returned value is an interned string which means that you can compare
+	// the pointer by value to other interned strings and that you must not free
+	// it.
+	//
+	// If the [property@Gtk.ComboBox:id-column] property of @combo_box is not
+	// set, or if no row is active, or if the active row has a nil ID value,
+	// then nil is returned.
 	ActiveID() string
-
+	// ActiveIter sets @iter to point to the currently active item.
+	//
+	// If no item is active, @iter is left unchanged.
 	ActiveIter() (TreeIter, bool)
-
+	// ButtonSensitivity returns whether the combo box sets the dropdown button
+	// sensitive or not when there are no items in the model.
 	ButtonSensitivity() SensitivityType
-
+	// Child gets the child widget of @combo_box.
 	Child() Widget
-
+	// EntryTextColumn returns the column which @combo_box is using to get the
+	// strings from to display in the internal entry.
 	EntryTextColumn() int
-
+	// HasEntry returns whether the combo box has an entry.
 	HasEntry() bool
-
+	// IDColumn returns the column which @combo_box is using to get string IDs
+	// for values from.
 	IDColumn() int
-
+	// Model returns the `GtkTreeModel` of @combo_box.
 	Model() TreeModel
-
+	// PopupFixedWidth gets whether the popup uses a fixed width.
 	PopupFixedWidth() bool
-
+	// PopdownComboBox hides the menu or dropdown list of @combo_box.
+	//
+	// This function is mostly intended for use by accessibility technologies;
+	// applications should have little use for it.
 	PopdownComboBox()
-
+	// PopupComboBox pops up the menu or dropdown list of @combo_box.
+	//
+	// This function is mostly intended for use by accessibility technologies;
+	// applications should have little use for it.
+	//
+	// Before calling this, @combo_box must be mapped, or nothing will happen.
 	PopupComboBox()
-
+	// PopupForDeviceComboBox pops up the menu of @combo_box.
+	//
+	// Note that currently this does not do anything with the device, as it was
+	// previously only used for list-mode combo boxes, and those were removed in
+	// GTK 4. However, it is retained in case similar functionality is added
+	// back later.
 	PopupForDeviceComboBox(device gdk.Device)
-
+	// SetActiveComboBox sets the active item of @combo_box to be the item at
+	// @index.
 	SetActiveComboBox(index_ int)
-
+	// SetActiveIDComboBox changes the active row of @combo_box to the one that
+	// has an ID equal to @active_id.
+	//
+	// If @active_id is nil, the active row is unset. Rows having a nil ID
+	// string cannot be made active by this function.
+	//
+	// If the [property@Gtk.ComboBox:id-column] property of @combo_box is unset
+	// or if no row has the given ID then the function does nothing and returns
+	// false.
 	SetActiveIDComboBox(activeId string) bool
-
-	SetActiveIterComboBox(iter *TreeIter)
-
+	// SetActiveIterComboBox sets the current active item to be the one
+	// referenced by @iter.
+	//
+	// If @iter is nil, the active item is unset.
+	SetActiveIterComboBox(iter TreeIter)
+	// SetButtonSensitivityComboBox sets whether the dropdown button of the
+	// combo box should update its sensitivity depending on the model contents.
 	SetButtonSensitivityComboBox(sensitivity SensitivityType)
-
+	// SetChildComboBox sets the child widget of @combo_box.
 	SetChildComboBox(child Widget)
-
+	// SetEntryTextColumnComboBox sets the model column which @combo_box should
+	// use to get strings from to be @text_column.
+	//
+	// The column @text_column in the model of @combo_box must be of type
+	// G_TYPE_STRING.
+	//
+	// This is only relevant if @combo_box has been created with
+	// [property@Gtk.ComboBox:has-entry] as true.
 	SetEntryTextColumnComboBox(textColumn int)
-
+	// SetIDColumnComboBox sets the model column which @combo_box should use to
+	// get string IDs for values from.
+	//
+	// The column @id_column in the model of @combo_box must be of type
+	// G_TYPE_STRING.
 	SetIDColumnComboBox(idColumn int)
-
+	// SetModelComboBox sets the model used by @combo_box to be @model.
+	//
+	// Will unset a previously set model (if applicable). If model is nil, then
+	// it will unset the model.
+	//
+	// Note that this function does not clear the cell renderers, you have to
+	// call [method@Gtk.CellLayout.clear] yourself if you need to set up
+	// different cell renderers for the new model.
 	SetModelComboBox(model TreeModel)
-
+	// SetPopupFixedWidthComboBox specifies whether the popup’s width should be
+	// a fixed width.
+	//
+	// If @fixed is true, the popup's width is set to match the allocated width
+	// of the combo box.
 	SetPopupFixedWidthComboBox(fixed bool)
 }
 
@@ -137,6 +218,7 @@ func marshalComboBox(p uintptr) (interface{}, error) {
 	return WrapComboBox(obj), nil
 }
 
+// NewComboBox creates a new empty `GtkComboBox`.
 func NewComboBox() ComboBox {
 	var _cret *C.GtkWidget // in
 
@@ -144,11 +226,12 @@ func NewComboBox() ComboBox {
 
 	var _comboBox ComboBox // out
 
-	_comboBox = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ComboBox)
+	_comboBox = WrapComboBox(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _comboBox
 }
 
+// NewComboBoxWithEntry creates a new empty `GtkComboBox` with an entry.
 func NewComboBoxWithEntry() ComboBox {
 	var _cret *C.GtkWidget // in
 
@@ -156,11 +239,12 @@ func NewComboBoxWithEntry() ComboBox {
 
 	var _comboBox ComboBox // out
 
-	_comboBox = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ComboBox)
+	_comboBox = WrapComboBox(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _comboBox
 }
 
+// NewComboBoxWithModel creates a new `GtkComboBox` with a model.
 func NewComboBoxWithModel(model TreeModel) ComboBox {
 	var _arg1 *C.GtkTreeModel // out
 	var _cret *C.GtkWidget    // in
@@ -171,11 +255,13 @@ func NewComboBoxWithModel(model TreeModel) ComboBox {
 
 	var _comboBox ComboBox // out
 
-	_comboBox = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ComboBox)
+	_comboBox = WrapComboBox(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _comboBox
 }
 
+// NewComboBoxWithModelAndEntry creates a new empty `GtkComboBox` with an entry
+// and a model.
 func NewComboBoxWithModelAndEntry(model TreeModel) ComboBox {
 	var _arg1 *C.GtkTreeModel // out
 	var _cret *C.GtkWidget    // in
@@ -186,7 +272,7 @@ func NewComboBoxWithModelAndEntry(model TreeModel) ComboBox {
 
 	var _comboBox ComboBox // out
 
-	_comboBox = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ComboBox)
+	_comboBox = WrapComboBox(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _comboBox
 }
@@ -223,7 +309,7 @@ func (c comboBox) ActiveID() string {
 
 func (c comboBox) ActiveIter() (TreeIter, bool) {
 	var _arg0 *C.GtkComboBox // out
-	var _arg1 C.GtkTreeIter  // in
+	var _arg1 *C.GtkTreeIter // in
 	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
@@ -233,17 +319,7 @@ func (c comboBox) ActiveIter() (TreeIter, bool) {
 	var _iter TreeIter // out
 	var _ok bool       // out
 
-	{
-		var refTmpIn *C.GtkTreeIter
-		var refTmpOut *TreeIter
-
-		in0 := &_arg1
-		refTmpIn = in0
-
-		refTmpOut = (*TreeIter)(unsafe.Pointer(refTmpIn))
-
-		_iter = *refTmpOut
-	}
+	_iter = (TreeIter)(unsafe.Pointer(_arg1))
 	if _cret != 0 {
 		_ok = true
 	}
@@ -416,12 +492,12 @@ func (c comboBox) SetActiveIDComboBox(activeId string) bool {
 	return _ok
 }
 
-func (c comboBox) SetActiveIterComboBox(iter *TreeIter) {
+func (c comboBox) SetActiveIterComboBox(iter TreeIter) {
 	var _arg0 *C.GtkComboBox // out
 	var _arg1 *C.GtkTreeIter // out
 
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
-	_arg1 = (*C.GtkTreeIter)(unsafe.Pointer(iter.Native()))
+	_arg1 = (*C.GtkTreeIter)(unsafe.Pointer(iter))
 
 	C.gtk_combo_box_set_active_iter(_arg0, _arg1)
 }
@@ -488,74 +564,22 @@ func (c comboBox) SetPopupFixedWidthComboBox(fixed bool) {
 	C.gtk_combo_box_set_popup_fixed_width(_arg0, _arg1)
 }
 
-func (c comboBox) EditingDone() {
-	WrapCellEditable(gextras.InternObject(c)).EditingDone()
+func (c comboBox) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(c))
 }
 
-func (c comboBox) RemoveWidget() {
-	WrapCellEditable(gextras.InternObject(c)).RemoveWidget()
+func (c comboBox) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(c))
 }
 
-func (c comboBox) StartEditing(event gdk.Event) {
-	WrapCellEditable(gextras.InternObject(c)).StartEditing(event)
+func (c comboBox) AsCellEditable() CellEditable {
+	return WrapCellEditable(gextras.InternObject(c))
 }
 
-func (s comboBox) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
+func (c comboBox) AsCellLayout() CellLayout {
+	return WrapCellLayout(gextras.InternObject(c))
 }
 
-func (s comboBox) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
-}
-
-func (s comboBox) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
-}
-
-func (s comboBox) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s comboBox) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s comboBox) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s comboBox) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b comboBox) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
-}
-
-func (c comboBox) AddAttribute(cell CellRenderer, attribute string, column int) {
-	WrapCellLayout(gextras.InternObject(c)).AddAttribute(cell, attribute, column)
-}
-
-func (c comboBox) Clear() {
-	WrapCellLayout(gextras.InternObject(c)).Clear()
-}
-
-func (c comboBox) ClearAttributes(cell CellRenderer) {
-	WrapCellLayout(gextras.InternObject(c)).ClearAttributes(cell)
-}
-
-func (c comboBox) Area() CellArea {
-	return WrapCellLayout(gextras.InternObject(c)).Area()
-}
-
-func (c comboBox) PackEnd(cell CellRenderer, expand bool) {
-	WrapCellLayout(gextras.InternObject(c)).PackEnd(cell, expand)
-}
-
-func (c comboBox) PackStart(cell CellRenderer, expand bool) {
-	WrapCellLayout(gextras.InternObject(c)).PackStart(cell, expand)
-}
-
-func (c comboBox) Reorder(cell CellRenderer, position int) {
-	WrapCellLayout(gextras.InternObject(c)).Reorder(cell, position)
+func (c comboBox) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(c))
 }

@@ -68,26 +68,43 @@ func marshalConstraintTarget(p uintptr) (interface{}, error) {
 type Constraint interface {
 	gextras.Objector
 
+	// Constant retrieves the constant factor added to the source attributes'
+	// value.
 	Constant() float64
-
+	// Multiplier retrieves the multiplication factor applied to the source
+	// attribute's value.
 	Multiplier() float64
-
+	// Relation: the order relation between the terms of the constraint.
 	Relation() ConstraintRelation
-
+	// Source retrieves the [iface@Gtk.ConstraintTarget] used as the source for
+	// the constraint.
+	//
+	// If the source is set to `NULL` at creation, the constraint will use the
+	// widget using the [class@Gtk.ConstraintLayout] as the source.
 	Source() ConstraintTarget
-
+	// SourceAttribute retrieves the attribute of the source to be read by the
+	// constraint.
 	SourceAttribute() ConstraintAttribute
-
+	// Strength retrieves the strength of the constraint.
 	Strength() int
-
+	// Target retrieves the [iface@Gtk.ConstraintTarget] used as the target for
+	// the constraint.
+	//
+	// If the targe is set to `NULL` at creation, the constraint will use the
+	// widget using the [class@Gtk.ConstraintLayout] as the target.
 	Target() ConstraintTarget
-
+	// TargetAttribute retrieves the attribute of the target to be set by the
+	// constraint.
 	TargetAttribute() ConstraintAttribute
-
+	// IsAttachedConstraint checks whether the constraint is attached to a
+	// [class@Gtk.ConstraintLayout], and it is contributing to the layout.
 	IsAttachedConstraint() bool
-
+	// IsConstantConstraint checks whether the constraint describes a relation
+	// between an attribute on the [property@Gtk.Constraint:target] and a
+	// constant value.
 	IsConstantConstraint() bool
-
+	// IsRequiredConstraint checks whether the constraint is a required relation
+	// for solving the constraint layout.
 	IsRequiredConstraint() bool
 }
 
@@ -110,6 +127,8 @@ func marshalConstraint(p uintptr) (interface{}, error) {
 	return WrapConstraint(obj), nil
 }
 
+// NewConstraint creates a new constraint representing a relation between a
+// layout attribute on a source and a layout attribute on a target.
 func NewConstraint(target ConstraintTarget, targetAttribute ConstraintAttribute, relation ConstraintRelation, source ConstraintTarget, sourceAttribute ConstraintAttribute, multiplier float64, constant float64, strength int) Constraint {
 	var _arg1 C.gpointer               // out
 	var _arg2 C.GtkConstraintAttribute // out
@@ -134,11 +153,13 @@ func NewConstraint(target ConstraintTarget, targetAttribute ConstraintAttribute,
 
 	var _constraint Constraint // out
 
-	_constraint = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Constraint)
+	_constraint = WrapConstraint(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _constraint
 }
 
+// NewConstraintConstant creates a new constraint representing a relation
+// between a layout attribute on a target and a constant value.
 func NewConstraintConstant(target ConstraintTarget, targetAttribute ConstraintAttribute, relation ConstraintRelation, constant float64, strength int) Constraint {
 	var _arg1 C.gpointer               // out
 	var _arg2 C.GtkConstraintAttribute // out
@@ -157,7 +178,7 @@ func NewConstraintConstant(target ConstraintTarget, targetAttribute ConstraintAt
 
 	var _constraint Constraint // out
 
-	_constraint = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Constraint)
+	_constraint = WrapConstraint(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _constraint
 }

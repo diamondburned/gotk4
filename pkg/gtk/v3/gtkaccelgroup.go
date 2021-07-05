@@ -193,9 +193,9 @@ func AcceleratorNameWithKeycode(display gdk.Display, acceleratorKey uint, keycod
 // If the parse fails, @accelerator_key and @accelerator_mods will be set to 0
 // (zero).
 func AcceleratorParse(accelerator string) (uint, gdk.ModifierType) {
-	var _arg1 *C.gchar          // out
-	var _arg2 C.guint           // in
-	var _arg3 C.GdkModifierType // in
+	var _arg1 *C.gchar           // out
+	var _arg2 *C.guint           // in
+	var _arg3 *C.GdkModifierType // in
 
 	_arg1 = (*C.gchar)(C.CString(accelerator))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -206,7 +206,16 @@ func AcceleratorParse(accelerator string) (uint, gdk.ModifierType) {
 	var _acceleratorMods gdk.ModifierType // out
 
 	_acceleratorKey = uint(_arg2)
-	_acceleratorMods = gdk.ModifierType(_arg3)
+	{
+		var refTmpIn C.GdkModifierType
+		var refTmpOut gdk.ModifierType
+
+		refTmpIn = *_arg3
+
+		refTmpOut = gdk.ModifierType(refTmpIn)
+
+		_acceleratorMods = refTmpOut
+	}
 
 	return _acceleratorKey, _acceleratorMods
 }
@@ -226,9 +235,9 @@ func AcceleratorParse(accelerator string) (uint, gdk.ModifierType) {
 // @accelerator_codes will be set to 0 (zero).
 func AcceleratorParseWithKeycode(accelerator string) (uint, []uint, gdk.ModifierType) {
 	var _arg1 *C.gchar // out
-	var _arg2 C.guint  // in
+	var _arg2 *C.guint // in
 	var _arg3 *C.guint
-	var _arg4 C.GdkModifierType // in
+	var _arg4 *C.GdkModifierType // in
 
 	_arg1 = (*C.gchar)(C.CString(accelerator))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -242,7 +251,7 @@ func AcceleratorParseWithKeycode(accelerator string) (uint, []uint, gdk.Modifier
 	_acceleratorKey = uint(_arg2)
 	{
 		var i int
-		var z C.guint
+		var z *C.guint
 		for p := _arg3; *p != z; p = &unsafe.Slice(p, i+1)[i] {
 			i++
 		}
@@ -253,7 +262,16 @@ func AcceleratorParseWithKeycode(accelerator string) (uint, []uint, gdk.Modifier
 			_acceleratorCodes[i] = uint(src[i])
 		}
 	}
-	_acceleratorMods = gdk.ModifierType(_arg4)
+	{
+		var refTmpIn C.GdkModifierType
+		var refTmpOut gdk.ModifierType
+
+		refTmpIn = *_arg4
+
+		refTmpOut = gdk.ModifierType(refTmpIn)
+
+		_acceleratorMods = refTmpOut
+	}
 
 	return _acceleratorKey, _acceleratorCodes, _acceleratorMods
 }
@@ -301,11 +319,11 @@ func AcceleratorValid(keyval uint, modifiers gdk.ModifierType) bool {
 	return _ok
 }
 
-// AccelGroup: a AccelGroup represents a group of keyboard accelerators,
-// typically attached to a toplevel Window (with gtk_window_add_accel_group()).
-// Usually you won’t need to create a AccelGroup directly; instead, when using
-// UIManager, GTK+ automatically sets up the accelerators for your menus in the
-// ui manager’s AccelGroup.
+// AccelGroup represents a group of keyboard accelerators, typically attached to
+// a toplevel Window (with gtk_window_add_accel_group()). Usually you won’t need
+// to create a AccelGroup directly; instead, when using UIManager, GTK+
+// automatically sets up the accelerators for your menus in the ui manager’s
+// AccelGroup.
 //
 // Note that “accelerators” are different from “mnemonics”. Accelerators are
 // shortcuts for activating a menu item; they appear alongside the menu item
@@ -317,14 +335,26 @@ func AcceleratorValid(keyval uint, modifiers gdk.ModifierType) bool {
 type AccelGroup interface {
 	gextras.Objector
 
+	// DisconnectKeyAccelGroup removes an accelerator previously installed
+	// through gtk_accel_group_connect().
 	DisconnectKeyAccelGroup(accelKey uint, accelMods gdk.ModifierType) bool
-
+	// IsLocked locks are added and removed using gtk_accel_group_lock() and
+	// gtk_accel_group_unlock().
 	IsLocked() bool
-
+	// ModifierMask gets a ModifierType representing the mask for this
+	// @accel_group. For example, K_CONTROL_MASK, K_SHIFT_MASK, etc.
 	ModifierMask() gdk.ModifierType
-
+	// LockAccelGroup locks the given accelerator group.
+	//
+	// Locking an acelerator group prevents the accelerators contained within it
+	// to be changed during runtime. Refer to gtk_accel_map_change_entry() about
+	// runtime accelerator changes.
+	//
+	// If called more than once, @accel_group remains locked until
+	// gtk_accel_group_unlock() has been called an equivalent number of times.
 	LockAccelGroup()
-
+	// UnlockAccelGroup undoes the last call to gtk_accel_group_lock() on this
+	// @accel_group.
 	UnlockAccelGroup()
 }
 
@@ -347,6 +377,7 @@ func marshalAccelGroup(p uintptr) (interface{}, error) {
 	return WrapAccelGroup(obj), nil
 }
 
+// NewAccelGroup creates a new AccelGroup.
 func NewAccelGroup() AccelGroup {
 	var _cret *C.GtkAccelGroup // in
 
@@ -354,7 +385,7 @@ func NewAccelGroup() AccelGroup {
 
 	var _accelGroup AccelGroup // out
 
-	_accelGroup = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(AccelGroup)
+	_accelGroup = WrapAccelGroup(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _accelGroup
 }
@@ -428,7 +459,9 @@ func (a accelGroup) UnlockAccelGroup() {
 	C.gtk_accel_group_unlock(_arg0)
 }
 
-type AccelKey C.GtkAccelKey
+type AccelKey struct {
+	native C.GtkAccelKey
+}
 
 // WrapAccelKey wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -438,5 +471,5 @@ func WrapAccelKey(ptr unsafe.Pointer) *AccelKey {
 
 // Native returns the underlying C source pointer.
 func (a *AccelKey) Native() unsafe.Pointer {
-	return unsafe.Pointer(a)
+	return unsafe.Pointer(&a.native)
 }

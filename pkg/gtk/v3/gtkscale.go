@@ -5,9 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -27,11 +25,11 @@ func init() {
 	})
 }
 
-// Scale: a GtkScale is a slider control used to select a numeric value. To use
-// it, you’ll probably want to investigate the methods on its base class, Range,
-// in addition to the methods for GtkScale itself. To set the value of a scale,
-// you would normally use gtk_range_set_value(). To detect changes to the value,
-// you would normally use the Range::value-changed signal.
+// Scale is a slider control used to select a numeric value. To use it, you’ll
+// probably want to investigate the methods on its base class, Range, in
+// addition to the methods for GtkScale itself. To set the value of a scale, you
+// would normally use gtk_range_set_value(). To detect changes to the value, you
+// would normally use the Range::value-changed signal.
 //
 // Note that using the same upper and lower bounds for the Scale (through the
 // Range methods) will hide the slider itself. This is useful for applications
@@ -99,28 +97,65 @@ func init() {
 type Scale interface {
 	Range
 
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsOrientable casts the class to the Orientable interface.
+	AsOrientable() Orientable
+
+	// AddMarkScale adds a mark at @value.
+	//
+	// A mark is indicated visually by drawing a tick mark next to the scale,
+	// and GTK+ makes it easy for the user to position the scale exactly at the
+	// marks value.
+	//
+	// If @markup is not nil, text is shown next to the tick mark.
+	//
+	// To remove marks from a scale, use gtk_scale_clear_marks().
 	AddMarkScale(value float64, position PositionType, markup string)
-
+	// ClearMarksScale removes any marks that have been added with
+	// gtk_scale_add_mark().
 	ClearMarksScale()
-
+	// Digits gets the number of decimal places that are displayed in the value.
 	Digits() int
-
+	// DrawValue returns whether the current value is displayed as a string next
+	// to the slider.
 	DrawValue() bool
-
+	// HasOrigin returns whether the scale has an origin.
 	HasOrigin() bool
-
+	// Layout gets the Layout used to display the scale. The returned object is
+	// owned by the scale so does not need to be freed by the caller.
 	Layout() pango.Layout
-
+	// LayoutOffsets obtains the coordinates where the scale will draw the
+	// Layout representing the text in the scale. Remember when using the Layout
+	// function you need to convert to and from pixels using PANGO_PIXELS() or
+	// NGO_SCALE.
+	//
+	// If the Scale:draw-value property is false, the return values are
+	// undefined.
 	LayoutOffsets() (x int, y int)
-
+	// ValuePos gets the position in which the current value is displayed.
 	ValuePos() PositionType
-
+	// SetDigitsScale sets the number of decimal places that are displayed in
+	// the value. Also causes the value of the adjustment to be rounded to this
+	// number of digits, so the retrieved value matches the displayed one, if
+	// Scale:draw-value is true when the value changes. If you want to enforce
+	// rounding the value when Scale:draw-value is false, you can set
+	// Range:round-digits instead.
+	//
+	// Note that rounding to a small number of digits can interfere with the
+	// smooth autoscrolling that is built into Scale. As an alternative, you can
+	// use the Scale::format-value signal to format the displayed value
+	// yourself.
 	SetDigitsScale(digits int)
-
+	// SetDrawValueScale specifies whether the current value is displayed as a
+	// string next to the slider.
 	SetDrawValueScale(drawValue bool)
-
+	// SetHasOriginScale: if Scale:has-origin is set to true (the default), the
+	// scale will highlight the part of the trough between the origin (bottom or
+	// left side) and the current value.
 	SetHasOriginScale(hasOrigin bool)
-
+	// SetValuePosScale sets the position in which the current value is
+	// displayed.
 	SetValuePosScale(pos PositionType)
 }
 
@@ -143,6 +178,7 @@ func marshalScale(p uintptr) (interface{}, error) {
 	return WrapScale(obj), nil
 }
 
+// NewScale creates a new Scale.
 func NewScale(orientation Orientation, adjustment Adjustment) Scale {
 	var _arg1 C.GtkOrientation // out
 	var _arg2 *C.GtkAdjustment // out
@@ -155,11 +191,19 @@ func NewScale(orientation Orientation, adjustment Adjustment) Scale {
 
 	var _scale Scale // out
 
-	_scale = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Scale)
+	_scale = WrapScale(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _scale
 }
 
+// NewScaleWithRange creates a new scale widget with the given orientation that
+// lets the user input a number between @min and @max (including @min and @max)
+// with the increment @step. @step must be nonzero; it’s the distance the slider
+// moves when using the arrow keys to adjust the scale value.
+//
+// Note that the way in which the precision is derived works best if @step is a
+// power of ten. If the resulting precision is not suitable for your needs, use
+// gtk_scale_set_digits() to correct it.
 func NewScaleWithRange(orientation Orientation, min float64, max float64, step float64) Scale {
 	var _arg1 C.GtkOrientation // out
 	var _arg2 C.gdouble        // out
@@ -176,7 +220,7 @@ func NewScaleWithRange(orientation Orientation, min float64, max float64, step f
 
 	var _scale Scale // out
 
-	_scale = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Scale)
+	_scale = WrapScale(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _scale
 }
@@ -270,8 +314,8 @@ func (s scale) Layout() pango.Layout {
 
 func (s scale) LayoutOffsets() (x int, y int) {
 	var _arg0 *C.GtkScale // out
-	var _arg1 C.gint      // in
-	var _arg2 C.gint      // in
+	var _arg1 *C.gint     // in
+	var _arg2 *C.gint     // in
 
 	_arg0 = (*C.GtkScale)(unsafe.Pointer(s.Native()))
 
@@ -345,50 +389,10 @@ func (s scale) SetValuePosScale(pos PositionType) {
 	C.gtk_scale_set_value_pos(_arg0, _arg1)
 }
 
-func (b scale) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+func (s scale) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(s))
 }
 
-func (b scale) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b scale) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b scale) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b scale) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b scale) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b scale) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b scale) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b scale) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b scale) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (o scale) Orientation() Orientation {
-	return WrapOrientable(gextras.InternObject(o)).Orientation()
-}
-
-func (o scale) SetOrientation(orientation Orientation) {
-	WrapOrientable(gextras.InternObject(o)).SetOrientation(orientation)
+func (s scale) AsOrientable() Orientable {
+	return WrapOrientable(gextras.InternObject(s))
 }

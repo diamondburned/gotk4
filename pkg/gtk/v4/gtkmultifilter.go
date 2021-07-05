@@ -30,6 +30,9 @@ func init() {
 // To add filters to a `GtkAnyFilter`, use [method@Gtk.MultiFilter.append].
 type AnyFilter interface {
 	MultiFilter
+
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
 }
 
 // anyFilter implements the AnyFilter class.
@@ -51,6 +54,13 @@ func marshalAnyFilter(p uintptr) (interface{}, error) {
 	return WrapAnyFilter(obj), nil
 }
 
+// NewAnyFilter creates a new empty "any" filter.
+//
+// Use [method@Gtk.MultiFilter.append] to add filters to it.
+//
+// This filter matches an item if any of the filters added to it matches the
+// item. In particular, this means that if no filter has been added to it, the
+// filter matches no item.
 func NewAnyFilter() AnyFilter {
 	var _cret *C.GtkAnyFilter // in
 
@@ -58,13 +68,13 @@ func NewAnyFilter() AnyFilter {
 
 	var _anyFilter AnyFilter // out
 
-	_anyFilter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(AnyFilter)
+	_anyFilter = WrapAnyFilter(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _anyFilter
 }
 
-func (b anyFilter) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
+func (a anyFilter) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(a))
 }
 
 // EveryFilter: `GtkEveryFilter` matches an item when each of its filters
@@ -73,6 +83,9 @@ func (b anyFilter) BuildableID() string {
 // To add filters to a `GtkEveryFilter`, use [method@Gtk.MultiFilter.append].
 type EveryFilter interface {
 	MultiFilter
+
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
 }
 
 // everyFilter implements the EveryFilter class.
@@ -94,6 +107,13 @@ func marshalEveryFilter(p uintptr) (interface{}, error) {
 	return WrapEveryFilter(obj), nil
 }
 
+// NewEveryFilter creates a new empty "every" filter.
+//
+// Use [method@Gtk.MultiFilter.append] to add filters to it.
+//
+// This filter matches an item if each of the filters added to it matches the
+// item. In particular, this means that if no filter has been added to it, the
+// filter matches every item.
 func NewEveryFilter() EveryFilter {
 	var _cret *C.GtkEveryFilter // in
 
@@ -101,23 +121,30 @@ func NewEveryFilter() EveryFilter {
 
 	var _everyFilter EveryFilter // out
 
-	_everyFilter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(EveryFilter)
+	_everyFilter = WrapEveryFilter(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _everyFilter
 }
 
-func (b everyFilter) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
+func (e everyFilter) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(e))
 }
 
 // MultiFilter: `GtkMultiFilter` is the base class for filters that combine
 // multiple filters.
 type MultiFilter interface {
 	Filter
-	Buildable
 
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+
+	// AppendMultiFilter adds a @filter to @self to use for matching.
 	AppendMultiFilter(filter Filter)
-
+	// RemoveMultiFilter removes the filter at the given @position from the list
+	// of filters used by @self.
+	//
+	// If @position is larger than the number of filters, nothing happens and
+	// the function returns.
 	RemoveMultiFilter(position uint)
 }
 
@@ -160,6 +187,6 @@ func (s multiFilter) RemoveMultiFilter(position uint) {
 	C.gtk_multi_filter_remove(_arg0, _arg1)
 }
 
-func (b multiFilter) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
+func (m multiFilter) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(m))
 }

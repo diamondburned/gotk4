@@ -60,11 +60,11 @@ func marshalKeyEventType(p uintptr) (interface{}, error) {
 	return KeyEventType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// KeySnoopFunc: an KeySnoopFunc is a type of callback which is called whenever
-// a key event occurs, if registered via atk_add_key_event_listener. It allows
-// for pre-emptive interception of key events via the return code as described
+// KeySnoopFunc is a type of callback which is called whenever a key event
+// occurs, if registered via atk_add_key_event_listener. It allows for
+// pre-emptive interception of key events via the return code as described
 // below.
-type KeySnoopFunc func(event *KeyEventStruct, gint int)
+type KeySnoopFunc func(event KeyEventStruct) (gint int)
 
 //export gotk4_KeySnoopFunc
 func gotk4_KeySnoopFunc(arg0 *C.AtkKeyEventStruct, arg1 C.gpointer) C.gint {
@@ -73,9 +73,9 @@ func gotk4_KeySnoopFunc(arg0 *C.AtkKeyEventStruct, arg1 C.gpointer) C.gint {
 		panic(`callback not found`)
 	}
 
-	var event *KeyEventStruct // out
+	var event KeyEventStruct // out
 
-	event = (*KeyEventStruct)(unsafe.Pointer(arg0))
+	event = (KeyEventStruct)(unsafe.Pointer(arg0))
 
 	fn := v.(KeySnoopFunc)
 	gint := fn(event)
@@ -209,7 +209,7 @@ func RemoveKeyEventListener(listenerId uint) {
 	C.atk_remove_key_event_listener(_arg1)
 }
 
-// Util: a set of ATK utility functions which are used to support event
+// Util: set of ATK utility functions which are used to support event
 // registration of various types, and obtaining the 'root' accessible of a
 // process and information about the current ATK implementation and toolkit
 // version.
@@ -237,7 +237,9 @@ func marshalUtil(p uintptr) (interface{}, error) {
 }
 
 // KeyEventStruct encapsulates information about a key event.
-type KeyEventStruct C.AtkKeyEventStruct
+type KeyEventStruct struct {
+	native C.AtkKeyEventStruct
+}
 
 // WrapKeyEventStruct wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -247,5 +249,5 @@ func WrapKeyEventStruct(ptr unsafe.Pointer) *KeyEventStruct {
 
 // Native returns the underlying C source pointer.
 func (k *KeyEventStruct) Native() unsafe.Pointer {
-	return unsafe.Pointer(k)
+	return unsafe.Pointer(&k.native)
 }

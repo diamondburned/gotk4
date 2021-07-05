@@ -41,11 +41,12 @@ func init() {
 type LoadableIcon interface {
 	Icon
 
-	// Load finishes an asynchronous icon load started in
-	// g_loadable_icon_load_async().
+	// Load loads a loadable icon. For the asynchronous version of this
+	// function, see g_loadable_icon_load_async().
 	Load(size int, cancellable Cancellable) (string, InputStream, error)
-	// LoadAsync finishes an asynchronous icon load started in
-	// g_loadable_icon_load_async().
+	// LoadAsync loads an icon asynchronously. To finish this function, see
+	// g_loadable_icon_load_finish(). For the synchronous, blocking version of
+	// this function, see g_loadable_icon_load().
 	LoadAsync(size int, cancellable Cancellable, callback AsyncReadyCallback)
 	// LoadFinish finishes an asynchronous icon load started in
 	// g_loadable_icon_load_async().
@@ -76,10 +77,10 @@ func marshalLoadableIcon(p uintptr) (interface{}, error) {
 func (i loadableIcon) Load(size int, cancellable Cancellable) (string, InputStream, error) {
 	var _arg0 *C.GLoadableIcon // out
 	var _arg1 C.int            // out
-	var _arg2 *C.char          // in
+	var _arg2 **C.char         // in
 	var _arg3 *C.GCancellable  // out
 	var _cret *C.GInputStream  // in
-	var _cerr *C.GError        // in
+	var _cerr **C.GError       // in
 
 	_arg0 = (*C.GLoadableIcon)(unsafe.Pointer(i.Native()))
 	_arg1 = C.int(size)
@@ -91,10 +92,28 @@ func (i loadableIcon) Load(size int, cancellable Cancellable) (string, InputStre
 	var _inputStream InputStream // out
 	var _goerr error             // out
 
-	_typ = C.GoString(_arg2)
-	defer C.free(unsafe.Pointer(_arg2))
+	{
+		var refTmpIn *C.char
+		var refTmpOut string
+
+		refTmpIn = *_arg2
+
+		refTmpOut = C.GoString(refTmpIn)
+		defer C.free(unsafe.Pointer(refTmpIn))
+
+		_typ = refTmpOut
+	}
 	_inputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(InputStream)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _typ, _inputStream, _goerr
 }
@@ -118,9 +137,9 @@ func (i loadableIcon) LoadAsync(size int, cancellable Cancellable, callback Asyn
 func (i loadableIcon) LoadFinish(res AsyncResult) (string, InputStream, error) {
 	var _arg0 *C.GLoadableIcon // out
 	var _arg1 *C.GAsyncResult  // out
-	var _arg2 *C.char          // in
+	var _arg2 **C.char         // in
 	var _cret *C.GInputStream  // in
-	var _cerr *C.GError        // in
+	var _cerr **C.GError       // in
 
 	_arg0 = (*C.GLoadableIcon)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
@@ -131,10 +150,28 @@ func (i loadableIcon) LoadFinish(res AsyncResult) (string, InputStream, error) {
 	var _inputStream InputStream // out
 	var _goerr error             // out
 
-	_typ = C.GoString(_arg2)
-	defer C.free(unsafe.Pointer(_arg2))
+	{
+		var refTmpIn *C.char
+		var refTmpOut string
+
+		refTmpIn = *_arg2
+
+		refTmpOut = C.GoString(refTmpIn)
+		defer C.free(unsafe.Pointer(refTmpIn))
+
+		_typ = refTmpOut
+	}
 	_inputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(InputStream)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _typ, _inputStream, _goerr
 }

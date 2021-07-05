@@ -58,20 +58,36 @@ func init() {
 type Frame interface {
 	Widget
 
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
+
+	// Child gets the child widget of @frame.
 	Child() Widget
-
+	// Label returns the frame labels text.
+	//
+	// If the frame's label widget is not a `GtkLabel`, nil is returned.
 	Label() string
-
+	// LabelAlign retrieves the X alignment of the frame’s label.
 	LabelAlign() float32
-
+	// LabelWidget retrieves the label widget for the frame.
 	LabelWidget() Widget
-
+	// SetChildFrame sets the child widget of @frame.
 	SetChildFrame(child Widget)
-
+	// SetLabelFrame creates a new `GtkLabel` with the @label and sets it as the
+	// frame's label widget.
 	SetLabelFrame(label string)
-
+	// SetLabelAlignFrame sets the X alignment of the frame widget’s label.
+	//
+	// The default value for a newly created frame is 0.0.
 	SetLabelAlignFrame(xalign float32)
-
+	// SetLabelWidgetFrame sets the label widget for the frame.
+	//
+	// This is the widget that will appear embedded in the top edge of the frame
+	// as a title.
 	SetLabelWidgetFrame(labelWidget Widget)
 }
 
@@ -94,6 +110,9 @@ func marshalFrame(p uintptr) (interface{}, error) {
 	return WrapFrame(obj), nil
 }
 
+// NewFrame creates a new `GtkFrame`, with optional label @label.
+//
+// If @label is nil, the label is omitted.
 func NewFrame(label string) Frame {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in
@@ -105,7 +124,7 @@ func NewFrame(label string) Frame {
 
 	var _frame Frame // out
 
-	_frame = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Frame)
+	_frame = WrapFrame(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _frame
 }
@@ -211,34 +230,14 @@ func (f frame) SetLabelWidgetFrame(labelWidget Widget) {
 	C.gtk_frame_set_label_widget(_arg0, _arg1)
 }
 
-func (s frame) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
+func (f frame) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(f))
 }
 
-func (s frame) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
+func (f frame) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(f))
 }
 
-func (s frame) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
-}
-
-func (s frame) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s frame) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s frame) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s frame) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b frame) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
+func (f frame) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(f))
 }

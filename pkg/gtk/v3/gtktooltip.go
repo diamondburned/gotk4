@@ -64,19 +64,41 @@ func init() {
 type Tooltip interface {
 	gextras.Objector
 
+	// SetCustomTooltip replaces the widget packed into the tooltip with
+	// @custom_widget. @custom_widget does not get destroyed when the tooltip
+	// goes away. By default a box with a Image and Label is embedded in the
+	// tooltip, which can be configured using gtk_tooltip_set_markup() and
+	// gtk_tooltip_set_icon().
 	SetCustomTooltip(customWidget Widget)
-
+	// SetIconTooltip sets the icon of the tooltip (which is in front of the
+	// text) to be @pixbuf. If @pixbuf is nil, the image will be hidden.
 	SetIconTooltip(pixbuf gdkpixbuf.Pixbuf)
-
+	// SetIconFromIconNameTooltip sets the icon of the tooltip (which is in
+	// front of the text) to be the icon indicated by @icon_name with the size
+	// indicated by @size. If @icon_name is nil, the image will be hidden.
 	SetIconFromIconNameTooltip(iconName string, size int)
-
+	// SetIconFromStockTooltip sets the icon of the tooltip (which is in front
+	// of the text) to be the stock item indicated by @stock_id with the size
+	// indicated by @size. If @stock_id is nil, the image will be hidden.
+	//
+	// Deprecated: since version 3.10.
 	SetIconFromStockTooltip(stockId string, size int)
-
+	// SetMarkupTooltip sets the text of the tooltip to be @markup, which is
+	// marked up with the [Pango text markup language][PangoMarkupFormat]. If
+	// @markup is nil, the label will be hidden.
 	SetMarkupTooltip(markup string)
-
+	// SetTextTooltip sets the text of the tooltip to be @text. If @text is nil,
+	// the label will be hidden. See also gtk_tooltip_set_markup().
 	SetTextTooltip(text string)
-
-	SetTipAreaTooltip(rect *gdk.Rectangle)
+	// SetTipAreaTooltip sets the area of the widget, where the contents of this
+	// tooltip apply, to be @rect (in widget coordinates). This is especially
+	// useful for properly setting tooltips on TreeView rows and cells,
+	// IconViews, etc.
+	//
+	// For setting tooltips on TreeView, please refer to the convenience
+	// functions for this: gtk_tree_view_set_tooltip_row() and
+	// gtk_tree_view_set_tooltip_cell().
+	SetTipAreaTooltip(rect gdk.Rectangle)
 }
 
 // tooltip implements the Tooltip class.
@@ -166,12 +188,12 @@ func (t tooltip) SetTextTooltip(text string) {
 	C.gtk_tooltip_set_text(_arg0, _arg1)
 }
 
-func (t tooltip) SetTipAreaTooltip(rect *gdk.Rectangle) {
+func (t tooltip) SetTipAreaTooltip(rect gdk.Rectangle) {
 	var _arg0 *C.GtkTooltip   // out
 	var _arg1 *C.GdkRectangle // out
 
 	_arg0 = (*C.GtkTooltip)(unsafe.Pointer(t.Native()))
-	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(rect.Native()))
+	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(rect))
 
 	C.gtk_tooltip_set_tip_area(_arg0, _arg1)
 }

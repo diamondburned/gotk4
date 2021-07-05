@@ -3,6 +3,7 @@
 package pango
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -25,7 +26,9 @@ func init() {
 //
 // You typically obtain `PangoItems` by itemizing a piece of text with
 // [func@itemize].
-type Item C.PangoItem
+type Item struct {
+	native C.PangoItem
+}
 
 // WrapItem wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -39,16 +42,16 @@ func marshalItem(p uintptr) (interface{}, error) {
 }
 
 // NewItem constructs a struct Item.
-func NewItem() *Item {
+func NewItem() Item {
 	var _cret *C.PangoItem // in
 
 	_cret = C.pango_item_new()
 
-	var _item *Item // out
+	var _item Item // out
 
-	_item = (*Item)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(&_item, func(v **Item) {
-		C.free(unsafe.Pointer(v))
+	_item = (Item)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_item, func(v Item) {
+		C.pango_item_free((*C.PangoItem)(unsafe.Pointer(v)))
 	})
 
 	return _item
@@ -56,72 +59,53 @@ func NewItem() *Item {
 
 // Native returns the underlying C source pointer.
 func (i *Item) Native() unsafe.Pointer {
-	return unsafe.Pointer(i)
+	return unsafe.Pointer(&i.native)
 }
 
-// ApplyAttrs modifies @orig to cover only the text after @split_index, and
-// returns a new item that covers the text before @split_index that used to be
-// in @orig.
+// ApplyAttrs: add attributes to a `PangoItem`.
 //
-// You can think of @split_index as the length of the returned item.
-// @split_index may not be 0, and it may not be greater than or equal to the
-// length of @orig (that is, there must be at least one byte assigned to each
-// item, you can't create a zero-length item). @split_offset is the length of
-// the first item in chars, and must be provided because the text used to
-// generate the item isn't available, so `pango_item_split()` can't count the
-// char length of the split items itself.
-func (o *Item) ApplyAttrs(iter *AttrIterator) {
+// The idea is that you have attributes that don't affect itemization, such as
+// font features, so you filter them out using [method@Pango.AttrList.filter],
+// itemize your text, then reapply the attributes to the resulting items using
+// this function.
+//
+// The @iter should be positioned before the range of the item, and will be
+// advanced past it. This function is meant to be called in a loop over the
+// items resulting from itemization, while passing the iter to each call.
+func (i *Item) ApplyAttrs(iter AttrIterator) {
 	var _arg0 *C.PangoItem         // out
 	var _arg1 *C.PangoAttrIterator // out
 
-	_arg0 = (*C.PangoItem)(unsafe.Pointer(i.Native()))
-	_arg1 = (*C.PangoAttrIterator)(unsafe.Pointer(iter.Native()))
+	_arg0 = (*C.PangoItem)(unsafe.Pointer(i))
+	_arg1 = (*C.PangoAttrIterator)(unsafe.Pointer(iter))
 
 	C.pango_item_apply_attrs(_arg0, _arg1)
 }
 
-// Copy modifies @orig to cover only the text after @split_index, and returns a
-// new item that covers the text before @split_index that used to be in @orig.
-//
-// You can think of @split_index as the length of the returned item.
-// @split_index may not be 0, and it may not be greater than or equal to the
-// length of @orig (that is, there must be at least one byte assigned to each
-// item, you can't create a zero-length item). @split_offset is the length of
-// the first item in chars, and must be provided because the text used to
-// generate the item isn't available, so `pango_item_split()` can't count the
-// char length of the split items itself.
-func (o *Item) Copy() *Item {
+// Copy an existing `PangoItem` structure.
+func (i *Item) Copy() Item {
 	var _arg0 *C.PangoItem // out
 	var _cret *C.PangoItem // in
 
-	_arg0 = (*C.PangoItem)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.PangoItem)(unsafe.Pointer(i))
 
 	_cret = C.pango_item_copy(_arg0)
 
-	var _ret *Item // out
+	var _ret Item // out
 
-	_ret = (*Item)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(&_ret, func(v **Item) {
-		C.free(unsafe.Pointer(v))
+	_ret = (Item)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_ret, func(v Item) {
+		C.pango_item_free((*C.PangoItem)(unsafe.Pointer(v)))
 	})
 
 	return _ret
 }
 
-// Free modifies @orig to cover only the text after @split_index, and returns a
-// new item that covers the text before @split_index that used to be in @orig.
-//
-// You can think of @split_index as the length of the returned item.
-// @split_index may not be 0, and it may not be greater than or equal to the
-// length of @orig (that is, there must be at least one byte assigned to each
-// item, you can't create a zero-length item). @split_offset is the length of
-// the first item in chars, and must be provided because the text used to
-// generate the item isn't available, so `pango_item_split()` can't count the
-// char length of the split items itself.
-func (o *Item) Free() {
+// Free a `PangoItem` and all associated memory.
+func (i *Item) Free() {
 	var _arg0 *C.PangoItem // out
 
-	_arg0 = (*C.PangoItem)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.PangoItem)(unsafe.Pointer(i))
 
 	C.pango_item_free(_arg0)
 }
@@ -136,23 +120,23 @@ func (o *Item) Free() {
 // the first item in chars, and must be provided because the text used to
 // generate the item isn't available, so `pango_item_split()` can't count the
 // char length of the split items itself.
-func (o *Item) Split(splitIndex int, splitOffset int) *Item {
+func (o *Item) Split(splitIndex int, splitOffset int) Item {
 	var _arg0 *C.PangoItem // out
 	var _arg1 C.int        // out
 	var _arg2 C.int        // out
 	var _cret *C.PangoItem // in
 
-	_arg0 = (*C.PangoItem)(unsafe.Pointer(o.Native()))
+	_arg0 = (*C.PangoItem)(unsafe.Pointer(o))
 	_arg1 = C.int(splitIndex)
 	_arg2 = C.int(splitOffset)
 
 	_cret = C.pango_item_split(_arg0, _arg1, _arg2)
 
-	var _item *Item // out
+	var _item Item // out
 
-	_item = (*Item)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(&_item, func(v **Item) {
-		C.free(unsafe.Pointer(v))
+	_item = (Item)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_item, func(v Item) {
+		C.pango_item_free((*C.PangoItem)(unsafe.Pointer(v)))
 	})
 
 	return _item

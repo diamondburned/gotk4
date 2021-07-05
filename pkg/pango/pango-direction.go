@@ -42,17 +42,17 @@ func init() {
 type Direction int
 
 const (
-	// ltr: a strong left-to-right direction
+	// ltr: strong left-to-right direction
 	DirectionLTR Direction = 0
-	// rtl: a strong right-to-left direction
+	// rtl: strong right-to-left direction
 	DirectionRTL Direction = 1
 	// TtbLTR: deprecated value; treated the same as PANGO_DIRECTION_RTL.
 	DirectionTtbLTR Direction = 2
 	// TtbRTL: deprecated value; treated the same as PANGO_DIRECTION_LTR
 	DirectionTtbRTL Direction = 3
-	// WeakLTR: a weak left-to-right direction
+	// WeakLTR: weak left-to-right direction
 	DirectionWeakLTR Direction = 4
-	// WeakRTL: a weak right-to-left direction
+	// WeakRTL: weak right-to-left direction
 	DirectionWeakRTL Direction = 5
 	// neutral: no direction specified
 	DirectionNeutral Direction = 6

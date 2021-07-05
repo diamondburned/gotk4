@@ -18,10 +18,10 @@ import "C"
 // group. This is not public API and must not be used by applications.
 //
 // Deprecated: since version 3.16.
-func AddOptionEntriesLibgtkOnly(group *glib.OptionGroup) {
+func AddOptionEntriesLibgtkOnly(group glib.OptionGroup) {
 	var _arg1 *C.GOptionGroup // out
 
-	_arg1 = (*C.GOptionGroup)(unsafe.Pointer(group.Native()))
+	_arg1 = (*C.GOptionGroup)(unsafe.Pointer(group))
 
 	C.gdk_add_option_entries_libgtk_only(_arg1)
 }

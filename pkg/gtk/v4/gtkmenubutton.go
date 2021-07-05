@@ -104,36 +104,76 @@ func gotk4_MenuButtonCreatePopupFunc(arg0 *C.GtkMenuButton, arg1 C.gpointer) {
 type MenuButton interface {
 	Widget
 
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
+
+	// Direction returns the direction the popup will be pointing at when popped
+	// up.
 	Direction() ArrowType
-
+	// HasFrame returns whether the button has a frame.
 	HasFrame() bool
-
+	// IconName gets the name of the icon shown in the button.
 	IconName() string
-
+	// Label gets the label shown in the button
 	Label() string
-
+	// MenuModel returns the `GMenuModel` used to generate the popup.
 	MenuModel() gio.MenuModel
-
+	// Popover returns the `GtkPopover` that pops out of the button.
+	//
+	// If the button is not using a `GtkPopover`, this function returns nil.
 	Popover() Popover
-
+	// UseUnderline returns whether an embedded underline in the text indicates
+	// a mnemonic.
 	UseUnderline() bool
-
+	// PopdownMenuButton dismiss the menu.
 	PopdownMenuButton()
-
+	// PopupMenuButton: pop up the menu.
 	PopupMenuButton()
-
+	// SetDirectionMenuButton sets the direction in which the popup will be
+	// popped up.
+	//
+	// If the button is automatically populated with an arrow icon, its
+	// direction will be changed to match.
+	//
+	// If the does not fit in the available space in the given direction, GTK
+	// will its best to keep it inside the screen and fully visible.
+	//
+	// If you pass GTK_ARROW_NONE for a @direction, the popup will behave as if
+	// you passed GTK_ARROW_DOWN (although you won’t see any arrows).
 	SetDirectionMenuButton(direction ArrowType)
-
+	// SetHasFrameMenuButton sets the style of the button.
 	SetHasFrameMenuButton(hasFrame bool)
-
+	// SetIconNameMenuButton sets the name of an icon to show inside the menu
+	// button.
 	SetIconNameMenuButton(iconName string)
-
+	// SetLabelMenuButton sets the label to show inside the menu button.
 	SetLabelMenuButton(label string)
-
+	// SetMenuModelMenuButton sets the `GMenuModel` from which the popup will be
+	// constructed.
+	//
+	// If @menu_model is nil, the button is disabled.
+	//
+	// A [class@Gtk.Popover] will be created from the menu model with
+	// [ctor@Gtk.PopoverMenu.new_from_model]. Actions will be connected as
+	// documented for this function.
+	//
+	// If [property@Gtk.MenuButton:popover] is already set, it will be
+	// dissociated from the @menu_button, and the property is set to nil.
 	SetMenuModelMenuButton(menuModel gio.MenuModel)
-
+	// SetPopoverMenuButton sets the `GtkPopover` that will be popped up when
+	// the @menu_button is clicked.
+	//
+	// If @popover is nil, the button is disabled.
+	//
+	// If [property@Gtk.MenuButton:menu-model] is set, the menu model is
+	// dissociated from the @menu_button, and the property is set to nil.
 	SetPopoverMenuButton(popover Widget)
-
+	// SetUseUnderlineMenuButton: if true, an underline in the text indicates a
+	// mnemonic.
 	SetUseUnderlineMenuButton(useUnderline bool)
 }
 
@@ -156,6 +196,10 @@ func marshalMenuButton(p uintptr) (interface{}, error) {
 	return WrapMenuButton(obj), nil
 }
 
+// NewMenuButton creates a new `GtkMenuButton` widget with downwards-pointing
+// arrow as the only child.
+//
+// You can replace the child widget with another `GtkWidget` should you wish to.
 func NewMenuButton() MenuButton {
 	var _cret *C.GtkWidget // in
 
@@ -163,7 +207,7 @@ func NewMenuButton() MenuButton {
 
 	var _menuButton MenuButton // out
 
-	_menuButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(MenuButton)
+	_menuButton = WrapMenuButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _menuButton
 }
@@ -369,34 +413,14 @@ func (m menuButton) SetUseUnderlineMenuButton(useUnderline bool) {
 	C.gtk_menu_button_set_use_underline(_arg0, _arg1)
 }
 
-func (s menuButton) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
+func (m menuButton) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(m))
 }
 
-func (s menuButton) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
+func (m menuButton) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(m))
 }
 
-func (s menuButton) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
-}
-
-func (s menuButton) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s menuButton) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s menuButton) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s menuButton) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b menuButton) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
+func (m menuButton) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(m))
 }

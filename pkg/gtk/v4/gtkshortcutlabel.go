@@ -30,12 +30,23 @@ func init() {
 type ShortcutLabel interface {
 	Widget
 
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
+
+	// Accelerator retrieves the current accelerator of @self.
 	Accelerator() string
-
+	// DisabledText retrieves the text that is displayed when no accelerator is
+	// set.
 	DisabledText() string
-
+	// SetAcceleratorShortcutLabel sets the accelerator to be displayed by
+	// @self.
 	SetAcceleratorShortcutLabel(accelerator string)
-
+	// SetDisabledTextShortcutLabel sets the text to be displayed by @self when
+	// no accelerator is set.
 	SetDisabledTextShortcutLabel(disabledText string)
 }
 
@@ -58,6 +69,7 @@ func marshalShortcutLabel(p uintptr) (interface{}, error) {
 	return WrapShortcutLabel(obj), nil
 }
 
+// NewShortcutLabel creates a new `GtkShortcutLabel` with @accelerator set.
 func NewShortcutLabel(accelerator string) ShortcutLabel {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in
@@ -69,7 +81,7 @@ func NewShortcutLabel(accelerator string) ShortcutLabel {
 
 	var _shortcutLabel ShortcutLabel // out
 
-	_shortcutLabel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ShortcutLabel)
+	_shortcutLabel = WrapShortcutLabel(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _shortcutLabel
 }
@@ -126,34 +138,14 @@ func (s shortcutLabel) SetDisabledTextShortcutLabel(disabledText string) {
 	C.gtk_shortcut_label_set_disabled_text(_arg0, _arg1)
 }
 
-func (s shortcutLabel) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
+func (s shortcutLabel) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(s))
 }
 
-func (s shortcutLabel) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
+func (s shortcutLabel) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(s))
 }
 
-func (s shortcutLabel) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
-}
-
-func (s shortcutLabel) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s shortcutLabel) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s shortcutLabel) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s shortcutLabel) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b shortcutLabel) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
+func (s shortcutLabel) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(s))
 }

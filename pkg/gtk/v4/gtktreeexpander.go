@@ -61,14 +61,29 @@ func init() {
 type TreeExpander interface {
 	Widget
 
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
+
+	// Child gets the child widget displayed by @self.
 	Child() Widget
-
+	// Item forwards the item set on the `GtkTreeListRow` that @self is
+	// managing.
+	//
+	// This call is essentially equivalent to calling:
+	//
+	// “`c gtk_tree_list_row_get_item (gtk_tree_expander_get_list_row (@self));
+	// “`
 	Item() gextras.Objector
-
+	// ListRow gets the list row managed by @self.
 	ListRow() TreeListRow
-
+	// SetChildTreeExpander sets the content widget to display.
 	SetChildTreeExpander(child Widget)
-
+	// SetListRowTreeExpander sets the tree list row that this expander should
+	// manage.
 	SetListRowTreeExpander(listRow TreeListRow)
 }
 
@@ -91,6 +106,7 @@ func marshalTreeExpander(p uintptr) (interface{}, error) {
 	return WrapTreeExpander(obj), nil
 }
 
+// NewTreeExpander creates a new `GtkTreeExpander`
 func NewTreeExpander() TreeExpander {
 	var _cret *C.GtkWidget // in
 
@@ -98,7 +114,7 @@ func NewTreeExpander() TreeExpander {
 
 	var _treeExpander TreeExpander // out
 
-	_treeExpander = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(TreeExpander)
+	_treeExpander = WrapTreeExpander(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _treeExpander
 }
@@ -168,34 +184,14 @@ func (s treeExpander) SetListRowTreeExpander(listRow TreeListRow) {
 	C.gtk_tree_expander_set_list_row(_arg0, _arg1)
 }
 
-func (s treeExpander) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
+func (t treeExpander) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(t))
 }
 
-func (s treeExpander) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
+func (t treeExpander) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(t))
 }
 
-func (s treeExpander) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
-}
-
-func (s treeExpander) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s treeExpander) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s treeExpander) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s treeExpander) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b treeExpander) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
+func (t treeExpander) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(t))
 }

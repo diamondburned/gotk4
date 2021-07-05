@@ -31,9 +31,9 @@ func init() {
 	})
 }
 
-// SocketService: a Service is an object that represents a service that is
-// provided to the network or over local sockets. When a new connection is made
-// to the service the Service::incoming signal is emitted.
+// SocketService is an object that represents a service that is provided to the
+// network or over local sockets. When a new connection is made to the service
+// the Service::incoming signal is emitted.
 //
 // A Service is a subclass of Listener and you need to add the addresses you
 // want to accept connections on with the Listener APIs.
@@ -56,10 +56,33 @@ func init() {
 type SocketService interface {
 	SocketListener
 
+	// IsActiveSocketService: check whether the service is active or not. An
+	// active service will accept new clients that connect, while a non-active
+	// service will let connecting clients queue up until the service is
+	// started.
 	IsActiveSocketService() bool
-
+	// StartSocketService restarts the service, i.e. start accepting connections
+	// from the added sockets when the mainloop runs. This only needs to be
+	// called after the service has been stopped from g_socket_service_stop().
+	//
+	// This call is thread-safe, so it may be called from a thread handling an
+	// incoming client request.
 	StartSocketService()
-
+	// StopSocketService stops the service, i.e. stops accepting connections
+	// from the added sockets when the mainloop runs.
+	//
+	// This call is thread-safe, so it may be called from a thread handling an
+	// incoming client request.
+	//
+	// Note that this only stops accepting new connections; it does not close
+	// the listening sockets, and you can call g_socket_service_start() again
+	// later to begin listening again. To close the listening sockets, call
+	// g_socket_listener_close(). (This will happen automatically when the
+	// Service is finalized.)
+	//
+	// This must be called before calling g_socket_listener_close() as the
+	// socket service will start accepting connections immediately when a new
+	// socket is added.
 	StopSocketService()
 }
 
@@ -82,6 +105,13 @@ func marshalSocketService(p uintptr) (interface{}, error) {
 	return WrapSocketService(obj), nil
 }
 
+// NewSocketService creates a new Service with no sockets to listen for. New
+// listeners can be added with e.g. g_socket_listener_add_address() or
+// g_socket_listener_add_inet_port().
+//
+// New services are created active, there is no need to call
+// g_socket_service_start(), unless g_socket_service_stop() has been called
+// before.
 func NewSocketService() SocketService {
 	var _cret *C.GSocketService // in
 
@@ -89,7 +119,7 @@ func NewSocketService() SocketService {
 
 	var _socketService SocketService // out
 
-	_socketService = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(SocketService)
+	_socketService = WrapSocketService(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _socketService
 }

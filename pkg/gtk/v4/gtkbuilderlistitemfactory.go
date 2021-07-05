@@ -36,8 +36,10 @@ func init() {
 type BuilderListItemFactory interface {
 	ListItemFactory
 
+	// Resource: if the data references a resource, gets the path of that
+	// resource.
 	Resource() string
-
+	// Scope gets the scope used when constructing listitems.
 	Scope() BuilderScope
 }
 
@@ -60,6 +62,9 @@ func marshalBuilderListItemFactory(p uintptr) (interface{}, error) {
 	return WrapBuilderListItemFactory(obj), nil
 }
 
+// NewBuilderListItemFactoryFromResource creates a new
+// `GtkBuilderListItemFactory` that instantiates widgets using data read from
+// the given @resource_path to pass to `GtkBuilder`.
 func NewBuilderListItemFactoryFromResource(scope BuilderScope, resourcePath string) BuilderListItemFactory {
 	var _arg1 *C.GtkBuilderScope    // out
 	var _arg2 *C.char               // out
@@ -73,7 +78,7 @@ func NewBuilderListItemFactoryFromResource(scope BuilderScope, resourcePath stri
 
 	var _builderListItemFactory BuilderListItemFactory // out
 
-	_builderListItemFactory = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(BuilderListItemFactory)
+	_builderListItemFactory = WrapBuilderListItemFactory(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _builderListItemFactory
 }

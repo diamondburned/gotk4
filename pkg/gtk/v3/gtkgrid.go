@@ -5,9 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -26,8 +24,8 @@ func init() {
 	})
 }
 
-// Grid: gtkGrid is a container which arranges its child widgets in rows and
-// columns, with arbitrary positions and horizontal/vertical spans.
+// Grid is a container which arranges its child widgets in rows and columns,
+// with arbitrary positions and horizontal/vertical spans.
 //
 // Children are added using gtk_grid_attach(). They can span multiple rows or
 // columns. It is also possible to add a child next to an existing child, using
@@ -45,46 +43,93 @@ func init() {
 // GtkGrid uses a single CSS node with name grid.
 type Grid interface {
 	Container
-	Orientable
 
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsOrientable casts the class to the Orientable interface.
+	AsOrientable() Orientable
+
+	// AttachGrid adds a widget to the grid.
+	//
+	// The position of @child is determined by @left and @top. The number of
+	// “cells” that @child will occupy is determined by @width and @height.
 	AttachGrid(child Widget, left int, top int, width int, height int)
-
+	// AttachNextToGrid adds a widget to the grid.
+	//
+	// The widget is placed next to @sibling, on the side determined by @side.
+	// When @sibling is nil, the widget is placed in row (for left or right
+	// placement) or column 0 (for top or bottom placement), at the end
+	// indicated by @side.
+	//
+	// Attaching widgets labeled [1], [2], [3] with @sibling == nil and @side ==
+	// GTK_POS_LEFT yields a layout of [3][2][1].
 	AttachNextToGrid(child Widget, sibling Widget, side PositionType, width int, height int)
-
+	// BaselineRow returns which row defines the global baseline of @grid.
 	BaselineRow() int
-
+	// ChildAt gets the child of @grid whose area covers the grid cell whose
+	// upper left corner is at @left, @top.
 	ChildAt(left int, top int) Widget
-
+	// ColumnHomogeneous returns whether all columns of @grid have the same
+	// width.
 	ColumnHomogeneous() bool
-
+	// ColumnSpacing returns the amount of space between the columns of @grid.
 	ColumnSpacing() uint
-
+	// RowBaselinePosition returns the baseline position of @row as set by
+	// gtk_grid_set_row_baseline_position() or the default value
+	// GTK_BASELINE_POSITION_CENTER.
 	RowBaselinePosition(row int) BaselinePosition
-
+	// RowHomogeneous returns whether all rows of @grid have the same height.
 	RowHomogeneous() bool
-
+	// RowSpacing returns the amount of space between the rows of @grid.
 	RowSpacing() uint
-
+	// InsertColumnGrid inserts a column at the specified position.
+	//
+	// Children which are attached at or to the right of this position are moved
+	// one column to the right. Children which span across this position are
+	// grown to span the new column.
 	InsertColumnGrid(position int)
-
+	// InsertNextToGrid inserts a row or column at the specified position.
+	//
+	// The new row or column is placed next to @sibling, on the side determined
+	// by @side. If @side is GTK_POS_TOP or GTK_POS_BOTTOM, a row is inserted.
+	// If @side is GTK_POS_LEFT of GTK_POS_RIGHT, a column is inserted.
 	InsertNextToGrid(sibling Widget, side PositionType)
-
+	// InsertRowGrid inserts a row at the specified position.
+	//
+	// Children which are attached at or below this position are moved one row
+	// down. Children which span across this position are grown to span the new
+	// row.
 	InsertRowGrid(position int)
-
+	// RemoveColumnGrid removes a column from the grid.
+	//
+	// Children that are placed in this column are removed, spanning children
+	// that overlap this column have their width reduced by one, and children
+	// after the column are moved to the left.
 	RemoveColumnGrid(position int)
-
+	// RemoveRowGrid removes a row from the grid.
+	//
+	// Children that are placed in this row are removed, spanning children that
+	// overlap this row have their height reduced by one, and children below the
+	// row are moved up.
 	RemoveRowGrid(position int)
-
+	// SetBaselineRowGrid sets which row defines the global baseline for the
+	// entire grid. Each row in the grid can have its own local baseline, but
+	// only one of those is global, meaning it will be the baseline in the
+	// parent of the @grid.
 	SetBaselineRowGrid(row int)
-
+	// SetColumnHomogeneousGrid sets whether all columns of @grid will have the
+	// same width.
 	SetColumnHomogeneousGrid(homogeneous bool)
-
+	// SetColumnSpacingGrid sets the amount of space between columns of @grid.
 	SetColumnSpacingGrid(spacing uint)
-
+	// SetRowBaselinePositionGrid sets how the baseline should be positioned on
+	// @row of the grid, in case that row is assigned more space than is
+	// requested.
 	SetRowBaselinePositionGrid(row int, pos BaselinePosition)
-
+	// SetRowHomogeneousGrid sets whether all rows of @grid will have the same
+	// height.
 	SetRowHomogeneousGrid(homogeneous bool)
-
+	// SetRowSpacingGrid sets the amount of space between rows of @grid.
 	SetRowSpacingGrid(spacing uint)
 }
 
@@ -107,6 +152,7 @@ func marshalGrid(p uintptr) (interface{}, error) {
 	return WrapGrid(obj), nil
 }
 
+// NewGrid creates a new grid widget.
 func NewGrid() Grid {
 	var _cret *C.GtkWidget // in
 
@@ -114,7 +160,7 @@ func NewGrid() Grid {
 
 	var _grid Grid // out
 
-	_grid = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Grid)
+	_grid = WrapGrid(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _grid
 }
@@ -388,50 +434,10 @@ func (g grid) SetRowSpacingGrid(spacing uint) {
 	C.gtk_grid_set_row_spacing(_arg0, _arg1)
 }
 
-func (b grid) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+func (g grid) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(g))
 }
 
-func (b grid) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b grid) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b grid) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b grid) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b grid) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b grid) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b grid) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b grid) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b grid) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (o grid) Orientation() Orientation {
-	return WrapOrientable(gextras.InternObject(o)).Orientation()
-}
-
-func (o grid) SetOrientation(orientation Orientation) {
-	WrapOrientable(gextras.InternObject(o)).SetOrientation(orientation)
+func (g grid) AsOrientable() Orientable {
+	return WrapOrientable(gextras.InternObject(g))
 }

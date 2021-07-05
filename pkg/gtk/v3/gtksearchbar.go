@@ -5,9 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -53,14 +51,23 @@ func init() {
 type SearchBar interface {
 	Bin
 
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+
+	// ConnectEntrySearchBar connects the Entry widget passed as the one to be
+	// used in this search bar. The entry should be a descendant of the search
+	// bar. This is only required if the entry isn’t the direct child of the
+	// search bar (as in our main example).
 	ConnectEntrySearchBar(entry Entry)
-
+	// SearchMode returns whether the search mode is on or off.
 	SearchMode() bool
-
+	// ShowCloseButton returns whether the close button is shown.
 	ShowCloseButton() bool
-
+	// SetSearchModeSearchBar switches the search mode on or off.
 	SetSearchModeSearchBar(searchMode bool)
-
+	// SetShowCloseButtonSearchBar shows or hides the close button. Applications
+	// that already have a “search” toggle button should not show a close button
+	// in their search bar, as it duplicates the role of the toggle button.
 	SetShowCloseButtonSearchBar(visible bool)
 }
 
@@ -83,6 +90,8 @@ func marshalSearchBar(p uintptr) (interface{}, error) {
 	return WrapSearchBar(obj), nil
 }
 
+// NewSearchBar creates a SearchBar. You will need to tell it about which widget
+// is going to be your text entry using gtk_search_bar_connect_entry().
 func NewSearchBar() SearchBar {
 	var _cret *C.GtkWidget // in
 
@@ -90,7 +99,7 @@ func NewSearchBar() SearchBar {
 
 	var _searchBar SearchBar // out
 
-	_searchBar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(SearchBar)
+	_searchBar = WrapSearchBar(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _searchBar
 }
@@ -163,42 +172,6 @@ func (b searchBar) SetShowCloseButtonSearchBar(visible bool) {
 	C.gtk_search_bar_set_show_close_button(_arg0, _arg1)
 }
 
-func (b searchBar) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
-}
-
-func (b searchBar) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b searchBar) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b searchBar) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b searchBar) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b searchBar) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b searchBar) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b searchBar) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b searchBar) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b searchBar) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
+func (s searchBar) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(s))
 }

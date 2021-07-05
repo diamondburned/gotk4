@@ -54,14 +54,30 @@ func init() {
 //
 // `GtkPasswordEntry` uses the GTK_ACCESSIBLE_ROLE_TEXT_BOX role.
 type PasswordEntry interface {
-	Editable
+	Widget
 
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
+	// AsEditable casts the class to the Editable interface.
+	AsEditable() Editable
+
+	// ExtraMenu gets the menu model set with
+	// gtk_password_entry_set_extra_menu().
 	ExtraMenu() gio.MenuModel
-
+	// ShowPeekIcon returns whether the entry is showing an icon to reveal the
+	// contents.
 	ShowPeekIcon() bool
-
+	// SetExtraMenuPasswordEntry sets a menu model to add when constructing the
+	// context menu for @entry.
 	SetExtraMenuPasswordEntry(model gio.MenuModel)
-
+	// SetShowPeekIconPasswordEntry sets whether the entry should have a
+	// clickable icon to reveal the contents.
+	//
+	// Setting this to false also hides the text again.
 	SetShowPeekIconPasswordEntry(showPeekIcon bool)
 }
 
@@ -84,6 +100,7 @@ func marshalPasswordEntry(p uintptr) (interface{}, error) {
 	return WrapPasswordEntry(obj), nil
 }
 
+// NewPasswordEntry creates a `GtkPasswordEntry`.
 func NewPasswordEntry() PasswordEntry {
 	var _cret *C.GtkWidget // in
 
@@ -91,7 +108,7 @@ func NewPasswordEntry() PasswordEntry {
 
 	var _passwordEntry PasswordEntry // out
 
-	_passwordEntry = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(PasswordEntry)
+	_passwordEntry = WrapPasswordEntry(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _passwordEntry
 }
@@ -150,122 +167,18 @@ func (e passwordEntry) SetShowPeekIconPasswordEntry(showPeekIcon bool) {
 	C.gtk_password_entry_set_show_peek_icon(_arg0, _arg1)
 }
 
-func (e passwordEntry) DeleteSelection() {
-	WrapEditable(gextras.InternObject(e)).DeleteSelection()
+func (p passwordEntry) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(p))
 }
 
-func (e passwordEntry) DeleteText(startPos int, endPos int) {
-	WrapEditable(gextras.InternObject(e)).DeleteText(startPos, endPos)
+func (p passwordEntry) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(p))
 }
 
-func (e passwordEntry) FinishDelegate() {
-	WrapEditable(gextras.InternObject(e)).FinishDelegate()
+func (p passwordEntry) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(p))
 }
 
-func (e passwordEntry) Alignment() float32 {
-	return WrapEditable(gextras.InternObject(e)).Alignment()
-}
-
-func (e passwordEntry) Chars(startPos int, endPos int) string {
-	return WrapEditable(gextras.InternObject(e)).Chars(startPos, endPos)
-}
-
-func (e passwordEntry) Delegate() Editable {
-	return WrapEditable(gextras.InternObject(e)).Delegate()
-}
-
-func (e passwordEntry) Editable() bool {
-	return WrapEditable(gextras.InternObject(e)).Editable()
-}
-
-func (e passwordEntry) EnableUndo() bool {
-	return WrapEditable(gextras.InternObject(e)).EnableUndo()
-}
-
-func (e passwordEntry) MaxWidthChars() int {
-	return WrapEditable(gextras.InternObject(e)).MaxWidthChars()
-}
-
-func (e passwordEntry) Position() int {
-	return WrapEditable(gextras.InternObject(e)).Position()
-}
-
-func (e passwordEntry) SelectionBounds() (startPos int, endPos int, ok bool) {
-	return WrapEditable(gextras.InternObject(e)).SelectionBounds()
-}
-
-func (e passwordEntry) Text() string {
-	return WrapEditable(gextras.InternObject(e)).Text()
-}
-
-func (e passwordEntry) WidthChars() int {
-	return WrapEditable(gextras.InternObject(e)).WidthChars()
-}
-
-func (e passwordEntry) InitDelegate() {
-	WrapEditable(gextras.InternObject(e)).InitDelegate()
-}
-
-func (e passwordEntry) SelectRegion(startPos int, endPos int) {
-	WrapEditable(gextras.InternObject(e)).SelectRegion(startPos, endPos)
-}
-
-func (e passwordEntry) SetAlignment(xalign float32) {
-	WrapEditable(gextras.InternObject(e)).SetAlignment(xalign)
-}
-
-func (e passwordEntry) SetEditable(isEditable bool) {
-	WrapEditable(gextras.InternObject(e)).SetEditable(isEditable)
-}
-
-func (e passwordEntry) SetEnableUndo(enableUndo bool) {
-	WrapEditable(gextras.InternObject(e)).SetEnableUndo(enableUndo)
-}
-
-func (e passwordEntry) SetMaxWidthChars(nChars int) {
-	WrapEditable(gextras.InternObject(e)).SetMaxWidthChars(nChars)
-}
-
-func (e passwordEntry) SetPosition(position int) {
-	WrapEditable(gextras.InternObject(e)).SetPosition(position)
-}
-
-func (e passwordEntry) SetText(text string) {
-	WrapEditable(gextras.InternObject(e)).SetText(text)
-}
-
-func (e passwordEntry) SetWidthChars(nChars int) {
-	WrapEditable(gextras.InternObject(e)).SetWidthChars(nChars)
-}
-
-func (s passwordEntry) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
-}
-
-func (s passwordEntry) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
-}
-
-func (s passwordEntry) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
-}
-
-func (s passwordEntry) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s passwordEntry) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s passwordEntry) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s passwordEntry) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b passwordEntry) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
+func (p passwordEntry) AsEditable() Editable {
+	return WrapEditable(gextras.InternObject(p))
 }

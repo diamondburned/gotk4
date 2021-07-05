@@ -70,7 +70,7 @@ func marshalPrintCapabilities(p uintptr) (interface{}, error) {
 //
 // Note that you need to ref @printer, if you want to keep a reference to it
 // after the function has returned.
-type PrinterFunc func(printer Printer, ok bool)
+type PrinterFunc func(printer Printer) (ok bool)
 
 //export gotk4_PrinterFunc
 func gotk4_PrinterFunc(arg0 *C.GtkPrinter, arg1 C.gpointer) C.gboolean {
@@ -95,7 +95,7 @@ func gotk4_PrinterFunc(arg0 *C.GtkPrinter, arg1 C.gpointer) C.gboolean {
 	return cret
 }
 
-// Printer: a `GtkPrinter` object represents a printer.
+// Printer: `GtkPrinter` object represents a printer.
 //
 // You only need to deal directly with printers if you use the non-portable
 // [class@Gtk.PrintUnixDialog] API.
@@ -107,46 +107,79 @@ func gotk4_PrinterFunc(arg0 *C.GtkPrinter, arg1 C.gpointer) C.gboolean {
 type Printer interface {
 	gextras.Objector
 
+	// AcceptsPDFPrinter returns whether the printer accepts input in PDF
+	// format.
 	AcceptsPDFPrinter() bool
-
+	// AcceptsPSPrinter returns whether the printer accepts input in PostScript
+	// format.
 	AcceptsPSPrinter() bool
-
+	// ComparePrinter compares two printers.
 	ComparePrinter(b Printer) int
-
-	Backend() *PrintBackend
-
+	// Capabilities returns the printer’s capabilities.
+	//
+	// This is useful when you’re using `GtkPrintUnixDialog`’s
+	// manual-capabilities setting and need to know which settings the printer
+	// can handle and which you must handle yourself.
+	//
+	// This will return 0 unless the printer’s details are available, see
+	// [method@Gtk.Printer.has_details] and
+	// [method@Gtk.Printer.request_details].
 	Capabilities() PrintCapabilities
-
+	// DefaultPageSize returns default page size of @printer.
 	DefaultPageSize() PageSetup
-
+	// Description gets the description of the printer.
 	Description() string
-
+	// HardMargins: retrieve the hard margins of @printer.
+	//
+	// These are the margins that define the area at the borders of the paper
+	// that the printer cannot print to.
+	//
+	// Note: This will not succeed unless the printer’s details are available,
+	// see [method@Gtk.Printer.has_details] and
+	// [method@Gtk.Printer.request_details].
 	HardMargins() (top float64, bottom float64, left float64, right float64, ok bool)
-
-	HardMarginsForPaperSize(paperSize *PaperSize) (top float64, bottom float64, left float64, right float64, ok bool)
-
+	// HardMarginsForPaperSize: retrieve the hard margins of @printer for
+	// @paper_size.
+	//
+	// These are the margins that define the area at the borders of the paper
+	// that the printer cannot print to.
+	//
+	// Note: This will not succeed unless the printer’s details are available,
+	// see [method@Gtk.Printer.has_details] and
+	// [method@Gtk.Printer.request_details].
+	HardMarginsForPaperSize(paperSize PaperSize) (top float64, bottom float64, left float64, right float64, ok bool)
+	// IconName gets the name of the icon to use for the printer.
 	IconName() string
-
+	// JobCount gets the number of jobs currently queued on the printer.
 	JobCount() int
-
+	// Location returns a description of the location of the printer.
 	Location() string
-
+	// Name returns the name of the printer.
 	Name() string
-
+	// StateMessage returns the state message describing the current state of
+	// the printer.
 	StateMessage() string
-
+	// HasDetailsPrinter returns whether the printer details are available.
 	HasDetailsPrinter() bool
-
+	// IsAcceptingJobsPrinter returns whether the printer is accepting jobs
 	IsAcceptingJobsPrinter() bool
-
+	// IsActivePrinter returns whether the printer is currently active (i.e.
+	// accepts new jobs).
 	IsActivePrinter() bool
-
+	// IsDefaultPrinter returns whether the printer is the default printer.
 	IsDefaultPrinter() bool
-
+	// IsPausedPrinter returns whether the printer is currently paused.
+	//
+	// A paused printer still accepts jobs, but it is not printing them.
 	IsPausedPrinter() bool
-
+	// IsVirtualPrinter returns whether the printer is virtual (i.e. does not
+	// represent actual printer hardware, but something like a CUPS class).
 	IsVirtualPrinter() bool
-
+	// RequestDetailsPrinter requests the printer details.
+	//
+	// When the details are available, the
+	// [signal@Gtk.Printer::details-acquired] signal will be emitted on
+	// @printer.
 	RequestDetailsPrinter()
 }
 
@@ -167,28 +200,6 @@ func marshalPrinter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapPrinter(obj), nil
-}
-
-func NewPrinter(name string, backend *PrintBackend, virtual_ bool) Printer {
-	var _arg1 *C.char            // out
-	var _arg2 *C.GtkPrintBackend // out
-	var _arg3 C.gboolean         // out
-	var _cret *C.GtkPrinter      // in
-
-	_arg1 = (*C.char)(C.CString(name))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GtkPrintBackend)(unsafe.Pointer(backend.Native()))
-	if virtual_ {
-		_arg3 = C.TRUE
-	}
-
-	_cret = C.gtk_printer_new(_arg1, _arg2, _arg3)
-
-	var _printer Printer // out
-
-	_printer = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Printer)
-
-	return _printer
 }
 
 func (p printer) AcceptsPDFPrinter() bool {
@@ -242,21 +253,6 @@ func (a printer) ComparePrinter(b Printer) int {
 	return _gint
 }
 
-func (p printer) Backend() *PrintBackend {
-	var _arg0 *C.GtkPrinter      // out
-	var _cret *C.GtkPrintBackend // in
-
-	_arg0 = (*C.GtkPrinter)(unsafe.Pointer(p.Native()))
-
-	_cret = C.gtk_printer_get_backend(_arg0)
-
-	var _printBackend *PrintBackend // out
-
-	_printBackend = (*PrintBackend)(unsafe.Pointer(_cret))
-
-	return _printBackend
-}
-
 func (p printer) Capabilities() PrintCapabilities {
 	var _arg0 *C.GtkPrinter          // out
 	var _cret C.GtkPrintCapabilities // in
@@ -304,10 +300,10 @@ func (p printer) Description() string {
 
 func (p printer) HardMargins() (top float64, bottom float64, left float64, right float64, ok bool) {
 	var _arg0 *C.GtkPrinter // out
-	var _arg1 C.double      // in
-	var _arg2 C.double      // in
-	var _arg3 C.double      // in
-	var _arg4 C.double      // in
+	var _arg1 *C.double     // in
+	var _arg2 *C.double     // in
+	var _arg3 *C.double     // in
+	var _arg4 *C.double     // in
 	var _cret C.gboolean    // in
 
 	_arg0 = (*C.GtkPrinter)(unsafe.Pointer(p.Native()))
@@ -331,17 +327,17 @@ func (p printer) HardMargins() (top float64, bottom float64, left float64, right
 	return _top, _bottom, _left, _right, _ok
 }
 
-func (p printer) HardMarginsForPaperSize(paperSize *PaperSize) (top float64, bottom float64, left float64, right float64, ok bool) {
+func (p printer) HardMarginsForPaperSize(paperSize PaperSize) (top float64, bottom float64, left float64, right float64, ok bool) {
 	var _arg0 *C.GtkPrinter   // out
 	var _arg1 *C.GtkPaperSize // out
-	var _arg2 C.double        // in
-	var _arg3 C.double        // in
-	var _arg4 C.double        // in
-	var _arg5 C.double        // in
+	var _arg2 *C.double       // in
+	var _arg3 *C.double       // in
+	var _arg4 *C.double       // in
+	var _arg5 *C.double       // in
 	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GtkPrinter)(unsafe.Pointer(p.Native()))
-	_arg1 = (*C.GtkPaperSize)(unsafe.Pointer(paperSize.Native()))
+	_arg1 = (*C.GtkPaperSize)(unsafe.Pointer(paperSize))
 
 	_cret = C.gtk_printer_get_hard_margins_for_paper_size(_arg0, _arg1, &_arg2, &_arg3, &_arg4, &_arg5)
 
@@ -545,17 +541,4 @@ func (p printer) RequestDetailsPrinter() {
 	_arg0 = (*C.GtkPrinter)(unsafe.Pointer(p.Native()))
 
 	C.gtk_printer_request_details(_arg0)
-}
-
-type PrintBackend C.GtkPrintBackend
-
-// WrapPrintBackend wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapPrintBackend(ptr unsafe.Pointer) *PrintBackend {
-	return (*PrintBackend)(ptr)
-}
-
-// Native returns the underlying C source pointer.
-func (p *PrintBackend) Native() unsafe.Pointer {
-	return unsafe.Pointer(p)
 }

@@ -38,10 +38,12 @@ func init() {
 type FilenameCompleter interface {
 	gextras.Objector
 
+	// CompletionSuffix obtains a completion for @initial_text from @completer.
 	CompletionSuffix(initialText string) string
-
+	// Completions gets an array of completion strings for a given initial text.
 	Completions(initialText string) []string
-
+	// SetDirsOnlyFilenameCompleter: if @dirs_only is true, @completer will only
+	// complete directory names, and not file names.
 	SetDirsOnlyFilenameCompleter(dirsOnly bool)
 }
 
@@ -64,6 +66,7 @@ func marshalFilenameCompleter(p uintptr) (interface{}, error) {
 	return WrapFilenameCompleter(obj), nil
 }
 
+// NewFilenameCompleter creates a new filename completer.
 func NewFilenameCompleter() FilenameCompleter {
 	var _cret *C.GFilenameCompleter // in
 
@@ -71,7 +74,7 @@ func NewFilenameCompleter() FilenameCompleter {
 
 	var _filenameCompleter FilenameCompleter // out
 
-	_filenameCompleter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(FilenameCompleter)
+	_filenameCompleter = WrapFilenameCompleter(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _filenameCompleter
 }

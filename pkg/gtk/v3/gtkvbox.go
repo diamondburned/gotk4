@@ -5,9 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -26,8 +24,7 @@ func init() {
 	})
 }
 
-// VBox: a VBox is a container that organizes child widgets into a single
-// column.
+// VBox is a container that organizes child widgets into a single column.
 //
 // Use the Box packing interface to determine the arrangement, spacing, height,
 // and alignment of VBox children.
@@ -52,6 +49,11 @@ func init() {
 // containers to GtkGrid][gtk-migrating-GtkGrid].
 type VBox interface {
 	Box
+
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsOrientable casts the class to the Orientable interface.
+	AsOrientable() Orientable
 }
 
 // vBox implements the VBox class.
@@ -73,6 +75,9 @@ func marshalVBox(p uintptr) (interface{}, error) {
 	return WrapVBox(obj), nil
 }
 
+// NewVBox creates a new VBox.
+//
+// Deprecated: since version 3.2.
 func NewVBox(homogeneous bool, spacing int) VBox {
 	var _arg1 C.gboolean   // out
 	var _arg2 C.gint       // out
@@ -87,55 +92,15 @@ func NewVBox(homogeneous bool, spacing int) VBox {
 
 	var _vBox VBox // out
 
-	_vBox = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(VBox)
+	_vBox = WrapVBox(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _vBox
 }
 
-func (b vBox) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+func (v vBox) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(v))
 }
 
-func (b vBox) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b vBox) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b vBox) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b vBox) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b vBox) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b vBox) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b vBox) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b vBox) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b vBox) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (o vBox) Orientation() Orientation {
-	return WrapOrientable(gextras.InternObject(o)).Orientation()
-}
-
-func (o vBox) SetOrientation(orientation Orientation) {
-	WrapOrientable(gextras.InternObject(o)).SetOrientation(orientation)
+func (v vBox) AsOrientable() Orientable {
+	return WrapOrientable(gextras.InternObject(v))
 }

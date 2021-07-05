@@ -35,6 +35,11 @@ func init() {
 type GestureSwipe interface {
 	GestureSingle
 
+	// Velocity gets the current velocity.
+	//
+	// If the gesture is recognized, this function returns true and fills in
+	// @velocity_x and @velocity_y with the recorded velocity, as per the last
+	// events processed.
 	Velocity() (velocityX float64, velocityY float64, ok bool)
 }
 
@@ -57,6 +62,7 @@ func marshalGestureSwipe(p uintptr) (interface{}, error) {
 	return WrapGestureSwipe(obj), nil
 }
 
+// NewGestureSwipe returns a newly created `GtkGesture` that recognizes swipes.
 func NewGestureSwipe() GestureSwipe {
 	var _cret *C.GtkGesture // in
 
@@ -64,15 +70,15 @@ func NewGestureSwipe() GestureSwipe {
 
 	var _gestureSwipe GestureSwipe // out
 
-	_gestureSwipe = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(GestureSwipe)
+	_gestureSwipe = WrapGestureSwipe(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _gestureSwipe
 }
 
 func (g gestureSwipe) Velocity() (velocityX float64, velocityY float64, ok bool) {
 	var _arg0 *C.GtkGestureSwipe // out
-	var _arg1 C.double           // in
-	var _arg2 C.double           // in
+	var _arg1 *C.double          // in
+	var _arg2 *C.double          // in
 	var _cret C.gboolean         // in
 
 	_arg0 = (*C.GtkGestureSwipe)(unsafe.Pointer(g.Native()))

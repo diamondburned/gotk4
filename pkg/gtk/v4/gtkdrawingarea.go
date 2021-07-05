@@ -29,7 +29,7 @@ func init() {
 //
 // This function should exclusively redraw the contents of the drawing area and
 // must not call any widget functions that cause changes.
-type DrawingAreaDrawFunc func(drawingArea DrawingArea, cr *cairo.Context, width int, height int)
+type DrawingAreaDrawFunc func(drawingArea DrawingArea, cr cairo.Context, width int, height int)
 
 //export gotk4_DrawingAreaDrawFunc
 func gotk4_DrawingAreaDrawFunc(arg0 *C.GtkDrawingArea, arg1 *C.cairo_t, arg2 C.int, arg3 C.int, arg4 C.gpointer) {
@@ -39,12 +39,12 @@ func gotk4_DrawingAreaDrawFunc(arg0 *C.GtkDrawingArea, arg1 *C.cairo_t, arg2 C.i
 	}
 
 	var drawingArea DrawingArea // out
-	var cr *cairo.Context       // out
+	var cr cairo.Context        // out
 	var width int               // out
 	var height int              // out
 
 	drawingArea = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0))).(DrawingArea)
-	cr = (*cairo.Context)(unsafe.Pointer(arg1))
+	cr = (cairo.Context)(unsafe.Pointer(arg1))
 	width = int(arg2)
 	height = int(arg3)
 
@@ -124,12 +124,36 @@ func gotk4_DrawingAreaDrawFunc(arg0 *C.GtkDrawingArea, arg1 *C.cairo_t, arg2 C.i
 type DrawingArea interface {
 	Widget
 
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
+
+	// ContentHeight retrieves the content height of the `GtkDrawingArea`.
 	ContentHeight() int
-
+	// ContentWidth retrieves the content width of the `GtkDrawingArea`.
 	ContentWidth() int
-
+	// SetContentHeightDrawingArea sets the desired height of the contents of
+	// the drawing area.
+	//
+	// Note that because widgets may be allocated larger sizes than they
+	// requested, it is possible that the actual height passed to your draw
+	// function is larger than the height set here. You can use
+	// [method@Gtk.Widget.set_valign] to avoid that.
+	//
+	// If the height is set to 0 (the default), the drawing area may disappear.
 	SetContentHeightDrawingArea(height int)
-
+	// SetContentWidthDrawingArea sets the desired width of the contents of the
+	// drawing area.
+	//
+	// Note that because widgets may be allocated larger sizes than they
+	// requested, it is possible that the actual width passed to your draw
+	// function is larger than the width set here. You can use
+	// [method@Gtk.Widget.set_halign] to avoid that.
+	//
+	// If the width is set to 0 (the default), the drawing area may disappear.
 	SetContentWidthDrawingArea(width int)
 }
 
@@ -152,6 +176,7 @@ func marshalDrawingArea(p uintptr) (interface{}, error) {
 	return WrapDrawingArea(obj), nil
 }
 
+// NewDrawingArea creates a new drawing area.
 func NewDrawingArea() DrawingArea {
 	var _cret *C.GtkWidget // in
 
@@ -159,7 +184,7 @@ func NewDrawingArea() DrawingArea {
 
 	var _drawingArea DrawingArea // out
 
-	_drawingArea = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(DrawingArea)
+	_drawingArea = WrapDrawingArea(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _drawingArea
 }
@@ -214,34 +239,14 @@ func (s drawingArea) SetContentWidthDrawingArea(width int) {
 	C.gtk_drawing_area_set_content_width(_arg0, _arg1)
 }
 
-func (s drawingArea) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
+func (d drawingArea) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(d))
 }
 
-func (s drawingArea) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
+func (d drawingArea) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(d))
 }
 
-func (s drawingArea) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
-}
-
-func (s drawingArea) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s drawingArea) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s drawingArea) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s drawingArea) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b drawingArea) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
+func (d drawingArea) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(d))
 }

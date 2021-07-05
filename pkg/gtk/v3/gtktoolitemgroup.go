@@ -5,9 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -27,9 +25,8 @@ func init() {
 	})
 }
 
-// ToolItemGroup: a ToolItemGroup is used together with ToolPalette to add
-// ToolItems to a palette like container with different categories and drag and
-// drop support.
+// ToolItemGroup is used together with ToolPalette to add ToolItems to a palette
+// like container with different categories and drag and drop support.
 //
 //
 // CSS nodes
@@ -37,38 +34,52 @@ func init() {
 // GtkToolItemGroup has a single CSS node named toolitemgroup.
 type ToolItemGroup interface {
 	Container
-	ToolShell
 
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsToolShell casts the class to the ToolShell interface.
+	AsToolShell() ToolShell
+
+	// Collapsed gets whether @group is collapsed or expanded.
 	Collapsed() bool
-
+	// DropItem gets the tool item at position (x, y).
 	DropItem(x int, y int) ToolItem
-
+	// Ellipsize gets the ellipsization mode of @group.
 	Ellipsize() pango.EllipsizeMode
-
+	// HeaderRelief gets the relief mode of the header button of @group.
 	HeaderRelief() ReliefStyle
-
+	// ItemPosition gets the position of @item in @group as index.
 	ItemPosition(item ToolItem) int
-
+	// Label gets the label of @group.
 	Label() string
-
+	// LabelWidget gets the label widget of @group. See
+	// gtk_tool_item_group_set_label_widget().
 	LabelWidget() Widget
-
+	// NItems gets the number of tool items in @group.
 	NItems() uint
-
+	// NthItem gets the tool item at @index in group.
 	NthItem(index uint) ToolItem
-
+	// InsertToolItemGroup inserts @item at @position in the list of children of
+	// @group.
 	InsertToolItemGroup(item ToolItem, position int)
-
+	// SetCollapsedToolItemGroup sets whether the @group should be collapsed or
+	// expanded.
 	SetCollapsedToolItemGroup(collapsed bool)
-
+	// SetEllipsizeToolItemGroup sets the ellipsization mode which should be
+	// used by labels in @group.
 	SetEllipsizeToolItemGroup(ellipsize pango.EllipsizeMode)
-
+	// SetHeaderReliefToolItemGroup: set the button relief of the group header.
+	// See gtk_button_set_relief() for details.
 	SetHeaderReliefToolItemGroup(style ReliefStyle)
-
+	// SetItemPositionToolItemGroup sets the position of @item in the list of
+	// children of @group.
 	SetItemPositionToolItemGroup(item ToolItem, position int)
-
+	// SetLabelToolItemGroup sets the label of the tool item group. The label is
+	// displayed in the header of the group.
 	SetLabelToolItemGroup(label string)
-
+	// SetLabelWidgetToolItemGroup sets the label of the tool item group. The
+	// label widget is displayed in the header of the group, in place of the
+	// usual label.
 	SetLabelWidgetToolItemGroup(labelWidget Widget)
 }
 
@@ -91,6 +102,7 @@ func marshalToolItemGroup(p uintptr) (interface{}, error) {
 	return WrapToolItemGroup(obj), nil
 }
 
+// NewToolItemGroup creates a new tool item group with label @label.
 func NewToolItemGroup(label string) ToolItemGroup {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -102,7 +114,7 @@ func NewToolItemGroup(label string) ToolItemGroup {
 
 	var _toolItemGroup ToolItemGroup // out
 
-	_toolItemGroup = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ToolItemGroup)
+	_toolItemGroup = WrapToolItemGroup(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _toolItemGroup
 }
@@ -329,118 +341,10 @@ func (g toolItemGroup) SetLabelWidgetToolItemGroup(labelWidget Widget) {
 	C.gtk_tool_item_group_set_label_widget(_arg0, _arg1)
 }
 
-func (b toolItemGroup) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+func (t toolItemGroup) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(t))
 }
 
-func (b toolItemGroup) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b toolItemGroup) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b toolItemGroup) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b toolItemGroup) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b toolItemGroup) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b toolItemGroup) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b toolItemGroup) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b toolItemGroup) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b toolItemGroup) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (s toolItemGroup) EllipsizeMode() pango.EllipsizeMode {
-	return WrapToolShell(gextras.InternObject(s)).EllipsizeMode()
-}
-
-func (s toolItemGroup) IconSize() int {
-	return WrapToolShell(gextras.InternObject(s)).IconSize()
-}
-
-func (s toolItemGroup) Orientation() Orientation {
-	return WrapToolShell(gextras.InternObject(s)).Orientation()
-}
-
-func (s toolItemGroup) ReliefStyle() ReliefStyle {
-	return WrapToolShell(gextras.InternObject(s)).ReliefStyle()
-}
-
-func (s toolItemGroup) Style() ToolbarStyle {
-	return WrapToolShell(gextras.InternObject(s)).Style()
-}
-
-func (s toolItemGroup) TextAlignment() float32 {
-	return WrapToolShell(gextras.InternObject(s)).TextAlignment()
-}
-
-func (s toolItemGroup) TextOrientation() Orientation {
-	return WrapToolShell(gextras.InternObject(s)).TextOrientation()
-}
-
-func (s toolItemGroup) TextSizeGroup() SizeGroup {
-	return WrapToolShell(gextras.InternObject(s)).TextSizeGroup()
-}
-
-func (s toolItemGroup) RebuildMenu() {
-	WrapToolShell(gextras.InternObject(s)).RebuildMenu()
-}
-
-func (b toolItemGroup) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
-}
-
-func (b toolItemGroup) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b toolItemGroup) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b toolItemGroup) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b toolItemGroup) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b toolItemGroup) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b toolItemGroup) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b toolItemGroup) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b toolItemGroup) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b toolItemGroup) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
+func (t toolItemGroup) AsToolShell() ToolShell {
+	return WrapToolShell(gextras.InternObject(t))
 }

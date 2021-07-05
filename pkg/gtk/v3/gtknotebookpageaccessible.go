@@ -61,7 +61,7 @@ func NewNotebookPageAccessible(notebook NotebookAccessible, child Widget) Notebo
 
 	var _notebookPageAccessible NotebookPageAccessible // out
 
-	_notebookPageAccessible = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(NotebookPageAccessible)
+	_notebookPageAccessible = WrapNotebookPageAccessible(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _notebookPageAccessible
 }

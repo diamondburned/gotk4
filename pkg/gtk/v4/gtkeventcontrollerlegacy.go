@@ -49,6 +49,7 @@ func marshalEventControllerLegacy(p uintptr) (interface{}, error) {
 	return WrapEventControllerLegacy(obj), nil
 }
 
+// NewEventControllerLegacy creates a new legacy event controller.
 func NewEventControllerLegacy() EventControllerLegacy {
 	var _cret *C.GtkEventController // in
 
@@ -56,7 +57,7 @@ func NewEventControllerLegacy() EventControllerLegacy {
 
 	var _eventControllerLegacy EventControllerLegacy // out
 
-	_eventControllerLegacy = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(EventControllerLegacy)
+	_eventControllerLegacy = WrapEventControllerLegacy(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _eventControllerLegacy
 }

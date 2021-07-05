@@ -48,12 +48,25 @@ func init() {
 type UnixSocketAddress interface {
 	SocketAddress
 
+	// AsSocketConnectable casts the class to the SocketConnectable interface.
+	AsSocketConnectable() SocketConnectable
+
+	// AddressType gets @address's type.
 	AddressType() UnixSocketAddressType
-
+	// IsAbstract tests if @address is abstract.
+	//
+	// Deprecated: since version .
 	IsAbstract() bool
-
+	// Path gets @address's path, or for abstract sockets the "name".
+	//
+	// Guaranteed to be zero-terminated, but an abstract socket may contain
+	// embedded zeros, and thus you should use
+	// g_unix_socket_address_get_path_len() to get the true length of this
+	// string.
 	Path() string
-
+	// PathLen gets the length of @address's path.
+	//
+	// For details, see g_unix_socket_address_get_path().
 	PathLen() uint
 }
 
@@ -76,6 +89,10 @@ func marshalUnixSocketAddress(p uintptr) (interface{}, error) {
 	return WrapUnixSocketAddress(obj), nil
 }
 
+// NewUnixSocketAddress creates a new SocketAddress for @path.
+//
+// To create abstract socket addresses, on systems that support that, use
+// g_unix_socket_address_new_abstract().
 func NewUnixSocketAddress(path string) UnixSocketAddress {
 	var _arg1 *C.gchar          // out
 	var _cret *C.GSocketAddress // in
@@ -87,11 +104,15 @@ func NewUnixSocketAddress(path string) UnixSocketAddress {
 
 	var _unixSocketAddress UnixSocketAddress // out
 
-	_unixSocketAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(UnixSocketAddress)
+	_unixSocketAddress = WrapUnixSocketAddress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _unixSocketAddress
 }
 
+// NewUnixSocketAddressAbstract creates a new
+// G_UNIX_SOCKET_ADDRESS_ABSTRACT_PADDED SocketAddress for @path.
+//
+// Deprecated: since version .
 func NewUnixSocketAddressAbstract(path []byte) UnixSocketAddress {
 	var _arg1 *C.gchar
 	var _arg2 C.gint
@@ -104,11 +125,42 @@ func NewUnixSocketAddressAbstract(path []byte) UnixSocketAddress {
 
 	var _unixSocketAddress UnixSocketAddress // out
 
-	_unixSocketAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(UnixSocketAddress)
+	_unixSocketAddress = WrapUnixSocketAddress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _unixSocketAddress
 }
 
+// NewUnixSocketAddressWithType creates a new SocketAddress of type @type with
+// name @path.
+//
+// If @type is G_UNIX_SOCKET_ADDRESS_PATH, this is equivalent to calling
+// g_unix_socket_address_new().
+//
+// If @type is G_UNIX_SOCKET_ADDRESS_ANONYMOUS, @path and @path_len will be
+// ignored.
+//
+// If @path_type is G_UNIX_SOCKET_ADDRESS_ABSTRACT, then @path_len bytes of
+// @path will be copied to the socket's path, and only those bytes will be
+// considered part of the name. (If @path_len is -1, then @path is assumed to be
+// NUL-terminated.) For example, if @path was "test", then calling
+// g_socket_address_get_native_size() on the returned socket would return 7 (2
+// bytes of overhead, 1 byte for the abstract-socket indicator byte, and 4 bytes
+// for the name "test").
+//
+// If @path_type is G_UNIX_SOCKET_ADDRESS_ABSTRACT_PADDED, then @path_len bytes
+// of @path will be copied to the socket's path, the rest of the path will be
+// padded with 0 bytes, and the entire zero-padded buffer will be considered the
+// name. (As above, if @path_len is -1, then @path is assumed to be
+// NUL-terminated.) In this case, g_socket_address_get_native_size() will always
+// return the full size of a `struct sockaddr_un`, although
+// g_unix_socket_address_get_path_len() will still return just the length of
+// @path.
+//
+// G_UNIX_SOCKET_ADDRESS_ABSTRACT is preferred over
+// G_UNIX_SOCKET_ADDRESS_ABSTRACT_PADDED for new programs. Of course, when
+// connecting to a server created by another process, you must use the
+// appropriate type corresponding to how that process created its listening
+// socket.
 func NewUnixSocketAddressWithType(path []byte, typ UnixSocketAddressType) UnixSocketAddress {
 	var _arg1 *C.gchar
 	var _arg2 C.gint
@@ -123,7 +175,7 @@ func NewUnixSocketAddressWithType(path []byte, typ UnixSocketAddressType) UnixSo
 
 	var _unixSocketAddress UnixSocketAddress // out
 
-	_unixSocketAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(UnixSocketAddress)
+	_unixSocketAddress = WrapUnixSocketAddress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _unixSocketAddress
 }
@@ -190,14 +242,6 @@ func (a unixSocketAddress) PathLen() uint {
 	return _gsize
 }
 
-func (c unixSocketAddress) Enumerate() SocketAddressEnumerator {
-	return WrapSocketConnectable(gextras.InternObject(c)).Enumerate()
-}
-
-func (c unixSocketAddress) ProxyEnumerate() SocketAddressEnumerator {
-	return WrapSocketConnectable(gextras.InternObject(c)).ProxyEnumerate()
-}
-
-func (c unixSocketAddress) String() string {
-	return WrapSocketConnectable(gextras.InternObject(c)).String()
+func (u unixSocketAddress) AsSocketConnectable() SocketConnectable {
+	return WrapSocketConnectable(gextras.InternObject(u))
 }

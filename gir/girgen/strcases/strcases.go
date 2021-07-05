@@ -38,6 +38,7 @@ var (
 		"Ipv4":     "IPv4",
 		"Ipv6":     "IPv6",
 		"ProXY":    "Proxy",
+		"Zorder":   "ZOrder",
 	}
 
 	pascalRegex        *regexp.Regexp

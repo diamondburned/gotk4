@@ -22,15 +22,15 @@ func init() {
 	})
 }
 
-// DevicePadFeature: a pad feature.
+// DevicePadFeature: pad feature.
 type DevicePadFeature int
 
 const (
-	// button: a button
+	// button: button
 	DevicePadFeatureButton DevicePadFeature = 0
-	// ring: a ring-shaped interactive area
+	// ring: ring-shaped interactive area
 	DevicePadFeatureRing DevicePadFeature = 1
-	// strip: a straight interactive area
+	// strip: straight interactive area
 	DevicePadFeatureStrip DevicePadFeature = 2
 )
 
@@ -57,17 +57,12 @@ func marshalDevicePadFeature(p uintptr) (interface{}, error) {
 type DevicePad interface {
 	Device
 
-	// FeatureGroup returns the number of groups this pad device has. Pads have
-	// at least one group. A pad group is a subcollection of buttons/strip/rings
-	// that is affected collectively by a same current mode.
+	// FeatureGroup returns the group the given @feature and @idx belong to, or
+	// -1 if feature/index do not exist in @pad.
 	FeatureGroup(feature DevicePadFeature, featureIdx int) int
-	// GroupNModes returns the number of groups this pad device has. Pads have
-	// at least one group. A pad group is a subcollection of buttons/strip/rings
-	// that is affected collectively by a same current mode.
+	// GroupNModes returns the number of modes that @group may have.
 	GroupNModes(groupIdx int) int
-	// NFeatures returns the number of groups this pad device has. Pads have at
-	// least one group. A pad group is a subcollection of buttons/strip/rings
-	// that is affected collectively by a same current mode.
+	// NFeatures returns the number of features a tablet pad has.
 	NFeatures(feature DevicePadFeature) int
 	// NGroups returns the number of groups this pad device has. Pads have at
 	// least one group. A pad group is a subcollection of buttons/strip/rings

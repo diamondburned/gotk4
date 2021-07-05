@@ -25,9 +25,9 @@ func init() {
 	})
 }
 
-// CellLayoutDataFunc: a function which should set the value of @cell_layout’s
+// CellLayoutDataFunc: function which should set the value of @cell_layout’s
 // cell renderer(s) as appropriate.
-type CellLayoutDataFunc func(cellLayout CellLayout, cell CellRenderer, treeModel TreeModel, iter *TreeIter)
+type CellLayoutDataFunc func(cellLayout CellLayout, cell CellRenderer, treeModel TreeModel, iter TreeIter)
 
 //export gotk4_CellLayoutDataFunc
 func gotk4_CellLayoutDataFunc(arg0 *C.GtkCellLayout, arg1 *C.GtkCellRenderer, arg2 *C.GtkTreeModel, arg3 *C.GtkTreeIter, arg4 C.gpointer) {
@@ -39,12 +39,12 @@ func gotk4_CellLayoutDataFunc(arg0 *C.GtkCellLayout, arg1 *C.GtkCellRenderer, ar
 	var cellLayout CellLayout // out
 	var cell CellRenderer     // out
 	var treeModel TreeModel   // out
-	var iter *TreeIter        // out
+	var iter TreeIter         // out
 
 	cellLayout = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0))).(CellLayout)
 	cell = gextras.CastObject(externglib.Take(unsafe.Pointer(arg1))).(CellRenderer)
 	treeModel = gextras.CastObject(externglib.Take(unsafe.Pointer(arg2))).(TreeModel)
-	iter = (*TreeIter)(unsafe.Pointer(arg3))
+	iter = (TreeIter)(unsafe.Pointer(arg3))
 
 	fn := v.(CellLayoutDataFunc)
 	fn(cellLayout, cell, treeModel, iter)
@@ -139,61 +139,39 @@ func gotk4_CellLayoutDataFunc(arg0 *C.GtkCellLayout, arg1 *C.GtkCellRenderer, ar
 type CellLayout interface {
 	gextras.Objector
 
-	// AddAttribute sets the CellLayoutDataFunc to use for @cell_layout.
+	// AddAttribute adds an attribute mapping to the list in @cell_layout.
 	//
-	// This function is used instead of the standard attributes mapping for
-	// setting the column value, and should set the value of @cell_layout’s cell
-	// renderer(s) as appropriate.
-	//
-	// @func may be nil to remove a previously set function.
+	// The @column is the column of the model to get a value from, and the
+	// @attribute is the parameter on @cell to be set from the value. So for
+	// example if column 2 of the model contains strings, you could have the
+	// “text” attribute of a CellRendererText get its values from column 2.
 	AddAttribute(cell CellRenderer, attribute string, column int)
-	// Clear sets the CellLayoutDataFunc to use for @cell_layout.
-	//
-	// This function is used instead of the standard attributes mapping for
-	// setting the column value, and should set the value of @cell_layout’s cell
-	// renderer(s) as appropriate.
-	//
-	// @func may be nil to remove a previously set function.
+	// Clear unsets all the mappings on all renderers on @cell_layout and
+	// removes all renderers from @cell_layout.
 	Clear()
-	// ClearAttributes sets the CellLayoutDataFunc to use for @cell_layout.
-	//
-	// This function is used instead of the standard attributes mapping for
-	// setting the column value, and should set the value of @cell_layout’s cell
-	// renderer(s) as appropriate.
-	//
-	// @func may be nil to remove a previously set function.
+	// ClearAttributes clears all existing attributes previously set with
+	// gtk_cell_layout_set_attributes().
 	ClearAttributes(cell CellRenderer)
-	// Area sets the CellLayoutDataFunc to use for @cell_layout.
-	//
-	// This function is used instead of the standard attributes mapping for
-	// setting the column value, and should set the value of @cell_layout’s cell
-	// renderer(s) as appropriate.
-	//
-	// @func may be nil to remove a previously set function.
+	// Area returns the underlying CellArea which might be @cell_layout if
+	// called on a CellArea or might be nil if no CellArea is used by
+	// @cell_layout.
 	Area() CellArea
-	// PackEnd sets the CellLayoutDataFunc to use for @cell_layout.
+	// PackEnd adds the @cell to the end of @cell_layout. If @expand is false,
+	// then the @cell is allocated no more space than it needs. Any unused space
+	// is divided evenly between cells for which @expand is true.
 	//
-	// This function is used instead of the standard attributes mapping for
-	// setting the column value, and should set the value of @cell_layout’s cell
-	// renderer(s) as appropriate.
-	//
-	// @func may be nil to remove a previously set function.
+	// Note that reusing the same cell renderer is not supported.
 	PackEnd(cell CellRenderer, expand bool)
-	// PackStart sets the CellLayoutDataFunc to use for @cell_layout.
+	// PackStart packs the @cell into the beginning of @cell_layout. If @expand
+	// is false, then the @cell is allocated no more space than it needs. Any
+	// unused space is divided evenly between cells for which @expand is true.
 	//
-	// This function is used instead of the standard attributes mapping for
-	// setting the column value, and should set the value of @cell_layout’s cell
-	// renderer(s) as appropriate.
-	//
-	// @func may be nil to remove a previously set function.
+	// Note that reusing the same cell renderer is not supported.
 	PackStart(cell CellRenderer, expand bool)
-	// Reorder sets the CellLayoutDataFunc to use for @cell_layout.
+	// Reorder re-inserts @cell at @position.
 	//
-	// This function is used instead of the standard attributes mapping for
-	// setting the column value, and should set the value of @cell_layout’s cell
-	// renderer(s) as appropriate.
-	//
-	// @func may be nil to remove a previously set function.
+	// Note that @cell has already to be packed into @cell_layout for this to
+	// function properly.
 	Reorder(cell CellRenderer, position int)
 }
 

@@ -32,13 +32,16 @@ func init() {
 	})
 }
 
-// DBusObjectProxy: a BusObjectProxy is an object used to represent a remote
-// object with one or more D-Bus interfaces. Normally, you don't instantiate a
-// BusObjectProxy yourself - typically BusObjectManagerClient is used to obtain
-// it.
+// DBusObjectProxy is an object used to represent a remote object with one or
+// more D-Bus interfaces. Normally, you don't instantiate a BusObjectProxy
+// yourself - typically BusObjectManagerClient is used to obtain it.
 type DBusObjectProxy interface {
-	DBusObject
+	gextras.Objector
 
+	// AsDBusObject casts the class to the DBusObject interface.
+	AsDBusObject() DBusObject
+
+	// Connection gets the connection that @proxy is for.
 	Connection() DBusConnection
 }
 
@@ -61,6 +64,8 @@ func marshalDBusObjectProxy(p uintptr) (interface{}, error) {
 	return WrapDBusObjectProxy(obj), nil
 }
 
+// NewDBusObjectProxy creates a new BusObjectProxy for the given connection and
+// object path.
 func NewDBusObjectProxy(connection DBusConnection, objectPath string) DBusObjectProxy {
 	var _arg1 *C.GDBusConnection  // out
 	var _arg2 *C.gchar            // out
@@ -74,7 +79,7 @@ func NewDBusObjectProxy(connection DBusConnection, objectPath string) DBusObject
 
 	var _dBusObjectProxy DBusObjectProxy // out
 
-	_dBusObjectProxy = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(DBusObjectProxy)
+	_dBusObjectProxy = WrapDBusObjectProxy(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _dBusObjectProxy
 }
@@ -94,10 +99,6 @@ func (p dBusObjectProxy) Connection() DBusConnection {
 	return _dBusConnection
 }
 
-func (o dBusObjectProxy) Interface(interfaceName string) DBusInterface {
-	return WrapDBusObject(gextras.InternObject(o)).Interface(interfaceName)
-}
-
-func (o dBusObjectProxy) ObjectPath() string {
-	return WrapDBusObject(gextras.InternObject(o)).ObjectPath()
+func (d dBusObjectProxy) AsDBusObject() DBusObject {
+	return WrapDBusObject(gextras.InternObject(d))
 }

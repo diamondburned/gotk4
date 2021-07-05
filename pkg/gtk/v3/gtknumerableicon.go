@@ -25,9 +25,8 @@ func init() {
 	})
 }
 
-// NumerableIcon: gtkNumerableIcon is a subclass of Icon that can show a number
-// or short string as an emblem. The number can be overlayed on top of another
-// emblem, if desired.
+// NumerableIcon is a subclass of Icon that can show a number or short string as
+// an emblem. The number can be overlayed on top of another emblem, if desired.
 //
 // It supports theming by taking font and color information from a provided
 // StyleContext; see gtk_numerable_icon_set_style_context().
@@ -36,20 +35,67 @@ func init() {
 type NumerableIcon interface {
 	gio.EmblemedIcon
 
+	// BackgroundIconName returns the icon name used as the base background
+	// image, or nil if there’s none.
+	//
+	// Deprecated: since version 3.14.
 	BackgroundIconName() string
-
+	// Count returns the value currently displayed by @self.
+	//
+	// Deprecated: since version 3.14.
 	Count() int
-
+	// Label returns the currently displayed label of the icon, or nil.
+	//
+	// Deprecated: since version 3.14.
 	Label() string
-
+	// StyleContext returns the StyleContext used by the icon for theming, or
+	// nil if there’s none.
+	//
+	// Deprecated: since version 3.14.
 	StyleContext() StyleContext
-
+	// SetBackgroundIconNameNumerableIcon updates the icon to use the icon named
+	// @icon_name from the current icon theme as the base background image. If
+	// @icon_name is nil, @self will go back using style information or default
+	// theming for its background image.
+	//
+	// If this method is called and a #GIcon was already set as background for
+	// the icon, @icon_name will be used, i.e. the last method called between
+	// gtk_numerable_icon_set_background_icon_name() and
+	// gtk_numerable_icon_set_background_gicon() has always priority.
+	//
+	// Deprecated: since version 3.14.
 	SetBackgroundIconNameNumerableIcon(iconName string)
-
+	// SetCountNumerableIcon sets the currently displayed value of @self to
+	// @count.
+	//
+	// The numeric value is always clamped to make it two digits, i.e. between
+	// -99 and 99. Setting a count of zero removes the emblem. If this method is
+	// called, and a label was already set on the icon, it will automatically be
+	// reset to nil before rendering the number, i.e. the last method called
+	// between gtk_numerable_icon_set_count() and gtk_numerable_icon_set_label()
+	// has always priority.
+	//
+	// Deprecated: since version 3.14.
 	SetCountNumerableIcon(count int)
-
+	// SetLabelNumerableIcon sets the currently displayed value of @self to the
+	// string in @label. Setting an empty label removes the emblem.
+	//
+	// Note that this is meant for displaying short labels, such as roman
+	// numbers, or single letters. For roman numbers, consider using the Unicode
+	// characters U+2160 - U+217F. Strings longer than two characters will
+	// likely not be rendered very well.
+	//
+	// If this method is called, and a number was already set on the icon, it
+	// will automatically be reset to zero before rendering the label, i.e. the
+	// last method called between gtk_numerable_icon_set_label() and
+	// gtk_numerable_icon_set_count() has always priority.
+	//
+	// Deprecated: since version 3.14.
 	SetLabelNumerableIcon(label string)
-
+	// SetStyleContextNumerableIcon updates the icon to fetch theme information
+	// from the given StyleContext.
+	//
+	// Deprecated: since version 3.14.
 	SetStyleContextNumerableIcon(style StyleContext)
 }
 

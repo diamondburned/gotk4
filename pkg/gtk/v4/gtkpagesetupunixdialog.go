@@ -6,8 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/gdk/v4"
-	"github.com/diamondburned/gotk4/pkg/gsk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -35,12 +33,28 @@ func init() {
 type PageSetupUnixDialog interface {
 	Dialog
 
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
+	// AsNative casts the class to the Native interface.
+	AsNative() Native
+	// AsRoot casts the class to the Root interface.
+	AsRoot() Root
+	// AsShortcutManager casts the class to the ShortcutManager interface.
+	AsShortcutManager() ShortcutManager
+
+	// PageSetup gets the currently selected page setup from the dialog.
 	PageSetup() PageSetup
-
+	// PrintSettings gets the current print settings from the dialog.
 	PrintSettings() PrintSettings
-
+	// SetPageSetupPageSetupUnixDialog sets the `GtkPageSetup` from which the
+	// page setup dialog takes its values.
 	SetPageSetupPageSetupUnixDialog(pageSetup PageSetup)
-
+	// SetPrintSettingsPageSetupUnixDialog sets the `GtkPrintSettings` from
+	// which the page setup dialog takes its values.
 	SetPrintSettingsPageSetupUnixDialog(printSettings PrintSettings)
 }
 
@@ -63,6 +77,7 @@ func marshalPageSetupUnixDialog(p uintptr) (interface{}, error) {
 	return WrapPageSetupUnixDialog(obj), nil
 }
 
+// NewPageSetupUnixDialog creates a new page setup dialog.
 func NewPageSetupUnixDialog(title string, parent Window) PageSetupUnixDialog {
 	var _arg1 *C.char      // out
 	var _arg2 *C.GtkWindow // out
@@ -76,7 +91,7 @@ func NewPageSetupUnixDialog(title string, parent Window) PageSetupUnixDialog {
 
 	var _pageSetupUnixDialog PageSetupUnixDialog // out
 
-	_pageSetupUnixDialog = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(PageSetupUnixDialog)
+	_pageSetupUnixDialog = WrapPageSetupUnixDialog(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _pageSetupUnixDialog
 }
@@ -131,66 +146,26 @@ func (d pageSetupUnixDialog) SetPrintSettingsPageSetupUnixDialog(printSettings P
 	C.gtk_page_setup_unix_dialog_set_print_settings(_arg0, _arg1)
 }
 
-func (s pageSetupUnixDialog) Display() gdk.Display {
-	return WrapRoot(gextras.InternObject(s)).Display()
+func (p pageSetupUnixDialog) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(p))
 }
 
-func (s pageSetupUnixDialog) Focus() Widget {
-	return WrapRoot(gextras.InternObject(s)).Focus()
+func (p pageSetupUnixDialog) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(p))
 }
 
-func (s pageSetupUnixDialog) SetFocus(focus Widget) {
-	WrapRoot(gextras.InternObject(s)).SetFocus(focus)
+func (p pageSetupUnixDialog) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(p))
 }
 
-func (s pageSetupUnixDialog) Renderer() gsk.Renderer {
-	return WrapNative(gextras.InternObject(s)).Renderer()
+func (p pageSetupUnixDialog) AsNative() Native {
+	return WrapNative(gextras.InternObject(p))
 }
 
-func (s pageSetupUnixDialog) Surface() gdk.Surface {
-	return WrapNative(gextras.InternObject(s)).Surface()
+func (p pageSetupUnixDialog) AsRoot() Root {
+	return WrapRoot(gextras.InternObject(p))
 }
 
-func (s pageSetupUnixDialog) SurfaceTransform() (x float64, y float64) {
-	return WrapNative(gextras.InternObject(s)).SurfaceTransform()
-}
-
-func (s pageSetupUnixDialog) Realize() {
-	WrapNative(gextras.InternObject(s)).Realize()
-}
-
-func (s pageSetupUnixDialog) Unrealize() {
-	WrapNative(gextras.InternObject(s)).Unrealize()
-}
-
-func (s pageSetupUnixDialog) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
-}
-
-func (s pageSetupUnixDialog) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
-}
-
-func (s pageSetupUnixDialog) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
-}
-
-func (s pageSetupUnixDialog) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s pageSetupUnixDialog) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s pageSetupUnixDialog) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s pageSetupUnixDialog) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b pageSetupUnixDialog) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
+func (p pageSetupUnixDialog) AsShortcutManager() ShortcutManager {
+	return WrapShortcutManager(gextras.InternObject(p))
 }

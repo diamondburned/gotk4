@@ -5,10 +5,8 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -105,42 +103,112 @@ func marshalPlacesOpenFlags(p uintptr) (interface{}, error) {
 type PlacesSidebar interface {
 	ScrolledWindow
 
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+
+	// LocalOnly returns the value previously set with
+	// gtk_places_sidebar_set_local_only().
 	LocalOnly() bool
-
+	// OpenFlags gets the open flags.
 	OpenFlags() PlacesOpenFlags
-
+	// ShowConnectToServer returns the value previously set with
+	// gtk_places_sidebar_set_show_connect_to_server()
+	//
+	// Deprecated: since version 3.18.
 	ShowConnectToServer() bool
-
+	// ShowDesktop returns the value previously set with
+	// gtk_places_sidebar_set_show_desktop()
 	ShowDesktop() bool
-
+	// ShowEnterLocation returns the value previously set with
+	// gtk_places_sidebar_set_show_enter_location()
 	ShowEnterLocation() bool
-
+	// ShowOtherLocations returns the value previously set with
+	// gtk_places_sidebar_set_show_other_locations()
 	ShowOtherLocations() bool
-
+	// ShowRecent returns the value previously set with
+	// gtk_places_sidebar_set_show_recent()
 	ShowRecent() bool
-
+	// ShowStarredLocation returns the value previously set with
+	// gtk_places_sidebar_set_show_starred_location()
 	ShowStarredLocation() bool
-
+	// ShowTrash returns the value previously set with
+	// gtk_places_sidebar_set_show_trash()
 	ShowTrash() bool
-
+	// SetDropTargetsVisiblePlacesSidebar: make the GtkPlacesSidebar show drop
+	// targets, so it can show the available drop targets and a "new bookmark"
+	// row. This improves the Drag-and-Drop experience of the user and allows
+	// applications to show all available drop targets at once.
+	//
+	// This needs to be called when the application is aware of an ongoing drag
+	// that might target the sidebar. The drop-targets-visible state will be
+	// unset automatically if the drag finishes in the GtkPlacesSidebar. You
+	// only need to unset the state when the drag ends on some other widget on
+	// your application.
 	SetDropTargetsVisiblePlacesSidebar(visible bool, context gdk.DragContext)
-
+	// SetLocalOnlyPlacesSidebar sets whether the @sidebar should only show
+	// local files.
 	SetLocalOnlyPlacesSidebar(localOnly bool)
-
+	// SetOpenFlagsPlacesSidebar sets the way in which the calling application
+	// can open new locations from the places sidebar. For example, some
+	// applications only open locations “directly” into their main view, while
+	// others may support opening locations in a new notebook tab or a new
+	// window.
+	//
+	// This function is used to tell the places @sidebar about the ways in which
+	// the application can open new locations, so that the sidebar can display
+	// (or not) the “Open in new tab” and “Open in new window” menu items as
+	// appropriate.
+	//
+	// When the PlacesSidebar::open-location signal is emitted, its flags
+	// argument will be set to one of the @flags that was passed in
+	// gtk_places_sidebar_set_open_flags().
+	//
+	// Passing 0 for @flags will cause K_PLACES_OPEN_NORMAL to always be sent to
+	// callbacks for the “open-location” signal.
 	SetOpenFlagsPlacesSidebar(flags PlacesOpenFlags)
-
+	// SetShowConnectToServerPlacesSidebar sets whether the @sidebar should show
+	// an item for connecting to a network server; this is off by default. An
+	// application may want to turn this on if it implements a way for the user
+	// to connect to network servers directly.
+	//
+	// If you enable this, you should connect to the
+	// PlacesSidebar::show-connect-to-server signal.
+	//
+	// Deprecated: since version 3.18.
 	SetShowConnectToServerPlacesSidebar(showConnectToServer bool)
-
+	// SetShowDesktopPlacesSidebar sets whether the @sidebar should show an item
+	// for the Desktop folder. The default value for this option is determined
+	// by the desktop environment and the user’s configuration, but this
+	// function can be used to override it on a per-application basis.
 	SetShowDesktopPlacesSidebar(showDesktop bool)
-
+	// SetShowEnterLocationPlacesSidebar sets whether the @sidebar should show
+	// an item for entering a location; this is off by default. An application
+	// may want to turn this on if manually entering URLs is an expected user
+	// action.
+	//
+	// If you enable this, you should connect to the
+	// PlacesSidebar::show-enter-location signal.
 	SetShowEnterLocationPlacesSidebar(showEnterLocation bool)
-
+	// SetShowOtherLocationsPlacesSidebar sets whether the @sidebar should show
+	// an item for the application to show an Other Locations view; this is off
+	// by default. When set to true, persistent devices such as hard drives are
+	// hidden, otherwise they are shown in the sidebar. An application may want
+	// to turn this on if it implements a way for the user to see and interact
+	// with drives and network servers directly.
+	//
+	// If you enable this, you should connect to the
+	// PlacesSidebar::show-other-locations signal.
 	SetShowOtherLocationsPlacesSidebar(showOtherLocations bool)
-
+	// SetShowRecentPlacesSidebar sets whether the @sidebar should show an item
+	// for recent files. The default value for this option is determined by the
+	// desktop environment, but this function can be used to override it on a
+	// per-application basis.
 	SetShowRecentPlacesSidebar(showRecent bool)
-
+	// SetShowStarredLocationPlacesSidebar: if you enable this, you should
+	// connect to the PlacesSidebar::show-starred-location signal.
 	SetShowStarredLocationPlacesSidebar(showStarredLocation bool)
-
+	// SetShowTrashPlacesSidebar sets whether the @sidebar should show an item
+	// for the Trash location.
 	SetShowTrashPlacesSidebar(showTrash bool)
 }
 
@@ -163,6 +231,10 @@ func marshalPlacesSidebar(p uintptr) (interface{}, error) {
 	return WrapPlacesSidebar(obj), nil
 }
 
+// NewPlacesSidebar creates a new PlacesSidebar widget.
+//
+// The application should connect to at least the PlacesSidebar::open-location
+// signal to be notified when the user makes a selection in the sidebar.
 func NewPlacesSidebar() PlacesSidebar {
 	var _cret *C.GtkWidget // in
 
@@ -170,7 +242,7 @@ func NewPlacesSidebar() PlacesSidebar {
 
 	var _placesSidebar PlacesSidebar // out
 
-	_placesSidebar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(PlacesSidebar)
+	_placesSidebar = WrapPlacesSidebar(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _placesSidebar
 }
@@ -446,42 +518,6 @@ func (s placesSidebar) SetShowTrashPlacesSidebar(showTrash bool) {
 	C.gtk_places_sidebar_set_show_trash(_arg0, _arg1)
 }
 
-func (b placesSidebar) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
-}
-
-func (b placesSidebar) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b placesSidebar) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b placesSidebar) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b placesSidebar) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b placesSidebar) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b placesSidebar) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b placesSidebar) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b placesSidebar) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b placesSidebar) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
+func (p placesSidebar) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(p))
 }

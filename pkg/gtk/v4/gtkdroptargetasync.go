@@ -59,15 +59,24 @@ func init() {
 type DropTargetAsync interface {
 	EventController
 
+	// Actions gets the actions that this drop target supports.
 	Actions() gdk.DragAction
-
-	Formats() *gdk.ContentFormats
-
+	// Formats gets the data formats that this drop target accepts.
+	//
+	// If the result is nil, all formats are expected to be supported.
+	Formats() gdk.ContentFormats
+	// RejectDropDropTargetAsync sets the @drop as not accepted on this drag
+	// site.
+	//
+	// This function should be used when delaying the decision on whether to
+	// accept a drag or not until after reading the data.
 	RejectDropDropTargetAsync(drop gdk.Drop)
-
+	// SetActionsDropTargetAsync sets the actions that this drop target
+	// supports.
 	SetActionsDropTargetAsync(actions gdk.DragAction)
-
-	SetFormatsDropTargetAsync(formats *gdk.ContentFormats)
+	// SetFormatsDropTargetAsync sets the data formats that this drop target
+	// will accept.
+	SetFormatsDropTargetAsync(formats gdk.ContentFormats)
 }
 
 // dropTargetAsync implements the DropTargetAsync class.
@@ -89,19 +98,20 @@ func marshalDropTargetAsync(p uintptr) (interface{}, error) {
 	return WrapDropTargetAsync(obj), nil
 }
 
-func NewDropTargetAsync(formats *gdk.ContentFormats, actions gdk.DragAction) DropTargetAsync {
+// NewDropTargetAsync creates a new `GtkDropTargetAsync` object.
+func NewDropTargetAsync(formats gdk.ContentFormats, actions gdk.DragAction) DropTargetAsync {
 	var _arg1 *C.GdkContentFormats  // out
 	var _arg2 C.GdkDragAction       // out
 	var _cret *C.GtkDropTargetAsync // in
 
-	_arg1 = (*C.GdkContentFormats)(unsafe.Pointer(formats.Native()))
+	_arg1 = (*C.GdkContentFormats)(unsafe.Pointer(formats))
 	_arg2 = C.GdkDragAction(actions)
 
 	_cret = C.gtk_drop_target_async_new(_arg1, _arg2)
 
 	var _dropTargetAsync DropTargetAsync // out
 
-	_dropTargetAsync = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(DropTargetAsync)
+	_dropTargetAsync = WrapDropTargetAsync(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _dropTargetAsync
 }
@@ -121,7 +131,7 @@ func (s dropTargetAsync) Actions() gdk.DragAction {
 	return _dragAction
 }
 
-func (s dropTargetAsync) Formats() *gdk.ContentFormats {
+func (s dropTargetAsync) Formats() gdk.ContentFormats {
 	var _arg0 *C.GtkDropTargetAsync // out
 	var _cret *C.GdkContentFormats  // in
 
@@ -129,11 +139,11 @@ func (s dropTargetAsync) Formats() *gdk.ContentFormats {
 
 	_cret = C.gtk_drop_target_async_get_formats(_arg0)
 
-	var _contentFormats *gdk.ContentFormats // out
+	var _contentFormats gdk.ContentFormats // out
 
-	_contentFormats = (*gdk.ContentFormats)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(&_contentFormats, func(v **gdk.ContentFormats) {
-		C.free(unsafe.Pointer(v))
+	_contentFormats = (gdk.ContentFormats)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_contentFormats, func(v gdk.ContentFormats) {
+		C.gdk_content_formats_unref((*C.GdkContentFormats)(unsafe.Pointer(v)))
 	})
 
 	return _contentFormats
@@ -159,12 +169,12 @@ func (s dropTargetAsync) SetActionsDropTargetAsync(actions gdk.DragAction) {
 	C.gtk_drop_target_async_set_actions(_arg0, _arg1)
 }
 
-func (s dropTargetAsync) SetFormatsDropTargetAsync(formats *gdk.ContentFormats) {
+func (s dropTargetAsync) SetFormatsDropTargetAsync(formats gdk.ContentFormats) {
 	var _arg0 *C.GtkDropTargetAsync // out
 	var _arg1 *C.GdkContentFormats  // out
 
 	_arg0 = (*C.GtkDropTargetAsync)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GdkContentFormats)(unsafe.Pointer(formats.Native()))
+	_arg1 = (*C.GdkContentFormats)(unsafe.Pointer(formats))
 
 	C.gtk_drop_target_async_set_formats(_arg0, _arg1)
 }

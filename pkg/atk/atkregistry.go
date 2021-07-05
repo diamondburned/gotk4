@@ -48,10 +48,16 @@ func GetDefaultRegistry() Registry {
 type Registry interface {
 	gextras.Objector
 
+	// Factory gets an ObjectFactory appropriate for creating Objects
+	// appropriate for @type.
 	Factory(typ externglib.Type) ObjectFactory
-
+	// FactoryType provides a #GType indicating the ObjectFactory subclass
+	// associated with @type.
 	FactoryType(typ externglib.Type) externglib.Type
-
+	// SetFactoryTypeRegistry: associate an ObjectFactory subclass with a
+	// #GType. Note: The associated @factory_type will thereafter be responsible
+	// for the creation of new Object implementations for instances appropriate
+	// for @type.
 	SetFactoryTypeRegistry(typ externglib.Type, factoryType externglib.Type)
 }
 

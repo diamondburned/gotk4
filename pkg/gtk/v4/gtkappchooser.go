@@ -42,7 +42,8 @@ func init() {
 type AppChooser interface {
 	Widget
 
-	// ContentType reloads the list of applications.
+	// ContentType returns the content type for which the `GtkAppChooser` shows
+	// applications.
 	ContentType() string
 	// Refresh reloads the list of applications.
 	Refresh()

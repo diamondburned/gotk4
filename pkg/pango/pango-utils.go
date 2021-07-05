@@ -47,7 +47,7 @@ func IsZeroWidth(ch uint32) bool {
 //
 // If the input base direction is a weak direction, the direction of the
 // characters in the text will determine the final resolved direction.
-func Log2VisGetEmbeddingLevels(text string, length int, pbaseDir *Direction) *byte {
+func Log2VisGetEmbeddingLevels(text string, length int, pbaseDir Direction) byte {
 	var _arg1 *C.gchar          // out
 	var _arg2 C.int             // out
 	var _arg3 *C.PangoDirection // out
@@ -60,7 +60,7 @@ func Log2VisGetEmbeddingLevels(text string, length int, pbaseDir *Direction) *by
 		var refTmpIn Direction
 		var refTmpOut C.PangoDirection
 
-		refTmpIn = *pbaseDir
+		refTmpIn = pbaseDir
 
 		refTmpOut = C.PangoDirection(refTmpIn)
 
@@ -70,9 +70,9 @@ func Log2VisGetEmbeddingLevels(text string, length int, pbaseDir *Direction) *by
 
 	_cret = C.pango_log2vis_get_embedding_levels(_arg1, _arg2, _arg3)
 
-	var _guint8 *byte // out
+	var _guint8 byte // out
 
-	_guint8 = (*byte)(unsafe.Pointer(_cret))
+	_guint8 = byte(_cret)
 
 	return _guint8
 }
@@ -90,9 +90,9 @@ func Log2VisGetEmbeddingLevels(text string, length int, pbaseDir *Direction) *by
 func ParseEnum(typ externglib.Type, str string, warn bool) (int, string, bool) {
 	var _arg1 C.GType    // out
 	var _arg2 *C.char    // out
-	var _arg3 C.int      // in
+	var _arg3 *C.int     // in
 	var _arg4 C.gboolean // out
-	var _arg5 *C.char    // in
+	var _arg5 **C.char   // in
 	var _cret C.gboolean // in
 
 	_arg1 = (C.GType)(typ)
@@ -109,8 +109,17 @@ func ParseEnum(typ externglib.Type, str string, warn bool) (int, string, bool) {
 	var _ok bool               // out
 
 	_value = int(_arg3)
-	_possibleValues = C.GoString(_arg5)
-	defer C.free(unsafe.Pointer(_arg5))
+	{
+		var refTmpIn *C.char
+		var refTmpOut string
+
+		refTmpIn = *_arg5
+
+		refTmpOut = C.GoString(refTmpIn)
+		defer C.free(unsafe.Pointer(refTmpIn))
+
+		_possibleValues = refTmpOut
+	}
 	if _cret != 0 {
 		_ok = true
 	}
@@ -125,10 +134,10 @@ func ParseEnum(typ externglib.Type, str string, warn bool) (int, string, bool) {
 // "ultra_expanded". Case variations are ignored and the '_' characters may be
 // omitted.
 func ParseStretch(str string, warn bool) (Stretch, bool) {
-	var _arg1 *C.char        // out
-	var _arg2 C.PangoStretch // in
-	var _arg3 C.gboolean     // out
-	var _cret C.gboolean     // in
+	var _arg1 *C.char         // out
+	var _arg2 *C.PangoStretch // in
+	var _arg3 C.gboolean      // out
+	var _cret C.gboolean      // in
 
 	_arg1 = (*C.char)(C.CString(str))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -141,7 +150,16 @@ func ParseStretch(str string, warn bool) (Stretch, bool) {
 	var _stretch Stretch // out
 	var _ok bool         // out
 
-	_stretch = Stretch(_arg2)
+	{
+		var refTmpIn C.PangoStretch
+		var refTmpOut Stretch
+
+		refTmpIn = *_arg2
+
+		refTmpOut = Stretch(refTmpIn)
+
+		_stretch = refTmpOut
+	}
 	if _cret != 0 {
 		_ok = true
 	}
@@ -154,10 +172,10 @@ func ParseStretch(str string, warn bool) (Stretch, bool) {
 // The allowed values are "normal", "italic" and "oblique", case variations
 // being ignored.
 func ParseStyle(str string, warn bool) (Style, bool) {
-	var _arg1 *C.char      // out
-	var _arg2 C.PangoStyle // in
-	var _arg3 C.gboolean   // out
-	var _cret C.gboolean   // in
+	var _arg1 *C.char       // out
+	var _arg2 *C.PangoStyle // in
+	var _arg3 C.gboolean    // out
+	var _cret C.gboolean    // in
 
 	_arg1 = (*C.char)(C.CString(str))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -170,7 +188,16 @@ func ParseStyle(str string, warn bool) (Style, bool) {
 	var _style Style // out
 	var _ok bool     // out
 
-	_style = Style(_arg2)
+	{
+		var refTmpIn C.PangoStyle
+		var refTmpOut Style
+
+		refTmpIn = *_arg2
+
+		refTmpOut = Style(refTmpIn)
+
+		_style = refTmpOut
+	}
 	if _cret != 0 {
 		_ok = true
 	}
@@ -183,10 +210,10 @@ func ParseStyle(str string, warn bool) (Style, bool) {
 // The allowed values are "normal" and "smallcaps" or "small_caps", case
 // variations being ignored.
 func ParseVariant(str string, warn bool) (Variant, bool) {
-	var _arg1 *C.char        // out
-	var _arg2 C.PangoVariant // in
-	var _arg3 C.gboolean     // out
-	var _cret C.gboolean     // in
+	var _arg1 *C.char         // out
+	var _arg2 *C.PangoVariant // in
+	var _arg3 C.gboolean      // out
+	var _cret C.gboolean      // in
 
 	_arg1 = (*C.char)(C.CString(str))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -199,7 +226,16 @@ func ParseVariant(str string, warn bool) (Variant, bool) {
 	var _variant Variant // out
 	var _ok bool         // out
 
-	_variant = Variant(_arg2)
+	{
+		var refTmpIn C.PangoVariant
+		var refTmpOut Variant
+
+		refTmpIn = *_arg2
+
+		refTmpOut = Variant(refTmpIn)
+
+		_variant = refTmpOut
+	}
 	if _cret != 0 {
 		_ok = true
 	}
@@ -212,10 +248,10 @@ func ParseVariant(str string, warn bool) (Variant, bool) {
 // The allowed values are "heavy", "ultrabold", "bold", "normal", "light",
 // "ultraleight" and integers. Case variations are ignored.
 func ParseWeight(str string, warn bool) (Weight, bool) {
-	var _arg1 *C.char       // out
-	var _arg2 C.PangoWeight // in
-	var _arg3 C.gboolean    // out
-	var _cret C.gboolean    // in
+	var _arg1 *C.char        // out
+	var _arg2 *C.PangoWeight // in
+	var _arg3 C.gboolean     // out
+	var _cret C.gboolean     // in
 
 	_arg1 = (*C.char)(C.CString(str))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -228,7 +264,16 @@ func ParseWeight(str string, warn bool) (Weight, bool) {
 	var _weight Weight // out
 	var _ok bool       // out
 
-	_weight = Weight(_arg2)
+	{
+		var refTmpIn C.PangoWeight
+		var refTmpOut Weight
+
+		refTmpIn = *_arg2
+
+		refTmpOut = Weight(refTmpIn)
+
+		_weight = refTmpOut
+	}
 	if _cret != 0 {
 		_ok = true
 	}

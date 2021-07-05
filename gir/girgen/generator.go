@@ -2,6 +2,7 @@ package girgen
 
 import (
 	"log"
+	"sync"
 
 	"github.com/diamondburned/gotk4/gir"
 	"github.com/diamondburned/gotk4/gir/girgen/logger"
@@ -15,7 +16,11 @@ type Generator struct {
 
 	repos   gir.Repositories
 	modPath types.ModulePathFunc
+
 	filters []types.FilterMatcher
+
+	preprocs    []types.Preprocessor
+	preprocOnce sync.Once
 }
 
 // NewGenerator creates a new generator with sane defaults.
@@ -37,6 +42,11 @@ func (g *Generator) AddFilters(filters []types.FilterMatcher) {
 // Filters returns the generator's list of type filters.
 func (g *Generator) Filters() []types.FilterMatcher {
 	return g.filters
+}
+
+// AddPreprocessors applies the given list of preprocessors.
+func (g *Generator) ApplyPreprocessors(preprocs []types.Preprocessor) {
+	types.ApplyPreprocessors(g.repos, preprocs)
 }
 
 // ModPath creates an import path from the user's ModulePathFunc given into the

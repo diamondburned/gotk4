@@ -179,10 +179,11 @@ func (conv *Converter) ConvertAll() []ValueConverted {
 		}
 	}
 
-	for _, result := range conv.results {
+	for i, result := range conv.results {
 		if result.Skip {
 			continue
 		}
+		file.ApplyHeader(conv, &conv.results[i])
 		results = append(results, result)
 	}
 
@@ -205,6 +206,7 @@ func (conv *Converter) Convert(i int) *ValueConverted {
 		return nil
 	}
 
+	file.ApplyHeader(conv, result)
 	return result
 }
 
@@ -229,12 +231,17 @@ func (conv *Converter) convert(result *ValueConverted) bool {
 		return false
 	}
 
-	if result.InType == "" || result.OutType == "" {
-		conv.Logln(logger.Error, "missing CGoType or GoType for", result.InName, "->", result.OutName)
-		panic("see above")
+	if !result.Optional {
+		if result.InType == "" || result.OutType == "" {
+			result.logln(conv, logger.Error, "missing CGoType or GoType")
+			panic("see above")
+		}
+		if result.Resolved == nil {
+			result.logln(conv, logger.Error, "missing Resolved type")
+			panic("see above")
+		}
 	}
 
-	// Only finalize when succeeded.
 	result.finalize()
 	return true
 }
@@ -253,7 +260,16 @@ func (conv *Converter) convertInner(of *ValueConverted, in, out string) *ValueCo
 		owner = "none"
 	}
 
-	return conv.convertType(of, in, out, of.AnyType.Array.AnyType, owner)
+	result := conv.convertType(of, in, out, of.AnyType.Array.AnyType, owner)
+	if result == nil {
+		return nil
+	}
+
+	// Set the array value's resolved type to the inner type.
+	of.Resolved = result.Resolved
+	of.NeedsNamespace = result.NeedsNamespace
+
+	return result
 }
 
 // convertType converts a manually-crafted value with the given type.
@@ -261,7 +277,7 @@ func (conv *Converter) convertType(
 	of *ValueConverted, in, out string, typ gir.AnyType, owner string) *ValueConverted {
 
 	attrs := of.ParameterAttrs
-	attrs.AnyType = of.AnyType.Array.AnyType
+	attrs.AnyType = typ
 	attrs.TransferOwnership.TransferOwnership = owner
 
 	result := newValueConverted(conv, &ConversionValue{
@@ -275,6 +291,9 @@ func (conv *Converter) convertType(
 	if !conv.convert(&result) {
 		return nil
 	}
+
+	// Inherit the headers.
+	file.ApplyHeader(of, &result)
 
 	return &result
 }
@@ -346,7 +365,7 @@ func (conv *Converter) convertRef(value *ValueConverted, wantC, wantGo int) bool
 	)
 
 	// Account for pointer types.
-	if types.IsGpointer(value.resolved.CType) {
+	if types.IsGpointer(value.Resolved.CType) {
 		if wantC > 0 {
 			wantC--
 		} else {
@@ -355,7 +374,7 @@ func (conv *Converter) convertRef(value *ValueConverted, wantC, wantGo int) bool
 	}
 
 	// Prefer the implementation Go type instead of the public type.
-	goType := value.resolved.ImplType(value.needsNamespace)
+	goType := value.Resolved.ImplType(value.NeedsNamespace)
 
 	// Change the pointer types into what the converter wants.
 	switch value.Direction {
@@ -420,6 +439,7 @@ func (conv *Converter) convertRef(value *ValueConverted, wantC, wantGo int) bool
 		refValue.p.Linef("%s = %s", value.OutName, current)
 	}
 
+	file.ApplyHeader(value, &refValue)
 	return true
 }
 

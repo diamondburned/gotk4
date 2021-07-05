@@ -3,12 +3,9 @@
 package gio
 
 import (
-	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -44,13 +41,20 @@ func init() {
 // interfaces, thus you have to use the `gio-unix-2.0.pc` pkg-config file when
 // using it.
 type UnixOutputStream interface {
-	FileDescriptorBased
-	PollableOutputStream
+	OutputStream
 
+	// AsFileDescriptorBased casts the class to the FileDescriptorBased interface.
+	AsFileDescriptorBased() FileDescriptorBased
+	// AsPollableOutputStream casts the class to the PollableOutputStream interface.
+	AsPollableOutputStream() PollableOutputStream
+
+	// CloseFd returns whether the file descriptor of @stream will be closed
+	// when the stream is closed.
 	CloseFd() bool
-
-	GetFd() int
-
+	// Fd: return the UNIX file descriptor that the stream writes to.
+	Fd() int
+	// SetCloseFdUnixOutputStream sets whether the file descriptor of @stream
+	// shall be closed when the stream is closed.
 	SetCloseFdUnixOutputStream(closeFd bool)
 }
 
@@ -73,6 +77,10 @@ func marshalUnixOutputStream(p uintptr) (interface{}, error) {
 	return WrapUnixOutputStream(obj), nil
 }
 
+// NewUnixOutputStream creates a new OutputStream for the given @fd.
+//
+// If @close_fd, is true, the file descriptor will be closed when the output
+// stream is destroyed.
 func NewUnixOutputStream(fd int, closeFd bool) UnixOutputStream {
 	var _arg1 C.gint           // out
 	var _arg2 C.gboolean       // out
@@ -87,7 +95,7 @@ func NewUnixOutputStream(fd int, closeFd bool) UnixOutputStream {
 
 	var _unixOutputStream UnixOutputStream // out
 
-	_unixOutputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(UnixOutputStream)
+	_unixOutputStream = WrapUnixOutputStream(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _unixOutputStream
 }
@@ -109,7 +117,7 @@ func (s unixOutputStream) CloseFd() bool {
 	return _ok
 }
 
-func (s unixOutputStream) GetFd() int {
+func (s unixOutputStream) Fd() int {
 	var _arg0 *C.GUnixOutputStream // out
 	var _cret C.gint               // in
 
@@ -136,26 +144,10 @@ func (s unixOutputStream) SetCloseFdUnixOutputStream(closeFd bool) {
 	C.g_unix_output_stream_set_close_fd(_arg0, _arg1)
 }
 
-func (f unixOutputStream) Fd() int {
-	return WrapFileDescriptorBased(gextras.InternObject(f)).Fd()
+func (u unixOutputStream) AsFileDescriptorBased() FileDescriptorBased {
+	return WrapFileDescriptorBased(gextras.InternObject(u))
 }
 
-func (s unixOutputStream) CanPoll() bool {
-	return WrapPollableOutputStream(gextras.InternObject(s)).CanPoll()
-}
-
-func (s unixOutputStream) CreateSource(cancellable Cancellable) *glib.Source {
-	return WrapPollableOutputStream(gextras.InternObject(s)).CreateSource(cancellable)
-}
-
-func (s unixOutputStream) IsWritable() bool {
-	return WrapPollableOutputStream(gextras.InternObject(s)).IsWritable()
-}
-
-func (s unixOutputStream) WriteNonblocking(buffer []byte, cancellable Cancellable) (int, error) {
-	return WrapPollableOutputStream(gextras.InternObject(s)).WriteNonblocking(buffer, cancellable)
-}
-
-func (s unixOutputStream) WritevNonblocking(vectors []OutputVector, cancellable Cancellable) (uint, PollableReturn, error) {
-	return WrapPollableOutputStream(gextras.InternObject(s)).WritevNonblocking(vectors, cancellable)
+func (u unixOutputStream) AsPollableOutputStream() PollableOutputStream {
+	return WrapPollableOutputStream(gextras.InternObject(u))
 }

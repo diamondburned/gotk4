@@ -24,8 +24,7 @@ func init() {
 	})
 }
 
-// Settings gtkSettings provide a mechanism to share global settings between
-// applications.
+// Settings provide a mechanism to share global settings between applications.
 //
 // On the X window system, this sharing is realized by an XSettings
 // (http://www.freedesktop.org/wiki/Specifications/xsettings-spec) manager that
@@ -56,14 +55,20 @@ func init() {
 // use gtk_widget_get_settings(). gtk_settings_get_default() returns the
 // GtkSettings instance for the default screen.
 type Settings interface {
-	StyleProvider
+	gextras.Objector
 
+	// AsStyleProvider casts the class to the StyleProvider interface.
+	AsStyleProvider() StyleProvider
+
+	// ResetPropertySettings undoes the effect of calling g_object_set() to
+	// install an application-specific value for a setting. After this call, the
+	// setting will again follow the session-wide value for this setting.
 	ResetPropertySettings(name string)
-
+	// SetDoublePropertySettings: deprecated: since version 3.16.
 	SetDoublePropertySettings(name string, vDouble float64, origin string)
-
+	// SetLongPropertySettings: deprecated: since version 3.16.
 	SetLongPropertySettings(name string, vLong int32, origin string)
-
+	// SetStringPropertySettings: deprecated: since version 3.16.
 	SetStringPropertySettings(name string, vString string, origin string)
 }
 
@@ -146,10 +151,6 @@ func (s settings) SetStringPropertySettings(name string, vString string, origin 
 	C.gtk_settings_set_string_property(_arg0, _arg1, _arg2, _arg3)
 }
 
-func (p settings) IconFactory(path *WidgetPath) IconFactory {
-	return WrapStyleProvider(gextras.InternObject(p)).IconFactory(path)
-}
-
-func (p settings) Style(path *WidgetPath) StyleProperties {
-	return WrapStyleProvider(gextras.InternObject(p)).Style(path)
+func (s settings) AsStyleProvider() StyleProvider {
+	return WrapStyleProvider(gextras.InternObject(s))
 }

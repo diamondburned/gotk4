@@ -35,11 +35,10 @@ func init() {
 	})
 }
 
-// DatagramBased: a Based is a networking interface for representing
-// datagram-based communications. It is a more or less direct mapping of the
-// core parts of the BSD socket API in a portable GObject interface. It is
-// implemented by #GSocket, which wraps the UNIX socket API on UNIX and winsock2
-// on Windows.
+// DatagramBased is a networking interface for representing datagram-based
+// communications. It is a more or less direct mapping of the core parts of the
+// BSD socket API in a portable GObject interface. It is implemented by
+// #GSocket, which wraps the UNIX socket API on UNIX and winsock2 on Windows.
 //
 // Based is entirely platform independent, and is intended to be used alongside
 // higher-level networking APIs such as OStream.
@@ -84,183 +83,115 @@ func init() {
 type DatagramBased interface {
 	gextras.Objector
 
-	// ConditionCheck: send one or more data messages from @datagram_based in
-	// one go.
+	// ConditionCheck checks on the readiness of @datagram_based to perform
+	// operations. The operations specified in @condition are checked for and
+	// masked against the currently-satisfied conditions on @datagram_based. The
+	// result is returned.
 	//
-	// @messages must point to an array of Message structs and @num_messages
-	// must be the length of this array. Each Message contains an address to
-	// send the data to, and a pointer to an array of Vector structs to describe
-	// the buffers that the data to be sent for each message will be gathered
-	// from.
-	//
-	// @flags modify how the message is sent. The commonly available arguments
-	// for this are available in the MsgFlags enum, but the values there are the
-	// same as the system values, and the flags are passed in as-is, so you can
-	// pass in system-specific flags too.
-	//
-	// The other members of Message are treated as described in its
-	// documentation.
-	//
-	// If @timeout is negative the call will block until @num_messages have been
-	// sent, @cancellable is cancelled, or an error occurs.
-	//
-	// If @timeout is 0 the call will send up to @num_messages without blocking,
-	// or will return G_IO_ERROR_WOULD_BLOCK if there is no space to send
-	// messages.
-	//
-	// If @timeout is positive the call will block on the same conditions as if
-	// @timeout were negative. If the timeout is reached before any messages are
-	// sent, G_IO_ERROR_TIMED_OUT is returned, otherwise it will return the
-	// number of messages sent before timing out.
-	//
-	// To be notified when messages can be sent, wait for the G_IO_OUT
-	// condition. Note though that you may still receive G_IO_ERROR_WOULD_BLOCK
-	// from g_datagram_based_send_messages() even if you were previously
-	// notified of a G_IO_OUT condition. (On Windows in particular, this is very
-	// common due to the way the underlying APIs work.)
+	// G_IO_IN will be set in the return value if data is available to read with
+	// g_datagram_based_receive_messages(), or if the connection is closed
+	// remotely (EOS); and if the datagram_based has not been closed locally
+	// using some implementation-specific method (such as g_socket_close() or
+	// g_socket_shutdown() with @shutdown_read set, if it’s a #GSocket).
 	//
 	// If the connection is shut down or closed (by calling g_socket_close() or
-	// g_socket_shutdown() with @shutdown_write set, if it’s a #GSocket, for
+	// g_socket_shutdown() with @shutdown_read set, if it’s a #GSocket, for
 	// example), all calls to this function will return G_IO_ERROR_CLOSED.
 	//
-	// On error -1 is returned and @error is set accordingly. An error will only
-	// be returned if zero messages could be sent; otherwise the number of
-	// messages successfully sent before the error will be returned. If
-	// @cancellable is cancelled, G_IO_ERROR_CANCELLED is returned as with any
-	// other error.
+	// G_IO_OUT will be set if it is expected that at least one byte can be sent
+	// using g_datagram_based_send_messages() without blocking. It will not be
+	// set if the datagram_based has been closed locally.
+	//
+	// G_IO_HUP will be set if the connection has been closed locally.
+	//
+	// G_IO_ERR will be set if there was an asynchronous error in transmitting
+	// data previously enqueued using g_datagram_based_send_messages().
+	//
+	// Note that on Windows, it is possible for an operation to return
+	// G_IO_ERROR_WOULD_BLOCK even immediately after
+	// g_datagram_based_condition_check() has claimed that the Based is ready
+	// for writing. Rather than calling g_datagram_based_condition_check() and
+	// then writing to the Based if it succeeds, it is generally better to
+	// simply try writing right away, and try again later if the initial attempt
+	// returns G_IO_ERROR_WOULD_BLOCK.
+	//
+	// It is meaningless to specify G_IO_ERR or G_IO_HUP in @condition; these
+	// conditions will always be set in the output if they are true. Apart from
+	// these flags, the output is guaranteed to be masked by @condition.
+	//
+	// This call never blocks.
 	ConditionCheck(condition glib.IOCondition) glib.IOCondition
-	// ConditionWait: send one or more data messages from @datagram_based in one
-	// go.
+	// ConditionWait waits for up to @timeout microseconds for condition to
+	// become true on @datagram_based. If the condition is met, true is
+	// returned.
 	//
-	// @messages must point to an array of Message structs and @num_messages
-	// must be the length of this array. Each Message contains an address to
-	// send the data to, and a pointer to an array of Vector structs to describe
-	// the buffers that the data to be sent for each message will be gathered
-	// from.
-	//
-	// @flags modify how the message is sent. The commonly available arguments
-	// for this are available in the MsgFlags enum, but the values there are the
-	// same as the system values, and the flags are passed in as-is, so you can
-	// pass in system-specific flags too.
-	//
-	// The other members of Message are treated as described in its
-	// documentation.
-	//
-	// If @timeout is negative the call will block until @num_messages have been
-	// sent, @cancellable is cancelled, or an error occurs.
-	//
-	// If @timeout is 0 the call will send up to @num_messages without blocking,
-	// or will return G_IO_ERROR_WOULD_BLOCK if there is no space to send
-	// messages.
-	//
-	// If @timeout is positive the call will block on the same conditions as if
-	// @timeout were negative. If the timeout is reached before any messages are
-	// sent, G_IO_ERROR_TIMED_OUT is returned, otherwise it will return the
-	// number of messages sent before timing out.
-	//
-	// To be notified when messages can be sent, wait for the G_IO_OUT
-	// condition. Note though that you may still receive G_IO_ERROR_WOULD_BLOCK
-	// from g_datagram_based_send_messages() even if you were previously
-	// notified of a G_IO_OUT condition. (On Windows in particular, this is very
-	// common due to the way the underlying APIs work.)
-	//
-	// If the connection is shut down or closed (by calling g_socket_close() or
-	// g_socket_shutdown() with @shutdown_write set, if it’s a #GSocket, for
-	// example), all calls to this function will return G_IO_ERROR_CLOSED.
-	//
-	// On error -1 is returned and @error is set accordingly. An error will only
-	// be returned if zero messages could be sent; otherwise the number of
-	// messages successfully sent before the error will be returned. If
-	// @cancellable is cancelled, G_IO_ERROR_CANCELLED is returned as with any
-	// other error.
+	// If @cancellable is cancelled before the condition is met, or if @timeout
+	// is reached before the condition is met, then false is returned and @error
+	// is set appropriately (G_IO_ERROR_CANCELLED or G_IO_ERROR_TIMED_OUT).
 	ConditionWait(condition glib.IOCondition, timeout int64, cancellable Cancellable) error
-	// CreateSource: send one or more data messages from @datagram_based in one
-	// go.
+	// CreateSource creates a #GSource that can be attached to a Context to
+	// monitor for the availability of the specified @condition on the Based.
+	// The #GSource keeps a reference to the @datagram_based.
+	//
+	// The callback on the source is of the BasedSourceFunc type.
+	//
+	// It is meaningless to specify G_IO_ERR or G_IO_HUP in @condition; these
+	// conditions will always be reported in the callback if they are true.
+	//
+	// If non-nil, @cancellable can be used to cancel the source, which will
+	// cause the source to trigger, reporting the current condition (which is
+	// likely 0 unless cancellation happened at the same time as a condition
+	// change). You can check for this in the callback using
+	// g_cancellable_is_cancelled().
+	CreateSource(condition glib.IOCondition, cancellable Cancellable) glib.Source
+	// ReceiveMessages: receive one or more data messages from @datagram_based
+	// in one go.
 	//
 	// @messages must point to an array of Message structs and @num_messages
-	// must be the length of this array. Each Message contains an address to
-	// send the data to, and a pointer to an array of Vector structs to describe
-	// the buffers that the data to be sent for each message will be gathered
-	// from.
+	// must be the length of this array. Each Message contains a pointer to an
+	// array of Vector structs describing the buffers that the data received in
+	// each message will be written to.
 	//
-	// @flags modify how the message is sent. The commonly available arguments
-	// for this are available in the MsgFlags enum, but the values there are the
-	// same as the system values, and the flags are passed in as-is, so you can
-	// pass in system-specific flags too.
+	// @flags modify how all messages are received. The commonly available
+	// arguments for this are available in the MsgFlags enum, but the values
+	// there are the same as the system values, and the flags are passed in
+	// as-is, so you can pass in system-specific flags too. These flags affect
+	// the overall receive operation. Flags affecting individual messages are
+	// returned in Message.flags.
 	//
 	// The other members of Message are treated as described in its
 	// documentation.
 	//
 	// If @timeout is negative the call will block until @num_messages have been
-	// sent, @cancellable is cancelled, or an error occurs.
+	// received, the connection is closed remotely (EOS), @cancellable is
+	// cancelled, or an error occurs.
 	//
-	// If @timeout is 0 the call will send up to @num_messages without blocking,
-	// or will return G_IO_ERROR_WOULD_BLOCK if there is no space to send
-	// messages.
-	//
-	// If @timeout is positive the call will block on the same conditions as if
-	// @timeout were negative. If the timeout is reached before any messages are
-	// sent, G_IO_ERROR_TIMED_OUT is returned, otherwise it will return the
-	// number of messages sent before timing out.
-	//
-	// To be notified when messages can be sent, wait for the G_IO_OUT
-	// condition. Note though that you may still receive G_IO_ERROR_WOULD_BLOCK
-	// from g_datagram_based_send_messages() even if you were previously
-	// notified of a G_IO_OUT condition. (On Windows in particular, this is very
-	// common due to the way the underlying APIs work.)
-	//
-	// If the connection is shut down or closed (by calling g_socket_close() or
-	// g_socket_shutdown() with @shutdown_write set, if it’s a #GSocket, for
-	// example), all calls to this function will return G_IO_ERROR_CLOSED.
-	//
-	// On error -1 is returned and @error is set accordingly. An error will only
-	// be returned if zero messages could be sent; otherwise the number of
-	// messages successfully sent before the error will be returned. If
-	// @cancellable is cancelled, G_IO_ERROR_CANCELLED is returned as with any
-	// other error.
-	CreateSource(condition glib.IOCondition, cancellable Cancellable) *glib.Source
-	// ReceiveMessages: send one or more data messages from @datagram_based in
-	// one go.
-	//
-	// @messages must point to an array of Message structs and @num_messages
-	// must be the length of this array. Each Message contains an address to
-	// send the data to, and a pointer to an array of Vector structs to describe
-	// the buffers that the data to be sent for each message will be gathered
-	// from.
-	//
-	// @flags modify how the message is sent. The commonly available arguments
-	// for this are available in the MsgFlags enum, but the values there are the
-	// same as the system values, and the flags are passed in as-is, so you can
-	// pass in system-specific flags too.
-	//
-	// The other members of Message are treated as described in its
-	// documentation.
-	//
-	// If @timeout is negative the call will block until @num_messages have been
-	// sent, @cancellable is cancelled, or an error occurs.
-	//
-	// If @timeout is 0 the call will send up to @num_messages without blocking,
-	// or will return G_IO_ERROR_WOULD_BLOCK if there is no space to send
-	// messages.
+	// If @timeout is 0 the call will return up to @num_messages without
+	// blocking, or G_IO_ERROR_WOULD_BLOCK if no messages are queued in the
+	// operating system to be received.
 	//
 	// If @timeout is positive the call will block on the same conditions as if
 	// @timeout were negative. If the timeout is reached before any messages are
-	// sent, G_IO_ERROR_TIMED_OUT is returned, otherwise it will return the
-	// number of messages sent before timing out.
+	// received, G_IO_ERROR_TIMED_OUT is returned, otherwise it will return the
+	// number of messages received before timing out. (Note: This is effectively
+	// the behaviour of `MSG_WAITFORONE` with recvmmsg().)
 	//
-	// To be notified when messages can be sent, wait for the G_IO_OUT
+	// To be notified when messages are available, wait for the G_IO_IN
 	// condition. Note though that you may still receive G_IO_ERROR_WOULD_BLOCK
-	// from g_datagram_based_send_messages() even if you were previously
-	// notified of a G_IO_OUT condition. (On Windows in particular, this is very
-	// common due to the way the underlying APIs work.)
+	// from g_datagram_based_receive_messages() even if you were previously
+	// notified of a G_IO_IN condition.
+	//
+	// If the remote peer closes the connection, any messages queued in the
+	// underlying receive buffer will be returned, and subsequent calls to
+	// g_datagram_based_receive_messages() will return 0 (with no error set).
 	//
 	// If the connection is shut down or closed (by calling g_socket_close() or
-	// g_socket_shutdown() with @shutdown_write set, if it’s a #GSocket, for
+	// g_socket_shutdown() with @shutdown_read set, if it’s a #GSocket, for
 	// example), all calls to this function will return G_IO_ERROR_CLOSED.
 	//
 	// On error -1 is returned and @error is set accordingly. An error will only
-	// be returned if zero messages could be sent; otherwise the number of
-	// messages successfully sent before the error will be returned. If
+	// be returned if zero messages could be received; otherwise the number of
+	// messages successfully received before the error will be returned. If
 	// @cancellable is cancelled, G_IO_ERROR_CANCELLED is returned as with any
 	// other error.
 	ReceiveMessages(messages []InputMessage, flags int, timeout int64, cancellable Cancellable) (int, error)
@@ -354,7 +285,7 @@ func (d datagramBased) ConditionWait(condition glib.IOCondition, timeout int64, 
 	var _arg1 C.GIOCondition    // out
 	var _arg2 C.gint64          // out
 	var _arg3 *C.GCancellable   // out
-	var _cerr *C.GError         // in
+	var _cerr **C.GError        // in
 
 	_arg0 = (*C.GDatagramBased)(unsafe.Pointer(d.Native()))
 	_arg1 = C.GIOCondition(condition)
@@ -365,12 +296,21 @@ func (d datagramBased) ConditionWait(condition glib.IOCondition, timeout int64, 
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _goerr
 }
 
-func (d datagramBased) CreateSource(condition glib.IOCondition, cancellable Cancellable) *glib.Source {
+func (d datagramBased) CreateSource(condition glib.IOCondition, cancellable Cancellable) glib.Source {
 	var _arg0 *C.GDatagramBased // out
 	var _arg1 C.GIOCondition    // out
 	var _arg2 *C.GCancellable   // out
@@ -382,11 +322,11 @@ func (d datagramBased) CreateSource(condition glib.IOCondition, cancellable Canc
 
 	_cret = C.g_datagram_based_create_source(_arg0, _arg1, _arg2)
 
-	var _source *glib.Source // out
+	var _source glib.Source // out
 
-	_source = (*glib.Source)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(&_source, func(v **glib.Source) {
-		C.free(unsafe.Pointer(v))
+	_source = (glib.Source)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_source, func(v glib.Source) {
+		C.g_source_unref((*C.GSource)(unsafe.Pointer(v)))
 	})
 
 	return _source
@@ -400,7 +340,7 @@ func (d datagramBased) ReceiveMessages(messages []InputMessage, flags int, timeo
 	var _arg4 C.gint64        // out
 	var _arg5 *C.GCancellable // out
 	var _cret C.gint          // in
-	var _cerr *C.GError       // in
+	var _cerr **C.GError      // in
 
 	_arg0 = (*C.GDatagramBased)(unsafe.Pointer(d.Native()))
 	_arg2 = C.guint(len(messages))
@@ -415,7 +355,16 @@ func (d datagramBased) ReceiveMessages(messages []InputMessage, flags int, timeo
 	var _goerr error // out
 
 	_gint = int(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _gint, _goerr
 }
@@ -428,7 +377,7 @@ func (d datagramBased) SendMessages(messages []OutputMessage, flags int, timeout
 	var _arg4 C.gint64        // out
 	var _arg5 *C.GCancellable // out
 	var _cret C.gint          // in
-	var _cerr *C.GError       // in
+	var _cerr **C.GError      // in
 
 	_arg0 = (*C.GDatagramBased)(unsafe.Pointer(d.Native()))
 	_arg2 = C.guint(len(messages))
@@ -443,7 +392,16 @@ func (d datagramBased) SendMessages(messages []OutputMessage, flags int, timeout
 	var _goerr error // out
 
 	_gint = int(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _gint, _goerr
 }

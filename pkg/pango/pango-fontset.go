@@ -29,7 +29,7 @@ func init() {
 
 // FontsetForeachFunc: callback used by pango_fontset_foreach() when enumerating
 // fonts in a fontset.
-type FontsetForeachFunc func(fontset Fontset, font Font, ok bool)
+type FontsetForeachFunc func(fontset Fontset, font Font) (ok bool)
 
 //export gotk4_FontsetForeachFunc
 func gotk4_FontsetForeachFunc(arg0 *C.PangoFontset, arg1 *C.PangoFont, arg2 C.gpointer) C.gboolean {
@@ -56,8 +56,8 @@ func gotk4_FontsetForeachFunc(arg0 *C.PangoFontset, arg1 *C.PangoFont, arg2 C.gp
 	return cret
 }
 
-// Fontset: a `PangoFontset` represents a set of `PangoFont` to use when
-// rendering text.
+// Fontset: `PangoFontset` represents a set of `PangoFont` to use when rendering
+// text.
 //
 // A `PAngoFontset` is the result of resolving a `PangoFontDescription` against
 // a particular `PangoContext`. It has operations for finding the component font
@@ -66,11 +66,16 @@ func gotk4_FontsetForeachFunc(arg0 *C.PangoFontset, arg1 *C.PangoFont, arg2 C.gp
 type Fontset interface {
 	gextras.Objector
 
+	// ForeachFontset iterates through all the fonts in a fontset, calling @func
+	// for each one.
+	//
+	// If @func returns true, that stops the iteration.
 	ForeachFontset(fn FontsetForeachFunc)
-
+	// Font returns the font in the fontset that contains the best glyph for a
+	// Unicode character.
 	Font(wc uint) Font
-
-	Metrics() *FontMetrics
+	// Metrics: get overall metric information for the fonts in the fontset.
+	Metrics() FontMetrics
 }
 
 // fontset implements the Fontset class.
@@ -121,7 +126,7 @@ func (f fontset) Font(wc uint) Font {
 	return _font
 }
 
-func (f fontset) Metrics() *FontMetrics {
+func (f fontset) Metrics() FontMetrics {
 	var _arg0 *C.PangoFontset     // out
 	var _cret *C.PangoFontMetrics // in
 
@@ -129,11 +134,11 @@ func (f fontset) Metrics() *FontMetrics {
 
 	_cret = C.pango_fontset_get_metrics(_arg0)
 
-	var _fontMetrics *FontMetrics // out
+	var _fontMetrics FontMetrics // out
 
-	_fontMetrics = (*FontMetrics)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(&_fontMetrics, func(v **FontMetrics) {
-		C.free(unsafe.Pointer(v))
+	_fontMetrics = (FontMetrics)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_fontMetrics, func(v FontMetrics) {
+		C.pango_font_metrics_unref((*C.PangoFontMetrics)(unsafe.Pointer(v)))
 	})
 
 	return _fontMetrics
@@ -147,8 +152,9 @@ func (f fontset) Metrics() *FontMetrics {
 type FontsetSimple interface {
 	Fontset
 
+	// AppendFontsetSimple adds a font to the fontset.
 	AppendFontsetSimple(font Font)
-
+	// SizeFontsetSimple returns the number of fonts in the fontset.
 	SizeFontsetSimple() int
 }
 
@@ -171,17 +177,18 @@ func marshalFontsetSimple(p uintptr) (interface{}, error) {
 	return WrapFontsetSimple(obj), nil
 }
 
-func NewFontsetSimple(language *Language) FontsetSimple {
+// NewFontsetSimple creates a new `PangoFontsetSimple` for the given language.
+func NewFontsetSimple(language Language) FontsetSimple {
 	var _arg1 *C.PangoLanguage      // out
 	var _cret *C.PangoFontsetSimple // in
 
-	_arg1 = (*C.PangoLanguage)(unsafe.Pointer(language.Native()))
+	_arg1 = (*C.PangoLanguage)(unsafe.Pointer(language))
 
 	_cret = C.pango_fontset_simple_new(_arg1)
 
 	var _fontsetSimple FontsetSimple // out
 
-	_fontsetSimple = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(FontsetSimple)
+	_fontsetSimple = WrapFontsetSimple(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _fontsetSimple
 }

@@ -39,10 +39,13 @@ func init() {
 type FilterOutputStream interface {
 	OutputStream
 
+	// BaseStream gets the base stream for the filter stream.
 	BaseStream() OutputStream
-
+	// CloseBaseStream returns whether the base stream will be closed when
+	// @stream is closed.
 	CloseBaseStream() bool
-
+	// SetCloseBaseStreamFilterOutputStream sets whether the base stream will be
+	// closed when @stream is closed.
 	SetCloseBaseStreamFilterOutputStream(closeBase bool)
 }
 

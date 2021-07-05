@@ -22,16 +22,20 @@ func init() {
 	})
 }
 
-// Relation: an AtkRelation describes a relation between an object and one or
-// more other objects. The actual relations that an object has with other
-// objects are defined as an AtkRelationSet, which is a set of AtkRelations.
+// Relation describes a relation between an object and one or more other
+// objects. The actual relations that an object has with other objects are
+// defined as an AtkRelationSet, which is a set of AtkRelations.
 type Relation interface {
 	gextras.Objector
 
+	// AddTargetRelation adds the specified AtkObject to the target for the
+	// relation, if it is not already present. See also
+	// atk_object_add_relationship().
 	AddTargetRelation(target Object)
-
+	// RelationType gets the type of @relation
 	RelationType() RelationType
-
+	// RemoveTargetRelation: remove the specified AtkObject from the target for
+	// the relation.
 	RemoveTargetRelation(target Object) bool
 }
 
@@ -54,6 +58,8 @@ func marshalRelation(p uintptr) (interface{}, error) {
 	return WrapRelation(obj), nil
 }
 
+// NewRelation: create a new relation for the specified key and the specified
+// list of targets. See also atk_object_add_relationship().
 func NewRelation(targets []Object, relationship RelationType) Relation {
 	var _arg1 **C.AtkObject
 	var _arg2 C.gint
@@ -75,7 +81,7 @@ func NewRelation(targets []Object, relationship RelationType) Relation {
 
 	var _relation Relation // out
 
-	_relation = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Relation)
+	_relation = WrapRelation(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _relation
 }

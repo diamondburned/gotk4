@@ -165,14 +165,33 @@ func init() {
 // * Shortcut folders.
 type FileChooserNative interface {
 	NativeDialog
-	FileChooser
 
+	// AsFileChooser casts the class to the FileChooser interface.
+	AsFileChooser() FileChooser
+
+	// AcceptLabel retrieves the custom label text for the accept button.
 	AcceptLabel() string
-
+	// CancelLabel retrieves the custom label text for the cancel button.
 	CancelLabel() string
-
+	// SetAcceptLabelFileChooserNative sets the custom label text for the accept
+	// button.
+	//
+	// If characters in @label are preceded by an underscore, they are
+	// underlined. If you need a literal underscore character in a label, use
+	// “__” (two underscores). The first underlined character represents a
+	// keyboard accelerator called a mnemonic.
+	//
+	// Pressing Alt and that key should activate the button.
 	SetAcceptLabelFileChooserNative(acceptLabel string)
-
+	// SetCancelLabelFileChooserNative sets the custom label text for the cancel
+	// button.
+	//
+	// If characters in @label are preceded by an underscore, they are
+	// underlined. If you need a literal underscore character in a label, use
+	// “__” (two underscores). The first underlined character represents a
+	// keyboard accelerator called a mnemonic.
+	//
+	// Pressing Alt and that key should activate the button.
 	SetCancelLabelFileChooserNative(cancelLabel string)
 }
 
@@ -195,6 +214,7 @@ func marshalFileChooserNative(p uintptr) (interface{}, error) {
 	return WrapFileChooserNative(obj), nil
 }
 
+// NewFileChooserNative creates a new `GtkFileChooserNative`.
 func NewFileChooserNative(title string, parent Window, action FileChooserAction, acceptLabel string, cancelLabel string) FileChooserNative {
 	var _arg1 *C.char                 // out
 	var _arg2 *C.GtkWindow            // out
@@ -216,7 +236,7 @@ func NewFileChooserNative(title string, parent Window, action FileChooserAction,
 
 	var _fileChooserNative FileChooserNative // out
 
-	_fileChooserNative = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(FileChooserNative)
+	_fileChooserNative = WrapFileChooserNative(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _fileChooserNative
 }
@@ -273,66 +293,6 @@ func (s fileChooserNative) SetCancelLabelFileChooserNative(cancelLabel string) {
 	C.gtk_file_chooser_native_set_cancel_label(_arg0, _arg1)
 }
 
-func (c fileChooserNative) AddChoice(id string, label string, options []string, optionLabels []string) {
-	WrapFileChooser(gextras.InternObject(c)).AddChoice(id, label, options, optionLabels)
-}
-
-func (c fileChooserNative) AddFilter(filter FileFilter) {
-	WrapFileChooser(gextras.InternObject(c)).AddFilter(filter)
-}
-
-func (c fileChooserNative) Action() FileChooserAction {
-	return WrapFileChooser(gextras.InternObject(c)).Action()
-}
-
-func (c fileChooserNative) Choice(id string) string {
-	return WrapFileChooser(gextras.InternObject(c)).Choice(id)
-}
-
-func (c fileChooserNative) CreateFolders() bool {
-	return WrapFileChooser(gextras.InternObject(c)).CreateFolders()
-}
-
-func (c fileChooserNative) CurrentName() string {
-	return WrapFileChooser(gextras.InternObject(c)).CurrentName()
-}
-
-func (c fileChooserNative) Filter() FileFilter {
-	return WrapFileChooser(gextras.InternObject(c)).Filter()
-}
-
-func (c fileChooserNative) SelectMultiple() bool {
-	return WrapFileChooser(gextras.InternObject(c)).SelectMultiple()
-}
-
-func (c fileChooserNative) RemoveChoice(id string) {
-	WrapFileChooser(gextras.InternObject(c)).RemoveChoice(id)
-}
-
-func (c fileChooserNative) RemoveFilter(filter FileFilter) {
-	WrapFileChooser(gextras.InternObject(c)).RemoveFilter(filter)
-}
-
-func (c fileChooserNative) SetAction(action FileChooserAction) {
-	WrapFileChooser(gextras.InternObject(c)).SetAction(action)
-}
-
-func (c fileChooserNative) SetChoice(id string, option string) {
-	WrapFileChooser(gextras.InternObject(c)).SetChoice(id, option)
-}
-
-func (c fileChooserNative) SetCreateFolders(createFolders bool) {
-	WrapFileChooser(gextras.InternObject(c)).SetCreateFolders(createFolders)
-}
-
-func (c fileChooserNative) SetCurrentName(name string) {
-	WrapFileChooser(gextras.InternObject(c)).SetCurrentName(name)
-}
-
-func (c fileChooserNative) SetFilter(filter FileFilter) {
-	WrapFileChooser(gextras.InternObject(c)).SetFilter(filter)
-}
-
-func (c fileChooserNative) SetSelectMultiple(selectMultiple bool) {
-	WrapFileChooser(gextras.InternObject(c)).SetSelectMultiple(selectMultiple)
+func (f fileChooserNative) AsFileChooser() FileChooser {
+	return WrapFileChooser(gextras.InternObject(f))
 }

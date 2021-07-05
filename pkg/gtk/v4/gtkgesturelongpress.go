@@ -38,8 +38,12 @@ func init() {
 type GestureLongPress interface {
 	GestureSingle
 
+	// DelayFactor returns the delay factor.
 	DelayFactor() float64
-
+	// SetDelayFactorGestureLongPress applies the given delay factor.
+	//
+	// The default long press time will be multiplied by this value. Valid
+	// values are in the range [0.5..2.0].
 	SetDelayFactorGestureLongPress(delayFactor float64)
 }
 
@@ -62,6 +66,8 @@ func marshalGestureLongPress(p uintptr) (interface{}, error) {
 	return WrapGestureLongPress(obj), nil
 }
 
+// NewGestureLongPress returns a newly created `GtkGesture` that recognizes long
+// presses.
 func NewGestureLongPress() GestureLongPress {
 	var _cret *C.GtkGesture // in
 
@@ -69,7 +75,7 @@ func NewGestureLongPress() GestureLongPress {
 
 	var _gestureLongPress GestureLongPress // out
 
-	_gestureLongPress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(GestureLongPress)
+	_gestureLongPress = WrapGestureLongPress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _gestureLongPress
 }

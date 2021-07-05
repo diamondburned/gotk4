@@ -65,22 +65,49 @@ func init() {
 type SearchBar interface {
 	Widget
 
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
+
+	// ConnectEntrySearchBar connects the `GtkEditable widget passed as the one
+	// to be used in this search bar.
+	//
+	// The entry should be a descendant of the search bar. Calling this function
+	// manually is only required if the entry isn’t the direct child of the
+	// search bar (as in our main example).
 	ConnectEntrySearchBar(entry Editable)
-
+	// Child gets the child widget of @bar.
 	Child() Widget
-
+	// KeyCaptureWidget gets the widget that @bar is capturing key events from.
 	KeyCaptureWidget() Widget
-
+	// SearchMode returns whether the search mode is on or off.
 	SearchMode() bool
-
+	// ShowCloseButton returns whether the close button is shown.
 	ShowCloseButton() bool
-
+	// SetChildSearchBar sets the child widget of @bar.
 	SetChildSearchBar(child Widget)
-
+	// SetKeyCaptureWidgetSearchBar sets @widget as the widget that @bar will
+	// capture key events from.
+	//
+	// If key events are handled by the search bar, the bar will be shown, and
+	// the entry populated with the entered text.
+	//
+	// Note that despite the name of this function, the events are only
+	// 'captured' in the bubble phase, which means that editable child widgets
+	// of @widget will receive text input before it gets captured. If that is
+	// not desired, you can capture and forward the events yourself with
+	// [method@Gtk.EventControllerKey.forward].
 	SetKeyCaptureWidgetSearchBar(widget Widget)
-
+	// SetSearchModeSearchBar switches the search mode on or off.
 	SetSearchModeSearchBar(searchMode bool)
-
+	// SetShowCloseButtonSearchBar shows or hides the close button.
+	//
+	// Applications that already have a “search” toggle button should not show a
+	// close button in their search bar, as it duplicates the role of the toggle
+	// button.
 	SetShowCloseButtonSearchBar(visible bool)
 }
 
@@ -103,6 +130,10 @@ func marshalSearchBar(p uintptr) (interface{}, error) {
 	return WrapSearchBar(obj), nil
 }
 
+// NewSearchBar creates a `GtkSearchBar`.
+//
+// You will need to tell it about which widget is going to be your text entry
+// using [method@Gtk.SearchBar.connect_entry].
 func NewSearchBar() SearchBar {
 	var _cret *C.GtkWidget // in
 
@@ -110,7 +141,7 @@ func NewSearchBar() SearchBar {
 
 	var _searchBar SearchBar // out
 
-	_searchBar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(SearchBar)
+	_searchBar = WrapSearchBar(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _searchBar
 }
@@ -233,34 +264,14 @@ func (b searchBar) SetShowCloseButtonSearchBar(visible bool) {
 	C.gtk_search_bar_set_show_close_button(_arg0, _arg1)
 }
 
-func (s searchBar) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
+func (s searchBar) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(s))
 }
 
-func (s searchBar) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
+func (s searchBar) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(s))
 }
 
-func (s searchBar) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
-}
-
-func (s searchBar) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s searchBar) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s searchBar) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s searchBar) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b searchBar) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
+func (s searchBar) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(s))
 }

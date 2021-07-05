@@ -23,10 +23,9 @@ func init() {
 	})
 }
 
-// CellRendererPixbuf: a CellRendererPixbuf can be used to render an image in a
-// cell. It allows to render either a given Pixbuf (set via the
-// CellRendererPixbuf:pixbuf property) or a named icon (set via the
-// CellRendererPixbuf:icon-name property).
+// CellRendererPixbuf can be used to render an image in a cell. It allows to
+// render either a given Pixbuf (set via the CellRendererPixbuf:pixbuf property)
+// or a named icon (set via the CellRendererPixbuf:icon-name property).
 //
 // To support the tree view, CellRendererPixbuf also supports rendering two
 // alternative pixbufs, when the CellRenderer:is-expander property is true. If
@@ -58,6 +57,12 @@ func marshalCellRendererPixbuf(p uintptr) (interface{}, error) {
 	return WrapCellRendererPixbuf(obj), nil
 }
 
+// NewCellRendererPixbuf creates a new CellRendererPixbuf. Adjust rendering
+// parameters using object properties. Object properties can be set globally
+// (with g_object_set()). Also, with TreeViewColumn, you can bind a property to
+// a value in a TreeModel. For example, you can bind the “pixbuf” property on
+// the cell renderer to a pixbuf value in the model, thus rendering a different
+// image in each row of the TreeView.
 func NewCellRendererPixbuf() CellRendererPixbuf {
 	var _cret *C.GtkCellRenderer // in
 
@@ -65,7 +70,7 @@ func NewCellRendererPixbuf() CellRendererPixbuf {
 
 	var _cellRendererPixbuf CellRendererPixbuf // out
 
-	_cellRendererPixbuf = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(CellRendererPixbuf)
+	_cellRendererPixbuf = WrapCellRendererPixbuf(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _cellRendererPixbuf
 }

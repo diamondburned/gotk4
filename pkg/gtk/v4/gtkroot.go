@@ -39,24 +39,15 @@ func init() {
 // hierarchy, with [method@Gtk.Root.set_focus] and [method@Gtk.Root.get_focus].
 type Root interface {
 	Native
+	Widget
 
-	// Display: if @focus is not the current focus widget, and is focusable,
-	// sets it as the focus widget for the root.
-	//
-	// If @focus is nil, unsets the focus widget for the root.
-	//
-	// To set the focus to a particular widget in the root, it is usually more
-	// convenient to use [method@Gtk.Widget.grab_focus] instead of this
-	// function.
+	// Display returns the display that this `GtkRoot` is on.
 	Display() gdk.Display
-	// Focus: if @focus is not the current focus widget, and is focusable, sets
-	// it as the focus widget for the root.
+	// Focus retrieves the current focused widget within the root.
 	//
-	// If @focus is nil, unsets the focus widget for the root.
-	//
-	// To set the focus to a particular widget in the root, it is usually more
-	// convenient to use [method@Gtk.Widget.grab_focus] instead of this
-	// function.
+	// Note that this is the widget that would have the focus if the root is
+	// active; if the root is not focused then `gtk_widget_has_focus (widget)`
+	// will be false for the widget.
 	Focus() Widget
 	// SetFocus: if @focus is not the current focus widget, and is focusable,
 	// sets it as the focus widget for the root.
@@ -72,6 +63,7 @@ type Root interface {
 // root implements the Root interface.
 type root struct {
 	Native
+	Widget
 }
 
 var _ Root = (*root)(nil)
@@ -81,6 +73,7 @@ var _ Root = (*root)(nil)
 func WrapRoot(obj *externglib.Object) Root {
 	return root{
 		Native: WrapNative(obj),
+		Widget: WrapWidget(obj),
 	}
 }
 

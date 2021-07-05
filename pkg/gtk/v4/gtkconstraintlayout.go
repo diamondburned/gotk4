@@ -23,7 +23,7 @@ func init() {
 	})
 }
 
-// ConstraintLayout: a layout manager using constraints to describe relations
+// ConstraintLayout: layout manager using constraints to describe relations
 // between widgets.
 //
 // `GtkConstraintLayout` is a layout manager that uses relations between widget
@@ -169,16 +169,40 @@ func init() {
 // 12 [button1(button2 / 2 + 12)] “`
 type ConstraintLayout interface {
 	LayoutManager
-	Buildable
 
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+
+	// AddConstraintConstraintLayout adds a constraint to the layout manager.
+	//
+	// The [property@Gtk.Constraint:source] and [property@Gtk.Constraint:target]
+	// properties of `constraint` can be:
+	//
+	//    - set to `NULL` to indicate that the constraint refers to the
+	//      widget using `layout`
+	//    - set to the [class@Gtk.Widget] using `layout`
+	//    - set to a child of the [class@Gtk.Widget] using `layout`
+	//    - set to a [class@Gtk.ConstraintGuide] that is part of `layout`
+	//
+	// The @layout acquires the ownership of @constraint after calling this
+	// function.
 	AddConstraintConstraintLayout(constraint Constraint)
-
+	// AddGuideConstraintLayout adds a guide to `layout`.
+	//
+	// A guide can be used as the source or target of constraints, like a
+	// widget, but it is not visible.
+	//
+	// The `layout` acquires the ownership of `guide` after calling this
+	// function.
 	AddGuideConstraintLayout(guide ConstraintGuide)
-
+	// RemoveAllConstraintsConstraintLayout removes all constraints from the
+	// layout manager.
 	RemoveAllConstraintsConstraintLayout()
-
+	// RemoveConstraintConstraintLayout removes `constraint` from the layout
+	// manager, so that it no longer influences the layout.
 	RemoveConstraintConstraintLayout(constraint Constraint)
-
+	// RemoveGuideConstraintLayout removes `guide` from the layout manager, so
+	// that it no longer influences the layout.
 	RemoveGuideConstraintLayout(guide ConstraintGuide)
 }
 
@@ -201,6 +225,7 @@ func marshalConstraintLayout(p uintptr) (interface{}, error) {
 	return WrapConstraintLayout(obj), nil
 }
 
+// NewConstraintLayout creates a new `GtkConstraintLayout` layout manager.
 func NewConstraintLayout() ConstraintLayout {
 	var _cret *C.GtkLayoutManager // in
 
@@ -208,7 +233,7 @@ func NewConstraintLayout() ConstraintLayout {
 
 	var _constraintLayout ConstraintLayout // out
 
-	_constraintLayout = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(ConstraintLayout)
+	_constraintLayout = WrapConstraintLayout(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _constraintLayout
 }
@@ -261,8 +286,8 @@ func (l constraintLayout) RemoveGuideConstraintLayout(guide ConstraintGuide) {
 	C.gtk_constraint_layout_remove_guide(_arg0, _arg1)
 }
 
-func (b constraintLayout) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
+func (c constraintLayout) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(c))
 }
 
 // ConstraintLayoutChild: `GtkLayoutChild` subclass for children in a

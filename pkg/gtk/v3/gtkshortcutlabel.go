@@ -5,9 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -31,12 +29,21 @@ func init() {
 type ShortcutLabel interface {
 	Box
 
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsOrientable casts the class to the Orientable interface.
+	AsOrientable() Orientable
+
+	// Accelerator retrieves the current accelerator of @self.
 	Accelerator() string
-
+	// DisabledText retrieves the text that is displayed when no accelerator is
+	// set.
 	DisabledText() string
-
+	// SetAcceleratorShortcutLabel sets the accelerator to be displayed by
+	// @self.
 	SetAcceleratorShortcutLabel(accelerator string)
-
+	// SetDisabledTextShortcutLabel sets the text to be displayed by @self when
+	// no accelerator is set.
 	SetDisabledTextShortcutLabel(disabledText string)
 }
 
@@ -59,6 +66,7 @@ func marshalShortcutLabel(p uintptr) (interface{}, error) {
 	return WrapShortcutLabel(obj), nil
 }
 
+// NewShortcutLabel creates a new ShortcutLabel with @accelerator set.
 func NewShortcutLabel(accelerator string) ShortcutLabel {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -70,7 +78,7 @@ func NewShortcutLabel(accelerator string) ShortcutLabel {
 
 	var _shortcutLabel ShortcutLabel // out
 
-	_shortcutLabel = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(ShortcutLabel)
+	_shortcutLabel = WrapShortcutLabel(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _shortcutLabel
 }
@@ -127,50 +135,10 @@ func (s shortcutLabel) SetDisabledTextShortcutLabel(disabledText string) {
 	C.gtk_shortcut_label_set_disabled_text(_arg0, _arg1)
 }
 
-func (b shortcutLabel) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+func (s shortcutLabel) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(s))
 }
 
-func (b shortcutLabel) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b shortcutLabel) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b shortcutLabel) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b shortcutLabel) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b shortcutLabel) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b shortcutLabel) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b shortcutLabel) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b shortcutLabel) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b shortcutLabel) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (o shortcutLabel) Orientation() Orientation {
-	return WrapOrientable(gextras.InternObject(o)).Orientation()
-}
-
-func (o shortcutLabel) SetOrientation(orientation Orientation) {
-	WrapOrientable(gextras.InternObject(o)).SetOrientation(orientation)
+func (s shortcutLabel) AsOrientable() Orientable {
+	return WrapOrientable(gextras.InternObject(s))
 }

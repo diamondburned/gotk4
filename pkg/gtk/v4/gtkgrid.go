@@ -80,50 +80,109 @@ func init() {
 // `GtkGrid` uses the GTK_ACCESSIBLE_ROLE_GROUP role.
 type Grid interface {
 	Widget
-	Orientable
 
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
+	// AsOrientable casts the class to the Orientable interface.
+	AsOrientable() Orientable
+
+	// AttachGrid adds a widget to the grid.
+	//
+	// The position of @child is determined by @column and @row. The number of
+	// “cells” that @child will occupy is determined by @width and @height.
 	AttachGrid(child Widget, column int, row int, width int, height int)
-
+	// AttachNextToGrid adds a widget to the grid.
+	//
+	// The widget is placed next to @sibling, on the side determined by @side.
+	// When @sibling is nil, the widget is placed in row (for left or right
+	// placement) or column 0 (for top or bottom placement), at the end
+	// indicated by @side.
+	//
+	// Attaching widgets labeled [1], [2], [3] with @sibling == nil and @side ==
+	// GTK_POS_LEFT yields a layout of [3][2][1].
 	AttachNextToGrid(child Widget, sibling Widget, side PositionType, width int, height int)
-
+	// BaselineRow returns which row defines the global baseline of @grid.
 	BaselineRow() int
-
+	// ChildAt gets the child of @grid whose area covers the grid cell at
+	// @column, @row.
 	ChildAt(column int, row int) Widget
-
+	// ColumnHomogeneous returns whether all columns of @grid have the same
+	// width.
 	ColumnHomogeneous() bool
-
+	// ColumnSpacing returns the amount of space between the columns of @grid.
 	ColumnSpacing() uint
-
+	// RowBaselinePosition returns the baseline position of @row.
+	//
+	// See [method@Gtk.Grid.set_row_baseline_position].
 	RowBaselinePosition(row int) BaselinePosition
-
+	// RowHomogeneous returns whether all rows of @grid have the same height.
 	RowHomogeneous() bool
-
+	// RowSpacing returns the amount of space between the rows of @grid.
 	RowSpacing() uint
-
+	// InsertColumnGrid inserts a column at the specified position.
+	//
+	// Children which are attached at or to the right of this position are moved
+	// one column to the right. Children which span across this position are
+	// grown to span the new column.
 	InsertColumnGrid(position int)
-
+	// InsertNextToGrid inserts a row or column at the specified position.
+	//
+	// The new row or column is placed next to @sibling, on the side determined
+	// by @side. If @side is GTK_POS_TOP or GTK_POS_BOTTOM, a row is inserted.
+	// If @side is GTK_POS_LEFT of GTK_POS_RIGHT, a column is inserted.
 	InsertNextToGrid(sibling Widget, side PositionType)
-
+	// InsertRowGrid inserts a row at the specified position.
+	//
+	// Children which are attached at or below this position are moved one row
+	// down. Children which span across this position are grown to span the new
+	// row.
 	InsertRowGrid(position int)
-
+	// QueryChildGrid queries the attach points and spans of @child inside the
+	// given `GtkGrid`.
 	QueryChildGrid(child Widget) (column int, row int, width int, height int)
-
+	// RemoveGrid removes a child from @grid.
+	//
+	// The child must have been added with [method@Gtk.Grid.attach] or
+	// [method@Gtk.Grid.attach_next_to].
 	RemoveGrid(child Widget)
-
+	// RemoveColumnGrid removes a column from the grid.
+	//
+	// Children that are placed in this column are removed, spanning children
+	// that overlap this column have their width reduced by one, and children
+	// after the column are moved to the left.
 	RemoveColumnGrid(position int)
-
+	// RemoveRowGrid removes a row from the grid.
+	//
+	// Children that are placed in this row are removed, spanning children that
+	// overlap this row have their height reduced by one, and children below the
+	// row are moved up.
 	RemoveRowGrid(position int)
-
+	// SetBaselineRowGrid sets which row defines the global baseline for the
+	// entire grid.
+	//
+	// Each row in the grid can have its own local baseline, but only one of
+	// those is global, meaning it will be the baseline in the parent of the
+	// @grid.
 	SetBaselineRowGrid(row int)
-
+	// SetColumnHomogeneousGrid sets whether all columns of @grid will have the
+	// same width.
 	SetColumnHomogeneousGrid(homogeneous bool)
-
+	// SetColumnSpacingGrid sets the amount of space between columns of @grid.
 	SetColumnSpacingGrid(spacing uint)
-
+	// SetRowBaselinePositionGrid sets how the baseline should be positioned on
+	// @row of the grid, in case that row is assigned more space than is
+	// requested.
+	//
+	// The default baseline position is GTK_BASELINE_POSITION_CENTER.
 	SetRowBaselinePositionGrid(row int, pos BaselinePosition)
-
+	// SetRowHomogeneousGrid sets whether all rows of @grid will have the same
+	// height.
 	SetRowHomogeneousGrid(homogeneous bool)
-
+	// SetRowSpacingGrid sets the amount of space between rows of @grid.
 	SetRowSpacingGrid(spacing uint)
 }
 
@@ -146,6 +205,7 @@ func marshalGrid(p uintptr) (interface{}, error) {
 	return WrapGrid(obj), nil
 }
 
+// NewGrid creates a new grid widget.
 func NewGrid() Grid {
 	var _cret *C.GtkWidget // in
 
@@ -153,7 +213,7 @@ func NewGrid() Grid {
 
 	var _grid Grid // out
 
-	_grid = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Grid)
+	_grid = WrapGrid(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _grid
 }
@@ -344,10 +404,10 @@ func (g grid) InsertRowGrid(position int) {
 func (g grid) QueryChildGrid(child Widget) (column int, row int, width int, height int) {
 	var _arg0 *C.GtkGrid   // out
 	var _arg1 *C.GtkWidget // out
-	var _arg2 C.int        // in
-	var _arg3 C.int        // in
-	var _arg4 C.int        // in
-	var _arg5 C.int        // in
+	var _arg2 *C.int       // in
+	var _arg3 *C.int       // in
+	var _arg4 *C.int       // in
+	var _arg5 *C.int       // in
 
 	_arg0 = (*C.GtkGrid)(unsafe.Pointer(g.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
@@ -463,42 +523,18 @@ func (g grid) SetRowSpacingGrid(spacing uint) {
 	C.gtk_grid_set_row_spacing(_arg0, _arg1)
 }
 
-func (s grid) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
+func (g grid) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(g))
 }
 
-func (s grid) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
+func (g grid) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(g))
 }
 
-func (s grid) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
+func (g grid) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(g))
 }
 
-func (s grid) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s grid) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s grid) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s grid) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b grid) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
-}
-
-func (o grid) Orientation() Orientation {
-	return WrapOrientable(gextras.InternObject(o)).Orientation()
-}
-
-func (o grid) SetOrientation(orientation Orientation) {
-	WrapOrientable(gextras.InternObject(o)).SetOrientation(orientation)
+func (g grid) AsOrientable() Orientable {
+	return WrapOrientable(gextras.InternObject(g))
 }

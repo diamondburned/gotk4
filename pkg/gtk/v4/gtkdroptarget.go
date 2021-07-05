@@ -88,22 +88,33 @@ func init() {
 type DropTarget interface {
 	EventController
 
+	// Actions gets the actions that this drop target supports.
 	Actions() gdk.DragAction
-
+	// Drop gets the currently handled drop operation.
+	//
+	// If no drop operation is going on, nil is returned.
 	Drop() gdk.Drop
-
-	Formats() *gdk.ContentFormats
-
+	// Formats gets the data formats that this drop target accepts.
+	//
+	// If the result is nil, all formats are expected to be supported.
+	Formats() gdk.ContentFormats
+	// Preload gets whether data should be preloaded on hover.
 	Preload() bool
-
+	// Value gets the current drop data, as a `GValue`.
 	Value() externglib.Value
-
+	// RejectDropTarget rejects the ongoing drop operation.
+	//
+	// If no drop operation is ongoing, i.e when [property@Gtk.DropTarget:drop]
+	// is nil, this function does nothing.
+	//
+	// This function should be used when delaying the decision on whether to
+	// accept a drag or not until after reading the data.
 	RejectDropTarget()
-
+	// SetActionsDropTarget sets the actions that this drop target supports.
 	SetActionsDropTarget(actions gdk.DragAction)
-
+	// SetGTypesDropTarget sets the supported `GTypes` for this drop target.
 	SetGTypesDropTarget(types []externglib.Type)
-
+	// SetPreloadDropTarget sets whether data should be preloaded on hover.
 	SetPreloadDropTarget(preload bool)
 }
 
@@ -126,6 +137,10 @@ func marshalDropTarget(p uintptr) (interface{}, error) {
 	return WrapDropTarget(obj), nil
 }
 
+// NewDropTarget creates a new `GtkDropTarget` object.
+//
+// If the drop target should support more than 1 type, pass G_TYPE_INVALID for
+// @type and then call [method@Gtk.DropTarget.set_gtypes].
 func NewDropTarget(typ externglib.Type, actions gdk.DragAction) DropTarget {
 	var _arg1 C.GType          // out
 	var _arg2 C.GdkDragAction  // out
@@ -138,7 +153,7 @@ func NewDropTarget(typ externglib.Type, actions gdk.DragAction) DropTarget {
 
 	var _dropTarget DropTarget // out
 
-	_dropTarget = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(DropTarget)
+	_dropTarget = WrapDropTarget(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _dropTarget
 }
@@ -173,7 +188,7 @@ func (s dropTarget) Drop() gdk.Drop {
 	return _drop
 }
 
-func (s dropTarget) Formats() *gdk.ContentFormats {
+func (s dropTarget) Formats() gdk.ContentFormats {
 	var _arg0 *C.GtkDropTarget     // out
 	var _cret *C.GdkContentFormats // in
 
@@ -181,11 +196,11 @@ func (s dropTarget) Formats() *gdk.ContentFormats {
 
 	_cret = C.gtk_drop_target_get_formats(_arg0)
 
-	var _contentFormats *gdk.ContentFormats // out
+	var _contentFormats gdk.ContentFormats // out
 
-	_contentFormats = (*gdk.ContentFormats)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(&_contentFormats, func(v **gdk.ContentFormats) {
-		C.free(unsafe.Pointer(v))
+	_contentFormats = (gdk.ContentFormats)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_contentFormats, func(v gdk.ContentFormats) {
+		C.gdk_content_formats_unref((*C.GdkContentFormats)(unsafe.Pointer(v)))
 	})
 
 	return _contentFormats

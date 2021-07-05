@@ -37,8 +37,8 @@ const (
 	// deprecated: the given construct is deprecated and will be removed in a
 	// future version
 	CSSParserWarningDeprecated CSSParserWarning = 0
-	// syntax: a syntax construct was used that should be avoided
+	// syntax construct was used that should be avoided
 	CSSParserWarningSyntax CSSParserWarning = 1
-	// unimplemented: a feature is not implemented
+	// unimplemented: feature is not implemented
 	CSSParserWarningUnimplemented CSSParserWarning = 2
 )

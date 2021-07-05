@@ -45,8 +45,10 @@ func init() {
 type VolumeMonitor interface {
 	gextras.Objector
 
+	// MountForUUID finds a #GMount object by its UUID (see g_mount_get_uuid())
 	MountForUUID(uuid string) Mount
-
+	// VolumeForUUID finds a #GVolume object by its UUID (see
+	// g_volume_get_uuid())
 	VolumeForUUID(uuid string) Volume
 }
 

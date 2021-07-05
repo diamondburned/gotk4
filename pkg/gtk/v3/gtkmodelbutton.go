@@ -5,9 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -31,11 +29,11 @@ func init() {
 type ButtonRole int
 
 const (
-	// normal: a plain button
+	// normal: plain button
 	ButtonRoleNormal ButtonRole = 0
-	// check: a check button
+	// check button
 	ButtonRoleCheck ButtonRole = 1
-	// radio: a radio button
+	// radio button
 	ButtonRoleRadio ButtonRole = 2
 )
 
@@ -43,11 +41,11 @@ func marshalButtonRole(p uintptr) (interface{}, error) {
 	return ButtonRole(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// ModelButton: gtkModelButton is a button class that can use a #GAction as its
-// model. In contrast to ToggleButton or RadioButton, which can also be backed
-// by a #GAction via the Actionable:action-name property, GtkModelButton will
-// adapt its appearance according to the kind of action it is backed by, and
-// appear either as a plain, check or radio button.
+// ModelButton is a button class that can use a #GAction as its model. In
+// contrast to ToggleButton or RadioButton, which can also be backed by a
+// #GAction via the Actionable:action-name property, GtkModelButton will adapt
+// its appearance according to the kind of action it is backed by, and appear
+// either as a plain, check or radio button.
 //
 // Model buttons are used when popovers from a menu model with
 // gtk_popover_new_from_model(); they can also be used manually in a
@@ -114,6 +112,13 @@ func marshalButtonRole(p uintptr) (interface{}, error) {
 // invisible in this case.
 type ModelButton interface {
 	Button
+
+	// AsActionable casts the class to the Actionable interface.
+	AsActionable() Actionable
+	// AsActivatable casts the class to the Activatable interface.
+	AsActivatable() Activatable
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
 }
 
 // modelButton implements the ModelButton class.
@@ -135,6 +140,7 @@ func marshalModelButton(p uintptr) (interface{}, error) {
 	return WrapModelButton(obj), nil
 }
 
+// NewModelButton creates a new GtkModelButton.
 func NewModelButton() ModelButton {
 	var _cret *C.GtkWidget // in
 
@@ -142,131 +148,19 @@ func NewModelButton() ModelButton {
 
 	var _modelButton ModelButton // out
 
-	_modelButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ModelButton)
+	_modelButton = WrapModelButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _modelButton
 }
 
-func (b modelButton) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+func (m modelButton) AsActionable() Actionable {
+	return WrapActionable(gextras.InternObject(m))
 }
 
-func (b modelButton) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+func (m modelButton) AsActivatable() Activatable {
+	return WrapActivatable(gextras.InternObject(m))
 }
 
-func (b modelButton) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b modelButton) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b modelButton) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b modelButton) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b modelButton) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b modelButton) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b modelButton) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b modelButton) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (a modelButton) ActionName() string {
-	return WrapActionable(gextras.InternObject(a)).ActionName()
-}
-
-func (a modelButton) ActionTargetValue() *glib.Variant {
-	return WrapActionable(gextras.InternObject(a)).ActionTargetValue()
-}
-
-func (a modelButton) SetActionName(actionName string) {
-	WrapActionable(gextras.InternObject(a)).SetActionName(actionName)
-}
-
-func (a modelButton) SetActionTargetValue(targetValue *glib.Variant) {
-	WrapActionable(gextras.InternObject(a)).SetActionTargetValue(targetValue)
-}
-
-func (a modelButton) SetDetailedActionName(detailedActionName string) {
-	WrapActionable(gextras.InternObject(a)).SetDetailedActionName(detailedActionName)
-}
-
-func (b modelButton) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
-}
-
-func (b modelButton) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b modelButton) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b modelButton) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b modelButton) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b modelButton) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b modelButton) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b modelButton) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b modelButton) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b modelButton) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (a modelButton) DoSetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).DoSetRelatedAction(action)
-}
-
-func (a modelButton) RelatedAction() Action {
-	return WrapActivatable(gextras.InternObject(a)).RelatedAction()
-}
-
-func (a modelButton) UseActionAppearance() bool {
-	return WrapActivatable(gextras.InternObject(a)).UseActionAppearance()
-}
-
-func (a modelButton) SetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SetRelatedAction(action)
-}
-
-func (a modelButton) SetUseActionAppearance(useAppearance bool) {
-	WrapActivatable(gextras.InternObject(a)).SetUseActionAppearance(useAppearance)
-}
-
-func (a modelButton) SyncActionProperties(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SyncActionProperties(action)
+func (m modelButton) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(m))
 }

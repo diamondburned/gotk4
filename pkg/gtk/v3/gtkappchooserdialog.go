@@ -5,9 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -37,12 +35,18 @@ func init() {
 // gtk_app_chooser_dialog_set_heading().
 type AppChooserDialog interface {
 	Dialog
-	AppChooser
 
+	// AsAppChooser casts the class to the AppChooser interface.
+	AsAppChooser() AppChooser
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+
+	// Heading returns the text to display at the top of the dialog.
 	Heading() string
-
+	// Widget returns the AppChooserWidget of this dialog.
 	Widget() Widget
-
+	// SetHeadingAppChooserDialog sets the text to display at the top of the
+	// dialog. If the heading is not set, the dialog displays a default text.
 	SetHeadingAppChooserDialog(heading string)
 }
 
@@ -65,6 +69,8 @@ func marshalAppChooserDialog(p uintptr) (interface{}, error) {
 	return WrapAppChooserDialog(obj), nil
 }
 
+// NewAppChooserDialogForContentType creates a new AppChooserDialog for the
+// provided content type, to allow the user to select an application for it.
 func NewAppChooserDialogForContentType(parent Window, flags DialogFlags, contentType string) AppChooserDialog {
 	var _arg1 *C.GtkWindow     // out
 	var _arg2 C.GtkDialogFlags // out
@@ -80,7 +86,7 @@ func NewAppChooserDialogForContentType(parent Window, flags DialogFlags, content
 
 	var _appChooserDialog AppChooserDialog // out
 
-	_appChooserDialog = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(AppChooserDialog)
+	_appChooserDialog = WrapAppChooserDialog(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _appChooserDialog
 }
@@ -126,90 +132,10 @@ func (s appChooserDialog) SetHeadingAppChooserDialog(heading string) {
 	C.gtk_app_chooser_dialog_set_heading(_arg0, _arg1)
 }
 
-func (b appChooserDialog) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+func (a appChooserDialog) AsAppChooser() AppChooser {
+	return WrapAppChooser(gextras.InternObject(a))
 }
 
-func (b appChooserDialog) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b appChooserDialog) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b appChooserDialog) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b appChooserDialog) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b appChooserDialog) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b appChooserDialog) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b appChooserDialog) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b appChooserDialog) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b appChooserDialog) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (s appChooserDialog) ContentType() string {
-	return WrapAppChooser(gextras.InternObject(s)).ContentType()
-}
-
-func (s appChooserDialog) Refresh() {
-	WrapAppChooser(gextras.InternObject(s)).Refresh()
-}
-
-func (b appChooserDialog) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
-}
-
-func (b appChooserDialog) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b appChooserDialog) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b appChooserDialog) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b appChooserDialog) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b appChooserDialog) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b appChooserDialog) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b appChooserDialog) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b appChooserDialog) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b appChooserDialog) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
+func (a appChooserDialog) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(a))
 }

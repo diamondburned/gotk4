@@ -51,16 +51,36 @@ func init() {
 // To track errors while loading CSS, connect to the
 // [signal@Gtk.CssProvider::parsing-error] signal.
 type CSSProvider interface {
-	StyleProvider
+	gextras.Objector
 
+	// AsStyleProvider casts the class to the StyleProvider interface.
+	AsStyleProvider() StyleProvider
+
+	// LoadFromDataCSSProvider loads @data into @css_provider.
+	//
+	// This clears any previously loaded information.
 	LoadFromDataCSSProvider(data []byte)
-
+	// LoadFromPathCSSProvider loads the data contained in @path into
+	// @css_provider.
+	//
+	// This clears any previously loaded information.
 	LoadFromPathCSSProvider(path string)
-
+	// LoadFromResourceCSSProvider loads the data contained in the resource at
+	// @resource_path into the @css_provider.
+	//
+	// This clears any previously loaded information.
 	LoadFromResourceCSSProvider(resourcePath string)
-
+	// LoadNamedCSSProvider loads a theme from the usual theme paths.
+	//
+	// The actual process of finding the theme might change between releases,
+	// but it is guaranteed that this function uses the same mechanism to load
+	// the theme that GTK uses for loading its own theme.
 	LoadNamedCSSProvider(name string, variant string)
-
+	// String converts the @provider into a string representation in CSS format.
+	//
+	// Using [method@Gtk.CssProvider.load_from_data] with the return value from
+	// this function on a new provider created with [ctor@Gtk.CssProvider.new]
+	// will basically create a duplicate of this @provider.
 	String() string
 }
 
@@ -83,6 +103,7 @@ func marshalCSSProvider(p uintptr) (interface{}, error) {
 	return WrapCSSProvider(obj), nil
 }
 
+// NewCSSProvider returns a newly created `GtkCssProvider`.
 func NewCSSProvider() CSSProvider {
 	var _cret *C.GtkCssProvider // in
 
@@ -90,7 +111,7 @@ func NewCSSProvider() CSSProvider {
 
 	var _cssProvider CSSProvider // out
 
-	_cssProvider = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(CSSProvider)
+	_cssProvider = WrapCSSProvider(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _cssProvider
 }
@@ -157,4 +178,8 @@ func (p cssProvider) String() string {
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
+}
+
+func (c cssProvider) AsStyleProvider() StyleProvider {
+	return WrapStyleProvider(gextras.InternObject(c))
 }

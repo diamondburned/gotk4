@@ -32,20 +32,29 @@ func init() {
 type Document interface {
 	gextras.Objector
 
-	// AttributeValue sets the value for the given @attribute_name inside
+	// AttributeValue retrieves the value of the given @attribute_name inside
 	// @document.
 	AttributeValue(attributeName string) string
-	// CurrentPageNumber sets the value for the given @attribute_name inside
-	// @document.
+	// CurrentPageNumber retrieves the current page number inside @document.
 	CurrentPageNumber() int
-	// Document sets the value for the given @attribute_name inside @document.
+	// Document gets a gpointer that points to an instance of the DOM. It is up
+	// to the caller to check atk_document_get_type to determine how to cast
+	// this pointer.
+	//
+	// Deprecated: since version .
 	Document() interface{}
-	// DocumentType sets the value for the given @attribute_name inside
-	// @document.
+	// DocumentType gets a string indicating the document type.
+	//
+	// Deprecated: since version .
 	DocumentType() string
-	// Locale sets the value for the given @attribute_name inside @document.
+	// Locale gets a UTF-8 string indicating the POSIX-style LC_MESSAGES locale
+	// of the content of this document instance. Individual text substrings or
+	// images within this document may have a different locale, see
+	// atk_text_get_attributes and atk_image_get_image_locale.
+	//
+	// Deprecated: since version 2.7.90.
 	Locale() string
-	// PageCount sets the value for the given @attribute_name inside @document.
+	// PageCount retrieves the total number of pages inside @document.
 	PageCount() int
 	// SetAttributeValue sets the value for the given @attribute_name inside
 	// @document.

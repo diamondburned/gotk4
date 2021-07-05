@@ -13,12 +13,12 @@ import "C"
 // Input values must be in the [0.0, 1.0] range; output values will be in the
 // same range.
 func HSVToRGB(h float32, s float32, v float32) (r float32, g float32, b float32) {
-	var _arg1 C.float // out
-	var _arg2 C.float // out
-	var _arg3 C.float // out
-	var _arg4 C.float // in
-	var _arg5 C.float // in
-	var _arg6 C.float // in
+	var _arg1 C.float  // out
+	var _arg2 C.float  // out
+	var _arg3 C.float  // out
+	var _arg4 *C.float // in
+	var _arg5 *C.float // in
+	var _arg6 *C.float // in
 
 	_arg1 = C.float(h)
 	_arg2 = C.float(s)
@@ -42,12 +42,12 @@ func HSVToRGB(h float32, s float32, v float32) (r float32, g float32, b float32)
 // Input values must be in the [0.0, 1.0] range; output values will be in the
 // same range.
 func RGBToHSV(r float32, g float32, b float32) (h float32, s float32, v float32) {
-	var _arg1 C.float // out
-	var _arg2 C.float // out
-	var _arg3 C.float // out
-	var _arg4 C.float // in
-	var _arg5 C.float // in
-	var _arg6 C.float // in
+	var _arg1 C.float  // out
+	var _arg2 C.float  // out
+	var _arg3 C.float  // out
+	var _arg4 *C.float // in
+	var _arg5 *C.float // in
+	var _arg6 *C.float // in
 
 	_arg1 = C.float(r)
 	_arg2 = C.float(g)

@@ -27,6 +27,9 @@ func init() {
 
 type SpinButtonAccessible interface {
 	EntryAccessible
+
+	// AsAction casts the class to the atk.Action interface.
+	AsAction() atk.Action
 }
 
 // spinButtonAccessible implements the SpinButtonAccessible class.
@@ -48,30 +51,6 @@ func marshalSpinButtonAccessible(p uintptr) (interface{}, error) {
 	return WrapSpinButtonAccessible(obj), nil
 }
 
-func (a spinButtonAccessible) DoAction(i int) bool {
-	return atk.WrapAction(gextras.InternObject(a)).DoAction(i)
-}
-
-func (a spinButtonAccessible) Description(i int) string {
-	return atk.WrapAction(gextras.InternObject(a)).Description(i)
-}
-
-func (a spinButtonAccessible) Keybinding(i int) string {
-	return atk.WrapAction(gextras.InternObject(a)).Keybinding(i)
-}
-
-func (a spinButtonAccessible) LocalizedName(i int) string {
-	return atk.WrapAction(gextras.InternObject(a)).LocalizedName(i)
-}
-
-func (a spinButtonAccessible) NActions() int {
-	return atk.WrapAction(gextras.InternObject(a)).NActions()
-}
-
-func (a spinButtonAccessible) Name(i int) string {
-	return atk.WrapAction(gextras.InternObject(a)).Name(i)
-}
-
-func (a spinButtonAccessible) SetDescription(i int, desc string) bool {
-	return atk.WrapAction(gextras.InternObject(a)).SetDescription(i, desc)
+func (s spinButtonAccessible) AsAction() atk.Action {
+	return atk.WrapAction(gextras.InternObject(s))
 }

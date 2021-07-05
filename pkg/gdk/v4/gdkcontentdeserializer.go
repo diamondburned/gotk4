@@ -25,8 +25,8 @@ func init() {
 	})
 }
 
-// ContentDeserializer: a `GdkContentDeserializer` is used to deserialize
-// content received via inter-application data transfers.
+// ContentDeserializer: `GdkContentDeserializer` is used to deserialize content
+// received via inter-application data transfers.
 //
 // The `GdkContentDeserializer` transforms serialized content that is identified
 // by a mime type into an object identified by a GType.
@@ -39,24 +39,39 @@ func init() {
 type ContentDeserializer interface {
 	gextras.Objector
 
+	// Cancellable gets the cancellable for the current operation.
+	//
+	// This is the `GCancellable` that was passed to
+	// [func@content_deserialize_async].
 	Cancellable() gio.Cancellable
-
+	// GType gets the GType to create an instance of.
 	GType() externglib.Type
-
+	// InputStream gets the input stream for the current operation.
+	//
+	// This is the stream that was passed to [func@content_deserialize_async].
 	InputStream() gio.InputStream
-
+	// MIMEType gets the mime type to deserialize from.
 	MIMEType() string
-
+	// Priority gets the I/O priority for the current operation.
+	//
+	// This is the priority that was passed to [funccontent_deserialize_async].
 	Priority() int
-
+	// TaskData gets the data that was associated with the current operation.
+	//
+	// See [method@Gdk.ContentDeserializer.set_task_data].
 	TaskData() interface{}
-
+	// UserData gets the user data that was passed when the deserializer was
+	// registered.
 	UserData() interface{}
-
+	// Value gets the `GValue` to store the deserialized object in.
 	Value() externglib.Value
-
+	// ReturnErrorContentDeserializer: indicate that the deserialization has
+	// ended with an error.
+	//
+	// This function consumes @error.
 	ReturnErrorContentDeserializer(err error)
-
+	// ReturnSuccessContentDeserializer: indicate that the deserialization has
+	// been successfully completed.
 	ReturnSuccessContentDeserializer()
 }
 

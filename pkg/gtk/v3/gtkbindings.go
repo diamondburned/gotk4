@@ -42,13 +42,13 @@ func BindingsActivate(object gextras.Objector, keyval uint, modifiers gdk.Modifi
 
 // BindingsActivateEvent looks up key bindings for @object to find one matching
 // @event, and if one was found, activate it.
-func BindingsActivateEvent(object gextras.Objector, event *gdk.EventKey) bool {
+func BindingsActivateEvent(object gextras.Objector, event gdk.EventKey) bool {
 	var _arg1 *C.GObject     // out
 	var _arg2 *C.GdkEventKey // out
 	var _cret C.gboolean     // in
 
 	_arg1 = (*C.GObject)(unsafe.Pointer(object.Native()))
-	_arg2 = (*C.GdkEventKey)(unsafe.Pointer(event.Native()))
+	_arg2 = (*C.GdkEventKey)(unsafe.Pointer(event))
 
 	_cret = C.gtk_bindings_activate_event(_arg1, _arg2)
 
@@ -61,9 +61,11 @@ func BindingsActivateEvent(object gextras.Objector, event *gdk.EventKey) bool {
 	return _ok
 }
 
-// BindingArg: a BindingArg holds the data associated with an argument for a key
-// binding signal emission as stored in BindingSignal.
-type BindingArg C.GtkBindingArg
+// BindingArg holds the data associated with an argument for a key binding
+// signal emission as stored in BindingSignal.
+type BindingArg struct {
+	native C.GtkBindingArg
+}
 
 // WrapBindingArg wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -73,12 +75,14 @@ func WrapBindingArg(ptr unsafe.Pointer) *BindingArg {
 
 // Native returns the underlying C source pointer.
 func (b *BindingArg) Native() unsafe.Pointer {
-	return unsafe.Pointer(b)
+	return unsafe.Pointer(&b.native)
 }
 
 // BindingEntry: each key binding element of a binding sets binding list is
 // represented by a GtkBindingEntry.
-type BindingEntry C.GtkBindingEntry
+type BindingEntry struct {
+	native C.GtkBindingEntry
+}
 
 // WrapBindingEntry wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -88,12 +92,14 @@ func WrapBindingEntry(ptr unsafe.Pointer) *BindingEntry {
 
 // Native returns the underlying C source pointer.
 func (b *BindingEntry) Native() unsafe.Pointer {
-	return unsafe.Pointer(b)
+	return unsafe.Pointer(&b.native)
 }
 
-// BindingSignal: a GtkBindingSignal stores the necessary information to
-// activate a widget in response to a key press via a signal emission.
-type BindingSignal C.GtkBindingSignal
+// BindingSignal stores the necessary information to activate a widget in
+// response to a key press via a signal emission.
+type BindingSignal struct {
+	native C.GtkBindingSignal
+}
 
 // WrapBindingSignal wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -103,5 +109,5 @@ func WrapBindingSignal(ptr unsafe.Pointer) *BindingSignal {
 
 // Native returns the underlying C source pointer.
 func (b *BindingSignal) Native() unsafe.Pointer {
-	return unsafe.Pointer(b)
+	return unsafe.Pointer(&b.native)
 }

@@ -36,18 +36,27 @@ func init() {
 type ProxyAddress interface {
 	InetSocketAddress
 
+	// AsSocketConnectable casts the class to the SocketConnectable interface.
+	AsSocketConnectable() SocketConnectable
+
+	// DestinationHostname gets @proxy's destination hostname; that is, the name
+	// of the host that will be connected to via the proxy, not the name of the
+	// proxy itself.
 	DestinationHostname() string
-
+	// DestinationPort gets @proxy's destination port; that is, the port on the
+	// destination host that will be connected to via the proxy, not the port
+	// number of the proxy itself.
 	DestinationPort() uint16
-
+	// DestinationProtocol gets the protocol that is being spoken to the
+	// destination server; eg, "http" or "ftp".
 	DestinationProtocol() string
-
+	// Password gets @proxy's password.
 	Password() string
-
+	// Protocol gets @proxy's protocol. eg, "socks" or "http"
 	Protocol() string
-
+	// URI gets the proxy URI that @proxy was constructed from.
 	URI() string
-
+	// Username gets @proxy's username.
 	Username() string
 }
 
@@ -70,6 +79,12 @@ func marshalProxyAddress(p uintptr) (interface{}, error) {
 	return WrapProxyAddress(obj), nil
 }
 
+// NewProxyAddress creates a new Address for @inetaddr with @protocol that
+// should tunnel through @dest_hostname and @dest_port.
+//
+// (Note that this method doesn't set the Address:uri or
+// Address:destination-protocol fields; use g_object_new() directly if you want
+// to set those.)
 func NewProxyAddress(inetaddr InetAddress, port uint16, protocol string, destHostname string, destPort uint16, username string, password string) ProxyAddress {
 	var _arg1 *C.GInetAddress   // out
 	var _arg2 C.guint16         // out
@@ -96,7 +111,7 @@ func NewProxyAddress(inetaddr InetAddress, port uint16, protocol string, destHos
 
 	var _proxyAddress ProxyAddress // out
 
-	_proxyAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(ProxyAddress)
+	_proxyAddress = WrapProxyAddress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _proxyAddress
 }
@@ -206,14 +221,6 @@ func (p proxyAddress) Username() string {
 	return _utf8
 }
 
-func (c proxyAddress) Enumerate() SocketAddressEnumerator {
-	return WrapSocketConnectable(gextras.InternObject(c)).Enumerate()
-}
-
-func (c proxyAddress) ProxyEnumerate() SocketAddressEnumerator {
-	return WrapSocketConnectable(gextras.InternObject(c)).ProxyEnumerate()
-}
-
-func (c proxyAddress) String() string {
-	return WrapSocketConnectable(gextras.InternObject(c)).String()
+func (p proxyAddress) AsSocketConnectable() SocketConnectable {
+	return WrapSocketConnectable(gextras.InternObject(p))
 }

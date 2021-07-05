@@ -52,8 +52,7 @@ const (
 	DragProtocolMotif DragProtocol = 1
 	// xdnd: the Xdnd protocol.
 	DragProtocolXdnd DragProtocol = 2
-	// rootwin: an extension to the Xdnd protocol for unclaimed root window
-	// drops.
+	// rootwin: extension to the Xdnd protocol for unclaimed root window drops.
 	DragProtocolRootwin DragProtocol = 3
 	// Win32Dropfiles: the simple WM_DROPFILES protocol.
 	DragProtocolWin32Dropfiles DragProtocol = 4
@@ -174,13 +173,13 @@ func DragDropSucceeded(context DragContext) bool {
 // This function is called by the drag source to obtain the @dest_window and
 // @protocol parameters for gdk_drag_motion().
 func DragFindWindowForScreen(context DragContext, dragWindow Window, screen Screen, xRoot int, yRoot int) (Window, DragProtocol) {
-	var _arg1 *C.GdkDragContext // out
-	var _arg2 *C.GdkWindow      // out
-	var _arg3 *C.GdkScreen      // out
-	var _arg4 C.gint            // out
-	var _arg5 C.gint            // out
-	var _arg6 *C.GdkWindow      // in
-	var _arg7 C.GdkDragProtocol // in
+	var _arg1 *C.GdkDragContext  // out
+	var _arg2 *C.GdkWindow       // out
+	var _arg3 *C.GdkScreen       // out
+	var _arg4 C.gint             // out
+	var _arg5 C.gint             // out
+	var _arg6 **C.GdkWindow      // in
+	var _arg7 *C.GdkDragProtocol // in
 
 	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
 	_arg2 = (*C.GdkWindow)(unsafe.Pointer(dragWindow.Native()))
@@ -193,36 +192,28 @@ func DragFindWindowForScreen(context DragContext, dragWindow Window, screen Scre
 	var _destWindow Window     // out
 	var _protocol DragProtocol // out
 
-	_destWindow = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_arg6))).(Window)
-	_protocol = DragProtocol(_arg7)
-
-	return _destWindow, _protocol
-}
-
-// DragGetSelection returns the selection atom for the current source window.
-func DragGetSelection(context DragContext) *Atom {
-	var _arg1 *C.GdkDragContext // out
-	var _cret C.GdkAtom         // in
-
-	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
-
-	_cret = C.gdk_drag_get_selection(_arg1)
-
-	var _atom *Atom // out
-
 	{
-		var refTmpIn *C.GdkAtom
-		var refTmpOut *Atom
+		var refTmpIn *C.GdkWindow
+		var refTmpOut window
 
-		in0 := &_cret
-		refTmpIn = in0
+		refTmpIn = *_arg6
 
-		refTmpOut = (*Atom)(unsafe.Pointer(refTmpIn))
+		refTmpOut = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(refTmpIn))).(window)
 
-		_atom = refTmpOut
+		_destWindow = refTmpOut
+	}
+	{
+		var refTmpIn C.GdkDragProtocol
+		var refTmpOut DragProtocol
+
+		refTmpIn = *_arg7
+
+		refTmpOut = DragProtocol(refTmpIn)
+
+		_protocol = refTmpOut
 	}
 
-	return _atom
+	return _destWindow, _protocol
 }
 
 // DragMotion updates the drag context when the pointer moves or the set of

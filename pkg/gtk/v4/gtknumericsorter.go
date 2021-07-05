@@ -29,12 +29,22 @@ func init() {
 type NumericSorter interface {
 	Sorter
 
+	// Expression gets the expression that is evaluated to obtain numbers from
+	// items.
 	Expression() Expression
-
+	// SortOrder gets whether this sorter will sort smaller numbers first.
 	SortOrder() SortType
-
+	// SetExpressionNumericSorter sets the expression that is evaluated to
+	// obtain numbers from items.
+	//
+	// Unless an expression is set on @self, the sorter will always compare
+	// items as invalid.
+	//
+	// The expression must have a return type that can be compared numerically,
+	// such as G_TYPE_INT or G_TYPE_DOUBLE.
 	SetExpressionNumericSorter(expression Expression)
-
+	// SetSortOrderNumericSorter sets whether to sort smaller numbers before
+	// larger ones.
 	SetSortOrderNumericSorter(sortOrder SortType)
 }
 
@@ -57,6 +67,10 @@ func marshalNumericSorter(p uintptr) (interface{}, error) {
 	return WrapNumericSorter(obj), nil
 }
 
+// NewNumericSorter creates a new numeric sorter using the given @expression.
+//
+// Smaller numbers will be sorted first. You can call
+// [method@Gtk.NumericSorter.set_sort_order] to change this.
 func NewNumericSorter(expression Expression) NumericSorter {
 	var _arg1 *C.GtkExpression    // out
 	var _cret *C.GtkNumericSorter // in
@@ -67,7 +81,7 @@ func NewNumericSorter(expression Expression) NumericSorter {
 
 	var _numericSorter NumericSorter // out
 
-	_numericSorter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(NumericSorter)
+	_numericSorter = WrapNumericSorter(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _numericSorter
 }

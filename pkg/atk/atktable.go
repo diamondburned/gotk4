@@ -49,61 +49,84 @@ func init() {
 type Table interface {
 	gextras.Objector
 
-	// AddColumnSelection sets the summary description of the table.
+	// AddColumnSelection adds the specified @column to the selection.
 	AddColumnSelection(column int) bool
-	// AddRowSelection sets the summary description of the table.
+	// AddRowSelection adds the specified @row to the selection.
 	AddRowSelection(row int) bool
-	// Caption sets the summary description of the table.
+	// Caption gets the caption for the @table.
 	Caption() Object
-	// ColumnAtIndex sets the summary description of the table.
+	// ColumnAtIndex gets a #gint representing the column at the specified
+	// @index_.
+	//
+	// Deprecated: since version .
 	ColumnAtIndex(index_ int) int
-	// ColumnDescription sets the summary description of the table.
+	// ColumnDescription gets the description text of the specified @column in
+	// the table
 	ColumnDescription(column int) string
-	// ColumnExtentAt sets the summary description of the table.
+	// ColumnExtentAt gets the number of columns occupied by the accessible
+	// object at the specified @row and @column in the @table.
 	ColumnExtentAt(row int, column int) int
-	// ColumnHeader sets the summary description of the table.
+	// ColumnHeader gets the column header of a specified column in an
+	// accessible table.
 	ColumnHeader(column int) Object
-	// IndexAt sets the summary description of the table.
+	// IndexAt gets a #gint representing the index at the specified @row and
+	// @column.
+	//
+	// Deprecated: since version .
 	IndexAt(row int, column int) int
-	// NColumns sets the summary description of the table.
+	// NColumns gets the number of columns in the table.
 	NColumns() int
-	// NRows sets the summary description of the table.
+	// NRows gets the number of rows in the table.
 	NRows() int
-	// RowAtIndex sets the summary description of the table.
+	// RowAtIndex gets a #gint representing the row at the specified @index_.
+	//
+	// Deprecated: since version .
 	RowAtIndex(index_ int) int
-	// RowDescription sets the summary description of the table.
+	// RowDescription gets the description text of the specified row in the
+	// table
 	RowDescription(row int) string
-	// RowExtentAt sets the summary description of the table.
+	// RowExtentAt gets the number of rows occupied by the accessible object at
+	// a specified @row and @column in the @table.
 	RowExtentAt(row int, column int) int
-	// RowHeader sets the summary description of the table.
+	// RowHeader gets the row header of a specified row in an accessible table.
 	RowHeader(row int) Object
-	// SelectedColumns sets the summary description of the table.
-	SelectedColumns(selected **int) int
-	// SelectedRows sets the summary description of the table.
-	SelectedRows(selected **int) int
-	// Summary sets the summary description of the table.
+	// SelectedColumns gets the selected columns of the table by initializing
+	// **selected with the selected column numbers. This array should be freed
+	// by the caller.
+	SelectedColumns(selected *int) int
+	// SelectedRows gets the selected rows of the table by initializing
+	// **selected with the selected row numbers. This array should be freed by
+	// the caller.
+	SelectedRows(selected *int) int
+	// Summary gets the summary description of the table.
 	Summary() Object
-	// IsColumnSelected sets the summary description of the table.
+	// IsColumnSelected gets a boolean value indicating whether the specified
+	// @column is selected
 	IsColumnSelected(column int) bool
-	// IsRowSelected sets the summary description of the table.
+	// IsRowSelected gets a boolean value indicating whether the specified @row
+	// is selected
 	IsRowSelected(row int) bool
-	// IsSelected sets the summary description of the table.
+	// IsSelected gets a boolean value indicating whether the accessible object
+	// at the specified @row and @column is selected
 	IsSelected(row int, column int) bool
-	// RefAt sets the summary description of the table.
+	// RefAt: get a reference to the table cell at @row, @column. This cell
+	// should implement the interface TableCell
 	RefAt(row int, column int) Object
-	// RemoveColumnSelection sets the summary description of the table.
+	// RemoveColumnSelection adds the specified @column to the selection.
 	RemoveColumnSelection(column int) bool
-	// RemoveRowSelection sets the summary description of the table.
+	// RemoveRowSelection removes the specified @row from the selection.
 	RemoveRowSelection(row int) bool
-	// SetCaption sets the summary description of the table.
+	// SetCaption sets the caption for the table.
 	SetCaption(caption Object)
-	// SetColumnDescription sets the summary description of the table.
+	// SetColumnDescription sets the description text for the specified @column
+	// of the @table.
 	SetColumnDescription(column int, description string)
-	// SetColumnHeader sets the summary description of the table.
+	// SetColumnHeader sets the specified column header to @header.
 	SetColumnHeader(column int, header Object)
-	// SetRowDescription sets the summary description of the table.
+	// SetRowDescription sets the description text for the specified @row of
+	// @table.
 	SetRowDescription(row int, description string)
-	// SetRowHeader sets the summary description of the table.
+	// SetRowHeader sets the specified row header to @header.
 	SetRowHeader(row int, header Object)
 	// SetSummary sets the summary description of the table.
 	SetSummary(accessible Object)
@@ -372,7 +395,7 @@ func (t table) RowHeader(row int) Object {
 	return _object
 }
 
-func (t table) SelectedColumns(selected **int) int {
+func (t table) SelectedColumns(selected *int) int {
 	var _arg0 *C.AtkTable // out
 	var _arg1 **C.gint    // out
 	var _cret C.gint      // in
@@ -389,7 +412,7 @@ func (t table) SelectedColumns(selected **int) int {
 	return _gint
 }
 
-func (t table) SelectedRows(selected **int) int {
+func (t table) SelectedRows(selected *int) int {
 	var _arg0 *C.AtkTable // out
 	var _arg1 **C.gint    // out
 	var _cret C.gint      // in

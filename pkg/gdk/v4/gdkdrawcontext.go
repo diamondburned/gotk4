@@ -35,16 +35,60 @@ func init() {
 type DrawContext interface {
 	gextras.Objector
 
-	BeginFrameDrawContext(region *cairo.Region)
-
+	// BeginFrameDrawContext indicates that you are beginning the process of
+	// redrawing @region on the @context's surface.
+	//
+	// Calling this function begins a drawing operation using @context on the
+	// surface that @context was created from. The actual requirements and
+	// guarantees for the drawing operation vary for different implementations
+	// of drawing, so a [class@Gdk.CairoContext] and a [class@Gdk.GLContext]
+	// need to be treated differently.
+	//
+	// A call to this function is a requirement for drawing and must be followed
+	// by a call to [method@Gdk.DrawContext.end_frame], which will complete the
+	// drawing operation and ensure the contents become visible on screen.
+	//
+	// Note that the @region passed to this function is the minimum region that
+	// needs to be drawn and depending on implementation, windowing system and
+	// hardware in use, it might be necessary to draw a larger region. Drawing
+	// implementation must use [method@Gdk.DrawContext.get_frame_region() to
+	// query the region that must be drawn.
+	//
+	// When using GTK, the widget system automatically places calls to
+	// gdk_draw_context_begin_frame() and gdk_draw_context_end_frame() via the
+	// use of [class@Gsk.Renderer]s, so application code does not need to call
+	// these functions explicitly.
+	BeginFrameDrawContext(region cairo.Region)
+	// EndFrameDrawContext ends a drawing operation started with
+	// gdk_draw_context_begin_frame().
+	//
+	// This makes the drawing available on screen. See
+	// [method@Gdk.DrawContext.begin_frame] for more details about drawing.
+	//
+	// When using a [class@Gdk.GLContext], this function may call `glFlush()`
+	// implicitly before returning; it is not recommended to call `glFlush()`
+	// explicitly before calling this function.
 	EndFrameDrawContext()
-
+	// Display retrieves the `GdkDisplay` the @context is created for
 	Display() Display
-
-	FrameRegion() *cairo.Region
-
+	// FrameRegion retrieves the region that is currently being repainted.
+	//
+	// After a call to [method@Gdk.DrawContext.begin_frame] this function will
+	// return a union of the region passed to that function and the area of the
+	// surface that the @context determined needs to be repainted.
+	//
+	// If @context is not in between calls to
+	// [method@Gdk.DrawContext.begin_frame] and
+	// [method@Gdk.DrawContext.end_frame], nil will be returned.
+	FrameRegion() cairo.Region
+	// Surface retrieves the surface that @context is bound to.
 	Surface() Surface
-
+	// IsInFrameDrawContext returns true if @context is in the process of
+	// drawing to its surface.
+	//
+	// This is the case between calls to [method@Gdk.DrawContext.begin_frame]
+	// and [method@Gdk.DrawContext.end_frame]. In this situation, drawing
+	// commands may be effecting the contents of the @context's surface.
 	IsInFrameDrawContext() bool
 }
 
@@ -67,12 +111,12 @@ func marshalDrawContext(p uintptr) (interface{}, error) {
 	return WrapDrawContext(obj), nil
 }
 
-func (c drawContext) BeginFrameDrawContext(region *cairo.Region) {
+func (c drawContext) BeginFrameDrawContext(region cairo.Region) {
 	var _arg0 *C.GdkDrawContext // out
 	var _arg1 *C.cairo_region_t // out
 
 	_arg0 = (*C.GdkDrawContext)(unsafe.Pointer(c.Native()))
-	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
+	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region))
 
 	C.gdk_draw_context_begin_frame(_arg0, _arg1)
 }
@@ -100,7 +144,7 @@ func (c drawContext) Display() Display {
 	return _display
 }
 
-func (c drawContext) FrameRegion() *cairo.Region {
+func (c drawContext) FrameRegion() cairo.Region {
 	var _arg0 *C.GdkDrawContext // out
 	var _cret *C.cairo_region_t // in
 
@@ -108,9 +152,9 @@ func (c drawContext) FrameRegion() *cairo.Region {
 
 	_cret = C.gdk_draw_context_get_frame_region(_arg0)
 
-	var _region *cairo.Region // out
+	var _region cairo.Region // out
 
-	_region = (*cairo.Region)(unsafe.Pointer(_cret))
+	_region = (cairo.Region)(unsafe.Pointer(_cret))
 
 	return _region
 }

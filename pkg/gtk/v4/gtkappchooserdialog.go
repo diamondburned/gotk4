@@ -6,8 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/gdk/v4"
-	"github.com/diamondburned/gotk4/pkg/gsk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -38,12 +36,30 @@ func init() {
 // [method@Gtk.AppChooserDialog.set_heading].
 type AppChooserDialog interface {
 	Dialog
-	AppChooser
 
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsAppChooser casts the class to the AppChooser interface.
+	AsAppChooser() AppChooser
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
+	// AsNative casts the class to the Native interface.
+	AsNative() Native
+	// AsRoot casts the class to the Root interface.
+	AsRoot() Root
+	// AsShortcutManager casts the class to the ShortcutManager interface.
+	AsShortcutManager() ShortcutManager
+
+	// Heading returns the text to display at the top of the dialog.
 	Heading() string
-
+	// Widget returns the `GtkAppChooserWidget` of this dialog.
 	Widget() Widget
-
+	// SetHeadingAppChooserDialog sets the text to display at the top of the
+	// dialog.
+	//
+	// If the heading is not set, the dialog displays a default text.
 	SetHeadingAppChooserDialog(heading string)
 }
 
@@ -66,6 +82,10 @@ func marshalAppChooserDialog(p uintptr) (interface{}, error) {
 	return WrapAppChooserDialog(obj), nil
 }
 
+// NewAppChooserDialogForContentType creates a new `GtkAppChooserDialog` for the
+// provided content type.
+//
+// The dialog will show applications that can open the content type.
 func NewAppChooserDialogForContentType(parent Window, flags DialogFlags, contentType string) AppChooserDialog {
 	var _arg1 *C.GtkWindow     // out
 	var _arg2 C.GtkDialogFlags // out
@@ -81,7 +101,7 @@ func NewAppChooserDialogForContentType(parent Window, flags DialogFlags, content
 
 	var _appChooserDialog AppChooserDialog // out
 
-	_appChooserDialog = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(AppChooserDialog)
+	_appChooserDialog = WrapAppChooserDialog(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _appChooserDialog
 }
@@ -127,106 +147,30 @@ func (s appChooserDialog) SetHeadingAppChooserDialog(heading string) {
 	C.gtk_app_chooser_dialog_set_heading(_arg0, _arg1)
 }
 
-func (s appChooserDialog) Display() gdk.Display {
-	return WrapRoot(gextras.InternObject(s)).Display()
+func (a appChooserDialog) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(a))
 }
 
-func (s appChooserDialog) Focus() Widget {
-	return WrapRoot(gextras.InternObject(s)).Focus()
+func (a appChooserDialog) AsAppChooser() AppChooser {
+	return WrapAppChooser(gextras.InternObject(a))
 }
 
-func (s appChooserDialog) SetFocus(focus Widget) {
-	WrapRoot(gextras.InternObject(s)).SetFocus(focus)
+func (a appChooserDialog) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(a))
 }
 
-func (s appChooserDialog) Renderer() gsk.Renderer {
-	return WrapNative(gextras.InternObject(s)).Renderer()
+func (a appChooserDialog) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(a))
 }
 
-func (s appChooserDialog) Surface() gdk.Surface {
-	return WrapNative(gextras.InternObject(s)).Surface()
+func (a appChooserDialog) AsNative() Native {
+	return WrapNative(gextras.InternObject(a))
 }
 
-func (s appChooserDialog) SurfaceTransform() (x float64, y float64) {
-	return WrapNative(gextras.InternObject(s)).SurfaceTransform()
+func (a appChooserDialog) AsRoot() Root {
+	return WrapRoot(gextras.InternObject(a))
 }
 
-func (s appChooserDialog) Realize() {
-	WrapNative(gextras.InternObject(s)).Realize()
-}
-
-func (s appChooserDialog) Unrealize() {
-	WrapNative(gextras.InternObject(s)).Unrealize()
-}
-
-func (s appChooserDialog) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
-}
-
-func (s appChooserDialog) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
-}
-
-func (s appChooserDialog) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
-}
-
-func (s appChooserDialog) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s appChooserDialog) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s appChooserDialog) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s appChooserDialog) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b appChooserDialog) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
-}
-
-func (s appChooserDialog) ContentType() string {
-	return WrapAppChooser(gextras.InternObject(s)).ContentType()
-}
-
-func (s appChooserDialog) Refresh() {
-	WrapAppChooser(gextras.InternObject(s)).Refresh()
-}
-
-func (s appChooserDialog) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
-}
-
-func (s appChooserDialog) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
-}
-
-func (s appChooserDialog) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
-}
-
-func (s appChooserDialog) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s appChooserDialog) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s appChooserDialog) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s appChooserDialog) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b appChooserDialog) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
+func (a appChooserDialog) AsShortcutManager() ShortcutManager {
+	return WrapShortcutManager(gextras.InternObject(a))
 }

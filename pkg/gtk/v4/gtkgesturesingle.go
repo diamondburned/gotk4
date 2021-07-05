@@ -40,20 +40,40 @@ func init() {
 type GestureSingle interface {
 	Gesture
 
+	// Button returns the button number @gesture listens for.
+	//
+	// If this is 0, the gesture reacts to any button press.
 	Button() uint
-
+	// CurrentButton returns the button number currently interacting with
+	// @gesture, or 0 if there is none.
 	CurrentButton() uint
-
-	CurrentSequence() *gdk.EventSequence
-
+	// CurrentSequence returns the event sequence currently interacting with
+	// @gesture.
+	//
+	// This is only meaningful if [method@Gtk.Gesture.is_active] returns true.
+	CurrentSequence() gdk.EventSequence
+	// Exclusive gets whether a gesture is exclusive.
+	//
+	// For more information, see [method@Gtk.GestureSingle.set_exclusive].
 	Exclusive() bool
-
+	// TouchOnly returns true if the gesture is only triggered by touch events.
 	TouchOnly() bool
-
+	// SetButtonGestureSingle sets the button number @gesture listens to.
+	//
+	// If non-0, every button press from a different button number will be
+	// ignored. Touch events implicitly match with button 1.
 	SetButtonGestureSingle(button uint)
-
+	// SetExclusiveGestureSingle sets whether @gesture is exclusive.
+	//
+	// An exclusive gesture will only handle pointer and "pointer emulated"
+	// touch events, so at any given time, there is only one sequence able to
+	// interact with those.
 	SetExclusiveGestureSingle(exclusive bool)
-
+	// SetTouchOnlyGestureSingle sets whether to handle only touch events.
+	//
+	// If @touch_only is true, @gesture will only handle events of type
+	// GDK_TOUCH_BEGIN, GDK_TOUCH_UPDATE or GDK_TOUCH_END. If false, mouse
+	// events will be handled too.
 	SetTouchOnlyGestureSingle(touchOnly bool)
 }
 
@@ -106,7 +126,7 @@ func (g gestureSingle) CurrentButton() uint {
 	return _guint
 }
 
-func (g gestureSingle) CurrentSequence() *gdk.EventSequence {
+func (g gestureSingle) CurrentSequence() gdk.EventSequence {
 	var _arg0 *C.GtkGestureSingle // out
 	var _cret *C.GdkEventSequence // in
 
@@ -114,10 +134,10 @@ func (g gestureSingle) CurrentSequence() *gdk.EventSequence {
 
 	_cret = C.gtk_gesture_single_get_current_sequence(_arg0)
 
-	var _eventSequence *gdk.EventSequence // out
+	var _eventSequence gdk.EventSequence // out
 
-	_eventSequence = (*gdk.EventSequence)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(&_eventSequence, func(v **gdk.EventSequence) {
+	_eventSequence = (gdk.EventSequence)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_eventSequence, func(v gdk.EventSequence) {
 		C.free(unsafe.Pointer(v))
 	})
 

@@ -27,12 +27,22 @@ func init() {
 type EventControllerKey interface {
 	EventController
 
+	// ForwardEventControllerKey forwards the current event of this @controller
+	// to a @widget.
+	//
+	// This function can only be used in handlers for the
+	// [signal@Gtk.EventControllerKey::key-pressed],
+	// [signal@Gtk.EventControllerKey::key-released] or
+	// [signal@Gtk.EventControllerKey::modifiers] signals.
 	ForwardEventControllerKey(widget Widget) bool
-
+	// Group gets the key group of the current event of this @controller.
+	//
+	// See [method@Gdk.KeyEvent.get_layout].
 	Group() uint
-
+	// ImContext gets the input method context of the key @controller.
 	ImContext() IMContext
-
+	// SetImContextEventControllerKey sets the input method context of the key
+	// @controller.
 	SetImContextEventControllerKey(imContext IMContext)
 }
 
@@ -55,6 +65,8 @@ func marshalEventControllerKey(p uintptr) (interface{}, error) {
 	return WrapEventControllerKey(obj), nil
 }
 
+// NewEventControllerKey creates a new event controller that will handle key
+// events.
 func NewEventControllerKey() EventControllerKey {
 	var _cret *C.GtkEventController // in
 
@@ -62,7 +74,7 @@ func NewEventControllerKey() EventControllerKey {
 
 	var _eventControllerKey EventControllerKey // out
 
-	_eventControllerKey = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(EventControllerKey)
+	_eventControllerKey = WrapEventControllerKey(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _eventControllerKey
 }

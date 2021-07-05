@@ -479,6 +479,9 @@ func (repos Repositories) FindFullType(fullType string) *TypeFindResult {
 
 func (repos Repositories) findFullType(fullType string) *TypeFindResult {
 	vNamespace, typ := SplitGIRType(fullType)
+	if vNamespace == "" {
+		log.Panicf("type %q empty namespace", fullType)
+	}
 
 	r := TypeFindResult{NamespaceFindResult: repos.FindNamespace(vNamespace)}
 	if r.NamespaceFindResult == nil {

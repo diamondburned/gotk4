@@ -5,9 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -26,9 +24,8 @@ func init() {
 	})
 }
 
-// ToggleButton: a ToggleButton is a Button which will remain “pressed-in” when
-// clicked. Clicking again will cause the toggle button to return to its normal
-// state.
+// ToggleButton is a Button which will remain “pressed-in” when clicked.
+// Clicking again will cause the toggle button to return to its normal state.
 //
 // A toggle button is created by calling either gtk_toggle_button_new() or
 // gtk_toggle_button_new_with_label(). If using the former, it is advisable to
@@ -89,18 +86,50 @@ func init() {
 type ToggleButton interface {
 	Button
 
+	// AsActionable casts the class to the Actionable interface.
+	AsActionable() Actionable
+	// AsActivatable casts the class to the Activatable interface.
+	AsActivatable() Activatable
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+
+	// Active queries a ToggleButton and returns its current state. Returns true
+	// if the toggle button is pressed in and false if it is raised.
 	Active() bool
-
+	// Inconsistent gets the value set by gtk_toggle_button_set_inconsistent().
 	Inconsistent() bool
-
+	// Mode retrieves whether the button is displayed as a separate indicator
+	// and label. See gtk_toggle_button_set_mode().
 	Mode() bool
-
+	// SetActiveToggleButton sets the status of the toggle button. Set to true
+	// if you want the GtkToggleButton to be “pressed in”, and false to raise
+	// it. This action causes the ToggleButton::toggled signal and the
+	// Button::clicked signal to be emitted.
 	SetActiveToggleButton(isActive bool)
-
+	// SetInconsistentToggleButton: if the user has selected a range of elements
+	// (such as some text or spreadsheet cells) that are affected by a toggle
+	// button, and the current values in that range are inconsistent, you may
+	// want to display the toggle in an “in between” state. This function turns
+	// on “in between” display. Normally you would turn off the inconsistent
+	// state again if the user toggles the toggle button. This has to be done
+	// manually, gtk_toggle_button_set_inconsistent() only affects visual
+	// appearance, it doesn’t affect the semantics of the button.
 	SetInconsistentToggleButton(setting bool)
-
+	// SetModeToggleButton sets whether the button is displayed as a separate
+	// indicator and label. You can call this function on a checkbutton or a
+	// radiobutton with @draw_indicator = false to make the button look like a
+	// normal button.
+	//
+	// This can be used to create linked strip of buttons that work like a
+	// StackSwitcher.
+	//
+	// This function only affects instances of classes like CheckButton and
+	// RadioButton that derive from ToggleButton, not instances of ToggleButton
+	// itself.
 	SetModeToggleButton(drawIndicator bool)
-
+	// ToggledToggleButton emits the ToggleButton::toggled signal on the
+	// ToggleButton. There is no good reason for an application ever to call
+	// this function.
 	ToggledToggleButton()
 }
 
@@ -123,6 +152,8 @@ func marshalToggleButton(p uintptr) (interface{}, error) {
 	return WrapToggleButton(obj), nil
 }
 
+// NewToggleButton creates a new toggle button. A widget should be packed into
+// the button, as in gtk_button_new().
 func NewToggleButton() ToggleButton {
 	var _cret *C.GtkWidget // in
 
@@ -130,11 +161,12 @@ func NewToggleButton() ToggleButton {
 
 	var _toggleButton ToggleButton // out
 
-	_toggleButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ToggleButton)
+	_toggleButton = WrapToggleButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _toggleButton
 }
 
+// NewToggleButtonWithLabel creates a new toggle button with a text label.
 func NewToggleButtonWithLabel(label string) ToggleButton {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -146,11 +178,14 @@ func NewToggleButtonWithLabel(label string) ToggleButton {
 
 	var _toggleButton ToggleButton // out
 
-	_toggleButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ToggleButton)
+	_toggleButton = WrapToggleButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _toggleButton
 }
 
+// NewToggleButtonWithMnemonic creates a new ToggleButton containing a label.
+// The label will be created using gtk_label_new_with_mnemonic(), so underscores
+// in @label indicate the mnemonic for the button.
 func NewToggleButtonWithMnemonic(label string) ToggleButton {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -162,7 +197,7 @@ func NewToggleButtonWithMnemonic(label string) ToggleButton {
 
 	var _toggleButton ToggleButton // out
 
-	_toggleButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ToggleButton)
+	_toggleButton = WrapToggleButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _toggleButton
 }
@@ -262,126 +297,14 @@ func (t toggleButton) ToggledToggleButton() {
 	C.gtk_toggle_button_toggled(_arg0)
 }
 
-func (b toggleButton) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+func (t toggleButton) AsActionable() Actionable {
+	return WrapActionable(gextras.InternObject(t))
 }
 
-func (b toggleButton) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+func (t toggleButton) AsActivatable() Activatable {
+	return WrapActivatable(gextras.InternObject(t))
 }
 
-func (b toggleButton) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b toggleButton) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b toggleButton) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b toggleButton) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b toggleButton) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b toggleButton) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b toggleButton) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b toggleButton) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (a toggleButton) ActionName() string {
-	return WrapActionable(gextras.InternObject(a)).ActionName()
-}
-
-func (a toggleButton) ActionTargetValue() *glib.Variant {
-	return WrapActionable(gextras.InternObject(a)).ActionTargetValue()
-}
-
-func (a toggleButton) SetActionName(actionName string) {
-	WrapActionable(gextras.InternObject(a)).SetActionName(actionName)
-}
-
-func (a toggleButton) SetActionTargetValue(targetValue *glib.Variant) {
-	WrapActionable(gextras.InternObject(a)).SetActionTargetValue(targetValue)
-}
-
-func (a toggleButton) SetDetailedActionName(detailedActionName string) {
-	WrapActionable(gextras.InternObject(a)).SetDetailedActionName(detailedActionName)
-}
-
-func (b toggleButton) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
-}
-
-func (b toggleButton) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b toggleButton) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b toggleButton) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b toggleButton) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b toggleButton) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b toggleButton) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b toggleButton) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b toggleButton) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b toggleButton) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (a toggleButton) DoSetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).DoSetRelatedAction(action)
-}
-
-func (a toggleButton) RelatedAction() Action {
-	return WrapActivatable(gextras.InternObject(a)).RelatedAction()
-}
-
-func (a toggleButton) UseActionAppearance() bool {
-	return WrapActivatable(gextras.InternObject(a)).UseActionAppearance()
-}
-
-func (a toggleButton) SetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SetRelatedAction(action)
-}
-
-func (a toggleButton) SetUseActionAppearance(useAppearance bool) {
-	WrapActivatable(gextras.InternObject(a)).SetUseActionAppearance(useAppearance)
-}
-
-func (a toggleButton) SyncActionProperties(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SyncActionProperties(action)
+func (t toggleButton) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(t))
 }

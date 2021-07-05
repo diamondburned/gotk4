@@ -39,50 +39,44 @@ func init() {
 type Actionable interface {
 	Widget
 
-	// ActionName sets the action-name and associated string target value of an
-	// actionable widget.
+	// ActionName gets the action name for @actionable.
 	//
-	// @detailed_action_name is a string in the format accepted by
-	// g_action_parse_detailed_name().
-	//
-	// (Note that prior to version 3.22.25, this function is only usable for
-	// actions with a simple "s" target, and @detailed_action_name must be of
-	// the form `"action::target"` where `action` is the action name and
-	// `target` is the string to use as the target.)
+	// See gtk_actionable_set_action_name() for more information.
 	ActionName() string
-	// ActionTargetValue sets the action-name and associated string target value
-	// of an actionable widget.
+	// ActionTargetValue gets the current target value of @actionable.
 	//
-	// @detailed_action_name is a string in the format accepted by
-	// g_action_parse_detailed_name().
+	// See gtk_actionable_set_action_target_value() for more information.
+	ActionTargetValue() glib.Variant
+	// SetActionName specifies the name of the action with which this widget
+	// should be associated. If @action_name is nil then the widget will be
+	// unassociated from any previous action.
 	//
-	// (Note that prior to version 3.22.25, this function is only usable for
-	// actions with a simple "s" target, and @detailed_action_name must be of
-	// the form `"action::target"` where `action` is the action name and
-	// `target` is the string to use as the target.)
-	ActionTargetValue() *glib.Variant
-	// SetActionName sets the action-name and associated string target value of
-	// an actionable widget.
+	// Usually this function is used when the widget is located (or will be
+	// located) within the hierarchy of a ApplicationWindow.
 	//
-	// @detailed_action_name is a string in the format accepted by
-	// g_action_parse_detailed_name().
-	//
-	// (Note that prior to version 3.22.25, this function is only usable for
-	// actions with a simple "s" target, and @detailed_action_name must be of
-	// the form `"action::target"` where `action` is the action name and
-	// `target` is the string to use as the target.)
+	// Names are of the form “win.save” or “app.quit” for actions on the
+	// containing ApplicationWindow or its associated Application, respectively.
+	// This is the same form used for actions in the #GMenu associated with the
+	// window.
 	SetActionName(actionName string)
-	// SetActionTargetValue sets the action-name and associated string target
-	// value of an actionable widget.
+	// SetActionTargetValue sets the target value of an actionable widget.
 	//
-	// @detailed_action_name is a string in the format accepted by
-	// g_action_parse_detailed_name().
+	// If @target_value is nil then the target value is unset.
 	//
-	// (Note that prior to version 3.22.25, this function is only usable for
-	// actions with a simple "s" target, and @detailed_action_name must be of
-	// the form `"action::target"` where `action` is the action name and
-	// `target` is the string to use as the target.)
-	SetActionTargetValue(targetValue *glib.Variant)
+	// The target value has two purposes. First, it is used as the parameter to
+	// activation of the action associated with the Actionable widget. Second,
+	// it is used to determine if the widget should be rendered as “active” —
+	// the widget is active if the state is equal to the given target.
+	//
+	// Consider the example of associating a set of buttons with a #GAction with
+	// string state in a typical “radio button” situation. Each button will be
+	// associated with the same action, but with a different target value for
+	// that action. Clicking on a particular button will activate the action
+	// with the target of that button, which will typically cause the action’s
+	// state to change to that value. Since the action’s state is now equal to
+	// the target value of the button, the button will now be rendered as active
+	// (and the other buttons, with different targets, rendered inactive).
+	SetActionTargetValue(targetValue glib.Variant)
 	// SetDetailedActionName sets the action-name and associated string target
 	// value of an actionable widget.
 	//
@@ -132,7 +126,7 @@ func (a actionable) ActionName() string {
 	return _utf8
 }
 
-func (a actionable) ActionTargetValue() *glib.Variant {
+func (a actionable) ActionTargetValue() glib.Variant {
 	var _arg0 *C.GtkActionable // out
 	var _cret *C.GVariant      // in
 
@@ -140,9 +134,10 @@ func (a actionable) ActionTargetValue() *glib.Variant {
 
 	_cret = C.gtk_actionable_get_action_target_value(_arg0)
 
-	var _variant *glib.Variant // out
+	var _variant glib.Variant // out
 
-	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	_variant = (glib.Variant)(unsafe.Pointer(_cret))
+	C.g_variant_ref(_cret)
 
 	return _variant
 }
@@ -158,12 +153,12 @@ func (a actionable) SetActionName(actionName string) {
 	C.gtk_actionable_set_action_name(_arg0, _arg1)
 }
 
-func (a actionable) SetActionTargetValue(targetValue *glib.Variant) {
+func (a actionable) SetActionTargetValue(targetValue glib.Variant) {
 	var _arg0 *C.GtkActionable // out
 	var _arg1 *C.GVariant      // out
 
 	_arg0 = (*C.GtkActionable)(unsafe.Pointer(a.Native()))
-	_arg1 = (*C.GVariant)(unsafe.Pointer(targetValue.Native()))
+	_arg1 = (*C.GVariant)(unsafe.Pointer(targetValue))
 
 	C.gtk_actionable_set_action_target_value(_arg0, _arg1)
 }

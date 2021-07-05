@@ -3,13 +3,9 @@
 package gtk
 
 import (
-	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
-	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -28,8 +24,8 @@ func init() {
 	})
 }
 
-// RecentAction: a RecentAction represents a list of recently used files, which
-// can be shown by widgets such as RecentChooserDialog or RecentChooserMenu.
+// RecentAction represents a list of recently used files, which can be shown by
+// widgets such as RecentChooserDialog or RecentChooserMenu.
 //
 // To construct a submenu showing recently used files, use a RecentAction as the
 // action for a <menuitem>. To construct a menu toolbutton showing the recently
@@ -37,10 +33,23 @@ func init() {
 // <toolitem> element.
 type RecentAction interface {
 	Action
-	RecentChooser
 
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsRecentChooser casts the class to the RecentChooser interface.
+	AsRecentChooser() RecentChooser
+
+	// ShowNumbers returns the value set by
+	// gtk_recent_chooser_menu_set_show_numbers().
+	//
+	// Deprecated: since version 3.10.
 	ShowNumbers() bool
-
+	// SetShowNumbersRecentAction sets whether a number should be added to the
+	// items shown by the widgets representing @action. The numbers are shown to
+	// provide a unique character for a mnemonic to be used inside the menu
+	// item's label. Only the first ten items get a number to avoid clashes.
+	//
+	// Deprecated: since version 3.10.
 	SetShowNumbersRecentAction(showNumbers bool)
 }
 
@@ -63,6 +72,11 @@ func marshalRecentAction(p uintptr) (interface{}, error) {
 	return WrapRecentAction(obj), nil
 }
 
+// NewRecentAction creates a new RecentAction object. To add the action to a
+// ActionGroup and set the accelerator for the action, call
+// gtk_action_group_add_action_with_accel().
+//
+// Deprecated: since version 3.10.
 func NewRecentAction(name string, label string, tooltip string, stockId string) RecentAction {
 	var _arg1 *C.gchar     // out
 	var _arg2 *C.gchar     // out
@@ -83,11 +97,16 @@ func NewRecentAction(name string, label string, tooltip string, stockId string) 
 
 	var _recentAction RecentAction // out
 
-	_recentAction = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(RecentAction)
+	_recentAction = WrapRecentAction(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _recentAction
 }
 
+// NewRecentActionForManager creates a new RecentAction object. To add the
+// action to a ActionGroup and set the accelerator for the action, call
+// gtk_action_group_add_action_with_accel().
+//
+// Deprecated: since version 3.10.
 func NewRecentActionForManager(name string, label string, tooltip string, stockId string, manager RecentManager) RecentAction {
 	var _arg1 *C.gchar            // out
 	var _arg2 *C.gchar            // out
@@ -110,7 +129,7 @@ func NewRecentActionForManager(name string, label string, tooltip string, stockI
 
 	var _recentAction RecentAction // out
 
-	_recentAction = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(RecentAction)
+	_recentAction = WrapRecentAction(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _recentAction
 }
@@ -144,150 +163,10 @@ func (a recentAction) SetShowNumbersRecentAction(showNumbers bool) {
 	C.gtk_recent_action_set_show_numbers(_arg0, _arg1)
 }
 
-func (b recentAction) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+func (r recentAction) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(r))
 }
 
-func (b recentAction) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b recentAction) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b recentAction) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b recentAction) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b recentAction) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b recentAction) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b recentAction) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b recentAction) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b recentAction) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (c recentAction) AddFilter(filter RecentFilter) {
-	WrapRecentChooser(gextras.InternObject(c)).AddFilter(filter)
-}
-
-func (c recentAction) CurrentItem() *RecentInfo {
-	return WrapRecentChooser(gextras.InternObject(c)).CurrentItem()
-}
-
-func (c recentAction) CurrentURI() string {
-	return WrapRecentChooser(gextras.InternObject(c)).CurrentURI()
-}
-
-func (c recentAction) Filter() RecentFilter {
-	return WrapRecentChooser(gextras.InternObject(c)).Filter()
-}
-
-func (c recentAction) Limit() int {
-	return WrapRecentChooser(gextras.InternObject(c)).Limit()
-}
-
-func (c recentAction) LocalOnly() bool {
-	return WrapRecentChooser(gextras.InternObject(c)).LocalOnly()
-}
-
-func (c recentAction) SelectMultiple() bool {
-	return WrapRecentChooser(gextras.InternObject(c)).SelectMultiple()
-}
-
-func (c recentAction) ShowIcons() bool {
-	return WrapRecentChooser(gextras.InternObject(c)).ShowIcons()
-}
-
-func (c recentAction) ShowNotFound() bool {
-	return WrapRecentChooser(gextras.InternObject(c)).ShowNotFound()
-}
-
-func (c recentAction) ShowPrivate() bool {
-	return WrapRecentChooser(gextras.InternObject(c)).ShowPrivate()
-}
-
-func (c recentAction) ShowTips() bool {
-	return WrapRecentChooser(gextras.InternObject(c)).ShowTips()
-}
-
-func (c recentAction) SortType() RecentSortType {
-	return WrapRecentChooser(gextras.InternObject(c)).SortType()
-}
-
-func (c recentAction) RemoveFilter(filter RecentFilter) {
-	WrapRecentChooser(gextras.InternObject(c)).RemoveFilter(filter)
-}
-
-func (c recentAction) SelectAll() {
-	WrapRecentChooser(gextras.InternObject(c)).SelectAll()
-}
-
-func (c recentAction) SelectURI(uri string) error {
-	return WrapRecentChooser(gextras.InternObject(c)).SelectURI(uri)
-}
-
-func (c recentAction) SetCurrentURI(uri string) error {
-	return WrapRecentChooser(gextras.InternObject(c)).SetCurrentURI(uri)
-}
-
-func (c recentAction) SetFilter(filter RecentFilter) {
-	WrapRecentChooser(gextras.InternObject(c)).SetFilter(filter)
-}
-
-func (c recentAction) SetLimit(limit int) {
-	WrapRecentChooser(gextras.InternObject(c)).SetLimit(limit)
-}
-
-func (c recentAction) SetLocalOnly(localOnly bool) {
-	WrapRecentChooser(gextras.InternObject(c)).SetLocalOnly(localOnly)
-}
-
-func (c recentAction) SetSelectMultiple(selectMultiple bool) {
-	WrapRecentChooser(gextras.InternObject(c)).SetSelectMultiple(selectMultiple)
-}
-
-func (c recentAction) SetShowIcons(showIcons bool) {
-	WrapRecentChooser(gextras.InternObject(c)).SetShowIcons(showIcons)
-}
-
-func (c recentAction) SetShowNotFound(showNotFound bool) {
-	WrapRecentChooser(gextras.InternObject(c)).SetShowNotFound(showNotFound)
-}
-
-func (c recentAction) SetShowPrivate(showPrivate bool) {
-	WrapRecentChooser(gextras.InternObject(c)).SetShowPrivate(showPrivate)
-}
-
-func (c recentAction) SetShowTips(showTips bool) {
-	WrapRecentChooser(gextras.InternObject(c)).SetShowTips(showTips)
-}
-
-func (c recentAction) SetSortType(sortType RecentSortType) {
-	WrapRecentChooser(gextras.InternObject(c)).SetSortType(sortType)
-}
-
-func (c recentAction) UnselectAll() {
-	WrapRecentChooser(gextras.InternObject(c)).UnselectAll()
-}
-
-func (c recentAction) UnselectURI(uri string) {
-	WrapRecentChooser(gextras.InternObject(c)).UnselectURI(uri)
+func (r recentAction) AsRecentChooser() RecentChooser {
+	return WrapRecentChooser(gextras.InternObject(r))
 }

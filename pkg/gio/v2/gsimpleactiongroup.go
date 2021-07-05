@@ -3,12 +3,10 @@
 package gio
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -38,15 +36,39 @@ func init() {
 // SimpleActionGroup is a hash table filled with #GAction objects, implementing
 // the Group and Map interfaces.
 type SimpleActionGroup interface {
-	ActionGroup
-	ActionMap
+	gextras.Objector
 
+	// AsActionGroup casts the class to the ActionGroup interface.
+	AsActionGroup() ActionGroup
+	// AsActionMap casts the class to the ActionMap interface.
+	AsActionMap() ActionMap
+
+	// AddEntriesSimpleActionGroup: convenience function for creating multiple
+	// Action instances and adding them to the action group.
+	//
+	// Deprecated: since version 2.38.
 	AddEntriesSimpleActionGroup(entries []ActionEntry, userData interface{})
-
+	// InsertSimpleActionGroup adds an action to the action group.
+	//
+	// If the action group already contains an action with the same name as
+	// @action then the old action is dropped from the group.
+	//
+	// The action group takes its own reference on @action.
+	//
+	// Deprecated: since version 2.38.
 	InsertSimpleActionGroup(action Action)
-
+	// LookupSimpleActionGroup looks up the action with the name @action_name in
+	// the group.
+	//
+	// If no such action exists, returns nil.
+	//
+	// Deprecated: since version 2.38.
 	LookupSimpleActionGroup(actionName string) Action
-
+	// RemoveSimpleActionGroup removes the named action from the action group.
+	//
+	// If no action of this name is in the group then nothing happens.
+	//
+	// Deprecated: since version 2.38.
 	RemoveSimpleActionGroup(actionName string)
 }
 
@@ -69,6 +91,7 @@ func marshalSimpleActionGroup(p uintptr) (interface{}, error) {
 	return WrapSimpleActionGroup(obj), nil
 }
 
+// NewSimpleActionGroup creates a new, empty, ActionGroup.
 func NewSimpleActionGroup() SimpleActionGroup {
 	var _cret *C.GSimpleActionGroup // in
 
@@ -76,7 +99,7 @@ func NewSimpleActionGroup() SimpleActionGroup {
 
 	var _simpleActionGroup SimpleActionGroup // out
 
-	_simpleActionGroup = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(SimpleActionGroup)
+	_simpleActionGroup = WrapSimpleActionGroup(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _simpleActionGroup
 }
@@ -90,7 +113,7 @@ func (s simpleActionGroup) AddEntriesSimpleActionGroup(entries []ActionEntry, us
 	_arg0 = (*C.GSimpleActionGroup)(unsafe.Pointer(s.Native()))
 	_arg2 = C.gint(len(entries))
 	_arg1 = (*C.GActionEntry)(unsafe.Pointer(&entries[0]))
-	_arg3 = C.gpointer(box.Assign(unsafe.Pointer(userData)))
+	_arg3 = C.gpointer(box.Assign(userData))
 
 	C.g_simple_action_group_add_entries(_arg0, _arg1, _arg2, _arg3)
 }
@@ -134,74 +157,10 @@ func (s simpleActionGroup) RemoveSimpleActionGroup(actionName string) {
 	C.g_simple_action_group_remove(_arg0, _arg1)
 }
 
-func (a simpleActionGroup) ActionAdded(actionName string) {
-	WrapActionGroup(gextras.InternObject(a)).ActionAdded(actionName)
+func (s simpleActionGroup) AsActionGroup() ActionGroup {
+	return WrapActionGroup(gextras.InternObject(s))
 }
 
-func (a simpleActionGroup) ActionEnabledChanged(actionName string, enabled bool) {
-	WrapActionGroup(gextras.InternObject(a)).ActionEnabledChanged(actionName, enabled)
-}
-
-func (a simpleActionGroup) ActionRemoved(actionName string) {
-	WrapActionGroup(gextras.InternObject(a)).ActionRemoved(actionName)
-}
-
-func (a simpleActionGroup) ActionStateChanged(actionName string, state *glib.Variant) {
-	WrapActionGroup(gextras.InternObject(a)).ActionStateChanged(actionName, state)
-}
-
-func (a simpleActionGroup) ActivateAction(actionName string, parameter *glib.Variant) {
-	WrapActionGroup(gextras.InternObject(a)).ActivateAction(actionName, parameter)
-}
-
-func (a simpleActionGroup) ChangeActionState(actionName string, value *glib.Variant) {
-	WrapActionGroup(gextras.InternObject(a)).ChangeActionState(actionName, value)
-}
-
-func (a simpleActionGroup) ActionEnabled(actionName string) bool {
-	return WrapActionGroup(gextras.InternObject(a)).ActionEnabled(actionName)
-}
-
-func (a simpleActionGroup) ActionParameterType(actionName string) *glib.VariantType {
-	return WrapActionGroup(gextras.InternObject(a)).ActionParameterType(actionName)
-}
-
-func (a simpleActionGroup) ActionState(actionName string) *glib.Variant {
-	return WrapActionGroup(gextras.InternObject(a)).ActionState(actionName)
-}
-
-func (a simpleActionGroup) ActionStateHint(actionName string) *glib.Variant {
-	return WrapActionGroup(gextras.InternObject(a)).ActionStateHint(actionName)
-}
-
-func (a simpleActionGroup) ActionStateType(actionName string) *glib.VariantType {
-	return WrapActionGroup(gextras.InternObject(a)).ActionStateType(actionName)
-}
-
-func (a simpleActionGroup) HasAction(actionName string) bool {
-	return WrapActionGroup(gextras.InternObject(a)).HasAction(actionName)
-}
-
-func (a simpleActionGroup) ListActions() []string {
-	return WrapActionGroup(gextras.InternObject(a)).ListActions()
-}
-
-func (a simpleActionGroup) QueryAction(actionName string) (enabled bool, parameterType *glib.VariantType, stateType *glib.VariantType, stateHint *glib.Variant, state *glib.Variant, ok bool) {
-	return WrapActionGroup(gextras.InternObject(a)).QueryAction(actionName)
-}
-
-func (a simpleActionGroup) AddAction(action Action) {
-	WrapActionMap(gextras.InternObject(a)).AddAction(action)
-}
-
-func (a simpleActionGroup) AddActionEntries(entries []ActionEntry, userData interface{}) {
-	WrapActionMap(gextras.InternObject(a)).AddActionEntries(entries, userData)
-}
-
-func (a simpleActionGroup) LookupAction(actionName string) Action {
-	return WrapActionMap(gextras.InternObject(a)).LookupAction(actionName)
-}
-
-func (a simpleActionGroup) RemoveAction(actionName string) {
-	WrapActionMap(gextras.InternObject(a)).RemoveAction(actionName)
+func (s simpleActionGroup) AsActionMap() ActionMap {
+	return WrapActionMap(gextras.InternObject(s))
 }

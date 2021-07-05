@@ -5,9 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -26,9 +24,9 @@ func init() {
 	})
 }
 
-// Spinner: a GtkSpinner widget displays an icon-size spinning animation. It is
-// often used as an alternative to a ProgressBar for displaying indefinite
-// activity, instead of actual progress.
+// Spinner widget displays an icon-size spinning animation. It is often used as
+// an alternative to a ProgressBar for displaying indefinite activity, instead
+// of actual progress.
 //
 // To start the animation, use gtk_spinner_start(), to stop it use
 // gtk_spinner_stop().
@@ -41,8 +39,12 @@ func init() {
 type Spinner interface {
 	Widget
 
-	StartSpinner()
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
 
+	// StartSpinner starts the animation of the spinner.
+	StartSpinner()
+	// StopSpinner stops the animation of the spinner.
 	StopSpinner()
 }
 
@@ -65,6 +67,7 @@ func marshalSpinner(p uintptr) (interface{}, error) {
 	return WrapSpinner(obj), nil
 }
 
+// NewSpinner returns a new spinner widget. Not yet started.
 func NewSpinner() Spinner {
 	var _cret *C.GtkWidget // in
 
@@ -72,7 +75,7 @@ func NewSpinner() Spinner {
 
 	var _spinner Spinner // out
 
-	_spinner = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Spinner)
+	_spinner = WrapSpinner(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _spinner
 }
@@ -93,42 +96,6 @@ func (s spinner) StopSpinner() {
 	C.gtk_spinner_stop(_arg0)
 }
 
-func (b spinner) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
-}
-
-func (b spinner) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b spinner) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b spinner) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b spinner) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b spinner) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b spinner) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b spinner) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b spinner) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b spinner) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
+func (s spinner) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(s))
 }

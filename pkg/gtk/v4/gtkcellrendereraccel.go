@@ -67,6 +67,7 @@ func marshalCellRendererAccel(p uintptr) (interface{}, error) {
 	return WrapCellRendererAccel(obj), nil
 }
 
+// NewCellRendererAccel creates a new CellRendererAccel.
 func NewCellRendererAccel() CellRendererAccel {
 	var _cret *C.GtkCellRenderer // in
 
@@ -74,7 +75,7 @@ func NewCellRendererAccel() CellRendererAccel {
 
 	var _cellRendererAccel CellRendererAccel // out
 
-	_cellRendererAccel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(CellRendererAccel)
+	_cellRendererAccel = WrapCellRendererAccel(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _cellRendererAccel
 }

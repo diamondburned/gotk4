@@ -27,7 +27,9 @@ func init() {
 
 type ExpanderAccessible interface {
 	ContainerAccessible
-	atk.Action
+
+	// AsAction casts the class to the atk.Action interface.
+	AsAction() atk.Action
 }
 
 // expanderAccessible implements the ExpanderAccessible class.
@@ -49,30 +51,6 @@ func marshalExpanderAccessible(p uintptr) (interface{}, error) {
 	return WrapExpanderAccessible(obj), nil
 }
 
-func (a expanderAccessible) DoAction(i int) bool {
-	return atk.WrapAction(gextras.InternObject(a)).DoAction(i)
-}
-
-func (a expanderAccessible) Description(i int) string {
-	return atk.WrapAction(gextras.InternObject(a)).Description(i)
-}
-
-func (a expanderAccessible) Keybinding(i int) string {
-	return atk.WrapAction(gextras.InternObject(a)).Keybinding(i)
-}
-
-func (a expanderAccessible) LocalizedName(i int) string {
-	return atk.WrapAction(gextras.InternObject(a)).LocalizedName(i)
-}
-
-func (a expanderAccessible) NActions() int {
-	return atk.WrapAction(gextras.InternObject(a)).NActions()
-}
-
-func (a expanderAccessible) Name(i int) string {
-	return atk.WrapAction(gextras.InternObject(a)).Name(i)
-}
-
-func (a expanderAccessible) SetDescription(i int, desc string) bool {
-	return atk.WrapAction(gextras.InternObject(a)).SetDescription(i, desc)
+func (e expanderAccessible) AsAction() atk.Action {
+	return atk.WrapAction(gextras.InternObject(e))
 }

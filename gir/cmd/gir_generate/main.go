@@ -87,6 +87,7 @@ func main() {
 	gen := girgen.NewGenerator(repos, modulePath)
 	gen.Logger = log.New(os.Stderr, "girgen: ", log.Lmsgprefix)
 	gen.AddFilters(filters)
+	gen.ApplyPreprocessors(preprocessors)
 
 	if verbose {
 		gen.LogLevel = logger.Debug

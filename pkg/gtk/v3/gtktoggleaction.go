@@ -5,9 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -26,19 +24,35 @@ func init() {
 	})
 }
 
-// ToggleAction: a ToggleAction corresponds roughly to a CheckMenuItem. It has
-// an “active” state specifying whether the action has been checked or not.
+// ToggleAction corresponds roughly to a CheckMenuItem. It has an “active” state
+// specifying whether the action has been checked or not.
 type ToggleAction interface {
 	Action
 
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+
+	// Active returns the checked state of the toggle action.
+	//
+	// Deprecated: since version 3.10.
 	Active() bool
-
+	// DrawAsRadio returns whether the action should have proxies like a radio
+	// action.
+	//
+	// Deprecated: since version 3.10.
 	DrawAsRadio() bool
-
+	// SetActiveToggleAction sets the checked state on the toggle action.
+	//
+	// Deprecated: since version 3.10.
 	SetActiveToggleAction(isActive bool)
-
+	// SetDrawAsRadioToggleAction sets whether the action should have proxies
+	// like a radio action.
+	//
+	// Deprecated: since version 3.10.
 	SetDrawAsRadioToggleAction(drawAsRadio bool)
-
+	// ToggledToggleAction emits the “toggled” signal on the toggle action.
+	//
+	// Deprecated: since version 3.10.
 	ToggledToggleAction()
 }
 
@@ -61,6 +75,11 @@ func marshalToggleAction(p uintptr) (interface{}, error) {
 	return WrapToggleAction(obj), nil
 }
 
+// NewToggleAction creates a new ToggleAction object. To add the action to a
+// ActionGroup and set the accelerator for the action, call
+// gtk_action_group_add_action_with_accel().
+//
+// Deprecated: since version 3.10.
 func NewToggleAction(name string, label string, tooltip string, stockId string) ToggleAction {
 	var _arg1 *C.gchar           // out
 	var _arg2 *C.gchar           // out
@@ -81,7 +100,7 @@ func NewToggleAction(name string, label string, tooltip string, stockId string) 
 
 	var _toggleAction ToggleAction // out
 
-	_toggleAction = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(ToggleAction)
+	_toggleAction = WrapToggleAction(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _toggleAction
 }
@@ -152,42 +171,6 @@ func (a toggleAction) ToggledToggleAction() {
 	C.gtk_toggle_action_toggled(_arg0)
 }
 
-func (b toggleAction) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
-}
-
-func (b toggleAction) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b toggleAction) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b toggleAction) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b toggleAction) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b toggleAction) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b toggleAction) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b toggleAction) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b toggleAction) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b toggleAction) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
+func (t toggleAction) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(t))
 }

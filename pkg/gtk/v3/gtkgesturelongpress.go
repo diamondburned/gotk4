@@ -52,6 +52,8 @@ func marshalGestureLongPress(p uintptr) (interface{}, error) {
 	return WrapGestureLongPress(obj), nil
 }
 
+// NewGestureLongPress returns a newly created Gesture that recognizes long
+// presses.
 func NewGestureLongPress(widget Widget) GestureLongPress {
 	var _arg1 *C.GtkWidget  // out
 	var _cret *C.GtkGesture // in
@@ -62,7 +64,7 @@ func NewGestureLongPress(widget Widget) GestureLongPress {
 
 	var _gestureLongPress GestureLongPress // out
 
-	_gestureLongPress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(GestureLongPress)
+	_gestureLongPress = WrapGestureLongPress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _gestureLongPress
 }

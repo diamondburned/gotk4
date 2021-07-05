@@ -82,38 +82,51 @@ func init() {
 // gtk_widget_set_size_request (frame2, 50, -1); “`
 type Paned interface {
 	Widget
-	Orientable
 
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
+	// AsOrientable casts the class to the Orientable interface.
+	AsOrientable() Orientable
+
+	// EndChild retrieves the end child of the given `GtkPaned`.
+	//
+	// See also: `GtkPaned`:end-child
 	EndChild() Widget
-
+	// Position obtains the position of the divider between the two panes.
 	Position() int
-
+	// ResizeEndChild returns whether the end child can be resized.
 	ResizeEndChild() bool
-
+	// ResizeStartChild returns whether the start child can be resized.
 	ResizeStartChild() bool
-
+	// ShrinkEndChild returns whether the end child can be shrunk.
 	ShrinkEndChild() bool
-
+	// ShrinkStartChild returns whether the start child can be shrunk.
 	ShrinkStartChild() bool
-
+	// StartChild retrieves the start child of the given `GtkPaned`.
+	//
+	// See also: `GtkPaned`:start-child
 	StartChild() Widget
-
+	// WideHandle gets whether the separator should be wide.
 	WideHandle() bool
-
+	// SetEndChildPaned sets the end child of @paned to @child.
 	SetEndChildPaned(child Widget)
-
+	// SetPositionPaned sets the position of the divider between the two panes.
 	SetPositionPaned(position int)
-
+	// SetResizeEndChildPaned sets the `GtkPaned`:resize-end-child property
 	SetResizeEndChildPaned(resize bool)
-
+	// SetResizeStartChildPaned sets the `GtkPaned`:resize-start-child property
 	SetResizeStartChildPaned(resize bool)
-
+	// SetShrinkEndChildPaned sets the `GtkPaned`:shrink-end-child property
 	SetShrinkEndChildPaned(resize bool)
-
+	// SetShrinkStartChildPaned sets the `GtkPaned`:shrink-start-child property
 	SetShrinkStartChildPaned(resize bool)
-
+	// SetStartChildPaned sets the start child of @paned to @child.
 	SetStartChildPaned(child Widget)
-
+	// SetWideHandlePaned sets whether the separator should be wide.
 	SetWideHandlePaned(wide bool)
 }
 
@@ -136,6 +149,7 @@ func marshalPaned(p uintptr) (interface{}, error) {
 	return WrapPaned(obj), nil
 }
 
+// NewPaned creates a new `GtkPaned` widget.
 func NewPaned(orientation Orientation) Paned {
 	var _arg1 C.GtkOrientation // out
 	var _cret *C.GtkWidget     // in
@@ -146,7 +160,7 @@ func NewPaned(orientation Orientation) Paned {
 
 	var _paned Paned // out
 
-	_paned = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Paned)
+	_paned = WrapPaned(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _paned
 }
@@ -371,42 +385,18 @@ func (p paned) SetWideHandlePaned(wide bool) {
 	C.gtk_paned_set_wide_handle(_arg0, _arg1)
 }
 
-func (s paned) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
+func (p paned) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(p))
 }
 
-func (s paned) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
+func (p paned) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(p))
 }
 
-func (s paned) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
+func (p paned) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(p))
 }
 
-func (s paned) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s paned) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s paned) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s paned) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b paned) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
-}
-
-func (o paned) Orientation() Orientation {
-	return WrapOrientable(gextras.InternObject(o)).Orientation()
-}
-
-func (o paned) SetOrientation(orientation Orientation) {
-	WrapOrientable(gextras.InternObject(o)).SetOrientation(orientation)
+func (p paned) AsOrientable() Orientable {
+	return WrapOrientable(gextras.InternObject(p))
 }

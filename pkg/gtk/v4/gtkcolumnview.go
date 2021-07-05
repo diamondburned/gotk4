@@ -84,36 +84,84 @@ func init() {
 // the GTK_ACCESSIBLE_ROLE_GRID_CELL role
 type ColumnView interface {
 	Widget
-	Scrollable
 
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
+	// AsScrollable casts the class to the Scrollable interface.
+	AsScrollable() Scrollable
+
+	// AppendColumnColumnView appends the @column to the end of the columns in
+	// @self.
 	AppendColumnColumnView(column ColumnViewColumn)
-
+	// EnableRubberband returns whether rows can be selected by dragging with
+	// the mouse.
 	EnableRubberband() bool
-
+	// Reorderable returns whether columns are reorderable.
 	Reorderable() bool
-
+	// ShowColumnSeparators returns whether the list should show separators
+	// between columns.
 	ShowColumnSeparators() bool
-
+	// ShowRowSeparators returns whether the list should show separators between
+	// rows.
 	ShowRowSeparators() bool
-
+	// SingleClickActivate returns whether rows will be activated on single
+	// click and selected on hover.
 	SingleClickActivate() bool
-
+	// Sorter returns a special sorter that reflects the users sorting choices
+	// in the column view.
+	//
+	// To allow users to customizable sorting by clicking on column headers,
+	// this sorter needs to be set on the sort model underneath the model that
+	// is displayed by the view.
+	//
+	// See [method@Gtk.ColumnViewColumn.set_sorter] for setting up per-column
+	// sorting.
+	//
+	// Here is an example: “`c gtk_column_view_column_set_sorter (column,
+	// sorter); gtk_column_view_append_column (view, column); sorter =
+	// g_object_ref (gtk_column_view_get_sorter (view))); model =
+	// gtk_sort_list_model_new (store, sorter); selection = gtk_no_selection_new
+	// (model); gtk_column_view_set_model (view, selection); “`
 	Sorter() Sorter
-
+	// InsertColumnColumnView inserts a column at the given position in the
+	// columns of @self.
+	//
+	// If @column is already a column of @self, it will be repositioned.
 	InsertColumnColumnView(position uint, column ColumnViewColumn)
-
+	// RemoveColumnColumnView removes the @column from the list of columns of
+	// @self.
 	RemoveColumnColumnView(column ColumnViewColumn)
-
+	// SetEnableRubberbandColumnView sets whether selections can be changed by
+	// dragging with the mouse.
 	SetEnableRubberbandColumnView(enableRubberband bool)
-
+	// SetReorderableColumnView sets whether columns should be reorderable by
+	// dragging.
 	SetReorderableColumnView(reorderable bool)
-
+	// SetShowColumnSeparatorsColumnView sets whether the list should show
+	// separators between columns.
 	SetShowColumnSeparatorsColumnView(showColumnSeparators bool)
-
+	// SetShowRowSeparatorsColumnView sets whether the list should show
+	// separators between rows.
 	SetShowRowSeparatorsColumnView(showRowSeparators bool)
-
+	// SetSingleClickActivateColumnView sets whether rows should be activated on
+	// single click and selected on hover.
 	SetSingleClickActivateColumnView(singleClickActivate bool)
-
+	// SortByColumnColumnView sets the sorting of the view.
+	//
+	// This function should be used to set up the initial sorting. At runtime,
+	// users can change the sorting of a column view by clicking on the list
+	// headers.
+	//
+	// This call only has an effect if the sorter returned by
+	// [method@Gtk.ColumnView.get_sorter] is set on a sort model, and
+	// [method@Gtk.ColumnViewColumn.set_sorter] has been called on @column to
+	// associate a sorter with the column.
+	//
+	// If @column is nil, the view will be unsorted.
 	SortByColumnColumnView(column ColumnViewColumn, direction SortType)
 }
 
@@ -340,70 +388,18 @@ func (s columnView) SortByColumnColumnView(column ColumnViewColumn, direction So
 	C.gtk_column_view_sort_by_column(_arg0, _arg1, _arg2)
 }
 
-func (s columnView) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
+func (c columnView) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(c))
 }
 
-func (s columnView) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
+func (c columnView) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(c))
 }
 
-func (s columnView) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
+func (c columnView) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(c))
 }
 
-func (s columnView) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s columnView) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s columnView) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s columnView) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b columnView) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
-}
-
-func (s columnView) Border() (Border, bool) {
-	return WrapScrollable(gextras.InternObject(s)).Border()
-}
-
-func (s columnView) HAdjustment() Adjustment {
-	return WrapScrollable(gextras.InternObject(s)).HAdjustment()
-}
-
-func (s columnView) HScrollPolicy() ScrollablePolicy {
-	return WrapScrollable(gextras.InternObject(s)).HScrollPolicy()
-}
-
-func (s columnView) VAdjustment() Adjustment {
-	return WrapScrollable(gextras.InternObject(s)).VAdjustment()
-}
-
-func (s columnView) VScrollPolicy() ScrollablePolicy {
-	return WrapScrollable(gextras.InternObject(s)).VScrollPolicy()
-}
-
-func (s columnView) SetHAdjustment(hadjustment Adjustment) {
-	WrapScrollable(gextras.InternObject(s)).SetHAdjustment(hadjustment)
-}
-
-func (s columnView) SetHScrollPolicy(policy ScrollablePolicy) {
-	WrapScrollable(gextras.InternObject(s)).SetHScrollPolicy(policy)
-}
-
-func (s columnView) SetVAdjustment(vadjustment Adjustment) {
-	WrapScrollable(gextras.InternObject(s)).SetVAdjustment(vadjustment)
-}
-
-func (s columnView) SetVScrollPolicy(policy ScrollablePolicy) {
-	WrapScrollable(gextras.InternObject(s)).SetVScrollPolicy(policy)
+func (c columnView) AsScrollable() Scrollable {
+	return WrapScrollable(gextras.InternObject(c))
 }

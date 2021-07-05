@@ -53,24 +53,45 @@ func marshalDragCancelReason(p uintptr) (interface{}, error) {
 type Drag interface {
 	gextras.Objector
 
+	// DropDoneDrag informs GDK that the drop ended.
+	//
+	// Passing false for @success may trigger a drag cancellation animation.
+	//
+	// This function is called by the drag source, and should be the last call
+	// before dropping the reference to the @drag.
+	//
+	// The `GdkDrag` will only take the first [method@Gdk.Drag.drop_done] call
+	// as effective, if this function is called multiple times, all subsequent
+	// calls will be ignored.
 	DropDoneDrag(success bool)
-
+	// Actions determines the bitmask of possible actions proposed by the
+	// source.
 	Actions() DragAction
-
+	// Content returns the `GdkContentProvider` associated to the `GdkDrag`
+	// object.
 	Content() ContentProvider
-
+	// Device returns the `GdkDevice` associated to the `GdkDrag` object.
 	Device() Device
-
+	// Display gets the `GdkDisplay` that the drag object was created for.
 	Display() Display
-
+	// DragSurface returns the surface on which the drag icon should be rendered
+	// during the drag operation.
+	//
+	// Note that the surface may not be available until the drag operation has
+	// begun. GDK will move the surface in accordance with the ongoing drag
+	// operation. The surface is owned by @drag and will be destroyed when the
+	// drag operation is over.
 	DragSurface() Surface
-
-	Formats() *ContentFormats
-
+	// Formats retrieves the formats supported by this `GdkDrag` object.
+	Formats() ContentFormats
+	// SelectedAction determines the action chosen by the drag destination.
 	SelectedAction() DragAction
-
+	// Surface returns the `GdkSurface` where the drag originates.
 	Surface() Surface
-
+	// SetHotspotDrag sets the position of the drag surface that will be kept
+	// under the cursor hotspot.
+	//
+	// Initially, the hotspot is at the top left corner of the drag surface.
 	SetHotspotDrag(hotX int, hotY int)
 }
 
@@ -180,7 +201,7 @@ func (d drag) DragSurface() Surface {
 	return _surface
 }
 
-func (d drag) Formats() *ContentFormats {
+func (d drag) Formats() ContentFormats {
 	var _arg0 *C.GdkDrag           // out
 	var _cret *C.GdkContentFormats // in
 
@@ -188,9 +209,10 @@ func (d drag) Formats() *ContentFormats {
 
 	_cret = C.gdk_drag_get_formats(_arg0)
 
-	var _contentFormats *ContentFormats // out
+	var _contentFormats ContentFormats // out
 
-	_contentFormats = (*ContentFormats)(unsafe.Pointer(_cret))
+	_contentFormats = (ContentFormats)(unsafe.Pointer(_cret))
+	C.gdk_content_formats_ref(_cret)
 
 	return _contentFormats
 }

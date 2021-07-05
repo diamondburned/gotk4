@@ -34,24 +34,38 @@ func init() {
 type AspectFrame interface {
 	Widget
 
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
+
+	// Child gets the child widget of @self.
 	Child() Widget
-
+	// ObeyChild returns whether the child's size request should override the
+	// set aspect ratio of the `GtkAspectFrame`.
 	ObeyChild() bool
-
+	// Ratio returns the desired aspect ratio of the child.
 	Ratio() float32
-
+	// Xalign returns the horizontal alignment of the child within the
+	// allocation of the `GtkAspectFrame`.
 	Xalign() float32
-
+	// Yalign returns the vertical alignment of the child within the allocation
+	// of the `GtkAspectFrame`.
 	Yalign() float32
-
+	// SetChildAspectFrame sets the child widget of @self.
 	SetChildAspectFrame(child Widget)
-
+	// SetObeyChildAspectFrame sets whether the aspect ratio of the child's size
+	// request should override the set aspect ratio of the `GtkAspectFrame`.
 	SetObeyChildAspectFrame(obeyChild bool)
-
+	// SetRatioAspectFrame sets the desired aspect ratio of the child.
 	SetRatioAspectFrame(ratio float32)
-
+	// SetXalignAspectFrame sets the horizontal alignment of the child within
+	// the allocation of the `GtkAspectFrame`.
 	SetXalignAspectFrame(xalign float32)
-
+	// SetYalignAspectFrame sets the vertical alignment of the child within the
+	// allocation of the `GtkAspectFrame`.
 	SetYalignAspectFrame(yalign float32)
 }
 
@@ -74,6 +88,7 @@ func marshalAspectFrame(p uintptr) (interface{}, error) {
 	return WrapAspectFrame(obj), nil
 }
 
+// NewAspectFrame: create a new `GtkAspectFrame`.
 func NewAspectFrame(xalign float32, yalign float32, ratio float32, obeyChild bool) AspectFrame {
 	var _arg1 C.float      // out
 	var _arg2 C.float      // out
@@ -92,7 +107,7 @@ func NewAspectFrame(xalign float32, yalign float32, ratio float32, obeyChild boo
 
 	var _aspectFrame AspectFrame // out
 
-	_aspectFrame = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(AspectFrame)
+	_aspectFrame = WrapAspectFrame(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _aspectFrame
 }
@@ -226,34 +241,14 @@ func (s aspectFrame) SetYalignAspectFrame(yalign float32) {
 	C.gtk_aspect_frame_set_yalign(_arg0, _arg1)
 }
 
-func (s aspectFrame) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
+func (a aspectFrame) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(a))
 }
 
-func (s aspectFrame) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
+func (a aspectFrame) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(a))
 }
 
-func (s aspectFrame) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
-}
-
-func (s aspectFrame) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s aspectFrame) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s aspectFrame) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s aspectFrame) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b aspectFrame) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
+func (a aspectFrame) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(a))
 }

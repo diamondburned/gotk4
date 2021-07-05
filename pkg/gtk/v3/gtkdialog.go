@@ -5,10 +5,8 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -111,9 +109,9 @@ func AlternativeDialogButtonOrder(screen gdk.Screen) bool {
 	return _ok
 }
 
-// Dialog: dialog boxes are a convenient way to prompt the user for a small
-// amount of input, e.g. to display a message, ask a question, or anything else
-// that does not require extensive effort on the user’s part.
+// Dialog boxes are a convenient way to prompt the user for a small amount of
+// input, e.g. to display a message, ask a question, or anything else that does
+// not require extensive effort on the user’s part.
 //
 // GTK+ treats a dialog as a window split vertically. The top section is a VBox,
 // and is where widgets such as a Label or a Entry should be packed. The bottom
@@ -225,28 +223,105 @@ func AlternativeDialogButtonOrder(screen gdk.Screen) bool {
 type Dialog interface {
 	Window
 
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+
+	// AddActionWidgetDialog adds an activatable widget to the action area of a
+	// Dialog, connecting a signal handler that will emit the Dialog::response
+	// signal on the dialog when the widget is activated. The widget is appended
+	// to the end of the dialog’s action area. If you want to add a
+	// non-activatable widget, simply pack it into the @action_area field of the
+	// Dialog struct.
 	AddActionWidgetDialog(child Widget, responseId int)
-
+	// AddButtonDialog adds a button with the given text and sets things up so
+	// that clicking the button will emit the Dialog::response signal with the
+	// given @response_id. The button is appended to the end of the dialog’s
+	// action area. The button widget is returned, but usually you don’t need
+	// it.
 	AddButtonDialog(buttonText string, responseId int) Widget
-
+	// ActionArea returns the action area of @dialog.
+	//
+	// Deprecated: since version 3.12.
 	ActionArea() Box
-
+	// ContentArea returns the content area of @dialog.
 	ContentArea() Box
-
+	// HeaderBar returns the header bar of @dialog. Note that the headerbar is
+	// only used by the dialog if the Dialog:use-header-bar property is true.
 	HeaderBar() HeaderBar
-
+	// ResponseForWidget gets the response id of a widget in the action area of
+	// a dialog.
 	ResponseForWidget(widget Widget) int
-
+	// WidgetForResponse gets the widget button that uses the given response ID
+	// in the action area of a dialog.
 	WidgetForResponse(responseId int) Widget
-
+	// ResponseDialog emits the Dialog::response signal with the given response
+	// ID. Used to indicate that the user has responded to the dialog in some
+	// way; typically either you or gtk_dialog_run() will be monitoring the
+	// ::response signal and take appropriate action.
 	ResponseDialog(responseId int)
-
+	// RunDialog blocks in a recursive main loop until the @dialog either emits
+	// the Dialog::response signal, or is destroyed. If the dialog is destroyed
+	// during the call to gtk_dialog_run(), gtk_dialog_run() returns
+	// K_RESPONSE_NONE. Otherwise, it returns the response ID from the
+	// ::response signal emission.
+	//
+	// Before entering the recursive main loop, gtk_dialog_run() calls
+	// gtk_widget_show() on the dialog for you. Note that you still need to show
+	// any children of the dialog yourself.
+	//
+	// During gtk_dialog_run(), the default behavior of Widget::delete-event is
+	// disabled; if the dialog receives ::delete_event, it will not be destroyed
+	// as windows usually are, and gtk_dialog_run() will return
+	// K_RESPONSE_DELETE_EVENT. Also, during gtk_dialog_run() the dialog will be
+	// modal. You can force gtk_dialog_run() to return at any time by calling
+	// gtk_dialog_response() to emit the ::response signal. Destroying the
+	// dialog during gtk_dialog_run() is a very bad idea, because your post-run
+	// code won’t know whether the dialog was destroyed or not.
+	//
+	// After gtk_dialog_run() returns, you are responsible for hiding or
+	// destroying the dialog if you wish to do so.
+	//
+	// Typical usage of this function might be:
+	//
+	//      GtkWidget *dialog = gtk_dialog_new ();
+	//      // Set up dialog...
+	//
+	//      int result = gtk_dialog_run (GTK_DIALOG (dialog));
+	//      switch (result)
+	//        {
+	//          case GTK_RESPONSE_ACCEPT:
+	//             // do_application_specific_something ();
+	//             break;
+	//          default:
+	//             // do_nothing_since_dialog_was_cancelled ();
+	//             break;
+	//        }
+	//      gtk_widget_destroy (dialog);
+	//
+	// Note that even though the recursive main loop gives the effect of a modal
+	// dialog (it prevents the user from interacting with other windows in the
+	// same window group while the dialog is run), callbacks such as timeouts,
+	// IO channel watches, DND drops, etc, will be triggered during a
+	// gtk_dialog_run() call.
 	RunDialog() int
-
+	// SetAlternativeButtonOrderFromArrayDialog sets an alternative button
+	// order. If the Settings:gtk-alternative-button-order setting is set to
+	// true, the dialog buttons are reordered according to the order of the
+	// response ids in @new_order.
+	//
+	// See gtk_dialog_set_alternative_button_order() for more information.
+	//
+	// This function is for use by language bindings.
+	//
+	// Deprecated: since version 3.10.
 	SetAlternativeButtonOrderFromArrayDialog(newOrder []int)
-
+	// SetDefaultResponseDialog sets the last widget in the dialog’s action area
+	// with the given @response_id as the default widget for the dialog.
+	// Pressing “Enter” normally activates the default widget.
 	SetDefaultResponseDialog(responseId int)
-
+	// SetResponseSensitiveDialog calls `gtk_widget_set_sensitive (widget,
+	// @setting)` for each widget in the dialog’s action area with the given
+	// @response_id. A convenient way to sensitize/desensitize dialog buttons.
 	SetResponseSensitiveDialog(responseId int, setting bool)
 }
 
@@ -269,6 +344,10 @@ func marshalDialog(p uintptr) (interface{}, error) {
 	return WrapDialog(obj), nil
 }
 
+// NewDialog creates a new dialog box.
+//
+// Widgets should not be packed into this Window directly, but into the @vbox
+// and @action_area, as described above.
 func NewDialog() Dialog {
 	var _cret *C.GtkWidget // in
 
@@ -276,7 +355,7 @@ func NewDialog() Dialog {
 
 	var _dialog Dialog // out
 
-	_dialog = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Dialog)
+	_dialog = WrapDialog(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _dialog
 }
@@ -453,42 +532,6 @@ func (d dialog) SetResponseSensitiveDialog(responseId int, setting bool) {
 	C.gtk_dialog_set_response_sensitive(_arg0, _arg1, _arg2)
 }
 
-func (b dialog) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
-}
-
-func (b dialog) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b dialog) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b dialog) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b dialog) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b dialog) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b dialog) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b dialog) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b dialog) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b dialog) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
+func (d dialog) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(d))
 }

@@ -28,6 +28,15 @@ func init() {
 // !An example GtkVolumeButton (volumebutton.png)
 type VolumeButton interface {
 	ScaleButton
+
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
+	// AsOrientable casts the class to the Orientable interface.
+	AsOrientable() Orientable
 }
 
 // volumeButton implements the VolumeButton class.
@@ -49,6 +58,11 @@ func marshalVolumeButton(p uintptr) (interface{}, error) {
 	return WrapVolumeButton(obj), nil
 }
 
+// NewVolumeButton creates a `GtkVolumeButton`.
+//
+// The button has a range between 0.0 and 1.0, with a stepping of 0.02. Volume
+// values can be obtained and modified using the functions from
+// [class@Gtk.ScaleButton].
 func NewVolumeButton() VolumeButton {
 	var _cret *C.GtkWidget // in
 
@@ -56,47 +70,23 @@ func NewVolumeButton() VolumeButton {
 
 	var _volumeButton VolumeButton // out
 
-	_volumeButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(VolumeButton)
+	_volumeButton = WrapVolumeButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _volumeButton
 }
 
-func (s volumeButton) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
+func (v volumeButton) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(v))
 }
 
-func (s volumeButton) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
+func (v volumeButton) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(v))
 }
 
-func (s volumeButton) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
+func (v volumeButton) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(v))
 }
 
-func (s volumeButton) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s volumeButton) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s volumeButton) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s volumeButton) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b volumeButton) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
-}
-
-func (o volumeButton) Orientation() Orientation {
-	return WrapOrientable(gextras.InternObject(o)).Orientation()
-}
-
-func (o volumeButton) SetOrientation(orientation Orientation) {
-	WrapOrientable(gextras.InternObject(o)).SetOrientation(orientation)
+func (v volumeButton) AsOrientable() Orientable {
+	return WrapOrientable(gextras.InternObject(v))
 }

@@ -5,9 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -26,9 +24,8 @@ func init() {
 	})
 }
 
-// ActionBar: gtkActionBar is designed to present contextual actions. It is
-// expected to be displayed below the content and expand horizontally to fill
-// the area.
+// ActionBar is designed to present contextual actions. It is expected to be
+// displayed below the content and expand horizontally to fill the area.
 //
 // It allows placing children at the start or the end. In addition, it contains
 // an internal centered box which is centered with respect to the full width of
@@ -42,12 +39,18 @@ func init() {
 type ActionBar interface {
 	Bin
 
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+
+	// CenterWidget retrieves the center bar widget of the bar.
 	CenterWidget() Widget
-
+	// PackEndActionBar adds @child to @action_bar, packed with reference to the
+	// end of the @action_bar.
 	PackEndActionBar(child Widget)
-
+	// PackStartActionBar adds @child to @action_bar, packed with reference to
+	// the start of the @action_bar.
 	PackStartActionBar(child Widget)
-
+	// SetCenterWidgetActionBar sets the center widget for the ActionBar.
 	SetCenterWidgetActionBar(centerWidget Widget)
 }
 
@@ -70,6 +73,7 @@ func marshalActionBar(p uintptr) (interface{}, error) {
 	return WrapActionBar(obj), nil
 }
 
+// NewActionBar creates a new ActionBar widget.
 func NewActionBar() ActionBar {
 	var _cret *C.GtkWidget // in
 
@@ -77,7 +81,7 @@ func NewActionBar() ActionBar {
 
 	var _actionBar ActionBar // out
 
-	_actionBar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ActionBar)
+	_actionBar = WrapActionBar(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _actionBar
 }
@@ -127,42 +131,6 @@ func (a actionBar) SetCenterWidgetActionBar(centerWidget Widget) {
 	C.gtk_action_bar_set_center_widget(_arg0, _arg1)
 }
 
-func (b actionBar) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
-}
-
-func (b actionBar) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b actionBar) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b actionBar) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b actionBar) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b actionBar) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b actionBar) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b actionBar) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b actionBar) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b actionBar) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
+func (a actionBar) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(a))
 }

@@ -49,8 +49,16 @@ func init() {
 // [type_func@GtkSettings.get_for_display], but in many cases, it is more
 // convenient to use [method@Gtk.Widget.get_settings].
 type Settings interface {
-	StyleProvider
+	gextras.Objector
 
+	// AsStyleProvider casts the class to the StyleProvider interface.
+	AsStyleProvider() StyleProvider
+
+	// ResetPropertySettings undoes the effect of calling g_object_set() to
+	// install an application-specific value for a setting.
+	//
+	// After this call, the setting will again follow the session-wide value for
+	// this setting.
 	ResetPropertySettings(name string)
 }
 
@@ -82,4 +90,8 @@ func (s settings) ResetPropertySettings(name string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_settings_reset_property(_arg0, _arg1)
+}
+
+func (s settings) AsStyleProvider() StyleProvider {
+	return WrapStyleProvider(gextras.InternObject(s))
 }

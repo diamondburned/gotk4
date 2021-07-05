@@ -34,8 +34,8 @@ const (
 	ConvertErrorNotAbsolutePath ConvertError = 5
 	// NoMemory: no memory available. Since: 2.40
 	ConvertErrorNoMemory ConvertError = 6
-	// EmbeddedNUL: an embedded NUL character is present in conversion output
-	// where a NUL-terminated string is expected. Since: 2.56
+	// EmbeddedNUL: embedded NUL character is present in conversion output where
+	// a NUL-terminated string is expected. Since: 2.56
 	ConvertErrorEmbeddedNUL ConvertError = 7
 )
 
@@ -107,10 +107,10 @@ func FilenameDisplayName(filename string) string {
 // FilenameFromURI converts an escaped ASCII-encoded URI to a local filename in
 // the encoding used for filenames.
 func FilenameFromURI(uri string) (hostname string, filename string, goerr error) {
-	var _arg1 *C.gchar  // out
-	var _arg2 *C.gchar  // in
-	var _cret *C.gchar  // in
-	var _cerr *C.GError // in
+	var _arg1 *C.gchar   // out
+	var _arg2 **C.gchar  // in
+	var _cret *C.gchar   // in
+	var _cerr **C.GError // in
 
 	_arg1 = (*C.gchar)(C.CString(uri))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -121,11 +121,29 @@ func FilenameFromURI(uri string) (hostname string, filename string, goerr error)
 	var _filename string // out
 	var _goerr error     // out
 
-	_hostname = C.GoString(_arg2)
-	defer C.free(unsafe.Pointer(_arg2))
+	{
+		var refTmpIn *C.gchar
+		var refTmpOut string
+
+		refTmpIn = *_arg2
+
+		refTmpOut = C.GoString(refTmpIn)
+		defer C.free(unsafe.Pointer(refTmpIn))
+
+		_hostname = refTmpOut
+	}
 	_filename = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _hostname, _filename, _goerr
 }
@@ -141,12 +159,12 @@ func FilenameFromURI(uri string) (hostname string, filename string, goerr error)
 // the conversion output contains a nul character, the error
 // G_CONVERT_ERROR_EMBEDDED_NUL is set and the function returns nil.
 func FilenameFromUTF8(utf8String string, len int) (bytesRead uint, bytesWritten uint, filename string, goerr error) {
-	var _arg1 *C.gchar  // out
-	var _arg2 C.gssize  // out
-	var _arg3 C.gsize   // in
-	var _arg4 C.gsize   // in
-	var _cret *C.gchar  // in
-	var _cerr *C.GError // in
+	var _arg1 *C.gchar   // out
+	var _arg2 C.gssize   // out
+	var _arg3 *C.gsize   // in
+	var _arg4 *C.gsize   // in
+	var _cret *C.gchar   // in
+	var _cerr **C.GError // in
 
 	_arg1 = (*C.gchar)(C.CString(utf8String))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -163,7 +181,16 @@ func FilenameFromUTF8(utf8String string, len int) (bytesRead uint, bytesWritten 
 	_bytesWritten = uint(_arg4)
 	_filename = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _bytesRead, _bytesWritten, _filename, _goerr
 }
@@ -171,10 +198,10 @@ func FilenameFromUTF8(utf8String string, len int) (bytesRead uint, bytesWritten 
 // FilenameToURI converts an absolute filename to an escaped ASCII-encoded URI,
 // with the path component following Section 3.3. of RFC 2396.
 func FilenameToURI(filename string, hostname string) (string, error) {
-	var _arg1 *C.gchar  // out
-	var _arg2 *C.gchar  // out
-	var _cret *C.gchar  // in
-	var _cerr *C.GError // in
+	var _arg1 *C.gchar   // out
+	var _arg2 *C.gchar   // out
+	var _cret *C.gchar   // in
+	var _cerr **C.GError // in
 
 	_arg1 = (*C.gchar)(C.CString(filename))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -188,7 +215,16 @@ func FilenameToURI(filename string, hostname string) (string, error) {
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _utf8, _goerr
 }
@@ -205,12 +241,12 @@ func FilenameToURI(filename string, hostname string) (string, error) {
 // G_CONVERT_ERROR_EMBEDDED_NUL is set and the function returns nil. Use
 // g_convert() to produce output that may contain embedded nul characters.
 func FilenameToUTF8(opsysstring string, len int) (bytesRead uint, bytesWritten uint, utf8 string, goerr error) {
-	var _arg1 *C.gchar  // out
-	var _arg2 C.gssize  // out
-	var _arg3 C.gsize   // in
-	var _arg4 C.gsize   // in
-	var _cret *C.gchar  // in
-	var _cerr *C.GError // in
+	var _arg1 *C.gchar   // out
+	var _arg2 C.gssize   // out
+	var _arg3 *C.gsize   // in
+	var _arg4 *C.gsize   // in
+	var _cret *C.gchar   // in
+	var _cerr **C.GError // in
 
 	_arg1 = (*C.gchar)(C.CString(opsysstring))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -227,7 +263,16 @@ func FilenameToUTF8(opsysstring string, len int) (bytesRead uint, bytesWritten u
 	_bytesWritten = uint(_arg4)
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _bytesRead, _bytesWritten, _utf8, _goerr
 }
@@ -266,7 +311,7 @@ func GetFilenameCharsets() ([]string, bool) {
 
 	{
 		var i int
-		var z *C.gchar
+		var z **C.gchar
 		for p := _arg1; *p != z; p = &unsafe.Slice(p, i+1)[i] {
 			i++
 		}
@@ -274,7 +319,16 @@ func GetFilenameCharsets() ([]string, bool) {
 		src := unsafe.Slice(_arg1, i)
 		_filenameCharsets = make([]string, i)
 		for i := range src {
-			_filenameCharsets[i] = C.GoString(src[i])
+			{
+				var refTmpIn *C.gchar
+				var refTmpOut string
+
+				refTmpIn = *src[i]
+
+				refTmpOut = C.GoString(refTmpIn)
+
+				_filenameCharsets[i] = refTmpOut
+			}
 		}
 	}
 	if _cret != 0 {
@@ -297,10 +351,10 @@ func GetFilenameCharsets() ([]string, bool) {
 func LocaleToUTF8(opsysstring []byte) (bytesRead uint, bytesWritten uint, utf8 string, goerr error) {
 	var _arg1 *C.gchar
 	var _arg2 C.gssize
-	var _arg3 C.gsize   // in
-	var _arg4 C.gsize   // in
-	var _cret *C.gchar  // in
-	var _cerr *C.GError // in
+	var _arg3 *C.gsize   // in
+	var _arg4 *C.gsize   // in
+	var _cret *C.gchar   // in
+	var _cerr **C.GError // in
 
 	_arg2 = C.gssize(len(opsysstring))
 	_arg1 = (*C.gchar)(unsafe.Pointer(&opsysstring[0]))
@@ -316,7 +370,16 @@ func LocaleToUTF8(opsysstring []byte) (bytesRead uint, bytesWritten uint, utf8 s
 	_bytesWritten = uint(_arg4)
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _bytesRead, _bytesWritten, _utf8, _goerr
 }

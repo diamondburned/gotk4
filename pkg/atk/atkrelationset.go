@@ -32,20 +32,33 @@ func init() {
 type RelationSet interface {
 	gextras.Objector
 
+	// AddRelationSet: add a new relation to the current relation set if it is
+	// not already present. This function ref's the AtkRelation so the caller of
+	// this function should unref it to ensure that it will be destroyed when
+	// the AtkRelationSet is destroyed.
 	AddRelationSet(relation Relation)
-
+	// AddRelationByTypeRelationSet: add a new relation of the specified type
+	// with the specified target to the current relation set if the relation set
+	// does not contain a relation of that type. If it is does contain a
+	// relation of that typea the target is added to the relation.
 	AddRelationByTypeRelationSet(relationship RelationType, target Object)
-
+	// ContainsRelationSet determines whether the relation set contains a
+	// relation that matches the specified type.
 	ContainsRelationSet(relationship RelationType) bool
-
+	// ContainsTargetRelationSet determines whether the relation set contains a
+	// relation that matches the specified pair formed by type @relationship and
+	// object @target.
 	ContainsTargetRelationSet(relationship RelationType, target Object) bool
-
+	// NRelations determines the number of relations in a relation set.
 	NRelations() int
-
+	// Relation determines the relation at the specified position in the
+	// relation set.
 	Relation(i int) Relation
-
+	// RelationByType finds a relation that matches the specified type.
 	RelationByType(relationship RelationType) Relation
-
+	// RemoveRelationSet removes a relation from the relation set. This function
+	// unref's the Relation so it will be deleted unless there is another
+	// reference to it.
 	RemoveRelationSet(relation Relation)
 }
 
@@ -68,6 +81,7 @@ func marshalRelationSet(p uintptr) (interface{}, error) {
 	return WrapRelationSet(obj), nil
 }
 
+// NewRelationSet creates a new empty relation set.
 func NewRelationSet() RelationSet {
 	var _cret *C.AtkRelationSet // in
 
@@ -75,7 +89,7 @@ func NewRelationSet() RelationSet {
 
 	var _relationSet RelationSet // out
 
-	_relationSet = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(RelationSet)
+	_relationSet = WrapRelationSet(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _relationSet
 }

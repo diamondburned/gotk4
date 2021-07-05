@@ -5,10 +5,8 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -27,12 +25,12 @@ func init() {
 	})
 }
 
-// LockButton: gtkLockButton is a widget that can be used in control panels or
-// preference dialogs to allow users to obtain and revoke authorizations needed
-// to operate the controls. The required authorization is represented by a
-// #GPermission object. Concrete implementations of #GPermission may use
-// PolicyKit or some other authorization framework. To obtain a PolicyKit-based
-// #GPermission, use polkit_permission_new().
+// LockButton is a widget that can be used in control panels or preference
+// dialogs to allow users to obtain and revoke authorizations needed to operate
+// the controls. The required authorization is represented by a #GPermission
+// object. Concrete implementations of #GPermission may use PolicyKit or some
+// other authorization framework. To obtain a PolicyKit-based #GPermission, use
+// polkit_permission_new().
 //
 // If the user is not currently allowed to perform the action, but can obtain
 // the permission, the widget looks like this:
@@ -60,8 +58,17 @@ func init() {
 type LockButton interface {
 	Button
 
-	Permission() gio.Permission
+	// AsActionable casts the class to the Actionable interface.
+	AsActionable() Actionable
+	// AsActivatable casts the class to the Activatable interface.
+	AsActivatable() Activatable
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
 
+	// Permission obtains the #GPermission object that controls @button.
+	Permission() gio.Permission
+	// SetPermissionLockButton sets the #GPermission object that controls
+	// @button.
 	SetPermissionLockButton(permission gio.Permission)
 }
 
@@ -84,6 +91,7 @@ func marshalLockButton(p uintptr) (interface{}, error) {
 	return WrapLockButton(obj), nil
 }
 
+// NewLockButton creates a new lock button which reflects the @permission.
 func NewLockButton(permission gio.Permission) LockButton {
 	var _arg1 *C.GPermission // out
 	var _cret *C.GtkWidget   // in
@@ -94,7 +102,7 @@ func NewLockButton(permission gio.Permission) LockButton {
 
 	var _lockButton LockButton // out
 
-	_lockButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(LockButton)
+	_lockButton = WrapLockButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _lockButton
 }
@@ -124,126 +132,14 @@ func (b lockButton) SetPermissionLockButton(permission gio.Permission) {
 	C.gtk_lock_button_set_permission(_arg0, _arg1)
 }
 
-func (b lockButton) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+func (l lockButton) AsActionable() Actionable {
+	return WrapActionable(gextras.InternObject(l))
 }
 
-func (b lockButton) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+func (l lockButton) AsActivatable() Activatable {
+	return WrapActivatable(gextras.InternObject(l))
 }
 
-func (b lockButton) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b lockButton) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b lockButton) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b lockButton) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b lockButton) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b lockButton) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b lockButton) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b lockButton) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (a lockButton) ActionName() string {
-	return WrapActionable(gextras.InternObject(a)).ActionName()
-}
-
-func (a lockButton) ActionTargetValue() *glib.Variant {
-	return WrapActionable(gextras.InternObject(a)).ActionTargetValue()
-}
-
-func (a lockButton) SetActionName(actionName string) {
-	WrapActionable(gextras.InternObject(a)).SetActionName(actionName)
-}
-
-func (a lockButton) SetActionTargetValue(targetValue *glib.Variant) {
-	WrapActionable(gextras.InternObject(a)).SetActionTargetValue(targetValue)
-}
-
-func (a lockButton) SetDetailedActionName(detailedActionName string) {
-	WrapActionable(gextras.InternObject(a)).SetDetailedActionName(detailedActionName)
-}
-
-func (b lockButton) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
-}
-
-func (b lockButton) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b lockButton) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b lockButton) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b lockButton) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b lockButton) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b lockButton) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b lockButton) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b lockButton) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b lockButton) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (a lockButton) DoSetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).DoSetRelatedAction(action)
-}
-
-func (a lockButton) RelatedAction() Action {
-	return WrapActivatable(gextras.InternObject(a)).RelatedAction()
-}
-
-func (a lockButton) UseActionAppearance() bool {
-	return WrapActivatable(gextras.InternObject(a)).UseActionAppearance()
-}
-
-func (a lockButton) SetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SetRelatedAction(action)
-}
-
-func (a lockButton) SetUseActionAppearance(useAppearance bool) {
-	WrapActivatable(gextras.InternObject(a)).SetUseActionAppearance(useAppearance)
-}
-
-func (a lockButton) SyncActionProperties(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SyncActionProperties(action)
+func (l lockButton) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(l))
 }

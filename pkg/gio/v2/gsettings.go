@@ -3,13 +3,13 @@
 package gio
 
 import (
-	"runtime"
-	"unsafe"
+"runtime"
+"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
-	externglib "github.com/gotk3/gotk3/glib"
+"github.com/diamondburned/gotk4/pkg/core/box"
+"github.com/diamondburned/gotk4/pkg/core/gextras"
+"github.com/diamondburned/gotk4/pkg/glib/v2"
+externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
@@ -32,142 +32,149 @@ import (
 import "C"
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_settings_bind_flags_get_type()), F: marshalSettingsBindFlags},
-		{T: externglib.Type(C.g_settings_get_type()), F: marshalSettings},
-	})
+  externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+{T: externglib.Type(C.g_settings_bind_flags_get_type()), F: marshalSettingsBindFlags},
+{T: externglib.Type(C.g_settings_get_type()), F: marshalSettings},
+  })
 }
 
-// SettingsBindFlags flags used when creating a binding. These flags determine
+	// SettingsBindFlags flags used when creating a binding. These flags determine
 // in which direction the binding works. The default is to synchronize in both
 // directions.
-type SettingsBindFlags int
+	type SettingsBindFlags int
 
-const (
-	// SettingsBindFlagsDefault: equivalent to
+	const (
+			// SettingsBindFlagsDefault: equivalent to
 	// `G_SETTINGS_BIND_GET|G_SETTINGS_BIND_SET`
-	SettingsBindFlagsDefault SettingsBindFlags = 0b0
-	// SettingsBindFlagsGet: update the #GObject property when the setting
+		SettingsBindFlagsDefault SettingsBindFlags = 0b0
+			// SettingsBindFlagsGet: update the #GObject property when the setting
 	// changes. It is an error to use this flag if the property is not writable.
-	SettingsBindFlagsGet SettingsBindFlags = 0b1
-	// SettingsBindFlagsSet: update the setting when the #GObject property
+		SettingsBindFlagsGet SettingsBindFlags = 0b1
+			// SettingsBindFlagsSet: update the setting when the #GObject property
 	// changes. It is an error to use this flag if the property is not readable.
-	SettingsBindFlagsSet SettingsBindFlags = 0b10
-	// SettingsBindFlagsNoSensitivity: do not try to bind a "sensitivity"
+		SettingsBindFlagsSet SettingsBindFlags = 0b10
+			// SettingsBindFlagsNoSensitivity: do not try to bind a "sensitivity"
 	// property to the writability of the setting
-	SettingsBindFlagsNoSensitivity SettingsBindFlags = 0b100
-	// SettingsBindFlagsGetNoChanges: when set in addition to SETTINGS_BIND_GET,
+		SettingsBindFlagsNoSensitivity SettingsBindFlags = 0b100
+			// SettingsBindFlagsGetNoChanges: when set in addition to SETTINGS_BIND_GET,
 	// set the #GObject property value initially from the setting, but do not
 	// listen for changes of the setting
-	SettingsBindFlagsGetNoChanges SettingsBindFlags = 0b1000
-	// SettingsBindFlagsInvertBoolean: when passed to g_settings_bind(), uses a
+		SettingsBindFlagsGetNoChanges SettingsBindFlags = 0b1000
+			// SettingsBindFlagsInvertBoolean: when passed to g_settings_bind(), uses a
 	// pair of mapping functions that invert the boolean value when mapping
 	// between the setting and the property. The setting and property must both
 	// be booleans. You cannot pass this flag to g_settings_bind_with_mapping().
-	SettingsBindFlagsInvertBoolean SettingsBindFlags = 0b10000
-)
+		SettingsBindFlagsInvertBoolean SettingsBindFlags = 0b10000
+		)
 
-func marshalSettingsBindFlags(p uintptr) (interface{}, error) {
-	return SettingsBindFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
-}
+	
+	func marshalSettingsBindFlags(p uintptr) (interface{}, error) {
+		return SettingsBindFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	}
+	
 
-// SettingsBindGetMapping: the type for the function that is used to convert
+
+	// SettingsBindGetMapping: the type for the function that is used to convert
 // from #GSettings to an object property. The @value is already initialized to
 // hold values of the appropriate type.
-type SettingsBindGetMapping func(value externglib.Value, variant *glib.Variant, ok bool)
+	type SettingsBindGetMapping func(value externglib.Value, variant glib.Variant) (ok bool)
 
-//export gotk4_SettingsBindGetMapping
-func gotk4_SettingsBindGetMapping(arg0 *C.GValue, arg1 *C.GVariant, arg2 C.gpointer) C.gboolean {
-	v := box.Get(uintptr(arg2))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	var value externglib.Value // out
-	var variant *glib.Variant  // out
-
-	value = externglib.ValueFromNative(unsafe.Pointer(arg0))
-	variant = (*glib.Variant)(unsafe.Pointer(arg1))
-
-	fn := v.(SettingsBindGetMapping)
-	ok := fn(value, variant)
-
-	var cret C.gboolean // out
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
+	//export gotk4_SettingsBindGetMapping
+	func gotk4_SettingsBindGetMapping(arg0 *C.GValue, arg1 *C.GVariant, arg2 C.gpointer) C.gboolean {
+v := box.Get(uintptr(arg2))
+if v == nil {
+  panic(`callback not found`)
 }
 
-// SettingsBindSetMapping: the type for the function that is used to convert an
+
+var value externglib.Value // out
+var variant glib.Variant // out
+
+value = externglib.ValueFromNative(unsafe.Pointer(arg0))
+variant = (glib.Variant)(unsafe.Pointer(arg1))
+C.g_variant_ref(arg1)
+
+fn := v.(SettingsBindGetMapping)
+ok := fn(value, variant)
+
+var cret C.gboolean // out
+
+if ok { cret = C.TRUE }
+
+return cret
+}
+
+
+	// SettingsBindSetMapping: the type for the function that is used to convert an
 // object property value to a #GVariant for storing it in #GSettings.
-type SettingsBindSetMapping func(value externglib.Value, expectedType *glib.VariantType, variant *glib.Variant)
+	type SettingsBindSetMapping func(value externglib.Value, expectedType glib.VariantType) (variant glib.Variant)
 
-//export gotk4_SettingsBindSetMapping
-func gotk4_SettingsBindSetMapping(arg0 *C.GValue, arg1 *C.GVariantType, arg2 C.gpointer) *C.GVariant {
-	v := box.Get(uintptr(arg2))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	var value externglib.Value         // out
-	var expectedType *glib.VariantType // out
-
-	value = externglib.ValueFromNative(unsafe.Pointer(arg0))
-	expectedType = (*glib.VariantType)(unsafe.Pointer(arg1))
-
-	fn := v.(SettingsBindSetMapping)
-	variant := fn(value, expectedType)
-
-	var cret *C.GVariant // out
-
-	cret = (*C.GVariant)(unsafe.Pointer(variant.Native()))
-
-	return cret
+	//export gotk4_SettingsBindSetMapping
+	func gotk4_SettingsBindSetMapping(arg0 *C.GValue, arg1 *C.GVariantType, arg2 C.gpointer) *C.GVariant {
+v := box.Get(uintptr(arg2))
+if v == nil {
+  panic(`callback not found`)
 }
 
-// SettingsGetMapping: the type of the function that is used to convert from a
+
+var value externglib.Value // out
+var expectedType glib.VariantType // out
+
+value = externglib.ValueFromNative(unsafe.Pointer(arg0))
+expectedType = (glib.VariantType)(unsafe.Pointer(arg1))
+
+fn := v.(SettingsBindSetMapping)
+&variant := fn(value, expectedType)
+
+var cret *C.GVariant // out
+
+cret = (*C.GVariant)(unsafe.Pointer(variant))
+
+return cret
+}
+
+
+	// SettingsGetMapping: the type of the function that is used to convert from a
 // value stored in a #GSettings to a value that is useful to the application.
-//
+// 
 // If the value is successfully mapped, the result should be stored at @result
 // and true returned. If mapping fails (for example, if @value is not in the
 // right format) then false should be returned.
-//
+// 
 // If @value is nil then it means that the mapping function is being given a
 // "last chance" to successfully return a valid value. true must be returned in
 // this case.
-type SettingsGetMapping func(value *glib.Variant, result *interface{}, ok bool)
+	type SettingsGetMapping func(value glib.Variant) (result interface{}, ok bool)
 
-//export gotk4_SettingsGetMapping
-func gotk4_SettingsGetMapping(arg0 *C.GVariant, arg1 *C.gpointer, arg2 C.gpointer) C.gboolean {
-	v := box.Get(uintptr(arg2))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	var value *glib.Variant // out
-
-	value = (*glib.Variant)(unsafe.Pointer(arg0))
-
-	fn := v.(SettingsGetMapping)
-	result, ok := fn(value)
-
-	var arg1 *C.gpointer // out
-	var cret C.gboolean  // out
-
-	arg1 = *C.gpointer(box.Assign(unsafe.Pointer(result)))
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
+	//export gotk4_SettingsGetMapping
+	func gotk4_SettingsGetMapping(arg0 *C.GVariant, arg1 *C.gpointer, arg2 C.gpointer) C.gboolean {
+v := box.Get(uintptr(arg2))
+if v == nil {
+  panic(`callback not found`)
 }
 
-// Settings: the #GSettings class provides a convenient API for storing and
+
+var value glib.Variant // out
+
+value = (glib.Variant)(unsafe.Pointer(arg0))
+C.g_variant_ref(arg0)
+
+fn := v.(SettingsGetMapping)
+result, ok := fn(value)
+
+var arg1 *C.gpointer // out
+var cret C.gboolean // out
+
+arg1 = *C.gpointer(box.Assign(result))
+if ok { cret = C.TRUE }
+
+return cret
+}
+
+
+	// Settings: the #GSettings class provides a convenient API for storing and
 // retrieving application settings.
-//
+// 
 // Reads and writes can be considered to be non-blocking. Reading settings with
 // #GSettings is typically extremely fast: on approximately the same order of
 // magnitude (but slower than) a Table lookup. Writing settings is also
@@ -182,31 +189,31 @@ func gotk4_SettingsGetMapping(arg0 *C.GVariant, arg1 *C.gpointer, arg2 C.gpointe
 // setting the initial value of preferences widgets. The built-in
 // g_settings_bind() functionality is careful not to write settings in response
 // to notify signals as a result of modifications that it makes to widgets.
-//
+// 
 // When creating a GSettings instance, you have to specify a schema that
 // describes the keys in your settings and their types and default values, as
 // well as some other information.
-//
+// 
 // Normally, a schema has a fixed path that determines where the settings are
 // stored in the conceptual global tree of settings. However, schemas can also
 // be '[relocatable][gsettings-relocatable]', i.e. not equipped with a fixed
 // path. This is useful e.g. when the schema describes an 'account', and you
 // want to be able to store a arbitrary number of accounts.
-//
+// 
 // Paths must start with and end with a forward slash character ('/') and must
 // not contain two sequential slash characters. Paths should be chosen based on
 // a domain name associated with the program or library to which the settings
 // belong. Examples of paths are "/org/gtk/settings/file-chooser/" and
 // "/ca/desrt/dconf-editor/". Paths should not start with "/apps/", "/desktop/"
 // or "/system/" as they often did in GConf.
-//
+// 
 // Unlike other configuration systems (like GConf), GSettings does not restrict
 // keys to basic types like strings and numbers. GSettings stores values as
 // #GVariant, and allows any Type for keys. Key names are restricted to
 // lowercase characters, numbers and '-'. Furthermore, the names must begin with
 // a lowercase character, must not end with a '-', and must not contain
 // consecutive dashes.
-//
+// 
 // Similar to GConf, the default values in GSettings schemas can be localized,
 // but the localized values are stored in gettext catalogs and looked up with
 // the domain that is specified in the `gettext-domain` attribute of the
@@ -214,7 +221,7 @@ func gotk4_SettingsGetMapping(arg0 *C.GVariant, arg1 *C.gpointer, arg2 C.gpointe
 // `l10n` attribute of the <default> element. The string which is translated
 // includes all text in the <default> element, including any surrounding
 // quotation marks.
-//
+// 
 // The `l10n` attribute must be set to `messages` or `time`, and sets the
 // [locale category for
 // translation](https://www.gnu.org/software/gettext/manual/html_node/Aspects.html#index-locale-categories-1).
@@ -225,28 +232,28 @@ func gotk4_SettingsGetMapping(arg0 *C.GVariant, arg1 *C.gpointer, arg2 C.gpointe
 // of the default value. An optional translation `context` attribute can be set
 // on the <default> element to disambiguate multiple defaults which use the same
 // string.
-//
+// 
 // For example:
-//
+// 
 //    <!-- Translators: A list of words which are not allowed to be typed, in
 //         GVariant serialization syntax.
 //         See: https://developer.gnome.org/glib/stable/gvariant-text.html -->
 //    <default l10n='messages' context='Banned words'>['bad', 'words']</default>
-//
+// 
 // Translations of default values must remain syntactically valid serialized
 // #GVariants (e.g. retaining any surrounding quotation marks) or runtime errors
 // will occur.
-//
+// 
 // GSettings uses schemas in a compact binary form that is created by the
 // [glib-compile-schemas][glib-compile-schemas] utility. The input is a schema
 // description in an XML format.
-//
+// 
 // A DTD for the gschema XML format can be found here: gschema.dtd
 // (https://git.gnome.org/browse/glib/tree/gio/gschema.dtd)
-//
+// 
 // The [glib-compile-schemas][glib-compile-schemas] tool expects schema files to
 // have the extension `.gschema.xml`.
-//
+// 
 // At runtime, schemas are identified by their id (as specified in the id
 // attribute of the <schema> element). The convention for schema ids is to use a
 // dotted name, similar in style to a D-Bus bus name, e.g.
@@ -255,19 +262,19 @@ func gotk4_SettingsGetMapping(arg0 *C.GVariant, arg1 *C.gpointer, arg2 C.gpointe
 // match. For schemas which deal with settings not associated with one named
 // application, the id should not use StudlyCaps, e.g.
 // "org.gnome.font-rendering".
-//
+// 
 // In addition to #GVariant types, keys can have types that have enumerated
 // types. These can be described by a <choice>, <enum> or <flags> element, as
 // seen in the [example][schema-enumerated]. The underlying type of such a key
 // is string, but you can use g_settings_get_enum(), g_settings_set_enum(),
 // g_settings_get_flags(), g_settings_set_flags() access the numeric values
 // corresponding to the string value of enum and flags keys.
-//
+// 
 // An example for default value:
-//
+// 
 //    <schemalist>
 //      <schema id="org.gtk.Test" path="/org/gtk/Test/" gettext-domain="test">
-//
+// 
 //        <key name="greeting" type="s">
 //          <default l10n="messages">"Hello, earthlings"</default>
 //          <summary>A greeting</summary>
@@ -275,41 +282,41 @@ func gotk4_SettingsGetMapping(arg0 *C.GVariant, arg1 *C.gpointer, arg2 C.gpointe
 //            Greeting of the invading martians
 //          </description>
 //        </key>
-//
+// 
 //        <key name="box" type="(ii)">
 //          <default>(20,30)</default>
 //        </key>
-//
+// 
 //        <key name="empty-string" type="s">
 //          <default>""</default>
 //          <summary>Empty strings have to be provided in GVariant form</summary>
 //        </key>
-//
+// 
 //      </schema>
 //    </schemalist>
-//
+// 
 // An example for ranges, choices and enumerated types:
-//
+// 
 //    <schemalist>
-//
+// 
 //      <enum id="org.gtk.Test.myenum">
 //        <value nick="first" value="1"/>
 //        <value nick="second" value="2"/>
 //      </enum>
-//
+// 
 //      <flags id="org.gtk.Test.myflags">
 //        <value nick="flag1" value="1"/>
 //        <value nick="flag2" value="2"/>
 //        <value nick="flag3" value="4"/>
 //      </flags>
-//
+// 
 //      <schema id="org.gtk.Test">
-//
+// 
 //        <key name="key-with-range" type="i">
 //          <range min="1" max="100"/>
 //          <default>10</default>
 //        </key>
-//
+// 
 //        <key name="key-with-choices" type="s">
 //          <choices>
 //            <choice value='Elisabeth'/>
@@ -322,20 +329,20 @@ func gotk4_SettingsGetMapping(arg0 *C.GVariant, arg1 *C.gpointer, arg2 C.gpointe
 //          </aliases>
 //          <default>'Joe'</default>
 //        </key>
-//
+// 
 //        <key name='enumerated-key' enum='org.gtk.Test.myenum'>
 //          <default>'first'</default>
 //        </key>
-//
+// 
 //        <key name='flags-key' flags='org.gtk.Test.myflags'>
 //          <default>["flag1","flag2"]</default>
 //        </key>
 //      </schema>
 //    </schemalist>
-//
-//
+// 
+// 
 // Vendor overrides
-//
+// 
 // Default values are defined in the schemas that get installed by an
 // application. Sometimes, it is necessary for a vendor or distributor to adjust
 // these defaults. Since patching the XML source for the schema is inconvenient
@@ -344,32 +351,32 @@ func gotk4_SettingsGetMapping(arg0 *C.GVariant, arg1 *C.gpointer, arg2 C.gpointe
 // schema sources which can override default values. The schema id serves as the
 // group name in the key file, and the values are expected in serialized
 // GVariant form, as in the following example:
-//
+// 
 //    [org.gtk.Example]
 //    key1='string'
 //    key2=1.5
-//
+// 
 // glib-compile-schemas expects schema files to have the extension
 // `.gschema.override`.
-//
-//
+// 
+// 
 // Binding
-//
+// 
 // A very convenient feature of GSettings lets you bind #GObject properties
 // directly to settings, using g_settings_bind(). Once a GObject property has
 // been bound to a setting, changes on either side are automatically propagated
 // to the other side. GSettings handles details like mapping between GObject and
 // GVariant types, and preventing infinite cycles.
-//
+// 
 // This makes it very easy to hook up a preferences dialog to the underlying
 // settings. To make this even more convenient, GSettings looks for a boolean
 // property with the name "sensitivity" and automatically binds it to the
 // writability of the bound setting. If this 'magic' gets in the way, it can be
 // suppressed with the SETTINGS_BIND_NO_SENSITIVITY flag.
-//
-//
+// 
+// 
 // Relocatable schemas
-//
+// 
 // A relocatable schema is one with no `path` attribute specified on its
 // <schema> element. By using g_settings_new_with_path(), a #GSettings object
 // can be instantiated for a relocatable schema, assigning a path to the
@@ -378,978 +385,1294 @@ func gotk4_SettingsGetMapping(arg0 *C.GVariant, arg1 *C.gpointer, arg2 C.gpointe
 // identifier; but they must still be valid GSettings paths. Paths could also be
 // constant and used with a globally installed schema originating from a
 // dependency library.
-//
+// 
 // For example, a relocatable schema could be used to store geometry information
 // for different windows in an application. If the schema ID was
 // `org.foo.MyApp.Window`, it could be instantiated for paths
 // `/org/foo/MyApp/main/`, `/org/foo/MyApp/document-1/`,
 // `/org/foo/MyApp/document-2/`, etc. If any of the paths are well-known they
 // can be specified as <child> elements in the parent schema, e.g.:
-//
+// 
 //    <schema id="org.foo.MyApp" path="/org/foo/MyApp/">
 //      <child name="main" schema="org.foo.MyApp.Window"/>
 //    </schema>
-//
-//
+// 
+// 
 // Build system integration
-//
+// 
 // GSettings comes with autotools integration to simplify compiling and
 // installing schemas. To add GSettings support to an application, add the
 // following to your `configure.ac`:
-//
+// 
 //    GLIB_GSETTINGS
-//
+// 
 // In the appropriate `Makefile.am`, use the following snippet to compile and
 // install the named schema:
-//
+// 
 //    gsettings_SCHEMAS = org.foo.MyApp.gschema.xml
 //    EXTRA_DIST = $(gsettings_SCHEMAS)
-//
+// 
 //    @GSETTINGS_RULES@
-//
+// 
 // No changes are needed to the build system to mark a schema XML file for
 // translation. Assuming it sets the `gettext-domain` attribute, a schema may be
 // marked for translation by adding it to `POTFILES.in`, assuming gettext 0.19
 // is in use (the preferred method for translation):
-//
+// 
 //    data/org.foo.MyApp.gschema.xml
-//
+// 
 // Alternatively, if intltool 0.50.1 is in use:
-//
+// 
 //    [type: gettext/gsettings]data/org.foo.MyApp.gschema.xml
-//
+// 
 // GSettings will use gettext to look up translations for the <summary> and
 // <description> elements, and also any <default> elements which have a `l10n`
 // attribute set. Translations must not be included in the `.gschema.xml` file
 // by the build system, for example by using intltool XML rules with a
 // `.gschema.xml.in` template.
-//
+// 
 // If an enumerated type defined in a C header file is to be used in a GSettings
 // schema, it can either be defined manually using an <enum> element in the
 // schema XML, or it can be extracted automatically from the C header. This
 // approach is preferred, as it ensures the two representations are always
 // synchronised. To do so, add the following to the relevant `Makefile.am`:
-//
+// 
 //    gsettings_ENUM_NAMESPACE = org.foo.MyApp
 //    gsettings_ENUM_FILES = my-app-enums.h my-app-misc.h
-//
+// 
 // `gsettings_ENUM_NAMESPACE` specifies the schema namespace for the enum files,
 // which are specified in `gsettings_ENUM_FILES`. This will generate a
 // `org.foo.MyApp.enums.xml` file containing the extracted enums, which will be
 // automatically included in the schema compilation, install and uninstall
 // rules. It should not be committed to version control or included in
 // `EXTRA_DIST`.
-type Settings interface {
-	gextras.Objector
-
-	ApplySettings()
-
-	BindSettings(key string, object gextras.Objector, property string, flags SettingsBindFlags)
-
-	BindWritableSettings(key string, object gextras.Objector, property string, inverted bool)
-
-	CreateActionSettings(key string) Action
-
-	DelaySettings()
-
-	Boolean(key string) bool
-
-	Child(name string) Settings
-
-	DefaultValue(key string) *glib.Variant
-
-	Double(key string) float64
-
-	Enum(key string) int
-
-	Flags(key string) uint
-
-	HasUnapplied() bool
-
-	Int(key string) int
-
-	Int64(key string) int64
-
-	Mapped(key string, mapping SettingsGetMapping) interface{}
-
-	Range(key string) *glib.Variant
-
-	String(key string) string
-
-	Strv(key string) []string
-
-	Uint(key string) uint
-
-	Uint64(key string) uint64
-
-	UserValue(key string) *glib.Variant
-
-	Value(key string) *glib.Variant
-
-	IsWritableSettings(name string) bool
-
-	ListChildrenSettings() []string
-
-	ListKeysSettings() []string
-
-	RangeCheckSettings(key string, value *glib.Variant) bool
-
-	ResetSettings(key string)
-
-	RevertSettings()
-
-	SetBooleanSettings(key string, value bool) bool
-
-	SetDoubleSettings(key string, value float64) bool
-
-	SetEnumSettings(key string, value int) bool
-
-	SetFlagsSettings(key string, value uint) bool
-
-	SetIntSettings(key string, value int) bool
-
-	SetInt64Settings(key string, value int64) bool
-
-	SetStringSettings(key string, value string) bool
-
-	SetStrvSettings(key string, value []string) bool
-
-	SetUintSettings(key string, value uint) bool
-
-	SetUint64Settings(key string, value uint64) bool
-
-	SetValueSettings(key string, value *glib.Variant) bool
-}
-
-// settings implements the Settings class.
-type settings struct {
-	gextras.Objector
-}
-
-// WrapSettings wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapSettings(obj *externglib.Object) Settings {
-	return settings{
-		Objector: obj,
-	}
-}
-
-func marshalSettings(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapSettings(obj), nil
-}
-
-func NewSettings(schemaId string) Settings {
-	var _arg1 *C.gchar     // out
-	var _cret *C.GSettings // in
-
-	_arg1 = (*C.gchar)(C.CString(schemaId))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	_cret = C.g_settings_new(_arg1)
-
-	var _settings Settings // out
-
-	_settings = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Settings)
-
-	return _settings
-}
-
-func NewSettingsWithPath(schemaId string, path string) Settings {
-	var _arg1 *C.gchar     // out
-	var _arg2 *C.gchar     // out
-	var _cret *C.GSettings // in
-
-	_arg1 = (*C.gchar)(C.CString(schemaId))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.gchar)(C.CString(path))
-	defer C.free(unsafe.Pointer(_arg2))
-
-	_cret = C.g_settings_new_with_path(_arg1, _arg2)
-
-	var _settings Settings // out
-
-	_settings = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Settings)
-
-	return _settings
-}
-
-func (s settings) ApplySettings() {
-	var _arg0 *C.GSettings // out
-
-	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
-
-	C.g_settings_apply(_arg0)
-}
-
-func (s settings) BindSettings(key string, object gextras.Objector, property string, flags SettingsBindFlags) {
-	var _arg0 *C.GSettings         // out
-	var _arg1 *C.gchar             // out
-	var _arg2 C.gpointer           // out
-	var _arg3 *C.gchar             // out
-	var _arg4 C.GSettingsBindFlags // out
-
-	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.gchar)(C.CString(key))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.gpointer)(unsafe.Pointer(object.Native()))
-	_arg3 = (*C.gchar)(C.CString(property))
-	defer C.free(unsafe.Pointer(_arg3))
-	_arg4 = C.GSettingsBindFlags(flags)
-
-	C.g_settings_bind(_arg0, _arg1, _arg2, _arg3, _arg4)
-}
-
-func (s settings) BindWritableSettings(key string, object gextras.Objector, property string, inverted bool) {
-	var _arg0 *C.GSettings // out
-	var _arg1 *C.gchar     // out
-	var _arg2 C.gpointer   // out
-	var _arg3 *C.gchar     // out
-	var _arg4 C.gboolean   // out
-
-	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.gchar)(C.CString(key))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.gpointer)(unsafe.Pointer(object.Native()))
-	_arg3 = (*C.gchar)(C.CString(property))
-	defer C.free(unsafe.Pointer(_arg3))
-	if inverted {
-		_arg4 = C.TRUE
-	}
-
-	C.g_settings_bind_writable(_arg0, _arg1, _arg2, _arg3, _arg4)
-}
-
-func (s settings) CreateActionSettings(key string) Action {
-	var _arg0 *C.GSettings // out
-	var _arg1 *C.gchar     // out
-	var _cret *C.GAction   // in
-
-	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.gchar)(C.CString(key))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	_cret = C.g_settings_create_action(_arg0, _arg1)
-
-	var _action Action // out
-
-	_action = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Action)
-
-	return _action
-}
-
-func (s settings) DelaySettings() {
-	var _arg0 *C.GSettings // out
-
-	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
-
-	C.g_settings_delay(_arg0)
-}
-
-func (s settings) Boolean(key string) bool {
-	var _arg0 *C.GSettings // out
-	var _arg1 *C.gchar     // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.gchar)(C.CString(key))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	_cret = C.g_settings_get_boolean(_arg0, _arg1)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-func (s settings) Child(name string) Settings {
-	var _arg0 *C.GSettings // out
-	var _arg1 *C.gchar     // out
-	var _cret *C.GSettings // in
-
-	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.gchar)(C.CString(name))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	_cret = C.g_settings_get_child(_arg0, _arg1)
-
-	var _ret Settings // out
-
-	_ret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Settings)
-
-	return _ret
-}
-
-func (s settings) DefaultValue(key string) *glib.Variant {
-	var _arg0 *C.GSettings // out
-	var _arg1 *C.gchar     // out
-	var _cret *C.GVariant  // in
-
-	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.gchar)(C.CString(key))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	_cret = C.g_settings_get_default_value(_arg0, _arg1)
-
-	var _variant *glib.Variant // out
-
-	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(&_variant, func(v **glib.Variant) {
-		C.free(unsafe.Pointer(v))
-	})
-
-	return _variant
-}
-
-func (s settings) Double(key string) float64 {
-	var _arg0 *C.GSettings // out
-	var _arg1 *C.gchar     // out
-	var _cret C.gdouble    // in
-
-	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.gchar)(C.CString(key))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	_cret = C.g_settings_get_double(_arg0, _arg1)
-
-	var _gdouble float64 // out
-
-	_gdouble = float64(_cret)
-
-	return _gdouble
-}
-
-func (s settings) Enum(key string) int {
-	var _arg0 *C.GSettings // out
-	var _arg1 *C.gchar     // out
-	var _cret C.gint       // in
-
-	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.gchar)(C.CString(key))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	_cret = C.g_settings_get_enum(_arg0, _arg1)
-
-	var _gint int // out
-
-	_gint = int(_cret)
-
-	return _gint
-}
-
-func (s settings) Flags(key string) uint {
-	var _arg0 *C.GSettings // out
-	var _arg1 *C.gchar     // out
-	var _cret C.guint      // in
-
-	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.gchar)(C.CString(key))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	_cret = C.g_settings_get_flags(_arg0, _arg1)
-
-	var _guint uint // out
-
-	_guint = uint(_cret)
-
-	return _guint
-}
-
-func (s settings) HasUnapplied() bool {
-	var _arg0 *C.GSettings // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
-
-	_cret = C.g_settings_get_has_unapplied(_arg0)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-func (s settings) Int(key string) int {
-	var _arg0 *C.GSettings // out
-	var _arg1 *C.gchar     // out
-	var _cret C.gint       // in
-
-	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.gchar)(C.CString(key))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	_cret = C.g_settings_get_int(_arg0, _arg1)
-
-	var _gint int // out
-
-	_gint = int(_cret)
-
-	return _gint
-}
-
-func (s settings) Int64(key string) int64 {
-	var _arg0 *C.GSettings // out
-	var _arg1 *C.gchar     // out
-	var _cret C.gint64     // in
-
-	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.gchar)(C.CString(key))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	_cret = C.g_settings_get_int64(_arg0, _arg1)
-
-	var _gint64 int64 // out
-
-	_gint64 = int64(_cret)
-
-	return _gint64
-}
-
-func (s settings) Mapped(key string, mapping SettingsGetMapping) interface{} {
-	var _arg0 *C.GSettings          // out
-	var _arg1 *C.gchar              // out
-	var _arg2 C.GSettingsGetMapping // out
-	var _arg3 C.gpointer
-	var _cret C.gpointer // in
-
-	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.gchar)(C.CString(key))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*[0]byte)(C.gotk4_SettingsGetMapping)
-	_arg3 = C.gpointer(box.Assign(mapping))
-
-	_cret = C.g_settings_get_mapped(_arg0, _arg1, _arg2, _arg3)
-
-	var _gpointer interface{} // out
-
-	_gpointer = box.Get(uintptr(_cret))
-
-	return _gpointer
-}
-
-func (s settings) Range(key string) *glib.Variant {
-	var _arg0 *C.GSettings // out
-	var _arg1 *C.gchar     // out
-	var _cret *C.GVariant  // in
-
-	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.gchar)(C.CString(key))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	_cret = C.g_settings_get_range(_arg0, _arg1)
-
-	var _variant *glib.Variant // out
-
-	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(&_variant, func(v **glib.Variant) {
-		C.free(unsafe.Pointer(v))
-	})
-
-	return _variant
-}
-
-func (s settings) String(key string) string {
-	var _arg0 *C.GSettings // out
-	var _arg1 *C.gchar     // out
-	var _cret *C.gchar     // in
-
-	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.gchar)(C.CString(key))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	_cret = C.g_settings_get_string(_arg0, _arg1)
-
-	var _utf8 string // out
-
-	_utf8 = C.GoString(_cret)
-	defer C.free(unsafe.Pointer(_cret))
-
-	return _utf8
-}
-
-func (s settings) Strv(key string) []string {
-	var _arg0 *C.GSettings // out
-	var _arg1 *C.gchar     // out
-	var _cret **C.gchar
-
-	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.gchar)(C.CString(key))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	_cret = C.g_settings_get_strv(_arg0, _arg1)
-
-	var _utf8s []string
-
-	{
-		var i int
-		var z *C.gchar
-		for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
-			i++
-		}
-
-		src := unsafe.Slice(_cret, i)
-		_utf8s = make([]string, i)
-		for i := range src {
-			_utf8s[i] = C.GoString(src[i])
-			defer C.free(unsafe.Pointer(src[i]))
-		}
+	type Settings interface {
+		gextras.Objector
+
+		
+
+		
+			// ApplySettings applies any changes that have been made to the settings.
+	// This function does nothing unless @settings is in 'delay-apply' mode; see
+	// g_settings_delay(). In the normal case settings are always applied
+	// immediately.
+		ApplySettings() 
+			// BindSettings: create a binding between the @key in the @settings object
+	// and the property @property of @object.
+	// 
+	// The binding uses the default GIO mapping functions to map between the
+	// settings and property values. These functions handle booleans, numeric
+	// types and string types in a straightforward way. Use
+	// g_settings_bind_with_mapping() if you need a custom mapping, or map
+	// between types that are not supported by the default mapping functions.
+	// 
+	// Unless the @flags include G_SETTINGS_BIND_NO_SENSITIVITY, this function
+	// also establishes a binding between the writability of @key and the
+	// "sensitive" property of @object (if @object has a boolean property by
+	// that name). See g_settings_bind_writable() for more details about
+	// writable bindings.
+	// 
+	// Note that the lifecycle of the binding is tied to @object, and that you
+	// can have only one binding per object property. If you bind the same
+	// property twice on the same object, the second binding overrides the first
+	// one.
+		BindSettings(key string, object gextras.Objector, property string, flags SettingsBindFlags) 
+			// BindWritableSettings: create a binding between the writability of @key in
+	// the @settings object and the property @property of @object. The property
+	// must be boolean; "sensitive" or "visible" properties of widgets are the
+	// most likely candidates.
+	// 
+	// Writable bindings are always uni-directional; changes of the writability
+	// of the setting will be propagated to the object property, not the other
+	// way.
+	// 
+	// When the @inverted argument is true, the binding inverts the value as it
+	// passes from the setting to the object, i.e. @property will be set to true
+	// if the key is not writable.
+	// 
+	// Note that the lifecycle of the binding is tied to @object, and that you
+	// can have only one binding per object property. If you bind the same
+	// property twice on the same object, the second binding overrides the first
+	// one.
+		BindWritableSettings(key string, object gextras.Objector, property string, inverted bool) 
+			// CreateActionSettings creates a #GAction corresponding to a given
+	// #GSettings key.
+	// 
+	// The action has the same name as the key.
+	// 
+	// The value of the key becomes the state of the action and the action is
+	// enabled when the key is writable. Changing the state of the action
+	// results in the key being written to. Changes to the value or writability
+	// of the key cause appropriate change notifications to be emitted for the
+	// action.
+	// 
+	// For boolean-valued keys, action activations take no parameter and result
+	// in the toggling of the value. For all other types, activations take the
+	// new value for the key (which must have the correct type).
+		CreateActionSettings(key string) Action
+			// DelaySettings changes the #GSettings object into 'delay-apply' mode. In
+	// this mode, changes to @settings are not immediately propagated to the
+	// backend, but kept locally until g_settings_apply() is called.
+		DelaySettings() 
+			// Boolean gets the value that is stored at @key in @settings.
+	// 
+	// A convenience variant of g_settings_get() for booleans.
+	// 
+	// It is a programmer error to give a @key that isn't specified as having a
+	// boolean type in the schema for @settings.
+		Boolean(key string) bool
+			// Child creates a child settings object which has a base path of
+	// `base-path/@name`, where `base-path` is the base path of @settings.
+	// 
+	// The schema for the child settings object must have been declared in the
+	// schema of @settings using a <child> element.
+		Child(name string) Settings
+			// DefaultValue gets the "default value" of a key.
+	// 
+	// This is the value that would be read if g_settings_reset() were to be
+	// called on the key.
+	// 
+	// Note that this may be a different value than returned by
+	// g_settings_schema_key_get_default_value() if the system administrator has
+	// provided a default value.
+	// 
+	// Comparing the return values of g_settings_get_default_value() and
+	// g_settings_get_value() is not sufficient for determining if a value has
+	// been set because the user may have explicitly set the value to something
+	// that happens to be equal to the default. The difference here is that if
+	// the default changes in the future, the user's key will still be set.
+	// 
+	// This function may be useful for adding an indication to a UI of what the
+	// default value was before the user set it.
+	// 
+	// It is a programmer error to give a @key that isn't contained in the
+	// schema for @settings.
+		DefaultValue(key string) glib.Variant
+			// Double gets the value that is stored at @key in @settings.
+	// 
+	// A convenience variant of g_settings_get() for doubles.
+	// 
+	// It is a programmer error to give a @key that isn't specified as having a
+	// 'double' type in the schema for @settings.
+		Double(key string) float64
+			// Enum gets the value that is stored in @settings for @key and converts it
+	// to the enum value that it represents.
+	// 
+	// In order to use this function the type of the value must be a string and
+	// it must be marked in the schema file as an enumerated type.
+	// 
+	// It is a programmer error to give a @key that isn't contained in the
+	// schema for @settings or is not marked as an enumerated type.
+	// 
+	// If the value stored in the configuration database is not a valid value
+	// for the enumerated type then this function will return the default value.
+		Enum(key string) int
+			// Flags gets the value that is stored in @settings for @key and converts it
+	// to the flags value that it represents.
+	// 
+	// In order to use this function the type of the value must be an array of
+	// strings and it must be marked in the schema file as a flags type.
+	// 
+	// It is a programmer error to give a @key that isn't contained in the
+	// schema for @settings or is not marked as a flags type.
+	// 
+	// If the value stored in the configuration database is not a valid value
+	// for the flags type then this function will return the default value.
+		Flags(key string) uint
+			// HasUnapplied returns whether the #GSettings object has any unapplied
+	// changes. This can only be the case if it is in 'delayed-apply' mode.
+		HasUnapplied() bool
+			// Int gets the value that is stored at @key in @settings.
+	// 
+	// A convenience variant of g_settings_get() for 32-bit integers.
+	// 
+	// It is a programmer error to give a @key that isn't specified as having a
+	// int32 type in the schema for @settings.
+		Int(key string) int
+			// Int64 gets the value that is stored at @key in @settings.
+	// 
+	// A convenience variant of g_settings_get() for 64-bit integers.
+	// 
+	// It is a programmer error to give a @key that isn't specified as having a
+	// int64 type in the schema for @settings.
+		Int64(key string) int64
+			// Mapped gets the value that is stored at @key in @settings, subject to
+	// application-level validation/mapping.
+	// 
+	// You should use this function when the application needs to perform some
+	// processing on the value of the key (for example, parsing). The @mapping
+	// function performs that processing. If the function indicates that the
+	// processing was unsuccessful (due to a parse error, for example) then the
+	// mapping is tried again with another value.
+	// 
+	// This allows a robust 'fall back to defaults' behaviour to be implemented
+	// somewhat automatically.
+	// 
+	// The first value that is tried is the user's setting for the key. If the
+	// mapping function fails to map this value, other values may be tried in an
+	// unspecified order (system or site defaults, translated schema default
+	// values, untranslated schema default values, etc).
+	// 
+	// If the mapping function fails for all possible values, one additional
+	// attempt is made: the mapping function is called with a nil value. If the
+	// mapping function still indicates failure at this point then the
+	// application will be aborted.
+	// 
+	// The result parameter for the @mapping function is pointed to a #gpointer
+	// which is initially set to nil. The same pointer is given to each
+	// invocation of @mapping. The final value of that #gpointer is what is
+	// returned by this function. nil is valid; it is returned just as any other
+	// value would be.
+		Mapped(key string, mapping SettingsGetMapping) interface{}
+			// Range queries the range of a key.
+	// 
+	// Deprecated: since version 2.40.
+		Range(key string) glib.Variant
+			// String gets the value that is stored at @key in @settings.
+	// 
+	// A convenience variant of g_settings_get() for strings.
+	// 
+	// It is a programmer error to give a @key that isn't specified as having a
+	// string type in the schema for @settings.
+		String(key string) string
+			// Strv: convenience variant of g_settings_get() for string arrays.
+	// 
+	// It is a programmer error to give a @key that isn't specified as having an
+	// array of strings type in the schema for @settings.
+		Strv(key string) []string
+			// Uint gets the value that is stored at @key in @settings.
+	// 
+	// A convenience variant of g_settings_get() for 32-bit unsigned integers.
+	// 
+	// It is a programmer error to give a @key that isn't specified as having a
+	// uint32 type in the schema for @settings.
+		Uint(key string) uint
+			// Uint64 gets the value that is stored at @key in @settings.
+	// 
+	// A convenience variant of g_settings_get() for 64-bit unsigned integers.
+	// 
+	// It is a programmer error to give a @key that isn't specified as having a
+	// uint64 type in the schema for @settings.
+		Uint64(key string) uint64
+			// UserValue checks the "user value" of a key, if there is one.
+	// 
+	// The user value of a key is the last value that was set by the user.
+	// 
+	// After calling g_settings_reset() this function should always return nil
+	// (assuming something is not wrong with the system configuration).
+	// 
+	// It is possible that g_settings_get_value() will return a different value
+	// than this function. This can happen in the case that the user set a value
+	// for a key that was subsequently locked down by the system administrator
+	// -- this function will return the user's old value.
+	// 
+	// This function may be useful for adding a "reset" option to a UI or for
+	// providing indication that a particular value has been changed.
+	// 
+	// It is a programmer error to give a @key that isn't contained in the
+	// schema for @settings.
+		UserValue(key string) glib.Variant
+			// Value gets the value that is stored in @settings for @key.
+	// 
+	// It is a programmer error to give a @key that isn't contained in the
+	// schema for @settings.
+		Value(key string) glib.Variant
+			// IsWritableSettings finds out if a key can be written or not
+		IsWritableSettings(name string) bool
+			// ListChildrenSettings gets the list of children on @settings.
+	// 
+	// The list is exactly the list of strings for which it is not an error to
+	// call g_settings_get_child().
+	// 
+	// There is little reason to call this function from "normal" code, since
+	// you should already know what children are in your schema. This function
+	// may still be useful there for introspection reasons, however.
+	// 
+	// You should free the return value with g_strfreev() when you are done with
+	// it.
+		ListChildrenSettings() []string
+			// ListKeysSettings introspects the list of keys on @settings.
+	// 
+	// You should probably not be calling this function from "normal" code
+	// (since you should already know what keys are in your schema). This
+	// function is intended for introspection reasons.
+	// 
+	// You should free the return value with g_strfreev() when you are done with
+	// it.
+	// 
+	// Deprecated: since version 2.46.
+		ListKeysSettings() []string
+			// RangeCheckSettings checks if the given @value is of the correct type and
+	// within the permitted range for @key.
+	// 
+	// Deprecated: since version 2.40.
+		RangeCheckSettings(key string, value glib.Variant) bool
+			// ResetSettings resets @key to its default value.
+	// 
+	// This call resets the key, as much as possible, to its default value. That
+	// might be the value specified in the schema or the one set by the
+	// administrator.
+		ResetSettings(key string) 
+			// RevertSettings reverts all non-applied changes to the settings. This
+	// function does nothing unless @settings is in 'delay-apply' mode; see
+	// g_settings_delay(). In the normal case settings are always applied
+	// immediately.
+	// 
+	// Change notifications will be emitted for affected keys.
+		RevertSettings() 
+			// SetBooleanSettings sets @key in @settings to @value.
+	// 
+	// A convenience variant of g_settings_set() for booleans.
+	// 
+	// It is a programmer error to give a @key that isn't specified as having a
+	// boolean type in the schema for @settings.
+		SetBooleanSettings(key string, value bool) bool
+			// SetDoubleSettings sets @key in @settings to @value.
+	// 
+	// A convenience variant of g_settings_set() for doubles.
+	// 
+	// It is a programmer error to give a @key that isn't specified as having a
+	// 'double' type in the schema for @settings.
+		SetDoubleSettings(key string, value float64) bool
+			// SetEnumSettings looks up the enumerated type nick for @value and writes
+	// it to @key, within @settings.
+	// 
+	// It is a programmer error to give a @key that isn't contained in the
+	// schema for @settings or is not marked as an enumerated type, or for
+	// @value not to be a valid value for the named type.
+	// 
+	// After performing the write, accessing @key directly with
+	// g_settings_get_string() will return the 'nick' associated with @value.
+		SetEnumSettings(key string, value int) bool
+			// SetFlagsSettings looks up the flags type nicks for the bits specified by
+	// @value, puts them in an array of strings and writes the array to @key,
+	// within @settings.
+	// 
+	// It is a programmer error to give a @key that isn't contained in the
+	// schema for @settings or is not marked as a flags type, or for @value to
+	// contain any bits that are not value for the named type.
+	// 
+	// After performing the write, accessing @key directly with
+	// g_settings_get_strv() will return an array of 'nicks'; one for each bit
+	// in @value.
+		SetFlagsSettings(key string, value uint) bool
+			// SetIntSettings sets @key in @settings to @value.
+	// 
+	// A convenience variant of g_settings_set() for 32-bit integers.
+	// 
+	// It is a programmer error to give a @key that isn't specified as having a
+	// int32 type in the schema for @settings.
+		SetIntSettings(key string, value int) bool
+			// SetInt64Settings sets @key in @settings to @value.
+	// 
+	// A convenience variant of g_settings_set() for 64-bit integers.
+	// 
+	// It is a programmer error to give a @key that isn't specified as having a
+	// int64 type in the schema for @settings.
+		SetInt64Settings(key string, value int64) bool
+			// SetStringSettings sets @key in @settings to @value.
+	// 
+	// A convenience variant of g_settings_set() for strings.
+	// 
+	// It is a programmer error to give a @key that isn't specified as having a
+	// string type in the schema for @settings.
+		SetStringSettings(key string, value string) bool
+			// SetStrvSettings sets @key in @settings to @value.
+	// 
+	// A convenience variant of g_settings_set() for string arrays. If @value is
+	// nil, then @key is set to be the empty array.
+	// 
+	// It is a programmer error to give a @key that isn't specified as having an
+	// array of strings type in the schema for @settings.
+		SetStrvSettings(key string, value []string) bool
+			// SetUintSettings sets @key in @settings to @value.
+	// 
+	// A convenience variant of g_settings_set() for 32-bit unsigned integers.
+	// 
+	// It is a programmer error to give a @key that isn't specified as having a
+	// uint32 type in the schema for @settings.
+		SetUintSettings(key string, value uint) bool
+			// SetUint64Settings sets @key in @settings to @value.
+	// 
+	// A convenience variant of g_settings_set() for 64-bit unsigned integers.
+	// 
+	// It is a programmer error to give a @key that isn't specified as having a
+	// uint64 type in the schema for @settings.
+		SetUint64Settings(key string, value uint64) bool
+			// SetValueSettings sets @key in @settings to @value.
+	// 
+	// It is a programmer error to give a @key that isn't contained in the
+	// schema for @settings or for @value to have the incorrect type, per the
+	// schema.
+	// 
+	// If @value is floating then this function consumes the reference.
+		SetValueSettings(key string, value glib.Variant) bool
 	}
 
-	return _utf8s
-}
-
-func (s settings) Uint(key string) uint {
-	var _arg0 *C.GSettings // out
-	var _arg1 *C.gchar     // out
-	var _cret C.guint      // in
-
-	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.gchar)(C.CString(key))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	_cret = C.g_settings_get_uint(_arg0, _arg1)
-
-	var _guint uint // out
-
-	_guint = uint(_cret)
-
-	return _guint
-}
-
-func (s settings) Uint64(key string) uint64 {
-	var _arg0 *C.GSettings // out
-	var _arg1 *C.gchar     // out
-	var _cret C.guint64    // in
-
-	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.gchar)(C.CString(key))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	_cret = C.g_settings_get_uint64(_arg0, _arg1)
-
-	var _guint64 uint64 // out
-
-	_guint64 = uint64(_cret)
-
-	return _guint64
-}
-
-func (s settings) UserValue(key string) *glib.Variant {
-	var _arg0 *C.GSettings // out
-	var _arg1 *C.gchar     // out
-	var _cret *C.GVariant  // in
-
-	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.gchar)(C.CString(key))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	_cret = C.g_settings_get_user_value(_arg0, _arg1)
-
-	var _variant *glib.Variant // out
-
-	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(&_variant, func(v **glib.Variant) {
-		C.free(unsafe.Pointer(v))
-	})
-
-	return _variant
-}
-
-func (s settings) Value(key string) *glib.Variant {
-	var _arg0 *C.GSettings // out
-	var _arg1 *C.gchar     // out
-	var _cret *C.GVariant  // in
-
-	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.gchar)(C.CString(key))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	_cret = C.g_settings_get_value(_arg0, _arg1)
-
-	var _variant *glib.Variant // out
-
-	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(&_variant, func(v **glib.Variant) {
-		C.free(unsafe.Pointer(v))
-	})
-
-	return _variant
-}
-
-func (s settings) IsWritableSettings(name string) bool {
-	var _arg0 *C.GSettings // out
-	var _arg1 *C.gchar     // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.gchar)(C.CString(name))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	_cret = C.g_settings_is_writable(_arg0, _arg1)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
+	// settings implements the Settings class.
+	type settings struct {
+		gextras.Objector
 	}
 
-	return _ok
+	// WrapSettings wraps a GObject to the right type. It is
+	// primarily used internally.
+	func WrapSettings(obj *externglib.Object) Settings {
+		return settings{
+Objector: obj,
 }
-
-func (s settings) ListChildrenSettings() []string {
-	var _arg0 *C.GSettings // out
-	var _cret **C.gchar
-
-	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
-
-	_cret = C.g_settings_list_children(_arg0)
-
-	var _utf8s []string
-
-	{
-		var i int
-		var z *C.gchar
-		for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
-			i++
-		}
-
-		src := unsafe.Slice(_cret, i)
-		_utf8s = make([]string, i)
-		for i := range src {
-			_utf8s[i] = C.GoString(src[i])
-			defer C.free(unsafe.Pointer(src[i]))
-		}
 	}
 
-	return _utf8s
-}
-
-func (s settings) ListKeysSettings() []string {
-	var _arg0 *C.GSettings // out
-	var _cret **C.gchar
-
-	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
-
-	_cret = C.g_settings_list_keys(_arg0)
-
-	var _utf8s []string
-
-	{
-		var i int
-		var z *C.gchar
-		for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
-			i++
-		}
-
-		src := unsafe.Slice(_cret, i)
-		_utf8s = make([]string, i)
-		for i := range src {
-			_utf8s[i] = C.GoString(src[i])
-			defer C.free(unsafe.Pointer(src[i]))
-		}
+	
+	func marshalSettings(p uintptr) (interface{}, error) {
+		val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+		obj := externglib.Take(unsafe.Pointer(val))
+		return WrapSettings(obj), nil
 	}
+	
 
-	return _utf8s
+	
+	// NewSettings creates a new #GSettings object with the schema specified by
+// @schema_id.
+// 
+// It is an error for the schema to not exist: schemas are an essential part of
+// a program, as they provide type information. If schemas need to be
+// dynamically loaded (for example, from an optional runtime dependency),
+// g_settings_schema_source_lookup() can be used to test for their existence
+// before loading them.
+// 
+// Signals on the newly created #GSettings object will be dispatched via the
+// thread-default Context in effect at the time of the call to g_settings_new().
+// The new #GSettings will hold a reference on the context. See
+// g_main_context_push_thread_default().
+	func NewSettings(schemaId string) Settings {
+var _arg1 *C.gchar // out
+var _cret *C.GSettings // in
+
+_arg1 = (*C.gchar)(C.CString(schemaId))
+defer C.free(unsafe.Pointer(_arg1))
+
+_cret = C.g_settings_new(_arg1)
+
+
+var _settings Settings // out
+
+_settings = WrapSettings(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+return _settings
+}
+	
+	// NewSettingsWithPath creates a new #GSettings object with the relocatable
+// schema specified by @schema_id and a given path.
+// 
+// You only need to do this if you want to directly create a settings object
+// with a schema that doesn't have a specified path of its own. That's quite
+// rare.
+// 
+// It is a programmer error to call this function for a schema that has an
+// explicitly specified path.
+// 
+// It is a programmer error if @path is not a valid path. A valid path begins
+// and ends with '/' and does not contain two consecutive '/' characters.
+	func NewSettingsWithPath(schemaId string, path string) Settings {
+var _arg1 *C.gchar // out
+var _arg2 *C.gchar // out
+var _cret *C.GSettings // in
+
+_arg1 = (*C.gchar)(C.CString(schemaId))
+defer C.free(unsafe.Pointer(_arg1))
+_arg2 = (*C.gchar)(C.CString(path))
+defer C.free(unsafe.Pointer(_arg2))
+
+_cret = C.g_settings_new_with_path(_arg1, _arg2)
+
+
+var _settings Settings // out
+
+_settings = WrapSettings(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+return _settings
+}
+	
+
+	
+	func (s settings) ApplySettings()  {
+var _arg0 *C.GSettings // out
+
+_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+
+C.g_settings_apply(_arg0)
+}
+	
+	func (s settings) BindSettings(key string, object gextras.Objector, property string, flags SettingsBindFlags)  {
+var _arg0 *C.GSettings // out
+var _arg1 *C.gchar // out
+var _arg2 C.gpointer // out
+var _arg3 *C.gchar // out
+var _arg4 C.GSettingsBindFlags // out
+
+_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+_arg1 = (*C.gchar)(C.CString(key))
+defer C.free(unsafe.Pointer(_arg1))
+_arg2 = (C.gpointer)(unsafe.Pointer(object.Native()))
+_arg3 = (*C.gchar)(C.CString(property))
+defer C.free(unsafe.Pointer(_arg3))
+_arg4 = C.GSettingsBindFlags(flags)
+
+C.g_settings_bind(_arg0, _arg1, _arg2, _arg3, _arg4)
+}
+	
+	func (s settings) BindWritableSettings(key string, object gextras.Objector, property string, inverted bool)  {
+var _arg0 *C.GSettings // out
+var _arg1 *C.gchar // out
+var _arg2 C.gpointer // out
+var _arg3 *C.gchar // out
+var _arg4 C.gboolean // out
+
+_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+_arg1 = (*C.gchar)(C.CString(key))
+defer C.free(unsafe.Pointer(_arg1))
+_arg2 = (C.gpointer)(unsafe.Pointer(object.Native()))
+_arg3 = (*C.gchar)(C.CString(property))
+defer C.free(unsafe.Pointer(_arg3))
+if inverted { _arg4 = C.TRUE }
+
+C.g_settings_bind_writable(_arg0, _arg1, _arg2, _arg3, _arg4)
+}
+	
+	func (s settings) CreateActionSettings(key string) Action {
+var _arg0 *C.GSettings // out
+var _arg1 *C.gchar // out
+var _cret *C.GAction // in
+
+_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+_arg1 = (*C.gchar)(C.CString(key))
+defer C.free(unsafe.Pointer(_arg1))
+
+_cret = C.g_settings_create_action(_arg0, _arg1)
+
+
+var _action Action // out
+
+_action = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Action)
+
+return _action
+}
+	
+	func (s settings) DelaySettings()  {
+var _arg0 *C.GSettings // out
+
+_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+
+C.g_settings_delay(_arg0)
+}
+	
+	func (s settings) Boolean(key string) bool {
+var _arg0 *C.GSettings // out
+var _arg1 *C.gchar // out
+var _cret C.gboolean // in
+
+_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+_arg1 = (*C.gchar)(C.CString(key))
+defer C.free(unsafe.Pointer(_arg1))
+
+_cret = C.g_settings_get_boolean(_arg0, _arg1)
+
+
+var _ok bool // out
+
+if _cret != 0 { _ok = true }
+
+return _ok
+}
+	
+	func (s settings) Child(name string) Settings {
+var _arg0 *C.GSettings // out
+var _arg1 *C.gchar // out
+var _cret *C.GSettings // in
+
+_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+_arg1 = (*C.gchar)(C.CString(name))
+defer C.free(unsafe.Pointer(_arg1))
+
+_cret = C.g_settings_get_child(_arg0, _arg1)
+
+
+var _ret Settings // out
+
+_ret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Settings)
+
+return _ret
+}
+	
+	func (s settings) DefaultValue(key string) glib.Variant {
+var _arg0 *C.GSettings // out
+var _arg1 *C.gchar // out
+var _cret *C.GVariant // in
+
+_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+_arg1 = (*C.gchar)(C.CString(key))
+defer C.free(unsafe.Pointer(_arg1))
+
+_cret = C.g_settings_get_default_value(_arg0, _arg1)
+
+
+var _variant glib.Variant // out
+
+_variant = (glib.Variant)(unsafe.Pointer(_cret))
+runtime.SetFinalizer(_variant, func(v glib.Variant) {
+C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+})
+
+return _variant
+}
+	
+	func (s settings) Double(key string) float64 {
+var _arg0 *C.GSettings // out
+var _arg1 *C.gchar // out
+var _cret C.gdouble // in
+
+_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+_arg1 = (*C.gchar)(C.CString(key))
+defer C.free(unsafe.Pointer(_arg1))
+
+_cret = C.g_settings_get_double(_arg0, _arg1)
+
+
+var _gdouble float64 // out
+
+_gdouble = float64(_cret)
+
+return _gdouble
+}
+	
+	func (s settings) Enum(key string) int {
+var _arg0 *C.GSettings // out
+var _arg1 *C.gchar // out
+var _cret C.gint // in
+
+_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+_arg1 = (*C.gchar)(C.CString(key))
+defer C.free(unsafe.Pointer(_arg1))
+
+_cret = C.g_settings_get_enum(_arg0, _arg1)
+
+
+var _gint int // out
+
+_gint = int(_cret)
+
+return _gint
+}
+	
+	func (s settings) Flags(key string) uint {
+var _arg0 *C.GSettings // out
+var _arg1 *C.gchar // out
+var _cret C.guint // in
+
+_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+_arg1 = (*C.gchar)(C.CString(key))
+defer C.free(unsafe.Pointer(_arg1))
+
+_cret = C.g_settings_get_flags(_arg0, _arg1)
+
+
+var _guint uint // out
+
+_guint = uint(_cret)
+
+return _guint
+}
+	
+	func (s settings) HasUnapplied() bool {
+var _arg0 *C.GSettings // out
+var _cret C.gboolean // in
+
+_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+
+_cret = C.g_settings_get_has_unapplied(_arg0)
+
+
+var _ok bool // out
+
+if _cret != 0 { _ok = true }
+
+return _ok
+}
+	
+	func (s settings) Int(key string) int {
+var _arg0 *C.GSettings // out
+var _arg1 *C.gchar // out
+var _cret C.gint // in
+
+_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+_arg1 = (*C.gchar)(C.CString(key))
+defer C.free(unsafe.Pointer(_arg1))
+
+_cret = C.g_settings_get_int(_arg0, _arg1)
+
+
+var _gint int // out
+
+_gint = int(_cret)
+
+return _gint
+}
+	
+	func (s settings) Int64(key string) int64 {
+var _arg0 *C.GSettings // out
+var _arg1 *C.gchar // out
+var _cret C.gint64 // in
+
+_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+_arg1 = (*C.gchar)(C.CString(key))
+defer C.free(unsafe.Pointer(_arg1))
+
+_cret = C.g_settings_get_int64(_arg0, _arg1)
+
+
+var _gint64 int64 // out
+
+_gint64 = int64(_cret)
+
+return _gint64
+}
+	
+	func (s settings) Mapped(key string, mapping SettingsGetMapping) interface{} {
+var _arg0 *C.GSettings // out
+var _arg1 *C.gchar // out
+var _arg2 C.GSettingsGetMapping // out
+var _arg3 C.gpointer
+var _cret C.gpointer // in
+
+_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+_arg1 = (*C.gchar)(C.CString(key))
+defer C.free(unsafe.Pointer(_arg1))
+_arg2 = (*[0]byte)(C.gotk4_SettingsGetMapping)
+_arg3 = C.gpointer(box.Assign(mapping))
+
+_cret = C.g_settings_get_mapped(_arg0, _arg1, _arg2, _arg3)
+
+
+var _gpointer interface{} // out
+
+_gpointer = box.Get(uintptr(_cret))
+
+return _gpointer
+}
+	
+	func (s settings) Range(key string) glib.Variant {
+var _arg0 *C.GSettings // out
+var _arg1 *C.gchar // out
+var _cret *C.GVariant // in
+
+_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+_arg1 = (*C.gchar)(C.CString(key))
+defer C.free(unsafe.Pointer(_arg1))
+
+_cret = C.g_settings_get_range(_arg0, _arg1)
+
+
+var _variant glib.Variant // out
+
+_variant = (glib.Variant)(unsafe.Pointer(_cret))
+runtime.SetFinalizer(_variant, func(v glib.Variant) {
+C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+})
+
+return _variant
+}
+	
+	func (s settings) String(key string) string {
+var _arg0 *C.GSettings // out
+var _arg1 *C.gchar // out
+var _cret *C.gchar // in
+
+_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+_arg1 = (*C.gchar)(C.CString(key))
+defer C.free(unsafe.Pointer(_arg1))
+
+_cret = C.g_settings_get_string(_arg0, _arg1)
+
+
+var _utf8 string // out
+
+_utf8 = C.GoString(_cret)
+defer C.free(unsafe.Pointer(_cret))
+
+return _utf8
+}
+	
+	func (s settings) Strv(key string) []string {
+var _arg0 *C.GSettings // out
+var _arg1 *C.gchar // out
+var _cret **C.gchar
+
+_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+_arg1 = (*C.gchar)(C.CString(key))
+defer C.free(unsafe.Pointer(_arg1))
+
+_cret = C.g_settings_get_strv(_arg0, _arg1)
+
+
+var _utf8s []string
+
+{
+var i int
+var z *C.gchar
+for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+  i++
 }
 
-func (s settings) RangeCheckSettings(key string, value *glib.Variant) bool {
-	var _arg0 *C.GSettings // out
-	var _arg1 *C.gchar     // out
-	var _arg2 *C.GVariant  // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.gchar)(C.CString(key))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GVariant)(unsafe.Pointer(value.Native()))
-
-	_cret = C.g_settings_range_check(_arg0, _arg1, _arg2)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
+src := unsafe.Slice(_cret, i)
+_utf8s = make([]string, i)
+for i := range src {
+_utf8s[i] = C.GoString(src[i])
+defer C.free(unsafe.Pointer(src[i]))
+}
 }
 
-func (s settings) ResetSettings(key string) {
-	var _arg0 *C.GSettings // out
-	var _arg1 *C.gchar     // out
+return _utf8s
+}
+	
+	func (s settings) Uint(key string) uint {
+var _arg0 *C.GSettings // out
+var _arg1 *C.gchar // out
+var _cret C.guint // in
 
-	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.gchar)(C.CString(key))
-	defer C.free(unsafe.Pointer(_arg1))
+_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+_arg1 = (*C.gchar)(C.CString(key))
+defer C.free(unsafe.Pointer(_arg1))
 
-	C.g_settings_reset(_arg0, _arg1)
+_cret = C.g_settings_get_uint(_arg0, _arg1)
+
+
+var _guint uint // out
+
+_guint = uint(_cret)
+
+return _guint
+}
+	
+	func (s settings) Uint64(key string) uint64 {
+var _arg0 *C.GSettings // out
+var _arg1 *C.gchar // out
+var _cret C.guint64 // in
+
+_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+_arg1 = (*C.gchar)(C.CString(key))
+defer C.free(unsafe.Pointer(_arg1))
+
+_cret = C.g_settings_get_uint64(_arg0, _arg1)
+
+
+var _guint64 uint64 // out
+
+_guint64 = uint64(_cret)
+
+return _guint64
+}
+	
+	func (s settings) UserValue(key string) glib.Variant {
+var _arg0 *C.GSettings // out
+var _arg1 *C.gchar // out
+var _cret *C.GVariant // in
+
+_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+_arg1 = (*C.gchar)(C.CString(key))
+defer C.free(unsafe.Pointer(_arg1))
+
+_cret = C.g_settings_get_user_value(_arg0, _arg1)
+
+
+var _variant glib.Variant // out
+
+_variant = (glib.Variant)(unsafe.Pointer(_cret))
+runtime.SetFinalizer(_variant, func(v glib.Variant) {
+C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+})
+
+return _variant
+}
+	
+	func (s settings) Value(key string) glib.Variant {
+var _arg0 *C.GSettings // out
+var _arg1 *C.gchar // out
+var _cret *C.GVariant // in
+
+_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+_arg1 = (*C.gchar)(C.CString(key))
+defer C.free(unsafe.Pointer(_arg1))
+
+_cret = C.g_settings_get_value(_arg0, _arg1)
+
+
+var _variant glib.Variant // out
+
+_variant = (glib.Variant)(unsafe.Pointer(_cret))
+runtime.SetFinalizer(_variant, func(v glib.Variant) {
+C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+})
+
+return _variant
+}
+	
+	func (s settings) IsWritableSettings(name string) bool {
+var _arg0 *C.GSettings // out
+var _arg1 *C.gchar // out
+var _cret C.gboolean // in
+
+_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+_arg1 = (*C.gchar)(C.CString(name))
+defer C.free(unsafe.Pointer(_arg1))
+
+_cret = C.g_settings_is_writable(_arg0, _arg1)
+
+
+var _ok bool // out
+
+if _cret != 0 { _ok = true }
+
+return _ok
+}
+	
+	func (s settings) ListChildrenSettings() []string {
+var _arg0 *C.GSettings // out
+var _cret **C.gchar
+
+_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+
+_cret = C.g_settings_list_children(_arg0)
+
+
+var _utf8s []string
+
+{
+var i int
+var z *C.gchar
+for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+  i++
 }
 
-func (s settings) RevertSettings() {
-	var _arg0 *C.GSettings // out
-
-	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
-
-	C.g_settings_revert(_arg0)
+src := unsafe.Slice(_cret, i)
+_utf8s = make([]string, i)
+for i := range src {
+_utf8s[i] = C.GoString(src[i])
+defer C.free(unsafe.Pointer(src[i]))
+}
 }
 
-func (s settings) SetBooleanSettings(key string, value bool) bool {
-	var _arg0 *C.GSettings // out
-	var _arg1 *C.gchar     // out
-	var _arg2 C.gboolean   // out
-	var _cret C.gboolean   // in
+return _utf8s
+}
+	
+	func (s settings) ListKeysSettings() []string {
+var _arg0 *C.GSettings // out
+var _cret **C.gchar
 
-	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.gchar)(C.CString(key))
-	defer C.free(unsafe.Pointer(_arg1))
-	if value {
-		_arg2 = C.TRUE
-	}
+_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
 
-	_cret = C.g_settings_set_boolean(_arg0, _arg1, _arg2)
+_cret = C.g_settings_list_keys(_arg0)
 
-	var _ok bool // out
 
-	if _cret != 0 {
-		_ok = true
-	}
+var _utf8s []string
 
-	return _ok
+{
+var i int
+var z *C.gchar
+for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+  i++
 }
 
-func (s settings) SetDoubleSettings(key string, value float64) bool {
-	var _arg0 *C.GSettings // out
-	var _arg1 *C.gchar     // out
-	var _arg2 C.gdouble    // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.gchar)(C.CString(key))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.gdouble(value)
-
-	_cret = C.g_settings_set_double(_arg0, _arg1, _arg2)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
+src := unsafe.Slice(_cret, i)
+_utf8s = make([]string, i)
+for i := range src {
+_utf8s[i] = C.GoString(src[i])
+defer C.free(unsafe.Pointer(src[i]))
+}
 }
 
-func (s settings) SetEnumSettings(key string, value int) bool {
-	var _arg0 *C.GSettings // out
-	var _arg1 *C.gchar     // out
-	var _arg2 C.gint       // out
-	var _cret C.gboolean   // in
+return _utf8s
+}
+	
+	func (s settings) RangeCheckSettings(key string, value glib.Variant) bool {
+var _arg0 *C.GSettings // out
+var _arg1 *C.gchar // out
+var _arg2 *C.GVariant // out
+var _cret C.gboolean // in
 
-	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.gchar)(C.CString(key))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.gint(value)
+_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+_arg1 = (*C.gchar)(C.CString(key))
+defer C.free(unsafe.Pointer(_arg1))
+_arg2 = (*C.GVariant)(unsafe.Pointer(value))
 
-	_cret = C.g_settings_set_enum(_arg0, _arg1, _arg2)
+_cret = C.g_settings_range_check(_arg0, _arg1, _arg2)
 
-	var _ok bool // out
 
-	if _cret != 0 {
-		_ok = true
-	}
+var _ok bool // out
 
-	return _ok
+if _cret != 0 { _ok = true }
+
+return _ok
+}
+	
+	func (s settings) ResetSettings(key string)  {
+var _arg0 *C.GSettings // out
+var _arg1 *C.gchar // out
+
+_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+_arg1 = (*C.gchar)(C.CString(key))
+defer C.free(unsafe.Pointer(_arg1))
+
+C.g_settings_reset(_arg0, _arg1)
+}
+	
+	func (s settings) RevertSettings()  {
+var _arg0 *C.GSettings // out
+
+_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+
+C.g_settings_revert(_arg0)
+}
+	
+	func (s settings) SetBooleanSettings(key string, value bool) bool {
+var _arg0 *C.GSettings // out
+var _arg1 *C.gchar // out
+var _arg2 C.gboolean // out
+var _cret C.gboolean // in
+
+_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+_arg1 = (*C.gchar)(C.CString(key))
+defer C.free(unsafe.Pointer(_arg1))
+if value { _arg2 = C.TRUE }
+
+_cret = C.g_settings_set_boolean(_arg0, _arg1, _arg2)
+
+
+var _ok bool // out
+
+if _cret != 0 { _ok = true }
+
+return _ok
+}
+	
+	func (s settings) SetDoubleSettings(key string, value float64) bool {
+var _arg0 *C.GSettings // out
+var _arg1 *C.gchar // out
+var _arg2 C.gdouble // out
+var _cret C.gboolean // in
+
+_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+_arg1 = (*C.gchar)(C.CString(key))
+defer C.free(unsafe.Pointer(_arg1))
+_arg2 = C.gdouble(value)
+
+_cret = C.g_settings_set_double(_arg0, _arg1, _arg2)
+
+
+var _ok bool // out
+
+if _cret != 0 { _ok = true }
+
+return _ok
+}
+	
+	func (s settings) SetEnumSettings(key string, value int) bool {
+var _arg0 *C.GSettings // out
+var _arg1 *C.gchar // out
+var _arg2 C.gint // out
+var _cret C.gboolean // in
+
+_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+_arg1 = (*C.gchar)(C.CString(key))
+defer C.free(unsafe.Pointer(_arg1))
+_arg2 = C.gint(value)
+
+_cret = C.g_settings_set_enum(_arg0, _arg1, _arg2)
+
+
+var _ok bool // out
+
+if _cret != 0 { _ok = true }
+
+return _ok
+}
+	
+	func (s settings) SetFlagsSettings(key string, value uint) bool {
+var _arg0 *C.GSettings // out
+var _arg1 *C.gchar // out
+var _arg2 C.guint // out
+var _cret C.gboolean // in
+
+_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+_arg1 = (*C.gchar)(C.CString(key))
+defer C.free(unsafe.Pointer(_arg1))
+_arg2 = C.guint(value)
+
+_cret = C.g_settings_set_flags(_arg0, _arg1, _arg2)
+
+
+var _ok bool // out
+
+if _cret != 0 { _ok = true }
+
+return _ok
+}
+	
+	func (s settings) SetIntSettings(key string, value int) bool {
+var _arg0 *C.GSettings // out
+var _arg1 *C.gchar // out
+var _arg2 C.gint // out
+var _cret C.gboolean // in
+
+_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+_arg1 = (*C.gchar)(C.CString(key))
+defer C.free(unsafe.Pointer(_arg1))
+_arg2 = C.gint(value)
+
+_cret = C.g_settings_set_int(_arg0, _arg1, _arg2)
+
+
+var _ok bool // out
+
+if _cret != 0 { _ok = true }
+
+return _ok
+}
+	
+	func (s settings) SetInt64Settings(key string, value int64) bool {
+var _arg0 *C.GSettings // out
+var _arg1 *C.gchar // out
+var _arg2 C.gint64 // out
+var _cret C.gboolean // in
+
+_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+_arg1 = (*C.gchar)(C.CString(key))
+defer C.free(unsafe.Pointer(_arg1))
+_arg2 = C.gint64(value)
+
+_cret = C.g_settings_set_int64(_arg0, _arg1, _arg2)
+
+
+var _ok bool // out
+
+if _cret != 0 { _ok = true }
+
+return _ok
+}
+	
+	func (s settings) SetStringSettings(key string, value string) bool {
+var _arg0 *C.GSettings // out
+var _arg1 *C.gchar // out
+var _arg2 *C.gchar // out
+var _cret C.gboolean // in
+
+_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+_arg1 = (*C.gchar)(C.CString(key))
+defer C.free(unsafe.Pointer(_arg1))
+_arg2 = (*C.gchar)(C.CString(value))
+defer C.free(unsafe.Pointer(_arg2))
+
+_cret = C.g_settings_set_string(_arg0, _arg1, _arg2)
+
+
+var _ok bool // out
+
+if _cret != 0 { _ok = true }
+
+return _ok
+}
+	
+	func (s settings) SetStrvSettings(key string, value []string) bool {
+var _arg0 *C.GSettings // out
+var _arg1 *C.gchar // out
+var _arg2 **C.gchar
+var _cret C.gboolean // in
+
+_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+_arg1 = (*C.gchar)(C.CString(key))
+defer C.free(unsafe.Pointer(_arg1))
+_arg2 = (**C.gchar)(C.malloc(C.ulong(len(value)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
+defer C.free(unsafe.Pointer(_arg2))
+{
+out := unsafe.Slice(_arg2, len(value))
+for i := range value {
+out[i] = (*C.gchar)(C.CString(value[i]))
+defer C.free(unsafe.Pointer(out[i]))
+}
 }
 
-func (s settings) SetFlagsSettings(key string, value uint) bool {
-	var _arg0 *C.GSettings // out
-	var _arg1 *C.gchar     // out
-	var _arg2 C.guint      // out
-	var _cret C.gboolean   // in
+_cret = C.g_settings_set_strv(_arg0, _arg1, _arg2)
 
-	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.gchar)(C.CString(key))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.guint(value)
 
-	_cret = C.g_settings_set_flags(_arg0, _arg1, _arg2)
+var _ok bool // out
 
-	var _ok bool // out
+if _cret != 0 { _ok = true }
 
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
+return _ok
 }
+	
+	func (s settings) SetUintSettings(key string, value uint) bool {
+var _arg0 *C.GSettings // out
+var _arg1 *C.gchar // out
+var _arg2 C.guint // out
+var _cret C.gboolean // in
 
-func (s settings) SetIntSettings(key string, value int) bool {
-	var _arg0 *C.GSettings // out
-	var _arg1 *C.gchar     // out
-	var _arg2 C.gint       // out
-	var _cret C.gboolean   // in
+_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+_arg1 = (*C.gchar)(C.CString(key))
+defer C.free(unsafe.Pointer(_arg1))
+_arg2 = C.guint(value)
 
-	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.gchar)(C.CString(key))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.gint(value)
+_cret = C.g_settings_set_uint(_arg0, _arg1, _arg2)
 
-	_cret = C.g_settings_set_int(_arg0, _arg1, _arg2)
 
-	var _ok bool // out
+var _ok bool // out
 
-	if _cret != 0 {
-		_ok = true
-	}
+if _cret != 0 { _ok = true }
 
-	return _ok
+return _ok
 }
+	
+	func (s settings) SetUint64Settings(key string, value uint64) bool {
+var _arg0 *C.GSettings // out
+var _arg1 *C.gchar // out
+var _arg2 C.guint64 // out
+var _cret C.gboolean // in
 
-func (s settings) SetInt64Settings(key string, value int64) bool {
-	var _arg0 *C.GSettings // out
-	var _arg1 *C.gchar     // out
-	var _arg2 C.gint64     // out
-	var _cret C.gboolean   // in
+_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+_arg1 = (*C.gchar)(C.CString(key))
+defer C.free(unsafe.Pointer(_arg1))
+_arg2 = C.guint64(value)
 
-	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.gchar)(C.CString(key))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.gint64(value)
+_cret = C.g_settings_set_uint64(_arg0, _arg1, _arg2)
 
-	_cret = C.g_settings_set_int64(_arg0, _arg1, _arg2)
 
-	var _ok bool // out
+var _ok bool // out
 
-	if _cret != 0 {
-		_ok = true
-	}
+if _cret != 0 { _ok = true }
 
-	return _ok
+return _ok
 }
+	
+	func (s settings) SetValueSettings(key string, value glib.Variant) bool {
+var _arg0 *C.GSettings // out
+var _arg1 *C.gchar // out
+var _arg2 *C.GVariant // out
+var _cret C.gboolean // in
 
-func (s settings) SetStringSettings(key string, value string) bool {
-	var _arg0 *C.GSettings // out
-	var _arg1 *C.gchar     // out
-	var _arg2 *C.gchar     // out
-	var _cret C.gboolean   // in
+_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+_arg1 = (*C.gchar)(C.CString(key))
+defer C.free(unsafe.Pointer(_arg1))
+_arg2 = (*C.GVariant)(unsafe.Pointer(value))
 
-	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.gchar)(C.CString(key))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.gchar)(C.CString(value))
-	defer C.free(unsafe.Pointer(_arg2))
+_cret = C.g_settings_set_value(_arg0, _arg1, _arg2)
 
-	_cret = C.g_settings_set_string(_arg0, _arg1, _arg2)
 
-	var _ok bool // out
+var _ok bool // out
 
-	if _cret != 0 {
-		_ok = true
-	}
+if _cret != 0 { _ok = true }
 
-	return _ok
+return _ok
 }
+	
 
-func (s settings) SetStrvSettings(key string, value []string) bool {
-	var _arg0 *C.GSettings // out
-	var _arg1 *C.gchar     // out
-	var _arg2 **C.gchar
-	var _cret C.gboolean // in
-
-	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.gchar)(C.CString(key))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (**C.gchar)(C.malloc(C.ulong(len(value)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
-	defer C.free(unsafe.Pointer(_arg2))
-	{
-		out := unsafe.Slice(_arg2, len(value))
-		for i := range value {
-			out[i] = (*C.gchar)(C.CString(value[i]))
-			defer C.free(unsafe.Pointer(out[i]))
-		}
-	}
-
-	_cret = C.g_settings_set_strv(_arg0, _arg1, _arg2)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-func (s settings) SetUintSettings(key string, value uint) bool {
-	var _arg0 *C.GSettings // out
-	var _arg1 *C.gchar     // out
-	var _arg2 C.guint      // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.gchar)(C.CString(key))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.guint(value)
-
-	_cret = C.g_settings_set_uint(_arg0, _arg1, _arg2)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-func (s settings) SetUint64Settings(key string, value uint64) bool {
-	var _arg0 *C.GSettings // out
-	var _arg1 *C.gchar     // out
-	var _arg2 C.guint64    // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.gchar)(C.CString(key))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.guint64(value)
-
-	_cret = C.g_settings_set_uint64(_arg0, _arg1, _arg2)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-func (s settings) SetValueSettings(key string, value *glib.Variant) bool {
-	var _arg0 *C.GSettings // out
-	var _arg1 *C.gchar     // out
-	var _arg2 *C.GVariant  // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.gchar)(C.CString(key))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GVariant)(unsafe.Pointer(value.Native()))
-
-	_cret = C.g_settings_set_value(_arg0, _arg1, _arg2)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
+	
+	

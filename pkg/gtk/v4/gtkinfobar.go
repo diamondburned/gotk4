@@ -82,32 +82,80 @@ func init() {
 type InfoBar interface {
 	Widget
 
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
+
+	// AddActionWidgetInfoBar: add an activatable widget to the action area of a
+	// `GtkInfoBar`.
+	//
+	// This also connects a signal handler that will emit the
+	// [signal@Gtk.InfoBar::response] signal on the message area when the widget
+	// is activated. The widget is appended to the end of the message areas
+	// action area.
 	AddActionWidgetInfoBar(child Widget, responseId int)
-
+	// AddButtonInfoBar adds a button with the given text.
+	//
+	// Clicking the button will emit the [signal@Gtk.InfoBar::response] signal
+	// with the given response_id. The button is appended to the end of the info
+	// bars's action area. The button widget is returned, but usually you don't
+	// need it.
 	AddButtonInfoBar(buttonText string, responseId int) Button
-
+	// AddChildInfoBar adds a widget to the content area of the info bar.
 	AddChildInfoBar(widget Widget)
-
+	// MessageType returns the message type of the message area.
 	MessageType() MessageType
-
+	// Revealed returns whether the info bar is currently revealed.
 	Revealed() bool
-
+	// ShowCloseButton returns whether the widget will display a standard close
+	// button.
 	ShowCloseButton() bool
-
+	// RemoveActionWidgetInfoBar removes a widget from the action area of
+	// @info_bar.
+	//
+	// The widget must have been put there by a call to
+	// [method@Gtk.InfoBar.add_action_widget] or
+	// [method@Gtk.InfoBar.add_button].
 	RemoveActionWidgetInfoBar(widget Widget)
-
+	// RemoveChildInfoBar removes a widget from the content area of the info
+	// bar.
 	RemoveChildInfoBar(widget Widget)
-
+	// ResponseInfoBar emits the “response” signal with the given @response_id.
 	ResponseInfoBar(responseId int)
-
+	// SetDefaultResponseInfoBar sets the last widget in the info bar’s action
+	// area with the given response_id as the default widget for the dialog.
+	//
+	// Pressing “Enter” normally activates the default widget.
+	//
+	// Note that this function currently requires @info_bar to be added to a
+	// widget hierarchy.
 	SetDefaultResponseInfoBar(responseId int)
-
+	// SetMessageTypeInfoBar sets the message type of the message area.
+	//
+	// GTK uses this type to determine how the message is displayed.
 	SetMessageTypeInfoBar(messageType MessageType)
-
+	// SetResponseSensitiveInfoBar sets the sensitivity of action widgets for
+	// @response_id.
+	//
+	// Calls `gtk_widget_set_sensitive (widget, setting)` for each widget in the
+	// info bars’s action area with the given @response_id. A convenient way to
+	// sensitize/desensitize buttons.
 	SetResponseSensitiveInfoBar(responseId int, setting bool)
-
+	// SetRevealedInfoBar sets whether the `GtkInfoBar` is revealed.
+	//
+	// Changing this will make @info_bar reveal or conceal itself via a sliding
+	// transition.
+	//
+	// Note: this does not show or hide @info_bar in the
+	// [property@Gtk.Widget:visible] sense, so revealing has no effect if
+	// [property@Gtk.Widget:visible] is false.
 	SetRevealedInfoBar(revealed bool)
-
+	// SetShowCloseButtonInfoBar: if true, a standard close button is shown.
+	//
+	// When clicked it emits the response GTK_RESPONSE_CLOSE.
 	SetShowCloseButtonInfoBar(setting bool)
 }
 
@@ -130,6 +178,7 @@ func marshalInfoBar(p uintptr) (interface{}, error) {
 	return WrapInfoBar(obj), nil
 }
 
+// NewInfoBar creates a new `GtkInfoBar` object.
 func NewInfoBar() InfoBar {
 	var _cret *C.GtkWidget // in
 
@@ -137,7 +186,7 @@ func NewInfoBar() InfoBar {
 
 	var _infoBar InfoBar // out
 
-	_infoBar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(InfoBar)
+	_infoBar = WrapInfoBar(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _infoBar
 }
@@ -321,34 +370,14 @@ func (i infoBar) SetShowCloseButtonInfoBar(setting bool) {
 	C.gtk_info_bar_set_show_close_button(_arg0, _arg1)
 }
 
-func (s infoBar) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
+func (i infoBar) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(i))
 }
 
-func (s infoBar) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
+func (i infoBar) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(i))
 }
 
-func (s infoBar) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
-}
-
-func (s infoBar) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s infoBar) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s infoBar) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s infoBar) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b infoBar) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
+func (i infoBar) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(i))
 }

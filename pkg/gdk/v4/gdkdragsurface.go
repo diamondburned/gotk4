@@ -21,11 +21,11 @@ func init() {
 	})
 }
 
-// DragSurface: a DragSurface is an interface for surfaces used during DND.
+// DragSurface is an interface for surfaces used during DND.
 type DragSurface interface {
 	Surface
 
-	// Present: present @drag_surface.
+	// Present @drag_surface.
 	Present(width int, height int) bool
 }
 

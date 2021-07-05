@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -31,8 +32,9 @@ func init() {
 type ATContext interface {
 	gextras.Objector
 
+	// Accessible retrieves the `GtkAccessible` using this context.
 	Accessible() Accessible
-
+	// AccessibleRole retrieves the accessible role of this context.
 	AccessibleRole() AccessibleRole
 }
 
@@ -55,6 +57,11 @@ func marshalATContext(p uintptr) (interface{}, error) {
 	return WrapATContext(obj), nil
 }
 
+// NewATContextCreate creates a new `GtkATContext` instance for the given
+// accessible role, accessible instance, and display connection.
+//
+// The `GtkATContext` implementation being instantiated will depend on the
+// platform.
 func NewATContextCreate(accessibleRole AccessibleRole, accessible Accessible, display gdk.Display) ATContext {
 	var _arg1 C.GtkAccessibleRole // out
 	var _arg2 *C.GtkAccessible    // out
@@ -69,7 +76,7 @@ func NewATContextCreate(accessibleRole AccessibleRole, accessible Accessible, di
 
 	var _atContext ATContext // out
 
-	_atContext = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(ATContext)
+	_atContext = WrapATContext(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _atContext
 }

@@ -5,9 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -26,14 +24,14 @@ func init() {
 	})
 }
 
-// IconFactory: an icon factory manages a collection of IconSet; a IconSet
-// manages a set of variants of a particular icon (i.e. a IconSet contains
-// variants for different sizes and widget states). Icons in an icon factory are
-// named by a stock ID, which is a simple string identifying the icon. Each
-// Style has a list of IconFactory derived from the current theme; those icon
-// factories are consulted first when searching for an icon. If the theme
-// doesn’t set a particular icon, GTK+ looks for the icon in a list of default
-// icon factories, maintained by gtk_icon_factory_add_default() and
+// IconFactory: icon factory manages a collection of IconSet; a IconSet manages
+// a set of variants of a particular icon (i.e. a IconSet contains variants for
+// different sizes and widget states). Icons in an icon factory are named by a
+// stock ID, which is a simple string identifying the icon. Each Style has a
+// list of IconFactory derived from the current theme; those icon factories are
+// consulted first when searching for an icon. If the theme doesn’t set a
+// particular icon, GTK+ looks for the icon in a list of default icon factories,
+// maintained by gtk_icon_factory_add_default() and
 // gtk_icon_factory_remove_default(). Applications with icons should add a
 // default icon factory with their icons, which will allow themes to override
 // the icons for the application.
@@ -95,14 +93,45 @@ func init() {
 //      </child>
 //    </object>
 type IconFactory interface {
-	Buildable
+	gextras.Objector
 
-	AddIconFactory(stockId string, iconSet *IconSet)
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
 
+	// AddIconFactory adds the given @icon_set to the icon factory, under the
+	// name @stock_id. @stock_id should be namespaced for your application, e.g.
+	// “myapp-whatever-icon”. Normally applications create a IconFactory, then
+	// add it to the list of default factories with
+	// gtk_icon_factory_add_default(). Then they pass the @stock_id to widgets
+	// such as Image to display the icon. Themes can provide an icon with the
+	// same name (such as "myapp-whatever-icon") to override your application’s
+	// default icons. If an icon already existed in @factory for @stock_id, it
+	// is unreferenced and replaced with the new @icon_set.
+	//
+	// Deprecated: since version 3.10.
+	AddIconFactory(stockId string, iconSet IconSet)
+	// AddDefaultIconFactory adds an icon factory to the list of icon factories
+	// searched by gtk_style_lookup_icon_set(). This means that, for example,
+	// gtk_image_new_from_stock() will be able to find icons in @factory. There
+	// will normally be an icon factory added for each library or application
+	// that comes with icons. The default icon factories can be overridden by
+	// themes.
+	//
+	// Deprecated: since version 3.10.
 	AddDefaultIconFactory()
-
-	LookupIconFactory(stockId string) *IconSet
-
+	// LookupIconFactory looks up @stock_id in the icon factory, returning an
+	// icon set if found, otherwise nil. For display to the user, you should use
+	// gtk_style_lookup_icon_set() on the Style for the widget that will display
+	// the icon, instead of using this function directly, so that themes are
+	// taken into account.
+	//
+	// Deprecated: since version 3.10.
+	LookupIconFactory(stockId string) IconSet
+	// RemoveDefaultIconFactory removes an icon factory from the list of default
+	// icon factories. Not normally used; you might use it for a library that
+	// can be unloaded or shut down.
+	//
+	// Deprecated: since version 3.10.
 	RemoveDefaultIconFactory()
 }
 
@@ -125,6 +154,19 @@ func marshalIconFactory(p uintptr) (interface{}, error) {
 	return WrapIconFactory(obj), nil
 }
 
+// NewIconFactory creates a new IconFactory. An icon factory manages a
+// collection of IconSets; a IconSet manages a set of variants of a particular
+// icon (i.e. a IconSet contains variants for different sizes and widget
+// states). Icons in an icon factory are named by a stock ID, which is a simple
+// string identifying the icon. Each Style has a list of IconFactorys derived
+// from the current theme; those icon factories are consulted first when
+// searching for an icon. If the theme doesn’t set a particular icon, GTK+ looks
+// for the icon in a list of default icon factories, maintained by
+// gtk_icon_factory_add_default() and gtk_icon_factory_remove_default().
+// Applications with icons should add a default icon factory with their icons,
+// which will allow themes to override the icons for the application.
+//
+// Deprecated: since version 3.10.
 func NewIconFactory() IconFactory {
 	var _cret *C.GtkIconFactory // in
 
@@ -132,12 +174,12 @@ func NewIconFactory() IconFactory {
 
 	var _iconFactory IconFactory // out
 
-	_iconFactory = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(IconFactory)
+	_iconFactory = WrapIconFactory(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _iconFactory
 }
 
-func (f iconFactory) AddIconFactory(stockId string, iconSet *IconSet) {
+func (f iconFactory) AddIconFactory(stockId string, iconSet IconSet) {
 	var _arg0 *C.GtkIconFactory // out
 	var _arg1 *C.gchar          // out
 	var _arg2 *C.GtkIconSet     // out
@@ -145,7 +187,7 @@ func (f iconFactory) AddIconFactory(stockId string, iconSet *IconSet) {
 	_arg0 = (*C.GtkIconFactory)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.gchar)(C.CString(stockId))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GtkIconSet)(unsafe.Pointer(iconSet.Native()))
+	_arg2 = (*C.GtkIconSet)(unsafe.Pointer(iconSet))
 
 	C.gtk_icon_factory_add(_arg0, _arg1, _arg2)
 }
@@ -158,7 +200,7 @@ func (f iconFactory) AddDefaultIconFactory() {
 	C.gtk_icon_factory_add_default(_arg0)
 }
 
-func (f iconFactory) LookupIconFactory(stockId string) *IconSet {
+func (f iconFactory) LookupIconFactory(stockId string) IconSet {
 	var _arg0 *C.GtkIconFactory // out
 	var _arg1 *C.gchar          // out
 	var _cret *C.GtkIconSet     // in
@@ -169,9 +211,10 @@ func (f iconFactory) LookupIconFactory(stockId string) *IconSet {
 
 	_cret = C.gtk_icon_factory_lookup(_arg0, _arg1)
 
-	var _iconSet *IconSet // out
+	var _iconSet IconSet // out
 
-	_iconSet = (*IconSet)(unsafe.Pointer(_cret))
+	_iconSet = (IconSet)(unsafe.Pointer(_cret))
+	C.gtk_icon_set_ref(_cret)
 
 	return _iconSet
 }
@@ -184,42 +227,6 @@ func (f iconFactory) RemoveDefaultIconFactory() {
 	C.gtk_icon_factory_remove_default(_arg0)
 }
 
-func (b iconFactory) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
-}
-
-func (b iconFactory) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b iconFactory) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b iconFactory) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b iconFactory) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b iconFactory) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b iconFactory) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b iconFactory) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b iconFactory) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b iconFactory) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
+func (i iconFactory) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(i))
 }

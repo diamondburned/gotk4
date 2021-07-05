@@ -5,10 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
-	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -171,7 +168,11 @@ func init() {
 // ensure proper operation.
 type FileChooserDialog interface {
 	Dialog
-	FileChooser
+
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsFileChooser casts the class to the FileChooser interface.
+	AsFileChooser() FileChooser
 }
 
 // fileChooserDialog implements the FileChooserDialog class.
@@ -193,242 +194,10 @@ func marshalFileChooserDialog(p uintptr) (interface{}, error) {
 	return WrapFileChooserDialog(obj), nil
 }
 
-func (b fileChooserDialog) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+func (f fileChooserDialog) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(f))
 }
 
-func (b fileChooserDialog) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b fileChooserDialog) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b fileChooserDialog) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b fileChooserDialog) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b fileChooserDialog) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b fileChooserDialog) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b fileChooserDialog) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b fileChooserDialog) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b fileChooserDialog) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (c fileChooserDialog) AddChoice(id string, label string, options []string, optionLabels []string) {
-	WrapFileChooser(gextras.InternObject(c)).AddChoice(id, label, options, optionLabels)
-}
-
-func (c fileChooserDialog) AddFilter(filter FileFilter) {
-	WrapFileChooser(gextras.InternObject(c)).AddFilter(filter)
-}
-
-func (c fileChooserDialog) AddShortcutFolder(folder string) error {
-	return WrapFileChooser(gextras.InternObject(c)).AddShortcutFolder(folder)
-}
-
-func (c fileChooserDialog) AddShortcutFolderURI(uri string) error {
-	return WrapFileChooser(gextras.InternObject(c)).AddShortcutFolderURI(uri)
-}
-
-func (c fileChooserDialog) Action() FileChooserAction {
-	return WrapFileChooser(gextras.InternObject(c)).Action()
-}
-
-func (c fileChooserDialog) Choice(id string) string {
-	return WrapFileChooser(gextras.InternObject(c)).Choice(id)
-}
-
-func (c fileChooserDialog) CreateFolders() bool {
-	return WrapFileChooser(gextras.InternObject(c)).CreateFolders()
-}
-
-func (c fileChooserDialog) CurrentFolder() string {
-	return WrapFileChooser(gextras.InternObject(c)).CurrentFolder()
-}
-
-func (c fileChooserDialog) CurrentFolderURI() string {
-	return WrapFileChooser(gextras.InternObject(c)).CurrentFolderURI()
-}
-
-func (c fileChooserDialog) CurrentName() string {
-	return WrapFileChooser(gextras.InternObject(c)).CurrentName()
-}
-
-func (c fileChooserDialog) DoOverwriteConfirmation() bool {
-	return WrapFileChooser(gextras.InternObject(c)).DoOverwriteConfirmation()
-}
-
-func (c fileChooserDialog) ExtraWidget() Widget {
-	return WrapFileChooser(gextras.InternObject(c)).ExtraWidget()
-}
-
-func (c fileChooserDialog) Filename() string {
-	return WrapFileChooser(gextras.InternObject(c)).Filename()
-}
-
-func (c fileChooserDialog) Filter() FileFilter {
-	return WrapFileChooser(gextras.InternObject(c)).Filter()
-}
-
-func (c fileChooserDialog) LocalOnly() bool {
-	return WrapFileChooser(gextras.InternObject(c)).LocalOnly()
-}
-
-func (c fileChooserDialog) PreviewFilename() string {
-	return WrapFileChooser(gextras.InternObject(c)).PreviewFilename()
-}
-
-func (c fileChooserDialog) PreviewURI() string {
-	return WrapFileChooser(gextras.InternObject(c)).PreviewURI()
-}
-
-func (c fileChooserDialog) PreviewWidget() Widget {
-	return WrapFileChooser(gextras.InternObject(c)).PreviewWidget()
-}
-
-func (c fileChooserDialog) PreviewWidgetActive() bool {
-	return WrapFileChooser(gextras.InternObject(c)).PreviewWidgetActive()
-}
-
-func (c fileChooserDialog) SelectMultiple() bool {
-	return WrapFileChooser(gextras.InternObject(c)).SelectMultiple()
-}
-
-func (c fileChooserDialog) ShowHidden() bool {
-	return WrapFileChooser(gextras.InternObject(c)).ShowHidden()
-}
-
-func (c fileChooserDialog) URI() string {
-	return WrapFileChooser(gextras.InternObject(c)).URI()
-}
-
-func (c fileChooserDialog) UsePreviewLabel() bool {
-	return WrapFileChooser(gextras.InternObject(c)).UsePreviewLabel()
-}
-
-func (c fileChooserDialog) RemoveChoice(id string) {
-	WrapFileChooser(gextras.InternObject(c)).RemoveChoice(id)
-}
-
-func (c fileChooserDialog) RemoveFilter(filter FileFilter) {
-	WrapFileChooser(gextras.InternObject(c)).RemoveFilter(filter)
-}
-
-func (c fileChooserDialog) RemoveShortcutFolder(folder string) error {
-	return WrapFileChooser(gextras.InternObject(c)).RemoveShortcutFolder(folder)
-}
-
-func (c fileChooserDialog) RemoveShortcutFolderURI(uri string) error {
-	return WrapFileChooser(gextras.InternObject(c)).RemoveShortcutFolderURI(uri)
-}
-
-func (c fileChooserDialog) SelectAll() {
-	WrapFileChooser(gextras.InternObject(c)).SelectAll()
-}
-
-func (c fileChooserDialog) SelectFilename(filename string) bool {
-	return WrapFileChooser(gextras.InternObject(c)).SelectFilename(filename)
-}
-
-func (c fileChooserDialog) SelectURI(uri string) bool {
-	return WrapFileChooser(gextras.InternObject(c)).SelectURI(uri)
-}
-
-func (c fileChooserDialog) SetAction(action FileChooserAction) {
-	WrapFileChooser(gextras.InternObject(c)).SetAction(action)
-}
-
-func (c fileChooserDialog) SetChoice(id string, option string) {
-	WrapFileChooser(gextras.InternObject(c)).SetChoice(id, option)
-}
-
-func (c fileChooserDialog) SetCreateFolders(createFolders bool) {
-	WrapFileChooser(gextras.InternObject(c)).SetCreateFolders(createFolders)
-}
-
-func (c fileChooserDialog) SetCurrentFolder(filename string) bool {
-	return WrapFileChooser(gextras.InternObject(c)).SetCurrentFolder(filename)
-}
-
-func (c fileChooserDialog) SetCurrentFolderURI(uri string) bool {
-	return WrapFileChooser(gextras.InternObject(c)).SetCurrentFolderURI(uri)
-}
-
-func (c fileChooserDialog) SetCurrentName(name string) {
-	WrapFileChooser(gextras.InternObject(c)).SetCurrentName(name)
-}
-
-func (c fileChooserDialog) SetDoOverwriteConfirmation(doOverwriteConfirmation bool) {
-	WrapFileChooser(gextras.InternObject(c)).SetDoOverwriteConfirmation(doOverwriteConfirmation)
-}
-
-func (c fileChooserDialog) SetExtraWidget(extraWidget Widget) {
-	WrapFileChooser(gextras.InternObject(c)).SetExtraWidget(extraWidget)
-}
-
-func (c fileChooserDialog) SetFilename(filename string) bool {
-	return WrapFileChooser(gextras.InternObject(c)).SetFilename(filename)
-}
-
-func (c fileChooserDialog) SetFilter(filter FileFilter) {
-	WrapFileChooser(gextras.InternObject(c)).SetFilter(filter)
-}
-
-func (c fileChooserDialog) SetLocalOnly(localOnly bool) {
-	WrapFileChooser(gextras.InternObject(c)).SetLocalOnly(localOnly)
-}
-
-func (c fileChooserDialog) SetPreviewWidget(previewWidget Widget) {
-	WrapFileChooser(gextras.InternObject(c)).SetPreviewWidget(previewWidget)
-}
-
-func (c fileChooserDialog) SetPreviewWidgetActive(active bool) {
-	WrapFileChooser(gextras.InternObject(c)).SetPreviewWidgetActive(active)
-}
-
-func (c fileChooserDialog) SetSelectMultiple(selectMultiple bool) {
-	WrapFileChooser(gextras.InternObject(c)).SetSelectMultiple(selectMultiple)
-}
-
-func (c fileChooserDialog) SetShowHidden(showHidden bool) {
-	WrapFileChooser(gextras.InternObject(c)).SetShowHidden(showHidden)
-}
-
-func (c fileChooserDialog) SetURI(uri string) bool {
-	return WrapFileChooser(gextras.InternObject(c)).SetURI(uri)
-}
-
-func (c fileChooserDialog) SetUsePreviewLabel(useLabel bool) {
-	WrapFileChooser(gextras.InternObject(c)).SetUsePreviewLabel(useLabel)
-}
-
-func (c fileChooserDialog) UnselectAll() {
-	WrapFileChooser(gextras.InternObject(c)).UnselectAll()
-}
-
-func (c fileChooserDialog) UnselectFilename(filename string) {
-	WrapFileChooser(gextras.InternObject(c)).UnselectFilename(filename)
-}
-
-func (c fileChooserDialog) UnselectURI(uri string) {
-	WrapFileChooser(gextras.InternObject(c)).UnselectURI(uri)
+func (f fileChooserDialog) AsFileChooser() FileChooser {
+	return WrapFileChooser(gextras.InternObject(f))
 }

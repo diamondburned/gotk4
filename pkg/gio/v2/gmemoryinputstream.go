@@ -3,12 +3,9 @@
 package gio
 
 import (
-	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -40,8 +37,12 @@ func init() {
 //
 // As of GLib 2.34, InputStream implements InputStream.
 type MemoryInputStream interface {
-	PollableInputStream
-	Seekable
+	InputStream
+
+	// AsPollableInputStream casts the class to the PollableInputStream interface.
+	AsPollableInputStream() PollableInputStream
+	// AsSeekable casts the class to the Seekable interface.
+	AsSeekable() Seekable
 }
 
 // memoryInputStream implements the MemoryInputStream class.
@@ -63,6 +64,7 @@ func marshalMemoryInputStream(p uintptr) (interface{}, error) {
 	return WrapMemoryInputStream(obj), nil
 }
 
+// NewMemoryInputStream creates a new empty InputStream.
 func NewMemoryInputStream() MemoryInputStream {
 	var _cret *C.GInputStream // in
 
@@ -70,43 +72,15 @@ func NewMemoryInputStream() MemoryInputStream {
 
 	var _memoryInputStream MemoryInputStream // out
 
-	_memoryInputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(MemoryInputStream)
+	_memoryInputStream = WrapMemoryInputStream(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _memoryInputStream
 }
 
-func (s memoryInputStream) CanPoll() bool {
-	return WrapPollableInputStream(gextras.InternObject(s)).CanPoll()
+func (m memoryInputStream) AsPollableInputStream() PollableInputStream {
+	return WrapPollableInputStream(gextras.InternObject(m))
 }
 
-func (s memoryInputStream) CreateSource(cancellable Cancellable) *glib.Source {
-	return WrapPollableInputStream(gextras.InternObject(s)).CreateSource(cancellable)
-}
-
-func (s memoryInputStream) IsReadable() bool {
-	return WrapPollableInputStream(gextras.InternObject(s)).IsReadable()
-}
-
-func (s memoryInputStream) ReadNonblocking(buffer []byte, cancellable Cancellable) (int, error) {
-	return WrapPollableInputStream(gextras.InternObject(s)).ReadNonblocking(buffer, cancellable)
-}
-
-func (s memoryInputStream) CanSeek() bool {
-	return WrapSeekable(gextras.InternObject(s)).CanSeek()
-}
-
-func (s memoryInputStream) CanTruncate() bool {
-	return WrapSeekable(gextras.InternObject(s)).CanTruncate()
-}
-
-func (s memoryInputStream) Seek(offset int64, typ glib.SeekType, cancellable Cancellable) error {
-	return WrapSeekable(gextras.InternObject(s)).Seek(offset, typ, cancellable)
-}
-
-func (s memoryInputStream) Tell() int64 {
-	return WrapSeekable(gextras.InternObject(s)).Tell()
-}
-
-func (s memoryInputStream) Truncate(offset int64, cancellable Cancellable) error {
-	return WrapSeekable(gextras.InternObject(s)).Truncate(offset, cancellable)
+func (m memoryInputStream) AsSeekable() Seekable {
+	return WrapSeekable(gextras.InternObject(m))
 }

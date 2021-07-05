@@ -24,9 +24,9 @@ func init() {
 	})
 }
 
-// Activatable: activatable widgets can be connected to a Action and reflects
-// the state of its action. A Activatable can also provide feedback through its
-// action, as they are responsible for activating their related actions.
+// Activatable widgets can be connected to a Action and reflects the state of
+// its action. A Activatable can also provide feedback through its action, as
+// they are responsible for activating their related actions.
 //
 //
 // Implementing GtkActivatable
@@ -258,38 +258,50 @@ func init() {
 type Activatable interface {
 	gextras.Objector
 
-	// DoSetRelatedAction: this is called to update the activatable completely,
-	// this is called internally when the Activatable:related-action property is
-	// set or unset and by the implementing class when
-	// Activatable:use-action-appearance changes.
+	// DoSetRelatedAction: this is a utility function for Activatable
+	// implementors.
+	//
+	// When implementing Activatable you must call this when handling changes of
+	// the Activatable:related-action, and you must also use this to break
+	// references in #GObject->dispose().
+	//
+	// This function adds a reference to the currently set related action for
+	// you, it also makes sure the Activatable->update() method is called when
+	// the related Action properties change and registers to the action’s proxy
+	// list.
+	//
+	// > Be careful to call this before setting the local > copy of the Action
+	// property, since this function uses > gtk_activatable_get_related_action()
+	// to retrieve the > previous action.
 	//
 	// Deprecated: since version 3.10.
 	DoSetRelatedAction(action Action)
-	// RelatedAction: this is called to update the activatable completely, this
-	// is called internally when the Activatable:related-action property is set
-	// or unset and by the implementing class when
-	// Activatable:use-action-appearance changes.
+	// RelatedAction gets the related Action for @activatable.
 	//
 	// Deprecated: since version 3.10.
 	RelatedAction() Action
-	// UseActionAppearance: this is called to update the activatable completely,
-	// this is called internally when the Activatable:related-action property is
-	// set or unset and by the implementing class when
-	// Activatable:use-action-appearance changes.
+	// UseActionAppearance gets whether this activatable should reset its layout
+	// and appearance when setting the related action or when the action changes
+	// appearance.
 	//
 	// Deprecated: since version 3.10.
 	UseActionAppearance() bool
-	// SetRelatedAction: this is called to update the activatable completely,
-	// this is called internally when the Activatable:related-action property is
-	// set or unset and by the implementing class when
-	// Activatable:use-action-appearance changes.
+	// SetRelatedAction sets the related action on the @activatable object.
+	//
+	// > Activatable implementors need to handle the Activatable:related-action
+	// > property and call gtk_activatable_do_set_related_action() when it
+	// changes.
 	//
 	// Deprecated: since version 3.10.
 	SetRelatedAction(action Action)
-	// SetUseActionAppearance: this is called to update the activatable
-	// completely, this is called internally when the Activatable:related-action
-	// property is set or unset and by the implementing class when
-	// Activatable:use-action-appearance changes.
+	// SetUseActionAppearance sets whether this activatable should reset its
+	// layout and appearance when setting the related action or when the action
+	// changes appearance
+	//
+	// > Activatable implementors need to handle the >
+	// Activatable:use-action-appearance property and call >
+	// gtk_activatable_sync_action_properties() to update @activatable > if
+	// needed.
 	//
 	// Deprecated: since version 3.10.
 	SetUseActionAppearance(useAppearance bool)

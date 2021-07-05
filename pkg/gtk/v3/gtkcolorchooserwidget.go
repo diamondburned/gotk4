@@ -5,10 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/gdk/v3"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -49,7 +46,13 @@ func init() {
 // GtkColorChooserWidget has a single CSS node with name colorchooser.
 type ColorChooserWidget interface {
 	Box
-	ColorChooser
+
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsColorChooser casts the class to the ColorChooser interface.
+	AsColorChooser() ColorChooser
+	// AsOrientable casts the class to the Orientable interface.
+	AsOrientable() Orientable
 }
 
 // colorChooserWidget implements the ColorChooserWidget class.
@@ -71,6 +74,7 @@ func marshalColorChooserWidget(p uintptr) (interface{}, error) {
 	return WrapColorChooserWidget(obj), nil
 }
 
+// NewColorChooserWidget creates a new ColorChooserWidget.
 func NewColorChooserWidget() ColorChooserWidget {
 	var _cret *C.GtkWidget // in
 
@@ -78,75 +82,19 @@ func NewColorChooserWidget() ColorChooserWidget {
 
 	var _colorChooserWidget ColorChooserWidget // out
 
-	_colorChooserWidget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ColorChooserWidget)
+	_colorChooserWidget = WrapColorChooserWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _colorChooserWidget
 }
 
-func (b colorChooserWidget) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+func (c colorChooserWidget) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(c))
 }
 
-func (b colorChooserWidget) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+func (c colorChooserWidget) AsColorChooser() ColorChooser {
+	return WrapColorChooser(gextras.InternObject(c))
 }
 
-func (b colorChooserWidget) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b colorChooserWidget) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b colorChooserWidget) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b colorChooserWidget) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b colorChooserWidget) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b colorChooserWidget) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b colorChooserWidget) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b colorChooserWidget) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (o colorChooserWidget) Orientation() Orientation {
-	return WrapOrientable(gextras.InternObject(o)).Orientation()
-}
-
-func (o colorChooserWidget) SetOrientation(orientation Orientation) {
-	WrapOrientable(gextras.InternObject(o)).SetOrientation(orientation)
-}
-
-func (c colorChooserWidget) AddPalette(orientation Orientation, colorsPerLine int, colors []gdk.RGBA) {
-	WrapColorChooser(gextras.InternObject(c)).AddPalette(orientation, colorsPerLine, colors)
-}
-
-func (c colorChooserWidget) RGBA() gdk.RGBA {
-	return WrapColorChooser(gextras.InternObject(c)).RGBA()
-}
-
-func (c colorChooserWidget) UseAlpha() bool {
-	return WrapColorChooser(gextras.InternObject(c)).UseAlpha()
-}
-
-func (c colorChooserWidget) SetRGBA(color *gdk.RGBA) {
-	WrapColorChooser(gextras.InternObject(c)).SetRGBA(color)
-}
-
-func (c colorChooserWidget) SetUseAlpha(useAlpha bool) {
-	WrapColorChooser(gextras.InternObject(c)).SetUseAlpha(useAlpha)
+func (c colorChooserWidget) AsOrientable() Orientable {
+	return WrapOrientable(gextras.InternObject(c))
 }

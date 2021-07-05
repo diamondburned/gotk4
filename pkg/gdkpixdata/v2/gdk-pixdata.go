@@ -18,7 +18,7 @@ import (
 // #include <glib-object.h>
 import "C"
 
-// PixdataDumpType: an enumeration which is used by gdk_pixdata_to_csource() to
+// PixdataDumpType: enumeration which is used by gdk_pixdata_to_csource() to
 // determine the form of C source to be generated. The three values
 // @GDK_PIXDATA_DUMP_PIXDATA_STREAM, @GDK_PIXDATA_DUMP_PIXDATA_STRUCT and
 // @GDK_PIXDATA_DUMP_MACROS are mutually exclusive, as are
@@ -57,9 +57,9 @@ const (
 	PixdataDumpTypeRleDecoder PixdataDumpType = 0b10000000000000000
 )
 
-// PixdataType: an enumeration containing three sets of flags for a Pixdata
-// struct: one for the used colorspace, one for the width of the samples and one
-// for the encoding of the pixel data.
+// PixdataType: enumeration containing three sets of flags for a Pixdata struct:
+// one for the used colorspace, one for the width of the samples and one for the
+// encoding of the pixel data.
 //
 // Deprecated: since version 2.32.
 type PixdataType int
@@ -94,13 +94,13 @@ const (
 // pixel data is copied into newly-allocated memory; otherwise it is reused.
 //
 // Deprecated: since version 2.32.
-func PixbufFromPixdata(pixdata *Pixdata, copyPixels bool) (gdkpixbuf.Pixbuf, error) {
+func PixbufFromPixdata(pixdata Pixdata, copyPixels bool) (gdkpixbuf.Pixbuf, error) {
 	var _arg1 *C.GdkPixdata // out
 	var _arg2 C.gboolean    // out
 	var _cret *C.GdkPixbuf  // in
-	var _cerr *C.GError     // in
+	var _cerr **C.GError    // in
 
-	_arg1 = (*C.GdkPixdata)(unsafe.Pointer(pixdata.Native()))
+	_arg1 = (*C.GdkPixdata)(unsafe.Pointer(pixdata))
 	if copyPixels {
 		_arg2 = C.TRUE
 	}
@@ -111,12 +111,21 @@ func PixbufFromPixdata(pixdata *Pixdata, copyPixels bool) (gdkpixbuf.Pixbuf, err
 	var _goerr error             // out
 
 	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(gdkpixbuf.Pixbuf)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _pixbuf, _goerr
 }
 
-// Pixdata: a pixel buffer suitable for serialization and streaming.
+// Pixdata: pixel buffer suitable for serialization and streaming.
 //
 // Using `GdkPixdata`, images can be compiled into an application, making it
 // unnecessary to refer to external image files at runtime.
@@ -127,7 +136,9 @@ func PixbufFromPixdata(pixdata *Pixdata, copyPixels bool) (gdkpixbuf.Pixbuf, err
 // use `gdk_pixbuf_from_pixdata()`.
 //
 // Deprecated: since version 2.32.
-type Pixdata C.GdkPixdata
+type Pixdata struct {
+	native C.GdkPixdata
+}
 
 // WrapPixdata wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -137,23 +148,30 @@ func WrapPixdata(ptr unsafe.Pointer) *Pixdata {
 
 // Native returns the underlying C source pointer.
 func (p *Pixdata) Native() unsafe.Pointer {
-	return unsafe.Pointer(p)
+	return unsafe.Pointer(&p.native)
 }
 
-// Deserialize generates C source code suitable for compiling images directly
-// into programs.
+// Deserialize deserializes (reconstruct) a Pixdata structure from a byte
+// stream.
 //
-// GdkPixbuf ships with a program called `gdk-pixbuf-csource`, which offers a
-// command line interface to this function.
+// The byte stream consists of a straightforward writeout of the `GdkPixdata`
+// fields in network byte order, plus the `pixel_data` bytes the structure
+// points to.
+//
+// The `pixdata` contents are reconstructed byte by byte and are checked for
+// validity.
+//
+// This function may fail with `GDK_PIXBUF_ERROR_CORRUPT_IMAGE` or
+// `GDK_PIXBUF_ERROR_UNKNOWN_TYPE`.
 //
 // Deprecated: since version 2.32.
 func (p *Pixdata) Deserialize(stream []byte) error {
 	var _arg0 *C.GdkPixdata // out
 	var _arg2 *C.guint8
 	var _arg1 C.guint
-	var _cerr *C.GError // in
+	var _cerr **C.GError // in
 
-	_arg0 = (*C.GdkPixdata)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GdkPixdata)(unsafe.Pointer(p))
 	_arg1 = C.guint(len(stream))
 	_arg2 = (*C.guint8)(unsafe.Pointer(&stream[0]))
 
@@ -161,7 +179,16 @@ func (p *Pixdata) Deserialize(stream []byte) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _goerr
 }

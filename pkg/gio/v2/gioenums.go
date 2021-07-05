@@ -109,11 +109,11 @@ func init() {
 	})
 }
 
-// BusType: an enumeration for well-known message buses.
+// BusType: enumeration for well-known message buses.
 type BusType int
 
 const (
-	// starter: an alias for the message bus that activated the process, if any.
+	// starter alias for the message bus that activated the process, if any.
 	BusTypeStarter BusType = -1
 	// none: not a message bus.
 	BusTypeNone BusType = 0
@@ -177,8 +177,8 @@ func marshalCredentialsType(p uintptr) (interface{}, error) {
 type DBusError int
 
 const (
-	// failed: a generic error; "something went wrong" - see the error message
-	// for more.
+	// failed: generic error; "something went wrong" - see the error message for
+	// more.
 	DBusErrorFailed DBusError = 0
 	// NoMemory: there was not enough memory to complete an operation.
 	DBusErrorNoMemory DBusError = 1
@@ -194,7 +194,7 @@ const (
 	// IOError: something went wrong reading or writing to a socket, for
 	// example.
 	DBusErrorIOError DBusError = 5
-	// BadAddress: a D-Bus bus address was malformed.
+	// BadAddress d-Bus bus address was malformed.
 	DBusErrorBadAddress DBusError = 6
 	// NotSupported: requested operation isn't supported (like ENOSYS on UNIX).
 	DBusErrorNotSupported DBusError = 7
@@ -269,10 +269,9 @@ const (
 	// UnixProcessIDUnknown: tried to get a UNIX process ID and it wasn't
 	// available.
 	DBusErrorUnixProcessIDUnknown DBusError = 35
-	// InvalidSignature: a type signature is not valid.
+	// InvalidSignature: type signature is not valid.
 	DBusErrorInvalidSignature DBusError = 36
-	// InvalidFileContent: a file contains invalid syntax or is otherwise
-	// broken.
+	// InvalidFileContent: file contains invalid syntax or is otherwise broken.
 	DBusErrorInvalidFileContent DBusError = 37
 	// SelinuxSecurityContextUnknown: asked for SELinux security context and it
 	// wasn't available.
@@ -424,8 +423,8 @@ func marshalDriveStartStopType(p uintptr) (interface{}, error) {
 	return DriveStartStopType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// EmblemOrigin: GEmblemOrigin is used to add information about the origin of
-// the emblem to #GEmblem.
+// EmblemOrigin is used to add information about the origin of the emblem to
+// #GEmblem.
 type EmblemOrigin int
 
 const (
@@ -467,23 +466,23 @@ type FileAttributeType int
 const (
 	// invalid indicates an invalid or uninitialized type.
 	FileAttributeTypeInvalid FileAttributeType = 0
-	// string: a null terminated UTF8 string.
+	// string: null terminated UTF8 string.
 	FileAttributeTypeString FileAttributeType = 1
-	// ByteString: a zero terminated string of non-zero bytes.
+	// ByteString: zero terminated string of non-zero bytes.
 	FileAttributeTypeByteString FileAttributeType = 2
-	// boolean: a boolean value.
+	// boolean value.
 	FileAttributeTypeBoolean FileAttributeType = 3
-	// uint32: an unsigned 4-byte/32-bit integer.
+	// uint32: unsigned 4-byte/32-bit integer.
 	FileAttributeTypeUint32 FileAttributeType = 4
-	// int32: a signed 4-byte/32-bit integer.
+	// int32: signed 4-byte/32-bit integer.
 	FileAttributeTypeInt32 FileAttributeType = 5
-	// uint64: an unsigned 8-byte/64-bit integer.
+	// uint64: unsigned 8-byte/64-bit integer.
 	FileAttributeTypeUint64 FileAttributeType = 6
-	// int64: a signed 8-byte/64-bit integer.
+	// int64: signed 8-byte/64-bit integer.
 	FileAttributeTypeInt64 FileAttributeType = 7
-	// object: a #GObject.
+	// object: #GObject.
 	FileAttributeTypeObject FileAttributeType = 8
-	// stringv: a nil terminated char **. Since 2.22
+	// stringv: nil terminated char **. Since 2.22
 	FileAttributeTypeStringv FileAttributeType = 9
 )
 
@@ -495,16 +494,16 @@ func marshalFileAttributeType(p uintptr) (interface{}, error) {
 type FileMonitorEvent int
 
 const (
-	// changed: a file changed.
+	// changed: file changed.
 	FileMonitorEventChanged FileMonitorEvent = 0
-	// ChangesDoneHint: a hint that this was probably the last change in a set
-	// of changes.
+	// ChangesDoneHint: hint that this was probably the last change in a set of
+	// changes.
 	FileMonitorEventChangesDoneHint FileMonitorEvent = 1
-	// deleted: a file was deleted.
+	// deleted: file was deleted.
 	FileMonitorEventDeleted FileMonitorEvent = 2
-	// created: a file was created.
+	// created: file was created.
 	FileMonitorEventCreated FileMonitorEvent = 3
-	// AttributeChanged: a file attribute was changed.
+	// AttributeChanged: file attribute was changed.
 	FileMonitorEventAttributeChanged FileMonitorEvent = 4
 	// PreUnmount: the file location will soon be unmounted.
 	FileMonitorEventPreUnmount FileMonitorEvent = 5
@@ -679,8 +678,8 @@ const (
 	IOErrorEnumPartialInput IOErrorEnum = 34
 	// InvalidData: the input data was invalid. Since 2.24
 	IOErrorEnumInvalidData IOErrorEnum = 35
-	// DBusError: a remote object generated an error that doesn't correspond to
-	// a locally registered #GError error domain. Use
+	// DBusError: remote object generated an error that doesn't correspond to a
+	// locally registered #GError error domain. Use
 	// g_dbus_error_get_remote_error() to extract the D-Bus error name and
 	// g_dbus_error_strip_remote_error() to fix up the message so it matches
 	// what was received on the wire. Since 2.26.
@@ -834,7 +833,7 @@ func marshalNotificationPriority(p uintptr) (interface{}, error) {
 type PasswordSave int
 
 const (
-	// never: never save a password.
+	// never save a password.
 	PasswordSaveNever PasswordSave = 0
 	// ForSession: save a password for the session.
 	PasswordSaveForSession PasswordSave = 1
@@ -870,7 +869,7 @@ func marshalPollableReturn(p uintptr) (interface{}, error) {
 	return PollableReturn(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// ResolverError: an error code used with G_RESOLVER_ERROR in a #GError returned
+// ResolverError: error code used with G_RESOLVER_ERROR in a #GError returned
 // from a #GResolver routine.
 type ResolverError int
 
@@ -937,7 +936,7 @@ func marshalResolverRecordType(p uintptr) (interface{}, error) {
 	return ResolverRecordType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// ResourceError: an error code used with G_RESOURCE_ERROR in a #GError returned
+// ResourceError: error code used with G_RESOURCE_ERROR in a #GError returned
 // from a #GResource routine.
 type ResourceError int
 
@@ -1025,7 +1024,7 @@ func marshalSocketListenerEvent(p uintptr) (interface{}, error) {
 	return SocketListenerEvent(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// SocketProtocol: a protocol identifier is specified when creating a #GSocket,
+// SocketProtocol: protocol identifier is specified when creating a #GSocket,
 // which is a family/type specific identifier, where 0 means the default
 // protocol for the particular family/type.
 //
@@ -1101,8 +1100,8 @@ func marshalTLSCertificateRequestFlags(p uintptr) (interface{}, error) {
 	return TLSCertificateRequestFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// TLSChannelBindingError: an error code used with G_TLS_CHANNEL_BINDING_ERROR
-// in a #GError to indicate a TLS channel binding retrieval error.
+// TLSChannelBindingError: error code used with G_TLS_CHANNEL_BINDING_ERROR in a
+// #GError to indicate a TLS channel binding retrieval error.
 type TLSChannelBindingError int
 
 const (
@@ -1166,7 +1165,7 @@ func marshalTLSDatabaseLookupFlags(p uintptr) (interface{}, error) {
 	return TLSDatabaseLookupFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// TLSError: an error code used with G_TLS_ERROR in a #GError returned from a
+// TLSError: error code used with G_TLS_ERROR in a #GError returned from a
 // TLS-related routine.
 type TLSError int
 
@@ -1256,11 +1255,11 @@ const (
 	UnixSocketAddressTypeInvalid UnixSocketAddressType = 0
 	// anonymous: anonymous
 	UnixSocketAddressTypeAnonymous UnixSocketAddressType = 1
-	// path: a filesystem path
+	// path: filesystem path
 	UnixSocketAddressTypePath UnixSocketAddressType = 2
-	// abstract: an abstract name
+	// abstract name
 	UnixSocketAddressTypeAbstract UnixSocketAddressType = 3
-	// AbstractPadded: an abstract name, 0-padded to the full length of a unix
+	// AbstractPadded: abstract name, 0-padded to the full length of a unix
 	// socket name
 	UnixSocketAddressTypeAbstractPadded UnixSocketAddressType = 4
 )
@@ -1276,7 +1275,7 @@ type ZlibCompressorFormat int
 const (
 	// zlib: deflate compression with zlib header
 	ZlibCompressorFormatZlib ZlibCompressorFormat = 0
-	// gzip: gzip file format
+	// gzip file format
 	ZlibCompressorFormatGzip ZlibCompressorFormat = 1
 	// raw: deflate compression with no header
 	ZlibCompressorFormatRaw ZlibCompressorFormat = 2
@@ -1527,7 +1526,7 @@ type DBusMessageFlags int
 const (
 	// DBusMessageFlagsNone: no flags set.
 	DBusMessageFlagsNone DBusMessageFlags = 0b0
-	// DBusMessageFlagsNoReplyExpected: a reply is not expected.
+	// DBusMessageFlagsNoReplyExpected: reply is not expected.
 	DBusMessageFlagsNoReplyExpected DBusMessageFlags = 0b1
 	// DBusMessageFlagsNoAutoStart: the bus must not launch an owner for the
 	// destination name in response to this message.
@@ -1839,8 +1838,7 @@ func marshalFileQueryInfoFlags(p uintptr) (interface{}, error) {
 	return FileQueryInfoFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// IOStreamSpliceFlags gIOStreamSpliceFlags determine how streams should be
-// spliced.
+// IOStreamSpliceFlags determine how streams should be spliced.
 type IOStreamSpliceFlags int
 
 const (
@@ -1887,8 +1885,7 @@ func marshalMountUnmountFlags(p uintptr) (interface{}, error) {
 	return MountUnmountFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// OutputStreamSpliceFlags gOutputStreamSpliceFlags determine how streams should
-// be spliced.
+// OutputStreamSpliceFlags determine how streams should be spliced.
 type OutputStreamSpliceFlags int
 
 const (
@@ -1906,8 +1903,8 @@ func marshalOutputStreamSpliceFlags(p uintptr) (interface{}, error) {
 	return OutputStreamSpliceFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// ResourceFlags gResourceFlags give information about a particular file inside
-// a resource bundle.
+// ResourceFlags give information about a particular file inside a resource
+// bundle.
 type ResourceFlags int
 
 const (
@@ -1921,8 +1918,7 @@ func marshalResourceFlags(p uintptr) (interface{}, error) {
 	return ResourceFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// ResourceLookupFlags gResourceLookupFlags determine how resource path lookups
-// are handled.
+// ResourceLookupFlags determine how resource path lookups are handled.
 type ResourceLookupFlags int
 
 const (
@@ -2016,7 +2012,7 @@ func marshalTestDBusFlags(p uintptr) (interface{}, error) {
 	return TestDBusFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// TLSCertificateFlags: a set of flags describing TLS certification validation.
+// TLSCertificateFlags: set of flags describing TLS certification validation.
 // This can be used to set which validation steps to perform (eg, with
 // g_tls_client_connection_set_validation_flags()), or to describe why a
 // particular certificate was rejected (eg, in Connection::accept-certificate).

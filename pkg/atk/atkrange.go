@@ -3,6 +3,7 @@
 package atk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -25,7 +26,9 @@ func init() {
 // component (for example an slider or a range control), or to define each
 // individual subrange this full range is splitted if available. See Value
 // documentation for further details.
-type Range C.AtkRange
+type Range struct {
+	native C.AtkRange
+}
 
 // WrapRange wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -39,7 +42,7 @@ func marshalRange(p uintptr) (interface{}, error) {
 }
 
 // NewRange constructs a struct Range.
-func NewRange(lowerLimit float64, upperLimit float64, description string) *Range {
+func NewRange(lowerLimit float64, upperLimit float64, description string) Range {
 	var _arg1 C.gdouble   // out
 	var _arg2 C.gdouble   // out
 	var _arg3 *C.gchar    // out
@@ -52,11 +55,11 @@ func NewRange(lowerLimit float64, upperLimit float64, description string) *Range
 
 	_cret = C.atk_range_new(_arg1, _arg2, _arg3)
 
-	var __range *Range // out
+	var __range Range // out
 
-	__range = (*Range)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(&__range, func(v **Range) {
-		C.free(unsafe.Pointer(v))
+	__range = (Range)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(__range, func(v Range) {
+		C.atk_range_free((*C.AtkRange)(unsafe.Pointer(v)))
 	})
 
 	return __range
@@ -64,43 +67,43 @@ func NewRange(lowerLimit float64, upperLimit float64, description string) *Range
 
 // Native returns the underlying C source pointer.
 func (r *Range) Native() unsafe.Pointer {
-	return unsafe.Pointer(r)
+	return unsafe.Pointer(&r.native)
 }
 
-// Copy returns the upper limit of @range
-func (r *Range) Copy() *Range {
+// Copy returns a new Range that is a exact copy of @src
+func (s *Range) Copy() Range {
 	var _arg0 *C.AtkRange // out
 	var _cret *C.AtkRange // in
 
-	_arg0 = (*C.AtkRange)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.AtkRange)(unsafe.Pointer(s))
 
 	_cret = C.atk_range_copy(_arg0)
 
-	var __range *Range // out
+	var __range Range // out
 
-	__range = (*Range)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(&__range, func(v **Range) {
-		C.free(unsafe.Pointer(v))
+	__range = (Range)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(__range, func(v Range) {
+		C.atk_range_free((*C.AtkRange)(unsafe.Pointer(v)))
 	})
 
 	return __range
 }
 
-// Free returns the upper limit of @range
+// Free @range
 func (r *Range) Free() {
 	var _arg0 *C.AtkRange // out
 
-	_arg0 = (*C.AtkRange)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.AtkRange)(unsafe.Pointer(r))
 
 	C.atk_range_free(_arg0)
 }
 
-// Description returns the upper limit of @range
+// Description returns the human readable description of @range
 func (r *Range) Description() string {
 	var _arg0 *C.AtkRange // out
 	var _cret *C.gchar    // in
 
-	_arg0 = (*C.AtkRange)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.AtkRange)(unsafe.Pointer(r))
 
 	_cret = C.atk_range_get_description(_arg0)
 
@@ -111,12 +114,12 @@ func (r *Range) Description() string {
 	return _utf8
 }
 
-// LowerLimit returns the upper limit of @range
+// LowerLimit returns the lower limit of @range
 func (r *Range) LowerLimit() float64 {
 	var _arg0 *C.AtkRange // out
 	var _cret C.gdouble   // in
 
-	_arg0 = (*C.AtkRange)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.AtkRange)(unsafe.Pointer(r))
 
 	_cret = C.atk_range_get_lower_limit(_arg0)
 
@@ -132,7 +135,7 @@ func (r *Range) UpperLimit() float64 {
 	var _arg0 *C.AtkRange // out
 	var _cret C.gdouble   // in
 
-	_arg0 = (*C.AtkRange)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.AtkRange)(unsafe.Pointer(r))
 
 	_cret = C.atk_range_get_upper_limit(_arg0)
 

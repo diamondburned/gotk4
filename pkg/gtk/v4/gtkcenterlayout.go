@@ -33,24 +33,31 @@ func init() {
 type CenterLayout interface {
 	LayoutManager
 
+	// BaselinePosition returns the baseline position of the layout.
 	BaselinePosition() BaselinePosition
-
+	// CenterWidget returns the center widget of the layout.
 	CenterWidget() Widget
-
+	// EndWidget returns the end widget of the layout.
 	EndWidget() Widget
-
+	// Orientation gets the current orienration of the layout manager.
 	Orientation() Orientation
-
+	// StartWidget returns the start widget fo the layout.
 	StartWidget() Widget
-
+	// SetBaselinePositionCenterLayout sets the new baseline position of @self
 	SetBaselinePositionCenterLayout(baselinePosition BaselinePosition)
-
+	// SetCenterWidgetCenterLayout sets the new center widget of @self.
+	//
+	// To remove the existing center widget, pass nil.
 	SetCenterWidgetCenterLayout(widget Widget)
-
+	// SetEndWidgetCenterLayout sets the new end widget of @self.
+	//
+	// To remove the existing center widget, pass nil.
 	SetEndWidgetCenterLayout(widget Widget)
-
+	// SetOrientationCenterLayout sets the orientation of @self.
 	SetOrientationCenterLayout(orientation Orientation)
-
+	// SetStartWidgetCenterLayout sets the new start widget of @self.
+	//
+	// To remove the existing start widget, pass nil.
 	SetStartWidgetCenterLayout(widget Widget)
 }
 
@@ -73,6 +80,7 @@ func marshalCenterLayout(p uintptr) (interface{}, error) {
 	return WrapCenterLayout(obj), nil
 }
 
+// NewCenterLayout creates a new `GtkCenterLayout`.
 func NewCenterLayout() CenterLayout {
 	var _cret *C.GtkLayoutManager // in
 
@@ -80,7 +88,7 @@ func NewCenterLayout() CenterLayout {
 
 	var _centerLayout CenterLayout // out
 
-	_centerLayout = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(CenterLayout)
+	_centerLayout = WrapCenterLayout(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _centerLayout
 }

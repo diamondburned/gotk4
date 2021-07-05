@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/diamondburned/gotk4/gir/girgen/pen"
 	"github.com/diamondburned/gotk4/gir"
 	"github.com/diamondburned/gotk4/gir/girgen/file"
 	"github.com/diamondburned/gotk4/gir/girgen/logger"
+	"github.com/diamondburned/gotk4/gir/girgen/pen"
 	"github.com/diamondburned/gotk4/gir/girgen/strcases"
 	"github.com/diamondburned/gotk4/gir/girgen/types"
 	"github.com/diamondburned/gotk4/gir/girgen/types/typeconv"
@@ -25,17 +25,26 @@ type Generator struct {
 	Tail  string
 	Block string
 
-	ReturnWrap string // passed to ConversionValue, ctor only
-	Converts   []string
+	Constructor bool
+	Converts    []string
 
-	Conv   *typeconv.Converter
-	GoArgs pen.Joints
-	GoRets pen.Joints
+	Conv    *typeconv.Converter
+	Results []typeconv.ValueConverted
+	GoArgs  pen.Joints
+	GoRets  pen.Joints
 
 	src *gir.NamespaceFindResult
 	pen *pen.BlockSections
 	hdr file.Header
 	gen FileGenerator
+}
+
+// IgnoredNames is a list of method names that would be ignored. For more
+// information, see typeconv/c-go.go.
+var IgnoredNames = []string{
+	"Ref",
+	"Unref",
+	"Free",
 }
 
 // NewGenerator creates a new callable generator from the given generator.
@@ -57,11 +66,12 @@ func (g *Generator) Reset() {
 	g.GoRets.Reset(", ")
 
 	*g = Generator{
-		pen:    g.pen,
-		gen:    g.gen,
-		hdr:    g.hdr,
-		GoArgs: g.GoArgs,
-		GoRets: g.GoRets,
+		pen:         g.pen,
+		gen:         g.gen,
+		hdr:         g.hdr,
+		GoArgs:      g.GoArgs,
+		GoRets:      g.GoRets,
+		Constructor: g.Constructor,
 	}
 }
 
@@ -89,6 +99,13 @@ func (g *Generator) UseFromNamespace(cattrs *gir.CallableAttrs, n *gir.Namespace
 	}
 	if cattrs.CIdentifier == "" || !cattrs.IsIntrospectable() {
 		return false
+	}
+
+	for _, name := range IgnoredNames {
+		if name == g.Name {
+			g.Name = strcases.UnexportPascal(g.Name)
+			break
+		}
 	}
 
 	g.Name = strcases.SnakeToGo(true, cattrs.Name)
@@ -183,9 +200,8 @@ func (g *Generator) renderBlock() bool {
 			value := typeconv.NewReturnValue(
 				"_cret", returnName, typeconv.ConvertCToGo, *g.ReturnValue,
 			)
-			if g.ReturnWrap != "" {
-				value.WrapObject = g.ReturnWrap
-			}
+			// Use the return value's type if we're generating the constructor.
+			value.ManualCast = g.Constructor
 
 			callableValues = append(callableValues, value)
 		}
@@ -199,8 +215,8 @@ func (g *Generator) renderBlock() bool {
 	g.Conv.UseLogger(g)
 	g.Conv.SetSourceNamespace(g.src)
 
-	results := g.Conv.ConvertAll()
-	if results == nil {
+	g.Results = g.Conv.ConvertAll()
+	if g.Results == nil {
 		g.Logln(logger.Debug, "no conversion", CFunctionHeader(g.CallableAttrs))
 		return false
 	}
@@ -211,7 +227,7 @@ func (g *Generator) renderBlock() bool {
 	// For Go variables after the return statement.
 	goReturns := pen.NewJoints(", ", 2)
 
-	for i, converted := range results {
+	for i, converted := range g.Results {
 		if converted.Skip {
 			continue
 		}

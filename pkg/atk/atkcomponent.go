@@ -70,36 +70,69 @@ func marshalScrollType(p uintptr) (interface{}, error) {
 type Component interface {
 	gextras.Objector
 
-	// Contains: set the size of the @component in terms of width and height.
+	// Contains checks whether the specified point is within the extent of the
+	// @component.
+	//
+	// Toolkit implementor note: ATK provides a default implementation for this
+	// virtual method. In general there are little reason to re-implement it.
 	Contains(x int, y int, coordType CoordType) bool
-	// Alpha: set the size of the @component in terms of width and height.
+	// Alpha returns the alpha value (i.e. the opacity) for this @component, on
+	// a scale from 0 (fully transparent) to 1.0 (fully opaque).
 	Alpha() float64
-	// Extents: set the size of the @component in terms of width and height.
+	// Extents gets the rectangle which gives the extent of the @component.
+	//
+	// If the extent can not be obtained (e.g. a non-embedded plug or missing
+	// support), all of x, y, width, height are set to -1.
 	Extents(coordType CoordType) (x int, y int, width int, height int)
-	// Layer: set the size of the @component in terms of width and height.
+	// Layer gets the layer of the component.
 	Layer() Layer
-	// MdiZorder: set the size of the @component in terms of width and height.
-	MdiZorder() int
-	// Position: set the size of the @component in terms of width and height.
+	// MDIZOrder gets the zorder of the component. The value G_MININT will be
+	// returned if the layer of the component is not ATK_LAYER_MDI or
+	// ATK_LAYER_WINDOW.
+	MDIZOrder() int
+	// Position gets the position of @component in the form of a point
+	// specifying @component's top-left corner.
+	//
+	// If the position can not be obtained (e.g. a non-embedded plug or missing
+	// support), x and y are set to -1.
+	//
+	// Deprecated: since version .
 	Position(coordType CoordType) (x int, y int)
-	// Size: set the size of the @component in terms of width and height.
+	// Size gets the size of the @component in terms of width and height.
+	//
+	// If the size can not be obtained (e.g. a non-embedded plug or missing
+	// support), width and height are set to -1.
+	//
+	// Deprecated: since version .
 	Size() (width int, height int)
-	// GrabFocus: set the size of the @component in terms of width and height.
+	// GrabFocus grabs focus for this @component.
 	GrabFocus() bool
-	// RefAccessibleAtPoint: set the size of the @component in terms of width
-	// and height.
+	// RefAccessibleAtPoint gets a reference to the accessible child, if one
+	// exists, at the coordinate point specified by @x and @y.
 	RefAccessibleAtPoint(x int, y int, coordType CoordType) Object
-	// RemoveFocusHandler: set the size of the @component in terms of width and
-	// height.
+	// RemoveFocusHandler: remove the handler specified by @handler_id from the
+	// list of functions to be executed when this object receives focus events
+	// (in or out).
+	//
+	// Deprecated: since version 2.9.4.
 	RemoveFocusHandler(handlerId uint)
-	// ScrollTo: set the size of the @component in terms of width and height.
+	// ScrollTo makes @component visible on the screen by scrolling all
+	// necessary parents.
+	//
+	// Contrary to atk_component_set_position, this does not actually move
+	// @component in its parent, this only makes the parents scroll so that the
+	// object shows up on the screen, given its current position within the
+	// parents.
 	ScrollTo(typ ScrollType) bool
-	// ScrollToPoint: set the size of the @component in terms of width and
-	// height.
+	// ScrollToPoint: move the top-left of @component to a given position of the
+	// screen by scrolling all necessary parents.
 	ScrollToPoint(coords CoordType, x int, y int) bool
-	// SetExtents: set the size of the @component in terms of width and height.
+	// SetExtents sets the extents of @component.
 	SetExtents(x int, y int, width int, height int, coordType CoordType) bool
-	// SetPosition: set the size of the @component in terms of width and height.
+	// SetPosition sets the position of @component.
+	//
+	// Contrary to atk_component_scroll_to, this does not trigger any scrolling,
+	// this just moves @component in its parent.
 	SetPosition(x int, y int, coordType CoordType) bool
 	// SetSize: set the size of the @component in terms of width and height.
 	SetSize(width int, height int) bool
@@ -166,10 +199,10 @@ func (c component) Alpha() float64 {
 
 func (c component) Extents(coordType CoordType) (x int, y int, width int, height int) {
 	var _arg0 *C.AtkComponent // out
-	var _arg1 C.gint          // in
-	var _arg2 C.gint          // in
-	var _arg3 C.gint          // in
-	var _arg4 C.gint          // in
+	var _arg1 *C.gint         // in
+	var _arg2 *C.gint         // in
+	var _arg3 *C.gint         // in
+	var _arg4 *C.gint         // in
 	var _arg5 C.AtkCoordType  // out
 
 	_arg0 = (*C.AtkComponent)(unsafe.Pointer(c.Native()))
@@ -205,7 +238,7 @@ func (c component) Layer() Layer {
 	return _layer
 }
 
-func (c component) MdiZorder() int {
+func (c component) MDIZOrder() int {
 	var _arg0 *C.AtkComponent // out
 	var _cret C.gint          // in
 
@@ -222,8 +255,8 @@ func (c component) MdiZorder() int {
 
 func (c component) Position(coordType CoordType) (x int, y int) {
 	var _arg0 *C.AtkComponent // out
-	var _arg1 C.gint          // in
-	var _arg2 C.gint          // in
+	var _arg1 *C.gint         // in
+	var _arg2 *C.gint         // in
 	var _arg3 C.AtkCoordType  // out
 
 	_arg0 = (*C.AtkComponent)(unsafe.Pointer(c.Native()))
@@ -242,8 +275,8 @@ func (c component) Position(coordType CoordType) (x int, y int) {
 
 func (c component) Size() (width int, height int) {
 	var _arg0 *C.AtkComponent // out
-	var _arg1 C.gint          // in
-	var _arg2 C.gint          // in
+	var _arg1 *C.gint         // in
+	var _arg2 *C.gint         // in
 
 	_arg0 = (*C.AtkComponent)(unsafe.Pointer(c.Native()))
 
@@ -419,9 +452,11 @@ func (c component) SetSize(width int, height int) bool {
 	return _ok
 }
 
-// Rectangle: a data structure for holding a rectangle. Those coordinates are
+// Rectangle: data structure for holding a rectangle. Those coordinates are
 // relative to the component top-level parent.
-type Rectangle C.AtkRectangle
+type Rectangle struct {
+	native C.AtkRectangle
+}
 
 // WrapRectangle wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -436,5 +471,5 @@ func marshalRectangle(p uintptr) (interface{}, error) {
 
 // Native returns the underlying C source pointer.
 func (r *Rectangle) Native() unsafe.Pointer {
-	return unsafe.Pointer(r)
+	return unsafe.Pointer(&r.native)
 }

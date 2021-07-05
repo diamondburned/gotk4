@@ -150,10 +150,10 @@ func AcceleratorNameWithKeycode(display gdk.Display, acceleratorKey uint, keycod
 // If the parse fails, @accelerator_key and @accelerator_mods will be set to 0
 // (zero).
 func AcceleratorParse(accelerator string) (uint, gdk.ModifierType, bool) {
-	var _arg1 *C.char           // out
-	var _arg2 C.guint           // in
-	var _arg3 C.GdkModifierType // in
-	var _cret C.gboolean        // in
+	var _arg1 *C.char            // out
+	var _arg2 *C.guint           // in
+	var _arg3 *C.GdkModifierType // in
+	var _cret C.gboolean         // in
 
 	_arg1 = (*C.char)(C.CString(accelerator))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -165,7 +165,16 @@ func AcceleratorParse(accelerator string) (uint, gdk.ModifierType, bool) {
 	var _ok bool                          // out
 
 	_acceleratorKey = uint(_arg2)
-	_acceleratorMods = gdk.ModifierType(_arg3)
+	{
+		var refTmpIn C.GdkModifierType
+		var refTmpOut gdk.ModifierType
+
+		refTmpIn = *_arg3
+
+		refTmpOut = gdk.ModifierType(refTmpIn)
+
+		_acceleratorMods = refTmpOut
+	}
 	if _cret != 0 {
 		_ok = true
 	}
@@ -190,10 +199,10 @@ func AcceleratorParse(accelerator string) (uint, gdk.ModifierType, bool) {
 func AcceleratorParseWithKeycode(accelerator string, display gdk.Display) (uint, []uint, gdk.ModifierType, bool) {
 	var _arg1 *C.char       // out
 	var _arg2 *C.GdkDisplay // out
-	var _arg3 C.guint       // in
+	var _arg3 *C.guint      // in
 	var _arg4 *C.guint
-	var _arg5 C.GdkModifierType // in
-	var _cret C.gboolean        // in
+	var _arg5 *C.GdkModifierType // in
+	var _cret C.gboolean         // in
 
 	_arg1 = (*C.char)(C.CString(accelerator))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -209,7 +218,7 @@ func AcceleratorParseWithKeycode(accelerator string, display gdk.Display) (uint,
 	_acceleratorKey = uint(_arg3)
 	{
 		var i int
-		var z C.guint
+		var z *C.guint
 		for p := _arg4; *p != z; p = &unsafe.Slice(p, i+1)[i] {
 			i++
 		}
@@ -220,7 +229,16 @@ func AcceleratorParseWithKeycode(accelerator string, display gdk.Display) (uint,
 			_acceleratorCodes[i] = uint(src[i])
 		}
 	}
-	_acceleratorMods = gdk.ModifierType(_arg5)
+	{
+		var refTmpIn C.GdkModifierType
+		var refTmpOut gdk.ModifierType
+
+		refTmpIn = *_arg5
+
+		refTmpOut = gdk.ModifierType(refTmpIn)
+
+		_acceleratorMods = refTmpOut
+	}
 	if _cret != 0 {
 		_ok = true
 	}

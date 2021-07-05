@@ -45,7 +45,7 @@ const (
 	// for ordinary files that are referenced in contexts where they are
 	// expected to already exist.
 	FileErrorNoent FileError = 4
-	// notdir: a file that isn't a directory was specified when a directory is
+	// notdir: file that isn't a directory was specified when a directory is
 	// required.
 	FileErrorNotdir FileError = 5
 	// nxio: no such device or address. The system tried to use the device
@@ -141,7 +141,7 @@ const (
 	FileSetContentsFlagsOnlyExisting FileSetContentsFlags = 0b100
 )
 
-// FileTest: a test to perform on a file using g_file_test().
+// FileTest: test to perform on a file using g_file_test().
 type FileTest int
 
 const (
@@ -309,8 +309,8 @@ func FileErrorFromErrno(errNo int) FileError {
 func FileGetContents(filename string) ([]byte, error) {
 	var _arg1 *C.gchar // out
 	var _arg2 *C.gchar
-	var _arg3 C.gsize   // in
-	var _cerr *C.GError // in
+	var _arg3 *C.gsize   // in
+	var _cerr **C.GError // in
 
 	_arg1 = (*C.gchar)(C.CString(filename))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -324,7 +324,16 @@ func FileGetContents(filename string) ([]byte, error) {
 	runtime.SetFinalizer(&_contents, func(v *[]byte) {
 		C.free(unsafe.Pointer(&(*v)[0]))
 	})
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _contents, _goerr
 }
@@ -344,10 +353,10 @@ func FileGetContents(filename string) ([]byte, error) {
 // in @name_used. This string should be freed with g_free() when not needed any
 // longer. The returned name is in the GLib file name encoding.
 func FileOpenTmp(tmpl string) (string, int, error) {
-	var _arg1 *C.gchar  // out
-	var _arg2 *C.gchar  // in
-	var _cret C.gint    // in
-	var _cerr *C.GError // in
+	var _arg1 *C.gchar   // out
+	var _arg2 **C.gchar  // in
+	var _cret C.gint     // in
+	var _cerr **C.GError // in
 
 	_arg1 = (*C.gchar)(C.CString(tmpl))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -358,10 +367,28 @@ func FileOpenTmp(tmpl string) (string, int, error) {
 	var _gint int        // out
 	var _goerr error     // out
 
-	_nameUsed = C.GoString(_arg2)
-	defer C.free(unsafe.Pointer(_arg2))
+	{
+		var refTmpIn *C.gchar
+		var refTmpOut string
+
+		refTmpIn = *_arg2
+
+		refTmpOut = C.GoString(refTmpIn)
+		defer C.free(unsafe.Pointer(refTmpIn))
+
+		_nameUsed = refTmpOut
+	}
 	_gint = int(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _nameUsed, _gint, _goerr
 }
@@ -370,9 +397,9 @@ func FileOpenTmp(tmpl string) (string, int, error) {
 // readlink() function. The returned string is in the encoding used for
 // filenames. Use g_filename_to_utf8() to convert it to UTF-8.
 func FileReadLink(filename string) (string, error) {
-	var _arg1 *C.gchar  // out
-	var _cret *C.gchar  // in
-	var _cerr *C.GError // in
+	var _arg1 *C.gchar   // out
+	var _cret *C.gchar   // in
+	var _cerr **C.GError // in
 
 	_arg1 = (*C.gchar)(C.CString(filename))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -384,7 +411,16 @@ func FileReadLink(filename string) (string, error) {
 
 	_ret = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _ret, _goerr
 }
@@ -397,7 +433,7 @@ func FileSetContents(filename string, contents []byte) error {
 	var _arg1 *C.gchar // out
 	var _arg2 *C.gchar
 	var _arg3 C.gssize
-	var _cerr *C.GError // in
+	var _cerr **C.GError // in
 
 	_arg1 = (*C.gchar)(C.CString(filename))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -408,7 +444,16 @@ func FileSetContents(filename string, contents []byte) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _goerr
 }
@@ -474,7 +519,7 @@ func FileSetContentsFull(filename string, contents []byte, flags FileSetContents
 	var _arg3 C.gssize
 	var _arg4 C.GFileSetContentsFlags // out
 	var _arg5 C.int                   // out
-	var _cerr *C.GError               // in
+	var _cerr **C.GError              // in
 
 	_arg1 = (*C.gchar)(C.CString(filename))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -487,12 +532,21 @@ func FileSetContentsFull(filename string, contents []byte, flags FileSetContents
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _goerr
 }
 
-// FileTest returns true if any of the tests in the bitfield @test are true. For
+// TestFile returns true if any of the tests in the bitfield @test are true. For
 // example, `(G_FILE_TEST_EXISTS | G_FILE_TEST_IS_DIR)` will return true if the
 // file exists; the check whether it's a directory doesn't matter since the
 // existence test is true. With the current set of available tests, there's no
@@ -530,7 +584,7 @@ func FileSetContentsFull(filename string, contents []byte, flags FileSetContents
 // that the file exists and its name indicates that it is executable, checking
 // for well-known extensions and those listed in the `PATHEXT` environment
 // variable.
-func FileTest(filename string, test FileTest) bool {
+func TestFile(filename string, test FileTest) bool {
 	var _arg1 *C.gchar    // out
 	var _arg2 C.GFileTest // out
 	var _cret C.gboolean  // in

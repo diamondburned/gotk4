@@ -42,45 +42,28 @@ func init() {
 type Accessible interface {
 	gextras.Objector
 
-	// AccessibleRole updates an array of accessible states.
-	//
-	// This function should be called by `GtkWidget` types whenever an
-	// accessible state change must be communicated to assistive technologies.
-	//
-	// This function is meant to be used by language bindings.
+	// AccessibleRole retrieves the `GtkAccessibleRole` for the given
+	// `GtkAccessible`.
 	AccessibleRole() AccessibleRole
-	// ResetProperty updates an array of accessible states.
-	//
-	// This function should be called by `GtkWidget` types whenever an
-	// accessible state change must be communicated to assistive technologies.
-	//
-	// This function is meant to be used by language bindings.
+	// ResetProperty resets the accessible @property to its default value.
 	ResetProperty(property AccessibleProperty)
-	// ResetRelation updates an array of accessible states.
-	//
-	// This function should be called by `GtkWidget` types whenever an
-	// accessible state change must be communicated to assistive technologies.
-	//
-	// This function is meant to be used by language bindings.
+	// ResetRelation resets the accessible @relation to its default value.
 	ResetRelation(relation AccessibleRelation)
-	// ResetState updates an array of accessible states.
-	//
-	// This function should be called by `GtkWidget` types whenever an
-	// accessible state change must be communicated to assistive technologies.
-	//
-	// This function is meant to be used by language bindings.
+	// ResetState resets the accessible @state to its default value.
 	ResetState(state AccessibleState)
-	// UpdatePropertyValue updates an array of accessible states.
+	// UpdatePropertyValue updates an array of accessible properties.
 	//
 	// This function should be called by `GtkWidget` types whenever an
-	// accessible state change must be communicated to assistive technologies.
+	// accessible property change must be communicated to assistive
+	// technologies.
 	//
 	// This function is meant to be used by language bindings.
 	UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value)
-	// UpdateRelationValue updates an array of accessible states.
+	// UpdateRelationValue updates an array of accessible relations.
 	//
 	// This function should be called by `GtkWidget` types whenever an
-	// accessible state change must be communicated to assistive technologies.
+	// accessible relation change must be communicated to assistive
+	// technologies.
 	//
 	// This function is meant to be used by language bindings.
 	UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value)

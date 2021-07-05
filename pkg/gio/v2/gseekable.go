@@ -49,49 +49,27 @@ func init() {
 type Seekable interface {
 	gextras.Objector
 
-	// CanSeek sets the length of the stream to @offset. If the stream was
-	// previously larger than @offset, the extra data is discarded. If the
-	// stream was previously shorter than @offset, it is extended with NUL
-	// ('\0') bytes.
-	//
-	// If @cancellable is not nil, then the operation can be cancelled by
-	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned. If an
-	// operation was partially finished when the operation was cancelled the
-	// partial result will be returned, without an error.
+	// CanSeek tests if the stream supports the Iface.
 	CanSeek() bool
-	// CanTruncate sets the length of the stream to @offset. If the stream was
-	// previously larger than @offset, the extra data is discarded. If the
-	// stream was previously shorter than @offset, it is extended with NUL
-	// ('\0') bytes.
-	//
-	// If @cancellable is not nil, then the operation can be cancelled by
-	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned. If an
-	// operation was partially finished when the operation was cancelled the
-	// partial result will be returned, without an error.
+	// CanTruncate tests if the length of the stream can be adjusted with
+	// g_seekable_truncate().
 	CanTruncate() bool
-	// Seek sets the length of the stream to @offset. If the stream was
-	// previously larger than @offset, the extra data is discarded. If the
-	// stream was previously shorter than @offset, it is extended with NUL
-	// ('\0') bytes.
+	// Seek seeks in the stream by the given @offset, modified by @type.
+	//
+	// Attempting to seek past the end of the stream will have different results
+	// depending on if the stream is fixed-sized or resizable. If the stream is
+	// resizable then seeking past the end and then writing will result in zeros
+	// filling the empty space. Seeking past the end of a resizable stream and
+	// reading will result in EOF. Seeking past the end of a fixed-sized stream
+	// will fail.
+	//
+	// Any operation that would result in a negative offset will fail.
 	//
 	// If @cancellable is not nil, then the operation can be cancelled by
 	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned. If an
-	// operation was partially finished when the operation was cancelled the
-	// partial result will be returned, without an error.
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
 	Seek(offset int64, typ glib.SeekType, cancellable Cancellable) error
-	// Tell sets the length of the stream to @offset. If the stream was
-	// previously larger than @offset, the extra data is discarded. If the
-	// stream was previously shorter than @offset, it is extended with NUL
-	// ('\0') bytes.
-	//
-	// If @cancellable is not nil, then the operation can be cancelled by
-	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned. If an
-	// operation was partially finished when the operation was cancelled the
-	// partial result will be returned, without an error.
+	// Tell tells the current position within the stream.
 	Tell() int64
 	// Truncate sets the length of the stream to @offset. If the stream was
 	// previously larger than @offset, the extra data is discarded. If the
@@ -166,7 +144,7 @@ func (s seekable) Seek(offset int64, typ glib.SeekType, cancellable Cancellable)
 	var _arg1 C.goffset       // out
 	var _arg2 C.GSeekType     // out
 	var _arg3 *C.GCancellable // out
-	var _cerr *C.GError       // in
+	var _cerr **C.GError      // in
 
 	_arg0 = (*C.GSeekable)(unsafe.Pointer(s.Native()))
 	_arg1 = C.goffset(offset)
@@ -177,7 +155,16 @@ func (s seekable) Seek(offset int64, typ glib.SeekType, cancellable Cancellable)
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _goerr
 }
@@ -201,7 +188,7 @@ func (s seekable) Truncate(offset int64, cancellable Cancellable) error {
 	var _arg0 *C.GSeekable    // out
 	var _arg1 C.goffset       // out
 	var _arg2 *C.GCancellable // out
-	var _cerr *C.GError       // in
+	var _cerr **C.GError      // in
 
 	_arg0 = (*C.GSeekable)(unsafe.Pointer(s.Native()))
 	_arg1 = C.goffset(offset)
@@ -211,7 +198,16 @@ func (s seekable) Truncate(offset int64, cancellable Cancellable) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _goerr
 }

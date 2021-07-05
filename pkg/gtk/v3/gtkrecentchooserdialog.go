@@ -3,13 +3,9 @@
 package gtk
 
 import (
-	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
-	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -70,7 +66,11 @@ func init() {
 // Recently used files are supported since GTK+ 2.10.
 type RecentChooserDialog interface {
 	Dialog
-	RecentChooser
+
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsRecentChooser casts the class to the RecentChooser interface.
+	AsRecentChooser() RecentChooser
 }
 
 // recentChooserDialog implements the RecentChooserDialog class.
@@ -92,150 +92,10 @@ func marshalRecentChooserDialog(p uintptr) (interface{}, error) {
 	return WrapRecentChooserDialog(obj), nil
 }
 
-func (b recentChooserDialog) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+func (r recentChooserDialog) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(r))
 }
 
-func (b recentChooserDialog) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b recentChooserDialog) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b recentChooserDialog) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b recentChooserDialog) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b recentChooserDialog) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b recentChooserDialog) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b recentChooserDialog) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b recentChooserDialog) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b recentChooserDialog) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (c recentChooserDialog) AddFilter(filter RecentFilter) {
-	WrapRecentChooser(gextras.InternObject(c)).AddFilter(filter)
-}
-
-func (c recentChooserDialog) CurrentItem() *RecentInfo {
-	return WrapRecentChooser(gextras.InternObject(c)).CurrentItem()
-}
-
-func (c recentChooserDialog) CurrentURI() string {
-	return WrapRecentChooser(gextras.InternObject(c)).CurrentURI()
-}
-
-func (c recentChooserDialog) Filter() RecentFilter {
-	return WrapRecentChooser(gextras.InternObject(c)).Filter()
-}
-
-func (c recentChooserDialog) Limit() int {
-	return WrapRecentChooser(gextras.InternObject(c)).Limit()
-}
-
-func (c recentChooserDialog) LocalOnly() bool {
-	return WrapRecentChooser(gextras.InternObject(c)).LocalOnly()
-}
-
-func (c recentChooserDialog) SelectMultiple() bool {
-	return WrapRecentChooser(gextras.InternObject(c)).SelectMultiple()
-}
-
-func (c recentChooserDialog) ShowIcons() bool {
-	return WrapRecentChooser(gextras.InternObject(c)).ShowIcons()
-}
-
-func (c recentChooserDialog) ShowNotFound() bool {
-	return WrapRecentChooser(gextras.InternObject(c)).ShowNotFound()
-}
-
-func (c recentChooserDialog) ShowPrivate() bool {
-	return WrapRecentChooser(gextras.InternObject(c)).ShowPrivate()
-}
-
-func (c recentChooserDialog) ShowTips() bool {
-	return WrapRecentChooser(gextras.InternObject(c)).ShowTips()
-}
-
-func (c recentChooserDialog) SortType() RecentSortType {
-	return WrapRecentChooser(gextras.InternObject(c)).SortType()
-}
-
-func (c recentChooserDialog) RemoveFilter(filter RecentFilter) {
-	WrapRecentChooser(gextras.InternObject(c)).RemoveFilter(filter)
-}
-
-func (c recentChooserDialog) SelectAll() {
-	WrapRecentChooser(gextras.InternObject(c)).SelectAll()
-}
-
-func (c recentChooserDialog) SelectURI(uri string) error {
-	return WrapRecentChooser(gextras.InternObject(c)).SelectURI(uri)
-}
-
-func (c recentChooserDialog) SetCurrentURI(uri string) error {
-	return WrapRecentChooser(gextras.InternObject(c)).SetCurrentURI(uri)
-}
-
-func (c recentChooserDialog) SetFilter(filter RecentFilter) {
-	WrapRecentChooser(gextras.InternObject(c)).SetFilter(filter)
-}
-
-func (c recentChooserDialog) SetLimit(limit int) {
-	WrapRecentChooser(gextras.InternObject(c)).SetLimit(limit)
-}
-
-func (c recentChooserDialog) SetLocalOnly(localOnly bool) {
-	WrapRecentChooser(gextras.InternObject(c)).SetLocalOnly(localOnly)
-}
-
-func (c recentChooserDialog) SetSelectMultiple(selectMultiple bool) {
-	WrapRecentChooser(gextras.InternObject(c)).SetSelectMultiple(selectMultiple)
-}
-
-func (c recentChooserDialog) SetShowIcons(showIcons bool) {
-	WrapRecentChooser(gextras.InternObject(c)).SetShowIcons(showIcons)
-}
-
-func (c recentChooserDialog) SetShowNotFound(showNotFound bool) {
-	WrapRecentChooser(gextras.InternObject(c)).SetShowNotFound(showNotFound)
-}
-
-func (c recentChooserDialog) SetShowPrivate(showPrivate bool) {
-	WrapRecentChooser(gextras.InternObject(c)).SetShowPrivate(showPrivate)
-}
-
-func (c recentChooserDialog) SetShowTips(showTips bool) {
-	WrapRecentChooser(gextras.InternObject(c)).SetShowTips(showTips)
-}
-
-func (c recentChooserDialog) SetSortType(sortType RecentSortType) {
-	WrapRecentChooser(gextras.InternObject(c)).SetSortType(sortType)
-}
-
-func (c recentChooserDialog) UnselectAll() {
-	WrapRecentChooser(gextras.InternObject(c)).UnselectAll()
-}
-
-func (c recentChooserDialog) UnselectURI(uri string) {
-	WrapRecentChooser(gextras.InternObject(c)).UnselectURI(uri)
+func (r recentChooserDialog) AsRecentChooser() RecentChooser {
+	return WrapRecentChooser(gextras.InternObject(r))
 }

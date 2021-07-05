@@ -68,6 +68,11 @@ func (conv *Converter) gocArrayConverter(value *ValueConverted) bool {
 		value.p.Linef("%s = %s(len(%s))", length.OutName, length.OutType, value.InName)
 	}
 
+	inner := conv.convertInner(value, value.InName+"[i]", "out[i]")
+	if inner == nil {
+		return false
+	}
+
 	// These cases have invalid inner type names that aren't useful to us, so we
 	// handle them on our own.
 	switch {
@@ -100,11 +105,6 @@ func (conv *Converter) gocArrayConverter(value *ValueConverted) bool {
 		return true
 	}
 
-	inner := conv.convertInner(value, value.InName+"[i]", "out[i]")
-	if inner == nil {
-		return false
-	}
-
 	if array.FixedSize > 0 {
 		value.InType = fmt.Sprintf("[%d]%s", array.FixedSize, inner.InType)
 		value.inDecl.Linef("var %s %s", value.InName, value.InType)
@@ -113,12 +113,14 @@ func (conv *Converter) gocArrayConverter(value *ValueConverted) bool {
 		value.inDecl.Linef("var %s %s", value.InName, value.InType)
 	}
 
+	// TODO: PtrArray
+
 	switch {
 	case array.FixedSize > 0:
 		// Safe to do if this is a primitive AND we're not setting this inside a
 		// calllback, since the callback will retain Go memory beyond its
 		// lifetime which is bad.
-		if !value.isTransferring() && inner.resolved.CanCast() {
+		if !value.isTransferring() && inner.Resolved.CanCast() {
 			// We can directly use Go's array as a pointer, as long as we defer
 			// properly.
 			value.p.Linef(
@@ -145,7 +147,7 @@ func (conv *Converter) gocArrayConverter(value *ValueConverted) bool {
 	case array.Length != nil:
 		// Use the backing array with the appropriate transfer-ownership rule
 		// for primitive types; see type_c_go.go.
-		if !value.isTransferring() && inner.resolved.CanCast() {
+		if !value.isTransferring() && inner.Resolved.CanCast() {
 			value.header.Import("unsafe")
 			value.p.Linef(
 				"%s = (%s)(unsafe.Pointer(&%s[0]))",
@@ -208,7 +210,7 @@ func (conv *Converter) gocArrayConverter(value *ValueConverted) bool {
 			// No-copy path that works as long as we don't use unref, because
 			// that will free the Go memory.
 			value.p.Linef(
-				"%s = C.g_byte_array_new_take((*C.guint8)(&%s[0]), C.size(len(%s)))",
+				"%s = C.g_byte_array_new_take((*C.guint8)(&%s[0]), C.gsize(len(%s)))",
 				value.OutName, value.InName, value.InName)
 			// Steal will free the GByteArray, but not the underlying array
 			// itself, which is the Go memory.
@@ -231,7 +233,7 @@ func (conv *Converter) gocArrayConverter(value *ValueConverted) bool {
 		value.header.Import("unsafe")
 
 		// See if we can possibly reuse the Go slice in a shorter way.
-		if !value.isTransferring() && inner.resolved.CanCast() {
+		if !value.isTransferring() && inner.Resolved.CanCast() {
 			value.p.Descend()
 			value.p.Linef("var zero %s", inner.InType)
 			value.p.Linef("%s = append(%[1]s, zero)", value.InName)
@@ -280,16 +282,15 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 	}
 
 	switch {
-	case value.resolved.IsBuiltin("interface{}"):
-		value.header.Import("unsafe")
+	case value.Resolved.IsBuiltin("interface{}"):
 		value.header.ImportCore("box")
 		value.p.Linef(
-			"%s = %s(box.Assign(unsafe.Pointer(%s)))",
+			"%s = %s(box.Assign(%s))",
 			value.OutName, value.OutType, value.InName,
 		)
 		return true
 
-	case value.resolved.IsBuiltin("string"):
+	case value.Resolved.IsBuiltin("string"):
 		if !value.isPtr(1) {
 			return conv.convertRef(value, 1, 0)
 		}
@@ -304,12 +305,12 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 
 		return true
 
-	case value.resolved.IsBuiltin("bool"):
+	case value.Resolved.IsBuiltin("bool"):
 		if !value.isPtr(0) {
 			return conv.convertRef(value, 0, 0)
 		}
 
-		switch types.CleanCType(value.resolved.CType, true) {
+		switch types.CleanCType(value.Resolved.CType, true) {
 		case "gboolean":
 			// Manually use C.TRUE.
 			value.p.Linef("if %s { %s = C.TRUE }", value.InName, value.OutName)
@@ -322,7 +323,7 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 
 		return true
 
-	case value.resolved.IsBuiltin("error"):
+	case value.Resolved.IsBuiltin("error"):
 		if !value.isPtr(1) {
 			return conv.convertRef(value, 1, 0)
 		}
@@ -336,10 +337,10 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 		}
 		return true
 
-	case value.resolved.IsPrimitive():
+	case value.Resolved.IsPrimitive():
 		// Don't use the convertRef routine, because we might want to preserve
 		// the pointer in case the API is weird.
-		if value.resolved.Ptr > 0 {
+		if value.Resolved.Ptr > 0 {
 			value.header.Import("unsafe")
 			value.p.Linef(
 				"%s = (%s)(unsafe.Pointer(%s))",
@@ -353,9 +354,9 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 
 	// Only add these imports afterwards, since all imports above are manually
 	// resolved.
-	if value.needsNamespace {
+	if value.NeedsNamespace {
 		// We're using the PublicType, so add that import.
-		value.header.ImportPubl(value.resolved)
+		value.header.ImportPubl(value.Resolved)
 	}
 
 	switch types.EnsureNamespace(conv.sourceNamespace, value.AnyType.Type.Name) {
@@ -389,11 +390,11 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 		return true
 	}
 
-	if value.resolved.Extern == nil {
+	if value.Resolved.Extern == nil {
 		return false
 	}
 
-	switch v := value.resolved.Extern.Type.(type) {
+	switch v := value.Resolved.Extern.Type.(type) {
 	case *gir.Enum, *gir.Bitfield:
 		if !value.isPtr(0) {
 			return conv.convertRef(value, 0, 0)
@@ -421,19 +422,31 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 
 		value.header.Import("unsafe")
 		value.p.Linef(
-			"%s = (%s)(unsafe.Pointer(%s.Native()))",
+			"%s = (%s)(unsafe.Pointer(%s))",
 			value.OutName, value.OutType, value.InName,
 		)
+
+		// Detach Go's finalizer if the record doesn't have reference counting,
+		// since the caller is owning the value now.
+		if value.isTransferring() && types.RecordHasRef(v) == nil {
+			value.header.Import("runtime")
+			value.p.Linef("runtime.SetFinalizer(%s, nil)", value.InName)
+		}
 		return true
 
 	case *gir.Callback:
-		exportedName := value.resolved.Extern.Name()
+		exportedName := value.Resolved.Extern.Name()
 		exportedName = strcases.PascalToGo(exportedName)
 
 		// Callbacks must have the closure attribute to store the closure
 		// pointer.
 		if value.Closure == nil {
 			conv.Logln(logger.Debug, "Go->C callback", exportedName, "since missing closure")
+			return false
+		}
+
+		closure := conv.convertParam(*value.Closure)
+		if closure == nil {
 			return false
 		}
 
@@ -447,27 +460,18 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 		// https://github.com/golang/go/issues/19835.
 		value.p.Linef("%s = (*[0]byte)(C.%s%s)", value.OutName, file.CallbackPrefix, exportedName)
 
-		closure := conv.convertParam(*value.Closure)
-		if closure == nil {
-			return false
-		}
-
 		value.outDecl.Linef("var %s %s", closure.OutName, closure.OutType)
 		value.p.Linef("%s = %s(box.Assign(%s))", closure.OutName, closure.OutType, value.InName)
 
 		if value.Destroy != nil {
-			value.header.CallbackDelete = true
-
-			destroy := conv.convertParam(*value.Destroy)
-			if destroy == nil {
-				return false
+			if destroy := conv.convertParam(*value.Destroy); destroy != nil {
+				value.header.CallbackDelete = true
+				value.outDecl.Linef("var %s %s", destroy.OutName, destroy.OutType)
+				value.p.Linef(
+					"%s = (%s)((*[0]byte)(C.callbackDelete))",
+					destroy.OutName, destroy.OutType,
+				)
 			}
-
-			value.outDecl.Linef("var %s %s", destroy.OutName, destroy.OutType)
-			value.p.Linef(
-				"%s = (%s)((*[0]byte)(C.callbackDelete))",
-				destroy.OutName, destroy.OutType,
-			)
 		}
 
 		return true

@@ -54,7 +54,7 @@ func marshalRevealerTransitionType(p uintptr) (interface{}, error) {
 	return RevealerTransitionType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// Revealer: a `GtkRevealer` animates the transition of its child from invisible
+// Revealer: `GtkRevealer` animates the transition of its child from invisible
 // to visible.
 //
 // The style of transition can be controlled with
@@ -81,22 +81,47 @@ func marshalRevealerTransitionType(p uintptr) (interface{}, error) {
 type Revealer interface {
 	Widget
 
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
+
+	// Child gets the child widget of @revealer.
 	Child() Widget
-
+	// ChildRevealed returns whether the child is fully revealed.
+	//
+	// In other words, this returns whether the transition to the revealed state
+	// is completed.
 	ChildRevealed() bool
-
+	// RevealChild returns whether the child is currently revealed.
+	//
+	// This function returns true as soon as the transition is to the revealed
+	// state is started. To learn whether the child is fully revealed (ie the
+	// transition is completed), use [method@Gtk.Revealer.get_child_revealed].
 	RevealChild() bool
-
+	// TransitionDuration returns the amount of time (in milliseconds) that
+	// transitions will take.
 	TransitionDuration() uint
-
+	// TransitionType gets the type of animation that will be used for
+	// transitions in @revealer.
 	TransitionType() RevealerTransitionType
-
+	// SetChildRevealer sets the child widget of @revealer.
 	SetChildRevealer(child Widget)
-
+	// SetRevealChildRevealer tells the `GtkRevealer` to reveal or conceal its
+	// child.
+	//
+	// The transition will be animated with the current transition type of
+	// @revealer.
 	SetRevealChildRevealer(revealChild bool)
-
+	// SetTransitionDurationRevealer sets the duration that transitions will
+	// take.
 	SetTransitionDurationRevealer(duration uint)
-
+	// SetTransitionTypeRevealer sets the type of animation that will be used
+	// for transitions in @revealer.
+	//
+	// Available types include various kinds of fades and slides.
 	SetTransitionTypeRevealer(transition RevealerTransitionType)
 }
 
@@ -119,6 +144,7 @@ func marshalRevealer(p uintptr) (interface{}, error) {
 	return WrapRevealer(obj), nil
 }
 
+// NewRevealer creates a new `GtkRevealer`.
 func NewRevealer() Revealer {
 	var _cret *C.GtkWidget // in
 
@@ -126,7 +152,7 @@ func NewRevealer() Revealer {
 
 	var _revealer Revealer // out
 
-	_revealer = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Revealer)
+	_revealer = WrapRevealer(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _revealer
 }
@@ -252,34 +278,14 @@ func (r revealer) SetTransitionTypeRevealer(transition RevealerTransitionType) {
 	C.gtk_revealer_set_transition_type(_arg0, _arg1)
 }
 
-func (s revealer) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
+func (r revealer) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(r))
 }
 
-func (s revealer) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
+func (r revealer) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(r))
 }
 
-func (s revealer) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
-}
-
-func (s revealer) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s revealer) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s revealer) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s revealer) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b revealer) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
+func (r revealer) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(r))
 }

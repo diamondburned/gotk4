@@ -5,9 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -35,6 +33,11 @@ func init() {
 // GtkHScrollbar has been deprecated, use Scrollbar instead.
 type HScrollbar interface {
 	Scrollbar
+
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsOrientable casts the class to the Orientable interface.
+	AsOrientable() Orientable
 }
 
 // hScrollbar implements the HScrollbar class.
@@ -56,6 +59,9 @@ func marshalHScrollbar(p uintptr) (interface{}, error) {
 	return WrapHScrollbar(obj), nil
 }
 
+// NewHScrollbar creates a new horizontal scrollbar.
+//
+// Deprecated: since version 3.2.
 func NewHScrollbar(adjustment Adjustment) HScrollbar {
 	var _arg1 *C.GtkAdjustment // out
 	var _cret *C.GtkWidget     // in
@@ -66,55 +72,15 @@ func NewHScrollbar(adjustment Adjustment) HScrollbar {
 
 	var _hScrollbar HScrollbar // out
 
-	_hScrollbar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(HScrollbar)
+	_hScrollbar = WrapHScrollbar(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _hScrollbar
 }
 
-func (b hScrollbar) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+func (h hScrollbar) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(h))
 }
 
-func (b hScrollbar) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b hScrollbar) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b hScrollbar) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b hScrollbar) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b hScrollbar) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b hScrollbar) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b hScrollbar) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b hScrollbar) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b hScrollbar) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (o hScrollbar) Orientation() Orientation {
-	return WrapOrientable(gextras.InternObject(o)).Orientation()
-}
-
-func (o hScrollbar) SetOrientation(orientation Orientation) {
-	WrapOrientable(gextras.InternObject(o)).SetOrientation(orientation)
+func (h hScrollbar) AsOrientable() Orientable {
+	return WrapOrientable(gextras.InternObject(h))
 }

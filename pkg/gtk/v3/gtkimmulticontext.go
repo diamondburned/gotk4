@@ -26,10 +26,18 @@ func init() {
 type IMMulticontext interface {
 	IMContext
 
+	// AppendMenuitemsIMMulticontext: add menuitems for various available input
+	// methods to a menu; the menuitems, when selected, will switch the input
+	// method for the context and the global default input method.
+	//
+	// Deprecated: since version 3.10.
 	AppendMenuitemsIMMulticontext(menushell MenuShell)
-
+	// ContextID gets the id of the currently active slave of the @context.
 	ContextID() string
-
+	// SetContextIDIMMulticontext sets the context id for @context.
+	//
+	// This causes the currently active slave of @context to be replaced by the
+	// slave corresponding to the new context id.
 	SetContextIDIMMulticontext(contextId string)
 }
 
@@ -52,6 +60,7 @@ func marshalIMMulticontext(p uintptr) (interface{}, error) {
 	return WrapIMMulticontext(obj), nil
 }
 
+// NewIMMulticontext creates a new IMMulticontext.
 func NewIMMulticontext() IMMulticontext {
 	var _cret *C.GtkIMContext // in
 
@@ -59,7 +68,7 @@ func NewIMMulticontext() IMMulticontext {
 
 	var _imMulticontext IMMulticontext // out
 
-	_imMulticontext = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(IMMulticontext)
+	_imMulticontext = WrapIMMulticontext(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _imMulticontext
 }

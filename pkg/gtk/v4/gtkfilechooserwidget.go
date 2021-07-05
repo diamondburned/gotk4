@@ -33,7 +33,15 @@ func init() {
 // `GtkFileChooserWidget` has a single CSS node with name filechooser.
 type FileChooserWidget interface {
 	Widget
-	FileChooser
+
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
+	// AsFileChooser casts the class to the FileChooser interface.
+	AsFileChooser() FileChooser
 }
 
 // fileChooserWidget implements the FileChooserWidget class.
@@ -55,6 +63,10 @@ func marshalFileChooserWidget(p uintptr) (interface{}, error) {
 	return WrapFileChooserWidget(obj), nil
 }
 
+// NewFileChooserWidget creates a new `GtkFileChooserWidget`.
+//
+// This is a file chooser widget that can be embedded in custom windows, and it
+// is the same widget that is used by `GtkFileChooserDialog`.
 func NewFileChooserWidget(action FileChooserAction) FileChooserWidget {
 	var _arg1 C.GtkFileChooserAction // out
 	var _cret *C.GtkWidget           // in
@@ -65,103 +77,23 @@ func NewFileChooserWidget(action FileChooserAction) FileChooserWidget {
 
 	var _fileChooserWidget FileChooserWidget // out
 
-	_fileChooserWidget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(FileChooserWidget)
+	_fileChooserWidget = WrapFileChooserWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _fileChooserWidget
 }
 
-func (s fileChooserWidget) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
+func (f fileChooserWidget) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(f))
 }
 
-func (s fileChooserWidget) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
+func (f fileChooserWidget) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(f))
 }
 
-func (s fileChooserWidget) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
+func (f fileChooserWidget) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(f))
 }
 
-func (s fileChooserWidget) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s fileChooserWidget) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s fileChooserWidget) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s fileChooserWidget) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b fileChooserWidget) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
-}
-
-func (c fileChooserWidget) AddChoice(id string, label string, options []string, optionLabels []string) {
-	WrapFileChooser(gextras.InternObject(c)).AddChoice(id, label, options, optionLabels)
-}
-
-func (c fileChooserWidget) AddFilter(filter FileFilter) {
-	WrapFileChooser(gextras.InternObject(c)).AddFilter(filter)
-}
-
-func (c fileChooserWidget) Action() FileChooserAction {
-	return WrapFileChooser(gextras.InternObject(c)).Action()
-}
-
-func (c fileChooserWidget) Choice(id string) string {
-	return WrapFileChooser(gextras.InternObject(c)).Choice(id)
-}
-
-func (c fileChooserWidget) CreateFolders() bool {
-	return WrapFileChooser(gextras.InternObject(c)).CreateFolders()
-}
-
-func (c fileChooserWidget) CurrentName() string {
-	return WrapFileChooser(gextras.InternObject(c)).CurrentName()
-}
-
-func (c fileChooserWidget) Filter() FileFilter {
-	return WrapFileChooser(gextras.InternObject(c)).Filter()
-}
-
-func (c fileChooserWidget) SelectMultiple() bool {
-	return WrapFileChooser(gextras.InternObject(c)).SelectMultiple()
-}
-
-func (c fileChooserWidget) RemoveChoice(id string) {
-	WrapFileChooser(gextras.InternObject(c)).RemoveChoice(id)
-}
-
-func (c fileChooserWidget) RemoveFilter(filter FileFilter) {
-	WrapFileChooser(gextras.InternObject(c)).RemoveFilter(filter)
-}
-
-func (c fileChooserWidget) SetAction(action FileChooserAction) {
-	WrapFileChooser(gextras.InternObject(c)).SetAction(action)
-}
-
-func (c fileChooserWidget) SetChoice(id string, option string) {
-	WrapFileChooser(gextras.InternObject(c)).SetChoice(id, option)
-}
-
-func (c fileChooserWidget) SetCreateFolders(createFolders bool) {
-	WrapFileChooser(gextras.InternObject(c)).SetCreateFolders(createFolders)
-}
-
-func (c fileChooserWidget) SetCurrentName(name string) {
-	WrapFileChooser(gextras.InternObject(c)).SetCurrentName(name)
-}
-
-func (c fileChooserWidget) SetFilter(filter FileFilter) {
-	WrapFileChooser(gextras.InternObject(c)).SetFilter(filter)
-}
-
-func (c fileChooserWidget) SetSelectMultiple(selectMultiple bool) {
-	WrapFileChooser(gextras.InternObject(c)).SetSelectMultiple(selectMultiple)
+func (f fileChooserWidget) AsFileChooser() FileChooser {
+	return WrapFileChooser(gextras.InternObject(f))
 }

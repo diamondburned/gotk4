@@ -27,7 +27,7 @@ func init() {
 	})
 }
 
-// AlternativeTrigger: a `GtkShortcutTrigger` that combines two triggers.
+// AlternativeTrigger: `GtkShortcutTrigger` that combines two triggers.
 //
 // The `GtkAlternativeTrigger` triggers when either of two trigger.
 //
@@ -35,8 +35,15 @@ func init() {
 type AlternativeTrigger interface {
 	ShortcutTrigger
 
+	// First gets the first of the two alternative triggers that may trigger
+	// @self.
+	//
+	// [method@Gtk.AlternativeTrigger.get_second] will return the other one.
 	First() ShortcutTrigger
-
+	// Second gets the second of the two alternative triggers that may trigger
+	// @self.
+	//
+	// [method@Gtk.AlternativeTrigger.get_first] will return the other one.
 	Second() ShortcutTrigger
 }
 
@@ -59,6 +66,11 @@ func marshalAlternativeTrigger(p uintptr) (interface{}, error) {
 	return WrapAlternativeTrigger(obj), nil
 }
 
+// NewAlternativeTrigger creates a `GtkShortcutTrigger` that will trigger
+// whenever either of the two given triggers gets triggered.
+//
+// Note that nesting is allowed, so if you want more than two alternative,
+// create a new alternative trigger for each option.
 func NewAlternativeTrigger(first ShortcutTrigger, second ShortcutTrigger) AlternativeTrigger {
 	var _arg1 *C.GtkShortcutTrigger // out
 	var _arg2 *C.GtkShortcutTrigger // out
@@ -71,7 +83,7 @@ func NewAlternativeTrigger(first ShortcutTrigger, second ShortcutTrigger) Altern
 
 	var _alternativeTrigger AlternativeTrigger // out
 
-	_alternativeTrigger = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(AlternativeTrigger)
+	_alternativeTrigger = WrapAlternativeTrigger(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _alternativeTrigger
 }
@@ -106,13 +118,15 @@ func (s alternativeTrigger) Second() ShortcutTrigger {
 	return _shortcutTrigger
 }
 
-// KeyvalTrigger: a `GtkShortcutTrigger` that triggers when a specific keyval
-// and modifiers are pressed.
+// KeyvalTrigger: `GtkShortcutTrigger` that triggers when a specific keyval and
+// modifiers are pressed.
 type KeyvalTrigger interface {
 	ShortcutTrigger
 
+	// Keyval gets the keyval that must be pressed to succeed triggering @self.
 	Keyval() uint
-
+	// Modifiers gets the modifiers that must be present to succeed triggering
+	// @self.
 	Modifiers() gdk.ModifierType
 }
 
@@ -135,6 +149,8 @@ func marshalKeyvalTrigger(p uintptr) (interface{}, error) {
 	return WrapKeyvalTrigger(obj), nil
 }
 
+// NewKeyvalTrigger creates a `GtkShortcutTrigger` that will trigger whenever
+// the key with the given @keyval and @modifiers is pressed.
 func NewKeyvalTrigger(keyval uint, modifiers gdk.ModifierType) KeyvalTrigger {
 	var _arg1 C.guint               // out
 	var _arg2 C.GdkModifierType     // out
@@ -147,7 +163,7 @@ func NewKeyvalTrigger(keyval uint, modifiers gdk.ModifierType) KeyvalTrigger {
 
 	var _keyvalTrigger KeyvalTrigger // out
 
-	_keyvalTrigger = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(KeyvalTrigger)
+	_keyvalTrigger = WrapKeyvalTrigger(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _keyvalTrigger
 }
@@ -182,14 +198,15 @@ func (s keyvalTrigger) Modifiers() gdk.ModifierType {
 	return _modifierType
 }
 
-// MnemonicTrigger: a `GtkShortcutTrigger` that triggers when a specific
-// mnemonic is pressed.
+// MnemonicTrigger: `GtkShortcutTrigger` that triggers when a specific mnemonic
+// is pressed.
 //
 // Mnemonics require a *mnemonic modifier* (typically <kbd>Alt</kbd>) to be
 // pressed together with the mnemonic key.
 type MnemonicTrigger interface {
 	ShortcutTrigger
 
+	// Keyval gets the keyval that must be pressed to succeed triggering @self.
 	Keyval() uint
 }
 
@@ -212,6 +229,11 @@ func marshalMnemonicTrigger(p uintptr) (interface{}, error) {
 	return WrapMnemonicTrigger(obj), nil
 }
 
+// NewMnemonicTrigger creates a `GtkShortcutTrigger` that will trigger whenever
+// the key with the given @keyval is pressed and mnemonics have been activated.
+//
+// Mnemonics are activated by calling code when a key event with the right
+// modifiers is detected.
 func NewMnemonicTrigger(keyval uint) MnemonicTrigger {
 	var _arg1 C.guint               // out
 	var _cret *C.GtkShortcutTrigger // in
@@ -222,7 +244,7 @@ func NewMnemonicTrigger(keyval uint) MnemonicTrigger {
 
 	var _mnemonicTrigger MnemonicTrigger // out
 
-	_mnemonicTrigger = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(MnemonicTrigger)
+	_mnemonicTrigger = WrapMnemonicTrigger(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _mnemonicTrigger
 }
@@ -242,7 +264,7 @@ func (s mnemonicTrigger) Keyval() uint {
 	return _guint
 }
 
-// NeverTrigger: a `GtkShortcutTrigger` that never triggers.
+// NeverTrigger: `GtkShortcutTrigger` that never triggers.
 type NeverTrigger interface {
 	ShortcutTrigger
 }
@@ -281,16 +303,45 @@ func marshalNeverTrigger(p uintptr) (interface{}, error) {
 type ShortcutTrigger interface {
 	gextras.Objector
 
+	// CompareShortcutTrigger: the types of @trigger1 and @trigger2 are
+	// #gconstpointer only to allow use of this function as a Func.
+	//
+	// They must each be a `GtkShortcutTrigger`.
 	CompareShortcutTrigger(trigger2 ShortcutTrigger) int
-
+	// EqualShortcutTrigger checks if @trigger1 and @trigger2 trigger under the
+	// same conditions.
+	//
+	// The types of @one and @two are #gconstpointer only to allow use of this
+	// function with Table. They must each be a `GtkShortcutTrigger`.
 	EqualShortcutTrigger(trigger2 ShortcutTrigger) bool
-
+	// HashShortcutTrigger generates a hash value for a `GtkShortcutTrigger`.
+	//
+	// The output of this function is guaranteed to be the same for a given
+	// value only per-process. It may change between different processor
+	// architectures or even different versions of GTK. Do not use this function
+	// as a basis for building protocols or file formats.
+	//
+	// The types of @trigger is #gconstpointer only to allow use of this
+	// function with Table. They must each be a `GtkShortcutTrigger`.
 	HashShortcutTrigger() uint
-
+	// ToLabelShortcutTrigger gets textual representation for the given trigger.
+	//
+	// This function is returning a translated string for presentation to end
+	// users for example in menu items or in help texts.
+	//
+	// The @display in use may influence the resulting string in various forms,
+	// such as resolving hardware keycodes or by causing display-specific
+	// modifier names.
+	//
+	// The form of the representation may change at any time and is not
+	// guaranteed to stay identical.
 	ToLabelShortcutTrigger(display gdk.Display) string
-
+	// String prints the given trigger into a human-readable string.
+	//
+	// This is a small wrapper around [method@Gtk.ShortcutTrigger.print] to help
+	// when debugging.
 	String() string
-
+	// TriggerShortcutTrigger checks if the given @event triggers @self.
 	TriggerShortcutTrigger(event gdk.Event, enableMnemonics bool) gdk.KeyMatch
 }
 
@@ -313,6 +364,22 @@ func marshalShortcutTrigger(p uintptr) (interface{}, error) {
 	return WrapShortcutTrigger(obj), nil
 }
 
+// NewShortcutTriggerParseString tries to parse the given string into a trigger.
+//
+// On success, the parsed trigger is returned. When parsing failed, nil is
+// returned.
+//
+// The accepted strings are:
+//
+//    - `never`, for `GtkNeverTrigger`
+//    - a string parsed by gtk_accelerator_parse(), for a `GtkKeyvalTrigger`, e.g. `<Control>C`
+//    - underscore, followed by a single character, for `GtkMnemonicTrigger`, e.g. `_l`
+//    - two valid trigger strings, separated by a `|` character, for a
+//      `GtkAlternativeTrigger`: `<Control>q|<Control>w`
+//
+// Note that you will have to escape the `<` and `>` characters when specifying
+// triggers in XML files, such as GtkBuilder ui files. Use `&lt;` instead of `<`
+// and `&gt;` instead of `>`.
 func NewShortcutTriggerParseString(_string string) ShortcutTrigger {
 	var _arg1 *C.char               // out
 	var _cret *C.GtkShortcutTrigger // in
@@ -324,7 +391,7 @@ func NewShortcutTriggerParseString(_string string) ShortcutTrigger {
 
 	var _shortcutTrigger ShortcutTrigger // out
 
-	_shortcutTrigger = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(ShortcutTrigger)
+	_shortcutTrigger = WrapShortcutTrigger(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _shortcutTrigger
 }

@@ -52,14 +52,14 @@ func marshalSorterChange(p uintptr) (interface{}, error) {
 type SorterOrder int
 
 const (
-	// partial: a partial order. Any Ordering is possible.
+	// partial order. Any Ordering is possible.
 	SorterOrderPartial SorterOrder = 0
 	// none: no order, all elements are considered equal. gtk_sorter_compare()
 	// will only return GTK_ORDERING_EQUAL.
 	SorterOrderNone SorterOrder = 1
-	// total: a total order. gtk_sorter_compare() will only return
-	// GTK_ORDERING_EQUAL if an item is compared with itself. Two different
-	// items will never cause this value to be returned.
+	// total order. gtk_sorter_compare() will only return GTK_ORDERING_EQUAL if
+	// an item is compared with itself. Two different items will never cause
+	// this value to be returned.
 	SorterOrderTotal SorterOrder = 2
 )
 
@@ -89,10 +89,36 @@ func marshalSorterOrder(p uintptr) (interface{}, error) {
 type Sorter interface {
 	gextras.Objector
 
+	// ChangedSorter emits the [signal@Gtk.Sorter::changed] signal to notify all
+	// users of the sorter that it has changed.
+	//
+	// Users of the sorter should then update the sort order via
+	// gtk_sorter_compare().
+	//
+	// Depending on the @change parameter, it may be possible to update the sort
+	// order without a full resorting. Refer to the [enum@Gtk.SorterChange]
+	// documentation for details.
+	//
+	// This function is intended for implementors of `GtkSorter` subclasses and
+	// should not be called from other functions.
 	ChangedSorter(change SorterChange)
-
+	// CompareSorter compares two given items according to the sort order
+	// implemented by the sorter.
+	//
+	// Sorters implement a partial order:
+	//
+	// * It is reflexive, ie a = a * It is antisymmetric, ie if a < b and b < a,
+	// then a = b * It is transitive, ie given any 3 items with a ≤ b and b ≤ c,
+	// then a ≤ c
+	//
+	// The sorter may signal it conforms to additional constraints via the
+	// return value of [method@Gtk.Sorter.get_order].
 	CompareSorter(item1 gextras.Objector, item2 gextras.Objector) Ordering
-
+	// Order gets the order that @self conforms to.
+	//
+	// See [enum@Gtk.SorterOrder] for details of the possible return values.
+	//
+	// This function is intended to allow optimizations.
 	Order() SorterOrder
 }
 

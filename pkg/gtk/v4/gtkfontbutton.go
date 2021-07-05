@@ -3,11 +3,9 @@
 package gtk
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -40,22 +38,33 @@ func init() {
 // button node with the .font style class.
 type FontButton interface {
 	Widget
-	FontChooser
 
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
+	// AsFontChooser casts the class to the FontChooser interface.
+	AsFontChooser() FontChooser
+
+	// Modal gets whether the dialog is modal.
 	Modal() bool
-
+	// Title retrieves the title of the font chooser dialog.
 	Title() string
-
+	// UseFont returns whether the selected font is used in the label.
 	UseFont() bool
-
+	// UseSize returns whether the selected size is used in the label.
 	UseSize() bool
-
+	// SetModalFontButton sets whether the dialog should be modal.
 	SetModalFontButton(modal bool)
-
+	// SetTitleFontButton sets the title for the font chooser dialog.
 	SetTitleFontButton(title string)
-
+	// SetUseFontFontButton: if @use_font is true, the font name will be written
+	// using the selected font.
 	SetUseFontFontButton(useFont bool)
-
+	// SetUseSizeFontButton: if @use_size is true, the font name will be written
+	// using the selected size.
 	SetUseSizeFontButton(useSize bool)
 }
 
@@ -78,6 +87,7 @@ func marshalFontButton(p uintptr) (interface{}, error) {
 	return WrapFontButton(obj), nil
 }
 
+// NewFontButton creates a new font picker widget.
 func NewFontButton() FontButton {
 	var _cret *C.GtkWidget // in
 
@@ -85,11 +95,13 @@ func NewFontButton() FontButton {
 
 	var _fontButton FontButton // out
 
-	_fontButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(FontButton)
+	_fontButton = WrapFontButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _fontButton
 }
 
+// NewFontButtonWithFont creates a new font picker widget showing the given
+// font.
 func NewFontButtonWithFont(fontname string) FontButton {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in
@@ -101,7 +113,7 @@ func NewFontButtonWithFont(fontname string) FontButton {
 
 	var _fontButton FontButton // out
 
-	_fontButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(FontButton)
+	_fontButton = WrapFontButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _fontButton
 }
@@ -219,106 +231,18 @@ func (f fontButton) SetUseSizeFontButton(useSize bool) {
 	C.gtk_font_button_set_use_size(_arg0, _arg1)
 }
 
-func (s fontButton) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
+func (f fontButton) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(f))
 }
 
-func (s fontButton) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
+func (f fontButton) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(f))
 }
 
-func (s fontButton) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
+func (f fontButton) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(f))
 }
 
-func (s fontButton) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s fontButton) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s fontButton) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s fontButton) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b fontButton) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
-}
-
-func (f fontButton) Font() string {
-	return WrapFontChooser(gextras.InternObject(f)).Font()
-}
-
-func (f fontButton) FontDesc() *pango.FontDescription {
-	return WrapFontChooser(gextras.InternObject(f)).FontDesc()
-}
-
-func (f fontButton) FontFace() pango.FontFace {
-	return WrapFontChooser(gextras.InternObject(f)).FontFace()
-}
-
-func (f fontButton) FontFamily() pango.FontFamily {
-	return WrapFontChooser(gextras.InternObject(f)).FontFamily()
-}
-
-func (f fontButton) FontFeatures() string {
-	return WrapFontChooser(gextras.InternObject(f)).FontFeatures()
-}
-
-func (f fontButton) FontMap() pango.FontMap {
-	return WrapFontChooser(gextras.InternObject(f)).FontMap()
-}
-
-func (f fontButton) FontSize() int {
-	return WrapFontChooser(gextras.InternObject(f)).FontSize()
-}
-
-func (f fontButton) Language() string {
-	return WrapFontChooser(gextras.InternObject(f)).Language()
-}
-
-func (f fontButton) Level() FontChooserLevel {
-	return WrapFontChooser(gextras.InternObject(f)).Level()
-}
-
-func (f fontButton) PreviewText() string {
-	return WrapFontChooser(gextras.InternObject(f)).PreviewText()
-}
-
-func (f fontButton) ShowPreviewEntry() bool {
-	return WrapFontChooser(gextras.InternObject(f)).ShowPreviewEntry()
-}
-
-func (f fontButton) SetFont(fontname string) {
-	WrapFontChooser(gextras.InternObject(f)).SetFont(fontname)
-}
-
-func (f fontButton) SetFontDesc(fontDesc *pango.FontDescription) {
-	WrapFontChooser(gextras.InternObject(f)).SetFontDesc(fontDesc)
-}
-
-func (f fontButton) SetFontMap(fontmap pango.FontMap) {
-	WrapFontChooser(gextras.InternObject(f)).SetFontMap(fontmap)
-}
-
-func (f fontButton) SetLanguage(language string) {
-	WrapFontChooser(gextras.InternObject(f)).SetLanguage(language)
-}
-
-func (f fontButton) SetLevel(level FontChooserLevel) {
-	WrapFontChooser(gextras.InternObject(f)).SetLevel(level)
-}
-
-func (f fontButton) SetPreviewText(text string) {
-	WrapFontChooser(gextras.InternObject(f)).SetPreviewText(text)
-}
-
-func (f fontButton) SetShowPreviewEntry(showPreviewEntry bool) {
-	WrapFontChooser(gextras.InternObject(f)).SetShowPreviewEntry(showPreviewEntry)
+func (f fontButton) AsFontChooser() FontChooser {
+	return WrapFontChooser(gextras.InternObject(f))
 }

@@ -32,6 +32,14 @@ func init() {
 type CellRendererText interface {
 	CellRenderer
 
+	// SetFixedHeightFromFontCellRendererText sets the height of a renderer to
+	// explicitly be determined by the “font” and “y_pad” property set on it.
+	// Further changes in these properties do not affect the height, so they
+	// must be accompanied by a subsequent call to this function. Using this
+	// function is inflexible, and should really only be used if calculating the
+	// size of a cell is too slow (ie, a massive number of cells displayed). If
+	// @number_of_rows is -1, then the fixed height is unset, and the height is
+	// determined by the properties again.
 	SetFixedHeightFromFontCellRendererText(numberOfRows int)
 }
 
@@ -54,6 +62,12 @@ func marshalCellRendererText(p uintptr) (interface{}, error) {
 	return WrapCellRendererText(obj), nil
 }
 
+// NewCellRendererText creates a new CellRendererText. Adjust how text is drawn
+// using object properties. Object properties can be set globally (with
+// g_object_set()). Also, with TreeViewColumn, you can bind a property to a
+// value in a TreeModel. For example, you can bind the “text” property on the
+// cell renderer to a string value in the model, thus rendering a different
+// string in each row of the TreeView
 func NewCellRendererText() CellRendererText {
 	var _cret *C.GtkCellRenderer // in
 
@@ -61,7 +75,7 @@ func NewCellRendererText() CellRendererText {
 
 	var _cellRendererText CellRendererText // out
 
-	_cellRendererText = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(CellRendererText)
+	_cellRendererText = WrapCellRendererText(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _cellRendererText
 }

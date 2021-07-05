@@ -63,10 +63,19 @@ func init() {
 // `GtkScrollbar` uses the GTK_ACCESSIBLE_ROLE_SCROLLBAR role.
 type Scrollbar interface {
 	Widget
-	Orientable
 
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
+	// AsOrientable casts the class to the Orientable interface.
+	AsOrientable() Orientable
+
+	// Adjustment returns the scrollbar's adjustment.
 	Adjustment() Adjustment
-
+	// SetAdjustmentScrollbar makes the scrollbar use the given adjustment.
 	SetAdjustmentScrollbar(adjustment Adjustment)
 }
 
@@ -89,6 +98,7 @@ func marshalScrollbar(p uintptr) (interface{}, error) {
 	return WrapScrollbar(obj), nil
 }
 
+// NewScrollbar creates a new scrollbar with the given orientation.
 func NewScrollbar(orientation Orientation, adjustment Adjustment) Scrollbar {
 	var _arg1 C.GtkOrientation // out
 	var _arg2 *C.GtkAdjustment // out
@@ -101,7 +111,7 @@ func NewScrollbar(orientation Orientation, adjustment Adjustment) Scrollbar {
 
 	var _scrollbar Scrollbar // out
 
-	_scrollbar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Scrollbar)
+	_scrollbar = WrapScrollbar(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _scrollbar
 }
@@ -131,42 +141,18 @@ func (s scrollbar) SetAdjustmentScrollbar(adjustment Adjustment) {
 	C.gtk_scrollbar_set_adjustment(_arg0, _arg1)
 }
 
-func (s scrollbar) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
+func (s scrollbar) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(s))
 }
 
-func (s scrollbar) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
+func (s scrollbar) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(s))
 }
 
-func (s scrollbar) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
+func (s scrollbar) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(s))
 }
 
-func (s scrollbar) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s scrollbar) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s scrollbar) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s scrollbar) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b scrollbar) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
-}
-
-func (o scrollbar) Orientation() Orientation {
-	return WrapOrientable(gextras.InternObject(o)).Orientation()
-}
-
-func (o scrollbar) SetOrientation(orientation Orientation) {
-	WrapOrientable(gextras.InternObject(o)).SetOrientation(orientation)
+func (s scrollbar) AsOrientable() Orientable {
+	return WrapOrientable(gextras.InternObject(s))
 }

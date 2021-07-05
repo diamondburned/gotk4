@@ -40,7 +40,9 @@ func DistributeNaturalAllocation(extraSpace int, sizes []RequestedSize) int {
 // RequestedSize represents a request of a screen object in a given orientation.
 // These are primarily used in container implementations when allocating a
 // natural size for children calling. See gtk_distribute_natural_allocation().
-type RequestedSize C.GtkRequestedSize
+type RequestedSize struct {
+	native C.GtkRequestedSize
+}
 
 // WrapRequestedSize wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -50,5 +52,5 @@ func WrapRequestedSize(ptr unsafe.Pointer) *RequestedSize {
 
 // Native returns the underlying C source pointer.
 func (r *RequestedSize) Native() unsafe.Pointer {
-	return unsafe.Pointer(r)
+	return unsafe.Pointer(&r.native)
 }

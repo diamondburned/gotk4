@@ -50,16 +50,30 @@ func marshalDeviceToolType(p uintptr) (interface{}, error) {
 	return DeviceToolType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// DeviceTool: a physical tool associated to a `GdkDevice`.
+// DeviceTool: physical tool associated to a `GdkDevice`.
 type DeviceTool interface {
 	gextras.Objector
 
+	// Axes gets the axes of the tool.
 	Axes() AxisFlags
-
+	// HardwareID gets the hardware ID of this tool, or 0 if it's not known.
+	//
+	// When non-zero, the identificator is unique for the given tool model,
+	// meaning that two identical tools will share the same @hardware_id, but
+	// will have different serial numbers (see
+	// [method@Gdk.DeviceTool.get_serial]).
+	//
+	// This is a more concrete (and device specific) method to identify a
+	// `GdkDeviceTool` than [method@Gdk.DeviceTool.get_tool_type], as a tablet
+	// may support multiple devices with the same `GdkDeviceToolType`, but
+	// different hardware identificators.
 	HardwareID() uint64
-
+	// Serial gets the serial number of this tool.
+	//
+	// This value can be used to identify a physical tool (eg. a tablet pen)
+	// across program executions.
 	Serial() uint64
-
+	// ToolType gets the `GdkDeviceToolType` of the tool.
 	ToolType() DeviceToolType
 }
 

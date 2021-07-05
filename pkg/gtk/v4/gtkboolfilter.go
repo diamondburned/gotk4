@@ -27,12 +27,17 @@ func init() {
 type BoolFilter interface {
 	Filter
 
+	// Expression gets the expression that the filter uses to evaluate if an
+	// item should be filtered.
 	Expression() Expression
-
+	// Invert returns whether the filter inverts the expression.
 	Invert() bool
-
+	// SetExpressionBoolFilter sets the expression that the filter uses to check
+	// if items should be filtered.
+	//
+	// The expression must have a value type of G_TYPE_BOOLEAN.
 	SetExpressionBoolFilter(expression Expression)
-
+	// SetInvertBoolFilter sets whether the filter should invert the expression.
 	SetInvertBoolFilter(invert bool)
 }
 
@@ -55,6 +60,7 @@ func marshalBoolFilter(p uintptr) (interface{}, error) {
 	return WrapBoolFilter(obj), nil
 }
 
+// NewBoolFilter creates a new bool filter.
 func NewBoolFilter(expression Expression) BoolFilter {
 	var _arg1 *C.GtkExpression // out
 	var _cret *C.GtkBoolFilter // in
@@ -65,7 +71,7 @@ func NewBoolFilter(expression Expression) BoolFilter {
 
 	var _boolFilter BoolFilter // out
 
-	_boolFilter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(BoolFilter)
+	_boolFilter = WrapBoolFilter(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _boolFilter
 }

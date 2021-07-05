@@ -42,16 +42,38 @@ func init() {
 type Clipboard interface {
 	gextras.Objector
 
+	// Content returns the `GdkContentProvider` currently set on @clipboard.
+	//
+	// If the @clipboard is empty or its contents are not owned by the current
+	// process, nil will be returned.
 	Content() ContentProvider
-
+	// Display gets the `GdkDisplay` that the clipboard was created for.
 	Display() Display
-
-	Formats() *ContentFormats
-
+	// Formats gets the formats that the clipboard can provide its current
+	// contents in.
+	Formats() ContentFormats
+	// IsLocalClipboard returns if the clipboard is local.
+	//
+	// A clipboard is considered local if it was last claimed by the running
+	// application.
+	//
+	// Note that [method@Gdk.Clipboard.get_content] may return nil even on a
+	// local clipboard. In this case the clipboard is empty.
 	IsLocalClipboard() bool
-
+	// SetContentClipboard sets a new content provider on @clipboard.
+	//
+	// The clipboard will claim the `GdkDisplay`'s resources and advertise these
+	// new contents to other applications.
+	//
+	// In the rare case of a failure, this function will return false. The
+	// clipboard will then continue reporting its old contents and ignore
+	// @provider.
+	//
+	// If the contents are read by either an external application or the
+	// @clipboard's read functions, @clipboard will select the best format to
+	// transfer the contents and then request that format from @provider.
 	SetContentClipboard(provider ContentProvider) bool
-
+	// SetValueClipboard sets the @clipboard to contain the given @value.
 	SetValueClipboard(value externglib.Value)
 }
 
@@ -104,7 +126,7 @@ func (c clipboard) Display() Display {
 	return _display
 }
 
-func (c clipboard) Formats() *ContentFormats {
+func (c clipboard) Formats() ContentFormats {
 	var _arg0 *C.GdkClipboard      // out
 	var _cret *C.GdkContentFormats // in
 
@@ -112,9 +134,10 @@ func (c clipboard) Formats() *ContentFormats {
 
 	_cret = C.gdk_clipboard_get_formats(_arg0)
 
-	var _contentFormats *ContentFormats // out
+	var _contentFormats ContentFormats // out
 
-	_contentFormats = (*ContentFormats)(unsafe.Pointer(_cret))
+	_contentFormats = (ContentFormats)(unsafe.Pointer(_cret))
+	C.gdk_content_formats_ref(_cret)
 
 	return _contentFormats
 }

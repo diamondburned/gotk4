@@ -27,7 +27,9 @@ func init() {
 
 type SpinnerAccessible interface {
 	WidgetAccessible
-	atk.Image
+
+	// AsImage casts the class to the atk.Image interface.
+	AsImage() atk.Image
 }
 
 // spinnerAccessible implements the SpinnerAccessible class.
@@ -49,22 +51,6 @@ func marshalSpinnerAccessible(p uintptr) (interface{}, error) {
 	return WrapSpinnerAccessible(obj), nil
 }
 
-func (i spinnerAccessible) ImageDescription() string {
-	return atk.WrapImage(gextras.InternObject(i)).ImageDescription()
-}
-
-func (i spinnerAccessible) ImageLocale() string {
-	return atk.WrapImage(gextras.InternObject(i)).ImageLocale()
-}
-
-func (i spinnerAccessible) ImagePosition(coordType atk.CoordType) (x int, y int) {
-	return atk.WrapImage(gextras.InternObject(i)).ImagePosition(coordType)
-}
-
-func (i spinnerAccessible) ImageSize() (width int, height int) {
-	return atk.WrapImage(gextras.InternObject(i)).ImageSize()
-}
-
-func (i spinnerAccessible) SetImageDescription(description string) bool {
-	return atk.WrapImage(gextras.InternObject(i)).SetImageDescription(description)
+func (s spinnerAccessible) AsImage() atk.Image {
+	return atk.WrapImage(gextras.InternObject(s))
 }

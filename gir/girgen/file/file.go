@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"sort"
 
-	"github.com/diamondburned/gotk4/gir/girgen/pen"
 	"github.com/diamondburned/gotk4/gir"
+	"github.com/diamondburned/gotk4/gir/girgen/pen"
 	"github.com/diamondburned/gotk4/gir/girgen/strcases"
 	"github.com/diamondburned/gotk4/gir/girgen/types"
 )
@@ -20,9 +20,9 @@ type Headerer interface {
 }
 
 // ApplyHeader applies the given src headers to dst.
-func ApplyHeader(dst Headerer, src ...Headerer) {
+func ApplyHeader(dst Headerer, srcs ...Headerer) {
 	dstHeader := dst.Header()
-	for _, src := range src {
+	for _, src := range srcs {
 		src.Header().ApplyHeader(dstHeader)
 	}
 }

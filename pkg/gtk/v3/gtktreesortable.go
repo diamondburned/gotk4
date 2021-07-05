@@ -25,16 +25,16 @@ func init() {
 	})
 }
 
-// TreeIterCompareFunc: a GtkTreeIterCompareFunc should return a negative
-// integer, zero, or a positive integer if @a sorts before @b, @a sorts with @b,
-// or @a sorts after @b respectively. If two iters compare as equal, their order
-// in the sorted model is undefined. In order to ensure that the TreeSortable
-// behaves as expected, the GtkTreeIterCompareFunc must define a partial order
-// on the model, i.e. it must be reflexive, antisymmetric and transitive.
+// TreeIterCompareFunc should return a negative integer, zero, or a positive
+// integer if @a sorts before @b, @a sorts with @b, or @a sorts after @b
+// respectively. If two iters compare as equal, their order in the sorted model
+// is undefined. In order to ensure that the TreeSortable behaves as expected,
+// the GtkTreeIterCompareFunc must define a partial order on the model, i.e. it
+// must be reflexive, antisymmetric and transitive.
 //
 // For example, if @model is a product catalogue, then a compare function for
 // the “price” column could be one which returns `price_of(@a) - price_of(@b)`.
-type TreeIterCompareFunc func(model TreeModel, a *TreeIter, b *TreeIter, gint int)
+type TreeIterCompareFunc func(model TreeModel, a TreeIter, b TreeIter) (gint int)
 
 //export gotk4_TreeIterCompareFunc
 func gotk4_TreeIterCompareFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 *C.GtkTreeIter, arg3 C.gpointer) C.gint {
@@ -44,12 +44,12 @@ func gotk4_TreeIterCompareFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 *
 	}
 
 	var model TreeModel // out
-	var a *TreeIter     // out
-	var b *TreeIter     // out
+	var a TreeIter      // out
+	var b TreeIter      // out
 
 	model = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0))).(TreeModel)
-	a = (*TreeIter)(unsafe.Pointer(arg1))
-	b = (*TreeIter)(unsafe.Pointer(arg2))
+	a = (TreeIter)(unsafe.Pointer(arg1))
+	b = (TreeIter)(unsafe.Pointer(arg2))
 
 	fn := v.(TreeIterCompareFunc)
 	gint := fn(model, a, b)
@@ -67,14 +67,24 @@ func gotk4_TreeIterCompareFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 *
 type TreeSortable interface {
 	TreeModel
 
-	// SortColumnID emits a TreeSortable::sort-column-changed signal on
-	// @sortable.
+	// SortColumnID fills in @sort_column_id and @order with the current sort
+	// column and the order. It returns true unless the @sort_column_id is
+	// GTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID or
+	// GTK_TREE_SORTABLE_UNSORTED_SORT_COLUMN_ID.
 	SortColumnID() (int, SortType, bool)
-	// HasDefaultSortFunc emits a TreeSortable::sort-column-changed signal on
-	// @sortable.
+	// HasDefaultSortFunc returns true if the model has a default sort function.
+	// This is used primarily by GtkTreeViewColumns in order to determine if a
+	// model can go back to the default state, or not.
 	HasDefaultSortFunc() bool
-	// SetSortColumnID emits a TreeSortable::sort-column-changed signal on
-	// @sortable.
+	// SetSortColumnID sets the current sort column to be @sort_column_id. The
+	// @sortable will resort itself to reflect this change, after emitting a
+	// TreeSortable::sort-column-changed signal. @sort_column_id may either be a
+	// regular column id, or one of the following special values:
+	//
+	// - GTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID: the default sort function
+	// will be used, if it is set
+	//
+	// - GTK_TREE_SORTABLE_UNSORTED_SORT_COLUMN_ID: no sorting will occur
 	SetSortColumnID(sortColumnId int, order SortType)
 	// SortColumnChanged emits a TreeSortable::sort-column-changed signal on
 	// @sortable.
@@ -104,8 +114,8 @@ func marshalTreeSortable(p uintptr) (interface{}, error) {
 
 func (s treeSortable) SortColumnID() (int, SortType, bool) {
 	var _arg0 *C.GtkTreeSortable // out
-	var _arg1 C.gint             // in
-	var _arg2 C.GtkSortType      // in
+	var _arg1 *C.gint            // in
+	var _arg2 *C.GtkSortType     // in
 	var _cret C.gboolean         // in
 
 	_arg0 = (*C.GtkTreeSortable)(unsafe.Pointer(s.Native()))
@@ -117,7 +127,16 @@ func (s treeSortable) SortColumnID() (int, SortType, bool) {
 	var _ok bool          // out
 
 	_sortColumnId = int(_arg1)
-	_order = SortType(_arg2)
+	{
+		var refTmpIn C.GtkSortType
+		var refTmpOut SortType
+
+		refTmpIn = *_arg2
+
+		refTmpOut = SortType(refTmpIn)
+
+		_order = refTmpOut
+	}
 	if _cret != 0 {
 		_ok = true
 	}

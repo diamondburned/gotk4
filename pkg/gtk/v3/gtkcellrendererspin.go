@@ -59,6 +59,7 @@ func marshalCellRendererSpin(p uintptr) (interface{}, error) {
 	return WrapCellRendererSpin(obj), nil
 }
 
+// NewCellRendererSpin creates a new CellRendererSpin.
 func NewCellRendererSpin() CellRendererSpin {
 	var _cret *C.GtkCellRenderer // in
 
@@ -66,7 +67,7 @@ func NewCellRendererSpin() CellRendererSpin {
 
 	var _cellRendererSpin CellRendererSpin // out
 
-	_cellRendererSpin = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(CellRendererSpin)
+	_cellRendererSpin = WrapCellRendererSpin(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _cellRendererSpin
 }

@@ -28,14 +28,54 @@ func init() {
 type TreeListModel interface {
 	gextras.Objector
 
+	// Autoexpand gets whether the model is set to automatically expand new rows
+	// that get added.
+	//
+	// This can be either rows added by changes to the underlying models or via
+	// [method@Gtk.TreeListRow.set_expanded].
 	Autoexpand() bool
-
+	// ChildRow gets the row item corresponding to the child at index @position
+	// for @self's root model.
+	//
+	// If @position is greater than the number of children in the root model,
+	// nil is returned.
+	//
+	// Do not confuse this function with [method@Gtk.TreeListModel.get_row].
 	ChildRow(position uint) TreeListRow
-
+	// Passthrough gets whether the model is passing through original row items.
+	//
+	// If this function returns false, the `GListModel` functions for @self
+	// return custom `GtkTreeListRow` objects. You need to call
+	// [method@Gtk.TreeListRow.get_item] on these objects to get the original
+	// item.
+	//
+	// If true, the values of the child models are passed through in their
+	// original state. You then need to call [method@Gtk.TreeListModel.get_row]
+	// to get the custom `GtkTreeListRow`s.
 	Passthrough() bool
-
+	// Row gets the row object for the given row.
+	//
+	// If @position is greater than the number of items in @self, nil is
+	// returned.
+	//
+	// The row object can be used to expand and collapse rows as well as to
+	// inspect its position in the tree. See its documentation for details.
+	//
+	// This row object is persistent and will refer to the current item as long
+	// as the row is present in @self, independent of other rows being added or
+	// removed.
+	//
+	// If @self is set to not be passthrough, this function is equivalent to
+	// calling g_list_model_get_item().
+	//
+	// Do not confuse this function with
+	// [method@Gtk.TreeListModel.get_child_row].
 	Row(position uint) TreeListRow
-
+	// SetAutoexpandTreeListModel sets whether the model should autoexpand.
+	//
+	// If set to true, the model will recursively expand all rows that get added
+	// to the model. This can be either rows added by changes to the underlying
+	// models or via [method@Gtk.TreeListRow.set_expanded].
 	SetAutoexpandTreeListModel(autoexpand bool)
 }
 
@@ -153,20 +193,52 @@ func (s treeListModel) SetAutoexpandTreeListModel(autoexpand bool) {
 type TreeListRow interface {
 	gextras.Objector
 
+	// ChildRow: if @self is not expanded or @position is greater than the
+	// number of children, nil is returned.
 	ChildRow(position uint) TreeListRow
-
+	// Depth gets the depth of this row.
+	//
+	// Rows that correspond to items in the root model have a depth of zero,
+	// rows corresponding to items of models of direct children of the root
+	// model have a depth of 1 and so on.
+	//
+	// The depth of a row never changes until the row is destroyed.
 	Depth() uint
-
+	// Expanded gets if a row is currently expanded.
 	Expanded() bool
-
+	// Item gets the item corresponding to this row,
+	//
+	// The value returned by this function never changes until the row is
+	// destroyed.
 	Item() gextras.Objector
-
+	// Parent gets the row representing the parent for @self.
+	//
+	// That is the row that would need to be collapsed to make this row
+	// disappear.
+	//
+	// If @self is a row corresponding to the root model, nil is returned.
+	//
+	// The value returned by this function never changes until the row is
+	// destroyed.
 	Parent() TreeListRow
-
+	// Position returns the position in the `GtkTreeListModel` that @self
+	// occupies at the moment.
 	Position() uint
-
+	// IsExpandableTreeListRow checks if a row can be expanded.
+	//
+	// This does not mean that the row is actually expanded, this can be checked
+	// with [method@Gtk.TreeListRow.get_expanded].
+	//
+	// If a row is expandable never changes until the row is destroyed.
 	IsExpandableTreeListRow() bool
-
+	// SetExpandedTreeListRow expands or collapses a row.
+	//
+	// If a row is expanded, the model of calling the
+	// [callback@Gtk.TreeListModelCreateModelFunc] for the row's item will be
+	// inserted after this row. If a row is collapsed, those items will be
+	// removed from the model.
+	//
+	// If the row is not expandable, this function does nothing.
 	SetExpandedTreeListRow(expanded bool)
 }
 

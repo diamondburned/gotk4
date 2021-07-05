@@ -45,8 +45,9 @@ func init() {
 type WidgetPaintable interface {
 	gextras.Objector
 
+	// Widget returns the widget that is observed or nil if none.
 	Widget() Widget
-
+	// SetWidgetWidgetPaintable sets the widget that should be observed.
 	SetWidgetWidgetPaintable(widget Widget)
 }
 
@@ -69,6 +70,7 @@ func marshalWidgetPaintable(p uintptr) (interface{}, error) {
 	return WrapWidgetPaintable(obj), nil
 }
 
+// NewWidgetPaintable creates a new widget paintable observing the given widget.
 func NewWidgetPaintable(widget Widget) WidgetPaintable {
 	var _arg1 *C.GtkWidget    // out
 	var _cret *C.GdkPaintable // in
@@ -79,7 +81,7 @@ func NewWidgetPaintable(widget Widget) WidgetPaintable {
 
 	var _widgetPaintable WidgetPaintable // out
 
-	_widgetPaintable = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(WidgetPaintable)
+	_widgetPaintable = WrapWidgetPaintable(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _widgetPaintable
 }

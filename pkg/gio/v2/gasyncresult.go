@@ -117,32 +117,12 @@ func init() {
 type AsyncResult interface {
 	gextras.Objector
 
-	// SourceObject: if @res is a AsyncResult, this is equivalent to
-	// g_simple_async_result_propagate_error(). Otherwise it returns false.
-	//
-	// This can be used for legacy error handling in async *_finish() wrapper
-	// functions that traditionally handled AsyncResult error returns themselves
-	// rather than calling into the virtual method. This should not be used in
-	// new code; Result errors that are set by virtual methods should also be
-	// extracted by virtual methods, to enable subclasses to chain up correctly.
+	// SourceObject gets the source object from a Result.
 	SourceObject() gextras.Objector
-	// UserData: if @res is a AsyncResult, this is equivalent to
-	// g_simple_async_result_propagate_error(). Otherwise it returns false.
-	//
-	// This can be used for legacy error handling in async *_finish() wrapper
-	// functions that traditionally handled AsyncResult error returns themselves
-	// rather than calling into the virtual method. This should not be used in
-	// new code; Result errors that are set by virtual methods should also be
-	// extracted by virtual methods, to enable subclasses to chain up correctly.
+	// UserData gets the user data from a Result.
 	UserData() interface{}
-	// IsTagged: if @res is a AsyncResult, this is equivalent to
-	// g_simple_async_result_propagate_error(). Otherwise it returns false.
-	//
-	// This can be used for legacy error handling in async *_finish() wrapper
-	// functions that traditionally handled AsyncResult error returns themselves
-	// rather than calling into the virtual method. This should not be used in
-	// new code; Result errors that are set by virtual methods should also be
-	// extracted by virtual methods, to enable subclasses to chain up correctly.
+	// IsTagged checks if @res has the given @source_tag (generally a function
+	// pointer indicating the function @res was created by).
 	IsTagged(sourceTag interface{}) bool
 	// LegacyPropagateError: if @res is a AsyncResult, this is equivalent to
 	// g_simple_async_result_propagate_error(). Otherwise it returns false.
@@ -212,7 +192,7 @@ func (r asyncResult) IsTagged(sourceTag interface{}) bool {
 	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GAsyncResult)(unsafe.Pointer(r.Native()))
-	_arg1 = C.gpointer(box.Assign(unsafe.Pointer(sourceTag)))
+	_arg1 = C.gpointer(box.Assign(sourceTag))
 
 	_cret = C.g_async_result_is_tagged(_arg0, _arg1)
 
@@ -227,7 +207,7 @@ func (r asyncResult) IsTagged(sourceTag interface{}) bool {
 
 func (r asyncResult) LegacyPropagateError() error {
 	var _arg0 *C.GAsyncResult // out
-	var _cerr *C.GError       // in
+	var _cerr **C.GError      // in
 
 	_arg0 = (*C.GAsyncResult)(unsafe.Pointer(r.Native()))
 
@@ -235,7 +215,16 @@ func (r asyncResult) LegacyPropagateError() error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _goerr
 }

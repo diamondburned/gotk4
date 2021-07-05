@@ -65,24 +65,44 @@ func init() {
 type Calendar interface {
 	Widget
 
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
+
+	// ClearMarksCalendar: remove all visual markers.
 	ClearMarksCalendar()
-
+	// DayIsMarked returns if the @day of the @calendar is already marked.
 	DayIsMarked(day uint) bool
-
+	// ShowDayNames returns whether @self is currently showing the names of the
+	// week days.
+	//
+	// This is the value of the [property@Gtk.Calendar:show-day-names] property.
 	ShowDayNames() bool
-
+	// ShowHeading returns whether @self is currently showing the heading.
+	//
+	// This is the value of the [property@Gtk.Calendar:show-heading] property.
 	ShowHeading() bool
-
+	// ShowWeekNumbers returns whether @self is showing week numbers right now.
+	//
+	// This is the value of the [property@Gtk.Calendar:show-week-numbers]
+	// property.
 	ShowWeekNumbers() bool
-
+	// MarkDayCalendar places a visual marker on a particular day.
 	MarkDayCalendar(day uint)
-
+	// SetShowDayNamesCalendar sets whether the calendar shows day names.
 	SetShowDayNamesCalendar(value bool)
-
+	// SetShowHeadingCalendar sets whether the calendar should show a heading.
+	//
+	// The heading contains the current year and month as well as buttons for
+	// changing both.
 	SetShowHeadingCalendar(value bool)
-
+	// SetShowWeekNumbersCalendar sets whether week numbers are shown in the
+	// calendar.
 	SetShowWeekNumbersCalendar(value bool)
-
+	// UnmarkDayCalendar removes the visual marker from a particular day.
 	UnmarkDayCalendar(day uint)
 }
 
@@ -105,6 +125,7 @@ func marshalCalendar(p uintptr) (interface{}, error) {
 	return WrapCalendar(obj), nil
 }
 
+// NewCalendar creates a new calendar, with the current date being selected.
 func NewCalendar() Calendar {
 	var _cret *C.GtkWidget // in
 
@@ -112,7 +133,7 @@ func NewCalendar() Calendar {
 
 	var _calendar Calendar // out
 
-	_calendar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Calendar)
+	_calendar = WrapCalendar(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _calendar
 }
@@ -251,34 +272,14 @@ func (c calendar) UnmarkDayCalendar(day uint) {
 	C.gtk_calendar_unmark_day(_arg0, _arg1)
 }
 
-func (s calendar) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
+func (c calendar) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(c))
 }
 
-func (s calendar) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
+func (c calendar) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(c))
 }
 
-func (s calendar) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
-}
-
-func (s calendar) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s calendar) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s calendar) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s calendar) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b calendar) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
+func (c calendar) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(c))
 }

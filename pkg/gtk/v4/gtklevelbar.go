@@ -114,32 +114,60 @@ func init() {
 // `GtkLevelBar` uses the K_ACCESSIBLE_ROLE_METER role.
 type LevelBar interface {
 	Widget
-	Orientable
 
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
+	// AsOrientable casts the class to the Orientable interface.
+	AsOrientable() Orientable
+
+	// AddOffsetValueLevelBar adds a new offset marker on @self at the position
+	// specified by @value.
+	//
+	// When the bar value is in the interval topped by @value (or between @value
+	// and [property@Gtk.LevelBar:max-value] in case the offset is the last one
+	// on the bar) a style class named `level-`@name will be applied when
+	// rendering the level bar fill.
+	//
+	// If another offset marker named @name exists, its value will be replaced
+	// by @value.
 	AddOffsetValueLevelBar(name string, value float64)
-
+	// Inverted returns whether the levelbar is inverted.
 	Inverted() bool
-
+	// MaxValue returns the `max-value` of the `GtkLevelBar`.
 	MaxValue() float64
-
+	// MinValue returns the `min-value of the `GtkLevelBar`.
 	MinValue() float64
-
+	// Mode returns the `mode` of the `GtkLevelBar`.
 	Mode() LevelBarMode
-
+	// OffsetValue fetches the value specified for the offset marker @name in
+	// @self.
 	OffsetValue(name string) (float64, bool)
-
+	// Value returns the `value` of the `GtkLevelBar`.
 	Value() float64
-
+	// RemoveOffsetValueLevelBar removes an offset marker from a `GtkLevelBar`.
+	//
+	// The marker must have been previously added with
+	// [method@Gtk.LevelBar.add_offset_value].
 	RemoveOffsetValueLevelBar(name string)
-
+	// SetInvertedLevelBar sets whether the `GtkLevelBar` is inverted.
 	SetInvertedLevelBar(inverted bool)
-
+	// SetMaxValueLevelBar sets the `max-value` of the `GtkLevelBar`.
+	//
+	// You probably want to update preexisting level offsets after calling this
+	// function.
 	SetMaxValueLevelBar(value float64)
-
+	// SetMinValueLevelBar sets the `min-value` of the `GtkLevelBar`.
+	//
+	// You probably want to update preexisting level offsets after calling this
+	// function.
 	SetMinValueLevelBar(value float64)
-
+	// SetModeLevelBar sets the `mode` of the `GtkLevelBar`.
 	SetModeLevelBar(mode LevelBarMode)
-
+	// SetValueLevelBar sets the value of the `GtkLevelBar`.
 	SetValueLevelBar(value float64)
 }
 
@@ -162,6 +190,7 @@ func marshalLevelBar(p uintptr) (interface{}, error) {
 	return WrapLevelBar(obj), nil
 }
 
+// NewLevelBar creates a new `GtkLevelBar`.
 func NewLevelBar() LevelBar {
 	var _cret *C.GtkWidget // in
 
@@ -169,11 +198,13 @@ func NewLevelBar() LevelBar {
 
 	var _levelBar LevelBar // out
 
-	_levelBar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(LevelBar)
+	_levelBar = WrapLevelBar(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _levelBar
 }
 
+// NewLevelBarForInterval creates a new `GtkLevelBar` for the specified
+// interval.
 func NewLevelBarForInterval(minValue float64, maxValue float64) LevelBar {
 	var _arg1 C.double     // out
 	var _arg2 C.double     // out
@@ -186,7 +217,7 @@ func NewLevelBarForInterval(minValue float64, maxValue float64) LevelBar {
 
 	var _levelBar LevelBar // out
 
-	_levelBar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(LevelBar)
+	_levelBar = WrapLevelBar(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _levelBar
 }
@@ -269,7 +300,7 @@ func (s levelBar) Mode() LevelBarMode {
 func (s levelBar) OffsetValue(name string) (float64, bool) {
 	var _arg0 *C.GtkLevelBar // out
 	var _arg1 *C.char        // out
-	var _arg2 C.double       // in
+	var _arg2 *C.double      // in
 	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(s.Native()))
@@ -367,42 +398,18 @@ func (s levelBar) SetValueLevelBar(value float64) {
 	C.gtk_level_bar_set_value(_arg0, _arg1)
 }
 
-func (s levelBar) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
+func (l levelBar) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(l))
 }
 
-func (s levelBar) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
+func (l levelBar) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(l))
 }
 
-func (s levelBar) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
+func (l levelBar) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(l))
 }
 
-func (s levelBar) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s levelBar) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s levelBar) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s levelBar) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b levelBar) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
-}
-
-func (o levelBar) Orientation() Orientation {
-	return WrapOrientable(gextras.InternObject(o)).Orientation()
-}
-
-func (o levelBar) SetOrientation(orientation Orientation) {
-	WrapOrientable(gextras.InternObject(o)).SetOrientation(orientation)
+func (l levelBar) AsOrientable() Orientable {
+	return WrapOrientable(gextras.InternObject(l))
 }

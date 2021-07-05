@@ -6,7 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -23,7 +22,7 @@ func init() {
 	})
 }
 
-// LinkButton: a `GtkLinkButton` is a button with a hyperlink.
+// LinkButton: `GtkLinkButton` is a button with a hyperlink.
 //
 // !An example GtkLinkButton (link-button.png)
 //
@@ -54,12 +53,31 @@ func init() {
 type LinkButton interface {
 	Button
 
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsActionable casts the class to the Actionable interface.
+	AsActionable() Actionable
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
+
+	// URI retrieves the URI of the `GtkLinkButton`.
 	URI() string
-
+	// Visited retrieves the “visited” state of the `GtkLinkButton`.
+	//
+	// The button becomes visited when it is clicked. If the URI is changed on
+	// the button, the “visited” state is unset again.
+	//
+	// The state may also be changed using [method@Gtk.LinkButton.set_visited].
 	Visited() bool
-
+	// SetURILinkButton sets @uri as the URI where the `GtkLinkButton` points.
+	//
+	// As a side-effect this unsets the “visited” state of the button.
 	SetURILinkButton(uri string)
-
+	// SetVisitedLinkButton sets the “visited” state of the `GtkLinkButton`.
+	//
+	// See [method@Gtk.LinkButton.get_visited] for more details.
 	SetVisitedLinkButton(visited bool)
 }
 
@@ -82,6 +100,7 @@ func marshalLinkButton(p uintptr) (interface{}, error) {
 	return WrapLinkButton(obj), nil
 }
 
+// NewLinkButton creates a new `GtkLinkButton` with the URI as its text.
 func NewLinkButton(uri string) LinkButton {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in
@@ -93,11 +112,12 @@ func NewLinkButton(uri string) LinkButton {
 
 	var _linkButton LinkButton // out
 
-	_linkButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(LinkButton)
+	_linkButton = WrapLinkButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _linkButton
 }
 
+// NewLinkButtonWithLabel creates a new `GtkLinkButton` containing a label.
 func NewLinkButtonWithLabel(uri string, label string) LinkButton {
 	var _arg1 *C.char      // out
 	var _arg2 *C.char      // out
@@ -112,7 +132,7 @@ func NewLinkButtonWithLabel(uri string, label string) LinkButton {
 
 	var _linkButton LinkButton // out
 
-	_linkButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(LinkButton)
+	_linkButton = WrapLinkButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _linkButton
 }
@@ -172,54 +192,18 @@ func (l linkButton) SetVisitedLinkButton(visited bool) {
 	C.gtk_link_button_set_visited(_arg0, _arg1)
 }
 
-func (a linkButton) ActionName() string {
-	return WrapActionable(gextras.InternObject(a)).ActionName()
+func (l linkButton) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(l))
 }
 
-func (a linkButton) ActionTargetValue() *glib.Variant {
-	return WrapActionable(gextras.InternObject(a)).ActionTargetValue()
+func (l linkButton) AsActionable() Actionable {
+	return WrapActionable(gextras.InternObject(l))
 }
 
-func (a linkButton) SetActionName(actionName string) {
-	WrapActionable(gextras.InternObject(a)).SetActionName(actionName)
+func (l linkButton) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(l))
 }
 
-func (a linkButton) SetActionTargetValue(targetValue *glib.Variant) {
-	WrapActionable(gextras.InternObject(a)).SetActionTargetValue(targetValue)
-}
-
-func (a linkButton) SetDetailedActionName(detailedActionName string) {
-	WrapActionable(gextras.InternObject(a)).SetDetailedActionName(detailedActionName)
-}
-
-func (s linkButton) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
-}
-
-func (s linkButton) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
-}
-
-func (s linkButton) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
-}
-
-func (s linkButton) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s linkButton) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s linkButton) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s linkButton) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b linkButton) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
+func (l linkButton) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(l))
 }

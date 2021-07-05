@@ -27,6 +27,9 @@ func init() {
 
 type RendererCellAccessible interface {
 	CellAccessible
+
+	// AsAction casts the class to the atk.Action interface.
+	AsAction() atk.Action
 }
 
 // rendererCellAccessible implements the RendererCellAccessible class.
@@ -58,35 +61,11 @@ func NewRendererCellAccessible(renderer CellRenderer) RendererCellAccessible {
 
 	var _rendererCellAccessible RendererCellAccessible // out
 
-	_rendererCellAccessible = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(RendererCellAccessible)
+	_rendererCellAccessible = WrapRendererCellAccessible(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _rendererCellAccessible
 }
 
-func (a rendererCellAccessible) DoAction(i int) bool {
-	return atk.WrapAction(gextras.InternObject(a)).DoAction(i)
-}
-
-func (a rendererCellAccessible) Description(i int) string {
-	return atk.WrapAction(gextras.InternObject(a)).Description(i)
-}
-
-func (a rendererCellAccessible) Keybinding(i int) string {
-	return atk.WrapAction(gextras.InternObject(a)).Keybinding(i)
-}
-
-func (a rendererCellAccessible) LocalizedName(i int) string {
-	return atk.WrapAction(gextras.InternObject(a)).LocalizedName(i)
-}
-
-func (a rendererCellAccessible) NActions() int {
-	return atk.WrapAction(gextras.InternObject(a)).NActions()
-}
-
-func (a rendererCellAccessible) Name(i int) string {
-	return atk.WrapAction(gextras.InternObject(a)).Name(i)
-}
-
-func (a rendererCellAccessible) SetDescription(i int, desc string) bool {
-	return atk.WrapAction(gextras.InternObject(a)).SetDescription(i, desc)
+func (r rendererCellAccessible) AsAction() atk.Action {
+	return atk.WrapAction(gextras.InternObject(r))
 }

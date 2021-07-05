@@ -24,7 +24,7 @@ func init() {
 	})
 }
 
-type ScaleFormatValueFunc func(scale Scale, value float64, utf8 string)
+type ScaleFormatValueFunc func(scale Scale, value float64) (utf8 string)
 
 //export gotk4_ScaleFormatValueFunc
 func gotk4_ScaleFormatValueFunc(arg0 *C.GtkScale, arg1 C.double, arg2 C.gpointer) *C.char {
@@ -49,7 +49,7 @@ func gotk4_ScaleFormatValueFunc(arg0 *C.GtkScale, arg1 C.double, arg2 C.gpointer
 	return cret
 }
 
-// Scale: a `GtkScale` is a slider control used to select a numeric value.
+// Scale: `GtkScale` is a slider control used to select a numeric value.
 //
 // !An example GtkScale (scales.png)
 //
@@ -120,28 +120,75 @@ func gotk4_ScaleFormatValueFunc(arg0 *C.GtkScale, arg1 C.double, arg2 C.gpointer
 type Scale interface {
 	Range
 
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
+	// AsOrientable casts the class to the Orientable interface.
+	AsOrientable() Orientable
+
+	// AddMarkScale adds a mark at @value.
+	//
+	// A mark is indicated visually by drawing a tick mark next to the scale,
+	// and GTK makes it easy for the user to position the scale exactly at the
+	// marks value.
+	//
+	// If @markup is not nil, text is shown next to the tick mark.
+	//
+	// To remove marks from a scale, use [method@Gtk.Scale.clear_marks].
 	AddMarkScale(value float64, position PositionType, markup string)
-
+	// ClearMarksScale removes any marks that have been added.
 	ClearMarksScale()
-
+	// Digits gets the number of decimal places that are displayed in the value.
 	Digits() int
-
+	// DrawValue returns whether the current value is displayed as a string next
+	// to the slider.
 	DrawValue() bool
-
+	// HasOrigin returns whether the scale has an origin.
 	HasOrigin() bool
-
+	// Layout gets the `PangoLayout` used to display the scale.
+	//
+	// The returned object is owned by the scale so does not need to be freed by
+	// the caller.
 	Layout() pango.Layout
-
+	// LayoutOffsets obtains the coordinates where the scale will draw the
+	// `PangoLayout` representing the text in the scale.
+	//
+	// Remember when using the `PangoLayout` function you need to convert to and
+	// from pixels using `PANGO_PIXELS()` or `PANGO_SCALE`.
+	//
+	// If the [property@GtkScale:draw-value] property is false, the return
+	// values are undefined.
 	LayoutOffsets() (x int, y int)
-
+	// ValuePos gets the position in which the current value is displayed.
 	ValuePos() PositionType
-
+	// SetDigitsScale sets the number of decimal places that are displayed in
+	// the value.
+	//
+	// Also causes the value of the adjustment to be rounded to this number of
+	// digits, so the retrieved value matches the displayed one, if
+	// [property@GtkScale:draw-value] is true when the value changes. If you
+	// want to enforce rounding the value when [property@GtkScale:draw-value] is
+	// false, you can set [property@GtkRange:round-digits] instead.
+	//
+	// Note that rounding to a small number of digits can interfere with the
+	// smooth autoscrolling that is built into `GtkScale`. As an alternative,
+	// you can use [method@Gtk.Scale.set_format_value_func] to format the
+	// displayed value yourself.
 	SetDigitsScale(digits int)
-
+	// SetDrawValueScale specifies whether the current value is displayed as a
+	// string next to the slider.
 	SetDrawValueScale(drawValue bool)
-
+	// SetHasOriginScale sets whether the scale has an origin.
+	//
+	// If [property@GtkScale:has-origin] is set to true (the default), the scale
+	// will highlight the part of the trough between the origin (bottom or left
+	// side) and the current value.
 	SetHasOriginScale(hasOrigin bool)
-
+	// SetValuePosScale sets the position in which the current value is
+	// displayed.
 	SetValuePosScale(pos PositionType)
 }
 
@@ -164,6 +211,7 @@ func marshalScale(p uintptr) (interface{}, error) {
 	return WrapScale(obj), nil
 }
 
+// NewScale creates a new `GtkScale`.
 func NewScale(orientation Orientation, adjustment Adjustment) Scale {
 	var _arg1 C.GtkOrientation // out
 	var _arg2 *C.GtkAdjustment // out
@@ -176,11 +224,21 @@ func NewScale(orientation Orientation, adjustment Adjustment) Scale {
 
 	var _scale Scale // out
 
-	_scale = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Scale)
+	_scale = WrapScale(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _scale
 }
 
+// NewScaleWithRange creates a new scale widget with a range from @min to @max.
+//
+// The returns scale will have the given orientation and will let the user input
+// a number between @min and @max (including @min and @max) with the increment
+// @step. @step must be nonzero; it’s the distance the slider moves when using
+// the arrow keys to adjust the scale value.
+//
+// Note that the way in which the precision is derived works best if @step is a
+// power of ten. If the resulting precision is not suitable for your needs, use
+// [method@Gtk.Scale.set_digits] to correct it.
 func NewScaleWithRange(orientation Orientation, min float64, max float64, step float64) Scale {
 	var _arg1 C.GtkOrientation // out
 	var _arg2 C.double         // out
@@ -197,7 +255,7 @@ func NewScaleWithRange(orientation Orientation, min float64, max float64, step f
 
 	var _scale Scale // out
 
-	_scale = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Scale)
+	_scale = WrapScale(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _scale
 }
@@ -291,8 +349,8 @@ func (s scale) Layout() pango.Layout {
 
 func (s scale) LayoutOffsets() (x int, y int) {
 	var _arg0 *C.GtkScale // out
-	var _arg1 C.int       // in
-	var _arg2 C.int       // in
+	var _arg1 *C.int      // in
+	var _arg2 *C.int      // in
 
 	_arg0 = (*C.GtkScale)(unsafe.Pointer(s.Native()))
 
@@ -366,42 +424,18 @@ func (s scale) SetValuePosScale(pos PositionType) {
 	C.gtk_scale_set_value_pos(_arg0, _arg1)
 }
 
-func (s scale) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
+func (s scale) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(s))
 }
 
-func (s scale) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
+func (s scale) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(s))
 }
 
-func (s scale) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
+func (s scale) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(s))
 }
 
-func (s scale) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s scale) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s scale) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s scale) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b scale) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
-}
-
-func (o scale) Orientation() Orientation {
-	return WrapOrientable(gextras.InternObject(o)).Orientation()
-}
-
-func (o scale) SetOrientation(orientation Orientation) {
-	WrapOrientable(gextras.InternObject(o)).SetOrientation(orientation)
+func (s scale) AsOrientable() Orientable {
+	return WrapOrientable(gextras.InternObject(s))
 }

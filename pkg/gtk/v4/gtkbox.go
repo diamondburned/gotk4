@@ -58,28 +58,54 @@ func init() {
 // `GtkBox` uses the GTK_ACCESSIBLE_ROLE_GROUP role.
 type Box interface {
 	Widget
-	Orientable
 
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
+	// AsOrientable casts the class to the Orientable interface.
+	AsOrientable() Orientable
+
+	// AppendBox adds @child as the last child to @box.
 	AppendBox(child Widget)
-
+	// BaselinePosition gets the value set by gtk_box_set_baseline_position().
 	BaselinePosition() BaselinePosition
-
+	// Homogeneous returns whether the box is homogeneous (all children are the
+	// same size).
 	Homogeneous() bool
-
+	// Spacing gets the value set by gtk_box_set_spacing().
 	Spacing() int
-
+	// InsertChildAfterBox inserts @child in the position after @sibling in the
+	// list of @box children.
+	//
+	// If @sibling is nil, insert @child at the first position.
 	InsertChildAfterBox(child Widget, sibling Widget)
-
+	// PrependBox adds @child as the first child to @box.
 	PrependBox(child Widget)
-
+	// RemoveBox removes a child widget from @box.
+	//
+	// The child must have been added before with [method@Gtk.Box.append],
+	// [method@Gtk.Box.prepend], or [method@Gtk.Box.insert_child_after].
 	RemoveBox(child Widget)
-
+	// ReorderChildAfterBox moves @child to the position after @sibling in the
+	// list of @box children.
+	//
+	// If @sibling is nil, move @child to the first position.
 	ReorderChildAfterBox(child Widget, sibling Widget)
-
+	// SetBaselinePositionBox sets the baseline position of a box.
+	//
+	// This affects only horizontal boxes with at least one baseline aligned
+	// child. If there is more vertical space available than requested, and the
+	// baseline is not allocated by the parent then @position is used to
+	// allocate the baseline with respect to the extra space available.
 	SetBaselinePositionBox(position BaselinePosition)
-
+	// SetHomogeneousBox sets whether or not all children of @box are given
+	// equal space in the box.
 	SetHomogeneousBox(homogeneous bool)
-
+	// SetSpacingBox sets the number of pixels to place between children of
+	// @box.
 	SetSpacingBox(spacing int)
 }
 
@@ -102,6 +128,7 @@ func marshalBox(p uintptr) (interface{}, error) {
 	return WrapBox(obj), nil
 }
 
+// NewBox creates a new `GtkBox`.
 func NewBox(orientation Orientation, spacing int) Box {
 	var _arg1 C.GtkOrientation // out
 	var _arg2 C.int            // out
@@ -114,7 +141,7 @@ func NewBox(orientation Orientation, spacing int) Box {
 
 	var _box Box // out
 
-	_box = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Box)
+	_box = WrapBox(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _box
 }
@@ -252,42 +279,18 @@ func (b box) SetSpacingBox(spacing int) {
 	C.gtk_box_set_spacing(_arg0, _arg1)
 }
 
-func (s box) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
+func (b box) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(b))
 }
 
-func (s box) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
+func (b box) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(b))
 }
 
-func (s box) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
+func (b box) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(b))
 }
 
-func (s box) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s box) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s box) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s box) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b box) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
-}
-
-func (o box) Orientation() Orientation {
-	return WrapOrientable(gextras.InternObject(o)).Orientation()
-}
-
-func (o box) SetOrientation(orientation Orientation) {
-	WrapOrientable(gextras.InternObject(o)).SetOrientation(orientation)
+func (b box) AsOrientable() Orientable {
+	return WrapOrientable(gextras.InternObject(b))
 }

@@ -31,9 +31,9 @@ func init() {
 	})
 }
 
-// ThreadedSocketService: a SocketService is a simple subclass of Service that
-// handles incoming connections by creating a worker thread and dispatching the
-// connection to it by emitting the SocketService::run signal in the new thread.
+// ThreadedSocketService is a simple subclass of Service that handles incoming
+// connections by creating a worker thread and dispatching the connection to it
+// by emitting the SocketService::run signal in the new thread.
 //
 // The signal handler may perform blocking IO and need not return until the
 // connection is closed.
@@ -67,6 +67,8 @@ func marshalThreadedSocketService(p uintptr) (interface{}, error) {
 	return WrapThreadedSocketService(obj), nil
 }
 
+// NewThreadedSocketService creates a new SocketService with no listeners.
+// Listeners must be added with one of the Listener "add" methods.
 func NewThreadedSocketService(maxThreads int) ThreadedSocketService {
 	var _arg1 C.int             // out
 	var _cret *C.GSocketService // in
@@ -77,7 +79,7 @@ func NewThreadedSocketService(maxThreads int) ThreadedSocketService {
 
 	var _threadedSocketService ThreadedSocketService // out
 
-	_threadedSocketService = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(ThreadedSocketService)
+	_threadedSocketService = WrapThreadedSocketService(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _threadedSocketService
 }

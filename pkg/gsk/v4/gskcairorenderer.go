@@ -21,7 +21,7 @@ func init() {
 	})
 }
 
-// CairoRenderer: a GSK renderer that is using cairo.
+// CairoRenderer: GSK renderer that is using cairo.
 //
 // Since it is using cairo, this renderer cannot support 3D transformations.
 type CairoRenderer interface {
@@ -47,6 +47,13 @@ func marshalCairoRenderer(p uintptr) (interface{}, error) {
 	return WrapCairoRenderer(obj), nil
 }
 
+// NewCairoRenderer creates a new Cairo renderer.
+//
+// The Cairo renderer is the fallback renderer drawing in ways similar to how
+// GTK 3 drew its content. Its primary use is as comparison tool.
+//
+// The Cairo renderer is incomplete. It cannot render 3D transformed content and
+// will instead render an error marker. Its usage should be avoided.
 func NewCairoRenderer() CairoRenderer {
 	var _cret *C.GskRenderer // in
 
@@ -54,7 +61,7 @@ func NewCairoRenderer() CairoRenderer {
 
 	var _cairoRenderer CairoRenderer // out
 
-	_cairoRenderer = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(CairoRenderer)
+	_cairoRenderer = WrapCairoRenderer(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _cairoRenderer
 }

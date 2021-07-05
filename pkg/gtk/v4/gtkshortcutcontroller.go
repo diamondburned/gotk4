@@ -58,18 +58,51 @@ func init() {
 // more about the syntax for triggers.
 type ShortcutController interface {
 	EventController
-	Buildable
 
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+
+	// AddShortcutShortcutController adds @shortcut to the list of shortcuts
+	// handled by @self.
+	//
+	// If this controller uses an external shortcut list, this function does
+	// nothing.
 	AddShortcutShortcutController(shortcut Shortcut)
-
+	// MnemonicsModifiers gets the mnemonics modifiers for when this controller
+	// activates its shortcuts.
 	MnemonicsModifiers() gdk.ModifierType
-
+	// Scope gets the scope for when this controller activates its shortcuts.
+	// See gtk_shortcut_controller_set_scope() for details.
 	Scope() ShortcutScope
-
+	// RemoveShortcutShortcutController removes @shortcut from the list of
+	// shortcuts handled by @self.
+	//
+	// If @shortcut had not been added to @controller or this controller uses an
+	// external shortcut list, this function does nothing.
 	RemoveShortcutShortcutController(shortcut Shortcut)
-
+	// SetMnemonicsModifiersShortcutController sets the controller to have the
+	// given @mnemonics_modifiers.
+	//
+	// The mnemonics modifiers determines which modifiers need to be pressed to
+	// allow activation of shortcuts with mnemonics triggers.
+	//
+	// GTK normally uses the Alt modifier for mnemonics, except in PopoverMenus,
+	// where mnemonics can be triggered without any modifiers. It should be very
+	// rarely necessary to change this, and doing so is likely to interfere with
+	// other shortcuts.
+	//
+	// This value is only relevant for local shortcut controllers. Global and
+	// managed shortcut controllers will have their shortcuts activated from
+	// other places which have their own modifiers for activating mnemonics.
 	SetMnemonicsModifiersShortcutController(modifiers gdk.ModifierType)
-
+	// SetScopeShortcutController sets the controller to have the given @scope.
+	//
+	// The scope allows shortcuts to be activated outside of the normal event
+	// propagation. In particular, it allows installing global keyboard
+	// shortcuts that can be activated even when a widget does not have focus.
+	//
+	// With GTK_SHORTCUT_SCOPE_LOCAL, shortcuts will only be activated when the
+	// widget has focus.
 	SetScopeShortcutController(scope ShortcutScope)
 }
 
@@ -92,6 +125,7 @@ func marshalShortcutController(p uintptr) (interface{}, error) {
 	return WrapShortcutController(obj), nil
 }
 
+// NewShortcutController creates a new shortcut controller.
 func NewShortcutController() ShortcutController {
 	var _cret *C.GtkEventController // in
 
@@ -99,7 +133,7 @@ func NewShortcutController() ShortcutController {
 
 	var _shortcutController ShortcutController // out
 
-	_shortcutController = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(ShortcutController)
+	_shortcutController = WrapShortcutController(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _shortcutController
 }
@@ -174,6 +208,6 @@ func (s shortcutController) SetScopeShortcutController(scope ShortcutScope) {
 	C.gtk_shortcut_controller_set_scope(_arg0, _arg1)
 }
 
-func (b shortcutController) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
+func (s shortcutController) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(s))
 }

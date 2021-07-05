@@ -129,8 +129,18 @@ func init() {
 type DeviceManager interface {
 	gextras.Objector
 
+	// ClientPointer returns the client pointer, that is, the master pointer
+	// that acts as the core pointer for this application. In X11, window
+	// managers may change this depending on the interaction pattern under the
+	// presence of several pointers.
+	//
+	// You should use this function seldomly, only in code that isn’t triggered
+	// by a Event and there aren’t other means to get a meaningful Device to
+	// operate on.
+	//
+	// Deprecated: since version 3.20.
 	ClientPointer() Device
-
+	// Display gets the Display associated to @device_manager.
 	Display() Display
 }
 

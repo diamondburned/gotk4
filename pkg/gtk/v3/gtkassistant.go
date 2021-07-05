@@ -8,7 +8,6 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -28,8 +27,8 @@ func init() {
 	})
 }
 
-// AssistantPageType: an enum for determining the page role inside the
-// Assistant. It's used to handle buttons sensitivity and visibility.
+// AssistantPageType: enum for determining the page role inside the Assistant.
+// It's used to handle buttons sensitivity and visibility.
 //
 // Note that an assistant needs to end its page flow with a page of type
 // GTK_ASSISTANT_PAGE_CONFIRM, GTK_ASSISTANT_PAGE_SUMMARY or
@@ -66,11 +65,11 @@ func marshalAssistantPageType(p uintptr) (interface{}, error) {
 	return AssistantPageType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// AssistantPageFunc: a function used by gtk_assistant_set_forward_page_func()
-// to know which is the next page given a current one. It’s called both for
+// AssistantPageFunc: function used by gtk_assistant_set_forward_page_func() to
+// know which is the next page given a current one. It’s called both for
 // computing the next page when the user presses the “forward” button and for
 // handling the behavior of the “last” button.
-type AssistantPageFunc func(currentPage int, gint int)
+type AssistantPageFunc func(currentPage int) (gint int)
 
 //export gotk4_AssistantPageFunc
 func gotk4_AssistantPageFunc(arg0 C.gint, arg1 C.gpointer) C.gint {
@@ -93,9 +92,9 @@ func gotk4_AssistantPageFunc(arg0 C.gint, arg1 C.gpointer) C.gint {
 	return cret
 }
 
-// Assistant: a Assistant is a widget used to represent a generally complex
-// operation splitted in several steps, guiding the user through its pages and
-// controlling the page flow to collect the necessary data.
+// Assistant is a widget used to represent a generally complex operation
+// splitted in several steps, guiding the user through its pages and controlling
+// the page flow to collect the necessary data.
 //
 // The design of GtkAssistant is that it controls what buttons to show and to
 // make sensitive, based on what it knows about the page sequence and the
@@ -123,56 +122,112 @@ func gotk4_AssistantPageFunc(arg0 C.gint, arg1 C.gpointer) C.gint {
 type Assistant interface {
 	Window
 
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+
+	// AddActionWidgetAssistant adds a widget to the action area of a Assistant.
 	AddActionWidgetAssistant(child Widget)
-
+	// AppendPageAssistant appends a page to the @assistant.
 	AppendPageAssistant(page Widget) int
-
+	// CommitAssistant erases the visited page history so the back button is not
+	// shown on the current page, and removes the cancel button from subsequent
+	// pages.
+	//
+	// Use this when the information provided up to the current page is
+	// hereafter deemed permanent and cannot be modified or undone. For example,
+	// showing a progress page to track a long-running, unreversible operation
+	// after the user has clicked apply on a confirmation page.
 	CommitAssistant()
-
+	// CurrentPage returns the page number of the current page.
 	CurrentPage() int
-
+	// NPages returns the number of pages in the @assistant
 	NPages() int
-
+	// NthPage returns the child widget contained in page number @page_num.
 	NthPage(pageNum int) Widget
-
+	// PageComplete gets whether @page is complete.
 	PageComplete(page Widget) bool
-
+	// PageHasPadding gets whether page has padding.
 	PageHasPadding(page Widget) bool
-
+	// PageHeaderImage gets the header image for @page.
+	//
+	// Deprecated: since version 3.2.
 	PageHeaderImage(page Widget) gdkpixbuf.Pixbuf
-
+	// PageSideImage gets the side image for @page.
+	//
+	// Deprecated: since version 3.2.
 	PageSideImage(page Widget) gdkpixbuf.Pixbuf
-
+	// PageTitle gets the title for @page.
 	PageTitle(page Widget) string
-
+	// PageType gets the page type of @page.
 	PageType(page Widget) AssistantPageType
-
+	// InsertPageAssistant inserts a page in the @assistant at a given position.
 	InsertPageAssistant(page Widget, position int) int
-
+	// NextPageAssistant: navigate to the next page.
+	//
+	// It is a programming error to call this function when there is no next
+	// page.
+	//
+	// This function is for use when creating pages of the
+	// K_ASSISTANT_PAGE_CUSTOM type.
 	NextPageAssistant()
-
+	// PrependPageAssistant prepends a page to the @assistant.
 	PrependPageAssistant(page Widget) int
-
+	// PreviousPageAssistant: navigate to the previous visited page.
+	//
+	// It is a programming error to call this function when no previous page is
+	// available.
+	//
+	// This function is for use when creating pages of the
+	// K_ASSISTANT_PAGE_CUSTOM type.
 	PreviousPageAssistant()
-
+	// RemoveActionWidgetAssistant removes a widget from the action area of a
+	// Assistant.
 	RemoveActionWidgetAssistant(child Widget)
-
+	// RemovePageAssistant removes the @page_num’s page from @assistant.
 	RemovePageAssistant(pageNum int)
-
+	// SetCurrentPageAssistant switches the page to @page_num.
+	//
+	// Note that this will only be necessary in custom buttons, as the
+	// @assistant flow can be set with gtk_assistant_set_forward_page_func().
 	SetCurrentPageAssistant(pageNum int)
-
+	// SetPageCompleteAssistant sets whether @page contents are complete.
+	//
+	// This will make @assistant update the buttons state to be able to continue
+	// the task.
 	SetPageCompleteAssistant(page Widget, complete bool)
-
+	// SetPageHasPaddingAssistant sets whether the assistant is adding padding
+	// around the page.
 	SetPageHasPaddingAssistant(page Widget, hasPadding bool)
-
+	// SetPageHeaderImageAssistant sets a header image for @page.
+	//
+	// Deprecated: since version 3.2.
 	SetPageHeaderImageAssistant(page Widget, pixbuf gdkpixbuf.Pixbuf)
-
+	// SetPageSideImageAssistant sets a side image for @page.
+	//
+	// This image used to be displayed in the side area of the assistant when
+	// @page is the current page.
+	//
+	// Deprecated: since version 3.2.
 	SetPageSideImageAssistant(page Widget, pixbuf gdkpixbuf.Pixbuf)
-
+	// SetPageTitleAssistant sets a title for @page.
+	//
+	// The title is displayed in the header area of the assistant when @page is
+	// the current page.
 	SetPageTitleAssistant(page Widget, title string)
-
+	// SetPageTypeAssistant sets the page type for @page.
+	//
+	// The page type determines the page behavior in the @assistant.
 	SetPageTypeAssistant(page Widget, typ AssistantPageType)
-
+	// UpdateButtonsStateAssistant forces @assistant to recompute the buttons
+	// state.
+	//
+	// GTK+ automatically takes care of this in most situations, e.g. when the
+	// user goes to a different page, or when the visibility or completeness of
+	// a page changes.
+	//
+	// One situation where it can be necessary to call this function is when
+	// changing a value on the current page affects the future page flow of the
+	// assistant.
 	UpdateButtonsStateAssistant()
 }
 
@@ -195,6 +250,7 @@ func marshalAssistant(p uintptr) (interface{}, error) {
 	return WrapAssistant(obj), nil
 }
 
+// NewAssistant creates a new Assistant.
 func NewAssistant() Assistant {
 	var _cret *C.GtkWidget // in
 
@@ -202,7 +258,7 @@ func NewAssistant() Assistant {
 
 	var _assistant Assistant // out
 
-	_assistant = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Assistant)
+	_assistant = WrapAssistant(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _assistant
 }
@@ -562,42 +618,6 @@ func (a assistant) UpdateButtonsStateAssistant() {
 	C.gtk_assistant_update_buttons_state(_arg0)
 }
 
-func (b assistant) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
-}
-
-func (b assistant) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b assistant) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b assistant) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b assistant) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b assistant) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b assistant) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b assistant) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b assistant) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b assistant) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
+func (a assistant) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(a))
 }

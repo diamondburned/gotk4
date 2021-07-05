@@ -27,13 +27,13 @@ func init() {
 
 // TreeCreateRowDragContent creates a content provider for dragging @path from
 // @tree_model.
-func TreeCreateRowDragContent(treeModel TreeModel, path *TreePath) gdk.ContentProvider {
+func TreeCreateRowDragContent(treeModel TreeModel, path TreePath) gdk.ContentProvider {
 	var _arg1 *C.GtkTreeModel       // out
 	var _arg2 *C.GtkTreePath        // out
 	var _cret *C.GdkContentProvider // in
 
 	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer(treeModel.Native()))
-	_arg2 = (*C.GtkTreePath)(unsafe.Pointer(path.Native()))
+	_arg2 = (*C.GtkTreePath)(unsafe.Pointer(path))
 
 	_cret = C.gtk_tree_create_row_drag_content(_arg1, _arg2)
 
@@ -49,10 +49,10 @@ func TreeCreateRowDragContent(treeModel TreeModel, path *TreePath) gdk.ContentPr
 //
 // The returned path must be freed with gtk_tree_path_free().
 func TreeGetRowDragData(value externglib.Value) (TreeModel, *TreePath, bool) {
-	var _arg1 *C.GValue       // out
-	var _arg2 *C.GtkTreeModel // in
-	var _arg3 *C.GtkTreePath  // in
-	var _cret C.gboolean      // in
+	var _arg1 *C.GValue        // out
+	var _arg2 **C.GtkTreeModel // in
+	var _arg3 **C.GtkTreePath  // in
+	var _cret C.gboolean       // in
 
 	_arg1 = (*C.GValue)(unsafe.Pointer(&value.GValue))
 
@@ -62,11 +62,29 @@ func TreeGetRowDragData(value externglib.Value) (TreeModel, *TreePath, bool) {
 	var _path *TreePath      // out
 	var _ok bool             // out
 
-	_treeModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg2))).(TreeModel)
-	_path = (*TreePath)(unsafe.Pointer(_arg3))
-	runtime.SetFinalizer(&_path, func(v **TreePath) {
-		C.free(unsafe.Pointer(v))
-	})
+	{
+		var refTmpIn *C.GtkTreeModel
+		var refTmpOut treeModel
+
+		refTmpIn = *_arg2
+
+		refTmpOut = gextras.CastObject(externglib.Take(unsafe.Pointer(refTmpIn))).(treeModel)
+
+		_treeModel = refTmpOut
+	}
+	{
+		var refTmpIn *C.GtkTreePath
+		var refTmpOut *TreePath
+
+		refTmpIn = *_arg3
+
+		refTmpOut = (*TreePath)(unsafe.Pointer(refTmpIn))
+		runtime.SetFinalizer(refTmpOut, func(v *TreePath) {
+			C.gtk_tree_path_free((*C.GtkTreePath)(unsafe.Pointer(v)))
+		})
+
+		_path = refTmpOut
+	}
 	if _cret != 0 {
 		_ok = true
 	}
@@ -78,18 +96,19 @@ func TreeGetRowDragData(value externglib.Value) (TreeModel, *TreePath, bool) {
 type TreeDragDest interface {
 	gextras.Objector
 
-	// DragDataReceived determines whether a drop is possible before the given
-	// @dest_path, at the same depth as @dest_path. i.e., can we drop the data
-	// in @value at that location. @dest_path does not have to exist; the return
-	// value will almost certainly be false if the parent of @dest_path doesn’t
-	// exist, though.
-	DragDataReceived(dest *TreePath, value externglib.Value) bool
+	// DragDataReceived asks the TreeDragDest to insert a row before the path
+	// @dest, deriving the contents of the row from @value. If @dest is outside
+	// the tree so that inserting before it is impossible, false will be
+	// returned. Also, false may be returned if the new row is not created for
+	// some model-specific reason. Should robustly handle a @dest no longer
+	// found in the model!
+	DragDataReceived(dest TreePath, value externglib.Value) bool
 	// RowDropPossible determines whether a drop is possible before the given
 	// @dest_path, at the same depth as @dest_path. i.e., can we drop the data
 	// in @value at that location. @dest_path does not have to exist; the return
 	// value will almost certainly be false if the parent of @dest_path doesn’t
 	// exist, though.
-	RowDropPossible(destPath *TreePath, value externglib.Value) bool
+	RowDropPossible(destPath TreePath, value externglib.Value) bool
 }
 
 // treeDragDest implements the TreeDragDest interface.
@@ -113,14 +132,14 @@ func marshalTreeDragDest(p uintptr) (interface{}, error) {
 	return WrapTreeDragDest(obj), nil
 }
 
-func (d treeDragDest) DragDataReceived(dest *TreePath, value externglib.Value) bool {
+func (d treeDragDest) DragDataReceived(dest TreePath, value externglib.Value) bool {
 	var _arg0 *C.GtkTreeDragDest // out
 	var _arg1 *C.GtkTreePath     // out
 	var _arg2 *C.GValue          // out
 	var _cret C.gboolean         // in
 
 	_arg0 = (*C.GtkTreeDragDest)(unsafe.Pointer(d.Native()))
-	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(dest.Native()))
+	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(dest))
 	_arg2 = (*C.GValue)(unsafe.Pointer(&value.GValue))
 
 	_cret = C.gtk_tree_drag_dest_drag_data_received(_arg0, _arg1, _arg2)
@@ -134,14 +153,14 @@ func (d treeDragDest) DragDataReceived(dest *TreePath, value externglib.Value) b
 	return _ok
 }
 
-func (d treeDragDest) RowDropPossible(destPath *TreePath, value externglib.Value) bool {
+func (d treeDragDest) RowDropPossible(destPath TreePath, value externglib.Value) bool {
 	var _arg0 *C.GtkTreeDragDest // out
 	var _arg1 *C.GtkTreePath     // out
 	var _arg2 *C.GValue          // out
 	var _cret C.gboolean         // in
 
 	_arg0 = (*C.GtkTreeDragDest)(unsafe.Pointer(d.Native()))
-	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(destPath.Native()))
+	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(destPath))
 	_arg2 = (*C.GValue)(unsafe.Pointer(&value.GValue))
 
 	_cret = C.gtk_tree_drag_dest_row_drop_possible(_arg0, _arg1, _arg2)
@@ -159,18 +178,20 @@ func (d treeDragDest) RowDropPossible(destPath *TreePath, value externglib.Value
 type TreeDragSource interface {
 	gextras.Objector
 
-	// DragDataDelete asks the TreeDragSource whether a particular row can be
-	// used as the source of a DND operation. If the source doesn’t implement
-	// this interface, the row is assumed draggable.
-	DragDataDelete(path *TreePath) bool
-	// DragDataGet asks the TreeDragSource whether a particular row can be used
-	// as the source of a DND operation. If the source doesn’t implement this
-	// interface, the row is assumed draggable.
-	DragDataGet(path *TreePath) gdk.ContentProvider
+	// DragDataDelete asks the TreeDragSource to delete the row at @path,
+	// because it was moved somewhere else via drag-and-drop. Returns false if
+	// the deletion fails because @path no longer exists, or for some
+	// model-specific reason. Should robustly handle a @path no longer found in
+	// the model!
+	DragDataDelete(path TreePath) bool
+	// DragDataGet asks the TreeDragSource to return a ContentProvider
+	// representing the row at @path. Should robustly handle a @path no longer
+	// found in the model!
+	DragDataGet(path TreePath) gdk.ContentProvider
 	// RowDraggable asks the TreeDragSource whether a particular row can be used
 	// as the source of a DND operation. If the source doesn’t implement this
 	// interface, the row is assumed draggable.
-	RowDraggable(path *TreePath) bool
+	RowDraggable(path TreePath) bool
 }
 
 // treeDragSource implements the TreeDragSource interface.
@@ -194,13 +215,13 @@ func marshalTreeDragSource(p uintptr) (interface{}, error) {
 	return WrapTreeDragSource(obj), nil
 }
 
-func (d treeDragSource) DragDataDelete(path *TreePath) bool {
+func (d treeDragSource) DragDataDelete(path TreePath) bool {
 	var _arg0 *C.GtkTreeDragSource // out
 	var _arg1 *C.GtkTreePath       // out
 	var _cret C.gboolean           // in
 
 	_arg0 = (*C.GtkTreeDragSource)(unsafe.Pointer(d.Native()))
-	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(path.Native()))
+	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(path))
 
 	_cret = C.gtk_tree_drag_source_drag_data_delete(_arg0, _arg1)
 
@@ -213,13 +234,13 @@ func (d treeDragSource) DragDataDelete(path *TreePath) bool {
 	return _ok
 }
 
-func (d treeDragSource) DragDataGet(path *TreePath) gdk.ContentProvider {
+func (d treeDragSource) DragDataGet(path TreePath) gdk.ContentProvider {
 	var _arg0 *C.GtkTreeDragSource  // out
 	var _arg1 *C.GtkTreePath        // out
 	var _cret *C.GdkContentProvider // in
 
 	_arg0 = (*C.GtkTreeDragSource)(unsafe.Pointer(d.Native()))
-	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(path.Native()))
+	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(path))
 
 	_cret = C.gtk_tree_drag_source_drag_data_get(_arg0, _arg1)
 
@@ -230,13 +251,13 @@ func (d treeDragSource) DragDataGet(path *TreePath) gdk.ContentProvider {
 	return _contentProvider
 }
 
-func (d treeDragSource) RowDraggable(path *TreePath) bool {
+func (d treeDragSource) RowDraggable(path TreePath) bool {
 	var _arg0 *C.GtkTreeDragSource // out
 	var _arg1 *C.GtkTreePath       // out
 	var _cret C.gboolean           // in
 
 	_arg0 = (*C.GtkTreeDragSource)(unsafe.Pointer(d.Native()))
-	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(path.Native()))
+	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(path))
 
 	_cret = C.gtk_tree_drag_source_row_draggable(_arg0, _arg1)
 

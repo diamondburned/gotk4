@@ -36,13 +36,22 @@ func init() {
 type Image interface {
 	gextras.Objector
 
-	// ImageDescription sets the textual description for this image.
+	// ImageDescription: get a textual description of this image.
 	ImageDescription() string
-	// ImageLocale sets the textual description for this image.
+	// ImageLocale retrieves the locale identifier associated to the Image.
 	ImageLocale() string
-	// ImagePosition sets the textual description for this image.
+	// ImagePosition gets the position of the image in the form of a point
+	// specifying the images top-left corner.
+	//
+	// If the position can not be obtained (e.g. missing support), x and y are
+	// set to -1.
 	ImagePosition(coordType CoordType) (x int, y int)
-	// ImageSize sets the textual description for this image.
+	// ImageSize: get the width and height in pixels for the specified image.
+	// The values of @width and @height are returned as -1 if the values cannot
+	// be obtained (for instance, if the object is not onscreen).
+	//
+	// If the size can not be obtained (e.g. missing support), x and y are set
+	// to -1.
 	ImageSize() (width int, height int)
 	// SetImageDescription sets the textual description for this image.
 	SetImageDescription(description string) bool
@@ -101,8 +110,8 @@ func (i image) ImageLocale() string {
 
 func (i image) ImagePosition(coordType CoordType) (x int, y int) {
 	var _arg0 *C.AtkImage    // out
-	var _arg1 C.gint         // in
-	var _arg2 C.gint         // in
+	var _arg1 *C.gint        // in
+	var _arg2 *C.gint        // in
 	var _arg3 C.AtkCoordType // out
 
 	_arg0 = (*C.AtkImage)(unsafe.Pointer(i.Native()))
@@ -121,8 +130,8 @@ func (i image) ImagePosition(coordType CoordType) (x int, y int) {
 
 func (i image) ImageSize() (width int, height int) {
 	var _arg0 *C.AtkImage // out
-	var _arg1 C.gint      // in
-	var _arg2 C.gint      // in
+	var _arg1 *C.gint     // in
+	var _arg2 *C.gint     // in
 
 	_arg0 = (*C.AtkImage)(unsafe.Pointer(i.Native()))
 

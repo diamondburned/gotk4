@@ -22,7 +22,7 @@ func init() {
 	})
 }
 
-// ListItemFactory: a `GtkListItemFactory` creates widgets for the items taken
+// ListItemFactory: `GtkListItemFactory` creates widgets for the items taken
 // from a `GListModel`.
 //
 // This is one of the core concepts of handling list widgets such as

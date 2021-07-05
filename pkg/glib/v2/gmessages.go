@@ -56,7 +56,7 @@ const (
 	LogLevelFlagsLevelInfo LogLevelFlags = 0b1000000
 	// LogLevelFlagsLevelDebug: log level for debug messages, see g_debug()
 	LogLevelFlagsLevelDebug LogLevelFlags = 0b10000000
-	// LogLevelFlagsLevelMask: a mask including all log levels
+	// LogLevelFlagsLevelMask: mask including all log levels
 	LogLevelFlagsLevelMask LogLevelFlags = -4
 )
 
@@ -109,7 +109,7 @@ func gotk4_LogFunc(arg0 *C.gchar, arg1 C.GLogLevelFlags, arg2 *C.gchar, arg3 C.g
 // send messages to a remote logging server and there is a network error), it
 // should return G_LOG_WRITER_UNHANDLED. This allows writer functions to be
 // chained and fall back to simpler handlers in case of failure.
-type LogWriterFunc func(logLevel LogLevelFlags, fields []LogField, logWriterOutput LogWriterOutput)
+type LogWriterFunc func(logLevel LogLevelFlags, fields []LogField) (logWriterOutput LogWriterOutput)
 
 //export gotk4_LogWriterFunc
 func gotk4_LogWriterFunc(arg0 C.GLogLevelFlags, arg1 *C.GLogField, arg2 C.gsize, arg3 C.gpointer) C.GLogWriterOutput {
@@ -190,7 +190,7 @@ func LogDefaultHandler(logDomain string, logLevel LogLevelFlags, message string,
 	_arg2 = C.GLogLevelFlags(logLevel)
 	_arg3 = (*C.gchar)(C.CString(message))
 	defer C.free(unsafe.Pointer(_arg3))
-	_arg4 = C.gpointer(box.Assign(unsafe.Pointer(unusedData)))
+	_arg4 = C.gpointer(box.Assign(unusedData))
 
 	C.g_log_default_handler(_arg1, _arg2, _arg3, _arg4)
 }
@@ -310,7 +310,7 @@ func LogStructuredArray(logLevel LogLevelFlags, fields []LogField) {
 //
 // For more details on its usage and about the parameters, see
 // g_log_structured().
-func LogVariant(logDomain string, logLevel LogLevelFlags, fields *Variant) {
+func LogVariant(logDomain string, logLevel LogLevelFlags, fields Variant) {
 	var _arg1 *C.gchar         // out
 	var _arg2 C.GLogLevelFlags // out
 	var _arg3 *C.GVariant      // out
@@ -318,7 +318,7 @@ func LogVariant(logDomain string, logLevel LogLevelFlags, fields *Variant) {
 	_arg1 = (*C.gchar)(C.CString(logDomain))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GLogLevelFlags(logLevel)
-	_arg3 = (*C.GVariant)(unsafe.Pointer(fields.Native()))
+	_arg3 = (*C.GVariant)(unsafe.Pointer(fields))
 
 	C.g_log_variant(_arg1, _arg2, _arg3)
 }
@@ -352,7 +352,7 @@ func LogWriterDefault(logLevel LogLevelFlags, fields []LogField, userData interf
 	_arg1 = C.GLogLevelFlags(logLevel)
 	_arg3 = C.gsize(len(fields))
 	_arg2 = (*C.GLogField)(unsafe.Pointer(&fields[0]))
-	_arg4 = C.gpointer(box.Assign(unsafe.Pointer(userData)))
+	_arg4 = C.gpointer(box.Assign(userData))
 
 	_cret = C.g_log_writer_default(_arg1, _arg2, _arg3, _arg4)
 
@@ -501,7 +501,7 @@ func LogWriterJournald(logLevel LogLevelFlags, fields []LogField, userData inter
 	_arg1 = C.GLogLevelFlags(logLevel)
 	_arg3 = C.gsize(len(fields))
 	_arg2 = (*C.GLogField)(unsafe.Pointer(&fields[0]))
-	_arg4 = C.gpointer(box.Assign(unsafe.Pointer(userData)))
+	_arg4 = C.gpointer(box.Assign(userData))
 
 	_cret = C.g_log_writer_journald(_arg1, _arg2, _arg3, _arg4)
 
@@ -535,7 +535,7 @@ func LogWriterStandardStreams(logLevel LogLevelFlags, fields []LogField, userDat
 	_arg1 = C.GLogLevelFlags(logLevel)
 	_arg3 = C.gsize(len(fields))
 	_arg2 = (*C.GLogField)(unsafe.Pointer(&fields[0]))
-	_arg4 = C.gpointer(box.Assign(unsafe.Pointer(userData)))
+	_arg4 = C.gpointer(box.Assign(userData))
 
 	_cret = C.g_log_writer_standard_streams(_arg1, _arg2, _arg3, _arg4)
 
@@ -573,7 +573,9 @@ func LogWriterSupportsColor(outputFd int) bool {
 // bytes. If the field contains a string, the string must be UTF-8 encoded and
 // have a trailing nul byte. Otherwise, @length must be set to a non-negative
 // value.
-type LogField C.GLogField
+type LogField struct {
+	native C.GLogField
+}
 
 // WrapLogField wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -583,5 +585,5 @@ func WrapLogField(ptr unsafe.Pointer) *LogField {
 
 // Native returns the underlying C source pointer.
 func (l *LogField) Native() unsafe.Pointer {
-	return unsafe.Pointer(l)
+	return unsafe.Pointer(&l.native)
 }

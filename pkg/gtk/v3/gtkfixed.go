@@ -5,9 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -66,8 +64,12 @@ func init() {
 type Fixed interface {
 	Container
 
-	MoveFixed(widget Widget, x int, y int)
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
 
+	// MoveFixed moves a child of a Fixed container to the given position.
+	MoveFixed(widget Widget, x int, y int)
+	// PutFixed adds a widget to a Fixed container at the given position.
 	PutFixed(widget Widget, x int, y int)
 }
 
@@ -90,6 +92,7 @@ func marshalFixed(p uintptr) (interface{}, error) {
 	return WrapFixed(obj), nil
 }
 
+// NewFixed creates a new Fixed.
 func NewFixed() Fixed {
 	var _cret *C.GtkWidget // in
 
@@ -97,7 +100,7 @@ func NewFixed() Fixed {
 
 	var _fixed Fixed // out
 
-	_fixed = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Fixed)
+	_fixed = WrapFixed(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _fixed
 }
@@ -130,47 +133,13 @@ func (f fixed) PutFixed(widget Widget, x int, y int) {
 	C.gtk_fixed_put(_arg0, _arg1, _arg2, _arg3)
 }
 
-func (b fixed) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+func (f fixed) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(f))
 }
 
-func (b fixed) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+type FixedChild struct {
+	native C.GtkFixedChild
 }
-
-func (b fixed) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b fixed) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b fixed) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b fixed) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b fixed) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b fixed) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b fixed) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b fixed) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-type FixedChild C.GtkFixedChild
 
 // WrapFixedChild wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -180,5 +149,5 @@ func WrapFixedChild(ptr unsafe.Pointer) *FixedChild {
 
 // Native returns the underlying C source pointer.
 func (f *FixedChild) Native() unsafe.Pointer {
-	return unsafe.Pointer(f)
+	return unsafe.Pointer(&f.native)
 }

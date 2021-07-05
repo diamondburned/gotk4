@@ -30,31 +30,9 @@ func init() {
 type CellEditable interface {
 	Widget
 
-	// EditingDone begins editing on a @cell_editable.
-	//
-	// The CellRenderer for the cell creates and returns a CellEditable from
-	// gtk_cell_renderer_start_editing(), configured for the CellRenderer type.
-	//
-	// gtk_cell_editable_start_editing() can then set up @cell_editable suitably
-	// for editing a cell, e.g. making the Esc key emit
-	// CellEditable::editing-done.
-	//
-	// Note that the @cell_editable is created on-demand for the current edit;
-	// its lifetime is temporary and does not persist across other edits and/or
-	// cells.
+	// EditingDone emits the CellEditable::editing-done signal.
 	EditingDone()
-	// RemoveWidget begins editing on a @cell_editable.
-	//
-	// The CellRenderer for the cell creates and returns a CellEditable from
-	// gtk_cell_renderer_start_editing(), configured for the CellRenderer type.
-	//
-	// gtk_cell_editable_start_editing() can then set up @cell_editable suitably
-	// for editing a cell, e.g. making the Esc key emit
-	// CellEditable::editing-done.
-	//
-	// Note that the @cell_editable is created on-demand for the current edit;
-	// its lifetime is temporary and does not persist across other edits and/or
-	// cells.
+	// RemoveWidget emits the CellEditable::remove-widget signal.
 	RemoveWidget()
 	// StartEditing begins editing on a @cell_editable.
 	//

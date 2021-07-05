@@ -22,30 +22,56 @@ func init() {
 	})
 }
 
-// StateSet: an AtkStateSet is a read-only representation of the full set of
-// States that apply to an object at a given time. This set is not meant to be
-// modified, but rather created when #atk_object_ref_state_set() is called.
+// StateSet is a read-only representation of the full set of States that apply
+// to an object at a given time. This set is not meant to be modified, but
+// rather created when #atk_object_ref_state_set() is called.
 type StateSet interface {
 	gextras.Objector
 
+	// AddStateStateSet adds the state of the specified type to the state set if
+	// it is not already present.
+	//
+	// Note that because an StateSet is a read-only object, this method should
+	// be used to add a state to a newly-created set which will then be returned
+	// by #atk_object_ref_state_set. It should not be used to modify the
+	// existing state of an object. See also #atk_object_notify_state_change.
 	AddStateStateSet(typ StateType) bool
-
+	// AddStatesStateSet adds the states of the specified types to the state
+	// set.
+	//
+	// Note that because an StateSet is a read-only object, this method should
+	// be used to add states to a newly-created set which will then be returned
+	// by #atk_object_ref_state_set. It should not be used to modify the
+	// existing state of an object. See also #atk_object_notify_state_change.
 	AddStatesStateSet(types []StateType)
-
+	// AndSetsStateSet constructs the intersection of the two sets, returning
+	// nil if the intersection is empty.
 	AndSetsStateSet(compareSet StateSet) StateSet
-
+	// ClearStatesStateSet removes all states from the state set.
 	ClearStatesStateSet()
-
+	// ContainsStateStateSet checks whether the state for the specified type is
+	// in the specified set.
 	ContainsStateStateSet(typ StateType) bool
-
+	// ContainsStatesStateSet checks whether the states for all the specified
+	// types are in the specified set.
 	ContainsStatesStateSet(types []StateType) bool
-
+	// IsEmptyStateSet checks whether the state set is empty, i.e. has no states
+	// set.
 	IsEmptyStateSet() bool
-
+	// OrSetsStateSet constructs the union of the two sets.
 	OrSetsStateSet(compareSet StateSet) StateSet
-
+	// RemoveStateStateSet removes the state for the specified type from the
+	// state set.
+	//
+	// Note that because an StateSet is a read-only object, this method should
+	// be used to remove a state to a newly-created set which will then be
+	// returned by #atk_object_ref_state_set. It should not be used to modify
+	// the existing state of an object. See also
+	// #atk_object_notify_state_change.
 	RemoveStateStateSet(typ StateType) bool
-
+	// XorSetsStateSet constructs the exclusive-or of the two sets, returning
+	// nil is empty. The set returned by this operation contains the states in
+	// exactly one of the two sets.
 	XorSetsStateSet(compareSet StateSet) StateSet
 }
 
@@ -68,6 +94,7 @@ func marshalStateSet(p uintptr) (interface{}, error) {
 	return WrapStateSet(obj), nil
 }
 
+// NewStateSet creates a new empty state set.
 func NewStateSet() StateSet {
 	var _cret *C.AtkStateSet // in
 
@@ -75,7 +102,7 @@ func NewStateSet() StateSet {
 
 	var _stateSet StateSet // out
 
-	_stateSet = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(StateSet)
+	_stateSet = WrapStateSet(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _stateSet
 }

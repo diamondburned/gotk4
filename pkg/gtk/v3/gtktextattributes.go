@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -23,7 +24,9 @@ func init() {
 	})
 }
 
-type TextAppearance C.GtkTextAppearance
+type TextAppearance struct {
+	native C.GtkTextAppearance
+}
 
 // WrapTextAppearance wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -33,14 +36,16 @@ func WrapTextAppearance(ptr unsafe.Pointer) *TextAppearance {
 
 // Native returns the underlying C source pointer.
 func (t *TextAppearance) Native() unsafe.Pointer {
-	return unsafe.Pointer(t)
+	return unsafe.Pointer(&t.native)
 }
 
 // TextAttributes: using TextAttributes directly should rarely be necessary.
 // It’s primarily useful with gtk_text_iter_get_attributes(). As with most GTK+
 // structs, the fields in this struct should only be read, never modified
 // directly.
-type TextAttributes C.GtkTextAttributes
+type TextAttributes struct {
+	native C.GtkTextAttributes
+}
 
 // WrapTextAttributes wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -54,16 +59,16 @@ func marshalTextAttributes(p uintptr) (interface{}, error) {
 }
 
 // NewTextAttributes constructs a struct TextAttributes.
-func NewTextAttributes() *TextAttributes {
+func NewTextAttributes() TextAttributes {
 	var _cret *C.GtkTextAttributes // in
 
 	_cret = C.gtk_text_attributes_new()
 
-	var _textAttributes *TextAttributes // out
+	var _textAttributes TextAttributes // out
 
-	_textAttributes = (*TextAttributes)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(&_textAttributes, func(v **TextAttributes) {
-		C.free(unsafe.Pointer(v))
+	_textAttributes = (TextAttributes)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_textAttributes, func(v TextAttributes) {
+		C.gtk_text_attributes_unref((*C.GtkTextAttributes)(unsafe.Pointer(v)))
 	})
 
 	return _textAttributes
@@ -71,56 +76,54 @@ func NewTextAttributes() *TextAttributes {
 
 // Native returns the underlying C source pointer.
 func (t *TextAttributes) Native() unsafe.Pointer {
-	return unsafe.Pointer(t)
+	return unsafe.Pointer(&t.native)
 }
 
-// Copy decrements the reference count on @values, freeing the structure if the
-// reference count reaches 0.
-func (v *TextAttributes) Copy() *TextAttributes {
+// Copy copies @src and returns a new TextAttributes.
+func (s *TextAttributes) Copy() TextAttributes {
 	var _arg0 *C.GtkTextAttributes // out
 	var _cret *C.GtkTextAttributes // in
 
-	_arg0 = (*C.GtkTextAttributes)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkTextAttributes)(unsafe.Pointer(s))
 
 	_cret = C.gtk_text_attributes_copy(_arg0)
 
-	var _textAttributes *TextAttributes // out
+	var _textAttributes TextAttributes // out
 
-	_textAttributes = (*TextAttributes)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(&_textAttributes, func(v **TextAttributes) {
-		C.free(unsafe.Pointer(v))
+	_textAttributes = (TextAttributes)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_textAttributes, func(v TextAttributes) {
+		C.gtk_text_attributes_unref((*C.GtkTextAttributes)(unsafe.Pointer(v)))
 	})
 
 	return _textAttributes
 }
 
-// CopyValues decrements the reference count on @values, freeing the structure
-// if the reference count reaches 0.
-func (v *TextAttributes) CopyValues(dest *TextAttributes) {
+// CopyValues copies the values from @src to @dest so that @dest has the same
+// values as @src. Frees existing values in @dest.
+func (s *TextAttributes) CopyValues(dest TextAttributes) {
 	var _arg0 *C.GtkTextAttributes // out
 	var _arg1 *C.GtkTextAttributes // out
 
-	_arg0 = (*C.GtkTextAttributes)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GtkTextAttributes)(unsafe.Pointer(dest.Native()))
+	_arg0 = (*C.GtkTextAttributes)(unsafe.Pointer(s))
+	_arg1 = (*C.GtkTextAttributes)(unsafe.Pointer(dest))
 
 	C.gtk_text_attributes_copy_values(_arg0, _arg1)
 }
 
-// Ref decrements the reference count on @values, freeing the structure if the
-// reference count reaches 0.
-func (v *TextAttributes) Ref() *TextAttributes {
+// Ref increments the reference count on @values.
+func (v *TextAttributes) Ref() TextAttributes {
 	var _arg0 *C.GtkTextAttributes // out
 	var _cret *C.GtkTextAttributes // in
 
-	_arg0 = (*C.GtkTextAttributes)(unsafe.Pointer(v.Native()))
+	_arg0 = (*C.GtkTextAttributes)(unsafe.Pointer(v))
 
 	_cret = C.gtk_text_attributes_ref(_arg0)
 
-	var _textAttributes *TextAttributes // out
+	var _textAttributes TextAttributes // out
 
-	_textAttributes = (*TextAttributes)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(&_textAttributes, func(v **TextAttributes) {
-		C.free(unsafe.Pointer(v))
+	_textAttributes = (TextAttributes)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_textAttributes, func(v TextAttributes) {
+		C.gtk_text_attributes_unref((*C.GtkTextAttributes)(unsafe.Pointer(v)))
 	})
 
 	return _textAttributes
@@ -131,7 +134,7 @@ func (v *TextAttributes) Ref() *TextAttributes {
 func (v *TextAttributes) Unref() {
 	var _arg0 *C.GtkTextAttributes // out
 
-	_arg0 = (*C.GtkTextAttributes)(unsafe.Pointer(v.Native()))
+	_arg0 = (*C.GtkTextAttributes)(unsafe.Pointer(v))
 
 	C.gtk_text_attributes_unref(_arg0)
 }

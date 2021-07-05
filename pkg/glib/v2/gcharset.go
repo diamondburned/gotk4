@@ -31,7 +31,7 @@ import "C"
 //
 // The string returned in @charset is not allocated, and should not be freed.
 func GetCharset() (string, bool) {
-	var _arg1 *C.char    // in
+	var _arg1 **C.char   // in
 	var _cret C.gboolean // in
 
 	_cret = C.g_get_charset(&_arg1)
@@ -39,7 +39,16 @@ func GetCharset() (string, bool) {
 	var _charset string // out
 	var _ok bool        // out
 
-	_charset = C.GoString(_arg1)
+	{
+		var refTmpIn *C.char
+		var refTmpOut string
+
+		refTmpIn = *_arg1
+
+		refTmpOut = C.GoString(refTmpIn)
+
+		_charset = refTmpOut
+	}
 	if _cret != 0 {
 		_ok = true
 	}
@@ -78,7 +87,7 @@ func GetCodeset() string {
 //
 // The string returned in @charset is not allocated, and should not be freed.
 func GetConsoleCharset() (string, bool) {
-	var _arg1 *C.char    // in
+	var _arg1 **C.char   // in
 	var _cret C.gboolean // in
 
 	_cret = C.g_get_console_charset(&_arg1)
@@ -86,7 +95,16 @@ func GetConsoleCharset() (string, bool) {
 	var _charset string // out
 	var _ok bool        // out
 
-	_charset = C.GoString(_arg1)
+	{
+		var refTmpIn *C.char
+		var refTmpOut string
+
+		refTmpIn = *_arg1
+
+		refTmpOut = C.GoString(refTmpIn)
+
+		_charset = refTmpOut
+	}
 	if _cret != 0 {
 		_ok = true
 	}

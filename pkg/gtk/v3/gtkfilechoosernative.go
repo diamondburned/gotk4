@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -183,14 +182,31 @@ func init() {
 // * Shortcut folders.
 type FileChooserNative interface {
 	NativeDialog
-	FileChooser
 
+	// AsFileChooser casts the class to the FileChooser interface.
+	AsFileChooser() FileChooser
+
+	// AcceptLabel retrieves the custom label text for the accept button.
 	AcceptLabel() string
-
+	// CancelLabel retrieves the custom label text for the cancel button.
 	CancelLabel() string
-
+	// SetAcceptLabelFileChooserNative sets the custom label text for the accept
+	// button.
+	//
+	// If characters in @label are preceded by an underscore, they are
+	// underlined. If you need a literal underscore character in a label, use
+	// “__” (two underscores). The first underlined character represents a
+	// keyboard accelerator called a mnemonic. Pressing Alt and that key
+	// activates the button.
 	SetAcceptLabelFileChooserNative(acceptLabel string)
-
+	// SetCancelLabelFileChooserNative sets the custom label text for the cancel
+	// button.
+	//
+	// If characters in @label are preceded by an underscore, they are
+	// underlined. If you need a literal underscore character in a label, use
+	// “__” (two underscores). The first underlined character represents a
+	// keyboard accelerator called a mnemonic. Pressing Alt and that key
+	// activates the button.
 	SetCancelLabelFileChooserNative(cancelLabel string)
 }
 
@@ -213,6 +229,7 @@ func marshalFileChooserNative(p uintptr) (interface{}, error) {
 	return WrapFileChooserNative(obj), nil
 }
 
+// NewFileChooserNative creates a new FileChooserNative.
 func NewFileChooserNative(title string, parent Window, action FileChooserAction, acceptLabel string, cancelLabel string) FileChooserNative {
 	var _arg1 *C.gchar                // out
 	var _arg2 *C.GtkWindow            // out
@@ -234,7 +251,7 @@ func NewFileChooserNative(title string, parent Window, action FileChooserAction,
 
 	var _fileChooserNative FileChooserNative // out
 
-	_fileChooserNative = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(FileChooserNative)
+	_fileChooserNative = WrapFileChooserNative(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _fileChooserNative
 }
@@ -291,202 +308,6 @@ func (s fileChooserNative) SetCancelLabelFileChooserNative(cancelLabel string) {
 	C.gtk_file_chooser_native_set_cancel_label(_arg0, _arg1)
 }
 
-func (c fileChooserNative) AddChoice(id string, label string, options []string, optionLabels []string) {
-	WrapFileChooser(gextras.InternObject(c)).AddChoice(id, label, options, optionLabels)
-}
-
-func (c fileChooserNative) AddFilter(filter FileFilter) {
-	WrapFileChooser(gextras.InternObject(c)).AddFilter(filter)
-}
-
-func (c fileChooserNative) AddShortcutFolder(folder string) error {
-	return WrapFileChooser(gextras.InternObject(c)).AddShortcutFolder(folder)
-}
-
-func (c fileChooserNative) AddShortcutFolderURI(uri string) error {
-	return WrapFileChooser(gextras.InternObject(c)).AddShortcutFolderURI(uri)
-}
-
-func (c fileChooserNative) Action() FileChooserAction {
-	return WrapFileChooser(gextras.InternObject(c)).Action()
-}
-
-func (c fileChooserNative) Choice(id string) string {
-	return WrapFileChooser(gextras.InternObject(c)).Choice(id)
-}
-
-func (c fileChooserNative) CreateFolders() bool {
-	return WrapFileChooser(gextras.InternObject(c)).CreateFolders()
-}
-
-func (c fileChooserNative) CurrentFolder() string {
-	return WrapFileChooser(gextras.InternObject(c)).CurrentFolder()
-}
-
-func (c fileChooserNative) CurrentFolderURI() string {
-	return WrapFileChooser(gextras.InternObject(c)).CurrentFolderURI()
-}
-
-func (c fileChooserNative) CurrentName() string {
-	return WrapFileChooser(gextras.InternObject(c)).CurrentName()
-}
-
-func (c fileChooserNative) DoOverwriteConfirmation() bool {
-	return WrapFileChooser(gextras.InternObject(c)).DoOverwriteConfirmation()
-}
-
-func (c fileChooserNative) ExtraWidget() Widget {
-	return WrapFileChooser(gextras.InternObject(c)).ExtraWidget()
-}
-
-func (c fileChooserNative) Filename() string {
-	return WrapFileChooser(gextras.InternObject(c)).Filename()
-}
-
-func (c fileChooserNative) Filter() FileFilter {
-	return WrapFileChooser(gextras.InternObject(c)).Filter()
-}
-
-func (c fileChooserNative) LocalOnly() bool {
-	return WrapFileChooser(gextras.InternObject(c)).LocalOnly()
-}
-
-func (c fileChooserNative) PreviewFilename() string {
-	return WrapFileChooser(gextras.InternObject(c)).PreviewFilename()
-}
-
-func (c fileChooserNative) PreviewURI() string {
-	return WrapFileChooser(gextras.InternObject(c)).PreviewURI()
-}
-
-func (c fileChooserNative) PreviewWidget() Widget {
-	return WrapFileChooser(gextras.InternObject(c)).PreviewWidget()
-}
-
-func (c fileChooserNative) PreviewWidgetActive() bool {
-	return WrapFileChooser(gextras.InternObject(c)).PreviewWidgetActive()
-}
-
-func (c fileChooserNative) SelectMultiple() bool {
-	return WrapFileChooser(gextras.InternObject(c)).SelectMultiple()
-}
-
-func (c fileChooserNative) ShowHidden() bool {
-	return WrapFileChooser(gextras.InternObject(c)).ShowHidden()
-}
-
-func (c fileChooserNative) URI() string {
-	return WrapFileChooser(gextras.InternObject(c)).URI()
-}
-
-func (c fileChooserNative) UsePreviewLabel() bool {
-	return WrapFileChooser(gextras.InternObject(c)).UsePreviewLabel()
-}
-
-func (c fileChooserNative) RemoveChoice(id string) {
-	WrapFileChooser(gextras.InternObject(c)).RemoveChoice(id)
-}
-
-func (c fileChooserNative) RemoveFilter(filter FileFilter) {
-	WrapFileChooser(gextras.InternObject(c)).RemoveFilter(filter)
-}
-
-func (c fileChooserNative) RemoveShortcutFolder(folder string) error {
-	return WrapFileChooser(gextras.InternObject(c)).RemoveShortcutFolder(folder)
-}
-
-func (c fileChooserNative) RemoveShortcutFolderURI(uri string) error {
-	return WrapFileChooser(gextras.InternObject(c)).RemoveShortcutFolderURI(uri)
-}
-
-func (c fileChooserNative) SelectAll() {
-	WrapFileChooser(gextras.InternObject(c)).SelectAll()
-}
-
-func (c fileChooserNative) SelectFilename(filename string) bool {
-	return WrapFileChooser(gextras.InternObject(c)).SelectFilename(filename)
-}
-
-func (c fileChooserNative) SelectURI(uri string) bool {
-	return WrapFileChooser(gextras.InternObject(c)).SelectURI(uri)
-}
-
-func (c fileChooserNative) SetAction(action FileChooserAction) {
-	WrapFileChooser(gextras.InternObject(c)).SetAction(action)
-}
-
-func (c fileChooserNative) SetChoice(id string, option string) {
-	WrapFileChooser(gextras.InternObject(c)).SetChoice(id, option)
-}
-
-func (c fileChooserNative) SetCreateFolders(createFolders bool) {
-	WrapFileChooser(gextras.InternObject(c)).SetCreateFolders(createFolders)
-}
-
-func (c fileChooserNative) SetCurrentFolder(filename string) bool {
-	return WrapFileChooser(gextras.InternObject(c)).SetCurrentFolder(filename)
-}
-
-func (c fileChooserNative) SetCurrentFolderURI(uri string) bool {
-	return WrapFileChooser(gextras.InternObject(c)).SetCurrentFolderURI(uri)
-}
-
-func (c fileChooserNative) SetCurrentName(name string) {
-	WrapFileChooser(gextras.InternObject(c)).SetCurrentName(name)
-}
-
-func (c fileChooserNative) SetDoOverwriteConfirmation(doOverwriteConfirmation bool) {
-	WrapFileChooser(gextras.InternObject(c)).SetDoOverwriteConfirmation(doOverwriteConfirmation)
-}
-
-func (c fileChooserNative) SetExtraWidget(extraWidget Widget) {
-	WrapFileChooser(gextras.InternObject(c)).SetExtraWidget(extraWidget)
-}
-
-func (c fileChooserNative) SetFilename(filename string) bool {
-	return WrapFileChooser(gextras.InternObject(c)).SetFilename(filename)
-}
-
-func (c fileChooserNative) SetFilter(filter FileFilter) {
-	WrapFileChooser(gextras.InternObject(c)).SetFilter(filter)
-}
-
-func (c fileChooserNative) SetLocalOnly(localOnly bool) {
-	WrapFileChooser(gextras.InternObject(c)).SetLocalOnly(localOnly)
-}
-
-func (c fileChooserNative) SetPreviewWidget(previewWidget Widget) {
-	WrapFileChooser(gextras.InternObject(c)).SetPreviewWidget(previewWidget)
-}
-
-func (c fileChooserNative) SetPreviewWidgetActive(active bool) {
-	WrapFileChooser(gextras.InternObject(c)).SetPreviewWidgetActive(active)
-}
-
-func (c fileChooserNative) SetSelectMultiple(selectMultiple bool) {
-	WrapFileChooser(gextras.InternObject(c)).SetSelectMultiple(selectMultiple)
-}
-
-func (c fileChooserNative) SetShowHidden(showHidden bool) {
-	WrapFileChooser(gextras.InternObject(c)).SetShowHidden(showHidden)
-}
-
-func (c fileChooserNative) SetURI(uri string) bool {
-	return WrapFileChooser(gextras.InternObject(c)).SetURI(uri)
-}
-
-func (c fileChooserNative) SetUsePreviewLabel(useLabel bool) {
-	WrapFileChooser(gextras.InternObject(c)).SetUsePreviewLabel(useLabel)
-}
-
-func (c fileChooserNative) UnselectAll() {
-	WrapFileChooser(gextras.InternObject(c)).UnselectAll()
-}
-
-func (c fileChooserNative) UnselectFilename(filename string) {
-	WrapFileChooser(gextras.InternObject(c)).UnselectFilename(filename)
-}
-
-func (c fileChooserNative) UnselectURI(uri string) {
-	WrapFileChooser(gextras.InternObject(c)).UnselectURI(uri)
+func (f fileChooserNative) AsFileChooser() FileChooser {
+	return WrapFileChooser(gextras.InternObject(f))
 }

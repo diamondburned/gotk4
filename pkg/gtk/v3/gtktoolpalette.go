@@ -5,10 +5,8 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -42,8 +40,8 @@ func marshalToolPaletteDragTargets(p uintptr) (interface{}, error) {
 	return ToolPaletteDragTargets(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// ToolPalette: a ToolPalette allows you to add ToolItems to a palette-like
-// container with different categories and drag and drop support.
+// ToolPalette allows you to add ToolItems to a palette-like container with
+// different categories and drag and drop support.
 //
 // A ToolPalette is created with a call to gtk_tool_palette_new().
 //
@@ -92,45 +90,73 @@ func marshalToolPaletteDragTargets(p uintptr) (interface{}, error) {
 // GtkToolPalette has a single CSS node named toolpalette.
 type ToolPalette interface {
 	Container
-	Orientable
-	Scrollable
 
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsOrientable casts the class to the Orientable interface.
+	AsOrientable() Orientable
+	// AsScrollable casts the class to the Scrollable interface.
+	AsScrollable() Scrollable
+
+	// AddDragDestToolPalette sets @palette as drag source (see
+	// gtk_tool_palette_set_drag_source()) and sets @widget as a drag
+	// destination for drags from @palette. See gtk_drag_dest_set().
 	AddDragDestToolPalette(widget Widget, flags DestDefaults, targets ToolPaletteDragTargets, actions gdk.DragAction)
-
-	DragItem(selection *SelectionData) Widget
-
+	// DragItem: get the dragged item from the selection. This could be a
+	// ToolItem or a ToolItemGroup.
+	DragItem(selection SelectionData) Widget
+	// DropGroup gets the group at position (x, y).
 	DropGroup(x int, y int) ToolItemGroup
-
+	// DropItem gets the item at position (x, y). See
+	// gtk_tool_palette_get_drop_group().
 	DropItem(x int, y int) ToolItem
-
+	// Exclusive gets whether @group is exclusive or not. See
+	// gtk_tool_palette_set_exclusive().
 	Exclusive(group ToolItemGroup) bool
-
+	// Expand gets whether group should be given extra space. See
+	// gtk_tool_palette_set_expand().
 	Expand(group ToolItemGroup) bool
-
+	// GroupPosition gets the position of @group in @palette as index. See
+	// gtk_tool_palette_set_group_position().
 	GroupPosition(group ToolItemGroup) int
-
-	GetHAdjustment() Adjustment
-
+	// HAdjustment gets the horizontal adjustment of the tool palette.
+	//
+	// Deprecated: since version 3.0.
+	HAdjustment() Adjustment
+	// IconSize gets the size of icons in the tool palette. See
+	// gtk_tool_palette_set_icon_size().
 	IconSize() int
-
+	// Style gets the style (icons, text or both) of items in the tool palette.
 	Style() ToolbarStyle
-
-	GetVAdjustment() Adjustment
-
+	// VAdjustment gets the vertical adjustment of the tool palette.
+	//
+	// Deprecated: since version 3.0.
+	VAdjustment() Adjustment
+	// SetDragSourceToolPalette sets the tool palette as a drag source. Enables
+	// all groups and items in the tool palette as drag sources on button 1 and
+	// button 3 press with copy and move actions. See gtk_drag_source_set().
 	SetDragSourceToolPalette(targets ToolPaletteDragTargets)
-
+	// SetExclusiveToolPalette sets whether the group should be exclusive or
+	// not. If an exclusive group is expanded all other groups are collapsed.
 	SetExclusiveToolPalette(group ToolItemGroup, exclusive bool)
-
+	// SetExpandToolPalette sets whether the group should be given extra space.
 	SetExpandToolPalette(group ToolItemGroup, expand bool)
-
+	// SetGroupPositionToolPalette sets the position of the group as an index of
+	// the tool palette. If position is 0 the group will become the first child,
+	// if position is -1 it will become the last child.
 	SetGroupPositionToolPalette(group ToolItemGroup, position int)
-
+	// SetIconSizeToolPalette sets the size of icons in the tool palette.
 	SetIconSizeToolPalette(iconSize int)
-
+	// SetStyleToolPalette sets the style (text, icons or both) of items in the
+	// tool palette.
 	SetStyleToolPalette(style ToolbarStyle)
-
+	// UnsetIconSizeToolPalette unsets the tool palette icon size set with
+	// gtk_tool_palette_set_icon_size(), so that user preferences will be used
+	// to determine the icon size.
 	UnsetIconSizeToolPalette()
-
+	// UnsetStyleToolPalette unsets a toolbar style set with
+	// gtk_tool_palette_set_style(), so that user preferences will be used to
+	// determine the toolbar style.
 	UnsetStyleToolPalette()
 }
 
@@ -153,6 +179,7 @@ func marshalToolPalette(p uintptr) (interface{}, error) {
 	return WrapToolPalette(obj), nil
 }
 
+// NewToolPalette creates a new tool palette.
 func NewToolPalette() ToolPalette {
 	var _cret *C.GtkWidget // in
 
@@ -160,7 +187,7 @@ func NewToolPalette() ToolPalette {
 
 	var _toolPalette ToolPalette // out
 
-	_toolPalette = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ToolPalette)
+	_toolPalette = WrapToolPalette(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _toolPalette
 }
@@ -181,13 +208,13 @@ func (p toolPalette) AddDragDestToolPalette(widget Widget, flags DestDefaults, t
 	C.gtk_tool_palette_add_drag_dest(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
-func (p toolPalette) DragItem(selection *SelectionData) Widget {
+func (p toolPalette) DragItem(selection SelectionData) Widget {
 	var _arg0 *C.GtkToolPalette   // out
 	var _arg1 *C.GtkSelectionData // out
 	var _cret *C.GtkWidget        // in
 
 	_arg0 = (*C.GtkToolPalette)(unsafe.Pointer(p.Native()))
-	_arg1 = (*C.GtkSelectionData)(unsafe.Pointer(selection.Native()))
+	_arg1 = (*C.GtkSelectionData)(unsafe.Pointer(selection))
 
 	_cret = C.gtk_tool_palette_get_drag_item(_arg0, _arg1)
 
@@ -291,7 +318,7 @@ func (p toolPalette) GroupPosition(group ToolItemGroup) int {
 	return _gint
 }
 
-func (p toolPalette) GetHAdjustment() Adjustment {
+func (p toolPalette) HAdjustment() Adjustment {
 	var _arg0 *C.GtkToolPalette // out
 	var _cret *C.GtkAdjustment  // in
 
@@ -336,7 +363,7 @@ func (p toolPalette) Style() ToolbarStyle {
 	return _toolbarStyle
 }
 
-func (p toolPalette) GetVAdjustment() Adjustment {
+func (p toolPalette) VAdjustment() Adjustment {
 	var _arg0 *C.GtkToolPalette // out
 	var _cret *C.GtkAdjustment  // in
 
@@ -437,86 +464,14 @@ func (p toolPalette) UnsetStyleToolPalette() {
 	C.gtk_tool_palette_unset_style(_arg0)
 }
 
-func (b toolPalette) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+func (t toolPalette) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(t))
 }
 
-func (b toolPalette) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+func (t toolPalette) AsOrientable() Orientable {
+	return WrapOrientable(gextras.InternObject(t))
 }
 
-func (b toolPalette) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b toolPalette) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b toolPalette) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b toolPalette) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b toolPalette) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b toolPalette) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b toolPalette) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b toolPalette) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (o toolPalette) Orientation() Orientation {
-	return WrapOrientable(gextras.InternObject(o)).Orientation()
-}
-
-func (o toolPalette) SetOrientation(orientation Orientation) {
-	WrapOrientable(gextras.InternObject(o)).SetOrientation(orientation)
-}
-
-func (s toolPalette) Border() (Border, bool) {
-	return WrapScrollable(gextras.InternObject(s)).Border()
-}
-
-func (s toolPalette) HAdjustment() Adjustment {
-	return WrapScrollable(gextras.InternObject(s)).HAdjustment()
-}
-
-func (s toolPalette) HScrollPolicy() ScrollablePolicy {
-	return WrapScrollable(gextras.InternObject(s)).HScrollPolicy()
-}
-
-func (s toolPalette) VAdjustment() Adjustment {
-	return WrapScrollable(gextras.InternObject(s)).VAdjustment()
-}
-
-func (s toolPalette) VScrollPolicy() ScrollablePolicy {
-	return WrapScrollable(gextras.InternObject(s)).VScrollPolicy()
-}
-
-func (s toolPalette) SetHAdjustment(hadjustment Adjustment) {
-	WrapScrollable(gextras.InternObject(s)).SetHAdjustment(hadjustment)
-}
-
-func (s toolPalette) SetHScrollPolicy(policy ScrollablePolicy) {
-	WrapScrollable(gextras.InternObject(s)).SetHScrollPolicy(policy)
-}
-
-func (s toolPalette) SetVAdjustment(vadjustment Adjustment) {
-	WrapScrollable(gextras.InternObject(s)).SetVAdjustment(vadjustment)
-}
-
-func (s toolPalette) SetVScrollPolicy(policy ScrollablePolicy) {
-	WrapScrollable(gextras.InternObject(s)).SetVScrollPolicy(policy)
+func (t toolPalette) AsScrollable() Scrollable {
+	return WrapScrollable(gextras.InternObject(t))
 }

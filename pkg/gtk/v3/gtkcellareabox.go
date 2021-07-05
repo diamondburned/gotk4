@@ -5,9 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -43,14 +41,30 @@ func init() {
 // gtk_cell_area_box_pack_start() and gtk_cell_area_box_pack_end().
 type CellAreaBox interface {
 	CellArea
-	Orientable
 
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsCellLayout casts the class to the CellLayout interface.
+	AsCellLayout() CellLayout
+	// AsOrientable casts the class to the Orientable interface.
+	AsOrientable() Orientable
+
+	// Spacing gets the spacing added between cell renderers.
 	Spacing() int
-
+	// PackEndCellAreaBox adds @renderer to @box, packed with reference to the
+	// end of @box.
+	//
+	// The @renderer is packed after (away from end of) any other CellRenderer
+	// packed with reference to the end of @box.
 	PackEndCellAreaBox(renderer CellRenderer, expand bool, align bool, fixed bool)
-
+	// PackStartCellAreaBox adds @renderer to @box, packed with reference to the
+	// start of @box.
+	//
+	// The @renderer is packed after any other CellRenderer packed with
+	// reference to the start of @box.
 	PackStartCellAreaBox(renderer CellRenderer, expand bool, align bool, fixed bool)
-
+	// SetSpacingCellAreaBox sets the spacing to add between cell renderers in
+	// @box.
 	SetSpacingCellAreaBox(spacing int)
 }
 
@@ -73,6 +87,7 @@ func marshalCellAreaBox(p uintptr) (interface{}, error) {
 	return WrapCellAreaBox(obj), nil
 }
 
+// NewCellAreaBox creates a new CellAreaBox.
 func NewCellAreaBox() CellAreaBox {
 	var _cret *C.GtkCellArea // in
 
@@ -80,7 +95,7 @@ func NewCellAreaBox() CellAreaBox {
 
 	var _cellAreaBox CellAreaBox // out
 
-	_cellAreaBox = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(CellAreaBox)
+	_cellAreaBox = WrapCellAreaBox(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _cellAreaBox
 }
@@ -154,78 +169,14 @@ func (b cellAreaBox) SetSpacingCellAreaBox(spacing int) {
 	C.gtk_cell_area_box_set_spacing(_arg0, _arg1)
 }
 
-func (b cellAreaBox) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+func (c cellAreaBox) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(c))
 }
 
-func (b cellAreaBox) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+func (c cellAreaBox) AsCellLayout() CellLayout {
+	return WrapCellLayout(gextras.InternObject(c))
 }
 
-func (b cellAreaBox) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b cellAreaBox) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b cellAreaBox) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b cellAreaBox) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b cellAreaBox) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b cellAreaBox) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b cellAreaBox) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b cellAreaBox) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (c cellAreaBox) AddAttribute(cell CellRenderer, attribute string, column int) {
-	WrapCellLayout(gextras.InternObject(c)).AddAttribute(cell, attribute, column)
-}
-
-func (c cellAreaBox) Clear() {
-	WrapCellLayout(gextras.InternObject(c)).Clear()
-}
-
-func (c cellAreaBox) ClearAttributes(cell CellRenderer) {
-	WrapCellLayout(gextras.InternObject(c)).ClearAttributes(cell)
-}
-
-func (c cellAreaBox) Area() CellArea {
-	return WrapCellLayout(gextras.InternObject(c)).Area()
-}
-
-func (c cellAreaBox) PackEnd(cell CellRenderer, expand bool) {
-	WrapCellLayout(gextras.InternObject(c)).PackEnd(cell, expand)
-}
-
-func (c cellAreaBox) PackStart(cell CellRenderer, expand bool) {
-	WrapCellLayout(gextras.InternObject(c)).PackStart(cell, expand)
-}
-
-func (c cellAreaBox) Reorder(cell CellRenderer, position int) {
-	WrapCellLayout(gextras.InternObject(c)).Reorder(cell, position)
-}
-
-func (o cellAreaBox) Orientation() Orientation {
-	return WrapOrientable(gextras.InternObject(o)).Orientation()
-}
-
-func (o cellAreaBox) SetOrientation(orientation Orientation) {
-	WrapOrientable(gextras.InternObject(o)).SetOrientation(orientation)
+func (c cellAreaBox) AsOrientable() Orientable {
+	return WrapOrientable(gextras.InternObject(c))
 }

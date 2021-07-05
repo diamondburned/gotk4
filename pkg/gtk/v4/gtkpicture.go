@@ -72,22 +72,67 @@ func init() {
 type Picture interface {
 	Widget
 
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
+
+	// AlternativeText gets the alternative textual description of the picture.
+	//
+	// The returned string will be nil if the picture cannot be described
+	// textually.
 	AlternativeText() string
-
+	// CanShrink returns whether the `GtkPicture` respects its contents size.
 	CanShrink() bool
-
+	// KeepAspectRatio returns whether the `GtkPicture` preserves its contents
+	// aspect ratio.
 	KeepAspectRatio() bool
-
+	// SetAlternativeTextPicture sets an alternative textual description for the
+	// picture contents.
+	//
+	// It is equivalent to the "alt" attribute for images on websites.
+	//
+	// This text will be made available to accessibility tools.
+	//
+	// If the picture cannot be described textually, set this property to nil.
 	SetAlternativeTextPicture(alternativeText string)
-
+	// SetCanShrinkPicture: if set to true, the @self can be made smaller than
+	// its contents.
+	//
+	// The contents will then be scaled down when rendering.
+	//
+	// If you want to still force a minimum size manually, consider using
+	// [method@Gtk.Widget.set_size_request].
+	//
+	// Also of note is that a similar function for growing does not exist
+	// because the grow behavior can be controlled via
+	// [method@Gtk.Widget.set_halign] and [method@Gtk.Widget.set_valign].
 	SetCanShrinkPicture(canShrink bool)
-
+	// SetFilenamePicture makes @self load and display the given @filename.
+	//
+	// This is a utility function that calls [method@Gtk.Picture.set_file].
 	SetFilenamePicture(filename string)
-
+	// SetKeepAspectRatioPicture: if set to true, the @self will render its
+	// contents according to their aspect ratio.
+	//
+	// That means that empty space may show up at the top/bottom or left/right
+	// of @self.
+	//
+	// If set to false or if the contents provide no aspect ratio, the contents
+	// will be stretched over the picture's whole area.
 	SetKeepAspectRatioPicture(keepAspectRatio bool)
-
+	// SetPixbufPicture sets a `GtkPicture` to show a `GdkPixbuf`.
+	//
+	// See [ctor@Gtk.Picture.new_for_pixbuf] for details.
+	//
+	// This is a utility function that calls [method@Gtk.Picture.set_paintable].
 	SetPixbufPicture(pixbuf gdkpixbuf.Pixbuf)
-
+	// SetResourcePicture makes @self load and display the resource at the given
+	// @resource_path.
+	//
+	// This is a utility function that calls [method@Gtk.Picture.set_file].
 	SetResourcePicture(resourcePath string)
 }
 
@@ -110,6 +155,7 @@ func marshalPicture(p uintptr) (interface{}, error) {
 	return WrapPicture(obj), nil
 }
 
+// NewPicture creates a new empty `GtkPicture` widget.
 func NewPicture() Picture {
 	var _cret *C.GtkWidget // in
 
@@ -117,11 +163,16 @@ func NewPicture() Picture {
 
 	var _picture Picture // out
 
-	_picture = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Picture)
+	_picture = WrapPicture(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _picture
 }
 
+// NewPictureForFilename creates a new `GtkPicture` displaying the file
+// @filename.
+//
+// This is a utility function that calls [ctor@Gtk.Picture.new_for_file]. See
+// that function for details.
 func NewPictureForFilename(filename string) Picture {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in
@@ -133,11 +184,17 @@ func NewPictureForFilename(filename string) Picture {
 
 	var _picture Picture // out
 
-	_picture = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Picture)
+	_picture = WrapPicture(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _picture
 }
 
+// NewPictureForPixbuf creates a new `GtkPicture` displaying @pixbuf.
+//
+// This is a utility function that calls [ctor@Gtk.Picture.new_for_paintable],
+// See that function for details.
+//
+// The pixbuf must not be modified after passing it to this function.
 func NewPictureForPixbuf(pixbuf gdkpixbuf.Pixbuf) Picture {
 	var _arg1 *C.GdkPixbuf // out
 	var _cret *C.GtkWidget // in
@@ -148,11 +205,16 @@ func NewPictureForPixbuf(pixbuf gdkpixbuf.Pixbuf) Picture {
 
 	var _picture Picture // out
 
-	_picture = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Picture)
+	_picture = WrapPicture(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _picture
 }
 
+// NewPictureForResource creates a new `GtkPicture` displaying the resource at
+// @resource_path.
+//
+// This is a utility function that calls [ctor@Gtk.Picture.new_for_file]. See
+// that function for details.
 func NewPictureForResource(resourcePath string) Picture {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in
@@ -164,7 +226,7 @@ func NewPictureForResource(resourcePath string) Picture {
 
 	var _picture Picture // out
 
-	_picture = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Picture)
+	_picture = WrapPicture(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _picture
 }
@@ -285,34 +347,14 @@ func (s picture) SetResourcePicture(resourcePath string) {
 	C.gtk_picture_set_resource(_arg0, _arg1)
 }
 
-func (s picture) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
+func (p picture) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(p))
 }
 
-func (s picture) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
+func (p picture) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(p))
 }
 
-func (s picture) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
-}
-
-func (s picture) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s picture) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s picture) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s picture) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b picture) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
+func (p picture) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(p))
 }

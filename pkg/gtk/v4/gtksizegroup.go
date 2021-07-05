@@ -80,14 +80,33 @@ func init() {
 // class="GtkSizeGroup"> <property name="mode">horizontal</property> <widgets>
 // <widget name="radio1"/> <widget name="radio2"/> </widgets> </object> “`
 type SizeGroup interface {
-	Buildable
+	gextras.Objector
 
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+
+	// AddWidgetSizeGroup adds a widget to a `GtkSizeGroup`.
+	//
+	// In the future, the requisition of the widget will be determined as the
+	// maximum of its requisition and the requisition of the other widgets in
+	// the size group. Whether this applies horizontally, vertically, or in both
+	// directions depends on the mode of the size group. See
+	// [method@Gtk.SizeGroup.set_mode].
+	//
+	// When the widget is destroyed or no longer referenced elsewhere, it will
+	// be removed from the size group.
 	AddWidgetSizeGroup(widget Widget)
-
+	// Mode gets the current mode of the size group.
 	Mode() SizeGroupMode
-
+	// RemoveWidgetSizeGroup removes a widget from a `GtkSizeGroup`.
 	RemoveWidgetSizeGroup(widget Widget)
-
+	// SetModeSizeGroup sets the `GtkSizeGroupMode` of the size group.
+	//
+	// The mode of the size group determines whether the widgets in the size
+	// group should all have the same horizontal requisition
+	// (GTK_SIZE_GROUP_HORIZONTAL) all have the same vertical requisition
+	// (GTK_SIZE_GROUP_VERTICAL), or should all have the same requisition in
+	// both directions (GTK_SIZE_GROUP_BOTH).
 	SetModeSizeGroup(mode SizeGroupMode)
 }
 
@@ -110,6 +129,7 @@ func marshalSizeGroup(p uintptr) (interface{}, error) {
 	return WrapSizeGroup(obj), nil
 }
 
+// NewSizeGroup: create a new `GtkSizeGroup`.
 func NewSizeGroup(mode SizeGroupMode) SizeGroup {
 	var _arg1 C.GtkSizeGroupMode // out
 	var _cret *C.GtkSizeGroup    // in
@@ -120,7 +140,7 @@ func NewSizeGroup(mode SizeGroupMode) SizeGroup {
 
 	var _sizeGroup SizeGroup // out
 
-	_sizeGroup = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(SizeGroup)
+	_sizeGroup = WrapSizeGroup(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _sizeGroup
 }
@@ -170,6 +190,6 @@ func (s sizeGroup) SetModeSizeGroup(mode SizeGroupMode) {
 	C.gtk_size_group_set_mode(_arg0, _arg1)
 }
 
-func (b sizeGroup) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
+func (s sizeGroup) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(s))
 }

@@ -5,9 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -26,9 +24,9 @@ func init() {
 	})
 }
 
-// CheckButton: a CheckButton places a discrete ToggleButton next to a widget,
-// (usually a Label). See the section on ToggleButton widgets for more
-// information about toggle/check buttons.
+// CheckButton places a discrete ToggleButton next to a widget, (usually a
+// Label). See the section on ToggleButton widgets for more information about
+// toggle/check buttons.
 //
 // The important signal ( ToggleButton::toggled ) is also inherited from
 // ToggleButton.
@@ -44,6 +42,13 @@ func init() {
 // case.
 type CheckButton interface {
 	ToggleButton
+
+	// AsActionable casts the class to the Actionable interface.
+	AsActionable() Actionable
+	// AsActivatable casts the class to the Activatable interface.
+	AsActivatable() Activatable
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
 }
 
 // checkButton implements the CheckButton class.
@@ -65,6 +70,7 @@ func marshalCheckButton(p uintptr) (interface{}, error) {
 	return WrapCheckButton(obj), nil
 }
 
+// NewCheckButton creates a new CheckButton.
 func NewCheckButton() CheckButton {
 	var _cret *C.GtkWidget // in
 
@@ -72,11 +78,13 @@ func NewCheckButton() CheckButton {
 
 	var _checkButton CheckButton // out
 
-	_checkButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(CheckButton)
+	_checkButton = WrapCheckButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _checkButton
 }
 
+// NewCheckButtonWithLabel creates a new CheckButton with a Label to the right
+// of it.
 func NewCheckButtonWithLabel(label string) CheckButton {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -88,11 +96,14 @@ func NewCheckButtonWithLabel(label string) CheckButton {
 
 	var _checkButton CheckButton // out
 
-	_checkButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(CheckButton)
+	_checkButton = WrapCheckButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _checkButton
 }
 
+// NewCheckButtonWithMnemonic creates a new CheckButton containing a label. The
+// label will be created using gtk_label_new_with_mnemonic(), so underscores in
+// @label indicate the mnemonic for the check button.
 func NewCheckButtonWithMnemonic(label string) CheckButton {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -104,131 +115,19 @@ func NewCheckButtonWithMnemonic(label string) CheckButton {
 
 	var _checkButton CheckButton // out
 
-	_checkButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(CheckButton)
+	_checkButton = WrapCheckButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _checkButton
 }
 
-func (b checkButton) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+func (c checkButton) AsActionable() Actionable {
+	return WrapActionable(gextras.InternObject(c))
 }
 
-func (b checkButton) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+func (c checkButton) AsActivatable() Activatable {
+	return WrapActivatable(gextras.InternObject(c))
 }
 
-func (b checkButton) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b checkButton) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b checkButton) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b checkButton) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b checkButton) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b checkButton) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b checkButton) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b checkButton) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (a checkButton) ActionName() string {
-	return WrapActionable(gextras.InternObject(a)).ActionName()
-}
-
-func (a checkButton) ActionTargetValue() *glib.Variant {
-	return WrapActionable(gextras.InternObject(a)).ActionTargetValue()
-}
-
-func (a checkButton) SetActionName(actionName string) {
-	WrapActionable(gextras.InternObject(a)).SetActionName(actionName)
-}
-
-func (a checkButton) SetActionTargetValue(targetValue *glib.Variant) {
-	WrapActionable(gextras.InternObject(a)).SetActionTargetValue(targetValue)
-}
-
-func (a checkButton) SetDetailedActionName(detailedActionName string) {
-	WrapActionable(gextras.InternObject(a)).SetDetailedActionName(detailedActionName)
-}
-
-func (b checkButton) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
-}
-
-func (b checkButton) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b checkButton) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b checkButton) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b checkButton) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b checkButton) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b checkButton) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b checkButton) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b checkButton) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b checkButton) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (a checkButton) DoSetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).DoSetRelatedAction(action)
-}
-
-func (a checkButton) RelatedAction() Action {
-	return WrapActivatable(gextras.InternObject(a)).RelatedAction()
-}
-
-func (a checkButton) UseActionAppearance() bool {
-	return WrapActivatable(gextras.InternObject(a)).UseActionAppearance()
-}
-
-func (a checkButton) SetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SetRelatedAction(action)
-}
-
-func (a checkButton) SetUseActionAppearance(useAppearance bool) {
-	WrapActivatable(gextras.InternObject(a)).SetUseActionAppearance(useAppearance)
-}
-
-func (a checkButton) SyncActionProperties(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SyncActionProperties(action)
+func (c checkButton) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(c))
 }

@@ -3,6 +3,7 @@
 package gdk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -41,9 +42,11 @@ func InternMIMEType(_string string) string {
 	return _utf8
 }
 
-// ContentFormatsBuilder: a `GdkContentFormatsBuilder` is an auxiliary struct
-// used to create new `GdkContentFormats`, and should not be kept around.
-type ContentFormatsBuilder C.GdkContentFormatsBuilder
+// ContentFormatsBuilder: `GdkContentFormatsBuilder` is an auxiliary struct used
+// to create new `GdkContentFormats`, and should not be kept around.
+type ContentFormatsBuilder struct {
+	native C.GdkContentFormatsBuilder
+}
 
 // WrapContentFormatsBuilder wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -57,16 +60,16 @@ func marshalContentFormatsBuilder(p uintptr) (interface{}, error) {
 }
 
 // NewContentFormatsBuilder constructs a struct ContentFormatsBuilder.
-func NewContentFormatsBuilder() *ContentFormatsBuilder {
+func NewContentFormatsBuilder() ContentFormatsBuilder {
 	var _cret *C.GdkContentFormatsBuilder // in
 
 	_cret = C.gdk_content_formats_builder_new()
 
-	var _contentFormatsBuilder *ContentFormatsBuilder // out
+	var _contentFormatsBuilder ContentFormatsBuilder // out
 
-	_contentFormatsBuilder = (*ContentFormatsBuilder)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(&_contentFormatsBuilder, func(v **ContentFormatsBuilder) {
-		C.free(unsafe.Pointer(v))
+	_contentFormatsBuilder = (ContentFormatsBuilder)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_contentFormatsBuilder, func(v ContentFormatsBuilder) {
+		C.gdk_content_formats_builder_unref((*C.GdkContentFormatsBuilder)(unsafe.Pointer(v)))
 	})
 
 	return _contentFormatsBuilder
@@ -74,73 +77,84 @@ func NewContentFormatsBuilder() *ContentFormatsBuilder {
 
 // Native returns the underlying C source pointer.
 func (c *ContentFormatsBuilder) Native() unsafe.Pointer {
-	return unsafe.Pointer(c)
+	return unsafe.Pointer(&c.native)
 }
 
-// AddFormats releases a reference on the given @builder.
-func (b *ContentFormatsBuilder) AddFormats(formats *ContentFormats) {
+// AddFormats appends all formats from @formats to @builder, skipping those that
+// already exist.
+func (b *ContentFormatsBuilder) AddFormats(formats ContentFormats) {
 	var _arg0 *C.GdkContentFormatsBuilder // out
 	var _arg1 *C.GdkContentFormats        // out
 
-	_arg0 = (*C.GdkContentFormatsBuilder)(unsafe.Pointer(b.Native()))
-	_arg1 = (*C.GdkContentFormats)(unsafe.Pointer(formats.Native()))
+	_arg0 = (*C.GdkContentFormatsBuilder)(unsafe.Pointer(b))
+	_arg1 = (*C.GdkContentFormats)(unsafe.Pointer(formats))
 
 	C.gdk_content_formats_builder_add_formats(_arg0, _arg1)
 }
 
-// AddGType releases a reference on the given @builder.
+// AddGType appends @type to @builder if it has not already been added.
 func (b *ContentFormatsBuilder) AddGType(typ externglib.Type) {
 	var _arg0 *C.GdkContentFormatsBuilder // out
 	var _arg1 C.GType                     // out
 
-	_arg0 = (*C.GdkContentFormatsBuilder)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GdkContentFormatsBuilder)(unsafe.Pointer(b))
 	_arg1 = (C.GType)(typ)
 
 	C.gdk_content_formats_builder_add_gtype(_arg0, _arg1)
 }
 
-// AddMIMEType releases a reference on the given @builder.
+// AddMIMEType appends @mime_type to @builder if it has not already been added.
 func (b *ContentFormatsBuilder) AddMIMEType(mimeType string) {
 	var _arg0 *C.GdkContentFormatsBuilder // out
 	var _arg1 *C.char                     // out
 
-	_arg0 = (*C.GdkContentFormatsBuilder)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GdkContentFormatsBuilder)(unsafe.Pointer(b))
 	_arg1 = (*C.char)(C.CString(mimeType))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gdk_content_formats_builder_add_mime_type(_arg0, _arg1)
 }
 
-// Ref releases a reference on the given @builder.
-func (b *ContentFormatsBuilder) Ref() *ContentFormatsBuilder {
+// Ref acquires a reference on the given @builder.
+//
+// This function is intended primarily for bindings. `GdkContentFormatsBuilder`
+// objects should not be kept around.
+func (b *ContentFormatsBuilder) Ref() ContentFormatsBuilder {
 	var _arg0 *C.GdkContentFormatsBuilder // out
 	var _cret *C.GdkContentFormatsBuilder // in
 
-	_arg0 = (*C.GdkContentFormatsBuilder)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GdkContentFormatsBuilder)(unsafe.Pointer(b))
 
 	_cret = C.gdk_content_formats_builder_ref(_arg0)
 
-	var _contentFormatsBuilder *ContentFormatsBuilder // out
+	var _contentFormatsBuilder ContentFormatsBuilder // out
 
-	_contentFormatsBuilder = (*ContentFormatsBuilder)(unsafe.Pointer(_cret))
+	_contentFormatsBuilder = (ContentFormatsBuilder)(unsafe.Pointer(_cret))
+	C.gdk_content_formats_builder_ref(_cret)
 
 	return _contentFormatsBuilder
 }
 
-// ToFormats releases a reference on the given @builder.
-func (b *ContentFormatsBuilder) ToFormats() *ContentFormats {
+// ToFormats creates a new `GdkContentFormats` from the given @builder.
+//
+// The given `GdkContentFormatsBuilder` is reset once this function returns; you
+// cannot call this function multiple times on the same @builder instance.
+//
+// This function is intended primarily for bindings. C code should use
+// [method@Gdk.ContentFormatsBuilder.free_to_formats].
+func (b *ContentFormatsBuilder) ToFormats() ContentFormats {
 	var _arg0 *C.GdkContentFormatsBuilder // out
 	var _cret *C.GdkContentFormats        // in
 
-	_arg0 = (*C.GdkContentFormatsBuilder)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GdkContentFormatsBuilder)(unsafe.Pointer(b))
 
 	_cret = C.gdk_content_formats_builder_to_formats(_arg0)
 
-	var _contentFormats *ContentFormats // out
+	var _contentFormats ContentFormats // out
 
-	_contentFormats = (*ContentFormats)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(&_contentFormats, func(v **ContentFormats) {
-		C.free(unsafe.Pointer(v))
+	_contentFormats = (ContentFormats)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_contentFormats, func(v ContentFormats) {
+		C.gdk_content_formats_unref((*C.GdkContentFormats)(unsafe.Pointer(v)))
 	})
 
 	return _contentFormats
@@ -150,7 +164,7 @@ func (b *ContentFormatsBuilder) ToFormats() *ContentFormats {
 func (b *ContentFormatsBuilder) Unref() {
 	var _arg0 *C.GdkContentFormatsBuilder // out
 
-	_arg0 = (*C.GdkContentFormatsBuilder)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GdkContentFormatsBuilder)(unsafe.Pointer(b))
 
 	C.gdk_content_formats_builder_unref(_arg0)
 }

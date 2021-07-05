@@ -5,10 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
-	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -60,18 +57,37 @@ func init() {
 // a subnode for the internal button with name “button” and style class “.file”.
 type FileChooserButton interface {
 	Box
-	FileChooser
 
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsFileChooser casts the class to the FileChooser interface.
+	AsFileChooser() FileChooser
+	// AsOrientable casts the class to the Orientable interface.
+	AsOrientable() Orientable
+
+	// FocusOnClick returns whether the button grabs focus when it is clicked
+	// with the mouse. See gtk_file_chooser_button_set_focus_on_click().
+	//
+	// Deprecated: since version 3.20.
 	FocusOnClick() bool
-
+	// Title retrieves the title of the browse dialog used by @button. The
+	// returned value should not be modified or freed.
 	Title() string
-
+	// WidthChars retrieves the width in characters of the @button widget’s
+	// entry and/or label.
 	WidthChars() int
-
+	// SetFocusOnClickFileChooserButton sets whether the button will grab focus
+	// when it is clicked with the mouse. Making mouse clicks not grab focus is
+	// useful in places like toolbars where you don’t want the keyboard focus
+	// removed from the main area of the application.
+	//
+	// Deprecated: since version 3.20.
 	SetFocusOnClickFileChooserButton(focusOnClick bool)
-
+	// SetTitleFileChooserButton modifies the @title of the browse dialog used
+	// by @button.
 	SetTitleFileChooserButton(title string)
-
+	// SetWidthCharsFileChooserButton sets the width (in characters) that
+	// @button will use to @n_chars.
 	SetWidthCharsFileChooserButton(nChars int)
 }
 
@@ -94,6 +110,7 @@ func marshalFileChooserButton(p uintptr) (interface{}, error) {
 	return WrapFileChooserButton(obj), nil
 }
 
+// NewFileChooserButton creates a new file-selecting button widget.
 func NewFileChooserButton(title string, action FileChooserAction) FileChooserButton {
 	var _arg1 *C.gchar               // out
 	var _arg2 C.GtkFileChooserAction // out
@@ -107,11 +124,20 @@ func NewFileChooserButton(title string, action FileChooserAction) FileChooserBut
 
 	var _fileChooserButton FileChooserButton // out
 
-	_fileChooserButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(FileChooserButton)
+	_fileChooserButton = WrapFileChooserButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _fileChooserButton
 }
 
+// NewFileChooserButtonWithDialog creates a FileChooserButton widget which uses
+// @dialog as its file-picking window.
+//
+// Note that @dialog must be a Dialog (or subclass) which implements the
+// FileChooser interface and must not have GTK_DIALOG_DESTROY_WITH_PARENT set.
+//
+// Also note that the dialog needs to have its confirmative button added with
+// response GTK_RESPONSE_ACCEPT or GTK_RESPONSE_OK in order for the button to
+// take over the file selected in the dialog.
 func NewFileChooserButtonWithDialog(dialog Dialog) FileChooserButton {
 	var _arg1 *C.GtkWidget // out
 	var _cret *C.GtkWidget // in
@@ -122,7 +148,7 @@ func NewFileChooserButtonWithDialog(dialog Dialog) FileChooserButton {
 
 	var _fileChooserButton FileChooserButton // out
 
-	_fileChooserButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(FileChooserButton)
+	_fileChooserButton = WrapFileChooserButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _fileChooserButton
 }
@@ -207,250 +233,14 @@ func (b fileChooserButton) SetWidthCharsFileChooserButton(nChars int) {
 	C.gtk_file_chooser_button_set_width_chars(_arg0, _arg1)
 }
 
-func (b fileChooserButton) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+func (f fileChooserButton) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(f))
 }
 
-func (b fileChooserButton) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+func (f fileChooserButton) AsFileChooser() FileChooser {
+	return WrapFileChooser(gextras.InternObject(f))
 }
 
-func (b fileChooserButton) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b fileChooserButton) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b fileChooserButton) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b fileChooserButton) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b fileChooserButton) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b fileChooserButton) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b fileChooserButton) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b fileChooserButton) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (o fileChooserButton) Orientation() Orientation {
-	return WrapOrientable(gextras.InternObject(o)).Orientation()
-}
-
-func (o fileChooserButton) SetOrientation(orientation Orientation) {
-	WrapOrientable(gextras.InternObject(o)).SetOrientation(orientation)
-}
-
-func (c fileChooserButton) AddChoice(id string, label string, options []string, optionLabels []string) {
-	WrapFileChooser(gextras.InternObject(c)).AddChoice(id, label, options, optionLabels)
-}
-
-func (c fileChooserButton) AddFilter(filter FileFilter) {
-	WrapFileChooser(gextras.InternObject(c)).AddFilter(filter)
-}
-
-func (c fileChooserButton) AddShortcutFolder(folder string) error {
-	return WrapFileChooser(gextras.InternObject(c)).AddShortcutFolder(folder)
-}
-
-func (c fileChooserButton) AddShortcutFolderURI(uri string) error {
-	return WrapFileChooser(gextras.InternObject(c)).AddShortcutFolderURI(uri)
-}
-
-func (c fileChooserButton) Action() FileChooserAction {
-	return WrapFileChooser(gextras.InternObject(c)).Action()
-}
-
-func (c fileChooserButton) Choice(id string) string {
-	return WrapFileChooser(gextras.InternObject(c)).Choice(id)
-}
-
-func (c fileChooserButton) CreateFolders() bool {
-	return WrapFileChooser(gextras.InternObject(c)).CreateFolders()
-}
-
-func (c fileChooserButton) CurrentFolder() string {
-	return WrapFileChooser(gextras.InternObject(c)).CurrentFolder()
-}
-
-func (c fileChooserButton) CurrentFolderURI() string {
-	return WrapFileChooser(gextras.InternObject(c)).CurrentFolderURI()
-}
-
-func (c fileChooserButton) CurrentName() string {
-	return WrapFileChooser(gextras.InternObject(c)).CurrentName()
-}
-
-func (c fileChooserButton) DoOverwriteConfirmation() bool {
-	return WrapFileChooser(gextras.InternObject(c)).DoOverwriteConfirmation()
-}
-
-func (c fileChooserButton) ExtraWidget() Widget {
-	return WrapFileChooser(gextras.InternObject(c)).ExtraWidget()
-}
-
-func (c fileChooserButton) Filename() string {
-	return WrapFileChooser(gextras.InternObject(c)).Filename()
-}
-
-func (c fileChooserButton) Filter() FileFilter {
-	return WrapFileChooser(gextras.InternObject(c)).Filter()
-}
-
-func (c fileChooserButton) LocalOnly() bool {
-	return WrapFileChooser(gextras.InternObject(c)).LocalOnly()
-}
-
-func (c fileChooserButton) PreviewFilename() string {
-	return WrapFileChooser(gextras.InternObject(c)).PreviewFilename()
-}
-
-func (c fileChooserButton) PreviewURI() string {
-	return WrapFileChooser(gextras.InternObject(c)).PreviewURI()
-}
-
-func (c fileChooserButton) PreviewWidget() Widget {
-	return WrapFileChooser(gextras.InternObject(c)).PreviewWidget()
-}
-
-func (c fileChooserButton) PreviewWidgetActive() bool {
-	return WrapFileChooser(gextras.InternObject(c)).PreviewWidgetActive()
-}
-
-func (c fileChooserButton) SelectMultiple() bool {
-	return WrapFileChooser(gextras.InternObject(c)).SelectMultiple()
-}
-
-func (c fileChooserButton) ShowHidden() bool {
-	return WrapFileChooser(gextras.InternObject(c)).ShowHidden()
-}
-
-func (c fileChooserButton) URI() string {
-	return WrapFileChooser(gextras.InternObject(c)).URI()
-}
-
-func (c fileChooserButton) UsePreviewLabel() bool {
-	return WrapFileChooser(gextras.InternObject(c)).UsePreviewLabel()
-}
-
-func (c fileChooserButton) RemoveChoice(id string) {
-	WrapFileChooser(gextras.InternObject(c)).RemoveChoice(id)
-}
-
-func (c fileChooserButton) RemoveFilter(filter FileFilter) {
-	WrapFileChooser(gextras.InternObject(c)).RemoveFilter(filter)
-}
-
-func (c fileChooserButton) RemoveShortcutFolder(folder string) error {
-	return WrapFileChooser(gextras.InternObject(c)).RemoveShortcutFolder(folder)
-}
-
-func (c fileChooserButton) RemoveShortcutFolderURI(uri string) error {
-	return WrapFileChooser(gextras.InternObject(c)).RemoveShortcutFolderURI(uri)
-}
-
-func (c fileChooserButton) SelectAll() {
-	WrapFileChooser(gextras.InternObject(c)).SelectAll()
-}
-
-func (c fileChooserButton) SelectFilename(filename string) bool {
-	return WrapFileChooser(gextras.InternObject(c)).SelectFilename(filename)
-}
-
-func (c fileChooserButton) SelectURI(uri string) bool {
-	return WrapFileChooser(gextras.InternObject(c)).SelectURI(uri)
-}
-
-func (c fileChooserButton) SetAction(action FileChooserAction) {
-	WrapFileChooser(gextras.InternObject(c)).SetAction(action)
-}
-
-func (c fileChooserButton) SetChoice(id string, option string) {
-	WrapFileChooser(gextras.InternObject(c)).SetChoice(id, option)
-}
-
-func (c fileChooserButton) SetCreateFolders(createFolders bool) {
-	WrapFileChooser(gextras.InternObject(c)).SetCreateFolders(createFolders)
-}
-
-func (c fileChooserButton) SetCurrentFolder(filename string) bool {
-	return WrapFileChooser(gextras.InternObject(c)).SetCurrentFolder(filename)
-}
-
-func (c fileChooserButton) SetCurrentFolderURI(uri string) bool {
-	return WrapFileChooser(gextras.InternObject(c)).SetCurrentFolderURI(uri)
-}
-
-func (c fileChooserButton) SetCurrentName(name string) {
-	WrapFileChooser(gextras.InternObject(c)).SetCurrentName(name)
-}
-
-func (c fileChooserButton) SetDoOverwriteConfirmation(doOverwriteConfirmation bool) {
-	WrapFileChooser(gextras.InternObject(c)).SetDoOverwriteConfirmation(doOverwriteConfirmation)
-}
-
-func (c fileChooserButton) SetExtraWidget(extraWidget Widget) {
-	WrapFileChooser(gextras.InternObject(c)).SetExtraWidget(extraWidget)
-}
-
-func (c fileChooserButton) SetFilename(filename string) bool {
-	return WrapFileChooser(gextras.InternObject(c)).SetFilename(filename)
-}
-
-func (c fileChooserButton) SetFilter(filter FileFilter) {
-	WrapFileChooser(gextras.InternObject(c)).SetFilter(filter)
-}
-
-func (c fileChooserButton) SetLocalOnly(localOnly bool) {
-	WrapFileChooser(gextras.InternObject(c)).SetLocalOnly(localOnly)
-}
-
-func (c fileChooserButton) SetPreviewWidget(previewWidget Widget) {
-	WrapFileChooser(gextras.InternObject(c)).SetPreviewWidget(previewWidget)
-}
-
-func (c fileChooserButton) SetPreviewWidgetActive(active bool) {
-	WrapFileChooser(gextras.InternObject(c)).SetPreviewWidgetActive(active)
-}
-
-func (c fileChooserButton) SetSelectMultiple(selectMultiple bool) {
-	WrapFileChooser(gextras.InternObject(c)).SetSelectMultiple(selectMultiple)
-}
-
-func (c fileChooserButton) SetShowHidden(showHidden bool) {
-	WrapFileChooser(gextras.InternObject(c)).SetShowHidden(showHidden)
-}
-
-func (c fileChooserButton) SetURI(uri string) bool {
-	return WrapFileChooser(gextras.InternObject(c)).SetURI(uri)
-}
-
-func (c fileChooserButton) SetUsePreviewLabel(useLabel bool) {
-	WrapFileChooser(gextras.InternObject(c)).SetUsePreviewLabel(useLabel)
-}
-
-func (c fileChooserButton) UnselectAll() {
-	WrapFileChooser(gextras.InternObject(c)).UnselectAll()
-}
-
-func (c fileChooserButton) UnselectFilename(filename string) {
-	WrapFileChooser(gextras.InternObject(c)).UnselectFilename(filename)
-}
-
-func (c fileChooserButton) UnselectURI(uri string) {
-	WrapFileChooser(gextras.InternObject(c)).UnselectURI(uri)
+func (f fileChooserButton) AsOrientable() Orientable {
+	return WrapOrientable(gextras.InternObject(f))
 }

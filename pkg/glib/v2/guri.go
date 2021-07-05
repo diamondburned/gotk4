@@ -3,8 +3,10 @@
 package glib
 
 import (
+	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -90,8 +92,8 @@ const (
 	// URIFlagsEncodedFragment: same as G_URI_FLAGS_ENCODED, for the fragment
 	// only.
 	URIFlagsEncodedFragment URIFlags = 0b10000000
-	// URIFlagsSchemeNormalize: a scheme-based normalization will be applied.
-	// For example, when parsing an HTTP URI changing omitted path to `/` and
+	// URIFlagsSchemeNormalize: scheme-based normalization will be applied. For
+	// example, when parsing an HTTP URI changing omitted path to `/` and
 	// omitted port to `80`; and when building a URI, changing empty path to `/`
 	// and default port `80`). This only supports a subset of known schemes.
 	// (Since: 2.68)
@@ -241,7 +243,9 @@ const (
 // G_URI_FLAGS_SCHEME_NORMALIZE however it is not comprehensive. For example,
 // `data:,foo` and `data:;base64,Zm9v` resolve to the same thing according to
 // the `data:` URI specification which GLib does not handle.
-type URI C.GUri
+type URI struct {
+	native C.GUri
+}
 
 // WrapURI wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -256,18 +260,20 @@ func marshalURI(p uintptr) (interface{}, error) {
 
 // Native returns the underlying C source pointer.
 func (u *URI) Native() unsafe.Pointer {
-	return unsafe.Pointer(u)
+	return unsafe.Pointer(&u.native)
 }
 
-// AuthParams: atomically decrements the reference count of @uri by one.
+// AuthParams gets @uri's authentication parameters, which may contain
+// `%`-encoding, depending on the flags with which @uri was created. (If @uri
+// was not created with G_URI_FLAGS_HAS_AUTH_PARAMS then this will be nil.)
 //
-// When the reference count reaches zero, the resources allocated by @uri are
-// freed
+// Depending on the URI scheme, g_uri_parse_params() may be useful for further
+// parsing this information.
 func (u *URI) AuthParams() string {
 	var _arg0 *C.GUri  // out
 	var _cret *C.gchar // in
 
-	_arg0 = (*C.GUri)(unsafe.Pointer(u.Native()))
+	_arg0 = (*C.GUri)(unsafe.Pointer(u))
 
 	_cret = C.g_uri_get_auth_params(_arg0)
 
@@ -278,15 +284,12 @@ func (u *URI) AuthParams() string {
 	return _utf8
 }
 
-// Flags: atomically decrements the reference count of @uri by one.
-//
-// When the reference count reaches zero, the resources allocated by @uri are
-// freed
+// Flags gets @uri's flags set upon construction.
 func (u *URI) Flags() URIFlags {
 	var _arg0 *C.GUri     // out
 	var _cret C.GUriFlags // in
 
-	_arg0 = (*C.GUri)(unsafe.Pointer(u.Native()))
+	_arg0 = (*C.GUri)(unsafe.Pointer(u))
 
 	_cret = C.g_uri_get_flags(_arg0)
 
@@ -297,15 +300,13 @@ func (u *URI) Flags() URIFlags {
 	return _uriFlags
 }
 
-// Fragment: atomically decrements the reference count of @uri by one.
-//
-// When the reference count reaches zero, the resources allocated by @uri are
-// freed
+// Fragment gets @uri's fragment, which may contain `%`-encoding, depending on
+// the flags with which @uri was created.
 func (u *URI) Fragment() string {
 	var _arg0 *C.GUri  // out
 	var _cret *C.gchar // in
 
-	_arg0 = (*C.GUri)(unsafe.Pointer(u.Native()))
+	_arg0 = (*C.GUri)(unsafe.Pointer(u))
 
 	_cret = C.g_uri_get_fragment(_arg0)
 
@@ -316,15 +317,20 @@ func (u *URI) Fragment() string {
 	return _utf8
 }
 
-// Host: atomically decrements the reference count of @uri by one.
+// Host gets @uri's host. This will never have `%`-encoded characters, unless it
+// is non-UTF-8 (which can only be the case if @uri was created with
+// G_URI_FLAGS_NON_DNS).
 //
-// When the reference count reaches zero, the resources allocated by @uri are
-// freed
+// If @uri contained an IPv6 address literal, this value will be just that
+// address, without the brackets around it that are necessary in the string form
+// of the URI. Note that in this case there may also be a scope ID attached to
+// the address. Eg, `fe80::1234%“em1` (or `fe80::1234%“25em1` if the string is
+// still encoded).
 func (u *URI) Host() string {
 	var _arg0 *C.GUri  // out
 	var _cret *C.gchar // in
 
-	_arg0 = (*C.GUri)(unsafe.Pointer(u.Native()))
+	_arg0 = (*C.GUri)(unsafe.Pointer(u))
 
 	_cret = C.g_uri_get_host(_arg0)
 
@@ -335,15 +341,14 @@ func (u *URI) Host() string {
 	return _utf8
 }
 
-// Password: atomically decrements the reference count of @uri by one.
-//
-// When the reference count reaches zero, the resources allocated by @uri are
-// freed
+// Password gets @uri's password, which may contain `%`-encoding, depending on
+// the flags with which @uri was created. (If @uri was not created with
+// G_URI_FLAGS_HAS_PASSWORD then this will be nil.)
 func (u *URI) Password() string {
 	var _arg0 *C.GUri  // out
 	var _cret *C.gchar // in
 
-	_arg0 = (*C.GUri)(unsafe.Pointer(u.Native()))
+	_arg0 = (*C.GUri)(unsafe.Pointer(u))
 
 	_cret = C.g_uri_get_password(_arg0)
 
@@ -354,15 +359,13 @@ func (u *URI) Password() string {
 	return _utf8
 }
 
-// Path: atomically decrements the reference count of @uri by one.
-//
-// When the reference count reaches zero, the resources allocated by @uri are
-// freed
+// Path gets @uri's path, which may contain `%`-encoding, depending on the flags
+// with which @uri was created.
 func (u *URI) Path() string {
 	var _arg0 *C.GUri  // out
 	var _cret *C.gchar // in
 
-	_arg0 = (*C.GUri)(unsafe.Pointer(u.Native()))
+	_arg0 = (*C.GUri)(unsafe.Pointer(u))
 
 	_cret = C.g_uri_get_path(_arg0)
 
@@ -373,15 +376,12 @@ func (u *URI) Path() string {
 	return _utf8
 }
 
-// Port: atomically decrements the reference count of @uri by one.
-//
-// When the reference count reaches zero, the resources allocated by @uri are
-// freed
+// Port gets @uri's port.
 func (u *URI) Port() int {
 	var _arg0 *C.GUri // out
 	var _cret C.gint  // in
 
-	_arg0 = (*C.GUri)(unsafe.Pointer(u.Native()))
+	_arg0 = (*C.GUri)(unsafe.Pointer(u))
 
 	_cret = C.g_uri_get_port(_arg0)
 
@@ -392,15 +392,16 @@ func (u *URI) Port() int {
 	return _gint
 }
 
-// Query: atomically decrements the reference count of @uri by one.
+// Query gets @uri's query, which may contain `%`-encoding, depending on the
+// flags with which @uri was created.
 //
-// When the reference count reaches zero, the resources allocated by @uri are
-// freed
+// For queries consisting of a series of `name=value` parameters, ParamsIter or
+// g_uri_parse_params() may be useful.
 func (u *URI) Query() string {
 	var _arg0 *C.GUri  // out
 	var _cret *C.gchar // in
 
-	_arg0 = (*C.GUri)(unsafe.Pointer(u.Native()))
+	_arg0 = (*C.GUri)(unsafe.Pointer(u))
 
 	_cret = C.g_uri_get_query(_arg0)
 
@@ -411,15 +412,13 @@ func (u *URI) Query() string {
 	return _utf8
 }
 
-// Scheme: atomically decrements the reference count of @uri by one.
-//
-// When the reference count reaches zero, the resources allocated by @uri are
-// freed
+// Scheme gets @uri's scheme. Note that this will always be all-lowercase,
+// regardless of the string or strings that @uri was created from.
 func (u *URI) Scheme() string {
 	var _arg0 *C.GUri  // out
 	var _cret *C.gchar // in
 
-	_arg0 = (*C.GUri)(unsafe.Pointer(u.Native()))
+	_arg0 = (*C.GUri)(unsafe.Pointer(u))
 
 	_cret = C.g_uri_get_scheme(_arg0)
 
@@ -430,15 +429,15 @@ func (u *URI) Scheme() string {
 	return _utf8
 }
 
-// User: atomically decrements the reference count of @uri by one.
-//
-// When the reference count reaches zero, the resources allocated by @uri are
-// freed
+// User gets the ‘username’ component of @uri's userinfo, which may contain
+// `%`-encoding, depending on the flags with which @uri was created. If @uri was
+// not created with G_URI_FLAGS_HAS_PASSWORD or G_URI_FLAGS_HAS_AUTH_PARAMS,
+// this is the same as g_uri_get_userinfo().
 func (u *URI) User() string {
 	var _arg0 *C.GUri  // out
 	var _cret *C.gchar // in
 
-	_arg0 = (*C.GUri)(unsafe.Pointer(u.Native()))
+	_arg0 = (*C.GUri)(unsafe.Pointer(u))
 
 	_cret = C.g_uri_get_user(_arg0)
 
@@ -449,15 +448,13 @@ func (u *URI) User() string {
 	return _utf8
 }
 
-// Userinfo: atomically decrements the reference count of @uri by one.
-//
-// When the reference count reaches zero, the resources allocated by @uri are
-// freed
+// Userinfo gets @uri's userinfo, which may contain `%`-encoding, depending on
+// the flags with which @uri was created.
 func (u *URI) Userinfo() string {
 	var _arg0 *C.GUri  // out
 	var _cret *C.gchar // in
 
-	_arg0 = (*C.GUri)(unsafe.Pointer(u.Native()))
+	_arg0 = (*C.GUri)(unsafe.Pointer(u))
 
 	_cret = C.g_uri_get_userinfo(_arg0)
 
@@ -468,45 +465,61 @@ func (u *URI) Userinfo() string {
 	return _utf8
 }
 
-// ParseRelative: atomically decrements the reference count of @uri by one.
-//
-// When the reference count reaches zero, the resources allocated by @uri are
-// freed
-func (u *URI) ParseRelative(uriRef string, flags URIFlags) (*URI, error) {
+// ParseRelative parses @uri_ref according to @flags and, if it is a [relative
+// URI][relative-absolute-uris], resolves it relative to @base_uri. If the
+// result is not a valid absolute URI, it will be discarded, and an error
+// returned.
+func (b *URI) ParseRelative(uriRef string, flags URIFlags) (URI, error) {
 	var _arg0 *C.GUri     // out
 	var _arg1 *C.gchar    // out
 	var _arg2 C.GUriFlags // out
 	var _cret *C.GUri     // in
-	var _cerr *C.GError   // in
+	var _cerr **C.GError  // in
 
-	_arg0 = (*C.GUri)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GUri)(unsafe.Pointer(b))
 	_arg1 = (*C.gchar)(C.CString(uriRef))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GUriFlags(flags)
 
 	_cret = C.g_uri_parse_relative(_arg0, _arg1, _arg2, &_cerr)
 
-	var _uri *URI    // out
+	var _uri URI     // out
 	var _goerr error // out
 
-	_uri = (*URI)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(&_uri, func(v **URI) {
+	_uri = (URI)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_uri, func(v URI) {
 		C.free(unsafe.Pointer(v))
 	})
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _uri, _goerr
 }
 
-// String: atomically decrements the reference count of @uri by one.
+// String returns a string representing @uri.
 //
-// When the reference count reaches zero, the resources allocated by @uri are
-// freed
+// This is not guaranteed to return a string which is identical to the string
+// that @uri was parsed from. However, if the source URI was syntactically
+// correct (according to RFC 3986), and it was parsed with G_URI_FLAGS_ENCODED,
+// then g_uri_to_string() is guaranteed to return a string which is at least
+// semantically equivalent to the source URI (according to RFC 3986).
+//
+// If @uri might contain sensitive details, such as authentication parameters,
+// or private data in its query string, and the returned string is going to be
+// logged, then consider using g_uri_to_string_partial() to redact parts.
 func (u *URI) String() string {
 	var _arg0 *C.GUri // out
 	var _cret *C.char // in
 
-	_arg0 = (*C.GUri)(unsafe.Pointer(u.Native()))
+	_arg0 = (*C.GUri)(unsafe.Pointer(u))
 
 	_cret = C.g_uri_to_string(_arg0)
 
@@ -518,16 +531,14 @@ func (u *URI) String() string {
 	return _utf8
 }
 
-// ToStringPartial: atomically decrements the reference count of @uri by one.
-//
-// When the reference count reaches zero, the resources allocated by @uri are
-// freed
+// ToStringPartial returns a string representing @uri, subject to the options in
+// @flags. See g_uri_to_string() and HideFlags for more details.
 func (u *URI) ToStringPartial(flags URIHideFlags) string {
 	var _arg0 *C.GUri         // out
 	var _arg1 C.GUriHideFlags // out
 	var _cret *C.char         // in
 
-	_arg0 = (*C.GUri)(unsafe.Pointer(u.Native()))
+	_arg0 = (*C.GUri)(unsafe.Pointer(u))
 	_arg1 = C.GUriHideFlags(flags)
 
 	_cret = C.g_uri_to_string_partial(_arg0, _arg1)
@@ -550,7 +561,9 @@ func (u *URI) ToStringPartial(flags URIHideFlags) string {
 // are typically allocated on the stack and then initialized with
 // g_uri_params_iter_init(). See the documentation for g_uri_params_iter_init()
 // for a usage example.
-type URIParamsIter C.GUriParamsIter
+type URIParamsIter struct {
+	native C.GUriParamsIter
+}
 
 // WrapURIParamsIter wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -560,17 +573,40 @@ func WrapURIParamsIter(ptr unsafe.Pointer) *URIParamsIter {
 
 // Native returns the underlying C source pointer.
 func (u *URIParamsIter) Native() unsafe.Pointer {
-	return unsafe.Pointer(u)
+	return unsafe.Pointer(&u.native)
 }
 
-// Init advances @iter and retrieves the next attribute/value. false is returned
-// if an error has occurred (in which case @error is set), or if the end of the
-// iteration is reached (in which case @attribute and @value are set to nil and
-// the iterator becomes invalid). If true is returned, g_uri_params_iter_next()
-// may be called again to receive another attribute/value pair.
+// Init initializes an attribute/value pair iterator.
 //
-// Note that the same @attribute may be returned multiple times, since URIs
-// allow repeated attributes.
+// The iterator keeps pointers to the @params and @separators arguments, those
+// variables must thus outlive the iterator and not be modified during the
+// iteration.
+//
+// If G_URI_PARAMS_WWW_FORM is passed in @flags, `+` characters in the param
+// string will be replaced with spaces in the output. For example, `foo=bar+baz`
+// will give attribute `foo` with value `bar baz`. This is commonly used on the
+// web (the `https` and `http` schemes only), but is deprecated in favour of the
+// equivalent of encoding spaces as `20`.
+//
+// Unlike with g_uri_parse_params(), G_URI_PARAMS_CASE_INSENSITIVE has no effect
+// if passed to @flags for g_uri_params_iter_init(). The caller is responsible
+// for doing their own case-insensitive comparisons.
+//
+//    GUriParamsIter iter;
+//    GError *error = NULL;
+//    gchar *unowned_attr, *unowned_value;
+//
+//    g_uri_params_iter_init (&iter, "foo=bar&baz=bar&Foo=frob&baz=bar2", -1, "&", G_URI_PARAMS_NONE);
+//    while (g_uri_params_iter_next (&iter, &unowned_attr, &unowned_value, &error))
+//      {
+//        g_autofree gchar *attr = g_steal_pointer (&unowned_attr);
+//        g_autofree gchar *value = g_steal_pointer (&unowned_value);
+//        // do something with attr and value; this code will be called 4 times
+//        // for the params string in this example: once with attr=foo and value=bar,
+//        // then with baz/bar, then Foo/frob, then baz/bar2.
+//      }
+//    if (error)
+//      // handle parsing error
 func (i *URIParamsIter) Init(params string, length int, separators string, flags URIParamsFlags) {
 	var _arg0 *C.GUriParamsIter // out
 	var _arg1 *C.gchar          // out
@@ -578,7 +614,7 @@ func (i *URIParamsIter) Init(params string, length int, separators string, flags
 	var _arg3 *C.gchar          // out
 	var _arg4 C.GUriParamsFlags // out
 
-	_arg0 = (*C.GUriParamsIter)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GUriParamsIter)(unsafe.Pointer(i))
 	_arg1 = (*C.gchar)(C.CString(params))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gssize(length)
@@ -599,11 +635,11 @@ func (i *URIParamsIter) Init(params string, length int, separators string, flags
 // allow repeated attributes.
 func (i *URIParamsIter) Next() (attribute string, value string, goerr error) {
 	var _arg0 *C.GUriParamsIter // out
-	var _arg1 *C.gchar          // in
-	var _arg2 *C.gchar          // in
-	var _cerr *C.GError         // in
+	var _arg1 **C.gchar         // in
+	var _arg2 **C.gchar         // in
+	var _cerr **C.GError        // in
 
-	_arg0 = (*C.GUriParamsIter)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GUriParamsIter)(unsafe.Pointer(i))
 
 	C.g_uri_params_iter_next(_arg0, &_arg1, &_arg2, &_cerr)
 
@@ -611,11 +647,38 @@ func (i *URIParamsIter) Next() (attribute string, value string, goerr error) {
 	var _value string     // out
 	var _goerr error      // out
 
-	_attribute = C.GoString(_arg1)
-	defer C.free(unsafe.Pointer(_arg1))
-	_value = C.GoString(_arg2)
-	defer C.free(unsafe.Pointer(_arg2))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.gchar
+		var refTmpOut string
+
+		refTmpIn = *_arg1
+
+		refTmpOut = C.GoString(refTmpIn)
+		defer C.free(unsafe.Pointer(refTmpIn))
+
+		_attribute = refTmpOut
+	}
+	{
+		var refTmpIn *C.gchar
+		var refTmpOut string
+
+		refTmpIn = *_arg2
+
+		refTmpOut = C.GoString(refTmpIn)
+		defer C.free(unsafe.Pointer(refTmpIn))
+
+		_value = refTmpOut
+	}
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _attribute, _value, _goerr
 }

@@ -81,72 +81,156 @@ func init() {
 // as a delegate for a `GtkEditable` implementation that will be represented to
 // accessibility.
 type Text interface {
-	Editable
+	Widget
 
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
+	// AsEditable casts the class to the Editable interface.
+	AsEditable() Editable
+
+	// ActivatesDefault retrieves the value set by
+	// gtk_text_set_activates_default().
 	ActivatesDefault() bool
-
-	Attributes() *pango.AttrList
-
+	// Attributes gets the attribute list that was set on the `GtkText` using
+	// gtk_text_set_attributes().
+	Attributes() pango.AttrList
+	// Buffer: get the `GtkEntryBuffer` object which holds the text for this
+	// self.
 	Buffer() EntryBuffer
-
+	// EnableEmojiCompletion returns whether Emoji completion is enabled for
+	// this `GtkText` widget.
 	EnableEmojiCompletion() bool
-
+	// ExtraMenu gets the menu model set with gtk_text_set_extra_menu().
 	ExtraMenu() gio.MenuModel
-
+	// InputHints gets the input hints of the `GtkText`.
 	InputHints() InputHints
-
+	// InputPurpose gets the input purpose of the `GtkText`.
 	InputPurpose() InputPurpose
-
+	// InvisibleChar retrieves the character displayed in place of the real
+	// characters for entries with visibility set to false.
+	//
+	// Note that GTK does not compute this value unless it needs it, so the
+	// value returned by this function is not very useful unless it has been
+	// explicitly set with [method@Gtk.Text.set_invisible_char].
 	InvisibleChar() uint32
-
+	// MaxLength retrieves the maximum allowed length of the text in @self.
+	//
+	// See [method@Gtk.Text.set_max_length].
+	//
+	// This is equivalent to getting @self's `GtkEntryBuffer` and calling
+	// [method@Gtk.EntryBuffer.get_max_length] on it.
 	MaxLength() int
-
+	// OverwriteMode gets the value set by gtk_text_set_overwrite_mode().
 	OverwriteMode() bool
-
+	// PlaceholderText retrieves the text that will be displayed when @self is
+	// empty and unfocused
 	PlaceholderText() string
-
+	// PropagateTextWidth returns whether the `GtkText` will grow and shrink
+	// with the content.
 	PropagateTextWidth() bool
-
-	Tabs() *pango.TabArray
-
+	// Tabs gets the tabstops that were set on the `GtkText` using
+	// gtk_text_set_tabs().
+	Tabs() pango.TabArray
+	// TextLength retrieves the current length of the text in @self.
+	//
+	// This is equivalent to getting @self's `GtkEntryBuffer` and calling
+	// [method@Gtk.EntryBuffer.get_length] on it.
 	TextLength() uint16
-
+	// TruncateMultiline returns whether the `GtkText` will truncate multi-line
+	// text that is pasted into the widget
 	TruncateMultiline() bool
-
+	// Visibility retrieves whether the text in @self is visible.
 	Visibility() bool
-
+	// GrabFocusWithoutSelectingText causes @self to have keyboard focus.
+	//
+	// It behaves like [method@Gtk.Widget.grab_focus], except that it doesn't
+	// select the contents of @self. You only want to call this on some special
+	// entries which the user usually doesn't want to replace all text in, such
+	// as search-as-you-type entries.
 	GrabFocusWithoutSelectingText() bool
-
+	// SetActivatesDefaultText: if @activates is true, pressing Enter in the
+	// @self will activate the default widget for the window containing @self.
+	//
+	// This usually means that the dialog containing the `GtkText` will be
+	// closed, since the default widget is usually one of the dialog buttons.
 	SetActivatesDefaultText(activates bool)
-
-	SetAttributesText(attrs *pango.AttrList)
-
+	// SetAttributesText sets attributes that are applied to the text.
+	SetAttributesText(attrs pango.AttrList)
+	// SetBufferText: set the `GtkEntryBuffer` object which holds the text for
+	// this widget.
 	SetBufferText(buffer EntryBuffer)
-
+	// SetEnableEmojiCompletionText sets whether Emoji completion is enabled.
+	//
+	// If it is, typing ':', followed by a recognized keyword, will pop up a
+	// window with suggested Emojis matching the keyword.
 	SetEnableEmojiCompletionText(enableEmojiCompletion bool)
-
+	// SetExtraMenuText sets a menu model to add when constructing the context
+	// menu for @self.
 	SetExtraMenuText(model gio.MenuModel)
-
+	// SetInputHintsText sets input hints that allow input methods to fine-tune
+	// their behaviour.
 	SetInputHintsText(hints InputHints)
-
+	// SetInputPurposeText sets the input purpose of the `GtkText`.
+	//
+	// This can be used by on-screen keyboards and other input methods to adjust
+	// their behaviour.
 	SetInputPurposeText(purpose InputPurpose)
-
+	// SetInvisibleCharText sets the character to use in place of the actual
+	// text when in “password mode”.
+	//
+	// By default, GTK picks the best invisible char available in the current
+	// font. If you set the invisible char to 0, then the user will get no
+	// feedback at all; there will be no text on the screen as they type.
 	SetInvisibleCharText(ch uint32)
-
+	// SetMaxLengthText sets the maximum allowed length of the contents of the
+	// widget.
+	//
+	// If the current contents are longer than the given length, then they will
+	// be truncated to fit.
+	//
+	// This is equivalent to getting @self's `GtkEntryBuffer` and calling
+	// [method@Gtk.EntryBuffer.set_max_length] on it.
 	SetMaxLengthText(length int)
-
+	// SetOverwriteModeText sets whether the text is overwritten when typing in
+	// the `GtkText`.
 	SetOverwriteModeText(overwrite bool)
-
+	// SetPlaceholderTextText sets text to be displayed in @self when it is
+	// empty.
+	//
+	// This can be used to give a visual hint of the expected contents of the
+	// `GtkText`.
 	SetPlaceholderTextText(text string)
-
+	// SetPropagateTextWidthText sets whether the `GtkText` should grow and
+	// shrink with the content.
 	SetPropagateTextWidthText(propagateTextWidth bool)
-
-	SetTabsText(tabs *pango.TabArray)
-
+	// SetTabsText sets tabstops that are applied to the text.
+	SetTabsText(tabs pango.TabArray)
+	// SetTruncateMultilineText sets whether the `GtkText` should truncate
+	// multi-line text that is pasted into the widget.
 	SetTruncateMultilineText(truncateMultiline bool)
-
+	// SetVisibilityText sets whether the contents of the `GtkText` are visible
+	// or not.
+	//
+	// When visibility is set to false, characters are displayed as the
+	// invisible char, and will also appear that way when the text in the widget
+	// is copied to the clipboard.
+	//
+	// By default, GTK picks the best invisible character available in the
+	// current font, but it can be changed with
+	// [method@Gtk.Text.set_invisible_char].
+	//
+	// Note that you probably want to set [property@Gtk.Text:input-purpose] to
+	// GTK_INPUT_PURPOSE_PASSWORD or GTK_INPUT_PURPOSE_PIN to inform input
+	// methods about the purpose of this self, in addition to setting visibility
+	// to false.
 	SetVisibilityText(visible bool)
-
+	// UnsetInvisibleCharText unsets the invisible char.
+	//
+	// After calling this, the default invisible char is used again.
 	UnsetInvisibleCharText()
 }
 
@@ -169,6 +253,7 @@ func marshalText(p uintptr) (interface{}, error) {
 	return WrapText(obj), nil
 }
 
+// NewText creates a new `GtkText`.
 func NewText() Text {
 	var _cret *C.GtkWidget // in
 
@@ -176,11 +261,12 @@ func NewText() Text {
 
 	var _text Text // out
 
-	_text = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Text)
+	_text = WrapText(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _text
 }
 
+// NewTextWithBuffer creates a new `GtkText` with the specified text buffer.
 func NewTextWithBuffer(buffer EntryBuffer) Text {
 	var _arg1 *C.GtkEntryBuffer // out
 	var _cret *C.GtkWidget      // in
@@ -191,7 +277,7 @@ func NewTextWithBuffer(buffer EntryBuffer) Text {
 
 	var _text Text // out
 
-	_text = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Text)
+	_text = WrapText(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _text
 }
@@ -213,7 +299,7 @@ func (s text) ActivatesDefault() bool {
 	return _ok
 }
 
-func (s text) Attributes() *pango.AttrList {
+func (s text) Attributes() pango.AttrList {
 	var _arg0 *C.GtkText       // out
 	var _cret *C.PangoAttrList // in
 
@@ -221,9 +307,10 @@ func (s text) Attributes() *pango.AttrList {
 
 	_cret = C.gtk_text_get_attributes(_arg0)
 
-	var _attrList *pango.AttrList // out
+	var _attrList pango.AttrList // out
 
-	_attrList = (*pango.AttrList)(unsafe.Pointer(_cret))
+	_attrList = (pango.AttrList)(unsafe.Pointer(_cret))
+	C.pango_attr_list_ref(_cret)
 
 	return _attrList
 }
@@ -384,7 +471,7 @@ func (s text) PropagateTextWidth() bool {
 	return _ok
 }
 
-func (s text) Tabs() *pango.TabArray {
+func (s text) Tabs() pango.TabArray {
 	var _arg0 *C.GtkText       // out
 	var _cret *C.PangoTabArray // in
 
@@ -392,9 +479,9 @@ func (s text) Tabs() *pango.TabArray {
 
 	_cret = C.gtk_text_get_tabs(_arg0)
 
-	var _tabArray *pango.TabArray // out
+	var _tabArray pango.TabArray // out
 
-	_tabArray = (*pango.TabArray)(unsafe.Pointer(_cret))
+	_tabArray = (pango.TabArray)(unsafe.Pointer(_cret))
 
 	return _tabArray
 }
@@ -477,12 +564,12 @@ func (s text) SetActivatesDefaultText(activates bool) {
 	C.gtk_text_set_activates_default(_arg0, _arg1)
 }
 
-func (s text) SetAttributesText(attrs *pango.AttrList) {
+func (s text) SetAttributesText(attrs pango.AttrList) {
 	var _arg0 *C.GtkText       // out
 	var _arg1 *C.PangoAttrList // out
 
 	_arg0 = (*C.GtkText)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.PangoAttrList)(unsafe.Pointer(attrs.Native()))
+	_arg1 = (*C.PangoAttrList)(unsafe.Pointer(attrs))
 
 	C.gtk_text_set_attributes(_arg0, _arg1)
 }
@@ -594,12 +681,12 @@ func (s text) SetPropagateTextWidthText(propagateTextWidth bool) {
 	C.gtk_text_set_propagate_text_width(_arg0, _arg1)
 }
 
-func (s text) SetTabsText(tabs *pango.TabArray) {
+func (s text) SetTabsText(tabs pango.TabArray) {
 	var _arg0 *C.GtkText       // out
 	var _arg1 *C.PangoTabArray // out
 
 	_arg0 = (*C.GtkText)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.PangoTabArray)(unsafe.Pointer(tabs.Native()))
+	_arg1 = (*C.PangoTabArray)(unsafe.Pointer(tabs))
 
 	C.gtk_text_set_tabs(_arg0, _arg1)
 }
@@ -636,122 +723,18 @@ func (s text) UnsetInvisibleCharText() {
 	C.gtk_text_unset_invisible_char(_arg0)
 }
 
-func (e text) DeleteSelection() {
-	WrapEditable(gextras.InternObject(e)).DeleteSelection()
+func (t text) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(t))
 }
 
-func (e text) DeleteText(startPos int, endPos int) {
-	WrapEditable(gextras.InternObject(e)).DeleteText(startPos, endPos)
+func (t text) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(t))
 }
 
-func (e text) FinishDelegate() {
-	WrapEditable(gextras.InternObject(e)).FinishDelegate()
+func (t text) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(t))
 }
 
-func (e text) Alignment() float32 {
-	return WrapEditable(gextras.InternObject(e)).Alignment()
-}
-
-func (e text) Chars(startPos int, endPos int) string {
-	return WrapEditable(gextras.InternObject(e)).Chars(startPos, endPos)
-}
-
-func (e text) Delegate() Editable {
-	return WrapEditable(gextras.InternObject(e)).Delegate()
-}
-
-func (e text) Editable() bool {
-	return WrapEditable(gextras.InternObject(e)).Editable()
-}
-
-func (e text) EnableUndo() bool {
-	return WrapEditable(gextras.InternObject(e)).EnableUndo()
-}
-
-func (e text) MaxWidthChars() int {
-	return WrapEditable(gextras.InternObject(e)).MaxWidthChars()
-}
-
-func (e text) Position() int {
-	return WrapEditable(gextras.InternObject(e)).Position()
-}
-
-func (e text) SelectionBounds() (startPos int, endPos int, ok bool) {
-	return WrapEditable(gextras.InternObject(e)).SelectionBounds()
-}
-
-func (e text) Text() string {
-	return WrapEditable(gextras.InternObject(e)).Text()
-}
-
-func (e text) WidthChars() int {
-	return WrapEditable(gextras.InternObject(e)).WidthChars()
-}
-
-func (e text) InitDelegate() {
-	WrapEditable(gextras.InternObject(e)).InitDelegate()
-}
-
-func (e text) SelectRegion(startPos int, endPos int) {
-	WrapEditable(gextras.InternObject(e)).SelectRegion(startPos, endPos)
-}
-
-func (e text) SetAlignment(xalign float32) {
-	WrapEditable(gextras.InternObject(e)).SetAlignment(xalign)
-}
-
-func (e text) SetEditable(isEditable bool) {
-	WrapEditable(gextras.InternObject(e)).SetEditable(isEditable)
-}
-
-func (e text) SetEnableUndo(enableUndo bool) {
-	WrapEditable(gextras.InternObject(e)).SetEnableUndo(enableUndo)
-}
-
-func (e text) SetMaxWidthChars(nChars int) {
-	WrapEditable(gextras.InternObject(e)).SetMaxWidthChars(nChars)
-}
-
-func (e text) SetPosition(position int) {
-	WrapEditable(gextras.InternObject(e)).SetPosition(position)
-}
-
-func (e text) SetText(text string) {
-	WrapEditable(gextras.InternObject(e)).SetText(text)
-}
-
-func (e text) SetWidthChars(nChars int) {
-	WrapEditable(gextras.InternObject(e)).SetWidthChars(nChars)
-}
-
-func (s text) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
-}
-
-func (s text) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
-}
-
-func (s text) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
-}
-
-func (s text) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s text) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s text) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s text) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b text) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
+func (t text) AsEditable() Editable {
+	return WrapEditable(gextras.InternObject(t))
 }

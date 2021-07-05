@@ -3,13 +3,10 @@
 package gio
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/box"
-	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -42,15 +39,42 @@ func init() {
 // As of GLib 2.34, OutputStream trivially implements OutputStream: it always
 // polls as ready.
 type MemoryOutputStream interface {
-	PollableOutputStream
-	Seekable
+	OutputStream
 
+	// AsPollableOutputStream casts the class to the PollableOutputStream interface.
+	AsPollableOutputStream() PollableOutputStream
+	// AsSeekable casts the class to the Seekable interface.
+	AsSeekable() Seekable
+
+	// Data gets any loaded data from the @ostream.
+	//
+	// Note that the returned pointer may become invalid on the next write or
+	// truncate operation on the stream.
 	Data() interface{}
-
+	// DataSize returns the number of bytes from the start up to including the
+	// last byte written in the stream that has not been truncated away.
 	DataSize() uint
-
+	// Size gets the size of the currently allocated data area (available from
+	// g_memory_output_stream_get_data()).
+	//
+	// You probably don't want to use this function on resizable streams. See
+	// g_memory_output_stream_get_data_size() instead. For resizable streams the
+	// size returned by this function is an implementation detail and may be
+	// change at any time in response to operations on the stream.
+	//
+	// If the stream is fixed-sized (ie: no realloc was passed to
+	// g_memory_output_stream_new()) then this is the maximum size of the stream
+	// and further writes will return G_IO_ERROR_NO_SPACE.
+	//
+	// In any case, if you want the number of bytes currently written to the
+	// stream, use g_memory_output_stream_get_data_size().
 	Size() uint
-
+	// StealDataMemoryOutputStream gets any loaded data from the @ostream.
+	// Ownership of the data is transferred to the caller; when no longer needed
+	// it must be freed using the free function set in @ostream's
+	// OutputStream:destroy-function property.
+	//
+	// @ostream must be closed before calling this function.
 	StealDataMemoryOutputStream() interface{}
 }
 
@@ -73,6 +97,8 @@ func marshalMemoryOutputStream(p uintptr) (interface{}, error) {
 	return WrapMemoryOutputStream(obj), nil
 }
 
+// NewMemoryOutputStreamResizable creates a new OutputStream, using g_realloc()
+// and g_free() for memory allocation.
 func NewMemoryOutputStreamResizable() MemoryOutputStream {
 	var _cret *C.GOutputStream // in
 
@@ -80,7 +106,7 @@ func NewMemoryOutputStreamResizable() MemoryOutputStream {
 
 	var _memoryOutputStream MemoryOutputStream // out
 
-	_memoryOutputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(MemoryOutputStream)
+	_memoryOutputStream = WrapMemoryOutputStream(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _memoryOutputStream
 }
@@ -145,42 +171,10 @@ func (o memoryOutputStream) StealDataMemoryOutputStream() interface{} {
 	return _gpointer
 }
 
-func (s memoryOutputStream) CanPoll() bool {
-	return WrapPollableOutputStream(gextras.InternObject(s)).CanPoll()
+func (m memoryOutputStream) AsPollableOutputStream() PollableOutputStream {
+	return WrapPollableOutputStream(gextras.InternObject(m))
 }
 
-func (s memoryOutputStream) CreateSource(cancellable Cancellable) *glib.Source {
-	return WrapPollableOutputStream(gextras.InternObject(s)).CreateSource(cancellable)
-}
-
-func (s memoryOutputStream) IsWritable() bool {
-	return WrapPollableOutputStream(gextras.InternObject(s)).IsWritable()
-}
-
-func (s memoryOutputStream) WriteNonblocking(buffer []byte, cancellable Cancellable) (int, error) {
-	return WrapPollableOutputStream(gextras.InternObject(s)).WriteNonblocking(buffer, cancellable)
-}
-
-func (s memoryOutputStream) WritevNonblocking(vectors []OutputVector, cancellable Cancellable) (uint, PollableReturn, error) {
-	return WrapPollableOutputStream(gextras.InternObject(s)).WritevNonblocking(vectors, cancellable)
-}
-
-func (s memoryOutputStream) CanSeek() bool {
-	return WrapSeekable(gextras.InternObject(s)).CanSeek()
-}
-
-func (s memoryOutputStream) CanTruncate() bool {
-	return WrapSeekable(gextras.InternObject(s)).CanTruncate()
-}
-
-func (s memoryOutputStream) Seek(offset int64, typ glib.SeekType, cancellable Cancellable) error {
-	return WrapSeekable(gextras.InternObject(s)).Seek(offset, typ, cancellable)
-}
-
-func (s memoryOutputStream) Tell() int64 {
-	return WrapSeekable(gextras.InternObject(s)).Tell()
-}
-
-func (s memoryOutputStream) Truncate(offset int64, cancellable Cancellable) error {
-	return WrapSeekable(gextras.InternObject(s)).Truncate(offset, cancellable)
+func (m memoryOutputStream) AsSeekable() Seekable {
+	return WrapSeekable(gextras.InternObject(m))
 }

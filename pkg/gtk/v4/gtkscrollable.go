@@ -55,45 +55,29 @@ func init() {
 type Scrollable interface {
 	gextras.Objector
 
-	// Border sets the `GtkScrollablePolicy`.
+	// Border returns the size of a non-scrolling border around the outside of
+	// the scrollable.
 	//
-	// The policy determines whether vertical scrolling should start below the
-	// minimum height or below the natural height.
+	// An example for this would be treeview headers. GTK can use this
+	// information to display overlaid graphics, like the overshoot indication,
+	// at the right position.
 	Border() (Border, bool)
-	// HAdjustment sets the `GtkScrollablePolicy`.
-	//
-	// The policy determines whether vertical scrolling should start below the
-	// minimum height or below the natural height.
+	// HAdjustment retrieves the `GtkAdjustment` used for horizontal scrolling.
 	HAdjustment() Adjustment
-	// HScrollPolicy sets the `GtkScrollablePolicy`.
-	//
-	// The policy determines whether vertical scrolling should start below the
-	// minimum height or below the natural height.
+	// HScrollPolicy gets the horizontal `GtkScrollablePolicy`.
 	HScrollPolicy() ScrollablePolicy
-	// VAdjustment sets the `GtkScrollablePolicy`.
-	//
-	// The policy determines whether vertical scrolling should start below the
-	// minimum height or below the natural height.
+	// VAdjustment retrieves the `GtkAdjustment` used for vertical scrolling.
 	VAdjustment() Adjustment
-	// VScrollPolicy sets the `GtkScrollablePolicy`.
-	//
-	// The policy determines whether vertical scrolling should start below the
-	// minimum height or below the natural height.
+	// VScrollPolicy gets the vertical `GtkScrollablePolicy`.
 	VScrollPolicy() ScrollablePolicy
-	// SetHAdjustment sets the `GtkScrollablePolicy`.
-	//
-	// The policy determines whether vertical scrolling should start below the
-	// minimum height or below the natural height.
+	// SetHAdjustment sets the horizontal adjustment of the `GtkScrollable`.
 	SetHAdjustment(hadjustment Adjustment)
 	// SetHScrollPolicy sets the `GtkScrollablePolicy`.
 	//
-	// The policy determines whether vertical scrolling should start below the
-	// minimum height or below the natural height.
+	// The policy determines whether horizontal scrolling should start below the
+	// minimum width or below the natural width.
 	SetHScrollPolicy(policy ScrollablePolicy)
-	// SetVAdjustment sets the `GtkScrollablePolicy`.
-	//
-	// The policy determines whether vertical scrolling should start below the
-	// minimum height or below the natural height.
+	// SetVAdjustment sets the vertical adjustment of the `GtkScrollable`.
 	SetVAdjustment(vadjustment Adjustment)
 	// SetVScrollPolicy sets the `GtkScrollablePolicy`.
 	//
@@ -125,7 +109,7 @@ func marshalScrollable(p uintptr) (interface{}, error) {
 
 func (s scrollable) Border() (Border, bool) {
 	var _arg0 *C.GtkScrollable // out
-	var _arg1 C.GtkBorder      // in
+	var _arg1 *C.GtkBorder     // in
 	var _cret C.gboolean       // in
 
 	_arg0 = (*C.GtkScrollable)(unsafe.Pointer(s.Native()))
@@ -135,17 +119,7 @@ func (s scrollable) Border() (Border, bool) {
 	var _border Border // out
 	var _ok bool       // out
 
-	{
-		var refTmpIn *C.GtkBorder
-		var refTmpOut *Border
-
-		in0 := &_arg1
-		refTmpIn = in0
-
-		refTmpOut = (*Border)(unsafe.Pointer(refTmpIn))
-
-		_border = *refTmpOut
-	}
+	_border = (Border)(unsafe.Pointer(_arg1))
 	if _cret != 0 {
 		_ok = true
 	}

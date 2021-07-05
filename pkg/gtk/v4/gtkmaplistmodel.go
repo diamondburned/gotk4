@@ -28,7 +28,7 @@ func init() {
 //
 // The returned items must conform to the item type of the model they are used
 // with.
-type MapListModelMapFunc func(item gextras.Objector, object gextras.Objector)
+type MapListModelMapFunc func(item gextras.Objector) (object gextras.Objector)
 
 //export gotk4_MapListModelMapFunc
 func gotk4_MapListModelMapFunc(arg0 C.gpointer, arg1 C.gpointer) C.gpointer {
@@ -51,7 +51,7 @@ func gotk4_MapListModelMapFunc(arg0 C.gpointer, arg1 C.gpointer) C.gpointer {
 	return cret
 }
 
-// MapListModel: a `GtkMapListModel` maps the items in a list model to different
+// MapListModel: `GtkMapListModel` maps the items in a list model to different
 // items.
 //
 // `GtkMapListModel` uses a [callback@Gtk.MapListModelMapFunc].
@@ -74,6 +74,7 @@ func gotk4_MapListModelMapFunc(arg0 C.gpointer, arg1 C.gpointer) C.gpointer {
 type MapListModel interface {
 	gextras.Objector
 
+	// HasMapMapListModel checks if a map function is currently set on @self.
 	HasMapMapListModel() bool
 }
 

@@ -30,12 +30,21 @@ func init() {
 type EventController interface {
 	gextras.Objector
 
+	// PropagationPhase gets the propagation phase at which @controller handles
+	// events.
 	PropagationPhase() PropagationPhase
-
+	// Widget returns the Widget this controller relates to.
 	Widget() Widget
-
+	// ResetEventController resets the @controller to a clean state. Every
+	// interaction the controller did through EventController::handle-event will
+	// be dropped at this point.
 	ResetEventController()
-
+	// SetPropagationPhaseEventController sets the propagation phase at which a
+	// controller handles events.
+	//
+	// If @phase is GTK_PHASE_NONE, no automatic event handling will be
+	// performed, but other additional gesture maintenance will. In that phase,
+	// the events can be managed by calling gtk_event_controller_handle_event().
 	SetPropagationPhaseEventController(phase PropagationPhase)
 }
 

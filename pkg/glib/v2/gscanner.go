@@ -17,7 +17,7 @@ import "C"
 type ErrorType int
 
 const (
-	// unknown: unknown error
+	// unknown error
 	ErrorTypeUnknown ErrorType = 0
 	// UnexpEOF: unexpected end of file
 	ErrorTypeUnexpEOF ErrorType = 1
@@ -42,45 +42,45 @@ type TokenType int
 const (
 	// eof: the end of the file
 	TokenTypeEOF TokenType = 0
-	// LeftParen: a '(' character
+	// LeftParen: '(' character
 	TokenTypeLeftParen TokenType = 40
-	// RightParen: a ')' character
+	// RightParen: ')' character
 	TokenTypeRightParen TokenType = 41
-	// LeftCurly: a '{' character
+	// LeftCurly: '{' character
 	TokenTypeLeftCurly TokenType = 123
-	// RightCurly: a '}' character
+	// RightCurly: '}' character
 	TokenTypeRightCurly TokenType = 125
-	// LeftBrace: a '[' character
+	// LeftBrace: '[' character
 	TokenTypeLeftBrace TokenType = 91
-	// RightBrace: a ']' character
+	// RightBrace: ']' character
 	TokenTypeRightBrace TokenType = 93
-	// EqualSign: a '=' character
+	// EqualSign: '=' character
 	TokenTypeEqualSign TokenType = 61
-	// comma: a ',' character
+	// comma: ',' character
 	TokenTypeComma TokenType = 44
 	// none: not a token
 	TokenTypeNone TokenType = 256
-	// error: an error occurred
+	// error occurred
 	TokenTypeError TokenType = 257
-	// char: a character
+	// char: character
 	TokenTypeChar TokenType = 258
-	// binary: a binary integer
+	// binary integer
 	TokenTypeBinary TokenType = 259
-	// octal: an octal integer
+	// octal integer
 	TokenTypeOctal TokenType = 260
-	// int: an integer
+	// int: integer
 	TokenTypeInt TokenType = 261
-	// hex: a hex integer
+	// hex integer
 	TokenTypeHex TokenType = 262
-	// float: a floating point number
+	// float: floating point number
 	TokenTypeFloat TokenType = 263
-	// string: a string
+	// string: string
 	TokenTypeString TokenType = 264
-	// symbol: a symbol
+	// symbol: symbol
 	TokenTypeSymbol TokenType = 265
-	// identifier: an identifier
+	// identifier: identifier
 	TokenTypeIdentifier TokenType = 266
-	// IdentifierNull: a null identifier
+	// IdentifierNull: null identifier
 	TokenTypeIdentifierNull TokenType = 267
 	// CommentSingle: one line comment
 	TokenTypeCommentSingle TokenType = 268
@@ -91,7 +91,9 @@ const (
 // ScannerConfig specifies the #GScanner parser configuration. Most settings can
 // be changed during the parsing phase and will affect the lexical parsing of
 // the next unpeeked token.
-type ScannerConfig C.GScannerConfig
+type ScannerConfig struct {
+	native C.GScannerConfig
+}
 
 // WrapScannerConfig wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -101,5 +103,5 @@ func WrapScannerConfig(ptr unsafe.Pointer) *ScannerConfig {
 
 // Native returns the underlying C source pointer.
 func (s *ScannerConfig) Native() unsafe.Pointer {
-	return unsafe.Pointer(s)
+	return unsafe.Pointer(&s.native)
 }

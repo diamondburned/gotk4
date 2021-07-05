@@ -5,9 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -38,60 +36,136 @@ func init() {
 // for a description of the tool shell interface.
 type ToolItem interface {
 	Bin
-	Activatable
 
+	// AsActivatable casts the class to the Activatable interface.
+	AsActivatable() Activatable
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+
+	// EllipsizeMode returns the ellipsize mode used for @tool_item. Custom
+	// subclasses of ToolItem should call this function to find out how text
+	// should be ellipsized.
 	EllipsizeMode() pango.EllipsizeMode
-
+	// Expand returns whether @tool_item is allocated extra space. See
+	// gtk_tool_item_set_expand().
 	Expand() bool
-
+	// Homogeneous returns whether @tool_item is the same size as other
+	// homogeneous items. See gtk_tool_item_set_homogeneous().
 	Homogeneous() bool
-
+	// IconSize returns the icon size used for @tool_item. Custom subclasses of
+	// ToolItem should call this function to find out what size icons they
+	// should use.
 	IconSize() int
-
+	// IsImportant returns whether @tool_item is considered important. See
+	// gtk_tool_item_set_is_important()
 	IsImportant() bool
-
+	// Orientation returns the orientation used for @tool_item. Custom
+	// subclasses of ToolItem should call this function to find out what size
+	// icons they should use.
 	Orientation() Orientation
-
+	// ProxyMenuItem: if @menu_item_id matches the string passed to
+	// gtk_tool_item_set_proxy_menu_item() return the corresponding MenuItem.
+	//
+	// Custom subclasses of ToolItem should use this function to update their
+	// menu item when the ToolItem changes. That the @menu_item_ids must match
+	// ensures that a ToolItem will not inadvertently change a menu item that
+	// they did not create.
 	ProxyMenuItem(menuItemId string) Widget
-
+	// ReliefStyle returns the relief style of @tool_item. See
+	// gtk_button_set_relief(). Custom subclasses of ToolItem should call this
+	// function in the handler of the ToolItem::toolbar_reconfigured signal to
+	// find out the relief style of buttons.
 	ReliefStyle() ReliefStyle
-
+	// TextAlignment returns the text alignment used for @tool_item. Custom
+	// subclasses of ToolItem should call this function to find out how text
+	// should be aligned.
 	TextAlignment() float32
-
+	// TextOrientation returns the text orientation used for @tool_item. Custom
+	// subclasses of ToolItem should call this function to find out how text
+	// should be orientated.
 	TextOrientation() Orientation
-
+	// TextSizeGroup returns the size group used for labels in @tool_item.
+	// Custom subclasses of ToolItem should call this function and use the size
+	// group for labels.
 	TextSizeGroup() SizeGroup
-
+	// ToolbarStyle returns the toolbar style used for @tool_item. Custom
+	// subclasses of ToolItem should call this function in the handler of the
+	// GtkToolItem::toolbar_reconfigured signal to find out in what style the
+	// toolbar is displayed and change themselves accordingly
+	//
+	// Possibilities are: - GTK_TOOLBAR_BOTH, meaning the tool item should show
+	// both an icon and a label, stacked vertically - GTK_TOOLBAR_ICONS, meaning
+	// the toolbar shows only icons - GTK_TOOLBAR_TEXT, meaning the tool item
+	// should only show text - GTK_TOOLBAR_BOTH_HORIZ, meaning the tool item
+	// should show both an icon and a label, arranged horizontally
 	ToolbarStyle() ToolbarStyle
-
+	// UseDragWindow returns whether @tool_item has a drag window. See
+	// gtk_tool_item_set_use_drag_window().
 	UseDragWindow() bool
-
+	// VisibleHorizontal returns whether the @tool_item is visible on toolbars
+	// that are docked horizontally.
 	VisibleHorizontal() bool
-
+	// VisibleVertical returns whether @tool_item is visible when the toolbar is
+	// docked vertically. See gtk_tool_item_set_visible_vertical().
 	VisibleVertical() bool
-
+	// RebuildMenuToolItem: calling this function signals to the toolbar that
+	// the overflow menu item for @tool_item has changed. If the overflow menu
+	// is visible when this function it called, the menu will be rebuilt.
+	//
+	// The function must be called when the tool item changes what it will do in
+	// response to the ToolItem::create-menu-proxy signal.
 	RebuildMenuToolItem()
-
+	// RetrieveProxyMenuItemToolItem returns the MenuItem that was last set by
+	// gtk_tool_item_set_proxy_menu_item(), ie. the MenuItem that is going to
+	// appear in the overflow menu.
 	RetrieveProxyMenuItemToolItem() Widget
-
+	// SetExpandToolItem sets whether @tool_item is allocated extra space when
+	// there is more room on the toolbar then needed for the items. The effect
+	// is that the item gets bigger when the toolbar gets bigger and smaller
+	// when the toolbar gets smaller.
 	SetExpandToolItem(expand bool)
-
+	// SetHomogeneousToolItem sets whether @tool_item is to be allocated the
+	// same size as other homogeneous items. The effect is that all homogeneous
+	// items will have the same width as the widest of the items.
 	SetHomogeneousToolItem(homogeneous bool)
-
+	// SetIsImportantToolItem sets whether @tool_item should be considered
+	// important. The ToolButton class uses this property to determine whether
+	// to show or hide its label when the toolbar style is
+	// GTK_TOOLBAR_BOTH_HORIZ. The result is that only tool buttons with the
+	// “is_important” property set have labels, an effect known as “priority
+	// text”
 	SetIsImportantToolItem(isImportant bool)
-
+	// SetProxyMenuItemToolItem sets the MenuItem used in the toolbar overflow
+	// menu. The @menu_item_id is used to identify the caller of this function
+	// and should also be used with gtk_tool_item_get_proxy_menu_item().
+	//
+	// See also ToolItem::create-menu-proxy.
 	SetProxyMenuItemToolItem(menuItemId string, menuItem Widget)
-
+	// SetTooltipMarkupToolItem sets the markup text to be displayed as tooltip
+	// on the item. See gtk_widget_set_tooltip_markup().
 	SetTooltipMarkupToolItem(markup string)
-
+	// SetTooltipTextToolItem sets the text to be displayed as tooltip on the
+	// item. See gtk_widget_set_tooltip_text().
 	SetTooltipTextToolItem(text string)
-
+	// SetUseDragWindowToolItem sets whether @tool_item has a drag window. When
+	// true the toolitem can be used as a drag source through
+	// gtk_drag_source_set(). When @tool_item has a drag window it will
+	// intercept all events, even those that would otherwise be sent to a child
+	// of @tool_item.
 	SetUseDragWindowToolItem(useDragWindow bool)
-
+	// SetVisibleHorizontalToolItem sets whether @tool_item is visible when the
+	// toolbar is docked horizontally.
 	SetVisibleHorizontalToolItem(visibleHorizontal bool)
-
+	// SetVisibleVerticalToolItem sets whether @tool_item is visible when the
+	// toolbar is docked vertically. Some tool items, such as text entries, are
+	// too wide to be useful on a vertically docked toolbar. If
+	// @visible_vertical is false @tool_item will not appear on toolbars that
+	// are docked vertically.
 	SetVisibleVerticalToolItem(visibleVertical bool)
-
+	// ToolbarReconfiguredToolItem emits the signal
+	// ToolItem::toolbar_reconfigured on @tool_item. Toolbar and other ToolShell
+	// implementations use this function to notify children, when some aspect of
+	// their configuration changes.
 	ToolbarReconfiguredToolItem()
 }
 
@@ -114,6 +188,7 @@ func marshalToolItem(p uintptr) (interface{}, error) {
 	return WrapToolItem(obj), nil
 }
 
+// NewToolItem creates a new ToolItem
 func NewToolItem() ToolItem {
 	var _cret *C.GtkToolItem // in
 
@@ -121,7 +196,7 @@ func NewToolItem() ToolItem {
 
 	var _toolItem ToolItem // out
 
-	_toolItem = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ToolItem)
+	_toolItem = WrapToolItem(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _toolItem
 }
@@ -504,66 +579,10 @@ func (t toolItem) ToolbarReconfiguredToolItem() {
 	C.gtk_tool_item_toolbar_reconfigured(_arg0)
 }
 
-func (b toolItem) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+func (t toolItem) AsActivatable() Activatable {
+	return WrapActivatable(gextras.InternObject(t))
 }
 
-func (b toolItem) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b toolItem) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b toolItem) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b toolItem) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b toolItem) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b toolItem) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b toolItem) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b toolItem) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b toolItem) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (a toolItem) DoSetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).DoSetRelatedAction(action)
-}
-
-func (a toolItem) RelatedAction() Action {
-	return WrapActivatable(gextras.InternObject(a)).RelatedAction()
-}
-
-func (a toolItem) UseActionAppearance() bool {
-	return WrapActivatable(gextras.InternObject(a)).UseActionAppearance()
-}
-
-func (a toolItem) SetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SetRelatedAction(action)
-}
-
-func (a toolItem) SetUseActionAppearance(useAppearance bool) {
-	WrapActivatable(gextras.InternObject(a)).SetUseActionAppearance(useAppearance)
-}
-
-func (a toolItem) SyncActionProperties(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SyncActionProperties(action)
+func (t toolItem) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(t))
 }

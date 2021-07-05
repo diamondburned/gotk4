@@ -46,17 +46,25 @@ func init() {
 type ProxyResolver interface {
 	gextras.Objector
 
-	// IsSupported: call this function to obtain the array of proxy URIs when
-	// g_proxy_resolver_lookup_async() is complete. See
-	// g_proxy_resolver_lookup() for more details.
+	// IsSupported checks if @resolver can be used on this system. (This is used
+	// internally; g_proxy_resolver_get_default() will only return a proxy
+	// resolver that returns true for this method.)
 	IsSupported() bool
-	// Lookup: call this function to obtain the array of proxy URIs when
-	// g_proxy_resolver_lookup_async() is complete. See
-	// g_proxy_resolver_lookup() for more details.
+	// Lookup looks into the system proxy configuration to determine what proxy,
+	// if any, to use to connect to @uri. The returned proxy URIs are of the
+	// form `<protocol>://[user[:password]@]host:port` or `direct://`, where
+	// <protocol> could be http, rtsp, socks or other proxying protocol.
+	//
+	// If you don't know what network protocol is being used on the socket, you
+	// should use `none` as the URI protocol. In this case, the resolver might
+	// still return a generic proxy type (such as SOCKS), but would not return
+	// protocol-specific proxy types (such as http).
+	//
+	// `direct://` is used when no proxy is needed. Direct connection should not
+	// be attempted unless it is part of the returned array of proxies.
 	Lookup(uri string, cancellable Cancellable) ([]string, error)
-	// LookupAsync: call this function to obtain the array of proxy URIs when
-	// g_proxy_resolver_lookup_async() is complete. See
-	// g_proxy_resolver_lookup() for more details.
+	// LookupAsync asynchronous lookup of proxy. See g_proxy_resolver_lookup()
+	// for more details.
 	LookupAsync(uri string, cancellable Cancellable, callback AsyncReadyCallback)
 	// LookupFinish: call this function to obtain the array of proxy URIs when
 	// g_proxy_resolver_lookup_async() is complete. See
@@ -107,7 +115,7 @@ func (r proxyResolver) Lookup(uri string, cancellable Cancellable) ([]string, er
 	var _arg1 *C.gchar          // out
 	var _arg2 *C.GCancellable   // out
 	var _cret **C.gchar
-	var _cerr *C.GError // in
+	var _cerr **C.GError // in
 
 	_arg0 = (*C.GProxyResolver)(unsafe.Pointer(r.Native()))
 	_arg1 = (*C.gchar)(C.CString(uri))
@@ -133,7 +141,16 @@ func (r proxyResolver) Lookup(uri string, cancellable Cancellable) ([]string, er
 			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _utf8s, _goerr
 }
@@ -159,7 +176,7 @@ func (r proxyResolver) LookupFinish(result AsyncResult) ([]string, error) {
 	var _arg0 *C.GProxyResolver // out
 	var _arg1 *C.GAsyncResult   // out
 	var _cret **C.gchar
-	var _cerr *C.GError // in
+	var _cerr **C.GError // in
 
 	_arg0 = (*C.GProxyResolver)(unsafe.Pointer(r.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
@@ -183,7 +200,16 @@ func (r proxyResolver) LookupFinish(result AsyncResult) ([]string, error) {
 			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _utf8s, _goerr
 }

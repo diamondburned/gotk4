@@ -34,7 +34,7 @@ type EventControllerKey interface {
 	ForwardEventControllerKey(widget Widget) bool
 
 	Group() uint
-
+	// ImContext gets the IM context of a key controller.
 	ImContext() IMContext
 
 	SetImContextEventControllerKey(imContext IMContext)
@@ -69,7 +69,7 @@ func NewEventControllerKey(widget Widget) EventControllerKey {
 
 	var _eventControllerKey EventControllerKey // out
 
-	_eventControllerKey = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(EventControllerKey)
+	_eventControllerKey = WrapEventControllerKey(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _eventControllerKey
 }

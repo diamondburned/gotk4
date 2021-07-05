@@ -59,14 +59,37 @@ func init() {
 type Cursor interface {
 	gextras.Objector
 
+	// Fallback returns the fallback for this @cursor.
+	//
+	// The fallback will be used if this cursor is not available on a given
+	// `GdkDisplay`. For named cursors, this can happen when using nonstandard
+	// names or when using an incomplete cursor theme. For textured cursors,
+	// this can happen when the texture is too large or when the `GdkDisplay` it
+	// is used on does not support textured cursors.
 	Fallback() Cursor
-
+	// HotspotX returns the horizontal offset of the hotspot.
+	//
+	// The hotspot indicates the pixel that will be directly above the cursor.
+	//
+	// Note that named cursors may have a nonzero hotspot, but this function
+	// will only return the hotspot position for cursors created with
+	// [ctor@Gdk.Cursor.new_from_texture].
 	HotspotX() int
-
+	// HotspotY returns the vertical offset of the hotspot.
+	//
+	// The hotspot indicates the pixel that will be directly above the cursor.
+	//
+	// Note that named cursors may have a nonzero hotspot, but this function
+	// will only return the hotspot position for cursors created with
+	// [ctor@Gdk.Cursor.new_from_texture].
 	HotspotY() int
-
+	// Name returns the name of the cursor.
+	//
+	// If the cursor is not a named cursor, nil will be returned.
 	Name() string
-
+	// Texture returns the texture for the cursor.
+	//
+	// If the cursor is a named cursor, nil will be returned.
 	Texture() Texture
 }
 
@@ -89,6 +112,31 @@ func marshalCursor(p uintptr) (interface{}, error) {
 	return WrapCursor(obj), nil
 }
 
+// NewCursorFromName creates a new cursor by looking up @name in the current
+// cursor theme.
+//
+// A recommended set of cursor names that will work across different platforms
+// can be found in the CSS specification:
+//
+// | | | | | | --- | --- | ---- | --- | | "none" | ! (default_cursor.png)
+// "default" | ! (help_cursor.png) "help" | ! (pointer_cursor.png) "pointer" | |
+// ! (context_menu_cursor.png) "context-menu" | ! (progress_cursor.png)
+// "progress" | ! (wait_cursor.png) "wait" | ! (cell_cursor.png) "cell" | | !
+// (crosshair_cursor.png) "crosshair" | ! (text_cursor.png) "text" | !
+// (vertical_text_cursor.png) "vertical-text" | ! (alias_cursor.png) "alias" | |
+// ! (copy_cursor.png) "copy" | ! (no_drop_cursor.png) "no-drop" | !
+// (move_cursor.png) "move" | ! (not_allowed_cursor.png) "not-allowed" | | !
+// (grab_cursor.png) "grab" | ! (grabbing_cursor.png) "grabbing" | !
+// (all_scroll_cursor.png) "all-scroll" | ! (col_resize_cursor.png) "col-resize"
+// | | ! (row_resize_cursor.png) "row-resize" | ! (n_resize_cursor.png)
+// "n-resize" | ! (e_resize_cursor.png) "e-resize" | ! (s_resize_cursor.png)
+// "s-resize" | | ! (w_resize_cursor.png) "w-resize" | ! (ne_resize_cursor.png)
+// "ne-resize" | ! (nw_resize_cursor.png) "nw-resize" | ! (sw_resize_cursor.png)
+// "sw-resize" | | ! (se_resize_cursor.png) "se-resize" | !
+// (ew_resize_cursor.png) "ew-resize" | ! (ns_resize_cursor.png) "ns-resize" | !
+// (nesw_resize_cursor.png) "nesw-resize" | | ! (nwse_resize_cursor.png)
+// "nwse-resize" | ! (zoom_in_cursor.png) "zoom-in" | ! (zoom_out_cursor.png)
+// "zoom-out" | |
 func NewCursorFromName(name string, fallback Cursor) Cursor {
 	var _arg1 *C.char      // out
 	var _arg2 *C.GdkCursor // out
@@ -102,11 +150,12 @@ func NewCursorFromName(name string, fallback Cursor) Cursor {
 
 	var _cursor Cursor // out
 
-	_cursor = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Cursor)
+	_cursor = WrapCursor(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _cursor
 }
 
+// NewCursorFromTexture creates a new cursor from a `GdkTexture`.
 func NewCursorFromTexture(texture Texture, hotspotX int, hotspotY int, fallback Cursor) Cursor {
 	var _arg1 *C.GdkTexture // out
 	var _arg2 C.int         // out
@@ -123,7 +172,7 @@ func NewCursorFromTexture(texture Texture, hotspotX int, hotspotY int, fallback 
 
 	var _cursor Cursor // out
 
-	_cursor = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Cursor)
+	_cursor = WrapCursor(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _cursor
 }

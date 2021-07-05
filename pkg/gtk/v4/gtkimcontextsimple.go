@@ -48,6 +48,8 @@ func init() {
 type IMContextSimple interface {
 	IMContext
 
+	// AddComposeFileIMContextSimple adds an additional table from the X11
+	// compose file.
 	AddComposeFileIMContextSimple(composeFile string)
 }
 
@@ -70,6 +72,7 @@ func marshalIMContextSimple(p uintptr) (interface{}, error) {
 	return WrapIMContextSimple(obj), nil
 }
 
+// NewIMContextSimple creates a new IMContextSimple.
 func NewIMContextSimple() IMContextSimple {
 	var _cret *C.GtkIMContext // in
 
@@ -77,7 +80,7 @@ func NewIMContextSimple() IMContextSimple {
 
 	var _imContextSimple IMContextSimple // out
 
-	_imContextSimple = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(IMContextSimple)
+	_imContextSimple = WrapIMContextSimple(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _imContextSimple
 }

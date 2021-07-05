@@ -38,12 +38,22 @@ func init() {
 // This is an abstract class; use SocketAddress for internet sockets, or
 // SocketAddress for UNIX domain sockets.
 type SocketAddress interface {
-	SocketConnectable
+	gextras.Objector
 
+	// AsSocketConnectable casts the class to the SocketConnectable interface.
+	AsSocketConnectable() SocketConnectable
+
+	// Family gets the socket family type of @address.
 	Family() SocketFamily
-
+	// NativeSize gets the size of @address's native struct sockaddr. You can
+	// use this to allocate memory to pass to g_socket_address_to_native().
 	NativeSize() int
-
+	// ToNativeSocketAddress converts a Address to a native struct sockaddr,
+	// which can be passed to low-level functions like connect() or bind().
+	//
+	// If not enough space is available, a G_IO_ERROR_NO_SPACE error is
+	// returned. If the address type is not known on the system then a
+	// G_IO_ERROR_NOT_SUPPORTED error is returned.
 	ToNativeSocketAddress(dest interface{}, destlen uint) error
 }
 
@@ -66,19 +76,21 @@ func marshalSocketAddress(p uintptr) (interface{}, error) {
 	return WrapSocketAddress(obj), nil
 }
 
+// NewSocketAddressFromNative creates a Address subclass corresponding to the
+// native struct sockaddr @native.
 func NewSocketAddressFromNative(native interface{}, len uint) SocketAddress {
 	var _arg1 C.gpointer        // out
 	var _arg2 C.gsize           // out
 	var _cret *C.GSocketAddress // in
 
-	_arg1 = C.gpointer(box.Assign(unsafe.Pointer(native)))
+	_arg1 = C.gpointer(box.Assign(native))
 	_arg2 = C.gsize(len)
 
 	_cret = C.g_socket_address_new_from_native(_arg1, _arg2)
 
 	var _socketAddress SocketAddress // out
 
-	_socketAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(SocketAddress)
+	_socketAddress = WrapSocketAddress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _socketAddress
 }
@@ -117,29 +129,30 @@ func (a socketAddress) ToNativeSocketAddress(dest interface{}, destlen uint) err
 	var _arg0 *C.GSocketAddress // out
 	var _arg1 C.gpointer        // out
 	var _arg2 C.gsize           // out
-	var _cerr *C.GError         // in
+	var _cerr **C.GError        // in
 
 	_arg0 = (*C.GSocketAddress)(unsafe.Pointer(a.Native()))
-	_arg1 = C.gpointer(box.Assign(unsafe.Pointer(dest)))
+	_arg1 = C.gpointer(box.Assign(dest))
 	_arg2 = C.gsize(destlen)
 
 	C.g_socket_address_to_native(_arg0, _arg1, _arg2, &_cerr)
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _goerr
 }
 
-func (c socketAddress) Enumerate() SocketAddressEnumerator {
-	return WrapSocketConnectable(gextras.InternObject(c)).Enumerate()
-}
-
-func (c socketAddress) ProxyEnumerate() SocketAddressEnumerator {
-	return WrapSocketConnectable(gextras.InternObject(c)).ProxyEnumerate()
-}
-
-func (c socketAddress) String() string {
-	return WrapSocketConnectable(gextras.InternObject(c)).String()
+func (s socketAddress) AsSocketConnectable() SocketConnectable {
+	return WrapSocketConnectable(gextras.InternObject(s))
 }

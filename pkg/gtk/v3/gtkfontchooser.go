@@ -53,7 +53,7 @@ func marshalFontChooserLevel(p uintptr) (interface{}, error) {
 
 // FontFilterFunc: the type of function that is used for deciding what fonts get
 // shown in a FontChooser. See gtk_font_chooser_set_filter_func().
-type FontFilterFunc func(family pango.FontFamily, face pango.FontFace, ok bool)
+type FontFilterFunc func(family pango.FontFamily, face pango.FontFace) (ok bool)
 
 //export gotk4_FontFilterFunc
 func gotk4_FontFilterFunc(arg0 *C.PangoFontFamily, arg1 *C.PangoFontFace, arg2 C.gpointer) C.gboolean {
@@ -87,39 +87,84 @@ func gotk4_FontFilterFunc(arg0 *C.PangoFontFamily, arg1 *C.PangoFontFace, arg2 C
 type FontChooser interface {
 	gextras.Objector
 
-	// Font shows or hides the editable preview entry.
+	// Font gets the currently-selected font name.
+	//
+	// Note that this can be a different string than what you set with
+	// gtk_font_chooser_set_font(), as the font chooser widget may normalize
+	// font names and thus return a string with a different structure. For
+	// example, “Helvetica Italic Bold 12” could be normalized to “Helvetica
+	// Bold Italic 12”.
+	//
+	// Use pango_font_description_equal() if you want to compare two font
+	// descriptions.
 	Font() string
-	// FontDesc shows or hides the editable preview entry.
-	FontDesc() *pango.FontDescription
-	// FontFace shows or hides the editable preview entry.
+	// FontDesc gets the currently-selected font.
+	//
+	// Note that this can be a different string than what you set with
+	// gtk_font_chooser_set_font(), as the font chooser widget may normalize
+	// font names and thus return a string with a different structure. For
+	// example, “Helvetica Italic Bold 12” could be normalized to “Helvetica
+	// Bold Italic 12”.
+	//
+	// Use pango_font_description_equal() if you want to compare two font
+	// descriptions.
+	FontDesc() pango.FontDescription
+	// FontFace gets the FontFace representing the selected font group details
+	// (i.e. family, slant, weight, width, etc).
+	//
+	// If the selected font is not installed, returns nil.
 	FontFace() pango.FontFace
-	// FontFamily shows or hides the editable preview entry.
+	// FontFamily gets the FontFamily representing the selected font family.
+	// Font families are a collection of font faces.
+	//
+	// If the selected font is not installed, returns nil.
 	FontFamily() pango.FontFamily
-	// FontFeatures shows or hides the editable preview entry.
+	// FontFeatures gets the currently-selected font features.
 	FontFeatures() string
-	// FontMap shows or hides the editable preview entry.
+	// FontMap gets the custom font map of this font chooser widget, or nil if
+	// it does not have one.
 	FontMap() pango.FontMap
-	// FontSize shows or hides the editable preview entry.
+	// FontSize: the selected font size.
 	FontSize() int
-	// Language shows or hides the editable preview entry.
+	// Language gets the language that is used for font features.
 	Language() string
-	// Level shows or hides the editable preview entry.
+	// Level returns the current level of granularity for selecting fonts.
 	Level() FontChooserLevel
-	// PreviewText shows or hides the editable preview entry.
+	// PreviewText gets the text displayed in the preview area.
 	PreviewText() string
-	// ShowPreviewEntry shows or hides the editable preview entry.
+	// ShowPreviewEntry returns whether the preview entry is shown or not.
 	ShowPreviewEntry() bool
-	// SetFont shows or hides the editable preview entry.
+	// SetFont sets the currently-selected font.
 	SetFont(fontname string)
-	// SetFontDesc shows or hides the editable preview entry.
-	SetFontDesc(fontDesc *pango.FontDescription)
-	// SetFontMap shows or hides the editable preview entry.
+	// SetFontDesc sets the currently-selected font from @font_desc.
+	SetFontDesc(fontDesc pango.FontDescription)
+	// SetFontMap sets a custom font map to use for this font chooser widget. A
+	// custom font map can be used to present application-specific fonts instead
+	// of or in addition to the normal system fonts.
+	//
+	//    FcConfig *config;
+	//    PangoFontMap *fontmap;
+	//
+	//    config = FcInitLoadConfigAndFonts ();
+	//    FcConfigAppFontAddFile (config, my_app_font_file);
+	//
+	//    fontmap = pango_cairo_font_map_new_for_font_type (CAIRO_FONT_TYPE_FT);
+	//    pango_fc_font_map_set_config (PANGO_FC_FONT_MAP (fontmap), config);
+	//
+	//    gtk_font_chooser_set_font_map (font_chooser, fontmap);
+	//
+	// Note that other GTK+ widgets will only be able to use the
+	// application-specific font if it is present in the font map they use:
+	//
+	//    context = gtk_widget_get_pango_context (label);
+	//    pango_context_set_font_map (context, fontmap);
 	SetFontMap(fontmap pango.FontMap)
-	// SetLanguage shows or hides the editable preview entry.
+	// SetLanguage sets the language to use for font features.
 	SetLanguage(language string)
-	// SetLevel shows or hides the editable preview entry.
+	// SetLevel sets the desired level of granularity for selecting fonts.
 	SetLevel(level FontChooserLevel)
-	// SetPreviewText shows or hides the editable preview entry.
+	// SetPreviewText sets the text displayed in the preview area. The @text is
+	// used to show how the selected font looks.
 	SetPreviewText(text string)
 	// SetShowPreviewEntry shows or hides the editable preview entry.
 	SetShowPreviewEntry(showPreviewEntry bool)
@@ -162,7 +207,7 @@ func (f fontChooser) Font() string {
 	return _utf8
 }
 
-func (f fontChooser) FontDesc() *pango.FontDescription {
+func (f fontChooser) FontDesc() pango.FontDescription {
 	var _arg0 *C.GtkFontChooser       // out
 	var _cret *C.PangoFontDescription // in
 
@@ -170,11 +215,11 @@ func (f fontChooser) FontDesc() *pango.FontDescription {
 
 	_cret = C.gtk_font_chooser_get_font_desc(_arg0)
 
-	var _fontDescription *pango.FontDescription // out
+	var _fontDescription pango.FontDescription // out
 
-	_fontDescription = (*pango.FontDescription)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(&_fontDescription, func(v **pango.FontDescription) {
-		C.free(unsafe.Pointer(v))
+	_fontDescription = (pango.FontDescription)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_fontDescription, func(v pango.FontDescription) {
+		C.pango_font_description_free((*C.PangoFontDescription)(unsafe.Pointer(v)))
 	})
 
 	return _fontDescription
@@ -331,12 +376,12 @@ func (f fontChooser) SetFont(fontname string) {
 	C.gtk_font_chooser_set_font(_arg0, _arg1)
 }
 
-func (f fontChooser) SetFontDesc(fontDesc *pango.FontDescription) {
+func (f fontChooser) SetFontDesc(fontDesc pango.FontDescription) {
 	var _arg0 *C.GtkFontChooser       // out
 	var _arg1 *C.PangoFontDescription // out
 
 	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(f.Native()))
-	_arg1 = (*C.PangoFontDescription)(unsafe.Pointer(fontDesc.Native()))
+	_arg1 = (*C.PangoFontDescription)(unsafe.Pointer(fontDesc))
 
 	C.gtk_font_chooser_set_font_desc(_arg0, _arg1)
 }

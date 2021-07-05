@@ -3,13 +3,9 @@
 package gtk
 
 import (
-	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
-	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -39,7 +35,13 @@ func init() {
 // Recently used files are supported since GTK+ 2.10.
 type RecentChooserWidget interface {
 	Box
-	RecentChooser
+
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsOrientable casts the class to the Orientable interface.
+	AsOrientable() Orientable
+	// AsRecentChooser casts the class to the RecentChooser interface.
+	AsRecentChooser() RecentChooser
 }
 
 // recentChooserWidget implements the RecentChooserWidget class.
@@ -61,6 +63,8 @@ func marshalRecentChooserWidget(p uintptr) (interface{}, error) {
 	return WrapRecentChooserWidget(obj), nil
 }
 
+// NewRecentChooserWidget creates a new RecentChooserWidget object. This is an
+// embeddable widget used to access the recently used resources list.
 func NewRecentChooserWidget() RecentChooserWidget {
 	var _cret *C.GtkWidget // in
 
@@ -68,11 +72,16 @@ func NewRecentChooserWidget() RecentChooserWidget {
 
 	var _recentChooserWidget RecentChooserWidget // out
 
-	_recentChooserWidget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(RecentChooserWidget)
+	_recentChooserWidget = WrapRecentChooserWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _recentChooserWidget
 }
 
+// NewRecentChooserWidgetForManager creates a new RecentChooserWidget with a
+// specified recent manager.
+//
+// This is useful if you have implemented your own recent manager, or if you
+// have a customized instance of a RecentManager object.
 func NewRecentChooserWidgetForManager(manager RecentManager) RecentChooserWidget {
 	var _arg1 *C.GtkRecentManager // out
 	var _cret *C.GtkWidget        // in
@@ -83,163 +92,19 @@ func NewRecentChooserWidgetForManager(manager RecentManager) RecentChooserWidget
 
 	var _recentChooserWidget RecentChooserWidget // out
 
-	_recentChooserWidget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(RecentChooserWidget)
+	_recentChooserWidget = WrapRecentChooserWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _recentChooserWidget
 }
 
-func (b recentChooserWidget) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+func (r recentChooserWidget) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(r))
 }
 
-func (b recentChooserWidget) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+func (r recentChooserWidget) AsOrientable() Orientable {
+	return WrapOrientable(gextras.InternObject(r))
 }
 
-func (b recentChooserWidget) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b recentChooserWidget) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b recentChooserWidget) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b recentChooserWidget) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b recentChooserWidget) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b recentChooserWidget) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b recentChooserWidget) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b recentChooserWidget) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (o recentChooserWidget) Orientation() Orientation {
-	return WrapOrientable(gextras.InternObject(o)).Orientation()
-}
-
-func (o recentChooserWidget) SetOrientation(orientation Orientation) {
-	WrapOrientable(gextras.InternObject(o)).SetOrientation(orientation)
-}
-
-func (c recentChooserWidget) AddFilter(filter RecentFilter) {
-	WrapRecentChooser(gextras.InternObject(c)).AddFilter(filter)
-}
-
-func (c recentChooserWidget) CurrentItem() *RecentInfo {
-	return WrapRecentChooser(gextras.InternObject(c)).CurrentItem()
-}
-
-func (c recentChooserWidget) CurrentURI() string {
-	return WrapRecentChooser(gextras.InternObject(c)).CurrentURI()
-}
-
-func (c recentChooserWidget) Filter() RecentFilter {
-	return WrapRecentChooser(gextras.InternObject(c)).Filter()
-}
-
-func (c recentChooserWidget) Limit() int {
-	return WrapRecentChooser(gextras.InternObject(c)).Limit()
-}
-
-func (c recentChooserWidget) LocalOnly() bool {
-	return WrapRecentChooser(gextras.InternObject(c)).LocalOnly()
-}
-
-func (c recentChooserWidget) SelectMultiple() bool {
-	return WrapRecentChooser(gextras.InternObject(c)).SelectMultiple()
-}
-
-func (c recentChooserWidget) ShowIcons() bool {
-	return WrapRecentChooser(gextras.InternObject(c)).ShowIcons()
-}
-
-func (c recentChooserWidget) ShowNotFound() bool {
-	return WrapRecentChooser(gextras.InternObject(c)).ShowNotFound()
-}
-
-func (c recentChooserWidget) ShowPrivate() bool {
-	return WrapRecentChooser(gextras.InternObject(c)).ShowPrivate()
-}
-
-func (c recentChooserWidget) ShowTips() bool {
-	return WrapRecentChooser(gextras.InternObject(c)).ShowTips()
-}
-
-func (c recentChooserWidget) SortType() RecentSortType {
-	return WrapRecentChooser(gextras.InternObject(c)).SortType()
-}
-
-func (c recentChooserWidget) RemoveFilter(filter RecentFilter) {
-	WrapRecentChooser(gextras.InternObject(c)).RemoveFilter(filter)
-}
-
-func (c recentChooserWidget) SelectAll() {
-	WrapRecentChooser(gextras.InternObject(c)).SelectAll()
-}
-
-func (c recentChooserWidget) SelectURI(uri string) error {
-	return WrapRecentChooser(gextras.InternObject(c)).SelectURI(uri)
-}
-
-func (c recentChooserWidget) SetCurrentURI(uri string) error {
-	return WrapRecentChooser(gextras.InternObject(c)).SetCurrentURI(uri)
-}
-
-func (c recentChooserWidget) SetFilter(filter RecentFilter) {
-	WrapRecentChooser(gextras.InternObject(c)).SetFilter(filter)
-}
-
-func (c recentChooserWidget) SetLimit(limit int) {
-	WrapRecentChooser(gextras.InternObject(c)).SetLimit(limit)
-}
-
-func (c recentChooserWidget) SetLocalOnly(localOnly bool) {
-	WrapRecentChooser(gextras.InternObject(c)).SetLocalOnly(localOnly)
-}
-
-func (c recentChooserWidget) SetSelectMultiple(selectMultiple bool) {
-	WrapRecentChooser(gextras.InternObject(c)).SetSelectMultiple(selectMultiple)
-}
-
-func (c recentChooserWidget) SetShowIcons(showIcons bool) {
-	WrapRecentChooser(gextras.InternObject(c)).SetShowIcons(showIcons)
-}
-
-func (c recentChooserWidget) SetShowNotFound(showNotFound bool) {
-	WrapRecentChooser(gextras.InternObject(c)).SetShowNotFound(showNotFound)
-}
-
-func (c recentChooserWidget) SetShowPrivate(showPrivate bool) {
-	WrapRecentChooser(gextras.InternObject(c)).SetShowPrivate(showPrivate)
-}
-
-func (c recentChooserWidget) SetShowTips(showTips bool) {
-	WrapRecentChooser(gextras.InternObject(c)).SetShowTips(showTips)
-}
-
-func (c recentChooserWidget) SetSortType(sortType RecentSortType) {
-	WrapRecentChooser(gextras.InternObject(c)).SetSortType(sortType)
-}
-
-func (c recentChooserWidget) UnselectAll() {
-	WrapRecentChooser(gextras.InternObject(c)).UnselectAll()
-}
-
-func (c recentChooserWidget) UnselectURI(uri string) {
-	WrapRecentChooser(gextras.InternObject(c)).UnselectURI(uri)
+func (r recentChooserWidget) AsRecentChooser() RecentChooser {
+	return WrapRecentChooser(gextras.InternObject(r))
 }

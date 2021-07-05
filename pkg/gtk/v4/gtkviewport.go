@@ -42,14 +42,25 @@ func init() {
 // `GtkViewport` uses the GTK_ACCESSIBLE_ROLE_GROUP role.
 type Viewport interface {
 	Widget
-	Scrollable
 
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
+	// AsScrollable casts the class to the Scrollable interface.
+	AsScrollable() Scrollable
+
+	// Child gets the child widget of @viewport.
 	Child() Widget
-
+	// ScrollToFocus gets whether the viewport is scrolling to keep the focused
+	// child in view.
 	ScrollToFocus() bool
-
+	// SetChildViewport sets the child widget of @viewport.
 	SetChildViewport(child Widget)
-
+	// SetScrollToFocusViewport sets whether the viewport should automatically
+	// scroll to keep the focused child in view.
 	SetScrollToFocusViewport(scrollToFocus bool)
 }
 
@@ -72,6 +83,10 @@ func marshalViewport(p uintptr) (interface{}, error) {
 	return WrapViewport(obj), nil
 }
 
+// NewViewport creates a new `GtkViewport`.
+//
+// The new viewport uses the given adjustments, or default adjustments if none
+// are given.
 func NewViewport(hadjustment Adjustment, vadjustment Adjustment) Viewport {
 	var _arg1 *C.GtkAdjustment // out
 	var _arg2 *C.GtkAdjustment // out
@@ -84,7 +99,7 @@ func NewViewport(hadjustment Adjustment, vadjustment Adjustment) Viewport {
 
 	var _viewport Viewport // out
 
-	_viewport = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Viewport)
+	_viewport = WrapViewport(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _viewport
 }
@@ -143,70 +158,18 @@ func (v viewport) SetScrollToFocusViewport(scrollToFocus bool) {
 	C.gtk_viewport_set_scroll_to_focus(_arg0, _arg1)
 }
 
-func (s viewport) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
+func (v viewport) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(v))
 }
 
-func (s viewport) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
+func (v viewport) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(v))
 }
 
-func (s viewport) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
+func (v viewport) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(v))
 }
 
-func (s viewport) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s viewport) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s viewport) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s viewport) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b viewport) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
-}
-
-func (s viewport) Border() (Border, bool) {
-	return WrapScrollable(gextras.InternObject(s)).Border()
-}
-
-func (s viewport) HAdjustment() Adjustment {
-	return WrapScrollable(gextras.InternObject(s)).HAdjustment()
-}
-
-func (s viewport) HScrollPolicy() ScrollablePolicy {
-	return WrapScrollable(gextras.InternObject(s)).HScrollPolicy()
-}
-
-func (s viewport) VAdjustment() Adjustment {
-	return WrapScrollable(gextras.InternObject(s)).VAdjustment()
-}
-
-func (s viewport) VScrollPolicy() ScrollablePolicy {
-	return WrapScrollable(gextras.InternObject(s)).VScrollPolicy()
-}
-
-func (s viewport) SetHAdjustment(hadjustment Adjustment) {
-	WrapScrollable(gextras.InternObject(s)).SetHAdjustment(hadjustment)
-}
-
-func (s viewport) SetHScrollPolicy(policy ScrollablePolicy) {
-	WrapScrollable(gextras.InternObject(s)).SetHScrollPolicy(policy)
-}
-
-func (s viewport) SetVAdjustment(vadjustment Adjustment) {
-	WrapScrollable(gextras.InternObject(s)).SetVAdjustment(vadjustment)
-}
-
-func (s viewport) SetVScrollPolicy(policy ScrollablePolicy) {
-	WrapScrollable(gextras.InternObject(s)).SetVScrollPolicy(policy)
+func (v viewport) AsScrollable() Scrollable {
+	return WrapScrollable(gextras.InternObject(v))
 }

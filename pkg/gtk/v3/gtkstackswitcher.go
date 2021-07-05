@@ -5,9 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -50,8 +48,14 @@ func init() {
 type StackSwitcher interface {
 	Box
 
-	Stack() Stack
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsOrientable casts the class to the Orientable interface.
+	AsOrientable() Orientable
 
+	// Stack retrieves the stack. See gtk_stack_switcher_set_stack().
+	Stack() Stack
+	// SetStackStackSwitcher sets the stack to control.
 	SetStackStackSwitcher(stack Stack)
 }
 
@@ -74,6 +78,7 @@ func marshalStackSwitcher(p uintptr) (interface{}, error) {
 	return WrapStackSwitcher(obj), nil
 }
 
+// NewStackSwitcher: create a new StackSwitcher.
 func NewStackSwitcher() StackSwitcher {
 	var _cret *C.GtkWidget // in
 
@@ -81,7 +86,7 @@ func NewStackSwitcher() StackSwitcher {
 
 	var _stackSwitcher StackSwitcher // out
 
-	_stackSwitcher = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(StackSwitcher)
+	_stackSwitcher = WrapStackSwitcher(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _stackSwitcher
 }
@@ -111,50 +116,10 @@ func (s stackSwitcher) SetStackStackSwitcher(stack Stack) {
 	C.gtk_stack_switcher_set_stack(_arg0, _arg1)
 }
 
-func (b stackSwitcher) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+func (s stackSwitcher) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(s))
 }
 
-func (b stackSwitcher) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b stackSwitcher) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b stackSwitcher) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b stackSwitcher) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b stackSwitcher) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b stackSwitcher) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b stackSwitcher) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b stackSwitcher) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b stackSwitcher) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (o stackSwitcher) Orientation() Orientation {
-	return WrapOrientable(gextras.InternObject(o)).Orientation()
-}
-
-func (o stackSwitcher) SetOrientation(orientation Orientation) {
-	WrapOrientable(gextras.InternObject(o)).SetOrientation(orientation)
+func (s stackSwitcher) AsOrientable() Orientable {
+	return WrapOrientable(gextras.InternObject(s))
 }

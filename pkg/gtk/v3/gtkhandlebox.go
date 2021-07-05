@@ -5,9 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -52,18 +50,51 @@ func init() {
 type HandleBox interface {
 	Bin
 
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+
+	// ChildDetached: whether the handlebox’s child is currently detached.
+	//
+	// Deprecated: since version 3.4.
 	ChildDetached() bool
-
+	// HandlePosition gets the handle position of the handle box. See
+	// gtk_handle_box_set_handle_position().
+	//
+	// Deprecated: since version 3.4.
 	HandlePosition() PositionType
-
+	// ShadowType gets the type of shadow drawn around the handle box. See
+	// gtk_handle_box_set_shadow_type().
+	//
+	// Deprecated: since version 3.4.
 	ShadowType() ShadowType
-
+	// SnapEdge gets the edge used for determining reattachment of the handle
+	// box. See gtk_handle_box_set_snap_edge().
+	//
+	// Deprecated: since version 3.4.
 	SnapEdge() PositionType
-
+	// SetHandlePositionHandleBox sets the side of the handlebox where the
+	// handle is drawn.
+	//
+	// Deprecated: since version 3.4.
 	SetHandlePositionHandleBox(position PositionType)
-
+	// SetShadowTypeHandleBox sets the type of shadow to be drawn around the
+	// border of the handle box.
+	//
+	// Deprecated: since version 3.4.
 	SetShadowTypeHandleBox(typ ShadowType)
-
+	// SetSnapEdgeHandleBox sets the snap edge of a handlebox. The snap edge is
+	// the edge of the detached child that must be aligned with the
+	// corresponding edge of the “ghost” left behind when the child was detached
+	// to reattach the torn-off window. Usually, the snap edge should be chosen
+	// so that it stays in the same place on the screen when the handlebox is
+	// torn off.
+	//
+	// If the snap edge is not set, then an appropriate value will be guessed
+	// from the handle position. If the handle position is GTK_POS_RIGHT or
+	// GTK_POS_LEFT, then the snap edge will be GTK_POS_TOP, otherwise it will
+	// be GTK_POS_LEFT.
+	//
+	// Deprecated: since version 3.4.
 	SetSnapEdgeHandleBox(edge PositionType)
 }
 
@@ -86,6 +117,9 @@ func marshalHandleBox(p uintptr) (interface{}, error) {
 	return WrapHandleBox(obj), nil
 }
 
+// NewHandleBox: create a new handle box.
+//
+// Deprecated: since version 3.4.
 func NewHandleBox() HandleBox {
 	var _cret *C.GtkWidget // in
 
@@ -93,7 +127,7 @@ func NewHandleBox() HandleBox {
 
 	var _handleBox HandleBox // out
 
-	_handleBox = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(HandleBox)
+	_handleBox = WrapHandleBox(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _handleBox
 }
@@ -190,42 +224,6 @@ func (h handleBox) SetSnapEdgeHandleBox(edge PositionType) {
 	C.gtk_handle_box_set_snap_edge(_arg0, _arg1)
 }
 
-func (b handleBox) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
-}
-
-func (b handleBox) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b handleBox) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b handleBox) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b handleBox) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b handleBox) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b handleBox) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b handleBox) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b handleBox) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b handleBox) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
+func (h handleBox) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(h))
 }

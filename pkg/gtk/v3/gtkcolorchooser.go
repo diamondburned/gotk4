@@ -34,17 +34,29 @@ func init() {
 type ColorChooser interface {
 	gextras.Objector
 
-	// AddPalette sets whether or not the color chooser should use the alpha
-	// channel.
+	// AddPalette adds a palette to the color chooser. If @orientation is
+	// horizontal, the colors are grouped in rows, with @colors_per_line colors
+	// in each row. If @horizontal is false, the colors are grouped in columns
+	// instead.
+	//
+	// The default color palette of ColorChooserWidget has 27 colors, organized
+	// in columns of 3 colors. The default gray palette has 9 grays in a single
+	// row.
+	//
+	// The layout of the color chooser widget works best when the palettes have
+	// 9-10 columns.
+	//
+	// Calling this function for the first time has the side effect of removing
+	// the default color and gray palettes from the color chooser.
+	//
+	// If @colors is nil, removes all previously added palettes.
 	AddPalette(orientation Orientation, colorsPerLine int, colors []gdk.RGBA)
-	// RGBA sets whether or not the color chooser should use the alpha channel.
+	// RGBA gets the currently-selected color.
 	RGBA() gdk.RGBA
-	// UseAlpha sets whether or not the color chooser should use the alpha
-	// channel.
+	// UseAlpha returns whether the color chooser shows the alpha channel.
 	UseAlpha() bool
-	// SetRGBA sets whether or not the color chooser should use the alpha
-	// channel.
-	SetRGBA(color *gdk.RGBA)
+	// SetRGBA sets the color.
+	SetRGBA(color gdk.RGBA)
 	// SetUseAlpha sets whether or not the color chooser should use the alpha
 	// channel.
 	SetUseAlpha(useAlpha bool)
@@ -89,7 +101,7 @@ func (c colorChooser) AddPalette(orientation Orientation, colorsPerLine int, col
 
 func (c colorChooser) RGBA() gdk.RGBA {
 	var _arg0 *C.GtkColorChooser // out
-	var _arg1 C.GdkRGBA          // in
+	var _arg1 *C.GdkRGBA         // in
 
 	_arg0 = (*C.GtkColorChooser)(unsafe.Pointer(c.Native()))
 
@@ -97,17 +109,7 @@ func (c colorChooser) RGBA() gdk.RGBA {
 
 	var _color gdk.RGBA // out
 
-	{
-		var refTmpIn *C.GdkRGBA
-		var refTmpOut *gdk.RGBA
-
-		in0 := &_arg1
-		refTmpIn = in0
-
-		refTmpOut = (*gdk.RGBA)(unsafe.Pointer(refTmpIn))
-
-		_color = *refTmpOut
-	}
+	_color = (gdk.RGBA)(unsafe.Pointer(_arg1))
 
 	return _color
 }
@@ -129,12 +131,12 @@ func (c colorChooser) UseAlpha() bool {
 	return _ok
 }
 
-func (c colorChooser) SetRGBA(color *gdk.RGBA) {
+func (c colorChooser) SetRGBA(color gdk.RGBA) {
 	var _arg0 *C.GtkColorChooser // out
 	var _arg1 *C.GdkRGBA         // out
 
 	_arg0 = (*C.GtkColorChooser)(unsafe.Pointer(c.Native()))
-	_arg1 = (*C.GdkRGBA)(unsafe.Pointer(color.Native()))
+	_arg1 = (*C.GdkRGBA)(unsafe.Pointer(color))
 
 	C.gtk_color_chooser_set_rgba(_arg0, _arg1)
 }

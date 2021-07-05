@@ -70,32 +70,90 @@ func init() {
 // `GtkProgressBar` uses the K_ACCESSIBLE_ROLE_PROGRESS_BAR role.
 type ProgressBar interface {
 	Widget
-	Orientable
 
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
+	// AsOrientable casts the class to the Orientable interface.
+	AsOrientable() Orientable
+
+	// Ellipsize returns the ellipsizing position of the progress bar.
+	//
+	// See [method@Gtk.ProgressBar.set_ellipsize].
 	Ellipsize() pango.EllipsizeMode
-
+	// Fraction returns the current fraction of the task that’s been completed.
 	Fraction() float64
-
+	// Inverted returns whether the progress bar is inverted.
 	Inverted() bool
-
+	// PulseStep retrieves the pulse step.
+	//
+	// See [method@Gtk.ProgressBar.set_pulse_step].
 	PulseStep() float64
-
+	// ShowText returns whether the `GtkProgressBar` shows text.
+	//
+	// See [method@Gtk.ProgressBar.set_show_text].
 	ShowText() bool
-
+	// Text retrieves the text that is displayed with the progress bar.
+	//
+	// The return value is a reference to the text, not a copy of it, so will
+	// become invalid if you change the text in the progress bar.
 	Text() string
-
+	// PulseProgressBar indicates that some progress has been made, but you
+	// don’t know how much.
+	//
+	// Causes the progress bar to enter “activity mode,” where a block bounces
+	// back and forth. Each call to [method@Gtk.ProgressBar.pulse] causes the
+	// block to move by a little bit (the amount of movement per pulse is
+	// determined by [method@Gtk.ProgressBar.set_pulse_step]).
 	PulseProgressBar()
-
+	// SetEllipsizeProgressBar sets the mode used to ellipsize the text.
+	//
+	// The text is ellipsized if there is not enough space to render the entire
+	// string.
 	SetEllipsizeProgressBar(mode pango.EllipsizeMode)
-
+	// SetFractionProgressBar causes the progress bar to “fill in” the given
+	// fraction of the bar.
+	//
+	// The fraction should be between 0.0 and 1.0, inclusive.
 	SetFractionProgressBar(fraction float64)
-
+	// SetInvertedProgressBar sets whether the progress bar is inverted.
+	//
+	// Progress bars normally grow from top to bottom or left to right. Inverted
+	// progress bars grow in the opposite direction.
 	SetInvertedProgressBar(inverted bool)
-
+	// SetPulseStepProgressBar sets the fraction of total progress bar length to
+	// move the bouncing block.
+	//
+	// The bouncing block is moved when [method@Gtk.ProgressBar.pulse] is
+	// called.
 	SetPulseStepProgressBar(fraction float64)
-
+	// SetShowTextProgressBar sets whether the progress bar will show text next
+	// to the bar.
+	//
+	// The shown text is either the value of the [property@Gtk.ProgressBar:text]
+	// property or, if that is nil, the [property@Gtk.ProgressBar:fraction]
+	// value, as a percentage.
+	//
+	// To make a progress bar that is styled and sized suitably for containing
+	// text (even if the actual text is blank), set
+	// [property@Gtk.ProgressBar:show-text] to true and
+	// [property@Gtk.ProgressBar:text] to the empty string (not nil).
 	SetShowTextProgressBar(showText bool)
-
+	// SetTextProgressBar causes the given @text to appear next to the progress
+	// bar.
+	//
+	// If @text is nil and [property@Gtk.ProgressBar:show-text] is true, the
+	// current value of [property@Gtk.ProgressBar:fraction] will be displayed as
+	// a percentage.
+	//
+	// If @text is non-nil and [property@Gtk.ProgressBar:show-text] is true, the
+	// text will be displayed. In this case, it will not display the progress
+	// percentage. If @text is the empty string, the progress bar will still be
+	// styled and sized suitably for containing text, as long as
+	// [property@Gtk.ProgressBar:show-text] is true.
 	SetTextProgressBar(text string)
 }
 
@@ -118,6 +176,7 @@ func marshalProgressBar(p uintptr) (interface{}, error) {
 	return WrapProgressBar(obj), nil
 }
 
+// NewProgressBar creates a new `GtkProgressBar`.
 func NewProgressBar() ProgressBar {
 	var _cret *C.GtkWidget // in
 
@@ -125,7 +184,7 @@ func NewProgressBar() ProgressBar {
 
 	var _progressBar ProgressBar // out
 
-	_progressBar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ProgressBar)
+	_progressBar = WrapProgressBar(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _progressBar
 }
@@ -297,42 +356,18 @@ func (p progressBar) SetTextProgressBar(text string) {
 	C.gtk_progress_bar_set_text(_arg0, _arg1)
 }
 
-func (s progressBar) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
+func (p progressBar) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(p))
 }
 
-func (s progressBar) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
+func (p progressBar) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(p))
 }
 
-func (s progressBar) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
+func (p progressBar) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(p))
 }
 
-func (s progressBar) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s progressBar) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s progressBar) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s progressBar) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b progressBar) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
-}
-
-func (o progressBar) Orientation() Orientation {
-	return WrapOrientable(gextras.InternObject(o)).Orientation()
-}
-
-func (o progressBar) SetOrientation(orientation Orientation) {
-	WrapOrientable(gextras.InternObject(o)).SetOrientation(orientation)
+func (p progressBar) AsOrientable() Orientable {
+	return WrapOrientable(gextras.InternObject(p))
 }

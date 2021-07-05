@@ -202,20 +202,35 @@ func marshalCursorType(p uintptr) (interface{}, error) {
 	return CursorType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// Cursor: a Cursor represents a cursor. Its contents are private.
+// Cursor represents a cursor. Its contents are private.
 type Cursor interface {
 	gextras.Objector
 
+	// CursorType returns the cursor type for this cursor.
 	CursorType() CursorType
-
+	// Display returns the display on which the Cursor is defined.
 	Display() Display
-
+	// Image returns a Pixbuf with the image used to display the cursor.
+	//
+	// Note that depending on the capabilities of the windowing system and on
+	// the cursor, GDK may not be able to obtain the image data. In this case,
+	// nil is returned.
 	Image() gdkpixbuf.Pixbuf
-
-	Surface() (xHot float64, yHot float64, surface *cairo.Surface)
-
+	// Surface returns a cairo image surface with the image used to display the
+	// cursor.
+	//
+	// Note that depending on the capabilities of the windowing system and on
+	// the cursor, GDK may not be able to obtain the image data. In this case,
+	// nil is returned.
+	Surface() (xHot float64, yHot float64, surface cairo.Surface)
+	// RefCursor adds a reference to @cursor.
+	//
+	// Deprecated: since version 3.0.
 	RefCursor() Cursor
-
+	// UnrefCursor removes a reference from @cursor, deallocating the cursor if
+	// no references remain.
+	//
+	// Deprecated: since version 3.0.
 	UnrefCursor()
 }
 
@@ -238,6 +253,12 @@ func marshalCursor(p uintptr) (interface{}, error) {
 	return WrapCursor(obj), nil
 }
 
+// NewCursor creates a new cursor from the set of builtin cursors for the
+// default display. See gdk_cursor_new_for_display().
+//
+// To make the cursor invisible, use GDK_BLANK_CURSOR.
+//
+// Deprecated: since version 3.16.
 func NewCursor(cursorType CursorType) Cursor {
 	var _arg1 C.GdkCursorType // out
 	var _cret *C.GdkCursor    // in
@@ -248,11 +269,12 @@ func NewCursor(cursorType CursorType) Cursor {
 
 	var _cursor Cursor // out
 
-	_cursor = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Cursor)
+	_cursor = WrapCursor(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _cursor
 }
 
+// NewCursorForDisplay creates a new cursor from the set of builtin cursors.
 func NewCursorForDisplay(display Display, cursorType CursorType) Cursor {
 	var _arg1 *C.GdkDisplay   // out
 	var _arg2 C.GdkCursorType // out
@@ -265,11 +287,33 @@ func NewCursorForDisplay(display Display, cursorType CursorType) Cursor {
 
 	var _cursor Cursor // out
 
-	_cursor = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Cursor)
+	_cursor = WrapCursor(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _cursor
 }
 
+// NewCursorFromName creates a new cursor by looking up @name in the current
+// cursor theme.
+//
+// A recommended set of cursor names that will work across different platforms
+// can be found in the CSS specification: - "none" - ! (default_cursor.png)
+// "default" - ! (help_cursor.png) "help" - ! (pointer_cursor.png) "pointer" - !
+// (context_menu_cursor.png) "context-menu" - ! (progress_cursor.png) "progress"
+// - ! (wait_cursor.png) "wait" - ! (cell_cursor.png) "cell" - !
+// (crosshair_cursor.png) "crosshair" - ! (text_cursor.png) "text" - !
+// (vertical_text_cursor.png) "vertical-text" - ! (alias_cursor.png) "alias" - !
+// (copy_cursor.png) "copy" - ! (no_drop_cursor.png) "no-drop" - !
+// (move_cursor.png) "move" - ! (not_allowed_cursor.png) "not-allowed" - !
+// (grab_cursor.png) "grab" - ! (grabbing_cursor.png) "grabbing" - !
+// (all_scroll_cursor.png) "all-scroll" - ! (col_resize_cursor.png) "col-resize"
+// - ! (row_resize_cursor.png) "row-resize" - ! (n_resize_cursor.png) "n-resize"
+// - ! (e_resize_cursor.png) "e-resize" - ! (s_resize_cursor.png) "s-resize" - !
+// (w_resize_cursor.png) "w-resize" - ! (ne_resize_cursor.png) "ne-resize" - !
+// (nw_resize_cursor.png) "nw-resize" - ! (sw_resize_cursor.png) "sw-resize" - !
+// (se_resize_cursor.png) "se-resize" - ! (ew_resize_cursor.png) "ew-resize" - !
+// (ns_resize_cursor.png) "ns-resize" - ! (nesw_resize_cursor.png) "nesw-resize"
+// - ! (nwse_resize_cursor.png) "nwse-resize" - ! (zoom_in_cursor.png) "zoom-in"
+// - ! (zoom_out_cursor.png) "zoom-out"
 func NewCursorFromName(display Display, name string) Cursor {
 	var _arg1 *C.GdkDisplay // out
 	var _arg2 *C.gchar      // out
@@ -283,11 +327,26 @@ func NewCursorFromName(display Display, name string) Cursor {
 
 	var _cursor Cursor // out
 
-	_cursor = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Cursor)
+	_cursor = WrapCursor(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _cursor
 }
 
+// NewCursorFromPixbuf creates a new cursor from a pixbuf.
+//
+// Not all GDK backends support RGBA cursors. If they are not supported, a
+// monochrome approximation will be displayed. The functions
+// gdk_display_supports_cursor_alpha() and gdk_display_supports_cursor_color()
+// can be used to determine whether RGBA cursors are supported;
+// gdk_display_get_default_cursor_size() and
+// gdk_display_get_maximal_cursor_size() give information about cursor sizes.
+//
+// If @x or @y are `-1`, the pixbuf must have options named “x_hot” and “y_hot”,
+// resp., containing integer values between `0` and the width resp. height of
+// the pixbuf. (Since: 3.0)
+//
+// On the X backend, support for RGBA cursors requires a sufficently new version
+// of the X Render extension.
 func NewCursorFromPixbuf(display Display, pixbuf gdkpixbuf.Pixbuf, x int, y int) Cursor {
 	var _arg1 *C.GdkDisplay // out
 	var _arg2 *C.GdkPixbuf  // out
@@ -304,12 +363,23 @@ func NewCursorFromPixbuf(display Display, pixbuf gdkpixbuf.Pixbuf, x int, y int)
 
 	var _cursor Cursor // out
 
-	_cursor = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Cursor)
+	_cursor = WrapCursor(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _cursor
 }
 
-func NewCursorFromSurface(display Display, surface *cairo.Surface, x float64, y float64) Cursor {
+// NewCursorFromSurface creates a new cursor from a cairo image surface.
+//
+// Not all GDK backends support RGBA cursors. If they are not supported, a
+// monochrome approximation will be displayed. The functions
+// gdk_display_supports_cursor_alpha() and gdk_display_supports_cursor_color()
+// can be used to determine whether RGBA cursors are supported;
+// gdk_display_get_default_cursor_size() and
+// gdk_display_get_maximal_cursor_size() give information about cursor sizes.
+//
+// On the X backend, support for RGBA cursors requires a sufficently new version
+// of the X Render extension.
+func NewCursorFromSurface(display Display, surface cairo.Surface, x float64, y float64) Cursor {
 	var _arg1 *C.GdkDisplay      // out
 	var _arg2 *C.cairo_surface_t // out
 	var _arg3 C.gdouble          // out
@@ -317,7 +387,7 @@ func NewCursorFromSurface(display Display, surface *cairo.Surface, x float64, y 
 	var _cret *C.GdkCursor       // in
 
 	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
-	_arg2 = (*C.cairo_surface_t)(unsafe.Pointer(surface.Native()))
+	_arg2 = (*C.cairo_surface_t)(unsafe.Pointer(surface))
 	_arg3 = C.gdouble(x)
 	_arg4 = C.gdouble(y)
 
@@ -325,7 +395,7 @@ func NewCursorFromSurface(display Display, surface *cairo.Surface, x float64, y 
 
 	var _cursor Cursor // out
 
-	_cursor = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Cursor)
+	_cursor = WrapCursor(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _cursor
 }
@@ -375,24 +445,24 @@ func (c cursor) Image() gdkpixbuf.Pixbuf {
 	return _pixbuf
 }
 
-func (c cursor) Surface() (xHot float64, yHot float64, surface *cairo.Surface) {
+func (c cursor) Surface() (xHot float64, yHot float64, surface cairo.Surface) {
 	var _arg0 *C.GdkCursor       // out
-	var _arg1 C.gdouble          // in
-	var _arg2 C.gdouble          // in
+	var _arg1 *C.gdouble         // in
+	var _arg2 *C.gdouble         // in
 	var _cret *C.cairo_surface_t // in
 
 	_arg0 = (*C.GdkCursor)(unsafe.Pointer(c.Native()))
 
 	_cret = C.gdk_cursor_get_surface(_arg0, &_arg1, &_arg2)
 
-	var _xHot float64           // out
-	var _yHot float64           // out
-	var _surface *cairo.Surface // out
+	var _xHot float64          // out
+	var _yHot float64          // out
+	var _surface cairo.Surface // out
 
 	_xHot = float64(_arg1)
 	_yHot = float64(_arg2)
-	_surface = (*cairo.Surface)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(&_surface, func(v **cairo.Surface) {
+	_surface = (cairo.Surface)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_surface, func(v cairo.Surface) {
 		C.free(unsafe.Pointer(v))
 	})
 

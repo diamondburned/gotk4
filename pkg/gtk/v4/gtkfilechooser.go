@@ -108,92 +108,89 @@ func marshalFileChooserError(p uintptr) (interface{}, error) {
 type FileChooser interface {
 	gextras.Objector
 
-	// AddChoice sets whether multiple files can be selected in the file
-	// chooser.
+	// AddChoice adds a 'choice' to the file chooser.
 	//
-	// This is only relevant if the action is set to be
-	// GTK_FILE_CHOOSER_ACTION_OPEN or GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER.
+	// This is typically implemented as a combobox or, for boolean choices, as a
+	// checkbutton. You can select a value using
+	// [method@Gtk.FileChooser.set_choice] before the dialog is shown, and you
+	// can obtain the user-selected value in the [signal@Gtk.Dialog::response]
+	// signal handler using [method@Gtk.FileChooser.get_choice].
 	AddChoice(id string, label string, options []string, optionLabels []string)
-	// AddFilter sets whether multiple files can be selected in the file
-	// chooser.
+	// AddFilter adds @filter to the list of filters that the user can select
+	// between.
 	//
-	// This is only relevant if the action is set to be
-	// GTK_FILE_CHOOSER_ACTION_OPEN or GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER.
+	// When a filter is selected, only files that are passed by that filter are
+	// displayed.
+	//
+	// Note that the @chooser takes ownership of the filter if it is floating,
+	// so you have to ref and sink it if you want to keep a reference.
 	AddFilter(filter FileFilter)
-	// Action sets whether multiple files can be selected in the file chooser.
-	//
-	// This is only relevant if the action is set to be
-	// GTK_FILE_CHOOSER_ACTION_OPEN or GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER.
+	// Action gets the type of operation that the file chooser is performing.
 	Action() FileChooserAction
-	// Choice sets whether multiple files can be selected in the file chooser.
-	//
-	// This is only relevant if the action is set to be
-	// GTK_FILE_CHOOSER_ACTION_OPEN or GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER.
+	// Choice gets the currently selected option in the 'choice' with the given
+	// ID.
 	Choice(id string) string
-	// CreateFolders sets whether multiple files can be selected in the file
-	// chooser.
-	//
-	// This is only relevant if the action is set to be
-	// GTK_FILE_CHOOSER_ACTION_OPEN or GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER.
+	// CreateFolders gets whether file chooser will offer to create new folders.
 	CreateFolders() bool
-	// CurrentName sets whether multiple files can be selected in the file
-	// chooser.
+	// CurrentName gets the current name in the file selector, as entered by the
+	// user.
 	//
-	// This is only relevant if the action is set to be
-	// GTK_FILE_CHOOSER_ACTION_OPEN or GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER.
+	// This is meant to be used in save dialogs, to get the currently typed
+	// filename when the file itself does not exist yet.
 	CurrentName() string
-	// Filter sets whether multiple files can be selected in the file chooser.
-	//
-	// This is only relevant if the action is set to be
-	// GTK_FILE_CHOOSER_ACTION_OPEN or GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER.
+	// Filter gets the current filter.
 	Filter() FileFilter
-	// SelectMultiple sets whether multiple files can be selected in the file
+	// SelectMultiple gets whether multiple files can be selected in the file
 	// chooser.
-	//
-	// This is only relevant if the action is set to be
-	// GTK_FILE_CHOOSER_ACTION_OPEN or GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER.
 	SelectMultiple() bool
-	// RemoveChoice sets whether multiple files can be selected in the file
-	// chooser.
-	//
-	// This is only relevant if the action is set to be
-	// GTK_FILE_CHOOSER_ACTION_OPEN or GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER.
+	// RemoveChoice removes a 'choice' that has been added with
+	// gtk_file_chooser_add_choice().
 	RemoveChoice(id string)
-	// RemoveFilter sets whether multiple files can be selected in the file
-	// chooser.
-	//
-	// This is only relevant if the action is set to be
-	// GTK_FILE_CHOOSER_ACTION_OPEN or GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER.
+	// RemoveFilter removes @filter from the list of filters that the user can
+	// select between.
 	RemoveFilter(filter FileFilter)
-	// SetAction sets whether multiple files can be selected in the file
-	// chooser.
+	// SetAction sets the type of operation that the chooser is performing.
 	//
-	// This is only relevant if the action is set to be
-	// GTK_FILE_CHOOSER_ACTION_OPEN or GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER.
+	// The user interface is adapted to suit the selected action.
+	//
+	// For example, an option to create a new folder might be shown if the
+	// action is GTK_FILE_CHOOSER_ACTION_SAVE but not if the action is
+	// GTK_FILE_CHOOSER_ACTION_OPEN.
 	SetAction(action FileChooserAction)
-	// SetChoice sets whether multiple files can be selected in the file
-	// chooser.
+	// SetChoice selects an option in a 'choice' that has been added with
+	// gtk_file_chooser_add_choice().
 	//
-	// This is only relevant if the action is set to be
-	// GTK_FILE_CHOOSER_ACTION_OPEN or GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER.
+	// For a boolean choice, the possible options are "true" and "false".
 	SetChoice(id string, option string)
-	// SetCreateFolders sets whether multiple files can be selected in the file
-	// chooser.
+	// SetCreateFolders sets whether file chooser will offer to create new
+	// folders.
 	//
-	// This is only relevant if the action is set to be
-	// GTK_FILE_CHOOSER_ACTION_OPEN or GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER.
+	// This is only relevant if the action is not set to be
+	// GTK_FILE_CHOOSER_ACTION_OPEN.
 	SetCreateFolders(createFolders bool)
-	// SetCurrentName sets whether multiple files can be selected in the file
-	// chooser.
+	// SetCurrentName sets the current name in the file selector, as if entered
+	// by the user.
 	//
-	// This is only relevant if the action is set to be
-	// GTK_FILE_CHOOSER_ACTION_OPEN or GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER.
+	// Note that the name passed in here is a UTF-8 string rather than a
+	// filename. This function is meant for such uses as a suggested name in a
+	// “Save As...” dialog. You can pass “Untitled.doc” or a similarly suitable
+	// suggestion for the @name.
+	//
+	// If you want to preselect a particular existing file, you should use
+	// [method@Gtk.FileChooser.set_file] instead.
+	//
+	// Please see the documentation for those functions for an example of using
+	// [method@Gtk.FileChooser.set_current_name] as well.
 	SetCurrentName(name string)
-	// SetFilter sets whether multiple files can be selected in the file
-	// chooser.
+	// SetFilter sets the current filter.
 	//
-	// This is only relevant if the action is set to be
-	// GTK_FILE_CHOOSER_ACTION_OPEN or GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER.
+	// Only the files that pass the filter will be displayed. If the
+	// user-selectable list of filters is non-empty, then the filter should be
+	// one of the filters in that list.
+	//
+	// Setting the current filter when the list of filters is empty is useful if
+	// you want to restrict the displayed set of files without letting the user
+	// change it.
 	SetFilter(filter FileFilter)
 	// SetSelectMultiple sets whether multiple files can be selected in the file
 	// chooser.

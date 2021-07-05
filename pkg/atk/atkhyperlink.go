@@ -35,28 +35,46 @@ func marshalHyperlinkStateFlags(p uintptr) (interface{}, error) {
 	return HyperlinkStateFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// Hyperlink: an ATK object which encapsulates a link or set of links (for
-// instance in the case of client-side image maps) in a hypertext document. It
-// may implement the AtkAction interface. AtkHyperlink may also be used to refer
-// to inline embedded content, since it allows specification of a start and end
+// Hyperlink: ATK object which encapsulates a link or set of links (for instance
+// in the case of client-side image maps) in a hypertext document. It may
+// implement the AtkAction interface. AtkHyperlink may also be used to refer to
+// inline embedded content, since it allows specification of a start and end
 // offset within the host AtkHypertext object.
 type Hyperlink interface {
-	Action
+	gextras.Objector
 
+	// AsAction casts the class to the Action interface.
+	AsAction() Action
+
+	// EndIndex gets the index with the hypertext document at which this link
+	// ends.
 	EndIndex() int
-
+	// NAnchors gets the number of anchors associated with this hyperlink.
 	NAnchors() int
-
+	// Object returns the item associated with this hyperlinks nth anchor. For
+	// instance, the returned Object will implement Text if @link_ is a text
+	// hyperlink, Image if @link_ is an image hyperlink etc.
+	//
+	// Multiple anchors are primarily used by client-side image maps.
 	Object(i int) Object
-
+	// StartIndex gets the index with the hypertext document at which this link
+	// begins.
 	StartIndex() int
-
+	// URI: get a the URI associated with the anchor specified by @i of @link_.
+	//
+	// Multiple anchors are primarily used by client-side image maps.
 	URI(i int) string
-
+	// IsInlineHyperlink indicates whether the link currently displays some or
+	// all of its content inline. Ordinary HTML links will usually return false,
+	// but an inline &lt;src&gt; HTML element will return true.
 	IsInlineHyperlink() bool
-
+	// IsSelectedLinkHyperlink determines whether this AtkHyperlink is selected
+	//
+	// Deprecated: since version 1.8.
 	IsSelectedLinkHyperlink() bool
-
+	// IsValidHyperlink: since the document that a link is associated with may
+	// have changed this method returns true if the link is still valid (with
+	// respect to the document it references) and false otherwise.
 	IsValidHyperlink() bool
 }
 
@@ -210,30 +228,6 @@ func (l hyperlink) IsValidHyperlink() bool {
 	return _ok
 }
 
-func (a hyperlink) DoAction(i int) bool {
-	return WrapAction(gextras.InternObject(a)).DoAction(i)
-}
-
-func (a hyperlink) Description(i int) string {
-	return WrapAction(gextras.InternObject(a)).Description(i)
-}
-
-func (a hyperlink) Keybinding(i int) string {
-	return WrapAction(gextras.InternObject(a)).Keybinding(i)
-}
-
-func (a hyperlink) LocalizedName(i int) string {
-	return WrapAction(gextras.InternObject(a)).LocalizedName(i)
-}
-
-func (a hyperlink) NActions() int {
-	return WrapAction(gextras.InternObject(a)).NActions()
-}
-
-func (a hyperlink) Name(i int) string {
-	return WrapAction(gextras.InternObject(a)).Name(i)
-}
-
-func (a hyperlink) SetDescription(i int, desc string) bool {
-	return WrapAction(gextras.InternObject(a)).SetDescription(i, desc)
+func (h hyperlink) AsAction() Action {
+	return WrapAction(gextras.InternObject(h))
 }

@@ -5,7 +5,6 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -35,10 +34,21 @@ func init() {
 
 // ZlibCompressor: zlib decompression
 type ZlibCompressor interface {
-	Converter
+	gextras.Objector
 
+	// AsConverter casts the class to the Converter interface.
+	AsConverter() Converter
+
+	// FileInfo returns the Compressor:file-info property.
 	FileInfo() FileInfo
-
+	// SetFileInfoZlibCompressor sets @file_info in @compressor. If non-nil, and
+	// @compressor's Compressor:format property is
+	// G_ZLIB_COMPRESSOR_FORMAT_GZIP, it will be used to set the file name and
+	// modification time in the GZIP header of the compressed data.
+	//
+	// Note: it is an error to call this function while a compression is in
+	// progress; it may only be called immediately after creation of
+	// @compressor, or after resetting it with g_converter_reset().
 	SetFileInfoZlibCompressor(fileInfo FileInfo)
 }
 
@@ -61,6 +71,7 @@ func marshalZlibCompressor(p uintptr) (interface{}, error) {
 	return WrapZlibCompressor(obj), nil
 }
 
+// NewZlibCompressor creates a new Compressor.
 func NewZlibCompressor(format ZlibCompressorFormat, level int) ZlibCompressor {
 	var _arg1 C.GZlibCompressorFormat // out
 	var _arg2 C.int                   // out
@@ -73,7 +84,7 @@ func NewZlibCompressor(format ZlibCompressorFormat, level int) ZlibCompressor {
 
 	var _zlibCompressor ZlibCompressor // out
 
-	_zlibCompressor = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(ZlibCompressor)
+	_zlibCompressor = WrapZlibCompressor(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _zlibCompressor
 }
@@ -103,10 +114,6 @@ func (c zlibCompressor) SetFileInfoZlibCompressor(fileInfo FileInfo) {
 	C.g_zlib_compressor_set_file_info(_arg0, _arg1)
 }
 
-func (c zlibCompressor) Convert(inbuf []byte, outbuf []byte, flags ConverterFlags) (bytesRead uint, bytesWritten uint, converterResult ConverterResult, goerr error) {
-	return WrapConverter(gextras.InternObject(c)).Convert(inbuf, outbuf, flags)
-}
-
-func (c zlibCompressor) Reset() {
-	WrapConverter(gextras.InternObject(c)).Reset()
+func (z zlibCompressor) AsConverter() Converter {
+	return WrapConverter(gextras.InternObject(z))
 }

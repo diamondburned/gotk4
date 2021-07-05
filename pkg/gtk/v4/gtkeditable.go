@@ -117,152 +117,114 @@ func init() {
 type Editable interface {
 	Widget
 
-	// DeleteSelection changes the size request of the editable to be about the
-	// right size for @n_chars characters.
+	// DeleteSelection deletes the currently selected text of the editable.
 	//
-	// Note that it changes the size request, the size can still be affected by
-	// how you pack the widget into containers. If @n_chars is -1, the size
-	// reverts to the default size.
+	// This call doesn’t do anything if there is no selected text.
 	DeleteSelection()
-	// DeleteText changes the size request of the editable to be about the right
-	// size for @n_chars characters.
+	// DeleteText deletes a sequence of characters.
 	//
-	// Note that it changes the size request, the size can still be affected by
-	// how you pack the widget into containers. If @n_chars is -1, the size
-	// reverts to the default size.
+	// The characters that are deleted are those characters at positions from
+	// @start_pos up to, but not including @end_pos. If @end_pos is negative,
+	// then the characters deleted are those from @start_pos to the end of the
+	// text.
+	//
+	// Note that the positions are specified in characters, not bytes.
 	DeleteText(startPos int, endPos int)
-	// FinishDelegate changes the size request of the editable to be about the
-	// right size for @n_chars characters.
+	// FinishDelegate undoes the setup done by
+	// [method@Gtk.Editable.init_delegate].
 	//
-	// Note that it changes the size request, the size can still be affected by
-	// how you pack the widget into containers. If @n_chars is -1, the size
-	// reverts to the default size.
+	// This is a helper function that should be called from dispose, before
+	// removing the delegate object.
 	FinishDelegate()
-	// Alignment changes the size request of the editable to be about the right
-	// size for @n_chars characters.
-	//
-	// Note that it changes the size request, the size can still be affected by
-	// how you pack the widget into containers. If @n_chars is -1, the size
-	// reverts to the default size.
+	// Alignment gets the alignment of the editable.
 	Alignment() float32
-	// Chars changes the size request of the editable to be about the right size
-	// for @n_chars characters.
+	// Chars retrieves a sequence of characters.
 	//
-	// Note that it changes the size request, the size can still be affected by
-	// how you pack the widget into containers. If @n_chars is -1, the size
-	// reverts to the default size.
+	// The characters that are retrieved are those characters at positions from
+	// @start_pos up to, but not including @end_pos. If @end_pos is negative,
+	// then the characters retrieved are those characters from @start_pos to the
+	// end of the text.
+	//
+	// Note that positions are specified in characters, not bytes.
 	Chars(startPos int, endPos int) string
-	// Delegate changes the size request of the editable to be about the right
-	// size for @n_chars characters.
+	// Delegate gets the `GtkEditable` that @editable is delegating its
+	// implementation to.
 	//
-	// Note that it changes the size request, the size can still be affected by
-	// how you pack the widget into containers. If @n_chars is -1, the size
-	// reverts to the default size.
+	// Typically, the delegate is a [class@Gtk.Text] widget.
 	Delegate() Editable
-	// Editable changes the size request of the editable to be about the right
-	// size for @n_chars characters.
-	//
-	// Note that it changes the size request, the size can still be affected by
-	// how you pack the widget into containers. If @n_chars is -1, the size
-	// reverts to the default size.
+	// Editable retrieves whether @editable is editable.
 	Editable() bool
-	// EnableUndo changes the size request of the editable to be about the right
-	// size for @n_chars characters.
-	//
-	// Note that it changes the size request, the size can still be affected by
-	// how you pack the widget into containers. If @n_chars is -1, the size
-	// reverts to the default size.
+	// EnableUndo gets if undo/redo actions are enabled for @editable
 	EnableUndo() bool
-	// MaxWidthChars changes the size request of the editable to be about the
-	// right size for @n_chars characters.
-	//
-	// Note that it changes the size request, the size can still be affected by
-	// how you pack the widget into containers. If @n_chars is -1, the size
-	// reverts to the default size.
+	// MaxWidthChars retrieves the desired maximum width of @editable, in
+	// characters.
 	MaxWidthChars() int
-	// Position changes the size request of the editable to be about the right
-	// size for @n_chars characters.
+	// Position retrieves the current position of the cursor relative to the
+	// start of the content of the editable.
 	//
-	// Note that it changes the size request, the size can still be affected by
-	// how you pack the widget into containers. If @n_chars is -1, the size
-	// reverts to the default size.
+	// Note that this position is in characters, not in bytes.
 	Position() int
-	// SelectionBounds changes the size request of the editable to be about the
-	// right size for @n_chars characters.
+	// SelectionBounds retrieves the selection bound of the editable.
 	//
-	// Note that it changes the size request, the size can still be affected by
-	// how you pack the widget into containers. If @n_chars is -1, the size
-	// reverts to the default size.
+	// @start_pos will be filled with the start of the selection and @end_pos
+	// with end. If no text was selected both will be identical and false will
+	// be returned.
+	//
+	// Note that positions are specified in characters, not bytes.
 	SelectionBounds() (startPos int, endPos int, ok bool)
-	// Text changes the size request of the editable to be about the right size
-	// for @n_chars characters.
+	// Text retrieves the contents of @editable.
 	//
-	// Note that it changes the size request, the size can still be affected by
-	// how you pack the widget into containers. If @n_chars is -1, the size
-	// reverts to the default size.
+	// The returned string is owned by GTK and must not be modified or freed.
 	Text() string
-	// WidthChars changes the size request of the editable to be about the right
-	// size for @n_chars characters.
-	//
-	// Note that it changes the size request, the size can still be affected by
-	// how you pack the widget into containers. If @n_chars is -1, the size
-	// reverts to the default size.
+	// WidthChars gets the number of characters of space reserved for the
+	// contents of the editable.
 	WidthChars() int
-	// InitDelegate changes the size request of the editable to be about the
-	// right size for @n_chars characters.
+	// InitDelegate sets up a delegate for `GtkEditable`.
 	//
-	// Note that it changes the size request, the size can still be affected by
-	// how you pack the widget into containers. If @n_chars is -1, the size
-	// reverts to the default size.
+	// This is assuming that the get_delegate vfunc in the `GtkEditable`
+	// interface has been set up for the @editable's type.
+	//
+	// This is a helper function that should be called in instance init, after
+	// creating the delegate object.
 	InitDelegate()
-	// SelectRegion changes the size request of the editable to be about the
-	// right size for @n_chars characters.
+	// SelectRegion selects a region of text.
 	//
-	// Note that it changes the size request, the size can still be affected by
-	// how you pack the widget into containers. If @n_chars is -1, the size
-	// reverts to the default size.
+	// The characters that are selected are those characters at positions from
+	// @start_pos up to, but not including @end_pos. If @end_pos is negative,
+	// then the characters selected are those characters from @start_pos to the
+	// end of the text.
+	//
+	// Note that positions are specified in characters, not bytes.
 	SelectRegion(startPos int, endPos int)
-	// SetAlignment changes the size request of the editable to be about the
-	// right size for @n_chars characters.
+	// SetAlignment sets the alignment for the contents of the editable.
 	//
-	// Note that it changes the size request, the size can still be affected by
-	// how you pack the widget into containers. If @n_chars is -1, the size
-	// reverts to the default size.
+	// This controls the horizontal positioning of the contents when the
+	// displayed text is shorter than the width of the editable.
 	SetAlignment(xalign float32)
-	// SetEditable changes the size request of the editable to be about the
-	// right size for @n_chars characters.
-	//
-	// Note that it changes the size request, the size can still be affected by
-	// how you pack the widget into containers. If @n_chars is -1, the size
-	// reverts to the default size.
+	// SetEditable determines if the user can edit the text in the editable
+	// widget.
 	SetEditable(isEditable bool)
-	// SetEnableUndo changes the size request of the editable to be about the
-	// right size for @n_chars characters.
+	// SetEnableUndo: if enabled, changes to @editable will be saved for
+	// undo/redo actions.
 	//
-	// Note that it changes the size request, the size can still be affected by
-	// how you pack the widget into containers. If @n_chars is -1, the size
-	// reverts to the default size.
+	// This results in an additional copy of text changes and are not stored in
+	// secure memory. As such, undo is forcefully disabled when
+	// [property@Gtk.Text:visibility] is set to false.
 	SetEnableUndo(enableUndo bool)
-	// SetMaxWidthChars changes the size request of the editable to be about the
-	// right size for @n_chars characters.
-	//
-	// Note that it changes the size request, the size can still be affected by
-	// how you pack the widget into containers. If @n_chars is -1, the size
-	// reverts to the default size.
+	// SetMaxWidthChars sets the desired maximum width in characters of
+	// @editable.
 	SetMaxWidthChars(nChars int)
-	// SetPosition changes the size request of the editable to be about the
-	// right size for @n_chars characters.
+	// SetPosition sets the cursor position in the editable to the given value.
 	//
-	// Note that it changes the size request, the size can still be affected by
-	// how you pack the widget into containers. If @n_chars is -1, the size
-	// reverts to the default size.
+	// The cursor is displayed before the character with the given (base 0)
+	// index in the contents of the editable. The value must be less than or
+	// equal to the number of characters in the editable. A value of -1
+	// indicates that the position should be set after the last character of the
+	// editable. Note that @position is in characters, not in bytes.
 	SetPosition(position int)
-	// SetText changes the size request of the editable to be about the right
-	// size for @n_chars characters.
+	// SetText sets the text in the editable to the given value.
 	//
-	// Note that it changes the size request, the size can still be affected by
-	// how you pack the widget into containers. If @n_chars is -1, the size
-	// reverts to the default size.
+	// This is replacing the current contents.
 	SetText(text string)
 	// SetWidthChars changes the size request of the editable to be about the
 	// right size for @n_chars characters.
@@ -438,8 +400,8 @@ func (e editable) Position() int {
 
 func (e editable) SelectionBounds() (startPos int, endPos int, ok bool) {
 	var _arg0 *C.GtkEditable // out
-	var _arg1 C.int          // in
-	var _arg2 C.int          // in
+	var _arg1 *C.int         // in
+	var _arg2 *C.int         // in
 	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))

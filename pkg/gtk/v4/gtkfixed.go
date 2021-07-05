@@ -62,17 +62,34 @@ func init() {
 type Fixed interface {
 	Widget
 
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
+
+	// ChildPosition retrieves the translation transformation of the given child
+	// `GtkWidget` in the `GtkFixed`.
+	//
+	// See also: [method@Gtk.Fixed.get_child_transform].
 	ChildPosition(widget Widget) (x float64, y float64)
-
-	ChildTransform(widget Widget) *gsk.Transform
-
+	// ChildTransform retrieves the transformation for @widget set using
+	// gtk_fixed_set_child_transform().
+	ChildTransform(widget Widget) gsk.Transform
+	// MoveFixed sets a translation transformation to the given @x and @y
+	// coordinates to the child @widget of the `GtkFixed`.
 	MoveFixed(widget Widget, x float64, y float64)
-
+	// PutFixed adds a widget to a `GtkFixed` at the given position.
 	PutFixed(widget Widget, x float64, y float64)
-
+	// RemoveFixed removes a child from @fixed.
 	RemoveFixed(widget Widget)
-
-	SetChildTransformFixed(widget Widget, transform *gsk.Transform)
+	// SetChildTransformFixed sets the transformation for @widget.
+	//
+	// This is a convenience function that retrieves the
+	// [class@Gtk.FixedLayoutChild] instance associated to @widget and calls
+	// [method@Gtk.FixedLayoutChild.set_transform].
+	SetChildTransformFixed(widget Widget, transform gsk.Transform)
 }
 
 // fixed implements the Fixed class.
@@ -94,6 +111,7 @@ func marshalFixed(p uintptr) (interface{}, error) {
 	return WrapFixed(obj), nil
 }
 
+// NewFixed creates a new `GtkFixed`.
 func NewFixed() Fixed {
 	var _cret *C.GtkWidget // in
 
@@ -101,7 +119,7 @@ func NewFixed() Fixed {
 
 	var _fixed Fixed // out
 
-	_fixed = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Fixed)
+	_fixed = WrapFixed(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _fixed
 }
@@ -109,8 +127,8 @@ func NewFixed() Fixed {
 func (f fixed) ChildPosition(widget Widget) (x float64, y float64) {
 	var _arg0 *C.GtkFixed  // out
 	var _arg1 *C.GtkWidget // out
-	var _arg2 C.double     // in
-	var _arg3 C.double     // in
+	var _arg2 *C.double    // in
+	var _arg3 *C.double    // in
 
 	_arg0 = (*C.GtkFixed)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
@@ -126,7 +144,7 @@ func (f fixed) ChildPosition(widget Widget) (x float64, y float64) {
 	return _x, _y
 }
 
-func (f fixed) ChildTransform(widget Widget) *gsk.Transform {
+func (f fixed) ChildTransform(widget Widget) gsk.Transform {
 	var _arg0 *C.GtkFixed     // out
 	var _arg1 *C.GtkWidget    // out
 	var _cret *C.GskTransform // in
@@ -136,9 +154,10 @@ func (f fixed) ChildTransform(widget Widget) *gsk.Transform {
 
 	_cret = C.gtk_fixed_get_child_transform(_arg0, _arg1)
 
-	var _transform *gsk.Transform // out
+	var _transform gsk.Transform // out
 
-	_transform = (*gsk.Transform)(unsafe.Pointer(_cret))
+	_transform = (gsk.Transform)(unsafe.Pointer(_cret))
+	C.gsk_transform_ref(_cret)
 
 	return _transform
 }
@@ -181,46 +200,26 @@ func (f fixed) RemoveFixed(widget Widget) {
 	C.gtk_fixed_remove(_arg0, _arg1)
 }
 
-func (f fixed) SetChildTransformFixed(widget Widget, transform *gsk.Transform) {
+func (f fixed) SetChildTransformFixed(widget Widget, transform gsk.Transform) {
 	var _arg0 *C.GtkFixed     // out
 	var _arg1 *C.GtkWidget    // out
 	var _arg2 *C.GskTransform // out
 
 	_arg0 = (*C.GtkFixed)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg2 = (*C.GskTransform)(unsafe.Pointer(transform.Native()))
+	_arg2 = (*C.GskTransform)(unsafe.Pointer(transform))
 
 	C.gtk_fixed_set_child_transform(_arg0, _arg1, _arg2)
 }
 
-func (s fixed) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
+func (f fixed) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(f))
 }
 
-func (s fixed) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
+func (f fixed) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(f))
 }
 
-func (s fixed) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
-}
-
-func (s fixed) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s fixed) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s fixed) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s fixed) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b fixed) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
+func (f fixed) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(f))
 }

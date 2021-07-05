@@ -34,12 +34,25 @@ func init() {
 type WaylandDisplay interface {
 	gdk.Display
 
+	// StartupNotificationID gets the startup notification ID for a Wayland
+	// display, or nil if no ID has been defined.
 	StartupNotificationID() string
-
+	// QueryRegistryWaylandDisplay returns true if the the interface was found
+	// in the display `wl_registry.global` handler.
 	QueryRegistryWaylandDisplay(global string) bool
-
+	// SetCursorThemeWaylandDisplay sets the cursor theme for the given
+	// @display.
 	SetCursorThemeWaylandDisplay(name string, size int)
-
+	// SetStartupNotificationIDWaylandDisplay sets the startup notification ID
+	// for a display.
+	//
+	// This is usually taken from the value of the `DESKTOP_STARTUP_ID`
+	// environment variable, but in some cases (such as the application not
+	// being launched using exec()) it can come from other sources.
+	//
+	// The startup ID is also what is used to signal that the startup is
+	// complete (for example, when opening a window or when calling
+	// [method@Gdk.Display.notify_startup_complete]).
 	SetStartupNotificationIDWaylandDisplay(startupId string)
 }
 

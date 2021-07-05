@@ -34,50 +34,135 @@ func init() {
 // range widgets. See [method@Gtk.Range.set_fill_level].
 type Range interface {
 	Widget
-	Orientable
 
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
+	// AsOrientable casts the class to the Orientable interface.
+	AsOrientable() Orientable
+
+	// Adjustment: get the adjustment which is the “model” object for
+	// `GtkRange`.
 	Adjustment() Adjustment
-
+	// FillLevel gets the current position of the fill level indicator.
 	FillLevel() float64
-
+	// Flippable gets whether the `GtkRange` respects text direction.
+	//
+	// See [method@Gtk.Range.set_flippable].
 	Flippable() bool
-
+	// Inverted gets whether the range is inverted.
+	//
+	// See [method@Gtk.Range.set_inverted].
 	Inverted() bool
-
+	// RangeRect: this function returns the area that contains the range’s
+	// trough, in coordinates relative to @range's origin.
+	//
+	// This function is useful mainly for `GtkRange` subclasses.
 	RangeRect() gdk.Rectangle
-
+	// RestrictToFillLevel gets whether the range is restricted to the fill
+	// level.
 	RestrictToFillLevel() bool
-
+	// RoundDigits gets the number of digits to round the value to when it
+	// changes.
+	//
+	// See [signal@Gtk.Range::change-value].
 	RoundDigits() int
-
+	// ShowFillLevel gets whether the range displays the fill level graphically.
 	ShowFillLevel() bool
-
+	// SliderRange: this function returns sliders range along the long
+	// dimension, in widget->window coordinates.
+	//
+	// This function is useful mainly for `GtkRange` subclasses.
 	SliderRange() (sliderStart int, sliderEnd int)
-
+	// SliderSizeFixed: this function is useful mainly for `GtkRange`
+	// subclasses.
+	//
+	// See [method@Gtk.Range.set_slider_size_fixed].
 	SliderSizeFixed() bool
-
+	// Value gets the current value of the range.
 	Value() float64
-
+	// SetAdjustmentRange sets the adjustment to be used as the “model” object
+	// for the `GtkRange`
+	//
+	// The adjustment indicates the current range value, the minimum and maximum
+	// range values, the step/page increments used for keybindings and
+	// scrolling, and the page size.
+	//
+	// The page size is normally 0 for `GtkScale` and nonzero for
+	// `GtkScrollbar`, and indicates the size of the visible area of the widget
+	// being scrolled. The page size affects the size of the scrollbar slider.
 	SetAdjustmentRange(adjustment Adjustment)
-
+	// SetFillLevelRange: set the new position of the fill level indicator.
+	//
+	// The “fill level” is probably best described by its most prominent use
+	// case, which is an indicator for the amount of pre-buffering in a
+	// streaming media player. In that use case, the value of the range would
+	// indicate the current play position, and the fill level would be the
+	// position up to which the file/stream has been downloaded.
+	//
+	// This amount of prebuffering can be displayed on the range’s trough and is
+	// themeable separately from the trough. To enable fill level display, use
+	// [method@Gtk.Range.set_show_fill_level]. The range defaults to not showing
+	// the fill level.
+	//
+	// Additionally, it’s possible to restrict the range’s slider position to
+	// values which are smaller than the fill level. This is controlled by
+	// [method@Gtk.Range.set_restrict_to_fill_level] and is by default enabled.
 	SetFillLevelRange(fillLevel float64)
-
+	// SetFlippableRange sets whether the `GtkRange` respects text direction.
+	//
+	// If a range is flippable, it will switch its direction if it is horizontal
+	// and its direction is GTK_TEXT_DIR_RTL.
+	//
+	// See [method@Gtk.Widget.get_direction].
 	SetFlippableRange(flippable bool)
-
+	// SetIncrementsRange sets the step and page sizes for the range.
+	//
+	// The step size is used when the user clicks the `GtkScrollbar` arrows or
+	// moves a `GtkScale` via arrow keys. The page size is used for example when
+	// moving via Page Up or Page Down keys.
 	SetIncrementsRange(step float64, page float64)
-
+	// SetInvertedRange sets whether to invert the range.
+	//
+	// Ranges normally move from lower to higher values as the slider moves from
+	// top to bottom or left to right. Inverted ranges have higher values at the
+	// top or on the right rather than on the bottom or left.
 	SetInvertedRange(setting bool)
-
+	// SetRangeRange sets the allowable values in the `GtkRange`.
+	//
+	// The range value is clamped to be between @min and @max. (If the range has
+	// a non-zero page size, it is clamped between @min and @max - page-size.)
 	SetRangeRange(min float64, max float64)
-
+	// SetRestrictToFillLevelRange sets whether the slider is restricted to the
+	// fill level.
+	//
+	// See [method@Gtk.Range.set_fill_level] for a general description of the
+	// fill level concept.
 	SetRestrictToFillLevelRange(restrictToFillLevel bool)
-
+	// SetRoundDigitsRange sets the number of digits to round the value to when
+	// it changes.
+	//
+	// See [signal@Gtk.Range::change-value].
 	SetRoundDigitsRange(roundDigits int)
-
+	// SetShowFillLevelRange sets whether a graphical fill level is show on the
+	// trough.
+	//
+	// See [method@Gtk.Range.set_fill_level] for a general description of the
+	// fill level concept.
 	SetShowFillLevelRange(showFillLevel bool)
-
+	// SetSliderSizeFixedRange sets whether the range’s slider has a fixed size,
+	// or a size that depends on its adjustment’s page size.
+	//
+	// This function is useful mainly for `GtkRange` subclasses.
 	SetSliderSizeFixedRange(sizeFixed bool)
-
+	// SetValueRange sets the current value of the range.
+	//
+	// If the value is outside the minimum or maximum range values, it will be
+	// clamped to fit inside them. The range emits the
+	// [signal@Gtk.Range::value-changed] signal if the value changes.
 	SetValueRange(value float64)
 }
 
@@ -165,8 +250,8 @@ func (r _range) Inverted() bool {
 }
 
 func (r _range) RangeRect() gdk.Rectangle {
-	var _arg0 *C.GtkRange    // out
-	var _arg1 C.GdkRectangle // in
+	var _arg0 *C.GtkRange     // out
+	var _arg1 *C.GdkRectangle // in
 
 	_arg0 = (*C.GtkRange)(unsafe.Pointer(r.Native()))
 
@@ -174,17 +259,7 @@ func (r _range) RangeRect() gdk.Rectangle {
 
 	var _rangeRect gdk.Rectangle // out
 
-	{
-		var refTmpIn *C.GdkRectangle
-		var refTmpOut *gdk.Rectangle
-
-		in0 := &_arg1
-		refTmpIn = in0
-
-		refTmpOut = (*gdk.Rectangle)(unsafe.Pointer(refTmpIn))
-
-		_rangeRect = *refTmpOut
-	}
+	_rangeRect = (gdk.Rectangle)(unsafe.Pointer(_arg1))
 
 	return _rangeRect
 }
@@ -240,8 +315,8 @@ func (r _range) ShowFillLevel() bool {
 
 func (r _range) SliderRange() (sliderStart int, sliderEnd int) {
 	var _arg0 *C.GtkRange // out
-	var _arg1 C.int       // in
-	var _arg2 C.int       // in
+	var _arg1 *C.int      // in
+	var _arg2 *C.int      // in
 
 	_arg0 = (*C.GtkRange)(unsafe.Pointer(r.Native()))
 
@@ -412,42 +487,18 @@ func (r _range) SetValueRange(value float64) {
 	C.gtk_range_set_value(_arg0, _arg1)
 }
 
-func (s _range) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
+func (_ _range) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(_))
 }
 
-func (s _range) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
+func (_ _range) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(_))
 }
 
-func (s _range) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
+func (_ _range) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(_))
 }
 
-func (s _range) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s _range) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s _range) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s _range) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b _range) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
-}
-
-func (o _range) Orientation() Orientation {
-	return WrapOrientable(gextras.InternObject(o)).Orientation()
-}
-
-func (o _range) SetOrientation(orientation Orientation) {
-	WrapOrientable(gextras.InternObject(o)).SetOrientation(orientation)
+func (_ _range) AsOrientable() Orientable {
+	return WrapOrientable(gextras.InternObject(_))
 }

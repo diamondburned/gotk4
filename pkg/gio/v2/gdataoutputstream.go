@@ -7,7 +7,6 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -38,26 +37,35 @@ func init() {
 // for writing data directly to an output stream.
 type DataOutputStream interface {
 	FilterOutputStream
-	Seekable
 
+	// AsSeekable casts the class to the Seekable interface.
+	AsSeekable() Seekable
+
+	// ByteOrder gets the byte order for the stream.
 	ByteOrder() DataStreamByteOrder
-
+	// PutByteDataOutputStream puts a byte into the output stream.
 	PutByteDataOutputStream(data byte, cancellable Cancellable) error
-
+	// PutInt16DataOutputStream puts a signed 16-bit integer into the output
+	// stream.
 	PutInt16DataOutputStream(data int16, cancellable Cancellable) error
-
+	// PutInt32DataOutputStream puts a signed 32-bit integer into the output
+	// stream.
 	PutInt32DataOutputStream(data int32, cancellable Cancellable) error
-
+	// PutInt64DataOutputStream puts a signed 64-bit integer into the stream.
 	PutInt64DataOutputStream(data int64, cancellable Cancellable) error
-
+	// PutStringDataOutputStream puts a string into the output stream.
 	PutStringDataOutputStream(str string, cancellable Cancellable) error
-
+	// PutUint16DataOutputStream puts an unsigned 16-bit integer into the output
+	// stream.
 	PutUint16DataOutputStream(data uint16, cancellable Cancellable) error
-
+	// PutUint32DataOutputStream puts an unsigned 32-bit integer into the
+	// stream.
 	PutUint32DataOutputStream(data uint32, cancellable Cancellable) error
-
+	// PutUint64DataOutputStream puts an unsigned 64-bit integer into the
+	// stream.
 	PutUint64DataOutputStream(data uint64, cancellable Cancellable) error
-
+	// SetByteOrderDataOutputStream sets the byte order of the data output
+	// stream to @order.
 	SetByteOrderDataOutputStream(order DataStreamByteOrder)
 }
 
@@ -80,6 +88,7 @@ func marshalDataOutputStream(p uintptr) (interface{}, error) {
 	return WrapDataOutputStream(obj), nil
 }
 
+// NewDataOutputStream creates a new data output stream for @base_stream.
 func NewDataOutputStream(baseStream OutputStream) DataOutputStream {
 	var _arg1 *C.GOutputStream     // out
 	var _cret *C.GDataOutputStream // in
@@ -90,7 +99,7 @@ func NewDataOutputStream(baseStream OutputStream) DataOutputStream {
 
 	var _dataOutputStream DataOutputStream // out
 
-	_dataOutputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(DataOutputStream)
+	_dataOutputStream = WrapDataOutputStream(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _dataOutputStream
 }
@@ -114,7 +123,7 @@ func (s dataOutputStream) PutByteDataOutputStream(data byte, cancellable Cancell
 	var _arg0 *C.GDataOutputStream // out
 	var _arg1 C.guchar             // out
 	var _arg2 *C.GCancellable      // out
-	var _cerr *C.GError            // in
+	var _cerr **C.GError           // in
 
 	_arg0 = (*C.GDataOutputStream)(unsafe.Pointer(s.Native()))
 	_arg1 = C.guchar(data)
@@ -124,7 +133,16 @@ func (s dataOutputStream) PutByteDataOutputStream(data byte, cancellable Cancell
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _goerr
 }
@@ -133,7 +151,7 @@ func (s dataOutputStream) PutInt16DataOutputStream(data int16, cancellable Cance
 	var _arg0 *C.GDataOutputStream // out
 	var _arg1 C.gint16             // out
 	var _arg2 *C.GCancellable      // out
-	var _cerr *C.GError            // in
+	var _cerr **C.GError           // in
 
 	_arg0 = (*C.GDataOutputStream)(unsafe.Pointer(s.Native()))
 	_arg1 = C.gint16(data)
@@ -143,7 +161,16 @@ func (s dataOutputStream) PutInt16DataOutputStream(data int16, cancellable Cance
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _goerr
 }
@@ -152,7 +179,7 @@ func (s dataOutputStream) PutInt32DataOutputStream(data int32, cancellable Cance
 	var _arg0 *C.GDataOutputStream // out
 	var _arg1 C.gint32             // out
 	var _arg2 *C.GCancellable      // out
-	var _cerr *C.GError            // in
+	var _cerr **C.GError           // in
 
 	_arg0 = (*C.GDataOutputStream)(unsafe.Pointer(s.Native()))
 	_arg1 = C.gint32(data)
@@ -162,7 +189,16 @@ func (s dataOutputStream) PutInt32DataOutputStream(data int32, cancellable Cance
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _goerr
 }
@@ -171,7 +207,7 @@ func (s dataOutputStream) PutInt64DataOutputStream(data int64, cancellable Cance
 	var _arg0 *C.GDataOutputStream // out
 	var _arg1 C.gint64             // out
 	var _arg2 *C.GCancellable      // out
-	var _cerr *C.GError            // in
+	var _cerr **C.GError           // in
 
 	_arg0 = (*C.GDataOutputStream)(unsafe.Pointer(s.Native()))
 	_arg1 = C.gint64(data)
@@ -181,7 +217,16 @@ func (s dataOutputStream) PutInt64DataOutputStream(data int64, cancellable Cance
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _goerr
 }
@@ -190,7 +235,7 @@ func (s dataOutputStream) PutStringDataOutputStream(str string, cancellable Canc
 	var _arg0 *C.GDataOutputStream // out
 	var _arg1 *C.char              // out
 	var _arg2 *C.GCancellable      // out
-	var _cerr *C.GError            // in
+	var _cerr **C.GError           // in
 
 	_arg0 = (*C.GDataOutputStream)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.char)(C.CString(str))
@@ -201,7 +246,16 @@ func (s dataOutputStream) PutStringDataOutputStream(str string, cancellable Canc
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _goerr
 }
@@ -210,7 +264,7 @@ func (s dataOutputStream) PutUint16DataOutputStream(data uint16, cancellable Can
 	var _arg0 *C.GDataOutputStream // out
 	var _arg1 C.guint16            // out
 	var _arg2 *C.GCancellable      // out
-	var _cerr *C.GError            // in
+	var _cerr **C.GError           // in
 
 	_arg0 = (*C.GDataOutputStream)(unsafe.Pointer(s.Native()))
 	_arg1 = C.guint16(data)
@@ -220,7 +274,16 @@ func (s dataOutputStream) PutUint16DataOutputStream(data uint16, cancellable Can
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _goerr
 }
@@ -229,7 +292,7 @@ func (s dataOutputStream) PutUint32DataOutputStream(data uint32, cancellable Can
 	var _arg0 *C.GDataOutputStream // out
 	var _arg1 C.guint32            // out
 	var _arg2 *C.GCancellable      // out
-	var _cerr *C.GError            // in
+	var _cerr **C.GError           // in
 
 	_arg0 = (*C.GDataOutputStream)(unsafe.Pointer(s.Native()))
 	_arg1 = C.guint32(data)
@@ -239,7 +302,16 @@ func (s dataOutputStream) PutUint32DataOutputStream(data uint32, cancellable Can
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _goerr
 }
@@ -248,7 +320,7 @@ func (s dataOutputStream) PutUint64DataOutputStream(data uint64, cancellable Can
 	var _arg0 *C.GDataOutputStream // out
 	var _arg1 C.guint64            // out
 	var _arg2 *C.GCancellable      // out
-	var _cerr *C.GError            // in
+	var _cerr **C.GError           // in
 
 	_arg0 = (*C.GDataOutputStream)(unsafe.Pointer(s.Native()))
 	_arg1 = C.guint64(data)
@@ -258,7 +330,16 @@ func (s dataOutputStream) PutUint64DataOutputStream(data uint64, cancellable Can
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	{
+		var refTmpIn *C.GError
+		var refTmpOut error
+
+		refTmpIn = *_cerr
+
+		refTmpOut = gerror.Take(unsafe.Pointer(refTmpIn))
+
+		_goerr = refTmpOut
+	}
 
 	return _goerr
 }
@@ -273,22 +354,6 @@ func (s dataOutputStream) SetByteOrderDataOutputStream(order DataStreamByteOrder
 	C.g_data_output_stream_set_byte_order(_arg0, _arg1)
 }
 
-func (s dataOutputStream) CanSeek() bool {
-	return WrapSeekable(gextras.InternObject(s)).CanSeek()
-}
-
-func (s dataOutputStream) CanTruncate() bool {
-	return WrapSeekable(gextras.InternObject(s)).CanTruncate()
-}
-
-func (s dataOutputStream) Seek(offset int64, typ glib.SeekType, cancellable Cancellable) error {
-	return WrapSeekable(gextras.InternObject(s)).Seek(offset, typ, cancellable)
-}
-
-func (s dataOutputStream) Tell() int64 {
-	return WrapSeekable(gextras.InternObject(s)).Tell()
-}
-
-func (s dataOutputStream) Truncate(offset int64, cancellable Cancellable) error {
-	return WrapSeekable(gextras.InternObject(s)).Truncate(offset, cancellable)
+func (d dataOutputStream) AsSeekable() Seekable {
+	return WrapSeekable(gextras.InternObject(d))
 }

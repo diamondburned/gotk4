@@ -32,18 +32,40 @@ func init() {
 type SingleSelection interface {
 	gextras.Objector
 
+	// Autoselect checks if autoselect has been enabled or disabled via
+	// gtk_single_selection_set_autoselect().
 	Autoselect() bool
-
+	// CanUnselect: if true, gtk_selection_model_unselect_item() is supported
+	// and allows unselecting the selected item.
 	CanUnselect() bool
-
+	// Selected gets the position of the selected item.
+	//
+	// If no item is selected, GTK_INVALID_LIST_POSITION is returned.
 	Selected() uint
-
+	// SelectedItem gets the selected item.
+	//
+	// If no item is selected, nil is returned.
 	SelectedItem() gextras.Objector
-
+	// SetAutoselectSingleSelection enables or disables autoselect.
+	//
+	// If @autoselect is true, @self will enforce that an item is always
+	// selected. It will select a new item when the currently selected item is
+	// deleted and it will disallow unselecting the current item.
 	SetAutoselectSingleSelection(autoselect bool)
-
+	// SetCanUnselectSingleSelection: if true, unselecting the current item via
+	// gtk_selection_model_unselect_item() is supported.
+	//
+	// Note that setting [property@Gtk.SingleSelection:autoselect] will cause
+	// unselecting to not work, so it practically makes no sense to set both at
+	// the same time the same time.
 	SetCanUnselectSingleSelection(canUnselect bool)
-
+	// SetSelectedSingleSelection selects the item at the given position.
+	//
+	// If the list does not have an item at @position or
+	// GTK_INVALID_LIST_POSITION is given, the behavior depends on the value of
+	// the [property@Gtk.SingleSelection:autoselect] property: If it is set, no
+	// change will occur and the old item will stay selected. If it is unset,
+	// the selection will be unset and no item will be selected.
 	SetSelectedSingleSelection(position uint)
 }
 

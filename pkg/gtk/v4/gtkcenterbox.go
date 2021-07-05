@@ -60,22 +60,43 @@ func init() {
 // `GtkCenterBox` uses the GTK_ACCESSIBLE_ROLE_GROUP role.
 type CenterBox interface {
 	Widget
-	Orientable
 
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
+	// AsOrientable casts the class to the Orientable interface.
+	AsOrientable() Orientable
+
+	// BaselinePosition gets the value set by
+	// gtk_center_box_set_baseline_position().
 	BaselinePosition() BaselinePosition
-
+	// CenterWidget gets the center widget, or nil if there is none.
 	CenterWidget() Widget
-
+	// EndWidget gets the end widget, or nil if there is none.
 	EndWidget() Widget
-
+	// StartWidget gets the start widget, or nil if there is none.
 	StartWidget() Widget
-
+	// SetBaselinePositionCenterBox sets the baseline position of a center box.
+	//
+	// This affects only horizontal boxes with at least one baseline aligned
+	// child. If there is more vertical space available than requested, and the
+	// baseline is not allocated by the parent then @position is used to
+	// allocate the baseline wrt. the extra space available.
 	SetBaselinePositionCenterBox(position BaselinePosition)
-
+	// SetCenterWidgetCenterBox sets the center widget.
+	//
+	// To remove the existing center widget, pas nil.
 	SetCenterWidgetCenterBox(child Widget)
-
+	// SetEndWidgetCenterBox sets the end widget.
+	//
+	// To remove the existing end widget, pass nil.
 	SetEndWidgetCenterBox(child Widget)
-
+	// SetStartWidgetCenterBox sets the start widget.
+	//
+	// To remove the existing start widget, pass nil.
 	SetStartWidgetCenterBox(child Widget)
 }
 
@@ -98,6 +119,7 @@ func marshalCenterBox(p uintptr) (interface{}, error) {
 	return WrapCenterBox(obj), nil
 }
 
+// NewCenterBox creates a new `GtkCenterBox`.
 func NewCenterBox() CenterBox {
 	var _cret *C.GtkWidget // in
 
@@ -105,7 +127,7 @@ func NewCenterBox() CenterBox {
 
 	var _centerBox CenterBox // out
 
-	_centerBox = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(CenterBox)
+	_centerBox = WrapCenterBox(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _centerBox
 }
@@ -210,42 +232,18 @@ func (s centerBox) SetStartWidgetCenterBox(child Widget) {
 	C.gtk_center_box_set_start_widget(_arg0, _arg1)
 }
 
-func (s centerBox) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
+func (c centerBox) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(c))
 }
 
-func (s centerBox) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
+func (c centerBox) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(c))
 }
 
-func (s centerBox) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
+func (c centerBox) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(c))
 }
 
-func (s centerBox) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s centerBox) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s centerBox) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s centerBox) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b centerBox) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
-}
-
-func (o centerBox) Orientation() Orientation {
-	return WrapOrientable(gextras.InternObject(o)).Orientation()
-}
-
-func (o centerBox) SetOrientation(orientation Orientation) {
-	WrapOrientable(gextras.InternObject(o)).SetOrientation(orientation)
+func (c centerBox) AsOrientable() Orientable {
+	return WrapOrientable(gextras.InternObject(c))
 }

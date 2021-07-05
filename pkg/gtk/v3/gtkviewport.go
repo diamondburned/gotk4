@@ -5,10 +5,8 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -47,22 +45,36 @@ func init() {
 // GtkViewport has a single CSS node with name viewport.
 type Viewport interface {
 	Bin
-	Scrollable
 
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsScrollable casts the class to the Scrollable interface.
+	AsScrollable() Scrollable
+
+	// BinWindow gets the bin window of the Viewport.
 	BinWindow() gdk.Window
-
-	GetHAdjustment() Adjustment
-
+	// HAdjustment returns the horizontal adjustment of the viewport.
+	//
+	// Deprecated: since version 3.0.
+	HAdjustment() Adjustment
+	// ShadowType gets the shadow type of the Viewport. See
+	// gtk_viewport_set_shadow_type().
 	ShadowType() ShadowType
-
-	GetVAdjustment() Adjustment
-
+	// VAdjustment returns the vertical adjustment of the viewport.
+	//
+	// Deprecated: since version 3.0.
+	VAdjustment() Adjustment
+	// ViewWindow gets the view window of the Viewport.
 	ViewWindow() gdk.Window
-
+	// SetHAdjustmentViewport sets the horizontal adjustment of the viewport.
+	//
+	// Deprecated: since version 3.0.
 	SetHAdjustmentViewport(adjustment Adjustment)
-
+	// SetShadowTypeViewport sets the shadow type of the viewport.
 	SetShadowTypeViewport(typ ShadowType)
-
+	// SetVAdjustmentViewport sets the vertical adjustment of the viewport.
+	//
+	// Deprecated: since version 3.0.
 	SetVAdjustmentViewport(adjustment Adjustment)
 }
 
@@ -85,6 +97,8 @@ func marshalViewport(p uintptr) (interface{}, error) {
 	return WrapViewport(obj), nil
 }
 
+// NewViewport creates a new Viewport with the given adjustments, or with
+// default adjustments if none are given.
 func NewViewport(hadjustment Adjustment, vadjustment Adjustment) Viewport {
 	var _arg1 *C.GtkAdjustment // out
 	var _arg2 *C.GtkAdjustment // out
@@ -97,7 +111,7 @@ func NewViewport(hadjustment Adjustment, vadjustment Adjustment) Viewport {
 
 	var _viewport Viewport // out
 
-	_viewport = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Viewport)
+	_viewport = WrapViewport(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _viewport
 }
@@ -117,7 +131,7 @@ func (v viewport) BinWindow() gdk.Window {
 	return _window
 }
 
-func (v viewport) GetHAdjustment() Adjustment {
+func (v viewport) HAdjustment() Adjustment {
 	var _arg0 *C.GtkViewport   // out
 	var _cret *C.GtkAdjustment // in
 
@@ -147,7 +161,7 @@ func (v viewport) ShadowType() ShadowType {
 	return _shadowType
 }
 
-func (v viewport) GetVAdjustment() Adjustment {
+func (v viewport) VAdjustment() Adjustment {
 	var _arg0 *C.GtkViewport   // out
 	var _cret *C.GtkAdjustment // in
 
@@ -207,78 +221,10 @@ func (v viewport) SetVAdjustmentViewport(adjustment Adjustment) {
 	C.gtk_viewport_set_vadjustment(_arg0, _arg1)
 }
 
-func (b viewport) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+func (v viewport) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(v))
 }
 
-func (b viewport) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b viewport) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b viewport) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b viewport) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b viewport) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b viewport) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b viewport) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b viewport) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b viewport) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (s viewport) Border() (Border, bool) {
-	return WrapScrollable(gextras.InternObject(s)).Border()
-}
-
-func (s viewport) HAdjustment() Adjustment {
-	return WrapScrollable(gextras.InternObject(s)).HAdjustment()
-}
-
-func (s viewport) HScrollPolicy() ScrollablePolicy {
-	return WrapScrollable(gextras.InternObject(s)).HScrollPolicy()
-}
-
-func (s viewport) VAdjustment() Adjustment {
-	return WrapScrollable(gextras.InternObject(s)).VAdjustment()
-}
-
-func (s viewport) VScrollPolicy() ScrollablePolicy {
-	return WrapScrollable(gextras.InternObject(s)).VScrollPolicy()
-}
-
-func (s viewport) SetHAdjustment(hadjustment Adjustment) {
-	WrapScrollable(gextras.InternObject(s)).SetHAdjustment(hadjustment)
-}
-
-func (s viewport) SetHScrollPolicy(policy ScrollablePolicy) {
-	WrapScrollable(gextras.InternObject(s)).SetHScrollPolicy(policy)
-}
-
-func (s viewport) SetVAdjustment(vadjustment Adjustment) {
-	WrapScrollable(gextras.InternObject(s)).SetVAdjustment(vadjustment)
-}
-
-func (s viewport) SetVScrollPolicy(policy ScrollablePolicy) {
-	WrapScrollable(gextras.InternObject(s)).SetVScrollPolicy(policy)
+func (v viewport) AsScrollable() Scrollable {
+	return WrapScrollable(gextras.InternObject(v))
 }

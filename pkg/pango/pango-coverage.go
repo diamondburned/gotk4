@@ -51,8 +51,7 @@ func marshalCoverageLevel(p uintptr) (interface{}, error) {
 	return CoverageLevel(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// Coverage: a Coverage structure is a map from Unicode characters to
-// CoverageLevel values.
+// Coverage structure is a map from Unicode characters to CoverageLevel values.
 //
 // It is often necessary in Pango to determine if a particular font can
 // represent a particular character, and also how well it can represent that
@@ -61,18 +60,30 @@ func marshalCoverageLevel(p uintptr) (interface{}, error) {
 type Coverage interface {
 	gextras.Objector
 
+	// CopyCoverage: copy an existing `PangoCoverage`.
 	CopyCoverage() Coverage
-
+	// GetCoverage: determine whether a particular index is covered by
+	// @coverage.
 	GetCoverage(index_ int) CoverageLevel
-
+	// MaxCoverage: set the coverage for each index in @coverage to be the max
+	// (better) value of the current coverage for the index and the coverage for
+	// the corresponding index in @other.
+	//
+	// Deprecated: since version 1.44.
 	MaxCoverage(other Coverage)
-
+	// RefCoverage: increase the reference count on the `PangoCoverage` by one.
 	RefCoverage() Coverage
-
+	// SetCoverage: modify a particular index within @coverage
 	SetCoverage(index_ int, level CoverageLevel)
-
+	// ToBytesCoverage: convert a `PangoCoverage` structure into a flat binary
+	// format.
+	//
+	// Deprecated: since version 1.44.
 	ToBytesCoverage() []byte
-
+	// UnrefCoverage: decrease the reference count on the `PangoCoverage` by
+	// one.
+	//
+	// If the result is zero, free the coverage and all associated memory.
 	UnrefCoverage()
 }
 
@@ -95,6 +106,7 @@ func marshalCoverage(p uintptr) (interface{}, error) {
 	return WrapCoverage(obj), nil
 }
 
+// NewCoverage: create a new `PangoCoverage`
 func NewCoverage() Coverage {
 	var _cret *C.PangoCoverage // in
 
@@ -102,7 +114,7 @@ func NewCoverage() Coverage {
 
 	var _coverage Coverage // out
 
-	_coverage = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Coverage)
+	_coverage = WrapCoverage(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _coverage
 }
@@ -179,7 +191,7 @@ func (c coverage) SetCoverage(index_ int, level CoverageLevel) {
 func (c coverage) ToBytesCoverage() []byte {
 	var _arg0 *C.PangoCoverage // out
 	var _arg1 *C.guchar
-	var _arg2 C.int // in
+	var _arg2 *C.int // in
 
 	_arg0 = (*C.PangoCoverage)(unsafe.Pointer(c.Native()))
 

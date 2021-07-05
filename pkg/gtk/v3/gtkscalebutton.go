@@ -5,9 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -39,22 +37,37 @@ func init() {
 // The popup widget that contains the scale has a .scale-popup style class.
 type ScaleButton interface {
 	Button
-	Orientable
 
+	// AsActionable casts the class to the Actionable interface.
+	AsActionable() Actionable
+	// AsActivatable casts the class to the Activatable interface.
+	AsActivatable() Activatable
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsOrientable casts the class to the Orientable interface.
+	AsOrientable() Orientable
+
+	// Adjustment gets the Adjustment associated with the ScaleButton’s scale.
+	// See gtk_range_get_adjustment() for details.
 	Adjustment() Adjustment
-
+	// MinusButton retrieves the minus button of the ScaleButton.
 	MinusButton() Button
-
+	// PlusButton retrieves the plus button of the ScaleButton.
 	PlusButton() Button
-
+	// Popup retrieves the popup of the ScaleButton.
 	Popup() Widget
-
+	// Value gets the current value of the scale button.
 	Value() float64
-
+	// SetAdjustmentScaleButton sets the Adjustment to be used as a model for
+	// the ScaleButton’s scale. See gtk_range_set_adjustment() for details.
 	SetAdjustmentScaleButton(adjustment Adjustment)
-
+	// SetIconsScaleButton sets the icons to be used by the scale button. For
+	// details, see the ScaleButton:icons property.
 	SetIconsScaleButton(icons []string)
-
+	// SetValueScaleButton sets the current value of the scale; if the value is
+	// outside the minimum or maximum range values, it will be clamped to fit
+	// inside them. The scale button emits the ScaleButton::value-changed signal
+	// if the value changes.
 	SetValueScaleButton(value float64)
 }
 
@@ -77,6 +90,8 @@ func marshalScaleButton(p uintptr) (interface{}, error) {
 	return WrapScaleButton(obj), nil
 }
 
+// NewScaleButton creates a ScaleButton, with a range between @min and @max,
+// with a stepping of @step.
 func NewScaleButton(size int, min float64, max float64, step float64, icons []string) ScaleButton {
 	var _arg1 C.GtkIconSize // out
 	var _arg2 C.gdouble     // out
@@ -103,7 +118,7 @@ func NewScaleButton(size int, min float64, max float64, step float64, icons []st
 
 	var _scaleButton ScaleButton // out
 
-	_scaleButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ScaleButton)
+	_scaleButton = WrapScaleButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _scaleButton
 }
@@ -221,134 +236,18 @@ func (b scaleButton) SetValueScaleButton(value float64) {
 	C.gtk_scale_button_set_value(_arg0, _arg1)
 }
 
-func (b scaleButton) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+func (s scaleButton) AsActionable() Actionable {
+	return WrapActionable(gextras.InternObject(s))
 }
 
-func (b scaleButton) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+func (s scaleButton) AsActivatable() Activatable {
+	return WrapActivatable(gextras.InternObject(s))
 }
 
-func (b scaleButton) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+func (s scaleButton) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(s))
 }
 
-func (b scaleButton) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b scaleButton) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b scaleButton) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b scaleButton) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b scaleButton) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b scaleButton) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b scaleButton) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (a scaleButton) ActionName() string {
-	return WrapActionable(gextras.InternObject(a)).ActionName()
-}
-
-func (a scaleButton) ActionTargetValue() *glib.Variant {
-	return WrapActionable(gextras.InternObject(a)).ActionTargetValue()
-}
-
-func (a scaleButton) SetActionName(actionName string) {
-	WrapActionable(gextras.InternObject(a)).SetActionName(actionName)
-}
-
-func (a scaleButton) SetActionTargetValue(targetValue *glib.Variant) {
-	WrapActionable(gextras.InternObject(a)).SetActionTargetValue(targetValue)
-}
-
-func (a scaleButton) SetDetailedActionName(detailedActionName string) {
-	WrapActionable(gextras.InternObject(a)).SetDetailedActionName(detailedActionName)
-}
-
-func (b scaleButton) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
-}
-
-func (b scaleButton) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b scaleButton) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b scaleButton) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b scaleButton) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b scaleButton) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b scaleButton) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b scaleButton) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b scaleButton) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b scaleButton) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (a scaleButton) DoSetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).DoSetRelatedAction(action)
-}
-
-func (a scaleButton) RelatedAction() Action {
-	return WrapActivatable(gextras.InternObject(a)).RelatedAction()
-}
-
-func (a scaleButton) UseActionAppearance() bool {
-	return WrapActivatable(gextras.InternObject(a)).UseActionAppearance()
-}
-
-func (a scaleButton) SetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SetRelatedAction(action)
-}
-
-func (a scaleButton) SetUseActionAppearance(useAppearance bool) {
-	WrapActivatable(gextras.InternObject(a)).SetUseActionAppearance(useAppearance)
-}
-
-func (a scaleButton) SyncActionProperties(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SyncActionProperties(action)
-}
-
-func (o scaleButton) Orientation() Orientation {
-	return WrapOrientable(gextras.InternObject(o)).Orientation()
-}
-
-func (o scaleButton) SetOrientation(orientation Orientation) {
-	WrapOrientable(gextras.InternObject(o)).SetOrientation(orientation)
+func (s scaleButton) AsOrientable() Orientable {
+	return WrapOrientable(gextras.InternObject(s))
 }

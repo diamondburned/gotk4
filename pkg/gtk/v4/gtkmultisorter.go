@@ -29,10 +29,19 @@ func init() {
 // and so on.
 type MultiSorter interface {
 	Sorter
-	Buildable
 
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+
+	// AppendMultiSorter: add @sorter to @self to use for sorting at the end.
+	//
+	// @self will consult all existing sorters before it will sort with the
+	// given @sorter.
 	AppendMultiSorter(sorter Sorter)
-
+	// RemoveMultiSorter removes the sorter at the given @position from the list
+	// of sorter used by @self.
+	//
+	// If @position is larger than the number of sorters, nothing happens.
 	RemoveMultiSorter(position uint)
 }
 
@@ -55,6 +64,11 @@ func marshalMultiSorter(p uintptr) (interface{}, error) {
 	return WrapMultiSorter(obj), nil
 }
 
+// NewMultiSorter creates a new multi sorter.
+//
+// This sorter compares items by trying each of the sorters in turn, until one
+// returns non-zero. In particular, if no sorter has been added to it, it will
+// always compare items as equal.
 func NewMultiSorter() MultiSorter {
 	var _cret *C.GtkMultiSorter // in
 
@@ -62,7 +76,7 @@ func NewMultiSorter() MultiSorter {
 
 	var _multiSorter MultiSorter // out
 
-	_multiSorter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(MultiSorter)
+	_multiSorter = WrapMultiSorter(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _multiSorter
 }
@@ -87,6 +101,6 @@ func (s multiSorter) RemoveMultiSorter(position uint) {
 	C.gtk_multi_sorter_remove(_arg0, _arg1)
 }
 
-func (b multiSorter) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
+func (m multiSorter) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(m))
 }

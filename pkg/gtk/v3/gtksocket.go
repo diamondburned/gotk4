@@ -5,10 +5,8 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -76,6 +74,11 @@ func init() {
 type Socket interface {
 	Container
 
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+
+	// PlugWindow retrieves the window of the plug. Use this to check if the
+	// plug has been created inside of the socket.
 	PlugWindow() gdk.Window
 }
 
@@ -98,6 +101,7 @@ func marshalSocket(p uintptr) (interface{}, error) {
 	return WrapSocket(obj), nil
 }
 
+// NewSocket: create a new empty Socket.
 func NewSocket() Socket {
 	var _cret *C.GtkWidget // in
 
@@ -105,7 +109,7 @@ func NewSocket() Socket {
 
 	var _socket Socket // out
 
-	_socket = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Socket)
+	_socket = WrapSocket(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _socket
 }
@@ -125,42 +129,6 @@ func (s socket) PlugWindow() gdk.Window {
 	return _window
 }
 
-func (b socket) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
-}
-
-func (b socket) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b socket) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b socket) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b socket) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b socket) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b socket) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b socket) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b socket) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b socket) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
+func (s socket) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(s))
 }

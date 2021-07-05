@@ -5,9 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -26,9 +24,9 @@ func init() {
 	})
 }
 
-// SeparatorToolItem: a SeparatorToolItem is a ToolItem that separates groups of
-// other ToolItems. Depending on the theme, a SeparatorToolItem will often look
-// like a vertical line on horizontally docked toolbars.
+// SeparatorToolItem is a ToolItem that separates groups of other ToolItems.
+// Depending on the theme, a SeparatorToolItem will often look like a vertical
+// line on horizontally docked toolbars.
 //
 // If the Toolbar child property “expand” is true and the property
 // SeparatorToolItem:draw is false, a SeparatorToolItem will act as a “spring”
@@ -43,8 +41,18 @@ func init() {
 type SeparatorToolItem interface {
 	ToolItem
 
-	Draw() bool
+	// AsActivatable casts the class to the Activatable interface.
+	AsActivatable() Activatable
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
 
+	// Draw returns whether @item is drawn as a line, or just blank. See
+	// gtk_separator_tool_item_set_draw().
+	Draw() bool
+	// SetDrawSeparatorToolItem: whether @item is drawn as a vertical line, or
+	// just blank. Setting this to false along with gtk_tool_item_set_expand()
+	// is useful to create an item that forces following items to the end of the
+	// toolbar.
 	SetDrawSeparatorToolItem(draw bool)
 }
 
@@ -67,6 +75,7 @@ func marshalSeparatorToolItem(p uintptr) (interface{}, error) {
 	return WrapSeparatorToolItem(obj), nil
 }
 
+// NewSeparatorToolItem: create a new SeparatorToolItem
 func NewSeparatorToolItem() SeparatorToolItem {
 	var _cret *C.GtkToolItem // in
 
@@ -74,7 +83,7 @@ func NewSeparatorToolItem() SeparatorToolItem {
 
 	var _separatorToolItem SeparatorToolItem // out
 
-	_separatorToolItem = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(SeparatorToolItem)
+	_separatorToolItem = WrapSeparatorToolItem(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _separatorToolItem
 }
@@ -108,66 +117,10 @@ func (i separatorToolItem) SetDrawSeparatorToolItem(draw bool) {
 	C.gtk_separator_tool_item_set_draw(_arg0, _arg1)
 }
 
-func (b separatorToolItem) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+func (s separatorToolItem) AsActivatable() Activatable {
+	return WrapActivatable(gextras.InternObject(s))
 }
 
-func (b separatorToolItem) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b separatorToolItem) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b separatorToolItem) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b separatorToolItem) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b separatorToolItem) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b separatorToolItem) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b separatorToolItem) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b separatorToolItem) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b separatorToolItem) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (a separatorToolItem) DoSetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).DoSetRelatedAction(action)
-}
-
-func (a separatorToolItem) RelatedAction() Action {
-	return WrapActivatable(gextras.InternObject(a)).RelatedAction()
-}
-
-func (a separatorToolItem) UseActionAppearance() bool {
-	return WrapActivatable(gextras.InternObject(a)).UseActionAppearance()
-}
-
-func (a separatorToolItem) SetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SetRelatedAction(action)
-}
-
-func (a separatorToolItem) SetUseActionAppearance(useAppearance bool) {
-	WrapActivatable(gextras.InternObject(a)).SetUseActionAppearance(useAppearance)
-}
-
-func (a separatorToolItem) SyncActionProperties(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SyncActionProperties(action)
+func (s separatorToolItem) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(s))
 }

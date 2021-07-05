@@ -100,13 +100,13 @@ func FindBaseDir(text string, length int) Direction {
 //
 // Use g_unichar_get_mirror_char() instead; the docs for that function provide
 // full details.
-func GetMirrorChar(ch uint32, mirroredCh *uint32) bool {
+func GetMirrorChar(ch uint32, mirroredCh uint32) bool {
 	var _arg1 C.gunichar  // out
 	var _arg2 *C.gunichar // out
 	var _cret C.gboolean  // in
 
 	_arg1 = C.gunichar(ch)
-	_arg2 = (*C.gunichar)(unsafe.Pointer(mirroredCh))
+	_arg2 = *C.gunichar(mirroredCh)
 
 	_cret = C.pango_get_mirror_char(_arg1, _arg2)
 

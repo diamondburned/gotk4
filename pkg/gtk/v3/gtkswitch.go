@@ -5,9 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -40,15 +38,28 @@ func init() {
 // GtkSwitch has two css nodes, the main node with the name switch and a subnode
 // named slider. Neither of them is using any style classes.
 type Switch interface {
-	Actionable
-	Activatable
+	Widget
 
+	// AsActionable casts the class to the Actionable interface.
+	AsActionable() Actionable
+	// AsActivatable casts the class to the Activatable interface.
+	AsActivatable() Activatable
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+
+	// Active gets whether the Switch is in its “on” or “off” state.
 	Active() bool
-
+	// State gets the underlying state of the Switch.
 	State() bool
-
+	// SetActiveSwitch changes the state of @sw to the desired one.
 	SetActiveSwitch(isActive bool)
-
+	// SetStateSwitch sets the underlying state of the Switch.
+	//
+	// Normally, this is the same as Switch:active, unless the switch is set up
+	// for delayed state changes. This function is typically called from a
+	// Switch::state-set signal handler.
+	//
+	// See Switch::state-set for details.
 	SetStateSwitch(state bool)
 }
 
@@ -71,6 +82,7 @@ func marshalSwitch(p uintptr) (interface{}, error) {
 	return WrapSwitch(obj), nil
 }
 
+// NewSwitch creates a new Switch widget.
 func NewSwitch() Switch {
 	var _cret *C.GtkWidget // in
 
@@ -78,7 +90,7 @@ func NewSwitch() Switch {
 
 	var __switch Switch // out
 
-	__switch = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Switch)
+	__switch = WrapSwitch(externglib.Take(unsafe.Pointer(_cret)))
 
 	return __switch
 }
@@ -141,86 +153,14 @@ func (s _switch) SetStateSwitch(state bool) {
 	C.gtk_switch_set_state(_arg0, _arg1)
 }
 
-func (a _switch) ActionName() string {
-	return WrapActionable(gextras.InternObject(a)).ActionName()
+func (_ _switch) AsActionable() Actionable {
+	return WrapActionable(gextras.InternObject(_))
 }
 
-func (a _switch) ActionTargetValue() *glib.Variant {
-	return WrapActionable(gextras.InternObject(a)).ActionTargetValue()
+func (_ _switch) AsActivatable() Activatable {
+	return WrapActivatable(gextras.InternObject(_))
 }
 
-func (a _switch) SetActionName(actionName string) {
-	WrapActionable(gextras.InternObject(a)).SetActionName(actionName)
-}
-
-func (a _switch) SetActionTargetValue(targetValue *glib.Variant) {
-	WrapActionable(gextras.InternObject(a)).SetActionTargetValue(targetValue)
-}
-
-func (a _switch) SetDetailedActionName(detailedActionName string) {
-	WrapActionable(gextras.InternObject(a)).SetDetailedActionName(detailedActionName)
-}
-
-func (b _switch) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
-}
-
-func (b _switch) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b _switch) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b _switch) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b _switch) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b _switch) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b _switch) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b _switch) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b _switch) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b _switch) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (a _switch) DoSetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).DoSetRelatedAction(action)
-}
-
-func (a _switch) RelatedAction() Action {
-	return WrapActivatable(gextras.InternObject(a)).RelatedAction()
-}
-
-func (a _switch) UseActionAppearance() bool {
-	return WrapActivatable(gextras.InternObject(a)).UseActionAppearance()
-}
-
-func (a _switch) SetRelatedAction(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SetRelatedAction(action)
-}
-
-func (a _switch) SetUseActionAppearance(useAppearance bool) {
-	WrapActivatable(gextras.InternObject(a)).SetUseActionAppearance(useAppearance)
-}
-
-func (a _switch) SyncActionProperties(action Action) {
-	WrapActivatable(gextras.InternObject(a)).SyncActionProperties(action)
+func (_ _switch) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(_))
 }

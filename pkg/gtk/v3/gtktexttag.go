@@ -41,10 +41,24 @@ func init() {
 type TextTag interface {
 	gextras.Objector
 
+	// ChangedTextTag emits the TextTagTable::tag-changed signal on the
+	// TextTagTable where the tag is included.
+	//
+	// The signal is already emitted when setting a TextTag property. This
+	// function is useful for a TextTag subclass.
 	ChangedTextTag(sizeChanged bool)
-
+	// Priority: get the tag priority.
 	Priority() int
-
+	// SetPriorityTextTag sets the priority of a TextTag. Valid priorities start
+	// at 0 and go to one less than gtk_text_tag_table_get_size(). Each tag in a
+	// table has a unique priority; setting the priority of one tag shifts the
+	// priorities of all the other tags in the table to maintain a unique
+	// priority for each tag. Higher priority tags “win” if two tags both set
+	// the same text attribute. When adding a tag to a tag table, it will be
+	// assigned the highest priority in the table by default; so normally the
+	// precedence of a set of tags is the order in which they were added to the
+	// table, or created with gtk_text_buffer_create_tag(), which adds the tag
+	// to the buffer’s table automatically.
 	SetPriorityTextTag(priority int)
 }
 
@@ -67,6 +81,8 @@ func marshalTextTag(p uintptr) (interface{}, error) {
 	return WrapTextTag(obj), nil
 }
 
+// NewTextTag creates a TextTag. Configure the tag using object arguments, i.e.
+// using g_object_set().
 func NewTextTag(name string) TextTag {
 	var _arg1 *C.gchar      // out
 	var _cret *C.GtkTextTag // in
@@ -78,7 +94,7 @@ func NewTextTag(name string) TextTag {
 
 	var _textTag TextTag // out
 
-	_textTag = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(TextTag)
+	_textTag = WrapTextTag(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _textTag
 }

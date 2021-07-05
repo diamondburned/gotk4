@@ -3,7 +3,6 @@
 package gtk
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/box"
@@ -22,9 +21,6 @@ import (
 // #include <gtk/gtkx.h>
 //
 // void gotk4_ClipboardImageReceivedFunc(GtkClipboard*, GdkPixbuf*, gpointer);
-// void gotk4_ClipboardReceivedFunc(GtkClipboard*, GtkSelectionData*, gpointer);
-// void gotk4_ClipboardRichTextReceivedFunc(GtkClipboard*, GdkAtom, guint8*, gsize, gpointer);
-// void gotk4_ClipboardTargetsReceivedFunc(GtkClipboard*, GdkAtom*, gint, gpointer);
 // void gotk4_ClipboardTextReceivedFunc(GtkClipboard*, gchar*, gpointer);
 // void gotk4_ClipboardURIReceivedFunc(GtkClipboard*, gchar**, gpointer);
 import "C"
@@ -35,7 +31,7 @@ func init() {
 	})
 }
 
-// ClipboardImageReceivedFunc: a function to be called when the results of
+// ClipboardImageReceivedFunc: function to be called when the results of
 // gtk_clipboard_request_image() are received, or when the request fails.
 type ClipboardImageReceivedFunc func(clipboard Clipboard, pixbuf gdkpixbuf.Pixbuf)
 
@@ -56,9 +52,9 @@ func gotk4_ClipboardImageReceivedFunc(arg0 *C.GtkClipboard, arg1 *C.GdkPixbuf, a
 	fn(clipboard, pixbuf)
 }
 
-// ClipboardReceivedFunc: a function to be called when the results of
+// ClipboardReceivedFunc: function to be called when the results of
 // gtk_clipboard_request_contents() are received, or when the request fails.
-type ClipboardReceivedFunc func(clipboard Clipboard, selectionData *SelectionData)
+type ClipboardReceivedFunc func(clipboard Clipboard, selectionData SelectionData)
 
 //export gotk4_ClipboardReceivedFunc
 func gotk4_ClipboardReceivedFunc(arg0 *C.GtkClipboard, arg1 *C.GtkSelectionData, arg2 C.gpointer) {
@@ -67,74 +63,17 @@ func gotk4_ClipboardReceivedFunc(arg0 *C.GtkClipboard, arg1 *C.GtkSelectionData,
 		panic(`callback not found`)
 	}
 
-	var clipboard Clipboard          // out
-	var selectionData *SelectionData // out
+	var clipboard Clipboard         // out
+	var selectionData SelectionData // out
 
 	clipboard = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0))).(Clipboard)
-	selectionData = (*SelectionData)(unsafe.Pointer(arg1))
+	selectionData = (SelectionData)(unsafe.Pointer(arg1))
 
 	fn := v.(ClipboardReceivedFunc)
 	fn(clipboard, selectionData)
 }
 
-// ClipboardRichTextReceivedFunc: a function to be called when the results of
-// gtk_clipboard_request_rich_text() are received, or when the request fails.
-type ClipboardRichTextReceivedFunc func(clipboard Clipboard, format *gdk.Atom, text string, length uint)
-
-//export gotk4_ClipboardRichTextReceivedFunc
-func gotk4_ClipboardRichTextReceivedFunc(arg0 *C.GtkClipboard, arg1 C.GdkAtom, arg2 *C.guint8, arg3 C.gsize, arg4 C.gpointer) {
-	v := box.Get(uintptr(arg4))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	var clipboard Clipboard // out
-	var format *gdk.Atom    // out
-	var text string         // out
-	var length uint         // out
-
-	clipboard = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0))).(Clipboard)
-	{
-		var refTmpIn *C.GdkAtom
-		var refTmpOut *gdk.Atom
-
-		in0 := &arg1
-		refTmpIn = in0
-
-		refTmpOut = (*gdk.Atom)(unsafe.Pointer(refTmpIn))
-
-		format = refTmpOut
-	}
-	text = C.GoString(arg2)
-	length = uint(arg3)
-
-	fn := v.(ClipboardRichTextReceivedFunc)
-	fn(clipboard, format, text, length)
-}
-
-// ClipboardTargetsReceivedFunc: a function to be called when the results of
-// gtk_clipboard_request_targets() are received, or when the request fails.
-type ClipboardTargetsReceivedFunc func(clipboard Clipboard, atoms []*gdk.Atom)
-
-//export gotk4_ClipboardTargetsReceivedFunc
-func gotk4_ClipboardTargetsReceivedFunc(arg0 *C.GtkClipboard, arg1 *C.GdkAtom, arg2 C.gint, arg3 C.gpointer) {
-	v := box.Get(uintptr(arg3))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	var clipboard Clipboard // out
-	var atoms []*gdk.Atom
-
-	clipboard = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0))).(Clipboard)
-	atoms = make([]*gdk.Atom, arg2)
-	copy(atoms, unsafe.Slice((**gdk.Atom)(unsafe.Pointer(arg1)), arg2))
-
-	fn := v.(ClipboardTargetsReceivedFunc)
-	fn(clipboard, atoms)
-}
-
-// ClipboardTextReceivedFunc: a function to be called when the results of
+// ClipboardTextReceivedFunc: function to be called when the results of
 // gtk_clipboard_request_text() are received, or when the request fails.
 type ClipboardTextReceivedFunc func(clipboard Clipboard, text string)
 
@@ -155,7 +94,7 @@ func gotk4_ClipboardTextReceivedFunc(arg0 *C.GtkClipboard, arg1 *C.gchar, arg2 C
 	fn(clipboard, text)
 }
 
-// ClipboardURIReceivedFunc: a function to be called when the results of
+// ClipboardURIReceivedFunc: function to be called when the results of
 // gtk_clipboard_request_uris() are received, or when the request fails.
 type ClipboardURIReceivedFunc func(clipboard Clipboard, uris []string)
 
@@ -241,50 +180,118 @@ func gotk4_ClipboardURIReceivedFunc(arg0 *C.GtkClipboard, arg1 **C.gchar, arg2 C
 type Clipboard interface {
 	gextras.Objector
 
+	// ClearClipboard clears the contents of the clipboard. Generally this
+	// should only be called between the time you call
+	// gtk_clipboard_set_with_owner() or gtk_clipboard_set_with_data(), and when
+	// the @clear_func you supplied is called. Otherwise, the clipboard may be
+	// owned by someone else.
 	ClearClipboard()
-
+	// Display gets the Display associated with @clipboard
 	Display() gdk.Display
-
+	// Owner: if the clipboard contents callbacks were set with
+	// gtk_clipboard_set_with_owner(), and the gtk_clipboard_set_with_data() or
+	// gtk_clipboard_clear() has not subsequently called, returns the owner set
+	// by gtk_clipboard_set_with_owner().
 	Owner() gextras.Objector
-
-	RequestContentsClipboard(target *gdk.Atom, callback ClipboardReceivedFunc)
-
+	// RequestImageClipboard requests the contents of the clipboard as image.
+	// When the image is later received, it will be converted to a Pixbuf, and
+	// @callback will be called.
+	//
+	// The @pixbuf parameter to @callback will contain the resulting Pixbuf if
+	// the request succeeded, or nil if it failed. This could happen for various
+	// reasons, in particular if the clipboard was empty or if the contents of
+	// the clipboard could not be converted into an image.
 	RequestImageClipboard(callback ClipboardImageReceivedFunc)
-
-	RequestRichTextClipboard(buffer TextBuffer, callback ClipboardRichTextReceivedFunc)
-
-	RequestTargetsClipboard(callback ClipboardTargetsReceivedFunc)
-
+	// RequestTextClipboard requests the contents of the clipboard as text. When
+	// the text is later received, it will be converted to UTF-8 if necessary,
+	// and @callback will be called.
+	//
+	// The @text parameter to @callback will contain the resulting text if the
+	// request succeeded, or nil if it failed. This could happen for various
+	// reasons, in particular if the clipboard was empty or if the contents of
+	// the clipboard could not be converted into text form.
 	RequestTextClipboard(callback ClipboardTextReceivedFunc)
-
+	// RequestUrisClipboard requests the contents of the clipboard as URIs. When
+	// the URIs are later received @callback will be called.
+	//
+	// The @uris parameter to @callback will contain the resulting array of URIs
+	// if the request succeeded, or nil if it failed. This could happen for
+	// various reasons, in particular if the clipboard was empty or if the
+	// contents of the clipboard could not be converted into URI form.
 	RequestUrisClipboard(callback ClipboardURIReceivedFunc)
-
+	// SetCanStoreClipboard hints that the clipboard data should be stored
+	// somewhere when the application exits or when gtk_clipboard_store () is
+	// called.
+	//
+	// This value is reset when the clipboard owner changes. Where the clipboard
+	// data is stored is platform dependent, see gdk_display_store_clipboard ()
+	// for more information.
 	SetCanStoreClipboard(targets []TargetEntry)
-
+	// SetImageClipboard sets the contents of the clipboard to the given Pixbuf.
+	// GTK+ will take responsibility for responding for requests for the image,
+	// and for converting the image into the requested format.
 	SetImageClipboard(pixbuf gdkpixbuf.Pixbuf)
-
+	// SetTextClipboard sets the contents of the clipboard to the given UTF-8
+	// string. GTK+ will make a copy of the text and take responsibility for
+	// responding for requests for the text, and for converting the text into
+	// the requested format.
 	SetTextClipboard(text string, len int)
-
+	// StoreClipboard stores the current clipboard data somewhere so that it
+	// will stay around after the application has quit.
 	StoreClipboard()
-
-	WaitForContentsClipboard(target *gdk.Atom) *SelectionData
-
+	// WaitForImageClipboard requests the contents of the clipboard as image and
+	// converts the result to a Pixbuf. This function waits for the data to be
+	// received using the main loop, so events, timeouts, etc, may be dispatched
+	// during the wait.
 	WaitForImageClipboard() gdkpixbuf.Pixbuf
-
-	WaitForTargetsClipboard() ([]gdk.Atom, bool)
-
+	// WaitForTextClipboard requests the contents of the clipboard as text and
+	// converts the result to UTF-8 if necessary. This function waits for the
+	// data to be received using the main loop, so events, timeouts, etc, may be
+	// dispatched during the wait.
 	WaitForTextClipboard() string
-
+	// WaitForUrisClipboard requests the contents of the clipboard as URIs. This
+	// function waits for the data to be received using the main loop, so
+	// events, timeouts, etc, may be dispatched during the wait.
 	WaitForUrisClipboard() []string
-
+	// WaitIsImageAvailableClipboard: test to see if there is an image available
+	// to be pasted This is done by requesting the TARGETS atom and checking if
+	// it contains any of the supported image targets. This function waits for
+	// the data to be received using the main loop, so events, timeouts, etc,
+	// may be dispatched during the wait.
+	//
+	// This function is a little faster than calling
+	// gtk_clipboard_wait_for_image() since it doesn’t need to retrieve the
+	// actual image data.
 	WaitIsImageAvailableClipboard() bool
-
+	// WaitIsRichTextAvailableClipboard: test to see if there is rich text
+	// available to be pasted This is done by requesting the TARGETS atom and
+	// checking if it contains any of the supported rich text targets. This
+	// function waits for the data to be received using the main loop, so
+	// events, timeouts, etc, may be dispatched during the wait.
+	//
+	// This function is a little faster than calling
+	// gtk_clipboard_wait_for_rich_text() since it doesn’t need to retrieve the
+	// actual text.
 	WaitIsRichTextAvailableClipboard(buffer TextBuffer) bool
-
-	WaitIsTargetAvailableClipboard(target *gdk.Atom) bool
-
+	// WaitIsTextAvailableClipboard: test to see if there is text available to
+	// be pasted This is done by requesting the TARGETS atom and checking if it
+	// contains any of the supported text targets. This function waits for the
+	// data to be received using the main loop, so events, timeouts, etc, may be
+	// dispatched during the wait.
+	//
+	// This function is a little faster than calling
+	// gtk_clipboard_wait_for_text() since it doesn’t need to retrieve the
+	// actual text.
 	WaitIsTextAvailableClipboard() bool
-
+	// WaitIsUrisAvailableClipboard: test to see if there is a list of URIs
+	// available to be pasted This is done by requesting the TARGETS atom and
+	// checking if it contains the URI targets. This function waits for the data
+	// to be received using the main loop, so events, timeouts, etc, may be
+	// dispatched during the wait.
+	//
+	// This function is a little faster than calling
+	// gtk_clipboard_wait_for_uris() since it doesn’t need to retrieve the
+	// actual URI data.
 	WaitIsUrisAvailableClipboard() bool
 }
 
@@ -345,29 +352,6 @@ func (c clipboard) Owner() gextras.Objector {
 	return _object
 }
 
-func (c clipboard) RequestContentsClipboard(target *gdk.Atom, callback ClipboardReceivedFunc) {
-	var _arg0 *C.GtkClipboard            // out
-	var _arg1 C.GdkAtom                  // out
-	var _arg2 C.GtkClipboardReceivedFunc // out
-	var _arg3 C.gpointer
-
-	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(c.Native()))
-	{
-		var refTmpIn *gdk.Atom
-		var refTmpOut *C.GdkAtom
-
-		refTmpIn = target
-
-		refTmpOut = (*C.GdkAtom)(unsafe.Pointer(refTmpIn.Native()))
-
-		_arg1 = *refTmpOut
-	}
-	_arg2 = (*[0]byte)(C.gotk4_ClipboardReceivedFunc)
-	_arg3 = C.gpointer(box.Assign(callback))
-
-	C.gtk_clipboard_request_contents(_arg0, _arg1, _arg2, _arg3)
-}
-
 func (c clipboard) RequestImageClipboard(callback ClipboardImageReceivedFunc) {
 	var _arg0 *C.GtkClipboard                 // out
 	var _arg1 C.GtkClipboardImageReceivedFunc // out
@@ -378,32 +362,6 @@ func (c clipboard) RequestImageClipboard(callback ClipboardImageReceivedFunc) {
 	_arg2 = C.gpointer(box.Assign(callback))
 
 	C.gtk_clipboard_request_image(_arg0, _arg1, _arg2)
-}
-
-func (c clipboard) RequestRichTextClipboard(buffer TextBuffer, callback ClipboardRichTextReceivedFunc) {
-	var _arg0 *C.GtkClipboard                    // out
-	var _arg1 *C.GtkTextBuffer                   // out
-	var _arg2 C.GtkClipboardRichTextReceivedFunc // out
-	var _arg3 C.gpointer
-
-	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(c.Native()))
-	_arg1 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
-	_arg2 = (*[0]byte)(C.gotk4_ClipboardRichTextReceivedFunc)
-	_arg3 = C.gpointer(box.Assign(callback))
-
-	C.gtk_clipboard_request_rich_text(_arg0, _arg1, _arg2, _arg3)
-}
-
-func (c clipboard) RequestTargetsClipboard(callback ClipboardTargetsReceivedFunc) {
-	var _arg0 *C.GtkClipboard                   // out
-	var _arg1 C.GtkClipboardTargetsReceivedFunc // out
-	var _arg2 C.gpointer
-
-	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(c.Native()))
-	_arg1 = (*[0]byte)(C.gotk4_ClipboardTargetsReceivedFunc)
-	_arg2 = C.gpointer(box.Assign(callback))
-
-	C.gtk_clipboard_request_targets(_arg0, _arg1, _arg2)
 }
 
 func (c clipboard) RequestTextClipboard(callback ClipboardTextReceivedFunc) {
@@ -473,35 +431,6 @@ func (c clipboard) StoreClipboard() {
 	C.gtk_clipboard_store(_arg0)
 }
 
-func (c clipboard) WaitForContentsClipboard(target *gdk.Atom) *SelectionData {
-	var _arg0 *C.GtkClipboard     // out
-	var _arg1 C.GdkAtom           // out
-	var _cret *C.GtkSelectionData // in
-
-	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(c.Native()))
-	{
-		var refTmpIn *gdk.Atom
-		var refTmpOut *C.GdkAtom
-
-		refTmpIn = target
-
-		refTmpOut = (*C.GdkAtom)(unsafe.Pointer(refTmpIn.Native()))
-
-		_arg1 = *refTmpOut
-	}
-
-	_cret = C.gtk_clipboard_wait_for_contents(_arg0, _arg1)
-
-	var _selectionData *SelectionData // out
-
-	_selectionData = (*SelectionData)(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(&_selectionData, func(v **SelectionData) {
-		C.free(unsafe.Pointer(v))
-	})
-
-	return _selectionData
-}
-
 func (c clipboard) WaitForImageClipboard() gdkpixbuf.Pixbuf {
 	var _arg0 *C.GtkClipboard // out
 	var _cret *C.GdkPixbuf    // in
@@ -515,30 +444,6 @@ func (c clipboard) WaitForImageClipboard() gdkpixbuf.Pixbuf {
 	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(gdkpixbuf.Pixbuf)
 
 	return _pixbuf
-}
-
-func (c clipboard) WaitForTargetsClipboard() ([]gdk.Atom, bool) {
-	var _arg0 *C.GtkClipboard // out
-	var _arg1 *C.GdkAtom
-	var _arg2 C.gint     // in
-	var _cret C.gboolean // in
-
-	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(c.Native()))
-
-	_cret = C.gtk_clipboard_wait_for_targets(_arg0, &_arg1, &_arg2)
-
-	var _targets []gdk.Atom
-	var _ok bool // out
-
-	_targets = unsafe.Slice((*gdk.Atom)(unsafe.Pointer(_arg1)), _arg2)
-	runtime.SetFinalizer(&_targets, func(v *[]gdk.Atom) {
-		C.free(unsafe.Pointer(&(*v)[0]))
-	})
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _targets, _ok
 }
 
 func (c clipboard) WaitForTextClipboard() string {
@@ -611,34 +516,6 @@ func (c clipboard) WaitIsRichTextAvailableClipboard(buffer TextBuffer) bool {
 	_arg1 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
 
 	_cret = C.gtk_clipboard_wait_is_rich_text_available(_arg0, _arg1)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-func (c clipboard) WaitIsTargetAvailableClipboard(target *gdk.Atom) bool {
-	var _arg0 *C.GtkClipboard // out
-	var _arg1 C.GdkAtom       // out
-	var _cret C.gboolean      // in
-
-	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(c.Native()))
-	{
-		var refTmpIn *gdk.Atom
-		var refTmpOut *C.GdkAtom
-
-		refTmpIn = target
-
-		refTmpOut = (*C.GdkAtom)(unsafe.Pointer(refTmpIn.Native()))
-
-		_arg1 = *refTmpOut
-	}
-
-	_cret = C.gtk_clipboard_wait_is_target_available(_arg0, _arg1)
 
 	var _ok bool // out
 

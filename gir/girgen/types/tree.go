@@ -2,9 +2,9 @@ package types
 
 import (
 	"github.com/davecgh/go-spew/spew"
-	"github.com/diamondburned/gotk4/gir/girgen/pen"
 	"github.com/diamondburned/gotk4/gir"
 	"github.com/diamondburned/gotk4/gir/girgen/logger"
+	"github.com/diamondburned/gotk4/gir/girgen/pen"
 )
 
 // Tree is a structure for a type that is resolved to the lowest level of
@@ -17,9 +17,6 @@ type Tree struct {
 	// contain interfaces that are also in other interfaces, which will not
 	// build.
 	Requires []Tree
-	// Embeds contains the filtered dependencies, that is, ones that will not
-	// collide when built.
-	Embeds []Tree
 
 	// Level sets the maximum recursion level to go. It only applies if set
 	// to something more than -1.
@@ -36,12 +33,8 @@ func (tree *Tree) Reset() {
 	for i := range tree.Requires {
 		tree.Requires[i] = Tree{}
 	}
-	for i := range tree.Embeds {
-		tree.Embeds[i] = Tree{}
-	}
 
 	tree.Resolved = nil
-	tree.Embeds = tree.Embeds[:0]
 	tree.Requires = tree.Requires[:0]
 }
 
@@ -78,7 +71,6 @@ func (tree *Tree) ResolveFromType(toplevel *Resolved) bool {
 			return true
 		}
 
-		tree.omitAmbiguous(false)
 		return true
 	}
 
@@ -107,8 +99,6 @@ func (tree *Tree) ResolveFromType(toplevel *Resolved) bool {
 			}
 		}
 
-		tree.omitAmbiguous(true)
-
 	case *gir.Interface:
 		for _, prereq := range v.Prerequisites {
 			// Like class parents, interface prerequisites are important.
@@ -128,68 +118,9 @@ func (tree *Tree) ResolveFromType(toplevel *Resolved) bool {
 				return false
 			}
 		}
-
-		tree.omitAmbiguous(true)
-
-	default:
-		tree.omitAmbiguous(false)
 	}
 
 	return true
-}
-
-// omitAmbiguous omits current-level ambiguous types.
-func (tree *Tree) omitAmbiguous(actually bool) {
-	// Try and reuse the backing array, but regrow it ourselves if there's not
-	// enough space.
-	tree.Embeds = tree.Embeds[:0]
-	if cap(tree.Embeds) < len(tree.Requires) {
-		tree.Embeds = make([]Tree, 0, len(tree.Requires))
-	}
-
-	// No ambiguity if there's less than 2 parents.
-	if !actually || len(tree.Requires) < 2 {
-		tree.Embeds = append(tree.Embeds, tree.Requires...)
-		return
-	}
-
-	// This loop seems to be quite expensive. We can likely make it much
-	// faster by using a hashmap of prereq names at the current level.
-addLoop:
-	for i, prereqTree := range tree.Requires {
-		for j, otherTree := range tree.Requires {
-			// Skip the same value.
-			if i == j {
-				continue
-			}
-
-			if requiresHasGType(otherTree.Requires, prereqTree.Resolved) {
-				// prereqTree is already inside another interface that we
-				// inherit from, so we don't add it to prevent ambiguity.
-				continue addLoop
-			}
-		}
-
-		tree.Embeds = append(tree.Embeds, prereqTree)
-	}
-}
-
-// requiresHasGType scans over the list of resolved types and returns true if
-// any of the resolved types implements the given resolved type.
-func requiresHasGType(requires []Tree, typ *Resolved) bool {
-	return requiresHasGTyperec(requires, typ.PublicType(true))
-}
-
-func requiresHasGTyperec(requires []Tree, publType string) bool {
-	for _, req := range requires {
-		if req.Resolved.PublicType(true) == publType {
-			return true
-		}
-		if requiresHasGTyperec(req.Requires, publType) {
-			return true
-		}
-	}
-	return false
 }
 
 func (tree *Tree) parentLevel() int {
@@ -238,27 +169,14 @@ func (tree *Tree) resolveParents(parents ...*Resolved) bool {
 // PublicEmbeds returns the list of the toplevel type's children as Go exported
 // type names. The namespaces are appropriately prepended if needed.
 func (tree *Tree) PublicEmbeds() []string {
-	names := make([]string, len(tree.Embeds))
+	names := make([]string, len(tree.Requires))
 
-	for i, req := range tree.Embeds {
+	for i, req := range tree.Requires {
 		namespace := req.Resolved.NeedsNamespace(tree.gen.Namespace())
 		names[i] = req.Resolved.PublicType(namespace)
 	}
 
 	return names
-}
-
-// WalkPublInterfaces walks the tree for all embedded interfaces.
-func (tree *Tree) WalkPublInterfaces(f func(*Resolved)) {
-	for _, impl := range tree.Embeds {
-		if impl.IsInterface() {
-			f(impl.Resolved)
-		}
-
-		if len(impl.Embeds) > 0 {
-			impl.WalkPublInterfaces(f)
-		}
-	}
 }
 
 // WrapClass creates a wrapper that uses public fields to create code that wraps
@@ -285,10 +203,7 @@ func (tree *Tree) wrap(obj string, class bool) string {
 	p.Write(tree.Resolved.ImplType(false)).Char('{')
 	p.EmptyLine()
 
-	iter := tree.Embeds
-	if class {
-		iter = tree.Requires // get the Parent from Requires
-	}
+	iter := tree.Requires
 
 	for _, typ := range iter {
 		if typ.Resolved.Builtin != nil {

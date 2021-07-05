@@ -5,9 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -99,30 +97,57 @@ func init() {
 type InfoBar interface {
 	Box
 
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsOrientable casts the class to the Orientable interface.
+	AsOrientable() Orientable
+
+	// AddActionWidgetInfoBar: add an activatable widget to the action area of a
+	// InfoBar, connecting a signal handler that will emit the InfoBar::response
+	// signal on the message area when the widget is activated. The widget is
+	// appended to the end of the message areas action area.
 	AddActionWidgetInfoBar(child Widget, responseId int)
-
+	// AddButtonInfoBar adds a button with the given text and sets things up so
+	// that clicking the button will emit the “response” signal with the given
+	// response_id. The button is appended to the end of the info bars's action
+	// area. The button widget is returned, but usually you don't need it.
 	AddButtonInfoBar(buttonText string, responseId int) Button
-
+	// ActionArea returns the action area of @info_bar.
 	ActionArea() Box
-
+	// ContentArea returns the content area of @info_bar.
 	ContentArea() Box
-
+	// MessageType returns the message type of the message area.
 	MessageType() MessageType
 
 	Revealed() bool
-
+	// ShowCloseButton returns whether the widget will display a standard close
+	// button.
 	ShowCloseButton() bool
-
+	// ResponseInfoBar emits the “response” signal with the given @response_id.
 	ResponseInfoBar(responseId int)
-
+	// SetDefaultResponseInfoBar sets the last widget in the info bar’s action
+	// area with the given response_id as the default widget for the dialog.
+	// Pressing “Enter” normally activates the default widget.
+	//
+	// Note that this function currently requires @info_bar to be added to a
+	// widget hierarchy.
 	SetDefaultResponseInfoBar(responseId int)
-
+	// SetMessageTypeInfoBar sets the message type of the message area.
+	//
+	// GTK+ uses this type to determine how the message is displayed.
 	SetMessageTypeInfoBar(messageType MessageType)
-
+	// SetResponseSensitiveInfoBar calls gtk_widget_set_sensitive (widget,
+	// setting) for each widget in the info bars’s action area with the given
+	// response_id. A convenient way to sensitize/desensitize dialog buttons.
 	SetResponseSensitiveInfoBar(responseId int, setting bool)
-
+	// SetRevealedInfoBar sets the GtkInfoBar:revealed property to @revealed.
+	// This will cause @info_bar to show up with a slide-in transition.
+	//
+	// Note that this property does not automatically show @info_bar and thus
+	// won’t have any effect if it is invisible.
 	SetRevealedInfoBar(revealed bool)
-
+	// SetShowCloseButtonInfoBar: if true, a standard close button is shown.
+	// When clicked it emits the response GTK_RESPONSE_CLOSE.
 	SetShowCloseButtonInfoBar(setting bool)
 }
 
@@ -145,6 +170,7 @@ func marshalInfoBar(p uintptr) (interface{}, error) {
 	return WrapInfoBar(obj), nil
 }
 
+// NewInfoBar creates a new InfoBar object.
 func NewInfoBar() InfoBar {
 	var _cret *C.GtkWidget // in
 
@@ -152,7 +178,7 @@ func NewInfoBar() InfoBar {
 
 	var _infoBar InfoBar // out
 
-	_infoBar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(InfoBar)
+	_infoBar = WrapInfoBar(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _infoBar
 }
@@ -336,50 +362,10 @@ func (i infoBar) SetShowCloseButtonInfoBar(setting bool) {
 	C.gtk_info_bar_set_show_close_button(_arg0, _arg1)
 }
 
-func (b infoBar) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+func (i infoBar) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(i))
 }
 
-func (b infoBar) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b infoBar) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b infoBar) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b infoBar) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b infoBar) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b infoBar) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b infoBar) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b infoBar) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b infoBar) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (o infoBar) Orientation() Orientation {
-	return WrapOrientable(gextras.InternObject(o)).Orientation()
-}
-
-func (o infoBar) SetOrientation(orientation Orientation) {
-	WrapOrientable(gextras.InternObject(o)).SetOrientation(orientation)
+func (i infoBar) AsOrientable() Orientable {
+	return WrapOrientable(gextras.InternObject(i))
 }

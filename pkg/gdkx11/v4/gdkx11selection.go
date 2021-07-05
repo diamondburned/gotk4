@@ -14,17 +14,17 @@ import "C"
 
 // X11FreeCompoundText frees the data returned from
 // gdk_x11_display_string_to_compound_text().
-func X11FreeCompoundText(ctext *byte) {
+func X11FreeCompoundText(ctext byte) {
 	var _arg1 *C.guchar // out
 
-	_arg1 = (*C.guchar)(unsafe.Pointer(ctext))
+	_arg1 = *C.guchar(ctext)
 
 	C.gdk_x11_free_compound_text(_arg1)
 }
 
 // X11FreeTextList frees the array of strings created by
 // gdk_x11_display_text_property_to_text_list().
-func X11FreeTextList(list *string) {
+func X11FreeTextList(list string) {
 	var _arg1 **C.char // out
 
 	{

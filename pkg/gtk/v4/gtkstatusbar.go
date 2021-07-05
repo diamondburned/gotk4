@@ -22,7 +22,7 @@ func init() {
 	})
 }
 
-// Statusbar: a `GtkStatusbar` widget is usually placed along the bottom of an
+// Statusbar: `GtkStatusbar` widget is usually placed along the bottom of an
 // application's main [class@Gtk.Window].
 //
 // !An example GtkStatusbar (statusbar.png)
@@ -62,14 +62,31 @@ func init() {
 type Statusbar interface {
 	Widget
 
+	// AsAccessible casts the class to the Accessible interface.
+	AsAccessible() Accessible
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+	// AsConstraintTarget casts the class to the ConstraintTarget interface.
+	AsConstraintTarget() ConstraintTarget
+
+	// ContextID returns a new context identifier, given a description of the
+	// actual context.
+	//
+	// Note that the description is not shown in the UI.
 	ContextID(contextDescription string) uint
-
+	// PopStatusbar removes the first message in the `GtkStatusbar`’s stack with
+	// the given context id.
+	//
+	// Note that this may not change the displayed message, if the message at
+	// the top of the stack has a different context id.
 	PopStatusbar(contextId uint)
-
+	// PushStatusbar pushes a new message onto a statusbar’s stack.
 	PushStatusbar(contextId uint, text string) uint
-
+	// RemoveStatusbar forces the removal of a message from a statusbar’s stack.
+	// The exact @context_id and @message_id must be specified.
 	RemoveStatusbar(contextId uint, messageId uint)
-
+	// RemoveAllStatusbar forces the removal of all messages from a statusbar's
+	// stack with the exact @context_id.
 	RemoveAllStatusbar(contextId uint)
 }
 
@@ -92,6 +109,7 @@ func marshalStatusbar(p uintptr) (interface{}, error) {
 	return WrapStatusbar(obj), nil
 }
 
+// NewStatusbar creates a new `GtkStatusbar` ready for messages.
 func NewStatusbar() Statusbar {
 	var _cret *C.GtkWidget // in
 
@@ -99,7 +117,7 @@ func NewStatusbar() Statusbar {
 
 	var _statusbar Statusbar // out
 
-	_statusbar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Statusbar)
+	_statusbar = WrapStatusbar(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _statusbar
 }
@@ -174,34 +192,14 @@ func (s statusbar) RemoveAllStatusbar(contextId uint) {
 	C.gtk_statusbar_remove_all(_arg0, _arg1)
 }
 
-func (s statusbar) AccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).AccessibleRole()
+func (s statusbar) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(s))
 }
 
-func (s statusbar) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
+func (s statusbar) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(s))
 }
 
-func (s statusbar) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
-}
-
-func (s statusbar) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s statusbar) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s statusbar) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s statusbar) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b statusbar) BuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).BuildableID()
+func (s statusbar) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(s))
 }

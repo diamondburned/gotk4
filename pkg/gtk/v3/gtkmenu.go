@@ -5,10 +5,9 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -45,9 +44,9 @@ func marshalArrowPlacement(p uintptr) (interface{}, error) {
 	return ArrowPlacement(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// Menu: a Menu is a MenuShell that implements a drop down menu consisting of a
-// list of MenuItem objects which can be navigated and activated by the user to
-// perform application functions.
+// Menu is a MenuShell that implements a drop down menu consisting of a list of
+// MenuItem objects which can be navigated and activated by the user to perform
+// application functions.
 //
 // A Menu is most commonly dropped down by activating a MenuItem in a MenuBar or
 // popped up by activating a MenuItem in another Menu.
@@ -74,48 +73,113 @@ func marshalArrowPlacement(p uintptr) (interface{}, error) {
 type Menu interface {
 	MenuShell
 
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+
+	// AttachMenu adds a new MenuItem to a (table) menu. The number of “cells”
+	// that an item will occupy is specified by @left_attach, @right_attach,
+	// @top_attach and @bottom_attach. These each represent the leftmost,
+	// rightmost, uppermost and lower column and row numbers of the table.
+	// (Columns and rows are indexed from zero).
+	//
+	// Note that this function is not related to gtk_menu_detach().
 	AttachMenu(child Widget, leftAttach uint, rightAttach uint, topAttach uint, bottomAttach uint)
-
+	// DetachMenu detaches the menu from the widget to which it had been
+	// attached. This function will call the callback function, @detacher,
+	// provided when the gtk_menu_attach_to_widget() function was called.
 	DetachMenu()
-
+	// AccelGroup gets the AccelGroup which holds global accelerators for the
+	// menu. See gtk_menu_set_accel_group().
 	AccelGroup() AccelGroup
-
+	// AccelPath retrieves the accelerator path set on the menu.
 	AccelPath() string
-
+	// Active returns the selected menu item from the menu. This is used by the
+	// ComboBox.
 	Active() Widget
-
+	// AttachWidget returns the Widget that the menu is attached to.
 	AttachWidget() Widget
-
+	// Monitor retrieves the number of the monitor on which to show the menu.
 	Monitor() int
-
+	// ReserveToggleSize returns whether the menu reserves space for toggles and
+	// icons, regardless of their actual presence.
 	ReserveToggleSize() bool
-
+	// TearoffState returns whether the menu is torn off. See
+	// gtk_menu_set_tearoff_state().
+	//
+	// Deprecated: since version 3.10.
 	TearoffState() bool
-
+	// Title returns the title of the menu. See gtk_menu_set_title().
+	//
+	// Deprecated: since version 3.10.
 	Title() string
-
+	// PlaceOnMonitorMenu places @menu on the given monitor.
 	PlaceOnMonitorMenu(monitor gdk.Monitor)
-
+	// PopdownMenu removes the menu from the screen.
 	PopdownMenu()
-
+	// ReorderChildMenu moves @child to a new @position in the list of @menu
+	// children.
 	ReorderChildMenu(child Widget, position int)
-
+	// RepositionMenu repositions the menu according to its position function.
 	RepositionMenu()
-
+	// SetAccelGroupMenu: set the AccelGroup which holds global accelerators for
+	// the menu. This accelerator group needs to also be added to all windows
+	// that this menu is being used in with gtk_window_add_accel_group(), in
+	// order for those windows to support all the accelerators contained in this
+	// group.
 	SetAccelGroupMenu(accelGroup AccelGroup)
-
+	// SetAccelPathMenu sets an accelerator path for this menu from which
+	// accelerator paths for its immediate children, its menu items, can be
+	// constructed. The main purpose of this function is to spare the programmer
+	// the inconvenience of having to call gtk_menu_item_set_accel_path() on
+	// each menu item that should support runtime user changable accelerators.
+	// Instead, by just calling gtk_menu_set_accel_path() on their parent, each
+	// menu item of this menu, that contains a label describing its purpose,
+	// automatically gets an accel path assigned.
+	//
+	// For example, a menu containing menu items “New” and “Exit”, will, after
+	// `gtk_menu_set_accel_path (menu, "<Gnumeric-Sheet>/File");` has been
+	// called, assign its items the accel paths: `"<Gnumeric-Sheet>/File/New"`
+	// and `"<Gnumeric-Sheet>/File/Exit"`.
+	//
+	// Assigning accel paths to menu items then enables the user to change their
+	// accelerators at runtime. More details about accelerator paths and their
+	// default setups can be found at gtk_accel_map_add_entry().
+	//
+	// Note that @accel_path string will be stored in a #GQuark. Therefore, if
+	// you pass a static string, you can save some memory by interning it first
+	// with g_intern_static_string().
 	SetAccelPathMenu(accelPath string)
-
+	// SetActiveMenu selects the specified menu item within the menu. This is
+	// used by the ComboBox and should not be used by anyone else.
 	SetActiveMenu(index uint)
-
+	// SetMonitorMenu informs GTK+ on which monitor a menu should be popped up.
+	// See gdk_monitor_get_geometry().
+	//
+	// This function should be called from a MenuPositionFunc if the menu should
+	// not appear on the same monitor as the pointer. This information can’t be
+	// reliably inferred from the coordinates returned by a MenuPositionFunc,
+	// since, for very long menus, these coordinates may extend beyond the
+	// monitor boundaries or even the screen boundaries.
 	SetMonitorMenu(monitorNum int)
-
+	// SetReserveToggleSizeMenu sets whether the menu should reserve space for
+	// drawing toggles or icons, regardless of their actual presence.
 	SetReserveToggleSizeMenu(reserveToggleSize bool)
-
+	// SetScreenMenu sets the Screen on which the menu will be displayed.
 	SetScreenMenu(screen gdk.Screen)
-
+	// SetTearoffStateMenu changes the tearoff state of the menu. A menu is
+	// normally displayed as drop down menu which persists as long as the menu
+	// is active. It can also be displayed as a tearoff menu which persists
+	// until it is closed or reattached.
+	//
+	// Deprecated: since version 3.10.
 	SetTearoffStateMenu(tornOff bool)
-
+	// SetTitleMenu sets the title string for the menu.
+	//
+	// The title is displayed when the menu is shown as a tearoff menu. If
+	// @title is nil, the menu will see if it is attached to a parent menu item,
+	// and if so it will try to use the same text as that menu item’s label.
+	//
+	// Deprecated: since version 3.10.
 	SetTitleMenu(title string)
 }
 
@@ -138,6 +202,7 @@ func marshalMenu(p uintptr) (interface{}, error) {
 	return WrapMenu(obj), nil
 }
 
+// NewMenu creates a new Menu
 func NewMenu() Menu {
 	var _cret *C.GtkWidget // in
 
@@ -145,11 +210,21 @@ func NewMenu() Menu {
 
 	var _menu Menu // out
 
-	_menu = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Menu)
+	_menu = WrapMenu(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _menu
 }
 
+// NewMenuFromModel creates a Menu and populates it with menu items and submenus
+// according to @model.
+//
+// The created menu items are connected to actions found in the
+// ApplicationWindow to which the menu belongs - typically by means of being
+// attached to a widget (see gtk_menu_attach_to_widget()) that is contained
+// within the ApplicationWindows widget hierarchy.
+//
+// Actions can also be added using gtk_widget_insert_action_group() on the
+// menu's attach widget or on any of its parent widgets.
 func NewMenuFromModel(model gio.MenuModel) Menu {
 	var _arg1 *C.GMenuModel // out
 	var _cret *C.GtkWidget  // in
@@ -160,7 +235,7 @@ func NewMenuFromModel(model gio.MenuModel) Menu {
 
 	var _menu Menu // out
 
-	_menu = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Menu)
+	_menu = WrapMenu(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _menu
 }
@@ -439,42 +514,6 @@ func (m menu) SetTitleMenu(title string) {
 	C.gtk_menu_set_title(_arg0, _arg1)
 }
 
-func (b menu) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
-}
-
-func (b menu) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b menu) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b menu) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b menu) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b menu) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b menu) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b menu) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b menu) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b menu) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
+func (m menu) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(m))
 }

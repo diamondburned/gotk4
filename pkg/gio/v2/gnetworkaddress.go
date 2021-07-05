@@ -41,12 +41,17 @@ func init() {
 //
 // See Connectable for an example of using the connectable interface.
 type NetworkAddress interface {
-	SocketConnectable
+	gextras.Objector
 
+	// AsSocketConnectable casts the class to the SocketConnectable interface.
+	AsSocketConnectable() SocketConnectable
+
+	// Hostname gets @addr's hostname. This might be either UTF-8 or
+	// ASCII-encoded, depending on what @addr was created with.
 	Hostname() string
-
+	// Port gets @addr's port number
 	Port() uint16
-
+	// Scheme gets @addr's scheme
 	Scheme() string
 }
 
@@ -69,6 +74,13 @@ func marshalNetworkAddress(p uintptr) (interface{}, error) {
 	return WrapNetworkAddress(obj), nil
 }
 
+// NewNetworkAddress creates a new Connectable for connecting to the given
+// @hostname and @port.
+//
+// Note that depending on the configuration of the machine, a @hostname of
+// `localhost` may refer to the IPv4 loopback address only, or to both IPv4 and
+// IPv6; use g_network_address_new_loopback() to create a Address that is
+// guaranteed to resolve to both addresses.
 func NewNetworkAddress(hostname string, port uint16) NetworkAddress {
 	var _arg1 *C.gchar              // out
 	var _arg2 C.guint16             // out
@@ -82,11 +94,22 @@ func NewNetworkAddress(hostname string, port uint16) NetworkAddress {
 
 	var _networkAddress NetworkAddress // out
 
-	_networkAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(NetworkAddress)
+	_networkAddress = WrapNetworkAddress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _networkAddress
 }
 
+// NewNetworkAddressLoopback creates a new Connectable for connecting to the
+// local host over a loopback connection to the given @port. This is intended
+// for use in connecting to local services which may be running on IPv4 or IPv6.
+//
+// The connectable will return IPv4 and IPv6 loopback addresses, regardless of
+// how the host resolves `localhost`. By contrast, g_network_address_new() will
+// often only return an IPv4 address when resolving `localhost`, and an IPv6
+// address for `localhost6`.
+//
+// g_network_address_get_hostname() will always return `localhost` for a Address
+// created with this constructor.
 func NewNetworkAddressLoopback(port uint16) NetworkAddress {
 	var _arg1 C.guint16             // out
 	var _cret *C.GSocketConnectable // in
@@ -97,7 +120,7 @@ func NewNetworkAddressLoopback(port uint16) NetworkAddress {
 
 	var _networkAddress NetworkAddress // out
 
-	_networkAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(NetworkAddress)
+	_networkAddress = WrapNetworkAddress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _networkAddress
 }
@@ -147,14 +170,6 @@ func (a networkAddress) Scheme() string {
 	return _utf8
 }
 
-func (c networkAddress) Enumerate() SocketAddressEnumerator {
-	return WrapSocketConnectable(gextras.InternObject(c)).Enumerate()
-}
-
-func (c networkAddress) ProxyEnumerate() SocketAddressEnumerator {
-	return WrapSocketConnectable(gextras.InternObject(c)).ProxyEnumerate()
-}
-
-func (c networkAddress) String() string {
-	return WrapSocketConnectable(gextras.InternObject(c)).String()
+func (n networkAddress) AsSocketConnectable() SocketConnectable {
+	return WrapSocketConnectable(gextras.InternObject(n))
 }

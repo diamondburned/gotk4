@@ -5,9 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -44,12 +42,26 @@ func init() {
 type Misc interface {
 	Widget
 
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+
+	// Alignment gets the X and Y alignment of the widget within its allocation.
+	// See gtk_misc_set_alignment().
+	//
+	// Deprecated: since version 3.14.
 	Alignment() (xalign float32, yalign float32)
-
+	// Padding gets the padding in the X and Y directions of the widget. See
+	// gtk_misc_set_padding().
+	//
+	// Deprecated: since version 3.14.
 	Padding() (xpad int, ypad int)
-
+	// SetAlignmentMisc sets the alignment of the widget.
+	//
+	// Deprecated: since version 3.14.
 	SetAlignmentMisc(xalign float32, yalign float32)
-
+	// SetPaddingMisc sets the amount of space to add around the widget.
+	//
+	// Deprecated: since version 3.14.
 	SetPaddingMisc(xpad int, ypad int)
 }
 
@@ -74,8 +86,8 @@ func marshalMisc(p uintptr) (interface{}, error) {
 
 func (m misc) Alignment() (xalign float32, yalign float32) {
 	var _arg0 *C.GtkMisc // out
-	var _arg1 C.gfloat   // in
-	var _arg2 C.gfloat   // in
+	var _arg1 *C.gfloat  // in
+	var _arg2 *C.gfloat  // in
 
 	_arg0 = (*C.GtkMisc)(unsafe.Pointer(m.Native()))
 
@@ -92,8 +104,8 @@ func (m misc) Alignment() (xalign float32, yalign float32) {
 
 func (m misc) Padding() (xpad int, ypad int) {
 	var _arg0 *C.GtkMisc // out
-	var _arg1 C.gint     // in
-	var _arg2 C.gint     // in
+	var _arg1 *C.gint    // in
+	var _arg2 *C.gint    // in
 
 	_arg0 = (*C.GtkMisc)(unsafe.Pointer(m.Native()))
 
@@ -132,42 +144,6 @@ func (m misc) SetPaddingMisc(xpad int, ypad int) {
 	C.gtk_misc_set_padding(_arg0, _arg1, _arg2)
 }
 
-func (b misc) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
-}
-
-func (b misc) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b misc) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b misc) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b misc) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b misc) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b misc) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b misc) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b misc) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b misc) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
+func (m misc) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(m))
 }

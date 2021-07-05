@@ -5,9 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -32,12 +30,54 @@ func init() {
 type EventBox interface {
 	Bin
 
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+
+	// AboveChild returns whether the event box window is above or below the
+	// windows of its child. See gtk_event_box_set_above_child() for details.
 	AboveChild() bool
-
+	// VisibleWindow returns whether the event box has a visible window. See
+	// gtk_event_box_set_visible_window() for details.
 	VisibleWindow() bool
-
+	// SetAboveChildEventBox: set whether the event box window is positioned
+	// above the windows of its child, as opposed to below it. If the window is
+	// above, all events inside the event box will go to the event box. If the
+	// window is below, events in windows of child widgets will first got to
+	// that widget, and then to its parents.
+	//
+	// The default is to keep the window below the child.
 	SetAboveChildEventBox(aboveChild bool)
-
+	// SetVisibleWindowEventBox: set whether the event box uses a visible or
+	// invisible child window. The default is to use visible windows.
+	//
+	// In an invisible window event box, the window that the event box creates
+	// is a GDK_INPUT_ONLY window, which means that it is invisible and only
+	// serves to receive events.
+	//
+	// A visible window event box creates a visible (GDK_INPUT_OUTPUT) window
+	// that acts as the parent window for all the widgets contained in the event
+	// box.
+	//
+	// You should generally make your event box invisible if you just want to
+	// trap events. Creating a visible window may cause artifacts that are
+	// visible to the user, especially if the user is using a theme with
+	// gradients or pixmaps.
+	//
+	// The main reason to create a non input-only event box is if you want to
+	// set the background to a different color or draw on it.
+	//
+	// There is one unexpected issue for an invisible event box that has its
+	// window below the child. (See gtk_event_box_set_above_child().) Since the
+	// input-only window is not an ancestor window of any windows that
+	// descendent widgets of the event box create, events on these windows
+	// aren’t propagated up by the windowing system, but only by GTK+. The
+	// practical effect of this is if an event isn’t in the event mask for the
+	// descendant window (see gtk_widget_add_events()), it won’t be received by
+	// the event box.
+	//
+	// This problem doesn’t occur for visible event boxes, because in that case,
+	// the event box window is actually the ancestor of the descendant windows,
+	// not just at the same place on the screen.
 	SetVisibleWindowEventBox(visibleWindow bool)
 }
 
@@ -60,6 +100,7 @@ func marshalEventBox(p uintptr) (interface{}, error) {
 	return WrapEventBox(obj), nil
 }
 
+// NewEventBox creates a new EventBox.
 func NewEventBox() EventBox {
 	var _cret *C.GtkWidget // in
 
@@ -67,7 +108,7 @@ func NewEventBox() EventBox {
 
 	var _eventBox EventBox // out
 
-	_eventBox = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(EventBox)
+	_eventBox = WrapEventBox(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _eventBox
 }
@@ -130,42 +171,6 @@ func (e eventBox) SetVisibleWindowEventBox(visibleWindow bool) {
 	C.gtk_event_box_set_visible_window(_arg0, _arg1)
 }
 
-func (b eventBox) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
-}
-
-func (b eventBox) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b eventBox) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b eventBox) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b eventBox) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b eventBox) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b eventBox) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b eventBox) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b eventBox) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b eventBox) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
+func (e eventBox) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(e))
 }

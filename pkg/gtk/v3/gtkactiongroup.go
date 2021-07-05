@@ -5,9 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -76,32 +74,86 @@ func init() {
 //      </child>
 //    </object>
 type ActionGroup interface {
-	Buildable
+	gextras.Objector
 
+	// AsBuildable casts the class to the Buildable interface.
+	AsBuildable() Buildable
+
+	// AddActionActionGroup adds an action object to the action group. Note that
+	// this function does not set up the accel path of the action, which can
+	// lead to problems if a user tries to modify the accelerator of a menuitem
+	// associated with the action. Therefore you must either set the accel path
+	// yourself with gtk_action_set_accel_path(), or use
+	// `gtk_action_group_add_action_with_accel (..., NULL)`.
+	//
+	// Deprecated: since version 3.10.
 	AddActionActionGroup(action Action)
-
+	// AddActionWithAccelActionGroup adds an action object to the action group
+	// and sets up the accelerator.
+	//
+	// If @accelerator is nil, attempts to use the accelerator associated with
+	// the stock_id of the action.
+	//
+	// Accel paths are set to `<Actions>/group-name/action-name`.
+	//
+	// Deprecated: since version 3.10.
 	AddActionWithAccelActionGroup(action Action, accelerator string)
-
+	// AccelGroup gets the accelerator group.
+	//
+	// Deprecated: since version 3.10.
 	AccelGroup() AccelGroup
-
+	// Action looks up an action in the action group by name.
+	//
+	// Deprecated: since version 3.10.
 	Action(actionName string) Action
-
-	GetName() string
-
+	// Name gets the name of the action group.
+	//
+	// Deprecated: since version 3.10.
+	Name() string
+	// Sensitive returns true if the group is sensitive. The constituent actions
+	// can only be logically sensitive (see gtk_action_is_sensitive()) if they
+	// are sensitive (see gtk_action_get_sensitive()) and their group is
+	// sensitive.
+	//
+	// Deprecated: since version 3.10.
 	Sensitive() bool
-
+	// Visible returns true if the group is visible. The constituent actions can
+	// only be logically visible (see gtk_action_is_visible()) if they are
+	// visible (see gtk_action_get_visible()) and their group is visible.
+	//
+	// Deprecated: since version 3.10.
 	Visible() bool
-
+	// RemoveActionActionGroup removes an action object from the action group.
+	//
+	// Deprecated: since version 3.10.
 	RemoveActionActionGroup(action Action)
-
+	// SetAccelGroupActionGroup sets the accelerator group to be used by every
+	// action in this group.
+	//
+	// Deprecated: since version 3.10.
 	SetAccelGroupActionGroup(accelGroup AccelGroup)
-
+	// SetSensitiveActionGroup changes the sensitivity of @action_group
+	//
+	// Deprecated: since version 3.10.
 	SetSensitiveActionGroup(sensitive bool)
-
+	// SetTranslationDomainActionGroup sets the translation domain and uses
+	// g_dgettext() for translating the @label and @tooltip of ActionEntrys
+	// added by gtk_action_group_add_actions().
+	//
+	// If you’re not using gettext() for localization, see
+	// gtk_action_group_set_translate_func().
+	//
+	// Deprecated: since version 3.10.
 	SetTranslationDomainActionGroup(domain string)
-
+	// SetVisibleActionGroup changes the visible of @action_group.
+	//
+	// Deprecated: since version 3.10.
 	SetVisibleActionGroup(visible bool)
-
+	// TranslateStringActionGroup translates a string using the function set
+	// with gtk_action_group_set_translate_func(). This is mainly intended for
+	// language bindings.
+	//
+	// Deprecated: since version 3.10.
 	TranslateStringActionGroup(_string string) string
 }
 
@@ -124,6 +176,10 @@ func marshalActionGroup(p uintptr) (interface{}, error) {
 	return WrapActionGroup(obj), nil
 }
 
+// NewActionGroup creates a new ActionGroup object. The name of the action group
+// is used when associating [keybindings][Action-Accel] with the actions.
+//
+// Deprecated: since version 3.10.
 func NewActionGroup(name string) ActionGroup {
 	var _arg1 *C.gchar          // out
 	var _cret *C.GtkActionGroup // in
@@ -135,7 +191,7 @@ func NewActionGroup(name string) ActionGroup {
 
 	var _actionGroup ActionGroup // out
 
-	_actionGroup = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(ActionGroup)
+	_actionGroup = WrapActionGroup(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _actionGroup
 }
@@ -196,7 +252,7 @@ func (a actionGroup) Action(actionName string) Action {
 	return _action
 }
 
-func (a actionGroup) GetName() string {
+func (a actionGroup) Name() string {
 	var _arg0 *C.GtkActionGroup // out
 	var _cret *C.gchar          // in
 
@@ -318,51 +374,17 @@ func (a actionGroup) TranslateStringActionGroup(_string string) string {
 	return _utf8
 }
 
-func (b actionGroup) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
-}
-
-func (b actionGroup) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b actionGroup) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b actionGroup) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b actionGroup) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b actionGroup) InternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).InternalChild(builder, childname)
-}
-
-func (b actionGroup) Name() string {
-	return WrapBuildable(gextras.InternObject(b)).Name()
-}
-
-func (b actionGroup) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b actionGroup) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b actionGroup) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
+func (a actionGroup) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(a))
 }
 
 // RadioActionEntry structs are used with gtk_action_group_add_radio_actions()
 // to construct groups of radio actions.
 //
 // Deprecated: since version 3.10.
-type RadioActionEntry C.GtkRadioActionEntry
+type RadioActionEntry struct {
+	native C.GtkRadioActionEntry
+}
 
 // WrapRadioActionEntry wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
@@ -372,5 +394,5 @@ func WrapRadioActionEntry(ptr unsafe.Pointer) *RadioActionEntry {
 
 // Native returns the underlying C source pointer.
 func (r *RadioActionEntry) Native() unsafe.Pointer {
-	return unsafe.Pointer(r)
+	return unsafe.Pointer(&r.native)
 }

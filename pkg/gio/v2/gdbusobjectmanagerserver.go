@@ -53,18 +53,41 @@ func init() {
 // used with BusObjectManagerServer or any D-Bus object implementing the
 // org.freedesktop.DBus.ObjectManager interface.
 type DBusObjectManagerServer interface {
-	DBusObjectManager
+	gextras.Objector
 
+	// AsDBusObjectManager casts the class to the DBusObjectManager interface.
+	AsDBusObjectManager() DBusObjectManager
+
+	// ExportDBusObjectManagerServer exports @object on @manager.
+	//
+	// If there is already a BusObject exported at the object path, then the old
+	// object is removed.
+	//
+	// The object path for @object must be in the hierarchy rooted by the object
+	// path for @manager.
+	//
+	// Note that @manager will take a reference on @object for as long as it is
+	// exported.
 	ExportDBusObjectManagerServer(object DBusObjectSkeleton)
-
+	// ExportUniquelyDBusObjectManagerServer: like
+	// g_dbus_object_manager_server_export() but appends a string of the form _N
+	// (with N being a natural number) to @object's object path if an object
+	// with the given path already exists. As such, the
+	// BusObjectProxy:g-object-path property of @object may be modified.
 	ExportUniquelyDBusObjectManagerServer(object DBusObjectSkeleton)
-
+	// Connection gets the BusConnection used by @manager.
 	Connection() DBusConnection
-
+	// IsExportedDBusObjectManagerServer returns whether @object is currently
+	// exported on @manager.
 	IsExportedDBusObjectManagerServer(object DBusObjectSkeleton) bool
-
+	// SetConnectionDBusObjectManagerServer exports all objects managed by
+	// @manager on @connection. If @connection is nil, stops exporting objects.
 	SetConnectionDBusObjectManagerServer(connection DBusConnection)
-
+	// UnexportDBusObjectManagerServer: if @manager has an object at @path,
+	// removes the object. Otherwise does nothing.
+	//
+	// Note that @object_path must be in the hierarchy rooted by the object path
+	// for @manager.
 	UnexportDBusObjectManagerServer(objectPath string) bool
 }
 
@@ -87,6 +110,13 @@ func marshalDBusObjectManagerServer(p uintptr) (interface{}, error) {
 	return WrapDBusObjectManagerServer(obj), nil
 }
 
+// NewDBusObjectManagerServer creates a new BusObjectManagerServer object.
+//
+// The returned server isn't yet exported on any connection. To do so, use
+// g_dbus_object_manager_server_set_connection(). Normally you want to export
+// all of your objects before doing so to avoid InterfacesAdded
+// (http://dbus.freedesktop.org/doc/dbus-specification.html#standard-interfaces-objectmanager)
+// signals being emitted.
 func NewDBusObjectManagerServer(objectPath string) DBusObjectManagerServer {
 	var _arg1 *C.gchar                    // out
 	var _cret *C.GDBusObjectManagerServer // in
@@ -98,7 +128,7 @@ func NewDBusObjectManagerServer(objectPath string) DBusObjectManagerServer {
 
 	var _dBusObjectManagerServer DBusObjectManagerServer // out
 
-	_dBusObjectManagerServer = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(DBusObjectManagerServer)
+	_dBusObjectManagerServer = WrapDBusObjectManagerServer(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _dBusObjectManagerServer
 }
@@ -187,14 +217,6 @@ func (m dBusObjectManagerServer) UnexportDBusObjectManagerServer(objectPath stri
 	return _ok
 }
 
-func (m dBusObjectManagerServer) Interface(objectPath string, interfaceName string) DBusInterface {
-	return WrapDBusObjectManager(gextras.InternObject(m)).Interface(objectPath, interfaceName)
-}
-
-func (m dBusObjectManagerServer) Object(objectPath string) DBusObject {
-	return WrapDBusObjectManager(gextras.InternObject(m)).Object(objectPath)
-}
-
-func (m dBusObjectManagerServer) ObjectPath() string {
-	return WrapDBusObjectManager(gextras.InternObject(m)).ObjectPath()
+func (d dBusObjectManagerServer) AsDBusObjectManager() DBusObjectManager {
+	return WrapDBusObjectManager(gextras.InternObject(d))
 }

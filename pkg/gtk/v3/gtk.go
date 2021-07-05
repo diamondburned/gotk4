@@ -139,7 +139,9 @@ func marshalDebugFlag(p uintptr) (interface{}, error) {
 
 type EntryIconAccessible interface {
 	atk.Object
-	atk.Action
+
+	// AsAction casts the class to the atk.Action interface.
+	AsAction() atk.Action
 }
 
 // entryIconAccessible implements the EntryIconAccessible class.
@@ -161,30 +163,6 @@ func marshalEntryIconAccessible(p uintptr) (interface{}, error) {
 	return WrapEntryIconAccessible(obj), nil
 }
 
-func (a entryIconAccessible) DoAction(i int) bool {
-	return atk.WrapAction(gextras.InternObject(a)).DoAction(i)
-}
-
-func (a entryIconAccessible) Description(i int) string {
-	return atk.WrapAction(gextras.InternObject(a)).Description(i)
-}
-
-func (a entryIconAccessible) Keybinding(i int) string {
-	return atk.WrapAction(gextras.InternObject(a)).Keybinding(i)
-}
-
-func (a entryIconAccessible) LocalizedName(i int) string {
-	return atk.WrapAction(gextras.InternObject(a)).LocalizedName(i)
-}
-
-func (a entryIconAccessible) NActions() int {
-	return atk.WrapAction(gextras.InternObject(a)).NActions()
-}
-
-func (a entryIconAccessible) Name(i int) string {
-	return atk.WrapAction(gextras.InternObject(a)).Name(i)
-}
-
-func (a entryIconAccessible) SetDescription(i int, desc string) bool {
-	return atk.WrapAction(gextras.InternObject(a)).SetDescription(i, desc)
+func (e entryIconAccessible) AsAction() atk.Action {
+	return atk.WrapAction(gextras.InternObject(e))
 }

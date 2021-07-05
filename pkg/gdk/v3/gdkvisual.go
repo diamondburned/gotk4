@@ -23,8 +23,8 @@ func init() {
 	})
 }
 
-// VisualType: a set of values that describe the manner in which the pixel
-// values for a visual are converted into RGB values for display.
+// VisualType: set of values that describe the manner in which the pixel values
+// for a visual are converted into RGB values for display.
 type VisualType int
 
 const (
@@ -62,7 +62,7 @@ func marshalVisualType(p uintptr) (interface{}, error) {
 // Deprecated: since version 3.22.
 func QueryDepths() []int {
 	var _arg1 *C.gint
-	var _arg2 C.gint // in
+	var _arg2 *C.gint // in
 
 	C.gdk_query_depths(&_arg1, &_arg2)
 
@@ -83,7 +83,7 @@ func QueryDepths() []int {
 // Deprecated: since version 3.22.
 func QueryVisualTypes() []VisualType {
 	var _arg1 *C.GdkVisualType
-	var _arg2 C.gint // in
+	var _arg2 *C.gint // in
 
 	C.gdk_query_visual_types(&_arg1, &_arg2)
 
@@ -93,33 +93,74 @@ func QueryVisualTypes() []VisualType {
 		src := unsafe.Slice(_arg1, _arg2)
 		_visualTypes = make([]VisualType, _arg2)
 		for i := 0; i < int(_arg2); i++ {
-			_visualTypes[i] = VisualType(src[i])
+			{
+				var refTmpIn C.GdkVisualType
+				var refTmpOut VisualType
+
+				refTmpIn = *src[i]
+
+				refTmpOut = VisualType(refTmpIn)
+
+				_visualTypes[i] = refTmpOut
+			}
 		}
 	}
 
 	return _visualTypes
 }
 
-// Visual: a Visual contains information about a particular visual.
+// Visual contains information about a particular visual.
 type Visual interface {
 	gextras.Objector
 
+	// BitsPerRGB returns the number of significant bits per red, green and blue
+	// value.
+	//
+	// Not all GDK backend provide a meaningful value for this function.
+	//
+	// Deprecated: since version 3.22..
 	BitsPerRGB() int
-
+	// BluePixelDetails obtains values that are needed to calculate blue pixel
+	// values in TrueColor and DirectColor. The “mask” is the significant bits
+	// within the pixel. The “shift” is the number of bits left we must shift a
+	// primary for it to be in position (according to the "mask"). Finally,
+	// "precision" refers to how much precision the pixel value contains for a
+	// particular primary.
 	BluePixelDetails() (mask uint32, shift int, precision int)
-
+	// ByteOrder returns the byte order of this visual.
+	//
+	// The information returned by this function is only relevant when working
+	// with XImages, and not all backends return meaningful information for
+	// this.
+	//
+	// Deprecated: since version 3.22.
 	ByteOrder() ByteOrder
-
+	// ColormapSize returns the size of a colormap for this visual.
+	//
+	// You have to use platform-specific APIs to manipulate colormaps.
+	//
+	// Deprecated: since version 3.22.
 	ColormapSize() int
-
+	// Depth returns the bit depth of this visual.
 	Depth() int
-
+	// GreenPixelDetails obtains values that are needed to calculate green pixel
+	// values in TrueColor and DirectColor. The “mask” is the significant bits
+	// within the pixel. The “shift” is the number of bits left we must shift a
+	// primary for it to be in position (according to the "mask"). Finally,
+	// "precision" refers to how much precision the pixel value contains for a
+	// particular primary.
 	GreenPixelDetails() (mask uint32, shift int, precision int)
-
+	// RedPixelDetails obtains values that are needed to calculate red pixel
+	// values in TrueColor and DirectColor. The “mask” is the significant bits
+	// within the pixel. The “shift” is the number of bits left we must shift a
+	// primary for it to be in position (according to the "mask"). Finally,
+	// "precision" refers to how much precision the pixel value contains for a
+	// particular primary.
 	RedPixelDetails() (mask uint32, shift int, precision int)
-
+	// Screen gets the screen to which this visual belongs
 	Screen() Screen
-
+	// VisualType returns the type of visual this is (PseudoColor, TrueColor,
+	// etc).
 	VisualType() VisualType
 }
 
@@ -159,9 +200,9 @@ func (v visual) BitsPerRGB() int {
 
 func (v visual) BluePixelDetails() (mask uint32, shift int, precision int) {
 	var _arg0 *C.GdkVisual // out
-	var _arg1 C.guint32    // in
-	var _arg2 C.gint       // in
-	var _arg3 C.gint       // in
+	var _arg1 *C.guint32   // in
+	var _arg2 *C.gint      // in
+	var _arg3 *C.gint      // in
 
 	_arg0 = (*C.GdkVisual)(unsafe.Pointer(v.Native()))
 
@@ -225,9 +266,9 @@ func (v visual) Depth() int {
 
 func (v visual) GreenPixelDetails() (mask uint32, shift int, precision int) {
 	var _arg0 *C.GdkVisual // out
-	var _arg1 C.guint32    // in
-	var _arg2 C.gint       // in
-	var _arg3 C.gint       // in
+	var _arg1 *C.guint32   // in
+	var _arg2 *C.gint      // in
+	var _arg3 *C.gint      // in
 
 	_arg0 = (*C.GdkVisual)(unsafe.Pointer(v.Native()))
 
@@ -246,9 +287,9 @@ func (v visual) GreenPixelDetails() (mask uint32, shift int, precision int) {
 
 func (v visual) RedPixelDetails() (mask uint32, shift int, precision int) {
 	var _arg0 *C.GdkVisual // out
-	var _arg1 C.guint32    // in
-	var _arg2 C.gint       // in
-	var _arg3 C.gint       // in
+	var _arg1 *C.guint32   // in
+	var _arg2 *C.gint      // in
+	var _arg3 *C.gint      // in
 
 	_arg0 = (*C.GdkVisual)(unsafe.Pointer(v.Native()))
 

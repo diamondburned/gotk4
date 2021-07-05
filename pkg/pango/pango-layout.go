@@ -43,11 +43,11 @@ type Alignment int
 
 const (
 	// left: put all available space on the right
-	AlignmentLeft Alignment = 0
+	AlignmentLeft Alignment = iota
 	// center: center the line within the available space
-	AlignmentCenter Alignment = 1
+	AlignmentCenter
 	// right: put all available space on the left
-	AlignmentRight Alignment = 2
+	AlignmentRight
 )
 
 func marshalAlignment(p uintptr) (interface{}, error) {
@@ -63,13 +63,13 @@ type EllipsizeMode int
 
 const (
 	// none: no ellipsization
-	EllipsizeModeNone EllipsizeMode = 0
+	EllipsizeModeNone EllipsizeMode = iota
 	// start: omit characters at the start of the text
-	EllipsizeModeStart EllipsizeMode = 1
+	EllipsizeModeStart
 	// middle: omit characters in the middle of the text
-	EllipsizeModeMiddle EllipsizeMode = 2
+	EllipsizeModeMiddle
 	// end: omit characters at the end of the text
-	EllipsizeModeEnd EllipsizeMode = 3
+	EllipsizeModeEnd
 )
 
 func marshalEllipsizeMode(p uintptr) (interface{}, error) {
@@ -82,12 +82,12 @@ type WrapMode int
 
 const (
 	// word: wrap lines at word boundaries.
-	WrapModeWord WrapMode = 0
+	WrapModeWord WrapMode = iota
 	// char: wrap lines at character boundaries.
-	WrapModeChar WrapMode = 1
+	WrapModeChar
 	// WordChar: wrap lines at word boundaries, but fall back to character
 	// boundaries if there is not enough space for a full word.
-	WrapModeWordChar WrapMode = 2
+	WrapModeWordChar
 )
 
 func marshalWrapMode(p uintptr) (interface{}, error) {

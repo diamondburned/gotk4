@@ -64,8 +64,8 @@ func DirectEqual(v1 interface{}, v2 interface{}) bool {
 	var _arg2 C.gconstpointer // out
 	var _cret C.gboolean      // in
 
-	_arg1 = C.gconstpointer(box.Assign(v1))
-	_arg2 = C.gconstpointer(box.Assign(v2))
+	_arg1 = (C.gconstpointer)(box.Assign(v1))
+	_arg2 = (C.gconstpointer)(box.Assign(v2))
 
 	_cret = C.g_direct_equal(_arg1, _arg2)
 
@@ -88,7 +88,7 @@ func DirectHash(v interface{}) uint {
 	var _arg1 C.gconstpointer // out
 	var _cret C.guint         // in
 
-	_arg1 = C.gconstpointer(box.Assign(v))
+	_arg1 = (C.gconstpointer)(box.Assign(v))
 
 	_cret = C.g_direct_hash(_arg1)
 
@@ -108,8 +108,8 @@ func DoubleEqual(v1 interface{}, v2 interface{}) bool {
 	var _arg2 C.gconstpointer // out
 	var _cret C.gboolean      // in
 
-	_arg1 = C.gconstpointer(box.Assign(v1))
-	_arg2 = C.gconstpointer(box.Assign(v2))
+	_arg1 = (C.gconstpointer)(box.Assign(v1))
+	_arg2 = (C.gconstpointer)(box.Assign(v2))
 
 	_cret = C.g_double_equal(_arg1, _arg2)
 
@@ -130,7 +130,7 @@ func DoubleHash(v interface{}) uint {
 	var _arg1 C.gconstpointer // out
 	var _cret C.guint         // in
 
-	_arg1 = C.gconstpointer(box.Assign(v))
+	_arg1 = (C.gconstpointer)(box.Assign(v))
 
 	_cret = C.g_double_hash(_arg1)
 
@@ -150,8 +150,8 @@ func Int64Equal(v1 interface{}, v2 interface{}) bool {
 	var _arg2 C.gconstpointer // out
 	var _cret C.gboolean      // in
 
-	_arg1 = C.gconstpointer(box.Assign(v1))
-	_arg2 = C.gconstpointer(box.Assign(v2))
+	_arg1 = (C.gconstpointer)(box.Assign(v1))
+	_arg2 = (C.gconstpointer)(box.Assign(v2))
 
 	_cret = C.g_int64_equal(_arg1, _arg2)
 
@@ -172,7 +172,7 @@ func Int64Hash(v interface{}) uint {
 	var _arg1 C.gconstpointer // out
 	var _cret C.guint         // in
 
-	_arg1 = C.gconstpointer(box.Assign(v))
+	_arg1 = (C.gconstpointer)(box.Assign(v))
 
 	_cret = C.g_int64_hash(_arg1)
 
@@ -195,8 +195,8 @@ func IntEqual(v1 interface{}, v2 interface{}) bool {
 	var _arg2 C.gconstpointer // out
 	var _cret C.gboolean      // in
 
-	_arg1 = C.gconstpointer(box.Assign(v1))
-	_arg2 = C.gconstpointer(box.Assign(v2))
+	_arg1 = (C.gconstpointer)(box.Assign(v1))
+	_arg2 = (C.gconstpointer)(box.Assign(v2))
 
 	_cret = C.g_int_equal(_arg1, _arg2)
 
@@ -220,7 +220,7 @@ func IntHash(v interface{}) uint {
 	var _arg1 C.gconstpointer // out
 	var _cret C.guint         // in
 
-	_arg1 = C.gconstpointer(box.Assign(v))
+	_arg1 = (C.gconstpointer)(box.Assign(v))
 
 	_cret = C.g_int_hash(_arg1)
 
@@ -243,8 +243,8 @@ func StrEqual(v1 interface{}, v2 interface{}) bool {
 	var _arg2 C.gconstpointer // out
 	var _cret C.gboolean      // in
 
-	_arg1 = C.gconstpointer(box.Assign(v1))
-	_arg2 = C.gconstpointer(box.Assign(v2))
+	_arg1 = (C.gconstpointer)(box.Assign(v1))
+	_arg2 = (C.gconstpointer)(box.Assign(v2))
 
 	_cret = C.g_str_equal(_arg1, _arg2)
 
@@ -273,7 +273,7 @@ func StrHash(v interface{}) uint {
 	var _arg1 C.gconstpointer // out
 	var _cret C.guint         // in
 
-	_arg1 = C.gconstpointer(box.Assign(v))
+	_arg1 = (C.gconstpointer)(box.Assign(v))
 
 	_cret = C.g_str_hash(_arg1)
 
@@ -414,7 +414,7 @@ func (i *HashTableIter) Replace(value interface{}) {
 	var _arg1 C.gpointer        // out
 
 	_arg0 = (*C.GHashTableIter)(unsafe.Pointer(i))
-	_arg1 = C.gpointer(box.Assign(value))
+	_arg1 = (C.gpointer)(box.Assign(value))
 
 	C.g_hash_table_iter_replace(_arg0, _arg1)
 }

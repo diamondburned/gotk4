@@ -29,17 +29,17 @@ type SubpixelLayout int
 
 const (
 	// unknown: the layout is not known
-	SubpixelLayoutUnknown SubpixelLayout = 0
+	SubpixelLayoutUnknown SubpixelLayout = iota
 	// none: not organized in this way
-	SubpixelLayoutNone SubpixelLayout = 1
+	SubpixelLayoutNone
 	// HorizontalRGB: the layout is horizontal, the order is RGB
-	SubpixelLayoutHorizontalRGB SubpixelLayout = 2
+	SubpixelLayoutHorizontalRGB
 	// HorizontalBGR: the layout is horizontal, the order is BGR
-	SubpixelLayoutHorizontalBGR SubpixelLayout = 3
+	SubpixelLayoutHorizontalBGR
 	// VerticalRGB: the layout is vertical, the order is RGB
-	SubpixelLayoutVerticalRGB SubpixelLayout = 4
+	SubpixelLayoutVerticalRGB
 	// VerticalBGR: the layout is vertical, the order is BGR
-	SubpixelLayoutVerticalBGR SubpixelLayout = 5
+	SubpixelLayoutVerticalBGR
 )
 
 func marshalSubpixelLayout(p uintptr) (interface{}, error) {

@@ -26,44 +26,44 @@ type RelationType int
 
 const (
 	// null: not used, represens "no relationship" or an error condition.
-	RelationTypeNull RelationType = 0
+	RelationTypeNull RelationType = iota
 	// ControlledBy indicates an object controlled by one or more target
 	// objects.
-	RelationTypeControlledBy RelationType = 1
+	RelationTypeControlledBy
 	// ControllerFor indicates an object is an controller for one or more target
 	// objects.
-	RelationTypeControllerFor RelationType = 2
+	RelationTypeControllerFor
 	// LabelFor indicates an object is a label for one or more target objects.
-	RelationTypeLabelFor RelationType = 3
+	RelationTypeLabelFor
 	// LabelledBy indicates an object is labelled by one or more target objects.
-	RelationTypeLabelledBy RelationType = 4
+	RelationTypeLabelledBy
 	// MemberOf indicates an object is a member of a group of one or more target
 	// objects.
-	RelationTypeMemberOf RelationType = 5
+	RelationTypeMemberOf
 	// NodeChildOf indicates an object is a cell in a treetable which is
 	// displayed because a cell in the same column is expanded and identifies
 	// that cell.
-	RelationTypeNodeChildOf RelationType = 6
+	RelationTypeNodeChildOf
 	// FlowsTo indicates that the object has content that flows logically to
 	// another AtkObject in a sequential way, (for instance text-flow).
-	RelationTypeFlowsTo RelationType = 7
+	RelationTypeFlowsTo
 	// FlowsFrom indicates that the object has content that flows logically from
 	// another AtkObject in a sequential way, (for instance text-flow).
-	RelationTypeFlowsFrom RelationType = 8
+	RelationTypeFlowsFrom
 	// SubwindowOf indicates a subwindow attached to a component but otherwise
 	// has no connection in the UI heirarchy to that component.
-	RelationTypeSubwindowOf RelationType = 9
+	RelationTypeSubwindowOf
 	// embeds indicates that the object visually embeds another object's
 	// content, i.e. this object's content flows around another's content.
-	RelationTypeEmbeds RelationType = 10
+	RelationTypeEmbeds
 	// EmbeddedBy: reciprocal of ATK_RELATION_EMBEDS, indicates that this
 	// object's content is visualy embedded in another object.
-	RelationTypeEmbeddedBy RelationType = 11
+	RelationTypeEmbeddedBy
 	// PopupFor indicates that an object is a popup for another object.
-	RelationTypePopupFor RelationType = 12
+	RelationTypePopupFor
 	// ParentWindowOf indicates that an object is a parent window of another
 	// object.
-	RelationTypeParentWindowOf RelationType = 13
+	RelationTypeParentWindowOf
 	// DescribedBy: reciprocal of ATK_RELATION_DESCRIPTION_FOR. Indicates that
 	// one or more target objects provide descriptive information about this
 	// object. This relation type is most appropriate for information that is
@@ -76,14 +76,14 @@ const (
 	// assistive technologies may provide a means for the user to navigate to
 	// objects containing detailed descriptions so that their content can be
 	// more closely reviewed.
-	RelationTypeDescribedBy RelationType = 14
+	RelationTypeDescribedBy
 	// DescriptionFor: reciprocal of ATK_RELATION_DESCRIBED_BY. Indicates that
 	// this object provides descriptive information about the target object(s).
 	// See also ATK_RELATION_DETAILS_FOR and ATK_RELATION_ERROR_FOR.
-	RelationTypeDescriptionFor RelationType = 15
+	RelationTypeDescriptionFor
 	// NodeParentOf indicates an object is a cell in a treetable and is expanded
 	// to display other cells in the same column.
-	RelationTypeNodeParentOf RelationType = 16
+	RelationTypeNodeParentOf
 	// details: reciprocal of ATK_RELATION_DETAILS_FOR. Indicates that this
 	// object has a detailed or extended description, the contents of which can
 	// be found in the target object(s). This relation type is most appropriate
@@ -92,24 +92,24 @@ const (
 	// suitable for announcement only, see ATK_RELATION_DESCRIBED_BY. If the
 	// detailed information describes an error condition, ATK_RELATION_ERROR_FOR
 	// should be used instead. @Since: ATK-2.26.
-	RelationTypeDetails RelationType = 17
+	RelationTypeDetails
 	// DetailsFor: reciprocal of ATK_RELATION_DETAILS. Indicates that this
 	// object provides a detailed or extended description about the target
 	// object(s). See also ATK_RELATION_DESCRIPTION_FOR and
 	// ATK_RELATION_ERROR_FOR. @Since: ATK-2.26.
-	RelationTypeDetailsFor RelationType = 18
+	RelationTypeDetailsFor
 	// ErrorMessage: reciprocal of ATK_RELATION_ERROR_FOR. Indicates that this
 	// object has one or more errors, the nature of which is described in the
 	// contents of the target object(s). Objects that have this relation type
 	// should also contain ATK_STATE_INVALID_ENTRY in their StateSet. @Since:
 	// ATK-2.26.
-	RelationTypeErrorMessage RelationType = 19
+	RelationTypeErrorMessage
 	// ErrorFor: reciprocal of ATK_RELATION_ERROR_MESSAGE. Indicates that this
 	// object contains an error message describing an invalid condition in the
 	// target object(s). @Since: ATK_2.26.
-	RelationTypeErrorFor RelationType = 20
+	RelationTypeErrorFor
 	// LastDefined: not used, this value indicates the end of the enumeration.
-	RelationTypeLastDefined RelationType = 21
+	RelationTypeLastDefined
 )
 
 func marshalRelationType(p uintptr) (interface{}, error) {

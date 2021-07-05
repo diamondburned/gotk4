@@ -32,58 +32,58 @@ type StackTransitionType int
 
 const (
 	// none: no transition
-	StackTransitionTypeNone StackTransitionType = 0
+	StackTransitionTypeNone StackTransitionType = iota
 	// crossfade: cross-fade
-	StackTransitionTypeCrossfade StackTransitionType = 1
+	StackTransitionTypeCrossfade
 	// SlideRight: slide from left to right
-	StackTransitionTypeSlideRight StackTransitionType = 2
+	StackTransitionTypeSlideRight
 	// SlideLeft: slide from right to left
-	StackTransitionTypeSlideLeft StackTransitionType = 3
+	StackTransitionTypeSlideLeft
 	// SlideUp: slide from bottom up
-	StackTransitionTypeSlideUp StackTransitionType = 4
+	StackTransitionTypeSlideUp
 	// SlideDown: slide from top down
-	StackTransitionTypeSlideDown StackTransitionType = 5
+	StackTransitionTypeSlideDown
 	// SlideLeftRight: slide from left or right according to the children order
-	StackTransitionTypeSlideLeftRight StackTransitionType = 6
+	StackTransitionTypeSlideLeftRight
 	// SlideUpDown: slide from top down or bottom up according to the order
-	StackTransitionTypeSlideUpDown StackTransitionType = 7
+	StackTransitionTypeSlideUpDown
 	// OverUp: cover the old page by sliding up
-	StackTransitionTypeOverUp StackTransitionType = 8
+	StackTransitionTypeOverUp
 	// OverDown: cover the old page by sliding down
-	StackTransitionTypeOverDown StackTransitionType = 9
+	StackTransitionTypeOverDown
 	// OverLeft: cover the old page by sliding to the left
-	StackTransitionTypeOverLeft StackTransitionType = 10
+	StackTransitionTypeOverLeft
 	// OverRight: cover the old page by sliding to the right
-	StackTransitionTypeOverRight StackTransitionType = 11
+	StackTransitionTypeOverRight
 	// UnderUp: uncover the new page by sliding up
-	StackTransitionTypeUnderUp StackTransitionType = 12
+	StackTransitionTypeUnderUp
 	// UnderDown: uncover the new page by sliding down
-	StackTransitionTypeUnderDown StackTransitionType = 13
+	StackTransitionTypeUnderDown
 	// UnderLeft: uncover the new page by sliding to the left
-	StackTransitionTypeUnderLeft StackTransitionType = 14
+	StackTransitionTypeUnderLeft
 	// UnderRight: uncover the new page by sliding to the right
-	StackTransitionTypeUnderRight StackTransitionType = 15
+	StackTransitionTypeUnderRight
 	// OverUpDown: cover the old page sliding up or uncover the new page sliding
 	// down, according to order
-	StackTransitionTypeOverUpDown StackTransitionType = 16
+	StackTransitionTypeOverUpDown
 	// OverDownUp: cover the old page sliding down or uncover the new page
 	// sliding up, according to order
-	StackTransitionTypeOverDownUp StackTransitionType = 17
+	StackTransitionTypeOverDownUp
 	// OverLeftRight: cover the old page sliding left or uncover the new page
 	// sliding right, according to order
-	StackTransitionTypeOverLeftRight StackTransitionType = 18
+	StackTransitionTypeOverLeftRight
 	// OverRightLeft: cover the old page sliding right or uncover the new page
 	// sliding left, according to order
-	StackTransitionTypeOverRightLeft StackTransitionType = 19
+	StackTransitionTypeOverRightLeft
 	// RotateLeft: pretend the pages are sides of a cube and rotate that cube to
 	// the left
-	StackTransitionTypeRotateLeft StackTransitionType = 20
+	StackTransitionTypeRotateLeft
 	// RotateRight: pretend the pages are sides of a cube and rotate that cube
 	// to the right
-	StackTransitionTypeRotateRight StackTransitionType = 21
+	StackTransitionTypeRotateRight
 	// RotateLeftRight: pretend the pages are sides of a cube and rotate that
 	// cube to the left or right according to the children order
-	StackTransitionTypeRotateLeftRight StackTransitionType = 22
+	StackTransitionTypeRotateLeftRight
 )
 
 func marshalStackTransitionType(p uintptr) (interface{}, error) {

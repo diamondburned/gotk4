@@ -239,6 +239,8 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 	switch {
 	case value.Resolved.IsBuiltin("interface{}"):
 		value.header.ImportCore("box")
+		// This isn't handled properly if InType is a typed pointer and not a
+		// gpointer.
 		value.p.Linef("%s = box.Get(uintptr(%s))", value.OutName, value.InName)
 		return true
 

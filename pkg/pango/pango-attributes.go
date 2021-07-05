@@ -45,74 +45,74 @@ type AttrType int
 
 const (
 	// invalid does not happen
-	AttrTypeInvalid AttrType = 0
+	AttrTypeInvalid AttrType = iota
 	// language ([struct@Pango.AttrLanguage])
-	AttrTypeLanguage AttrType = 1
+	AttrTypeLanguage
 	// family: font family name list ([struct@Pango.AttrString])
-	AttrTypeFamily AttrType = 2
+	AttrTypeFamily
 	// style: font slant style ([struct@Pango.AttrInt])
-	AttrTypeStyle AttrType = 3
+	AttrTypeStyle
 	// weight: font weight ([struct@Pango.AttrInt])
-	AttrTypeWeight AttrType = 4
+	AttrTypeWeight
 	// variant: font variant (normal or small caps) ([struct@Pango.AttrInt])
-	AttrTypeVariant AttrType = 5
+	AttrTypeVariant
 	// stretch: font stretch ([struct@Pango.AttrInt])
-	AttrTypeStretch AttrType = 6
+	AttrTypeStretch
 	// size: font size in points scaled by PANGO_SCALE ([struct@Pango.AttrInt])
-	AttrTypeSize AttrType = 7
+	AttrTypeSize
 	// FontDesc: font description ([struct@Pango.AttrFontDesc])
-	AttrTypeFontDesc AttrType = 8
+	AttrTypeFontDesc
 	// foreground color ([struct@Pango.AttrColor])
-	AttrTypeForeground AttrType = 9
+	AttrTypeForeground
 	// background color ([struct@Pango.AttrColor])
-	AttrTypeBackground AttrType = 10
+	AttrTypeBackground
 	// underline: whether the text has an underline ([struct@Pango.AttrInt])
-	AttrTypeUnderline AttrType = 11
+	AttrTypeUnderline
 	// strikethrough: whether the text is struck-through
 	// ([struct@Pango.AttrInt])
-	AttrTypeStrikethrough AttrType = 12
+	AttrTypeStrikethrough
 	// rise: baseline displacement ([struct@Pango.AttrInt])
-	AttrTypeRise AttrType = 13
+	AttrTypeRise
 	// shape ([struct@Pango.AttrShape])
-	AttrTypeShape AttrType = 14
+	AttrTypeShape
 	// scale: font size scale factor ([struct@Pango.AttrFloat])
-	AttrTypeScale AttrType = 15
+	AttrTypeScale
 	// fallback: whether fallback is enabled ([struct@Pango.AttrInt])
-	AttrTypeFallback AttrType = 16
+	AttrTypeFallback
 	// LetterSpacing: letter spacing ([struct@PangoAttrInt])
-	AttrTypeLetterSpacing AttrType = 17
+	AttrTypeLetterSpacing
 	// UnderlineColor: underline color ([struct@Pango.AttrColor])
-	AttrTypeUnderlineColor AttrType = 18
+	AttrTypeUnderlineColor
 	// StrikethroughColor: strikethrough color ([struct@Pango.AttrColor])
-	AttrTypeStrikethroughColor AttrType = 19
+	AttrTypeStrikethroughColor
 	// AbsoluteSize: font size in pixels scaled by PANGO_SCALE
 	// ([struct@Pango.AttrInt])
-	AttrTypeAbsoluteSize AttrType = 20
+	AttrTypeAbsoluteSize
 	// gravity: base text gravity ([struct@Pango.AttrInt])
-	AttrTypeGravity AttrType = 21
+	AttrTypeGravity
 	// GravityHint: gravity hint ([struct@Pango.AttrInt])
-	AttrTypeGravityHint AttrType = 22
+	AttrTypeGravityHint
 	// FontFeatures: openType font features ([struct@Pango.AttrString]). Since
 	// 1.38
-	AttrTypeFontFeatures AttrType = 23
+	AttrTypeFontFeatures
 	// ForegroundAlpha: foreground alpha ([struct@Pango.AttrInt]). Since 1.38
-	AttrTypeForegroundAlpha AttrType = 24
+	AttrTypeForegroundAlpha
 	// BackgroundAlpha: background alpha ([struct@Pango.AttrInt]). Since 1.38
-	AttrTypeBackgroundAlpha AttrType = 25
+	AttrTypeBackgroundAlpha
 	// AllowBreaks: whether breaks are allowed ([struct@Pango.AttrInt]). Since
 	// 1.44
-	AttrTypeAllowBreaks AttrType = 26
+	AttrTypeAllowBreaks
 	// show: how to render invisible characters ([struct@Pango.AttrInt]). Since
 	// 1.44
-	AttrTypeShow AttrType = 27
+	AttrTypeShow
 	// InsertHyphens: whether to insert hyphens at intra-word line breaks
 	// ([struct@Pango.AttrInt]). Since 1.44
-	AttrTypeInsertHyphens AttrType = 28
+	AttrTypeInsertHyphens
 	// overline: whether the text has an overline ([struct@Pango.AttrInt]).
 	// Since 1.46
-	AttrTypeOverline AttrType = 29
+	AttrTypeOverline
 	// OverlineColor: overline color ([struct@Pango.AttrColor]). Since 1.46
-	AttrTypeOverlineColor AttrType = 30
+	AttrTypeOverlineColor
 )
 
 func marshalAttrType(p uintptr) (interface{}, error) {
@@ -125,10 +125,10 @@ type Overline int
 
 const (
 	// none: no overline should be drawn
-	OverlineNone Overline = 0
+	OverlineNone Overline = iota
 	// single: draw a single line above the ink extents of the text being
 	// underlined.
-	OverlineSingle Overline = 1
+	OverlineSingle
 )
 
 func marshalOverline(p uintptr) (interface{}, error) {
@@ -141,30 +141,30 @@ type Underline int
 
 const (
 	// none: no underline should be drawn
-	UnderlineNone Underline = 0
+	UnderlineNone Underline = iota
 	// single underline should be drawn
-	UnderlineSingle Underline = 1
+	UnderlineSingle
 	// double underline should be drawn
-	UnderlineDouble Underline = 2
+	UnderlineDouble
 	// low: single underline should be drawn at a position beneath the ink
 	// extents of the text being underlined. This should be used only for
 	// underlining single characters, such as for keyboard accelerators.
 	// PANGO_UNDERLINE_SINGLE should be used for extended portions of text.
-	UnderlineLow Underline = 3
+	UnderlineLow
 	// error: wavy underline should be drawn below. This underline is typically
 	// used to indicate an error such as a possible mispelling; in some cases a
 	// contrasting color may automatically be used. This type of underlining is
 	// available since Pango 1.4.
-	UnderlineError Underline = 4
+	UnderlineError
 	// SingleLine: like @PANGO_UNDERLINE_SINGLE, but drawn continuously across
 	// multiple runs. This type of underlining is available since Pango 1.46.
-	UnderlineSingleLine Underline = 5
+	UnderlineSingleLine
 	// DoubleLine: like @PANGO_UNDERLINE_DOUBLE, but drawn continuously across
 	// multiple runs. This type of underlining is available since Pango 1.46.
-	UnderlineDoubleLine Underline = 6
+	UnderlineDoubleLine
 	// ErrorLine: like @PANGO_UNDERLINE_ERROR, but drawn continuously across
 	// multiple runs. This type of underlining is available since Pango 1.46.
-	UnderlineErrorLine Underline = 7
+	UnderlineErrorLine
 )
 
 func marshalUnderline(p uintptr) (interface{}, error) {
@@ -204,7 +204,7 @@ func gotk4_AttrDataCopyFunc(arg0 C.gconstpointer) (cret C.gpointer) {
 	fn := v.(AttrDataCopyFunc)
 	gpointer := fn()
 
-	cret = C.gpointer(box.Assign(gpointer))
+	cret = (C.gpointer)(box.Assign(gpointer))
 
 	return cret
 }

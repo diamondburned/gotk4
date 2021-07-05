@@ -33,13 +33,13 @@ type CornerType int
 const (
 	// TopLeft: place the scrollbars on the right and bottom of the widget
 	// (default behaviour).
-	CornerTypeTopLeft CornerType = 0
+	CornerTypeTopLeft CornerType = iota
 	// BottomLeft: place the scrollbars on the top and right of the widget.
-	CornerTypeBottomLeft CornerType = 1
+	CornerTypeBottomLeft
 	// TopRight: place the scrollbars on the left and bottom of the widget.
-	CornerTypeTopRight CornerType = 2
+	CornerTypeTopRight
 	// BottomRight: place the scrollbars on the top and left of the widget.
-	CornerTypeBottomRight CornerType = 3
+	CornerTypeBottomRight
 )
 
 func marshalCornerType(p uintptr) (interface{}, error) {
@@ -53,17 +53,17 @@ type PolicyType int
 const (
 	// always: the scrollbar is always visible. The view size is independent of
 	// the content.
-	PolicyTypeAlways PolicyType = 0
+	PolicyTypeAlways PolicyType = iota
 	// automatic: the scrollbar will appear and disappear as necessary. For
 	// example, when all of a `GtkTreeView` can not be seen.
-	PolicyTypeAutomatic PolicyType = 1
+	PolicyTypeAutomatic
 	// never: the scrollbar should never appear. In this mode the content
 	// determines the size.
-	PolicyTypeNever PolicyType = 2
+	PolicyTypeNever
 	// external: don't show a scrollbar, but don't force the size to follow the
 	// content. This can be used e.g. to make multiple scrolled windows share a
 	// scrollbar.
-	PolicyTypeExternal PolicyType = 3
+	PolicyTypeExternal
 )
 
 func marshalPolicyType(p uintptr) (interface{}, error) {

@@ -37,27 +37,27 @@ type CSSSectionType int
 const (
 	// document: the section describes a complete document. This section time is
 	// the only one where gtk_css_section_get_parent() might return nil.
-	CSSSectionTypeDocument CSSSectionType = 0
+	CSSSectionTypeDocument CSSSectionType = iota
 	// import: the section defines an import rule.
-	CSSSectionTypeImport CSSSectionType = 1
+	CSSSectionTypeImport
 	// ColorDefinition: the section defines a color. This is a GTK extension to
 	// CSS.
-	CSSSectionTypeColorDefinition CSSSectionType = 2
+	CSSSectionTypeColorDefinition
 	// BindingSet: the section defines a binding set. This is a GTK extension to
 	// CSS.
-	CSSSectionTypeBindingSet CSSSectionType = 3
+	CSSSectionTypeBindingSet
 	// ruleset: the section defines a CSS ruleset.
-	CSSSectionTypeRuleset CSSSectionType = 4
+	CSSSectionTypeRuleset
 	// selector: the section defines a CSS selector.
-	CSSSectionTypeSelector CSSSectionType = 5
+	CSSSectionTypeSelector
 	// declaration: the section defines the declaration of a CSS variable.
-	CSSSectionTypeDeclaration CSSSectionType = 6
+	CSSSectionTypeDeclaration
 	// value: the section defines the value of a CSS declaration.
-	CSSSectionTypeValue CSSSectionType = 7
+	CSSSectionTypeValue
 	// keyframes: the section defines keyframes. See [CSS
 	// Animations](http://dev.w3.org/csswg/css3-animations/#keyframes) for
 	// details. Since 3.6
-	CSSSectionTypeKeyframes CSSSectionType = 8
+	CSSSectionTypeKeyframes
 )
 
 func marshalCSSSectionType(p uintptr) (interface{}, error) {

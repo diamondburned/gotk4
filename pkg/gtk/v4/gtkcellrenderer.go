@@ -32,11 +32,11 @@ const (
 	// inert: the cell is just for display and cannot be interacted with. Note
 	// that this doesn’t mean that eg. the row being drawn can’t be selected --
 	// just that a particular element of it cannot be individually modified.
-	CellRendererModeInert CellRendererMode = 0
+	CellRendererModeInert CellRendererMode = iota
 	// activatable: the cell can be clicked.
-	CellRendererModeActivatable CellRendererMode = 1
+	CellRendererModeActivatable
 	// editable: the cell can be edited or otherwise modified.
-	CellRendererModeEditable CellRendererMode = 2
+	CellRendererModeEditable
 )
 
 func marshalCellRendererMode(p uintptr) (interface{}, error) {

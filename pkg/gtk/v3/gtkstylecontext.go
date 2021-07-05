@@ -561,7 +561,7 @@ func (c styleContext) CancelAnimationsStyleContext(regionId interface{}) {
 	var _arg1 C.gpointer         // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
-	_arg1 = C.gpointer(box.Assign(regionId))
+	_arg1 = (C.gpointer)(box.Assign(regionId))
 
 	C.gtk_style_context_cancel_animations(_arg0, _arg1)
 }
@@ -1052,7 +1052,7 @@ func (c styleContext) NotifyStateChangeStyleContext(window gdk.Window, regionId 
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
-	_arg2 = C.gpointer(box.Assign(regionId))
+	_arg2 = (C.gpointer)(box.Assign(regionId))
 	_arg3 = C.GtkStateType(state)
 	if stateValue {
 		_arg4 = C.TRUE
@@ -1074,7 +1074,7 @@ func (c styleContext) PushAnimatableRegionStyleContext(regionId interface{}) {
 	var _arg1 C.gpointer         // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
-	_arg1 = C.gpointer(box.Assign(regionId))
+	_arg1 = (C.gpointer)(box.Assign(regionId))
 
 	C.gtk_style_context_push_animatable_region(_arg0, _arg1)
 }

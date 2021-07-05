@@ -18,21 +18,21 @@ type ErrorType int
 
 const (
 	// unknown error
-	ErrorTypeUnknown ErrorType = 0
+	ErrorTypeUnknown ErrorType = iota
 	// UnexpEOF: unexpected end of file
-	ErrorTypeUnexpEOF ErrorType = 1
+	ErrorTypeUnexpEOF
 	// UnexpEOFInString: unterminated string constant
-	ErrorTypeUnexpEOFInString ErrorType = 2
+	ErrorTypeUnexpEOFInString
 	// UnexpEOFInComment: unterminated comment
-	ErrorTypeUnexpEOFInComment ErrorType = 3
+	ErrorTypeUnexpEOFInComment
 	// NonDigitInConst: non-digit character in a number
-	ErrorTypeNonDigitInConst ErrorType = 4
+	ErrorTypeNonDigitInConst
 	// DigitRadix: digit beyond radix in a number
-	ErrorTypeDigitRadix ErrorType = 5
+	ErrorTypeDigitRadix
 	// FloatRadix: non-decimal floating point number
-	ErrorTypeFloatRadix ErrorType = 6
+	ErrorTypeFloatRadix
 	// FloatMalformed: malformed floating point number
-	ErrorTypeFloatMalformed ErrorType = 7
+	ErrorTypeFloatMalformed
 )
 
 // TokenType: the possible types of token returned from each

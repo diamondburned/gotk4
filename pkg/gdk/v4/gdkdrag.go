@@ -30,11 +30,11 @@ type DragCancelReason int
 
 const (
 	// NoTarget: there is no suitable drop target.
-	DragCancelReasonNoTarget DragCancelReason = 0
+	DragCancelReasonNoTarget DragCancelReason = iota
 	// UserCancelled: drag cancelled by the user
-	DragCancelReasonUserCancelled DragCancelReason = 1
+	DragCancelReasonUserCancelled
 	// error: unspecified error.
-	DragCancelReasonError DragCancelReason = 2
+	DragCancelReasonError
 )
 
 func marshalDragCancelReason(p uintptr) (interface{}, error) {

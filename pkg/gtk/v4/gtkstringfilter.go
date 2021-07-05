@@ -28,12 +28,12 @@ type StringFilterMatchMode int
 
 const (
 	// exact: the search string and text must match exactly.
-	StringFilterMatchModeExact StringFilterMatchMode = 0
+	StringFilterMatchModeExact StringFilterMatchMode = iota
 	// substring: the search string must be contained as a substring inside the
 	// text.
-	StringFilterMatchModeSubstring StringFilterMatchMode = 1
+	StringFilterMatchModeSubstring
 	// prefix: the text must begin with the search string.
-	StringFilterMatchModePrefix StringFilterMatchMode = 2
+	StringFilterMatchModePrefix
 )
 
 func marshalStringFilterMatchMode(p uintptr) (interface{}, error) {

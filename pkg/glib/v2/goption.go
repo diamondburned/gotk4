@@ -30,30 +30,30 @@ type OptionArg int
 
 const (
 	// none: no extra argument. This is useful for simple flags.
-	OptionArgNone OptionArg = 0
+	OptionArgNone OptionArg = iota
 	// string: the option takes a UTF-8 string argument.
-	OptionArgString OptionArg = 1
+	OptionArgString
 	// int: the option takes an integer argument.
-	OptionArgInt OptionArg = 2
+	OptionArgInt
 	// callback: the option provides a callback (of type ArgFunc) to parse the
 	// extra argument.
-	OptionArgCallback OptionArg = 3
+	OptionArgCallback
 	// filename: the option takes a filename as argument, which will be in the
 	// GLib filename encoding rather than UTF-8.
-	OptionArgFilename OptionArg = 4
+	OptionArgFilename
 	// StringArray: the option takes a string argument, multiple uses of the
 	// option are collected into an array of strings.
-	OptionArgStringArray OptionArg = 5
+	OptionArgStringArray
 	// FilenameArray: the option takes a filename as argument, multiple uses of
 	// the option are collected into an array of strings.
-	OptionArgFilenameArray OptionArg = 6
+	OptionArgFilenameArray
 	// double: the option takes a double argument. The argument can be formatted
 	// either for the user's locale or for the "C" locale. Since 2.12
-	OptionArgDouble OptionArg = 7
+	OptionArgDouble
 	// int64: the option takes a 64-bit integer. Like G_OPTION_ARG_INT but for
 	// larger numbers. The number can be in decimal base, or in hexadecimal
 	// (when prefixed with `0x`, for example, `0xffffffff`). Since 2.12
-	OptionArgInt64 OptionArg = 8
+	OptionArgInt64
 )
 
 // OptionError: error codes returned by option parsing.
@@ -63,11 +63,11 @@ const (
 	// UnknownOption: option was not known to the parser. This error will only
 	// be reported, if the parser hasn't been instructed to ignore unknown
 	// options, see g_option_context_set_ignore_unknown_options().
-	OptionErrorUnknownOption OptionError = 0
+	OptionErrorUnknownOption OptionError = iota
 	// BadValue: value couldn't be parsed.
-	OptionErrorBadValue OptionError = 1
+	OptionErrorBadValue
 	// failed callback failed.
-	OptionErrorFailed OptionError = 2
+	OptionErrorFailed
 )
 
 // OptionFlags flags which modify individual options.

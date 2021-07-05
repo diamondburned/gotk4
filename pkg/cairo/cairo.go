@@ -55,45 +55,45 @@ func init() {
 type Status int
 
 const (
-	StatusSuccess                 Status = 0
-	StatusNoMemory                Status = 1
-	StatusInvalidRestore          Status = 2
-	StatusInvalidPopGroup         Status = 3
-	StatusNoCurrentPoint          Status = 4
-	StatusInvalidMatrix           Status = 5
-	StatusInvalidStatus           Status = 6
-	StatusNullPointer             Status = 7
-	StatusInvalidString           Status = 8
-	StatusInvalidPathData         Status = 9
-	StatusReadError               Status = 10
-	StatusWriteError              Status = 11
-	StatusSurfaceFinished         Status = 12
-	StatusSurfaceTypeMismatch     Status = 13
-	StatusPatternTypeMismatch     Status = 14
-	StatusInvalidContent          Status = 15
-	StatusInvalidFormat           Status = 16
-	StatusInvalidVisual           Status = 17
-	StatusFileNotFound            Status = 18
-	StatusInvalidDash             Status = 19
-	StatusInvalidDscComment       Status = 20
-	StatusInvalidIndex            Status = 21
-	StatusClipNotRepresentable    Status = 22
-	StatusTempFileError           Status = 23
-	StatusInvalidStride           Status = 24
-	StatusFontTypeMismatch        Status = 25
-	StatusUserFontImmutable       Status = 26
-	StatusUserFontError           Status = 27
-	StatusNegativeCount           Status = 28
-	StatusInvalidClusters         Status = 29
-	StatusInvalidSlant            Status = 30
-	StatusInvalidWeight           Status = 31
-	StatusInvalidSize             Status = 32
-	StatusUserFontNotImplemented  Status = 33
-	StatusDeviceTypeMismatch      Status = 34
-	StatusDeviceError             Status = 35
-	StatusInvalidMeshConstruction Status = 36
-	StatusDeviceFinished          Status = 37
-	StatusJbig2GlobalMissing      Status = 38
+	StatusSuccess Status = iota
+	StatusNoMemory
+	StatusInvalidRestore
+	StatusInvalidPopGroup
+	StatusNoCurrentPoint
+	StatusInvalidMatrix
+	StatusInvalidStatus
+	StatusNullPointer
+	StatusInvalidString
+	StatusInvalidPathData
+	StatusReadError
+	StatusWriteError
+	StatusSurfaceFinished
+	StatusSurfaceTypeMismatch
+	StatusPatternTypeMismatch
+	StatusInvalidContent
+	StatusInvalidFormat
+	StatusInvalidVisual
+	StatusFileNotFound
+	StatusInvalidDash
+	StatusInvalidDscComment
+	StatusInvalidIndex
+	StatusClipNotRepresentable
+	StatusTempFileError
+	StatusInvalidStride
+	StatusFontTypeMismatch
+	StatusUserFontImmutable
+	StatusUserFontError
+	StatusNegativeCount
+	StatusInvalidClusters
+	StatusInvalidSlant
+	StatusInvalidWeight
+	StatusInvalidSize
+	StatusUserFontNotImplemented
+	StatusDeviceTypeMismatch
+	StatusDeviceError
+	StatusInvalidMeshConstruction
+	StatusDeviceFinished
+	StatusJbig2GlobalMissing
 )
 
 func marshalStatus(p uintptr) (interface{}, error) {
@@ -115,35 +115,35 @@ func marshalContent(p uintptr) (interface{}, error) {
 type Operator int
 
 const (
-	OperatorClear         Operator = 0
-	OperatorSource        Operator = 1
-	OperatorOver          Operator = 2
-	OperatorIn            Operator = 3
-	OperatorOut           Operator = 4
-	OperatorAtop          Operator = 5
-	OperatorDest          Operator = 6
-	OperatorDestOver      Operator = 7
-	OperatorDestIn        Operator = 8
-	OperatorDestOut       Operator = 9
-	OperatorDestAtop      Operator = 10
-	OperatorXor           Operator = 11
-	OperatorAdd           Operator = 12
-	OperatorSaturate      Operator = 13
-	OperatorMultiply      Operator = 14
-	OperatorScreen        Operator = 15
-	OperatorOverlay       Operator = 16
-	OperatorDarken        Operator = 17
-	OperatorLighten       Operator = 18
-	OperatorColorDodge    Operator = 19
-	OperatorColorBurn     Operator = 20
-	OperatorHardLight     Operator = 21
-	OperatorSoftLight     Operator = 22
-	OperatorDifference    Operator = 23
-	OperatorExclusion     Operator = 24
-	OperatorHSLHue        Operator = 25
-	OperatorHSLSaturation Operator = 26
-	OperatorHSLColor      Operator = 27
-	OperatorHSLLuminosity Operator = 28
+	OperatorClear Operator = iota
+	OperatorSource
+	OperatorOver
+	OperatorIn
+	OperatorOut
+	OperatorAtop
+	OperatorDest
+	OperatorDestOver
+	OperatorDestIn
+	OperatorDestOut
+	OperatorDestAtop
+	OperatorXor
+	OperatorAdd
+	OperatorSaturate
+	OperatorMultiply
+	OperatorScreen
+	OperatorOverlay
+	OperatorDarken
+	OperatorLighten
+	OperatorColorDodge
+	OperatorColorBurn
+	OperatorHardLight
+	OperatorSoftLight
+	OperatorDifference
+	OperatorExclusion
+	OperatorHSLHue
+	OperatorHSLSaturation
+	OperatorHSLColor
+	OperatorHSLLuminosity
 )
 
 func marshalOperator(p uintptr) (interface{}, error) {
@@ -153,13 +153,13 @@ func marshalOperator(p uintptr) (interface{}, error) {
 type Antialias int
 
 const (
-	AntialiasDefault  Antialias = 0
-	AntialiasNone     Antialias = 1
-	AntialiasGray     Antialias = 2
-	AntialiasSubpixel Antialias = 3
-	AntialiasFast     Antialias = 4
-	AntialiasGood     Antialias = 5
-	AntialiasBest     Antialias = 6
+	AntialiasDefault Antialias = iota
+	AntialiasNone
+	AntialiasGray
+	AntialiasSubpixel
+	AntialiasFast
+	AntialiasGood
+	AntialiasBest
 )
 
 func marshalAntialias(p uintptr) (interface{}, error) {
@@ -169,8 +169,8 @@ func marshalAntialias(p uintptr) (interface{}, error) {
 type FillRule int
 
 const (
-	FillRuleWinding FillRule = 0
-	FillRuleEvenOdd FillRule = 1
+	FillRuleWinding FillRule = iota
+	FillRuleEvenOdd
 )
 
 func marshalFillRule(p uintptr) (interface{}, error) {
@@ -180,9 +180,9 @@ func marshalFillRule(p uintptr) (interface{}, error) {
 type LineCap int
 
 const (
-	LineCapButt   LineCap = 0
-	LineCapRound  LineCap = 1
-	LineCapSquare LineCap = 2
+	LineCapButt LineCap = iota
+	LineCapRound
+	LineCapSquare
 )
 
 func marshalLineCap(p uintptr) (interface{}, error) {
@@ -192,9 +192,9 @@ func marshalLineCap(p uintptr) (interface{}, error) {
 type LineJoin int
 
 const (
-	LineJoinMiter LineJoin = 0
-	LineJoinRound LineJoin = 1
-	LineJoinBevel LineJoin = 2
+	LineJoinMiter LineJoin = iota
+	LineJoinRound
+	LineJoinBevel
 )
 
 func marshalLineJoin(p uintptr) (interface{}, error) {
@@ -214,9 +214,9 @@ func marshalTextClusterFlags(p uintptr) (interface{}, error) {
 type FontSlant int
 
 const (
-	FontSlantNormal  FontSlant = 0
-	FontSlantItalic  FontSlant = 1
-	FontSlantOblique FontSlant = 2
+	FontSlantNormal FontSlant = iota
+	FontSlantItalic
+	FontSlantOblique
 )
 
 func marshalFontSlant(p uintptr) (interface{}, error) {
@@ -226,8 +226,8 @@ func marshalFontSlant(p uintptr) (interface{}, error) {
 type FontWeight int
 
 const (
-	FontWeightNormal FontWeight = 0
-	FontWeightBold   FontWeight = 1
+	FontWeightNormal FontWeight = iota
+	FontWeightBold
 )
 
 func marshalFontWeight(p uintptr) (interface{}, error) {
@@ -237,11 +237,11 @@ func marshalFontWeight(p uintptr) (interface{}, error) {
 type SubpixelOrder int
 
 const (
-	SubpixelOrderDefault SubpixelOrder = 0
-	SubpixelOrderRGB     SubpixelOrder = 1
-	SubpixelOrderBGR     SubpixelOrder = 2
-	SubpixelOrderVRGB    SubpixelOrder = 3
-	SubpixelOrderVBGR    SubpixelOrder = 4
+	SubpixelOrderDefault SubpixelOrder = iota
+	SubpixelOrderRGB
+	SubpixelOrderBGR
+	SubpixelOrderVRGB
+	SubpixelOrderVBGR
 )
 
 func marshalSubpixelOrder(p uintptr) (interface{}, error) {
@@ -251,11 +251,11 @@ func marshalSubpixelOrder(p uintptr) (interface{}, error) {
 type HintStyle int
 
 const (
-	HintStyleDefault HintStyle = 0
-	HintStyleNone    HintStyle = 1
-	HintStyleSlight  HintStyle = 2
-	HintStyleMedium  HintStyle = 3
-	HintStyleFull    HintStyle = 4
+	HintStyleDefault HintStyle = iota
+	HintStyleNone
+	HintStyleSlight
+	HintStyleMedium
+	HintStyleFull
 )
 
 func marshalHintStyle(p uintptr) (interface{}, error) {
@@ -265,9 +265,9 @@ func marshalHintStyle(p uintptr) (interface{}, error) {
 type HintMetrics int
 
 const (
-	HintMetricsDefault HintMetrics = 0
-	HintMetricsOff     HintMetrics = 1
-	HintMetricsOn      HintMetrics = 2
+	HintMetricsDefault HintMetrics = iota
+	HintMetricsOff
+	HintMetricsOn
 )
 
 func marshalHintMetrics(p uintptr) (interface{}, error) {
@@ -277,11 +277,11 @@ func marshalHintMetrics(p uintptr) (interface{}, error) {
 type FontType int
 
 const (
-	FontTypeToy    FontType = 0
-	FontTypeFT     FontType = 1
-	FontTypeWin32  FontType = 2
-	FontTypeQuartz FontType = 3
-	FontTypeUser   FontType = 4
+	FontTypeToy FontType = iota
+	FontTypeFT
+	FontTypeWin32
+	FontTypeQuartz
+	FontTypeUser
 )
 
 func marshalFontType(p uintptr) (interface{}, error) {
@@ -291,10 +291,10 @@ func marshalFontType(p uintptr) (interface{}, error) {
 type PathDataType int
 
 const (
-	PathDataTypeMoveTo    PathDataType = 0
-	PathDataTypeLineTo    PathDataType = 1
-	PathDataTypeCurveTo   PathDataType = 2
-	PathDataTypeClosePath PathDataType = 3
+	PathDataTypeMoveTo PathDataType = iota
+	PathDataTypeLineTo
+	PathDataTypeCurveTo
+	PathDataTypeClosePath
 )
 
 func marshalPathDataType(p uintptr) (interface{}, error) {
@@ -322,31 +322,31 @@ func marshalDeviceType(p uintptr) (interface{}, error) {
 type SurfaceType int
 
 const (
-	SurfaceTypeImage         SurfaceType = 0
-	SurfaceTypePDF           SurfaceType = 1
-	SurfaceTypePS            SurfaceType = 2
-	SurfaceTypeXlib          SurfaceType = 3
-	SurfaceTypeXcb           SurfaceType = 4
-	SurfaceTypeGlitz         SurfaceType = 5
-	SurfaceTypeQuartz        SurfaceType = 6
-	SurfaceTypeWin32         SurfaceType = 7
-	SurfaceTypeBeOS          SurfaceType = 8
-	SurfaceTypeDirectFB      SurfaceType = 9
-	SurfaceTypeSvg           SurfaceType = 10
-	SurfaceTypeOS2           SurfaceType = 11
-	SurfaceTypeWin32Printing SurfaceType = 12
-	SurfaceTypeQuartzImage   SurfaceType = 13
-	SurfaceTypeScript        SurfaceType = 14
-	SurfaceTypeQt            SurfaceType = 15
-	SurfaceTypeRecording     SurfaceType = 16
-	SurfaceTypeVg            SurfaceType = 17
-	SurfaceTypeGL            SurfaceType = 18
-	SurfaceTypeDRM           SurfaceType = 19
-	SurfaceTypeTee           SurfaceType = 20
-	SurfaceTypeXML           SurfaceType = 21
-	SurfaceTypeSkia          SurfaceType = 22
-	SurfaceTypeSubsurface    SurfaceType = 23
-	SurfaceTypeCOGL          SurfaceType = 24
+	SurfaceTypeImage SurfaceType = iota
+	SurfaceTypePDF
+	SurfaceTypePS
+	SurfaceTypeXlib
+	SurfaceTypeXcb
+	SurfaceTypeGlitz
+	SurfaceTypeQuartz
+	SurfaceTypeWin32
+	SurfaceTypeBeOS
+	SurfaceTypeDirectFB
+	SurfaceTypeSvg
+	SurfaceTypeOS2
+	SurfaceTypeWin32Printing
+	SurfaceTypeQuartzImage
+	SurfaceTypeScript
+	SurfaceTypeQt
+	SurfaceTypeRecording
+	SurfaceTypeVg
+	SurfaceTypeGL
+	SurfaceTypeDRM
+	SurfaceTypeTee
+	SurfaceTypeXML
+	SurfaceTypeSkia
+	SurfaceTypeSubsurface
+	SurfaceTypeCOGL
 )
 
 func marshalSurfaceType(p uintptr) (interface{}, error) {
@@ -372,12 +372,12 @@ func marshalFormat(p uintptr) (interface{}, error) {
 type PatternType int
 
 const (
-	PatternTypeSolid        PatternType = 0
-	PatternTypeSurface      PatternType = 1
-	PatternTypeLinear       PatternType = 2
-	PatternTypeRadial       PatternType = 3
-	PatternTypeMesh         PatternType = 4
-	PatternTypeRasterSource PatternType = 5
+	PatternTypeSolid PatternType = iota
+	PatternTypeSurface
+	PatternTypeLinear
+	PatternTypeRadial
+	PatternTypeMesh
+	PatternTypeRasterSource
 )
 
 func marshalPatternType(p uintptr) (interface{}, error) {
@@ -387,10 +387,10 @@ func marshalPatternType(p uintptr) (interface{}, error) {
 type Extend int
 
 const (
-	ExtendNone    Extend = 0
-	ExtendRepeat  Extend = 1
-	ExtendReflect Extend = 2
-	ExtendPad     Extend = 3
+	ExtendNone Extend = iota
+	ExtendRepeat
+	ExtendReflect
+	ExtendPad
 )
 
 func marshalExtend(p uintptr) (interface{}, error) {
@@ -400,12 +400,12 @@ func marshalExtend(p uintptr) (interface{}, error) {
 type Filter int
 
 const (
-	FilterFast     Filter = 0
-	FilterGood     Filter = 1
-	FilterBest     Filter = 2
-	FilterNearest  Filter = 3
-	FilterBilinear Filter = 4
-	FilterGaussian Filter = 5
+	FilterFast Filter = iota
+	FilterGood
+	FilterBest
+	FilterNearest
+	FilterBilinear
+	FilterGaussian
 )
 
 func marshalFilter(p uintptr) (interface{}, error) {
@@ -415,9 +415,9 @@ func marshalFilter(p uintptr) (interface{}, error) {
 type RegionOverlap int
 
 const (
-	RegionOverlapIn   RegionOverlap = 0
-	RegionOverlapOut  RegionOverlap = 1
-	RegionOverlapPart RegionOverlap = 2
+	RegionOverlapIn RegionOverlap = iota
+	RegionOverlapOut
+	RegionOverlapPart
 )
 
 func marshalRegionOverlap(p uintptr) (interface{}, error) {

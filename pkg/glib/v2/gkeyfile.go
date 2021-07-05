@@ -28,17 +28,17 @@ type KeyFileError int
 
 const (
 	// UnknownEncoding: the text being parsed was in an unknown encoding
-	KeyFileErrorUnknownEncoding KeyFileError = 0
+	KeyFileErrorUnknownEncoding KeyFileError = iota
 	// parse: document was ill-formed
-	KeyFileErrorParse KeyFileError = 1
+	KeyFileErrorParse
 	// NotFound: the file was not found
-	KeyFileErrorNotFound KeyFileError = 2
+	KeyFileErrorNotFound
 	// KeyNotFound: requested key was not found
-	KeyFileErrorKeyNotFound KeyFileError = 3
+	KeyFileErrorKeyNotFound
 	// GroupNotFound: requested group was not found
-	KeyFileErrorGroupNotFound KeyFileError = 4
+	KeyFileErrorGroupNotFound
 	// InvalidValue: value could not be parsed
-	KeyFileErrorInvalidValue KeyFileError = 5
+	KeyFileErrorInvalidValue
 )
 
 // KeyFileFlags flags which influence the parsing.

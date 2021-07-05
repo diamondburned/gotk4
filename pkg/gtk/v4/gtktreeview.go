@@ -33,13 +33,13 @@ type TreeViewDropPosition int
 
 const (
 	// before: dropped row is inserted before
-	TreeViewDropPositionBefore TreeViewDropPosition = 0
+	TreeViewDropPositionBefore TreeViewDropPosition = iota
 	// after: dropped row is inserted after
-	TreeViewDropPositionAfter TreeViewDropPosition = 1
+	TreeViewDropPositionAfter
 	// IntoOrBefore: dropped row becomes a child or is inserted before
-	TreeViewDropPositionIntoOrBefore TreeViewDropPosition = 2
+	TreeViewDropPositionIntoOrBefore
 	// IntoOrAfter: dropped row becomes a child or is inserted after
-	TreeViewDropPositionIntoOrAfter TreeViewDropPosition = 3
+	TreeViewDropPositionIntoOrAfter
 )
 
 func marshalTreeViewDropPosition(p uintptr) (interface{}, error) {

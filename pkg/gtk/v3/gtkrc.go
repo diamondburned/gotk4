@@ -62,11 +62,11 @@ type PathType int
 
 const (
 	// widget: deprecated
-	PathTypeWidget PathType = 0
+	PathTypeWidget PathType = iota
 	// WidgetClass: deprecated
-	PathTypeWidgetClass PathType = 1
+	PathTypeWidgetClass
 	// class: deprecated
-	PathTypeClass PathType = 2
+	PathTypeClass
 )
 
 func marshalPathType(p uintptr) (interface{}, error) {

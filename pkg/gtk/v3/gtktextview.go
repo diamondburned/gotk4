@@ -37,10 +37,10 @@ type TextExtendSelection int
 const (
 	// word selects the current word. It is triggered by a double-click for
 	// example.
-	TextExtendSelectionWord TextExtendSelection = 0
+	TextExtendSelectionWord TextExtendSelection = iota
 	// line selects the current line. It is triggered by a triple-click for
 	// example.
-	TextExtendSelectionLine TextExtendSelection = 1
+	TextExtendSelectionLine
 )
 
 func marshalTextExtendSelection(p uintptr) (interface{}, error) {
@@ -53,14 +53,14 @@ type TextViewLayer int
 
 const (
 	// below: old deprecated layer, use GTK_TEXT_VIEW_LAYER_BELOW_TEXT instead
-	TextViewLayerBelow TextViewLayer = 0
+	TextViewLayerBelow TextViewLayer = iota
 	// above: old deprecated layer, use GTK_TEXT_VIEW_LAYER_ABOVE_TEXT instead
-	TextViewLayerAbove TextViewLayer = 1
+	TextViewLayerAbove
 	// BelowText: the layer rendered below the text (but above the background).
 	// Since: 3.20
-	TextViewLayerBelowText TextViewLayer = 2
+	TextViewLayerBelowText
 	// AboveText: the layer rendered above the text. Since: 3.20
-	TextViewLayerAboveText TextViewLayer = 3
+	TextViewLayerAboveText
 )
 
 func marshalTextViewLayer(p uintptr) (interface{}, error) {
@@ -72,19 +72,19 @@ type TextWindowType int
 
 const (
 	// private: invalid value, used as a marker
-	TextWindowTypePrivate TextWindowType = 0
+	TextWindowTypePrivate TextWindowType = iota
 	// widget: window that floats over scrolling areas.
-	TextWindowTypeWidget TextWindowType = 1
+	TextWindowTypeWidget
 	// text: scrollable text window.
-	TextWindowTypeText TextWindowType = 2
+	TextWindowTypeText
 	// left: left side border window.
-	TextWindowTypeLeft TextWindowType = 3
+	TextWindowTypeLeft
 	// right: right side border window.
-	TextWindowTypeRight TextWindowType = 4
+	TextWindowTypeRight
 	// top: top border window.
-	TextWindowTypeTop TextWindowType = 5
+	TextWindowTypeTop
 	// bottom: bottom border window.
-	TextWindowTypeBottom TextWindowType = 6
+	TextWindowTypeBottom
 )
 
 func marshalTextWindowType(p uintptr) (interface{}, error) {

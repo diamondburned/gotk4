@@ -33,87 +33,87 @@ type TextAttribute int
 
 const (
 	// invalid: invalid attribute, like bad spelling or grammar.
-	TextAttributeInvalid TextAttribute = 0
+	TextAttributeInvalid TextAttribute = iota
 	// LeftMargin: the pixel width of the left margin
-	TextAttributeLeftMargin TextAttribute = 1
+	TextAttributeLeftMargin
 	// RightMargin: the pixel width of the right margin
-	TextAttributeRightMargin TextAttribute = 2
+	TextAttributeRightMargin
 	// indent: the number of pixels that the text is indented
-	TextAttributeIndent TextAttribute = 3
+	TextAttributeIndent
 	// invisible: either "true" or "false" indicating whether text is visible or
 	// not
-	TextAttributeInvisible TextAttribute = 4
+	TextAttributeInvisible
 	// editable: either "true" or "false" indicating whether text is editable or
 	// not
-	TextAttributeEditable TextAttribute = 5
+	TextAttributeEditable
 	// PixelsAboveLines pixels of blank space to leave above each
 	// newline-terminated line.
-	TextAttributePixelsAboveLines TextAttribute = 6
+	TextAttributePixelsAboveLines
 	// PixelsBelowLines pixels of blank space to leave below each
 	// newline-terminated line.
-	TextAttributePixelsBelowLines TextAttribute = 7
+	TextAttributePixelsBelowLines
 	// PixelsInsideWrap pixels of blank space to leave between wrapped lines
 	// inside the same newline-terminated line (paragraph).
-	TextAttributePixelsInsideWrap TextAttribute = 8
+	TextAttributePixelsInsideWrap
 	// BgFullHeight: "true" or "false" whether to make the background color for
 	// each character the height of the highest font used on the current line,
 	// or the height of the font used for the current character.
-	TextAttributeBgFullHeight TextAttribute = 9
+	TextAttributeBgFullHeight
 	// rise: number of pixels that the characters are risen above the baseline.
 	// See also ATK_TEXT_ATTR_TEXT_POSITION.
-	TextAttributeRise TextAttribute = 10
+	TextAttributeRise
 	// underline: "none", "single", "double", "low", or "error"
-	TextAttributeUnderline TextAttribute = 11
+	TextAttributeUnderline
 	// strikethrough: "true" or "false" whether the text is strikethrough
-	TextAttributeStrikethrough TextAttribute = 12
+	TextAttributeStrikethrough
 	// size: the size of the characters in points. eg: 10
-	TextAttributeSize TextAttribute = 13
+	TextAttributeSize
 	// scale: the scale of the characters. The value is a string representation
 	// of a double
-	TextAttributeScale TextAttribute = 14
+	TextAttributeScale
 	// weight: the weight of the characters.
-	TextAttributeWeight TextAttribute = 15
+	TextAttributeWeight
 	// language: the language used
-	TextAttributeLanguage TextAttribute = 16
+	TextAttributeLanguage
 	// FamilyName: the font family name
-	TextAttributeFamilyName TextAttribute = 17
+	TextAttributeFamilyName
 	// BgColor: the background color. The value is an RGB value of the format
 	// "u,u,u"
-	TextAttributeBgColor TextAttribute = 18
+	TextAttributeBgColor
 	// FgColor: the foreground color. The value is an RGB value of the format
 	// "u,u,u"
-	TextAttributeFgColor TextAttribute = 19
+	TextAttributeFgColor
 	// BgStipple: "true" if a Bitmap is set for stippling the background color.
-	TextAttributeBgStipple TextAttribute = 20
+	TextAttributeBgStipple
 	// FgStipple: "true" if a Bitmap is set for stippling the foreground color.
-	TextAttributeFgStipple TextAttribute = 21
+	TextAttributeFgStipple
 	// WrapMode: the wrap mode of the text, if any. Values are "none", "char",
 	// "word", or "word_char".
-	TextAttributeWrapMode TextAttribute = 22
+	TextAttributeWrapMode
 	// direction: the direction of the text, if set. Values are "none", "ltr" or
 	// "rtl"
-	TextAttributeDirection TextAttribute = 23
+	TextAttributeDirection
 	// justification: the justification of the text, if set. Values are "left",
 	// "right", "center" or "fill"
-	TextAttributeJustification TextAttribute = 24
+	TextAttributeJustification
 	// stretch: the stretch of the text, if set. Values are "ultra_condensed",
 	// "extra_condensed", "condensed", "semi_condensed", "normal",
 	// "semi_expanded", "expanded", "extra_expanded" or "ultra_expanded"
-	TextAttributeStretch TextAttribute = 25
+	TextAttributeStretch
 	// variant: the capitalization variant of the text, if set. Values are
 	// "normal" or "small_caps"
-	TextAttributeVariant TextAttribute = 26
+	TextAttributeVariant
 	// style: the slant style of the text, if set. Values are "normal",
 	// "oblique" or "italic"
-	TextAttributeStyle TextAttribute = 27
+	TextAttributeStyle
 	// TextPosition: the vertical position with respect to the baseline. Values
 	// are "baseline", "super", or "sub". Note that a super or sub text
 	// attribute refers to position with respect to the baseline of the prior
 	// character.
-	TextAttributeTextPosition TextAttribute = 28
+	TextAttributeTextPosition
 	// LastDefined: not a valid text attribute, used for finding end of
 	// enumeration
-	TextAttributeLastDefined TextAttribute = 29
+	TextAttributeLastDefined
 )
 
 func marshalTextAttribute(p uintptr) (interface{}, error) {
@@ -128,22 +128,22 @@ type TextBoundary int
 const (
 	// char: boundary is the boundary between characters (including non-printing
 	// characters)
-	TextBoundaryChar TextBoundary = 0
+	TextBoundaryChar TextBoundary = iota
 	// WordStart: boundary is the start (i.e. first character) of a word.
-	TextBoundaryWordStart TextBoundary = 1
+	TextBoundaryWordStart
 	// WordEnd: boundary is the end (i.e. last character) of a word.
-	TextBoundaryWordEnd TextBoundary = 2
+	TextBoundaryWordEnd
 	// SentenceStart: boundary is the first character in a sentence.
-	TextBoundarySentenceStart TextBoundary = 3
+	TextBoundarySentenceStart
 	// SentenceEnd: boundary is the last (terminal) character in a sentence; in
 	// languages which use "sentence stop" punctuation such as English, the
 	// boundary is thus the '.', '?', or similar terminal punctuation character.
-	TextBoundarySentenceEnd TextBoundary = 4
+	TextBoundarySentenceEnd
 	// LineStart: boundary is the initial character of the content or a
 	// character immediately following a newline, linefeed, or return character.
-	TextBoundaryLineStart TextBoundary = 5
+	TextBoundaryLineStart
 	// LineEnd: boundary is the linefeed, or return character.
-	TextBoundaryLineEnd TextBoundary = 6
+	TextBoundaryLineEnd
 )
 
 func marshalTextBoundary(p uintptr) (interface{}, error) {
@@ -155,13 +155,13 @@ type TextClipType int
 
 const (
 	// none: no clipping to be done
-	TextClipTypeNone TextClipType = 0
+	TextClipTypeNone TextClipType = iota
 	// min: text clipped by min coordinate is omitted
-	TextClipTypeMin TextClipType = 1
+	TextClipTypeMin
 	// max: text clipped by max coordinate is omitted
-	TextClipTypeMax TextClipType = 2
+	TextClipTypeMax
 	// both: only text fully within mix/max bound is retained
-	TextClipTypeBoth TextClipType = 3
+	TextClipTypeBoth
 )
 
 func marshalTextClipType(p uintptr) (interface{}, error) {
@@ -175,23 +175,23 @@ type TextGranularity int
 const (
 	// char: granularity is defined by the boundaries between characters
 	// (including non-printing characters)
-	TextGranularityChar TextGranularity = 0
+	TextGranularityChar TextGranularity = iota
 	// word: granularity is defined by the boundaries of a word, starting at the
 	// beginning of the current word and finishing at the beginning of the
 	// following one, if present.
-	TextGranularityWord TextGranularity = 1
+	TextGranularityWord
 	// sentence: granularity is defined by the boundaries of a sentence,
 	// starting at the beginning of the current sentence and finishing at the
 	// beginning of the following one, if present.
-	TextGranularitySentence TextGranularity = 2
+	TextGranularitySentence
 	// line: granularity is defined by the boundaries of a line, starting at the
 	// beginning of the current line and finishing at the beginning of the
 	// following one, if present.
-	TextGranularityLine TextGranularity = 3
+	TextGranularityLine
 	// paragraph: granularity is defined by the boundaries of a paragraph,
 	// starting at the beginning of the current paragraph and finishing at the
 	// beginning of the following one, if present.
-	TextGranularityParagraph TextGranularity = 4
+	TextGranularityParagraph
 )
 
 func marshalTextGranularity(p uintptr) (interface{}, error) {

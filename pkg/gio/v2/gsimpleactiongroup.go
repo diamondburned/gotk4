@@ -113,7 +113,7 @@ func (s simpleActionGroup) AddEntriesSimpleActionGroup(entries []ActionEntry, us
 	_arg0 = (*C.GSimpleActionGroup)(unsafe.Pointer(s.Native()))
 	_arg2 = C.gint(len(entries))
 	_arg1 = (*C.GActionEntry)(unsafe.Pointer(&entries[0]))
-	_arg3 = C.gpointer(box.Assign(userData))
+	_arg3 = (C.gpointer)(box.Assign(userData))
 
 	C.g_simple_action_group_add_entries(_arg0, _arg1, _arg2, _arg3)
 }

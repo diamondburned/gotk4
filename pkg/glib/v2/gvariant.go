@@ -71,46 +71,46 @@ type VariantParseError int
 
 const (
 	// failed: generic error (unused)
-	VariantParseErrorFailed VariantParseError = 0
+	VariantParseErrorFailed VariantParseError = iota
 	// BasicTypeExpected: non-basic Type was given where a basic type was
 	// expected
-	VariantParseErrorBasicTypeExpected VariantParseError = 1
+	VariantParseErrorBasicTypeExpected
 	// CannotInferType: cannot infer the Type
-	VariantParseErrorCannotInferType VariantParseError = 2
+	VariantParseErrorCannotInferType
 	// DefiniteTypeExpected: indefinite Type was given where a definite type was
 	// expected
-	VariantParseErrorDefiniteTypeExpected VariantParseError = 3
+	VariantParseErrorDefiniteTypeExpected
 	// InputNotAtEnd: extra data after parsing finished
-	VariantParseErrorInputNotAtEnd VariantParseError = 4
+	VariantParseErrorInputNotAtEnd
 	// InvalidCharacter: invalid character in number or unicode escape
-	VariantParseErrorInvalidCharacter VariantParseError = 5
+	VariantParseErrorInvalidCharacter
 	// InvalidFormatString: not a valid #GVariant format string
-	VariantParseErrorInvalidFormatString VariantParseError = 6
+	VariantParseErrorInvalidFormatString
 	// InvalidObjectPath: not a valid object path
-	VariantParseErrorInvalidObjectPath VariantParseError = 7
+	VariantParseErrorInvalidObjectPath
 	// InvalidSignature: not a valid type signature
-	VariantParseErrorInvalidSignature VariantParseError = 8
+	VariantParseErrorInvalidSignature
 	// InvalidTypeString: not a valid #GVariant type string
-	VariantParseErrorInvalidTypeString VariantParseError = 9
+	VariantParseErrorInvalidTypeString
 	// NoCommonType: could not find a common type for array entries
-	VariantParseErrorNoCommonType VariantParseError = 10
+	VariantParseErrorNoCommonType
 	// NumberOutOfRange: the numerical value is out of range of the given type
-	VariantParseErrorNumberOutOfRange VariantParseError = 11
+	VariantParseErrorNumberOutOfRange
 	// NumberTooBig: the numerical value is out of range for any type
-	VariantParseErrorNumberTooBig VariantParseError = 12
+	VariantParseErrorNumberTooBig
 	// TypeError: cannot parse as variant of the specified type
-	VariantParseErrorTypeError VariantParseError = 13
+	VariantParseErrorTypeError
 	// UnexpectedToken: unexpected token was encountered
-	VariantParseErrorUnexpectedToken VariantParseError = 14
+	VariantParseErrorUnexpectedToken
 	// UnknownKeyword: unknown keyword was encountered
-	VariantParseErrorUnknownKeyword VariantParseError = 15
+	VariantParseErrorUnknownKeyword
 	// UnterminatedStringConstant: unterminated string constant
-	VariantParseErrorUnterminatedStringConstant VariantParseError = 16
+	VariantParseErrorUnterminatedStringConstant
 	// ValueExpected: no value given
-	VariantParseErrorValueExpected VariantParseError = 17
+	VariantParseErrorValueExpected
 	// recursion: variant was too deeply nested; #GVariant is only guaranteed to
 	// handle nesting up to 64 levels (Since: 2.64)
-	VariantParseErrorRecursion VariantParseError = 18
+	VariantParseErrorRecursion
 )
 
 // Variant is a variant datatype; it can contain one or more values along with
@@ -520,7 +520,7 @@ func NewVariantFixedArray(elementType *VariantType, elements interface{}, nEleme
 	var _cret *C.GVariant     // in
 
 	_arg1 = (*C.GVariantType)(unsafe.Pointer(elementType))
-	_arg2 = C.gconstpointer(box.Assign(elements))
+	_arg2 = (C.gconstpointer)(box.Assign(elements))
 	_arg3 = C.gsize(nElements)
 	_arg4 = C.gsize(elementSize)
 
@@ -1824,7 +1824,7 @@ func (v *Variant) Store(data interface{}) {
 	var _arg1 C.gpointer  // out
 
 	_arg0 = (*C.GVariant)(unsafe.Pointer(v))
-	_arg1 = C.gpointer(box.Assign(data))
+	_arg1 = (C.gpointer)(box.Assign(data))
 
 	C.g_variant_store(_arg0, _arg1)
 }

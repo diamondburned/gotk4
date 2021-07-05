@@ -32,19 +32,19 @@ type RecentManagerError int
 const (
 	// NotFound: the URI specified does not exists in the recently used
 	// resources list.
-	RecentManagerErrorNotFound RecentManagerError = 0
+	RecentManagerErrorNotFound RecentManagerError = iota
 	// InvalidURI: the URI specified is not valid.
-	RecentManagerErrorInvalidURI RecentManagerError = 1
+	RecentManagerErrorInvalidURI
 	// InvalidEncoding: the supplied string is not UTF-8 encoded.
-	RecentManagerErrorInvalidEncoding RecentManagerError = 2
+	RecentManagerErrorInvalidEncoding
 	// NotRegistered: no application has registered the specified item.
-	RecentManagerErrorNotRegistered RecentManagerError = 3
+	RecentManagerErrorNotRegistered
 	// read: failure while reading the recently used resources file.
-	RecentManagerErrorRead RecentManagerError = 4
+	RecentManagerErrorRead
 	// write: failure while writing the recently used resources file.
-	RecentManagerErrorWrite RecentManagerError = 5
+	RecentManagerErrorWrite
 	// unknown: unspecified error.
-	RecentManagerErrorUnknown RecentManagerError = 6
+	RecentManagerErrorUnknown
 )
 
 func marshalRecentManagerError(p uintptr) (interface{}, error) {

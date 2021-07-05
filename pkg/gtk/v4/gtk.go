@@ -25,15 +25,15 @@ func init() {
 type EditableProperties int
 
 const (
-	EditablePropertiesPropText           EditableProperties = 0
-	EditablePropertiesPropCursorPosition EditableProperties = 1
-	EditablePropertiesPropSelectionBound EditableProperties = 2
-	EditablePropertiesPropEditable       EditableProperties = 3
-	EditablePropertiesPropWidthChars     EditableProperties = 4
-	EditablePropertiesPropMaxWidthChars  EditableProperties = 5
-	EditablePropertiesPropXalign         EditableProperties = 6
-	EditablePropertiesPropEnableUndo     EditableProperties = 7
-	EditablePropertiesNumProperties      EditableProperties = 8
+	EditablePropertiesPropText EditableProperties = iota
+	EditablePropertiesPropCursorPosition
+	EditablePropertiesPropSelectionBound
+	EditablePropertiesPropEditable
+	EditablePropertiesPropWidthChars
+	EditablePropertiesPropMaxWidthChars
+	EditablePropertiesPropXalign
+	EditablePropertiesPropEnableUndo
+	EditablePropertiesNumProperties
 )
 
 func marshalEditableProperties(p uintptr) (interface{}, error) {

@@ -31,9 +31,9 @@ type IconThemeError int
 
 const (
 	// NotFound: the icon specified does not exist in the theme
-	IconThemeErrorNotFound IconThemeError = 0
+	IconThemeErrorNotFound IconThemeError = iota
 	// failed: unspecified error occurred.
-	IconThemeErrorFailed IconThemeError = 1
+	IconThemeErrorFailed
 )
 
 func marshalIconThemeError(p uintptr) (interface{}, error) {

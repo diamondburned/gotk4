@@ -1,6 +1,8 @@
 package generators
 
 import (
+	"strconv"
+
 	"github.com/diamondburned/gotk4/gir"
 	"github.com/diamondburned/gotk4/gir/girgen/gotmpl"
 	"github.com/diamondburned/gotk4/gir/girgen/strcases"
@@ -11,15 +13,29 @@ var enumTmpl = gotmpl.NewGoTemplate(`
 	{{ GoDoc . 0 }}
 	type {{ .GoName }} int
 
+	{{ if .IsIota }}
 	const (
-		{{ range .Members -}}
-		{{- $name := ($.FormatMember .Name) -}}
+		{{ range $ix, $member := .Members -}}
 		{{- if .Doc -}}
 		{{ GoDoc . 1 }}
 		{{ end -}}
-		{{ $name }} {{ $.GoName }} = {{ .Value }}
+		{{- if (eq $ix 0) -}}
+		{{ $.FormatMember .Name }} {{ $.GoName }} = iota
+		{{ else -}}
+		{{ $.FormatMember .Name }}
+		{{ end -}}
+		{{ end }}
+	)
+	{{ else }}
+	const (
+		{{ range .Members -}}
+		{{- if .Doc -}}
+		{{ GoDoc . 1 }}
+		{{ end -}}
+		{{ $.FormatMember .Name }} {{ $.GoName }} = {{ .Value }}
 		{{ end -}}
 	)
+	{{ end }}
 
 	{{ if .GLibGetType }}
 	func marshal{{ .GoName }}(p uintptr) (interface{}, error) {
@@ -31,6 +47,7 @@ var enumTmpl = gotmpl.NewGoTemplate(`
 type enumData struct {
 	*gir.Enum
 	GoName string
+	IsIota bool
 }
 
 func (eg *enumData) FormatMember(memberName string) string {
@@ -59,9 +76,18 @@ func GenerateEnum(gen FileGeneratorWriter, enum *gir.Enum) bool {
 		writer.Header().AddMarshaler(enum.GLibGetType, goName)
 	}
 
+	isIota := true
+	for i := 0; i < len(enum.Members); i++ {
+		if enum.Members[i].Value != strconv.Itoa(i) {
+			isIota = false
+			break
+		}
+	}
+
 	writer.Pen().WriteTmpl(enumTmpl, &enumData{
 		Enum:   enum,
 		GoName: goName,
+		IsIota: isIota,
 	})
 	return true
 }

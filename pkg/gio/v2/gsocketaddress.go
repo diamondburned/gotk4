@@ -83,7 +83,7 @@ func NewSocketAddressFromNative(native interface{}, len uint) SocketAddress {
 	var _arg2 C.gsize           // out
 	var _cret *C.GSocketAddress // in
 
-	_arg1 = C.gpointer(box.Assign(native))
+	_arg1 = (C.gpointer)(box.Assign(native))
 	_arg2 = C.gsize(len)
 
 	_cret = C.g_socket_address_new_from_native(_arg1, _arg2)
@@ -132,7 +132,7 @@ func (a socketAddress) ToNativeSocketAddress(dest interface{}, destlen uint) err
 	var _cerr *C.GError         // in
 
 	_arg0 = (*C.GSocketAddress)(unsafe.Pointer(a.Native()))
-	_arg1 = C.gpointer(box.Assign(dest))
+	_arg1 = (C.gpointer)(box.Assign(dest))
 	_arg2 = C.gsize(destlen)
 
 	C.g_socket_address_to_native(_arg0, _arg1, _arg2, &_cerr)

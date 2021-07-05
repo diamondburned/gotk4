@@ -24,23 +24,23 @@ type UserDirectory int
 
 const (
 	// DirectoryDesktop: the user's Desktop directory
-	UserDirectoryDirectoryDesktop UserDirectory = 0
+	UserDirectoryDirectoryDesktop UserDirectory = iota
 	// DirectoryDocuments: the user's Documents directory
-	UserDirectoryDirectoryDocuments UserDirectory = 1
+	UserDirectoryDirectoryDocuments
 	// DirectoryDownload: the user's Downloads directory
-	UserDirectoryDirectoryDownload UserDirectory = 2
+	UserDirectoryDirectoryDownload
 	// DirectoryMusic: the user's Music directory
-	UserDirectoryDirectoryMusic UserDirectory = 3
+	UserDirectoryDirectoryMusic
 	// DirectoryPictures: the user's Pictures directory
-	UserDirectoryDirectoryPictures UserDirectory = 4
+	UserDirectoryDirectoryPictures
 	// DirectoryPublicShare: the user's shared directory
-	UserDirectoryDirectoryPublicShare UserDirectory = 5
+	UserDirectoryDirectoryPublicShare
 	// DirectoryTemplates: the user's Templates directory
-	UserDirectoryDirectoryTemplates UserDirectory = 6
+	UserDirectoryDirectoryTemplates
 	// DirectoryVideos: the user's Movies directory
-	UserDirectoryDirectoryVideos UserDirectory = 7
+	UserDirectoryDirectoryVideos
 	// NDirectories: the number of enum values
-	UserDirectoryNDirectories UserDirectory = 8
+	UserDirectoryNDirectories
 )
 
 // FormatSizeFlags flags to modify the format of the string returned by

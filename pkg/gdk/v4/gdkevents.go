@@ -47,28 +47,28 @@ type CrossingMode int
 
 const (
 	// normal: crossing because of pointer motion.
-	CrossingModeNormal CrossingMode = 0
+	CrossingModeNormal CrossingMode = iota
 	// grab: crossing because a grab is activated.
-	CrossingModeGrab CrossingMode = 1
+	CrossingModeGrab
 	// ungrab: crossing because a grab is deactivated.
-	CrossingModeUngrab CrossingMode = 2
+	CrossingModeUngrab
 	// GTKGrab: crossing because a GTK grab is activated.
-	CrossingModeGTKGrab CrossingMode = 3
+	CrossingModeGTKGrab
 	// GTKUngrab: crossing because a GTK grab is deactivated.
-	CrossingModeGTKUngrab CrossingMode = 4
+	CrossingModeGTKUngrab
 	// StateChanged: crossing because a GTK widget changed state (e.g.
 	// sensitivity).
-	CrossingModeStateChanged CrossingMode = 5
+	CrossingModeStateChanged
 	// TouchBegin: crossing because a touch sequence has begun, this event is
 	// synthetic as the pointer might have not left the surface.
-	CrossingModeTouchBegin CrossingMode = 6
+	CrossingModeTouchBegin
 	// TouchEnd: crossing because a touch sequence has ended, this event is
 	// synthetic as the pointer might have not left the surface.
-	CrossingModeTouchEnd CrossingMode = 7
+	CrossingModeTouchEnd
 	// DeviceSwitch: crossing because of a device switch (i.e. a mouse taking
 	// control of the pointer after a touch device), this event is synthetic as
 	// the pointer didn’t leave the surface.
-	CrossingModeDeviceSwitch CrossingMode = 8
+	CrossingModeDeviceSwitch
 )
 
 func marshalCrossingMode(p uintptr) (interface{}, error) {
@@ -82,68 +82,68 @@ const (
 	// delete: the window manager has requested that the toplevel surface be
 	// hidden or destroyed, usually when the user clicks on a special icon in
 	// the title bar.
-	EventTypeDelete EventType = 0
+	EventTypeDelete EventType = iota
 	// MotionNotify: the pointer (usually a mouse) has moved.
-	EventTypeMotionNotify EventType = 1
+	EventTypeMotionNotify
 	// ButtonPress: mouse button has been pressed.
-	EventTypeButtonPress EventType = 2
+	EventTypeButtonPress
 	// ButtonRelease: mouse button has been released.
-	EventTypeButtonRelease EventType = 3
+	EventTypeButtonRelease
 	// KeyPress: key has been pressed.
-	EventTypeKeyPress EventType = 4
+	EventTypeKeyPress
 	// KeyRelease: key has been released.
-	EventTypeKeyRelease EventType = 5
+	EventTypeKeyRelease
 	// EnterNotify: the pointer has entered the surface.
-	EventTypeEnterNotify EventType = 6
+	EventTypeEnterNotify
 	// LeaveNotify: the pointer has left the surface.
-	EventTypeLeaveNotify EventType = 7
+	EventTypeLeaveNotify
 	// FocusChange: the keyboard focus has entered or left the surface.
-	EventTypeFocusChange EventType = 8
+	EventTypeFocusChange
 	// ProximityIn: input device has moved into contact with a sensing surface
 	// (e.g. a touchscreen or graphics tablet).
-	EventTypeProximityIn EventType = 9
+	EventTypeProximityIn
 	// ProximityOut: input device has moved out of contact with a sensing
 	// surface.
-	EventTypeProximityOut EventType = 10
+	EventTypeProximityOut
 	// DragEnter: the mouse has entered the surface while a drag is in progress.
-	EventTypeDragEnter EventType = 11
+	EventTypeDragEnter
 	// DragLeave: the mouse has left the surface while a drag is in progress.
-	EventTypeDragLeave EventType = 12
+	EventTypeDragLeave
 	// DragMotion: the mouse has moved in the surface while a drag is in
 	// progress.
-	EventTypeDragMotion EventType = 13
+	EventTypeDragMotion
 	// DropStart: drop operation onto the surface has started.
-	EventTypeDropStart EventType = 14
+	EventTypeDropStart
 	// scroll: the scroll wheel was turned
-	EventTypeScroll EventType = 15
+	EventTypeScroll
 	// GrabBroken: pointer or keyboard grab was broken.
-	EventTypeGrabBroken EventType = 16
+	EventTypeGrabBroken
 	// TouchBegin: new touch event sequence has just started.
-	EventTypeTouchBegin EventType = 17
+	EventTypeTouchBegin
 	// TouchUpdate: touch event sequence has been updated.
-	EventTypeTouchUpdate EventType = 18
+	EventTypeTouchUpdate
 	// TouchEnd: touch event sequence has finished.
-	EventTypeTouchEnd EventType = 19
+	EventTypeTouchEnd
 	// TouchCancel: touch event sequence has been canceled.
-	EventTypeTouchCancel EventType = 20
+	EventTypeTouchCancel
 	// TouchpadSwipe: touchpad swipe gesture event, the current state is
 	// determined by its phase field.
-	EventTypeTouchpadSwipe EventType = 21
+	EventTypeTouchpadSwipe
 	// TouchpadPinch: touchpad pinch gesture event, the current state is
 	// determined by its phase field.
-	EventTypeTouchpadPinch EventType = 22
+	EventTypeTouchpadPinch
 	// PadButtonPress: tablet pad button press event.
-	EventTypePadButtonPress EventType = 23
+	EventTypePadButtonPress
 	// PadButtonRelease: tablet pad button release event.
-	EventTypePadButtonRelease EventType = 24
+	EventTypePadButtonRelease
 	// PadRing: tablet pad axis event from a "ring".
-	EventTypePadRing EventType = 25
+	EventTypePadRing
 	// PadStrip: tablet pad axis event from a "strip".
-	EventTypePadStrip EventType = 26
+	EventTypePadStrip
 	// PadGroupMode: tablet pad group mode change.
-	EventTypePadGroupMode EventType = 27
+	EventTypePadGroupMode
 	// EventLast marks the end of the GdkEventType enumeration.
-	EventTypeEventLast EventType = 28
+	EventTypeEventLast
 )
 
 func marshalEventType(p uintptr) (interface{}, error) {
@@ -157,12 +157,12 @@ type KeyMatch int
 
 const (
 	// none: the key event does not match
-	KeyMatchNone KeyMatch = 0
+	KeyMatchNone KeyMatch = iota
 	// partial: the key event matches if keyboard state (specifically, the
 	// currently active group) is ignored
-	KeyMatchPartial KeyMatch = 1
+	KeyMatchPartial
 	// exact: the key event matches
-	KeyMatchExact KeyMatch = 2
+	KeyMatchExact
 )
 
 func marshalKeyMatch(p uintptr) (interface{}, error) {
@@ -178,22 +178,22 @@ type NotifyType int
 const (
 	// ancestor: the surface is entered from an ancestor or left towards an
 	// ancestor.
-	NotifyTypeAncestor NotifyType = 0
+	NotifyTypeAncestor NotifyType = iota
 	// virtual: the pointer moves between an ancestor and an inferior of the
 	// surface.
-	NotifyTypeVirtual NotifyType = 1
+	NotifyTypeVirtual
 	// inferior: the surface is entered from an inferior or left towards an
 	// inferior.
-	NotifyTypeInferior NotifyType = 2
+	NotifyTypeInferior
 	// nonlinear: the surface is entered from or left towards a surface which is
 	// neither an ancestor nor an inferior.
-	NotifyTypeNonlinear NotifyType = 3
+	NotifyTypeNonlinear
 	// NonlinearVirtual: the pointer moves between two surfaces which are not
 	// ancestors of each other and the surface is part of the ancestor chain
 	// between one of these surfaces and their least common ancestor.
-	NotifyTypeNonlinearVirtual NotifyType = 4
+	NotifyTypeNonlinearVirtual
 	// unknown type of enter/leave event occurred.
-	NotifyTypeUnknown NotifyType = 5
+	NotifyTypeUnknown
 )
 
 func marshalNotifyType(p uintptr) (interface{}, error) {
@@ -205,16 +205,16 @@ type ScrollDirection int
 
 const (
 	// up: the surface is scrolled up.
-	ScrollDirectionUp ScrollDirection = 0
+	ScrollDirectionUp ScrollDirection = iota
 	// down: the surface is scrolled down.
-	ScrollDirectionDown ScrollDirection = 1
+	ScrollDirectionDown
 	// left: the surface is scrolled to the left.
-	ScrollDirectionLeft ScrollDirection = 2
+	ScrollDirectionLeft
 	// right: the surface is scrolled to the right.
-	ScrollDirectionRight ScrollDirection = 3
+	ScrollDirectionRight
 	// smooth: the scrolling is determined by the delta values in scroll events.
 	// See gdk_scroll_event_get_deltas()
-	ScrollDirectionSmooth ScrollDirection = 4
+	ScrollDirectionSmooth
 )
 
 func marshalScrollDirection(p uintptr) (interface{}, error) {
@@ -242,13 +242,13 @@ type TouchpadGesturePhase int
 
 const (
 	// begin: the gesture has begun.
-	TouchpadGesturePhaseBegin TouchpadGesturePhase = 0
+	TouchpadGesturePhaseBegin TouchpadGesturePhase = iota
 	// update: the gesture has been updated.
-	TouchpadGesturePhaseUpdate TouchpadGesturePhase = 1
+	TouchpadGesturePhaseUpdate
 	// end: the gesture was finished, changes should be permanently applied.
-	TouchpadGesturePhaseEnd TouchpadGesturePhase = 2
+	TouchpadGesturePhaseEnd
 	// cancel: the gesture was cancelled, all changes should be undone.
-	TouchpadGesturePhaseCancel TouchpadGesturePhase = 3
+	TouchpadGesturePhaseCancel
 )
 
 func marshalTouchpadGesturePhase(p uintptr) (interface{}, error) {

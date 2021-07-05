@@ -145,7 +145,7 @@ func (b buildable) CustomFinished(builder Builder, child gextras.Objector, tagna
 	_arg2 = (*C.GObject)(unsafe.Pointer(child.Native()))
 	_arg3 = (*C.gchar)(C.CString(tagname))
 	defer C.free(unsafe.Pointer(_arg3))
-	_arg4 = C.gpointer(box.Assign(data))
+	_arg4 = (C.gpointer)(box.Assign(data))
 
 	C.gtk_buildable_custom_finished(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
@@ -162,7 +162,7 @@ func (b buildable) CustomTagEnd(builder Builder, child gextras.Objector, tagname
 	_arg2 = (*C.GObject)(unsafe.Pointer(child.Native()))
 	_arg3 = (*C.gchar)(C.CString(tagname))
 	defer C.free(unsafe.Pointer(_arg3))
-	_arg4 = *C.gpointer(box.Assign(data))
+	_arg4 = (*C.gpointer)(box.Assign(data))
 
 	C.gtk_buildable_custom_tag_end(_arg0, _arg1, _arg2, _arg3, _arg4)
 }

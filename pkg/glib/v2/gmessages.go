@@ -188,7 +188,7 @@ func LogDefaultHandler(logDomain string, logLevel LogLevelFlags, message string,
 	_arg2 = C.GLogLevelFlags(logLevel)
 	_arg3 = (*C.gchar)(C.CString(message))
 	defer C.free(unsafe.Pointer(_arg3))
-	_arg4 = C.gpointer(box.Assign(unusedData))
+	_arg4 = (C.gpointer)(box.Assign(unusedData))
 
 	C.g_log_default_handler(_arg1, _arg2, _arg3, _arg4)
 }
@@ -350,7 +350,7 @@ func LogWriterDefault(logLevel LogLevelFlags, fields []LogField, userData interf
 	_arg1 = C.GLogLevelFlags(logLevel)
 	_arg3 = C.gsize(len(fields))
 	_arg2 = (*C.GLogField)(unsafe.Pointer(&fields[0]))
-	_arg4 = C.gpointer(box.Assign(userData))
+	_arg4 = (C.gpointer)(box.Assign(userData))
 
 	_cret = C.g_log_writer_default(_arg1, _arg2, _arg3, _arg4)
 
@@ -499,7 +499,7 @@ func LogWriterJournald(logLevel LogLevelFlags, fields []LogField, userData inter
 	_arg1 = C.GLogLevelFlags(logLevel)
 	_arg3 = C.gsize(len(fields))
 	_arg2 = (*C.GLogField)(unsafe.Pointer(&fields[0]))
-	_arg4 = C.gpointer(box.Assign(userData))
+	_arg4 = (C.gpointer)(box.Assign(userData))
 
 	_cret = C.g_log_writer_journald(_arg1, _arg2, _arg3, _arg4)
 
@@ -533,7 +533,7 @@ func LogWriterStandardStreams(logLevel LogLevelFlags, fields []LogField, userDat
 	_arg1 = C.GLogLevelFlags(logLevel)
 	_arg3 = C.gsize(len(fields))
 	_arg2 = (*C.GLogField)(unsafe.Pointer(&fields[0]))
-	_arg4 = C.gpointer(box.Assign(userData))
+	_arg4 = (C.gpointer)(box.Assign(userData))
 
 	_cret = C.g_log_writer_standard_streams(_arg1, _arg2, _arg3, _arg4)
 

@@ -30,41 +30,41 @@ type License int
 
 const (
 	// unknown: no license specified
-	LicenseUnknown License = 0
+	LicenseUnknown License = iota
 	// custom: license text is going to be specified by the developer
-	LicenseCustom License = 1
+	LicenseCustom
 	// GPL20: the GNU General Public License, version 2.0 or later
-	LicenseGPL20 License = 2
+	LicenseGPL20
 	// GPL30: the GNU General Public License, version 3.0 or later
-	LicenseGPL30 License = 3
+	LicenseGPL30
 	// LGPL21: the GNU Lesser General Public License, version 2.1 or later
-	LicenseLGPL21 License = 4
+	LicenseLGPL21
 	// LGPL30: the GNU Lesser General Public License, version 3.0 or later
-	LicenseLGPL30 License = 5
+	LicenseLGPL30
 	// bsd: the BSD standard license
-	LicenseBSD License = 6
+	LicenseBSD
 	// MITX11: the MIT/X11 standard license
-	LicenseMITX11 License = 7
+	LicenseMITX11
 	// artistic: the Artistic License, version 2.0
-	LicenseArtistic License = 8
+	LicenseArtistic
 	// GPL20Only: the GNU General Public License, version 2.0 only
-	LicenseGPL20Only License = 9
+	LicenseGPL20Only
 	// GPL30Only: the GNU General Public License, version 3.0 only
-	LicenseGPL30Only License = 10
+	LicenseGPL30Only
 	// LGPL21Only: the GNU Lesser General Public License, version 2.1 only
-	LicenseLGPL21Only License = 11
+	LicenseLGPL21Only
 	// LGPL30Only: the GNU Lesser General Public License, version 3.0 only
-	LicenseLGPL30Only License = 12
+	LicenseLGPL30Only
 	// AGPL30: the GNU Affero General Public License, version 3.0 or later
-	LicenseAGPL30 License = 13
+	LicenseAGPL30
 	// AGPL30Only: the GNU Affero General Public License, version 3.0 only
-	LicenseAGPL30Only License = 14
+	LicenseAGPL30Only
 	// BSD3: the 3-clause BSD licence
-	LicenseBSD3 License = 15
+	LicenseBSD3
 	// Apache20: the Apache License, version 2.0
-	LicenseApache20 License = 16
+	LicenseApache20
 	// MPL20: the Mozilla Public License, version 2.0
-	LicenseMPL20 License = 17
+	LicenseMPL20
 )
 
 func marshalLicense(p uintptr) (interface{}, error) {

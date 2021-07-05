@@ -28,16 +28,16 @@ const (
 	// InOrder vists a node's left child first, then the node itself, then its
 	// right child. This is the one to use if you want the output sorted
 	// according to the compare function.
-	TraverseTypeInOrder TraverseType = 0
+	TraverseTypeInOrder TraverseType = iota
 	// PreOrder visits a node, then its children.
-	TraverseTypePreOrder TraverseType = 1
+	TraverseTypePreOrder
 	// PostOrder visits the node's children, then the node itself.
-	TraverseTypePostOrder TraverseType = 2
+	TraverseTypePostOrder
 	// LevelOrder is not implemented for [balanced binary
 	// trees][glib-Balanced-Binary-Trees]. For [n-ary trees][glib-N-ary-Trees],
 	// it vists the root node first, then its children, then its grandchildren,
 	// and so on. Note that this is less efficient than the other orders.
-	TraverseTypeLevelOrder TraverseType = 3
+	TraverseTypeLevelOrder
 )
 
 // TraverseFlags specifies which nodes are visited during several of the tree
@@ -86,7 +86,7 @@ func (n *Node) ChildIndex(data interface{}) int {
 	var _cret C.gint     // in
 
 	_arg0 = (*C.GNode)(unsafe.Pointer(n))
-	_arg1 = C.gpointer(box.Assign(data))
+	_arg1 = (C.gpointer)(box.Assign(data))
 
 	_cret = C.g_node_child_index(_arg0, _arg1)
 

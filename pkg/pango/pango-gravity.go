@@ -39,15 +39,15 @@ type Gravity int
 
 const (
 	// south glyphs stand upright (default)
-	GravitySouth Gravity = 0
+	GravitySouth Gravity = iota
 	// east glyphs are rotated 90 degrees clockwise
-	GravityEast Gravity = 1
+	GravityEast
 	// north glyphs are upside-down
-	GravityNorth Gravity = 2
+	GravityNorth
 	// west glyphs are rotated 90 degrees counter-clockwise
-	GravityWest Gravity = 3
+	GravityWest
 	// auto: gravity is resolved from the context matrix
-	GravityAuto Gravity = 4
+	GravityAuto
 )
 
 func marshalGravity(p uintptr) (interface{}, error) {
@@ -65,14 +65,14 @@ type GravityHint int
 const (
 	// natural scripts will take their natural gravity based on the base gravity
 	// and the script. This is the default.
-	GravityHintNatural GravityHint = 0
+	GravityHintNatural GravityHint = iota
 	// strong always use the base gravity set, regardless of the script.
-	GravityHintStrong GravityHint = 1
+	GravityHintStrong
 	// line: for scripts not in their natural direction (eg. Latin in East
 	// gravity), choose per-script gravity such that every script respects the
 	// line progression. This means, Latin and Arabic will take opposite
 	// gravities and both flow top-to-bottom for example.
-	GravityHintLine GravityHint = 2
+	GravityHintLine
 )
 
 func marshalGravityHint(p uintptr) (interface{}, error) {

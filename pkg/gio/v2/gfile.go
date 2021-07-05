@@ -3159,7 +3159,7 @@ func (f file) SetAttribute(attribute string, typ FileAttributeType, valueP inter
 	_arg1 = (*C.char)(C.CString(attribute))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GFileAttributeType(typ)
-	_arg3 = C.gpointer(box.Assign(valueP))
+	_arg3 = (C.gpointer)(box.Assign(valueP))
 	_arg4 = C.GFileQueryInfoFlags(flags)
 	_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 

@@ -28,23 +28,23 @@ type IOChannelError int
 
 const (
 	// fbig: file too large.
-	IOChannelErrorFbig IOChannelError = 0
+	IOChannelErrorFbig IOChannelError = iota
 	// inval: invalid argument.
-	IOChannelErrorInval IOChannelError = 1
+	IOChannelErrorInval
 	// io: IO error.
-	IOChannelErrorIO IOChannelError = 2
+	IOChannelErrorIO
 	// isdir: file is a directory.
-	IOChannelErrorIsdir IOChannelError = 3
+	IOChannelErrorIsdir
 	// nospc: no space left on device.
-	IOChannelErrorNospc IOChannelError = 4
+	IOChannelErrorNospc
 	// nxio: no such device or address.
-	IOChannelErrorNxio IOChannelError = 5
+	IOChannelErrorNxio
 	// overflow: value too large for defined datatype.
-	IOChannelErrorOverflow IOChannelError = 6
+	IOChannelErrorOverflow
 	// pipe: broken pipe.
-	IOChannelErrorPipe IOChannelError = 7
+	IOChannelErrorPipe
 	// failed: some other error.
-	IOChannelErrorFailed IOChannelError = 8
+	IOChannelErrorFailed
 )
 
 // IOError is only used by the deprecated functions g_io_channel_read(),
@@ -53,13 +53,13 @@ type IOError int
 
 const (
 	// none: no error
-	IOErrorNone IOError = 0
+	IOErrorNone IOError = iota
 	// again: EAGAIN error occurred
-	IOErrorAgain IOError = 1
+	IOErrorAgain
 	// inval: EINVAL error occurred
-	IOErrorInval IOError = 2
+	IOErrorInval
 	// unknown: another error occurred
-	IOErrorUnknown IOError = 3
+	IOErrorUnknown
 )
 
 // IOStatus statuses returned by most of the OFuncs functions.
@@ -67,13 +67,13 @@ type IOStatus int
 
 const (
 	// error occurred.
-	IOStatusError IOStatus = 0
+	IOStatusError IOStatus = iota
 	// normal: success.
-	IOStatusNormal IOStatus = 1
+	IOStatusNormal
 	// eof: end of file.
-	IOStatusEOF IOStatus = 2
+	IOStatusEOF
 	// again: resource temporarily unavailable.
-	IOStatusAgain IOStatus = 3
+	IOStatusAgain
 )
 
 // SeekType: enumeration specifying the base position for a
@@ -82,11 +82,11 @@ type SeekType int
 
 const (
 	// cur: the current position in the file.
-	SeekTypeCur SeekType = 0
+	SeekTypeCur SeekType = iota
 	// set: the start of the file.
-	SeekTypeSet SeekType = 1
+	SeekTypeSet
 	// end: the end of the file.
-	SeekTypeEnd SeekType = 2
+	SeekTypeEnd
 )
 
 // IOFlags specifies properties of a OChannel. Some of the flags can only be

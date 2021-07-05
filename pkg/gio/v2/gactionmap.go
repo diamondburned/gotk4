@@ -137,7 +137,7 @@ func (a actionMap) AddActionEntries(entries []ActionEntry, userData interface{})
 	_arg0 = (*C.GActionMap)(unsafe.Pointer(a.Native()))
 	_arg2 = C.gint(len(entries))
 	_arg1 = (*C.GActionEntry)(unsafe.Pointer(&entries[0]))
-	_arg3 = C.gpointer(box.Assign(userData))
+	_arg3 = (C.gpointer)(box.Assign(userData))
 
 	C.g_action_map_add_action_entries(_arg0, _arg1, _arg2, _arg3)
 }

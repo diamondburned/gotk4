@@ -158,7 +158,7 @@ func gotk4_SettingsGetMapping(arg0 *C.GVariant, arg1 *C.gpointer, arg2 C.gpointe
 	fn := v.(SettingsGetMapping)
 	result, ok := fn(value)
 
-	arg1 = *C.gpointer(box.Assign(result))
+	arg1 = (*C.gpointer)(box.Assign(result))
 	if ok {
 		cret = C.TRUE
 	}

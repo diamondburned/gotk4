@@ -285,7 +285,7 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 	case value.Resolved.IsBuiltin("interface{}"):
 		value.header.ImportCore("box")
 		value.p.Linef(
-			"%s = %s(box.Assign(%s))",
+			"%s = (%s)(box.Assign(%s))",
 			value.OutName, value.OutType, value.InName,
 		)
 		return true

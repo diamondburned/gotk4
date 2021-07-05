@@ -29,23 +29,23 @@ type MarkupError int
 
 const (
 	// BadUTF8: text being parsed was not valid UTF-8
-	MarkupErrorBadUTF8 MarkupError = 0
+	MarkupErrorBadUTF8 MarkupError = iota
 	// empty: document contained nothing, or only whitespace
-	MarkupErrorEmpty MarkupError = 1
+	MarkupErrorEmpty
 	// parse: document was ill-formed
-	MarkupErrorParse MarkupError = 2
+	MarkupErrorParse
 	// UnknownElement: error should be set by Parser functions; element wasn't
 	// known
-	MarkupErrorUnknownElement MarkupError = 3
+	MarkupErrorUnknownElement
 	// UnknownAttribute: error should be set by Parser functions; attribute
 	// wasn't known
-	MarkupErrorUnknownAttribute MarkupError = 4
+	MarkupErrorUnknownAttribute
 	// InvalidContent: error should be set by Parser functions; content was
 	// invalid
-	MarkupErrorInvalidContent MarkupError = 5
+	MarkupErrorInvalidContent
 	// MissingAttribute: error should be set by Parser functions; a required
 	// attribute was missing
-	MarkupErrorMissingAttribute MarkupError = 6
+	MarkupErrorMissingAttribute
 )
 
 // MarkupCollectType: mixed enumerated type and flags field. You must specify
@@ -364,7 +364,7 @@ func (c *MarkupParseContext) Push(parser *MarkupParser, userData interface{}) {
 
 	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c))
 	_arg1 = (*C.GMarkupParser)(unsafe.Pointer(parser))
-	_arg2 = C.gpointer(box.Assign(userData))
+	_arg2 = (C.gpointer)(box.Assign(userData))
 
 	C.g_markup_parse_context_push(_arg0, _arg1, _arg2)
 }

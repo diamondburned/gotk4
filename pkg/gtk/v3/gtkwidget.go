@@ -45,9 +45,9 @@ type WidgetHelpType int
 
 const (
 	// tooltip: tooltip.
-	WidgetHelpTypeTooltip WidgetHelpType = 0
+	WidgetHelpTypeTooltip WidgetHelpType = iota
 	// WhatsThis what’s this.
-	WidgetHelpTypeWhatsThis WidgetHelpType = 1
+	WidgetHelpTypeWhatsThis
 )
 
 func marshalWidgetHelpType(p uintptr) (interface{}, error) {

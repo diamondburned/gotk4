@@ -58,92 +58,92 @@ type UnicodeBreakType int
 
 const (
 	// mandatory: mandatory Break (BK)
-	UnicodeBreakTypeMandatory UnicodeBreakType = 0
+	UnicodeBreakTypeMandatory UnicodeBreakType = iota
 	// CarriageReturn: carriage Return (CR)
-	UnicodeBreakTypeCarriageReturn UnicodeBreakType = 1
+	UnicodeBreakTypeCarriageReturn
 	// LineFeed: line Feed (LF)
-	UnicodeBreakTypeLineFeed UnicodeBreakType = 2
+	UnicodeBreakTypeLineFeed
 	// CombiningMark: attached Characters and Combining Marks (CM)
-	UnicodeBreakTypeCombiningMark UnicodeBreakType = 3
+	UnicodeBreakTypeCombiningMark
 	// surrogate surrogates (SG)
-	UnicodeBreakTypeSurrogate UnicodeBreakType = 4
+	UnicodeBreakTypeSurrogate
 	// ZeroWidthSpace: zero Width Space (ZW)
-	UnicodeBreakTypeZeroWidthSpace UnicodeBreakType = 5
+	UnicodeBreakTypeZeroWidthSpace
 	// inseparable: inseparable (IN)
-	UnicodeBreakTypeInseparable UnicodeBreakType = 6
+	UnicodeBreakTypeInseparable
 	// NonBreakingGlue: non-breaking ("Glue") (GL)
-	UnicodeBreakTypeNonBreakingGlue UnicodeBreakType = 7
+	UnicodeBreakTypeNonBreakingGlue
 	// contingent: contingent Break Opportunity (CB)
-	UnicodeBreakTypeContingent UnicodeBreakType = 8
+	UnicodeBreakTypeContingent
 	// space: space (SP)
-	UnicodeBreakTypeSpace UnicodeBreakType = 9
+	UnicodeBreakTypeSpace
 	// after: break Opportunity After (BA)
-	UnicodeBreakTypeAfter UnicodeBreakType = 10
+	UnicodeBreakTypeAfter
 	// before: break Opportunity Before (BB)
-	UnicodeBreakTypeBefore UnicodeBreakType = 11
+	UnicodeBreakTypeBefore
 	// BeforeAndAfter: break Opportunity Before and After (B2)
-	UnicodeBreakTypeBeforeAndAfter UnicodeBreakType = 12
+	UnicodeBreakTypeBeforeAndAfter
 	// hyphen: hyphen (HY)
-	UnicodeBreakTypeHyphen UnicodeBreakType = 13
+	UnicodeBreakTypeHyphen
 	// NonStarter: nonstarter (NS)
-	UnicodeBreakTypeNonStarter UnicodeBreakType = 14
+	UnicodeBreakTypeNonStarter
 	// OpenPunctuation: opening Punctuation (OP)
-	UnicodeBreakTypeOpenPunctuation UnicodeBreakType = 15
+	UnicodeBreakTypeOpenPunctuation
 	// ClosePunctuation: closing Punctuation (CL)
-	UnicodeBreakTypeClosePunctuation UnicodeBreakType = 16
+	UnicodeBreakTypeClosePunctuation
 	// quotation ambiguous Quotation (QU)
-	UnicodeBreakTypeQuotation UnicodeBreakType = 17
+	UnicodeBreakTypeQuotation
 	// exclamation: exclamation/Interrogation (EX)
-	UnicodeBreakTypeExclamation UnicodeBreakType = 18
+	UnicodeBreakTypeExclamation
 	// ideographic: ideographic (ID)
-	UnicodeBreakTypeIdeographic UnicodeBreakType = 19
+	UnicodeBreakTypeIdeographic
 	// numeric: numeric (NU)
-	UnicodeBreakTypeNumeric UnicodeBreakType = 20
+	UnicodeBreakTypeNumeric
 	// InfixSeparator: infix Separator (Numeric) (IS)
-	UnicodeBreakTypeInfixSeparator UnicodeBreakType = 21
+	UnicodeBreakTypeInfixSeparator
 	// symbol symbols Allowing Break After (SY)
-	UnicodeBreakTypeSymbol UnicodeBreakType = 22
+	UnicodeBreakTypeSymbol
 	// alphabetic: ordinary Alphabetic and Symbol Characters (AL)
-	UnicodeBreakTypeAlphabetic UnicodeBreakType = 23
+	UnicodeBreakTypeAlphabetic
 	// prefix: prefix (Numeric) (PR)
-	UnicodeBreakTypePrefix UnicodeBreakType = 24
+	UnicodeBreakTypePrefix
 	// postfix: postfix (Numeric) (PO)
-	UnicodeBreakTypePostfix UnicodeBreakType = 25
+	UnicodeBreakTypePostfix
 	// ComplexContext: complex Content Dependent (South East Asian) (SA)
-	UnicodeBreakTypeComplexContext UnicodeBreakType = 26
+	UnicodeBreakTypeComplexContext
 	// ambiguous ambiguous (Alphabetic or Ideographic) (AI)
-	UnicodeBreakTypeAmbiguous UnicodeBreakType = 27
+	UnicodeBreakTypeAmbiguous
 	// unknown: unknown (XX)
-	UnicodeBreakTypeUnknown UnicodeBreakType = 28
+	UnicodeBreakTypeUnknown
 	// NextLine: next Line (NL)
-	UnicodeBreakTypeNextLine UnicodeBreakType = 29
+	UnicodeBreakTypeNextLine
 	// WordJoiner: word Joiner (WJ)
-	UnicodeBreakTypeWordJoiner UnicodeBreakType = 30
+	UnicodeBreakTypeWordJoiner
 	// HangulLJamo: hangul L Jamo (JL)
-	UnicodeBreakTypeHangulLJamo UnicodeBreakType = 31
+	UnicodeBreakTypeHangulLJamo
 	// HangulVJamo: hangul V Jamo (JV)
-	UnicodeBreakTypeHangulVJamo UnicodeBreakType = 32
+	UnicodeBreakTypeHangulVJamo
 	// HangulTJamo: hangul T Jamo (JT)
-	UnicodeBreakTypeHangulTJamo UnicodeBreakType = 33
+	UnicodeBreakTypeHangulTJamo
 	// HangulLvSyllable: hangul LV Syllable (H2)
-	UnicodeBreakTypeHangulLvSyllable UnicodeBreakType = 34
+	UnicodeBreakTypeHangulLvSyllable
 	// HangulLvtSyllable: hangul LVT Syllable (H3)
-	UnicodeBreakTypeHangulLvtSyllable UnicodeBreakType = 35
+	UnicodeBreakTypeHangulLvtSyllable
 	// CloseParanthesis: closing Parenthesis (CP). Since 2.28
-	UnicodeBreakTypeCloseParanthesis UnicodeBreakType = 36
+	UnicodeBreakTypeCloseParanthesis
 	// ConditionalJapaneseStarter: conditional Japanese Starter (CJ). Since:
 	// 2.32
-	UnicodeBreakTypeConditionalJapaneseStarter UnicodeBreakType = 37
+	UnicodeBreakTypeConditionalJapaneseStarter
 	// HebrewLetter: hebrew Letter (HL). Since: 2.32
-	UnicodeBreakTypeHebrewLetter UnicodeBreakType = 38
+	UnicodeBreakTypeHebrewLetter
 	// RegionalIndicator: regional Indicator (RI). Since: 2.36
-	UnicodeBreakTypeRegionalIndicator UnicodeBreakType = 39
+	UnicodeBreakTypeRegionalIndicator
 	// EmojiBase: emoji Base (EB). Since: 2.50
-	UnicodeBreakTypeEmojiBase UnicodeBreakType = 40
+	UnicodeBreakTypeEmojiBase
 	// EmojiModifier: emoji Modifier (EM). Since: 2.50
-	UnicodeBreakTypeEmojiModifier UnicodeBreakType = 41
+	UnicodeBreakTypeEmojiModifier
 	// ZeroWidthJoiner: zero Width Joiner (ZWJ). Since: 2.50
-	UnicodeBreakTypeZeroWidthJoiner UnicodeBreakType = 42
+	UnicodeBreakTypeZeroWidthJoiner
 )
 
 // UnicodeScript: the Script enumeration identifies different writing systems.
@@ -482,65 +482,65 @@ type UnicodeType int
 
 const (
 	// control: general category "Other, Control" (Cc)
-	UnicodeTypeControl UnicodeType = 0
+	UnicodeTypeControl UnicodeType = iota
 	// format: general category "Other, Format" (Cf)
-	UnicodeTypeFormat UnicodeType = 1
+	UnicodeTypeFormat
 	// unassigned: general category "Other, Not Assigned" (Cn)
-	UnicodeTypeUnassigned UnicodeType = 2
+	UnicodeTypeUnassigned
 	// PrivateUse: general category "Other, Private Use" (Co)
-	UnicodeTypePrivateUse UnicodeType = 3
+	UnicodeTypePrivateUse
 	// surrogate: general category "Other, Surrogate" (Cs)
-	UnicodeTypeSurrogate UnicodeType = 4
+	UnicodeTypeSurrogate
 	// LowercaseLetter: general category "Letter, Lowercase" (Ll)
-	UnicodeTypeLowercaseLetter UnicodeType = 5
+	UnicodeTypeLowercaseLetter
 	// ModifierLetter: general category "Letter, Modifier" (Lm)
-	UnicodeTypeModifierLetter UnicodeType = 6
+	UnicodeTypeModifierLetter
 	// OtherLetter: general category "Letter, Other" (Lo)
-	UnicodeTypeOtherLetter UnicodeType = 7
+	UnicodeTypeOtherLetter
 	// TitlecaseLetter: general category "Letter, Titlecase" (Lt)
-	UnicodeTypeTitlecaseLetter UnicodeType = 8
+	UnicodeTypeTitlecaseLetter
 	// UppercaseLetter: general category "Letter, Uppercase" (Lu)
-	UnicodeTypeUppercaseLetter UnicodeType = 9
+	UnicodeTypeUppercaseLetter
 	// SpacingMark: general category "Mark, Spacing" (Mc)
-	UnicodeTypeSpacingMark UnicodeType = 10
+	UnicodeTypeSpacingMark
 	// EnclosingMark: general category "Mark, Enclosing" (Me)
-	UnicodeTypeEnclosingMark UnicodeType = 11
+	UnicodeTypeEnclosingMark
 	// NonSpacingMark: general category "Mark, Nonspacing" (Mn)
-	UnicodeTypeNonSpacingMark UnicodeType = 12
+	UnicodeTypeNonSpacingMark
 	// DecimalNumber: general category "Number, Decimal Digit" (Nd)
-	UnicodeTypeDecimalNumber UnicodeType = 13
+	UnicodeTypeDecimalNumber
 	// LetterNumber: general category "Number, Letter" (Nl)
-	UnicodeTypeLetterNumber UnicodeType = 14
+	UnicodeTypeLetterNumber
 	// OtherNumber: general category "Number, Other" (No)
-	UnicodeTypeOtherNumber UnicodeType = 15
+	UnicodeTypeOtherNumber
 	// ConnectPunctuation: general category "Punctuation, Connector" (Pc)
-	UnicodeTypeConnectPunctuation UnicodeType = 16
+	UnicodeTypeConnectPunctuation
 	// DashPunctuation: general category "Punctuation, Dash" (Pd)
-	UnicodeTypeDashPunctuation UnicodeType = 17
+	UnicodeTypeDashPunctuation
 	// ClosePunctuation: general category "Punctuation, Close" (Pe)
-	UnicodeTypeClosePunctuation UnicodeType = 18
+	UnicodeTypeClosePunctuation
 	// FinalPunctuation: general category "Punctuation, Final quote" (Pf)
-	UnicodeTypeFinalPunctuation UnicodeType = 19
+	UnicodeTypeFinalPunctuation
 	// InitialPunctuation: general category "Punctuation, Initial quote" (Pi)
-	UnicodeTypeInitialPunctuation UnicodeType = 20
+	UnicodeTypeInitialPunctuation
 	// OtherPunctuation: general category "Punctuation, Other" (Po)
-	UnicodeTypeOtherPunctuation UnicodeType = 21
+	UnicodeTypeOtherPunctuation
 	// OpenPunctuation: general category "Punctuation, Open" (Ps)
-	UnicodeTypeOpenPunctuation UnicodeType = 22
+	UnicodeTypeOpenPunctuation
 	// CurrencySymbol: general category "Symbol, Currency" (Sc)
-	UnicodeTypeCurrencySymbol UnicodeType = 23
+	UnicodeTypeCurrencySymbol
 	// ModifierSymbol: general category "Symbol, Modifier" (Sk)
-	UnicodeTypeModifierSymbol UnicodeType = 24
+	UnicodeTypeModifierSymbol
 	// MathSymbol: general category "Symbol, Math" (Sm)
-	UnicodeTypeMathSymbol UnicodeType = 25
+	UnicodeTypeMathSymbol
 	// OtherSymbol: general category "Symbol, Other" (So)
-	UnicodeTypeOtherSymbol UnicodeType = 26
+	UnicodeTypeOtherSymbol
 	// LineSeparator: general category "Separator, Line" (Zl)
-	UnicodeTypeLineSeparator UnicodeType = 27
+	UnicodeTypeLineSeparator
 	// ParagraphSeparator: general category "Separator, Paragraph" (Zp)
-	UnicodeTypeParagraphSeparator UnicodeType = 28
+	UnicodeTypeParagraphSeparator
 	// SpaceSeparator: general category "Separator, Space" (Zs)
-	UnicodeTypeSpaceSeparator UnicodeType = 29
+	UnicodeTypeSpaceSeparator
 )
 
 // UCS4ToUTF16: convert a string from UCS-4 to UTF-16. A 0 character will be

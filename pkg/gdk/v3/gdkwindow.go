@@ -44,9 +44,9 @@ type FullscreenMode int
 
 const (
 	// CurrentMonitor: fullscreen on current monitor only.
-	FullscreenModeCurrentMonitor FullscreenMode = 0
+	FullscreenModeCurrentMonitor FullscreenMode = iota
 	// AllMonitors: span across all monitors when fullscreen.
-	FullscreenModeAllMonitors FullscreenMode = 1
+	FullscreenModeAllMonitors
 )
 
 func marshalFullscreenMode(p uintptr) (interface{}, error) {
@@ -93,21 +93,21 @@ type WindowEdge int
 
 const (
 	// NorthWest: the top left corner.
-	WindowEdgeNorthWest WindowEdge = 0
+	WindowEdgeNorthWest WindowEdge = iota
 	// north: the top edge.
-	WindowEdgeNorth WindowEdge = 1
+	WindowEdgeNorth
 	// NorthEast: the top right corner.
-	WindowEdgeNorthEast WindowEdge = 2
+	WindowEdgeNorthEast
 	// west: the left edge.
-	WindowEdgeWest WindowEdge = 3
+	WindowEdgeWest
 	// east: the right edge.
-	WindowEdgeEast WindowEdge = 4
+	WindowEdgeEast
 	// SouthWest: the lower left corner.
-	WindowEdgeSouthWest WindowEdge = 5
+	WindowEdgeSouthWest
 	// south: the lower edge.
-	WindowEdgeSouth WindowEdge = 6
+	WindowEdgeSouth
 	// SouthEast: the lower right corner.
-	WindowEdgeSouthEast WindowEdge = 7
+	WindowEdgeSouthEast
 )
 
 func marshalWindowEdge(p uintptr) (interface{}, error) {
@@ -120,21 +120,21 @@ type WindowType int
 const (
 	// root window; this window has no parent, covers the entire screen, and is
 	// created by the window system
-	WindowTypeRoot WindowType = 0
+	WindowTypeRoot WindowType = iota
 	// toplevel window (used to implement Window)
-	WindowTypeToplevel WindowType = 1
+	WindowTypeToplevel
 	// child window (used to implement e.g. Entry)
-	WindowTypeChild WindowType = 2
+	WindowTypeChild
 	// temp: override redirect temporary window (used to implement Menu)
-	WindowTypeTemp WindowType = 3
+	WindowTypeTemp
 	// foreign window (see gdk_window_foreign_new())
-	WindowTypeForeign WindowType = 4
+	WindowTypeForeign
 	// offscreen window (see [Offscreen Windows][OFFSCREEN-WINDOWS]). Since 2.18
-	WindowTypeOffscreen WindowType = 5
+	WindowTypeOffscreen
 	// subsurface: subsurface-based window; This window is visually tied to a
 	// toplevel, and is moved/stacked with it. Currently this window type is
 	// only implemented in Wayland. Since 3.14
-	WindowTypeSubsurface WindowType = 6
+	WindowTypeSubsurface
 )
 
 func marshalWindowType(p uintptr) (interface{}, error) {
@@ -150,9 +150,9 @@ type WindowWindowClass int
 
 const (
 	// InputOutput: window for graphics and events
-	WindowWindowClassInputOutput WindowWindowClass = 0
+	WindowWindowClassInputOutput WindowWindowClass = iota
 	// InputOnly: window for events only
-	WindowWindowClassInputOnly WindowWindowClass = 1
+	WindowWindowClassInputOnly
 )
 
 func marshalWindowWindowClass(p uintptr) (interface{}, error) {

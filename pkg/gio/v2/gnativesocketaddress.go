@@ -66,7 +66,7 @@ func NewNativeSocketAddress(native interface{}, len uint) NativeSocketAddress {
 	var _arg2 C.gsize           // out
 	var _cret *C.GSocketAddress // in
 
-	_arg1 = C.gpointer(box.Assign(native))
+	_arg1 = (C.gpointer)(box.Assign(native))
 	_arg2 = C.gsize(len)
 
 	_cret = C.g_native_socket_address_new(_arg1, _arg2)

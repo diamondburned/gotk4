@@ -31,34 +31,34 @@ type ShortcutType int
 const (
 	// accelerator: the shortcut is a keyboard accelerator. The
 	// GtkShortcutsShortcut:accelerator property will be used.
-	ShortcutTypeAccelerator ShortcutType = 0
+	ShortcutTypeAccelerator ShortcutType = iota
 	// GesturePinch: the shortcut is a pinch gesture. GTK provides an icon and
 	// subtitle.
-	ShortcutTypeGesturePinch ShortcutType = 1
+	ShortcutTypeGesturePinch
 	// GestureStretch: the shortcut is a stretch gesture. GTK provides an icon
 	// and subtitle.
-	ShortcutTypeGestureStretch ShortcutType = 2
+	ShortcutTypeGestureStretch
 	// GestureRotateClockwise: the shortcut is a clockwise rotation gesture. GTK
 	// provides an icon and subtitle.
-	ShortcutTypeGestureRotateClockwise ShortcutType = 3
+	ShortcutTypeGestureRotateClockwise
 	// GestureRotateCounterclockwise: the shortcut is a counterclockwise
 	// rotation gesture. GTK provides an icon and subtitle.
-	ShortcutTypeGestureRotateCounterclockwise ShortcutType = 4
+	ShortcutTypeGestureRotateCounterclockwise
 	// GestureTwoFingerSwipeLeft: the shortcut is a two-finger swipe gesture.
 	// GTK provides an icon and subtitle.
-	ShortcutTypeGestureTwoFingerSwipeLeft ShortcutType = 5
+	ShortcutTypeGestureTwoFingerSwipeLeft
 	// GestureTwoFingerSwipeRight: the shortcut is a two-finger swipe gesture.
 	// GTK provides an icon and subtitle.
-	ShortcutTypeGestureTwoFingerSwipeRight ShortcutType = 6
+	ShortcutTypeGestureTwoFingerSwipeRight
 	// gesture: the shortcut is a gesture. The GtkShortcutsShortcut:icon
 	// property will be used.
-	ShortcutTypeGesture ShortcutType = 7
+	ShortcutTypeGesture
 	// GestureSwipeLeft: the shortcut is a swipe gesture. GTK provides an icon
 	// and subtitle.
-	ShortcutTypeGestureSwipeLeft ShortcutType = 8
+	ShortcutTypeGestureSwipeLeft
 	// GestureSwipeRight: the shortcut is a swipe gesture. GTK provides an icon
 	// and subtitle.
-	ShortcutTypeGestureSwipeRight ShortcutType = 9
+	ShortcutTypeGestureSwipeRight
 )
 
 func marshalShortcutType(p uintptr) (interface{}, error) {

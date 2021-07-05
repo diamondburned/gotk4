@@ -316,7 +316,7 @@ func gotk4_DBusSubtreeDispatchFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 
 	fn := v.(DBusSubtreeDispatchFunc)
 	outUserData, dBusInterfaceVTable := fn(connection, sender, objectPath, interfaceName, node)
 
-	arg5 = *C.gpointer(box.Assign(outUserData))
+	arg5 = (*C.gpointer)(box.Assign(outUserData))
 	cret = (*C.GDBusInterfaceVTable)(unsafe.Pointer(dBusInterfaceVTable))
 
 	return cret

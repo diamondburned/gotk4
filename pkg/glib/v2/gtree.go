@@ -89,8 +89,8 @@ func (t *Tree) Insert(key interface{}, value interface{}) {
 	var _arg2 C.gpointer // out
 
 	_arg0 = (*C.GTree)(unsafe.Pointer(t))
-	_arg1 = C.gpointer(box.Assign(key))
-	_arg2 = C.gpointer(box.Assign(value))
+	_arg1 = (C.gpointer)(box.Assign(key))
+	_arg2 = (C.gpointer)(box.Assign(value))
 
 	C.g_tree_insert(_arg0, _arg1, _arg2)
 }
@@ -104,7 +104,7 @@ func (t *Tree) Lookup(key interface{}) interface{} {
 	var _cret C.gpointer      // in
 
 	_arg0 = (*C.GTree)(unsafe.Pointer(t))
-	_arg1 = C.gconstpointer(box.Assign(key))
+	_arg1 = (C.gconstpointer)(box.Assign(key))
 
 	_cret = C.g_tree_lookup(_arg0, _arg1)
 
@@ -126,7 +126,7 @@ func (t *Tree) LookupExtended(lookupKey interface{}) (origKey interface{}, value
 	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GTree)(unsafe.Pointer(t))
-	_arg1 = C.gconstpointer(box.Assign(lookupKey))
+	_arg1 = (C.gconstpointer)(box.Assign(lookupKey))
 
 	_cret = C.g_tree_lookup_extended(_arg0, _arg1, &_arg2, &_arg3)
 
@@ -196,7 +196,7 @@ func (t *Tree) Remove(key interface{}) bool {
 	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GTree)(unsafe.Pointer(t))
-	_arg1 = C.gconstpointer(box.Assign(key))
+	_arg1 = (C.gconstpointer)(box.Assign(key))
 
 	_cret = C.g_tree_remove(_arg0, _arg1)
 
@@ -217,8 +217,8 @@ func (t *Tree) Replace(key interface{}, value interface{}) {
 	var _arg2 C.gpointer // out
 
 	_arg0 = (*C.GTree)(unsafe.Pointer(t))
-	_arg1 = C.gpointer(box.Assign(key))
-	_arg2 = C.gpointer(box.Assign(value))
+	_arg1 = (C.gpointer)(box.Assign(key))
+	_arg2 = (C.gpointer)(box.Assign(value))
 
 	C.g_tree_replace(_arg0, _arg1, _arg2)
 }
@@ -233,7 +233,7 @@ func (t *Tree) Steal(key interface{}) bool {
 	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GTree)(unsafe.Pointer(t))
-	_arg1 = C.gconstpointer(box.Assign(key))
+	_arg1 = (C.gconstpointer)(box.Assign(key))
 
 	_cret = C.g_tree_steal(_arg0, _arg1)
 

@@ -36,13 +36,13 @@ type ExpanderStyle int
 
 const (
 	// collapsed: the style used for a collapsed subtree.
-	ExpanderStyleCollapsed ExpanderStyle = 0
+	ExpanderStyleCollapsed ExpanderStyle = iota
 	// SemiCollapsed: intermediate style used during animation.
-	ExpanderStyleSemiCollapsed ExpanderStyle = 1
+	ExpanderStyleSemiCollapsed
 	// SemiExpanded: intermediate style used during animation.
-	ExpanderStyleSemiExpanded ExpanderStyle = 2
+	ExpanderStyleSemiExpanded
 	// expanded: the style used for an expanded subtree.
-	ExpanderStyleExpanded ExpanderStyle = 3
+	ExpanderStyleExpanded
 )
 
 func marshalExpanderStyle(p uintptr) (interface{}, error) {

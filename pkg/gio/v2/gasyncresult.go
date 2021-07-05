@@ -192,7 +192,7 @@ func (r asyncResult) IsTagged(sourceTag interface{}) bool {
 	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GAsyncResult)(unsafe.Pointer(r.Native()))
-	_arg1 = C.gpointer(box.Assign(sourceTag))
+	_arg1 = (C.gpointer)(box.Assign(sourceTag))
 
 	_cret = C.g_async_result_is_tagged(_arg0, _arg1)
 

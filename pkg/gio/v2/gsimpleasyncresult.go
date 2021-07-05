@@ -345,7 +345,7 @@ func NewSimpleAsyncResult(sourceObject gextras.Objector, callback AsyncReadyCall
 	_arg1 = (*C.GObject)(unsafe.Pointer(sourceObject.Native()))
 	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg3 = C.gpointer(box.Assign(callback))
-	_arg4 = C.gpointer(box.Assign(sourceTag))
+	_arg4 = (C.gpointer)(box.Assign(sourceTag))
 
 	_cret = C.g_simple_async_result_new(_arg1, _arg2, _arg3, _arg4)
 

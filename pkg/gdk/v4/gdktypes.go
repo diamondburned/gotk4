@@ -39,31 +39,31 @@ type AxisUse int
 
 const (
 	// ignore: the axis is ignored.
-	AxisUseIgnore AxisUse = 0
+	AxisUseIgnore AxisUse = iota
 	// x: the axis is used as the x axis.
-	AxisUseX AxisUse = 1
+	AxisUseX
 	// y: the axis is used as the y axis.
-	AxisUseY AxisUse = 2
+	AxisUseY
 	// DeltaX: the axis is used as the scroll x delta
-	AxisUseDeltaX AxisUse = 3
+	AxisUseDeltaX
 	// DeltaY: the axis is used as the scroll y delta
-	AxisUseDeltaY AxisUse = 4
+	AxisUseDeltaY
 	// pressure: the axis is used for pressure information.
-	AxisUsePressure AxisUse = 5
+	AxisUsePressure
 	// xtilt: the axis is used for x tilt information.
-	AxisUseXtilt AxisUse = 6
+	AxisUseXtilt
 	// ytilt: the axis is used for y tilt information.
-	AxisUseYtilt AxisUse = 7
+	AxisUseYtilt
 	// wheel: the axis is used for wheel information.
-	AxisUseWheel AxisUse = 8
+	AxisUseWheel
 	// distance: the axis is used for pen/tablet distance information
-	AxisUseDistance AxisUse = 9
+	AxisUseDistance
 	// rotation: the axis is used for pen rotation information
-	AxisUseRotation AxisUse = 10
+	AxisUseRotation
 	// slider: the axis is used for pen slider information
-	AxisUseSlider AxisUse = 11
+	AxisUseSlider
 	// last: constant equal to the numerically highest axis value.
-	AxisUseLast AxisUse = 12
+	AxisUseLast
 )
 
 func marshalAxisUse(p uintptr) (interface{}, error) {
@@ -75,15 +75,15 @@ type GLError int
 
 const (
 	// NotAvailable: openGL support is not available
-	GLErrorNotAvailable GLError = 0
+	GLErrorNotAvailable GLError = iota
 	// UnsupportedFormat: the requested visual format is not supported
-	GLErrorUnsupportedFormat GLError = 1
+	GLErrorUnsupportedFormat
 	// UnsupportedProfile: the requested profile is not supported
-	GLErrorUnsupportedProfile GLError = 2
+	GLErrorUnsupportedProfile
 	// CompilationFailed: the shader compilation failed
-	GLErrorCompilationFailed GLError = 3
+	GLErrorCompilationFailed
 	// LinkFailed: the shader linking failed
-	GLErrorLinkFailed GLError = 4
+	GLErrorLinkFailed
 )
 
 func marshalGLError(p uintptr) (interface{}, error) {
@@ -127,9 +127,9 @@ type VulkanError int
 const (
 	// unsupported: vulkan is not supported on this backend or has not been
 	// compiled in.
-	VulkanErrorUnsupported VulkanError = 0
+	VulkanErrorUnsupported VulkanError = iota
 	// NotAvailable: vulkan support is not available on this Surface
-	VulkanErrorNotAvailable VulkanError = 1
+	VulkanErrorNotAvailable
 )
 
 func marshalVulkanError(p uintptr) (interface{}, error) {

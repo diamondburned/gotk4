@@ -27,11 +27,11 @@ type PadActionType int
 
 const (
 	// button: action is triggered by a pad button
-	PadActionTypeButton PadActionType = 0
+	PadActionTypeButton PadActionType = iota
 	// ring: action is triggered by a pad ring
-	PadActionTypeRing PadActionType = 1
+	PadActionTypeRing
 	// strip: action is triggered by a pad strip
-	PadActionTypeStrip PadActionType = 2
+	PadActionTypeStrip
 )
 
 func marshalPadActionType(p uintptr) (interface{}, error) {

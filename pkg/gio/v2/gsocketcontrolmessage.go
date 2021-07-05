@@ -140,7 +140,7 @@ func (m socketControlMessage) SerializeSocketControlMessage(data interface{}) {
 	var _arg1 C.gpointer               // out
 
 	_arg0 = (*C.GSocketControlMessage)(unsafe.Pointer(m.Native()))
-	_arg1 = C.gpointer(box.Assign(data))
+	_arg1 = (C.gpointer)(box.Assign(data))
 
 	C.g_socket_control_message_serialize(_arg0, _arg1)
 }

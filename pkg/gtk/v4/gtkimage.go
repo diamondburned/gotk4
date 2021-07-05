@@ -38,13 +38,13 @@ type ImageType int
 
 const (
 	// empty: there is no image displayed by the widget
-	ImageTypeEmpty ImageType = 0
+	ImageTypeEmpty ImageType = iota
 	// IconName: the widget contains a named icon
-	ImageTypeIconName ImageType = 1
+	ImageTypeIconName
 	// gicon: the widget contains a #GIcon
-	ImageTypeGIcon ImageType = 2
+	ImageTypeGIcon
 	// paintable: the widget contains a Paintable
-	ImageTypePaintable ImageType = 3
+	ImageTypePaintable
 )
 
 func marshalImageType(p uintptr) (interface{}, error) {

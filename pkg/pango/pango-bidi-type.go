@@ -31,43 +31,43 @@ type BidiType int
 
 const (
 	// l: left-to-Right
-	BidiTypeL BidiType = 0
+	BidiTypeL BidiType = iota
 	// lre: left-to-Right Embedding
-	BidiTypeLre BidiType = 1
+	BidiTypeLre
 	// lro: left-to-Right Override
-	BidiTypeLro BidiType = 2
+	BidiTypeLro
 	// r: right-to-Left
-	BidiTypeR BidiType = 3
+	BidiTypeR
 	// al: right-to-Left Arabic
-	BidiTypeAl BidiType = 4
+	BidiTypeAl
 	// rle: right-to-Left Embedding
-	BidiTypeRle BidiType = 5
+	BidiTypeRle
 	// rlo: right-to-Left Override
-	BidiTypeRlo BidiType = 6
+	BidiTypeRlo
 	// pdf: pop Directional Format
-	BidiTypePDF BidiType = 7
+	BidiTypePDF
 	// en: european Number
-	BidiTypeEn BidiType = 8
+	BidiTypeEn
 	// es: european Number Separator
-	BidiTypeES BidiType = 9
+	BidiTypeES
 	// et: european Number Terminator
-	BidiTypeEt BidiType = 10
+	BidiTypeEt
 	// an: arabic Number
-	BidiTypeAn BidiType = 11
+	BidiTypeAn
 	// cs: common Number Separator
-	BidiTypeCs BidiType = 12
+	BidiTypeCs
 	// nsm: nonspacing Mark
-	BidiTypeNsm BidiType = 13
+	BidiTypeNsm
 	// bn: boundary Neutral
-	BidiTypeBn BidiType = 14
+	BidiTypeBn
 	// b: paragraph Separator
-	BidiTypeB BidiType = 15
+	BidiTypeB
 	// s: segment Separator
-	BidiTypeS BidiType = 16
+	BidiTypeS
 	// ws: whitespace
-	BidiTypeWs BidiType = 17
+	BidiTypeWs
 	// on: other Neutrals
-	BidiTypeOn BidiType = 18
+	BidiTypeOn
 )
 
 func marshalBidiType(p uintptr) (interface{}, error) {

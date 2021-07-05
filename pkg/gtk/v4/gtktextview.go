@@ -36,10 +36,10 @@ type TextExtendSelection int
 const (
 	// word selects the current word. It is triggered by a double-click for
 	// example.
-	TextExtendSelectionWord TextExtendSelection = 0
+	TextExtendSelectionWord TextExtendSelection = iota
 	// line selects the current line. It is triggered by a triple-click for
 	// example.
-	TextExtendSelectionLine TextExtendSelection = 1
+	TextExtendSelectionLine
 )
 
 func marshalTextExtendSelection(p uintptr) (interface{}, error) {
@@ -52,9 +52,9 @@ type TextViewLayer int
 
 const (
 	// BelowText: the layer rendered below the text (but above the background).
-	TextViewLayerBelowText TextViewLayer = 0
+	TextViewLayerBelowText TextViewLayer = iota
 	// AboveText: the layer rendered above the text.
-	TextViewLayerAboveText TextViewLayer = 1
+	TextViewLayerAboveText
 )
 
 func marshalTextViewLayer(p uintptr) (interface{}, error) {

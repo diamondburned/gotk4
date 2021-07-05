@@ -909,7 +909,7 @@ func (i fileInfo) SetAttributeFileInfo(attribute string, typ FileAttributeType, 
 	_arg1 = (*C.char)(C.CString(attribute))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GFileAttributeType(typ)
-	_arg3 = C.gpointer(box.Assign(valueP))
+	_arg3 = (C.gpointer)(box.Assign(valueP))
 
 	C.g_file_info_set_attribute(_arg0, _arg1, _arg2, _arg3)
 }

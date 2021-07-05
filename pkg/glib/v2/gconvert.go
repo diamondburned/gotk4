@@ -20,23 +20,23 @@ type ConvertError int
 const (
 	// NoConversion: conversion between the requested character sets is not
 	// supported.
-	ConvertErrorNoConversion ConvertError = 0
+	ConvertErrorNoConversion ConvertError = iota
 	// IllegalSequence: invalid byte sequence in conversion input; or the
 	// character sequence could not be represented in the target character set.
-	ConvertErrorIllegalSequence ConvertError = 1
+	ConvertErrorIllegalSequence
 	// failed: conversion failed for some reason.
-	ConvertErrorFailed ConvertError = 2
+	ConvertErrorFailed
 	// PartialInput: partial character sequence at end of input.
-	ConvertErrorPartialInput ConvertError = 3
+	ConvertErrorPartialInput
 	// BadURI: URI is invalid.
-	ConvertErrorBadURI ConvertError = 4
+	ConvertErrorBadURI
 	// NotAbsolutePath: pathname is not an absolute path.
-	ConvertErrorNotAbsolutePath ConvertError = 5
+	ConvertErrorNotAbsolutePath
 	// NoMemory: no memory available. Since: 2.40
-	ConvertErrorNoMemory ConvertError = 6
+	ConvertErrorNoMemory
 	// EmbeddedNUL: embedded NUL character is present in conversion output where
 	// a NUL-terminated string is expected. Since: 2.56
-	ConvertErrorEmbeddedNUL ConvertError = 7
+	ConvertErrorEmbeddedNUL
 )
 
 // FilenameDisplayBasename returns the display basename for the particular

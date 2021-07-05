@@ -31,26 +31,26 @@ type ScrollType int
 const (
 	// TopLeft: scroll the object vertically and horizontally to bring its top
 	// left corner to the top left corner of the window.
-	ScrollTypeTopLeft ScrollType = 0
+	ScrollTypeTopLeft ScrollType = iota
 	// BottomRight: scroll the object vertically and horizontally to bring its
 	// bottom right corner to the bottom right corner of the window.
-	ScrollTypeBottomRight ScrollType = 1
+	ScrollTypeBottomRight
 	// TopEdge: scroll the object vertically to bring its top edge to the top
 	// edge of the window.
-	ScrollTypeTopEdge ScrollType = 2
+	ScrollTypeTopEdge
 	// BottomEdge: scroll the object vertically to bring its bottom edge to the
 	// bottom edge of the window.
-	ScrollTypeBottomEdge ScrollType = 3
+	ScrollTypeBottomEdge
 	// LeftEdge: scroll the object vertically and horizontally to bring its left
 	// edge to the left edge of the window.
-	ScrollTypeLeftEdge ScrollType = 4
+	ScrollTypeLeftEdge
 	// RightEdge: scroll the object vertically and horizontally to bring its
 	// right edge to the right edge of the window.
-	ScrollTypeRightEdge ScrollType = 5
+	ScrollTypeRightEdge
 	// anywhere: scroll the object vertically and horizontally so that as much
 	// as possible of the object becomes visible. The exact placement is
 	// determined by the application.
-	ScrollTypeAnywhere ScrollType = 6
+	ScrollTypeAnywhere
 )
 
 func marshalScrollType(p uintptr) (interface{}, error) {

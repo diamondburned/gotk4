@@ -41,28 +41,28 @@ type AxisUse int
 
 const (
 	// ignore: the axis is ignored.
-	AxisUseIgnore AxisUse = 0
+	AxisUseIgnore AxisUse = iota
 	// x: the axis is used as the x axis.
-	AxisUseX AxisUse = 1
+	AxisUseX
 	// y: the axis is used as the y axis.
-	AxisUseY AxisUse = 2
+	AxisUseY
 	// pressure: the axis is used for pressure information.
-	AxisUsePressure AxisUse = 3
+	AxisUsePressure
 	// xtilt: the axis is used for x tilt information.
-	AxisUseXtilt AxisUse = 4
+	AxisUseXtilt
 	// ytilt: the axis is used for y tilt information.
-	AxisUseYtilt AxisUse = 5
+	AxisUseYtilt
 	// wheel: the axis is used for wheel information.
-	AxisUseWheel AxisUse = 6
+	AxisUseWheel
 	// distance: the axis is used for pen/tablet distance information. (Since:
 	// 3.22)
-	AxisUseDistance AxisUse = 7
+	AxisUseDistance
 	// rotation: the axis is used for pen rotation information. (Since: 3.22)
-	AxisUseRotation AxisUse = 8
+	AxisUseRotation
 	// slider: the axis is used for pen slider information. (Since: 3.22)
-	AxisUseSlider AxisUse = 9
+	AxisUseSlider
 	// last: constant equal to the numerically highest axis value.
-	AxisUseLast AxisUse = 10
+	AxisUseLast
 )
 
 func marshalAxisUse(p uintptr) (interface{}, error) {
@@ -77,11 +77,11 @@ const (
 	// LsbFirst: the values are stored with the least-significant byte first.
 	// For instance, the 32-bit value 0xffeecc would be stored in memory as
 	// 0xcc, 0xee, 0xff, 0x00.
-	ByteOrderLsbFirst ByteOrder = 0
+	ByteOrderLsbFirst ByteOrder = iota
 	// MsbFirst: the values are stored with the most-significant byte first. For
 	// instance, the 32-bit value 0xffeecc would be stored in memory as 0x00,
 	// 0xff, 0xee, 0xcc.
-	ByteOrderMsbFirst ByteOrder = 1
+	ByteOrderMsbFirst
 )
 
 func marshalByteOrder(p uintptr) (interface{}, error) {
@@ -93,11 +93,11 @@ type GLError int
 
 const (
 	// NotAvailable: openGL support is not available
-	GLErrorNotAvailable GLError = 0
+	GLErrorNotAvailable GLError = iota
 	// UnsupportedFormat: the requested visual format is not supported
-	GLErrorUnsupportedFormat GLError = 1
+	GLErrorUnsupportedFormat
 	// UnsupportedProfile: the requested profile is not supported
-	GLErrorUnsupportedProfile GLError = 2
+	GLErrorUnsupportedProfile
 )
 
 func marshalGLError(p uintptr) (interface{}, error) {
@@ -109,11 +109,11 @@ type GrabOwnership int
 
 const (
 	// none: all other devices’ events are allowed.
-	GrabOwnershipNone GrabOwnership = 0
+	GrabOwnershipNone GrabOwnership = iota
 	// window: other devices’ events are blocked for the grab window.
-	GrabOwnershipWindow GrabOwnership = 1
+	GrabOwnershipWindow
 	// application: other devices’ events are blocked for the whole application.
-	GrabOwnershipApplication GrabOwnership = 2
+	GrabOwnershipApplication
 )
 
 func marshalGrabOwnership(p uintptr) (interface{}, error) {
@@ -127,18 +127,18 @@ type GrabStatus int
 
 const (
 	// success: the resource was successfully grabbed.
-	GrabStatusSuccess GrabStatus = 0
+	GrabStatusSuccess GrabStatus = iota
 	// AlreadyGrabbed: the resource is actively grabbed by another client.
-	GrabStatusAlreadyGrabbed GrabStatus = 1
+	GrabStatusAlreadyGrabbed
 	// InvalidTime: the resource was grabbed more recently than the specified
 	// time.
-	GrabStatusInvalidTime GrabStatus = 2
+	GrabStatusInvalidTime
 	// NotViewable: the grab window or the @confine_to window are not viewable.
-	GrabStatusNotViewable GrabStatus = 3
+	GrabStatusNotViewable
 	// frozen: the resource is frozen by an active grab of another client.
-	GrabStatusFrozen GrabStatus = 4
+	GrabStatusFrozen
 	// failed: the grab failed for some other reason. Since 3.16
-	GrabStatusFailed GrabStatus = 5
+	GrabStatusFailed
 )
 
 func marshalGrabStatus(p uintptr) (interface{}, error) {
@@ -156,30 +156,30 @@ type ModifierIntent int
 const (
 	// PrimaryAccelerator: the primary modifier used to invoke menu
 	// accelerators.
-	ModifierIntentPrimaryAccelerator ModifierIntent = 0
+	ModifierIntentPrimaryAccelerator ModifierIntent = iota
 	// ContextMenu: the modifier used to invoke context menus. Note that mouse
 	// button 3 always triggers context menus. When this modifier is not 0, it
 	// additionally triggers context menus when used with mouse button 1.
-	ModifierIntentContextMenu ModifierIntent = 1
+	ModifierIntentContextMenu
 	// ExtendSelection: the modifier used to extend selections using
 	// `modifier`-click or `modifier`-cursor-key
-	ModifierIntentExtendSelection ModifierIntent = 2
+	ModifierIntentExtendSelection
 	// ModifySelection: the modifier used to modify selections, which in most
 	// cases means toggling the clicked item into or out of the selection.
-	ModifierIntentModifySelection ModifierIntent = 3
+	ModifierIntentModifySelection
 	// NoTextInput: when any of these modifiers is pressed, the key event cannot
 	// produce a symbol directly. This is meant to be used for input methods,
 	// and for use cases like typeahead search.
-	ModifierIntentNoTextInput ModifierIntent = 4
+	ModifierIntentNoTextInput
 	// ShiftGroup: the modifier that switches between keyboard groups (AltGr on
 	// X11/Windows and Option/Alt on OS X).
-	ModifierIntentShiftGroup ModifierIntent = 5
+	ModifierIntentShiftGroup
 	// DefaultModMask: the set of modifier masks accepted as modifiers in
 	// accelerators. Needed because Command is mapped to MOD2 on OSX, which is
 	// widely used, but on X11 MOD2 is NumLock and using that for a mod key is
 	// problematic at best. Ref:
 	// https://bugzilla.gnome.org/show_bug.cgi?id=736125.
-	ModifierIntentDefaultModMask ModifierIntent = 6
+	ModifierIntentDefaultModMask
 )
 
 func marshalModifierIntent(p uintptr) (interface{}, error) {
@@ -198,35 +198,35 @@ type WindowTypeHint int
 
 const (
 	// normal: normal toplevel window.
-	WindowTypeHintNormal WindowTypeHint = 0
+	WindowTypeHintNormal WindowTypeHint = iota
 	// dialog: dialog window.
-	WindowTypeHintDialog WindowTypeHint = 1
+	WindowTypeHintDialog
 	// menu: window used to implement a menu; GTK+ uses this hint only for
 	// torn-off menus, see TearoffMenuItem.
-	WindowTypeHintMenu WindowTypeHint = 2
+	WindowTypeHintMenu
 	// toolbar: window used to implement toolbars.
-	WindowTypeHintToolbar WindowTypeHint = 3
+	WindowTypeHintToolbar
 	// splashscreen: window used to display a splash screen during application
 	// startup.
-	WindowTypeHintSplashscreen WindowTypeHint = 4
+	WindowTypeHintSplashscreen
 	// utility: utility windows which are not detached toolbars or dialogs.
-	WindowTypeHintUtility WindowTypeHint = 5
+	WindowTypeHintUtility
 	// dock: used for creating dock or panel windows.
-	WindowTypeHintDock WindowTypeHint = 6
+	WindowTypeHintDock
 	// desktop: used for creating the desktop background window.
-	WindowTypeHintDesktop WindowTypeHint = 7
+	WindowTypeHintDesktop
 	// DropdownMenu: menu that belongs to a menubar.
-	WindowTypeHintDropdownMenu WindowTypeHint = 8
+	WindowTypeHintDropdownMenu
 	// PopupMenu: menu that does not belong to a menubar, e.g. a context menu.
-	WindowTypeHintPopupMenu WindowTypeHint = 9
+	WindowTypeHintPopupMenu
 	// tooltip: tooltip.
-	WindowTypeHintTooltip WindowTypeHint = 10
+	WindowTypeHintTooltip
 	// notification - typically a “bubble” that belongs to a status icon.
-	WindowTypeHintNotification WindowTypeHint = 11
+	WindowTypeHintNotification
 	// combo: popup from a combo box.
-	WindowTypeHintCombo WindowTypeHint = 12
+	WindowTypeHintCombo
 	// dnd: window that is used to implement a DND cursor.
-	WindowTypeHintDnd WindowTypeHint = 13
+	WindowTypeHintDnd
 )
 
 func marshalWindowTypeHint(p uintptr) (interface{}, error) {

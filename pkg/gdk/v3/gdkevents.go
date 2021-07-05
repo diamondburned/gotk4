@@ -41,28 +41,28 @@ type CrossingMode int
 
 const (
 	// normal: crossing because of pointer motion.
-	CrossingModeNormal CrossingMode = 0
+	CrossingModeNormal CrossingMode = iota
 	// grab: crossing because a grab is activated.
-	CrossingModeGrab CrossingMode = 1
+	CrossingModeGrab
 	// ungrab: crossing because a grab is deactivated.
-	CrossingModeUngrab CrossingMode = 2
+	CrossingModeUngrab
 	// GTKGrab: crossing because a GTK+ grab is activated.
-	CrossingModeGTKGrab CrossingMode = 3
+	CrossingModeGTKGrab
 	// GTKUngrab: crossing because a GTK+ grab is deactivated.
-	CrossingModeGTKUngrab CrossingMode = 4
+	CrossingModeGTKUngrab
 	// StateChanged: crossing because a GTK+ widget changed state (e.g.
 	// sensitivity).
-	CrossingModeStateChanged CrossingMode = 5
+	CrossingModeStateChanged
 	// TouchBegin: crossing because a touch sequence has begun, this event is
 	// synthetic as the pointer might have not left the window.
-	CrossingModeTouchBegin CrossingMode = 6
+	CrossingModeTouchBegin
 	// TouchEnd: crossing because a touch sequence has ended, this event is
 	// synthetic as the pointer might have not left the window.
-	CrossingModeTouchEnd CrossingMode = 7
+	CrossingModeTouchEnd
 	// DeviceSwitch: crossing because of a device switch (i.e. a mouse taking
 	// control of the pointer after a touch device), this event is synthetic as
 	// the pointer didn’t leave the window.
-	CrossingModeDeviceSwitch CrossingMode = 8
+	CrossingModeDeviceSwitch
 )
 
 func marshalCrossingMode(p uintptr) (interface{}, error) {
@@ -223,12 +223,12 @@ type FilterReturn int
 
 const (
 	// continue: event not handled, continue processing.
-	FilterReturnContinue FilterReturn = 0
+	FilterReturnContinue FilterReturn = iota
 	// translate: native event translated into a GDK event and stored in the
 	// `event` structure that was passed in.
-	FilterReturnTranslate FilterReturn = 1
+	FilterReturnTranslate
 	// remove: event handled, terminate processing.
-	FilterReturnRemove FilterReturn = 2
+	FilterReturnRemove
 )
 
 func marshalFilterReturn(p uintptr) (interface{}, error) {
@@ -244,22 +244,22 @@ type NotifyType int
 const (
 	// ancestor: the window is entered from an ancestor or left towards an
 	// ancestor.
-	NotifyTypeAncestor NotifyType = 0
+	NotifyTypeAncestor NotifyType = iota
 	// virtual: the pointer moves between an ancestor and an inferior of the
 	// window.
-	NotifyTypeVirtual NotifyType = 1
+	NotifyTypeVirtual
 	// inferior: the window is entered from an inferior or left towards an
 	// inferior.
-	NotifyTypeInferior NotifyType = 2
+	NotifyTypeInferior
 	// nonlinear: the window is entered from or left towards a window which is
 	// neither an ancestor nor an inferior.
-	NotifyTypeNonlinear NotifyType = 3
+	NotifyTypeNonlinear
 	// NonlinearVirtual: the pointer moves between two windows which are not
 	// ancestors of each other and the window is part of the ancestor chain
 	// between one of these windows and their least common ancestor.
-	NotifyTypeNonlinearVirtual NotifyType = 4
+	NotifyTypeNonlinearVirtual
 	// unknown type of enter/leave event occurred.
-	NotifyTypeUnknown NotifyType = 5
+	NotifyTypeUnknown
 )
 
 func marshalNotifyType(p uintptr) (interface{}, error) {
@@ -271,11 +271,11 @@ type OwnerChange int
 
 const (
 	// NewOwner: some other app claimed the ownership
-	OwnerChangeNewOwner OwnerChange = 0
+	OwnerChangeNewOwner OwnerChange = iota
 	// destroy: the window was destroyed
-	OwnerChangeDestroy OwnerChange = 1
+	OwnerChangeDestroy
 	// close: the client was closed
-	OwnerChangeClose OwnerChange = 2
+	OwnerChangeClose
 )
 
 func marshalOwnerChange(p uintptr) (interface{}, error) {
@@ -287,9 +287,9 @@ type PropertyState int
 
 const (
 	// NewValue: the property value was changed.
-	PropertyStateNewValue PropertyState = 0
+	PropertyStateNewValue PropertyState = iota
 	// delete: the property was deleted.
-	PropertyStateDelete PropertyState = 1
+	PropertyStateDelete
 )
 
 func marshalPropertyState(p uintptr) (interface{}, error) {
@@ -301,16 +301,16 @@ type ScrollDirection int
 
 const (
 	// up: the window is scrolled up.
-	ScrollDirectionUp ScrollDirection = 0
+	ScrollDirectionUp ScrollDirection = iota
 	// down: the window is scrolled down.
-	ScrollDirectionDown ScrollDirection = 1
+	ScrollDirectionDown
 	// left: the window is scrolled to the left.
-	ScrollDirectionLeft ScrollDirection = 2
+	ScrollDirectionLeft
 	// right: the window is scrolled to the right.
-	ScrollDirectionRight ScrollDirection = 3
+	ScrollDirectionRight
 	// smooth: the scrolling is determined by the delta values in EventScroll.
 	// See gdk_event_get_scroll_deltas(). Since: 3.4
-	ScrollDirectionSmooth ScrollDirection = 4
+	ScrollDirectionSmooth
 )
 
 func marshalScrollDirection(p uintptr) (interface{}, error) {
@@ -323,11 +323,11 @@ type SettingAction int
 
 const (
 	// new: setting was added.
-	SettingActionNew SettingAction = 0
+	SettingActionNew SettingAction = iota
 	// changed: setting was changed.
-	SettingActionChanged SettingAction = 1
+	SettingActionChanged
 	// deleted: setting was deleted.
-	SettingActionDeleted SettingAction = 2
+	SettingActionDeleted
 )
 
 func marshalSettingAction(p uintptr) (interface{}, error) {
@@ -356,13 +356,13 @@ type TouchpadGesturePhase int
 
 const (
 	// begin: the gesture has begun.
-	TouchpadGesturePhaseBegin TouchpadGesturePhase = 0
+	TouchpadGesturePhaseBegin TouchpadGesturePhase = iota
 	// update: the gesture has been updated.
-	TouchpadGesturePhaseUpdate TouchpadGesturePhase = 1
+	TouchpadGesturePhaseUpdate
 	// end: the gesture was finished, changes should be permanently applied.
-	TouchpadGesturePhaseEnd TouchpadGesturePhase = 2
+	TouchpadGesturePhaseEnd
 	// cancel: the gesture was cancelled, all changes should be undone.
-	TouchpadGesturePhaseCancel TouchpadGesturePhase = 3
+	TouchpadGesturePhaseCancel
 )
 
 func marshalTouchpadGesturePhase(p uintptr) (interface{}, error) {
@@ -375,11 +375,11 @@ type VisibilityState int
 
 const (
 	// unobscured: the window is completely visible.
-	VisibilityStateUnobscured VisibilityState = 0
+	VisibilityStateUnobscured VisibilityState = iota
 	// partial: the window is partially visible.
-	VisibilityStatePartial VisibilityState = 1
+	VisibilityStatePartial
 	// FullyObscured: the window is not visible at all.
-	VisibilityStateFullyObscured VisibilityState = 2
+	VisibilityStateFullyObscured
 )
 
 func marshalVisibilityState(p uintptr) (interface{}, error) {

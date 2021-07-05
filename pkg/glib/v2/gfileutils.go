@@ -32,85 +32,85 @@ type FileError int
 const (
 	// exist: operation not permitted; only the owner of the file (or other
 	// resource) or processes with special privileges can perform the operation.
-	FileErrorExist FileError = 0
+	FileErrorExist FileError = iota
 	// isdir: file is a directory; you cannot open a directory for writing, or
 	// create or remove hard links to it.
-	FileErrorIsdir FileError = 1
+	FileErrorIsdir
 	// acces: permission denied; the file permissions do not allow the attempted
 	// operation.
-	FileErrorAcces FileError = 2
+	FileErrorAcces
 	// nametoolong: filename too long.
-	FileErrorNametoolong FileError = 3
+	FileErrorNametoolong
 	// noent: no such file or directory. This is a "file doesn't exist" error
 	// for ordinary files that are referenced in contexts where they are
 	// expected to already exist.
-	FileErrorNoent FileError = 4
+	FileErrorNoent
 	// notdir: file that isn't a directory was specified when a directory is
 	// required.
-	FileErrorNotdir FileError = 5
+	FileErrorNotdir
 	// nxio: no such device or address. The system tried to use the device
 	// represented by a file you specified, and it couldn't find the device.
 	// This can mean that the device file was installed incorrectly, or that the
 	// physical device is missing or not correctly attached to the computer.
-	FileErrorNxio FileError = 6
+	FileErrorNxio
 	// nodev: the underlying file system of the specified file does not support
 	// memory mapping.
-	FileErrorNodev FileError = 7
+	FileErrorNodev
 	// rofs: the directory containing the new link can't be modified because
 	// it's on a read-only file system.
-	FileErrorRofs FileError = 8
+	FileErrorRofs
 	// txtbsy: text file busy.
-	FileErrorTxtbsy FileError = 9
+	FileErrorTxtbsy
 	// fault: you passed in a pointer to bad memory. (GLib won't reliably return
 	// this, don't pass in pointers to bad memory.)
-	FileErrorFault FileError = 10
+	FileErrorFault
 	// loop: too many levels of symbolic links were encountered in looking up a
 	// file name. This often indicates a cycle of symbolic links.
-	FileErrorLoop FileError = 11
+	FileErrorLoop
 	// nospc: no space left on device; write operation on a file failed because
 	// the disk is full.
-	FileErrorNospc FileError = 12
+	FileErrorNospc
 	// nomem: no memory available. The system cannot allocate more virtual
 	// memory because its capacity is full.
-	FileErrorNOMEM FileError = 13
+	FileErrorNOMEM
 	// mfile: the current process has too many files open and can't open any
 	// more. Duplicate descriptors do count toward this limit.
-	FileErrorMfile FileError = 14
+	FileErrorMfile
 	// nfile: there are too many distinct file openings in the entire system.
-	FileErrorNfile FileError = 15
+	FileErrorNfile
 	// badf: bad file descriptor; for example, I/O on a descriptor that has been
 	// closed or reading from a descriptor open only for writing (or vice
 	// versa).
-	FileErrorBadf FileError = 16
+	FileErrorBadf
 	// inval: invalid argument. This is used to indicate various kinds of
 	// problems with passing the wrong argument to a library function.
-	FileErrorInval FileError = 17
+	FileErrorInval
 	// pipe: broken pipe; there is no process reading from the other end of a
 	// pipe. Every library function that returns this error code also generates
 	// a 'SIGPIPE' signal; this signal terminates the program if not handled or
 	// blocked. Thus, your program will never actually see this code unless it
 	// has handled or blocked 'SIGPIPE'.
-	FileErrorPipe FileError = 18
+	FileErrorPipe
 	// again: resource temporarily unavailable; the call might work if you try
 	// again later.
-	FileErrorAgain FileError = 19
+	FileErrorAgain
 	// intr: interrupted function call; an asynchronous signal occurred and
 	// prevented completion of the call. When this happens, you should try the
 	// call again.
-	FileErrorIntr FileError = 20
+	FileErrorIntr
 	// io: input/output error; usually used for physical read or write errors.
 	// i.e. the disk or other physical device hardware is returning errors.
-	FileErrorIO FileError = 21
+	FileErrorIO
 	// perm: operation not permitted; only the owner of the file (or other
 	// resource) or processes with special privileges can perform the operation.
-	FileErrorPerm FileError = 22
+	FileErrorPerm
 	// nosys: function not implemented; this indicates that the system is
 	// missing some functionality.
-	FileErrorNosys FileError = 23
+	FileErrorNosys
 	// failed does not correspond to a UNIX error code; this is the standard
 	// "failed for unspecified reason" error code present in all #GError error
 	// code enumerations. Returned if no specific code applies.
-	FileErrorFailed FileError = 24
+	FileErrorFailed
 )
 
 // FileSetContentsFlags flags to pass to g_file_set_contents_full() to affect

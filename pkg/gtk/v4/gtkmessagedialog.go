@@ -35,17 +35,17 @@ type ButtonsType int
 
 const (
 	// none: no buttons at all
-	ButtonsTypeNone ButtonsType = 0
+	ButtonsTypeNone ButtonsType = iota
 	// ok: OK button
-	ButtonsTypeOk ButtonsType = 1
+	ButtonsTypeOk
 	// close: close button
-	ButtonsTypeClose ButtonsType = 2
+	ButtonsTypeClose
 	// cancel: cancel button
-	ButtonsTypeCancel ButtonsType = 3
+	ButtonsTypeCancel
 	// YesNo yes and No buttons
-	ButtonsTypeYesNo ButtonsType = 4
+	ButtonsTypeYesNo
 	// OkCancel: OK and Cancel buttons
-	ButtonsTypeOkCancel ButtonsType = 5
+	ButtonsTypeOkCancel
 )
 
 func marshalButtonsType(p uintptr) (interface{}, error) {

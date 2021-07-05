@@ -33,12 +33,12 @@ type DeviceType int
 const (
 	// master: device is a master (or virtual) device. There will be an
 	// associated focus indicator on the screen.
-	DeviceTypeMaster DeviceType = 0
+	DeviceTypeMaster DeviceType = iota
 	// slave: device is a slave (or physical) device.
-	DeviceTypeSlave DeviceType = 1
+	DeviceTypeSlave
 	// floating: device is a physical device, currently not attached to any
 	// virtual device.
-	DeviceTypeFloating DeviceType = 2
+	DeviceTypeFloating
 )
 
 func marshalDeviceType(p uintptr) (interface{}, error) {
@@ -50,15 +50,15 @@ type InputMode int
 
 const (
 	// disabled: the device is disabled and will not report any events.
-	InputModeDisabled InputMode = 0
+	InputModeDisabled InputMode = iota
 	// screen: the device is enabled. The device’s coordinate space maps to the
 	// entire screen.
-	InputModeScreen InputMode = 1
+	InputModeScreen
 	// window: the device is enabled. The device’s coordinate space is mapped to
 	// a single window. The manner in which this window is chosen is undefined,
 	// but it will typically be the same way in which the focus window for key
 	// events is determined.
-	InputModeWindow InputMode = 2
+	InputModeWindow
 )
 
 func marshalInputMode(p uintptr) (interface{}, error) {
@@ -72,28 +72,28 @@ type InputSource int
 const (
 	// mouse: the device is a mouse. (This will be reported for the core
 	// pointer, even if it is something else, such as a trackball.)
-	InputSourceMouse InputSource = 0
+	InputSourceMouse InputSource = iota
 	// pen: the device is a stylus of a graphics tablet or similar device.
-	InputSourcePen InputSource = 1
+	InputSourcePen
 	// eraser: the device is an eraser. Typically, this would be the other end
 	// of a stylus on a graphics tablet.
-	InputSourceEraser InputSource = 2
+	InputSourceEraser
 	// cursor: the device is a graphics tablet “puck” or similar device.
-	InputSourceCursor InputSource = 3
+	InputSourceCursor
 	// keyboard: the device is a keyboard.
-	InputSourceKeyboard InputSource = 4
+	InputSourceKeyboard
 	// touchscreen: the device is a direct-input touch device, such as a
 	// touchscreen or tablet. This device type has been added in 3.4.
-	InputSourceTouchscreen InputSource = 5
+	InputSourceTouchscreen
 	// touchpad: the device is an indirect touch device, such as a touchpad.
 	// This device type has been added in 3.4.
-	InputSourceTouchpad InputSource = 6
+	InputSourceTouchpad
 	// trackpoint: the device is a trackpoint. This device type has been added
 	// in 3.22
-	InputSourceTrackpoint InputSource = 7
+	InputSourceTrackpoint
 	// TabletPad: the device is a "pad", a collection of buttons, rings and
 	// strips found in drawing tablets. This device type has been added in 3.22.
-	InputSourceTabletPad InputSource = 8
+	InputSourceTabletPad
 )
 
 func marshalInputSource(p uintptr) (interface{}, error) {

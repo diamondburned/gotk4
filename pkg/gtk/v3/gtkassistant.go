@@ -41,24 +41,24 @@ type AssistantPageType int
 const (
 	// content: the page has regular contents. Both the Back and forward buttons
 	// will be shown.
-	AssistantPageTypeContent AssistantPageType = 0
+	AssistantPageTypeContent AssistantPageType = iota
 	// intro: the page contains an introduction to the assistant task. Only the
 	// Forward button will be shown if there is a next page.
-	AssistantPageTypeIntro AssistantPageType = 1
+	AssistantPageTypeIntro
 	// confirm: the page lets the user confirm or deny the changes. The Back and
 	// Apply buttons will be shown.
-	AssistantPageTypeConfirm AssistantPageType = 2
+	AssistantPageTypeConfirm
 	// summary: the page informs the user of the changes done. Only the Close
 	// button will be shown.
-	AssistantPageTypeSummary AssistantPageType = 3
+	AssistantPageTypeSummary
 	// progress: used for tasks that take a long time to complete, blocks the
 	// assistant until the page is marked as complete. Only the back button will
 	// be shown.
-	AssistantPageTypeProgress AssistantPageType = 4
+	AssistantPageTypeProgress
 	// custom: used for when other page types are not appropriate. No buttons
 	// will be shown, and the application must add its own buttons through
 	// gtk_assistant_add_action_widget().
-	AssistantPageTypeCustom AssistantPageType = 5
+	AssistantPageTypeCustom
 )
 
 func marshalAssistantPageType(p uintptr) (interface{}, error) {

@@ -35,16 +35,16 @@ type FileChooserAction int
 const (
 	// open indicates open mode. The file chooser will only let the user pick an
 	// existing file.
-	FileChooserActionOpen FileChooserAction = 0
+	FileChooserActionOpen FileChooserAction = iota
 	// save indicates save mode. The file chooser will let the user pick an
 	// existing file, or type in a new filename.
-	FileChooserActionSave FileChooserAction = 1
+	FileChooserActionSave
 	// SelectFolder indicates an Open mode for selecting folders. The file
 	// chooser will let the user pick an existing folder.
-	FileChooserActionSelectFolder FileChooserAction = 2
+	FileChooserActionSelectFolder
 	// CreateFolder indicates a mode for creating a new folder. The file chooser
 	// will let the user name an existing or new folder.
-	FileChooserActionCreateFolder FileChooserAction = 3
+	FileChooserActionCreateFolder
 )
 
 func marshalFileChooserAction(p uintptr) (interface{}, error) {
@@ -60,13 +60,13 @@ type FileChooserConfirmation int
 const (
 	// confirm: the file chooser will present its stock dialog to confirm about
 	// overwriting an existing file.
-	FileChooserConfirmationConfirm FileChooserConfirmation = 0
+	FileChooserConfirmationConfirm FileChooserConfirmation = iota
 	// AcceptFilename: the file chooser will terminate and accept the user’s
 	// choice of a file name.
-	FileChooserConfirmationAcceptFilename FileChooserConfirmation = 1
+	FileChooserConfirmationAcceptFilename
 	// SelectAgain: the file chooser will continue running, so as to let the
 	// user select another file name.
-	FileChooserConfirmationSelectAgain FileChooserConfirmation = 2
+	FileChooserConfirmationSelectAgain
 )
 
 func marshalFileChooserConfirmation(p uintptr) (interface{}, error) {
@@ -79,14 +79,14 @@ type FileChooserError int
 
 const (
 	// nonexistent indicates that a file does not exist.
-	FileChooserErrorNonexistent FileChooserError = 0
+	FileChooserErrorNonexistent FileChooserError = iota
 	// BadFilename indicates a malformed filename.
-	FileChooserErrorBadFilename FileChooserError = 1
+	FileChooserErrorBadFilename
 	// AlreadyExists indicates a duplicate path (e.g. when adding a bookmark).
-	FileChooserErrorAlreadyExists FileChooserError = 2
+	FileChooserErrorAlreadyExists
 	// IncompleteHostname indicates an incomplete hostname (e.g. "http://foo"
 	// without a slash after that).
-	FileChooserErrorIncompleteHostname FileChooserError = 3
+	FileChooserErrorIncompleteHostname
 )
 
 func marshalFileChooserError(p uintptr) (interface{}, error) {

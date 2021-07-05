@@ -31,21 +31,21 @@ type InputSource int
 const (
 	// mouse: the device is a mouse. (This will be reported for the core
 	// pointer, even if it is something else, such as a trackball.)
-	InputSourceMouse InputSource = 0
+	InputSourceMouse InputSource = iota
 	// pen: the device is a stylus of a graphics tablet or similar device.
-	InputSourcePen InputSource = 1
+	InputSourcePen
 	// keyboard: the device is a keyboard.
-	InputSourceKeyboard InputSource = 2
+	InputSourceKeyboard
 	// touchscreen: the device is a direct-input touch device, such as a
 	// touchscreen or tablet
-	InputSourceTouchscreen InputSource = 3
+	InputSourceTouchscreen
 	// touchpad: the device is an indirect touch device, such as a touchpad
-	InputSourceTouchpad InputSource = 4
+	InputSourceTouchpad
 	// trackpoint: the device is a trackpoint
-	InputSourceTrackpoint InputSource = 5
+	InputSourceTrackpoint
 	// TabletPad: the device is a "pad", a collection of buttons, rings and
 	// strips found in drawing tablets
-	InputSourceTabletPad InputSource = 6
+	InputSourceTabletPad
 )
 
 func marshalInputSource(p uintptr) (interface{}, error) {

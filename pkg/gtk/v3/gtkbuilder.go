@@ -34,35 +34,35 @@ type BuilderError int
 const (
 	// InvalidTypeFunction: type-func attribute didn’t name a function that
 	// returns a #GType.
-	BuilderErrorInvalidTypeFunction BuilderError = 0
+	BuilderErrorInvalidTypeFunction BuilderError = iota
 	// UnhandledTag: the input contained a tag that Builder can’t handle.
-	BuilderErrorUnhandledTag BuilderError = 1
+	BuilderErrorUnhandledTag
 	// MissingAttribute: attribute that is required by Builder was missing.
-	BuilderErrorMissingAttribute BuilderError = 2
+	BuilderErrorMissingAttribute
 	// InvalidAttribute found an attribute that it doesn’t understand.
-	BuilderErrorInvalidAttribute BuilderError = 3
+	BuilderErrorInvalidAttribute
 	// InvalidTag found a tag that it doesn’t understand.
-	BuilderErrorInvalidTag BuilderError = 4
+	BuilderErrorInvalidTag
 	// MissingPropertyValue: required property value was missing.
-	BuilderErrorMissingPropertyValue BuilderError = 5
+	BuilderErrorMissingPropertyValue
 	// InvalidValue couldn’t parse some attribute value.
-	BuilderErrorInvalidValue BuilderError = 6
+	BuilderErrorInvalidValue
 	// VersionMismatch: the input file requires a newer version of GTK+.
-	BuilderErrorVersionMismatch BuilderError = 7
+	BuilderErrorVersionMismatch
 	// DuplicateID: object id occurred twice.
-	BuilderErrorDuplicateID BuilderError = 8
+	BuilderErrorDuplicateID
 	// ObjectTypeRefused: specified object type is of the same type or derived
 	// from the type of the composite class being extended with builder XML.
-	BuilderErrorObjectTypeRefused BuilderError = 9
+	BuilderErrorObjectTypeRefused
 	// TemplateMismatch: the wrong type was specified in a composite class’s
 	// template XML
-	BuilderErrorTemplateMismatch BuilderError = 10
+	BuilderErrorTemplateMismatch
 	// InvalidProperty: the specified property is unknown for the object class.
-	BuilderErrorInvalidProperty BuilderError = 11
+	BuilderErrorInvalidProperty
 	// InvalidSignal: the specified signal is unknown for the object class.
-	BuilderErrorInvalidSignal BuilderError = 12
+	BuilderErrorInvalidSignal
 	// InvalidID: object id is unknown
-	BuilderErrorInvalidID BuilderError = 13
+	BuilderErrorInvalidID
 )
 
 func marshalBuilderError(p uintptr) (interface{}, error) {
@@ -661,7 +661,7 @@ func (b builder) ConnectSignalsBuilder(userData interface{}) {
 	var _arg1 C.gpointer    // out
 
 	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
-	_arg1 = C.gpointer(box.Assign(userData))
+	_arg1 = (C.gpointer)(box.Assign(userData))
 
 	C.gtk_builder_connect_signals(_arg0, _arg1)
 }

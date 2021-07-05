@@ -16,15 +16,15 @@ type CSSParserError int
 
 const (
 	// failed: unknown failure.
-	CSSParserErrorFailed CSSParserError = 0
+	CSSParserErrorFailed CSSParserError = iota
 	// syntax: the given text does not form valid syntax
-	CSSParserErrorSyntax CSSParserError = 1
+	CSSParserErrorSyntax
 	// import: failed to import a resource
-	CSSParserErrorImport CSSParserError = 2
+	CSSParserErrorImport
 	// name: the given name has not been defined
-	CSSParserErrorName CSSParserError = 3
+	CSSParserErrorName
 	// UnknownValue: the given value is not correct
-	CSSParserErrorUnknownValue CSSParserError = 4
+	CSSParserErrorUnknownValue
 )
 
 // CSSParserWarning warnings that can occur while parsing CSS.
@@ -36,9 +36,9 @@ type CSSParserWarning int
 const (
 	// deprecated: the given construct is deprecated and will be removed in a
 	// future version
-	CSSParserWarningDeprecated CSSParserWarning = 0
+	CSSParserWarningDeprecated CSSParserWarning = iota
 	// syntax construct was used that should be avoided
-	CSSParserWarningSyntax CSSParserWarning = 1
+	CSSParserWarningSyntax
 	// unimplemented: feature is not implemented
-	CSSParserWarningUnimplemented CSSParserWarning = 2
+	CSSParserWarningUnimplemented
 )

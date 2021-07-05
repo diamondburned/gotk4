@@ -112,7 +112,7 @@ func IdleRemoveByData(data interface{}) bool {
 	var _arg1 C.gpointer // out
 	var _cret C.gboolean // in
 
-	_arg1 = C.gpointer(box.Assign(data))
+	_arg1 = (C.gpointer)(box.Assign(data))
 
 	_cret = C.g_idle_remove_by_data(_arg1)
 
@@ -421,7 +421,7 @@ func (c *MainContext) FindSourceByFuncsUserData(funcs *SourceFuncs, userData int
 
 	_arg0 = (*C.GMainContext)(unsafe.Pointer(c))
 	_arg1 = (*C.GSourceFuncs)(unsafe.Pointer(funcs))
-	_arg2 = C.gpointer(box.Assign(userData))
+	_arg2 = (C.gpointer)(box.Assign(userData))
 
 	_cret = C.g_main_context_find_source_by_funcs_user_data(_arg0, _arg1, _arg2)
 
@@ -477,7 +477,7 @@ func (c *MainContext) FindSourceByUserData(userData interface{}) *Source {
 	var _cret *C.GSource      // in
 
 	_arg0 = (*C.GMainContext)(unsafe.Pointer(c))
-	_arg1 = C.gpointer(box.Assign(userData))
+	_arg1 = (C.gpointer)(box.Assign(userData))
 
 	_cret = C.g_main_context_find_source_by_user_data(_arg0, _arg1)
 
@@ -1233,7 +1233,7 @@ func (s *Source) ModifyUnixFd(tag interface{}, newEvents IOCondition) {
 	var _arg2 C.GIOCondition // out
 
 	_arg0 = (*C.GSource)(unsafe.Pointer(s))
-	_arg1 = C.gpointer(box.Assign(tag))
+	_arg1 = (C.gpointer)(box.Assign(tag))
 	_arg2 = C.GIOCondition(newEvents)
 
 	C.g_source_modify_unix_fd(_arg0, _arg1, _arg2)
@@ -1255,7 +1255,7 @@ func (s *Source) QueryUnixFd(tag interface{}) IOCondition {
 	var _cret C.GIOCondition // in
 
 	_arg0 = (*C.GSource)(unsafe.Pointer(s))
-	_arg1 = C.gpointer(box.Assign(tag))
+	_arg1 = (C.gpointer)(box.Assign(tag))
 
 	_cret = C.g_source_query_unix_fd(_arg0, _arg1)
 
@@ -1331,7 +1331,7 @@ func (s *Source) RemoveUnixFd(tag interface{}) {
 	var _arg1 C.gpointer // out
 
 	_arg0 = (*C.GSource)(unsafe.Pointer(s))
-	_arg1 = C.gpointer(box.Assign(tag))
+	_arg1 = (C.gpointer)(box.Assign(tag))
 
 	C.g_source_remove_unix_fd(_arg0, _arg1)
 }
@@ -1351,7 +1351,7 @@ func (s *Source) SetCallbackIndirect(callbackData interface{}, callbackFuncs *So
 	var _arg2 *C.GSourceCallbackFuncs // out
 
 	_arg0 = (*C.GSource)(unsafe.Pointer(s))
-	_arg1 = C.gpointer(box.Assign(callbackData))
+	_arg1 = (C.gpointer)(box.Assign(callbackData))
 	_arg2 = (*C.GSourceCallbackFuncs)(unsafe.Pointer(callbackFuncs))
 
 	C.g_source_set_callback_indirect(_arg0, _arg1, _arg2)

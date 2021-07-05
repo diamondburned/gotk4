@@ -38,23 +38,23 @@ type Stretch int
 
 const (
 	// UltraCondensed: ultra condensed width
-	StretchUltraCondensed Stretch = 0
+	StretchUltraCondensed Stretch = iota
 	// ExtraCondensed: extra condensed width
-	StretchExtraCondensed Stretch = 1
+	StretchExtraCondensed
 	// condensed width
-	StretchCondensed Stretch = 2
+	StretchCondensed
 	// SemiCondensed: semi condensed width
-	StretchSemiCondensed Stretch = 3
+	StretchSemiCondensed
 	// normal: the normal width
-	StretchNormal Stretch = 4
+	StretchNormal
 	// SemiExpanded: semi expanded width
-	StretchSemiExpanded Stretch = 5
+	StretchSemiExpanded
 	// expanded width
-	StretchExpanded Stretch = 6
+	StretchExpanded
 	// ExtraExpanded: extra expanded width
-	StretchExtraExpanded Stretch = 7
+	StretchExtraExpanded
 	// UltraExpanded: ultra expanded width
-	StretchUltraExpanded Stretch = 8
+	StretchUltraExpanded
 )
 
 func marshalStretch(p uintptr) (interface{}, error) {
@@ -66,11 +66,11 @@ type Style int
 
 const (
 	// normal: the font is upright.
-	StyleNormal Style = 0
+	StyleNormal Style = iota
 	// oblique: the font is slanted, but in a roman style.
-	StyleOblique Style = 1
+	StyleOblique
 	// italic: the font is slanted in an italic style.
-	StyleItalic Style = 2
+	StyleItalic
 )
 
 func marshalStyle(p uintptr) (interface{}, error) {
@@ -82,10 +82,10 @@ type Variant int
 
 const (
 	// normal font.
-	VariantNormal Variant = 0
+	VariantNormal Variant = iota
 	// SmallCaps: font with the lower case characters replaced by smaller
 	// variants of the capital characters.
-	VariantSmallCaps Variant = 1
+	VariantSmallCaps
 )
 
 func marshalVariant(p uintptr) (interface{}, error) {

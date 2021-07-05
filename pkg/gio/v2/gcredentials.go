@@ -201,7 +201,7 @@ func (c credentials) SetNativeCredentials(nativeType CredentialsType, native int
 
 	_arg0 = (*C.GCredentials)(unsafe.Pointer(c.Native()))
 	_arg1 = C.GCredentialsType(nativeType)
-	_arg2 = C.gpointer(box.Assign(native))
+	_arg2 = (C.gpointer)(box.Assign(native))
 
 	C.g_credentials_set_native(_arg0, _arg1, _arg2)
 }

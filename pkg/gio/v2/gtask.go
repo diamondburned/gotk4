@@ -791,7 +791,7 @@ func (t task) SetSourceTagTask(sourceTag interface{}) {
 	var _arg1 C.gpointer // out
 
 	_arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
-	_arg1 = C.gpointer(box.Assign(sourceTag))
+	_arg1 = (C.gpointer)(box.Assign(sourceTag))
 
 	C.g_task_set_source_tag(_arg0, _arg1)
 }

@@ -182,6 +182,9 @@ func (i dBusInterfaceSkeleton) Info() *DBusInterfaceInfo {
 
 	_dBusInterfaceInfo = (*DBusInterfaceInfo)(unsafe.Pointer(_cret))
 	C.g_dbus_interface_info_ref(_cret)
+	runtime.SetFinalizer(_dBusInterfaceInfo, func(v *DBusInterfaceInfo) {
+		C.g_dbus_interface_info_unref((*C.GDBusInterfaceInfo)(unsafe.Pointer(v)))
+	})
 
 	return _dBusInterfaceInfo
 }
@@ -212,6 +215,7 @@ func (i dBusInterfaceSkeleton) Properties() *glib.Variant {
 	var _variant *glib.Variant // out
 
 	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
 	})

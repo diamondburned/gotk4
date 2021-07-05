@@ -377,6 +377,7 @@ func (b *ShaderArgsBuilder) Ref() *ShaderArgsBuilder {
 	var _shaderArgsBuilder *ShaderArgsBuilder // out
 
 	_shaderArgsBuilder = (*ShaderArgsBuilder)(unsafe.Pointer(_cret))
+	C.gsk_shader_args_builder_ref(_cret)
 	runtime.SetFinalizer(_shaderArgsBuilder, func(v *ShaderArgsBuilder) {
 		C.gsk_shader_args_builder_unref((*C.GskShaderArgsBuilder)(unsafe.Pointer(v)))
 	})

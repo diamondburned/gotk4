@@ -112,7 +112,7 @@ func gotk4_LogFunc(arg0 *C.gchar, arg1 C.GLogLevelFlags, arg2 *C.gchar, arg3 C.g
 type LogWriterFunc func(logLevel LogLevelFlags, fields []LogField) (logWriterOutput LogWriterOutput)
 
 //export gotk4_LogWriterFunc
-func gotk4_LogWriterFunc(arg0 C.GLogLevelFlags, arg1 *C.GLogField, arg2 C.gsize, arg3 C.gpointer) C.GLogWriterOutput {
+func gotk4_LogWriterFunc(arg0 C.GLogLevelFlags, arg1 *C.GLogField, arg2 C.gsize, arg3 C.gpointer) (cret C.GLogWriterOutput) {
 	v := box.Get(uintptr(arg3))
 	if v == nil {
 		panic(`callback not found`)
@@ -127,8 +127,6 @@ func gotk4_LogWriterFunc(arg0 C.GLogLevelFlags, arg1 *C.GLogField, arg2 C.gsize,
 
 	fn := v.(LogWriterFunc)
 	logWriterOutput := fn(logLevel, fields)
-
-	var cret C.GLogWriterOutput // out
 
 	cret = C.GLogWriterOutput(logWriterOutput)
 

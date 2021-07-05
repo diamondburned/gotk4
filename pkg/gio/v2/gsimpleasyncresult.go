@@ -51,7 +51,9 @@ func SimpleAsyncReportGerrorInIdle(object gextras.Objector, callback AsyncReadyC
 	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg3 = C.gpointer(box.Assign(callback))
 	_arg4 = (*C.GError)(gerror.New(err))
-	defer C.g_error_free(_arg4)
+	if _arg4 != nil {
+		defer C.g_error_free(_arg4)
+	}
 
 	C.g_simple_async_report_gerror_in_idle(_arg1, _arg2, _arg3, _arg4)
 }
@@ -368,7 +370,9 @@ func NewSimpleAsyncResultFromError(sourceObject gextras.Objector, callback Async
 	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg3 = C.gpointer(box.Assign(callback))
 	_arg4 = (*C.GError)(gerror.New(err))
-	defer C.g_error_free(_arg4)
+	if _arg4 != nil {
+		defer C.g_error_free(_arg4)
+	}
 
 	_cret = C.g_simple_async_result_new_from_error(_arg1, _arg2, _arg3, _arg4)
 
@@ -458,7 +462,9 @@ func (s simpleAsyncResult) SetFromErrorSimpleAsyncResult(err error) {
 
 	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GError)(gerror.New(err))
-	defer C.g_error_free(_arg1)
+	if _arg1 != nil {
+		defer C.g_error_free(_arg1)
+	}
 
 	C.g_simple_async_result_set_from_error(_arg0, _arg1)
 }

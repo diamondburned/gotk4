@@ -68,6 +68,10 @@ func getQuark(err error) C.GQuark {
 // New creates a new *C.GError from the given error. The caller is responsible
 // for freeing the error with g_error_free().
 func New(err error) unsafe.Pointer {
+	if err == nil {
+		return nil
+	}
+
 	var code int
 	if coder, ok := err.(ErrorCoder); ok {
 		code = coder.ErrorCode()

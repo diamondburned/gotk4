@@ -33,7 +33,7 @@ func init() {
 type FlowBoxCreateWidgetFunc func(item gextras.Objector) (widget Widget)
 
 //export gotk4_FlowBoxCreateWidgetFunc
-func gotk4_FlowBoxCreateWidgetFunc(arg0 C.gpointer, arg1 C.gpointer) *C.GtkWidget {
+func gotk4_FlowBoxCreateWidgetFunc(arg0 C.gpointer, arg1 C.gpointer) (cret *C.GtkWidget) {
 	v := box.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
@@ -45,8 +45,6 @@ func gotk4_FlowBoxCreateWidgetFunc(arg0 C.gpointer, arg1 C.gpointer) *C.GtkWidge
 
 	fn := v.(FlowBoxCreateWidgetFunc)
 	widget := fn(item)
-
-	var cret *C.GtkWidget // out
 
 	cret = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
@@ -60,7 +58,7 @@ func gotk4_FlowBoxCreateWidgetFunc(arg0 C.gpointer, arg1 C.gpointer) *C.GtkWidge
 type FlowBoxFilterFunc func(child FlowBoxChild) (ok bool)
 
 //export gotk4_FlowBoxFilterFunc
-func gotk4_FlowBoxFilterFunc(arg0 *C.GtkFlowBoxChild, arg1 C.gpointer) C.gboolean {
+func gotk4_FlowBoxFilterFunc(arg0 *C.GtkFlowBoxChild, arg1 C.gpointer) (cret C.gboolean) {
 	v := box.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
@@ -72,8 +70,6 @@ func gotk4_FlowBoxFilterFunc(arg0 *C.GtkFlowBoxChild, arg1 C.gpointer) C.gboolea
 
 	fn := v.(FlowBoxFilterFunc)
 	ok := fn(child)
-
-	var cret C.gboolean // out
 
 	if ok {
 		cret = C.TRUE
@@ -109,7 +105,7 @@ func gotk4_FlowBoxForeachFunc(arg0 *C.GtkFlowBox, arg1 *C.GtkFlowBoxChild, arg2 
 type FlowBoxSortFunc func(child1 FlowBoxChild, child2 FlowBoxChild) (gint int)
 
 //export gotk4_FlowBoxSortFunc
-func gotk4_FlowBoxSortFunc(arg0 *C.GtkFlowBoxChild, arg1 *C.GtkFlowBoxChild, arg2 C.gpointer) C.int {
+func gotk4_FlowBoxSortFunc(arg0 *C.GtkFlowBoxChild, arg1 *C.GtkFlowBoxChild, arg2 C.gpointer) (cret C.int) {
 	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
@@ -123,8 +119,6 @@ func gotk4_FlowBoxSortFunc(arg0 *C.GtkFlowBoxChild, arg1 *C.GtkFlowBoxChild, arg
 
 	fn := v.(FlowBoxSortFunc)
 	gint := fn(child1, child2)
-
-	var cret C.int // out
 
 	cret = C.int(gint)
 

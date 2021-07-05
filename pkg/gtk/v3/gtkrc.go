@@ -495,17 +495,7 @@ func RCParsePriority(scanner *glib.Scanner, priority *PathPriorityType) uint {
 	var _cret C.guint                // in
 
 	_arg1 = (*C.GScanner)(unsafe.Pointer(scanner))
-	{
-		var refTmpIn PathPriorityType
-		var refTmpOut C.GtkPathPriorityType
-
-		refTmpIn = *priority
-
-		refTmpOut = C.GtkPathPriorityType(refTmpIn)
-
-		out0 := &refTmpOut
-		_arg2 = out0
-	}
+	_arg2 = (*C.GtkPathPriorityType)(unsafe.Pointer(priority))
 
 	_cret = C.gtk_rc_parse_priority(_arg1, _arg2)
 

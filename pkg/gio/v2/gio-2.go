@@ -942,6 +942,7 @@ func (c dBusConnection) CallFinishDBusConnection(res AsyncResult) (*glib.Variant
 	var _goerr error           // out
 
 	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
 	})
@@ -985,6 +986,7 @@ func (c dBusConnection) CallSyncDBusConnection(busName string, objectPath string
 	var _goerr error           // out
 
 	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
 	})
@@ -1047,6 +1049,7 @@ func (c dBusConnection) CallWithUnixFdListFinishDBusConnection(res AsyncResult) 
 
 	_outFdList = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_arg1))).(UnixFDList)
 	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
 	})
@@ -1095,6 +1098,7 @@ func (c dBusConnection) CallWithUnixFdListSyncDBusConnection(busName string, obj
 
 	_outFdList = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_arg10))).(UnixFDList)
 	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
 	})
@@ -1978,6 +1982,9 @@ func (m dBusMessage) Body() *glib.Variant {
 
 	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
 	C.g_variant_ref(_cret)
+	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
+		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+	})
 
 	return _variant
 }
@@ -2056,6 +2063,9 @@ func (m dBusMessage) Header(headerField DBusMessageHeaderField) *glib.Variant {
 
 	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
 	C.g_variant_ref(_cret)
+	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
+		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+	})
 
 	return _variant
 }
@@ -2687,6 +2697,9 @@ func (i dBusMethodInvocation) MethodInfo() *DBusMethodInfo {
 
 	_dBusMethodInfo = (*DBusMethodInfo)(unsafe.Pointer(_cret))
 	C.g_dbus_method_info_ref(_cret)
+	runtime.SetFinalizer(_dBusMethodInfo, func(v *DBusMethodInfo) {
+		C.g_dbus_method_info_unref((*C.GDBusMethodInfo)(unsafe.Pointer(v)))
+	})
 
 	return _dBusMethodInfo
 }
@@ -2733,6 +2746,9 @@ func (i dBusMethodInvocation) Parameters() *glib.Variant {
 
 	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
 	C.g_variant_ref(_cret)
+	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
+		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+	})
 
 	return _variant
 }
@@ -2749,6 +2765,9 @@ func (i dBusMethodInvocation) PropertyInfo() *DBusPropertyInfo {
 
 	_dBusPropertyInfo = (*DBusPropertyInfo)(unsafe.Pointer(_cret))
 	C.g_dbus_property_info_ref(_cret)
+	runtime.SetFinalizer(_dBusPropertyInfo, func(v *DBusPropertyInfo) {
+		C.g_dbus_property_info_unref((*C.GDBusPropertyInfo)(unsafe.Pointer(v)))
+	})
 
 	return _dBusPropertyInfo
 }
@@ -2788,7 +2807,9 @@ func (i dBusMethodInvocation) ReturnGerrorDBusMethodInvocation(err error) {
 
 	_arg0 = (*C.GDBusMethodInvocation)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.GError)(gerror.New(err))
-	defer C.g_error_free(_arg1)
+	if _arg1 != nil {
+		defer C.g_error_free(_arg1)
+	}
 
 	C.g_dbus_method_invocation_return_gerror(_arg0, _arg1)
 }
@@ -3627,6 +3648,7 @@ func (m menuItem) AttributeValue(attribute string, expectedType *glib.VariantTyp
 	var _variant *glib.Variant // out
 
 	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
 	})

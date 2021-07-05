@@ -1,6 +1,8 @@
 package main
 
-import . "github.com/diamondburned/gotk4/gir/girgen/types"
+import (
+	. "github.com/diamondburned/gotk4/gir/girgen/types"
+)
 
 // pkgExceptions contains a list of file names that won't be deleted off of
 // pkg/.
@@ -36,6 +38,12 @@ var packages = []Package{
 var preprocessors = []Preprocessor{
 	// Collision due to case conversions.
 	TypeRenamer("GLib-2.file_test", "test_file"),
+	// Fix incorrect parameter direction.
+	// ModifyCallable("Gio-2.DBusInterfaceGetPropertyFunc",
+	// 	func(cattrs *gir.CallableAttrs) {
+	// 		FindParameter(cattrs, "error").Direction = "out"
+	// 	},
+	// ),
 }
 
 // filters defines a list of GIR types to be filtered. The map key is the

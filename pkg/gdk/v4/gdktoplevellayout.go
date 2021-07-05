@@ -55,6 +55,7 @@ func NewToplevelLayout() *ToplevelLayout {
 	var _toplevelLayout *ToplevelLayout // out
 
 	_toplevelLayout = (*ToplevelLayout)(unsafe.Pointer(_cret))
+	C.gdk_toplevel_layout_ref(_cret)
 	runtime.SetFinalizer(_toplevelLayout, func(v *ToplevelLayout) {
 		C.gdk_toplevel_layout_unref((*C.GdkToplevelLayout)(unsafe.Pointer(v)))
 	})
@@ -79,6 +80,7 @@ func (l *ToplevelLayout) Copy() *ToplevelLayout {
 	var _toplevelLayout *ToplevelLayout // out
 
 	_toplevelLayout = (*ToplevelLayout)(unsafe.Pointer(_cret))
+	C.gdk_toplevel_layout_ref(_cret)
 	runtime.SetFinalizer(_toplevelLayout, func(v *ToplevelLayout) {
 		C.gdk_toplevel_layout_unref((*C.GdkToplevelLayout)(unsafe.Pointer(v)))
 	})
@@ -204,6 +206,7 @@ func (l *ToplevelLayout) Ref() *ToplevelLayout {
 	var _toplevelLayout *ToplevelLayout // out
 
 	_toplevelLayout = (*ToplevelLayout)(unsafe.Pointer(_cret))
+	C.gdk_toplevel_layout_ref(_cret)
 	runtime.SetFinalizer(_toplevelLayout, func(v *ToplevelLayout) {
 		C.gdk_toplevel_layout_unref((*C.GdkToplevelLayout)(unsafe.Pointer(v)))
 	})

@@ -55,6 +55,7 @@ func NewIconSet() *IconSet {
 	var _iconSet *IconSet // out
 
 	_iconSet = (*IconSet)(unsafe.Pointer(_cret))
+	C.gtk_icon_set_ref(_cret)
 	runtime.SetFinalizer(_iconSet, func(v *IconSet) {
 		C.gtk_icon_set_unref((*C.GtkIconSet)(unsafe.Pointer(v)))
 	})
@@ -74,6 +75,7 @@ func NewIconSetFromPixbuf(pixbuf gdkpixbuf.Pixbuf) *IconSet {
 	var _iconSet *IconSet // out
 
 	_iconSet = (*IconSet)(unsafe.Pointer(_cret))
+	C.gtk_icon_set_ref(_cret)
 	runtime.SetFinalizer(_iconSet, func(v *IconSet) {
 		C.gtk_icon_set_unref((*C.GtkIconSet)(unsafe.Pointer(v)))
 	})
@@ -135,6 +137,7 @@ func (i *IconSet) Copy() *IconSet {
 	var _iconSet *IconSet // out
 
 	_iconSet = (*IconSet)(unsafe.Pointer(_cret))
+	C.gtk_icon_set_ref(_cret)
 	runtime.SetFinalizer(_iconSet, func(v *IconSet) {
 		C.gtk_icon_set_unref((*C.GtkIconSet)(unsafe.Pointer(v)))
 	})
@@ -179,6 +182,7 @@ func (i *IconSet) Ref() *IconSet {
 	var _iconSet *IconSet // out
 
 	_iconSet = (*IconSet)(unsafe.Pointer(_cret))
+	C.gtk_icon_set_ref(_cret)
 	runtime.SetFinalizer(_iconSet, func(v *IconSet) {
 		C.gtk_icon_set_unref((*C.GtkIconSet)(unsafe.Pointer(v)))
 	})
@@ -319,7 +323,7 @@ func NewIconSource() *IconSource {
 
 	_iconSource = (*IconSource)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_iconSource, func(v *IconSource) {
-		C.gtk_icon_source_free((*C.GtkIconSource)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _iconSource
@@ -345,7 +349,7 @@ func (s *IconSource) Copy() *IconSource {
 
 	_iconSource = (*IconSource)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_iconSource, func(v *IconSource) {
-		C.gtk_icon_source_free((*C.GtkIconSource)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _iconSource
@@ -748,7 +752,7 @@ func (d *SelectionData) Copy() *SelectionData {
 
 	_selectionData = (*SelectionData)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_selectionData, func(v *SelectionData) {
-		C.gtk_selection_data_free((*C.GtkSelectionData)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _selectionData
@@ -1084,6 +1088,7 @@ func NewWidgetPath() *WidgetPath {
 	var _widgetPath *WidgetPath // out
 
 	_widgetPath = (*WidgetPath)(unsafe.Pointer(_cret))
+	C.gtk_widget_path_ref(_cret)
 	runtime.SetFinalizer(_widgetPath, func(v *WidgetPath) {
 		C.gtk_widget_path_unref((*C.GtkWidgetPath)(unsafe.Pointer(v)))
 	})
@@ -1174,6 +1179,7 @@ func (p *WidgetPath) Copy() *WidgetPath {
 	var _widgetPath *WidgetPath // out
 
 	_widgetPath = (*WidgetPath)(unsafe.Pointer(_cret))
+	C.gtk_widget_path_ref(_cret)
 	runtime.SetFinalizer(_widgetPath, func(v *WidgetPath) {
 		C.gtk_widget_path_unref((*C.GtkWidgetPath)(unsafe.Pointer(v)))
 	})
@@ -1407,6 +1413,9 @@ func (p *WidgetPath) IterGetSiblings(pos int) *WidgetPath {
 
 	_widgetPath = (*WidgetPath)(unsafe.Pointer(_cret))
 	C.gtk_widget_path_ref(_cret)
+	runtime.SetFinalizer(_widgetPath, func(v *WidgetPath) {
+		C.gtk_widget_path_unref((*C.GtkWidgetPath)(unsafe.Pointer(v)))
+	})
 
 	return _widgetPath
 }
@@ -1647,6 +1656,7 @@ func (p *WidgetPath) Ref() *WidgetPath {
 	var _widgetPath *WidgetPath // out
 
 	_widgetPath = (*WidgetPath)(unsafe.Pointer(_cret))
+	C.gtk_widget_path_ref(_cret)
 	runtime.SetFinalizer(_widgetPath, func(v *WidgetPath) {
 		C.gtk_widget_path_unref((*C.GtkWidgetPath)(unsafe.Pointer(v)))
 	})

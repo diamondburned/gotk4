@@ -327,3 +327,41 @@ var cgoPrimitiveTypes = map[string]string{
 
 	// "long double":  "longdouble",
 }
+
+// FindParameter finds a parameter.
+func FindParameter(c *gir.CallableAttrs, paramName string) *gir.ParameterAttrs {
+	if c.Parameters == nil {
+		return nil
+	}
+
+	if c.Parameters.InstanceParameter != nil {
+		if c.Parameters.InstanceParameter.Name == paramName {
+			return &c.Parameters.InstanceParameter.ParameterAttrs
+		}
+	}
+
+	for i, param := range c.Parameters.Parameters {
+		if param.Name == paramName {
+			return &c.Parameters.Parameters[i].ParameterAttrs
+		}
+	}
+
+	return nil
+}
+
+// GuessParameterOutput guesses the parameter output using various clues to make
+// up for GIR's painful shortcomings.
+func GuessParameterOutput(param *gir.Parameter) string {
+	switch param.Direction {
+	case "out", "in":
+		return param.Direction
+	}
+
+	// GIR is fucking miserable. Why can't they get these properly?
+	if param.Doc != nil && strings.HasPrefix(param.Doc.String, "Return location") {
+		return "out"
+	}
+
+	// default
+	return "in"
+}

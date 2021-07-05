@@ -77,7 +77,7 @@ func marshalSettingsBindFlags(p uintptr) (interface{}, error) {
 type SettingsBindGetMapping func(value externglib.Value, variant *glib.Variant) (ok bool)
 
 //export gotk4_SettingsBindGetMapping
-func gotk4_SettingsBindGetMapping(arg0 *C.GValue, arg1 *C.GVariant, arg2 C.gpointer) C.gboolean {
+func gotk4_SettingsBindGetMapping(arg0 *C.GValue, arg1 *C.GVariant, arg2 C.gpointer) (cret C.gboolean) {
 	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
@@ -89,11 +89,12 @@ func gotk4_SettingsBindGetMapping(arg0 *C.GValue, arg1 *C.GVariant, arg2 C.gpoin
 	value = externglib.ValueFromNative(unsafe.Pointer(arg0))
 	variant = (*glib.Variant)(unsafe.Pointer(arg1))
 	C.g_variant_ref(arg1)
+	runtime.SetFinalizer(variant, func(v *glib.Variant) {
+		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+	})
 
 	fn := v.(SettingsBindGetMapping)
 	ok := fn(value, variant)
-
-	var cret C.gboolean // out
 
 	if ok {
 		cret = C.TRUE
@@ -107,7 +108,7 @@ func gotk4_SettingsBindGetMapping(arg0 *C.GValue, arg1 *C.GVariant, arg2 C.gpoin
 type SettingsBindSetMapping func(value externglib.Value, expectedType *glib.VariantType) (variant *glib.Variant)
 
 //export gotk4_SettingsBindSetMapping
-func gotk4_SettingsBindSetMapping(arg0 *C.GValue, arg1 *C.GVariantType, arg2 C.gpointer) *C.GVariant {
+func gotk4_SettingsBindSetMapping(arg0 *C.GValue, arg1 *C.GVariantType, arg2 C.gpointer) (cret *C.GVariant) {
 	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
@@ -121,8 +122,6 @@ func gotk4_SettingsBindSetMapping(arg0 *C.GValue, arg1 *C.GVariantType, arg2 C.g
 
 	fn := v.(SettingsBindSetMapping)
 	variant := fn(value, expectedType)
-
-	var cret *C.GVariant // out
 
 	cret = (*C.GVariant)(unsafe.Pointer(variant))
 
@@ -142,7 +141,7 @@ func gotk4_SettingsBindSetMapping(arg0 *C.GValue, arg1 *C.GVariantType, arg2 C.g
 type SettingsGetMapping func(value *glib.Variant) (result interface{}, ok bool)
 
 //export gotk4_SettingsGetMapping
-func gotk4_SettingsGetMapping(arg0 *C.GVariant, arg1 *C.gpointer, arg2 C.gpointer) C.gboolean {
+func gotk4_SettingsGetMapping(arg0 *C.GVariant, arg1 *C.gpointer, arg2 C.gpointer) (cret C.gboolean) {
 	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
@@ -152,12 +151,12 @@ func gotk4_SettingsGetMapping(arg0 *C.GVariant, arg1 *C.gpointer, arg2 C.gpointe
 
 	value = (*glib.Variant)(unsafe.Pointer(arg0))
 	C.g_variant_ref(arg0)
+	runtime.SetFinalizer(value, func(v *glib.Variant) {
+		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+	})
 
 	fn := v.(SettingsGetMapping)
 	result, ok := fn(value)
-
-	var arg1 *C.gpointer // out
-	var cret C.gboolean  // out
 
 	arg1 = *C.gpointer(box.Assign(result))
 	if ok {
@@ -1004,6 +1003,7 @@ func (s settings) DefaultValue(key string) *glib.Variant {
 	var _variant *glib.Variant // out
 
 	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
 	})
@@ -1154,6 +1154,7 @@ func (s settings) Range(key string) *glib.Variant {
 	var _variant *glib.Variant // out
 
 	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
 	})
@@ -1261,6 +1262,7 @@ func (s settings) UserValue(key string) *glib.Variant {
 	var _variant *glib.Variant // out
 
 	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
 	})
@@ -1282,6 +1284,7 @@ func (s settings) Value(key string) *glib.Variant {
 	var _variant *glib.Variant // out
 
 	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
 	})

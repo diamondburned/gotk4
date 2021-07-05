@@ -48,7 +48,7 @@ func NewPoint3DAlloc() *Point3D {
 
 	_point3D = (*Point3D)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_point3D, func(v *Point3D) {
-		C.graphene_point3d_free((*C.graphene_point3d_t)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _point3D

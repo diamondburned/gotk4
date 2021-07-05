@@ -63,7 +63,7 @@ func (c *Color) Copy() *Color {
 
 	_ret = (*Color)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_ret, func(v *Color) {
-		C.gdk_color_free((*C.GdkColor)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _ret

@@ -51,7 +51,7 @@ func NewMatrixAlloc() *Matrix {
 
 	_matrix = (*Matrix)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_matrix, func(v *Matrix) {
-		C.graphene_matrix_free((*C.graphene_matrix_t)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _matrix

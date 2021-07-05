@@ -74,7 +74,7 @@ func marshalAssistantPageType(p uintptr) (interface{}, error) {
 type AssistantPageFunc func(currentPage int) (gint int)
 
 //export gotk4_AssistantPageFunc
-func gotk4_AssistantPageFunc(arg0 C.int, arg1 C.gpointer) C.int {
+func gotk4_AssistantPageFunc(arg0 C.int, arg1 C.gpointer) (cret C.int) {
 	v := box.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
@@ -86,8 +86,6 @@ func gotk4_AssistantPageFunc(arg0 C.int, arg1 C.gpointer) C.int {
 
 	fn := v.(AssistantPageFunc)
 	gint := fn(currentPage)
-
-	var cret C.int // out
 
 	cret = C.int(gint)
 

@@ -162,7 +162,19 @@ func (value *ConversionValue) IsZero() bool {
 
 // ParameterIsOutput returns true if the direction is out.
 func (value *ConversionValue) ParameterIsOutput() bool {
-	return value.ParameterAttrs.Direction == "out"
+	switch value.ParameterAttrs.Direction {
+	case "out":
+		return true
+	case "in":
+		return false
+	}
+
+	// GIR is fucking miserable. Why can't they get these properly?
+	if value.Doc != nil && strings.HasPrefix(value.Doc.String, "Return location") {
+		return true
+	}
+
+	return false
 }
 
 // outputAllocs returns true if the parameter is a value we need to allocate
@@ -285,7 +297,7 @@ func (value *ValueConverted) resolveType(conv *Converter) bool {
 
 	// If this is the output parameter, then the pointer count should be less.
 	// This only affects the Go type.
-	if value.Direction == ConvertCToGo && value.ParameterIsOutput() && value.Resolved.Ptr > 0 {
+	if value.ParameterIsOutput() && value.Resolved.Ptr > 0 {
 		value.Resolved.Ptr--
 	}
 

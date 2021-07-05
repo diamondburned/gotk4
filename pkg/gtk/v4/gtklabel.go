@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -552,6 +553,9 @@ func (s label) Attributes() *pango.AttrList {
 
 	_attrList = (*pango.AttrList)(unsafe.Pointer(_cret))
 	C.pango_attr_list_ref(_cret)
+	runtime.SetFinalizer(_attrList, func(v *pango.AttrList) {
+		C.pango_attr_list_unref((*C.PangoAttrList)(unsafe.Pointer(v)))
+	})
 
 	return _attrList
 }

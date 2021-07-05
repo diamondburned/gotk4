@@ -489,7 +489,7 @@ func marshalRole(p uintptr) (interface{}, error) {
 type Function func() (ok bool)
 
 //export gotk4_Function
-func gotk4_Function(arg0 C.gpointer) C.gboolean {
+func gotk4_Function(arg0 C.gpointer) (cret C.gboolean) {
 	v := box.Get(uintptr(arg0))
 	if v == nil {
 		panic(`callback not found`)
@@ -497,8 +497,6 @@ func gotk4_Function(arg0 C.gpointer) C.gboolean {
 
 	fn := v.(Function)
 	ok := fn()
-
-	var cret C.gboolean // out
 
 	if ok {
 		cret = C.TRUE

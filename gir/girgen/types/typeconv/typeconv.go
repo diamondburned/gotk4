@@ -431,12 +431,22 @@ func (conv *Converter) convertRef(value *ValueConverted, wantC, wantGo int) bool
 		// Use the new output value as name for the first variable to be
 		// referenced.
 		current := refValue.OutName
+		nilable := -outDiff > 0 || (refValue.Resolved.IsContainerBuiltin())
+		closing := 0
+
 		for i := 0; i < -outDiff; i++ {
+			if nilable {
+				// Type can nil, so add a check.
+				refValue.p.Linef("if %s != nil {", current)
+				closing++
+			}
 			refValue.p.Linef("out%d := &%s", i, current)
 			current = fmt.Sprintf("out%d", i)
 		}
+
 		// Copy the temporary variable into the original output.
 		refValue.p.Linef("%s = %s", value.OutName, current)
+		refValue.p.Linef(strings.Repeat("}", closing))
 	}
 
 	file.ApplyHeader(value, &refValue)

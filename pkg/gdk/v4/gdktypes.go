@@ -304,6 +304,7 @@ func NewContentFormats(mimeTypes []string) *ContentFormats {
 	var _contentFormats *ContentFormats // out
 
 	_contentFormats = (*ContentFormats)(unsafe.Pointer(_cret))
+	C.gdk_content_formats_ref(_cret)
 	runtime.SetFinalizer(_contentFormats, func(v *ContentFormats) {
 		C.gdk_content_formats_unref((*C.GdkContentFormats)(unsafe.Pointer(v)))
 	})
@@ -323,6 +324,7 @@ func NewContentFormatsForGType(typ externglib.Type) *ContentFormats {
 	var _contentFormats *ContentFormats // out
 
 	_contentFormats = (*ContentFormats)(unsafe.Pointer(_cret))
+	C.gdk_content_formats_ref(_cret)
 	runtime.SetFinalizer(_contentFormats, func(v *ContentFormats) {
 		C.gdk_content_formats_unref((*C.GdkContentFormats)(unsafe.Pointer(v)))
 	})
@@ -450,6 +452,7 @@ func (f *ContentFormats) Ref() *ContentFormats {
 	var _contentFormats *ContentFormats // out
 
 	_contentFormats = (*ContentFormats)(unsafe.Pointer(_cret))
+	C.gdk_content_formats_ref(_cret)
 	runtime.SetFinalizer(_contentFormats, func(v *ContentFormats) {
 		C.gdk_content_formats_unref((*C.GdkContentFormats)(unsafe.Pointer(v)))
 	})
@@ -492,6 +495,7 @@ func (f *ContentFormats) Union(second *ContentFormats) *ContentFormats {
 	var _contentFormats *ContentFormats // out
 
 	_contentFormats = (*ContentFormats)(unsafe.Pointer(_cret))
+	C.gdk_content_formats_ref(_cret)
 	runtime.SetFinalizer(_contentFormats, func(v *ContentFormats) {
 		C.gdk_content_formats_unref((*C.GdkContentFormats)(unsafe.Pointer(v)))
 	})
@@ -512,6 +516,7 @@ func (f *ContentFormats) UnionDeserializeGTypes() *ContentFormats {
 	var _contentFormats *ContentFormats // out
 
 	_contentFormats = (*ContentFormats)(unsafe.Pointer(_cret))
+	C.gdk_content_formats_ref(_cret)
 	runtime.SetFinalizer(_contentFormats, func(v *ContentFormats) {
 		C.gdk_content_formats_unref((*C.GdkContentFormats)(unsafe.Pointer(v)))
 	})
@@ -532,6 +537,7 @@ func (f *ContentFormats) UnionDeserializeMIMETypes() *ContentFormats {
 	var _contentFormats *ContentFormats // out
 
 	_contentFormats = (*ContentFormats)(unsafe.Pointer(_cret))
+	C.gdk_content_formats_ref(_cret)
 	runtime.SetFinalizer(_contentFormats, func(v *ContentFormats) {
 		C.gdk_content_formats_unref((*C.GdkContentFormats)(unsafe.Pointer(v)))
 	})
@@ -552,6 +558,7 @@ func (f *ContentFormats) UnionSerializeGTypes() *ContentFormats {
 	var _contentFormats *ContentFormats // out
 
 	_contentFormats = (*ContentFormats)(unsafe.Pointer(_cret))
+	C.gdk_content_formats_ref(_cret)
 	runtime.SetFinalizer(_contentFormats, func(v *ContentFormats) {
 		C.gdk_content_formats_unref((*C.GdkContentFormats)(unsafe.Pointer(v)))
 	})
@@ -572,6 +579,7 @@ func (f *ContentFormats) UnionSerializeMIMETypes() *ContentFormats {
 	var _contentFormats *ContentFormats // out
 
 	_contentFormats = (*ContentFormats)(unsafe.Pointer(_cret))
+	C.gdk_content_formats_ref(_cret)
 	runtime.SetFinalizer(_contentFormats, func(v *ContentFormats) {
 		C.gdk_content_formats_unref((*C.GdkContentFormats)(unsafe.Pointer(v)))
 	})

@@ -370,6 +370,9 @@ func NewVariantArray(childType *VariantType, children []*Variant) *Variant {
 
 	_variant = (*Variant)(unsafe.Pointer(_cret))
 	C.g_variant_ref(_cret)
+	runtime.SetFinalizer(_variant, func(v *Variant) {
+		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+	})
 
 	return _variant
 }
@@ -389,6 +392,9 @@ func NewVariantBoolean(value bool) *Variant {
 
 	_variant = (*Variant)(unsafe.Pointer(_cret))
 	C.g_variant_ref(_cret)
+	runtime.SetFinalizer(_variant, func(v *Variant) {
+		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+	})
 
 	return _variant
 }
@@ -406,6 +412,9 @@ func NewVariantByte(value byte) *Variant {
 
 	_variant = (*Variant)(unsafe.Pointer(_cret))
 	C.g_variant_ref(_cret)
+	runtime.SetFinalizer(_variant, func(v *Variant) {
+		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+	})
 
 	return _variant
 }
@@ -423,6 +432,9 @@ func NewVariantBytestring(_string []byte) *Variant {
 
 	_variant = (*Variant)(unsafe.Pointer(_cret))
 	C.g_variant_ref(_cret)
+	runtime.SetFinalizer(_variant, func(v *Variant) {
+		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+	})
 
 	return _variant
 }
@@ -450,6 +462,9 @@ func NewVariantBytestringArray(strv []string) *Variant {
 
 	_variant = (*Variant)(unsafe.Pointer(_cret))
 	C.g_variant_ref(_cret)
+	runtime.SetFinalizer(_variant, func(v *Variant) {
+		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+	})
 
 	return _variant
 }
@@ -469,6 +484,9 @@ func NewVariantDictEntry(key *Variant, value *Variant) *Variant {
 
 	_variant = (*Variant)(unsafe.Pointer(_cret))
 	C.g_variant_ref(_cret)
+	runtime.SetFinalizer(_variant, func(v *Variant) {
+		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+	})
 
 	return _variant
 }
@@ -486,6 +504,9 @@ func NewVariantDouble(value float64) *Variant {
 
 	_variant = (*Variant)(unsafe.Pointer(_cret))
 	C.g_variant_ref(_cret)
+	runtime.SetFinalizer(_variant, func(v *Variant) {
+		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+	})
 
 	return _variant
 }
@@ -509,6 +530,9 @@ func NewVariantFixedArray(elementType *VariantType, elements interface{}, nEleme
 
 	_variant = (*Variant)(unsafe.Pointer(_cret))
 	C.g_variant_ref(_cret)
+	runtime.SetFinalizer(_variant, func(v *Variant) {
+		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+	})
 
 	return _variant
 }
@@ -526,6 +550,9 @@ func NewVariantHandle(value int32) *Variant {
 
 	_variant = (*Variant)(unsafe.Pointer(_cret))
 	C.g_variant_ref(_cret)
+	runtime.SetFinalizer(_variant, func(v *Variant) {
+		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+	})
 
 	return _variant
 }
@@ -543,6 +570,9 @@ func NewVariantInt16(value int16) *Variant {
 
 	_variant = (*Variant)(unsafe.Pointer(_cret))
 	C.g_variant_ref(_cret)
+	runtime.SetFinalizer(_variant, func(v *Variant) {
+		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+	})
 
 	return _variant
 }
@@ -560,6 +590,9 @@ func NewVariantInt32(value int32) *Variant {
 
 	_variant = (*Variant)(unsafe.Pointer(_cret))
 	C.g_variant_ref(_cret)
+	runtime.SetFinalizer(_variant, func(v *Variant) {
+		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+	})
 
 	return _variant
 }
@@ -577,6 +610,9 @@ func NewVariantInt64(value int64) *Variant {
 
 	_variant = (*Variant)(unsafe.Pointer(_cret))
 	C.g_variant_ref(_cret)
+	runtime.SetFinalizer(_variant, func(v *Variant) {
+		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+	})
 
 	return _variant
 }
@@ -596,6 +632,9 @@ func NewVariantMaybe(childType *VariantType, child *Variant) *Variant {
 
 	_variant = (*Variant)(unsafe.Pointer(_cret))
 	C.g_variant_ref(_cret)
+	runtime.SetFinalizer(_variant, func(v *Variant) {
+		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+	})
 
 	return _variant
 }
@@ -614,6 +653,9 @@ func NewVariantObjectPath(objectPath string) *Variant {
 
 	_variant = (*Variant)(unsafe.Pointer(_cret))
 	C.g_variant_ref(_cret)
+	runtime.SetFinalizer(_variant, func(v *Variant) {
+		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+	})
 
 	return _variant
 }
@@ -641,6 +683,9 @@ func NewVariantObjv(strv []string) *Variant {
 
 	_variant = (*Variant)(unsafe.Pointer(_cret))
 	C.g_variant_ref(_cret)
+	runtime.SetFinalizer(_variant, func(v *Variant) {
+		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+	})
 
 	return _variant
 }
@@ -659,6 +704,9 @@ func NewVariantSignature(signature string) *Variant {
 
 	_variant = (*Variant)(unsafe.Pointer(_cret))
 	C.g_variant_ref(_cret)
+	runtime.SetFinalizer(_variant, func(v *Variant) {
+		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+	})
 
 	return _variant
 }
@@ -677,6 +725,9 @@ func NewVariantString(_string string) *Variant {
 
 	_variant = (*Variant)(unsafe.Pointer(_cret))
 	C.g_variant_ref(_cret)
+	runtime.SetFinalizer(_variant, func(v *Variant) {
+		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+	})
 
 	return _variant
 }
@@ -704,6 +755,9 @@ func NewVariantStrv(strv []string) *Variant {
 
 	_variant = (*Variant)(unsafe.Pointer(_cret))
 	C.g_variant_ref(_cret)
+	runtime.SetFinalizer(_variant, func(v *Variant) {
+		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+	})
 
 	return _variant
 }
@@ -723,6 +777,9 @@ func NewVariantTuple(children []*Variant) *Variant {
 
 	_variant = (*Variant)(unsafe.Pointer(_cret))
 	C.g_variant_ref(_cret)
+	runtime.SetFinalizer(_variant, func(v *Variant) {
+		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+	})
 
 	return _variant
 }
@@ -740,6 +797,9 @@ func NewVariantUint16(value uint16) *Variant {
 
 	_variant = (*Variant)(unsafe.Pointer(_cret))
 	C.g_variant_ref(_cret)
+	runtime.SetFinalizer(_variant, func(v *Variant) {
+		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+	})
 
 	return _variant
 }
@@ -757,6 +817,9 @@ func NewVariantUint32(value uint32) *Variant {
 
 	_variant = (*Variant)(unsafe.Pointer(_cret))
 	C.g_variant_ref(_cret)
+	runtime.SetFinalizer(_variant, func(v *Variant) {
+		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+	})
 
 	return _variant
 }
@@ -774,6 +837,9 @@ func NewVariantUint64(value uint64) *Variant {
 
 	_variant = (*Variant)(unsafe.Pointer(_cret))
 	C.g_variant_ref(_cret)
+	runtime.SetFinalizer(_variant, func(v *Variant) {
+		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+	})
 
 	return _variant
 }
@@ -791,6 +857,9 @@ func NewVariantVariant(value *Variant) *Variant {
 
 	_variant = (*Variant)(unsafe.Pointer(_cret))
 	C.g_variant_ref(_cret)
+	runtime.SetFinalizer(_variant, func(v *Variant) {
+		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+	})
 
 	return _variant
 }
@@ -821,6 +890,7 @@ func (v *Variant) Byteswap() *Variant {
 	var _variant *Variant // out
 
 	_variant = (*Variant)(unsafe.Pointer(_cret))
+	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *Variant) {
 		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
 	})
@@ -1085,6 +1155,7 @@ func (v *Variant) ChildValue(index_ uint) *Variant {
 	var _variant *Variant // out
 
 	_variant = (*Variant)(unsafe.Pointer(_cret))
+	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *Variant) {
 		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
 	})
@@ -1241,6 +1312,7 @@ func (v *Variant) Maybe() *Variant {
 	var _variant *Variant // out
 
 	_variant = (*Variant)(unsafe.Pointer(_cret))
+	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *Variant) {
 		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
 	})
@@ -1282,6 +1354,7 @@ func (v *Variant) NormalForm() *Variant {
 	var _variant *Variant // out
 
 	_variant = (*Variant)(unsafe.Pointer(_cret))
+	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *Variant) {
 		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
 	})
@@ -1455,6 +1528,7 @@ func (v *Variant) Variant() *Variant {
 	var _variant *Variant // out
 
 	_variant = (*Variant)(unsafe.Pointer(_cret))
+	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *Variant) {
 		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
 	})
@@ -1616,6 +1690,7 @@ func (d *Variant) LookupValue(key string, expectedType *VariantType) *Variant {
 	var _variant *Variant // out
 
 	_variant = (*Variant)(unsafe.Pointer(_cret))
+	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *Variant) {
 		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
 	})
@@ -1685,6 +1760,7 @@ func (v *Variant) Ref() *Variant {
 	var _variant *Variant // out
 
 	_variant = (*Variant)(unsafe.Pointer(_cret))
+	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *Variant) {
 		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
 	})
@@ -1723,6 +1799,7 @@ func (v *Variant) RefSink() *Variant {
 	var _variant *Variant // out
 
 	_variant = (*Variant)(unsafe.Pointer(_cret))
+	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *Variant) {
 		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
 	})
@@ -1792,6 +1869,7 @@ func (v *Variant) TakeRef() *Variant {
 	var _variant *Variant // out
 
 	_variant = (*Variant)(unsafe.Pointer(_cret))
+	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *Variant) {
 		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
 	})
@@ -1844,6 +1922,7 @@ func NewVariantBuilder(typ *VariantType) *VariantBuilder {
 	var _variantBuilder *VariantBuilder // out
 
 	_variantBuilder = (*VariantBuilder)(unsafe.Pointer(_cret))
+	C.g_variant_builder_ref(_cret)
 	runtime.SetFinalizer(_variantBuilder, func(v *VariantBuilder) {
 		C.g_variant_builder_unref((*C.GVariantBuilder)(unsafe.Pointer(v)))
 	})
@@ -1916,6 +1995,9 @@ func (b *VariantBuilder) End() *Variant {
 
 	_variant = (*Variant)(unsafe.Pointer(_cret))
 	C.g_variant_ref(_cret)
+	runtime.SetFinalizer(_variant, func(v *Variant) {
+		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+	})
 
 	return _variant
 }
@@ -1980,6 +2062,7 @@ func (b *VariantBuilder) Ref() *VariantBuilder {
 	var _variantBuilder *VariantBuilder // out
 
 	_variantBuilder = (*VariantBuilder)(unsafe.Pointer(_cret))
+	C.g_variant_builder_ref(_cret)
 	runtime.SetFinalizer(_variantBuilder, func(v *VariantBuilder) {
 		C.g_variant_builder_unref((*C.GVariantBuilder)(unsafe.Pointer(v)))
 	})
@@ -2086,6 +2169,7 @@ func NewVariantDict(fromAsv *Variant) *VariantDict {
 	var _variantDict *VariantDict // out
 
 	_variantDict = (*VariantDict)(unsafe.Pointer(_cret))
+	C.g_variant_dict_ref(_cret)
 	runtime.SetFinalizer(_variantDict, func(v *VariantDict) {
 		C.g_variant_dict_unref((*C.GVariantDict)(unsafe.Pointer(v)))
 	})
@@ -2158,6 +2242,9 @@ func (d *VariantDict) End() *Variant {
 
 	_variant = (*Variant)(unsafe.Pointer(_cret))
 	C.g_variant_ref(_cret)
+	runtime.SetFinalizer(_variant, func(v *Variant) {
+		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+	})
 
 	return _variant
 }
@@ -2204,6 +2291,7 @@ func (d *VariantDict) LookupValue(key string, expectedType *VariantType) *Varian
 	var _variant *Variant // out
 
 	_variant = (*Variant)(unsafe.Pointer(_cret))
+	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *Variant) {
 		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
 	})
@@ -2225,6 +2313,7 @@ func (d *VariantDict) Ref() *VariantDict {
 	var _variantDict *VariantDict // out
 
 	_variantDict = (*VariantDict)(unsafe.Pointer(_cret))
+	C.g_variant_dict_ref(_cret)
 	runtime.SetFinalizer(_variantDict, func(v *VariantDict) {
 		C.g_variant_dict_unref((*C.GVariantDict)(unsafe.Pointer(v)))
 	})

@@ -334,6 +334,9 @@ func (c applicationCommandLine) OptionsDict() *glib.VariantDict {
 
 	_variantDict = (*glib.VariantDict)(unsafe.Pointer(_cret))
 	C.g_variant_dict_ref(_cret)
+	runtime.SetFinalizer(_variantDict, func(v *glib.VariantDict) {
+		C.g_variant_dict_unref((*C.GVariantDict)(unsafe.Pointer(v)))
+	})
 
 	return _variantDict
 }
@@ -349,6 +352,7 @@ func (c applicationCommandLine) PlatformData() *glib.Variant {
 	var _variant *glib.Variant // out
 
 	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
 	})

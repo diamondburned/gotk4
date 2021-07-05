@@ -522,13 +522,15 @@ func (s iconTheme) SetResourcePathIconTheme(path *string) {
 		var refTmpIn string
 		var refTmpOut *C.char
 
-		refTmpIn = path
+		refTmpIn = *path
 
 		refTmpOut = (*C.char)(C.CString(refTmpIn))
 		defer C.free(unsafe.Pointer(refTmpOut))
 
-		out0 := &refTmpOut
-		_arg1 = out0
+		if refTmpOut != nil {
+			out0 := &refTmpOut
+			_arg1 = out0
+		}
 	}
 
 	C.gtk_icon_theme_set_resource_path(_arg0, _arg1)

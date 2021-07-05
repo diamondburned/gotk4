@@ -67,6 +67,7 @@ func NewTextAttributes() *TextAttributes {
 	var _textAttributes *TextAttributes // out
 
 	_textAttributes = (*TextAttributes)(unsafe.Pointer(_cret))
+	C.gtk_text_attributes_ref(_cret)
 	runtime.SetFinalizer(_textAttributes, func(v *TextAttributes) {
 		C.gtk_text_attributes_unref((*C.GtkTextAttributes)(unsafe.Pointer(v)))
 	})
@@ -91,6 +92,7 @@ func (s *TextAttributes) Copy() *TextAttributes {
 	var _textAttributes *TextAttributes // out
 
 	_textAttributes = (*TextAttributes)(unsafe.Pointer(_cret))
+	C.gtk_text_attributes_ref(_cret)
 	runtime.SetFinalizer(_textAttributes, func(v *TextAttributes) {
 		C.gtk_text_attributes_unref((*C.GtkTextAttributes)(unsafe.Pointer(v)))
 	})
@@ -122,6 +124,7 @@ func (v *TextAttributes) Ref() *TextAttributes {
 	var _textAttributes *TextAttributes // out
 
 	_textAttributes = (*TextAttributes)(unsafe.Pointer(_cret))
+	C.gtk_text_attributes_ref(_cret)
 	runtime.SetFinalizer(_textAttributes, func(v *TextAttributes) {
 		C.gtk_text_attributes_unref((*C.GtkTextAttributes)(unsafe.Pointer(v)))
 	})

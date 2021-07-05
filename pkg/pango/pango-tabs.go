@@ -72,7 +72,7 @@ func NewTabArray(initialSize int, positionsInPixels bool) *TabArray {
 
 	_tabArray = (*TabArray)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_tabArray, func(v *TabArray) {
-		C.pango_tab_array_free((*C.PangoTabArray)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _tabArray
@@ -96,7 +96,7 @@ func (s *TabArray) Copy() *TabArray {
 
 	_tabArray = (*TabArray)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_tabArray, func(v *TabArray) {
-		C.pango_tab_array_free((*C.PangoTabArray)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _tabArray

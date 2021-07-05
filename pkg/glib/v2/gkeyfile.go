@@ -84,7 +84,7 @@ func NewKeyFile() *KeyFile {
 
 	_keyFile = (*KeyFile)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_keyFile, func(v *KeyFile) {
-		C.g_key_file_unref((*C.GKeyFile)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _keyFile

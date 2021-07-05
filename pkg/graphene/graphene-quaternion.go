@@ -51,7 +51,7 @@ func NewQuaternionAlloc() *Quaternion {
 
 	_quaternion = (*Quaternion)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_quaternion, func(v *Quaternion) {
-		C.graphene_quaternion_free((*C.graphene_quaternion_t)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _quaternion

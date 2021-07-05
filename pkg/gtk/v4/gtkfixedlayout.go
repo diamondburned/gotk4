@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/gsk/v4"
@@ -131,6 +132,9 @@ func (c fixedLayoutChild) Transform() *gsk.Transform {
 
 	_transform = (*gsk.Transform)(unsafe.Pointer(_cret))
 	C.gsk_transform_ref(_cret)
+	runtime.SetFinalizer(_transform, func(v *gsk.Transform) {
+		C.gsk_transform_unref((*C.GskTransform)(unsafe.Pointer(v)))
+	})
 
 	return _transform
 }

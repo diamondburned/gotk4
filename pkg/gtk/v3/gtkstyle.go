@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/cairo"
@@ -910,6 +911,9 @@ func (s style) LookupIconSetStyle(stockId string) *IconSet {
 
 	_iconSet = (*IconSet)(unsafe.Pointer(_cret))
 	C.gtk_icon_set_ref(_cret)
+	runtime.SetFinalizer(_iconSet, func(v *IconSet) {
+		C.gtk_icon_set_unref((*C.GtkIconSet)(unsafe.Pointer(v)))
+	})
 
 	return _iconSet
 }

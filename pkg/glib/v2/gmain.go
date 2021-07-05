@@ -37,7 +37,7 @@ type MainContextPusher = C.void
 type SourceFunc func() (ok bool)
 
 //export gotk4_SourceFunc
-func gotk4_SourceFunc(arg0 C.gpointer) C.gboolean {
+func gotk4_SourceFunc(arg0 C.gpointer) (cret C.gboolean) {
 	v := box.Get(uintptr(arg0))
 	if v == nil {
 		panic(`callback not found`)
@@ -45,8 +45,6 @@ func gotk4_SourceFunc(arg0 C.gpointer) C.gboolean {
 
 	fn := v.(SourceFunc)
 	ok := fn()
-
-	var cret C.gboolean // out
 
 	if ok {
 		cret = C.TRUE
@@ -141,6 +139,7 @@ func NewIdleSource() *Source {
 	var _source *Source // out
 
 	_source = (*Source)(unsafe.Pointer(_cret))
+	C.g_source_ref(_cret)
 	runtime.SetFinalizer(_source, func(v *Source) {
 		C.g_source_unref((*C.GSource)(unsafe.Pointer(v)))
 	})
@@ -158,6 +157,9 @@ func MainCurrentSource() *Source {
 
 	_source = (*Source)(unsafe.Pointer(_cret))
 	C.g_source_ref(_cret)
+	runtime.SetFinalizer(_source, func(v *Source) {
+		C.g_source_unref((*C.GSource)(unsafe.Pointer(v)))
+	})
 
 	return _source
 }
@@ -249,6 +251,7 @@ func NewTimeoutSource(interval uint) *Source {
 	var _source *Source // out
 
 	_source = (*Source)(unsafe.Pointer(_cret))
+	C.g_source_ref(_cret)
 	runtime.SetFinalizer(_source, func(v *Source) {
 		C.g_source_unref((*C.GSource)(unsafe.Pointer(v)))
 	})
@@ -277,6 +280,7 @@ func TimeoutSourceNewSeconds(interval uint) *Source {
 	var _source *Source // out
 
 	_source = (*Source)(unsafe.Pointer(_cret))
+	C.g_source_ref(_cret)
 	runtime.SetFinalizer(_source, func(v *Source) {
 		C.g_source_unref((*C.GSource)(unsafe.Pointer(v)))
 	})
@@ -310,6 +314,7 @@ func NewMainContext() *MainContext {
 	var _mainContext *MainContext // out
 
 	_mainContext = (*MainContext)(unsafe.Pointer(_cret))
+	C.g_main_context_ref(_cret)
 	runtime.SetFinalizer(_mainContext, func(v *MainContext) {
 		C.g_main_context_unref((*C.GMainContext)(unsafe.Pointer(v)))
 	})
@@ -424,6 +429,9 @@ func (c *MainContext) FindSourceByFuncsUserData(funcs *SourceFuncs, userData int
 
 	_source = (*Source)(unsafe.Pointer(_cret))
 	C.g_source_ref(_cret)
+	runtime.SetFinalizer(_source, func(v *Source) {
+		C.g_source_unref((*C.GSource)(unsafe.Pointer(v)))
+	})
 
 	return _source
 }
@@ -453,6 +461,9 @@ func (c *MainContext) FindSourceByID(sourceId uint) *Source {
 
 	_source = (*Source)(unsafe.Pointer(_cret))
 	C.g_source_ref(_cret)
+	runtime.SetFinalizer(_source, func(v *Source) {
+		C.g_source_unref((*C.GSource)(unsafe.Pointer(v)))
+	})
 
 	return _source
 }
@@ -474,6 +485,9 @@ func (c *MainContext) FindSourceByUserData(userData interface{}) *Source {
 
 	_source = (*Source)(unsafe.Pointer(_cret))
 	C.g_source_ref(_cret)
+	runtime.SetFinalizer(_source, func(v *Source) {
+		C.g_source_unref((*C.GSource)(unsafe.Pointer(v)))
+	})
 
 	return _source
 }
@@ -635,6 +649,7 @@ func (c *MainContext) Ref() *MainContext {
 	var _mainContext *MainContext // out
 
 	_mainContext = (*MainContext)(unsafe.Pointer(_cret))
+	C.g_main_context_ref(_cret)
 	runtime.SetFinalizer(_mainContext, func(v *MainContext) {
 		C.g_main_context_unref((*C.GMainContext)(unsafe.Pointer(v)))
 	})
@@ -732,6 +747,7 @@ func NewMainLoop(context *MainContext, isRunning bool) *MainLoop {
 	var _mainLoop *MainLoop // out
 
 	_mainLoop = (*MainLoop)(unsafe.Pointer(_cret))
+	C.g_main_loop_ref(_cret)
 	runtime.SetFinalizer(_mainLoop, func(v *MainLoop) {
 		C.g_main_loop_unref((*C.GMainLoop)(unsafe.Pointer(v)))
 	})
@@ -757,6 +773,9 @@ func (l *MainLoop) Context() *MainContext {
 
 	_mainContext = (*MainContext)(unsafe.Pointer(_cret))
 	C.g_main_context_ref(_cret)
+	runtime.SetFinalizer(_mainContext, func(v *MainContext) {
+		C.g_main_context_unref((*C.GMainContext)(unsafe.Pointer(v)))
+	})
 
 	return _mainContext
 }
@@ -805,6 +824,7 @@ func (l *MainLoop) Ref() *MainLoop {
 	var _mainLoop *MainLoop // out
 
 	_mainLoop = (*MainLoop)(unsafe.Pointer(_cret))
+	C.g_main_loop_ref(_cret)
 	runtime.SetFinalizer(_mainLoop, func(v *MainLoop) {
 		C.g_main_loop_unref((*C.GMainLoop)(unsafe.Pointer(v)))
 	})
@@ -864,6 +884,7 @@ func NewSource(sourceFuncs *SourceFuncs, structSize uint) *Source {
 	var _source *Source // out
 
 	_source = (*Source)(unsafe.Pointer(_cret))
+	C.g_source_ref(_cret)
 	runtime.SetFinalizer(_source, func(v *Source) {
 		C.g_source_unref((*C.GSource)(unsafe.Pointer(v)))
 	})
@@ -1032,6 +1053,9 @@ func (s *Source) Context() *MainContext {
 
 	_mainContext = (*MainContext)(unsafe.Pointer(_cret))
 	C.g_main_context_ref(_cret)
+	runtime.SetFinalizer(_mainContext, func(v *MainContext) {
+		C.g_main_context_unref((*C.GMainContext)(unsafe.Pointer(v)))
+	})
 
 	return _mainContext
 }
@@ -1254,6 +1278,7 @@ func (s *Source) Ref() *Source {
 	var _ret *Source // out
 
 	_ret = (*Source)(unsafe.Pointer(_cret))
+	C.g_source_ref(_cret)
 	runtime.SetFinalizer(_ret, func(v *Source) {
 		C.g_source_unref((*C.GSource)(unsafe.Pointer(v)))
 	})

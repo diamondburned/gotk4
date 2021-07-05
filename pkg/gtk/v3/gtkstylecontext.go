@@ -817,6 +817,9 @@ func (c styleContext) Path() *WidgetPath {
 
 	_widgetPath = (*WidgetPath)(unsafe.Pointer(_cret))
 	C.gtk_widget_path_ref(_cret)
+	runtime.SetFinalizer(_widgetPath, func(v *WidgetPath) {
+		C.gtk_widget_path_unref((*C.GtkWidgetPath)(unsafe.Pointer(v)))
+	})
 
 	return _widgetPath
 }
@@ -899,6 +902,9 @@ func (c styleContext) Section(property string) *CSSSection {
 
 	_cssSection = (*CSSSection)(unsafe.Pointer(_cret))
 	C.gtk_css_section_ref(_cret)
+	runtime.SetFinalizer(_cssSection, func(v *CSSSection) {
+		C.gtk_css_section_unref((*C.GtkCssSection)(unsafe.Pointer(v)))
+	})
 
 	return _cssSection
 }
@@ -1030,6 +1036,9 @@ func (c styleContext) LookupIconSetStyleContext(stockId string) *IconSet {
 
 	_iconSet = (*IconSet)(unsafe.Pointer(_cret))
 	C.gtk_icon_set_ref(_cret)
+	runtime.SetFinalizer(_iconSet, func(v *IconSet) {
+		C.gtk_icon_set_unref((*C.GtkIconSet)(unsafe.Pointer(v)))
+	})
 
 	return _iconSet
 }

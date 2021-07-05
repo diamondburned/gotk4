@@ -129,7 +129,7 @@ func NewEulerAlloc() *Euler {
 
 	_euler = (*Euler)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_euler, func(v *Euler) {
-		C.graphene_euler_free((*C.graphene_euler_t)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _euler

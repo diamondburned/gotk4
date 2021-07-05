@@ -379,14 +379,18 @@ func (d x11Display) TextPropertyToTextListX11Display(encoding string, format int
 		var refTmpIn string
 		var refTmpOut *C.char
 
-		refTmpIn = list
+		refTmpIn = **list
 
 		refTmpOut = (*C.char)(C.CString(refTmpIn))
 		defer C.free(unsafe.Pointer(refTmpOut))
 
-		out0 := &refTmpOut
-		out1 := &out0
-		_arg5 = out1
+		if refTmpOut != nil {
+			out0 := &refTmpOut
+			if out0 != nil {
+				out1 := &out0
+				_arg5 = out1
+			}
+		}
 	}
 
 	_cret = C.gdk_x11_display_text_property_to_text_list(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)

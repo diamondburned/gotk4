@@ -312,7 +312,7 @@ func NewScriptIter(text string, length int) *ScriptIter {
 
 	_scriptIter = (*ScriptIter)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_scriptIter, func(v *ScriptIter) {
-		C.pango_script_iter_free((*C.PangoScriptIter)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _scriptIter

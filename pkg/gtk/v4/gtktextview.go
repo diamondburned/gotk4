@@ -1210,7 +1210,7 @@ func (t textView) Tabs() *pango.TabArray {
 
 	_tabArray = (*pango.TabArray)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_tabArray, func(v *pango.TabArray) {
-		C.pango_tab_array_free((*C.PangoTabArray)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _tabArray

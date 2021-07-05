@@ -54,7 +54,7 @@ func marshalTreeModelFlags(p uintptr) (interface{}, error) {
 type TreeModelForeachFunc func(model TreeModel, path *TreePath, iter *TreeIter) (ok bool)
 
 //export gotk4_TreeModelForeachFunc
-func gotk4_TreeModelForeachFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreePath, arg2 *C.GtkTreeIter, arg3 C.gpointer) C.gboolean {
+func gotk4_TreeModelForeachFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreePath, arg2 *C.GtkTreeIter, arg3 C.gpointer) (cret C.gboolean) {
 	v := box.Get(uintptr(arg3))
 	if v == nil {
 		panic(`callback not found`)
@@ -70,8 +70,6 @@ func gotk4_TreeModelForeachFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreePath, arg2 
 
 	fn := v.(TreeModelForeachFunc)
 	ok := fn(model, path, iter)
-
-	var cret C.gboolean // out
 
 	if ok {
 		cret = C.TRUE
@@ -585,7 +583,7 @@ func (t treeModel) Path(iter *TreeIter) *TreePath {
 
 	_treePath = (*TreePath)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_treePath, func(v *TreePath) {
-		C.gtk_tree_path_free((*C.GtkTreePath)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _treePath
@@ -932,7 +930,7 @@ func (i *TreeIter) Copy() *TreeIter {
 
 	_treeIter = (*TreeIter)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_treeIter, func(v *TreeIter) {
-		C.gtk_tree_iter_free((*C.GtkTreeIter)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _treeIter
@@ -975,7 +973,7 @@ func NewTreePath() *TreePath {
 
 	_treePath = (*TreePath)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_treePath, func(v *TreePath) {
-		C.gtk_tree_path_free((*C.GtkTreePath)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _treePath
@@ -991,7 +989,7 @@ func NewTreePathFirst() *TreePath {
 
 	_treePath = (*TreePath)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_treePath, func(v *TreePath) {
-		C.gtk_tree_path_free((*C.GtkTreePath)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _treePath
@@ -1012,7 +1010,7 @@ func NewTreePathFromIndicesv(indices []int) *TreePath {
 
 	_treePath = (*TreePath)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_treePath, func(v *TreePath) {
-		C.gtk_tree_path_free((*C.GtkTreePath)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _treePath
@@ -1032,7 +1030,7 @@ func NewTreePathFromString(path string) *TreePath {
 
 	_treePath = (*TreePath)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_treePath, func(v *TreePath) {
-		C.gtk_tree_path_free((*C.GtkTreePath)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _treePath
@@ -1090,7 +1088,7 @@ func (p *TreePath) Copy() *TreePath {
 
 	_treePath = (*TreePath)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_treePath, func(v *TreePath) {
-		C.gtk_tree_path_free((*C.GtkTreePath)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _treePath
@@ -1283,7 +1281,7 @@ func NewTreeRowReference(model TreeModel, path *TreePath) *TreeRowReference {
 
 	_treeRowReference = (*TreeRowReference)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_treeRowReference, func(v *TreeRowReference) {
-		C.gtk_tree_row_reference_free((*C.GtkTreeRowReference)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _treeRowReference
@@ -1306,7 +1304,7 @@ func NewTreeRowReferenceProxy(proxy gextras.Objector, model TreeModel, path *Tre
 
 	_treeRowReference = (*TreeRowReference)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_treeRowReference, func(v *TreeRowReference) {
-		C.gtk_tree_row_reference_free((*C.GtkTreeRowReference)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _treeRowReference
@@ -1330,7 +1328,7 @@ func (r *TreeRowReference) Copy() *TreeRowReference {
 
 	_treeRowReference = (*TreeRowReference)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_treeRowReference, func(v *TreeRowReference) {
-		C.gtk_tree_row_reference_free((*C.GtkTreeRowReference)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _treeRowReference
@@ -1375,7 +1373,7 @@ func (r *TreeRowReference) Path() *TreePath {
 
 	_treePath = (*TreePath)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_treePath, func(v *TreePath) {
-		C.gtk_tree_path_free((*C.GtkTreePath)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _treePath

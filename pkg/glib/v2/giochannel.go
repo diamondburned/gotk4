@@ -152,6 +152,7 @@ func IOCreateWatch(channel *IOChannel, condition IOCondition) *Source {
 	var _source *Source // out
 
 	_source = (*Source)(unsafe.Pointer(_cret))
+	C.g_source_ref(_cret)
 	runtime.SetFinalizer(_source, func(v *Source) {
 		C.g_source_unref((*C.GSource)(unsafe.Pointer(v)))
 	})
@@ -194,6 +195,7 @@ func NewIOChannelFile(filename string, mode string) (*IOChannel, error) {
 	var _goerr error          // out
 
 	_ioChannel = (*IOChannel)(unsafe.Pointer(_cret))
+	C.g_io_channel_ref(_cret)
 	runtime.SetFinalizer(_ioChannel, func(v *IOChannel) {
 		C.g_io_channel_unref((*C.GIOChannel)(unsafe.Pointer(v)))
 	})
@@ -214,6 +216,7 @@ func NewIOChannelUnix(fd int) *IOChannel {
 	var _ioChannel *IOChannel // out
 
 	_ioChannel = (*IOChannel)(unsafe.Pointer(_cret))
+	C.g_io_channel_ref(_cret)
 	runtime.SetFinalizer(_ioChannel, func(v *IOChannel) {
 		C.g_io_channel_unref((*C.GIOChannel)(unsafe.Pointer(v)))
 	})
@@ -521,6 +524,7 @@ func (c *IOChannel) Ref() *IOChannel {
 	var _ioChannel *IOChannel // out
 
 	_ioChannel = (*IOChannel)(unsafe.Pointer(_cret))
+	C.g_io_channel_ref(_cret)
 	runtime.SetFinalizer(_ioChannel, func(v *IOChannel) {
 		C.g_io_channel_unref((*C.GIOChannel)(unsafe.Pointer(v)))
 	})

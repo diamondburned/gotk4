@@ -107,10 +107,10 @@ func marshalPixbufError(p uintptr) (interface{}, error) {
 // If successful it should return `TRUE`; if an error occurs it should set
 // `error` and return `FALSE`, in which case `gdk_pixbuf_save_to_callback()`
 // will fail with the same error.
-type PixbufSaveFunc func(buf []byte) (err *error, ok bool)
+type PixbufSaveFunc func(buf []byte) (err error, ok bool)
 
 //export gotk4_PixbufSaveFunc
-func gotk4_PixbufSaveFunc(arg0 *C.gchar, arg1 C.gsize, arg2 **C.GError, arg3 C.gpointer) C.gboolean {
+func gotk4_PixbufSaveFunc(arg0 *C.gchar, arg1 C.gsize, arg2 **C.GError, arg3 C.gpointer) (cret C.gboolean) {
 	v := box.Get(uintptr(arg3))
 	if v == nil {
 		panic(`callback not found`)
@@ -124,9 +124,6 @@ func gotk4_PixbufSaveFunc(arg0 *C.gchar, arg1 C.gsize, arg2 **C.GError, arg3 C.g
 	fn := v.(PixbufSaveFunc)
 	err, ok := fn(buf)
 
-	var arg2 **C.GError // out
-	var cret C.gboolean // out
-
 	{
 		var refTmpIn error
 		var refTmpOut *C.GError
@@ -135,8 +132,10 @@ func gotk4_PixbufSaveFunc(arg0 *C.gchar, arg1 C.gsize, arg2 **C.GError, arg3 C.g
 
 		refTmpOut = (*C.GError)(gerror.New(refTmpIn))
 
-		out0 := &refTmpOut
-		arg2 = out0
+		if refTmpOut != nil {
+			out0 := &refTmpOut
+			arg2 = out0
+		}
 	}
 	if ok {
 		cret = C.TRUE

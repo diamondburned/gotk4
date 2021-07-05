@@ -736,7 +736,7 @@ func (s printSettings) PaperSize() *PaperSize {
 
 	_paperSize = (*PaperSize)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_paperSize, func(v *PaperSize) {
-		C.gtk_paper_size_free((*C.GtkPaperSize)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _paperSize
@@ -1341,6 +1341,9 @@ func (s printSettings) ToGVariantPrintSettings() *glib.Variant {
 
 	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
 	C.g_variant_ref(_cret)
+	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
+		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+	})
 
 	return _variant
 }

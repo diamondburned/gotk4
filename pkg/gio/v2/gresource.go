@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
@@ -188,6 +189,9 @@ func (s *StaticResource) Resource() *Resource {
 
 	_resource = (*Resource)(unsafe.Pointer(_cret))
 	C.g_resource_ref(_cret)
+	runtime.SetFinalizer(_resource, func(v *Resource) {
+		C.g_resource_unref((*C.GResource)(unsafe.Pointer(v)))
+	})
 
 	return _resource
 }

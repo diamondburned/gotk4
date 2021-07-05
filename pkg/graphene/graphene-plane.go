@@ -51,7 +51,7 @@ func NewPlaneAlloc() *Plane {
 
 	_plane = (*Plane)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_plane, func(v *Plane) {
-		C.graphene_plane_free((*C.graphene_plane_t)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _plane

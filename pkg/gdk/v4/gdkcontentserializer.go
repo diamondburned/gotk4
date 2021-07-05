@@ -220,7 +220,9 @@ func (s contentSerializer) ReturnErrorContentSerializer(err error) {
 
 	_arg0 = (*C.GdkContentSerializer)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GError)(gerror.New(err))
-	defer C.g_error_free(_arg1)
+	if _arg1 != nil {
+		defer C.g_error_free(_arg1)
+	}
 
 	C.gdk_content_serializer_return_error(_arg0, _arg1)
 }

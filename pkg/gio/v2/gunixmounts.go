@@ -598,7 +598,7 @@ func (m *UnixMountPoint) Copy() *UnixMountPoint {
 
 	_unixMountPoint = (*UnixMountPoint)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_unixMountPoint, func(v *UnixMountPoint) {
-		C.g_unix_mount_point_free((*C.GUnixMountPoint)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _unixMountPoint

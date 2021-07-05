@@ -37,7 +37,7 @@ func init() {
 type TreeIterCompareFunc func(model TreeModel, a *TreeIter, b *TreeIter) (gint int)
 
 //export gotk4_TreeIterCompareFunc
-func gotk4_TreeIterCompareFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 *C.GtkTreeIter, arg3 C.gpointer) C.gint {
+func gotk4_TreeIterCompareFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 *C.GtkTreeIter, arg3 C.gpointer) (cret C.gint) {
 	v := box.Get(uintptr(arg3))
 	if v == nil {
 		panic(`callback not found`)
@@ -53,8 +53,6 @@ func gotk4_TreeIterCompareFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 *
 
 	fn := v.(TreeIterCompareFunc)
 	gint := fn(model, a, b)
-
-	var cret C.gint // out
 
 	cret = C.gint(gint)
 

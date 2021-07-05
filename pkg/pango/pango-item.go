@@ -51,7 +51,7 @@ func NewItem() *Item {
 
 	_item = (*Item)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_item, func(v *Item) {
-		C.pango_item_free((*C.PangoItem)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _item
@@ -95,7 +95,7 @@ func (i *Item) Copy() *Item {
 
 	_ret = (*Item)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_ret, func(v *Item) {
-		C.pango_item_free((*C.PangoItem)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _ret
@@ -136,7 +136,7 @@ func (o *Item) Split(splitIndex int, splitOffset int) *Item {
 
 	_item = (*Item)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_item, func(v *Item) {
-		C.pango_item_free((*C.PangoItem)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _item

@@ -333,7 +333,9 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 
 		value.p.Linef("%s = (*C.GError)(gerror.New(%s))", value.OutName, value.InName)
 		if !value.isTransferring() {
-			value.p.Linef("defer C.g_error_free(%s)", value.OutName)
+			value.p.Linef("if %s != nil {", value.OutName)
+			value.p.Linef("  defer C.g_error_free(%s)", value.OutName)
+			value.p.Linef("}")
 		}
 		return true
 
@@ -396,11 +398,16 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 
 	switch v := value.Resolved.Extern.Type.(type) {
 	case *gir.Enum, *gir.Bitfield:
-		if !value.isPtr(0) {
-			return conv.convertRef(value, 0, 0)
+		switch {
+		case value.isPtr(0):
+			value.p.Linef("%s = %s(%s)", value.OutName, value.OutType, value.InName)
+		case value.isPtr(1):
+			value.header.Import("unsafe")
+			value.p.Linef("%s = (%s)(unsafe.Pointer(%s))", value.OutName, value.OutType, value.InName)
+		default:
+			return conv.convertRef(value, 1, 1)
 		}
 
-		value.p.Linef("%s = %s(%s)", value.OutName, value.OutType, value.InName)
 		return true
 
 	case *gir.Class, *gir.Interface:

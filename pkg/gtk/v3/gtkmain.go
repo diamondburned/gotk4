@@ -27,7 +27,7 @@ import "C"
 type KeySnoopFunc func(grabWidget Widget, event *gdk.EventKey) (gint int)
 
 //export gotk4_KeySnoopFunc
-func gotk4_KeySnoopFunc(arg0 *C.GtkWidget, arg1 *C.GdkEventKey, arg2 C.gpointer) C.gint {
+func gotk4_KeySnoopFunc(arg0 *C.GtkWidget, arg1 *C.GdkEventKey, arg2 C.gpointer) (cret C.gint) {
 	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
@@ -41,8 +41,6 @@ func gotk4_KeySnoopFunc(arg0 *C.GtkWidget, arg1 *C.GdkEventKey, arg2 C.gpointer)
 
 	fn := v.(KeySnoopFunc)
 	gint := fn(grabWidget, event)
-
-	var cret C.gint // out
 
 	cret = C.gint(gint)
 
@@ -373,6 +371,7 @@ func GetOptionGroup(openDefaultDisplay bool) *glib.OptionGroup {
 	var _optionGroup *glib.OptionGroup // out
 
 	_optionGroup = (*glib.OptionGroup)(unsafe.Pointer(_cret))
+	C.g_option_group_ref(_cret)
 	runtime.SetFinalizer(_optionGroup, func(v *glib.OptionGroup) {
 		C.g_option_group_unref((*C.GOptionGroup)(unsafe.Pointer(v)))
 	})

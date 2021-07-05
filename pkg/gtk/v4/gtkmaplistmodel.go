@@ -31,7 +31,7 @@ func init() {
 type MapListModelMapFunc func(item gextras.Objector) (object gextras.Objector)
 
 //export gotk4_MapListModelMapFunc
-func gotk4_MapListModelMapFunc(arg0 C.gpointer, arg1 C.gpointer) C.gpointer {
+func gotk4_MapListModelMapFunc(arg0 C.gpointer, arg1 C.gpointer) (cret C.gpointer) {
 	v := box.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
@@ -43,8 +43,6 @@ func gotk4_MapListModelMapFunc(arg0 C.gpointer, arg1 C.gpointer) C.gpointer {
 
 	fn := v.(MapListModelMapFunc)
 	object := fn(item)
-
-	var cret C.gpointer // out
 
 	cret = (C.gpointer)(unsafe.Pointer(object.Native()))
 

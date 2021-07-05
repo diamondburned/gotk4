@@ -40,7 +40,7 @@ type Allocation = gdk.Rectangle
 type TickCallback func(widget Widget, frameClock gdk.FrameClock) (ok bool)
 
 //export gotk4_TickCallback
-func gotk4_TickCallback(arg0 *C.GtkWidget, arg1 *C.GdkFrameClock, arg2 C.gpointer) C.gboolean {
+func gotk4_TickCallback(arg0 *C.GtkWidget, arg1 *C.GdkFrameClock, arg2 C.gpointer) (cret C.gboolean) {
 	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
@@ -54,8 +54,6 @@ func gotk4_TickCallback(arg0 *C.GtkWidget, arg1 *C.GdkFrameClock, arg2 C.gpointe
 
 	fn := v.(TickCallback)
 	ok := fn(widget, frameClock)
-
-	var cret C.gboolean // out
 
 	if ok {
 		cret = C.TRUE
@@ -3769,7 +3767,7 @@ func NewRequisition() *Requisition {
 
 	_requisition = (*Requisition)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_requisition, func(v *Requisition) {
-		C.gtk_requisition_free((*C.GtkRequisition)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _requisition
@@ -3793,7 +3791,7 @@ func (r *Requisition) Copy() *Requisition {
 
 	_ret = (*Requisition)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_ret, func(v *Requisition) {
-		C.gtk_requisition_free((*C.GtkRequisition)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _ret

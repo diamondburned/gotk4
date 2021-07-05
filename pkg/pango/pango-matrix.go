@@ -76,7 +76,7 @@ func (m *Matrix) Copy() *Matrix {
 
 	_ret = (*Matrix)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_ret, func(v *Matrix) {
-		C.pango_matrix_free((*C.PangoMatrix)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _ret

@@ -248,6 +248,22 @@ func (typ *Resolved) IsPrimitive() bool {
 	return true
 }
 
+// IsContainerBuiltin returns true if the resolved type is a built-in Go
+// container type (like string, error or interface{}).
+func (typ *Resolved) IsContainerBuiltin() bool {
+	if typ.Builtin == nil {
+		return false
+	}
+
+	for _, con := range goContainerTypes {
+		if con == *typ.Builtin {
+			return true
+		}
+	}
+
+	return false
+}
+
 // CanCast returns true if the resolved type is a builtin type that can be
 // directly casted to an equivalent C type OR a record..
 func (typ *Resolved) CanCast() bool {
@@ -352,7 +368,7 @@ func (typ *Resolved) ptr(sub1 bool) string {
 // implementation type.
 func (typ *Resolved) ImplType(needsNamespace bool) string {
 	if typ.Builtin != nil {
-		return *typ.Builtin
+		return typ.ptr(false) + *typ.Builtin
 	}
 
 	name := typ.Extern.Name()

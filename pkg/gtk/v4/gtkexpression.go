@@ -414,6 +414,9 @@ func (s expression) BindExpression(target gextras.Objector, property string, thi
 
 	_expressionWatch = (*ExpressionWatch)(unsafe.Pointer(_cret))
 	C.gtk_expression_watch_ref(_cret)
+	runtime.SetFinalizer(_expressionWatch, func(v *ExpressionWatch) {
+		C.gtk_expression_watch_unref((*C.GtkExpressionWatch)(unsafe.Pointer(v)))
+	})
 
 	return _expressionWatch
 }
@@ -691,6 +694,7 @@ func (w *ExpressionWatch) Ref() *ExpressionWatch {
 	var _expressionWatch *ExpressionWatch // out
 
 	_expressionWatch = (*ExpressionWatch)(unsafe.Pointer(_cret))
+	C.gtk_expression_watch_ref(_cret)
 	runtime.SetFinalizer(_expressionWatch, func(v *ExpressionWatch) {
 		C.gtk_expression_watch_unref((*C.GtkExpressionWatch)(unsafe.Pointer(v)))
 	})

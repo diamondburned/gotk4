@@ -48,7 +48,7 @@ func NewSphereAlloc() *Sphere {
 
 	_sphere = (*Sphere)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_sphere, func(v *Sphere) {
-		C.graphene_sphere_free((*C.graphene_sphere_t)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _sphere

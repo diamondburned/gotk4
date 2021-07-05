@@ -582,6 +582,9 @@ func (l layout) Attributes() *AttrList {
 
 	_attrList = (*AttrList)(unsafe.Pointer(_cret))
 	C.pango_attr_list_ref(_cret)
+	runtime.SetFinalizer(_attrList, func(v *AttrList) {
+		C.pango_attr_list_unref((*C.PangoAttrList)(unsafe.Pointer(v)))
+	})
 
 	return _attrList
 }
@@ -815,7 +818,7 @@ func (l layout) Iter() *LayoutIter {
 
 	_layoutIter = (*LayoutIter)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_layoutIter, func(v *LayoutIter) {
-		C.pango_layout_iter_free((*C.PangoLayoutIter)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _layoutIter
@@ -1020,7 +1023,7 @@ func (l layout) Tabs() *TabArray {
 
 	_tabArray = (*TabArray)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_tabArray, func(v *TabArray) {
-		C.pango_tab_array_free((*C.PangoTabArray)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _tabArray
@@ -1477,7 +1480,7 @@ func (i *LayoutIter) Copy() *LayoutIter {
 
 	_layoutIter = (*LayoutIter)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_layoutIter, func(v *LayoutIter) {
-		C.pango_layout_iter_free((*C.PangoLayoutIter)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _layoutIter

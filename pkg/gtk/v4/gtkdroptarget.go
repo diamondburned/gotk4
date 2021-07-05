@@ -199,6 +199,7 @@ func (s dropTarget) Formats() *gdk.ContentFormats {
 	var _contentFormats *gdk.ContentFormats // out
 
 	_contentFormats = (*gdk.ContentFormats)(unsafe.Pointer(_cret))
+	C.gdk_content_formats_ref(_cret)
 	runtime.SetFinalizer(_contentFormats, func(v *gdk.ContentFormats) {
 		C.gdk_content_formats_unref((*C.GdkContentFormats)(unsafe.Pointer(v)))
 	})

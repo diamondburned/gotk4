@@ -130,6 +130,7 @@ func (s pollableInputStream) CreateSource(cancellable Cancellable) *glib.Source 
 	var _source *glib.Source // out
 
 	_source = (*glib.Source)(unsafe.Pointer(_cret))
+	C.g_source_ref(_cret)
 	runtime.SetFinalizer(_source, func(v *glib.Source) {
 		C.g_source_unref((*C.GSource)(unsafe.Pointer(v)))
 	})

@@ -344,7 +344,7 @@ func (o value) Range() *Range {
 
 	__range = (*Range)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(__range, func(v *Range) {
-		C.atk_range_free((*C.AtkRange)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 
 	return __range

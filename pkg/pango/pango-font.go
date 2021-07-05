@@ -233,7 +233,7 @@ func (f font) DescribeFont() *FontDescription {
 
 	_fontDescription = (*FontDescription)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_fontDescription, func(v *FontDescription) {
-		C.pango_font_description_free((*C.PangoFontDescription)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _fontDescription
@@ -251,7 +251,7 @@ func (f font) DescribeWithAbsoluteSizeFont() *FontDescription {
 
 	_fontDescription = (*FontDescription)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_fontDescription, func(v *FontDescription) {
-		C.pango_font_description_free((*C.PangoFontDescription)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _fontDescription
@@ -317,6 +317,7 @@ func (f font) Metrics(language *Language) *FontMetrics {
 	var _fontMetrics *FontMetrics // out
 
 	_fontMetrics = (*FontMetrics)(unsafe.Pointer(_cret))
+	C.pango_font_metrics_ref(_cret)
 	runtime.SetFinalizer(_fontMetrics, func(v *FontMetrics) {
 		C.pango_font_metrics_unref((*C.PangoFontMetrics)(unsafe.Pointer(v)))
 	})
@@ -402,7 +403,7 @@ func (f fontFace) DescribeFontFace() *FontDescription {
 
 	_fontDescription = (*FontDescription)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_fontDescription, func(v *FontDescription) {
-		C.pango_font_description_free((*C.PangoFontDescription)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _fontDescription
@@ -654,7 +655,7 @@ func NewFontDescription() *FontDescription {
 
 	_fontDescription = (*FontDescription)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_fontDescription, func(v *FontDescription) {
-		C.pango_font_description_free((*C.PangoFontDescription)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _fontDescription
@@ -710,7 +711,7 @@ func (d *FontDescription) Copy() *FontDescription {
 
 	_fontDescription = (*FontDescription)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_fontDescription, func(v *FontDescription) {
-		C.pango_font_description_free((*C.PangoFontDescription)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _fontDescription
@@ -735,7 +736,7 @@ func (d *FontDescription) CopyStatic() *FontDescription {
 
 	_fontDescription = (*FontDescription)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_fontDescription, func(v *FontDescription) {
-		C.pango_font_description_free((*C.PangoFontDescription)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _fontDescription
@@ -1478,6 +1479,7 @@ func (m *FontMetrics) Ref() *FontMetrics {
 	var _fontMetrics *FontMetrics // out
 
 	_fontMetrics = (*FontMetrics)(unsafe.Pointer(_cret))
+	C.pango_font_metrics_ref(_cret)
 	runtime.SetFinalizer(_fontMetrics, func(v *FontMetrics) {
 		C.pango_font_metrics_unref((*C.PangoFontMetrics)(unsafe.Pointer(v)))
 	})

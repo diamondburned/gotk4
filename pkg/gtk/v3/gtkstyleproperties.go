@@ -180,6 +180,9 @@ func (p styleProperties) LookupColorStyleProperties(name string) *SymbolicColor 
 
 	_symbolicColor = (*SymbolicColor)(unsafe.Pointer(_cret))
 	C.gtk_symbolic_color_ref(_cret)
+	runtime.SetFinalizer(_symbolicColor, func(v *SymbolicColor) {
+		C.gtk_symbolic_color_unref((*C.GtkSymbolicColor)(unsafe.Pointer(v)))
+	})
 
 	return _symbolicColor
 }
@@ -290,6 +293,7 @@ func NewGradientLinear(x0 float64, y0 float64, x1 float64, y1 float64) *Gradient
 	var _gradient *Gradient // out
 
 	_gradient = (*Gradient)(unsafe.Pointer(_cret))
+	C.gtk_gradient_ref(_cret)
 	runtime.SetFinalizer(_gradient, func(v *Gradient) {
 		C.gtk_gradient_unref((*C.GtkGradient)(unsafe.Pointer(v)))
 	})
@@ -319,6 +323,7 @@ func NewGradientRadial(x0 float64, y0 float64, radius0 float64, x1 float64, y1 f
 	var _gradient *Gradient // out
 
 	_gradient = (*Gradient)(unsafe.Pointer(_cret))
+	C.gtk_gradient_ref(_cret)
 	runtime.SetFinalizer(_gradient, func(v *Gradient) {
 		C.gtk_gradient_unref((*C.GtkGradient)(unsafe.Pointer(v)))
 	})
@@ -360,6 +365,7 @@ func (g *Gradient) Ref() *Gradient {
 	var _ret *Gradient // out
 
 	_ret = (*Gradient)(unsafe.Pointer(_cret))
+	C.gtk_gradient_ref(_cret)
 	runtime.SetFinalizer(_ret, func(v *Gradient) {
 		C.gtk_gradient_unref((*C.GtkGradient)(unsafe.Pointer(v)))
 	})
@@ -491,6 +497,7 @@ func NewSymbolicColorAlpha(color *SymbolicColor, factor float64) *SymbolicColor 
 	var _symbolicColor *SymbolicColor // out
 
 	_symbolicColor = (*SymbolicColor)(unsafe.Pointer(_cret))
+	C.gtk_symbolic_color_ref(_cret)
 	runtime.SetFinalizer(_symbolicColor, func(v *SymbolicColor) {
 		C.gtk_symbolic_color_unref((*C.GtkSymbolicColor)(unsafe.Pointer(v)))
 	})
@@ -510,6 +517,7 @@ func NewSymbolicColorLiteral(color *gdk.RGBA) *SymbolicColor {
 	var _symbolicColor *SymbolicColor // out
 
 	_symbolicColor = (*SymbolicColor)(unsafe.Pointer(_cret))
+	C.gtk_symbolic_color_ref(_cret)
 	runtime.SetFinalizer(_symbolicColor, func(v *SymbolicColor) {
 		C.gtk_symbolic_color_unref((*C.GtkSymbolicColor)(unsafe.Pointer(v)))
 	})
@@ -533,6 +541,7 @@ func NewSymbolicColorMix(color1 *SymbolicColor, color2 *SymbolicColor, factor fl
 	var _symbolicColor *SymbolicColor // out
 
 	_symbolicColor = (*SymbolicColor)(unsafe.Pointer(_cret))
+	C.gtk_symbolic_color_ref(_cret)
 	runtime.SetFinalizer(_symbolicColor, func(v *SymbolicColor) {
 		C.gtk_symbolic_color_unref((*C.GtkSymbolicColor)(unsafe.Pointer(v)))
 	})
@@ -553,6 +562,7 @@ func NewSymbolicColorName(name string) *SymbolicColor {
 	var _symbolicColor *SymbolicColor // out
 
 	_symbolicColor = (*SymbolicColor)(unsafe.Pointer(_cret))
+	C.gtk_symbolic_color_ref(_cret)
 	runtime.SetFinalizer(_symbolicColor, func(v *SymbolicColor) {
 		C.gtk_symbolic_color_unref((*C.GtkSymbolicColor)(unsafe.Pointer(v)))
 	})
@@ -574,6 +584,7 @@ func NewSymbolicColorShade(color *SymbolicColor, factor float64) *SymbolicColor 
 	var _symbolicColor *SymbolicColor // out
 
 	_symbolicColor = (*SymbolicColor)(unsafe.Pointer(_cret))
+	C.gtk_symbolic_color_ref(_cret)
 	runtime.SetFinalizer(_symbolicColor, func(v *SymbolicColor) {
 		C.gtk_symbolic_color_unref((*C.GtkSymbolicColor)(unsafe.Pointer(v)))
 	})
@@ -596,6 +607,7 @@ func NewSymbolicColorWin32(themeClass string, id int) *SymbolicColor {
 	var _symbolicColor *SymbolicColor // out
 
 	_symbolicColor = (*SymbolicColor)(unsafe.Pointer(_cret))
+	C.gtk_symbolic_color_ref(_cret)
 	runtime.SetFinalizer(_symbolicColor, func(v *SymbolicColor) {
 		C.gtk_symbolic_color_unref((*C.GtkSymbolicColor)(unsafe.Pointer(v)))
 	})
@@ -622,6 +634,7 @@ func (c *SymbolicColor) Ref() *SymbolicColor {
 	var _symbolicColor *SymbolicColor // out
 
 	_symbolicColor = (*SymbolicColor)(unsafe.Pointer(_cret))
+	C.gtk_symbolic_color_ref(_cret)
 	runtime.SetFinalizer(_symbolicColor, func(v *SymbolicColor) {
 		C.gtk_symbolic_color_unref((*C.GtkSymbolicColor)(unsafe.Pointer(v)))
 	})

@@ -28,6 +28,16 @@ func ApplyPreprocessors(repos gir.Repositories, preprocs []Preprocessor) {
 	}
 }
 
+func girTypeMustBeVersioned(girType string) {
+	namespace, _ := gir.SplitGIRType(girType)
+
+	// Verify that the namespace is present.
+	_, version := gir.ParseVersionName(namespace)
+	if version == "" {
+		log.Panicf("girType %q missing version", girType)
+	}
+}
+
 type typeRenamer struct {
 	from, to string
 }
@@ -37,14 +47,7 @@ type typeRenamer struct {
 // name must not. The GIR type is absolutely matched, similarly to
 // AbsoluteFilter.
 func TypeRenamer(girType, newName string) Preprocessor {
-	namespace, _ := gir.SplitGIRType(girType)
-
-	// Verify that the namespace is present.
-	_, version := gir.ParseVersionName(namespace)
-	if version == "" {
-		log.Panicf("girType %q missing version", girType)
-	}
-
+	girTypeMustBeVersioned(girType)
 	return typeRenamer{
 		from: girType,
 		to:   newName,
@@ -70,28 +73,79 @@ type modifyCallable struct {
 //
 // TODO: add Method, Virtual Method and Constructor support.
 func ModifyCallable(girType string, f func(c *gir.CallableAttrs)) Preprocessor {
-	return modifyCallable{girType, f}
+	girTypeMustBeVersioned(girType)
+	return modifyCallable{
+		girType: girType,
+		modFunc: f,
+	}
 }
 
 func (m modifyCallable) Preprocess(repos gir.Repositories) {
-	result := repos.FindFullType(m.girType)
+	threeParts := strings.SplitN(m.girType, ".", 3)
+	girType := strings.Join(threeParts[:2], ".")
+
+	result := repos.FindFullType(girType)
 	if result == nil {
 		log.Panicf("GIR type %q not found", m.girType)
 	}
 
-	var callable *gir.CallableAttrs
 	switch v := result.Type.(type) {
 	case *gir.Function:
-		callable = &v.CallableAttrs
+		m.modFunc(&v.CallableAttrs)
+		return
 	case *gir.Callback:
-		callable = &v.CallableAttrs
+		m.modFunc(&v.CallableAttrs)
+		return
 	}
 
-	if callable == nil {
-		log.Panicf("GIR type %q has no callable", m.girType)
+	if len(threeParts) != 3 {
+		goto notFound
 	}
 
-	m.modFunc(callable)
+	switch v := result.Type.(type) {
+	case *gir.Class:
+		for i, ctor := range v.Constructors {
+			if ctor.Name == threeParts[2] {
+				m.modFunc(&v.Constructors[i].CallableAttrs)
+				return
+			}
+		}
+		for i, method := range v.Methods {
+			if method.Name == threeParts[2] {
+				m.modFunc(&v.Methods[i].CallableAttrs)
+				return
+			}
+		}
+	case *gir.Record:
+		for i, ctor := range v.Constructors {
+			if ctor.Name == threeParts[2] {
+				m.modFunc(&v.Constructors[i].CallableAttrs)
+				return
+			}
+		}
+		for i, method := range v.Methods {
+			if method.Name == threeParts[2] {
+				m.modFunc(&v.Methods[i].CallableAttrs)
+				return
+			}
+		}
+	case *gir.Interface:
+		for i, method := range v.Methods {
+			if method.Name == threeParts[2] {
+				m.modFunc(&v.Methods[i].CallableAttrs)
+				return
+			}
+		}
+		for i, method := range v.VirtualMethods {
+			if method.Name == threeParts[2] {
+				m.modFunc(&v.VirtualMethods[i].CallableAttrs)
+				return
+			}
+		}
+	}
+
+notFound:
+	log.Panicf("GIR type %q has no callable", m.girType)
 }
 
 // FilterMatcher describes a filter for a GIR type.

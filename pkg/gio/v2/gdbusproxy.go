@@ -438,6 +438,7 @@ func (p dBusProxy) CallFinishDBusProxy(res AsyncResult) (*glib.Variant, error) {
 	var _goerr error           // out
 
 	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
 	})
@@ -470,6 +471,7 @@ func (p dBusProxy) CallSyncDBusProxy(methodName string, parameters *glib.Variant
 	var _goerr error           // out
 
 	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
 	})
@@ -521,6 +523,7 @@ func (p dBusProxy) CallWithUnixFdListFinishDBusProxy(res AsyncResult) (UnixFDLis
 
 	_outFdList = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_arg1))).(UnixFDList)
 	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
 	})
@@ -558,6 +561,7 @@ func (p dBusProxy) CallWithUnixFdListSyncDBusProxy(methodName string, parameters
 
 	_outFdList = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_arg6))).(UnixFDList)
 	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
 	})
@@ -580,6 +584,7 @@ func (p dBusProxy) CachedProperty(propertyName string) *glib.Variant {
 	var _variant *glib.Variant // out
 
 	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
 	})
@@ -672,6 +677,9 @@ func (p dBusProxy) InterfaceInfo() *DBusInterfaceInfo {
 
 	_dBusInterfaceInfo = (*DBusInterfaceInfo)(unsafe.Pointer(_cret))
 	C.g_dbus_interface_info_ref(_cret)
+	runtime.SetFinalizer(_dBusInterfaceInfo, func(v *DBusInterfaceInfo) {
+		C.g_dbus_interface_info_unref((*C.GDBusInterfaceInfo)(unsafe.Pointer(v)))
+	})
 
 	return _dBusInterfaceInfo
 }

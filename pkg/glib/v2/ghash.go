@@ -30,7 +30,7 @@ func init() {
 type HRFunc func(key interface{}, value interface{}) (ok bool)
 
 //export gotk4_HRFunc
-func gotk4_HRFunc(arg0 C.gpointer, arg1 C.gpointer, arg2 C.gpointer) C.gboolean {
+func gotk4_HRFunc(arg0 C.gpointer, arg1 C.gpointer, arg2 C.gpointer) (cret C.gboolean) {
 	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
@@ -44,8 +44,6 @@ func gotk4_HRFunc(arg0 C.gpointer, arg1 C.gpointer, arg2 C.gpointer) C.gboolean 
 
 	fn := v.(HRFunc)
 	ok := fn(key, value)
-
-	var cret C.gboolean // out
 
 	if ok {
 		cret = C.TRUE

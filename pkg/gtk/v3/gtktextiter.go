@@ -57,7 +57,7 @@ func marshalTextSearchFlags(p uintptr) (interface{}, error) {
 type TextCharPredicate func(ch uint32) (ok bool)
 
 //export gotk4_TextCharPredicate
-func gotk4_TextCharPredicate(arg0 C.gunichar, arg1 C.gpointer) C.gboolean {
+func gotk4_TextCharPredicate(arg0 C.gunichar, arg1 C.gpointer) (cret C.gboolean) {
 	v := box.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
@@ -69,8 +69,6 @@ func gotk4_TextCharPredicate(arg0 C.gunichar, arg1 C.gpointer) C.gboolean {
 
 	fn := v.(TextCharPredicate)
 	ok := fn(ch)
-
-	var cret C.gboolean // out
 
 	if ok {
 		cret = C.TRUE
@@ -663,7 +661,7 @@ func (i *TextIter) Copy() *TextIter {
 
 	_textIter = (*TextIter)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_textIter, func(v *TextIter) {
-		C.gtk_text_iter_free((*C.GtkTextIter)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _textIter
@@ -1354,6 +1352,9 @@ func (i *TextIter) Attributes() (TextAttributes, bool) {
 
 		refTmpOut = (*TextAttributes)(unsafe.Pointer(refTmpIn))
 		C.gtk_text_attributes_ref(refTmpIn)
+		runtime.SetFinalizer(refTmpOut, func(v *TextAttributes) {
+			C.gtk_text_attributes_unref((*C.GtkTextAttributes)(unsafe.Pointer(v)))
+		})
 
 		_values = *refTmpOut
 	}

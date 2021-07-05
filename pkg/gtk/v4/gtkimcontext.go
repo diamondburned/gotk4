@@ -307,6 +307,7 @@ func (c imContext) PreeditString() (string, *pango.AttrList, int) {
 	_str = C.GoString(_arg1)
 	defer C.free(unsafe.Pointer(_arg1))
 	_attrs = (*pango.AttrList)(unsafe.Pointer(_arg2))
+	C.pango_attr_list_ref(_arg2)
 	runtime.SetFinalizer(_attrs, func(v *pango.AttrList) {
 		C.pango_attr_list_unref((*C.PangoAttrList)(unsafe.Pointer(v)))
 	})

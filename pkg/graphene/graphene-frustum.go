@@ -51,7 +51,7 @@ func NewFrustumAlloc() *Frustum {
 
 	_frustum = (*Frustum)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_frustum, func(v *Frustum) {
-		C.graphene_frustum_free((*C.graphene_frustum_t)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _frustum

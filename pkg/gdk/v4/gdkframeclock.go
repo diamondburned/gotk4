@@ -3,6 +3,7 @@
 package gdk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -205,6 +206,9 @@ func (f frameClock) CurrentTimings() *FrameTimings {
 
 	_frameTimings = (*FrameTimings)(unsafe.Pointer(_cret))
 	C.gdk_frame_timings_ref(_cret)
+	runtime.SetFinalizer(_frameTimings, func(v *FrameTimings) {
+		C.gdk_frame_timings_unref((*C.GdkFrameTimings)(unsafe.Pointer(v)))
+	})
 
 	return _frameTimings
 }
@@ -303,6 +307,9 @@ func (f frameClock) Timings(frameCounter int64) *FrameTimings {
 
 	_frameTimings = (*FrameTimings)(unsafe.Pointer(_cret))
 	C.gdk_frame_timings_ref(_cret)
+	runtime.SetFinalizer(_frameTimings, func(v *FrameTimings) {
+		C.gdk_frame_timings_unref((*C.GdkFrameTimings)(unsafe.Pointer(v)))
+	})
 
 	return _frameTimings
 }

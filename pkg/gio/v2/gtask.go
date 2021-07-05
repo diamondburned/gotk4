@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/box"
@@ -477,6 +478,9 @@ func (t task) Context() *glib.MainContext {
 
 	_mainContext = (*glib.MainContext)(unsafe.Pointer(_cret))
 	C.g_main_context_ref(_cret)
+	runtime.SetFinalizer(_mainContext, func(v *glib.MainContext) {
+		C.g_main_context_unref((*C.GMainContext)(unsafe.Pointer(v)))
+	})
 
 	return _mainContext
 }

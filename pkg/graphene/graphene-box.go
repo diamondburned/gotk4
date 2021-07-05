@@ -49,7 +49,7 @@ func NewBoxAlloc() *Box {
 
 	_box = (*Box)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_box, func(v *Box) {
-		C.graphene_box_free((*C.graphene_box_t)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _box

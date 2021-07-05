@@ -390,6 +390,7 @@ func (a actionGroup) ActionState(actionName string) *glib.Variant {
 	var _variant *glib.Variant // out
 
 	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
 	})
@@ -411,6 +412,7 @@ func (a actionGroup) ActionStateHint(actionName string) *glib.Variant {
 	var _variant *glib.Variant // out
 
 	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
 	})
@@ -512,17 +514,19 @@ func (a actionGroup) QueryAction(actionName string) (enabled bool, parameterType
 	}
 	_parameterType = (*glib.VariantType)(unsafe.Pointer(_arg3))
 	runtime.SetFinalizer(_parameterType, func(v *glib.VariantType) {
-		C.g_variant_type_free((*C.GVariantType)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 	_stateType = (*glib.VariantType)(unsafe.Pointer(_arg4))
 	runtime.SetFinalizer(_stateType, func(v *glib.VariantType) {
-		C.g_variant_type_free((*C.GVariantType)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 	_stateHint = (*glib.Variant)(unsafe.Pointer(_arg5))
+	C.g_variant_ref(_arg5)
 	runtime.SetFinalizer(_stateHint, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
 	})
 	_state = (*glib.Variant)(unsafe.Pointer(_arg6))
+	C.g_variant_ref(_arg6)
 	runtime.SetFinalizer(_state, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
 	})

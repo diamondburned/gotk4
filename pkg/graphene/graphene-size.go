@@ -48,7 +48,7 @@ func NewSizeAlloc() *Size {
 
 	_size = (*Size)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_size, func(v *Size) {
-		C.graphene_size_free((*C.graphene_size_t)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _size

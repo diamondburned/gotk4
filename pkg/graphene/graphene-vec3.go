@@ -52,7 +52,7 @@ func NewVec3Alloc() *Vec3 {
 
 	_vec3 = (*Vec3)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_vec3, func(v *Vec3) {
-		C.graphene_vec3_free((*C.graphene_vec3_t)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _vec3

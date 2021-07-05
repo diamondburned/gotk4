@@ -374,7 +374,9 @@ func (a glArea) SetErrorGLArea(err error) {
 
 	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.GError)(gerror.New(err))
-	defer C.g_error_free(_arg1)
+	if _arg1 != nil {
+		defer C.g_error_free(_arg1)
+	}
 
 	C.gtk_gl_area_set_error(_arg0, _arg1)
 }

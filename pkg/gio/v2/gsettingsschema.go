@@ -119,6 +119,7 @@ func (s *SettingsSchema) Key(name string) *SettingsSchemaKey {
 	var _settingsSchemaKey *SettingsSchemaKey // out
 
 	_settingsSchemaKey = (*SettingsSchemaKey)(unsafe.Pointer(_cret))
+	C.g_settings_schema_key_ref(_cret)
 	runtime.SetFinalizer(_settingsSchemaKey, func(v *SettingsSchemaKey) {
 		C.g_settings_schema_key_unref((*C.GSettingsSchemaKey)(unsafe.Pointer(v)))
 	})
@@ -247,6 +248,7 @@ func (s *SettingsSchema) Ref() *SettingsSchema {
 	var _settingsSchema *SettingsSchema // out
 
 	_settingsSchema = (*SettingsSchema)(unsafe.Pointer(_cret))
+	C.g_settings_schema_ref(_cret)
 	runtime.SetFinalizer(_settingsSchema, func(v *SettingsSchema) {
 		C.g_settings_schema_unref((*C.GSettingsSchema)(unsafe.Pointer(v)))
 	})
@@ -300,6 +302,7 @@ func (k *SettingsSchemaKey) DefaultValue() *glib.Variant {
 	var _variant *glib.Variant // out
 
 	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
 	})
@@ -395,6 +398,7 @@ func (k *SettingsSchemaKey) Range() *glib.Variant {
 	var _variant *glib.Variant // out
 
 	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
 	})
@@ -480,6 +484,7 @@ func (k *SettingsSchemaKey) Ref() *SettingsSchemaKey {
 	var _settingsSchemaKey *SettingsSchemaKey // out
 
 	_settingsSchemaKey = (*SettingsSchemaKey)(unsafe.Pointer(_cret))
+	C.g_settings_schema_key_ref(_cret)
 	runtime.SetFinalizer(_settingsSchemaKey, func(v *SettingsSchemaKey) {
 		C.g_settings_schema_key_unref((*C.GSettingsSchemaKey)(unsafe.Pointer(v)))
 	})
@@ -534,6 +539,7 @@ func NewSettingsSchemaSourceFromDirectory(directory string, parent *SettingsSche
 	var _goerr error                                // out
 
 	_settingsSchemaSource = (*SettingsSchemaSource)(unsafe.Pointer(_cret))
+	C.g_settings_schema_source_ref(_cret)
 	runtime.SetFinalizer(_settingsSchemaSource, func(v *SettingsSchemaSource) {
 		C.g_settings_schema_source_unref((*C.GSettingsSchemaSource)(unsafe.Pointer(v)))
 	})
@@ -634,6 +640,7 @@ func (s *SettingsSchemaSource) Lookup(schemaId string, recursive bool) *Settings
 	var _settingsSchema *SettingsSchema // out
 
 	_settingsSchema = (*SettingsSchema)(unsafe.Pointer(_cret))
+	C.g_settings_schema_ref(_cret)
 	runtime.SetFinalizer(_settingsSchema, func(v *SettingsSchema) {
 		C.g_settings_schema_unref((*C.GSettingsSchema)(unsafe.Pointer(v)))
 	})
@@ -653,6 +660,7 @@ func (s *SettingsSchemaSource) Ref() *SettingsSchemaSource {
 	var _settingsSchemaSource *SettingsSchemaSource // out
 
 	_settingsSchemaSource = (*SettingsSchemaSource)(unsafe.Pointer(_cret))
+	C.g_settings_schema_source_ref(_cret)
 	runtime.SetFinalizer(_settingsSchemaSource, func(v *SettingsSchemaSource) {
 		C.g_settings_schema_source_unref((*C.GSettingsSchemaSource)(unsafe.Pointer(v)))
 	})

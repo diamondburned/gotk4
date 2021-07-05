@@ -122,7 +122,7 @@ func NewChecksum(checksumType ChecksumType) *Checksum {
 
 	_checksum = (*Checksum)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_checksum, func(v *Checksum) {
-		C.g_checksum_free((*C.GChecksum)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _checksum
@@ -148,7 +148,7 @@ func (c *Checksum) Copy() *Checksum {
 
 	_ret = (*Checksum)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_ret, func(v *Checksum) {
-		C.g_checksum_free((*C.GChecksum)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _ret

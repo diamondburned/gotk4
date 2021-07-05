@@ -68,6 +68,7 @@ func NewContentFormatsBuilder() *ContentFormatsBuilder {
 	var _contentFormatsBuilder *ContentFormatsBuilder // out
 
 	_contentFormatsBuilder = (*ContentFormatsBuilder)(unsafe.Pointer(_cret))
+	C.gdk_content_formats_builder_ref(_cret)
 	runtime.SetFinalizer(_contentFormatsBuilder, func(v *ContentFormatsBuilder) {
 		C.gdk_content_formats_builder_unref((*C.GdkContentFormatsBuilder)(unsafe.Pointer(v)))
 	})
@@ -131,6 +132,9 @@ func (b *ContentFormatsBuilder) Ref() *ContentFormatsBuilder {
 
 	_contentFormatsBuilder = (*ContentFormatsBuilder)(unsafe.Pointer(_cret))
 	C.gdk_content_formats_builder_ref(_cret)
+	runtime.SetFinalizer(_contentFormatsBuilder, func(v *ContentFormatsBuilder) {
+		C.gdk_content_formats_builder_unref((*C.GdkContentFormatsBuilder)(unsafe.Pointer(v)))
+	})
 
 	return _contentFormatsBuilder
 }
@@ -153,6 +157,7 @@ func (b *ContentFormatsBuilder) ToFormats() *ContentFormats {
 	var _contentFormats *ContentFormats // out
 
 	_contentFormats = (*ContentFormats)(unsafe.Pointer(_cret))
+	C.gdk_content_formats_ref(_cret)
 	runtime.SetFinalizer(_contentFormats, func(v *ContentFormats) {
 		C.gdk_content_formats_unref((*C.GdkContentFormats)(unsafe.Pointer(v)))
 	})

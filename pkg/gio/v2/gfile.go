@@ -2809,6 +2809,7 @@ func (f file) QuerySettableAttributes(cancellable Cancellable) (*FileAttributeIn
 	var _goerr error                                  // out
 
 	_fileAttributeInfoList = (*FileAttributeInfoList)(unsafe.Pointer(_cret))
+	C.g_file_attribute_info_list_ref(_cret)
 	runtime.SetFinalizer(_fileAttributeInfoList, func(v *FileAttributeInfoList) {
 		C.g_file_attribute_info_list_unref((*C.GFileAttributeInfoList)(unsafe.Pointer(v)))
 	})
@@ -2832,6 +2833,7 @@ func (f file) QueryWritableNamespaces(cancellable Cancellable) (*FileAttributeIn
 	var _goerr error                                  // out
 
 	_fileAttributeInfoList = (*FileAttributeInfoList)(unsafe.Pointer(_cret))
+	C.g_file_attribute_info_list_ref(_cret)
 	runtime.SetFinalizer(_fileAttributeInfoList, func(v *FileAttributeInfoList) {
 		C.g_file_attribute_info_list_unref((*C.GFileAttributeInfoList)(unsafe.Pointer(v)))
 	})

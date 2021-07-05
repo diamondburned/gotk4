@@ -68,7 +68,7 @@ func gotk4_AsyncReadyCallback(arg0 *C.GObject, arg1 *C.GAsyncResult, arg2 C.gpoi
 type CancellableSourceFunc func(cancellable Cancellable) (ok bool)
 
 //export gotk4_CancellableSourceFunc
-func gotk4_CancellableSourceFunc(arg0 *C.GCancellable, arg1 C.gpointer) C.gboolean {
+func gotk4_CancellableSourceFunc(arg0 *C.GCancellable, arg1 C.gpointer) (cret C.gboolean) {
 	v := box.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
@@ -80,8 +80,6 @@ func gotk4_CancellableSourceFunc(arg0 *C.GCancellable, arg1 C.gpointer) C.gboole
 
 	fn := v.(CancellableSourceFunc)
 	ok := fn(cancellable)
-
-	var cret C.gboolean // out
 
 	if ok {
 		cret = C.TRUE
@@ -99,7 +97,7 @@ func gotk4_CancellableSourceFunc(arg0 *C.GCancellable, arg1 C.gpointer) C.gboole
 type DBusProxyTypeFunc func(manager DBusObjectManagerClient, objectPath string, interfaceName string) (gType externglib.Type)
 
 //export gotk4_DBusProxyTypeFunc
-func gotk4_DBusProxyTypeFunc(arg0 *C.GDBusObjectManagerClient, arg1 *C.gchar, arg2 *C.gchar, arg3 C.gpointer) C.GType {
+func gotk4_DBusProxyTypeFunc(arg0 *C.GDBusObjectManagerClient, arg1 *C.gchar, arg2 *C.gchar, arg3 C.gpointer) (cret C.GType) {
 	v := box.Get(uintptr(arg3))
 	if v == nil {
 		panic(`callback not found`)
@@ -116,8 +114,6 @@ func gotk4_DBusProxyTypeFunc(arg0 *C.GDBusObjectManagerClient, arg1 *C.gchar, ar
 	fn := v.(DBusProxyTypeFunc)
 	gType := fn(manager, objectPath, interfaceName)
 
-	var cret C.GType // out
-
 	cret = (C.GType)(gType)
 
 	return cret
@@ -128,7 +124,7 @@ func gotk4_DBusProxyTypeFunc(arg0 *C.GDBusObjectManagerClient, arg1 *C.gchar, ar
 type DatagramBasedSourceFunc func(datagramBased DatagramBased, condition glib.IOCondition) (ok bool)
 
 //export gotk4_DatagramBasedSourceFunc
-func gotk4_DatagramBasedSourceFunc(arg0 *C.GDatagramBased, arg1 C.GIOCondition, arg2 C.gpointer) C.gboolean {
+func gotk4_DatagramBasedSourceFunc(arg0 *C.GDatagramBased, arg1 C.GIOCondition, arg2 C.gpointer) (cret C.gboolean) {
 	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
@@ -142,8 +138,6 @@ func gotk4_DatagramBasedSourceFunc(arg0 *C.GDatagramBased, arg1 C.GIOCondition, 
 
 	fn := v.(DatagramBasedSourceFunc)
 	ok := fn(datagramBased, condition)
-
-	var cret C.gboolean // out
 
 	if ok {
 		cret = C.TRUE
@@ -234,7 +228,7 @@ func gotk4_FileProgressCallback(arg0 C.goffset, arg1 C.goffset, arg2 C.gpointer)
 type FileReadMoreCallback func(fileContents string, fileSize int64) (ok bool)
 
 //export gotk4_FileReadMoreCallback
-func gotk4_FileReadMoreCallback(arg0 *C.char, arg1 C.goffset, arg2 C.gpointer) C.gboolean {
+func gotk4_FileReadMoreCallback(arg0 *C.char, arg1 C.goffset, arg2 C.gpointer) (cret C.gboolean) {
 	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
@@ -249,8 +243,6 @@ func gotk4_FileReadMoreCallback(arg0 *C.char, arg1 C.goffset, arg2 C.gpointer) C
 	fn := v.(FileReadMoreCallback)
 	ok := fn(fileContents, fileSize)
 
-	var cret C.gboolean // out
-
 	if ok {
 		cret = C.TRUE
 	}
@@ -264,7 +256,7 @@ func gotk4_FileReadMoreCallback(arg0 *C.char, arg1 C.goffset, arg2 C.gpointer) C
 type PollableSourceFunc func(pollableStream gextras.Objector) (ok bool)
 
 //export gotk4_PollableSourceFunc
-func gotk4_PollableSourceFunc(arg0 *C.GObject, arg1 C.gpointer) C.gboolean {
+func gotk4_PollableSourceFunc(arg0 *C.GObject, arg1 C.gpointer) (cret C.gboolean) {
 	v := box.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
@@ -276,8 +268,6 @@ func gotk4_PollableSourceFunc(arg0 *C.GObject, arg1 C.gpointer) C.gboolean {
 
 	fn := v.(PollableSourceFunc)
 	ok := fn(pollableStream)
-
-	var cret C.gboolean // out
 
 	if ok {
 		cret = C.TRUE
@@ -291,7 +281,7 @@ func gotk4_PollableSourceFunc(arg0 *C.GObject, arg1 C.gpointer) C.gboolean {
 type SocketSourceFunc func(socket Socket, condition glib.IOCondition) (ok bool)
 
 //export gotk4_SocketSourceFunc
-func gotk4_SocketSourceFunc(arg0 *C.GSocket, arg1 C.GIOCondition, arg2 C.gpointer) C.gboolean {
+func gotk4_SocketSourceFunc(arg0 *C.GSocket, arg1 C.GIOCondition, arg2 C.gpointer) (cret C.gboolean) {
 	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
@@ -305,8 +295,6 @@ func gotk4_SocketSourceFunc(arg0 *C.GSocket, arg1 C.GIOCondition, arg2 C.gpointe
 
 	fn := v.(SocketSourceFunc)
 	ok := fn(socket, condition)
-
-	var cret C.gboolean // out
 
 	if ok {
 		cret = C.TRUE
@@ -344,6 +332,7 @@ func NewFileAttributeMatcher(attributes string) *FileAttributeMatcher {
 	var _fileAttributeMatcher *FileAttributeMatcher // out
 
 	_fileAttributeMatcher = (*FileAttributeMatcher)(unsafe.Pointer(_cret))
+	C.g_file_attribute_matcher_ref(_cret)
 	runtime.SetFinalizer(_fileAttributeMatcher, func(v *FileAttributeMatcher) {
 		C.g_file_attribute_matcher_unref((*C.GFileAttributeMatcher)(unsafe.Pointer(v)))
 	})
@@ -455,6 +444,7 @@ func (m *FileAttributeMatcher) Ref() *FileAttributeMatcher {
 	var _fileAttributeMatcher *FileAttributeMatcher // out
 
 	_fileAttributeMatcher = (*FileAttributeMatcher)(unsafe.Pointer(_cret))
+	C.g_file_attribute_matcher_ref(_cret)
 	runtime.SetFinalizer(_fileAttributeMatcher, func(v *FileAttributeMatcher) {
 		C.g_file_attribute_matcher_unref((*C.GFileAttributeMatcher)(unsafe.Pointer(v)))
 	})
@@ -482,6 +472,7 @@ func (m *FileAttributeMatcher) Subtract(subtract *FileAttributeMatcher) *FileAtt
 	var _fileAttributeMatcher *FileAttributeMatcher // out
 
 	_fileAttributeMatcher = (*FileAttributeMatcher)(unsafe.Pointer(_cret))
+	C.g_file_attribute_matcher_ref(_cret)
 	runtime.SetFinalizer(_fileAttributeMatcher, func(v *FileAttributeMatcher) {
 		C.g_file_attribute_matcher_unref((*C.GFileAttributeMatcher)(unsafe.Pointer(v)))
 	})
@@ -893,6 +884,7 @@ func (r *Resource) Ref() *Resource {
 	var _ret *Resource // out
 
 	_ret = (*Resource)(unsafe.Pointer(_cret))
+	C.g_resource_ref(_cret)
 	runtime.SetFinalizer(_ret, func(v *Resource) {
 		C.g_resource_unref((*C.GResource)(unsafe.Pointer(v)))
 	})
@@ -958,7 +950,7 @@ func NewSrvTarget(hostname string, port uint16, priority uint16, weight uint16) 
 
 	_srvTarget = (*SrvTarget)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_srvTarget, func(v *SrvTarget) {
-		C.g_srv_target_free((*C.GSrvTarget)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _srvTarget
@@ -982,7 +974,7 @@ func (t *SrvTarget) Copy() *SrvTarget {
 
 	_srvTarget = (*SrvTarget)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_srvTarget, func(v *SrvTarget) {
-		C.g_srv_target_free((*C.GSrvTarget)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _srvTarget

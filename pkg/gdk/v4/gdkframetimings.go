@@ -191,6 +191,7 @@ func (t *FrameTimings) Ref() *FrameTimings {
 	var _frameTimings *FrameTimings // out
 
 	_frameTimings = (*FrameTimings)(unsafe.Pointer(_cret))
+	C.gdk_frame_timings_ref(_cret)
 	runtime.SetFinalizer(_frameTimings, func(v *FrameTimings) {
 		C.gdk_frame_timings_unref((*C.GdkFrameTimings)(unsafe.Pointer(v)))
 	})

@@ -619,6 +619,7 @@ func (m *MatchInfo) Regex() *Regex {
 	var _regex *Regex // out
 
 	_regex = (*Regex)(unsafe.Pointer(_cret))
+	C.g_regex_ref(_cret)
 	runtime.SetFinalizer(_regex, func(v *Regex) {
 		C.g_regex_unref((*C.GRegex)(unsafe.Pointer(v)))
 	})
@@ -742,6 +743,7 @@ func (m *MatchInfo) Ref() *MatchInfo {
 	var _matchInfo *MatchInfo // out
 
 	_matchInfo = (*MatchInfo)(unsafe.Pointer(_cret))
+	C.g_match_info_ref(_cret)
 	runtime.SetFinalizer(_matchInfo, func(v *MatchInfo) {
 		C.g_match_info_unref((*C.GMatchInfo)(unsafe.Pointer(v)))
 	})
@@ -852,6 +854,7 @@ func NewRegex(pattern string, compileOptions RegexCompileFlags, matchOptions Reg
 	var _goerr error  // out
 
 	_regex = (*Regex)(unsafe.Pointer(_cret))
+	C.g_regex_ref(_cret)
 	runtime.SetFinalizer(_regex, func(v *Regex) {
 		C.g_regex_unref((*C.GRegex)(unsafe.Pointer(v)))
 	})
@@ -1062,6 +1065,7 @@ func (r *Regex) Match(_string string, matchOptions RegexMatchFlags) (*MatchInfo,
 	var _ok bool              // out
 
 	_matchInfo = (*MatchInfo)(unsafe.Pointer(_arg3))
+	C.g_match_info_ref(_arg3)
 	runtime.SetFinalizer(_matchInfo, func(v *MatchInfo) {
 		C.g_match_info_unref((*C.GMatchInfo)(unsafe.Pointer(v)))
 	})
@@ -1103,6 +1107,7 @@ func (r *Regex) MatchAll(_string string, matchOptions RegexMatchFlags) (*MatchIn
 	var _ok bool              // out
 
 	_matchInfo = (*MatchInfo)(unsafe.Pointer(_arg3))
+	C.g_match_info_ref(_arg3)
 	runtime.SetFinalizer(_matchInfo, func(v *MatchInfo) {
 		C.g_match_info_unref((*C.GMatchInfo)(unsafe.Pointer(v)))
 	})
@@ -1168,6 +1173,7 @@ func (r *Regex) MatchAllFull(_string []byte, startPosition int, matchOptions Reg
 	var _goerr error          // out
 
 	_matchInfo = (*MatchInfo)(unsafe.Pointer(_arg5))
+	C.g_match_info_ref(_arg5)
 	runtime.SetFinalizer(_matchInfo, func(v *MatchInfo) {
 		C.g_match_info_unref((*C.GMatchInfo)(unsafe.Pointer(v)))
 	})
@@ -1245,6 +1251,7 @@ func (r *Regex) MatchFull(_string []byte, startPosition int, matchOptions RegexM
 	var _goerr error          // out
 
 	_matchInfo = (*MatchInfo)(unsafe.Pointer(_arg5))
+	C.g_match_info_ref(_arg5)
 	runtime.SetFinalizer(_matchInfo, func(v *MatchInfo) {
 		C.g_match_info_unref((*C.GMatchInfo)(unsafe.Pointer(v)))
 	})
@@ -1265,6 +1272,7 @@ func (r *Regex) Ref() *Regex {
 	var _ret *Regex // out
 
 	_ret = (*Regex)(unsafe.Pointer(_cret))
+	C.g_regex_ref(_cret)
 	runtime.SetFinalizer(_ret, func(v *Regex) {
 		C.g_regex_unref((*C.GRegex)(unsafe.Pointer(v)))
 	})

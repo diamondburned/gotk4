@@ -189,6 +189,7 @@ func (g *OptionGroup) Ref() *OptionGroup {
 	var _optionGroup *OptionGroup // out
 
 	_optionGroup = (*OptionGroup)(unsafe.Pointer(_cret))
+	C.g_option_group_ref(_cret)
 	runtime.SetFinalizer(_optionGroup, func(v *OptionGroup) {
 		C.g_option_group_unref((*C.GOptionGroup)(unsafe.Pointer(v)))
 	})

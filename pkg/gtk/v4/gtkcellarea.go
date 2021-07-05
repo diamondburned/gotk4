@@ -33,7 +33,7 @@ func init() {
 type CellAllocCallback func(renderer CellRenderer, cellArea *gdk.Rectangle, cellBackground *gdk.Rectangle) (ok bool)
 
 //export gotk4_CellAllocCallback
-func gotk4_CellAllocCallback(arg0 *C.GtkCellRenderer, arg1 *C.GdkRectangle, arg2 *C.GdkRectangle, arg3 C.gpointer) C.gboolean {
+func gotk4_CellAllocCallback(arg0 *C.GtkCellRenderer, arg1 *C.GdkRectangle, arg2 *C.GdkRectangle, arg3 C.gpointer) (cret C.gboolean) {
 	v := box.Get(uintptr(arg3))
 	if v == nil {
 		panic(`callback not found`)
@@ -50,8 +50,6 @@ func gotk4_CellAllocCallback(arg0 *C.GtkCellRenderer, arg1 *C.GdkRectangle, arg2
 	fn := v.(CellAllocCallback)
 	ok := fn(renderer, cellArea, cellBackground)
 
-	var cret C.gboolean // out
-
 	if ok {
 		cret = C.TRUE
 	}
@@ -64,7 +62,7 @@ func gotk4_CellAllocCallback(arg0 *C.GtkCellRenderer, arg1 *C.GdkRectangle, arg2
 type CellCallback func(renderer CellRenderer) (ok bool)
 
 //export gotk4_CellCallback
-func gotk4_CellCallback(arg0 *C.GtkCellRenderer, arg1 C.gpointer) C.gboolean {
+func gotk4_CellCallback(arg0 *C.GtkCellRenderer, arg1 C.gpointer) (cret C.gboolean) {
 	v := box.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
@@ -76,8 +74,6 @@ func gotk4_CellCallback(arg0 *C.GtkCellRenderer, arg1 C.gpointer) C.gboolean {
 
 	fn := v.(CellCallback)
 	ok := fn(renderer)
-
-	var cret C.gboolean // out
 
 	if ok {
 		cret = C.TRUE

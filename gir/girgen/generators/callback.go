@@ -162,7 +162,7 @@ func (g *CallbackGenerator) cgoTail() string {
 			return ""
 		}
 
-		callTail += " " + types.AnyTypeCGo(g.ReturnValue.AnyType)
+		callTail += fmt.Sprintf(" (cret %s)", types.AnyTypeCGo(g.ReturnValue.AnyType))
 	}
 
 	return callTail
@@ -196,9 +196,8 @@ func (g *CallbackGenerator) renderBlock() bool {
 			continue
 		}
 
-		if param.Direction == "" {
-			param.Direction = "in" // default
-		}
+		// Reguess the parameter.
+		param.Direction = types.GuessParameterOutput(&param)
 
 		var in string
 		var out string
@@ -265,7 +264,9 @@ func (g *CallbackGenerator) renderBlock() bool {
 			goCallRets.Add(result.InCall)
 			goTypeRets.Addf("%s %s", result.InName, result.InType)
 
-			g.pen.Line(secOutputPre, result.OutDeclare)
+			// OutDeclare is declared in the function signature.
+			// g.pen.Line(secOutputPre, result.OutDeclare)
+
 			g.pen.Line(secOutputConv, result.Conversion)
 		}
 	}

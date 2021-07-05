@@ -326,7 +326,7 @@ func marshalWindowHints(p uintptr) (interface{}, error) {
 type WindowChildFunc func(window Window) (ok bool)
 
 //export gotk4_WindowChildFunc
-func gotk4_WindowChildFunc(arg0 *C.GdkWindow, arg1 C.gpointer) C.gboolean {
+func gotk4_WindowChildFunc(arg0 *C.GdkWindow, arg1 C.gpointer) (cret C.gboolean) {
 	v := box.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
@@ -338,8 +338,6 @@ func gotk4_WindowChildFunc(arg0 *C.GdkWindow, arg1 C.gpointer) C.gboolean {
 
 	fn := v.(WindowChildFunc)
 	ok := fn(window)
-
-	var cret C.gboolean // out
 
 	if ok {
 		cret = C.TRUE

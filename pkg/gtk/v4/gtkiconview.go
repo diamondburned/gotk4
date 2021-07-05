@@ -522,7 +522,7 @@ func (i iconView) Cursor() (*TreePath, CellRenderer, bool) {
 
 	_path = (*TreePath)(unsafe.Pointer(_arg1))
 	runtime.SetFinalizer(_path, func(v *TreePath) {
-		C.gtk_tree_path_free((*C.GtkTreePath)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 	_cell = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg2))).(CellRenderer)
 	if _cret != 0 {
@@ -552,7 +552,7 @@ func (i iconView) DestItemAtPos(dragX int, dragY int) (*TreePath, IconViewDropPo
 
 	_path = (*TreePath)(unsafe.Pointer(_arg3))
 	runtime.SetFinalizer(_path, func(v *TreePath) {
-		C.gtk_tree_path_free((*C.GtkTreePath)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 	_pos = IconViewDropPosition(_arg4)
 	if _cret != 0 {
@@ -576,7 +576,7 @@ func (i iconView) DragDestItem() (*TreePath, IconViewDropPosition) {
 
 	_path = (*TreePath)(unsafe.Pointer(_arg1))
 	runtime.SetFinalizer(_path, func(v *TreePath) {
-		C.gtk_tree_path_free((*C.GtkTreePath)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 	_pos = IconViewDropPosition(_arg2)
 
@@ -603,7 +603,7 @@ func (i iconView) ItemAtPos(x int, y int) (*TreePath, CellRenderer, bool) {
 
 	_path = (*TreePath)(unsafe.Pointer(_arg3))
 	runtime.SetFinalizer(_path, func(v *TreePath) {
-		C.gtk_tree_path_free((*C.GtkTreePath)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 	_cell = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg4))).(CellRenderer)
 	if _cret != 0 {
@@ -753,7 +753,7 @@ func (i iconView) PathAtPos(x int, y int) *TreePath {
 
 	_treePath = (*TreePath)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_treePath, func(v *TreePath) {
-		C.gtk_tree_path_free((*C.GtkTreePath)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _treePath
@@ -893,7 +893,7 @@ func (i iconView) TooltipContext(x int, y int, keyboardTip bool) (TreeModel, *Tr
 	_model = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg4))).(TreeModel)
 	_path = (*TreePath)(unsafe.Pointer(_arg5))
 	runtime.SetFinalizer(_path, func(v *TreePath) {
-		C.gtk_tree_path_free((*C.GtkTreePath)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 	{
 		var refTmpIn *C.GtkTreeIter
@@ -929,11 +929,11 @@ func (i iconView) VisibleRange() (startPath *TreePath, endPath *TreePath, ok boo
 
 	_startPath = (*TreePath)(unsafe.Pointer(_arg1))
 	runtime.SetFinalizer(_startPath, func(v *TreePath) {
-		C.gtk_tree_path_free((*C.GtkTreePath)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 	_endPath = (*TreePath)(unsafe.Pointer(_arg2))
 	runtime.SetFinalizer(_endPath, func(v *TreePath) {
-		C.gtk_tree_path_free((*C.GtkTreePath)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 	if _cret != 0 {
 		_ok = true

@@ -24,7 +24,7 @@ import "C"
 type TextBufferDeserializeFunc func(registerBuffer TextBuffer, contentBuffer TextBuffer, iter *TextIter, data []byte, createTags bool) (ok bool)
 
 //export gotk4_TextBufferDeserializeFunc
-func gotk4_TextBufferDeserializeFunc(arg0 *C.GtkTextBuffer, arg1 *C.GtkTextBuffer, arg2 *C.GtkTextIter, arg3 *C.guint8, arg4 C.gsize, arg5 C.gboolean, arg6 C.gpointer) C.gboolean {
+func gotk4_TextBufferDeserializeFunc(arg0 *C.GtkTextBuffer, arg1 *C.GtkTextBuffer, arg2 *C.GtkTextIter, arg3 *C.guint8, arg4 C.gsize, arg5 C.gboolean, arg6 C.gpointer) (cret C.gboolean) {
 	v := box.Get(uintptr(arg6))
 	if v == nil {
 		panic(`callback not found`)
@@ -48,8 +48,6 @@ func gotk4_TextBufferDeserializeFunc(arg0 *C.GtkTextBuffer, arg1 *C.GtkTextBuffe
 	fn := v.(TextBufferDeserializeFunc)
 	ok := fn(registerBuffer, contentBuffer, iter, data, createTags)
 
-	var cret C.gboolean // out
-
 	if ok {
 		cret = C.TRUE
 	}
@@ -59,10 +57,10 @@ func gotk4_TextBufferDeserializeFunc(arg0 *C.GtkTextBuffer, arg1 *C.GtkTextBuffe
 
 // TextBufferSerializeFunc: function that is called to serialize the content of
 // a text buffer. It must return the serialized form of the content.
-type TextBufferSerializeFunc func(registerBuffer TextBuffer, contentBuffer TextBuffer, start *TextIter, end *TextIter, length *uint) (guint8 *byte)
+type TextBufferSerializeFunc func(registerBuffer TextBuffer, contentBuffer TextBuffer, start *TextIter, end *TextIter) (length uint, guint8 *byte)
 
 //export gotk4_TextBufferSerializeFunc
-func gotk4_TextBufferSerializeFunc(arg0 *C.GtkTextBuffer, arg1 *C.GtkTextBuffer, arg2 *C.GtkTextIter, arg3 *C.GtkTextIter, arg4 *C.gsize, arg5 C.gpointer) *C.guint8 {
+func gotk4_TextBufferSerializeFunc(arg0 *C.GtkTextBuffer, arg1 *C.GtkTextBuffer, arg2 *C.GtkTextIter, arg3 *C.GtkTextIter, arg4 *C.gsize, arg5 C.gpointer) (cret *C.guint8) {
 	v := box.Get(uintptr(arg5))
 	if v == nil {
 		panic(`callback not found`)
@@ -72,19 +70,16 @@ func gotk4_TextBufferSerializeFunc(arg0 *C.GtkTextBuffer, arg1 *C.GtkTextBuffer,
 	var contentBuffer TextBuffer  // out
 	var start *TextIter           // out
 	var end *TextIter             // out
-	var length *uint              // out
 
 	registerBuffer = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0))).(TextBuffer)
 	contentBuffer = gextras.CastObject(externglib.Take(unsafe.Pointer(arg1))).(TextBuffer)
 	start = (*TextIter)(unsafe.Pointer(arg2))
 	end = (*TextIter)(unsafe.Pointer(arg3))
-	length = (*uint)(unsafe.Pointer(arg4))
 
 	fn := v.(TextBufferSerializeFunc)
-	guint8 := fn(registerBuffer, contentBuffer, start, end, length)
+	length, guint8 := fn(registerBuffer, contentBuffer, start, end)
 
-	var cret *C.guint8 // out
-
+	arg4 = *C.gsize(length)
 	cret = (*C.guint8)(unsafe.Pointer(guint8))
 
 	return cret

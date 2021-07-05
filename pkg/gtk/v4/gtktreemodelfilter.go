@@ -50,8 +50,6 @@ func gotk4_TreeModelFilterModifyFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, 
 	fn := v.(TreeModelFilterModifyFunc)
 	value := fn(model, iter, column)
 
-	var arg2 *C.GValue // out
-
 	arg2 = (*C.GValue)(unsafe.Pointer(&value.GValue))
 }
 
@@ -60,7 +58,7 @@ func gotk4_TreeModelFilterModifyFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, 
 type TreeModelFilterVisibleFunc func(model TreeModel, iter *TreeIter) (ok bool)
 
 //export gotk4_TreeModelFilterVisibleFunc
-func gotk4_TreeModelFilterVisibleFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 C.gpointer) C.gboolean {
+func gotk4_TreeModelFilterVisibleFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 C.gpointer) (cret C.gboolean) {
 	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
@@ -74,8 +72,6 @@ func gotk4_TreeModelFilterVisibleFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter,
 
 	fn := v.(TreeModelFilterVisibleFunc)
 	ok := fn(model, iter)
-
-	var cret C.gboolean // out
 
 	if ok {
 		cret = C.TRUE
@@ -271,7 +267,7 @@ func (f treeModelFilter) ConvertChildPathToPathTreeModelFilter(childPath *TreePa
 
 	_treePath = (*TreePath)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_treePath, func(v *TreePath) {
-		C.gtk_tree_path_free((*C.GtkTreePath)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _treePath
@@ -318,7 +314,7 @@ func (f treeModelFilter) ConvertPathToChildPathTreeModelFilter(filterPath *TreeP
 
 	_treePath = (*TreePath)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_treePath, func(v *TreePath) {
-		C.gtk_tree_path_free((*C.GtkTreePath)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _treePath

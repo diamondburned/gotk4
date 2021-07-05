@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/box"
@@ -51,7 +52,7 @@ func marshalShortcutActionFlags(p uintptr) (interface{}, error) {
 type ShortcutFunc func(widget Widget, args *glib.Variant) (ok bool)
 
 //export gotk4_ShortcutFunc
-func gotk4_ShortcutFunc(arg0 *C.GtkWidget, arg1 *C.GVariant, arg2 C.gpointer) C.gboolean {
+func gotk4_ShortcutFunc(arg0 *C.GtkWidget, arg1 *C.GVariant, arg2 C.gpointer) (cret C.gboolean) {
 	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
@@ -63,11 +64,12 @@ func gotk4_ShortcutFunc(arg0 *C.GtkWidget, arg1 *C.GVariant, arg2 C.gpointer) C.
 	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0))).(Widget)
 	args = (*glib.Variant)(unsafe.Pointer(arg1))
 	C.g_variant_ref(arg1)
+	runtime.SetFinalizer(args, func(v *glib.Variant) {
+		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+	})
 
 	fn := v.(ShortcutFunc)
 	ok := fn(widget, args)
-
-	var cret C.gboolean // out
 
 	if ok {
 		cret = C.TRUE

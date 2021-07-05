@@ -56,7 +56,7 @@ func marshalFontChooserLevel(p uintptr) (interface{}, error) {
 type FontFilterFunc func(family pango.FontFamily, face pango.FontFace) (ok bool)
 
 //export gotk4_FontFilterFunc
-func gotk4_FontFilterFunc(arg0 *C.PangoFontFamily, arg1 *C.PangoFontFace, arg2 C.gpointer) C.gboolean {
+func gotk4_FontFilterFunc(arg0 *C.PangoFontFamily, arg1 *C.PangoFontFace, arg2 C.gpointer) (cret C.gboolean) {
 	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
@@ -70,8 +70,6 @@ func gotk4_FontFilterFunc(arg0 *C.PangoFontFamily, arg1 *C.PangoFontFace, arg2 C
 
 	fn := v.(FontFilterFunc)
 	ok := fn(family, face)
-
-	var cret C.gboolean // out
 
 	if ok {
 		cret = C.TRUE
@@ -219,7 +217,7 @@ func (f fontChooser) FontDesc() *pango.FontDescription {
 
 	_fontDescription = (*pango.FontDescription)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_fontDescription, func(v *pango.FontDescription) {
-		C.pango_font_description_free((*C.PangoFontDescription)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _fontDescription

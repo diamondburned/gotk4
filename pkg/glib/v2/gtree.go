@@ -173,6 +173,7 @@ func (t *Tree) Ref() *Tree {
 	var _ret *Tree // out
 
 	_ret = (*Tree)(unsafe.Pointer(_cret))
+	C.g_tree_ref(_cret)
 	runtime.SetFinalizer(_ret, func(v *Tree) {
 		C.g_tree_unref((*C.GTree)(unsafe.Pointer(v)))
 	})

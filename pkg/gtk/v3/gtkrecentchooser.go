@@ -67,7 +67,7 @@ func marshalRecentSortType(p uintptr) (interface{}, error) {
 type RecentSortFunc func(a *RecentInfo, b *RecentInfo) (gint int)
 
 //export gotk4_RecentSortFunc
-func gotk4_RecentSortFunc(arg0 *C.GtkRecentInfo, arg1 *C.GtkRecentInfo, arg2 C.gpointer) C.gint {
+func gotk4_RecentSortFunc(arg0 *C.GtkRecentInfo, arg1 *C.GtkRecentInfo, arg2 C.gpointer) (cret C.gint) {
 	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
@@ -78,13 +78,17 @@ func gotk4_RecentSortFunc(arg0 *C.GtkRecentInfo, arg1 *C.GtkRecentInfo, arg2 C.g
 
 	a = (*RecentInfo)(unsafe.Pointer(arg0))
 	C.gtk_recent_info_ref(arg0)
+	runtime.SetFinalizer(a, func(v *RecentInfo) {
+		C.gtk_recent_info_unref((*C.GtkRecentInfo)(unsafe.Pointer(v)))
+	})
 	b = (*RecentInfo)(unsafe.Pointer(arg1))
 	C.gtk_recent_info_ref(arg1)
+	runtime.SetFinalizer(b, func(v *RecentInfo) {
+		C.gtk_recent_info_unref((*C.GtkRecentInfo)(unsafe.Pointer(v)))
+	})
 
 	fn := v.(RecentSortFunc)
 	gint := fn(a, b)
-
-	var cret C.gint // out
 
 	cret = C.gint(gint)
 
@@ -222,6 +226,7 @@ func (c recentChooser) CurrentItem() *RecentInfo {
 	var _recentInfo *RecentInfo // out
 
 	_recentInfo = (*RecentInfo)(unsafe.Pointer(_cret))
+	C.gtk_recent_info_ref(_cret)
 	runtime.SetFinalizer(_recentInfo, func(v *RecentInfo) {
 		C.gtk_recent_info_unref((*C.GtkRecentInfo)(unsafe.Pointer(v)))
 	})

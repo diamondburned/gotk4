@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -752,6 +753,9 @@ func (b textBuffer) CopyTargetList() *TargetList {
 
 	_targetList = (*TargetList)(unsafe.Pointer(_cret))
 	C.gtk_target_list_ref(_cret)
+	runtime.SetFinalizer(_targetList, func(v *TargetList) {
+		C.gtk_target_list_unref((*C.GtkTargetList)(unsafe.Pointer(v)))
+	})
 
 	return _targetList
 }
@@ -1041,6 +1045,9 @@ func (b textBuffer) PasteTargetList() *TargetList {
 
 	_targetList = (*TargetList)(unsafe.Pointer(_cret))
 	C.gtk_target_list_ref(_cret)
+	runtime.SetFinalizer(_targetList, func(v *TargetList) {
+		C.gtk_target_list_unref((*C.GtkTargetList)(unsafe.Pointer(v)))
+	})
 
 	return _targetList
 }

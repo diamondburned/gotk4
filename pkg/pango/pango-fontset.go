@@ -32,7 +32,7 @@ func init() {
 type FontsetForeachFunc func(fontset Fontset, font Font) (ok bool)
 
 //export gotk4_FontsetForeachFunc
-func gotk4_FontsetForeachFunc(arg0 *C.PangoFontset, arg1 *C.PangoFont, arg2 C.gpointer) C.gboolean {
+func gotk4_FontsetForeachFunc(arg0 *C.PangoFontset, arg1 *C.PangoFont, arg2 C.gpointer) (cret C.gboolean) {
 	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
@@ -46,8 +46,6 @@ func gotk4_FontsetForeachFunc(arg0 *C.PangoFontset, arg1 *C.PangoFont, arg2 C.gp
 
 	fn := v.(FontsetForeachFunc)
 	ok := fn(fontset, font)
-
-	var cret C.gboolean // out
 
 	if ok {
 		cret = C.TRUE
@@ -137,6 +135,7 @@ func (f fontset) Metrics() *FontMetrics {
 	var _fontMetrics *FontMetrics // out
 
 	_fontMetrics = (*FontMetrics)(unsafe.Pointer(_cret))
+	C.pango_font_metrics_ref(_cret)
 	runtime.SetFinalizer(_fontMetrics, func(v *FontMetrics) {
 		C.pango_font_metrics_unref((*C.PangoFontMetrics)(unsafe.Pointer(v)))
 	})

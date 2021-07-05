@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -97,6 +98,9 @@ func (i dBusInterface) Info() *DBusInterfaceInfo {
 
 	_dBusInterfaceInfo = (*DBusInterfaceInfo)(unsafe.Pointer(_cret))
 	C.g_dbus_interface_info_ref(_cret)
+	runtime.SetFinalizer(_dBusInterfaceInfo, func(v *DBusInterfaceInfo) {
+		C.g_dbus_interface_info_unref((*C.GDBusInterfaceInfo)(unsafe.Pointer(v)))
+	})
 
 	return _dBusInterfaceInfo
 }

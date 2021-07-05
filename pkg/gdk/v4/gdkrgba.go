@@ -65,7 +65,7 @@ func (r *RGBA) Copy() *RGBA {
 
 	_rgbA = (*RGBA)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_rgbA, func(v *RGBA) {
-		C.gdk_rgba_free((*C.GdkRGBA)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _rgbA

@@ -127,6 +127,7 @@ func (s streamableContent) Stream(mimeType string) *glib.IOChannel {
 	var _ioChannel *glib.IOChannel // out
 
 	_ioChannel = (*glib.IOChannel)(unsafe.Pointer(_cret))
+	C.g_io_channel_ref(_cret)
 	runtime.SetFinalizer(_ioChannel, func(v *glib.IOChannel) {
 		C.g_io_channel_unref((*C.GIOChannel)(unsafe.Pointer(v)))
 	})

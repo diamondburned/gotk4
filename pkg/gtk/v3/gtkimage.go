@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/cairo"
@@ -473,6 +474,9 @@ func (i image) IconSet() (*IconSet, int) {
 
 	_iconSet = (*IconSet)(unsafe.Pointer(_arg1))
 	C.gtk_icon_set_ref(_arg1)
+	runtime.SetFinalizer(_iconSet, func(v *IconSet) {
+		C.gtk_icon_set_unref((*C.GtkIconSet)(unsafe.Pointer(v)))
+	})
 	_size = int(_arg2)
 
 	return _iconSet, _size

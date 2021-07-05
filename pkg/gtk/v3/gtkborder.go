@@ -51,7 +51,7 @@ func NewBorder() *Border {
 
 	_border = (*Border)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_border, func(v *Border) {
-		C.gtk_border_free((*C.GtkBorder)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _border
@@ -75,7 +75,7 @@ func (b *Border) Copy() *Border {
 
 	_border = (*Border)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_border, func(v *Border) {
-		C.gtk_border_free((*C.GtkBorder)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _border

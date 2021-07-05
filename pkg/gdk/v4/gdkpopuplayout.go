@@ -129,6 +129,7 @@ func NewPopupLayout(anchorRect *Rectangle, rectAnchor Gravity, surfaceAnchor Gra
 	var _popupLayout *PopupLayout // out
 
 	_popupLayout = (*PopupLayout)(unsafe.Pointer(_cret))
+	C.gdk_popup_layout_ref(_cret)
 	runtime.SetFinalizer(_popupLayout, func(v *PopupLayout) {
 		C.gdk_popup_layout_unref((*C.GdkPopupLayout)(unsafe.Pointer(v)))
 	})
@@ -153,6 +154,7 @@ func (l *PopupLayout) Copy() *PopupLayout {
 	var _popupLayout *PopupLayout // out
 
 	_popupLayout = (*PopupLayout)(unsafe.Pointer(_cret))
+	C.gdk_popup_layout_ref(_cret)
 	runtime.SetFinalizer(_popupLayout, func(v *PopupLayout) {
 		C.gdk_popup_layout_unref((*C.GdkPopupLayout)(unsafe.Pointer(v)))
 	})
@@ -300,6 +302,7 @@ func (l *PopupLayout) Ref() *PopupLayout {
 	var _popupLayout *PopupLayout // out
 
 	_popupLayout = (*PopupLayout)(unsafe.Pointer(_cret))
+	C.gdk_popup_layout_ref(_cret)
 	runtime.SetFinalizer(_popupLayout, func(v *PopupLayout) {
 		C.gdk_popup_layout_unref((*C.GdkPopupLayout)(unsafe.Pointer(v)))
 	})

@@ -62,6 +62,7 @@ func NewBitsetEmpty() *Bitset {
 	var _bitset *Bitset // out
 
 	_bitset = (*Bitset)(unsafe.Pointer(_cret))
+	C.gtk_bitset_ref(_cret)
 	runtime.SetFinalizer(_bitset, func(v *Bitset) {
 		C.gtk_bitset_unref((*C.GtkBitset)(unsafe.Pointer(v)))
 	})
@@ -83,6 +84,7 @@ func NewBitsetRange(start uint, nItems uint) *Bitset {
 	var _bitset *Bitset // out
 
 	_bitset = (*Bitset)(unsafe.Pointer(_cret))
+	C.gtk_bitset_ref(_cret)
 	runtime.SetFinalizer(_bitset, func(v *Bitset) {
 		C.gtk_bitset_unref((*C.GtkBitset)(unsafe.Pointer(v)))
 	})
@@ -194,6 +196,7 @@ func (s *Bitset) Copy() *Bitset {
 	var _bitset *Bitset // out
 
 	_bitset = (*Bitset)(unsafe.Pointer(_cret))
+	C.gtk_bitset_ref(_cret)
 	runtime.SetFinalizer(_bitset, func(v *Bitset) {
 		C.gtk_bitset_unref((*C.GtkBitset)(unsafe.Pointer(v)))
 	})
@@ -389,6 +392,9 @@ func (s *Bitset) Ref() *Bitset {
 
 	_bitset = (*Bitset)(unsafe.Pointer(_cret))
 	C.gtk_bitset_ref(_cret)
+	runtime.SetFinalizer(_bitset, func(v *Bitset) {
+		C.gtk_bitset_unref((*C.GtkBitset)(unsafe.Pointer(v)))
+	})
 
 	return _bitset
 }

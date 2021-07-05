@@ -195,7 +195,7 @@ func marshalShowFlags(p uintptr) (interface{}, error) {
 type AttrDataCopyFunc func() (gpointer interface{})
 
 //export gotk4_AttrDataCopyFunc
-func gotk4_AttrDataCopyFunc(arg0 C.gconstpointer) C.gpointer {
+func gotk4_AttrDataCopyFunc(arg0 C.gconstpointer) (cret C.gpointer) {
 	v := box.Get(uintptr(arg0))
 	if v == nil {
 		panic(`callback not found`)
@@ -203,8 +203,6 @@ func gotk4_AttrDataCopyFunc(arg0 C.gconstpointer) C.gpointer {
 
 	fn := v.(AttrDataCopyFunc)
 	gpointer := fn()
-
-	var cret C.gpointer // out
 
 	cret = C.gpointer(box.Assign(gpointer))
 
@@ -215,7 +213,7 @@ func gotk4_AttrDataCopyFunc(arg0 C.gconstpointer) C.gpointer {
 type AttrFilterFunc func(attribute *Attribute) (ok bool)
 
 //export gotk4_AttrFilterFunc
-func gotk4_AttrFilterFunc(arg0 *C.PangoAttribute, arg1 C.gpointer) C.gboolean {
+func gotk4_AttrFilterFunc(arg0 *C.PangoAttribute, arg1 C.gpointer) (cret C.gboolean) {
 	v := box.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
@@ -227,8 +225,6 @@ func gotk4_AttrFilterFunc(arg0 *C.PangoAttribute, arg1 C.gpointer) C.gboolean {
 
 	fn := v.(AttrFilterFunc)
 	ok := fn(attribute)
-
-	var cret C.gboolean // out
 
 	if ok {
 		cret = C.TRUE
@@ -768,6 +764,7 @@ func MarkupParserFinish(context *glib.MarkupParseContext) (*AttrList, string, ui
 	var _goerr error        // out
 
 	_attrList = (*AttrList)(unsafe.Pointer(_arg2))
+	C.pango_attr_list_ref(_arg2)
 	runtime.SetFinalizer(_attrList, func(v *AttrList) {
 		C.pango_attr_list_unref((*C.PangoAttrList)(unsafe.Pointer(v)))
 	})
@@ -813,6 +810,9 @@ func NewMarkupParser(accelMarker uint32) *glib.MarkupParseContext {
 
 	_markupParseContext = (*glib.MarkupParseContext)(unsafe.Pointer(_cret))
 	C.g_markup_parse_context_ref(_cret)
+	runtime.SetFinalizer(_markupParseContext, func(v *glib.MarkupParseContext) {
+		C.g_markup_parse_context_unref((*C.GMarkupParseContext)(unsafe.Pointer(v)))
+	})
 
 	return _markupParseContext
 }
@@ -857,6 +857,7 @@ func ParseMarkup(markupText string, length int, accelMarker uint32) (*AttrList, 
 	var _goerr error        // out
 
 	_attrList = (*AttrList)(unsafe.Pointer(_arg4))
+	C.pango_attr_list_ref(_arg4)
 	runtime.SetFinalizer(_attrList, func(v *AttrList) {
 		C.pango_attr_list_unref((*C.PangoAttrList)(unsafe.Pointer(v)))
 	})
@@ -1121,6 +1122,7 @@ func NewAttrList() *AttrList {
 	var _attrList *AttrList // out
 
 	_attrList = (*AttrList)(unsafe.Pointer(_cret))
+	C.pango_attr_list_ref(_cret)
 	runtime.SetFinalizer(_attrList, func(v *AttrList) {
 		C.pango_attr_list_unref((*C.PangoAttrList)(unsafe.Pointer(v)))
 	})
@@ -1165,6 +1167,7 @@ func (l *AttrList) Copy() *AttrList {
 	var _attrList *AttrList // out
 
 	_attrList = (*AttrList)(unsafe.Pointer(_cret))
+	C.pango_attr_list_ref(_cret)
 	runtime.SetFinalizer(_attrList, func(v *AttrList) {
 		C.pango_attr_list_unref((*C.PangoAttrList)(unsafe.Pointer(v)))
 	})
@@ -1211,6 +1214,7 @@ func (l *AttrList) Filter(fn AttrFilterFunc) *AttrList {
 	var _attrList *AttrList // out
 
 	_attrList = (*AttrList)(unsafe.Pointer(_cret))
+	C.pango_attr_list_ref(_cret)
 	runtime.SetFinalizer(_attrList, func(v *AttrList) {
 		C.pango_attr_list_unref((*C.PangoAttrList)(unsafe.Pointer(v)))
 	})
@@ -1278,6 +1282,7 @@ func (l *AttrList) Ref() *AttrList {
 	var _attrList *AttrList // out
 
 	_attrList = (*AttrList)(unsafe.Pointer(_cret))
+	C.pango_attr_list_ref(_cret)
 	runtime.SetFinalizer(_attrList, func(v *AttrList) {
 		C.pango_attr_list_unref((*C.PangoAttrList)(unsafe.Pointer(v)))
 	})
@@ -1513,7 +1518,7 @@ func (s *Color) Copy() *Color {
 
 	_color = (*Color)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_color, func(v *Color) {
-		C.pango_color_free((*C.PangoColor)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _color

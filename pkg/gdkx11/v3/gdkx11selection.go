@@ -31,13 +31,15 @@ func X11FreeTextList(list *string) {
 		var refTmpIn string
 		var refTmpOut *C.gchar
 
-		refTmpIn = list
+		refTmpIn = *list
 
 		refTmpOut = (*C.gchar)(C.CString(refTmpIn))
 		defer C.free(unsafe.Pointer(refTmpOut))
 
-		out0 := &refTmpOut
-		_arg1 = out0
+		if refTmpOut != nil {
+			out0 := &refTmpOut
+			_arg1 = out0
+		}
 	}
 
 	C.gdk_x11_free_text_list(_arg1)

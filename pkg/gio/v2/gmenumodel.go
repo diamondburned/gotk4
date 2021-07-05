@@ -126,6 +126,7 @@ func (i menuAttributeIter) GetNext() (string, *glib.Variant, bool) {
 
 	_outName = C.GoString(_arg1)
 	_value = (*glib.Variant)(unsafe.Pointer(_arg2))
+	C.g_variant_ref(_arg2)
 	runtime.SetFinalizer(_value, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
 	})
@@ -147,6 +148,7 @@ func (i menuAttributeIter) Value() *glib.Variant {
 	var _variant *glib.Variant // out
 
 	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
 	})
@@ -503,6 +505,7 @@ func (m menuModel) ItemAttributeValue(itemIndex int, attribute string, expectedT
 	var _variant *glib.Variant // out
 
 	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
 	})

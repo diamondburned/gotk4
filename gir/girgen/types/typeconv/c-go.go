@@ -403,17 +403,19 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 		value.header.Import("unsafe")
 		value.p.Linef("%s = (%s)(unsafe.Pointer(%s))", value.OutName, value.OutType, value.InName)
 
-		if !value.isTransferring() {
-			if ref := types.RecordHasRef(v); ref != nil {
-				value.p.Linef("C.%s(%s)", ref.CIdentifier, value.InName)
-			}
+		var free *gir.Method
+
+		if ref := types.RecordHasRef(v); ref != nil {
+			value.p.Linef("C.%s(%s)", ref.CIdentifier, value.InName)
+			free = types.RecordHasFree(v)
 		}
 
-		if value.isTransferring() {
+		// We can take ownership if the type can be reference-counted anyway.
+		if value.isTransferring() || free != nil {
 			value.header.Import("runtime")
 			value.p.Linef("runtime.SetFinalizer(%s, func(v %s) {", value.OutName, value.OutType)
 
-			if free := types.RecordHasFree(v); free != nil {
+			if free != nil {
 				value.p.Linef("C.%s((%s)(unsafe.Pointer(v)))", free.CIdentifier, value.InType)
 			} else {
 				value.p.Linef("C.free(unsafe.Pointer(v))")

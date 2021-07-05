@@ -264,6 +264,7 @@ func (m recentManager) LookupItemRecentManager(uri string) (*RecentInfo, error) 
 	var _goerr error            // out
 
 	_recentInfo = (*RecentInfo)(unsafe.Pointer(_cret))
+	C.gtk_recent_info_ref(_cret)
 	runtime.SetFinalizer(_recentInfo, func(v *RecentInfo) {
 		C.gtk_recent_info_unref((*C.GtkRecentInfo)(unsafe.Pointer(v)))
 	})
@@ -746,6 +747,7 @@ func (i *RecentInfo) Ref() *RecentInfo {
 	var _recentInfo *RecentInfo // out
 
 	_recentInfo = (*RecentInfo)(unsafe.Pointer(_cret))
+	C.gtk_recent_info_ref(_cret)
 	runtime.SetFinalizer(_recentInfo, func(v *RecentInfo) {
 		C.gtk_recent_info_unref((*C.GtkRecentInfo)(unsafe.Pointer(v)))
 	})

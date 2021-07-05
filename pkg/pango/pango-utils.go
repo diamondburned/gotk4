@@ -56,17 +56,7 @@ func Log2VisGetEmbeddingLevels(text string, length int, pbaseDir *Direction) *by
 	_arg1 = (*C.gchar)(C.CString(text))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(length)
-	{
-		var refTmpIn Direction
-		var refTmpOut C.PangoDirection
-
-		refTmpIn = *pbaseDir
-
-		refTmpOut = C.PangoDirection(refTmpIn)
-
-		out0 := &refTmpOut
-		_arg3 = out0
-	}
+	_arg3 = (*C.PangoDirection)(unsafe.Pointer(pbaseDir))
 
 	_cret = C.pango_log2vis_get_embedding_levels(_arg1, _arg2, _arg3)
 

@@ -184,7 +184,7 @@ func NewVariantType(typeString string) *VariantType {
 
 	_variantType = (*VariantType)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_variantType, func(v *VariantType) {
-		C.g_variant_type_free((*C.GVariantType)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _variantType
@@ -203,7 +203,7 @@ func NewVariantTypeArray(element *VariantType) *VariantType {
 
 	_variantType = (*VariantType)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_variantType, func(v *VariantType) {
-		C.g_variant_type_free((*C.GVariantType)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _variantType
@@ -224,7 +224,7 @@ func NewVariantTypeDictEntry(key *VariantType, value *VariantType) *VariantType 
 
 	_variantType = (*VariantType)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_variantType, func(v *VariantType) {
-		C.g_variant_type_free((*C.GVariantType)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _variantType
@@ -243,7 +243,7 @@ func NewVariantTypeMaybe(element *VariantType) *VariantType {
 
 	_variantType = (*VariantType)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_variantType, func(v *VariantType) {
-		C.g_variant_type_free((*C.GVariantType)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _variantType
@@ -264,7 +264,7 @@ func NewVariantTypeTuple(items []*VariantType) *VariantType {
 
 	_variantType = (*VariantType)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_variantType, func(v *VariantType) {
-		C.g_variant_type_free((*C.GVariantType)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _variantType
@@ -289,7 +289,7 @@ func (t *VariantType) Copy() *VariantType {
 
 	_variantType = (*VariantType)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_variantType, func(v *VariantType) {
-		C.g_variant_type_free((*C.GVariantType)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _variantType

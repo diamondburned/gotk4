@@ -63,7 +63,7 @@ func NewRayAlloc() *Ray {
 
 	_ray = (*Ray)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_ray, func(v *Ray) {
-		C.graphene_ray_free((*C.graphene_ray_t)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _ray

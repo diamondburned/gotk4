@@ -74,6 +74,7 @@ func NewFileAttributeInfoList() *FileAttributeInfoList {
 	var _fileAttributeInfoList *FileAttributeInfoList // out
 
 	_fileAttributeInfoList = (*FileAttributeInfoList)(unsafe.Pointer(_cret))
+	C.g_file_attribute_info_list_ref(_cret)
 	runtime.SetFinalizer(_fileAttributeInfoList, func(v *FileAttributeInfoList) {
 		C.g_file_attribute_info_list_unref((*C.GFileAttributeInfoList)(unsafe.Pointer(v)))
 	})
@@ -115,6 +116,7 @@ func (l *FileAttributeInfoList) Dup() *FileAttributeInfoList {
 	var _fileAttributeInfoList *FileAttributeInfoList // out
 
 	_fileAttributeInfoList = (*FileAttributeInfoList)(unsafe.Pointer(_cret))
+	C.g_file_attribute_info_list_ref(_cret)
 	runtime.SetFinalizer(_fileAttributeInfoList, func(v *FileAttributeInfoList) {
 		C.g_file_attribute_info_list_unref((*C.GFileAttributeInfoList)(unsafe.Pointer(v)))
 	})
@@ -153,6 +155,7 @@ func (l *FileAttributeInfoList) Ref() *FileAttributeInfoList {
 	var _fileAttributeInfoList *FileAttributeInfoList // out
 
 	_fileAttributeInfoList = (*FileAttributeInfoList)(unsafe.Pointer(_cret))
+	C.g_file_attribute_info_list_ref(_cret)
 	runtime.SetFinalizer(_fileAttributeInfoList, func(v *FileAttributeInfoList) {
 		C.g_file_attribute_info_list_unref((*C.GFileAttributeInfoList)(unsafe.Pointer(v)))
 	})

@@ -69,6 +69,7 @@ func NewTimeZone(identifier string) *TimeZone {
 	var _timeZone *TimeZone // out
 
 	_timeZone = (*TimeZone)(unsafe.Pointer(_cret))
+	C.g_time_zone_ref(_cret)
 	runtime.SetFinalizer(_timeZone, func(v *TimeZone) {
 		C.g_time_zone_unref((*C.GTimeZone)(unsafe.Pointer(v)))
 	})
@@ -89,6 +90,7 @@ func NewTimeZoneIdentifier(identifier string) *TimeZone {
 	var _timeZone *TimeZone // out
 
 	_timeZone = (*TimeZone)(unsafe.Pointer(_cret))
+	C.g_time_zone_ref(_cret)
 	runtime.SetFinalizer(_timeZone, func(v *TimeZone) {
 		C.g_time_zone_unref((*C.GTimeZone)(unsafe.Pointer(v)))
 	})
@@ -105,6 +107,7 @@ func NewTimeZoneLocal() *TimeZone {
 	var _timeZone *TimeZone // out
 
 	_timeZone = (*TimeZone)(unsafe.Pointer(_cret))
+	C.g_time_zone_ref(_cret)
 	runtime.SetFinalizer(_timeZone, func(v *TimeZone) {
 		C.g_time_zone_unref((*C.GTimeZone)(unsafe.Pointer(v)))
 	})
@@ -124,6 +127,7 @@ func NewTimeZoneOffset(seconds int32) *TimeZone {
 	var _timeZone *TimeZone // out
 
 	_timeZone = (*TimeZone)(unsafe.Pointer(_cret))
+	C.g_time_zone_ref(_cret)
 	runtime.SetFinalizer(_timeZone, func(v *TimeZone) {
 		C.g_time_zone_unref((*C.GTimeZone)(unsafe.Pointer(v)))
 	})
@@ -140,6 +144,7 @@ func NewTimeZoneUtc() *TimeZone {
 	var _timeZone *TimeZone // out
 
 	_timeZone = (*TimeZone)(unsafe.Pointer(_cret))
+	C.g_time_zone_ref(_cret)
 	runtime.SetFinalizer(_timeZone, func(v *TimeZone) {
 		C.g_time_zone_unref((*C.GTimeZone)(unsafe.Pointer(v)))
 	})
@@ -321,6 +326,7 @@ func (t *TimeZone) Ref() *TimeZone {
 	var _timeZone *TimeZone // out
 
 	_timeZone = (*TimeZone)(unsafe.Pointer(_cret))
+	C.g_time_zone_ref(_cret)
 	runtime.SetFinalizer(_timeZone, func(v *TimeZone) {
 		C.g_time_zone_unref((*C.GTimeZone)(unsafe.Pointer(v)))
 	})

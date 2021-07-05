@@ -62,7 +62,7 @@ func (o *GlyphItem) Copy() *GlyphItem {
 
 	_glyphItem = (*GlyphItem)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_glyphItem, func(v *GlyphItem) {
-		C.pango_glyph_item_free((*C.PangoGlyphItem)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _glyphItem
@@ -104,7 +104,7 @@ func (o *GlyphItem) Split(text string, splitIndex int) *GlyphItem {
 
 	_glyphItem = (*GlyphItem)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_glyphItem, func(v *GlyphItem) {
-		C.pango_glyph_item_free((*C.PangoGlyphItem)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _glyphItem
@@ -175,7 +175,7 @@ func (o *GlyphItemIter) Copy() *GlyphItemIter {
 
 	_glyphItemIter = (*GlyphItemIter)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_glyphItemIter, func(v *GlyphItemIter) {
-		C.pango_glyph_item_iter_free((*C.PangoGlyphItemIter)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _glyphItemIter

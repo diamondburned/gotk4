@@ -38,7 +38,7 @@ func init() {
 type ListBoxCreateWidgetFunc func(item gextras.Objector) (widget Widget)
 
 //export gotk4_ListBoxCreateWidgetFunc
-func gotk4_ListBoxCreateWidgetFunc(arg0 C.gpointer, arg1 C.gpointer) *C.GtkWidget {
+func gotk4_ListBoxCreateWidgetFunc(arg0 C.gpointer, arg1 C.gpointer) (cret *C.GtkWidget) {
 	v := box.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
@@ -51,8 +51,6 @@ func gotk4_ListBoxCreateWidgetFunc(arg0 C.gpointer, arg1 C.gpointer) *C.GtkWidge
 	fn := v.(ListBoxCreateWidgetFunc)
 	widget := fn(item)
 
-	var cret *C.GtkWidget // out
-
 	cret = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	return cret
@@ -63,7 +61,7 @@ func gotk4_ListBoxCreateWidgetFunc(arg0 C.gpointer, arg1 C.gpointer) *C.GtkWidge
 type ListBoxFilterFunc func(row ListBoxRow) (ok bool)
 
 //export gotk4_ListBoxFilterFunc
-func gotk4_ListBoxFilterFunc(arg0 *C.GtkListBoxRow, arg1 C.gpointer) C.gboolean {
+func gotk4_ListBoxFilterFunc(arg0 *C.GtkListBoxRow, arg1 C.gpointer) (cret C.gboolean) {
 	v := box.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
@@ -75,8 +73,6 @@ func gotk4_ListBoxFilterFunc(arg0 *C.GtkListBoxRow, arg1 C.gpointer) C.gboolean 
 
 	fn := v.(ListBoxFilterFunc)
 	ok := fn(row)
-
-	var cret C.gboolean // out
 
 	if ok {
 		cret = C.TRUE
@@ -110,7 +106,7 @@ func gotk4_ListBoxForeachFunc(arg0 *C.GtkListBox, arg1 *C.GtkListBoxRow, arg2 C.
 type ListBoxSortFunc func(row1 ListBoxRow, row2 ListBoxRow) (gint int)
 
 //export gotk4_ListBoxSortFunc
-func gotk4_ListBoxSortFunc(arg0 *C.GtkListBoxRow, arg1 *C.GtkListBoxRow, arg2 C.gpointer) C.gint {
+func gotk4_ListBoxSortFunc(arg0 *C.GtkListBoxRow, arg1 *C.GtkListBoxRow, arg2 C.gpointer) (cret C.gint) {
 	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
@@ -124,8 +120,6 @@ func gotk4_ListBoxSortFunc(arg0 *C.GtkListBoxRow, arg1 *C.GtkListBoxRow, arg2 C.
 
 	fn := v.(ListBoxSortFunc)
 	gint := fn(row1, row2)
-
-	var cret C.gint // out
 
 	cret = C.gint(gint)
 

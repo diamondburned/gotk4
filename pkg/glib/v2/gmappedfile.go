@@ -60,6 +60,7 @@ func NewMappedFile(filename string, writable bool) (*MappedFile, error) {
 	var _goerr error            // out
 
 	_mappedFile = (*MappedFile)(unsafe.Pointer(_cret))
+	C.g_mapped_file_ref(_cret)
 	runtime.SetFinalizer(_mappedFile, func(v *MappedFile) {
 		C.g_mapped_file_unref((*C.GMappedFile)(unsafe.Pointer(v)))
 	})
@@ -86,6 +87,7 @@ func NewMappedFileFromFd(fd int, writable bool) (*MappedFile, error) {
 	var _goerr error            // out
 
 	_mappedFile = (*MappedFile)(unsafe.Pointer(_cret))
+	C.g_mapped_file_ref(_cret)
 	runtime.SetFinalizer(_mappedFile, func(v *MappedFile) {
 		C.g_mapped_file_unref((*C.GMappedFile)(unsafe.Pointer(v)))
 	})
@@ -162,6 +164,7 @@ func (f *MappedFile) Ref() *MappedFile {
 	var _mappedFile *MappedFile // out
 
 	_mappedFile = (*MappedFile)(unsafe.Pointer(_cret))
+	C.g_mapped_file_ref(_cret)
 	runtime.SetFinalizer(_mappedFile, func(v *MappedFile) {
 		C.g_mapped_file_unref((*C.GMappedFile)(unsafe.Pointer(v)))
 	})

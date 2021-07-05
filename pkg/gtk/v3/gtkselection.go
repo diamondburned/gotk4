@@ -107,7 +107,7 @@ func NewTargetEntry(target string, flags uint, info uint) *TargetEntry {
 
 	_targetEntry = (*TargetEntry)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_targetEntry, func(v *TargetEntry) {
-		C.gtk_target_entry_free((*C.GtkTargetEntry)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _targetEntry
@@ -131,7 +131,7 @@ func (d *TargetEntry) Copy() *TargetEntry {
 
 	_targetEntry = (*TargetEntry)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_targetEntry, func(v *TargetEntry) {
-		C.gtk_target_entry_free((*C.GtkTargetEntry)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _targetEntry
@@ -178,6 +178,7 @@ func NewTargetList(targets []TargetEntry) *TargetList {
 	var _targetList *TargetList // out
 
 	_targetList = (*TargetList)(unsafe.Pointer(_cret))
+	C.gtk_target_list_ref(_cret)
 	runtime.SetFinalizer(_targetList, func(v *TargetList) {
 		C.gtk_target_list_unref((*C.GtkTargetList)(unsafe.Pointer(v)))
 	})
@@ -275,6 +276,7 @@ func (l *TargetList) Ref() *TargetList {
 	var _targetList *TargetList // out
 
 	_targetList = (*TargetList)(unsafe.Pointer(_cret))
+	C.gtk_target_list_ref(_cret)
 	runtime.SetFinalizer(_targetList, func(v *TargetList) {
 		C.gtk_target_list_unref((*C.GtkTargetList)(unsafe.Pointer(v)))
 	})

@@ -351,6 +351,7 @@ func (c context) Metrics(desc *FontDescription, language *Language) *FontMetrics
 	var _fontMetrics *FontMetrics // out
 
 	_fontMetrics = (*FontMetrics)(unsafe.Pointer(_cret))
+	C.pango_font_metrics_ref(_cret)
 	runtime.SetFinalizer(_fontMetrics, func(v *FontMetrics) {
 		C.pango_font_metrics_unref((*C.PangoFontMetrics)(unsafe.Pointer(v)))
 	})

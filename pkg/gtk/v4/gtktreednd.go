@@ -65,7 +65,7 @@ func TreeGetRowDragData(value externglib.Value) (TreeModel, *TreePath, bool) {
 	_treeModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg2))).(TreeModel)
 	_path = (*TreePath)(unsafe.Pointer(_arg3))
 	runtime.SetFinalizer(_path, func(v *TreePath) {
-		C.gtk_tree_path_free((*C.GtkTreePath)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 	if _cret != 0 {
 		_ok = true

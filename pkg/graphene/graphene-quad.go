@@ -51,7 +51,7 @@ func NewQuadAlloc() *Quad {
 
 	_quad = (*Quad)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_quad, func(v *Quad) {
-		C.graphene_quad_free((*C.graphene_quad_t)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _quad

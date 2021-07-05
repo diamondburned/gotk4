@@ -48,7 +48,7 @@ func NewPointAlloc() *Point {
 
 	_point = (*Point)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_point, func(v *Point) {
-		C.graphene_point_free((*C.graphene_point_t)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _point

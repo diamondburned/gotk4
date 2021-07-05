@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/box"
@@ -52,7 +53,7 @@ func marshalFileFilterFlags(p uintptr) (interface{}, error) {
 type FileFilterFunc func(filterInfo *FileFilterInfo) (ok bool)
 
 //export gotk4_FileFilterFunc
-func gotk4_FileFilterFunc(arg0 *C.GtkFileFilterInfo, arg1 C.gpointer) C.gboolean {
+func gotk4_FileFilterFunc(arg0 *C.GtkFileFilterInfo, arg1 C.gpointer) (cret C.gboolean) {
 	v := box.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
@@ -64,8 +65,6 @@ func gotk4_FileFilterFunc(arg0 *C.GtkFileFilterInfo, arg1 C.gpointer) C.gboolean
 
 	fn := v.(FileFilterFunc)
 	ok := fn(filterInfo)
-
-	var cret C.gboolean // out
 
 	if ok {
 		cret = C.TRUE
@@ -305,6 +304,9 @@ func (f fileFilter) ToGVariantFileFilter() *glib.Variant {
 
 	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
 	C.g_variant_ref(_cret)
+	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
+		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+	})
 
 	return _variant
 }

@@ -73,6 +73,7 @@ func (i *DBusAnnotationInfo) Ref() *DBusAnnotationInfo {
 	var _dBusAnnotationInfo *DBusAnnotationInfo // out
 
 	_dBusAnnotationInfo = (*DBusAnnotationInfo)(unsafe.Pointer(_cret))
+	C.g_dbus_annotation_info_ref(_cret)
 	runtime.SetFinalizer(_dBusAnnotationInfo, func(v *DBusAnnotationInfo) {
 		C.g_dbus_annotation_info_unref((*C.GDBusAnnotationInfo)(unsafe.Pointer(v)))
 	})
@@ -125,6 +126,7 @@ func (i *DBusArgInfo) Ref() *DBusArgInfo {
 	var _dBusArgInfo *DBusArgInfo // out
 
 	_dBusArgInfo = (*DBusArgInfo)(unsafe.Pointer(_cret))
+	C.g_dbus_arg_info_ref(_cret)
 	runtime.SetFinalizer(_dBusArgInfo, func(v *DBusArgInfo) {
 		C.g_dbus_arg_info_unref((*C.GDBusArgInfo)(unsafe.Pointer(v)))
 	})
@@ -211,6 +213,9 @@ func (i *DBusInterfaceInfo) LookupMethod(name string) *DBusMethodInfo {
 
 	_dBusMethodInfo = (*DBusMethodInfo)(unsafe.Pointer(_cret))
 	C.g_dbus_method_info_ref(_cret)
+	runtime.SetFinalizer(_dBusMethodInfo, func(v *DBusMethodInfo) {
+		C.g_dbus_method_info_unref((*C.GDBusMethodInfo)(unsafe.Pointer(v)))
+	})
 
 	return _dBusMethodInfo
 }
@@ -234,6 +239,9 @@ func (i *DBusInterfaceInfo) LookupProperty(name string) *DBusPropertyInfo {
 
 	_dBusPropertyInfo = (*DBusPropertyInfo)(unsafe.Pointer(_cret))
 	C.g_dbus_property_info_ref(_cret)
+	runtime.SetFinalizer(_dBusPropertyInfo, func(v *DBusPropertyInfo) {
+		C.g_dbus_property_info_unref((*C.GDBusPropertyInfo)(unsafe.Pointer(v)))
+	})
 
 	return _dBusPropertyInfo
 }
@@ -257,6 +265,9 @@ func (i *DBusInterfaceInfo) LookupSignal(name string) *DBusSignalInfo {
 
 	_dBusSignalInfo = (*DBusSignalInfo)(unsafe.Pointer(_cret))
 	C.g_dbus_signal_info_ref(_cret)
+	runtime.SetFinalizer(_dBusSignalInfo, func(v *DBusSignalInfo) {
+		C.g_dbus_signal_info_unref((*C.GDBusSignalInfo)(unsafe.Pointer(v)))
+	})
 
 	return _dBusSignalInfo
 }
@@ -274,6 +285,7 @@ func (i *DBusInterfaceInfo) Ref() *DBusInterfaceInfo {
 	var _dBusInterfaceInfo *DBusInterfaceInfo // out
 
 	_dBusInterfaceInfo = (*DBusInterfaceInfo)(unsafe.Pointer(_cret))
+	C.g_dbus_interface_info_ref(_cret)
 	runtime.SetFinalizer(_dBusInterfaceInfo, func(v *DBusInterfaceInfo) {
 		C.g_dbus_interface_info_unref((*C.GDBusInterfaceInfo)(unsafe.Pointer(v)))
 	})
@@ -326,6 +338,7 @@ func (i *DBusMethodInfo) Ref() *DBusMethodInfo {
 	var _dBusMethodInfo *DBusMethodInfo // out
 
 	_dBusMethodInfo = (*DBusMethodInfo)(unsafe.Pointer(_cret))
+	C.g_dbus_method_info_ref(_cret)
 	runtime.SetFinalizer(_dBusMethodInfo, func(v *DBusMethodInfo) {
 		C.g_dbus_method_info_unref((*C.GDBusMethodInfo)(unsafe.Pointer(v)))
 	})
@@ -375,6 +388,7 @@ func NewDBusNodeInfoForXML(xmlData string) (*DBusNodeInfo, error) {
 	var _goerr error                // out
 
 	_dBusNodeInfo = (*DBusNodeInfo)(unsafe.Pointer(_cret))
+	C.g_dbus_node_info_ref(_cret)
 	runtime.SetFinalizer(_dBusNodeInfo, func(v *DBusNodeInfo) {
 		C.g_dbus_node_info_unref((*C.GDBusNodeInfo)(unsafe.Pointer(v)))
 	})
@@ -406,6 +420,9 @@ func (i *DBusNodeInfo) LookupInterface(name string) *DBusInterfaceInfo {
 
 	_dBusInterfaceInfo = (*DBusInterfaceInfo)(unsafe.Pointer(_cret))
 	C.g_dbus_interface_info_ref(_cret)
+	runtime.SetFinalizer(_dBusInterfaceInfo, func(v *DBusInterfaceInfo) {
+		C.g_dbus_interface_info_unref((*C.GDBusInterfaceInfo)(unsafe.Pointer(v)))
+	})
 
 	return _dBusInterfaceInfo
 }
@@ -423,6 +440,7 @@ func (i *DBusNodeInfo) Ref() *DBusNodeInfo {
 	var _dBusNodeInfo *DBusNodeInfo // out
 
 	_dBusNodeInfo = (*DBusNodeInfo)(unsafe.Pointer(_cret))
+	C.g_dbus_node_info_ref(_cret)
 	runtime.SetFinalizer(_dBusNodeInfo, func(v *DBusNodeInfo) {
 		C.g_dbus_node_info_unref((*C.GDBusNodeInfo)(unsafe.Pointer(v)))
 	})
@@ -475,6 +493,7 @@ func (i *DBusPropertyInfo) Ref() *DBusPropertyInfo {
 	var _dBusPropertyInfo *DBusPropertyInfo // out
 
 	_dBusPropertyInfo = (*DBusPropertyInfo)(unsafe.Pointer(_cret))
+	C.g_dbus_property_info_ref(_cret)
 	runtime.SetFinalizer(_dBusPropertyInfo, func(v *DBusPropertyInfo) {
 		C.g_dbus_property_info_unref((*C.GDBusPropertyInfo)(unsafe.Pointer(v)))
 	})
@@ -527,6 +546,7 @@ func (i *DBusSignalInfo) Ref() *DBusSignalInfo {
 	var _dBusSignalInfo *DBusSignalInfo // out
 
 	_dBusSignalInfo = (*DBusSignalInfo)(unsafe.Pointer(_cret))
+	C.g_dbus_signal_info_ref(_cret)
 	runtime.SetFinalizer(_dBusSignalInfo, func(v *DBusSignalInfo) {
 		C.g_dbus_signal_info_unref((*C.GDBusSignalInfo)(unsafe.Pointer(v)))
 	})

@@ -115,7 +115,7 @@ func NewGlyphString() *GlyphString {
 
 	_glyphString = (*GlyphString)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_glyphString, func(v *GlyphString) {
-		C.pango_glyph_string_free((*C.PangoGlyphString)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _glyphString
@@ -139,7 +139,7 @@ func (s *GlyphString) Copy() *GlyphString {
 
 	_glyphString = (*GlyphString)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_glyphString, func(v *GlyphString) {
-		C.pango_glyph_string_free((*C.PangoGlyphString)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _glyphString

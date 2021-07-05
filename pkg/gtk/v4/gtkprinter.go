@@ -73,7 +73,7 @@ func marshalPrintCapabilities(p uintptr) (interface{}, error) {
 type PrinterFunc func(printer Printer) (ok bool)
 
 //export gotk4_PrinterFunc
-func gotk4_PrinterFunc(arg0 *C.GtkPrinter, arg1 C.gpointer) C.gboolean {
+func gotk4_PrinterFunc(arg0 *C.GtkPrinter, arg1 C.gpointer) (cret C.gboolean) {
 	v := box.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
@@ -85,8 +85,6 @@ func gotk4_PrinterFunc(arg0 *C.GtkPrinter, arg1 C.gpointer) C.gboolean {
 
 	fn := v.(PrinterFunc)
 	ok := fn(printer)
-
-	var cret C.gboolean // out
 
 	if ok {
 		cret = C.TRUE

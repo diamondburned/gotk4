@@ -78,7 +78,7 @@ func gotk4_Callback(arg0 *C.GtkWidget, arg1 C.gpointer) {
 type TickCallback func(widget Widget, frameClock gdk.FrameClock) (ok bool)
 
 //export gotk4_TickCallback
-func gotk4_TickCallback(arg0 *C.GtkWidget, arg1 *C.GdkFrameClock, arg2 C.gpointer) C.gboolean {
+func gotk4_TickCallback(arg0 *C.GtkWidget, arg1 *C.GdkFrameClock, arg2 C.gpointer) (cret C.gboolean) {
 	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
@@ -92,8 +92,6 @@ func gotk4_TickCallback(arg0 *C.GtkWidget, arg1 *C.GdkFrameClock, arg2 C.gpointe
 
 	fn := v.(TickCallback)
 	ok := fn(widget, frameClock)
-
-	var cret C.gboolean // out
 
 	if ok {
 		cret = C.TRUE
@@ -2329,6 +2327,9 @@ func (w widget) DragDestGetTargetListWidget() *TargetList {
 
 	_targetList = (*TargetList)(unsafe.Pointer(_cret))
 	C.gtk_target_list_ref(_cret)
+	runtime.SetFinalizer(_targetList, func(v *TargetList) {
+		C.gtk_target_list_unref((*C.GtkTargetList)(unsafe.Pointer(v)))
+	})
 
 	return _targetList
 }
@@ -2456,6 +2457,9 @@ func (w widget) DragSourceGetTargetListWidget() *TargetList {
 
 	_targetList = (*TargetList)(unsafe.Pointer(_cret))
 	C.gtk_target_list_ref(_cret)
+	runtime.SetFinalizer(_targetList, func(v *TargetList) {
+		C.gtk_target_list_unref((*C.GtkTargetList)(unsafe.Pointer(v)))
+	})
 
 	return _targetList
 }
@@ -3258,6 +3262,9 @@ func (w widget) GetPath() *WidgetPath {
 
 	_widgetPath = (*WidgetPath)(unsafe.Pointer(_cret))
 	C.gtk_widget_path_ref(_cret)
+	runtime.SetFinalizer(_widgetPath, func(v *WidgetPath) {
+		C.gtk_widget_path_unref((*C.GtkWidgetPath)(unsafe.Pointer(v)))
+	})
 
 	return _widgetPath
 }
@@ -5421,7 +5428,7 @@ func NewRequisition() *Requisition {
 
 	_requisition = (*Requisition)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_requisition, func(v *Requisition) {
-		C.gtk_requisition_free((*C.GtkRequisition)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _requisition
@@ -5445,7 +5452,7 @@ func (r *Requisition) Copy() *Requisition {
 
 	_ret = (*Requisition)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_ret, func(v *Requisition) {
-		C.gtk_requisition_free((*C.GtkRequisition)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _ret

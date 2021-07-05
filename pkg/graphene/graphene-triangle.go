@@ -48,7 +48,7 @@ func NewTriangleAlloc() *Triangle {
 
 	_triangle = (*Triangle)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_triangle, func(v *Triangle) {
-		C.graphene_triangle_free((*C.graphene_triangle_t)(unsafe.Pointer(v)))
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _triangle

@@ -381,6 +381,7 @@ func (c *MarkupParseContext) Ref() *MarkupParseContext {
 	var _markupParseContext *MarkupParseContext // out
 
 	_markupParseContext = (*MarkupParseContext)(unsafe.Pointer(_cret))
+	C.g_markup_parse_context_ref(_cret)
 	runtime.SetFinalizer(_markupParseContext, func(v *MarkupParseContext) {
 		C.g_markup_parse_context_unref((*C.GMarkupParseContext)(unsafe.Pointer(v)))
 	})

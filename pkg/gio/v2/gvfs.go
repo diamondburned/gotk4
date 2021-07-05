@@ -42,7 +42,7 @@ func init() {
 type VFSFileLookupFunc func(vfs VFS, identifier string) (file File)
 
 //export gotk4_VFSFileLookupFunc
-func gotk4_VFSFileLookupFunc(arg0 *C.GVfs, arg1 *C.char, arg2 C.gpointer) *C.GFile {
+func gotk4_VFSFileLookupFunc(arg0 *C.GVfs, arg1 *C.char, arg2 C.gpointer) (cret *C.GFile) {
 	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
@@ -56,8 +56,6 @@ func gotk4_VFSFileLookupFunc(arg0 *C.GVfs, arg1 *C.char, arg2 C.gpointer) *C.GFi
 
 	fn := v.(VFSFileLookupFunc)
 	file := fn(vfs, identifier)
-
-	var cret *C.GFile // out
 
 	cret = (*C.GFile)(unsafe.Pointer(file.Native()))
 

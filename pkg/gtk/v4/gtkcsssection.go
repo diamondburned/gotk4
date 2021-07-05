@@ -82,6 +82,9 @@ func (s *CSSSection) Parent() *CSSSection {
 
 	_cssSection = (*CSSSection)(unsafe.Pointer(_cret))
 	C.gtk_css_section_ref(_cret)
+	runtime.SetFinalizer(_cssSection, func(v *CSSSection) {
+		C.gtk_css_section_unref((*C.GtkCssSection)(unsafe.Pointer(v)))
+	})
 
 	return _cssSection
 }
@@ -115,6 +118,7 @@ func (s *CSSSection) Ref() *CSSSection {
 	var _cssSection *CSSSection // out
 
 	_cssSection = (*CSSSection)(unsafe.Pointer(_cret))
+	C.gtk_css_section_ref(_cret)
 	runtime.SetFinalizer(_cssSection, func(v *CSSSection) {
 		C.gtk_css_section_unref((*C.GtkCssSection)(unsafe.Pointer(v)))
 	})

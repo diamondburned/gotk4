@@ -21,7 +21,7 @@ import "C"
 type CompareDataFunc func(a interface{}, b interface{}) (gint int)
 
 //export gotk4_CompareDataFunc
-func gotk4_CompareDataFunc(arg0 C.gconstpointer, arg1 C.gconstpointer, arg2 C.gpointer) C.gint {
+func gotk4_CompareDataFunc(arg0 C.gconstpointer, arg1 C.gconstpointer, arg2 C.gpointer) (cret C.gint) {
 	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
@@ -35,8 +35,6 @@ func gotk4_CompareDataFunc(arg0 C.gconstpointer, arg1 C.gconstpointer, arg2 C.gp
 
 	fn := v.(CompareDataFunc)
 	gint := fn(a, b)
-
-	var cret C.gint // out
 
 	cret = C.gint(gint)
 

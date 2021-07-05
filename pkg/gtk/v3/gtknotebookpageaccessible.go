@@ -27,7 +27,7 @@ func init() {
 type NotebookPageAccessible interface {
 	atk.Object
 
-	InvalidateNotebookPageAccessible()
+	Invalidate()
 }
 
 // notebookPageAccessible implements the NotebookPageAccessible class.
@@ -66,7 +66,7 @@ func NewNotebookPageAccessible(notebook NotebookAccessible, child Widget) Notebo
 	return _notebookPageAccessible
 }
 
-func (p notebookPageAccessible) InvalidateNotebookPageAccessible() {
+func (p notebookPageAccessible) Invalidate() {
 	var _arg0 *C.GtkNotebookPageAccessible // out
 
 	_arg0 = (*C.GtkNotebookPageAccessible)(unsafe.Pointer(p.Native()))

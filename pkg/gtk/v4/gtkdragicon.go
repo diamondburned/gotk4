@@ -49,8 +49,8 @@ type DragIcon interface {
 
 	// Child gets the widget currently used as drag icon.
 	Child() Widget
-	// SetChildDragIcon sets the widget to display as the drag icon.
-	SetChildDragIcon(child Widget)
+	// SetChild sets the widget to display as the drag icon.
+	SetChild(child Widget)
 }
 
 // dragIcon implements the DragIcon class.
@@ -72,31 +72,6 @@ func marshalDragIcon(p uintptr) (interface{}, error) {
 	return WrapDragIcon(obj), nil
 }
 
-func (s dragIcon) Child() Widget {
-	var _arg0 *C.GtkDragIcon // out
-	var _cret *C.GtkWidget   // in
-
-	_arg0 = (*C.GtkDragIcon)(unsafe.Pointer(s.Native()))
-
-	_cret = C.gtk_drag_icon_get_child(_arg0)
-
-	var _widget Widget // out
-
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
-
-	return _widget
-}
-
-func (s dragIcon) SetChildDragIcon(child Widget) {
-	var _arg0 *C.GtkDragIcon // out
-	var _arg1 *C.GtkWidget   // out
-
-	_arg0 = (*C.GtkDragIcon)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
-
-	C.gtk_drag_icon_set_child(_arg0, _arg1)
-}
-
 func (d dragIcon) AsAccessible() Accessible {
 	return WrapAccessible(gextras.InternObject(d))
 }
@@ -115,4 +90,29 @@ func (d dragIcon) AsNative() Native {
 
 func (d dragIcon) AsRoot() Root {
 	return WrapRoot(gextras.InternObject(d))
+}
+
+func (s dragIcon) Child() Widget {
+	var _arg0 *C.GtkDragIcon // out
+	var _cret *C.GtkWidget   // in
+
+	_arg0 = (*C.GtkDragIcon)(unsafe.Pointer(s.Native()))
+
+	_cret = C.gtk_drag_icon_get_child(_arg0)
+
+	var _widget Widget // out
+
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
+
+	return _widget
+}
+
+func (s dragIcon) SetChild(child Widget) {
+	var _arg0 *C.GtkDragIcon // out
+	var _arg1 *C.GtkWidget   // out
+
+	_arg0 = (*C.GtkDragIcon)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+
+	C.gtk_drag_icon_set_child(_arg0, _arg1)
 }

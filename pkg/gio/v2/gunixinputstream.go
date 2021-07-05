@@ -53,9 +53,9 @@ type UnixInputStream interface {
 	CloseFd() bool
 	// Fd: return the UNIX file descriptor that the stream reads from.
 	Fd() int
-	// SetCloseFdUnixInputStream sets whether the file descriptor of @stream
-	// shall be closed when the stream is closed.
-	SetCloseFdUnixInputStream(closeFd bool)
+	// SetCloseFd sets whether the file descriptor of @stream shall be closed
+	// when the stream is closed.
+	SetCloseFd(closeFd bool)
 }
 
 // unixInputStream implements the UnixInputStream class.
@@ -100,6 +100,14 @@ func NewUnixInputStream(fd int, closeFd bool) UnixInputStream {
 	return _unixInputStream
 }
 
+func (u unixInputStream) AsFileDescriptorBased() FileDescriptorBased {
+	return WrapFileDescriptorBased(gextras.InternObject(u))
+}
+
+func (u unixInputStream) AsPollableInputStream() PollableInputStream {
+	return WrapPollableInputStream(gextras.InternObject(u))
+}
+
 func (s unixInputStream) CloseFd() bool {
 	var _arg0 *C.GUnixInputStream // out
 	var _cret C.gboolean          // in
@@ -132,7 +140,7 @@ func (s unixInputStream) Fd() int {
 	return _gint
 }
 
-func (s unixInputStream) SetCloseFdUnixInputStream(closeFd bool) {
+func (s unixInputStream) SetCloseFd(closeFd bool) {
 	var _arg0 *C.GUnixInputStream // out
 	var _arg1 C.gboolean          // out
 
@@ -142,12 +150,4 @@ func (s unixInputStream) SetCloseFdUnixInputStream(closeFd bool) {
 	}
 
 	C.g_unix_input_stream_set_close_fd(_arg0, _arg1)
-}
-
-func (u unixInputStream) AsFileDescriptorBased() FileDescriptorBased {
-	return WrapFileDescriptorBased(gextras.InternObject(u))
-}
-
-func (u unixInputStream) AsPollableInputStream() PollableInputStream {
-	return WrapPollableInputStream(gextras.InternObject(u))
 }

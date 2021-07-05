@@ -58,7 +58,7 @@ type Table interface {
 	// ColumnAtIndex gets a #gint representing the column at the specified
 	// @index_.
 	//
-	// Deprecated: since version .
+	// Deprecated.
 	ColumnAtIndex(index_ int) int
 	// ColumnDescription gets the description text of the specified @column in
 	// the table
@@ -72,7 +72,7 @@ type Table interface {
 	// IndexAt gets a #gint representing the index at the specified @row and
 	// @column.
 	//
-	// Deprecated: since version .
+	// Deprecated.
 	IndexAt(row int, column int) int
 	// NColumns gets the number of columns in the table.
 	NColumns() int
@@ -80,7 +80,7 @@ type Table interface {
 	NRows() int
 	// RowAtIndex gets a #gint representing the row at the specified @index_.
 	//
-	// Deprecated: since version .
+	// Deprecated.
 	RowAtIndex(index_ int) int
 	// RowDescription gets the description text of the specified row in the
 	// table

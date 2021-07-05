@@ -107,22 +107,20 @@ type Revealer interface {
 	// TransitionType gets the type of animation that will be used for
 	// transitions in @revealer.
 	TransitionType() RevealerTransitionType
-	// SetChildRevealer sets the child widget of @revealer.
-	SetChildRevealer(child Widget)
-	// SetRevealChildRevealer tells the `GtkRevealer` to reveal or conceal its
-	// child.
+	// SetChild sets the child widget of @revealer.
+	SetChild(child Widget)
+	// SetRevealChild tells the `GtkRevealer` to reveal or conceal its child.
 	//
 	// The transition will be animated with the current transition type of
 	// @revealer.
-	SetRevealChildRevealer(revealChild bool)
-	// SetTransitionDurationRevealer sets the duration that transitions will
-	// take.
-	SetTransitionDurationRevealer(duration uint)
-	// SetTransitionTypeRevealer sets the type of animation that will be used
-	// for transitions in @revealer.
+	SetRevealChild(revealChild bool)
+	// SetTransitionDuration sets the duration that transitions will take.
+	SetTransitionDuration(duration uint)
+	// SetTransitionType sets the type of animation that will be used for
+	// transitions in @revealer.
 	//
 	// Available types include various kinds of fades and slides.
-	SetTransitionTypeRevealer(transition RevealerTransitionType)
+	SetTransitionType(transition RevealerTransitionType)
 }
 
 // revealer implements the Revealer class.
@@ -155,6 +153,18 @@ func NewRevealer() Revealer {
 	_revealer = WrapRevealer(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _revealer
+}
+
+func (r revealer) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(r))
+}
+
+func (r revealer) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(r))
+}
+
+func (r revealer) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(r))
 }
 
 func (r revealer) Child() Widget {
@@ -236,7 +246,7 @@ func (r revealer) TransitionType() RevealerTransitionType {
 	return _revealerTransitionType
 }
 
-func (r revealer) SetChildRevealer(child Widget) {
+func (r revealer) SetChild(child Widget) {
 	var _arg0 *C.GtkRevealer // out
 	var _arg1 *C.GtkWidget   // out
 
@@ -246,7 +256,7 @@ func (r revealer) SetChildRevealer(child Widget) {
 	C.gtk_revealer_set_child(_arg0, _arg1)
 }
 
-func (r revealer) SetRevealChildRevealer(revealChild bool) {
+func (r revealer) SetRevealChild(revealChild bool) {
 	var _arg0 *C.GtkRevealer // out
 	var _arg1 C.gboolean     // out
 
@@ -258,7 +268,7 @@ func (r revealer) SetRevealChildRevealer(revealChild bool) {
 	C.gtk_revealer_set_reveal_child(_arg0, _arg1)
 }
 
-func (r revealer) SetTransitionDurationRevealer(duration uint) {
+func (r revealer) SetTransitionDuration(duration uint) {
 	var _arg0 *C.GtkRevealer // out
 	var _arg1 C.guint        // out
 
@@ -268,7 +278,7 @@ func (r revealer) SetTransitionDurationRevealer(duration uint) {
 	C.gtk_revealer_set_transition_duration(_arg0, _arg1)
 }
 
-func (r revealer) SetTransitionTypeRevealer(transition RevealerTransitionType) {
+func (r revealer) SetTransitionType(transition RevealerTransitionType) {
 	var _arg0 *C.GtkRevealer              // out
 	var _arg1 C.GtkRevealerTransitionType // out
 
@@ -276,16 +286,4 @@ func (r revealer) SetTransitionTypeRevealer(transition RevealerTransitionType) {
 	_arg1 = C.GtkRevealerTransitionType(transition)
 
 	C.gtk_revealer_set_transition_type(_arg0, _arg1)
-}
-
-func (r revealer) AsAccessible() Accessible {
-	return WrapAccessible(gextras.InternObject(r))
-}
-
-func (r revealer) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(r))
-}
-
-func (r revealer) AsConstraintTarget() ConstraintTarget {
-	return WrapConstraintTarget(gextras.InternObject(r))
 }

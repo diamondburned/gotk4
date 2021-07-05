@@ -62,22 +62,22 @@ func init() {
 type FileEnumerator interface {
 	gextras.Objector
 
-	// CloseFileEnumerator releases all resources used by this enumerator,
-	// making the enumerator return G_IO_ERROR_CLOSED on all calls.
+	// Close releases all resources used by this enumerator, making the
+	// enumerator return G_IO_ERROR_CLOSED on all calls.
 	//
 	// This will be automatically called when the last reference is dropped, but
 	// you might want to call this function to make sure resources are released
 	// as early as possible.
-	CloseFileEnumerator(cancellable Cancellable) error
-	// CloseAsyncFileEnumerator: asynchronously closes the file enumerator.
+	Close(cancellable Cancellable) error
+	// CloseAsync: asynchronously closes the file enumerator.
 	//
 	// If @cancellable is not nil, then the operation can be cancelled by
 	// triggering the cancellable object from another thread. If the operation
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned in
 	// g_file_enumerator_close_finish().
-	CloseAsyncFileEnumerator(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
-	// CloseFinishFileEnumerator finishes closing a file enumerator, started
-	// from g_file_enumerator_close_async().
+	CloseAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
+	// CloseFinish finishes closing a file enumerator, started from
+	// g_file_enumerator_close_async().
 	//
 	// If the file enumerator was already closed when
 	// g_file_enumerator_close_async() was called, then this function will
@@ -88,7 +88,7 @@ type FileEnumerator interface {
 	// triggering the cancellable object from another thread. If the operation
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be set, and false will
 	// be returned.
-	CloseFinishFileEnumerator(result AsyncResult) error
+	CloseFinish(result AsyncResult) error
 	// Child: return a new #GFile which refers to the file named by @info in the
 	// source directory of @enumerator. This function is primarily intended to
 	// be used inside loops with g_file_enumerator_next_file().
@@ -101,15 +101,14 @@ type FileEnumerator interface {
 	Child(info FileInfo) File
 	// Container: get the #GFile container which is being enumerated.
 	Container() File
-	// HasPendingFileEnumerator checks if the file enumerator has pending
-	// operations.
-	HasPendingFileEnumerator() bool
-	// IsClosedFileEnumerator checks if the file enumerator has been closed.
-	IsClosedFileEnumerator() bool
-	// IterateFileEnumerator: this is a version of g_file_enumerator_next_file()
-	// that's easier to use correctly from C programs. With
-	// g_file_enumerator_next_file(), the gboolean return value signifies "end
-	// of iteration or error", which requires allocation of a temporary #GError.
+	// HasPending checks if the file enumerator has pending operations.
+	HasPending() bool
+	// IsClosed checks if the file enumerator has been closed.
+	IsClosed() bool
+	// Iterate: this is a version of g_file_enumerator_next_file() that's easier
+	// to use correctly from C programs. With g_file_enumerator_next_file(), the
+	// gboolean return value signifies "end of iteration or error", which
+	// requires allocation of a temporary #GError.
 	//
 	// In contrast, with this function, a false return from
 	// g_file_enumerator_iterate() *always* means "error". End of iteration is
@@ -140,21 +139,21 @@ type FileEnumerator interface {
 	//
 	//    out:
 	//      g_object_unref (direnum); // Note: frees the last @info
-	IterateFileEnumerator(cancellable Cancellable) (FileInfo, File, error)
-	// NextFileFileEnumerator returns information for the next file in the
-	// enumerated object. Will block until the information is available. The
-	// Info returned from this function will contain attributes that match the
-	// attribute string that was passed when the Enumerator was created.
+	Iterate(cancellable Cancellable) (FileInfo, File, error)
+	// NextFile returns information for the next file in the enumerated object.
+	// Will block until the information is available. The Info returned from
+	// this function will contain attributes that match the attribute string
+	// that was passed when the Enumerator was created.
 	//
 	// See the documentation of Enumerator for information about the order of
 	// returned files.
 	//
 	// On error, returns nil and sets @error to the error. If the enumerator is
 	// at the end, nil will be returned and @error will be unset.
-	NextFileFileEnumerator(cancellable Cancellable) (FileInfo, error)
-	// NextFilesAsyncFileEnumerator: request information for a number of files
-	// from the enumerator asynchronously. When all i/o for the operation is
-	// finished the @callback will be called with the requested information.
+	NextFile(cancellable Cancellable) (FileInfo, error)
+	// NextFilesAsync: request information for a number of files from the
+	// enumerator asynchronously. When all i/o for the operation is finished the
+	// @callback will be called with the requested information.
 	//
 	// See the documentation of Enumerator for information about the order of
 	// returned files.
@@ -171,10 +170,9 @@ type FileEnumerator interface {
 	// Any outstanding i/o request with higher priority (lower numerical value)
 	// will be executed before an outstanding request with lower priority.
 	// Default priority is G_PRIORITY_DEFAULT.
-	NextFilesAsyncFileEnumerator(numFiles int, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
-	// SetPendingFileEnumerator sets the file enumerator as having pending
-	// operations.
-	SetPendingFileEnumerator(pending bool)
+	NextFilesAsync(numFiles int, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
+	// SetPending sets the file enumerator as having pending operations.
+	SetPending(pending bool)
 }
 
 // fileEnumerator implements the FileEnumerator class.
@@ -196,7 +194,7 @@ func marshalFileEnumerator(p uintptr) (interface{}, error) {
 	return WrapFileEnumerator(obj), nil
 }
 
-func (e fileEnumerator) CloseFileEnumerator(cancellable Cancellable) error {
+func (e fileEnumerator) Close(cancellable Cancellable) error {
 	var _arg0 *C.GFileEnumerator // out
 	var _arg1 *C.GCancellable    // out
 	var _cerr *C.GError          // in
@@ -213,7 +211,7 @@ func (e fileEnumerator) CloseFileEnumerator(cancellable Cancellable) error {
 	return _goerr
 }
 
-func (e fileEnumerator) CloseAsyncFileEnumerator(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+func (e fileEnumerator) CloseAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GFileEnumerator    // out
 	var _arg1 C.int                 // out
 	var _arg2 *C.GCancellable       // out
@@ -229,7 +227,7 @@ func (e fileEnumerator) CloseAsyncFileEnumerator(ioPriority int, cancellable Can
 	C.g_file_enumerator_close_async(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
-func (e fileEnumerator) CloseFinishFileEnumerator(result AsyncResult) error {
+func (e fileEnumerator) CloseFinish(result AsyncResult) error {
 	var _arg0 *C.GFileEnumerator // out
 	var _arg1 *C.GAsyncResult    // out
 	var _cerr *C.GError          // in
@@ -278,7 +276,7 @@ func (e fileEnumerator) Container() File {
 	return _file
 }
 
-func (e fileEnumerator) HasPendingFileEnumerator() bool {
+func (e fileEnumerator) HasPending() bool {
 	var _arg0 *C.GFileEnumerator // out
 	var _cret C.gboolean         // in
 
@@ -295,7 +293,7 @@ func (e fileEnumerator) HasPendingFileEnumerator() bool {
 	return _ok
 }
 
-func (e fileEnumerator) IsClosedFileEnumerator() bool {
+func (e fileEnumerator) IsClosed() bool {
 	var _arg0 *C.GFileEnumerator // out
 	var _cret C.gboolean         // in
 
@@ -312,7 +310,7 @@ func (e fileEnumerator) IsClosedFileEnumerator() bool {
 	return _ok
 }
 
-func (d fileEnumerator) IterateFileEnumerator(cancellable Cancellable) (FileInfo, File, error) {
+func (d fileEnumerator) Iterate(cancellable Cancellable) (FileInfo, File, error) {
 	var _arg0 *C.GFileEnumerator // out
 	var _arg1 *C.GFileInfo       // in
 	var _arg2 *C.GFile           // in
@@ -335,7 +333,7 @@ func (d fileEnumerator) IterateFileEnumerator(cancellable Cancellable) (FileInfo
 	return _outInfo, _outChild, _goerr
 }
 
-func (e fileEnumerator) NextFileFileEnumerator(cancellable Cancellable) (FileInfo, error) {
+func (e fileEnumerator) NextFile(cancellable Cancellable) (FileInfo, error) {
 	var _arg0 *C.GFileEnumerator // out
 	var _arg1 *C.GCancellable    // out
 	var _cret *C.GFileInfo       // in
@@ -355,7 +353,7 @@ func (e fileEnumerator) NextFileFileEnumerator(cancellable Cancellable) (FileInf
 	return _fileInfo, _goerr
 }
 
-func (e fileEnumerator) NextFilesAsyncFileEnumerator(numFiles int, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+func (e fileEnumerator) NextFilesAsync(numFiles int, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GFileEnumerator    // out
 	var _arg1 C.int                 // out
 	var _arg2 C.int                 // out
@@ -373,7 +371,7 @@ func (e fileEnumerator) NextFilesAsyncFileEnumerator(numFiles int, ioPriority in
 	C.g_file_enumerator_next_files_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
 
-func (e fileEnumerator) SetPendingFileEnumerator(pending bool) {
+func (e fileEnumerator) SetPending(pending bool) {
 	var _arg0 *C.GFileEnumerator // out
 	var _arg1 C.gboolean         // out
 

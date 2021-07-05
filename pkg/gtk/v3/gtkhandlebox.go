@@ -72,22 +72,21 @@ type HandleBox interface {
 	//
 	// Deprecated: since version 3.4.
 	SnapEdge() PositionType
-	// SetHandlePositionHandleBox sets the side of the handlebox where the
-	// handle is drawn.
+	// SetHandlePosition sets the side of the handlebox where the handle is
+	// drawn.
 	//
 	// Deprecated: since version 3.4.
-	SetHandlePositionHandleBox(position PositionType)
-	// SetShadowTypeHandleBox sets the type of shadow to be drawn around the
-	// border of the handle box.
+	SetHandlePosition(position PositionType)
+	// SetShadowType sets the type of shadow to be drawn around the border of
+	// the handle box.
 	//
 	// Deprecated: since version 3.4.
-	SetShadowTypeHandleBox(typ ShadowType)
-	// SetSnapEdgeHandleBox sets the snap edge of a handlebox. The snap edge is
-	// the edge of the detached child that must be aligned with the
-	// corresponding edge of the “ghost” left behind when the child was detached
-	// to reattach the torn-off window. Usually, the snap edge should be chosen
-	// so that it stays in the same place on the screen when the handlebox is
-	// torn off.
+	SetShadowType(typ ShadowType)
+	// SetSnapEdge sets the snap edge of a handlebox. The snap edge is the edge
+	// of the detached child that must be aligned with the corresponding edge of
+	// the “ghost” left behind when the child was detached to reattach the
+	// torn-off window. Usually, the snap edge should be chosen so that it stays
+	// in the same place on the screen when the handlebox is torn off.
 	//
 	// If the snap edge is not set, then an appropriate value will be guessed
 	// from the handle position. If the handle position is GTK_POS_RIGHT or
@@ -95,7 +94,7 @@ type HandleBox interface {
 	// be GTK_POS_LEFT.
 	//
 	// Deprecated: since version 3.4.
-	SetSnapEdgeHandleBox(edge PositionType)
+	SetSnapEdge(edge PositionType)
 }
 
 // handleBox implements the HandleBox class.
@@ -130,6 +129,10 @@ func NewHandleBox() HandleBox {
 	_handleBox = WrapHandleBox(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _handleBox
+}
+
+func (h handleBox) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(h))
 }
 
 func (h handleBox) ChildDetached() bool {
@@ -194,7 +197,7 @@ func (h handleBox) SnapEdge() PositionType {
 	return _positionType
 }
 
-func (h handleBox) SetHandlePositionHandleBox(position PositionType) {
+func (h handleBox) SetHandlePosition(position PositionType) {
 	var _arg0 *C.GtkHandleBox   // out
 	var _arg1 C.GtkPositionType // out
 
@@ -204,7 +207,7 @@ func (h handleBox) SetHandlePositionHandleBox(position PositionType) {
 	C.gtk_handle_box_set_handle_position(_arg0, _arg1)
 }
 
-func (h handleBox) SetShadowTypeHandleBox(typ ShadowType) {
+func (h handleBox) SetShadowType(typ ShadowType) {
 	var _arg0 *C.GtkHandleBox // out
 	var _arg1 C.GtkShadowType // out
 
@@ -214,7 +217,7 @@ func (h handleBox) SetShadowTypeHandleBox(typ ShadowType) {
 	C.gtk_handle_box_set_shadow_type(_arg0, _arg1)
 }
 
-func (h handleBox) SetSnapEdgeHandleBox(edge PositionType) {
+func (h handleBox) SetSnapEdge(edge PositionType) {
 	var _arg0 *C.GtkHandleBox   // out
 	var _arg1 C.GtkPositionType // out
 
@@ -222,8 +225,4 @@ func (h handleBox) SetSnapEdgeHandleBox(edge PositionType) {
 	_arg1 = C.GtkPositionType(edge)
 
 	C.gtk_handle_box_set_snap_edge(_arg0, _arg1)
-}
-
-func (h handleBox) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(h))
 }

@@ -156,7 +156,7 @@ func init() {
 type Pixbuf interface {
 	gextras.Objector
 
-	// AddAlphaPixbuf takes an existing pixbuf and adds an alpha channel to it.
+	// AddAlpha takes an existing pixbuf and adds an alpha channel to it.
 	//
 	// If the existing pixbuf already had an alpha channel, the channel values
 	// are copied from the original; otherwise, the alpha channel is initialized
@@ -169,9 +169,9 @@ type Pixbuf interface {
 	//
 	// If `substitute_color` is `FALSE`, then the (`r`, `g`, `b`) arguments will
 	// be ignored.
-	AddAlphaPixbuf(substituteColor bool, r byte, g byte, b byte) Pixbuf
-	// ApplyEmbeddedOrientationPixbuf takes an existing pixbuf and checks for
-	// the presence of an associated "orientation" option.
+	AddAlpha(substituteColor bool, r byte, g byte, b byte) Pixbuf
+	// ApplyEmbeddedOrientation takes an existing pixbuf and checks for the
+	// presence of an associated "orientation" option.
 	//
 	// The orientation option may be provided by the JPEG loader (which reads
 	// the exif orientation tag) or the TIFF loader (which reads the TIFF
@@ -180,10 +180,9 @@ type Pixbuf interface {
 	//
 	// If an orientation option/tag is present, the appropriate transform will
 	// be performed so that the pixbuf is oriented correctly.
-	ApplyEmbeddedOrientationPixbuf() Pixbuf
-	// CompositePixbuf creates a transformation of the source image @src by
-	// scaling by @scale_x and @scale_y then translating by @offset_x and
-	// @offset_y.
+	ApplyEmbeddedOrientation() Pixbuf
+	// Composite creates a transformation of the source image @src by scaling by
+	// @scale_x and @scale_y then translating by @offset_x and @offset_y.
 	//
 	// This gives an image in the coordinates of the destination pixbuf. The
 	// rectangle (@dest_x, @dest_y, @dest_width, @dest_height) is then alpha
@@ -194,8 +193,8 @@ type Pixbuf interface {
 	// the data at the edges of the source image is replicated to infinity.
 	//
 	// ! (composite.png)
-	CompositePixbuf(dest Pixbuf, destX int, destY int, destWidth int, destHeight int, offsetX float64, offsetY float64, scaleX float64, scaleY float64, interpType InterpType, overallAlpha int)
-	// CompositeColorPixbuf creates a transformation of the source image @src by
+	Composite(dest Pixbuf, destX int, destY int, destWidth int, destHeight int, offsetX float64, offsetY float64, scaleX float64, scaleY float64, interpType InterpType, overallAlpha int)
+	// CompositeColor creates a transformation of the source image @src by
 	// scaling by @scale_x and @scale_y then translating by @offset_x and
 	// @offset_y, then alpha blends the rectangle (@dest_x ,@dest_y,
 	// @dest_width, @dest_height) of the resulting image with a checkboard of
@@ -207,42 +206,41 @@ type Pixbuf interface {
 	//
 	// See gdk_pixbuf_composite_color_simple() for a simpler variant of this
 	// function suitable for many tasks.
-	CompositeColorPixbuf(dest Pixbuf, destX int, destY int, destWidth int, destHeight int, offsetX float64, offsetY float64, scaleX float64, scaleY float64, interpType InterpType, overallAlpha int, checkX int, checkY int, checkSize int, color1 uint32, color2 uint32)
-	// CompositeColorSimplePixbuf creates a new pixbuf by scaling `src` to
+	CompositeColor(dest Pixbuf, destX int, destY int, destWidth int, destHeight int, offsetX float64, offsetY float64, scaleX float64, scaleY float64, interpType InterpType, overallAlpha int, checkX int, checkY int, checkSize int, color1 uint32, color2 uint32)
+	// CompositeColorSimple creates a new pixbuf by scaling `src` to
 	// `dest_width` x `dest_height` and alpha blending the result with a
 	// checkboard of colors `color1` and `color2`.
-	CompositeColorSimplePixbuf(destWidth int, destHeight int, interpType InterpType, overallAlpha int, checkSize int, color1 uint32, color2 uint32) Pixbuf
-	// CopyPixbuf creates a new `GdkPixbuf` with a copy of the information in
-	// the specified `pixbuf`.
+	CompositeColorSimple(destWidth int, destHeight int, interpType InterpType, overallAlpha int, checkSize int, color1 uint32, color2 uint32) Pixbuf
+	// Copy creates a new `GdkPixbuf` with a copy of the information in the
+	// specified `pixbuf`.
 	//
 	// Note that this does not copy the options set on the original `GdkPixbuf`,
 	// use gdk_pixbuf_copy_options() for this.
-	CopyPixbuf() Pixbuf
-	// CopyAreaPixbuf copies a rectangular area from `src_pixbuf` to
-	// `dest_pixbuf`.
+	Copy() Pixbuf
+	// CopyArea copies a rectangular area from `src_pixbuf` to `dest_pixbuf`.
 	//
 	// Conversion of pixbuf formats is done automatically.
 	//
 	// If the source rectangle overlaps the destination rectangle on the same
 	// pixbuf, it will be overwritten during the copy operation. Therefore, you
 	// can not use this function to scroll a pixbuf.
-	CopyAreaPixbuf(srcX int, srcY int, width int, height int, destPixbuf Pixbuf, destX int, destY int)
-	// CopyOptionsPixbuf copies the key/value pair options attached to a
-	// `GdkPixbuf` to another `GdkPixbuf`.
+	CopyArea(srcX int, srcY int, width int, height int, destPixbuf Pixbuf, destX int, destY int)
+	// CopyOptions copies the key/value pair options attached to a `GdkPixbuf`
+	// to another `GdkPixbuf`.
 	//
 	// This is useful to keep original metadata after having manipulated a file.
 	// However be careful to remove metadata which you've already applied, such
 	// as the "orientation" option after rotating the image.
-	CopyOptionsPixbuf(destPixbuf Pixbuf) bool
-	// FillPixbuf clears a pixbuf to the given RGBA value, converting the RGBA
-	// value into the pixbuf's pixel format.
+	CopyOptions(destPixbuf Pixbuf) bool
+	// Fill clears a pixbuf to the given RGBA value, converting the RGBA value
+	// into the pixbuf's pixel format.
 	//
 	// The alpha component will be ignored if the pixbuf doesn't have an alpha
 	// channel.
-	FillPixbuf(pixel uint32)
-	// FlipPixbuf flips a pixbuf horizontally or vertically and returns the
-	// result in a new pixbuf.
-	FlipPixbuf(horizontal bool) Pixbuf
+	Fill(pixel uint32)
+	// Flip flips a pixbuf horizontally or vertically and returns the result in
+	// a new pixbuf.
+	Flip(horizontal bool) Pixbuf
 	// BitsPerSample queries the number of bits per color sample in a pixbuf.
 	BitsPerSample() int
 	// ByteLength returns the length of the pixel data, in bytes.
@@ -281,7 +279,7 @@ type Pixbuf interface {
 	Rowstride() int
 	// Width queries the width of a pixbuf.
 	Width() int
-	// NewSubpixbufPixbuf creates a new pixbuf which represents a sub-region of
+	// NewSubpixbuf creates a new pixbuf which represents a sub-region of
 	// `src_pixbuf`.
 	//
 	// The new pixbuf shares its pixels with the original pixbuf, so writing to
@@ -290,22 +288,21 @@ type Pixbuf interface {
 	//
 	// Note that if `src_pixbuf` is read-only, this function will force it to be
 	// mutable.
-	NewSubpixbufPixbuf(srcX int, srcY int, width int, height int) Pixbuf
-	// ReadPixelsPixbuf provides a read-only pointer to the raw pixel data.
+	NewSubpixbuf(srcX int, srcY int, width int, height int) Pixbuf
+	// ReadPixels provides a read-only pointer to the raw pixel data.
 	//
 	// This function allows skipping the implicit copy that must be made if
 	// gdk_pixbuf_get_pixels() is called on a read-only pixbuf.
-	ReadPixelsPixbuf() *byte
-	// RemoveOptionPixbuf removes the key/value pair option attached to a
-	// `GdkPixbuf`.
-	RemoveOptionPixbuf(key string) bool
-	// RotateSimplePixbuf rotates a pixbuf by a multiple of 90 degrees, and
-	// returns the result in a new pixbuf.
+	ReadPixels() *byte
+	// RemoveOption removes the key/value pair option attached to a `GdkPixbuf`.
+	RemoveOption(key string) bool
+	// RotateSimple rotates a pixbuf by a multiple of 90 degrees, and returns
+	// the result in a new pixbuf.
 	//
 	// If `angle` is 0, this function will return a copy of `src`.
-	RotateSimplePixbuf(angle PixbufRotation) Pixbuf
-	// SaturateAndPixelatePixbuf modifies saturation and optionally pixelates
-	// `src`, placing the result in `dest`.
+	RotateSimple(angle PixbufRotation) Pixbuf
+	// SaturateAndPixelate modifies saturation and optionally pixelates `src`,
+	// placing the result in `dest`.
 	//
 	// The `src` and `dest` pixbufs must have the same image format, size, and
 	// rowstride.
@@ -319,15 +316,15 @@ type Pixbuf interface {
 	//
 	// If `pixelate` is `TRUE`, then pixels are faded in a checkerboard pattern
 	// to create a pixelated image.
-	SaturateAndPixelatePixbuf(dest Pixbuf, saturation float32, pixelate bool)
-	// SaveToBuffervPixbuf: vector version of `gdk_pixbuf_save_to_buffer()`.
+	SaturateAndPixelate(dest Pixbuf, saturation float32, pixelate bool)
+	// SaveToBufferv: vector version of `gdk_pixbuf_save_to_buffer()`.
 	//
 	// Saves pixbuf to a new buffer in format @type, which is currently "jpeg",
 	// "tiff", "png", "ico" or "bmp".
 	//
 	// See [method@GdkPixbuf.Pixbuf.save_to_buffer] for more details.
-	SaveToBuffervPixbuf(typ string, optionKeys []string, optionValues []string) ([]byte, error)
-	// SaveToCallbackvPixbuf: vector version of `gdk_pixbuf_save_to_callback()`.
+	SaveToBufferv(typ string, optionKeys []string, optionValues []string) ([]byte, error)
+	// SaveToCallbackv: vector version of `gdk_pixbuf_save_to_callback()`.
 	//
 	// Saves pixbuf to a callback in format @type, which is currently "jpeg",
 	// "png", "tiff", "ico" or "bmp".
@@ -335,15 +332,15 @@ type Pixbuf interface {
 	// If @error is set, `FALSE` will be returned.
 	//
 	// See [method@GdkPixbuf.Pixbuf.save_to_callback] for more details.
-	SaveToCallbackvPixbuf(saveFunc PixbufSaveFunc, typ string, optionKeys []string, optionValues []string) error
-	// SaveToStreamvPixbuf saves `pixbuf` to an output stream.
+	SaveToCallbackv(saveFunc PixbufSaveFunc, typ string, optionKeys []string, optionValues []string) error
+	// SaveToStreamv saves `pixbuf` to an output stream.
 	//
 	// Supported file formats are currently "jpeg", "tiff", "png", "ico" or
 	// "bmp".
 	//
 	// See [method@GdkPixbuf.Pixbuf.save_to_stream] for more details.
-	SaveToStreamvPixbuf(stream gio.OutputStream, typ string, optionKeys []string, optionValues []string, cancellable gio.Cancellable) error
-	// SavevPixbuf: vector version of `gdk_pixbuf_save()`.
+	SaveToStreamv(stream gio.OutputStream, typ string, optionKeys []string, optionValues []string, cancellable gio.Cancellable) error
+	// Savev: vector version of `gdk_pixbuf_save()`.
 	//
 	// Saves pixbuf to a file in `type`, which is currently "jpeg", "png",
 	// "tiff", "ico" or "bmp".
@@ -351,11 +348,11 @@ type Pixbuf interface {
 	// If @error is set, `FALSE` will be returned.
 	//
 	// See [method@GdkPixbuf.Pixbuf.save] for more details.
-	SavevPixbuf(filename string, typ string, optionKeys []string, optionValues []string) error
-	// ScalePixbuf creates a transformation of the source image @src by scaling
-	// by @scale_x and @scale_y then translating by @offset_x and @offset_y,
-	// then renders the rectangle (@dest_x, @dest_y, @dest_width, @dest_height)
-	// of the resulting image onto the destination image replacing the previous
+	Savev(filename string, typ string, optionKeys []string, optionValues []string) error
+	// Scale creates a transformation of the source image @src by scaling by
+	// @scale_x and @scale_y then translating by @offset_x and @offset_y, then
+	// renders the rectangle (@dest_x, @dest_y, @dest_width, @dest_height) of
+	// the resulting image onto the destination image replacing the previous
 	// contents.
 	//
 	// Try to use gdk_pixbuf_scale_simple() first; this function is the
@@ -365,9 +362,9 @@ type Pixbuf interface {
 	// If the source rectangle overlaps the destination rectangle on the same
 	// pixbuf, it will be overwritten during the scaling which results in
 	// rendering artifacts.
-	ScalePixbuf(dest Pixbuf, destX int, destY int, destWidth int, destHeight int, offsetX float64, offsetY float64, scaleX float64, scaleY float64, interpType InterpType)
-	// ScaleSimplePixbuf: create a new pixbuf containing a copy of `src` scaled
-	// to `dest_width` x `dest_height`.
+	Scale(dest Pixbuf, destX int, destY int, destWidth int, destHeight int, offsetX float64, offsetY float64, scaleX float64, scaleY float64, interpType InterpType)
+	// ScaleSimple: create a new pixbuf containing a copy of `src` scaled to
+	// `dest_width` x `dest_height`.
 	//
 	// This function leaves `src` unaffected.
 	//
@@ -384,12 +381,12 @@ type Pixbuf interface {
 	//
 	// For more complicated scaling/alpha blending see
 	// [method@GdkPixbuf.Pixbuf.scale] and [method@GdkPixbuf.Pixbuf.composite].
-	ScaleSimplePixbuf(destWidth int, destHeight int, interpType InterpType) Pixbuf
-	// SetOptionPixbuf attaches a key/value pair as an option to a `GdkPixbuf`.
+	ScaleSimple(destWidth int, destHeight int, interpType InterpType) Pixbuf
+	// SetOption attaches a key/value pair as an option to a `GdkPixbuf`.
 	//
 	// If `key` already exists in the list of options attached to the `pixbuf`,
 	// the new value is ignored and `FALSE` is returned.
-	SetOptionPixbuf(key string, value string) bool
+	SetOption(key string, value string) bool
 }
 
 // pixbuf implements the Pixbuf class.
@@ -792,7 +789,7 @@ func NewPixbufFromXpmData(data []string) Pixbuf {
 	return _pixbuf
 }
 
-func (p pixbuf) AddAlphaPixbuf(substituteColor bool, r byte, g byte, b byte) Pixbuf {
+func (p pixbuf) AddAlpha(substituteColor bool, r byte, g byte, b byte) Pixbuf {
 	var _arg0 *C.GdkPixbuf // out
 	var _arg1 C.gboolean   // out
 	var _arg2 C.guchar     // out
@@ -817,7 +814,7 @@ func (p pixbuf) AddAlphaPixbuf(substituteColor bool, r byte, g byte, b byte) Pix
 	return _ret
 }
 
-func (s pixbuf) ApplyEmbeddedOrientationPixbuf() Pixbuf {
+func (s pixbuf) ApplyEmbeddedOrientation() Pixbuf {
 	var _arg0 *C.GdkPixbuf // out
 	var _cret *C.GdkPixbuf // in
 
@@ -832,7 +829,7 @@ func (s pixbuf) ApplyEmbeddedOrientationPixbuf() Pixbuf {
 	return _pixbuf
 }
 
-func (s pixbuf) CompositePixbuf(dest Pixbuf, destX int, destY int, destWidth int, destHeight int, offsetX float64, offsetY float64, scaleX float64, scaleY float64, interpType InterpType, overallAlpha int) {
+func (s pixbuf) Composite(dest Pixbuf, destX int, destY int, destWidth int, destHeight int, offsetX float64, offsetY float64, scaleX float64, scaleY float64, interpType InterpType, overallAlpha int) {
 	var _arg0 *C.GdkPixbuf     // out
 	var _arg1 *C.GdkPixbuf     // out
 	var _arg2 C.int            // out
@@ -862,7 +859,7 @@ func (s pixbuf) CompositePixbuf(dest Pixbuf, destX int, destY int, destWidth int
 	C.gdk_pixbuf_composite(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, _arg10, _arg11)
 }
 
-func (s pixbuf) CompositeColorPixbuf(dest Pixbuf, destX int, destY int, destWidth int, destHeight int, offsetX float64, offsetY float64, scaleX float64, scaleY float64, interpType InterpType, overallAlpha int, checkX int, checkY int, checkSize int, color1 uint32, color2 uint32) {
+func (s pixbuf) CompositeColor(dest Pixbuf, destX int, destY int, destWidth int, destHeight int, offsetX float64, offsetY float64, scaleX float64, scaleY float64, interpType InterpType, overallAlpha int, checkX int, checkY int, checkSize int, color1 uint32, color2 uint32) {
 	var _arg0 *C.GdkPixbuf     // out
 	var _arg1 *C.GdkPixbuf     // out
 	var _arg2 C.int            // out
@@ -902,7 +899,7 @@ func (s pixbuf) CompositeColorPixbuf(dest Pixbuf, destX int, destY int, destWidt
 	C.gdk_pixbuf_composite_color(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, _arg10, _arg11, _arg12, _arg13, _arg14, _arg15, _arg16)
 }
 
-func (s pixbuf) CompositeColorSimplePixbuf(destWidth int, destHeight int, interpType InterpType, overallAlpha int, checkSize int, color1 uint32, color2 uint32) Pixbuf {
+func (s pixbuf) CompositeColorSimple(destWidth int, destHeight int, interpType InterpType, overallAlpha int, checkSize int, color1 uint32, color2 uint32) Pixbuf {
 	var _arg0 *C.GdkPixbuf    // out
 	var _arg1 C.int           // out
 	var _arg2 C.int           // out
@@ -931,7 +928,7 @@ func (s pixbuf) CompositeColorSimplePixbuf(destWidth int, destHeight int, interp
 	return _pixbuf
 }
 
-func (p pixbuf) CopyPixbuf() Pixbuf {
+func (p pixbuf) Copy() Pixbuf {
 	var _arg0 *C.GdkPixbuf // out
 	var _cret *C.GdkPixbuf // in
 
@@ -946,7 +943,7 @@ func (p pixbuf) CopyPixbuf() Pixbuf {
 	return _ret
 }
 
-func (s pixbuf) CopyAreaPixbuf(srcX int, srcY int, width int, height int, destPixbuf Pixbuf, destX int, destY int) {
+func (s pixbuf) CopyArea(srcX int, srcY int, width int, height int, destPixbuf Pixbuf, destX int, destY int) {
 	var _arg0 *C.GdkPixbuf // out
 	var _arg1 C.int        // out
 	var _arg2 C.int        // out
@@ -968,7 +965,7 @@ func (s pixbuf) CopyAreaPixbuf(srcX int, srcY int, width int, height int, destPi
 	C.gdk_pixbuf_copy_area(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
 }
 
-func (s pixbuf) CopyOptionsPixbuf(destPixbuf Pixbuf) bool {
+func (s pixbuf) CopyOptions(destPixbuf Pixbuf) bool {
 	var _arg0 *C.GdkPixbuf // out
 	var _arg1 *C.GdkPixbuf // out
 	var _cret C.gboolean   // in
@@ -987,7 +984,7 @@ func (s pixbuf) CopyOptionsPixbuf(destPixbuf Pixbuf) bool {
 	return _ok
 }
 
-func (p pixbuf) FillPixbuf(pixel uint32) {
+func (p pixbuf) Fill(pixel uint32) {
 	var _arg0 *C.GdkPixbuf // out
 	var _arg1 C.guint32    // out
 
@@ -997,7 +994,7 @@ func (p pixbuf) FillPixbuf(pixel uint32) {
 	C.gdk_pixbuf_fill(_arg0, _arg1)
 }
 
-func (s pixbuf) FlipPixbuf(horizontal bool) Pixbuf {
+func (s pixbuf) Flip(horizontal bool) Pixbuf {
 	var _arg0 *C.GdkPixbuf // out
 	var _arg1 C.gboolean   // out
 	var _cret *C.GdkPixbuf // in
@@ -1174,7 +1171,7 @@ func (p pixbuf) Width() int {
 	return _gint
 }
 
-func (s pixbuf) NewSubpixbufPixbuf(srcX int, srcY int, width int, height int) Pixbuf {
+func (s pixbuf) NewSubpixbuf(srcX int, srcY int, width int, height int) Pixbuf {
 	var _arg0 *C.GdkPixbuf // out
 	var _arg1 C.int        // out
 	var _arg2 C.int        // out
@@ -1197,7 +1194,7 @@ func (s pixbuf) NewSubpixbufPixbuf(srcX int, srcY int, width int, height int) Pi
 	return _pixbuf
 }
 
-func (p pixbuf) ReadPixelsPixbuf() *byte {
+func (p pixbuf) ReadPixels() *byte {
 	var _arg0 *C.GdkPixbuf // out
 	var _cret *C.guint8    // in
 
@@ -1212,7 +1209,7 @@ func (p pixbuf) ReadPixelsPixbuf() *byte {
 	return _guint8
 }
 
-func (p pixbuf) RemoveOptionPixbuf(key string) bool {
+func (p pixbuf) RemoveOption(key string) bool {
 	var _arg0 *C.GdkPixbuf // out
 	var _arg1 *C.gchar     // out
 	var _cret C.gboolean   // in
@@ -1232,7 +1229,7 @@ func (p pixbuf) RemoveOptionPixbuf(key string) bool {
 	return _ok
 }
 
-func (s pixbuf) RotateSimplePixbuf(angle PixbufRotation) Pixbuf {
+func (s pixbuf) RotateSimple(angle PixbufRotation) Pixbuf {
 	var _arg0 *C.GdkPixbuf        // out
 	var _arg1 C.GdkPixbufRotation // out
 	var _cret *C.GdkPixbuf        // in
@@ -1249,7 +1246,7 @@ func (s pixbuf) RotateSimplePixbuf(angle PixbufRotation) Pixbuf {
 	return _pixbuf
 }
 
-func (s pixbuf) SaturateAndPixelatePixbuf(dest Pixbuf, saturation float32, pixelate bool) {
+func (s pixbuf) SaturateAndPixelate(dest Pixbuf, saturation float32, pixelate bool) {
 	var _arg0 *C.GdkPixbuf // out
 	var _arg1 *C.GdkPixbuf // out
 	var _arg2 C.gfloat     // out
@@ -1265,7 +1262,7 @@ func (s pixbuf) SaturateAndPixelatePixbuf(dest Pixbuf, saturation float32, pixel
 	C.gdk_pixbuf_saturate_and_pixelate(_arg0, _arg1, _arg2, _arg3)
 }
 
-func (p pixbuf) SaveToBuffervPixbuf(typ string, optionKeys []string, optionValues []string) ([]byte, error) {
+func (p pixbuf) SaveToBufferv(typ string, optionKeys []string, optionValues []string) ([]byte, error) {
 	var _arg0 *C.GdkPixbuf // out
 	var _arg1 *C.gchar
 	var _arg2 C.gsize // in
@@ -1310,7 +1307,7 @@ func (p pixbuf) SaveToBuffervPixbuf(typ string, optionKeys []string, optionValue
 	return _buffer, _goerr
 }
 
-func (p pixbuf) SaveToCallbackvPixbuf(saveFunc PixbufSaveFunc, typ string, optionKeys []string, optionValues []string) error {
+func (p pixbuf) SaveToCallbackv(saveFunc PixbufSaveFunc, typ string, optionKeys []string, optionValues []string) error {
 	var _arg0 *C.GdkPixbuf        // out
 	var _arg1 C.GdkPixbufSaveFunc // out
 	var _arg2 C.gpointer
@@ -1352,7 +1349,7 @@ func (p pixbuf) SaveToCallbackvPixbuf(saveFunc PixbufSaveFunc, typ string, optio
 	return _goerr
 }
 
-func (p pixbuf) SaveToStreamvPixbuf(stream gio.OutputStream, typ string, optionKeys []string, optionValues []string, cancellable gio.Cancellable) error {
+func (p pixbuf) SaveToStreamv(stream gio.OutputStream, typ string, optionKeys []string, optionValues []string, cancellable gio.Cancellable) error {
 	var _arg0 *C.GdkPixbuf     // out
 	var _arg1 *C.GOutputStream // out
 	var _arg2 *C.char          // out
@@ -1394,7 +1391,7 @@ func (p pixbuf) SaveToStreamvPixbuf(stream gio.OutputStream, typ string, optionK
 	return _goerr
 }
 
-func (p pixbuf) SavevPixbuf(filename string, typ string, optionKeys []string, optionValues []string) error {
+func (p pixbuf) Savev(filename string, typ string, optionKeys []string, optionValues []string) error {
 	var _arg0 *C.GdkPixbuf // out
 	var _arg1 *C.char      // out
 	var _arg2 *C.char      // out
@@ -1435,7 +1432,7 @@ func (p pixbuf) SavevPixbuf(filename string, typ string, optionKeys []string, op
 	return _goerr
 }
 
-func (s pixbuf) ScalePixbuf(dest Pixbuf, destX int, destY int, destWidth int, destHeight int, offsetX float64, offsetY float64, scaleX float64, scaleY float64, interpType InterpType) {
+func (s pixbuf) Scale(dest Pixbuf, destX int, destY int, destWidth int, destHeight int, offsetX float64, offsetY float64, scaleX float64, scaleY float64, interpType InterpType) {
 	var _arg0 *C.GdkPixbuf     // out
 	var _arg1 *C.GdkPixbuf     // out
 	var _arg2 C.int            // out
@@ -1463,7 +1460,7 @@ func (s pixbuf) ScalePixbuf(dest Pixbuf, destX int, destY int, destWidth int, de
 	C.gdk_pixbuf_scale(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, _arg10)
 }
 
-func (s pixbuf) ScaleSimplePixbuf(destWidth int, destHeight int, interpType InterpType) Pixbuf {
+func (s pixbuf) ScaleSimple(destWidth int, destHeight int, interpType InterpType) Pixbuf {
 	var _arg0 *C.GdkPixbuf    // out
 	var _arg1 C.int           // out
 	var _arg2 C.int           // out
@@ -1484,7 +1481,7 @@ func (s pixbuf) ScaleSimplePixbuf(destWidth int, destHeight int, interpType Inte
 	return _pixbuf
 }
 
-func (p pixbuf) SetOptionPixbuf(key string, value string) bool {
+func (p pixbuf) SetOption(key string, value string) bool {
 	var _arg0 *C.GdkPixbuf // out
 	var _arg1 *C.gchar     // out
 	var _arg2 *C.gchar     // out

@@ -43,17 +43,16 @@ type InetAddressMask interface {
 	// AsInitable casts the class to the Initable interface.
 	AsInitable() Initable
 
-	// EqualInetAddressMask tests if @mask and @mask2 are the same mask.
-	EqualInetAddressMask(mask2 InetAddressMask) bool
+	// Equal tests if @mask and @mask2 are the same mask.
+	Equal(mask2 InetAddressMask) bool
 	// Address gets @mask's base address
 	Address() InetAddress
 	// Family gets the Family of @mask's address
 	Family() SocketFamily
 	// Length gets @mask's length
 	Length() uint
-	// MatchesInetAddressMask tests if @address falls within the range described
-	// by @mask.
-	MatchesInetAddressMask(address InetAddress) bool
+	// Matches tests if @address falls within the range described by @mask.
+	Matches(address InetAddress) bool
 	// String converts @mask back to its corresponding string form.
 	String() string
 }
@@ -122,7 +121,11 @@ func NewInetAddressMaskFromString(maskString string) (InetAddressMask, error) {
 	return _inetAddressMask, _goerr
 }
 
-func (m inetAddressMask) EqualInetAddressMask(mask2 InetAddressMask) bool {
+func (i inetAddressMask) AsInitable() Initable {
+	return WrapInitable(gextras.InternObject(i))
+}
+
+func (m inetAddressMask) Equal(mask2 InetAddressMask) bool {
 	var _arg0 *C.GInetAddressMask // out
 	var _arg1 *C.GInetAddressMask // out
 	var _cret C.gboolean          // in
@@ -186,7 +189,7 @@ func (m inetAddressMask) Length() uint {
 	return _guint
 }
 
-func (m inetAddressMask) MatchesInetAddressMask(address InetAddress) bool {
+func (m inetAddressMask) Matches(address InetAddress) bool {
 	var _arg0 *C.GInetAddressMask // out
 	var _arg1 *C.GInetAddress     // out
 	var _cret C.gboolean          // in
@@ -219,8 +222,4 @@ func (m inetAddressMask) String() string {
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
-}
-
-func (i inetAddressMask) AsInitable() Initable {
-	return WrapInitable(gextras.InternObject(i))
 }

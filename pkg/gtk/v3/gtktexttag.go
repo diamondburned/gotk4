@@ -41,16 +41,16 @@ func init() {
 type TextTag interface {
 	gextras.Objector
 
-	// ChangedTextTag emits the TextTagTable::tag-changed signal on the
-	// TextTagTable where the tag is included.
+	// Changed emits the TextTagTable::tag-changed signal on the TextTagTable
+	// where the tag is included.
 	//
 	// The signal is already emitted when setting a TextTag property. This
 	// function is useful for a TextTag subclass.
-	ChangedTextTag(sizeChanged bool)
+	Changed(sizeChanged bool)
 	// Priority: get the tag priority.
 	Priority() int
-	// SetPriorityTextTag sets the priority of a TextTag. Valid priorities start
-	// at 0 and go to one less than gtk_text_tag_table_get_size(). Each tag in a
+	// SetPriority sets the priority of a TextTag. Valid priorities start at 0
+	// and go to one less than gtk_text_tag_table_get_size(). Each tag in a
 	// table has a unique priority; setting the priority of one tag shifts the
 	// priorities of all the other tags in the table to maintain a unique
 	// priority for each tag. Higher priority tags “win” if two tags both set
@@ -59,7 +59,7 @@ type TextTag interface {
 	// precedence of a set of tags is the order in which they were added to the
 	// table, or created with gtk_text_buffer_create_tag(), which adds the tag
 	// to the buffer’s table automatically.
-	SetPriorityTextTag(priority int)
+	SetPriority(priority int)
 }
 
 // textTag implements the TextTag class.
@@ -99,7 +99,7 @@ func NewTextTag(name string) TextTag {
 	return _textTag
 }
 
-func (t textTag) ChangedTextTag(sizeChanged bool) {
+func (t textTag) Changed(sizeChanged bool) {
 	var _arg0 *C.GtkTextTag // out
 	var _arg1 C.gboolean    // out
 
@@ -126,7 +126,7 @@ func (t textTag) Priority() int {
 	return _gint
 }
 
-func (t textTag) SetPriorityTextTag(priority int) {
+func (t textTag) SetPriority(priority int) {
 	var _arg0 *C.GtkTextTag // out
 	var _arg1 C.gint        // out
 

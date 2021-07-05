@@ -49,11 +49,10 @@ type SeparatorToolItem interface {
 	// Draw returns whether @item is drawn as a line, or just blank. See
 	// gtk_separator_tool_item_set_draw().
 	Draw() bool
-	// SetDrawSeparatorToolItem: whether @item is drawn as a vertical line, or
-	// just blank. Setting this to false along with gtk_tool_item_set_expand()
-	// is useful to create an item that forces following items to the end of the
-	// toolbar.
-	SetDrawSeparatorToolItem(draw bool)
+	// SetDraw: whether @item is drawn as a vertical line, or just blank.
+	// Setting this to false along with gtk_tool_item_set_expand() is useful to
+	// create an item that forces following items to the end of the toolbar.
+	SetDraw(draw bool)
 }
 
 // separatorToolItem implements the SeparatorToolItem class.
@@ -88,6 +87,14 @@ func NewSeparatorToolItem() SeparatorToolItem {
 	return _separatorToolItem
 }
 
+func (s separatorToolItem) AsActivatable() Activatable {
+	return WrapActivatable(gextras.InternObject(s))
+}
+
+func (s separatorToolItem) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(s))
+}
+
 func (i separatorToolItem) Draw() bool {
 	var _arg0 *C.GtkSeparatorToolItem // out
 	var _cret C.gboolean              // in
@@ -105,7 +112,7 @@ func (i separatorToolItem) Draw() bool {
 	return _ok
 }
 
-func (i separatorToolItem) SetDrawSeparatorToolItem(draw bool) {
+func (i separatorToolItem) SetDraw(draw bool) {
 	var _arg0 *C.GtkSeparatorToolItem // out
 	var _arg1 C.gboolean              // out
 
@@ -115,12 +122,4 @@ func (i separatorToolItem) SetDrawSeparatorToolItem(draw bool) {
 	}
 
 	C.gtk_separator_tool_item_set_draw(_arg0, _arg1)
-}
-
-func (s separatorToolItem) AsActivatable() Activatable {
-	return WrapActivatable(gextras.InternObject(s))
-}
-
-func (s separatorToolItem) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(s))
 }

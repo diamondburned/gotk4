@@ -54,10 +54,10 @@ type ColorButton interface {
 	Modal() bool
 	// Title gets the title of the color chooser dialog.
 	Title() string
-	// SetModalColorButton sets whether the dialog should be modal.
-	SetModalColorButton(modal bool)
-	// SetTitleColorButton sets the title for the color chooser dialog.
-	SetTitleColorButton(title string)
+	// SetModal sets whether the dialog should be modal.
+	SetModal(modal bool)
+	// SetTitle sets the title for the color chooser dialog.
+	SetTitle(title string)
 }
 
 // colorButton implements the ColorButton class.
@@ -113,6 +113,22 @@ func NewColorButtonWithRGBA(rgba *gdk.RGBA) ColorButton {
 	return _colorButton
 }
 
+func (c colorButton) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(c))
+}
+
+func (c colorButton) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(c))
+}
+
+func (c colorButton) AsColorChooser() ColorChooser {
+	return WrapColorChooser(gextras.InternObject(c))
+}
+
+func (c colorButton) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(c))
+}
+
 func (b colorButton) Modal() bool {
 	var _arg0 *C.GtkColorButton // out
 	var _cret C.gboolean        // in
@@ -145,7 +161,7 @@ func (b colorButton) Title() string {
 	return _utf8
 }
 
-func (b colorButton) SetModalColorButton(modal bool) {
+func (b colorButton) SetModal(modal bool) {
 	var _arg0 *C.GtkColorButton // out
 	var _arg1 C.gboolean        // out
 
@@ -157,7 +173,7 @@ func (b colorButton) SetModalColorButton(modal bool) {
 	C.gtk_color_button_set_modal(_arg0, _arg1)
 }
 
-func (b colorButton) SetTitleColorButton(title string) {
+func (b colorButton) SetTitle(title string) {
 	var _arg0 *C.GtkColorButton // out
 	var _arg1 *C.char           // out
 
@@ -166,20 +182,4 @@ func (b colorButton) SetTitleColorButton(title string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_color_button_set_title(_arg0, _arg1)
-}
-
-func (c colorButton) AsAccessible() Accessible {
-	return WrapAccessible(gextras.InternObject(c))
-}
-
-func (c colorButton) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(c))
-}
-
-func (c colorButton) AsColorChooser() ColorChooser {
-	return WrapColorChooser(gextras.InternObject(c))
-}
-
-func (c colorButton) AsConstraintTarget() ConstraintTarget {
-	return WrapConstraintTarget(gextras.InternObject(c))
 }

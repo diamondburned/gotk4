@@ -101,37 +101,36 @@ type ProgressBar interface {
 	// The return value is a reference to the text, not a copy of it, so will
 	// become invalid if you change the text in the progress bar.
 	Text() string
-	// PulseProgressBar indicates that some progress has been made, but you
-	// don’t know how much.
+	// Pulse indicates that some progress has been made, but you don’t know how
+	// much.
 	//
 	// Causes the progress bar to enter “activity mode,” where a block bounces
 	// back and forth. Each call to [method@Gtk.ProgressBar.pulse] causes the
 	// block to move by a little bit (the amount of movement per pulse is
 	// determined by [method@Gtk.ProgressBar.set_pulse_step]).
-	PulseProgressBar()
-	// SetEllipsizeProgressBar sets the mode used to ellipsize the text.
+	Pulse()
+	// SetEllipsize sets the mode used to ellipsize the text.
 	//
 	// The text is ellipsized if there is not enough space to render the entire
 	// string.
-	SetEllipsizeProgressBar(mode pango.EllipsizeMode)
-	// SetFractionProgressBar causes the progress bar to “fill in” the given
-	// fraction of the bar.
+	SetEllipsize(mode pango.EllipsizeMode)
+	// SetFraction causes the progress bar to “fill in” the given fraction of
+	// the bar.
 	//
 	// The fraction should be between 0.0 and 1.0, inclusive.
-	SetFractionProgressBar(fraction float64)
-	// SetInvertedProgressBar sets whether the progress bar is inverted.
+	SetFraction(fraction float64)
+	// SetInverted sets whether the progress bar is inverted.
 	//
 	// Progress bars normally grow from top to bottom or left to right. Inverted
 	// progress bars grow in the opposite direction.
-	SetInvertedProgressBar(inverted bool)
-	// SetPulseStepProgressBar sets the fraction of total progress bar length to
-	// move the bouncing block.
+	SetInverted(inverted bool)
+	// SetPulseStep sets the fraction of total progress bar length to move the
+	// bouncing block.
 	//
 	// The bouncing block is moved when [method@Gtk.ProgressBar.pulse] is
 	// called.
-	SetPulseStepProgressBar(fraction float64)
-	// SetShowTextProgressBar sets whether the progress bar will show text next
-	// to the bar.
+	SetPulseStep(fraction float64)
+	// SetShowText sets whether the progress bar will show text next to the bar.
 	//
 	// The shown text is either the value of the [property@Gtk.ProgressBar:text]
 	// property or, if that is nil, the [property@Gtk.ProgressBar:fraction]
@@ -141,9 +140,8 @@ type ProgressBar interface {
 	// text (even if the actual text is blank), set
 	// [property@Gtk.ProgressBar:show-text] to true and
 	// [property@Gtk.ProgressBar:text] to the empty string (not nil).
-	SetShowTextProgressBar(showText bool)
-	// SetTextProgressBar causes the given @text to appear next to the progress
-	// bar.
+	SetShowText(showText bool)
+	// SetText causes the given @text to appear next to the progress bar.
 	//
 	// If @text is nil and [property@Gtk.ProgressBar:show-text] is true, the
 	// current value of [property@Gtk.ProgressBar:fraction] will be displayed as
@@ -154,7 +152,7 @@ type ProgressBar interface {
 	// percentage. If @text is the empty string, the progress bar will still be
 	// styled and sized suitably for containing text, as long as
 	// [property@Gtk.ProgressBar:show-text] is true.
-	SetTextProgressBar(text string)
+	SetText(text string)
 }
 
 // progressBar implements the ProgressBar class.
@@ -187,6 +185,22 @@ func NewProgressBar() ProgressBar {
 	_progressBar = WrapProgressBar(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _progressBar
+}
+
+func (p progressBar) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(p))
+}
+
+func (p progressBar) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(p))
+}
+
+func (p progressBar) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(p))
+}
+
+func (p progressBar) AsOrientable() Orientable {
+	return WrapOrientable(gextras.InternObject(p))
 }
 
 func (p progressBar) Ellipsize() pango.EllipsizeMode {
@@ -283,7 +297,7 @@ func (p progressBar) Text() string {
 	return _utf8
 }
 
-func (p progressBar) PulseProgressBar() {
+func (p progressBar) Pulse() {
 	var _arg0 *C.GtkProgressBar // out
 
 	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer(p.Native()))
@@ -291,7 +305,7 @@ func (p progressBar) PulseProgressBar() {
 	C.gtk_progress_bar_pulse(_arg0)
 }
 
-func (p progressBar) SetEllipsizeProgressBar(mode pango.EllipsizeMode) {
+func (p progressBar) SetEllipsize(mode pango.EllipsizeMode) {
 	var _arg0 *C.GtkProgressBar    // out
 	var _arg1 C.PangoEllipsizeMode // out
 
@@ -301,7 +315,7 @@ func (p progressBar) SetEllipsizeProgressBar(mode pango.EllipsizeMode) {
 	C.gtk_progress_bar_set_ellipsize(_arg0, _arg1)
 }
 
-func (p progressBar) SetFractionProgressBar(fraction float64) {
+func (p progressBar) SetFraction(fraction float64) {
 	var _arg0 *C.GtkProgressBar // out
 	var _arg1 C.double          // out
 
@@ -311,7 +325,7 @@ func (p progressBar) SetFractionProgressBar(fraction float64) {
 	C.gtk_progress_bar_set_fraction(_arg0, _arg1)
 }
 
-func (p progressBar) SetInvertedProgressBar(inverted bool) {
+func (p progressBar) SetInverted(inverted bool) {
 	var _arg0 *C.GtkProgressBar // out
 	var _arg1 C.gboolean        // out
 
@@ -323,7 +337,7 @@ func (p progressBar) SetInvertedProgressBar(inverted bool) {
 	C.gtk_progress_bar_set_inverted(_arg0, _arg1)
 }
 
-func (p progressBar) SetPulseStepProgressBar(fraction float64) {
+func (p progressBar) SetPulseStep(fraction float64) {
 	var _arg0 *C.GtkProgressBar // out
 	var _arg1 C.double          // out
 
@@ -333,7 +347,7 @@ func (p progressBar) SetPulseStepProgressBar(fraction float64) {
 	C.gtk_progress_bar_set_pulse_step(_arg0, _arg1)
 }
 
-func (p progressBar) SetShowTextProgressBar(showText bool) {
+func (p progressBar) SetShowText(showText bool) {
 	var _arg0 *C.GtkProgressBar // out
 	var _arg1 C.gboolean        // out
 
@@ -345,7 +359,7 @@ func (p progressBar) SetShowTextProgressBar(showText bool) {
 	C.gtk_progress_bar_set_show_text(_arg0, _arg1)
 }
 
-func (p progressBar) SetTextProgressBar(text string) {
+func (p progressBar) SetText(text string) {
 	var _arg0 *C.GtkProgressBar // out
 	var _arg1 *C.char           // out
 
@@ -354,20 +368,4 @@ func (p progressBar) SetTextProgressBar(text string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_progress_bar_set_text(_arg0, _arg1)
-}
-
-func (p progressBar) AsAccessible() Accessible {
-	return WrapAccessible(gextras.InternObject(p))
-}
-
-func (p progressBar) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(p))
-}
-
-func (p progressBar) AsConstraintTarget() ConstraintTarget {
-	return WrapConstraintTarget(gextras.InternObject(p))
-}
-
-func (p progressBar) AsOrientable() Orientable {
-	return WrapOrientable(gextras.InternObject(p))
 }

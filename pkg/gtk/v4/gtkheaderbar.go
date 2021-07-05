@@ -96,20 +96,19 @@ type HeaderBar interface {
 	//
 	// See [method@Gtk.HeaderBar.set_title_widget].
 	TitleWidget() Widget
-	// PackEndHeaderBar adds @child to @bar, packed with reference to the end of
-	// the @bar.
-	PackEndHeaderBar(child Widget)
-	// PackStartHeaderBar adds @child to @bar, packed with reference to the
-	// start of the @bar.
-	PackStartHeaderBar(child Widget)
-	// RemoveHeaderBar removes a child from the `GtkHeaderBar`.
+	// PackEnd adds @child to @bar, packed with reference to the end of the
+	// @bar.
+	PackEnd(child Widget)
+	// PackStart adds @child to @bar, packed with reference to the start of the
+	// @bar.
+	PackStart(child Widget)
+	// Remove removes a child from the `GtkHeaderBar`.
 	//
 	// The child must have been added with [method@Gtk.HeaderBar.pack_start],
 	// [method@Gtk.HeaderBar.pack_end] or
 	// [method@Gtk.HeaderBar.set_title_widget].
-	RemoveHeaderBar(child Widget)
-	// SetDecorationLayoutHeaderBar sets the decoration layout for this header
-	// bar.
+	Remove(child Widget)
+	// SetDecorationLayout sets the decoration layout for this header bar.
 	//
 	// This property overrides the [property@Gtk.Settings:gtk-decoration-layout]
 	// setting.
@@ -126,11 +125,11 @@ type HeaderBar interface {
 	//
 	// For example, “icon:minimize,maximize,close” specifies a icon on the left,
 	// and minimize, maximize and close buttons on the right.
-	SetDecorationLayoutHeaderBar(layout string)
-	// SetShowTitleButtonsHeaderBar sets whether this header bar shows the
-	// standard window title buttons.
-	SetShowTitleButtonsHeaderBar(setting bool)
-	// SetTitleWidgetHeaderBar sets the title for the `GtkHeaderBar`.
+	SetDecorationLayout(layout string)
+	// SetShowTitleButtons sets whether this header bar shows the standard
+	// window title buttons.
+	SetShowTitleButtons(setting bool)
+	// SetTitleWidget sets the title for the `GtkHeaderBar`.
 	//
 	// When set to nil, the headerbar will display the title of the window it is
 	// contained in.
@@ -140,7 +139,7 @@ type HeaderBar interface {
 	//
 	// You should set the title widget to nil, for the window title label to be
 	// visible again.
-	SetTitleWidgetHeaderBar(titleWidget Widget)
+	SetTitleWidget(titleWidget Widget)
 }
 
 // headerBar implements the HeaderBar class.
@@ -173,6 +172,18 @@ func NewHeaderBar() HeaderBar {
 	_headerBar = WrapHeaderBar(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _headerBar
+}
+
+func (h headerBar) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(h))
+}
+
+func (h headerBar) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(h))
+}
+
+func (h headerBar) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(h))
 }
 
 func (b headerBar) DecorationLayout() string {
@@ -222,7 +233,7 @@ func (b headerBar) TitleWidget() Widget {
 	return _widget
 }
 
-func (b headerBar) PackEndHeaderBar(child Widget) {
+func (b headerBar) PackEnd(child Widget) {
 	var _arg0 *C.GtkHeaderBar // out
 	var _arg1 *C.GtkWidget    // out
 
@@ -232,7 +243,7 @@ func (b headerBar) PackEndHeaderBar(child Widget) {
 	C.gtk_header_bar_pack_end(_arg0, _arg1)
 }
 
-func (b headerBar) PackStartHeaderBar(child Widget) {
+func (b headerBar) PackStart(child Widget) {
 	var _arg0 *C.GtkHeaderBar // out
 	var _arg1 *C.GtkWidget    // out
 
@@ -242,7 +253,7 @@ func (b headerBar) PackStartHeaderBar(child Widget) {
 	C.gtk_header_bar_pack_start(_arg0, _arg1)
 }
 
-func (b headerBar) RemoveHeaderBar(child Widget) {
+func (b headerBar) Remove(child Widget) {
 	var _arg0 *C.GtkHeaderBar // out
 	var _arg1 *C.GtkWidget    // out
 
@@ -252,7 +263,7 @@ func (b headerBar) RemoveHeaderBar(child Widget) {
 	C.gtk_header_bar_remove(_arg0, _arg1)
 }
 
-func (b headerBar) SetDecorationLayoutHeaderBar(layout string) {
+func (b headerBar) SetDecorationLayout(layout string) {
 	var _arg0 *C.GtkHeaderBar // out
 	var _arg1 *C.char         // out
 
@@ -263,7 +274,7 @@ func (b headerBar) SetDecorationLayoutHeaderBar(layout string) {
 	C.gtk_header_bar_set_decoration_layout(_arg0, _arg1)
 }
 
-func (b headerBar) SetShowTitleButtonsHeaderBar(setting bool) {
+func (b headerBar) SetShowTitleButtons(setting bool) {
 	var _arg0 *C.GtkHeaderBar // out
 	var _arg1 C.gboolean      // out
 
@@ -275,7 +286,7 @@ func (b headerBar) SetShowTitleButtonsHeaderBar(setting bool) {
 	C.gtk_header_bar_set_show_title_buttons(_arg0, _arg1)
 }
 
-func (b headerBar) SetTitleWidgetHeaderBar(titleWidget Widget) {
+func (b headerBar) SetTitleWidget(titleWidget Widget) {
 	var _arg0 *C.GtkHeaderBar // out
 	var _arg1 *C.GtkWidget    // out
 
@@ -283,16 +294,4 @@ func (b headerBar) SetTitleWidgetHeaderBar(titleWidget Widget) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(titleWidget.Native()))
 
 	C.gtk_header_bar_set_title_widget(_arg0, _arg1)
-}
-
-func (h headerBar) AsAccessible() Accessible {
-	return WrapAccessible(gextras.InternObject(h))
-}
-
-func (h headerBar) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(h))
-}
-
-func (h headerBar) AsConstraintTarget() ConstraintTarget {
-	return WrapConstraintTarget(gextras.InternObject(h))
 }

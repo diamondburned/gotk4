@@ -580,20 +580,20 @@ type Event interface {
 	// Not all events have timestamps. In that case, this function returns
 	// GDK_CURRENT_TIME.
 	Time() uint32
-	// RefEvent: increase the ref count of @event.
-	RefEvent() Event
-	// TriggersContextMenuEvent returns whether a `GdkEvent` should trigger a
-	// context menu, according to platform conventions.
+	// Ref: increase the ref count of @event.
+	Ref() Event
+	// TriggersContextMenu returns whether a `GdkEvent` should trigger a context
+	// menu, according to platform conventions.
 	//
 	// The right mouse button typically triggers context menus.
 	//
 	// This function should always be used instead of simply checking for
 	// event->button == GDK_BUTTON_SECONDARY.
-	TriggersContextMenuEvent() bool
-	// UnrefEvent: decrease the ref count of @event.
+	TriggersContextMenu() bool
+	// Unref: decrease the ref count of @event.
 	//
 	// If the last reference is dropped, the structure is freed.
-	UnrefEvent()
+	Unref()
 }
 
 // event implements the Event class.
@@ -834,7 +834,7 @@ func (e event) Time() uint32 {
 	return _guint32
 }
 
-func (e event) RefEvent() Event {
+func (e event) Ref() Event {
 	var _arg0 *C.GdkEvent // out
 	var _cret *C.GdkEvent // in
 
@@ -849,7 +849,7 @@ func (e event) RefEvent() Event {
 	return _ret
 }
 
-func (e event) TriggersContextMenuEvent() bool {
+func (e event) TriggersContextMenu() bool {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.gboolean  // in
 
@@ -866,7 +866,7 @@ func (e event) TriggersContextMenuEvent() bool {
 	return _ok
 }
 
-func (e event) UnrefEvent() {
+func (e event) Unref() {
 	var _arg0 *C.GdkEvent // out
 
 	_arg0 = (*C.GdkEvent)(unsafe.Pointer(e.Native()))
@@ -998,9 +998,9 @@ type KeyEvent interface {
 	//
 	// See [method@Gdk.KeyEvent.matches].
 	Match() (uint, ModifierType, bool)
-	// IsModifierKeyEvent extracts whether the key event is for a modifier key.
-	IsModifierKeyEvent() bool
-	// MatchesKeyEvent matches a key event against a keyval and modifiers.
+	// IsModifier extracts whether the key event is for a modifier key.
+	IsModifier() bool
+	// Matches a key event against a keyval and modifiers.
 	//
 	// This is typically used to trigger keyboard shortcuts such as Ctrl-C.
 	//
@@ -1008,7 +1008,7 @@ type KeyEvent interface {
 	// currently active group is ignored.
 	//
 	// Note that we ignore Caps Lock for matching.
-	MatchesKeyEvent(keyval uint, modifiers ModifierType) KeyMatch
+	Matches(keyval uint, modifiers ModifierType) KeyMatch
 }
 
 // keyEvent implements the KeyEvent class.
@@ -1128,7 +1128,7 @@ func (e keyEvent) Match() (uint, ModifierType, bool) {
 	return _keyval, _modifiers, _ok
 }
 
-func (e keyEvent) IsModifierKeyEvent() bool {
+func (e keyEvent) IsModifier() bool {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.gboolean  // in
 
@@ -1145,7 +1145,7 @@ func (e keyEvent) IsModifierKeyEvent() bool {
 	return _ok
 }
 
-func (e keyEvent) MatchesKeyEvent(keyval uint, modifiers ModifierType) KeyMatch {
+func (e keyEvent) Matches(keyval uint, modifiers ModifierType) KeyMatch {
 	var _arg0 *C.GdkEvent       // out
 	var _arg1 C.guint           // out
 	var _arg2 C.GdkModifierType // out
@@ -1304,7 +1304,7 @@ type ScrollEvent interface {
 	Deltas() (deltaX float64, deltaY float64)
 	// Direction extracts the direction of a scroll event.
 	Direction() ScrollDirection
-	// IsStopScrollEvent: check whether a scroll event is a stop scroll event.
+	// IsStop: check whether a scroll event is a stop scroll event.
 	//
 	// Scroll sequences with smooth scroll information may provide a stop scroll
 	// event once the interaction with the device finishes, e.g. by lifting a
@@ -1312,7 +1312,7 @@ type ScrollEvent interface {
 	// kinetic scrolling based on the current velocity.
 	//
 	// Stop scroll events always have a delta of 0/0.
-	IsStopScrollEvent() bool
+	IsStop() bool
 }
 
 // scrollEvent implements the ScrollEvent class.
@@ -1367,7 +1367,7 @@ func (e scrollEvent) Direction() ScrollDirection {
 	return _scrollDirection
 }
 
-func (e scrollEvent) IsStopScrollEvent() bool {
+func (e scrollEvent) IsStop() bool {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.gboolean  // in
 

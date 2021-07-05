@@ -71,12 +71,12 @@ type TreeListModel interface {
 	// Do not confuse this function with
 	// [method@Gtk.TreeListModel.get_child_row].
 	Row(position uint) TreeListRow
-	// SetAutoexpandTreeListModel sets whether the model should autoexpand.
+	// SetAutoexpand sets whether the model should autoexpand.
 	//
 	// If set to true, the model will recursively expand all rows that get added
 	// to the model. This can be either rows added by changes to the underlying
 	// models or via [method@Gtk.TreeListRow.set_expanded].
-	SetAutoexpandTreeListModel(autoexpand bool)
+	SetAutoexpand(autoexpand bool)
 }
 
 // treeListModel implements the TreeListModel class.
@@ -166,7 +166,7 @@ func (s treeListModel) Row(position uint) TreeListRow {
 	return _treeListRow
 }
 
-func (s treeListModel) SetAutoexpandTreeListModel(autoexpand bool) {
+func (s treeListModel) SetAutoexpand(autoexpand bool) {
 	var _arg0 *C.GtkTreeListModel // out
 	var _arg1 C.gboolean          // out
 
@@ -224,14 +224,14 @@ type TreeListRow interface {
 	// Position returns the position in the `GtkTreeListModel` that @self
 	// occupies at the moment.
 	Position() uint
-	// IsExpandableTreeListRow checks if a row can be expanded.
+	// IsExpandable checks if a row can be expanded.
 	//
 	// This does not mean that the row is actually expanded, this can be checked
 	// with [method@Gtk.TreeListRow.get_expanded].
 	//
 	// If a row is expandable never changes until the row is destroyed.
-	IsExpandableTreeListRow() bool
-	// SetExpandedTreeListRow expands or collapses a row.
+	IsExpandable() bool
+	// SetExpanded expands or collapses a row.
 	//
 	// If a row is expanded, the model of calling the
 	// [callback@Gtk.TreeListModelCreateModelFunc] for the row's item will be
@@ -239,7 +239,7 @@ type TreeListRow interface {
 	// removed from the model.
 	//
 	// If the row is not expandable, this function does nothing.
-	SetExpandedTreeListRow(expanded bool)
+	SetExpanded(expanded bool)
 }
 
 // treeListRow implements the TreeListRow class.
@@ -355,7 +355,7 @@ func (s treeListRow) Position() uint {
 	return _guint
 }
 
-func (s treeListRow) IsExpandableTreeListRow() bool {
+func (s treeListRow) IsExpandable() bool {
 	var _arg0 *C.GtkTreeListRow // out
 	var _cret C.gboolean        // in
 
@@ -372,7 +372,7 @@ func (s treeListRow) IsExpandableTreeListRow() bool {
 	return _ok
 }
 
-func (s treeListRow) SetExpandedTreeListRow(expanded bool) {
+func (s treeListRow) SetExpanded(expanded bool) {
 	var _arg0 *C.GtkTreeListRow // out
 	var _arg1 C.gboolean        // out
 

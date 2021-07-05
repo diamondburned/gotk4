@@ -44,9 +44,9 @@ type FilterOutputStream interface {
 	// CloseBaseStream returns whether the base stream will be closed when
 	// @stream is closed.
 	CloseBaseStream() bool
-	// SetCloseBaseStreamFilterOutputStream sets whether the base stream will be
-	// closed when @stream is closed.
-	SetCloseBaseStreamFilterOutputStream(closeBase bool)
+	// SetCloseBaseStream sets whether the base stream will be closed when
+	// @stream is closed.
+	SetCloseBaseStream(closeBase bool)
 }
 
 // filterOutputStream implements the FilterOutputStream class.
@@ -100,7 +100,7 @@ func (s filterOutputStream) CloseBaseStream() bool {
 	return _ok
 }
 
-func (s filterOutputStream) SetCloseBaseStreamFilterOutputStream(closeBase bool) {
+func (s filterOutputStream) SetCloseBaseStream(closeBase bool) {
 	var _arg0 *C.GFilterOutputStream // out
 	var _arg1 C.gboolean             // out
 

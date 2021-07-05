@@ -128,18 +128,18 @@ type ListView interface {
 	// SingleClickActivate returns whether rows will be activated on single
 	// click and selected on hover.
 	SingleClickActivate() bool
-	// SetEnableRubberbandListView sets whether selections can be changed by
-	// dragging with the mouse.
-	SetEnableRubberbandListView(enableRubberband bool)
-	// SetFactoryListView sets the `GtkListItemFactory` to use for populating
-	// list items.
-	SetFactoryListView(factory ListItemFactory)
-	// SetShowSeparatorsListView sets whether the list box should show
-	// separators between rows.
-	SetShowSeparatorsListView(showSeparators bool)
-	// SetSingleClickActivateListView sets whether rows should be activated on
-	// single click and selected on hover.
-	SetSingleClickActivateListView(singleClickActivate bool)
+	// SetEnableRubberband sets whether selections can be changed by dragging
+	// with the mouse.
+	SetEnableRubberband(enableRubberband bool)
+	// SetFactory sets the `GtkListItemFactory` to use for populating list
+	// items.
+	SetFactory(factory ListItemFactory)
+	// SetShowSeparators sets whether the list box should show separators
+	// between rows.
+	SetShowSeparators(showSeparators bool)
+	// SetSingleClickActivate sets whether rows should be activated on single
+	// click and selected on hover.
+	SetSingleClickActivate(singleClickActivate bool)
 }
 
 // listView implements the ListView class.
@@ -159,6 +159,26 @@ func marshalListView(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapListView(obj), nil
+}
+
+func (l listView) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(l))
+}
+
+func (l listView) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(l))
+}
+
+func (l listView) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(l))
+}
+
+func (l listView) AsOrientable() Orientable {
+	return WrapOrientable(gextras.InternObject(l))
+}
+
+func (l listView) AsScrollable() Scrollable {
+	return WrapScrollable(gextras.InternObject(l))
 }
 
 func (s listView) EnableRubberband() bool {
@@ -227,7 +247,7 @@ func (s listView) SingleClickActivate() bool {
 	return _ok
 }
 
-func (s listView) SetEnableRubberbandListView(enableRubberband bool) {
+func (s listView) SetEnableRubberband(enableRubberband bool) {
 	var _arg0 *C.GtkListView // out
 	var _arg1 C.gboolean     // out
 
@@ -239,7 +259,7 @@ func (s listView) SetEnableRubberbandListView(enableRubberband bool) {
 	C.gtk_list_view_set_enable_rubberband(_arg0, _arg1)
 }
 
-func (s listView) SetFactoryListView(factory ListItemFactory) {
+func (s listView) SetFactory(factory ListItemFactory) {
 	var _arg0 *C.GtkListView        // out
 	var _arg1 *C.GtkListItemFactory // out
 
@@ -249,7 +269,7 @@ func (s listView) SetFactoryListView(factory ListItemFactory) {
 	C.gtk_list_view_set_factory(_arg0, _arg1)
 }
 
-func (s listView) SetShowSeparatorsListView(showSeparators bool) {
+func (s listView) SetShowSeparators(showSeparators bool) {
 	var _arg0 *C.GtkListView // out
 	var _arg1 C.gboolean     // out
 
@@ -261,7 +281,7 @@ func (s listView) SetShowSeparatorsListView(showSeparators bool) {
 	C.gtk_list_view_set_show_separators(_arg0, _arg1)
 }
 
-func (s listView) SetSingleClickActivateListView(singleClickActivate bool) {
+func (s listView) SetSingleClickActivate(singleClickActivate bool) {
 	var _arg0 *C.GtkListView // out
 	var _arg1 C.gboolean     // out
 
@@ -271,24 +291,4 @@ func (s listView) SetSingleClickActivateListView(singleClickActivate bool) {
 	}
 
 	C.gtk_list_view_set_single_click_activate(_arg0, _arg1)
-}
-
-func (l listView) AsAccessible() Accessible {
-	return WrapAccessible(gextras.InternObject(l))
-}
-
-func (l listView) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(l))
-}
-
-func (l listView) AsConstraintTarget() ConstraintTarget {
-	return WrapConstraintTarget(gextras.InternObject(l))
-}
-
-func (l listView) AsOrientable() Orientable {
-	return WrapOrientable(gextras.InternObject(l))
-}
-
-func (l listView) AsScrollable() Scrollable {
-	return WrapScrollable(gextras.InternObject(l))
 }

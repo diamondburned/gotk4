@@ -65,14 +65,13 @@ type ContentSerializer interface {
 	UserData() interface{}
 	// Value gets the `GValue` to read the object to serialize from.
 	Value() externglib.Value
-	// ReturnErrorContentSerializer: indicate that the serialization has ended
-	// with an error.
+	// ReturnError: indicate that the serialization has ended with an error.
 	//
 	// This function consumes @error.
-	ReturnErrorContentSerializer(err error)
-	// ReturnSuccessContentSerializer: indicate that the serialization has been
-	// successfully completed.
-	ReturnSuccessContentSerializer()
+	ReturnError(err error)
+	// ReturnSuccess: indicate that the serialization has been successfully
+	// completed.
+	ReturnSuccess()
 }
 
 // contentSerializer implements the ContentSerializer class.
@@ -214,7 +213,7 @@ func (s contentSerializer) Value() externglib.Value {
 	return _value
 }
 
-func (s contentSerializer) ReturnErrorContentSerializer(err error) {
+func (s contentSerializer) ReturnError(err error) {
 	var _arg0 *C.GdkContentSerializer // out
 	var _arg1 *C.GError               // out
 
@@ -227,7 +226,7 @@ func (s contentSerializer) ReturnErrorContentSerializer(err error) {
 	C.gdk_content_serializer_return_error(_arg0, _arg1)
 }
 
-func (s contentSerializer) ReturnSuccessContentSerializer() {
+func (s contentSerializer) ReturnSuccess() {
 	var _arg0 *C.GdkContentSerializer // out
 
 	_arg0 = (*C.GdkContentSerializer)(unsafe.Pointer(s.Native()))

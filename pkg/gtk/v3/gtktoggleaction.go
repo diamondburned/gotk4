@@ -41,19 +41,19 @@ type ToggleAction interface {
 	//
 	// Deprecated: since version 3.10.
 	DrawAsRadio() bool
-	// SetActiveToggleAction sets the checked state on the toggle action.
+	// SetActive sets the checked state on the toggle action.
 	//
 	// Deprecated: since version 3.10.
-	SetActiveToggleAction(isActive bool)
-	// SetDrawAsRadioToggleAction sets whether the action should have proxies
-	// like a radio action.
+	SetActive(isActive bool)
+	// SetDrawAsRadio sets whether the action should have proxies like a radio
+	// action.
 	//
 	// Deprecated: since version 3.10.
-	SetDrawAsRadioToggleAction(drawAsRadio bool)
-	// ToggledToggleAction emits the “toggled” signal on the toggle action.
+	SetDrawAsRadio(drawAsRadio bool)
+	// Toggled emits the “toggled” signal on the toggle action.
 	//
 	// Deprecated: since version 3.10.
-	ToggledToggleAction()
+	Toggled()
 }
 
 // toggleAction implements the ToggleAction class.
@@ -105,6 +105,10 @@ func NewToggleAction(name string, label string, tooltip string, stockId string) 
 	return _toggleAction
 }
 
+func (t toggleAction) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(t))
+}
+
 func (a toggleAction) Active() bool {
 	var _arg0 *C.GtkToggleAction // out
 	var _cret C.gboolean         // in
@@ -139,7 +143,7 @@ func (a toggleAction) DrawAsRadio() bool {
 	return _ok
 }
 
-func (a toggleAction) SetActiveToggleAction(isActive bool) {
+func (a toggleAction) SetActive(isActive bool) {
 	var _arg0 *C.GtkToggleAction // out
 	var _arg1 C.gboolean         // out
 
@@ -151,7 +155,7 @@ func (a toggleAction) SetActiveToggleAction(isActive bool) {
 	C.gtk_toggle_action_set_active(_arg0, _arg1)
 }
 
-func (a toggleAction) SetDrawAsRadioToggleAction(drawAsRadio bool) {
+func (a toggleAction) SetDrawAsRadio(drawAsRadio bool) {
 	var _arg0 *C.GtkToggleAction // out
 	var _arg1 C.gboolean         // out
 
@@ -163,14 +167,10 @@ func (a toggleAction) SetDrawAsRadioToggleAction(drawAsRadio bool) {
 	C.gtk_toggle_action_set_draw_as_radio(_arg0, _arg1)
 }
 
-func (a toggleAction) ToggledToggleAction() {
+func (a toggleAction) Toggled() {
 	var _arg0 *C.GtkToggleAction // out
 
 	_arg0 = (*C.GtkToggleAction)(unsafe.Pointer(a.Native()))
 
 	C.gtk_toggle_action_toggled(_arg0)
-}
-
-func (t toggleAction) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(t))
 }

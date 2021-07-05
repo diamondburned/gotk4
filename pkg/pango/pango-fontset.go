@@ -64,11 +64,11 @@ func gotk4_FontsetForeachFunc(arg0 *C.PangoFontset, arg1 *C.PangoFont, arg2 C.gp
 type Fontset interface {
 	gextras.Objector
 
-	// ForeachFontset iterates through all the fonts in a fontset, calling @func
-	// for each one.
+	// Foreach iterates through all the fonts in a fontset, calling @func for
+	// each one.
 	//
 	// If @func returns true, that stops the iteration.
-	ForeachFontset(fn FontsetForeachFunc)
+	Foreach(fn FontsetForeachFunc)
 	// Font returns the font in the fontset that contains the best glyph for a
 	// Unicode character.
 	Font(wc uint) Font
@@ -95,7 +95,7 @@ func marshalFontset(p uintptr) (interface{}, error) {
 	return WrapFontset(obj), nil
 }
 
-func (f fontset) ForeachFontset(fn FontsetForeachFunc) {
+func (f fontset) Foreach(fn FontsetForeachFunc) {
 	var _arg0 *C.PangoFontset           // out
 	var _arg1 C.PangoFontsetForeachFunc // out
 	var _arg2 C.gpointer
@@ -151,10 +151,10 @@ func (f fontset) Metrics() *FontMetrics {
 type FontsetSimple interface {
 	Fontset
 
-	// AppendFontsetSimple adds a font to the fontset.
-	AppendFontsetSimple(font Font)
-	// SizeFontsetSimple returns the number of fonts in the fontset.
-	SizeFontsetSimple() int
+	// Append adds a font to the fontset.
+	Append(font Font)
+	// Size returns the number of fonts in the fontset.
+	Size() int
 }
 
 // fontsetSimple implements the FontsetSimple class.
@@ -192,7 +192,7 @@ func NewFontsetSimple(language *Language) FontsetSimple {
 	return _fontsetSimple
 }
 
-func (f fontsetSimple) AppendFontsetSimple(font Font) {
+func (f fontsetSimple) Append(font Font) {
 	var _arg0 *C.PangoFontsetSimple // out
 	var _arg1 *C.PangoFont          // out
 
@@ -202,7 +202,7 @@ func (f fontsetSimple) AppendFontsetSimple(font Font) {
 	C.pango_fontset_simple_append(_arg0, _arg1)
 }
 
-func (f fontsetSimple) SizeFontsetSimple() int {
+func (f fontsetSimple) Size() int {
 	var _arg0 *C.PangoFontsetSimple // out
 	var _cret C.int                 // in
 

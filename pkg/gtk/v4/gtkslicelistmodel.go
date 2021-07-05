@@ -35,17 +35,16 @@ type SliceListModel interface {
 	Offset() uint
 	// Size gets the size set via gtk_slice_list_model_set_size().
 	Size() uint
-	// SetOffsetSliceListModel sets the offset into the original model for this
-	// slice.
+	// SetOffset sets the offset into the original model for this slice.
 	//
 	// If the offset is too large for the sliced model, @self will end up empty.
-	SetOffsetSliceListModel(offset uint)
-	// SetSizeSliceListModel sets the maximum size. @self will never have more
-	// items than @size.
+	SetOffset(offset uint)
+	// SetSize sets the maximum size. @self will never have more items than
+	// @size.
 	//
 	// It can however have fewer items if the offset is too large or the model
 	// sliced from doesn't have enough items.
-	SetSizeSliceListModel(size uint)
+	SetSize(size uint)
 }
 
 // sliceListModel implements the SliceListModel class.
@@ -97,7 +96,7 @@ func (s sliceListModel) Size() uint {
 	return _guint
 }
 
-func (s sliceListModel) SetOffsetSliceListModel(offset uint) {
+func (s sliceListModel) SetOffset(offset uint) {
 	var _arg0 *C.GtkSliceListModel // out
 	var _arg1 C.guint              // out
 
@@ -107,7 +106,7 @@ func (s sliceListModel) SetOffsetSliceListModel(offset uint) {
 	C.gtk_slice_list_model_set_offset(_arg0, _arg1)
 }
 
-func (s sliceListModel) SetSizeSliceListModel(size uint) {
+func (s sliceListModel) SetSize(size uint) {
 	var _arg0 *C.GtkSliceListModel // out
 	var _arg1 C.guint              // out
 

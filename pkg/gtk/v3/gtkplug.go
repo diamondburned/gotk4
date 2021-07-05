@@ -72,6 +72,10 @@ func marshalPlug(p uintptr) (interface{}, error) {
 	return WrapPlug(obj), nil
 }
 
+func (p plug) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(p))
+}
+
 func (p plug) Embedded() bool {
 	var _arg0 *C.GtkPlug // out
 	var _cret C.gboolean // in
@@ -102,8 +106,4 @@ func (p plug) SocketWindow() gdk.Window {
 	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gdk.Window)
 
 	return _window
-}
-
-func (p plug) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(p))
 }

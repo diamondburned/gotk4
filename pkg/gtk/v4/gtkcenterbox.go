@@ -79,25 +79,25 @@ type CenterBox interface {
 	EndWidget() Widget
 	// StartWidget gets the start widget, or nil if there is none.
 	StartWidget() Widget
-	// SetBaselinePositionCenterBox sets the baseline position of a center box.
+	// SetBaselinePosition sets the baseline position of a center box.
 	//
 	// This affects only horizontal boxes with at least one baseline aligned
 	// child. If there is more vertical space available than requested, and the
 	// baseline is not allocated by the parent then @position is used to
 	// allocate the baseline wrt. the extra space available.
-	SetBaselinePositionCenterBox(position BaselinePosition)
-	// SetCenterWidgetCenterBox sets the center widget.
+	SetBaselinePosition(position BaselinePosition)
+	// SetCenterWidget sets the center widget.
 	//
 	// To remove the existing center widget, pas nil.
-	SetCenterWidgetCenterBox(child Widget)
-	// SetEndWidgetCenterBox sets the end widget.
+	SetCenterWidget(child Widget)
+	// SetEndWidget sets the end widget.
 	//
 	// To remove the existing end widget, pass nil.
-	SetEndWidgetCenterBox(child Widget)
-	// SetStartWidgetCenterBox sets the start widget.
+	SetEndWidget(child Widget)
+	// SetStartWidget sets the start widget.
 	//
 	// To remove the existing start widget, pass nil.
-	SetStartWidgetCenterBox(child Widget)
+	SetStartWidget(child Widget)
 }
 
 // centerBox implements the CenterBox class.
@@ -130,6 +130,22 @@ func NewCenterBox() CenterBox {
 	_centerBox = WrapCenterBox(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _centerBox
+}
+
+func (c centerBox) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(c))
+}
+
+func (c centerBox) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(c))
+}
+
+func (c centerBox) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(c))
+}
+
+func (c centerBox) AsOrientable() Orientable {
+	return WrapOrientable(gextras.InternObject(c))
 }
 
 func (s centerBox) BaselinePosition() BaselinePosition {
@@ -192,7 +208,7 @@ func (s centerBox) StartWidget() Widget {
 	return _widget
 }
 
-func (s centerBox) SetBaselinePositionCenterBox(position BaselinePosition) {
+func (s centerBox) SetBaselinePosition(position BaselinePosition) {
 	var _arg0 *C.GtkCenterBox       // out
 	var _arg1 C.GtkBaselinePosition // out
 
@@ -202,7 +218,7 @@ func (s centerBox) SetBaselinePositionCenterBox(position BaselinePosition) {
 	C.gtk_center_box_set_baseline_position(_arg0, _arg1)
 }
 
-func (s centerBox) SetCenterWidgetCenterBox(child Widget) {
+func (s centerBox) SetCenterWidget(child Widget) {
 	var _arg0 *C.GtkCenterBox // out
 	var _arg1 *C.GtkWidget    // out
 
@@ -212,7 +228,7 @@ func (s centerBox) SetCenterWidgetCenterBox(child Widget) {
 	C.gtk_center_box_set_center_widget(_arg0, _arg1)
 }
 
-func (s centerBox) SetEndWidgetCenterBox(child Widget) {
+func (s centerBox) SetEndWidget(child Widget) {
 	var _arg0 *C.GtkCenterBox // out
 	var _arg1 *C.GtkWidget    // out
 
@@ -222,7 +238,7 @@ func (s centerBox) SetEndWidgetCenterBox(child Widget) {
 	C.gtk_center_box_set_end_widget(_arg0, _arg1)
 }
 
-func (s centerBox) SetStartWidgetCenterBox(child Widget) {
+func (s centerBox) SetStartWidget(child Widget) {
 	var _arg0 *C.GtkCenterBox // out
 	var _arg1 *C.GtkWidget    // out
 
@@ -230,20 +246,4 @@ func (s centerBox) SetStartWidgetCenterBox(child Widget) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_center_box_set_start_widget(_arg0, _arg1)
-}
-
-func (c centerBox) AsAccessible() Accessible {
-	return WrapAccessible(gextras.InternObject(c))
-}
-
-func (c centerBox) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(c))
-}
-
-func (c centerBox) AsConstraintTarget() ConstraintTarget {
-	return WrapConstraintTarget(gextras.InternObject(c))
-}
-
-func (c centerBox) AsOrientable() Orientable {
-	return WrapOrientable(gextras.InternObject(c))
 }

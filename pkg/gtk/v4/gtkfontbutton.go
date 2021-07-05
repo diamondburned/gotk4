@@ -56,16 +56,16 @@ type FontButton interface {
 	UseFont() bool
 	// UseSize returns whether the selected size is used in the label.
 	UseSize() bool
-	// SetModalFontButton sets whether the dialog should be modal.
-	SetModalFontButton(modal bool)
-	// SetTitleFontButton sets the title for the font chooser dialog.
-	SetTitleFontButton(title string)
-	// SetUseFontFontButton: if @use_font is true, the font name will be written
-	// using the selected font.
-	SetUseFontFontButton(useFont bool)
-	// SetUseSizeFontButton: if @use_size is true, the font name will be written
-	// using the selected size.
-	SetUseSizeFontButton(useSize bool)
+	// SetModal sets whether the dialog should be modal.
+	SetModal(modal bool)
+	// SetTitle sets the title for the font chooser dialog.
+	SetTitle(title string)
+	// SetUseFont: if @use_font is true, the font name will be written using the
+	// selected font.
+	SetUseFont(useFont bool)
+	// SetUseSize: if @use_size is true, the font name will be written using the
+	// selected size.
+	SetUseSize(useSize bool)
 }
 
 // fontButton implements the FontButton class.
@@ -116,6 +116,22 @@ func NewFontButtonWithFont(fontname string) FontButton {
 	_fontButton = WrapFontButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _fontButton
+}
+
+func (f fontButton) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(f))
+}
+
+func (f fontButton) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(f))
+}
+
+func (f fontButton) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(f))
+}
+
+func (f fontButton) AsFontChooser() FontChooser {
+	return WrapFontChooser(gextras.InternObject(f))
 }
 
 func (f fontButton) Modal() bool {
@@ -184,7 +200,7 @@ func (f fontButton) UseSize() bool {
 	return _ok
 }
 
-func (f fontButton) SetModalFontButton(modal bool) {
+func (f fontButton) SetModal(modal bool) {
 	var _arg0 *C.GtkFontButton // out
 	var _arg1 C.gboolean       // out
 
@@ -196,7 +212,7 @@ func (f fontButton) SetModalFontButton(modal bool) {
 	C.gtk_font_button_set_modal(_arg0, _arg1)
 }
 
-func (f fontButton) SetTitleFontButton(title string) {
+func (f fontButton) SetTitle(title string) {
 	var _arg0 *C.GtkFontButton // out
 	var _arg1 *C.char          // out
 
@@ -207,7 +223,7 @@ func (f fontButton) SetTitleFontButton(title string) {
 	C.gtk_font_button_set_title(_arg0, _arg1)
 }
 
-func (f fontButton) SetUseFontFontButton(useFont bool) {
+func (f fontButton) SetUseFont(useFont bool) {
 	var _arg0 *C.GtkFontButton // out
 	var _arg1 C.gboolean       // out
 
@@ -219,7 +235,7 @@ func (f fontButton) SetUseFontFontButton(useFont bool) {
 	C.gtk_font_button_set_use_font(_arg0, _arg1)
 }
 
-func (f fontButton) SetUseSizeFontButton(useSize bool) {
+func (f fontButton) SetUseSize(useSize bool) {
 	var _arg0 *C.GtkFontButton // out
 	var _arg1 C.gboolean       // out
 
@@ -229,20 +245,4 @@ func (f fontButton) SetUseSizeFontButton(useSize bool) {
 	}
 
 	C.gtk_font_button_set_use_size(_arg0, _arg1)
-}
-
-func (f fontButton) AsAccessible() Accessible {
-	return WrapAccessible(gextras.InternObject(f))
-}
-
-func (f fontButton) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(f))
-}
-
-func (f fontButton) AsConstraintTarget() ConstraintTarget {
-	return WrapConstraintTarget(gextras.InternObject(f))
-}
-
-func (f fontButton) AsFontChooser() FontChooser {
-	return WrapFontChooser(gextras.InternObject(f))
 }

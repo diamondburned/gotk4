@@ -68,12 +68,12 @@ type TextMark interface {
 	// Visible returns true if the mark is visible (i.e. a cursor is displayed
 	// for it).
 	Visible() bool
-	// SetVisibleTextMark sets the visibility of @mark; the insertion point is
-	// normally visible, i.e. you can see it as a vertical bar. Also, the text
-	// widget uses a visible mark to indicate where a drop will occur when
+	// SetVisible sets the visibility of @mark; the insertion point is normally
+	// visible, i.e. you can see it as a vertical bar. Also, the text widget
+	// uses a visible mark to indicate where a drop will occur when
 	// dragging-and-dropping text. Most other marks are not visible. Marks are
 	// not visible by default.
-	SetVisibleTextMark(setting bool)
+	SetVisible(setting bool)
 }
 
 // textMark implements the TextMark class.
@@ -205,7 +205,7 @@ func (m textMark) Visible() bool {
 	return _ok
 }
 
-func (m textMark) SetVisibleTextMark(setting bool) {
+func (m textMark) SetVisible(setting bool) {
 	var _arg0 *C.GtkTextMark // out
 	var _arg1 C.gboolean     // out
 

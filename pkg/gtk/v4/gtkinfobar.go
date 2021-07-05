@@ -89,23 +89,23 @@ type InfoBar interface {
 	// AsConstraintTarget casts the class to the ConstraintTarget interface.
 	AsConstraintTarget() ConstraintTarget
 
-	// AddActionWidgetInfoBar: add an activatable widget to the action area of a
+	// AddActionWidget: add an activatable widget to the action area of a
 	// `GtkInfoBar`.
 	//
 	// This also connects a signal handler that will emit the
 	// [signal@Gtk.InfoBar::response] signal on the message area when the widget
 	// is activated. The widget is appended to the end of the message areas
 	// action area.
-	AddActionWidgetInfoBar(child Widget, responseId int)
-	// AddButtonInfoBar adds a button with the given text.
+	AddActionWidget(child Widget, responseId int)
+	// AddButton adds a button with the given text.
 	//
 	// Clicking the button will emit the [signal@Gtk.InfoBar::response] signal
 	// with the given response_id. The button is appended to the end of the info
 	// bars's action area. The button widget is returned, but usually you don't
 	// need it.
-	AddButtonInfoBar(buttonText string, responseId int) Button
-	// AddChildInfoBar adds a widget to the content area of the info bar.
-	AddChildInfoBar(widget Widget)
+	AddButton(buttonText string, responseId int) Button
+	// AddChild adds a widget to the content area of the info bar.
+	AddChild(widget Widget)
 	// MessageType returns the message type of the message area.
 	MessageType() MessageType
 	// Revealed returns whether the info bar is currently revealed.
@@ -113,38 +113,36 @@ type InfoBar interface {
 	// ShowCloseButton returns whether the widget will display a standard close
 	// button.
 	ShowCloseButton() bool
-	// RemoveActionWidgetInfoBar removes a widget from the action area of
-	// @info_bar.
+	// RemoveActionWidget removes a widget from the action area of @info_bar.
 	//
 	// The widget must have been put there by a call to
 	// [method@Gtk.InfoBar.add_action_widget] or
 	// [method@Gtk.InfoBar.add_button].
-	RemoveActionWidgetInfoBar(widget Widget)
-	// RemoveChildInfoBar removes a widget from the content area of the info
-	// bar.
-	RemoveChildInfoBar(widget Widget)
-	// ResponseInfoBar emits the “response” signal with the given @response_id.
-	ResponseInfoBar(responseId int)
-	// SetDefaultResponseInfoBar sets the last widget in the info bar’s action
-	// area with the given response_id as the default widget for the dialog.
+	RemoveActionWidget(widget Widget)
+	// RemoveChild removes a widget from the content area of the info bar.
+	RemoveChild(widget Widget)
+	// Response emits the “response” signal with the given @response_id.
+	Response(responseId int)
+	// SetDefaultResponse sets the last widget in the info bar’s action area
+	// with the given response_id as the default widget for the dialog.
 	//
 	// Pressing “Enter” normally activates the default widget.
 	//
 	// Note that this function currently requires @info_bar to be added to a
 	// widget hierarchy.
-	SetDefaultResponseInfoBar(responseId int)
-	// SetMessageTypeInfoBar sets the message type of the message area.
+	SetDefaultResponse(responseId int)
+	// SetMessageType sets the message type of the message area.
 	//
 	// GTK uses this type to determine how the message is displayed.
-	SetMessageTypeInfoBar(messageType MessageType)
-	// SetResponseSensitiveInfoBar sets the sensitivity of action widgets for
+	SetMessageType(messageType MessageType)
+	// SetResponseSensitive sets the sensitivity of action widgets for
 	// @response_id.
 	//
 	// Calls `gtk_widget_set_sensitive (widget, setting)` for each widget in the
 	// info bars’s action area with the given @response_id. A convenient way to
 	// sensitize/desensitize buttons.
-	SetResponseSensitiveInfoBar(responseId int, setting bool)
-	// SetRevealedInfoBar sets whether the `GtkInfoBar` is revealed.
+	SetResponseSensitive(responseId int, setting bool)
+	// SetRevealed sets whether the `GtkInfoBar` is revealed.
 	//
 	// Changing this will make @info_bar reveal or conceal itself via a sliding
 	// transition.
@@ -152,11 +150,11 @@ type InfoBar interface {
 	// Note: this does not show or hide @info_bar in the
 	// [property@Gtk.Widget:visible] sense, so revealing has no effect if
 	// [property@Gtk.Widget:visible] is false.
-	SetRevealedInfoBar(revealed bool)
-	// SetShowCloseButtonInfoBar: if true, a standard close button is shown.
+	SetRevealed(revealed bool)
+	// SetShowCloseButton: if true, a standard close button is shown.
 	//
 	// When clicked it emits the response GTK_RESPONSE_CLOSE.
-	SetShowCloseButtonInfoBar(setting bool)
+	SetShowCloseButton(setting bool)
 }
 
 // infoBar implements the InfoBar class.
@@ -191,7 +189,19 @@ func NewInfoBar() InfoBar {
 	return _infoBar
 }
 
-func (i infoBar) AddActionWidgetInfoBar(child Widget, responseId int) {
+func (i infoBar) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(i))
+}
+
+func (i infoBar) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(i))
+}
+
+func (i infoBar) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(i))
+}
+
+func (i infoBar) AddActionWidget(child Widget, responseId int) {
 	var _arg0 *C.GtkInfoBar // out
 	var _arg1 *C.GtkWidget  // out
 	var _arg2 C.int         // out
@@ -203,7 +213,7 @@ func (i infoBar) AddActionWidgetInfoBar(child Widget, responseId int) {
 	C.gtk_info_bar_add_action_widget(_arg0, _arg1, _arg2)
 }
 
-func (i infoBar) AddButtonInfoBar(buttonText string, responseId int) Button {
+func (i infoBar) AddButton(buttonText string, responseId int) Button {
 	var _arg0 *C.GtkInfoBar // out
 	var _arg1 *C.char       // out
 	var _arg2 C.int         // out
@@ -223,7 +233,7 @@ func (i infoBar) AddButtonInfoBar(buttonText string, responseId int) Button {
 	return _button
 }
 
-func (i infoBar) AddChildInfoBar(widget Widget) {
+func (i infoBar) AddChild(widget Widget) {
 	var _arg0 *C.GtkInfoBar // out
 	var _arg1 *C.GtkWidget  // out
 
@@ -282,7 +292,7 @@ func (i infoBar) ShowCloseButton() bool {
 	return _ok
 }
 
-func (i infoBar) RemoveActionWidgetInfoBar(widget Widget) {
+func (i infoBar) RemoveActionWidget(widget Widget) {
 	var _arg0 *C.GtkInfoBar // out
 	var _arg1 *C.GtkWidget  // out
 
@@ -292,7 +302,7 @@ func (i infoBar) RemoveActionWidgetInfoBar(widget Widget) {
 	C.gtk_info_bar_remove_action_widget(_arg0, _arg1)
 }
 
-func (i infoBar) RemoveChildInfoBar(widget Widget) {
+func (i infoBar) RemoveChild(widget Widget) {
 	var _arg0 *C.GtkInfoBar // out
 	var _arg1 *C.GtkWidget  // out
 
@@ -302,7 +312,7 @@ func (i infoBar) RemoveChildInfoBar(widget Widget) {
 	C.gtk_info_bar_remove_child(_arg0, _arg1)
 }
 
-func (i infoBar) ResponseInfoBar(responseId int) {
+func (i infoBar) Response(responseId int) {
 	var _arg0 *C.GtkInfoBar // out
 	var _arg1 C.int         // out
 
@@ -312,7 +322,7 @@ func (i infoBar) ResponseInfoBar(responseId int) {
 	C.gtk_info_bar_response(_arg0, _arg1)
 }
 
-func (i infoBar) SetDefaultResponseInfoBar(responseId int) {
+func (i infoBar) SetDefaultResponse(responseId int) {
 	var _arg0 *C.GtkInfoBar // out
 	var _arg1 C.int         // out
 
@@ -322,7 +332,7 @@ func (i infoBar) SetDefaultResponseInfoBar(responseId int) {
 	C.gtk_info_bar_set_default_response(_arg0, _arg1)
 }
 
-func (i infoBar) SetMessageTypeInfoBar(messageType MessageType) {
+func (i infoBar) SetMessageType(messageType MessageType) {
 	var _arg0 *C.GtkInfoBar    // out
 	var _arg1 C.GtkMessageType // out
 
@@ -332,7 +342,7 @@ func (i infoBar) SetMessageTypeInfoBar(messageType MessageType) {
 	C.gtk_info_bar_set_message_type(_arg0, _arg1)
 }
 
-func (i infoBar) SetResponseSensitiveInfoBar(responseId int, setting bool) {
+func (i infoBar) SetResponseSensitive(responseId int, setting bool) {
 	var _arg0 *C.GtkInfoBar // out
 	var _arg1 C.int         // out
 	var _arg2 C.gboolean    // out
@@ -346,7 +356,7 @@ func (i infoBar) SetResponseSensitiveInfoBar(responseId int, setting bool) {
 	C.gtk_info_bar_set_response_sensitive(_arg0, _arg1, _arg2)
 }
 
-func (i infoBar) SetRevealedInfoBar(revealed bool) {
+func (i infoBar) SetRevealed(revealed bool) {
 	var _arg0 *C.GtkInfoBar // out
 	var _arg1 C.gboolean    // out
 
@@ -358,7 +368,7 @@ func (i infoBar) SetRevealedInfoBar(revealed bool) {
 	C.gtk_info_bar_set_revealed(_arg0, _arg1)
 }
 
-func (i infoBar) SetShowCloseButtonInfoBar(setting bool) {
+func (i infoBar) SetShowCloseButton(setting bool) {
 	var _arg0 *C.GtkInfoBar // out
 	var _arg1 C.gboolean    // out
 
@@ -368,16 +378,4 @@ func (i infoBar) SetShowCloseButtonInfoBar(setting bool) {
 	}
 
 	C.gtk_info_bar_set_show_close_button(_arg0, _arg1)
-}
-
-func (i infoBar) AsAccessible() Accessible {
-	return WrapAccessible(gextras.InternObject(i))
-}
-
-func (i infoBar) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(i))
-}
-
-func (i infoBar) AsConstraintTarget() ConstraintTarget {
-	return WrapConstraintTarget(gextras.InternObject(i))
 }

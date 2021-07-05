@@ -42,25 +42,25 @@ func X11SetSmClientID(smClientId string) {
 type X11Display interface {
 	gdk.Display
 
-	// ErrorTrapPopX11Display pops the error trap pushed by
+	// ErrorTrapPop pops the error trap pushed by
 	// gdk_x11_display_error_trap_push(). Will XSync() if necessary and will
 	// always block until the error is known to have occurred or not occurred,
 	// so the error code can be returned.
 	//
 	// If you don’t need to use the return value,
 	// gdk_x11_display_error_trap_pop_ignored() would be more efficient.
-	ErrorTrapPopX11Display() int
-	// ErrorTrapPopIgnoredX11Display pops the error trap pushed by
+	ErrorTrapPop() int
+	// ErrorTrapPopIgnored pops the error trap pushed by
 	// gdk_x11_display_error_trap_push(). Does not block to see if an error
 	// occurred; merely records the range of requests to ignore errors for, and
 	// ignores those errors if they arrive asynchronously.
-	ErrorTrapPopIgnoredX11Display()
-	// ErrorTrapPushX11Display begins a range of X requests on @display for
-	// which X error events will be ignored. Unignored errors (when no trap is
-	// pushed) will abort the application. Use gdk_x11_display_error_trap_pop()
-	// or gdk_x11_display_error_trap_pop_ignored()to lift a trap pushed with
-	// this function.
-	ErrorTrapPushX11Display()
+	ErrorTrapPopIgnored()
+	// ErrorTrapPush begins a range of X requests on @display for which X error
+	// events will be ignored. Unignored errors (when no trap is pushed) will
+	// abort the application. Use gdk_x11_display_error_trap_pop() or
+	// gdk_x11_display_error_trap_pop_ignored()to lift a trap pushed with this
+	// function.
+	ErrorTrapPush()
 	// DefaultGroup returns the default group leader surface for all toplevel
 	// surfaces on @display. This surface is implicitly created by GDK. See
 	// gdk_x11_surface_set_group().
@@ -85,13 +85,13 @@ type X11Display interface {
 	// The timestamp is taken from events caused by user interaction such as key
 	// presses or pointer movements. See gdk_x11_surface_set_user_time().
 	UserTime() uint32
-	// GrabX11Display: call XGrabServer() on @display. To ungrab the display
-	// again, use gdk_x11_display_ungrab().
+	// Grab: call XGrabServer() on @display. To ungrab the display again, use
+	// gdk_x11_display_ungrab().
 	//
 	// gdk_x11_display_grab()/gdk_x11_display_ungrab() calls can be nested.
-	GrabX11Display()
-	// SetCursorThemeX11Display sets the cursor theme from which the images for
-	// cursor should be taken.
+	Grab()
+	// SetCursorTheme sets the cursor theme from which the images for cursor
+	// should be taken.
 	//
 	// If the windowing system supports it, existing cursors created with
 	// gdk_cursor_new_from_name() are updated to reflect the theme change.
@@ -99,9 +99,8 @@ type X11Display interface {
 	// to be handled by the application (GTK applications can learn about cursor
 	// theme changes by listening for change notification for the corresponding
 	// Setting).
-	SetCursorThemeX11Display(theme string, size int)
-	// SetStartupNotificationIDX11Display sets the startup notification ID for a
-	// display.
+	SetCursorTheme(theme string, size int)
+	// SetStartupNotificationID sets the startup notification ID for a display.
 	//
 	// This is usually taken from the value of the DESKTOP_STARTUP_ID
 	// environment variable, but in some cases (such as the application not
@@ -115,28 +114,27 @@ type X11Display interface {
 	// The startup ID is also what is used to signal that the startup is
 	// complete (for example, when opening a window or when calling
 	// gdk_display_notify_startup_complete()).
-	SetStartupNotificationIDX11Display(startupId string)
-	// SetSurfaceScaleX11Display forces a specific window scale for all windows
-	// on this display, instead of using the default or user configured scale.
-	// This is can be used to disable scaling support by setting @scale to 1, or
-	// to programmatically set the window scale.
+	SetStartupNotificationID(startupId string)
+	// SetSurfaceScale forces a specific window scale for all windows on this
+	// display, instead of using the default or user configured scale. This is
+	// can be used to disable scaling support by setting @scale to 1, or to
+	// programmatically set the window scale.
 	//
 	// Once the scale is set by this call it will not change in response to
 	// later user configuration changes.
-	SetSurfaceScaleX11Display(scale int)
-	// StringToCompoundTextX11Display: convert a string from the encoding of the
-	// current locale into a form suitable for storing in a window property.
-	StringToCompoundTextX11Display(str string) (encoding string, format int, ctext []byte, gint int)
-	// TextPropertyToTextListX11Display: convert a text string from the encoding
-	// as it is stored in a property into an array of strings in the encoding of
-	// the current locale. (The elements of the array represent the
-	// nul-separated elements of the original text string.)
-	TextPropertyToTextListX11Display(encoding string, format int, text *byte, length int, list **string) int
-	// UngrabX11Display: ungrab @display after it has been grabbed with
-	// gdk_x11_display_grab().
-	UngrabX11Display()
-	// UTF8ToCompoundTextX11Display converts from UTF-8 to compound text.
-	UTF8ToCompoundTextX11Display(str string) (string, int, []byte, bool)
+	SetSurfaceScale(scale int)
+	// StringToCompoundText: convert a string from the encoding of the current
+	// locale into a form suitable for storing in a window property.
+	StringToCompoundText(str string) (encoding string, format int, ctext []byte, gint int)
+	// TextPropertyToTextList: convert a text string from the encoding as it is
+	// stored in a property into an array of strings in the encoding of the
+	// current locale. (The elements of the array represent the nul-separated
+	// elements of the original text string.)
+	TextPropertyToTextList(encoding string, format int, text *byte, length int, list **string) int
+	// Ungrab @display after it has been grabbed with gdk_x11_display_grab().
+	Ungrab()
+	// UTF8ToCompoundText converts from UTF-8 to compound text.
+	UTF8ToCompoundText(str string) (string, int, []byte, bool)
 }
 
 // x11Display implements the X11Display class.
@@ -158,7 +156,7 @@ func marshalX11Display(p uintptr) (interface{}, error) {
 	return WrapX11Display(obj), nil
 }
 
-func (d x11Display) ErrorTrapPopX11Display() int {
+func (d x11Display) ErrorTrapPop() int {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.int         // in
 
@@ -173,7 +171,7 @@ func (d x11Display) ErrorTrapPopX11Display() int {
 	return _gint
 }
 
-func (d x11Display) ErrorTrapPopIgnoredX11Display() {
+func (d x11Display) ErrorTrapPopIgnored() {
 	var _arg0 *C.GdkDisplay // out
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
@@ -181,7 +179,7 @@ func (d x11Display) ErrorTrapPopIgnoredX11Display() {
 	C.gdk_x11_display_error_trap_pop_ignored(_arg0)
 }
 
-func (d x11Display) ErrorTrapPushX11Display() {
+func (d x11Display) ErrorTrapPush() {
 	var _arg0 *C.GdkDisplay // out
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
@@ -287,7 +285,7 @@ func (d x11Display) UserTime() uint32 {
 	return _guint32
 }
 
-func (d x11Display) GrabX11Display() {
+func (d x11Display) Grab() {
 	var _arg0 *C.GdkDisplay // out
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
@@ -295,7 +293,7 @@ func (d x11Display) GrabX11Display() {
 	C.gdk_x11_display_grab(_arg0)
 }
 
-func (d x11Display) SetCursorThemeX11Display(theme string, size int) {
+func (d x11Display) SetCursorTheme(theme string, size int) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.char       // out
 	var _arg2 C.int         // out
@@ -308,7 +306,7 @@ func (d x11Display) SetCursorThemeX11Display(theme string, size int) {
 	C.gdk_x11_display_set_cursor_theme(_arg0, _arg1, _arg2)
 }
 
-func (d x11Display) SetStartupNotificationIDX11Display(startupId string) {
+func (d x11Display) SetStartupNotificationID(startupId string) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.char       // out
 
@@ -319,7 +317,7 @@ func (d x11Display) SetStartupNotificationIDX11Display(startupId string) {
 	C.gdk_x11_display_set_startup_notification_id(_arg0, _arg1)
 }
 
-func (d x11Display) SetSurfaceScaleX11Display(scale int) {
+func (d x11Display) SetSurfaceScale(scale int) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 C.int         // out
 
@@ -329,7 +327,7 @@ func (d x11Display) SetSurfaceScaleX11Display(scale int) {
 	C.gdk_x11_display_set_surface_scale(_arg0, _arg1)
 }
 
-func (d x11Display) StringToCompoundTextX11Display(str string) (encoding string, format int, ctext []byte, gint int) {
+func (d x11Display) StringToCompoundText(str string) (encoding string, format int, ctext []byte, gint int) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.char       // out
 	var _arg2 *C.char       // in
@@ -360,7 +358,7 @@ func (d x11Display) StringToCompoundTextX11Display(str string) (encoding string,
 	return _encoding, _format, _ctext, _gint
 }
 
-func (d x11Display) TextPropertyToTextListX11Display(encoding string, format int, text *byte, length int, list **string) int {
+func (d x11Display) TextPropertyToTextList(encoding string, format int, text *byte, length int, list **string) int {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.char       // out
 	var _arg2 C.int         // out
@@ -402,7 +400,7 @@ func (d x11Display) TextPropertyToTextListX11Display(encoding string, format int
 	return _gint
 }
 
-func (d x11Display) UngrabX11Display() {
+func (d x11Display) Ungrab() {
 	var _arg0 *C.GdkDisplay // out
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
@@ -410,7 +408,7 @@ func (d x11Display) UngrabX11Display() {
 	C.gdk_x11_display_ungrab(_arg0)
 }
 
-func (d x11Display) UTF8ToCompoundTextX11Display(str string) (string, int, []byte, bool) {
+func (d x11Display) UTF8ToCompoundText(str string) (string, int, []byte, bool) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.char       // out
 	var _arg2 *C.char       // in

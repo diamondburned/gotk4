@@ -56,14 +56,13 @@ type BufferedOutputStream interface {
 	AutoGrow() bool
 	// BufferSize gets the size of the buffer in the @stream.
 	BufferSize() uint
-	// SetAutoGrowBufferedOutputStream sets whether or not the @stream's buffer
-	// should automatically grow. If @auto_grow is true, then each write will
-	// just make the buffer larger, and you must manually flush the buffer to
-	// actually write out the data to the underlying stream.
-	SetAutoGrowBufferedOutputStream(autoGrow bool)
-	// SetBufferSizeBufferedOutputStream sets the size of the internal buffer to
-	// @size.
-	SetBufferSizeBufferedOutputStream(size uint)
+	// SetAutoGrow sets whether or not the @stream's buffer should automatically
+	// grow. If @auto_grow is true, then each write will just make the buffer
+	// larger, and you must manually flush the buffer to actually write out the
+	// data to the underlying stream.
+	SetAutoGrow(autoGrow bool)
+	// SetBufferSize sets the size of the internal buffer to @size.
+	SetBufferSize(size uint)
 }
 
 // bufferedOutputStream implements the BufferedOutputStream class.
@@ -121,6 +120,10 @@ func NewBufferedOutputStreamSized(baseStream OutputStream, size uint) BufferedOu
 	return _bufferedOutputStream
 }
 
+func (b bufferedOutputStream) AsSeekable() Seekable {
+	return WrapSeekable(gextras.InternObject(b))
+}
+
 func (s bufferedOutputStream) AutoGrow() bool {
 	var _arg0 *C.GBufferedOutputStream // out
 	var _cret C.gboolean               // in
@@ -153,7 +156,7 @@ func (s bufferedOutputStream) BufferSize() uint {
 	return _gsize
 }
 
-func (s bufferedOutputStream) SetAutoGrowBufferedOutputStream(autoGrow bool) {
+func (s bufferedOutputStream) SetAutoGrow(autoGrow bool) {
 	var _arg0 *C.GBufferedOutputStream // out
 	var _arg1 C.gboolean               // out
 
@@ -165,7 +168,7 @@ func (s bufferedOutputStream) SetAutoGrowBufferedOutputStream(autoGrow bool) {
 	C.g_buffered_output_stream_set_auto_grow(_arg0, _arg1)
 }
 
-func (s bufferedOutputStream) SetBufferSizeBufferedOutputStream(size uint) {
+func (s bufferedOutputStream) SetBufferSize(size uint) {
 	var _arg0 *C.GBufferedOutputStream // out
 	var _arg1 C.gsize                  // out
 
@@ -173,8 +176,4 @@ func (s bufferedOutputStream) SetBufferSizeBufferedOutputStream(size uint) {
 	_arg1 = C.gsize(size)
 
 	C.g_buffered_output_stream_set_buffer_size(_arg0, _arg1)
-}
-
-func (b bufferedOutputStream) AsSeekable() Seekable {
-	return WrapSeekable(gextras.InternObject(b))
 }

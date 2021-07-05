@@ -48,8 +48,8 @@ type DrawingContext interface {
 	Clip() *cairo.Region
 	// Window retrieves the window that created the drawing @context.
 	Window() Window
-	// IsValidDrawingContext checks whether the given DrawingContext is valid.
-	IsValidDrawingContext() bool
+	// IsValid checks whether the given DrawingContext is valid.
+	IsValid() bool
 }
 
 // drawingContext implements the DrawingContext class.
@@ -119,7 +119,7 @@ func (c drawingContext) Window() Window {
 	return _window
 }
 
-func (c drawingContext) IsValidDrawingContext() bool {
+func (c drawingContext) IsValid() bool {
 	var _arg0 *C.GdkDrawingContext // out
 	var _cret C.gboolean           // in
 

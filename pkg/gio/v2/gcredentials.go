@@ -82,26 +82,26 @@ type Credentials interface {
 	// the native credentials type does not contain information about the UNIX
 	// user.
 	UnixUser() (uint, error)
-	// IsSameUserCredentials checks if @credentials and @other_credentials is
-	// the same user.
+	// IsSameUser checks if @credentials and @other_credentials is the same
+	// user.
 	//
 	// This operation can fail if #GCredentials is not supported on the the OS.
-	IsSameUserCredentials(otherCredentials Credentials) error
-	// SetNativeCredentials copies the native credentials of type @native_type
-	// from @native into @credentials.
+	IsSameUser(otherCredentials Credentials) error
+	// SetNative copies the native credentials of type @native_type from @native
+	// into @credentials.
 	//
 	// It is a programming error (which will cause a warning to be logged) to
 	// use this method if there is no #GCredentials support for the OS or if
 	// @native_type isn't supported by the OS.
-	SetNativeCredentials(nativeType CredentialsType, native interface{})
-	// SetUnixUserCredentials tries to set the UNIX user identifier on
-	// @credentials. This method is only available on UNIX platforms.
+	SetNative(nativeType CredentialsType, native interface{})
+	// SetUnixUser tries to set the UNIX user identifier on @credentials. This
+	// method is only available on UNIX platforms.
 	//
 	// This operation can fail if #GCredentials is not supported on the OS or if
 	// the native credentials type does not contain information about the UNIX
 	// user. It can also fail if the OS does not allow the use of "spoofed"
 	// credentials.
-	SetUnixUserCredentials(uid uint) error
+	SetUnixUser(uid uint) error
 	// String creates a human-readable textual representation of @credentials
 	// that can be used in logging and debug messages. The format of the
 	// returned string may change in future GLib release.
@@ -177,7 +177,7 @@ func (c credentials) UnixUser() (uint, error) {
 	return _guint, _goerr
 }
 
-func (c credentials) IsSameUserCredentials(otherCredentials Credentials) error {
+func (c credentials) IsSameUser(otherCredentials Credentials) error {
 	var _arg0 *C.GCredentials // out
 	var _arg1 *C.GCredentials // out
 	var _cerr *C.GError       // in
@@ -194,7 +194,7 @@ func (c credentials) IsSameUserCredentials(otherCredentials Credentials) error {
 	return _goerr
 }
 
-func (c credentials) SetNativeCredentials(nativeType CredentialsType, native interface{}) {
+func (c credentials) SetNative(nativeType CredentialsType, native interface{}) {
 	var _arg0 *C.GCredentials    // out
 	var _arg1 C.GCredentialsType // out
 	var _arg2 C.gpointer         // out
@@ -206,7 +206,7 @@ func (c credentials) SetNativeCredentials(nativeType CredentialsType, native int
 	C.g_credentials_set_native(_arg0, _arg1, _arg2)
 }
 
-func (c credentials) SetUnixUserCredentials(uid uint) error {
+func (c credentials) SetUnixUser(uid uint) error {
 	var _arg0 *C.GCredentials // out
 	var _arg1 C.uid_t         // out
 	var _cerr *C.GError       // in

@@ -26,19 +26,19 @@ func init() {
 type IMMulticontext interface {
 	IMContext
 
-	// AppendMenuitemsIMMulticontext: add menuitems for various available input
-	// methods to a menu; the menuitems, when selected, will switch the input
-	// method for the context and the global default input method.
+	// AppendMenuitems: add menuitems for various available input methods to a
+	// menu; the menuitems, when selected, will switch the input method for the
+	// context and the global default input method.
 	//
 	// Deprecated: since version 3.10.
-	AppendMenuitemsIMMulticontext(menushell MenuShell)
+	AppendMenuitems(menushell MenuShell)
 	// ContextID gets the id of the currently active slave of the @context.
 	ContextID() string
-	// SetContextIDIMMulticontext sets the context id for @context.
+	// SetContextID sets the context id for @context.
 	//
 	// This causes the currently active slave of @context to be replaced by the
 	// slave corresponding to the new context id.
-	SetContextIDIMMulticontext(contextId string)
+	SetContextID(contextId string)
 }
 
 // imMulticontext implements the IMMulticontext class.
@@ -73,7 +73,7 @@ func NewIMMulticontext() IMMulticontext {
 	return _imMulticontext
 }
 
-func (c imMulticontext) AppendMenuitemsIMMulticontext(menushell MenuShell) {
+func (c imMulticontext) AppendMenuitems(menushell MenuShell) {
 	var _arg0 *C.GtkIMMulticontext // out
 	var _arg1 *C.GtkMenuShell      // out
 
@@ -98,7 +98,7 @@ func (c imMulticontext) ContextID() string {
 	return _utf8
 }
 
-func (c imMulticontext) SetContextIDIMMulticontext(contextId string) {
+func (c imMulticontext) SetContextID(contextId string) {
 	var _arg0 *C.GtkIMMulticontext // out
 	var _arg1 *C.char              // out
 

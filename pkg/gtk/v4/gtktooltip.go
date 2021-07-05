@@ -50,27 +50,27 @@ func init() {
 type Tooltip interface {
 	gextras.Objector
 
-	// SetCustomTooltip replaces the widget packed into the tooltip with
+	// SetCustom replaces the widget packed into the tooltip with
 	// @custom_widget. @custom_widget does not get destroyed when the tooltip
 	// goes away. By default a box with a Image and Label is embedded in the
 	// tooltip, which can be configured using gtk_tooltip_set_markup() and
 	// gtk_tooltip_set_icon().
-	SetCustomTooltip(customWidget Widget)
-	// SetIconFromIconNameTooltip sets the icon of the tooltip (which is in
-	// front of the text) to be the icon indicated by @icon_name with the size
-	// indicated by @size. If @icon_name is nil, the image will be hidden.
-	SetIconFromIconNameTooltip(iconName string)
-	// SetMarkupTooltip sets the text of the tooltip to be @markup.
+	SetCustom(customWidget Widget)
+	// SetIconFromIconName sets the icon of the tooltip (which is in front of
+	// the text) to be the icon indicated by @icon_name with the size indicated
+	// by @size. If @icon_name is nil, the image will be hidden.
+	SetIconFromIconName(iconName string)
+	// SetMarkup sets the text of the tooltip to be @markup.
 	//
 	// The string must be marked up with Pango markup. If @markup is nil, the
 	// label will be hidden.
-	SetMarkupTooltip(markup string)
-	// SetTextTooltip sets the text of the tooltip to be @text.
+	SetMarkup(markup string)
+	// SetText sets the text of the tooltip to be @text.
 	//
 	// If @text is nil, the label will be hidden. See also
 	// [method@Gtk.Tooltip.set_markup].
-	SetTextTooltip(text string)
-	// SetTipAreaTooltip sets the area of the widget, where the contents of this
+	SetText(text string)
+	// SetTipArea sets the area of the widget, where the contents of this
 	// tooltip apply, to be @rect (in widget coordinates). This is especially
 	// useful for properly setting tooltips on TreeView rows and cells,
 	// IconViews, etc.
@@ -78,7 +78,7 @@ type Tooltip interface {
 	// For setting tooltips on TreeView, please refer to the convenience
 	// functions for this: gtk_tree_view_set_tooltip_row() and
 	// gtk_tree_view_set_tooltip_cell().
-	SetTipAreaTooltip(rect *gdk.Rectangle)
+	SetTipArea(rect *gdk.Rectangle)
 }
 
 // tooltip implements the Tooltip class.
@@ -100,7 +100,7 @@ func marshalTooltip(p uintptr) (interface{}, error) {
 	return WrapTooltip(obj), nil
 }
 
-func (t tooltip) SetCustomTooltip(customWidget Widget) {
+func (t tooltip) SetCustom(customWidget Widget) {
 	var _arg0 *C.GtkTooltip // out
 	var _arg1 *C.GtkWidget  // out
 
@@ -110,7 +110,7 @@ func (t tooltip) SetCustomTooltip(customWidget Widget) {
 	C.gtk_tooltip_set_custom(_arg0, _arg1)
 }
 
-func (t tooltip) SetIconFromIconNameTooltip(iconName string) {
+func (t tooltip) SetIconFromIconName(iconName string) {
 	var _arg0 *C.GtkTooltip // out
 	var _arg1 *C.char       // out
 
@@ -121,7 +121,7 @@ func (t tooltip) SetIconFromIconNameTooltip(iconName string) {
 	C.gtk_tooltip_set_icon_from_icon_name(_arg0, _arg1)
 }
 
-func (t tooltip) SetMarkupTooltip(markup string) {
+func (t tooltip) SetMarkup(markup string) {
 	var _arg0 *C.GtkTooltip // out
 	var _arg1 *C.char       // out
 
@@ -132,7 +132,7 @@ func (t tooltip) SetMarkupTooltip(markup string) {
 	C.gtk_tooltip_set_markup(_arg0, _arg1)
 }
 
-func (t tooltip) SetTextTooltip(text string) {
+func (t tooltip) SetText(text string) {
 	var _arg0 *C.GtkTooltip // out
 	var _arg1 *C.char       // out
 
@@ -143,7 +143,7 @@ func (t tooltip) SetTextTooltip(text string) {
 	C.gtk_tooltip_set_text(_arg0, _arg1)
 }
 
-func (t tooltip) SetTipAreaTooltip(rect *gdk.Rectangle) {
+func (t tooltip) SetTipArea(rect *gdk.Rectangle) {
 	var _arg0 *C.GtkTooltip   // out
 	var _arg1 *C.GdkRectangle // out
 

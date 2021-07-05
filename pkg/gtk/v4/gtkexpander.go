@@ -129,31 +129,29 @@ type Expander interface {
 	// UseUnderline returns whether an underline in the text indicates a
 	// mnemonic.
 	UseUnderline() bool
-	// SetChildExpander sets the child widget of @expander.
-	SetChildExpander(child Widget)
-	// SetExpandedExpander sets the state of the expander.
+	// SetChild sets the child widget of @expander.
+	SetChild(child Widget)
+	// SetExpanded sets the state of the expander.
 	//
 	// Set to true, if you want the child widget to be revealed, and false if
 	// you want the child widget to be hidden.
-	SetExpandedExpander(expanded bool)
-	// SetLabelExpander sets the text of the label of the expander to @label.
+	SetExpanded(expanded bool)
+	// SetLabel sets the text of the label of the expander to @label.
 	//
 	// This will also clear any previously set labels.
-	SetLabelExpander(label string)
-	// SetLabelWidgetExpander: set the label widget for the expander.
+	SetLabel(label string)
+	// SetLabelWidget: set the label widget for the expander.
 	//
 	// This is the widget that will appear embedded alongside the expander
 	// arrow.
-	SetLabelWidgetExpander(labelWidget Widget)
-	// SetResizeToplevelExpander sets whether the expander will resize the
-	// toplevel widget containing the expander upon resizing and collpasing.
-	SetResizeToplevelExpander(resizeToplevel bool)
-	// SetUseMarkupExpander sets whether the text of the label contains Pango
-	// markup.
-	SetUseMarkupExpander(useMarkup bool)
-	// SetUseUnderlineExpander: if true, an underline in the text indicates a
-	// mnemonic.
-	SetUseUnderlineExpander(useUnderline bool)
+	SetLabelWidget(labelWidget Widget)
+	// SetResizeToplevel sets whether the expander will resize the toplevel
+	// widget containing the expander upon resizing and collpasing.
+	SetResizeToplevel(resizeToplevel bool)
+	// SetUseMarkup sets whether the text of the label contains Pango markup.
+	SetUseMarkup(useMarkup bool)
+	// SetUseUnderline: if true, an underline in the text indicates a mnemonic.
+	SetUseUnderline(useUnderline bool)
 }
 
 // expander implements the Expander class.
@@ -215,6 +213,18 @@ func NewExpanderWithMnemonic(label string) Expander {
 	_expander = WrapExpander(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _expander
+}
+
+func (e expander) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(e))
+}
+
+func (e expander) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(e))
+}
+
+func (e expander) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(e))
 }
 
 func (e expander) Child() Widget {
@@ -330,7 +340,7 @@ func (e expander) UseUnderline() bool {
 	return _ok
 }
 
-func (e expander) SetChildExpander(child Widget) {
+func (e expander) SetChild(child Widget) {
 	var _arg0 *C.GtkExpander // out
 	var _arg1 *C.GtkWidget   // out
 
@@ -340,7 +350,7 @@ func (e expander) SetChildExpander(child Widget) {
 	C.gtk_expander_set_child(_arg0, _arg1)
 }
 
-func (e expander) SetExpandedExpander(expanded bool) {
+func (e expander) SetExpanded(expanded bool) {
 	var _arg0 *C.GtkExpander // out
 	var _arg1 C.gboolean     // out
 
@@ -352,7 +362,7 @@ func (e expander) SetExpandedExpander(expanded bool) {
 	C.gtk_expander_set_expanded(_arg0, _arg1)
 }
 
-func (e expander) SetLabelExpander(label string) {
+func (e expander) SetLabel(label string) {
 	var _arg0 *C.GtkExpander // out
 	var _arg1 *C.char        // out
 
@@ -363,7 +373,7 @@ func (e expander) SetLabelExpander(label string) {
 	C.gtk_expander_set_label(_arg0, _arg1)
 }
 
-func (e expander) SetLabelWidgetExpander(labelWidget Widget) {
+func (e expander) SetLabelWidget(labelWidget Widget) {
 	var _arg0 *C.GtkExpander // out
 	var _arg1 *C.GtkWidget   // out
 
@@ -373,7 +383,7 @@ func (e expander) SetLabelWidgetExpander(labelWidget Widget) {
 	C.gtk_expander_set_label_widget(_arg0, _arg1)
 }
 
-func (e expander) SetResizeToplevelExpander(resizeToplevel bool) {
+func (e expander) SetResizeToplevel(resizeToplevel bool) {
 	var _arg0 *C.GtkExpander // out
 	var _arg1 C.gboolean     // out
 
@@ -385,7 +395,7 @@ func (e expander) SetResizeToplevelExpander(resizeToplevel bool) {
 	C.gtk_expander_set_resize_toplevel(_arg0, _arg1)
 }
 
-func (e expander) SetUseMarkupExpander(useMarkup bool) {
+func (e expander) SetUseMarkup(useMarkup bool) {
 	var _arg0 *C.GtkExpander // out
 	var _arg1 C.gboolean     // out
 
@@ -397,7 +407,7 @@ func (e expander) SetUseMarkupExpander(useMarkup bool) {
 	C.gtk_expander_set_use_markup(_arg0, _arg1)
 }
 
-func (e expander) SetUseUnderlineExpander(useUnderline bool) {
+func (e expander) SetUseUnderline(useUnderline bool) {
 	var _arg0 *C.GtkExpander // out
 	var _arg1 C.gboolean     // out
 
@@ -407,16 +417,4 @@ func (e expander) SetUseUnderlineExpander(useUnderline bool) {
 	}
 
 	C.gtk_expander_set_use_underline(_arg0, _arg1)
-}
-
-func (e expander) AsAccessible() Accessible {
-	return WrapAccessible(gextras.InternObject(e))
-}
-
-func (e expander) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(e))
-}
-
-func (e expander) AsConstraintTarget() ConstraintTarget {
-	return WrapConstraintTarget(gextras.InternObject(e))
 }

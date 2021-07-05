@@ -70,12 +70,12 @@ type ButtonBox interface {
 	// Layout retrieves the method being used to arrange the buttons in a button
 	// box.
 	Layout() ButtonBoxStyle
-	// SetChildNonHomogeneousButtonBox sets whether the child is exempted from
-	// homogeous sizing.
-	SetChildNonHomogeneousButtonBox(child Widget, nonHomogeneous bool)
-	// SetChildSecondaryButtonBox sets whether @child should appear in a
-	// secondary group of children. A typical use of a secondary child is the
-	// help button in a dialog.
+	// SetChildNonHomogeneous sets whether the child is exempted from homogeous
+	// sizing.
+	SetChildNonHomogeneous(child Widget, nonHomogeneous bool)
+	// SetChildSecondary sets whether @child should appear in a secondary group
+	// of children. A typical use of a secondary child is the help button in a
+	// dialog.
 	//
 	// This group appears after the other children if the style is
 	// GTK_BUTTONBOX_START, GTK_BUTTONBOX_SPREAD or GTK_BUTTONBOX_EDGE, and
@@ -85,10 +85,9 @@ type ButtonBox interface {
 	// GTK_BUTTONBOX_START or GTK_BUTTONBOX_END, then the secondary children are
 	// aligned at the other end of the button box from the main children. For
 	// the other styles, they appear immediately next to the main children.
-	SetChildSecondaryButtonBox(child Widget, isSecondary bool)
-	// SetLayoutButtonBox changes the way buttons are arranged in their
-	// container.
-	SetLayoutButtonBox(layoutStyle ButtonBoxStyle)
+	SetChildSecondary(child Widget, isSecondary bool)
+	// SetLayout changes the way buttons are arranged in their container.
+	SetLayout(layoutStyle ButtonBoxStyle)
 }
 
 // buttonBox implements the ButtonBox class.
@@ -124,6 +123,14 @@ func NewButtonBox(orientation Orientation) ButtonBox {
 	_buttonBox = WrapButtonBox(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _buttonBox
+}
+
+func (b buttonBox) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(b))
+}
+
+func (b buttonBox) AsOrientable() Orientable {
+	return WrapOrientable(gextras.InternObject(b))
 }
 
 func (w buttonBox) ChildNonHomogeneous(child Widget) bool {
@@ -179,7 +186,7 @@ func (w buttonBox) Layout() ButtonBoxStyle {
 	return _buttonBoxStyle
 }
 
-func (w buttonBox) SetChildNonHomogeneousButtonBox(child Widget, nonHomogeneous bool) {
+func (w buttonBox) SetChildNonHomogeneous(child Widget, nonHomogeneous bool) {
 	var _arg0 *C.GtkButtonBox // out
 	var _arg1 *C.GtkWidget    // out
 	var _arg2 C.gboolean      // out
@@ -193,7 +200,7 @@ func (w buttonBox) SetChildNonHomogeneousButtonBox(child Widget, nonHomogeneous 
 	C.gtk_button_box_set_child_non_homogeneous(_arg0, _arg1, _arg2)
 }
 
-func (w buttonBox) SetChildSecondaryButtonBox(child Widget, isSecondary bool) {
+func (w buttonBox) SetChildSecondary(child Widget, isSecondary bool) {
 	var _arg0 *C.GtkButtonBox // out
 	var _arg1 *C.GtkWidget    // out
 	var _arg2 C.gboolean      // out
@@ -207,7 +214,7 @@ func (w buttonBox) SetChildSecondaryButtonBox(child Widget, isSecondary bool) {
 	C.gtk_button_box_set_child_secondary(_arg0, _arg1, _arg2)
 }
 
-func (w buttonBox) SetLayoutButtonBox(layoutStyle ButtonBoxStyle) {
+func (w buttonBox) SetLayout(layoutStyle ButtonBoxStyle) {
 	var _arg0 *C.GtkButtonBox     // out
 	var _arg1 C.GtkButtonBoxStyle // out
 
@@ -215,12 +222,4 @@ func (w buttonBox) SetLayoutButtonBox(layoutStyle ButtonBoxStyle) {
 	_arg1 = C.GtkButtonBoxStyle(layoutStyle)
 
 	C.gtk_button_box_set_layout(_arg0, _arg1)
-}
-
-func (b buttonBox) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(b))
-}
-
-func (b buttonBox) AsOrientable() Orientable {
-	return WrapOrientable(gextras.InternObject(b))
 }

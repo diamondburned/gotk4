@@ -23,7 +23,7 @@ import "C"
 // A job is cancellable if a #GCancellable was passed into
 // g_io_scheduler_push_job().
 //
-// Deprecated: since version .
+// Deprecated.
 func IOSchedulerCancelAllJobs() {
 	C.g_io_scheduler_cancel_all_jobs()
 }

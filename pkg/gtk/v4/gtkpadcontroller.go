@@ -81,7 +81,7 @@ func marshalPadActionType(p uintptr) (interface{}, error) {
 type PadController interface {
 	EventController
 
-	// SetActionPadController adds an individual action to @controller.
+	// SetAction adds an individual action to @controller.
 	//
 	// This action will only be activated if the given button/ring/strip number
 	// in @index is interacted while the current mode is @mode. -1 may be used
@@ -90,13 +90,13 @@ type PadController interface {
 	// The given @label should be considered user-visible, so
 	// internationalization rules apply. Some windowing systems may be able to
 	// use those for user feedback.
-	SetActionPadController(typ PadActionType, index int, mode int, label string, actionName string)
-	// SetActionEntriesPadController: convenience function to add a group of
-	// action entries on @controller.
+	SetAction(typ PadActionType, index int, mode int, label string, actionName string)
+	// SetActionEntries: convenience function to add a group of action entries
+	// on @controller.
 	//
 	// See [struct@Gtk.PadActionEntry] and
 	// [method@Gtk.PadController.set_action].
-	SetActionEntriesPadController(entries []PadActionEntry)
+	SetActionEntries(entries []PadActionEntry)
 }
 
 // padController implements the PadController class.
@@ -118,7 +118,7 @@ func marshalPadController(p uintptr) (interface{}, error) {
 	return WrapPadController(obj), nil
 }
 
-func (c padController) SetActionPadController(typ PadActionType, index int, mode int, label string, actionName string) {
+func (c padController) SetAction(typ PadActionType, index int, mode int, label string, actionName string) {
 	var _arg0 *C.GtkPadController // out
 	var _arg1 C.GtkPadActionType  // out
 	var _arg2 C.int               // out
@@ -138,7 +138,7 @@ func (c padController) SetActionPadController(typ PadActionType, index int, mode
 	C.gtk_pad_controller_set_action(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
 
-func (c padController) SetActionEntriesPadController(entries []PadActionEntry) {
+func (c padController) SetActionEntries(entries []PadActionEntry) {
 	var _arg0 *C.GtkPadController // out
 	var _arg1 *C.GtkPadActionEntry
 	var _arg2 C.int

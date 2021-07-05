@@ -94,8 +94,8 @@ type RadioButton interface {
 	// AsBuildable casts the class to the Buildable interface.
 	AsBuildable() Buildable
 
-	// JoinGroupRadioButton joins a RadioButton object to the group of another
-	// RadioButton object
+	// JoinGroup joins a RadioButton object to the group of another RadioButton
+	// object
 	//
 	// Use this in language bindings instead of the gtk_radio_button_get_group()
 	// and gtk_radio_button_set_group() methods
@@ -112,7 +112,7 @@ type RadioButton interface {
 	//           gtk_radio_button_join_group (radio_button, last_button);
 	//           last_button = radio_button;
 	//        }
-	JoinGroupRadioButton(groupSource RadioButton)
+	JoinGroup(groupSource RadioButton)
 }
 
 // radioButton implements the RadioButton class.
@@ -193,16 +193,6 @@ func NewRadioButtonWithMnemonicFromWidget(radioGroupMember RadioButton, label st
 	return _radioButton
 }
 
-func (r radioButton) JoinGroupRadioButton(groupSource RadioButton) {
-	var _arg0 *C.GtkRadioButton // out
-	var _arg1 *C.GtkRadioButton // out
-
-	_arg0 = (*C.GtkRadioButton)(unsafe.Pointer(r.Native()))
-	_arg1 = (*C.GtkRadioButton)(unsafe.Pointer(groupSource.Native()))
-
-	C.gtk_radio_button_join_group(_arg0, _arg1)
-}
-
 func (r radioButton) AsActionable() Actionable {
 	return WrapActionable(gextras.InternObject(r))
 }
@@ -213,4 +203,14 @@ func (r radioButton) AsActivatable() Activatable {
 
 func (r radioButton) AsBuildable() Buildable {
 	return WrapBuildable(gextras.InternObject(r))
+}
+
+func (r radioButton) JoinGroup(groupSource RadioButton) {
+	var _arg0 *C.GtkRadioButton // out
+	var _arg1 *C.GtkRadioButton // out
+
+	_arg0 = (*C.GtkRadioButton)(unsafe.Pointer(r.Native()))
+	_arg1 = (*C.GtkRadioButton)(unsafe.Pointer(groupSource.Native()))
+
+	C.gtk_radio_button_join_group(_arg0, _arg1)
 }

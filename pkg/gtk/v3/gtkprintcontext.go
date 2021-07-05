@@ -93,12 +93,12 @@ func init() {
 type PrintContext interface {
 	gextras.Objector
 
-	// CreatePangoContextPrintContext creates a new Context that can be used
-	// with the PrintContext.
-	CreatePangoContextPrintContext() pango.Context
-	// CreatePangoLayoutPrintContext creates a new Layout that is suitable for
-	// use with the PrintContext.
-	CreatePangoLayoutPrintContext() pango.Layout
+	// CreatePangoContext creates a new Context that can be used with the
+	// PrintContext.
+	CreatePangoContext() pango.Context
+	// CreatePangoLayout creates a new Layout that is suitable for use with the
+	// PrintContext.
+	CreatePangoLayout() pango.Layout
 	// CairoContext obtains the cairo context that is associated with the
 	// PrintContext.
 	CairoContext() *cairo.Context
@@ -121,12 +121,12 @@ type PrintContext interface {
 	PangoFontmap() pango.FontMap
 	// Width obtains the width of the PrintContext, in pixels.
 	Width() float64
-	// SetCairoContextPrintContext sets a new cairo context on a print context.
+	// SetCairoContext sets a new cairo context on a print context.
 	//
 	// This function is intended to be used when implementing an internal print
 	// preview, it is not needed for printing, since GTK+ itself creates a
 	// suitable cairo context in that case.
-	SetCairoContextPrintContext(cr *cairo.Context, dpiX float64, dpiY float64)
+	SetCairoContext(cr *cairo.Context, dpiX float64, dpiY float64)
 }
 
 // printContext implements the PrintContext class.
@@ -148,7 +148,7 @@ func marshalPrintContext(p uintptr) (interface{}, error) {
 	return WrapPrintContext(obj), nil
 }
 
-func (c printContext) CreatePangoContextPrintContext() pango.Context {
+func (c printContext) CreatePangoContext() pango.Context {
 	var _arg0 *C.GtkPrintContext // out
 	var _cret *C.PangoContext    // in
 
@@ -163,7 +163,7 @@ func (c printContext) CreatePangoContextPrintContext() pango.Context {
 	return _ret
 }
 
-func (c printContext) CreatePangoLayoutPrintContext() pango.Layout {
+func (c printContext) CreatePangoLayout() pango.Layout {
 	var _arg0 *C.GtkPrintContext // out
 	var _cret *C.PangoLayout     // in
 
@@ -312,7 +312,7 @@ func (c printContext) Width() float64 {
 	return _gdouble
 }
 
-func (c printContext) SetCairoContextPrintContext(cr *cairo.Context, dpiX float64, dpiY float64) {
+func (c printContext) SetCairoContext(cr *cairo.Context, dpiX float64, dpiY float64) {
 	var _arg0 *C.GtkPrintContext // out
 	var _arg1 *C.cairo_t         // out
 	var _arg2 C.double           // out

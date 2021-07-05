@@ -148,7 +148,7 @@ type Value interface {
 
 	// CurrentValue gets the value of this object.
 	//
-	// Deprecated: since version .
+	// Deprecated.
 	CurrentValue() externglib.Value
 	// Increment gets the minimum increment by which the value of this object
 	// may be changed. If zero, the minimum increment is undefined, which may
@@ -157,18 +157,18 @@ type Value interface {
 	Increment() float64
 	// MaximumValue gets the maximum value of this object.
 	//
-	// Deprecated: since version .
+	// Deprecated.
 	MaximumValue() externglib.Value
 	// MinimumIncrement gets the minimum increment by which the value of this
 	// object may be changed. If zero, the minimum increment is undefined, which
 	// may mean that it is limited only by the floating point precision of the
 	// platform.
 	//
-	// Deprecated: since version .
+	// Deprecated.
 	MinimumIncrement() externglib.Value
 	// MinimumValue gets the minimum value of this object.
 	//
-	// Deprecated: since version .
+	// Deprecated.
 	MinimumValue() externglib.Value
 	// Range gets the range of this object.
 	Range() *Range
@@ -178,7 +178,7 @@ type Value interface {
 	ValueAndText() (float64, string)
 	// SetCurrentValue sets the value of this object.
 	//
-	// Deprecated: since version .
+	// Deprecated.
 	SetCurrentValue(value externglib.Value) bool
 	// SetValue sets the value of this object.
 	//

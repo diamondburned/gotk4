@@ -34,18 +34,17 @@ type NumericSorter interface {
 	Expression() Expression
 	// SortOrder gets whether this sorter will sort smaller numbers first.
 	SortOrder() SortType
-	// SetExpressionNumericSorter sets the expression that is evaluated to
-	// obtain numbers from items.
+	// SetExpression sets the expression that is evaluated to obtain numbers
+	// from items.
 	//
 	// Unless an expression is set on @self, the sorter will always compare
 	// items as invalid.
 	//
 	// The expression must have a return type that can be compared numerically,
 	// such as G_TYPE_INT or G_TYPE_DOUBLE.
-	SetExpressionNumericSorter(expression Expression)
-	// SetSortOrderNumericSorter sets whether to sort smaller numbers before
-	// larger ones.
-	SetSortOrderNumericSorter(sortOrder SortType)
+	SetExpression(expression Expression)
+	// SetSortOrder sets whether to sort smaller numbers before larger ones.
+	SetSortOrder(sortOrder SortType)
 }
 
 // numericSorter implements the NumericSorter class.
@@ -116,7 +115,7 @@ func (s numericSorter) SortOrder() SortType {
 	return _sortType
 }
 
-func (s numericSorter) SetExpressionNumericSorter(expression Expression) {
+func (s numericSorter) SetExpression(expression Expression) {
 	var _arg0 *C.GtkNumericSorter // out
 	var _arg1 *C.GtkExpression    // out
 
@@ -126,7 +125,7 @@ func (s numericSorter) SetExpressionNumericSorter(expression Expression) {
 	C.gtk_numeric_sorter_set_expression(_arg0, _arg1)
 }
 
-func (s numericSorter) SetSortOrderNumericSorter(sortOrder SortType) {
+func (s numericSorter) SetSortOrder(sortOrder SortType) {
 	var _arg0 *C.GtkNumericSorter // out
 	var _arg1 C.GtkSortType       // out
 

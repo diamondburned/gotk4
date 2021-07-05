@@ -36,14 +36,13 @@ func init() {
 type TreeListRowSorter interface {
 	Sorter
 
-	// GetSorter returns the sorter used by @self.
-	GetSorter() Sorter
-	// SetSorterTreeListRowSorter sets the sorter to use for items with the same
-	// parent.
+	// SorterTreeListRowSorter returns the sorter used by @self.
+	SorterTreeListRowSorter() Sorter
+	// SetSorter sets the sorter to use for items with the same parent.
 	//
 	// This sorter will be passed the [property@Gtk.TreeListRow:item] of the
 	// tree list rows passed to @self.
-	SetSorterTreeListRowSorter(sorter Sorter)
+	SetSorter(sorter Sorter)
 }
 
 // treeListRowSorter implements the TreeListRowSorter class.
@@ -85,7 +84,7 @@ func NewTreeListRowSorter(sorter Sorter) TreeListRowSorter {
 	return _treeListRowSorter
 }
 
-func (s treeListRowSorter) GetSorter() Sorter {
+func (s treeListRowSorter) SorterTreeListRowSorter() Sorter {
 	var _arg0 *C.GtkTreeListRowSorter // out
 	var _cret *C.GtkSorter            // in
 
@@ -100,7 +99,7 @@ func (s treeListRowSorter) GetSorter() Sorter {
 	return _sorter
 }
 
-func (s treeListRowSorter) SetSorterTreeListRowSorter(sorter Sorter) {
+func (s treeListRowSorter) SetSorter(sorter Sorter) {
 	var _arg0 *C.GtkTreeListRowSorter // out
 	var _arg1 *C.GtkSorter            // out
 

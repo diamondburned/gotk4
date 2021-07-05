@@ -76,7 +76,7 @@ type TextMark interface {
 	// A cursor is displayed for visible marks.
 	Visible() bool
 
-	SetVisibleTextMark(setting bool)
+	SetVisible(setting bool)
 }
 
 // textMark implements the TextMark class.
@@ -209,7 +209,7 @@ func (m textMark) Visible() bool {
 	return _ok
 }
 
-func (m textMark) SetVisibleTextMark(setting bool) {
+func (m textMark) SetVisible(setting bool) {
 	var _arg0 *C.GtkTextMark // out
 	var _arg1 C.gboolean     // out
 

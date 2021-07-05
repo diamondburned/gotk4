@@ -114,6 +114,10 @@ func NewSocket() Socket {
 	return _socket
 }
 
+func (s socket) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(s))
+}
+
 func (s socket) PlugWindow() gdk.Window {
 	var _arg0 *C.GtkSocket // out
 	var _cret *C.GdkWindow // in
@@ -127,8 +131,4 @@ func (s socket) PlugWindow() gdk.Window {
 	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gdk.Window)
 
 	return _window
-}
-
-func (s socket) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(s))
 }

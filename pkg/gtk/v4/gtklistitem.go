@@ -64,7 +64,7 @@ type ListItem interface {
 	// The selected state is maintained by the liste widget and its model and
 	// cannot be set otherwise.
 	Selected() bool
-	// SetActivatableListItem sets @self to be activatable.
+	// SetActivatable sets @self to be activatable.
 	//
 	// If an item is activatable, double-clicking on the item, using the Return
 	// key or calling gtk_widget_activate() will activate the item. Activating
@@ -72,13 +72,13 @@ type ListItem interface {
 	// example will be emitting the [signal@Gtk.ListView::activate] signal.
 	//
 	// By default, list items are activatable.
-	SetActivatableListItem(activatable bool)
-	// SetChildListItem sets the child to be used for this listitem.
+	SetActivatable(activatable bool)
+	// SetChild sets the child to be used for this listitem.
 	//
 	// This function is typically called by applications when setting up a
 	// listitem so that the widget can be reused when binding it multiple times.
-	SetChildListItem(child Widget)
-	// SetSelectableListItem sets @self to be selectable.
+	SetChild(child Widget)
+	// SetSelectable sets @self to be selectable.
 	//
 	// If an item is selectable, clicking on the item or using the keyboard will
 	// try to select or unselect the item. If this succeeds is up to the model
@@ -90,7 +90,7 @@ type ListItem interface {
 	//
 	// By default, list items are selectable. When rebinding them to a new item,
 	// they will also be reset to be selectable by GTK.
-	SetSelectableListItem(selectable bool)
+	SetSelectable(selectable bool)
 }
 
 // listItem implements the ListItem class.
@@ -208,7 +208,7 @@ func (s listItem) Selected() bool {
 	return _ok
 }
 
-func (s listItem) SetActivatableListItem(activatable bool) {
+func (s listItem) SetActivatable(activatable bool) {
 	var _arg0 *C.GtkListItem // out
 	var _arg1 C.gboolean     // out
 
@@ -220,7 +220,7 @@ func (s listItem) SetActivatableListItem(activatable bool) {
 	C.gtk_list_item_set_activatable(_arg0, _arg1)
 }
 
-func (s listItem) SetChildListItem(child Widget) {
+func (s listItem) SetChild(child Widget) {
 	var _arg0 *C.GtkListItem // out
 	var _arg1 *C.GtkWidget   // out
 
@@ -230,7 +230,7 @@ func (s listItem) SetChildListItem(child Widget) {
 	C.gtk_list_item_set_child(_arg0, _arg1)
 }
 
-func (s listItem) SetSelectableListItem(selectable bool) {
+func (s listItem) SetSelectable(selectable bool) {
 	var _arg0 *C.GtkListItem // out
 	var _arg1 C.gboolean     // out
 

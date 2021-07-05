@@ -89,8 +89,8 @@ func marshalSorterOrder(p uintptr) (interface{}, error) {
 type Sorter interface {
 	gextras.Objector
 
-	// ChangedSorter emits the [signal@Gtk.Sorter::changed] signal to notify all
-	// users of the sorter that it has changed.
+	// Changed emits the [signal@Gtk.Sorter::changed] signal to notify all users
+	// of the sorter that it has changed.
 	//
 	// Users of the sorter should then update the sort order via
 	// gtk_sorter_compare().
@@ -101,9 +101,9 @@ type Sorter interface {
 	//
 	// This function is intended for implementors of `GtkSorter` subclasses and
 	// should not be called from other functions.
-	ChangedSorter(change SorterChange)
-	// CompareSorter compares two given items according to the sort order
-	// implemented by the sorter.
+	Changed(change SorterChange)
+	// Compare compares two given items according to the sort order implemented
+	// by the sorter.
 	//
 	// Sorters implement a partial order:
 	//
@@ -113,7 +113,7 @@ type Sorter interface {
 	//
 	// The sorter may signal it conforms to additional constraints via the
 	// return value of [method@Gtk.Sorter.get_order].
-	CompareSorter(item1 gextras.Objector, item2 gextras.Objector) Ordering
+	Compare(item1 gextras.Objector, item2 gextras.Objector) Ordering
 	// Order gets the order that @self conforms to.
 	//
 	// See [enum@Gtk.SorterOrder] for details of the possible return values.
@@ -141,7 +141,7 @@ func marshalSorter(p uintptr) (interface{}, error) {
 	return WrapSorter(obj), nil
 }
 
-func (s sorter) ChangedSorter(change SorterChange) {
+func (s sorter) Changed(change SorterChange) {
 	var _arg0 *C.GtkSorter      // out
 	var _arg1 C.GtkSorterChange // out
 
@@ -151,7 +151,7 @@ func (s sorter) ChangedSorter(change SorterChange) {
 	C.gtk_sorter_changed(_arg0, _arg1)
 }
 
-func (s sorter) CompareSorter(item1 gextras.Objector, item2 gextras.Objector) Ordering {
+func (s sorter) Compare(item1 gextras.Objector, item2 gextras.Objector) Ordering {
 	var _arg0 *C.GtkSorter  // out
 	var _arg1 C.gpointer    // out
 	var _arg2 C.gpointer    // out

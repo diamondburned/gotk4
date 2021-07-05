@@ -105,14 +105,12 @@ func gotk4_PrinterFunc(arg0 *C.GtkPrinter, arg1 C.gpointer) (cret C.gboolean) {
 type Printer interface {
 	gextras.Objector
 
-	// AcceptsPDFPrinter returns whether the printer accepts input in PDF
-	// format.
-	AcceptsPDFPrinter() bool
-	// AcceptsPSPrinter returns whether the printer accepts input in PostScript
-	// format.
-	AcceptsPSPrinter() bool
-	// ComparePrinter compares two printers.
-	ComparePrinter(b Printer) int
+	// AcceptsPDF returns whether the printer accepts input in PDF format.
+	AcceptsPDF() bool
+	// AcceptsPS returns whether the printer accepts input in PostScript format.
+	AcceptsPS() bool
+	// Compare compares two printers.
+	Compare(b Printer) int
 	// Capabilities returns the printer’s capabilities.
 	//
 	// This is useful when you’re using `GtkPrintUnixDialog`’s
@@ -157,28 +155,28 @@ type Printer interface {
 	// StateMessage returns the state message describing the current state of
 	// the printer.
 	StateMessage() string
-	// HasDetailsPrinter returns whether the printer details are available.
-	HasDetailsPrinter() bool
-	// IsAcceptingJobsPrinter returns whether the printer is accepting jobs
-	IsAcceptingJobsPrinter() bool
-	// IsActivePrinter returns whether the printer is currently active (i.e.
-	// accepts new jobs).
-	IsActivePrinter() bool
-	// IsDefaultPrinter returns whether the printer is the default printer.
-	IsDefaultPrinter() bool
-	// IsPausedPrinter returns whether the printer is currently paused.
+	// HasDetails returns whether the printer details are available.
+	HasDetails() bool
+	// IsAcceptingJobs returns whether the printer is accepting jobs
+	IsAcceptingJobs() bool
+	// IsActive returns whether the printer is currently active (i.e. accepts
+	// new jobs).
+	IsActive() bool
+	// IsDefault returns whether the printer is the default printer.
+	IsDefault() bool
+	// IsPaused returns whether the printer is currently paused.
 	//
 	// A paused printer still accepts jobs, but it is not printing them.
-	IsPausedPrinter() bool
-	// IsVirtualPrinter returns whether the printer is virtual (i.e. does not
-	// represent actual printer hardware, but something like a CUPS class).
-	IsVirtualPrinter() bool
-	// RequestDetailsPrinter requests the printer details.
+	IsPaused() bool
+	// IsVirtual returns whether the printer is virtual (i.e. does not represent
+	// actual printer hardware, but something like a CUPS class).
+	IsVirtual() bool
+	// RequestDetails requests the printer details.
 	//
 	// When the details are available, the
 	// [signal@Gtk.Printer::details-acquired] signal will be emitted on
 	// @printer.
-	RequestDetailsPrinter()
+	RequestDetails()
 }
 
 // printer implements the Printer class.
@@ -200,7 +198,7 @@ func marshalPrinter(p uintptr) (interface{}, error) {
 	return WrapPrinter(obj), nil
 }
 
-func (p printer) AcceptsPDFPrinter() bool {
+func (p printer) AcceptsPDF() bool {
 	var _arg0 *C.GtkPrinter // out
 	var _cret C.gboolean    // in
 
@@ -217,7 +215,7 @@ func (p printer) AcceptsPDFPrinter() bool {
 	return _ok
 }
 
-func (p printer) AcceptsPSPrinter() bool {
+func (p printer) AcceptsPS() bool {
 	var _arg0 *C.GtkPrinter // out
 	var _cret C.gboolean    // in
 
@@ -234,7 +232,7 @@ func (p printer) AcceptsPSPrinter() bool {
 	return _ok
 }
 
-func (a printer) ComparePrinter(b Printer) int {
+func (a printer) Compare(b Printer) int {
 	var _arg0 *C.GtkPrinter // out
 	var _arg1 *C.GtkPrinter // out
 	var _cret C.int         // in
@@ -431,7 +429,7 @@ func (p printer) StateMessage() string {
 	return _utf8
 }
 
-func (p printer) HasDetailsPrinter() bool {
+func (p printer) HasDetails() bool {
 	var _arg0 *C.GtkPrinter // out
 	var _cret C.gboolean    // in
 
@@ -448,7 +446,7 @@ func (p printer) HasDetailsPrinter() bool {
 	return _ok
 }
 
-func (p printer) IsAcceptingJobsPrinter() bool {
+func (p printer) IsAcceptingJobs() bool {
 	var _arg0 *C.GtkPrinter // out
 	var _cret C.gboolean    // in
 
@@ -465,7 +463,7 @@ func (p printer) IsAcceptingJobsPrinter() bool {
 	return _ok
 }
 
-func (p printer) IsActivePrinter() bool {
+func (p printer) IsActive() bool {
 	var _arg0 *C.GtkPrinter // out
 	var _cret C.gboolean    // in
 
@@ -482,7 +480,7 @@ func (p printer) IsActivePrinter() bool {
 	return _ok
 }
 
-func (p printer) IsDefaultPrinter() bool {
+func (p printer) IsDefault() bool {
 	var _arg0 *C.GtkPrinter // out
 	var _cret C.gboolean    // in
 
@@ -499,7 +497,7 @@ func (p printer) IsDefaultPrinter() bool {
 	return _ok
 }
 
-func (p printer) IsPausedPrinter() bool {
+func (p printer) IsPaused() bool {
 	var _arg0 *C.GtkPrinter // out
 	var _cret C.gboolean    // in
 
@@ -516,7 +514,7 @@ func (p printer) IsPausedPrinter() bool {
 	return _ok
 }
 
-func (p printer) IsVirtualPrinter() bool {
+func (p printer) IsVirtual() bool {
 	var _arg0 *C.GtkPrinter // out
 	var _cret C.gboolean    // in
 
@@ -533,7 +531,7 @@ func (p printer) IsVirtualPrinter() bool {
 	return _ok
 }
 
-func (p printer) RequestDetailsPrinter() {
+func (p printer) RequestDetails() {
 	var _arg0 *C.GtkPrinter // out
 
 	_arg0 = (*C.GtkPrinter)(unsafe.Pointer(p.Native()))

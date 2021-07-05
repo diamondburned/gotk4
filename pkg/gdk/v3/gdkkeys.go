@@ -229,16 +229,16 @@ type Keymap interface {
 	NumLockState() bool
 	// ScrollLockState returns whether the Scroll Lock modifer is locked.
 	ScrollLockState() bool
-	// HaveBidiLayoutsKeymap determines if keyboard layouts for both
-	// right-to-left and left-to-right languages are in use.
-	HaveBidiLayoutsKeymap() bool
-	// LookupKeyKeymap looks up the keyval mapped to a keycode/group/level
-	// triplet. If no keyval is bound to @key, returns 0. For normal user input,
-	// you want to use gdk_keymap_translate_keyboard_state() instead of this
-	// function, since the effective group/level may not be the same as the
-	// current keyboard state.
-	LookupKeyKeymap(key *KeymapKey) uint
-	// TranslateKeyboardStateKeymap translates the contents of a EventKey into a
+	// HaveBidiLayouts determines if keyboard layouts for both right-to-left and
+	// left-to-right languages are in use.
+	HaveBidiLayouts() bool
+	// LookupKey looks up the keyval mapped to a keycode/group/level triplet. If
+	// no keyval is bound to @key, returns 0. For normal user input, you want to
+	// use gdk_keymap_translate_keyboard_state() instead of this function, since
+	// the effective group/level may not be the same as the current keyboard
+	// state.
+	LookupKey(key *KeymapKey) uint
+	// TranslateKeyboardState translates the contents of a EventKey into a
 	// keyval, effective group, and level. Modifiers that affected the
 	// translation and are thus unavailable for application use are returned in
 	// @consumed_modifiers. See [Groups][key-group-explanation] for an
@@ -267,7 +267,7 @@ type Keymap interface {
 	// actually found in @state. When you store accelerators, you should always
 	// store them with consumed modifiers removed. Store `<Control>plus`, not
 	// `<Control><Shift>plus`,
-	TranslateKeyboardStateKeymap(hardwareKeycode uint, state ModifierType, group int) (keyval uint, effectiveGroup int, level int, consumedModifiers ModifierType, ok bool)
+	TranslateKeyboardState(hardwareKeycode uint, state ModifierType, group int) (keyval uint, effectiveGroup int, level int, consumedModifiers ModifierType, ok bool)
 }
 
 // keymap implements the Keymap class.
@@ -446,7 +446,7 @@ func (k keymap) ScrollLockState() bool {
 	return _ok
 }
 
-func (k keymap) HaveBidiLayoutsKeymap() bool {
+func (k keymap) HaveBidiLayouts() bool {
 	var _arg0 *C.GdkKeymap // out
 	var _cret C.gboolean   // in
 
@@ -463,7 +463,7 @@ func (k keymap) HaveBidiLayoutsKeymap() bool {
 	return _ok
 }
 
-func (k keymap) LookupKeyKeymap(key *KeymapKey) uint {
+func (k keymap) LookupKey(key *KeymapKey) uint {
 	var _arg0 *C.GdkKeymap    // out
 	var _arg1 *C.GdkKeymapKey // out
 	var _cret C.guint         // in
@@ -480,7 +480,7 @@ func (k keymap) LookupKeyKeymap(key *KeymapKey) uint {
 	return _guint
 }
 
-func (k keymap) TranslateKeyboardStateKeymap(hardwareKeycode uint, state ModifierType, group int) (keyval uint, effectiveGroup int, level int, consumedModifiers ModifierType, ok bool) {
+func (k keymap) TranslateKeyboardState(hardwareKeycode uint, state ModifierType, group int) (keyval uint, effectiveGroup int, level int, consumedModifiers ModifierType, ok bool) {
 	var _arg0 *C.GdkKeymap      // out
 	var _arg1 C.guint           // out
 	var _arg2 C.GdkModifierType // out

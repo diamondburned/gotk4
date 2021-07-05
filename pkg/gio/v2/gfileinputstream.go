@@ -50,17 +50,17 @@ type FileInputStream interface {
 	// AsSeekable casts the class to the Seekable interface.
 	AsSeekable() Seekable
 
-	// QueryInfoFileInputStream queries a file input stream the given
-	// @attributes. This function blocks while querying the stream. For the
-	// asynchronous (non-blocking) version of this function, see
+	// QueryInfo queries a file input stream the given @attributes. This
+	// function blocks while querying the stream. For the asynchronous
+	// (non-blocking) version of this function, see
 	// g_file_input_stream_query_info_async(). While the stream is blocked, the
 	// stream will set the pending flag internally, and any other operations on
 	// the stream will fail with G_IO_ERROR_PENDING.
-	QueryInfoFileInputStream(attributes string, cancellable Cancellable) (FileInfo, error)
-	// QueryInfoAsyncFileInputStream queries the stream information
-	// asynchronously. When the operation is finished @callback will be called.
-	// You can then call g_file_input_stream_query_info_finish() to get the
-	// result of the operation.
+	QueryInfo(attributes string, cancellable Cancellable) (FileInfo, error)
+	// QueryInfoAsync queries the stream information asynchronously. When the
+	// operation is finished @callback will be called. You can then call
+	// g_file_input_stream_query_info_finish() to get the result of the
+	// operation.
 	//
 	// For the synchronous version of this function, see
 	// g_file_input_stream_query_info().
@@ -68,10 +68,9 @@ type FileInputStream interface {
 	// If @cancellable is not nil, then the operation can be cancelled by
 	// triggering the cancellable object from another thread. If the operation
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be set
-	QueryInfoAsyncFileInputStream(attributes string, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
-	// QueryInfoFinishFileInputStream finishes an asynchronous info query
-	// operation.
-	QueryInfoFinishFileInputStream(result AsyncResult) (FileInfo, error)
+	QueryInfoAsync(attributes string, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
+	// QueryInfoFinish finishes an asynchronous info query operation.
+	QueryInfoFinish(result AsyncResult) (FileInfo, error)
 }
 
 // fileInputStream implements the FileInputStream class.
@@ -93,7 +92,11 @@ func marshalFileInputStream(p uintptr) (interface{}, error) {
 	return WrapFileInputStream(obj), nil
 }
 
-func (s fileInputStream) QueryInfoFileInputStream(attributes string, cancellable Cancellable) (FileInfo, error) {
+func (f fileInputStream) AsSeekable() Seekable {
+	return WrapSeekable(gextras.InternObject(f))
+}
+
+func (s fileInputStream) QueryInfo(attributes string, cancellable Cancellable) (FileInfo, error) {
 	var _arg0 *C.GFileInputStream // out
 	var _arg1 *C.char             // out
 	var _arg2 *C.GCancellable     // out
@@ -116,7 +119,7 @@ func (s fileInputStream) QueryInfoFileInputStream(attributes string, cancellable
 	return _fileInfo, _goerr
 }
 
-func (s fileInputStream) QueryInfoAsyncFileInputStream(attributes string, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+func (s fileInputStream) QueryInfoAsync(attributes string, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GFileInputStream   // out
 	var _arg1 *C.char               // out
 	var _arg2 C.int                 // out
@@ -135,7 +138,7 @@ func (s fileInputStream) QueryInfoAsyncFileInputStream(attributes string, ioPrio
 	C.g_file_input_stream_query_info_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
 
-func (s fileInputStream) QueryInfoFinishFileInputStream(result AsyncResult) (FileInfo, error) {
+func (s fileInputStream) QueryInfoFinish(result AsyncResult) (FileInfo, error) {
 	var _arg0 *C.GFileInputStream // out
 	var _arg1 *C.GAsyncResult     // out
 	var _cret *C.GFileInfo        // in
@@ -153,8 +156,4 @@ func (s fileInputStream) QueryInfoFinishFileInputStream(result AsyncResult) (Fil
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _fileInfo, _goerr
-}
-
-func (f fileInputStream) AsSeekable() Seekable {
-	return WrapSeekable(gextras.InternObject(f))
 }

@@ -94,25 +94,24 @@ type ThemingEngine interface {
 	//
 	// Deprecated: since version 3.14.
 	StyleProperty(propertyName string) externglib.Value
-	// HasClassThemingEngine returns true if the currently rendered contents
-	// have defined the given class name.
+	// HasClass returns true if the currently rendered contents have defined the
+	// given class name.
 	//
 	// Deprecated: since version 3.14.
-	HasClassThemingEngine(styleClass string) bool
-	// HasRegionThemingEngine returns true if the currently rendered contents
-	// have the region defined. If @flags_return is not nil, it is set to the
-	// flags affecting the region.
+	HasClass(styleClass string) bool
+	// HasRegion returns true if the currently rendered contents have the region
+	// defined. If @flags_return is not nil, it is set to the flags affecting
+	// the region.
 	//
 	// Deprecated: since version 3.14.
-	HasRegionThemingEngine(styleRegion string) (RegionFlags, bool)
-	// LookupColorThemingEngine looks up and resolves a color name in the
-	// current style’s color map.
+	HasRegion(styleRegion string) (RegionFlags, bool)
+	// LookupColor looks up and resolves a color name in the current style’s
+	// color map.
 	//
 	// Deprecated: since version 3.14.
-	LookupColorThemingEngine(colorName string) (gdk.RGBA, bool)
-	// StateIsRunningThemingEngine returns true if there is a transition
-	// animation running for the current region (see
-	// gtk_style_context_push_animatable_region()).
+	LookupColor(colorName string) (gdk.RGBA, bool)
+	// StateIsRunning returns true if there is a transition animation running
+	// for the current region (see gtk_style_context_push_animatable_region()).
 	//
 	// If @progress is not nil, the animation progress will be returned there,
 	// 0.0 means the state is closest to being false, while 1.0 means it’s
@@ -121,7 +120,7 @@ type ThemingEngine interface {
 	// to false.
 	//
 	// Deprecated: since version 3.6.
-	StateIsRunningThemingEngine(state StateType) (float64, bool)
+	StateIsRunning(state StateType) (float64, bool)
 }
 
 // themingEngine implements the ThemingEngine class.
@@ -462,7 +461,7 @@ func (e themingEngine) StyleProperty(propertyName string) externglib.Value {
 	return _value
 }
 
-func (e themingEngine) HasClassThemingEngine(styleClass string) bool {
+func (e themingEngine) HasClass(styleClass string) bool {
 	var _arg0 *C.GtkThemingEngine // out
 	var _arg1 *C.gchar            // out
 	var _cret C.gboolean          // in
@@ -482,7 +481,7 @@ func (e themingEngine) HasClassThemingEngine(styleClass string) bool {
 	return _ok
 }
 
-func (e themingEngine) HasRegionThemingEngine(styleRegion string) (RegionFlags, bool) {
+func (e themingEngine) HasRegion(styleRegion string) (RegionFlags, bool) {
 	var _arg0 *C.GtkThemingEngine // out
 	var _arg1 *C.gchar            // out
 	var _arg2 C.GtkRegionFlags    // in
@@ -505,7 +504,7 @@ func (e themingEngine) HasRegionThemingEngine(styleRegion string) (RegionFlags, 
 	return _flags, _ok
 }
 
-func (e themingEngine) LookupColorThemingEngine(colorName string) (gdk.RGBA, bool) {
+func (e themingEngine) LookupColor(colorName string) (gdk.RGBA, bool) {
 	var _arg0 *C.GtkThemingEngine // out
 	var _arg1 *C.gchar            // out
 	var _arg2 C.GdkRGBA           // in
@@ -538,7 +537,7 @@ func (e themingEngine) LookupColorThemingEngine(colorName string) (gdk.RGBA, boo
 	return _color, _ok
 }
 
-func (e themingEngine) StateIsRunningThemingEngine(state StateType) (float64, bool) {
+func (e themingEngine) StateIsRunning(state StateType) (float64, bool) {
 	var _arg0 *C.GtkThemingEngine // out
 	var _arg1 C.GtkStateType      // out
 	var _arg2 C.gdouble           // in

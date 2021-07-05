@@ -32,15 +32,15 @@ func init() {
 type CellRendererText interface {
 	CellRenderer
 
-	// SetFixedHeightFromFontCellRendererText sets the height of a renderer to
-	// explicitly be determined by the “font” and “y_pad” property set on it.
-	// Further changes in these properties do not affect the height, so they
-	// must be accompanied by a subsequent call to this function. Using this
-	// function is unflexible, and should really only be used if calculating the
-	// size of a cell is too slow (ie, a massive number of cells displayed). If
-	// @number_of_rows is -1, then the fixed height is unset, and the height is
-	// determined by the properties again.
-	SetFixedHeightFromFontCellRendererText(numberOfRows int)
+	// SetFixedHeightFromFont sets the height of a renderer to explicitly be
+	// determined by the “font” and “y_pad” property set on it. Further changes
+	// in these properties do not affect the height, so they must be accompanied
+	// by a subsequent call to this function. Using this function is unflexible,
+	// and should really only be used if calculating the size of a cell is too
+	// slow (ie, a massive number of cells displayed). If @number_of_rows is -1,
+	// then the fixed height is unset, and the height is determined by the
+	// properties again.
+	SetFixedHeightFromFont(numberOfRows int)
 }
 
 // cellRendererText implements the CellRendererText class.
@@ -80,7 +80,7 @@ func NewCellRendererText() CellRendererText {
 	return _cellRendererText
 }
 
-func (r cellRendererText) SetFixedHeightFromFontCellRendererText(numberOfRows int) {
+func (r cellRendererText) SetFixedHeightFromFont(numberOfRows int) {
 	var _arg0 *C.GtkCellRendererText // out
 	var _arg1 C.gint                 // out
 

@@ -46,14 +46,13 @@ type Texture interface {
 	Height() int
 	// Width returns the width of @texture, in pixels.
 	Width() int
-	// SaveToPngTexture: store the given @texture to the @filename as a PNG
-	// file.
+	// SaveToPng: store the given @texture to the @filename as a PNG file.
 	//
 	// This is a utility function intended for debugging and testing. If you
 	// want more control over formats, proper error handling or want to store to
 	// a `GFile` or other location, you might want to look into using the
 	// gdk-pixbuf library.
-	SaveToPngTexture(filename string) bool
+	SaveToPng(filename string) bool
 }
 
 // texture implements the Texture class.
@@ -117,6 +116,10 @@ func NewTextureFromResource(resourcePath string) Texture {
 	return _texture
 }
 
+func (t texture) AsPaintable() Paintable {
+	return WrapPaintable(gextras.InternObject(t))
+}
+
 func (t texture) Height() int {
 	var _arg0 *C.GdkTexture // out
 	var _cret C.int         // in
@@ -147,7 +150,7 @@ func (t texture) Width() int {
 	return _gint
 }
 
-func (t texture) SaveToPngTexture(filename string) bool {
+func (t texture) SaveToPng(filename string) bool {
 	var _arg0 *C.GdkTexture // out
 	var _arg1 *C.char       // out
 	var _cret C.gboolean    // in
@@ -165,8 +168,4 @@ func (t texture) SaveToPngTexture(filename string) bool {
 	}
 
 	return _ok
-}
-
-func (t texture) AsPaintable() Paintable {
-	return WrapPaintable(gextras.InternObject(t))
 }

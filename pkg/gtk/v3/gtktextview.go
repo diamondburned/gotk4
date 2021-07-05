@@ -123,11 +123,11 @@ type TextView interface {
 	// AsScrollable casts the class to the Scrollable interface.
 	AsScrollable() Scrollable
 
-	// AddChildAtAnchorTextView adds a child widget in the text buffer, at the
-	// given @anchor.
-	AddChildAtAnchorTextView(child Widget, anchor TextChildAnchor)
-	// AddChildInWindowTextView adds a child at fixed coordinates in one of the
-	// text widget's windows.
+	// AddChildAtAnchor adds a child widget in the text buffer, at the given
+	// @anchor.
+	AddChildAtAnchor(child Widget, anchor TextChildAnchor)
+	// AddChildInWindow adds a child at fixed coordinates in one of the text
+	// widget's windows.
 	//
 	// The window must have nonzero size (see
 	// gtk_text_view_set_border_window_size()). Note that the child coordinates
@@ -136,8 +136,8 @@ type TextView interface {
 	// scrollable areas. But when placing a child in one of the scrollable
 	// windows (border windows or text window) it will move with the scrolling
 	// as needed.
-	AddChildInWindowTextView(child Widget, whichWindow TextWindowType, xpos int, ypos int)
-	// BackwardDisplayLineTextView moves the given @iter backward by one display
+	AddChildInWindow(child Widget, whichWindow TextWindowType, xpos int, ypos int)
+	// BackwardDisplayLine moves the given @iter backward by one display
 	// (wrapped) line. A display line is different from a paragraph. Paragraphs
 	// are separated by newlines or other paragraph separator characters.
 	// Display lines are created by line-wrapping a paragraph. If wrapping is
@@ -145,41 +145,41 @@ type TextView interface {
 	// are divided differently for each view, since they depend on the view’s
 	// width; paragraphs are the same in all views, since they depend on the
 	// contents of the TextBuffer.
-	BackwardDisplayLineTextView(iter *TextIter) bool
-	// BackwardDisplayLineStartTextView moves the given @iter backward to the
-	// next display line start. A display line is different from a paragraph.
+	BackwardDisplayLine(iter *TextIter) bool
+	// BackwardDisplayLineStart moves the given @iter backward to the next
+	// display line start. A display line is different from a paragraph.
 	// Paragraphs are separated by newlines or other paragraph separator
 	// characters. Display lines are created by line-wrapping a paragraph. If
 	// wrapping is turned off, display lines and paragraphs will be the same.
 	// Display lines are divided differently for each view, since they depend on
 	// the view’s width; paragraphs are the same in all views, since they depend
 	// on the contents of the TextBuffer.
-	BackwardDisplayLineStartTextView(iter *TextIter) bool
-	// BufferToWindowCoordsTextView converts coordinate (@buffer_x, @buffer_y)
-	// to coordinates for the window @win, and stores the result in (@window_x,
+	BackwardDisplayLineStart(iter *TextIter) bool
+	// BufferToWindowCoords converts coordinate (@buffer_x, @buffer_y) to
+	// coordinates for the window @win, and stores the result in (@window_x,
 	// @window_y).
 	//
 	// Note that you can’t convert coordinates for a nonexisting window (see
 	// gtk_text_view_set_border_window_size()).
-	BufferToWindowCoordsTextView(win TextWindowType, bufferX int, bufferY int) (windowX int, windowY int)
-	// ForwardDisplayLineTextView moves the given @iter forward by one display
-	// (wrapped) line. A display line is different from a paragraph. Paragraphs
-	// are separated by newlines or other paragraph separator characters.
-	// Display lines are created by line-wrapping a paragraph. If wrapping is
-	// turned off, display lines and paragraphs will be the same. Display lines
-	// are divided differently for each view, since they depend on the view’s
-	// width; paragraphs are the same in all views, since they depend on the
-	// contents of the TextBuffer.
-	ForwardDisplayLineTextView(iter *TextIter) bool
-	// ForwardDisplayLineEndTextView moves the given @iter forward to the next
-	// display line end. A display line is different from a paragraph.
-	// Paragraphs are separated by newlines or other paragraph separator
-	// characters. Display lines are created by line-wrapping a paragraph. If
-	// wrapping is turned off, display lines and paragraphs will be the same.
-	// Display lines are divided differently for each view, since they depend on
-	// the view’s width; paragraphs are the same in all views, since they depend
-	// on the contents of the TextBuffer.
-	ForwardDisplayLineEndTextView(iter *TextIter) bool
+	BufferToWindowCoords(win TextWindowType, bufferX int, bufferY int) (windowX int, windowY int)
+	// ForwardDisplayLine moves the given @iter forward by one display (wrapped)
+	// line. A display line is different from a paragraph. Paragraphs are
+	// separated by newlines or other paragraph separator characters. Display
+	// lines are created by line-wrapping a paragraph. If wrapping is turned
+	// off, display lines and paragraphs will be the same. Display lines are
+	// divided differently for each view, since they depend on the view’s width;
+	// paragraphs are the same in all views, since they depend on the contents
+	// of the TextBuffer.
+	ForwardDisplayLine(iter *TextIter) bool
+	// ForwardDisplayLineEnd moves the given @iter forward to the next display
+	// line end. A display line is different from a paragraph. Paragraphs are
+	// separated by newlines or other paragraph separator characters. Display
+	// lines are created by line-wrapping a paragraph. If wrapping is turned
+	// off, display lines and paragraphs will be the same. Display lines are
+	// divided differently for each view, since they depend on the view’s width;
+	// paragraphs are the same in all views, since they depend on the contents
+	// of the TextBuffer.
+	ForwardDisplayLineEnd(iter *TextIter) bool
 	// AcceptsTab returns whether pressing the Tab key inserts a tab characters.
 	// gtk_text_view_set_accepts_tab().
 	AcceptsTab() bool
@@ -324,9 +324,9 @@ type TextView interface {
 	WindowType(window gdk.Window) TextWindowType
 	// WrapMode gets the line wrapping for the view.
 	WrapMode() WrapMode
-	// ImContextFilterKeypressTextView: allow the TextView input method to
-	// internally handle key press and release events. If this function returns
-	// true, then no further processing should be done for this key event. See
+	// ImContextFilterKeypress: allow the TextView input method to internally
+	// handle key press and release events. If this function returns true, then
+	// no further processing should be done for this key event. See
 	// gtk_im_context_filter_keypress().
 	//
 	// Note that you are expected to call this function from your handler when
@@ -352,48 +352,47 @@ type TextView interface {
 	//
 	//      return GTK_WIDGET_CLASS (gtk_foo_bar_parent_class)->key_press_event (widget, event);
 	//    }
-	ImContextFilterKeypressTextView(event *gdk.EventKey) bool
-	// MoveChildTextView updates the position of a child, as for
+	ImContextFilterKeypress(event *gdk.EventKey) bool
+	// MoveChild updates the position of a child, as for
 	// gtk_text_view_add_child_in_window().
-	MoveChildTextView(child Widget, xpos int, ypos int)
-	// MoveMarkOnscreenTextView moves a mark within the buffer so that it's
-	// located within the currently-visible text area.
-	MoveMarkOnscreenTextView(mark TextMark) bool
-	// MoveVisuallyTextView: move the iterator a given number of characters
-	// visually, treating it as the strong cursor position. If @count is
-	// positive, then the new strong cursor position will be @count positions to
-	// the right of the old cursor position. If @count is negative then the new
-	// strong cursor position will be @count positions to the left of the old
-	// cursor position.
+	MoveChild(child Widget, xpos int, ypos int)
+	// MoveMarkOnscreen moves a mark within the buffer so that it's located
+	// within the currently-visible text area.
+	MoveMarkOnscreen(mark TextMark) bool
+	// MoveVisually: move the iterator a given number of characters visually,
+	// treating it as the strong cursor position. If @count is positive, then
+	// the new strong cursor position will be @count positions to the right of
+	// the old cursor position. If @count is negative then the new strong cursor
+	// position will be @count positions to the left of the old cursor position.
 	//
 	// In the presence of bi-directional text, the correspondence between
 	// logical and visual order will depend on the direction of the current run,
 	// and there may be jumps when the cursor is moved off of the end of a run.
-	MoveVisuallyTextView(iter *TextIter, count int) bool
-	// PlaceCursorOnscreenTextView moves the cursor to the currently visible
-	// region of the buffer, it it isn’t there already.
-	PlaceCursorOnscreenTextView() bool
-	// ResetCursorBlinkTextView ensures that the cursor is shown (i.e. not in an
-	// 'off' blink interval) and resets the time that it will stay blinking (or
+	MoveVisually(iter *TextIter, count int) bool
+	// PlaceCursorOnscreen moves the cursor to the currently visible region of
+	// the buffer, it it isn’t there already.
+	PlaceCursorOnscreen() bool
+	// ResetCursorBlink ensures that the cursor is shown (i.e. not in an 'off'
+	// blink interval) and resets the time that it will stay blinking (or
 	// visible, in case blinking is disabled).
 	//
 	// This function should be called in response to user input (e.g. from
 	// derived classes that override the textview's Widget::key-press-event
 	// handler).
-	ResetCursorBlinkTextView()
-	// ResetImContextTextView: reset the input method context of the text view
-	// if needed.
+	ResetCursorBlink()
+	// ResetImContext: reset the input method context of the text view if
+	// needed.
 	//
 	// This can be necessary in the case where modifying the buffer would
 	// confuse on-going input method behavior.
-	ResetImContextTextView()
-	// ScrollMarkOnscreenTextView scrolls @text_view the minimum distance such
-	// that @mark is contained within the visible area of the widget.
-	ScrollMarkOnscreenTextView(mark TextMark)
-	// ScrollToIterTextView scrolls @text_view so that @iter is on the screen in
-	// the position indicated by @xalign and @yalign. An alignment of 0.0
-	// indicates left or top, 1.0 indicates right or bottom, 0.5 means center.
-	// If @use_align is false, the text scrolls the minimal distance to get the
+	ResetImContext()
+	// ScrollMarkOnscreen scrolls @text_view the minimum distance such that
+	// @mark is contained within the visible area of the widget.
+	ScrollMarkOnscreen(mark TextMark)
+	// ScrollToIter scrolls @text_view so that @iter is on the screen in the
+	// position indicated by @xalign and @yalign. An alignment of 0.0 indicates
+	// left or top, 1.0 indicates right or bottom, 0.5 means center. If
+	// @use_align is false, the text scrolls the minimal distance to get the
 	// mark onscreen, possibly not scrolling at all. The effective screen for
 	// purposes of this function is reduced by a margin of size @within_margin.
 	//
@@ -403,112 +402,111 @@ type TextView interface {
 	// computations. To avoid oddness, consider using
 	// gtk_text_view_scroll_to_mark() which saves a point to be scrolled to
 	// after line validation.
-	ScrollToIterTextView(iter *TextIter, withinMargin float64, useAlign bool, xalign float64, yalign float64) bool
-	// ScrollToMarkTextView scrolls @text_view so that @mark is on the screen in
-	// the position indicated by @xalign and @yalign. An alignment of 0.0
-	// indicates left or top, 1.0 indicates right or bottom, 0.5 means center.
-	// If @use_align is false, the text scrolls the minimal distance to get the
+	ScrollToIter(iter *TextIter, withinMargin float64, useAlign bool, xalign float64, yalign float64) bool
+	// ScrollToMark scrolls @text_view so that @mark is on the screen in the
+	// position indicated by @xalign and @yalign. An alignment of 0.0 indicates
+	// left or top, 1.0 indicates right or bottom, 0.5 means center. If
+	// @use_align is false, the text scrolls the minimal distance to get the
 	// mark onscreen, possibly not scrolling at all. The effective screen for
 	// purposes of this function is reduced by a margin of size @within_margin.
-	ScrollToMarkTextView(mark TextMark, withinMargin float64, useAlign bool, xalign float64, yalign float64)
-	// SetAcceptsTabTextView sets the behavior of the text widget when the Tab
-	// key is pressed. If @accepts_tab is true, a tab character is inserted. If
+	ScrollToMark(mark TextMark, withinMargin float64, useAlign bool, xalign float64, yalign float64)
+	// SetAcceptsTab sets the behavior of the text widget when the Tab key is
+	// pressed. If @accepts_tab is true, a tab character is inserted. If
 	// @accepts_tab is false the keyboard focus is moved to the next widget in
 	// the focus chain.
-	SetAcceptsTabTextView(acceptsTab bool)
-	// SetBorderWindowSizeTextView sets the width of GTK_TEXT_WINDOW_LEFT or
+	SetAcceptsTab(acceptsTab bool)
+	// SetBorderWindowSize sets the width of GTK_TEXT_WINDOW_LEFT or
 	// GTK_TEXT_WINDOW_RIGHT, or the height of GTK_TEXT_WINDOW_TOP or
 	// GTK_TEXT_WINDOW_BOTTOM. Automatically destroys the corresponding window
 	// if the size is set to 0, and creates the window if the size is set to
 	// non-zero. This function can only be used for the “border windows”, and it
 	// won’t work with GTK_TEXT_WINDOW_WIDGET, GTK_TEXT_WINDOW_TEXT, or
 	// GTK_TEXT_WINDOW_PRIVATE.
-	SetBorderWindowSizeTextView(typ TextWindowType, size int)
-	// SetBottomMarginTextView sets the bottom margin for text in @text_view.
+	SetBorderWindowSize(typ TextWindowType, size int)
+	// SetBottomMargin sets the bottom margin for text in @text_view.
 	//
 	// Note that this function is confusingly named. In CSS terms, the value set
 	// here is padding.
-	SetBottomMarginTextView(bottomMargin int)
-	// SetBufferTextView sets @buffer as the buffer being displayed by
-	// @text_view. The previous buffer displayed by the text view is
-	// unreferenced, and a reference is added to @buffer. If you owned a
-	// reference to @buffer before passing it to this function, you must remove
-	// that reference yourself; TextView will not “adopt” it.
-	SetBufferTextView(buffer TextBuffer)
-	// SetCursorVisibleTextView toggles whether the insertion point should be
-	// displayed. A buffer with no editable text probably shouldn’t have a
-	// visible cursor, so you may want to turn the cursor off.
+	SetBottomMargin(bottomMargin int)
+	// SetBuffer sets @buffer as the buffer being displayed by @text_view. The
+	// previous buffer displayed by the text view is unreferenced, and a
+	// reference is added to @buffer. If you owned a reference to @buffer before
+	// passing it to this function, you must remove that reference yourself;
+	// TextView will not “adopt” it.
+	SetBuffer(buffer TextBuffer)
+	// SetCursorVisible toggles whether the insertion point should be displayed.
+	// A buffer with no editable text probably shouldn’t have a visible cursor,
+	// so you may want to turn the cursor off.
 	//
 	// Note that this property may be overridden by the
 	// Settings:gtk-keynave-use-caret settings.
-	SetCursorVisibleTextView(setting bool)
-	// SetEditableTextView sets the default editability of the TextView. You can
+	SetCursorVisible(setting bool)
+	// SetEditable sets the default editability of the TextView. You can
 	// override this default setting with tags in the buffer, using the
 	// “editable” attribute of tags.
-	SetEditableTextView(setting bool)
-	// SetIndentTextView sets the default indentation for paragraphs in
-	// @text_view. Tags in the buffer may override the default.
-	SetIndentTextView(indent int)
-	// SetInputHintsTextView sets the TextView:input-hints property, which
-	// allows input methods to fine-tune their behaviour.
-	SetInputHintsTextView(hints InputHints)
-	// SetInputPurposeTextView sets the TextView:input-purpose property which
-	// can be used by on-screen keyboards and other input methods to adjust
-	// their behaviour.
-	SetInputPurposeTextView(purpose InputPurpose)
-	// SetJustificationTextView sets the default justification of text in
-	// @text_view. Tags in the view’s buffer may override the default.
-	SetJustificationTextView(justification Justification)
-	// SetLeftMarginTextView sets the default left margin for text in
-	// @text_view. Tags in the buffer may override the default.
+	SetEditable(setting bool)
+	// SetIndent sets the default indentation for paragraphs in @text_view. Tags
+	// in the buffer may override the default.
+	SetIndent(indent int)
+	// SetInputHints sets the TextView:input-hints property, which allows input
+	// methods to fine-tune their behaviour.
+	SetInputHints(hints InputHints)
+	// SetInputPurpose sets the TextView:input-purpose property which can be
+	// used by on-screen keyboards and other input methods to adjust their
+	// behaviour.
+	SetInputPurpose(purpose InputPurpose)
+	// SetJustification sets the default justification of text in @text_view.
+	// Tags in the view’s buffer may override the default.
+	SetJustification(justification Justification)
+	// SetLeftMargin sets the default left margin for text in @text_view. Tags
+	// in the buffer may override the default.
 	//
 	// Note that this function is confusingly named. In CSS terms, the value set
 	// here is padding.
-	SetLeftMarginTextView(leftMargin int)
-	// SetMonospaceTextView sets the TextView:monospace property, which
-	// indicates that the text view should use monospace fonts.
-	SetMonospaceTextView(monospace bool)
-	// SetOverwriteTextView changes the TextView overwrite mode.
-	SetOverwriteTextView(overwrite bool)
-	// SetPixelsAboveLinesTextView sets the default number of blank pixels above
+	SetLeftMargin(leftMargin int)
+	// SetMonospace sets the TextView:monospace property, which indicates that
+	// the text view should use monospace fonts.
+	SetMonospace(monospace bool)
+	// SetOverwrite changes the TextView overwrite mode.
+	SetOverwrite(overwrite bool)
+	// SetPixelsAboveLines sets the default number of blank pixels above
 	// paragraphs in @text_view. Tags in the buffer for @text_view may override
 	// the defaults.
-	SetPixelsAboveLinesTextView(pixelsAboveLines int)
-	// SetPixelsBelowLinesTextView sets the default number of pixels of blank
-	// space to put below paragraphs in @text_view. May be overridden by tags
-	// applied to @text_view’s buffer.
-	SetPixelsBelowLinesTextView(pixelsBelowLines int)
-	// SetPixelsInsideWrapTextView sets the default number of pixels of blank
-	// space to leave between display/wrapped lines within a paragraph. May be
-	// overridden by tags in @text_view’s buffer.
-	SetPixelsInsideWrapTextView(pixelsInsideWrap int)
-	// SetRightMarginTextView sets the default right margin for text in the text
-	// view. Tags in the buffer may override the default.
-	//
-	// Note that this function is confusingly named. In CSS terms, the value set
-	// here is padding.
-	SetRightMarginTextView(rightMargin int)
-	// SetTabsTextView sets the default tab stops for paragraphs in @text_view.
+	SetPixelsAboveLines(pixelsAboveLines int)
+	// SetPixelsBelowLines sets the default number of pixels of blank space to
+	// put below paragraphs in @text_view. May be overridden by tags applied to
+	// @text_view’s buffer.
+	SetPixelsBelowLines(pixelsBelowLines int)
+	// SetPixelsInsideWrap sets the default number of pixels of blank space to
+	// leave between display/wrapped lines within a paragraph. May be overridden
+	// by tags in @text_view’s buffer.
+	SetPixelsInsideWrap(pixelsInsideWrap int)
+	// SetRightMargin sets the default right margin for text in the text view.
 	// Tags in the buffer may override the default.
-	SetTabsTextView(tabs *pango.TabArray)
-	// SetTopMarginTextView sets the top margin for text in @text_view.
 	//
 	// Note that this function is confusingly named. In CSS terms, the value set
 	// here is padding.
-	SetTopMarginTextView(topMargin int)
-	// SetWrapModeTextView sets the line wrapping for the view.
-	SetWrapModeTextView(wrapMode WrapMode)
-	// StartsDisplayLineTextView determines whether @iter is at the start of a
-	// display line. See gtk_text_view_forward_display_line() for an explanation
-	// of display lines vs. paragraphs.
-	StartsDisplayLineTextView(iter *TextIter) bool
-	// WindowToBufferCoordsTextView converts coordinates on the window
-	// identified by @win to buffer coordinates, storing the result in
-	// (@buffer_x,@buffer_y).
+	SetRightMargin(rightMargin int)
+	// SetTabs sets the default tab stops for paragraphs in @text_view. Tags in
+	// the buffer may override the default.
+	SetTabs(tabs *pango.TabArray)
+	// SetTopMargin sets the top margin for text in @text_view.
+	//
+	// Note that this function is confusingly named. In CSS terms, the value set
+	// here is padding.
+	SetTopMargin(topMargin int)
+	// SetWrapMode sets the line wrapping for the view.
+	SetWrapMode(wrapMode WrapMode)
+	// StartsDisplayLine determines whether @iter is at the start of a display
+	// line. See gtk_text_view_forward_display_line() for an explanation of
+	// display lines vs. paragraphs.
+	StartsDisplayLine(iter *TextIter) bool
+	// WindowToBufferCoords converts coordinates on the window identified by
+	// @win to buffer coordinates, storing the result in (@buffer_x,@buffer_y).
 	//
 	// Note that you can’t convert coordinates for a nonexisting window (see
 	// gtk_text_view_set_border_window_size()).
-	WindowToBufferCoordsTextView(win TextWindowType, windowX int, windowY int) (bufferX int, bufferY int)
+	WindowToBufferCoords(win TextWindowType, windowX int, windowY int) (bufferX int, bufferY int)
 }
 
 // textView implements the TextView class.
@@ -567,7 +565,15 @@ func NewTextViewWithBuffer(buffer TextBuffer) TextView {
 	return _textView
 }
 
-func (t textView) AddChildAtAnchorTextView(child Widget, anchor TextChildAnchor) {
+func (t textView) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(t))
+}
+
+func (t textView) AsScrollable() Scrollable {
+	return WrapScrollable(gextras.InternObject(t))
+}
+
+func (t textView) AddChildAtAnchor(child Widget, anchor TextChildAnchor) {
 	var _arg0 *C.GtkTextView        // out
 	var _arg1 *C.GtkWidget          // out
 	var _arg2 *C.GtkTextChildAnchor // out
@@ -579,7 +585,7 @@ func (t textView) AddChildAtAnchorTextView(child Widget, anchor TextChildAnchor)
 	C.gtk_text_view_add_child_at_anchor(_arg0, _arg1, _arg2)
 }
 
-func (t textView) AddChildInWindowTextView(child Widget, whichWindow TextWindowType, xpos int, ypos int) {
+func (t textView) AddChildInWindow(child Widget, whichWindow TextWindowType, xpos int, ypos int) {
 	var _arg0 *C.GtkTextView      // out
 	var _arg1 *C.GtkWidget        // out
 	var _arg2 C.GtkTextWindowType // out
@@ -595,7 +601,7 @@ func (t textView) AddChildInWindowTextView(child Widget, whichWindow TextWindowT
 	C.gtk_text_view_add_child_in_window(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
-func (t textView) BackwardDisplayLineTextView(iter *TextIter) bool {
+func (t textView) BackwardDisplayLine(iter *TextIter) bool {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 *C.GtkTextIter // out
 	var _cret C.gboolean     // in
@@ -614,7 +620,7 @@ func (t textView) BackwardDisplayLineTextView(iter *TextIter) bool {
 	return _ok
 }
 
-func (t textView) BackwardDisplayLineStartTextView(iter *TextIter) bool {
+func (t textView) BackwardDisplayLineStart(iter *TextIter) bool {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 *C.GtkTextIter // out
 	var _cret C.gboolean     // in
@@ -633,7 +639,7 @@ func (t textView) BackwardDisplayLineStartTextView(iter *TextIter) bool {
 	return _ok
 }
 
-func (t textView) BufferToWindowCoordsTextView(win TextWindowType, bufferX int, bufferY int) (windowX int, windowY int) {
+func (t textView) BufferToWindowCoords(win TextWindowType, bufferX int, bufferY int) (windowX int, windowY int) {
 	var _arg0 *C.GtkTextView      // out
 	var _arg1 C.GtkTextWindowType // out
 	var _arg2 C.gint              // out
@@ -657,7 +663,7 @@ func (t textView) BufferToWindowCoordsTextView(win TextWindowType, bufferX int, 
 	return _windowX, _windowY
 }
 
-func (t textView) ForwardDisplayLineTextView(iter *TextIter) bool {
+func (t textView) ForwardDisplayLine(iter *TextIter) bool {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 *C.GtkTextIter // out
 	var _cret C.gboolean     // in
@@ -676,7 +682,7 @@ func (t textView) ForwardDisplayLineTextView(iter *TextIter) bool {
 	return _ok
 }
 
-func (t textView) ForwardDisplayLineEndTextView(iter *TextIter) bool {
+func (t textView) ForwardDisplayLineEnd(iter *TextIter) bool {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 *C.GtkTextIter // out
 	var _cret C.gboolean     // in
@@ -1306,7 +1312,7 @@ func (t textView) WrapMode() WrapMode {
 	return _wrapMode
 }
 
-func (t textView) ImContextFilterKeypressTextView(event *gdk.EventKey) bool {
+func (t textView) ImContextFilterKeypress(event *gdk.EventKey) bool {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 *C.GdkEventKey // out
 	var _cret C.gboolean     // in
@@ -1325,7 +1331,7 @@ func (t textView) ImContextFilterKeypressTextView(event *gdk.EventKey) bool {
 	return _ok
 }
 
-func (t textView) MoveChildTextView(child Widget, xpos int, ypos int) {
+func (t textView) MoveChild(child Widget, xpos int, ypos int) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 *C.GtkWidget   // out
 	var _arg2 C.gint         // out
@@ -1339,7 +1345,7 @@ func (t textView) MoveChildTextView(child Widget, xpos int, ypos int) {
 	C.gtk_text_view_move_child(_arg0, _arg1, _arg2, _arg3)
 }
 
-func (t textView) MoveMarkOnscreenTextView(mark TextMark) bool {
+func (t textView) MoveMarkOnscreen(mark TextMark) bool {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 *C.GtkTextMark // out
 	var _cret C.gboolean     // in
@@ -1358,7 +1364,7 @@ func (t textView) MoveMarkOnscreenTextView(mark TextMark) bool {
 	return _ok
 }
 
-func (t textView) MoveVisuallyTextView(iter *TextIter, count int) bool {
+func (t textView) MoveVisually(iter *TextIter, count int) bool {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 *C.GtkTextIter // out
 	var _arg2 C.gint         // out
@@ -1379,7 +1385,7 @@ func (t textView) MoveVisuallyTextView(iter *TextIter, count int) bool {
 	return _ok
 }
 
-func (t textView) PlaceCursorOnscreenTextView() bool {
+func (t textView) PlaceCursorOnscreen() bool {
 	var _arg0 *C.GtkTextView // out
 	var _cret C.gboolean     // in
 
@@ -1396,7 +1402,7 @@ func (t textView) PlaceCursorOnscreenTextView() bool {
 	return _ok
 }
 
-func (t textView) ResetCursorBlinkTextView() {
+func (t textView) ResetCursorBlink() {
 	var _arg0 *C.GtkTextView // out
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(t.Native()))
@@ -1404,7 +1410,7 @@ func (t textView) ResetCursorBlinkTextView() {
 	C.gtk_text_view_reset_cursor_blink(_arg0)
 }
 
-func (t textView) ResetImContextTextView() {
+func (t textView) ResetImContext() {
 	var _arg0 *C.GtkTextView // out
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(t.Native()))
@@ -1412,7 +1418,7 @@ func (t textView) ResetImContextTextView() {
 	C.gtk_text_view_reset_im_context(_arg0)
 }
 
-func (t textView) ScrollMarkOnscreenTextView(mark TextMark) {
+func (t textView) ScrollMarkOnscreen(mark TextMark) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 *C.GtkTextMark // out
 
@@ -1422,7 +1428,7 @@ func (t textView) ScrollMarkOnscreenTextView(mark TextMark) {
 	C.gtk_text_view_scroll_mark_onscreen(_arg0, _arg1)
 }
 
-func (t textView) ScrollToIterTextView(iter *TextIter, withinMargin float64, useAlign bool, xalign float64, yalign float64) bool {
+func (t textView) ScrollToIter(iter *TextIter, withinMargin float64, useAlign bool, xalign float64, yalign float64) bool {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 *C.GtkTextIter // out
 	var _arg2 C.gdouble      // out
@@ -1451,7 +1457,7 @@ func (t textView) ScrollToIterTextView(iter *TextIter, withinMargin float64, use
 	return _ok
 }
 
-func (t textView) ScrollToMarkTextView(mark TextMark, withinMargin float64, useAlign bool, xalign float64, yalign float64) {
+func (t textView) ScrollToMark(mark TextMark, withinMargin float64, useAlign bool, xalign float64, yalign float64) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 *C.GtkTextMark // out
 	var _arg2 C.gdouble      // out
@@ -1471,7 +1477,7 @@ func (t textView) ScrollToMarkTextView(mark TextMark, withinMargin float64, useA
 	C.gtk_text_view_scroll_to_mark(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
 
-func (t textView) SetAcceptsTabTextView(acceptsTab bool) {
+func (t textView) SetAcceptsTab(acceptsTab bool) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 C.gboolean     // out
 
@@ -1483,7 +1489,7 @@ func (t textView) SetAcceptsTabTextView(acceptsTab bool) {
 	C.gtk_text_view_set_accepts_tab(_arg0, _arg1)
 }
 
-func (t textView) SetBorderWindowSizeTextView(typ TextWindowType, size int) {
+func (t textView) SetBorderWindowSize(typ TextWindowType, size int) {
 	var _arg0 *C.GtkTextView      // out
 	var _arg1 C.GtkTextWindowType // out
 	var _arg2 C.gint              // out
@@ -1495,7 +1501,7 @@ func (t textView) SetBorderWindowSizeTextView(typ TextWindowType, size int) {
 	C.gtk_text_view_set_border_window_size(_arg0, _arg1, _arg2)
 }
 
-func (t textView) SetBottomMarginTextView(bottomMargin int) {
+func (t textView) SetBottomMargin(bottomMargin int) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 C.gint         // out
 
@@ -1505,7 +1511,7 @@ func (t textView) SetBottomMarginTextView(bottomMargin int) {
 	C.gtk_text_view_set_bottom_margin(_arg0, _arg1)
 }
 
-func (t textView) SetBufferTextView(buffer TextBuffer) {
+func (t textView) SetBuffer(buffer TextBuffer) {
 	var _arg0 *C.GtkTextView   // out
 	var _arg1 *C.GtkTextBuffer // out
 
@@ -1515,7 +1521,7 @@ func (t textView) SetBufferTextView(buffer TextBuffer) {
 	C.gtk_text_view_set_buffer(_arg0, _arg1)
 }
 
-func (t textView) SetCursorVisibleTextView(setting bool) {
+func (t textView) SetCursorVisible(setting bool) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 C.gboolean     // out
 
@@ -1527,7 +1533,7 @@ func (t textView) SetCursorVisibleTextView(setting bool) {
 	C.gtk_text_view_set_cursor_visible(_arg0, _arg1)
 }
 
-func (t textView) SetEditableTextView(setting bool) {
+func (t textView) SetEditable(setting bool) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 C.gboolean     // out
 
@@ -1539,7 +1545,7 @@ func (t textView) SetEditableTextView(setting bool) {
 	C.gtk_text_view_set_editable(_arg0, _arg1)
 }
 
-func (t textView) SetIndentTextView(indent int) {
+func (t textView) SetIndent(indent int) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 C.gint         // out
 
@@ -1549,7 +1555,7 @@ func (t textView) SetIndentTextView(indent int) {
 	C.gtk_text_view_set_indent(_arg0, _arg1)
 }
 
-func (t textView) SetInputHintsTextView(hints InputHints) {
+func (t textView) SetInputHints(hints InputHints) {
 	var _arg0 *C.GtkTextView  // out
 	var _arg1 C.GtkInputHints // out
 
@@ -1559,7 +1565,7 @@ func (t textView) SetInputHintsTextView(hints InputHints) {
 	C.gtk_text_view_set_input_hints(_arg0, _arg1)
 }
 
-func (t textView) SetInputPurposeTextView(purpose InputPurpose) {
+func (t textView) SetInputPurpose(purpose InputPurpose) {
 	var _arg0 *C.GtkTextView    // out
 	var _arg1 C.GtkInputPurpose // out
 
@@ -1569,7 +1575,7 @@ func (t textView) SetInputPurposeTextView(purpose InputPurpose) {
 	C.gtk_text_view_set_input_purpose(_arg0, _arg1)
 }
 
-func (t textView) SetJustificationTextView(justification Justification) {
+func (t textView) SetJustification(justification Justification) {
 	var _arg0 *C.GtkTextView     // out
 	var _arg1 C.GtkJustification // out
 
@@ -1579,7 +1585,7 @@ func (t textView) SetJustificationTextView(justification Justification) {
 	C.gtk_text_view_set_justification(_arg0, _arg1)
 }
 
-func (t textView) SetLeftMarginTextView(leftMargin int) {
+func (t textView) SetLeftMargin(leftMargin int) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 C.gint         // out
 
@@ -1589,7 +1595,7 @@ func (t textView) SetLeftMarginTextView(leftMargin int) {
 	C.gtk_text_view_set_left_margin(_arg0, _arg1)
 }
 
-func (t textView) SetMonospaceTextView(monospace bool) {
+func (t textView) SetMonospace(monospace bool) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 C.gboolean     // out
 
@@ -1601,7 +1607,7 @@ func (t textView) SetMonospaceTextView(monospace bool) {
 	C.gtk_text_view_set_monospace(_arg0, _arg1)
 }
 
-func (t textView) SetOverwriteTextView(overwrite bool) {
+func (t textView) SetOverwrite(overwrite bool) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 C.gboolean     // out
 
@@ -1613,7 +1619,7 @@ func (t textView) SetOverwriteTextView(overwrite bool) {
 	C.gtk_text_view_set_overwrite(_arg0, _arg1)
 }
 
-func (t textView) SetPixelsAboveLinesTextView(pixelsAboveLines int) {
+func (t textView) SetPixelsAboveLines(pixelsAboveLines int) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 C.gint         // out
 
@@ -1623,7 +1629,7 @@ func (t textView) SetPixelsAboveLinesTextView(pixelsAboveLines int) {
 	C.gtk_text_view_set_pixels_above_lines(_arg0, _arg1)
 }
 
-func (t textView) SetPixelsBelowLinesTextView(pixelsBelowLines int) {
+func (t textView) SetPixelsBelowLines(pixelsBelowLines int) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 C.gint         // out
 
@@ -1633,7 +1639,7 @@ func (t textView) SetPixelsBelowLinesTextView(pixelsBelowLines int) {
 	C.gtk_text_view_set_pixels_below_lines(_arg0, _arg1)
 }
 
-func (t textView) SetPixelsInsideWrapTextView(pixelsInsideWrap int) {
+func (t textView) SetPixelsInsideWrap(pixelsInsideWrap int) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 C.gint         // out
 
@@ -1643,7 +1649,7 @@ func (t textView) SetPixelsInsideWrapTextView(pixelsInsideWrap int) {
 	C.gtk_text_view_set_pixels_inside_wrap(_arg0, _arg1)
 }
 
-func (t textView) SetRightMarginTextView(rightMargin int) {
+func (t textView) SetRightMargin(rightMargin int) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 C.gint         // out
 
@@ -1653,7 +1659,7 @@ func (t textView) SetRightMarginTextView(rightMargin int) {
 	C.gtk_text_view_set_right_margin(_arg0, _arg1)
 }
 
-func (t textView) SetTabsTextView(tabs *pango.TabArray) {
+func (t textView) SetTabs(tabs *pango.TabArray) {
 	var _arg0 *C.GtkTextView   // out
 	var _arg1 *C.PangoTabArray // out
 
@@ -1663,7 +1669,7 @@ func (t textView) SetTabsTextView(tabs *pango.TabArray) {
 	C.gtk_text_view_set_tabs(_arg0, _arg1)
 }
 
-func (t textView) SetTopMarginTextView(topMargin int) {
+func (t textView) SetTopMargin(topMargin int) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 C.gint         // out
 
@@ -1673,7 +1679,7 @@ func (t textView) SetTopMarginTextView(topMargin int) {
 	C.gtk_text_view_set_top_margin(_arg0, _arg1)
 }
 
-func (t textView) SetWrapModeTextView(wrapMode WrapMode) {
+func (t textView) SetWrapMode(wrapMode WrapMode) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 C.GtkWrapMode  // out
 
@@ -1683,7 +1689,7 @@ func (t textView) SetWrapModeTextView(wrapMode WrapMode) {
 	C.gtk_text_view_set_wrap_mode(_arg0, _arg1)
 }
 
-func (t textView) StartsDisplayLineTextView(iter *TextIter) bool {
+func (t textView) StartsDisplayLine(iter *TextIter) bool {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 *C.GtkTextIter // out
 	var _cret C.gboolean     // in
@@ -1702,7 +1708,7 @@ func (t textView) StartsDisplayLineTextView(iter *TextIter) bool {
 	return _ok
 }
 
-func (t textView) WindowToBufferCoordsTextView(win TextWindowType, windowX int, windowY int) (bufferX int, bufferY int) {
+func (t textView) WindowToBufferCoords(win TextWindowType, windowX int, windowY int) (bufferX int, bufferY int) {
 	var _arg0 *C.GtkTextView      // out
 	var _arg1 C.GtkTextWindowType // out
 	var _arg2 C.gint              // out
@@ -1724,12 +1730,4 @@ func (t textView) WindowToBufferCoordsTextView(win TextWindowType, windowX int, 
 	_bufferY = int(_arg5)
 
 	return _bufferX, _bufferY
-}
-
-func (t textView) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(t))
-}
-
-func (t textView) AsScrollable() Scrollable {
-	return WrapScrollable(gextras.InternObject(t))
 }

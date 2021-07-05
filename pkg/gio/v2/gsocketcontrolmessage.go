@@ -63,12 +63,12 @@ type SocketControlMessage interface {
 	// Size returns the space required for the control message, not including
 	// headers or alignment.
 	Size() uint
-	// SerializeSocketControlMessage converts the data in the message to bytes
-	// placed in the message.
+	// Serialize converts the data in the message to bytes placed in the
+	// message.
 	//
 	// @data is guaranteed to have enough space to fit the size returned by
 	// g_socket_control_message_get_size() on this object.
-	SerializeSocketControlMessage(data interface{})
+	Serialize(data interface{})
 }
 
 // socketControlMessage implements the SocketControlMessage class.
@@ -135,7 +135,7 @@ func (m socketControlMessage) Size() uint {
 	return _gsize
 }
 
-func (m socketControlMessage) SerializeSocketControlMessage(data interface{}) {
+func (m socketControlMessage) Serialize(data interface{}) {
 	var _arg0 *C.GSocketControlMessage // out
 	var _arg1 C.gpointer               // out
 

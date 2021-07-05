@@ -129,33 +129,33 @@ type RecentFilter interface {
 	// AsBuildable casts the class to the Buildable interface.
 	AsBuildable() Buildable
 
-	// AddAgeRecentFilter adds a rule that allows resources based on their age -
-	// that is, the number of days elapsed since they were last modified.
-	AddAgeRecentFilter(days int)
-	// AddApplicationRecentFilter adds a rule that allows resources based on the
-	// name of the application that has registered them.
-	AddApplicationRecentFilter(application string)
-	// AddGroupRecentFilter adds a rule that allows resources based on the name
-	// of the group to which they belong
-	AddGroupRecentFilter(group string)
-	// AddMIMETypeRecentFilter adds a rule that allows resources based on their
-	// registered MIME type.
-	AddMIMETypeRecentFilter(mimeType string)
-	// AddPatternRecentFilter adds a rule that allows resources based on a
-	// pattern matching their display name.
-	AddPatternRecentFilter(pattern string)
-	// AddPixbufFormatsRecentFilter adds a rule allowing image files in the
-	// formats supported by GdkPixbuf.
-	AddPixbufFormatsRecentFilter()
-	// FilterRecentFilter tests whether a file should be displayed according to
-	// @filter. The RecentFilterInfo @filter_info should include the fields
-	// returned from gtk_recent_filter_get_needed(), and must set the
+	// AddAge adds a rule that allows resources based on their age - that is,
+	// the number of days elapsed since they were last modified.
+	AddAge(days int)
+	// AddApplication adds a rule that allows resources based on the name of the
+	// application that has registered them.
+	AddApplication(application string)
+	// AddGroup adds a rule that allows resources based on the name of the group
+	// to which they belong
+	AddGroup(group string)
+	// AddMIMEType adds a rule that allows resources based on their registered
+	// MIME type.
+	AddMIMEType(mimeType string)
+	// AddPattern adds a rule that allows resources based on a pattern matching
+	// their display name.
+	AddPattern(pattern string)
+	// AddPixbufFormats adds a rule allowing image files in the formats
+	// supported by GdkPixbuf.
+	AddPixbufFormats()
+	// Filter tests whether a file should be displayed according to @filter. The
+	// RecentFilterInfo @filter_info should include the fields returned from
+	// gtk_recent_filter_get_needed(), and must set the
 	// RecentFilterInfo.contains field of @filter_info to indicate which fields
 	// have been set.
 	//
 	// This function will not typically be used by applications; it is intended
 	// principally for use in the implementation of RecentChooser.
-	FilterRecentFilter(filterInfo *RecentFilterInfo) bool
+	Filter(filterInfo *RecentFilterInfo) bool
 	// Name gets the human-readable name for the filter. See
 	// gtk_recent_filter_set_name().
 	Name() string
@@ -165,10 +165,10 @@ type RecentFilter interface {
 	// This function will not typically be used by applications; it is intended
 	// principally for use in the implementation of RecentChooser.
 	Needed() RecentFilterFlags
-	// SetNameRecentFilter sets the human-readable name of the filter; this is
-	// the string that will be displayed in the recently used resources selector
-	// user interface if there is a selectable list of filters.
-	SetNameRecentFilter(name string)
+	// SetName sets the human-readable name of the filter; this is the string
+	// that will be displayed in the recently used resources selector user
+	// interface if there is a selectable list of filters.
+	SetName(name string)
 }
 
 // recentFilter implements the RecentFilter class.
@@ -211,7 +211,11 @@ func NewRecentFilter() RecentFilter {
 	return _recentFilter
 }
 
-func (f recentFilter) AddAgeRecentFilter(days int) {
+func (r recentFilter) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(r))
+}
+
+func (f recentFilter) AddAge(days int) {
 	var _arg0 *C.GtkRecentFilter // out
 	var _arg1 C.gint             // out
 
@@ -221,7 +225,7 @@ func (f recentFilter) AddAgeRecentFilter(days int) {
 	C.gtk_recent_filter_add_age(_arg0, _arg1)
 }
 
-func (f recentFilter) AddApplicationRecentFilter(application string) {
+func (f recentFilter) AddApplication(application string) {
 	var _arg0 *C.GtkRecentFilter // out
 	var _arg1 *C.gchar           // out
 
@@ -232,7 +236,7 @@ func (f recentFilter) AddApplicationRecentFilter(application string) {
 	C.gtk_recent_filter_add_application(_arg0, _arg1)
 }
 
-func (f recentFilter) AddGroupRecentFilter(group string) {
+func (f recentFilter) AddGroup(group string) {
 	var _arg0 *C.GtkRecentFilter // out
 	var _arg1 *C.gchar           // out
 
@@ -243,7 +247,7 @@ func (f recentFilter) AddGroupRecentFilter(group string) {
 	C.gtk_recent_filter_add_group(_arg0, _arg1)
 }
 
-func (f recentFilter) AddMIMETypeRecentFilter(mimeType string) {
+func (f recentFilter) AddMIMEType(mimeType string) {
 	var _arg0 *C.GtkRecentFilter // out
 	var _arg1 *C.gchar           // out
 
@@ -254,7 +258,7 @@ func (f recentFilter) AddMIMETypeRecentFilter(mimeType string) {
 	C.gtk_recent_filter_add_mime_type(_arg0, _arg1)
 }
 
-func (f recentFilter) AddPatternRecentFilter(pattern string) {
+func (f recentFilter) AddPattern(pattern string) {
 	var _arg0 *C.GtkRecentFilter // out
 	var _arg1 *C.gchar           // out
 
@@ -265,7 +269,7 @@ func (f recentFilter) AddPatternRecentFilter(pattern string) {
 	C.gtk_recent_filter_add_pattern(_arg0, _arg1)
 }
 
-func (f recentFilter) AddPixbufFormatsRecentFilter() {
+func (f recentFilter) AddPixbufFormats() {
 	var _arg0 *C.GtkRecentFilter // out
 
 	_arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(f.Native()))
@@ -273,7 +277,7 @@ func (f recentFilter) AddPixbufFormatsRecentFilter() {
 	C.gtk_recent_filter_add_pixbuf_formats(_arg0)
 }
 
-func (f recentFilter) FilterRecentFilter(filterInfo *RecentFilterInfo) bool {
+func (f recentFilter) Filter(filterInfo *RecentFilterInfo) bool {
 	var _arg0 *C.GtkRecentFilter     // out
 	var _arg1 *C.GtkRecentFilterInfo // out
 	var _cret C.gboolean             // in
@@ -322,7 +326,7 @@ func (f recentFilter) Needed() RecentFilterFlags {
 	return _recentFilterFlags
 }
 
-func (f recentFilter) SetNameRecentFilter(name string) {
+func (f recentFilter) SetName(name string) {
 	var _arg0 *C.GtkRecentFilter // out
 	var _arg1 *C.gchar           // out
 
@@ -331,10 +335,6 @@ func (f recentFilter) SetNameRecentFilter(name string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_recent_filter_set_name(_arg0, _arg1)
-}
-
-func (r recentFilter) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(r))
 }
 
 // RecentFilterInfo struct is used to pass information about the tested file to

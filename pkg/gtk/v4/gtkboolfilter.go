@@ -32,13 +32,13 @@ type BoolFilter interface {
 	Expression() Expression
 	// Invert returns whether the filter inverts the expression.
 	Invert() bool
-	// SetExpressionBoolFilter sets the expression that the filter uses to check
-	// if items should be filtered.
+	// SetExpression sets the expression that the filter uses to check if items
+	// should be filtered.
 	//
 	// The expression must have a value type of G_TYPE_BOOLEAN.
-	SetExpressionBoolFilter(expression Expression)
-	// SetInvertBoolFilter sets whether the filter should invert the expression.
-	SetInvertBoolFilter(invert bool)
+	SetExpression(expression Expression)
+	// SetInvert sets whether the filter should invert the expression.
+	SetInvert(invert bool)
 }
 
 // boolFilter implements the BoolFilter class.
@@ -108,7 +108,7 @@ func (s boolFilter) Invert() bool {
 	return _ok
 }
 
-func (s boolFilter) SetExpressionBoolFilter(expression Expression) {
+func (s boolFilter) SetExpression(expression Expression) {
 	var _arg0 *C.GtkBoolFilter // out
 	var _arg1 *C.GtkExpression // out
 
@@ -118,7 +118,7 @@ func (s boolFilter) SetExpressionBoolFilter(expression Expression) {
 	C.gtk_bool_filter_set_expression(_arg0, _arg1)
 }
 
-func (s boolFilter) SetInvertBoolFilter(invert bool) {
+func (s boolFilter) SetInvert(invert bool) {
 	var _arg0 *C.GtkBoolFilter // out
 	var _arg1 C.gboolean       // out
 

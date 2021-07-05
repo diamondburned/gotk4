@@ -112,6 +112,10 @@ func NewInetSocketAddressFromString(address string, port uint) InetSocketAddress
 	return _inetSocketAddress
 }
 
+func (i inetSocketAddress) AsSocketConnectable() SocketConnectable {
+	return WrapSocketConnectable(gextras.InternObject(i))
+}
+
 func (a inetSocketAddress) Address() InetAddress {
 	var _arg0 *C.GInetSocketAddress // out
 	var _cret *C.GInetAddress       // in
@@ -170,8 +174,4 @@ func (a inetSocketAddress) ScopeID() uint32 {
 	_guint32 = uint32(_cret)
 
 	return _guint32
-}
-
-func (i inetSocketAddress) AsSocketConnectable() SocketConnectable {
-	return WrapSocketConnectable(gextras.InternObject(i))
 }

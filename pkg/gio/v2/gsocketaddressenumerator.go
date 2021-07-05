@@ -51,9 +51,9 @@ func init() {
 type SocketAddressEnumerator interface {
 	gextras.Objector
 
-	// NextSocketAddressEnumerator retrieves the next Address from @enumerator.
-	// Note that this may block for some amount of time. (Eg, a Address may need
-	// to do a DNS lookup before it can return an address.) Use
+	// Next retrieves the next Address from @enumerator. Note that this may
+	// block for some amount of time. (Eg, a Address may need to do a DNS lookup
+	// before it can return an address.) Use
 	// g_socket_address_enumerator_next_async() if you need to avoid blocking.
 	//
 	// If @enumerator is expected to yield addresses, but for some reason is
@@ -62,19 +62,19 @@ type SocketAddressEnumerator interface {
 	// *@error. However, if the first call to g_socket_address_enumerator_next()
 	// succeeds, then any further internal errors (other than @cancellable being
 	// triggered) will be ignored.
-	NextSocketAddressEnumerator(cancellable Cancellable) (SocketAddress, error)
-	// NextAsyncSocketAddressEnumerator: asynchronously retrieves the next
-	// Address from @enumerator and then calls @callback, which must call
+	Next(cancellable Cancellable) (SocketAddress, error)
+	// NextAsync: asynchronously retrieves the next Address from @enumerator and
+	// then calls @callback, which must call
 	// g_socket_address_enumerator_next_finish() to get the result.
 	//
 	// It is an error to call this multiple times before the previous callback
 	// has finished.
-	NextAsyncSocketAddressEnumerator(cancellable Cancellable, callback AsyncReadyCallback)
-	// NextFinishSocketAddressEnumerator retrieves the result of a completed
-	// call to g_socket_address_enumerator_next_async(). See
+	NextAsync(cancellable Cancellable, callback AsyncReadyCallback)
+	// NextFinish retrieves the result of a completed call to
+	// g_socket_address_enumerator_next_async(). See
 	// g_socket_address_enumerator_next() for more information about error
 	// handling.
-	NextFinishSocketAddressEnumerator(result AsyncResult) (SocketAddress, error)
+	NextFinish(result AsyncResult) (SocketAddress, error)
 }
 
 // socketAddressEnumerator implements the SocketAddressEnumerator class.
@@ -96,7 +96,7 @@ func marshalSocketAddressEnumerator(p uintptr) (interface{}, error) {
 	return WrapSocketAddressEnumerator(obj), nil
 }
 
-func (e socketAddressEnumerator) NextSocketAddressEnumerator(cancellable Cancellable) (SocketAddress, error) {
+func (e socketAddressEnumerator) Next(cancellable Cancellable) (SocketAddress, error) {
 	var _arg0 *C.GSocketAddressEnumerator // out
 	var _arg1 *C.GCancellable             // out
 	var _cret *C.GSocketAddress           // in
@@ -116,7 +116,7 @@ func (e socketAddressEnumerator) NextSocketAddressEnumerator(cancellable Cancell
 	return _socketAddress, _goerr
 }
 
-func (e socketAddressEnumerator) NextAsyncSocketAddressEnumerator(cancellable Cancellable, callback AsyncReadyCallback) {
+func (e socketAddressEnumerator) NextAsync(cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GSocketAddressEnumerator // out
 	var _arg1 *C.GCancellable             // out
 	var _arg2 C.GAsyncReadyCallback       // out
@@ -130,7 +130,7 @@ func (e socketAddressEnumerator) NextAsyncSocketAddressEnumerator(cancellable Ca
 	C.g_socket_address_enumerator_next_async(_arg0, _arg1, _arg2, _arg3)
 }
 
-func (e socketAddressEnumerator) NextFinishSocketAddressEnumerator(result AsyncResult) (SocketAddress, error) {
+func (e socketAddressEnumerator) NextFinish(result AsyncResult) (SocketAddress, error) {
 	var _arg0 *C.GSocketAddressEnumerator // out
 	var _arg1 *C.GAsyncResult             // out
 	var _cret *C.GSocketAddress           // in

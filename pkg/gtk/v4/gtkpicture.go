@@ -89,7 +89,7 @@ type Picture interface {
 	// KeepAspectRatio returns whether the `GtkPicture` preserves its contents
 	// aspect ratio.
 	KeepAspectRatio() bool
-	// SetAlternativeTextPicture sets an alternative textual description for the
+	// SetAlternativeText sets an alternative textual description for the
 	// picture contents.
 	//
 	// It is equivalent to the "alt" attribute for images on websites.
@@ -97,9 +97,9 @@ type Picture interface {
 	// This text will be made available to accessibility tools.
 	//
 	// If the picture cannot be described textually, set this property to nil.
-	SetAlternativeTextPicture(alternativeText string)
-	// SetCanShrinkPicture: if set to true, the @self can be made smaller than
-	// its contents.
+	SetAlternativeText(alternativeText string)
+	// SetCanShrink: if set to true, the @self can be made smaller than its
+	// contents.
 	//
 	// The contents will then be scaled down when rendering.
 	//
@@ -109,31 +109,31 @@ type Picture interface {
 	// Also of note is that a similar function for growing does not exist
 	// because the grow behavior can be controlled via
 	// [method@Gtk.Widget.set_halign] and [method@Gtk.Widget.set_valign].
-	SetCanShrinkPicture(canShrink bool)
-	// SetFilenamePicture makes @self load and display the given @filename.
+	SetCanShrink(canShrink bool)
+	// SetFilename makes @self load and display the given @filename.
 	//
 	// This is a utility function that calls [method@Gtk.Picture.set_file].
-	SetFilenamePicture(filename string)
-	// SetKeepAspectRatioPicture: if set to true, the @self will render its
-	// contents according to their aspect ratio.
+	SetFilename(filename string)
+	// SetKeepAspectRatio: if set to true, the @self will render its contents
+	// according to their aspect ratio.
 	//
 	// That means that empty space may show up at the top/bottom or left/right
 	// of @self.
 	//
 	// If set to false or if the contents provide no aspect ratio, the contents
 	// will be stretched over the picture's whole area.
-	SetKeepAspectRatioPicture(keepAspectRatio bool)
-	// SetPixbufPicture sets a `GtkPicture` to show a `GdkPixbuf`.
+	SetKeepAspectRatio(keepAspectRatio bool)
+	// SetPixbuf sets a `GtkPicture` to show a `GdkPixbuf`.
 	//
 	// See [ctor@Gtk.Picture.new_for_pixbuf] for details.
 	//
 	// This is a utility function that calls [method@Gtk.Picture.set_paintable].
-	SetPixbufPicture(pixbuf gdkpixbuf.Pixbuf)
-	// SetResourcePicture makes @self load and display the resource at the given
+	SetPixbuf(pixbuf gdkpixbuf.Pixbuf)
+	// SetResource makes @self load and display the resource at the given
 	// @resource_path.
 	//
 	// This is a utility function that calls [method@Gtk.Picture.set_file].
-	SetResourcePicture(resourcePath string)
+	SetResource(resourcePath string)
 }
 
 // picture implements the Picture class.
@@ -231,6 +231,18 @@ func NewPictureForResource(resourcePath string) Picture {
 	return _picture
 }
 
+func (p picture) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(p))
+}
+
+func (p picture) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(p))
+}
+
+func (p picture) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(p))
+}
+
 func (s picture) AlternativeText() string {
 	var _arg0 *C.GtkPicture // out
 	var _cret *C.char       // in
@@ -280,7 +292,7 @@ func (s picture) KeepAspectRatio() bool {
 	return _ok
 }
 
-func (s picture) SetAlternativeTextPicture(alternativeText string) {
+func (s picture) SetAlternativeText(alternativeText string) {
 	var _arg0 *C.GtkPicture // out
 	var _arg1 *C.char       // out
 
@@ -291,7 +303,7 @@ func (s picture) SetAlternativeTextPicture(alternativeText string) {
 	C.gtk_picture_set_alternative_text(_arg0, _arg1)
 }
 
-func (s picture) SetCanShrinkPicture(canShrink bool) {
+func (s picture) SetCanShrink(canShrink bool) {
 	var _arg0 *C.GtkPicture // out
 	var _arg1 C.gboolean    // out
 
@@ -303,7 +315,7 @@ func (s picture) SetCanShrinkPicture(canShrink bool) {
 	C.gtk_picture_set_can_shrink(_arg0, _arg1)
 }
 
-func (s picture) SetFilenamePicture(filename string) {
+func (s picture) SetFilename(filename string) {
 	var _arg0 *C.GtkPicture // out
 	var _arg1 *C.char       // out
 
@@ -314,7 +326,7 @@ func (s picture) SetFilenamePicture(filename string) {
 	C.gtk_picture_set_filename(_arg0, _arg1)
 }
 
-func (s picture) SetKeepAspectRatioPicture(keepAspectRatio bool) {
+func (s picture) SetKeepAspectRatio(keepAspectRatio bool) {
 	var _arg0 *C.GtkPicture // out
 	var _arg1 C.gboolean    // out
 
@@ -326,7 +338,7 @@ func (s picture) SetKeepAspectRatioPicture(keepAspectRatio bool) {
 	C.gtk_picture_set_keep_aspect_ratio(_arg0, _arg1)
 }
 
-func (s picture) SetPixbufPicture(pixbuf gdkpixbuf.Pixbuf) {
+func (s picture) SetPixbuf(pixbuf gdkpixbuf.Pixbuf) {
 	var _arg0 *C.GtkPicture // out
 	var _arg1 *C.GdkPixbuf  // out
 
@@ -336,7 +348,7 @@ func (s picture) SetPixbufPicture(pixbuf gdkpixbuf.Pixbuf) {
 	C.gtk_picture_set_pixbuf(_arg0, _arg1)
 }
 
-func (s picture) SetResourcePicture(resourcePath string) {
+func (s picture) SetResource(resourcePath string) {
 	var _arg0 *C.GtkPicture // out
 	var _arg1 *C.char       // out
 
@@ -345,16 +357,4 @@ func (s picture) SetResourcePicture(resourcePath string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_picture_set_resource(_arg0, _arg1)
-}
-
-func (p picture) AsAccessible() Accessible {
-	return WrapAccessible(gextras.InternObject(p))
-}
-
-func (p picture) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(p))
-}
-
-func (p picture) AsConstraintTarget() ConstraintTarget {
-	return WrapConstraintTarget(gextras.InternObject(p))
 }

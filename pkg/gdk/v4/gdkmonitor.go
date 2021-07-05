@@ -96,12 +96,12 @@ type Monitor interface {
 	SubpixelLayout() SubpixelLayout
 	// WidthMm gets the width in millimeters of the monitor.
 	WidthMm() int
-	// IsValidMonitor returns true if the @monitor object corresponds to a
-	// physical monitor.
+	// IsValid returns true if the @monitor object corresponds to a physical
+	// monitor.
 	//
 	// The @monitor becomes invalid when the physical monitor is unplugged or
 	// removed.
-	IsValidMonitor() bool
+	IsValid() bool
 }
 
 // monitor implements the Monitor class.
@@ -283,7 +283,7 @@ func (m monitor) WidthMm() int {
 	return _gint
 }
 
-func (m monitor) IsValidMonitor() bool {
+func (m monitor) IsValid() bool {
 	var _arg0 *C.GdkMonitor // out
 	var _cret C.gboolean    // in
 

@@ -33,12 +33,12 @@ func init() {
 type EventControllerMotion interface {
 	EventController
 
-	// ContainsPointerEventControllerMotion returns if a pointer is within @self
-	// or one of its children.
-	ContainsPointerEventControllerMotion() bool
-	// IsPointerEventControllerMotion returns if a pointer is within @self, but
-	// not one of its children.
-	IsPointerEventControllerMotion() bool
+	// ContainsPointer returns if a pointer is within @self or one of its
+	// children.
+	ContainsPointer() bool
+	// IsPointer returns if a pointer is within @self, but not one of its
+	// children.
+	IsPointer() bool
 }
 
 // eventControllerMotion implements the EventControllerMotion class.
@@ -74,7 +74,7 @@ func NewEventControllerMotion() EventControllerMotion {
 	return _eventControllerMotion
 }
 
-func (s eventControllerMotion) ContainsPointerEventControllerMotion() bool {
+func (s eventControllerMotion) ContainsPointer() bool {
 	var _arg0 *C.GtkEventControllerMotion // out
 	var _cret C.gboolean                  // in
 
@@ -91,7 +91,7 @@ func (s eventControllerMotion) ContainsPointerEventControllerMotion() bool {
 	return _ok
 }
 
-func (s eventControllerMotion) IsPointerEventControllerMotion() bool {
+func (s eventControllerMotion) IsPointer() bool {
 	var _arg0 *C.GtkEventControllerMotion // out
 	var _cret C.gboolean                  // in
 

@@ -54,21 +54,21 @@ type SearchBar interface {
 	// AsBuildable casts the class to the Buildable interface.
 	AsBuildable() Buildable
 
-	// ConnectEntrySearchBar connects the Entry widget passed as the one to be
-	// used in this search bar. The entry should be a descendant of the search
-	// bar. This is only required if the entry isn’t the direct child of the
-	// search bar (as in our main example).
-	ConnectEntrySearchBar(entry Entry)
+	// ConnectEntry connects the Entry widget passed as the one to be used in
+	// this search bar. The entry should be a descendant of the search bar. This
+	// is only required if the entry isn’t the direct child of the search bar
+	// (as in our main example).
+	ConnectEntry(entry Entry)
 	// SearchMode returns whether the search mode is on or off.
 	SearchMode() bool
 	// ShowCloseButton returns whether the close button is shown.
 	ShowCloseButton() bool
-	// SetSearchModeSearchBar switches the search mode on or off.
-	SetSearchModeSearchBar(searchMode bool)
-	// SetShowCloseButtonSearchBar shows or hides the close button. Applications
-	// that already have a “search” toggle button should not show a close button
-	// in their search bar, as it duplicates the role of the toggle button.
-	SetShowCloseButtonSearchBar(visible bool)
+	// SetSearchMode switches the search mode on or off.
+	SetSearchMode(searchMode bool)
+	// SetShowCloseButton shows or hides the close button. Applications that
+	// already have a “search” toggle button should not show a close button in
+	// their search bar, as it duplicates the role of the toggle button.
+	SetShowCloseButton(visible bool)
 }
 
 // searchBar implements the SearchBar class.
@@ -104,7 +104,11 @@ func NewSearchBar() SearchBar {
 	return _searchBar
 }
 
-func (b searchBar) ConnectEntrySearchBar(entry Entry) {
+func (s searchBar) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(s))
+}
+
+func (b searchBar) ConnectEntry(entry Entry) {
 	var _arg0 *C.GtkSearchBar // out
 	var _arg1 *C.GtkEntry     // out
 
@@ -148,7 +152,7 @@ func (b searchBar) ShowCloseButton() bool {
 	return _ok
 }
 
-func (b searchBar) SetSearchModeSearchBar(searchMode bool) {
+func (b searchBar) SetSearchMode(searchMode bool) {
 	var _arg0 *C.GtkSearchBar // out
 	var _arg1 C.gboolean      // out
 
@@ -160,7 +164,7 @@ func (b searchBar) SetSearchModeSearchBar(searchMode bool) {
 	C.gtk_search_bar_set_search_mode(_arg0, _arg1)
 }
 
-func (b searchBar) SetShowCloseButtonSearchBar(visible bool) {
+func (b searchBar) SetShowCloseButton(visible bool) {
 	var _arg0 *C.GtkSearchBar // out
 	var _arg1 C.gboolean      // out
 
@@ -170,8 +174,4 @@ func (b searchBar) SetShowCloseButtonSearchBar(visible bool) {
 	}
 
 	C.gtk_search_bar_set_show_close_button(_arg0, _arg1)
-}
-
-func (s searchBar) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(s))
 }

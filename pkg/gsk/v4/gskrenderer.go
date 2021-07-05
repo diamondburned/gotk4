@@ -44,13 +44,13 @@ type Renderer interface {
 	//
 	// If the renderer has not been realized yet, nil will be returned.
 	Surface() gdk.Surface
-	// IsRealizedRenderer checks whether the @renderer is realized or not.
-	IsRealizedRenderer() bool
-	// RealizeRenderer creates the resources needed by the @renderer to render
-	// the scene graph.
-	RealizeRenderer(surface gdk.Surface) error
-	// RenderRenderer renders the scene graph, described by a tree of
-	// `GskRenderNode` instances, ensuring that the given @region gets redrawn.
+	// IsRealized checks whether the @renderer is realized or not.
+	IsRealized() bool
+	// Realize creates the resources needed by the @renderer to render the scene
+	// graph.
+	Realize(surface gdk.Surface) error
+	// Render renders the scene graph, described by a tree of `GskRenderNode`
+	// instances, ensuring that the given @region gets redrawn.
 	//
 	// Renderers must ensure that changes of the contents given by the @root
 	// node as well as the area given by @region are redrawn. They are however
@@ -59,8 +59,8 @@ type Renderer interface {
 	//
 	// The @renderer will acquire a reference on the `GskRenderNode` tree while
 	// the rendering is in progress.
-	RenderRenderer(root RenderNode, region *cairo.Region)
-	// RenderTextureRenderer renders the scene graph, described by a tree of
+	Render(root RenderNode, region *cairo.Region)
+	// RenderTexture renders the scene graph, described by a tree of
 	// `GskRenderNode` instances, to a `GdkTexture`.
 	//
 	// The @renderer will acquire a reference on the `GskRenderNode` tree while
@@ -68,10 +68,9 @@ type Renderer interface {
 	//
 	// If you want to apply any transformations to @root, you should put it into
 	// a transform node and pass that node instead.
-	RenderTextureRenderer(root RenderNode, viewport *graphene.Rect) gdk.Texture
-	// UnrealizeRenderer releases all the resources created by
-	// gsk_renderer_realize().
-	UnrealizeRenderer()
+	RenderTexture(root RenderNode, viewport *graphene.Rect) gdk.Texture
+	// Unrealize releases all the resources created by gsk_renderer_realize().
+	Unrealize()
 }
 
 // renderer implements the Renderer class.
@@ -131,7 +130,7 @@ func (r renderer) Surface() gdk.Surface {
 	return _surface
 }
 
-func (r renderer) IsRealizedRenderer() bool {
+func (r renderer) IsRealized() bool {
 	var _arg0 *C.GskRenderer // out
 	var _cret C.gboolean     // in
 
@@ -148,7 +147,7 @@ func (r renderer) IsRealizedRenderer() bool {
 	return _ok
 }
 
-func (r renderer) RealizeRenderer(surface gdk.Surface) error {
+func (r renderer) Realize(surface gdk.Surface) error {
 	var _arg0 *C.GskRenderer // out
 	var _arg1 *C.GdkSurface  // out
 	var _cerr *C.GError      // in
@@ -165,7 +164,7 @@ func (r renderer) RealizeRenderer(surface gdk.Surface) error {
 	return _goerr
 }
 
-func (r renderer) RenderRenderer(root RenderNode, region *cairo.Region) {
+func (r renderer) Render(root RenderNode, region *cairo.Region) {
 	var _arg0 *C.GskRenderer    // out
 	var _arg1 *C.GskRenderNode  // out
 	var _arg2 *C.cairo_region_t // out
@@ -177,7 +176,7 @@ func (r renderer) RenderRenderer(root RenderNode, region *cairo.Region) {
 	C.gsk_renderer_render(_arg0, _arg1, _arg2)
 }
 
-func (r renderer) RenderTextureRenderer(root RenderNode, viewport *graphene.Rect) gdk.Texture {
+func (r renderer) RenderTexture(root RenderNode, viewport *graphene.Rect) gdk.Texture {
 	var _arg0 *C.GskRenderer     // out
 	var _arg1 *C.GskRenderNode   // out
 	var _arg2 *C.graphene_rect_t // out
@@ -196,7 +195,7 @@ func (r renderer) RenderTextureRenderer(root RenderNode, viewport *graphene.Rect
 	return _texture
 }
 
-func (r renderer) UnrealizeRenderer() {
+func (r renderer) Unrealize() {
 	var _arg0 *C.GskRenderer // out
 
 	_arg0 = (*C.GskRenderer)(unsafe.Pointer(r.Native()))

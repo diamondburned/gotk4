@@ -44,11 +44,11 @@ type MenuBar interface {
 	// PackDirection retrieves the current pack direction of the menubar. See
 	// gtk_menu_bar_set_pack_direction().
 	PackDirection() PackDirection
-	// SetChildPackDirectionMenuBar sets how widgets should be packed inside the
+	// SetChildPackDirection sets how widgets should be packed inside the
 	// children of a menubar.
-	SetChildPackDirectionMenuBar(childPackDir PackDirection)
-	// SetPackDirectionMenuBar sets how items should be packed inside a menubar.
-	SetPackDirectionMenuBar(packDir PackDirection)
+	SetChildPackDirection(childPackDir PackDirection)
+	// SetPackDirection sets how items should be packed inside a menubar.
+	SetPackDirection(packDir PackDirection)
 }
 
 // menuBar implements the MenuBar class.
@@ -104,6 +104,10 @@ func NewMenuBarFromModel(model gio.MenuModel) MenuBar {
 	return _menuBar
 }
 
+func (m menuBar) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(m))
+}
+
 func (m menuBar) ChildPackDirection() PackDirection {
 	var _arg0 *C.GtkMenuBar      // out
 	var _cret C.GtkPackDirection // in
@@ -134,7 +138,7 @@ func (m menuBar) PackDirection() PackDirection {
 	return _packDirection
 }
 
-func (m menuBar) SetChildPackDirectionMenuBar(childPackDir PackDirection) {
+func (m menuBar) SetChildPackDirection(childPackDir PackDirection) {
 	var _arg0 *C.GtkMenuBar      // out
 	var _arg1 C.GtkPackDirection // out
 
@@ -144,7 +148,7 @@ func (m menuBar) SetChildPackDirectionMenuBar(childPackDir PackDirection) {
 	C.gtk_menu_bar_set_child_pack_direction(_arg0, _arg1)
 }
 
-func (m menuBar) SetPackDirectionMenuBar(packDir PackDirection) {
+func (m menuBar) SetPackDirection(packDir PackDirection) {
 	var _arg0 *C.GtkMenuBar      // out
 	var _arg1 C.GtkPackDirection // out
 
@@ -152,8 +156,4 @@ func (m menuBar) SetPackDirectionMenuBar(packDir PackDirection) {
 	_arg1 = C.GtkPackDirection(packDir)
 
 	C.gtk_menu_bar_set_pack_direction(_arg0, _arg1)
-}
-
-func (m menuBar) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(m))
 }

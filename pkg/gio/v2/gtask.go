@@ -225,25 +225,25 @@ type Task interface {
 	SourceTag() interface{}
 	// TaskData gets @task's `task_data`.
 	TaskData() interface{}
-	// HadErrorTask tests if @task resulted in an error.
-	HadErrorTask() bool
-	// PropagateBooleanTask gets the result of @task as a #gboolean.
+	// HadError tests if @task resulted in an error.
+	HadError() bool
+	// PropagateBoolean gets the result of @task as a #gboolean.
 	//
 	// If the task resulted in an error, or was cancelled, then this will
 	// instead return false and set @error.
 	//
 	// Since this method transfers ownership of the return value (or error) to
 	// the caller, you may only call it once.
-	PropagateBooleanTask() error
-	// PropagateIntTask gets the result of @task as an integer (#gssize).
+	PropagateBoolean() error
+	// PropagateInt gets the result of @task as an integer (#gssize).
 	//
 	// If the task resulted in an error, or was cancelled, then this will
 	// instead return -1 and set @error.
 	//
 	// Since this method transfers ownership of the return value (or error) to
 	// the caller, you may only call it once.
-	PropagateIntTask() (int, error)
-	// PropagatePointerTask gets the result of @task as a pointer, and transfers
+	PropagateInt() (int, error)
+	// PropagatePointer gets the result of @task as a pointer, and transfers
 	// ownership of that value to the caller.
 	//
 	// If the task resulted in an error, or was cancelled, then this will
@@ -251,8 +251,8 @@ type Task interface {
 	//
 	// Since this method transfers ownership of the return value (or error) to
 	// the caller, you may only call it once.
-	PropagatePointerTask() (interface{}, error)
-	// PropagateValueTask gets the result of @task as a #GValue, and transfers
+	PropagatePointer() (interface{}, error)
+	// PropagateValue gets the result of @task as a #GValue, and transfers
 	// ownership of that value to the caller. As with g_task_return_value(),
 	// this is a generic low-level method; g_task_propagate_pointer() and the
 	// like will usually be more useful for C code.
@@ -262,14 +262,13 @@ type Task interface {
 	//
 	// Since this method transfers ownership of the return value (or error) to
 	// the caller, you may only call it once.
-	PropagateValueTask() (externglib.Value, error)
-	// ReturnBooleanTask sets @task's result to @result and completes the task
-	// (see g_task_return_pointer() for more discussion of exactly what this
-	// means).
-	ReturnBooleanTask(result bool)
-	// ReturnErrorTask sets @task's result to @error (which @task assumes
-	// ownership of) and completes the task (see g_task_return_pointer() for
-	// more discussion of exactly what this means).
+	PropagateValue() (externglib.Value, error)
+	// ReturnBoolean sets @task's result to @result and completes the task (see
+	// g_task_return_pointer() for more discussion of exactly what this means).
+	ReturnBoolean(result bool)
+	// ReturnError sets @task's result to @error (which @task assumes ownership
+	// of) and completes the task (see g_task_return_pointer() for more
+	// discussion of exactly what this means).
 	//
 	// Note that since the task takes ownership of @error, and since the task
 	// may be completed before returning from g_task_return_error(), you cannot
@@ -277,17 +276,17 @@ type Task interface {
 	// on the error if you need to keep a local copy as well.
 	//
 	// See also g_task_return_new_error().
-	ReturnErrorTask(err error)
-	// ReturnErrorIfCancelledTask checks if @task's #GCancellable has been
+	ReturnError(err error)
+	// ReturnErrorIfCancelled checks if @task's #GCancellable has been
 	// cancelled, and if so, sets @task's error accordingly and completes the
 	// task (see g_task_return_pointer() for more discussion of exactly what
 	// this means).
-	ReturnErrorIfCancelledTask() bool
-	// ReturnIntTask sets @task's result to @result and completes the task (see
+	ReturnErrorIfCancelled() bool
+	// ReturnInt sets @task's result to @result and completes the task (see
 	// g_task_return_pointer() for more discussion of exactly what this means).
-	ReturnIntTask(result int)
-	// ReturnValueTask sets @task's result to @result (by copying it) and
-	// completes the task.
+	ReturnInt(result int)
+	// ReturnValue sets @task's result to @result (by copying it) and completes
+	// the task.
 	//
 	// If @result is nil then a #GValue of type TYPE_POINTER with a value of nil
 	// will be used for the result.
@@ -295,8 +294,8 @@ type Task interface {
 	// This is a very generic low-level method intended primarily for use by
 	// language bindings; for C code, g_task_return_pointer() and the like will
 	// normally be much easier to use.
-	ReturnValueTask(result externglib.Value)
-	// SetCheckCancellableTask sets or clears @task's check-cancellable flag. If
+	ReturnValue(result externglib.Value)
+	// SetCheckCancellable sets or clears @task's check-cancellable flag. If
 	// this is true (the default), then g_task_propagate_pointer(), etc, and
 	// g_task_had_error() will check the task's #GCancellable first, and if it
 	// has been cancelled, then they will consider the task to have returned an
@@ -309,8 +308,8 @@ type Task interface {
 	//
 	// If you are using g_task_set_return_on_cancel() as well, then you must
 	// leave check-cancellable set true.
-	SetCheckCancellableTask(checkCancellable bool)
-	// SetNameTask sets @task’s name, used in debugging and profiling. The name
+	SetCheckCancellable(checkCancellable bool)
+	// SetName sets @task’s name, used in debugging and profiling. The name
 	// defaults to nil.
 	//
 	// The task name should describe in a human readable way what the task does.
@@ -319,16 +318,16 @@ type Task interface {
 	//
 	// This function may only be called before the @task is first used in a
 	// thread other than the one it was constructed in.
-	SetNameTask(name string)
-	// SetPriorityTask sets @task's priority. If you do not call this, it will
+	SetName(name string)
+	// SetPriority sets @task's priority. If you do not call this, it will
 	// default to G_PRIORITY_DEFAULT.
 	//
 	// This will affect the priority of #GSources created with
 	// g_task_attach_source() and the scheduling of tasks run in threads, and
 	// can also be explicitly retrieved later via g_task_get_priority().
-	SetPriorityTask(priority int)
-	// SetReturnOnCancelTask sets or clears @task's return-on-cancel flag. This
-	// is only meaningful for tasks run via g_task_run_in_thread() or
+	SetPriority(priority int)
+	// SetReturnOnCancel sets or clears @task's return-on-cancel flag. This is
+	// only meaningful for tasks run via g_task_run_in_thread() or
 	// g_task_run_in_thread_sync().
 	//
 	// If @return_on_cancel is true, then cancelling @task's #GCancellable will
@@ -353,13 +352,13 @@ type Task interface {
 	// g_task_run_in_thread()/g_task_run_in_thread_sync(), then the ThreadFunc
 	// will still be run (for consistency), but the task will also be completed
 	// right away.
-	SetReturnOnCancelTask(returnOnCancel bool) bool
-	// SetSourceTagTask sets @task's source tag. You can use this to tag a task
+	SetReturnOnCancel(returnOnCancel bool) bool
+	// SetSourceTag sets @task's source tag. You can use this to tag a task
 	// return value with a particular pointer (usually a pointer to the function
 	// doing the tagging) and then later check it using g_task_get_source_tag()
 	// (or g_async_result_is_tagged()) in the task's "finish" function, to
 	// figure out if the response came from a particular place.
-	SetSourceTagTask(sourceTag interface{})
+	SetSourceTag(sourceTag interface{})
 }
 
 // task implements the Task class.
@@ -415,6 +414,10 @@ func NewTask(sourceObject gextras.Objector, cancellable Cancellable, callback As
 	_task = WrapTask(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _task
+}
+
+func (t task) AsAsyncResult() AsyncResult {
+	return WrapAsyncResult(gextras.InternObject(t))
 }
 
 func (t task) Cancellable() Cancellable {
@@ -577,7 +580,7 @@ func (t task) TaskData() interface{} {
 	return _gpointer
 }
 
-func (t task) HadErrorTask() bool {
+func (t task) HadError() bool {
 	var _arg0 *C.GTask   // out
 	var _cret C.gboolean // in
 
@@ -594,7 +597,7 @@ func (t task) HadErrorTask() bool {
 	return _ok
 }
 
-func (t task) PropagateBooleanTask() error {
+func (t task) PropagateBoolean() error {
 	var _arg0 *C.GTask  // out
 	var _cerr *C.GError // in
 
@@ -609,7 +612,7 @@ func (t task) PropagateBooleanTask() error {
 	return _goerr
 }
 
-func (t task) PropagateIntTask() (int, error) {
+func (t task) PropagateInt() (int, error) {
 	var _arg0 *C.GTask  // out
 	var _cret C.gssize  // in
 	var _cerr *C.GError // in
@@ -627,7 +630,7 @@ func (t task) PropagateIntTask() (int, error) {
 	return _gssize, _goerr
 }
 
-func (t task) PropagatePointerTask() (interface{}, error) {
+func (t task) PropagatePointer() (interface{}, error) {
 	var _arg0 *C.GTask   // out
 	var _cret C.gpointer // in
 	var _cerr *C.GError  // in
@@ -645,7 +648,7 @@ func (t task) PropagatePointerTask() (interface{}, error) {
 	return _gpointer, _goerr
 }
 
-func (t task) PropagateValueTask() (externglib.Value, error) {
+func (t task) PropagateValue() (externglib.Value, error) {
 	var _arg0 *C.GTask  // out
 	var _arg1 C.GValue  // in
 	var _cerr *C.GError // in
@@ -673,7 +676,7 @@ func (t task) PropagateValueTask() (externglib.Value, error) {
 	return _value, _goerr
 }
 
-func (t task) ReturnBooleanTask(result bool) {
+func (t task) ReturnBoolean(result bool) {
 	var _arg0 *C.GTask   // out
 	var _arg1 C.gboolean // out
 
@@ -685,7 +688,7 @@ func (t task) ReturnBooleanTask(result bool) {
 	C.g_task_return_boolean(_arg0, _arg1)
 }
 
-func (t task) ReturnErrorTask(err error) {
+func (t task) ReturnError(err error) {
 	var _arg0 *C.GTask  // out
 	var _arg1 *C.GError // out
 
@@ -695,7 +698,7 @@ func (t task) ReturnErrorTask(err error) {
 	C.g_task_return_error(_arg0, _arg1)
 }
 
-func (t task) ReturnErrorIfCancelledTask() bool {
+func (t task) ReturnErrorIfCancelled() bool {
 	var _arg0 *C.GTask   // out
 	var _cret C.gboolean // in
 
@@ -712,7 +715,7 @@ func (t task) ReturnErrorIfCancelledTask() bool {
 	return _ok
 }
 
-func (t task) ReturnIntTask(result int) {
+func (t task) ReturnInt(result int) {
 	var _arg0 *C.GTask // out
 	var _arg1 C.gssize // out
 
@@ -722,7 +725,7 @@ func (t task) ReturnIntTask(result int) {
 	C.g_task_return_int(_arg0, _arg1)
 }
 
-func (t task) ReturnValueTask(result externglib.Value) {
+func (t task) ReturnValue(result externglib.Value) {
 	var _arg0 *C.GTask  // out
 	var _arg1 *C.GValue // out
 
@@ -732,7 +735,7 @@ func (t task) ReturnValueTask(result externglib.Value) {
 	C.g_task_return_value(_arg0, _arg1)
 }
 
-func (t task) SetCheckCancellableTask(checkCancellable bool) {
+func (t task) SetCheckCancellable(checkCancellable bool) {
 	var _arg0 *C.GTask   // out
 	var _arg1 C.gboolean // out
 
@@ -744,7 +747,7 @@ func (t task) SetCheckCancellableTask(checkCancellable bool) {
 	C.g_task_set_check_cancellable(_arg0, _arg1)
 }
 
-func (t task) SetNameTask(name string) {
+func (t task) SetName(name string) {
 	var _arg0 *C.GTask // out
 	var _arg1 *C.gchar // out
 
@@ -755,7 +758,7 @@ func (t task) SetNameTask(name string) {
 	C.g_task_set_name(_arg0, _arg1)
 }
 
-func (t task) SetPriorityTask(priority int) {
+func (t task) SetPriority(priority int) {
 	var _arg0 *C.GTask // out
 	var _arg1 C.gint   // out
 
@@ -765,7 +768,7 @@ func (t task) SetPriorityTask(priority int) {
 	C.g_task_set_priority(_arg0, _arg1)
 }
 
-func (t task) SetReturnOnCancelTask(returnOnCancel bool) bool {
+func (t task) SetReturnOnCancel(returnOnCancel bool) bool {
 	var _arg0 *C.GTask   // out
 	var _arg1 C.gboolean // out
 	var _cret C.gboolean // in
@@ -786,7 +789,7 @@ func (t task) SetReturnOnCancelTask(returnOnCancel bool) bool {
 	return _ok
 }
 
-func (t task) SetSourceTagTask(sourceTag interface{}) {
+func (t task) SetSourceTag(sourceTag interface{}) {
 	var _arg0 *C.GTask   // out
 	var _arg1 C.gpointer // out
 
@@ -794,8 +797,4 @@ func (t task) SetSourceTagTask(sourceTag interface{}) {
 	_arg1 = (C.gpointer)(box.Assign(sourceTag))
 
 	C.g_task_set_source_tag(_arg0, _arg1)
-}
-
-func (t task) AsAsyncResult() AsyncResult {
-	return WrapAsyncResult(gextras.InternObject(t))
 }

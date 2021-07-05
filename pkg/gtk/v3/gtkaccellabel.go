@@ -73,22 +73,22 @@ type AccelLabel interface {
 	// This is used by menus to align all of the MenuItem widgets, and shouldn't
 	// be needed by applications.
 	AccelWidth() uint
-	// RefetchAccelLabel recreates the string representing the accelerator keys.
-	// This should not be needed since the string is automatically updated
-	// whenever accelerators are added or removed from the associated widget.
-	RefetchAccelLabel() bool
-	// SetAccelAccelLabel: manually sets a keyval and modifier mask as the
-	// accelerator rendered by @accel_label.
+	// Refetch recreates the string representing the accelerator keys. This
+	// should not be needed since the string is automatically updated whenever
+	// accelerators are added or removed from the associated widget.
+	Refetch() bool
+	// SetAccel: manually sets a keyval and modifier mask as the accelerator
+	// rendered by @accel_label.
 	//
 	// If a keyval and modifier are explicitly set then these values are used
 	// regardless of any associated accel closure or widget.
 	//
 	// Providing an @accelerator_key of 0 removes the manual setting.
-	SetAccelAccelLabel(acceleratorKey uint, acceleratorMods gdk.ModifierType)
-	// SetAccelWidgetAccelLabel sets the widget to be monitored by this
-	// accelerator label. Passing nil for @accel_widget will dissociate
-	// @accel_label from its current widget, if any.
-	SetAccelWidgetAccelLabel(accelWidget Widget)
+	SetAccel(acceleratorKey uint, acceleratorMods gdk.ModifierType)
+	// SetAccelWidget sets the widget to be monitored by this accelerator label.
+	// Passing nil for @accel_widget will dissociate @accel_label from its
+	// current widget, if any.
+	SetAccelWidget(accelWidget Widget)
 }
 
 // accelLabel implements the AccelLabel class.
@@ -125,6 +125,10 @@ func NewAccelLabel(_string string) AccelLabel {
 	_accelLabel = WrapAccelLabel(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _accelLabel
+}
+
+func (a accelLabel) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(a))
 }
 
 func (a accelLabel) Accel() (uint, gdk.ModifierType) {
@@ -175,7 +179,7 @@ func (a accelLabel) AccelWidth() uint {
 	return _guint
 }
 
-func (a accelLabel) RefetchAccelLabel() bool {
+func (a accelLabel) Refetch() bool {
 	var _arg0 *C.GtkAccelLabel // out
 	var _cret C.gboolean       // in
 
@@ -192,7 +196,7 @@ func (a accelLabel) RefetchAccelLabel() bool {
 	return _ok
 }
 
-func (a accelLabel) SetAccelAccelLabel(acceleratorKey uint, acceleratorMods gdk.ModifierType) {
+func (a accelLabel) SetAccel(acceleratorKey uint, acceleratorMods gdk.ModifierType) {
 	var _arg0 *C.GtkAccelLabel  // out
 	var _arg1 C.guint           // out
 	var _arg2 C.GdkModifierType // out
@@ -204,7 +208,7 @@ func (a accelLabel) SetAccelAccelLabel(acceleratorKey uint, acceleratorMods gdk.
 	C.gtk_accel_label_set_accel(_arg0, _arg1, _arg2)
 }
 
-func (a accelLabel) SetAccelWidgetAccelLabel(accelWidget Widget) {
+func (a accelLabel) SetAccelWidget(accelWidget Widget) {
 	var _arg0 *C.GtkAccelLabel // out
 	var _arg1 *C.GtkWidget     // out
 
@@ -212,8 +216,4 @@ func (a accelLabel) SetAccelWidgetAccelLabel(accelWidget Widget) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(accelWidget.Native()))
 
 	C.gtk_accel_label_set_accel_widget(_arg0, _arg1)
-}
-
-func (a accelLabel) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(a))
 }

@@ -83,8 +83,8 @@ type Seat interface {
 	Keyboard() Device
 	// Pointer returns the master device that routes pointer events.
 	Pointer() Device
-	// UngrabSeat releases a grab added through gdk_seat_grab().
-	UngrabSeat()
+	// Ungrab releases a grab added through gdk_seat_grab().
+	Ungrab()
 }
 
 // seat implements the Seat class.
@@ -166,7 +166,7 @@ func (s seat) Pointer() Device {
 	return _device
 }
 
-func (s seat) UngrabSeat() {
+func (s seat) Ungrab() {
 	var _arg0 *C.GdkSeat // out
 
 	_arg0 = (*C.GdkSeat)(unsafe.Pointer(s.Native()))

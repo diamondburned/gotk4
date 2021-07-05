@@ -38,9 +38,8 @@ type Invisible interface {
 
 	// Screen returns the Screen object associated with @invisible
 	Screen() gdk.Screen
-	// SetScreenInvisible sets the Screen where the Invisible object will be
-	// displayed.
-	SetScreenInvisible(screen gdk.Screen)
+	// SetScreen sets the Screen where the Invisible object will be displayed.
+	SetScreen(screen gdk.Screen)
 }
 
 // invisible implements the Invisible class.
@@ -91,6 +90,10 @@ func NewInvisibleForScreen(screen gdk.Screen) Invisible {
 	return _invisible
 }
 
+func (i invisible) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(i))
+}
+
 func (i invisible) Screen() gdk.Screen {
 	var _arg0 *C.GtkInvisible // out
 	var _cret *C.GdkScreen    // in
@@ -106,7 +109,7 @@ func (i invisible) Screen() gdk.Screen {
 	return _screen
 }
 
-func (i invisible) SetScreenInvisible(screen gdk.Screen) {
+func (i invisible) SetScreen(screen gdk.Screen) {
 	var _arg0 *C.GtkInvisible // out
 	var _arg1 *C.GdkScreen    // out
 
@@ -114,8 +117,4 @@ func (i invisible) SetScreenInvisible(screen gdk.Screen) {
 	_arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
 
 	C.gtk_invisible_set_screen(_arg0, _arg1)
-}
-
-func (i invisible) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(i))
 }

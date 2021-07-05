@@ -29,13 +29,12 @@ type X11Keymap interface {
 	// event. This is only needed for code processing raw X events, since
 	// EventKey directly includes an is_modifier field.
 	GroupForState(state uint) int
-	// KeyIsModifierX11Keymap determines whether a particular key code
-	// represents a key that is a modifier. That is, it’s a key that normally
-	// just affects the keyboard state and the behavior of other keys rather
-	// than producing a direct effect itself. This is only needed for code
-	// processing raw X events, since EventKey directly includes an is_modifier
-	// field.
-	KeyIsModifierX11Keymap(keycode uint) bool
+	// KeyIsModifier determines whether a particular key code represents a key
+	// that is a modifier. That is, it’s a key that normally just affects the
+	// keyboard state and the behavior of other keys rather than producing a
+	// direct effect itself. This is only needed for code processing raw X
+	// events, since EventKey directly includes an is_modifier field.
+	KeyIsModifier(keycode uint) bool
 }
 
 // x11Keymap implements the X11Keymap class.
@@ -74,7 +73,7 @@ func (k x11Keymap) GroupForState(state uint) int {
 	return _gint
 }
 
-func (k x11Keymap) KeyIsModifierX11Keymap(keycode uint) bool {
+func (k x11Keymap) KeyIsModifier(keycode uint) bool {
 	var _arg0 *C.GdkKeymap // out
 	var _arg1 C.guint      // out
 	var _cret C.gboolean   // in

@@ -69,28 +69,28 @@ type CellView interface {
 	// Model returns the model for @cell_view. If no model is used nil is
 	// returned.
 	Model() TreeModel
-	// SetDisplayedRowCellView sets the row of the model that is currently
-	// displayed by the CellView. If the path is unset, then the contents of the
-	// cellview “stick” at their last value; this is not normally a desired
-	// result, but may be a needed intermediate state if say, the model for the
-	// CellView becomes temporarily empty.
-	SetDisplayedRowCellView(path *TreePath)
-	// SetDrawSensitiveCellView sets whether @cell_view should draw all of its
-	// cells in a sensitive state, this is used by ComboBox menus to ensure that
-	// rows with insensitive cells that contain children appear sensitive in the
+	// SetDisplayedRow sets the row of the model that is currently displayed by
+	// the CellView. If the path is unset, then the contents of the cellview
+	// “stick” at their last value; this is not normally a desired result, but
+	// may be a needed intermediate state if say, the model for the CellView
+	// becomes temporarily empty.
+	SetDisplayedRow(path *TreePath)
+	// SetDrawSensitive sets whether @cell_view should draw all of its cells in
+	// a sensitive state, this is used by ComboBox menus to ensure that rows
+	// with insensitive cells that contain children appear sensitive in the
 	// parent menu item.
-	SetDrawSensitiveCellView(drawSensitive bool)
-	// SetFitModelCellView sets whether @cell_view should request space to fit
-	// the entire TreeModel.
+	SetDrawSensitive(drawSensitive bool)
+	// SetFitModel sets whether @cell_view should request space to fit the
+	// entire TreeModel.
 	//
 	// This is used by ComboBox to ensure that the cell view displayed on the
 	// combo box’s button always gets enough space and does not resize when
 	// selection changes.
-	SetFitModelCellView(fitModel bool)
-	// SetModelCellView sets the model for @cell_view. If @cell_view already has
-	// a model set, it will remove it before setting the new model. If @model is
-	// nil, then it will unset the old model.
-	SetModelCellView(model TreeModel)
+	SetFitModel(fitModel bool)
+	// SetModel sets the model for @cell_view. If @cell_view already has a model
+	// set, it will remove it before setting the new model. If @model is nil,
+	// then it will unset the old model.
+	SetModel(model TreeModel)
 }
 
 // cellView implements the CellView class.
@@ -202,6 +202,26 @@ func NewCellViewWithTexture(texture gdk.Texture) CellView {
 	return _cellView
 }
 
+func (c cellView) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(c))
+}
+
+func (c cellView) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(c))
+}
+
+func (c cellView) AsCellLayout() CellLayout {
+	return WrapCellLayout(gextras.InternObject(c))
+}
+
+func (c cellView) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(c))
+}
+
+func (c cellView) AsOrientable() Orientable {
+	return WrapOrientable(gextras.InternObject(c))
+}
+
 func (c cellView) DisplayedRow() *TreePath {
 	var _arg0 *C.GtkCellView // out
 	var _cret *C.GtkTreePath // in
@@ -269,7 +289,7 @@ func (c cellView) Model() TreeModel {
 	return _treeModel
 }
 
-func (c cellView) SetDisplayedRowCellView(path *TreePath) {
+func (c cellView) SetDisplayedRow(path *TreePath) {
 	var _arg0 *C.GtkCellView // out
 	var _arg1 *C.GtkTreePath // out
 
@@ -279,7 +299,7 @@ func (c cellView) SetDisplayedRowCellView(path *TreePath) {
 	C.gtk_cell_view_set_displayed_row(_arg0, _arg1)
 }
 
-func (c cellView) SetDrawSensitiveCellView(drawSensitive bool) {
+func (c cellView) SetDrawSensitive(drawSensitive bool) {
 	var _arg0 *C.GtkCellView // out
 	var _arg1 C.gboolean     // out
 
@@ -291,7 +311,7 @@ func (c cellView) SetDrawSensitiveCellView(drawSensitive bool) {
 	C.gtk_cell_view_set_draw_sensitive(_arg0, _arg1)
 }
 
-func (c cellView) SetFitModelCellView(fitModel bool) {
+func (c cellView) SetFitModel(fitModel bool) {
 	var _arg0 *C.GtkCellView // out
 	var _arg1 C.gboolean     // out
 
@@ -303,7 +323,7 @@ func (c cellView) SetFitModelCellView(fitModel bool) {
 	C.gtk_cell_view_set_fit_model(_arg0, _arg1)
 }
 
-func (c cellView) SetModelCellView(model TreeModel) {
+func (c cellView) SetModel(model TreeModel) {
 	var _arg0 *C.GtkCellView  // out
 	var _arg1 *C.GtkTreeModel // out
 
@@ -311,24 +331,4 @@ func (c cellView) SetModelCellView(model TreeModel) {
 	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer(model.Native()))
 
 	C.gtk_cell_view_set_model(_arg0, _arg1)
-}
-
-func (c cellView) AsAccessible() Accessible {
-	return WrapAccessible(gextras.InternObject(c))
-}
-
-func (c cellView) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(c))
-}
-
-func (c cellView) AsCellLayout() CellLayout {
-	return WrapCellLayout(gextras.InternObject(c))
-}
-
-func (c cellView) AsConstraintTarget() ConstraintTarget {
-	return WrapConstraintTarget(gextras.InternObject(c))
-}
-
-func (c cellView) AsOrientable() Orientable {
-	return WrapOrientable(gextras.InternObject(c))
 }

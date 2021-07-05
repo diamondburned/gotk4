@@ -37,21 +37,20 @@ func init() {
 type Accessible interface {
 	atk.Object
 
-	// ConnectWidgetDestroyedAccessible: this function specifies the callback
-	// function to be called when the widget corresponding to a GtkAccessible is
-	// destroyed.
+	// ConnectWidgetDestroyed: this function specifies the callback function to
+	// be called when the widget corresponding to a GtkAccessible is destroyed.
 	//
 	// Deprecated: since version 3.4.
-	ConnectWidgetDestroyedAccessible()
+	ConnectWidgetDestroyed()
 	// Widget gets the Widget corresponding to the Accessible. The returned
 	// widget does not have a reference added, so you do not need to unref it.
 	Widget() Widget
-	// SetWidgetAccessible sets the Widget corresponding to the Accessible.
+	// SetWidget sets the Widget corresponding to the Accessible.
 	//
 	// @accessible will not hold a reference to @widget. It is the caller’s
 	// responsibility to ensure that when @widget is destroyed, the widget is
 	// unset by calling this function again with @widget set to nil.
-	SetWidgetAccessible(widget Widget)
+	SetWidget(widget Widget)
 }
 
 // accessible implements the Accessible class.
@@ -73,7 +72,7 @@ func marshalAccessible(p uintptr) (interface{}, error) {
 	return WrapAccessible(obj), nil
 }
 
-func (a accessible) ConnectWidgetDestroyedAccessible() {
+func (a accessible) ConnectWidgetDestroyed() {
 	var _arg0 *C.GtkAccessible // out
 
 	_arg0 = (*C.GtkAccessible)(unsafe.Pointer(a.Native()))
@@ -96,7 +95,7 @@ func (a accessible) Widget() Widget {
 	return _widget
 }
 
-func (a accessible) SetWidgetAccessible(widget Widget) {
+func (a accessible) SetWidget(widget Widget) {
 	var _arg0 *C.GtkAccessible // out
 	var _arg1 *C.GtkWidget     // out
 

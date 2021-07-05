@@ -132,9 +132,9 @@ type Application interface {
 	// AsActionGroup casts the class to the gio.ActionGroup interface.
 	AsActionGroup() gio.ActionGroup
 
-	// AddAcceleratorApplication installs an accelerator that will cause the
-	// named action to be activated when the key combination specificed by
-	// @accelerator is pressed.
+	// AddAccelerator installs an accelerator that will cause the named action
+	// to be activated when the key combination specificed by @accelerator is
+	// pressed.
 	//
 	// @accelerator must be a string that can be parsed by
 	// gtk_accelerator_parse(), e.g. "<Primary>q" or “<Control><Alt>p”.
@@ -150,8 +150,8 @@ type Application interface {
 	// calling this function for each accelerator.
 	//
 	// Deprecated: since version 3.14.
-	AddAcceleratorApplication(accelerator string, actionName string, parameter *glib.Variant)
-	// AddWindowApplication adds a window to @application.
+	AddAccelerator(accelerator string, actionName string, parameter *glib.Variant)
+	// AddWindow adds a window to @application.
 	//
 	// This call can only happen after the @application has started; typically,
 	// you should add new application windows in response to the emission of the
@@ -165,7 +165,7 @@ type Application interface {
 	// with gtk_application_remove_window().
 	//
 	// GTK+ will keep the @application running as long as it has any windows.
-	AddWindowApplication(window Window)
+	AddWindow(window Window)
 	// AccelsForAction gets the accelerators that are currently associated with
 	// the given action.
 	AccelsForAction(detailedActionName string) []string
@@ -206,9 +206,9 @@ type Application interface {
 	// The ID of a ApplicationWindow can be retrieved with
 	// gtk_application_window_get_id().
 	WindowByID(id uint) Window
-	// InhibitApplication: inform the session manager that certain types of
-	// actions should be inhibited. This is not guaranteed to work on all
-	// platforms and for all types of actions.
+	// Inhibit: inform the session manager that certain types of actions should
+	// be inhibited. This is not guaranteed to work on all platforms and for all
+	// types of actions.
 	//
 	// Applications should invoke this method when they begin an operation that
 	// should not be interrupted, such as creating a CD or DVD. The types of
@@ -227,19 +227,18 @@ type Application interface {
 	//
 	// If @window is given, the session manager may point the user to this
 	// window to find out more about why the action is inhibited.
-	InhibitApplication(window Window, flags ApplicationInhibitFlags, reason string) uint
-	// IsInhibitedApplication determines if any of the actions specified in
-	// @flags are currently inhibited (possibly by another application).
+	Inhibit(window Window, flags ApplicationInhibitFlags, reason string) uint
+	// IsInhibited determines if any of the actions specified in @flags are
+	// currently inhibited (possibly by another application).
 	//
 	// Note that this information may not be available (for example when the
 	// application is running in a sandbox).
-	IsInhibitedApplication(flags ApplicationInhibitFlags) bool
-	// ListActionDescriptionsApplication lists the detailed action names which
-	// have associated accelerators. See
-	// gtk_application_set_accels_for_action().
-	ListActionDescriptionsApplication() []string
-	// PrefersAppMenuApplication determines if the desktop environment in which
-	// the application is running would prefer an application menu be shown.
+	IsInhibited(flags ApplicationInhibitFlags) bool
+	// ListActionDescriptions lists the detailed action names which have
+	// associated accelerators. See gtk_application_set_accels_for_action().
+	ListActionDescriptions() []string
+	// PrefersAppMenu determines if the desktop environment in which the
+	// application is running would prefer an application menu be shown.
 	//
 	// If this function returns true then the application should call
 	// gtk_application_set_app_menu() with the contents of an application menu,
@@ -270,31 +269,30 @@ type Application interface {
 	// created automatically with the "usual" contents of that menu typical to
 	// most Mac OS applications. If you call gtk_application_set_app_menu()
 	// anyway, then this menu will be replaced with your own.
-	PrefersAppMenuApplication() bool
-	// RemoveAcceleratorApplication removes an accelerator that has been
-	// previously added with gtk_application_add_accelerator().
+	PrefersAppMenu() bool
+	// RemoveAccelerator removes an accelerator that has been previously added
+	// with gtk_application_add_accelerator().
 	//
 	// Deprecated: since version 3.14.
-	RemoveAcceleratorApplication(actionName string, parameter *glib.Variant)
-	// RemoveWindowApplication: remove a window from @application.
+	RemoveAccelerator(actionName string, parameter *glib.Variant)
+	// RemoveWindow: remove a window from @application.
 	//
 	// If @window belongs to @application then this call is equivalent to
 	// setting the Window:application property of @window to nil.
 	//
 	// The application may stop running as a result of a call to this function.
-	RemoveWindowApplication(window Window)
-	// SetAccelsForActionApplication sets zero or more keyboard accelerators
-	// that will trigger the given action. The first item in @accels will be the
-	// primary accelerator, which may be displayed in the UI.
+	RemoveWindow(window Window)
+	// SetAccelsForAction sets zero or more keyboard accelerators that will
+	// trigger the given action. The first item in @accels will be the primary
+	// accelerator, which may be displayed in the UI.
 	//
 	// To remove all accelerators for an action, use an empty, zero-terminated
 	// array for @accels.
 	//
 	// For the @detailed_action_name, see g_action_parse_detailed_name() and
 	// g_action_print_detailed_name().
-	SetAccelsForActionApplication(detailedActionName string, accels []string)
-	// SetAppMenuApplication sets or unsets the application menu for
-	// @application.
+	SetAccelsForAction(detailedActionName string, accels []string)
+	// SetAppMenu sets or unsets the application menu for @application.
 	//
 	// This can only be done in the primary instance of the application, after
 	// it has been registered. #GApplication::startup is a good place to call
@@ -310,9 +308,8 @@ type Application interface {
 	//
 	// Use the base Map interface to add actions, to respond to the user
 	// selecting these menu items.
-	SetAppMenuApplication(appMenu gio.MenuModel)
-	// SetMenubarApplication sets or unsets the menubar for windows of
-	// @application.
+	SetAppMenu(appMenu gio.MenuModel)
+	// SetMenubar sets or unsets the menubar for windows of @application.
 	//
 	// This is a menubar in the traditional sense.
 	//
@@ -330,11 +327,11 @@ type Application interface {
 	//
 	// Use the base Map interface to add actions, to respond to the user
 	// selecting these menu items.
-	SetMenubarApplication(menubar gio.MenuModel)
-	// UninhibitApplication removes an inhibitor that has been established with
+	SetMenubar(menubar gio.MenuModel)
+	// Uninhibit removes an inhibitor that has been established with
 	// gtk_application_inhibit(). Inhibitors are also cleared when the
 	// application exits.
-	UninhibitApplication(cookie uint)
+	Uninhibit(cookie uint)
 }
 
 // application implements the Application class.
@@ -396,7 +393,11 @@ func NewApplication(applicationId string, flags gio.ApplicationFlags) Applicatio
 	return _application
 }
 
-func (a application) AddAcceleratorApplication(accelerator string, actionName string, parameter *glib.Variant) {
+func (a application) AsActionGroup() gio.ActionGroup {
+	return gio.WrapActionGroup(gextras.InternObject(a))
+}
+
+func (a application) AddAccelerator(accelerator string, actionName string, parameter *glib.Variant) {
 	var _arg0 *C.GtkApplication // out
 	var _arg1 *C.gchar          // out
 	var _arg2 *C.gchar          // out
@@ -412,7 +413,7 @@ func (a application) AddAcceleratorApplication(accelerator string, actionName st
 	C.gtk_application_add_accelerator(_arg0, _arg1, _arg2, _arg3)
 }
 
-func (a application) AddWindowApplication(window Window) {
+func (a application) AddWindow(window Window) {
 	var _arg0 *C.GtkApplication // out
 	var _arg1 *C.GtkWindow      // out
 
@@ -564,7 +565,7 @@ func (a application) WindowByID(id uint) Window {
 	return _window
 }
 
-func (a application) InhibitApplication(window Window, flags ApplicationInhibitFlags, reason string) uint {
+func (a application) Inhibit(window Window, flags ApplicationInhibitFlags, reason string) uint {
 	var _arg0 *C.GtkApplication            // out
 	var _arg1 *C.GtkWindow                 // out
 	var _arg2 C.GtkApplicationInhibitFlags // out
@@ -586,7 +587,7 @@ func (a application) InhibitApplication(window Window, flags ApplicationInhibitF
 	return _guint
 }
 
-func (a application) IsInhibitedApplication(flags ApplicationInhibitFlags) bool {
+func (a application) IsInhibited(flags ApplicationInhibitFlags) bool {
 	var _arg0 *C.GtkApplication            // out
 	var _arg1 C.GtkApplicationInhibitFlags // out
 	var _cret C.gboolean                   // in
@@ -605,7 +606,7 @@ func (a application) IsInhibitedApplication(flags ApplicationInhibitFlags) bool 
 	return _ok
 }
 
-func (a application) ListActionDescriptionsApplication() []string {
+func (a application) ListActionDescriptions() []string {
 	var _arg0 *C.GtkApplication // out
 	var _cret **C.gchar
 
@@ -633,7 +634,7 @@ func (a application) ListActionDescriptionsApplication() []string {
 	return _utf8s
 }
 
-func (a application) PrefersAppMenuApplication() bool {
+func (a application) PrefersAppMenu() bool {
 	var _arg0 *C.GtkApplication // out
 	var _cret C.gboolean        // in
 
@@ -650,7 +651,7 @@ func (a application) PrefersAppMenuApplication() bool {
 	return _ok
 }
 
-func (a application) RemoveAcceleratorApplication(actionName string, parameter *glib.Variant) {
+func (a application) RemoveAccelerator(actionName string, parameter *glib.Variant) {
 	var _arg0 *C.GtkApplication // out
 	var _arg1 *C.gchar          // out
 	var _arg2 *C.GVariant       // out
@@ -663,7 +664,7 @@ func (a application) RemoveAcceleratorApplication(actionName string, parameter *
 	C.gtk_application_remove_accelerator(_arg0, _arg1, _arg2)
 }
 
-func (a application) RemoveWindowApplication(window Window) {
+func (a application) RemoveWindow(window Window) {
 	var _arg0 *C.GtkApplication // out
 	var _arg1 *C.GtkWindow      // out
 
@@ -673,7 +674,7 @@ func (a application) RemoveWindowApplication(window Window) {
 	C.gtk_application_remove_window(_arg0, _arg1)
 }
 
-func (a application) SetAccelsForActionApplication(detailedActionName string, accels []string) {
+func (a application) SetAccelsForAction(detailedActionName string, accels []string) {
 	var _arg0 *C.GtkApplication // out
 	var _arg1 *C.gchar          // out
 	var _arg2 **C.gchar
@@ -694,7 +695,7 @@ func (a application) SetAccelsForActionApplication(detailedActionName string, ac
 	C.gtk_application_set_accels_for_action(_arg0, _arg1, _arg2)
 }
 
-func (a application) SetAppMenuApplication(appMenu gio.MenuModel) {
+func (a application) SetAppMenu(appMenu gio.MenuModel) {
 	var _arg0 *C.GtkApplication // out
 	var _arg1 *C.GMenuModel     // out
 
@@ -704,7 +705,7 @@ func (a application) SetAppMenuApplication(appMenu gio.MenuModel) {
 	C.gtk_application_set_app_menu(_arg0, _arg1)
 }
 
-func (a application) SetMenubarApplication(menubar gio.MenuModel) {
+func (a application) SetMenubar(menubar gio.MenuModel) {
 	var _arg0 *C.GtkApplication // out
 	var _arg1 *C.GMenuModel     // out
 
@@ -714,7 +715,7 @@ func (a application) SetMenubarApplication(menubar gio.MenuModel) {
 	C.gtk_application_set_menubar(_arg0, _arg1)
 }
 
-func (a application) UninhibitApplication(cookie uint) {
+func (a application) Uninhibit(cookie uint) {
 	var _arg0 *C.GtkApplication // out
 	var _arg1 C.guint           // out
 
@@ -722,8 +723,4 @@ func (a application) UninhibitApplication(cookie uint) {
 	_arg1 = C.guint(cookie)
 
 	C.gtk_application_uninhibit(_arg0, _arg1)
-}
-
-func (a application) AsActionGroup() gio.ActionGroup {
-	return gio.WrapActionGroup(gextras.InternObject(a))
 }

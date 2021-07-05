@@ -44,20 +44,18 @@ type ThemedIcon interface {
 	// AsIcon casts the class to the Icon interface.
 	AsIcon() Icon
 
-	// AppendNameThemedIcon: append a name to the list of icons from within
-	// @icon.
+	// AppendName: append a name to the list of icons from within @icon.
 	//
 	// Note that doing so invalidates the hash computed by prior calls to
 	// g_icon_hash().
-	AppendNameThemedIcon(iconname string)
+	AppendName(iconname string)
 	// Names gets the names of icons from within @icon.
 	Names() []string
-	// PrependNameThemedIcon: prepend a name to the list of icons from within
-	// @icon.
+	// PrependName: prepend a name to the list of icons from within @icon.
 	//
 	// Note that doing so invalidates the hash computed by prior calls to
 	// g_icon_hash().
-	PrependNameThemedIcon(iconname string)
+	PrependName(iconname string)
 }
 
 // themedIcon implements the ThemedIcon class.
@@ -153,7 +151,11 @@ func NewThemedIconWithDefaultFallbacks(iconname string) ThemedIcon {
 	return _themedIcon
 }
 
-func (i themedIcon) AppendNameThemedIcon(iconname string) {
+func (t themedIcon) AsIcon() Icon {
+	return WrapIcon(gextras.InternObject(t))
+}
+
+func (i themedIcon) AppendName(iconname string) {
 	var _arg0 *C.GThemedIcon // out
 	var _arg1 *C.char        // out
 
@@ -191,7 +193,7 @@ func (i themedIcon) Names() []string {
 	return _utf8s
 }
 
-func (i themedIcon) PrependNameThemedIcon(iconname string) {
+func (i themedIcon) PrependName(iconname string) {
 	var _arg0 *C.GThemedIcon // out
 	var _arg1 *C.char        // out
 
@@ -200,8 +202,4 @@ func (i themedIcon) PrependNameThemedIcon(iconname string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_themed_icon_prepend_name(_arg0, _arg1)
-}
-
-func (t themedIcon) AsIcon() Icon {
-	return WrapIcon(gextras.InternObject(t))
 }

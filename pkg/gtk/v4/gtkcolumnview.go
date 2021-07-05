@@ -94,9 +94,8 @@ type ColumnView interface {
 	// AsScrollable casts the class to the Scrollable interface.
 	AsScrollable() Scrollable
 
-	// AppendColumnColumnView appends the @column to the end of the columns in
-	// @self.
-	AppendColumnColumnView(column ColumnViewColumn)
+	// AppendColumn appends the @column to the end of the columns in @self.
+	AppendColumn(column ColumnViewColumn)
 	// EnableRubberband returns whether rows can be selected by dragging with
 	// the mouse.
 	EnableRubberband() bool
@@ -127,30 +126,28 @@ type ColumnView interface {
 	// gtk_sort_list_model_new (store, sorter); selection = gtk_no_selection_new
 	// (model); gtk_column_view_set_model (view, selection); “`
 	Sorter() Sorter
-	// InsertColumnColumnView inserts a column at the given position in the
-	// columns of @self.
+	// InsertColumn inserts a column at the given position in the columns of
+	// @self.
 	//
 	// If @column is already a column of @self, it will be repositioned.
-	InsertColumnColumnView(position uint, column ColumnViewColumn)
-	// RemoveColumnColumnView removes the @column from the list of columns of
-	// @self.
-	RemoveColumnColumnView(column ColumnViewColumn)
-	// SetEnableRubberbandColumnView sets whether selections can be changed by
-	// dragging with the mouse.
-	SetEnableRubberbandColumnView(enableRubberband bool)
-	// SetReorderableColumnView sets whether columns should be reorderable by
-	// dragging.
-	SetReorderableColumnView(reorderable bool)
-	// SetShowColumnSeparatorsColumnView sets whether the list should show
-	// separators between columns.
-	SetShowColumnSeparatorsColumnView(showColumnSeparators bool)
-	// SetShowRowSeparatorsColumnView sets whether the list should show
-	// separators between rows.
-	SetShowRowSeparatorsColumnView(showRowSeparators bool)
-	// SetSingleClickActivateColumnView sets whether rows should be activated on
-	// single click and selected on hover.
-	SetSingleClickActivateColumnView(singleClickActivate bool)
-	// SortByColumnColumnView sets the sorting of the view.
+	InsertColumn(position uint, column ColumnViewColumn)
+	// RemoveColumn removes the @column from the list of columns of @self.
+	RemoveColumn(column ColumnViewColumn)
+	// SetEnableRubberband sets whether selections can be changed by dragging
+	// with the mouse.
+	SetEnableRubberband(enableRubberband bool)
+	// SetReorderable sets whether columns should be reorderable by dragging.
+	SetReorderable(reorderable bool)
+	// SetShowColumnSeparators sets whether the list should show separators
+	// between columns.
+	SetShowColumnSeparators(showColumnSeparators bool)
+	// SetShowRowSeparators sets whether the list should show separators between
+	// rows.
+	SetShowRowSeparators(showRowSeparators bool)
+	// SetSingleClickActivate sets whether rows should be activated on single
+	// click and selected on hover.
+	SetSingleClickActivate(singleClickActivate bool)
+	// SortByColumn sets the sorting of the view.
 	//
 	// This function should be used to set up the initial sorting. At runtime,
 	// users can change the sorting of a column view by clicking on the list
@@ -162,7 +159,7 @@ type ColumnView interface {
 	// associate a sorter with the column.
 	//
 	// If @column is nil, the view will be unsorted.
-	SortByColumnColumnView(column ColumnViewColumn, direction SortType)
+	SortByColumn(column ColumnViewColumn, direction SortType)
 }
 
 // columnView implements the ColumnView class.
@@ -184,7 +181,23 @@ func marshalColumnView(p uintptr) (interface{}, error) {
 	return WrapColumnView(obj), nil
 }
 
-func (s columnView) AppendColumnColumnView(column ColumnViewColumn) {
+func (c columnView) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(c))
+}
+
+func (c columnView) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(c))
+}
+
+func (c columnView) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(c))
+}
+
+func (c columnView) AsScrollable() Scrollable {
+	return WrapScrollable(gextras.InternObject(c))
+}
+
+func (s columnView) AppendColumn(column ColumnViewColumn) {
 	var _arg0 *C.GtkColumnView       // out
 	var _arg1 *C.GtkColumnViewColumn // out
 
@@ -294,7 +307,7 @@ func (s columnView) Sorter() Sorter {
 	return _sorter
 }
 
-func (s columnView) InsertColumnColumnView(position uint, column ColumnViewColumn) {
+func (s columnView) InsertColumn(position uint, column ColumnViewColumn) {
 	var _arg0 *C.GtkColumnView       // out
 	var _arg1 C.guint                // out
 	var _arg2 *C.GtkColumnViewColumn // out
@@ -306,7 +319,7 @@ func (s columnView) InsertColumnColumnView(position uint, column ColumnViewColum
 	C.gtk_column_view_insert_column(_arg0, _arg1, _arg2)
 }
 
-func (s columnView) RemoveColumnColumnView(column ColumnViewColumn) {
+func (s columnView) RemoveColumn(column ColumnViewColumn) {
 	var _arg0 *C.GtkColumnView       // out
 	var _arg1 *C.GtkColumnViewColumn // out
 
@@ -316,7 +329,7 @@ func (s columnView) RemoveColumnColumnView(column ColumnViewColumn) {
 	C.gtk_column_view_remove_column(_arg0, _arg1)
 }
 
-func (s columnView) SetEnableRubberbandColumnView(enableRubberband bool) {
+func (s columnView) SetEnableRubberband(enableRubberband bool) {
 	var _arg0 *C.GtkColumnView // out
 	var _arg1 C.gboolean       // out
 
@@ -328,7 +341,7 @@ func (s columnView) SetEnableRubberbandColumnView(enableRubberband bool) {
 	C.gtk_column_view_set_enable_rubberband(_arg0, _arg1)
 }
 
-func (s columnView) SetReorderableColumnView(reorderable bool) {
+func (s columnView) SetReorderable(reorderable bool) {
 	var _arg0 *C.GtkColumnView // out
 	var _arg1 C.gboolean       // out
 
@@ -340,7 +353,7 @@ func (s columnView) SetReorderableColumnView(reorderable bool) {
 	C.gtk_column_view_set_reorderable(_arg0, _arg1)
 }
 
-func (s columnView) SetShowColumnSeparatorsColumnView(showColumnSeparators bool) {
+func (s columnView) SetShowColumnSeparators(showColumnSeparators bool) {
 	var _arg0 *C.GtkColumnView // out
 	var _arg1 C.gboolean       // out
 
@@ -352,7 +365,7 @@ func (s columnView) SetShowColumnSeparatorsColumnView(showColumnSeparators bool)
 	C.gtk_column_view_set_show_column_separators(_arg0, _arg1)
 }
 
-func (s columnView) SetShowRowSeparatorsColumnView(showRowSeparators bool) {
+func (s columnView) SetShowRowSeparators(showRowSeparators bool) {
 	var _arg0 *C.GtkColumnView // out
 	var _arg1 C.gboolean       // out
 
@@ -364,7 +377,7 @@ func (s columnView) SetShowRowSeparatorsColumnView(showRowSeparators bool) {
 	C.gtk_column_view_set_show_row_separators(_arg0, _arg1)
 }
 
-func (s columnView) SetSingleClickActivateColumnView(singleClickActivate bool) {
+func (s columnView) SetSingleClickActivate(singleClickActivate bool) {
 	var _arg0 *C.GtkColumnView // out
 	var _arg1 C.gboolean       // out
 
@@ -376,7 +389,7 @@ func (s columnView) SetSingleClickActivateColumnView(singleClickActivate bool) {
 	C.gtk_column_view_set_single_click_activate(_arg0, _arg1)
 }
 
-func (s columnView) SortByColumnColumnView(column ColumnViewColumn, direction SortType) {
+func (s columnView) SortByColumn(column ColumnViewColumn, direction SortType) {
 	var _arg0 *C.GtkColumnView       // out
 	var _arg1 *C.GtkColumnViewColumn // out
 	var _arg2 C.GtkSortType          // out
@@ -386,20 +399,4 @@ func (s columnView) SortByColumnColumnView(column ColumnViewColumn, direction So
 	_arg2 = C.GtkSortType(direction)
 
 	C.gtk_column_view_sort_by_column(_arg0, _arg1, _arg2)
-}
-
-func (c columnView) AsAccessible() Accessible {
-	return WrapAccessible(gextras.InternObject(c))
-}
-
-func (c columnView) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(c))
-}
-
-func (c columnView) AsConstraintTarget() ConstraintTarget {
-	return WrapConstraintTarget(gextras.InternObject(c))
-}
-
-func (c columnView) AsScrollable() Scrollable {
-	return WrapScrollable(gextras.InternObject(c))
 }

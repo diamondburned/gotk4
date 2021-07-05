@@ -552,9 +552,9 @@ func marshalImplementorIface(p uintptr) (interface{}, error) {
 type Object interface {
 	gextras.Objector
 
-	// AddRelationshipObject adds a relationship of the specified type with the
+	// AddRelationship adds a relationship of the specified type with the
 	// specified target.
-	AddRelationshipObject(relationship RelationType, target Object) bool
+	AddRelationship(relationship RelationType, target Object) bool
 	// AccessibleID gets the accessible id of the accessible.
 	AccessibleID() string
 	// Description gets the accessible description of the accessible.
@@ -564,12 +564,12 @@ type Object interface {
 	IndexInParent() int
 	// Layer gets the layer of the accessible.
 	//
-	// Deprecated: since version .
+	// Deprecated.
 	Layer() Layer
 	// MDIZOrder gets the zorder of the accessible. The value G_MININT will be
 	// returned if the layer of the accessible is not ATK_LAYER_MDI.
 	//
-	// Deprecated: since version .
+	// Deprecated.
 	MDIZOrder() int
 	// NAccessibleChildren gets the number of accessible children of the
 	// accessible.
@@ -590,57 +590,56 @@ type Object interface {
 	Parent() Object
 	// Role gets the role of the accessible.
 	Role() Role
-	// InitializeObject: this function is called when implementing subclasses of
+	// Initialize: this function is called when implementing subclasses of
 	// Object. It does initialization required for the new object. It is
 	// intended that this function should called only in the ..._new() functions
 	// used to create an instance of a subclass of Object
-	InitializeObject(data interface{})
-	// PeekParentObject gets the accessible parent of the accessible, if it has
-	// been manually assigned with atk_object_set_parent. Otherwise, this
-	// function returns nil.
+	Initialize(data interface{})
+	// PeekParent gets the accessible parent of the accessible, if it has been
+	// manually assigned with atk_object_set_parent. Otherwise, this function
+	// returns nil.
 	//
 	// This method is intended as an utility for ATK implementors, and not to be
 	// exposed to accessible tools. See atk_object_get_parent() for further
 	// reference.
-	PeekParentObject() Object
-	// RefAccessibleChildObject gets a reference to the specified accessible
-	// child of the object. The accessible children are 0-based so the first
-	// accessible child is at index 0, the second at index 1 and so on.
-	RefAccessibleChildObject(i int) Object
-	// RefRelationSetObject gets the RelationSet associated with the object.
-	RefRelationSetObject() RelationSet
-	// RefStateSetObject gets a reference to the state set of the accessible;
-	// the caller must unreference it when it is no longer needed.
-	RefStateSetObject() StateSet
-	// RemovePropertyChangeHandlerObject removes a property change handler.
+	PeekParent() Object
+	// RefAccessibleChild gets a reference to the specified accessible child of
+	// the object. The accessible children are 0-based so the first accessible
+	// child is at index 0, the second at index 1 and so on.
+	RefAccessibleChild(i int) Object
+	// RefRelationSet gets the RelationSet associated with the object.
+	RefRelationSet() RelationSet
+	// RefStateSet gets a reference to the state set of the accessible; the
+	// caller must unreference it when it is no longer needed.
+	RefStateSet() StateSet
+	// RemovePropertyChangeHandler removes a property change handler.
 	//
 	// Deprecated: since version 2.12.
-	RemovePropertyChangeHandlerObject(handlerId uint)
-	// RemoveRelationshipObject removes a relationship of the specified type
-	// with the specified target.
-	RemoveRelationshipObject(relationship RelationType, target Object) bool
-	// SetAccessibleIDObject sets the accessible ID of the accessible. This is
-	// not meant to be presented to the user, but to be an ID which is stable
-	// over application development. Typically, this is the gtkbuilder ID. Such
-	// an ID will be available for instance to identify a given well-known
-	// accessible object for tailored screen reading, or for automatic
-	// regression testing.
-	SetAccessibleIDObject(name string)
-	// SetDescriptionObject sets the accessible description of the accessible.
-	// You can't set the description to NULL. This is reserved for the initial
+	RemovePropertyChangeHandler(handlerId uint)
+	// RemoveRelationship removes a relationship of the specified type with the
+	// specified target.
+	RemoveRelationship(relationship RelationType, target Object) bool
+	// SetAccessibleID sets the accessible ID of the accessible. This is not
+	// meant to be presented to the user, but to be an ID which is stable over
+	// application development. Typically, this is the gtkbuilder ID. Such an ID
+	// will be available for instance to identify a given well-known accessible
+	// object for tailored screen reading, or for automatic regression testing.
+	SetAccessibleID(name string)
+	// SetDescription sets the accessible description of the accessible. You
+	// can't set the description to NULL. This is reserved for the initial
 	// value. In this aspect NULL is similar to ATK_ROLE_UNKNOWN. If you want to
 	// set the name to a empty value you can use "".
-	SetDescriptionObject(description string)
-	// SetNameObject sets the accessible name of the accessible. You can't set
-	// the name to NULL. This is reserved for the initial value. In this aspect
-	// NULL is similar to ATK_ROLE_UNKNOWN. If you want to set the name to a
-	// empty value you can use "".
-	SetNameObject(name string)
-	// SetParentObject sets the accessible parent of the accessible. @parent can
-	// be NULL.
-	SetParentObject(parent Object)
-	// SetRoleObject sets the role of the accessible.
-	SetRoleObject(role Role)
+	SetDescription(description string)
+	// SetName sets the accessible name of the accessible. You can't set the
+	// name to NULL. This is reserved for the initial value. In this aspect NULL
+	// is similar to ATK_ROLE_UNKNOWN. If you want to set the name to a empty
+	// value you can use "".
+	SetName(name string)
+	// SetParent sets the accessible parent of the accessible. @parent can be
+	// NULL.
+	SetParent(parent Object)
+	// SetRole sets the role of the accessible.
+	SetRole(role Role)
 }
 
 // object implements the Object class.
@@ -662,7 +661,7 @@ func marshalObject(p uintptr) (interface{}, error) {
 	return WrapObject(obj), nil
 }
 
-func (o object) AddRelationshipObject(relationship RelationType, target Object) bool {
+func (o object) AddRelationship(relationship RelationType, target Object) bool {
 	var _arg0 *C.AtkObject      // out
 	var _arg1 C.AtkRelationType // out
 	var _arg2 *C.AtkObject      // out
@@ -833,7 +832,7 @@ func (a object) Role() Role {
 	return _role
 }
 
-func (a object) InitializeObject(data interface{}) {
+func (a object) Initialize(data interface{}) {
 	var _arg0 *C.AtkObject // out
 	var _arg1 C.gpointer   // out
 
@@ -843,7 +842,7 @@ func (a object) InitializeObject(data interface{}) {
 	C.atk_object_initialize(_arg0, _arg1)
 }
 
-func (a object) PeekParentObject() Object {
+func (a object) PeekParent() Object {
 	var _arg0 *C.AtkObject // out
 	var _cret *C.AtkObject // in
 
@@ -858,7 +857,7 @@ func (a object) PeekParentObject() Object {
 	return _object
 }
 
-func (a object) RefAccessibleChildObject(i int) Object {
+func (a object) RefAccessibleChild(i int) Object {
 	var _arg0 *C.AtkObject // out
 	var _arg1 C.gint       // out
 	var _cret *C.AtkObject // in
@@ -875,7 +874,7 @@ func (a object) RefAccessibleChildObject(i int) Object {
 	return _object
 }
 
-func (a object) RefRelationSetObject() RelationSet {
+func (a object) RefRelationSet() RelationSet {
 	var _arg0 *C.AtkObject      // out
 	var _cret *C.AtkRelationSet // in
 
@@ -890,7 +889,7 @@ func (a object) RefRelationSetObject() RelationSet {
 	return _relationSet
 }
 
-func (a object) RefStateSetObject() StateSet {
+func (a object) RefStateSet() StateSet {
 	var _arg0 *C.AtkObject   // out
 	var _cret *C.AtkStateSet // in
 
@@ -905,7 +904,7 @@ func (a object) RefStateSetObject() StateSet {
 	return _stateSet
 }
 
-func (a object) RemovePropertyChangeHandlerObject(handlerId uint) {
+func (a object) RemovePropertyChangeHandler(handlerId uint) {
 	var _arg0 *C.AtkObject // out
 	var _arg1 C.guint      // out
 
@@ -915,7 +914,7 @@ func (a object) RemovePropertyChangeHandlerObject(handlerId uint) {
 	C.atk_object_remove_property_change_handler(_arg0, _arg1)
 }
 
-func (o object) RemoveRelationshipObject(relationship RelationType, target Object) bool {
+func (o object) RemoveRelationship(relationship RelationType, target Object) bool {
 	var _arg0 *C.AtkObject      // out
 	var _arg1 C.AtkRelationType // out
 	var _arg2 *C.AtkObject      // out
@@ -936,7 +935,7 @@ func (o object) RemoveRelationshipObject(relationship RelationType, target Objec
 	return _ok
 }
 
-func (a object) SetAccessibleIDObject(name string) {
+func (a object) SetAccessibleID(name string) {
 	var _arg0 *C.AtkObject // out
 	var _arg1 *C.gchar     // out
 
@@ -947,7 +946,7 @@ func (a object) SetAccessibleIDObject(name string) {
 	C.atk_object_set_accessible_id(_arg0, _arg1)
 }
 
-func (a object) SetDescriptionObject(description string) {
+func (a object) SetDescription(description string) {
 	var _arg0 *C.AtkObject // out
 	var _arg1 *C.gchar     // out
 
@@ -958,7 +957,7 @@ func (a object) SetDescriptionObject(description string) {
 	C.atk_object_set_description(_arg0, _arg1)
 }
 
-func (a object) SetNameObject(name string) {
+func (a object) SetName(name string) {
 	var _arg0 *C.AtkObject // out
 	var _arg1 *C.gchar     // out
 
@@ -969,7 +968,7 @@ func (a object) SetNameObject(name string) {
 	C.atk_object_set_name(_arg0, _arg1)
 }
 
-func (a object) SetParentObject(parent Object) {
+func (a object) SetParent(parent Object) {
 	var _arg0 *C.AtkObject // out
 	var _arg1 *C.AtkObject // out
 
@@ -979,7 +978,7 @@ func (a object) SetParentObject(parent Object) {
 	C.atk_object_set_parent(_arg0, _arg1)
 }
 
-func (a object) SetRoleObject(role Role) {
+func (a object) SetRole(role Role) {
 	var _arg0 *C.AtkObject // out
 	var _arg1 C.AtkRole    // out
 

@@ -73,36 +73,35 @@ type ImageMenuItem interface {
 	//
 	// Deprecated: since version 3.10.
 	UseStock() bool
-	// SetAccelGroupImageMenuItem specifies an @accel_group to add the menu
-	// items accelerator to (this only applies to stock items so a stock item
-	// must already be set, make sure to call
-	// gtk_image_menu_item_set_use_stock() and gtk_menu_item_set_label() with a
-	// valid stock item first).
+	// SetAccelGroup specifies an @accel_group to add the menu items accelerator
+	// to (this only applies to stock items so a stock item must already be set,
+	// make sure to call gtk_image_menu_item_set_use_stock() and
+	// gtk_menu_item_set_label() with a valid stock item first).
 	//
 	// If you want this menu item to have changeable accelerators then you
 	// shouldnt need this (see gtk_image_menu_item_new_from_stock()).
 	//
 	// Deprecated: since version 3.10.
-	SetAccelGroupImageMenuItem(accelGroup AccelGroup)
-	// SetAlwaysShowImageImageMenuItem: if true, the menu item will ignore the
+	SetAccelGroup(accelGroup AccelGroup)
+	// SetAlwaysShowImage: if true, the menu item will ignore the
 	// Settings:gtk-menu-images setting and always show the image, if available.
 	//
 	// Use this property if the menuitem would be useless or hard to use without
 	// the image.
 	//
 	// Deprecated: since version 3.10.
-	SetAlwaysShowImageImageMenuItem(alwaysShow bool)
-	// SetImageImageMenuItem sets the image of @image_menu_item to the given
-	// widget. Note that it depends on the show-menu-images setting whether the
-	// image will be displayed or not.
+	SetAlwaysShowImage(alwaysShow bool)
+	// SetImage sets the image of @image_menu_item to the given widget. Note
+	// that it depends on the show-menu-images setting whether the image will be
+	// displayed or not.
 	//
 	// Deprecated: since version 3.10.
-	SetImageImageMenuItem(image Widget)
-	// SetUseStockImageMenuItem: if true, the label set in the menuitem is used
-	// as a stock id to select the stock item for the item.
+	SetImage(image Widget)
+	// SetUseStock: if true, the label set in the menuitem is used as a stock id
+	// to select the stock item for the item.
 	//
 	// Deprecated: since version 3.10.
-	SetUseStockImageMenuItem(useStock bool)
+	SetUseStock(useStock bool)
 }
 
 // imageMenuItem implements the ImageMenuItem class.
@@ -208,6 +207,18 @@ func NewImageMenuItemWithMnemonic(label string) ImageMenuItem {
 	return _imageMenuItem
 }
 
+func (i imageMenuItem) AsActionable() Actionable {
+	return WrapActionable(gextras.InternObject(i))
+}
+
+func (i imageMenuItem) AsActivatable() Activatable {
+	return WrapActivatable(gextras.InternObject(i))
+}
+
+func (i imageMenuItem) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(i))
+}
+
 func (i imageMenuItem) AlwaysShowImage() bool {
 	var _arg0 *C.GtkImageMenuItem // out
 	var _cret C.gboolean          // in
@@ -257,7 +268,7 @@ func (i imageMenuItem) UseStock() bool {
 	return _ok
 }
 
-func (i imageMenuItem) SetAccelGroupImageMenuItem(accelGroup AccelGroup) {
+func (i imageMenuItem) SetAccelGroup(accelGroup AccelGroup) {
 	var _arg0 *C.GtkImageMenuItem // out
 	var _arg1 *C.GtkAccelGroup    // out
 
@@ -267,7 +278,7 @@ func (i imageMenuItem) SetAccelGroupImageMenuItem(accelGroup AccelGroup) {
 	C.gtk_image_menu_item_set_accel_group(_arg0, _arg1)
 }
 
-func (i imageMenuItem) SetAlwaysShowImageImageMenuItem(alwaysShow bool) {
+func (i imageMenuItem) SetAlwaysShowImage(alwaysShow bool) {
 	var _arg0 *C.GtkImageMenuItem // out
 	var _arg1 C.gboolean          // out
 
@@ -279,7 +290,7 @@ func (i imageMenuItem) SetAlwaysShowImageImageMenuItem(alwaysShow bool) {
 	C.gtk_image_menu_item_set_always_show_image(_arg0, _arg1)
 }
 
-func (i imageMenuItem) SetImageImageMenuItem(image Widget) {
+func (i imageMenuItem) SetImage(image Widget) {
 	var _arg0 *C.GtkImageMenuItem // out
 	var _arg1 *C.GtkWidget        // out
 
@@ -289,7 +300,7 @@ func (i imageMenuItem) SetImageImageMenuItem(image Widget) {
 	C.gtk_image_menu_item_set_image(_arg0, _arg1)
 }
 
-func (i imageMenuItem) SetUseStockImageMenuItem(useStock bool) {
+func (i imageMenuItem) SetUseStock(useStock bool) {
 	var _arg0 *C.GtkImageMenuItem // out
 	var _arg1 C.gboolean          // out
 
@@ -299,16 +310,4 @@ func (i imageMenuItem) SetUseStockImageMenuItem(useStock bool) {
 	}
 
 	C.gtk_image_menu_item_set_use_stock(_arg0, _arg1)
-}
-
-func (i imageMenuItem) AsActionable() Actionable {
-	return WrapActionable(gextras.InternObject(i))
-}
-
-func (i imageMenuItem) AsActivatable() Activatable {
-	return WrapActivatable(gextras.InternObject(i))
-}
-
-func (i imageMenuItem) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(i))
 }

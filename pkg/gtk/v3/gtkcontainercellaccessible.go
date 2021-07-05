@@ -31,9 +31,9 @@ type ContainerCellAccessible interface {
 	// AsAction casts the class to the atk.Action interface.
 	AsAction() atk.Action
 
-	AddChildContainerCellAccessible(child CellAccessible)
+	AddChild(child CellAccessible)
 
-	RemoveChildContainerCellAccessible(child CellAccessible)
+	RemoveChild(child CellAccessible)
 }
 
 // containerCellAccessible implements the ContainerCellAccessible class.
@@ -67,7 +67,11 @@ func NewContainerCellAccessible() ContainerCellAccessible {
 	return _containerCellAccessible
 }
 
-func (c containerCellAccessible) AddChildContainerCellAccessible(child CellAccessible) {
+func (c containerCellAccessible) AsAction() atk.Action {
+	return atk.WrapAction(gextras.InternObject(c))
+}
+
+func (c containerCellAccessible) AddChild(child CellAccessible) {
 	var _arg0 *C.GtkContainerCellAccessible // out
 	var _arg1 *C.GtkCellAccessible          // out
 
@@ -77,7 +81,7 @@ func (c containerCellAccessible) AddChildContainerCellAccessible(child CellAcces
 	C.gtk_container_cell_accessible_add_child(_arg0, _arg1)
 }
 
-func (c containerCellAccessible) RemoveChildContainerCellAccessible(child CellAccessible) {
+func (c containerCellAccessible) RemoveChild(child CellAccessible) {
 	var _arg0 *C.GtkContainerCellAccessible // out
 	var _arg1 *C.GtkCellAccessible          // out
 
@@ -85,8 +89,4 @@ func (c containerCellAccessible) RemoveChildContainerCellAccessible(child CellAc
 	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(child.Native()))
 
 	C.gtk_container_cell_accessible_remove_child(_arg0, _arg1)
-}
-
-func (c containerCellAccessible) AsAction() atk.Action {
-	return atk.WrapAction(gextras.InternObject(c))
 }

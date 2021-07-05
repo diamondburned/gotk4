@@ -56,11 +56,10 @@ type AppChooserDialog interface {
 	Heading() string
 	// Widget returns the `GtkAppChooserWidget` of this dialog.
 	Widget() Widget
-	// SetHeadingAppChooserDialog sets the text to display at the top of the
-	// dialog.
+	// SetHeading sets the text to display at the top of the dialog.
 	//
 	// If the heading is not set, the dialog displays a default text.
-	SetHeadingAppChooserDialog(heading string)
+	SetHeading(heading string)
 }
 
 // appChooserDialog implements the AppChooserDialog class.
@@ -106,6 +105,34 @@ func NewAppChooserDialogForContentType(parent Window, flags DialogFlags, content
 	return _appChooserDialog
 }
 
+func (a appChooserDialog) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(a))
+}
+
+func (a appChooserDialog) AsAppChooser() AppChooser {
+	return WrapAppChooser(gextras.InternObject(a))
+}
+
+func (a appChooserDialog) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(a))
+}
+
+func (a appChooserDialog) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(a))
+}
+
+func (a appChooserDialog) AsNative() Native {
+	return WrapNative(gextras.InternObject(a))
+}
+
+func (a appChooserDialog) AsRoot() Root {
+	return WrapRoot(gextras.InternObject(a))
+}
+
+func (a appChooserDialog) AsShortcutManager() ShortcutManager {
+	return WrapShortcutManager(gextras.InternObject(a))
+}
+
 func (s appChooserDialog) Heading() string {
 	var _arg0 *C.GtkAppChooserDialog // out
 	var _cret *C.char                // in
@@ -136,7 +163,7 @@ func (s appChooserDialog) Widget() Widget {
 	return _widget
 }
 
-func (s appChooserDialog) SetHeadingAppChooserDialog(heading string) {
+func (s appChooserDialog) SetHeading(heading string) {
 	var _arg0 *C.GtkAppChooserDialog // out
 	var _arg1 *C.char                // out
 
@@ -145,32 +172,4 @@ func (s appChooserDialog) SetHeadingAppChooserDialog(heading string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_app_chooser_dialog_set_heading(_arg0, _arg1)
-}
-
-func (a appChooserDialog) AsAccessible() Accessible {
-	return WrapAccessible(gextras.InternObject(a))
-}
-
-func (a appChooserDialog) AsAppChooser() AppChooser {
-	return WrapAppChooser(gextras.InternObject(a))
-}
-
-func (a appChooserDialog) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(a))
-}
-
-func (a appChooserDialog) AsConstraintTarget() ConstraintTarget {
-	return WrapConstraintTarget(gextras.InternObject(a))
-}
-
-func (a appChooserDialog) AsNative() Native {
-	return WrapNative(gextras.InternObject(a))
-}
-
-func (a appChooserDialog) AsRoot() Root {
-	return WrapRoot(gextras.InternObject(a))
-}
-
-func (a appChooserDialog) AsShortcutManager() ShortcutManager {
-	return WrapShortcutManager(gextras.InternObject(a))
 }

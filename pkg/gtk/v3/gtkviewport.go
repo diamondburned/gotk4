@@ -66,16 +66,16 @@ type Viewport interface {
 	VAdjustment() Adjustment
 	// ViewWindow gets the view window of the Viewport.
 	ViewWindow() gdk.Window
-	// SetHAdjustmentViewport sets the horizontal adjustment of the viewport.
+	// SetHAdjustment sets the horizontal adjustment of the viewport.
 	//
 	// Deprecated: since version 3.0.
-	SetHAdjustmentViewport(adjustment Adjustment)
-	// SetShadowTypeViewport sets the shadow type of the viewport.
-	SetShadowTypeViewport(typ ShadowType)
-	// SetVAdjustmentViewport sets the vertical adjustment of the viewport.
+	SetHAdjustment(adjustment Adjustment)
+	// SetShadowType sets the shadow type of the viewport.
+	SetShadowType(typ ShadowType)
+	// SetVAdjustment sets the vertical adjustment of the viewport.
 	//
 	// Deprecated: since version 3.0.
-	SetVAdjustmentViewport(adjustment Adjustment)
+	SetVAdjustment(adjustment Adjustment)
 }
 
 // viewport implements the Viewport class.
@@ -114,6 +114,14 @@ func NewViewport(hadjustment Adjustment, vadjustment Adjustment) Viewport {
 	_viewport = WrapViewport(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _viewport
+}
+
+func (v viewport) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(v))
+}
+
+func (v viewport) AsScrollable() Scrollable {
+	return WrapScrollable(gextras.InternObject(v))
 }
 
 func (v viewport) BinWindow() gdk.Window {
@@ -191,7 +199,7 @@ func (v viewport) ViewWindow() gdk.Window {
 	return _window
 }
 
-func (v viewport) SetHAdjustmentViewport(adjustment Adjustment) {
+func (v viewport) SetHAdjustment(adjustment Adjustment) {
 	var _arg0 *C.GtkViewport   // out
 	var _arg1 *C.GtkAdjustment // out
 
@@ -201,7 +209,7 @@ func (v viewport) SetHAdjustmentViewport(adjustment Adjustment) {
 	C.gtk_viewport_set_hadjustment(_arg0, _arg1)
 }
 
-func (v viewport) SetShadowTypeViewport(typ ShadowType) {
+func (v viewport) SetShadowType(typ ShadowType) {
 	var _arg0 *C.GtkViewport  // out
 	var _arg1 C.GtkShadowType // out
 
@@ -211,7 +219,7 @@ func (v viewport) SetShadowTypeViewport(typ ShadowType) {
 	C.gtk_viewport_set_shadow_type(_arg0, _arg1)
 }
 
-func (v viewport) SetVAdjustmentViewport(adjustment Adjustment) {
+func (v viewport) SetVAdjustment(adjustment Adjustment) {
 	var _arg0 *C.GtkViewport   // out
 	var _arg1 *C.GtkAdjustment // out
 
@@ -219,12 +227,4 @@ func (v viewport) SetVAdjustmentViewport(adjustment Adjustment) {
 	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
 
 	C.gtk_viewport_set_vadjustment(_arg0, _arg1)
-}
-
-func (v viewport) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(v))
-}
-
-func (v viewport) AsScrollable() Scrollable {
-	return WrapScrollable(gextras.InternObject(v))
 }

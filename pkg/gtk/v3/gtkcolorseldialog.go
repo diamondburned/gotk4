@@ -71,6 +71,10 @@ func NewColorSelectionDialog(title string) ColorSelectionDialog {
 	return _colorSelectionDialog
 }
 
+func (c colorSelectionDialog) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(c))
+}
+
 func (c colorSelectionDialog) ColorSelection() Widget {
 	var _arg0 *C.GtkColorSelectionDialog // out
 	var _cret *C.GtkWidget               // in
@@ -84,8 +88,4 @@ func (c colorSelectionDialog) ColorSelection() Widget {
 	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
-}
-
-func (c colorSelectionDialog) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(c))
 }

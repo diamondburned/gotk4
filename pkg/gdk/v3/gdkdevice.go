@@ -208,8 +208,8 @@ type Device interface {
 	// function may not be called on devices of type GDK_DEVICE_TYPE_SLAVE,
 	// unless there is an ongoing grab on them, see gdk_device_grab().
 	WindowAtPositionDouble() (winX float64, winY float64, window Window)
-	// GrabDevice grabs the device so that all events coming from this device
-	// are passed to this application until the device is ungrabbed with
+	// Grab grabs the device so that all events coming from this device are
+	// passed to this application until the device is ungrabbed with
 	// gdk_device_ungrab(), or the window becomes unviewable. This overrides any
 	// previous grab on the device by this client.
 	//
@@ -231,34 +231,34 @@ type Device interface {
 	// events that are emitted when the grab ends unvoluntarily.
 	//
 	// Deprecated: since version 3.20..
-	GrabDevice(window Window, grabOwnership GrabOwnership, ownerEvents bool, eventMask EventMask, cursor Cursor, time_ uint32) GrabStatus
-	// SetAxisUseDevice specifies how an axis of a device is used.
-	SetAxisUseDevice(index_ uint, use AxisUse)
-	// SetKeyDevice specifies the X key event to generate when a macro button of
-	// a device is pressed.
-	SetKeyDevice(index_ uint, keyval uint, modifiers ModifierType)
-	// SetModeDevice sets a the mode of an input device. The mode controls if
-	// the device is active and whether the device’s range is mapped to the
-	// entire screen or to a single window.
+	Grab(window Window, grabOwnership GrabOwnership, ownerEvents bool, eventMask EventMask, cursor Cursor, time_ uint32) GrabStatus
+	// SetAxisUse specifies how an axis of a device is used.
+	SetAxisUse(index_ uint, use AxisUse)
+	// SetKey specifies the X key event to generate when a macro button of a
+	// device is pressed.
+	SetKey(index_ uint, keyval uint, modifiers ModifierType)
+	// SetMode sets a the mode of an input device. The mode controls if the
+	// device is active and whether the device’s range is mapped to the entire
+	// screen or to a single window.
 	//
 	// Note: This is only meaningful for floating devices, master devices (and
 	// slaves connected to these) drive the pointer cursor, which is not limited
 	// by the input mode.
-	SetModeDevice(mode InputMode) bool
-	// UngrabDevice: release any grab on @device.
+	SetMode(mode InputMode) bool
+	// Ungrab: release any grab on @device.
 	//
 	// Deprecated: since version 3.20..
-	UngrabDevice(time_ uint32)
-	// WarpDevice warps @device in @display to the point @x,@y on the screen
-	// @screen, unless the device is confined to a window by a grab, in which
-	// case it will be moved as far as allowed by the grab. Warping the pointer
-	// creates events as if the user had moved the mouse instantaneously to the
+	Ungrab(time_ uint32)
+	// Warp warps @device in @display to the point @x,@y on the screen @screen,
+	// unless the device is confined to a window by a grab, in which case it
+	// will be moved as far as allowed by the grab. Warping the pointer creates
+	// events as if the user had moved the mouse instantaneously to the
 	// destination.
 	//
 	// Note that the pointer should normally be under the control of the user.
 	// This function was added to cover some rare use cases like keyboard
 	// navigation support for the color picker in the ColorSelectionDialog.
-	WarpDevice(screen Screen, x int, y int)
+	Warp(screen Screen, x int, y int)
 }
 
 // device implements the Device class.
@@ -618,7 +618,7 @@ func (d device) WindowAtPositionDouble() (winX float64, winY float64, window Win
 	return _winX, _winY, _window
 }
 
-func (d device) GrabDevice(window Window, grabOwnership GrabOwnership, ownerEvents bool, eventMask EventMask, cursor Cursor, time_ uint32) GrabStatus {
+func (d device) Grab(window Window, grabOwnership GrabOwnership, ownerEvents bool, eventMask EventMask, cursor Cursor, time_ uint32) GrabStatus {
 	var _arg0 *C.GdkDevice       // out
 	var _arg1 *C.GdkWindow       // out
 	var _arg2 C.GdkGrabOwnership // out
@@ -647,7 +647,7 @@ func (d device) GrabDevice(window Window, grabOwnership GrabOwnership, ownerEven
 	return _grabStatus
 }
 
-func (d device) SetAxisUseDevice(index_ uint, use AxisUse) {
+func (d device) SetAxisUse(index_ uint, use AxisUse) {
 	var _arg0 *C.GdkDevice // out
 	var _arg1 C.guint      // out
 	var _arg2 C.GdkAxisUse // out
@@ -659,7 +659,7 @@ func (d device) SetAxisUseDevice(index_ uint, use AxisUse) {
 	C.gdk_device_set_axis_use(_arg0, _arg1, _arg2)
 }
 
-func (d device) SetKeyDevice(index_ uint, keyval uint, modifiers ModifierType) {
+func (d device) SetKey(index_ uint, keyval uint, modifiers ModifierType) {
 	var _arg0 *C.GdkDevice      // out
 	var _arg1 C.guint           // out
 	var _arg2 C.guint           // out
@@ -673,7 +673,7 @@ func (d device) SetKeyDevice(index_ uint, keyval uint, modifiers ModifierType) {
 	C.gdk_device_set_key(_arg0, _arg1, _arg2, _arg3)
 }
 
-func (d device) SetModeDevice(mode InputMode) bool {
+func (d device) SetMode(mode InputMode) bool {
 	var _arg0 *C.GdkDevice   // out
 	var _arg1 C.GdkInputMode // out
 	var _cret C.gboolean     // in
@@ -692,7 +692,7 @@ func (d device) SetModeDevice(mode InputMode) bool {
 	return _ok
 }
 
-func (d device) UngrabDevice(time_ uint32) {
+func (d device) Ungrab(time_ uint32) {
 	var _arg0 *C.GdkDevice // out
 	var _arg1 C.guint32    // out
 
@@ -702,7 +702,7 @@ func (d device) UngrabDevice(time_ uint32) {
 	C.gdk_device_ungrab(_arg0, _arg1)
 }
 
-func (d device) WarpDevice(screen Screen, x int, y int) {
+func (d device) Warp(screen Screen, x int, y int) {
 	var _arg0 *C.GdkDevice // out
 	var _arg1 *C.GdkScreen // out
 	var _arg2 C.gint       // out

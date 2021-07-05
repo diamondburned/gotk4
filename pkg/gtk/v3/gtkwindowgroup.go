@@ -41,16 +41,16 @@ func init() {
 type WindowGroup interface {
 	gextras.Objector
 
-	// AddWindowWindowGroup adds a window to a WindowGroup.
-	AddWindowWindowGroup(window Window)
+	// AddWindow adds a window to a WindowGroup.
+	AddWindow(window Window)
 	// CurrentDeviceGrab returns the current grab widget for @device, or nil if
 	// none.
 	CurrentDeviceGrab(device gdk.Device) Widget
 	// CurrentGrab gets the current grab widget of the given group, see
 	// gtk_grab_add().
 	CurrentGrab() Widget
-	// RemoveWindowWindowGroup removes a window from a WindowGroup.
-	RemoveWindowWindowGroup(window Window)
+	// RemoveWindow removes a window from a WindowGroup.
+	RemoveWindow(window Window)
 }
 
 // windowGroup implements the WindowGroup class.
@@ -86,7 +86,7 @@ func NewWindowGroup() WindowGroup {
 	return _windowGroup
 }
 
-func (w windowGroup) AddWindowWindowGroup(window Window) {
+func (w windowGroup) AddWindow(window Window) {
 	var _arg0 *C.GtkWindowGroup // out
 	var _arg1 *C.GtkWindow      // out
 
@@ -128,7 +128,7 @@ func (w windowGroup) CurrentGrab() Widget {
 	return _widget
 }
 
-func (w windowGroup) RemoveWindowWindowGroup(window Window) {
+func (w windowGroup) RemoveWindow(window Window) {
 	var _arg0 *C.GtkWindowGroup // out
 	var _arg1 *C.GtkWindow      // out
 

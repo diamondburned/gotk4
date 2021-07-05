@@ -102,6 +102,10 @@ func NewEmblemWithOrigin(icon Icon, origin EmblemOrigin) Emblem {
 	return _emblem
 }
 
+func (e emblem) AsIcon() Icon {
+	return WrapIcon(gextras.InternObject(e))
+}
+
 func (e emblem) Icon() Icon {
 	var _arg0 *C.GEmblem // out
 	var _cret *C.GIcon   // in
@@ -130,8 +134,4 @@ func (e emblem) Origin() EmblemOrigin {
 	_emblemOrigin = EmblemOrigin(_cret)
 
 	return _emblemOrigin
-}
-
-func (e emblem) AsIcon() Icon {
-	return WrapIcon(gextras.InternObject(e))
 }

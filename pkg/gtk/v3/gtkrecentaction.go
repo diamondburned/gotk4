@@ -44,13 +44,13 @@ type RecentAction interface {
 	//
 	// Deprecated: since version 3.10.
 	ShowNumbers() bool
-	// SetShowNumbersRecentAction sets whether a number should be added to the
-	// items shown by the widgets representing @action. The numbers are shown to
-	// provide a unique character for a mnemonic to be used inside the menu
-	// item's label. Only the first ten items get a number to avoid clashes.
+	// SetShowNumbers sets whether a number should be added to the items shown
+	// by the widgets representing @action. The numbers are shown to provide a
+	// unique character for a mnemonic to be used inside the menu item's label.
+	// Only the first ten items get a number to avoid clashes.
 	//
 	// Deprecated: since version 3.10.
-	SetShowNumbersRecentAction(showNumbers bool)
+	SetShowNumbers(showNumbers bool)
 }
 
 // recentAction implements the RecentAction class.
@@ -134,6 +134,14 @@ func NewRecentActionForManager(name string, label string, tooltip string, stockI
 	return _recentAction
 }
 
+func (r recentAction) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(r))
+}
+
+func (r recentAction) AsRecentChooser() RecentChooser {
+	return WrapRecentChooser(gextras.InternObject(r))
+}
+
 func (a recentAction) ShowNumbers() bool {
 	var _arg0 *C.GtkRecentAction // out
 	var _cret C.gboolean         // in
@@ -151,7 +159,7 @@ func (a recentAction) ShowNumbers() bool {
 	return _ok
 }
 
-func (a recentAction) SetShowNumbersRecentAction(showNumbers bool) {
+func (a recentAction) SetShowNumbers(showNumbers bool) {
 	var _arg0 *C.GtkRecentAction // out
 	var _arg1 C.gboolean         // out
 
@@ -161,12 +169,4 @@ func (a recentAction) SetShowNumbersRecentAction(showNumbers bool) {
 	}
 
 	C.gtk_recent_action_set_show_numbers(_arg0, _arg1)
-}
-
-func (r recentAction) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(r))
-}
-
-func (r recentAction) AsRecentChooser() RecentChooser {
-	return WrapRecentChooser(gextras.InternObject(r))
 }

@@ -98,10 +98,10 @@ type ToolPalette interface {
 	// AsScrollable casts the class to the Scrollable interface.
 	AsScrollable() Scrollable
 
-	// AddDragDestToolPalette sets @palette as drag source (see
+	// AddDragDest sets @palette as drag source (see
 	// gtk_tool_palette_set_drag_source()) and sets @widget as a drag
 	// destination for drags from @palette. See gtk_drag_dest_set().
-	AddDragDestToolPalette(widget Widget, flags DestDefaults, targets ToolPaletteDragTargets, actions gdk.DragAction)
+	AddDragDest(widget Widget, flags DestDefaults, targets ToolPaletteDragTargets, actions gdk.DragAction)
 	// DragItem: get the dragged item from the selection. This could be a
 	// ToolItem or a ToolItemGroup.
 	DragItem(selection *SelectionData) Widget
@@ -132,32 +132,31 @@ type ToolPalette interface {
 	//
 	// Deprecated: since version 3.0.
 	VAdjustment() Adjustment
-	// SetDragSourceToolPalette sets the tool palette as a drag source. Enables
-	// all groups and items in the tool palette as drag sources on button 1 and
-	// button 3 press with copy and move actions. See gtk_drag_source_set().
-	SetDragSourceToolPalette(targets ToolPaletteDragTargets)
-	// SetExclusiveToolPalette sets whether the group should be exclusive or
-	// not. If an exclusive group is expanded all other groups are collapsed.
-	SetExclusiveToolPalette(group ToolItemGroup, exclusive bool)
-	// SetExpandToolPalette sets whether the group should be given extra space.
-	SetExpandToolPalette(group ToolItemGroup, expand bool)
-	// SetGroupPositionToolPalette sets the position of the group as an index of
-	// the tool palette. If position is 0 the group will become the first child,
-	// if position is -1 it will become the last child.
-	SetGroupPositionToolPalette(group ToolItemGroup, position int)
-	// SetIconSizeToolPalette sets the size of icons in the tool palette.
-	SetIconSizeToolPalette(iconSize int)
-	// SetStyleToolPalette sets the style (text, icons or both) of items in the
-	// tool palette.
-	SetStyleToolPalette(style ToolbarStyle)
-	// UnsetIconSizeToolPalette unsets the tool palette icon size set with
+	// SetDragSource sets the tool palette as a drag source. Enables all groups
+	// and items in the tool palette as drag sources on button 1 and button 3
+	// press with copy and move actions. See gtk_drag_source_set().
+	SetDragSource(targets ToolPaletteDragTargets)
+	// SetExclusive sets whether the group should be exclusive or not. If an
+	// exclusive group is expanded all other groups are collapsed.
+	SetExclusive(group ToolItemGroup, exclusive bool)
+	// SetExpand sets whether the group should be given extra space.
+	SetExpand(group ToolItemGroup, expand bool)
+	// SetGroupPosition sets the position of the group as an index of the tool
+	// palette. If position is 0 the group will become the first child, if
+	// position is -1 it will become the last child.
+	SetGroupPosition(group ToolItemGroup, position int)
+	// SetIconSize sets the size of icons in the tool palette.
+	SetIconSize(iconSize int)
+	// SetStyle sets the style (text, icons or both) of items in the tool
+	// palette.
+	SetStyle(style ToolbarStyle)
+	// UnsetIconSize unsets the tool palette icon size set with
 	// gtk_tool_palette_set_icon_size(), so that user preferences will be used
 	// to determine the icon size.
-	UnsetIconSizeToolPalette()
-	// UnsetStyleToolPalette unsets a toolbar style set with
-	// gtk_tool_palette_set_style(), so that user preferences will be used to
-	// determine the toolbar style.
-	UnsetStyleToolPalette()
+	UnsetIconSize()
+	// UnsetStyle unsets a toolbar style set with gtk_tool_palette_set_style(),
+	// so that user preferences will be used to determine the toolbar style.
+	UnsetStyle()
 }
 
 // toolPalette implements the ToolPalette class.
@@ -192,7 +191,19 @@ func NewToolPalette() ToolPalette {
 	return _toolPalette
 }
 
-func (p toolPalette) AddDragDestToolPalette(widget Widget, flags DestDefaults, targets ToolPaletteDragTargets, actions gdk.DragAction) {
+func (t toolPalette) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(t))
+}
+
+func (t toolPalette) AsOrientable() Orientable {
+	return WrapOrientable(gextras.InternObject(t))
+}
+
+func (t toolPalette) AsScrollable() Scrollable {
+	return WrapScrollable(gextras.InternObject(t))
+}
+
+func (p toolPalette) AddDragDest(widget Widget, flags DestDefaults, targets ToolPaletteDragTargets, actions gdk.DragAction) {
 	var _arg0 *C.GtkToolPalette           // out
 	var _arg1 *C.GtkWidget                // out
 	var _arg2 C.GtkDestDefaults           // out
@@ -378,7 +389,7 @@ func (p toolPalette) VAdjustment() Adjustment {
 	return _adjustment
 }
 
-func (p toolPalette) SetDragSourceToolPalette(targets ToolPaletteDragTargets) {
+func (p toolPalette) SetDragSource(targets ToolPaletteDragTargets) {
 	var _arg0 *C.GtkToolPalette           // out
 	var _arg1 C.GtkToolPaletteDragTargets // out
 
@@ -388,7 +399,7 @@ func (p toolPalette) SetDragSourceToolPalette(targets ToolPaletteDragTargets) {
 	C.gtk_tool_palette_set_drag_source(_arg0, _arg1)
 }
 
-func (p toolPalette) SetExclusiveToolPalette(group ToolItemGroup, exclusive bool) {
+func (p toolPalette) SetExclusive(group ToolItemGroup, exclusive bool) {
 	var _arg0 *C.GtkToolPalette   // out
 	var _arg1 *C.GtkToolItemGroup // out
 	var _arg2 C.gboolean          // out
@@ -402,7 +413,7 @@ func (p toolPalette) SetExclusiveToolPalette(group ToolItemGroup, exclusive bool
 	C.gtk_tool_palette_set_exclusive(_arg0, _arg1, _arg2)
 }
 
-func (p toolPalette) SetExpandToolPalette(group ToolItemGroup, expand bool) {
+func (p toolPalette) SetExpand(group ToolItemGroup, expand bool) {
 	var _arg0 *C.GtkToolPalette   // out
 	var _arg1 *C.GtkToolItemGroup // out
 	var _arg2 C.gboolean          // out
@@ -416,7 +427,7 @@ func (p toolPalette) SetExpandToolPalette(group ToolItemGroup, expand bool) {
 	C.gtk_tool_palette_set_expand(_arg0, _arg1, _arg2)
 }
 
-func (p toolPalette) SetGroupPositionToolPalette(group ToolItemGroup, position int) {
+func (p toolPalette) SetGroupPosition(group ToolItemGroup, position int) {
 	var _arg0 *C.GtkToolPalette   // out
 	var _arg1 *C.GtkToolItemGroup // out
 	var _arg2 C.gint              // out
@@ -428,7 +439,7 @@ func (p toolPalette) SetGroupPositionToolPalette(group ToolItemGroup, position i
 	C.gtk_tool_palette_set_group_position(_arg0, _arg1, _arg2)
 }
 
-func (p toolPalette) SetIconSizeToolPalette(iconSize int) {
+func (p toolPalette) SetIconSize(iconSize int) {
 	var _arg0 *C.GtkToolPalette // out
 	var _arg1 C.GtkIconSize     // out
 
@@ -438,7 +449,7 @@ func (p toolPalette) SetIconSizeToolPalette(iconSize int) {
 	C.gtk_tool_palette_set_icon_size(_arg0, _arg1)
 }
 
-func (p toolPalette) SetStyleToolPalette(style ToolbarStyle) {
+func (p toolPalette) SetStyle(style ToolbarStyle) {
 	var _arg0 *C.GtkToolPalette // out
 	var _arg1 C.GtkToolbarStyle // out
 
@@ -448,7 +459,7 @@ func (p toolPalette) SetStyleToolPalette(style ToolbarStyle) {
 	C.gtk_tool_palette_set_style(_arg0, _arg1)
 }
 
-func (p toolPalette) UnsetIconSizeToolPalette() {
+func (p toolPalette) UnsetIconSize() {
 	var _arg0 *C.GtkToolPalette // out
 
 	_arg0 = (*C.GtkToolPalette)(unsafe.Pointer(p.Native()))
@@ -456,22 +467,10 @@ func (p toolPalette) UnsetIconSizeToolPalette() {
 	C.gtk_tool_palette_unset_icon_size(_arg0)
 }
 
-func (p toolPalette) UnsetStyleToolPalette() {
+func (p toolPalette) UnsetStyle() {
 	var _arg0 *C.GtkToolPalette // out
 
 	_arg0 = (*C.GtkToolPalette)(unsafe.Pointer(p.Native()))
 
 	C.gtk_tool_palette_unset_style(_arg0)
-}
-
-func (t toolPalette) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(t))
-}
-
-func (t toolPalette) AsOrientable() Orientable {
-	return WrapOrientable(gextras.InternObject(t))
-}
-
-func (t toolPalette) AsScrollable() Scrollable {
-	return WrapScrollable(gextras.InternObject(t))
 }

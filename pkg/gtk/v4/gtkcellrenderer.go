@@ -105,10 +105,10 @@ func marshalCellRendererState(p uintptr) (interface{}, error) {
 type CellRenderer interface {
 	gextras.Objector
 
-	// ActivateCellRenderer passes an activate event to the cell renderer for
-	// possible processing. Some cell renderers may use events; for example,
+	// Activate passes an activate event to the cell renderer for possible
+	// processing. Some cell renderers may use events; for example,
 	// CellRendererToggle toggles when it gets a mouse click.
-	ActivateCellRenderer(event gdk.Event, widget Widget, path string, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState) bool
+	Activate(event gdk.Event, widget Widget, path string, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState) bool
 	// AlignedArea gets the aligned area used by @cell inside @cell_area. Used
 	// for finding the appropriate edit and focus rectangle.
 	AlignedArea(widget Widget, flags CellRendererState, cellArea *gdk.Rectangle) gdk.Rectangle
@@ -148,46 +148,43 @@ type CellRenderer interface {
 	State(widget Widget, cellState CellRendererState) StateFlags
 	// Visible returns the cell renderer’s visibility.
 	Visible() bool
-	// IsActivatableCellRenderer checks whether the cell renderer can do
-	// something when activated.
-	IsActivatableCellRenderer() bool
-	// SetAlignmentCellRenderer sets the renderer’s alignment within its
-	// available space.
-	SetAlignmentCellRenderer(xalign float32, yalign float32)
-	// SetFixedSizeCellRenderer sets the renderer size to be explicit,
-	// independent of the properties set.
-	SetFixedSizeCellRenderer(width int, height int)
-	// SetIsExpandedCellRenderer sets whether the given CellRenderer is
-	// expanded.
-	SetIsExpandedCellRenderer(isExpanded bool)
-	// SetIsExpanderCellRenderer sets whether the given CellRenderer is an
-	// expander.
-	SetIsExpanderCellRenderer(isExpander bool)
-	// SetPaddingCellRenderer sets the renderer’s padding.
-	SetPaddingCellRenderer(xpad int, ypad int)
-	// SetSensitiveCellRenderer sets the cell renderer’s sensitivity.
-	SetSensitiveCellRenderer(sensitive bool)
-	// SetVisibleCellRenderer sets the cell renderer’s visibility.
-	SetVisibleCellRenderer(visible bool)
-	// SnapshotCellRenderer invokes the virtual render function of the
-	// CellRenderer. The three passed-in rectangles are areas in @cr. Most
-	// renderers will draw within @cell_area; the xalign, yalign, xpad, and ypad
-	// fields of the CellRenderer should be honored with respect to @cell_area.
+	// IsActivatable checks whether the cell renderer can do something when
+	// activated.
+	IsActivatable() bool
+	// SetAlignment sets the renderer’s alignment within its available space.
+	SetAlignment(xalign float32, yalign float32)
+	// SetFixedSize sets the renderer size to be explicit, independent of the
+	// properties set.
+	SetFixedSize(width int, height int)
+	// SetIsExpanded sets whether the given CellRenderer is expanded.
+	SetIsExpanded(isExpanded bool)
+	// SetIsExpander sets whether the given CellRenderer is an expander.
+	SetIsExpander(isExpander bool)
+	// SetPadding sets the renderer’s padding.
+	SetPadding(xpad int, ypad int)
+	// SetSensitive sets the cell renderer’s sensitivity.
+	SetSensitive(sensitive bool)
+	// SetVisible sets the cell renderer’s visibility.
+	SetVisible(visible bool)
+	// Snapshot invokes the virtual render function of the CellRenderer. The
+	// three passed-in rectangles are areas in @cr. Most renderers will draw
+	// within @cell_area; the xalign, yalign, xpad, and ypad fields of the
+	// CellRenderer should be honored with respect to @cell_area.
 	// @background_area includes the blank space around the cell, and also the
 	// area containing the tree expander; so the @background_area rectangles for
 	// all cells tile to cover the entire @window.
-	SnapshotCellRenderer(snapshot Snapshot, widget Widget, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState)
-	// StartEditingCellRenderer starts editing the contents of this @cell,
-	// through a new CellEditable widget created by the
-	// CellRendererClass.start_editing virtual function.
-	StartEditingCellRenderer(event gdk.Event, widget Widget, path string, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState) CellEditable
-	// StopEditingCellRenderer informs the cell renderer that the editing is
-	// stopped. If @canceled is true, the cell renderer will emit the
+	Snapshot(snapshot Snapshot, widget Widget, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState)
+	// StartEditing starts editing the contents of this @cell, through a new
+	// CellEditable widget created by the CellRendererClass.start_editing
+	// virtual function.
+	StartEditing(event gdk.Event, widget Widget, path string, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState) CellEditable
+	// StopEditing informs the cell renderer that the editing is stopped. If
+	// @canceled is true, the cell renderer will emit the
 	// CellRenderer::editing-canceled signal.
 	//
 	// This function should be called by cell renderer implementations in
 	// response to the CellEditable::editing-done signal of CellEditable.
-	StopEditingCellRenderer(canceled bool)
+	StopEditing(canceled bool)
 }
 
 // cellRenderer implements the CellRenderer class.
@@ -209,7 +206,7 @@ func marshalCellRenderer(p uintptr) (interface{}, error) {
 	return WrapCellRenderer(obj), nil
 }
 
-func (c cellRenderer) ActivateCellRenderer(event gdk.Event, widget Widget, path string, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState) bool {
+func (c cellRenderer) Activate(event gdk.Event, widget Widget, path string, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState) bool {
 	var _arg0 *C.GtkCellRenderer     // out
 	var _arg1 *C.GdkEvent            // out
 	var _arg2 *C.GtkWidget           // out
@@ -550,7 +547,7 @@ func (c cellRenderer) Visible() bool {
 	return _ok
 }
 
-func (c cellRenderer) IsActivatableCellRenderer() bool {
+func (c cellRenderer) IsActivatable() bool {
 	var _arg0 *C.GtkCellRenderer // out
 	var _cret C.gboolean         // in
 
@@ -567,7 +564,7 @@ func (c cellRenderer) IsActivatableCellRenderer() bool {
 	return _ok
 }
 
-func (c cellRenderer) SetAlignmentCellRenderer(xalign float32, yalign float32) {
+func (c cellRenderer) SetAlignment(xalign float32, yalign float32) {
 	var _arg0 *C.GtkCellRenderer // out
 	var _arg1 C.float            // out
 	var _arg2 C.float            // out
@@ -579,7 +576,7 @@ func (c cellRenderer) SetAlignmentCellRenderer(xalign float32, yalign float32) {
 	C.gtk_cell_renderer_set_alignment(_arg0, _arg1, _arg2)
 }
 
-func (c cellRenderer) SetFixedSizeCellRenderer(width int, height int) {
+func (c cellRenderer) SetFixedSize(width int, height int) {
 	var _arg0 *C.GtkCellRenderer // out
 	var _arg1 C.int              // out
 	var _arg2 C.int              // out
@@ -591,7 +588,7 @@ func (c cellRenderer) SetFixedSizeCellRenderer(width int, height int) {
 	C.gtk_cell_renderer_set_fixed_size(_arg0, _arg1, _arg2)
 }
 
-func (c cellRenderer) SetIsExpandedCellRenderer(isExpanded bool) {
+func (c cellRenderer) SetIsExpanded(isExpanded bool) {
 	var _arg0 *C.GtkCellRenderer // out
 	var _arg1 C.gboolean         // out
 
@@ -603,7 +600,7 @@ func (c cellRenderer) SetIsExpandedCellRenderer(isExpanded bool) {
 	C.gtk_cell_renderer_set_is_expanded(_arg0, _arg1)
 }
 
-func (c cellRenderer) SetIsExpanderCellRenderer(isExpander bool) {
+func (c cellRenderer) SetIsExpander(isExpander bool) {
 	var _arg0 *C.GtkCellRenderer // out
 	var _arg1 C.gboolean         // out
 
@@ -615,7 +612,7 @@ func (c cellRenderer) SetIsExpanderCellRenderer(isExpander bool) {
 	C.gtk_cell_renderer_set_is_expander(_arg0, _arg1)
 }
 
-func (c cellRenderer) SetPaddingCellRenderer(xpad int, ypad int) {
+func (c cellRenderer) SetPadding(xpad int, ypad int) {
 	var _arg0 *C.GtkCellRenderer // out
 	var _arg1 C.int              // out
 	var _arg2 C.int              // out
@@ -627,7 +624,7 @@ func (c cellRenderer) SetPaddingCellRenderer(xpad int, ypad int) {
 	C.gtk_cell_renderer_set_padding(_arg0, _arg1, _arg2)
 }
 
-func (c cellRenderer) SetSensitiveCellRenderer(sensitive bool) {
+func (c cellRenderer) SetSensitive(sensitive bool) {
 	var _arg0 *C.GtkCellRenderer // out
 	var _arg1 C.gboolean         // out
 
@@ -639,7 +636,7 @@ func (c cellRenderer) SetSensitiveCellRenderer(sensitive bool) {
 	C.gtk_cell_renderer_set_sensitive(_arg0, _arg1)
 }
 
-func (c cellRenderer) SetVisibleCellRenderer(visible bool) {
+func (c cellRenderer) SetVisible(visible bool) {
 	var _arg0 *C.GtkCellRenderer // out
 	var _arg1 C.gboolean         // out
 
@@ -651,7 +648,7 @@ func (c cellRenderer) SetVisibleCellRenderer(visible bool) {
 	C.gtk_cell_renderer_set_visible(_arg0, _arg1)
 }
 
-func (c cellRenderer) SnapshotCellRenderer(snapshot Snapshot, widget Widget, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState) {
+func (c cellRenderer) Snapshot(snapshot Snapshot, widget Widget, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState) {
 	var _arg0 *C.GtkCellRenderer     // out
 	var _arg1 *C.GtkSnapshot         // out
 	var _arg2 *C.GtkWidget           // out
@@ -669,7 +666,7 @@ func (c cellRenderer) SnapshotCellRenderer(snapshot Snapshot, widget Widget, bac
 	C.gtk_cell_renderer_snapshot(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
 
-func (c cellRenderer) StartEditingCellRenderer(event gdk.Event, widget Widget, path string, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState) CellEditable {
+func (c cellRenderer) StartEditing(event gdk.Event, widget Widget, path string, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState) CellEditable {
 	var _arg0 *C.GtkCellRenderer     // out
 	var _arg1 *C.GdkEvent            // out
 	var _arg2 *C.GtkWidget           // out
@@ -697,7 +694,7 @@ func (c cellRenderer) StartEditingCellRenderer(event gdk.Event, widget Widget, p
 	return _cellEditable
 }
 
-func (c cellRenderer) StopEditingCellRenderer(canceled bool) {
+func (c cellRenderer) StopEditing(canceled bool) {
 	var _arg0 *C.GtkCellRenderer // out
 	var _arg1 C.gboolean         // out
 

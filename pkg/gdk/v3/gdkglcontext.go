@@ -94,7 +94,7 @@ type GLContext interface {
 	Version() (major int, minor int)
 	// Window retrieves the Window used by the @context.
 	Window() Window
-	// IsLegacyGLContext: whether the GLContext is in legacy mode or not.
+	// IsLegacy: whether the GLContext is in legacy mode or not.
 	//
 	// The GLContext must be realized before calling this function.
 	//
@@ -110,22 +110,22 @@ type GLContext interface {
 	// You can use the value returned by this function to decide which kind of
 	// OpenGL API to use, or whether to do extension discovery, or what kind of
 	// shader programs to load.
-	IsLegacyGLContext() bool
-	// MakeCurrentGLContext makes the @context the current one.
-	MakeCurrentGLContext()
-	// RealizeGLContext realizes the given GLContext.
+	IsLegacy() bool
+	// MakeCurrent makes the @context the current one.
+	MakeCurrent()
+	// Realize realizes the given GLContext.
 	//
 	// It is safe to call this function on a realized GLContext.
-	RealizeGLContext() error
-	// SetDebugEnabledGLContext sets whether the GLContext should perform extra
+	Realize() error
+	// SetDebugEnabled sets whether the GLContext should perform extra
 	// validations and run time checking. This is useful during development, but
 	// has additional overhead.
 	//
 	// The GLContext must not be realized or made current prior to calling this
 	// function.
-	SetDebugEnabledGLContext(enabled bool)
-	// SetForwardCompatibleGLContext sets whether the GLContext should be
-	// forward compatible.
+	SetDebugEnabled(enabled bool)
+	// SetForwardCompatible sets whether the GLContext should be forward
+	// compatible.
 	//
 	// Forward compatibile contexts must not support OpenGL functionality that
 	// has been marked as deprecated in the requested version; non-forward
@@ -134,17 +134,16 @@ type GLContext interface {
 	//
 	// The GLContext must not be realized or made current prior to calling this
 	// function.
-	SetForwardCompatibleGLContext(compatible bool)
-	// SetRequiredVersionGLContext sets the major and minor version of OpenGL to
-	// request.
+	SetForwardCompatible(compatible bool)
+	// SetRequiredVersion sets the major and minor version of OpenGL to request.
 	//
 	// Setting @major and @minor to zero will use the default values.
 	//
 	// The GLContext must not be realized or made current prior to calling this
 	// function.
-	SetRequiredVersionGLContext(major int, minor int)
-	// SetUseESGLContext requests that GDK create a OpenGL ES context instead of
-	// an OpenGL one, if the platform and windowing system allows it.
+	SetRequiredVersion(major int, minor int)
+	// SetUseES requests that GDK create a OpenGL ES context instead of an
+	// OpenGL one, if the platform and windowing system allows it.
 	//
 	// The @context must not have been realized.
 	//
@@ -155,7 +154,7 @@ type GLContext interface {
 	// You should check the return value of gdk_gl_context_get_use_es() after
 	// calling gdk_gl_context_realize() to decide whether to use the OpenGL or
 	// OpenGL ES API, extensions, or shaders.
-	SetUseESGLContext(useEs int)
+	SetUseES(useEs int)
 }
 
 // glContext implements the GLContext class.
@@ -309,7 +308,7 @@ func (c glContext) Window() Window {
 	return _window
 }
 
-func (c glContext) IsLegacyGLContext() bool {
+func (c glContext) IsLegacy() bool {
 	var _arg0 *C.GdkGLContext // out
 	var _cret C.gboolean      // in
 
@@ -326,7 +325,7 @@ func (c glContext) IsLegacyGLContext() bool {
 	return _ok
 }
 
-func (c glContext) MakeCurrentGLContext() {
+func (c glContext) MakeCurrent() {
 	var _arg0 *C.GdkGLContext // out
 
 	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(c.Native()))
@@ -334,7 +333,7 @@ func (c glContext) MakeCurrentGLContext() {
 	C.gdk_gl_context_make_current(_arg0)
 }
 
-func (c glContext) RealizeGLContext() error {
+func (c glContext) Realize() error {
 	var _arg0 *C.GdkGLContext // out
 	var _cerr *C.GError       // in
 
@@ -349,7 +348,7 @@ func (c glContext) RealizeGLContext() error {
 	return _goerr
 }
 
-func (c glContext) SetDebugEnabledGLContext(enabled bool) {
+func (c glContext) SetDebugEnabled(enabled bool) {
 	var _arg0 *C.GdkGLContext // out
 	var _arg1 C.gboolean      // out
 
@@ -361,7 +360,7 @@ func (c glContext) SetDebugEnabledGLContext(enabled bool) {
 	C.gdk_gl_context_set_debug_enabled(_arg0, _arg1)
 }
 
-func (c glContext) SetForwardCompatibleGLContext(compatible bool) {
+func (c glContext) SetForwardCompatible(compatible bool) {
 	var _arg0 *C.GdkGLContext // out
 	var _arg1 C.gboolean      // out
 
@@ -373,7 +372,7 @@ func (c glContext) SetForwardCompatibleGLContext(compatible bool) {
 	C.gdk_gl_context_set_forward_compatible(_arg0, _arg1)
 }
 
-func (c glContext) SetRequiredVersionGLContext(major int, minor int) {
+func (c glContext) SetRequiredVersion(major int, minor int) {
 	var _arg0 *C.GdkGLContext // out
 	var _arg1 C.int           // out
 	var _arg2 C.int           // out
@@ -385,7 +384,7 @@ func (c glContext) SetRequiredVersionGLContext(major int, minor int) {
 	C.gdk_gl_context_set_required_version(_arg0, _arg1, _arg2)
 }
 
-func (c glContext) SetUseESGLContext(useEs int) {
+func (c glContext) SetUseES(useEs int) {
 	var _arg0 *C.GdkGLContext // out
 	var _arg1 C.int           // out
 

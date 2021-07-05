@@ -80,8 +80,7 @@ type WindowControls interface {
 	Empty() bool
 	// Side gets the side to which this `GtkWindowControls` instance belongs.
 	Side() PackType
-	// SetDecorationLayoutWindowControls sets the decoration layout for the
-	// title buttons.
+	// SetDecorationLayout sets the decoration layout for the title buttons.
 	//
 	// This overrides the [property@Gtk.Settings:gtk-decoration-layout] setting.
 	//
@@ -95,12 +94,12 @@ type WindowControls interface {
 	//
 	// If [property@Gtk.WindowControls:side] value is @GTK_PACK_START, @self
 	// will display the part before the colon, otherwise after that.
-	SetDecorationLayoutWindowControls(layout string)
-	// SetSideWindowControls determines which part of decoration layout the
+	SetDecorationLayout(layout string)
+	// SetSide determines which part of decoration layout the
 	// `GtkWindowControls` uses.
 	//
 	// See [property@Gtk.WindowControls:decoration-layout].
-	SetSideWindowControls(side PackType)
+	SetSide(side PackType)
 }
 
 // windowControls implements the WindowControls class.
@@ -136,6 +135,18 @@ func NewWindowControls(side PackType) WindowControls {
 	_windowControls = WrapWindowControls(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _windowControls
+}
+
+func (w windowControls) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(w))
+}
+
+func (w windowControls) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(w))
+}
+
+func (w windowControls) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(w))
 }
 
 func (s windowControls) DecorationLayout() string {
@@ -185,7 +196,7 @@ func (s windowControls) Side() PackType {
 	return _packType
 }
 
-func (s windowControls) SetDecorationLayoutWindowControls(layout string) {
+func (s windowControls) SetDecorationLayout(layout string) {
 	var _arg0 *C.GtkWindowControls // out
 	var _arg1 *C.char              // out
 
@@ -196,7 +207,7 @@ func (s windowControls) SetDecorationLayoutWindowControls(layout string) {
 	C.gtk_window_controls_set_decoration_layout(_arg0, _arg1)
 }
 
-func (s windowControls) SetSideWindowControls(side PackType) {
+func (s windowControls) SetSide(side PackType) {
 	var _arg0 *C.GtkWindowControls // out
 	var _arg1 C.GtkPackType        // out
 
@@ -204,16 +215,4 @@ func (s windowControls) SetSideWindowControls(side PackType) {
 	_arg1 = C.GtkPackType(side)
 
 	C.gtk_window_controls_set_side(_arg0, _arg1)
-}
-
-func (w windowControls) AsAccessible() Accessible {
-	return WrapAccessible(gextras.InternObject(w))
-}
-
-func (w windowControls) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(w))
-}
-
-func (w windowControls) AsConstraintTarget() ConstraintTarget {
-	return WrapConstraintTarget(gextras.InternObject(w))
 }

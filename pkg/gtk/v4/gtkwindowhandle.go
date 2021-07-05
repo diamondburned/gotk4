@@ -48,8 +48,8 @@ type WindowHandle interface {
 
 	// Child gets the child widget of @self.
 	Child() Widget
-	// SetChildWindowHandle sets the child widget of @self.
-	SetChildWindowHandle(child Widget)
+	// SetChild sets the child widget of @self.
+	SetChild(child Widget)
 }
 
 // windowHandle implements the WindowHandle class.
@@ -84,6 +84,18 @@ func NewWindowHandle() WindowHandle {
 	return _windowHandle
 }
 
+func (w windowHandle) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(w))
+}
+
+func (w windowHandle) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(w))
+}
+
+func (w windowHandle) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(w))
+}
+
 func (s windowHandle) Child() Widget {
 	var _arg0 *C.GtkWindowHandle // out
 	var _cret *C.GtkWidget       // in
@@ -99,7 +111,7 @@ func (s windowHandle) Child() Widget {
 	return _widget
 }
 
-func (s windowHandle) SetChildWindowHandle(child Widget) {
+func (s windowHandle) SetChild(child Widget) {
 	var _arg0 *C.GtkWindowHandle // out
 	var _arg1 *C.GtkWidget       // out
 
@@ -107,16 +119,4 @@ func (s windowHandle) SetChildWindowHandle(child Widget) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_window_handle_set_child(_arg0, _arg1)
-}
-
-func (w windowHandle) AsAccessible() Accessible {
-	return WrapAccessible(gextras.InternObject(w))
-}
-
-func (w windowHandle) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(w))
-}
-
-func (w windowHandle) AsConstraintTarget() ConstraintTarget {
-	return WrapConstraintTarget(gextras.InternObject(w))
 }

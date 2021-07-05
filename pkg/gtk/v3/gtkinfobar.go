@@ -102,16 +102,16 @@ type InfoBar interface {
 	// AsOrientable casts the class to the Orientable interface.
 	AsOrientable() Orientable
 
-	// AddActionWidgetInfoBar: add an activatable widget to the action area of a
+	// AddActionWidget: add an activatable widget to the action area of a
 	// InfoBar, connecting a signal handler that will emit the InfoBar::response
 	// signal on the message area when the widget is activated. The widget is
 	// appended to the end of the message areas action area.
-	AddActionWidgetInfoBar(child Widget, responseId int)
-	// AddButtonInfoBar adds a button with the given text and sets things up so
-	// that clicking the button will emit the “response” signal with the given
+	AddActionWidget(child Widget, responseId int)
+	// AddButton adds a button with the given text and sets things up so that
+	// clicking the button will emit the “response” signal with the given
 	// response_id. The button is appended to the end of the info bars's action
 	// area. The button widget is returned, but usually you don't need it.
-	AddButtonInfoBar(buttonText string, responseId int) Button
+	AddButton(buttonText string, responseId int) Button
 	// ActionArea returns the action area of @info_bar.
 	ActionArea() Box
 	// ContentArea returns the content area of @info_bar.
@@ -123,32 +123,32 @@ type InfoBar interface {
 	// ShowCloseButton returns whether the widget will display a standard close
 	// button.
 	ShowCloseButton() bool
-	// ResponseInfoBar emits the “response” signal with the given @response_id.
-	ResponseInfoBar(responseId int)
-	// SetDefaultResponseInfoBar sets the last widget in the info bar’s action
-	// area with the given response_id as the default widget for the dialog.
-	// Pressing “Enter” normally activates the default widget.
+	// Response emits the “response” signal with the given @response_id.
+	Response(responseId int)
+	// SetDefaultResponse sets the last widget in the info bar’s action area
+	// with the given response_id as the default widget for the dialog. Pressing
+	// “Enter” normally activates the default widget.
 	//
 	// Note that this function currently requires @info_bar to be added to a
 	// widget hierarchy.
-	SetDefaultResponseInfoBar(responseId int)
-	// SetMessageTypeInfoBar sets the message type of the message area.
+	SetDefaultResponse(responseId int)
+	// SetMessageType sets the message type of the message area.
 	//
 	// GTK+ uses this type to determine how the message is displayed.
-	SetMessageTypeInfoBar(messageType MessageType)
-	// SetResponseSensitiveInfoBar calls gtk_widget_set_sensitive (widget,
-	// setting) for each widget in the info bars’s action area with the given
-	// response_id. A convenient way to sensitize/desensitize dialog buttons.
-	SetResponseSensitiveInfoBar(responseId int, setting bool)
-	// SetRevealedInfoBar sets the GtkInfoBar:revealed property to @revealed.
-	// This will cause @info_bar to show up with a slide-in transition.
+	SetMessageType(messageType MessageType)
+	// SetResponseSensitive calls gtk_widget_set_sensitive (widget, setting) for
+	// each widget in the info bars’s action area with the given response_id. A
+	// convenient way to sensitize/desensitize dialog buttons.
+	SetResponseSensitive(responseId int, setting bool)
+	// SetRevealed sets the GtkInfoBar:revealed property to @revealed. This will
+	// cause @info_bar to show up with a slide-in transition.
 	//
 	// Note that this property does not automatically show @info_bar and thus
 	// won’t have any effect if it is invisible.
-	SetRevealedInfoBar(revealed bool)
-	// SetShowCloseButtonInfoBar: if true, a standard close button is shown.
-	// When clicked it emits the response GTK_RESPONSE_CLOSE.
-	SetShowCloseButtonInfoBar(setting bool)
+	SetRevealed(revealed bool)
+	// SetShowCloseButton: if true, a standard close button is shown. When
+	// clicked it emits the response GTK_RESPONSE_CLOSE.
+	SetShowCloseButton(setting bool)
 }
 
 // infoBar implements the InfoBar class.
@@ -183,7 +183,15 @@ func NewInfoBar() InfoBar {
 	return _infoBar
 }
 
-func (i infoBar) AddActionWidgetInfoBar(child Widget, responseId int) {
+func (i infoBar) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(i))
+}
+
+func (i infoBar) AsOrientable() Orientable {
+	return WrapOrientable(gextras.InternObject(i))
+}
+
+func (i infoBar) AddActionWidget(child Widget, responseId int) {
 	var _arg0 *C.GtkInfoBar // out
 	var _arg1 *C.GtkWidget  // out
 	var _arg2 C.gint        // out
@@ -195,7 +203,7 @@ func (i infoBar) AddActionWidgetInfoBar(child Widget, responseId int) {
 	C.gtk_info_bar_add_action_widget(_arg0, _arg1, _arg2)
 }
 
-func (i infoBar) AddButtonInfoBar(buttonText string, responseId int) Button {
+func (i infoBar) AddButton(buttonText string, responseId int) Button {
 	var _arg0 *C.GtkInfoBar // out
 	var _arg1 *C.gchar      // out
 	var _arg2 C.gint        // out
@@ -294,7 +302,7 @@ func (i infoBar) ShowCloseButton() bool {
 	return _ok
 }
 
-func (i infoBar) ResponseInfoBar(responseId int) {
+func (i infoBar) Response(responseId int) {
 	var _arg0 *C.GtkInfoBar // out
 	var _arg1 C.gint        // out
 
@@ -304,7 +312,7 @@ func (i infoBar) ResponseInfoBar(responseId int) {
 	C.gtk_info_bar_response(_arg0, _arg1)
 }
 
-func (i infoBar) SetDefaultResponseInfoBar(responseId int) {
+func (i infoBar) SetDefaultResponse(responseId int) {
 	var _arg0 *C.GtkInfoBar // out
 	var _arg1 C.gint        // out
 
@@ -314,7 +322,7 @@ func (i infoBar) SetDefaultResponseInfoBar(responseId int) {
 	C.gtk_info_bar_set_default_response(_arg0, _arg1)
 }
 
-func (i infoBar) SetMessageTypeInfoBar(messageType MessageType) {
+func (i infoBar) SetMessageType(messageType MessageType) {
 	var _arg0 *C.GtkInfoBar    // out
 	var _arg1 C.GtkMessageType // out
 
@@ -324,7 +332,7 @@ func (i infoBar) SetMessageTypeInfoBar(messageType MessageType) {
 	C.gtk_info_bar_set_message_type(_arg0, _arg1)
 }
 
-func (i infoBar) SetResponseSensitiveInfoBar(responseId int, setting bool) {
+func (i infoBar) SetResponseSensitive(responseId int, setting bool) {
 	var _arg0 *C.GtkInfoBar // out
 	var _arg1 C.gint        // out
 	var _arg2 C.gboolean    // out
@@ -338,7 +346,7 @@ func (i infoBar) SetResponseSensitiveInfoBar(responseId int, setting bool) {
 	C.gtk_info_bar_set_response_sensitive(_arg0, _arg1, _arg2)
 }
 
-func (i infoBar) SetRevealedInfoBar(revealed bool) {
+func (i infoBar) SetRevealed(revealed bool) {
 	var _arg0 *C.GtkInfoBar // out
 	var _arg1 C.gboolean    // out
 
@@ -350,7 +358,7 @@ func (i infoBar) SetRevealedInfoBar(revealed bool) {
 	C.gtk_info_bar_set_revealed(_arg0, _arg1)
 }
 
-func (i infoBar) SetShowCloseButtonInfoBar(setting bool) {
+func (i infoBar) SetShowCloseButton(setting bool) {
 	var _arg0 *C.GtkInfoBar // out
 	var _arg1 C.gboolean    // out
 
@@ -360,12 +368,4 @@ func (i infoBar) SetShowCloseButtonInfoBar(setting bool) {
 	}
 
 	C.gtk_info_bar_set_show_close_button(_arg0, _arg1)
-}
-
-func (i infoBar) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(i))
-}
-
-func (i infoBar) AsOrientable() Orientable {
-	return WrapOrientable(gextras.InternObject(i))
 }

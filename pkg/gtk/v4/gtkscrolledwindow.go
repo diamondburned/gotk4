@@ -172,8 +172,8 @@ type ScrolledWindow interface {
 	HAdjustment() Adjustment
 	// HasFrame gets whether the scrolled window draws a frame.
 	HasFrame() bool
-	// HScrollbar returns the horizontal scrollbar of @scrolled_window.
-	HScrollbar() Widget
+	// Hscrollbar returns the horizontal scrollbar of @scrolled_window.
+	Hscrollbar() Widget
 	// KineticScrolling returns the specified kinetic scrolling behavior.
 	KineticScrolling() bool
 	// MaxContentHeight returns the maximum content height set.
@@ -208,62 +208,61 @@ type ScrolledWindow interface {
 	// This is the adjustment used to connect the vertical scrollbar to the
 	// child widget’s vertical scroll functionality.
 	VAdjustment() Adjustment
-	// VScrollbar returns the vertical scrollbar of @scrolled_window.
-	VScrollbar() Widget
-	// SetChildScrolledWindow sets the child widget of @scrolled_window.
-	SetChildScrolledWindow(child Widget)
-	// SetHAdjustmentScrolledWindow sets the `GtkAdjustment` for the horizontal
-	// scrollbar.
-	SetHAdjustmentScrolledWindow(hadjustment Adjustment)
-	// SetHasFrameScrolledWindow changes the frame drawn around the contents of
+	// Vscrollbar returns the vertical scrollbar of @scrolled_window.
+	Vscrollbar() Widget
+	// SetChild sets the child widget of @scrolled_window.
+	SetChild(child Widget)
+	// SetHAdjustment sets the `GtkAdjustment` for the horizontal scrollbar.
+	SetHAdjustment(hadjustment Adjustment)
+	// SetHasFrame changes the frame drawn around the contents of
 	// @scrolled_window.
-	SetHasFrameScrolledWindow(hasFrame bool)
-	// SetKineticScrollingScrolledWindow turns kinetic scrolling on or off.
+	SetHasFrame(hasFrame bool)
+	// SetKineticScrolling turns kinetic scrolling on or off.
 	//
 	// Kinetic scrolling only applies to devices with source
 	// GDK_SOURCE_TOUCHSCREEN.
-	SetKineticScrollingScrolledWindow(kineticScrolling bool)
-	// SetMaxContentHeightScrolledWindow sets the maximum height that
-	// @scrolled_window should keep visible.
+	SetKineticScrolling(kineticScrolling bool)
+	// SetMaxContentHeight sets the maximum height that @scrolled_window should
+	// keep visible.
 	//
 	// The @scrolled_window will grow up to this height before it starts
 	// scrolling the content.
 	//
 	// It is a programming error to set the maximum content height to a value
 	// smaller than [property@Gtk.ScrolledWindow:min-content-height].
-	SetMaxContentHeightScrolledWindow(height int)
-	// SetMaxContentWidthScrolledWindow sets the maximum width that
-	// @scrolled_window should keep visible.
+	SetMaxContentHeight(height int)
+	// SetMaxContentWidth sets the maximum width that @scrolled_window should
+	// keep visible.
 	//
 	// The @scrolled_window will grow up to this width before it starts
 	// scrolling the content.
 	//
 	// It is a programming error to set the maximum content width to a value
 	// smaller than [property@Gtk.ScrolledWindow:min-content-width].
-	SetMaxContentWidthScrolledWindow(width int)
-	// SetMinContentHeightScrolledWindow sets the minimum height that
-	// @scrolled_window should keep visible.
+	SetMaxContentWidth(width int)
+	// SetMinContentHeight sets the minimum height that @scrolled_window should
+	// keep visible.
 	//
 	// Note that this can and (usually will) be smaller than the minimum size of
 	// the content.
 	//
 	// It is a programming error to set the minimum content height to a value
 	// greater than [property@Gtk.ScrolledWindow:max-content-height].
-	SetMinContentHeightScrolledWindow(height int)
-	// SetMinContentWidthScrolledWindow sets the minimum width that
-	// @scrolled_window should keep visible.
+	SetMinContentHeight(height int)
+	// SetMinContentWidth sets the minimum width that @scrolled_window should
+	// keep visible.
 	//
 	// Note that this can and (usually will) be smaller than the minimum size of
 	// the content.
 	//
 	// It is a programming error to set the minimum content width to a value
 	// greater than [property@Gtk.ScrolledWindow:max-content-width].
-	SetMinContentWidthScrolledWindow(width int)
-	// SetOverlayScrollingScrolledWindow enables or disables overlay scrolling
-	// for this scrolled window.
-	SetOverlayScrollingScrolledWindow(overlayScrolling bool)
-	// SetPlacementScrolledWindow sets the placement of the contents with
-	// respect to the scrollbars for the scrolled window.
+	SetMinContentWidth(width int)
+	// SetOverlayScrolling enables or disables overlay scrolling for this
+	// scrolled window.
+	SetOverlayScrolling(overlayScrolling bool)
+	// SetPlacement sets the placement of the contents with respect to the
+	// scrollbars for the scrolled window.
 	//
 	// The default is GTK_CORNER_TOP_LEFT, meaning the child is in the top left,
 	// with the scrollbars underneath and to the right. Other values in
@@ -272,9 +271,9 @@ type ScrolledWindow interface {
 	//
 	// See also [method@Gtk.ScrolledWindow.get_placement] and
 	// [method@Gtk.ScrolledWindow.unset_placement].
-	SetPlacementScrolledWindow(windowPlacement CornerType)
-	// SetPolicyScrolledWindow sets the scrollbar policy for the horizontal and
-	// vertical scrollbars.
+	SetPlacement(windowPlacement CornerType)
+	// SetPolicy sets the scrollbar policy for the horizontal and vertical
+	// scrollbars.
 	//
 	// The policy determines when the scrollbar should appear; it is a value
 	// from the [enum@Gtk.PolicyType] enumeration. If GTK_POLICY_ALWAYS, the
@@ -282,24 +281,23 @@ type ScrolledWindow interface {
 	// present; if GTK_POLICY_AUTOMATIC, the scrollbar is present only if needed
 	// (that is, if the slider part of the bar would be smaller than the trough
 	// — the display is larger than the page size).
-	SetPolicyScrolledWindow(hscrollbarPolicy PolicyType, vscrollbarPolicy PolicyType)
-	// SetPropagateNaturalHeightScrolledWindow sets whether the natural height
-	// of the child should be calculated and propagated through the scrolled
-	// window’s requested natural height.
-	SetPropagateNaturalHeightScrolledWindow(propagate bool)
-	// SetPropagateNaturalWidthScrolledWindow sets whether the natural width of
-	// the child should be calculated and propagated through the scrolled
-	// window’s requested natural width.
-	SetPropagateNaturalWidthScrolledWindow(propagate bool)
-	// SetVAdjustmentScrolledWindow sets the `GtkAdjustment` for the vertical
-	// scrollbar.
-	SetVAdjustmentScrolledWindow(vadjustment Adjustment)
-	// UnsetPlacementScrolledWindow unsets the placement of the contents with
-	// respect to the scrollbars.
+	SetPolicy(hscrollbarPolicy PolicyType, vscrollbarPolicy PolicyType)
+	// SetPropagateNaturalHeight sets whether the natural height of the child
+	// should be calculated and propagated through the scrolled window’s
+	// requested natural height.
+	SetPropagateNaturalHeight(propagate bool)
+	// SetPropagateNaturalWidth sets whether the natural width of the child
+	// should be calculated and propagated through the scrolled window’s
+	// requested natural width.
+	SetPropagateNaturalWidth(propagate bool)
+	// SetVAdjustment sets the `GtkAdjustment` for the vertical scrollbar.
+	SetVAdjustment(vadjustment Adjustment)
+	// UnsetPlacement unsets the placement of the contents with respect to the
+	// scrollbars.
 	//
 	// If no window placement is set for a scrolled window, it defaults to
 	// GTK_CORNER_TOP_LEFT.
-	UnsetPlacementScrolledWindow()
+	UnsetPlacement()
 }
 
 // scrolledWindow implements the ScrolledWindow class.
@@ -332,6 +330,18 @@ func NewScrolledWindow() ScrolledWindow {
 	_scrolledWindow = WrapScrolledWindow(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _scrolledWindow
+}
+
+func (s scrolledWindow) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(s))
+}
+
+func (s scrolledWindow) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(s))
+}
+
+func (s scrolledWindow) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(s))
 }
 
 func (s scrolledWindow) Child() Widget {
@@ -381,7 +391,7 @@ func (s scrolledWindow) HasFrame() bool {
 	return _ok
 }
 
-func (s scrolledWindow) HScrollbar() Widget {
+func (s scrolledWindow) Hscrollbar() Widget {
 	var _arg0 *C.GtkScrolledWindow // out
 	var _cret *C.GtkWidget         // in
 
@@ -572,7 +582,7 @@ func (s scrolledWindow) VAdjustment() Adjustment {
 	return _adjustment
 }
 
-func (s scrolledWindow) VScrollbar() Widget {
+func (s scrolledWindow) Vscrollbar() Widget {
 	var _arg0 *C.GtkScrolledWindow // out
 	var _cret *C.GtkWidget         // in
 
@@ -587,7 +597,7 @@ func (s scrolledWindow) VScrollbar() Widget {
 	return _widget
 }
 
-func (s scrolledWindow) SetChildScrolledWindow(child Widget) {
+func (s scrolledWindow) SetChild(child Widget) {
 	var _arg0 *C.GtkScrolledWindow // out
 	var _arg1 *C.GtkWidget         // out
 
@@ -597,7 +607,7 @@ func (s scrolledWindow) SetChildScrolledWindow(child Widget) {
 	C.gtk_scrolled_window_set_child(_arg0, _arg1)
 }
 
-func (s scrolledWindow) SetHAdjustmentScrolledWindow(hadjustment Adjustment) {
+func (s scrolledWindow) SetHAdjustment(hadjustment Adjustment) {
 	var _arg0 *C.GtkScrolledWindow // out
 	var _arg1 *C.GtkAdjustment     // out
 
@@ -607,7 +617,7 @@ func (s scrolledWindow) SetHAdjustmentScrolledWindow(hadjustment Adjustment) {
 	C.gtk_scrolled_window_set_hadjustment(_arg0, _arg1)
 }
 
-func (s scrolledWindow) SetHasFrameScrolledWindow(hasFrame bool) {
+func (s scrolledWindow) SetHasFrame(hasFrame bool) {
 	var _arg0 *C.GtkScrolledWindow // out
 	var _arg1 C.gboolean           // out
 
@@ -619,7 +629,7 @@ func (s scrolledWindow) SetHasFrameScrolledWindow(hasFrame bool) {
 	C.gtk_scrolled_window_set_has_frame(_arg0, _arg1)
 }
 
-func (s scrolledWindow) SetKineticScrollingScrolledWindow(kineticScrolling bool) {
+func (s scrolledWindow) SetKineticScrolling(kineticScrolling bool) {
 	var _arg0 *C.GtkScrolledWindow // out
 	var _arg1 C.gboolean           // out
 
@@ -631,7 +641,7 @@ func (s scrolledWindow) SetKineticScrollingScrolledWindow(kineticScrolling bool)
 	C.gtk_scrolled_window_set_kinetic_scrolling(_arg0, _arg1)
 }
 
-func (s scrolledWindow) SetMaxContentHeightScrolledWindow(height int) {
+func (s scrolledWindow) SetMaxContentHeight(height int) {
 	var _arg0 *C.GtkScrolledWindow // out
 	var _arg1 C.int                // out
 
@@ -641,7 +651,7 @@ func (s scrolledWindow) SetMaxContentHeightScrolledWindow(height int) {
 	C.gtk_scrolled_window_set_max_content_height(_arg0, _arg1)
 }
 
-func (s scrolledWindow) SetMaxContentWidthScrolledWindow(width int) {
+func (s scrolledWindow) SetMaxContentWidth(width int) {
 	var _arg0 *C.GtkScrolledWindow // out
 	var _arg1 C.int                // out
 
@@ -651,7 +661,7 @@ func (s scrolledWindow) SetMaxContentWidthScrolledWindow(width int) {
 	C.gtk_scrolled_window_set_max_content_width(_arg0, _arg1)
 }
 
-func (s scrolledWindow) SetMinContentHeightScrolledWindow(height int) {
+func (s scrolledWindow) SetMinContentHeight(height int) {
 	var _arg0 *C.GtkScrolledWindow // out
 	var _arg1 C.int                // out
 
@@ -661,7 +671,7 @@ func (s scrolledWindow) SetMinContentHeightScrolledWindow(height int) {
 	C.gtk_scrolled_window_set_min_content_height(_arg0, _arg1)
 }
 
-func (s scrolledWindow) SetMinContentWidthScrolledWindow(width int) {
+func (s scrolledWindow) SetMinContentWidth(width int) {
 	var _arg0 *C.GtkScrolledWindow // out
 	var _arg1 C.int                // out
 
@@ -671,7 +681,7 @@ func (s scrolledWindow) SetMinContentWidthScrolledWindow(width int) {
 	C.gtk_scrolled_window_set_min_content_width(_arg0, _arg1)
 }
 
-func (s scrolledWindow) SetOverlayScrollingScrolledWindow(overlayScrolling bool) {
+func (s scrolledWindow) SetOverlayScrolling(overlayScrolling bool) {
 	var _arg0 *C.GtkScrolledWindow // out
 	var _arg1 C.gboolean           // out
 
@@ -683,7 +693,7 @@ func (s scrolledWindow) SetOverlayScrollingScrolledWindow(overlayScrolling bool)
 	C.gtk_scrolled_window_set_overlay_scrolling(_arg0, _arg1)
 }
 
-func (s scrolledWindow) SetPlacementScrolledWindow(windowPlacement CornerType) {
+func (s scrolledWindow) SetPlacement(windowPlacement CornerType) {
 	var _arg0 *C.GtkScrolledWindow // out
 	var _arg1 C.GtkCornerType      // out
 
@@ -693,7 +703,7 @@ func (s scrolledWindow) SetPlacementScrolledWindow(windowPlacement CornerType) {
 	C.gtk_scrolled_window_set_placement(_arg0, _arg1)
 }
 
-func (s scrolledWindow) SetPolicyScrolledWindow(hscrollbarPolicy PolicyType, vscrollbarPolicy PolicyType) {
+func (s scrolledWindow) SetPolicy(hscrollbarPolicy PolicyType, vscrollbarPolicy PolicyType) {
 	var _arg0 *C.GtkScrolledWindow // out
 	var _arg1 C.GtkPolicyType      // out
 	var _arg2 C.GtkPolicyType      // out
@@ -705,7 +715,7 @@ func (s scrolledWindow) SetPolicyScrolledWindow(hscrollbarPolicy PolicyType, vsc
 	C.gtk_scrolled_window_set_policy(_arg0, _arg1, _arg2)
 }
 
-func (s scrolledWindow) SetPropagateNaturalHeightScrolledWindow(propagate bool) {
+func (s scrolledWindow) SetPropagateNaturalHeight(propagate bool) {
 	var _arg0 *C.GtkScrolledWindow // out
 	var _arg1 C.gboolean           // out
 
@@ -717,7 +727,7 @@ func (s scrolledWindow) SetPropagateNaturalHeightScrolledWindow(propagate bool) 
 	C.gtk_scrolled_window_set_propagate_natural_height(_arg0, _arg1)
 }
 
-func (s scrolledWindow) SetPropagateNaturalWidthScrolledWindow(propagate bool) {
+func (s scrolledWindow) SetPropagateNaturalWidth(propagate bool) {
 	var _arg0 *C.GtkScrolledWindow // out
 	var _arg1 C.gboolean           // out
 
@@ -729,7 +739,7 @@ func (s scrolledWindow) SetPropagateNaturalWidthScrolledWindow(propagate bool) {
 	C.gtk_scrolled_window_set_propagate_natural_width(_arg0, _arg1)
 }
 
-func (s scrolledWindow) SetVAdjustmentScrolledWindow(vadjustment Adjustment) {
+func (s scrolledWindow) SetVAdjustment(vadjustment Adjustment) {
 	var _arg0 *C.GtkScrolledWindow // out
 	var _arg1 *C.GtkAdjustment     // out
 
@@ -739,22 +749,10 @@ func (s scrolledWindow) SetVAdjustmentScrolledWindow(vadjustment Adjustment) {
 	C.gtk_scrolled_window_set_vadjustment(_arg0, _arg1)
 }
 
-func (s scrolledWindow) UnsetPlacementScrolledWindow() {
+func (s scrolledWindow) UnsetPlacement() {
 	var _arg0 *C.GtkScrolledWindow // out
 
 	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
 
 	C.gtk_scrolled_window_unset_placement(_arg0)
-}
-
-func (s scrolledWindow) AsAccessible() Accessible {
-	return WrapAccessible(gextras.InternObject(s))
-}
-
-func (s scrolledWindow) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(s))
-}
-
-func (s scrolledWindow) AsConstraintTarget() ConstraintTarget {
-	return WrapConstraintTarget(gextras.InternObject(s))
 }

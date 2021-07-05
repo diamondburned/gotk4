@@ -58,17 +58,17 @@ type ScaleButton interface {
 	Popup() Widget
 	// Value gets the current value of the scale button.
 	Value() float64
-	// SetAdjustmentScaleButton sets the Adjustment to be used as a model for
-	// the ScaleButton’s scale. See gtk_range_set_adjustment() for details.
-	SetAdjustmentScaleButton(adjustment Adjustment)
-	// SetIconsScaleButton sets the icons to be used by the scale button. For
-	// details, see the ScaleButton:icons property.
-	SetIconsScaleButton(icons []string)
-	// SetValueScaleButton sets the current value of the scale; if the value is
-	// outside the minimum or maximum range values, it will be clamped to fit
-	// inside them. The scale button emits the ScaleButton::value-changed signal
-	// if the value changes.
-	SetValueScaleButton(value float64)
+	// SetAdjustment sets the Adjustment to be used as a model for the
+	// ScaleButton’s scale. See gtk_range_set_adjustment() for details.
+	SetAdjustment(adjustment Adjustment)
+	// SetIcons sets the icons to be used by the scale button. For details, see
+	// the ScaleButton:icons property.
+	SetIcons(icons []string)
+	// SetValue sets the current value of the scale; if the value is outside the
+	// minimum or maximum range values, it will be clamped to fit inside them.
+	// The scale button emits the ScaleButton::value-changed signal if the value
+	// changes.
+	SetValue(value float64)
 }
 
 // scaleButton implements the ScaleButton class.
@@ -121,6 +121,22 @@ func NewScaleButton(size int, min float64, max float64, step float64, icons []st
 	_scaleButton = WrapScaleButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _scaleButton
+}
+
+func (s scaleButton) AsActionable() Actionable {
+	return WrapActionable(gextras.InternObject(s))
+}
+
+func (s scaleButton) AsActivatable() Activatable {
+	return WrapActivatable(gextras.InternObject(s))
+}
+
+func (s scaleButton) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(s))
+}
+
+func (s scaleButton) AsOrientable() Orientable {
+	return WrapOrientable(gextras.InternObject(s))
 }
 
 func (b scaleButton) Adjustment() Adjustment {
@@ -198,7 +214,7 @@ func (b scaleButton) Value() float64 {
 	return _gdouble
 }
 
-func (b scaleButton) SetAdjustmentScaleButton(adjustment Adjustment) {
+func (b scaleButton) SetAdjustment(adjustment Adjustment) {
 	var _arg0 *C.GtkScaleButton // out
 	var _arg1 *C.GtkAdjustment  // out
 
@@ -208,7 +224,7 @@ func (b scaleButton) SetAdjustmentScaleButton(adjustment Adjustment) {
 	C.gtk_scale_button_set_adjustment(_arg0, _arg1)
 }
 
-func (b scaleButton) SetIconsScaleButton(icons []string) {
+func (b scaleButton) SetIcons(icons []string) {
 	var _arg0 *C.GtkScaleButton // out
 	var _arg1 **C.gchar
 
@@ -226,7 +242,7 @@ func (b scaleButton) SetIconsScaleButton(icons []string) {
 	C.gtk_scale_button_set_icons(_arg0, _arg1)
 }
 
-func (b scaleButton) SetValueScaleButton(value float64) {
+func (b scaleButton) SetValue(value float64) {
 	var _arg0 *C.GtkScaleButton // out
 	var _arg1 C.gdouble         // out
 
@@ -234,20 +250,4 @@ func (b scaleButton) SetValueScaleButton(value float64) {
 	_arg1 = C.gdouble(value)
 
 	C.gtk_scale_button_set_value(_arg0, _arg1)
-}
-
-func (s scaleButton) AsActionable() Actionable {
-	return WrapActionable(gextras.InternObject(s))
-}
-
-func (s scaleButton) AsActivatable() Activatable {
-	return WrapActivatable(gextras.InternObject(s))
-}
-
-func (s scaleButton) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(s))
-}
-
-func (s scaleButton) AsOrientable() Orientable {
-	return WrapOrientable(gextras.InternObject(s))
 }

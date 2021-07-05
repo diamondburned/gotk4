@@ -270,15 +270,14 @@ func marshalNothingAction(p uintptr) (interface{}, error) {
 type ShortcutAction interface {
 	gextras.Objector
 
-	// ActivateShortcutAction activates the action on the @widget with the given
-	// @args.
+	// Activate activates the action on the @widget with the given @args.
 	//
 	// Note that some actions ignore the passed in @flags, @widget or @args.
 	//
 	// Activation of an action can fail for various reasons. If the action is
 	// not supported by the @widget, if the @args don't match the action or if
 	// the activation otherwise had no effect, false will be returned.
-	ActivateShortcutAction(flags ShortcutActionFlags, widget Widget, args *glib.Variant) bool
+	Activate(flags ShortcutActionFlags, widget Widget, args *glib.Variant) bool
 	// String prints the given action into a human-readable string.
 	//
 	// This is a small wrapper around [method@Gtk.ShortcutAction.print] to help
@@ -332,7 +331,7 @@ func NewShortcutActionParseString(_string string) ShortcutAction {
 	return _shortcutAction
 }
 
-func (s shortcutAction) ActivateShortcutAction(flags ShortcutActionFlags, widget Widget, args *glib.Variant) bool {
+func (s shortcutAction) Activate(flags ShortcutActionFlags, widget Widget, args *glib.Variant) bool {
 	var _arg0 *C.GtkShortcutAction     // out
 	var _arg1 C.GtkShortcutActionFlags // out
 	var _arg2 *C.GtkWidget             // out

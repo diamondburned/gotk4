@@ -58,28 +58,28 @@ type Overlay interface {
 	// AsBuildable casts the class to the Buildable interface.
 	AsBuildable() Buildable
 
-	// AddOverlayOverlay adds @widget to @overlay.
+	// AddOverlay adds @widget to @overlay.
 	//
 	// The widget will be stacked on top of the main widget added with
 	// gtk_container_add().
 	//
 	// The position at which @widget is placed is determined from its
 	// Widget:halign and Widget:valign properties.
-	AddOverlayOverlay(widget Widget)
+	AddOverlay(widget Widget)
 	// OverlayPassThrough: convenience function to get the value of the
 	// Overlay:pass-through child property for @widget.
 	OverlayPassThrough(widget Widget) bool
-	// ReorderOverlayOverlay moves @child to a new @index in the list of
-	// @overlay children. The list contains overlays in the order that these
-	// were added to @overlay by default. See also Overlay:index.
+	// ReorderOverlay moves @child to a new @index in the list of @overlay
+	// children. The list contains overlays in the order that these were added
+	// to @overlay by default. See also Overlay:index.
 	//
 	// A widget’s index in the @overlay children list determines which order the
 	// children are drawn if they overlap. The first child is drawn at the
 	// bottom. It also affects the default focus chain order.
-	ReorderOverlayOverlay(child Widget, index_ int)
-	// SetOverlayPassThroughOverlay: convenience function to set the value of
-	// the Overlay:pass-through child property for @widget.
-	SetOverlayPassThroughOverlay(widget Widget, passThrough bool)
+	ReorderOverlay(child Widget, index_ int)
+	// SetOverlayPassThrough: convenience function to set the value of the
+	// Overlay:pass-through child property for @widget.
+	SetOverlayPassThrough(widget Widget, passThrough bool)
 }
 
 // overlay implements the Overlay class.
@@ -114,7 +114,11 @@ func NewOverlay() Overlay {
 	return _overlay
 }
 
-func (o overlay) AddOverlayOverlay(widget Widget) {
+func (o overlay) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(o))
+}
+
+func (o overlay) AddOverlay(widget Widget) {
 	var _arg0 *C.GtkOverlay // out
 	var _arg1 *C.GtkWidget  // out
 
@@ -143,7 +147,7 @@ func (o overlay) OverlayPassThrough(widget Widget) bool {
 	return _ok
 }
 
-func (o overlay) ReorderOverlayOverlay(child Widget, index_ int) {
+func (o overlay) ReorderOverlay(child Widget, index_ int) {
 	var _arg0 *C.GtkOverlay // out
 	var _arg1 *C.GtkWidget  // out
 	var _arg2 C.int         // out
@@ -155,7 +159,7 @@ func (o overlay) ReorderOverlayOverlay(child Widget, index_ int) {
 	C.gtk_overlay_reorder_overlay(_arg0, _arg1, _arg2)
 }
 
-func (o overlay) SetOverlayPassThroughOverlay(widget Widget, passThrough bool) {
+func (o overlay) SetOverlayPassThrough(widget Widget, passThrough bool) {
 	var _arg0 *C.GtkOverlay // out
 	var _arg1 *C.GtkWidget  // out
 	var _arg2 C.gboolean    // out
@@ -167,8 +171,4 @@ func (o overlay) SetOverlayPassThroughOverlay(widget Widget, passThrough bool) {
 	}
 
 	C.gtk_overlay_set_overlay_pass_through(_arg0, _arg1, _arg2)
-}
-
-func (o overlay) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(o))
 }

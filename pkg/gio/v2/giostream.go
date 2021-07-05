@@ -83,10 +83,10 @@ func init() {
 type IOStream interface {
 	gextras.Objector
 
-	// ClearPendingIOStream clears the pending flag on @stream.
-	ClearPendingIOStream()
-	// CloseIOStream closes the stream, releasing resources related to it. This
-	// will also close the individual input and output streams, if they are not
+	// ClearPending clears the pending flag on @stream.
+	ClearPending()
+	// Close closes the stream, releasing resources related to it. This will
+	// also close the individual input and output streams, if they are not
 	// already closed.
 	//
 	// Once the stream is closed, all other operations will return
@@ -118,41 +118,40 @@ type IOStream interface {
 	//
 	// The default implementation of this method just calls close on the
 	// individual input/output streams.
-	CloseIOStream(cancellable Cancellable) error
-	// CloseAsyncIOStream requests an asynchronous close of the stream,
-	// releasing resources related to it. When the operation is finished
-	// @callback will be called. You can then call g_io_stream_close_finish() to
-	// get the result of the operation.
+	Close(cancellable Cancellable) error
+	// CloseAsync requests an asynchronous close of the stream, releasing
+	// resources related to it. When the operation is finished @callback will be
+	// called. You can then call g_io_stream_close_finish() to get the result of
+	// the operation.
 	//
 	// For behaviour details see g_io_stream_close().
 	//
 	// The asynchronous methods have a default fallback that uses threads to
 	// implement asynchronicity, so they are optional for inheriting classes.
 	// However, if you override one you must override all.
-	CloseAsyncIOStream(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
-	// CloseFinishIOStream closes a stream.
-	CloseFinishIOStream(result AsyncResult) error
+	CloseAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
+	// CloseFinish closes a stream.
+	CloseFinish(result AsyncResult) error
 	// InputStream gets the input stream for this object. This is used for
 	// reading.
 	InputStream() InputStream
 	// OutputStream gets the output stream for this object. This is used for
 	// writing.
 	OutputStream() OutputStream
-	// HasPendingIOStream checks if a stream has pending actions.
-	HasPendingIOStream() bool
-	// IsClosedIOStream checks if a stream is closed.
-	IsClosedIOStream() bool
-	// SetPendingIOStream sets @stream to have actions pending. If the pending
-	// flag is already set or @stream is closed, it will return false and set
-	// @error.
-	SetPendingIOStream() error
-	// SpliceAsyncIOStream: asynchronously splice the output stream of @stream1
-	// to the input stream of @stream2, and splice the output stream of @stream2
-	// to the input stream of @stream1.
+	// HasPending checks if a stream has pending actions.
+	HasPending() bool
+	// IsClosed checks if a stream is closed.
+	IsClosed() bool
+	// SetPending sets @stream to have actions pending. If the pending flag is
+	// already set or @stream is closed, it will return false and set @error.
+	SetPending() error
+	// SpliceAsync: asynchronously splice the output stream of @stream1 to the
+	// input stream of @stream2, and splice the output stream of @stream2 to the
+	// input stream of @stream1.
 	//
 	// When the operation is finished @callback will be called. You can then
 	// call g_io_stream_splice_finish() to get the result of the operation.
-	SpliceAsyncIOStream(stream2 IOStream, flags IOStreamSpliceFlags, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
+	SpliceAsync(stream2 IOStream, flags IOStreamSpliceFlags, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 }
 
 // ioStream implements the IOStream class.
@@ -174,7 +173,7 @@ func marshalIOStream(p uintptr) (interface{}, error) {
 	return WrapIOStream(obj), nil
 }
 
-func (s ioStream) ClearPendingIOStream() {
+func (s ioStream) ClearPending() {
 	var _arg0 *C.GIOStream // out
 
 	_arg0 = (*C.GIOStream)(unsafe.Pointer(s.Native()))
@@ -182,7 +181,7 @@ func (s ioStream) ClearPendingIOStream() {
 	C.g_io_stream_clear_pending(_arg0)
 }
 
-func (s ioStream) CloseIOStream(cancellable Cancellable) error {
+func (s ioStream) Close(cancellable Cancellable) error {
 	var _arg0 *C.GIOStream    // out
 	var _arg1 *C.GCancellable // out
 	var _cerr *C.GError       // in
@@ -199,7 +198,7 @@ func (s ioStream) CloseIOStream(cancellable Cancellable) error {
 	return _goerr
 }
 
-func (s ioStream) CloseAsyncIOStream(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+func (s ioStream) CloseAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GIOStream          // out
 	var _arg1 C.int                 // out
 	var _arg2 *C.GCancellable       // out
@@ -215,7 +214,7 @@ func (s ioStream) CloseAsyncIOStream(ioPriority int, cancellable Cancellable, ca
 	C.g_io_stream_close_async(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
-func (s ioStream) CloseFinishIOStream(result AsyncResult) error {
+func (s ioStream) CloseFinish(result AsyncResult) error {
 	var _arg0 *C.GIOStream    // out
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
@@ -262,7 +261,7 @@ func (s ioStream) OutputStream() OutputStream {
 	return _outputStream
 }
 
-func (s ioStream) HasPendingIOStream() bool {
+func (s ioStream) HasPending() bool {
 	var _arg0 *C.GIOStream // out
 	var _cret C.gboolean   // in
 
@@ -279,7 +278,7 @@ func (s ioStream) HasPendingIOStream() bool {
 	return _ok
 }
 
-func (s ioStream) IsClosedIOStream() bool {
+func (s ioStream) IsClosed() bool {
 	var _arg0 *C.GIOStream // out
 	var _cret C.gboolean   // in
 
@@ -296,7 +295,7 @@ func (s ioStream) IsClosedIOStream() bool {
 	return _ok
 }
 
-func (s ioStream) SetPendingIOStream() error {
+func (s ioStream) SetPending() error {
 	var _arg0 *C.GIOStream // out
 	var _cerr *C.GError    // in
 
@@ -311,7 +310,7 @@ func (s ioStream) SetPendingIOStream() error {
 	return _goerr
 }
 
-func (s ioStream) SpliceAsyncIOStream(stream2 IOStream, flags IOStreamSpliceFlags, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+func (s ioStream) SpliceAsync(stream2 IOStream, flags IOStreamSpliceFlags, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GIOStream           // out
 	var _arg1 *C.GIOStream           // out
 	var _arg2 C.GIOStreamSpliceFlags // out

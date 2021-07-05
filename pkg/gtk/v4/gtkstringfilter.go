@@ -65,18 +65,17 @@ type StringFilter interface {
 	MatchMode() StringFilterMatchMode
 	// Search gets the search term.
 	Search() string
-	// SetExpressionStringFilter sets the expression that the string filter uses
-	// to obtain strings from items.
+	// SetExpression sets the expression that the string filter uses to obtain
+	// strings from items.
 	//
 	// The expression must have a value type of G_TYPE_STRING.
-	SetExpressionStringFilter(expression Expression)
-	// SetIgnoreCaseStringFilter sets whether the filter ignores case
-	// differences.
-	SetIgnoreCaseStringFilter(ignoreCase bool)
-	// SetMatchModeStringFilter sets the match mode for the filter.
-	SetMatchModeStringFilter(mode StringFilterMatchMode)
-	// SetSearchStringFilter sets the string to search for.
-	SetSearchStringFilter(search string)
+	SetExpression(expression Expression)
+	// SetIgnoreCase sets whether the filter ignores case differences.
+	SetIgnoreCase(ignoreCase bool)
+	// SetMatchMode sets the match mode for the filter.
+	SetMatchMode(mode StringFilterMatchMode)
+	// SetSearch sets the string to search for.
+	SetSearch(search string)
 }
 
 // stringFilter implements the StringFilter class.
@@ -179,7 +178,7 @@ func (s stringFilter) Search() string {
 	return _utf8
 }
 
-func (s stringFilter) SetExpressionStringFilter(expression Expression) {
+func (s stringFilter) SetExpression(expression Expression) {
 	var _arg0 *C.GtkStringFilter // out
 	var _arg1 *C.GtkExpression   // out
 
@@ -189,7 +188,7 @@ func (s stringFilter) SetExpressionStringFilter(expression Expression) {
 	C.gtk_string_filter_set_expression(_arg0, _arg1)
 }
 
-func (s stringFilter) SetIgnoreCaseStringFilter(ignoreCase bool) {
+func (s stringFilter) SetIgnoreCase(ignoreCase bool) {
 	var _arg0 *C.GtkStringFilter // out
 	var _arg1 C.gboolean         // out
 
@@ -201,7 +200,7 @@ func (s stringFilter) SetIgnoreCaseStringFilter(ignoreCase bool) {
 	C.gtk_string_filter_set_ignore_case(_arg0, _arg1)
 }
 
-func (s stringFilter) SetMatchModeStringFilter(mode StringFilterMatchMode) {
+func (s stringFilter) SetMatchMode(mode StringFilterMatchMode) {
 	var _arg0 *C.GtkStringFilter         // out
 	var _arg1 C.GtkStringFilterMatchMode // out
 
@@ -211,7 +210,7 @@ func (s stringFilter) SetMatchModeStringFilter(mode StringFilterMatchMode) {
 	C.gtk_string_filter_set_match_mode(_arg0, _arg1)
 }
 
-func (s stringFilter) SetSearchStringFilter(search string) {
+func (s stringFilter) SetSearch(search string) {
 	var _arg0 *C.GtkStringFilter // out
 	var _arg1 *C.char            // out
 

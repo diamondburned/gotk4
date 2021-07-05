@@ -153,36 +153,35 @@ type CellRenderer interface {
 	State(widget Widget, cellState CellRendererState) StateFlags
 	// Visible returns the cell renderer’s visibility.
 	Visible() bool
-	// IsActivatableCellRenderer checks whether the cell renderer can do
-	// something when activated.
-	IsActivatableCellRenderer() bool
-	// RenderCellRenderer invokes the virtual render function of the
-	// CellRenderer. The three passed-in rectangles are areas in @cr. Most
-	// renderers will draw within @cell_area; the xalign, yalign, xpad, and ypad
-	// fields of the CellRenderer should be honored with respect to @cell_area.
-	// @background_area includes the blank space around the cell, and also the
-	// area containing the tree expander; so the @background_area rectangles for
-	// all cells tile to cover the entire @window.
-	RenderCellRenderer(cr *cairo.Context, widget Widget, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState)
-	// SetAlignmentCellRenderer sets the renderer’s alignment within its
-	// available space.
-	SetAlignmentCellRenderer(xalign float32, yalign float32)
-	// SetFixedSizeCellRenderer sets the renderer size to be explicit,
-	// independent of the properties set.
-	SetFixedSizeCellRenderer(width int, height int)
-	// SetPaddingCellRenderer sets the renderer’s padding.
-	SetPaddingCellRenderer(xpad int, ypad int)
-	// SetSensitiveCellRenderer sets the cell renderer’s sensitivity.
-	SetSensitiveCellRenderer(sensitive bool)
-	// SetVisibleCellRenderer sets the cell renderer’s visibility.
-	SetVisibleCellRenderer(visible bool)
-	// StopEditingCellRenderer informs the cell renderer that the editing is
-	// stopped. If @canceled is true, the cell renderer will emit the
+	// IsActivatable checks whether the cell renderer can do something when
+	// activated.
+	IsActivatable() bool
+	// Render invokes the virtual render function of the CellRenderer. The three
+	// passed-in rectangles are areas in @cr. Most renderers will draw within
+	// @cell_area; the xalign, yalign, xpad, and ypad fields of the CellRenderer
+	// should be honored with respect to @cell_area. @background_area includes
+	// the blank space around the cell, and also the area containing the tree
+	// expander; so the @background_area rectangles for all cells tile to cover
+	// the entire @window.
+	Render(cr *cairo.Context, widget Widget, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState)
+	// SetAlignment sets the renderer’s alignment within its available space.
+	SetAlignment(xalign float32, yalign float32)
+	// SetFixedSize sets the renderer size to be explicit, independent of the
+	// properties set.
+	SetFixedSize(width int, height int)
+	// SetPadding sets the renderer’s padding.
+	SetPadding(xpad int, ypad int)
+	// SetSensitive sets the cell renderer’s sensitivity.
+	SetSensitive(sensitive bool)
+	// SetVisible sets the cell renderer’s visibility.
+	SetVisible(visible bool)
+	// StopEditing informs the cell renderer that the editing is stopped. If
+	// @canceled is true, the cell renderer will emit the
 	// CellRenderer::editing-canceled signal.
 	//
 	// This function should be called by cell renderer implementations in
 	// response to the CellEditable::editing-done signal of CellEditable.
-	StopEditingCellRenderer(canceled bool)
+	StopEditing(canceled bool)
 }
 
 // cellRenderer implements the CellRenderer class.
@@ -509,7 +508,7 @@ func (c cellRenderer) Visible() bool {
 	return _ok
 }
 
-func (c cellRenderer) IsActivatableCellRenderer() bool {
+func (c cellRenderer) IsActivatable() bool {
 	var _arg0 *C.GtkCellRenderer // out
 	var _cret C.gboolean         // in
 
@@ -526,7 +525,7 @@ func (c cellRenderer) IsActivatableCellRenderer() bool {
 	return _ok
 }
 
-func (c cellRenderer) RenderCellRenderer(cr *cairo.Context, widget Widget, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState) {
+func (c cellRenderer) Render(cr *cairo.Context, widget Widget, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState) {
 	var _arg0 *C.GtkCellRenderer     // out
 	var _arg1 *C.cairo_t             // out
 	var _arg2 *C.GtkWidget           // out
@@ -544,7 +543,7 @@ func (c cellRenderer) RenderCellRenderer(cr *cairo.Context, widget Widget, backg
 	C.gtk_cell_renderer_render(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
 
-func (c cellRenderer) SetAlignmentCellRenderer(xalign float32, yalign float32) {
+func (c cellRenderer) SetAlignment(xalign float32, yalign float32) {
 	var _arg0 *C.GtkCellRenderer // out
 	var _arg1 C.gfloat           // out
 	var _arg2 C.gfloat           // out
@@ -556,7 +555,7 @@ func (c cellRenderer) SetAlignmentCellRenderer(xalign float32, yalign float32) {
 	C.gtk_cell_renderer_set_alignment(_arg0, _arg1, _arg2)
 }
 
-func (c cellRenderer) SetFixedSizeCellRenderer(width int, height int) {
+func (c cellRenderer) SetFixedSize(width int, height int) {
 	var _arg0 *C.GtkCellRenderer // out
 	var _arg1 C.gint             // out
 	var _arg2 C.gint             // out
@@ -568,7 +567,7 @@ func (c cellRenderer) SetFixedSizeCellRenderer(width int, height int) {
 	C.gtk_cell_renderer_set_fixed_size(_arg0, _arg1, _arg2)
 }
 
-func (c cellRenderer) SetPaddingCellRenderer(xpad int, ypad int) {
+func (c cellRenderer) SetPadding(xpad int, ypad int) {
 	var _arg0 *C.GtkCellRenderer // out
 	var _arg1 C.gint             // out
 	var _arg2 C.gint             // out
@@ -580,7 +579,7 @@ func (c cellRenderer) SetPaddingCellRenderer(xpad int, ypad int) {
 	C.gtk_cell_renderer_set_padding(_arg0, _arg1, _arg2)
 }
 
-func (c cellRenderer) SetSensitiveCellRenderer(sensitive bool) {
+func (c cellRenderer) SetSensitive(sensitive bool) {
 	var _arg0 *C.GtkCellRenderer // out
 	var _arg1 C.gboolean         // out
 
@@ -592,7 +591,7 @@ func (c cellRenderer) SetSensitiveCellRenderer(sensitive bool) {
 	C.gtk_cell_renderer_set_sensitive(_arg0, _arg1)
 }
 
-func (c cellRenderer) SetVisibleCellRenderer(visible bool) {
+func (c cellRenderer) SetVisible(visible bool) {
 	var _arg0 *C.GtkCellRenderer // out
 	var _arg1 C.gboolean         // out
 
@@ -604,7 +603,7 @@ func (c cellRenderer) SetVisibleCellRenderer(visible bool) {
 	C.gtk_cell_renderer_set_visible(_arg0, _arg1)
 }
 
-func (c cellRenderer) StopEditingCellRenderer(canceled bool) {
+func (c cellRenderer) StopEditing(canceled bool) {
 	var _arg0 *C.GtkCellRenderer // out
 	var _arg1 C.gboolean         // out
 

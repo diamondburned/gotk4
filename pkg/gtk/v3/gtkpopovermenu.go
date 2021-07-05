@@ -98,14 +98,14 @@ type PopoverMenu interface {
 	// AsBuildable casts the class to the Buildable interface.
 	AsBuildable() Buildable
 
-	// OpenSubmenuPopoverMenu opens a submenu of the @popover. The @name must be
-	// one of the names given to the submenus of @popover with
-	// PopoverMenu:submenu, or "main" to switch back to the main menu.
+	// OpenSubmenu opens a submenu of the @popover. The @name must be one of the
+	// names given to the submenus of @popover with PopoverMenu:submenu, or
+	// "main" to switch back to the main menu.
 	//
 	// ModelButton will open submenus automatically when the
 	// ModelButton:menu-name property is set, so this function is only needed
 	// when you are using other kinds of widgets to initiate menu changes.
-	OpenSubmenuPopoverMenu(name string)
+	OpenSubmenu(name string)
 }
 
 // popoverMenu implements the PopoverMenu class.
@@ -140,7 +140,11 @@ func NewPopoverMenu() PopoverMenu {
 	return _popoverMenu
 }
 
-func (p popoverMenu) OpenSubmenuPopoverMenu(name string) {
+func (p popoverMenu) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(p))
+}
+
+func (p popoverMenu) OpenSubmenu(name string) {
 	var _arg0 *C.GtkPopoverMenu // out
 	var _arg1 *C.gchar          // out
 
@@ -149,8 +153,4 @@ func (p popoverMenu) OpenSubmenuPopoverMenu(name string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_popover_menu_open_submenu(_arg0, _arg1)
-}
-
-func (p popoverMenu) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(p))
 }

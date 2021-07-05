@@ -39,17 +39,17 @@ type TCPConnection interface {
 	// GracefulDisconnect checks if graceful disconnects are used. See
 	// g_tcp_connection_set_graceful_disconnect().
 	GracefulDisconnect() bool
-	// SetGracefulDisconnectTCPConnection: this enables graceful disconnects on
-	// close. A graceful disconnect means that we signal the receiving end that
-	// the connection is terminated and wait for it to close the connection
-	// before closing the connection.
+	// SetGracefulDisconnect: this enables graceful disconnects on close. A
+	// graceful disconnect means that we signal the receiving end that the
+	// connection is terminated and wait for it to close the connection before
+	// closing the connection.
 	//
 	// A graceful disconnect means that we can be sure that we successfully sent
 	// all the outstanding data to the other end, or get an error reported.
 	// However, it also means we have to wait for all the data to reach the
 	// other side and for it to acknowledge this by closing the socket, which
 	// may take a while. For this reason it is disabled by default.
-	SetGracefulDisconnectTCPConnection(gracefulDisconnect bool)
+	SetGracefulDisconnect(gracefulDisconnect bool)
 }
 
 // tcpConnection implements the TCPConnection class.
@@ -88,7 +88,7 @@ func (c tcpConnection) GracefulDisconnect() bool {
 	return _ok
 }
 
-func (c tcpConnection) SetGracefulDisconnectTCPConnection(gracefulDisconnect bool) {
+func (c tcpConnection) SetGracefulDisconnect(gracefulDisconnect bool) {
 	var _arg0 *C.GTcpConnection // out
 	var _arg1 C.gboolean        // out
 

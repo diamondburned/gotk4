@@ -90,6 +90,10 @@ func NewOffscreenWindow() OffscreenWindow {
 	return _offscreenWindow
 }
 
+func (o offscreenWindow) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(o))
+}
+
 func (o offscreenWindow) Pixbuf() gdkpixbuf.Pixbuf {
 	var _arg0 *C.GtkOffscreenWindow // out
 	var _cret *C.GdkPixbuf          // in
@@ -118,8 +122,4 @@ func (o offscreenWindow) Surface() *cairo.Surface {
 	_surface = (*cairo.Surface)(unsafe.Pointer(_cret))
 
 	return _surface
-}
-
-func (o offscreenWindow) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(o))
 }

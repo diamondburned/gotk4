@@ -65,14 +65,13 @@ type ContentDeserializer interface {
 	UserData() interface{}
 	// Value gets the `GValue` to store the deserialized object in.
 	Value() externglib.Value
-	// ReturnErrorContentDeserializer: indicate that the deserialization has
-	// ended with an error.
+	// ReturnError: indicate that the deserialization has ended with an error.
 	//
 	// This function consumes @error.
-	ReturnErrorContentDeserializer(err error)
-	// ReturnSuccessContentDeserializer: indicate that the deserialization has
-	// been successfully completed.
-	ReturnSuccessContentDeserializer()
+	ReturnError(err error)
+	// ReturnSuccess: indicate that the deserialization has been successfully
+	// completed.
+	ReturnSuccess()
 }
 
 // contentDeserializer implements the ContentDeserializer class.
@@ -214,7 +213,7 @@ func (d contentDeserializer) Value() externglib.Value {
 	return _value
 }
 
-func (d contentDeserializer) ReturnErrorContentDeserializer(err error) {
+func (d contentDeserializer) ReturnError(err error) {
 	var _arg0 *C.GdkContentDeserializer // out
 	var _arg1 *C.GError                 // out
 
@@ -227,7 +226,7 @@ func (d contentDeserializer) ReturnErrorContentDeserializer(err error) {
 	C.gdk_content_deserializer_return_error(_arg0, _arg1)
 }
 
-func (d contentDeserializer) ReturnSuccessContentDeserializer() {
+func (d contentDeserializer) ReturnSuccess() {
 	var _arg0 *C.GdkContentDeserializer // out
 
 	_arg0 = (*C.GdkContentDeserializer)(unsafe.Pointer(d.Native()))

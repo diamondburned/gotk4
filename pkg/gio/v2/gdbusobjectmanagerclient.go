@@ -179,6 +179,18 @@ func NewDBusObjectManagerClientForBusFinish(res AsyncResult) (DBusObjectManagerC
 	return _dBusObjectManagerClient, _goerr
 }
 
+func (d dBusObjectManagerClient) AsAsyncInitable() AsyncInitable {
+	return WrapAsyncInitable(gextras.InternObject(d))
+}
+
+func (d dBusObjectManagerClient) AsDBusObjectManager() DBusObjectManager {
+	return WrapDBusObjectManager(gextras.InternObject(d))
+}
+
+func (d dBusObjectManagerClient) AsInitable() Initable {
+	return WrapInitable(gextras.InternObject(d))
+}
+
 func (m dBusObjectManagerClient) Connection() DBusConnection {
 	var _arg0 *C.GDBusObjectManagerClient // out
 	var _cret *C.GDBusConnection          // in
@@ -238,16 +250,4 @@ func (m dBusObjectManagerClient) NameOwner() string {
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
-}
-
-func (d dBusObjectManagerClient) AsAsyncInitable() AsyncInitable {
-	return WrapAsyncInitable(gextras.InternObject(d))
-}
-
-func (d dBusObjectManagerClient) AsDBusObjectManager() DBusObjectManager {
-	return WrapDBusObjectManager(gextras.InternObject(d))
-}
-
-func (d dBusObjectManagerClient) AsInitable() Initable {
-	return WrapInitable(gextras.InternObject(d))
 }

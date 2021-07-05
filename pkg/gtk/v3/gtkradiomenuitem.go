@@ -51,8 +51,8 @@ type RadioMenuItem interface {
 	// AsBuildable casts the class to the Buildable interface.
 	AsBuildable() Buildable
 
-	// JoinGroupRadioMenuItem joins a RadioMenuItem object to the group of
-	// another RadioMenuItem object.
+	// JoinGroup joins a RadioMenuItem object to the group of another
+	// RadioMenuItem object.
 	//
 	// This function should be used by language bindings to avoid the memory
 	// manangement of the opaque List of gtk_radio_menu_item_get_group() and
@@ -71,7 +71,7 @@ type RadioMenuItem interface {
 	//          gtk_radio_menu_item_join_group (radio_item, last_item);
 	//          last_item = radio_item;
 	//        }
-	JoinGroupRadioMenuItem(groupSource RadioMenuItem)
+	JoinGroup(groupSource RadioMenuItem)
 }
 
 // radioMenuItem implements the RadioMenuItem class.
@@ -155,16 +155,6 @@ func NewRadioMenuItemWithMnemonicFromWidget(group RadioMenuItem, label string) R
 	return _radioMenuItem
 }
 
-func (r radioMenuItem) JoinGroupRadioMenuItem(groupSource RadioMenuItem) {
-	var _arg0 *C.GtkRadioMenuItem // out
-	var _arg1 *C.GtkRadioMenuItem // out
-
-	_arg0 = (*C.GtkRadioMenuItem)(unsafe.Pointer(r.Native()))
-	_arg1 = (*C.GtkRadioMenuItem)(unsafe.Pointer(groupSource.Native()))
-
-	C.gtk_radio_menu_item_join_group(_arg0, _arg1)
-}
-
 func (r radioMenuItem) AsActionable() Actionable {
 	return WrapActionable(gextras.InternObject(r))
 }
@@ -175,4 +165,14 @@ func (r radioMenuItem) AsActivatable() Activatable {
 
 func (r radioMenuItem) AsBuildable() Buildable {
 	return WrapBuildable(gextras.InternObject(r))
+}
+
+func (r radioMenuItem) JoinGroup(groupSource RadioMenuItem) {
+	var _arg0 *C.GtkRadioMenuItem // out
+	var _arg1 *C.GtkRadioMenuItem // out
+
+	_arg0 = (*C.GtkRadioMenuItem)(unsafe.Pointer(r.Native()))
+	_arg1 = (*C.GtkRadioMenuItem)(unsafe.Pointer(groupSource.Native()))
+
+	C.gtk_radio_menu_item_join_group(_arg0, _arg1)
 }

@@ -48,13 +48,13 @@ type SocketAddress interface {
 	// NativeSize gets the size of @address's native struct sockaddr. You can
 	// use this to allocate memory to pass to g_socket_address_to_native().
 	NativeSize() int
-	// ToNativeSocketAddress converts a Address to a native struct sockaddr,
-	// which can be passed to low-level functions like connect() or bind().
+	// ToNative converts a Address to a native struct sockaddr, which can be
+	// passed to low-level functions like connect() or bind().
 	//
 	// If not enough space is available, a G_IO_ERROR_NO_SPACE error is
 	// returned. If the address type is not known on the system then a
 	// G_IO_ERROR_NOT_SUPPORTED error is returned.
-	ToNativeSocketAddress(dest interface{}, destlen uint) error
+	ToNative(dest interface{}, destlen uint) error
 }
 
 // socketAddress implements the SocketAddress class.
@@ -95,6 +95,10 @@ func NewSocketAddressFromNative(native interface{}, len uint) SocketAddress {
 	return _socketAddress
 }
 
+func (s socketAddress) AsSocketConnectable() SocketConnectable {
+	return WrapSocketConnectable(gextras.InternObject(s))
+}
+
 func (a socketAddress) Family() SocketFamily {
 	var _arg0 *C.GSocketAddress // out
 	var _cret C.GSocketFamily   // in
@@ -125,7 +129,7 @@ func (a socketAddress) NativeSize() int {
 	return _gssize
 }
 
-func (a socketAddress) ToNativeSocketAddress(dest interface{}, destlen uint) error {
+func (a socketAddress) ToNative(dest interface{}, destlen uint) error {
 	var _arg0 *C.GSocketAddress // out
 	var _arg1 C.gpointer        // out
 	var _arg2 C.gsize           // out
@@ -142,8 +146,4 @@ func (a socketAddress) ToNativeSocketAddress(dest interface{}, destlen uint) err
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
-}
-
-func (s socketAddress) AsSocketConnectable() SocketConnectable {
-	return WrapSocketConnectable(gextras.InternObject(s))
 }

@@ -84,8 +84,8 @@ type Range interface {
 	SliderSizeFixed() bool
 	// Value gets the current value of the range.
 	Value() float64
-	// SetAdjustmentRange sets the adjustment to be used as the “model” object
-	// for the `GtkRange`
+	// SetAdjustment sets the adjustment to be used as the “model” object for
+	// the `GtkRange`
 	//
 	// The adjustment indicates the current range value, the minimum and maximum
 	// range values, the step/page increments used for keybindings and
@@ -94,8 +94,8 @@ type Range interface {
 	// The page size is normally 0 for `GtkScale` and nonzero for
 	// `GtkScrollbar`, and indicates the size of the visible area of the widget
 	// being scrolled. The page size affects the size of the scrollbar slider.
-	SetAdjustmentRange(adjustment Adjustment)
-	// SetFillLevelRange: set the new position of the fill level indicator.
+	SetAdjustment(adjustment Adjustment)
+	// SetFillLevel: set the new position of the fill level indicator.
 	//
 	// The “fill level” is probably best described by its most prominent use
 	// case, which is an indicator for the amount of pre-buffering in a
@@ -111,59 +111,59 @@ type Range interface {
 	// Additionally, it’s possible to restrict the range’s slider position to
 	// values which are smaller than the fill level. This is controlled by
 	// [method@Gtk.Range.set_restrict_to_fill_level] and is by default enabled.
-	SetFillLevelRange(fillLevel float64)
-	// SetFlippableRange sets whether the `GtkRange` respects text direction.
+	SetFillLevel(fillLevel float64)
+	// SetFlippable sets whether the `GtkRange` respects text direction.
 	//
 	// If a range is flippable, it will switch its direction if it is horizontal
 	// and its direction is GTK_TEXT_DIR_RTL.
 	//
 	// See [method@Gtk.Widget.get_direction].
-	SetFlippableRange(flippable bool)
-	// SetIncrementsRange sets the step and page sizes for the range.
+	SetFlippable(flippable bool)
+	// SetIncrements sets the step and page sizes for the range.
 	//
 	// The step size is used when the user clicks the `GtkScrollbar` arrows or
 	// moves a `GtkScale` via arrow keys. The page size is used for example when
 	// moving via Page Up or Page Down keys.
-	SetIncrementsRange(step float64, page float64)
-	// SetInvertedRange sets whether to invert the range.
+	SetIncrements(step float64, page float64)
+	// SetInverted sets whether to invert the range.
 	//
 	// Ranges normally move from lower to higher values as the slider moves from
 	// top to bottom or left to right. Inverted ranges have higher values at the
 	// top or on the right rather than on the bottom or left.
-	SetInvertedRange(setting bool)
-	// SetRangeRange sets the allowable values in the `GtkRange`.
+	SetInverted(setting bool)
+	// SetRange sets the allowable values in the `GtkRange`.
 	//
 	// The range value is clamped to be between @min and @max. (If the range has
 	// a non-zero page size, it is clamped between @min and @max - page-size.)
-	SetRangeRange(min float64, max float64)
-	// SetRestrictToFillLevelRange sets whether the slider is restricted to the
-	// fill level.
+	SetRange(min float64, max float64)
+	// SetRestrictToFillLevel sets whether the slider is restricted to the fill
+	// level.
 	//
 	// See [method@Gtk.Range.set_fill_level] for a general description of the
 	// fill level concept.
-	SetRestrictToFillLevelRange(restrictToFillLevel bool)
-	// SetRoundDigitsRange sets the number of digits to round the value to when
-	// it changes.
+	SetRestrictToFillLevel(restrictToFillLevel bool)
+	// SetRoundDigits sets the number of digits to round the value to when it
+	// changes.
 	//
 	// See [signal@Gtk.Range::change-value].
-	SetRoundDigitsRange(roundDigits int)
-	// SetShowFillLevelRange sets whether a graphical fill level is show on the
+	SetRoundDigits(roundDigits int)
+	// SetShowFillLevel sets whether a graphical fill level is show on the
 	// trough.
 	//
 	// See [method@Gtk.Range.set_fill_level] for a general description of the
 	// fill level concept.
-	SetShowFillLevelRange(showFillLevel bool)
-	// SetSliderSizeFixedRange sets whether the range’s slider has a fixed size,
-	// or a size that depends on its adjustment’s page size.
+	SetShowFillLevel(showFillLevel bool)
+	// SetSliderSizeFixed sets whether the range’s slider has a fixed size, or a
+	// size that depends on its adjustment’s page size.
 	//
 	// This function is useful mainly for `GtkRange` subclasses.
-	SetSliderSizeFixedRange(sizeFixed bool)
-	// SetValueRange sets the current value of the range.
+	SetSliderSizeFixed(sizeFixed bool)
+	// SetValue sets the current value of the range.
 	//
 	// If the value is outside the minimum or maximum range values, it will be
 	// clamped to fit inside them. The range emits the
 	// [signal@Gtk.Range::value-changed] signal if the value changes.
-	SetValueRange(value float64)
+	SetValue(value float64)
 }
 
 // _range implements the Range class.
@@ -183,6 +183,22 @@ func marshalRange(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapRange(obj), nil
+}
+
+func (_ _range) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(_))
+}
+
+func (_ _range) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(_))
+}
+
+func (_ _range) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(_))
+}
+
+func (_ _range) AsOrientable() Orientable {
+	return WrapOrientable(gextras.InternObject(_))
 }
 
 func (r _range) Adjustment() Adjustment {
@@ -373,7 +389,7 @@ func (r _range) Value() float64 {
 	return _gdouble
 }
 
-func (r _range) SetAdjustmentRange(adjustment Adjustment) {
+func (r _range) SetAdjustment(adjustment Adjustment) {
 	var _arg0 *C.GtkRange      // out
 	var _arg1 *C.GtkAdjustment // out
 
@@ -383,7 +399,7 @@ func (r _range) SetAdjustmentRange(adjustment Adjustment) {
 	C.gtk_range_set_adjustment(_arg0, _arg1)
 }
 
-func (r _range) SetFillLevelRange(fillLevel float64) {
+func (r _range) SetFillLevel(fillLevel float64) {
 	var _arg0 *C.GtkRange // out
 	var _arg1 C.double    // out
 
@@ -393,7 +409,7 @@ func (r _range) SetFillLevelRange(fillLevel float64) {
 	C.gtk_range_set_fill_level(_arg0, _arg1)
 }
 
-func (r _range) SetFlippableRange(flippable bool) {
+func (r _range) SetFlippable(flippable bool) {
 	var _arg0 *C.GtkRange // out
 	var _arg1 C.gboolean  // out
 
@@ -405,7 +421,7 @@ func (r _range) SetFlippableRange(flippable bool) {
 	C.gtk_range_set_flippable(_arg0, _arg1)
 }
 
-func (r _range) SetIncrementsRange(step float64, page float64) {
+func (r _range) SetIncrements(step float64, page float64) {
 	var _arg0 *C.GtkRange // out
 	var _arg1 C.double    // out
 	var _arg2 C.double    // out
@@ -417,7 +433,7 @@ func (r _range) SetIncrementsRange(step float64, page float64) {
 	C.gtk_range_set_increments(_arg0, _arg1, _arg2)
 }
 
-func (r _range) SetInvertedRange(setting bool) {
+func (r _range) SetInverted(setting bool) {
 	var _arg0 *C.GtkRange // out
 	var _arg1 C.gboolean  // out
 
@@ -429,7 +445,7 @@ func (r _range) SetInvertedRange(setting bool) {
 	C.gtk_range_set_inverted(_arg0, _arg1)
 }
 
-func (r _range) SetRangeRange(min float64, max float64) {
+func (r _range) SetRange(min float64, max float64) {
 	var _arg0 *C.GtkRange // out
 	var _arg1 C.double    // out
 	var _arg2 C.double    // out
@@ -441,7 +457,7 @@ func (r _range) SetRangeRange(min float64, max float64) {
 	C.gtk_range_set_range(_arg0, _arg1, _arg2)
 }
 
-func (r _range) SetRestrictToFillLevelRange(restrictToFillLevel bool) {
+func (r _range) SetRestrictToFillLevel(restrictToFillLevel bool) {
 	var _arg0 *C.GtkRange // out
 	var _arg1 C.gboolean  // out
 
@@ -453,7 +469,7 @@ func (r _range) SetRestrictToFillLevelRange(restrictToFillLevel bool) {
 	C.gtk_range_set_restrict_to_fill_level(_arg0, _arg1)
 }
 
-func (r _range) SetRoundDigitsRange(roundDigits int) {
+func (r _range) SetRoundDigits(roundDigits int) {
 	var _arg0 *C.GtkRange // out
 	var _arg1 C.int       // out
 
@@ -463,7 +479,7 @@ func (r _range) SetRoundDigitsRange(roundDigits int) {
 	C.gtk_range_set_round_digits(_arg0, _arg1)
 }
 
-func (r _range) SetShowFillLevelRange(showFillLevel bool) {
+func (r _range) SetShowFillLevel(showFillLevel bool) {
 	var _arg0 *C.GtkRange // out
 	var _arg1 C.gboolean  // out
 
@@ -475,7 +491,7 @@ func (r _range) SetShowFillLevelRange(showFillLevel bool) {
 	C.gtk_range_set_show_fill_level(_arg0, _arg1)
 }
 
-func (r _range) SetSliderSizeFixedRange(sizeFixed bool) {
+func (r _range) SetSliderSizeFixed(sizeFixed bool) {
 	var _arg0 *C.GtkRange // out
 	var _arg1 C.gboolean  // out
 
@@ -487,7 +503,7 @@ func (r _range) SetSliderSizeFixedRange(sizeFixed bool) {
 	C.gtk_range_set_slider_size_fixed(_arg0, _arg1)
 }
 
-func (r _range) SetValueRange(value float64) {
+func (r _range) SetValue(value float64) {
 	var _arg0 *C.GtkRange // out
 	var _arg1 C.double    // out
 
@@ -495,20 +511,4 @@ func (r _range) SetValueRange(value float64) {
 	_arg1 = C.double(value)
 
 	C.gtk_range_set_value(_arg0, _arg1)
-}
-
-func (_ _range) AsAccessible() Accessible {
-	return WrapAccessible(gextras.InternObject(_))
-}
-
-func (_ _range) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(_))
-}
-
-func (_ _range) AsConstraintTarget() ConstraintTarget {
-	return WrapConstraintTarget(gextras.InternObject(_))
-}
-
-func (_ _range) AsOrientable() Orientable {
-	return WrapOrientable(gextras.InternObject(_))
 }

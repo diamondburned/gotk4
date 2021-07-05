@@ -60,21 +60,21 @@ type ColorButton interface {
 	//
 	// Deprecated: since version 3.4.
 	UseAlpha() bool
-	// SetAlphaColorButton sets the current opacity to be @alpha.
+	// SetAlpha sets the current opacity to be @alpha.
 	//
 	// Deprecated: since version 3.4.
-	SetAlphaColorButton(alpha uint16)
-	// SetColorColorButton sets the current color to be @color.
+	SetAlpha(alpha uint16)
+	// SetColor sets the current color to be @color.
 	//
-	// Deprecated: since version .
-	SetColorColorButton(color *gdk.Color)
-	// SetTitleColorButton sets the title for the color selection dialog.
-	SetTitleColorButton(title string)
-	// SetUseAlphaColorButton sets whether or not the color button should use
-	// the alpha channel.
+	// Deprecated.
+	SetColor(color *gdk.Color)
+	// SetTitle sets the title for the color selection dialog.
+	SetTitle(title string)
+	// SetUseAlpha sets whether or not the color button should use the alpha
+	// channel.
 	//
 	// Deprecated: since version 3.4.
-	SetUseAlphaColorButton(useAlpha bool)
+	SetUseAlpha(useAlpha bool)
 }
 
 // colorButton implements the ColorButton class.
@@ -146,6 +146,22 @@ func NewColorButtonWithRGBA(rgba *gdk.RGBA) ColorButton {
 	_colorButton = WrapColorButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _colorButton
+}
+
+func (c colorButton) AsActionable() Actionable {
+	return WrapActionable(gextras.InternObject(c))
+}
+
+func (c colorButton) AsActivatable() Activatable {
+	return WrapActivatable(gextras.InternObject(c))
+}
+
+func (c colorButton) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(c))
+}
+
+func (c colorButton) AsColorChooser() ColorChooser {
+	return WrapColorChooser(gextras.InternObject(c))
 }
 
 func (b colorButton) Alpha() uint16 {
@@ -220,7 +236,7 @@ func (b colorButton) UseAlpha() bool {
 	return _ok
 }
 
-func (b colorButton) SetAlphaColorButton(alpha uint16) {
+func (b colorButton) SetAlpha(alpha uint16) {
 	var _arg0 *C.GtkColorButton // out
 	var _arg1 C.guint16         // out
 
@@ -230,7 +246,7 @@ func (b colorButton) SetAlphaColorButton(alpha uint16) {
 	C.gtk_color_button_set_alpha(_arg0, _arg1)
 }
 
-func (b colorButton) SetColorColorButton(color *gdk.Color) {
+func (b colorButton) SetColor(color *gdk.Color) {
 	var _arg0 *C.GtkColorButton // out
 	var _arg1 *C.GdkColor       // out
 
@@ -240,7 +256,7 @@ func (b colorButton) SetColorColorButton(color *gdk.Color) {
 	C.gtk_color_button_set_color(_arg0, _arg1)
 }
 
-func (b colorButton) SetTitleColorButton(title string) {
+func (b colorButton) SetTitle(title string) {
 	var _arg0 *C.GtkColorButton // out
 	var _arg1 *C.gchar          // out
 
@@ -251,7 +267,7 @@ func (b colorButton) SetTitleColorButton(title string) {
 	C.gtk_color_button_set_title(_arg0, _arg1)
 }
 
-func (b colorButton) SetUseAlphaColorButton(useAlpha bool) {
+func (b colorButton) SetUseAlpha(useAlpha bool) {
 	var _arg0 *C.GtkColorButton // out
 	var _arg1 C.gboolean        // out
 
@@ -261,20 +277,4 @@ func (b colorButton) SetUseAlphaColorButton(useAlpha bool) {
 	}
 
 	C.gtk_color_button_set_use_alpha(_arg0, _arg1)
-}
-
-func (c colorButton) AsActionable() Actionable {
-	return WrapActionable(gextras.InternObject(c))
-}
-
-func (c colorButton) AsActivatable() Activatable {
-	return WrapActivatable(gextras.InternObject(c))
-}
-
-func (c colorButton) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(c))
-}
-
-func (c colorButton) AsColorChooser() ColorChooser {
-	return WrapColorChooser(gextras.InternObject(c))
 }

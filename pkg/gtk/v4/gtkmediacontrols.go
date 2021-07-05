@@ -39,9 +39,8 @@ type MediaControls interface {
 
 	// MediaStream gets the media stream managed by @controls or nil if none.
 	MediaStream() MediaStream
-	// SetMediaStreamMediaControls sets the stream that is controlled by
-	// @controls.
-	SetMediaStreamMediaControls(stream MediaStream)
+	// SetMediaStream sets the stream that is controlled by @controls.
+	SetMediaStream(stream MediaStream)
 }
 
 // mediaControls implements the MediaControls class.
@@ -80,6 +79,18 @@ func NewMediaControls(stream MediaStream) MediaControls {
 	return _mediaControls
 }
 
+func (m mediaControls) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(m))
+}
+
+func (m mediaControls) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(m))
+}
+
+func (m mediaControls) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(m))
+}
+
 func (c mediaControls) MediaStream() MediaStream {
 	var _arg0 *C.GtkMediaControls // out
 	var _cret *C.GtkMediaStream   // in
@@ -95,7 +106,7 @@ func (c mediaControls) MediaStream() MediaStream {
 	return _mediaStream
 }
 
-func (c mediaControls) SetMediaStreamMediaControls(stream MediaStream) {
+func (c mediaControls) SetMediaStream(stream MediaStream) {
 	var _arg0 *C.GtkMediaControls // out
 	var _arg1 *C.GtkMediaStream   // out
 
@@ -103,16 +114,4 @@ func (c mediaControls) SetMediaStreamMediaControls(stream MediaStream) {
 	_arg1 = (*C.GtkMediaStream)(unsafe.Pointer(stream.Native()))
 
 	C.gtk_media_controls_set_media_stream(_arg0, _arg1)
-}
-
-func (m mediaControls) AsAccessible() Accessible {
-	return WrapAccessible(gextras.InternObject(m))
-}
-
-func (m mediaControls) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(m))
-}
-
-func (m mediaControls) AsConstraintTarget() ConstraintTarget {
-	return WrapConstraintTarget(gextras.InternObject(m))
 }

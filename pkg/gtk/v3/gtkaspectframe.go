@@ -40,8 +40,8 @@ type AspectFrame interface {
 	// AsBuildable casts the class to the Buildable interface.
 	AsBuildable() Buildable
 
-	// SetAspectFrame: set parameters for an existing AspectFrame.
-	SetAspectFrame(xalign float32, yalign float32, ratio float32, obeyChild bool)
+	// Set parameters for an existing AspectFrame.
+	Set(xalign float32, yalign float32, ratio float32, obeyChild bool)
 }
 
 // aspectFrame implements the AspectFrame class.
@@ -90,7 +90,11 @@ func NewAspectFrame(label string, xalign float32, yalign float32, ratio float32,
 	return _aspectFrame
 }
 
-func (a aspectFrame) SetAspectFrame(xalign float32, yalign float32, ratio float32, obeyChild bool) {
+func (a aspectFrame) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(a))
+}
+
+func (a aspectFrame) Set(xalign float32, yalign float32, ratio float32, obeyChild bool) {
 	var _arg0 *C.GtkAspectFrame // out
 	var _arg1 C.gfloat          // out
 	var _arg2 C.gfloat          // out
@@ -106,8 +110,4 @@ func (a aspectFrame) SetAspectFrame(xalign float32, yalign float32, ratio float3
 	}
 
 	C.gtk_aspect_frame_set(_arg0, _arg1, _arg2, _arg3, _arg4)
-}
-
-func (a aspectFrame) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(a))
 }

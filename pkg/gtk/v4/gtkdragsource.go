@@ -81,15 +81,15 @@ func init() {
 type DragSource interface {
 	GestureSingle
 
-	// DragCancelDragSource cancels a currently ongoing drag operation.
-	DragCancelDragSource()
+	// DragCancel cancels a currently ongoing drag operation.
+	DragCancel()
 	// Actions gets the actions that are currently set on the `GtkDragSource`.
 	Actions() gdk.DragAction
 	// Content gets the current content provider of a `GtkDragSource`.
 	Content() gdk.ContentProvider
 	// Drag returns the underlying `GdkDrag` object for an ongoing drag.
 	Drag() gdk.Drag
-	// SetActionsDragSource sets the actions on the `GtkDragSource`.
+	// SetActions sets the actions on the `GtkDragSource`.
 	//
 	// During a DND operation, the actions are offered to potential drop
 	// targets. If @actions include GDK_ACTION_MOVE, you need to listen to the
@@ -98,8 +98,8 @@ type DragSource interface {
 	//
 	// This function can be called before a drag is started, or in a handler for
 	// the [signal@Gtk.DragSource::prepare] signal.
-	SetActionsDragSource(actions gdk.DragAction)
-	// SetContentDragSource sets a content provider on a `GtkDragSource`.
+	SetActions(actions gdk.DragAction)
+	// SetContent sets a content provider on a `GtkDragSource`.
 	//
 	// When the data is requested in the cause of a DND operation, it will be
 	// obtained from the content provider.
@@ -109,7 +109,7 @@ type DragSource interface {
 	//
 	// You may consider setting the content provider back to nil in a
 	// [signal@Gtk.DragSource::drag-end] signal handler.
-	SetContentDragSource(content gdk.ContentProvider)
+	SetContent(content gdk.ContentProvider)
 }
 
 // dragSource implements the DragSource class.
@@ -144,7 +144,7 @@ func NewDragSource() DragSource {
 	return _dragSource
 }
 
-func (s dragSource) DragCancelDragSource() {
+func (s dragSource) DragCancel() {
 	var _arg0 *C.GtkDragSource // out
 
 	_arg0 = (*C.GtkDragSource)(unsafe.Pointer(s.Native()))
@@ -197,7 +197,7 @@ func (s dragSource) Drag() gdk.Drag {
 	return _drag
 }
 
-func (s dragSource) SetActionsDragSource(actions gdk.DragAction) {
+func (s dragSource) SetActions(actions gdk.DragAction) {
 	var _arg0 *C.GtkDragSource // out
 	var _arg1 C.GdkDragAction  // out
 
@@ -207,7 +207,7 @@ func (s dragSource) SetActionsDragSource(actions gdk.DragAction) {
 	C.gtk_drag_source_set_actions(_arg0, _arg1)
 }
 
-func (s dragSource) SetContentDragSource(content gdk.ContentProvider) {
+func (s dragSource) SetContent(content gdk.ContentProvider) {
 	var _arg0 *C.GtkDragSource      // out
 	var _arg1 *C.GdkContentProvider // out
 

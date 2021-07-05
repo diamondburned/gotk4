@@ -102,15 +102,15 @@ type ToggleButton interface {
 	// Returns true if the toggle button is pressed in and false if it is
 	// raised.
 	Active() bool
-	// SetActiveToggleButton sets the status of the toggle button.
+	// SetActive sets the status of the toggle button.
 	//
 	// Set to true if you want the `GtkToggleButton` to be “pressed in”, and
 	// false to raise it.
 	//
 	// If the status of the button changes, this action causes the
 	// [signal@GtkToggleButton::toggled] signal to be emitted.
-	SetActiveToggleButton(isActive bool)
-	// SetGroupToggleButton adds @self to the group of @group.
+	SetActive(isActive bool)
+	// SetGroup adds @self to the group of @group.
 	//
 	// In a group of multiple toggle buttons, only one button can be active at a
 	// time.
@@ -121,11 +121,11 @@ type ToggleButton interface {
 	// [interface@Gtk.Actionable] API, by using the same action with parameter
 	// type and state type 's' for all buttons in the group, and giving each
 	// button its own target value.
-	SetGroupToggleButton(group ToggleButton)
-	// ToggledToggleButton emits the ::toggled signal on the `GtkToggleButton`.
+	SetGroup(group ToggleButton)
+	// Toggled emits the ::toggled signal on the `GtkToggleButton`.
 	//
 	// There is no good reason for an application ever to call this function.
-	ToggledToggleButton()
+	Toggled()
 }
 
 // toggleButton implements the ToggleButton class.
@@ -200,6 +200,22 @@ func NewToggleButtonWithMnemonic(label string) ToggleButton {
 	return _toggleButton
 }
 
+func (t toggleButton) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(t))
+}
+
+func (t toggleButton) AsActionable() Actionable {
+	return WrapActionable(gextras.InternObject(t))
+}
+
+func (t toggleButton) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(t))
+}
+
+func (t toggleButton) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(t))
+}
+
 func (t toggleButton) Active() bool {
 	var _arg0 *C.GtkToggleButton // out
 	var _cret C.gboolean         // in
@@ -217,7 +233,7 @@ func (t toggleButton) Active() bool {
 	return _ok
 }
 
-func (t toggleButton) SetActiveToggleButton(isActive bool) {
+func (t toggleButton) SetActive(isActive bool) {
 	var _arg0 *C.GtkToggleButton // out
 	var _arg1 C.gboolean         // out
 
@@ -229,7 +245,7 @@ func (t toggleButton) SetActiveToggleButton(isActive bool) {
 	C.gtk_toggle_button_set_active(_arg0, _arg1)
 }
 
-func (t toggleButton) SetGroupToggleButton(group ToggleButton) {
+func (t toggleButton) SetGroup(group ToggleButton) {
 	var _arg0 *C.GtkToggleButton // out
 	var _arg1 *C.GtkToggleButton // out
 
@@ -239,26 +255,10 @@ func (t toggleButton) SetGroupToggleButton(group ToggleButton) {
 	C.gtk_toggle_button_set_group(_arg0, _arg1)
 }
 
-func (t toggleButton) ToggledToggleButton() {
+func (t toggleButton) Toggled() {
 	var _arg0 *C.GtkToggleButton // out
 
 	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer(t.Native()))
 
 	C.gtk_toggle_button_toggled(_arg0)
-}
-
-func (t toggleButton) AsAccessible() Accessible {
-	return WrapAccessible(gextras.InternObject(t))
-}
-
-func (t toggleButton) AsActionable() Actionable {
-	return WrapActionable(gextras.InternObject(t))
-}
-
-func (t toggleButton) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(t))
-}
-
-func (t toggleButton) AsConstraintTarget() ConstraintTarget {
-	return WrapConstraintTarget(gextras.InternObject(t))
 }

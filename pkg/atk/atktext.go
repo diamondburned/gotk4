@@ -309,7 +309,7 @@ type Text interface {
 	// is from the line start at or before the offset to the line start after
 	// the offset.
 	//
-	// Deprecated: since version .
+	// Deprecated.
 	TextAtOffset(offset int, boundaryType TextBoundary) (startOffset int, endOffset int, utf8 string)
 	// TextBeforeOffset gets the specified text.
 	//

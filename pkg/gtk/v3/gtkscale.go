@@ -102,7 +102,7 @@ type Scale interface {
 	// AsOrientable casts the class to the Orientable interface.
 	AsOrientable() Orientable
 
-	// AddMarkScale adds a mark at @value.
+	// AddMark adds a mark at @value.
 	//
 	// A mark is indicated visually by drawing a tick mark next to the scale,
 	// and GTK+ makes it easy for the user to position the scale exactly at the
@@ -111,10 +111,10 @@ type Scale interface {
 	// If @markup is not nil, text is shown next to the tick mark.
 	//
 	// To remove marks from a scale, use gtk_scale_clear_marks().
-	AddMarkScale(value float64, position PositionType, markup string)
-	// ClearMarksScale removes any marks that have been added with
+	AddMark(value float64, position PositionType, markup string)
+	// ClearMarks removes any marks that have been added with
 	// gtk_scale_add_mark().
-	ClearMarksScale()
+	ClearMarks()
 	// Digits gets the number of decimal places that are displayed in the value.
 	Digits() int
 	// DrawValue returns whether the current value is displayed as a string next
@@ -135,8 +135,8 @@ type Scale interface {
 	LayoutOffsets() (x int, y int)
 	// ValuePos gets the position in which the current value is displayed.
 	ValuePos() PositionType
-	// SetDigitsScale sets the number of decimal places that are displayed in
-	// the value. Also causes the value of the adjustment to be rounded to this
+	// SetDigits sets the number of decimal places that are displayed in the
+	// value. Also causes the value of the adjustment to be rounded to this
 	// number of digits, so the retrieved value matches the displayed one, if
 	// Scale:draw-value is true when the value changes. If you want to enforce
 	// rounding the value when Scale:draw-value is false, you can set
@@ -146,17 +146,16 @@ type Scale interface {
 	// smooth autoscrolling that is built into Scale. As an alternative, you can
 	// use the Scale::format-value signal to format the displayed value
 	// yourself.
-	SetDigitsScale(digits int)
-	// SetDrawValueScale specifies whether the current value is displayed as a
-	// string next to the slider.
-	SetDrawValueScale(drawValue bool)
-	// SetHasOriginScale: if Scale:has-origin is set to true (the default), the
-	// scale will highlight the part of the trough between the origin (bottom or
-	// left side) and the current value.
-	SetHasOriginScale(hasOrigin bool)
-	// SetValuePosScale sets the position in which the current value is
-	// displayed.
-	SetValuePosScale(pos PositionType)
+	SetDigits(digits int)
+	// SetDrawValue specifies whether the current value is displayed as a string
+	// next to the slider.
+	SetDrawValue(drawValue bool)
+	// SetHasOrigin: if Scale:has-origin is set to true (the default), the scale
+	// will highlight the part of the trough between the origin (bottom or left
+	// side) and the current value.
+	SetHasOrigin(hasOrigin bool)
+	// SetValuePos sets the position in which the current value is displayed.
+	SetValuePos(pos PositionType)
 }
 
 // scale implements the Scale class.
@@ -225,7 +224,15 @@ func NewScaleWithRange(orientation Orientation, min float64, max float64, step f
 	return _scale
 }
 
-func (s scale) AddMarkScale(value float64, position PositionType, markup string) {
+func (s scale) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(s))
+}
+
+func (s scale) AsOrientable() Orientable {
+	return WrapOrientable(gextras.InternObject(s))
+}
+
+func (s scale) AddMark(value float64, position PositionType, markup string) {
 	var _arg0 *C.GtkScale       // out
 	var _arg1 C.gdouble         // out
 	var _arg2 C.GtkPositionType // out
@@ -240,7 +247,7 @@ func (s scale) AddMarkScale(value float64, position PositionType, markup string)
 	C.gtk_scale_add_mark(_arg0, _arg1, _arg2, _arg3)
 }
 
-func (s scale) ClearMarksScale() {
+func (s scale) ClearMarks() {
 	var _arg0 *C.GtkScale // out
 
 	_arg0 = (*C.GtkScale)(unsafe.Pointer(s.Native()))
@@ -345,7 +352,7 @@ func (s scale) ValuePos() PositionType {
 	return _positionType
 }
 
-func (s scale) SetDigitsScale(digits int) {
+func (s scale) SetDigits(digits int) {
 	var _arg0 *C.GtkScale // out
 	var _arg1 C.gint      // out
 
@@ -355,7 +362,7 @@ func (s scale) SetDigitsScale(digits int) {
 	C.gtk_scale_set_digits(_arg0, _arg1)
 }
 
-func (s scale) SetDrawValueScale(drawValue bool) {
+func (s scale) SetDrawValue(drawValue bool) {
 	var _arg0 *C.GtkScale // out
 	var _arg1 C.gboolean  // out
 
@@ -367,7 +374,7 @@ func (s scale) SetDrawValueScale(drawValue bool) {
 	C.gtk_scale_set_draw_value(_arg0, _arg1)
 }
 
-func (s scale) SetHasOriginScale(hasOrigin bool) {
+func (s scale) SetHasOrigin(hasOrigin bool) {
 	var _arg0 *C.GtkScale // out
 	var _arg1 C.gboolean  // out
 
@@ -379,7 +386,7 @@ func (s scale) SetHasOriginScale(hasOrigin bool) {
 	C.gtk_scale_set_has_origin(_arg0, _arg1)
 }
 
-func (s scale) SetValuePosScale(pos PositionType) {
+func (s scale) SetValuePos(pos PositionType) {
 	var _arg0 *C.GtkScale       // out
 	var _arg1 C.GtkPositionType // out
 
@@ -387,12 +394,4 @@ func (s scale) SetValuePosScale(pos PositionType) {
 	_arg1 = C.GtkPositionType(pos)
 
 	C.gtk_scale_set_value_pos(_arg0, _arg1)
-}
-
-func (s scale) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(s))
-}
-
-func (s scale) AsOrientable() Orientable {
-	return WrapOrientable(gextras.InternObject(s))
 }

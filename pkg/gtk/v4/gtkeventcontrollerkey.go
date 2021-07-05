@@ -27,23 +27,21 @@ func init() {
 type EventControllerKey interface {
 	EventController
 
-	// ForwardEventControllerKey forwards the current event of this @controller
-	// to a @widget.
+	// Forward forwards the current event of this @controller to a @widget.
 	//
 	// This function can only be used in handlers for the
 	// [signal@Gtk.EventControllerKey::key-pressed],
 	// [signal@Gtk.EventControllerKey::key-released] or
 	// [signal@Gtk.EventControllerKey::modifiers] signals.
-	ForwardEventControllerKey(widget Widget) bool
+	Forward(widget Widget) bool
 	// Group gets the key group of the current event of this @controller.
 	//
 	// See [method@Gdk.KeyEvent.get_layout].
 	Group() uint
 	// ImContext gets the input method context of the key @controller.
 	ImContext() IMContext
-	// SetImContextEventControllerKey sets the input method context of the key
-	// @controller.
-	SetImContextEventControllerKey(imContext IMContext)
+	// SetImContext sets the input method context of the key @controller.
+	SetImContext(imContext IMContext)
 }
 
 // eventControllerKey implements the EventControllerKey class.
@@ -79,7 +77,7 @@ func NewEventControllerKey() EventControllerKey {
 	return _eventControllerKey
 }
 
-func (c eventControllerKey) ForwardEventControllerKey(widget Widget) bool {
+func (c eventControllerKey) Forward(widget Widget) bool {
 	var _arg0 *C.GtkEventControllerKey // out
 	var _arg1 *C.GtkWidget             // out
 	var _cret C.gboolean               // in
@@ -128,7 +126,7 @@ func (c eventControllerKey) ImContext() IMContext {
 	return _imContext
 }
 
-func (c eventControllerKey) SetImContextEventControllerKey(imContext IMContext) {
+func (c eventControllerKey) SetImContext(imContext IMContext) {
 	var _arg0 *C.GtkEventControllerKey // out
 	var _arg1 *C.GtkIMContext          // out
 

@@ -41,11 +41,11 @@ type Document interface {
 	// to the caller to check atk_document_get_type to determine how to cast
 	// this pointer.
 	//
-	// Deprecated: since version .
+	// Deprecated.
 	Document() interface{}
 	// DocumentType gets a string indicating the document type.
 	//
-	// Deprecated: since version .
+	// Deprecated.
 	DocumentType() string
 	// Locale gets a UTF-8 string indicating the POSIX-style LC_MESSAGES locale
 	// of the content of this document instance. Individual text substrings or

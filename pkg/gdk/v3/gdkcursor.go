@@ -223,15 +223,15 @@ type Cursor interface {
 	// the cursor, GDK may not be able to obtain the image data. In this case,
 	// nil is returned.
 	Surface() (xHot float64, yHot float64, surface *cairo.Surface)
-	// RefCursor adds a reference to @cursor.
+	// Ref adds a reference to @cursor.
 	//
 	// Deprecated: since version 3.0.
-	RefCursor() Cursor
-	// UnrefCursor removes a reference from @cursor, deallocating the cursor if
-	// no references remain.
+	Ref() Cursor
+	// Unref removes a reference from @cursor, deallocating the cursor if no
+	// references remain.
 	//
 	// Deprecated: since version 3.0.
-	UnrefCursor()
+	Unref()
 }
 
 // cursor implements the Cursor class.
@@ -469,7 +469,7 @@ func (c cursor) Surface() (xHot float64, yHot float64, surface *cairo.Surface) {
 	return _xHot, _yHot, _surface
 }
 
-func (c cursor) RefCursor() Cursor {
+func (c cursor) Ref() Cursor {
 	var _arg0 *C.GdkCursor // out
 	var _cret *C.GdkCursor // in
 
@@ -484,7 +484,7 @@ func (c cursor) RefCursor() Cursor {
 	return _ret
 }
 
-func (c cursor) UnrefCursor() {
+func (c cursor) Unref() {
 	var _arg0 *C.GdkCursor // out
 
 	_arg0 = (*C.GdkCursor)(unsafe.Pointer(c.Native()))

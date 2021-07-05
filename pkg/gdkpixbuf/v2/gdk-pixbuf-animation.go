@@ -91,14 +91,13 @@ type PixbufAnimation interface {
 	StaticImage() Pixbuf
 	// Width queries the width of the bounding box of a pixbuf animation.
 	Width() int
-	// IsStaticImagePixbufAnimation checks whether the animation is a static
-	// image.
+	// IsStaticImage checks whether the animation is a static image.
 	//
 	// If you load a file with gdk_pixbuf_animation_new_from_file() and it turns
 	// out to be a plain, unanimated image, then this function will return
 	// `TRUE`. Use gdk_pixbuf_animation_get_static_image() to retrieve the
 	// image.
-	IsStaticImagePixbufAnimation() bool
+	IsStaticImage() bool
 }
 
 // pixbufAnimation implements the PixbufAnimation class.
@@ -266,7 +265,7 @@ func (a pixbufAnimation) Width() int {
 	return _gint
 }
 
-func (a pixbufAnimation) IsStaticImagePixbufAnimation() bool {
+func (a pixbufAnimation) IsStaticImage() bool {
 	var _arg0 *C.GdkPixbufAnimation // out
 	var _cret C.gboolean            // in
 
@@ -288,8 +287,7 @@ func (a pixbufAnimation) IsStaticImagePixbufAnimation() bool {
 type PixbufAnimationIter interface {
 	gextras.Objector
 
-	// AdvancePixbufAnimationIter: possibly advances an animation to a new
-	// frame.
+	// Advance: possibly advances an animation to a new frame.
 	//
 	// Chooses the frame based on the start time passed to
 	// gdk_pixbuf_animation_get_iter().
@@ -309,7 +307,7 @@ type PixbufAnimationIter interface {
 	// display, assuming the display had been rendered prior to advancing; if
 	// `TRUE`, you need to call gdk_pixbuf_animation_iter_get_pixbuf() and
 	// update the display with the new pixbuf.
-	AdvancePixbufAnimationIter(currentTime *glib.TimeVal) bool
+	Advance(currentTime *glib.TimeVal) bool
 	// DelayTime gets the number of milliseconds the current pixbuf should be
 	// displayed, or -1 if the current pixbuf should be displayed forever.
 	//
@@ -336,14 +334,13 @@ type PixbufAnimationIter interface {
 	// Copy the pixbuf to keep it (don't just add a reference), as it may get
 	// recycled as you advance the iterator.
 	Pixbuf() Pixbuf
-	// OnCurrentlyLoadingFramePixbufAnimationIter: used to determine how to
-	// respond to the area_updated signal on PixbufLoader when loading an
-	// animation.
+	// OnCurrentlyLoadingFrame: used to determine how to respond to the
+	// area_updated signal on PixbufLoader when loading an animation.
 	//
 	// The `::area_updated` signal is emitted for an area of the frame currently
 	// streaming in to the loader. So if you're on the currently loading frame,
 	// you will need to redraw the screen for the updated area.
-	OnCurrentlyLoadingFramePixbufAnimationIter() bool
+	OnCurrentlyLoadingFrame() bool
 }
 
 // pixbufAnimationIter implements the PixbufAnimationIter class.
@@ -365,7 +362,7 @@ func marshalPixbufAnimationIter(p uintptr) (interface{}, error) {
 	return WrapPixbufAnimationIter(obj), nil
 }
 
-func (i pixbufAnimationIter) AdvancePixbufAnimationIter(currentTime *glib.TimeVal) bool {
+func (i pixbufAnimationIter) Advance(currentTime *glib.TimeVal) bool {
 	var _arg0 *C.GdkPixbufAnimationIter // out
 	var _arg1 *C.GTimeVal               // out
 	var _cret C.gboolean                // in
@@ -414,7 +411,7 @@ func (i pixbufAnimationIter) Pixbuf() Pixbuf {
 	return _pixbuf
 }
 
-func (i pixbufAnimationIter) OnCurrentlyLoadingFramePixbufAnimationIter() bool {
+func (i pixbufAnimationIter) OnCurrentlyLoadingFrame() bool {
 	var _arg0 *C.GdkPixbufAnimationIter // out
 	var _cret C.gboolean                // in
 

@@ -94,9 +94,9 @@ type CheckButton interface {
 	Label() string
 	// UseUnderline returns whether underlines in the label indicate mnemonics.
 	UseUnderline() bool
-	// SetActiveCheckButton changes the check buttons active state.
-	SetActiveCheckButton(setting bool)
-	// SetGroupCheckButton adds @self to the group of @group.
+	// SetActive changes the check buttons active state.
+	SetActive(setting bool)
+	// SetGroup adds @self to the group of @group.
 	//
 	// In a group of multiple check buttons, only one button can be active at a
 	// time. The behavior of a checkbutton in a group is also commonly known as
@@ -111,26 +111,24 @@ type CheckButton interface {
 	// [interface@Gtk.Actionable] API, by using the same action with parameter
 	// type and state type 's' for all buttons in the group, and giving each
 	// button its own target value.
-	SetGroupCheckButton(group CheckButton)
-	// SetInconsistentCheckButton sets the `GtkCheckButton` to inconsistent
-	// state.
+	SetGroup(group CheckButton)
+	// SetInconsistent sets the `GtkCheckButton` to inconsistent state.
 	//
 	// You shoud turn off the inconsistent state again if the user checks the
 	// check button. This has to be done manually.
-	SetInconsistentCheckButton(inconsistent bool)
-	// SetLabelCheckButton sets the text of @self.
+	SetInconsistent(inconsistent bool)
+	// SetLabel sets the text of @self.
 	//
 	// If [property@Gtk.CheckButton:use-underline] is true, an underscore in
 	// @label is interpreted as mnemonic indicator, see
 	// [method@Gtk.CheckButton.set_use_underline] for details on this behavior.
-	SetLabelCheckButton(label string)
-	// SetUseUnderlineCheckButton sets whether underlines in the label indicate
-	// mnemonics.
+	SetLabel(label string)
+	// SetUseUnderline sets whether underlines in the label indicate mnemonics.
 	//
 	// If @setting is true, an underscore character in @self's label indicates a
 	// mnemonic accelerator key. This behavior is similar to
 	// [property@Gtk.Label:use-underline].
-	SetUseUnderlineCheckButton(setting bool)
+	SetUseUnderline(setting bool)
 }
 
 // checkButton implements the CheckButton class.
@@ -200,6 +198,22 @@ func NewCheckButtonWithMnemonic(label string) CheckButton {
 	return _checkButton
 }
 
+func (c checkButton) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(c))
+}
+
+func (c checkButton) AsActionable() Actionable {
+	return WrapActionable(gextras.InternObject(c))
+}
+
+func (c checkButton) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(c))
+}
+
+func (c checkButton) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(c))
+}
+
 func (s checkButton) Active() bool {
 	var _arg0 *C.GtkCheckButton // out
 	var _cret C.gboolean        // in
@@ -266,7 +280,7 @@ func (s checkButton) UseUnderline() bool {
 	return _ok
 }
 
-func (s checkButton) SetActiveCheckButton(setting bool) {
+func (s checkButton) SetActive(setting bool) {
 	var _arg0 *C.GtkCheckButton // out
 	var _arg1 C.gboolean        // out
 
@@ -278,7 +292,7 @@ func (s checkButton) SetActiveCheckButton(setting bool) {
 	C.gtk_check_button_set_active(_arg0, _arg1)
 }
 
-func (s checkButton) SetGroupCheckButton(group CheckButton) {
+func (s checkButton) SetGroup(group CheckButton) {
 	var _arg0 *C.GtkCheckButton // out
 	var _arg1 *C.GtkCheckButton // out
 
@@ -288,7 +302,7 @@ func (s checkButton) SetGroupCheckButton(group CheckButton) {
 	C.gtk_check_button_set_group(_arg0, _arg1)
 }
 
-func (c checkButton) SetInconsistentCheckButton(inconsistent bool) {
+func (c checkButton) SetInconsistent(inconsistent bool) {
 	var _arg0 *C.GtkCheckButton // out
 	var _arg1 C.gboolean        // out
 
@@ -300,7 +314,7 @@ func (c checkButton) SetInconsistentCheckButton(inconsistent bool) {
 	C.gtk_check_button_set_inconsistent(_arg0, _arg1)
 }
 
-func (s checkButton) SetLabelCheckButton(label string) {
+func (s checkButton) SetLabel(label string) {
 	var _arg0 *C.GtkCheckButton // out
 	var _arg1 *C.char           // out
 
@@ -311,7 +325,7 @@ func (s checkButton) SetLabelCheckButton(label string) {
 	C.gtk_check_button_set_label(_arg0, _arg1)
 }
 
-func (s checkButton) SetUseUnderlineCheckButton(setting bool) {
+func (s checkButton) SetUseUnderline(setting bool) {
 	var _arg0 *C.GtkCheckButton // out
 	var _arg1 C.gboolean        // out
 
@@ -321,20 +335,4 @@ func (s checkButton) SetUseUnderlineCheckButton(setting bool) {
 	}
 
 	C.gtk_check_button_set_use_underline(_arg0, _arg1)
-}
-
-func (c checkButton) AsAccessible() Accessible {
-	return WrapAccessible(gextras.InternObject(c))
-}
-
-func (c checkButton) AsActionable() Actionable {
-	return WrapActionable(gextras.InternObject(c))
-}
-
-func (c checkButton) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(c))
-}
-
-func (c checkButton) AsConstraintTarget() ConstraintTarget {
-	return WrapConstraintTarget(gextras.InternObject(c))
 }

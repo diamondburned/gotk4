@@ -125,6 +125,10 @@ func NewNetworkAddressLoopback(port uint16) NetworkAddress {
 	return _networkAddress
 }
 
+func (n networkAddress) AsSocketConnectable() SocketConnectable {
+	return WrapSocketConnectable(gextras.InternObject(n))
+}
+
 func (a networkAddress) Hostname() string {
 	var _arg0 *C.GNetworkAddress // out
 	var _cret *C.gchar           // in
@@ -168,8 +172,4 @@ func (a networkAddress) Scheme() string {
 	_utf8 = C.GoString(_cret)
 
 	return _utf8
-}
-
-func (n networkAddress) AsSocketConnectable() SocketConnectable {
-	return WrapSocketConnectable(gextras.InternObject(n))
 }

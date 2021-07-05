@@ -157,58 +157,56 @@ type StatusIcon interface {
 	//
 	// Deprecated: since version 3.14.
 	X11WindowID() uint32
-	// IsEmbeddedStatusIcon returns whether the status icon is embedded in a
-	// notification area.
+	// IsEmbedded returns whether the status icon is embedded in a notification
+	// area.
 	//
 	// Deprecated: since version 3.14.
-	IsEmbeddedStatusIcon() bool
-	// SetFromFileStatusIcon makes @status_icon display the file @filename. See
+	IsEmbedded() bool
+	// SetFromFile makes @status_icon display the file @filename. See
 	// gtk_status_icon_new_from_file() for details.
 	//
 	// Deprecated: since version 3.14.
-	SetFromFileStatusIcon(filename string)
-	// SetFromIconNameStatusIcon makes @status_icon display the icon named
-	// @icon_name from the current icon theme. See
-	// gtk_status_icon_new_from_icon_name() for details.
+	SetFromFile(filename string)
+	// SetFromIconName makes @status_icon display the icon named @icon_name from
+	// the current icon theme. See gtk_status_icon_new_from_icon_name() for
+	// details.
 	//
 	// Deprecated: since version 3.14.
-	SetFromIconNameStatusIcon(iconName string)
-	// SetFromPixbufStatusIcon makes @status_icon display @pixbuf. See
+	SetFromIconName(iconName string)
+	// SetFromPixbuf makes @status_icon display @pixbuf. See
 	// gtk_status_icon_new_from_pixbuf() for details.
 	//
 	// Deprecated: since version 3.14.
-	SetFromPixbufStatusIcon(pixbuf gdkpixbuf.Pixbuf)
-	// SetFromStockStatusIcon makes @status_icon display the stock icon with the
-	// id @stock_id. See gtk_status_icon_new_from_stock() for details.
+	SetFromPixbuf(pixbuf gdkpixbuf.Pixbuf)
+	// SetFromStock makes @status_icon display the stock icon with the id
+	// @stock_id. See gtk_status_icon_new_from_stock() for details.
 	//
 	// Deprecated: since version 3.10.
-	SetFromStockStatusIcon(stockId string)
-	// SetHasTooltipStatusIcon sets the has-tooltip property on @status_icon to
+	SetFromStock(stockId string)
+	// SetHasTooltip sets the has-tooltip property on @status_icon to
 	// @has_tooltip. See StatusIcon:has-tooltip for more information.
 	//
 	// Deprecated: since version 3.14.
-	SetHasTooltipStatusIcon(hasTooltip bool)
-	// SetNameStatusIcon sets the name of this tray icon. This should be a
-	// string identifying this icon. It is may be used for sorting the icons in
-	// the tray and will not be shown to the user.
+	SetHasTooltip(hasTooltip bool)
+	// SetName sets the name of this tray icon. This should be a string
+	// identifying this icon. It is may be used for sorting the icons in the
+	// tray and will not be shown to the user.
 	//
 	// Deprecated: since version 3.14.
-	SetNameStatusIcon(name string)
-	// SetScreenStatusIcon sets the Screen where @status_icon is displayed; if
-	// the icon is already mapped, it will be unmapped, and then remapped on the
-	// new screen.
+	SetName(name string)
+	// SetScreen sets the Screen where @status_icon is displayed; if the icon is
+	// already mapped, it will be unmapped, and then remapped on the new screen.
 	//
 	// Deprecated: since version 3.14.
-	SetScreenStatusIcon(screen gdk.Screen)
-	// SetTitleStatusIcon sets the title of this tray icon. This should be a
-	// short, human-readable, localized string describing the tray icon. It may
-	// be used by tools like screen readers to render the tray icon.
+	SetScreen(screen gdk.Screen)
+	// SetTitle sets the title of this tray icon. This should be a short,
+	// human-readable, localized string describing the tray icon. It may be used
+	// by tools like screen readers to render the tray icon.
 	//
 	// Deprecated: since version 3.14.
-	SetTitleStatusIcon(title string)
-	// SetTooltipMarkupStatusIcon sets @markup as the contents of the tooltip,
-	// which is marked up with the [Pango text markup
-	// language][PangoMarkupFormat].
+	SetTitle(title string)
+	// SetTooltipMarkup sets @markup as the contents of the tooltip, which is
+	// marked up with the [Pango text markup language][PangoMarkupFormat].
 	//
 	// This function will take care of setting StatusIcon:has-tooltip to true
 	// and of the default handler for the StatusIcon::query-tooltip signal.
@@ -217,8 +215,8 @@ type StatusIcon interface {
 	// gtk_tooltip_set_markup().
 	//
 	// Deprecated: since version 3.14.
-	SetTooltipMarkupStatusIcon(markup string)
-	// SetTooltipTextStatusIcon sets @text as the contents of the tooltip.
+	SetTooltipMarkup(markup string)
+	// SetTooltipText sets @text as the contents of the tooltip.
 	//
 	// This function will take care of setting StatusIcon:has-tooltip to true
 	// and of the default handler for the StatusIcon::query-tooltip signal.
@@ -226,11 +224,11 @@ type StatusIcon interface {
 	// See also the StatusIcon:tooltip-text property and gtk_tooltip_set_text().
 	//
 	// Deprecated: since version 3.14.
-	SetTooltipTextStatusIcon(text string)
-	// SetVisibleStatusIcon shows or hides a status icon.
+	SetTooltipText(text string)
+	// SetVisible shows or hides a status icon.
 	//
 	// Deprecated: since version 3.14.
-	SetVisibleStatusIcon(visible bool)
+	SetVisible(visible bool)
 }
 
 // statusIcon implements the StatusIcon class.
@@ -575,7 +573,7 @@ func (s statusIcon) X11WindowID() uint32 {
 	return _guint32
 }
 
-func (s statusIcon) IsEmbeddedStatusIcon() bool {
+func (s statusIcon) IsEmbedded() bool {
 	var _arg0 *C.GtkStatusIcon // out
 	var _cret C.gboolean       // in
 
@@ -592,7 +590,7 @@ func (s statusIcon) IsEmbeddedStatusIcon() bool {
 	return _ok
 }
 
-func (s statusIcon) SetFromFileStatusIcon(filename string) {
+func (s statusIcon) SetFromFile(filename string) {
 	var _arg0 *C.GtkStatusIcon // out
 	var _arg1 *C.gchar         // out
 
@@ -603,7 +601,7 @@ func (s statusIcon) SetFromFileStatusIcon(filename string) {
 	C.gtk_status_icon_set_from_file(_arg0, _arg1)
 }
 
-func (s statusIcon) SetFromIconNameStatusIcon(iconName string) {
+func (s statusIcon) SetFromIconName(iconName string) {
 	var _arg0 *C.GtkStatusIcon // out
 	var _arg1 *C.gchar         // out
 
@@ -614,7 +612,7 @@ func (s statusIcon) SetFromIconNameStatusIcon(iconName string) {
 	C.gtk_status_icon_set_from_icon_name(_arg0, _arg1)
 }
 
-func (s statusIcon) SetFromPixbufStatusIcon(pixbuf gdkpixbuf.Pixbuf) {
+func (s statusIcon) SetFromPixbuf(pixbuf gdkpixbuf.Pixbuf) {
 	var _arg0 *C.GtkStatusIcon // out
 	var _arg1 *C.GdkPixbuf     // out
 
@@ -624,7 +622,7 @@ func (s statusIcon) SetFromPixbufStatusIcon(pixbuf gdkpixbuf.Pixbuf) {
 	C.gtk_status_icon_set_from_pixbuf(_arg0, _arg1)
 }
 
-func (s statusIcon) SetFromStockStatusIcon(stockId string) {
+func (s statusIcon) SetFromStock(stockId string) {
 	var _arg0 *C.GtkStatusIcon // out
 	var _arg1 *C.gchar         // out
 
@@ -635,7 +633,7 @@ func (s statusIcon) SetFromStockStatusIcon(stockId string) {
 	C.gtk_status_icon_set_from_stock(_arg0, _arg1)
 }
 
-func (s statusIcon) SetHasTooltipStatusIcon(hasTooltip bool) {
+func (s statusIcon) SetHasTooltip(hasTooltip bool) {
 	var _arg0 *C.GtkStatusIcon // out
 	var _arg1 C.gboolean       // out
 
@@ -647,7 +645,7 @@ func (s statusIcon) SetHasTooltipStatusIcon(hasTooltip bool) {
 	C.gtk_status_icon_set_has_tooltip(_arg0, _arg1)
 }
 
-func (s statusIcon) SetNameStatusIcon(name string) {
+func (s statusIcon) SetName(name string) {
 	var _arg0 *C.GtkStatusIcon // out
 	var _arg1 *C.gchar         // out
 
@@ -658,7 +656,7 @@ func (s statusIcon) SetNameStatusIcon(name string) {
 	C.gtk_status_icon_set_name(_arg0, _arg1)
 }
 
-func (s statusIcon) SetScreenStatusIcon(screen gdk.Screen) {
+func (s statusIcon) SetScreen(screen gdk.Screen) {
 	var _arg0 *C.GtkStatusIcon // out
 	var _arg1 *C.GdkScreen     // out
 
@@ -668,7 +666,7 @@ func (s statusIcon) SetScreenStatusIcon(screen gdk.Screen) {
 	C.gtk_status_icon_set_screen(_arg0, _arg1)
 }
 
-func (s statusIcon) SetTitleStatusIcon(title string) {
+func (s statusIcon) SetTitle(title string) {
 	var _arg0 *C.GtkStatusIcon // out
 	var _arg1 *C.gchar         // out
 
@@ -679,7 +677,7 @@ func (s statusIcon) SetTitleStatusIcon(title string) {
 	C.gtk_status_icon_set_title(_arg0, _arg1)
 }
 
-func (s statusIcon) SetTooltipMarkupStatusIcon(markup string) {
+func (s statusIcon) SetTooltipMarkup(markup string) {
 	var _arg0 *C.GtkStatusIcon // out
 	var _arg1 *C.gchar         // out
 
@@ -690,7 +688,7 @@ func (s statusIcon) SetTooltipMarkupStatusIcon(markup string) {
 	C.gtk_status_icon_set_tooltip_markup(_arg0, _arg1)
 }
 
-func (s statusIcon) SetTooltipTextStatusIcon(text string) {
+func (s statusIcon) SetTooltipText(text string) {
 	var _arg0 *C.GtkStatusIcon // out
 	var _arg1 *C.gchar         // out
 
@@ -701,7 +699,7 @@ func (s statusIcon) SetTooltipTextStatusIcon(text string) {
 	C.gtk_status_icon_set_tooltip_text(_arg0, _arg1)
 }
 
-func (s statusIcon) SetVisibleStatusIcon(visible bool) {
+func (s statusIcon) SetVisible(visible bool) {
 	var _arg0 *C.GtkStatusIcon // out
 	var _arg1 C.gboolean       // out
 

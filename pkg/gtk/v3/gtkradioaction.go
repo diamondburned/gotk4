@@ -37,8 +37,8 @@ type RadioAction interface {
 	//
 	// Deprecated: since version 3.10.
 	CurrentValue() int
-	// JoinGroupRadioAction joins a radio action object to the group of another
-	// radio action object.
+	// JoinGroup joins a radio action object to the group of another radio
+	// action object.
 	//
 	// Use this in language bindings instead of the gtk_radio_action_get_group()
 	// and gtk_radio_action_set_group() methods
@@ -57,12 +57,12 @@ type RadioAction interface {
 	//       }
 	//
 	// Deprecated: since version 3.10.
-	JoinGroupRadioAction(groupSource RadioAction)
-	// SetCurrentValueRadioAction sets the currently active group member to the
-	// member with value property @current_value.
+	JoinGroup(groupSource RadioAction)
+	// SetCurrentValue sets the currently active group member to the member with
+	// value property @current_value.
 	//
 	// Deprecated: since version 3.10.
-	SetCurrentValueRadioAction(currentValue int)
+	SetCurrentValue(currentValue int)
 }
 
 // radioAction implements the RadioAction class.
@@ -116,6 +116,10 @@ func NewRadioAction(name string, label string, tooltip string, stockId string, v
 	return _radioAction
 }
 
+func (r radioAction) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(r))
+}
+
 func (a radioAction) CurrentValue() int {
 	var _arg0 *C.GtkRadioAction // out
 	var _cret C.gint            // in
@@ -131,7 +135,7 @@ func (a radioAction) CurrentValue() int {
 	return _gint
 }
 
-func (a radioAction) JoinGroupRadioAction(groupSource RadioAction) {
+func (a radioAction) JoinGroup(groupSource RadioAction) {
 	var _arg0 *C.GtkRadioAction // out
 	var _arg1 *C.GtkRadioAction // out
 
@@ -141,7 +145,7 @@ func (a radioAction) JoinGroupRadioAction(groupSource RadioAction) {
 	C.gtk_radio_action_join_group(_arg0, _arg1)
 }
 
-func (a radioAction) SetCurrentValueRadioAction(currentValue int) {
+func (a radioAction) SetCurrentValue(currentValue int) {
 	var _arg0 *C.GtkRadioAction // out
 	var _arg1 C.gint            // out
 
@@ -149,8 +153,4 @@ func (a radioAction) SetCurrentValueRadioAction(currentValue int) {
 	_arg1 = C.gint(currentValue)
 
 	C.gtk_radio_action_set_current_value(_arg0, _arg1)
-}
-
-func (r radioAction) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(r))
 }

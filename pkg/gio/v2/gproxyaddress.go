@@ -116,6 +116,10 @@ func NewProxyAddress(inetaddr InetAddress, port uint16, protocol string, destHos
 	return _proxyAddress
 }
 
+func (p proxyAddress) AsSocketConnectable() SocketConnectable {
+	return WrapSocketConnectable(gextras.InternObject(p))
+}
+
 func (p proxyAddress) DestinationHostname() string {
 	var _arg0 *C.GProxyAddress // out
 	var _cret *C.gchar         // in
@@ -219,8 +223,4 @@ func (p proxyAddress) Username() string {
 	_utf8 = C.GoString(_cret)
 
 	return _utf8
-}
-
-func (p proxyAddress) AsSocketConnectable() SocketConnectable {
-	return WrapSocketConnectable(gextras.InternObject(p))
 }

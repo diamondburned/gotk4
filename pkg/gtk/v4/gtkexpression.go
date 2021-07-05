@@ -331,7 +331,7 @@ func (e constantExpression) Value() externglib.Value {
 type Expression interface {
 	gextras.Objector
 
-	// BindExpression: bind `target`'s property named `property` to `self`.
+	// Bind `target`'s property named `property` to `self`.
 	//
 	// The value that `self` evaluates to is set via `g_object_set()` on
 	// `target`. This is repeated whenever `self` changes to ensure that the
@@ -342,9 +342,9 @@ type Expression interface {
 	//
 	// Note that this function takes ownership of `self`. If you want to keep it
 	// around, you should [method@Gtk.Expression.ref] it beforehand.
-	BindExpression(target gextras.Objector, property string, this_ gextras.Objector) *ExpressionWatch
-	// EvaluateExpression evaluates the given expression and on success stores
-	// the result in @value.
+	Bind(target gextras.Objector, property string, this_ gextras.Objector) *ExpressionWatch
+	// Evaluate evaluates the given expression and on success stores the result
+	// in @value.
 	//
 	// The `GType` of `value` will be the type given by
 	// [method@Gtk.Expression.get_value_type].
@@ -353,27 +353,27 @@ type Expression interface {
 	// the expression references objects that have been destroyed or set to
 	// `NULL`. In that case `value` will remain empty and `FALSE` will be
 	// returned.
-	EvaluateExpression(this_ gextras.Objector, value externglib.Value) bool
+	Evaluate(this_ gextras.Objector, value externglib.Value) bool
 	// ValueType gets the `GType` that this expression evaluates to.
 	//
 	// This type is constant and will not change over the lifetime of this
 	// expression.
 	ValueType() externglib.Type
-	// IsStaticExpression checks if the expression is static.
+	// IsStatic checks if the expression is static.
 	//
 	// A static expression will never change its result when
 	// [method@Gtk.Expression.evaluate] is called on it with the same arguments.
 	//
 	// That means a call to [method@Gtk.Expression.watch] is not necessary
 	// because it will never trigger a notify.
-	IsStaticExpression() bool
-	// RefExpression acquires a reference on the given `GtkExpression`.
-	RefExpression() Expression
-	// UnrefExpression releases a reference on the given `GtkExpression`.
+	IsStatic() bool
+	// Ref acquires a reference on the given `GtkExpression`.
+	Ref() Expression
+	// Unref releases a reference on the given `GtkExpression`.
 	//
 	// If the reference was the last, the resources associated to the `self` are
 	// freed.
-	UnrefExpression()
+	Unref()
 }
 
 // expression implements the Expression class.
@@ -395,7 +395,7 @@ func marshalExpression(p uintptr) (interface{}, error) {
 	return WrapExpression(obj), nil
 }
 
-func (s expression) BindExpression(target gextras.Objector, property string, this_ gextras.Objector) *ExpressionWatch {
+func (s expression) Bind(target gextras.Objector, property string, this_ gextras.Objector) *ExpressionWatch {
 	var _arg0 *C.GtkExpression      // out
 	var _arg1 C.gpointer            // out
 	var _arg2 *C.char               // out
@@ -421,7 +421,7 @@ func (s expression) BindExpression(target gextras.Objector, property string, thi
 	return _expressionWatch
 }
 
-func (s expression) EvaluateExpression(this_ gextras.Objector, value externglib.Value) bool {
+func (s expression) Evaluate(this_ gextras.Objector, value externglib.Value) bool {
 	var _arg0 *C.GtkExpression // out
 	var _arg1 C.gpointer       // out
 	var _arg2 *C.GValue        // out
@@ -457,7 +457,7 @@ func (s expression) ValueType() externglib.Type {
 	return _gType
 }
 
-func (s expression) IsStaticExpression() bool {
+func (s expression) IsStatic() bool {
 	var _arg0 *C.GtkExpression // out
 	var _cret C.gboolean       // in
 
@@ -474,7 +474,7 @@ func (s expression) IsStaticExpression() bool {
 	return _ok
 }
 
-func (s expression) RefExpression() Expression {
+func (s expression) Ref() Expression {
 	var _arg0 *C.GtkExpression // out
 	var _cret *C.GtkExpression // in
 
@@ -489,7 +489,7 @@ func (s expression) RefExpression() Expression {
 	return _expression
 }
 
-func (s expression) UnrefExpression() {
+func (s expression) Unref() {
 	var _arg0 *C.GtkExpression // out
 
 	_arg0 = (*C.GtkExpression)(unsafe.Pointer(s.Native()))
@@ -567,9 +567,9 @@ func (e objectExpression) Object() gextras.Objector {
 type PropertyExpression interface {
 	Expression
 
-	// GetExpression gets the expression specifying the object of a property
-	// expression.
-	GetExpression() Expression
+	// ExpressionPropertyExpression gets the expression specifying the object of
+	// a property expression.
+	ExpressionPropertyExpression() Expression
 }
 
 // propertyExpression implements the PropertyExpression class.
@@ -619,7 +619,7 @@ func NewPropertyExpression(thisType externglib.Type, expression Expression, prop
 	return _propertyExpression
 }
 
-func (e propertyExpression) GetExpression() Expression {
+func (e propertyExpression) ExpressionPropertyExpression() Expression {
 	var _arg0 *C.GtkExpression // out
 	var _cret *C.GtkExpression // in
 

@@ -82,6 +82,10 @@ func NewZlibDecompressor(format ZlibCompressorFormat) ZlibDecompressor {
 	return _zlibDecompressor
 }
 
+func (z zlibDecompressor) AsConverter() Converter {
+	return WrapConverter(gextras.InternObject(z))
+}
+
 func (d zlibDecompressor) FileInfo() FileInfo {
 	var _arg0 *C.GZlibDecompressor // out
 	var _cret *C.GFileInfo         // in
@@ -95,8 +99,4 @@ func (d zlibDecompressor) FileInfo() FileInfo {
 	_fileInfo = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(FileInfo)
 
 	return _fileInfo
-}
-
-func (z zlibDecompressor) AsConverter() Converter {
-	return WrapConverter(gextras.InternObject(z))
 }

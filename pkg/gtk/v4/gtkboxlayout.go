@@ -49,19 +49,19 @@ type BoxLayout interface {
 	Homogeneous() bool
 	// Spacing returns the space that @box_layout puts between children.
 	Spacing() uint
-	// SetBaselinePositionBoxLayout sets the baseline position of a box layout.
+	// SetBaselinePosition sets the baseline position of a box layout.
 	//
 	// The baseline position affects only horizontal boxes with at least one
 	// baseline aligned child. If there is more vertical space available than
 	// requested, and the baseline is not allocated by the parent then the given
 	// @position is used to allocate the baseline within the extra space
 	// available.
-	SetBaselinePositionBoxLayout(position BaselinePosition)
-	// SetHomogeneousBoxLayout sets whether the box layout will allocate the
-	// same size to all children.
-	SetHomogeneousBoxLayout(homogeneous bool)
-	// SetSpacingBoxLayout sets how much spacing to put between children.
-	SetSpacingBoxLayout(spacing uint)
+	SetBaselinePosition(position BaselinePosition)
+	// SetHomogeneous sets whether the box layout will allocate the same size to
+	// all children.
+	SetHomogeneous(homogeneous bool)
+	// SetSpacing sets how much spacing to put between children.
+	SetSpacing(spacing uint)
 }
 
 // boxLayout implements the BoxLayout class.
@@ -97,6 +97,10 @@ func NewBoxLayout(orientation Orientation) BoxLayout {
 	_boxLayout = WrapBoxLayout(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _boxLayout
+}
+
+func (b boxLayout) AsOrientable() Orientable {
+	return WrapOrientable(gextras.InternObject(b))
 }
 
 func (b boxLayout) BaselinePosition() BaselinePosition {
@@ -146,7 +150,7 @@ func (b boxLayout) Spacing() uint {
 	return _guint
 }
 
-func (b boxLayout) SetBaselinePositionBoxLayout(position BaselinePosition) {
+func (b boxLayout) SetBaselinePosition(position BaselinePosition) {
 	var _arg0 *C.GtkBoxLayout       // out
 	var _arg1 C.GtkBaselinePosition // out
 
@@ -156,7 +160,7 @@ func (b boxLayout) SetBaselinePositionBoxLayout(position BaselinePosition) {
 	C.gtk_box_layout_set_baseline_position(_arg0, _arg1)
 }
 
-func (b boxLayout) SetHomogeneousBoxLayout(homogeneous bool) {
+func (b boxLayout) SetHomogeneous(homogeneous bool) {
 	var _arg0 *C.GtkBoxLayout // out
 	var _arg1 C.gboolean      // out
 
@@ -168,7 +172,7 @@ func (b boxLayout) SetHomogeneousBoxLayout(homogeneous bool) {
 	C.gtk_box_layout_set_homogeneous(_arg0, _arg1)
 }
 
-func (b boxLayout) SetSpacingBoxLayout(spacing uint) {
+func (b boxLayout) SetSpacing(spacing uint) {
 	var _arg0 *C.GtkBoxLayout // out
 	var _arg1 C.guint         // out
 
@@ -176,8 +180,4 @@ func (b boxLayout) SetSpacingBoxLayout(spacing uint) {
 	_arg1 = C.guint(spacing)
 
 	C.gtk_box_layout_set_spacing(_arg0, _arg1)
-}
-
-func (b boxLayout) AsOrientable() Orientable {
-	return WrapOrientable(gextras.InternObject(b))
 }

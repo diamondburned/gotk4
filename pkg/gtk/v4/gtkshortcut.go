@@ -48,13 +48,12 @@ type Shortcut interface {
 	Arguments() *glib.Variant
 	// Trigger gets the trigger used to trigger @self.
 	Trigger() ShortcutTrigger
-	// SetActionShortcut sets the new action for @self to be @action.
-	SetActionShortcut(action ShortcutAction)
-	// SetArgumentsShortcut sets the arguments to pass when activating the
-	// shortcut.
-	SetArgumentsShortcut(args *glib.Variant)
-	// SetTriggerShortcut sets the new trigger for @self to be @trigger.
-	SetTriggerShortcut(trigger ShortcutTrigger)
+	// SetAction sets the new action for @self to be @action.
+	SetAction(action ShortcutAction)
+	// SetArguments sets the arguments to pass when activating the shortcut.
+	SetArguments(args *glib.Variant)
+	// SetTrigger sets the new trigger for @self to be @trigger.
+	SetTrigger(trigger ShortcutTrigger)
 }
 
 // shortcut implements the Shortcut class.
@@ -144,7 +143,7 @@ func (s shortcut) Trigger() ShortcutTrigger {
 	return _shortcutTrigger
 }
 
-func (s shortcut) SetActionShortcut(action ShortcutAction) {
+func (s shortcut) SetAction(action ShortcutAction) {
 	var _arg0 *C.GtkShortcut       // out
 	var _arg1 *C.GtkShortcutAction // out
 
@@ -154,7 +153,7 @@ func (s shortcut) SetActionShortcut(action ShortcutAction) {
 	C.gtk_shortcut_set_action(_arg0, _arg1)
 }
 
-func (s shortcut) SetArgumentsShortcut(args *glib.Variant) {
+func (s shortcut) SetArguments(args *glib.Variant) {
 	var _arg0 *C.GtkShortcut // out
 	var _arg1 *C.GVariant    // out
 
@@ -164,7 +163,7 @@ func (s shortcut) SetArgumentsShortcut(args *glib.Variant) {
 	C.gtk_shortcut_set_arguments(_arg0, _arg1)
 }
 
-func (s shortcut) SetTriggerShortcut(trigger ShortcutTrigger) {
+func (s shortcut) SetTrigger(trigger ShortcutTrigger) {
 	var _arg0 *C.GtkShortcut        // out
 	var _arg1 *C.GtkShortcutTrigger // out
 

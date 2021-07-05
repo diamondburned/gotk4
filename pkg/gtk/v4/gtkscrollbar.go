@@ -75,8 +75,8 @@ type Scrollbar interface {
 
 	// Adjustment returns the scrollbar's adjustment.
 	Adjustment() Adjustment
-	// SetAdjustmentScrollbar makes the scrollbar use the given adjustment.
-	SetAdjustmentScrollbar(adjustment Adjustment)
+	// SetAdjustment makes the scrollbar use the given adjustment.
+	SetAdjustment(adjustment Adjustment)
 }
 
 // scrollbar implements the Scrollbar class.
@@ -116,6 +116,22 @@ func NewScrollbar(orientation Orientation, adjustment Adjustment) Scrollbar {
 	return _scrollbar
 }
 
+func (s scrollbar) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(s))
+}
+
+func (s scrollbar) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(s))
+}
+
+func (s scrollbar) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(s))
+}
+
+func (s scrollbar) AsOrientable() Orientable {
+	return WrapOrientable(gextras.InternObject(s))
+}
+
 func (s scrollbar) Adjustment() Adjustment {
 	var _arg0 *C.GtkScrollbar  // out
 	var _cret *C.GtkAdjustment // in
@@ -131,7 +147,7 @@ func (s scrollbar) Adjustment() Adjustment {
 	return _adjustment
 }
 
-func (s scrollbar) SetAdjustmentScrollbar(adjustment Adjustment) {
+func (s scrollbar) SetAdjustment(adjustment Adjustment) {
 	var _arg0 *C.GtkScrollbar  // out
 	var _arg1 *C.GtkAdjustment // out
 
@@ -139,20 +155,4 @@ func (s scrollbar) SetAdjustmentScrollbar(adjustment Adjustment) {
 	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
 
 	C.gtk_scrollbar_set_adjustment(_arg0, _arg1)
-}
-
-func (s scrollbar) AsAccessible() Accessible {
-	return WrapAccessible(gextras.InternObject(s))
-}
-
-func (s scrollbar) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(s))
-}
-
-func (s scrollbar) AsConstraintTarget() ConstraintTarget {
-	return WrapConstraintTarget(gextras.InternObject(s))
-}
-
-func (s scrollbar) AsOrientable() Orientable {
-	return WrapOrientable(gextras.InternObject(s))
 }

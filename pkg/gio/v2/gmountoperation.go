@@ -76,31 +76,30 @@ type MountOperation interface {
 	Pim() uint
 	// Username: get the user name from the mount operation.
 	Username() string
-	// ReplyMountOperation emits the Operation::reply signal.
-	ReplyMountOperation(result MountOperationResult)
-	// SetAnonymousMountOperation sets the mount operation to use an anonymous
-	// user if @anonymous is true.
-	SetAnonymousMountOperation(anonymous bool)
-	// SetChoiceMountOperation sets a default choice for the mount operation.
-	SetChoiceMountOperation(choice int)
-	// SetDomainMountOperation sets the mount operation's domain.
-	SetDomainMountOperation(domain string)
-	// SetIsTcryptHiddenVolumeMountOperation sets the mount operation to use a
-	// hidden volume if @hidden_volume is true.
-	SetIsTcryptHiddenVolumeMountOperation(hiddenVolume bool)
-	// SetIsTcryptSystemVolumeMountOperation sets the mount operation to use a
-	// system volume if @system_volume is true.
-	SetIsTcryptSystemVolumeMountOperation(systemVolume bool)
-	// SetPasswordMountOperation sets the mount operation's password to
-	// @password.
-	SetPasswordMountOperation(password string)
-	// SetPasswordSaveMountOperation sets the state of saving passwords for the
-	// mount operation.
-	SetPasswordSaveMountOperation(save PasswordSave)
-	// SetPimMountOperation sets the mount operation's PIM to @pim.
-	SetPimMountOperation(pim uint)
-	// SetUsernameMountOperation sets the user name within @op to @username.
-	SetUsernameMountOperation(username string)
+	// Reply emits the Operation::reply signal.
+	Reply(result MountOperationResult)
+	// SetAnonymous sets the mount operation to use an anonymous user if
+	// @anonymous is true.
+	SetAnonymous(anonymous bool)
+	// SetChoice sets a default choice for the mount operation.
+	SetChoice(choice int)
+	// SetDomain sets the mount operation's domain.
+	SetDomain(domain string)
+	// SetIsTcryptHiddenVolume sets the mount operation to use a hidden volume
+	// if @hidden_volume is true.
+	SetIsTcryptHiddenVolume(hiddenVolume bool)
+	// SetIsTcryptSystemVolume sets the mount operation to use a system volume
+	// if @system_volume is true.
+	SetIsTcryptSystemVolume(systemVolume bool)
+	// SetPassword sets the mount operation's password to @password.
+	SetPassword(password string)
+	// SetPasswordSave sets the state of saving passwords for the mount
+	// operation.
+	SetPasswordSave(save PasswordSave)
+	// SetPim sets the mount operation's PIM to @pim.
+	SetPim(pim uint)
+	// SetUsername sets the user name within @op to @username.
+	SetUsername(username string)
 }
 
 // mountOperation implements the MountOperation class.
@@ -276,7 +275,7 @@ func (o mountOperation) Username() string {
 	return _utf8
 }
 
-func (o mountOperation) ReplyMountOperation(result MountOperationResult) {
+func (o mountOperation) Reply(result MountOperationResult) {
 	var _arg0 *C.GMountOperation      // out
 	var _arg1 C.GMountOperationResult // out
 
@@ -286,7 +285,7 @@ func (o mountOperation) ReplyMountOperation(result MountOperationResult) {
 	C.g_mount_operation_reply(_arg0, _arg1)
 }
 
-func (o mountOperation) SetAnonymousMountOperation(anonymous bool) {
+func (o mountOperation) SetAnonymous(anonymous bool) {
 	var _arg0 *C.GMountOperation // out
 	var _arg1 C.gboolean         // out
 
@@ -298,7 +297,7 @@ func (o mountOperation) SetAnonymousMountOperation(anonymous bool) {
 	C.g_mount_operation_set_anonymous(_arg0, _arg1)
 }
 
-func (o mountOperation) SetChoiceMountOperation(choice int) {
+func (o mountOperation) SetChoice(choice int) {
 	var _arg0 *C.GMountOperation // out
 	var _arg1 C.int              // out
 
@@ -308,7 +307,7 @@ func (o mountOperation) SetChoiceMountOperation(choice int) {
 	C.g_mount_operation_set_choice(_arg0, _arg1)
 }
 
-func (o mountOperation) SetDomainMountOperation(domain string) {
+func (o mountOperation) SetDomain(domain string) {
 	var _arg0 *C.GMountOperation // out
 	var _arg1 *C.char            // out
 
@@ -319,7 +318,7 @@ func (o mountOperation) SetDomainMountOperation(domain string) {
 	C.g_mount_operation_set_domain(_arg0, _arg1)
 }
 
-func (o mountOperation) SetIsTcryptHiddenVolumeMountOperation(hiddenVolume bool) {
+func (o mountOperation) SetIsTcryptHiddenVolume(hiddenVolume bool) {
 	var _arg0 *C.GMountOperation // out
 	var _arg1 C.gboolean         // out
 
@@ -331,7 +330,7 @@ func (o mountOperation) SetIsTcryptHiddenVolumeMountOperation(hiddenVolume bool)
 	C.g_mount_operation_set_is_tcrypt_hidden_volume(_arg0, _arg1)
 }
 
-func (o mountOperation) SetIsTcryptSystemVolumeMountOperation(systemVolume bool) {
+func (o mountOperation) SetIsTcryptSystemVolume(systemVolume bool) {
 	var _arg0 *C.GMountOperation // out
 	var _arg1 C.gboolean         // out
 
@@ -343,7 +342,7 @@ func (o mountOperation) SetIsTcryptSystemVolumeMountOperation(systemVolume bool)
 	C.g_mount_operation_set_is_tcrypt_system_volume(_arg0, _arg1)
 }
 
-func (o mountOperation) SetPasswordMountOperation(password string) {
+func (o mountOperation) SetPassword(password string) {
 	var _arg0 *C.GMountOperation // out
 	var _arg1 *C.char            // out
 
@@ -354,7 +353,7 @@ func (o mountOperation) SetPasswordMountOperation(password string) {
 	C.g_mount_operation_set_password(_arg0, _arg1)
 }
 
-func (o mountOperation) SetPasswordSaveMountOperation(save PasswordSave) {
+func (o mountOperation) SetPasswordSave(save PasswordSave) {
 	var _arg0 *C.GMountOperation // out
 	var _arg1 C.GPasswordSave    // out
 
@@ -364,7 +363,7 @@ func (o mountOperation) SetPasswordSaveMountOperation(save PasswordSave) {
 	C.g_mount_operation_set_password_save(_arg0, _arg1)
 }
 
-func (o mountOperation) SetPimMountOperation(pim uint) {
+func (o mountOperation) SetPim(pim uint) {
 	var _arg0 *C.GMountOperation // out
 	var _arg1 C.guint            // out
 
@@ -374,7 +373,7 @@ func (o mountOperation) SetPimMountOperation(pim uint) {
 	C.g_mount_operation_set_pim(_arg0, _arg1)
 }
 
-func (o mountOperation) SetUsernameMountOperation(username string) {
+func (o mountOperation) SetUsername(username string) {
 	var _arg0 *C.GMountOperation // out
 	var _arg1 *C.char            // out
 

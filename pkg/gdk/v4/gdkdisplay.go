@@ -41,17 +41,17 @@ func init() {
 type Display interface {
 	gextras.Objector
 
-	// BeepDisplay emits a short beep on @display
-	BeepDisplay()
-	// CloseDisplay closes the connection to the windowing system for the given
+	// Beep emits a short beep on @display
+	Beep()
+	// Close closes the connection to the windowing system for the given
 	// display.
 	//
 	// This cleans up associated resources.
-	CloseDisplay()
-	// DeviceIsGrabbedDisplay returns true if there is an ongoing grab on
-	// @device for @display.
-	DeviceIsGrabbedDisplay(device Device) bool
-	// FlushDisplay flushes any requests queued for the windowing system.
+	Close()
+	// DeviceIsGrabbed returns true if there is an ongoing grab on @device for
+	// @display.
+	DeviceIsGrabbed(device Device) bool
+	// Flush flushes any requests queued for the windowing system.
 	//
 	// This happens automatically when the main loop blocks waiting for new
 	// events, but if your application is drawing without returning control to
@@ -62,7 +62,7 @@ type Display interface {
 	//
 	// This is most useful for X11. On windowing systems where requests are
 	// handled synchronously, this function will do nothing.
-	FlushDisplay()
+	Flush()
 	// AppLaunchContext returns a `GdkAppLaunchContext` suitable for launching
 	// applications on the given display.
 	AppLaunchContext() AppLaunchContext
@@ -91,10 +91,10 @@ type Display interface {
 	// StartupNotificationID gets the startup notification ID for a Wayland
 	// display, or nil if no ID has been defined.
 	StartupNotificationID() string
-	// IsClosedDisplay finds out if the display has been closed.
-	IsClosedDisplay() bool
-	// IsCompositedDisplay returns whether surfaces can reasonably be expected
-	// to have their alpha channel drawn correctly on the screen.
+	// IsClosed finds out if the display has been closed.
+	IsClosed() bool
+	// IsComposited returns whether surfaces can reasonably be expected to have
+	// their alpha channel drawn correctly on the screen.
 	//
 	// Check [method@Gdk.Display.is_rgba] for whether the display supports an
 	// alpha channel.
@@ -103,9 +103,9 @@ type Display interface {
 	// on @display.
 	//
 	// On modern displays, this value is always true.
-	IsCompositedDisplay() bool
-	// IsRGBADisplay returns whether surfaces on this @display are created with
-	// an alpha channel.
+	IsComposited() bool
+	// IsRGBA returns whether surfaces on this @display are created with an
+	// alpha channel.
 	//
 	// Even if a true is returned, it is possible that the surface’s alpha
 	// channel won’t be honored when displaying the surface on the screen: in
@@ -114,8 +114,8 @@ type Display interface {
 	// [method@Gdk.Display.is_composited] to check if that is the case.
 	//
 	// On modern displays, this value is always true.
-	IsRGBADisplay() bool
-	// MapKeycodeDisplay returns the keyvals bound to @keycode.
+	IsRGBA() bool
+	// MapKeycode returns the keyvals bound to @keycode.
 	//
 	// The Nth `GdkKeymapKey` in @keys is bound to the Nth keyval in @keyvals.
 	//
@@ -124,9 +124,9 @@ type Display interface {
 	// level.
 	//
 	// Free the returned arrays with g_free().
-	MapKeycodeDisplay(keycode uint) ([]KeymapKey, []uint, bool)
-	// MapKeyvalDisplay obtains a list of keycode/group/level combinations that
-	// will generate @keyval.
+	MapKeycode(keycode uint) ([]KeymapKey, []uint, bool)
+	// MapKeyval obtains a list of keycode/group/level combinations that will
+	// generate @keyval.
 	//
 	// Groups and levels are two kinds of keyboard mode; in general, the level
 	// determines whether the top or bottom symbol on a key is used, and the
@@ -140,31 +140,30 @@ type Display interface {
 	// group. The level is computed from the modifier mask.
 	//
 	// The returned array should be freed with g_free().
-	MapKeyvalDisplay(keyval uint) ([]KeymapKey, bool)
-	// NotifyStartupCompleteDisplay indicates to the GUI environment that the
+	MapKeyval(keyval uint) ([]KeymapKey, bool)
+	// NotifyStartupComplete indicates to the GUI environment that the
 	// application has finished loading, using a given identifier.
 	//
 	// GTK will call this function automatically for [class@Gtk.Window] with
 	// custom startup-notification identifier unless
 	// [method@Gtk.Window.set_auto_startup_notification] is called to disable
 	// that feature.
-	NotifyStartupCompleteDisplay(startupId string)
-	// PutEventDisplay appends the given event onto the front of the event queue
-	// for @display.
+	NotifyStartupComplete(startupId string)
+	// PutEvent appends the given event onto the front of the event queue for
+	// @display.
 	//
 	// This function is only useful in very special situations and should not be
 	// used by applications.
-	PutEventDisplay(event Event)
-	// SupportsInputShapesDisplay returns true if the display supports input
-	// shapes.
+	PutEvent(event Event)
+	// SupportsInputShapes returns true if the display supports input shapes.
 	//
 	// This means that [method@Gdk.Surface.set_input_region] can be used to
 	// modify the input shape of surfaces on @display.
 	//
 	// On modern displays, this value is always true.
-	SupportsInputShapesDisplay() bool
-	// SyncDisplay flushes any requests queued for the windowing system and
-	// waits until all requests have been handled.
+	SupportsInputShapes() bool
+	// Sync flushes any requests queued for the windowing system and waits until
+	// all requests have been handled.
 	//
 	// This is often used for making sure that the display is synchronized with
 	// the current state of the program. Calling [method@Gdk.Display.sync]
@@ -174,9 +173,9 @@ type Display interface {
 	//
 	// This is most useful for X11. On windowing systems where requests are
 	// handled synchronously, this function will do nothing.
-	SyncDisplay()
-	// TranslateKeyDisplay translates the contents of a `GdkEventKey` into a
-	// keyval, effective group, and level.
+	Sync()
+	// TranslateKey translates the contents of a `GdkEventKey` into a keyval,
+	// effective group, and level.
 	//
 	// Modifiers that affected the translation and are thus unavailable for
 	// application use are returned in @consumed_modifiers.
@@ -193,7 +192,7 @@ type Display interface {
 	// This function should rarely be needed, since `GdkEventKey` already
 	// contains the translated keyval. It is exported for the benefit of
 	// virtualized test environments.
-	TranslateKeyDisplay(keycode uint, state ModifierType, group int) (keyval uint, effectiveGroup int, level int, consumed ModifierType, ok bool)
+	TranslateKey(keycode uint, state ModifierType, group int) (keyval uint, effectiveGroup int, level int, consumed ModifierType, ok bool)
 }
 
 // display implements the Display class.
@@ -215,7 +214,7 @@ func marshalDisplay(p uintptr) (interface{}, error) {
 	return WrapDisplay(obj), nil
 }
 
-func (d display) BeepDisplay() {
+func (d display) Beep() {
 	var _arg0 *C.GdkDisplay // out
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
@@ -223,7 +222,7 @@ func (d display) BeepDisplay() {
 	C.gdk_display_beep(_arg0)
 }
 
-func (d display) CloseDisplay() {
+func (d display) Close() {
 	var _arg0 *C.GdkDisplay // out
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
@@ -231,7 +230,7 @@ func (d display) CloseDisplay() {
 	C.gdk_display_close(_arg0)
 }
 
-func (d display) DeviceIsGrabbedDisplay(device Device) bool {
+func (d display) DeviceIsGrabbed(device Device) bool {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.GdkDevice  // out
 	var _cret C.gboolean    // in
@@ -250,7 +249,7 @@ func (d display) DeviceIsGrabbedDisplay(device Device) bool {
 	return _ok
 }
 
-func (d display) FlushDisplay() {
+func (d display) Flush() {
 	var _arg0 *C.GdkDisplay // out
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
@@ -387,7 +386,7 @@ func (d display) StartupNotificationID() string {
 	return _utf8
 }
 
-func (d display) IsClosedDisplay() bool {
+func (d display) IsClosed() bool {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.gboolean    // in
 
@@ -404,7 +403,7 @@ func (d display) IsClosedDisplay() bool {
 	return _ok
 }
 
-func (d display) IsCompositedDisplay() bool {
+func (d display) IsComposited() bool {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.gboolean    // in
 
@@ -421,7 +420,7 @@ func (d display) IsCompositedDisplay() bool {
 	return _ok
 }
 
-func (d display) IsRGBADisplay() bool {
+func (d display) IsRGBA() bool {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.gboolean    // in
 
@@ -438,7 +437,7 @@ func (d display) IsRGBADisplay() bool {
 	return _ok
 }
 
-func (d display) MapKeycodeDisplay(keycode uint) ([]KeymapKey, []uint, bool) {
+func (d display) MapKeycode(keycode uint) ([]KeymapKey, []uint, bool) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 C.guint       // out
 	var _arg2 *C.GdkKeymapKey
@@ -471,7 +470,7 @@ func (d display) MapKeycodeDisplay(keycode uint) ([]KeymapKey, []uint, bool) {
 	return _keys, _keyvals, _ok
 }
 
-func (d display) MapKeyvalDisplay(keyval uint) ([]KeymapKey, bool) {
+func (d display) MapKeyval(keyval uint) ([]KeymapKey, bool) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 C.guint       // out
 	var _arg2 *C.GdkKeymapKey
@@ -497,7 +496,7 @@ func (d display) MapKeyvalDisplay(keyval uint) ([]KeymapKey, bool) {
 	return _keys, _ok
 }
 
-func (d display) NotifyStartupCompleteDisplay(startupId string) {
+func (d display) NotifyStartupComplete(startupId string) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.char       // out
 
@@ -508,7 +507,7 @@ func (d display) NotifyStartupCompleteDisplay(startupId string) {
 	C.gdk_display_notify_startup_complete(_arg0, _arg1)
 }
 
-func (d display) PutEventDisplay(event Event) {
+func (d display) PutEvent(event Event) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.GdkEvent   // out
 
@@ -518,7 +517,7 @@ func (d display) PutEventDisplay(event Event) {
 	C.gdk_display_put_event(_arg0, _arg1)
 }
 
-func (d display) SupportsInputShapesDisplay() bool {
+func (d display) SupportsInputShapes() bool {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.gboolean    // in
 
@@ -535,7 +534,7 @@ func (d display) SupportsInputShapesDisplay() bool {
 	return _ok
 }
 
-func (d display) SyncDisplay() {
+func (d display) Sync() {
 	var _arg0 *C.GdkDisplay // out
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
@@ -543,7 +542,7 @@ func (d display) SyncDisplay() {
 	C.gdk_display_sync(_arg0)
 }
 
-func (d display) TranslateKeyDisplay(keycode uint, state ModifierType, group int) (keyval uint, effectiveGroup int, level int, consumed ModifierType, ok bool) {
+func (d display) TranslateKey(keycode uint, state ModifierType, group int) (keyval uint, effectiveGroup int, level int, consumed ModifierType, ok bool) {
 	var _arg0 *C.GdkDisplay     // out
 	var _arg1 C.guint           // out
 	var _arg2 C.GdkModifierType // out

@@ -50,12 +50,12 @@ type PageSetupUnixDialog interface {
 	PageSetup() PageSetup
 	// PrintSettings gets the current print settings from the dialog.
 	PrintSettings() PrintSettings
-	// SetPageSetupPageSetupUnixDialog sets the `GtkPageSetup` from which the
-	// page setup dialog takes its values.
-	SetPageSetupPageSetupUnixDialog(pageSetup PageSetup)
-	// SetPrintSettingsPageSetupUnixDialog sets the `GtkPrintSettings` from
-	// which the page setup dialog takes its values.
-	SetPrintSettingsPageSetupUnixDialog(printSettings PrintSettings)
+	// SetPageSetup sets the `GtkPageSetup` from which the page setup dialog
+	// takes its values.
+	SetPageSetup(pageSetup PageSetup)
+	// SetPrintSettings sets the `GtkPrintSettings` from which the page setup
+	// dialog takes its values.
+	SetPrintSettings(printSettings PrintSettings)
 }
 
 // pageSetupUnixDialog implements the PageSetupUnixDialog class.
@@ -96,6 +96,30 @@ func NewPageSetupUnixDialog(title string, parent Window) PageSetupUnixDialog {
 	return _pageSetupUnixDialog
 }
 
+func (p pageSetupUnixDialog) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(p))
+}
+
+func (p pageSetupUnixDialog) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(p))
+}
+
+func (p pageSetupUnixDialog) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(p))
+}
+
+func (p pageSetupUnixDialog) AsNative() Native {
+	return WrapNative(gextras.InternObject(p))
+}
+
+func (p pageSetupUnixDialog) AsRoot() Root {
+	return WrapRoot(gextras.InternObject(p))
+}
+
+func (p pageSetupUnixDialog) AsShortcutManager() ShortcutManager {
+	return WrapShortcutManager(gextras.InternObject(p))
+}
+
 func (d pageSetupUnixDialog) PageSetup() PageSetup {
 	var _arg0 *C.GtkPageSetupUnixDialog // out
 	var _cret *C.GtkPageSetup           // in
@@ -126,7 +150,7 @@ func (d pageSetupUnixDialog) PrintSettings() PrintSettings {
 	return _printSettings
 }
 
-func (d pageSetupUnixDialog) SetPageSetupPageSetupUnixDialog(pageSetup PageSetup) {
+func (d pageSetupUnixDialog) SetPageSetup(pageSetup PageSetup) {
 	var _arg0 *C.GtkPageSetupUnixDialog // out
 	var _arg1 *C.GtkPageSetup           // out
 
@@ -136,7 +160,7 @@ func (d pageSetupUnixDialog) SetPageSetupPageSetupUnixDialog(pageSetup PageSetup
 	C.gtk_page_setup_unix_dialog_set_page_setup(_arg0, _arg1)
 }
 
-func (d pageSetupUnixDialog) SetPrintSettingsPageSetupUnixDialog(printSettings PrintSettings) {
+func (d pageSetupUnixDialog) SetPrintSettings(printSettings PrintSettings) {
 	var _arg0 *C.GtkPageSetupUnixDialog // out
 	var _arg1 *C.GtkPrintSettings       // out
 
@@ -144,28 +168,4 @@ func (d pageSetupUnixDialog) SetPrintSettingsPageSetupUnixDialog(printSettings P
 	_arg1 = (*C.GtkPrintSettings)(unsafe.Pointer(printSettings.Native()))
 
 	C.gtk_page_setup_unix_dialog_set_print_settings(_arg0, _arg1)
-}
-
-func (p pageSetupUnixDialog) AsAccessible() Accessible {
-	return WrapAccessible(gextras.InternObject(p))
-}
-
-func (p pageSetupUnixDialog) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(p))
-}
-
-func (p pageSetupUnixDialog) AsConstraintTarget() ConstraintTarget {
-	return WrapConstraintTarget(gextras.InternObject(p))
-}
-
-func (p pageSetupUnixDialog) AsNative() Native {
-	return WrapNative(gextras.InternObject(p))
-}
-
-func (p pageSetupUnixDialog) AsRoot() Root {
-	return WrapRoot(gextras.InternObject(p))
-}
-
-func (p pageSetupUnixDialog) AsShortcutManager() ShortcutManager {
-	return WrapShortcutManager(gextras.InternObject(p))
 }

@@ -48,18 +48,17 @@ type Socket interface {
 	// AsComponent casts the class to the Component interface.
 	AsComponent() Component
 
-	// EmbedSocket embeds the children of an Plug as the children of the Socket.
-	// The plug may be in the same process or in a different process.
+	// Embed embeds the children of an Plug as the children of the Socket. The
+	// plug may be in the same process or in a different process.
 	//
 	// The class item used by this function should be filled in by the IPC layer
 	// (usually at-spi2-atk). The implementor of the AtkSocket should call this
 	// function and pass the id for the plug as returned by atk_plug_get_id().
 	// It is the responsibility of the application to pass the plug id on to the
 	// process implementing the Socket as needed.
-	EmbedSocket(plugId string)
-	// IsOccupiedSocket determines whether or not the socket has an embedded
-	// plug.
-	IsOccupiedSocket() bool
+	Embed(plugId string)
+	// IsOccupied determines whether or not the socket has an embedded plug.
+	IsOccupied() bool
 }
 
 // socket implements the Socket class.
@@ -94,7 +93,11 @@ func NewSocket() Socket {
 	return _socket
 }
 
-func (o socket) EmbedSocket(plugId string) {
+func (s socket) AsComponent() Component {
+	return WrapComponent(gextras.InternObject(s))
+}
+
+func (o socket) Embed(plugId string) {
 	var _arg0 *C.AtkSocket // out
 	var _arg1 *C.gchar     // out
 
@@ -105,7 +108,7 @@ func (o socket) EmbedSocket(plugId string) {
 	C.atk_socket_embed(_arg0, _arg1)
 }
 
-func (o socket) IsOccupiedSocket() bool {
+func (o socket) IsOccupied() bool {
 	var _arg0 *C.AtkSocket // out
 	var _cret C.gboolean   // in
 
@@ -120,8 +123,4 @@ func (o socket) IsOccupiedSocket() bool {
 	}
 
 	return _ok
-}
-
-func (s socket) AsComponent() Component {
-	return WrapComponent(gextras.InternObject(s))
 }

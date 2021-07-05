@@ -108,17 +108,16 @@ type ApplicationWindow interface {
 	// ShowMenubar returns whether the window will display a menubar for the app
 	// menu and menubar as needed.
 	ShowMenubar() bool
-	// SetHelpOverlayApplicationWindow associates a shortcuts window with the
-	// application window.
+	// SetHelpOverlay associates a shortcuts window with the application window.
 	//
 	// Additionally, sets up an action with the name `win.show-help-overlay` to
 	// present it.
 	//
 	// @window takes responsibility for destroying @help_overlay.
-	SetHelpOverlayApplicationWindow(helpOverlay ShortcutsWindow)
-	// SetShowMenubarApplicationWindow sets whether the window will display a
-	// menubar for the app menu and menubar as needed.
-	SetShowMenubarApplicationWindow(showMenubar bool)
+	SetHelpOverlay(helpOverlay ShortcutsWindow)
+	// SetShowMenubar sets whether the window will display a menubar for the app
+	// menu and menubar as needed.
+	SetShowMenubar(showMenubar bool)
 }
 
 // applicationWindow implements the ApplicationWindow class.
@@ -154,6 +153,30 @@ func NewApplicationWindow(application Application) ApplicationWindow {
 	_applicationWindow = WrapApplicationWindow(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _applicationWindow
+}
+
+func (a applicationWindow) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(a))
+}
+
+func (a applicationWindow) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(a))
+}
+
+func (a applicationWindow) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(a))
+}
+
+func (a applicationWindow) AsNative() Native {
+	return WrapNative(gextras.InternObject(a))
+}
+
+func (a applicationWindow) AsRoot() Root {
+	return WrapRoot(gextras.InternObject(a))
+}
+
+func (a applicationWindow) AsShortcutManager() ShortcutManager {
+	return WrapShortcutManager(gextras.InternObject(a))
 }
 
 func (w applicationWindow) HelpOverlay() ShortcutsWindow {
@@ -203,7 +226,7 @@ func (w applicationWindow) ShowMenubar() bool {
 	return _ok
 }
 
-func (w applicationWindow) SetHelpOverlayApplicationWindow(helpOverlay ShortcutsWindow) {
+func (w applicationWindow) SetHelpOverlay(helpOverlay ShortcutsWindow) {
 	var _arg0 *C.GtkApplicationWindow // out
 	var _arg1 *C.GtkShortcutsWindow   // out
 
@@ -213,7 +236,7 @@ func (w applicationWindow) SetHelpOverlayApplicationWindow(helpOverlay Shortcuts
 	C.gtk_application_window_set_help_overlay(_arg0, _arg1)
 }
 
-func (w applicationWindow) SetShowMenubarApplicationWindow(showMenubar bool) {
+func (w applicationWindow) SetShowMenubar(showMenubar bool) {
 	var _arg0 *C.GtkApplicationWindow // out
 	var _arg1 C.gboolean              // out
 
@@ -223,28 +246,4 @@ func (w applicationWindow) SetShowMenubarApplicationWindow(showMenubar bool) {
 	}
 
 	C.gtk_application_window_set_show_menubar(_arg0, _arg1)
-}
-
-func (a applicationWindow) AsAccessible() Accessible {
-	return WrapAccessible(gextras.InternObject(a))
-}
-
-func (a applicationWindow) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(a))
-}
-
-func (a applicationWindow) AsConstraintTarget() ConstraintTarget {
-	return WrapConstraintTarget(gextras.InternObject(a))
-}
-
-func (a applicationWindow) AsNative() Native {
-	return WrapNative(gextras.InternObject(a))
-}
-
-func (a applicationWindow) AsRoot() Root {
-	return WrapRoot(gextras.InternObject(a))
-}
-
-func (a applicationWindow) AsShortcutManager() ShortcutManager {
-	return WrapShortcutManager(gextras.InternObject(a))
 }

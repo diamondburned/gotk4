@@ -55,20 +55,18 @@ type MenuToolButton interface {
 
 	// Menu gets the Menu associated with MenuToolButton.
 	Menu() Widget
-	// SetArrowTooltipMarkupMenuToolButton sets the tooltip markup text to be
-	// used as tooltip for the arrow button which pops up the menu. See
+	// SetArrowTooltipMarkup sets the tooltip markup text to be used as tooltip
+	// for the arrow button which pops up the menu. See
 	// gtk_tool_item_set_tooltip_text() for setting a tooltip on the whole
 	// MenuToolButton.
-	SetArrowTooltipMarkupMenuToolButton(markup string)
-	// SetArrowTooltipTextMenuToolButton sets the tooltip text to be used as
-	// tooltip for the arrow button which pops up the menu. See
-	// gtk_tool_item_set_tooltip_text() for setting a tooltip on the whole
-	// MenuToolButton.
-	SetArrowTooltipTextMenuToolButton(text string)
-	// SetMenuMenuToolButton sets the Menu that is popped up when the user
-	// clicks on the arrow. If @menu is NULL, the arrow button becomes
-	// insensitive.
-	SetMenuMenuToolButton(menu Widget)
+	SetArrowTooltipMarkup(markup string)
+	// SetArrowTooltipText sets the tooltip text to be used as tooltip for the
+	// arrow button which pops up the menu. See gtk_tool_item_set_tooltip_text()
+	// for setting a tooltip on the whole MenuToolButton.
+	SetArrowTooltipText(text string)
+	// SetMenu sets the Menu that is popped up when the user clicks on the
+	// arrow. If @menu is NULL, the arrow button becomes insensitive.
+	SetMenu(menu Widget)
 }
 
 // menuToolButton implements the MenuToolButton class.
@@ -131,6 +129,18 @@ func NewMenuToolButtonFromStock(stockId string) MenuToolButton {
 	return _menuToolButton
 }
 
+func (m menuToolButton) AsActionable() Actionable {
+	return WrapActionable(gextras.InternObject(m))
+}
+
+func (m menuToolButton) AsActivatable() Activatable {
+	return WrapActivatable(gextras.InternObject(m))
+}
+
+func (m menuToolButton) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(m))
+}
+
 func (b menuToolButton) Menu() Widget {
 	var _arg0 *C.GtkMenuToolButton // out
 	var _cret *C.GtkWidget         // in
@@ -146,7 +156,7 @@ func (b menuToolButton) Menu() Widget {
 	return _widget
 }
 
-func (b menuToolButton) SetArrowTooltipMarkupMenuToolButton(markup string) {
+func (b menuToolButton) SetArrowTooltipMarkup(markup string) {
 	var _arg0 *C.GtkMenuToolButton // out
 	var _arg1 *C.gchar             // out
 
@@ -157,7 +167,7 @@ func (b menuToolButton) SetArrowTooltipMarkupMenuToolButton(markup string) {
 	C.gtk_menu_tool_button_set_arrow_tooltip_markup(_arg0, _arg1)
 }
 
-func (b menuToolButton) SetArrowTooltipTextMenuToolButton(text string) {
+func (b menuToolButton) SetArrowTooltipText(text string) {
 	var _arg0 *C.GtkMenuToolButton // out
 	var _arg1 *C.gchar             // out
 
@@ -168,7 +178,7 @@ func (b menuToolButton) SetArrowTooltipTextMenuToolButton(text string) {
 	C.gtk_menu_tool_button_set_arrow_tooltip_text(_arg0, _arg1)
 }
 
-func (b menuToolButton) SetMenuMenuToolButton(menu Widget) {
+func (b menuToolButton) SetMenu(menu Widget) {
 	var _arg0 *C.GtkMenuToolButton // out
 	var _arg1 *C.GtkWidget         // out
 
@@ -176,16 +186,4 @@ func (b menuToolButton) SetMenuMenuToolButton(menu Widget) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(menu.Native()))
 
 	C.gtk_menu_tool_button_set_menu(_arg0, _arg1)
-}
-
-func (m menuToolButton) AsActionable() Actionable {
-	return WrapActionable(gextras.InternObject(m))
-}
-
-func (m menuToolButton) AsActivatable() Activatable {
-	return WrapActivatable(gextras.InternObject(m))
-}
-
-func (m menuToolButton) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(m))
 }

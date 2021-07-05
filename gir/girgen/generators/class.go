@@ -53,15 +53,15 @@ var classTmpl = gotmpl.NewGoTemplate(`
 	func {{ .Name }}{{ .Tail }} {{ .Block }}
 	{{ end }}
 
-	{{ range .Methods }}
-	func ({{ .Recv }} {{ $.StructName }}) {{ .Name }}{{ .Tail }} {{ .Block }}
-	{{ end }}
-
 	{{ $recv := (FirstLetter .StructName) }}
 	{{ range .Implements }}
 	func ({{ $recv }} {{ $.StructName }}) As{{.Name}}() {{ .Type }} {
 		return {{ .Wrapper }}(gextras.InternObject({{ $recv }}))
 	}
+	{{ end }}
+
+	{{ range .Methods }}
+	func ({{ .Recv }} {{ $.StructName }}) {{ .Name }}{{ .Tail }} {{ .Block }}
 	{{ end }}
 `)
 
@@ -254,7 +254,7 @@ func (cg *ClassGenerator) Use(class *gir.Class) bool {
 		// Avoid duplicating field names with inherited interfaces, including
 		// Objector, but only this if we're not renaming a getter (since that's
 		// not important).
-		if isDuplicate && !isGetter {
+		if isDuplicate && isGetter {
 			newName += cg.InterfaceName
 			isDuplicate = cg.hasField(newName)
 		}
@@ -268,6 +268,7 @@ func (cg *ClassGenerator) Use(class *gir.Class) bool {
 }
 
 func (cg *ClassGenerator) hasField(goName string) bool {
+	// TODO: is ParentInterface == goName needed?
 	if types.IsObjectorMethod(goName) || cg.ParentInterface == goName {
 		return true
 	}

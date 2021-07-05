@@ -80,11 +80,10 @@ type TreeExpander interface {
 	Item() gextras.Objector
 	// ListRow gets the list row managed by @self.
 	ListRow() TreeListRow
-	// SetChildTreeExpander sets the content widget to display.
-	SetChildTreeExpander(child Widget)
-	// SetListRowTreeExpander sets the tree list row that this expander should
-	// manage.
-	SetListRowTreeExpander(listRow TreeListRow)
+	// SetChild sets the content widget to display.
+	SetChild(child Widget)
+	// SetListRow sets the tree list row that this expander should manage.
+	SetListRow(listRow TreeListRow)
 }
 
 // treeExpander implements the TreeExpander class.
@@ -117,6 +116,18 @@ func NewTreeExpander() TreeExpander {
 	_treeExpander = WrapTreeExpander(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _treeExpander
+}
+
+func (t treeExpander) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(t))
+}
+
+func (t treeExpander) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(t))
+}
+
+func (t treeExpander) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(t))
 }
 
 func (s treeExpander) Child() Widget {
@@ -164,7 +175,7 @@ func (s treeExpander) ListRow() TreeListRow {
 	return _treeListRow
 }
 
-func (s treeExpander) SetChildTreeExpander(child Widget) {
+func (s treeExpander) SetChild(child Widget) {
 	var _arg0 *C.GtkTreeExpander // out
 	var _arg1 *C.GtkWidget       // out
 
@@ -174,7 +185,7 @@ func (s treeExpander) SetChildTreeExpander(child Widget) {
 	C.gtk_tree_expander_set_child(_arg0, _arg1)
 }
 
-func (s treeExpander) SetListRowTreeExpander(listRow TreeListRow) {
+func (s treeExpander) SetListRow(listRow TreeListRow) {
 	var _arg0 *C.GtkTreeExpander // out
 	var _arg1 *C.GtkTreeListRow  // out
 
@@ -182,16 +193,4 @@ func (s treeExpander) SetListRowTreeExpander(listRow TreeListRow) {
 	_arg1 = (*C.GtkTreeListRow)(unsafe.Pointer(listRow.Native()))
 
 	C.gtk_tree_expander_set_list_row(_arg0, _arg1)
-}
-
-func (t treeExpander) AsAccessible() Accessible {
-	return WrapAccessible(gextras.InternObject(t))
-}
-
-func (t treeExpander) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(t))
-}
-
-func (t treeExpander) AsConstraintTarget() ConstraintTarget {
-	return WrapConstraintTarget(gextras.InternObject(t))
 }

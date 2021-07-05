@@ -72,13 +72,12 @@ type Paned interface {
 	// AsOrientable casts the class to the Orientable interface.
 	AsOrientable() Orientable
 
-	// Add1Paned adds a child to the top or left pane with default parameters.
-	// This is equivalent to `gtk_paned_pack1 (paned, child, FALSE, TRUE)`.
-	Add1Paned(child Widget)
-	// Add2Paned adds a child to the bottom or right pane with default
-	// parameters. This is equivalent to `gtk_paned_pack2 (paned, child, TRUE,
-	// TRUE)`.
-	Add2Paned(child Widget)
+	// Add1 adds a child to the top or left pane with default parameters. This
+	// is equivalent to `gtk_paned_pack1 (paned, child, FALSE, TRUE)`.
+	Add1(child Widget)
+	// Add2 adds a child to the bottom or right pane with default parameters.
+	// This is equivalent to `gtk_paned_pack2 (paned, child, TRUE, TRUE)`.
+	Add2(child Widget)
 	// Child1 obtains the first child of the paned widget.
 	Child1() Widget
 	// Child2 obtains the second child of the paned widget.
@@ -91,14 +90,14 @@ type Paned interface {
 	Position() int
 	// WideHandle gets the Paned:wide-handle property.
 	WideHandle() bool
-	// Pack1Paned adds a child to the top or left pane.
-	Pack1Paned(child Widget, resize bool, shrink bool)
-	// Pack2Paned adds a child to the bottom or right pane.
-	Pack2Paned(child Widget, resize bool, shrink bool)
-	// SetPositionPaned sets the position of the divider between the two panes.
-	SetPositionPaned(position int)
-	// SetWideHandlePaned sets the Paned:wide-handle property.
-	SetWideHandlePaned(wide bool)
+	// Pack1 adds a child to the top or left pane.
+	Pack1(child Widget, resize bool, shrink bool)
+	// Pack2 adds a child to the bottom or right pane.
+	Pack2(child Widget, resize bool, shrink bool)
+	// SetPosition sets the position of the divider between the two panes.
+	SetPosition(position int)
+	// SetWideHandle sets the Paned:wide-handle property.
+	SetWideHandle(wide bool)
 }
 
 // paned implements the Paned class.
@@ -136,7 +135,15 @@ func NewPaned(orientation Orientation) Paned {
 	return _paned
 }
 
-func (p paned) Add1Paned(child Widget) {
+func (p paned) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(p))
+}
+
+func (p paned) AsOrientable() Orientable {
+	return WrapOrientable(gextras.InternObject(p))
+}
+
+func (p paned) Add1(child Widget) {
 	var _arg0 *C.GtkPaned  // out
 	var _arg1 *C.GtkWidget // out
 
@@ -146,7 +153,7 @@ func (p paned) Add1Paned(child Widget) {
 	C.gtk_paned_add1(_arg0, _arg1)
 }
 
-func (p paned) Add2Paned(child Widget) {
+func (p paned) Add2(child Widget) {
 	var _arg0 *C.GtkPaned  // out
 	var _arg1 *C.GtkWidget // out
 
@@ -233,7 +240,7 @@ func (p paned) WideHandle() bool {
 	return _ok
 }
 
-func (p paned) Pack1Paned(child Widget, resize bool, shrink bool) {
+func (p paned) Pack1(child Widget, resize bool, shrink bool) {
 	var _arg0 *C.GtkPaned  // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.gboolean   // out
@@ -251,7 +258,7 @@ func (p paned) Pack1Paned(child Widget, resize bool, shrink bool) {
 	C.gtk_paned_pack1(_arg0, _arg1, _arg2, _arg3)
 }
 
-func (p paned) Pack2Paned(child Widget, resize bool, shrink bool) {
+func (p paned) Pack2(child Widget, resize bool, shrink bool) {
 	var _arg0 *C.GtkPaned  // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.gboolean   // out
@@ -269,7 +276,7 @@ func (p paned) Pack2Paned(child Widget, resize bool, shrink bool) {
 	C.gtk_paned_pack2(_arg0, _arg1, _arg2, _arg3)
 }
 
-func (p paned) SetPositionPaned(position int) {
+func (p paned) SetPosition(position int) {
 	var _arg0 *C.GtkPaned // out
 	var _arg1 C.gint      // out
 
@@ -279,7 +286,7 @@ func (p paned) SetPositionPaned(position int) {
 	C.gtk_paned_set_position(_arg0, _arg1)
 }
 
-func (p paned) SetWideHandlePaned(wide bool) {
+func (p paned) SetWideHandle(wide bool) {
 	var _arg0 *C.GtkPaned // out
 	var _arg1 C.gboolean  // out
 
@@ -289,12 +296,4 @@ func (p paned) SetWideHandlePaned(wide bool) {
 	}
 
 	C.gtk_paned_set_wide_handle(_arg0, _arg1)
-}
-
-func (p paned) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(p))
-}
-
-func (p paned) AsOrientable() Orientable {
-	return WrapOrientable(gextras.InternObject(p))
 }

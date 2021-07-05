@@ -54,19 +54,19 @@ type AspectFrame interface {
 	// Yalign returns the vertical alignment of the child within the allocation
 	// of the `GtkAspectFrame`.
 	Yalign() float32
-	// SetChildAspectFrame sets the child widget of @self.
-	SetChildAspectFrame(child Widget)
-	// SetObeyChildAspectFrame sets whether the aspect ratio of the child's size
-	// request should override the set aspect ratio of the `GtkAspectFrame`.
-	SetObeyChildAspectFrame(obeyChild bool)
-	// SetRatioAspectFrame sets the desired aspect ratio of the child.
-	SetRatioAspectFrame(ratio float32)
-	// SetXalignAspectFrame sets the horizontal alignment of the child within
-	// the allocation of the `GtkAspectFrame`.
-	SetXalignAspectFrame(xalign float32)
-	// SetYalignAspectFrame sets the vertical alignment of the child within the
+	// SetChild sets the child widget of @self.
+	SetChild(child Widget)
+	// SetObeyChild sets whether the aspect ratio of the child's size request
+	// should override the set aspect ratio of the `GtkAspectFrame`.
+	SetObeyChild(obeyChild bool)
+	// SetRatio sets the desired aspect ratio of the child.
+	SetRatio(ratio float32)
+	// SetXalign sets the horizontal alignment of the child within the
 	// allocation of the `GtkAspectFrame`.
-	SetYalignAspectFrame(yalign float32)
+	SetXalign(xalign float32)
+	// SetYalign sets the vertical alignment of the child within the allocation
+	// of the `GtkAspectFrame`.
+	SetYalign(yalign float32)
 }
 
 // aspectFrame implements the AspectFrame class.
@@ -110,6 +110,18 @@ func NewAspectFrame(xalign float32, yalign float32, ratio float32, obeyChild boo
 	_aspectFrame = WrapAspectFrame(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _aspectFrame
+}
+
+func (a aspectFrame) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(a))
+}
+
+func (a aspectFrame) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(a))
+}
+
+func (a aspectFrame) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(a))
 }
 
 func (s aspectFrame) Child() Widget {
@@ -189,7 +201,7 @@ func (s aspectFrame) Yalign() float32 {
 	return _gfloat
 }
 
-func (s aspectFrame) SetChildAspectFrame(child Widget) {
+func (s aspectFrame) SetChild(child Widget) {
 	var _arg0 *C.GtkAspectFrame // out
 	var _arg1 *C.GtkWidget      // out
 
@@ -199,7 +211,7 @@ func (s aspectFrame) SetChildAspectFrame(child Widget) {
 	C.gtk_aspect_frame_set_child(_arg0, _arg1)
 }
 
-func (s aspectFrame) SetObeyChildAspectFrame(obeyChild bool) {
+func (s aspectFrame) SetObeyChild(obeyChild bool) {
 	var _arg0 *C.GtkAspectFrame // out
 	var _arg1 C.gboolean        // out
 
@@ -211,7 +223,7 @@ func (s aspectFrame) SetObeyChildAspectFrame(obeyChild bool) {
 	C.gtk_aspect_frame_set_obey_child(_arg0, _arg1)
 }
 
-func (s aspectFrame) SetRatioAspectFrame(ratio float32) {
+func (s aspectFrame) SetRatio(ratio float32) {
 	var _arg0 *C.GtkAspectFrame // out
 	var _arg1 C.float           // out
 
@@ -221,7 +233,7 @@ func (s aspectFrame) SetRatioAspectFrame(ratio float32) {
 	C.gtk_aspect_frame_set_ratio(_arg0, _arg1)
 }
 
-func (s aspectFrame) SetXalignAspectFrame(xalign float32) {
+func (s aspectFrame) SetXalign(xalign float32) {
 	var _arg0 *C.GtkAspectFrame // out
 	var _arg1 C.float           // out
 
@@ -231,7 +243,7 @@ func (s aspectFrame) SetXalignAspectFrame(xalign float32) {
 	C.gtk_aspect_frame_set_xalign(_arg0, _arg1)
 }
 
-func (s aspectFrame) SetYalignAspectFrame(yalign float32) {
+func (s aspectFrame) SetYalign(yalign float32) {
 	var _arg0 *C.GtkAspectFrame // out
 	var _arg1 C.float           // out
 
@@ -239,16 +251,4 @@ func (s aspectFrame) SetYalignAspectFrame(yalign float32) {
 	_arg1 = C.float(yalign)
 
 	C.gtk_aspect_frame_set_yalign(_arg0, _arg1)
-}
-
-func (a aspectFrame) AsAccessible() Accessible {
-	return WrapAccessible(gextras.InternObject(a))
-}
-
-func (a aspectFrame) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(a))
-}
-
-func (a aspectFrame) AsConstraintTarget() ConstraintTarget {
-	return WrapConstraintTarget(gextras.InternObject(a))
 }

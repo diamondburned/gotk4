@@ -57,12 +57,11 @@ type FileOutputStream interface {
 	// be called after the stream has been written and closed, as the etag can
 	// change while writing.
 	Etag() string
-	// QueryInfoFileOutputStream queries a file output stream for the given
-	// @attributes. This function blocks while querying the stream. For the
-	// asynchronous version of this function, see
-	// g_file_output_stream_query_info_async(). While the stream is blocked, the
-	// stream will set the pending flag internally, and any other operations on
-	// the stream will fail with G_IO_ERROR_PENDING.
+	// QueryInfo queries a file output stream for the given @attributes. This
+	// function blocks while querying the stream. For the asynchronous version
+	// of this function, see g_file_output_stream_query_info_async(). While the
+	// stream is blocked, the stream will set the pending flag internally, and
+	// any other operations on the stream will fail with G_IO_ERROR_PENDING.
 	//
 	// Can fail if the stream was already closed (with @error being set to
 	// G_IO_ERROR_CLOSED), the stream has pending operations (with @error being
@@ -74,18 +73,17 @@ type FileOutputStream interface {
 	// triggering the cancellable object from another thread. If the operation
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be set, and nil will
 	// be returned.
-	QueryInfoFileOutputStream(attributes string, cancellable Cancellable) (FileInfo, error)
-	// QueryInfoAsyncFileOutputStream: asynchronously queries the @stream for a
-	// Info. When completed, @callback will be called with a Result which can be
-	// used to finish the operation with
-	// g_file_output_stream_query_info_finish().
+	QueryInfo(attributes string, cancellable Cancellable) (FileInfo, error)
+	// QueryInfoAsync: asynchronously queries the @stream for a Info. When
+	// completed, @callback will be called with a Result which can be used to
+	// finish the operation with g_file_output_stream_query_info_finish().
 	//
 	// For the synchronous version of this function, see
 	// g_file_output_stream_query_info().
-	QueryInfoAsyncFileOutputStream(attributes string, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
-	// QueryInfoFinishFileOutputStream finalizes the asynchronous query started
-	// by g_file_output_stream_query_info_async().
-	QueryInfoFinishFileOutputStream(result AsyncResult) (FileInfo, error)
+	QueryInfoAsync(attributes string, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
+	// QueryInfoFinish finalizes the asynchronous query started by
+	// g_file_output_stream_query_info_async().
+	QueryInfoFinish(result AsyncResult) (FileInfo, error)
 }
 
 // fileOutputStream implements the FileOutputStream class.
@@ -107,6 +105,10 @@ func marshalFileOutputStream(p uintptr) (interface{}, error) {
 	return WrapFileOutputStream(obj), nil
 }
 
+func (f fileOutputStream) AsSeekable() Seekable {
+	return WrapSeekable(gextras.InternObject(f))
+}
+
 func (s fileOutputStream) Etag() string {
 	var _arg0 *C.GFileOutputStream // out
 	var _cret *C.char              // in
@@ -123,7 +125,7 @@ func (s fileOutputStream) Etag() string {
 	return _utf8
 }
 
-func (s fileOutputStream) QueryInfoFileOutputStream(attributes string, cancellable Cancellable) (FileInfo, error) {
+func (s fileOutputStream) QueryInfo(attributes string, cancellable Cancellable) (FileInfo, error) {
 	var _arg0 *C.GFileOutputStream // out
 	var _arg1 *C.char              // out
 	var _arg2 *C.GCancellable      // out
@@ -146,7 +148,7 @@ func (s fileOutputStream) QueryInfoFileOutputStream(attributes string, cancellab
 	return _fileInfo, _goerr
 }
 
-func (s fileOutputStream) QueryInfoAsyncFileOutputStream(attributes string, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+func (s fileOutputStream) QueryInfoAsync(attributes string, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GFileOutputStream  // out
 	var _arg1 *C.char               // out
 	var _arg2 C.int                 // out
@@ -165,7 +167,7 @@ func (s fileOutputStream) QueryInfoAsyncFileOutputStream(attributes string, ioPr
 	C.g_file_output_stream_query_info_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
 
-func (s fileOutputStream) QueryInfoFinishFileOutputStream(result AsyncResult) (FileInfo, error) {
+func (s fileOutputStream) QueryInfoFinish(result AsyncResult) (FileInfo, error) {
 	var _arg0 *C.GFileOutputStream // out
 	var _arg1 *C.GAsyncResult      // out
 	var _cret *C.GFileInfo         // in
@@ -183,8 +185,4 @@ func (s fileOutputStream) QueryInfoFinishFileOutputStream(result AsyncResult) (F
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _fileInfo, _goerr
-}
-
-func (f fileOutputStream) AsSeekable() Seekable {
-	return WrapSeekable(gextras.InternObject(f))
 }

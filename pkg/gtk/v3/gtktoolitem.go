@@ -108,65 +108,61 @@ type ToolItem interface {
 	// VisibleVertical returns whether @tool_item is visible when the toolbar is
 	// docked vertically. See gtk_tool_item_set_visible_vertical().
 	VisibleVertical() bool
-	// RebuildMenuToolItem: calling this function signals to the toolbar that
-	// the overflow menu item for @tool_item has changed. If the overflow menu
-	// is visible when this function it called, the menu will be rebuilt.
+	// RebuildMenu: calling this function signals to the toolbar that the
+	// overflow menu item for @tool_item has changed. If the overflow menu is
+	// visible when this function it called, the menu will be rebuilt.
 	//
 	// The function must be called when the tool item changes what it will do in
 	// response to the ToolItem::create-menu-proxy signal.
-	RebuildMenuToolItem()
-	// RetrieveProxyMenuItemToolItem returns the MenuItem that was last set by
+	RebuildMenu()
+	// RetrieveProxyMenuItem returns the MenuItem that was last set by
 	// gtk_tool_item_set_proxy_menu_item(), ie. the MenuItem that is going to
 	// appear in the overflow menu.
-	RetrieveProxyMenuItemToolItem() Widget
-	// SetExpandToolItem sets whether @tool_item is allocated extra space when
-	// there is more room on the toolbar then needed for the items. The effect
-	// is that the item gets bigger when the toolbar gets bigger and smaller
-	// when the toolbar gets smaller.
-	SetExpandToolItem(expand bool)
-	// SetHomogeneousToolItem sets whether @tool_item is to be allocated the
-	// same size as other homogeneous items. The effect is that all homogeneous
-	// items will have the same width as the widest of the items.
-	SetHomogeneousToolItem(homogeneous bool)
-	// SetIsImportantToolItem sets whether @tool_item should be considered
-	// important. The ToolButton class uses this property to determine whether
-	// to show or hide its label when the toolbar style is
-	// GTK_TOOLBAR_BOTH_HORIZ. The result is that only tool buttons with the
-	// “is_important” property set have labels, an effect known as “priority
-	// text”
-	SetIsImportantToolItem(isImportant bool)
-	// SetProxyMenuItemToolItem sets the MenuItem used in the toolbar overflow
-	// menu. The @menu_item_id is used to identify the caller of this function
-	// and should also be used with gtk_tool_item_get_proxy_menu_item().
+	RetrieveProxyMenuItem() Widget
+	// SetExpand sets whether @tool_item is allocated extra space when there is
+	// more room on the toolbar then needed for the items. The effect is that
+	// the item gets bigger when the toolbar gets bigger and smaller when the
+	// toolbar gets smaller.
+	SetExpand(expand bool)
+	// SetHomogeneous sets whether @tool_item is to be allocated the same size
+	// as other homogeneous items. The effect is that all homogeneous items will
+	// have the same width as the widest of the items.
+	SetHomogeneous(homogeneous bool)
+	// SetIsImportant sets whether @tool_item should be considered important.
+	// The ToolButton class uses this property to determine whether to show or
+	// hide its label when the toolbar style is GTK_TOOLBAR_BOTH_HORIZ. The
+	// result is that only tool buttons with the “is_important” property set
+	// have labels, an effect known as “priority text”
+	SetIsImportant(isImportant bool)
+	// SetProxyMenuItem sets the MenuItem used in the toolbar overflow menu. The
+	// @menu_item_id is used to identify the caller of this function and should
+	// also be used with gtk_tool_item_get_proxy_menu_item().
 	//
 	// See also ToolItem::create-menu-proxy.
-	SetProxyMenuItemToolItem(menuItemId string, menuItem Widget)
-	// SetTooltipMarkupToolItem sets the markup text to be displayed as tooltip
-	// on the item. See gtk_widget_set_tooltip_markup().
-	SetTooltipMarkupToolItem(markup string)
-	// SetTooltipTextToolItem sets the text to be displayed as tooltip on the
-	// item. See gtk_widget_set_tooltip_text().
-	SetTooltipTextToolItem(text string)
-	// SetUseDragWindowToolItem sets whether @tool_item has a drag window. When
-	// true the toolitem can be used as a drag source through
-	// gtk_drag_source_set(). When @tool_item has a drag window it will
-	// intercept all events, even those that would otherwise be sent to a child
-	// of @tool_item.
-	SetUseDragWindowToolItem(useDragWindow bool)
-	// SetVisibleHorizontalToolItem sets whether @tool_item is visible when the
-	// toolbar is docked horizontally.
-	SetVisibleHorizontalToolItem(visibleHorizontal bool)
-	// SetVisibleVerticalToolItem sets whether @tool_item is visible when the
-	// toolbar is docked vertically. Some tool items, such as text entries, are
-	// too wide to be useful on a vertically docked toolbar. If
-	// @visible_vertical is false @tool_item will not appear on toolbars that
-	// are docked vertically.
-	SetVisibleVerticalToolItem(visibleVertical bool)
-	// ToolbarReconfiguredToolItem emits the signal
-	// ToolItem::toolbar_reconfigured on @tool_item. Toolbar and other ToolShell
-	// implementations use this function to notify children, when some aspect of
-	// their configuration changes.
-	ToolbarReconfiguredToolItem()
+	SetProxyMenuItem(menuItemId string, menuItem Widget)
+	// SetTooltipMarkup sets the markup text to be displayed as tooltip on the
+	// item. See gtk_widget_set_tooltip_markup().
+	SetTooltipMarkup(markup string)
+	// SetTooltipText sets the text to be displayed as tooltip on the item. See
+	// gtk_widget_set_tooltip_text().
+	SetTooltipText(text string)
+	// SetUseDragWindow sets whether @tool_item has a drag window. When true the
+	// toolitem can be used as a drag source through gtk_drag_source_set(). When
+	// @tool_item has a drag window it will intercept all events, even those
+	// that would otherwise be sent to a child of @tool_item.
+	SetUseDragWindow(useDragWindow bool)
+	// SetVisibleHorizontal sets whether @tool_item is visible when the toolbar
+	// is docked horizontally.
+	SetVisibleHorizontal(visibleHorizontal bool)
+	// SetVisibleVertical sets whether @tool_item is visible when the toolbar is
+	// docked vertically. Some tool items, such as text entries, are too wide to
+	// be useful on a vertically docked toolbar. If @visible_vertical is false
+	// @tool_item will not appear on toolbars that are docked vertically.
+	SetVisibleVertical(visibleVertical bool)
+	// ToolbarReconfigured emits the signal ToolItem::toolbar_reconfigured on
+	// @tool_item. Toolbar and other ToolShell implementations use this function
+	// to notify children, when some aspect of their configuration changes.
+	ToolbarReconfigured()
 }
 
 // toolItem implements the ToolItem class.
@@ -199,6 +195,14 @@ func NewToolItem() ToolItem {
 	_toolItem = WrapToolItem(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _toolItem
+}
+
+func (t toolItem) AsActivatable() Activatable {
+	return WrapActivatable(gextras.InternObject(t))
+}
+
+func (t toolItem) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(t))
 }
 
 func (t toolItem) EllipsizeMode() pango.EllipsizeMode {
@@ -441,7 +445,7 @@ func (t toolItem) VisibleVertical() bool {
 	return _ok
 }
 
-func (t toolItem) RebuildMenuToolItem() {
+func (t toolItem) RebuildMenu() {
 	var _arg0 *C.GtkToolItem // out
 
 	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
@@ -449,7 +453,7 @@ func (t toolItem) RebuildMenuToolItem() {
 	C.gtk_tool_item_rebuild_menu(_arg0)
 }
 
-func (t toolItem) RetrieveProxyMenuItemToolItem() Widget {
+func (t toolItem) RetrieveProxyMenuItem() Widget {
 	var _arg0 *C.GtkToolItem // out
 	var _cret *C.GtkWidget   // in
 
@@ -464,7 +468,7 @@ func (t toolItem) RetrieveProxyMenuItemToolItem() Widget {
 	return _widget
 }
 
-func (t toolItem) SetExpandToolItem(expand bool) {
+func (t toolItem) SetExpand(expand bool) {
 	var _arg0 *C.GtkToolItem // out
 	var _arg1 C.gboolean     // out
 
@@ -476,7 +480,7 @@ func (t toolItem) SetExpandToolItem(expand bool) {
 	C.gtk_tool_item_set_expand(_arg0, _arg1)
 }
 
-func (t toolItem) SetHomogeneousToolItem(homogeneous bool) {
+func (t toolItem) SetHomogeneous(homogeneous bool) {
 	var _arg0 *C.GtkToolItem // out
 	var _arg1 C.gboolean     // out
 
@@ -488,7 +492,7 @@ func (t toolItem) SetHomogeneousToolItem(homogeneous bool) {
 	C.gtk_tool_item_set_homogeneous(_arg0, _arg1)
 }
 
-func (t toolItem) SetIsImportantToolItem(isImportant bool) {
+func (t toolItem) SetIsImportant(isImportant bool) {
 	var _arg0 *C.GtkToolItem // out
 	var _arg1 C.gboolean     // out
 
@@ -500,7 +504,7 @@ func (t toolItem) SetIsImportantToolItem(isImportant bool) {
 	C.gtk_tool_item_set_is_important(_arg0, _arg1)
 }
 
-func (t toolItem) SetProxyMenuItemToolItem(menuItemId string, menuItem Widget) {
+func (t toolItem) SetProxyMenuItem(menuItemId string, menuItem Widget) {
 	var _arg0 *C.GtkToolItem // out
 	var _arg1 *C.gchar       // out
 	var _arg2 *C.GtkWidget   // out
@@ -513,7 +517,7 @@ func (t toolItem) SetProxyMenuItemToolItem(menuItemId string, menuItem Widget) {
 	C.gtk_tool_item_set_proxy_menu_item(_arg0, _arg1, _arg2)
 }
 
-func (t toolItem) SetTooltipMarkupToolItem(markup string) {
+func (t toolItem) SetTooltipMarkup(markup string) {
 	var _arg0 *C.GtkToolItem // out
 	var _arg1 *C.gchar       // out
 
@@ -524,7 +528,7 @@ func (t toolItem) SetTooltipMarkupToolItem(markup string) {
 	C.gtk_tool_item_set_tooltip_markup(_arg0, _arg1)
 }
 
-func (t toolItem) SetTooltipTextToolItem(text string) {
+func (t toolItem) SetTooltipText(text string) {
 	var _arg0 *C.GtkToolItem // out
 	var _arg1 *C.gchar       // out
 
@@ -535,7 +539,7 @@ func (t toolItem) SetTooltipTextToolItem(text string) {
 	C.gtk_tool_item_set_tooltip_text(_arg0, _arg1)
 }
 
-func (t toolItem) SetUseDragWindowToolItem(useDragWindow bool) {
+func (t toolItem) SetUseDragWindow(useDragWindow bool) {
 	var _arg0 *C.GtkToolItem // out
 	var _arg1 C.gboolean     // out
 
@@ -547,7 +551,7 @@ func (t toolItem) SetUseDragWindowToolItem(useDragWindow bool) {
 	C.gtk_tool_item_set_use_drag_window(_arg0, _arg1)
 }
 
-func (t toolItem) SetVisibleHorizontalToolItem(visibleHorizontal bool) {
+func (t toolItem) SetVisibleHorizontal(visibleHorizontal bool) {
 	var _arg0 *C.GtkToolItem // out
 	var _arg1 C.gboolean     // out
 
@@ -559,7 +563,7 @@ func (t toolItem) SetVisibleHorizontalToolItem(visibleHorizontal bool) {
 	C.gtk_tool_item_set_visible_horizontal(_arg0, _arg1)
 }
 
-func (t toolItem) SetVisibleVerticalToolItem(visibleVertical bool) {
+func (t toolItem) SetVisibleVertical(visibleVertical bool) {
 	var _arg0 *C.GtkToolItem // out
 	var _arg1 C.gboolean     // out
 
@@ -571,18 +575,10 @@ func (t toolItem) SetVisibleVerticalToolItem(visibleVertical bool) {
 	C.gtk_tool_item_set_visible_vertical(_arg0, _arg1)
 }
 
-func (t toolItem) ToolbarReconfiguredToolItem() {
+func (t toolItem) ToolbarReconfigured() {
 	var _arg0 *C.GtkToolItem // out
 
 	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
 
 	C.gtk_tool_item_toolbar_reconfigured(_arg0)
-}
-
-func (t toolItem) AsActivatable() Activatable {
-	return WrapActivatable(gextras.InternObject(t))
-}
-
-func (t toolItem) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(t))
 }

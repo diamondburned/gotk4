@@ -57,9 +57,9 @@ type AppChooserButton interface {
 	// AsCellLayout casts the class to the CellLayout interface.
 	AsCellLayout() CellLayout
 
-	// AppendSeparatorAppChooserButton appends a separator to the list of
-	// applications that is shown in the popup.
-	AppendSeparatorAppChooserButton()
+	// AppendSeparator appends a separator to the list of applications that is
+	// shown in the popup.
+	AppendSeparator()
 	// Heading returns the text to display at the top of the dialog.
 	Heading() string
 	// ShowDefaultItem returns the current value of the
@@ -68,22 +68,21 @@ type AppChooserButton interface {
 	// ShowDialogItem returns the current value of the
 	// AppChooserButton:show-dialog-item property.
 	ShowDialogItem() bool
-	// SetActiveCustomItemAppChooserButton selects a custom item previously
-	// added with gtk_app_chooser_button_append_custom_item().
+	// SetActiveCustomItem selects a custom item previously added with
+	// gtk_app_chooser_button_append_custom_item().
 	//
 	// Use gtk_app_chooser_refresh() to bring the selection to its initial
 	// state.
-	SetActiveCustomItemAppChooserButton(name string)
-	// SetHeadingAppChooserButton sets the text to display at the top of the
-	// dialog. If the heading is not set, the dialog displays a default text.
-	SetHeadingAppChooserButton(heading string)
-	// SetShowDefaultItemAppChooserButton sets whether the dropdown menu of this
-	// button should show the default application for the given content type at
-	// top.
-	SetShowDefaultItemAppChooserButton(setting bool)
-	// SetShowDialogItemAppChooserButton sets whether the dropdown menu of this
-	// button should show an entry to trigger a AppChooserDialog.
-	SetShowDialogItemAppChooserButton(setting bool)
+	SetActiveCustomItem(name string)
+	// SetHeading sets the text to display at the top of the dialog. If the
+	// heading is not set, the dialog displays a default text.
+	SetHeading(heading string)
+	// SetShowDefaultItem sets whether the dropdown menu of this button should
+	// show the default application for the given content type at top.
+	SetShowDefaultItem(setting bool)
+	// SetShowDialogItem sets whether the dropdown menu of this button should
+	// show an entry to trigger a AppChooserDialog.
+	SetShowDialogItem(setting bool)
 }
 
 // appChooserButton implements the AppChooserButton class.
@@ -123,7 +122,23 @@ func NewAppChooserButton(contentType string) AppChooserButton {
 	return _appChooserButton
 }
 
-func (s appChooserButton) AppendSeparatorAppChooserButton() {
+func (a appChooserButton) AsAppChooser() AppChooser {
+	return WrapAppChooser(gextras.InternObject(a))
+}
+
+func (a appChooserButton) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(a))
+}
+
+func (a appChooserButton) AsCellEditable() CellEditable {
+	return WrapCellEditable(gextras.InternObject(a))
+}
+
+func (a appChooserButton) AsCellLayout() CellLayout {
+	return WrapCellLayout(gextras.InternObject(a))
+}
+
+func (s appChooserButton) AppendSeparator() {
 	var _arg0 *C.GtkAppChooserButton // out
 
 	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(s.Native()))
@@ -180,7 +195,7 @@ func (s appChooserButton) ShowDialogItem() bool {
 	return _ok
 }
 
-func (s appChooserButton) SetActiveCustomItemAppChooserButton(name string) {
+func (s appChooserButton) SetActiveCustomItem(name string) {
 	var _arg0 *C.GtkAppChooserButton // out
 	var _arg1 *C.gchar               // out
 
@@ -191,7 +206,7 @@ func (s appChooserButton) SetActiveCustomItemAppChooserButton(name string) {
 	C.gtk_app_chooser_button_set_active_custom_item(_arg0, _arg1)
 }
 
-func (s appChooserButton) SetHeadingAppChooserButton(heading string) {
+func (s appChooserButton) SetHeading(heading string) {
 	var _arg0 *C.GtkAppChooserButton // out
 	var _arg1 *C.gchar               // out
 
@@ -202,7 +217,7 @@ func (s appChooserButton) SetHeadingAppChooserButton(heading string) {
 	C.gtk_app_chooser_button_set_heading(_arg0, _arg1)
 }
 
-func (s appChooserButton) SetShowDefaultItemAppChooserButton(setting bool) {
+func (s appChooserButton) SetShowDefaultItem(setting bool) {
 	var _arg0 *C.GtkAppChooserButton // out
 	var _arg1 C.gboolean             // out
 
@@ -214,7 +229,7 @@ func (s appChooserButton) SetShowDefaultItemAppChooserButton(setting bool) {
 	C.gtk_app_chooser_button_set_show_default_item(_arg0, _arg1)
 }
 
-func (s appChooserButton) SetShowDialogItemAppChooserButton(setting bool) {
+func (s appChooserButton) SetShowDialogItem(setting bool) {
 	var _arg0 *C.GtkAppChooserButton // out
 	var _arg1 C.gboolean             // out
 
@@ -224,20 +239,4 @@ func (s appChooserButton) SetShowDialogItemAppChooserButton(setting bool) {
 	}
 
 	C.gtk_app_chooser_button_set_show_dialog_item(_arg0, _arg1)
-}
-
-func (a appChooserButton) AsAppChooser() AppChooser {
-	return WrapAppChooser(gextras.InternObject(a))
-}
-
-func (a appChooserButton) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(a))
-}
-
-func (a appChooserButton) AsCellEditable() CellEditable {
-	return WrapCellEditable(gextras.InternObject(a))
-}
-
-func (a appChooserButton) AsCellLayout() CellLayout {
-	return WrapCellLayout(gextras.InternObject(a))
 }

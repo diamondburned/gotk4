@@ -79,17 +79,17 @@ type ActionGroup interface {
 	// AsBuildable casts the class to the Buildable interface.
 	AsBuildable() Buildable
 
-	// AddActionActionGroup adds an action object to the action group. Note that
-	// this function does not set up the accel path of the action, which can
-	// lead to problems if a user tries to modify the accelerator of a menuitem
+	// AddAction adds an action object to the action group. Note that this
+	// function does not set up the accel path of the action, which can lead to
+	// problems if a user tries to modify the accelerator of a menuitem
 	// associated with the action. Therefore you must either set the accel path
 	// yourself with gtk_action_set_accel_path(), or use
 	// `gtk_action_group_add_action_with_accel (..., NULL)`.
 	//
 	// Deprecated: since version 3.10.
-	AddActionActionGroup(action Action)
-	// AddActionWithAccelActionGroup adds an action object to the action group
-	// and sets up the accelerator.
+	AddAction(action Action)
+	// AddActionWithAccel adds an action object to the action group and sets up
+	// the accelerator.
 	//
 	// If @accelerator is nil, attempts to use the accelerator associated with
 	// the stock_id of the action.
@@ -97,7 +97,7 @@ type ActionGroup interface {
 	// Accel paths are set to `<Actions>/group-name/action-name`.
 	//
 	// Deprecated: since version 3.10.
-	AddActionWithAccelActionGroup(action Action, accelerator string)
+	AddActionWithAccel(action Action, accelerator string)
 	// AccelGroup gets the accelerator group.
 	//
 	// Deprecated: since version 3.10.
@@ -123,38 +123,38 @@ type ActionGroup interface {
 	//
 	// Deprecated: since version 3.10.
 	Visible() bool
-	// RemoveActionActionGroup removes an action object from the action group.
+	// RemoveAction removes an action object from the action group.
 	//
 	// Deprecated: since version 3.10.
-	RemoveActionActionGroup(action Action)
-	// SetAccelGroupActionGroup sets the accelerator group to be used by every
-	// action in this group.
+	RemoveAction(action Action)
+	// SetAccelGroup sets the accelerator group to be used by every action in
+	// this group.
 	//
 	// Deprecated: since version 3.10.
-	SetAccelGroupActionGroup(accelGroup AccelGroup)
-	// SetSensitiveActionGroup changes the sensitivity of @action_group
+	SetAccelGroup(accelGroup AccelGroup)
+	// SetSensitive changes the sensitivity of @action_group
 	//
 	// Deprecated: since version 3.10.
-	SetSensitiveActionGroup(sensitive bool)
-	// SetTranslationDomainActionGroup sets the translation domain and uses
-	// g_dgettext() for translating the @label and @tooltip of ActionEntrys
-	// added by gtk_action_group_add_actions().
+	SetSensitive(sensitive bool)
+	// SetTranslationDomain sets the translation domain and uses g_dgettext()
+	// for translating the @label and @tooltip of ActionEntrys added by
+	// gtk_action_group_add_actions().
 	//
 	// If you’re not using gettext() for localization, see
 	// gtk_action_group_set_translate_func().
 	//
 	// Deprecated: since version 3.10.
-	SetTranslationDomainActionGroup(domain string)
-	// SetVisibleActionGroup changes the visible of @action_group.
+	SetTranslationDomain(domain string)
+	// SetVisible changes the visible of @action_group.
 	//
 	// Deprecated: since version 3.10.
-	SetVisibleActionGroup(visible bool)
-	// TranslateStringActionGroup translates a string using the function set
-	// with gtk_action_group_set_translate_func(). This is mainly intended for
+	SetVisible(visible bool)
+	// TranslateString translates a string using the function set with
+	// gtk_action_group_set_translate_func(). This is mainly intended for
 	// language bindings.
 	//
 	// Deprecated: since version 3.10.
-	TranslateStringActionGroup(_string string) string
+	TranslateString(_string string) string
 }
 
 // actionGroup implements the ActionGroup class.
@@ -196,7 +196,11 @@ func NewActionGroup(name string) ActionGroup {
 	return _actionGroup
 }
 
-func (a actionGroup) AddActionActionGroup(action Action) {
+func (a actionGroup) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(a))
+}
+
+func (a actionGroup) AddAction(action Action) {
 	var _arg0 *C.GtkActionGroup // out
 	var _arg1 *C.GtkAction      // out
 
@@ -206,7 +210,7 @@ func (a actionGroup) AddActionActionGroup(action Action) {
 	C.gtk_action_group_add_action(_arg0, _arg1)
 }
 
-func (a actionGroup) AddActionWithAccelActionGroup(action Action, accelerator string) {
+func (a actionGroup) AddActionWithAccel(action Action, accelerator string) {
 	var _arg0 *C.GtkActionGroup // out
 	var _arg1 *C.GtkAction      // out
 	var _arg2 *C.gchar          // out
@@ -301,7 +305,7 @@ func (a actionGroup) Visible() bool {
 	return _ok
 }
 
-func (a actionGroup) RemoveActionActionGroup(action Action) {
+func (a actionGroup) RemoveAction(action Action) {
 	var _arg0 *C.GtkActionGroup // out
 	var _arg1 *C.GtkAction      // out
 
@@ -311,7 +315,7 @@ func (a actionGroup) RemoveActionActionGroup(action Action) {
 	C.gtk_action_group_remove_action(_arg0, _arg1)
 }
 
-func (a actionGroup) SetAccelGroupActionGroup(accelGroup AccelGroup) {
+func (a actionGroup) SetAccelGroup(accelGroup AccelGroup) {
 	var _arg0 *C.GtkActionGroup // out
 	var _arg1 *C.GtkAccelGroup  // out
 
@@ -321,7 +325,7 @@ func (a actionGroup) SetAccelGroupActionGroup(accelGroup AccelGroup) {
 	C.gtk_action_group_set_accel_group(_arg0, _arg1)
 }
 
-func (a actionGroup) SetSensitiveActionGroup(sensitive bool) {
+func (a actionGroup) SetSensitive(sensitive bool) {
 	var _arg0 *C.GtkActionGroup // out
 	var _arg1 C.gboolean        // out
 
@@ -333,7 +337,7 @@ func (a actionGroup) SetSensitiveActionGroup(sensitive bool) {
 	C.gtk_action_group_set_sensitive(_arg0, _arg1)
 }
 
-func (a actionGroup) SetTranslationDomainActionGroup(domain string) {
+func (a actionGroup) SetTranslationDomain(domain string) {
 	var _arg0 *C.GtkActionGroup // out
 	var _arg1 *C.gchar          // out
 
@@ -344,7 +348,7 @@ func (a actionGroup) SetTranslationDomainActionGroup(domain string) {
 	C.gtk_action_group_set_translation_domain(_arg0, _arg1)
 }
 
-func (a actionGroup) SetVisibleActionGroup(visible bool) {
+func (a actionGroup) SetVisible(visible bool) {
 	var _arg0 *C.GtkActionGroup // out
 	var _arg1 C.gboolean        // out
 
@@ -356,7 +360,7 @@ func (a actionGroup) SetVisibleActionGroup(visible bool) {
 	C.gtk_action_group_set_visible(_arg0, _arg1)
 }
 
-func (a actionGroup) TranslateStringActionGroup(_string string) string {
+func (a actionGroup) TranslateString(_string string) string {
 	var _arg0 *C.GtkActionGroup // out
 	var _arg1 *C.gchar          // out
 	var _cret *C.gchar          // in
@@ -372,10 +376,6 @@ func (a actionGroup) TranslateStringActionGroup(_string string) string {
 	_utf8 = C.GoString(_cret)
 
 	return _utf8
-}
-
-func (a actionGroup) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(a))
 }
 
 // RadioActionEntry structs are used with gtk_action_group_add_radio_actions()

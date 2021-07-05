@@ -65,14 +65,14 @@ type Overlay interface {
 	// AsConstraintTarget casts the class to the ConstraintTarget interface.
 	AsConstraintTarget() ConstraintTarget
 
-	// AddOverlayOverlay adds @widget to @overlay.
+	// AddOverlay adds @widget to @overlay.
 	//
 	// The widget will be stacked on top of the main widget added with
 	// [method@Gtk.Overlay.set_child].
 	//
 	// The position at which @widget is placed is determined from its
 	// [property@Gtk.Widget:halign] and [property@Gtk.Widget:valign] properties.
-	AddOverlayOverlay(widget Widget)
+	AddOverlay(widget Widget)
 	// Child gets the child widget of @overlay.
 	Child() Widget
 	// ClipOverlay gets whether @widget should be clipped within the parent.
@@ -80,21 +80,20 @@ type Overlay interface {
 	// MeasureOverlay gets whether @widget's size is included in the measurement
 	// of @overlay.
 	MeasureOverlay(widget Widget) bool
-	// RemoveOverlayOverlay removes an overlay that was added with
+	// RemoveOverlay removes an overlay that was added with
 	// gtk_overlay_add_overlay().
-	RemoveOverlayOverlay(widget Widget)
-	// SetChildOverlay sets the child widget of @overlay.
-	SetChildOverlay(child Widget)
-	// SetClipOverlayOverlay sets whether @widget should be clipped within the
-	// parent.
-	SetClipOverlayOverlay(widget Widget, clipOverlay bool)
-	// SetMeasureOverlayOverlay sets whether @widget is included in the measured
-	// size of @overlay.
+	RemoveOverlay(widget Widget)
+	// SetChild sets the child widget of @overlay.
+	SetChild(child Widget)
+	// SetClipOverlay sets whether @widget should be clipped within the parent.
+	SetClipOverlay(widget Widget, clipOverlay bool)
+	// SetMeasureOverlay sets whether @widget is included in the measured size
+	// of @overlay.
 	//
 	// The overlay will request the size of the largest child that has this
 	// property set to true. Children who are not included may be drawn outside
 	// of @overlay's allocation if they are too large.
-	SetMeasureOverlayOverlay(widget Widget, measure bool)
+	SetMeasureOverlay(widget Widget, measure bool)
 }
 
 // overlay implements the Overlay class.
@@ -129,7 +128,19 @@ func NewOverlay() Overlay {
 	return _overlay
 }
 
-func (o overlay) AddOverlayOverlay(widget Widget) {
+func (o overlay) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(o))
+}
+
+func (o overlay) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(o))
+}
+
+func (o overlay) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(o))
+}
+
+func (o overlay) AddOverlay(widget Widget) {
 	var _arg0 *C.GtkOverlay // out
 	var _arg1 *C.GtkWidget  // out
 
@@ -192,7 +203,7 @@ func (o overlay) MeasureOverlay(widget Widget) bool {
 	return _ok
 }
 
-func (o overlay) RemoveOverlayOverlay(widget Widget) {
+func (o overlay) RemoveOverlay(widget Widget) {
 	var _arg0 *C.GtkOverlay // out
 	var _arg1 *C.GtkWidget  // out
 
@@ -202,7 +213,7 @@ func (o overlay) RemoveOverlayOverlay(widget Widget) {
 	C.gtk_overlay_remove_overlay(_arg0, _arg1)
 }
 
-func (o overlay) SetChildOverlay(child Widget) {
+func (o overlay) SetChild(child Widget) {
 	var _arg0 *C.GtkOverlay // out
 	var _arg1 *C.GtkWidget  // out
 
@@ -212,7 +223,7 @@ func (o overlay) SetChildOverlay(child Widget) {
 	C.gtk_overlay_set_child(_arg0, _arg1)
 }
 
-func (o overlay) SetClipOverlayOverlay(widget Widget, clipOverlay bool) {
+func (o overlay) SetClipOverlay(widget Widget, clipOverlay bool) {
 	var _arg0 *C.GtkOverlay // out
 	var _arg1 *C.GtkWidget  // out
 	var _arg2 C.gboolean    // out
@@ -226,7 +237,7 @@ func (o overlay) SetClipOverlayOverlay(widget Widget, clipOverlay bool) {
 	C.gtk_overlay_set_clip_overlay(_arg0, _arg1, _arg2)
 }
 
-func (o overlay) SetMeasureOverlayOverlay(widget Widget, measure bool) {
+func (o overlay) SetMeasureOverlay(widget Widget, measure bool) {
 	var _arg0 *C.GtkOverlay // out
 	var _arg1 *C.GtkWidget  // out
 	var _arg2 C.gboolean    // out
@@ -238,16 +249,4 @@ func (o overlay) SetMeasureOverlayOverlay(widget Widget, measure bool) {
 	}
 
 	C.gtk_overlay_set_measure_overlay(_arg0, _arg1, _arg2)
-}
-
-func (o overlay) AsAccessible() Accessible {
-	return WrapAccessible(gextras.InternObject(o))
-}
-
-func (o overlay) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(o))
-}
-
-func (o overlay) AsConstraintTarget() ConstraintTarget {
-	return WrapConstraintTarget(gextras.InternObject(o))
 }

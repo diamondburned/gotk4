@@ -55,7 +55,7 @@ type UnixSocketAddress interface {
 	AddressType() UnixSocketAddressType
 	// IsAbstract tests if @address is abstract.
 	//
-	// Deprecated: since version .
+	// Deprecated.
 	IsAbstract() bool
 	// Path gets @address's path, or for abstract sockets the "name".
 	//
@@ -112,7 +112,7 @@ func NewUnixSocketAddress(path string) UnixSocketAddress {
 // NewUnixSocketAddressAbstract creates a new
 // G_UNIX_SOCKET_ADDRESS_ABSTRACT_PADDED SocketAddress for @path.
 //
-// Deprecated: since version .
+// Deprecated.
 func NewUnixSocketAddressAbstract(path []byte) UnixSocketAddress {
 	var _arg1 *C.gchar
 	var _arg2 C.gint
@@ -180,6 +180,10 @@ func NewUnixSocketAddressWithType(path []byte, typ UnixSocketAddressType) UnixSo
 	return _unixSocketAddress
 }
 
+func (u unixSocketAddress) AsSocketConnectable() SocketConnectable {
+	return WrapSocketConnectable(gextras.InternObject(u))
+}
+
 func (a unixSocketAddress) AddressType() UnixSocketAddressType {
 	var _arg0 *C.GUnixSocketAddress    // out
 	var _cret C.GUnixSocketAddressType // in
@@ -240,8 +244,4 @@ func (a unixSocketAddress) PathLen() uint {
 	_gsize = uint(_cret)
 
 	return _gsize
-}
-
-func (u unixSocketAddress) AsSocketConnectable() SocketConnectable {
-	return WrapSocketConnectable(gextras.InternObject(u))
 }

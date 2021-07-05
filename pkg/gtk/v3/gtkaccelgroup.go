@@ -317,16 +317,16 @@ func AcceleratorValid(keyval uint, modifiers gdk.ModifierType) bool {
 type AccelGroup interface {
 	gextras.Objector
 
-	// DisconnectKeyAccelGroup removes an accelerator previously installed
-	// through gtk_accel_group_connect().
-	DisconnectKeyAccelGroup(accelKey uint, accelMods gdk.ModifierType) bool
+	// DisconnectKey removes an accelerator previously installed through
+	// gtk_accel_group_connect().
+	DisconnectKey(accelKey uint, accelMods gdk.ModifierType) bool
 	// IsLocked locks are added and removed using gtk_accel_group_lock() and
 	// gtk_accel_group_unlock().
 	IsLocked() bool
 	// ModifierMask gets a ModifierType representing the mask for this
 	// @accel_group. For example, K_CONTROL_MASK, K_SHIFT_MASK, etc.
 	ModifierMask() gdk.ModifierType
-	// LockAccelGroup locks the given accelerator group.
+	// Lock locks the given accelerator group.
 	//
 	// Locking an acelerator group prevents the accelerators contained within it
 	// to be changed during runtime. Refer to gtk_accel_map_change_entry() about
@@ -334,10 +334,10 @@ type AccelGroup interface {
 	//
 	// If called more than once, @accel_group remains locked until
 	// gtk_accel_group_unlock() has been called an equivalent number of times.
-	LockAccelGroup()
-	// UnlockAccelGroup undoes the last call to gtk_accel_group_lock() on this
+	Lock()
+	// Unlock undoes the last call to gtk_accel_group_lock() on this
 	// @accel_group.
-	UnlockAccelGroup()
+	Unlock()
 }
 
 // accelGroup implements the AccelGroup class.
@@ -372,7 +372,7 @@ func NewAccelGroup() AccelGroup {
 	return _accelGroup
 }
 
-func (a accelGroup) DisconnectKeyAccelGroup(accelKey uint, accelMods gdk.ModifierType) bool {
+func (a accelGroup) DisconnectKey(accelKey uint, accelMods gdk.ModifierType) bool {
 	var _arg0 *C.GtkAccelGroup  // out
 	var _arg1 C.guint           // out
 	var _arg2 C.GdkModifierType // out
@@ -425,7 +425,7 @@ func (a accelGroup) ModifierMask() gdk.ModifierType {
 	return _modifierType
 }
 
-func (a accelGroup) LockAccelGroup() {
+func (a accelGroup) Lock() {
 	var _arg0 *C.GtkAccelGroup // out
 
 	_arg0 = (*C.GtkAccelGroup)(unsafe.Pointer(a.Native()))
@@ -433,7 +433,7 @@ func (a accelGroup) LockAccelGroup() {
 	C.gtk_accel_group_lock(_arg0)
 }
 
-func (a accelGroup) UnlockAccelGroup() {
+func (a accelGroup) Unlock() {
 	var _arg0 *C.GtkAccelGroup // out
 
 	_arg0 = (*C.GtkAccelGroup)(unsafe.Pointer(a.Native()))

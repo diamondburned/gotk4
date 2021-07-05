@@ -43,12 +43,12 @@ type SimpleActionGroup interface {
 	// AsActionMap casts the class to the ActionMap interface.
 	AsActionMap() ActionMap
 
-	// AddEntriesSimpleActionGroup: convenience function for creating multiple
-	// Action instances and adding them to the action group.
+	// AddEntries: convenience function for creating multiple Action instances
+	// and adding them to the action group.
 	//
 	// Deprecated: since version 2.38.
-	AddEntriesSimpleActionGroup(entries []ActionEntry, userData interface{})
-	// InsertSimpleActionGroup adds an action to the action group.
+	AddEntries(entries []ActionEntry, userData interface{})
+	// Insert adds an action to the action group.
 	//
 	// If the action group already contains an action with the same name as
 	// @action then the old action is dropped from the group.
@@ -56,20 +56,19 @@ type SimpleActionGroup interface {
 	// The action group takes its own reference on @action.
 	//
 	// Deprecated: since version 2.38.
-	InsertSimpleActionGroup(action Action)
-	// LookupSimpleActionGroup looks up the action with the name @action_name in
-	// the group.
+	Insert(action Action)
+	// Lookup looks up the action with the name @action_name in the group.
 	//
 	// If no such action exists, returns nil.
 	//
 	// Deprecated: since version 2.38.
-	LookupSimpleActionGroup(actionName string) Action
-	// RemoveSimpleActionGroup removes the named action from the action group.
+	Lookup(actionName string) Action
+	// Remove removes the named action from the action group.
 	//
 	// If no action of this name is in the group then nothing happens.
 	//
 	// Deprecated: since version 2.38.
-	RemoveSimpleActionGroup(actionName string)
+	Remove(actionName string)
 }
 
 // simpleActionGroup implements the SimpleActionGroup class.
@@ -104,7 +103,15 @@ func NewSimpleActionGroup() SimpleActionGroup {
 	return _simpleActionGroup
 }
 
-func (s simpleActionGroup) AddEntriesSimpleActionGroup(entries []ActionEntry, userData interface{}) {
+func (s simpleActionGroup) AsActionGroup() ActionGroup {
+	return WrapActionGroup(gextras.InternObject(s))
+}
+
+func (s simpleActionGroup) AsActionMap() ActionMap {
+	return WrapActionMap(gextras.InternObject(s))
+}
+
+func (s simpleActionGroup) AddEntries(entries []ActionEntry, userData interface{}) {
 	var _arg0 *C.GSimpleActionGroup // out
 	var _arg1 *C.GActionEntry
 	var _arg2 C.gint
@@ -118,7 +125,7 @@ func (s simpleActionGroup) AddEntriesSimpleActionGroup(entries []ActionEntry, us
 	C.g_simple_action_group_add_entries(_arg0, _arg1, _arg2, _arg3)
 }
 
-func (s simpleActionGroup) InsertSimpleActionGroup(action Action) {
+func (s simpleActionGroup) Insert(action Action) {
 	var _arg0 *C.GSimpleActionGroup // out
 	var _arg1 *C.GAction            // out
 
@@ -128,7 +135,7 @@ func (s simpleActionGroup) InsertSimpleActionGroup(action Action) {
 	C.g_simple_action_group_insert(_arg0, _arg1)
 }
 
-func (s simpleActionGroup) LookupSimpleActionGroup(actionName string) Action {
+func (s simpleActionGroup) Lookup(actionName string) Action {
 	var _arg0 *C.GSimpleActionGroup // out
 	var _arg1 *C.gchar              // out
 	var _cret *C.GAction            // in
@@ -146,7 +153,7 @@ func (s simpleActionGroup) LookupSimpleActionGroup(actionName string) Action {
 	return _action
 }
 
-func (s simpleActionGroup) RemoveSimpleActionGroup(actionName string) {
+func (s simpleActionGroup) Remove(actionName string) {
 	var _arg0 *C.GSimpleActionGroup // out
 	var _arg1 *C.gchar              // out
 
@@ -155,12 +162,4 @@ func (s simpleActionGroup) RemoveSimpleActionGroup(actionName string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_simple_action_group_remove(_arg0, _arg1)
-}
-
-func (s simpleActionGroup) AsActionGroup() ActionGroup {
-	return WrapActionGroup(gextras.InternObject(s))
-}
-
-func (s simpleActionGroup) AsActionMap() ActionMap {
-	return WrapActionMap(gextras.InternObject(s))
 }

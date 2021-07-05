@@ -29,18 +29,17 @@ func init() {
 type ObjectFactory interface {
 	gextras.Objector
 
-	// CreateAccessibleObjectFactory provides an Object that implements an
-	// accessibility interface on behalf of @obj
-	CreateAccessibleObjectFactory(obj gextras.Objector) Object
+	// CreateAccessible provides an Object that implements an accessibility
+	// interface on behalf of @obj
+	CreateAccessible(obj gextras.Objector) Object
 	// AccessibleType gets the GType of the accessible which is created by the
 	// factory.
 	AccessibleType() externglib.Type
-	// InvalidateObjectFactory: inform @factory that it is no longer being used
-	// to create accessibles. When called, @factory may need to inform Objects
-	// which it has created that they need to be re-instantiated. Note:
-	// primarily used for runtime replacement of ObjectFactorys in object
-	// registries.
-	InvalidateObjectFactory()
+	// Invalidate: inform @factory that it is no longer being used to create
+	// accessibles. When called, @factory may need to inform Objects which it
+	// has created that they need to be re-instantiated. Note: primarily used
+	// for runtime replacement of ObjectFactorys in object registries.
+	Invalidate()
 }
 
 // objectFactory implements the ObjectFactory class.
@@ -62,7 +61,7 @@ func marshalObjectFactory(p uintptr) (interface{}, error) {
 	return WrapObjectFactory(obj), nil
 }
 
-func (f objectFactory) CreateAccessibleObjectFactory(obj gextras.Objector) Object {
+func (f objectFactory) CreateAccessible(obj gextras.Objector) Object {
 	var _arg0 *C.AtkObjectFactory // out
 	var _arg1 *C.GObject          // out
 	var _cret *C.AtkObject        // in
@@ -94,7 +93,7 @@ func (f objectFactory) AccessibleType() externglib.Type {
 	return _gType
 }
 
-func (f objectFactory) InvalidateObjectFactory() {
+func (f objectFactory) Invalidate() {
 	var _arg0 *C.AtkObjectFactory // out
 
 	_arg0 = (*C.AtkObjectFactory)(unsafe.Pointer(f.Native()))

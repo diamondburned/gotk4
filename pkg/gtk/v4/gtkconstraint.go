@@ -96,16 +96,15 @@ type Constraint interface {
 	// TargetAttribute retrieves the attribute of the target to be set by the
 	// constraint.
 	TargetAttribute() ConstraintAttribute
-	// IsAttachedConstraint checks whether the constraint is attached to a
+	// IsAttached checks whether the constraint is attached to a
 	// [class@Gtk.ConstraintLayout], and it is contributing to the layout.
-	IsAttachedConstraint() bool
-	// IsConstantConstraint checks whether the constraint describes a relation
-	// between an attribute on the [property@Gtk.Constraint:target] and a
-	// constant value.
-	IsConstantConstraint() bool
-	// IsRequiredConstraint checks whether the constraint is a required relation
-	// for solving the constraint layout.
-	IsRequiredConstraint() bool
+	IsAttached() bool
+	// IsConstant checks whether the constraint describes a relation between an
+	// attribute on the [property@Gtk.Constraint:target] and a constant value.
+	IsConstant() bool
+	// IsRequired checks whether the constraint is a required relation for
+	// solving the constraint layout.
+	IsRequired() bool
 }
 
 // constraint implements the Constraint class.
@@ -303,7 +302,7 @@ func (c constraint) TargetAttribute() ConstraintAttribute {
 	return _constraintAttribute
 }
 
-func (c constraint) IsAttachedConstraint() bool {
+func (c constraint) IsAttached() bool {
 	var _arg0 *C.GtkConstraint // out
 	var _cret C.gboolean       // in
 
@@ -320,7 +319,7 @@ func (c constraint) IsAttachedConstraint() bool {
 	return _ok
 }
 
-func (c constraint) IsConstantConstraint() bool {
+func (c constraint) IsConstant() bool {
 	var _arg0 *C.GtkConstraint // out
 	var _cret C.gboolean       // in
 
@@ -337,7 +336,7 @@ func (c constraint) IsConstantConstraint() bool {
 	return _ok
 }
 
-func (c constraint) IsRequiredConstraint() bool {
+func (c constraint) IsRequired() bool {
 	var _arg0 *C.GtkConstraint // out
 	var _cret C.gboolean       // in
 

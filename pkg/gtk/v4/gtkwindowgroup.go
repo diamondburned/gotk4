@@ -41,10 +41,10 @@ func init() {
 type WindowGroup interface {
 	gextras.Objector
 
-	// AddWindowWindowGroup adds a window to a `GtkWindowGroup`.
-	AddWindowWindowGroup(window Window)
-	// RemoveWindowWindowGroup removes a window from a `GtkWindowGroup`.
-	RemoveWindowWindowGroup(window Window)
+	// AddWindow adds a window to a `GtkWindowGroup`.
+	AddWindow(window Window)
+	// RemoveWindow removes a window from a `GtkWindowGroup`.
+	RemoveWindow(window Window)
 }
 
 // windowGroup implements the WindowGroup class.
@@ -81,7 +81,7 @@ func NewWindowGroup() WindowGroup {
 	return _windowGroup
 }
 
-func (w windowGroup) AddWindowWindowGroup(window Window) {
+func (w windowGroup) AddWindow(window Window) {
 	var _arg0 *C.GtkWindowGroup // out
 	var _arg1 *C.GtkWindow      // out
 
@@ -91,7 +91,7 @@ func (w windowGroup) AddWindowWindowGroup(window Window) {
 	C.gtk_window_group_add_window(_arg0, _arg1)
 }
 
-func (w windowGroup) RemoveWindowWindowGroup(window Window) {
+func (w windowGroup) RemoveWindow(window Window) {
 	var _arg0 *C.GtkWindowGroup // out
 	var _arg1 *C.GtkWindow      // out
 

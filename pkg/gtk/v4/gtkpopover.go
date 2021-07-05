@@ -122,21 +122,21 @@ type Popover interface {
 	PointingTo() (gdk.Rectangle, bool)
 	// Position returns the preferred position of @popover.
 	Position() PositionType
-	// PopdownPopover pops @popover down.
+	// Popdown pops @popover down.
 	//
 	// This is different from a [method@Gtk.Widget.hide] call in that it may
 	// show the popover with a transition. If you want to hide the popover
 	// without a transition, just use [method@Gtk.Widget.hide].
-	PopdownPopover()
-	// PopupPopover pops @popover up.
+	Popdown()
+	// Popup pops @popover up.
 	//
 	// This is different from a [method@Gtk.Widget.show() call in that it may
 	// show the popover with a transition. If you want to show the popover
 	// without a transition, just use [method@Gtk.Widget.show].
-	PopupPopover()
-	// PresentPopover presents the popover to the user.
-	PresentPopover()
-	// SetAutohidePopover sets whether @popover is modal.
+	Popup()
+	// Present presents the popover to the user.
+	Present()
+	// SetAutohide sets whether @popover is modal.
 	//
 	// A modal popover will grab the keyboard focus on it when being displayed.
 	// Clicking outside the popover area or pressing Esc will dismiss the
@@ -144,43 +144,43 @@ type Popover interface {
 	//
 	// Called this function on an already showing popup with a new autohide
 	// value different from the current one, will cause the popup to be hidden.
-	SetAutohidePopover(autohide bool)
-	// SetCascadePopdownPopover: if @cascade_popdown is true, the popover will
-	// be closed when a child modal popover is closed.
+	SetAutohide(autohide bool)
+	// SetCascadePopdown: if @cascade_popdown is true, the popover will be
+	// closed when a child modal popover is closed.
 	//
 	// If false, @popover will stay visible.
-	SetCascadePopdownPopover(cascadePopdown bool)
-	// SetChildPopover sets the child widget of @popover.
-	SetChildPopover(child Widget)
-	// SetDefaultWidgetPopover sets the default widget of a `GtkPopover`.
+	SetCascadePopdown(cascadePopdown bool)
+	// SetChild sets the child widget of @popover.
+	SetChild(child Widget)
+	// SetDefaultWidget sets the default widget of a `GtkPopover`.
 	//
 	// The default widget is the widget that’s activated when the user presses
 	// Enter in a dialog (for example). This function sets or unsets the default
 	// widget for a `GtkPopover`.
-	SetDefaultWidgetPopover(widget Widget)
-	// SetHasArrowPopover sets whether this popover should draw an arrow
-	// pointing at the widget it is relative to.
-	SetHasArrowPopover(hasArrow bool)
-	// SetMnemonicsVisiblePopover sets whether mnemonics should be visible.
-	SetMnemonicsVisiblePopover(mnemonicsVisible bool)
-	// SetOffsetPopover sets the offset to use when calculating the position of
-	// the popover.
+	SetDefaultWidget(widget Widget)
+	// SetHasArrow sets whether this popover should draw an arrow pointing at
+	// the widget it is relative to.
+	SetHasArrow(hasArrow bool)
+	// SetMnemonicsVisible sets whether mnemonics should be visible.
+	SetMnemonicsVisible(mnemonicsVisible bool)
+	// SetOffset sets the offset to use when calculating the position of the
+	// popover.
 	//
 	// These values are used when preparing the [struct@Gdk.PopupLayout] for
 	// positioning the popover.
-	SetOffsetPopover(xOffset int, yOffset int)
-	// SetPointingToPopover sets the rectangle that @popover points to.
+	SetOffset(xOffset int, yOffset int)
+	// SetPointingTo sets the rectangle that @popover points to.
 	//
 	// This is in the coordinate space of the @popover parent.
-	SetPointingToPopover(rect *gdk.Rectangle)
-	// SetPositionPopover sets the preferred position for @popover to appear.
+	SetPointingTo(rect *gdk.Rectangle)
+	// SetPosition sets the preferred position for @popover to appear.
 	//
 	// If the @popover is currently visible, it will be immediately updated.
 	//
 	// This preference will be respected where possible, although on lack of
 	// space (eg. if close to the window edges), the `GtkPopover` may choose to
 	// appear on the opposite side.
-	SetPositionPopover(position PositionType)
+	SetPosition(position PositionType)
 }
 
 // popover implements the Popover class.
@@ -213,6 +213,26 @@ func NewPopover() Popover {
 	_popover = WrapPopover(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _popover
+}
+
+func (p popover) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(p))
+}
+
+func (p popover) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(p))
+}
+
+func (p popover) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(p))
+}
+
+func (p popover) AsNative() Native {
+	return WrapNative(gextras.InternObject(p))
+}
+
+func (p popover) AsShortcutManager() ShortcutManager {
+	return WrapShortcutManager(gextras.InternObject(p))
 }
 
 func (p popover) Autohide() bool {
@@ -361,7 +381,7 @@ func (p popover) Position() PositionType {
 	return _positionType
 }
 
-func (p popover) PopdownPopover() {
+func (p popover) Popdown() {
 	var _arg0 *C.GtkPopover // out
 
 	_arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
@@ -369,7 +389,7 @@ func (p popover) PopdownPopover() {
 	C.gtk_popover_popdown(_arg0)
 }
 
-func (p popover) PopupPopover() {
+func (p popover) Popup() {
 	var _arg0 *C.GtkPopover // out
 
 	_arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
@@ -377,7 +397,7 @@ func (p popover) PopupPopover() {
 	C.gtk_popover_popup(_arg0)
 }
 
-func (p popover) PresentPopover() {
+func (p popover) Present() {
 	var _arg0 *C.GtkPopover // out
 
 	_arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
@@ -385,7 +405,7 @@ func (p popover) PresentPopover() {
 	C.gtk_popover_present(_arg0)
 }
 
-func (p popover) SetAutohidePopover(autohide bool) {
+func (p popover) SetAutohide(autohide bool) {
 	var _arg0 *C.GtkPopover // out
 	var _arg1 C.gboolean    // out
 
@@ -397,7 +417,7 @@ func (p popover) SetAutohidePopover(autohide bool) {
 	C.gtk_popover_set_autohide(_arg0, _arg1)
 }
 
-func (p popover) SetCascadePopdownPopover(cascadePopdown bool) {
+func (p popover) SetCascadePopdown(cascadePopdown bool) {
 	var _arg0 *C.GtkPopover // out
 	var _arg1 C.gboolean    // out
 
@@ -409,7 +429,7 @@ func (p popover) SetCascadePopdownPopover(cascadePopdown bool) {
 	C.gtk_popover_set_cascade_popdown(_arg0, _arg1)
 }
 
-func (p popover) SetChildPopover(child Widget) {
+func (p popover) SetChild(child Widget) {
 	var _arg0 *C.GtkPopover // out
 	var _arg1 *C.GtkWidget  // out
 
@@ -419,7 +439,7 @@ func (p popover) SetChildPopover(child Widget) {
 	C.gtk_popover_set_child(_arg0, _arg1)
 }
 
-func (p popover) SetDefaultWidgetPopover(widget Widget) {
+func (p popover) SetDefaultWidget(widget Widget) {
 	var _arg0 *C.GtkPopover // out
 	var _arg1 *C.GtkWidget  // out
 
@@ -429,7 +449,7 @@ func (p popover) SetDefaultWidgetPopover(widget Widget) {
 	C.gtk_popover_set_default_widget(_arg0, _arg1)
 }
 
-func (p popover) SetHasArrowPopover(hasArrow bool) {
+func (p popover) SetHasArrow(hasArrow bool) {
 	var _arg0 *C.GtkPopover // out
 	var _arg1 C.gboolean    // out
 
@@ -441,7 +461,7 @@ func (p popover) SetHasArrowPopover(hasArrow bool) {
 	C.gtk_popover_set_has_arrow(_arg0, _arg1)
 }
 
-func (p popover) SetMnemonicsVisiblePopover(mnemonicsVisible bool) {
+func (p popover) SetMnemonicsVisible(mnemonicsVisible bool) {
 	var _arg0 *C.GtkPopover // out
 	var _arg1 C.gboolean    // out
 
@@ -453,7 +473,7 @@ func (p popover) SetMnemonicsVisiblePopover(mnemonicsVisible bool) {
 	C.gtk_popover_set_mnemonics_visible(_arg0, _arg1)
 }
 
-func (p popover) SetOffsetPopover(xOffset int, yOffset int) {
+func (p popover) SetOffset(xOffset int, yOffset int) {
 	var _arg0 *C.GtkPopover // out
 	var _arg1 C.int         // out
 	var _arg2 C.int         // out
@@ -465,7 +485,7 @@ func (p popover) SetOffsetPopover(xOffset int, yOffset int) {
 	C.gtk_popover_set_offset(_arg0, _arg1, _arg2)
 }
 
-func (p popover) SetPointingToPopover(rect *gdk.Rectangle) {
+func (p popover) SetPointingTo(rect *gdk.Rectangle) {
 	var _arg0 *C.GtkPopover   // out
 	var _arg1 *C.GdkRectangle // out
 
@@ -475,7 +495,7 @@ func (p popover) SetPointingToPopover(rect *gdk.Rectangle) {
 	C.gtk_popover_set_pointing_to(_arg0, _arg1)
 }
 
-func (p popover) SetPositionPopover(position PositionType) {
+func (p popover) SetPosition(position PositionType) {
 	var _arg0 *C.GtkPopover     // out
 	var _arg1 C.GtkPositionType // out
 
@@ -483,24 +503,4 @@ func (p popover) SetPositionPopover(position PositionType) {
 	_arg1 = C.GtkPositionType(position)
 
 	C.gtk_popover_set_position(_arg0, _arg1)
-}
-
-func (p popover) AsAccessible() Accessible {
-	return WrapAccessible(gextras.InternObject(p))
-}
-
-func (p popover) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(p))
-}
-
-func (p popover) AsConstraintTarget() ConstraintTarget {
-	return WrapConstraintTarget(gextras.InternObject(p))
-}
-
-func (p popover) AsNative() Native {
-	return WrapNative(gextras.InternObject(p))
-}
-
-func (p popover) AsShortcutManager() ShortcutManager {
-	return WrapShortcutManager(gextras.InternObject(p))
 }

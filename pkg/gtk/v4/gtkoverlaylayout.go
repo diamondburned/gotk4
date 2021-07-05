@@ -74,10 +74,10 @@ type OverlayLayoutChild interface {
 	ClipOverlay() bool
 	// Measure retrieves whether the child is measured.
 	Measure() bool
-	// SetClipOverlayOverlayLayoutChild sets whether to clip this child.
-	SetClipOverlayOverlayLayoutChild(clipOverlay bool)
-	// SetMeasureOverlayLayoutChild sets whether to measure this child.
-	SetMeasureOverlayLayoutChild(measure bool)
+	// SetClipOverlay sets whether to clip this child.
+	SetClipOverlay(clipOverlay bool)
+	// SetMeasure sets whether to measure this child.
+	SetMeasure(measure bool)
 }
 
 // overlayLayoutChild implements the OverlayLayoutChild class.
@@ -133,7 +133,7 @@ func (c overlayLayoutChild) Measure() bool {
 	return _ok
 }
 
-func (c overlayLayoutChild) SetClipOverlayOverlayLayoutChild(clipOverlay bool) {
+func (c overlayLayoutChild) SetClipOverlay(clipOverlay bool) {
 	var _arg0 *C.GtkOverlayLayoutChild // out
 	var _arg1 C.gboolean               // out
 
@@ -145,7 +145,7 @@ func (c overlayLayoutChild) SetClipOverlayOverlayLayoutChild(clipOverlay bool) {
 	C.gtk_overlay_layout_child_set_clip_overlay(_arg0, _arg1)
 }
 
-func (c overlayLayoutChild) SetMeasureOverlayLayoutChild(measure bool) {
+func (c overlayLayoutChild) SetMeasure(measure bool) {
 	var _arg0 *C.GtkOverlayLayoutChild // out
 	var _arg1 C.gboolean               // out
 

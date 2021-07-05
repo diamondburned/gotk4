@@ -45,7 +45,7 @@ func init() {
 type UnixFDList interface {
 	gextras.Objector
 
-	// AppendUnixFDList adds a file descriptor to @list.
+	// Append adds a file descriptor to @list.
 	//
 	// The file descriptor is duplicated using dup(). You keep your copy of the
 	// descriptor and the copy contained in @list will be closed when @list is
@@ -57,8 +57,8 @@ type UnixFDList interface {
 	// The index of the file descriptor in the list is returned. If you use this
 	// index with g_unix_fd_list_get() then you will receive back a duplicated
 	// copy of the same file descriptor.
-	AppendUnixFDList(fd int) (int, error)
-	// GetUnixFDList gets a file descriptor out of @list.
+	Append(fd int) (int, error)
+	// Get gets a file descriptor out of @list.
 	//
 	// @index_ specifies the index of the file descriptor to get. It is a
 	// programmer error for @index_ to be out of range; see
@@ -69,7 +69,7 @@ type UnixFDList interface {
 	//
 	// A possible cause of failure is exceeding the per-process or system-wide
 	// file descriptor limit.
-	GetUnixFDList(index_ int) (int, error)
+	Get(index_ int) (int, error)
 	// Length gets the length of @list (ie: the number of file descriptors
 	// contained within).
 	Length() int
@@ -131,7 +131,7 @@ func NewUnixFDListFromArray(fds []int) UnixFDList {
 	return _unixFDList
 }
 
-func (l unixFDList) AppendUnixFDList(fd int) (int, error) {
+func (l unixFDList) Append(fd int) (int, error) {
 	var _arg0 *C.GUnixFDList // out
 	var _arg1 C.gint         // out
 	var _cret C.gint         // in
@@ -151,7 +151,7 @@ func (l unixFDList) AppendUnixFDList(fd int) (int, error) {
 	return _gint, _goerr
 }
 
-func (l unixFDList) GetUnixFDList(index_ int) (int, error) {
+func (l unixFDList) Get(index_ int) (int, error) {
 	var _arg0 *C.GUnixFDList // out
 	var _arg1 C.gint         // out
 	var _cret C.gint         // in

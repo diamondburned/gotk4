@@ -135,8 +135,8 @@ type DrawingArea interface {
 	ContentHeight() int
 	// ContentWidth retrieves the content width of the `GtkDrawingArea`.
 	ContentWidth() int
-	// SetContentHeightDrawingArea sets the desired height of the contents of
-	// the drawing area.
+	// SetContentHeight sets the desired height of the contents of the drawing
+	// area.
 	//
 	// Note that because widgets may be allocated larger sizes than they
 	// requested, it is possible that the actual height passed to your draw
@@ -144,9 +144,9 @@ type DrawingArea interface {
 	// [method@Gtk.Widget.set_valign] to avoid that.
 	//
 	// If the height is set to 0 (the default), the drawing area may disappear.
-	SetContentHeightDrawingArea(height int)
-	// SetContentWidthDrawingArea sets the desired width of the contents of the
-	// drawing area.
+	SetContentHeight(height int)
+	// SetContentWidth sets the desired width of the contents of the drawing
+	// area.
 	//
 	// Note that because widgets may be allocated larger sizes than they
 	// requested, it is possible that the actual width passed to your draw
@@ -154,7 +154,7 @@ type DrawingArea interface {
 	// [method@Gtk.Widget.set_halign] to avoid that.
 	//
 	// If the width is set to 0 (the default), the drawing area may disappear.
-	SetContentWidthDrawingArea(width int)
+	SetContentWidth(width int)
 }
 
 // drawingArea implements the DrawingArea class.
@@ -189,6 +189,18 @@ func NewDrawingArea() DrawingArea {
 	return _drawingArea
 }
 
+func (d drawingArea) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(d))
+}
+
+func (d drawingArea) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(d))
+}
+
+func (d drawingArea) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(d))
+}
+
 func (s drawingArea) ContentHeight() int {
 	var _arg0 *C.GtkDrawingArea // out
 	var _cret C.int             // in
@@ -219,7 +231,7 @@ func (s drawingArea) ContentWidth() int {
 	return _gint
 }
 
-func (s drawingArea) SetContentHeightDrawingArea(height int) {
+func (s drawingArea) SetContentHeight(height int) {
 	var _arg0 *C.GtkDrawingArea // out
 	var _arg1 C.int             // out
 
@@ -229,7 +241,7 @@ func (s drawingArea) SetContentHeightDrawingArea(height int) {
 	C.gtk_drawing_area_set_content_height(_arg0, _arg1)
 }
 
-func (s drawingArea) SetContentWidthDrawingArea(width int) {
+func (s drawingArea) SetContentWidth(width int) {
 	var _arg0 *C.GtkDrawingArea // out
 	var _arg1 C.int             // out
 
@@ -237,16 +249,4 @@ func (s drawingArea) SetContentWidthDrawingArea(width int) {
 	_arg1 = C.int(width)
 
 	C.gtk_drawing_area_set_content_width(_arg0, _arg1)
-}
-
-func (d drawingArea) AsAccessible() Accessible {
-	return WrapAccessible(gextras.InternObject(d))
-}
-
-func (d drawingArea) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(d))
-}
-
-func (d drawingArea) AsConstraintTarget() ConstraintTarget {
-	return WrapConstraintTarget(gextras.InternObject(d))
 }

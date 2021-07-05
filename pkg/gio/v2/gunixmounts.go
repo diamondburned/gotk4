@@ -466,7 +466,7 @@ func UnixMountsChangedSince(time uint64) bool {
 type UnixMountMonitor interface {
 	gextras.Objector
 
-	// SetRateLimitUnixMountMonitor: this function does nothing.
+	// SetRateLimit: this function does nothing.
 	//
 	// Before 2.44, this was a partially-effective way of controlling the rate
 	// at which events would be reported under some uncommon circumstances.
@@ -474,7 +474,7 @@ type UnixMountMonitor interface {
 	// function would have side effects for other users of the monitor.
 	//
 	// Deprecated: since version 2.44.
-	SetRateLimitUnixMountMonitor(limitMsec int)
+	SetRateLimit(limitMsec int)
 }
 
 // unixMountMonitor implements the UnixMountMonitor class.
@@ -513,7 +513,7 @@ func NewUnixMountMonitor() UnixMountMonitor {
 	return _unixMountMonitor
 }
 
-func (m unixMountMonitor) SetRateLimitUnixMountMonitor(limitMsec int) {
+func (m unixMountMonitor) SetRateLimit(limitMsec int) {
 	var _arg0 *C.GUnixMountMonitor // out
 	var _arg1 C.int                // out
 

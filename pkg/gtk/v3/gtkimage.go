@@ -124,8 +124,8 @@ type Image interface {
 	// AsBuildable casts the class to the Buildable interface.
 	AsBuildable() Buildable
 
-	// ClearImage resets the image to be empty.
-	ClearImage()
+	// Clear resets the image to be empty.
+	Clear()
 	// Animation gets the PixbufAnimation being displayed by the Image. The
 	// storage type of the image must be GTK_IMAGE_EMPTY or GTK_IMAGE_ANIMATION
 	// (see gtk_image_get_storage_type()). The caller of this function does not
@@ -160,31 +160,31 @@ type Image interface {
 	// store image data. If the Image has no image data, the return value will
 	// be GTK_IMAGE_EMPTY.
 	StorageType() ImageType
-	// SetFromAnimationImage causes the Image to display the given animation (or
+	// SetFromAnimation causes the Image to display the given animation (or
 	// display nothing, if you set the animation to nil).
-	SetFromAnimationImage(animation gdkpixbuf.PixbufAnimation)
-	// SetFromFileImage: see gtk_image_new_from_file() for details.
-	SetFromFileImage(filename string)
-	// SetFromIconNameImage: see gtk_image_new_from_icon_name() for details.
-	SetFromIconNameImage(iconName string, size int)
-	// SetFromIconSetImage: see gtk_image_new_from_icon_set() for details.
+	SetFromAnimation(animation gdkpixbuf.PixbufAnimation)
+	// SetFromFile: see gtk_image_new_from_file() for details.
+	SetFromFile(filename string)
+	// SetFromIconName: see gtk_image_new_from_icon_name() for details.
+	SetFromIconName(iconName string, size int)
+	// SetFromIconSet: see gtk_image_new_from_icon_set() for details.
 	//
 	// Deprecated: since version 3.10.
-	SetFromIconSetImage(iconSet *IconSet, size int)
-	// SetFromPixbufImage: see gtk_image_new_from_pixbuf() for details.
-	SetFromPixbufImage(pixbuf gdkpixbuf.Pixbuf)
-	// SetFromResourceImage: see gtk_image_new_from_resource() for details.
-	SetFromResourceImage(resourcePath string)
-	// SetFromStockImage: see gtk_image_new_from_stock() for details.
+	SetFromIconSet(iconSet *IconSet, size int)
+	// SetFromPixbuf: see gtk_image_new_from_pixbuf() for details.
+	SetFromPixbuf(pixbuf gdkpixbuf.Pixbuf)
+	// SetFromResource: see gtk_image_new_from_resource() for details.
+	SetFromResource(resourcePath string)
+	// SetFromStock: see gtk_image_new_from_stock() for details.
 	//
 	// Deprecated: since version 3.10.
-	SetFromStockImage(stockId string, size int)
-	// SetFromSurfaceImage: see gtk_image_new_from_surface() for details.
-	SetFromSurfaceImage(surface *cairo.Surface)
-	// SetPixelSizeImage sets the pixel size to use for named icons. If the
-	// pixel size is set to a value != -1, it is used instead of the icon size
-	// set by gtk_image_set_from_icon_name().
-	SetPixelSizeImage(pixelSize int)
+	SetFromStock(stockId string, size int)
+	// SetFromSurface: see gtk_image_new_from_surface() for details.
+	SetFromSurface(surface *cairo.Surface)
+	// SetPixelSize sets the pixel size to use for named icons. If the pixel
+	// size is set to a value != -1, it is used instead of the icon size set by
+	// gtk_image_set_from_icon_name().
+	SetPixelSize(pixelSize int)
 }
 
 // image implements the Image class.
@@ -419,7 +419,11 @@ func NewImageFromSurface(surface *cairo.Surface) Image {
 	return _image
 }
 
-func (i image) ClearImage() {
+func (i image) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(i))
+}
+
+func (i image) Clear() {
 	var _arg0 *C.GtkImage // out
 
 	_arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
@@ -545,7 +549,7 @@ func (i image) StorageType() ImageType {
 	return _imageType
 }
 
-func (i image) SetFromAnimationImage(animation gdkpixbuf.PixbufAnimation) {
+func (i image) SetFromAnimation(animation gdkpixbuf.PixbufAnimation) {
 	var _arg0 *C.GtkImage           // out
 	var _arg1 *C.GdkPixbufAnimation // out
 
@@ -555,7 +559,7 @@ func (i image) SetFromAnimationImage(animation gdkpixbuf.PixbufAnimation) {
 	C.gtk_image_set_from_animation(_arg0, _arg1)
 }
 
-func (i image) SetFromFileImage(filename string) {
+func (i image) SetFromFile(filename string) {
 	var _arg0 *C.GtkImage // out
 	var _arg1 *C.gchar    // out
 
@@ -566,7 +570,7 @@ func (i image) SetFromFileImage(filename string) {
 	C.gtk_image_set_from_file(_arg0, _arg1)
 }
 
-func (i image) SetFromIconNameImage(iconName string, size int) {
+func (i image) SetFromIconName(iconName string, size int) {
 	var _arg0 *C.GtkImage   // out
 	var _arg1 *C.gchar      // out
 	var _arg2 C.GtkIconSize // out
@@ -579,7 +583,7 @@ func (i image) SetFromIconNameImage(iconName string, size int) {
 	C.gtk_image_set_from_icon_name(_arg0, _arg1, _arg2)
 }
 
-func (i image) SetFromIconSetImage(iconSet *IconSet, size int) {
+func (i image) SetFromIconSet(iconSet *IconSet, size int) {
 	var _arg0 *C.GtkImage   // out
 	var _arg1 *C.GtkIconSet // out
 	var _arg2 C.GtkIconSize // out
@@ -591,7 +595,7 @@ func (i image) SetFromIconSetImage(iconSet *IconSet, size int) {
 	C.gtk_image_set_from_icon_set(_arg0, _arg1, _arg2)
 }
 
-func (i image) SetFromPixbufImage(pixbuf gdkpixbuf.Pixbuf) {
+func (i image) SetFromPixbuf(pixbuf gdkpixbuf.Pixbuf) {
 	var _arg0 *C.GtkImage  // out
 	var _arg1 *C.GdkPixbuf // out
 
@@ -601,7 +605,7 @@ func (i image) SetFromPixbufImage(pixbuf gdkpixbuf.Pixbuf) {
 	C.gtk_image_set_from_pixbuf(_arg0, _arg1)
 }
 
-func (i image) SetFromResourceImage(resourcePath string) {
+func (i image) SetFromResource(resourcePath string) {
 	var _arg0 *C.GtkImage // out
 	var _arg1 *C.gchar    // out
 
@@ -612,7 +616,7 @@ func (i image) SetFromResourceImage(resourcePath string) {
 	C.gtk_image_set_from_resource(_arg0, _arg1)
 }
 
-func (i image) SetFromStockImage(stockId string, size int) {
+func (i image) SetFromStock(stockId string, size int) {
 	var _arg0 *C.GtkImage   // out
 	var _arg1 *C.gchar      // out
 	var _arg2 C.GtkIconSize // out
@@ -625,7 +629,7 @@ func (i image) SetFromStockImage(stockId string, size int) {
 	C.gtk_image_set_from_stock(_arg0, _arg1, _arg2)
 }
 
-func (i image) SetFromSurfaceImage(surface *cairo.Surface) {
+func (i image) SetFromSurface(surface *cairo.Surface) {
 	var _arg0 *C.GtkImage        // out
 	var _arg1 *C.cairo_surface_t // out
 
@@ -635,7 +639,7 @@ func (i image) SetFromSurfaceImage(surface *cairo.Surface) {
 	C.gtk_image_set_from_surface(_arg0, _arg1)
 }
 
-func (i image) SetPixelSizeImage(pixelSize int) {
+func (i image) SetPixelSize(pixelSize int) {
 	var _arg0 *C.GtkImage // out
 	var _arg1 C.gint      // out
 
@@ -643,8 +647,4 @@ func (i image) SetPixelSizeImage(pixelSize int) {
 	_arg1 = C.gint(pixelSize)
 
 	C.gtk_image_set_pixel_size(_arg0, _arg1)
-}
-
-func (i image) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(i))
 }

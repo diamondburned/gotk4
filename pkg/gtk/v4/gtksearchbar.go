@@ -72,13 +72,13 @@ type SearchBar interface {
 	// AsConstraintTarget casts the class to the ConstraintTarget interface.
 	AsConstraintTarget() ConstraintTarget
 
-	// ConnectEntrySearchBar connects the `GtkEditable widget passed as the one
-	// to be used in this search bar.
+	// ConnectEntry connects the `GtkEditable widget passed as the one to be
+	// used in this search bar.
 	//
 	// The entry should be a descendant of the search bar. Calling this function
 	// manually is only required if the entry isn’t the direct child of the
 	// search bar (as in our main example).
-	ConnectEntrySearchBar(entry Editable)
+	ConnectEntry(entry Editable)
 	// Child gets the child widget of @bar.
 	Child() Widget
 	// KeyCaptureWidget gets the widget that @bar is capturing key events from.
@@ -87,10 +87,10 @@ type SearchBar interface {
 	SearchMode() bool
 	// ShowCloseButton returns whether the close button is shown.
 	ShowCloseButton() bool
-	// SetChildSearchBar sets the child widget of @bar.
-	SetChildSearchBar(child Widget)
-	// SetKeyCaptureWidgetSearchBar sets @widget as the widget that @bar will
-	// capture key events from.
+	// SetChild sets the child widget of @bar.
+	SetChild(child Widget)
+	// SetKeyCaptureWidget sets @widget as the widget that @bar will capture key
+	// events from.
 	//
 	// If key events are handled by the search bar, the bar will be shown, and
 	// the entry populated with the entered text.
@@ -100,15 +100,15 @@ type SearchBar interface {
 	// of @widget will receive text input before it gets captured. If that is
 	// not desired, you can capture and forward the events yourself with
 	// [method@Gtk.EventControllerKey.forward].
-	SetKeyCaptureWidgetSearchBar(widget Widget)
-	// SetSearchModeSearchBar switches the search mode on or off.
-	SetSearchModeSearchBar(searchMode bool)
-	// SetShowCloseButtonSearchBar shows or hides the close button.
+	SetKeyCaptureWidget(widget Widget)
+	// SetSearchMode switches the search mode on or off.
+	SetSearchMode(searchMode bool)
+	// SetShowCloseButton shows or hides the close button.
 	//
 	// Applications that already have a “search” toggle button should not show a
 	// close button in their search bar, as it duplicates the role of the toggle
 	// button.
-	SetShowCloseButtonSearchBar(visible bool)
+	SetShowCloseButton(visible bool)
 }
 
 // searchBar implements the SearchBar class.
@@ -146,7 +146,19 @@ func NewSearchBar() SearchBar {
 	return _searchBar
 }
 
-func (b searchBar) ConnectEntrySearchBar(entry Editable) {
+func (s searchBar) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(s))
+}
+
+func (s searchBar) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(s))
+}
+
+func (s searchBar) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(s))
+}
+
+func (b searchBar) ConnectEntry(entry Editable) {
 	var _arg0 *C.GtkSearchBar // out
 	var _arg1 *C.GtkEditable  // out
 
@@ -220,7 +232,7 @@ func (b searchBar) ShowCloseButton() bool {
 	return _ok
 }
 
-func (b searchBar) SetChildSearchBar(child Widget) {
+func (b searchBar) SetChild(child Widget) {
 	var _arg0 *C.GtkSearchBar // out
 	var _arg1 *C.GtkWidget    // out
 
@@ -230,7 +242,7 @@ func (b searchBar) SetChildSearchBar(child Widget) {
 	C.gtk_search_bar_set_child(_arg0, _arg1)
 }
 
-func (b searchBar) SetKeyCaptureWidgetSearchBar(widget Widget) {
+func (b searchBar) SetKeyCaptureWidget(widget Widget) {
 	var _arg0 *C.GtkSearchBar // out
 	var _arg1 *C.GtkWidget    // out
 
@@ -240,7 +252,7 @@ func (b searchBar) SetKeyCaptureWidgetSearchBar(widget Widget) {
 	C.gtk_search_bar_set_key_capture_widget(_arg0, _arg1)
 }
 
-func (b searchBar) SetSearchModeSearchBar(searchMode bool) {
+func (b searchBar) SetSearchMode(searchMode bool) {
 	var _arg0 *C.GtkSearchBar // out
 	var _arg1 C.gboolean      // out
 
@@ -252,7 +264,7 @@ func (b searchBar) SetSearchModeSearchBar(searchMode bool) {
 	C.gtk_search_bar_set_search_mode(_arg0, _arg1)
 }
 
-func (b searchBar) SetShowCloseButtonSearchBar(visible bool) {
+func (b searchBar) SetShowCloseButton(visible bool) {
 	var _arg0 *C.GtkSearchBar // out
 	var _arg1 C.gboolean      // out
 
@@ -262,16 +274,4 @@ func (b searchBar) SetShowCloseButtonSearchBar(visible bool) {
 	}
 
 	C.gtk_search_bar_set_show_close_button(_arg0, _arg1)
-}
-
-func (s searchBar) AsAccessible() Accessible {
-	return WrapAccessible(gextras.InternObject(s))
-}
-
-func (s searchBar) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(s))
-}
-
-func (s searchBar) AsConstraintTarget() ConstraintTarget {
-	return WrapConstraintTarget(gextras.InternObject(s))
 }

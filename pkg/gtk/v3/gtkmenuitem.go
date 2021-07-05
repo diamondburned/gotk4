@@ -54,10 +54,10 @@ type MenuItem interface {
 	// AsBuildable casts the class to the Buildable interface.
 	AsBuildable() Buildable
 
-	// ActivateMenuItem emits the MenuItem::activate signal on the given item
-	ActivateMenuItem()
-	// DeselectMenuItem emits the MenuItem::deselect signal on the given item.
-	DeselectMenuItem()
+	// Activate emits the MenuItem::activate signal on the given item
+	Activate()
+	// Deselect emits the MenuItem::deselect signal on the given item.
+	Deselect()
 	// AccelPath: retrieve the accelerator path that was previously set on
 	// @menu_item.
 	//
@@ -79,14 +79,14 @@ type MenuItem interface {
 	// UseUnderline checks if an underline in the text indicates the next
 	// character should be used for the mnemonic accelerator key.
 	UseUnderline() bool
-	// SelectMenuItem emits the MenuItem::select signal on the given item.
-	SelectMenuItem()
-	// SetAccelPathMenuItem: set the accelerator path on @menu_item, through
-	// which runtime changes of the menu item’s accelerator caused by the user
-	// can be identified and saved to persistent storage (see
-	// gtk_accel_map_save() on this). To set up a default accelerator for this
-	// menu item, call gtk_accel_map_add_entry() with the same @accel_path. See
-	// also gtk_accel_map_add_entry() on the specifics of accelerator paths, and
+	// Select emits the MenuItem::select signal on the given item.
+	Select()
+	// SetAccelPath: set the accelerator path on @menu_item, through which
+	// runtime changes of the menu item’s accelerator caused by the user can be
+	// identified and saved to persistent storage (see gtk_accel_map_save() on
+	// this). To set up a default accelerator for this menu item, call
+	// gtk_accel_map_add_entry() with the same @accel_path. See also
+	// gtk_accel_map_add_entry() on the specifics of accelerator paths, and
 	// gtk_menu_set_accel_path() for a more convenient variant of this function.
 	//
 	// This function is basically a convenience wrapper that handles calling
@@ -99,32 +99,31 @@ type MenuItem interface {
 	// Note that @accel_path string will be stored in a #GQuark. Therefore, if
 	// you pass a static string, you can save some memory by interning it first
 	// with g_intern_static_string().
-	SetAccelPathMenuItem(accelPath string)
-	// SetLabelMenuItem sets @text on the @menu_item label
-	SetLabelMenuItem(label string)
-	// SetReserveIndicatorMenuItem sets whether the @menu_item should reserve
-	// space for the submenu indicator, regardless if it actually has a submenu
-	// or not.
+	SetAccelPath(accelPath string)
+	// SetLabel sets @text on the @menu_item label
+	SetLabel(label string)
+	// SetReserveIndicator sets whether the @menu_item should reserve space for
+	// the submenu indicator, regardless if it actually has a submenu or not.
 	//
 	// There should be little need for applications to call this functions.
-	SetReserveIndicatorMenuItem(reserve bool)
-	// SetRightJustifiedMenuItem sets whether the menu item appears justified at
-	// the right side of a menu bar. This was traditionally done for “Help” menu
+	SetReserveIndicator(reserve bool)
+	// SetRightJustified sets whether the menu item appears justified at the
+	// right side of a menu bar. This was traditionally done for “Help” menu
 	// items, but is now considered a bad idea. (If the widget layout is
 	// reversed for a right-to-left language like Hebrew or Arabic,
 	// right-justified-menu-items appear at the left.)
 	//
 	// Deprecated: since version 3.2.
-	SetRightJustifiedMenuItem(rightJustified bool)
-	// SetSubmenuMenuItem sets or replaces the menu item’s submenu, or removes
-	// it when a nil submenu is passed.
-	SetSubmenuMenuItem(submenu Menu)
-	// SetUseUnderlineMenuItem: if true, an underline in the text indicates the
-	// next character should be used for the mnemonic accelerator key.
-	SetUseUnderlineMenuItem(setting bool)
-	// ToggleSizeAllocateMenuItem emits the MenuItem::toggle-size-allocate
-	// signal on the given item.
-	ToggleSizeAllocateMenuItem(allocation int)
+	SetRightJustified(rightJustified bool)
+	// SetSubmenu sets or replaces the menu item’s submenu, or removes it when a
+	// nil submenu is passed.
+	SetSubmenu(submenu Menu)
+	// SetUseUnderline: if true, an underline in the text indicates the next
+	// character should be used for the mnemonic accelerator key.
+	SetUseUnderline(setting bool)
+	// ToggleSizeAllocate emits the MenuItem::toggle-size-allocate signal on the
+	// given item.
+	ToggleSizeAllocate(allocation int)
 }
 
 // menuItem implements the MenuItem class.
@@ -196,7 +195,19 @@ func NewMenuItemWithMnemonic(label string) MenuItem {
 	return _menuItem
 }
 
-func (m menuItem) ActivateMenuItem() {
+func (m menuItem) AsActionable() Actionable {
+	return WrapActionable(gextras.InternObject(m))
+}
+
+func (m menuItem) AsActivatable() Activatable {
+	return WrapActivatable(gextras.InternObject(m))
+}
+
+func (m menuItem) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(m))
+}
+
+func (m menuItem) Activate() {
 	var _arg0 *C.GtkMenuItem // out
 
 	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer(m.Native()))
@@ -204,7 +215,7 @@ func (m menuItem) ActivateMenuItem() {
 	C.gtk_menu_item_activate(_arg0)
 }
 
-func (m menuItem) DeselectMenuItem() {
+func (m menuItem) Deselect() {
 	var _arg0 *C.GtkMenuItem // out
 
 	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer(m.Native()))
@@ -308,7 +319,7 @@ func (m menuItem) UseUnderline() bool {
 	return _ok
 }
 
-func (m menuItem) SelectMenuItem() {
+func (m menuItem) Select() {
 	var _arg0 *C.GtkMenuItem // out
 
 	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer(m.Native()))
@@ -316,7 +327,7 @@ func (m menuItem) SelectMenuItem() {
 	C.gtk_menu_item_select(_arg0)
 }
 
-func (m menuItem) SetAccelPathMenuItem(accelPath string) {
+func (m menuItem) SetAccelPath(accelPath string) {
 	var _arg0 *C.GtkMenuItem // out
 	var _arg1 *C.gchar       // out
 
@@ -327,7 +338,7 @@ func (m menuItem) SetAccelPathMenuItem(accelPath string) {
 	C.gtk_menu_item_set_accel_path(_arg0, _arg1)
 }
 
-func (m menuItem) SetLabelMenuItem(label string) {
+func (m menuItem) SetLabel(label string) {
 	var _arg0 *C.GtkMenuItem // out
 	var _arg1 *C.gchar       // out
 
@@ -338,7 +349,7 @@ func (m menuItem) SetLabelMenuItem(label string) {
 	C.gtk_menu_item_set_label(_arg0, _arg1)
 }
 
-func (m menuItem) SetReserveIndicatorMenuItem(reserve bool) {
+func (m menuItem) SetReserveIndicator(reserve bool) {
 	var _arg0 *C.GtkMenuItem // out
 	var _arg1 C.gboolean     // out
 
@@ -350,7 +361,7 @@ func (m menuItem) SetReserveIndicatorMenuItem(reserve bool) {
 	C.gtk_menu_item_set_reserve_indicator(_arg0, _arg1)
 }
 
-func (m menuItem) SetRightJustifiedMenuItem(rightJustified bool) {
+func (m menuItem) SetRightJustified(rightJustified bool) {
 	var _arg0 *C.GtkMenuItem // out
 	var _arg1 C.gboolean     // out
 
@@ -362,7 +373,7 @@ func (m menuItem) SetRightJustifiedMenuItem(rightJustified bool) {
 	C.gtk_menu_item_set_right_justified(_arg0, _arg1)
 }
 
-func (m menuItem) SetSubmenuMenuItem(submenu Menu) {
+func (m menuItem) SetSubmenu(submenu Menu) {
 	var _arg0 *C.GtkMenuItem // out
 	var _arg1 *C.GtkWidget   // out
 
@@ -372,7 +383,7 @@ func (m menuItem) SetSubmenuMenuItem(submenu Menu) {
 	C.gtk_menu_item_set_submenu(_arg0, _arg1)
 }
 
-func (m menuItem) SetUseUnderlineMenuItem(setting bool) {
+func (m menuItem) SetUseUnderline(setting bool) {
 	var _arg0 *C.GtkMenuItem // out
 	var _arg1 C.gboolean     // out
 
@@ -384,7 +395,7 @@ func (m menuItem) SetUseUnderlineMenuItem(setting bool) {
 	C.gtk_menu_item_set_use_underline(_arg0, _arg1)
 }
 
-func (m menuItem) ToggleSizeAllocateMenuItem(allocation int) {
+func (m menuItem) ToggleSizeAllocate(allocation int) {
 	var _arg0 *C.GtkMenuItem // out
 	var _arg1 C.gint         // out
 
@@ -392,16 +403,4 @@ func (m menuItem) ToggleSizeAllocateMenuItem(allocation int) {
 	_arg1 = C.gint(allocation)
 
 	C.gtk_menu_item_toggle_size_allocate(_arg0, _arg1)
-}
-
-func (m menuItem) AsActionable() Actionable {
-	return WrapActionable(gextras.InternObject(m))
-}
-
-func (m menuItem) AsActivatable() Activatable {
-	return WrapActivatable(gextras.InternObject(m))
-}
-
-func (m menuItem) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(m))
 }

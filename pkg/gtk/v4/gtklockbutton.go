@@ -74,9 +74,8 @@ type LockButton interface {
 
 	// Permission obtains the `GPermission` object that controls @button.
 	Permission() gio.Permission
-	// SetPermissionLockButton sets the `GPermission` object that controls
-	// @button.
-	SetPermissionLockButton(permission gio.Permission)
+	// SetPermission sets the `GPermission` object that controls @button.
+	SetPermission(permission gio.Permission)
 }
 
 // lockButton implements the LockButton class.
@@ -114,6 +113,22 @@ func NewLockButton(permission gio.Permission) LockButton {
 	return _lockButton
 }
 
+func (l lockButton) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(l))
+}
+
+func (l lockButton) AsActionable() Actionable {
+	return WrapActionable(gextras.InternObject(l))
+}
+
+func (l lockButton) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(l))
+}
+
+func (l lockButton) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(l))
+}
+
 func (b lockButton) Permission() gio.Permission {
 	var _arg0 *C.GtkLockButton // out
 	var _cret *C.GPermission   // in
@@ -129,7 +144,7 @@ func (b lockButton) Permission() gio.Permission {
 	return _permission
 }
 
-func (b lockButton) SetPermissionLockButton(permission gio.Permission) {
+func (b lockButton) SetPermission(permission gio.Permission) {
 	var _arg0 *C.GtkLockButton // out
 	var _arg1 *C.GPermission   // out
 
@@ -137,20 +152,4 @@ func (b lockButton) SetPermissionLockButton(permission gio.Permission) {
 	_arg1 = (*C.GPermission)(unsafe.Pointer(permission.Native()))
 
 	C.gtk_lock_button_set_permission(_arg0, _arg1)
-}
-
-func (l lockButton) AsAccessible() Accessible {
-	return WrapAccessible(gextras.InternObject(l))
-}
-
-func (l lockButton) AsActionable() Actionable {
-	return WrapActionable(gextras.InternObject(l))
-}
-
-func (l lockButton) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(l))
-}
-
-func (l lockButton) AsConstraintTarget() ConstraintTarget {
-	return WrapConstraintTarget(gextras.InternObject(l))
 }

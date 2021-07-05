@@ -50,23 +50,23 @@ type TLSPassword interface {
 	// a representation of the password flags returned from
 	// g_tls_password_get_flags().
 	Warning() string
-	// SetDescriptionTLSPassword: set a description string about what the
-	// password will be used for.
-	SetDescriptionTLSPassword(description string)
-	// SetFlagsTLSPassword: set flags about the password.
-	SetFlagsTLSPassword(flags TLSPasswordFlags)
-	// SetValueTLSPassword: set the value for this password. The @value will be
-	// copied by the password object.
+	// SetDescription: set a description string about what the password will be
+	// used for.
+	SetDescription(description string)
+	// SetFlags: set flags about the password.
+	SetFlags(flags TLSPasswordFlags)
+	// SetValue: set the value for this password. The @value will be copied by
+	// the password object.
 	//
 	// Specify the @length, for a non-nul-terminated password. Pass -1 as
 	// @length if using a nul-terminated password, and @length will be
 	// calculated automatically. (Note that the terminating nul is not
 	// considered part of the password in this case.)
-	SetValueTLSPassword(value []byte)
-	// SetWarningTLSPassword: set a user readable translated warning. Usually
-	// this warning is a representation of the password flags returned from
+	SetValue(value []byte)
+	// SetWarning: set a user readable translated warning. Usually this warning
+	// is a representation of the password flags returned from
 	// g_tls_password_get_flags().
-	SetWarningTLSPassword(warning string)
+	SetWarning(warning string)
 }
 
 // tlsPassword implements the TLSPassword class.
@@ -169,7 +169,7 @@ func (p tlsPassword) Warning() string {
 	return _utf8
 }
 
-func (p tlsPassword) SetDescriptionTLSPassword(description string) {
+func (p tlsPassword) SetDescription(description string) {
 	var _arg0 *C.GTlsPassword // out
 	var _arg1 *C.gchar        // out
 
@@ -180,7 +180,7 @@ func (p tlsPassword) SetDescriptionTLSPassword(description string) {
 	C.g_tls_password_set_description(_arg0, _arg1)
 }
 
-func (p tlsPassword) SetFlagsTLSPassword(flags TLSPasswordFlags) {
+func (p tlsPassword) SetFlags(flags TLSPasswordFlags) {
 	var _arg0 *C.GTlsPassword     // out
 	var _arg1 C.GTlsPasswordFlags // out
 
@@ -190,7 +190,7 @@ func (p tlsPassword) SetFlagsTLSPassword(flags TLSPasswordFlags) {
 	C.g_tls_password_set_flags(_arg0, _arg1)
 }
 
-func (p tlsPassword) SetValueTLSPassword(value []byte) {
+func (p tlsPassword) SetValue(value []byte) {
 	var _arg0 *C.GTlsPassword // out
 	var _arg1 *C.guchar
 	var _arg2 C.gssize
@@ -202,7 +202,7 @@ func (p tlsPassword) SetValueTLSPassword(value []byte) {
 	C.g_tls_password_set_value(_arg0, _arg1, _arg2)
 }
 
-func (p tlsPassword) SetWarningTLSPassword(warning string) {
+func (p tlsPassword) SetWarning(warning string) {
 	var _arg0 *C.GTlsPassword // out
 	var _arg1 *C.gchar        // out
 

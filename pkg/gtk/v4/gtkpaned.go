@@ -112,22 +112,22 @@ type Paned interface {
 	StartChild() Widget
 	// WideHandle gets whether the separator should be wide.
 	WideHandle() bool
-	// SetEndChildPaned sets the end child of @paned to @child.
-	SetEndChildPaned(child Widget)
-	// SetPositionPaned sets the position of the divider between the two panes.
-	SetPositionPaned(position int)
-	// SetResizeEndChildPaned sets the `GtkPaned`:resize-end-child property
-	SetResizeEndChildPaned(resize bool)
-	// SetResizeStartChildPaned sets the `GtkPaned`:resize-start-child property
-	SetResizeStartChildPaned(resize bool)
-	// SetShrinkEndChildPaned sets the `GtkPaned`:shrink-end-child property
-	SetShrinkEndChildPaned(resize bool)
-	// SetShrinkStartChildPaned sets the `GtkPaned`:shrink-start-child property
-	SetShrinkStartChildPaned(resize bool)
-	// SetStartChildPaned sets the start child of @paned to @child.
-	SetStartChildPaned(child Widget)
-	// SetWideHandlePaned sets whether the separator should be wide.
-	SetWideHandlePaned(wide bool)
+	// SetEndChild sets the end child of @paned to @child.
+	SetEndChild(child Widget)
+	// SetPosition sets the position of the divider between the two panes.
+	SetPosition(position int)
+	// SetResizeEndChild sets the `GtkPaned`:resize-end-child property
+	SetResizeEndChild(resize bool)
+	// SetResizeStartChild sets the `GtkPaned`:resize-start-child property
+	SetResizeStartChild(resize bool)
+	// SetShrinkEndChild sets the `GtkPaned`:shrink-end-child property
+	SetShrinkEndChild(resize bool)
+	// SetShrinkStartChild sets the `GtkPaned`:shrink-start-child property
+	SetShrinkStartChild(resize bool)
+	// SetStartChild sets the start child of @paned to @child.
+	SetStartChild(child Widget)
+	// SetWideHandle sets whether the separator should be wide.
+	SetWideHandle(wide bool)
 }
 
 // paned implements the Paned class.
@@ -163,6 +163,22 @@ func NewPaned(orientation Orientation) Paned {
 	_paned = WrapPaned(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _paned
+}
+
+func (p paned) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(p))
+}
+
+func (p paned) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(p))
+}
+
+func (p paned) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(p))
+}
+
+func (p paned) AsOrientable() Orientable {
+	return WrapOrientable(gextras.InternObject(p))
 }
 
 func (p paned) EndChild() Widget {
@@ -295,7 +311,7 @@ func (p paned) WideHandle() bool {
 	return _ok
 }
 
-func (p paned) SetEndChildPaned(child Widget) {
+func (p paned) SetEndChild(child Widget) {
 	var _arg0 *C.GtkPaned  // out
 	var _arg1 *C.GtkWidget // out
 
@@ -305,7 +321,7 @@ func (p paned) SetEndChildPaned(child Widget) {
 	C.gtk_paned_set_end_child(_arg0, _arg1)
 }
 
-func (p paned) SetPositionPaned(position int) {
+func (p paned) SetPosition(position int) {
 	var _arg0 *C.GtkPaned // out
 	var _arg1 C.int       // out
 
@@ -315,7 +331,7 @@ func (p paned) SetPositionPaned(position int) {
 	C.gtk_paned_set_position(_arg0, _arg1)
 }
 
-func (p paned) SetResizeEndChildPaned(resize bool) {
+func (p paned) SetResizeEndChild(resize bool) {
 	var _arg0 *C.GtkPaned // out
 	var _arg1 C.gboolean  // out
 
@@ -327,7 +343,7 @@ func (p paned) SetResizeEndChildPaned(resize bool) {
 	C.gtk_paned_set_resize_end_child(_arg0, _arg1)
 }
 
-func (p paned) SetResizeStartChildPaned(resize bool) {
+func (p paned) SetResizeStartChild(resize bool) {
 	var _arg0 *C.GtkPaned // out
 	var _arg1 C.gboolean  // out
 
@@ -339,7 +355,7 @@ func (p paned) SetResizeStartChildPaned(resize bool) {
 	C.gtk_paned_set_resize_start_child(_arg0, _arg1)
 }
 
-func (p paned) SetShrinkEndChildPaned(resize bool) {
+func (p paned) SetShrinkEndChild(resize bool) {
 	var _arg0 *C.GtkPaned // out
 	var _arg1 C.gboolean  // out
 
@@ -351,7 +367,7 @@ func (p paned) SetShrinkEndChildPaned(resize bool) {
 	C.gtk_paned_set_shrink_end_child(_arg0, _arg1)
 }
 
-func (p paned) SetShrinkStartChildPaned(resize bool) {
+func (p paned) SetShrinkStartChild(resize bool) {
 	var _arg0 *C.GtkPaned // out
 	var _arg1 C.gboolean  // out
 
@@ -363,7 +379,7 @@ func (p paned) SetShrinkStartChildPaned(resize bool) {
 	C.gtk_paned_set_shrink_start_child(_arg0, _arg1)
 }
 
-func (p paned) SetStartChildPaned(child Widget) {
+func (p paned) SetStartChild(child Widget) {
 	var _arg0 *C.GtkPaned  // out
 	var _arg1 *C.GtkWidget // out
 
@@ -373,7 +389,7 @@ func (p paned) SetStartChildPaned(child Widget) {
 	C.gtk_paned_set_start_child(_arg0, _arg1)
 }
 
-func (p paned) SetWideHandlePaned(wide bool) {
+func (p paned) SetWideHandle(wide bool) {
 	var _arg0 *C.GtkPaned // out
 	var _arg1 C.gboolean  // out
 
@@ -383,20 +399,4 @@ func (p paned) SetWideHandlePaned(wide bool) {
 	}
 
 	C.gtk_paned_set_wide_handle(_arg0, _arg1)
-}
-
-func (p paned) AsAccessible() Accessible {
-	return WrapAccessible(gextras.InternObject(p))
-}
-
-func (p paned) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(p))
-}
-
-func (p paned) AsConstraintTarget() ConstraintTarget {
-	return WrapConstraintTarget(gextras.InternObject(p))
-}
-
-func (p paned) AsOrientable() Orientable {
-	return WrapOrientable(gextras.InternObject(p))
 }

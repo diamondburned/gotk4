@@ -48,7 +48,7 @@ func init() {
 type UnixFDMessage interface {
 	SocketControlMessage
 
-	// AppendFdUnixFDMessage adds a file descriptor to @message.
+	// AppendFd adds a file descriptor to @message.
 	//
 	// The file descriptor is duplicated using dup(). You keep your copy of the
 	// descriptor and the copy contained in @message will be closed when
@@ -56,7 +56,7 @@ type UnixFDMessage interface {
 	//
 	// A possible cause of failure is exceeding the per-process or system-wide
 	// file descriptor limit.
-	AppendFdUnixFDMessage(fd int) error
+	AppendFd(fd int) error
 	// FdList gets the FDList contained in @message. This function does not
 	// return a reference to the caller, but the returned list is valid for the
 	// lifetime of @message.
@@ -112,7 +112,7 @@ func NewUnixFDMessageWithFdList(fdList UnixFDList) UnixFDMessage {
 	return _unixFDMessage
 }
 
-func (m unixFDMessage) AppendFdUnixFDMessage(fd int) error {
+func (m unixFDMessage) AppendFd(fd int) error {
 	var _arg0 *C.GUnixFDMessage // out
 	var _arg1 C.gint            // out
 	var _cerr *C.GError         // in

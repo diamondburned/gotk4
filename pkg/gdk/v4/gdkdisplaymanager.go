@@ -96,10 +96,10 @@ type DisplayManager interface {
 
 	// DefaultDisplay gets the default `GdkDisplay`.
 	DefaultDisplay() Display
-	// OpenDisplayDisplayManager opens a display.
-	OpenDisplayDisplayManager(name string) Display
-	// SetDefaultDisplayDisplayManager sets @display as the default display.
-	SetDefaultDisplayDisplayManager(display Display)
+	// OpenDisplay opens a display.
+	OpenDisplay(name string) Display
+	// SetDefaultDisplay sets @display as the default display.
+	SetDefaultDisplay(display Display)
 }
 
 // displayManager implements the DisplayManager class.
@@ -136,7 +136,7 @@ func (m displayManager) DefaultDisplay() Display {
 	return _display
 }
 
-func (m displayManager) OpenDisplayDisplayManager(name string) Display {
+func (m displayManager) OpenDisplay(name string) Display {
 	var _arg0 *C.GdkDisplayManager // out
 	var _arg1 *C.char              // out
 	var _cret *C.GdkDisplay        // in
@@ -154,7 +154,7 @@ func (m displayManager) OpenDisplayDisplayManager(name string) Display {
 	return _display
 }
 
-func (m displayManager) SetDefaultDisplayDisplayManager(display Display) {
+func (m displayManager) SetDefaultDisplay(display Display) {
 	var _arg0 *C.GdkDisplayManager // out
 	var _arg1 *C.GdkDisplay        // out
 

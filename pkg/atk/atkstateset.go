@@ -28,51 +28,48 @@ func init() {
 type StateSet interface {
 	gextras.Objector
 
-	// AddStateStateSet adds the state of the specified type to the state set if
-	// it is not already present.
+	// AddState adds the state of the specified type to the state set if it is
+	// not already present.
 	//
 	// Note that because an StateSet is a read-only object, this method should
 	// be used to add a state to a newly-created set which will then be returned
 	// by #atk_object_ref_state_set. It should not be used to modify the
 	// existing state of an object. See also #atk_object_notify_state_change.
-	AddStateStateSet(typ StateType) bool
-	// AddStatesStateSet adds the states of the specified types to the state
-	// set.
+	AddState(typ StateType) bool
+	// AddStates adds the states of the specified types to the state set.
 	//
 	// Note that because an StateSet is a read-only object, this method should
 	// be used to add states to a newly-created set which will then be returned
 	// by #atk_object_ref_state_set. It should not be used to modify the
 	// existing state of an object. See also #atk_object_notify_state_change.
-	AddStatesStateSet(types []StateType)
-	// AndSetsStateSet constructs the intersection of the two sets, returning
-	// nil if the intersection is empty.
-	AndSetsStateSet(compareSet StateSet) StateSet
-	// ClearStatesStateSet removes all states from the state set.
-	ClearStatesStateSet()
-	// ContainsStateStateSet checks whether the state for the specified type is
+	AddStates(types []StateType)
+	// AndSets constructs the intersection of the two sets, returning nil if the
+	// intersection is empty.
+	AndSets(compareSet StateSet) StateSet
+	// ClearStates removes all states from the state set.
+	ClearStates()
+	// ContainsState checks whether the state for the specified type is in the
+	// specified set.
+	ContainsState(typ StateType) bool
+	// ContainsStates checks whether the states for all the specified types are
 	// in the specified set.
-	ContainsStateStateSet(typ StateType) bool
-	// ContainsStatesStateSet checks whether the states for all the specified
-	// types are in the specified set.
-	ContainsStatesStateSet(types []StateType) bool
-	// IsEmptyStateSet checks whether the state set is empty, i.e. has no states
-	// set.
-	IsEmptyStateSet() bool
-	// OrSetsStateSet constructs the union of the two sets.
-	OrSetsStateSet(compareSet StateSet) StateSet
-	// RemoveStateStateSet removes the state for the specified type from the
-	// state set.
+	ContainsStates(types []StateType) bool
+	// IsEmpty checks whether the state set is empty, i.e. has no states set.
+	IsEmpty() bool
+	// OrSets constructs the union of the two sets.
+	OrSets(compareSet StateSet) StateSet
+	// RemoveState removes the state for the specified type from the state set.
 	//
 	// Note that because an StateSet is a read-only object, this method should
 	// be used to remove a state to a newly-created set which will then be
 	// returned by #atk_object_ref_state_set. It should not be used to modify
 	// the existing state of an object. See also
 	// #atk_object_notify_state_change.
-	RemoveStateStateSet(typ StateType) bool
-	// XorSetsStateSet constructs the exclusive-or of the two sets, returning
-	// nil is empty. The set returned by this operation contains the states in
-	// exactly one of the two sets.
-	XorSetsStateSet(compareSet StateSet) StateSet
+	RemoveState(typ StateType) bool
+	// XorSets constructs the exclusive-or of the two sets, returning nil is
+	// empty. The set returned by this operation contains the states in exactly
+	// one of the two sets.
+	XorSets(compareSet StateSet) StateSet
 }
 
 // stateSet implements the StateSet class.
@@ -107,7 +104,7 @@ func NewStateSet() StateSet {
 	return _stateSet
 }
 
-func (s stateSet) AddStateStateSet(typ StateType) bool {
+func (s stateSet) AddState(typ StateType) bool {
 	var _arg0 *C.AtkStateSet // out
 	var _arg1 C.AtkStateType // out
 	var _cret C.gboolean     // in
@@ -126,7 +123,7 @@ func (s stateSet) AddStateStateSet(typ StateType) bool {
 	return _ok
 }
 
-func (s stateSet) AddStatesStateSet(types []StateType) {
+func (s stateSet) AddStates(types []StateType) {
 	var _arg0 *C.AtkStateSet // out
 	var _arg1 *C.AtkStateType
 	var _arg2 C.gint
@@ -145,7 +142,7 @@ func (s stateSet) AddStatesStateSet(types []StateType) {
 	C.atk_state_set_add_states(_arg0, _arg1, _arg2)
 }
 
-func (s stateSet) AndSetsStateSet(compareSet StateSet) StateSet {
+func (s stateSet) AndSets(compareSet StateSet) StateSet {
 	var _arg0 *C.AtkStateSet // out
 	var _arg1 *C.AtkStateSet // out
 	var _cret *C.AtkStateSet // in
@@ -162,7 +159,7 @@ func (s stateSet) AndSetsStateSet(compareSet StateSet) StateSet {
 	return _stateSet
 }
 
-func (s stateSet) ClearStatesStateSet() {
+func (s stateSet) ClearStates() {
 	var _arg0 *C.AtkStateSet // out
 
 	_arg0 = (*C.AtkStateSet)(unsafe.Pointer(s.Native()))
@@ -170,7 +167,7 @@ func (s stateSet) ClearStatesStateSet() {
 	C.atk_state_set_clear_states(_arg0)
 }
 
-func (s stateSet) ContainsStateStateSet(typ StateType) bool {
+func (s stateSet) ContainsState(typ StateType) bool {
 	var _arg0 *C.AtkStateSet // out
 	var _arg1 C.AtkStateType // out
 	var _cret C.gboolean     // in
@@ -189,7 +186,7 @@ func (s stateSet) ContainsStateStateSet(typ StateType) bool {
 	return _ok
 }
 
-func (s stateSet) ContainsStatesStateSet(types []StateType) bool {
+func (s stateSet) ContainsStates(types []StateType) bool {
 	var _arg0 *C.AtkStateSet // out
 	var _arg1 *C.AtkStateType
 	var _arg2 C.gint
@@ -217,7 +214,7 @@ func (s stateSet) ContainsStatesStateSet(types []StateType) bool {
 	return _ok
 }
 
-func (s stateSet) IsEmptyStateSet() bool {
+func (s stateSet) IsEmpty() bool {
 	var _arg0 *C.AtkStateSet // out
 	var _cret C.gboolean     // in
 
@@ -234,7 +231,7 @@ func (s stateSet) IsEmptyStateSet() bool {
 	return _ok
 }
 
-func (s stateSet) OrSetsStateSet(compareSet StateSet) StateSet {
+func (s stateSet) OrSets(compareSet StateSet) StateSet {
 	var _arg0 *C.AtkStateSet // out
 	var _arg1 *C.AtkStateSet // out
 	var _cret *C.AtkStateSet // in
@@ -251,7 +248,7 @@ func (s stateSet) OrSetsStateSet(compareSet StateSet) StateSet {
 	return _stateSet
 }
 
-func (s stateSet) RemoveStateStateSet(typ StateType) bool {
+func (s stateSet) RemoveState(typ StateType) bool {
 	var _arg0 *C.AtkStateSet // out
 	var _arg1 C.AtkStateType // out
 	var _cret C.gboolean     // in
@@ -270,7 +267,7 @@ func (s stateSet) RemoveStateStateSet(typ StateType) bool {
 	return _ok
 }
 
-func (s stateSet) XorSetsStateSet(compareSet StateSet) StateSet {
+func (s stateSet) XorSets(compareSet StateSet) StateSet {
 	var _arg0 *C.AtkStateSet // out
 	var _arg1 *C.AtkStateSet // out
 	var _cret *C.AtkStateSet // in

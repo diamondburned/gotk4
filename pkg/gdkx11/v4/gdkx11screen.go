@@ -39,9 +39,9 @@ type X11Screen interface {
 	ScreenNumber() int
 	// WindowManagerName returns the name of the window manager for @screen.
 	WindowManagerName() string
-	// SupportsNetWmHintX11Screen: this function is specific to the X11 backend
-	// of GDK, and indicates whether the window manager supports a certain hint
-	// from the Extended Window Manager Hints
+	// SupportsNetWmHint: this function is specific to the X11 backend of GDK,
+	// and indicates whether the window manager supports a certain hint from the
+	// Extended Window Manager Hints
 	// (http://www.freedesktop.org/Standards/wm-spec) specification.
 	//
 	// When using this function, keep in mind that the window manager can change
@@ -52,7 +52,7 @@ type X11Screen interface {
 	// return false for every property. You can monitor the
 	// window_manager_changed signal on X11Screen to detect a window manager
 	// change.
-	SupportsNetWmHintX11Screen(propertyName string) bool
+	SupportsNetWmHint(propertyName string) bool
 }
 
 // x11Screen implements the X11Screen class.
@@ -134,7 +134,7 @@ func (s x11Screen) WindowManagerName() string {
 	return _utf8
 }
 
-func (s x11Screen) SupportsNetWmHintX11Screen(propertyName string) bool {
+func (s x11Screen) SupportsNetWmHint(propertyName string) bool {
 	var _arg0 *C.GdkX11Screen // out
 	var _arg1 *C.char         // out
 	var _cret C.gboolean      // in

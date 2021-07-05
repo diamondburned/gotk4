@@ -55,14 +55,14 @@ type Misc interface {
 	//
 	// Deprecated: since version 3.14.
 	Padding() (xpad int, ypad int)
-	// SetAlignmentMisc sets the alignment of the widget.
+	// SetAlignment sets the alignment of the widget.
 	//
 	// Deprecated: since version 3.14.
-	SetAlignmentMisc(xalign float32, yalign float32)
-	// SetPaddingMisc sets the amount of space to add around the widget.
+	SetAlignment(xalign float32, yalign float32)
+	// SetPadding sets the amount of space to add around the widget.
 	//
 	// Deprecated: since version 3.14.
-	SetPaddingMisc(xpad int, ypad int)
+	SetPadding(xpad int, ypad int)
 }
 
 // misc implements the Misc class.
@@ -82,6 +82,10 @@ func marshalMisc(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapMisc(obj), nil
+}
+
+func (m misc) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(m))
 }
 
 func (m misc) Alignment() (xalign float32, yalign float32) {
@@ -120,7 +124,7 @@ func (m misc) Padding() (xpad int, ypad int) {
 	return _xpad, _ypad
 }
 
-func (m misc) SetAlignmentMisc(xalign float32, yalign float32) {
+func (m misc) SetAlignment(xalign float32, yalign float32) {
 	var _arg0 *C.GtkMisc // out
 	var _arg1 C.gfloat   // out
 	var _arg2 C.gfloat   // out
@@ -132,7 +136,7 @@ func (m misc) SetAlignmentMisc(xalign float32, yalign float32) {
 	C.gtk_misc_set_alignment(_arg0, _arg1, _arg2)
 }
 
-func (m misc) SetPaddingMisc(xpad int, ypad int) {
+func (m misc) SetPadding(xpad int, ypad int) {
 	var _arg0 *C.GtkMisc // out
 	var _arg1 C.gint     // out
 	var _arg2 C.gint     // out
@@ -142,8 +146,4 @@ func (m misc) SetPaddingMisc(xpad int, ypad int) {
 	_arg2 = C.gint(ypad)
 
 	C.gtk_misc_set_padding(_arg0, _arg1, _arg2)
-}
-
-func (m misc) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(m))
 }

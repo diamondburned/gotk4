@@ -303,18 +303,18 @@ func marshalNeverTrigger(p uintptr) (interface{}, error) {
 type ShortcutTrigger interface {
 	gextras.Objector
 
-	// CompareShortcutTrigger: the types of @trigger1 and @trigger2 are
-	// #gconstpointer only to allow use of this function as a Func.
+	// Compare: the types of @trigger1 and @trigger2 are #gconstpointer only to
+	// allow use of this function as a Func.
 	//
 	// They must each be a `GtkShortcutTrigger`.
-	CompareShortcutTrigger(trigger2 ShortcutTrigger) int
-	// EqualShortcutTrigger checks if @trigger1 and @trigger2 trigger under the
-	// same conditions.
+	Compare(trigger2 ShortcutTrigger) int
+	// Equal checks if @trigger1 and @trigger2 trigger under the same
+	// conditions.
 	//
 	// The types of @one and @two are #gconstpointer only to allow use of this
 	// function with Table. They must each be a `GtkShortcutTrigger`.
-	EqualShortcutTrigger(trigger2 ShortcutTrigger) bool
-	// HashShortcutTrigger generates a hash value for a `GtkShortcutTrigger`.
+	Equal(trigger2 ShortcutTrigger) bool
+	// Hash generates a hash value for a `GtkShortcutTrigger`.
 	//
 	// The output of this function is guaranteed to be the same for a given
 	// value only per-process. It may change between different processor
@@ -323,8 +323,8 @@ type ShortcutTrigger interface {
 	//
 	// The types of @trigger is #gconstpointer only to allow use of this
 	// function with Table. They must each be a `GtkShortcutTrigger`.
-	HashShortcutTrigger() uint
-	// ToLabelShortcutTrigger gets textual representation for the given trigger.
+	Hash() uint
+	// ToLabel gets textual representation for the given trigger.
 	//
 	// This function is returning a translated string for presentation to end
 	// users for example in menu items or in help texts.
@@ -335,14 +335,14 @@ type ShortcutTrigger interface {
 	//
 	// The form of the representation may change at any time and is not
 	// guaranteed to stay identical.
-	ToLabelShortcutTrigger(display gdk.Display) string
+	ToLabel(display gdk.Display) string
 	// String prints the given trigger into a human-readable string.
 	//
 	// This is a small wrapper around [method@Gtk.ShortcutTrigger.print] to help
 	// when debugging.
 	String() string
-	// TriggerShortcutTrigger checks if the given @event triggers @self.
-	TriggerShortcutTrigger(event gdk.Event, enableMnemonics bool) gdk.KeyMatch
+	// Trigger checks if the given @event triggers @self.
+	Trigger(event gdk.Event, enableMnemonics bool) gdk.KeyMatch
 }
 
 // shortcutTrigger implements the ShortcutTrigger class.
@@ -396,7 +396,7 @@ func NewShortcutTriggerParseString(_string string) ShortcutTrigger {
 	return _shortcutTrigger
 }
 
-func (t shortcutTrigger) CompareShortcutTrigger(trigger2 ShortcutTrigger) int {
+func (t shortcutTrigger) Compare(trigger2 ShortcutTrigger) int {
 	var _arg0 C.gconstpointer // out
 	var _arg1 C.gconstpointer // out
 	var _cret C.int           // in
@@ -413,7 +413,7 @@ func (t shortcutTrigger) CompareShortcutTrigger(trigger2 ShortcutTrigger) int {
 	return _gint
 }
 
-func (t shortcutTrigger) EqualShortcutTrigger(trigger2 ShortcutTrigger) bool {
+func (t shortcutTrigger) Equal(trigger2 ShortcutTrigger) bool {
 	var _arg0 C.gconstpointer // out
 	var _arg1 C.gconstpointer // out
 	var _cret C.gboolean      // in
@@ -432,7 +432,7 @@ func (t shortcutTrigger) EqualShortcutTrigger(trigger2 ShortcutTrigger) bool {
 	return _ok
 }
 
-func (t shortcutTrigger) HashShortcutTrigger() uint {
+func (t shortcutTrigger) Hash() uint {
 	var _arg0 C.gconstpointer // out
 	var _cret C.guint         // in
 
@@ -447,7 +447,7 @@ func (t shortcutTrigger) HashShortcutTrigger() uint {
 	return _guint
 }
 
-func (s shortcutTrigger) ToLabelShortcutTrigger(display gdk.Display) string {
+func (s shortcutTrigger) ToLabel(display gdk.Display) string {
 	var _arg0 *C.GtkShortcutTrigger // out
 	var _arg1 *C.GdkDisplay         // out
 	var _cret *C.char               // in
@@ -481,7 +481,7 @@ func (s shortcutTrigger) String() string {
 	return _utf8
 }
 
-func (s shortcutTrigger) TriggerShortcutTrigger(event gdk.Event, enableMnemonics bool) gdk.KeyMatch {
+func (s shortcutTrigger) Trigger(event gdk.Event, enableMnemonics bool) gdk.KeyMatch {
 	var _arg0 *C.GtkShortcutTrigger // out
 	var _arg1 *C.GdkEvent           // out
 	var _arg2 C.gboolean            // out

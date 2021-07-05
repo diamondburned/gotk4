@@ -50,12 +50,11 @@ type StackSidebar interface {
 
 	// Stack retrieves the stack.
 	Stack() Stack
-	// SetStackStackSidebar: set the `GtkStack` associated with this
-	// `GtkStackSidebar`.
+	// SetStack: set the `GtkStack` associated with this `GtkStackSidebar`.
 	//
 	// The sidebar widget will automatically update according to the order and
 	// items within the given `GtkStack`.
-	SetStackStackSidebar(stack Stack)
+	SetStack(stack Stack)
 }
 
 // stackSidebar implements the StackSidebar class.
@@ -90,6 +89,18 @@ func NewStackSidebar() StackSidebar {
 	return _stackSidebar
 }
 
+func (s stackSidebar) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(s))
+}
+
+func (s stackSidebar) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(s))
+}
+
+func (s stackSidebar) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(s))
+}
+
 func (s stackSidebar) Stack() Stack {
 	var _arg0 *C.GtkStackSidebar // out
 	var _cret *C.GtkStack        // in
@@ -105,7 +116,7 @@ func (s stackSidebar) Stack() Stack {
 	return _stack
 }
 
-func (s stackSidebar) SetStackStackSidebar(stack Stack) {
+func (s stackSidebar) SetStack(stack Stack) {
 	var _arg0 *C.GtkStackSidebar // out
 	var _arg1 *C.GtkStack        // out
 
@@ -113,16 +124,4 @@ func (s stackSidebar) SetStackStackSidebar(stack Stack) {
 	_arg1 = (*C.GtkStack)(unsafe.Pointer(stack.Native()))
 
 	C.gtk_stack_sidebar_set_stack(_arg0, _arg1)
-}
-
-func (s stackSidebar) AsAccessible() Accessible {
-	return WrapAccessible(gextras.InternObject(s))
-}
-
-func (s stackSidebar) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(s))
-}
-
-func (s stackSidebar) AsConstraintTarget() ConstraintTarget {
-	return WrapConstraintTarget(gextras.InternObject(s))
 }

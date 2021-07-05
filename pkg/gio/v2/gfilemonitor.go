@@ -46,20 +46,20 @@ func init() {
 type FileMonitor interface {
 	gextras.Objector
 
-	// CancelFileMonitor cancels a file monitor.
-	CancelFileMonitor() bool
-	// EmitEventFileMonitor emits the Monitor::changed signal if a change has
-	// taken place. Should be called from file monitor implementations only.
+	// Cancel cancels a file monitor.
+	Cancel() bool
+	// EmitEvent emits the Monitor::changed signal if a change has taken place.
+	// Should be called from file monitor implementations only.
 	//
 	// Implementations are responsible to call this method from the
 	// [thread-default main context][g-main-context-push-thread-default] of the
 	// thread that the monitor was created in.
-	EmitEventFileMonitor(child File, otherFile File, eventType FileMonitorEvent)
-	// IsCancelledFileMonitor returns whether the monitor is canceled.
-	IsCancelledFileMonitor() bool
-	// SetRateLimitFileMonitor sets the rate limit to which the @monitor will
-	// report consecutive change events to the same file.
-	SetRateLimitFileMonitor(limitMsecs int)
+	EmitEvent(child File, otherFile File, eventType FileMonitorEvent)
+	// IsCancelled returns whether the monitor is canceled.
+	IsCancelled() bool
+	// SetRateLimit sets the rate limit to which the @monitor will report
+	// consecutive change events to the same file.
+	SetRateLimit(limitMsecs int)
 }
 
 // fileMonitor implements the FileMonitor class.
@@ -81,7 +81,7 @@ func marshalFileMonitor(p uintptr) (interface{}, error) {
 	return WrapFileMonitor(obj), nil
 }
 
-func (m fileMonitor) CancelFileMonitor() bool {
+func (m fileMonitor) Cancel() bool {
 	var _arg0 *C.GFileMonitor // out
 	var _cret C.gboolean      // in
 
@@ -98,7 +98,7 @@ func (m fileMonitor) CancelFileMonitor() bool {
 	return _ok
 }
 
-func (m fileMonitor) EmitEventFileMonitor(child File, otherFile File, eventType FileMonitorEvent) {
+func (m fileMonitor) EmitEvent(child File, otherFile File, eventType FileMonitorEvent) {
 	var _arg0 *C.GFileMonitor     // out
 	var _arg1 *C.GFile            // out
 	var _arg2 *C.GFile            // out
@@ -112,7 +112,7 @@ func (m fileMonitor) EmitEventFileMonitor(child File, otherFile File, eventType 
 	C.g_file_monitor_emit_event(_arg0, _arg1, _arg2, _arg3)
 }
 
-func (m fileMonitor) IsCancelledFileMonitor() bool {
+func (m fileMonitor) IsCancelled() bool {
 	var _arg0 *C.GFileMonitor // out
 	var _cret C.gboolean      // in
 
@@ -129,7 +129,7 @@ func (m fileMonitor) IsCancelledFileMonitor() bool {
 	return _ok
 }
 
-func (m fileMonitor) SetRateLimitFileMonitor(limitMsecs int) {
+func (m fileMonitor) SetRateLimit(limitMsecs int) {
 	var _arg0 *C.GFileMonitor // out
 	var _arg1 C.gint          // out
 

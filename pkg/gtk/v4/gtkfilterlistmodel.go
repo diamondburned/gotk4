@@ -55,10 +55,9 @@ type FilterListModel interface {
 	// [property@Gtk.FilterListModel:incremental] is false - this function
 	// returns 0.
 	Pending() uint
-	// SetFilterFilterListModel sets the filter used to filter items.
-	SetFilterFilterListModel(filter Filter)
-	// SetIncrementalFilterListModel sets the filter model to do an incremental
-	// sort.
+	// SetFilter sets the filter used to filter items.
+	SetFilter(filter Filter)
+	// SetIncremental sets the filter model to do an incremental sort.
 	//
 	// When incremental filtering is enabled, the `GtkFilterListModel` will not
 	// run filters immediately, but will instead queue an idle handler that
@@ -74,7 +73,7 @@ type FilterListModel interface {
 	//
 	// See [method@Gtk.FilterListModel.get_pending] for progress information
 	// about an ongoing incremental filtering operation.
-	SetIncrementalFilterListModel(incremental bool)
+	SetIncremental(incremental bool)
 }
 
 // filterListModel implements the FilterListModel class.
@@ -143,7 +142,7 @@ func (s filterListModel) Pending() uint {
 	return _guint
 }
 
-func (s filterListModel) SetFilterFilterListModel(filter Filter) {
+func (s filterListModel) SetFilter(filter Filter) {
 	var _arg0 *C.GtkFilterListModel // out
 	var _arg1 *C.GtkFilter          // out
 
@@ -153,7 +152,7 @@ func (s filterListModel) SetFilterFilterListModel(filter Filter) {
 	C.gtk_filter_list_model_set_filter(_arg0, _arg1)
 }
 
-func (s filterListModel) SetIncrementalFilterListModel(incremental bool) {
+func (s filterListModel) SetIncremental(incremental bool) {
 	var _arg0 *C.GtkFilterListModel // out
 	var _arg1 C.gboolean            // out
 

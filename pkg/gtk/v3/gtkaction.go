@@ -73,15 +73,15 @@ type Action interface {
 	// AsBuildable casts the class to the Buildable interface.
 	AsBuildable() Buildable
 
-	// ActivateAction emits the “activate” signal on the specified action, if it
-	// isn't insensitive. This gets called by the proxy widgets when they get
+	// Activate emits the “activate” signal on the specified action, if it isn't
+	// insensitive. This gets called by the proxy widgets when they get
 	// activated.
 	//
 	// It can also be used to manually activate an action.
 	//
 	// Deprecated: since version 3.10.
-	ActivateAction()
-	// BlockActivateAction: disable activation signals from the action
+	Activate()
+	// BlockActivate: disable activation signals from the action
 	//
 	// This is needed when updating the state of your proxy Activatable widget
 	// could result in calling gtk_action_activate(), this is a convenience
@@ -89,9 +89,9 @@ type Action interface {
 	// instance).
 	//
 	// Deprecated: since version 3.10.
-	BlockActivateAction()
-	// ConnectAcceleratorAction installs the accelerator for @action if @action
-	// has an accel path and group. See gtk_action_set_accel_path() and
+	BlockActivate()
+	// ConnectAccelerator installs the accelerator for @action if @action has an
+	// accel path and group. See gtk_action_set_accel_path() and
 	// gtk_action_set_accel_group()
 	//
 	// Since multiple proxies may independently trigger the installation of the
@@ -100,33 +100,33 @@ type Action interface {
 	// gtk_action_disconnect_accelerator() has been called as many times.
 	//
 	// Deprecated: since version 3.10.
-	ConnectAcceleratorAction()
-	// CreateIconAction: this function is intended for use by action
-	// implementations to create icons displayed in the proxy widgets.
+	ConnectAccelerator()
+	// CreateIcon: this function is intended for use by action implementations
+	// to create icons displayed in the proxy widgets.
 	//
 	// Deprecated: since version 3.10.
-	CreateIconAction(iconSize int) Widget
-	// CreateMenuAction: if @action provides a Menu widget as a submenu for the
-	// menu item or the toolbar item it creates, this function returns an
-	// instance of that menu.
+	CreateIcon(iconSize int) Widget
+	// CreateMenu: if @action provides a Menu widget as a submenu for the menu
+	// item or the toolbar item it creates, this function returns an instance of
+	// that menu.
 	//
 	// Deprecated: since version 3.10.
-	CreateMenuAction() Widget
-	// CreateMenuItemAction creates a menu item widget that proxies for the
-	// given action.
+	CreateMenu() Widget
+	// CreateMenuItem creates a menu item widget that proxies for the given
+	// action.
 	//
 	// Deprecated: since version 3.10.
-	CreateMenuItemAction() Widget
-	// CreateToolItemAction creates a toolbar item widget that proxies for the
-	// given action.
+	CreateMenuItem() Widget
+	// CreateToolItem creates a toolbar item widget that proxies for the given
+	// action.
 	//
 	// Deprecated: since version 3.10.
-	CreateToolItemAction() Widget
-	// DisconnectAcceleratorAction undoes the effect of one call to
+	CreateToolItem() Widget
+	// DisconnectAccelerator undoes the effect of one call to
 	// gtk_action_connect_accelerator().
 	//
 	// Deprecated: since version 3.10.
-	DisconnectAcceleratorAction()
+	DisconnectAccelerator()
 	// AccelPath returns the accel path for this action.
 	//
 	// Deprecated: since version 3.10.
@@ -184,20 +184,20 @@ type Action interface {
 	//
 	// Deprecated: since version 3.10.
 	VisibleVertical() bool
-	// IsSensitiveAction returns whether the action is effectively sensitive.
+	// IsSensitive returns whether the action is effectively sensitive.
 	//
 	// Deprecated: since version 3.10.
-	IsSensitiveAction() bool
-	// IsVisibleAction returns whether the action is effectively visible.
+	IsSensitive() bool
+	// IsVisible returns whether the action is effectively visible.
 	//
 	// Deprecated: since version 3.10.
-	IsVisibleAction() bool
-	// SetAccelGroupAction sets the AccelGroup in which the accelerator for this
+	IsVisible() bool
+	// SetAccelGroup sets the AccelGroup in which the accelerator for this
 	// action will be installed.
 	//
 	// Deprecated: since version 3.10.
-	SetAccelGroupAction(accelGroup AccelGroup)
-	// SetAccelPathAction sets the accel path for this action. All proxy widgets
+	SetAccelGroup(accelGroup AccelGroup)
+	// SetAccelPath sets the accel path for this action. All proxy widgets
 	// associated with the action will have this accel path, so that their
 	// accelerators are consistent.
 	//
@@ -206,67 +206,65 @@ type Action interface {
 	// with g_intern_static_string().
 	//
 	// Deprecated: since version 3.10.
-	SetAccelPathAction(accelPath string)
-	// SetAlwaysShowImageAction sets whether @action's menu item proxies will
-	// ignore the Settings:gtk-menu-images setting and always show their image,
-	// if available.
+	SetAccelPath(accelPath string)
+	// SetAlwaysShowImage sets whether @action's menu item proxies will ignore
+	// the Settings:gtk-menu-images setting and always show their image, if
+	// available.
 	//
 	// Use this if the menu item would be useless or hard to use without their
 	// image.
 	//
 	// Deprecated: since version 3.10.
-	SetAlwaysShowImageAction(alwaysShow bool)
-	// SetIconNameAction sets the icon name on @action
+	SetAlwaysShowImage(alwaysShow bool)
+	// SetIconName sets the icon name on @action
 	//
 	// Deprecated: since version 3.10.
-	SetIconNameAction(iconName string)
-	// SetIsImportantAction sets whether the action is important, this attribute
-	// is used primarily by toolbar items to decide whether to show a label or
-	// not.
+	SetIconName(iconName string)
+	// SetIsImportant sets whether the action is important, this attribute is
+	// used primarily by toolbar items to decide whether to show a label or not.
 	//
 	// Deprecated: since version 3.10.
-	SetIsImportantAction(isImportant bool)
-	// SetLabelAction sets the label of @action.
+	SetIsImportant(isImportant bool)
+	// SetLabel sets the label of @action.
 	//
 	// Deprecated: since version 3.10.
-	SetLabelAction(label string)
-	// SetSensitiveAction sets the :sensitive property of the action to
-	// @sensitive. Note that this doesn’t necessarily mean effective
-	// sensitivity. See gtk_action_is_sensitive() for that.
+	SetLabel(label string)
+	// SetSensitive sets the :sensitive property of the action to @sensitive.
+	// Note that this doesn’t necessarily mean effective sensitivity. See
+	// gtk_action_is_sensitive() for that.
 	//
 	// Deprecated: since version 3.10.
-	SetSensitiveAction(sensitive bool)
-	// SetShortLabelAction sets a shorter label text on @action.
+	SetSensitive(sensitive bool)
+	// SetShortLabel sets a shorter label text on @action.
 	//
 	// Deprecated: since version 3.10.
-	SetShortLabelAction(shortLabel string)
-	// SetStockIDAction sets the stock id on @action
+	SetShortLabel(shortLabel string)
+	// SetStockID sets the stock id on @action
 	//
 	// Deprecated: since version 3.10.
-	SetStockIDAction(stockId string)
-	// SetTooltipAction sets the tooltip text on @action
+	SetStockID(stockId string)
+	// SetTooltip sets the tooltip text on @action
 	//
 	// Deprecated: since version 3.10.
-	SetTooltipAction(tooltip string)
-	// SetVisibleAction sets the :visible property of the action to @visible.
-	// Note that this doesn’t necessarily mean effective visibility. See
+	SetTooltip(tooltip string)
+	// SetVisible sets the :visible property of the action to @visible. Note
+	// that this doesn’t necessarily mean effective visibility. See
 	// gtk_action_is_visible() for that.
 	//
 	// Deprecated: since version 3.10.
-	SetVisibleAction(visible bool)
-	// SetVisibleHorizontalAction sets whether @action is visible when
-	// horizontal
+	SetVisible(visible bool)
+	// SetVisibleHorizontal sets whether @action is visible when horizontal
 	//
 	// Deprecated: since version 3.10.
-	SetVisibleHorizontalAction(visibleHorizontal bool)
-	// SetVisibleVerticalAction sets whether @action is visible when vertical
+	SetVisibleHorizontal(visibleHorizontal bool)
+	// SetVisibleVertical sets whether @action is visible when vertical
 	//
 	// Deprecated: since version 3.10.
-	SetVisibleVerticalAction(visibleVertical bool)
-	// UnblockActivateAction: reenable activation signals from the action
+	SetVisibleVertical(visibleVertical bool)
+	// UnblockActivate: reenable activation signals from the action
 	//
 	// Deprecated: since version 3.10.
-	UnblockActivateAction()
+	UnblockActivate()
 }
 
 // action implements the Action class.
@@ -319,7 +317,11 @@ func NewAction(name string, label string, tooltip string, stockId string) Action
 	return _action
 }
 
-func (a action) ActivateAction() {
+func (a action) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(a))
+}
+
+func (a action) Activate() {
 	var _arg0 *C.GtkAction // out
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
@@ -327,7 +329,7 @@ func (a action) ActivateAction() {
 	C.gtk_action_activate(_arg0)
 }
 
-func (a action) BlockActivateAction() {
+func (a action) BlockActivate() {
 	var _arg0 *C.GtkAction // out
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
@@ -335,7 +337,7 @@ func (a action) BlockActivateAction() {
 	C.gtk_action_block_activate(_arg0)
 }
 
-func (a action) ConnectAcceleratorAction() {
+func (a action) ConnectAccelerator() {
 	var _arg0 *C.GtkAction // out
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
@@ -343,7 +345,7 @@ func (a action) ConnectAcceleratorAction() {
 	C.gtk_action_connect_accelerator(_arg0)
 }
 
-func (a action) CreateIconAction(iconSize int) Widget {
+func (a action) CreateIcon(iconSize int) Widget {
 	var _arg0 *C.GtkAction  // out
 	var _arg1 C.GtkIconSize // out
 	var _cret *C.GtkWidget  // in
@@ -360,7 +362,7 @@ func (a action) CreateIconAction(iconSize int) Widget {
 	return _widget
 }
 
-func (a action) CreateMenuAction() Widget {
+func (a action) CreateMenu() Widget {
 	var _arg0 *C.GtkAction // out
 	var _cret *C.GtkWidget // in
 
@@ -375,7 +377,7 @@ func (a action) CreateMenuAction() Widget {
 	return _widget
 }
 
-func (a action) CreateMenuItemAction() Widget {
+func (a action) CreateMenuItem() Widget {
 	var _arg0 *C.GtkAction // out
 	var _cret *C.GtkWidget // in
 
@@ -390,7 +392,7 @@ func (a action) CreateMenuItemAction() Widget {
 	return _widget
 }
 
-func (a action) CreateToolItemAction() Widget {
+func (a action) CreateToolItem() Widget {
 	var _arg0 *C.GtkAction // out
 	var _cret *C.GtkWidget // in
 
@@ -405,7 +407,7 @@ func (a action) CreateToolItemAction() Widget {
 	return _widget
 }
 
-func (a action) DisconnectAcceleratorAction() {
+func (a action) DisconnectAccelerator() {
 	var _arg0 *C.GtkAction // out
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
@@ -620,7 +622,7 @@ func (a action) VisibleVertical() bool {
 	return _ok
 }
 
-func (a action) IsSensitiveAction() bool {
+func (a action) IsSensitive() bool {
 	var _arg0 *C.GtkAction // out
 	var _cret C.gboolean   // in
 
@@ -637,7 +639,7 @@ func (a action) IsSensitiveAction() bool {
 	return _ok
 }
 
-func (a action) IsVisibleAction() bool {
+func (a action) IsVisible() bool {
 	var _arg0 *C.GtkAction // out
 	var _cret C.gboolean   // in
 
@@ -654,7 +656,7 @@ func (a action) IsVisibleAction() bool {
 	return _ok
 }
 
-func (a action) SetAccelGroupAction(accelGroup AccelGroup) {
+func (a action) SetAccelGroup(accelGroup AccelGroup) {
 	var _arg0 *C.GtkAction     // out
 	var _arg1 *C.GtkAccelGroup // out
 
@@ -664,7 +666,7 @@ func (a action) SetAccelGroupAction(accelGroup AccelGroup) {
 	C.gtk_action_set_accel_group(_arg0, _arg1)
 }
 
-func (a action) SetAccelPathAction(accelPath string) {
+func (a action) SetAccelPath(accelPath string) {
 	var _arg0 *C.GtkAction // out
 	var _arg1 *C.gchar     // out
 
@@ -675,7 +677,7 @@ func (a action) SetAccelPathAction(accelPath string) {
 	C.gtk_action_set_accel_path(_arg0, _arg1)
 }
 
-func (a action) SetAlwaysShowImageAction(alwaysShow bool) {
+func (a action) SetAlwaysShowImage(alwaysShow bool) {
 	var _arg0 *C.GtkAction // out
 	var _arg1 C.gboolean   // out
 
@@ -687,7 +689,7 @@ func (a action) SetAlwaysShowImageAction(alwaysShow bool) {
 	C.gtk_action_set_always_show_image(_arg0, _arg1)
 }
 
-func (a action) SetIconNameAction(iconName string) {
+func (a action) SetIconName(iconName string) {
 	var _arg0 *C.GtkAction // out
 	var _arg1 *C.gchar     // out
 
@@ -698,7 +700,7 @@ func (a action) SetIconNameAction(iconName string) {
 	C.gtk_action_set_icon_name(_arg0, _arg1)
 }
 
-func (a action) SetIsImportantAction(isImportant bool) {
+func (a action) SetIsImportant(isImportant bool) {
 	var _arg0 *C.GtkAction // out
 	var _arg1 C.gboolean   // out
 
@@ -710,7 +712,7 @@ func (a action) SetIsImportantAction(isImportant bool) {
 	C.gtk_action_set_is_important(_arg0, _arg1)
 }
 
-func (a action) SetLabelAction(label string) {
+func (a action) SetLabel(label string) {
 	var _arg0 *C.GtkAction // out
 	var _arg1 *C.gchar     // out
 
@@ -721,7 +723,7 @@ func (a action) SetLabelAction(label string) {
 	C.gtk_action_set_label(_arg0, _arg1)
 }
 
-func (a action) SetSensitiveAction(sensitive bool) {
+func (a action) SetSensitive(sensitive bool) {
 	var _arg0 *C.GtkAction // out
 	var _arg1 C.gboolean   // out
 
@@ -733,7 +735,7 @@ func (a action) SetSensitiveAction(sensitive bool) {
 	C.gtk_action_set_sensitive(_arg0, _arg1)
 }
 
-func (a action) SetShortLabelAction(shortLabel string) {
+func (a action) SetShortLabel(shortLabel string) {
 	var _arg0 *C.GtkAction // out
 	var _arg1 *C.gchar     // out
 
@@ -744,7 +746,7 @@ func (a action) SetShortLabelAction(shortLabel string) {
 	C.gtk_action_set_short_label(_arg0, _arg1)
 }
 
-func (a action) SetStockIDAction(stockId string) {
+func (a action) SetStockID(stockId string) {
 	var _arg0 *C.GtkAction // out
 	var _arg1 *C.gchar     // out
 
@@ -755,7 +757,7 @@ func (a action) SetStockIDAction(stockId string) {
 	C.gtk_action_set_stock_id(_arg0, _arg1)
 }
 
-func (a action) SetTooltipAction(tooltip string) {
+func (a action) SetTooltip(tooltip string) {
 	var _arg0 *C.GtkAction // out
 	var _arg1 *C.gchar     // out
 
@@ -766,7 +768,7 @@ func (a action) SetTooltipAction(tooltip string) {
 	C.gtk_action_set_tooltip(_arg0, _arg1)
 }
 
-func (a action) SetVisibleAction(visible bool) {
+func (a action) SetVisible(visible bool) {
 	var _arg0 *C.GtkAction // out
 	var _arg1 C.gboolean   // out
 
@@ -778,7 +780,7 @@ func (a action) SetVisibleAction(visible bool) {
 	C.gtk_action_set_visible(_arg0, _arg1)
 }
 
-func (a action) SetVisibleHorizontalAction(visibleHorizontal bool) {
+func (a action) SetVisibleHorizontal(visibleHorizontal bool) {
 	var _arg0 *C.GtkAction // out
 	var _arg1 C.gboolean   // out
 
@@ -790,7 +792,7 @@ func (a action) SetVisibleHorizontalAction(visibleHorizontal bool) {
 	C.gtk_action_set_visible_horizontal(_arg0, _arg1)
 }
 
-func (a action) SetVisibleVerticalAction(visibleVertical bool) {
+func (a action) SetVisibleVertical(visibleVertical bool) {
 	var _arg0 *C.GtkAction // out
 	var _arg1 C.gboolean   // out
 
@@ -802,14 +804,10 @@ func (a action) SetVisibleVerticalAction(visibleVertical bool) {
 	C.gtk_action_set_visible_vertical(_arg0, _arg1)
 }
 
-func (a action) UnblockActivateAction() {
+func (a action) UnblockActivate() {
 	var _arg0 *C.GtkAction // out
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
 
 	C.gtk_action_unblock_activate(_arg0)
-}
-
-func (a action) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(a))
 }

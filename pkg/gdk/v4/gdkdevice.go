@@ -143,11 +143,11 @@ type Device interface {
 	//
 	// “`
 	VendorID() string
-	// HasBidiLayoutsDevice determines if layouts for both right-to-left and
+	// HasBidiLayouts determines if layouts for both right-to-left and
 	// left-to-right languages are in use on the keyboard.
 	//
 	// This is only relevant for keyboard devices.
-	HasBidiLayoutsDevice() bool
+	HasBidiLayouts() bool
 }
 
 // device implements the Device class.
@@ -423,7 +423,7 @@ func (d device) VendorID() string {
 	return _utf8
 }
 
-func (d device) HasBidiLayoutsDevice() bool {
+func (d device) HasBidiLayouts() bool {
 	var _arg0 *C.GdkDevice // out
 	var _cret C.gboolean   // in
 

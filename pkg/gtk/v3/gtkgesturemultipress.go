@@ -41,14 +41,14 @@ type GestureMultiPress interface {
 	// gtk_gesture_multi_press_set_area() for more details on what the press
 	// area represents.
 	Area() (gdk.Rectangle, bool)
-	// SetAreaGestureMultiPress: if @rect is non-nil, the press area will be
-	// checked to be confined within the rectangle, otherwise the button count
-	// will be reset so the press is seen as being the first one. If @rect is
-	// nil, the area will be reset to an unrestricted state.
+	// SetArea: if @rect is non-nil, the press area will be checked to be
+	// confined within the rectangle, otherwise the button count will be reset
+	// so the press is seen as being the first one. If @rect is nil, the area
+	// will be reset to an unrestricted state.
 	//
 	// Note: The rectangle is only used to determine whether any non-first click
 	// falls within the expected area. This is not akin to an input shape.
-	SetAreaGestureMultiPress(rect *gdk.Rectangle)
+	SetArea(rect *gdk.Rectangle)
 }
 
 // gestureMultiPress implements the GestureMultiPress class.
@@ -117,7 +117,7 @@ func (g gestureMultiPress) Area() (gdk.Rectangle, bool) {
 	return _rect, _ok
 }
 
-func (g gestureMultiPress) SetAreaGestureMultiPress(rect *gdk.Rectangle) {
+func (g gestureMultiPress) SetArea(rect *gdk.Rectangle) {
 	var _arg0 *C.GtkGestureMultiPress // out
 	var _arg1 *C.GdkRectangle         // out
 

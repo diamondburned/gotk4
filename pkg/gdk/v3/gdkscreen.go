@@ -199,28 +199,27 @@ type Screen interface {
 	//
 	// Deprecated: since version 3.22.
 	WidthMm() int
-	// IsCompositedScreen returns whether windows with an RGBA visual can
-	// reasonably be expected to have their alpha channel drawn correctly on the
-	// screen.
+	// IsComposited returns whether windows with an RGBA visual can reasonably
+	// be expected to have their alpha channel drawn correctly on the screen.
 	//
 	// On X11 this function returns whether a compositing manager is compositing
 	// @screen.
-	IsCompositedScreen() bool
-	// MakeDisplayNameScreen determines the name to pass to gdk_display_open()
-	// to get a Display with this screen as the default screen.
+	IsComposited() bool
+	// MakeDisplayName determines the name to pass to gdk_display_open() to get
+	// a Display with this screen as the default screen.
 	//
 	// Deprecated: since version 3.22.
-	MakeDisplayNameScreen() string
-	// SetFontOptionsScreen sets the default font options for the screen. These
+	MakeDisplayName() string
+	// SetFontOptions sets the default font options for the screen. These
 	// options will be set on any Context’s newly created with
 	// gdk_pango_context_get_for_screen(). Changing the default set of font
 	// options does not affect contexts that have already been created.
-	SetFontOptionsScreen(options *cairo.FontOptions)
-	// SetResolutionScreen sets the resolution for font handling on the screen.
-	// This is a scale factor between points specified in a FontDescription and
-	// cairo units. The default value is 96, meaning that a 10 point font will
-	// be 13 units high. (10 * 96. / 72. = 13.3).
-	SetResolutionScreen(dpi float64)
+	SetFontOptions(options *cairo.FontOptions)
+	// SetResolution sets the resolution for font handling on the screen. This
+	// is a scale factor between points specified in a FontDescription and cairo
+	// units. The default value is 96, meaning that a 10 point font will be 13
+	// units high. (10 * 96. / 72. = 13.3).
+	SetResolution(dpi float64)
 }
 
 // screen implements the Screen class.
@@ -633,7 +632,7 @@ func (s screen) WidthMm() int {
 	return _gint
 }
 
-func (s screen) IsCompositedScreen() bool {
+func (s screen) IsComposited() bool {
 	var _arg0 *C.GdkScreen // out
 	var _cret C.gboolean   // in
 
@@ -650,7 +649,7 @@ func (s screen) IsCompositedScreen() bool {
 	return _ok
 }
 
-func (s screen) MakeDisplayNameScreen() string {
+func (s screen) MakeDisplayName() string {
 	var _arg0 *C.GdkScreen // out
 	var _cret *C.gchar     // in
 
@@ -666,7 +665,7 @@ func (s screen) MakeDisplayNameScreen() string {
 	return _utf8
 }
 
-func (s screen) SetFontOptionsScreen(options *cairo.FontOptions) {
+func (s screen) SetFontOptions(options *cairo.FontOptions) {
 	var _arg0 *C.GdkScreen            // out
 	var _arg1 *C.cairo_font_options_t // out
 
@@ -676,7 +675,7 @@ func (s screen) SetFontOptionsScreen(options *cairo.FontOptions) {
 	C.gdk_screen_set_font_options(_arg0, _arg1)
 }
 
-func (s screen) SetResolutionScreen(dpi float64) {
+func (s screen) SetResolution(dpi float64) {
 	var _arg0 *C.GdkScreen // out
 	var _arg1 C.gdouble    // out
 

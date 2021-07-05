@@ -52,22 +52,22 @@ type ActionBar interface {
 	CenterWidget() Widget
 	// Revealed gets whether the contents of the action bar are revealed.
 	Revealed() bool
-	// PackEndActionBar adds @child to @action_bar, packed with reference to the
-	// end of the @action_bar.
-	PackEndActionBar(child Widget)
-	// PackStartActionBar adds @child to @action_bar, packed with reference to
-	// the start of the @action_bar.
-	PackStartActionBar(child Widget)
-	// RemoveActionBar removes a child from @action_bar.
-	RemoveActionBar(child Widget)
-	// SetCenterWidgetActionBar sets the center widget for the `GtkActionBar`.
-	SetCenterWidgetActionBar(centerWidget Widget)
-	// SetRevealedActionBar reveals or conceals the content of the action bar.
+	// PackEnd adds @child to @action_bar, packed with reference to the end of
+	// the @action_bar.
+	PackEnd(child Widget)
+	// PackStart adds @child to @action_bar, packed with reference to the start
+	// of the @action_bar.
+	PackStart(child Widget)
+	// Remove removes a child from @action_bar.
+	Remove(child Widget)
+	// SetCenterWidget sets the center widget for the `GtkActionBar`.
+	SetCenterWidget(centerWidget Widget)
+	// SetRevealed reveals or conceals the content of the action bar.
 	//
 	// Note: this does not show or hide @action_bar in the
 	// [property@Gtk.Widget:visible] sense, so revealing has no effect if the
 	// action bar is hidden.
-	SetRevealedActionBar(revealed bool)
+	SetRevealed(revealed bool)
 }
 
 // actionBar implements the ActionBar class.
@@ -102,6 +102,18 @@ func NewActionBar() ActionBar {
 	return _actionBar
 }
 
+func (a actionBar) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(a))
+}
+
+func (a actionBar) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(a))
+}
+
+func (a actionBar) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(a))
+}
+
 func (a actionBar) CenterWidget() Widget {
 	var _arg0 *C.GtkActionBar // out
 	var _cret *C.GtkWidget    // in
@@ -134,7 +146,7 @@ func (a actionBar) Revealed() bool {
 	return _ok
 }
 
-func (a actionBar) PackEndActionBar(child Widget) {
+func (a actionBar) PackEnd(child Widget) {
 	var _arg0 *C.GtkActionBar // out
 	var _arg1 *C.GtkWidget    // out
 
@@ -144,7 +156,7 @@ func (a actionBar) PackEndActionBar(child Widget) {
 	C.gtk_action_bar_pack_end(_arg0, _arg1)
 }
 
-func (a actionBar) PackStartActionBar(child Widget) {
+func (a actionBar) PackStart(child Widget) {
 	var _arg0 *C.GtkActionBar // out
 	var _arg1 *C.GtkWidget    // out
 
@@ -154,7 +166,7 @@ func (a actionBar) PackStartActionBar(child Widget) {
 	C.gtk_action_bar_pack_start(_arg0, _arg1)
 }
 
-func (a actionBar) RemoveActionBar(child Widget) {
+func (a actionBar) Remove(child Widget) {
 	var _arg0 *C.GtkActionBar // out
 	var _arg1 *C.GtkWidget    // out
 
@@ -164,7 +176,7 @@ func (a actionBar) RemoveActionBar(child Widget) {
 	C.gtk_action_bar_remove(_arg0, _arg1)
 }
 
-func (a actionBar) SetCenterWidgetActionBar(centerWidget Widget) {
+func (a actionBar) SetCenterWidget(centerWidget Widget) {
 	var _arg0 *C.GtkActionBar // out
 	var _arg1 *C.GtkWidget    // out
 
@@ -174,7 +186,7 @@ func (a actionBar) SetCenterWidgetActionBar(centerWidget Widget) {
 	C.gtk_action_bar_set_center_widget(_arg0, _arg1)
 }
 
-func (a actionBar) SetRevealedActionBar(revealed bool) {
+func (a actionBar) SetRevealed(revealed bool) {
 	var _arg0 *C.GtkActionBar // out
 	var _arg1 C.gboolean      // out
 
@@ -184,16 +196,4 @@ func (a actionBar) SetRevealedActionBar(revealed bool) {
 	}
 
 	C.gtk_action_bar_set_revealed(_arg0, _arg1)
-}
-
-func (a actionBar) AsAccessible() Accessible {
-	return WrapAccessible(gextras.InternObject(a))
-}
-
-func (a actionBar) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(a))
-}
-
-func (a actionBar) AsConstraintTarget() ConstraintTarget {
-	return WrapConstraintTarget(gextras.InternObject(a))
 }

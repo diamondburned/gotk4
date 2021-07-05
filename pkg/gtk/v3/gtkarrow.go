@@ -48,10 +48,10 @@ type Arrow interface {
 	// AsBuildable casts the class to the Buildable interface.
 	AsBuildable() Buildable
 
-	// SetArrow sets the direction and style of the Arrow, @arrow.
+	// Set sets the direction and style of the Arrow, @arrow.
 	//
 	// Deprecated: since version 3.14.
-	SetArrow(arrowType ArrowType, shadowType ShadowType)
+	Set(arrowType ArrowType, shadowType ShadowType)
 }
 
 // arrow implements the Arrow class.
@@ -93,7 +93,11 @@ func NewArrow(arrowType ArrowType, shadowType ShadowType) Arrow {
 	return _arrow
 }
 
-func (a arrow) SetArrow(arrowType ArrowType, shadowType ShadowType) {
+func (a arrow) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(a))
+}
+
+func (a arrow) Set(arrowType ArrowType, shadowType ShadowType) {
 	var _arg0 *C.GtkArrow     // out
 	var _arg1 C.GtkArrowType  // out
 	var _arg2 C.GtkShadowType // out
@@ -103,8 +107,4 @@ func (a arrow) SetArrow(arrowType ArrowType, shadowType ShadowType) {
 	_arg2 = C.GtkShadowType(shadowType)
 
 	C.gtk_arrow_set(_arg0, _arg1, _arg2)
-}
-
-func (a arrow) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(a))
 }

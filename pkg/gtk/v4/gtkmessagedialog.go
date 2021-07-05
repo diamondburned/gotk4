@@ -114,8 +114,8 @@ type MessageDialog interface {
 	// below those labels. See [method@Gtk.Dialog.get_content_area] for the
 	// corresponding function in the parent [class@Gtk.Dialog].
 	MessageArea() Widget
-	// SetMarkupMessageDialog sets the text of the message dialog.
-	SetMarkupMessageDialog(str string)
+	// SetMarkup sets the text of the message dialog.
+	SetMarkup(str string)
 }
 
 // messageDialog implements the MessageDialog class.
@@ -135,32 +135,6 @@ func marshalMessageDialog(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapMessageDialog(obj), nil
-}
-
-func (m messageDialog) MessageArea() Widget {
-	var _arg0 *C.GtkMessageDialog // out
-	var _cret *C.GtkWidget        // in
-
-	_arg0 = (*C.GtkMessageDialog)(unsafe.Pointer(m.Native()))
-
-	_cret = C.gtk_message_dialog_get_message_area(_arg0)
-
-	var _widget Widget // out
-
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
-
-	return _widget
-}
-
-func (m messageDialog) SetMarkupMessageDialog(str string) {
-	var _arg0 *C.GtkMessageDialog // out
-	var _arg1 *C.char             // out
-
-	_arg0 = (*C.GtkMessageDialog)(unsafe.Pointer(m.Native()))
-	_arg1 = (*C.char)(C.CString(str))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	C.gtk_message_dialog_set_markup(_arg0, _arg1)
 }
 
 func (m messageDialog) AsAccessible() Accessible {
@@ -185,4 +159,30 @@ func (m messageDialog) AsRoot() Root {
 
 func (m messageDialog) AsShortcutManager() ShortcutManager {
 	return WrapShortcutManager(gextras.InternObject(m))
+}
+
+func (m messageDialog) MessageArea() Widget {
+	var _arg0 *C.GtkMessageDialog // out
+	var _cret *C.GtkWidget        // in
+
+	_arg0 = (*C.GtkMessageDialog)(unsafe.Pointer(m.Native()))
+
+	_cret = C.gtk_message_dialog_get_message_area(_arg0)
+
+	var _widget Widget // out
+
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
+
+	return _widget
+}
+
+func (m messageDialog) SetMarkup(str string) {
+	var _arg0 *C.GtkMessageDialog // out
+	var _arg1 *C.char             // out
+
+	_arg0 = (*C.GtkMessageDialog)(unsafe.Pointer(m.Native()))
+	_arg1 = (*C.char)(C.CString(str))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	C.gtk_message_dialog_set_markup(_arg0, _arg1)
 }

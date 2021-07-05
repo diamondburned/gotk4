@@ -58,23 +58,23 @@ type GestureSingle interface {
 	Exclusive() bool
 	// TouchOnly returns true if the gesture is only triggered by touch events.
 	TouchOnly() bool
-	// SetButtonGestureSingle sets the button number @gesture listens to.
+	// SetButton sets the button number @gesture listens to.
 	//
 	// If non-0, every button press from a different button number will be
 	// ignored. Touch events implicitly match with button 1.
-	SetButtonGestureSingle(button uint)
-	// SetExclusiveGestureSingle sets whether @gesture is exclusive.
+	SetButton(button uint)
+	// SetExclusive sets whether @gesture is exclusive.
 	//
 	// An exclusive gesture will only handle pointer and "pointer emulated"
 	// touch events, so at any given time, there is only one sequence able to
 	// interact with those.
-	SetExclusiveGestureSingle(exclusive bool)
-	// SetTouchOnlyGestureSingle sets whether to handle only touch events.
+	SetExclusive(exclusive bool)
+	// SetTouchOnly sets whether to handle only touch events.
 	//
 	// If @touch_only is true, @gesture will only handle events of type
 	// GDK_TOUCH_BEGIN, GDK_TOUCH_UPDATE or GDK_TOUCH_END. If false, mouse
 	// events will be handled too.
-	SetTouchOnlyGestureSingle(touchOnly bool)
+	SetTouchOnly(touchOnly bool)
 }
 
 // gestureSingle implements the GestureSingle class.
@@ -178,7 +178,7 @@ func (g gestureSingle) TouchOnly() bool {
 	return _ok
 }
 
-func (g gestureSingle) SetButtonGestureSingle(button uint) {
+func (g gestureSingle) SetButton(button uint) {
 	var _arg0 *C.GtkGestureSingle // out
 	var _arg1 C.guint             // out
 
@@ -188,7 +188,7 @@ func (g gestureSingle) SetButtonGestureSingle(button uint) {
 	C.gtk_gesture_single_set_button(_arg0, _arg1)
 }
 
-func (g gestureSingle) SetExclusiveGestureSingle(exclusive bool) {
+func (g gestureSingle) SetExclusive(exclusive bool) {
 	var _arg0 *C.GtkGestureSingle // out
 	var _arg1 C.gboolean          // out
 
@@ -200,7 +200,7 @@ func (g gestureSingle) SetExclusiveGestureSingle(exclusive bool) {
 	C.gtk_gesture_single_set_exclusive(_arg0, _arg1)
 }
 
-func (g gestureSingle) SetTouchOnlyGestureSingle(touchOnly bool) {
+func (g gestureSingle) SetTouchOnly(touchOnly bool) {
 	var _arg0 *C.GtkGestureSingle // out
 	var _arg1 C.gboolean          // out
 

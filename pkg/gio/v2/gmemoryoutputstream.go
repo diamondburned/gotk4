@@ -69,13 +69,13 @@ type MemoryOutputStream interface {
 	// In any case, if you want the number of bytes currently written to the
 	// stream, use g_memory_output_stream_get_data_size().
 	Size() uint
-	// StealDataMemoryOutputStream gets any loaded data from the @ostream.
-	// Ownership of the data is transferred to the caller; when no longer needed
-	// it must be freed using the free function set in @ostream's
-	// OutputStream:destroy-function property.
+	// StealData gets any loaded data from the @ostream. Ownership of the data
+	// is transferred to the caller; when no longer needed it must be freed
+	// using the free function set in @ostream's OutputStream:destroy-function
+	// property.
 	//
 	// @ostream must be closed before calling this function.
-	StealDataMemoryOutputStream() interface{}
+	StealData() interface{}
 }
 
 // memoryOutputStream implements the MemoryOutputStream class.
@@ -109,6 +109,14 @@ func NewMemoryOutputStreamResizable() MemoryOutputStream {
 	_memoryOutputStream = WrapMemoryOutputStream(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _memoryOutputStream
+}
+
+func (m memoryOutputStream) AsPollableOutputStream() PollableOutputStream {
+	return WrapPollableOutputStream(gextras.InternObject(m))
+}
+
+func (m memoryOutputStream) AsSeekable() Seekable {
+	return WrapSeekable(gextras.InternObject(m))
 }
 
 func (o memoryOutputStream) Data() interface{} {
@@ -156,7 +164,7 @@ func (o memoryOutputStream) Size() uint {
 	return _gsize
 }
 
-func (o memoryOutputStream) StealDataMemoryOutputStream() interface{} {
+func (o memoryOutputStream) StealData() interface{} {
 	var _arg0 *C.GMemoryOutputStream // out
 	var _cret C.gpointer             // in
 
@@ -169,12 +177,4 @@ func (o memoryOutputStream) StealDataMemoryOutputStream() interface{} {
 	_gpointer = box.Get(uintptr(_cret))
 
 	return _gpointer
-}
-
-func (m memoryOutputStream) AsPollableOutputStream() PollableOutputStream {
-	return WrapPollableOutputStream(gextras.InternObject(m))
-}
-
-func (m memoryOutputStream) AsSeekable() Seekable {
-	return WrapSeekable(gextras.InternObject(m))
 }

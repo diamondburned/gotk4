@@ -27,14 +27,13 @@ func init() {
 type Misc interface {
 	gextras.Objector
 
-	// ThreadsEnterMisc: take the thread mutex for the GUI toolkit, if one
-	// exists. (This method is implemented by the toolkit ATK implementation
-	// layer; for instance, for GTK+, GAIL implements this via
-	// GDK_THREADS_ENTER).
+	// ThreadsEnter: take the thread mutex for the GUI toolkit, if one exists.
+	// (This method is implemented by the toolkit ATK implementation layer; for
+	// instance, for GTK+, GAIL implements this via GDK_THREADS_ENTER).
 	//
-	// Deprecated: since version .
-	ThreadsEnterMisc()
-	// ThreadsLeaveMisc: release the thread mutex for the GUI toolkit, if one
+	// Deprecated.
+	ThreadsEnter()
+	// ThreadsLeave: release the thread mutex for the GUI toolkit, if one
 	// exists. This method, and atk_misc_threads_enter, are needed in some
 	// situations by threaded application code which services ATK requests,
 	// since fulfilling ATK requests often requires calling into the GUI
@@ -44,8 +43,8 @@ type Misc interface {
 	// implemented by the toolkit ATK implementation layer; for instance, for
 	// GTK+, GAIL implements this via GDK_THREADS_LEAVE).
 	//
-	// Deprecated: since version .
-	ThreadsLeaveMisc()
+	// Deprecated.
+	ThreadsLeave()
 }
 
 // misc implements the Misc class.
@@ -67,7 +66,7 @@ func marshalMisc(p uintptr) (interface{}, error) {
 	return WrapMisc(obj), nil
 }
 
-func (m misc) ThreadsEnterMisc() {
+func (m misc) ThreadsEnter() {
 	var _arg0 *C.AtkMisc // out
 
 	_arg0 = (*C.AtkMisc)(unsafe.Pointer(m.Native()))
@@ -75,7 +74,7 @@ func (m misc) ThreadsEnterMisc() {
 	C.atk_misc_threads_enter(_arg0)
 }
 
-func (m misc) ThreadsLeaveMisc() {
+func (m misc) ThreadsLeave() {
 	var _arg0 *C.AtkMisc // out
 
 	_arg0 = (*C.AtkMisc)(unsafe.Pointer(m.Native()))

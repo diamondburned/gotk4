@@ -86,19 +86,19 @@ type FontSelection interface {
 	//
 	// Deprecated: since version 3.2.
 	SizeList() Widget
-	// SetFontNameFontSelection sets the currently-selected font.
+	// SetFontName sets the currently-selected font.
 	//
 	// Note that the @fontsel needs to know the screen in which it will appear
 	// for this to work; this can be guaranteed by simply making sure that the
 	// @fontsel is inserted in a toplevel window before you call this function.
 	//
 	// Deprecated: since version 3.2.
-	SetFontNameFontSelection(fontname string) bool
-	// SetPreviewTextFontSelection sets the text displayed in the preview area.
-	// The @text is used to show how the selected font looks.
+	SetFontName(fontname string) bool
+	// SetPreviewText sets the text displayed in the preview area. The @text is
+	// used to show how the selected font looks.
 	//
 	// Deprecated: since version 3.2.
-	SetPreviewTextFontSelection(text string)
+	SetPreviewText(text string)
 }
 
 // fontSelection implements the FontSelection class.
@@ -133,6 +133,14 @@ func NewFontSelection() FontSelection {
 	_fontSelection = WrapFontSelection(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _fontSelection
+}
+
+func (f fontSelection) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(f))
+}
+
+func (f fontSelection) AsOrientable() Orientable {
+	return WrapOrientable(gextras.InternObject(f))
 }
 
 func (f fontSelection) Face() pango.FontFace {
@@ -286,7 +294,7 @@ func (f fontSelection) SizeList() Widget {
 	return _widget
 }
 
-func (f fontSelection) SetFontNameFontSelection(fontname string) bool {
+func (f fontSelection) SetFontName(fontname string) bool {
 	var _arg0 *C.GtkFontSelection // out
 	var _arg1 *C.gchar            // out
 	var _cret C.gboolean          // in
@@ -306,7 +314,7 @@ func (f fontSelection) SetFontNameFontSelection(fontname string) bool {
 	return _ok
 }
 
-func (f fontSelection) SetPreviewTextFontSelection(text string) {
+func (f fontSelection) SetPreviewText(text string) {
 	var _arg0 *C.GtkFontSelection // out
 	var _arg1 *C.gchar            // out
 
@@ -315,14 +323,6 @@ func (f fontSelection) SetPreviewTextFontSelection(text string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_font_selection_set_preview_text(_arg0, _arg1)
-}
-
-func (f fontSelection) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(f))
-}
-
-func (f fontSelection) AsOrientable() Orientable {
-	return WrapOrientable(gextras.InternObject(f))
 }
 
 type FontSelectionDialog interface {
@@ -358,15 +358,14 @@ type FontSelectionDialog interface {
 	//
 	// Deprecated: since version 3.2.
 	PreviewText() string
-	// SetFontNameFontSelectionDialog sets the currently selected font.
+	// SetFontName sets the currently selected font.
 	//
 	// Deprecated: since version 3.2.
-	SetFontNameFontSelectionDialog(fontname string) bool
-	// SetPreviewTextFontSelectionDialog sets the text displayed in the preview
-	// area.
+	SetFontName(fontname string) bool
+	// SetPreviewText sets the text displayed in the preview area.
 	//
 	// Deprecated: since version 3.2.
-	SetPreviewTextFontSelectionDialog(text string)
+	SetPreviewText(text string)
 }
 
 // fontSelectionDialog implements the FontSelectionDialog class.
@@ -405,6 +404,10 @@ func NewFontSelectionDialog(title string) FontSelectionDialog {
 	_fontSelectionDialog = WrapFontSelectionDialog(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _fontSelectionDialog
+}
+
+func (f fontSelectionDialog) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(f))
 }
 
 func (f fontSelectionDialog) CancelButton() Widget {
@@ -483,7 +486,7 @@ func (f fontSelectionDialog) PreviewText() string {
 	return _utf8
 }
 
-func (f fontSelectionDialog) SetFontNameFontSelectionDialog(fontname string) bool {
+func (f fontSelectionDialog) SetFontName(fontname string) bool {
 	var _arg0 *C.GtkFontSelectionDialog // out
 	var _arg1 *C.gchar                  // out
 	var _cret C.gboolean                // in
@@ -503,7 +506,7 @@ func (f fontSelectionDialog) SetFontNameFontSelectionDialog(fontname string) boo
 	return _ok
 }
 
-func (f fontSelectionDialog) SetPreviewTextFontSelectionDialog(text string) {
+func (f fontSelectionDialog) SetPreviewText(text string) {
 	var _arg0 *C.GtkFontSelectionDialog // out
 	var _arg1 *C.gchar                  // out
 
@@ -512,8 +515,4 @@ func (f fontSelectionDialog) SetPreviewTextFontSelectionDialog(text string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_font_selection_dialog_set_preview_text(_arg0, _arg1)
-}
-
-func (f fontSelectionDialog) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(f))
 }

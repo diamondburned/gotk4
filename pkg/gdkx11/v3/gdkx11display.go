@@ -64,7 +64,7 @@ func X11SetSmClientID(smClientId string) {
 type X11Display interface {
 	gdk.Display
 
-	// ErrorTrapPopX11Display pops the error trap pushed by
+	// ErrorTrapPop pops the error trap pushed by
 	// gdk_x11_display_error_trap_push(). Will XSync() if necessary and will
 	// always block until the error is known to have occurred or not occurred,
 	// so the error code can be returned.
@@ -73,35 +73,35 @@ type X11Display interface {
 	// gdk_x11_display_error_trap_pop_ignored() would be more efficient.
 	//
 	// See gdk_error_trap_pop() for the all-displays-at-once equivalent.
-	ErrorTrapPopX11Display() int
-	// ErrorTrapPopIgnoredX11Display pops the error trap pushed by
+	ErrorTrapPop() int
+	// ErrorTrapPopIgnored pops the error trap pushed by
 	// gdk_x11_display_error_trap_push(). Does not block to see if an error
 	// occurred; merely records the range of requests to ignore errors for, and
 	// ignores those errors if they arrive asynchronously.
 	//
 	// See gdk_error_trap_pop_ignored() for the all-displays-at-once equivalent.
-	ErrorTrapPopIgnoredX11Display()
-	// ErrorTrapPushX11Display begins a range of X requests on @display for
-	// which X error events will be ignored. Unignored errors (when no trap is
-	// pushed) will abort the application. Use gdk_x11_display_error_trap_pop()
-	// or gdk_x11_display_error_trap_pop_ignored()to lift a trap pushed with
-	// this function.
+	ErrorTrapPopIgnored()
+	// ErrorTrapPush begins a range of X requests on @display for which X error
+	// events will be ignored. Unignored errors (when no trap is pushed) will
+	// abort the application. Use gdk_x11_display_error_trap_pop() or
+	// gdk_x11_display_error_trap_pop_ignored()to lift a trap pushed with this
+	// function.
 	//
 	// See also gdk_error_trap_push() to push a trap on all displays.
-	ErrorTrapPushX11Display()
+	ErrorTrapPush()
 	// StartupNotificationID gets the startup notification ID for a display.
 	StartupNotificationID() string
 	// UserTime returns the timestamp of the last user interaction on @display.
 	// The timestamp is taken from events caused by user interaction such as key
 	// presses or pointer movements. See gdk_x11_window_set_user_time().
 	UserTime() uint32
-	// GrabX11Display: call XGrabServer() on @display. To ungrab the display
-	// again, use gdk_x11_display_ungrab().
+	// Grab: call XGrabServer() on @display. To ungrab the display again, use
+	// gdk_x11_display_ungrab().
 	//
 	// gdk_x11_display_grab()/gdk_x11_display_ungrab() calls can be nested.
-	GrabX11Display()
-	// SetCursorThemeX11Display sets the cursor theme from which the images for
-	// cursor should be taken.
+	Grab()
+	// SetCursorTheme sets the cursor theme from which the images for cursor
+	// should be taken.
 	//
 	// If the windowing system supports it, existing cursors created with
 	// gdk_cursor_new(), gdk_cursor_new_for_display() and
@@ -110,9 +110,8 @@ type X11Display interface {
 	// be handled by the application (GTK+ applications can learn about cursor
 	// theme changes by listening for change notification for the corresponding
 	// Setting).
-	SetCursorThemeX11Display(theme string, size int)
-	// SetStartupNotificationIDX11Display sets the startup notification ID for a
-	// display.
+	SetCursorTheme(theme string, size int)
+	// SetStartupNotificationID sets the startup notification ID for a display.
 	//
 	// This is usually taken from the value of the DESKTOP_STARTUP_ID
 	// environment variable, but in some cases (such as the application not
@@ -126,18 +125,17 @@ type X11Display interface {
 	// The startup ID is also what is used to signal that the startup is
 	// complete (for example, when opening a window or when calling
 	// gdk_notify_startup_complete()).
-	SetStartupNotificationIDX11Display(startupId string)
-	// SetWindowScaleX11Display forces a specific window scale for all windows
-	// on this display, instead of using the default or user configured scale.
-	// This is can be used to disable scaling support by setting @scale to 1, or
-	// to programmatically set the window scale.
+	SetStartupNotificationID(startupId string)
+	// SetWindowScale forces a specific window scale for all windows on this
+	// display, instead of using the default or user configured scale. This is
+	// can be used to disable scaling support by setting @scale to 1, or to
+	// programmatically set the window scale.
 	//
 	// Once the scale is set by this call it will not change in response to
 	// later user configuration changes.
-	SetWindowScaleX11Display(scale int)
-	// UngrabX11Display: ungrab @display after it has been grabbed with
-	// gdk_x11_display_grab().
-	UngrabX11Display()
+	SetWindowScale(scale int)
+	// Ungrab @display after it has been grabbed with gdk_x11_display_grab().
+	Ungrab()
 }
 
 // x11Display implements the X11Display class.
@@ -159,7 +157,7 @@ func marshalX11Display(p uintptr) (interface{}, error) {
 	return WrapX11Display(obj), nil
 }
 
-func (d x11Display) ErrorTrapPopX11Display() int {
+func (d x11Display) ErrorTrapPop() int {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.gint        // in
 
@@ -174,7 +172,7 @@ func (d x11Display) ErrorTrapPopX11Display() int {
 	return _gint
 }
 
-func (d x11Display) ErrorTrapPopIgnoredX11Display() {
+func (d x11Display) ErrorTrapPopIgnored() {
 	var _arg0 *C.GdkDisplay // out
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
@@ -182,7 +180,7 @@ func (d x11Display) ErrorTrapPopIgnoredX11Display() {
 	C.gdk_x11_display_error_trap_pop_ignored(_arg0)
 }
 
-func (d x11Display) ErrorTrapPushX11Display() {
+func (d x11Display) ErrorTrapPush() {
 	var _arg0 *C.GdkDisplay // out
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
@@ -220,7 +218,7 @@ func (d x11Display) UserTime() uint32 {
 	return _guint32
 }
 
-func (d x11Display) GrabX11Display() {
+func (d x11Display) Grab() {
 	var _arg0 *C.GdkDisplay // out
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
@@ -228,7 +226,7 @@ func (d x11Display) GrabX11Display() {
 	C.gdk_x11_display_grab(_arg0)
 }
 
-func (d x11Display) SetCursorThemeX11Display(theme string, size int) {
+func (d x11Display) SetCursorTheme(theme string, size int) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.gchar      // out
 	var _arg2 C.gint        // out
@@ -241,7 +239,7 @@ func (d x11Display) SetCursorThemeX11Display(theme string, size int) {
 	C.gdk_x11_display_set_cursor_theme(_arg0, _arg1, _arg2)
 }
 
-func (d x11Display) SetStartupNotificationIDX11Display(startupId string) {
+func (d x11Display) SetStartupNotificationID(startupId string) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.gchar      // out
 
@@ -252,7 +250,7 @@ func (d x11Display) SetStartupNotificationIDX11Display(startupId string) {
 	C.gdk_x11_display_set_startup_notification_id(_arg0, _arg1)
 }
 
-func (d x11Display) SetWindowScaleX11Display(scale int) {
+func (d x11Display) SetWindowScale(scale int) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 C.gint        // out
 
@@ -262,7 +260,7 @@ func (d x11Display) SetWindowScaleX11Display(scale int) {
 	C.gdk_x11_display_set_window_scale(_arg0, _arg1)
 }
 
-func (d x11Display) UngrabX11Display() {
+func (d x11Display) Ungrab() {
 	var _arg0 *C.GdkDisplay // out
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))

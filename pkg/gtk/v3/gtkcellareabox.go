@@ -51,21 +51,19 @@ type CellAreaBox interface {
 
 	// Spacing gets the spacing added between cell renderers.
 	Spacing() int
-	// PackEndCellAreaBox adds @renderer to @box, packed with reference to the
-	// end of @box.
+	// PackEnd adds @renderer to @box, packed with reference to the end of @box.
 	//
 	// The @renderer is packed after (away from end of) any other CellRenderer
 	// packed with reference to the end of @box.
-	PackEndCellAreaBox(renderer CellRenderer, expand bool, align bool, fixed bool)
-	// PackStartCellAreaBox adds @renderer to @box, packed with reference to the
-	// start of @box.
+	PackEnd(renderer CellRenderer, expand bool, align bool, fixed bool)
+	// PackStart adds @renderer to @box, packed with reference to the start of
+	// @box.
 	//
 	// The @renderer is packed after any other CellRenderer packed with
 	// reference to the start of @box.
-	PackStartCellAreaBox(renderer CellRenderer, expand bool, align bool, fixed bool)
-	// SetSpacingCellAreaBox sets the spacing to add between cell renderers in
-	// @box.
-	SetSpacingCellAreaBox(spacing int)
+	PackStart(renderer CellRenderer, expand bool, align bool, fixed bool)
+	// SetSpacing sets the spacing to add between cell renderers in @box.
+	SetSpacing(spacing int)
 }
 
 // cellAreaBox implements the CellAreaBox class.
@@ -100,6 +98,18 @@ func NewCellAreaBox() CellAreaBox {
 	return _cellAreaBox
 }
 
+func (c cellAreaBox) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(c))
+}
+
+func (c cellAreaBox) AsCellLayout() CellLayout {
+	return WrapCellLayout(gextras.InternObject(c))
+}
+
+func (c cellAreaBox) AsOrientable() Orientable {
+	return WrapOrientable(gextras.InternObject(c))
+}
+
 func (b cellAreaBox) Spacing() int {
 	var _arg0 *C.GtkCellAreaBox // out
 	var _cret C.gint            // in
@@ -115,7 +125,7 @@ func (b cellAreaBox) Spacing() int {
 	return _gint
 }
 
-func (b cellAreaBox) PackEndCellAreaBox(renderer CellRenderer, expand bool, align bool, fixed bool) {
+func (b cellAreaBox) PackEnd(renderer CellRenderer, expand bool, align bool, fixed bool) {
 	var _arg0 *C.GtkCellAreaBox  // out
 	var _arg1 *C.GtkCellRenderer // out
 	var _arg2 C.gboolean         // out
@@ -137,7 +147,7 @@ func (b cellAreaBox) PackEndCellAreaBox(renderer CellRenderer, expand bool, alig
 	C.gtk_cell_area_box_pack_end(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
-func (b cellAreaBox) PackStartCellAreaBox(renderer CellRenderer, expand bool, align bool, fixed bool) {
+func (b cellAreaBox) PackStart(renderer CellRenderer, expand bool, align bool, fixed bool) {
 	var _arg0 *C.GtkCellAreaBox  // out
 	var _arg1 *C.GtkCellRenderer // out
 	var _arg2 C.gboolean         // out
@@ -159,7 +169,7 @@ func (b cellAreaBox) PackStartCellAreaBox(renderer CellRenderer, expand bool, al
 	C.gtk_cell_area_box_pack_start(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
-func (b cellAreaBox) SetSpacingCellAreaBox(spacing int) {
+func (b cellAreaBox) SetSpacing(spacing int) {
 	var _arg0 *C.GtkCellAreaBox // out
 	var _arg1 C.gint            // out
 
@@ -167,16 +177,4 @@ func (b cellAreaBox) SetSpacingCellAreaBox(spacing int) {
 	_arg1 = C.gint(spacing)
 
 	C.gtk_cell_area_box_set_spacing(_arg0, _arg1)
-}
-
-func (c cellAreaBox) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(c))
-}
-
-func (c cellAreaBox) AsCellLayout() CellLayout {
-	return WrapCellLayout(gextras.InternObject(c))
-}
-
-func (c cellAreaBox) AsOrientable() Orientable {
-	return WrapOrientable(gextras.InternObject(c))
 }

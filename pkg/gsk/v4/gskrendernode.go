@@ -65,7 +65,7 @@ func gotk4_ParseErrorFunc(arg0 *C.GskParseLocation, arg1 *C.GskParseLocation, ar
 type RenderNode interface {
 	gextras.Objector
 
-	// DrawRenderNode: draw the contents of @node to the given cairo context.
+	// Draw the contents of @node to the given cairo context.
 	//
 	// Typically, you'll use this function to implement fallback rendering of
 	// `GskRenderNode`s on an intermediate Cairo context, instead of using the
@@ -73,28 +73,28 @@ type RenderNode interface {
 	//
 	// For advanced nodes that cannot be supported using Cairo, in particular
 	// for nodes doing 3D operations, this function may fail.
-	DrawRenderNode(cr *cairo.Context)
+	Draw(cr *cairo.Context)
 	// Bounds retrieves the boundaries of the @node.
 	//
 	// The node will not draw outside of its boundaries.
 	Bounds() graphene.Rect
 	// NodeType returns the type of the @node.
 	NodeType() RenderNodeType
-	// RefRenderNode acquires a reference on the given `GskRenderNode`.
-	RefRenderNode() RenderNode
-	// UnrefRenderNode releases a reference on the given `GskRenderNode`.
+	// Ref acquires a reference on the given `GskRenderNode`.
+	Ref() RenderNode
+	// Unref releases a reference on the given `GskRenderNode`.
 	//
 	// If the reference was the last, the resources associated to the @node are
 	// freed.
-	UnrefRenderNode()
-	// WriteToFileRenderNode: this function is equivalent to calling
+	Unref()
+	// WriteToFile: this function is equivalent to calling
 	// gsk_render_node_serialize() followed by g_file_set_contents().
 	//
 	// See those two functions for details on the arguments.
 	//
 	// It is mostly intended for use inside a debugger to quickly dump a render
 	// node to a file for later inspection.
-	WriteToFileRenderNode(filename string) error
+	WriteToFile(filename string) error
 }
 
 // renderNode implements the RenderNode class.
@@ -116,7 +116,7 @@ func marshalRenderNode(p uintptr) (interface{}, error) {
 	return WrapRenderNode(obj), nil
 }
 
-func (n renderNode) DrawRenderNode(cr *cairo.Context) {
+func (n renderNode) Draw(cr *cairo.Context) {
 	var _arg0 *C.GskRenderNode // out
 	var _arg1 *C.cairo_t       // out
 
@@ -166,7 +166,7 @@ func (n renderNode) NodeType() RenderNodeType {
 	return _renderNodeType
 }
 
-func (n renderNode) RefRenderNode() RenderNode {
+func (n renderNode) Ref() RenderNode {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GskRenderNode // in
 
@@ -181,7 +181,7 @@ func (n renderNode) RefRenderNode() RenderNode {
 	return _renderNode
 }
 
-func (n renderNode) UnrefRenderNode() {
+func (n renderNode) Unref() {
 	var _arg0 *C.GskRenderNode // out
 
 	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(n.Native()))
@@ -189,7 +189,7 @@ func (n renderNode) UnrefRenderNode() {
 	C.gsk_render_node_unref(_arg0)
 }
 
-func (n renderNode) WriteToFileRenderNode(filename string) error {
+func (n renderNode) WriteToFile(filename string) error {
 	var _arg0 *C.GskRenderNode // out
 	var _arg1 *C.char          // out
 	var _cerr *C.GError        // in

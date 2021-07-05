@@ -105,14 +105,13 @@ type MessageDialog interface {
 	// gtk_dialog_get_content_area() for the corresponding function in the
 	// parent Dialog.
 	MessageArea() Widget
-	// SetImageMessageDialog sets the dialog’s image to @image.
+	// SetImage sets the dialog’s image to @image.
 	//
 	// Deprecated: since version 3.12.
-	SetImageMessageDialog(image Widget)
-	// SetMarkupMessageDialog sets the text of the message dialog to be @str,
-	// which is marked up with the [Pango text markup
-	// language][PangoMarkupFormat].
-	SetMarkupMessageDialog(str string)
+	SetImage(image Widget)
+	// SetMarkup sets the text of the message dialog to be @str, which is marked
+	// up with the [Pango text markup language][PangoMarkupFormat].
+	SetMarkup(str string)
 }
 
 // messageDialog implements the MessageDialog class.
@@ -132,6 +131,10 @@ func marshalMessageDialog(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapMessageDialog(obj), nil
+}
+
+func (m messageDialog) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(m))
 }
 
 func (d messageDialog) Image() Widget {
@@ -164,7 +167,7 @@ func (m messageDialog) MessageArea() Widget {
 	return _widget
 }
 
-func (d messageDialog) SetImageMessageDialog(image Widget) {
+func (d messageDialog) SetImage(image Widget) {
 	var _arg0 *C.GtkMessageDialog // out
 	var _arg1 *C.GtkWidget        // out
 
@@ -174,7 +177,7 @@ func (d messageDialog) SetImageMessageDialog(image Widget) {
 	C.gtk_message_dialog_set_image(_arg0, _arg1)
 }
 
-func (m messageDialog) SetMarkupMessageDialog(str string) {
+func (m messageDialog) SetMarkup(str string) {
 	var _arg0 *C.GtkMessageDialog // out
 	var _arg1 *C.gchar            // out
 
@@ -183,8 +186,4 @@ func (m messageDialog) SetMarkupMessageDialog(str string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_message_dialog_set_markup(_arg0, _arg1)
-}
-
-func (m messageDialog) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(m))
 }

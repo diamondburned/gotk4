@@ -34,29 +34,29 @@ func init() {
 type MediaFile interface {
 	MediaStream
 
-	// ClearMediaFile resets the media file to be empty.
-	ClearMediaFile()
+	// Clear resets the media file to be empty.
+	Clear()
 	// InputStream returns the stream that @self is currently playing from.
 	//
 	// When @self is not playing or not playing from a stream, nil is returned.
 	InputStream() gio.InputStream
-	// SetFilenameMediaFile sets the `GtkMediaFile to play the given file.
+	// SetFilename sets the `GtkMediaFile to play the given file.
 	//
 	// This is a utility function that converts the given @filename to a `GFile`
 	// and calls [method@Gtk.MediaFile.set_file].
-	SetFilenameMediaFile(filename string)
-	// SetInputStreamMediaFile sets the `GtkMediaFile` to play the given stream.
+	SetFilename(filename string)
+	// SetInputStream sets the `GtkMediaFile` to play the given stream.
 	//
 	// If anything is still playing, stop playing it.
 	//
 	// Full control about the @stream is assumed for the duration of playback.
 	// The stream will not be closed.
-	SetInputStreamMediaFile(stream gio.InputStream)
-	// SetResourceMediaFile sets the `GtkMediaFile to play the given resource.
+	SetInputStream(stream gio.InputStream)
+	// SetResource sets the `GtkMediaFile to play the given resource.
 	//
 	// This is a utility function that converts the given @resource_path to a
 	// `GFile` and calls [method@Gtk.MediaFile.set_file].
-	SetResourceMediaFile(resourcePath string)
+	SetResource(resourcePath string)
 }
 
 // mediaFile implements the MediaFile class.
@@ -150,7 +150,7 @@ func NewMediaFileForResource(resourcePath string) MediaFile {
 	return _mediaFile
 }
 
-func (s mediaFile) ClearMediaFile() {
+func (s mediaFile) Clear() {
 	var _arg0 *C.GtkMediaFile // out
 
 	_arg0 = (*C.GtkMediaFile)(unsafe.Pointer(s.Native()))
@@ -173,7 +173,7 @@ func (s mediaFile) InputStream() gio.InputStream {
 	return _inputStream
 }
 
-func (s mediaFile) SetFilenameMediaFile(filename string) {
+func (s mediaFile) SetFilename(filename string) {
 	var _arg0 *C.GtkMediaFile // out
 	var _arg1 *C.char         // out
 
@@ -184,7 +184,7 @@ func (s mediaFile) SetFilenameMediaFile(filename string) {
 	C.gtk_media_file_set_filename(_arg0, _arg1)
 }
 
-func (s mediaFile) SetInputStreamMediaFile(stream gio.InputStream) {
+func (s mediaFile) SetInputStream(stream gio.InputStream) {
 	var _arg0 *C.GtkMediaFile // out
 	var _arg1 *C.GInputStream // out
 
@@ -194,7 +194,7 @@ func (s mediaFile) SetInputStreamMediaFile(stream gio.InputStream) {
 	C.gtk_media_file_set_input_stream(_arg0, _arg1)
 }
 
-func (s mediaFile) SetResourceMediaFile(resourcePath string) {
+func (s mediaFile) SetResource(resourcePath string) {
 	var _arg0 *C.GtkMediaFile // out
 	var _arg1 *C.char         // out
 

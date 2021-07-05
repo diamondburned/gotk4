@@ -32,11 +32,11 @@ type IMMulticontext interface {
 
 	// ContextID gets the id of the currently active delegate of the @context.
 	ContextID() string
-	// SetContextIDIMMulticontext sets the context id for @context.
+	// SetContextID sets the context id for @context.
 	//
 	// This causes the currently active delegate of @context to be replaced by
 	// the delegate corresponding to the new context id.
-	SetContextIDIMMulticontext(contextId string)
+	SetContextID(contextId string)
 }
 
 // imMulticontext implements the IMMulticontext class.
@@ -86,7 +86,7 @@ func (c imMulticontext) ContextID() string {
 	return _utf8
 }
 
-func (c imMulticontext) SetContextIDIMMulticontext(contextId string) {
+func (c imMulticontext) SetContextID(contextId string) {
 	var _arg0 *C.GtkIMMulticontext // out
 	var _arg1 *C.char              // out
 

@@ -57,19 +57,18 @@ type PopoverMenuBar interface {
 	// AsConstraintTarget casts the class to the ConstraintTarget interface.
 	AsConstraintTarget() ConstraintTarget
 
-	// AddChildPopoverMenuBar adds a custom widget to a generated menubar.
+	// AddChild adds a custom widget to a generated menubar.
 	//
 	// For this to work, the menu model of @bar must have an item with a
 	// `custom` attribute that matches @id.
-	AddChildPopoverMenuBar(child Widget, id string) bool
+	AddChild(child Widget, id string) bool
 	// MenuModel returns the model from which the contents of @bar are taken.
 	MenuModel() gio.MenuModel
-	// RemoveChildPopoverMenuBar removes a widget that has previously been added
-	// with gtk_popover_menu_bar_add_child().
-	RemoveChildPopoverMenuBar(child Widget) bool
-	// SetMenuModelPopoverMenuBar sets a menu model from which @bar should take
-	// its contents.
-	SetMenuModelPopoverMenuBar(model gio.MenuModel)
+	// RemoveChild removes a widget that has previously been added with
+	// gtk_popover_menu_bar_add_child().
+	RemoveChild(child Widget) bool
+	// SetMenuModel sets a menu model from which @bar should take its contents.
+	SetMenuModel(model gio.MenuModel)
 }
 
 // popoverMenuBar implements the PopoverMenuBar class.
@@ -107,7 +106,19 @@ func NewPopoverMenuBarFromModel(model gio.MenuModel) PopoverMenuBar {
 	return _popoverMenuBar
 }
 
-func (b popoverMenuBar) AddChildPopoverMenuBar(child Widget, id string) bool {
+func (p popoverMenuBar) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(p))
+}
+
+func (p popoverMenuBar) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(p))
+}
+
+func (p popoverMenuBar) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(p))
+}
+
+func (b popoverMenuBar) AddChild(child Widget, id string) bool {
 	var _arg0 *C.GtkPopoverMenuBar // out
 	var _arg1 *C.GtkWidget         // out
 	var _arg2 *C.char              // out
@@ -144,7 +155,7 @@ func (b popoverMenuBar) MenuModel() gio.MenuModel {
 	return _menuModel
 }
 
-func (b popoverMenuBar) RemoveChildPopoverMenuBar(child Widget) bool {
+func (b popoverMenuBar) RemoveChild(child Widget) bool {
 	var _arg0 *C.GtkPopoverMenuBar // out
 	var _arg1 *C.GtkWidget         // out
 	var _cret C.gboolean           // in
@@ -163,7 +174,7 @@ func (b popoverMenuBar) RemoveChildPopoverMenuBar(child Widget) bool {
 	return _ok
 }
 
-func (b popoverMenuBar) SetMenuModelPopoverMenuBar(model gio.MenuModel) {
+func (b popoverMenuBar) SetMenuModel(model gio.MenuModel) {
 	var _arg0 *C.GtkPopoverMenuBar // out
 	var _arg1 *C.GMenuModel        // out
 
@@ -171,16 +182,4 @@ func (b popoverMenuBar) SetMenuModelPopoverMenuBar(model gio.MenuModel) {
 	_arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
 
 	C.gtk_popover_menu_bar_set_menu_model(_arg0, _arg1)
-}
-
-func (p popoverMenuBar) AsAccessible() Accessible {
-	return WrapAccessible(gextras.InternObject(p))
-}
-
-func (p popoverMenuBar) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(p))
-}
-
-func (p popoverMenuBar) AsConstraintTarget() ConstraintTarget {
-	return WrapConstraintTarget(gextras.InternObject(p))
 }

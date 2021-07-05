@@ -62,26 +62,25 @@ type ShortcutController interface {
 	// AsBuildable casts the class to the Buildable interface.
 	AsBuildable() Buildable
 
-	// AddShortcutShortcutController adds @shortcut to the list of shortcuts
-	// handled by @self.
+	// AddShortcut adds @shortcut to the list of shortcuts handled by @self.
 	//
 	// If this controller uses an external shortcut list, this function does
 	// nothing.
-	AddShortcutShortcutController(shortcut Shortcut)
+	AddShortcut(shortcut Shortcut)
 	// MnemonicsModifiers gets the mnemonics modifiers for when this controller
 	// activates its shortcuts.
 	MnemonicsModifiers() gdk.ModifierType
 	// Scope gets the scope for when this controller activates its shortcuts.
 	// See gtk_shortcut_controller_set_scope() for details.
 	Scope() ShortcutScope
-	// RemoveShortcutShortcutController removes @shortcut from the list of
-	// shortcuts handled by @self.
+	// RemoveShortcut removes @shortcut from the list of shortcuts handled by
+	// @self.
 	//
 	// If @shortcut had not been added to @controller or this controller uses an
 	// external shortcut list, this function does nothing.
-	RemoveShortcutShortcutController(shortcut Shortcut)
-	// SetMnemonicsModifiersShortcutController sets the controller to have the
-	// given @mnemonics_modifiers.
+	RemoveShortcut(shortcut Shortcut)
+	// SetMnemonicsModifiers sets the controller to have the given
+	// @mnemonics_modifiers.
 	//
 	// The mnemonics modifiers determines which modifiers need to be pressed to
 	// allow activation of shortcuts with mnemonics triggers.
@@ -94,8 +93,8 @@ type ShortcutController interface {
 	// This value is only relevant for local shortcut controllers. Global and
 	// managed shortcut controllers will have their shortcuts activated from
 	// other places which have their own modifiers for activating mnemonics.
-	SetMnemonicsModifiersShortcutController(modifiers gdk.ModifierType)
-	// SetScopeShortcutController sets the controller to have the given @scope.
+	SetMnemonicsModifiers(modifiers gdk.ModifierType)
+	// SetScope sets the controller to have the given @scope.
 	//
 	// The scope allows shortcuts to be activated outside of the normal event
 	// propagation. In particular, it allows installing global keyboard
@@ -103,7 +102,7 @@ type ShortcutController interface {
 	//
 	// With GTK_SHORTCUT_SCOPE_LOCAL, shortcuts will only be activated when the
 	// widget has focus.
-	SetScopeShortcutController(scope ShortcutScope)
+	SetScope(scope ShortcutScope)
 }
 
 // shortcutController implements the ShortcutController class.
@@ -138,7 +137,11 @@ func NewShortcutController() ShortcutController {
 	return _shortcutController
 }
 
-func (s shortcutController) AddShortcutShortcutController(shortcut Shortcut) {
+func (s shortcutController) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(s))
+}
+
+func (s shortcutController) AddShortcut(shortcut Shortcut) {
 	var _arg0 *C.GtkShortcutController // out
 	var _arg1 *C.GtkShortcut           // out
 
@@ -178,7 +181,7 @@ func (s shortcutController) Scope() ShortcutScope {
 	return _shortcutScope
 }
 
-func (s shortcutController) RemoveShortcutShortcutController(shortcut Shortcut) {
+func (s shortcutController) RemoveShortcut(shortcut Shortcut) {
 	var _arg0 *C.GtkShortcutController // out
 	var _arg1 *C.GtkShortcut           // out
 
@@ -188,7 +191,7 @@ func (s shortcutController) RemoveShortcutShortcutController(shortcut Shortcut) 
 	C.gtk_shortcut_controller_remove_shortcut(_arg0, _arg1)
 }
 
-func (s shortcutController) SetMnemonicsModifiersShortcutController(modifiers gdk.ModifierType) {
+func (s shortcutController) SetMnemonicsModifiers(modifiers gdk.ModifierType) {
 	var _arg0 *C.GtkShortcutController // out
 	var _arg1 C.GdkModifierType        // out
 
@@ -198,7 +201,7 @@ func (s shortcutController) SetMnemonicsModifiersShortcutController(modifiers gd
 	C.gtk_shortcut_controller_set_mnemonics_modifiers(_arg0, _arg1)
 }
 
-func (s shortcutController) SetScopeShortcutController(scope ShortcutScope) {
+func (s shortcutController) SetScope(scope ShortcutScope) {
 	var _arg0 *C.GtkShortcutController // out
 	var _arg1 C.GtkShortcutScope       // out
 
@@ -206,8 +209,4 @@ func (s shortcutController) SetScopeShortcutController(scope ShortcutScope) {
 	_arg1 = C.GtkShortcutScope(scope)
 
 	C.gtk_shortcut_controller_set_scope(_arg0, _arg1)
-}
-
-func (s shortcutController) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(s))
 }

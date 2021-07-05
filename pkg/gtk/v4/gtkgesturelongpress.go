@@ -40,11 +40,11 @@ type GestureLongPress interface {
 
 	// DelayFactor returns the delay factor.
 	DelayFactor() float64
-	// SetDelayFactorGestureLongPress applies the given delay factor.
+	// SetDelayFactor applies the given delay factor.
 	//
 	// The default long press time will be multiplied by this value. Valid
 	// values are in the range [0.5..2.0].
-	SetDelayFactorGestureLongPress(delayFactor float64)
+	SetDelayFactor(delayFactor float64)
 }
 
 // gestureLongPress implements the GestureLongPress class.
@@ -95,7 +95,7 @@ func (g gestureLongPress) DelayFactor() float64 {
 	return _gdouble
 }
 
-func (g gestureLongPress) SetDelayFactorGestureLongPress(delayFactor float64) {
+func (g gestureLongPress) SetDelayFactor(delayFactor float64) {
 	var _arg0 *C.GtkGestureLongPress // out
 	var _arg1 C.double               // out
 

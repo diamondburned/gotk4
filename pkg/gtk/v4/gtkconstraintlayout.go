@@ -173,7 +173,7 @@ type ConstraintLayout interface {
 	// AsBuildable casts the class to the Buildable interface.
 	AsBuildable() Buildable
 
-	// AddConstraintConstraintLayout adds a constraint to the layout manager.
+	// AddConstraint adds a constraint to the layout manager.
 	//
 	// The [property@Gtk.Constraint:source] and [property@Gtk.Constraint:target]
 	// properties of `constraint` can be:
@@ -186,24 +186,23 @@ type ConstraintLayout interface {
 	//
 	// The @layout acquires the ownership of @constraint after calling this
 	// function.
-	AddConstraintConstraintLayout(constraint Constraint)
-	// AddGuideConstraintLayout adds a guide to `layout`.
+	AddConstraint(constraint Constraint)
+	// AddGuide adds a guide to `layout`.
 	//
 	// A guide can be used as the source or target of constraints, like a
 	// widget, but it is not visible.
 	//
 	// The `layout` acquires the ownership of `guide` after calling this
 	// function.
-	AddGuideConstraintLayout(guide ConstraintGuide)
-	// RemoveAllConstraintsConstraintLayout removes all constraints from the
-	// layout manager.
-	RemoveAllConstraintsConstraintLayout()
-	// RemoveConstraintConstraintLayout removes `constraint` from the layout
-	// manager, so that it no longer influences the layout.
-	RemoveConstraintConstraintLayout(constraint Constraint)
-	// RemoveGuideConstraintLayout removes `guide` from the layout manager, so
-	// that it no longer influences the layout.
-	RemoveGuideConstraintLayout(guide ConstraintGuide)
+	AddGuide(guide ConstraintGuide)
+	// RemoveAllConstraints removes all constraints from the layout manager.
+	RemoveAllConstraints()
+	// RemoveConstraint removes `constraint` from the layout manager, so that it
+	// no longer influences the layout.
+	RemoveConstraint(constraint Constraint)
+	// RemoveGuide removes `guide` from the layout manager, so that it no longer
+	// influences the layout.
+	RemoveGuide(guide ConstraintGuide)
 }
 
 // constraintLayout implements the ConstraintLayout class.
@@ -238,7 +237,11 @@ func NewConstraintLayout() ConstraintLayout {
 	return _constraintLayout
 }
 
-func (l constraintLayout) AddConstraintConstraintLayout(constraint Constraint) {
+func (c constraintLayout) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(c))
+}
+
+func (l constraintLayout) AddConstraint(constraint Constraint) {
 	var _arg0 *C.GtkConstraintLayout // out
 	var _arg1 *C.GtkConstraint       // out
 
@@ -248,7 +251,7 @@ func (l constraintLayout) AddConstraintConstraintLayout(constraint Constraint) {
 	C.gtk_constraint_layout_add_constraint(_arg0, _arg1)
 }
 
-func (l constraintLayout) AddGuideConstraintLayout(guide ConstraintGuide) {
+func (l constraintLayout) AddGuide(guide ConstraintGuide) {
 	var _arg0 *C.GtkConstraintLayout // out
 	var _arg1 *C.GtkConstraintGuide  // out
 
@@ -258,7 +261,7 @@ func (l constraintLayout) AddGuideConstraintLayout(guide ConstraintGuide) {
 	C.gtk_constraint_layout_add_guide(_arg0, _arg1)
 }
 
-func (l constraintLayout) RemoveAllConstraintsConstraintLayout() {
+func (l constraintLayout) RemoveAllConstraints() {
 	var _arg0 *C.GtkConstraintLayout // out
 
 	_arg0 = (*C.GtkConstraintLayout)(unsafe.Pointer(l.Native()))
@@ -266,7 +269,7 @@ func (l constraintLayout) RemoveAllConstraintsConstraintLayout() {
 	C.gtk_constraint_layout_remove_all_constraints(_arg0)
 }
 
-func (l constraintLayout) RemoveConstraintConstraintLayout(constraint Constraint) {
+func (l constraintLayout) RemoveConstraint(constraint Constraint) {
 	var _arg0 *C.GtkConstraintLayout // out
 	var _arg1 *C.GtkConstraint       // out
 
@@ -276,7 +279,7 @@ func (l constraintLayout) RemoveConstraintConstraintLayout(constraint Constraint
 	C.gtk_constraint_layout_remove_constraint(_arg0, _arg1)
 }
 
-func (l constraintLayout) RemoveGuideConstraintLayout(guide ConstraintGuide) {
+func (l constraintLayout) RemoveGuide(guide ConstraintGuide) {
 	var _arg0 *C.GtkConstraintLayout // out
 	var _arg1 *C.GtkConstraintGuide  // out
 
@@ -284,10 +287,6 @@ func (l constraintLayout) RemoveGuideConstraintLayout(guide ConstraintGuide) {
 	_arg1 = (*C.GtkConstraintGuide)(unsafe.Pointer(guide.Native()))
 
 	C.gtk_constraint_layout_remove_guide(_arg0, _arg1)
-}
-
-func (c constraintLayout) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(c))
 }
 
 // ConstraintLayoutChild: `GtkLayoutChild` subclass for children in a

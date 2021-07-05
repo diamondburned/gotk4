@@ -82,26 +82,26 @@ type DropDown interface {
 	// SelectedItem gets the selected item. If no item is selected, nil is
 	// returned.
 	SelectedItem() gextras.Objector
-	// SetEnableSearchDropDown sets whether a search entry will be shown in the
-	// popup that allows to search for items in the list.
+	// SetEnableSearch sets whether a search entry will be shown in the popup
+	// that allows to search for items in the list.
 	//
 	// Note that [property@Gtk.DropDown:expression] must be set for search to
 	// work.
-	SetEnableSearchDropDown(enableSearch bool)
-	// SetExpressionDropDown sets the expression that gets evaluated to obtain
-	// strings from items.
+	SetEnableSearch(enableSearch bool)
+	// SetExpression sets the expression that gets evaluated to obtain strings
+	// from items.
 	//
 	// This is used for search in the popup. The expression must have a value
 	// type of G_TYPE_STRING.
-	SetExpressionDropDown(expression Expression)
-	// SetFactoryDropDown sets the `GtkListItemFactory` to use for populating
-	// list items.
-	SetFactoryDropDown(factory ListItemFactory)
-	// SetListFactoryDropDown sets the `GtkListItemFactory` to use for
-	// populating list items in the popup.
-	SetListFactoryDropDown(factory ListItemFactory)
-	// SetSelectedDropDown selects the item at the given position.
-	SetSelectedDropDown(position uint)
+	SetExpression(expression Expression)
+	// SetFactory sets the `GtkListItemFactory` to use for populating list
+	// items.
+	SetFactory(factory ListItemFactory)
+	// SetListFactory sets the `GtkListItemFactory` to use for populating list
+	// items in the popup.
+	SetListFactory(factory ListItemFactory)
+	// SetSelected selects the item at the given position.
+	SetSelected(position uint)
 }
 
 // dropDown implements the DropDown class.
@@ -146,6 +146,18 @@ func NewDropDownFromStrings(strings []string) DropDown {
 	_dropDown = WrapDropDown(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _dropDown
+}
+
+func (d dropDown) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(d))
+}
+
+func (d dropDown) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(d))
+}
+
+func (d dropDown) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(d))
 }
 
 func (s dropDown) EnableSearch() bool {
@@ -240,7 +252,7 @@ func (s dropDown) SelectedItem() gextras.Objector {
 	return _object
 }
 
-func (s dropDown) SetEnableSearchDropDown(enableSearch bool) {
+func (s dropDown) SetEnableSearch(enableSearch bool) {
 	var _arg0 *C.GtkDropDown // out
 	var _arg1 C.gboolean     // out
 
@@ -252,7 +264,7 @@ func (s dropDown) SetEnableSearchDropDown(enableSearch bool) {
 	C.gtk_drop_down_set_enable_search(_arg0, _arg1)
 }
 
-func (s dropDown) SetExpressionDropDown(expression Expression) {
+func (s dropDown) SetExpression(expression Expression) {
 	var _arg0 *C.GtkDropDown   // out
 	var _arg1 *C.GtkExpression // out
 
@@ -262,7 +274,7 @@ func (s dropDown) SetExpressionDropDown(expression Expression) {
 	C.gtk_drop_down_set_expression(_arg0, _arg1)
 }
 
-func (s dropDown) SetFactoryDropDown(factory ListItemFactory) {
+func (s dropDown) SetFactory(factory ListItemFactory) {
 	var _arg0 *C.GtkDropDown        // out
 	var _arg1 *C.GtkListItemFactory // out
 
@@ -272,7 +284,7 @@ func (s dropDown) SetFactoryDropDown(factory ListItemFactory) {
 	C.gtk_drop_down_set_factory(_arg0, _arg1)
 }
 
-func (s dropDown) SetListFactoryDropDown(factory ListItemFactory) {
+func (s dropDown) SetListFactory(factory ListItemFactory) {
 	var _arg0 *C.GtkDropDown        // out
 	var _arg1 *C.GtkListItemFactory // out
 
@@ -282,7 +294,7 @@ func (s dropDown) SetListFactoryDropDown(factory ListItemFactory) {
 	C.gtk_drop_down_set_list_factory(_arg0, _arg1)
 }
 
-func (s dropDown) SetSelectedDropDown(position uint) {
+func (s dropDown) SetSelected(position uint) {
 	var _arg0 *C.GtkDropDown // out
 	var _arg1 C.guint        // out
 
@@ -290,16 +302,4 @@ func (s dropDown) SetSelectedDropDown(position uint) {
 	_arg1 = C.guint(position)
 
 	C.gtk_drop_down_set_selected(_arg0, _arg1)
-}
-
-func (d dropDown) AsAccessible() Accessible {
-	return WrapAccessible(gextras.InternObject(d))
-}
-
-func (d dropDown) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(d))
-}
-
-func (d dropDown) AsConstraintTarget() ConstraintTarget {
-	return WrapConstraintTarget(gextras.InternObject(d))
 }

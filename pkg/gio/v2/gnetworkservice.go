@@ -55,9 +55,9 @@ type NetworkService interface {
 	Scheme() string
 	// Service gets @srv's service name (eg, "ldap").
 	Service() string
-	// SetSchemeNetworkService set's the URI scheme used to resolve proxies. By
-	// default, the service name is used as scheme.
-	SetSchemeNetworkService(scheme string)
+	// SetScheme set's the URI scheme used to resolve proxies. By default, the
+	// service name is used as scheme.
+	SetScheme(scheme string)
 }
 
 // networkService implements the NetworkService class.
@@ -102,6 +102,10 @@ func NewNetworkService(service string, protocol string, domain string) NetworkSe
 	_networkService = WrapNetworkService(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _networkService
+}
+
+func (n networkService) AsSocketConnectable() SocketConnectable {
+	return WrapSocketConnectable(gextras.InternObject(n))
 }
 
 func (s networkService) Domain() string {
@@ -164,7 +168,7 @@ func (s networkService) Service() string {
 	return _utf8
 }
 
-func (s networkService) SetSchemeNetworkService(scheme string) {
+func (s networkService) SetScheme(scheme string) {
 	var _arg0 *C.GNetworkService // out
 	var _arg1 *C.gchar           // out
 
@@ -173,8 +177,4 @@ func (s networkService) SetSchemeNetworkService(scheme string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_network_service_set_scheme(_arg0, _arg1)
-}
-
-func (n networkService) AsSocketConnectable() SocketConnectable {
-	return WrapSocketConnectable(gextras.InternObject(n))
 }

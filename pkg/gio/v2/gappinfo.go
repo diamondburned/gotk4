@@ -565,16 +565,16 @@ type AppLaunchContext interface {
 	// a nil-terminated array of strings, where each string has the form
 	// `KEY=VALUE`.
 	Environment() []string
-	// LaunchFailedAppLaunchContext: called when an application has failed to
-	// launch, so that it can cancel the application startup notification
-	// started in g_app_launch_context_get_startup_notify_id().
-	LaunchFailedAppLaunchContext(startupNotifyId string)
-	// SetenvAppLaunchContext arranges for @variable to be set to @value in the
-	// child's environment when @context is used to launch an application.
-	SetenvAppLaunchContext(variable string, value string)
-	// UnsetenvAppLaunchContext arranges for @variable to be unset in the
-	// child's environment when @context is used to launch an application.
-	UnsetenvAppLaunchContext(variable string)
+	// LaunchFailed: called when an application has failed to launch, so that it
+	// can cancel the application startup notification started in
+	// g_app_launch_context_get_startup_notify_id().
+	LaunchFailed(startupNotifyId string)
+	// Setenv arranges for @variable to be set to @value in the child's
+	// environment when @context is used to launch an application.
+	Setenv(variable string, value string)
+	// Unsetenv arranges for @variable to be unset in the child's environment
+	// when @context is used to launch an application.
+	Unsetenv(variable string)
 }
 
 // appLaunchContext implements the AppLaunchContext class.
@@ -639,7 +639,7 @@ func (c appLaunchContext) Environment() []string {
 	return _filenames
 }
 
-func (c appLaunchContext) LaunchFailedAppLaunchContext(startupNotifyId string) {
+func (c appLaunchContext) LaunchFailed(startupNotifyId string) {
 	var _arg0 *C.GAppLaunchContext // out
 	var _arg1 *C.char              // out
 
@@ -650,7 +650,7 @@ func (c appLaunchContext) LaunchFailedAppLaunchContext(startupNotifyId string) {
 	C.g_app_launch_context_launch_failed(_arg0, _arg1)
 }
 
-func (c appLaunchContext) SetenvAppLaunchContext(variable string, value string) {
+func (c appLaunchContext) Setenv(variable string, value string) {
 	var _arg0 *C.GAppLaunchContext // out
 	var _arg1 *C.char              // out
 	var _arg2 *C.char              // out
@@ -664,7 +664,7 @@ func (c appLaunchContext) SetenvAppLaunchContext(variable string, value string) 
 	C.g_app_launch_context_setenv(_arg0, _arg1, _arg2)
 }
 
-func (c appLaunchContext) UnsetenvAppLaunchContext(variable string) {
+func (c appLaunchContext) Unsetenv(variable string) {
 	var _arg0 *C.GAppLaunchContext // out
 	var _arg1 *C.char              // out
 

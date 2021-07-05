@@ -72,8 +72,8 @@ type Table interface {
 	// AsBuildable casts the class to the Buildable interface.
 	AsBuildable() Buildable
 
-	// AttachTable adds a widget to a table. The number of “cells” that a widget
-	// will occupy is specified by @left_attach, @right_attach, @top_attach and
+	// Attach adds a widget to a table. The number of “cells” that a widget will
+	// occupy is specified by @left_attach, @right_attach, @top_attach and
 	// @bottom_attach. These each represent the leftmost, rightmost, uppermost
 	// and lowest column and row numbers of the table. (Columns and rows are
 	// indexed from zero).
@@ -90,15 +90,15 @@ type Table interface {
 	// @left_attach == 0 and @right_attach = 2 instead.
 	//
 	// Deprecated: since version 3.4.
-	AttachTable(child Widget, leftAttach uint, rightAttach uint, topAttach uint, bottomAttach uint, xoptions AttachOptions, yoptions AttachOptions, xpadding uint, ypadding uint)
-	// AttachDefaultsTable as there are many options associated with
+	Attach(child Widget, leftAttach uint, rightAttach uint, topAttach uint, bottomAttach uint, xoptions AttachOptions, yoptions AttachOptions, xpadding uint, ypadding uint)
+	// AttachDefaults as there are many options associated with
 	// gtk_table_attach(), this convenience function provides the programmer
 	// with a means to add children to a table with identical padding and
 	// expansion options. The values used for the AttachOptions are `GTK_EXPAND
 	// | GTK_FILL`, and the padding is set to 0.
 	//
 	// Deprecated: since version 3.4.
-	AttachDefaultsTable(widget Widget, leftAttach uint, rightAttach uint, topAttach uint, bottomAttach uint)
+	AttachDefaults(widget Widget, leftAttach uint, rightAttach uint, topAttach uint, bottomAttach uint)
 	// ColSpacing gets the amount of space between column @col, and column @col
 	// + 1. See gtk_table_set_col_spacing().
 	//
@@ -130,36 +130,36 @@ type Table interface {
 	//
 	// Deprecated: since version 3.4.
 	Size() (rows uint, columns uint)
-	// ResizeTable: if you need to change a table’s size after it has been
-	// created, this function allows you to do so.
+	// Resize: if you need to change a table’s size after it has been created,
+	// this function allows you to do so.
 	//
 	// Deprecated: since version 3.4.
-	ResizeTable(rows uint, columns uint)
-	// SetColSpacingTable alters the amount of space between a given table
-	// column and the following column.
+	Resize(rows uint, columns uint)
+	// SetColSpacing alters the amount of space between a given table column and
+	// the following column.
 	//
 	// Deprecated: since version 3.4.
-	SetColSpacingTable(column uint, spacing uint)
-	// SetColSpacingsTable sets the space between every column in @table equal
-	// to @spacing.
-	//
-	// Deprecated: since version 3.4.
-	SetColSpacingsTable(spacing uint)
-	// SetHomogeneousTable changes the homogenous property of table cells, ie.
-	// whether all cells are an equal size or not.
-	//
-	// Deprecated: since version 3.4.
-	SetHomogeneousTable(homogeneous bool)
-	// SetRowSpacingTable changes the space between a given table row and the
-	// subsequent row.
-	//
-	// Deprecated: since version 3.4.
-	SetRowSpacingTable(row uint, spacing uint)
-	// SetRowSpacingsTable sets the space between every row in @table equal to
+	SetColSpacing(column uint, spacing uint)
+	// SetColSpacings sets the space between every column in @table equal to
 	// @spacing.
 	//
 	// Deprecated: since version 3.4.
-	SetRowSpacingsTable(spacing uint)
+	SetColSpacings(spacing uint)
+	// SetHomogeneous changes the homogenous property of table cells, ie.
+	// whether all cells are an equal size or not.
+	//
+	// Deprecated: since version 3.4.
+	SetHomogeneous(homogeneous bool)
+	// SetRowSpacing changes the space between a given table row and the
+	// subsequent row.
+	//
+	// Deprecated: since version 3.4.
+	SetRowSpacing(row uint, spacing uint)
+	// SetRowSpacings sets the space between every row in @table equal to
+	// @spacing.
+	//
+	// Deprecated: since version 3.4.
+	SetRowSpacings(spacing uint)
 }
 
 // table implements the Table class.
@@ -209,7 +209,11 @@ func NewTable(rows uint, columns uint, homogeneous bool) Table {
 	return _table
 }
 
-func (t table) AttachTable(child Widget, leftAttach uint, rightAttach uint, topAttach uint, bottomAttach uint, xoptions AttachOptions, yoptions AttachOptions, xpadding uint, ypadding uint) {
+func (t table) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(t))
+}
+
+func (t table) Attach(child Widget, leftAttach uint, rightAttach uint, topAttach uint, bottomAttach uint, xoptions AttachOptions, yoptions AttachOptions, xpadding uint, ypadding uint) {
 	var _arg0 *C.GtkTable        // out
 	var _arg1 *C.GtkWidget       // out
 	var _arg2 C.guint            // out
@@ -235,7 +239,7 @@ func (t table) AttachTable(child Widget, leftAttach uint, rightAttach uint, topA
 	C.gtk_table_attach(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9)
 }
 
-func (t table) AttachDefaultsTable(widget Widget, leftAttach uint, rightAttach uint, topAttach uint, bottomAttach uint) {
+func (t table) AttachDefaults(widget Widget, leftAttach uint, rightAttach uint, topAttach uint, bottomAttach uint) {
 	var _arg0 *C.GtkTable  // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.guint      // out
@@ -352,7 +356,7 @@ func (t table) Size() (rows uint, columns uint) {
 	return _rows, _columns
 }
 
-func (t table) ResizeTable(rows uint, columns uint) {
+func (t table) Resize(rows uint, columns uint) {
 	var _arg0 *C.GtkTable // out
 	var _arg1 C.guint     // out
 	var _arg2 C.guint     // out
@@ -364,7 +368,7 @@ func (t table) ResizeTable(rows uint, columns uint) {
 	C.gtk_table_resize(_arg0, _arg1, _arg2)
 }
 
-func (t table) SetColSpacingTable(column uint, spacing uint) {
+func (t table) SetColSpacing(column uint, spacing uint) {
 	var _arg0 *C.GtkTable // out
 	var _arg1 C.guint     // out
 	var _arg2 C.guint     // out
@@ -376,7 +380,7 @@ func (t table) SetColSpacingTable(column uint, spacing uint) {
 	C.gtk_table_set_col_spacing(_arg0, _arg1, _arg2)
 }
 
-func (t table) SetColSpacingsTable(spacing uint) {
+func (t table) SetColSpacings(spacing uint) {
 	var _arg0 *C.GtkTable // out
 	var _arg1 C.guint     // out
 
@@ -386,7 +390,7 @@ func (t table) SetColSpacingsTable(spacing uint) {
 	C.gtk_table_set_col_spacings(_arg0, _arg1)
 }
 
-func (t table) SetHomogeneousTable(homogeneous bool) {
+func (t table) SetHomogeneous(homogeneous bool) {
 	var _arg0 *C.GtkTable // out
 	var _arg1 C.gboolean  // out
 
@@ -398,7 +402,7 @@ func (t table) SetHomogeneousTable(homogeneous bool) {
 	C.gtk_table_set_homogeneous(_arg0, _arg1)
 }
 
-func (t table) SetRowSpacingTable(row uint, spacing uint) {
+func (t table) SetRowSpacing(row uint, spacing uint) {
 	var _arg0 *C.GtkTable // out
 	var _arg1 C.guint     // out
 	var _arg2 C.guint     // out
@@ -410,7 +414,7 @@ func (t table) SetRowSpacingTable(row uint, spacing uint) {
 	C.gtk_table_set_row_spacing(_arg0, _arg1, _arg2)
 }
 
-func (t table) SetRowSpacingsTable(spacing uint) {
+func (t table) SetRowSpacings(spacing uint) {
 	var _arg0 *C.GtkTable // out
 	var _arg1 C.guint     // out
 
@@ -418,10 +422,6 @@ func (t table) SetRowSpacingsTable(spacing uint) {
 	_arg1 = C.guint(spacing)
 
 	C.gtk_table_set_row_spacings(_arg0, _arg1)
-}
-
-func (t table) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(t))
 }
 
 type TableChild struct {

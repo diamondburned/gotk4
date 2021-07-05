@@ -629,12 +629,11 @@ func RCSetDefaultFiles(filenames []string) {
 type RCStyle interface {
 	gextras.Objector
 
-	// CopyRCStyle makes a copy of the specified RcStyle. This function will
-	// correctly copy an RC style that is a member of a class derived from
-	// RcStyle.
+	// Copy makes a copy of the specified RcStyle. This function will correctly
+	// copy an RC style that is a member of a class derived from RcStyle.
 	//
 	// Deprecated: since version 3.0.
-	CopyRCStyle() RCStyle
+	Copy() RCStyle
 }
 
 // rcStyle implements the RCStyle class.
@@ -672,7 +671,7 @@ func NewRCStyle() RCStyle {
 	return _rcStyle
 }
 
-func (o rcStyle) CopyRCStyle() RCStyle {
+func (o rcStyle) Copy() RCStyle {
 	var _arg0 *C.GtkRcStyle // out
 	var _cret *C.GtkRcStyle // in
 

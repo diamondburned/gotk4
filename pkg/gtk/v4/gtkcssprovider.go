@@ -56,26 +56,25 @@ type CSSProvider interface {
 	// AsStyleProvider casts the class to the StyleProvider interface.
 	AsStyleProvider() StyleProvider
 
-	// LoadFromDataCSSProvider loads @data into @css_provider.
+	// LoadFromData loads @data into @css_provider.
 	//
 	// This clears any previously loaded information.
-	LoadFromDataCSSProvider(data []byte)
-	// LoadFromPathCSSProvider loads the data contained in @path into
-	// @css_provider.
+	LoadFromData(data []byte)
+	// LoadFromPath loads the data contained in @path into @css_provider.
 	//
 	// This clears any previously loaded information.
-	LoadFromPathCSSProvider(path string)
-	// LoadFromResourceCSSProvider loads the data contained in the resource at
+	LoadFromPath(path string)
+	// LoadFromResource loads the data contained in the resource at
 	// @resource_path into the @css_provider.
 	//
 	// This clears any previously loaded information.
-	LoadFromResourceCSSProvider(resourcePath string)
-	// LoadNamedCSSProvider loads a theme from the usual theme paths.
+	LoadFromResource(resourcePath string)
+	// LoadNamed loads a theme from the usual theme paths.
 	//
 	// The actual process of finding the theme might change between releases,
 	// but it is guaranteed that this function uses the same mechanism to load
 	// the theme that GTK uses for loading its own theme.
-	LoadNamedCSSProvider(name string, variant string)
+	LoadNamed(name string, variant string)
 	// String converts the @provider into a string representation in CSS format.
 	//
 	// Using [method@Gtk.CssProvider.load_from_data] with the return value from
@@ -116,7 +115,11 @@ func NewCSSProvider() CSSProvider {
 	return _cssProvider
 }
 
-func (c cssProvider) LoadFromDataCSSProvider(data []byte) {
+func (c cssProvider) AsStyleProvider() StyleProvider {
+	return WrapStyleProvider(gextras.InternObject(c))
+}
+
+func (c cssProvider) LoadFromData(data []byte) {
 	var _arg0 *C.GtkCssProvider // out
 	var _arg1 *C.char
 	var _arg2 C.gssize
@@ -128,7 +131,7 @@ func (c cssProvider) LoadFromDataCSSProvider(data []byte) {
 	C.gtk_css_provider_load_from_data(_arg0, _arg1, _arg2)
 }
 
-func (c cssProvider) LoadFromPathCSSProvider(path string) {
+func (c cssProvider) LoadFromPath(path string) {
 	var _arg0 *C.GtkCssProvider // out
 	var _arg1 *C.char           // out
 
@@ -139,7 +142,7 @@ func (c cssProvider) LoadFromPathCSSProvider(path string) {
 	C.gtk_css_provider_load_from_path(_arg0, _arg1)
 }
 
-func (c cssProvider) LoadFromResourceCSSProvider(resourcePath string) {
+func (c cssProvider) LoadFromResource(resourcePath string) {
 	var _arg0 *C.GtkCssProvider // out
 	var _arg1 *C.char           // out
 
@@ -150,7 +153,7 @@ func (c cssProvider) LoadFromResourceCSSProvider(resourcePath string) {
 	C.gtk_css_provider_load_from_resource(_arg0, _arg1)
 }
 
-func (p cssProvider) LoadNamedCSSProvider(name string, variant string) {
+func (p cssProvider) LoadNamed(name string, variant string) {
 	var _arg0 *C.GtkCssProvider // out
 	var _arg1 *C.char           // out
 	var _arg2 *C.char           // out
@@ -178,8 +181,4 @@ func (p cssProvider) String() string {
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
-}
-
-func (c cssProvider) AsStyleProvider() StyleProvider {
-	return WrapStyleProvider(gextras.InternObject(c))
 }

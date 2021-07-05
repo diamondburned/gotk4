@@ -71,14 +71,14 @@ type PasswordEntry interface {
 	// ShowPeekIcon returns whether the entry is showing an icon to reveal the
 	// contents.
 	ShowPeekIcon() bool
-	// SetExtraMenuPasswordEntry sets a menu model to add when constructing the
-	// context menu for @entry.
-	SetExtraMenuPasswordEntry(model gio.MenuModel)
-	// SetShowPeekIconPasswordEntry sets whether the entry should have a
-	// clickable icon to reveal the contents.
+	// SetExtraMenu sets a menu model to add when constructing the context menu
+	// for @entry.
+	SetExtraMenu(model gio.MenuModel)
+	// SetShowPeekIcon sets whether the entry should have a clickable icon to
+	// reveal the contents.
 	//
 	// Setting this to false also hides the text again.
-	SetShowPeekIconPasswordEntry(showPeekIcon bool)
+	SetShowPeekIcon(showPeekIcon bool)
 }
 
 // passwordEntry implements the PasswordEntry class.
@@ -113,6 +113,22 @@ func NewPasswordEntry() PasswordEntry {
 	return _passwordEntry
 }
 
+func (p passwordEntry) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(p))
+}
+
+func (p passwordEntry) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(p))
+}
+
+func (p passwordEntry) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(p))
+}
+
+func (p passwordEntry) AsEditable() Editable {
+	return WrapEditable(gextras.InternObject(p))
+}
+
 func (e passwordEntry) ExtraMenu() gio.MenuModel {
 	var _arg0 *C.GtkPasswordEntry // out
 	var _cret *C.GMenuModel       // in
@@ -145,7 +161,7 @@ func (e passwordEntry) ShowPeekIcon() bool {
 	return _ok
 }
 
-func (e passwordEntry) SetExtraMenuPasswordEntry(model gio.MenuModel) {
+func (e passwordEntry) SetExtraMenu(model gio.MenuModel) {
 	var _arg0 *C.GtkPasswordEntry // out
 	var _arg1 *C.GMenuModel       // out
 
@@ -155,7 +171,7 @@ func (e passwordEntry) SetExtraMenuPasswordEntry(model gio.MenuModel) {
 	C.gtk_password_entry_set_extra_menu(_arg0, _arg1)
 }
 
-func (e passwordEntry) SetShowPeekIconPasswordEntry(showPeekIcon bool) {
+func (e passwordEntry) SetShowPeekIcon(showPeekIcon bool) {
 	var _arg0 *C.GtkPasswordEntry // out
 	var _arg1 C.gboolean          // out
 
@@ -165,20 +181,4 @@ func (e passwordEntry) SetShowPeekIconPasswordEntry(showPeekIcon bool) {
 	}
 
 	C.gtk_password_entry_set_show_peek_icon(_arg0, _arg1)
-}
-
-func (p passwordEntry) AsAccessible() Accessible {
-	return WrapAccessible(gextras.InternObject(p))
-}
-
-func (p passwordEntry) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(p))
-}
-
-func (p passwordEntry) AsConstraintTarget() ConstraintTarget {
-	return WrapConstraintTarget(gextras.InternObject(p))
-}
-
-func (p passwordEntry) AsEditable() Editable {
-	return WrapEditable(gextras.InternObject(p))
 }

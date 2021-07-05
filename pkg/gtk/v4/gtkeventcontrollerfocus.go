@@ -33,12 +33,12 @@ func init() {
 type EventControllerFocus interface {
 	EventController
 
-	// ContainsFocusEventControllerFocus returns true if focus is within @self
-	// or one of its children.
-	ContainsFocusEventControllerFocus() bool
-	// IsFocusEventControllerFocus returns true if focus is within @self, but
-	// not one of its children.
-	IsFocusEventControllerFocus() bool
+	// ContainsFocus returns true if focus is within @self or one of its
+	// children.
+	ContainsFocus() bool
+	// IsFocus returns true if focus is within @self, but not one of its
+	// children.
+	IsFocus() bool
 }
 
 // eventControllerFocus implements the EventControllerFocus class.
@@ -74,7 +74,7 @@ func NewEventControllerFocus() EventControllerFocus {
 	return _eventControllerFocus
 }
 
-func (s eventControllerFocus) ContainsFocusEventControllerFocus() bool {
+func (s eventControllerFocus) ContainsFocus() bool {
 	var _arg0 *C.GtkEventControllerFocus // out
 	var _cret C.gboolean                 // in
 
@@ -91,7 +91,7 @@ func (s eventControllerFocus) ContainsFocusEventControllerFocus() bool {
 	return _ok
 }
 
-func (s eventControllerFocus) IsFocusEventControllerFocus() bool {
+func (s eventControllerFocus) IsFocus() bool {
 	var _arg0 *C.GtkEventControllerFocus // out
 	var _cret C.gboolean                 // in
 

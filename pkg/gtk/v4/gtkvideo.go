@@ -52,17 +52,16 @@ type Video interface {
 	Loop() bool
 	// MediaStream gets the media stream managed by @self or nil if none.
 	MediaStream() MediaStream
-	// SetAutoplayVideo sets whether @self automatically starts playback when it
+	// SetAutoplay sets whether @self automatically starts playback when it
 	// becomes visible or when a new file gets loaded.
-	SetAutoplayVideo(autoplay bool)
-	// SetFilenameVideo makes @self play the given @filename.
+	SetAutoplay(autoplay bool)
+	// SetFilename makes @self play the given @filename.
 	//
 	// This is a utility function that calls gtk_video_set_file(),
-	SetFilenameVideo(filename string)
-	// SetLoopVideo sets whether new files loaded by @self should be set to
-	// loop.
-	SetLoopVideo(loop bool)
-	// SetMediaStreamVideo sets the media stream to be played back.
+	SetFilename(filename string)
+	// SetLoop sets whether new files loaded by @self should be set to loop.
+	SetLoop(loop bool)
+	// SetMediaStream sets the media stream to be played back.
 	//
 	// @self will take full control of managing the media stream. If you want to
 	// manage a media stream yourself, consider using a [class@Gtk.Picture] for
@@ -70,12 +69,11 @@ type Video interface {
 	//
 	// If you want to display a file, consider using [method@Gtk.Video.set_file]
 	// instead.
-	SetMediaStreamVideo(stream MediaStream)
-	// SetResourceVideo makes @self play the resource at the given
-	// @resource_path.
+	SetMediaStream(stream MediaStream)
+	// SetResource makes @self play the resource at the given @resource_path.
 	//
 	// This is a utility function that calls [method@Gtk.Video.set_file].
-	SetResourceVideo(resourcePath string)
+	SetResource(resourcePath string)
 }
 
 // video implements the Video class.
@@ -166,6 +164,18 @@ func NewVideoForResource(resourcePath string) Video {
 	return _video
 }
 
+func (v video) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(v))
+}
+
+func (v video) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(v))
+}
+
+func (v video) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(v))
+}
+
 func (s video) Autoplay() bool {
 	var _arg0 *C.GtkVideo // out
 	var _cret C.gboolean  // in
@@ -215,7 +225,7 @@ func (s video) MediaStream() MediaStream {
 	return _mediaStream
 }
 
-func (s video) SetAutoplayVideo(autoplay bool) {
+func (s video) SetAutoplay(autoplay bool) {
 	var _arg0 *C.GtkVideo // out
 	var _arg1 C.gboolean  // out
 
@@ -227,7 +237,7 @@ func (s video) SetAutoplayVideo(autoplay bool) {
 	C.gtk_video_set_autoplay(_arg0, _arg1)
 }
 
-func (s video) SetFilenameVideo(filename string) {
+func (s video) SetFilename(filename string) {
 	var _arg0 *C.GtkVideo // out
 	var _arg1 *C.char     // out
 
@@ -238,7 +248,7 @@ func (s video) SetFilenameVideo(filename string) {
 	C.gtk_video_set_filename(_arg0, _arg1)
 }
 
-func (s video) SetLoopVideo(loop bool) {
+func (s video) SetLoop(loop bool) {
 	var _arg0 *C.GtkVideo // out
 	var _arg1 C.gboolean  // out
 
@@ -250,7 +260,7 @@ func (s video) SetLoopVideo(loop bool) {
 	C.gtk_video_set_loop(_arg0, _arg1)
 }
 
-func (s video) SetMediaStreamVideo(stream MediaStream) {
+func (s video) SetMediaStream(stream MediaStream) {
 	var _arg0 *C.GtkVideo       // out
 	var _arg1 *C.GtkMediaStream // out
 
@@ -260,7 +270,7 @@ func (s video) SetMediaStreamVideo(stream MediaStream) {
 	C.gtk_video_set_media_stream(_arg0, _arg1)
 }
 
-func (s video) SetResourceVideo(resourcePath string) {
+func (s video) SetResource(resourcePath string) {
 	var _arg0 *C.GtkVideo // out
 	var _arg1 *C.char     // out
 
@@ -269,16 +279,4 @@ func (s video) SetResourceVideo(resourcePath string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_video_set_resource(_arg0, _arg1)
-}
-
-func (v video) AsAccessible() Accessible {
-	return WrapAccessible(gextras.InternObject(v))
-}
-
-func (v video) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(v))
-}
-
-func (v video) AsConstraintTarget() ConstraintTarget {
-	return WrapConstraintTarget(gextras.InternObject(v))
 }

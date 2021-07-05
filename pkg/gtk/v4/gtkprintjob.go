@@ -95,30 +95,30 @@ type PrintJob interface {
 	//
 	// For details, see [method@Gtk.PrintJob.set_track_print_status].
 	TrackPrintStatus() bool
-	// SetCollatePrintJob sets whether this job is printed collated.
-	SetCollatePrintJob(collate bool)
-	// SetNUpPrintJob sets the n-up setting for this job.
-	SetNUpPrintJob(nUp uint)
-	// SetNUpLayoutPrintJob sets the n-up layout setting for this job.
-	SetNUpLayoutPrintJob(layout NumberUpLayout)
-	// SetNumCopiesPrintJob sets the number of copies for this job.
-	SetNumCopiesPrintJob(numCopies int)
-	// SetPageRangesPrintJob sets the page ranges for this job.
-	SetPageRangesPrintJob(ranges []PageRange)
-	// SetPageSetPrintJob sets the `GtkPageSet` setting for this job.
-	SetPageSetPrintJob(pageSet PageSet)
-	// SetPagesPrintJob sets the `GtkPrintPages` setting for this job.
-	SetPagesPrintJob(pages PrintPages)
-	// SetReversePrintJob sets whether this job is printed reversed.
-	SetReversePrintJob(reverse bool)
-	// SetRotatePrintJob sets whether this job is printed rotated.
-	SetRotatePrintJob(rotate bool)
-	// SetScalePrintJob sets the scale for this job.
+	// SetCollate sets whether this job is printed collated.
+	SetCollate(collate bool)
+	// SetNUp sets the n-up setting for this job.
+	SetNUp(nUp uint)
+	// SetNUpLayout sets the n-up layout setting for this job.
+	SetNUpLayout(layout NumberUpLayout)
+	// SetNumCopies sets the number of copies for this job.
+	SetNumCopies(numCopies int)
+	// SetPageRanges sets the page ranges for this job.
+	SetPageRanges(ranges []PageRange)
+	// SetPageSet sets the `GtkPageSet` setting for this job.
+	SetPageSet(pageSet PageSet)
+	// SetPages sets the `GtkPrintPages` setting for this job.
+	SetPages(pages PrintPages)
+	// SetReverse sets whether this job is printed reversed.
+	SetReverse(reverse bool)
+	// SetRotate sets whether this job is printed rotated.
+	SetRotate(rotate bool)
+	// SetScale sets the scale for this job.
 	//
 	// 1.0 means unscaled.
-	SetScalePrintJob(scale float64)
-	// SetSourceFdPrintJob: make the `GtkPrintJob` send an existing document to
-	// the printing system.
+	SetScale(scale float64)
+	// SetSourceFd: make the `GtkPrintJob` send an existing document to the
+	// printing system.
 	//
 	// The file can be in any format understood by the platforms printing system
 	// (typically PostScript, but on many platforms PDF may work too). See
@@ -126,24 +126,24 @@ type PrintJob interface {
 	//
 	// This is similar to [method@Gtk.PrintJob.set_source_file], but takes
 	// expects an open file descriptor for the file, instead of a filename.
-	SetSourceFdPrintJob(fd int) error
-	// SetSourceFilePrintJob: make the `GtkPrintJob` send an existing document
-	// to the printing system.
+	SetSourceFd(fd int) error
+	// SetSourceFile: make the `GtkPrintJob` send an existing document to the
+	// printing system.
 	//
 	// The file can be in any format understood by the platforms printing system
 	// (typically PostScript, but on many platforms PDF may work too). See
 	// [method@Gtk.Printer.accepts_pdf] and [method@Gtk.Printer.accepts_ps].
-	SetSourceFilePrintJob(filename string) error
-	// SetTrackPrintStatusPrintJob: if track_status is true, the print job will
-	// try to continue report on the status of the print job in the printer
-	// queues and printer.
+	SetSourceFile(filename string) error
+	// SetTrackPrintStatus: if track_status is true, the print job will try to
+	// continue report on the status of the print job in the printer queues and
+	// printer.
 	//
 	// This can allow your application to show things like “out of paper”
 	// issues, and when the print job actually reaches the printer.
 	//
 	// This function is often implemented using some form of polling, so it
 	// should not be enabled unless needed.
-	SetTrackPrintStatusPrintJob(trackStatus bool)
+	SetTrackPrintStatus(trackStatus bool)
 }
 
 // printJob implements the PrintJob class.
@@ -424,7 +424,7 @@ func (j printJob) TrackPrintStatus() bool {
 	return _ok
 }
 
-func (j printJob) SetCollatePrintJob(collate bool) {
+func (j printJob) SetCollate(collate bool) {
 	var _arg0 *C.GtkPrintJob // out
 	var _arg1 C.gboolean     // out
 
@@ -436,7 +436,7 @@ func (j printJob) SetCollatePrintJob(collate bool) {
 	C.gtk_print_job_set_collate(_arg0, _arg1)
 }
 
-func (j printJob) SetNUpPrintJob(nUp uint) {
+func (j printJob) SetNUp(nUp uint) {
 	var _arg0 *C.GtkPrintJob // out
 	var _arg1 C.guint        // out
 
@@ -446,7 +446,7 @@ func (j printJob) SetNUpPrintJob(nUp uint) {
 	C.gtk_print_job_set_n_up(_arg0, _arg1)
 }
 
-func (j printJob) SetNUpLayoutPrintJob(layout NumberUpLayout) {
+func (j printJob) SetNUpLayout(layout NumberUpLayout) {
 	var _arg0 *C.GtkPrintJob      // out
 	var _arg1 C.GtkNumberUpLayout // out
 
@@ -456,7 +456,7 @@ func (j printJob) SetNUpLayoutPrintJob(layout NumberUpLayout) {
 	C.gtk_print_job_set_n_up_layout(_arg0, _arg1)
 }
 
-func (j printJob) SetNumCopiesPrintJob(numCopies int) {
+func (j printJob) SetNumCopies(numCopies int) {
 	var _arg0 *C.GtkPrintJob // out
 	var _arg1 C.int          // out
 
@@ -466,7 +466,7 @@ func (j printJob) SetNumCopiesPrintJob(numCopies int) {
 	C.gtk_print_job_set_num_copies(_arg0, _arg1)
 }
 
-func (j printJob) SetPageRangesPrintJob(ranges []PageRange) {
+func (j printJob) SetPageRanges(ranges []PageRange) {
 	var _arg0 *C.GtkPrintJob // out
 	var _arg1 *C.GtkPageRange
 	var _arg2 C.int
@@ -495,7 +495,7 @@ func (j printJob) SetPageRangesPrintJob(ranges []PageRange) {
 	C.gtk_print_job_set_page_ranges(_arg0, _arg1, _arg2)
 }
 
-func (j printJob) SetPageSetPrintJob(pageSet PageSet) {
+func (j printJob) SetPageSet(pageSet PageSet) {
 	var _arg0 *C.GtkPrintJob // out
 	var _arg1 C.GtkPageSet   // out
 
@@ -505,7 +505,7 @@ func (j printJob) SetPageSetPrintJob(pageSet PageSet) {
 	C.gtk_print_job_set_page_set(_arg0, _arg1)
 }
 
-func (j printJob) SetPagesPrintJob(pages PrintPages) {
+func (j printJob) SetPages(pages PrintPages) {
 	var _arg0 *C.GtkPrintJob  // out
 	var _arg1 C.GtkPrintPages // out
 
@@ -515,7 +515,7 @@ func (j printJob) SetPagesPrintJob(pages PrintPages) {
 	C.gtk_print_job_set_pages(_arg0, _arg1)
 }
 
-func (j printJob) SetReversePrintJob(reverse bool) {
+func (j printJob) SetReverse(reverse bool) {
 	var _arg0 *C.GtkPrintJob // out
 	var _arg1 C.gboolean     // out
 
@@ -527,7 +527,7 @@ func (j printJob) SetReversePrintJob(reverse bool) {
 	C.gtk_print_job_set_reverse(_arg0, _arg1)
 }
 
-func (j printJob) SetRotatePrintJob(rotate bool) {
+func (j printJob) SetRotate(rotate bool) {
 	var _arg0 *C.GtkPrintJob // out
 	var _arg1 C.gboolean     // out
 
@@ -539,7 +539,7 @@ func (j printJob) SetRotatePrintJob(rotate bool) {
 	C.gtk_print_job_set_rotate(_arg0, _arg1)
 }
 
-func (j printJob) SetScalePrintJob(scale float64) {
+func (j printJob) SetScale(scale float64) {
 	var _arg0 *C.GtkPrintJob // out
 	var _arg1 C.double       // out
 
@@ -549,7 +549,7 @@ func (j printJob) SetScalePrintJob(scale float64) {
 	C.gtk_print_job_set_scale(_arg0, _arg1)
 }
 
-func (j printJob) SetSourceFdPrintJob(fd int) error {
+func (j printJob) SetSourceFd(fd int) error {
 	var _arg0 *C.GtkPrintJob // out
 	var _arg1 C.int          // out
 	var _cerr *C.GError      // in
@@ -566,7 +566,7 @@ func (j printJob) SetSourceFdPrintJob(fd int) error {
 	return _goerr
 }
 
-func (j printJob) SetSourceFilePrintJob(filename string) error {
+func (j printJob) SetSourceFile(filename string) error {
 	var _arg0 *C.GtkPrintJob // out
 	var _arg1 *C.char        // out
 	var _cerr *C.GError      // in
@@ -584,7 +584,7 @@ func (j printJob) SetSourceFilePrintJob(filename string) error {
 	return _goerr
 }
 
-func (j printJob) SetTrackPrintStatusPrintJob(trackStatus bool) {
+func (j printJob) SetTrackPrintStatus(trackStatus bool) {
 	var _arg0 *C.GtkPrintJob // out
 	var _arg1 C.gboolean     // out
 

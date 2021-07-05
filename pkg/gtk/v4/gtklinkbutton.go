@@ -71,14 +71,14 @@ type LinkButton interface {
 	//
 	// The state may also be changed using [method@Gtk.LinkButton.set_visited].
 	Visited() bool
-	// SetURILinkButton sets @uri as the URI where the `GtkLinkButton` points.
+	// SetURI sets @uri as the URI where the `GtkLinkButton` points.
 	//
 	// As a side-effect this unsets the “visited” state of the button.
-	SetURILinkButton(uri string)
-	// SetVisitedLinkButton sets the “visited” state of the `GtkLinkButton`.
+	SetURI(uri string)
+	// SetVisited sets the “visited” state of the `GtkLinkButton`.
 	//
 	// See [method@Gtk.LinkButton.get_visited] for more details.
-	SetVisitedLinkButton(visited bool)
+	SetVisited(visited bool)
 }
 
 // linkButton implements the LinkButton class.
@@ -137,6 +137,22 @@ func NewLinkButtonWithLabel(uri string, label string) LinkButton {
 	return _linkButton
 }
 
+func (l linkButton) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(l))
+}
+
+func (l linkButton) AsActionable() Actionable {
+	return WrapActionable(gextras.InternObject(l))
+}
+
+func (l linkButton) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(l))
+}
+
+func (l linkButton) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(l))
+}
+
 func (l linkButton) URI() string {
 	var _arg0 *C.GtkLinkButton // out
 	var _cret *C.char          // in
@@ -169,7 +185,7 @@ func (l linkButton) Visited() bool {
 	return _ok
 }
 
-func (l linkButton) SetURILinkButton(uri string) {
+func (l linkButton) SetURI(uri string) {
 	var _arg0 *C.GtkLinkButton // out
 	var _arg1 *C.char          // out
 
@@ -180,7 +196,7 @@ func (l linkButton) SetURILinkButton(uri string) {
 	C.gtk_link_button_set_uri(_arg0, _arg1)
 }
 
-func (l linkButton) SetVisitedLinkButton(visited bool) {
+func (l linkButton) SetVisited(visited bool) {
 	var _arg0 *C.GtkLinkButton // out
 	var _arg1 C.gboolean       // out
 
@@ -190,20 +206,4 @@ func (l linkButton) SetVisitedLinkButton(visited bool) {
 	}
 
 	C.gtk_link_button_set_visited(_arg0, _arg1)
-}
-
-func (l linkButton) AsAccessible() Accessible {
-	return WrapAccessible(gextras.InternObject(l))
-}
-
-func (l linkButton) AsActionable() Actionable {
-	return WrapActionable(gextras.InternObject(l))
-}
-
-func (l linkButton) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(l))
-}
-
-func (l linkButton) AsConstraintTarget() ConstraintTarget {
-	return WrapConstraintTarget(gextras.InternObject(l))
 }

@@ -86,26 +86,26 @@ type Button interface {
 	//
 	// See [method@Gtk.Button.set_use_underline].
 	UseUnderline() bool
-	// SetChildButton sets the child widget of @button.
-	SetChildButton(child Widget)
-	// SetHasFrameButton sets the style of the button.
+	// SetChild sets the child widget of @button.
+	SetChild(child Widget)
+	// SetHasFrame sets the style of the button.
 	//
 	// Buttons can has a flat appearance or have a frame drawn around them.
-	SetHasFrameButton(hasFrame bool)
-	// SetIconNameButton adds a `GtkImage` with the given icon name as a child.
+	SetHasFrame(hasFrame bool)
+	// SetIconName adds a `GtkImage` with the given icon name as a child.
 	//
 	// If @button already contains a child widget, that child widget will be
 	// removed and replaced with the image.
-	SetIconNameButton(iconName string)
-	// SetLabelButton sets the text of the label of the button to @label.
+	SetIconName(iconName string)
+	// SetLabel sets the text of the label of the button to @label.
 	//
 	// This will also clear any previously set labels.
-	SetLabelButton(label string)
-	// SetUseUnderlineButton sets whether to use underlines as mnemonics.
+	SetLabel(label string)
+	// SetUseUnderline sets whether to use underlines as mnemonics.
 	//
 	// If true, an underline in the text of the button label indicates the next
 	// character should be used for the mnemonic accelerator key.
-	SetUseUnderlineButton(useUnderline bool)
+	SetUseUnderline(useUnderline bool)
 }
 
 // button implements the Button class.
@@ -204,6 +204,22 @@ func NewButtonWithMnemonic(label string) Button {
 	return _button
 }
 
+func (b button) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(b))
+}
+
+func (b button) AsActionable() Actionable {
+	return WrapActionable(gextras.InternObject(b))
+}
+
+func (b button) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(b))
+}
+
+func (b button) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(b))
+}
+
 func (b button) Child() Widget {
 	var _arg0 *C.GtkButton // out
 	var _cret *C.GtkWidget // in
@@ -283,7 +299,7 @@ func (b button) UseUnderline() bool {
 	return _ok
 }
 
-func (b button) SetChildButton(child Widget) {
+func (b button) SetChild(child Widget) {
 	var _arg0 *C.GtkButton // out
 	var _arg1 *C.GtkWidget // out
 
@@ -293,7 +309,7 @@ func (b button) SetChildButton(child Widget) {
 	C.gtk_button_set_child(_arg0, _arg1)
 }
 
-func (b button) SetHasFrameButton(hasFrame bool) {
+func (b button) SetHasFrame(hasFrame bool) {
 	var _arg0 *C.GtkButton // out
 	var _arg1 C.gboolean   // out
 
@@ -305,7 +321,7 @@ func (b button) SetHasFrameButton(hasFrame bool) {
 	C.gtk_button_set_has_frame(_arg0, _arg1)
 }
 
-func (b button) SetIconNameButton(iconName string) {
+func (b button) SetIconName(iconName string) {
 	var _arg0 *C.GtkButton // out
 	var _arg1 *C.char      // out
 
@@ -316,7 +332,7 @@ func (b button) SetIconNameButton(iconName string) {
 	C.gtk_button_set_icon_name(_arg0, _arg1)
 }
 
-func (b button) SetLabelButton(label string) {
+func (b button) SetLabel(label string) {
 	var _arg0 *C.GtkButton // out
 	var _arg1 *C.char      // out
 
@@ -327,7 +343,7 @@ func (b button) SetLabelButton(label string) {
 	C.gtk_button_set_label(_arg0, _arg1)
 }
 
-func (b button) SetUseUnderlineButton(useUnderline bool) {
+func (b button) SetUseUnderline(useUnderline bool) {
 	var _arg0 *C.GtkButton // out
 	var _arg1 C.gboolean   // out
 
@@ -337,20 +353,4 @@ func (b button) SetUseUnderlineButton(useUnderline bool) {
 	}
 
 	C.gtk_button_set_use_underline(_arg0, _arg1)
-}
-
-func (b button) AsAccessible() Accessible {
-	return WrapAccessible(gextras.InternObject(b))
-}
-
-func (b button) AsActionable() Actionable {
-	return WrapActionable(gextras.InternObject(b))
-}
-
-func (b button) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(b))
-}
-
-func (b button) AsConstraintTarget() ConstraintTarget {
-	return WrapConstraintTarget(gextras.InternObject(b))
 }

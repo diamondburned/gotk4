@@ -58,7 +58,7 @@ type DBusObjectManagerServer interface {
 	// AsDBusObjectManager casts the class to the DBusObjectManager interface.
 	AsDBusObjectManager() DBusObjectManager
 
-	// ExportDBusObjectManagerServer exports @object on @manager.
+	// Export exports @object on @manager.
 	//
 	// If there is already a BusObject exported at the object path, then the old
 	// object is removed.
@@ -68,27 +68,25 @@ type DBusObjectManagerServer interface {
 	//
 	// Note that @manager will take a reference on @object for as long as it is
 	// exported.
-	ExportDBusObjectManagerServer(object DBusObjectSkeleton)
-	// ExportUniquelyDBusObjectManagerServer: like
-	// g_dbus_object_manager_server_export() but appends a string of the form _N
-	// (with N being a natural number) to @object's object path if an object
-	// with the given path already exists. As such, the
+	Export(object DBusObjectSkeleton)
+	// ExportUniquely: like g_dbus_object_manager_server_export() but appends a
+	// string of the form _N (with N being a natural number) to @object's object
+	// path if an object with the given path already exists. As such, the
 	// BusObjectProxy:g-object-path property of @object may be modified.
-	ExportUniquelyDBusObjectManagerServer(object DBusObjectSkeleton)
+	ExportUniquely(object DBusObjectSkeleton)
 	// Connection gets the BusConnection used by @manager.
 	Connection() DBusConnection
-	// IsExportedDBusObjectManagerServer returns whether @object is currently
-	// exported on @manager.
-	IsExportedDBusObjectManagerServer(object DBusObjectSkeleton) bool
-	// SetConnectionDBusObjectManagerServer exports all objects managed by
-	// @manager on @connection. If @connection is nil, stops exporting objects.
-	SetConnectionDBusObjectManagerServer(connection DBusConnection)
-	// UnexportDBusObjectManagerServer: if @manager has an object at @path,
-	// removes the object. Otherwise does nothing.
+	// IsExported returns whether @object is currently exported on @manager.
+	IsExported(object DBusObjectSkeleton) bool
+	// SetConnection exports all objects managed by @manager on @connection. If
+	// @connection is nil, stops exporting objects.
+	SetConnection(connection DBusConnection)
+	// Unexport: if @manager has an object at @path, removes the object.
+	// Otherwise does nothing.
 	//
 	// Note that @object_path must be in the hierarchy rooted by the object path
 	// for @manager.
-	UnexportDBusObjectManagerServer(objectPath string) bool
+	Unexport(objectPath string) bool
 }
 
 // dBusObjectManagerServer implements the DBusObjectManagerServer class.
@@ -133,7 +131,11 @@ func NewDBusObjectManagerServer(objectPath string) DBusObjectManagerServer {
 	return _dBusObjectManagerServer
 }
 
-func (m dBusObjectManagerServer) ExportDBusObjectManagerServer(object DBusObjectSkeleton) {
+func (d dBusObjectManagerServer) AsDBusObjectManager() DBusObjectManager {
+	return WrapDBusObjectManager(gextras.InternObject(d))
+}
+
+func (m dBusObjectManagerServer) Export(object DBusObjectSkeleton) {
 	var _arg0 *C.GDBusObjectManagerServer // out
 	var _arg1 *C.GDBusObjectSkeleton      // out
 
@@ -143,7 +145,7 @@ func (m dBusObjectManagerServer) ExportDBusObjectManagerServer(object DBusObject
 	C.g_dbus_object_manager_server_export(_arg0, _arg1)
 }
 
-func (m dBusObjectManagerServer) ExportUniquelyDBusObjectManagerServer(object DBusObjectSkeleton) {
+func (m dBusObjectManagerServer) ExportUniquely(object DBusObjectSkeleton) {
 	var _arg0 *C.GDBusObjectManagerServer // out
 	var _arg1 *C.GDBusObjectSkeleton      // out
 
@@ -168,7 +170,7 @@ func (m dBusObjectManagerServer) Connection() DBusConnection {
 	return _dBusConnection
 }
 
-func (m dBusObjectManagerServer) IsExportedDBusObjectManagerServer(object DBusObjectSkeleton) bool {
+func (m dBusObjectManagerServer) IsExported(object DBusObjectSkeleton) bool {
 	var _arg0 *C.GDBusObjectManagerServer // out
 	var _arg1 *C.GDBusObjectSkeleton      // out
 	var _cret C.gboolean                  // in
@@ -187,7 +189,7 @@ func (m dBusObjectManagerServer) IsExportedDBusObjectManagerServer(object DBusOb
 	return _ok
 }
 
-func (m dBusObjectManagerServer) SetConnectionDBusObjectManagerServer(connection DBusConnection) {
+func (m dBusObjectManagerServer) SetConnection(connection DBusConnection) {
 	var _arg0 *C.GDBusObjectManagerServer // out
 	var _arg1 *C.GDBusConnection          // out
 
@@ -197,7 +199,7 @@ func (m dBusObjectManagerServer) SetConnectionDBusObjectManagerServer(connection
 	C.g_dbus_object_manager_server_set_connection(_arg0, _arg1)
 }
 
-func (m dBusObjectManagerServer) UnexportDBusObjectManagerServer(objectPath string) bool {
+func (m dBusObjectManagerServer) Unexport(objectPath string) bool {
 	var _arg0 *C.GDBusObjectManagerServer // out
 	var _arg1 *C.gchar                    // out
 	var _cret C.gboolean                  // in
@@ -215,8 +217,4 @@ func (m dBusObjectManagerServer) UnexportDBusObjectManagerServer(objectPath stri
 	}
 
 	return _ok
-}
-
-func (d dBusObjectManagerServer) AsDBusObjectManager() DBusObjectManager {
-	return WrapDBusObjectManager(gextras.InternObject(d))
 }

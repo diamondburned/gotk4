@@ -96,9 +96,8 @@ type FixedLayoutChild interface {
 
 	// Transform retrieves the transformation of the child.
 	Transform() *gsk.Transform
-	// SetTransformFixedLayoutChild sets the transformation of the child of a
-	// `GtkFixedLayout`.
-	SetTransformFixedLayoutChild(transform *gsk.Transform)
+	// SetTransform sets the transformation of the child of a `GtkFixedLayout`.
+	SetTransform(transform *gsk.Transform)
 }
 
 // fixedLayoutChild implements the FixedLayoutChild class.
@@ -139,7 +138,7 @@ func (c fixedLayoutChild) Transform() *gsk.Transform {
 	return _transform
 }
 
-func (c fixedLayoutChild) SetTransformFixedLayoutChild(transform *gsk.Transform) {
+func (c fixedLayoutChild) SetTransform(transform *gsk.Transform) {
 	var _arg0 *C.GtkFixedLayoutChild // out
 	var _arg1 *C.GskTransform        // out
 

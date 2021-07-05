@@ -76,15 +76,15 @@ type VFS interface {
 	FileForURI(uri string) File
 	// SupportedURISchemes gets a list of URI schemes supported by @vfs.
 	SupportedURISchemes() []string
-	// IsActiveVFS checks if the VFS is active.
-	IsActiveVFS() bool
-	// ParseNameVFS: this operation never fails, but the returned object might
-	// not support any I/O operations if the @parse_name cannot be parsed by the
+	// IsActive checks if the VFS is active.
+	IsActive() bool
+	// ParseName: this operation never fails, but the returned object might not
+	// support any I/O operations if the @parse_name cannot be parsed by the
 	// #GVfs module.
-	ParseNameVFS(parseName string) File
-	// UnregisterURISchemeVFS unregisters the URI handler for @scheme previously
+	ParseName(parseName string) File
+	// UnregisterURIScheme unregisters the URI handler for @scheme previously
 	// registered with g_vfs_register_uri_scheme().
-	UnregisterURISchemeVFS(scheme string) bool
+	UnregisterURIScheme(scheme string) bool
 }
 
 // vfS implements the VFS class.
@@ -169,7 +169,7 @@ func (v vfS) SupportedURISchemes() []string {
 	return _utf8s
 }
 
-func (v vfS) IsActiveVFS() bool {
+func (v vfS) IsActive() bool {
 	var _arg0 *C.GVfs    // out
 	var _cret C.gboolean // in
 
@@ -186,7 +186,7 @@ func (v vfS) IsActiveVFS() bool {
 	return _ok
 }
 
-func (v vfS) ParseNameVFS(parseName string) File {
+func (v vfS) ParseName(parseName string) File {
 	var _arg0 *C.GVfs  // out
 	var _arg1 *C.char  // out
 	var _cret *C.GFile // in
@@ -204,7 +204,7 @@ func (v vfS) ParseNameVFS(parseName string) File {
 	return _file
 }
 
-func (v vfS) UnregisterURISchemeVFS(scheme string) bool {
+func (v vfS) UnregisterURIScheme(scheme string) bool {
 	var _arg0 *C.GVfs    // out
 	var _arg1 *C.char    // out
 	var _cret C.gboolean // in

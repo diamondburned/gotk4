@@ -85,11 +85,10 @@ func marshalWaylandSurface(p uintptr) (interface{}, error) {
 type WaylandToplevel interface {
 	WaylandSurface
 
-	// SetApplicationIDWaylandToplevel sets the application id on a
-	// `GdkToplevel`.
-	SetApplicationIDWaylandToplevel(applicationId string)
-	// SetTransientForExportedWaylandToplevel marks @toplevel as transient for
-	// the surface to which the given @parent_handle_str refers.
+	// SetApplicationID sets the application id on a `GdkToplevel`.
+	SetApplicationID(applicationId string)
+	// SetTransientForExported marks @toplevel as transient for the surface to
+	// which the given @parent_handle_str refers.
 	//
 	// Typically, the handle will originate from a
 	// [method@GdkWayland.WaylandToplevel.export_handle] call in another
@@ -97,8 +96,8 @@ type WaylandToplevel interface {
 	//
 	// Note that this API depends on an unstable Wayland protocol, and thus may
 	// require changes in the future.
-	SetTransientForExportedWaylandToplevel(parentHandleStr string) bool
-	// UnexportHandleWaylandToplevel destroys the handle that was obtained with
+	SetTransientForExported(parentHandleStr string) bool
+	// UnexportHandle destroys the handle that was obtained with
 	// gdk_wayland_toplevel_export_handle().
 	//
 	// It is an error to call this function on a surface that does not have a
@@ -106,7 +105,7 @@ type WaylandToplevel interface {
 	//
 	// Note that this API depends on an unstable Wayland protocol, and thus may
 	// require changes in the future.
-	UnexportHandleWaylandToplevel()
+	UnexportHandle()
 }
 
 // waylandToplevel implements the WaylandToplevel class.
@@ -128,7 +127,7 @@ func marshalWaylandToplevel(p uintptr) (interface{}, error) {
 	return WrapWaylandToplevel(obj), nil
 }
 
-func (t waylandToplevel) SetApplicationIDWaylandToplevel(applicationId string) {
+func (t waylandToplevel) SetApplicationID(applicationId string) {
 	var _arg0 *C.GdkToplevel // out
 	var _arg1 *C.char        // out
 
@@ -139,7 +138,7 @@ func (t waylandToplevel) SetApplicationIDWaylandToplevel(applicationId string) {
 	C.gdk_wayland_toplevel_set_application_id(_arg0, _arg1)
 }
 
-func (t waylandToplevel) SetTransientForExportedWaylandToplevel(parentHandleStr string) bool {
+func (t waylandToplevel) SetTransientForExported(parentHandleStr string) bool {
 	var _arg0 *C.GdkToplevel // out
 	var _arg1 *C.char        // out
 	var _cret C.gboolean     // in
@@ -159,7 +158,7 @@ func (t waylandToplevel) SetTransientForExportedWaylandToplevel(parentHandleStr 
 	return _ok
 }
 
-func (t waylandToplevel) UnexportHandleWaylandToplevel() {
+func (t waylandToplevel) UnexportHandle() {
 	var _arg0 *C.GdkToplevel // out
 
 	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(t.Native()))

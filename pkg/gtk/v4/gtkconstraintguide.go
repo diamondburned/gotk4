@@ -50,28 +50,28 @@ type ConstraintGuide interface {
 	// Strength retrieves the strength set using
 	// gtk_constraint_guide_set_strength().
 	Strength() ConstraintStrength
-	// SetMaxSizeConstraintGuide sets the maximum size of @guide.
+	// SetMaxSize sets the maximum size of @guide.
 	//
 	// If @guide is attached to a `GtkConstraintLayout`, the constraints will be
 	// updated to reflect the new size.
-	SetMaxSizeConstraintGuide(width int, height int)
-	// SetMinSizeConstraintGuide sets the minimum size of @guide.
+	SetMaxSize(width int, height int)
+	// SetMinSize sets the minimum size of @guide.
 	//
 	// If @guide is attached to a `GtkConstraintLayout`, the constraints will be
 	// updated to reflect the new size.
-	SetMinSizeConstraintGuide(width int, height int)
-	// SetNameConstraintGuide sets a name for the given `GtkConstraintGuide`.
+	SetMinSize(width int, height int)
+	// SetName sets a name for the given `GtkConstraintGuide`.
 	//
 	// The name is useful for debugging purposes.
-	SetNameConstraintGuide(name string)
-	// SetNatSizeConstraintGuide sets the natural size of @guide.
+	SetName(name string)
+	// SetNatSize sets the natural size of @guide.
 	//
 	// If @guide is attached to a `GtkConstraintLayout`, the constraints will be
 	// updated to reflect the new size.
-	SetNatSizeConstraintGuide(width int, height int)
-	// SetStrengthConstraintGuide sets the strength of the constraint on the
-	// natural size of the given `GtkConstraintGuide`.
-	SetStrengthConstraintGuide(strength ConstraintStrength)
+	SetNatSize(width int, height int)
+	// SetStrength sets the strength of the constraint on the natural size of
+	// the given `GtkConstraintGuide`.
+	SetStrength(strength ConstraintStrength)
 }
 
 // constraintGuide implements the ConstraintGuide class.
@@ -104,6 +104,10 @@ func NewConstraintGuide() ConstraintGuide {
 	_constraintGuide = WrapConstraintGuide(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _constraintGuide
+}
+
+func (c constraintGuide) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(c))
 }
 
 func (g constraintGuide) MaxSize(width *int, height *int) {
@@ -172,7 +176,7 @@ func (g constraintGuide) Strength() ConstraintStrength {
 	return _constraintStrength
 }
 
-func (g constraintGuide) SetMaxSizeConstraintGuide(width int, height int) {
+func (g constraintGuide) SetMaxSize(width int, height int) {
 	var _arg0 *C.GtkConstraintGuide // out
 	var _arg1 C.int                 // out
 	var _arg2 C.int                 // out
@@ -184,7 +188,7 @@ func (g constraintGuide) SetMaxSizeConstraintGuide(width int, height int) {
 	C.gtk_constraint_guide_set_max_size(_arg0, _arg1, _arg2)
 }
 
-func (g constraintGuide) SetMinSizeConstraintGuide(width int, height int) {
+func (g constraintGuide) SetMinSize(width int, height int) {
 	var _arg0 *C.GtkConstraintGuide // out
 	var _arg1 C.int                 // out
 	var _arg2 C.int                 // out
@@ -196,7 +200,7 @@ func (g constraintGuide) SetMinSizeConstraintGuide(width int, height int) {
 	C.gtk_constraint_guide_set_min_size(_arg0, _arg1, _arg2)
 }
 
-func (g constraintGuide) SetNameConstraintGuide(name string) {
+func (g constraintGuide) SetName(name string) {
 	var _arg0 *C.GtkConstraintGuide // out
 	var _arg1 *C.char               // out
 
@@ -207,7 +211,7 @@ func (g constraintGuide) SetNameConstraintGuide(name string) {
 	C.gtk_constraint_guide_set_name(_arg0, _arg1)
 }
 
-func (g constraintGuide) SetNatSizeConstraintGuide(width int, height int) {
+func (g constraintGuide) SetNatSize(width int, height int) {
 	var _arg0 *C.GtkConstraintGuide // out
 	var _arg1 C.int                 // out
 	var _arg2 C.int                 // out
@@ -219,7 +223,7 @@ func (g constraintGuide) SetNatSizeConstraintGuide(width int, height int) {
 	C.gtk_constraint_guide_set_nat_size(_arg0, _arg1, _arg2)
 }
 
-func (g constraintGuide) SetStrengthConstraintGuide(strength ConstraintStrength) {
+func (g constraintGuide) SetStrength(strength ConstraintStrength) {
 	var _arg0 *C.GtkConstraintGuide   // out
 	var _arg1 C.GtkConstraintStrength // out
 
@@ -227,8 +231,4 @@ func (g constraintGuide) SetStrengthConstraintGuide(strength ConstraintStrength)
 	_arg1 = C.GtkConstraintStrength(strength)
 
 	C.gtk_constraint_guide_set_strength(_arg0, _arg1)
-}
-
-func (c constraintGuide) AsConstraintTarget() ConstraintTarget {
-	return WrapConstraintTarget(gextras.InternObject(c))
 }

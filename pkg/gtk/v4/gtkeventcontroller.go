@@ -60,24 +60,23 @@ type EventController interface {
 	PropagationPhase() PropagationPhase
 	// Widget returns the Widget this controller relates to.
 	Widget() Widget
-	// ResetEventController resets the @controller to a clean state.
-	ResetEventController()
-	// SetNameEventController sets a name on the controller that can be used for
-	// debugging.
-	SetNameEventController(name string)
-	// SetPropagationLimitEventController sets the event propagation limit on
-	// the event controller.
+	// Reset resets the @controller to a clean state.
+	Reset()
+	// SetName sets a name on the controller that can be used for debugging.
+	SetName(name string)
+	// SetPropagationLimit sets the event propagation limit on the event
+	// controller.
 	//
 	// If the limit is set to GTK_LIMIT_SAME_NATIVE, the controller won't handle
 	// events that are targeted at widgets on a different surface, such as
 	// popovers.
-	SetPropagationLimitEventController(limit PropagationLimit)
-	// SetPropagationPhaseEventController sets the propagation phase at which a
-	// controller handles events.
+	SetPropagationLimit(limit PropagationLimit)
+	// SetPropagationPhase sets the propagation phase at which a controller
+	// handles events.
 	//
 	// If @phase is GTK_PHASE_NONE, no automatic event handling will be
 	// performed, but other additional gesture maintenance will.
-	SetPropagationPhaseEventController(phase PropagationPhase)
+	SetPropagationPhase(phase PropagationPhase)
 }
 
 // eventController implements the EventController class.
@@ -219,7 +218,7 @@ func (c eventController) Widget() Widget {
 	return _widget
 }
 
-func (c eventController) ResetEventController() {
+func (c eventController) Reset() {
 	var _arg0 *C.GtkEventController // out
 
 	_arg0 = (*C.GtkEventController)(unsafe.Pointer(c.Native()))
@@ -227,7 +226,7 @@ func (c eventController) ResetEventController() {
 	C.gtk_event_controller_reset(_arg0)
 }
 
-func (c eventController) SetNameEventController(name string) {
+func (c eventController) SetName(name string) {
 	var _arg0 *C.GtkEventController // out
 	var _arg1 *C.char               // out
 
@@ -238,7 +237,7 @@ func (c eventController) SetNameEventController(name string) {
 	C.gtk_event_controller_set_name(_arg0, _arg1)
 }
 
-func (c eventController) SetPropagationLimitEventController(limit PropagationLimit) {
+func (c eventController) SetPropagationLimit(limit PropagationLimit) {
 	var _arg0 *C.GtkEventController // out
 	var _arg1 C.GtkPropagationLimit // out
 
@@ -248,7 +247,7 @@ func (c eventController) SetPropagationLimitEventController(limit PropagationLim
 	C.gtk_event_controller_set_propagation_limit(_arg0, _arg1)
 }
 
-func (c eventController) SetPropagationPhaseEventController(phase PropagationPhase) {
+func (c eventController) SetPropagationPhase(phase PropagationPhase) {
 	var _arg0 *C.GtkEventController // out
 	var _arg1 C.GtkPropagationPhase // out
 

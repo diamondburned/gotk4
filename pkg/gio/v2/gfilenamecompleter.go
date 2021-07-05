@@ -42,9 +42,9 @@ type FilenameCompleter interface {
 	CompletionSuffix(initialText string) string
 	// Completions gets an array of completion strings for a given initial text.
 	Completions(initialText string) []string
-	// SetDirsOnlyFilenameCompleter: if @dirs_only is true, @completer will only
-	// complete directory names, and not file names.
-	SetDirsOnlyFilenameCompleter(dirsOnly bool)
+	// SetDirsOnly: if @dirs_only is true, @completer will only complete
+	// directory names, and not file names.
+	SetDirsOnly(dirsOnly bool)
 }
 
 // filenameCompleter implements the FilenameCompleter class.
@@ -129,7 +129,7 @@ func (c filenameCompleter) Completions(initialText string) []string {
 	return _utf8s
 }
 
-func (c filenameCompleter) SetDirsOnlyFilenameCompleter(dirsOnly bool) {
+func (c filenameCompleter) SetDirsOnly(dirsOnly bool) {
 	var _arg0 *C.GFilenameCompleter // out
 	var _arg1 C.gboolean            // out
 

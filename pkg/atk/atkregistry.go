@@ -54,11 +54,11 @@ type Registry interface {
 	// FactoryType provides a #GType indicating the ObjectFactory subclass
 	// associated with @type.
 	FactoryType(typ externglib.Type) externglib.Type
-	// SetFactoryTypeRegistry: associate an ObjectFactory subclass with a
-	// #GType. Note: The associated @factory_type will thereafter be responsible
-	// for the creation of new Object implementations for instances appropriate
-	// for @type.
-	SetFactoryTypeRegistry(typ externglib.Type, factoryType externglib.Type)
+	// SetFactoryType: associate an ObjectFactory subclass with a #GType. Note:
+	// The associated @factory_type will thereafter be responsible for the
+	// creation of new Object implementations for instances appropriate for
+	// @type.
+	SetFactoryType(typ externglib.Type, factoryType externglib.Type)
 }
 
 // registry implements the Registry class.
@@ -114,7 +114,7 @@ func (r registry) FactoryType(typ externglib.Type) externglib.Type {
 	return _gType
 }
 
-func (r registry) SetFactoryTypeRegistry(typ externglib.Type, factoryType externglib.Type) {
+func (r registry) SetFactoryType(typ externglib.Type, factoryType externglib.Type) {
 	var _arg0 *C.AtkRegistry // out
 	var _arg1 C.GType        // out
 	var _arg2 C.GType        // out

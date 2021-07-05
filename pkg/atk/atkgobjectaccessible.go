@@ -29,8 +29,9 @@ func init() {
 type GObjectAccessible interface {
 	Object
 
-	// GetObject gets the GObject for which @obj is the accessible object.
-	GetObject() gextras.Objector
+	// ObjectGObjectAccessible gets the GObject for which @obj is the accessible
+	// object.
+	ObjectGObjectAccessible() gextras.Objector
 }
 
 // gObjectAccessible implements the GObjectAccessible class.
@@ -52,7 +53,7 @@ func marshalGObjectAccessible(p uintptr) (interface{}, error) {
 	return WrapGObjectAccessible(obj), nil
 }
 
-func (o gObjectAccessible) GetObject() gextras.Objector {
+func (o gObjectAccessible) ObjectGObjectAccessible() gextras.Objector {
 	var _arg0 *C.AtkGObjectAccessible // out
 	var _cret *C.GObject              // in
 

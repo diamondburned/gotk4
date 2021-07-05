@@ -29,12 +29,12 @@ type GLTexture interface {
 	// AsPaintable casts the class to the Paintable interface.
 	AsPaintable() Paintable
 
-	// ReleaseGLTexture releases the GL resources held by a `GdkGLTexture`.
+	// Release releases the GL resources held by a `GdkGLTexture`.
 	//
 	// The texture contents are still available via the
 	// [method@Gdk.Texture.download] function, after this function has been
 	// called.
-	ReleaseGLTexture()
+	Release()
 }
 
 // glTexture implements the GLTexture class.
@@ -56,14 +56,14 @@ func marshalGLTexture(p uintptr) (interface{}, error) {
 	return WrapGLTexture(obj), nil
 }
 
-func (s glTexture) ReleaseGLTexture() {
+func (g glTexture) AsPaintable() Paintable {
+	return WrapPaintable(gextras.InternObject(g))
+}
+
+func (s glTexture) Release() {
 	var _arg0 *C.GdkGLTexture // out
 
 	_arg0 = (*C.GdkGLTexture)(unsafe.Pointer(s.Native()))
 
 	C.gdk_gl_texture_release(_arg0)
-}
-
-func (g glTexture) AsPaintable() Paintable {
-	return WrapPaintable(gextras.InternObject(g))
 }

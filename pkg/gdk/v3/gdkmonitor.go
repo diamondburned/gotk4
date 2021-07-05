@@ -105,9 +105,9 @@ type Monitor interface {
 	// will return the monitor geometry if a workarea is not available, or does
 	// not apply.
 	Workarea() Rectangle
-	// IsPrimaryMonitor gets whether this monitor should be considered primary
-	// (see gdk_display_get_primary_monitor()).
-	IsPrimaryMonitor() bool
+	// IsPrimary gets whether this monitor should be considered primary (see
+	// gdk_display_get_primary_monitor()).
+	IsPrimary() bool
 }
 
 // monitor implements the Monitor class.
@@ -299,7 +299,7 @@ func (m monitor) Workarea() Rectangle {
 	return _workarea
 }
 
-func (m monitor) IsPrimaryMonitor() bool {
+func (m monitor) IsPrimary() bool {
 	var _arg0 *C.GdkMonitor // out
 	var _cret C.gboolean    // in
 

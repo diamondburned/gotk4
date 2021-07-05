@@ -45,21 +45,21 @@ type SimpleProxyResolver interface {
 	// AsProxyResolver casts the class to the ProxyResolver interface.
 	AsProxyResolver() ProxyResolver
 
-	// SetDefaultProxySimpleProxyResolver sets the default proxy on @resolver,
-	// to be used for any URIs that don't match ProxyResolver:ignore-hosts or a
-	// proxy set via g_simple_proxy_resolver_set_uri_proxy().
+	// SetDefaultProxy sets the default proxy on @resolver, to be used for any
+	// URIs that don't match ProxyResolver:ignore-hosts or a proxy set via
+	// g_simple_proxy_resolver_set_uri_proxy().
 	//
 	// If @default_proxy starts with "socks://", ProxyResolver will treat it as
 	// referring to all three of the socks5, socks4a, and socks4 proxy types.
-	SetDefaultProxySimpleProxyResolver(defaultProxy string)
-	// SetURIProxySimpleProxyResolver adds a URI-scheme-specific proxy to
-	// @resolver; URIs whose scheme matches @uri_scheme (and which don't match
+	SetDefaultProxy(defaultProxy string)
+	// SetURIProxy adds a URI-scheme-specific proxy to @resolver; URIs whose
+	// scheme matches @uri_scheme (and which don't match
 	// ProxyResolver:ignore-hosts) will be proxied via @proxy.
 	//
 	// As with ProxyResolver:default-proxy, if @proxy starts with "socks://",
 	// ProxyResolver will treat it as referring to all three of the socks5,
 	// socks4a, and socks4 proxy types.
-	SetURIProxySimpleProxyResolver(uriScheme string, proxy string)
+	SetURIProxy(uriScheme string, proxy string)
 }
 
 // simpleProxyResolver implements the SimpleProxyResolver class.
@@ -81,7 +81,11 @@ func marshalSimpleProxyResolver(p uintptr) (interface{}, error) {
 	return WrapSimpleProxyResolver(obj), nil
 }
 
-func (r simpleProxyResolver) SetDefaultProxySimpleProxyResolver(defaultProxy string) {
+func (s simpleProxyResolver) AsProxyResolver() ProxyResolver {
+	return WrapProxyResolver(gextras.InternObject(s))
+}
+
+func (r simpleProxyResolver) SetDefaultProxy(defaultProxy string) {
 	var _arg0 *C.GSimpleProxyResolver // out
 	var _arg1 *C.gchar                // out
 
@@ -92,7 +96,7 @@ func (r simpleProxyResolver) SetDefaultProxySimpleProxyResolver(defaultProxy str
 	C.g_simple_proxy_resolver_set_default_proxy(_arg0, _arg1)
 }
 
-func (r simpleProxyResolver) SetURIProxySimpleProxyResolver(uriScheme string, proxy string) {
+func (r simpleProxyResolver) SetURIProxy(uriScheme string, proxy string) {
 	var _arg0 *C.GSimpleProxyResolver // out
 	var _arg1 *C.gchar                // out
 	var _arg2 *C.gchar                // out
@@ -104,8 +108,4 @@ func (r simpleProxyResolver) SetURIProxySimpleProxyResolver(uriScheme string, pr
 	defer C.free(unsafe.Pointer(_arg2))
 
 	C.g_simple_proxy_resolver_set_uri_proxy(_arg0, _arg1, _arg2)
-}
-
-func (s simpleProxyResolver) AsProxyResolver() ProxyResolver {
-	return WrapProxyResolver(gextras.InternObject(s))
 }

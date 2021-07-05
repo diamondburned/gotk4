@@ -57,11 +57,11 @@ type Viewport interface {
 	// ScrollToFocus gets whether the viewport is scrolling to keep the focused
 	// child in view.
 	ScrollToFocus() bool
-	// SetChildViewport sets the child widget of @viewport.
-	SetChildViewport(child Widget)
-	// SetScrollToFocusViewport sets whether the viewport should automatically
-	// scroll to keep the focused child in view.
-	SetScrollToFocusViewport(scrollToFocus bool)
+	// SetChild sets the child widget of @viewport.
+	SetChild(child Widget)
+	// SetScrollToFocus sets whether the viewport should automatically scroll to
+	// keep the focused child in view.
+	SetScrollToFocus(scrollToFocus bool)
 }
 
 // viewport implements the Viewport class.
@@ -104,6 +104,22 @@ func NewViewport(hadjustment Adjustment, vadjustment Adjustment) Viewport {
 	return _viewport
 }
 
+func (v viewport) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(v))
+}
+
+func (v viewport) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(v))
+}
+
+func (v viewport) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(v))
+}
+
+func (v viewport) AsScrollable() Scrollable {
+	return WrapScrollable(gextras.InternObject(v))
+}
+
 func (v viewport) Child() Widget {
 	var _arg0 *C.GtkViewport // out
 	var _cret *C.GtkWidget   // in
@@ -136,7 +152,7 @@ func (v viewport) ScrollToFocus() bool {
 	return _ok
 }
 
-func (v viewport) SetChildViewport(child Widget) {
+func (v viewport) SetChild(child Widget) {
 	var _arg0 *C.GtkViewport // out
 	var _arg1 *C.GtkWidget   // out
 
@@ -146,7 +162,7 @@ func (v viewport) SetChildViewport(child Widget) {
 	C.gtk_viewport_set_child(_arg0, _arg1)
 }
 
-func (v viewport) SetScrollToFocusViewport(scrollToFocus bool) {
+func (v viewport) SetScrollToFocus(scrollToFocus bool) {
 	var _arg0 *C.GtkViewport // out
 	var _arg1 C.gboolean     // out
 
@@ -156,20 +172,4 @@ func (v viewport) SetScrollToFocusViewport(scrollToFocus bool) {
 	}
 
 	C.gtk_viewport_set_scroll_to_focus(_arg0, _arg1)
-}
-
-func (v viewport) AsAccessible() Accessible {
-	return WrapAccessible(gextras.InternObject(v))
-}
-
-func (v viewport) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(v))
-}
-
-func (v viewport) AsConstraintTarget() ConstraintTarget {
-	return WrapConstraintTarget(gextras.InternObject(v))
-}
-
-func (v viewport) AsScrollable() Scrollable {
-	return WrapScrollable(gextras.InternObject(v))
 }

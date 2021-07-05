@@ -80,6 +80,14 @@ func NewFileIcon(file File) FileIcon {
 	return _fileIcon
 }
 
+func (f fileIcon) AsIcon() Icon {
+	return WrapIcon(gextras.InternObject(f))
+}
+
+func (f fileIcon) AsLoadableIcon() LoadableIcon {
+	return WrapLoadableIcon(gextras.InternObject(f))
+}
+
 func (i fileIcon) File() File {
 	var _arg0 *C.GFileIcon // out
 	var _cret *C.GFile     // in
@@ -93,12 +101,4 @@ func (i fileIcon) File() File {
 	_file = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(File)
 
 	return _file
-}
-
-func (f fileIcon) AsIcon() Icon {
-	return WrapIcon(gextras.InternObject(f))
-}
-
-func (f fileIcon) AsLoadableIcon() LoadableIcon {
-	return WrapLoadableIcon(gextras.InternObject(f))
 }

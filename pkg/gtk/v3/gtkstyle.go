@@ -696,45 +696,45 @@ func PaintVline(style Style, cr *cairo.Context, stateType StateType, widget Widg
 type Style interface {
 	gextras.Objector
 
-	// ApplyDefaultBackgroundStyle: deprecated: since version 3.0.
-	ApplyDefaultBackgroundStyle(cr *cairo.Context, window gdk.Window, stateType StateType, x int, y int, width int, height int)
-	// CopyStyle creates a copy of the passed in Style object.
+	// ApplyDefaultBackground: deprecated: since version 3.0.
+	ApplyDefaultBackground(cr *cairo.Context, window gdk.Window, stateType StateType, x int, y int, width int, height int)
+	// Copy creates a copy of the passed in Style object.
 	//
 	// Deprecated: since version 3.0.
-	CopyStyle() Style
-	// DetachStyle detaches a style from a window. If the style is not attached
-	// to any windows anymore, it is unrealized. See gtk_style_attach().
+	Copy() Style
+	// Detach detaches a style from a window. If the style is not attached to
+	// any windows anymore, it is unrealized. See gtk_style_attach().
 	//
 	// Deprecated: since version 3.0.
-	DetachStyle()
+	Detach()
 	// StyleProperty queries the value of a style property corresponding to a
 	// widget class is in the given style.
 	StyleProperty(widgetType externglib.Type, propertyName string) externglib.Value
-	// HasContextStyle returns whether @style has an associated StyleContext.
-	HasContextStyle() bool
-	// LookupColorStyle looks up @color_name in the style’s logical color
-	// mappings, filling in @color and returning true if found, otherwise
-	// returning false. Do not cache the found mapping, because it depends on
-	// the Style and might change when a theme switch occurs.
+	// HasContext returns whether @style has an associated StyleContext.
+	HasContext() bool
+	// LookupColor looks up @color_name in the style’s logical color mappings,
+	// filling in @color and returning true if found, otherwise returning false.
+	// Do not cache the found mapping, because it depends on the Style and might
+	// change when a theme switch occurs.
 	//
 	// Deprecated: since version 3.0.
-	LookupColorStyle(colorName string) (gdk.Color, bool)
-	// LookupIconSetStyle looks up @stock_id in the icon factories associated
-	// with @style and the default icon factory, returning an icon set if found,
+	LookupColor(colorName string) (gdk.Color, bool)
+	// LookupIconSet looks up @stock_id in the icon factories associated with
+	// @style and the default icon factory, returning an icon set if found,
 	// otherwise nil.
 	//
 	// Deprecated: since version 3.0.
-	LookupIconSetStyle(stockId string) *IconSet
-	// RenderIconStyle renders the icon specified by @source at the given @size
+	LookupIconSet(stockId string) *IconSet
+	// RenderIcon renders the icon specified by @source at the given @size
 	// according to the given parameters and returns the result in a pixbuf.
 	//
 	// Deprecated: since version 3.0.
-	RenderIconStyle(source *IconSource, direction TextDirection, state StateType, size int, widget Widget, detail string) gdkpixbuf.Pixbuf
-	// SetBackgroundStyle sets the background of @window to the background color
-	// or pixmap specified by @style for the given state.
+	RenderIcon(source *IconSource, direction TextDirection, state StateType, size int, widget Widget, detail string) gdkpixbuf.Pixbuf
+	// SetBackground sets the background of @window to the background color or
+	// pixmap specified by @style for the given state.
 	//
 	// Deprecated: since version 3.0.
-	SetBackgroundStyle(window gdk.Window, stateType StateType)
+	SetBackground(window gdk.Window, stateType StateType)
 }
 
 // style implements the Style class.
@@ -771,7 +771,7 @@ func NewStyle() Style {
 	return _style
 }
 
-func (s style) ApplyDefaultBackgroundStyle(cr *cairo.Context, window gdk.Window, stateType StateType, x int, y int, width int, height int) {
+func (s style) ApplyDefaultBackground(cr *cairo.Context, window gdk.Window, stateType StateType, x int, y int, width int, height int) {
 	var _arg0 *C.GtkStyle    // out
 	var _arg1 *C.cairo_t     // out
 	var _arg2 *C.GdkWindow   // out
@@ -793,7 +793,7 @@ func (s style) ApplyDefaultBackgroundStyle(cr *cairo.Context, window gdk.Window,
 	C.gtk_style_apply_default_background(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
 }
 
-func (s style) CopyStyle() Style {
+func (s style) Copy() Style {
 	var _arg0 *C.GtkStyle // out
 	var _cret *C.GtkStyle // in
 
@@ -808,7 +808,7 @@ func (s style) CopyStyle() Style {
 	return _ret
 }
 
-func (s style) DetachStyle() {
+func (s style) Detach() {
 	var _arg0 *C.GtkStyle // out
 
 	_arg0 = (*C.GtkStyle)(unsafe.Pointer(s.Native()))
@@ -846,7 +846,7 @@ func (s style) StyleProperty(widgetType externglib.Type, propertyName string) ex
 	return _value
 }
 
-func (s style) HasContextStyle() bool {
+func (s style) HasContext() bool {
 	var _arg0 *C.GtkStyle // out
 	var _cret C.gboolean  // in
 
@@ -863,7 +863,7 @@ func (s style) HasContextStyle() bool {
 	return _ok
 }
 
-func (s style) LookupColorStyle(colorName string) (gdk.Color, bool) {
+func (s style) LookupColor(colorName string) (gdk.Color, bool) {
 	var _arg0 *C.GtkStyle // out
 	var _arg1 *C.gchar    // out
 	var _arg2 C.GdkColor  // in
@@ -896,7 +896,7 @@ func (s style) LookupColorStyle(colorName string) (gdk.Color, bool) {
 	return _color, _ok
 }
 
-func (s style) LookupIconSetStyle(stockId string) *IconSet {
+func (s style) LookupIconSet(stockId string) *IconSet {
 	var _arg0 *C.GtkStyle   // out
 	var _arg1 *C.gchar      // out
 	var _cret *C.GtkIconSet // in
@@ -918,7 +918,7 @@ func (s style) LookupIconSetStyle(stockId string) *IconSet {
 	return _iconSet
 }
 
-func (s style) RenderIconStyle(source *IconSource, direction TextDirection, state StateType, size int, widget Widget, detail string) gdkpixbuf.Pixbuf {
+func (s style) RenderIcon(source *IconSource, direction TextDirection, state StateType, size int, widget Widget, detail string) gdkpixbuf.Pixbuf {
 	var _arg0 *C.GtkStyle        // out
 	var _arg1 *C.GtkIconSource   // out
 	var _arg2 C.GtkTextDirection // out
@@ -946,7 +946,7 @@ func (s style) RenderIconStyle(source *IconSource, direction TextDirection, stat
 	return _pixbuf
 }
 
-func (s style) SetBackgroundStyle(window gdk.Window, stateType StateType) {
+func (s style) SetBackground(window gdk.Window, stateType StateType) {
 	var _arg0 *C.GtkStyle    // out
 	var _arg1 *C.GdkWindow   // out
 	var _arg2 C.GtkStateType // out

@@ -76,24 +76,24 @@ type AppChooserWidget interface {
 	// ShowRecommended gets whether the app chooser should show recommended
 	// applications for the content type in a separate section.
 	ShowRecommended() bool
-	// SetDefaultTextAppChooserWidget sets the text that is shown if there are
-	// not applications that can handle the content type.
-	SetDefaultTextAppChooserWidget(text string)
-	// SetShowAllAppChooserWidget sets whether the app chooser should show all
-	// applications in a flat list.
-	SetShowAllAppChooserWidget(setting bool)
-	// SetShowDefaultAppChooserWidget sets whether the app chooser should show
-	// the default handler for the content type in a separate section.
-	SetShowDefaultAppChooserWidget(setting bool)
-	// SetShowFallbackAppChooserWidget sets whether the app chooser should show
-	// related applications for the content type in a separate section.
-	SetShowFallbackAppChooserWidget(setting bool)
-	// SetShowOtherAppChooserWidget sets whether the app chooser should show
-	// applications which are unrelated to the content type.
-	SetShowOtherAppChooserWidget(setting bool)
-	// SetShowRecommendedAppChooserWidget sets whether the app chooser should
-	// show recommended applications for the content type in a separate section.
-	SetShowRecommendedAppChooserWidget(setting bool)
+	// SetDefaultText sets the text that is shown if there are not applications
+	// that can handle the content type.
+	SetDefaultText(text string)
+	// SetShowAll sets whether the app chooser should show all applications in a
+	// flat list.
+	SetShowAll(setting bool)
+	// SetShowDefault sets whether the app chooser should show the default
+	// handler for the content type in a separate section.
+	SetShowDefault(setting bool)
+	// SetShowFallback sets whether the app chooser should show related
+	// applications for the content type in a separate section.
+	SetShowFallback(setting bool)
+	// SetShowOther sets whether the app chooser should show applications which
+	// are unrelated to the content type.
+	SetShowOther(setting bool)
+	// SetShowRecommended sets whether the app chooser should show recommended
+	// applications for the content type in a separate section.
+	SetShowRecommended(setting bool)
 }
 
 // appChooserWidget implements the AppChooserWidget class.
@@ -131,6 +131,22 @@ func NewAppChooserWidget(contentType string) AppChooserWidget {
 	_appChooserWidget = WrapAppChooserWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _appChooserWidget
+}
+
+func (a appChooserWidget) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(a))
+}
+
+func (a appChooserWidget) AsAppChooser() AppChooser {
+	return WrapAppChooser(gextras.InternObject(a))
+}
+
+func (a appChooserWidget) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(a))
+}
+
+func (a appChooserWidget) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(a))
 }
 
 func (s appChooserWidget) DefaultText() string {
@@ -233,7 +249,7 @@ func (s appChooserWidget) ShowRecommended() bool {
 	return _ok
 }
 
-func (s appChooserWidget) SetDefaultTextAppChooserWidget(text string) {
+func (s appChooserWidget) SetDefaultText(text string) {
 	var _arg0 *C.GtkAppChooserWidget // out
 	var _arg1 *C.char                // out
 
@@ -244,7 +260,7 @@ func (s appChooserWidget) SetDefaultTextAppChooserWidget(text string) {
 	C.gtk_app_chooser_widget_set_default_text(_arg0, _arg1)
 }
 
-func (s appChooserWidget) SetShowAllAppChooserWidget(setting bool) {
+func (s appChooserWidget) SetShowAll(setting bool) {
 	var _arg0 *C.GtkAppChooserWidget // out
 	var _arg1 C.gboolean             // out
 
@@ -256,7 +272,7 @@ func (s appChooserWidget) SetShowAllAppChooserWidget(setting bool) {
 	C.gtk_app_chooser_widget_set_show_all(_arg0, _arg1)
 }
 
-func (s appChooserWidget) SetShowDefaultAppChooserWidget(setting bool) {
+func (s appChooserWidget) SetShowDefault(setting bool) {
 	var _arg0 *C.GtkAppChooserWidget // out
 	var _arg1 C.gboolean             // out
 
@@ -268,7 +284,7 @@ func (s appChooserWidget) SetShowDefaultAppChooserWidget(setting bool) {
 	C.gtk_app_chooser_widget_set_show_default(_arg0, _arg1)
 }
 
-func (s appChooserWidget) SetShowFallbackAppChooserWidget(setting bool) {
+func (s appChooserWidget) SetShowFallback(setting bool) {
 	var _arg0 *C.GtkAppChooserWidget // out
 	var _arg1 C.gboolean             // out
 
@@ -280,7 +296,7 @@ func (s appChooserWidget) SetShowFallbackAppChooserWidget(setting bool) {
 	C.gtk_app_chooser_widget_set_show_fallback(_arg0, _arg1)
 }
 
-func (s appChooserWidget) SetShowOtherAppChooserWidget(setting bool) {
+func (s appChooserWidget) SetShowOther(setting bool) {
 	var _arg0 *C.GtkAppChooserWidget // out
 	var _arg1 C.gboolean             // out
 
@@ -292,7 +308,7 @@ func (s appChooserWidget) SetShowOtherAppChooserWidget(setting bool) {
 	C.gtk_app_chooser_widget_set_show_other(_arg0, _arg1)
 }
 
-func (s appChooserWidget) SetShowRecommendedAppChooserWidget(setting bool) {
+func (s appChooserWidget) SetShowRecommended(setting bool) {
 	var _arg0 *C.GtkAppChooserWidget // out
 	var _arg1 C.gboolean             // out
 
@@ -302,20 +318,4 @@ func (s appChooserWidget) SetShowRecommendedAppChooserWidget(setting bool) {
 	}
 
 	C.gtk_app_chooser_widget_set_show_recommended(_arg0, _arg1)
-}
-
-func (a appChooserWidget) AsAccessible() Accessible {
-	return WrapAccessible(gextras.InternObject(a))
-}
-
-func (a appChooserWidget) AsAppChooser() AppChooser {
-	return WrapAppChooser(gextras.InternObject(a))
-}
-
-func (a appChooserWidget) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(a))
-}
-
-func (a appChooserWidget) AsConstraintTarget() ConstraintTarget {
-	return WrapConstraintTarget(gextras.InternObject(a))
 }

@@ -37,8 +37,8 @@ func init() {
 type CellAreaContext interface {
 	gextras.Objector
 
-	// AllocateCellAreaContext allocates a width and/or a height for all rows
-	// which are to be rendered with @context.
+	// Allocate allocates a width and/or a height for all rows which are to be
+	// rendered with @context.
 	//
 	// Usually allocation is performed only horizontally or sometimes vertically
 	// since a group of rows are usually rendered side by side vertically or
@@ -48,7 +48,7 @@ type CellAreaContext interface {
 	// for TreeView when TreeView:fixed-height-mode is enabled.
 	//
 	// Since 3.0
-	AllocateCellAreaContext(width int, height int)
+	Allocate(width int, height int)
 	// Allocation fetches the current allocation size for @context.
 	//
 	// If the context was not allocated in width or height, or if the context
@@ -91,26 +91,23 @@ type CellAreaContext interface {
 	// After gtk_cell_area_context_reset() is called and/or before ever
 	// requesting the size of a CellArea, the returned values are -1.
 	PreferredWidthForHeight(height int) (minimumWidth int, naturalWidth int)
-	// PushPreferredHeightCellAreaContext causes the minimum and/or natural
-	// height to grow if the new proposed sizes exceed the current minimum and
-	// natural height.
+	// PushPreferredHeight causes the minimum and/or natural height to grow if
+	// the new proposed sizes exceed the current minimum and natural height.
 	//
 	// This is used by CellAreaContext implementations during the request
 	// process over a series of TreeModel rows to progressively push the
 	// requested height over a series of gtk_cell_area_get_preferred_height()
 	// requests.
-	PushPreferredHeightCellAreaContext(minimumHeight int, naturalHeight int)
-	// PushPreferredWidthCellAreaContext causes the minimum and/or natural width
-	// to grow if the new proposed sizes exceed the current minimum and natural
-	// width.
+	PushPreferredHeight(minimumHeight int, naturalHeight int)
+	// PushPreferredWidth causes the minimum and/or natural width to grow if the
+	// new proposed sizes exceed the current minimum and natural width.
 	//
 	// This is used by CellAreaContext implementations during the request
 	// process over a series of TreeModel rows to progressively push the
 	// requested width over a series of gtk_cell_area_get_preferred_width()
 	// requests.
-	PushPreferredWidthCellAreaContext(minimumWidth int, naturalWidth int)
-	// ResetCellAreaContext resets any previously cached request and allocation
-	// data.
+	PushPreferredWidth(minimumWidth int, naturalWidth int)
+	// Reset resets any previously cached request and allocation data.
 	//
 	// When underlying TreeModel data changes its important to reset the context
 	// if the content size is allowed to shrink. If the content size is only
@@ -129,7 +126,7 @@ type CellAreaContext interface {
 	// gtk_cell_area_get_preferred_height_for_width().
 	//
 	// Since 3.0
-	ResetCellAreaContext()
+	Reset()
 }
 
 // cellAreaContext implements the CellAreaContext class.
@@ -151,7 +148,7 @@ func marshalCellAreaContext(p uintptr) (interface{}, error) {
 	return WrapCellAreaContext(obj), nil
 }
 
-func (c cellAreaContext) AllocateCellAreaContext(width int, height int) {
+func (c cellAreaContext) Allocate(width int, height int) {
 	var _arg0 *C.GtkCellAreaContext // out
 	var _arg1 C.gint                // out
 	var _arg2 C.gint                // out
@@ -272,7 +269,7 @@ func (c cellAreaContext) PreferredWidthForHeight(height int) (minimumWidth int, 
 	return _minimumWidth, _naturalWidth
 }
 
-func (c cellAreaContext) PushPreferredHeightCellAreaContext(minimumHeight int, naturalHeight int) {
+func (c cellAreaContext) PushPreferredHeight(minimumHeight int, naturalHeight int) {
 	var _arg0 *C.GtkCellAreaContext // out
 	var _arg1 C.gint                // out
 	var _arg2 C.gint                // out
@@ -284,7 +281,7 @@ func (c cellAreaContext) PushPreferredHeightCellAreaContext(minimumHeight int, n
 	C.gtk_cell_area_context_push_preferred_height(_arg0, _arg1, _arg2)
 }
 
-func (c cellAreaContext) PushPreferredWidthCellAreaContext(minimumWidth int, naturalWidth int) {
+func (c cellAreaContext) PushPreferredWidth(minimumWidth int, naturalWidth int) {
 	var _arg0 *C.GtkCellAreaContext // out
 	var _arg1 C.gint                // out
 	var _arg2 C.gint                // out
@@ -296,7 +293,7 @@ func (c cellAreaContext) PushPreferredWidthCellAreaContext(minimumWidth int, nat
 	C.gtk_cell_area_context_push_preferred_width(_arg0, _arg1, _arg2)
 }
 
-func (c cellAreaContext) ResetCellAreaContext() {
+func (c cellAreaContext) Reset() {
 	var _arg0 *C.GtkCellAreaContext // out
 
 	_arg0 = (*C.GtkCellAreaContext)(unsafe.Pointer(c.Native()))

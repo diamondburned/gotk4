@@ -72,8 +72,8 @@ func gotk4_MapListModelMapFunc(arg0 C.gpointer, arg1 C.gpointer) (cret C.gpointe
 type MapListModel interface {
 	gextras.Objector
 
-	// HasMapMapListModel checks if a map function is currently set on @self.
-	HasMapMapListModel() bool
+	// HasMap checks if a map function is currently set on @self.
+	HasMap() bool
 }
 
 // mapListModel implements the MapListModel class.
@@ -95,7 +95,7 @@ func marshalMapListModel(p uintptr) (interface{}, error) {
 	return WrapMapListModel(obj), nil
 }
 
-func (s mapListModel) HasMapMapListModel() bool {
+func (s mapListModel) HasMap() bool {
 	var _arg0 *C.GtkMapListModel // out
 	var _cret C.gboolean         // in
 

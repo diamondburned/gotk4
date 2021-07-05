@@ -56,23 +56,22 @@ type CheckMenuItem interface {
 	// Inconsistent retrieves the value set by
 	// gtk_check_menu_item_set_inconsistent().
 	Inconsistent() bool
-	// SetActiveCheckMenuItem sets the active state of the menu item’s check
-	// box.
-	SetActiveCheckMenuItem(isActive bool)
-	// SetDrawAsRadioCheckMenuItem sets whether @check_menu_item is drawn like a
+	// SetActive sets the active state of the menu item’s check box.
+	SetActive(isActive bool)
+	// SetDrawAsRadio sets whether @check_menu_item is drawn like a
 	// RadioMenuItem
-	SetDrawAsRadioCheckMenuItem(drawAsRadio bool)
-	// SetInconsistentCheckMenuItem: if the user has selected a range of
-	// elements (such as some text or spreadsheet cells) that are affected by a
-	// boolean setting, and the current values in that range are inconsistent,
-	// you may want to display the check in an “in between” state. This function
-	// turns on “in between” display. Normally you would turn off the
-	// inconsistent state again if the user explicitly selects a setting. This
-	// has to be done manually, gtk_check_menu_item_set_inconsistent() only
-	// affects visual appearance, it doesn’t affect the semantics of the widget.
-	SetInconsistentCheckMenuItem(setting bool)
-	// ToggledCheckMenuItem emits the CheckMenuItem::toggled signal.
-	ToggledCheckMenuItem()
+	SetDrawAsRadio(drawAsRadio bool)
+	// SetInconsistent: if the user has selected a range of elements (such as
+	// some text or spreadsheet cells) that are affected by a boolean setting,
+	// and the current values in that range are inconsistent, you may want to
+	// display the check in an “in between” state. This function turns on “in
+	// between” display. Normally you would turn off the inconsistent state
+	// again if the user explicitly selects a setting. This has to be done
+	// manually, gtk_check_menu_item_set_inconsistent() only affects visual
+	// appearance, it doesn’t affect the semantics of the widget.
+	SetInconsistent(setting bool)
+	// Toggled emits the CheckMenuItem::toggled signal.
+	Toggled()
 }
 
 // checkMenuItem implements the CheckMenuItem class.
@@ -143,6 +142,18 @@ func NewCheckMenuItemWithMnemonic(label string) CheckMenuItem {
 	return _checkMenuItem
 }
 
+func (c checkMenuItem) AsActionable() Actionable {
+	return WrapActionable(gextras.InternObject(c))
+}
+
+func (c checkMenuItem) AsActivatable() Activatable {
+	return WrapActivatable(gextras.InternObject(c))
+}
+
+func (c checkMenuItem) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(c))
+}
+
 func (c checkMenuItem) Active() bool {
 	var _arg0 *C.GtkCheckMenuItem // out
 	var _cret C.gboolean          // in
@@ -194,7 +205,7 @@ func (c checkMenuItem) Inconsistent() bool {
 	return _ok
 }
 
-func (c checkMenuItem) SetActiveCheckMenuItem(isActive bool) {
+func (c checkMenuItem) SetActive(isActive bool) {
 	var _arg0 *C.GtkCheckMenuItem // out
 	var _arg1 C.gboolean          // out
 
@@ -206,7 +217,7 @@ func (c checkMenuItem) SetActiveCheckMenuItem(isActive bool) {
 	C.gtk_check_menu_item_set_active(_arg0, _arg1)
 }
 
-func (c checkMenuItem) SetDrawAsRadioCheckMenuItem(drawAsRadio bool) {
+func (c checkMenuItem) SetDrawAsRadio(drawAsRadio bool) {
 	var _arg0 *C.GtkCheckMenuItem // out
 	var _arg1 C.gboolean          // out
 
@@ -218,7 +229,7 @@ func (c checkMenuItem) SetDrawAsRadioCheckMenuItem(drawAsRadio bool) {
 	C.gtk_check_menu_item_set_draw_as_radio(_arg0, _arg1)
 }
 
-func (c checkMenuItem) SetInconsistentCheckMenuItem(setting bool) {
+func (c checkMenuItem) SetInconsistent(setting bool) {
 	var _arg0 *C.GtkCheckMenuItem // out
 	var _arg1 C.gboolean          // out
 
@@ -230,22 +241,10 @@ func (c checkMenuItem) SetInconsistentCheckMenuItem(setting bool) {
 	C.gtk_check_menu_item_set_inconsistent(_arg0, _arg1)
 }
 
-func (c checkMenuItem) ToggledCheckMenuItem() {
+func (c checkMenuItem) Toggled() {
 	var _arg0 *C.GtkCheckMenuItem // out
 
 	_arg0 = (*C.GtkCheckMenuItem)(unsafe.Pointer(c.Native()))
 
 	C.gtk_check_menu_item_toggled(_arg0)
-}
-
-func (c checkMenuItem) AsActionable() Actionable {
-	return WrapActionable(gextras.InternObject(c))
-}
-
-func (c checkMenuItem) AsActivatable() Activatable {
-	return WrapActivatable(gextras.InternObject(c))
-}
-
-func (c checkMenuItem) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(c))
 }

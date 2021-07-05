@@ -108,13 +108,13 @@ func init() {
 type ApplicationCommandLine interface {
 	gextras.Objector
 
-	// CreateFileForArgApplicationCommandLine creates a #GFile corresponding to
-	// a filename that was given as part of the invocation of @cmdline.
+	// CreateFileForArg creates a #GFile corresponding to a filename that was
+	// given as part of the invocation of @cmdline.
 	//
 	// This differs from g_file_new_for_commandline_arg() in that it resolves
 	// relative pathnames using the current working directory of the invoking
 	// process rather than the local process.
-	CreateFileForArgApplicationCommandLine(arg string) File
+	CreateFileForArg(arg string) File
 	// Cwd gets the working directory of the command line invocation. The string
 	// may contain non-utf8 data.
 	//
@@ -187,8 +187,8 @@ type ApplicationCommandLine interface {
 	// The return value should not be modified or freed and is valid for as long
 	// as @cmdline exists.
 	env(name string) string
-	// SetExitStatusApplicationCommandLine sets the exit status that will be
-	// used when the invoking process exits.
+	// SetExitStatus sets the exit status that will be used when the invoking
+	// process exits.
 	//
 	// The return value of the #GApplication::command-line signal is passed to
 	// this function when the handler returns. This is the usual way of setting
@@ -208,7 +208,7 @@ type ApplicationCommandLine interface {
 	// 'successful' in a certain sense, and the exit status is always zero. If
 	// the application use count is zero, though, the exit status of the local
 	// CommandLine is used.
-	SetExitStatusApplicationCommandLine(exitStatus int)
+	SetExitStatus(exitStatus int)
 }
 
 // applicationCommandLine implements the ApplicationCommandLine class.
@@ -230,7 +230,7 @@ func marshalApplicationCommandLine(p uintptr) (interface{}, error) {
 	return WrapApplicationCommandLine(obj), nil
 }
 
-func (c applicationCommandLine) CreateFileForArgApplicationCommandLine(arg string) File {
+func (c applicationCommandLine) CreateFileForArg(arg string) File {
 	var _arg0 *C.GApplicationCommandLine // out
 	var _arg1 *C.gchar                   // out
 	var _cret *C.GFile                   // in
@@ -393,7 +393,7 @@ func (c applicationCommandLine) env(name string) string {
 	return _utf8
 }
 
-func (c applicationCommandLine) SetExitStatusApplicationCommandLine(exitStatus int) {
+func (c applicationCommandLine) SetExitStatus(exitStatus int) {
 	var _arg0 *C.GApplicationCommandLine // out
 	var _arg1 C.int                      // out
 

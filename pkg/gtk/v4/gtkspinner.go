@@ -49,12 +49,12 @@ type Spinner interface {
 
 	// Spinning returns whether the spinner is spinning.
 	Spinning() bool
-	// SetSpinningSpinner sets the activity of the spinner.
-	SetSpinningSpinner(spinning bool)
-	// StartSpinner starts the animation of the spinner.
-	StartSpinner()
-	// StopSpinner stops the animation of the spinner.
-	StopSpinner()
+	// SetSpinning sets the activity of the spinner.
+	SetSpinning(spinning bool)
+	// Start starts the animation of the spinner.
+	Start()
+	// Stop stops the animation of the spinner.
+	Stop()
 }
 
 // spinner implements the Spinner class.
@@ -89,6 +89,18 @@ func NewSpinner() Spinner {
 	return _spinner
 }
 
+func (s spinner) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(s))
+}
+
+func (s spinner) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(s))
+}
+
+func (s spinner) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(s))
+}
+
 func (s spinner) Spinning() bool {
 	var _arg0 *C.GtkSpinner // out
 	var _cret C.gboolean    // in
@@ -106,7 +118,7 @@ func (s spinner) Spinning() bool {
 	return _ok
 }
 
-func (s spinner) SetSpinningSpinner(spinning bool) {
+func (s spinner) SetSpinning(spinning bool) {
 	var _arg0 *C.GtkSpinner // out
 	var _arg1 C.gboolean    // out
 
@@ -118,7 +130,7 @@ func (s spinner) SetSpinningSpinner(spinning bool) {
 	C.gtk_spinner_set_spinning(_arg0, _arg1)
 }
 
-func (s spinner) StartSpinner() {
+func (s spinner) Start() {
 	var _arg0 *C.GtkSpinner // out
 
 	_arg0 = (*C.GtkSpinner)(unsafe.Pointer(s.Native()))
@@ -126,22 +138,10 @@ func (s spinner) StartSpinner() {
 	C.gtk_spinner_start(_arg0)
 }
 
-func (s spinner) StopSpinner() {
+func (s spinner) Stop() {
 	var _arg0 *C.GtkSpinner // out
 
 	_arg0 = (*C.GtkSpinner)(unsafe.Pointer(s.Native()))
 
 	C.gtk_spinner_stop(_arg0)
-}
-
-func (s spinner) AsAccessible() Accessible {
-	return WrapAccessible(gextras.InternObject(s))
-}
-
-func (s spinner) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(s))
-}
-
-func (s spinner) AsConstraintTarget() ConstraintTarget {
-	return WrapConstraintTarget(gextras.InternObject(s))
 }

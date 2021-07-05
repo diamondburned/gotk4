@@ -43,28 +43,28 @@ type DBusObjectSkeleton interface {
 	// AsDBusObject casts the class to the DBusObject interface.
 	AsDBusObject() DBusObject
 
-	// AddInterfaceDBusObjectSkeleton adds @interface_ to @object.
+	// AddInterface adds @interface_ to @object.
 	//
 	// If @object already contains a BusInterfaceSkeleton with the same
 	// interface name, it is removed before @interface_ is added.
 	//
 	// Note that @object takes its own reference on @interface_ and holds it
 	// until removed.
-	AddInterfaceDBusObjectSkeleton(interface_ DBusInterfaceSkeleton)
-	// FlushDBusObjectSkeleton: this method simply calls
-	// g_dbus_interface_skeleton_flush() on all interfaces belonging to @object.
-	// See that method for when flushing is useful.
-	FlushDBusObjectSkeleton()
-	// RemoveInterfaceDBusObjectSkeleton removes @interface_ from @object.
-	RemoveInterfaceDBusObjectSkeleton(interface_ DBusInterfaceSkeleton)
-	// RemoveInterfaceByNameDBusObjectSkeleton removes the BusInterface with
-	// @interface_name from @object.
+	AddInterface(interface_ DBusInterfaceSkeleton)
+	// Flush: this method simply calls g_dbus_interface_skeleton_flush() on all
+	// interfaces belonging to @object. See that method for when flushing is
+	// useful.
+	Flush()
+	// RemoveInterface removes @interface_ from @object.
+	RemoveInterface(interface_ DBusInterfaceSkeleton)
+	// RemoveInterfaceByName removes the BusInterface with @interface_name from
+	// @object.
 	//
 	// If no D-Bus interface of the given interface exists, this function does
 	// nothing.
-	RemoveInterfaceByNameDBusObjectSkeleton(interfaceName string)
-	// SetObjectPathDBusObjectSkeleton sets the object path for @object.
-	SetObjectPathDBusObjectSkeleton(objectPath string)
+	RemoveInterfaceByName(interfaceName string)
+	// SetObjectPath sets the object path for @object.
+	SetObjectPath(objectPath string)
 }
 
 // dBusObjectSkeleton implements the DBusObjectSkeleton class.
@@ -103,7 +103,11 @@ func NewDBusObjectSkeleton(objectPath string) DBusObjectSkeleton {
 	return _dBusObjectSkeleton
 }
 
-func (o dBusObjectSkeleton) AddInterfaceDBusObjectSkeleton(interface_ DBusInterfaceSkeleton) {
+func (d dBusObjectSkeleton) AsDBusObject() DBusObject {
+	return WrapDBusObject(gextras.InternObject(d))
+}
+
+func (o dBusObjectSkeleton) AddInterface(interface_ DBusInterfaceSkeleton) {
 	var _arg0 *C.GDBusObjectSkeleton    // out
 	var _arg1 *C.GDBusInterfaceSkeleton // out
 
@@ -113,7 +117,7 @@ func (o dBusObjectSkeleton) AddInterfaceDBusObjectSkeleton(interface_ DBusInterf
 	C.g_dbus_object_skeleton_add_interface(_arg0, _arg1)
 }
 
-func (o dBusObjectSkeleton) FlushDBusObjectSkeleton() {
+func (o dBusObjectSkeleton) Flush() {
 	var _arg0 *C.GDBusObjectSkeleton // out
 
 	_arg0 = (*C.GDBusObjectSkeleton)(unsafe.Pointer(o.Native()))
@@ -121,7 +125,7 @@ func (o dBusObjectSkeleton) FlushDBusObjectSkeleton() {
 	C.g_dbus_object_skeleton_flush(_arg0)
 }
 
-func (o dBusObjectSkeleton) RemoveInterfaceDBusObjectSkeleton(interface_ DBusInterfaceSkeleton) {
+func (o dBusObjectSkeleton) RemoveInterface(interface_ DBusInterfaceSkeleton) {
 	var _arg0 *C.GDBusObjectSkeleton    // out
 	var _arg1 *C.GDBusInterfaceSkeleton // out
 
@@ -131,7 +135,7 @@ func (o dBusObjectSkeleton) RemoveInterfaceDBusObjectSkeleton(interface_ DBusInt
 	C.g_dbus_object_skeleton_remove_interface(_arg0, _arg1)
 }
 
-func (o dBusObjectSkeleton) RemoveInterfaceByNameDBusObjectSkeleton(interfaceName string) {
+func (o dBusObjectSkeleton) RemoveInterfaceByName(interfaceName string) {
 	var _arg0 *C.GDBusObjectSkeleton // out
 	var _arg1 *C.gchar               // out
 
@@ -142,7 +146,7 @@ func (o dBusObjectSkeleton) RemoveInterfaceByNameDBusObjectSkeleton(interfaceNam
 	C.g_dbus_object_skeleton_remove_interface_by_name(_arg0, _arg1)
 }
 
-func (o dBusObjectSkeleton) SetObjectPathDBusObjectSkeleton(objectPath string) {
+func (o dBusObjectSkeleton) SetObjectPath(objectPath string) {
 	var _arg0 *C.GDBusObjectSkeleton // out
 	var _arg1 *C.gchar               // out
 
@@ -151,8 +155,4 @@ func (o dBusObjectSkeleton) SetObjectPathDBusObjectSkeleton(objectPath string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_dbus_object_skeleton_set_object_path(_arg0, _arg1)
-}
-
-func (d dBusObjectSkeleton) AsDBusObject() DBusObject {
-	return WrapDBusObject(gextras.InternObject(d))
 }

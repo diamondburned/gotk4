@@ -75,20 +75,20 @@ type Frame interface {
 	LabelAlign() float32
 	// LabelWidget retrieves the label widget for the frame.
 	LabelWidget() Widget
-	// SetChildFrame sets the child widget of @frame.
-	SetChildFrame(child Widget)
-	// SetLabelFrame creates a new `GtkLabel` with the @label and sets it as the
+	// SetChild sets the child widget of @frame.
+	SetChild(child Widget)
+	// SetLabel creates a new `GtkLabel` with the @label and sets it as the
 	// frame's label widget.
-	SetLabelFrame(label string)
-	// SetLabelAlignFrame sets the X alignment of the frame widget’s label.
+	SetLabel(label string)
+	// SetLabelAlign sets the X alignment of the frame widget’s label.
 	//
 	// The default value for a newly created frame is 0.0.
-	SetLabelAlignFrame(xalign float32)
-	// SetLabelWidgetFrame sets the label widget for the frame.
+	SetLabelAlign(xalign float32)
+	// SetLabelWidget sets the label widget for the frame.
 	//
 	// This is the widget that will appear embedded in the top edge of the frame
 	// as a title.
-	SetLabelWidgetFrame(labelWidget Widget)
+	SetLabelWidget(labelWidget Widget)
 }
 
 // frame implements the Frame class.
@@ -127,6 +127,18 @@ func NewFrame(label string) Frame {
 	_frame = WrapFrame(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _frame
+}
+
+func (f frame) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(f))
+}
+
+func (f frame) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(f))
+}
+
+func (f frame) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(f))
 }
 
 func (f frame) Child() Widget {
@@ -189,7 +201,7 @@ func (f frame) LabelWidget() Widget {
 	return _widget
 }
 
-func (f frame) SetChildFrame(child Widget) {
+func (f frame) SetChild(child Widget) {
 	var _arg0 *C.GtkFrame  // out
 	var _arg1 *C.GtkWidget // out
 
@@ -199,7 +211,7 @@ func (f frame) SetChildFrame(child Widget) {
 	C.gtk_frame_set_child(_arg0, _arg1)
 }
 
-func (f frame) SetLabelFrame(label string) {
+func (f frame) SetLabel(label string) {
 	var _arg0 *C.GtkFrame // out
 	var _arg1 *C.char     // out
 
@@ -210,7 +222,7 @@ func (f frame) SetLabelFrame(label string) {
 	C.gtk_frame_set_label(_arg0, _arg1)
 }
 
-func (f frame) SetLabelAlignFrame(xalign float32) {
+func (f frame) SetLabelAlign(xalign float32) {
 	var _arg0 *C.GtkFrame // out
 	var _arg1 C.float     // out
 
@@ -220,7 +232,7 @@ func (f frame) SetLabelAlignFrame(xalign float32) {
 	C.gtk_frame_set_label_align(_arg0, _arg1)
 }
 
-func (f frame) SetLabelWidgetFrame(labelWidget Widget) {
+func (f frame) SetLabelWidget(labelWidget Widget) {
 	var _arg0 *C.GtkFrame  // out
 	var _arg1 *C.GtkWidget // out
 
@@ -228,16 +240,4 @@ func (f frame) SetLabelWidgetFrame(labelWidget Widget) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(labelWidget.Native()))
 
 	C.gtk_frame_set_label_widget(_arg0, _arg1)
-}
-
-func (f frame) AsAccessible() Accessible {
-	return WrapAccessible(gextras.InternObject(f))
-}
-
-func (f frame) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(f))
-}
-
-func (f frame) AsConstraintTarget() ConstraintTarget {
-	return WrapConstraintTarget(gextras.InternObject(f))
 }

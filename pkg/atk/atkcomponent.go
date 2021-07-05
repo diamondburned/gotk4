@@ -96,14 +96,14 @@ type Component interface {
 	// If the position can not be obtained (e.g. a non-embedded plug or missing
 	// support), x and y are set to -1.
 	//
-	// Deprecated: since version .
+	// Deprecated.
 	Position(coordType CoordType) (x int, y int)
 	// Size gets the size of the @component in terms of width and height.
 	//
 	// If the size can not be obtained (e.g. a non-embedded plug or missing
 	// support), width and height are set to -1.
 	//
-	// Deprecated: since version .
+	// Deprecated.
 	Size() (width int, height int)
 	// GrabFocus grabs focus for this @component.
 	GrabFocus() bool

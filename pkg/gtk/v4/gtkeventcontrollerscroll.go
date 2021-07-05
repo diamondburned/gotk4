@@ -87,9 +87,8 @@ type EventControllerScroll interface {
 
 	// Flags gets the flags conditioning the scroll controller behavior.
 	Flags() EventControllerScrollFlags
-	// SetFlagsEventControllerScroll sets the flags conditioning scroll
-	// controller behavior.
-	SetFlagsEventControllerScroll(flags EventControllerScrollFlags)
+	// SetFlags sets the flags conditioning scroll controller behavior.
+	SetFlags(flags EventControllerScrollFlags)
 }
 
 // eventControllerScroll implements the EventControllerScroll class.
@@ -143,7 +142,7 @@ func (s eventControllerScroll) Flags() EventControllerScrollFlags {
 	return _eventControllerScrollFlags
 }
 
-func (s eventControllerScroll) SetFlagsEventControllerScroll(flags EventControllerScrollFlags) {
+func (s eventControllerScroll) SetFlags(flags EventControllerScrollFlags) {
 	var _arg0 *C.GtkEventControllerScroll     // out
 	var _arg1 C.GtkEventControllerScrollFlags // out
 

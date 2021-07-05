@@ -146,10 +146,10 @@ type DragContext interface {
 	SourceWindow() Window
 	// SuggestedAction determines the suggested drag action of the context.
 	SuggestedAction() DragAction
-	// ManageDndDragContext requests the drag and drop operation to be managed
-	// by @context. When a drag and drop operation becomes managed, the
-	// DragContext will internally handle all input and source-side EventDND
-	// events as required by the windowing system.
+	// ManageDnd requests the drag and drop operation to be managed by @context.
+	// When a drag and drop operation becomes managed, the DragContext will
+	// internally handle all input and source-side EventDND events as required
+	// by the windowing system.
 	//
 	// Once the drag and drop operation is managed, the drag context will emit
 	// the following signals: - The DragContext::action-changed signal whenever
@@ -161,14 +161,14 @@ type DragContext interface {
 	// DragContext::cancel signal if the drag and drop operation is finished but
 	// doesn't happen over an accepting destination, or is cancelled through
 	// other means.
-	ManageDndDragContext(ipcWindow Window, actions DragAction) bool
-	// SetDeviceDragContext associates a Device to @context, so all Drag and
-	// Drop events for @context are emitted as if they came from this device.
-	SetDeviceDragContext(device Device)
-	// SetHotspotDragContext sets the position of the drag window that will be
-	// kept under the cursor hotspot. Initially, the hotspot is at the top left
-	// corner of the drag window.
-	SetHotspotDragContext(hotX int, hotY int)
+	ManageDnd(ipcWindow Window, actions DragAction) bool
+	// SetDevice associates a Device to @context, so all Drag and Drop events
+	// for @context are emitted as if they came from this device.
+	SetDevice(device Device)
+	// SetHotspot sets the position of the drag window that will be kept under
+	// the cursor hotspot. Initially, the hotspot is at the top left corner of
+	// the drag window.
+	SetHotspot(hotX int, hotY int)
 }
 
 // dragContext implements the DragContext class.
@@ -310,7 +310,7 @@ func (c dragContext) SuggestedAction() DragAction {
 	return _dragAction
 }
 
-func (c dragContext) ManageDndDragContext(ipcWindow Window, actions DragAction) bool {
+func (c dragContext) ManageDnd(ipcWindow Window, actions DragAction) bool {
 	var _arg0 *C.GdkDragContext // out
 	var _arg1 *C.GdkWindow      // out
 	var _arg2 C.GdkDragAction   // out
@@ -331,7 +331,7 @@ func (c dragContext) ManageDndDragContext(ipcWindow Window, actions DragAction) 
 	return _ok
 }
 
-func (c dragContext) SetDeviceDragContext(device Device) {
+func (c dragContext) SetDevice(device Device) {
 	var _arg0 *C.GdkDragContext // out
 	var _arg1 *C.GdkDevice      // out
 
@@ -341,7 +341,7 @@ func (c dragContext) SetDeviceDragContext(device Device) {
 	C.gdk_drag_context_set_device(_arg0, _arg1)
 }
 
-func (c dragContext) SetHotspotDragContext(hotX int, hotY int) {
+func (c dragContext) SetHotspot(hotX int, hotY int) {
 	var _arg0 *C.GdkDragContext // out
 	var _arg1 C.gint            // out
 	var _arg2 C.gint            // out

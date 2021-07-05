@@ -55,8 +55,8 @@ type StackSwitcher interface {
 
 	// Stack retrieves the stack. See gtk_stack_switcher_set_stack().
 	Stack() Stack
-	// SetStackStackSwitcher sets the stack to control.
-	SetStackStackSwitcher(stack Stack)
+	// SetStack sets the stack to control.
+	SetStack(stack Stack)
 }
 
 // stackSwitcher implements the StackSwitcher class.
@@ -91,6 +91,14 @@ func NewStackSwitcher() StackSwitcher {
 	return _stackSwitcher
 }
 
+func (s stackSwitcher) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(s))
+}
+
+func (s stackSwitcher) AsOrientable() Orientable {
+	return WrapOrientable(gextras.InternObject(s))
+}
+
 func (s stackSwitcher) Stack() Stack {
 	var _arg0 *C.GtkStackSwitcher // out
 	var _cret *C.GtkStack         // in
@@ -106,7 +114,7 @@ func (s stackSwitcher) Stack() Stack {
 	return _stack
 }
 
-func (s stackSwitcher) SetStackStackSwitcher(stack Stack) {
+func (s stackSwitcher) SetStack(stack Stack) {
 	var _arg0 *C.GtkStackSwitcher // out
 	var _arg1 *C.GtkStack         // out
 
@@ -114,12 +122,4 @@ func (s stackSwitcher) SetStackStackSwitcher(stack Stack) {
 	_arg1 = (*C.GtkStack)(unsafe.Pointer(stack.Native()))
 
 	C.gtk_stack_switcher_set_stack(_arg0, _arg1)
-}
-
-func (s stackSwitcher) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(s))
-}
-
-func (s stackSwitcher) AsOrientable() Orientable {
-	return WrapOrientable(gextras.InternObject(s))
 }

@@ -39,16 +39,16 @@ type EventBox interface {
 	// VisibleWindow returns whether the event box has a visible window. See
 	// gtk_event_box_set_visible_window() for details.
 	VisibleWindow() bool
-	// SetAboveChildEventBox: set whether the event box window is positioned
-	// above the windows of its child, as opposed to below it. If the window is
-	// above, all events inside the event box will go to the event box. If the
-	// window is below, events in windows of child widgets will first got to
-	// that widget, and then to its parents.
+	// SetAboveChild: set whether the event box window is positioned above the
+	// windows of its child, as opposed to below it. If the window is above, all
+	// events inside the event box will go to the event box. If the window is
+	// below, events in windows of child widgets will first got to that widget,
+	// and then to its parents.
 	//
 	// The default is to keep the window below the child.
-	SetAboveChildEventBox(aboveChild bool)
-	// SetVisibleWindowEventBox: set whether the event box uses a visible or
-	// invisible child window. The default is to use visible windows.
+	SetAboveChild(aboveChild bool)
+	// SetVisibleWindow: set whether the event box uses a visible or invisible
+	// child window. The default is to use visible windows.
 	//
 	// In an invisible window event box, the window that the event box creates
 	// is a GDK_INPUT_ONLY window, which means that it is invisible and only
@@ -78,7 +78,7 @@ type EventBox interface {
 	// This problem doesn’t occur for visible event boxes, because in that case,
 	// the event box window is actually the ancestor of the descendant windows,
 	// not just at the same place on the screen.
-	SetVisibleWindowEventBox(visibleWindow bool)
+	SetVisibleWindow(visibleWindow bool)
 }
 
 // eventBox implements the EventBox class.
@@ -111,6 +111,10 @@ func NewEventBox() EventBox {
 	_eventBox = WrapEventBox(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _eventBox
+}
+
+func (e eventBox) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(e))
 }
 
 func (e eventBox) AboveChild() bool {
@@ -147,7 +151,7 @@ func (e eventBox) VisibleWindow() bool {
 	return _ok
 }
 
-func (e eventBox) SetAboveChildEventBox(aboveChild bool) {
+func (e eventBox) SetAboveChild(aboveChild bool) {
 	var _arg0 *C.GtkEventBox // out
 	var _arg1 C.gboolean     // out
 
@@ -159,7 +163,7 @@ func (e eventBox) SetAboveChildEventBox(aboveChild bool) {
 	C.gtk_event_box_set_above_child(_arg0, _arg1)
 }
 
-func (e eventBox) SetVisibleWindowEventBox(visibleWindow bool) {
+func (e eventBox) SetVisibleWindow(visibleWindow bool) {
 	var _arg0 *C.GtkEventBox // out
 	var _arg1 C.gboolean     // out
 
@@ -169,8 +173,4 @@ func (e eventBox) SetVisibleWindowEventBox(visibleWindow bool) {
 	}
 
 	C.gtk_event_box_set_visible_window(_arg0, _arg1)
-}
-
-func (e eventBox) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(e))
 }

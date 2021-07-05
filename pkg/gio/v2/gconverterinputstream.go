@@ -84,6 +84,10 @@ func NewConverterInputStream(baseStream InputStream, converter Converter) Conver
 	return _converterInputStream
 }
 
+func (c converterInputStream) AsPollableInputStream() PollableInputStream {
+	return WrapPollableInputStream(gextras.InternObject(c))
+}
+
 func (c converterInputStream) Converter() Converter {
 	var _arg0 *C.GConverterInputStream // out
 	var _cret *C.GConverter            // in
@@ -97,8 +101,4 @@ func (c converterInputStream) Converter() Converter {
 	_converter = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Converter)
 
 	return _converter
-}
-
-func (c converterInputStream) AsPollableInputStream() PollableInputStream {
-	return WrapPollableInputStream(gextras.InternObject(c))
 }

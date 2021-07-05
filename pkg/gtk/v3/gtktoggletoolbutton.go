@@ -45,10 +45,10 @@ type ToggleToolButton interface {
 	// Active queries a ToggleToolButton and returns its current state. Returns
 	// true if the toggle button is pressed in and false if it is raised.
 	Active() bool
-	// SetActiveToggleToolButton sets the status of the toggle tool button. Set
-	// to true if you want the GtkToggleButton to be “pressed in”, and false to
-	// raise it. This action causes the toggled signal to be emitted.
-	SetActiveToggleToolButton(isActive bool)
+	// SetActive sets the status of the toggle tool button. Set to true if you
+	// want the GtkToggleButton to be “pressed in”, and false to raise it. This
+	// action causes the toggled signal to be emitted.
+	SetActive(isActive bool)
 }
 
 // toggleToolButton implements the ToggleToolButton class.
@@ -106,6 +106,18 @@ func NewToggleToolButtonFromStock(stockId string) ToggleToolButton {
 	return _toggleToolButton
 }
 
+func (t toggleToolButton) AsActionable() Actionable {
+	return WrapActionable(gextras.InternObject(t))
+}
+
+func (t toggleToolButton) AsActivatable() Activatable {
+	return WrapActivatable(gextras.InternObject(t))
+}
+
+func (t toggleToolButton) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(t))
+}
+
 func (b toggleToolButton) Active() bool {
 	var _arg0 *C.GtkToggleToolButton // out
 	var _cret C.gboolean             // in
@@ -123,7 +135,7 @@ func (b toggleToolButton) Active() bool {
 	return _ok
 }
 
-func (b toggleToolButton) SetActiveToggleToolButton(isActive bool) {
+func (b toggleToolButton) SetActive(isActive bool) {
 	var _arg0 *C.GtkToggleToolButton // out
 	var _arg1 C.gboolean             // out
 
@@ -133,16 +145,4 @@ func (b toggleToolButton) SetActiveToggleToolButton(isActive bool) {
 	}
 
 	C.gtk_toggle_tool_button_set_active(_arg0, _arg1)
-}
-
-func (t toggleToolButton) AsActionable() Actionable {
-	return WrapActionable(gextras.InternObject(t))
-}
-
-func (t toggleToolButton) AsActivatable() Activatable {
-	return WrapActivatable(gextras.InternObject(t))
-}
-
-func (t toggleToolButton) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(t))
 }

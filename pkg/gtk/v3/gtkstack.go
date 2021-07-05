@@ -103,13 +103,12 @@ type Stack interface {
 	// AsBuildable casts the class to the Buildable interface.
 	AsBuildable() Buildable
 
-	// AddNamedStack adds a child to @stack. The child is identified by the
-	// @name.
-	AddNamedStack(child Widget, name string)
-	// AddTitledStack adds a child to @stack. The child is identified by the
-	// @name. The @title will be used by StackSwitcher to represent @child in a
-	// tab bar, so it should be short.
-	AddTitledStack(child Widget, name string, title string)
+	// AddNamed adds a child to @stack. The child is identified by the @name.
+	AddNamed(child Widget, name string)
+	// AddTitled adds a child to @stack. The child is identified by the @name.
+	// The @title will be used by StackSwitcher to represent @child in a tab
+	// bar, so it should be short.
+	AddTitled(child Widget, name string, title string)
 	// ChildByName finds the child of the Stack with the name given as the
 	// argument. Returns nil if there is no child with this name.
 	ChildByName(name string) Widget
@@ -140,42 +139,42 @@ type Stack interface {
 	// VisibleChildName returns the name of the currently visible child of
 	// @stack, or nil if there is no visible child.
 	VisibleChildName() string
-	// SetHhomogeneousStack sets the Stack to be horizontally homogeneous or
-	// not. If it is homogeneous, the Stack will request the same width for all
-	// its children. If it isn't, the stack may change width when a different
-	// child becomes visible.
-	SetHhomogeneousStack(hhomogeneous bool)
-	// SetHomogeneousStack sets the Stack to be homogeneous or not. If it is
+	// SetHhomogeneous sets the Stack to be horizontally homogeneous or not. If
+	// it is homogeneous, the Stack will request the same width for all its
+	// children. If it isn't, the stack may change width when a different child
+	// becomes visible.
+	SetHhomogeneous(hhomogeneous bool)
+	// SetHomogeneous sets the Stack to be homogeneous or not. If it is
 	// homogeneous, the Stack will request the same size for all its children.
 	// If it isn't, the stack may change size when a different child becomes
 	// visible.
 	//
 	// Since 3.16, homogeneity can be controlled separately for horizontal and
 	// vertical size, with the Stack:hhomogeneous and Stack:vhomogeneous.
-	SetHomogeneousStack(homogeneous bool)
-	// SetInterpolateSizeStack sets whether or not @stack will interpolate its
-	// size when changing the visible child. If the Stack:interpolate-size
-	// property is set to true, @stack will interpolate its size between the
-	// current one and the one it'll take after changing the visible child,
-	// according to the set transition duration.
-	SetInterpolateSizeStack(interpolateSize bool)
-	// SetTransitionDurationStack sets the duration that transitions between
-	// pages in @stack will take.
-	SetTransitionDurationStack(duration uint)
-	// SetTransitionTypeStack sets the type of animation that will be used for
+	SetHomogeneous(homogeneous bool)
+	// SetInterpolateSize sets whether or not @stack will interpolate its size
+	// when changing the visible child. If the Stack:interpolate-size property
+	// is set to true, @stack will interpolate its size between the current one
+	// and the one it'll take after changing the visible child, according to the
+	// set transition duration.
+	SetInterpolateSize(interpolateSize bool)
+	// SetTransitionDuration sets the duration that transitions between pages in
+	// @stack will take.
+	SetTransitionDuration(duration uint)
+	// SetTransitionType sets the type of animation that will be used for
 	// transitions between pages in @stack. Available types include various
 	// kinds of fades and slides.
 	//
 	// The transition type can be changed without problems at runtime, so it is
 	// possible to change the animation based on the page that is about to
 	// become current.
-	SetTransitionTypeStack(transition StackTransitionType)
-	// SetVhomogeneousStack sets the Stack to be vertically homogeneous or not.
-	// If it is homogeneous, the Stack will request the same height for all its
+	SetTransitionType(transition StackTransitionType)
+	// SetVhomogeneous sets the Stack to be vertically homogeneous or not. If it
+	// is homogeneous, the Stack will request the same height for all its
 	// children. If it isn't, the stack may change height when a different child
 	// becomes visible.
-	SetVhomogeneousStack(vhomogeneous bool)
-	// SetVisibleChildStack makes @child the visible child of @stack.
+	SetVhomogeneous(vhomogeneous bool)
+	// SetVisibleChild makes @child the visible child of @stack.
 	//
 	// If @child is different from the currently visible child, the transition
 	// between the two will be animated with the current transition type of
@@ -183,13 +182,13 @@ type Stack interface {
 	//
 	// Note that the @child widget has to be visible itself (see
 	// gtk_widget_show()) in order to become the visible child of @stack.
-	SetVisibleChildStack(child Widget)
-	// SetVisibleChildFullStack makes the child with the given name visible.
+	SetVisibleChild(child Widget)
+	// SetVisibleChildFull makes the child with the given name visible.
 	//
 	// Note that the child widget has to be visible itself (see
 	// gtk_widget_show()) in order to become the visible child of @stack.
-	SetVisibleChildFullStack(name string, transition StackTransitionType)
-	// SetVisibleChildNameStack makes the child with the given name visible.
+	SetVisibleChildFull(name string, transition StackTransitionType)
+	// SetVisibleChildName makes the child with the given name visible.
 	//
 	// If @child is different from the currently visible child, the transition
 	// between the two will be animated with the current transition type of
@@ -197,7 +196,7 @@ type Stack interface {
 	//
 	// Note that the child widget has to be visible itself (see
 	// gtk_widget_show()) in order to become the visible child of @stack.
-	SetVisibleChildNameStack(name string)
+	SetVisibleChildName(name string)
 }
 
 // stack implements the Stack class.
@@ -232,7 +231,11 @@ func NewStack() Stack {
 	return _stack
 }
 
-func (s stack) AddNamedStack(child Widget, name string) {
+func (s stack) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(s))
+}
+
+func (s stack) AddNamed(child Widget, name string) {
 	var _arg0 *C.GtkStack  // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 *C.gchar     // out
@@ -245,7 +248,7 @@ func (s stack) AddNamedStack(child Widget, name string) {
 	C.gtk_stack_add_named(_arg0, _arg1, _arg2)
 }
 
-func (s stack) AddTitledStack(child Widget, name string, title string) {
+func (s stack) AddTitled(child Widget, name string, title string) {
 	var _arg0 *C.GtkStack  // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 *C.gchar     // out
@@ -424,7 +427,7 @@ func (s stack) VisibleChildName() string {
 	return _utf8
 }
 
-func (s stack) SetHhomogeneousStack(hhomogeneous bool) {
+func (s stack) SetHhomogeneous(hhomogeneous bool) {
 	var _arg0 *C.GtkStack // out
 	var _arg1 C.gboolean  // out
 
@@ -436,7 +439,7 @@ func (s stack) SetHhomogeneousStack(hhomogeneous bool) {
 	C.gtk_stack_set_hhomogeneous(_arg0, _arg1)
 }
 
-func (s stack) SetHomogeneousStack(homogeneous bool) {
+func (s stack) SetHomogeneous(homogeneous bool) {
 	var _arg0 *C.GtkStack // out
 	var _arg1 C.gboolean  // out
 
@@ -448,7 +451,7 @@ func (s stack) SetHomogeneousStack(homogeneous bool) {
 	C.gtk_stack_set_homogeneous(_arg0, _arg1)
 }
 
-func (s stack) SetInterpolateSizeStack(interpolateSize bool) {
+func (s stack) SetInterpolateSize(interpolateSize bool) {
 	var _arg0 *C.GtkStack // out
 	var _arg1 C.gboolean  // out
 
@@ -460,7 +463,7 @@ func (s stack) SetInterpolateSizeStack(interpolateSize bool) {
 	C.gtk_stack_set_interpolate_size(_arg0, _arg1)
 }
 
-func (s stack) SetTransitionDurationStack(duration uint) {
+func (s stack) SetTransitionDuration(duration uint) {
 	var _arg0 *C.GtkStack // out
 	var _arg1 C.guint     // out
 
@@ -470,7 +473,7 @@ func (s stack) SetTransitionDurationStack(duration uint) {
 	C.gtk_stack_set_transition_duration(_arg0, _arg1)
 }
 
-func (s stack) SetTransitionTypeStack(transition StackTransitionType) {
+func (s stack) SetTransitionType(transition StackTransitionType) {
 	var _arg0 *C.GtkStack              // out
 	var _arg1 C.GtkStackTransitionType // out
 
@@ -480,7 +483,7 @@ func (s stack) SetTransitionTypeStack(transition StackTransitionType) {
 	C.gtk_stack_set_transition_type(_arg0, _arg1)
 }
 
-func (s stack) SetVhomogeneousStack(vhomogeneous bool) {
+func (s stack) SetVhomogeneous(vhomogeneous bool) {
 	var _arg0 *C.GtkStack // out
 	var _arg1 C.gboolean  // out
 
@@ -492,7 +495,7 @@ func (s stack) SetVhomogeneousStack(vhomogeneous bool) {
 	C.gtk_stack_set_vhomogeneous(_arg0, _arg1)
 }
 
-func (s stack) SetVisibleChildStack(child Widget) {
+func (s stack) SetVisibleChild(child Widget) {
 	var _arg0 *C.GtkStack  // out
 	var _arg1 *C.GtkWidget // out
 
@@ -502,7 +505,7 @@ func (s stack) SetVisibleChildStack(child Widget) {
 	C.gtk_stack_set_visible_child(_arg0, _arg1)
 }
 
-func (s stack) SetVisibleChildFullStack(name string, transition StackTransitionType) {
+func (s stack) SetVisibleChildFull(name string, transition StackTransitionType) {
 	var _arg0 *C.GtkStack              // out
 	var _arg1 *C.gchar                 // out
 	var _arg2 C.GtkStackTransitionType // out
@@ -515,7 +518,7 @@ func (s stack) SetVisibleChildFullStack(name string, transition StackTransitionT
 	C.gtk_stack_set_visible_child_full(_arg0, _arg1, _arg2)
 }
 
-func (s stack) SetVisibleChildNameStack(name string) {
+func (s stack) SetVisibleChildName(name string) {
 	var _arg0 *C.GtkStack // out
 	var _arg1 *C.gchar    // out
 
@@ -524,8 +527,4 @@ func (s stack) SetVisibleChildNameStack(name string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_stack_set_visible_child_name(_arg0, _arg1)
-}
-
-func (s stack) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(s))
 }

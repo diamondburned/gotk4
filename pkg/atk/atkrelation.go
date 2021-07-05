@@ -28,15 +28,14 @@ func init() {
 type Relation interface {
 	gextras.Objector
 
-	// AddTargetRelation adds the specified AtkObject to the target for the
-	// relation, if it is not already present. See also
-	// atk_object_add_relationship().
-	AddTargetRelation(target Object)
+	// AddTarget adds the specified AtkObject to the target for the relation, if
+	// it is not already present. See also atk_object_add_relationship().
+	AddTarget(target Object)
 	// RelationType gets the type of @relation
 	RelationType() RelationType
-	// RemoveTargetRelation: remove the specified AtkObject from the target for
-	// the relation.
-	RemoveTargetRelation(target Object) bool
+	// RemoveTarget: remove the specified AtkObject from the target for the
+	// relation.
+	RemoveTarget(target Object) bool
 }
 
 // relation implements the Relation class.
@@ -86,7 +85,7 @@ func NewRelation(targets []Object, relationship RelationType) Relation {
 	return _relation
 }
 
-func (r relation) AddTargetRelation(target Object) {
+func (r relation) AddTarget(target Object) {
 	var _arg0 *C.AtkRelation // out
 	var _arg1 *C.AtkObject   // out
 
@@ -111,7 +110,7 @@ func (r relation) RelationType() RelationType {
 	return _relationType
 }
 
-func (r relation) RemoveTargetRelation(target Object) bool {
+func (r relation) RemoveTarget(target Object) bool {
 	var _arg0 *C.AtkRelation // out
 	var _arg1 *C.AtkObject   // out
 	var _cret C.gboolean     // in

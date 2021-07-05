@@ -161,17 +161,16 @@ func marshalFontMask(p uintptr) (interface{}, error) {
 type Font interface {
 	gextras.Objector
 
-	// DescribeFont returns a description of the font, with font size set in
-	// points.
+	// Describe returns a description of the font, with font size set in points.
 	//
 	// Use [method@Pango.Font.describe_with_absolute_size] if you want the font
 	// size in device units.
-	DescribeFont() *FontDescription
-	// DescribeWithAbsoluteSizeFont returns a description of the font, with
-	// absolute font size set in device units.
+	Describe() *FontDescription
+	// DescribeWithAbsoluteSize returns a description of the font, with absolute
+	// font size set in device units.
 	//
 	// Use [method@Pango.Font.describe] if you want the font size in points.
-	DescribeWithAbsoluteSizeFont() *FontDescription
+	DescribeWithAbsoluteSize() *FontDescription
 	// Coverage computes the coverage map for a given font and language tag.
 	Coverage(language *Language) Coverage
 	// Face gets the `PangoFontFace` to which @font belongs.
@@ -196,10 +195,10 @@ type Font interface {
 	// If @font is nil, this function gracefully sets some sane values in the
 	// output variables and returns.
 	Metrics(language *Language) *FontMetrics
-	// HasCharFont returns whether the font provides a glyph for this character.
+	// HasChar returns whether the font provides a glyph for this character.
 	//
 	// Returns true if @font can render @wc
-	HasCharFont(wc uint32) bool
+	HasChar(wc uint32) bool
 }
 
 // font implements the Font class.
@@ -221,7 +220,7 @@ func marshalFont(p uintptr) (interface{}, error) {
 	return WrapFont(obj), nil
 }
 
-func (f font) DescribeFont() *FontDescription {
+func (f font) Describe() *FontDescription {
 	var _arg0 *C.PangoFont            // out
 	var _cret *C.PangoFontDescription // in
 
@@ -239,7 +238,7 @@ func (f font) DescribeFont() *FontDescription {
 	return _fontDescription
 }
 
-func (f font) DescribeWithAbsoluteSizeFont() *FontDescription {
+func (f font) DescribeWithAbsoluteSize() *FontDescription {
 	var _arg0 *C.PangoFont            // out
 	var _cret *C.PangoFontDescription // in
 
@@ -325,7 +324,7 @@ func (f font) Metrics(language *Language) *FontMetrics {
 	return _fontMetrics
 }
 
-func (f font) HasCharFont(wc uint32) bool {
+func (f font) HasChar(wc uint32) bool {
 	var _arg0 *C.PangoFont // out
 	var _arg1 C.gunichar   // out
 	var _cret C.gboolean   // in
@@ -349,27 +348,27 @@ func (f font) HasCharFont(wc uint32) bool {
 type FontFace interface {
 	gextras.Objector
 
-	// DescribeFontFace returns the family, style, variant, weight and stretch
-	// of a `PangoFontFace`. The size field of the resulting font description
-	// will be unset.
-	DescribeFontFace() *FontDescription
+	// Describe returns the family, style, variant, weight and stretch of a
+	// `PangoFontFace`. The size field of the resulting font description will be
+	// unset.
+	Describe() *FontDescription
 	// FaceName gets a name representing the style of this face among the
 	// different faces in the `PangoFontFamily` for the face. The name is
 	// suitable for displaying to users.
 	FaceName() string
 	// Family gets the `PangoFontFamily` that @face belongs to.
 	Family() FontFamily
-	// IsSynthesizedFontFace returns whether a `PangoFontFace` is synthesized by
-	// the underlying font rendering engine from another face, perhaps by
-	// shearing, emboldening, or lightening it.
-	IsSynthesizedFontFace() bool
-	// ListSizesFontFace: list the available sizes for a font.
+	// IsSynthesized returns whether a `PangoFontFace` is synthesized by the
+	// underlying font rendering engine from another face, perhaps by shearing,
+	// emboldening, or lightening it.
+	IsSynthesized() bool
+	// ListSizes: list the available sizes for a font.
 	//
 	// This is only applicable to bitmap fonts. For scalable fonts, stores nil
 	// at the location pointed to by @sizes and 0 at the location pointed to by
 	// @n_sizes. The sizes returned are in Pango units and are sorted in
 	// ascending order.
-	ListSizesFontFace() []int
+	ListSizes() []int
 }
 
 // fontFace implements the FontFace class.
@@ -391,7 +390,7 @@ func marshalFontFace(p uintptr) (interface{}, error) {
 	return WrapFontFace(obj), nil
 }
 
-func (f fontFace) DescribeFontFace() *FontDescription {
+func (f fontFace) Describe() *FontDescription {
 	var _arg0 *C.PangoFontFace        // out
 	var _cret *C.PangoFontDescription // in
 
@@ -439,7 +438,7 @@ func (f fontFace) Family() FontFamily {
 	return _fontFamily
 }
 
-func (f fontFace) IsSynthesizedFontFace() bool {
+func (f fontFace) IsSynthesized() bool {
 	var _arg0 *C.PangoFontFace // out
 	var _cret C.gboolean       // in
 
@@ -456,7 +455,7 @@ func (f fontFace) IsSynthesizedFontFace() bool {
 	return _ok
 }
 
-func (f fontFace) ListSizesFontFace() []int {
+func (f fontFace) ListSizes() []int {
 	var _arg0 *C.PangoFontFace // out
 	var _arg1 *C.int
 	var _arg2 C.int // in
@@ -491,8 +490,8 @@ type FontFamily interface {
 	// in a `PangoFontDescription` to specify that a face from this family is
 	// desired.
 	Name() string
-	// IsMonospaceFontFamily: monospace font is a font designed for text display
-	// where the the characters form a regular grid.
+	// IsMonospace: monospace font is a font designed for text display where the
+	// the characters form a regular grid.
 	//
 	// For Western languages this would mean that the advance width of all
 	// characters are the same, but this categorization also includes Asian
@@ -504,15 +503,15 @@ type FontFamily interface {
 	// [method@Pango.FontMetrics.get_approximate_digit_width], since the results
 	// of [method@Pango.FontMetrics.get_approximate_char_width] may be affected
 	// by double-width characters.
-	IsMonospaceFontFamily() bool
-	// IsVariableFontFamily: variable font is a font which has axes that can be
-	// modified to produce different faces.
-	IsVariableFontFamily() bool
-	// ListFacesFontFamily lists the different font faces that make up @family.
+	IsMonospace() bool
+	// IsVariable: variable font is a font which has axes that can be modified
+	// to produce different faces.
+	IsVariable() bool
+	// ListFaces lists the different font faces that make up @family.
 	//
 	// The faces in a family share a common design, but differ in slant, weight,
 	// width and other aspects.
-	ListFacesFontFamily() []FontFace
+	ListFaces() []FontFace
 }
 
 // fontFamily implements the FontFamily class.
@@ -567,7 +566,7 @@ func (f fontFamily) Name() string {
 	return _utf8
 }
 
-func (f fontFamily) IsMonospaceFontFamily() bool {
+func (f fontFamily) IsMonospace() bool {
 	var _arg0 *C.PangoFontFamily // out
 	var _cret C.gboolean         // in
 
@@ -584,7 +583,7 @@ func (f fontFamily) IsMonospaceFontFamily() bool {
 	return _ok
 }
 
-func (f fontFamily) IsVariableFontFamily() bool {
+func (f fontFamily) IsVariable() bool {
 	var _arg0 *C.PangoFontFamily // out
 	var _cret C.gboolean         // in
 
@@ -601,7 +600,7 @@ func (f fontFamily) IsVariableFontFamily() bool {
 	return _ok
 }
 
-func (f fontFamily) ListFacesFontFamily() []FontFace {
+func (f fontFamily) ListFaces() []FontFace {
 	var _arg0 *C.PangoFontFamily // out
 	var _arg1 **C.PangoFontFace
 	var _arg2 C.int // in

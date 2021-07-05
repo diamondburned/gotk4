@@ -47,8 +47,8 @@ type CharsetConverter interface {
 	NumFallbacks() uint
 	// UseFallback gets the Converter:use-fallback property.
 	UseFallback() bool
-	// SetUseFallbackCharsetConverter sets the Converter:use-fallback property.
-	SetUseFallbackCharsetConverter(useFallback bool)
+	// SetUseFallback sets the Converter:use-fallback property.
+	SetUseFallback(useFallback bool)
 }
 
 // charsetConverter implements the CharsetConverter class.
@@ -93,6 +93,14 @@ func NewCharsetConverter(toCharset string, fromCharset string) (CharsetConverter
 	return _charsetConverter, _goerr
 }
 
+func (c charsetConverter) AsConverter() Converter {
+	return WrapConverter(gextras.InternObject(c))
+}
+
+func (c charsetConverter) AsInitable() Initable {
+	return WrapInitable(gextras.InternObject(c))
+}
+
 func (c charsetConverter) NumFallbacks() uint {
 	var _arg0 *C.GCharsetConverter // out
 	var _cret C.guint              // in
@@ -125,7 +133,7 @@ func (c charsetConverter) UseFallback() bool {
 	return _ok
 }
 
-func (c charsetConverter) SetUseFallbackCharsetConverter(useFallback bool) {
+func (c charsetConverter) SetUseFallback(useFallback bool) {
 	var _arg0 *C.GCharsetConverter // out
 	var _arg1 C.gboolean           // out
 
@@ -135,12 +143,4 @@ func (c charsetConverter) SetUseFallbackCharsetConverter(useFallback bool) {
 	}
 
 	C.g_charset_converter_set_use_fallback(_arg0, _arg1)
-}
-
-func (c charsetConverter) AsConverter() Converter {
-	return WrapConverter(gextras.InternObject(c))
-}
-
-func (c charsetConverter) AsInitable() Initable {
-	return WrapInitable(gextras.InternObject(c))
 }

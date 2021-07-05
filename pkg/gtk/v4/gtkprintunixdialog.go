@@ -79,8 +79,8 @@ type PrintUnixDialog interface {
 	// AsShortcutManager casts the class to the ShortcutManager interface.
 	AsShortcutManager() ShortcutManager
 
-	// AddCustomTabPrintUnixDialog adds a custom tab to the print dialog.
-	AddCustomTabPrintUnixDialog(child Widget, tabLabel Widget)
+	// AddCustomTab adds a custom tab to the print dialog.
+	AddCustomTab(child Widget, tabLabel Widget)
 	// CurrentPage gets the current page of the `GtkPrintUnixDialog`.
 	CurrentPage() int
 	// EmbedPageSetup gets whether to embed the page setup.
@@ -105,36 +105,34 @@ type PrintUnixDialog interface {
 	// SupportSelection gets whether the print dialog allows user to print a
 	// selection.
 	SupportSelection() bool
-	// SetCurrentPagePrintUnixDialog sets the current page number.
+	// SetCurrentPage sets the current page number.
 	//
 	// If @current_page is not -1, this enables the current page choice for the
 	// range of pages to print.
-	SetCurrentPagePrintUnixDialog(currentPage int)
-	// SetEmbedPageSetupPrintUnixDialog: embed page size combo box and
-	// orientation combo box into page setup page.
-	SetEmbedPageSetupPrintUnixDialog(embed bool)
-	// SetHasSelectionPrintUnixDialog sets whether a selection exists.
-	SetHasSelectionPrintUnixDialog(hasSelection bool)
-	// SetManualCapabilitiesPrintUnixDialog: this lets you specify the printing
-	// capabilities your application supports.
+	SetCurrentPage(currentPage int)
+	// SetEmbedPageSetup: embed page size combo box and orientation combo box
+	// into page setup page.
+	SetEmbedPageSetup(embed bool)
+	// SetHasSelection sets whether a selection exists.
+	SetHasSelection(hasSelection bool)
+	// SetManualCapabilities: this lets you specify the printing capabilities
+	// your application supports.
 	//
 	// For instance, if you can handle scaling the output then you pass
 	// GTK_PRINT_CAPABILITY_SCALE. If you don’t pass that, then the dialog will
 	// only let you select the scale if the printing system automatically
 	// handles scaling.
-	SetManualCapabilitiesPrintUnixDialog(capabilities PrintCapabilities)
-	// SetPageSetupPrintUnixDialog sets the page setup of the
-	// `GtkPrintUnixDialog`.
-	SetPageSetupPrintUnixDialog(pageSetup PageSetup)
-	// SetSettingsPrintUnixDialog sets the `GtkPrintSettings` for the
-	// `GtkPrintUnixDialog`.
+	SetManualCapabilities(capabilities PrintCapabilities)
+	// SetPageSetup sets the page setup of the `GtkPrintUnixDialog`.
+	SetPageSetup(pageSetup PageSetup)
+	// SetSettings sets the `GtkPrintSettings` for the `GtkPrintUnixDialog`.
 	//
 	// Typically, this is used to restore saved print settings from a previous
 	// print operation before the print dialog is shown.
-	SetSettingsPrintUnixDialog(settings PrintSettings)
-	// SetSupportSelectionPrintUnixDialog sets whether the print dialog allows
-	// user to print a selection.
-	SetSupportSelectionPrintUnixDialog(supportSelection bool)
+	SetSettings(settings PrintSettings)
+	// SetSupportSelection sets whether the print dialog allows user to print a
+	// selection.
+	SetSupportSelection(supportSelection bool)
 }
 
 // printUnixDialog implements the PrintUnixDialog class.
@@ -175,7 +173,31 @@ func NewPrintUnixDialog(title string, parent Window) PrintUnixDialog {
 	return _printUnixDialog
 }
 
-func (d printUnixDialog) AddCustomTabPrintUnixDialog(child Widget, tabLabel Widget) {
+func (p printUnixDialog) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(p))
+}
+
+func (p printUnixDialog) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(p))
+}
+
+func (p printUnixDialog) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(p))
+}
+
+func (p printUnixDialog) AsNative() Native {
+	return WrapNative(gextras.InternObject(p))
+}
+
+func (p printUnixDialog) AsRoot() Root {
+	return WrapRoot(gextras.InternObject(p))
+}
+
+func (p printUnixDialog) AsShortcutManager() ShortcutManager {
+	return WrapShortcutManager(gextras.InternObject(p))
+}
+
+func (d printUnixDialog) AddCustomTab(child Widget, tabLabel Widget) {
 	var _arg0 *C.GtkPrintUnixDialog // out
 	var _arg1 *C.GtkWidget          // out
 	var _arg2 *C.GtkWidget          // out
@@ -330,7 +352,7 @@ func (d printUnixDialog) SupportSelection() bool {
 	return _ok
 }
 
-func (d printUnixDialog) SetCurrentPagePrintUnixDialog(currentPage int) {
+func (d printUnixDialog) SetCurrentPage(currentPage int) {
 	var _arg0 *C.GtkPrintUnixDialog // out
 	var _arg1 C.int                 // out
 
@@ -340,7 +362,7 @@ func (d printUnixDialog) SetCurrentPagePrintUnixDialog(currentPage int) {
 	C.gtk_print_unix_dialog_set_current_page(_arg0, _arg1)
 }
 
-func (d printUnixDialog) SetEmbedPageSetupPrintUnixDialog(embed bool) {
+func (d printUnixDialog) SetEmbedPageSetup(embed bool) {
 	var _arg0 *C.GtkPrintUnixDialog // out
 	var _arg1 C.gboolean            // out
 
@@ -352,7 +374,7 @@ func (d printUnixDialog) SetEmbedPageSetupPrintUnixDialog(embed bool) {
 	C.gtk_print_unix_dialog_set_embed_page_setup(_arg0, _arg1)
 }
 
-func (d printUnixDialog) SetHasSelectionPrintUnixDialog(hasSelection bool) {
+func (d printUnixDialog) SetHasSelection(hasSelection bool) {
 	var _arg0 *C.GtkPrintUnixDialog // out
 	var _arg1 C.gboolean            // out
 
@@ -364,7 +386,7 @@ func (d printUnixDialog) SetHasSelectionPrintUnixDialog(hasSelection bool) {
 	C.gtk_print_unix_dialog_set_has_selection(_arg0, _arg1)
 }
 
-func (d printUnixDialog) SetManualCapabilitiesPrintUnixDialog(capabilities PrintCapabilities) {
+func (d printUnixDialog) SetManualCapabilities(capabilities PrintCapabilities) {
 	var _arg0 *C.GtkPrintUnixDialog  // out
 	var _arg1 C.GtkPrintCapabilities // out
 
@@ -374,7 +396,7 @@ func (d printUnixDialog) SetManualCapabilitiesPrintUnixDialog(capabilities Print
 	C.gtk_print_unix_dialog_set_manual_capabilities(_arg0, _arg1)
 }
 
-func (d printUnixDialog) SetPageSetupPrintUnixDialog(pageSetup PageSetup) {
+func (d printUnixDialog) SetPageSetup(pageSetup PageSetup) {
 	var _arg0 *C.GtkPrintUnixDialog // out
 	var _arg1 *C.GtkPageSetup       // out
 
@@ -384,7 +406,7 @@ func (d printUnixDialog) SetPageSetupPrintUnixDialog(pageSetup PageSetup) {
 	C.gtk_print_unix_dialog_set_page_setup(_arg0, _arg1)
 }
 
-func (d printUnixDialog) SetSettingsPrintUnixDialog(settings PrintSettings) {
+func (d printUnixDialog) SetSettings(settings PrintSettings) {
 	var _arg0 *C.GtkPrintUnixDialog // out
 	var _arg1 *C.GtkPrintSettings   // out
 
@@ -394,7 +416,7 @@ func (d printUnixDialog) SetSettingsPrintUnixDialog(settings PrintSettings) {
 	C.gtk_print_unix_dialog_set_settings(_arg0, _arg1)
 }
 
-func (d printUnixDialog) SetSupportSelectionPrintUnixDialog(supportSelection bool) {
+func (d printUnixDialog) SetSupportSelection(supportSelection bool) {
 	var _arg0 *C.GtkPrintUnixDialog // out
 	var _arg1 C.gboolean            // out
 
@@ -404,28 +426,4 @@ func (d printUnixDialog) SetSupportSelectionPrintUnixDialog(supportSelection boo
 	}
 
 	C.gtk_print_unix_dialog_set_support_selection(_arg0, _arg1)
-}
-
-func (p printUnixDialog) AsAccessible() Accessible {
-	return WrapAccessible(gextras.InternObject(p))
-}
-
-func (p printUnixDialog) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(p))
-}
-
-func (p printUnixDialog) AsConstraintTarget() ConstraintTarget {
-	return WrapConstraintTarget(gextras.InternObject(p))
-}
-
-func (p printUnixDialog) AsNative() Native {
-	return WrapNative(gextras.InternObject(p))
-}
-
-func (p printUnixDialog) AsRoot() Root {
-	return WrapRoot(gextras.InternObject(p))
-}
-
-func (p printUnixDialog) AsShortcutManager() ShortcutManager {
-	return WrapShortcutManager(gextras.InternObject(p))
 }

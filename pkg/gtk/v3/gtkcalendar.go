@@ -109,8 +109,8 @@ type Calendar interface {
 	// AsBuildable casts the class to the Buildable interface.
 	AsBuildable() Buildable
 
-	// ClearMarksCalendar: remove all visual markers.
-	ClearMarksCalendar()
+	// ClearMarks: remove all visual markers.
+	ClearMarks()
 	// Date obtains the selected date from a Calendar.
 	Date() (year uint, month uint, day uint)
 	// DayIsMarked returns if the @day of the @calendar is already marked.
@@ -123,23 +123,23 @@ type Calendar interface {
 	DetailWidthChars() int
 	// DisplayOptions returns the current display options of @calendar.
 	DisplayOptions() CalendarDisplayOptions
-	// MarkDayCalendar places a visual marker on a particular day.
-	MarkDayCalendar(day uint)
-	// SelectDayCalendar selects a day from the current month.
-	SelectDayCalendar(day uint)
-	// SelectMonthCalendar shifts the calendar to a different month.
-	SelectMonthCalendar(month uint, year uint)
-	// SetDetailHeightRowsCalendar updates the height of detail cells. See
+	// MarkDay places a visual marker on a particular day.
+	MarkDay(day uint)
+	// SelectDay selects a day from the current month.
+	SelectDay(day uint)
+	// SelectMonth shifts the calendar to a different month.
+	SelectMonth(month uint, year uint)
+	// SetDetailHeightRows updates the height of detail cells. See
 	// Calendar:detail-height-rows.
-	SetDetailHeightRowsCalendar(rows int)
-	// SetDetailWidthCharsCalendar updates the width of detail cells. See
+	SetDetailHeightRows(rows int)
+	// SetDetailWidthChars updates the width of detail cells. See
 	// Calendar:detail-width-chars.
-	SetDetailWidthCharsCalendar(chars int)
-	// SetDisplayOptionsCalendar sets display options (whether to display the
-	// heading and the month headings).
-	SetDisplayOptionsCalendar(flags CalendarDisplayOptions)
-	// UnmarkDayCalendar removes the visual marker from a particular day.
-	UnmarkDayCalendar(day uint)
+	SetDetailWidthChars(chars int)
+	// SetDisplayOptions sets display options (whether to display the heading
+	// and the month headings).
+	SetDisplayOptions(flags CalendarDisplayOptions)
+	// UnmarkDay removes the visual marker from a particular day.
+	UnmarkDay(day uint)
 }
 
 // calendar implements the Calendar class.
@@ -174,7 +174,11 @@ func NewCalendar() Calendar {
 	return _calendar
 }
 
-func (c calendar) ClearMarksCalendar() {
+func (c calendar) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(c))
+}
+
+func (c calendar) ClearMarks() {
 	var _arg0 *C.GtkCalendar // out
 
 	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(c.Native()))
@@ -267,7 +271,7 @@ func (c calendar) DisplayOptions() CalendarDisplayOptions {
 	return _calendarDisplayOptions
 }
 
-func (c calendar) MarkDayCalendar(day uint) {
+func (c calendar) MarkDay(day uint) {
 	var _arg0 *C.GtkCalendar // out
 	var _arg1 C.guint        // out
 
@@ -277,7 +281,7 @@ func (c calendar) MarkDayCalendar(day uint) {
 	C.gtk_calendar_mark_day(_arg0, _arg1)
 }
 
-func (c calendar) SelectDayCalendar(day uint) {
+func (c calendar) SelectDay(day uint) {
 	var _arg0 *C.GtkCalendar // out
 	var _arg1 C.guint        // out
 
@@ -287,7 +291,7 @@ func (c calendar) SelectDayCalendar(day uint) {
 	C.gtk_calendar_select_day(_arg0, _arg1)
 }
 
-func (c calendar) SelectMonthCalendar(month uint, year uint) {
+func (c calendar) SelectMonth(month uint, year uint) {
 	var _arg0 *C.GtkCalendar // out
 	var _arg1 C.guint        // out
 	var _arg2 C.guint        // out
@@ -299,7 +303,7 @@ func (c calendar) SelectMonthCalendar(month uint, year uint) {
 	C.gtk_calendar_select_month(_arg0, _arg1, _arg2)
 }
 
-func (c calendar) SetDetailHeightRowsCalendar(rows int) {
+func (c calendar) SetDetailHeightRows(rows int) {
 	var _arg0 *C.GtkCalendar // out
 	var _arg1 C.gint         // out
 
@@ -309,7 +313,7 @@ func (c calendar) SetDetailHeightRowsCalendar(rows int) {
 	C.gtk_calendar_set_detail_height_rows(_arg0, _arg1)
 }
 
-func (c calendar) SetDetailWidthCharsCalendar(chars int) {
+func (c calendar) SetDetailWidthChars(chars int) {
 	var _arg0 *C.GtkCalendar // out
 	var _arg1 C.gint         // out
 
@@ -319,7 +323,7 @@ func (c calendar) SetDetailWidthCharsCalendar(chars int) {
 	C.gtk_calendar_set_detail_width_chars(_arg0, _arg1)
 }
 
-func (c calendar) SetDisplayOptionsCalendar(flags CalendarDisplayOptions) {
+func (c calendar) SetDisplayOptions(flags CalendarDisplayOptions) {
 	var _arg0 *C.GtkCalendar              // out
 	var _arg1 C.GtkCalendarDisplayOptions // out
 
@@ -329,7 +333,7 @@ func (c calendar) SetDisplayOptionsCalendar(flags CalendarDisplayOptions) {
 	C.gtk_calendar_set_display_options(_arg0, _arg1)
 }
 
-func (c calendar) UnmarkDayCalendar(day uint) {
+func (c calendar) UnmarkDay(day uint) {
 	var _arg0 *C.GtkCalendar // out
 	var _arg1 C.guint        // out
 
@@ -337,8 +341,4 @@ func (c calendar) UnmarkDayCalendar(day uint) {
 	_arg1 = C.guint(day)
 
 	C.gtk_calendar_unmark_day(_arg0, _arg1)
-}
-
-func (c calendar) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(c))
 }

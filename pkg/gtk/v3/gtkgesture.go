@@ -146,8 +146,8 @@ type Gesture interface {
 	// Window returns the user-defined window that receives the events handled
 	// by @gesture. See gtk_gesture_set_window() for more information.
 	Window() gdk.Window
-	// GroupGesture adds @gesture to the same group than @group_gesture.
-	// Gestures are by default isolated in their own groups.
+	// Group adds @gesture to the same group than @group_gesture. Gestures are
+	// by default isolated in their own groups.
 	//
 	// When gestures are grouped, the state of EventSequences is kept in sync
 	// for all of those, so calling gtk_gesture_set_sequence_state(), on one
@@ -157,25 +157,23 @@ type Gesture interface {
 	// EventSequence state is set to K_EVENT_SEQUENCE_CLAIMED on one group,
 	// every other gesture group attached to the same Widget will switch the
 	// state for that sequence to K_EVENT_SEQUENCE_DENIED.
-	GroupGesture(gesture Gesture)
-	// HandlesSequenceGesture returns true if @gesture is currently handling
-	// events corresponding to @sequence.
-	HandlesSequenceGesture(sequence *gdk.EventSequence) bool
-	// IsActiveGesture returns true if the gesture is currently active. A
-	// gesture is active meanwhile there are touch sequences interacting with
-	// it.
-	IsActiveGesture() bool
-	// IsGroupedWithGesture returns true if both gestures pertain to the same
-	// group.
-	IsGroupedWithGesture(other Gesture) bool
-	// IsRecognizedGesture returns true if the gesture is currently recognized.
-	// A gesture is recognized if there are as many interacting touch sequences
-	// as required by @gesture, and Gesture::check returned true for the
-	// sequences being currently interpreted.
-	IsRecognizedGesture() bool
-	// SetSequenceStateGesture sets the state of @sequence in @gesture.
-	// Sequences start in state K_EVENT_SEQUENCE_NONE, and whenever they change
-	// state, they can never go back to that state. Likewise, sequences in state
+	Group(gesture Gesture)
+	// HandlesSequence returns true if @gesture is currently handling events
+	// corresponding to @sequence.
+	HandlesSequence(sequence *gdk.EventSequence) bool
+	// IsActive returns true if the gesture is currently active. A gesture is
+	// active meanwhile there are touch sequences interacting with it.
+	IsActive() bool
+	// IsGroupedWith returns true if both gestures pertain to the same group.
+	IsGroupedWith(other Gesture) bool
+	// IsRecognized returns true if the gesture is currently recognized. A
+	// gesture is recognized if there are as many interacting touch sequences as
+	// required by @gesture, and Gesture::check returned true for the sequences
+	// being currently interpreted.
+	IsRecognized() bool
+	// SetSequenceState sets the state of @sequence in @gesture. Sequences start
+	// in state K_EVENT_SEQUENCE_NONE, and whenever they change state, they can
+	// never go back to that state. Likewise, sequences in state
 	// K_EVENT_SEQUENCE_DENIED cannot turn back to a not denied state. With
 	// these rules, the lifetime of an event sequence is constrained to the next
 	// four:
@@ -208,17 +206,17 @@ type Gesture interface {
 	// If both gestures are in the same group, just set the state on the gesture
 	// emitting the event, the sequence will be already be initialized to the
 	// group's global state when the second gesture processes the event.
-	SetSequenceStateGesture(sequence *gdk.EventSequence, state EventSequenceState) bool
-	// SetStateGesture sets the state of all sequences that @gesture is
-	// currently interacting with. See gtk_gesture_set_sequence_state() for more
-	// details on sequence states.
-	SetStateGesture(state EventSequenceState) bool
-	// SetWindowGesture sets a specific window to receive events about, so
-	// @gesture will effectively handle only events targeting @window, or a
-	// child of it. @window must pertain to gtk_event_controller_get_widget().
-	SetWindowGesture(window gdk.Window)
-	// UngroupGesture separates @gesture into an isolated group.
-	UngroupGesture()
+	SetSequenceState(sequence *gdk.EventSequence, state EventSequenceState) bool
+	// SetState sets the state of all sequences that @gesture is currently
+	// interacting with. See gtk_gesture_set_sequence_state() for more details
+	// on sequence states.
+	SetState(state EventSequenceState) bool
+	// SetWindow sets a specific window to receive events about, so @gesture
+	// will effectively handle only events targeting @window, or a child of it.
+	// @window must pertain to gtk_event_controller_get_widget().
+	SetWindow(window gdk.Window)
+	// Ungroup separates @gesture into an isolated group.
+	Ungroup()
 }
 
 // gesture implements the Gesture class.
@@ -380,7 +378,7 @@ func (g gesture) Window() gdk.Window {
 	return _window
 }
 
-func (g gesture) GroupGesture(gesture Gesture) {
+func (g gesture) Group(gesture Gesture) {
 	var _arg0 *C.GtkGesture // out
 	var _arg1 *C.GtkGesture // out
 
@@ -390,7 +388,7 @@ func (g gesture) GroupGesture(gesture Gesture) {
 	C.gtk_gesture_group(_arg0, _arg1)
 }
 
-func (g gesture) HandlesSequenceGesture(sequence *gdk.EventSequence) bool {
+func (g gesture) HandlesSequence(sequence *gdk.EventSequence) bool {
 	var _arg0 *C.GtkGesture       // out
 	var _arg1 *C.GdkEventSequence // out
 	var _cret C.gboolean          // in
@@ -409,7 +407,7 @@ func (g gesture) HandlesSequenceGesture(sequence *gdk.EventSequence) bool {
 	return _ok
 }
 
-func (g gesture) IsActiveGesture() bool {
+func (g gesture) IsActive() bool {
 	var _arg0 *C.GtkGesture // out
 	var _cret C.gboolean    // in
 
@@ -426,7 +424,7 @@ func (g gesture) IsActiveGesture() bool {
 	return _ok
 }
 
-func (g gesture) IsGroupedWithGesture(other Gesture) bool {
+func (g gesture) IsGroupedWith(other Gesture) bool {
 	var _arg0 *C.GtkGesture // out
 	var _arg1 *C.GtkGesture // out
 	var _cret C.gboolean    // in
@@ -445,7 +443,7 @@ func (g gesture) IsGroupedWithGesture(other Gesture) bool {
 	return _ok
 }
 
-func (g gesture) IsRecognizedGesture() bool {
+func (g gesture) IsRecognized() bool {
 	var _arg0 *C.GtkGesture // out
 	var _cret C.gboolean    // in
 
@@ -462,7 +460,7 @@ func (g gesture) IsRecognizedGesture() bool {
 	return _ok
 }
 
-func (g gesture) SetSequenceStateGesture(sequence *gdk.EventSequence, state EventSequenceState) bool {
+func (g gesture) SetSequenceState(sequence *gdk.EventSequence, state EventSequenceState) bool {
 	var _arg0 *C.GtkGesture           // out
 	var _arg1 *C.GdkEventSequence     // out
 	var _arg2 C.GtkEventSequenceState // out
@@ -483,7 +481,7 @@ func (g gesture) SetSequenceStateGesture(sequence *gdk.EventSequence, state Even
 	return _ok
 }
 
-func (g gesture) SetStateGesture(state EventSequenceState) bool {
+func (g gesture) SetState(state EventSequenceState) bool {
 	var _arg0 *C.GtkGesture           // out
 	var _arg1 C.GtkEventSequenceState // out
 	var _cret C.gboolean              // in
@@ -502,7 +500,7 @@ func (g gesture) SetStateGesture(state EventSequenceState) bool {
 	return _ok
 }
 
-func (g gesture) SetWindowGesture(window gdk.Window) {
+func (g gesture) SetWindow(window gdk.Window) {
 	var _arg0 *C.GtkGesture // out
 	var _arg1 *C.GdkWindow  // out
 
@@ -512,7 +510,7 @@ func (g gesture) SetWindowGesture(window gdk.Window) {
 	C.gtk_gesture_set_window(_arg0, _arg1)
 }
 
-func (g gesture) UngroupGesture() {
+func (g gesture) Ungroup() {
 	var _arg0 *C.GtkGesture // out
 
 	_arg0 = (*C.GtkGesture)(unsafe.Pointer(g.Native()))

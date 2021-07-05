@@ -120,17 +120,17 @@ func marshalWrapMode(p uintptr) (interface{}, error) {
 type Layout interface {
 	gextras.Objector
 
-	// ContextChangedLayout forces recomputation of any state in the
-	// `PangoLayout` that might depend on the layout's context.
+	// ContextChanged forces recomputation of any state in the `PangoLayout`
+	// that might depend on the layout's context.
 	//
 	// This function should be called if you make changes to the context
 	// subsequent to creating the layout.
-	ContextChangedLayout()
-	// CopyLayout creates a deep copy-by-value of the layout.
+	ContextChanged()
+	// Copy creates a deep copy-by-value of the layout.
 	//
 	// The attribute list, tab array, and text from the original layout are all
 	// copied by value.
-	CopyLayout() Layout
+	Copy() Layout
 	// Alignment gets the alignment for the layout: how partial lines are
 	// positioned within the horizontal space available.
 	Alignment() Alignment
@@ -267,34 +267,33 @@ type Layout interface {
 	// Use [method@Pango.Layout.is_wrapped] to query whether any paragraphs were
 	// actually wrapped.
 	Wrap() WrapMode
-	// IndexToLineXLayout converts from byte @index_ within the @layout to line
-	// and X position.
+	// IndexToLineX converts from byte @index_ within the @layout to line and X
+	// position.
 	//
 	// The X position is measured from the left edge of the line.
-	IndexToLineXLayout(index_ int, trailing bool) (line int, xPos int)
-	// IndexToPosLayout converts from an index within a `PangoLayout` to the
-	// onscreen position corresponding to the grapheme at that index.
+	IndexToLineX(index_ int, trailing bool) (line int, xPos int)
+	// IndexToPos converts from an index within a `PangoLayout` to the onscreen
+	// position corresponding to the grapheme at that index.
 	//
 	// The return value is represented as rectangle. Note that `pos->x` is
 	// always the leading edge of the grapheme and `pos->x + pos->width` the
 	// trailing edge of the grapheme. If the directionality of the grapheme is
 	// right-to-left, then `pos->width` will be negative.
-	IndexToPosLayout(index_ int) Rectangle
-	// IsEllipsizedLayout queries whether the layout had to ellipsize any
-	// paragraphs.
+	IndexToPos(index_ int) Rectangle
+	// IsEllipsized queries whether the layout had to ellipsize any paragraphs.
 	//
 	// This returns true if the ellipsization mode for @layout is not
 	// PANGO_ELLIPSIZE_NONE, a positive width is set on @layout, and there are
 	// paragraphs exceeding that width that have to be ellipsized.
-	IsEllipsizedLayout() bool
-	// IsWrappedLayout queries whether the layout had to wrap any paragraphs.
+	IsEllipsized() bool
+	// IsWrapped queries whether the layout had to wrap any paragraphs.
 	//
 	// This returns true if a positive width is set on @layout, ellipsization
 	// mode of @layout is set to PANGO_ELLIPSIZE_NONE, and there are paragraphs
 	// exceeding the layout width that have to be wrapped.
-	IsWrappedLayout() bool
-	// MoveCursorVisuallyLayout computes a new cursor position from an old
-	// position and a count of positions to move visually.
+	IsWrapped() bool
+	// MoveCursorVisually computes a new cursor position from an old position
+	// and a count of positions to move visually.
 	//
 	// If @direction is positive, then the new strong cursor position will be
 	// one position to the right of the old cursor position. If @direction is
@@ -309,15 +308,15 @@ type Layout interface {
 	// to [method@Pango.Layout.move_cursor_visually] may move the cursor over
 	// multiple characters when multiple characters combine to form a single
 	// grapheme.
-	MoveCursorVisuallyLayout(strong bool, oldIndex int, oldTrailing int, direction int) (newIndex int, newTrailing int)
-	// SetAlignmentLayout sets the alignment for the layout: how partial lines
-	// are positioned within the horizontal space available.
-	SetAlignmentLayout(alignment Alignment)
-	// SetAttributesLayout sets the text attributes for a layout object.
-	// References @attrs, so the caller can unref its reference.
-	SetAttributesLayout(attrs *AttrList)
-	// SetAutoDirLayout sets whether to calculate the base direction for the
-	// layout according to its contents.
+	MoveCursorVisually(strong bool, oldIndex int, oldTrailing int, direction int) (newIndex int, newTrailing int)
+	// SetAlignment sets the alignment for the layout: how partial lines are
+	// positioned within the horizontal space available.
+	SetAlignment(alignment Alignment)
+	// SetAttributes sets the text attributes for a layout object. References
+	// @attrs, so the caller can unref its reference.
+	SetAttributes(attrs *AttrList)
+	// SetAutoDir sets whether to calculate the base direction for the layout
+	// according to its contents.
 	//
 	// When this flag is on (the default), then paragraphs in @layout that begin
 	// with strong right-to-left characters (Arabic and Hebrew principally),
@@ -332,9 +331,8 @@ type Layout interface {
 	// When the auto-computed direction of a paragraph differs from the base
 	// direction of the context, the interpretation of PANGO_ALIGN_LEFT and
 	// PANGO_ALIGN_RIGHT are swapped.
-	SetAutoDirLayout(autoDir bool)
-	// SetEllipsizeLayout sets the type of ellipsization being performed for
-	// @layout.
+	SetAutoDir(autoDir bool)
+	// SetEllipsize sets the type of ellipsization being performed for @layout.
 	//
 	// Depending on the ellipsization mode @ellipsize text is removed from the
 	// start, middle, or end of text so they fit within the width and height of
@@ -346,15 +344,14 @@ type Layout interface {
 	// ellipsized separately or the entire layout is ellipsized as a whole
 	// depends on the set height of the layout. See
 	// [method@Pango.Layout.set_height] for details.
-	SetEllipsizeLayout(ellipsize EllipsizeMode)
-	// SetFontDescriptionLayout sets the default font description for the
-	// layout.
+	SetEllipsize(ellipsize EllipsizeMode)
+	// SetFontDescription sets the default font description for the layout.
 	//
 	// If no font description is set on the layout, the font description from
 	// the layout's context is used.
-	SetFontDescriptionLayout(desc *FontDescription)
-	// SetHeightLayout sets the height to which the `PangoLayout` should be
-	// ellipsized at.
+	SetFontDescription(desc *FontDescription)
+	// SetHeight sets the height to which the `PangoLayout` should be ellipsized
+	// at.
 	//
 	// There are two different behaviors, based on whether @height is positive
 	// or negative.
@@ -379,8 +376,8 @@ type Layout interface {
 	// ellipsization mode of @layout is not PANGO_ELLIPSIZE_NONE. The behavior
 	// is undefined if a height other than -1 is set and ellipsization mode is
 	// set to PANGO_ELLIPSIZE_NONE, and may change in the future.
-	SetHeightLayout(height int)
-	// SetIndentLayout sets the width in Pango units to indent each paragraph.
+	SetHeight(height int)
+	// SetIndent sets the width in Pango units to indent each paragraph.
 	//
 	// A negative value of @indent will produce a hanging indentation. That is,
 	// the first line will have the full width, and subsequent lines will be
@@ -388,9 +385,9 @@ type Layout interface {
 	//
 	// The indent setting is ignored if layout alignment is set to
 	// PANGO_ALIGN_CENTER.
-	SetIndentLayout(indent int)
-	// SetJustifyLayout sets whether each complete line should be stretched to
-	// fill the entire width of the layout.
+	SetIndent(indent int)
+	// SetJustify sets whether each complete line should be stretched to fill
+	// the entire width of the layout.
 	//
 	// Stretching is typically done by adding whitespace, but for some scripts
 	// (such as Arabic), the justification may be done in more complex ways,
@@ -398,8 +395,8 @@ type Layout interface {
 	//
 	// Note that this setting is not implemented and so is ignored in Pango
 	// older than 1.18.
-	SetJustifyLayout(justify bool)
-	// SetLineSpacingLayout sets a factor for line spacing.
+	SetJustify(justify bool)
+	// SetLineSpacing sets a factor for line spacing.
 	//
 	// Typical values are: 0, 1, 1.5, 2. The default values is 0.
 	//
@@ -412,18 +409,17 @@ type Layout interface {
 	// [method@Pango.Layout.set_spacing] is ignored.
 	//
 	// If @factor is zero, spacing is applied as before.
-	SetLineSpacingLayout(factor float32)
-	// SetMarkupLayout sets the layout text and attribute list from marked-up
-	// text.
+	SetLineSpacing(factor float32)
+	// SetMarkup sets the layout text and attribute list from marked-up text.
 	//
 	// See Pango Markup (pango_markup.html)). Replaces the current text and
 	// attribute list.
 	//
 	// This is the Same as [method@Pango.Layout.set_markup_with_accel], but the
 	// markup text isn't scanned for accelerators.
-	SetMarkupLayout(markup string, length int)
-	// SetMarkupWithAccelLayout sets the layout text and attribute list from
-	// marked-up text.
+	SetMarkup(markup string, length int)
+	// SetMarkupWithAccel sets the layout text and attribute list from marked-up
+	// text.
 	//
 	// See Pango Markup (pango_markup.html)). Replaces the current text and
 	// attribute list.
@@ -434,16 +430,16 @@ type Layout interface {
 	// receive a PANGO_UNDERLINE_LOW attribute, and the first character so
 	// marked will be returned in @accel_char. Two @accel_marker characters
 	// following each other produce a single literal @accel_marker character.
-	SetMarkupWithAccelLayout(markup string, length int, accelMarker uint32) uint32
-	// SetSingleParagraphModeLayout sets the single paragraph mode of @layout.
+	SetMarkupWithAccel(markup string, length int, accelMarker uint32) uint32
+	// SetSingleParagraphMode sets the single paragraph mode of @layout.
 	//
 	// If @setting is true, do not treat newlines and similar characters as
 	// paragraph separators; instead, keep all text in a single paragraph, and
 	// display a glyph for paragraph separator characters. Used when you want to
 	// allow editing of newlines on a single text line.
-	SetSingleParagraphModeLayout(setting bool)
-	// SetSpacingLayout sets the amount of spacing in Pango unit between the
-	// lines of the layout.
+	SetSingleParagraphMode(setting bool)
+	// SetSpacing sets the amount of spacing in Pango unit between the lines of
+	// the layout.
 	//
 	//
 	// When placing lines with spacing, Pango arranges things so that
@@ -454,15 +450,14 @@ type Layout interface {
 	// by the font) for placing lines. The @spacing set with this function is
 	// only taken into account when the line height factor is set to zero with
 	// [method@Pango.Layout.set_line_spacing].
-	SetSpacingLayout(spacing int)
-	// SetTabsLayout sets the tabs to use for @layout, overriding the default
-	// tabs.
+	SetSpacing(spacing int)
+	// SetTabs sets the tabs to use for @layout, overriding the default tabs.
 	//
 	// By default, tabs are every 8 spaces. If @tabs is nil, the default tabs
 	// are reinstated. @tabs is copied into the layout; you must free your copy
 	// of @tabs yourself.
-	SetTabsLayout(tabs *TabArray)
-	// SetTextLayout sets the text of the layout.
+	SetTabs(tabs *TabArray)
+	// SetText sets the text of the layout.
 	//
 	// This function validates @text and renders invalid UTF-8 with a
 	// placeholder glyph.
@@ -472,20 +467,20 @@ type Layout interface {
 	// want to call [method@Pango.Layout.set_attributes] to clear the attributes
 	// set on the layout from the markup as this function does not clear
 	// attributes.
-	SetTextLayout(text string, length int)
-	// SetWidthLayout sets the width to which the lines of the `PangoLayout`
-	// should wrap or ellipsized.
+	SetText(text string, length int)
+	// SetWidth sets the width to which the lines of the `PangoLayout` should
+	// wrap or ellipsized.
 	//
 	// The default value is -1: no width set.
-	SetWidthLayout(width int)
-	// SetWrapLayout sets the wrap mode.
+	SetWidth(width int)
+	// SetWrap sets the wrap mode.
 	//
 	// The wrap mode only has effect if a width is set on the layout with
 	// [method@Pango.Layout.set_width]. To turn off wrapping, set the width to
 	// -1.
-	SetWrapLayout(wrap WrapMode)
-	// XYToIndexLayout converts from X and Y position within a layout to the
-	// byte index to the character at that logical position.
+	SetWrap(wrap WrapMode)
+	// XYToIndex converts from X and Y position within a layout to the byte
+	// index to the character at that logical position.
 	//
 	// If the Y position is not inside the layout, the closest position is
 	// chosen (the position will be clamped inside the layout). If the X
@@ -493,7 +488,7 @@ type Layout interface {
 	// is chosen as described for [method@Pango.LayoutLine.x_to_index]. If
 	// either the X or Y positions were not inside the layout, then the function
 	// returns false; on an exact hit, it returns true.
-	XYToIndexLayout(x int, y int) (index_ int, trailing int, ok bool)
+	XYToIndex(x int, y int) (index_ int, trailing int, ok bool)
 }
 
 // layout implements the Layout class.
@@ -532,7 +527,7 @@ func NewLayout(context Context) Layout {
 	return _layout
 }
 
-func (l layout) ContextChangedLayout() {
+func (l layout) ContextChanged() {
 	var _arg0 *C.PangoLayout // out
 
 	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
@@ -540,7 +535,7 @@ func (l layout) ContextChangedLayout() {
 	C.pango_layout_context_changed(_arg0)
 }
 
-func (s layout) CopyLayout() Layout {
+func (s layout) Copy() Layout {
 	var _arg0 *C.PangoLayout // out
 	var _cret *C.PangoLayout // in
 
@@ -1089,7 +1084,7 @@ func (l layout) Wrap() WrapMode {
 	return _wrapMode
 }
 
-func (l layout) IndexToLineXLayout(index_ int, trailing bool) (line int, xPos int) {
+func (l layout) IndexToLineX(index_ int, trailing bool) (line int, xPos int) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 C.int          // out
 	var _arg2 C.gboolean     // out
@@ -1113,7 +1108,7 @@ func (l layout) IndexToLineXLayout(index_ int, trailing bool) (line int, xPos in
 	return _line, _xPos
 }
 
-func (l layout) IndexToPosLayout(index_ int) Rectangle {
+func (l layout) IndexToPos(index_ int) Rectangle {
 	var _arg0 *C.PangoLayout   // out
 	var _arg1 C.int            // out
 	var _arg2 C.PangoRectangle // in
@@ -1140,7 +1135,7 @@ func (l layout) IndexToPosLayout(index_ int) Rectangle {
 	return _pos
 }
 
-func (l layout) IsEllipsizedLayout() bool {
+func (l layout) IsEllipsized() bool {
 	var _arg0 *C.PangoLayout // out
 	var _cret C.gboolean     // in
 
@@ -1157,7 +1152,7 @@ func (l layout) IsEllipsizedLayout() bool {
 	return _ok
 }
 
-func (l layout) IsWrappedLayout() bool {
+func (l layout) IsWrapped() bool {
 	var _arg0 *C.PangoLayout // out
 	var _cret C.gboolean     // in
 
@@ -1174,7 +1169,7 @@ func (l layout) IsWrappedLayout() bool {
 	return _ok
 }
 
-func (l layout) MoveCursorVisuallyLayout(strong bool, oldIndex int, oldTrailing int, direction int) (newIndex int, newTrailing int) {
+func (l layout) MoveCursorVisually(strong bool, oldIndex int, oldTrailing int, direction int) (newIndex int, newTrailing int) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 C.gboolean     // out
 	var _arg2 C.int          // out
@@ -1202,7 +1197,7 @@ func (l layout) MoveCursorVisuallyLayout(strong bool, oldIndex int, oldTrailing 
 	return _newIndex, _newTrailing
 }
 
-func (l layout) SetAlignmentLayout(alignment Alignment) {
+func (l layout) SetAlignment(alignment Alignment) {
 	var _arg0 *C.PangoLayout   // out
 	var _arg1 C.PangoAlignment // out
 
@@ -1212,7 +1207,7 @@ func (l layout) SetAlignmentLayout(alignment Alignment) {
 	C.pango_layout_set_alignment(_arg0, _arg1)
 }
 
-func (l layout) SetAttributesLayout(attrs *AttrList) {
+func (l layout) SetAttributes(attrs *AttrList) {
 	var _arg0 *C.PangoLayout   // out
 	var _arg1 *C.PangoAttrList // out
 
@@ -1222,7 +1217,7 @@ func (l layout) SetAttributesLayout(attrs *AttrList) {
 	C.pango_layout_set_attributes(_arg0, _arg1)
 }
 
-func (l layout) SetAutoDirLayout(autoDir bool) {
+func (l layout) SetAutoDir(autoDir bool) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 C.gboolean     // out
 
@@ -1234,7 +1229,7 @@ func (l layout) SetAutoDirLayout(autoDir bool) {
 	C.pango_layout_set_auto_dir(_arg0, _arg1)
 }
 
-func (l layout) SetEllipsizeLayout(ellipsize EllipsizeMode) {
+func (l layout) SetEllipsize(ellipsize EllipsizeMode) {
 	var _arg0 *C.PangoLayout       // out
 	var _arg1 C.PangoEllipsizeMode // out
 
@@ -1244,7 +1239,7 @@ func (l layout) SetEllipsizeLayout(ellipsize EllipsizeMode) {
 	C.pango_layout_set_ellipsize(_arg0, _arg1)
 }
 
-func (l layout) SetFontDescriptionLayout(desc *FontDescription) {
+func (l layout) SetFontDescription(desc *FontDescription) {
 	var _arg0 *C.PangoLayout          // out
 	var _arg1 *C.PangoFontDescription // out
 
@@ -1254,7 +1249,7 @@ func (l layout) SetFontDescriptionLayout(desc *FontDescription) {
 	C.pango_layout_set_font_description(_arg0, _arg1)
 }
 
-func (l layout) SetHeightLayout(height int) {
+func (l layout) SetHeight(height int) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 C.int          // out
 
@@ -1264,7 +1259,7 @@ func (l layout) SetHeightLayout(height int) {
 	C.pango_layout_set_height(_arg0, _arg1)
 }
 
-func (l layout) SetIndentLayout(indent int) {
+func (l layout) SetIndent(indent int) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 C.int          // out
 
@@ -1274,7 +1269,7 @@ func (l layout) SetIndentLayout(indent int) {
 	C.pango_layout_set_indent(_arg0, _arg1)
 }
 
-func (l layout) SetJustifyLayout(justify bool) {
+func (l layout) SetJustify(justify bool) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 C.gboolean     // out
 
@@ -1286,7 +1281,7 @@ func (l layout) SetJustifyLayout(justify bool) {
 	C.pango_layout_set_justify(_arg0, _arg1)
 }
 
-func (l layout) SetLineSpacingLayout(factor float32) {
+func (l layout) SetLineSpacing(factor float32) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 C.float        // out
 
@@ -1296,7 +1291,7 @@ func (l layout) SetLineSpacingLayout(factor float32) {
 	C.pango_layout_set_line_spacing(_arg0, _arg1)
 }
 
-func (l layout) SetMarkupLayout(markup string, length int) {
+func (l layout) SetMarkup(markup string, length int) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 *C.char        // out
 	var _arg2 C.int          // out
@@ -1309,7 +1304,7 @@ func (l layout) SetMarkupLayout(markup string, length int) {
 	C.pango_layout_set_markup(_arg0, _arg1, _arg2)
 }
 
-func (l layout) SetMarkupWithAccelLayout(markup string, length int, accelMarker uint32) uint32 {
+func (l layout) SetMarkupWithAccel(markup string, length int, accelMarker uint32) uint32 {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 *C.char        // out
 	var _arg2 C.int          // out
@@ -1331,7 +1326,7 @@ func (l layout) SetMarkupWithAccelLayout(markup string, length int, accelMarker 
 	return _accelChar
 }
 
-func (l layout) SetSingleParagraphModeLayout(setting bool) {
+func (l layout) SetSingleParagraphMode(setting bool) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 C.gboolean     // out
 
@@ -1343,7 +1338,7 @@ func (l layout) SetSingleParagraphModeLayout(setting bool) {
 	C.pango_layout_set_single_paragraph_mode(_arg0, _arg1)
 }
 
-func (l layout) SetSpacingLayout(spacing int) {
+func (l layout) SetSpacing(spacing int) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 C.int          // out
 
@@ -1353,7 +1348,7 @@ func (l layout) SetSpacingLayout(spacing int) {
 	C.pango_layout_set_spacing(_arg0, _arg1)
 }
 
-func (l layout) SetTabsLayout(tabs *TabArray) {
+func (l layout) SetTabs(tabs *TabArray) {
 	var _arg0 *C.PangoLayout   // out
 	var _arg1 *C.PangoTabArray // out
 
@@ -1363,7 +1358,7 @@ func (l layout) SetTabsLayout(tabs *TabArray) {
 	C.pango_layout_set_tabs(_arg0, _arg1)
 }
 
-func (l layout) SetTextLayout(text string, length int) {
+func (l layout) SetText(text string, length int) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 *C.char        // out
 	var _arg2 C.int          // out
@@ -1376,7 +1371,7 @@ func (l layout) SetTextLayout(text string, length int) {
 	C.pango_layout_set_text(_arg0, _arg1, _arg2)
 }
 
-func (l layout) SetWidthLayout(width int) {
+func (l layout) SetWidth(width int) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 C.int          // out
 
@@ -1386,7 +1381,7 @@ func (l layout) SetWidthLayout(width int) {
 	C.pango_layout_set_width(_arg0, _arg1)
 }
 
-func (l layout) SetWrapLayout(wrap WrapMode) {
+func (l layout) SetWrap(wrap WrapMode) {
 	var _arg0 *C.PangoLayout  // out
 	var _arg1 C.PangoWrapMode // out
 
@@ -1396,7 +1391,7 @@ func (l layout) SetWrapLayout(wrap WrapMode) {
 	C.pango_layout_set_wrap(_arg0, _arg1)
 }
 
-func (l layout) XYToIndexLayout(x int, y int) (index_ int, trailing int, ok bool) {
+func (l layout) XYToIndex(x int, y int) (index_ int, trailing int, ok bool) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 C.int          // out
 	var _arg2 C.int          // out

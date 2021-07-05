@@ -72,7 +72,7 @@ func init() {
 type PixbufLoader interface {
 	gextras.Objector
 
-	// ClosePixbufLoader informs a pixbuf loader that no further writes with
+	// Close informs a pixbuf loader that no further writes with
 	// gdk_pixbuf_loader_write() will occur, so that it can free its internal
 	// loading structures.
 	//
@@ -87,7 +87,7 @@ type PixbufLoader interface {
 	//
 	// Remember that this function does not release a reference on the loader,
 	// so you will need to explicitly release any reference you hold.
-	ClosePixbufLoader() error
+	Close() error
 	// Animation queries the PixbufAnimation that a pixbuf loader is currently
 	// creating.
 	//
@@ -114,7 +114,7 @@ type PixbufLoader interface {
 	// Additionally, if the loader is an animation, it will return the "static
 	// image" of the animation (see gdk_pixbuf_animation_get_static_image()).
 	Pixbuf() Pixbuf
-	// SetSizePixbufLoader causes the image to be scaled while it is loaded.
+	// SetSize causes the image to be scaled while it is loaded.
 	//
 	// The desired image size can be determined relative to the original size of
 	// the image by calling gdk_pixbuf_loader_set_size() from a signal handler
@@ -122,10 +122,9 @@ type PixbufLoader interface {
 	//
 	// Attempts to set the desired image size are ignored after the emission of
 	// the ::size-prepared signal.
-	SetSizePixbufLoader(width int, height int)
-	// WritePixbufLoader parses the next `count` bytes in the given image
-	// buffer.
-	WritePixbufLoader(buf []byte) error
+	SetSize(width int, height int)
+	// Write parses the next `count` bytes in the given image buffer.
+	Write(buf []byte) error
 }
 
 // pixbufLoader implements the PixbufLoader class.
@@ -224,7 +223,7 @@ func NewPixbufLoaderWithType(imageType string) (PixbufLoader, error) {
 	return _pixbufLoader, _goerr
 }
 
-func (l pixbufLoader) ClosePixbufLoader() error {
+func (l pixbufLoader) Close() error {
 	var _arg0 *C.GdkPixbufLoader // out
 	var _cerr *C.GError          // in
 
@@ -269,7 +268,7 @@ func (l pixbufLoader) Pixbuf() Pixbuf {
 	return _pixbuf
 }
 
-func (l pixbufLoader) SetSizePixbufLoader(width int, height int) {
+func (l pixbufLoader) SetSize(width int, height int) {
 	var _arg0 *C.GdkPixbufLoader // out
 	var _arg1 C.int              // out
 	var _arg2 C.int              // out
@@ -281,7 +280,7 @@ func (l pixbufLoader) SetSizePixbufLoader(width int, height int) {
 	C.gdk_pixbuf_loader_set_size(_arg0, _arg1, _arg2)
 }
 
-func (l pixbufLoader) WritePixbufLoader(buf []byte) error {
+func (l pixbufLoader) Write(buf []byte) error {
 	var _arg0 *C.GdkPixbufLoader // out
 	var _arg1 *C.guchar
 	var _arg2 C.gsize

@@ -37,14 +37,12 @@ type WaylandDisplay interface {
 	// StartupNotificationID gets the startup notification ID for a Wayland
 	// display, or nil if no ID has been defined.
 	StartupNotificationID() string
-	// QueryRegistryWaylandDisplay returns true if the the interface was found
-	// in the display `wl_registry.global` handler.
-	QueryRegistryWaylandDisplay(global string) bool
-	// SetCursorThemeWaylandDisplay sets the cursor theme for the given
-	// @display.
-	SetCursorThemeWaylandDisplay(name string, size int)
-	// SetStartupNotificationIDWaylandDisplay sets the startup notification ID
-	// for a display.
+	// QueryRegistry returns true if the the interface was found in the display
+	// `wl_registry.global` handler.
+	QueryRegistry(global string) bool
+	// SetCursorTheme sets the cursor theme for the given @display.
+	SetCursorTheme(name string, size int)
+	// SetStartupNotificationID sets the startup notification ID for a display.
 	//
 	// This is usually taken from the value of the `DESKTOP_STARTUP_ID`
 	// environment variable, but in some cases (such as the application not
@@ -53,7 +51,7 @@ type WaylandDisplay interface {
 	// The startup ID is also what is used to signal that the startup is
 	// complete (for example, when opening a window or when calling
 	// [method@Gdk.Display.notify_startup_complete]).
-	SetStartupNotificationIDWaylandDisplay(startupId string)
+	SetStartupNotificationID(startupId string)
 }
 
 // waylandDisplay implements the WaylandDisplay class.
@@ -90,7 +88,7 @@ func (d waylandDisplay) StartupNotificationID() string {
 	return _utf8
 }
 
-func (d waylandDisplay) QueryRegistryWaylandDisplay(global string) bool {
+func (d waylandDisplay) QueryRegistry(global string) bool {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.char       // out
 	var _cret C.gboolean    // in
@@ -110,7 +108,7 @@ func (d waylandDisplay) QueryRegistryWaylandDisplay(global string) bool {
 	return _ok
 }
 
-func (d waylandDisplay) SetCursorThemeWaylandDisplay(name string, size int) {
+func (d waylandDisplay) SetCursorTheme(name string, size int) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.char       // out
 	var _arg2 C.int         // out
@@ -123,7 +121,7 @@ func (d waylandDisplay) SetCursorThemeWaylandDisplay(name string, size int) {
 	C.gdk_wayland_display_set_cursor_theme(_arg0, _arg1, _arg2)
 }
 
-func (d waylandDisplay) SetStartupNotificationIDWaylandDisplay(startupId string) {
+func (d waylandDisplay) SetStartupNotificationID(startupId string) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.char       // out
 

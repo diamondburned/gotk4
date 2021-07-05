@@ -190,24 +190,22 @@ type FileChooserNative interface {
 	AcceptLabel() string
 	// CancelLabel retrieves the custom label text for the cancel button.
 	CancelLabel() string
-	// SetAcceptLabelFileChooserNative sets the custom label text for the accept
-	// button.
+	// SetAcceptLabel sets the custom label text for the accept button.
 	//
 	// If characters in @label are preceded by an underscore, they are
 	// underlined. If you need a literal underscore character in a label, use
 	// “__” (two underscores). The first underlined character represents a
 	// keyboard accelerator called a mnemonic. Pressing Alt and that key
 	// activates the button.
-	SetAcceptLabelFileChooserNative(acceptLabel string)
-	// SetCancelLabelFileChooserNative sets the custom label text for the cancel
-	// button.
+	SetAcceptLabel(acceptLabel string)
+	// SetCancelLabel sets the custom label text for the cancel button.
 	//
 	// If characters in @label are preceded by an underscore, they are
 	// underlined. If you need a literal underscore character in a label, use
 	// “__” (two underscores). The first underlined character represents a
 	// keyboard accelerator called a mnemonic. Pressing Alt and that key
 	// activates the button.
-	SetCancelLabelFileChooserNative(cancelLabel string)
+	SetCancelLabel(cancelLabel string)
 }
 
 // fileChooserNative implements the FileChooserNative class.
@@ -256,6 +254,10 @@ func NewFileChooserNative(title string, parent Window, action FileChooserAction,
 	return _fileChooserNative
 }
 
+func (f fileChooserNative) AsFileChooser() FileChooser {
+	return WrapFileChooser(gextras.InternObject(f))
+}
+
 func (s fileChooserNative) AcceptLabel() string {
 	var _arg0 *C.GtkFileChooserNative // out
 	var _cret *C.char                 // in
@@ -286,7 +288,7 @@ func (s fileChooserNative) CancelLabel() string {
 	return _utf8
 }
 
-func (s fileChooserNative) SetAcceptLabelFileChooserNative(acceptLabel string) {
+func (s fileChooserNative) SetAcceptLabel(acceptLabel string) {
 	var _arg0 *C.GtkFileChooserNative // out
 	var _arg1 *C.char                 // out
 
@@ -297,7 +299,7 @@ func (s fileChooserNative) SetAcceptLabelFileChooserNative(acceptLabel string) {
 	C.gtk_file_chooser_native_set_accept_label(_arg0, _arg1)
 }
 
-func (s fileChooserNative) SetCancelLabelFileChooserNative(cancelLabel string) {
+func (s fileChooserNative) SetCancelLabel(cancelLabel string) {
 	var _arg0 *C.GtkFileChooserNative // out
 	var _arg1 *C.char                 // out
 
@@ -306,8 +308,4 @@ func (s fileChooserNative) SetCancelLabelFileChooserNative(cancelLabel string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_file_chooser_native_set_cancel_label(_arg0, _arg1)
-}
-
-func (f fileChooserNative) AsFileChooser() FileChooser {
-	return WrapFileChooser(gextras.InternObject(f))
 }

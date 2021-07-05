@@ -138,14 +138,14 @@ type MultiFilter interface {
 	// AsBuildable casts the class to the Buildable interface.
 	AsBuildable() Buildable
 
-	// AppendMultiFilter adds a @filter to @self to use for matching.
-	AppendMultiFilter(filter Filter)
-	// RemoveMultiFilter removes the filter at the given @position from the list
-	// of filters used by @self.
+	// Append adds a @filter to @self to use for matching.
+	Append(filter Filter)
+	// Remove removes the filter at the given @position from the list of filters
+	// used by @self.
 	//
 	// If @position is larger than the number of filters, nothing happens and
 	// the function returns.
-	RemoveMultiFilter(position uint)
+	Remove(position uint)
 }
 
 // multiFilter implements the MultiFilter class.
@@ -167,7 +167,11 @@ func marshalMultiFilter(p uintptr) (interface{}, error) {
 	return WrapMultiFilter(obj), nil
 }
 
-func (s multiFilter) AppendMultiFilter(filter Filter) {
+func (m multiFilter) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(m))
+}
+
+func (s multiFilter) Append(filter Filter) {
 	var _arg0 *C.GtkMultiFilter // out
 	var _arg1 *C.GtkFilter      // out
 
@@ -177,7 +181,7 @@ func (s multiFilter) AppendMultiFilter(filter Filter) {
 	C.gtk_multi_filter_append(_arg0, _arg1)
 }
 
-func (s multiFilter) RemoveMultiFilter(position uint) {
+func (s multiFilter) Remove(position uint) {
 	var _arg0 *C.GtkMultiFilter // out
 	var _arg1 C.guint           // out
 
@@ -185,8 +189,4 @@ func (s multiFilter) RemoveMultiFilter(position uint) {
 	_arg1 = C.guint(position)
 
 	C.gtk_multi_filter_remove(_arg0, _arg1)
-}
-
-func (m multiFilter) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(m))
 }

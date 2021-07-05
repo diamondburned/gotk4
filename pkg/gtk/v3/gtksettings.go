@@ -60,16 +60,16 @@ type Settings interface {
 	// AsStyleProvider casts the class to the StyleProvider interface.
 	AsStyleProvider() StyleProvider
 
-	// ResetPropertySettings undoes the effect of calling g_object_set() to
-	// install an application-specific value for a setting. After this call, the
-	// setting will again follow the session-wide value for this setting.
-	ResetPropertySettings(name string)
-	// SetDoublePropertySettings: deprecated: since version 3.16.
-	SetDoublePropertySettings(name string, vDouble float64, origin string)
-	// SetLongPropertySettings: deprecated: since version 3.16.
-	SetLongPropertySettings(name string, vLong int32, origin string)
-	// SetStringPropertySettings: deprecated: since version 3.16.
-	SetStringPropertySettings(name string, vString string, origin string)
+	// ResetProperty undoes the effect of calling g_object_set() to install an
+	// application-specific value for a setting. After this call, the setting
+	// will again follow the session-wide value for this setting.
+	ResetProperty(name string)
+	// SetDoubleProperty: deprecated: since version 3.16.
+	SetDoubleProperty(name string, vDouble float64, origin string)
+	// SetLongProperty: deprecated: since version 3.16.
+	SetLongProperty(name string, vLong int32, origin string)
+	// SetStringProperty: deprecated: since version 3.16.
+	SetStringProperty(name string, vString string, origin string)
 }
 
 // settings implements the Settings class.
@@ -91,7 +91,11 @@ func marshalSettings(p uintptr) (interface{}, error) {
 	return WrapSettings(obj), nil
 }
 
-func (s settings) ResetPropertySettings(name string) {
+func (s settings) AsStyleProvider() StyleProvider {
+	return WrapStyleProvider(gextras.InternObject(s))
+}
+
+func (s settings) ResetProperty(name string) {
 	var _arg0 *C.GtkSettings // out
 	var _arg1 *C.gchar       // out
 
@@ -102,7 +106,7 @@ func (s settings) ResetPropertySettings(name string) {
 	C.gtk_settings_reset_property(_arg0, _arg1)
 }
 
-func (s settings) SetDoublePropertySettings(name string, vDouble float64, origin string) {
+func (s settings) SetDoubleProperty(name string, vDouble float64, origin string) {
 	var _arg0 *C.GtkSettings // out
 	var _arg1 *C.gchar       // out
 	var _arg2 C.gdouble      // out
@@ -118,7 +122,7 @@ func (s settings) SetDoublePropertySettings(name string, vDouble float64, origin
 	C.gtk_settings_set_double_property(_arg0, _arg1, _arg2, _arg3)
 }
 
-func (s settings) SetLongPropertySettings(name string, vLong int32, origin string) {
+func (s settings) SetLongProperty(name string, vLong int32, origin string) {
 	var _arg0 *C.GtkSettings // out
 	var _arg1 *C.gchar       // out
 	var _arg2 C.glong        // out
@@ -134,7 +138,7 @@ func (s settings) SetLongPropertySettings(name string, vLong int32, origin strin
 	C.gtk_settings_set_long_property(_arg0, _arg1, _arg2, _arg3)
 }
 
-func (s settings) SetStringPropertySettings(name string, vString string, origin string) {
+func (s settings) SetStringProperty(name string, vString string, origin string) {
 	var _arg0 *C.GtkSettings // out
 	var _arg1 *C.gchar       // out
 	var _arg2 *C.gchar       // out
@@ -149,8 +153,4 @@ func (s settings) SetStringPropertySettings(name string, vString string, origin 
 	defer C.free(unsafe.Pointer(_arg3))
 
 	C.gtk_settings_set_string_property(_arg0, _arg1, _arg2, _arg3)
-}
-
-func (s settings) AsStyleProvider() StyleProvider {
-	return WrapStyleProvider(gextras.InternObject(s))
 }

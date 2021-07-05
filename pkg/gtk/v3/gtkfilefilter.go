@@ -116,20 +116,20 @@ type FileFilter interface {
 	// AsBuildable casts the class to the Buildable interface.
 	AsBuildable() Buildable
 
-	// AddMIMETypeFileFilter adds a rule allowing a given mime type to @filter.
-	AddMIMETypeFileFilter(mimeType string)
-	// AddPatternFileFilter adds a rule allowing a shell style glob to a filter.
-	AddPatternFileFilter(pattern string)
-	// AddPixbufFormatsFileFilter adds a rule allowing image files in the
-	// formats supported by GdkPixbuf.
-	AddPixbufFormatsFileFilter()
-	// FilterFileFilter tests whether a file should be displayed according to
-	// @filter. The FileFilterInfo @filter_info should include the fields
-	// returned from gtk_file_filter_get_needed().
+	// AddMIMEType adds a rule allowing a given mime type to @filter.
+	AddMIMEType(mimeType string)
+	// AddPattern adds a rule allowing a shell style glob to a filter.
+	AddPattern(pattern string)
+	// AddPixbufFormats adds a rule allowing image files in the formats
+	// supported by GdkPixbuf.
+	AddPixbufFormats()
+	// Filter tests whether a file should be displayed according to @filter. The
+	// FileFilterInfo @filter_info should include the fields returned from
+	// gtk_file_filter_get_needed().
 	//
 	// This function will not typically be used by applications; it is intended
 	// principally for use in the implementation of FileChooser.
-	FilterFileFilter(filterInfo *FileFilterInfo) bool
+	Filter(filterInfo *FileFilterInfo) bool
 	// Name gets the human-readable name for the filter. See
 	// gtk_file_filter_set_name().
 	Name() string
@@ -139,12 +139,12 @@ type FileFilter interface {
 	// This function will not typically be used by applications; it is intended
 	// principally for use in the implementation of FileChooser.
 	Needed() FileFilterFlags
-	// SetNameFileFilter sets the human-readable name of the filter; this is the
-	// string that will be displayed in the file selector user interface if
-	// there is a selectable list of filters.
-	SetNameFileFilter(name string)
-	// ToGVariantFileFilter: serialize a file filter to an a{sv} variant.
-	ToGVariantFileFilter() *glib.Variant
+	// SetName sets the human-readable name of the filter; this is the string
+	// that will be displayed in the file selector user interface if there is a
+	// selectable list of filters.
+	SetName(name string)
+	// ToGVariant: serialize a file filter to an a{sv} variant.
+	ToGVariant() *glib.Variant
 }
 
 // fileFilter implements the FileFilter class.
@@ -202,7 +202,11 @@ func NewFileFilterFromGVariant(variant *glib.Variant) FileFilter {
 	return _fileFilter
 }
 
-func (f fileFilter) AddMIMETypeFileFilter(mimeType string) {
+func (f fileFilter) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(f))
+}
+
+func (f fileFilter) AddMIMEType(mimeType string) {
 	var _arg0 *C.GtkFileFilter // out
 	var _arg1 *C.gchar         // out
 
@@ -213,7 +217,7 @@ func (f fileFilter) AddMIMETypeFileFilter(mimeType string) {
 	C.gtk_file_filter_add_mime_type(_arg0, _arg1)
 }
 
-func (f fileFilter) AddPatternFileFilter(pattern string) {
+func (f fileFilter) AddPattern(pattern string) {
 	var _arg0 *C.GtkFileFilter // out
 	var _arg1 *C.gchar         // out
 
@@ -224,7 +228,7 @@ func (f fileFilter) AddPatternFileFilter(pattern string) {
 	C.gtk_file_filter_add_pattern(_arg0, _arg1)
 }
 
-func (f fileFilter) AddPixbufFormatsFileFilter() {
+func (f fileFilter) AddPixbufFormats() {
 	var _arg0 *C.GtkFileFilter // out
 
 	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(f.Native()))
@@ -232,7 +236,7 @@ func (f fileFilter) AddPixbufFormatsFileFilter() {
 	C.gtk_file_filter_add_pixbuf_formats(_arg0)
 }
 
-func (f fileFilter) FilterFileFilter(filterInfo *FileFilterInfo) bool {
+func (f fileFilter) Filter(filterInfo *FileFilterInfo) bool {
 	var _arg0 *C.GtkFileFilter     // out
 	var _arg1 *C.GtkFileFilterInfo // out
 	var _cret C.gboolean           // in
@@ -281,7 +285,7 @@ func (f fileFilter) Needed() FileFilterFlags {
 	return _fileFilterFlags
 }
 
-func (f fileFilter) SetNameFileFilter(name string) {
+func (f fileFilter) SetName(name string) {
 	var _arg0 *C.GtkFileFilter // out
 	var _arg1 *C.gchar         // out
 
@@ -292,7 +296,7 @@ func (f fileFilter) SetNameFileFilter(name string) {
 	C.gtk_file_filter_set_name(_arg0, _arg1)
 }
 
-func (f fileFilter) ToGVariantFileFilter() *glib.Variant {
+func (f fileFilter) ToGVariant() *glib.Variant {
 	var _arg0 *C.GtkFileFilter // out
 	var _cret *C.GVariant      // in
 
@@ -309,10 +313,6 @@ func (f fileFilter) ToGVariantFileFilter() *glib.Variant {
 	})
 
 	return _variant
-}
-
-func (f fileFilter) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(f))
 }
 
 // FileFilterInfo is used to pass information about the tested file to

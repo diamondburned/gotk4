@@ -37,8 +37,8 @@ type Plug interface {
 	// call this function (after atk-bridge is loaded) and pass the value to the
 	// process implementing the Socket, so it could embed the plug.
 	ID() string
-	// SetChildPlug sets @child as accessible child of @plug and @plug as
-	// accessible parent of @child. @child can be NULL.
+	// SetChild sets @child as accessible child of @plug and @plug as accessible
+	// parent of @child. @child can be NULL.
 	//
 	// In some cases, one can not use the AtkPlug type directly as accessible
 	// object for the toplevel widget of the application. For instance in the
@@ -47,7 +47,7 @@ type Plug interface {
 	// standard accessible object for the toplevel widget, an AtkPlug object,
 	// and make the former the child of the latter by calling
 	// atk_plug_set_child().
-	SetChildPlug(child Object)
+	SetChild(child Object)
 }
 
 // plug implements the Plug class.
@@ -82,6 +82,10 @@ func NewPlug() Plug {
 	return _plug
 }
 
+func (p plug) AsComponent() Component {
+	return WrapComponent(gextras.InternObject(p))
+}
+
 func (p plug) ID() string {
 	var _arg0 *C.AtkPlug // out
 	var _cret *C.gchar   // in
@@ -98,7 +102,7 @@ func (p plug) ID() string {
 	return _utf8
 }
 
-func (p plug) SetChildPlug(child Object) {
+func (p plug) SetChild(child Object) {
 	var _arg0 *C.AtkPlug   // out
 	var _arg1 *C.AtkObject // out
 
@@ -106,8 +110,4 @@ func (p plug) SetChildPlug(child Object) {
 	_arg1 = (*C.AtkObject)(unsafe.Pointer(child.Native()))
 
 	C.atk_plug_set_child(_arg0, _arg1)
-}
-
-func (p plug) AsComponent() Component {
-	return WrapComponent(gextras.InternObject(p))
 }

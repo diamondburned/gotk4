@@ -124,7 +124,7 @@ type LevelBar interface {
 	// AsOrientable casts the class to the Orientable interface.
 	AsOrientable() Orientable
 
-	// AddOffsetValueLevelBar adds a new offset marker on @self at the position
+	// AddOffsetValue adds a new offset marker on @self at the position
 	// specified by @value.
 	//
 	// When the bar value is in the interval topped by @value (or between @value
@@ -134,7 +134,7 @@ type LevelBar interface {
 	//
 	// If another offset marker named @name exists, its value will be replaced
 	// by @value.
-	AddOffsetValueLevelBar(name string, value float64)
+	AddOffsetValue(name string, value float64)
 	// Inverted returns whether the levelbar is inverted.
 	Inverted() bool
 	// MaxValue returns the `max-value` of the `GtkLevelBar`.
@@ -148,27 +148,27 @@ type LevelBar interface {
 	OffsetValue(name string) (float64, bool)
 	// Value returns the `value` of the `GtkLevelBar`.
 	Value() float64
-	// RemoveOffsetValueLevelBar removes an offset marker from a `GtkLevelBar`.
+	// RemoveOffsetValue removes an offset marker from a `GtkLevelBar`.
 	//
 	// The marker must have been previously added with
 	// [method@Gtk.LevelBar.add_offset_value].
-	RemoveOffsetValueLevelBar(name string)
-	// SetInvertedLevelBar sets whether the `GtkLevelBar` is inverted.
-	SetInvertedLevelBar(inverted bool)
-	// SetMaxValueLevelBar sets the `max-value` of the `GtkLevelBar`.
+	RemoveOffsetValue(name string)
+	// SetInverted sets whether the `GtkLevelBar` is inverted.
+	SetInverted(inverted bool)
+	// SetMaxValue sets the `max-value` of the `GtkLevelBar`.
 	//
 	// You probably want to update preexisting level offsets after calling this
 	// function.
-	SetMaxValueLevelBar(value float64)
-	// SetMinValueLevelBar sets the `min-value` of the `GtkLevelBar`.
+	SetMaxValue(value float64)
+	// SetMinValue sets the `min-value` of the `GtkLevelBar`.
 	//
 	// You probably want to update preexisting level offsets after calling this
 	// function.
-	SetMinValueLevelBar(value float64)
-	// SetModeLevelBar sets the `mode` of the `GtkLevelBar`.
-	SetModeLevelBar(mode LevelBarMode)
-	// SetValueLevelBar sets the value of the `GtkLevelBar`.
-	SetValueLevelBar(value float64)
+	SetMinValue(value float64)
+	// SetMode sets the `mode` of the `GtkLevelBar`.
+	SetMode(mode LevelBarMode)
+	// SetValue sets the value of the `GtkLevelBar`.
+	SetValue(value float64)
 }
 
 // levelBar implements the LevelBar class.
@@ -222,7 +222,23 @@ func NewLevelBarForInterval(minValue float64, maxValue float64) LevelBar {
 	return _levelBar
 }
 
-func (s levelBar) AddOffsetValueLevelBar(name string, value float64) {
+func (l levelBar) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(l))
+}
+
+func (l levelBar) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(l))
+}
+
+func (l levelBar) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(l))
+}
+
+func (l levelBar) AsOrientable() Orientable {
+	return WrapOrientable(gextras.InternObject(l))
+}
+
+func (s levelBar) AddOffsetValue(name string, value float64) {
 	var _arg0 *C.GtkLevelBar // out
 	var _arg1 *C.char        // out
 	var _arg2 C.double       // out
@@ -335,7 +351,7 @@ func (s levelBar) Value() float64 {
 	return _gdouble
 }
 
-func (s levelBar) RemoveOffsetValueLevelBar(name string) {
+func (s levelBar) RemoveOffsetValue(name string) {
 	var _arg0 *C.GtkLevelBar // out
 	var _arg1 *C.char        // out
 
@@ -346,7 +362,7 @@ func (s levelBar) RemoveOffsetValueLevelBar(name string) {
 	C.gtk_level_bar_remove_offset_value(_arg0, _arg1)
 }
 
-func (s levelBar) SetInvertedLevelBar(inverted bool) {
+func (s levelBar) SetInverted(inverted bool) {
 	var _arg0 *C.GtkLevelBar // out
 	var _arg1 C.gboolean     // out
 
@@ -358,7 +374,7 @@ func (s levelBar) SetInvertedLevelBar(inverted bool) {
 	C.gtk_level_bar_set_inverted(_arg0, _arg1)
 }
 
-func (s levelBar) SetMaxValueLevelBar(value float64) {
+func (s levelBar) SetMaxValue(value float64) {
 	var _arg0 *C.GtkLevelBar // out
 	var _arg1 C.double       // out
 
@@ -368,7 +384,7 @@ func (s levelBar) SetMaxValueLevelBar(value float64) {
 	C.gtk_level_bar_set_max_value(_arg0, _arg1)
 }
 
-func (s levelBar) SetMinValueLevelBar(value float64) {
+func (s levelBar) SetMinValue(value float64) {
 	var _arg0 *C.GtkLevelBar // out
 	var _arg1 C.double       // out
 
@@ -378,7 +394,7 @@ func (s levelBar) SetMinValueLevelBar(value float64) {
 	C.gtk_level_bar_set_min_value(_arg0, _arg1)
 }
 
-func (s levelBar) SetModeLevelBar(mode LevelBarMode) {
+func (s levelBar) SetMode(mode LevelBarMode) {
 	var _arg0 *C.GtkLevelBar    // out
 	var _arg1 C.GtkLevelBarMode // out
 
@@ -388,7 +404,7 @@ func (s levelBar) SetModeLevelBar(mode LevelBarMode) {
 	C.gtk_level_bar_set_mode(_arg0, _arg1)
 }
 
-func (s levelBar) SetValueLevelBar(value float64) {
+func (s levelBar) SetValue(value float64) {
 	var _arg0 *C.GtkLevelBar // out
 	var _arg1 C.double       // out
 
@@ -396,20 +412,4 @@ func (s levelBar) SetValueLevelBar(value float64) {
 	_arg1 = C.double(value)
 
 	C.gtk_level_bar_set_value(_arg0, _arg1)
-}
-
-func (l levelBar) AsAccessible() Accessible {
-	return WrapAccessible(gextras.InternObject(l))
-}
-
-func (l levelBar) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(l))
-}
-
-func (l levelBar) AsConstraintTarget() ConstraintTarget {
-	return WrapConstraintTarget(gextras.InternObject(l))
-}
-
-func (l levelBar) AsOrientable() Orientable {
-	return WrapOrientable(gextras.InternObject(l))
 }

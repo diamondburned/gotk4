@@ -64,26 +64,26 @@ type Scrollable interface {
 	Border() (Border, bool)
 	// HAdjustment retrieves the `GtkAdjustment` used for horizontal scrolling.
 	HAdjustment() Adjustment
-	// HScrollPolicy gets the horizontal `GtkScrollablePolicy`.
-	HScrollPolicy() ScrollablePolicy
+	// HscrollPolicy gets the horizontal `GtkScrollablePolicy`.
+	HscrollPolicy() ScrollablePolicy
 	// VAdjustment retrieves the `GtkAdjustment` used for vertical scrolling.
 	VAdjustment() Adjustment
-	// VScrollPolicy gets the vertical `GtkScrollablePolicy`.
-	VScrollPolicy() ScrollablePolicy
+	// VscrollPolicy gets the vertical `GtkScrollablePolicy`.
+	VscrollPolicy() ScrollablePolicy
 	// SetHAdjustment sets the horizontal adjustment of the `GtkScrollable`.
 	SetHAdjustment(hadjustment Adjustment)
-	// SetHScrollPolicy sets the `GtkScrollablePolicy`.
+	// SetHscrollPolicy sets the `GtkScrollablePolicy`.
 	//
 	// The policy determines whether horizontal scrolling should start below the
 	// minimum width or below the natural width.
-	SetHScrollPolicy(policy ScrollablePolicy)
+	SetHscrollPolicy(policy ScrollablePolicy)
 	// SetVAdjustment sets the vertical adjustment of the `GtkScrollable`.
 	SetVAdjustment(vadjustment Adjustment)
-	// SetVScrollPolicy sets the `GtkScrollablePolicy`.
+	// SetVscrollPolicy sets the `GtkScrollablePolicy`.
 	//
 	// The policy determines whether vertical scrolling should start below the
 	// minimum height or below the natural height.
-	SetVScrollPolicy(policy ScrollablePolicy)
+	SetVscrollPolicy(policy ScrollablePolicy)
 }
 
 // scrollable implements the Scrollable interface.
@@ -152,7 +152,7 @@ func (s scrollable) HAdjustment() Adjustment {
 	return _adjustment
 }
 
-func (s scrollable) HScrollPolicy() ScrollablePolicy {
+func (s scrollable) HscrollPolicy() ScrollablePolicy {
 	var _arg0 *C.GtkScrollable      // out
 	var _cret C.GtkScrollablePolicy // in
 
@@ -182,7 +182,7 @@ func (s scrollable) VAdjustment() Adjustment {
 	return _adjustment
 }
 
-func (s scrollable) VScrollPolicy() ScrollablePolicy {
+func (s scrollable) VscrollPolicy() ScrollablePolicy {
 	var _arg0 *C.GtkScrollable      // out
 	var _cret C.GtkScrollablePolicy // in
 
@@ -207,7 +207,7 @@ func (s scrollable) SetHAdjustment(hadjustment Adjustment) {
 	C.gtk_scrollable_set_hadjustment(_arg0, _arg1)
 }
 
-func (s scrollable) SetHScrollPolicy(policy ScrollablePolicy) {
+func (s scrollable) SetHscrollPolicy(policy ScrollablePolicy) {
 	var _arg0 *C.GtkScrollable      // out
 	var _arg1 C.GtkScrollablePolicy // out
 
@@ -227,7 +227,7 @@ func (s scrollable) SetVAdjustment(vadjustment Adjustment) {
 	C.gtk_scrollable_set_vadjustment(_arg0, _arg1)
 }
 
-func (s scrollable) SetVScrollPolicy(policy ScrollablePolicy) {
+func (s scrollable) SetVscrollPolicy(policy ScrollablePolicy) {
 	var _arg0 *C.GtkScrollable      // out
 	var _arg1 C.GtkScrollablePolicy // out
 

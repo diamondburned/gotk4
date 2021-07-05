@@ -60,29 +60,28 @@ type GridLayout interface {
 	// RowSpacing retrieves the spacing set with
 	// gtk_grid_layout_set_row_spacing().
 	RowSpacing() uint
-	// SetBaselineRowGridLayout sets which row defines the global baseline for
-	// the entire grid.
+	// SetBaselineRow sets which row defines the global baseline for the entire
+	// grid.
 	//
 	// Each row in the grid can have its own local baseline, but only one of
 	// those is global, meaning it will be the baseline in the parent of the
 	// @grid.
-	SetBaselineRowGridLayout(row int)
-	// SetColumnHomogeneousGridLayout sets whether all columns of @grid should
-	// have the same width.
-	SetColumnHomogeneousGridLayout(homogeneous bool)
-	// SetColumnSpacingGridLayout sets the amount of space to insert between
-	// consecutive columns.
-	SetColumnSpacingGridLayout(spacing uint)
-	// SetRowBaselinePositionGridLayout sets how the baseline should be
-	// positioned on @row of the grid, in case that row is assigned more space
-	// than is requested.
-	SetRowBaselinePositionGridLayout(row int, pos BaselinePosition)
-	// SetRowHomogeneousGridLayout sets whether all rows of @grid should have
-	// the same height.
-	SetRowHomogeneousGridLayout(homogeneous bool)
-	// SetRowSpacingGridLayout sets the amount of space to insert between
-	// consecutive rows.
-	SetRowSpacingGridLayout(spacing uint)
+	SetBaselineRow(row int)
+	// SetColumnHomogeneous sets whether all columns of @grid should have the
+	// same width.
+	SetColumnHomogeneous(homogeneous bool)
+	// SetColumnSpacing sets the amount of space to insert between consecutive
+	// columns.
+	SetColumnSpacing(spacing uint)
+	// SetRowBaselinePosition sets how the baseline should be positioned on @row
+	// of the grid, in case that row is assigned more space than is requested.
+	SetRowBaselinePosition(row int, pos BaselinePosition)
+	// SetRowHomogeneous sets whether all rows of @grid should have the same
+	// height.
+	SetRowHomogeneous(homogeneous bool)
+	// SetRowSpacing sets the amount of space to insert between consecutive
+	// rows.
+	SetRowSpacing(spacing uint)
 }
 
 // gridLayout implements the GridLayout class.
@@ -213,7 +212,7 @@ func (g gridLayout) RowSpacing() uint {
 	return _guint
 }
 
-func (g gridLayout) SetBaselineRowGridLayout(row int) {
+func (g gridLayout) SetBaselineRow(row int) {
 	var _arg0 *C.GtkGridLayout // out
 	var _arg1 C.int            // out
 
@@ -223,7 +222,7 @@ func (g gridLayout) SetBaselineRowGridLayout(row int) {
 	C.gtk_grid_layout_set_baseline_row(_arg0, _arg1)
 }
 
-func (g gridLayout) SetColumnHomogeneousGridLayout(homogeneous bool) {
+func (g gridLayout) SetColumnHomogeneous(homogeneous bool) {
 	var _arg0 *C.GtkGridLayout // out
 	var _arg1 C.gboolean       // out
 
@@ -235,7 +234,7 @@ func (g gridLayout) SetColumnHomogeneousGridLayout(homogeneous bool) {
 	C.gtk_grid_layout_set_column_homogeneous(_arg0, _arg1)
 }
 
-func (g gridLayout) SetColumnSpacingGridLayout(spacing uint) {
+func (g gridLayout) SetColumnSpacing(spacing uint) {
 	var _arg0 *C.GtkGridLayout // out
 	var _arg1 C.guint          // out
 
@@ -245,7 +244,7 @@ func (g gridLayout) SetColumnSpacingGridLayout(spacing uint) {
 	C.gtk_grid_layout_set_column_spacing(_arg0, _arg1)
 }
 
-func (g gridLayout) SetRowBaselinePositionGridLayout(row int, pos BaselinePosition) {
+func (g gridLayout) SetRowBaselinePosition(row int, pos BaselinePosition) {
 	var _arg0 *C.GtkGridLayout      // out
 	var _arg1 C.int                 // out
 	var _arg2 C.GtkBaselinePosition // out
@@ -257,7 +256,7 @@ func (g gridLayout) SetRowBaselinePositionGridLayout(row int, pos BaselinePositi
 	C.gtk_grid_layout_set_row_baseline_position(_arg0, _arg1, _arg2)
 }
 
-func (g gridLayout) SetRowHomogeneousGridLayout(homogeneous bool) {
+func (g gridLayout) SetRowHomogeneous(homogeneous bool) {
 	var _arg0 *C.GtkGridLayout // out
 	var _arg1 C.gboolean       // out
 
@@ -269,7 +268,7 @@ func (g gridLayout) SetRowHomogeneousGridLayout(homogeneous bool) {
 	C.gtk_grid_layout_set_row_homogeneous(_arg0, _arg1)
 }
 
-func (g gridLayout) SetRowSpacingGridLayout(spacing uint) {
+func (g gridLayout) SetRowSpacing(spacing uint) {
 	var _arg0 *C.GtkGridLayout // out
 	var _arg1 C.guint          // out
 
@@ -292,15 +291,14 @@ type GridLayoutChild interface {
 	Row() int
 	// RowSpan retrieves the number of rows that @child spans to.
 	RowSpan() int
-	// SetColumnGridLayoutChild sets the column number to attach the left side
-	// of @child.
-	SetColumnGridLayoutChild(column int)
-	// SetColumnSpanGridLayoutChild sets the number of columns @child spans to.
-	SetColumnSpanGridLayoutChild(span int)
-	// SetRowGridLayoutChild sets the row to place @child in.
-	SetRowGridLayoutChild(row int)
-	// SetRowSpanGridLayoutChild sets the number of rows @child spans to.
-	SetRowSpanGridLayoutChild(span int)
+	// SetColumn sets the column number to attach the left side of @child.
+	SetColumn(column int)
+	// SetColumnSpan sets the number of columns @child spans to.
+	SetColumnSpan(span int)
+	// SetRow sets the row to place @child in.
+	SetRow(row int)
+	// SetRowSpan sets the number of rows @child spans to.
+	SetRowSpan(span int)
 }
 
 // gridLayoutChild implements the GridLayoutChild class.
@@ -382,7 +380,7 @@ func (c gridLayoutChild) RowSpan() int {
 	return _gint
 }
 
-func (c gridLayoutChild) SetColumnGridLayoutChild(column int) {
+func (c gridLayoutChild) SetColumn(column int) {
 	var _arg0 *C.GtkGridLayoutChild // out
 	var _arg1 C.int                 // out
 
@@ -392,7 +390,7 @@ func (c gridLayoutChild) SetColumnGridLayoutChild(column int) {
 	C.gtk_grid_layout_child_set_column(_arg0, _arg1)
 }
 
-func (c gridLayoutChild) SetColumnSpanGridLayoutChild(span int) {
+func (c gridLayoutChild) SetColumnSpan(span int) {
 	var _arg0 *C.GtkGridLayoutChild // out
 	var _arg1 C.int                 // out
 
@@ -402,7 +400,7 @@ func (c gridLayoutChild) SetColumnSpanGridLayoutChild(span int) {
 	C.gtk_grid_layout_child_set_column_span(_arg0, _arg1)
 }
 
-func (c gridLayoutChild) SetRowGridLayoutChild(row int) {
+func (c gridLayoutChild) SetRow(row int) {
 	var _arg0 *C.GtkGridLayoutChild // out
 	var _arg1 C.int                 // out
 
@@ -412,7 +410,7 @@ func (c gridLayoutChild) SetRowGridLayoutChild(row int) {
 	C.gtk_grid_layout_child_set_row(_arg0, _arg1)
 }
 
-func (c gridLayoutChild) SetRowSpanGridLayoutChild(span int) {
+func (c gridLayoutChild) SetRowSpan(span int) {
 	var _arg0 *C.GtkGridLayoutChild // out
 	var _arg1 C.int                 // out
 

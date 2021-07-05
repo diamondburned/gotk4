@@ -43,22 +43,22 @@ type CenterLayout interface {
 	Orientation() Orientation
 	// StartWidget returns the start widget fo the layout.
 	StartWidget() Widget
-	// SetBaselinePositionCenterLayout sets the new baseline position of @self
-	SetBaselinePositionCenterLayout(baselinePosition BaselinePosition)
-	// SetCenterWidgetCenterLayout sets the new center widget of @self.
+	// SetBaselinePosition sets the new baseline position of @self
+	SetBaselinePosition(baselinePosition BaselinePosition)
+	// SetCenterWidget sets the new center widget of @self.
 	//
 	// To remove the existing center widget, pass nil.
-	SetCenterWidgetCenterLayout(widget Widget)
-	// SetEndWidgetCenterLayout sets the new end widget of @self.
+	SetCenterWidget(widget Widget)
+	// SetEndWidget sets the new end widget of @self.
 	//
 	// To remove the existing center widget, pass nil.
-	SetEndWidgetCenterLayout(widget Widget)
-	// SetOrientationCenterLayout sets the orientation of @self.
-	SetOrientationCenterLayout(orientation Orientation)
-	// SetStartWidgetCenterLayout sets the new start widget of @self.
+	SetEndWidget(widget Widget)
+	// SetOrientation sets the orientation of @self.
+	SetOrientation(orientation Orientation)
+	// SetStartWidget sets the new start widget of @self.
 	//
 	// To remove the existing start widget, pass nil.
-	SetStartWidgetCenterLayout(widget Widget)
+	SetStartWidget(widget Widget)
 }
 
 // centerLayout implements the CenterLayout class.
@@ -168,7 +168,7 @@ func (s centerLayout) StartWidget() Widget {
 	return _widget
 }
 
-func (s centerLayout) SetBaselinePositionCenterLayout(baselinePosition BaselinePosition) {
+func (s centerLayout) SetBaselinePosition(baselinePosition BaselinePosition) {
 	var _arg0 *C.GtkCenterLayout    // out
 	var _arg1 C.GtkBaselinePosition // out
 
@@ -178,7 +178,7 @@ func (s centerLayout) SetBaselinePositionCenterLayout(baselinePosition BaselineP
 	C.gtk_center_layout_set_baseline_position(_arg0, _arg1)
 }
 
-func (s centerLayout) SetCenterWidgetCenterLayout(widget Widget) {
+func (s centerLayout) SetCenterWidget(widget Widget) {
 	var _arg0 *C.GtkCenterLayout // out
 	var _arg1 *C.GtkWidget       // out
 
@@ -188,7 +188,7 @@ func (s centerLayout) SetCenterWidgetCenterLayout(widget Widget) {
 	C.gtk_center_layout_set_center_widget(_arg0, _arg1)
 }
 
-func (s centerLayout) SetEndWidgetCenterLayout(widget Widget) {
+func (s centerLayout) SetEndWidget(widget Widget) {
 	var _arg0 *C.GtkCenterLayout // out
 	var _arg1 *C.GtkWidget       // out
 
@@ -198,7 +198,7 @@ func (s centerLayout) SetEndWidgetCenterLayout(widget Widget) {
 	C.gtk_center_layout_set_end_widget(_arg0, _arg1)
 }
 
-func (s centerLayout) SetOrientationCenterLayout(orientation Orientation) {
+func (s centerLayout) SetOrientation(orientation Orientation) {
 	var _arg0 *C.GtkCenterLayout // out
 	var _arg1 C.GtkOrientation   // out
 
@@ -208,7 +208,7 @@ func (s centerLayout) SetOrientationCenterLayout(orientation Orientation) {
 	C.gtk_center_layout_set_orientation(_arg0, _arg1)
 }
 
-func (s centerLayout) SetStartWidgetCenterLayout(widget Widget) {
+func (s centerLayout) SetStartWidget(widget Widget) {
 	var _arg0 *C.GtkCenterLayout // out
 	var _arg1 *C.GtkWidget       // out
 

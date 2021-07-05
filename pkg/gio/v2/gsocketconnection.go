@@ -54,20 +54,19 @@ func init() {
 type SocketConnection interface {
 	IOStream
 
-	// ConnectSocketConnection: connect @connection to the specified remote
+	// Connect @connection to the specified remote address.
+	Connect(address SocketAddress, cancellable Cancellable) error
+	// ConnectAsync: asynchronously connect @connection to the specified remote
 	// address.
-	ConnectSocketConnection(address SocketAddress, cancellable Cancellable) error
-	// ConnectAsyncSocketConnection: asynchronously connect @connection to the
-	// specified remote address.
 	//
 	// This clears the #GSocket:blocking flag on @connection's underlying socket
 	// if it is currently set.
 	//
 	// Use g_socket_connection_connect_finish() to retrieve the result.
-	ConnectAsyncSocketConnection(address SocketAddress, cancellable Cancellable, callback AsyncReadyCallback)
-	// ConnectFinishSocketConnection gets the result of a
-	// g_socket_connection_connect_async() call.
-	ConnectFinishSocketConnection(result AsyncResult) error
+	ConnectAsync(address SocketAddress, cancellable Cancellable, callback AsyncReadyCallback)
+	// ConnectFinish gets the result of a g_socket_connection_connect_async()
+	// call.
+	ConnectFinish(result AsyncResult) error
 	// LocalAddress: try to get the local address of a socket connection.
 	LocalAddress() (SocketAddress, error)
 	// RemoteAddress: try to get the remote address of a socket connection.
@@ -82,10 +81,9 @@ type SocketConnection interface {
 	// useful if you want to do something unusual on it not supported by the
 	// Connection APIs.
 	Socket() Socket
-	// IsConnectedSocketConnection checks if @connection is connected. This is
-	// equivalent to calling g_socket_is_connected() on @connection's underlying
-	// #GSocket.
-	IsConnectedSocketConnection() bool
+	// IsConnected checks if @connection is connected. This is equivalent to
+	// calling g_socket_is_connected() on @connection's underlying #GSocket.
+	IsConnected() bool
 }
 
 // socketConnection implements the SocketConnection class.
@@ -107,7 +105,7 @@ func marshalSocketConnection(p uintptr) (interface{}, error) {
 	return WrapSocketConnection(obj), nil
 }
 
-func (c socketConnection) ConnectSocketConnection(address SocketAddress, cancellable Cancellable) error {
+func (c socketConnection) Connect(address SocketAddress, cancellable Cancellable) error {
 	var _arg0 *C.GSocketConnection // out
 	var _arg1 *C.GSocketAddress    // out
 	var _arg2 *C.GCancellable      // out
@@ -126,7 +124,7 @@ func (c socketConnection) ConnectSocketConnection(address SocketAddress, cancell
 	return _goerr
 }
 
-func (c socketConnection) ConnectAsyncSocketConnection(address SocketAddress, cancellable Cancellable, callback AsyncReadyCallback) {
+func (c socketConnection) ConnectAsync(address SocketAddress, cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GSocketConnection  // out
 	var _arg1 *C.GSocketAddress     // out
 	var _arg2 *C.GCancellable       // out
@@ -142,7 +140,7 @@ func (c socketConnection) ConnectAsyncSocketConnection(address SocketAddress, ca
 	C.g_socket_connection_connect_async(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
-func (c socketConnection) ConnectFinishSocketConnection(result AsyncResult) error {
+func (c socketConnection) ConnectFinish(result AsyncResult) error {
 	var _arg0 *C.GSocketConnection // out
 	var _arg1 *C.GAsyncResult      // out
 	var _cerr *C.GError            // in
@@ -210,7 +208,7 @@ func (c socketConnection) Socket() Socket {
 	return _socket
 }
 
-func (c socketConnection) IsConnectedSocketConnection() bool {
+func (c socketConnection) IsConnected() bool {
 	var _arg0 *C.GSocketConnection // out
 	var _cret C.gboolean           // in
 

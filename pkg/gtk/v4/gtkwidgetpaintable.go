@@ -47,8 +47,8 @@ type WidgetPaintable interface {
 
 	// Widget returns the widget that is observed or nil if none.
 	Widget() Widget
-	// SetWidgetWidgetPaintable sets the widget that should be observed.
-	SetWidgetWidgetPaintable(widget Widget)
+	// SetWidget sets the widget that should be observed.
+	SetWidget(widget Widget)
 }
 
 // widgetPaintable implements the WidgetPaintable class.
@@ -101,7 +101,7 @@ func (s widgetPaintable) Widget() Widget {
 	return _widget
 }
 
-func (s widgetPaintable) SetWidgetWidgetPaintable(widget Widget) {
+func (s widgetPaintable) SetWidget(widget Widget) {
 	var _arg0 *C.GtkWidgetPaintable // out
 	var _arg1 *C.GtkWidget          // out
 

@@ -61,6 +61,10 @@ func marshalBin(p uintptr) (interface{}, error) {
 	return WrapBin(obj), nil
 }
 
+func (b bin) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(b))
+}
+
 func (b bin) Child() Widget {
 	var _arg0 *C.GtkBin    // out
 	var _cret *C.GtkWidget // in
@@ -74,8 +78,4 @@ func (b bin) Child() Widget {
 	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
 
 	return _widget
-}
-
-func (b bin) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(b))
 }

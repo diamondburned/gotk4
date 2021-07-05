@@ -42,9 +42,8 @@ func init() {
 type InetAddress interface {
 	gextras.Objector
 
-	// EqualInetAddress checks if two Address instances are equal, e.g. the same
-	// address.
-	EqualInetAddress(otherAddress InetAddress) bool
+	// Equal checks if two Address instances are equal, e.g. the same address.
+	Equal(otherAddress InetAddress) bool
 	// Family gets @address's family
 	Family() SocketFamily
 	// IsAny tests whether @address is the "any" address for its family.
@@ -151,7 +150,7 @@ func NewInetAddressLoopback(family SocketFamily) InetAddress {
 	return _inetAddress
 }
 
-func (a inetAddress) EqualInetAddress(otherAddress InetAddress) bool {
+func (a inetAddress) Equal(otherAddress InetAddress) bool {
 	var _arg0 *C.GInetAddress // out
 	var _arg1 *C.GInetAddress // out
 	var _cret C.gboolean      // in

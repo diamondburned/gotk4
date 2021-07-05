@@ -42,10 +42,10 @@ type Spinner interface {
 	// AsBuildable casts the class to the Buildable interface.
 	AsBuildable() Buildable
 
-	// StartSpinner starts the animation of the spinner.
-	StartSpinner()
-	// StopSpinner stops the animation of the spinner.
-	StopSpinner()
+	// Start starts the animation of the spinner.
+	Start()
+	// Stop stops the animation of the spinner.
+	Stop()
 }
 
 // spinner implements the Spinner class.
@@ -80,7 +80,11 @@ func NewSpinner() Spinner {
 	return _spinner
 }
 
-func (s spinner) StartSpinner() {
+func (s spinner) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(s))
+}
+
+func (s spinner) Start() {
 	var _arg0 *C.GtkSpinner // out
 
 	_arg0 = (*C.GtkSpinner)(unsafe.Pointer(s.Native()))
@@ -88,14 +92,10 @@ func (s spinner) StartSpinner() {
 	C.gtk_spinner_start(_arg0)
 }
 
-func (s spinner) StopSpinner() {
+func (s spinner) Stop() {
 	var _arg0 *C.GtkSpinner // out
 
 	_arg0 = (*C.GtkSpinner)(unsafe.Pointer(s.Native()))
 
 	C.gtk_spinner_stop(_arg0)
-}
-
-func (s spinner) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(s))
 }

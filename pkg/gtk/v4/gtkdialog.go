@@ -198,7 +198,7 @@ type Dialog interface {
 	// AsShortcutManager casts the class to the ShortcutManager interface.
 	AsShortcutManager() ShortcutManager
 
-	// AddActionWidgetDialog adds an activatable widget to the action area of a
+	// AddActionWidget adds an activatable widget to the action area of a
 	// `GtkDialog`.
 	//
 	// GTK connects a signal handler that will emit the
@@ -207,14 +207,14 @@ type Dialog interface {
 	//
 	// If you want to add a non-activatable widget, simply pack it into the
 	// @action_area field of the `GtkDialog` struct.
-	AddActionWidgetDialog(child Widget, responseId int)
-	// AddButtonDialog adds a button with the given text.
+	AddActionWidget(child Widget, responseId int)
+	// AddButton adds a button with the given text.
 	//
 	// GTK arranges things so that clicking the button will emit the
 	// [signal@Gtk.Dialog::response] signal with the given @response_id. The
 	// button is appended to the end of the dialog’s action area. The button
 	// widget is returned, but usually you don’t need it.
-	AddButtonDialog(buttonText string, responseId int) Widget
+	AddButton(buttonText string, responseId int) Widget
 	// ContentArea returns the content area of @dialog.
 	ContentArea() Box
 	// HeaderBar returns the header bar of @dialog.
@@ -228,21 +228,21 @@ type Dialog interface {
 	// WidgetForResponse gets the widget button that uses the given response ID
 	// in the action area of a dialog.
 	WidgetForResponse(responseId int) Widget
-	// ResponseDialog emits the ::response signal with the given response ID.
+	// Response emits the ::response signal with the given response ID.
 	//
 	// Used to indicate that the user has responded to the dialog in some way.
-	ResponseDialog(responseId int)
-	// SetDefaultResponseDialog sets the default widget for the dialog based on
-	// the response ID.
+	Response(responseId int)
+	// SetDefaultResponse sets the default widget for the dialog based on the
+	// response ID.
 	//
 	// Pressing “Enter” normally activates the default widget.
-	SetDefaultResponseDialog(responseId int)
-	// SetResponseSensitiveDialog: convenient way to sensitize/desensitize
-	// dialog buttons.
+	SetDefaultResponse(responseId int)
+	// SetResponseSensitive: convenient way to sensitize/desensitize dialog
+	// buttons.
 	//
 	// Calls `gtk_widget_set_sensitive (widget, @setting)` for each widget in
 	// the dialog’s action area with the given @response_id.
-	SetResponseSensitiveDialog(responseId int, setting bool)
+	SetResponseSensitive(responseId int, setting bool)
 }
 
 // dialog implements the Dialog class.
@@ -280,7 +280,31 @@ func NewDialog() Dialog {
 	return _dialog
 }
 
-func (d dialog) AddActionWidgetDialog(child Widget, responseId int) {
+func (d dialog) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(d))
+}
+
+func (d dialog) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(d))
+}
+
+func (d dialog) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(d))
+}
+
+func (d dialog) AsNative() Native {
+	return WrapNative(gextras.InternObject(d))
+}
+
+func (d dialog) AsRoot() Root {
+	return WrapRoot(gextras.InternObject(d))
+}
+
+func (d dialog) AsShortcutManager() ShortcutManager {
+	return WrapShortcutManager(gextras.InternObject(d))
+}
+
+func (d dialog) AddActionWidget(child Widget, responseId int) {
 	var _arg0 *C.GtkDialog // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.int        // out
@@ -292,7 +316,7 @@ func (d dialog) AddActionWidgetDialog(child Widget, responseId int) {
 	C.gtk_dialog_add_action_widget(_arg0, _arg1, _arg2)
 }
 
-func (d dialog) AddButtonDialog(buttonText string, responseId int) Widget {
+func (d dialog) AddButton(buttonText string, responseId int) Widget {
 	var _arg0 *C.GtkDialog // out
 	var _arg1 *C.char      // out
 	var _arg2 C.int        // out
@@ -376,7 +400,7 @@ func (d dialog) WidgetForResponse(responseId int) Widget {
 	return _widget
 }
 
-func (d dialog) ResponseDialog(responseId int) {
+func (d dialog) Response(responseId int) {
 	var _arg0 *C.GtkDialog // out
 	var _arg1 C.int        // out
 
@@ -386,7 +410,7 @@ func (d dialog) ResponseDialog(responseId int) {
 	C.gtk_dialog_response(_arg0, _arg1)
 }
 
-func (d dialog) SetDefaultResponseDialog(responseId int) {
+func (d dialog) SetDefaultResponse(responseId int) {
 	var _arg0 *C.GtkDialog // out
 	var _arg1 C.int        // out
 
@@ -396,7 +420,7 @@ func (d dialog) SetDefaultResponseDialog(responseId int) {
 	C.gtk_dialog_set_default_response(_arg0, _arg1)
 }
 
-func (d dialog) SetResponseSensitiveDialog(responseId int, setting bool) {
+func (d dialog) SetResponseSensitive(responseId int, setting bool) {
 	var _arg0 *C.GtkDialog // out
 	var _arg1 C.int        // out
 	var _arg2 C.gboolean   // out
@@ -408,28 +432,4 @@ func (d dialog) SetResponseSensitiveDialog(responseId int, setting bool) {
 	}
 
 	C.gtk_dialog_set_response_sensitive(_arg0, _arg1, _arg2)
-}
-
-func (d dialog) AsAccessible() Accessible {
-	return WrapAccessible(gextras.InternObject(d))
-}
-
-func (d dialog) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(d))
-}
-
-func (d dialog) AsConstraintTarget() ConstraintTarget {
-	return WrapConstraintTarget(gextras.InternObject(d))
-}
-
-func (d dialog) AsNative() Native {
-	return WrapNative(gextras.InternObject(d))
-}
-
-func (d dialog) AsRoot() Root {
-	return WrapRoot(gextras.InternObject(d))
-}
-
-func (d dialog) AsShortcutManager() ShortcutManager {
-	return WrapShortcutManager(gextras.InternObject(d))
 }

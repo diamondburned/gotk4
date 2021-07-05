@@ -25,15 +25,15 @@ func init() {
 type PixbufSimpleAnim interface {
 	PixbufAnimation
 
-	// AddFramePixbufSimpleAnim adds a new frame to @animation. The @pixbuf must
-	// have the dimensions specified when the animation was constructed.
-	AddFramePixbufSimpleAnim(pixbuf Pixbuf)
+	// AddFrame adds a new frame to @animation. The @pixbuf must have the
+	// dimensions specified when the animation was constructed.
+	AddFrame(pixbuf Pixbuf)
 	// Loop gets whether @animation should loop indefinitely when it reaches the
 	// end.
 	Loop() bool
-	// SetLoopPixbufSimpleAnim sets whether @animation should loop indefinitely
-	// when it reaches the end.
-	SetLoopPixbufSimpleAnim(loop bool)
+	// SetLoop sets whether @animation should loop indefinitely when it reaches
+	// the end.
+	SetLoop(loop bool)
 }
 
 // pixbufSimpleAnim implements the PixbufSimpleAnim class.
@@ -75,7 +75,7 @@ func NewPixbufSimpleAnim(width int, height int, rate float32) PixbufSimpleAnim {
 	return _pixbufSimpleAnim
 }
 
-func (a pixbufSimpleAnim) AddFramePixbufSimpleAnim(pixbuf Pixbuf) {
+func (a pixbufSimpleAnim) AddFrame(pixbuf Pixbuf) {
 	var _arg0 *C.GdkPixbufSimpleAnim // out
 	var _arg1 *C.GdkPixbuf           // out
 
@@ -102,7 +102,7 @@ func (a pixbufSimpleAnim) Loop() bool {
 	return _ok
 }
 
-func (a pixbufSimpleAnim) SetLoopPixbufSimpleAnim(loop bool) {
+func (a pixbufSimpleAnim) SetLoop(loop bool) {
 	var _arg0 *C.GdkPixbufSimpleAnim // out
 	var _arg1 C.gboolean             // out
 

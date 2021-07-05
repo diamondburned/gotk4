@@ -53,15 +53,15 @@ type Clipboard interface {
 	// Formats gets the formats that the clipboard can provide its current
 	// contents in.
 	Formats() *ContentFormats
-	// IsLocalClipboard returns if the clipboard is local.
+	// IsLocal returns if the clipboard is local.
 	//
 	// A clipboard is considered local if it was last claimed by the running
 	// application.
 	//
 	// Note that [method@Gdk.Clipboard.get_content] may return nil even on a
 	// local clipboard. In this case the clipboard is empty.
-	IsLocalClipboard() bool
-	// SetContentClipboard sets a new content provider on @clipboard.
+	IsLocal() bool
+	// SetContent sets a new content provider on @clipboard.
 	//
 	// The clipboard will claim the `GdkDisplay`'s resources and advertise these
 	// new contents to other applications.
@@ -73,9 +73,9 @@ type Clipboard interface {
 	// If the contents are read by either an external application or the
 	// @clipboard's read functions, @clipboard will select the best format to
 	// transfer the contents and then request that format from @provider.
-	SetContentClipboard(provider ContentProvider) bool
-	// SetValueClipboard sets the @clipboard to contain the given @value.
-	SetValueClipboard(value externglib.Value)
+	SetContent(provider ContentProvider) bool
+	// SetValue sets the @clipboard to contain the given @value.
+	SetValue(value externglib.Value)
 }
 
 // clipboard implements the Clipboard class.
@@ -146,7 +146,7 @@ func (c clipboard) Formats() *ContentFormats {
 	return _contentFormats
 }
 
-func (c clipboard) IsLocalClipboard() bool {
+func (c clipboard) IsLocal() bool {
 	var _arg0 *C.GdkClipboard // out
 	var _cret C.gboolean      // in
 
@@ -163,7 +163,7 @@ func (c clipboard) IsLocalClipboard() bool {
 	return _ok
 }
 
-func (c clipboard) SetContentClipboard(provider ContentProvider) bool {
+func (c clipboard) SetContent(provider ContentProvider) bool {
 	var _arg0 *C.GdkClipboard       // out
 	var _arg1 *C.GdkContentProvider // out
 	var _cret C.gboolean            // in
@@ -182,7 +182,7 @@ func (c clipboard) SetContentClipboard(provider ContentProvider) bool {
 	return _ok
 }
 
-func (c clipboard) SetValueClipboard(value externglib.Value) {
+func (c clipboard) SetValue(value externglib.Value) {
 	var _arg0 *C.GdkClipboard // out
 	var _arg1 *C.GValue       // out
 

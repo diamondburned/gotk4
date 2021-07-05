@@ -100,8 +100,8 @@ type Image interface {
 	// AsConstraintTarget casts the class to the ConstraintTarget interface.
 	AsConstraintTarget() ConstraintTarget
 
-	// ClearImage resets the image to be empty.
-	ClearImage()
+	// Clear resets the image to be empty.
+	Clear()
 	// IconName gets the icon name and size being displayed by the `GtkImage`.
 	//
 	// The storage type of the image must be GTK_IMAGE_EMPTY or
@@ -118,32 +118,32 @@ type Image interface {
 	// If the `GtkImage` has no image data, the return value will be
 	// GTK_IMAGE_EMPTY.
 	StorageType() ImageType
-	// SetFromFileImage sets a `GtkImage` to show a file.
+	// SetFromFile sets a `GtkImage` to show a file.
 	//
 	// See [ctor@Gtk.Image.new_from_file] for details.
-	SetFromFileImage(filename string)
-	// SetFromIconNameImage sets a `GtkImage` to show a named icon.
+	SetFromFile(filename string)
+	// SetFromIconName sets a `GtkImage` to show a named icon.
 	//
 	// See [ctor@Gtk.Image.new_from_icon_name] for details.
-	SetFromIconNameImage(iconName string)
-	// SetFromPixbufImage sets a `GtkImage` to show a `GdkPixbuf`.
+	SetFromIconName(iconName string)
+	// SetFromPixbuf sets a `GtkImage` to show a `GdkPixbuf`.
 	//
 	// See [ctor@Gtk.Image.new_from_pixbuf] for details.
 	//
 	// Note: This is a helper for [method@Gtk.Image.set_from_paintable], and you
 	// can't get back the exact pixbuf once this is called, only a paintable.
-	SetFromPixbufImage(pixbuf gdkpixbuf.Pixbuf)
-	// SetFromResourceImage sets a `GtkImage` to show a resource.
+	SetFromPixbuf(pixbuf gdkpixbuf.Pixbuf)
+	// SetFromResource sets a `GtkImage` to show a resource.
 	//
 	// See [ctor@Gtk.Image.new_from_resource] for details.
-	SetFromResourceImage(resourcePath string)
-	// SetIconSizeImage suggests an icon size to the theme for named icons.
-	SetIconSizeImage(iconSize IconSize)
-	// SetPixelSizeImage sets the pixel size to use for named icons.
+	SetFromResource(resourcePath string)
+	// SetIconSize suggests an icon size to the theme for named icons.
+	SetIconSize(iconSize IconSize)
+	// SetPixelSize sets the pixel size to use for named icons.
 	//
 	// If the pixel size is set to a value != -1, it is used instead of the icon
 	// size set by [method@Gtk.Image.set_from_icon_name].
-	SetPixelSizeImage(pixelSize int)
+	SetPixelSize(pixelSize int)
 }
 
 // image implements the Image class.
@@ -286,7 +286,19 @@ func NewImageFromResource(resourcePath string) Image {
 	return _image
 }
 
-func (i image) ClearImage() {
+func (i image) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(i))
+}
+
+func (i image) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(i))
+}
+
+func (i image) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(i))
+}
+
+func (i image) Clear() {
 	var _arg0 *C.GtkImage // out
 
 	_arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
@@ -354,7 +366,7 @@ func (i image) StorageType() ImageType {
 	return _imageType
 }
 
-func (i image) SetFromFileImage(filename string) {
+func (i image) SetFromFile(filename string) {
 	var _arg0 *C.GtkImage // out
 	var _arg1 *C.char     // out
 
@@ -365,7 +377,7 @@ func (i image) SetFromFileImage(filename string) {
 	C.gtk_image_set_from_file(_arg0, _arg1)
 }
 
-func (i image) SetFromIconNameImage(iconName string) {
+func (i image) SetFromIconName(iconName string) {
 	var _arg0 *C.GtkImage // out
 	var _arg1 *C.char     // out
 
@@ -376,7 +388,7 @@ func (i image) SetFromIconNameImage(iconName string) {
 	C.gtk_image_set_from_icon_name(_arg0, _arg1)
 }
 
-func (i image) SetFromPixbufImage(pixbuf gdkpixbuf.Pixbuf) {
+func (i image) SetFromPixbuf(pixbuf gdkpixbuf.Pixbuf) {
 	var _arg0 *C.GtkImage  // out
 	var _arg1 *C.GdkPixbuf // out
 
@@ -386,7 +398,7 @@ func (i image) SetFromPixbufImage(pixbuf gdkpixbuf.Pixbuf) {
 	C.gtk_image_set_from_pixbuf(_arg0, _arg1)
 }
 
-func (i image) SetFromResourceImage(resourcePath string) {
+func (i image) SetFromResource(resourcePath string) {
 	var _arg0 *C.GtkImage // out
 	var _arg1 *C.char     // out
 
@@ -397,7 +409,7 @@ func (i image) SetFromResourceImage(resourcePath string) {
 	C.gtk_image_set_from_resource(_arg0, _arg1)
 }
 
-func (i image) SetIconSizeImage(iconSize IconSize) {
+func (i image) SetIconSize(iconSize IconSize) {
 	var _arg0 *C.GtkImage   // out
 	var _arg1 C.GtkIconSize // out
 
@@ -407,7 +419,7 @@ func (i image) SetIconSizeImage(iconSize IconSize) {
 	C.gtk_image_set_icon_size(_arg0, _arg1)
 }
 
-func (i image) SetPixelSizeImage(pixelSize int) {
+func (i image) SetPixelSize(pixelSize int) {
 	var _arg0 *C.GtkImage // out
 	var _arg1 C.int       // out
 
@@ -415,16 +427,4 @@ func (i image) SetPixelSizeImage(pixelSize int) {
 	_arg1 = C.int(pixelSize)
 
 	C.gtk_image_set_pixel_size(_arg0, _arg1)
-}
-
-func (i image) AsAccessible() Accessible {
-	return WrapAccessible(gextras.InternObject(i))
-}
-
-func (i image) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(i))
-}
-
-func (i image) AsConstraintTarget() ConstraintTarget {
-	return WrapConstraintTarget(gextras.InternObject(i))
 }

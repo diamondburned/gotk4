@@ -65,18 +65,15 @@ type DropTargetAsync interface {
 	//
 	// If the result is nil, all formats are expected to be supported.
 	Formats() *gdk.ContentFormats
-	// RejectDropDropTargetAsync sets the @drop as not accepted on this drag
-	// site.
+	// RejectDrop sets the @drop as not accepted on this drag site.
 	//
 	// This function should be used when delaying the decision on whether to
 	// accept a drag or not until after reading the data.
-	RejectDropDropTargetAsync(drop gdk.Drop)
-	// SetActionsDropTargetAsync sets the actions that this drop target
-	// supports.
-	SetActionsDropTargetAsync(actions gdk.DragAction)
-	// SetFormatsDropTargetAsync sets the data formats that this drop target
-	// will accept.
-	SetFormatsDropTargetAsync(formats *gdk.ContentFormats)
+	RejectDrop(drop gdk.Drop)
+	// SetActions sets the actions that this drop target supports.
+	SetActions(actions gdk.DragAction)
+	// SetFormats sets the data formats that this drop target will accept.
+	SetFormats(formats *gdk.ContentFormats)
 }
 
 // dropTargetAsync implements the DropTargetAsync class.
@@ -150,7 +147,7 @@ func (s dropTargetAsync) Formats() *gdk.ContentFormats {
 	return _contentFormats
 }
 
-func (s dropTargetAsync) RejectDropDropTargetAsync(drop gdk.Drop) {
+func (s dropTargetAsync) RejectDrop(drop gdk.Drop) {
 	var _arg0 *C.GtkDropTargetAsync // out
 	var _arg1 *C.GdkDrop            // out
 
@@ -160,7 +157,7 @@ func (s dropTargetAsync) RejectDropDropTargetAsync(drop gdk.Drop) {
 	C.gtk_drop_target_async_reject_drop(_arg0, _arg1)
 }
 
-func (s dropTargetAsync) SetActionsDropTargetAsync(actions gdk.DragAction) {
+func (s dropTargetAsync) SetActions(actions gdk.DragAction) {
 	var _arg0 *C.GtkDropTargetAsync // out
 	var _arg1 C.GdkDragAction       // out
 
@@ -170,7 +167,7 @@ func (s dropTargetAsync) SetActionsDropTargetAsync(actions gdk.DragAction) {
 	C.gtk_drop_target_async_set_actions(_arg0, _arg1)
 }
 
-func (s dropTargetAsync) SetFormatsDropTargetAsync(formats *gdk.ContentFormats) {
+func (s dropTargetAsync) SetFormats(formats *gdk.ContentFormats) {
 	var _arg0 *C.GtkDropTargetAsync // out
 	var _arg1 *C.GdkContentFormats  // out
 

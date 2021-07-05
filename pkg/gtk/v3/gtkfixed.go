@@ -67,10 +67,10 @@ type Fixed interface {
 	// AsBuildable casts the class to the Buildable interface.
 	AsBuildable() Buildable
 
-	// MoveFixed moves a child of a Fixed container to the given position.
-	MoveFixed(widget Widget, x int, y int)
-	// PutFixed adds a widget to a Fixed container at the given position.
-	PutFixed(widget Widget, x int, y int)
+	// Move moves a child of a Fixed container to the given position.
+	Move(widget Widget, x int, y int)
+	// Put adds a widget to a Fixed container at the given position.
+	Put(widget Widget, x int, y int)
 }
 
 // fixed implements the Fixed class.
@@ -105,7 +105,11 @@ func NewFixed() Fixed {
 	return _fixed
 }
 
-func (f fixed) MoveFixed(widget Widget, x int, y int) {
+func (f fixed) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(f))
+}
+
+func (f fixed) Move(widget Widget, x int, y int) {
 	var _arg0 *C.GtkFixed  // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.gint       // out
@@ -119,7 +123,7 @@ func (f fixed) MoveFixed(widget Widget, x int, y int) {
 	C.gtk_fixed_move(_arg0, _arg1, _arg2, _arg3)
 }
 
-func (f fixed) PutFixed(widget Widget, x int, y int) {
+func (f fixed) Put(widget Widget, x int, y int) {
 	var _arg0 *C.GtkFixed  // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.gint       // out
@@ -131,10 +135,6 @@ func (f fixed) PutFixed(widget Widget, x int, y int) {
 	_arg3 = C.gint(y)
 
 	C.gtk_fixed_put(_arg0, _arg1, _arg2, _arg3)
-}
-
-func (f fixed) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(f))
 }
 
 type FixedChild struct {

@@ -34,15 +34,15 @@ func init() {
 type DropControllerMotion interface {
 	EventController
 
-	// ContainsPointerDropControllerMotion returns if a Drag-and-Drop operation
-	// is within the widget @self or one of its children.
-	ContainsPointerDropControllerMotion() bool
+	// ContainsPointer returns if a Drag-and-Drop operation is within the widget
+	// @self or one of its children.
+	ContainsPointer() bool
 	// Drop returns the `GdkDrop` of a current Drag-and-Drop operation over the
 	// widget of @self.
 	Drop() gdk.Drop
-	// IsPointerDropControllerMotion returns if a Drag-and-Drop operation is
-	// within the widget @self, not one of its children.
-	IsPointerDropControllerMotion() bool
+	// IsPointer returns if a Drag-and-Drop operation is within the widget
+	// @self, not one of its children.
+	IsPointer() bool
 }
 
 // dropControllerMotion implements the DropControllerMotion class.
@@ -78,7 +78,7 @@ func NewDropControllerMotion() DropControllerMotion {
 	return _dropControllerMotion
 }
 
-func (s dropControllerMotion) ContainsPointerDropControllerMotion() bool {
+func (s dropControllerMotion) ContainsPointer() bool {
 	var _arg0 *C.GtkDropControllerMotion // out
 	var _cret C.gboolean                 // in
 
@@ -110,7 +110,7 @@ func (s dropControllerMotion) Drop() gdk.Drop {
 	return _drop
 }
 
-func (s dropControllerMotion) IsPointerDropControllerMotion() bool {
+func (s dropControllerMotion) IsPointer() bool {
 	var _arg0 *C.GtkDropControllerMotion // out
 	var _cret C.gboolean                 // in
 

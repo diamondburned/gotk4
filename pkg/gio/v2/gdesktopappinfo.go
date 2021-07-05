@@ -155,10 +155,10 @@ type DesktopAppInfo interface {
 	//
 	// The @key is looked up in the "Desktop Entry" group.
 	String(key string) string
-	// HasKeyDesktopAppInfo returns whether @key exists in the "Desktop Entry"
-	// group of the keyfile backing @info.
-	HasKeyDesktopAppInfo(key string) bool
-	// LaunchActionDesktopAppInfo activates the named application action.
+	// HasKey returns whether @key exists in the "Desktop Entry" group of the
+	// keyfile backing @info.
+	HasKey(key string) bool
+	// LaunchAction activates the named application action.
 	//
 	// You may only call this function on action names that were returned from
 	// g_desktop_app_info_list_actions().
@@ -173,14 +173,13 @@ type DesktopAppInfo interface {
 	//
 	// As with g_app_info_launch() there is no way to detect failures that occur
 	// while using this function.
-	LaunchActionDesktopAppInfo(actionName string, launchContext AppLaunchContext)
-	// ListActionsDesktopAppInfo returns the list of "additional application
-	// actions" supported on the desktop file, as per the desktop file
-	// specification.
+	LaunchAction(actionName string, launchContext AppLaunchContext)
+	// ListActions returns the list of "additional application actions"
+	// supported on the desktop file, as per the desktop file specification.
 	//
 	// As per the specification, this is the list of actions that are explicitly
 	// listed in the "Actions" key of the [Desktop Entry] group.
-	ListActionsDesktopAppInfo() []string
+	ListActions() []string
 }
 
 // desktopAppInfo implements the DesktopAppInfo class.
@@ -259,6 +258,10 @@ func NewDesktopAppInfoFromKeyfile(keyFile *glib.KeyFile) DesktopAppInfo {
 	_desktopAppInfo = WrapDesktopAppInfo(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _desktopAppInfo
+}
+
+func (d desktopAppInfo) AsAppInfo() AppInfo {
+	return WrapAppInfo(gextras.InternObject(d))
 }
 
 func (i desktopAppInfo) ActionName(actionName string) string {
@@ -479,7 +482,7 @@ func (i desktopAppInfo) String(key string) string {
 	return _utf8
 }
 
-func (i desktopAppInfo) HasKeyDesktopAppInfo(key string) bool {
+func (i desktopAppInfo) HasKey(key string) bool {
 	var _arg0 *C.GDesktopAppInfo // out
 	var _arg1 *C.char            // out
 	var _cret C.gboolean         // in
@@ -499,7 +502,7 @@ func (i desktopAppInfo) HasKeyDesktopAppInfo(key string) bool {
 	return _ok
 }
 
-func (i desktopAppInfo) LaunchActionDesktopAppInfo(actionName string, launchContext AppLaunchContext) {
+func (i desktopAppInfo) LaunchAction(actionName string, launchContext AppLaunchContext) {
 	var _arg0 *C.GDesktopAppInfo   // out
 	var _arg1 *C.gchar             // out
 	var _arg2 *C.GAppLaunchContext // out
@@ -512,7 +515,7 @@ func (i desktopAppInfo) LaunchActionDesktopAppInfo(actionName string, launchCont
 	C.g_desktop_app_info_launch_action(_arg0, _arg1, _arg2)
 }
 
-func (i desktopAppInfo) ListActionsDesktopAppInfo() []string {
+func (i desktopAppInfo) ListActions() []string {
 	var _arg0 *C.GDesktopAppInfo // out
 	var _cret **C.gchar
 
@@ -537,8 +540,4 @@ func (i desktopAppInfo) ListActionsDesktopAppInfo() []string {
 	}
 
 	return _utf8s
-}
-
-func (d desktopAppInfo) AsAppInfo() AppInfo {
-	return WrapAppInfo(gextras.InternObject(d))
 }

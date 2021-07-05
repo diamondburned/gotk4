@@ -129,12 +129,11 @@ type MenuButton interface {
 	// UseUnderline returns whether an embedded underline in the text indicates
 	// a mnemonic.
 	UseUnderline() bool
-	// PopdownMenuButton dismiss the menu.
-	PopdownMenuButton()
-	// PopupMenuButton: pop up the menu.
-	PopupMenuButton()
-	// SetDirectionMenuButton sets the direction in which the popup will be
-	// popped up.
+	// Popdown dismiss the menu.
+	Popdown()
+	// Popup: pop up the menu.
+	Popup()
+	// SetDirection sets the direction in which the popup will be popped up.
 	//
 	// If the button is automatically populated with an arrow icon, its
 	// direction will be changed to match.
@@ -144,15 +143,14 @@ type MenuButton interface {
 	//
 	// If you pass GTK_ARROW_NONE for a @direction, the popup will behave as if
 	// you passed GTK_ARROW_DOWN (although you won’t see any arrows).
-	SetDirectionMenuButton(direction ArrowType)
-	// SetHasFrameMenuButton sets the style of the button.
-	SetHasFrameMenuButton(hasFrame bool)
-	// SetIconNameMenuButton sets the name of an icon to show inside the menu
-	// button.
-	SetIconNameMenuButton(iconName string)
-	// SetLabelMenuButton sets the label to show inside the menu button.
-	SetLabelMenuButton(label string)
-	// SetMenuModelMenuButton sets the `GMenuModel` from which the popup will be
+	SetDirection(direction ArrowType)
+	// SetHasFrame sets the style of the button.
+	SetHasFrame(hasFrame bool)
+	// SetIconName sets the name of an icon to show inside the menu button.
+	SetIconName(iconName string)
+	// SetLabel sets the label to show inside the menu button.
+	SetLabel(label string)
+	// SetMenuModel sets the `GMenuModel` from which the popup will be
 	// constructed.
 	//
 	// If @menu_model is nil, the button is disabled.
@@ -163,18 +161,17 @@ type MenuButton interface {
 	//
 	// If [property@Gtk.MenuButton:popover] is already set, it will be
 	// dissociated from the @menu_button, and the property is set to nil.
-	SetMenuModelMenuButton(menuModel gio.MenuModel)
-	// SetPopoverMenuButton sets the `GtkPopover` that will be popped up when
-	// the @menu_button is clicked.
+	SetMenuModel(menuModel gio.MenuModel)
+	// SetPopover sets the `GtkPopover` that will be popped up when the
+	// @menu_button is clicked.
 	//
 	// If @popover is nil, the button is disabled.
 	//
 	// If [property@Gtk.MenuButton:menu-model] is set, the menu model is
 	// dissociated from the @menu_button, and the property is set to nil.
-	SetPopoverMenuButton(popover Widget)
-	// SetUseUnderlineMenuButton: if true, an underline in the text indicates a
-	// mnemonic.
-	SetUseUnderlineMenuButton(useUnderline bool)
+	SetPopover(popover Widget)
+	// SetUseUnderline: if true, an underline in the text indicates a mnemonic.
+	SetUseUnderline(useUnderline bool)
 }
 
 // menuButton implements the MenuButton class.
@@ -210,6 +207,18 @@ func NewMenuButton() MenuButton {
 	_menuButton = WrapMenuButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _menuButton
+}
+
+func (m menuButton) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(m))
+}
+
+func (m menuButton) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(m))
+}
+
+func (m menuButton) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(m))
 }
 
 func (m menuButton) Direction() ArrowType {
@@ -321,7 +330,7 @@ func (m menuButton) UseUnderline() bool {
 	return _ok
 }
 
-func (m menuButton) PopdownMenuButton() {
+func (m menuButton) Popdown() {
 	var _arg0 *C.GtkMenuButton // out
 
 	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(m.Native()))
@@ -329,7 +338,7 @@ func (m menuButton) PopdownMenuButton() {
 	C.gtk_menu_button_popdown(_arg0)
 }
 
-func (m menuButton) PopupMenuButton() {
+func (m menuButton) Popup() {
 	var _arg0 *C.GtkMenuButton // out
 
 	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(m.Native()))
@@ -337,7 +346,7 @@ func (m menuButton) PopupMenuButton() {
 	C.gtk_menu_button_popup(_arg0)
 }
 
-func (m menuButton) SetDirectionMenuButton(direction ArrowType) {
+func (m menuButton) SetDirection(direction ArrowType) {
 	var _arg0 *C.GtkMenuButton // out
 	var _arg1 C.GtkArrowType   // out
 
@@ -347,7 +356,7 @@ func (m menuButton) SetDirectionMenuButton(direction ArrowType) {
 	C.gtk_menu_button_set_direction(_arg0, _arg1)
 }
 
-func (m menuButton) SetHasFrameMenuButton(hasFrame bool) {
+func (m menuButton) SetHasFrame(hasFrame bool) {
 	var _arg0 *C.GtkMenuButton // out
 	var _arg1 C.gboolean       // out
 
@@ -359,7 +368,7 @@ func (m menuButton) SetHasFrameMenuButton(hasFrame bool) {
 	C.gtk_menu_button_set_has_frame(_arg0, _arg1)
 }
 
-func (m menuButton) SetIconNameMenuButton(iconName string) {
+func (m menuButton) SetIconName(iconName string) {
 	var _arg0 *C.GtkMenuButton // out
 	var _arg1 *C.char          // out
 
@@ -370,7 +379,7 @@ func (m menuButton) SetIconNameMenuButton(iconName string) {
 	C.gtk_menu_button_set_icon_name(_arg0, _arg1)
 }
 
-func (m menuButton) SetLabelMenuButton(label string) {
+func (m menuButton) SetLabel(label string) {
 	var _arg0 *C.GtkMenuButton // out
 	var _arg1 *C.char          // out
 
@@ -381,7 +390,7 @@ func (m menuButton) SetLabelMenuButton(label string) {
 	C.gtk_menu_button_set_label(_arg0, _arg1)
 }
 
-func (m menuButton) SetMenuModelMenuButton(menuModel gio.MenuModel) {
+func (m menuButton) SetMenuModel(menuModel gio.MenuModel) {
 	var _arg0 *C.GtkMenuButton // out
 	var _arg1 *C.GMenuModel    // out
 
@@ -391,7 +400,7 @@ func (m menuButton) SetMenuModelMenuButton(menuModel gio.MenuModel) {
 	C.gtk_menu_button_set_menu_model(_arg0, _arg1)
 }
 
-func (m menuButton) SetPopoverMenuButton(popover Widget) {
+func (m menuButton) SetPopover(popover Widget) {
 	var _arg0 *C.GtkMenuButton // out
 	var _arg1 *C.GtkWidget     // out
 
@@ -401,7 +410,7 @@ func (m menuButton) SetPopoverMenuButton(popover Widget) {
 	C.gtk_menu_button_set_popover(_arg0, _arg1)
 }
 
-func (m menuButton) SetUseUnderlineMenuButton(useUnderline bool) {
+func (m menuButton) SetUseUnderline(useUnderline bool) {
 	var _arg0 *C.GtkMenuButton // out
 	var _arg1 C.gboolean       // out
 
@@ -411,16 +420,4 @@ func (m menuButton) SetUseUnderlineMenuButton(useUnderline bool) {
 	}
 
 	C.gtk_menu_button_set_use_underline(_arg0, _arg1)
-}
-
-func (m menuButton) AsAccessible() Accessible {
-	return WrapAccessible(gextras.InternObject(m))
-}
-
-func (m menuButton) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(m))
-}
-
-func (m menuButton) AsConstraintTarget() ConstraintTarget {
-	return WrapConstraintTarget(gextras.InternObject(m))
 }

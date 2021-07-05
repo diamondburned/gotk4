@@ -42,17 +42,16 @@ type TLSCertificate interface {
 
 	// Issuer gets the Certificate representing @cert's issuer, if known
 	Issuer() TLSCertificate
-	// IsSameTLSCertificate: check if two Certificate objects represent the same
-	// certificate. The raw DER byte data of the two certificates are checked
-	// for equality. This has the effect that two certificates may compare equal
-	// even if their Certificate:issuer, Certificate:private-key, or
+	// IsSame: check if two Certificate objects represent the same certificate.
+	// The raw DER byte data of the two certificates are checked for equality.
+	// This has the effect that two certificates may compare equal even if their
+	// Certificate:issuer, Certificate:private-key, or
 	// Certificate:private-key-pem properties differ.
-	IsSameTLSCertificate(certTwo TLSCertificate) bool
-	// VerifyTLSCertificate: this verifies @cert and returns a set of
-	// CertificateFlags indicating any problems found with it. This can be used
-	// to verify a certificate outside the context of making a connection, or to
-	// check a certificate against a CA that is not part of the system CA
-	// database.
+	IsSame(certTwo TLSCertificate) bool
+	// Verify: this verifies @cert and returns a set of CertificateFlags
+	// indicating any problems found with it. This can be used to verify a
+	// certificate outside the context of making a connection, or to check a
+	// certificate against a CA that is not part of the system CA database.
 	//
 	// If @identity is not nil, @cert's name(s) will be compared against it, and
 	// G_TLS_CERTIFICATE_BAD_IDENTITY will be set in the return value if it does
@@ -66,7 +65,7 @@ type TLSCertificate interface {
 	//
 	// (All other CertificateFlags values will always be set or unset as
 	// appropriate.)
-	VerifyTLSCertificate(identity SocketConnectable, trustedCa TLSCertificate) TLSCertificateFlags
+	Verify(identity SocketConnectable, trustedCa TLSCertificate) TLSCertificateFlags
 }
 
 // tlsCertificate implements the TLSCertificate class.
@@ -244,7 +243,7 @@ func (c tlsCertificate) Issuer() TLSCertificate {
 	return _tlsCertificate
 }
 
-func (c tlsCertificate) IsSameTLSCertificate(certTwo TLSCertificate) bool {
+func (c tlsCertificate) IsSame(certTwo TLSCertificate) bool {
 	var _arg0 *C.GTlsCertificate // out
 	var _arg1 *C.GTlsCertificate // out
 	var _cret C.gboolean         // in
@@ -263,7 +262,7 @@ func (c tlsCertificate) IsSameTLSCertificate(certTwo TLSCertificate) bool {
 	return _ok
 }
 
-func (c tlsCertificate) VerifyTLSCertificate(identity SocketConnectable, trustedCa TLSCertificate) TLSCertificateFlags {
+func (c tlsCertificate) Verify(identity SocketConnectable, trustedCa TLSCertificate) TLSCertificateFlags {
 	var _arg0 *C.GTlsCertificate     // out
 	var _arg1 *C.GSocketConnectable  // out
 	var _arg2 *C.GTlsCertificate     // out

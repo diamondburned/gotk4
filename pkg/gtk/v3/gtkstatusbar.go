@@ -69,20 +69,20 @@ type Statusbar interface {
 	ContextID(contextDescription string) uint
 	// MessageArea retrieves the box containing the label widget.
 	MessageArea() Box
-	// PopStatusbar removes the first message in the Statusbar’s stack with the
-	// given context id.
+	// Pop removes the first message in the Statusbar’s stack with the given
+	// context id.
 	//
 	// Note that this may not change the displayed message, if the message at
 	// the top of the stack has a different context id.
-	PopStatusbar(contextId uint)
-	// PushStatusbar pushes a new message onto a statusbar’s stack.
-	PushStatusbar(contextId uint, text string) uint
-	// RemoveStatusbar forces the removal of a message from a statusbar’s stack.
-	// The exact @context_id and @message_id must be specified.
-	RemoveStatusbar(contextId uint, messageId uint)
-	// RemoveAllStatusbar forces the removal of all messages from a statusbar's
-	// stack with the exact @context_id.
-	RemoveAllStatusbar(contextId uint)
+	Pop(contextId uint)
+	// Push pushes a new message onto a statusbar’s stack.
+	Push(contextId uint, text string) uint
+	// Remove forces the removal of a message from a statusbar’s stack. The
+	// exact @context_id and @message_id must be specified.
+	Remove(contextId uint, messageId uint)
+	// RemoveAll forces the removal of all messages from a statusbar's stack
+	// with the exact @context_id.
+	RemoveAll(contextId uint)
 }
 
 // statusbar implements the Statusbar class.
@@ -115,6 +115,14 @@ func NewStatusbar() Statusbar {
 	_statusbar = WrapStatusbar(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _statusbar
+}
+
+func (s statusbar) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(s))
+}
+
+func (s statusbar) AsOrientable() Orientable {
+	return WrapOrientable(gextras.InternObject(s))
 }
 
 func (s statusbar) ContextID(contextDescription string) uint {
@@ -150,7 +158,7 @@ func (s statusbar) MessageArea() Box {
 	return _box
 }
 
-func (s statusbar) PopStatusbar(contextId uint) {
+func (s statusbar) Pop(contextId uint) {
 	var _arg0 *C.GtkStatusbar // out
 	var _arg1 C.guint         // out
 
@@ -160,7 +168,7 @@ func (s statusbar) PopStatusbar(contextId uint) {
 	C.gtk_statusbar_pop(_arg0, _arg1)
 }
 
-func (s statusbar) PushStatusbar(contextId uint, text string) uint {
+func (s statusbar) Push(contextId uint, text string) uint {
 	var _arg0 *C.GtkStatusbar // out
 	var _arg1 C.guint         // out
 	var _arg2 *C.gchar        // out
@@ -180,7 +188,7 @@ func (s statusbar) PushStatusbar(contextId uint, text string) uint {
 	return _guint
 }
 
-func (s statusbar) RemoveStatusbar(contextId uint, messageId uint) {
+func (s statusbar) Remove(contextId uint, messageId uint) {
 	var _arg0 *C.GtkStatusbar // out
 	var _arg1 C.guint         // out
 	var _arg2 C.guint         // out
@@ -192,7 +200,7 @@ func (s statusbar) RemoveStatusbar(contextId uint, messageId uint) {
 	C.gtk_statusbar_remove(_arg0, _arg1, _arg2)
 }
 
-func (s statusbar) RemoveAllStatusbar(contextId uint) {
+func (s statusbar) RemoveAll(contextId uint) {
 	var _arg0 *C.GtkStatusbar // out
 	var _arg1 C.guint         // out
 
@@ -200,12 +208,4 @@ func (s statusbar) RemoveAllStatusbar(contextId uint) {
 	_arg1 = C.guint(contextId)
 
 	C.gtk_statusbar_remove_all(_arg0, _arg1)
-}
-
-func (s statusbar) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(s))
-}
-
-func (s statusbar) AsOrientable() Orientable {
-	return WrapOrientable(gextras.InternObject(s))
 }

@@ -48,9 +48,8 @@ func init() {
 type IMContextSimple interface {
 	IMContext
 
-	// AddComposeFileIMContextSimple adds an additional table from the X11
-	// compose file.
-	AddComposeFileIMContextSimple(composeFile string)
+	// AddComposeFile adds an additional table from the X11 compose file.
+	AddComposeFile(composeFile string)
 }
 
 // imContextSimple implements the IMContextSimple class.
@@ -85,7 +84,7 @@ func NewIMContextSimple() IMContextSimple {
 	return _imContextSimple
 }
 
-func (c imContextSimple) AddComposeFileIMContextSimple(composeFile string) {
+func (c imContextSimple) AddComposeFile(composeFile string) {
 	var _arg0 *C.GtkIMContextSimple // out
 	var _arg1 *C.char               // out
 

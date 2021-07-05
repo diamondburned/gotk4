@@ -90,8 +90,8 @@ func marshalStyleContextPrintFlags(p uintptr) (interface{}, error) {
 type StyleContext interface {
 	gextras.Objector
 
-	// AddClassStyleContext adds a style class to @context, so later uses of the
-	// style context will make use of this new class for styling.
+	// AddClass adds a style class to @context, so later uses of the style
+	// context will make use of this new class for styling.
 	//
 	// In the CSS file format, a `GtkEntry` defining a “search” class, would be
 	// matched by:
@@ -100,9 +100,9 @@ type StyleContext interface {
 	//
 	// While any widget defining a “search” class would be matched by: “`css
 	// .search { ... } “`
-	AddClassStyleContext(className string)
-	// AddProviderStyleContext adds a style provider to @context, to be used in
-	// style construction.
+	AddClass(className string)
+	// AddProvider adds a style provider to @context, to be used in style
+	// construction.
 	//
 	// Note that a style provider added by this function only affects the style
 	// of the widget to which @context belongs. If you want to affect the style
@@ -111,7 +111,7 @@ type StyleContext interface {
 	// Note: If both priorities are the same, a `GtkStyleProvider` added through
 	// this function takes precedence over another added through
 	// [func@Gtk.StyleContext.add_provider_for_display].
-	AddProviderStyleContext(provider StyleProvider, priority uint)
+	AddProvider(provider StyleProvider, priority uint)
 	// Border gets the border for a given state as a `GtkBorder`.
 	Border() Border
 	// Color gets the foreground color for a given state.
@@ -131,22 +131,21 @@ type StyleContext interface {
 	// If you need to retrieve the current state of a `GtkWidget`, use
 	// [method@Gtk.Widget.get_state_flags].
 	State() StateFlags
-	// HasClassStyleContext returns true if @context currently has defined the
-	// given class name.
-	HasClassStyleContext(className string) bool
-	// LookupColorStyleContext looks up and resolves a color name in the
-	// @context color map.
-	LookupColorStyleContext(colorName string) (gdk.RGBA, bool)
-	// RemoveClassStyleContext removes @class_name from @context.
-	RemoveClassStyleContext(className string)
-	// RemoveProviderStyleContext removes @provider from the style providers
-	// list in @context.
-	RemoveProviderStyleContext(provider StyleProvider)
-	// RestoreStyleContext restores @context state to a previous stage.
+	// HasClass returns true if @context currently has defined the given class
+	// name.
+	HasClass(className string) bool
+	// LookupColor looks up and resolves a color name in the @context color map.
+	LookupColor(colorName string) (gdk.RGBA, bool)
+	// RemoveClass removes @class_name from @context.
+	RemoveClass(className string)
+	// RemoveProvider removes @provider from the style providers list in
+	// @context.
+	RemoveProvider(provider StyleProvider)
+	// Restore restores @context state to a previous stage.
 	//
 	// See [method@Gtk.StyleContext.save].
-	RestoreStyleContext()
-	// SaveStyleContext saves the @context state.
+	Restore()
+	// Save saves the @context state.
 	//
 	// This allows temporary modifications done through
 	// [method@Gtk.StyleContext.add_class],
@@ -156,8 +155,8 @@ type StyleContext interface {
 	//
 	// The matching call to [method@Gtk.StyleContext.restore] must be done
 	// before GTK returns to the main loop.
-	SaveStyleContext()
-	// SetDisplayStyleContext attaches @context to the given display.
+	Save()
+	// SetDisplay attaches @context to the given display.
 	//
 	// The display is used to add style information from “global” style
 	// providers, such as the display's `GtkSettings` instance.
@@ -165,12 +164,11 @@ type StyleContext interface {
 	// If you are using a `GtkStyleContext` returned from
 	// [method@Gtk.Widget.get_style_context], you do not need to call this
 	// yourself.
-	SetDisplayStyleContext(display gdk.Display)
-	// SetScaleStyleContext sets the scale to use when getting image assets for
-	// the style.
-	SetScaleStyleContext(scale int)
-	// SetStateStyleContext sets the state to be used for style matching.
-	SetStateStyleContext(flags StateFlags)
+	SetDisplay(display gdk.Display)
+	// SetScale sets the scale to use when getting image assets for the style.
+	SetScale(scale int)
+	// SetState sets the state to be used for style matching.
+	SetState(flags StateFlags)
 	// String converts the style context into a string representation.
 	//
 	// The string representation always includes information about the name,
@@ -202,7 +200,7 @@ func marshalStyleContext(p uintptr) (interface{}, error) {
 	return WrapStyleContext(obj), nil
 }
 
-func (c styleContext) AddClassStyleContext(className string) {
+func (c styleContext) AddClass(className string) {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 *C.char            // out
 
@@ -213,7 +211,7 @@ func (c styleContext) AddClassStyleContext(className string) {
 	C.gtk_style_context_add_class(_arg0, _arg1)
 }
 
-func (c styleContext) AddProviderStyleContext(provider StyleProvider, priority uint) {
+func (c styleContext) AddProvider(provider StyleProvider, priority uint) {
 	var _arg0 *C.GtkStyleContext  // out
 	var _arg1 *C.GtkStyleProvider // out
 	var _arg2 C.guint             // out
@@ -370,7 +368,7 @@ func (c styleContext) State() StateFlags {
 	return _stateFlags
 }
 
-func (c styleContext) HasClassStyleContext(className string) bool {
+func (c styleContext) HasClass(className string) bool {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 *C.char            // out
 	var _cret C.gboolean         // in
@@ -390,7 +388,7 @@ func (c styleContext) HasClassStyleContext(className string) bool {
 	return _ok
 }
 
-func (c styleContext) LookupColorStyleContext(colorName string) (gdk.RGBA, bool) {
+func (c styleContext) LookupColor(colorName string) (gdk.RGBA, bool) {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 *C.char            // out
 	var _arg2 C.GdkRGBA          // in
@@ -423,7 +421,7 @@ func (c styleContext) LookupColorStyleContext(colorName string) (gdk.RGBA, bool)
 	return _color, _ok
 }
 
-func (c styleContext) RemoveClassStyleContext(className string) {
+func (c styleContext) RemoveClass(className string) {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 *C.char            // out
 
@@ -434,7 +432,7 @@ func (c styleContext) RemoveClassStyleContext(className string) {
 	C.gtk_style_context_remove_class(_arg0, _arg1)
 }
 
-func (c styleContext) RemoveProviderStyleContext(provider StyleProvider) {
+func (c styleContext) RemoveProvider(provider StyleProvider) {
 	var _arg0 *C.GtkStyleContext  // out
 	var _arg1 *C.GtkStyleProvider // out
 
@@ -444,7 +442,7 @@ func (c styleContext) RemoveProviderStyleContext(provider StyleProvider) {
 	C.gtk_style_context_remove_provider(_arg0, _arg1)
 }
 
-func (c styleContext) RestoreStyleContext() {
+func (c styleContext) Restore() {
 	var _arg0 *C.GtkStyleContext // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
@@ -452,7 +450,7 @@ func (c styleContext) RestoreStyleContext() {
 	C.gtk_style_context_restore(_arg0)
 }
 
-func (c styleContext) SaveStyleContext() {
+func (c styleContext) Save() {
 	var _arg0 *C.GtkStyleContext // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
@@ -460,7 +458,7 @@ func (c styleContext) SaveStyleContext() {
 	C.gtk_style_context_save(_arg0)
 }
 
-func (c styleContext) SetDisplayStyleContext(display gdk.Display) {
+func (c styleContext) SetDisplay(display gdk.Display) {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 *C.GdkDisplay      // out
 
@@ -470,7 +468,7 @@ func (c styleContext) SetDisplayStyleContext(display gdk.Display) {
 	C.gtk_style_context_set_display(_arg0, _arg1)
 }
 
-func (c styleContext) SetScaleStyleContext(scale int) {
+func (c styleContext) SetScale(scale int) {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 C.int              // out
 
@@ -480,7 +478,7 @@ func (c styleContext) SetScaleStyleContext(scale int) {
 	C.gtk_style_context_set_scale(_arg0, _arg1)
 }
 
-func (c styleContext) SetStateStyleContext(flags StateFlags) {
+func (c styleContext) SetState(flags StateFlags) {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 C.GtkStateFlags    // out
 

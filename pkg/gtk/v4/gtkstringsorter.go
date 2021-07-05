@@ -38,14 +38,13 @@ type StringSorter interface {
 	Expression() Expression
 	// IgnoreCase gets whether the sorter ignores case differences.
 	IgnoreCase() bool
-	// SetExpressionStringSorter sets the expression that is evaluated to obtain
-	// strings from items.
+	// SetExpression sets the expression that is evaluated to obtain strings
+	// from items.
 	//
 	// The expression must have the type G_TYPE_STRING.
-	SetExpressionStringSorter(expression Expression)
-	// SetIgnoreCaseStringSorter sets whether the sorter will ignore case
-	// differences.
-	SetIgnoreCaseStringSorter(ignoreCase bool)
+	SetExpression(expression Expression)
+	// SetIgnoreCase sets whether the sorter will ignore case differences.
+	SetIgnoreCase(ignoreCase bool)
 }
 
 // stringSorter implements the StringSorter class.
@@ -119,7 +118,7 @@ func (s stringSorter) IgnoreCase() bool {
 	return _ok
 }
 
-func (s stringSorter) SetExpressionStringSorter(expression Expression) {
+func (s stringSorter) SetExpression(expression Expression) {
 	var _arg0 *C.GtkStringSorter // out
 	var _arg1 *C.GtkExpression   // out
 
@@ -129,7 +128,7 @@ func (s stringSorter) SetExpressionStringSorter(expression Expression) {
 	C.gtk_string_sorter_set_expression(_arg0, _arg1)
 }
 
-func (s stringSorter) SetIgnoreCaseStringSorter(ignoreCase bool) {
+func (s stringSorter) SetIgnoreCase(ignoreCase bool) {
 	var _arg0 *C.GtkStringSorter // out
 	var _arg1 C.gboolean         // out
 

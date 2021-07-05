@@ -80,8 +80,8 @@ type SearchEntry interface {
 	// KeyCaptureWidget gets the widget that @entry is capturing key events
 	// from.
 	KeyCaptureWidget() Widget
-	// SetKeyCaptureWidgetSearchEntry sets @widget as the widget that @entry
-	// will capture key events from.
+	// SetKeyCaptureWidget sets @widget as the widget that @entry will capture
+	// key events from.
 	//
 	// Key events are consumed by the search entry to start or continue a
 	// search.
@@ -95,7 +95,7 @@ type SearchEntry interface {
 	// of @widget will receive text input before it gets captured. If that is
 	// not desired, you can capture and forward the events yourself with
 	// [method@Gtk.EventControllerKey.forward].
-	SetKeyCaptureWidgetSearchEntry(widget Widget)
+	SetKeyCaptureWidget(widget Widget)
 }
 
 // searchEntry implements the SearchEntry class.
@@ -130,6 +130,22 @@ func NewSearchEntry() SearchEntry {
 	return _searchEntry
 }
 
+func (s searchEntry) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(s))
+}
+
+func (s searchEntry) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(s))
+}
+
+func (s searchEntry) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(s))
+}
+
+func (s searchEntry) AsEditable() Editable {
+	return WrapEditable(gextras.InternObject(s))
+}
+
 func (e searchEntry) KeyCaptureWidget() Widget {
 	var _arg0 *C.GtkSearchEntry // out
 	var _cret *C.GtkWidget      // in
@@ -145,7 +161,7 @@ func (e searchEntry) KeyCaptureWidget() Widget {
 	return _widget
 }
 
-func (e searchEntry) SetKeyCaptureWidgetSearchEntry(widget Widget) {
+func (e searchEntry) SetKeyCaptureWidget(widget Widget) {
 	var _arg0 *C.GtkSearchEntry // out
 	var _arg1 *C.GtkWidget      // out
 
@@ -153,20 +169,4 @@ func (e searchEntry) SetKeyCaptureWidgetSearchEntry(widget Widget) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.gtk_search_entry_set_key_capture_widget(_arg0, _arg1)
-}
-
-func (s searchEntry) AsAccessible() Accessible {
-	return WrapAccessible(gextras.InternObject(s))
-}
-
-func (s searchEntry) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(s))
-}
-
-func (s searchEntry) AsConstraintTarget() ConstraintTarget {
-	return WrapConstraintTarget(gextras.InternObject(s))
-}
-
-func (s searchEntry) AsEditable() Editable {
-	return WrapEditable(gextras.InternObject(s))
 }

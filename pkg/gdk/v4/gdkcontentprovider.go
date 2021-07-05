@@ -37,8 +37,8 @@ func init() {
 type ContentProvider interface {
 	gextras.Objector
 
-	// ContentChangedContentProvider emits the ::content-changed signal.
-	ContentChangedContentProvider()
+	// ContentChanged emits the ::content-changed signal.
+	ContentChanged()
 	// Value gets the contents of @provider stored in @value.
 	//
 	// The @value will have been initialized to the `GType` the value should be
@@ -47,17 +47,17 @@ type ContentProvider interface {
 	// given `GType` is not supported, this operation can fail and
 	// IO_ERROR_NOT_SUPPORTED will be reported.
 	Value(value externglib.Value) error
-	// RefFormatsContentProvider gets the formats that the provider can provide
-	// its current contents in.
-	RefFormatsContentProvider() *ContentFormats
-	// RefStorableFormatsContentProvider gets the formats that the provider
-	// suggests other applications to store the data in.
+	// RefFormats gets the formats that the provider can provide its current
+	// contents in.
+	RefFormats() *ContentFormats
+	// RefStorableFormats gets the formats that the provider suggests other
+	// applications to store the data in.
 	//
 	// An example of such an application would be a clipboard manager.
 	//
 	// This can be assumed to be a subset of
 	// [method@Gdk.ContentProvider.ref_formats].
-	RefStorableFormatsContentProvider() *ContentFormats
+	RefStorableFormats() *ContentFormats
 }
 
 // contentProvider implements the ContentProvider class.
@@ -131,7 +131,7 @@ func NewContentProviderUnion(providers []ContentProvider) ContentProvider {
 	return _contentProvider
 }
 
-func (p contentProvider) ContentChangedContentProvider() {
+func (p contentProvider) ContentChanged() {
 	var _arg0 *C.GdkContentProvider // out
 
 	_arg0 = (*C.GdkContentProvider)(unsafe.Pointer(p.Native()))
@@ -156,7 +156,7 @@ func (p contentProvider) Value(value externglib.Value) error {
 	return _goerr
 }
 
-func (p contentProvider) RefFormatsContentProvider() *ContentFormats {
+func (p contentProvider) RefFormats() *ContentFormats {
 	var _arg0 *C.GdkContentProvider // out
 	var _cret *C.GdkContentFormats  // in
 
@@ -175,7 +175,7 @@ func (p contentProvider) RefFormatsContentProvider() *ContentFormats {
 	return _contentFormats
 }
 
-func (p contentProvider) RefStorableFormatsContentProvider() *ContentFormats {
+func (p contentProvider) RefStorableFormats() *ContentFormats {
 	var _arg0 *C.GdkContentProvider // out
 	var _cret *C.GdkContentFormats  // in
 

@@ -72,8 +72,8 @@ type Calendar interface {
 	// AsConstraintTarget casts the class to the ConstraintTarget interface.
 	AsConstraintTarget() ConstraintTarget
 
-	// ClearMarksCalendar: remove all visual markers.
-	ClearMarksCalendar()
+	// ClearMarks: remove all visual markers.
+	ClearMarks()
 	// DayIsMarked returns if the @day of the @calendar is already marked.
 	DayIsMarked(day uint) bool
 	// ShowDayNames returns whether @self is currently showing the names of the
@@ -90,20 +90,19 @@ type Calendar interface {
 	// This is the value of the [property@Gtk.Calendar:show-week-numbers]
 	// property.
 	ShowWeekNumbers() bool
-	// MarkDayCalendar places a visual marker on a particular day.
-	MarkDayCalendar(day uint)
-	// SetShowDayNamesCalendar sets whether the calendar shows day names.
-	SetShowDayNamesCalendar(value bool)
-	// SetShowHeadingCalendar sets whether the calendar should show a heading.
+	// MarkDay places a visual marker on a particular day.
+	MarkDay(day uint)
+	// SetShowDayNames sets whether the calendar shows day names.
+	SetShowDayNames(value bool)
+	// SetShowHeading sets whether the calendar should show a heading.
 	//
 	// The heading contains the current year and month as well as buttons for
 	// changing both.
-	SetShowHeadingCalendar(value bool)
-	// SetShowWeekNumbersCalendar sets whether week numbers are shown in the
-	// calendar.
-	SetShowWeekNumbersCalendar(value bool)
-	// UnmarkDayCalendar removes the visual marker from a particular day.
-	UnmarkDayCalendar(day uint)
+	SetShowHeading(value bool)
+	// SetShowWeekNumbers sets whether week numbers are shown in the calendar.
+	SetShowWeekNumbers(value bool)
+	// UnmarkDay removes the visual marker from a particular day.
+	UnmarkDay(day uint)
 }
 
 // calendar implements the Calendar class.
@@ -138,7 +137,19 @@ func NewCalendar() Calendar {
 	return _calendar
 }
 
-func (c calendar) ClearMarksCalendar() {
+func (c calendar) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(c))
+}
+
+func (c calendar) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(c))
+}
+
+func (c calendar) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(c))
+}
+
+func (c calendar) ClearMarks() {
 	var _arg0 *C.GtkCalendar // out
 
 	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(c.Native()))
@@ -216,7 +227,7 @@ func (s calendar) ShowWeekNumbers() bool {
 	return _ok
 }
 
-func (c calendar) MarkDayCalendar(day uint) {
+func (c calendar) MarkDay(day uint) {
 	var _arg0 *C.GtkCalendar // out
 	var _arg1 C.guint        // out
 
@@ -226,7 +237,7 @@ func (c calendar) MarkDayCalendar(day uint) {
 	C.gtk_calendar_mark_day(_arg0, _arg1)
 }
 
-func (s calendar) SetShowDayNamesCalendar(value bool) {
+func (s calendar) SetShowDayNames(value bool) {
 	var _arg0 *C.GtkCalendar // out
 	var _arg1 C.gboolean     // out
 
@@ -238,7 +249,7 @@ func (s calendar) SetShowDayNamesCalendar(value bool) {
 	C.gtk_calendar_set_show_day_names(_arg0, _arg1)
 }
 
-func (s calendar) SetShowHeadingCalendar(value bool) {
+func (s calendar) SetShowHeading(value bool) {
 	var _arg0 *C.GtkCalendar // out
 	var _arg1 C.gboolean     // out
 
@@ -250,7 +261,7 @@ func (s calendar) SetShowHeadingCalendar(value bool) {
 	C.gtk_calendar_set_show_heading(_arg0, _arg1)
 }
 
-func (s calendar) SetShowWeekNumbersCalendar(value bool) {
+func (s calendar) SetShowWeekNumbers(value bool) {
 	var _arg0 *C.GtkCalendar // out
 	var _arg1 C.gboolean     // out
 
@@ -262,7 +273,7 @@ func (s calendar) SetShowWeekNumbersCalendar(value bool) {
 	C.gtk_calendar_set_show_week_numbers(_arg0, _arg1)
 }
 
-func (c calendar) UnmarkDayCalendar(day uint) {
+func (c calendar) UnmarkDay(day uint) {
 	var _arg0 *C.GtkCalendar // out
 	var _arg1 C.guint        // out
 
@@ -270,16 +281,4 @@ func (c calendar) UnmarkDayCalendar(day uint) {
 	_arg1 = C.guint(day)
 
 	C.gtk_calendar_unmark_day(_arg0, _arg1)
-}
-
-func (c calendar) AsAccessible() Accessible {
-	return WrapAccessible(gextras.InternObject(c))
-}
-
-func (c calendar) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(c))
-}
-
-func (c calendar) AsConstraintTarget() ConstraintTarget {
-	return WrapConstraintTarget(gextras.InternObject(c))
 }

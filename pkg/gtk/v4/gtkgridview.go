@@ -76,29 +76,29 @@ type GridView interface {
 	// SingleClickActivate returns whether items will be activated on single
 	// click and selected on hover.
 	SingleClickActivate() bool
-	// SetEnableRubberbandGridView sets whether selections can be changed by
-	// dragging with the mouse.
-	SetEnableRubberbandGridView(enableRubberband bool)
-	// SetFactoryGridView sets the `GtkListItemFactory` to use for populating
-	// list items.
-	SetFactoryGridView(factory ListItemFactory)
-	// SetMaxColumnsGridView sets the maximum number of columns to use.
+	// SetEnableRubberband sets whether selections can be changed by dragging
+	// with the mouse.
+	SetEnableRubberband(enableRubberband bool)
+	// SetFactory sets the `GtkListItemFactory` to use for populating list
+	// items.
+	SetFactory(factory ListItemFactory)
+	// SetMaxColumns sets the maximum number of columns to use.
 	//
 	// This number must be at least 1.
 	//
 	// If @max_columns is smaller than the minimum set via
 	// [method@Gtk.GridView.set_min_columns], that value is used instead.
-	SetMaxColumnsGridView(maxColumns uint)
-	// SetMinColumnsGridView sets the minimum number of columns to use.
+	SetMaxColumns(maxColumns uint)
+	// SetMinColumns sets the minimum number of columns to use.
 	//
 	// This number must be at least 1.
 	//
 	// If @min_columns is smaller than the minimum set via
 	// [method@Gtk.GridView.set_max_columns], that value is ignored.
-	SetMinColumnsGridView(minColumns uint)
-	// SetSingleClickActivateGridView sets whether items should be activated on
-	// single click and selected on hover.
-	SetSingleClickActivateGridView(singleClickActivate bool)
+	SetMinColumns(minColumns uint)
+	// SetSingleClickActivate sets whether items should be activated on single
+	// click and selected on hover.
+	SetSingleClickActivate(singleClickActivate bool)
 }
 
 // gridView implements the GridView class.
@@ -118,6 +118,26 @@ func marshalGridView(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapGridView(obj), nil
+}
+
+func (g gridView) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(g))
+}
+
+func (g gridView) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(g))
+}
+
+func (g gridView) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(g))
+}
+
+func (g gridView) AsOrientable() Orientable {
+	return WrapOrientable(gextras.InternObject(g))
+}
+
+func (g gridView) AsScrollable() Scrollable {
+	return WrapScrollable(gextras.InternObject(g))
 }
 
 func (s gridView) EnableRubberband() bool {
@@ -199,7 +219,7 @@ func (s gridView) SingleClickActivate() bool {
 	return _ok
 }
 
-func (s gridView) SetEnableRubberbandGridView(enableRubberband bool) {
+func (s gridView) SetEnableRubberband(enableRubberband bool) {
 	var _arg0 *C.GtkGridView // out
 	var _arg1 C.gboolean     // out
 
@@ -211,7 +231,7 @@ func (s gridView) SetEnableRubberbandGridView(enableRubberband bool) {
 	C.gtk_grid_view_set_enable_rubberband(_arg0, _arg1)
 }
 
-func (s gridView) SetFactoryGridView(factory ListItemFactory) {
+func (s gridView) SetFactory(factory ListItemFactory) {
 	var _arg0 *C.GtkGridView        // out
 	var _arg1 *C.GtkListItemFactory // out
 
@@ -221,7 +241,7 @@ func (s gridView) SetFactoryGridView(factory ListItemFactory) {
 	C.gtk_grid_view_set_factory(_arg0, _arg1)
 }
 
-func (s gridView) SetMaxColumnsGridView(maxColumns uint) {
+func (s gridView) SetMaxColumns(maxColumns uint) {
 	var _arg0 *C.GtkGridView // out
 	var _arg1 C.guint        // out
 
@@ -231,7 +251,7 @@ func (s gridView) SetMaxColumnsGridView(maxColumns uint) {
 	C.gtk_grid_view_set_max_columns(_arg0, _arg1)
 }
 
-func (s gridView) SetMinColumnsGridView(minColumns uint) {
+func (s gridView) SetMinColumns(minColumns uint) {
 	var _arg0 *C.GtkGridView // out
 	var _arg1 C.guint        // out
 
@@ -241,7 +261,7 @@ func (s gridView) SetMinColumnsGridView(minColumns uint) {
 	C.gtk_grid_view_set_min_columns(_arg0, _arg1)
 }
 
-func (s gridView) SetSingleClickActivateGridView(singleClickActivate bool) {
+func (s gridView) SetSingleClickActivate(singleClickActivate bool) {
 	var _arg0 *C.GtkGridView // out
 	var _arg1 C.gboolean     // out
 
@@ -251,24 +271,4 @@ func (s gridView) SetSingleClickActivateGridView(singleClickActivate bool) {
 	}
 
 	C.gtk_grid_view_set_single_click_activate(_arg0, _arg1)
-}
-
-func (g gridView) AsAccessible() Accessible {
-	return WrapAccessible(gextras.InternObject(g))
-}
-
-func (g gridView) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(g))
-}
-
-func (g gridView) AsConstraintTarget() ConstraintTarget {
-	return WrapConstraintTarget(gextras.InternObject(g))
-}
-
-func (g gridView) AsOrientable() Orientable {
-	return WrapOrientable(gextras.InternObject(g))
-}
-
-func (g gridView) AsScrollable() Scrollable {
-	return WrapScrollable(gextras.InternObject(g))
 }

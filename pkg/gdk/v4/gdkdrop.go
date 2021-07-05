@@ -40,11 +40,11 @@ func init() {
 type Drop interface {
 	gextras.Objector
 
-	// FinishDrop ends the drag operation after a drop.
+	// Finish ends the drag operation after a drop.
 	//
 	// The @action must be a single action selected from the actions available
 	// via [method@Gdk.Drop.get_actions].
-	FinishDrop(action DragAction)
+	Finish(action DragAction)
 	// Actions returns the possible actions for this `GdkDrop`.
 	//
 	// If this value contains multiple actions - i.e.
@@ -73,7 +73,7 @@ type Drop interface {
 	Formats() *ContentFormats
 	// Surface returns the `GdkSurface` performing the drop.
 	Surface() Surface
-	// StatusDrop selects all actions that are potentially supported by the
+	// Status selects all actions that are potentially supported by the
 	// destination.
 	//
 	// When calling this function, do not restrict the passed in actions to the
@@ -87,7 +87,7 @@ type Drop interface {
 	// GDK_DRAG_ENTER or GDK_DRAG_MOTION events. If the destination does not yet
 	// know the exact actions it supports, it should set any possible actions
 	// first and then later call this function again.
-	StatusDrop(actions DragAction, preferred DragAction)
+	Status(actions DragAction, preferred DragAction)
 }
 
 // drop implements the Drop class.
@@ -109,7 +109,7 @@ func marshalDrop(p uintptr) (interface{}, error) {
 	return WrapDrop(obj), nil
 }
 
-func (s drop) FinishDrop(action DragAction) {
+func (s drop) Finish(action DragAction) {
 	var _arg0 *C.GdkDrop      // out
 	var _arg1 C.GdkDragAction // out
 
@@ -213,7 +213,7 @@ func (s drop) Surface() Surface {
 	return _surface
 }
 
-func (s drop) StatusDrop(actions DragAction, preferred DragAction) {
+func (s drop) Status(actions DragAction, preferred DragAction) {
 	var _arg0 *C.GdkDrop      // out
 	var _arg1 C.GdkDragAction // out
 	var _arg2 C.GdkDragAction // out

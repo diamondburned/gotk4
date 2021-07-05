@@ -42,12 +42,11 @@ type ShortcutLabel interface {
 	// DisabledText retrieves the text that is displayed when no accelerator is
 	// set.
 	DisabledText() string
-	// SetAcceleratorShortcutLabel sets the accelerator to be displayed by
-	// @self.
-	SetAcceleratorShortcutLabel(accelerator string)
-	// SetDisabledTextShortcutLabel sets the text to be displayed by @self when
-	// no accelerator is set.
-	SetDisabledTextShortcutLabel(disabledText string)
+	// SetAccelerator sets the accelerator to be displayed by @self.
+	SetAccelerator(accelerator string)
+	// SetDisabledText sets the text to be displayed by @self when no
+	// accelerator is set.
+	SetDisabledText(disabledText string)
 }
 
 // shortcutLabel implements the ShortcutLabel class.
@@ -86,6 +85,18 @@ func NewShortcutLabel(accelerator string) ShortcutLabel {
 	return _shortcutLabel
 }
 
+func (s shortcutLabel) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(s))
+}
+
+func (s shortcutLabel) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(s))
+}
+
+func (s shortcutLabel) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(s))
+}
+
 func (s shortcutLabel) Accelerator() string {
 	var _arg0 *C.GtkShortcutLabel // out
 	var _cret *C.char             // in
@@ -116,7 +127,7 @@ func (s shortcutLabel) DisabledText() string {
 	return _utf8
 }
 
-func (s shortcutLabel) SetAcceleratorShortcutLabel(accelerator string) {
+func (s shortcutLabel) SetAccelerator(accelerator string) {
 	var _arg0 *C.GtkShortcutLabel // out
 	var _arg1 *C.char             // out
 
@@ -127,7 +138,7 @@ func (s shortcutLabel) SetAcceleratorShortcutLabel(accelerator string) {
 	C.gtk_shortcut_label_set_accelerator(_arg0, _arg1)
 }
 
-func (s shortcutLabel) SetDisabledTextShortcutLabel(disabledText string) {
+func (s shortcutLabel) SetDisabledText(disabledText string) {
 	var _arg0 *C.GtkShortcutLabel // out
 	var _arg1 *C.char             // out
 
@@ -136,16 +147,4 @@ func (s shortcutLabel) SetDisabledTextShortcutLabel(disabledText string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_shortcut_label_set_disabled_text(_arg0, _arg1)
-}
-
-func (s shortcutLabel) AsAccessible() Accessible {
-	return WrapAccessible(gextras.InternObject(s))
-}
-
-func (s shortcutLabel) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(s))
-}
-
-func (s shortcutLabel) AsConstraintTarget() ConstraintTarget {
-	return WrapConstraintTarget(gextras.InternObject(s))
 }

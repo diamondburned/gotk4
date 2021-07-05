@@ -55,11 +55,11 @@ type RecentChooserMenu interface {
 	// ShowNumbers returns the value set by
 	// gtk_recent_chooser_menu_set_show_numbers().
 	ShowNumbers() bool
-	// SetShowNumbersRecentChooserMenu sets whether a number should be added to
-	// the items of @menu. The numbers are shown to provide a unique character
-	// for a mnemonic to be used inside ten menu item’s label. Only the first
-	// the items get a number to avoid clashes.
-	SetShowNumbersRecentChooserMenu(showNumbers bool)
+	// SetShowNumbers sets whether a number should be added to the items of
+	// @menu. The numbers are shown to provide a unique character for a mnemonic
+	// to be used inside ten menu item’s label. Only the first the items get a
+	// number to avoid clashes.
+	SetShowNumbers(showNumbers bool)
 }
 
 // recentChooserMenu implements the RecentChooserMenu class.
@@ -125,6 +125,18 @@ func NewRecentChooserMenuForManager(manager RecentManager) RecentChooserMenu {
 	return _recentChooserMenu
 }
 
+func (r recentChooserMenu) AsActivatable() Activatable {
+	return WrapActivatable(gextras.InternObject(r))
+}
+
+func (r recentChooserMenu) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(r))
+}
+
+func (r recentChooserMenu) AsRecentChooser() RecentChooser {
+	return WrapRecentChooser(gextras.InternObject(r))
+}
+
 func (m recentChooserMenu) ShowNumbers() bool {
 	var _arg0 *C.GtkRecentChooserMenu // out
 	var _cret C.gboolean              // in
@@ -142,7 +154,7 @@ func (m recentChooserMenu) ShowNumbers() bool {
 	return _ok
 }
 
-func (m recentChooserMenu) SetShowNumbersRecentChooserMenu(showNumbers bool) {
+func (m recentChooserMenu) SetShowNumbers(showNumbers bool) {
 	var _arg0 *C.GtkRecentChooserMenu // out
 	var _arg1 C.gboolean              // out
 
@@ -152,16 +164,4 @@ func (m recentChooserMenu) SetShowNumbersRecentChooserMenu(showNumbers bool) {
 	}
 
 	C.gtk_recent_chooser_menu_set_show_numbers(_arg0, _arg1)
-}
-
-func (r recentChooserMenu) AsActivatable() Activatable {
-	return WrapActivatable(gextras.InternObject(r))
-}
-
-func (r recentChooserMenu) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(r))
-}
-
-func (r recentChooserMenu) AsRecentChooser() RecentChooser {
-	return WrapRecentChooser(gextras.InternObject(r))
 }

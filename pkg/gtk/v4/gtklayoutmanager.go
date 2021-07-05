@@ -65,10 +65,10 @@ func init() {
 type LayoutManager interface {
 	gextras.Objector
 
-	// AllocateLayoutManager assigns the given @width, @height, and @baseline to
-	// a @widget, and computes the position and sizes of the children of the
-	// @widget using the layout management policy of @manager.
-	AllocateLayoutManager(widget Widget, width int, height int, baseline int)
+	// Allocate assigns the given @width, @height, and @baseline to a @widget,
+	// and computes the position and sizes of the children of the @widget using
+	// the layout management policy of @manager.
+	Allocate(widget Widget, width int, height int, baseline int)
 	// LayoutChild retrieves a `GtkLayoutChild` instance for the
 	// `GtkLayoutManager`, creating one if necessary.
 	//
@@ -82,18 +82,17 @@ type LayoutManager interface {
 	RequestMode() SizeRequestMode
 	// Widget retrieves the `GtkWidget` using the given `GtkLayoutManager`.
 	Widget() Widget
-	// LayoutChangedLayoutManager queues a resize on the `GtkWidget` using
-	// @manager, if any.
+	// LayoutChanged queues a resize on the `GtkWidget` using @manager, if any.
 	//
 	// This function should be called by subclasses of `GtkLayoutManager` in
 	// response to changes to their layout management policies.
-	LayoutChangedLayoutManager()
-	// MeasureLayoutManager measures the size of the @widget using @manager, for
-	// the given @orientation and size.
+	LayoutChanged()
+	// Measure measures the size of the @widget using @manager, for the given
+	// @orientation and size.
 	//
 	// See the [class@Gtk.Widget] documentation on layout management for more
 	// details.
-	MeasureLayoutManager(widget Widget, orientation Orientation, forSize int) (minimum int, natural int, minimumBaseline int, naturalBaseline int)
+	Measure(widget Widget, orientation Orientation, forSize int) (minimum int, natural int, minimumBaseline int, naturalBaseline int)
 }
 
 // layoutManager implements the LayoutManager class.
@@ -115,7 +114,7 @@ func marshalLayoutManager(p uintptr) (interface{}, error) {
 	return WrapLayoutManager(obj), nil
 }
 
-func (m layoutManager) AllocateLayoutManager(widget Widget, width int, height int, baseline int) {
+func (m layoutManager) Allocate(widget Widget, width int, height int, baseline int) {
 	var _arg0 *C.GtkLayoutManager // out
 	var _arg1 *C.GtkWidget        // out
 	var _arg2 C.int               // out
@@ -178,7 +177,7 @@ func (m layoutManager) Widget() Widget {
 	return _widget
 }
 
-func (m layoutManager) LayoutChangedLayoutManager() {
+func (m layoutManager) LayoutChanged() {
 	var _arg0 *C.GtkLayoutManager // out
 
 	_arg0 = (*C.GtkLayoutManager)(unsafe.Pointer(m.Native()))
@@ -186,7 +185,7 @@ func (m layoutManager) LayoutChangedLayoutManager() {
 	C.gtk_layout_manager_layout_changed(_arg0)
 }
 
-func (m layoutManager) MeasureLayoutManager(widget Widget, orientation Orientation, forSize int) (minimum int, natural int, minimumBaseline int, naturalBaseline int) {
+func (m layoutManager) Measure(widget Widget, orientation Orientation, forSize int) (minimum int, natural int, minimumBaseline int, naturalBaseline int) {
 	var _arg0 *C.GtkLayoutManager // out
 	var _arg1 *C.GtkWidget        // out
 	var _arg2 C.GtkOrientation    // out

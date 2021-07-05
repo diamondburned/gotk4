@@ -228,82 +228,80 @@ type Entry interface {
 	//
 	// See [method@Gtk.Entry.set_visibility].
 	Visibility() bool
-	// GrabFocusWithoutSelectingEntry causes @entry to have keyboard focus.
+	// GrabFocusWithoutSelecting causes @entry to have keyboard focus.
 	//
 	// It behaves like [method@Gtk.Widget.grab_focus], except that it doesn't
 	// select the contents of the entry. You only want to call this on some
 	// special entries which the user usually doesn't want to replace all text
 	// in, such as search-as-you-type entries.
-	GrabFocusWithoutSelectingEntry() bool
-	// ProgressPulseEntry indicates that some progress is made, but you don’t
-	// know how much.
+	GrabFocusWithoutSelecting() bool
+	// ProgressPulse indicates that some progress is made, but you don’t know
+	// how much.
 	//
 	// Causes the entry’s progress indicator to enter “activity mode”, where a
 	// block bounces back and forth. Each call to gtk_entry_progress_pulse()
 	// causes the block to move by a little bit (the amount of movement per
 	// pulse is determined by [method@Gtk.Entry.set_progress_pulse_step]).
-	ProgressPulseEntry()
-	// ResetImContextEntry: reset the input method context of the entry if
-	// needed.
+	ProgressPulse()
+	// ResetImContext: reset the input method context of the entry if needed.
 	//
 	// This can be necessary in the case where modifying the buffer would
 	// confuse on-going input method behavior.
-	ResetImContextEntry()
-	// SetActivatesDefaultEntry sets whether pressing Enter in the @entry will
+	ResetImContext()
+	// SetActivatesDefault sets whether pressing Enter in the @entry will
 	// activate the default widget for the window containing the entry.
 	//
 	// This usually means that the dialog containing the entry will be closed,
 	// since the default widget is usually one of the dialog buttons.
-	SetActivatesDefaultEntry(setting bool)
-	// SetAlignmentEntry sets the alignment for the contents of the entry.
+	SetActivatesDefault(setting bool)
+	// SetAlignment sets the alignment for the contents of the entry.
 	//
 	// This controls the horizontal positioning of the contents when the
 	// displayed text is shorter than the width of the entry.
 	//
 	// See also: [property@Gtk.Editable:xalign]
-	SetAlignmentEntry(xalign float32)
-	// SetAttributesEntry sets a `PangoAttrList`.
+	SetAlignment(xalign float32)
+	// SetAttributes sets a `PangoAttrList`.
 	//
 	// The attributes in the list are applied to the entry text.
 	//
 	// Since the attributes will be applies to text that changes as the user
 	// types, it makes most sense to use attributes with unlimited extent.
-	SetAttributesEntry(attrs *pango.AttrList)
-	// SetBufferEntry: set the `GtkEntryBuffer` object which holds the text for
-	// this widget.
-	SetBufferEntry(buffer EntryBuffer)
-	// SetCompletionEntry sets @completion to be the auxiliary completion object
-	// to use with @entry.
+	SetAttributes(attrs *pango.AttrList)
+	// SetBuffer: set the `GtkEntryBuffer` object which holds the text for this
+	// widget.
+	SetBuffer(buffer EntryBuffer)
+	// SetCompletion sets @completion to be the auxiliary completion object to
+	// use with @entry.
 	//
 	// All further configuration of the completion mechanism is done on
 	// @completion using the `GtkEntryCompletion` API. Completion is disabled if
 	// @completion is set to nil.
-	SetCompletionEntry(completion EntryCompletion)
-	// SetExtraMenuEntry sets a menu model to add when constructing the context
-	// menu for @entry.
-	SetExtraMenuEntry(model gio.MenuModel)
-	// SetHasFrameEntry sets whether the entry has a beveled frame around it.
-	SetHasFrameEntry(setting bool)
-	// SetIconActivatableEntry sets whether the icon is activatable.
-	SetIconActivatableEntry(iconPos EntryIconPosition, activatable bool)
-	// SetIconDragSourceEntry sets up the icon at the given position as drag
-	// source.
+	SetCompletion(completion EntryCompletion)
+	// SetExtraMenu sets a menu model to add when constructing the context menu
+	// for @entry.
+	SetExtraMenu(model gio.MenuModel)
+	// SetHasFrame sets whether the entry has a beveled frame around it.
+	SetHasFrame(setting bool)
+	// SetIconActivatable sets whether the icon is activatable.
+	SetIconActivatable(iconPos EntryIconPosition, activatable bool)
+	// SetIconDragSource sets up the icon at the given position as drag source.
 	//
 	// This makes it so that GTK will start a drag operation when the user
 	// clicks and drags the icon.
-	SetIconDragSourceEntry(iconPos EntryIconPosition, provider gdk.ContentProvider, actions gdk.DragAction)
-	// SetIconFromIconNameEntry sets the icon shown in the entry at the
-	// specified position from the current icon theme.
+	SetIconDragSource(iconPos EntryIconPosition, provider gdk.ContentProvider, actions gdk.DragAction)
+	// SetIconFromIconName sets the icon shown in the entry at the specified
+	// position from the current icon theme.
 	//
 	// If the icon name isn’t known, a “broken image” icon will be displayed
 	// instead.
 	//
 	// If @icon_name is nil, no icon will be shown in the specified position.
-	SetIconFromIconNameEntry(iconPos EntryIconPosition, iconName string)
-	// SetIconSensitiveEntry sets the sensitivity for the specified icon.
-	SetIconSensitiveEntry(iconPos EntryIconPosition, sensitive bool)
-	// SetIconTooltipMarkupEntry sets @tooltip as the contents of the tooltip
-	// for the icon at the specified position.
+	SetIconFromIconName(iconPos EntryIconPosition, iconName string)
+	// SetIconSensitive sets the sensitivity for the specified icon.
+	SetIconSensitive(iconPos EntryIconPosition, sensitive bool)
+	// SetIconTooltipMarkup sets @tooltip as the contents of the tooltip for the
+	// icon at the specified position.
 	//
 	// @tooltip is assumed to be marked up with Pango Markup.
 	//
@@ -311,9 +309,9 @@ type Entry interface {
 	//
 	// See also [method@Gtk.Widget.set_tooltip_markup] and
 	// [method@Gtk.Entry.set_icon_tooltip_text].
-	SetIconTooltipMarkupEntry(iconPos EntryIconPosition, tooltip string)
-	// SetIconTooltipTextEntry sets @tooltip as the contents of the tooltip for
-	// the icon at the specified position.
+	SetIconTooltipMarkup(iconPos EntryIconPosition, tooltip string)
+	// SetIconTooltipText sets @tooltip as the contents of the tooltip for the
+	// icon at the specified position.
 	//
 	// Use nil for @tooltip to remove an existing tooltip.
 	//
@@ -327,23 +325,23 @@ type Entry interface {
 	// [method@Gtk.Widget.set_has_tooltip] to set
 	// [property@Gtk.Widget:has-tooltip] back to true, or setting at least one
 	// non-empty tooltip on any icon achieves the same result.
-	SetIconTooltipTextEntry(iconPos EntryIconPosition, tooltip string)
-	// SetInputHintsEntry: set additional hints which allow input methods to
+	SetIconTooltipText(iconPos EntryIconPosition, tooltip string)
+	// SetInputHints: set additional hints which allow input methods to
 	// fine-tune their behavior.
-	SetInputHintsEntry(hints InputHints)
-	// SetInputPurposeEntry sets the input purpose which can be used by input
-	// methods to adjust their behavior.
-	SetInputPurposeEntry(purpose InputPurpose)
-	// SetInvisibleCharEntry sets the character to use in place of the actual
-	// text in “password mode”.
+	SetInputHints(hints InputHints)
+	// SetInputPurpose sets the input purpose which can be used by input methods
+	// to adjust their behavior.
+	SetInputPurpose(purpose InputPurpose)
+	// SetInvisibleChar sets the character to use in place of the actual text in
+	// “password mode”.
 	//
 	// See [method@Gtk.Entry.set_visibility] for how to enable “password mode”.
 	//
 	// By default, GTK picks the best invisible char available in the current
 	// font. If you set the invisible char to 0, then the user will get no
 	// feedback at all; there will be no text on the screen as they type.
-	SetInvisibleCharEntry(ch uint32)
-	// SetMaxLengthEntry sets the maximum allowed length of the contents of the
+	SetInvisibleChar(ch uint32)
+	// SetMaxLength sets the maximum allowed length of the contents of the
 	// widget.
 	//
 	// If the current contents are longer than the given length, then they will
@@ -351,32 +349,30 @@ type Entry interface {
 	//
 	// This is equivalent to getting @entry's `GtkEntryBuffer` and calling
 	// [method@Gtk.EntryBuffer.set_max_length] on it.
-	SetMaxLengthEntry(max int)
-	// SetOverwriteModeEntry sets whether the text is overwritten when typing in
-	// the `GtkEntry`.
-	SetOverwriteModeEntry(overwrite bool)
-	// SetPlaceholderTextEntry sets text to be displayed in @entry when it is
-	// empty.
+	SetMaxLength(max int)
+	// SetOverwriteMode sets whether the text is overwritten when typing in the
+	// `GtkEntry`.
+	SetOverwriteMode(overwrite bool)
+	// SetPlaceholderText sets text to be displayed in @entry when it is empty.
 	//
 	// This can be used to give a visual hint of the expected contents of the
 	// `GtkEntry`.
-	SetPlaceholderTextEntry(text string)
-	// SetProgressFractionEntry causes the entry’s progress indicator to “fill
-	// in” the given fraction of the bar.
+	SetPlaceholderText(text string)
+	// SetProgressFraction causes the entry’s progress indicator to “fill in”
+	// the given fraction of the bar.
 	//
 	// The fraction should be between 0.0 and 1.0, inclusive.
-	SetProgressFractionEntry(fraction float64)
-	// SetProgressPulseStepEntry sets the fraction of total entry width to move
-	// the progress bouncing block for each pulse.
+	SetProgressFraction(fraction float64)
+	// SetProgressPulseStep sets the fraction of total entry width to move the
+	// progress bouncing block for each pulse.
 	//
 	// Use [method@Gtk.Entry.progress_pulse] to pulse the progress.
-	SetProgressPulseStepEntry(fraction float64)
-	// SetTabsEntry sets a `PangoTabArray`.
+	SetProgressPulseStep(fraction float64)
+	// SetTabs sets a `PangoTabArray`.
 	//
 	// The tabstops in the array are applied to the entry text.
-	SetTabsEntry(tabs *pango.TabArray)
-	// SetVisibilityEntry sets whether the contents of the entry are visible or
-	// not.
+	SetTabs(tabs *pango.TabArray)
+	// SetVisibility sets whether the contents of the entry are visible or not.
 	//
 	// When visibility is set to false, characters are displayed as the
 	// invisible char, and will also appear that way when the text in the entry
@@ -390,10 +386,10 @@ type Entry interface {
 	// GTK_INPUT_PURPOSE_PASSWORD or GTK_INPUT_PURPOSE_PIN to inform input
 	// methods about the purpose of this entry, in addition to setting
 	// visibility to false.
-	SetVisibilityEntry(visible bool)
-	// UnsetInvisibleCharEntry unsets the invisible char, so that the default
+	SetVisibility(visible bool)
+	// UnsetInvisibleChar unsets the invisible char, so that the default
 	// invisible char is used again. See [method@Gtk.Entry.set_invisible_char].
-	UnsetInvisibleCharEntry()
+	UnsetInvisibleChar()
 }
 
 // entry implements the Entry class.
@@ -442,6 +438,26 @@ func NewEntryWithBuffer(buffer EntryBuffer) Entry {
 	_entry = WrapEntry(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _entry
+}
+
+func (e entry) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(e))
+}
+
+func (e entry) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(e))
+}
+
+func (e entry) AsCellEditable() CellEditable {
+	return WrapCellEditable(gextras.InternObject(e))
+}
+
+func (e entry) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(e))
+}
+
+func (e entry) AsEditable() Editable {
+	return WrapEditable(gextras.InternObject(e))
 }
 
 func (e entry) ActivatesDefault() bool {
@@ -895,7 +911,7 @@ func (e entry) Visibility() bool {
 	return _ok
 }
 
-func (e entry) GrabFocusWithoutSelectingEntry() bool {
+func (e entry) GrabFocusWithoutSelecting() bool {
 	var _arg0 *C.GtkEntry // out
 	var _cret C.gboolean  // in
 
@@ -912,7 +928,7 @@ func (e entry) GrabFocusWithoutSelectingEntry() bool {
 	return _ok
 }
 
-func (e entry) ProgressPulseEntry() {
+func (e entry) ProgressPulse() {
 	var _arg0 *C.GtkEntry // out
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
@@ -920,7 +936,7 @@ func (e entry) ProgressPulseEntry() {
 	C.gtk_entry_progress_pulse(_arg0)
 }
 
-func (e entry) ResetImContextEntry() {
+func (e entry) ResetImContext() {
 	var _arg0 *C.GtkEntry // out
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
@@ -928,7 +944,7 @@ func (e entry) ResetImContextEntry() {
 	C.gtk_entry_reset_im_context(_arg0)
 }
 
-func (e entry) SetActivatesDefaultEntry(setting bool) {
+func (e entry) SetActivatesDefault(setting bool) {
 	var _arg0 *C.GtkEntry // out
 	var _arg1 C.gboolean  // out
 
@@ -940,7 +956,7 @@ func (e entry) SetActivatesDefaultEntry(setting bool) {
 	C.gtk_entry_set_activates_default(_arg0, _arg1)
 }
 
-func (e entry) SetAlignmentEntry(xalign float32) {
+func (e entry) SetAlignment(xalign float32) {
 	var _arg0 *C.GtkEntry // out
 	var _arg1 C.float     // out
 
@@ -950,7 +966,7 @@ func (e entry) SetAlignmentEntry(xalign float32) {
 	C.gtk_entry_set_alignment(_arg0, _arg1)
 }
 
-func (e entry) SetAttributesEntry(attrs *pango.AttrList) {
+func (e entry) SetAttributes(attrs *pango.AttrList) {
 	var _arg0 *C.GtkEntry      // out
 	var _arg1 *C.PangoAttrList // out
 
@@ -960,7 +976,7 @@ func (e entry) SetAttributesEntry(attrs *pango.AttrList) {
 	C.gtk_entry_set_attributes(_arg0, _arg1)
 }
 
-func (e entry) SetBufferEntry(buffer EntryBuffer) {
+func (e entry) SetBuffer(buffer EntryBuffer) {
 	var _arg0 *C.GtkEntry       // out
 	var _arg1 *C.GtkEntryBuffer // out
 
@@ -970,7 +986,7 @@ func (e entry) SetBufferEntry(buffer EntryBuffer) {
 	C.gtk_entry_set_buffer(_arg0, _arg1)
 }
 
-func (e entry) SetCompletionEntry(completion EntryCompletion) {
+func (e entry) SetCompletion(completion EntryCompletion) {
 	var _arg0 *C.GtkEntry           // out
 	var _arg1 *C.GtkEntryCompletion // out
 
@@ -980,7 +996,7 @@ func (e entry) SetCompletionEntry(completion EntryCompletion) {
 	C.gtk_entry_set_completion(_arg0, _arg1)
 }
 
-func (e entry) SetExtraMenuEntry(model gio.MenuModel) {
+func (e entry) SetExtraMenu(model gio.MenuModel) {
 	var _arg0 *C.GtkEntry   // out
 	var _arg1 *C.GMenuModel // out
 
@@ -990,7 +1006,7 @@ func (e entry) SetExtraMenuEntry(model gio.MenuModel) {
 	C.gtk_entry_set_extra_menu(_arg0, _arg1)
 }
 
-func (e entry) SetHasFrameEntry(setting bool) {
+func (e entry) SetHasFrame(setting bool) {
 	var _arg0 *C.GtkEntry // out
 	var _arg1 C.gboolean  // out
 
@@ -1002,7 +1018,7 @@ func (e entry) SetHasFrameEntry(setting bool) {
 	C.gtk_entry_set_has_frame(_arg0, _arg1)
 }
 
-func (e entry) SetIconActivatableEntry(iconPos EntryIconPosition, activatable bool) {
+func (e entry) SetIconActivatable(iconPos EntryIconPosition, activatable bool) {
 	var _arg0 *C.GtkEntry            // out
 	var _arg1 C.GtkEntryIconPosition // out
 	var _arg2 C.gboolean             // out
@@ -1016,7 +1032,7 @@ func (e entry) SetIconActivatableEntry(iconPos EntryIconPosition, activatable bo
 	C.gtk_entry_set_icon_activatable(_arg0, _arg1, _arg2)
 }
 
-func (e entry) SetIconDragSourceEntry(iconPos EntryIconPosition, provider gdk.ContentProvider, actions gdk.DragAction) {
+func (e entry) SetIconDragSource(iconPos EntryIconPosition, provider gdk.ContentProvider, actions gdk.DragAction) {
 	var _arg0 *C.GtkEntry            // out
 	var _arg1 C.GtkEntryIconPosition // out
 	var _arg2 *C.GdkContentProvider  // out
@@ -1030,7 +1046,7 @@ func (e entry) SetIconDragSourceEntry(iconPos EntryIconPosition, provider gdk.Co
 	C.gtk_entry_set_icon_drag_source(_arg0, _arg1, _arg2, _arg3)
 }
 
-func (e entry) SetIconFromIconNameEntry(iconPos EntryIconPosition, iconName string) {
+func (e entry) SetIconFromIconName(iconPos EntryIconPosition, iconName string) {
 	var _arg0 *C.GtkEntry            // out
 	var _arg1 C.GtkEntryIconPosition // out
 	var _arg2 *C.char                // out
@@ -1043,7 +1059,7 @@ func (e entry) SetIconFromIconNameEntry(iconPos EntryIconPosition, iconName stri
 	C.gtk_entry_set_icon_from_icon_name(_arg0, _arg1, _arg2)
 }
 
-func (e entry) SetIconSensitiveEntry(iconPos EntryIconPosition, sensitive bool) {
+func (e entry) SetIconSensitive(iconPos EntryIconPosition, sensitive bool) {
 	var _arg0 *C.GtkEntry            // out
 	var _arg1 C.GtkEntryIconPosition // out
 	var _arg2 C.gboolean             // out
@@ -1057,7 +1073,7 @@ func (e entry) SetIconSensitiveEntry(iconPos EntryIconPosition, sensitive bool) 
 	C.gtk_entry_set_icon_sensitive(_arg0, _arg1, _arg2)
 }
 
-func (e entry) SetIconTooltipMarkupEntry(iconPos EntryIconPosition, tooltip string) {
+func (e entry) SetIconTooltipMarkup(iconPos EntryIconPosition, tooltip string) {
 	var _arg0 *C.GtkEntry            // out
 	var _arg1 C.GtkEntryIconPosition // out
 	var _arg2 *C.char                // out
@@ -1070,7 +1086,7 @@ func (e entry) SetIconTooltipMarkupEntry(iconPos EntryIconPosition, tooltip stri
 	C.gtk_entry_set_icon_tooltip_markup(_arg0, _arg1, _arg2)
 }
 
-func (e entry) SetIconTooltipTextEntry(iconPos EntryIconPosition, tooltip string) {
+func (e entry) SetIconTooltipText(iconPos EntryIconPosition, tooltip string) {
 	var _arg0 *C.GtkEntry            // out
 	var _arg1 C.GtkEntryIconPosition // out
 	var _arg2 *C.char                // out
@@ -1083,7 +1099,7 @@ func (e entry) SetIconTooltipTextEntry(iconPos EntryIconPosition, tooltip string
 	C.gtk_entry_set_icon_tooltip_text(_arg0, _arg1, _arg2)
 }
 
-func (e entry) SetInputHintsEntry(hints InputHints) {
+func (e entry) SetInputHints(hints InputHints) {
 	var _arg0 *C.GtkEntry     // out
 	var _arg1 C.GtkInputHints // out
 
@@ -1093,7 +1109,7 @@ func (e entry) SetInputHintsEntry(hints InputHints) {
 	C.gtk_entry_set_input_hints(_arg0, _arg1)
 }
 
-func (e entry) SetInputPurposeEntry(purpose InputPurpose) {
+func (e entry) SetInputPurpose(purpose InputPurpose) {
 	var _arg0 *C.GtkEntry       // out
 	var _arg1 C.GtkInputPurpose // out
 
@@ -1103,7 +1119,7 @@ func (e entry) SetInputPurposeEntry(purpose InputPurpose) {
 	C.gtk_entry_set_input_purpose(_arg0, _arg1)
 }
 
-func (e entry) SetInvisibleCharEntry(ch uint32) {
+func (e entry) SetInvisibleChar(ch uint32) {
 	var _arg0 *C.GtkEntry // out
 	var _arg1 C.gunichar  // out
 
@@ -1113,7 +1129,7 @@ func (e entry) SetInvisibleCharEntry(ch uint32) {
 	C.gtk_entry_set_invisible_char(_arg0, _arg1)
 }
 
-func (e entry) SetMaxLengthEntry(max int) {
+func (e entry) SetMaxLength(max int) {
 	var _arg0 *C.GtkEntry // out
 	var _arg1 C.int       // out
 
@@ -1123,7 +1139,7 @@ func (e entry) SetMaxLengthEntry(max int) {
 	C.gtk_entry_set_max_length(_arg0, _arg1)
 }
 
-func (e entry) SetOverwriteModeEntry(overwrite bool) {
+func (e entry) SetOverwriteMode(overwrite bool) {
 	var _arg0 *C.GtkEntry // out
 	var _arg1 C.gboolean  // out
 
@@ -1135,7 +1151,7 @@ func (e entry) SetOverwriteModeEntry(overwrite bool) {
 	C.gtk_entry_set_overwrite_mode(_arg0, _arg1)
 }
 
-func (e entry) SetPlaceholderTextEntry(text string) {
+func (e entry) SetPlaceholderText(text string) {
 	var _arg0 *C.GtkEntry // out
 	var _arg1 *C.char     // out
 
@@ -1146,7 +1162,7 @@ func (e entry) SetPlaceholderTextEntry(text string) {
 	C.gtk_entry_set_placeholder_text(_arg0, _arg1)
 }
 
-func (e entry) SetProgressFractionEntry(fraction float64) {
+func (e entry) SetProgressFraction(fraction float64) {
 	var _arg0 *C.GtkEntry // out
 	var _arg1 C.double    // out
 
@@ -1156,7 +1172,7 @@ func (e entry) SetProgressFractionEntry(fraction float64) {
 	C.gtk_entry_set_progress_fraction(_arg0, _arg1)
 }
 
-func (e entry) SetProgressPulseStepEntry(fraction float64) {
+func (e entry) SetProgressPulseStep(fraction float64) {
 	var _arg0 *C.GtkEntry // out
 	var _arg1 C.double    // out
 
@@ -1166,7 +1182,7 @@ func (e entry) SetProgressPulseStepEntry(fraction float64) {
 	C.gtk_entry_set_progress_pulse_step(_arg0, _arg1)
 }
 
-func (e entry) SetTabsEntry(tabs *pango.TabArray) {
+func (e entry) SetTabs(tabs *pango.TabArray) {
 	var _arg0 *C.GtkEntry      // out
 	var _arg1 *C.PangoTabArray // out
 
@@ -1176,7 +1192,7 @@ func (e entry) SetTabsEntry(tabs *pango.TabArray) {
 	C.gtk_entry_set_tabs(_arg0, _arg1)
 }
 
-func (e entry) SetVisibilityEntry(visible bool) {
+func (e entry) SetVisibility(visible bool) {
 	var _arg0 *C.GtkEntry // out
 	var _arg1 C.gboolean  // out
 
@@ -1188,30 +1204,10 @@ func (e entry) SetVisibilityEntry(visible bool) {
 	C.gtk_entry_set_visibility(_arg0, _arg1)
 }
 
-func (e entry) UnsetInvisibleCharEntry() {
+func (e entry) UnsetInvisibleChar() {
 	var _arg0 *C.GtkEntry // out
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 
 	C.gtk_entry_unset_invisible_char(_arg0)
-}
-
-func (e entry) AsAccessible() Accessible {
-	return WrapAccessible(gextras.InternObject(e))
-}
-
-func (e entry) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(e))
-}
-
-func (e entry) AsCellEditable() CellEditable {
-	return WrapCellEditable(gextras.InternObject(e))
-}
-
-func (e entry) AsConstraintTarget() ConstraintTarget {
-	return WrapConstraintTarget(gextras.InternObject(e))
-}
-
-func (e entry) AsEditable() Editable {
-	return WrapEditable(gextras.InternObject(e))
 }

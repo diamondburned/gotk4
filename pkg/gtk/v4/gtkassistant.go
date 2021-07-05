@@ -146,12 +146,11 @@ type Assistant interface {
 	// AsShortcutManager casts the class to the ShortcutManager interface.
 	AsShortcutManager() ShortcutManager
 
-	// AddActionWidgetAssistant adds a widget to the action area of a
-	// `GtkAssistant`.
-	AddActionWidgetAssistant(child Widget)
-	// AppendPageAssistant appends a page to the @assistant.
-	AppendPageAssistant(page Widget) int
-	// CommitAssistant erases the visited page history.
+	// AddActionWidget adds a widget to the action area of a `GtkAssistant`.
+	AddActionWidget(child Widget)
+	// AppendPage appends a page to the @assistant.
+	AppendPage(page Widget) int
+	// Commit erases the visited page history.
 	//
 	// GTK will then hide the back button on the current page, and removes the
 	// cancel button from subsequent pages.
@@ -160,7 +159,7 @@ type Assistant interface {
 	// hereafter deemed permanent and cannot be modified or undone. For example,
 	// showing a progress page to track a long-running, unreversible operation
 	// after the user has clicked apply on a confirmation page.
-	CommitAssistant()
+	Commit()
 	// CurrentPage returns the page number of the current page.
 	CurrentPage() int
 	// NPages returns the number of pages in the @assistant
@@ -175,52 +174,51 @@ type Assistant interface {
 	PageTitle(page Widget) string
 	// PageType gets the page type of @page.
 	PageType(page Widget) AssistantPageType
-	// InsertPageAssistant inserts a page in the @assistant at a given position.
-	InsertPageAssistant(page Widget, position int) int
-	// NextPageAssistant: navigate to the next page.
+	// InsertPage inserts a page in the @assistant at a given position.
+	InsertPage(page Widget, position int) int
+	// NextPage: navigate to the next page.
 	//
 	// It is a programming error to call this function when there is no next
 	// page.
 	//
 	// This function is for use when creating pages of the
 	// GTK_ASSISTANT_PAGE_CUSTOM type.
-	NextPageAssistant()
-	// PrependPageAssistant prepends a page to the @assistant.
-	PrependPageAssistant(page Widget) int
-	// PreviousPageAssistant: navigate to the previous visited page.
+	NextPage()
+	// PrependPage prepends a page to the @assistant.
+	PrependPage(page Widget) int
+	// PreviousPage: navigate to the previous visited page.
 	//
 	// It is a programming error to call this function when no previous page is
 	// available.
 	//
 	// This function is for use when creating pages of the
 	// GTK_ASSISTANT_PAGE_CUSTOM type.
-	PreviousPageAssistant()
-	// RemoveActionWidgetAssistant removes a widget from the action area of a
+	PreviousPage()
+	// RemoveActionWidget removes a widget from the action area of a
 	// `GtkAssistant`.
-	RemoveActionWidgetAssistant(child Widget)
-	// RemovePageAssistant removes the @page_num’s page from @assistant.
-	RemovePageAssistant(pageNum int)
-	// SetCurrentPageAssistant switches the page to @page_num.
+	RemoveActionWidget(child Widget)
+	// RemovePage removes the @page_num’s page from @assistant.
+	RemovePage(pageNum int)
+	// SetCurrentPage switches the page to @page_num.
 	//
 	// Note that this will only be necessary in custom buttons, as the
 	// @assistant flow can be set with gtk_assistant_set_forward_page_func().
-	SetCurrentPageAssistant(pageNum int)
-	// SetPageCompleteAssistant sets whether @page contents are complete.
+	SetCurrentPage(pageNum int)
+	// SetPageComplete sets whether @page contents are complete.
 	//
 	// This will make @assistant update the buttons state to be able to continue
 	// the task.
-	SetPageCompleteAssistant(page Widget, complete bool)
-	// SetPageTitleAssistant sets a title for @page.
+	SetPageComplete(page Widget, complete bool)
+	// SetPageTitle sets a title for @page.
 	//
 	// The title is displayed in the header area of the assistant when @page is
 	// the current page.
-	SetPageTitleAssistant(page Widget, title string)
-	// SetPageTypeAssistant sets the page type for @page.
+	SetPageTitle(page Widget, title string)
+	// SetPageType sets the page type for @page.
 	//
 	// The page type determines the page behavior in the @assistant.
-	SetPageTypeAssistant(page Widget, typ AssistantPageType)
-	// UpdateButtonsStateAssistant forces @assistant to recompute the buttons
-	// state.
+	SetPageType(page Widget, typ AssistantPageType)
+	// UpdateButtonsState forces @assistant to recompute the buttons state.
 	//
 	// GTK automatically takes care of this in most situations, e.g. when the
 	// user goes to a different page, or when the visibility or completeness of
@@ -229,7 +227,7 @@ type Assistant interface {
 	// One situation where it can be necessary to call this function is when
 	// changing a value on the current page affects the future page flow of the
 	// assistant.
-	UpdateButtonsStateAssistant()
+	UpdateButtonsState()
 }
 
 // assistant implements the Assistant class.
@@ -264,7 +262,31 @@ func NewAssistant() Assistant {
 	return _assistant
 }
 
-func (a assistant) AddActionWidgetAssistant(child Widget) {
+func (a assistant) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(a))
+}
+
+func (a assistant) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(a))
+}
+
+func (a assistant) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(a))
+}
+
+func (a assistant) AsNative() Native {
+	return WrapNative(gextras.InternObject(a))
+}
+
+func (a assistant) AsRoot() Root {
+	return WrapRoot(gextras.InternObject(a))
+}
+
+func (a assistant) AsShortcutManager() ShortcutManager {
+	return WrapShortcutManager(gextras.InternObject(a))
+}
+
+func (a assistant) AddActionWidget(child Widget) {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 *C.GtkWidget    // out
 
@@ -274,7 +296,7 @@ func (a assistant) AddActionWidgetAssistant(child Widget) {
 	C.gtk_assistant_add_action_widget(_arg0, _arg1)
 }
 
-func (a assistant) AppendPageAssistant(page Widget) int {
+func (a assistant) AppendPage(page Widget) int {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 *C.GtkWidget    // out
 	var _cret C.int           // in
@@ -291,7 +313,7 @@ func (a assistant) AppendPageAssistant(page Widget) int {
 	return _gint
 }
 
-func (a assistant) CommitAssistant() {
+func (a assistant) Commit() {
 	var _arg0 *C.GtkAssistant // out
 
 	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(a.Native()))
@@ -416,7 +438,7 @@ func (a assistant) PageType(page Widget) AssistantPageType {
 	return _assistantPageType
 }
 
-func (a assistant) InsertPageAssistant(page Widget, position int) int {
+func (a assistant) InsertPage(page Widget, position int) int {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 *C.GtkWidget    // out
 	var _arg2 C.int           // out
@@ -435,7 +457,7 @@ func (a assistant) InsertPageAssistant(page Widget, position int) int {
 	return _gint
 }
 
-func (a assistant) NextPageAssistant() {
+func (a assistant) NextPage() {
 	var _arg0 *C.GtkAssistant // out
 
 	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(a.Native()))
@@ -443,7 +465,7 @@ func (a assistant) NextPageAssistant() {
 	C.gtk_assistant_next_page(_arg0)
 }
 
-func (a assistant) PrependPageAssistant(page Widget) int {
+func (a assistant) PrependPage(page Widget) int {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 *C.GtkWidget    // out
 	var _cret C.int           // in
@@ -460,7 +482,7 @@ func (a assistant) PrependPageAssistant(page Widget) int {
 	return _gint
 }
 
-func (a assistant) PreviousPageAssistant() {
+func (a assistant) PreviousPage() {
 	var _arg0 *C.GtkAssistant // out
 
 	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(a.Native()))
@@ -468,7 +490,7 @@ func (a assistant) PreviousPageAssistant() {
 	C.gtk_assistant_previous_page(_arg0)
 }
 
-func (a assistant) RemoveActionWidgetAssistant(child Widget) {
+func (a assistant) RemoveActionWidget(child Widget) {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 *C.GtkWidget    // out
 
@@ -478,7 +500,7 @@ func (a assistant) RemoveActionWidgetAssistant(child Widget) {
 	C.gtk_assistant_remove_action_widget(_arg0, _arg1)
 }
 
-func (a assistant) RemovePageAssistant(pageNum int) {
+func (a assistant) RemovePage(pageNum int) {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 C.int           // out
 
@@ -488,7 +510,7 @@ func (a assistant) RemovePageAssistant(pageNum int) {
 	C.gtk_assistant_remove_page(_arg0, _arg1)
 }
 
-func (a assistant) SetCurrentPageAssistant(pageNum int) {
+func (a assistant) SetCurrentPage(pageNum int) {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 C.int           // out
 
@@ -498,7 +520,7 @@ func (a assistant) SetCurrentPageAssistant(pageNum int) {
 	C.gtk_assistant_set_current_page(_arg0, _arg1)
 }
 
-func (a assistant) SetPageCompleteAssistant(page Widget, complete bool) {
+func (a assistant) SetPageComplete(page Widget, complete bool) {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 *C.GtkWidget    // out
 	var _arg2 C.gboolean      // out
@@ -512,7 +534,7 @@ func (a assistant) SetPageCompleteAssistant(page Widget, complete bool) {
 	C.gtk_assistant_set_page_complete(_arg0, _arg1, _arg2)
 }
 
-func (a assistant) SetPageTitleAssistant(page Widget, title string) {
+func (a assistant) SetPageTitle(page Widget, title string) {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 *C.GtkWidget    // out
 	var _arg2 *C.char         // out
@@ -525,7 +547,7 @@ func (a assistant) SetPageTitleAssistant(page Widget, title string) {
 	C.gtk_assistant_set_page_title(_arg0, _arg1, _arg2)
 }
 
-func (a assistant) SetPageTypeAssistant(page Widget, typ AssistantPageType) {
+func (a assistant) SetPageType(page Widget, typ AssistantPageType) {
 	var _arg0 *C.GtkAssistant        // out
 	var _arg1 *C.GtkWidget           // out
 	var _arg2 C.GtkAssistantPageType // out
@@ -537,36 +559,12 @@ func (a assistant) SetPageTypeAssistant(page Widget, typ AssistantPageType) {
 	C.gtk_assistant_set_page_type(_arg0, _arg1, _arg2)
 }
 
-func (a assistant) UpdateButtonsStateAssistant() {
+func (a assistant) UpdateButtonsState() {
 	var _arg0 *C.GtkAssistant // out
 
 	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(a.Native()))
 
 	C.gtk_assistant_update_buttons_state(_arg0)
-}
-
-func (a assistant) AsAccessible() Accessible {
-	return WrapAccessible(gextras.InternObject(a))
-}
-
-func (a assistant) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(a))
-}
-
-func (a assistant) AsConstraintTarget() ConstraintTarget {
-	return WrapConstraintTarget(gextras.InternObject(a))
-}
-
-func (a assistant) AsNative() Native {
-	return WrapNative(gextras.InternObject(a))
-}
-
-func (a assistant) AsRoot() Root {
-	return WrapRoot(gextras.InternObject(a))
-}
-
-func (a assistant) AsShortcutManager() ShortcutManager {
-	return WrapShortcutManager(gextras.InternObject(a))
 }
 
 // AssistantPage: `GtkAssistantPage` is an auxiliary object used by

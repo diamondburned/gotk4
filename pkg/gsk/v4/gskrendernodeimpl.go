@@ -2159,8 +2159,8 @@ type TextNode interface {
 	NumGlyphs() uint
 	// Offset retrieves the offset applied to the text.
 	Offset() *graphene.Point
-	// HasColorGlyphsTextNode checks whether the text @node has color glyphs.
-	HasColorGlyphsTextNode() bool
+	// HasColorGlyphs checks whether the text @node has color glyphs.
+	HasColorGlyphs() bool
 }
 
 // textNode implements the TextNode class.
@@ -2266,7 +2266,7 @@ func (n textNode) Offset() *graphene.Point {
 	return _point
 }
 
-func (n textNode) HasColorGlyphsTextNode() bool {
+func (n textNode) HasColorGlyphs() bool {
 	var _arg0 *C.GskRenderNode // out
 	var _cret C.gboolean       // in
 

@@ -44,14 +44,14 @@ type ActionBar interface {
 
 	// CenterWidget retrieves the center bar widget of the bar.
 	CenterWidget() Widget
-	// PackEndActionBar adds @child to @action_bar, packed with reference to the
-	// end of the @action_bar.
-	PackEndActionBar(child Widget)
-	// PackStartActionBar adds @child to @action_bar, packed with reference to
-	// the start of the @action_bar.
-	PackStartActionBar(child Widget)
-	// SetCenterWidgetActionBar sets the center widget for the ActionBar.
-	SetCenterWidgetActionBar(centerWidget Widget)
+	// PackEnd adds @child to @action_bar, packed with reference to the end of
+	// the @action_bar.
+	PackEnd(child Widget)
+	// PackStart adds @child to @action_bar, packed with reference to the start
+	// of the @action_bar.
+	PackStart(child Widget)
+	// SetCenterWidget sets the center widget for the ActionBar.
+	SetCenterWidget(centerWidget Widget)
 }
 
 // actionBar implements the ActionBar class.
@@ -86,6 +86,10 @@ func NewActionBar() ActionBar {
 	return _actionBar
 }
 
+func (a actionBar) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(a))
+}
+
 func (a actionBar) CenterWidget() Widget {
 	var _arg0 *C.GtkActionBar // out
 	var _cret *C.GtkWidget    // in
@@ -101,7 +105,7 @@ func (a actionBar) CenterWidget() Widget {
 	return _widget
 }
 
-func (a actionBar) PackEndActionBar(child Widget) {
+func (a actionBar) PackEnd(child Widget) {
 	var _arg0 *C.GtkActionBar // out
 	var _arg1 *C.GtkWidget    // out
 
@@ -111,7 +115,7 @@ func (a actionBar) PackEndActionBar(child Widget) {
 	C.gtk_action_bar_pack_end(_arg0, _arg1)
 }
 
-func (a actionBar) PackStartActionBar(child Widget) {
+func (a actionBar) PackStart(child Widget) {
 	var _arg0 *C.GtkActionBar // out
 	var _arg1 *C.GtkWidget    // out
 
@@ -121,7 +125,7 @@ func (a actionBar) PackStartActionBar(child Widget) {
 	C.gtk_action_bar_pack_start(_arg0, _arg1)
 }
 
-func (a actionBar) SetCenterWidgetActionBar(centerWidget Widget) {
+func (a actionBar) SetCenterWidget(centerWidget Widget) {
 	var _arg0 *C.GtkActionBar // out
 	var _arg1 *C.GtkWidget    // out
 
@@ -129,8 +133,4 @@ func (a actionBar) SetCenterWidgetActionBar(centerWidget Widget) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(centerWidget.Native()))
 
 	C.gtk_action_bar_set_center_widget(_arg0, _arg1)
-}
-
-func (a actionBar) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(a))
 }

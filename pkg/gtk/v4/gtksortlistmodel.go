@@ -57,8 +57,7 @@ type SortListModel interface {
 	Pending() uint
 	// Sorter gets the sorter that is used to sort @self.
 	Sorter() Sorter
-	// SetIncrementalSortListModel sets the sort model to do an incremental
-	// sort.
+	// SetIncremental sets the sort model to do an incremental sort.
 	//
 	// When incremental sorting is enabled, the `GtkSortListModel` will not do a
 	// complete sort immediately, but will instead queue an idle handler that
@@ -74,9 +73,9 @@ type SortListModel interface {
 	//
 	// See [method@Gtk.SortListModel.get_pending] for progress information about
 	// an ongoing incremental sorting operation.
-	SetIncrementalSortListModel(incremental bool)
-	// SetSorterSortListModel sets a new sorter on @self.
-	SetSorterSortListModel(sorter Sorter)
+	SetIncremental(incremental bool)
+	// SetSorter sets a new sorter on @self.
+	SetSorter(sorter Sorter)
 }
 
 // sortListModel implements the SortListModel class.
@@ -145,7 +144,7 @@ func (s sortListModel) Sorter() Sorter {
 	return _sorter
 }
 
-func (s sortListModel) SetIncrementalSortListModel(incremental bool) {
+func (s sortListModel) SetIncremental(incremental bool) {
 	var _arg0 *C.GtkSortListModel // out
 	var _arg1 C.gboolean          // out
 
@@ -157,7 +156,7 @@ func (s sortListModel) SetIncrementalSortListModel(incremental bool) {
 	C.gtk_sort_list_model_set_incremental(_arg0, _arg1)
 }
 
-func (s sortListModel) SetSorterSortListModel(sorter Sorter) {
+func (s sortListModel) SetSorter(sorter Sorter) {
 	var _arg0 *C.GtkSortListModel // out
 	var _arg1 *C.GtkSorter        // out
 

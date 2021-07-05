@@ -54,7 +54,7 @@ func marshalDragCancelReason(p uintptr) (interface{}, error) {
 type Drag interface {
 	gextras.Objector
 
-	// DropDoneDrag informs GDK that the drop ended.
+	// DropDone informs GDK that the drop ended.
 	//
 	// Passing false for @success may trigger a drag cancellation animation.
 	//
@@ -64,7 +64,7 @@ type Drag interface {
 	// The `GdkDrag` will only take the first [method@Gdk.Drag.drop_done] call
 	// as effective, if this function is called multiple times, all subsequent
 	// calls will be ignored.
-	DropDoneDrag(success bool)
+	DropDone(success bool)
 	// Actions determines the bitmask of possible actions proposed by the
 	// source.
 	Actions() DragAction
@@ -89,11 +89,11 @@ type Drag interface {
 	SelectedAction() DragAction
 	// Surface returns the `GdkSurface` where the drag originates.
 	Surface() Surface
-	// SetHotspotDrag sets the position of the drag surface that will be kept
-	// under the cursor hotspot.
+	// SetHotspot sets the position of the drag surface that will be kept under
+	// the cursor hotspot.
 	//
 	// Initially, the hotspot is at the top left corner of the drag surface.
-	SetHotspotDrag(hotX int, hotY int)
+	SetHotspot(hotX int, hotY int)
 }
 
 // drag implements the Drag class.
@@ -115,7 +115,7 @@ func marshalDrag(p uintptr) (interface{}, error) {
 	return WrapDrag(obj), nil
 }
 
-func (d drag) DropDoneDrag(success bool) {
+func (d drag) DropDone(success bool) {
 	var _arg0 *C.GdkDrag // out
 	var _arg1 C.gboolean // out
 
@@ -251,7 +251,7 @@ func (d drag) Surface() Surface {
 	return _surface
 }
 
-func (d drag) SetHotspotDrag(hotX int, hotY int) {
+func (d drag) SetHotspot(hotX int, hotY int) {
 	var _arg0 *C.GdkDrag // out
 	var _arg1 C.int      // out
 	var _arg2 C.int      // out

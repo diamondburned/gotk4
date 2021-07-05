@@ -151,47 +151,46 @@ type TreeModelFilter interface {
 	// AsTreeModel casts the class to the TreeModel interface.
 	AsTreeModel() TreeModel
 
-	// ClearCacheTreeModelFilter: this function should almost never be called.
-	// It clears the @filter of any cached iterators that haven’t been reffed
-	// with gtk_tree_model_ref_node(). This might be useful if the child model
-	// being filtered is static (and doesn’t change often) and there has been a
-	// lot of unreffed access to nodes. As a side effect of this function, all
-	// unreffed iters will be invalid.
-	ClearCacheTreeModelFilter()
-	// ConvertChildIterToIterTreeModelFilter sets @filter_iter to point to the
-	// row in @filter that corresponds to the row pointed at by @child_iter. If
-	// @filter_iter was not set, false is returned.
-	ConvertChildIterToIterTreeModelFilter(childIter *TreeIter) (TreeIter, bool)
-	// ConvertChildPathToPathTreeModelFilter converts @child_path to a path
-	// relative to @filter. That is, @child_path points to a path in the child
-	// model. The rerturned path will point to the same row in the filtered
-	// model. If @child_path isn’t a valid path on the child model or points to
-	// a row which is not visible in @filter, then nil is returned.
-	ConvertChildPathToPathTreeModelFilter(childPath *TreePath) *TreePath
-	// ConvertIterToChildIterTreeModelFilter sets @child_iter to point to the
-	// row pointed to by @filter_iter.
-	ConvertIterToChildIterTreeModelFilter(filterIter *TreeIter) TreeIter
-	// ConvertPathToChildPathTreeModelFilter converts @filter_path to a path on
-	// the child model of @filter. That is, @filter_path points to a location in
-	// @filter. The returned path will point to the same location in the model
-	// not being filtered. If @filter_path does not point to a location in the
-	// child model, nil is returned.
-	ConvertPathToChildPathTreeModelFilter(filterPath *TreePath) *TreePath
+	// ClearCache: this function should almost never be called. It clears the
+	// @filter of any cached iterators that haven’t been reffed with
+	// gtk_tree_model_ref_node(). This might be useful if the child model being
+	// filtered is static (and doesn’t change often) and there has been a lot of
+	// unreffed access to nodes. As a side effect of this function, all unreffed
+	// iters will be invalid.
+	ClearCache()
+	// ConvertChildIterToIter sets @filter_iter to point to the row in @filter
+	// that corresponds to the row pointed at by @child_iter. If @filter_iter
+	// was not set, false is returned.
+	ConvertChildIterToIter(childIter *TreeIter) (TreeIter, bool)
+	// ConvertChildPathToPath converts @child_path to a path relative to
+	// @filter. That is, @child_path points to a path in the child model. The
+	// rerturned path will point to the same row in the filtered model. If
+	// @child_path isn’t a valid path on the child model or points to a row
+	// which is not visible in @filter, then nil is returned.
+	ConvertChildPathToPath(childPath *TreePath) *TreePath
+	// ConvertIterToChildIter sets @child_iter to point to the row pointed to by
+	// @filter_iter.
+	ConvertIterToChildIter(filterIter *TreeIter) TreeIter
+	// ConvertPathToChildPath converts @filter_path to a path on the child model
+	// of @filter. That is, @filter_path points to a location in @filter. The
+	// returned path will point to the same location in the model not being
+	// filtered. If @filter_path does not point to a location in the child
+	// model, nil is returned.
+	ConvertPathToChildPath(filterPath *TreePath) *TreePath
 	// Model returns a pointer to the child model of @filter.
 	Model() TreeModel
-	// RefilterTreeModelFilter emits ::row_changed for each row in the child
-	// model, which causes the filter to re-evaluate whether a row is visible or
-	// not.
-	RefilterTreeModelFilter()
-	// SetVisibleColumnTreeModelFilter sets @column of the child_model to be the
-	// column where @filter should look for visibility information. @columns
-	// should be a column of type G_TYPE_BOOLEAN, where true means that a row is
-	// visible, and false if not.
+	// Refilter emits ::row_changed for each row in the child model, which
+	// causes the filter to re-evaluate whether a row is visible or not.
+	Refilter()
+	// SetVisibleColumn sets @column of the child_model to be the column where
+	// @filter should look for visibility information. @columns should be a
+	// column of type G_TYPE_BOOLEAN, where true means that a row is visible,
+	// and false if not.
 	//
 	// Note that gtk_tree_model_filter_set_visible_func() or
 	// gtk_tree_model_filter_set_visible_column() can only be called once for a
 	// given filter model.
-	SetVisibleColumnTreeModelFilter(column int)
+	SetVisibleColumn(column int)
 }
 
 // treeModelFilter implements the TreeModelFilter class.
@@ -213,7 +212,15 @@ func marshalTreeModelFilter(p uintptr) (interface{}, error) {
 	return WrapTreeModelFilter(obj), nil
 }
 
-func (f treeModelFilter) ClearCacheTreeModelFilter() {
+func (t treeModelFilter) AsTreeDragSource() TreeDragSource {
+	return WrapTreeDragSource(gextras.InternObject(t))
+}
+
+func (t treeModelFilter) AsTreeModel() TreeModel {
+	return WrapTreeModel(gextras.InternObject(t))
+}
+
+func (f treeModelFilter) ClearCache() {
 	var _arg0 *C.GtkTreeModelFilter // out
 
 	_arg0 = (*C.GtkTreeModelFilter)(unsafe.Pointer(f.Native()))
@@ -221,7 +228,7 @@ func (f treeModelFilter) ClearCacheTreeModelFilter() {
 	C.gtk_tree_model_filter_clear_cache(_arg0)
 }
 
-func (f treeModelFilter) ConvertChildIterToIterTreeModelFilter(childIter *TreeIter) (TreeIter, bool) {
+func (f treeModelFilter) ConvertChildIterToIter(childIter *TreeIter) (TreeIter, bool) {
 	var _arg0 *C.GtkTreeModelFilter // out
 	var _arg1 C.GtkTreeIter         // in
 	var _arg2 *C.GtkTreeIter        // out
@@ -253,7 +260,7 @@ func (f treeModelFilter) ConvertChildIterToIterTreeModelFilter(childIter *TreeIt
 	return _filterIter, _ok
 }
 
-func (f treeModelFilter) ConvertChildPathToPathTreeModelFilter(childPath *TreePath) *TreePath {
+func (f treeModelFilter) ConvertChildPathToPath(childPath *TreePath) *TreePath {
 	var _arg0 *C.GtkTreeModelFilter // out
 	var _arg1 *C.GtkTreePath        // out
 	var _cret *C.GtkTreePath        // in
@@ -273,7 +280,7 @@ func (f treeModelFilter) ConvertChildPathToPathTreeModelFilter(childPath *TreePa
 	return _treePath
 }
 
-func (f treeModelFilter) ConvertIterToChildIterTreeModelFilter(filterIter *TreeIter) TreeIter {
+func (f treeModelFilter) ConvertIterToChildIter(filterIter *TreeIter) TreeIter {
 	var _arg0 *C.GtkTreeModelFilter // out
 	var _arg1 C.GtkTreeIter         // in
 	var _arg2 *C.GtkTreeIter        // out
@@ -300,7 +307,7 @@ func (f treeModelFilter) ConvertIterToChildIterTreeModelFilter(filterIter *TreeI
 	return _childIter
 }
 
-func (f treeModelFilter) ConvertPathToChildPathTreeModelFilter(filterPath *TreePath) *TreePath {
+func (f treeModelFilter) ConvertPathToChildPath(filterPath *TreePath) *TreePath {
 	var _arg0 *C.GtkTreeModelFilter // out
 	var _arg1 *C.GtkTreePath        // out
 	var _cret *C.GtkTreePath        // in
@@ -335,7 +342,7 @@ func (f treeModelFilter) Model() TreeModel {
 	return _treeModel
 }
 
-func (f treeModelFilter) RefilterTreeModelFilter() {
+func (f treeModelFilter) Refilter() {
 	var _arg0 *C.GtkTreeModelFilter // out
 
 	_arg0 = (*C.GtkTreeModelFilter)(unsafe.Pointer(f.Native()))
@@ -343,7 +350,7 @@ func (f treeModelFilter) RefilterTreeModelFilter() {
 	C.gtk_tree_model_filter_refilter(_arg0)
 }
 
-func (f treeModelFilter) SetVisibleColumnTreeModelFilter(column int) {
+func (f treeModelFilter) SetVisibleColumn(column int) {
 	var _arg0 *C.GtkTreeModelFilter // out
 	var _arg1 C.gint                // out
 
@@ -351,12 +358,4 @@ func (f treeModelFilter) SetVisibleColumnTreeModelFilter(column int) {
 	_arg1 = C.gint(column)
 
 	C.gtk_tree_model_filter_set_visible_column(_arg0, _arg1)
-}
-
-func (t treeModelFilter) AsTreeDragSource() TreeDragSource {
-	return WrapTreeDragSource(gextras.InternObject(t))
-}
-
-func (t treeModelFilter) AsTreeModel() TreeModel {
-	return WrapTreeModel(gextras.InternObject(t))
 }

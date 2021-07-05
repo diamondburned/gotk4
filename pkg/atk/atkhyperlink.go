@@ -64,18 +64,18 @@ type Hyperlink interface {
 	//
 	// Multiple anchors are primarily used by client-side image maps.
 	URI(i int) string
-	// IsInlineHyperlink indicates whether the link currently displays some or
-	// all of its content inline. Ordinary HTML links will usually return false,
-	// but an inline &lt;src&gt; HTML element will return true.
-	IsInlineHyperlink() bool
-	// IsSelectedLinkHyperlink determines whether this AtkHyperlink is selected
+	// IsInline indicates whether the link currently displays some or all of its
+	// content inline. Ordinary HTML links will usually return false, but an
+	// inline &lt;src&gt; HTML element will return true.
+	IsInline() bool
+	// IsSelectedLink determines whether this AtkHyperlink is selected
 	//
 	// Deprecated: since version 1.8.
-	IsSelectedLinkHyperlink() bool
-	// IsValidHyperlink: since the document that a link is associated with may
-	// have changed this method returns true if the link is still valid (with
-	// respect to the document it references) and false otherwise.
-	IsValidHyperlink() bool
+	IsSelectedLink() bool
+	// IsValid: since the document that a link is associated with may have
+	// changed this method returns true if the link is still valid (with respect
+	// to the document it references) and false otherwise.
+	IsValid() bool
 }
 
 // hyperlink implements the Hyperlink class.
@@ -95,6 +95,10 @@ func marshalHyperlink(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapHyperlink(obj), nil
+}
+
+func (h hyperlink) AsAction() Action {
+	return WrapAction(gextras.InternObject(h))
 }
 
 func (l hyperlink) EndIndex() int {
@@ -177,7 +181,7 @@ func (l hyperlink) URI(i int) string {
 	return _utf8
 }
 
-func (l hyperlink) IsInlineHyperlink() bool {
+func (l hyperlink) IsInline() bool {
 	var _arg0 *C.AtkHyperlink // out
 	var _cret C.gboolean      // in
 
@@ -194,7 +198,7 @@ func (l hyperlink) IsInlineHyperlink() bool {
 	return _ok
 }
 
-func (l hyperlink) IsSelectedLinkHyperlink() bool {
+func (l hyperlink) IsSelectedLink() bool {
 	var _arg0 *C.AtkHyperlink // out
 	var _cret C.gboolean      // in
 
@@ -211,7 +215,7 @@ func (l hyperlink) IsSelectedLinkHyperlink() bool {
 	return _ok
 }
 
-func (l hyperlink) IsValidHyperlink() bool {
+func (l hyperlink) IsValid() bool {
 	var _arg0 *C.AtkHyperlink // out
 	var _cret C.gboolean      // in
 
@@ -226,8 +230,4 @@ func (l hyperlink) IsValidHyperlink() bool {
 	}
 
 	return _ok
-}
-
-func (h hyperlink) AsAction() Action {
-	return WrapAction(gextras.InternObject(h))
 }

@@ -158,7 +158,11 @@ func GoDoc(v interface{}, indentLvl int, opts ...Option) string {
 		if doc.Len() > 0 {
 			doc.WriteString("\n\n")
 		}
-		fmt.Fprintf(&doc, "Deprecated: since version %s.", inf.Attrs.DeprecatedVersion)
+		if inf.Attrs.DeprecatedVersion != "" {
+			fmt.Fprintf(&doc, "Deprecated: since version %s.", inf.Attrs.DeprecatedVersion)
+		} else {
+			fmt.Fprintf(&doc, "Deprecated.")
+		}
 	}
 
 	for _, opt := range opts {

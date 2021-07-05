@@ -61,16 +61,16 @@ type Switch interface {
 	Active() bool
 	// State gets the underlying state of the `GtkSwitch`.
 	State() bool
-	// SetActiveSwitch changes the state of @self to the desired one.
-	SetActiveSwitch(isActive bool)
-	// SetStateSwitch sets the underlying state of the `GtkSwitch`.
+	// SetActive changes the state of @self to the desired one.
+	SetActive(isActive bool)
+	// SetState sets the underlying state of the `GtkSwitch`.
 	//
 	// Normally, this is the same as [property@Gtk.Switch:active], unless the
 	// switch is set up for delayed state changes. This function is typically
 	// called from a [signal@Gtk.Switch`::state-set] signal handler.
 	//
 	// See [signal@Gtk.Switch::state-set] for details.
-	SetStateSwitch(state bool)
+	SetState(state bool)
 }
 
 // _switch implements the Switch class.
@@ -103,6 +103,22 @@ func NewSwitch() Switch {
 	__switch = WrapSwitch(externglib.Take(unsafe.Pointer(_cret)))
 
 	return __switch
+}
+
+func (_ _switch) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(_))
+}
+
+func (_ _switch) AsActionable() Actionable {
+	return WrapActionable(gextras.InternObject(_))
+}
+
+func (_ _switch) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(_))
+}
+
+func (_ _switch) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(_))
 }
 
 func (s _switch) Active() bool {
@@ -139,7 +155,7 @@ func (s _switch) State() bool {
 	return _ok
 }
 
-func (s _switch) SetActiveSwitch(isActive bool) {
+func (s _switch) SetActive(isActive bool) {
 	var _arg0 *C.GtkSwitch // out
 	var _arg1 C.gboolean   // out
 
@@ -151,7 +167,7 @@ func (s _switch) SetActiveSwitch(isActive bool) {
 	C.gtk_switch_set_active(_arg0, _arg1)
 }
 
-func (s _switch) SetStateSwitch(state bool) {
+func (s _switch) SetState(state bool) {
 	var _arg0 *C.GtkSwitch // out
 	var _arg1 C.gboolean   // out
 
@@ -161,20 +177,4 @@ func (s _switch) SetStateSwitch(state bool) {
 	}
 
 	C.gtk_switch_set_state(_arg0, _arg1)
-}
-
-func (_ _switch) AsAccessible() Accessible {
-	return WrapAccessible(gextras.InternObject(_))
-}
-
-func (_ _switch) AsActionable() Actionable {
-	return WrapActionable(gextras.InternObject(_))
-}
-
-func (_ _switch) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(_))
-}
-
-func (_ _switch) AsConstraintTarget() ConstraintTarget {
-	return WrapConstraintTarget(gextras.InternObject(_))
 }

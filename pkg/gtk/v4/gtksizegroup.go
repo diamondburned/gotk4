@@ -85,7 +85,7 @@ type SizeGroup interface {
 	// AsBuildable casts the class to the Buildable interface.
 	AsBuildable() Buildable
 
-	// AddWidgetSizeGroup adds a widget to a `GtkSizeGroup`.
+	// AddWidget adds a widget to a `GtkSizeGroup`.
 	//
 	// In the future, the requisition of the widget will be determined as the
 	// maximum of its requisition and the requisition of the other widgets in
@@ -95,19 +95,19 @@ type SizeGroup interface {
 	//
 	// When the widget is destroyed or no longer referenced elsewhere, it will
 	// be removed from the size group.
-	AddWidgetSizeGroup(widget Widget)
+	AddWidget(widget Widget)
 	// Mode gets the current mode of the size group.
 	Mode() SizeGroupMode
-	// RemoveWidgetSizeGroup removes a widget from a `GtkSizeGroup`.
-	RemoveWidgetSizeGroup(widget Widget)
-	// SetModeSizeGroup sets the `GtkSizeGroupMode` of the size group.
+	// RemoveWidget removes a widget from a `GtkSizeGroup`.
+	RemoveWidget(widget Widget)
+	// SetMode sets the `GtkSizeGroupMode` of the size group.
 	//
 	// The mode of the size group determines whether the widgets in the size
 	// group should all have the same horizontal requisition
 	// (GTK_SIZE_GROUP_HORIZONTAL) all have the same vertical requisition
 	// (GTK_SIZE_GROUP_VERTICAL), or should all have the same requisition in
 	// both directions (GTK_SIZE_GROUP_BOTH).
-	SetModeSizeGroup(mode SizeGroupMode)
+	SetMode(mode SizeGroupMode)
 }
 
 // sizeGroup implements the SizeGroup class.
@@ -145,7 +145,11 @@ func NewSizeGroup(mode SizeGroupMode) SizeGroup {
 	return _sizeGroup
 }
 
-func (s sizeGroup) AddWidgetSizeGroup(widget Widget) {
+func (s sizeGroup) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(s))
+}
+
+func (s sizeGroup) AddWidget(widget Widget) {
 	var _arg0 *C.GtkSizeGroup // out
 	var _arg1 *C.GtkWidget    // out
 
@@ -170,7 +174,7 @@ func (s sizeGroup) Mode() SizeGroupMode {
 	return _sizeGroupMode
 }
 
-func (s sizeGroup) RemoveWidgetSizeGroup(widget Widget) {
+func (s sizeGroup) RemoveWidget(widget Widget) {
 	var _arg0 *C.GtkSizeGroup // out
 	var _arg1 *C.GtkWidget    // out
 
@@ -180,7 +184,7 @@ func (s sizeGroup) RemoveWidgetSizeGroup(widget Widget) {
 	C.gtk_size_group_remove_widget(_arg0, _arg1)
 }
 
-func (s sizeGroup) SetModeSizeGroup(mode SizeGroupMode) {
+func (s sizeGroup) SetMode(mode SizeGroupMode) {
 	var _arg0 *C.GtkSizeGroup    // out
 	var _arg1 C.GtkSizeGroupMode // out
 
@@ -188,8 +192,4 @@ func (s sizeGroup) SetModeSizeGroup(mode SizeGroupMode) {
 	_arg1 = C.GtkSizeGroupMode(mode)
 
 	C.gtk_size_group_set_mode(_arg0, _arg1)
-}
-
-func (s sizeGroup) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(s))
 }

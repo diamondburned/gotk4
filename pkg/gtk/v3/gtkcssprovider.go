@@ -77,19 +77,19 @@ type CSSProvider interface {
 	// AsStyleProvider casts the class to the StyleProvider interface.
 	AsStyleProvider() StyleProvider
 
-	// LoadFromDataCSSProvider loads @data into @css_provider, and by doing so
-	// clears any previously loaded information.
-	LoadFromDataCSSProvider(data []byte) error
-	// LoadFromPathCSSProvider loads the data contained in @path into
-	// @css_provider, making it clear any previously loaded information.
-	LoadFromPathCSSProvider(path string) error
-	// LoadFromResourceCSSProvider loads the data contained in the resource at
+	// LoadFromData loads @data into @css_provider, and by doing so clears any
+	// previously loaded information.
+	LoadFromData(data []byte) error
+	// LoadFromPath loads the data contained in @path into @css_provider, making
+	// it clear any previously loaded information.
+	LoadFromPath(path string) error
+	// LoadFromResource loads the data contained in the resource at
 	// @resource_path into the CssProvider, clearing any previously loaded
 	// information.
 	//
 	// To track errors while loading CSS, connect to the
 	// CssProvider::parsing-error signal.
-	LoadFromResourceCSSProvider(resourcePath string)
+	LoadFromResource(resourcePath string)
 	// String converts the @provider into a string representation in CSS format.
 	//
 	// Using gtk_css_provider_load_from_data() with the return value from this
@@ -130,7 +130,11 @@ func NewCSSProvider() CSSProvider {
 	return _cssProvider
 }
 
-func (c cssProvider) LoadFromDataCSSProvider(data []byte) error {
+func (c cssProvider) AsStyleProvider() StyleProvider {
+	return WrapStyleProvider(gextras.InternObject(c))
+}
+
+func (c cssProvider) LoadFromData(data []byte) error {
 	var _arg0 *C.GtkCssProvider // out
 	var _arg1 *C.gchar
 	var _arg2 C.gssize
@@ -149,7 +153,7 @@ func (c cssProvider) LoadFromDataCSSProvider(data []byte) error {
 	return _goerr
 }
 
-func (c cssProvider) LoadFromPathCSSProvider(path string) error {
+func (c cssProvider) LoadFromPath(path string) error {
 	var _arg0 *C.GtkCssProvider // out
 	var _arg1 *C.gchar          // out
 	var _cerr *C.GError         // in
@@ -167,7 +171,7 @@ func (c cssProvider) LoadFromPathCSSProvider(path string) error {
 	return _goerr
 }
 
-func (c cssProvider) LoadFromResourceCSSProvider(resourcePath string) {
+func (c cssProvider) LoadFromResource(resourcePath string) {
 	var _arg0 *C.GtkCssProvider // out
 	var _arg1 *C.gchar          // out
 
@@ -192,8 +196,4 @@ func (p cssProvider) String() string {
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
-}
-
-func (c cssProvider) AsStyleProvider() StyleProvider {
-	return WrapStyleProvider(gextras.InternObject(c))
 }

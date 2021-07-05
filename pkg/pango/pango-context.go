@@ -34,13 +34,13 @@ func init() {
 type Context interface {
 	gextras.Objector
 
-	// ChangedContext forces a change in the context, which will cause any
+	// Changed forces a change in the context, which will cause any
 	// `PangoLayout` using this context to re-layout.
 	//
 	// This function is only useful when implementing a new backend for Pango,
 	// something applications won't do. Backends should call this function if
 	// they have attached extra data to the context and such data is changed.
-	ChangedContext()
+	Changed()
 	// BaseDir retrieves the base direction for the context.
 	//
 	// See [method@Pango.Context.set_base_dir].
@@ -100,15 +100,15 @@ type Context interface {
 	// is only useful when implementing objects that need update when their
 	// `PangoContext` changes, like `PangoLayout`.
 	Serial() uint
-	// ListFamiliesContext: list all families for a context.
-	ListFamiliesContext() []FontFamily
-	// LoadFontContext loads the font in one of the fontmaps in the context that
-	// is the closest match for @desc.
-	LoadFontContext(desc *FontDescription) Font
-	// LoadFontsetContext: load a set of fonts in the context that can be used
-	// to render a font matching @desc.
-	LoadFontsetContext(desc *FontDescription, language *Language) Fontset
-	// SetBaseDirContext sets the base direction for the context.
+	// ListFamilies: list all families for a context.
+	ListFamilies() []FontFamily
+	// LoadFont loads the font in one of the fontmaps in the context that is the
+	// closest match for @desc.
+	LoadFont(desc *FontDescription) Font
+	// LoadFontset: load a set of fonts in the context that can be used to
+	// render a font matching @desc.
+	LoadFontset(desc *FontDescription, language *Language) Fontset
+	// SetBaseDir sets the base direction for the context.
 	//
 	// The base direction is used in applying the Unicode bidirectional
 	// algorithm; if the @direction is PANGO_DIRECTION_LTR or
@@ -116,34 +116,33 @@ type Context interface {
 	// direction in the Unicode bidirectional algorithm. A value of
 	// PANGO_DIRECTION_WEAK_LTR or PANGO_DIRECTION_WEAK_RTL is used only for
 	// paragraphs that do not contain any strong characters themselves.
-	SetBaseDirContext(direction Direction)
-	// SetBaseGravityContext sets the base gravity for the context.
+	SetBaseDir(direction Direction)
+	// SetBaseGravity sets the base gravity for the context.
 	//
 	// The base gravity is used in laying vertical text out.
-	SetBaseGravityContext(gravity Gravity)
-	// SetFontDescriptionContext: set the default font description for the
-	// context
-	SetFontDescriptionContext(desc *FontDescription)
-	// SetFontMapContext sets the font map to be searched when fonts are
-	// looked-up in this context.
+	SetBaseGravity(gravity Gravity)
+	// SetFontDescription: set the default font description for the context
+	SetFontDescription(desc *FontDescription)
+	// SetFontMap sets the font map to be searched when fonts are looked-up in
+	// this context.
 	//
 	// This is only for internal use by Pango backends, a `PangoContext`
 	// obtained via one of the recommended methods should already have a
 	// suitable font map.
-	SetFontMapContext(fontMap FontMap)
-	// SetGravityHintContext sets the gravity hint for the context.
+	SetFontMap(fontMap FontMap)
+	// SetGravityHint sets the gravity hint for the context.
 	//
 	// The gravity hint is used in laying vertical text out, and is only
 	// relevant if gravity of the context as returned by
 	// [method@Pango.Context.get_gravity] is set to PANGO_GRAVITY_EAST or
 	// PANGO_GRAVITY_WEST.
-	SetGravityHintContext(hint GravityHint)
-	// SetLanguageContext sets the global language tag for the context.
+	SetGravityHint(hint GravityHint)
+	// SetLanguage sets the global language tag for the context.
 	//
 	// The default language for the locale of the running process can be found
 	// using [type_func@Pango.Language.get_default].
-	SetLanguageContext(language *Language)
-	// SetMatrixContext sets the transformation matrix that will be applied when
+	SetLanguage(language *Language)
+	// SetMatrix sets the transformation matrix that will be applied when
 	// rendering with this context.
 	//
 	// Note that reported metrics are in the user space coordinates before the
@@ -151,17 +150,17 @@ type Context interface {
 	// application of the matrix. So, they don't scale with the matrix, though
 	// they may change slightly for different matrices, depending on how the
 	// text is fit to the pixel grid.
-	SetMatrixContext(matrix *Matrix)
-	// SetRoundGlyphPositionsContext sets whether font rendering with this
-	// context should round glyph positions and widths to integral positions, in
-	// device units.
+	SetMatrix(matrix *Matrix)
+	// SetRoundGlyphPositions sets whether font rendering with this context
+	// should round glyph positions and widths to integral positions, in device
+	// units.
 	//
 	// This is useful when the renderer can't handle subpixel positioning of
 	// glyphs.
 	//
 	// The default value is to round glyph positions, to remain compatible with
 	// previous Pango behavior.
-	SetRoundGlyphPositionsContext(roundPositions bool)
+	SetRoundGlyphPositions(roundPositions bool)
 }
 
 // context implements the Context class.
@@ -205,7 +204,7 @@ func NewContext() Context {
 	return _context
 }
 
-func (c context) ChangedContext() {
+func (c context) Changed() {
 	var _arg0 *C.PangoContext // out
 
 	_arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
@@ -391,7 +390,7 @@ func (c context) Serial() uint {
 	return _guint
 }
 
-func (c context) ListFamiliesContext() []FontFamily {
+func (c context) ListFamilies() []FontFamily {
 	var _arg0 *C.PangoContext // out
 	var _arg1 **C.PangoFontFamily
 	var _arg2 C.int // in
@@ -414,7 +413,7 @@ func (c context) ListFamiliesContext() []FontFamily {
 	return _families
 }
 
-func (c context) LoadFontContext(desc *FontDescription) Font {
+func (c context) LoadFont(desc *FontDescription) Font {
 	var _arg0 *C.PangoContext         // out
 	var _arg1 *C.PangoFontDescription // out
 	var _cret *C.PangoFont            // in
@@ -431,7 +430,7 @@ func (c context) LoadFontContext(desc *FontDescription) Font {
 	return _font
 }
 
-func (c context) LoadFontsetContext(desc *FontDescription, language *Language) Fontset {
+func (c context) LoadFontset(desc *FontDescription, language *Language) Fontset {
 	var _arg0 *C.PangoContext         // out
 	var _arg1 *C.PangoFontDescription // out
 	var _arg2 *C.PangoLanguage        // out
@@ -450,7 +449,7 @@ func (c context) LoadFontsetContext(desc *FontDescription, language *Language) F
 	return _fontset
 }
 
-func (c context) SetBaseDirContext(direction Direction) {
+func (c context) SetBaseDir(direction Direction) {
 	var _arg0 *C.PangoContext  // out
 	var _arg1 C.PangoDirection // out
 
@@ -460,7 +459,7 @@ func (c context) SetBaseDirContext(direction Direction) {
 	C.pango_context_set_base_dir(_arg0, _arg1)
 }
 
-func (c context) SetBaseGravityContext(gravity Gravity) {
+func (c context) SetBaseGravity(gravity Gravity) {
 	var _arg0 *C.PangoContext // out
 	var _arg1 C.PangoGravity  // out
 
@@ -470,7 +469,7 @@ func (c context) SetBaseGravityContext(gravity Gravity) {
 	C.pango_context_set_base_gravity(_arg0, _arg1)
 }
 
-func (c context) SetFontDescriptionContext(desc *FontDescription) {
+func (c context) SetFontDescription(desc *FontDescription) {
 	var _arg0 *C.PangoContext         // out
 	var _arg1 *C.PangoFontDescription // out
 
@@ -480,7 +479,7 @@ func (c context) SetFontDescriptionContext(desc *FontDescription) {
 	C.pango_context_set_font_description(_arg0, _arg1)
 }
 
-func (c context) SetFontMapContext(fontMap FontMap) {
+func (c context) SetFontMap(fontMap FontMap) {
 	var _arg0 *C.PangoContext // out
 	var _arg1 *C.PangoFontMap // out
 
@@ -490,7 +489,7 @@ func (c context) SetFontMapContext(fontMap FontMap) {
 	C.pango_context_set_font_map(_arg0, _arg1)
 }
 
-func (c context) SetGravityHintContext(hint GravityHint) {
+func (c context) SetGravityHint(hint GravityHint) {
 	var _arg0 *C.PangoContext    // out
 	var _arg1 C.PangoGravityHint // out
 
@@ -500,7 +499,7 @@ func (c context) SetGravityHintContext(hint GravityHint) {
 	C.pango_context_set_gravity_hint(_arg0, _arg1)
 }
 
-func (c context) SetLanguageContext(language *Language) {
+func (c context) SetLanguage(language *Language) {
 	var _arg0 *C.PangoContext  // out
 	var _arg1 *C.PangoLanguage // out
 
@@ -510,7 +509,7 @@ func (c context) SetLanguageContext(language *Language) {
 	C.pango_context_set_language(_arg0, _arg1)
 }
 
-func (c context) SetMatrixContext(matrix *Matrix) {
+func (c context) SetMatrix(matrix *Matrix) {
 	var _arg0 *C.PangoContext // out
 	var _arg1 *C.PangoMatrix  // out
 
@@ -520,7 +519,7 @@ func (c context) SetMatrixContext(matrix *Matrix) {
 	C.pango_context_set_matrix(_arg0, _arg1)
 }
 
-func (c context) SetRoundGlyphPositionsContext(roundPositions bool) {
+func (c context) SetRoundGlyphPositions(roundPositions bool) {
 	var _arg0 *C.PangoContext // out
 	var _arg1 C.gboolean      // out
 

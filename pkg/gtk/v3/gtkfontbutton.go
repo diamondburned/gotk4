@@ -64,25 +64,25 @@ type FontButton interface {
 	UseFont() bool
 	// UseSize returns whether the selected size is used in the label.
 	UseSize() bool
-	// SetFontNameFontButton sets or updates the currently-displayed font in
-	// font picker dialog.
+	// SetFontName sets or updates the currently-displayed font in font picker
+	// dialog.
 	//
 	// Deprecated: since version 3.22.
-	SetFontNameFontButton(fontname string) bool
-	// SetShowSizeFontButton: if @show_size is true, the font size will be
-	// displayed along with the name of the selected font.
-	SetShowSizeFontButton(showSize bool)
-	// SetShowStyleFontButton: if @show_style is true, the font style will be
-	// displayed along with name of the selected font.
-	SetShowStyleFontButton(showStyle bool)
-	// SetTitleFontButton sets the title for the font chooser dialog.
-	SetTitleFontButton(title string)
-	// SetUseFontFontButton: if @use_font is true, the font name will be written
-	// using the selected font.
-	SetUseFontFontButton(useFont bool)
-	// SetUseSizeFontButton: if @use_size is true, the font name will be written
-	// using the selected size.
-	SetUseSizeFontButton(useSize bool)
+	SetFontName(fontname string) bool
+	// SetShowSize: if @show_size is true, the font size will be displayed along
+	// with the name of the selected font.
+	SetShowSize(showSize bool)
+	// SetShowStyle: if @show_style is true, the font style will be displayed
+	// along with name of the selected font.
+	SetShowStyle(showStyle bool)
+	// SetTitle sets the title for the font chooser dialog.
+	SetTitle(title string)
+	// SetUseFont: if @use_font is true, the font name will be written using the
+	// selected font.
+	SetUseFont(useFont bool)
+	// SetUseSize: if @use_size is true, the font name will be written using the
+	// selected size.
+	SetUseSize(useSize bool)
 }
 
 // fontButton implements the FontButton class.
@@ -132,6 +132,22 @@ func NewFontButtonWithFont(fontname string) FontButton {
 	_fontButton = WrapFontButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _fontButton
+}
+
+func (f fontButton) AsActionable() Actionable {
+	return WrapActionable(gextras.InternObject(f))
+}
+
+func (f fontButton) AsActivatable() Activatable {
+	return WrapActivatable(gextras.InternObject(f))
+}
+
+func (f fontButton) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(f))
+}
+
+func (f fontButton) AsFontChooser() FontChooser {
+	return WrapFontChooser(gextras.InternObject(f))
 }
 
 func (f fontButton) FontName() string {
@@ -232,7 +248,7 @@ func (f fontButton) UseSize() bool {
 	return _ok
 }
 
-func (f fontButton) SetFontNameFontButton(fontname string) bool {
+func (f fontButton) SetFontName(fontname string) bool {
 	var _arg0 *C.GtkFontButton // out
 	var _arg1 *C.gchar         // out
 	var _cret C.gboolean       // in
@@ -252,7 +268,7 @@ func (f fontButton) SetFontNameFontButton(fontname string) bool {
 	return _ok
 }
 
-func (f fontButton) SetShowSizeFontButton(showSize bool) {
+func (f fontButton) SetShowSize(showSize bool) {
 	var _arg0 *C.GtkFontButton // out
 	var _arg1 C.gboolean       // out
 
@@ -264,7 +280,7 @@ func (f fontButton) SetShowSizeFontButton(showSize bool) {
 	C.gtk_font_button_set_show_size(_arg0, _arg1)
 }
 
-func (f fontButton) SetShowStyleFontButton(showStyle bool) {
+func (f fontButton) SetShowStyle(showStyle bool) {
 	var _arg0 *C.GtkFontButton // out
 	var _arg1 C.gboolean       // out
 
@@ -276,7 +292,7 @@ func (f fontButton) SetShowStyleFontButton(showStyle bool) {
 	C.gtk_font_button_set_show_style(_arg0, _arg1)
 }
 
-func (f fontButton) SetTitleFontButton(title string) {
+func (f fontButton) SetTitle(title string) {
 	var _arg0 *C.GtkFontButton // out
 	var _arg1 *C.gchar         // out
 
@@ -287,7 +303,7 @@ func (f fontButton) SetTitleFontButton(title string) {
 	C.gtk_font_button_set_title(_arg0, _arg1)
 }
 
-func (f fontButton) SetUseFontFontButton(useFont bool) {
+func (f fontButton) SetUseFont(useFont bool) {
 	var _arg0 *C.GtkFontButton // out
 	var _arg1 C.gboolean       // out
 
@@ -299,7 +315,7 @@ func (f fontButton) SetUseFontFontButton(useFont bool) {
 	C.gtk_font_button_set_use_font(_arg0, _arg1)
 }
 
-func (f fontButton) SetUseSizeFontButton(useSize bool) {
+func (f fontButton) SetUseSize(useSize bool) {
 	var _arg0 *C.GtkFontButton // out
 	var _arg1 C.gboolean       // out
 
@@ -309,20 +325,4 @@ func (f fontButton) SetUseSizeFontButton(useSize bool) {
 	}
 
 	C.gtk_font_button_set_use_size(_arg0, _arg1)
-}
-
-func (f fontButton) AsActionable() Actionable {
-	return WrapActionable(gextras.InternObject(f))
-}
-
-func (f fontButton) AsActivatable() Activatable {
-	return WrapActivatable(gextras.InternObject(f))
-}
-
-func (f fontButton) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(f))
-}
-
-func (f fontButton) AsFontChooser() FontChooser {
-	return WrapFontChooser(gextras.InternObject(f))
 }

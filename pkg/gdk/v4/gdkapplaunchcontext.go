@@ -49,8 +49,7 @@ type AppLaunchContext interface {
 
 	// Display gets the `GdkDisplay` that @context is for.
 	Display() Display
-	// SetDesktopAppLaunchContext sets the workspace on which applications will
-	// be launched.
+	// SetDesktop sets the workspace on which applications will be launched.
 	//
 	// This only works when running under a window manager that supports
 	// multiple workspaces, as described in the Extended Window Manager Hints
@@ -59,9 +58,9 @@ type AppLaunchContext interface {
 	// When the workspace is not specified or @desktop is set to -1, it is up to
 	// the window manager to pick one, typically it will be the current
 	// workspace.
-	SetDesktopAppLaunchContext(desktop int)
-	// SetIconNameAppLaunchContext sets the icon for applications that are
-	// launched with this context.
+	SetDesktop(desktop int)
+	// SetIconName sets the icon for applications that are launched with this
+	// context.
 	//
 	// The @icon_name will be interpreted in the same way as the Icon field in
 	// desktop files. See also [method@Gdk.AppLaunchContext.set_icon()].
@@ -70,8 +69,8 @@ type AppLaunchContext interface {
 	// neither @icon or @icon_name is set, the icon is taken from either the
 	// file that is passed to launched application or from the `GAppInfo` for
 	// the launched application itself.
-	SetIconNameAppLaunchContext(iconName string)
-	// SetTimestampAppLaunchContext sets the timestamp of @context.
+	SetIconName(iconName string)
+	// SetTimestamp sets the timestamp of @context.
 	//
 	// The timestamp should ideally be taken from the event that triggered the
 	// launch.
@@ -79,7 +78,7 @@ type AppLaunchContext interface {
 	// Window managers can use this information to avoid moving the focus to the
 	// newly launched application when the user is busy typing in another
 	// window. This is also known as 'focus stealing prevention'.
-	SetTimestampAppLaunchContext(timestamp uint32)
+	SetTimestamp(timestamp uint32)
 }
 
 // appLaunchContext implements the AppLaunchContext class.
@@ -116,7 +115,7 @@ func (c appLaunchContext) Display() Display {
 	return _display
 }
 
-func (c appLaunchContext) SetDesktopAppLaunchContext(desktop int) {
+func (c appLaunchContext) SetDesktop(desktop int) {
 	var _arg0 *C.GdkAppLaunchContext // out
 	var _arg1 C.int                  // out
 
@@ -126,7 +125,7 @@ func (c appLaunchContext) SetDesktopAppLaunchContext(desktop int) {
 	C.gdk_app_launch_context_set_desktop(_arg0, _arg1)
 }
 
-func (c appLaunchContext) SetIconNameAppLaunchContext(iconName string) {
+func (c appLaunchContext) SetIconName(iconName string) {
 	var _arg0 *C.GdkAppLaunchContext // out
 	var _arg1 *C.char                // out
 
@@ -137,7 +136,7 @@ func (c appLaunchContext) SetIconNameAppLaunchContext(iconName string) {
 	C.gdk_app_launch_context_set_icon_name(_arg0, _arg1)
 }
 
-func (c appLaunchContext) SetTimestampAppLaunchContext(timestamp uint32) {
+func (c appLaunchContext) SetTimestamp(timestamp uint32) {
 	var _arg0 *C.GdkAppLaunchContext // out
 	var _arg1 C.guint32              // out
 

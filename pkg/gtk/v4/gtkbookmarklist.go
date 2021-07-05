@@ -39,23 +39,21 @@ type BookmarkList interface {
 	Filename() string
 	// IOPriority gets the IO priority to use while loading file.
 	IOPriority() int
-	// IsLoadingBookmarkList returns true if the files are currently being
-	// loaded.
+	// IsLoading returns true if the files are currently being loaded.
 	//
 	// Files will be added to @self from time to time while loading is going on.
 	// The order in which are added is undefined and may change in between runs.
-	IsLoadingBookmarkList() bool
-	// SetAttributesBookmarkList sets the @attributes to be enumerated and
-	// starts the enumeration.
+	IsLoading() bool
+	// SetAttributes sets the @attributes to be enumerated and starts the
+	// enumeration.
 	//
 	// If @attributes is nil, no attributes will be queried, but a list of Infos
 	// will still be created.
-	SetAttributesBookmarkList(attributes string)
-	// SetIOPriorityBookmarkList sets the IO priority to use while loading
-	// files.
+	SetAttributes(attributes string)
+	// SetIOPriority sets the IO priority to use while loading files.
 	//
 	// The default IO priority is G_PRIORITY_DEFAULT.
-	SetIOPriorityBookmarkList(ioPriority int)
+	SetIOPriority(ioPriority int)
 }
 
 // bookmarkList implements the BookmarkList class.
@@ -142,7 +140,7 @@ func (s bookmarkList) IOPriority() int {
 	return _gint
 }
 
-func (s bookmarkList) IsLoadingBookmarkList() bool {
+func (s bookmarkList) IsLoading() bool {
 	var _arg0 *C.GtkBookmarkList // out
 	var _cret C.gboolean         // in
 
@@ -159,7 +157,7 @@ func (s bookmarkList) IsLoadingBookmarkList() bool {
 	return _ok
 }
 
-func (s bookmarkList) SetAttributesBookmarkList(attributes string) {
+func (s bookmarkList) SetAttributes(attributes string) {
 	var _arg0 *C.GtkBookmarkList // out
 	var _arg1 *C.char            // out
 
@@ -170,7 +168,7 @@ func (s bookmarkList) SetAttributesBookmarkList(attributes string) {
 	C.gtk_bookmark_list_set_attributes(_arg0, _arg1)
 }
 
-func (s bookmarkList) SetIOPriorityBookmarkList(ioPriority int) {
+func (s bookmarkList) SetIOPriority(ioPriority int) {
 	var _arg0 *C.GtkBookmarkList // out
 	var _arg1 C.int              // out
 

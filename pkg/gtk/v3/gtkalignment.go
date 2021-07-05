@@ -52,17 +52,17 @@ type Alignment interface {
 	//
 	// Deprecated: since version 3.14.
 	Padding() (paddingTop uint, paddingBottom uint, paddingLeft uint, paddingRight uint)
-	// SetAlignment sets the Alignment values.
+	// Set sets the Alignment values.
 	//
 	// Deprecated: since version 3.14.
-	SetAlignment(xalign float32, yalign float32, xscale float32, yscale float32)
-	// SetPaddingAlignment sets the padding on the different sides of the
-	// widget. The padding adds blank space to the sides of the widget. For
-	// instance, this can be used to indent the child widget towards the right
-	// by adding padding on the left.
+	Set(xalign float32, yalign float32, xscale float32, yscale float32)
+	// SetPadding sets the padding on the different sides of the widget. The
+	// padding adds blank space to the sides of the widget. For instance, this
+	// can be used to indent the child widget towards the right by adding
+	// padding on the left.
 	//
 	// Deprecated: since version 3.14.
-	SetPaddingAlignment(paddingTop uint, paddingBottom uint, paddingLeft uint, paddingRight uint)
+	SetPadding(paddingTop uint, paddingBottom uint, paddingLeft uint, paddingRight uint)
 }
 
 // alignment implements the Alignment class.
@@ -108,6 +108,10 @@ func NewAlignment(xalign float32, yalign float32, xscale float32, yscale float32
 	return _alignment
 }
 
+func (a alignment) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(a))
+}
+
 func (a alignment) Padding() (paddingTop uint, paddingBottom uint, paddingLeft uint, paddingRight uint) {
 	var _arg0 *C.GtkAlignment // out
 	var _arg1 C.guint         // in
@@ -132,7 +136,7 @@ func (a alignment) Padding() (paddingTop uint, paddingBottom uint, paddingLeft u
 	return _paddingTop, _paddingBottom, _paddingLeft, _paddingRight
 }
 
-func (a alignment) SetAlignment(xalign float32, yalign float32, xscale float32, yscale float32) {
+func (a alignment) Set(xalign float32, yalign float32, xscale float32, yscale float32) {
 	var _arg0 *C.GtkAlignment // out
 	var _arg1 C.gfloat        // out
 	var _arg2 C.gfloat        // out
@@ -148,7 +152,7 @@ func (a alignment) SetAlignment(xalign float32, yalign float32, xscale float32, 
 	C.gtk_alignment_set(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
-func (a alignment) SetPaddingAlignment(paddingTop uint, paddingBottom uint, paddingLeft uint, paddingRight uint) {
+func (a alignment) SetPadding(paddingTop uint, paddingBottom uint, paddingLeft uint, paddingRight uint) {
 	var _arg0 *C.GtkAlignment // out
 	var _arg1 C.guint         // out
 	var _arg2 C.guint         // out
@@ -162,8 +166,4 @@ func (a alignment) SetPaddingAlignment(paddingTop uint, paddingBottom uint, padd
 	_arg4 = C.guint(paddingRight)
 
 	C.gtk_alignment_set_padding(_arg0, _arg1, _arg2, _arg3, _arg4)
-}
-
-func (a alignment) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(a))
 }

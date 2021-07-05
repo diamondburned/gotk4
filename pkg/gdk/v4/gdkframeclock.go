@@ -95,18 +95,18 @@ func marshalFrameClockPhase(p uintptr) (interface{}, error) {
 type FrameClock interface {
 	gextras.Objector
 
-	// BeginUpdatingFrameClock starts updates for an animation.
+	// BeginUpdating starts updates for an animation.
 	//
 	// Until a matching call to [method@Gdk.FrameClock.end_updating] is made,
 	// the frame clock will continually request a new frame with the
 	// GDK_FRAME_CLOCK_PHASE_UPDATE phase. This function may be called multiple
 	// times and frames will be requested until gdk_frame_clock_end_updating()
 	// is called the same number of times.
-	BeginUpdatingFrameClock()
-	// EndUpdatingFrameClock stops updates for an animation.
+	BeginUpdating()
+	// EndUpdating stops updates for an animation.
 	//
 	// See the documentation for [method@Gdk.FrameClock.begin_updating].
-	EndUpdatingFrameClock()
+	EndUpdating()
 	// CurrentTimings gets the frame timings for the current frame.
 	CurrentTimings() *FrameTimings
 	// Fps calculates the current frames-per-second, based on the frame timings
@@ -146,7 +146,7 @@ type FrameClock interface {
 	// The `GdkFrameTimings` object may not yet be complete: see
 	// [method@Gdk.FrameTimings.get_complete].
 	Timings(frameCounter int64) *FrameTimings
-	// RequestPhaseFrameClock asks the frame clock to run a particular phase.
+	// RequestPhase asks the frame clock to run a particular phase.
 	//
 	// The signal corresponding the requested phase will be emitted the next
 	// time the frame clock processes. Multiple calls to
@@ -156,7 +156,7 @@ type FrameClock interface {
 	// of time, you should use [method@Gdk.FrameClock.begin_updating] instead,
 	// since this allows GTK to adjust system parameters to get maximally smooth
 	// animations.
-	RequestPhaseFrameClock(phase FrameClockPhase)
+	RequestPhase(phase FrameClockPhase)
 }
 
 // frameClock implements the FrameClock class.
@@ -178,7 +178,7 @@ func marshalFrameClock(p uintptr) (interface{}, error) {
 	return WrapFrameClock(obj), nil
 }
 
-func (f frameClock) BeginUpdatingFrameClock() {
+func (f frameClock) BeginUpdating() {
 	var _arg0 *C.GdkFrameClock // out
 
 	_arg0 = (*C.GdkFrameClock)(unsafe.Pointer(f.Native()))
@@ -186,7 +186,7 @@ func (f frameClock) BeginUpdatingFrameClock() {
 	C.gdk_frame_clock_begin_updating(_arg0)
 }
 
-func (f frameClock) EndUpdatingFrameClock() {
+func (f frameClock) EndUpdating() {
 	var _arg0 *C.GdkFrameClock // out
 
 	_arg0 = (*C.GdkFrameClock)(unsafe.Pointer(f.Native()))
@@ -314,7 +314,7 @@ func (f frameClock) Timings(frameCounter int64) *FrameTimings {
 	return _frameTimings
 }
 
-func (f frameClock) RequestPhaseFrameClock(phase FrameClockPhase) {
+func (f frameClock) RequestPhase(phase FrameClockPhase) {
 	var _arg0 *C.GdkFrameClock     // out
 	var _arg1 C.GdkFrameClockPhase // out
 

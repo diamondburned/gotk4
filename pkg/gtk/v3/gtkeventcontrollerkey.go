@@ -31,13 +31,13 @@ func init() {
 type EventControllerKey interface {
 	EventController
 
-	ForwardEventControllerKey(widget Widget) bool
+	Forward(widget Widget) bool
 
 	Group() uint
 	// ImContext gets the IM context of a key controller.
 	ImContext() IMContext
 
-	SetImContextEventControllerKey(imContext IMContext)
+	SetImContext(imContext IMContext)
 }
 
 // eventControllerKey implements the EventControllerKey class.
@@ -74,7 +74,7 @@ func NewEventControllerKey(widget Widget) EventControllerKey {
 	return _eventControllerKey
 }
 
-func (c eventControllerKey) ForwardEventControllerKey(widget Widget) bool {
+func (c eventControllerKey) Forward(widget Widget) bool {
 	var _arg0 *C.GtkEventControllerKey // out
 	var _arg1 *C.GtkWidget             // out
 	var _cret C.gboolean               // in
@@ -123,7 +123,7 @@ func (c eventControllerKey) ImContext() IMContext {
 	return _imContext
 }
 
-func (c eventControllerKey) SetImContextEventControllerKey(imContext IMContext) {
+func (c eventControllerKey) SetImContext(imContext IMContext) {
 	var _arg0 *C.GtkEventControllerKey // out
 	var _arg1 *C.GtkIMContext          // out
 

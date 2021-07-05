@@ -102,19 +102,18 @@ type EntryCompletion interface {
 	// AsCellLayout casts the class to the CellLayout interface.
 	AsCellLayout() CellLayout
 
-	// CompleteEntryCompletion requests a completion operation, or in other
-	// words a refiltering of the current list with completions, using the
-	// current key.
+	// Complete requests a completion operation, or in other words a refiltering
+	// of the current list with completions, using the current key.
 	//
 	// The completion list view will be updated accordingly.
-	CompleteEntryCompletion()
-	// ComputePrefixEntryCompletion computes the common prefix that is shared by
-	// all rows in @completion that start with @key.
+	Complete()
+	// ComputePrefix computes the common prefix that is shared by all rows in
+	// @completion that start with @key.
 	//
 	// If no row matches @key, nil will be returned. Note that a text column
 	// must have been set for this function to work, see
 	// [method@Gtk.EntryCompletion.set_text_column] for details.
-	ComputePrefixEntryCompletion(key string) string
+	ComputePrefix(key string) string
 	// CompletionPrefix: get the original text entered by the user that
 	// triggered the completion or nil if there’s no completion ongoing.
 	CompletionPrefix() string
@@ -143,40 +142,40 @@ type EntryCompletion interface {
 	// TextColumn returns the column in the model of @completion to get strings
 	// from.
 	TextColumn() int
-	// InsertPrefixEntryCompletion requests a prefix insertion.
-	InsertPrefixEntryCompletion()
-	// SetInlineCompletionEntryCompletion sets whether the common prefix of the
-	// possible completions should be automatically inserted in the entry.
-	SetInlineCompletionEntryCompletion(inlineCompletion bool)
-	// SetInlineSelectionEntryCompletion sets whether it is possible to cycle
-	// through the possible completions inside the entry.
-	SetInlineSelectionEntryCompletion(inlineSelection bool)
-	// SetMinimumKeyLengthEntryCompletion requires the length of the search key
-	// for @completion to be at least @length.
+	// InsertPrefix requests a prefix insertion.
+	InsertPrefix()
+	// SetInlineCompletion sets whether the common prefix of the possible
+	// completions should be automatically inserted in the entry.
+	SetInlineCompletion(inlineCompletion bool)
+	// SetInlineSelection sets whether it is possible to cycle through the
+	// possible completions inside the entry.
+	SetInlineSelection(inlineSelection bool)
+	// SetMinimumKeyLength requires the length of the search key for @completion
+	// to be at least @length.
 	//
 	// This is useful for long lists, where completing using a small key takes a
 	// lot of time and will come up with meaningless results anyway (ie, a too
 	// large dataset).
-	SetMinimumKeyLengthEntryCompletion(length int)
-	// SetModelEntryCompletion sets the model for a `GtkEntryCompletion`.
+	SetMinimumKeyLength(length int)
+	// SetModel sets the model for a `GtkEntryCompletion`.
 	//
 	// If @completion already has a model set, it will remove it before setting
 	// the new model. If model is nil, then it will unset the model.
-	SetModelEntryCompletion(model TreeModel)
-	// SetPopupCompletionEntryCompletion sets whether the completions should be
-	// presented in a popup window.
-	SetPopupCompletionEntryCompletion(popupCompletion bool)
-	// SetPopupSetWidthEntryCompletion sets whether the completion popup window
-	// will be resized to be the same width as the entry.
-	SetPopupSetWidthEntryCompletion(popupSetWidth bool)
-	// SetPopupSingleMatchEntryCompletion sets whether the completion popup
-	// window will appear even if there is only a single match.
+	SetModel(model TreeModel)
+	// SetPopupCompletion sets whether the completions should be presented in a
+	// popup window.
+	SetPopupCompletion(popupCompletion bool)
+	// SetPopupSetWidth sets whether the completion popup window will be resized
+	// to be the same width as the entry.
+	SetPopupSetWidth(popupSetWidth bool)
+	// SetPopupSingleMatch sets whether the completion popup window will appear
+	// even if there is only a single match.
 	//
 	// You may want to set this to false if you are using
 	// [property@Gtk.EntryCompletion:inline-completion].
-	SetPopupSingleMatchEntryCompletion(popupSingleMatch bool)
-	// SetTextColumnEntryCompletion: convenience function for setting up the
-	// most used case of this code: a completion list with just strings.
+	SetPopupSingleMatch(popupSingleMatch bool)
+	// SetTextColumn: convenience function for setting up the most used case of
+	// this code: a completion list with just strings.
 	//
 	// This function will set up @completion to have a list displaying all (and
 	// just) strings in the completion list, and to get those strings from
@@ -186,7 +185,7 @@ type EntryCompletion interface {
 	// column. If you need to set the text column, but don't want the cell
 	// renderer, use g_object_set() to set the
 	// [property@Gtk.EntryCompletion:text-column] property directly.
-	SetTextColumnEntryCompletion(column int)
+	SetTextColumn(column int)
 }
 
 // entryCompletion implements the EntryCompletion class.
@@ -241,7 +240,15 @@ func NewEntryCompletionWithArea(area CellArea) EntryCompletion {
 	return _entryCompletion
 }
 
-func (c entryCompletion) CompleteEntryCompletion() {
+func (e entryCompletion) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(e))
+}
+
+func (e entryCompletion) AsCellLayout() CellLayout {
+	return WrapCellLayout(gextras.InternObject(e))
+}
+
+func (c entryCompletion) Complete() {
 	var _arg0 *C.GtkEntryCompletion // out
 
 	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(c.Native()))
@@ -249,7 +256,7 @@ func (c entryCompletion) CompleteEntryCompletion() {
 	C.gtk_entry_completion_complete(_arg0)
 }
 
-func (c entryCompletion) ComputePrefixEntryCompletion(key string) string {
+func (c entryCompletion) ComputePrefix(key string) string {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _arg1 *C.char               // out
 	var _cret *C.char               // in
@@ -428,7 +435,7 @@ func (c entryCompletion) TextColumn() int {
 	return _gint
 }
 
-func (c entryCompletion) InsertPrefixEntryCompletion() {
+func (c entryCompletion) InsertPrefix() {
 	var _arg0 *C.GtkEntryCompletion // out
 
 	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(c.Native()))
@@ -436,7 +443,7 @@ func (c entryCompletion) InsertPrefixEntryCompletion() {
 	C.gtk_entry_completion_insert_prefix(_arg0)
 }
 
-func (c entryCompletion) SetInlineCompletionEntryCompletion(inlineCompletion bool) {
+func (c entryCompletion) SetInlineCompletion(inlineCompletion bool) {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _arg1 C.gboolean            // out
 
@@ -448,7 +455,7 @@ func (c entryCompletion) SetInlineCompletionEntryCompletion(inlineCompletion boo
 	C.gtk_entry_completion_set_inline_completion(_arg0, _arg1)
 }
 
-func (c entryCompletion) SetInlineSelectionEntryCompletion(inlineSelection bool) {
+func (c entryCompletion) SetInlineSelection(inlineSelection bool) {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _arg1 C.gboolean            // out
 
@@ -460,7 +467,7 @@ func (c entryCompletion) SetInlineSelectionEntryCompletion(inlineSelection bool)
 	C.gtk_entry_completion_set_inline_selection(_arg0, _arg1)
 }
 
-func (c entryCompletion) SetMinimumKeyLengthEntryCompletion(length int) {
+func (c entryCompletion) SetMinimumKeyLength(length int) {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _arg1 C.int                 // out
 
@@ -470,7 +477,7 @@ func (c entryCompletion) SetMinimumKeyLengthEntryCompletion(length int) {
 	C.gtk_entry_completion_set_minimum_key_length(_arg0, _arg1)
 }
 
-func (c entryCompletion) SetModelEntryCompletion(model TreeModel) {
+func (c entryCompletion) SetModel(model TreeModel) {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _arg1 *C.GtkTreeModel       // out
 
@@ -480,7 +487,7 @@ func (c entryCompletion) SetModelEntryCompletion(model TreeModel) {
 	C.gtk_entry_completion_set_model(_arg0, _arg1)
 }
 
-func (c entryCompletion) SetPopupCompletionEntryCompletion(popupCompletion bool) {
+func (c entryCompletion) SetPopupCompletion(popupCompletion bool) {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _arg1 C.gboolean            // out
 
@@ -492,7 +499,7 @@ func (c entryCompletion) SetPopupCompletionEntryCompletion(popupCompletion bool)
 	C.gtk_entry_completion_set_popup_completion(_arg0, _arg1)
 }
 
-func (c entryCompletion) SetPopupSetWidthEntryCompletion(popupSetWidth bool) {
+func (c entryCompletion) SetPopupSetWidth(popupSetWidth bool) {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _arg1 C.gboolean            // out
 
@@ -504,7 +511,7 @@ func (c entryCompletion) SetPopupSetWidthEntryCompletion(popupSetWidth bool) {
 	C.gtk_entry_completion_set_popup_set_width(_arg0, _arg1)
 }
 
-func (c entryCompletion) SetPopupSingleMatchEntryCompletion(popupSingleMatch bool) {
+func (c entryCompletion) SetPopupSingleMatch(popupSingleMatch bool) {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _arg1 C.gboolean            // out
 
@@ -516,7 +523,7 @@ func (c entryCompletion) SetPopupSingleMatchEntryCompletion(popupSingleMatch boo
 	C.gtk_entry_completion_set_popup_single_match(_arg0, _arg1)
 }
 
-func (c entryCompletion) SetTextColumnEntryCompletion(column int) {
+func (c entryCompletion) SetTextColumn(column int) {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _arg1 C.int                 // out
 
@@ -524,12 +531,4 @@ func (c entryCompletion) SetTextColumnEntryCompletion(column int) {
 	_arg1 = C.int(column)
 
 	C.gtk_entry_completion_set_text_column(_arg0, _arg1)
-}
-
-func (e entryCompletion) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(e))
-}
-
-func (e entryCompletion) AsCellLayout() CellLayout {
-	return WrapCellLayout(gextras.InternObject(e))
 }

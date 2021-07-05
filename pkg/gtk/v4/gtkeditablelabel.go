@@ -58,15 +58,15 @@ type EditableLabel interface {
 
 	// Editing returns whether the label is currently in “editing mode”.
 	Editing() bool
-	// StartEditingEditableLabel switches the label into “editing mode”.
-	StartEditingEditableLabel()
-	// StopEditingEditableLabel switches the label out of “editing mode”.
+	// StartEditing switches the label into “editing mode”.
+	StartEditing()
+	// StopEditing switches the label out of “editing mode”.
 	//
 	// If @commit is true, the resulting text is kept as the
 	// [property@Gtk.Editable:text] property value, otherwise the resulting text
 	// is discarded and the label will keep its previous
 	// [property@Gtk.Editable:text] property value.
-	StopEditingEditableLabel(commit bool)
+	StopEditing(commit bool)
 }
 
 // editableLabel implements the EditableLabel class.
@@ -105,6 +105,22 @@ func NewEditableLabel(str string) EditableLabel {
 	return _editableLabel
 }
 
+func (e editableLabel) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(e))
+}
+
+func (e editableLabel) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(e))
+}
+
+func (e editableLabel) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(e))
+}
+
+func (e editableLabel) AsEditable() Editable {
+	return WrapEditable(gextras.InternObject(e))
+}
+
 func (s editableLabel) Editing() bool {
 	var _arg0 *C.GtkEditableLabel // out
 	var _cret C.gboolean          // in
@@ -122,7 +138,7 @@ func (s editableLabel) Editing() bool {
 	return _ok
 }
 
-func (s editableLabel) StartEditingEditableLabel() {
+func (s editableLabel) StartEditing() {
 	var _arg0 *C.GtkEditableLabel // out
 
 	_arg0 = (*C.GtkEditableLabel)(unsafe.Pointer(s.Native()))
@@ -130,7 +146,7 @@ func (s editableLabel) StartEditingEditableLabel() {
 	C.gtk_editable_label_start_editing(_arg0)
 }
 
-func (s editableLabel) StopEditingEditableLabel(commit bool) {
+func (s editableLabel) StopEditing(commit bool) {
 	var _arg0 *C.GtkEditableLabel // out
 	var _arg1 C.gboolean          // out
 
@@ -140,20 +156,4 @@ func (s editableLabel) StopEditingEditableLabel(commit bool) {
 	}
 
 	C.gtk_editable_label_stop_editing(_arg0, _arg1)
-}
-
-func (e editableLabel) AsAccessible() Accessible {
-	return WrapAccessible(gextras.InternObject(e))
-}
-
-func (e editableLabel) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(e))
-}
-
-func (e editableLabel) AsConstraintTarget() ConstraintTarget {
-	return WrapConstraintTarget(gextras.InternObject(e))
-}
-
-func (e editableLabel) AsEditable() Editable {
-	return WrapEditable(gextras.InternObject(e))
 }

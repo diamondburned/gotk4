@@ -56,20 +56,19 @@ func init() {
 type SocketService interface {
 	SocketListener
 
-	// IsActiveSocketService: check whether the service is active or not. An
-	// active service will accept new clients that connect, while a non-active
-	// service will let connecting clients queue up until the service is
-	// started.
-	IsActiveSocketService() bool
-	// StartSocketService restarts the service, i.e. start accepting connections
-	// from the added sockets when the mainloop runs. This only needs to be
-	// called after the service has been stopped from g_socket_service_stop().
+	// IsActive: check whether the service is active or not. An active service
+	// will accept new clients that connect, while a non-active service will let
+	// connecting clients queue up until the service is started.
+	IsActive() bool
+	// Start restarts the service, i.e. start accepting connections from the
+	// added sockets when the mainloop runs. This only needs to be called after
+	// the service has been stopped from g_socket_service_stop().
 	//
 	// This call is thread-safe, so it may be called from a thread handling an
 	// incoming client request.
-	StartSocketService()
-	// StopSocketService stops the service, i.e. stops accepting connections
-	// from the added sockets when the mainloop runs.
+	Start()
+	// Stop stops the service, i.e. stops accepting connections from the added
+	// sockets when the mainloop runs.
 	//
 	// This call is thread-safe, so it may be called from a thread handling an
 	// incoming client request.
@@ -83,7 +82,7 @@ type SocketService interface {
 	// This must be called before calling g_socket_listener_close() as the
 	// socket service will start accepting connections immediately when a new
 	// socket is added.
-	StopSocketService()
+	Stop()
 }
 
 // socketService implements the SocketService class.
@@ -124,7 +123,7 @@ func NewSocketService() SocketService {
 	return _socketService
 }
 
-func (s socketService) IsActiveSocketService() bool {
+func (s socketService) IsActive() bool {
 	var _arg0 *C.GSocketService // out
 	var _cret C.gboolean        // in
 
@@ -141,7 +140,7 @@ func (s socketService) IsActiveSocketService() bool {
 	return _ok
 }
 
-func (s socketService) StartSocketService() {
+func (s socketService) Start() {
 	var _arg0 *C.GSocketService // out
 
 	_arg0 = (*C.GSocketService)(unsafe.Pointer(s.Native()))
@@ -149,7 +148,7 @@ func (s socketService) StartSocketService() {
 	C.g_socket_service_start(_arg0)
 }
 
-func (s socketService) StopSocketService() {
+func (s socketService) Stop() {
 	var _arg0 *C.GSocketService // out
 
 	_arg0 = (*C.GSocketService)(unsafe.Pointer(s.Native()))

@@ -122,7 +122,7 @@ func init() {
 type GLShader interface {
 	gextras.Objector
 
-	// CompileGLShader tries to compile the @shader for the given @renderer.
+	// Compile tries to compile the @shader for the given @renderer.
 	//
 	// If there is a problem, this function returns false and reports an error.
 	// You should use this function before relying on the shader for rendering
@@ -132,10 +132,10 @@ type GLShader interface {
 	// current GL context) and requires the renderer to be set up. This means
 	// that the widget has to be realized. Commonly you want to call this from
 	// the realize signal of a widget, or during widget snapshot.
-	CompileGLShader(renderer Renderer) error
-	// FindUniformByNameGLShader looks for a uniform by the name @name, and
-	// returns the index of the uniform, or -1 if it was not found.
-	FindUniformByNameGLShader(name string) int
+	Compile(renderer Renderer) error
+	// FindUniformByName looks for a uniform by the name @name, and returns the
+	// index of the uniform, or -1 if it was not found.
+	FindUniformByName(name string) int
 	// ArgsSize: get the size of the data block used to specify arguments for
 	// this shader.
 	ArgsSize() uint
@@ -198,7 +198,7 @@ func NewGLShaderFromResource(resourcePath string) GLShader {
 	return _glShader
 }
 
-func (s glShader) CompileGLShader(renderer Renderer) error {
+func (s glShader) Compile(renderer Renderer) error {
 	var _arg0 *C.GskGLShader // out
 	var _arg1 *C.GskRenderer // out
 	var _cerr *C.GError      // in
@@ -215,7 +215,7 @@ func (s glShader) CompileGLShader(renderer Renderer) error {
 	return _goerr
 }
 
-func (s glShader) FindUniformByNameGLShader(name string) int {
+func (s glShader) FindUniformByName(name string) int {
 	var _arg0 *C.GskGLShader // out
 	var _arg1 *C.char        // out
 	var _cret C.int          // in

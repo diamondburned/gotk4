@@ -49,40 +49,39 @@ type StyleProperties interface {
 	// AsStyleProvider casts the class to the StyleProvider interface.
 	AsStyleProvider() StyleProvider
 
-	// ClearStyleProperties clears all style information from @props.
+	// Clear clears all style information from @props.
 	//
 	// Deprecated: since version 3.16.
-	ClearStyleProperties()
+	Clear()
 	// Property gets a style property from @props for the given state. When done
 	// with @value, g_value_unset() needs to be called to free any allocated
 	// memory.
 	//
 	// Deprecated: since version 3.16.
 	Property(property string, state StateFlags) (externglib.Value, bool)
-	// LookupColorStyleProperties returns the symbolic color that is mapped to
-	// @name.
+	// LookupColor returns the symbolic color that is mapped to @name.
 	//
 	// Deprecated: since version 3.8.
-	LookupColorStyleProperties(name string) *SymbolicColor
-	// MapColorStyleProperties maps @color so it can be referenced by @name. See
+	LookupColor(name string) *SymbolicColor
+	// MapColor maps @color so it can be referenced by @name. See
 	// gtk_style_properties_lookup_color()
 	//
 	// Deprecated: since version 3.8.
-	MapColorStyleProperties(name string, color *SymbolicColor)
-	// MergeStyleProperties merges into @props all the style information
-	// contained in @props_to_merge. If @replace is true, the values will be
-	// overwritten, if it is false, the older values will prevail.
+	MapColor(name string, color *SymbolicColor)
+	// Merge merges into @props all the style information contained in
+	// @props_to_merge. If @replace is true, the values will be overwritten, if
+	// it is false, the older values will prevail.
 	//
 	// Deprecated: since version 3.16.
-	MergeStyleProperties(propsToMerge StyleProperties, replace bool)
-	// SetPropertyStyleProperties sets a styling property in @props.
+	Merge(propsToMerge StyleProperties, replace bool)
+	// SetProperty sets a styling property in @props.
 	//
 	// Deprecated: since version 3.16.
-	SetPropertyStyleProperties(property string, state StateFlags, value externglib.Value)
-	// UnsetPropertyStyleProperties unsets a style property in @props.
+	SetProperty(property string, state StateFlags, value externglib.Value)
+	// UnsetProperty unsets a style property in @props.
 	//
 	// Deprecated: since version 3.16.
-	UnsetPropertyStyleProperties(property string, state StateFlags)
+	UnsetProperty(property string, state StateFlags)
 }
 
 // styleProperties implements the StyleProperties class.
@@ -119,7 +118,11 @@ func NewStyleProperties() StyleProperties {
 	return _styleProperties
 }
 
-func (p styleProperties) ClearStyleProperties() {
+func (s styleProperties) AsStyleProvider() StyleProvider {
+	return WrapStyleProvider(gextras.InternObject(s))
+}
+
+func (p styleProperties) Clear() {
 	var _arg0 *C.GtkStyleProperties // out
 
 	_arg0 = (*C.GtkStyleProperties)(unsafe.Pointer(p.Native()))
@@ -165,7 +168,7 @@ func (p styleProperties) Property(property string, state StateFlags) (externglib
 	return _value, _ok
 }
 
-func (p styleProperties) LookupColorStyleProperties(name string) *SymbolicColor {
+func (p styleProperties) LookupColor(name string) *SymbolicColor {
 	var _arg0 *C.GtkStyleProperties // out
 	var _arg1 *C.gchar              // out
 	var _cret *C.GtkSymbolicColor   // in
@@ -187,7 +190,7 @@ func (p styleProperties) LookupColorStyleProperties(name string) *SymbolicColor 
 	return _symbolicColor
 }
 
-func (p styleProperties) MapColorStyleProperties(name string, color *SymbolicColor) {
+func (p styleProperties) MapColor(name string, color *SymbolicColor) {
 	var _arg0 *C.GtkStyleProperties // out
 	var _arg1 *C.gchar              // out
 	var _arg2 *C.GtkSymbolicColor   // out
@@ -200,7 +203,7 @@ func (p styleProperties) MapColorStyleProperties(name string, color *SymbolicCol
 	C.gtk_style_properties_map_color(_arg0, _arg1, _arg2)
 }
 
-func (p styleProperties) MergeStyleProperties(propsToMerge StyleProperties, replace bool) {
+func (p styleProperties) Merge(propsToMerge StyleProperties, replace bool) {
 	var _arg0 *C.GtkStyleProperties // out
 	var _arg1 *C.GtkStyleProperties // out
 	var _arg2 C.gboolean            // out
@@ -214,7 +217,7 @@ func (p styleProperties) MergeStyleProperties(propsToMerge StyleProperties, repl
 	C.gtk_style_properties_merge(_arg0, _arg1, _arg2)
 }
 
-func (p styleProperties) SetPropertyStyleProperties(property string, state StateFlags, value externglib.Value) {
+func (p styleProperties) SetProperty(property string, state StateFlags, value externglib.Value) {
 	var _arg0 *C.GtkStyleProperties // out
 	var _arg1 *C.gchar              // out
 	var _arg2 C.GtkStateFlags       // out
@@ -229,7 +232,7 @@ func (p styleProperties) SetPropertyStyleProperties(property string, state State
 	C.gtk_style_properties_set_property(_arg0, _arg1, _arg2, _arg3)
 }
 
-func (p styleProperties) UnsetPropertyStyleProperties(property string, state StateFlags) {
+func (p styleProperties) UnsetProperty(property string, state StateFlags) {
 	var _arg0 *C.GtkStyleProperties // out
 	var _arg1 *C.gchar              // out
 	var _arg2 C.GtkStateFlags       // out
@@ -240,10 +243,6 @@ func (p styleProperties) UnsetPropertyStyleProperties(property string, state Sta
 	_arg2 = C.GtkStateFlags(state)
 
 	C.gtk_style_properties_unset_property(_arg0, _arg1, _arg2)
-}
-
-func (s styleProperties) AsStyleProvider() StyleProvider {
-	return WrapStyleProvider(gextras.InternObject(s))
 }
 
 // Gradient is a boxed type that represents a gradient. It is the result of

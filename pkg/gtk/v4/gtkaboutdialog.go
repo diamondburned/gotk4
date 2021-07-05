@@ -130,8 +130,8 @@ type AboutDialog interface {
 	// AsShortcutManager casts the class to the ShortcutManager interface.
 	AsShortcutManager() ShortcutManager
 
-	// AddCreditSectionAboutDialog creates a new section in the "Credits" page.
-	AddCreditSectionAboutDialog(sectionName string, people []string)
+	// AddCreditSection creates a new section in the "Credits" page.
+	AddCreditSection(sectionName string, people []string)
 	// Artists returns the string which are displayed in the "Artists" tab of
 	// the secondary credits dialog.
 	Artists() []string
@@ -168,52 +168,50 @@ type AboutDialog interface {
 	// WrapLicense returns whether the license text in the about dialog is
 	// automatically wrapped.
 	WrapLicense() bool
-	// SetArtistsAboutDialog sets the strings which are displayed in the
-	// "Artists" tab of the secondary credits dialog.
-	SetArtistsAboutDialog(artists []string)
-	// SetAuthorsAboutDialog sets the strings which are displayed in the
-	// "Authors" tab of the secondary credits dialog.
-	SetAuthorsAboutDialog(authors []string)
-	// SetCommentsAboutDialog sets the comments string to display in the about
-	// dialog.
+	// SetArtists sets the strings which are displayed in the "Artists" tab of
+	// the secondary credits dialog.
+	SetArtists(artists []string)
+	// SetAuthors sets the strings which are displayed in the "Authors" tab of
+	// the secondary credits dialog.
+	SetAuthors(authors []string)
+	// SetComments sets the comments string to display in the about dialog.
 	//
 	// This should be a short string of one or two lines.
-	SetCommentsAboutDialog(comments string)
-	// SetCopyrightAboutDialog sets the copyright string to display in the about
-	// dialog.
+	SetComments(comments string)
+	// SetCopyright sets the copyright string to display in the about dialog.
 	//
 	// This should be a short string of one or two lines.
-	SetCopyrightAboutDialog(copyright string)
-	// SetDocumentersAboutDialog sets the strings which are displayed in the
-	// "Documenters" tab of the credits dialog.
-	SetDocumentersAboutDialog(documenters []string)
-	// SetLicenseAboutDialog sets the license information to be displayed in the
-	// secondary license dialog.
+	SetCopyright(copyright string)
+	// SetDocumenters sets the strings which are displayed in the "Documenters"
+	// tab of the credits dialog.
+	SetDocumenters(documenters []string)
+	// SetLicense sets the license information to be displayed in the secondary
+	// license dialog.
 	//
 	// If `license` is `NULL`, the license button is hidden.
-	SetLicenseAboutDialog(license string)
-	// SetLicenseTypeAboutDialog sets the license of the application showing the
-	// about dialog from a list of known licenses.
+	SetLicense(license string)
+	// SetLicenseType sets the license of the application showing the about
+	// dialog from a list of known licenses.
 	//
 	// This function overrides the license set using
 	// [method@Gtk.AboutDialog.set_license].
-	SetLicenseTypeAboutDialog(licenseType License)
-	// SetLogoIconNameAboutDialog sets the icon name to be displayed as logo in
-	// the about dialog.
-	SetLogoIconNameAboutDialog(iconName string)
-	// SetProgramNameAboutDialog sets the name to display in the about dialog.
+	SetLicenseType(licenseType License)
+	// SetLogoIconName sets the icon name to be displayed as logo in the about
+	// dialog.
+	SetLogoIconName(iconName string)
+	// SetProgramName sets the name to display in the about dialog.
 	//
 	// If `name` is not set, it defaults to `g_get_application_name()`.
-	SetProgramNameAboutDialog(name string)
-	// SetSystemInformationAboutDialog sets the system information to be
-	// displayed in the about dialog.
+	SetProgramName(name string)
+	// SetSystemInformation sets the system information to be displayed in the
+	// about dialog.
 	//
 	// If `system_information` is `NULL`, the system information tab is hidden.
 	//
 	// See [property@Gtk.AboutDialog:system-information].
-	SetSystemInformationAboutDialog(systemInformation string)
-	// SetTranslatorCreditsAboutDialog sets the translator credits string which
-	// is displayed in the translators tab of the secondary credits dialog.
+	SetSystemInformation(systemInformation string)
+	// SetTranslatorCredits sets the translator credits string which is
+	// displayed in the translators tab of the secondary credits dialog.
 	//
 	// The intended use for this string is to display the translator of the
 	// language which is currently used in the user interface. Using
@@ -228,18 +226,16 @@ type AboutDialog interface {
 	// this purpose, since translators will already know the purpose of that
 	// `msgid`, and since `GtkAboutDialog` will detect if “translator-credits”
 	// is untranslated and hide the tab.
-	SetTranslatorCreditsAboutDialog(translatorCredits string)
-	// SetVersionAboutDialog sets the version string to display in the about
-	// dialog.
-	SetVersionAboutDialog(version string)
-	// SetWebsiteAboutDialog sets the URL to use for the website link.
-	SetWebsiteAboutDialog(website string)
-	// SetWebsiteLabelAboutDialog sets the label to be used for the website
-	// link.
-	SetWebsiteLabelAboutDialog(websiteLabel string)
-	// SetWrapLicenseAboutDialog sets whether the license text in the about
-	// dialog should be automatically wrapped.
-	SetWrapLicenseAboutDialog(wrapLicense bool)
+	SetTranslatorCredits(translatorCredits string)
+	// SetVersion sets the version string to display in the about dialog.
+	SetVersion(version string)
+	// SetWebsite sets the URL to use for the website link.
+	SetWebsite(website string)
+	// SetWebsiteLabel sets the label to be used for the website link.
+	SetWebsiteLabel(websiteLabel string)
+	// SetWrapLicense sets whether the license text in the about dialog should
+	// be automatically wrapped.
+	SetWrapLicense(wrapLicense bool)
 }
 
 // aboutDialog implements the AboutDialog class.
@@ -274,7 +270,31 @@ func NewAboutDialog() AboutDialog {
 	return _aboutDialog
 }
 
-func (a aboutDialog) AddCreditSectionAboutDialog(sectionName string, people []string) {
+func (a aboutDialog) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(a))
+}
+
+func (a aboutDialog) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(a))
+}
+
+func (a aboutDialog) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(a))
+}
+
+func (a aboutDialog) AsNative() Native {
+	return WrapNative(gextras.InternObject(a))
+}
+
+func (a aboutDialog) AsRoot() Root {
+	return WrapRoot(gextras.InternObject(a))
+}
+
+func (a aboutDialog) AsShortcutManager() ShortcutManager {
+	return WrapShortcutManager(gextras.InternObject(a))
+}
+
+func (a aboutDialog) AddCreditSection(sectionName string, people []string) {
 	var _arg0 *C.GtkAboutDialog // out
 	var _arg1 *C.char           // out
 	var _arg2 **C.char
@@ -558,7 +578,7 @@ func (a aboutDialog) WrapLicense() bool {
 	return _ok
 }
 
-func (a aboutDialog) SetArtistsAboutDialog(artists []string) {
+func (a aboutDialog) SetArtists(artists []string) {
 	var _arg0 *C.GtkAboutDialog // out
 	var _arg1 **C.char
 
@@ -576,7 +596,7 @@ func (a aboutDialog) SetArtistsAboutDialog(artists []string) {
 	C.gtk_about_dialog_set_artists(_arg0, _arg1)
 }
 
-func (a aboutDialog) SetAuthorsAboutDialog(authors []string) {
+func (a aboutDialog) SetAuthors(authors []string) {
 	var _arg0 *C.GtkAboutDialog // out
 	var _arg1 **C.char
 
@@ -594,7 +614,7 @@ func (a aboutDialog) SetAuthorsAboutDialog(authors []string) {
 	C.gtk_about_dialog_set_authors(_arg0, _arg1)
 }
 
-func (a aboutDialog) SetCommentsAboutDialog(comments string) {
+func (a aboutDialog) SetComments(comments string) {
 	var _arg0 *C.GtkAboutDialog // out
 	var _arg1 *C.char           // out
 
@@ -605,7 +625,7 @@ func (a aboutDialog) SetCommentsAboutDialog(comments string) {
 	C.gtk_about_dialog_set_comments(_arg0, _arg1)
 }
 
-func (a aboutDialog) SetCopyrightAboutDialog(copyright string) {
+func (a aboutDialog) SetCopyright(copyright string) {
 	var _arg0 *C.GtkAboutDialog // out
 	var _arg1 *C.char           // out
 
@@ -616,7 +636,7 @@ func (a aboutDialog) SetCopyrightAboutDialog(copyright string) {
 	C.gtk_about_dialog_set_copyright(_arg0, _arg1)
 }
 
-func (a aboutDialog) SetDocumentersAboutDialog(documenters []string) {
+func (a aboutDialog) SetDocumenters(documenters []string) {
 	var _arg0 *C.GtkAboutDialog // out
 	var _arg1 **C.char
 
@@ -634,7 +654,7 @@ func (a aboutDialog) SetDocumentersAboutDialog(documenters []string) {
 	C.gtk_about_dialog_set_documenters(_arg0, _arg1)
 }
 
-func (a aboutDialog) SetLicenseAboutDialog(license string) {
+func (a aboutDialog) SetLicense(license string) {
 	var _arg0 *C.GtkAboutDialog // out
 	var _arg1 *C.char           // out
 
@@ -645,7 +665,7 @@ func (a aboutDialog) SetLicenseAboutDialog(license string) {
 	C.gtk_about_dialog_set_license(_arg0, _arg1)
 }
 
-func (a aboutDialog) SetLicenseTypeAboutDialog(licenseType License) {
+func (a aboutDialog) SetLicenseType(licenseType License) {
 	var _arg0 *C.GtkAboutDialog // out
 	var _arg1 C.GtkLicense      // out
 
@@ -655,7 +675,7 @@ func (a aboutDialog) SetLicenseTypeAboutDialog(licenseType License) {
 	C.gtk_about_dialog_set_license_type(_arg0, _arg1)
 }
 
-func (a aboutDialog) SetLogoIconNameAboutDialog(iconName string) {
+func (a aboutDialog) SetLogoIconName(iconName string) {
 	var _arg0 *C.GtkAboutDialog // out
 	var _arg1 *C.char           // out
 
@@ -666,7 +686,7 @@ func (a aboutDialog) SetLogoIconNameAboutDialog(iconName string) {
 	C.gtk_about_dialog_set_logo_icon_name(_arg0, _arg1)
 }
 
-func (a aboutDialog) SetProgramNameAboutDialog(name string) {
+func (a aboutDialog) SetProgramName(name string) {
 	var _arg0 *C.GtkAboutDialog // out
 	var _arg1 *C.char           // out
 
@@ -677,7 +697,7 @@ func (a aboutDialog) SetProgramNameAboutDialog(name string) {
 	C.gtk_about_dialog_set_program_name(_arg0, _arg1)
 }
 
-func (a aboutDialog) SetSystemInformationAboutDialog(systemInformation string) {
+func (a aboutDialog) SetSystemInformation(systemInformation string) {
 	var _arg0 *C.GtkAboutDialog // out
 	var _arg1 *C.char           // out
 
@@ -688,7 +708,7 @@ func (a aboutDialog) SetSystemInformationAboutDialog(systemInformation string) {
 	C.gtk_about_dialog_set_system_information(_arg0, _arg1)
 }
 
-func (a aboutDialog) SetTranslatorCreditsAboutDialog(translatorCredits string) {
+func (a aboutDialog) SetTranslatorCredits(translatorCredits string) {
 	var _arg0 *C.GtkAboutDialog // out
 	var _arg1 *C.char           // out
 
@@ -699,7 +719,7 @@ func (a aboutDialog) SetTranslatorCreditsAboutDialog(translatorCredits string) {
 	C.gtk_about_dialog_set_translator_credits(_arg0, _arg1)
 }
 
-func (a aboutDialog) SetVersionAboutDialog(version string) {
+func (a aboutDialog) SetVersion(version string) {
 	var _arg0 *C.GtkAboutDialog // out
 	var _arg1 *C.char           // out
 
@@ -710,7 +730,7 @@ func (a aboutDialog) SetVersionAboutDialog(version string) {
 	C.gtk_about_dialog_set_version(_arg0, _arg1)
 }
 
-func (a aboutDialog) SetWebsiteAboutDialog(website string) {
+func (a aboutDialog) SetWebsite(website string) {
 	var _arg0 *C.GtkAboutDialog // out
 	var _arg1 *C.char           // out
 
@@ -721,7 +741,7 @@ func (a aboutDialog) SetWebsiteAboutDialog(website string) {
 	C.gtk_about_dialog_set_website(_arg0, _arg1)
 }
 
-func (a aboutDialog) SetWebsiteLabelAboutDialog(websiteLabel string) {
+func (a aboutDialog) SetWebsiteLabel(websiteLabel string) {
 	var _arg0 *C.GtkAboutDialog // out
 	var _arg1 *C.char           // out
 
@@ -732,7 +752,7 @@ func (a aboutDialog) SetWebsiteLabelAboutDialog(websiteLabel string) {
 	C.gtk_about_dialog_set_website_label(_arg0, _arg1)
 }
 
-func (a aboutDialog) SetWrapLicenseAboutDialog(wrapLicense bool) {
+func (a aboutDialog) SetWrapLicense(wrapLicense bool) {
 	var _arg0 *C.GtkAboutDialog // out
 	var _arg1 C.gboolean        // out
 
@@ -742,28 +762,4 @@ func (a aboutDialog) SetWrapLicenseAboutDialog(wrapLicense bool) {
 	}
 
 	C.gtk_about_dialog_set_wrap_license(_arg0, _arg1)
-}
-
-func (a aboutDialog) AsAccessible() Accessible {
-	return WrapAccessible(gextras.InternObject(a))
-}
-
-func (a aboutDialog) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(a))
-}
-
-func (a aboutDialog) AsConstraintTarget() ConstraintTarget {
-	return WrapConstraintTarget(gextras.InternObject(a))
-}
-
-func (a aboutDialog) AsNative() Native {
-	return WrapNative(gextras.InternObject(a))
-}
-
-func (a aboutDialog) AsRoot() Root {
-	return WrapRoot(gextras.InternObject(a))
-}
-
-func (a aboutDialog) AsShortcutManager() ShortcutManager {
-	return WrapShortcutManager(gextras.InternObject(a))
 }

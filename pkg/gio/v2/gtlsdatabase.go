@@ -48,17 +48,16 @@ func init() {
 type TLSDatabase interface {
 	gextras.Objector
 
-	// CreateCertificateHandleTLSDatabase: create a handle string for the
-	// certificate. The database will only be able to create a handle for
-	// certificates that originate from the database. In cases where the
-	// database cannot create a handle for a certificate, nil will be returned.
+	// CreateCertificateHandle: create a handle string for the certificate. The
+	// database will only be able to create a handle for certificates that
+	// originate from the database. In cases where the database cannot create a
+	// handle for a certificate, nil will be returned.
 	//
 	// This handle should be stable across various instances of the application,
 	// and between applications. If a certificate is modified in the database,
 	// then it is not guaranteed that this handle will continue to point to it.
-	CreateCertificateHandleTLSDatabase(certificate TLSCertificate) string
-	// LookupCertificateForHandleTLSDatabase: look up a certificate by its
-	// handle.
+	CreateCertificateHandle(certificate TLSCertificate) string
+	// LookupCertificateForHandle: look up a certificate by its handle.
 	//
 	// The handle should have been created by calling
 	// g_tls_database_create_certificate_handle() on a Database object of the
@@ -71,20 +70,20 @@ type TLSDatabase interface {
 	// This function can block, use
 	// g_tls_database_lookup_certificate_for_handle_async() to perform the
 	// lookup operation asynchronously.
-	LookupCertificateForHandleTLSDatabase(handle string, interaction TLSInteraction, flags TLSDatabaseLookupFlags, cancellable Cancellable) (TLSCertificate, error)
-	// LookupCertificateForHandleAsyncTLSDatabase: asynchronously look up a
-	// certificate by its handle in the database. See
+	LookupCertificateForHandle(handle string, interaction TLSInteraction, flags TLSDatabaseLookupFlags, cancellable Cancellable) (TLSCertificate, error)
+	// LookupCertificateForHandleAsync: asynchronously look up a certificate by
+	// its handle in the database. See
 	// g_tls_database_lookup_certificate_for_handle() for more information.
-	LookupCertificateForHandleAsyncTLSDatabase(handle string, interaction TLSInteraction, flags TLSDatabaseLookupFlags, cancellable Cancellable, callback AsyncReadyCallback)
-	// LookupCertificateForHandleFinishTLSDatabase: finish an asynchronous
-	// lookup of a certificate by its handle. See
+	LookupCertificateForHandleAsync(handle string, interaction TLSInteraction, flags TLSDatabaseLookupFlags, cancellable Cancellable, callback AsyncReadyCallback)
+	// LookupCertificateForHandleFinish: finish an asynchronous lookup of a
+	// certificate by its handle. See
 	// g_tls_database_lookup_certificate_for_handle() for more information.
 	//
 	// If the handle is no longer valid, or does not point to a certificate in
 	// this database, then nil will be returned.
-	LookupCertificateForHandleFinishTLSDatabase(result AsyncResult) (TLSCertificate, error)
-	// LookupCertificateIssuerTLSDatabase: look up the issuer of @certificate in
-	// the database.
+	LookupCertificateForHandleFinish(result AsyncResult) (TLSCertificate, error)
+	// LookupCertificateIssuer: look up the issuer of @certificate in the
+	// database.
 	//
 	// The Certificate:issuer property of @certificate is not modified, and the
 	// two certificates are not hooked into a chain.
@@ -92,25 +91,25 @@ type TLSDatabase interface {
 	// This function can block, use
 	// g_tls_database_lookup_certificate_issuer_async() to perform the lookup
 	// operation asynchronously.
-	LookupCertificateIssuerTLSDatabase(certificate TLSCertificate, interaction TLSInteraction, flags TLSDatabaseLookupFlags, cancellable Cancellable) (TLSCertificate, error)
-	// LookupCertificateIssuerAsyncTLSDatabase: asynchronously look up the
-	// issuer of @certificate in the database. See
+	LookupCertificateIssuer(certificate TLSCertificate, interaction TLSInteraction, flags TLSDatabaseLookupFlags, cancellable Cancellable) (TLSCertificate, error)
+	// LookupCertificateIssuerAsync: asynchronously look up the issuer of
+	// @certificate in the database. See
 	// g_tls_database_lookup_certificate_issuer() for more information.
-	LookupCertificateIssuerAsyncTLSDatabase(certificate TLSCertificate, interaction TLSInteraction, flags TLSDatabaseLookupFlags, cancellable Cancellable, callback AsyncReadyCallback)
-	// LookupCertificateIssuerFinishTLSDatabase: finish an asynchronous lookup
-	// issuer operation. See g_tls_database_lookup_certificate_issuer() for more
+	LookupCertificateIssuerAsync(certificate TLSCertificate, interaction TLSInteraction, flags TLSDatabaseLookupFlags, cancellable Cancellable, callback AsyncReadyCallback)
+	// LookupCertificateIssuerFinish: finish an asynchronous lookup issuer
+	// operation. See g_tls_database_lookup_certificate_issuer() for more
 	// information.
-	LookupCertificateIssuerFinishTLSDatabase(result AsyncResult) (TLSCertificate, error)
-	// LookupCertificatesIssuedByAsyncTLSDatabase: asynchronously look up
-	// certificates issued by this issuer in the database. See
+	LookupCertificateIssuerFinish(result AsyncResult) (TLSCertificate, error)
+	// LookupCertificatesIssuedByAsync: asynchronously look up certificates
+	// issued by this issuer in the database. See
 	// g_tls_database_lookup_certificates_issued_by() for more information.
 	//
 	// The database may choose to hold a reference to the issuer byte array for
 	// the duration of of this asynchronous operation. The byte array should not
 	// be modified during this time.
-	LookupCertificatesIssuedByAsyncTLSDatabase(issuerRawDn []byte, interaction TLSInteraction, flags TLSDatabaseLookupFlags, cancellable Cancellable, callback AsyncReadyCallback)
-	// VerifyChainTLSDatabase determines the validity of a certificate chain
-	// after looking up and adding any missing certificates to the chain.
+	LookupCertificatesIssuedByAsync(issuerRawDn []byte, interaction TLSInteraction, flags TLSDatabaseLookupFlags, cancellable Cancellable, callback AsyncReadyCallback)
+	// VerifyChain determines the validity of a certificate chain after looking
+	// up and adding any missing certificates to the chain.
 	//
 	// @chain is a chain of Certificate objects each pointing to the next
 	// certificate in the chain by its Certificate:issuer property. The chain
@@ -145,13 +144,13 @@ type TLSDatabase interface {
 	//
 	// This function can block, use g_tls_database_verify_chain_async() to
 	// perform the verification operation asynchronously.
-	VerifyChainTLSDatabase(chain TLSCertificate, purpose string, identity SocketConnectable, interaction TLSInteraction, flags TLSDatabaseVerifyFlags, cancellable Cancellable) (TLSCertificateFlags, error)
-	// VerifyChainAsyncTLSDatabase: asynchronously determines the validity of a
-	// certificate chain after looking up and adding any missing certificates to
-	// the chain. See g_tls_database_verify_chain() for more information.
-	VerifyChainAsyncTLSDatabase(chain TLSCertificate, purpose string, identity SocketConnectable, interaction TLSInteraction, flags TLSDatabaseVerifyFlags, cancellable Cancellable, callback AsyncReadyCallback)
-	// VerifyChainFinishTLSDatabase: finish an asynchronous verify chain
-	// operation. See g_tls_database_verify_chain() for more information.
+	VerifyChain(chain TLSCertificate, purpose string, identity SocketConnectable, interaction TLSInteraction, flags TLSDatabaseVerifyFlags, cancellable Cancellable) (TLSCertificateFlags, error)
+	// VerifyChainAsync: asynchronously determines the validity of a certificate
+	// chain after looking up and adding any missing certificates to the chain.
+	// See g_tls_database_verify_chain() for more information.
+	VerifyChainAsync(chain TLSCertificate, purpose string, identity SocketConnectable, interaction TLSInteraction, flags TLSDatabaseVerifyFlags, cancellable Cancellable, callback AsyncReadyCallback)
+	// VerifyChainFinish: finish an asynchronous verify chain operation. See
+	// g_tls_database_verify_chain() for more information.
 	//
 	// If @chain is found to be valid, then the return value will be 0. If
 	// @chain is found to be invalid, then the return value will indicate the
@@ -160,7 +159,7 @@ type TLSDatabase interface {
 	// then the return value will be G_TLS_CERTIFICATE_GENERIC_ERROR and @error
 	// will be set accordingly. @error is not set when @chain is successfully
 	// analyzed but found to be invalid.
-	VerifyChainFinishTLSDatabase(result AsyncResult) (TLSCertificateFlags, error)
+	VerifyChainFinish(result AsyncResult) (TLSCertificateFlags, error)
 }
 
 // tlsDatabase implements the TLSDatabase class.
@@ -182,7 +181,7 @@ func marshalTLSDatabase(p uintptr) (interface{}, error) {
 	return WrapTLSDatabase(obj), nil
 }
 
-func (s tlsDatabase) CreateCertificateHandleTLSDatabase(certificate TLSCertificate) string {
+func (s tlsDatabase) CreateCertificateHandle(certificate TLSCertificate) string {
 	var _arg0 *C.GTlsDatabase    // out
 	var _arg1 *C.GTlsCertificate // out
 	var _cret *C.gchar           // in
@@ -200,7 +199,7 @@ func (s tlsDatabase) CreateCertificateHandleTLSDatabase(certificate TLSCertifica
 	return _utf8
 }
 
-func (s tlsDatabase) LookupCertificateForHandleTLSDatabase(handle string, interaction TLSInteraction, flags TLSDatabaseLookupFlags, cancellable Cancellable) (TLSCertificate, error) {
+func (s tlsDatabase) LookupCertificateForHandle(handle string, interaction TLSInteraction, flags TLSDatabaseLookupFlags, cancellable Cancellable) (TLSCertificate, error) {
 	var _arg0 *C.GTlsDatabase           // out
 	var _arg1 *C.gchar                  // out
 	var _arg2 *C.GTlsInteraction        // out
@@ -227,7 +226,7 @@ func (s tlsDatabase) LookupCertificateForHandleTLSDatabase(handle string, intera
 	return _tlsCertificate, _goerr
 }
 
-func (s tlsDatabase) LookupCertificateForHandleAsyncTLSDatabase(handle string, interaction TLSInteraction, flags TLSDatabaseLookupFlags, cancellable Cancellable, callback AsyncReadyCallback) {
+func (s tlsDatabase) LookupCertificateForHandleAsync(handle string, interaction TLSInteraction, flags TLSDatabaseLookupFlags, cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GTlsDatabase           // out
 	var _arg1 *C.gchar                  // out
 	var _arg2 *C.GTlsInteraction        // out
@@ -248,7 +247,7 @@ func (s tlsDatabase) LookupCertificateForHandleAsyncTLSDatabase(handle string, i
 	C.g_tls_database_lookup_certificate_for_handle_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }
 
-func (s tlsDatabase) LookupCertificateForHandleFinishTLSDatabase(result AsyncResult) (TLSCertificate, error) {
+func (s tlsDatabase) LookupCertificateForHandleFinish(result AsyncResult) (TLSCertificate, error) {
 	var _arg0 *C.GTlsDatabase    // out
 	var _arg1 *C.GAsyncResult    // out
 	var _cret *C.GTlsCertificate // in
@@ -268,7 +267,7 @@ func (s tlsDatabase) LookupCertificateForHandleFinishTLSDatabase(result AsyncRes
 	return _tlsCertificate, _goerr
 }
 
-func (s tlsDatabase) LookupCertificateIssuerTLSDatabase(certificate TLSCertificate, interaction TLSInteraction, flags TLSDatabaseLookupFlags, cancellable Cancellable) (TLSCertificate, error) {
+func (s tlsDatabase) LookupCertificateIssuer(certificate TLSCertificate, interaction TLSInteraction, flags TLSDatabaseLookupFlags, cancellable Cancellable) (TLSCertificate, error) {
 	var _arg0 *C.GTlsDatabase           // out
 	var _arg1 *C.GTlsCertificate        // out
 	var _arg2 *C.GTlsInteraction        // out
@@ -294,7 +293,7 @@ func (s tlsDatabase) LookupCertificateIssuerTLSDatabase(certificate TLSCertifica
 	return _tlsCertificate, _goerr
 }
 
-func (s tlsDatabase) LookupCertificateIssuerAsyncTLSDatabase(certificate TLSCertificate, interaction TLSInteraction, flags TLSDatabaseLookupFlags, cancellable Cancellable, callback AsyncReadyCallback) {
+func (s tlsDatabase) LookupCertificateIssuerAsync(certificate TLSCertificate, interaction TLSInteraction, flags TLSDatabaseLookupFlags, cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GTlsDatabase           // out
 	var _arg1 *C.GTlsCertificate        // out
 	var _arg2 *C.GTlsInteraction        // out
@@ -314,7 +313,7 @@ func (s tlsDatabase) LookupCertificateIssuerAsyncTLSDatabase(certificate TLSCert
 	C.g_tls_database_lookup_certificate_issuer_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }
 
-func (s tlsDatabase) LookupCertificateIssuerFinishTLSDatabase(result AsyncResult) (TLSCertificate, error) {
+func (s tlsDatabase) LookupCertificateIssuerFinish(result AsyncResult) (TLSCertificate, error) {
 	var _arg0 *C.GTlsDatabase    // out
 	var _arg1 *C.GAsyncResult    // out
 	var _cret *C.GTlsCertificate // in
@@ -334,7 +333,7 @@ func (s tlsDatabase) LookupCertificateIssuerFinishTLSDatabase(result AsyncResult
 	return _tlsCertificate, _goerr
 }
 
-func (s tlsDatabase) LookupCertificatesIssuedByAsyncTLSDatabase(issuerRawDn []byte, interaction TLSInteraction, flags TLSDatabaseLookupFlags, cancellable Cancellable, callback AsyncReadyCallback) {
+func (s tlsDatabase) LookupCertificatesIssuedByAsync(issuerRawDn []byte, interaction TLSInteraction, flags TLSDatabaseLookupFlags, cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GTlsDatabase // out
 	var _arg1 *C.GByteArray
 	var _arg2 *C.GTlsInteraction        // out
@@ -355,7 +354,7 @@ func (s tlsDatabase) LookupCertificatesIssuedByAsyncTLSDatabase(issuerRawDn []by
 	C.g_tls_database_lookup_certificates_issued_by_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }
 
-func (s tlsDatabase) VerifyChainTLSDatabase(chain TLSCertificate, purpose string, identity SocketConnectable, interaction TLSInteraction, flags TLSDatabaseVerifyFlags, cancellable Cancellable) (TLSCertificateFlags, error) {
+func (s tlsDatabase) VerifyChain(chain TLSCertificate, purpose string, identity SocketConnectable, interaction TLSInteraction, flags TLSDatabaseVerifyFlags, cancellable Cancellable) (TLSCertificateFlags, error) {
 	var _arg0 *C.GTlsDatabase           // out
 	var _arg1 *C.GTlsCertificate        // out
 	var _arg2 *C.gchar                  // out
@@ -386,7 +385,7 @@ func (s tlsDatabase) VerifyChainTLSDatabase(chain TLSCertificate, purpose string
 	return _tlsCertificateFlags, _goerr
 }
 
-func (s tlsDatabase) VerifyChainAsyncTLSDatabase(chain TLSCertificate, purpose string, identity SocketConnectable, interaction TLSInteraction, flags TLSDatabaseVerifyFlags, cancellable Cancellable, callback AsyncReadyCallback) {
+func (s tlsDatabase) VerifyChainAsync(chain TLSCertificate, purpose string, identity SocketConnectable, interaction TLSInteraction, flags TLSDatabaseVerifyFlags, cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GTlsDatabase           // out
 	var _arg1 *C.GTlsCertificate        // out
 	var _arg2 *C.gchar                  // out
@@ -411,7 +410,7 @@ func (s tlsDatabase) VerifyChainAsyncTLSDatabase(chain TLSCertificate, purpose s
 	C.g_tls_database_verify_chain_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8)
 }
 
-func (s tlsDatabase) VerifyChainFinishTLSDatabase(result AsyncResult) (TLSCertificateFlags, error) {
+func (s tlsDatabase) VerifyChainFinish(result AsyncResult) (TLSCertificateFlags, error) {
 	var _arg0 *C.GTlsDatabase        // out
 	var _arg1 *C.GAsyncResult        // out
 	var _cret C.GTlsCertificateFlags // in

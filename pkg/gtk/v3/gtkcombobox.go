@@ -141,90 +141,89 @@ type ComboBox interface {
 	// columns for the popup menu. If the wrap width is larger than 1, the combo
 	// box is in table mode.
 	WrapWidth() int
-	// PopdownComboBox hides the menu or dropdown list of @combo_box.
+	// Popdown hides the menu or dropdown list of @combo_box.
 	//
 	// This function is mostly intended for use by accessibility technologies;
 	// applications should have little use for it.
-	PopdownComboBox()
-	// PopupComboBox pops up the menu or dropdown list of @combo_box.
+	Popdown()
+	// Popup pops up the menu or dropdown list of @combo_box.
 	//
 	// This function is mostly intended for use by accessibility technologies;
 	// applications should have little use for it.
 	//
 	// Before calling this, @combo_box must be mapped, or nothing will happen.
-	PopupComboBox()
-	// PopupForDeviceComboBox pops up the menu or dropdown list of @combo_box,
-	// the popup window will be grabbed so only @device and its associated
+	Popup()
+	// PopupForDevice pops up the menu or dropdown list of @combo_box, the popup
+	// window will be grabbed so only @device and its associated
 	// pointer/keyboard are the only Devices able to send events to it.
-	PopupForDeviceComboBox(device gdk.Device)
-	// SetActiveComboBox sets the active item of @combo_box to be the item at
-	// @index.
-	SetActiveComboBox(index_ int)
-	// SetActiveIDComboBox changes the active row of @combo_box to the one that
-	// has an ID equal to @active_id, or unsets the active row if @active_id is
-	// nil. Rows having a nil ID string cannot be made active by this function.
+	PopupForDevice(device gdk.Device)
+	// SetActive sets the active item of @combo_box to be the item at @index.
+	SetActive(index_ int)
+	// SetActiveID changes the active row of @combo_box to the one that has an
+	// ID equal to @active_id, or unsets the active row if @active_id is nil.
+	// Rows having a nil ID string cannot be made active by this function.
 	//
 	// If the ComboBox:id-column property of @combo_box is unset or if no row
 	// has the given ID then the function does nothing and returns false.
-	SetActiveIDComboBox(activeId string) bool
-	// SetActiveIterComboBox sets the current active item to be the one
-	// referenced by @iter, or unsets the active item if @iter is nil.
-	SetActiveIterComboBox(iter *TreeIter)
-	// SetAddTearoffsComboBox sets whether the popup menu should have a tearoff
-	// menu item.
+	SetActiveID(activeId string) bool
+	// SetActiveIter sets the current active item to be the one referenced by
+	// @iter, or unsets the active item if @iter is nil.
+	SetActiveIter(iter *TreeIter)
+	// SetAddTearoffs sets whether the popup menu should have a tearoff menu
+	// item.
 	//
 	// Deprecated: since version 3.10.
-	SetAddTearoffsComboBox(addTearoffs bool)
-	// SetButtonSensitivityComboBox sets whether the dropdown button of the
-	// combo box should be always sensitive (GTK_SENSITIVITY_ON), never
-	// sensitive (GTK_SENSITIVITY_OFF) or only if there is at least one item to
-	// display (GTK_SENSITIVITY_AUTO).
-	SetButtonSensitivityComboBox(sensitivity SensitivityType)
-	// SetColumnSpanColumnComboBox sets the column with column span information
-	// for @combo_box to be @column_span. The column span column contains
-	// integers which indicate how many columns an item should span.
-	SetColumnSpanColumnComboBox(columnSpan int)
-	// SetEntryTextColumnComboBox sets the model column which @combo_box should
-	// use to get strings from to be @text_column. The column @text_column in
-	// the model of @combo_box must be of type G_TYPE_STRING.
+	SetAddTearoffs(addTearoffs bool)
+	// SetButtonSensitivity sets whether the dropdown button of the combo box
+	// should be always sensitive (GTK_SENSITIVITY_ON), never sensitive
+	// (GTK_SENSITIVITY_OFF) or only if there is at least one item to display
+	// (GTK_SENSITIVITY_AUTO).
+	SetButtonSensitivity(sensitivity SensitivityType)
+	// SetColumnSpanColumn sets the column with column span information for
+	// @combo_box to be @column_span. The column span column contains integers
+	// which indicate how many columns an item should span.
+	SetColumnSpanColumn(columnSpan int)
+	// SetEntryTextColumn sets the model column which @combo_box should use to
+	// get strings from to be @text_column. The column @text_column in the model
+	// of @combo_box must be of type G_TYPE_STRING.
 	//
 	// This is only relevant if @combo_box has been created with
 	// ComboBox:has-entry as true.
-	SetEntryTextColumnComboBox(textColumn int)
-	// SetFocusOnClickComboBox sets whether the combo box will grab focus when
-	// it is clicked with the mouse. Making mouse clicks not grab focus is
-	// useful in places like toolbars where you don’t want the keyboard focus
-	// removed from the main area of the application.
+	SetEntryTextColumn(textColumn int)
+	// SetFocusOnClick sets whether the combo box will grab focus when it is
+	// clicked with the mouse. Making mouse clicks not grab focus is useful in
+	// places like toolbars where you don’t want the keyboard focus removed from
+	// the main area of the application.
 	//
 	// Deprecated: since version 3.20.
-	SetFocusOnClickComboBox(focusOnClick bool)
-	// SetIDColumnComboBox sets the model column which @combo_box should use to
-	// get string IDs for values from. The column @id_column in the model of
+	SetFocusOnClick(focusOnClick bool)
+	// SetIDColumn sets the model column which @combo_box should use to get
+	// string IDs for values from. The column @id_column in the model of
 	// @combo_box must be of type G_TYPE_STRING.
-	SetIDColumnComboBox(idColumn int)
-	// SetModelComboBox sets the model used by @combo_box to be @model. Will
-	// unset a previously set model (if applicable). If model is nil, then it
-	// will unset the model.
+	SetIDColumn(idColumn int)
+	// SetModel sets the model used by @combo_box to be @model. Will unset a
+	// previously set model (if applicable). If model is nil, then it will unset
+	// the model.
 	//
 	// Note that this function does not clear the cell renderers, you have to
 	// call gtk_cell_layout_clear() yourself if you need to set up different
 	// cell renderers for the new model.
-	SetModelComboBox(model TreeModel)
-	// SetPopupFixedWidthComboBox specifies whether the popup’s width should be
-	// a fixed width matching the allocated width of the combo box.
-	SetPopupFixedWidthComboBox(fixed bool)
-	// SetRowSpanColumnComboBox sets the column with row span information for
-	// @combo_box to be @row_span. The row span column contains integers which
-	// indicate how many rows an item should span.
-	SetRowSpanColumnComboBox(rowSpan int)
-	// SetTitleComboBox sets the menu’s title in tearoff mode.
+	SetModel(model TreeModel)
+	// SetPopupFixedWidth specifies whether the popup’s width should be a fixed
+	// width matching the allocated width of the combo box.
+	SetPopupFixedWidth(fixed bool)
+	// SetRowSpanColumn sets the column with row span information for @combo_box
+	// to be @row_span. The row span column contains integers which indicate how
+	// many rows an item should span.
+	SetRowSpanColumn(rowSpan int)
+	// SetTitle sets the menu’s title in tearoff mode.
 	//
 	// Deprecated: since version 3.10.
-	SetTitleComboBox(title string)
-	// SetWrapWidthComboBox sets the wrap width of @combo_box to be @width. The
-	// wrap width is basically the preferred number of columns when you want the
+	SetTitle(title string)
+	// SetWrapWidth sets the wrap width of @combo_box to be @width. The wrap
+	// width is basically the preferred number of columns when you want the
 	// popup to be layed out in a table.
-	SetWrapWidthComboBox(width int)
+	SetWrapWidth(width int)
 }
 
 // comboBox implements the ComboBox class.
@@ -338,6 +337,18 @@ func NewComboBoxWithModelAndEntry(model TreeModel) ComboBox {
 	_comboBox = WrapComboBox(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _comboBox
+}
+
+func (c comboBox) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(c))
+}
+
+func (c comboBox) AsCellEditable() CellEditable {
+	return WrapCellEditable(gextras.InternObject(c))
+}
+
+func (c comboBox) AsCellLayout() CellLayout {
+	return WrapCellLayout(gextras.InternObject(c))
 }
 
 func (c comboBox) Active() int {
@@ -603,7 +614,7 @@ func (c comboBox) WrapWidth() int {
 	return _gint
 }
 
-func (c comboBox) PopdownComboBox() {
+func (c comboBox) Popdown() {
 	var _arg0 *C.GtkComboBox // out
 
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
@@ -611,7 +622,7 @@ func (c comboBox) PopdownComboBox() {
 	C.gtk_combo_box_popdown(_arg0)
 }
 
-func (c comboBox) PopupComboBox() {
+func (c comboBox) Popup() {
 	var _arg0 *C.GtkComboBox // out
 
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
@@ -619,7 +630,7 @@ func (c comboBox) PopupComboBox() {
 	C.gtk_combo_box_popup(_arg0)
 }
 
-func (c comboBox) PopupForDeviceComboBox(device gdk.Device) {
+func (c comboBox) PopupForDevice(device gdk.Device) {
 	var _arg0 *C.GtkComboBox // out
 	var _arg1 *C.GdkDevice   // out
 
@@ -629,7 +640,7 @@ func (c comboBox) PopupForDeviceComboBox(device gdk.Device) {
 	C.gtk_combo_box_popup_for_device(_arg0, _arg1)
 }
 
-func (c comboBox) SetActiveComboBox(index_ int) {
+func (c comboBox) SetActive(index_ int) {
 	var _arg0 *C.GtkComboBox // out
 	var _arg1 C.gint         // out
 
@@ -639,7 +650,7 @@ func (c comboBox) SetActiveComboBox(index_ int) {
 	C.gtk_combo_box_set_active(_arg0, _arg1)
 }
 
-func (c comboBox) SetActiveIDComboBox(activeId string) bool {
+func (c comboBox) SetActiveID(activeId string) bool {
 	var _arg0 *C.GtkComboBox // out
 	var _arg1 *C.gchar       // out
 	var _cret C.gboolean     // in
@@ -659,7 +670,7 @@ func (c comboBox) SetActiveIDComboBox(activeId string) bool {
 	return _ok
 }
 
-func (c comboBox) SetActiveIterComboBox(iter *TreeIter) {
+func (c comboBox) SetActiveIter(iter *TreeIter) {
 	var _arg0 *C.GtkComboBox // out
 	var _arg1 *C.GtkTreeIter // out
 
@@ -669,7 +680,7 @@ func (c comboBox) SetActiveIterComboBox(iter *TreeIter) {
 	C.gtk_combo_box_set_active_iter(_arg0, _arg1)
 }
 
-func (c comboBox) SetAddTearoffsComboBox(addTearoffs bool) {
+func (c comboBox) SetAddTearoffs(addTearoffs bool) {
 	var _arg0 *C.GtkComboBox // out
 	var _arg1 C.gboolean     // out
 
@@ -681,7 +692,7 @@ func (c comboBox) SetAddTearoffsComboBox(addTearoffs bool) {
 	C.gtk_combo_box_set_add_tearoffs(_arg0, _arg1)
 }
 
-func (c comboBox) SetButtonSensitivityComboBox(sensitivity SensitivityType) {
+func (c comboBox) SetButtonSensitivity(sensitivity SensitivityType) {
 	var _arg0 *C.GtkComboBox       // out
 	var _arg1 C.GtkSensitivityType // out
 
@@ -691,7 +702,7 @@ func (c comboBox) SetButtonSensitivityComboBox(sensitivity SensitivityType) {
 	C.gtk_combo_box_set_button_sensitivity(_arg0, _arg1)
 }
 
-func (c comboBox) SetColumnSpanColumnComboBox(columnSpan int) {
+func (c comboBox) SetColumnSpanColumn(columnSpan int) {
 	var _arg0 *C.GtkComboBox // out
 	var _arg1 C.gint         // out
 
@@ -701,7 +712,7 @@ func (c comboBox) SetColumnSpanColumnComboBox(columnSpan int) {
 	C.gtk_combo_box_set_column_span_column(_arg0, _arg1)
 }
 
-func (c comboBox) SetEntryTextColumnComboBox(textColumn int) {
+func (c comboBox) SetEntryTextColumn(textColumn int) {
 	var _arg0 *C.GtkComboBox // out
 	var _arg1 C.gint         // out
 
@@ -711,7 +722,7 @@ func (c comboBox) SetEntryTextColumnComboBox(textColumn int) {
 	C.gtk_combo_box_set_entry_text_column(_arg0, _arg1)
 }
 
-func (c comboBox) SetFocusOnClickComboBox(focusOnClick bool) {
+func (c comboBox) SetFocusOnClick(focusOnClick bool) {
 	var _arg0 *C.GtkComboBox // out
 	var _arg1 C.gboolean     // out
 
@@ -723,7 +734,7 @@ func (c comboBox) SetFocusOnClickComboBox(focusOnClick bool) {
 	C.gtk_combo_box_set_focus_on_click(_arg0, _arg1)
 }
 
-func (c comboBox) SetIDColumnComboBox(idColumn int) {
+func (c comboBox) SetIDColumn(idColumn int) {
 	var _arg0 *C.GtkComboBox // out
 	var _arg1 C.gint         // out
 
@@ -733,7 +744,7 @@ func (c comboBox) SetIDColumnComboBox(idColumn int) {
 	C.gtk_combo_box_set_id_column(_arg0, _arg1)
 }
 
-func (c comboBox) SetModelComboBox(model TreeModel) {
+func (c comboBox) SetModel(model TreeModel) {
 	var _arg0 *C.GtkComboBox  // out
 	var _arg1 *C.GtkTreeModel // out
 
@@ -743,7 +754,7 @@ func (c comboBox) SetModelComboBox(model TreeModel) {
 	C.gtk_combo_box_set_model(_arg0, _arg1)
 }
 
-func (c comboBox) SetPopupFixedWidthComboBox(fixed bool) {
+func (c comboBox) SetPopupFixedWidth(fixed bool) {
 	var _arg0 *C.GtkComboBox // out
 	var _arg1 C.gboolean     // out
 
@@ -755,7 +766,7 @@ func (c comboBox) SetPopupFixedWidthComboBox(fixed bool) {
 	C.gtk_combo_box_set_popup_fixed_width(_arg0, _arg1)
 }
 
-func (c comboBox) SetRowSpanColumnComboBox(rowSpan int) {
+func (c comboBox) SetRowSpanColumn(rowSpan int) {
 	var _arg0 *C.GtkComboBox // out
 	var _arg1 C.gint         // out
 
@@ -765,7 +776,7 @@ func (c comboBox) SetRowSpanColumnComboBox(rowSpan int) {
 	C.gtk_combo_box_set_row_span_column(_arg0, _arg1)
 }
 
-func (c comboBox) SetTitleComboBox(title string) {
+func (c comboBox) SetTitle(title string) {
 	var _arg0 *C.GtkComboBox // out
 	var _arg1 *C.gchar       // out
 
@@ -776,7 +787,7 @@ func (c comboBox) SetTitleComboBox(title string) {
 	C.gtk_combo_box_set_title(_arg0, _arg1)
 }
 
-func (c comboBox) SetWrapWidthComboBox(width int) {
+func (c comboBox) SetWrapWidth(width int) {
 	var _arg0 *C.GtkComboBox // out
 	var _arg1 C.gint         // out
 
@@ -784,16 +795,4 @@ func (c comboBox) SetWrapWidthComboBox(width int) {
 	_arg1 = C.gint(width)
 
 	C.gtk_combo_box_set_wrap_width(_arg0, _arg1)
-}
-
-func (c comboBox) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(c))
-}
-
-func (c comboBox) AsCellEditable() CellEditable {
-	return WrapCellEditable(gextras.InternObject(c))
-}
-
-func (c comboBox) AsCellLayout() CellLayout {
-	return WrapCellLayout(gextras.InternObject(c))
 }

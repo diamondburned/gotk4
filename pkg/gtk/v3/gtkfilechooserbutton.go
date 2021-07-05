@@ -76,19 +76,18 @@ type FileChooserButton interface {
 	// WidthChars retrieves the width in characters of the @button widget’s
 	// entry and/or label.
 	WidthChars() int
-	// SetFocusOnClickFileChooserButton sets whether the button will grab focus
-	// when it is clicked with the mouse. Making mouse clicks not grab focus is
-	// useful in places like toolbars where you don’t want the keyboard focus
-	// removed from the main area of the application.
+	// SetFocusOnClick sets whether the button will grab focus when it is
+	// clicked with the mouse. Making mouse clicks not grab focus is useful in
+	// places like toolbars where you don’t want the keyboard focus removed from
+	// the main area of the application.
 	//
 	// Deprecated: since version 3.20.
-	SetFocusOnClickFileChooserButton(focusOnClick bool)
-	// SetTitleFileChooserButton modifies the @title of the browse dialog used
-	// by @button.
-	SetTitleFileChooserButton(title string)
-	// SetWidthCharsFileChooserButton sets the width (in characters) that
-	// @button will use to @n_chars.
-	SetWidthCharsFileChooserButton(nChars int)
+	SetFocusOnClick(focusOnClick bool)
+	// SetTitle modifies the @title of the browse dialog used by @button.
+	SetTitle(title string)
+	// SetWidthChars sets the width (in characters) that @button will use to
+	// @n_chars.
+	SetWidthChars(nChars int)
 }
 
 // fileChooserButton implements the FileChooserButton class.
@@ -153,6 +152,18 @@ func NewFileChooserButtonWithDialog(dialog Dialog) FileChooserButton {
 	return _fileChooserButton
 }
 
+func (f fileChooserButton) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(f))
+}
+
+func (f fileChooserButton) AsFileChooser() FileChooser {
+	return WrapFileChooser(gextras.InternObject(f))
+}
+
+func (f fileChooserButton) AsOrientable() Orientable {
+	return WrapOrientable(gextras.InternObject(f))
+}
+
 func (b fileChooserButton) FocusOnClick() bool {
 	var _arg0 *C.GtkFileChooserButton // out
 	var _cret C.gboolean              // in
@@ -200,7 +211,7 @@ func (b fileChooserButton) WidthChars() int {
 	return _gint
 }
 
-func (b fileChooserButton) SetFocusOnClickFileChooserButton(focusOnClick bool) {
+func (b fileChooserButton) SetFocusOnClick(focusOnClick bool) {
 	var _arg0 *C.GtkFileChooserButton // out
 	var _arg1 C.gboolean              // out
 
@@ -212,7 +223,7 @@ func (b fileChooserButton) SetFocusOnClickFileChooserButton(focusOnClick bool) {
 	C.gtk_file_chooser_button_set_focus_on_click(_arg0, _arg1)
 }
 
-func (b fileChooserButton) SetTitleFileChooserButton(title string) {
+func (b fileChooserButton) SetTitle(title string) {
 	var _arg0 *C.GtkFileChooserButton // out
 	var _arg1 *C.gchar                // out
 
@@ -223,7 +234,7 @@ func (b fileChooserButton) SetTitleFileChooserButton(title string) {
 	C.gtk_file_chooser_button_set_title(_arg0, _arg1)
 }
 
-func (b fileChooserButton) SetWidthCharsFileChooserButton(nChars int) {
+func (b fileChooserButton) SetWidthChars(nChars int) {
 	var _arg0 *C.GtkFileChooserButton // out
 	var _arg1 C.gint                  // out
 
@@ -231,16 +242,4 @@ func (b fileChooserButton) SetWidthCharsFileChooserButton(nChars int) {
 	_arg1 = C.gint(nChars)
 
 	C.gtk_file_chooser_button_set_width_chars(_arg0, _arg1)
-}
-
-func (f fileChooserButton) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(f))
-}
-
-func (f fileChooserButton) AsFileChooser() FileChooser {
-	return WrapFileChooser(gextras.InternObject(f))
-}
-
-func (f fileChooserButton) AsOrientable() Orientable {
-	return WrapOrientable(gextras.InternObject(f))
 }

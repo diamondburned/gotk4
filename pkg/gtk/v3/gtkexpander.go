@@ -93,38 +93,38 @@ type Expander interface {
 	// UseUnderline returns whether an embedded underline in the expander label
 	// indicates a mnemonic. See gtk_expander_set_use_underline().
 	UseUnderline() bool
-	// SetExpandedExpander sets the state of the expander. Set to true, if you
-	// want the child widget to be revealed, and false if you want the child
-	// widget to be hidden.
-	SetExpandedExpander(expanded bool)
-	// SetLabelExpander sets the text of the label of the expander to @label.
+	// SetExpanded sets the state of the expander. Set to true, if you want the
+	// child widget to be revealed, and false if you want the child widget to be
+	// hidden.
+	SetExpanded(expanded bool)
+	// SetLabel sets the text of the label of the expander to @label.
 	//
 	// This will also clear any previously set labels.
-	SetLabelExpander(label string)
-	// SetLabelFillExpander sets whether the label widget should fill all
-	// available horizontal space allocated to @expander.
+	SetLabel(label string)
+	// SetLabelFill sets whether the label widget should fill all available
+	// horizontal space allocated to @expander.
 	//
 	// Note that this function has no effect since 3.20.
-	SetLabelFillExpander(labelFill bool)
-	// SetLabelWidgetExpander: set the label widget for the expander. This is
-	// the widget that will appear embedded alongside the expander arrow.
-	SetLabelWidgetExpander(labelWidget Widget)
-	// SetResizeToplevelExpander sets whether the expander will resize the
-	// toplevel widget containing the expander upon resizing and collpasing.
-	SetResizeToplevelExpander(resizeToplevel bool)
-	// SetSpacingExpander sets the spacing field of @expander, which is the
-	// number of pixels to place between expander and the child.
+	SetLabelFill(labelFill bool)
+	// SetLabelWidget: set the label widget for the expander. This is the widget
+	// that will appear embedded alongside the expander arrow.
+	SetLabelWidget(labelWidget Widget)
+	// SetResizeToplevel sets whether the expander will resize the toplevel
+	// widget containing the expander upon resizing and collpasing.
+	SetResizeToplevel(resizeToplevel bool)
+	// SetSpacing sets the spacing field of @expander, which is the number of
+	// pixels to place between expander and the child.
 	//
 	// Deprecated: since version 3.20.
-	SetSpacingExpander(spacing int)
-	// SetUseMarkupExpander sets whether the text of the label contains markup
-	// in [Pango’s text markup language][PangoMarkupFormat]. See
+	SetSpacing(spacing int)
+	// SetUseMarkup sets whether the text of the label contains markup in
+	// [Pango’s text markup language][PangoMarkupFormat]. See
 	// gtk_label_set_markup().
-	SetUseMarkupExpander(useMarkup bool)
-	// SetUseUnderlineExpander: if true, an underline in the text of the
-	// expander label indicates the next character should be used for the
-	// mnemonic accelerator key.
-	SetUseUnderlineExpander(useUnderline bool)
+	SetUseMarkup(useMarkup bool)
+	// SetUseUnderline: if true, an underline in the text of the expander label
+	// indicates the next character should be used for the mnemonic accelerator
+	// key.
+	SetUseUnderline(useUnderline bool)
 }
 
 // expander implements the Expander class.
@@ -183,6 +183,10 @@ func NewExpanderWithMnemonic(label string) Expander {
 	_expander = WrapExpander(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _expander
+}
+
+func (e expander) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(e))
 }
 
 func (e expander) Expanded() bool {
@@ -315,7 +319,7 @@ func (e expander) UseUnderline() bool {
 	return _ok
 }
 
-func (e expander) SetExpandedExpander(expanded bool) {
+func (e expander) SetExpanded(expanded bool) {
 	var _arg0 *C.GtkExpander // out
 	var _arg1 C.gboolean     // out
 
@@ -327,7 +331,7 @@ func (e expander) SetExpandedExpander(expanded bool) {
 	C.gtk_expander_set_expanded(_arg0, _arg1)
 }
 
-func (e expander) SetLabelExpander(label string) {
+func (e expander) SetLabel(label string) {
 	var _arg0 *C.GtkExpander // out
 	var _arg1 *C.gchar       // out
 
@@ -338,7 +342,7 @@ func (e expander) SetLabelExpander(label string) {
 	C.gtk_expander_set_label(_arg0, _arg1)
 }
 
-func (e expander) SetLabelFillExpander(labelFill bool) {
+func (e expander) SetLabelFill(labelFill bool) {
 	var _arg0 *C.GtkExpander // out
 	var _arg1 C.gboolean     // out
 
@@ -350,7 +354,7 @@ func (e expander) SetLabelFillExpander(labelFill bool) {
 	C.gtk_expander_set_label_fill(_arg0, _arg1)
 }
 
-func (e expander) SetLabelWidgetExpander(labelWidget Widget) {
+func (e expander) SetLabelWidget(labelWidget Widget) {
 	var _arg0 *C.GtkExpander // out
 	var _arg1 *C.GtkWidget   // out
 
@@ -360,7 +364,7 @@ func (e expander) SetLabelWidgetExpander(labelWidget Widget) {
 	C.gtk_expander_set_label_widget(_arg0, _arg1)
 }
 
-func (e expander) SetResizeToplevelExpander(resizeToplevel bool) {
+func (e expander) SetResizeToplevel(resizeToplevel bool) {
 	var _arg0 *C.GtkExpander // out
 	var _arg1 C.gboolean     // out
 
@@ -372,7 +376,7 @@ func (e expander) SetResizeToplevelExpander(resizeToplevel bool) {
 	C.gtk_expander_set_resize_toplevel(_arg0, _arg1)
 }
 
-func (e expander) SetSpacingExpander(spacing int) {
+func (e expander) SetSpacing(spacing int) {
 	var _arg0 *C.GtkExpander // out
 	var _arg1 C.gint         // out
 
@@ -382,7 +386,7 @@ func (e expander) SetSpacingExpander(spacing int) {
 	C.gtk_expander_set_spacing(_arg0, _arg1)
 }
 
-func (e expander) SetUseMarkupExpander(useMarkup bool) {
+func (e expander) SetUseMarkup(useMarkup bool) {
 	var _arg0 *C.GtkExpander // out
 	var _arg1 C.gboolean     // out
 
@@ -394,7 +398,7 @@ func (e expander) SetUseMarkupExpander(useMarkup bool) {
 	C.gtk_expander_set_use_markup(_arg0, _arg1)
 }
 
-func (e expander) SetUseUnderlineExpander(useUnderline bool) {
+func (e expander) SetUseUnderline(useUnderline bool) {
 	var _arg0 *C.GtkExpander // out
 	var _arg1 C.gboolean     // out
 
@@ -404,8 +408,4 @@ func (e expander) SetUseUnderlineExpander(useUnderline bool) {
 	}
 
 	C.gtk_expander_set_use_underline(_arg0, _arg1)
-}
-
-func (e expander) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(e))
 }

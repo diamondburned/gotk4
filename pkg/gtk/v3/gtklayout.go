@@ -70,26 +70,25 @@ type Layout interface {
 	//
 	// Deprecated: since version 3.0.
 	VAdjustment() Adjustment
-	// MoveLayout moves a current child of @layout to a new position.
-	MoveLayout(childWidget Widget, x int, y int)
-	// PutLayout adds @child_widget to @layout, at position (@x,@y). @layout
-	// becomes the new parent container of @child_widget.
-	PutLayout(childWidget Widget, x int, y int)
-	// SetHAdjustmentLayout sets the horizontal scroll adjustment for the
-	// layout.
+	// Move moves a current child of @layout to a new position.
+	Move(childWidget Widget, x int, y int)
+	// Put adds @child_widget to @layout, at position (@x,@y). @layout becomes
+	// the new parent container of @child_widget.
+	Put(childWidget Widget, x int, y int)
+	// SetHAdjustment sets the horizontal scroll adjustment for the layout.
 	//
 	// See ScrolledWindow, Scrollbar, Adjustment for details.
 	//
 	// Deprecated: since version 3.0.
-	SetHAdjustmentLayout(adjustment Adjustment)
-	// SetSizeLayout sets the size of the scrollable area of the layout.
-	SetSizeLayout(width uint, height uint)
-	// SetVAdjustmentLayout sets the vertical scroll adjustment for the layout.
+	SetHAdjustment(adjustment Adjustment)
+	// SetSize sets the size of the scrollable area of the layout.
+	SetSize(width uint, height uint)
+	// SetVAdjustment sets the vertical scroll adjustment for the layout.
 	//
 	// See ScrolledWindow, Scrollbar, Adjustment for details.
 	//
 	// Deprecated: since version 3.0.
-	SetVAdjustmentLayout(adjustment Adjustment)
+	SetVAdjustment(adjustment Adjustment)
 }
 
 // layout implements the Layout class.
@@ -129,6 +128,14 @@ func NewLayout(hadjustment Adjustment, vadjustment Adjustment) Layout {
 	_layout = WrapLayout(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _layout
+}
+
+func (l layout) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(l))
+}
+
+func (l layout) AsScrollable() Scrollable {
+	return WrapScrollable(gextras.InternObject(l))
 }
 
 func (l layout) BinWindow() gdk.Window {
@@ -194,7 +201,7 @@ func (l layout) VAdjustment() Adjustment {
 	return _adjustment
 }
 
-func (l layout) MoveLayout(childWidget Widget, x int, y int) {
+func (l layout) Move(childWidget Widget, x int, y int) {
 	var _arg0 *C.GtkLayout // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.gint       // out
@@ -208,7 +215,7 @@ func (l layout) MoveLayout(childWidget Widget, x int, y int) {
 	C.gtk_layout_move(_arg0, _arg1, _arg2, _arg3)
 }
 
-func (l layout) PutLayout(childWidget Widget, x int, y int) {
+func (l layout) Put(childWidget Widget, x int, y int) {
 	var _arg0 *C.GtkLayout // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.gint       // out
@@ -222,7 +229,7 @@ func (l layout) PutLayout(childWidget Widget, x int, y int) {
 	C.gtk_layout_put(_arg0, _arg1, _arg2, _arg3)
 }
 
-func (l layout) SetHAdjustmentLayout(adjustment Adjustment) {
+func (l layout) SetHAdjustment(adjustment Adjustment) {
 	var _arg0 *C.GtkLayout     // out
 	var _arg1 *C.GtkAdjustment // out
 
@@ -232,7 +239,7 @@ func (l layout) SetHAdjustmentLayout(adjustment Adjustment) {
 	C.gtk_layout_set_hadjustment(_arg0, _arg1)
 }
 
-func (l layout) SetSizeLayout(width uint, height uint) {
+func (l layout) SetSize(width uint, height uint) {
 	var _arg0 *C.GtkLayout // out
 	var _arg1 C.guint      // out
 	var _arg2 C.guint      // out
@@ -244,7 +251,7 @@ func (l layout) SetSizeLayout(width uint, height uint) {
 	C.gtk_layout_set_size(_arg0, _arg1, _arg2)
 }
 
-func (l layout) SetVAdjustmentLayout(adjustment Adjustment) {
+func (l layout) SetVAdjustment(adjustment Adjustment) {
 	var _arg0 *C.GtkLayout     // out
 	var _arg1 *C.GtkAdjustment // out
 
@@ -252,12 +259,4 @@ func (l layout) SetVAdjustmentLayout(adjustment Adjustment) {
 	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
 
 	C.gtk_layout_set_vadjustment(_arg0, _arg1)
-}
-
-func (l layout) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(l))
-}
-
-func (l layout) AsScrollable() Scrollable {
-	return WrapScrollable(gextras.InternObject(l))
 }

@@ -40,9 +40,8 @@ type GesturePan interface {
 	// Orientation returns the orientation of the pan gestures that this
 	// @gesture expects.
 	Orientation() Orientation
-	// SetOrientationGesturePan sets the orientation to be expected on pan
-	// gestures.
-	SetOrientationGesturePan(orientation Orientation)
+	// SetOrientation sets the orientation to be expected on pan gestures.
+	SetOrientation(orientation Orientation)
 }
 
 // gesturePan implements the GesturePan class.
@@ -96,7 +95,7 @@ func (g gesturePan) Orientation() Orientation {
 	return _orientation
 }
 
-func (g gesturePan) SetOrientationGesturePan(orientation Orientation) {
+func (g gesturePan) SetOrientation(orientation Orientation) {
 	var _arg0 *C.GtkGesturePan // out
 	var _arg1 C.GtkOrientation // out
 

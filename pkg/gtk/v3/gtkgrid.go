@@ -49,12 +49,12 @@ type Grid interface {
 	// AsOrientable casts the class to the Orientable interface.
 	AsOrientable() Orientable
 
-	// AttachGrid adds a widget to the grid.
+	// Attach adds a widget to the grid.
 	//
 	// The position of @child is determined by @left and @top. The number of
 	// “cells” that @child will occupy is determined by @width and @height.
-	AttachGrid(child Widget, left int, top int, width int, height int)
-	// AttachNextToGrid adds a widget to the grid.
+	Attach(child Widget, left int, top int, width int, height int)
+	// AttachNextTo adds a widget to the grid.
 	//
 	// The widget is placed next to @sibling, on the side determined by @side.
 	// When @sibling is nil, the widget is placed in row (for left or right
@@ -63,7 +63,7 @@ type Grid interface {
 	//
 	// Attaching widgets labeled [1], [2], [3] with @sibling == nil and @side ==
 	// GTK_POS_LEFT yields a layout of [3][2][1].
-	AttachNextToGrid(child Widget, sibling Widget, side PositionType, width int, height int)
+	AttachNextTo(child Widget, sibling Widget, side PositionType, width int, height int)
 	// BaselineRow returns which row defines the global baseline of @grid.
 	BaselineRow() int
 	// ChildAt gets the child of @grid whose area covers the grid cell whose
@@ -82,55 +82,54 @@ type Grid interface {
 	RowHomogeneous() bool
 	// RowSpacing returns the amount of space between the rows of @grid.
 	RowSpacing() uint
-	// InsertColumnGrid inserts a column at the specified position.
+	// InsertColumn inserts a column at the specified position.
 	//
 	// Children which are attached at or to the right of this position are moved
 	// one column to the right. Children which span across this position are
 	// grown to span the new column.
-	InsertColumnGrid(position int)
-	// InsertNextToGrid inserts a row or column at the specified position.
+	InsertColumn(position int)
+	// InsertNextTo inserts a row or column at the specified position.
 	//
 	// The new row or column is placed next to @sibling, on the side determined
 	// by @side. If @side is GTK_POS_TOP or GTK_POS_BOTTOM, a row is inserted.
 	// If @side is GTK_POS_LEFT of GTK_POS_RIGHT, a column is inserted.
-	InsertNextToGrid(sibling Widget, side PositionType)
-	// InsertRowGrid inserts a row at the specified position.
+	InsertNextTo(sibling Widget, side PositionType)
+	// InsertRow inserts a row at the specified position.
 	//
 	// Children which are attached at or below this position are moved one row
 	// down. Children which span across this position are grown to span the new
 	// row.
-	InsertRowGrid(position int)
-	// RemoveColumnGrid removes a column from the grid.
+	InsertRow(position int)
+	// RemoveColumn removes a column from the grid.
 	//
 	// Children that are placed in this column are removed, spanning children
 	// that overlap this column have their width reduced by one, and children
 	// after the column are moved to the left.
-	RemoveColumnGrid(position int)
-	// RemoveRowGrid removes a row from the grid.
+	RemoveColumn(position int)
+	// RemoveRow removes a row from the grid.
 	//
 	// Children that are placed in this row are removed, spanning children that
 	// overlap this row have their height reduced by one, and children below the
 	// row are moved up.
-	RemoveRowGrid(position int)
-	// SetBaselineRowGrid sets which row defines the global baseline for the
-	// entire grid. Each row in the grid can have its own local baseline, but
-	// only one of those is global, meaning it will be the baseline in the
-	// parent of the @grid.
-	SetBaselineRowGrid(row int)
-	// SetColumnHomogeneousGrid sets whether all columns of @grid will have the
-	// same width.
-	SetColumnHomogeneousGrid(homogeneous bool)
-	// SetColumnSpacingGrid sets the amount of space between columns of @grid.
-	SetColumnSpacingGrid(spacing uint)
-	// SetRowBaselinePositionGrid sets how the baseline should be positioned on
-	// @row of the grid, in case that row is assigned more space than is
-	// requested.
-	SetRowBaselinePositionGrid(row int, pos BaselinePosition)
-	// SetRowHomogeneousGrid sets whether all rows of @grid will have the same
+	RemoveRow(position int)
+	// SetBaselineRow sets which row defines the global baseline for the entire
+	// grid. Each row in the grid can have its own local baseline, but only one
+	// of those is global, meaning it will be the baseline in the parent of the
+	// @grid.
+	SetBaselineRow(row int)
+	// SetColumnHomogeneous sets whether all columns of @grid will have the same
+	// width.
+	SetColumnHomogeneous(homogeneous bool)
+	// SetColumnSpacing sets the amount of space between columns of @grid.
+	SetColumnSpacing(spacing uint)
+	// SetRowBaselinePosition sets how the baseline should be positioned on @row
+	// of the grid, in case that row is assigned more space than is requested.
+	SetRowBaselinePosition(row int, pos BaselinePosition)
+	// SetRowHomogeneous sets whether all rows of @grid will have the same
 	// height.
-	SetRowHomogeneousGrid(homogeneous bool)
-	// SetRowSpacingGrid sets the amount of space between rows of @grid.
-	SetRowSpacingGrid(spacing uint)
+	SetRowHomogeneous(homogeneous bool)
+	// SetRowSpacing sets the amount of space between rows of @grid.
+	SetRowSpacing(spacing uint)
 }
 
 // grid implements the Grid class.
@@ -165,7 +164,15 @@ func NewGrid() Grid {
 	return _grid
 }
 
-func (g grid) AttachGrid(child Widget, left int, top int, width int, height int) {
+func (g grid) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(g))
+}
+
+func (g grid) AsOrientable() Orientable {
+	return WrapOrientable(gextras.InternObject(g))
+}
+
+func (g grid) Attach(child Widget, left int, top int, width int, height int) {
 	var _arg0 *C.GtkGrid   // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.gint       // out
@@ -183,7 +190,7 @@ func (g grid) AttachGrid(child Widget, left int, top int, width int, height int)
 	C.gtk_grid_attach(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
 
-func (g grid) AttachNextToGrid(child Widget, sibling Widget, side PositionType, width int, height int) {
+func (g grid) AttachNextTo(child Widget, sibling Widget, side PositionType, width int, height int) {
 	var _arg0 *C.GtkGrid        // out
 	var _arg1 *C.GtkWidget      // out
 	var _arg2 *C.GtkWidget      // out
@@ -316,7 +323,7 @@ func (g grid) RowSpacing() uint {
 	return _guint
 }
 
-func (g grid) InsertColumnGrid(position int) {
+func (g grid) InsertColumn(position int) {
 	var _arg0 *C.GtkGrid // out
 	var _arg1 C.gint     // out
 
@@ -326,7 +333,7 @@ func (g grid) InsertColumnGrid(position int) {
 	C.gtk_grid_insert_column(_arg0, _arg1)
 }
 
-func (g grid) InsertNextToGrid(sibling Widget, side PositionType) {
+func (g grid) InsertNextTo(sibling Widget, side PositionType) {
 	var _arg0 *C.GtkGrid        // out
 	var _arg1 *C.GtkWidget      // out
 	var _arg2 C.GtkPositionType // out
@@ -338,7 +345,7 @@ func (g grid) InsertNextToGrid(sibling Widget, side PositionType) {
 	C.gtk_grid_insert_next_to(_arg0, _arg1, _arg2)
 }
 
-func (g grid) InsertRowGrid(position int) {
+func (g grid) InsertRow(position int) {
 	var _arg0 *C.GtkGrid // out
 	var _arg1 C.gint     // out
 
@@ -348,7 +355,7 @@ func (g grid) InsertRowGrid(position int) {
 	C.gtk_grid_insert_row(_arg0, _arg1)
 }
 
-func (g grid) RemoveColumnGrid(position int) {
+func (g grid) RemoveColumn(position int) {
 	var _arg0 *C.GtkGrid // out
 	var _arg1 C.gint     // out
 
@@ -358,7 +365,7 @@ func (g grid) RemoveColumnGrid(position int) {
 	C.gtk_grid_remove_column(_arg0, _arg1)
 }
 
-func (g grid) RemoveRowGrid(position int) {
+func (g grid) RemoveRow(position int) {
 	var _arg0 *C.GtkGrid // out
 	var _arg1 C.gint     // out
 
@@ -368,7 +375,7 @@ func (g grid) RemoveRowGrid(position int) {
 	C.gtk_grid_remove_row(_arg0, _arg1)
 }
 
-func (g grid) SetBaselineRowGrid(row int) {
+func (g grid) SetBaselineRow(row int) {
 	var _arg0 *C.GtkGrid // out
 	var _arg1 C.gint     // out
 
@@ -378,7 +385,7 @@ func (g grid) SetBaselineRowGrid(row int) {
 	C.gtk_grid_set_baseline_row(_arg0, _arg1)
 }
 
-func (g grid) SetColumnHomogeneousGrid(homogeneous bool) {
+func (g grid) SetColumnHomogeneous(homogeneous bool) {
 	var _arg0 *C.GtkGrid // out
 	var _arg1 C.gboolean // out
 
@@ -390,7 +397,7 @@ func (g grid) SetColumnHomogeneousGrid(homogeneous bool) {
 	C.gtk_grid_set_column_homogeneous(_arg0, _arg1)
 }
 
-func (g grid) SetColumnSpacingGrid(spacing uint) {
+func (g grid) SetColumnSpacing(spacing uint) {
 	var _arg0 *C.GtkGrid // out
 	var _arg1 C.guint    // out
 
@@ -400,7 +407,7 @@ func (g grid) SetColumnSpacingGrid(spacing uint) {
 	C.gtk_grid_set_column_spacing(_arg0, _arg1)
 }
 
-func (g grid) SetRowBaselinePositionGrid(row int, pos BaselinePosition) {
+func (g grid) SetRowBaselinePosition(row int, pos BaselinePosition) {
 	var _arg0 *C.GtkGrid            // out
 	var _arg1 C.gint                // out
 	var _arg2 C.GtkBaselinePosition // out
@@ -412,7 +419,7 @@ func (g grid) SetRowBaselinePositionGrid(row int, pos BaselinePosition) {
 	C.gtk_grid_set_row_baseline_position(_arg0, _arg1, _arg2)
 }
 
-func (g grid) SetRowHomogeneousGrid(homogeneous bool) {
+func (g grid) SetRowHomogeneous(homogeneous bool) {
 	var _arg0 *C.GtkGrid // out
 	var _arg1 C.gboolean // out
 
@@ -424,7 +431,7 @@ func (g grid) SetRowHomogeneousGrid(homogeneous bool) {
 	C.gtk_grid_set_row_homogeneous(_arg0, _arg1)
 }
 
-func (g grid) SetRowSpacingGrid(spacing uint) {
+func (g grid) SetRowSpacing(spacing uint) {
 	var _arg0 *C.GtkGrid // out
 	var _arg1 C.guint    // out
 
@@ -432,12 +439,4 @@ func (g grid) SetRowSpacingGrid(spacing uint) {
 	_arg1 = C.guint(spacing)
 
 	C.gtk_grid_set_row_spacing(_arg0, _arg1)
-}
-
-func (g grid) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(g))
-}
-
-func (g grid) AsOrientable() Orientable {
-	return WrapOrientable(gextras.InternObject(g))
 }

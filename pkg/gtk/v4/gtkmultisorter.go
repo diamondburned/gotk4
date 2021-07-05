@@ -33,16 +33,16 @@ type MultiSorter interface {
 	// AsBuildable casts the class to the Buildable interface.
 	AsBuildable() Buildable
 
-	// AppendMultiSorter: add @sorter to @self to use for sorting at the end.
+	// Append: add @sorter to @self to use for sorting at the end.
 	//
 	// @self will consult all existing sorters before it will sort with the
 	// given @sorter.
-	AppendMultiSorter(sorter Sorter)
-	// RemoveMultiSorter removes the sorter at the given @position from the list
-	// of sorter used by @self.
+	Append(sorter Sorter)
+	// Remove removes the sorter at the given @position from the list of sorter
+	// used by @self.
 	//
 	// If @position is larger than the number of sorters, nothing happens.
-	RemoveMultiSorter(position uint)
+	Remove(position uint)
 }
 
 // multiSorter implements the MultiSorter class.
@@ -81,7 +81,11 @@ func NewMultiSorter() MultiSorter {
 	return _multiSorter
 }
 
-func (s multiSorter) AppendMultiSorter(sorter Sorter) {
+func (m multiSorter) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(m))
+}
+
+func (s multiSorter) Append(sorter Sorter) {
 	var _arg0 *C.GtkMultiSorter // out
 	var _arg1 *C.GtkSorter      // out
 
@@ -91,7 +95,7 @@ func (s multiSorter) AppendMultiSorter(sorter Sorter) {
 	C.gtk_multi_sorter_append(_arg0, _arg1)
 }
 
-func (s multiSorter) RemoveMultiSorter(position uint) {
+func (s multiSorter) Remove(position uint) {
 	var _arg0 *C.GtkMultiSorter // out
 	var _arg1 C.guint           // out
 
@@ -99,8 +103,4 @@ func (s multiSorter) RemoveMultiSorter(position uint) {
 	_arg1 = C.guint(position)
 
 	C.gtk_multi_sorter_remove(_arg0, _arg1)
-}
-
-func (m multiSorter) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(m))
 }

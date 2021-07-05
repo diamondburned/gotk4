@@ -41,16 +41,16 @@ type HSV interface {
 	Color() (h float64, s float64, v float64)
 	// Metrics queries the size and ring width of an HSV color selector.
 	Metrics() (size int, ringWidth int)
-	// IsAdjustingHSV: HSV color selector can be said to be adjusting if
-	// multiple rapid changes are being made to its value, for example, when the
-	// user is adjusting the value with the mouse. This function queries whether
-	// the HSV color selector is being adjusted or not.
-	IsAdjustingHSV() bool
-	// SetColorHSV sets the current color in an HSV color selector. Color
-	// component values must be in the [0.0, 1.0] range.
-	SetColorHSV(h float64, s float64, v float64)
-	// SetMetricsHSV sets the size and ring width of an HSV color selector.
-	SetMetricsHSV(size int, ringWidth int)
+	// IsAdjusting: HSV color selector can be said to be adjusting if multiple
+	// rapid changes are being made to its value, for example, when the user is
+	// adjusting the value with the mouse. This function queries whether the HSV
+	// color selector is being adjusted or not.
+	IsAdjusting() bool
+	// SetColor sets the current color in an HSV color selector. Color component
+	// values must be in the [0.0, 1.0] range.
+	SetColor(h float64, s float64, v float64)
+	// SetMetrics sets the size and ring width of an HSV color selector.
+	SetMetrics(size int, ringWidth int)
 }
 
 // hsV implements the HSV class.
@@ -83,6 +83,10 @@ func NewHSV() HSV {
 	_hsV = WrapHSV(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _hsV
+}
+
+func (h hsV) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(h))
 }
 
 func (h hsV) Color() (h float64, s float64, v float64) {
@@ -124,7 +128,7 @@ func (h hsV) Metrics() (size int, ringWidth int) {
 	return _size, _ringWidth
 }
 
-func (h hsV) IsAdjustingHSV() bool {
+func (h hsV) IsAdjusting() bool {
 	var _arg0 *C.GtkHSV  // out
 	var _cret C.gboolean // in
 
@@ -141,7 +145,7 @@ func (h hsV) IsAdjustingHSV() bool {
 	return _ok
 }
 
-func (h hsV) SetColorHSV(h float64, s float64, v float64) {
+func (h hsV) SetColor(h float64, s float64, v float64) {
 	var _arg0 *C.GtkHSV // out
 	var _arg1 C.double  // out
 	var _arg2 C.double  // out
@@ -155,7 +159,7 @@ func (h hsV) SetColorHSV(h float64, s float64, v float64) {
 	C.gtk_hsv_set_color(_arg0, _arg1, _arg2, _arg3)
 }
 
-func (h hsV) SetMetricsHSV(size int, ringWidth int) {
+func (h hsV) SetMetrics(size int, ringWidth int) {
 	var _arg0 *C.GtkHSV // out
 	var _arg1 C.gint    // out
 	var _arg2 C.gint    // out
@@ -165,8 +169,4 @@ func (h hsV) SetMetricsHSV(size int, ringWidth int) {
 	_arg2 = C.gint(ringWidth)
 
 	C.gtk_hsv_set_metrics(_arg0, _arg1, _arg2)
-}
-
-func (h hsV) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(h))
 }

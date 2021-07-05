@@ -140,21 +140,21 @@ type PopoverMenu interface {
 	// AsShortcutManager casts the class to the ShortcutManager interface.
 	AsShortcutManager() ShortcutManager
 
-	// AddChildPopoverMenu adds a custom widget to a generated menu.
+	// AddChild adds a custom widget to a generated menu.
 	//
 	// For this to work, the menu model of @popover must have an item with a
 	// `custom` attribute that matches @id.
-	AddChildPopoverMenu(child Widget, id string) bool
+	AddChild(child Widget, id string) bool
 	// MenuModel returns the menu model used to populate the popover.
 	MenuModel() gio.MenuModel
-	// RemoveChildPopoverMenu removes a widget that has previously been added
-	// with gtk_popover_menu_add_child().
-	RemoveChildPopoverMenu(child Widget) bool
-	// SetMenuModelPopoverMenu sets a new menu model on @popover.
+	// RemoveChild removes a widget that has previously been added with
+	// gtk_popover_menu_add_child().
+	RemoveChild(child Widget) bool
+	// SetMenuModel sets a new menu model on @popover.
 	//
 	// The existing contents of @popover are removed, and the @popover is
 	// populated with new contents according to @model.
-	SetMenuModelPopoverMenu(model gio.MenuModel)
+	SetMenuModel(model gio.MenuModel)
 }
 
 // popoverMenu implements the PopoverMenu class.
@@ -233,7 +233,27 @@ func NewPopoverMenuFromModelFull(model gio.MenuModel, flags PopoverMenuFlags) Po
 	return _popoverMenu
 }
 
-func (p popoverMenu) AddChildPopoverMenu(child Widget, id string) bool {
+func (p popoverMenu) AsAccessible() Accessible {
+	return WrapAccessible(gextras.InternObject(p))
+}
+
+func (p popoverMenu) AsBuildable() Buildable {
+	return WrapBuildable(gextras.InternObject(p))
+}
+
+func (p popoverMenu) AsConstraintTarget() ConstraintTarget {
+	return WrapConstraintTarget(gextras.InternObject(p))
+}
+
+func (p popoverMenu) AsNative() Native {
+	return WrapNative(gextras.InternObject(p))
+}
+
+func (p popoverMenu) AsShortcutManager() ShortcutManager {
+	return WrapShortcutManager(gextras.InternObject(p))
+}
+
+func (p popoverMenu) AddChild(child Widget, id string) bool {
 	var _arg0 *C.GtkPopoverMenu // out
 	var _arg1 *C.GtkWidget      // out
 	var _arg2 *C.char           // out
@@ -270,7 +290,7 @@ func (p popoverMenu) MenuModel() gio.MenuModel {
 	return _menuModel
 }
 
-func (p popoverMenu) RemoveChildPopoverMenu(child Widget) bool {
+func (p popoverMenu) RemoveChild(child Widget) bool {
 	var _arg0 *C.GtkPopoverMenu // out
 	var _arg1 *C.GtkWidget      // out
 	var _cret C.gboolean        // in
@@ -289,7 +309,7 @@ func (p popoverMenu) RemoveChildPopoverMenu(child Widget) bool {
 	return _ok
 }
 
-func (p popoverMenu) SetMenuModelPopoverMenu(model gio.MenuModel) {
+func (p popoverMenu) SetMenuModel(model gio.MenuModel) {
 	var _arg0 *C.GtkPopoverMenu // out
 	var _arg1 *C.GMenuModel     // out
 
@@ -297,24 +317,4 @@ func (p popoverMenu) SetMenuModelPopoverMenu(model gio.MenuModel) {
 	_arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
 
 	C.gtk_popover_menu_set_menu_model(_arg0, _arg1)
-}
-
-func (p popoverMenu) AsAccessible() Accessible {
-	return WrapAccessible(gextras.InternObject(p))
-}
-
-func (p popoverMenu) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(p))
-}
-
-func (p popoverMenu) AsConstraintTarget() ConstraintTarget {
-	return WrapConstraintTarget(gextras.InternObject(p))
-}
-
-func (p popoverMenu) AsNative() Native {
-	return WrapNative(gextras.InternObject(p))
-}
-
-func (p popoverMenu) AsShortcutManager() ShortcutManager {
-	return WrapShortcutManager(gextras.InternObject(p))
 }

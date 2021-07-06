@@ -35,9 +35,9 @@ type RecentChooserError int
 
 const (
 	// NotFound indicates that a file does not exist
-	NotFound RecentChooserError = iota
+	RecentChooserErrorNotFound RecentChooserError = iota
 	// InvalidURI indicates a malformed URI
-	InvalidURI
+	RecentChooserErrorInvalidURI
 )
 
 func marshalRecentChooserError(p uintptr) (interface{}, error) {
@@ -50,14 +50,14 @@ type RecentSortType int
 
 const (
 	// None: do not sort the returned list of recently used resources.
-	None RecentSortType = iota
+	RecentSortNone RecentSortType = iota
 	// Mru: sort the returned list with the most recently used items first.
-	Mru
+	RecentSortMru
 	// Lru: sort the returned list with the least recently used items first.
-	Lru
+	RecentSortLru
 	// Custom: sort the returned list using a custom sorting function passed
 	// using gtk_recent_chooser_set_sort_func().
-	Custom
+	RecentSortCustom
 )
 
 func marshalRecentSortType(p uintptr) (interface{}, error) {

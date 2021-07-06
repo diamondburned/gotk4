@@ -1375,3 +1375,17 @@ func WrapPageRange(ptr unsafe.Pointer) *PageRange {
 func (p *PageRange) Native() unsafe.Pointer {
 	return unsafe.Pointer(&p.native)
 }
+
+// Start: start of page range.
+func (p *PageRange) Start() int {
+	var v int // out
+	v = int(p.start)
+	return v
+}
+
+// End: end of page range.
+func (p *PageRange) End() int {
+	var v int // out
+	v = int(p.end)
+	return v
+}

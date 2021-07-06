@@ -23,48 +23,48 @@ type SpawnError int
 
 const (
 	// Fork: fork failed due to lack of memory.
-	Fork SpawnError = 0
+	SpawnErrorFork SpawnError = 0
 	// Read: read or select on pipes failed.
-	Read SpawnError = 1
+	SpawnErrorRead SpawnError = 1
 	// Chdir: changing to working directory failed.
-	Chdir SpawnError = 2
+	SpawnErrorChdir SpawnError = 2
 	// Acces: execv() returned `EACCES`
-	Acces SpawnError = 3
+	SpawnErrorAcces SpawnError = 3
 	// Perm: execv() returned `EPERM`
-	Perm SpawnError = 4
+	SpawnErrorPerm SpawnError = 4
 	// TooBig: execv() returned `E2BIG`
-	TooBig SpawnError = 5
+	SpawnErrorTooBig SpawnError = 5
 	// 2Big: deprecated alias for G_SPAWN_ERROR_TOO_BIG (deprecated since GLib
 	// 2.32)
-	TwoBig SpawnError = 5
+	SpawnError2Big SpawnError = 5
 	// Noexec: execv() returned `ENOEXEC`
-	Noexec SpawnError = 6
+	SpawnErrorNoexec SpawnError = 6
 	// Nametoolong: execv() returned `ENAMETOOLONG`
-	Nametoolong SpawnError = 7
+	SpawnErrorNametoolong SpawnError = 7
 	// Noent: execv() returned `ENOENT`
-	Noent SpawnError = 8
+	SpawnErrorNoent SpawnError = 8
 	// NOMEM: execv() returned `ENOMEM`
-	NOMEM SpawnError = 9
+	SpawnErrorNOMEM SpawnError = 9
 	// Notdir: execv() returned `ENOTDIR`
-	Notdir SpawnError = 10
+	SpawnErrorNotdir SpawnError = 10
 	// Loop: execv() returned `ELOOP`
-	Loop SpawnError = 11
+	SpawnErrorLoop SpawnError = 11
 	// Txtbusy: execv() returned `ETXTBUSY`
-	Txtbusy SpawnError = 12
+	SpawnErrorTxtbusy SpawnError = 12
 	// IO: execv() returned `EIO`
-	IO SpawnError = 13
+	SpawnErrorIO SpawnError = 13
 	// Nfile: execv() returned `ENFILE`
-	Nfile SpawnError = 14
+	SpawnErrorNfile SpawnError = 14
 	// Mfile: execv() returned `EMFILE`
-	Mfile SpawnError = 15
+	SpawnErrorMfile SpawnError = 15
 	// Inval: execv() returned `EINVAL`
-	Inval SpawnError = 16
+	SpawnErrorInval SpawnError = 16
 	// Isdir: execv() returned `EISDIR`
-	Isdir SpawnError = 17
+	SpawnErrorIsdir SpawnError = 17
 	// Libbad: execv() returned `ELIBBAD`
-	Libbad SpawnError = 18
+	SpawnErrorLibbad SpawnError = 18
 	// Failed: some other fatal failure, `error->message` should explain.
-	Failed SpawnError = 19
+	SpawnErrorFailed SpawnError = 19
 )
 
 // SpawnFlags flags passed to g_spawn_sync(), g_spawn_async() and

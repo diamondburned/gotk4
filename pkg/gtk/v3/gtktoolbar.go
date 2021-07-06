@@ -43,9 +43,9 @@ type ToolbarSpaceStyle int
 
 const (
 	// Empty: use blank spacers.
-	Empty ToolbarSpaceStyle = iota
+	ToolbarSpaceEmpty ToolbarSpaceStyle = iota
 	// Line: use vertical lines for spacers.
-	Line
+	ToolbarSpaceLine
 )
 
 func marshalToolbarSpaceStyle(p uintptr) (interface{}, error) {

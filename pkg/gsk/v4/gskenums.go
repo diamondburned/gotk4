@@ -37,48 +37,48 @@ type BlendMode int
 
 const (
 	// Default: the default blend mode, which specifies no blending
-	Default BlendMode = iota
+	BlendModeDefault BlendMode = iota
 	// Multiply: the source color is multiplied by the destination and replaces
 	// the destination
-	Multiply
+	BlendModeMultiply
 	// Screen multiplies the complements of the destination and source color
 	// values, then complements the result.
-	Screen
+	BlendModeScreen
 	// Overlay multiplies or screens the colors, depending on the destination
 	// color value. This is the inverse of hard-list
-	Overlay
+	BlendModeOverlay
 	// Darken selects the darker of the destination and source colors
-	Darken
+	BlendModeDarken
 	// Lighten selects the lighter of the destination and source colors
-	Lighten
+	BlendModeLighten
 	// ColorDodge brightens the destination color to reflect the source color
-	ColorDodge
+	BlendModeColorDodge
 	// ColorBurn darkens the destination color to reflect the source color
-	ColorBurn
+	BlendModeColorBurn
 	// HardLight multiplies or screens the colors, depending on the source color
 	// value
-	HardLight
+	BlendModeHardLight
 	// SoftLight darkens or lightens the colors, depending on the source color
 	// value
-	SoftLight
+	BlendModeSoftLight
 	// Difference subtracts the darker of the two constituent colors from the
 	// lighter color
-	Difference
+	BlendModeDifference
 	// Exclusion produces an effect similar to that of the difference mode but
 	// lower in contrast
-	Exclusion
+	BlendModeExclusion
 	// Color creates a color with the hue and saturation of the source color and
 	// the luminosity of the destination color
-	Color
+	BlendModeColor
 	// Hue creates a color with the hue of the source color and the saturation
 	// and luminosity of the destination color
-	Hue
+	BlendModeHue
 	// Saturation creates a color with the saturation of the source color and
 	// the hue and luminosity of the destination color
-	Saturation
+	BlendModeSaturation
 	// Luminosity creates a color with the luminosity of the source color and
 	// the hue and saturation of the destination color
-	Luminosity
+	BlendModeLuminosity
 )
 
 func marshalBlendMode(p uintptr) (interface{}, error) {
@@ -90,13 +90,13 @@ type Corner int
 
 const (
 	// TopLeft: the top left corner
-	TopLeft Corner = iota
+	CornerTopLeft Corner = iota
 	// TopRight: the top right corner
-	TopRight
+	CornerTopRight
 	// BottomRight: the bottom right corner
-	BottomRight
+	CornerBottomRight
 	// BottomLeft: the bottom left corner
-	BottomLeft
+	CornerBottomLeft
 )
 
 func marshalCorner(p uintptr) (interface{}, error) {
@@ -112,21 +112,21 @@ type GLUniformType int
 
 const (
 	// None: no type, used for uninitialized or unspecified values.
-	None GLUniformType = iota
+	GLUniformTypeNone GLUniformType = iota
 	// Float uniform
-	Float
+	GLUniformTypeFloat
 	// Int: GLSL int / gint32 uniform
-	Int
+	GLUniformTypeInt
 	// Uint: GLSL uint / guint32 uniform
-	Uint
+	GLUniformTypeUint
 	// Bool: GLSL bool / gboolean uniform
-	Bool
+	GLUniformTypeBool
 	// Vec2: GLSL vec2 / graphene_vec2_t uniform
-	Vec2
+	GLUniformTypeVec2
 	// Vec3: GLSL vec3 / graphene_vec3_t uniform
-	Vec3
+	GLUniformTypeVec3
 	// Vec4: GLSL vec4 / graphene_vec4_t uniform
-	Vec4
+	GLUniformTypeVec4
 )
 
 func marshalGLUniformType(p uintptr) (interface{}, error) {
@@ -204,12 +204,12 @@ type ScalingFilter int
 
 const (
 	// Linear interpolation filter
-	Linear ScalingFilter = iota
+	ScalingFilterLinear ScalingFilter = iota
 	// Nearest neighbor interpolation filter
-	Nearest
+	ScalingFilterNearest
 	// Trilinear: linear interpolation along each axis, plus mipmap generation,
 	// with linear interpolation along the mipmap levels
-	Trilinear
+	ScalingFilterTrilinear
 )
 
 func marshalScalingFilter(p uintptr) (interface{}, error) {
@@ -221,11 +221,11 @@ type SerializationError int
 
 const (
 	// UnsupportedFormat: the format can not be identified
-	UnsupportedFormat SerializationError = iota
+	SerializationUnsupportedFormat SerializationError = iota
 	// UnsupportedVersion: the version of the data is not understood
-	UnsupportedVersion
+	SerializationUnsupportedVersion
 	// InvalidData: the given data may not exist in a proper serialization
-	InvalidData
+	SerializationInvalidData
 )
 
 func marshalSerializationError(p uintptr) (interface{}, error) {
@@ -246,25 +246,25 @@ type TransformCategory int
 
 const (
 	// Unknown: the category of the matrix has not been determined.
-	Unknown TransformCategory = iota
+	TransformCategoryUnknown TransformCategory = iota
 	// Any: analyzing the matrix concluded that it does not fit in any other
 	// category.
-	Any
+	TransformCategoryAny
 	// 3D: the matrix is a 3D matrix. This means that the w column (the last
 	// column) has the values (0, 0, 0, 1).
-	ThreeD
+	TransformCategory3D
 	// 2D: the matrix is a 2D matrix. This is equivalent to
 	// graphene_matrix_is_2d() returning true. In particular, this means that
 	// Cairo can deal with the matrix.
-	TwoD
+	TransformCategory2D
 	// 2DAffine: the matrix is a combination of 2D scale and 2D translation
 	// operations. In particular, this means that any rectangle can be
 	// transformed exactly using this matrix.
-	TwoDAffine
+	TransformCategory2DAffine
 	// 2DTranslate: the matrix is a 2D translation.
-	TwoDTranslate
+	TransformCategory2DTranslate
 	// Identity: the matrix is the identity matrix.
-	Identity
+	TransformCategoryIdentity
 )
 
 func marshalTransformCategory(p uintptr) (interface{}, error) {

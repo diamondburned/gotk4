@@ -40,10 +40,10 @@ type TextExtendSelection int
 const (
 	// Word selects the current word. It is triggered by a double-click for
 	// example.
-	Word TextExtendSelection = iota
+	TextExtendSelectionWord TextExtendSelection = iota
 	// Line selects the current line. It is triggered by a triple-click for
 	// example.
-	Line
+	TextExtendSelectionLine
 )
 
 func marshalTextExtendSelection(p uintptr) (interface{}, error) {
@@ -56,9 +56,9 @@ type TextViewLayer int
 
 const (
 	// BelowText: the layer rendered below the text (but above the background).
-	BelowText TextViewLayer = iota
+	TextViewLayerBelowText TextViewLayer = iota
 	// AboveText: the layer rendered above the text.
-	AboveText
+	TextViewLayerAboveText
 )
 
 func marshalTextViewLayer(p uintptr) (interface{}, error) {
@@ -70,17 +70,17 @@ type TextWindowType int
 
 const (
 	// Widget: window that floats over scrolling areas.
-	Widget TextWindowType = 1
+	TextWindowWidget TextWindowType = 1
 	// Text: scrollable text window.
-	Text TextWindowType = 2
+	TextWindowText TextWindowType = 2
 	// Left: left side border window.
-	Left TextWindowType = 3
+	TextWindowLeft TextWindowType = 3
 	// Right: right side border window.
-	Right TextWindowType = 4
+	TextWindowRight TextWindowType = 4
 	// Top: top border window.
-	Top TextWindowType = 5
+	TextWindowTop TextWindowType = 5
 	// Bottom: bottom border window.
-	Bottom TextWindowType = 6
+	TextWindowBottom TextWindowType = 6
 )
 
 func marshalTextWindowType(p uintptr) (interface{}, error) {

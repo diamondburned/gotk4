@@ -455,3 +455,17 @@ func WrapAccelKey(ptr unsafe.Pointer) *AccelKey {
 func (a *AccelKey) Native() unsafe.Pointer {
 	return unsafe.Pointer(&a.native)
 }
+
+// AccelKey: the accelerator keyval
+func (a *AccelKey) AccelKey() uint {
+	var v uint // out
+	v = uint(a.accel_key)
+	return v
+}
+
+// AccelMods: the accelerator modifiers
+func (a *AccelKey) AccelMods() gdk.ModifierType {
+	var v gdk.ModifierType // out
+	v = gdk.ModifierType(a.accel_mods)
+	return v
+}

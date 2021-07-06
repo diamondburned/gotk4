@@ -33,18 +33,18 @@ type CoverageLevel int
 
 const (
 	// None: the character is not representable with the font.
-	None CoverageLevel = iota
+	CoverageNone CoverageLevel = iota
 	// Fallback: the character is represented in a way that may be
 	// comprehensible but is not the correct graphical form. For instance, a
 	// Hangul character represented as a a sequence of Jamos, or a Latin
 	// transliteration of a Cyrillic word.
-	Fallback
+	CoverageFallback
 	// Approximate: the character is represented as basically the correct
 	// graphical form, but with a stylistic variant inappropriate for the
 	// current script.
-	Approximate
+	CoverageApproximate
 	// Exact: the character is represented as the correct graphical form.
-	Exact
+	CoverageExact
 )
 
 func marshalCoverageLevel(p uintptr) (interface{}, error) {

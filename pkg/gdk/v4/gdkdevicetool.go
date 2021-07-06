@@ -29,21 +29,21 @@ type DeviceToolType int
 
 const (
 	// Unknown: tool is of an unknown type.
-	Unknown DeviceToolType = iota
+	DeviceToolTypeUnknown DeviceToolType = iota
 	// Pen: tool is a standard tablet stylus.
-	Pen
+	DeviceToolTypePen
 	// Eraser: tool is standard tablet eraser.
-	Eraser
+	DeviceToolTypeEraser
 	// Brush: tool is a brush stylus.
-	Brush
+	DeviceToolTypeBrush
 	// Pencil: tool is a pencil stylus.
-	Pencil
+	DeviceToolTypePencil
 	// Airbrush: tool is an airbrush stylus.
-	Airbrush
+	DeviceToolTypeAirbrush
 	// Mouse: tool is a mouse.
-	Mouse
+	DeviceToolTypeMouse
 	// Lens: tool is a lens cursor.
-	Lens
+	DeviceToolTypeLens
 )
 
 func marshalDeviceToolType(p uintptr) (interface{}, error) {

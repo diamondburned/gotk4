@@ -44,24 +44,24 @@ type ImageType int
 
 const (
 	// Empty: there is no image displayed by the widget
-	Empty ImageType = iota
+	ImageEmpty ImageType = iota
 	// Pixbuf: the widget contains a Pixbuf
-	Pixbuf
+	ImagePixbuf
 	// Stock: the widget contains a [stock item name][gtkstock]
-	Stock
+	ImageStock
 	// IconSet: the widget contains a IconSet
-	IconSet
+	ImageIconSet
 	// Animation: the widget contains a PixbufAnimation
-	Animation
+	ImageAnimation
 	// IconName: the widget contains a named icon. This image type was added in
 	// GTK+ 2.6
-	IconName
+	ImageIconName
 	// GIcon: the widget contains a #GIcon. This image type was added in GTK+
 	// 2.14
-	GIcon
+	ImageGIcon
 	// Surface: the widget contains a #cairo_surface_t. This image type was
 	// added in GTK+ 3.10
-	Surface
+	ImageSurface
 )
 
 func marshalImageType(p uintptr) (interface{}, error) {

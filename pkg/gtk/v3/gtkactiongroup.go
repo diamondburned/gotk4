@@ -504,3 +504,50 @@ func WrapRadioActionEntry(ptr unsafe.Pointer) *RadioActionEntry {
 func (r *RadioActionEntry) Native() unsafe.Pointer {
 	return unsafe.Pointer(&r.native)
 }
+
+// Name: the name of the action.
+func (r *RadioActionEntry) Name() string {
+	var v string // out
+	v = C.GoString(r.name)
+	return v
+}
+
+// StockID: the stock id for the action, or the name of an icon from the icon
+// theme.
+func (r *RadioActionEntry) StockID() string {
+	var v string // out
+	v = C.GoString(r.stock_id)
+	return v
+}
+
+// Label: the label for the action. This field should typically be marked for
+// translation, see gtk_action_group_set_translation_domain().
+func (r *RadioActionEntry) Label() string {
+	var v string // out
+	v = C.GoString(r.label)
+	return v
+}
+
+// Accelerator: the accelerator for the action, in the format understood by
+// gtk_accelerator_parse().
+func (r *RadioActionEntry) Accelerator() string {
+	var v string // out
+	v = C.GoString(r.accelerator)
+	return v
+}
+
+// Tooltip: the tooltip for the action. This field should typically be marked
+// for translation, see gtk_action_group_set_translation_domain().
+func (r *RadioActionEntry) Tooltip() string {
+	var v string // out
+	v = C.GoString(r.tooltip)
+	return v
+}
+
+// Value: the value to set on the radio action. See
+// gtk_radio_action_get_current_value().
+func (r *RadioActionEntry) Value() int {
+	var v int // out
+	v = int(r.value)
+	return v
+}

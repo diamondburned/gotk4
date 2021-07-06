@@ -66,8 +66,8 @@ var recordTmpl = gotmpl.NewGoTemplate(`
 	}
 
 	{{ range .Getters }}
-	// {{ .GoName }} gets the field inside the struct.
-	func ({{ $recv }} *{{ $.GoName }}) {{ .GoName }}() {{ .GoType }} {{ .Block }}
+	{{ GoDoc . 0 }}
+	func ({{ $recv }} *{{ $.GoName }}) {{ .Name }}() {{ .Type }} {{ .Block }}
 	{{ end }}
 
 	{{ range .Methods }}
@@ -179,9 +179,11 @@ type RecordGenerator struct {
 }
 
 type recordGetter struct {
-	GoName string
-	GoType string
-	Block  string // assume first_letter recv
+	InfoElements gir.InfoElements
+
+	Name  string
+	Type  string
+	Block string // assume first_letter recv
 }
 
 func NewRecordGenerator(gen FileGenerator) RecordGenerator {
@@ -296,9 +298,12 @@ func (rg *RecordGenerator) getters() []recordGetter {
 		b.Linef("return v")
 
 		getters = append(getters, recordGetter{
-			GoName: strcases.SnakeToGo(true, converted.Name),
-			GoType: converted.OutType,
-			Block:  b.String(),
+			Name:  strcases.SnakeToGo(true, converted.Name),
+			Type:  converted.OutType,
+			Block: b.String(),
+			InfoElements: gir.InfoElements{
+				DocElements: gir.DocElements{Doc: fields[i].Doc},
+			},
 		})
 	}
 
@@ -309,7 +314,7 @@ func (rg *RecordGenerator) getters() []recordGetter {
 func ignoreField(field *gir.Field) bool {
 	// For "Bits > 0", we can't safely do this in Go (and probably not CGo
 	// either?) so we're not doing it.
-	return field.Private || field.Bits > 0 || (!field.Readable && !field.Writable)
+	return field.Private || field.Bits > 0 || !field.IsReadable() || !field.Writable
 }
 
 func (rg *RecordGenerator) Logln(lvl logger.Level, v ...interface{}) {

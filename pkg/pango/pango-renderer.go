@@ -29,15 +29,15 @@ type RenderPart int
 
 const (
 	// Foreground: the text itself
-	Foreground RenderPart = iota
+	RenderPartForeground RenderPart = iota
 	// Background: the area behind the text
-	Background
+	RenderPartBackground
 	// Underline: underlines
-	Underline
+	RenderPartUnderline
 	// Strikethrough lines
-	Strikethrough
+	RenderPartStrikethrough
 	// Overline: overlines
-	Overline
+	RenderPartOverline
 )
 
 func marshalRenderPart(p uintptr) (interface{}, error) {

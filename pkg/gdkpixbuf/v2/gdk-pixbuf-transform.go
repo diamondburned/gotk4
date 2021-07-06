@@ -36,18 +36,18 @@ const (
 	// Nearest: nearest neighbor sampling; this is the fastest and lowest
 	// quality mode. Quality is normally unacceptable when scaling down, but may
 	// be OK when scaling up.
-	Nearest InterpType = iota
+	InterpNearest InterpType = iota
 	// Tiles: this is an accurate simulation of the PostScript image operator
 	// without any interpolation enabled. Each pixel is rendered as a tiny
 	// parallelogram of solid color, the edges of which are implemented with
 	// antialiasing. It resembles nearest neighbor for enlargement, and bilinear
 	// for reduction.
-	Tiles
+	InterpTiles
 	// Bilinear: best quality/speed balance; use this mode by default. Bilinear
 	// interpolation. For enlargement, it is equivalent to point-sampling the
 	// ideal bilinear-interpolated image. For reduction, it is equivalent to
 	// laying down small tiles and integrating over the coverage area.
-	Bilinear
+	InterpBilinear
 	// Hyper: this is the slowest and highest quality reconstruction function.
 	// It is derived from the hyperbolic filters in Wolberg's "Digital Image
 	// Warping", and is formally defined as the hyperbolic-filter sampling the
@@ -55,7 +55,7 @@ const (
 	// idempotent for 1:1 pixel mapping). **Deprecated**: this interpolation
 	// filter is deprecated, as in reality it has a lower quality than the
 	// @GDK_INTERP_BILINEAR filter (Since: 2.38)
-	Hyper
+	InterpHyper
 )
 
 func marshalInterpType(p uintptr) (interface{}, error) {
@@ -70,13 +70,13 @@ type PixbufRotation int
 
 const (
 	// None: no rotation.
-	None PixbufRotation = 0
+	PixbufRotateNone PixbufRotation = 0
 	// Counterclockwise: rotate by 90 degrees.
-	Counterclockwise PixbufRotation = 90
+	PixbufRotateCounterclockwise PixbufRotation = 90
 	// Upsidedown: rotate by 180 degrees.
-	Upsidedown PixbufRotation = 180
+	PixbufRotateUpsidedown PixbufRotation = 180
 	// Clockwise: rotate by 270 degrees.
-	Clockwise PixbufRotation = 270
+	PixbufRotateClockwise PixbufRotation = 270
 )
 
 func marshalPixbufRotation(p uintptr) (interface{}, error) {

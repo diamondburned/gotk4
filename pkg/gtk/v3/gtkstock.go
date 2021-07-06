@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
 
 // #cgo pkg-config: gtk+-3.0
@@ -123,6 +124,41 @@ func WrapStockItem(ptr unsafe.Pointer) *StockItem {
 // Native returns the underlying C source pointer.
 func (s *StockItem) Native() unsafe.Pointer {
 	return unsafe.Pointer(&s.native)
+}
+
+// StockID: identifier.
+func (s *StockItem) StockID() string {
+	var v string // out
+	v = C.GoString(s.stock_id)
+	return v
+}
+
+// Label: user visible label.
+func (s *StockItem) Label() string {
+	var v string // out
+	v = C.GoString(s.label)
+	return v
+}
+
+// Modifier type for keyboard accelerator
+func (s *StockItem) Modifier() gdk.ModifierType {
+	var v gdk.ModifierType // out
+	v = gdk.ModifierType(s.modifier)
+	return v
+}
+
+// Keyval: keyboard accelerator
+func (s *StockItem) Keyval() uint {
+	var v uint // out
+	v = uint(s.keyval)
+	return v
+}
+
+// TranslationDomain: translation domain of the menu or toolbar item
+func (s *StockItem) TranslationDomain() string {
+	var v string // out
+	v = C.GoString(s.translation_domain)
+	return v
 }
 
 // Free frees a stock item allocated on the heap, such as one returned by

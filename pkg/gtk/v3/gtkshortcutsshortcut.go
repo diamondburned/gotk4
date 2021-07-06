@@ -43,28 +43,28 @@ type ShortcutType int
 const (
 	// Accelerator: the shortcut is a keyboard accelerator. The
 	// ShortcutsShortcut:accelerator property will be used.
-	Accelerator ShortcutType = iota
+	ShortcutAccelerator ShortcutType = iota
 	// GesturePinch: the shortcut is a pinch gesture. GTK+ provides an icon and
 	// subtitle.
-	GesturePinch
+	ShortcutGesturePinch
 	// GestureStretch: the shortcut is a stretch gesture. GTK+ provides an icon
 	// and subtitle.
-	GestureStretch
+	ShortcutGestureStretch
 	// GestureRotateClockwise: the shortcut is a clockwise rotation gesture.
 	// GTK+ provides an icon and subtitle.
-	GestureRotateClockwise
+	ShortcutGestureRotateClockwise
 	// GestureRotateCounterclockwise: the shortcut is a counterclockwise
 	// rotation gesture. GTK+ provides an icon and subtitle.
-	GestureRotateCounterclockwise
+	ShortcutGestureRotateCounterclockwise
 	// GestureTwoFingerSwipeLeft: the shortcut is a two-finger swipe gesture.
 	// GTK+ provides an icon and subtitle.
-	GestureTwoFingerSwipeLeft
+	ShortcutGestureTwoFingerSwipeLeft
 	// GestureTwoFingerSwipeRight: the shortcut is a two-finger swipe gesture.
 	// GTK+ provides an icon and subtitle.
-	GestureTwoFingerSwipeRight
+	ShortcutGestureTwoFingerSwipeRight
 	// Gesture: the shortcut is a gesture. The ShortcutsShortcut:icon property
 	// will be used.
-	Gesture
+	ShortcutGesture
 )
 
 func marshalShortcutType(p uintptr) (interface{}, error) {

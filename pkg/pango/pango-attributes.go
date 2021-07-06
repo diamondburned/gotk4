@@ -45,74 +45,74 @@ type AttrType int
 
 const (
 	// Invalid does not happen
-	Invalid AttrType = iota
+	AttrInvalid AttrType = iota
 	// Language ([struct@Pango.AttrLanguage])
-	Language
+	AttrLanguage
 	// Family: font family name list ([struct@Pango.AttrString])
-	Family
+	AttrFamily
 	// Style: font slant style ([struct@Pango.AttrInt])
-	Style
+	AttrStyle
 	// Weight: font weight ([struct@Pango.AttrInt])
-	Weight
+	AttrWeight
 	// Variant: font variant (normal or small caps) ([struct@Pango.AttrInt])
-	Variant
+	AttrVariant
 	// Stretch: font stretch ([struct@Pango.AttrInt])
-	Stretch
+	AttrStretch
 	// Size: font size in points scaled by PANGO_SCALE ([struct@Pango.AttrInt])
-	Size
+	AttrSize
 	// FontDesc: font description ([struct@Pango.AttrFontDesc])
-	FontDesc
+	AttrFontDesc
 	// Foreground color ([struct@Pango.AttrColor])
-	Foreground
+	AttrForeground
 	// Background color ([struct@Pango.AttrColor])
-	Background
+	AttrBackground
 	// Underline: whether the text has an underline ([struct@Pango.AttrInt])
-	Underline
+	AttrUnderline
 	// Strikethrough: whether the text is struck-through
 	// ([struct@Pango.AttrInt])
-	Strikethrough
+	AttrStrikethrough
 	// Rise: baseline displacement ([struct@Pango.AttrInt])
-	Rise
+	AttrRise
 	// Shape ([struct@Pango.AttrShape])
-	Shape
+	AttrShape
 	// Scale: font size scale factor ([struct@Pango.AttrFloat])
-	Scale
+	AttrScale
 	// Fallback: whether fallback is enabled ([struct@Pango.AttrInt])
-	Fallback
+	AttrFallback
 	// LetterSpacing: letter spacing ([struct@PangoAttrInt])
-	LetterSpacing
+	AttrLetterSpacing
 	// UnderlineColor: underline color ([struct@Pango.AttrColor])
-	UnderlineColor
+	AttrUnderlineColor
 	// StrikethroughColor: strikethrough color ([struct@Pango.AttrColor])
-	StrikethroughColor
+	AttrStrikethroughColor
 	// AbsoluteSize: font size in pixels scaled by PANGO_SCALE
 	// ([struct@Pango.AttrInt])
-	AbsoluteSize
+	AttrAbsoluteSize
 	// Gravity: base text gravity ([struct@Pango.AttrInt])
-	Gravity
+	AttrGravity
 	// GravityHint: gravity hint ([struct@Pango.AttrInt])
-	GravityHint
+	AttrGravityHint
 	// FontFeatures: openType font features ([struct@Pango.AttrString]). Since
 	// 1.38
-	FontFeatures
+	AttrFontFeatures
 	// ForegroundAlpha: foreground alpha ([struct@Pango.AttrInt]). Since 1.38
-	ForegroundAlpha
+	AttrForegroundAlpha
 	// BackgroundAlpha: background alpha ([struct@Pango.AttrInt]). Since 1.38
-	BackgroundAlpha
+	AttrBackgroundAlpha
 	// AllowBreaks: whether breaks are allowed ([struct@Pango.AttrInt]). Since
 	// 1.44
-	AllowBreaks
+	AttrAllowBreaks
 	// Show: how to render invisible characters ([struct@Pango.AttrInt]). Since
 	// 1.44
-	Show
+	AttrShow
 	// InsertHyphens: whether to insert hyphens at intra-word line breaks
 	// ([struct@Pango.AttrInt]). Since 1.44
-	InsertHyphens
+	AttrInsertHyphens
 	// Overline: whether the text has an overline ([struct@Pango.AttrInt]).
 	// Since 1.46
-	Overline
+	AttrOverline
 	// OverlineColor: overline color ([struct@Pango.AttrColor]). Since 1.46
-	OverlineColor
+	AttrOverlineColor
 )
 
 func marshalAttrType(p uintptr) (interface{}, error) {
@@ -125,10 +125,10 @@ type Overline int
 
 const (
 	// None: no overline should be drawn
-	None Overline = iota
+	OverlineNone Overline = iota
 	// Single: draw a single line above the ink extents of the text being
 	// underlined.
-	Single
+	OverlineSingle
 )
 
 func marshalOverline(p uintptr) (interface{}, error) {
@@ -141,30 +141,30 @@ type Underline int
 
 const (
 	// None: no underline should be drawn
-	None Underline = iota
+	UnderlineNone Underline = iota
 	// Single underline should be drawn
-	Single
+	UnderlineSingle
 	// Double underline should be drawn
-	Double
+	UnderlineDouble
 	// Low: single underline should be drawn at a position beneath the ink
 	// extents of the text being underlined. This should be used only for
 	// underlining single characters, such as for keyboard accelerators.
 	// PANGO_UNDERLINE_SINGLE should be used for extended portions of text.
-	Low
+	UnderlineLow
 	// Error: wavy underline should be drawn below. This underline is typically
 	// used to indicate an error such as a possible mispelling; in some cases a
 	// contrasting color may automatically be used. This type of underlining is
 	// available since Pango 1.4.
-	Error
+	UnderlineError
 	// SingleLine: like @PANGO_UNDERLINE_SINGLE, but drawn continuously across
 	// multiple runs. This type of underlining is available since Pango 1.46.
-	SingleLine
+	UnderlineSingleLine
 	// DoubleLine: like @PANGO_UNDERLINE_DOUBLE, but drawn continuously across
 	// multiple runs. This type of underlining is available since Pango 1.46.
-	DoubleLine
+	UnderlineDoubleLine
 	// ErrorLine: like @PANGO_UNDERLINE_ERROR, but drawn continuously across
 	// multiple runs. This type of underlining is available since Pango 1.46.
-	ErrorLine
+	UnderlineErrorLine
 )
 
 func marshalUnderline(p uintptr) (interface{}, error) {
@@ -886,6 +886,40 @@ func (a *AttrColor) Native() unsafe.Pointer {
 	return unsafe.Pointer(&a.native)
 }
 
+// Attr: the common portion of the attribute
+func (a *AttrColor) Attr() Attribute {
+	var v Attribute // out
+	{
+		var refTmpIn *C.PangoAttribute
+		var refTmpOut *Attribute
+
+		in0 := &a.attr
+		refTmpIn = in0
+
+		refTmpOut = (*Attribute)(unsafe.Pointer(refTmpIn))
+
+		v = *refTmpOut
+	}
+	return v
+}
+
+// Color: the `PangoColor` which is the value of the attribute
+func (a *AttrColor) Color() Color {
+	var v Color // out
+	{
+		var refTmpIn *C.PangoColor
+		var refTmpOut *Color
+
+		in0 := &a.color
+		refTmpIn = in0
+
+		refTmpOut = (*Color)(unsafe.Pointer(refTmpIn))
+
+		v = *refTmpOut
+	}
+	return v
+}
+
 // AttrFloat: the `PangoAttrFloat` structure is used to represent attributes
 // with a float or double value.
 type AttrFloat struct {
@@ -901,6 +935,30 @@ func WrapAttrFloat(ptr unsafe.Pointer) *AttrFloat {
 // Native returns the underlying C source pointer.
 func (a *AttrFloat) Native() unsafe.Pointer {
 	return unsafe.Pointer(&a.native)
+}
+
+// Attr: the common portion of the attribute
+func (a *AttrFloat) Attr() Attribute {
+	var v Attribute // out
+	{
+		var refTmpIn *C.PangoAttribute
+		var refTmpOut *Attribute
+
+		in0 := &a.attr
+		refTmpIn = in0
+
+		refTmpOut = (*Attribute)(unsafe.Pointer(refTmpIn))
+
+		v = *refTmpOut
+	}
+	return v
+}
+
+// Value: the value of the attribute
+func (a *AttrFloat) Value() float64 {
+	var v float64 // out
+	v = float64(a.value)
+	return v
 }
 
 // AttrFontDesc: the `PangoAttrFontDesc` structure is used to store an attribute
@@ -920,6 +978,30 @@ func (a *AttrFontDesc) Native() unsafe.Pointer {
 	return unsafe.Pointer(&a.native)
 }
 
+// Attr: the common portion of the attribute
+func (a *AttrFontDesc) Attr() Attribute {
+	var v Attribute // out
+	{
+		var refTmpIn *C.PangoAttribute
+		var refTmpOut *Attribute
+
+		in0 := &a.attr
+		refTmpIn = in0
+
+		refTmpOut = (*Attribute)(unsafe.Pointer(refTmpIn))
+
+		v = *refTmpOut
+	}
+	return v
+}
+
+// Desc: the font description which is the value of this attribute
+func (a *AttrFontDesc) Desc() *FontDescription {
+	var v *FontDescription // out
+	v = (*FontDescription)(unsafe.Pointer(a.desc))
+	return v
+}
+
 // AttrFontFeatures: the `PangoAttrFontFeatures` structure is used to represent
 // OpenType font features as an attribute.
 type AttrFontFeatures struct {
@@ -937,6 +1019,30 @@ func (a *AttrFontFeatures) Native() unsafe.Pointer {
 	return unsafe.Pointer(&a.native)
 }
 
+// Attr: the common portion of the attribute
+func (a *AttrFontFeatures) Attr() Attribute {
+	var v Attribute // out
+	{
+		var refTmpIn *C.PangoAttribute
+		var refTmpOut *Attribute
+
+		in0 := &a.attr
+		refTmpIn = in0
+
+		refTmpOut = (*Attribute)(unsafe.Pointer(refTmpIn))
+
+		v = *refTmpOut
+	}
+	return v
+}
+
+// Features: the featues, as a string in CSS syntax
+func (a *AttrFontFeatures) Features() string {
+	var v string // out
+	v = C.GoString(a.features)
+	return v
+}
+
 // AttrInt: the `PangoAttrInt` structure is used to represent attributes with an
 // integer or enumeration value.
 type AttrInt struct {
@@ -952,6 +1058,30 @@ func WrapAttrInt(ptr unsafe.Pointer) *AttrInt {
 // Native returns the underlying C source pointer.
 func (a *AttrInt) Native() unsafe.Pointer {
 	return unsafe.Pointer(&a.native)
+}
+
+// Attr: the common portion of the attribute
+func (a *AttrInt) Attr() Attribute {
+	var v Attribute // out
+	{
+		var refTmpIn *C.PangoAttribute
+		var refTmpOut *Attribute
+
+		in0 := &a.attr
+		refTmpIn = in0
+
+		refTmpOut = (*Attribute)(unsafe.Pointer(refTmpIn))
+
+		v = *refTmpOut
+	}
+	return v
+}
+
+// Value: the value of the attribute
+func (a *AttrInt) Value() int {
+	var v int // out
+	v = int(a.value)
+	return v
 }
 
 // AttrIterator: `PangoAttrIterator` is used to iterate through a
@@ -1085,6 +1215,30 @@ func WrapAttrLanguage(ptr unsafe.Pointer) *AttrLanguage {
 // Native returns the underlying C source pointer.
 func (a *AttrLanguage) Native() unsafe.Pointer {
 	return unsafe.Pointer(&a.native)
+}
+
+// Attr: the common portion of the attribute
+func (a *AttrLanguage) Attr() Attribute {
+	var v Attribute // out
+	{
+		var refTmpIn *C.PangoAttribute
+		var refTmpOut *Attribute
+
+		in0 := &a.attr
+		refTmpIn = in0
+
+		refTmpOut = (*Attribute)(unsafe.Pointer(refTmpIn))
+
+		v = *refTmpOut
+	}
+	return v
+}
+
+// Value: the `PangoLanguage` which is the value of the attribute
+func (a *AttrLanguage) Value() *Language {
+	var v *Language // out
+	v = (*Language)(unsafe.Pointer(a.value))
+	return v
 }
 
 // AttrList: `PangoAttrList` represents a list of attributes that apply to a
@@ -1368,6 +1522,64 @@ func (a *AttrShape) Native() unsafe.Pointer {
 	return unsafe.Pointer(&a.native)
 }
 
+// Attr: the common portion of the attribute
+func (a *AttrShape) Attr() Attribute {
+	var v Attribute // out
+	{
+		var refTmpIn *C.PangoAttribute
+		var refTmpOut *Attribute
+
+		in0 := &a.attr
+		refTmpIn = in0
+
+		refTmpOut = (*Attribute)(unsafe.Pointer(refTmpIn))
+
+		v = *refTmpOut
+	}
+	return v
+}
+
+// InkRect: the ink rectangle to restrict to
+func (a *AttrShape) InkRect() Rectangle {
+	var v Rectangle // out
+	{
+		var refTmpIn *C.PangoRectangle
+		var refTmpOut *Rectangle
+
+		in0 := &a.ink_rect
+		refTmpIn = in0
+
+		refTmpOut = (*Rectangle)(unsafe.Pointer(refTmpIn))
+
+		v = *refTmpOut
+	}
+	return v
+}
+
+// LogicalRect: the logical rectangle to restrict to
+func (a *AttrShape) LogicalRect() Rectangle {
+	var v Rectangle // out
+	{
+		var refTmpIn *C.PangoRectangle
+		var refTmpOut *Rectangle
+
+		in0 := &a.logical_rect
+		refTmpIn = in0
+
+		refTmpOut = (*Rectangle)(unsafe.Pointer(refTmpIn))
+
+		v = *refTmpOut
+	}
+	return v
+}
+
+// Data: user data set (see [type_func@Pango.AttrShape.new_with_data])
+func (a *AttrShape) Data() interface{} {
+	var v interface{} // out
+	v = box.Get(uintptr(a.data))
+	return v
+}
+
 // AttrSize: the `PangoAttrSize` structure is used to represent attributes which
 // set font size.
 type AttrSize struct {
@@ -1385,6 +1597,31 @@ func (a *AttrSize) Native() unsafe.Pointer {
 	return unsafe.Pointer(&a.native)
 }
 
+// Attr: the common portion of the attribute
+func (a *AttrSize) Attr() Attribute {
+	var v Attribute // out
+	{
+		var refTmpIn *C.PangoAttribute
+		var refTmpOut *Attribute
+
+		in0 := &a.attr
+		refTmpIn = in0
+
+		refTmpOut = (*Attribute)(unsafe.Pointer(refTmpIn))
+
+		v = *refTmpOut
+	}
+	return v
+}
+
+// Size: size of font, in units of 1/PANGO_SCALE of a point (for
+// PANGO_ATTR_SIZE) or of a device unit (for PANGO_ATTR_ABSOLUTE_SIZE)
+func (a *AttrSize) Size() int {
+	var v int // out
+	v = int(a.size)
+	return v
+}
+
 // AttrString: the `PangoAttrString` structure is used to represent attributes
 // with a string value.
 type AttrString struct {
@@ -1400,6 +1637,30 @@ func WrapAttrString(ptr unsafe.Pointer) *AttrString {
 // Native returns the underlying C source pointer.
 func (a *AttrString) Native() unsafe.Pointer {
 	return unsafe.Pointer(&a.native)
+}
+
+// Attr: the common portion of the attribute
+func (a *AttrString) Attr() Attribute {
+	var v Attribute // out
+	{
+		var refTmpIn *C.PangoAttribute
+		var refTmpOut *Attribute
+
+		in0 := &a.attr
+		refTmpIn = in0
+
+		refTmpOut = (*Attribute)(unsafe.Pointer(refTmpIn))
+
+		v = *refTmpOut
+	}
+	return v
+}
+
+// Value: the string which is the value of the attribute
+func (a *AttrString) Value() string {
+	var v string // out
+	v = C.GoString(a.value)
+	return v
 }
 
 // Attribute: the `PangoAttribute` structure represents the common portions of
@@ -1428,6 +1689,21 @@ func marshalAttribute(p uintptr) (interface{}, error) {
 // Native returns the underlying C source pointer.
 func (a *Attribute) Native() unsafe.Pointer {
 	return unsafe.Pointer(&a.native)
+}
+
+// StartIndex: the start index of the range (in bytes).
+func (a *Attribute) StartIndex() uint {
+	var v uint // out
+	v = uint(a.start_index)
+	return v
+}
+
+// EndIndex: end index of the range (in bytes). The character at this index is
+// not included in the range.
+func (a *Attribute) EndIndex() uint {
+	var v uint // out
+	v = uint(a.end_index)
+	return v
 }
 
 // Copy: make a copy of an attribute.
@@ -1499,6 +1775,27 @@ func marshalColor(p uintptr) (interface{}, error) {
 // Native returns the underlying C source pointer.
 func (c *Color) Native() unsafe.Pointer {
 	return unsafe.Pointer(&c.native)
+}
+
+// Red: value of red component
+func (c *Color) Red() uint16 {
+	var v uint16 // out
+	v = uint16(c.red)
+	return v
+}
+
+// Green: value of green component
+func (c *Color) Green() uint16 {
+	var v uint16 // out
+	v = uint16(c.green)
+	return v
+}
+
+// Blue: value of blue component
+func (c *Color) Blue() uint16 {
+	var v uint16 // out
+	v = uint16(c.blue)
+	return v
 }
 
 // Copy creates a copy of @src.

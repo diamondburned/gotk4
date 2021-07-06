@@ -34,35 +34,35 @@ type BuilderError int
 const (
 	// InvalidTypeFunction: type-func attribute didn’t name a function that
 	// returns a #GType.
-	InvalidTypeFunction BuilderError = iota
+	BuilderErrorInvalidTypeFunction BuilderError = iota
 	// UnhandledTag: the input contained a tag that Builder can’t handle.
-	UnhandledTag
+	BuilderErrorUnhandledTag
 	// MissingAttribute: attribute that is required by Builder was missing.
-	MissingAttribute
+	BuilderErrorMissingAttribute
 	// InvalidAttribute found an attribute that it doesn’t understand.
-	InvalidAttribute
+	BuilderErrorInvalidAttribute
 	// InvalidTag found a tag that it doesn’t understand.
-	InvalidTag
+	BuilderErrorInvalidTag
 	// MissingPropertyValue: required property value was missing.
-	MissingPropertyValue
+	BuilderErrorMissingPropertyValue
 	// InvalidValue couldn’t parse some attribute value.
-	InvalidValue
+	BuilderErrorInvalidValue
 	// VersionMismatch: the input file requires a newer version of GTK+.
-	VersionMismatch
+	BuilderErrorVersionMismatch
 	// DuplicateID: object id occurred twice.
-	DuplicateID
+	BuilderErrorDuplicateID
 	// ObjectTypeRefused: specified object type is of the same type or derived
 	// from the type of the composite class being extended with builder XML.
-	ObjectTypeRefused
+	BuilderErrorObjectTypeRefused
 	// TemplateMismatch: the wrong type was specified in a composite class’s
 	// template XML
-	TemplateMismatch
+	BuilderErrorTemplateMismatch
 	// InvalidProperty: the specified property is unknown for the object class.
-	InvalidProperty
+	BuilderErrorInvalidProperty
 	// InvalidSignal: the specified signal is unknown for the object class.
-	InvalidSignal
+	BuilderErrorInvalidSignal
 	// InvalidID: object id is unknown
-	InvalidID
+	BuilderErrorInvalidID
 )
 
 func marshalBuilderError(p uintptr) (interface{}, error) {

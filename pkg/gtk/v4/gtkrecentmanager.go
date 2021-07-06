@@ -32,19 +32,19 @@ type RecentManagerError int
 const (
 	// NotFound: the URI specified does not exists in the recently used
 	// resources list.
-	NotFound RecentManagerError = iota
+	RecentManagerErrorNotFound RecentManagerError = iota
 	// InvalidURI: the URI specified is not valid.
-	InvalidURI
+	RecentManagerErrorInvalidURI
 	// InvalidEncoding: the supplied string is not UTF-8 encoded.
-	InvalidEncoding
+	RecentManagerErrorInvalidEncoding
 	// NotRegistered: no application has registered the specified item.
-	NotRegistered
+	RecentManagerErrorNotRegistered
 	// Read: failure while reading the recently used resources file.
-	Read
+	RecentManagerErrorRead
 	// Write: failure while writing the recently used resources file.
-	Write
+	RecentManagerErrorWrite
 	// Unknown: unspecified error.
-	Unknown
+	RecentManagerErrorUnknown
 )
 
 func marshalRecentManagerError(p uintptr) (interface{}, error) {
@@ -349,6 +349,75 @@ func WrapRecentData(ptr unsafe.Pointer) *RecentData {
 // Native returns the underlying C source pointer.
 func (r *RecentData) Native() unsafe.Pointer {
 	return unsafe.Pointer(&r.native)
+}
+
+// DisplayName: UTF-8 encoded string, containing the name of the recently used
+// resource to be displayed, or nil;
+func (r *RecentData) DisplayName() string {
+	var v string // out
+	v = C.GoString(r.display_name)
+	return v
+}
+
+// Description: UTF-8 encoded string, containing a short description of the
+// resource, or nil;
+func (r *RecentData) Description() string {
+	var v string // out
+	v = C.GoString(r.description)
+	return v
+}
+
+// MIMEType: the MIME type of the resource;
+func (r *RecentData) MIMEType() string {
+	var v string // out
+	v = C.GoString(r.mime_type)
+	return v
+}
+
+// AppName: the name of the application that is registering this recently used
+// resource;
+func (r *RecentData) AppName() string {
+	var v string // out
+	v = C.GoString(r.app_name)
+	return v
+}
+
+// AppExec: command line used to launch this resource; may contain the “\f” and
+// “\u” escape characters which will be expanded to the resource file path and
+// URI respectively when the command line is retrieved;
+func (r *RecentData) AppExec() string {
+	var v string // out
+	v = C.GoString(r.app_exec)
+	return v
+}
+
+// Groups: vector of strings containing groups names;
+func (r *RecentData) Groups() []string {
+	var v []string
+	{
+		var i int
+		var z *C.char
+		for p := r.groups; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+			i++
+		}
+
+		src := unsafe.Slice(r.groups, i)
+		v = make([]string, i)
+		for i := range src {
+			v[i] = C.GoString(src[i])
+		}
+	}
+	return v
+}
+
+// IsPrivate: whether this resource should be displayed only by the applications
+// that have registered it or not.
+func (r *RecentData) IsPrivate() bool {
+	var v bool // out
+	if r.is_private != 0 {
+		v = true
+	}
+	return v
 }
 
 // RecentInfo: `GtkRecentInfo` contains the metadata associated with an item in

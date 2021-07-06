@@ -37,242 +37,242 @@ type Script int
 
 const (
 	// InvalidCode: value never returned from pango_script_for_unichar()
-	InvalidCode Script = -1
+	ScriptInvalidCode Script = -1
 	// Common: character used by multiple different scripts
-	Common Script = 0
+	ScriptCommon Script = 0
 	// Inherited: mark glyph that takes its script from the base glyph to which
 	// it is attached
-	Inherited Script = 1
+	ScriptInherited Script = 1
 	// Arabic: arabic
-	Arabic Script = 2
+	ScriptArabic Script = 2
 	// Armenian: armenian
-	Armenian Script = 3
+	ScriptArmenian Script = 3
 	// Bengali: bengali
-	Bengali Script = 4
+	ScriptBengali Script = 4
 	// Bopomofo: bopomofo
-	Bopomofo Script = 5
+	ScriptBopomofo Script = 5
 	// Cherokee: cherokee
-	Cherokee Script = 6
+	ScriptCherokee Script = 6
 	// Coptic: coptic
-	Coptic Script = 7
+	ScriptCoptic Script = 7
 	// Cyrillic: cyrillic
-	Cyrillic Script = 8
+	ScriptCyrillic Script = 8
 	// Deseret: deseret
-	Deseret Script = 9
+	ScriptDeseret Script = 9
 	// Devanagari: devanagari
-	Devanagari Script = 10
+	ScriptDevanagari Script = 10
 	// Ethiopic: ethiopic
-	Ethiopic Script = 11
+	ScriptEthiopic Script = 11
 	// Georgian: georgian
-	Georgian Script = 12
+	ScriptGeorgian Script = 12
 	// Gothic: gothic
-	Gothic Script = 13
+	ScriptGothic Script = 13
 	// Greek: greek
-	Greek Script = 14
+	ScriptGreek Script = 14
 	// Gujarati: gujarati
-	Gujarati Script = 15
+	ScriptGujarati Script = 15
 	// Gurmukhi: gurmukhi
-	Gurmukhi Script = 16
+	ScriptGurmukhi Script = 16
 	// Han: han
-	Han Script = 17
+	ScriptHan Script = 17
 	// Hangul: hangul
-	Hangul Script = 18
+	ScriptHangul Script = 18
 	// Hebrew: hebrew
-	Hebrew Script = 19
+	ScriptHebrew Script = 19
 	// Hiragana: hiragana
-	Hiragana Script = 20
+	ScriptHiragana Script = 20
 	// Kannada: kannada
-	Kannada Script = 21
+	ScriptKannada Script = 21
 	// Katakana: katakana
-	Katakana Script = 22
+	ScriptKatakana Script = 22
 	// Khmer: khmer
-	Khmer Script = 23
+	ScriptKhmer Script = 23
 	// Lao: lao
-	Lao Script = 24
+	ScriptLao Script = 24
 	// Latin: latin
-	Latin Script = 25
+	ScriptLatin Script = 25
 	// Malayalam: malayalam
-	Malayalam Script = 26
+	ScriptMalayalam Script = 26
 	// Mongolian: mongolian
-	Mongolian Script = 27
+	ScriptMongolian Script = 27
 	// Myanmar: myanmar
-	Myanmar Script = 28
+	ScriptMyanmar Script = 28
 	// Ogham: ogham
-	Ogham Script = 29
+	ScriptOgham Script = 29
 	// OldItalic: old Italic
-	OldItalic Script = 30
+	ScriptOldItalic Script = 30
 	// Oriya: oriya
-	Oriya Script = 31
+	ScriptOriya Script = 31
 	// Runic: runic
-	Runic Script = 32
+	ScriptRunic Script = 32
 	// Sinhala: sinhala
-	Sinhala Script = 33
+	ScriptSinhala Script = 33
 	// Syriac: syriac
-	Syriac Script = 34
+	ScriptSyriac Script = 34
 	// Tamil: tamil
-	Tamil Script = 35
+	ScriptTamil Script = 35
 	// Telugu: telugu
-	Telugu Script = 36
+	ScriptTelugu Script = 36
 	// Thaana: thaana
-	Thaana Script = 37
+	ScriptThaana Script = 37
 	// Thai: thai
-	Thai Script = 38
+	ScriptThai Script = 38
 	// Tibetan: tibetan
-	Tibetan Script = 39
+	ScriptTibetan Script = 39
 	// CanadianAboriginal: canadian Aboriginal
-	CanadianAboriginal Script = 40
+	ScriptCanadianAboriginal Script = 40
 	// Yi: yi
-	Yi Script = 41
+	ScriptYi Script = 41
 	// Tagalog: tagalog
-	Tagalog Script = 42
+	ScriptTagalog Script = 42
 	// Hanunoo: hanunoo
-	Hanunoo Script = 43
+	ScriptHanunoo Script = 43
 	// Buhid: buhid
-	Buhid Script = 44
+	ScriptBuhid Script = 44
 	// Tagbanwa: tagbanwa
-	Tagbanwa Script = 45
+	ScriptTagbanwa Script = 45
 	// Braille: braille
-	Braille Script = 46
+	ScriptBraille Script = 46
 	// Cypriot: cypriot
-	Cypriot Script = 47
+	ScriptCypriot Script = 47
 	// Limbu: limbu
-	Limbu Script = 48
+	ScriptLimbu Script = 48
 	// Osmanya: osmanya
-	Osmanya Script = 49
+	ScriptOsmanya Script = 49
 	// Shavian: shavian
-	Shavian Script = 50
+	ScriptShavian Script = 50
 	// LinearB: linear B
-	LinearB Script = 51
+	ScriptLinearB Script = 51
 	// TaiLe: tai Le
-	TaiLe Script = 52
+	ScriptTaiLe Script = 52
 	// Ugaritic: ugaritic
-	Ugaritic Script = 53
+	ScriptUgaritic Script = 53
 	// NewTaiLue: new Tai Lue. Since 1.10
-	NewTaiLue Script = 54
+	ScriptNewTaiLue Script = 54
 	// Buginese: buginese. Since 1.10
-	Buginese Script = 55
+	ScriptBuginese Script = 55
 	// Glagolitic: glagolitic. Since 1.10
-	Glagolitic Script = 56
+	ScriptGlagolitic Script = 56
 	// Tifinagh: tifinagh. Since 1.10
-	Tifinagh Script = 57
+	ScriptTifinagh Script = 57
 	// SylotiNagri: syloti Nagri. Since 1.10
-	SylotiNagri Script = 58
+	ScriptSylotiNagri Script = 58
 	// OldPersian: old Persian. Since 1.10
-	OldPersian Script = 59
+	ScriptOldPersian Script = 59
 	// Kharoshthi: kharoshthi. Since 1.10
-	Kharoshthi Script = 60
+	ScriptKharoshthi Script = 60
 	// Unknown: unassigned code point. Since 1.14
-	Unknown Script = 61
+	ScriptUnknown Script = 61
 	// Balinese: balinese. Since 1.14
-	Balinese Script = 62
+	ScriptBalinese Script = 62
 	// Cuneiform: cuneiform. Since 1.14
-	Cuneiform Script = 63
+	ScriptCuneiform Script = 63
 	// Phoenician: phoenician. Since 1.14
-	Phoenician Script = 64
+	ScriptPhoenician Script = 64
 	// PhagsPa: phags-pa. Since 1.14
-	PhagsPa Script = 65
+	ScriptPhagsPa Script = 65
 	// Nko: n'Ko. Since 1.14
-	Nko Script = 66
+	ScriptNko Script = 66
 	// KayahLi: kayah Li. Since 1.20.1
-	KayahLi Script = 67
+	ScriptKayahLi Script = 67
 	// Lepcha: lepcha. Since 1.20.1
-	Lepcha Script = 68
+	ScriptLepcha Script = 68
 	// Rejang: rejang. Since 1.20.1
-	Rejang Script = 69
+	ScriptRejang Script = 69
 	// Sundanese: sundanese. Since 1.20.1
-	Sundanese Script = 70
+	ScriptSundanese Script = 70
 	// Saurashtra: saurashtra. Since 1.20.1
-	Saurashtra Script = 71
+	ScriptSaurashtra Script = 71
 	// Cham: cham. Since 1.20.1
-	Cham Script = 72
+	ScriptCham Script = 72
 	// OlChiki: ol Chiki. Since 1.20.1
-	OlChiki Script = 73
+	ScriptOlChiki Script = 73
 	// Vai: vai. Since 1.20.1
-	Vai Script = 74
+	ScriptVai Script = 74
 	// Carian: carian. Since 1.20.1
-	Carian Script = 75
+	ScriptCarian Script = 75
 	// Lycian: lycian. Since 1.20.1
-	Lycian Script = 76
+	ScriptLycian Script = 76
 	// Lydian: lydian. Since 1.20.1
-	Lydian Script = 77
+	ScriptLydian Script = 77
 	// Batak: batak. Since 1.32
-	Batak Script = 78
+	ScriptBatak Script = 78
 	// Brahmi: brahmi. Since 1.32
-	Brahmi Script = 79
+	ScriptBrahmi Script = 79
 	// Mandaic: mandaic. Since 1.32
-	Mandaic Script = 80
+	ScriptMandaic Script = 80
 	// Chakma: chakma. Since: 1.32
-	Chakma Script = 81
+	ScriptChakma Script = 81
 	// MeroiticCursive: meroitic Cursive. Since: 1.32
-	MeroiticCursive Script = 82
+	ScriptMeroiticCursive Script = 82
 	// MeroiticHieroglyphs: meroitic Hieroglyphs. Since: 1.32
-	MeroiticHieroglyphs Script = 83
+	ScriptMeroiticHieroglyphs Script = 83
 	// Miao: miao. Since: 1.32
-	Miao Script = 84
+	ScriptMiao Script = 84
 	// Sharada: sharada. Since: 1.32
-	Sharada Script = 85
+	ScriptSharada Script = 85
 	// SoraSompeng: sora Sompeng. Since: 1.32
-	SoraSompeng Script = 86
+	ScriptSoraSompeng Script = 86
 	// Takri: takri. Since: 1.32
-	Takri Script = 87
+	ScriptTakri Script = 87
 	// BassaVah: bassa. Since: 1.40
-	BassaVah Script = 88
+	ScriptBassaVah Script = 88
 	// CaucasianAlbanian: caucasian Albanian. Since: 1.40
-	CaucasianAlbanian Script = 89
+	ScriptCaucasianAlbanian Script = 89
 	// Duployan: duployan. Since: 1.40
-	Duployan Script = 90
+	ScriptDuployan Script = 90
 	// Elbasan: elbasan. Since: 1.40
-	Elbasan Script = 91
+	ScriptElbasan Script = 91
 	// Grantha: grantha. Since: 1.40
-	Grantha Script = 92
+	ScriptGrantha Script = 92
 	// Khojki: kjohki. Since: 1.40
-	Khojki Script = 93
+	ScriptKhojki Script = 93
 	// Khudawadi: khudawadi, Sindhi. Since: 1.40
-	Khudawadi Script = 94
+	ScriptKhudawadi Script = 94
 	// LinearA: linear A. Since: 1.40
-	LinearA Script = 95
+	ScriptLinearA Script = 95
 	// Mahajani: mahajani. Since: 1.40
-	Mahajani Script = 96
+	ScriptMahajani Script = 96
 	// Manichaean: manichaean. Since: 1.40
-	Manichaean Script = 97
+	ScriptManichaean Script = 97
 	// MendeKikakui: mende Kikakui. Since: 1.40
-	MendeKikakui Script = 98
+	ScriptMendeKikakui Script = 98
 	// Modi: modi. Since: 1.40
-	Modi Script = 99
+	ScriptModi Script = 99
 	// Mro: mro. Since: 1.40
-	Mro Script = 100
+	ScriptMro Script = 100
 	// Nabataean: nabataean. Since: 1.40
-	Nabataean Script = 101
+	ScriptNabataean Script = 101
 	// OldNorthArabian: old North Arabian. Since: 1.40
-	OldNorthArabian Script = 102
+	ScriptOldNorthArabian Script = 102
 	// OldPermic: old Permic. Since: 1.40
-	OldPermic Script = 103
+	ScriptOldPermic Script = 103
 	// PahawhHmong: pahawh Hmong. Since: 1.40
-	PahawhHmong Script = 104
+	ScriptPahawhHmong Script = 104
 	// Palmyrene: palmyrene. Since: 1.40
-	Palmyrene Script = 105
+	ScriptPalmyrene Script = 105
 	// PauCinHau: pau Cin Hau. Since: 1.40
-	PauCinHau Script = 106
+	ScriptPauCinHau Script = 106
 	// PsalterPahlavi: psalter Pahlavi. Since: 1.40
-	PsalterPahlavi Script = 107
+	ScriptPsalterPahlavi Script = 107
 	// Siddham: siddham. Since: 1.40
-	Siddham Script = 108
+	ScriptSiddham Script = 108
 	// Tirhuta: tirhuta. Since: 1.40
-	Tirhuta Script = 109
+	ScriptTirhuta Script = 109
 	// WarangCiti: warang Citi. Since: 1.40
-	WarangCiti Script = 110
+	ScriptWarangCiti Script = 110
 	// Ahom: ahom. Since: 1.40
-	Ahom Script = 111
+	ScriptAhom Script = 111
 	// AnatolianHieroglyphs: anatolian Hieroglyphs. Since: 1.40
-	AnatolianHieroglyphs Script = 112
+	ScriptAnatolianHieroglyphs Script = 112
 	// Hatran: hatran. Since: 1.40
-	Hatran Script = 113
+	ScriptHatran Script = 113
 	// Multani: multani. Since: 1.40
-	Multani Script = 114
+	ScriptMultani Script = 114
 	// OldHungarian: old Hungarian. Since: 1.40
-	OldHungarian Script = 115
+	ScriptOldHungarian Script = 115
 	// Signwriting: signwriting. Since: 1.40
-	Signwriting Script = 116
+	ScriptSignwriting Script = 116
 )
 
 func marshalScript(p uintptr) (interface{}, error) {

@@ -36,14 +36,14 @@ type PrintError int
 
 const (
 	// General: unspecified error occurred.
-	General PrintError = iota
+	PrintErrorGeneral PrintError = iota
 	// InternalError: internal error occurred.
-	InternalError
+	PrintErrorInternalError
 	// NOMEM: memory allocation failed.
-	NOMEM
+	PrintErrorNOMEM
 	// InvalidFile: error occurred while loading a page setup or paper size from
 	// a key file.
-	InvalidFile
+	PrintErrorInvalidFile
 )
 
 func marshalPrintError(p uintptr) (interface{}, error) {
@@ -58,15 +58,15 @@ type PrintOperationAction int
 
 const (
 	// PrintDialog: show the print dialog.
-	PrintDialog PrintOperationAction = iota
+	PrintOperationActionPrintDialog PrintOperationAction = iota
 	// Print: start to print without showing the print dialog, based on the
 	// current print settings.
-	Print
+	PrintOperationActionPrint
 	// Preview: show the print preview.
-	Preview
+	PrintOperationActionPreview
 	// Export: export to a file. This requires the export-filename property to
 	// be set.
-	Export
+	PrintOperationActionExport
 )
 
 func marshalPrintOperationAction(p uintptr) (interface{}, error) {
@@ -80,15 +80,15 @@ type PrintOperationResult int
 
 const (
 	// Error has occurred.
-	Error PrintOperationResult = iota
+	PrintOperationResultError PrintOperationResult = iota
 	// Apply: the print settings should be stored.
-	Apply
+	PrintOperationResultApply
 	// Cancel: the print operation has been canceled, the print settings should
 	// not be stored.
-	Cancel
+	PrintOperationResultCancel
 	// InProgress: the print operation is not complete yet. This value will only
 	// be returned when running asynchronously.
-	InProgress
+	PrintOperationResultInProgress
 )
 
 func marshalPrintOperationResult(p uintptr) (interface{}, error) {
@@ -102,26 +102,26 @@ type PrintStatus int
 const (
 	// Initial: the printing has not started yet; this status is set initially,
 	// and while the print dialog is shown.
-	Initial PrintStatus = iota
+	PrintStatusInitial PrintStatus = iota
 	// Preparing: this status is set while the begin-print signal is emitted and
 	// during pagination.
-	Preparing
+	PrintStatusPreparing
 	// GeneratingData: this status is set while the pages are being rendered.
-	GeneratingData
+	PrintStatusGeneratingData
 	// SendingData: the print job is being sent off to the printer.
-	SendingData
+	PrintStatusSendingData
 	// Pending: the print job has been sent to the printer, but is not printed
 	// for some reason, e.g. the printer may be stopped.
-	Pending
+	PrintStatusPending
 	// PendingIssue: some problem has occurred during printing, e.g. a paper
 	// jam.
-	PendingIssue
+	PrintStatusPendingIssue
 	// Printing: the printer is processing the print job.
-	Printing
+	PrintStatusPrinting
 	// Finished: the printing has been completed successfully.
-	Finished
+	PrintStatusFinished
 	// FinishedAborted: the printing has been aborted.
-	FinishedAborted
+	PrintStatusFinishedAborted
 )
 
 func marshalPrintStatus(p uintptr) (interface{}, error) {

@@ -449,3 +449,77 @@ func WrapRecentFilterInfo(ptr unsafe.Pointer) *RecentFilterInfo {
 func (r *RecentFilterInfo) Native() unsafe.Pointer {
 	return unsafe.Pointer(&r.native)
 }
+
+// Contains to indicate which fields are set.
+func (r *RecentFilterInfo) Contains() RecentFilterFlags {
+	var v RecentFilterFlags // out
+	v = RecentFilterFlags(r.contains)
+	return v
+}
+
+// URI: the URI of the file being tested.
+func (r *RecentFilterInfo) URI() string {
+	var v string // out
+	v = C.GoString(r.uri)
+	return v
+}
+
+// DisplayName: the string that will be used to display the file in the recent
+// chooser.
+func (r *RecentFilterInfo) DisplayName() string {
+	var v string // out
+	v = C.GoString(r.display_name)
+	return v
+}
+
+// MIMEType: MIME type of the file.
+func (r *RecentFilterInfo) MIMEType() string {
+	var v string // out
+	v = C.GoString(r.mime_type)
+	return v
+}
+
+// Applications: the list of applications that have registered the file.
+func (r *RecentFilterInfo) Applications() []string {
+	var v []string
+	{
+		var i int
+		var z *C.gchar
+		for p := r.applications; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+			i++
+		}
+
+		src := unsafe.Slice(r.applications, i)
+		v = make([]string, i)
+		for i := range src {
+			v[i] = C.GoString(src[i])
+		}
+	}
+	return v
+}
+
+// Groups: the groups to which the file belongs to.
+func (r *RecentFilterInfo) Groups() []string {
+	var v []string
+	{
+		var i int
+		var z *C.gchar
+		for p := r.groups; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+			i++
+		}
+
+		src := unsafe.Slice(r.groups, i)
+		v = make([]string, i)
+		for i := range src {
+			v[i] = C.GoString(src[i])
+		}
+	}
+	return v
+}
+
+// Age: the number of days elapsed since the file has been registered.
+func (r *RecentFilterInfo) Age() int {
+	var v int // out
+	v = int(r.age)
+	return v
+}

@@ -41,11 +41,11 @@ type ButtonRole int
 
 const (
 	// Normal: plain button
-	Normal ButtonRole = iota
+	ButtonRoleNormal ButtonRole = iota
 	// Check button
-	Check
+	ButtonRoleCheck
 	// Radio button
-	Radio
+	ButtonRoleRadio
 )
 
 func marshalButtonRole(p uintptr) (interface{}, error) {

@@ -4255,6 +4255,48 @@ func (t *TableChild) Native() unsafe.Pointer {
 	return unsafe.Pointer(&t.native)
 }
 
+func (t *TableChild) Widget() Widget {
+	var v Widget // out
+	v = gextras.CastObject(externglib.Take(unsafe.Pointer(t.widget))).(Widget)
+	return v
+}
+
+func (t *TableChild) LeftAttach() uint16 {
+	var v uint16 // out
+	v = uint16(t.left_attach)
+	return v
+}
+
+func (t *TableChild) RightAttach() uint16 {
+	var v uint16 // out
+	v = uint16(t.right_attach)
+	return v
+}
+
+func (t *TableChild) TopAttach() uint16 {
+	var v uint16 // out
+	v = uint16(t.top_attach)
+	return v
+}
+
+func (t *TableChild) BottomAttach() uint16 {
+	var v uint16 // out
+	v = uint16(t.bottom_attach)
+	return v
+}
+
+func (t *TableChild) Xpadding() uint16 {
+	var v uint16 // out
+	v = uint16(t.xpadding)
+	return v
+}
+
+func (t *TableChild) Ypadding() uint16 {
+	var v uint16 // out
+	v = uint16(t.ypadding)
+	return v
+}
+
 type TableRowCol struct {
 	native C.GtkTableRowCol
 }
@@ -4268,4 +4310,22 @@ func WrapTableRowCol(ptr unsafe.Pointer) *TableRowCol {
 // Native returns the underlying C source pointer.
 func (t *TableRowCol) Native() unsafe.Pointer {
 	return unsafe.Pointer(&t.native)
+}
+
+func (t *TableRowCol) Requisition() uint16 {
+	var v uint16 // out
+	v = uint16(t.requisition)
+	return v
+}
+
+func (t *TableRowCol) Allocation() uint16 {
+	var v uint16 // out
+	v = uint16(t.allocation)
+	return v
+}
+
+func (t *TableRowCol) Spacing() uint16 {
+	var v uint16 // out
+	v = uint16(t.spacing)
+	return v
 }

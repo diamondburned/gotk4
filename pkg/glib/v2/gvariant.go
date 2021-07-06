@@ -29,41 +29,41 @@ type VariantClass int
 
 const (
 	// Boolean: the #GVariant is a boolean.
-	Boolean VariantClass = 98
+	VariantClassBoolean VariantClass = 98
 	// Byte: the #GVariant is a byte.
-	Byte VariantClass = 121
+	VariantClassByte VariantClass = 121
 	// Int16: the #GVariant is a signed 16 bit integer.
-	Int16 VariantClass = 110
+	VariantClassInt16 VariantClass = 110
 	// Uint16: the #GVariant is an unsigned 16 bit integer.
-	Uint16 VariantClass = 113
+	VariantClassUint16 VariantClass = 113
 	// Int32: the #GVariant is a signed 32 bit integer.
-	Int32 VariantClass = 105
+	VariantClassInt32 VariantClass = 105
 	// Uint32: the #GVariant is an unsigned 32 bit integer.
-	Uint32 VariantClass = 117
+	VariantClassUint32 VariantClass = 117
 	// Int64: the #GVariant is a signed 64 bit integer.
-	Int64 VariantClass = 120
+	VariantClassInt64 VariantClass = 120
 	// Uint64: the #GVariant is an unsigned 64 bit integer.
-	Uint64 VariantClass = 116
+	VariantClassUint64 VariantClass = 116
 	// Handle: the #GVariant is a file handle index.
-	Handle VariantClass = 104
+	VariantClassHandle VariantClass = 104
 	// Double: the #GVariant is a double precision floating point value.
-	Double VariantClass = 100
+	VariantClassDouble VariantClass = 100
 	// String: the #GVariant is a normal string.
-	String VariantClass = 115
+	VariantClassString VariantClass = 115
 	// ObjectPath: the #GVariant is a D-Bus object path string.
-	ObjectPath VariantClass = 111
+	VariantClassObjectPath VariantClass = 111
 	// Signature: the #GVariant is a D-Bus signature string.
-	Signature VariantClass = 103
+	VariantClassSignature VariantClass = 103
 	// Variant: the #GVariant is a variant.
-	Variant VariantClass = 118
+	VariantClassVariant VariantClass = 118
 	// Maybe: the #GVariant is a maybe-typed value.
-	Maybe VariantClass = 109
+	VariantClassMaybe VariantClass = 109
 	// Array: the #GVariant is an array.
-	Array VariantClass = 97
+	VariantClassArray VariantClass = 97
 	// Tuple: the #GVariant is a tuple.
-	Tuple VariantClass = 40
+	VariantClassTuple VariantClass = 40
 	// DictEntry: the #GVariant is a dictionary entry.
-	DictEntry VariantClass = 123
+	VariantClassDictEntry VariantClass = 123
 )
 
 // VariantParseError: error codes returned by parsing text-format GVariants.
@@ -71,46 +71,46 @@ type VariantParseError int
 
 const (
 	// Failed: generic error (unused)
-	Failed VariantParseError = iota
+	VariantParseErrorFailed VariantParseError = iota
 	// BasicTypeExpected: non-basic Type was given where a basic type was
 	// expected
-	BasicTypeExpected
+	VariantParseErrorBasicTypeExpected
 	// CannotInferType: cannot infer the Type
-	CannotInferType
+	VariantParseErrorCannotInferType
 	// DefiniteTypeExpected: indefinite Type was given where a definite type was
 	// expected
-	DefiniteTypeExpected
+	VariantParseErrorDefiniteTypeExpected
 	// InputNotAtEnd: extra data after parsing finished
-	InputNotAtEnd
+	VariantParseErrorInputNotAtEnd
 	// InvalidCharacter: invalid character in number or unicode escape
-	InvalidCharacter
+	VariantParseErrorInvalidCharacter
 	// InvalidFormatString: not a valid #GVariant format string
-	InvalidFormatString
+	VariantParseErrorInvalidFormatString
 	// InvalidObjectPath: not a valid object path
-	InvalidObjectPath
+	VariantParseErrorInvalidObjectPath
 	// InvalidSignature: not a valid type signature
-	InvalidSignature
+	VariantParseErrorInvalidSignature
 	// InvalidTypeString: not a valid #GVariant type string
-	InvalidTypeString
+	VariantParseErrorInvalidTypeString
 	// NoCommonType: could not find a common type for array entries
-	NoCommonType
+	VariantParseErrorNoCommonType
 	// NumberOutOfRange: the numerical value is out of range of the given type
-	NumberOutOfRange
+	VariantParseErrorNumberOutOfRange
 	// NumberTooBig: the numerical value is out of range for any type
-	NumberTooBig
+	VariantParseErrorNumberTooBig
 	// TypeError: cannot parse as variant of the specified type
-	TypeError
+	VariantParseErrorTypeError
 	// UnexpectedToken: unexpected token was encountered
-	UnexpectedToken
+	VariantParseErrorUnexpectedToken
 	// UnknownKeyword: unknown keyword was encountered
-	UnknownKeyword
+	VariantParseErrorUnknownKeyword
 	// UnterminatedStringConstant: unterminated string constant
-	UnterminatedStringConstant
+	VariantParseErrorUnterminatedStringConstant
 	// ValueExpected: no value given
-	ValueExpected
+	VariantParseErrorValueExpected
 	// Recursion: variant was too deeply nested; #GVariant is only guaranteed to
 	// handle nesting up to 64 levels (Since: 2.64)
-	Recursion
+	VariantParseErrorRecursion
 )
 
 // Variant is a variant datatype; it can contain one or more values along with

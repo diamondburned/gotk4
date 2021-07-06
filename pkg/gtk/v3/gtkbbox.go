@@ -42,22 +42,22 @@ type ButtonBoxStyle int
 
 const (
 	// Spread buttons are evenly spread across the box.
-	Spread ButtonBoxStyle = 1
+	ButtonboxSpread ButtonBoxStyle = 1
 	// Edge buttons are placed at the edges of the box.
-	Edge ButtonBoxStyle = 2
+	ButtonboxEdge ButtonBoxStyle = 2
 	// Start buttons are grouped towards the start of the box, (on the left for
 	// a HBox, or the top for a VBox).
-	Start ButtonBoxStyle = 3
+	ButtonboxStart ButtonBoxStyle = 3
 	// End buttons are grouped towards the end of the box, (on the right for a
 	// HBox, or the bottom for a VBox).
-	End ButtonBoxStyle = 4
+	ButtonboxEnd ButtonBoxStyle = 4
 	// Center buttons are centered in the box. Since 2.12.
-	Center ButtonBoxStyle = 5
+	ButtonboxCenter ButtonBoxStyle = 5
 	// Expand buttons expand to fill the box. This entails giving buttons a
 	// "linked" appearance, making button sizes homogeneous, and setting spacing
 	// to 0 (same as calling gtk_box_set_homogeneous() and gtk_box_set_spacing()
 	// manually). Since 3.12.
-	Expand ButtonBoxStyle = 6
+	ButtonboxExpand ButtonBoxStyle = 6
 )
 
 func marshalButtonBoxStyle(p uintptr) (interface{}, error) {

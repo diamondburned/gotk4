@@ -45,10 +45,10 @@ type TextExtendSelection int
 const (
 	// Word selects the current word. It is triggered by a double-click for
 	// example.
-	Word TextExtendSelection = iota
+	TextExtendSelectionWord TextExtendSelection = iota
 	// Line selects the current line. It is triggered by a triple-click for
 	// example.
-	Line
+	TextExtendSelectionLine
 )
 
 func marshalTextExtendSelection(p uintptr) (interface{}, error) {
@@ -61,14 +61,14 @@ type TextViewLayer int
 
 const (
 	// Below: old deprecated layer, use GTK_TEXT_VIEW_LAYER_BELOW_TEXT instead
-	Below TextViewLayer = iota
+	TextViewLayerBelow TextViewLayer = iota
 	// Above: old deprecated layer, use GTK_TEXT_VIEW_LAYER_ABOVE_TEXT instead
-	Above
+	TextViewLayerAbove
 	// BelowText: the layer rendered below the text (but above the background).
 	// Since: 3.20
-	BelowText
+	TextViewLayerBelowText
 	// AboveText: the layer rendered above the text. Since: 3.20
-	AboveText
+	TextViewLayerAboveText
 )
 
 func marshalTextViewLayer(p uintptr) (interface{}, error) {
@@ -80,19 +80,19 @@ type TextWindowType int
 
 const (
 	// Private: invalid value, used as a marker
-	Private TextWindowType = iota
+	TextWindowPrivate TextWindowType = iota
 	// Widget: window that floats over scrolling areas.
-	Widget
+	TextWindowWidget
 	// Text: scrollable text window.
-	Text
+	TextWindowText
 	// Left: left side border window.
-	Left
+	TextWindowLeft
 	// Right: right side border window.
-	Right
+	TextWindowRight
 	// Top: top border window.
-	Top
+	TextWindowTop
 	// Bottom: bottom border window.
-	Bottom
+	TextWindowBottom
 )
 
 func marshalTextWindowType(p uintptr) (interface{}, error) {

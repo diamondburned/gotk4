@@ -33,12 +33,12 @@ type DeviceType int
 const (
 	// Master: device is a master (or virtual) device. There will be an
 	// associated focus indicator on the screen.
-	Master DeviceType = iota
+	DeviceTypeMaster DeviceType = iota
 	// Slave: device is a slave (or physical) device.
-	Slave
+	DeviceTypeSlave
 	// Floating: device is a physical device, currently not attached to any
 	// virtual device.
-	Floating
+	DeviceTypeFloating
 )
 
 func marshalDeviceType(p uintptr) (interface{}, error) {
@@ -50,15 +50,15 @@ type InputMode int
 
 const (
 	// Disabled: the device is disabled and will not report any events.
-	Disabled InputMode = iota
+	ModeDisabled InputMode = iota
 	// Screen: the device is enabled. The device’s coordinate space maps to the
 	// entire screen.
-	Screen
+	ModeScreen
 	// Window: the device is enabled. The device’s coordinate space is mapped to
 	// a single window. The manner in which this window is chosen is undefined,
 	// but it will typically be the same way in which the focus window for key
 	// events is determined.
-	Window
+	ModeWindow
 )
 
 func marshalInputMode(p uintptr) (interface{}, error) {
@@ -72,28 +72,28 @@ type InputSource int
 const (
 	// Mouse: the device is a mouse. (This will be reported for the core
 	// pointer, even if it is something else, such as a trackball.)
-	Mouse InputSource = iota
+	SourceMouse InputSource = iota
 	// Pen: the device is a stylus of a graphics tablet or similar device.
-	Pen
+	SourcePen
 	// Eraser: the device is an eraser. Typically, this would be the other end
 	// of a stylus on a graphics tablet.
-	Eraser
+	SourceEraser
 	// Cursor: the device is a graphics tablet “puck” or similar device.
-	Cursor
+	SourceCursor
 	// Keyboard: the device is a keyboard.
-	Keyboard
+	SourceKeyboard
 	// Touchscreen: the device is a direct-input touch device, such as a
 	// touchscreen or tablet. This device type has been added in 3.4.
-	Touchscreen
+	SourceTouchscreen
 	// Touchpad: the device is an indirect touch device, such as a touchpad.
 	// This device type has been added in 3.4.
-	Touchpad
+	SourceTouchpad
 	// Trackpoint: the device is a trackpoint. This device type has been added
 	// in 3.22
-	Trackpoint
+	SourceTrackpoint
 	// TabletPad: the device is a "pad", a collection of buttons, rings and
 	// strips found in drawing tablets. This device type has been added in 3.22.
-	TabletPad
+	SourceTabletPad
 )
 
 func marshalInputSource(p uintptr) (interface{}, error) {
@@ -730,4 +730,18 @@ func WrapTimeCoord(ptr unsafe.Pointer) *TimeCoord {
 // Native returns the underlying C source pointer.
 func (t *TimeCoord) Native() unsafe.Pointer {
 	return unsafe.Pointer(&t.native)
+}
+
+// Time: the timestamp for this event.
+func (t *TimeCoord) Time() uint32 {
+	var v uint32 // out
+	v = uint32(t.time)
+	return v
+}
+
+// Axes: the values of the device’s axes.
+func (t *TimeCoord) Axes() [128]float64 {
+	var v [128]float64
+	v = *(*[128]float64)(unsafe.Pointer(&t.axes))
+	return v
 }

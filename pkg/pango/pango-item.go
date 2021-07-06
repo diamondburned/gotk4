@@ -62,6 +62,27 @@ func (i *Item) Native() unsafe.Pointer {
 	return unsafe.Pointer(&i.native)
 }
 
+// Offset: byte offset of the start of this item in text.
+func (i *Item) Offset() int {
+	var v int // out
+	v = int(i.offset)
+	return v
+}
+
+// Length: length of this item in bytes.
+func (i *Item) Length() int {
+	var v int // out
+	v = int(i.length)
+	return v
+}
+
+// NumChars: number of Unicode characters in the item.
+func (i *Item) NumChars() int {
+	var v int // out
+	v = int(i.num_chars)
+	return v
+}
+
 // ApplyAttrs: add attributes to a `PangoItem`.
 //
 // The idea is that you have attributes that don't affect itemization, such as

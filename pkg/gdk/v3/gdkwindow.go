@@ -44,9 +44,9 @@ type FullscreenMode int
 
 const (
 	// CurrentMonitor: fullscreen on current monitor only.
-	CurrentMonitor FullscreenMode = iota
+	FullscreenOnCurrentMonitor FullscreenMode = iota
 	// AllMonitors: span across all monitors when fullscreen.
-	AllMonitors
+	FullscreenOnAllMonitors
 )
 
 func marshalFullscreenMode(p uintptr) (interface{}, error) {
@@ -62,26 +62,26 @@ type Gravity int
 
 const (
 	// NorthWest: the reference point is at the top left corner.
-	NorthWest Gravity = 1
+	GravityNorthWest Gravity = 1
 	// North: the reference point is in the middle of the top edge.
-	North Gravity = 2
+	GravityNorth Gravity = 2
 	// NorthEast: the reference point is at the top right corner.
-	NorthEast Gravity = 3
+	GravityNorthEast Gravity = 3
 	// West: the reference point is at the middle of the left edge.
-	West Gravity = 4
+	GravityWest Gravity = 4
 	// Center: the reference point is at the center of the window.
-	Center Gravity = 5
+	GravityCenter Gravity = 5
 	// East: the reference point is at the middle of the right edge.
-	East Gravity = 6
+	GravityEast Gravity = 6
 	// SouthWest: the reference point is at the lower left corner.
-	SouthWest Gravity = 7
+	GravitySouthWest Gravity = 7
 	// South: the reference point is at the middle of the lower edge.
-	South Gravity = 8
+	GravitySouth Gravity = 8
 	// SouthEast: the reference point is at the lower right corner.
-	SouthEast Gravity = 9
+	GravitySouthEast Gravity = 9
 	// Static: the reference point is at the top left corner of the window
 	// itself, ignoring window manager decorations.
-	Static Gravity = 10
+	GravityStatic Gravity = 10
 )
 
 func marshalGravity(p uintptr) (interface{}, error) {
@@ -93,21 +93,21 @@ type WindowEdge int
 
 const (
 	// NorthWest: the top left corner.
-	NorthWest WindowEdge = iota
+	WindowEdgeNorthWest WindowEdge = iota
 	// North: the top edge.
-	North
+	WindowEdgeNorth
 	// NorthEast: the top right corner.
-	NorthEast
+	WindowEdgeNorthEast
 	// West: the left edge.
-	West
+	WindowEdgeWest
 	// East: the right edge.
-	East
+	WindowEdgeEast
 	// SouthWest: the lower left corner.
-	SouthWest
+	WindowEdgeSouthWest
 	// South: the lower edge.
-	South
+	WindowEdgeSouth
 	// SouthEast: the lower right corner.
-	SouthEast
+	WindowEdgeSouthEast
 )
 
 func marshalWindowEdge(p uintptr) (interface{}, error) {
@@ -120,21 +120,21 @@ type WindowType int
 const (
 	// Root window; this window has no parent, covers the entire screen, and is
 	// created by the window system
-	Root WindowType = iota
+	WindowRoot WindowType = iota
 	// Toplevel window (used to implement Window)
-	Toplevel
+	WindowToplevel
 	// Child window (used to implement e.g. Entry)
-	Child
+	WindowChild
 	// Temp: override redirect temporary window (used to implement Menu)
-	Temp
+	WindowTemp
 	// Foreign window (see gdk_window_foreign_new())
-	Foreign
+	WindowForeign
 	// Offscreen window (see [Offscreen Windows][OFFSCREEN-WINDOWS]). Since 2.18
-	Offscreen
+	WindowOffscreen
 	// Subsurface: subsurface-based window; This window is visually tied to a
 	// toplevel, and is moved/stacked with it. Currently this window type is
 	// only implemented in Wayland. Since 3.14
-	Subsurface
+	WindowSubsurface
 )
 
 func marshalWindowType(p uintptr) (interface{}, error) {
@@ -3727,6 +3727,89 @@ func (g *Geometry) Native() unsafe.Pointer {
 	return unsafe.Pointer(&g.native)
 }
 
+// MinWidth: minimum width of window (or -1 to use requisition, with Window
+// only)
+func (g *Geometry) MinWidth() int {
+	var v int // out
+	v = int(g.min_width)
+	return v
+}
+
+// MinHeight: minimum height of window (or -1 to use requisition, with Window
+// only)
+func (g *Geometry) MinHeight() int {
+	var v int // out
+	v = int(g.min_height)
+	return v
+}
+
+// MaxWidth: maximum width of window (or -1 to use requisition, with Window
+// only)
+func (g *Geometry) MaxWidth() int {
+	var v int // out
+	v = int(g.max_width)
+	return v
+}
+
+// MaxHeight: maximum height of window (or -1 to use requisition, with Window
+// only)
+func (g *Geometry) MaxHeight() int {
+	var v int // out
+	v = int(g.max_height)
+	return v
+}
+
+// BaseWidth: allowed window widths are @base_width + @width_inc * N where N is
+// any integer (-1 allowed with Window)
+func (g *Geometry) BaseWidth() int {
+	var v int // out
+	v = int(g.base_width)
+	return v
+}
+
+// BaseHeight: allowed window widths are @base_height + @height_inc * N where N
+// is any integer (-1 allowed with Window)
+func (g *Geometry) BaseHeight() int {
+	var v int // out
+	v = int(g.base_height)
+	return v
+}
+
+// WidthInc: width resize increment
+func (g *Geometry) WidthInc() int {
+	var v int // out
+	v = int(g.width_inc)
+	return v
+}
+
+// HeightInc: height resize increment
+func (g *Geometry) HeightInc() int {
+	var v int // out
+	v = int(g.height_inc)
+	return v
+}
+
+// MinAspect: minimum width/height ratio
+func (g *Geometry) MinAspect() float64 {
+	var v float64 // out
+	v = float64(g.min_aspect)
+	return v
+}
+
+// MaxAspect: maximum width/height ratio
+func (g *Geometry) MaxAspect() float64 {
+	var v float64 // out
+	v = float64(g.max_aspect)
+	return v
+}
+
+// WinGravity: window gravity, see gtk_window_set_gravity()
+func (g *Geometry) WinGravity() Gravity {
+	var v Gravity // out
+	v = Gravity(g.win_gravity)
+	return v
+}
+
 // WindowAttr attributes to use for a newly-created window.
 type WindowAttr struct {
 	native C.GdkWindowAttr
@@ -3741,4 +3824,105 @@ func WrapWindowAttr(ptr unsafe.Pointer) *WindowAttr {
 // Native returns the underlying C source pointer.
 func (w *WindowAttr) Native() unsafe.Pointer {
 	return unsafe.Pointer(&w.native)
+}
+
+// Title: title of the window (for toplevel windows)
+func (w *WindowAttr) Title() string {
+	var v string // out
+	v = C.GoString(w.title)
+	return v
+}
+
+// EventMask: event mask (see gdk_window_set_events())
+func (w *WindowAttr) EventMask() int {
+	var v int // out
+	v = int(w.event_mask)
+	return v
+}
+
+// X coordinate relative to parent window (see gdk_window_move())
+func (w *WindowAttr) X() int {
+	var v int // out
+	v = int(w.x)
+	return v
+}
+
+// Y coordinate relative to parent window (see gdk_window_move())
+func (w *WindowAttr) Y() int {
+	var v int // out
+	v = int(w.y)
+	return v
+}
+
+// Width: width of window
+func (w *WindowAttr) Width() int {
+	var v int // out
+	v = int(w.width)
+	return v
+}
+
+// Height: height of window
+func (w *WindowAttr) Height() int {
+	var v int // out
+	v = int(w.height)
+	return v
+}
+
+// Wclass (normal window) or K_INPUT_ONLY (invisible window that receives
+// events)
+func (w *WindowAttr) Wclass() WindowWindowClass {
+	var v WindowWindowClass // out
+	v = WindowWindowClass(w.wclass)
+	return v
+}
+
+// Visual for window
+func (w *WindowAttr) Visual() Visual {
+	var v Visual // out
+	v = gextras.CastObject(externglib.Take(unsafe.Pointer(w.visual))).(Visual)
+	return v
+}
+
+// WindowType: type of window
+func (w *WindowAttr) WindowType() WindowType {
+	var v WindowType // out
+	v = WindowType(w.window_type)
+	return v
+}
+
+// Cursor: cursor for the window (see gdk_window_set_cursor())
+func (w *WindowAttr) Cursor() Cursor {
+	var v Cursor // out
+	v = gextras.CastObject(externglib.Take(unsafe.Pointer(w.cursor))).(Cursor)
+	return v
+}
+
+// WmclassName: don’t use (see gtk_window_set_wmclass())
+func (w *WindowAttr) WmclassName() string {
+	var v string // out
+	v = C.GoString(w.wmclass_name)
+	return v
+}
+
+// WmclassClass: don’t use (see gtk_window_set_wmclass())
+func (w *WindowAttr) WmclassClass() string {
+	var v string // out
+	v = C.GoString(w.wmclass_class)
+	return v
+}
+
+// OverrideRedirect: true to bypass the window manager
+func (w *WindowAttr) OverrideRedirect() bool {
+	var v bool // out
+	if w.override_redirect != 0 {
+		v = true
+	}
+	return v
+}
+
+// TypeHint: hint of the function of the window
+func (w *WindowAttr) TypeHint() WindowTypeHint {
+	var v WindowTypeHint // out
+	v = WindowTypeHint(w.type_hint)
+	return v
 }

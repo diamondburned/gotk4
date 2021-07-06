@@ -215,3 +215,29 @@ func WrapActionEntry(ptr unsafe.Pointer) *ActionEntry {
 func (a *ActionEntry) Native() unsafe.Pointer {
 	return unsafe.Pointer(&a.native)
 }
+
+// Name: the name of the action
+func (a *ActionEntry) Name() string {
+	var v string // out
+	v = C.GoString(a.name)
+	return v
+}
+
+// ParameterType: the type of the parameter that must be passed to the activate
+// function for this action, given as a single GVariant type string (or nil for
+// no parameter)
+func (a *ActionEntry) ParameterType() string {
+	var v string // out
+	v = C.GoString(a.parameter_type)
+	return v
+}
+
+// State: the initial state for this action, given in [GVariant text
+// format][gvariant-text]. The state is parsed with no extra type information,
+// so type tags must be added to the string if they are necessary. Stateless
+// actions should give nil here.
+func (a *ActionEntry) State() string {
+	var v string // out
+	v = C.GoString(a.state)
+	return v
+}

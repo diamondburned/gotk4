@@ -544,6 +544,54 @@ func (i *InputMessage) Native() unsafe.Pointer {
 	return unsafe.Pointer(&i.native)
 }
 
+// Address: return location for a Address, or nil
+func (i *InputMessage) Address() SocketAddress {
+	var v SocketAddress // out
+	{
+		var refTmpIn *C.GSocketAddress
+		var refTmpOut socketAddress
+
+		refTmpIn = *i.address
+
+		refTmpOut = gextras.CastObject(externglib.Take(unsafe.Pointer(refTmpIn))).(socketAddress)
+
+		if refTmpOut != nil {
+			out0 := &refTmpOut
+			v = out0
+		}
+	}
+	return v
+}
+
+// NumVectors: the number of input vectors pointed to by @vectors
+func (i *InputMessage) NumVectors() uint {
+	var v uint // out
+	v = uint(i.num_vectors)
+	return v
+}
+
+// BytesReceived: will be set to the number of bytes that have been received
+func (i *InputMessage) BytesReceived() uint {
+	var v uint // out
+	v = uint(i.bytes_received)
+	return v
+}
+
+// Flags: collection of MsgFlags for the received message, outputted by the call
+func (i *InputMessage) Flags() int {
+	var v int // out
+	v = int(i.flags)
+	return v
+}
+
+// NumControlMessages: return location for the number of elements in
+// @control_messages
+func (i *InputMessage) NumControlMessages() *uint {
+	var v *uint // out
+	v = (*uint)(unsafe.Pointer(i.num_control_messages))
+	return v
+}
+
 // InputVector: structure used for scatter/gather data input. You generally pass
 // in an array of Vectors and the operation will store the read data starting in
 // the first buffer, switching to the next as needed.
@@ -560,6 +608,20 @@ func WrapInputVector(ptr unsafe.Pointer) *InputVector {
 // Native returns the underlying C source pointer.
 func (i *InputVector) Native() unsafe.Pointer {
 	return unsafe.Pointer(&i.native)
+}
+
+// Buffer: pointer to a buffer where data will be written.
+func (i *InputVector) Buffer() interface{} {
+	var v interface{} // out
+	v = box.Get(uintptr(i.buffer))
+	return v
+}
+
+// Size: the available size in @buffer.
+func (i *InputVector) Size() uint {
+	var v uint // out
+	v = uint(i.size)
+	return v
 }
 
 // OutputMessage: structure used for scatter/gather data output when sending
@@ -584,6 +646,42 @@ func (o *OutputMessage) Native() unsafe.Pointer {
 	return unsafe.Pointer(&o.native)
 }
 
+// Address or nil
+func (o *OutputMessage) Address() SocketAddress {
+	var v SocketAddress // out
+	v = gextras.CastObject(externglib.Take(unsafe.Pointer(o.address))).(SocketAddress)
+	return v
+}
+
+// Vectors: pointer to an array of output vectors
+func (o *OutputMessage) Vectors() *OutputVector {
+	var v *OutputVector // out
+	v = (*OutputVector)(unsafe.Pointer(o.vectors))
+	return v
+}
+
+// NumVectors: the number of output vectors pointed to by @vectors.
+func (o *OutputMessage) NumVectors() uint {
+	var v uint // out
+	v = uint(o.num_vectors)
+	return v
+}
+
+// BytesSent: initialize to 0. Will be set to the number of bytes that have been
+// sent
+func (o *OutputMessage) BytesSent() uint {
+	var v uint // out
+	v = uint(o.bytes_sent)
+	return v
+}
+
+// NumControlMessages: number of elements in @control_messages.
+func (o *OutputMessage) NumControlMessages() uint {
+	var v uint // out
+	v = uint(o.num_control_messages)
+	return v
+}
+
 // OutputVector: structure used for scatter/gather data output. You generally
 // pass in an array of Vectors and the operation will use all the buffers as if
 // they were one buffer.
@@ -600,6 +698,20 @@ func WrapOutputVector(ptr unsafe.Pointer) *OutputVector {
 // Native returns the underlying C source pointer.
 func (o *OutputVector) Native() unsafe.Pointer {
 	return unsafe.Pointer(&o.native)
+}
+
+// Buffer: pointer to a buffer of data to read.
+func (o *OutputVector) Buffer() interface{} {
+	var v interface{} // out
+	v = box.Get(uintptr(o.buffer))
+	return v
+}
+
+// Size: the size of @buffer.
+func (o *OutputVector) Size() uint {
+	var v uint // out
+	v = uint(o.size)
+	return v
 }
 
 // Resource applications and libraries often contain binary or textual data that

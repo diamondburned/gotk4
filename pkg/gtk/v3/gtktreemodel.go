@@ -1015,6 +1015,34 @@ func (t *TreeIter) Native() unsafe.Pointer {
 	return unsafe.Pointer(&t.native)
 }
 
+// Stamp: unique stamp to catch invalid iterators
+func (t *TreeIter) Stamp() int {
+	var v int // out
+	v = int(t.stamp)
+	return v
+}
+
+// UserData: model-specific data
+func (t *TreeIter) UserData() interface{} {
+	var v interface{} // out
+	v = box.Get(uintptr(t.user_data))
+	return v
+}
+
+// UserData2: model-specific data
+func (t *TreeIter) UserData2() interface{} {
+	var v interface{} // out
+	v = box.Get(uintptr(t.user_data2))
+	return v
+}
+
+// UserData3: model-specific data
+func (t *TreeIter) UserData3() interface{} {
+	var v interface{} // out
+	v = box.Get(uintptr(t.user_data3))
+	return v
+}
+
 // Copy creates a dynamically allocated tree iterator as a copy of @iter.
 //
 // This function is not intended for use in applications, because you can just

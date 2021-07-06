@@ -114,13 +114,13 @@ type BusType int
 
 const (
 	// Starter alias for the message bus that activated the process, if any.
-	Starter BusType = -1
+	BusTypeStarter BusType = -1
 	// None: not a message bus.
-	None BusType = 0
+	BusTypeNone BusType = 0
 	// System: the system-wide message bus.
-	System BusType = 1
+	BusTypeSystem BusType = 1
 	// Session: the login session message bus.
-	Session BusType = 2
+	BusTypeSession BusType = 2
 )
 
 func marshalBusType(p uintptr) (interface{}, error) {
@@ -132,13 +132,13 @@ type ConverterResult int
 
 const (
 	// Error: there was an error during conversion.
-	Error ConverterResult = iota
+	ConverterError ConverterResult = iota
 	// Converted: some data was consumed or produced
-	Converted
+	ConverterConverted
 	// Finished: the conversion is finished
-	Finished
+	ConverterFinished
 	// Flushed: flushing is finished
-	Flushed
+	ConverterFlushed
 )
 
 func marshalConverterResult(p uintptr) (interface{}, error) {
@@ -151,22 +151,22 @@ type CredentialsType int
 
 const (
 	// Invalid indicates an invalid native credential type.
-	Invalid CredentialsType = iota
+	CredentialsTypeInvalid CredentialsType = iota
 	// LinuxUcred: the native credentials type is a `struct ucred`.
-	LinuxUcred
+	CredentialsTypeLinuxUcred
 	// FreebsdCmsgcred: the native credentials type is a `struct cmsgcred`.
-	FreebsdCmsgcred
+	CredentialsTypeFreebsdCmsgcred
 	// OpenbsdSockpeercred: the native credentials type is a `struct
 	// sockpeercred`. Added in 2.30.
-	OpenbsdSockpeercred
+	CredentialsTypeOpenbsdSockpeercred
 	// SolarisUcred: the native credentials type is a `ucred_t`. Added in 2.40.
-	SolarisUcred
+	CredentialsTypeSolarisUcred
 	// NetbsdUnpcbid: the native credentials type is a `struct unpcbid`. Added
 	// in 2.42.
-	NetbsdUnpcbid
+	CredentialsTypeNetbsdUnpcbid
 	// AppleXucred: the native credentials type is a `struct xucred`. Added in
 	// 2.66.
-	AppleXucred
+	CredentialsTypeAppleXucred
 )
 
 func marshalCredentialsType(p uintptr) (interface{}, error) {
@@ -179,117 +179,117 @@ type DBusError int
 const (
 	// Failed: generic error; "something went wrong" - see the error message for
 	// more.
-	Failed DBusError = iota
+	DBusErrorFailed DBusError = iota
 	// NoMemory: there was not enough memory to complete an operation.
-	NoMemory
+	DBusErrorNoMemory
 	// ServiceUnknown: the bus doesn't know how to launch a service to supply
 	// the bus name you wanted.
-	ServiceUnknown
+	DBusErrorServiceUnknown
 	// NameHasNoOwner: the bus name you referenced doesn't exist (i.e. no
 	// application owns it).
-	NameHasNoOwner
+	DBusErrorNameHasNoOwner
 	// NoReply: no reply to a message expecting one, usually means a timeout
 	// occurred.
-	NoReply
+	DBusErrorNoReply
 	// IOError: something went wrong reading or writing to a socket, for
 	// example.
-	IOError
+	DBusErrorIOError
 	// BadAddress d-Bus bus address was malformed.
-	BadAddress
+	DBusErrorBadAddress
 	// NotSupported: requested operation isn't supported (like ENOSYS on UNIX).
-	NotSupported
+	DBusErrorNotSupported
 	// LimitsExceeded: some limited resource is exhausted.
-	LimitsExceeded
+	DBusErrorLimitsExceeded
 	// AccessDenied: security restrictions don't allow doing what you're trying
 	// to do.
-	AccessDenied
+	DBusErrorAccessDenied
 	// AuthFailed: authentication didn't work.
-	AuthFailed
+	DBusErrorAuthFailed
 	// NoServer: unable to connect to server (probably caused by ECONNREFUSED on
 	// a socket).
-	NoServer
+	DBusErrorNoServer
 	// Timeout: certain timeout errors, possibly ETIMEDOUT on a socket. Note
 	// that G_DBUS_ERROR_NO_REPLY is used for message reply timeouts. Warning:
 	// this is confusingly-named given that G_DBUS_ERROR_TIMED_OUT also exists.
 	// We can't fix it for compatibility reasons so just be careful.
-	Timeout
+	DBusErrorTimeout
 	// NoNetwork: no network access (probably ENETUNREACH on a socket).
-	NoNetwork
+	DBusErrorNoNetwork
 	// AddressInUse: can't bind a socket since its address is in use (i.e.
 	// EADDRINUSE).
-	AddressInUse
+	DBusErrorAddressInUse
 	// Disconnected: the connection is disconnected and you're trying to use it.
-	Disconnected
+	DBusErrorDisconnected
 	// InvalidArgs: invalid arguments passed to a method call.
-	InvalidArgs
+	DBusErrorInvalidArgs
 	// FileNotFound: missing file.
-	FileNotFound
+	DBusErrorFileNotFound
 	// FileExists: existing file and the operation you're using does not
 	// silently overwrite.
-	FileExists
+	DBusErrorFileExists
 	// UnknownMethod: method name you invoked isn't known by the object you
 	// invoked it on.
-	UnknownMethod
+	DBusErrorUnknownMethod
 	// TimedOut: certain timeout errors, e.g. while starting a service. Warning:
 	// this is confusingly-named given that G_DBUS_ERROR_TIMEOUT also exists. We
 	// can't fix it for compatibility reasons so just be careful.
-	TimedOut
+	DBusErrorTimedOut
 	// MatchRuleNotFound: tried to remove or modify a match rule that didn't
 	// exist.
-	MatchRuleNotFound
+	DBusErrorMatchRuleNotFound
 	// MatchRuleInvalid: the match rule isn't syntactically valid.
-	MatchRuleInvalid
+	DBusErrorMatchRuleInvalid
 	// SpawnExecFailed: while starting a new process, the exec() call failed.
-	SpawnExecFailed
+	DBusErrorSpawnExecFailed
 	// SpawnForkFailed: while starting a new process, the fork() call failed.
-	SpawnForkFailed
+	DBusErrorSpawnForkFailed
 	// SpawnChildExited: while starting a new process, the child exited with a
 	// status code.
-	SpawnChildExited
+	DBusErrorSpawnChildExited
 	// SpawnChildSignaled: while starting a new process, the child exited on a
 	// signal.
-	SpawnChildSignaled
+	DBusErrorSpawnChildSignaled
 	// SpawnFailed: while starting a new process, something went wrong.
-	SpawnFailed
+	DBusErrorSpawnFailed
 	// SpawnSetupFailed: we failed to setup the environment correctly.
-	SpawnSetupFailed
+	DBusErrorSpawnSetupFailed
 	// SpawnConfigInvalid: we failed to setup the config parser correctly.
-	SpawnConfigInvalid
+	DBusErrorSpawnConfigInvalid
 	// SpawnServiceInvalid bus name was not valid.
-	SpawnServiceInvalid
+	DBusErrorSpawnServiceInvalid
 	// SpawnServiceNotFound: service file not found in system-services
 	// directory.
-	SpawnServiceNotFound
+	DBusErrorSpawnServiceNotFound
 	// SpawnPermissionsInvalid permissions are incorrect on the setuid helper.
-	SpawnPermissionsInvalid
+	DBusErrorSpawnPermissionsInvalid
 	// SpawnFileInvalid: service file invalid (Name, User or Exec missing).
-	SpawnFileInvalid
+	DBusErrorSpawnFileInvalid
 	// SpawnNoMemory: tried to get a UNIX process ID and it wasn't available.
-	SpawnNoMemory
+	DBusErrorSpawnNoMemory
 	// UnixProcessIDUnknown: tried to get a UNIX process ID and it wasn't
 	// available.
-	UnixProcessIDUnknown
+	DBusErrorUnixProcessIDUnknown
 	// InvalidSignature: type signature is not valid.
-	InvalidSignature
+	DBusErrorInvalidSignature
 	// InvalidFileContent: file contains invalid syntax or is otherwise broken.
-	InvalidFileContent
+	DBusErrorInvalidFileContent
 	// SelinuxSecurityContextUnknown: asked for SELinux security context and it
 	// wasn't available.
-	SelinuxSecurityContextUnknown
+	DBusErrorSelinuxSecurityContextUnknown
 	// AdtAuditDataUnknown: asked for ADT audit data and it wasn't available.
-	AdtAuditDataUnknown
+	DBusErrorAdtAuditDataUnknown
 	// ObjectPathInUse there's already an object with the requested object path.
-	ObjectPathInUse
+	DBusErrorObjectPathInUse
 	// UnknownObject: object you invoked a method on isn't known. Since 2.42
-	UnknownObject
+	DBusErrorUnknownObject
 	// UnknownInterface: interface you invoked a method on isn't known by the
 	// object. Since 2.42
-	UnknownInterface
+	DBusErrorUnknownInterface
 	// UnknownProperty: property you tried to access isn't known by the object.
 	// Since 2.42
-	UnknownProperty
+	DBusErrorUnknownProperty
 	// PropertyReadOnly: property you tried to set is read-only. Since 2.42
-	PropertyReadOnly
+	DBusErrorPropertyReadOnly
 )
 
 func marshalDBusError(p uintptr) (interface{}, error) {
@@ -302,9 +302,9 @@ type DBusMessageByteOrder int
 
 const (
 	// BigEndian: the byte order is big endian.
-	BigEndian DBusMessageByteOrder = 66
+	DBusMessageByteOrderBigEndian DBusMessageByteOrder = 66
 	// LittleEndian: the byte order is little endian.
-	LittleEndian DBusMessageByteOrder = 108
+	DBusMessageByteOrderLittleEndian DBusMessageByteOrder = 108
 )
 
 func marshalDBusMessageByteOrder(p uintptr) (interface{}, error) {
@@ -316,26 +316,26 @@ type DBusMessageHeaderField int
 
 const (
 	// Invalid: not a valid header field.
-	Invalid DBusMessageHeaderField = iota
+	DBusMessageHeaderFieldInvalid DBusMessageHeaderField = iota
 	// Path: the object path.
-	Path
+	DBusMessageHeaderFieldPath
 	// Interface: the interface name.
-	Interface
+	DBusMessageHeaderFieldInterface
 	// Member: the method or signal name.
-	Member
+	DBusMessageHeaderFieldMember
 	// ErrorName: the name of the error that occurred.
-	ErrorName
+	DBusMessageHeaderFieldErrorName
 	// ReplySerial: the serial number the message is a reply to.
-	ReplySerial
+	DBusMessageHeaderFieldReplySerial
 	// Destination: the name the message is intended for.
-	Destination
+	DBusMessageHeaderFieldDestination
 	// Sender: unique name of the sender of the message (filled in by the bus).
-	Sender
+	DBusMessageHeaderFieldSender
 	// Signature: the signature of the message body.
-	Signature
+	DBusMessageHeaderFieldSignature
 	// NumUnixFds: the number of UNIX file descriptors that accompany the
 	// message.
-	NumUnixFds
+	DBusMessageHeaderFieldNumUnixFds
 )
 
 func marshalDBusMessageHeaderField(p uintptr) (interface{}, error) {
@@ -347,15 +347,15 @@ type DBusMessageType int
 
 const (
 	// Invalid: message is of invalid type.
-	Invalid DBusMessageType = iota
+	DBusMessageTypeInvalid DBusMessageType = iota
 	// MethodCall: method call.
-	MethodCall
+	DBusMessageTypeMethodCall
 	// MethodReturn: method reply.
-	MethodReturn
+	DBusMessageTypeMethodReturn
 	// Error: error reply.
-	Error
+	DBusMessageTypeError
 	// Signal: signal emission.
-	Signal
+	DBusMessageTypeSignal
 )
 
 func marshalDBusMessageType(p uintptr) (interface{}, error) {
@@ -368,11 +368,11 @@ type DataStreamByteOrder int
 
 const (
 	// BigEndian selects Big Endian byte order.
-	BigEndian DataStreamByteOrder = iota
+	DataStreamByteOrderBigEndian DataStreamByteOrder = iota
 	// LittleEndian selects Little Endian byte order.
-	LittleEndian
+	DataStreamByteOrderLittleEndian
 	// HostEndian selects endianness based on host machine's architecture.
-	HostEndian
+	DataStreamByteOrderHostEndian
 )
 
 func marshalDataStreamByteOrder(p uintptr) (interface{}, error) {
@@ -385,13 +385,13 @@ type DataStreamNewlineType int
 
 const (
 	// Lf selects "LF" line endings, common on most modern UNIX platforms.
-	Lf DataStreamNewlineType = iota
+	DataStreamNewlineTypeLf DataStreamNewlineType = iota
 	// Cr selects "CR" line endings.
-	Cr
+	DataStreamNewlineTypeCr
 	// CrLf selects "CR, LF" line ending, common on Microsoft Windows.
-	CrLf
+	DataStreamNewlineTypeCrLf
 	// Any: automatically try to handle any line ending type.
-	Any
+	DataStreamNewlineTypeAny
 )
 
 func marshalDataStreamNewlineType(p uintptr) (interface{}, error) {
@@ -404,19 +404,19 @@ type DriveStartStopType int
 
 const (
 	// Unknown: unknown or drive doesn't support start/stop.
-	Unknown DriveStartStopType = iota
+	DriveStartStopTypeUnknown DriveStartStopType = iota
 	// Shutdown: the stop method will physically shut down the drive and e.g.
 	// power down the port the drive is attached to.
-	Shutdown
+	DriveStartStopTypeShutdown
 	// Network: the start/stop methods are used for connecting/disconnect to the
 	// drive over the network.
-	Network
+	DriveStartStopTypeNetwork
 	// Multidisk: the start/stop methods will assemble/disassemble a virtual
 	// drive from several physical drives.
-	Multidisk
+	DriveStartStopTypeMultidisk
 	// Password: the start/stop methods will unlock/lock the disk (for example
 	// using the ATA <quote>SECURITY UNLOCK DEVICE</quote> command)
-	Password
+	DriveStartStopTypePassword
 )
 
 func marshalDriveStartStopType(p uintptr) (interface{}, error) {
@@ -429,14 +429,14 @@ type EmblemOrigin int
 
 const (
 	// Unknown: emblem of unknown origin
-	Unknown EmblemOrigin = iota
+	EmblemOriginUnknown EmblemOrigin = iota
 	// Device: emblem adds device-specific information
-	Device
+	EmblemOriginDevice
 	// Livemetadata: emblem depicts live metadata, such as "readonly"
-	Livemetadata
+	EmblemOriginLivemetadata
 	// Tag: emblem comes from a user-defined tag, e.g. set by nautilus (in the
 	// future)
-	Tag
+	EmblemOriginTag
 )
 
 func marshalEmblemOrigin(p uintptr) (interface{}, error) {
@@ -449,11 +449,11 @@ type FileAttributeStatus int
 
 const (
 	// Unset: attribute value is unset (empty).
-	Unset FileAttributeStatus = iota
+	FileAttributeStatusUnset FileAttributeStatus = iota
 	// Set: attribute value is set.
-	Set
+	FileAttributeStatusSet
 	// ErrorSetting indicates an error in setting the value.
-	ErrorSetting
+	FileAttributeStatusErrorSetting
 )
 
 func marshalFileAttributeStatus(p uintptr) (interface{}, error) {
@@ -465,25 +465,25 @@ type FileAttributeType int
 
 const (
 	// Invalid indicates an invalid or uninitialized type.
-	Invalid FileAttributeType = iota
+	FileAttributeTypeInvalid FileAttributeType = iota
 	// String: null terminated UTF8 string.
-	String
+	FileAttributeTypeString
 	// ByteString: zero terminated string of non-zero bytes.
-	ByteString
+	FileAttributeTypeByteString
 	// Boolean value.
-	Boolean
+	FileAttributeTypeBoolean
 	// Uint32: unsigned 4-byte/32-bit integer.
-	Uint32
+	FileAttributeTypeUint32
 	// Int32: signed 4-byte/32-bit integer.
-	Int32
+	FileAttributeTypeInt32
 	// Uint64: unsigned 8-byte/64-bit integer.
-	Uint64
+	FileAttributeTypeUint64
 	// Int64: signed 8-byte/64-bit integer.
-	Int64
+	FileAttributeTypeInt64
 	// Object: #GObject.
-	Object
+	FileAttributeTypeObject
 	// Stringv: nil terminated char **. Since 2.22
-	Stringv
+	FileAttributeTypeStringv
 )
 
 func marshalFileAttributeType(p uintptr) (interface{}, error) {
@@ -495,34 +495,34 @@ type FileMonitorEvent int
 
 const (
 	// Changed: file changed.
-	Changed FileMonitorEvent = iota
+	FileMonitorEventChanged FileMonitorEvent = iota
 	// ChangesDoneHint: hint that this was probably the last change in a set of
 	// changes.
-	ChangesDoneHint
+	FileMonitorEventChangesDoneHint
 	// Deleted: file was deleted.
-	Deleted
+	FileMonitorEventDeleted
 	// Created: file was created.
-	Created
+	FileMonitorEventCreated
 	// AttributeChanged: file attribute was changed.
-	AttributeChanged
+	FileMonitorEventAttributeChanged
 	// PreUnmount: the file location will soon be unmounted.
-	PreUnmount
+	FileMonitorEventPreUnmount
 	// Unmounted: the file location was unmounted.
-	Unmounted
+	FileMonitorEventUnmounted
 	// Moved: the file was moved -- only sent if the (deprecated)
 	// G_FILE_MONITOR_SEND_MOVED flag is set
-	Moved
+	FileMonitorEventMoved
 	// Renamed: the file was renamed within the current directory -- only sent
 	// if the G_FILE_MONITOR_WATCH_MOVES flag is set. Since: 2.46.
-	Renamed
+	FileMonitorEventRenamed
 	// MovedIn: the file was moved into the monitored directory from another
 	// location -- only sent if the G_FILE_MONITOR_WATCH_MOVES flag is set.
 	// Since: 2.46.
-	MovedIn
+	FileMonitorEventMovedIn
 	// MovedOut: the file was moved out of the monitored directory to another
 	// location -- only sent if the G_FILE_MONITOR_WATCH_MOVES flag is set.
 	// Since: 2.46
-	MovedOut
+	FileMonitorEventMovedOut
 )
 
 func marshalFileMonitorEvent(p uintptr) (interface{}, error) {
@@ -543,20 +543,20 @@ type FileType int
 
 const (
 	// Unknown file's type is unknown.
-	Unknown FileType = iota
+	FileTypeUnknown FileType = iota
 	// Regular: file handle represents a regular file.
-	Regular
+	FileTypeRegular
 	// Directory: file handle represents a directory.
-	Directory
+	FileTypeDirectory
 	// SymbolicLink: file handle represents a symbolic link (Unix systems).
-	SymbolicLink
+	FileTypeSymbolicLink
 	// Special: file is a "special" file, such as a socket, fifo, block device,
 	// or character device.
-	Special
+	FileTypeSpecial
 	// Shortcut: file is a shortcut (Windows systems).
-	Shortcut
+	FileTypeShortcut
 	// Mountable: file is a mountable location.
-	Mountable
+	FileTypeMountable
 )
 
 func marshalFileType(p uintptr) (interface{}, error) {
@@ -570,11 +570,11 @@ type FilesystemPreviewType int
 
 const (
 	// IfAlways: only preview files if user has explicitly requested it.
-	IfAlways FilesystemPreviewType = iota
+	FilesystemPreviewTypeIfAlways FilesystemPreviewType = iota
 	// IfLocal: preview files if user has requested preview of "local" files.
-	IfLocal
+	FilesystemPreviewTypeIfLocal
 	// Never: never preview files.
-	Never
+	FilesystemPreviewTypeNever
 )
 
 func marshalFilesystemPreviewType(p uintptr) (interface{}, error) {
@@ -604,112 +604,112 @@ type IOErrorEnum int
 const (
 	// Failed: generic error condition for when an operation fails and no more
 	// specific OErrorEnum value is defined.
-	Failed IOErrorEnum = 0
+	IOErrorFailed IOErrorEnum = 0
 	// NotFound: file not found.
-	NotFound IOErrorEnum = 1
+	IOErrorNotFound IOErrorEnum = 1
 	// Exists: file already exists.
-	Exists IOErrorEnum = 2
+	IOErrorExists IOErrorEnum = 2
 	// IsDirectory: file is a directory.
-	IsDirectory IOErrorEnum = 3
+	IOErrorIsDirectory IOErrorEnum = 3
 	// NotDirectory: file is not a directory.
-	NotDirectory IOErrorEnum = 4
+	IOErrorNotDirectory IOErrorEnum = 4
 	// NotEmpty: file is a directory that isn't empty.
-	NotEmpty IOErrorEnum = 5
+	IOErrorNotEmpty IOErrorEnum = 5
 	// NotRegularFile: file is not a regular file.
-	NotRegularFile IOErrorEnum = 6
+	IOErrorNotRegularFile IOErrorEnum = 6
 	// NotSymbolicLink: file is not a symbolic link.
-	NotSymbolicLink IOErrorEnum = 7
+	IOErrorNotSymbolicLink IOErrorEnum = 7
 	// NotMountableFile: file cannot be mounted.
-	NotMountableFile IOErrorEnum = 8
+	IOErrorNotMountableFile IOErrorEnum = 8
 	// FilenameTooLong: filename is too many characters.
-	FilenameTooLong IOErrorEnum = 9
+	IOErrorFilenameTooLong IOErrorEnum = 9
 	// InvalidFilename: filename is invalid or contains invalid characters.
-	InvalidFilename IOErrorEnum = 10
+	IOErrorInvalidFilename IOErrorEnum = 10
 	// TooManyLinks: file contains too many symbolic links.
-	TooManyLinks IOErrorEnum = 11
+	IOErrorTooManyLinks IOErrorEnum = 11
 	// NoSpace: no space left on drive.
-	NoSpace IOErrorEnum = 12
+	IOErrorNoSpace IOErrorEnum = 12
 	// InvalidArgument: invalid argument.
-	InvalidArgument IOErrorEnum = 13
+	IOErrorInvalidArgument IOErrorEnum = 13
 	// PermissionDenied: permission denied.
-	PermissionDenied IOErrorEnum = 14
+	IOErrorPermissionDenied IOErrorEnum = 14
 	// NotSupported: operation (or one of its parameters) not supported
-	NotSupported IOErrorEnum = 15
+	IOErrorNotSupported IOErrorEnum = 15
 	// NotMounted: file isn't mounted.
-	NotMounted IOErrorEnum = 16
+	IOErrorNotMounted IOErrorEnum = 16
 	// AlreadyMounted: file is already mounted.
-	AlreadyMounted IOErrorEnum = 17
+	IOErrorAlreadyMounted IOErrorEnum = 17
 	// Closed: file was closed.
-	Closed IOErrorEnum = 18
+	IOErrorClosed IOErrorEnum = 18
 	// Cancelled: operation was cancelled. See #GCancellable.
-	Cancelled IOErrorEnum = 19
+	IOErrorCancelled IOErrorEnum = 19
 	// Pending operations are still pending.
-	Pending IOErrorEnum = 20
+	IOErrorPending IOErrorEnum = 20
 	// ReadOnly: file is read only.
-	ReadOnly IOErrorEnum = 21
+	IOErrorReadOnly IOErrorEnum = 21
 	// CantCreateBackup: backup couldn't be created.
-	CantCreateBackup IOErrorEnum = 22
+	IOErrorCantCreateBackup IOErrorEnum = 22
 	// WrongEtag file's Entity Tag was incorrect.
-	WrongEtag IOErrorEnum = 23
+	IOErrorWrongEtag IOErrorEnum = 23
 	// TimedOut: operation timed out.
-	TimedOut IOErrorEnum = 24
+	IOErrorTimedOut IOErrorEnum = 24
 	// WouldRecurse: operation would be recursive.
-	WouldRecurse IOErrorEnum = 25
+	IOErrorWouldRecurse IOErrorEnum = 25
 	// Busy: file is busy.
-	Busy IOErrorEnum = 26
+	IOErrorBusy IOErrorEnum = 26
 	// WouldBlock: operation would block.
-	WouldBlock IOErrorEnum = 27
+	IOErrorWouldBlock IOErrorEnum = 27
 	// HostNotFound: host couldn't be found (remote operations).
-	HostNotFound IOErrorEnum = 28
+	IOErrorHostNotFound IOErrorEnum = 28
 	// WouldMerge: operation would merge files.
-	WouldMerge IOErrorEnum = 29
+	IOErrorWouldMerge IOErrorEnum = 29
 	// FailedHandled: operation failed and a helper program has already
 	// interacted with the user. Do not display any error dialog.
-	FailedHandled IOErrorEnum = 30
+	IOErrorFailedHandled IOErrorEnum = 30
 	// TooManyOpenFiles: the current process has too many files open and can't
 	// open any more. Duplicate descriptors do count toward this limit. Since
 	// 2.20
-	TooManyOpenFiles IOErrorEnum = 31
+	IOErrorTooManyOpenFiles IOErrorEnum = 31
 	// NotInitialized: the object has not been initialized. Since 2.22
-	NotInitialized IOErrorEnum = 32
+	IOErrorNotInitialized IOErrorEnum = 32
 	// AddressInUse: the requested address is already in use. Since 2.22
-	AddressInUse IOErrorEnum = 33
+	IOErrorAddressInUse IOErrorEnum = 33
 	// PartialInput: need more input to finish operation. Since 2.24
-	PartialInput IOErrorEnum = 34
+	IOErrorPartialInput IOErrorEnum = 34
 	// InvalidData: the input data was invalid. Since 2.24
-	InvalidData IOErrorEnum = 35
+	IOErrorInvalidData IOErrorEnum = 35
 	// DBusError: remote object generated an error that doesn't correspond to a
 	// locally registered #GError error domain. Use
 	// g_dbus_error_get_remote_error() to extract the D-Bus error name and
 	// g_dbus_error_strip_remote_error() to fix up the message so it matches
 	// what was received on the wire. Since 2.26.
-	DBusError IOErrorEnum = 36
+	IOErrorDBusError IOErrorEnum = 36
 	// HostUnreachable: host unreachable. Since 2.26
-	HostUnreachable IOErrorEnum = 37
+	IOErrorHostUnreachable IOErrorEnum = 37
 	// NetworkUnreachable: network unreachable. Since 2.26
-	NetworkUnreachable IOErrorEnum = 38
+	IOErrorNetworkUnreachable IOErrorEnum = 38
 	// ConnectionRefused: connection refused. Since 2.26
-	ConnectionRefused IOErrorEnum = 39
+	IOErrorConnectionRefused IOErrorEnum = 39
 	// ProxyFailed: connection to proxy server failed. Since 2.26
-	ProxyFailed IOErrorEnum = 40
+	IOErrorProxyFailed IOErrorEnum = 40
 	// ProxyAuthFailed: proxy authentication failed. Since 2.26
-	ProxyAuthFailed IOErrorEnum = 41
+	IOErrorProxyAuthFailed IOErrorEnum = 41
 	// ProxyNeedAuth: proxy server needs authentication. Since 2.26
-	ProxyNeedAuth IOErrorEnum = 42
+	IOErrorProxyNeedAuth IOErrorEnum = 42
 	// ProxyNotAllowed: proxy connection is not allowed by ruleset. Since 2.26
-	ProxyNotAllowed IOErrorEnum = 43
+	IOErrorProxyNotAllowed IOErrorEnum = 43
 	// BrokenPipe: broken pipe. Since 2.36
-	BrokenPipe IOErrorEnum = 44
+	IOErrorBrokenPipe IOErrorEnum = 44
 	// ConnectionClosed: connection closed by peer. Note that this is the same
 	// code as G_IO_ERROR_BROKEN_PIPE; before 2.44 some "connection closed"
 	// errors returned G_IO_ERROR_BROKEN_PIPE, but others returned
 	// G_IO_ERROR_FAILED. Now they should all return the same value, which has
 	// this more logical name. Since 2.44.
-	ConnectionClosed IOErrorEnum = 44
+	IOErrorConnectionClosed IOErrorEnum = 44
 	// NotConnected: transport endpoint is not connected. Since 2.44
-	NotConnected IOErrorEnum = 45
+	IOErrorNotConnected IOErrorEnum = 45
 	// MessageTooLarge: message too large. Since 2.48.
-	MessageTooLarge IOErrorEnum = 46
+	IOErrorMessageTooLarge IOErrorEnum = 46
 )
 
 func marshalIOErrorEnum(p uintptr) (interface{}, error) {
@@ -721,11 +721,11 @@ type IOModuleScopeFlags int
 
 const (
 	// None: no module scan flags
-	None IOModuleScopeFlags = iota
+	IOModuleScopeNone IOModuleScopeFlags = iota
 	// BlockDuplicates: when using this scope to load or scan modules,
 	// automatically block a modules which has the same base basename as
 	// previously loaded module.
-	BlockDuplicates
+	IOModuleScopeBlockDuplicates
 )
 
 func marshalIOModuleScopeFlags(p uintptr) (interface{}, error) {
@@ -744,15 +744,15 @@ type MemoryMonitorWarningLevel int
 const (
 	// Low: memory on the device is low, processes should free up unneeded
 	// resources (for example, in-memory caches) so they can be used elsewhere.
-	Low MemoryMonitorWarningLevel = 50
+	MemoryMonitorWarningLevelLow MemoryMonitorWarningLevel = 50
 	// Medium: same as @G_MEMORY_MONITOR_WARNING_LEVEL_LOW but the device has
 	// even less free memory, so processes should try harder to free up unneeded
 	// resources. If your process does not need to stay running, it is a good
 	// time for it to quit.
-	Medium MemoryMonitorWarningLevel = 100
+	MemoryMonitorWarningLevelMedium MemoryMonitorWarningLevel = 100
 	// Critical: the system will soon start terminating processes to reclaim
 	// memory, including background processes.
-	Critical MemoryMonitorWarningLevel = 255
+	MemoryMonitorWarningLevelCritical MemoryMonitorWarningLevel = 255
 )
 
 func marshalMemoryMonitorWarningLevel(p uintptr) (interface{}, error) {
@@ -766,11 +766,11 @@ type MountOperationResult int
 const (
 	// Handled: the request was fulfilled and the user specified data is now
 	// available
-	Handled MountOperationResult = iota
+	MountOperationHandled MountOperationResult = iota
 	// Aborted: the user requested the mount operation to be aborted
-	Aborted
+	MountOperationAborted
 	// Unhandled: the request was unhandled (i.e. not implemented)
-	Unhandled
+	MountOperationUnhandled
 )
 
 func marshalMountOperationResult(p uintptr) (interface{}, error) {
@@ -784,17 +784,17 @@ type NetworkConnectivity int
 const (
 	// Local: the host is not configured with a route to the Internet; it may or
 	// may not be connected to a local network.
-	Local NetworkConnectivity = 1
+	NetworkConnectivityLocal NetworkConnectivity = 1
 	// Limited: the host is connected to a network, but does not appear to be
 	// able to reach the full Internet, perhaps due to upstream network
 	// problems.
-	Limited NetworkConnectivity = 2
+	NetworkConnectivityLimited NetworkConnectivity = 2
 	// Portal: the host is behind a captive portal and cannot reach the full
 	// Internet.
-	Portal NetworkConnectivity = 3
+	NetworkConnectivityPortal NetworkConnectivity = 3
 	// Full: the host is connected to a network, and appears to be able to reach
 	// the full Internet.
-	Full NetworkConnectivity = 4
+	NetworkConnectivityFull NetworkConnectivity = 4
 )
 
 func marshalNetworkConnectivity(p uintptr) (interface{}, error) {
@@ -808,18 +808,18 @@ const (
 	// Normal: the default priority, to be used for the majority of
 	// notifications (for example email messages, software updates, completed
 	// download/sync operations)
-	Normal NotificationPriority = iota
+	NotificationPriorityNormal NotificationPriority = iota
 	// Low: for notifications that do not require immediate attention -
 	// typically used for contextual background information, such as contact
 	// birthdays or local weather
-	Low
+	NotificationPriorityLow
 	// High: for events that require more attention, usually because responses
 	// are time-sensitive (for example chat and SMS messages or alarms)
-	High
+	NotificationPriorityHigh
 	// Urgent: for urgent notifications, or notifications that require a
 	// response in a short space of time (for example phone calls or emergency
 	// warnings)
-	Urgent
+	NotificationPriorityUrgent
 )
 
 func marshalNotificationPriority(p uintptr) (interface{}, error) {
@@ -834,11 +834,11 @@ type PasswordSave int
 
 const (
 	// Never save a password.
-	Never PasswordSave = iota
+	PasswordSaveNever PasswordSave = iota
 	// ForSession: save a password for the session.
-	ForSession
+	PasswordSaveForSession
 	// Permanently: save a password permanently.
-	Permanently
+	PasswordSavePermanently
 )
 
 func marshalPasswordSave(p uintptr) (interface{}, error) {
@@ -858,11 +858,11 @@ type PollableReturn int
 
 const (
 	// Failed: generic error condition for when an operation fails.
-	Failed PollableReturn = 0
+	PollableReturnFailed PollableReturn = 0
 	// Ok: the operation was successfully finished.
-	Ok PollableReturn = 1
+	PollableReturnOk PollableReturn = 1
 	// WouldBlock: the operation would block.
-	WouldBlock PollableReturn = -27
+	PollableReturnWouldBlock PollableReturn = -27
 )
 
 func marshalPollableReturn(p uintptr) (interface{}, error) {
@@ -875,12 +875,12 @@ type ResolverError int
 
 const (
 	// NotFound: the requested name/address/service was not found
-	NotFound ResolverError = iota
+	ResolverErrorNotFound ResolverError = iota
 	// TemporaryFailure: the requested information could not be looked up due to
 	// a network error or similar problem
-	TemporaryFailure
+	ResolverErrorTemporaryFailure
 	// Internal: unknown error
-	Internal
+	ResolverErrorInternal
 )
 
 func marshalResolverError(p uintptr) (interface{}, error) {
@@ -921,15 +921,15 @@ type ResolverRecordType int
 
 const (
 	// Srv: look up DNS SRV records for a domain
-	Srv ResolverRecordType = 1
+	ResolverRecordSrv ResolverRecordType = 1
 	// Mx: look up DNS MX records for a domain
-	Mx ResolverRecordType = 2
+	ResolverRecordMx ResolverRecordType = 2
 	// Txt: look up DNS TXT records for a name
-	Txt ResolverRecordType = 3
+	ResolverRecordTxt ResolverRecordType = 3
 	// Soa: look up DNS SOA records for a zone
-	Soa ResolverRecordType = 4
+	ResolverRecordSoa ResolverRecordType = 4
 	// Ns: look up DNS NS records for a domain
-	Ns ResolverRecordType = 5
+	ResolverRecordNs ResolverRecordType = 5
 )
 
 func marshalResolverRecordType(p uintptr) (interface{}, error) {
@@ -942,9 +942,9 @@ type ResourceError int
 
 const (
 	// NotFound: no file was found at the requested path
-	NotFound ResourceError = iota
+	ResourceErrorNotFound ResourceError = iota
 	// Internal: unknown error
-	Internal
+	ResourceErrorInternal
 )
 
 func marshalResourceError(p uintptr) (interface{}, error) {
@@ -959,25 +959,25 @@ type SocketClientEvent int
 
 const (
 	// Resolving: the client is doing a DNS lookup.
-	Resolving SocketClientEvent = iota
+	SocketClientResolving SocketClientEvent = iota
 	// Resolved: the client has completed a DNS lookup.
-	Resolved
+	SocketClientResolved
 	// Connecting: the client is connecting to a remote host (either a proxy or
 	// the destination server).
-	Connecting
+	SocketClientConnecting
 	// Connected: the client has connected to a remote host.
-	Connected
+	SocketClientConnected
 	// ProxyNegotiating: the client is negotiating with a proxy to connect to
 	// the destination server.
-	ProxyNegotiating
+	SocketClientProxyNegotiating
 	// ProxyNegotiated: the client has negotiated with the proxy server.
-	ProxyNegotiated
+	SocketClientProxyNegotiated
 	// TLSHandshaking: the client is performing a TLS handshake.
-	TLSHandshaking
+	SocketClientTLSHandshaking
 	// TLSHandshaked: the client has performed a TLS handshake.
-	TLSHandshaked
+	SocketClientTLSHandshaked
 	// Complete: the client is done with a particular Connectable.
-	Complete
+	SocketClientComplete
 )
 
 func marshalSocketClientEvent(p uintptr) (interface{}, error) {
@@ -990,13 +990,13 @@ type SocketFamily int
 
 const (
 	// Invalid: no address family
-	Invalid SocketFamily = 0
+	SocketFamilyInvalid SocketFamily = 0
 	// Unix: the UNIX domain family
-	Unix SocketFamily = 1
+	SocketFamilyUnix SocketFamily = 1
 	// IPv4: the IPv4 family
-	IPv4 SocketFamily = 2
+	SocketFamilyIPv4 SocketFamily = 2
 	// IPv6: the IPv6 family
-	IPv6 SocketFamily = 10
+	SocketFamilyIPv6 SocketFamily = 10
 )
 
 func marshalSocketFamily(p uintptr) (interface{}, error) {
@@ -1011,13 +1011,13 @@ type SocketListenerEvent int
 
 const (
 	// Binding: the listener is about to bind a socket.
-	Binding SocketListenerEvent = iota
+	SocketListenerBinding SocketListenerEvent = iota
 	// Bound: the listener has bound a socket.
-	Bound
+	SocketListenerBound
 	// Listening: the listener is about to start listening on this socket.
-	Listening
+	SocketListenerListening
 	// Listened: the listener is now listening on this socket.
-	Listened
+	SocketListenerListened
 )
 
 func marshalSocketListenerEvent(p uintptr) (interface{}, error) {
@@ -1035,15 +1035,15 @@ type SocketProtocol int
 
 const (
 	// Unknown: the protocol type is unknown
-	Unknown SocketProtocol = -1
+	SocketProtocolUnknown SocketProtocol = -1
 	// Default: the default protocol for the family/type
-	Default SocketProtocol = 0
+	SocketProtocolDefault SocketProtocol = 0
 	// TCP: TCP over IP
-	TCP SocketProtocol = 6
+	SocketProtocolTCP SocketProtocol = 6
 	// UDP: UDP over IP
-	UDP SocketProtocol = 17
+	SocketProtocolUDP SocketProtocol = 17
 	// SCTP: SCTP over IP
-	SCTP SocketProtocol = 132
+	SocketProtocolSCTP SocketProtocol = 132
 )
 
 func marshalSocketProtocol(p uintptr) (interface{}, error) {
@@ -1056,14 +1056,14 @@ type SocketType int
 
 const (
 	// Invalid: type unknown or wrong
-	Invalid SocketType = iota
+	SocketTypeInvalid SocketType = iota
 	// Stream: reliable connection-based byte streams (e.g. TCP).
-	Stream
+	SocketTypeStream
 	// Datagram: connectionless, unreliable datagram passing. (e.g. UDP)
-	Datagram
+	SocketTypeDatagram
 	// Seqpacket: reliable connection-based passing of datagrams of fixed
 	// maximum length (e.g. SCTP).
-	Seqpacket
+	SocketTypeSeqpacket
 )
 
 func marshalSocketType(p uintptr) (interface{}, error) {
@@ -1075,11 +1075,11 @@ type TLSAuthenticationMode int
 
 const (
 	// None: client authentication not required
-	None TLSAuthenticationMode = iota
+	TLSAuthenticationNone TLSAuthenticationMode = iota
 	// Requested: client authentication is requested
-	Requested
+	TLSAuthenticationRequested
 	// Required: client authentication is required
-	Required
+	TLSAuthenticationRequired
 )
 
 func marshalTLSAuthenticationMode(p uintptr) (interface{}, error) {
@@ -1093,7 +1093,7 @@ type TLSCertificateRequestFlags int
 
 const (
 	// None: no flags
-	None TLSCertificateRequestFlags = iota
+	TLSCertificateRequestNone TLSCertificateRequestFlags = iota
 )
 
 func marshalTLSCertificateRequestFlags(p uintptr) (interface{}, error) {
@@ -1107,22 +1107,22 @@ type TLSChannelBindingError int
 const (
 	// NotImplemented: either entire binding retrieval facility or specific
 	// binding type is not implemented in the TLS backend.
-	NotImplemented TLSChannelBindingError = iota
+	TLSChannelBindingErrorNotImplemented TLSChannelBindingError = iota
 	// InvalidState: the handshake is not yet complete on the connection which
 	// is a strong requirement for any existing binding type.
-	InvalidState
+	TLSChannelBindingErrorInvalidState
 	// NotAvailable: handshake is complete but binding data is not available.
 	// That normally indicates the TLS implementation failed to provide the
 	// binding data. For example, some implementations do not provide a peer
 	// certificate for resumed connections.
-	NotAvailable
+	TLSChannelBindingErrorNotAvailable
 	// NotSupported: binding type is not supported on the current connection.
 	// This error could be triggered when requesting `tls-server-end-point`
 	// binding data for a certificate which has no hash function or uses
 	// multiple hash functions.
-	NotSupported
+	TLSChannelBindingErrorNotSupported
 	// GeneralError: any other backend error preventing binding data retrieval.
-	GeneralError
+	TLSChannelBindingErrorGeneralError
 )
 
 func marshalTLSChannelBindingError(p uintptr) (interface{}, error) {
@@ -1138,10 +1138,10 @@ type TLSChannelBindingType int
 const (
 	// Unique: `tls-unique` (https://tools.ietf.org/html/rfc5929#section-3)
 	// binding type
-	Unique TLSChannelBindingType = iota
+	TLSChannelBindingTLSUnique TLSChannelBindingType = iota
 	// ServerEndPoint: `tls-server-end-point`
 	// (https://tools.ietf.org/html/rfc5929#section-4) binding type
-	ServerEndPoint
+	TLSChannelBindingTLSServerEndPoint
 )
 
 func marshalTLSChannelBindingType(p uintptr) (interface{}, error) {
@@ -1156,9 +1156,9 @@ type TLSDatabaseLookupFlags int
 
 const (
 	// None: no lookup flags
-	None TLSDatabaseLookupFlags = iota
+	TLSDatabaseLookupNone TLSDatabaseLookupFlags = iota
 	// Keypair: restrict lookup to certificates that have a private key.
-	Keypair
+	TLSDatabaseLookupKeypair
 )
 
 func marshalTLSDatabaseLookupFlags(p uintptr) (interface{}, error) {
@@ -1171,28 +1171,28 @@ type TLSError int
 
 const (
 	// Unavailable: no TLS provider is available
-	Unavailable TLSError = iota
+	TLSErrorUnavailable TLSError = iota
 	// Misc miscellaneous TLS error
-	Misc
+	TLSErrorMisc
 	// BadCertificate: the certificate presented could not be parsed or failed
 	// validation.
-	BadCertificate
+	TLSErrorBadCertificate
 	// NotTLS: the TLS handshake failed because the peer does not seem to be a
 	// TLS server.
-	NotTLS
+	TLSErrorNotTLS
 	// Handshake: the TLS handshake failed because the peer's certificate was
 	// not acceptable.
-	Handshake
+	TLSErrorHandshake
 	// CertificateRequired: the TLS handshake failed because the server
 	// requested a client-side certificate, but none was provided. See
 	// g_tls_connection_set_certificate().
-	CertificateRequired
+	TLSErrorCertificateRequired
 	// EOF: the TLS connection was closed without proper notice, which may
 	// indicate an attack. See g_tls_connection_set_require_close_notify().
-	EOF
+	TLSErrorEOF
 	// InappropriateFallback: the TLS handshake failed because the client sent
 	// the fallback SCSV, indicating a protocol downgrade attack. Since: 2.60
-	InappropriateFallback
+	TLSErrorInappropriateFallback
 )
 
 func marshalTLSError(p uintptr) (interface{}, error) {
@@ -1205,12 +1205,12 @@ type TLSInteractionResult int
 
 const (
 	// Unhandled: the interaction was unhandled (i.e. not implemented).
-	Unhandled TLSInteractionResult = iota
+	TLSInteractionUnhandled TLSInteractionResult = iota
 	// Handled: the interaction completed, and resulting data is available.
-	Handled
+	TLSInteractionHandled
 	// Failed: the interaction has failed, or was cancelled. and the operation
 	// should be aborted.
-	Failed
+	TLSInteractionFailed
 )
 
 func marshalTLSInteractionResult(p uintptr) (interface{}, error) {
@@ -1225,11 +1225,11 @@ type TLSRehandshakeMode int
 
 const (
 	// Never: never allow rehandshaking
-	Never TLSRehandshakeMode = iota
+	TLSRehandshakeNever TLSRehandshakeMode = iota
 	// Safely: allow safe rehandshaking only
-	Safely
+	TLSRehandshakeSafely
 	// Unsafely: allow unsafe rehandshaking
-	Unsafely
+	TLSRehandshakeUnsafely
 )
 
 func marshalTLSRehandshakeMode(p uintptr) (interface{}, error) {
@@ -1252,16 +1252,16 @@ type UnixSocketAddressType int
 
 const (
 	// Invalid: invalid
-	Invalid UnixSocketAddressType = iota
+	UnixSocketAddressInvalid UnixSocketAddressType = iota
 	// Anonymous: anonymous
-	Anonymous
+	UnixSocketAddressAnonymous
 	// Path: filesystem path
-	Path
+	UnixSocketAddressPath
 	// Abstract name
-	Abstract
+	UnixSocketAddressAbstract
 	// AbstractPadded: abstract name, 0-padded to the full length of a unix
 	// socket name
-	AbstractPadded
+	UnixSocketAddressAbstractPadded
 )
 
 func marshalUnixSocketAddressType(p uintptr) (interface{}, error) {
@@ -1274,11 +1274,11 @@ type ZlibCompressorFormat int
 
 const (
 	// Zlib: deflate compression with zlib header
-	Zlib ZlibCompressorFormat = iota
+	ZlibCompressorFormatZlib ZlibCompressorFormat = iota
 	// Gzip file format
-	Gzip
+	ZlibCompressorFormatGzip
 	// Raw: deflate compression with no header
-	Raw
+	ZlibCompressorFormatRaw
 )
 
 func marshalZlibCompressorFormat(p uintptr) (interface{}, error) {

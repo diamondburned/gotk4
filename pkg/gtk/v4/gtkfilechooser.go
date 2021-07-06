@@ -31,13 +31,13 @@ type FileChooserAction int
 const (
 	// Open indicates open mode. The file chooser will only let the user pick an
 	// existing file.
-	Open FileChooserAction = iota
+	FileChooserActionOpen FileChooserAction = iota
 	// Save indicates save mode. The file chooser will let the user pick an
 	// existing file, or type in a new filename.
-	Save
+	FileChooserActionSave
 	// SelectFolder indicates an Open mode for selecting folders. The file
 	// chooser will let the user pick an existing folder.
-	SelectFolder
+	FileChooserActionSelectFolder
 )
 
 func marshalFileChooserAction(p uintptr) (interface{}, error) {
@@ -50,14 +50,14 @@ type FileChooserError int
 
 const (
 	// Nonexistent indicates that a file does not exist.
-	Nonexistent FileChooserError = iota
+	FileChooserErrorNonexistent FileChooserError = iota
 	// BadFilename indicates a malformed filename.
-	BadFilename
+	FileChooserErrorBadFilename
 	// AlreadyExists indicates a duplicate path (e.g. when adding a bookmark).
-	AlreadyExists
+	FileChooserErrorAlreadyExists
 	// IncompleteHostname indicates an incomplete hostname (e.g. "http://foo"
 	// without a slash after that).
-	IncompleteHostname
+	FileChooserErrorIncompleteHostname
 )
 
 func marshalFileChooserError(p uintptr) (interface{}, error) {

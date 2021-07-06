@@ -7,11 +7,13 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
+	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 //
+// #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
@@ -78,6 +80,13 @@ func (b *BindingArg) Native() unsafe.Pointer {
 	return unsafe.Pointer(&b.native)
 }
 
+// ArgType: implementation detail
+func (b *BindingArg) ArgType() externglib.Type {
+	var v externglib.Type // out
+	v = externglib.Type(b.arg_type)
+	return v
+}
+
 // BindingEntry: each key binding element of a binding sets binding list is
 // represented by a GtkBindingEntry.
 type BindingEntry struct {
@@ -95,6 +104,41 @@ func (b *BindingEntry) Native() unsafe.Pointer {
 	return unsafe.Pointer(&b.native)
 }
 
+// Keyval: key value to match
+func (b *BindingEntry) Keyval() uint {
+	var v uint // out
+	v = uint(b.keyval)
+	return v
+}
+
+// Modifiers: key modifiers to match
+func (b *BindingEntry) Modifiers() gdk.ModifierType {
+	var v gdk.ModifierType // out
+	v = gdk.ModifierType(b.modifiers)
+	return v
+}
+
+// SetNext: linked list of entries maintained by binding set
+func (b *BindingEntry) SetNext() *BindingEntry {
+	var v *BindingEntry // out
+	v = (*BindingEntry)(unsafe.Pointer(b.set_next))
+	return v
+}
+
+// HashNext: implementation detail
+func (b *BindingEntry) HashNext() *BindingEntry {
+	var v *BindingEntry // out
+	v = (*BindingEntry)(unsafe.Pointer(b.hash_next))
+	return v
+}
+
+// Signals: action signals of this entry
+func (b *BindingEntry) Signals() *BindingSignal {
+	var v *BindingSignal // out
+	v = (*BindingSignal)(unsafe.Pointer(b.signals))
+	return v
+}
+
 // BindingSignal stores the necessary information to activate a widget in
 // response to a key press via a signal emission.
 type BindingSignal struct {
@@ -110,4 +154,25 @@ func WrapBindingSignal(ptr unsafe.Pointer) *BindingSignal {
 // Native returns the underlying C source pointer.
 func (b *BindingSignal) Native() unsafe.Pointer {
 	return unsafe.Pointer(&b.native)
+}
+
+// Next: implementation detail
+func (b *BindingSignal) Next() *BindingSignal {
+	var v *BindingSignal // out
+	v = (*BindingSignal)(unsafe.Pointer(b.next))
+	return v
+}
+
+// SignalName: the action signal to be emitted
+func (b *BindingSignal) SignalName() string {
+	var v string // out
+	v = C.GoString(b.signal_name)
+	return v
+}
+
+// NArgs: number of arguments specified for the signal
+func (b *BindingSignal) NArgs() uint {
+	var v uint // out
+	v = uint(b.n_args)
+	return v
 }

@@ -118,6 +118,29 @@ func (t *TargetEntry) Native() unsafe.Pointer {
 	return unsafe.Pointer(&t.native)
 }
 
+// Target: string representation of the target type
+func (t *TargetEntry) Target() string {
+	var v string // out
+	v = C.GoString(t.target)
+	return v
+}
+
+// Flags for DND
+func (t *TargetEntry) Flags() uint {
+	var v uint // out
+	v = uint(t.flags)
+	return v
+}
+
+// Info: application-assigned integer ID which will get passed as a parameter to
+// e.g the Widget::selection-get signal. It allows the application to identify
+// the target type without extensive string compares.
+func (t *TargetEntry) Info() uint {
+	var v uint // out
+	v = uint(t.info)
+	return v
+}
+
 // Copy makes a copy of a TargetEntry and its data.
 func (d *TargetEntry) Copy() *TargetEntry {
 	var _arg0 *C.GtkTargetEntry // out
@@ -309,4 +332,20 @@ func WrapTargetPair(ptr unsafe.Pointer) *TargetPair {
 // Native returns the underlying C source pointer.
 func (t *TargetPair) Native() unsafe.Pointer {
 	return unsafe.Pointer(&t.native)
+}
+
+// Flags for DND
+func (t *TargetPair) Flags() uint {
+	var v uint // out
+	v = uint(t.flags)
+	return v
+}
+
+// Info: application-assigned integer ID which will get passed as a parameter to
+// e.g the Widget::selection-get signal. It allows the application to identify
+// the target type without extensive string compares.
+func (t *TargetPair) Info() uint {
+	var v uint // out
+	v = uint(t.info)
+	return v
 }

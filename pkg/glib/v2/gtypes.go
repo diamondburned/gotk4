@@ -106,6 +106,20 @@ func (t *TimeVal) Native() unsafe.Pointer {
 	return unsafe.Pointer(&t.native)
 }
 
+// TvSec: seconds
+func (t *TimeVal) TvSec() int32 {
+	var v int32 // out
+	v = int32(t.tv_sec)
+	return v
+}
+
+// TvUsec: microseconds
+func (t *TimeVal) TvUsec() int32 {
+	var v int32 // out
+	v = int32(t.tv_usec)
+	return v
+}
+
 // Add adds the given number of microseconds to @time_. @microseconds can also
 // be negative to decrease the value of @time_.
 //

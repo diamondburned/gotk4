@@ -2,6 +2,7 @@ package generators
 
 import (
 	"strconv"
+	"strings"
 	"unicode"
 	"unicode/utf8"
 
@@ -20,9 +21,9 @@ var enumTmpl = gotmpl.NewGoTemplate(`
 		{{ range $ix, $member := .Members }}
 		{{- GoDoc . 1 TrailingNewLine -}}
 		{{- if (eq $ix 0) }}
-		{{- $.FormatMember .Name }} {{ $.GoName }} = iota
+		{{- $.FormatMember $member }} {{ $.GoName }} = iota
 		{{- else }}
-		{{- $.FormatMember .Name }}
+		{{- $.FormatMember $member }}
 		{{- end }}
 		{{ end }}
 	)
@@ -30,7 +31,7 @@ var enumTmpl = gotmpl.NewGoTemplate(`
 	const (
 		{{ range .Members }}
 		{{- GoDoc . 1 TrailingNewLine -}}
-		{{- $.FormatMember .Name }} {{ $.GoName }} = {{ .Value }}
+		{{- $.FormatMember . }} {{ $.GoName }} = {{ .Value }}
 		{{ end -}}
 	)
 	{{ end }}
@@ -61,9 +62,15 @@ var numberMap = map[rune]string{
 	'9': "Nine",
 }
 
-func (eg *enumData) FormatMember(memberName string) string {
-	memberName = strcases.SnakeToGo(true, memberName)
+func (eg *enumData) FormatMember(member gir.Member) string {
+	// Pop the namespace off. Probably works most of the time.
+	if parts := strings.SplitN(member.CIdentifier, "_", 2); len(parts) == 2 {
+		member.CIdentifier = parts[1]
+	}
 
+	memberName := strcases.SnakeToGo(true, strings.ToLower(member.CIdentifier))
+
+	// TODO: prepend GoName instead.
 	r, sz := utf8.DecodeRuneInString(memberName)
 	if sz > 0 && unicode.IsNumber(r) {
 		memberName = numberMap[r] + memberName[sz:]

@@ -35,16 +35,16 @@ type FileChooserAction int
 const (
 	// Open indicates open mode. The file chooser will only let the user pick an
 	// existing file.
-	Open FileChooserAction = iota
+	FileChooserActionOpen FileChooserAction = iota
 	// Save indicates save mode. The file chooser will let the user pick an
 	// existing file, or type in a new filename.
-	Save
+	FileChooserActionSave
 	// SelectFolder indicates an Open mode for selecting folders. The file
 	// chooser will let the user pick an existing folder.
-	SelectFolder
+	FileChooserActionSelectFolder
 	// CreateFolder indicates a mode for creating a new folder. The file chooser
 	// will let the user name an existing or new folder.
-	CreateFolder
+	FileChooserActionCreateFolder
 )
 
 func marshalFileChooserAction(p uintptr) (interface{}, error) {
@@ -60,13 +60,13 @@ type FileChooserConfirmation int
 const (
 	// Confirm: the file chooser will present its stock dialog to confirm about
 	// overwriting an existing file.
-	Confirm FileChooserConfirmation = iota
+	FileChooserConfirmationConfirm FileChooserConfirmation = iota
 	// AcceptFilename: the file chooser will terminate and accept the user’s
 	// choice of a file name.
-	AcceptFilename
+	FileChooserConfirmationAcceptFilename
 	// SelectAgain: the file chooser will continue running, so as to let the
 	// user select another file name.
-	SelectAgain
+	FileChooserConfirmationSelectAgain
 )
 
 func marshalFileChooserConfirmation(p uintptr) (interface{}, error) {
@@ -79,14 +79,14 @@ type FileChooserError int
 
 const (
 	// Nonexistent indicates that a file does not exist.
-	Nonexistent FileChooserError = iota
+	FileChooserErrorNonexistent FileChooserError = iota
 	// BadFilename indicates a malformed filename.
-	BadFilename
+	FileChooserErrorBadFilename
 	// AlreadyExists indicates a duplicate path (e.g. when adding a bookmark).
-	AlreadyExists
+	FileChooserErrorAlreadyExists
 	// IncompleteHostname indicates an incomplete hostname (e.g. "http://foo"
 	// without a slash after that).
-	IncompleteHostname
+	FileChooserErrorIncompleteHostname
 )
 
 func marshalFileChooserError(p uintptr) (interface{}, error) {

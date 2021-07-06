@@ -45,16 +45,16 @@ type WindowPosition int
 
 const (
 	// None: no influence is made on placement.
-	None WindowPosition = iota
+	WinPosNone WindowPosition = iota
 	// Center windows should be placed in the center of the screen.
-	Center
+	WinPosCenter
 	// Mouse windows should be placed at the current mouse position.
-	Mouse
+	WinPosMouse
 	// CenterAlways: keep window centered as it changes size, etc.
-	CenterAlways
+	WinPosCenterAlways
 	// CenterOnParent: center the window on its transient parent (see
 	// gtk_window_set_transient_for()).
-	CenterOnParent
+	WinPosCenterOnParent
 )
 
 func marshalWindowPosition(p uintptr) (interface{}, error) {
@@ -77,9 +77,9 @@ type WindowType int
 
 const (
 	// Toplevel: regular window, such as a dialog.
-	Toplevel WindowType = iota
+	WindowToplevel WindowType = iota
 	// Popup: special window such as a tooltip.
-	Popup
+	WindowPopup
 )
 
 func marshalWindowType(p uintptr) (interface{}, error) {

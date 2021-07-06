@@ -33,7 +33,7 @@ type Colorspace int
 
 const (
 	// RGB indicates a red/green/blue additive color space.
-	RGB Colorspace = iota
+	ColorspaceRGB Colorspace = iota
 )
 
 func marshalColorspace(p uintptr) (interface{}, error) {
@@ -60,10 +60,10 @@ const (
 	// Bilevel clipping mask (black and white) will be created and used to draw
 	// the image. Pixels below 0.5 opacity will be considered fully transparent,
 	// and all others will be considered fully opaque.
-	Bilevel PixbufAlphaMode = iota
+	PixbufAlphaBilevel PixbufAlphaMode = iota
 	// Full: for now falls back to K_PIXBUF_ALPHA_BILEVEL. In the future it will
 	// do full alpha compositing.
-	Full
+	PixbufAlphaFull
 )
 
 func marshalPixbufAlphaMode(p uintptr) (interface{}, error) {
@@ -78,20 +78,20 @@ type PixbufError int
 
 const (
 	// CorruptImage: image file was broken somehow.
-	CorruptImage PixbufError = iota
+	PixbufErrorCorruptImage PixbufError = iota
 	// InsufficientMemory: not enough memory.
-	InsufficientMemory
+	PixbufErrorInsufficientMemory
 	// BadOption: bad option was passed to a pixbuf save module.
-	BadOption
+	PixbufErrorBadOption
 	// UnknownType: unknown image type.
-	UnknownType
+	PixbufErrorUnknownType
 	// UnsupportedOperation: don't know how to perform the given operation on
 	// the type of image at hand.
-	UnsupportedOperation
+	PixbufErrorUnsupportedOperation
 	// Failed: generic failure code, something went wrong.
-	Failed
+	PixbufErrorFailed
 	// IncompleteAnimation: only part of the animation was loaded.
-	IncompleteAnimation
+	PixbufErrorIncompleteAnimation
 )
 
 func marshalPixbufError(p uintptr) (interface{}, error) {

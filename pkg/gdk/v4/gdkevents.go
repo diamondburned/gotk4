@@ -47,28 +47,28 @@ type CrossingMode int
 
 const (
 	// Normal: crossing because of pointer motion.
-	Normal CrossingMode = iota
+	CrossingNormal CrossingMode = iota
 	// Grab: crossing because a grab is activated.
-	Grab
+	CrossingGrab
 	// Ungrab: crossing because a grab is deactivated.
-	Ungrab
+	CrossingUngrab
 	// GTKGrab: crossing because a GTK grab is activated.
-	GTKGrab
+	CrossingGTKGrab
 	// GTKUngrab: crossing because a GTK grab is deactivated.
-	GTKUngrab
+	CrossingGTKUngrab
 	// StateChanged: crossing because a GTK widget changed state (e.g.
 	// sensitivity).
-	StateChanged
+	CrossingStateChanged
 	// TouchBegin: crossing because a touch sequence has begun, this event is
 	// synthetic as the pointer might have not left the surface.
-	TouchBegin
+	CrossingTouchBegin
 	// TouchEnd: crossing because a touch sequence has ended, this event is
 	// synthetic as the pointer might have not left the surface.
-	TouchEnd
+	CrossingTouchEnd
 	// DeviceSwitch: crossing because of a device switch (i.e. a mouse taking
 	// control of the pointer after a touch device), this event is synthetic as
 	// the pointer didn’t leave the surface.
-	DeviceSwitch
+	CrossingDeviceSwitch
 )
 
 func marshalCrossingMode(p uintptr) (interface{}, error) {
@@ -157,12 +157,12 @@ type KeyMatch int
 
 const (
 	// None: the key event does not match
-	None KeyMatch = iota
+	KeyMatchNone KeyMatch = iota
 	// Partial: the key event matches if keyboard state (specifically, the
 	// currently active group) is ignored
-	Partial
+	KeyMatchPartial
 	// Exact: the key event matches
-	Exact
+	KeyMatchExact
 )
 
 func marshalKeyMatch(p uintptr) (interface{}, error) {
@@ -178,22 +178,22 @@ type NotifyType int
 const (
 	// Ancestor: the surface is entered from an ancestor or left towards an
 	// ancestor.
-	Ancestor NotifyType = iota
+	NotifyAncestor NotifyType = iota
 	// Virtual: the pointer moves between an ancestor and an inferior of the
 	// surface.
-	Virtual
+	NotifyVirtual
 	// Inferior: the surface is entered from an inferior or left towards an
 	// inferior.
-	Inferior
+	NotifyInferior
 	// Nonlinear: the surface is entered from or left towards a surface which is
 	// neither an ancestor nor an inferior.
-	Nonlinear
+	NotifyNonlinear
 	// NonlinearVirtual: the pointer moves between two surfaces which are not
 	// ancestors of each other and the surface is part of the ancestor chain
 	// between one of these surfaces and their least common ancestor.
-	NonlinearVirtual
+	NotifyNonlinearVirtual
 	// Unknown type of enter/leave event occurred.
-	Unknown
+	NotifyUnknown
 )
 
 func marshalNotifyType(p uintptr) (interface{}, error) {
@@ -205,16 +205,16 @@ type ScrollDirection int
 
 const (
 	// Up: the surface is scrolled up.
-	Up ScrollDirection = iota
+	ScrollUp ScrollDirection = iota
 	// Down: the surface is scrolled down.
-	Down
+	ScrollDown
 	// Left: the surface is scrolled to the left.
-	Left
+	ScrollLeft
 	// Right: the surface is scrolled to the right.
-	Right
+	ScrollRight
 	// Smooth: the scrolling is determined by the delta values in scroll events.
 	// See gdk_scroll_event_get_deltas()
-	Smooth
+	ScrollSmooth
 )
 
 func marshalScrollDirection(p uintptr) (interface{}, error) {
@@ -242,13 +242,13 @@ type TouchpadGesturePhase int
 
 const (
 	// Begin: the gesture has begun.
-	Begin TouchpadGesturePhase = iota
+	TouchpadGesturePhaseBegin TouchpadGesturePhase = iota
 	// Update: the gesture has been updated.
-	Update
+	TouchpadGesturePhaseUpdate
 	// End: the gesture was finished, changes should be permanently applied.
-	End
+	TouchpadGesturePhaseEnd
 	// Cancel: the gesture was cancelled, all changes should be undone.
-	Cancel
+	TouchpadGesturePhaseCancel
 )
 
 func marshalTouchpadGesturePhase(p uintptr) (interface{}, error) {

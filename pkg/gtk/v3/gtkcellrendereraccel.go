@@ -35,9 +35,9 @@ type CellRendererAccelMode int
 
 const (
 	// GTK: GTK+ accelerators mode
-	GTK CellRendererAccelMode = iota
+	CellRendererAccelModeGTK CellRendererAccelMode = iota
 	// Other: other accelerator mode
-	Other
+	CellRendererAccelModeOther
 )
 
 func marshalCellRendererAccelMode(p uintptr) (interface{}, error) {

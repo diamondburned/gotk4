@@ -3967,3 +3967,21 @@ func WrapFixedChild(ptr unsafe.Pointer) *FixedChild {
 func (f *FixedChild) Native() unsafe.Pointer {
 	return unsafe.Pointer(&f.native)
 }
+
+func (f *FixedChild) Widget() Widget {
+	var v Widget // out
+	v = gextras.CastObject(externglib.Take(unsafe.Pointer(f.widget))).(Widget)
+	return v
+}
+
+func (f *FixedChild) X() int {
+	var v int // out
+	v = int(f.x)
+	return v
+}
+
+func (f *FixedChild) Y() int {
+	var v int // out
+	v = int(f.y)
+	return v
+}

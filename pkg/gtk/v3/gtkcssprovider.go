@@ -31,17 +31,17 @@ type CSSProviderError int
 
 const (
 	// Failed: failed.
-	Failed CSSProviderError = iota
+	CSSProviderErrorFailed CSSProviderError = iota
 	// Syntax: syntax error.
-	Syntax
+	CSSProviderErrorSyntax
 	// Import: import error.
-	Import
+	CSSProviderErrorImport
 	// Name: name error.
-	Name
+	CSSProviderErrorName
 	// Deprecated: deprecation error.
-	Deprecated
+	CSSProviderErrorDeprecated
 	// UnknownValue: unknown value.
-	UnknownValue
+	CSSProviderErrorUnknownValue
 )
 
 func marshalCSSProviderError(p uintptr) (interface{}, error) {

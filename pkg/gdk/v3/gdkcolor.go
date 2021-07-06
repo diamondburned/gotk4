@@ -46,6 +46,36 @@ func (c *Color) Native() unsafe.Pointer {
 	return unsafe.Pointer(&c.native)
 }
 
+// Pixel: for allocated colors, the pixel value used to draw this color on the
+// screen. Not used anymore.
+func (c *Color) Pixel() uint32 {
+	var v uint32 // out
+	v = uint32(c.pixel)
+	return v
+}
+
+// Red: the red component of the color. This is a value between 0 and 65535,
+// with 65535 indicating full intensity
+func (c *Color) Red() uint16 {
+	var v uint16 // out
+	v = uint16(c.red)
+	return v
+}
+
+// Green: the green component of the color
+func (c *Color) Green() uint16 {
+	var v uint16 // out
+	v = uint16(c.green)
+	return v
+}
+
+// Blue: the blue component of the color
+func (c *Color) Blue() uint16 {
+	var v uint16 // out
+	v = uint16(c.blue)
+	return v
+}
+
 // Copy makes a copy of a Color.
 //
 // The result must be freed using gdk_color_free().

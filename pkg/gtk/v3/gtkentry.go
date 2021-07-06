@@ -39,9 +39,9 @@ type EntryIconPosition int
 
 const (
 	// Primary: at the beginning of the entry (depending on the text direction).
-	Primary EntryIconPosition = iota
+	EntryIconPrimary EntryIconPosition = iota
 	// Secondary: at the end of the entry (depending on the text direction).
-	Secondary
+	EntryIconSecondary
 )
 
 func marshalEntryIconPosition(p uintptr) (interface{}, error) {

@@ -59,6 +59,20 @@ func (p *Point) Native() unsafe.Pointer {
 	return unsafe.Pointer(&p.native)
 }
 
+// X: the X coordinate of the point
+func (p *Point) X() float32 {
+	var v float32 // out
+	v = float32(p.x)
+	return v
+}
+
+// Y: the Y coordinate of the point
+func (p *Point) Y() float32 {
+	var v float32 // out
+	v = float32(p.y)
+	return v
+}
+
 // Distance computes the distance between @a and @b.
 func (a *Point) Distance(b *Point) (dX float32, dY float32, gfloat float32) {
 	var _arg0 *C.graphene_point_t // out

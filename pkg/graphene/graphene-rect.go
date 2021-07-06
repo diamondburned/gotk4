@@ -53,6 +53,40 @@ func (r *Rect) Native() unsafe.Pointer {
 	return unsafe.Pointer(&r.native)
 }
 
+// Origin: the coordinates of the origin of the rectangle
+func (r *Rect) Origin() Point {
+	var v Point // out
+	{
+		var refTmpIn *C.graphene_point_t
+		var refTmpOut *Point
+
+		in0 := &r.origin
+		refTmpIn = in0
+
+		refTmpOut = (*Point)(unsafe.Pointer(refTmpIn))
+
+		v = *refTmpOut
+	}
+	return v
+}
+
+// Size: the size of the rectangle
+func (r *Rect) Size() Size {
+	var v Size // out
+	{
+		var refTmpIn *C.graphene_size_t
+		var refTmpOut *Size
+
+		in0 := &r.size
+		refTmpIn = in0
+
+		refTmpOut = (*Size)(unsafe.Pointer(refTmpIn))
+
+		v = *refTmpOut
+	}
+	return v
+}
+
 // ContainsPoint checks whether a #graphene_rect_t contains the given
 // coordinates.
 func (r *Rect) ContainsPoint(p *Point) bool {

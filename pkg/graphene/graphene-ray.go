@@ -27,11 +27,11 @@ type RayIntersectionKind int
 
 const (
 	// None: no intersection
-	None RayIntersectionKind = iota
+	RayIntersectionKindNone RayIntersectionKind = iota
 	// Enter: the ray is entering the intersected object
-	Enter
+	RayIntersectionKindEnter
 	// Leave: the ray is leaving the intersected object
-	Leave
+	RayIntersectionKindLeave
 )
 
 // Ray: ray emitted from an origin in a given direction.

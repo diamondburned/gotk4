@@ -44,6 +44,35 @@ func (r *RGBA) Native() unsafe.Pointer {
 	return unsafe.Pointer(&r.native)
 }
 
+// Red: the intensity of the red channel from 0.0 to 1.0 inclusive
+func (r *RGBA) Red() float64 {
+	var v float64 // out
+	v = float64(r.red)
+	return v
+}
+
+// Green: the intensity of the green channel from 0.0 to 1.0 inclusive
+func (r *RGBA) Green() float64 {
+	var v float64 // out
+	v = float64(r.green)
+	return v
+}
+
+// Blue: the intensity of the blue channel from 0.0 to 1.0 inclusive
+func (r *RGBA) Blue() float64 {
+	var v float64 // out
+	v = float64(r.blue)
+	return v
+}
+
+// Alpha: the opacity of the color from 0.0 for completely translucent to 1.0
+// for opaque
+func (r *RGBA) Alpha() float64 {
+	var v float64 // out
+	v = float64(r.alpha)
+	return v
+}
+
 // Copy makes a copy of a RGBA.
 //
 // The result must be freed through gdk_rgba_free().

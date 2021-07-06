@@ -29,26 +29,26 @@ type URIError int
 const (
 	// Failed: generic error if no more specific error is available. See the
 	// error message for details.
-	Failed URIError = iota
+	URIErrorFailed URIError = iota
 	// BadScheme: the scheme of a URI could not be parsed.
-	BadScheme
+	URIErrorBadScheme
 	// BadUser: the user/userinfo of a URI could not be parsed.
-	BadUser
+	URIErrorBadUser
 	// BadPassword: the password of a URI could not be parsed.
-	BadPassword
+	URIErrorBadPassword
 	// BadAuthParams: the authentication parameters of a URI could not be
 	// parsed.
-	BadAuthParams
+	URIErrorBadAuthParams
 	// BadHost: the host of a URI could not be parsed.
-	BadHost
+	URIErrorBadHost
 	// BadPort: the port of a URI could not be parsed.
-	BadPort
+	URIErrorBadPort
 	// BadPath: the path of a URI could not be parsed.
-	BadPath
+	URIErrorBadPath
 	// BadQuery: the query of a URI could not be parsed.
-	BadQuery
+	URIErrorBadQuery
 	// BadFragment: the fragment of a URI could not be parsed.
-	BadFragment
+	URIErrorBadFragment
 )
 
 // URIFlags flags that describe a URI.

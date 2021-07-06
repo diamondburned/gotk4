@@ -147,11 +147,14 @@ type Field struct {
 	Name     string   `xml:"name,attr"`
 	Bits     int      `xml:"bits,attr"`
 	Private  bool     `xml:"private,attr"`
-	Writable bool     `xml:"writable,attr"`
-	Readable bool     `xml:"readable,attr"`
+	Writable bool     `xml:"writable,attr"` // default false
+	Readable *bool    `xml:"readable,attr"` // default true
 	AnyType
 	Doc *Doc
 }
+
+// IsReadable returns true if the field is readable.
+func (f Field) IsReadable() bool { return f.Readable == nil || *f.Readable }
 
 type Function struct {
 	XMLName xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 function"`
@@ -217,7 +220,7 @@ type Member struct {
 	XMLName     xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 member"`
 	Name        string   `xml:"name,attr"`
 	Value       string   `xml:"value,attr"`
-	CIdentifier string   `xml:"http://www.gtk.org/introspection/c/1.0 identifer,attr"`
+	CIdentifier string   `xml:"http://www.gtk.org/introspection/c/1.0 identifier,attr"`
 	GLibNick    string   `xml:"http://www.gtk.org/introspection/glib/1.0 nick,attr"`
 
 	InfoAttrs

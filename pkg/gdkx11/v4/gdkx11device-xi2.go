@@ -27,9 +27,9 @@ func init() {
 type X11DeviceType int
 
 const (
-	Logical X11DeviceType = iota
-	Physical
-	Floating
+	X11DeviceTypeLogical X11DeviceType = iota
+	X11DeviceTypePhysical
+	X11DeviceTypeFloating
 )
 
 type X11DeviceXI2 interface {

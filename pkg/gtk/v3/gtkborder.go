@@ -62,6 +62,34 @@ func (b *Border) Native() unsafe.Pointer {
 	return unsafe.Pointer(&b.native)
 }
 
+// Left: the width of the left border
+func (b *Border) Left() int16 {
+	var v int16 // out
+	v = int16(b.left)
+	return v
+}
+
+// Right: the width of the right border
+func (b *Border) Right() int16 {
+	var v int16 // out
+	v = int16(b.right)
+	return v
+}
+
+// Top: the width of the top border
+func (b *Border) Top() int16 {
+	var v int16 // out
+	v = int16(b.top)
+	return v
+}
+
+// Bottom: the width of the bottom border
+func (b *Border) Bottom() int16 {
+	var v int16 // out
+	v = int16(b.bottom)
+	return v
+}
+
 // Copy copies a Border-struct.
 func (b *Border) Copy() *Border {
 	var _arg0 *C.GtkBorder // out

@@ -37,3 +37,17 @@ func WrapDBusErrorEntry(ptr unsafe.Pointer) *DBusErrorEntry {
 func (d *DBusErrorEntry) Native() unsafe.Pointer {
 	return unsafe.Pointer(&d.native)
 }
+
+// ErrorCode: error code.
+func (d *DBusErrorEntry) ErrorCode() int {
+	var v int // out
+	v = int(d.error_code)
+	return v
+}
+
+// DBusErrorName: the D-Bus error name to associate with @error_code.
+func (d *DBusErrorEntry) DBusErrorName() string {
+	var v string // out
+	v = C.GoString(d.dbus_error_name)
+	return v
+}

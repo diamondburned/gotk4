@@ -31,15 +31,15 @@ type ChecksumType int
 
 const (
 	// MD5: use the MD5 hashing algorithm
-	MD5 ChecksumType = iota
+	ChecksumMD5 ChecksumType = iota
 	// SHA1: use the SHA-1 hashing algorithm
-	SHA1
+	ChecksumSHA1
 	// SHA256: use the SHA-256 hashing algorithm
-	SHA256
+	ChecksumSHA256
 	// SHA512: use the SHA-512 hashing algorithm (Since: 2.36)
-	SHA512
+	ChecksumSHA512
 	// SHA384: use the SHA-384 hashing algorithm (Since: 2.51)
-	SHA384
+	ChecksumSHA384
 )
 
 // ComputeChecksumForData computes the checksum for a binary @data of @length.

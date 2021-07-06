@@ -31,21 +31,21 @@ type InputSource int
 const (
 	// Mouse: the device is a mouse. (This will be reported for the core
 	// pointer, even if it is something else, such as a trackball.)
-	Mouse InputSource = iota
+	SourceMouse InputSource = iota
 	// Pen: the device is a stylus of a graphics tablet or similar device.
-	Pen
+	SourcePen
 	// Keyboard: the device is a keyboard.
-	Keyboard
+	SourceKeyboard
 	// Touchscreen: the device is a direct-input touch device, such as a
 	// touchscreen or tablet
-	Touchscreen
+	SourceTouchscreen
 	// Touchpad: the device is an indirect touch device, such as a touchpad
-	Touchpad
+	SourceTouchpad
 	// Trackpoint: the device is a trackpoint
-	Trackpoint
+	SourceTrackpoint
 	// TabletPad: the device is a "pad", a collection of buttons, rings and
 	// strips found in drawing tablets
-	TabletPad
+	SourceTabletPad
 )
 
 func marshalInputSource(p uintptr) (interface{}, error) {
@@ -454,4 +454,25 @@ func WrapTimeCoord(ptr unsafe.Pointer) *TimeCoord {
 // Native returns the underlying C source pointer.
 func (t *TimeCoord) Native() unsafe.Pointer {
 	return unsafe.Pointer(&t.native)
+}
+
+// Time: the timestamp for this event.
+func (t *TimeCoord) Time() uint32 {
+	var v uint32 // out
+	v = uint32(t.time)
+	return v
+}
+
+// Flags indicating what axes are present
+func (t *TimeCoord) Flags() AxisFlags {
+	var v AxisFlags // out
+	v = AxisFlags(t.flags)
+	return v
+}
+
+// Axes axis values
+func (t *TimeCoord) Axes() [12]float64 {
+	var v [12]float64
+	v = *(*[12]float64)(unsafe.Pointer(&t.axes))
+	return v
 }

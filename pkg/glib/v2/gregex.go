@@ -29,147 +29,147 @@ type RegexError int
 
 const (
 	// Compile: compilation of the regular expression failed.
-	Compile RegexError = 0
+	RegexErrorCompile RegexError = 0
 	// Optimize: optimization of the regular expression failed.
-	Optimize RegexError = 1
+	RegexErrorOptimize RegexError = 1
 	// Replace: replacement failed due to an ill-formed replacement string.
-	Replace RegexError = 2
+	RegexErrorReplace RegexError = 2
 	// Match: the match process failed.
-	Match RegexError = 3
+	RegexErrorMatch RegexError = 3
 	// Internal: internal error of the regular expression engine. Since 2.16
-	Internal RegexError = 4
+	RegexErrorInternal RegexError = 4
 	// StrayBackslash: "\\" at end of pattern. Since 2.16
-	StrayBackslash RegexError = 101
+	RegexErrorStrayBackslash RegexError = 101
 	// MissingControlChar: "\\c" at end of pattern. Since 2.16
-	MissingControlChar RegexError = 102
+	RegexErrorMissingControlChar RegexError = 102
 	// UnrecognizedEscape: unrecognized character follows "\\". Since 2.16
-	UnrecognizedEscape RegexError = 103
+	RegexErrorUnrecognizedEscape RegexError = 103
 	// QuantifiersOutOfOrder numbers out of order in "{}" quantifier. Since 2.16
-	QuantifiersOutOfOrder RegexError = 104
+	RegexErrorQuantifiersOutOfOrder RegexError = 104
 	// QuantifierTooBig: number too big in "{}" quantifier. Since 2.16
-	QuantifierTooBig RegexError = 105
+	RegexErrorQuantifierTooBig RegexError = 105
 	// UnterminatedCharacterClass: missing terminating "]" for character class.
 	// Since 2.16
-	UnterminatedCharacterClass RegexError = 106
+	RegexErrorUnterminatedCharacterClass RegexError = 106
 	// InvalidEscapeInCharacterClass: invalid escape sequence in character
 	// class. Since 2.16
-	InvalidEscapeInCharacterClass RegexError = 107
+	RegexErrorInvalidEscapeInCharacterClass RegexError = 107
 	// RangeOutOfOrder: range out of order in character class. Since 2.16
-	RangeOutOfOrder RegexError = 108
+	RegexErrorRangeOutOfOrder RegexError = 108
 	// NothingToRepeat: nothing to repeat. Since 2.16
-	NothingToRepeat RegexError = 109
+	RegexErrorNothingToRepeat RegexError = 109
 	// UnrecognizedCharacter: unrecognized character after "(?", "(?<" or "(?P".
 	// Since 2.16
-	UnrecognizedCharacter RegexError = 112
+	RegexErrorUnrecognizedCharacter RegexError = 112
 	// PosixNamedClassOutsideClass: POSIX named classes are supported only
 	// within a class. Since 2.16
-	PosixNamedClassOutsideClass RegexError = 113
+	RegexErrorPosixNamedClassOutsideClass RegexError = 113
 	// UnmatchedParenthesis: missing terminating ")" or ")" without opening "(".
 	// Since 2.16
-	UnmatchedParenthesis RegexError = 114
+	RegexErrorUnmatchedParenthesis RegexError = 114
 	// InexistentSubpatternReference: reference to non-existent subpattern.
 	// Since 2.16
-	InexistentSubpatternReference RegexError = 115
+	RegexErrorInexistentSubpatternReference RegexError = 115
 	// UnterminatedComment: missing terminating ")" after comment. Since 2.16
-	UnterminatedComment RegexError = 118
+	RegexErrorUnterminatedComment RegexError = 118
 	// ExpressionTooLarge: regular expression too large. Since 2.16
-	ExpressionTooLarge RegexError = 120
+	RegexErrorExpressionTooLarge RegexError = 120
 	// MemoryError: failed to get memory. Since 2.16
-	MemoryError RegexError = 121
+	RegexErrorMemoryError RegexError = 121
 	// VariableLengthLookbehind: lookbehind assertion is not fixed length. Since
 	// 2.16
-	VariableLengthLookbehind RegexError = 125
+	RegexErrorVariableLengthLookbehind RegexError = 125
 	// MalformedCondition: malformed number or name after "(?(". Since 2.16
-	MalformedCondition RegexError = 126
+	RegexErrorMalformedCondition RegexError = 126
 	// TooManyConditionalBranches: conditional group contains more than two
 	// branches. Since 2.16
-	TooManyConditionalBranches RegexError = 127
+	RegexErrorTooManyConditionalBranches RegexError = 127
 	// AssertionExpected: assertion expected after "(?(". Since 2.16
-	AssertionExpected RegexError = 128
+	RegexErrorAssertionExpected RegexError = 128
 	// UnknownPosixClassName: unknown POSIX class name. Since 2.16
-	UnknownPosixClassName RegexError = 130
+	RegexErrorUnknownPosixClassName RegexError = 130
 	// PosixCollatingElementsNotSupported: POSIX collating elements are not
 	// supported. Since 2.16
-	PosixCollatingElementsNotSupported RegexError = 131
+	RegexErrorPosixCollatingElementsNotSupported RegexError = 131
 	// HexCodeTooLarge: character value in "\\x{...}" sequence is too large.
 	// Since 2.16
-	HexCodeTooLarge RegexError = 134
+	RegexErrorHexCodeTooLarge RegexError = 134
 	// InvalidCondition: invalid condition "(?(0)". Since 2.16
-	InvalidCondition RegexError = 135
+	RegexErrorInvalidCondition RegexError = 135
 	// SingleByteMatchInLookbehind: \\C not allowed in lookbehind assertion.
 	// Since 2.16
-	SingleByteMatchInLookbehind RegexError = 136
+	RegexErrorSingleByteMatchInLookbehind RegexError = 136
 	// InfiniteLoop: recursive call could loop indefinitely. Since 2.16
-	InfiniteLoop RegexError = 140
+	RegexErrorInfiniteLoop RegexError = 140
 	// MissingSubpatternNameTerminator: missing terminator in subpattern name.
 	// Since 2.16
-	MissingSubpatternNameTerminator RegexError = 142
+	RegexErrorMissingSubpatternNameTerminator RegexError = 142
 	// DuplicateSubpatternName: two named subpatterns have the same name. Since
 	// 2.16
-	DuplicateSubpatternName RegexError = 143
+	RegexErrorDuplicateSubpatternName RegexError = 143
 	// MalformedProperty: malformed "\\P" or "\\p" sequence. Since 2.16
-	MalformedProperty RegexError = 146
+	RegexErrorMalformedProperty RegexError = 146
 	// UnknownProperty: unknown property name after "\\P" or "\\p". Since 2.16
-	UnknownProperty RegexError = 147
+	RegexErrorUnknownProperty RegexError = 147
 	// SubpatternNameTooLong: subpattern name is too long (maximum 32
 	// characters). Since 2.16
-	SubpatternNameTooLong RegexError = 148
+	RegexErrorSubpatternNameTooLong RegexError = 148
 	// TooManySubpatterns: too many named subpatterns (maximum 10,000). Since
 	// 2.16
-	TooManySubpatterns RegexError = 149
+	RegexErrorTooManySubpatterns RegexError = 149
 	// InvalidOctalValue: octal value is greater than "\\377". Since 2.16
-	InvalidOctalValue RegexError = 151
+	RegexErrorInvalidOctalValue RegexError = 151
 	// TooManyBranchesInDefine: "DEFINE" group contains more than one branch.
 	// Since 2.16
-	TooManyBranchesInDefine RegexError = 154
+	RegexErrorTooManyBranchesInDefine RegexError = 154
 	// DefineRepetion: repeating a "DEFINE" group is not allowed. This error is
 	// never raised. Since: 2.16 Deprecated: 2.34
-	DefineRepetion RegexError = 155
+	RegexErrorDefineRepetion RegexError = 155
 	// InconsistentNewlineOptions: inconsistent newline options. Since 2.16
-	InconsistentNewlineOptions RegexError = 156
+	RegexErrorInconsistentNewlineOptions RegexError = 156
 	// MissingBackReference: "\\g" is not followed by a braced, angle-bracketed,
 	// or quoted name or number, or by a plain number. Since: 2.16
-	MissingBackReference RegexError = 157
+	RegexErrorMissingBackReference RegexError = 157
 	// InvalidRelativeReference: relative reference must not be zero. Since:
 	// 2.34
-	InvalidRelativeReference RegexError = 158
+	RegexErrorInvalidRelativeReference RegexError = 158
 	// BacktrackingControlVerbArgumentForbidden: the backtracing control verb
 	// used does not allow an argument. Since: 2.34
-	BacktrackingControlVerbArgumentForbidden RegexError = 159
+	RegexErrorBacktrackingControlVerbArgumentForbidden RegexError = 159
 	// UnknownBacktrackingControlVerb: unknown backtracing control verb. Since:
 	// 2.34
-	UnknownBacktrackingControlVerb RegexError = 160
+	RegexErrorUnknownBacktrackingControlVerb RegexError = 160
 	// NumberTooBig: number is too big in escape sequence. Since: 2.34
-	NumberTooBig RegexError = 161
+	RegexErrorNumberTooBig RegexError = 161
 	// MissingSubpatternName: missing subpattern name. Since: 2.34
-	MissingSubpatternName RegexError = 162
+	RegexErrorMissingSubpatternName RegexError = 162
 	// MissingDigit: missing digit. Since 2.34
-	MissingDigit RegexError = 163
+	RegexErrorMissingDigit RegexError = 163
 	// InvalidDataCharacter: in JavaScript compatibility mode, "[" is an invalid
 	// data character. Since: 2.34
-	InvalidDataCharacter RegexError = 164
+	RegexErrorInvalidDataCharacter RegexError = 164
 	// ExtraSubpatternName: different names for subpatterns of the same number
 	// are not allowed. Since: 2.34
-	ExtraSubpatternName RegexError = 165
+	RegexErrorExtraSubpatternName RegexError = 165
 	// BacktrackingControlVerbArgumentRequired: the backtracing control verb
 	// requires an argument. Since: 2.34
-	BacktrackingControlVerbArgumentRequired RegexError = 166
+	RegexErrorBacktrackingControlVerbArgumentRequired RegexError = 166
 	// InvalidControlChar: "\\c" must be followed by an ASCII character. Since:
 	// 2.34
-	InvalidControlChar RegexError = 168
+	RegexErrorInvalidControlChar RegexError = 168
 	// MissingName: "\\k" is not followed by a braced, angle-bracketed, or
 	// quoted name. Since: 2.34
-	MissingName RegexError = 169
+	RegexErrorMissingName RegexError = 169
 	// NotSupportedInClass: "\\N" is not supported in a class. Since: 2.34
-	NotSupportedInClass RegexError = 171
+	RegexErrorNotSupportedInClass RegexError = 171
 	// TooManyForwardReferences: too many forward references. Since: 2.34
-	TooManyForwardReferences RegexError = 172
+	RegexErrorTooManyForwardReferences RegexError = 172
 	// NameTooLong: the name is too long in "(*MARK)", "(*PRUNE)", "(*SKIP)", or
 	// "(*THEN)". Since: 2.34
-	NameTooLong RegexError = 175
+	RegexErrorNameTooLong RegexError = 175
 	// CharacterValueTooLarge: the character value in the \\u sequence is too
 	// large. Since: 2.34
-	CharacterValueTooLarge RegexError = 176
+	RegexErrorCharacterValueTooLarge RegexError = 176
 )
 
 // RegexCompileFlags flags specifying compile-time options.

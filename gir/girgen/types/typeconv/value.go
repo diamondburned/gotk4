@@ -121,7 +121,7 @@ func NewFieldValue(recv, out string, field gir.Field) ConversionValue {
 		ParameterIndex: UnknownValueIndex,
 		ParameterAttrs: gir.ParameterAttrs{
 			Name:    field.Name,
-			Skip:    field.Private || !field.Readable || field.Bits > 0,
+			Skip:    field.Private || !field.IsReadable() || field.Bits > 0,
 			AnyType: field.AnyType,
 			Doc:     field.Doc,
 		},

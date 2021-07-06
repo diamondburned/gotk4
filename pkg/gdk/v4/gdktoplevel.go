@@ -34,9 +34,9 @@ type FullscreenMode int
 
 const (
 	// CurrentMonitor: fullscreen on current monitor only.
-	CurrentMonitor FullscreenMode = iota
+	FullscreenOnCurrentMonitor FullscreenMode = iota
 	// AllMonitors: span across all monitors when fullscreen.
-	AllMonitors
+	FullscreenOnAllMonitors
 )
 
 func marshalFullscreenMode(p uintptr) (interface{}, error) {
@@ -48,21 +48,21 @@ type SurfaceEdge int
 
 const (
 	// NorthWest: the top left corner.
-	NorthWest SurfaceEdge = iota
+	SurfaceEdgeNorthWest SurfaceEdge = iota
 	// North: the top edge.
-	North
+	SurfaceEdgeNorth
 	// NorthEast: the top right corner.
-	NorthEast
+	SurfaceEdgeNorthEast
 	// West: the left edge.
-	West
+	SurfaceEdgeWest
 	// East: the right edge.
-	East
+	SurfaceEdgeEast
 	// SouthWest: the lower left corner.
-	SouthWest
+	SurfaceEdgeSouthWest
 	// South: the lower edge.
-	South
+	SurfaceEdgeSouth
 	// SouthEast: the lower right corner.
-	SouthEast
+	SurfaceEdgeSouthEast
 )
 
 func marshalSurfaceEdge(p uintptr) (interface{}, error) {

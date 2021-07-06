@@ -42,17 +42,17 @@ type IconViewDropPosition int
 
 const (
 	// NoDrop: no drop possible
-	NoDrop IconViewDropPosition = iota
+	IconViewNoDrop IconViewDropPosition = iota
 	// DropInto: dropped item replaces the item
-	DropInto
+	IconViewDropInto
 	// DropLeft: droppped item is inserted to the left
-	DropLeft
+	IconViewDropLeft
 	// DropRight: dropped item is inserted to the right
-	DropRight
+	IconViewDropRight
 	// DropAbove: dropped item is inserted above
-	DropAbove
+	IconViewDropAbove
 	// DropBelow: dropped item is inserted below
-	DropBelow
+	IconViewDropBelow
 )
 
 func marshalIconViewDropPosition(p uintptr) (interface{}, error) {

@@ -426,3 +426,39 @@ func WrapFileFilterInfo(ptr unsafe.Pointer) *FileFilterInfo {
 func (f *FileFilterInfo) Native() unsafe.Pointer {
 	return unsafe.Pointer(&f.native)
 }
+
+// Contains flags indicating which of the following fields need are filled
+func (f *FileFilterInfo) Contains() FileFilterFlags {
+	var v FileFilterFlags // out
+	v = FileFilterFlags(f.contains)
+	return v
+}
+
+// Filename: the filename of the file being tested
+func (f *FileFilterInfo) Filename() string {
+	var v string // out
+	v = C.GoString(f.filename)
+	return v
+}
+
+// URI: the URI for the file being tested
+func (f *FileFilterInfo) URI() string {
+	var v string // out
+	v = C.GoString(f.uri)
+	return v
+}
+
+// DisplayName: the string that will be used to display the file in the file
+// chooser
+func (f *FileFilterInfo) DisplayName() string {
+	var v string // out
+	v = C.GoString(f.display_name)
+	return v
+}
+
+// MIMEType: the mime type of the file
+func (f *FileFilterInfo) MIMEType() string {
+	var v string // out
+	v = C.GoString(f.mime_type)
+	return v
+}

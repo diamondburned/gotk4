@@ -90,15 +90,15 @@ type Align int
 const (
 	// Fill: stretch to fill all space if possible, center if no meaningful way
 	// to stretch
-	Fill Align = iota
+	AlignFill Align = iota
 	// Start: snap to left or top side, leaving space on right or bottom
-	Start
+	AlignStart
 	// End: snap to right or bottom side, leaving space on left or top
-	End
+	AlignEnd
 	// Center natural width of widget inside the allocation
-	Center
+	AlignCenter
 	// Baseline: align the widget according to the baseline. Since 3.10.
-	Baseline
+	AlignBaseline
 )
 
 func marshalAlign(p uintptr) (interface{}, error) {
@@ -110,15 +110,15 @@ type ArrowType int
 
 const (
 	// Up represents an upward pointing arrow.
-	Up ArrowType = iota
+	ArrowUp ArrowType = iota
 	// Down represents a downward pointing arrow.
-	Down
+	ArrowDown
 	// Left represents a left pointing arrow.
-	Left
+	ArrowLeft
 	// Right represents a right pointing arrow.
-	Right
+	ArrowRight
 	// None: no arrow. Since 2.10.
-	None
+	ArrowNone
 )
 
 func marshalArrowType(p uintptr) (interface{}, error) {
@@ -134,11 +134,11 @@ type BaselinePosition int
 
 const (
 	// Top: align the baseline at the top
-	Top BaselinePosition = iota
+	BaselinePositionTop BaselinePosition = iota
 	// Center: center the baseline
-	Center
+	BaselinePositionCenter
 	// Bottom: align the baseline at the bottom
-	Bottom
+	BaselinePositionBottom
 )
 
 func marshalBaselinePosition(p uintptr) (interface{}, error) {
@@ -150,25 +150,25 @@ type BorderStyle int
 
 const (
 	// None: no visible border
-	None BorderStyle = iota
+	BorderStyleNone BorderStyle = iota
 	// Solid: single line segment
-	Solid
+	BorderStyleSolid
 	// Inset looks as if the content is sunken into the canvas
-	Inset
+	BorderStyleInset
 	// Outset looks as if the content is coming out of the canvas
-	Outset
+	BorderStyleOutset
 	// Hidden: same as @GTK_BORDER_STYLE_NONE
-	Hidden
+	BorderStyleHidden
 	// Dotted series of round dots
-	Dotted
+	BorderStyleDotted
 	// Dashed series of square-ended dashes
-	Dashed
+	BorderStyleDashed
 	// Double: two parallel lines with some space between them
-	Double
+	BorderStyleDouble
 	// Groove looks as if it were carved in the canvas
-	Groove
+	BorderStyleGroove
 	// Ridge looks as if it were coming out of the canvas
-	Ridge
+	BorderStyleRidge
 )
 
 func marshalBorderStyle(p uintptr) (interface{}, error) {
@@ -180,26 +180,26 @@ type DeleteType int
 
 const (
 	// Chars: delete characters.
-	Chars DeleteType = iota
+	DeleteChars DeleteType = iota
 	// WordEnds: delete only the portion of the word to the left/right of cursor
 	// if we’re in the middle of a word.
-	WordEnds
+	DeleteWordEnds
 	// Words: delete words.
-	Words
+	DeleteWords
 	// DisplayLines: delete display-lines. Display-lines refers to the visible
 	// lines, with respect to to the current line breaks. As opposed to
 	// paragraphs, which are defined by line breaks in the input.
-	DisplayLines
+	DeleteDisplayLines
 	// DisplayLineEnds: delete only the portion of the display-line to the
 	// left/right of cursor.
-	DisplayLineEnds
+	DeleteDisplayLineEnds
 	// ParagraphEnds: delete to the end of the paragraph. Like C-k in Emacs (or
 	// its reverse).
-	ParagraphEnds
+	DeleteParagraphEnds
 	// Paragraphs: delete entire line. Like C-k in pico.
-	Paragraphs
+	DeleteParagraphs
 	// Whitespace: delete only whitespace. Like M-\ in Emacs.
-	Whitespace
+	DeleteWhitespace
 )
 
 func marshalDeleteType(p uintptr) (interface{}, error) {
@@ -211,17 +211,17 @@ type DirectionType int
 
 const (
 	// TabForward: move forward.
-	TabForward DirectionType = iota
+	DirTabForward DirectionType = iota
 	// TabBackward: move backward.
-	TabBackward
+	DirTabBackward
 	// Up: move up.
-	Up
+	DirUp
 	// Down: move down.
-	Down
+	DirDown
 	// Left: move left.
-	Left
+	DirLeft
 	// Right: move right.
-	Right
+	DirRight
 )
 
 func marshalDirectionType(p uintptr) (interface{}, error) {
@@ -234,18 +234,18 @@ type DragResult int
 
 const (
 	// Success: the drag operation was successful.
-	Success DragResult = iota
+	DragResultSuccess DragResult = iota
 	// NoTarget: no suitable drag target.
-	NoTarget
+	DragResultNoTarget
 	// UserCancelled: the user cancelled the drag operation.
-	UserCancelled
+	DragResultUserCancelled
 	// TimeoutExpired: the drag operation timed out.
-	TimeoutExpired
+	DragResultTimeoutExpired
 	// GrabBroken: the pointer or keyboard grab used for the drag operation was
 	// broken.
-	GrabBroken
+	DragResultGrabBroken
 	// Error: the drag operation failed due to some unspecified error.
-	Error
+	DragResultError
 )
 
 func marshalDragResult(p uintptr) (interface{}, error) {
@@ -257,11 +257,11 @@ type EventSequenceState int
 
 const (
 	// None: the sequence is handled, but not grabbed.
-	None EventSequenceState = iota
+	EventSequenceNone EventSequenceState = iota
 	// Claimed: the sequence is handled and grabbed.
-	Claimed
+	EventSequenceClaimed
 	// Denied: the sequence is denied.
-	Denied
+	EventSequenceDenied
 )
 
 func marshalEventSequenceState(p uintptr) (interface{}, error) {
@@ -276,11 +276,11 @@ type IMPreeditStyle int
 
 const (
 	// Nothing: deprecated
-	Nothing IMPreeditStyle = iota
+	ImPreeditNothing IMPreeditStyle = iota
 	// Callback: deprecated
-	Callback
+	ImPreeditCallback
 	// None: deprecated
-	None
+	ImPreeditNone
 )
 
 func marshalIMPreeditStyle(p uintptr) (interface{}, error) {
@@ -295,11 +295,11 @@ type IMStatusStyle int
 
 const (
 	// Nothing: deprecated
-	Nothing IMStatusStyle = iota
+	ImStatusNothing IMStatusStyle = iota
 	// Callback: deprecated
-	Callback
+	ImStatusCallback
 	// None: deprecated
-	None
+	ImStatusNone
 )
 
 func marshalIMStatusStyle(p uintptr) (interface{}, error) {
@@ -311,19 +311,19 @@ type IconSize int
 
 const (
 	// Invalid: invalid size.
-	Invalid IconSize = iota
+	IconSizeInvalid IconSize = iota
 	// Menu: size appropriate for menus (16px).
-	Menu
+	IconSizeMenu
 	// SmallToolbar: size appropriate for small toolbars (16px).
-	SmallToolbar
+	IconSizeSmallToolbar
 	// LargeToolbar: size appropriate for large toolbars (24px)
-	LargeToolbar
+	IconSizeLargeToolbar
 	// Button: size appropriate for buttons (16px)
-	Button
+	IconSizeButton
 	// Dnd: size appropriate for drag and drop (32px)
-	Dnd
+	IconSizeDnd
 	// Dialog: size appropriate for dialogs (48px)
-	Dialog
+	IconSizeDialog
 )
 
 func marshalIconSize(p uintptr) (interface{}, error) {
@@ -351,27 +351,27 @@ type InputPurpose int
 
 const (
 	// FreeForm: allow any character
-	FreeForm InputPurpose = iota
+	InputPurposeFreeForm InputPurpose = iota
 	// Alpha: allow only alphabetic characters
-	Alpha
+	InputPurposeAlpha
 	// Digits: allow only digits
-	Digits
+	InputPurposeDigits
 	// Number: edited field expects numbers
-	Number
+	InputPurposeNumber
 	// Phone: edited field expects phone number
-	Phone
+	InputPurposePhone
 	// URL: edited field expects URL
-	URL
+	InputPurposeURL
 	// Email: edited field expects email address
-	Email
+	InputPurposeEmail
 	// Name: edited field expects the name of a person
-	Name
+	InputPurposeName
 	// Password: like @GTK_INPUT_PURPOSE_FREE_FORM, but characters are hidden
-	Password
+	InputPurposePassword
 	// Pin: like @GTK_INPUT_PURPOSE_DIGITS, but characters are hidden
-	Pin
+	InputPurposePin
 	// Terminal: allow any character, in addition to control codes
-	Terminal
+	InputPurposeTerminal
 )
 
 func marshalInputPurpose(p uintptr) (interface{}, error) {
@@ -384,13 +384,13 @@ type Justification int
 
 const (
 	// Left: the text is placed at the left edge of the label.
-	Left Justification = iota
+	JustifyLeft Justification = iota
 	// Right: the text is placed at the right edge of the label.
-	Right
+	JustifyRight
 	// Center: the text is placed in the center of the label.
-	Center
+	JustifyCenter
 	// Fill: the text is placed is distributed across the label.
-	Fill
+	JustifyFill
 )
 
 func marshalJustification(p uintptr) (interface{}, error) {
@@ -403,9 +403,9 @@ type LevelBarMode int
 
 const (
 	// Continuous: the bar has a continuous mode
-	Continuous LevelBarMode = iota
+	LevelBarModeContinuous LevelBarMode = iota
 	// Discrete: the bar has a discrete mode
-	Discrete
+	LevelBarModeDiscrete
 )
 
 func marshalLevelBarMode(p uintptr) (interface{}, error) {
@@ -418,13 +418,13 @@ type MenuDirectionType int
 
 const (
 	// Parent: to the parent menu shell
-	Parent MenuDirectionType = iota
+	MenuDirParent MenuDirectionType = iota
 	// Child: to the submenu, if any, associated with the item
-	Child
+	MenuDirChild
 	// Next: to the next menu item
-	Next
+	MenuDirNext
 	// Prev: to the previous menu item
-	Prev
+	MenuDirPrev
 )
 
 func marshalMenuDirectionType(p uintptr) (interface{}, error) {
@@ -436,15 +436,15 @@ type MessageType int
 
 const (
 	// Info: informational message
-	Info MessageType = iota
+	MessageInfo MessageType = iota
 	// Warning: non-fatal warning message
-	Warning
+	MessageWarning
 	// Question: question requiring a choice
-	Question
+	MessageQuestion
 	// Error: fatal error message
-	Error
+	MessageError
 	// Other: none of the above
-	Other
+	MessageOther
 )
 
 func marshalMessageType(p uintptr) (interface{}, error) {
@@ -457,21 +457,21 @@ type NumberUpLayout int
 
 const (
 	// Lrtb: ! (layout-lrtb.png)
-	Lrtb NumberUpLayout = iota
+	NumberUpLayoutLeftToRightTopToBottom NumberUpLayout = iota
 	// Lrbt: ! (layout-lrbt.png)
-	Lrbt
+	NumberUpLayoutLeftToRightBottomToTop
 	// Rltb: ! (layout-rltb.png)
-	Rltb
+	NumberUpLayoutRightToLeftTopToBottom
 	// Rlbt: ! (layout-rlbt.png)
-	Rlbt
+	NumberUpLayoutRightToLeftBottomToTop
 	// Tblr: ! (layout-tblr.png)
-	Tblr
+	NumberUpLayoutTopToBottomLeftToRight
 	// Tbrl: ! (layout-tbrl.png)
-	Tbrl
+	NumberUpLayoutTopToBottomRightToLeft
 	// Btlr: ! (layout-btlr.png)
-	Btlr
+	NumberUpLayoutBottomToTopLeftToRight
 	// Btrl: ! (layout-btrl.png)
-	Btrl
+	NumberUpLayoutBottomToTopRightToLeft
 )
 
 func marshalNumberUpLayout(p uintptr) (interface{}, error) {
@@ -485,9 +485,9 @@ type Orientation int
 
 const (
 	// Horizontal: the element is in horizontal orientation.
-	Horizontal Orientation = iota
+	OrientationHorizontal Orientation = iota
 	// Vertical: the element is in vertical orientation.
-	Vertical
+	OrientationVertical
 )
 
 func marshalOrientation(p uintptr) (interface{}, error) {
@@ -500,13 +500,13 @@ type PackDirection int
 
 const (
 	// LTR widgets are packed left-to-right
-	LTR PackDirection = iota
+	PackDirectionLTR PackDirection = iota
 	// RTL widgets are packed right-to-left
-	RTL
+	PackDirectionRTL
 	// Ttb widgets are packed top-to-bottom
-	Ttb
+	PackDirectionTtb
 	// Btt widgets are packed bottom-to-top
-	Btt
+	PackDirectionBtt
 )
 
 func marshalPackDirection(p uintptr) (interface{}, error) {
@@ -519,9 +519,9 @@ type PackType int
 
 const (
 	// Start: the child is packed into the start of the box
-	Start PackType = iota
+	PackStart PackType = iota
 	// End: the child is packed into the end of the box
-	End
+	PackEnd
 )
 
 func marshalPackType(p uintptr) (interface{}, error) {
@@ -533,13 +533,13 @@ type PageOrientation int
 
 const (
 	// Portrait: portrait mode.
-	Portrait PageOrientation = iota
+	PageOrientationPortrait PageOrientation = iota
 	// Landscape: landscape mode.
-	Landscape
+	PageOrientationLandscape
 	// ReversePortrait: reverse portrait mode.
-	ReversePortrait
+	PageOrientationReversePortrait
 	// ReverseLandscape: reverse landscape mode.
-	ReverseLandscape
+	PageOrientationReverseLandscape
 )
 
 func marshalPageOrientation(p uintptr) (interface{}, error) {
@@ -551,11 +551,11 @@ type PageSet int
 
 const (
 	// All: all pages.
-	All PageSet = iota
+	PageSetAll PageSet = iota
 	// Even: even pages.
-	Even
+	PageSetEven
 	// Odd: odd pages.
-	Odd
+	PageSetOdd
 )
 
 func marshalPageSet(p uintptr) (interface{}, error) {
@@ -567,13 +567,13 @@ type PanDirection int
 
 const (
 	// Left: panned towards the left
-	Left PanDirection = iota
+	PanDirectionLeft PanDirection = iota
 	// Right: panned towards the right
-	Right
+	PanDirectionRight
 	// Up: panned upwards
-	Up
+	PanDirectionUp
 	// Down: panned downwards
-	Down
+	PanDirectionDown
 )
 
 func marshalPanDirection(p uintptr) (interface{}, error) {
@@ -587,10 +587,10 @@ type PopoverConstraint int
 const (
 	// None: don't constrain the popover position beyond what is imposed by the
 	// implementation
-	None PopoverConstraint = iota
+	PopoverConstraintNone PopoverConstraint = iota
 	// Window: constrain the popover to the boundaries of the window that it is
 	// attached to
-	Window
+	PopoverConstraintWindow
 )
 
 func marshalPopoverConstraint(p uintptr) (interface{}, error) {
@@ -604,13 +604,13 @@ type PositionType int
 
 const (
 	// Left: the feature is at the left edge.
-	Left PositionType = iota
+	PosLeft PositionType = iota
 	// Right: the feature is at the right edge.
-	Right
+	PosRight
 	// Top: the feature is at the top edge.
-	Top
+	PosTop
 	// Bottom: the feature is at the bottom edge.
-	Bottom
+	PosBottom
 )
 
 func marshalPositionType(p uintptr) (interface{}, error) {
@@ -622,11 +622,11 @@ type PrintDuplex int
 
 const (
 	// Simplex: no duplex.
-	Simplex PrintDuplex = iota
+	PrintDuplexSimplex PrintDuplex = iota
 	// Horizontal: horizontal duplex.
-	Horizontal
+	PrintDuplexHorizontal
 	// Vertical: vertical duplex.
-	Vertical
+	PrintDuplexVertical
 )
 
 func marshalPrintDuplex(p uintptr) (interface{}, error) {
@@ -638,13 +638,13 @@ type PrintPages int
 
 const (
 	// All: all pages.
-	All PrintPages = iota
+	PrintPagesAll PrintPages = iota
 	// Current: current page.
-	Current
+	PrintPagesCurrent
 	// Ranges: range of pages.
-	Ranges
+	PrintPagesRanges
 	// Selection: selected pages.
-	Selection
+	PrintPagesSelection
 )
 
 func marshalPrintPages(p uintptr) (interface{}, error) {
@@ -656,13 +656,13 @@ type PrintQuality int
 
 const (
 	// Low: low quality.
-	Low PrintQuality = iota
+	PrintQualityLow PrintQuality = iota
 	// Normal: normal quality.
-	Normal
+	PrintQualityNormal
 	// High: high quality.
-	High
+	PrintQualityHigh
 	// Draft: draft quality.
-	Draft
+	PrintQualityDraft
 )
 
 func marshalPrintQuality(p uintptr) (interface{}, error) {
@@ -678,20 +678,20 @@ const (
 	// through gtk_event_controller_handle_event(). This should only be used
 	// when full control about when, or whether the controller handles the event
 	// is needed.
-	None PropagationPhase = iota
+	PhaseNone PropagationPhase = iota
 	// Capture events are delivered in the capture phase. The capture phase
 	// happens before the bubble phase, runs from the toplevel down to the event
 	// widget. This option should only be used on containers that might possibly
 	// handle events before their children do.
-	Capture
+	PhaseCapture
 	// Bubble events are delivered in the bubble phase. The bubble phase happens
 	// after the capture phase, and before the default handlers are run. This
 	// phase runs from the event widget, up to the toplevel.
-	Bubble
+	PhaseBubble
 	// Target events are delivered in the default widget event handlers, note
 	// that widget implementations must chain up on button, motion, touch and
 	// grab broken handlers for controllers in this phase to be run.
-	Target
+	PhaseTarget
 )
 
 func marshalPropagationPhase(p uintptr) (interface{}, error) {
@@ -703,11 +703,11 @@ type ReliefStyle int
 
 const (
 	// Normal: draw a normal relief.
-	Normal ReliefStyle = iota
+	ReliefNormal ReliefStyle = iota
 	// Half relief. Deprecated in 3.14, does the same as @GTK_RELIEF_NORMAL
-	Half
+	ReliefHalf
 	// None: no relief.
-	None
+	ReliefNone
 )
 
 func marshalReliefStyle(p uintptr) (interface{}, error) {
@@ -719,37 +719,37 @@ type ScrollType int
 
 const (
 	// None: no scrolling.
-	None ScrollType = iota
+	ScrollNone ScrollType = iota
 	// Jump: jump to new location.
-	Jump
+	ScrollJump
 	// StepBackward: step backward.
-	StepBackward
+	ScrollStepBackward
 	// StepForward: step forward.
-	StepForward
+	ScrollStepForward
 	// PageBackward: page backward.
-	PageBackward
+	ScrollPageBackward
 	// PageForward: page forward.
-	PageForward
+	ScrollPageForward
 	// StepUp: step up.
-	StepUp
+	ScrollStepUp
 	// StepDown: step down.
-	StepDown
+	ScrollStepDown
 	// PageUp: page up.
-	PageUp
+	ScrollPageUp
 	// PageDown: page down.
-	PageDown
+	ScrollPageDown
 	// StepLeft: step to the left.
-	StepLeft
+	ScrollStepLeft
 	// StepRight: step to the right.
-	StepRight
+	ScrollStepRight
 	// PageLeft: page to the left.
-	PageLeft
+	ScrollPageLeft
 	// PageRight: page to the right.
-	PageRight
+	ScrollPageRight
 	// Start: scroll to start.
-	Start
+	ScrollStart
 	// End: scroll to end.
-	End
+	ScrollEnd
 )
 
 func marshalScrollType(p uintptr) (interface{}, error) {
@@ -762,9 +762,9 @@ type ScrollablePolicy int
 
 const (
 	// Minimum: scrollable adjustments are based on the minimum size
-	Minimum ScrollablePolicy = iota
+	ScrollMinimum ScrollablePolicy = iota
 	// Natural: scrollable adjustments are based on the natural size
-	Natural
+	ScrollNatural
 )
 
 func marshalScrollablePolicy(p uintptr) (interface{}, error) {
@@ -776,20 +776,20 @@ type SelectionMode int
 
 const (
 	// None: no selection is possible.
-	None SelectionMode = iota
+	SelectionNone SelectionMode = iota
 	// Single: zero or one element may be selected.
-	Single
+	SelectionSingle
 	// Browse: exactly one element is selected. In some circumstances, such as
 	// initially or during a search operation, it’s possible for no element to
 	// be selected with GTK_SELECTION_BROWSE. What is really enforced is that
 	// the user can’t deselect a currently selected element except by selecting
 	// another element.
-	Browse
+	SelectionBrowse
 	// Multiple: any number of elements may be selected. The Ctrl key may be
 	// used to enlarge the selection, and Shift key to select between the focus
 	// and the child pointed to. Some widgets may also allow Click-drag to
 	// select a range of elements.
-	Multiple
+	SelectionMultiple
 )
 
 func marshalSelectionMode(p uintptr) (interface{}, error) {
@@ -802,11 +802,11 @@ type SensitivityType int
 
 const (
 	// Auto: the arrow is made insensitive if the thumb is at the end
-	Auto SensitivityType = iota
+	SensitivityAuto SensitivityType = iota
 	// On: the arrow is always sensitive
-	On
+	SensitivityOn
 	// Off: the arrow is always insensitive
-	Off
+	SensitivityOff
 )
 
 func marshalSensitivityType(p uintptr) (interface{}, error) {
@@ -823,15 +823,15 @@ type ShadowType int
 
 const (
 	// None: no outline.
-	None ShadowType = iota
+	ShadowNone ShadowType = iota
 	// In: the outline is bevelled inwards.
-	In
+	ShadowIn
 	// Out: the outline is bevelled outwards like a button.
-	Out
+	ShadowOut
 	// EtchedIn: the outline has a sunken 3d appearance.
-	EtchedIn
+	ShadowEtchedIn
 	// EtchedOut: the outline has a raised 3d appearance.
-	EtchedOut
+	ShadowEtchedOut
 )
 
 func marshalShadowType(p uintptr) (interface{}, error) {
@@ -844,13 +844,13 @@ type SizeGroupMode int
 
 const (
 	// None: group has no effect
-	None SizeGroupMode = iota
+	SizeGroupNone SizeGroupMode = iota
 	// Horizontal: group affects horizontal requisition
-	Horizontal
+	SizeGroupHorizontal
 	// Vertical: group affects vertical requisition
-	Vertical
+	SizeGroupVertical
 	// Both: group affects both horizontal and vertical requisition
-	Both
+	SizeGroupBoth
 )
 
 func marshalSizeGroupMode(p uintptr) (interface{}, error) {
@@ -863,11 +863,11 @@ type SizeRequestMode int
 
 const (
 	// HeightForWidth: prefer height-for-width geometry management
-	HeightForWidth SizeRequestMode = iota
+	SizeRequestHeightForWidth SizeRequestMode = iota
 	// WidthForHeight: prefer width-for-height geometry management
-	WidthForHeight
+	SizeRequestWidthForHeight
 	// ConstantSize: don’t trade height-for-width or width-for-height
-	ConstantSize
+	SizeRequestConstantSize
 )
 
 func marshalSizeRequestMode(p uintptr) (interface{}, error) {
@@ -879,9 +879,9 @@ type SortType int
 
 const (
 	// Ascending: sorting is in ascending order.
-	Ascending SortType = iota
+	SortAscending SortType = iota
 	// Descending: sorting is in descending order.
-	Descending
+	SortDescending
 )
 
 func marshalSortType(p uintptr) (interface{}, error) {
@@ -898,23 +898,23 @@ type StateType int
 
 const (
 	// Normal: state during normal operation.
-	Normal StateType = iota
+	StateNormal StateType = iota
 	// Active: state of a currently active widget, such as a depressed button.
-	Active
+	StateActive
 	// Prelight: state indicating that the mouse pointer is over the widget and
 	// the widget will respond to mouse clicks.
-	Prelight
+	StatePrelight
 	// Selected: state of a selected item, such the selected row in a list.
-	Selected
+	StateSelected
 	// Insensitive: state indicating that the widget is unresponsive to user
 	// actions.
-	Insensitive
+	StateInsensitive
 	// Inconsistent: the widget is inconsistent, such as checkbuttons or
 	// radiobuttons that aren’t either set to true nor false, or buttons
 	// requiring the user attention.
-	Inconsistent
+	StateInconsistent
 	// Focused: the widget has the keyboard focus.
-	Focused
+	StateFocused
 )
 
 func marshalStateType(p uintptr) (interface{}, error) {
@@ -926,11 +926,11 @@ type TextDirection int
 
 const (
 	// None: no direction.
-	None TextDirection = iota
+	TextDirNone TextDirection = iota
 	// LTR: left to right text direction.
-	LTR
+	TextDirLTR
 	// RTL: right to left text direction.
-	RTL
+	TextDirRTL
 )
 
 func marshalTextDirection(p uintptr) (interface{}, error) {
@@ -945,14 +945,14 @@ type ToolbarStyle int
 
 const (
 	// Icons buttons display only icons in the toolbar.
-	Icons ToolbarStyle = iota
+	ToolbarIcons ToolbarStyle = iota
 	// Text buttons display only text labels in the toolbar.
-	Text
+	ToolbarText
 	// Both buttons display text and icons in the toolbar.
-	Both
+	ToolbarBoth
 	// BothHoriz buttons display icons and text alongside each other, rather
 	// than vertically stacked
-	BothHoriz
+	ToolbarBothHoriz
 )
 
 func marshalToolbarStyle(p uintptr) (interface{}, error) {
@@ -964,13 +964,13 @@ type TreeViewGridLines int
 
 const (
 	// None: no grid lines.
-	None TreeViewGridLines = iota
+	TreeViewGridLinesNone TreeViewGridLines = iota
 	// Horizontal: horizontal grid lines.
-	Horizontal
+	TreeViewGridLinesHorizontal
 	// Vertical: vertical grid lines.
-	Vertical
+	TreeViewGridLinesVertical
 	// Both: horizontal and vertical grid lines.
-	Both
+	TreeViewGridLinesBoth
 )
 
 func marshalTreeViewGridLines(p uintptr) (interface{}, error) {
@@ -982,13 +982,13 @@ type Unit int
 
 const (
 	// None: no units.
-	None Unit = iota
+	UnitNone Unit = iota
 	// Points dimensions in points.
-	Points
+	UnitPoints
 	// Inch dimensions in inches.
-	Inch
+	UnitInch
 	// Mm dimensions in millimeters
-	Mm
+	UnitMm
 )
 
 func marshalUnit(p uintptr) (interface{}, error) {
@@ -1000,16 +1000,16 @@ type WrapMode int
 
 const (
 	// None: do not wrap lines; just make the text area wider
-	None WrapMode = iota
+	WrapNone WrapMode = iota
 	// Char: wrap text, breaking lines anywhere the cursor can appear (between
 	// characters, usually - if you want to be technical, between graphemes, see
 	// pango_get_log_attrs())
-	Char
+	WrapChar
 	// Word: wrap text, breaking lines in between words
-	Word
+	WrapWord
 	// WordChar: wrap text, breaking lines in between words, or if that is not
 	// enough, also between graphemes
-	WordChar
+	WrapWordChar
 )
 
 func marshalWrapMode(p uintptr) (interface{}, error) {

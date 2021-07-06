@@ -31,26 +31,26 @@ type ScrollType int
 const (
 	// TopLeft: scroll the object vertically and horizontally to bring its top
 	// left corner to the top left corner of the window.
-	TopLeft ScrollType = iota
+	ScrollTopLeft ScrollType = iota
 	// BottomRight: scroll the object vertically and horizontally to bring its
 	// bottom right corner to the bottom right corner of the window.
-	BottomRight
+	ScrollBottomRight
 	// TopEdge: scroll the object vertically to bring its top edge to the top
 	// edge of the window.
-	TopEdge
+	ScrollTopEdge
 	// BottomEdge: scroll the object vertically to bring its bottom edge to the
 	// bottom edge of the window.
-	BottomEdge
+	ScrollBottomEdge
 	// LeftEdge: scroll the object vertically and horizontally to bring its left
 	// edge to the left edge of the window.
-	LeftEdge
+	ScrollLeftEdge
 	// RightEdge: scroll the object vertically and horizontally to bring its
 	// right edge to the right edge of the window.
-	RightEdge
+	ScrollRightEdge
 	// Anywhere: scroll the object vertically and horizontally so that as much
 	// as possible of the object becomes visible. The exact placement is
 	// determined by the application.
-	Anywhere
+	ScrollAnywhere
 )
 
 func marshalScrollType(p uintptr) (interface{}, error) {
@@ -544,4 +544,32 @@ func marshalRectangle(p uintptr) (interface{}, error) {
 // Native returns the underlying C source pointer.
 func (r *Rectangle) Native() unsafe.Pointer {
 	return unsafe.Pointer(&r.native)
+}
+
+// X coordinate of the left side of the rectangle.
+func (r *Rectangle) X() int {
+	var v int // out
+	v = int(r.x)
+	return v
+}
+
+// Y coordinate of the top side of the rectangle.
+func (r *Rectangle) Y() int {
+	var v int // out
+	v = int(r.y)
+	return v
+}
+
+// Width: width of the rectangle.
+func (r *Rectangle) Width() int {
+	var v int // out
+	v = int(r.width)
+	return v
+}
+
+// Height: height of the rectangle.
+func (r *Rectangle) Height() int {
+	var v int // out
+	v = int(r.height)
+	return v
 }

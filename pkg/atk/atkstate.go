@@ -28,7 +28,7 @@ type StateType int
 
 const (
 	// Invalid indicates an invalid state - probably an error condition.
-	Invalid StateType = iota
+	StateInvalid StateType = iota
 	// Active indicates a window is currently the active window, or an object is
 	// the active subelement within a container or table. ATK_STATE_ACTIVE
 	// should not be used for objects which have ATK_STATE_FOCUSABLE or
@@ -36,81 +36,81 @@ const (
 	// ATK_STATE_SELECTED respectively. ATK_STATE_ACTIVE is a means to indicate
 	// that an object which is not focusable and not selectable is the
 	// currently-active item within its parent container.
-	Active
+	StateActive
 	// Armed indicates that the object is 'armed', i.e. will be activated by if
 	// a pointer button-release event occurs within its bounds. Buttons often
 	// enter this state when a pointer click occurs within their bounds, as a
 	// precursor to activation. ATK_STATE_ARMED has been deprecated since
 	// ATK-2.16 and should not be used in newly-written code.
-	Armed
+	StateArmed
 	// Busy indicates the current object is busy, i.e. onscreen representation
 	// is in the process of changing, or the object is temporarily unavailable
 	// for interaction due to activity already in progress. This state may be
 	// used by implementors of Document to indicate that content loading is
 	// underway. It also may indicate other 'pending' conditions; clients may
 	// wish to interrogate this object when the ATK_STATE_BUSY flag is removed.
-	Busy
+	StateBusy
 	// Checked indicates this object is currently checked, for instance a
 	// checkbox is 'non-empty'.
-	Checked
+	StateChecked
 	// Defunct indicates that this object no longer has a valid backing widget
 	// (for instance, if its peer object has been destroyed)
-	Defunct
+	StateDefunct
 	// Editable indicates that this object can contain text, and that the user
 	// can change the textual contents of this object by editing those contents
 	// directly. For an object which is expected to be editable due to its type,
 	// but which cannot be edited due to the application or platform preventing
 	// the user from doing so, that object's StateSet should lack
 	// ATK_STATE_EDITABLE and should contain ATK_STATE_READ_ONLY.
-	Editable
+	StateEditable
 	// Enabled indicates that this object is enabled, i.e. that it currently
 	// reflects some application state. Objects that are "greyed out" may lack
 	// this state, and may lack the STATE_SENSITIVE if direct user interaction
 	// cannot cause them to acquire STATE_ENABLED. See also: ATK_STATE_SENSITIVE
-	Enabled
+	StateEnabled
 	// Expandable indicates this object allows progressive disclosure of its
 	// children
-	Expandable
+	StateExpandable
 	// Expanded indicates this object its expanded - see ATK_STATE_EXPANDABLE
 	// above
-	Expanded
+	StateExpanded
 	// Focusable indicates this object can accept keyboard focus, which means
 	// all events resulting from typing on the keyboard will normally be passed
 	// to it when it has focus
-	Focusable
+	StateFocusable
 	// Focused indicates this object currently has the keyboard focus
-	Focused
+	StateFocused
 	// Horizontal indicates the orientation of this object is horizontal; used,
 	// for instance, by objects of ATK_ROLE_SCROLL_BAR. For objects where
 	// vertical/horizontal orientation is especially meaningful.
-	Horizontal
+	StateHorizontal
 	// Iconified indicates this object is minimized and is represented only by
 	// an icon
-	Iconified
+	StateIconified
 	// Modal indicates something must be done with this object before the user
 	// can interact with an object in a different window
-	Modal
+	StateModal
 	// MultiLine indicates this (text) object can contain multiple lines of text
-	MultiLine
+	StateMultiLine
 	// Multiselectable indicates this object allows more than one of its
 	// children to be selected at the same time, or in the case of text objects,
 	// that the object supports non-contiguous text selections.
-	Multiselectable
+	StateMultiselectable
 	// Opaque indicates this object paints every pixel within its rectangular
 	// region.
-	Opaque
+	StateOpaque
 	// Pressed indicates this object is currently pressed.
-	Pressed
+	StatePressed
 	// Resizable indicates the size of this object is not fixed
-	Resizable
+	StateResizable
 	// Selectable indicates this object is the child of an object that allows
 	// its children to be selected and that this child is one of those children
 	// that can be selected
-	Selectable
+	StateSelectable
 	// Selected indicates this object is the child of an object that allows its
 	// children to be selected and that this child is one of those children that
 	// has been selected
-	Selected
+	StateSelected
 	// Sensitive indicates this object is sensitive, e.g. to user interaction.
 	// STATE_SENSITIVE usually accompanies STATE_ENABLED for user-actionable
 	// controls, but may be found in the absence of STATE_ENABLED if the current
@@ -119,29 +119,29 @@ const (
 	// object gaining STATE_SENSITIVE, for instance if a user makes an explicit
 	// selection using an object whose current state is ambiguous or undefined.
 	// @see STATE_ENABLED, STATE_INDETERMINATE.
-	Sensitive
+	StateSensitive
 	// Showing indicates this object, the object's parent, the object's parent's
 	// parent, and so on, are all 'shown' to the end-user, i.e. subject to
 	// "exposure" if blocking or obscuring objects do not interpose between this
 	// object and the top of the window stack.
-	Showing
+	StateShowing
 	// SingleLine indicates this (text) object can contain only a single line of
 	// text
-	SingleLine
+	StateSingleLine
 	// Stale indicates that the information returned for this object may no
 	// longer be synchronized with the application state. This is implied if the
 	// object has STATE_TRANSIENT, and can also occur towards the end of the
 	// object peer's lifecycle. It can also be used to indicate that the index
 	// associated with this object has changed since the user accessed the
 	// object (in lieu of "index-in-parent-changed" events).
-	Stale
+	StateStale
 	// Transient indicates this object is transient, i.e. a snapshot which may
 	// not emit events when its state changes. Data from objects with
 	// ATK_STATE_TRANSIENT should not be cached, since there may be no
 	// notification given when the cached data becomes obsolete.
-	Transient
+	StateTransient
 	// Vertical indicates the orientation of this object is vertical
-	Vertical
+	StateVertical
 	// Visible indicates this object is visible, e.g. has been explicitly marked
 	// for exposure to the user. **note**: ATK_STATE_VISIBLE is no guarantee
 	// that the object is actually unobscured on the screen, only that it is
@@ -155,7 +155,7 @@ const (
 	// which means that its contents are clipped, e.g. a truncated spreadsheet
 	// cell or an image within a scrolling viewport. Mostly useful for
 	// screen-review and magnification algorithms.
-	Visible
+	StateVisible
 	// ManagesDescendants indicates that "active-descendant-changed" event is
 	// sent when children become 'active' (i.e. are selected or navigated to
 	// onscreen). Used to prevent need to enumerate all children in very large
@@ -166,7 +166,7 @@ const (
 	// notifications of visibility changes and activation of their contained
 	// child objects, without the client having previously requested references
 	// to those children.
-	ManagesDescendants
+	StateManagesDescendants
 	// Indeterminate indicates that the value, or some other quantifiable
 	// property, of this AtkObject cannot be fully determined. In the case of a
 	// large data set in which the total number of items in that set is unknown
@@ -174,18 +174,18 @@ const (
 	// (999) along with this state. In the case of a check box, this state
 	// should be used to indicate that the check box is a tri-state check box
 	// which is currently neither checked nor unchecked.
-	Indeterminate
+	StateIndeterminate
 	// Truncated indicates that an object is truncated, e.g. a text value in a
 	// speradsheet cell.
-	Truncated
+	StateTruncated
 	// Required indicates that explicit user interaction with an object is
 	// required by the user interface, e.g. a required field in a "web-form"
 	// interface.
-	Required
+	StateRequired
 	// InvalidEntry indicates that the object has encountered an error condition
 	// due to failure of input validation. For instance, a form control may
 	// acquire this state in response to invalid or malformed user input.
-	InvalidEntry
+	StateInvalidEntry
 	// SupportsAutocompletion indicates that the object in question implements
 	// some form of ¨typeahead¨ or pre-selection behavior whereby entering the
 	// first character of one or more sub-elements causes those elements to
@@ -196,18 +196,18 @@ const (
 	// in full or partial ¨completion¨ of the data in the input field, in which
 	// case these input events may trigger text-changed events from the AtkText
 	// interface. This state supplants @ATK_ROLE_AUTOCOMPLETE.
-	SupportsAutocompletion
+	StateSupportsAutocompletion
 	// SelectableText indicates that the object in question supports text
 	// selection. It should only be exposed on objects which implement the Text
 	// interface, in order to distinguish this state from @ATK_STATE_SELECTABLE,
 	// which infers that the object in question is a selectable child of an
 	// object which implements Selection. While similar, text selection and
 	// subelement selection are distinct operations.
-	SelectableText
+	StateSelectableText
 	// Default indicates that the object is the "default" active component, i.e.
 	// the object which is activated by an end-user press of the "Enter" or
 	// "Return" key. Typically a "close" or "submit" button.
-	Default
+	StateDefault
 	// Animated indicates that the object changes its appearance dynamically as
 	// an inherent part of its presentation. This state may come and go if an
 	// object is only temporarily animated on the way to a 'final' onscreen
@@ -215,21 +215,21 @@ const (
 	// not be able to detect all kinds of animated content. Therefore the
 	// absence of this state should not be taken as definitive evidence that the
 	// object's visual representation is static; this state is advisory.
-	Animated
+	StateAnimated
 	// Visited indicates that the object (typically a hyperlink) has already
 	// been 'activated', and/or its backing data has already been downloaded,
 	// rendered, or otherwise "visited".
-	Visited
+	StateVisited
 	// Checkable indicates this object has the potential to be checked, such as
 	// a checkbox or toggle-able table cell. @Since: ATK-2.12
-	Checkable
+	StateCheckable
 	// HasPopup indicates that the object has a popup context menu or sub-level
 	// menu which may or may not be showing. This means that activation renders
 	// conditional content. Note that ordinary tooltips are not considered
 	// popups in this context. @Since: ATK-2.12
-	HasPopup
+	StateHasPopup
 	// HasTooltip indicates this object has a tooltip. @Since: ATK-2.16
-	HasTooltip
+	StateHasTooltip
 	// ReadOnly indicates that a widget which is ENABLED and SENSITIVE has a
 	// value which can be read, but not modified, by the user. Note that this
 	// state should only be applied to widget types whose value is normally
@@ -239,9 +239,9 @@ const (
 	// expected interaction with a widget does not include modification by the
 	// user, as is the case with labels and containers, ATK_STATE_READ_ONLY
 	// should not be applied. See also ATK_STATE_EDITABLE. @Since: ATK-2-16
-	ReadOnly
+	StateReadOnly
 	// LastDefined: not a valid state, used for finding end of enumeration
-	LastDefined
+	StateLastDefined
 )
 
 func marshalStateType(p uintptr) (interface{}, error) {

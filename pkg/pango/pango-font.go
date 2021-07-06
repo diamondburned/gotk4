@@ -38,23 +38,23 @@ type Stretch int
 
 const (
 	// UltraCondensed: ultra condensed width
-	UltraCondensed Stretch = iota
+	StretchUltraCondensed Stretch = iota
 	// ExtraCondensed: extra condensed width
-	ExtraCondensed
+	StretchExtraCondensed
 	// Condensed width
-	Condensed
+	StretchCondensed
 	// SemiCondensed: semi condensed width
-	SemiCondensed
+	StretchSemiCondensed
 	// Normal: the normal width
-	Normal
+	StretchNormal
 	// SemiExpanded: semi expanded width
-	SemiExpanded
+	StretchSemiExpanded
 	// Expanded width
-	Expanded
+	StretchExpanded
 	// ExtraExpanded: extra expanded width
-	ExtraExpanded
+	StretchExtraExpanded
 	// UltraExpanded: ultra expanded width
-	UltraExpanded
+	StretchUltraExpanded
 )
 
 func marshalStretch(p uintptr) (interface{}, error) {
@@ -66,11 +66,11 @@ type Style int
 
 const (
 	// Normal: the font is upright.
-	Normal Style = iota
+	StyleNormal Style = iota
 	// Oblique: the font is slanted, but in a roman style.
-	Oblique
+	StyleOblique
 	// Italic: the font is slanted in an italic style.
-	Italic
+	StyleItalic
 )
 
 func marshalStyle(p uintptr) (interface{}, error) {
@@ -82,10 +82,10 @@ type Variant int
 
 const (
 	// Normal font.
-	Normal Variant = iota
+	VariantNormal Variant = iota
 	// SmallCaps: font with the lower case characters replaced by smaller
 	// variants of the capital characters.
-	SmallCaps
+	VariantSmallCaps
 )
 
 func marshalVariant(p uintptr) (interface{}, error) {
@@ -100,29 +100,29 @@ type Weight int
 
 const (
 	// Thin: the thin weight (= 100; Since: 1.24)
-	Thin Weight = 100
+	WeightThin Weight = 100
 	// Ultralight: the ultralight weight (= 200)
-	Ultralight Weight = 200
+	WeightUltralight Weight = 200
 	// Light: the light weight (= 300)
-	Light Weight = 300
+	WeightLight Weight = 300
 	// Semilight: the semilight weight (= 350; Since: 1.36.7)
-	Semilight Weight = 350
+	WeightSemilight Weight = 350
 	// Book: the book weight (= 380; Since: 1.24)
-	Book Weight = 380
+	WeightBook Weight = 380
 	// Normal: the default weight (= 400)
-	Normal Weight = 400
+	WeightNormal Weight = 400
 	// Medium: the normal weight (= 500; Since: 1.24)
-	Medium Weight = 500
+	WeightMedium Weight = 500
 	// Semibold: the semibold weight (= 600)
-	Semibold Weight = 600
+	WeightSemibold Weight = 600
 	// Bold: the bold weight (= 700)
-	Bold Weight = 700
+	WeightBold Weight = 700
 	// Ultrabold: the ultrabold weight (= 800)
-	Ultrabold Weight = 800
+	WeightUltrabold Weight = 800
 	// Heavy: the heavy weight (= 900)
-	Heavy Weight = 900
+	WeightHeavy Weight = 900
 	// Ultraheavy: the ultraheavy weight (= 1000; Since: 1.24)
-	Ultraheavy Weight = 1000
+	WeightUltraheavy Weight = 1000
 )
 
 func marshalWeight(p uintptr) (interface{}, error) {

@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/box"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -30,30 +31,30 @@ type OptionArg int
 
 const (
 	// None: no extra argument. This is useful for simple flags.
-	None OptionArg = iota
+	OptionArgNone OptionArg = iota
 	// String: the option takes a UTF-8 string argument.
-	String
+	OptionArgString
 	// Int: the option takes an integer argument.
-	Int
+	OptionArgInt
 	// Callback: the option provides a callback (of type ArgFunc) to parse the
 	// extra argument.
-	Callback
+	OptionArgCallback
 	// Filename: the option takes a filename as argument, which will be in the
 	// GLib filename encoding rather than UTF-8.
-	Filename
+	OptionArgFilename
 	// StringArray: the option takes a string argument, multiple uses of the
 	// option are collected into an array of strings.
-	StringArray
+	OptionArgStringArray
 	// FilenameArray: the option takes a filename as argument, multiple uses of
 	// the option are collected into an array of strings.
-	FilenameArray
+	OptionArgFilenameArray
 	// Double: the option takes a double argument. The argument can be formatted
 	// either for the user's locale or for the "C" locale. Since 2.12
-	Double
+	OptionArgDouble
 	// Int64: the option takes a 64-bit integer. Like G_OPTION_ARG_INT but for
 	// larger numbers. The number can be in decimal base, or in hexadecimal
 	// (when prefixed with `0x`, for example, `0xffffffff`). Since 2.12
-	Int64
+	OptionArgInt64
 )
 
 // OptionError: error codes returned by option parsing.
@@ -63,11 +64,11 @@ const (
 	// UnknownOption: option was not known to the parser. This error will only
 	// be reported, if the parser hasn't been instructed to ignore unknown
 	// options, see g_option_context_set_ignore_unknown_options().
-	UnknownOption OptionError = iota
+	OptionErrorUnknownOption OptionError = iota
 	// BadValue: value couldn't be parsed.
-	BadValue
+	OptionErrorBadValue
 	// Failed callback failed.
-	Failed
+	OptionErrorFailed
 )
 
 // OptionFlags flags which modify individual options.
@@ -121,6 +122,75 @@ func WrapOptionEntry(ptr unsafe.Pointer) *OptionEntry {
 // Native returns the underlying C source pointer.
 func (o *OptionEntry) Native() unsafe.Pointer {
 	return unsafe.Pointer(&o.native)
+}
+
+// LongName: the long name of an option can be used to specify it in a
+// commandline as `--long_name`. Every option must have a long name. To resolve
+// conflicts if multiple option groups contain the same long name, it is also
+// possible to specify the option as `--groupname-long_name`.
+func (o *OptionEntry) LongName() string {
+	var v string // out
+	v = C.GoString(o.long_name)
+	return v
+}
+
+// ShortName: if an option has a short name, it can be specified `-short_name`
+// in a commandline. @short_name must be a printable ASCII character different
+// from '-', or zero if the option has no short name.
+func (o *OptionEntry) ShortName() byte {
+	var v byte // out
+	v = byte(o.short_name)
+	return v
+}
+
+// Flags from Flags
+func (o *OptionEntry) Flags() int {
+	var v int // out
+	v = int(o.flags)
+	return v
+}
+
+// Arg: the type of the option, as a Arg
+func (o *OptionEntry) Arg() OptionArg {
+	var v OptionArg // out
+	v = OptionArg(o.arg)
+	return v
+}
+
+// ArgData: if the @arg type is G_OPTION_ARG_CALLBACK, then @arg_data must point
+// to a ArgFunc callback function, which will be called to handle the extra
+// argument. Otherwise, @arg_data is a pointer to a location to store the value,
+// the required type of the location depends on the @arg type: -
+// G_OPTION_ARG_NONE: gboolean - G_OPTION_ARG_STRING: gchar* - G_OPTION_ARG_INT:
+// gint - G_OPTION_ARG_FILENAME: gchar* - G_OPTION_ARG_STRING_ARRAY: gchar** -
+// G_OPTION_ARG_FILENAME_ARRAY: gchar** - G_OPTION_ARG_DOUBLE: gdouble If @arg
+// type is G_OPTION_ARG_STRING or G_OPTION_ARG_FILENAME, the location will
+// contain a newly allocated string if the option was given. That string needs
+// to be freed by the callee using g_free(). Likewise if @arg type is
+// G_OPTION_ARG_STRING_ARRAY or G_OPTION_ARG_FILENAME_ARRAY, the data should be
+// freed using g_strfreev().
+func (o *OptionEntry) ArgData() interface{} {
+	var v interface{} // out
+	v = box.Get(uintptr(o.arg_data))
+	return v
+}
+
+// Description: the description for the option in `--help` output. The
+// @description is translated using the @translate_func of the group, see
+// g_option_group_set_translation_domain().
+func (o *OptionEntry) Description() string {
+	var v string // out
+	v = C.GoString(o.description)
+	return v
+}
+
+// ArgDescription: the placeholder to use for the extra argument parsed by the
+// option in `--help` output. The @arg_description is translated using the
+// @translate_func of the group, see g_option_group_set_translation_domain().
+func (o *OptionEntry) ArgDescription() string {
+	var v string // out
+	v = C.GoString(o.arg_description)
+	return v
 }
 
 // OptionGroup: `GOptionGroup` struct defines the options in a single group. The

@@ -35,9 +35,9 @@ type NotebookTab int
 
 const (
 	// First: the first tab in the notebook
-	First NotebookTab = iota
+	NotebookTabFirst NotebookTab = iota
 	// Last: the last tab in the notebook
-	Last
+	NotebookTabLast
 )
 
 func marshalNotebookTab(p uintptr) (interface{}, error) {

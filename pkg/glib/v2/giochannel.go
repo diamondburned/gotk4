@@ -28,23 +28,23 @@ type IOChannelError int
 
 const (
 	// Fbig: file too large.
-	Fbig IOChannelError = iota
+	IOChannelErrorFbig IOChannelError = iota
 	// Inval: invalid argument.
-	Inval
+	IOChannelErrorInval
 	// IO: IO error.
-	IO
+	IOChannelErrorIO
 	// Isdir: file is a directory.
-	Isdir
+	IOChannelErrorIsdir
 	// Nospc: no space left on device.
-	Nospc
+	IOChannelErrorNospc
 	// Nxio: no such device or address.
-	Nxio
+	IOChannelErrorNxio
 	// Overflow: value too large for defined datatype.
-	Overflow
+	IOChannelErrorOverflow
 	// Pipe: broken pipe.
-	Pipe
+	IOChannelErrorPipe
 	// Failed: some other error.
-	Failed
+	IOChannelErrorFailed
 )
 
 // IOError is only used by the deprecated functions g_io_channel_read(),
@@ -53,13 +53,13 @@ type IOError int
 
 const (
 	// None: no error
-	None IOError = iota
+	IOErrorNone IOError = iota
 	// Again: EAGAIN error occurred
-	Again
+	IOErrorAgain
 	// Inval: EINVAL error occurred
-	Inval
+	IOErrorInval
 	// Unknown: another error occurred
-	Unknown
+	IOErrorUnknown
 )
 
 // IOStatus statuses returned by most of the OFuncs functions.
@@ -67,13 +67,13 @@ type IOStatus int
 
 const (
 	// Error occurred.
-	Error IOStatus = iota
+	IOStatusError IOStatus = iota
 	// Normal: success.
-	Normal
+	IOStatusNormal
 	// EOF: end of file.
-	EOF
+	IOStatusEOF
 	// Again: resource temporarily unavailable.
-	Again
+	IOStatusAgain
 )
 
 // SeekType: enumeration specifying the base position for a
@@ -82,11 +82,11 @@ type SeekType int
 
 const (
 	// Cur: the current position in the file.
-	Cur SeekType = iota
+	SeekCur SeekType = iota
 	// Set: the start of the file.
-	Set
+	SeekSet
 	// End: the end of the file.
-	End
+	SeekEnd
 )
 
 // IOFlags specifies properties of a OChannel. Some of the flags can only be

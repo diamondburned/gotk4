@@ -46,27 +46,27 @@ type ResponseType int
 const (
 	// None: returned if an action widget has no response id, or if the dialog
 	// gets programmatically hidden or destroyed
-	None ResponseType = -1
+	ResponseNone ResponseType = -1
 	// Reject: generic response id, not used by GTK+ dialogs
-	Reject ResponseType = -2
+	ResponseReject ResponseType = -2
 	// Accept: generic response id, not used by GTK+ dialogs
-	Accept ResponseType = -3
+	ResponseAccept ResponseType = -3
 	// DeleteEvent: returned if the dialog is deleted
-	DeleteEvent ResponseType = -4
+	ResponseDeleteEvent ResponseType = -4
 	// Ok: returned by OK buttons in GTK+ dialogs
-	Ok ResponseType = -5
+	ResponseOk ResponseType = -5
 	// Cancel: returned by Cancel buttons in GTK+ dialogs
-	Cancel ResponseType = -6
+	ResponseCancel ResponseType = -6
 	// Close: returned by Close buttons in GTK+ dialogs
-	Close ResponseType = -7
+	ResponseClose ResponseType = -7
 	// Yes: returned by Yes buttons in GTK+ dialogs
-	Yes ResponseType = -8
+	ResponseYes ResponseType = -8
 	// No: returned by No buttons in GTK+ dialogs
-	No ResponseType = -9
+	ResponseNo ResponseType = -9
 	// Apply: returned by Apply buttons in GTK+ dialogs
-	Apply ResponseType = -10
+	ResponseApply ResponseType = -10
 	// Help: returned by Help buttons in GTK+ dialogs
-	Help ResponseType = -11
+	ResponseHelp ResponseType = -11
 )
 
 func marshalResponseType(p uintptr) (interface{}, error) {

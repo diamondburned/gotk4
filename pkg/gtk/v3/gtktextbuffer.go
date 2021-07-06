@@ -37,11 +37,11 @@ type TextBufferTargetInfo int
 
 const (
 	// BufferContents: buffer contents
-	BufferContents TextBufferTargetInfo = -1
+	TextBufferTargetInfoBufferContents TextBufferTargetInfo = -1
 	// RichText: rich text
-	RichText TextBufferTargetInfo = -2
+	TextBufferTargetInfoRichText TextBufferTargetInfo = -2
 	// Text: text
-	Text TextBufferTargetInfo = -3
+	TextBufferTargetInfoText TextBufferTargetInfo = -3
 )
 
 func marshalTextBufferTargetInfo(p uintptr) (interface{}, error) {

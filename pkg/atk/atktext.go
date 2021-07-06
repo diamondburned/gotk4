@@ -32,87 +32,87 @@ type TextAttribute int
 
 const (
 	// Invalid: invalid attribute, like bad spelling or grammar.
-	Invalid TextAttribute = iota
+	TextAttrInvalid TextAttribute = iota
 	// LeftMargin: the pixel width of the left margin
-	LeftMargin
+	TextAttrLeftMargin
 	// RightMargin: the pixel width of the right margin
-	RightMargin
+	TextAttrRightMargin
 	// Indent: the number of pixels that the text is indented
-	Indent
+	TextAttrIndent
 	// Invisible: either "true" or "false" indicating whether text is visible or
 	// not
-	Invisible
+	TextAttrInvisible
 	// Editable: either "true" or "false" indicating whether text is editable or
 	// not
-	Editable
+	TextAttrEditable
 	// PixelsAboveLines pixels of blank space to leave above each
 	// newline-terminated line.
-	PixelsAboveLines
+	TextAttrPixelsAboveLines
 	// PixelsBelowLines pixels of blank space to leave below each
 	// newline-terminated line.
-	PixelsBelowLines
+	TextAttrPixelsBelowLines
 	// PixelsInsideWrap pixels of blank space to leave between wrapped lines
 	// inside the same newline-terminated line (paragraph).
-	PixelsInsideWrap
+	TextAttrPixelsInsideWrap
 	// BgFullHeight: "true" or "false" whether to make the background color for
 	// each character the height of the highest font used on the current line,
 	// or the height of the font used for the current character.
-	BgFullHeight
+	TextAttrBgFullHeight
 	// Rise: number of pixels that the characters are risen above the baseline.
 	// See also ATK_TEXT_ATTR_TEXT_POSITION.
-	Rise
+	TextAttrRise
 	// Underline: "none", "single", "double", "low", or "error"
-	Underline
+	TextAttrUnderline
 	// Strikethrough: "true" or "false" whether the text is strikethrough
-	Strikethrough
+	TextAttrStrikethrough
 	// Size: the size of the characters in points. eg: 10
-	Size
+	TextAttrSize
 	// Scale: the scale of the characters. The value is a string representation
 	// of a double
-	Scale
+	TextAttrScale
 	// Weight: the weight of the characters.
-	Weight
+	TextAttrWeight
 	// Language: the language used
-	Language
+	TextAttrLanguage
 	// FamilyName: the font family name
-	FamilyName
+	TextAttrFamilyName
 	// BgColor: the background color. The value is an RGB value of the format
 	// "u,u,u"
-	BgColor
+	TextAttrBgColor
 	// FgColor: the foreground color. The value is an RGB value of the format
 	// "u,u,u"
-	FgColor
+	TextAttrFgColor
 	// BgStipple: "true" if a Bitmap is set for stippling the background color.
-	BgStipple
+	TextAttrBgStipple
 	// FgStipple: "true" if a Bitmap is set for stippling the foreground color.
-	FgStipple
+	TextAttrFgStipple
 	// WrapMode: the wrap mode of the text, if any. Values are "none", "char",
 	// "word", or "word_char".
-	WrapMode
+	TextAttrWrapMode
 	// Direction: the direction of the text, if set. Values are "none", "ltr" or
 	// "rtl"
-	Direction
+	TextAttrDirection
 	// Justification: the justification of the text, if set. Values are "left",
 	// "right", "center" or "fill"
-	Justification
+	TextAttrJustification
 	// Stretch: the stretch of the text, if set. Values are "ultra_condensed",
 	// "extra_condensed", "condensed", "semi_condensed", "normal",
 	// "semi_expanded", "expanded", "extra_expanded" or "ultra_expanded"
-	Stretch
+	TextAttrStretch
 	// Variant: the capitalization variant of the text, if set. Values are
 	// "normal" or "small_caps"
-	Variant
+	TextAttrVariant
 	// Style: the slant style of the text, if set. Values are "normal",
 	// "oblique" or "italic"
-	Style
+	TextAttrStyle
 	// TextPosition: the vertical position with respect to the baseline. Values
 	// are "baseline", "super", or "sub". Note that a super or sub text
 	// attribute refers to position with respect to the baseline of the prior
 	// character.
-	TextPosition
+	TextAttrTextPosition
 	// LastDefined: not a valid text attribute, used for finding end of
 	// enumeration
-	LastDefined
+	TextAttrLastDefined
 )
 
 func marshalTextAttribute(p uintptr) (interface{}, error) {
@@ -127,22 +127,22 @@ type TextBoundary int
 const (
 	// Char: boundary is the boundary between characters (including non-printing
 	// characters)
-	Char TextBoundary = iota
+	TextBoundaryChar TextBoundary = iota
 	// WordStart: boundary is the start (i.e. first character) of a word.
-	WordStart
+	TextBoundaryWordStart
 	// WordEnd: boundary is the end (i.e. last character) of a word.
-	WordEnd
+	TextBoundaryWordEnd
 	// SentenceStart: boundary is the first character in a sentence.
-	SentenceStart
+	TextBoundarySentenceStart
 	// SentenceEnd: boundary is the last (terminal) character in a sentence; in
 	// languages which use "sentence stop" punctuation such as English, the
 	// boundary is thus the '.', '?', or similar terminal punctuation character.
-	SentenceEnd
+	TextBoundarySentenceEnd
 	// LineStart: boundary is the initial character of the content or a
 	// character immediately following a newline, linefeed, or return character.
-	LineStart
+	TextBoundaryLineStart
 	// LineEnd: boundary is the linefeed, or return character.
-	LineEnd
+	TextBoundaryLineEnd
 )
 
 func marshalTextBoundary(p uintptr) (interface{}, error) {
@@ -154,13 +154,13 @@ type TextClipType int
 
 const (
 	// None: no clipping to be done
-	None TextClipType = iota
+	TextClipNone TextClipType = iota
 	// Min: text clipped by min coordinate is omitted
-	Min
+	TextClipMin
 	// Max: text clipped by max coordinate is omitted
-	Max
+	TextClipMax
 	// Both: only text fully within mix/max bound is retained
-	Both
+	TextClipBoth
 )
 
 func marshalTextClipType(p uintptr) (interface{}, error) {
@@ -174,23 +174,23 @@ type TextGranularity int
 const (
 	// Char: granularity is defined by the boundaries between characters
 	// (including non-printing characters)
-	Char TextGranularity = iota
+	TextGranularityChar TextGranularity = iota
 	// Word: granularity is defined by the boundaries of a word, starting at the
 	// beginning of the current word and finishing at the beginning of the
 	// following one, if present.
-	Word
+	TextGranularityWord
 	// Sentence: granularity is defined by the boundaries of a sentence,
 	// starting at the beginning of the current sentence and finishing at the
 	// beginning of the following one, if present.
-	Sentence
+	TextGranularitySentence
 	// Line: granularity is defined by the boundaries of a line, starting at the
 	// beginning of the current line and finishing at the beginning of the
 	// following one, if present.
-	Line
+	TextGranularityLine
 	// Paragraph: granularity is defined by the boundaries of a paragraph,
 	// starting at the beginning of the current paragraph and finishing at the
 	// beginning of the following one, if present.
-	Paragraph
+	TextGranularityParagraph
 )
 
 func marshalTextGranularity(p uintptr) (interface{}, error) {
@@ -982,6 +982,44 @@ func (t *TextRange) Native() unsafe.Pointer {
 	return unsafe.Pointer(&t.native)
 }
 
+// Bounds: rectangle giving the bounds of the text range
+func (t *TextRange) Bounds() TextRectangle {
+	var v TextRectangle // out
+	{
+		var refTmpIn *C.AtkTextRectangle
+		var refTmpOut *TextRectangle
+
+		in0 := &t.bounds
+		refTmpIn = in0
+
+		refTmpOut = (*TextRectangle)(unsafe.Pointer(refTmpIn))
+
+		v = *refTmpOut
+	}
+	return v
+}
+
+// StartOffset: the start offset of a AtkTextRange
+func (t *TextRange) StartOffset() int {
+	var v int // out
+	v = int(t.start_offset)
+	return v
+}
+
+// EndOffset: the end offset of a AtkTextRange
+func (t *TextRange) EndOffset() int {
+	var v int // out
+	v = int(t.end_offset)
+	return v
+}
+
+// Content: the text in the text range
+func (t *TextRange) Content() string {
+	var v string // out
+	v = C.GoString(t.content)
+	return v
+}
+
 // TextRectangle: structure used to store a rectangle used by AtkText.
 type TextRectangle struct {
 	native C.AtkTextRectangle
@@ -996,4 +1034,32 @@ func WrapTextRectangle(ptr unsafe.Pointer) *TextRectangle {
 // Native returns the underlying C source pointer.
 func (t *TextRectangle) Native() unsafe.Pointer {
 	return unsafe.Pointer(&t.native)
+}
+
+// X: the horizontal coordinate of a rectangle
+func (t *TextRectangle) X() int {
+	var v int // out
+	v = int(t.x)
+	return v
+}
+
+// Y: the vertical coordinate of a rectangle
+func (t *TextRectangle) Y() int {
+	var v int // out
+	v = int(t.y)
+	return v
+}
+
+// Width: the width of a rectangle
+func (t *TextRectangle) Width() int {
+	var v int // out
+	v = int(t.width)
+	return v
+}
+
+// Height: the height of a rectangle
+func (t *TextRectangle) Height() int {
+	var v int // out
+	v = int(t.height)
+	return v
 }

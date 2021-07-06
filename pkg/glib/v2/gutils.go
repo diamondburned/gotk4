@@ -24,23 +24,23 @@ type UserDirectory int
 
 const (
 	// DirectoryDesktop: the user's Desktop directory
-	DirectoryDesktop UserDirectory = iota
+	UserDirectoryDesktop UserDirectory = iota
 	// DirectoryDocuments: the user's Documents directory
-	DirectoryDocuments
+	UserDirectoryDocuments
 	// DirectoryDownload: the user's Downloads directory
-	DirectoryDownload
+	UserDirectoryDownload
 	// DirectoryMusic: the user's Music directory
-	DirectoryMusic
+	UserDirectoryMusic
 	// DirectoryPictures: the user's Pictures directory
-	DirectoryPictures
+	UserDirectoryPictures
 	// DirectoryPublicShare: the user's shared directory
-	DirectoryPublicShare
+	UserDirectoryPublicShare
 	// DirectoryTemplates: the user's Templates directory
-	DirectoryTemplates
+	UserDirectoryTemplates
 	// DirectoryVideos: the user's Movies directory
-	DirectoryVideos
+	UserDirectoryVideos
 	// NDirectories: the number of enum values
-	NDirectories
+	UserNDirectories
 )
 
 // FormatSizeFlags flags to modify the format of the string returned by
@@ -731,4 +731,18 @@ func WrapDebugKey(ptr unsafe.Pointer) *DebugKey {
 // Native returns the underlying C source pointer.
 func (d *DebugKey) Native() unsafe.Pointer {
 	return unsafe.Pointer(&d.native)
+}
+
+// Key: the string
+func (d *DebugKey) Key() string {
+	var v string // out
+	v = C.GoString(d.key)
+	return v
+}
+
+// Value: the flag
+func (d *DebugKey) Value() uint {
+	var v uint // out
+	v = uint(d.value)
+	return v
 }

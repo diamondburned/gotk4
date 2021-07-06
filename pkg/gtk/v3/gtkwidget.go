@@ -46,9 +46,9 @@ type WidgetHelpType int
 
 const (
 	// Tooltip: tooltip.
-	Tooltip WidgetHelpType = iota
+	WidgetHelpTooltip WidgetHelpType = iota
 	// WhatsThis what’s this.
-	WhatsThis
+	WidgetHelpWhatsThis
 )
 
 func marshalWidgetHelpType(p uintptr) (interface{}, error) {
@@ -5788,6 +5788,20 @@ func NewRequisition() *Requisition {
 // Native returns the underlying C source pointer.
 func (r *Requisition) Native() unsafe.Pointer {
 	return unsafe.Pointer(&r.native)
+}
+
+// Width: the widget’s desired width
+func (r *Requisition) Width() int {
+	var v int // out
+	v = int(r.width)
+	return v
+}
+
+// Height: the widget’s desired height
+func (r *Requisition) Height() int {
+	var v int // out
+	v = int(r.height)
+	return v
 }
 
 // Copy copies a Requisition.

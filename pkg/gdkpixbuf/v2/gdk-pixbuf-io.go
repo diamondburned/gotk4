@@ -178,3 +178,18 @@ func WrapPixbufModule(ptr unsafe.Pointer) *PixbufModule {
 func (p *PixbufModule) Native() unsafe.Pointer {
 	return unsafe.Pointer(&p.native)
 }
+
+// ModuleName: the name of the module, usually the same as the usual file
+// extension for images of this type, eg. "xpm", "jpeg" or "png".
+func (p *PixbufModule) ModuleName() string {
+	var v string // out
+	v = C.GoString(p.module_name)
+	return v
+}
+
+// ModulePath: the path from which the module is loaded.
+func (p *PixbufModule) ModulePath() string {
+	var v string // out
+	v = C.GoString(p.module_path)
+	return v
+}

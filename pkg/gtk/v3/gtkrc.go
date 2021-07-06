@@ -38,17 +38,17 @@ type PathPriorityType int
 
 const (
 	// Lowest: deprecated
-	Lowest PathPriorityType = 0
+	PathPrioLowest PathPriorityType = 0
 	// GTK: deprecated
-	GTK PathPriorityType = 4
+	PathPrioGTK PathPriorityType = 4
 	// Application: deprecated
-	Application PathPriorityType = 8
+	PathPrioApplication PathPriorityType = 8
 	// Theme: deprecated
-	Theme PathPriorityType = 10
+	PathPrioTheme PathPriorityType = 10
 	// RC: deprecated
-	RC PathPriorityType = 12
+	PathPrioRC PathPriorityType = 12
 	// Highest: deprecated
-	Highest PathPriorityType = 15
+	PathPrioHighest PathPriorityType = 15
 )
 
 func marshalPathPriorityType(p uintptr) (interface{}, error) {
@@ -62,11 +62,11 @@ type PathType int
 
 const (
 	// Widget: deprecated
-	Widget PathType = iota
+	PathWidget PathType = iota
 	// WidgetClass: deprecated
-	WidgetClass
+	PathWidgetClass
 	// Class: deprecated
-	Class
+	PathClass
 )
 
 func marshalPathType(p uintptr) (interface{}, error) {
@@ -82,85 +82,85 @@ type RCTokenType int
 
 const (
 	// Invalid: deprecated
-	Invalid RCTokenType = 270
+	RCTokenInvalid RCTokenType = 270
 	// Include: deprecated
-	Include RCTokenType = 271
+	RCTokenInclude RCTokenType = 271
 	// Normal: deprecated
-	Normal RCTokenType = 272
+	RCTokenNormal RCTokenType = 272
 	// Active: deprecated
-	Active RCTokenType = 273
+	RCTokenActive RCTokenType = 273
 	// Prelight: deprecated
-	Prelight RCTokenType = 274
+	RCTokenPrelight RCTokenType = 274
 	// Selected: deprecated
-	Selected RCTokenType = 275
+	RCTokenSelected RCTokenType = 275
 	// Insensitive: deprecated
-	Insensitive RCTokenType = 276
+	RCTokenInsensitive RCTokenType = 276
 	// Fg: deprecated
-	Fg RCTokenType = 277
+	RCTokenFg RCTokenType = 277
 	// Bg: deprecated
-	Bg RCTokenType = 278
+	RCTokenBg RCTokenType = 278
 	// Text: deprecated
-	Text RCTokenType = 279
+	RCTokenText RCTokenType = 279
 	// Base: deprecated
-	Base RCTokenType = 280
+	RCTokenBase RCTokenType = 280
 	// Xthickness: deprecated
-	Xthickness RCTokenType = 281
+	RCTokenXthickness RCTokenType = 281
 	// Ythickness: deprecated
-	Ythickness RCTokenType = 282
+	RCTokenYthickness RCTokenType = 282
 	// Font: deprecated
-	Font RCTokenType = 283
+	RCTokenFont RCTokenType = 283
 	// Fontset: deprecated
-	Fontset RCTokenType = 284
+	RCTokenFontset RCTokenType = 284
 	// FontName: deprecated
-	FontName RCTokenType = 285
+	RCTokenFontName RCTokenType = 285
 	// BgPixmap: deprecated
-	BgPixmap RCTokenType = 286
+	RCTokenBgPixmap RCTokenType = 286
 	// PixmapPath: deprecated
-	PixmapPath RCTokenType = 287
+	RCTokenPixmapPath RCTokenType = 287
 	// Style: deprecated
-	Style RCTokenType = 288
+	RCTokenStyle RCTokenType = 288
 	// Binding: deprecated
-	Binding RCTokenType = 289
+	RCTokenBinding RCTokenType = 289
 	// Bind: deprecated
-	Bind RCTokenType = 290
+	RCTokenBind RCTokenType = 290
 	// Widget: deprecated
-	Widget RCTokenType = 291
+	RCTokenWidget RCTokenType = 291
 	// WidgetClass: deprecated
-	WidgetClass RCTokenType = 292
+	RCTokenWidgetClass RCTokenType = 292
 	// Class: deprecated
-	Class RCTokenType = 293
+	RCTokenClass RCTokenType = 293
 	// Lowest: deprecated
-	Lowest RCTokenType = 294
+	RCTokenLowest RCTokenType = 294
 	// GTK: deprecated
-	GTK RCTokenType = 295
+	RCTokenGTK RCTokenType = 295
 	// Application: deprecated
-	Application RCTokenType = 296
+	RCTokenApplication RCTokenType = 296
 	// Theme: deprecated
-	Theme RCTokenType = 297
+	RCTokenTheme RCTokenType = 297
 	// RC: deprecated
-	RC RCTokenType = 298
+	RCTokenRC RCTokenType = 298
 	// Highest: deprecated
-	Highest RCTokenType = 299
+	RCTokenHighest RCTokenType = 299
 	// Engine: deprecated
-	Engine RCTokenType = 300
+	RCTokenEngine RCTokenType = 300
 	// ModulePath: deprecated
-	ModulePath RCTokenType = 301
+	RCTokenModulePath RCTokenType = 301
 	// ImModulePath: deprecated
-	ImModulePath RCTokenType = 302
+	RCTokenImModulePath RCTokenType = 302
 	// ImModuleFile: deprecated
-	ImModuleFile RCTokenType = 303
+	RCTokenImModuleFile RCTokenType = 303
 	// Stock: deprecated
-	Stock RCTokenType = 304
+	RCTokenStock RCTokenType = 304
 	// LTR: deprecated
-	LTR RCTokenType = 305
+	RCTokenLTR RCTokenType = 305
 	// RTL: deprecated
-	RTL RCTokenType = 306
+	RCTokenRTL RCTokenType = 306
 	// Color: deprecated
-	Color RCTokenType = 307
+	RCTokenColor RCTokenType = 307
 	// Unbind: deprecated
-	Unbind RCTokenType = 308
+	RCTokenUnbind RCTokenType = 308
 	// Last: deprecated
-	Last RCTokenType = 309
+	RCTokenLast RCTokenType = 309
 )
 
 func marshalRCTokenType(p uintptr) (interface{}, error) {

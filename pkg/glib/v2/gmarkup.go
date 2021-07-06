@@ -29,23 +29,23 @@ type MarkupError int
 
 const (
 	// BadUTF8: text being parsed was not valid UTF-8
-	BadUTF8 MarkupError = iota
+	MarkupErrorBadUTF8 MarkupError = iota
 	// Empty: document contained nothing, or only whitespace
-	Empty
+	MarkupErrorEmpty
 	// Parse: document was ill-formed
-	Parse
+	MarkupErrorParse
 	// UnknownElement: error should be set by Parser functions; element wasn't
 	// known
-	UnknownElement
+	MarkupErrorUnknownElement
 	// UnknownAttribute: error should be set by Parser functions; attribute
 	// wasn't known
-	UnknownAttribute
+	MarkupErrorUnknownAttribute
 	// InvalidContent: error should be set by Parser functions; content was
 	// invalid
-	InvalidContent
+	MarkupErrorInvalidContent
 	// MissingAttribute: error should be set by Parser functions; a required
 	// attribute was missing
-	MissingAttribute
+	MarkupErrorMissingAttribute
 )
 
 // MarkupCollectType: mixed enumerated type and flags field. You must specify

@@ -31,17 +31,17 @@ type SorterChange int
 const (
 	// Different: the sorter change cannot be described by any of the other
 	// enumeration values
-	Different SorterChange = iota
+	SorterChangeDifferent SorterChange = iota
 	// Inverted: the sort order was inverted. Comparisons that returned
 	// GTK_ORDERING_SMALLER now return GTK_ORDERING_LARGER and vice versa. Other
 	// comparisons return the same values as before.
-	Inverted
+	SorterChangeInverted
 	// LessStrict: the sorter is less strict: Comparisons may now return
 	// GTK_ORDERING_EQUAL that did not do so before.
-	LessStrict
+	SorterChangeLessStrict
 	// MoreStrict: the sorter is more strict: Comparisons that did return
 	// GTK_ORDERING_EQUAL may not do so anymore.
-	MoreStrict
+	SorterChangeMoreStrict
 )
 
 func marshalSorterChange(p uintptr) (interface{}, error) {
@@ -53,14 +53,14 @@ type SorterOrder int
 
 const (
 	// Partial order. Any Ordering is possible.
-	Partial SorterOrder = iota
+	SorterOrderPartial SorterOrder = iota
 	// None: no order, all elements are considered equal. gtk_sorter_compare()
 	// will only return GTK_ORDERING_EQUAL.
-	None
+	SorterOrderNone
 	// Total order. gtk_sorter_compare() will only return GTK_ORDERING_EQUAL if
 	// an item is compared with itself. Two different items will never cause
 	// this value to be returned.
-	Total
+	SorterOrderTotal
 )
 
 func marshalSorterOrder(p uintptr) (interface{}, error) {

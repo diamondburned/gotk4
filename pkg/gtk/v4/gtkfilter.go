@@ -34,13 +34,13 @@ type FilterChange int
 const (
 	// Different: the filter change cannot be described with any of the other
 	// enumeration values.
-	Different FilterChange = iota
+	FilterChangeDifferent FilterChange = iota
 	// LessStrict: the filter is less strict than it was before: All items that
 	// it used to return true for still return true, others now may, too.
-	LessStrict
+	FilterChangeLessStrict
 	// MoreStrict: the filter is more strict than it was before: All items that
 	// it used to return false for still return false, others now may, too.
-	MoreStrict
+	FilterChangeMoreStrict
 )
 
 func marshalFilterChange(p uintptr) (interface{}, error) {
@@ -57,13 +57,13 @@ type FilterMatch int
 const (
 	// Some: the filter matches some items, gtk_filter_match() may return true
 	// or false
-	Some FilterMatch = iota
+	FilterMatchSome FilterMatch = iota
 	// None: the filter does not match any item, gtk_filter_match() will always
 	// return false.
-	None
+	FilterMatchNone
 	// All: the filter matches all items, gtk_filter_match() will alays return
 	// true.
-	All
+	FilterMatchAll
 )
 
 func marshalFilterMatch(p uintptr) (interface{}, error) {

@@ -29,22 +29,22 @@ func init() {
 type ValueType int
 
 const (
-	VeryWeak ValueType = iota
-	Weak
-	Acceptable
-	Strong
-	VeryStrong
-	VeryLow
-	Low
-	Medium
-	High
-	VeryHigh
-	VeryBad
-	Bad
-	Good
-	VeryGood
-	Best
-	LastDefined
+	ValueVeryWeak ValueType = iota
+	ValueWeak
+	ValueAcceptable
+	ValueStrong
+	ValueVeryStrong
+	ValueVeryLow
+	ValueLow
+	ValueMedium
+	ValueHigh
+	ValueVeryHigh
+	ValueVeryBad
+	ValueBad
+	ValueGood
+	ValueVeryGood
+	ValueBest
+	ValueLastDefined
 )
 
 func marshalValueType(p uintptr) (interface{}, error) {

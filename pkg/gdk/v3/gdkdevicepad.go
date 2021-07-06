@@ -28,11 +28,11 @@ type DevicePadFeature int
 
 const (
 	// Button: button
-	Button DevicePadFeature = iota
+	DevicePadFeatureButton DevicePadFeature = iota
 	// Ring: ring-shaped interactive area
-	Ring
+	DevicePadFeatureRing
 	// Strip: straight interactive area
-	Strip
+	DevicePadFeatureStrip
 )
 
 func marshalDevicePadFeature(p uintptr) (interface{}, error) {

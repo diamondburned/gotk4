@@ -33,11 +33,11 @@ type TimeType int
 
 const (
 	// Standard: the time is in local standard time
-	Standard TimeType = iota
+	TimeTypeStandard TimeType = iota
 	// Daylight: the time is in local daylight time
-	Daylight
+	TimeTypeDaylight
 	// Universal: the time is in UTC
-	Universal
+	TimeTypeUniversal
 )
 
 // TimeZone is an opaque structure whose members cannot be accessed directly.

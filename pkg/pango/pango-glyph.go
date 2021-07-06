@@ -85,6 +85,40 @@ func (g *GlyphInfo) Native() unsafe.Pointer {
 	return unsafe.Pointer(&g.native)
 }
 
+// Geometry: the positional information about the glyph.
+func (g *GlyphInfo) Geometry() GlyphGeometry {
+	var v GlyphGeometry // out
+	{
+		var refTmpIn *C.PangoGlyphGeometry
+		var refTmpOut *GlyphGeometry
+
+		in0 := &g.geometry
+		refTmpIn = in0
+
+		refTmpOut = (*GlyphGeometry)(unsafe.Pointer(refTmpIn))
+
+		v = *refTmpOut
+	}
+	return v
+}
+
+// Attr: the visual attributes of the glyph.
+func (g *GlyphInfo) Attr() GlyphVisAttr {
+	var v GlyphVisAttr // out
+	{
+		var refTmpIn *C.PangoGlyphVisAttr
+		var refTmpOut *GlyphVisAttr
+
+		in0 := &g.attr
+		refTmpIn = in0
+
+		refTmpOut = (*GlyphVisAttr)(unsafe.Pointer(refTmpIn))
+
+		v = *refTmpOut
+	}
+	return v
+}
+
 // GlyphString: `PangoGlyphString` is used to store strings of glyphs with
 // geometry and visual attribute information.
 //
@@ -124,6 +158,21 @@ func NewGlyphString() *GlyphString {
 // Native returns the underlying C source pointer.
 func (g *GlyphString) Native() unsafe.Pointer {
 	return unsafe.Pointer(&g.native)
+}
+
+// NumGlyphs: number of the glyphs in this glyph string.
+func (g *GlyphString) NumGlyphs() int {
+	var v int // out
+	v = int(g.num_glyphs)
+	return v
+}
+
+// LogClusters: logical cluster info, indexed by the byte index within the text
+// corresponding to the glyph string.
+func (g *GlyphString) LogClusters() *int {
+	var v *int // out
+	v = (*int)(unsafe.Pointer(g.log_clusters))
+	return v
 }
 
 // Copy a glyph string and associated storage.

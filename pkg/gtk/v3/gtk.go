@@ -35,25 +35,25 @@ type MovementStep int
 
 const (
 	// LogicalPositions: move forward or back by graphemes
-	LogicalPositions MovementStep = iota
+	MovementLogicalPositions MovementStep = iota
 	// VisualPositions: move left or right by graphemes
-	VisualPositions
+	MovementVisualPositions
 	// Words: move forward or back by words
-	Words
+	MovementWords
 	// DisplayLines: move up or down lines (wrapped lines)
-	DisplayLines
+	MovementDisplayLines
 	// DisplayLineEnds: move to either end of a line
-	DisplayLineEnds
+	MovementDisplayLineEnds
 	// Paragraphs: move up or down paragraphs (newline-ended lines)
-	Paragraphs
+	MovementParagraphs
 	// ParagraphEnds: move to either end of a paragraph
-	ParagraphEnds
+	MovementParagraphEnds
 	// Pages: move by pages
-	Pages
+	MovementPages
 	// BufferEnds: move to ends of the buffer
-	BufferEnds
+	MovementBufferEnds
 	// HorizontalPages: move horizontally by pages
-	HorizontalPages
+	MovementHorizontalPages
 )
 
 func marshalMovementStep(p uintptr) (interface{}, error) {
@@ -63,8 +63,8 @@ func marshalMovementStep(p uintptr) (interface{}, error) {
 type NotebookTab int
 
 const (
-	First NotebookTab = iota
-	Last
+	NotebookTabFirst NotebookTab = iota
+	NotebookTabLast
 )
 
 func marshalNotebookTab(p uintptr) (interface{}, error) {
@@ -75,11 +75,11 @@ type ResizeMode int
 
 const (
 	// Parent pass resize request to the parent
-	Parent ResizeMode = iota
+	ResizeParent ResizeMode = iota
 	// Queue: queue resizes on this widget
-	Queue
+	ResizeQueue
 	// Immediate: resize immediately. Deprecated.
-	Immediate
+	ResizeImmediate
 )
 
 func marshalResizeMode(p uintptr) (interface{}, error) {
@@ -90,17 +90,17 @@ type ScrollStep int
 
 const (
 	// Steps: scroll in steps.
-	Steps ScrollStep = iota
+	ScrollSteps ScrollStep = iota
 	// Pages: scroll by pages.
-	Pages
+	ScrollPages
 	// Ends: scroll to ends.
-	Ends
+	ScrollEnds
 	// HorizontalSteps: scroll in horizontal steps.
-	HorizontalSteps
+	ScrollHorizontalSteps
 	// HorizontalPages: scroll by horizontal pages.
-	HorizontalPages
+	ScrollHorizontalPages
 	// HorizontalEnds: scroll to the horizontal ends.
-	HorizontalEnds
+	ScrollHorizontalEnds
 )
 
 func marshalScrollStep(p uintptr) (interface{}, error) {

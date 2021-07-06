@@ -41,28 +41,28 @@ type AxisUse int
 
 const (
 	// Ignore: the axis is ignored.
-	Ignore AxisUse = iota
+	AxisIgnore AxisUse = iota
 	// X: the axis is used as the x axis.
-	X
+	AxisX
 	// Y: the axis is used as the y axis.
-	Y
+	AxisY
 	// Pressure: the axis is used for pressure information.
-	Pressure
+	AxisPressure
 	// Xtilt: the axis is used for x tilt information.
-	Xtilt
+	AxisXtilt
 	// Ytilt: the axis is used for y tilt information.
-	Ytilt
+	AxisYtilt
 	// Wheel: the axis is used for wheel information.
-	Wheel
+	AxisWheel
 	// Distance: the axis is used for pen/tablet distance information. (Since:
 	// 3.22)
-	Distance
+	AxisDistance
 	// Rotation: the axis is used for pen rotation information. (Since: 3.22)
-	Rotation
+	AxisRotation
 	// Slider: the axis is used for pen slider information. (Since: 3.22)
-	Slider
+	AxisSlider
 	// Last: constant equal to the numerically highest axis value.
-	Last
+	AxisLast
 )
 
 func marshalAxisUse(p uintptr) (interface{}, error) {
@@ -93,11 +93,11 @@ type GLError int
 
 const (
 	// NotAvailable: openGL support is not available
-	NotAvailable GLError = iota
+	GLErrorNotAvailable GLError = iota
 	// UnsupportedFormat: the requested visual format is not supported
-	UnsupportedFormat
+	GLErrorUnsupportedFormat
 	// UnsupportedProfile: the requested profile is not supported
-	UnsupportedProfile
+	GLErrorUnsupportedProfile
 )
 
 func marshalGLError(p uintptr) (interface{}, error) {
@@ -109,11 +109,11 @@ type GrabOwnership int
 
 const (
 	// None: all other devices’ events are allowed.
-	None GrabOwnership = iota
+	OwnershipNone GrabOwnership = iota
 	// Window: other devices’ events are blocked for the grab window.
-	Window
+	OwnershipWindow
 	// Application: other devices’ events are blocked for the whole application.
-	Application
+	OwnershipApplication
 )
 
 func marshalGrabOwnership(p uintptr) (interface{}, error) {
@@ -127,18 +127,18 @@ type GrabStatus int
 
 const (
 	// Success: the resource was successfully grabbed.
-	Success GrabStatus = iota
+	GrabSuccess GrabStatus = iota
 	// AlreadyGrabbed: the resource is actively grabbed by another client.
-	AlreadyGrabbed
+	GrabAlreadyGrabbed
 	// InvalidTime: the resource was grabbed more recently than the specified
 	// time.
-	InvalidTime
+	GrabInvalidTime
 	// NotViewable: the grab window or the @confine_to window are not viewable.
-	NotViewable
+	GrabNotViewable
 	// Frozen: the resource is frozen by an active grab of another client.
-	Frozen
+	GrabFrozen
 	// Failed: the grab failed for some other reason. Since 3.16
-	Failed
+	GrabFailed
 )
 
 func marshalGrabStatus(p uintptr) (interface{}, error) {
@@ -156,30 +156,30 @@ type ModifierIntent int
 const (
 	// PrimaryAccelerator: the primary modifier used to invoke menu
 	// accelerators.
-	PrimaryAccelerator ModifierIntent = iota
+	ModifierIntentPrimaryAccelerator ModifierIntent = iota
 	// ContextMenu: the modifier used to invoke context menus. Note that mouse
 	// button 3 always triggers context menus. When this modifier is not 0, it
 	// additionally triggers context menus when used with mouse button 1.
-	ContextMenu
+	ModifierIntentContextMenu
 	// ExtendSelection: the modifier used to extend selections using
 	// `modifier`-click or `modifier`-cursor-key
-	ExtendSelection
+	ModifierIntentExtendSelection
 	// ModifySelection: the modifier used to modify selections, which in most
 	// cases means toggling the clicked item into or out of the selection.
-	ModifySelection
+	ModifierIntentModifySelection
 	// NoTextInput: when any of these modifiers is pressed, the key event cannot
 	// produce a symbol directly. This is meant to be used for input methods,
 	// and for use cases like typeahead search.
-	NoTextInput
+	ModifierIntentNoTextInput
 	// ShiftGroup: the modifier that switches between keyboard groups (AltGr on
 	// X11/Windows and Option/Alt on OS X).
-	ShiftGroup
+	ModifierIntentShiftGroup
 	// DefaultModMask: the set of modifier masks accepted as modifiers in
 	// accelerators. Needed because Command is mapped to MOD2 on OSX, which is
 	// widely used, but on X11 MOD2 is NumLock and using that for a mod key is
 	// problematic at best. Ref:
 	// https://bugzilla.gnome.org/show_bug.cgi?id=736125.
-	DefaultModMask
+	ModifierIntentDefaultModMask
 )
 
 func marshalModifierIntent(p uintptr) (interface{}, error) {
@@ -198,35 +198,35 @@ type WindowTypeHint int
 
 const (
 	// Normal: normal toplevel window.
-	Normal WindowTypeHint = iota
+	WindowTypeHintNormal WindowTypeHint = iota
 	// Dialog: dialog window.
-	Dialog
+	WindowTypeHintDialog
 	// Menu: window used to implement a menu; GTK+ uses this hint only for
 	// torn-off menus, see TearoffMenuItem.
-	Menu
+	WindowTypeHintMenu
 	// Toolbar: window used to implement toolbars.
-	Toolbar
+	WindowTypeHintToolbar
 	// Splashscreen: window used to display a splash screen during application
 	// startup.
-	Splashscreen
+	WindowTypeHintSplashscreen
 	// Utility: utility windows which are not detached toolbars or dialogs.
-	Utility
+	WindowTypeHintUtility
 	// Dock: used for creating dock or panel windows.
-	Dock
+	WindowTypeHintDock
 	// Desktop: used for creating the desktop background window.
-	Desktop
+	WindowTypeHintDesktop
 	// DropdownMenu: menu that belongs to a menubar.
-	DropdownMenu
+	WindowTypeHintDropdownMenu
 	// PopupMenu: menu that does not belong to a menubar, e.g. a context menu.
-	PopupMenu
+	WindowTypeHintPopupMenu
 	// Tooltip: tooltip.
-	Tooltip
+	WindowTypeHintTooltip
 	// Notification - typically a “bubble” that belongs to a status icon.
-	Notification
+	WindowTypeHintNotification
 	// Combo: popup from a combo box.
-	Combo
+	WindowTypeHintCombo
 	// Dnd: window that is used to implement a DND cursor.
-	Dnd
+	WindowTypeHintDnd
 )
 
 func marshalWindowTypeHint(p uintptr) (interface{}, error) {
@@ -481,6 +481,20 @@ func (p *Point) Native() unsafe.Pointer {
 	return unsafe.Pointer(&p.native)
 }
 
+// X: the x coordinate of the point.
+func (p *Point) X() int {
+	var v int // out
+	v = int(p.x)
+	return v
+}
+
+// Y: the y coordinate of the point.
+func (p *Point) Y() int {
+	var v int // out
+	v = int(p.y)
+	return v
+}
+
 // Rectangle defines the position and size of a rectangle. It is identical to
 // #cairo_rectangle_int_t.
 type Rectangle struct {
@@ -501,6 +515,30 @@ func marshalRectangle(p uintptr) (interface{}, error) {
 // Native returns the underlying C source pointer.
 func (r *Rectangle) Native() unsafe.Pointer {
 	return unsafe.Pointer(&r.native)
+}
+
+func (r *Rectangle) X() int {
+	var v int // out
+	v = int(r.x)
+	return v
+}
+
+func (r *Rectangle) Y() int {
+	var v int // out
+	v = int(r.y)
+	return v
+}
+
+func (r *Rectangle) Width() int {
+	var v int // out
+	v = int(r.width)
+	return v
+}
+
+func (r *Rectangle) Height() int {
+	var v int // out
+	v = int(r.height)
+	return v
 }
 
 // Equal checks if the two given rectangles are equal.

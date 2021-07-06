@@ -38,58 +38,58 @@ type StackTransitionType int
 
 const (
 	// None: no transition
-	None StackTransitionType = iota
+	StackTransitionTypeNone StackTransitionType = iota
 	// Crossfade: cross-fade
-	Crossfade
+	StackTransitionTypeCrossfade
 	// SlideRight: slide from left to right
-	SlideRight
+	StackTransitionTypeSlideRight
 	// SlideLeft: slide from right to left
-	SlideLeft
+	StackTransitionTypeSlideLeft
 	// SlideUp: slide from bottom up
-	SlideUp
+	StackTransitionTypeSlideUp
 	// SlideDown: slide from top down
-	SlideDown
+	StackTransitionTypeSlideDown
 	// SlideLeftRight: slide from left or right according to the children order
-	SlideLeftRight
+	StackTransitionTypeSlideLeftRight
 	// SlideUpDown: slide from top down or bottom up according to the order
-	SlideUpDown
+	StackTransitionTypeSlideUpDown
 	// OverUp: cover the old page by sliding up
-	OverUp
+	StackTransitionTypeOverUp
 	// OverDown: cover the old page by sliding down
-	OverDown
+	StackTransitionTypeOverDown
 	// OverLeft: cover the old page by sliding to the left
-	OverLeft
+	StackTransitionTypeOverLeft
 	// OverRight: cover the old page by sliding to the right
-	OverRight
+	StackTransitionTypeOverRight
 	// UnderUp: uncover the new page by sliding up
-	UnderUp
+	StackTransitionTypeUnderUp
 	// UnderDown: uncover the new page by sliding down
-	UnderDown
+	StackTransitionTypeUnderDown
 	// UnderLeft: uncover the new page by sliding to the left
-	UnderLeft
+	StackTransitionTypeUnderLeft
 	// UnderRight: uncover the new page by sliding to the right
-	UnderRight
+	StackTransitionTypeUnderRight
 	// OverUpDown: cover the old page sliding up or uncover the new page sliding
 	// down, according to order
-	OverUpDown
+	StackTransitionTypeOverUpDown
 	// OverDownUp: cover the old page sliding down or uncover the new page
 	// sliding up, according to order
-	OverDownUp
+	StackTransitionTypeOverDownUp
 	// OverLeftRight: cover the old page sliding left or uncover the new page
 	// sliding right, according to order
-	OverLeftRight
+	StackTransitionTypeOverLeftRight
 	// OverRightLeft: cover the old page sliding right or uncover the new page
 	// sliding left, according to order
-	OverRightLeft
+	StackTransitionTypeOverRightLeft
 	// RotateLeft: pretend the pages are sides of a cube and rotate that cube to
 	// the left
-	RotateLeft
+	StackTransitionTypeRotateLeft
 	// RotateRight: pretend the pages are sides of a cube and rotate that cube
 	// to the right
-	RotateRight
+	StackTransitionTypeRotateRight
 	// RotateLeftRight: pretend the pages are sides of a cube and rotate that
 	// cube to the left or right according to the children order
-	RotateLeftRight
+	StackTransitionTypeRotateLeftRight
 )
 
 func marshalStackTransitionType(p uintptr) (interface{}, error) {

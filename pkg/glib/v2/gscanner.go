@@ -18,21 +18,21 @@ type ErrorType int
 
 const (
 	// Unknown error
-	Unknown ErrorType = iota
+	ErrUnknown ErrorType = iota
 	// UnexpEOF: unexpected end of file
-	UnexpEOF
+	ErrUnexpEOF
 	// UnexpEOFInString: unterminated string constant
-	UnexpEOFInString
+	ErrUnexpEOFInString
 	// UnexpEOFInComment: unterminated comment
-	UnexpEOFInComment
+	ErrUnexpEOFInComment
 	// NonDigitInConst: non-digit character in a number
-	NonDigitInConst
+	ErrNonDigitInConst
 	// DigitRadix: digit beyond radix in a number
-	DigitRadix
+	ErrDigitRadix
 	// FloatRadix: non-decimal floating point number
-	FloatRadix
+	ErrFloatRadix
 	// FloatMalformed: malformed floating point number
-	FloatMalformed
+	ErrFloatMalformed
 )
 
 // TokenType: the possible types of token returned from each
@@ -41,51 +41,51 @@ type TokenType int
 
 const (
 	// EOF: the end of the file
-	EOF TokenType = 0
+	TokenEOF TokenType = 0
 	// LeftParen: '(' character
-	LeftParen TokenType = 40
+	TokenLeftParen TokenType = 40
 	// RightParen: ')' character
-	RightParen TokenType = 41
+	TokenRightParen TokenType = 41
 	// LeftCurly: '{' character
-	LeftCurly TokenType = 123
+	TokenLeftCurly TokenType = 123
 	// RightCurly: '}' character
-	RightCurly TokenType = 125
+	TokenRightCurly TokenType = 125
 	// LeftBrace: '[' character
-	LeftBrace TokenType = 91
+	TokenLeftBrace TokenType = 91
 	// RightBrace: ']' character
-	RightBrace TokenType = 93
+	TokenRightBrace TokenType = 93
 	// EqualSign: '=' character
-	EqualSign TokenType = 61
+	TokenEqualSign TokenType = 61
 	// Comma: ',' character
-	Comma TokenType = 44
+	TokenComma TokenType = 44
 	// None: not a token
-	None TokenType = 256
+	TokenNone TokenType = 256
 	// Error occurred
-	Error TokenType = 257
+	TokenError TokenType = 257
 	// Char: character
-	Char TokenType = 258
+	TokenChar TokenType = 258
 	// Binary integer
-	Binary TokenType = 259
+	TokenBinary TokenType = 259
 	// Octal integer
-	Octal TokenType = 260
+	TokenOctal TokenType = 260
 	// Int: integer
-	Int TokenType = 261
+	TokenInt TokenType = 261
 	// Hex integer
-	Hex TokenType = 262
+	TokenHex TokenType = 262
 	// Float: floating point number
-	Float TokenType = 263
+	TokenFloat TokenType = 263
 	// String: string
-	String TokenType = 264
+	TokenString TokenType = 264
 	// Symbol: symbol
-	Symbol TokenType = 265
+	TokenSymbol TokenType = 265
 	// Identifier: identifier
-	Identifier TokenType = 266
+	TokenIdentifier TokenType = 266
 	// IdentifierNull: null identifier
-	IdentifierNull TokenType = 267
+	TokenIdentifierNull TokenType = 267
 	// CommentSingle: one line comment
-	CommentSingle TokenType = 268
+	TokenCommentSingle TokenType = 268
 	// CommentMulti: multi line comment
-	CommentMulti TokenType = 269
+	TokenCommentMulti TokenType = 269
 )
 
 // ScannerConfig specifies the #GScanner parser configuration. Most settings can
@@ -104,4 +104,39 @@ func WrapScannerConfig(ptr unsafe.Pointer) *ScannerConfig {
 // Native returns the underlying C source pointer.
 func (s *ScannerConfig) Native() unsafe.Pointer {
 	return unsafe.Pointer(&s.native)
+}
+
+// CsetSkipCharacters specifies which characters should be skipped by the
+// scanner (the default is the whitespace characters: space, tab,
+// carriage-return and line-feed).
+func (s *ScannerConfig) CsetSkipCharacters() string {
+	var v string // out
+	v = C.GoString(s.cset_skip_characters)
+	return v
+}
+
+// CsetIdentifierFirst specifies the characters which can start identifiers (the
+// default is CSET_a_2_z, "_", and CSET_A_2_Z).
+func (s *ScannerConfig) CsetIdentifierFirst() string {
+	var v string // out
+	v = C.GoString(s.cset_identifier_first)
+	return v
+}
+
+// CsetIdentifierNth specifies the characters which can be used in identifiers,
+// after the first character (the default is CSET_a_2_z, "_0123456789",
+// CSET_A_2_Z, CSET_LATINS, CSET_LATINC).
+func (s *ScannerConfig) CsetIdentifierNth() string {
+	var v string // out
+	v = C.GoString(s.cset_identifier_nth)
+	return v
+}
+
+// CpairCommentSingle specifies the characters at the start and end of
+// single-line comments. The default is "#\n" which means that single-line
+// comments start with a '#' and continue until a '\n' (end of line).
+func (s *ScannerConfig) CpairCommentSingle() string {
+	var v string // out
+	v = C.GoString(s.cpair_comment_single)
+	return v
 }

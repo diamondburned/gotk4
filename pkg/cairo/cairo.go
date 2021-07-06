@@ -55,45 +55,45 @@ func init() {
 type Status int
 
 const (
-	Success Status = iota
-	NoMemory
-	InvalidRestore
-	InvalidPopGroup
-	NoCurrentPoint
-	InvalidMatrix
-	InvalidStatus
-	NullPointer
-	InvalidString
-	InvalidPathData
-	ReadError
-	WriteError
-	SurfaceFinished
-	SurfaceTypeMismatch
-	PatternTypeMismatch
-	InvalidContent
-	InvalidFormat
-	InvalidVisual
-	FileNotFound
-	InvalidDash
-	InvalidDscComment
-	InvalidIndex
-	ClipNotRepresentable
-	TempFileError
-	InvalidStride
-	FontTypeMismatch
-	UserFontImmutable
-	UserFontError
-	NegativeCount
-	InvalidClusters
-	InvalidSlant
-	InvalidWeight
-	InvalidSize
-	UserFontNotImplemented
-	DeviceTypeMismatch
-	DeviceError
-	InvalidMeshConstruction
-	DeviceFinished
-	Jbig2GlobalMissing
+	StatusSuccess Status = iota
+	StatusNoMemory
+	StatusInvalidRestore
+	StatusInvalidPopGroup
+	StatusNoCurrentPoint
+	StatusInvalidMatrix
+	StatusInvalidStatus
+	StatusNullPointer
+	StatusInvalidString
+	StatusInvalidPathData
+	StatusReadError
+	StatusWriteError
+	StatusSurfaceFinished
+	StatusSurfaceTypeMismatch
+	StatusPatternTypeMismatch
+	StatusInvalidContent
+	StatusInvalidFormat
+	StatusInvalidVisual
+	StatusFileNotFound
+	StatusInvalidDash
+	StatusInvalidDscComment
+	StatusInvalidIndex
+	StatusClipNotRepresentable
+	StatusTempFileError
+	StatusInvalidStride
+	StatusFontTypeMismatch
+	StatusUserFontImmutable
+	StatusUserFontError
+	StatusNegativeCount
+	StatusInvalidClusters
+	StatusInvalidSlant
+	StatusInvalidWeight
+	StatusInvalidSize
+	StatusUserFontNotImplemented
+	StatusDeviceTypeMismatch
+	StatusDeviceError
+	StatusInvalidMeshConstruction
+	StatusDeviceFinished
+	StatusJbig2GlobalMissing
 )
 
 func marshalStatus(p uintptr) (interface{}, error) {
@@ -103,9 +103,9 @@ func marshalStatus(p uintptr) (interface{}, error) {
 type Content int
 
 const (
-	Color      Content = 4096
-	Alpha      Content = 8192
-	ColorAlpha Content = 12288
+	ContentColor      Content = 4096
+	ContentAlpha      Content = 8192
+	ContentColorAlpha Content = 12288
 )
 
 func marshalContent(p uintptr) (interface{}, error) {
@@ -115,35 +115,35 @@ func marshalContent(p uintptr) (interface{}, error) {
 type Operator int
 
 const (
-	Clear Operator = iota
-	Source
-	Over
-	In
-	Out
-	Atop
-	Dest
-	DestOver
-	DestIn
-	DestOut
-	DestAtop
-	Xor
-	Add
-	Saturate
-	Multiply
-	Screen
-	Overlay
-	Darken
-	Lighten
-	ColorDodge
-	ColorBurn
-	HardLight
-	SoftLight
-	Difference
-	Exclusion
-	HSLHue
-	HSLSaturation
-	HSLColor
-	HSLLuminosity
+	OperatorClear Operator = iota
+	OperatorSource
+	OperatorOver
+	OperatorIn
+	OperatorOut
+	OperatorAtop
+	OperatorDest
+	OperatorDestOver
+	OperatorDestIn
+	OperatorDestOut
+	OperatorDestAtop
+	OperatorXor
+	OperatorAdd
+	OperatorSaturate
+	OperatorMultiply
+	OperatorScreen
+	OperatorOverlay
+	OperatorDarken
+	OperatorLighten
+	OperatorColorDodge
+	OperatorColorBurn
+	OperatorHardLight
+	OperatorSoftLight
+	OperatorDifference
+	OperatorExclusion
+	OperatorHSLHue
+	OperatorHSLSaturation
+	OperatorHSLColor
+	OperatorHSLLuminosity
 )
 
 func marshalOperator(p uintptr) (interface{}, error) {
@@ -153,13 +153,13 @@ func marshalOperator(p uintptr) (interface{}, error) {
 type Antialias int
 
 const (
-	Default Antialias = iota
-	None
-	Gray
-	Subpixel
-	Fast
-	Good
-	Best
+	AntialiasDefault Antialias = iota
+	AntialiasNone
+	AntialiasGray
+	AntialiasSubpixel
+	AntialiasFast
+	AntialiasGood
+	AntialiasBest
 )
 
 func marshalAntialias(p uintptr) (interface{}, error) {
@@ -169,8 +169,8 @@ func marshalAntialias(p uintptr) (interface{}, error) {
 type FillRule int
 
 const (
-	Winding FillRule = iota
-	EvenOdd
+	FillRuleWinding FillRule = iota
+	FillRuleEvenOdd
 )
 
 func marshalFillRule(p uintptr) (interface{}, error) {
@@ -180,9 +180,9 @@ func marshalFillRule(p uintptr) (interface{}, error) {
 type LineCap int
 
 const (
-	Butt LineCap = iota
-	Round
-	Square
+	LineCapButt LineCap = iota
+	LineCapRound
+	LineCapSquare
 )
 
 func marshalLineCap(p uintptr) (interface{}, error) {
@@ -192,9 +192,9 @@ func marshalLineCap(p uintptr) (interface{}, error) {
 type LineJoin int
 
 const (
-	Miter LineJoin = iota
-	Round
-	Bevel
+	LineJoinMiter LineJoin = iota
+	LineJoinRound
+	LineJoinBevel
 )
 
 func marshalLineJoin(p uintptr) (interface{}, error) {
@@ -204,7 +204,7 @@ func marshalLineJoin(p uintptr) (interface{}, error) {
 type TextClusterFlags int
 
 const (
-	Backward TextClusterFlags = 1
+	TextClusterFlagBackward TextClusterFlags = 1
 )
 
 func marshalTextClusterFlags(p uintptr) (interface{}, error) {
@@ -214,9 +214,9 @@ func marshalTextClusterFlags(p uintptr) (interface{}, error) {
 type FontSlant int
 
 const (
-	Normal FontSlant = iota
-	Italic
-	Oblique
+	FontSlantNormal FontSlant = iota
+	FontSlantItalic
+	FontSlantOblique
 )
 
 func marshalFontSlant(p uintptr) (interface{}, error) {
@@ -226,8 +226,8 @@ func marshalFontSlant(p uintptr) (interface{}, error) {
 type FontWeight int
 
 const (
-	Normal FontWeight = iota
-	Bold
+	FontWeightNormal FontWeight = iota
+	FontWeightBold
 )
 
 func marshalFontWeight(p uintptr) (interface{}, error) {
@@ -237,11 +237,11 @@ func marshalFontWeight(p uintptr) (interface{}, error) {
 type SubpixelOrder int
 
 const (
-	Default SubpixelOrder = iota
-	RGB
-	BGR
-	VRGB
-	VBGR
+	SubpixelOrderDefault SubpixelOrder = iota
+	SubpixelOrderRGB
+	SubpixelOrderBGR
+	SubpixelOrderVRGB
+	SubpixelOrderVBGR
 )
 
 func marshalSubpixelOrder(p uintptr) (interface{}, error) {
@@ -251,11 +251,11 @@ func marshalSubpixelOrder(p uintptr) (interface{}, error) {
 type HintStyle int
 
 const (
-	Default HintStyle = iota
-	None
-	Slight
-	Medium
-	Full
+	HintStyleDefault HintStyle = iota
+	HintStyleNone
+	HintStyleSlight
+	HintStyleMedium
+	HintStyleFull
 )
 
 func marshalHintStyle(p uintptr) (interface{}, error) {
@@ -265,9 +265,9 @@ func marshalHintStyle(p uintptr) (interface{}, error) {
 type HintMetrics int
 
 const (
-	Default HintMetrics = iota
-	Off
-	On
+	HintMetricsDefault HintMetrics = iota
+	HintMetricsOff
+	HintMetricsOn
 )
 
 func marshalHintMetrics(p uintptr) (interface{}, error) {
@@ -277,11 +277,11 @@ func marshalHintMetrics(p uintptr) (interface{}, error) {
 type FontType int
 
 const (
-	Toy FontType = iota
-	FT
-	Win32
-	Quartz
-	User
+	FontTypeToy FontType = iota
+	FontTypeFT
+	FontTypeWin32
+	FontTypeQuartz
+	FontTypeUser
 )
 
 func marshalFontType(p uintptr) (interface{}, error) {
@@ -291,10 +291,10 @@ func marshalFontType(p uintptr) (interface{}, error) {
 type PathDataType int
 
 const (
-	MoveTo PathDataType = iota
-	LineTo
-	CurveTo
-	ClosePath
+	PathMoveTo PathDataType = iota
+	PathLineTo
+	PathCurveTo
+	PathClosePath
 )
 
 func marshalPathDataType(p uintptr) (interface{}, error) {
@@ -304,15 +304,15 @@ func marshalPathDataType(p uintptr) (interface{}, error) {
 type DeviceType int
 
 const (
-	DRM     DeviceType = 0
-	GL      DeviceType = 1
-	Script  DeviceType = 2
-	Xcb     DeviceType = 3
-	Xlib    DeviceType = 4
-	XML     DeviceType = 5
-	COGL    DeviceType = 6
-	Win32   DeviceType = 7
-	Invalid DeviceType = -1
+	DeviceTypeDRM     DeviceType = 0
+	DeviceTypeGL      DeviceType = 1
+	DeviceTypeScript  DeviceType = 2
+	DeviceTypeXcb     DeviceType = 3
+	DeviceTypeXlib    DeviceType = 4
+	DeviceTypeXML     DeviceType = 5
+	DeviceTypeCOGL    DeviceType = 6
+	DeviceTypeWin32   DeviceType = 7
+	DeviceTypeInvalid DeviceType = -1
 )
 
 func marshalDeviceType(p uintptr) (interface{}, error) {
@@ -322,31 +322,31 @@ func marshalDeviceType(p uintptr) (interface{}, error) {
 type SurfaceType int
 
 const (
-	Image SurfaceType = iota
-	PDF
-	PS
-	Xlib
-	Xcb
-	Glitz
-	Quartz
-	Win32
-	BeOS
-	DirectFB
-	Svg
-	OS2
-	Win32Printing
-	QuartzImage
-	Script
-	Qt
-	Recording
-	Vg
-	GL
-	DRM
-	Tee
-	XML
-	Skia
-	Subsurface
-	COGL
+	SurfaceTypeImage SurfaceType = iota
+	SurfaceTypePDF
+	SurfaceTypePS
+	SurfaceTypeXlib
+	SurfaceTypeXcb
+	SurfaceTypeGlitz
+	SurfaceTypeQuartz
+	SurfaceTypeWin32
+	SurfaceTypeBeOS
+	SurfaceTypeDirectFB
+	SurfaceTypeSvg
+	SurfaceTypeOS2
+	SurfaceTypeWin32Printing
+	SurfaceTypeQuartzImage
+	SurfaceTypeScript
+	SurfaceTypeQt
+	SurfaceTypeRecording
+	SurfaceTypeVg
+	SurfaceTypeGL
+	SurfaceTypeDRM
+	SurfaceTypeTee
+	SurfaceTypeXML
+	SurfaceTypeSkia
+	SurfaceTypeSubsurface
+	SurfaceTypeCOGL
 )
 
 func marshalSurfaceType(p uintptr) (interface{}, error) {
@@ -356,13 +356,13 @@ func marshalSurfaceType(p uintptr) (interface{}, error) {
 type Format int
 
 const (
-	Invalid  Format = -1
-	ARGB32   Format = 0
-	RGB24    Format = 1
-	A8       Format = 2
-	A1       Format = 3
-	RGB16565 Format = 4
-	RGB30    Format = 5
+	FormatInvalid  Format = -1
+	FormatARGB32   Format = 0
+	FormatRGB24    Format = 1
+	FormatA8       Format = 2
+	FormatA1       Format = 3
+	FormatRGB16565 Format = 4
+	FormatRGB30    Format = 5
 )
 
 func marshalFormat(p uintptr) (interface{}, error) {
@@ -372,12 +372,12 @@ func marshalFormat(p uintptr) (interface{}, error) {
 type PatternType int
 
 const (
-	Solid PatternType = iota
-	Surface
-	Linear
-	Radial
-	Mesh
-	RasterSource
+	PatternTypeSolid PatternType = iota
+	PatternTypeSurface
+	PatternTypeLinear
+	PatternTypeRadial
+	PatternTypeMesh
+	PatternTypeRasterSource
 )
 
 func marshalPatternType(p uintptr) (interface{}, error) {
@@ -387,10 +387,10 @@ func marshalPatternType(p uintptr) (interface{}, error) {
 type Extend int
 
 const (
-	None Extend = iota
-	Repeat
-	Reflect
-	Pad
+	ExtendNone Extend = iota
+	ExtendRepeat
+	ExtendReflect
+	ExtendPad
 )
 
 func marshalExtend(p uintptr) (interface{}, error) {
@@ -400,12 +400,12 @@ func marshalExtend(p uintptr) (interface{}, error) {
 type Filter int
 
 const (
-	Fast Filter = iota
-	Good
-	Best
-	Nearest
-	Bilinear
-	Gaussian
+	FilterFast Filter = iota
+	FilterGood
+	FilterBest
+	FilterNearest
+	FilterBilinear
+	FilterGaussian
 )
 
 func marshalFilter(p uintptr) (interface{}, error) {
@@ -415,9 +415,9 @@ func marshalFilter(p uintptr) (interface{}, error) {
 type RegionOverlap int
 
 const (
-	In RegionOverlap = iota
-	Out
-	Part
+	RegionOverlapIn RegionOverlap = iota
+	RegionOverlapOut
+	RegionOverlapPart
 )
 
 func marshalRegionOverlap(p uintptr) (interface{}, error) {
@@ -634,6 +634,30 @@ func (r *Rectangle) Native() unsafe.Pointer {
 	return unsafe.Pointer(&r.native)
 }
 
+func (r *Rectangle) X() float64 {
+	var v float64 // out
+	v = float64(r.x)
+	return v
+}
+
+func (r *Rectangle) Y() float64 {
+	var v float64 // out
+	v = float64(r.y)
+	return v
+}
+
+func (r *Rectangle) Width() float64 {
+	var v float64 // out
+	v = float64(r.width)
+	return v
+}
+
+func (r *Rectangle) Height() float64 {
+	var v float64 // out
+	v = float64(r.height)
+	return v
+}
+
 type RectangleInt struct {
 	native C.cairo_rectangle_int_t
 }
@@ -652,4 +676,28 @@ func marshalRectangleInt(p uintptr) (interface{}, error) {
 // Native returns the underlying C source pointer.
 func (r *RectangleInt) Native() unsafe.Pointer {
 	return unsafe.Pointer(&r.native)
+}
+
+func (r *RectangleInt) X() int {
+	var v int // out
+	v = int(r.x)
+	return v
+}
+
+func (r *RectangleInt) Y() int {
+	var v int // out
+	v = int(r.y)
+	return v
+}
+
+func (r *RectangleInt) Width() int {
+	var v int // out
+	v = int(r.width)
+	return v
+}
+
+func (r *RectangleInt) Height() int {
+	var v int // out
+	v = int(r.height)
+	return v
 }

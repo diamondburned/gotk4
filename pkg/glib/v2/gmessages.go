@@ -24,9 +24,9 @@ type LogWriterOutput int
 
 const (
 	// Handled: log writer has handled the log entry.
-	Handled LogWriterOutput = 1
+	LogWriterHandled LogWriterOutput = 1
 	// Unhandled: log writer could not handle the log entry.
-	Unhandled LogWriterOutput = 0
+	LogWriterUnhandled LogWriterOutput = 0
 )
 
 // LogLevelFlags flags specifying the level of log messages.
@@ -584,4 +584,25 @@ func WrapLogField(ptr unsafe.Pointer) *LogField {
 // Native returns the underlying C source pointer.
 func (l *LogField) Native() unsafe.Pointer {
 	return unsafe.Pointer(&l.native)
+}
+
+// Key: field name (UTF-8 string)
+func (l *LogField) Key() string {
+	var v string // out
+	v = C.GoString(l.key)
+	return v
+}
+
+// Value: field value (arbitrary bytes)
+func (l *LogField) Value() interface{} {
+	var v interface{} // out
+	v = box.Get(uintptr(l.value))
+	return v
+}
+
+// Length: length of @value, in bytes, or -1 if it is nul-terminated
+func (l *LogField) Length() int {
+	var v int // out
+	v = int(l.length)
+	return v
 }

@@ -9,6 +9,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	"github.com/diamondburned/gotk4/pkg/graphene"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -223,6 +224,30 @@ func (c *ColorStop) Native() unsafe.Pointer {
 	return unsafe.Pointer(&c.native)
 }
 
+// Offset: the offset of the color stop
+func (c *ColorStop) Offset() float32 {
+	var v float32 // out
+	v = float32(c.offset)
+	return v
+}
+
+// Color: the color at the given offset
+func (c *ColorStop) Color() gdk.RGBA {
+	var v gdk.RGBA // out
+	{
+		var refTmpIn *C.GdkRGBA
+		var refTmpOut *gdk.RGBA
+
+		in0 := &c.color
+		refTmpIn = in0
+
+		refTmpOut = (*gdk.RGBA)(unsafe.Pointer(refTmpIn))
+
+		v = *refTmpOut
+	}
+	return v
+}
+
 // ParseLocation: location in a parse buffer.
 type ParseLocation struct {
 	native C.GskParseLocation
@@ -239,6 +264,41 @@ func (p *ParseLocation) Native() unsafe.Pointer {
 	return unsafe.Pointer(&p.native)
 }
 
+// Bytes: the offset of the location in the parse buffer, as bytes
+func (p *ParseLocation) Bytes() uint {
+	var v uint // out
+	v = uint(p.bytes)
+	return v
+}
+
+// Chars: the offset of the location in the parse buffer, as characters
+func (p *ParseLocation) Chars() uint {
+	var v uint // out
+	v = uint(p.chars)
+	return v
+}
+
+// Lines: the line of the location in the parse buffer
+func (p *ParseLocation) Lines() uint {
+	var v uint // out
+	v = uint(p.lines)
+	return v
+}
+
+// LineBytes: the position in the line, as bytes
+func (p *ParseLocation) LineBytes() uint {
+	var v uint // out
+	v = uint(p.line_bytes)
+	return v
+}
+
+// LineChars: the position in the line, as characters
+func (p *ParseLocation) LineChars() uint {
+	var v uint // out
+	v = uint(p.line_chars)
+	return v
+}
+
 // Shadow: the shadow parameters in a shadow node.
 type Shadow struct {
 	native C.GskShadow
@@ -253,4 +313,42 @@ func WrapShadow(ptr unsafe.Pointer) *Shadow {
 // Native returns the underlying C source pointer.
 func (s *Shadow) Native() unsafe.Pointer {
 	return unsafe.Pointer(&s.native)
+}
+
+// Color: the color of the shadow
+func (s *Shadow) Color() gdk.RGBA {
+	var v gdk.RGBA // out
+	{
+		var refTmpIn *C.GdkRGBA
+		var refTmpOut *gdk.RGBA
+
+		in0 := &s.color
+		refTmpIn = in0
+
+		refTmpOut = (*gdk.RGBA)(unsafe.Pointer(refTmpIn))
+
+		v = *refTmpOut
+	}
+	return v
+}
+
+// Dx: the horizontal offset of the shadow
+func (s *Shadow) Dx() float32 {
+	var v float32 // out
+	v = float32(s.dx)
+	return v
+}
+
+// Dy: the vertical offset of the shadow
+func (s *Shadow) Dy() float32 {
+	var v float32 // out
+	v = float32(s.dy)
+	return v
+}
+
+// Radius: the radius of the shadow
+func (s *Shadow) Radius() float32 {
+	var v float32 // out
+	v = float32(s.radius)
+	return v
 }

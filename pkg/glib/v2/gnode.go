@@ -78,6 +78,44 @@ func (n *Node) Native() unsafe.Pointer {
 	return unsafe.Pointer(&n.native)
 }
 
+// Data contains the actual data of the node.
+func (n *Node) Data() interface{} {
+	var v interface{} // out
+	v = box.Get(uintptr(n.data))
+	return v
+}
+
+// Next points to the node's next sibling (a sibling is another #GNode with the
+// same parent).
+func (n *Node) Next() *Node {
+	var v *Node // out
+	v = (*Node)(unsafe.Pointer(n.next))
+	return v
+}
+
+// Prev points to the node's previous sibling.
+func (n *Node) Prev() *Node {
+	var v *Node // out
+	v = (*Node)(unsafe.Pointer(n.prev))
+	return v
+}
+
+// Parent points to the parent of the #GNode, or is nil if the #GNode is the
+// root of the tree.
+func (n *Node) Parent() *Node {
+	var v *Node // out
+	v = (*Node)(unsafe.Pointer(n.parent))
+	return v
+}
+
+// Children points to the first child of the #GNode. The other children are
+// accessed by using the @next pointer of each child.
+func (n *Node) Children() *Node {
+	var v *Node // out
+	v = (*Node)(unsafe.Pointer(n.children))
+	return v
+}
+
 // ChildIndex gets the position of the first child of a #GNode which contains
 // the given data.
 func (n *Node) ChildIndex(data interface{}) int {

@@ -39,31 +39,31 @@ type AxisUse int
 
 const (
 	// Ignore: the axis is ignored.
-	Ignore AxisUse = iota
+	AxisIgnore AxisUse = iota
 	// X: the axis is used as the x axis.
-	X
+	AxisX
 	// Y: the axis is used as the y axis.
-	Y
+	AxisY
 	// DeltaX: the axis is used as the scroll x delta
-	DeltaX
+	AxisDeltaX
 	// DeltaY: the axis is used as the scroll y delta
-	DeltaY
+	AxisDeltaY
 	// Pressure: the axis is used for pressure information.
-	Pressure
+	AxisPressure
 	// Xtilt: the axis is used for x tilt information.
-	Xtilt
+	AxisXtilt
 	// Ytilt: the axis is used for y tilt information.
-	Ytilt
+	AxisYtilt
 	// Wheel: the axis is used for wheel information.
-	Wheel
+	AxisWheel
 	// Distance: the axis is used for pen/tablet distance information
-	Distance
+	AxisDistance
 	// Rotation: the axis is used for pen rotation information
-	Rotation
+	AxisRotation
 	// Slider: the axis is used for pen slider information
-	Slider
+	AxisSlider
 	// Last: constant equal to the numerically highest axis value.
-	Last
+	AxisLast
 )
 
 func marshalAxisUse(p uintptr) (interface{}, error) {
@@ -75,15 +75,15 @@ type GLError int
 
 const (
 	// NotAvailable: openGL support is not available
-	NotAvailable GLError = iota
+	GLErrorNotAvailable GLError = iota
 	// UnsupportedFormat: the requested visual format is not supported
-	UnsupportedFormat
+	GLErrorUnsupportedFormat
 	// UnsupportedProfile: the requested profile is not supported
-	UnsupportedProfile
+	GLErrorUnsupportedProfile
 	// CompilationFailed: the shader compilation failed
-	CompilationFailed
+	GLErrorCompilationFailed
 	// LinkFailed: the shader linking failed
-	LinkFailed
+	GLErrorLinkFailed
 )
 
 func marshalGLError(p uintptr) (interface{}, error) {
@@ -95,26 +95,26 @@ type Gravity int
 
 const (
 	// NorthWest: the reference point is at the top left corner.
-	NorthWest Gravity = 1
+	GravityNorthWest Gravity = 1
 	// North: the reference point is in the middle of the top edge.
-	North Gravity = 2
+	GravityNorth Gravity = 2
 	// NorthEast: the reference point is at the top right corner.
-	NorthEast Gravity = 3
+	GravityNorthEast Gravity = 3
 	// West: the reference point is at the middle of the left edge.
-	West Gravity = 4
+	GravityWest Gravity = 4
 	// Center: the reference point is at the center of the surface.
-	Center Gravity = 5
+	GravityCenter Gravity = 5
 	// East: the reference point is at the middle of the right edge.
-	East Gravity = 6
+	GravityEast Gravity = 6
 	// SouthWest: the reference point is at the lower left corner.
-	SouthWest Gravity = 7
+	GravitySouthWest Gravity = 7
 	// South: the reference point is at the middle of the lower edge.
-	South Gravity = 8
+	GravitySouth Gravity = 8
 	// SouthEast: the reference point is at the lower right corner.
-	SouthEast Gravity = 9
+	GravitySouthEast Gravity = 9
 	// Static: the reference point is at the top left corner of the surface
 	// itself, ignoring window manager decorations.
-	Static Gravity = 10
+	GravityStatic Gravity = 10
 )
 
 func marshalGravity(p uintptr) (interface{}, error) {
@@ -127,9 +127,9 @@ type VulkanError int
 const (
 	// Unsupported: vulkan is not supported on this backend or has not been
 	// compiled in.
-	Unsupported VulkanError = iota
+	VulkanErrorUnsupported VulkanError = iota
 	// NotAvailable: vulkan support is not available on this Surface
-	NotAvailable
+	VulkanErrorNotAvailable
 )
 
 func marshalVulkanError(p uintptr) (interface{}, error) {
@@ -614,6 +614,36 @@ func (k *KeymapKey) Native() unsafe.Pointer {
 	return unsafe.Pointer(&k.native)
 }
 
+// Keycode: the hardware keycode. This is an identifying number for a physical
+// key.
+func (k *KeymapKey) Keycode() uint {
+	var v uint // out
+	v = uint(k.keycode)
+	return v
+}
+
+// Group indicates movement in a horizontal direction. Usually groups are used
+// for two different languages. In group 0, a key might have two English
+// characters, and in group 1 it might have two Hebrew characters. The Hebrew
+// characters will be printed on the key next to the English characters.
+func (k *KeymapKey) Group() int {
+	var v int // out
+	v = int(k.group)
+	return v
+}
+
+// Level indicates which symbol on the key will be used, in a vertical
+// direction. So on a standard US keyboard, the key with the number “1” on it
+// also has the exclamation point ("!") character on it. The level indicates
+// whether to use the “1” or the “!” symbol. The letter keys are considered to
+// have a lowercase letter at level 0, and an uppercase letter at level 1,
+// though only the uppercase letter is printed.
+func (k *KeymapKey) Level() int {
+	var v int // out
+	v = int(k.level)
+	return v
+}
+
 // Rectangle: `GdkRectangle` data type for representing rectangles.
 //
 // `GdkRectangle` is identical to `cairo_rectangle_t`. Together with Cairo’s
@@ -647,6 +677,34 @@ func marshalRectangle(p uintptr) (interface{}, error) {
 // Native returns the underlying C source pointer.
 func (r *Rectangle) Native() unsafe.Pointer {
 	return unsafe.Pointer(&r.native)
+}
+
+// X: the x coordinate of the top left corner
+func (r *Rectangle) X() int {
+	var v int // out
+	v = int(r.x)
+	return v
+}
+
+// Y: the y coordinate of the top left corner
+func (r *Rectangle) Y() int {
+	var v int // out
+	v = int(r.y)
+	return v
+}
+
+// Width: the width of the rectangle
+func (r *Rectangle) Width() int {
+	var v int // out
+	v = int(r.width)
+	return v
+}
+
+// Height: the height of the rectangle
+func (r *Rectangle) Height() int {
+	var v int // out
+	v = int(r.height)
+	return v
 }
 
 // ContainsPoint returns UE if @rect contains the point described by @x and @y.

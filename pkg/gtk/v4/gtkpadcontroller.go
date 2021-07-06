@@ -29,11 +29,11 @@ type PadActionType int
 
 const (
 	// Button: action is triggered by a pad button
-	Button PadActionType = iota
+	PadActionButton PadActionType = iota
 	// Ring: action is triggered by a pad ring
-	Ring
+	PadActionRing
 	// Strip: action is triggered by a pad strip
-	Strip
+	PadActionStrip
 )
 
 func marshalPadActionType(p uintptr) (interface{}, error) {
@@ -284,4 +284,41 @@ func WrapPadActionEntry(ptr unsafe.Pointer) *PadActionEntry {
 // Native returns the underlying C source pointer.
 func (p *PadActionEntry) Native() unsafe.Pointer {
 	return unsafe.Pointer(&p.native)
+}
+
+// Type: the type of pad feature that will trigger this action entry.
+func (p *PadActionEntry) Type() PadActionType {
+	var v PadActionType // out
+	v = PadActionType(p._type)
+	return v
+}
+
+// Index: the 0-indexed button/ring/strip number that will trigger this action
+// entry.
+func (p *PadActionEntry) Index() int {
+	var v int // out
+	v = int(p.index)
+	return v
+}
+
+// Mode: the mode that will trigger this action entry, or -1 for all modes.
+func (p *PadActionEntry) Mode() int {
+	var v int // out
+	v = int(p.mode)
+	return v
+}
+
+// Label: human readable description of this action entry, this string should be
+// deemed user-visible.
+func (p *PadActionEntry) Label() string {
+	var v string // out
+	v = C.GoString(p.label)
+	return v
+}
+
+// ActionName: action name that will be activated in the Group.
+func (p *PadActionEntry) ActionName() string {
+	var v string // out
+	v = C.GoString(p.action_name)
+	return v
 }

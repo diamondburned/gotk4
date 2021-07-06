@@ -3982,6 +3982,20 @@ func (r *Requisition) Native() unsafe.Pointer {
 	return unsafe.Pointer(&r.native)
 }
 
+// Width: the widget’s desired width
+func (r *Requisition) Width() int {
+	var v int // out
+	v = int(r.width)
+	return v
+}
+
+// Height: the widget’s desired height
+func (r *Requisition) Height() int {
+	var v int // out
+	v = int(r.height)
+	return v
+}
+
 // Copy copies a `GtkRequisition`.
 func (r *Requisition) Copy() *Requisition {
 	var _arg0 *C.GtkRequisition // out

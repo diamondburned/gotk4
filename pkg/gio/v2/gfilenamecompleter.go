@@ -47,17 +47,17 @@ type FilenameCompleter interface {
 	SetDirsOnly(dirsOnly bool)
 }
 
-// filenameCompleter implements the FilenameCompleter class.
+// filenameCompleter implements the FilenameCompleter interface.
 type filenameCompleter struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapFilenameCompleter wraps a GObject to the right type. It is
-// primarily used internally.
+var _ FilenameCompleter = (*filenameCompleter)(nil)
+
+// WrapFilenameCompleter wraps a GObject to a type that implements
+// interface FilenameCompleter. It is primarily used internally.
 func WrapFilenameCompleter(obj *externglib.Object) FilenameCompleter {
-	return filenameCompleter{
-		Objector: obj,
-	}
+	return filenameCompleter{obj}
 }
 
 func marshalFilenameCompleter(p uintptr) (interface{}, error) {
@@ -74,7 +74,7 @@ func NewFilenameCompleter() FilenameCompleter {
 
 	var _filenameCompleter FilenameCompleter // out
 
-	_filenameCompleter = WrapFilenameCompleter(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_filenameCompleter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(FilenameCompleter)
 
 	return _filenameCompleter
 }

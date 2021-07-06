@@ -177,7 +177,7 @@ type CellLayout interface {
 
 // cellLayout implements the CellLayout interface.
 type cellLayout struct {
-	gextras.Objector
+	*externglib.Object
 }
 
 var _ CellLayout = (*cellLayout)(nil)
@@ -185,9 +185,7 @@ var _ CellLayout = (*cellLayout)(nil)
 // WrapCellLayout wraps a GObject to a type that implements
 // interface CellLayout. It is primarily used internally.
 func WrapCellLayout(obj *externglib.Object) CellLayout {
-	return cellLayout{
-		Objector: obj,
-	}
+	return cellLayout{obj}
 }
 
 func marshalCellLayout(p uintptr) (interface{}, error) {

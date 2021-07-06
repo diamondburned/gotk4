@@ -99,7 +99,7 @@ type ActionMap interface {
 
 // actionMap implements the ActionMap interface.
 type actionMap struct {
-	gextras.Objector
+	*externglib.Object
 }
 
 var _ ActionMap = (*actionMap)(nil)
@@ -107,9 +107,7 @@ var _ ActionMap = (*actionMap)(nil)
 // WrapActionMap wraps a GObject to a type that implements
 // interface ActionMap. It is primarily used internally.
 func WrapActionMap(obj *externglib.Object) ActionMap {
-	return actionMap{
-		Objector: obj,
-	}
+	return actionMap{obj}
 }
 
 func marshalActionMap(p uintptr) (interface{}, error) {

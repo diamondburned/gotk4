@@ -46,7 +46,144 @@ func init() {
 // interfaces, thus you have to use the `gio-unix-2.0.pc` pkg-config file when
 // using it.
 type UnixConnection interface {
-	SocketConnection
+	gextras.Objector
+
+	// AsSocketConnection casts the class to the SocketConnection interface.
+	AsSocketConnection() SocketConnection
+
+	// Connect @connection to the specified remote address.
+	//
+	// This method is inherited from SocketConnection
+	Connect(address SocketAddress, cancellable Cancellable) error
+	// ConnectAsync: asynchronously connect @connection to the specified remote
+	// address.
+	//
+	// This clears the #GSocket:blocking flag on @connection's underlying socket
+	// if it is currently set.
+	//
+	// Use g_socket_connection_connect_finish() to retrieve the result.
+	//
+	// This method is inherited from SocketConnection
+	ConnectAsync(address SocketAddress, cancellable Cancellable, callback AsyncReadyCallback)
+	// ConnectFinish gets the result of a g_socket_connection_connect_async()
+	// call.
+	//
+	// This method is inherited from SocketConnection
+	ConnectFinish(result AsyncResult) error
+	// GetLocalAddress: try to get the local address of a socket connection.
+	//
+	// This method is inherited from SocketConnection
+	GetLocalAddress() (SocketAddress, error)
+	// GetRemoteAddress: try to get the remote address of a socket connection.
+	//
+	// Since GLib 2.40, when used with g_socket_client_connect() or
+	// g_socket_client_connect_async(), during emission of
+	// G_SOCKET_CLIENT_CONNECTING, this function will return the remote address
+	// that will be used for the connection. This allows applications to print
+	// e.g. "Connecting to example.com (10.42.77.3)...".
+	//
+	// This method is inherited from SocketConnection
+	GetRemoteAddress() (SocketAddress, error)
+	// GetSocket gets the underlying #GSocket object of the connection. This can
+	// be useful if you want to do something unusual on it not supported by the
+	// Connection APIs.
+	//
+	// This method is inherited from SocketConnection
+	GetSocket() Socket
+	// IsConnected checks if @connection is connected. This is equivalent to
+	// calling g_socket_is_connected() on @connection's underlying #GSocket.
+	//
+	// This method is inherited from SocketConnection
+	IsConnected() bool
+	// ClearPending clears the pending flag on @stream.
+	//
+	// This method is inherited from IOStream
+	ClearPending()
+	// Close closes the stream, releasing resources related to it. This will
+	// also close the individual input and output streams, if they are not
+	// already closed.
+	//
+	// Once the stream is closed, all other operations will return
+	// G_IO_ERROR_CLOSED. Closing a stream multiple times will not return an
+	// error.
+	//
+	// Closing a stream will automatically flush any outstanding buffers in the
+	// stream.
+	//
+	// Streams will be automatically closed when the last reference is dropped,
+	// but you might want to call this function to make sure resources are
+	// released as early as possible.
+	//
+	// Some streams might keep the backing store of the stream (e.g. a file
+	// descriptor) open after the stream is closed. See the documentation for
+	// the individual stream for details.
+	//
+	// On failure the first error that happened will be reported, but the close
+	// operation will finish as much as possible. A stream that failed to close
+	// will still return G_IO_ERROR_CLOSED for all operations. Still, it is
+	// important to check and report the error to the user, otherwise there
+	// might be a loss of data as all data might not be written.
+	//
+	// If @cancellable is not NULL, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+	// Cancelling a close will still leave the stream closed, but some streams
+	// can use a faster close that doesn't block to e.g. check errors.
+	//
+	// The default implementation of this method just calls close on the
+	// individual input/output streams.
+	//
+	// This method is inherited from IOStream
+	Close(cancellable Cancellable) error
+	// CloseAsync requests an asynchronous close of the stream, releasing
+	// resources related to it. When the operation is finished @callback will be
+	// called. You can then call g_io_stream_close_finish() to get the result of
+	// the operation.
+	//
+	// For behaviour details see g_io_stream_close().
+	//
+	// The asynchronous methods have a default fallback that uses threads to
+	// implement asynchronicity, so they are optional for inheriting classes.
+	// However, if you override one you must override all.
+	//
+	// This method is inherited from IOStream
+	CloseAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
+	// CloseFinish closes a stream.
+	//
+	// This method is inherited from IOStream
+	CloseFinish(result AsyncResult) error
+	// GetInputStream gets the input stream for this object. This is used for
+	// reading.
+	//
+	// This method is inherited from IOStream
+	GetInputStream() InputStream
+	// GetOutputStream gets the output stream for this object. This is used for
+	// writing.
+	//
+	// This method is inherited from IOStream
+	GetOutputStream() OutputStream
+	// HasPending checks if a stream has pending actions.
+	//
+	// This method is inherited from IOStream
+	HasPending() bool
+	// IsClosed checks if a stream is closed.
+	//
+	// This method is inherited from IOStream
+	IsClosed() bool
+	// SetPending sets @stream to have actions pending. If the pending flag is
+	// already set or @stream is closed, it will return false and set @error.
+	//
+	// This method is inherited from IOStream
+	SetPending() error
+	// SpliceAsync: asynchronously splice the output stream of @stream1 to the
+	// input stream of @stream2, and splice the output stream of @stream2 to the
+	// input stream of @stream1.
+	//
+	// When the operation is finished @callback will be called. You can then
+	// call g_io_stream_splice_finish() to get the result of the operation.
+	//
+	// This method is inherited from IOStream
+	SpliceAsync(stream2 IOStream, flags IOStreamSpliceFlags, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 
 	// ReceiveCredentials receives credentials from the sending end of the
 	// connection. The sending end has to call
@@ -123,23 +260,95 @@ type UnixConnection interface {
 	SendFd(fd int, cancellable Cancellable) error
 }
 
-// unixConnection implements the UnixConnection class.
+// unixConnection implements the UnixConnection interface.
 type unixConnection struct {
-	SocketConnection
+	*externglib.Object
 }
 
-// WrapUnixConnection wraps a GObject to the right type. It is
-// primarily used internally.
+var _ UnixConnection = (*unixConnection)(nil)
+
+// WrapUnixConnection wraps a GObject to a type that implements
+// interface UnixConnection. It is primarily used internally.
 func WrapUnixConnection(obj *externglib.Object) UnixConnection {
-	return unixConnection{
-		SocketConnection: WrapSocketConnection(obj),
-	}
+	return unixConnection{obj}
 }
 
 func marshalUnixConnection(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapUnixConnection(obj), nil
+}
+
+func (u unixConnection) AsSocketConnection() SocketConnection {
+	return WrapSocketConnection(gextras.InternObject(u))
+}
+
+func (c unixConnection) Connect(address SocketAddress, cancellable Cancellable) error {
+	return WrapSocketConnection(gextras.InternObject(c)).Connect(address, cancellable)
+}
+
+func (c unixConnection) ConnectAsync(address SocketAddress, cancellable Cancellable, callback AsyncReadyCallback) {
+	WrapSocketConnection(gextras.InternObject(c)).ConnectAsync(address, cancellable, callback)
+}
+
+func (c unixConnection) ConnectFinish(result AsyncResult) error {
+	return WrapSocketConnection(gextras.InternObject(c)).ConnectFinish(result)
+}
+
+func (c unixConnection) GetLocalAddress() (SocketAddress, error) {
+	return WrapSocketConnection(gextras.InternObject(c)).GetLocalAddress()
+}
+
+func (c unixConnection) GetRemoteAddress() (SocketAddress, error) {
+	return WrapSocketConnection(gextras.InternObject(c)).GetRemoteAddress()
+}
+
+func (c unixConnection) GetSocket() Socket {
+	return WrapSocketConnection(gextras.InternObject(c)).GetSocket()
+}
+
+func (c unixConnection) IsConnected() bool {
+	return WrapSocketConnection(gextras.InternObject(c)).IsConnected()
+}
+
+func (s unixConnection) ClearPending() {
+	WrapIOStream(gextras.InternObject(s)).ClearPending()
+}
+
+func (s unixConnection) Close(cancellable Cancellable) error {
+	return WrapIOStream(gextras.InternObject(s)).Close(cancellable)
+}
+
+func (s unixConnection) CloseAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+	WrapIOStream(gextras.InternObject(s)).CloseAsync(ioPriority, cancellable, callback)
+}
+
+func (s unixConnection) CloseFinish(result AsyncResult) error {
+	return WrapIOStream(gextras.InternObject(s)).CloseFinish(result)
+}
+
+func (s unixConnection) GetInputStream() InputStream {
+	return WrapIOStream(gextras.InternObject(s)).GetInputStream()
+}
+
+func (s unixConnection) GetOutputStream() OutputStream {
+	return WrapIOStream(gextras.InternObject(s)).GetOutputStream()
+}
+
+func (s unixConnection) HasPending() bool {
+	return WrapIOStream(gextras.InternObject(s)).HasPending()
+}
+
+func (s unixConnection) IsClosed() bool {
+	return WrapIOStream(gextras.InternObject(s)).IsClosed()
+}
+
+func (s unixConnection) SetPending() error {
+	return WrapIOStream(gextras.InternObject(s)).SetPending()
+}
+
+func (s unixConnection) SpliceAsync(stream2 IOStream, flags IOStreamSpliceFlags, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+	WrapIOStream(gextras.InternObject(s)).SpliceAsync(stream2, flags, ioPriority, cancellable, callback)
 }
 
 func (c unixConnection) ReceiveCredentials(cancellable Cancellable) (Credentials, error) {

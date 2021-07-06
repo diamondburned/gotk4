@@ -46,9 +46,8 @@ type MenuAttributeIter interface {
 	//
 	// The iterator is not advanced.
 	Name() string
-	// NextMenuAttributeIter: this function combines
-	// g_menu_attribute_iter_next() with g_menu_attribute_iter_get_name() and
-	// g_menu_attribute_iter_get_value().
+	// GetNext: this function combines g_menu_attribute_iter_next() with
+	// g_menu_attribute_iter_get_name() and g_menu_attribute_iter_get_value().
 	//
 	// First the iterator is advanced to the next (possibly first) attribute. If
 	// that fails, then false is returned and there are no other effects.
@@ -61,7 +60,7 @@ type MenuAttributeIter interface {
 	// The value returned in @name remains valid for as long as the iterator
 	// remains at the current position. The value returned in @value must be
 	// unreffed using g_variant_unref() when it is no longer in use.
-	NextMenuAttributeIter() (string, *glib.Variant, bool)
+	GetNext() (string, *glib.Variant, bool)
 	// Value gets the value of the attribute at the current iterator position.
 	//
 	// The iterator is not advanced.
@@ -77,17 +76,17 @@ type MenuAttributeIter interface {
 	Next() bool
 }
 
-// menuAttributeIter implements the MenuAttributeIter class.
+// menuAttributeIter implements the MenuAttributeIter interface.
 type menuAttributeIter struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapMenuAttributeIter wraps a GObject to the right type. It is
-// primarily used internally.
+var _ MenuAttributeIter = (*menuAttributeIter)(nil)
+
+// WrapMenuAttributeIter wraps a GObject to a type that implements
+// interface MenuAttributeIter. It is primarily used internally.
 func WrapMenuAttributeIter(obj *externglib.Object) MenuAttributeIter {
-	return menuAttributeIter{
-		Objector: obj,
-	}
+	return menuAttributeIter{obj}
 }
 
 func marshalMenuAttributeIter(p uintptr) (interface{}, error) {
@@ -111,7 +110,7 @@ func (i menuAttributeIter) Name() string {
 	return _utf8
 }
 
-func (i menuAttributeIter) NextMenuAttributeIter() (string, *glib.Variant, bool) {
+func (i menuAttributeIter) GetNext() (string, *glib.Variant, bool) {
 	var _arg0 *C.GMenuAttributeIter // out
 	var _arg1 *C.gchar              // in
 	var _arg2 *C.GVariant           // in
@@ -183,7 +182,7 @@ type MenuLinkIter interface {
 	//
 	// The iterator is not advanced.
 	Name() string
-	// NextMenuLinkIter: this function combines g_menu_link_iter_next() with
+	// GetNext: this function combines g_menu_link_iter_next() with
 	// g_menu_link_iter_get_name() and g_menu_link_iter_get_value().
 	//
 	// First the iterator is advanced to the next (possibly first) link. If that
@@ -197,7 +196,7 @@ type MenuLinkIter interface {
 	// The value returned in @out_link remains valid for as long as the iterator
 	// remains at the current position. The value returned in @value must be
 	// unreffed using g_object_unref() when it is no longer in use.
-	NextMenuLinkIter() (string, MenuModel, bool)
+	GetNext() (string, MenuModel, bool)
 	// Value gets the linked Model at the current iterator position.
 	//
 	// The iterator is not advanced.
@@ -212,17 +211,17 @@ type MenuLinkIter interface {
 	Next() bool
 }
 
-// menuLinkIter implements the MenuLinkIter class.
+// menuLinkIter implements the MenuLinkIter interface.
 type menuLinkIter struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapMenuLinkIter wraps a GObject to the right type. It is
-// primarily used internally.
+var _ MenuLinkIter = (*menuLinkIter)(nil)
+
+// WrapMenuLinkIter wraps a GObject to a type that implements
+// interface MenuLinkIter. It is primarily used internally.
 func WrapMenuLinkIter(obj *externglib.Object) MenuLinkIter {
-	return menuLinkIter{
-		Objector: obj,
-	}
+	return menuLinkIter{obj}
 }
 
 func marshalMenuLinkIter(p uintptr) (interface{}, error) {
@@ -246,7 +245,7 @@ func (i menuLinkIter) Name() string {
 	return _utf8
 }
 
-func (i menuLinkIter) NextMenuLinkIter() (string, MenuModel, bool) {
+func (i menuLinkIter) GetNext() (string, MenuModel, bool) {
 	var _arg0 *C.GMenuLinkIter // out
 	var _arg1 *C.gchar         // in
 	var _arg2 *C.GMenuModel    // in
@@ -468,17 +467,17 @@ type MenuModel interface {
 	IterateItemLinks(itemIndex int) MenuLinkIter
 }
 
-// menuModel implements the MenuModel class.
+// menuModel implements the MenuModel interface.
 type menuModel struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapMenuModel wraps a GObject to the right type. It is
-// primarily used internally.
+var _ MenuModel = (*menuModel)(nil)
+
+// WrapMenuModel wraps a GObject to a type that implements
+// interface MenuModel. It is primarily used internally.
 func WrapMenuModel(obj *externglib.Object) MenuModel {
-	return menuModel{
-		Objector: obj,
-	}
+	return menuModel{obj}
 }
 
 func marshalMenuModel(p uintptr) (interface{}, error) {

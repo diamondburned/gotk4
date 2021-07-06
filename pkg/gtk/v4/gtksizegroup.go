@@ -85,6 +85,14 @@ type SizeGroup interface {
 	// AsBuildable casts the class to the Buildable interface.
 	AsBuildable() Buildable
 
+	// GetBuildableID gets the ID of the @buildable object.
+	//
+	// `GtkBuilder` sets the name based on the ID attribute of the <object> tag
+	// used to construct the @buildable.
+	//
+	// This method is inherited from Buildable
+	GetBuildableID() string
+
 	// AddWidget adds a widget to a `GtkSizeGroup`.
 	//
 	// In the future, the requisition of the widget will be determined as the
@@ -110,17 +118,17 @@ type SizeGroup interface {
 	SetMode(mode SizeGroupMode)
 }
 
-// sizeGroup implements the SizeGroup class.
+// sizeGroup implements the SizeGroup interface.
 type sizeGroup struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapSizeGroup wraps a GObject to the right type. It is
-// primarily used internally.
+var _ SizeGroup = (*sizeGroup)(nil)
+
+// WrapSizeGroup wraps a GObject to a type that implements
+// interface SizeGroup. It is primarily used internally.
 func WrapSizeGroup(obj *externglib.Object) SizeGroup {
-	return sizeGroup{
-		Objector: obj,
-	}
+	return sizeGroup{obj}
 }
 
 func marshalSizeGroup(p uintptr) (interface{}, error) {
@@ -140,13 +148,17 @@ func NewSizeGroup(mode SizeGroupMode) SizeGroup {
 
 	var _sizeGroup SizeGroup // out
 
-	_sizeGroup = WrapSizeGroup(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_sizeGroup = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(SizeGroup)
 
 	return _sizeGroup
 }
 
 func (s sizeGroup) AsBuildable() Buildable {
 	return WrapBuildable(gextras.InternObject(s))
+}
+
+func (b sizeGroup) GetBuildableID() string {
+	return WrapBuildable(gextras.InternObject(b)).GetBuildableID()
 }
 
 func (s sizeGroup) AddWidget(widget Widget) {

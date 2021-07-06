@@ -62,17 +62,17 @@ type FileMonitor interface {
 	SetRateLimit(limitMsecs int)
 }
 
-// fileMonitor implements the FileMonitor class.
+// fileMonitor implements the FileMonitor interface.
 type fileMonitor struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapFileMonitor wraps a GObject to the right type. It is
-// primarily used internally.
+var _ FileMonitor = (*fileMonitor)(nil)
+
+// WrapFileMonitor wraps a GObject to a type that implements
+// interface FileMonitor. It is primarily used internally.
 func WrapFileMonitor(obj *externglib.Object) FileMonitor {
-	return fileMonitor{
-		Objector: obj,
-	}
+	return fileMonitor{obj}
 }
 
 func marshalFileMonitor(p uintptr) (interface{}, error) {

@@ -103,7 +103,7 @@ type TreeDragDest interface {
 
 // treeDragDest implements the TreeDragDest interface.
 type treeDragDest struct {
-	gextras.Objector
+	*externglib.Object
 }
 
 var _ TreeDragDest = (*treeDragDest)(nil)
@@ -111,9 +111,7 @@ var _ TreeDragDest = (*treeDragDest)(nil)
 // WrapTreeDragDest wraps a GObject to a type that implements
 // interface TreeDragDest. It is primarily used internally.
 func WrapTreeDragDest(obj *externglib.Object) TreeDragDest {
-	return treeDragDest{
-		Objector: obj,
-	}
+	return treeDragDest{obj}
 }
 
 func marshalTreeDragDest(p uintptr) (interface{}, error) {
@@ -186,7 +184,7 @@ type TreeDragSource interface {
 
 // treeDragSource implements the TreeDragSource interface.
 type treeDragSource struct {
-	gextras.Objector
+	*externglib.Object
 }
 
 var _ TreeDragSource = (*treeDragSource)(nil)
@@ -194,9 +192,7 @@ var _ TreeDragSource = (*treeDragSource)(nil)
 // WrapTreeDragSource wraps a GObject to a type that implements
 // interface TreeDragSource. It is primarily used internally.
 func WrapTreeDragSource(obj *externglib.Object) TreeDragSource {
-	return treeDragSource{
-		Objector: obj,
-	}
+	return treeDragSource{obj}
 }
 
 func marshalTreeDragSource(p uintptr) (interface{}, error) {

@@ -260,6 +260,29 @@ type PrintOperation interface {
 	// AsPrintOperationPreview casts the class to the PrintOperationPreview interface.
 	AsPrintOperationPreview() PrintOperationPreview
 
+	// EndPreview ends a preview.
+	//
+	// This function must be called to finish a custom print preview.
+	//
+	// This method is inherited from PrintOperationPreview
+	EndPreview()
+	// IsSelected returns whether the given page is included in the set of pages
+	// that have been selected for printing.
+	//
+	// This method is inherited from PrintOperationPreview
+	IsSelected(pageNr int) bool
+	// RenderPage renders a page to the preview, using the print context that
+	// was passed to the PrintOperation::preview handler together with @preview.
+	//
+	// A custom iprint preview should use this function in its ::expose handler
+	// to render the currently selected page.
+	//
+	// Note that this function requires a suitable cairo context to be
+	// associated with the print context.
+	//
+	// This method is inherited from PrintOperationPreview
+	RenderPage(pageNr int)
+
 	// Cancel cancels a running print operation. This function may be called
 	// from a PrintOperation::begin-print, PrintOperation::paginate or
 	// PrintOperation::draw-page signal handler to stop the currently running
@@ -468,17 +491,17 @@ type PrintOperation interface {
 	SetUseFullPage(fullPage bool)
 }
 
-// printOperation implements the PrintOperation class.
+// printOperation implements the PrintOperation interface.
 type printOperation struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapPrintOperation wraps a GObject to the right type. It is
-// primarily used internally.
+var _ PrintOperation = (*printOperation)(nil)
+
+// WrapPrintOperation wraps a GObject to a type that implements
+// interface PrintOperation. It is primarily used internally.
 func WrapPrintOperation(obj *externglib.Object) PrintOperation {
-	return printOperation{
-		Objector: obj,
-	}
+	return printOperation{obj}
 }
 
 func marshalPrintOperation(p uintptr) (interface{}, error) {
@@ -495,13 +518,25 @@ func NewPrintOperation() PrintOperation {
 
 	var _printOperation PrintOperation // out
 
-	_printOperation = WrapPrintOperation(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_printOperation = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(PrintOperation)
 
 	return _printOperation
 }
 
 func (p printOperation) AsPrintOperationPreview() PrintOperationPreview {
 	return WrapPrintOperationPreview(gextras.InternObject(p))
+}
+
+func (p printOperation) EndPreview() {
+	WrapPrintOperationPreview(gextras.InternObject(p)).EndPreview()
+}
+
+func (p printOperation) IsSelected(pageNr int) bool {
+	return WrapPrintOperationPreview(gextras.InternObject(p)).IsSelected(pageNr)
+}
+
+func (p printOperation) RenderPage(pageNr int) {
+	WrapPrintOperationPreview(gextras.InternObject(p)).RenderPage(pageNr)
 }
 
 func (o printOperation) Cancel() {

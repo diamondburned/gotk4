@@ -33,7 +33,19 @@ func init() {
 //
 // Typical numerable icons: ! (numerableicon.png) ! (numerableicon2.png)
 type NumerableIcon interface {
-	gio.EmblemedIcon
+	gextras.Objector
+
+	// AsEmblemedIcon casts the class to the gio.EmblemedIcon interface.
+	AsEmblemedIcon() gio.EmblemedIcon
+
+	// AddEmblem adds @emblem to the #GList of #GEmblems.
+	//
+	// This method is inherited from gio.EmblemedIcon
+	AddEmblem(emblem gio.Emblem)
+	// ClearEmblems removes all the emblems from @icon.
+	//
+	// This method is inherited from gio.EmblemedIcon
+	ClearEmblems()
 
 	// BackgroundIconName returns the icon name used as the base background
 	// image, or nil if there’s none.
@@ -98,23 +110,35 @@ type NumerableIcon interface {
 	SetStyleContext(style StyleContext)
 }
 
-// numerableIcon implements the NumerableIcon class.
+// numerableIcon implements the NumerableIcon interface.
 type numerableIcon struct {
-	gio.EmblemedIcon
+	*externglib.Object
 }
 
-// WrapNumerableIcon wraps a GObject to the right type. It is
-// primarily used internally.
+var _ NumerableIcon = (*numerableIcon)(nil)
+
+// WrapNumerableIcon wraps a GObject to a type that implements
+// interface NumerableIcon. It is primarily used internally.
 func WrapNumerableIcon(obj *externglib.Object) NumerableIcon {
-	return numerableIcon{
-		EmblemedIcon: gio.WrapEmblemedIcon(obj),
-	}
+	return numerableIcon{obj}
 }
 
 func marshalNumerableIcon(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapNumerableIcon(obj), nil
+}
+
+func (n numerableIcon) AsEmblemedIcon() gio.EmblemedIcon {
+	return gio.WrapEmblemedIcon(gextras.InternObject(n))
+}
+
+func (e numerableIcon) AddEmblem(emblem gio.Emblem) {
+	gio.WrapEmblemedIcon(gextras.InternObject(e)).AddEmblem(emblem)
+}
+
+func (e numerableIcon) ClearEmblems() {
+	gio.WrapEmblemedIcon(gextras.InternObject(e)).ClearEmblems()
 }
 
 func (s numerableIcon) BackgroundIconName() string {

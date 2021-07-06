@@ -3,8 +3,13 @@
 package gio
 
 import (
+	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gerror"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -23,6 +28,8 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 // #include <glib-object.h>
+//
+// void gotk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 func init() {
@@ -34,14 +41,610 @@ func init() {
 // DTLSServerConnection is the server-side subclass of Connection, representing
 // a server-side DTLS connection.
 type DTLSServerConnection interface {
-	DatagramBased
-	DTLSConnection
+	gextras.Objector
+
+	// AsDatagramBased casts the class to the DatagramBased interface.
+	AsDatagramBased() DatagramBased
+	// AsDTLSConnection casts the class to the DTLSConnection interface.
+	AsDTLSConnection() DTLSConnection
+
+	// ConditionCheck checks on the readiness of @datagram_based to perform
+	// operations. The operations specified in @condition are checked for and
+	// masked against the currently-satisfied conditions on @datagram_based. The
+	// result is returned.
+	//
+	// G_IO_IN will be set in the return value if data is available to read with
+	// g_datagram_based_receive_messages(), or if the connection is closed
+	// remotely (EOS); and if the datagram_based has not been closed locally
+	// using some implementation-specific method (such as g_socket_close() or
+	// g_socket_shutdown() with @shutdown_read set, if it’s a #GSocket).
+	//
+	// If the connection is shut down or closed (by calling g_socket_close() or
+	// g_socket_shutdown() with @shutdown_read set, if it’s a #GSocket, for
+	// example), all calls to this function will return G_IO_ERROR_CLOSED.
+	//
+	// G_IO_OUT will be set if it is expected that at least one byte can be sent
+	// using g_datagram_based_send_messages() without blocking. It will not be
+	// set if the datagram_based has been closed locally.
+	//
+	// G_IO_HUP will be set if the connection has been closed locally.
+	//
+	// G_IO_ERR will be set if there was an asynchronous error in transmitting
+	// data previously enqueued using g_datagram_based_send_messages().
+	//
+	// Note that on Windows, it is possible for an operation to return
+	// G_IO_ERROR_WOULD_BLOCK even immediately after
+	// g_datagram_based_condition_check() has claimed that the Based is ready
+	// for writing. Rather than calling g_datagram_based_condition_check() and
+	// then writing to the Based if it succeeds, it is generally better to
+	// simply try writing right away, and try again later if the initial attempt
+	// returns G_IO_ERROR_WOULD_BLOCK.
+	//
+	// It is meaningless to specify G_IO_ERR or G_IO_HUP in @condition; these
+	// conditions will always be set in the output if they are true. Apart from
+	// these flags, the output is guaranteed to be masked by @condition.
+	//
+	// This call never blocks.
+	//
+	// This method is inherited from DatagramBased
+	ConditionCheck(condition glib.IOCondition) glib.IOCondition
+	// ConditionWait waits for up to @timeout microseconds for condition to
+	// become true on @datagram_based. If the condition is met, true is
+	// returned.
+	//
+	// If @cancellable is cancelled before the condition is met, or if @timeout
+	// is reached before the condition is met, then false is returned and @error
+	// is set appropriately (G_IO_ERROR_CANCELLED or G_IO_ERROR_TIMED_OUT).
+	//
+	// This method is inherited from DatagramBased
+	ConditionWait(condition glib.IOCondition, timeout int64, cancellable Cancellable) error
+	// CreateSource creates a #GSource that can be attached to a Context to
+	// monitor for the availability of the specified @condition on the Based.
+	// The #GSource keeps a reference to the @datagram_based.
+	//
+	// The callback on the source is of the BasedSourceFunc type.
+	//
+	// It is meaningless to specify G_IO_ERR or G_IO_HUP in @condition; these
+	// conditions will always be reported in the callback if they are true.
+	//
+	// If non-nil, @cancellable can be used to cancel the source, which will
+	// cause the source to trigger, reporting the current condition (which is
+	// likely 0 unless cancellation happened at the same time as a condition
+	// change). You can check for this in the callback using
+	// g_cancellable_is_cancelled().
+	//
+	// This method is inherited from DatagramBased
+	CreateSource(condition glib.IOCondition, cancellable Cancellable) *glib.Source
+	// ReceiveMessages: receive one or more data messages from @datagram_based
+	// in one go.
+	//
+	// @messages must point to an array of Message structs and @num_messages
+	// must be the length of this array. Each Message contains a pointer to an
+	// array of Vector structs describing the buffers that the data received in
+	// each message will be written to.
+	//
+	// @flags modify how all messages are received. The commonly available
+	// arguments for this are available in the MsgFlags enum, but the values
+	// there are the same as the system values, and the flags are passed in
+	// as-is, so you can pass in system-specific flags too. These flags affect
+	// the overall receive operation. Flags affecting individual messages are
+	// returned in Message.flags.
+	//
+	// The other members of Message are treated as described in its
+	// documentation.
+	//
+	// If @timeout is negative the call will block until @num_messages have been
+	// received, the connection is closed remotely (EOS), @cancellable is
+	// cancelled, or an error occurs.
+	//
+	// If @timeout is 0 the call will return up to @num_messages without
+	// blocking, or G_IO_ERROR_WOULD_BLOCK if no messages are queued in the
+	// operating system to be received.
+	//
+	// If @timeout is positive the call will block on the same conditions as if
+	// @timeout were negative. If the timeout is reached before any messages are
+	// received, G_IO_ERROR_TIMED_OUT is returned, otherwise it will return the
+	// number of messages received before timing out. (Note: This is effectively
+	// the behaviour of `MSG_WAITFORONE` with recvmmsg().)
+	//
+	// To be notified when messages are available, wait for the G_IO_IN
+	// condition. Note though that you may still receive G_IO_ERROR_WOULD_BLOCK
+	// from g_datagram_based_receive_messages() even if you were previously
+	// notified of a G_IO_IN condition.
+	//
+	// If the remote peer closes the connection, any messages queued in the
+	// underlying receive buffer will be returned, and subsequent calls to
+	// g_datagram_based_receive_messages() will return 0 (with no error set).
+	//
+	// If the connection is shut down or closed (by calling g_socket_close() or
+	// g_socket_shutdown() with @shutdown_read set, if it’s a #GSocket, for
+	// example), all calls to this function will return G_IO_ERROR_CLOSED.
+	//
+	// On error -1 is returned and @error is set accordingly. An error will only
+	// be returned if zero messages could be received; otherwise the number of
+	// messages successfully received before the error will be returned. If
+	// @cancellable is cancelled, G_IO_ERROR_CANCELLED is returned as with any
+	// other error.
+	//
+	// This method is inherited from DatagramBased
+	ReceiveMessages(messages []InputMessage, flags int, timeout int64, cancellable Cancellable) (int, error)
+	// SendMessages: send one or more data messages from @datagram_based in one
+	// go.
+	//
+	// @messages must point to an array of Message structs and @num_messages
+	// must be the length of this array. Each Message contains an address to
+	// send the data to, and a pointer to an array of Vector structs to describe
+	// the buffers that the data to be sent for each message will be gathered
+	// from.
+	//
+	// @flags modify how the message is sent. The commonly available arguments
+	// for this are available in the MsgFlags enum, but the values there are the
+	// same as the system values, and the flags are passed in as-is, so you can
+	// pass in system-specific flags too.
+	//
+	// The other members of Message are treated as described in its
+	// documentation.
+	//
+	// If @timeout is negative the call will block until @num_messages have been
+	// sent, @cancellable is cancelled, or an error occurs.
+	//
+	// If @timeout is 0 the call will send up to @num_messages without blocking,
+	// or will return G_IO_ERROR_WOULD_BLOCK if there is no space to send
+	// messages.
+	//
+	// If @timeout is positive the call will block on the same conditions as if
+	// @timeout were negative. If the timeout is reached before any messages are
+	// sent, G_IO_ERROR_TIMED_OUT is returned, otherwise it will return the
+	// number of messages sent before timing out.
+	//
+	// To be notified when messages can be sent, wait for the G_IO_OUT
+	// condition. Note though that you may still receive G_IO_ERROR_WOULD_BLOCK
+	// from g_datagram_based_send_messages() even if you were previously
+	// notified of a G_IO_OUT condition. (On Windows in particular, this is very
+	// common due to the way the underlying APIs work.)
+	//
+	// If the connection is shut down or closed (by calling g_socket_close() or
+	// g_socket_shutdown() with @shutdown_write set, if it’s a #GSocket, for
+	// example), all calls to this function will return G_IO_ERROR_CLOSED.
+	//
+	// On error -1 is returned and @error is set accordingly. An error will only
+	// be returned if zero messages could be sent; otherwise the number of
+	// messages successfully sent before the error will be returned. If
+	// @cancellable is cancelled, G_IO_ERROR_CANCELLED is returned as with any
+	// other error.
+	//
+	// This method is inherited from DatagramBased
+	SendMessages(messages []OutputMessage, flags int, timeout int64, cancellable Cancellable) (int, error)
+	// Close the DTLS connection. This is equivalent to calling
+	// g_dtls_connection_shutdown() to shut down both sides of the connection.
+	//
+	// Closing a Connection waits for all buffered but untransmitted data to be
+	// sent before it completes. It then sends a `close_notify` DTLS alert to
+	// the peer and may wait for a `close_notify` to be received from the peer.
+	// It does not close the underlying Connection:base-socket; that must be
+	// closed separately.
+	//
+	// Once @conn is closed, all other operations will return G_IO_ERROR_CLOSED.
+	// Closing a Connection multiple times will not return an error.
+	//
+	// Connections will be automatically closed when the last reference is
+	// dropped, but you might want to call this function to make sure resources
+	// are released as early as possible.
+	//
+	// If @cancellable is cancelled, the Connection may be left partially-closed
+	// and any pending untransmitted data may be lost. Call
+	// g_dtls_connection_close() again to complete closing the Connection.
+	//
+	// This method is inherited from DTLSConnection
+	Close(cancellable Cancellable) error
+	// CloseAsync: asynchronously close the DTLS connection. See
+	// g_dtls_connection_close() for more information.
+	//
+	// This method is inherited from DTLSConnection
+	CloseAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
+	// CloseFinish: finish an asynchronous TLS close operation. See
+	// g_dtls_connection_close() for more information.
+	//
+	// This method is inherited from DTLSConnection
+	CloseFinish(result AsyncResult) error
+	// EmitAcceptCertificate: used by Connection implementations to emit the
+	// Connection::accept-certificate signal.
+	//
+	// This method is inherited from DTLSConnection
+	EmitAcceptCertificate(peerCert TLSCertificate, errors TLSCertificateFlags) bool
+	// GetCertificate gets @conn's certificate, as set by
+	// g_dtls_connection_set_certificate().
+	//
+	// This method is inherited from DTLSConnection
+	GetCertificate() TLSCertificate
+	// GetChannelBindingData: query the TLS backend for TLS channel binding data
+	// of @type for @conn.
+	//
+	// This call retrieves TLS channel binding data as specified in RFC 5056
+	// (https://tools.ietf.org/html/rfc5056), RFC 5929
+	// (https://tools.ietf.org/html/rfc5929), and related RFCs. The binding data
+	// is returned in @data. The @data is resized by the callee using Array
+	// buffer management and will be freed when the @data is destroyed by
+	// g_byte_array_unref(). If @data is nil, it will only check whether TLS
+	// backend is able to fetch the data (e.g. whether @type is supported by the
+	// TLS backend). It does not guarantee that the data will be available
+	// though. That could happen if TLS connection does not support @type or the
+	// binding data is not available yet due to additional negotiation or input
+	// required.
+	//
+	// This method is inherited from DTLSConnection
+	GetChannelBindingData(typ TLSChannelBindingType) ([]byte, error)
+	// GetDatabase gets the certificate database that @conn uses to verify peer
+	// certificates. See g_dtls_connection_set_database().
+	//
+	// This method is inherited from DTLSConnection
+	GetDatabase() TLSDatabase
+	// GetInteraction: get the object that will be used to interact with the
+	// user. It will be used for things like prompting the user for passwords.
+	// If nil is returned, then no user interaction will occur for this
+	// connection.
+	//
+	// This method is inherited from DTLSConnection
+	GetInteraction() TLSInteraction
+	// GetNegotiatedProtocol gets the name of the application-layer protocol
+	// negotiated during the handshake.
+	//
+	// If the peer did not use the ALPN extension, or did not advertise a
+	// protocol that matched one of @conn's protocols, or the TLS backend does
+	// not support ALPN, then this will be nil. See
+	// g_dtls_connection_set_advertised_protocols().
+	//
+	// This method is inherited from DTLSConnection
+	GetNegotiatedProtocol() string
+	// GetPeerCertificate gets @conn's peer's certificate after the handshake
+	// has completed or failed. (It is not set during the emission of
+	// Connection::accept-certificate.)
+	//
+	// This method is inherited from DTLSConnection
+	GetPeerCertificate() TLSCertificate
+	// GetPeerCertificateErrors gets the errors associated with validating
+	// @conn's peer's certificate, after the handshake has completed or failed.
+	// (It is not set during the emission of Connection::accept-certificate.)
+	//
+	// This method is inherited from DTLSConnection
+	GetPeerCertificateErrors() TLSCertificateFlags
+	// GetRehandshakeMode gets @conn rehandshaking mode. See
+	// g_dtls_connection_set_rehandshake_mode() for details.
+	//
+	// Deprecated: since version 2.64.
+	//
+	// This method is inherited from DTLSConnection
+	GetRehandshakeMode() TLSRehandshakeMode
+	// GetRequireCloseNotify tests whether or not @conn expects a proper TLS
+	// close notification when the connection is closed. See
+	// g_dtls_connection_set_require_close_notify() for details.
+	//
+	// This method is inherited from DTLSConnection
+	GetRequireCloseNotify() bool
+	// Handshake attempts a TLS handshake on @conn.
+	//
+	// On the client side, it is never necessary to call this method; although
+	// the connection needs to perform a handshake after connecting, Connection
+	// will handle this for you automatically when you try to send or receive
+	// data on the connection. You can call g_dtls_connection_handshake()
+	// manually if you want to know whether the initial handshake succeeded or
+	// failed (as opposed to just immediately trying to use @conn to read or
+	// write, in which case, if it fails, it may not be possible to tell if it
+	// failed before or after completing the handshake), but beware that servers
+	// may reject client authentication after the handshake has completed, so a
+	// successful handshake does not indicate the connection will be usable.
+	//
+	// Likewise, on the server side, although a handshake is necessary at the
+	// beginning of the communication, you do not need to call this function
+	// explicitly unless you want clearer error reporting.
+	//
+	// Previously, calling g_dtls_connection_handshake() after the initial
+	// handshake would trigger a rehandshake; however, this usage was deprecated
+	// in GLib 2.60 because rehandshaking was removed from the TLS protocol in
+	// TLS 1.3. Since GLib 2.64, calling this function after the initial
+	// handshake will no longer do anything.
+	//
+	// Connection::accept_certificate may be emitted during the handshake.
+	//
+	// This method is inherited from DTLSConnection
+	Handshake(cancellable Cancellable) error
+	// HandshakeAsync: asynchronously performs a TLS handshake on @conn. See
+	// g_dtls_connection_handshake() for more information.
+	//
+	// This method is inherited from DTLSConnection
+	HandshakeAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
+	// HandshakeFinish: finish an asynchronous TLS handshake operation. See
+	// g_dtls_connection_handshake() for more information.
+	//
+	// This method is inherited from DTLSConnection
+	HandshakeFinish(result AsyncResult) error
+	// SetAdvertisedProtocols sets the list of application-layer protocols to
+	// advertise that the caller is willing to speak on this connection. The
+	// Application-Layer Protocol Negotiation (ALPN) extension will be used to
+	// negotiate a compatible protocol with the peer; use
+	// g_dtls_connection_get_negotiated_protocol() to find the negotiated
+	// protocol after the handshake. Specifying nil for the the value of
+	// @protocols will disable ALPN negotiation.
+	//
+	// See IANA TLS ALPN Protocol IDs
+	// (https://www.iana.org/assignments/tls-extensiontype-values/tls-extensiontype-values.xhtml#alpn-protocol-ids)
+	// for a list of registered protocol IDs.
+	//
+	// This method is inherited from DTLSConnection
+	SetAdvertisedProtocols(protocols []string)
+	// SetCertificate: this sets the certificate that @conn will present to its
+	// peer during the TLS handshake. For a ServerConnection, it is mandatory to
+	// set this, and that will normally be done at construct time.
+	//
+	// For a ClientConnection, this is optional. If a handshake fails with
+	// G_TLS_ERROR_CERTIFICATE_REQUIRED, that means that the server requires a
+	// certificate, and if you try connecting again, you should call this method
+	// first. You can call g_dtls_client_connection_get_accepted_cas() on the
+	// failed connection to get a list of Certificate Authorities that the
+	// server will accept certificates from.
+	//
+	// (It is also possible that a server will allow the connection with or
+	// without a certificate; in that case, if you don't provide a certificate,
+	// you can tell that the server requested one by the fact that
+	// g_dtls_client_connection_get_accepted_cas() will return non-nil.)
+	//
+	// This method is inherited from DTLSConnection
+	SetCertificate(certificate TLSCertificate)
+	// SetDatabase sets the certificate database that is used to verify peer
+	// certificates. This is set to the default database by default. See
+	// g_tls_backend_get_default_database(). If set to nil, then peer
+	// certificate validation will always set the G_TLS_CERTIFICATE_UNKNOWN_CA
+	// error (meaning Connection::accept-certificate will always be emitted on
+	// client-side connections, unless that bit is not set in
+	// ClientConnection:validation-flags).
+	//
+	// This method is inherited from DTLSConnection
+	SetDatabase(database TLSDatabase)
+	// SetInteraction: set the object that will be used to interact with the
+	// user. It will be used for things like prompting the user for passwords.
+	//
+	// The @interaction argument will normally be a derived subclass of
+	// Interaction. nil can also be provided if no user interaction should occur
+	// for this connection.
+	//
+	// This method is inherited from DTLSConnection
+	SetInteraction(interaction TLSInteraction)
+	// SetRehandshakeMode: since GLib 2.64, changing the rehandshake mode is no
+	// longer supported and will have no effect. With TLS 1.3, rehandshaking has
+	// been removed from the TLS protocol, replaced by separate post-handshake
+	// authentication and rekey operations.
+	//
+	// Deprecated: since version 2.60.
+	//
+	// This method is inherited from DTLSConnection
+	SetRehandshakeMode(mode TLSRehandshakeMode)
+	// SetRequireCloseNotify sets whether or not @conn expects a proper TLS
+	// close notification before the connection is closed. If this is true (the
+	// default), then @conn will expect to receive a TLS close notification from
+	// its peer before the connection is closed, and will return a
+	// G_TLS_ERROR_EOF error if the connection is closed without proper
+	// notification (since this may indicate a network error, or
+	// man-in-the-middle attack).
+	//
+	// In some protocols, the application will know whether or not the
+	// connection was closed cleanly based on application-level data (because
+	// the application-level data includes a length field, or is somehow
+	// self-delimiting); in this case, the close notify is redundant and may be
+	// omitted. You can use g_dtls_connection_set_require_close_notify() to tell
+	// @conn to allow an "unannounced" connection close, in which case the close
+	// will show up as a 0-length read, as in a non-TLS Based, and it is up to
+	// the application to check that the data has been fully received.
+	//
+	// Note that this only affects the behavior when the peer closes the
+	// connection; when the application calls g_dtls_connection_close_async() on
+	// @conn itself, this will send a close notification regardless of the
+	// setting of this property. If you explicitly want to do an unclean close,
+	// you can close @conn's Connection:base-socket rather than closing @conn
+	// itself.
+	//
+	// This method is inherited from DTLSConnection
+	SetRequireCloseNotify(requireCloseNotify bool)
+	// Shutdown: shut down part or all of a DTLS connection.
+	//
+	// If @shutdown_read is true then the receiving side of the connection is
+	// shut down, and further reading is disallowed. Subsequent calls to
+	// g_datagram_based_receive_messages() will return G_IO_ERROR_CLOSED.
+	//
+	// If @shutdown_write is true then the sending side of the connection is
+	// shut down, and further writing is disallowed. Subsequent calls to
+	// g_datagram_based_send_messages() will return G_IO_ERROR_CLOSED.
+	//
+	// It is allowed for both @shutdown_read and @shutdown_write to be TRUE —
+	// this is equivalent to calling g_dtls_connection_close().
+	//
+	// If @cancellable is cancelled, the Connection may be left partially-closed
+	// and any pending untransmitted data may be lost. Call
+	// g_dtls_connection_shutdown() again to complete closing the Connection.
+	//
+	// This method is inherited from DTLSConnection
+	Shutdown(shutdownRead bool, shutdownWrite bool, cancellable Cancellable) error
+	// ShutdownAsync: asynchronously shut down part or all of the DTLS
+	// connection. See g_dtls_connection_shutdown() for more information.
+	//
+	// This method is inherited from DTLSConnection
+	ShutdownAsync(shutdownRead bool, shutdownWrite bool, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
+	// ShutdownFinish: finish an asynchronous TLS shutdown operation. See
+	// g_dtls_connection_shutdown() for more information.
+	//
+	// This method is inherited from DTLSConnection
+	ShutdownFinish(result AsyncResult) error
+	// ConditionCheck checks on the readiness of @datagram_based to perform
+	// operations. The operations specified in @condition are checked for and
+	// masked against the currently-satisfied conditions on @datagram_based. The
+	// result is returned.
+	//
+	// G_IO_IN will be set in the return value if data is available to read with
+	// g_datagram_based_receive_messages(), or if the connection is closed
+	// remotely (EOS); and if the datagram_based has not been closed locally
+	// using some implementation-specific method (such as g_socket_close() or
+	// g_socket_shutdown() with @shutdown_read set, if it’s a #GSocket).
+	//
+	// If the connection is shut down or closed (by calling g_socket_close() or
+	// g_socket_shutdown() with @shutdown_read set, if it’s a #GSocket, for
+	// example), all calls to this function will return G_IO_ERROR_CLOSED.
+	//
+	// G_IO_OUT will be set if it is expected that at least one byte can be sent
+	// using g_datagram_based_send_messages() without blocking. It will not be
+	// set if the datagram_based has been closed locally.
+	//
+	// G_IO_HUP will be set if the connection has been closed locally.
+	//
+	// G_IO_ERR will be set if there was an asynchronous error in transmitting
+	// data previously enqueued using g_datagram_based_send_messages().
+	//
+	// Note that on Windows, it is possible for an operation to return
+	// G_IO_ERROR_WOULD_BLOCK even immediately after
+	// g_datagram_based_condition_check() has claimed that the Based is ready
+	// for writing. Rather than calling g_datagram_based_condition_check() and
+	// then writing to the Based if it succeeds, it is generally better to
+	// simply try writing right away, and try again later if the initial attempt
+	// returns G_IO_ERROR_WOULD_BLOCK.
+	//
+	// It is meaningless to specify G_IO_ERR or G_IO_HUP in @condition; these
+	// conditions will always be set in the output if they are true. Apart from
+	// these flags, the output is guaranteed to be masked by @condition.
+	//
+	// This call never blocks.
+	//
+	// This method is inherited from DatagramBased
+	ConditionCheck(condition glib.IOCondition) glib.IOCondition
+	// ConditionWait waits for up to @timeout microseconds for condition to
+	// become true on @datagram_based. If the condition is met, true is
+	// returned.
+	//
+	// If @cancellable is cancelled before the condition is met, or if @timeout
+	// is reached before the condition is met, then false is returned and @error
+	// is set appropriately (G_IO_ERROR_CANCELLED or G_IO_ERROR_TIMED_OUT).
+	//
+	// This method is inherited from DatagramBased
+	ConditionWait(condition glib.IOCondition, timeout int64, cancellable Cancellable) error
+	// CreateSource creates a #GSource that can be attached to a Context to
+	// monitor for the availability of the specified @condition on the Based.
+	// The #GSource keeps a reference to the @datagram_based.
+	//
+	// The callback on the source is of the BasedSourceFunc type.
+	//
+	// It is meaningless to specify G_IO_ERR or G_IO_HUP in @condition; these
+	// conditions will always be reported in the callback if they are true.
+	//
+	// If non-nil, @cancellable can be used to cancel the source, which will
+	// cause the source to trigger, reporting the current condition (which is
+	// likely 0 unless cancellation happened at the same time as a condition
+	// change). You can check for this in the callback using
+	// g_cancellable_is_cancelled().
+	//
+	// This method is inherited from DatagramBased
+	CreateSource(condition glib.IOCondition, cancellable Cancellable) *glib.Source
+	// ReceiveMessages: receive one or more data messages from @datagram_based
+	// in one go.
+	//
+	// @messages must point to an array of Message structs and @num_messages
+	// must be the length of this array. Each Message contains a pointer to an
+	// array of Vector structs describing the buffers that the data received in
+	// each message will be written to.
+	//
+	// @flags modify how all messages are received. The commonly available
+	// arguments for this are available in the MsgFlags enum, but the values
+	// there are the same as the system values, and the flags are passed in
+	// as-is, so you can pass in system-specific flags too. These flags affect
+	// the overall receive operation. Flags affecting individual messages are
+	// returned in Message.flags.
+	//
+	// The other members of Message are treated as described in its
+	// documentation.
+	//
+	// If @timeout is negative the call will block until @num_messages have been
+	// received, the connection is closed remotely (EOS), @cancellable is
+	// cancelled, or an error occurs.
+	//
+	// If @timeout is 0 the call will return up to @num_messages without
+	// blocking, or G_IO_ERROR_WOULD_BLOCK if no messages are queued in the
+	// operating system to be received.
+	//
+	// If @timeout is positive the call will block on the same conditions as if
+	// @timeout were negative. If the timeout is reached before any messages are
+	// received, G_IO_ERROR_TIMED_OUT is returned, otherwise it will return the
+	// number of messages received before timing out. (Note: This is effectively
+	// the behaviour of `MSG_WAITFORONE` with recvmmsg().)
+	//
+	// To be notified when messages are available, wait for the G_IO_IN
+	// condition. Note though that you may still receive G_IO_ERROR_WOULD_BLOCK
+	// from g_datagram_based_receive_messages() even if you were previously
+	// notified of a G_IO_IN condition.
+	//
+	// If the remote peer closes the connection, any messages queued in the
+	// underlying receive buffer will be returned, and subsequent calls to
+	// g_datagram_based_receive_messages() will return 0 (with no error set).
+	//
+	// If the connection is shut down or closed (by calling g_socket_close() or
+	// g_socket_shutdown() with @shutdown_read set, if it’s a #GSocket, for
+	// example), all calls to this function will return G_IO_ERROR_CLOSED.
+	//
+	// On error -1 is returned and @error is set accordingly. An error will only
+	// be returned if zero messages could be received; otherwise the number of
+	// messages successfully received before the error will be returned. If
+	// @cancellable is cancelled, G_IO_ERROR_CANCELLED is returned as with any
+	// other error.
+	//
+	// This method is inherited from DatagramBased
+	ReceiveMessages(messages []InputMessage, flags int, timeout int64, cancellable Cancellable) (int, error)
+	// SendMessages: send one or more data messages from @datagram_based in one
+	// go.
+	//
+	// @messages must point to an array of Message structs and @num_messages
+	// must be the length of this array. Each Message contains an address to
+	// send the data to, and a pointer to an array of Vector structs to describe
+	// the buffers that the data to be sent for each message will be gathered
+	// from.
+	//
+	// @flags modify how the message is sent. The commonly available arguments
+	// for this are available in the MsgFlags enum, but the values there are the
+	// same as the system values, and the flags are passed in as-is, so you can
+	// pass in system-specific flags too.
+	//
+	// The other members of Message are treated as described in its
+	// documentation.
+	//
+	// If @timeout is negative the call will block until @num_messages have been
+	// sent, @cancellable is cancelled, or an error occurs.
+	//
+	// If @timeout is 0 the call will send up to @num_messages without blocking,
+	// or will return G_IO_ERROR_WOULD_BLOCK if there is no space to send
+	// messages.
+	//
+	// If @timeout is positive the call will block on the same conditions as if
+	// @timeout were negative. If the timeout is reached before any messages are
+	// sent, G_IO_ERROR_TIMED_OUT is returned, otherwise it will return the
+	// number of messages sent before timing out.
+	//
+	// To be notified when messages can be sent, wait for the G_IO_OUT
+	// condition. Note though that you may still receive G_IO_ERROR_WOULD_BLOCK
+	// from g_datagram_based_send_messages() even if you were previously
+	// notified of a G_IO_OUT condition. (On Windows in particular, this is very
+	// common due to the way the underlying APIs work.)
+	//
+	// If the connection is shut down or closed (by calling g_socket_close() or
+	// g_socket_shutdown() with @shutdown_write set, if it’s a #GSocket, for
+	// example), all calls to this function will return G_IO_ERROR_CLOSED.
+	//
+	// On error -1 is returned and @error is set accordingly. An error will only
+	// be returned if zero messages could be sent; otherwise the number of
+	// messages successfully sent before the error will be returned. If
+	// @cancellable is cancelled, G_IO_ERROR_CANCELLED is returned as with any
+	// other error.
+	//
+	// This method is inherited from DatagramBased
+	SendMessages(messages []OutputMessage, flags int, timeout int64, cancellable Cancellable) (int, error)
 }
 
 // dtlsServerConnection implements the DTLSServerConnection interface.
 type dtlsServerConnection struct {
-	DatagramBased
-	DTLSConnection
+	*externglib.Object
 }
 
 var _ DTLSServerConnection = (*dtlsServerConnection)(nil)
@@ -49,14 +652,159 @@ var _ DTLSServerConnection = (*dtlsServerConnection)(nil)
 // WrapDTLSServerConnection wraps a GObject to a type that implements
 // interface DTLSServerConnection. It is primarily used internally.
 func WrapDTLSServerConnection(obj *externglib.Object) DTLSServerConnection {
-	return dtlsServerConnection{
-		DatagramBased:  WrapDatagramBased(obj),
-		DTLSConnection: WrapDTLSConnection(obj),
-	}
+	return dtlsServerConnection{obj}
 }
 
 func marshalDTLSServerConnection(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapDTLSServerConnection(obj), nil
+}
+
+func (d dtlsServerConnection) AsDatagramBased() DatagramBased {
+	return WrapDatagramBased(gextras.InternObject(d))
+}
+
+func (d dtlsServerConnection) AsDTLSConnection() DTLSConnection {
+	return WrapDTLSConnection(gextras.InternObject(d))
+}
+
+func (d dtlsServerConnection) ConditionCheck(condition glib.IOCondition) glib.IOCondition {
+	return WrapDatagramBased(gextras.InternObject(d)).ConditionCheck(condition)
+}
+
+func (d dtlsServerConnection) ConditionWait(condition glib.IOCondition, timeout int64, cancellable Cancellable) error {
+	return WrapDatagramBased(gextras.InternObject(d)).ConditionWait(condition, timeout, cancellable)
+}
+
+func (d dtlsServerConnection) CreateSource(condition glib.IOCondition, cancellable Cancellable) *glib.Source {
+	return WrapDatagramBased(gextras.InternObject(d)).CreateSource(condition, cancellable)
+}
+
+func (d dtlsServerConnection) ReceiveMessages(messages []InputMessage, flags int, timeout int64, cancellable Cancellable) (int, error) {
+	return WrapDatagramBased(gextras.InternObject(d)).ReceiveMessages(messages, flags, timeout, cancellable)
+}
+
+func (d dtlsServerConnection) SendMessages(messages []OutputMessage, flags int, timeout int64, cancellable Cancellable) (int, error) {
+	return WrapDatagramBased(gextras.InternObject(d)).SendMessages(messages, flags, timeout, cancellable)
+}
+
+func (c dtlsServerConnection) Close(cancellable Cancellable) error {
+	return WrapDTLSConnection(gextras.InternObject(c)).Close(cancellable)
+}
+
+func (c dtlsServerConnection) CloseAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+	WrapDTLSConnection(gextras.InternObject(c)).CloseAsync(ioPriority, cancellable, callback)
+}
+
+func (c dtlsServerConnection) CloseFinish(result AsyncResult) error {
+	return WrapDTLSConnection(gextras.InternObject(c)).CloseFinish(result)
+}
+
+func (c dtlsServerConnection) EmitAcceptCertificate(peerCert TLSCertificate, errors TLSCertificateFlags) bool {
+	return WrapDTLSConnection(gextras.InternObject(c)).EmitAcceptCertificate(peerCert, errors)
+}
+
+func (c dtlsServerConnection) GetCertificate() TLSCertificate {
+	return WrapDTLSConnection(gextras.InternObject(c)).GetCertificate()
+}
+
+func (c dtlsServerConnection) GetChannelBindingData(typ TLSChannelBindingType) ([]byte, error) {
+	return WrapDTLSConnection(gextras.InternObject(c)).GetChannelBindingData(typ)
+}
+
+func (c dtlsServerConnection) GetDatabase() TLSDatabase {
+	return WrapDTLSConnection(gextras.InternObject(c)).GetDatabase()
+}
+
+func (c dtlsServerConnection) GetInteraction() TLSInteraction {
+	return WrapDTLSConnection(gextras.InternObject(c)).GetInteraction()
+}
+
+func (c dtlsServerConnection) GetNegotiatedProtocol() string {
+	return WrapDTLSConnection(gextras.InternObject(c)).GetNegotiatedProtocol()
+}
+
+func (c dtlsServerConnection) GetPeerCertificate() TLSCertificate {
+	return WrapDTLSConnection(gextras.InternObject(c)).GetPeerCertificate()
+}
+
+func (c dtlsServerConnection) GetPeerCertificateErrors() TLSCertificateFlags {
+	return WrapDTLSConnection(gextras.InternObject(c)).GetPeerCertificateErrors()
+}
+
+func (c dtlsServerConnection) GetRehandshakeMode() TLSRehandshakeMode {
+	return WrapDTLSConnection(gextras.InternObject(c)).GetRehandshakeMode()
+}
+
+func (c dtlsServerConnection) GetRequireCloseNotify() bool {
+	return WrapDTLSConnection(gextras.InternObject(c)).GetRequireCloseNotify()
+}
+
+func (c dtlsServerConnection) Handshake(cancellable Cancellable) error {
+	return WrapDTLSConnection(gextras.InternObject(c)).Handshake(cancellable)
+}
+
+func (c dtlsServerConnection) HandshakeAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+	WrapDTLSConnection(gextras.InternObject(c)).HandshakeAsync(ioPriority, cancellable, callback)
+}
+
+func (c dtlsServerConnection) HandshakeFinish(result AsyncResult) error {
+	return WrapDTLSConnection(gextras.InternObject(c)).HandshakeFinish(result)
+}
+
+func (c dtlsServerConnection) SetAdvertisedProtocols(protocols []string) {
+	WrapDTLSConnection(gextras.InternObject(c)).SetAdvertisedProtocols(protocols)
+}
+
+func (c dtlsServerConnection) SetCertificate(certificate TLSCertificate) {
+	WrapDTLSConnection(gextras.InternObject(c)).SetCertificate(certificate)
+}
+
+func (c dtlsServerConnection) SetDatabase(database TLSDatabase) {
+	WrapDTLSConnection(gextras.InternObject(c)).SetDatabase(database)
+}
+
+func (c dtlsServerConnection) SetInteraction(interaction TLSInteraction) {
+	WrapDTLSConnection(gextras.InternObject(c)).SetInteraction(interaction)
+}
+
+func (c dtlsServerConnection) SetRehandshakeMode(mode TLSRehandshakeMode) {
+	WrapDTLSConnection(gextras.InternObject(c)).SetRehandshakeMode(mode)
+}
+
+func (c dtlsServerConnection) SetRequireCloseNotify(requireCloseNotify bool) {
+	WrapDTLSConnection(gextras.InternObject(c)).SetRequireCloseNotify(requireCloseNotify)
+}
+
+func (c dtlsServerConnection) Shutdown(shutdownRead bool, shutdownWrite bool, cancellable Cancellable) error {
+	return WrapDTLSConnection(gextras.InternObject(c)).Shutdown(shutdownRead, shutdownWrite, cancellable)
+}
+
+func (c dtlsServerConnection) ShutdownAsync(shutdownRead bool, shutdownWrite bool, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+	WrapDTLSConnection(gextras.InternObject(c)).ShutdownAsync(shutdownRead, shutdownWrite, ioPriority, cancellable, callback)
+}
+
+func (c dtlsServerConnection) ShutdownFinish(result AsyncResult) error {
+	return WrapDTLSConnection(gextras.InternObject(c)).ShutdownFinish(result)
+}
+
+func (d dtlsServerConnection) ConditionCheck(condition glib.IOCondition) glib.IOCondition {
+	return WrapDatagramBased(gextras.InternObject(d)).ConditionCheck(condition)
+}
+
+func (d dtlsServerConnection) ConditionWait(condition glib.IOCondition, timeout int64, cancellable Cancellable) error {
+	return WrapDatagramBased(gextras.InternObject(d)).ConditionWait(condition, timeout, cancellable)
+}
+
+func (d dtlsServerConnection) CreateSource(condition glib.IOCondition, cancellable Cancellable) *glib.Source {
+	return WrapDatagramBased(gextras.InternObject(d)).CreateSource(condition, cancellable)
+}
+
+func (d dtlsServerConnection) ReceiveMessages(messages []InputMessage, flags int, timeout int64, cancellable Cancellable) (int, error) {
+	return WrapDatagramBased(gextras.InternObject(d)).ReceiveMessages(messages, flags, timeout, cancellable)
+}
+
+func (d dtlsServerConnection) SendMessages(messages []OutputMessage, flags int, timeout int64, cancellable Cancellable) (int, error) {
+	return WrapDatagramBased(gextras.InternObject(d)).SendMessages(messages, flags, timeout, cancellable)
 }

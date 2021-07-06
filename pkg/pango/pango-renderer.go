@@ -148,17 +148,17 @@ type Renderer interface {
 	SetMatrix(matrix *Matrix)
 }
 
-// renderer implements the Renderer class.
+// renderer implements the Renderer interface.
 type renderer struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapRenderer wraps a GObject to the right type. It is
-// primarily used internally.
+var _ Renderer = (*renderer)(nil)
+
+// WrapRenderer wraps a GObject to a type that implements
+// interface Renderer. It is primarily used internally.
 func WrapRenderer(obj *externglib.Object) Renderer {
-	return renderer{
-		Objector: obj,
-	}
+	return renderer{obj}
 }
 
 func marshalRenderer(p uintptr) (interface{}, error) {

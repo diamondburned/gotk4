@@ -93,17 +93,17 @@ type ListItem interface {
 	SetSelectable(selectable bool)
 }
 
-// listItem implements the ListItem class.
+// listItem implements the ListItem interface.
 type listItem struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapListItem wraps a GObject to the right type. It is
-// primarily used internally.
+var _ ListItem = (*listItem)(nil)
+
+// WrapListItem wraps a GObject to a type that implements
+// interface ListItem. It is primarily used internally.
 func WrapListItem(obj *externglib.Object) ListItem {
-	return listItem{
-		Objector: obj,
-	}
+	return listItem{obj}
 }
 
 func marshalListItem(p uintptr) (interface{}, error) {

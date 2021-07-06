@@ -93,6 +93,62 @@ type TreeViewColumn interface {
 	// AsCellLayout casts the class to the CellLayout interface.
 	AsCellLayout() CellLayout
 
+	// GetBuildableID gets the ID of the @buildable object.
+	//
+	// `GtkBuilder` sets the name based on the ID attribute of the <object> tag
+	// used to construct the @buildable.
+	//
+	// This method is inherited from Buildable
+	GetBuildableID() string
+	// AddAttribute adds an attribute mapping to the list in @cell_layout.
+	//
+	// The @column is the column of the model to get a value from, and the
+	// @attribute is the parameter on @cell to be set from the value. So for
+	// example if column 2 of the model contains strings, you could have the
+	// “text” attribute of a CellRendererText get its values from column 2.
+	//
+	// This method is inherited from CellLayout
+	AddAttribute(cell CellRenderer, attribute string, column int)
+	// Clear unsets all the mappings on all renderers on @cell_layout and
+	// removes all renderers from @cell_layout.
+	//
+	// This method is inherited from CellLayout
+	Clear()
+	// ClearAttributes clears all existing attributes previously set with
+	// gtk_cell_layout_set_attributes().
+	//
+	// This method is inherited from CellLayout
+	ClearAttributes(cell CellRenderer)
+	// GetArea returns the underlying CellArea which might be @cell_layout if
+	// called on a CellArea or might be nil if no CellArea is used by
+	// @cell_layout.
+	//
+	// This method is inherited from CellLayout
+	GetArea() CellArea
+	// PackEnd adds the @cell to the end of @cell_layout. If @expand is false,
+	// then the @cell is allocated no more space than it needs. Any unused space
+	// is divided evenly between cells for which @expand is true.
+	//
+	// Note that reusing the same cell renderer is not supported.
+	//
+	// This method is inherited from CellLayout
+	PackEnd(cell CellRenderer, expand bool)
+	// PackStart packs the @cell into the beginning of @cell_layout. If @expand
+	// is false, then the @cell is allocated no more space than it needs. Any
+	// unused space is divided evenly between cells for which @expand is true.
+	//
+	// Note that reusing the same cell renderer is not supported.
+	//
+	// This method is inherited from CellLayout
+	PackStart(cell CellRenderer, expand bool)
+	// Reorder re-inserts @cell at @position.
+	//
+	// Note that @cell has already to be packed into @cell_layout for this to
+	// function properly.
+	//
+	// This method is inherited from CellLayout
+	Reorder(cell CellRenderer, position int)
+
 	// AddAttribute adds an attribute mapping to the list in @tree_column. The
 	// @column is the column of the model to get a value from, and the
 	// @attribute is the parameter on @cell_renderer to be set from the value.
@@ -271,17 +327,17 @@ type TreeViewColumn interface {
 	SetWidget(widget Widget)
 }
 
-// treeViewColumn implements the TreeViewColumn class.
+// treeViewColumn implements the TreeViewColumn interface.
 type treeViewColumn struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapTreeViewColumn wraps a GObject to the right type. It is
-// primarily used internally.
+var _ TreeViewColumn = (*treeViewColumn)(nil)
+
+// WrapTreeViewColumn wraps a GObject to a type that implements
+// interface TreeViewColumn. It is primarily used internally.
 func WrapTreeViewColumn(obj *externglib.Object) TreeViewColumn {
-	return treeViewColumn{
-		Objector: obj,
-	}
+	return treeViewColumn{obj}
 }
 
 func marshalTreeViewColumn(p uintptr) (interface{}, error) {
@@ -298,7 +354,7 @@ func NewTreeViewColumn() TreeViewColumn {
 
 	var _treeViewColumn TreeViewColumn // out
 
-	_treeViewColumn = WrapTreeViewColumn(externglib.Take(unsafe.Pointer(_cret)))
+	_treeViewColumn = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(TreeViewColumn)
 
 	return _treeViewColumn
 }
@@ -315,7 +371,7 @@ func NewTreeViewColumnWithArea(area CellArea) TreeViewColumn {
 
 	var _treeViewColumn TreeViewColumn // out
 
-	_treeViewColumn = WrapTreeViewColumn(externglib.Take(unsafe.Pointer(_cret)))
+	_treeViewColumn = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(TreeViewColumn)
 
 	return _treeViewColumn
 }
@@ -326,6 +382,38 @@ func (t treeViewColumn) AsBuildable() Buildable {
 
 func (t treeViewColumn) AsCellLayout() CellLayout {
 	return WrapCellLayout(gextras.InternObject(t))
+}
+
+func (b treeViewColumn) GetBuildableID() string {
+	return WrapBuildable(gextras.InternObject(b)).GetBuildableID()
+}
+
+func (c treeViewColumn) AddAttribute(cell CellRenderer, attribute string, column int) {
+	WrapCellLayout(gextras.InternObject(c)).AddAttribute(cell, attribute, column)
+}
+
+func (c treeViewColumn) Clear() {
+	WrapCellLayout(gextras.InternObject(c)).Clear()
+}
+
+func (c treeViewColumn) ClearAttributes(cell CellRenderer) {
+	WrapCellLayout(gextras.InternObject(c)).ClearAttributes(cell)
+}
+
+func (c treeViewColumn) GetArea() CellArea {
+	return WrapCellLayout(gextras.InternObject(c)).GetArea()
+}
+
+func (c treeViewColumn) PackEnd(cell CellRenderer, expand bool) {
+	WrapCellLayout(gextras.InternObject(c)).PackEnd(cell, expand)
+}
+
+func (c treeViewColumn) PackStart(cell CellRenderer, expand bool) {
+	WrapCellLayout(gextras.InternObject(c)).PackStart(cell, expand)
+}
+
+func (c treeViewColumn) Reorder(cell CellRenderer, position int) {
+	WrapCellLayout(gextras.InternObject(c)).Reorder(cell, position)
 }
 
 func (t treeViewColumn) AddAttribute(cellRenderer CellRenderer, attribute string, column int) {

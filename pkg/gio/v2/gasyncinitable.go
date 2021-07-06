@@ -183,7 +183,7 @@ type AsyncInitable interface {
 
 // asyncInitable implements the AsyncInitable interface.
 type asyncInitable struct {
-	gextras.Objector
+	*externglib.Object
 }
 
 var _ AsyncInitable = (*asyncInitable)(nil)
@@ -191,9 +191,7 @@ var _ AsyncInitable = (*asyncInitable)(nil)
 // WrapAsyncInitable wraps a GObject to a type that implements
 // interface AsyncInitable. It is primarily used internally.
 func WrapAsyncInitable(obj *externglib.Object) AsyncInitable {
-	return asyncInitable{
-		Objector: obj,
-	}
+	return asyncInitable{obj}
 }
 
 func marshalAsyncInitable(p uintptr) (interface{}, error) {

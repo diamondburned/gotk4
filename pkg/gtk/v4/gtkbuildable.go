@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -47,7 +46,7 @@ type Buildable interface {
 
 // buildable implements the Buildable interface.
 type buildable struct {
-	gextras.Objector
+	*externglib.Object
 }
 
 var _ Buildable = (*buildable)(nil)
@@ -55,9 +54,7 @@ var _ Buildable = (*buildable)(nil)
 // WrapBuildable wraps a GObject to a type that implements
 // interface Buildable. It is primarily used internally.
 func WrapBuildable(obj *externglib.Object) Buildable {
-	return buildable{
-		Objector: obj,
-	}
+	return buildable{obj}
 }
 
 func marshalBuildable(p uintptr) (interface{}, error) {

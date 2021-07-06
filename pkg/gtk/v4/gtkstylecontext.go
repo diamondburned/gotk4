@@ -181,17 +181,17 @@ type StyleContext interface {
 	String(flags StyleContextPrintFlags) string
 }
 
-// styleContext implements the StyleContext class.
+// styleContext implements the StyleContext interface.
 type styleContext struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapStyleContext wraps a GObject to the right type. It is
-// primarily used internally.
+var _ StyleContext = (*styleContext)(nil)
+
+// WrapStyleContext wraps a GObject to a type that implements
+// interface StyleContext. It is primarily used internally.
 func WrapStyleContext(obj *externglib.Object) StyleContext {
-	return styleContext{
-		Objector: obj,
-	}
+	return styleContext{obj}
 }
 
 func marshalStyleContext(p uintptr) (interface{}, error) {

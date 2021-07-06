@@ -93,17 +93,17 @@ type Cursor interface {
 	Texture() Texture
 }
 
-// cursor implements the Cursor class.
+// cursor implements the Cursor interface.
 type cursor struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapCursor wraps a GObject to the right type. It is
-// primarily used internally.
+var _ Cursor = (*cursor)(nil)
+
+// WrapCursor wraps a GObject to a type that implements
+// interface Cursor. It is primarily used internally.
 func WrapCursor(obj *externglib.Object) Cursor {
-	return cursor{
-		Objector: obj,
-	}
+	return cursor{obj}
 }
 
 func marshalCursor(p uintptr) (interface{}, error) {
@@ -150,7 +150,7 @@ func NewCursorFromName(name string, fallback Cursor) Cursor {
 
 	var _cursor Cursor // out
 
-	_cursor = WrapCursor(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_cursor = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Cursor)
 
 	return _cursor
 }
@@ -172,7 +172,7 @@ func NewCursorFromTexture(texture Texture, hotspotX int, hotspotY int, fallback 
 
 	var _cursor Cursor // out
 
-	_cursor = WrapCursor(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_cursor = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Cursor)
 
 	return _cursor
 }

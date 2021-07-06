@@ -215,17 +215,17 @@ type Util interface {
 	gextras.Objector
 }
 
-// util implements the Util class.
+// util implements the Util interface.
 type util struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapUtil wraps a GObject to the right type. It is
-// primarily used internally.
+var _ Util = (*util)(nil)
+
+// WrapUtil wraps a GObject to a type that implements
+// interface Util. It is primarily used internally.
 func WrapUtil(obj *externglib.Object) Util {
-	return util{
-		Objector: obj,
-	}
+	return util{obj}
 }
 
 func marshalUtil(p uintptr) (interface{}, error) {

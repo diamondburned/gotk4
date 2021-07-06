@@ -46,6 +46,31 @@ type NetworkAddress interface {
 	// AsSocketConnectable casts the class to the SocketConnectable interface.
 	AsSocketConnectable() SocketConnectable
 
+	// Enumerate creates a AddressEnumerator for @connectable.
+	//
+	// This method is inherited from SocketConnectable
+	Enumerate() SocketAddressEnumerator
+	// ProxyEnumerate creates a AddressEnumerator for @connectable that will
+	// return a Address for each of its addresses that you must connect to via a
+	// proxy.
+	//
+	// If @connectable does not implement
+	// g_socket_connectable_proxy_enumerate(), this will fall back to calling
+	// g_socket_connectable_enumerate().
+	//
+	// This method is inherited from SocketConnectable
+	ProxyEnumerate() SocketAddressEnumerator
+	// ToString: format a Connectable as a string. This is a human-readable
+	// format for use in debugging output, and is not a stable serialization
+	// format. It is not suitable for use in user interfaces as it exposes too
+	// much information for a user.
+	//
+	// If the Connectable implementation does not support string formatting, the
+	// implementation’s type name will be returned as a fallback.
+	//
+	// This method is inherited from SocketConnectable
+	ToString() string
+
 	// Hostname gets @addr's hostname. This might be either UTF-8 or
 	// ASCII-encoded, depending on what @addr was created with.
 	Hostname() string
@@ -55,17 +80,17 @@ type NetworkAddress interface {
 	Scheme() string
 }
 
-// networkAddress implements the NetworkAddress class.
+// networkAddress implements the NetworkAddress interface.
 type networkAddress struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapNetworkAddress wraps a GObject to the right type. It is
-// primarily used internally.
+var _ NetworkAddress = (*networkAddress)(nil)
+
+// WrapNetworkAddress wraps a GObject to a type that implements
+// interface NetworkAddress. It is primarily used internally.
 func WrapNetworkAddress(obj *externglib.Object) NetworkAddress {
-	return networkAddress{
-		Objector: obj,
-	}
+	return networkAddress{obj}
 }
 
 func marshalNetworkAddress(p uintptr) (interface{}, error) {
@@ -94,7 +119,7 @@ func NewNetworkAddress(hostname string, port uint16) NetworkAddress {
 
 	var _networkAddress NetworkAddress // out
 
-	_networkAddress = WrapNetworkAddress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_networkAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(NetworkAddress)
 
 	return _networkAddress
 }
@@ -120,13 +145,25 @@ func NewNetworkAddressLoopback(port uint16) NetworkAddress {
 
 	var _networkAddress NetworkAddress // out
 
-	_networkAddress = WrapNetworkAddress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_networkAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(NetworkAddress)
 
 	return _networkAddress
 }
 
 func (n networkAddress) AsSocketConnectable() SocketConnectable {
 	return WrapSocketConnectable(gextras.InternObject(n))
+}
+
+func (c networkAddress) Enumerate() SocketAddressEnumerator {
+	return WrapSocketConnectable(gextras.InternObject(c)).Enumerate()
+}
+
+func (c networkAddress) ProxyEnumerate() SocketAddressEnumerator {
+	return WrapSocketConnectable(gextras.InternObject(c)).ProxyEnumerate()
+}
+
+func (c networkAddress) ToString() string {
+	return WrapSocketConnectable(gextras.InternObject(c)).ToString()
 }
 
 func (a networkAddress) Hostname() string {

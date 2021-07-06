@@ -636,17 +636,17 @@ type RCStyle interface {
 	Copy() RCStyle
 }
 
-// rcStyle implements the RCStyle class.
+// rcStyle implements the RCStyle interface.
 type rcStyle struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapRCStyle wraps a GObject to the right type. It is
-// primarily used internally.
+var _ RCStyle = (*rcStyle)(nil)
+
+// WrapRCStyle wraps a GObject to a type that implements
+// interface RCStyle. It is primarily used internally.
 func WrapRCStyle(obj *externglib.Object) RCStyle {
-	return rcStyle{
-		Objector: obj,
-	}
+	return rcStyle{obj}
 }
 
 func marshalRCStyle(p uintptr) (interface{}, error) {
@@ -666,7 +666,7 @@ func NewRCStyle() RCStyle {
 
 	var _rcStyle RCStyle // out
 
-	_rcStyle = WrapRCStyle(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_rcStyle = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(RCStyle)
 
 	return _rcStyle
 }

@@ -41,21 +41,31 @@ type DBusObjectProxy interface {
 	// AsDBusObject casts the class to the DBusObject interface.
 	AsDBusObject() DBusObject
 
+	// GetInterface gets the D-Bus interface with name @interface_name
+	// associated with @object, if any.
+	//
+	// This method is inherited from DBusObject
+	GetInterface(interfaceName string) DBusInterface
+	// GetObjectPath gets the object path for @object.
+	//
+	// This method is inherited from DBusObject
+	GetObjectPath() string
+
 	// Connection gets the connection that @proxy is for.
 	Connection() DBusConnection
 }
 
-// dBusObjectProxy implements the DBusObjectProxy class.
+// dBusObjectProxy implements the DBusObjectProxy interface.
 type dBusObjectProxy struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapDBusObjectProxy wraps a GObject to the right type. It is
-// primarily used internally.
+var _ DBusObjectProxy = (*dBusObjectProxy)(nil)
+
+// WrapDBusObjectProxy wraps a GObject to a type that implements
+// interface DBusObjectProxy. It is primarily used internally.
 func WrapDBusObjectProxy(obj *externglib.Object) DBusObjectProxy {
-	return dBusObjectProxy{
-		Objector: obj,
-	}
+	return dBusObjectProxy{obj}
 }
 
 func marshalDBusObjectProxy(p uintptr) (interface{}, error) {
@@ -79,13 +89,21 @@ func NewDBusObjectProxy(connection DBusConnection, objectPath string) DBusObject
 
 	var _dBusObjectProxy DBusObjectProxy // out
 
-	_dBusObjectProxy = WrapDBusObjectProxy(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_dBusObjectProxy = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(DBusObjectProxy)
 
 	return _dBusObjectProxy
 }
 
 func (d dBusObjectProxy) AsDBusObject() DBusObject {
 	return WrapDBusObject(gextras.InternObject(d))
+}
+
+func (o dBusObjectProxy) GetInterface(interfaceName string) DBusInterface {
+	return WrapDBusObject(gextras.InternObject(o)).GetInterface(interfaceName)
+}
+
+func (o dBusObjectProxy) GetObjectPath() string {
+	return WrapDBusObject(gextras.InternObject(o)).GetObjectPath()
 }
 
 func (p dBusObjectProxy) Connection() DBusConnection {

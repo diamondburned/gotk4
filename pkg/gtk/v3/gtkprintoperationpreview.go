@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -47,7 +46,7 @@ type PrintOperationPreview interface {
 
 // printOperationPreview implements the PrintOperationPreview interface.
 type printOperationPreview struct {
-	gextras.Objector
+	*externglib.Object
 }
 
 var _ PrintOperationPreview = (*printOperationPreview)(nil)
@@ -55,9 +54,7 @@ var _ PrintOperationPreview = (*printOperationPreview)(nil)
 // WrapPrintOperationPreview wraps a GObject to a type that implements
 // interface PrintOperationPreview. It is primarily used internally.
 func WrapPrintOperationPreview(obj *externglib.Object) PrintOperationPreview {
-	return printOperationPreview{
-		Objector: obj,
-	}
+	return printOperationPreview{obj}
 }
 
 func marshalPrintOperationPreview(p uintptr) (interface{}, error) {

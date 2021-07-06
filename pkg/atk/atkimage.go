@@ -5,7 +5,6 @@ package atk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -59,7 +58,7 @@ type Image interface {
 
 // image implements the Image interface.
 type image struct {
-	gextras.Objector
+	*externglib.Object
 }
 
 var _ Image = (*image)(nil)
@@ -67,9 +66,7 @@ var _ Image = (*image)(nil)
 // WrapImage wraps a GObject to a type that implements
 // interface Image. It is primarily used internally.
 func WrapImage(obj *externglib.Object) Image {
-	return image{
-		Objector: obj,
-	}
+	return image{obj}
 }
 
 func marshalImage(p uintptr) (interface{}, error) {

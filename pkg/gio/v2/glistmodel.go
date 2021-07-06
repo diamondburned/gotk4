@@ -119,7 +119,7 @@ type ListModel interface {
 
 // listModel implements the ListModel interface.
 type listModel struct {
-	gextras.Objector
+	*externglib.Object
 }
 
 var _ ListModel = (*listModel)(nil)
@@ -127,9 +127,7 @@ var _ ListModel = (*listModel)(nil)
 // WrapListModel wraps a GObject to a type that implements
 // interface ListModel. It is primarily used internally.
 func WrapListModel(obj *externglib.Object) ListModel {
-	return listModel{
-		Objector: obj,
-	}
+	return listModel{obj}
 }
 
 func marshalListModel(p uintptr) (interface{}, error) {

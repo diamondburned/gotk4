@@ -6,7 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -52,7 +51,7 @@ type CellAccessibleParent interface {
 
 // cellAccessibleParent implements the CellAccessibleParent interface.
 type cellAccessibleParent struct {
-	gextras.Objector
+	*externglib.Object
 }
 
 var _ CellAccessibleParent = (*cellAccessibleParent)(nil)
@@ -60,9 +59,7 @@ var _ CellAccessibleParent = (*cellAccessibleParent)(nil)
 // WrapCellAccessibleParent wraps a GObject to a type that implements
 // interface CellAccessibleParent. It is primarily used internally.
 func WrapCellAccessibleParent(obj *externglib.Object) CellAccessibleParent {
-	return cellAccessibleParent{
-		Objector: obj,
-	}
+	return cellAccessibleParent{obj}
 }
 
 func marshalCellAccessibleParent(p uintptr) (interface{}, error) {

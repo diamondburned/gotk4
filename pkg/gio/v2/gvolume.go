@@ -154,7 +154,7 @@ type Volume interface {
 
 // volume implements the Volume interface.
 type volume struct {
-	gextras.Objector
+	*externglib.Object
 }
 
 var _ Volume = (*volume)(nil)
@@ -162,9 +162,7 @@ var _ Volume = (*volume)(nil)
 // WrapVolume wraps a GObject to a type that implements
 // interface Volume. It is primarily used internally.
 func WrapVolume(obj *externglib.Object) Volume {
-	return volume{
-		Objector: obj,
-	}
+	return volume{obj}
 }
 
 func marshalVolume(p uintptr) (interface{}, error) {

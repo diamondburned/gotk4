@@ -135,17 +135,17 @@ type PageSetup interface {
 	ToKeyFile(keyFile *glib.KeyFile, groupName string)
 }
 
-// pageSetup implements the PageSetup class.
+// pageSetup implements the PageSetup interface.
 type pageSetup struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapPageSetup wraps a GObject to the right type. It is
-// primarily used internally.
+var _ PageSetup = (*pageSetup)(nil)
+
+// WrapPageSetup wraps a GObject to a type that implements
+// interface PageSetup. It is primarily used internally.
 func WrapPageSetup(obj *externglib.Object) PageSetup {
-	return pageSetup{
-		Objector: obj,
-	}
+	return pageSetup{obj}
 }
 
 func marshalPageSetup(p uintptr) (interface{}, error) {
@@ -162,7 +162,7 @@ func NewPageSetup() PageSetup {
 
 	var _pageSetup PageSetup // out
 
-	_pageSetup = WrapPageSetup(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_pageSetup = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(PageSetup)
 
 	return _pageSetup
 }
@@ -184,7 +184,7 @@ func NewPageSetupFromFile(fileName string) (PageSetup, error) {
 	var _pageSetup PageSetup // out
 	var _goerr error         // out
 
-	_pageSetup = WrapPageSetup(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_pageSetup = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(PageSetup)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _pageSetup, _goerr
@@ -204,7 +204,7 @@ func NewPageSetupFromGVariant(variant *glib.Variant) PageSetup {
 
 	var _pageSetup PageSetup // out
 
-	_pageSetup = WrapPageSetup(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_pageSetup = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(PageSetup)
 
 	return _pageSetup
 }
@@ -229,7 +229,7 @@ func NewPageSetupFromKeyFile(keyFile *glib.KeyFile, groupName string) (PageSetup
 	var _pageSetup PageSetup // out
 	var _goerr error         // out
 
-	_pageSetup = WrapPageSetup(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_pageSetup = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(PageSetup)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _pageSetup, _goerr

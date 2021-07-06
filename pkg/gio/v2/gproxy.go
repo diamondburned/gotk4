@@ -65,7 +65,7 @@ type Proxy interface {
 
 // proxy implements the Proxy interface.
 type proxy struct {
-	gextras.Objector
+	*externglib.Object
 }
 
 var _ Proxy = (*proxy)(nil)
@@ -73,9 +73,7 @@ var _ Proxy = (*proxy)(nil)
 // WrapProxy wraps a GObject to a type that implements
 // interface Proxy. It is primarily used internally.
 func WrapProxy(obj *externglib.Object) Proxy {
-	return proxy{
-		Objector: obj,
-	}
+	return proxy{obj}
 }
 
 func marshalProxy(p uintptr) (interface{}, error) {

@@ -77,17 +77,17 @@ type SocketAddressEnumerator interface {
 	NextFinish(result AsyncResult) (SocketAddress, error)
 }
 
-// socketAddressEnumerator implements the SocketAddressEnumerator class.
+// socketAddressEnumerator implements the SocketAddressEnumerator interface.
 type socketAddressEnumerator struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapSocketAddressEnumerator wraps a GObject to the right type. It is
-// primarily used internally.
+var _ SocketAddressEnumerator = (*socketAddressEnumerator)(nil)
+
+// WrapSocketAddressEnumerator wraps a GObject to a type that implements
+// interface SocketAddressEnumerator. It is primarily used internally.
 func WrapSocketAddressEnumerator(obj *externglib.Object) SocketAddressEnumerator {
-	return socketAddressEnumerator{
-		Objector: obj,
-	}
+	return socketAddressEnumerator{obj}
 }
 
 func marshalSocketAddressEnumerator(p uintptr) (interface{}, error) {

@@ -70,8 +70,8 @@ type SocketClient interface {
 	// will be skipped. This is required to let the application do the proxy
 	// specific handshake.
 	AddApplicationProxy(protocol string)
-	// Connect tries to resolve the @connectable and make a network connection
-	// to it.
+	// ConnectSocketClient tries to resolve the @connectable and make a network
+	// connection to it.
 	//
 	// Upon a successful connection, a new Connection is constructed and
 	// returned. The caller owns this new object and must drop their reference
@@ -90,7 +90,7 @@ type SocketClient interface {
 	//
 	// If a local address is specified with g_socket_client_set_local_address()
 	// the socket will be bound to this address before connecting.
-	Connect(connectable SocketConnectable, cancellable Cancellable) (SocketConnection, error)
+	ConnectSocketClient(connectable SocketConnectable, cancellable Cancellable) (SocketConnection, error)
 	// ConnectAsync: this is the asynchronous version of
 	// g_socket_client_connect().
 	//
@@ -303,17 +303,17 @@ type SocketClient interface {
 	SetTLSValidationFlags(flags TLSCertificateFlags)
 }
 
-// socketClient implements the SocketClient class.
+// socketClient implements the SocketClient interface.
 type socketClient struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapSocketClient wraps a GObject to the right type. It is
-// primarily used internally.
+var _ SocketClient = (*socketClient)(nil)
+
+// WrapSocketClient wraps a GObject to a type that implements
+// interface SocketClient. It is primarily used internally.
 func WrapSocketClient(obj *externglib.Object) SocketClient {
-	return socketClient{
-		Objector: obj,
-	}
+	return socketClient{obj}
 }
 
 func marshalSocketClient(p uintptr) (interface{}, error) {
@@ -330,7 +330,7 @@ func NewSocketClient() SocketClient {
 
 	var _socketClient SocketClient // out
 
-	_socketClient = WrapSocketClient(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_socketClient = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(SocketClient)
 
 	return _socketClient
 }
@@ -346,7 +346,7 @@ func (c socketClient) AddApplicationProxy(protocol string) {
 	C.g_socket_client_add_application_proxy(_arg0, _arg1)
 }
 
-func (c socketClient) Connect(connectable SocketConnectable, cancellable Cancellable) (SocketConnection, error) {
+func (c socketClient) ConnectSocketClient(connectable SocketConnectable, cancellable Cancellable) (SocketConnection, error) {
 	var _arg0 *C.GSocketClient      // out
 	var _arg1 *C.GSocketConnectable // out
 	var _arg2 *C.GCancellable       // out

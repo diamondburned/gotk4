@@ -217,17 +217,17 @@ type IconInfo interface {
 	SetRawCoordinates(rawCoordinates bool)
 }
 
-// iconInfo implements the IconInfo class.
+// iconInfo implements the IconInfo interface.
 type iconInfo struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapIconInfo wraps a GObject to the right type. It is
-// primarily used internally.
+var _ IconInfo = (*iconInfo)(nil)
+
+// WrapIconInfo wraps a GObject to a type that implements
+// interface IconInfo. It is primarily used internally.
 func WrapIconInfo(obj *externglib.Object) IconInfo {
-	return iconInfo{
-		Objector: obj,
-	}
+	return iconInfo{obj}
 }
 
 func marshalIconInfo(p uintptr) (interface{}, error) {
@@ -249,7 +249,7 @@ func NewIconInfoForPixbuf(iconTheme IconTheme, pixbuf gdkpixbuf.Pixbuf) IconInfo
 
 	var _iconInfo IconInfo // out
 
-	_iconInfo = WrapIconInfo(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_iconInfo = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(IconInfo)
 
 	return _iconInfo
 }
@@ -731,17 +731,17 @@ type IconTheme interface {
 	SetSearchPath(path []string)
 }
 
-// iconTheme implements the IconTheme class.
+// iconTheme implements the IconTheme interface.
 type iconTheme struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapIconTheme wraps a GObject to the right type. It is
-// primarily used internally.
+var _ IconTheme = (*iconTheme)(nil)
+
+// WrapIconTheme wraps a GObject to a type that implements
+// interface IconTheme. It is primarily used internally.
 func WrapIconTheme(obj *externglib.Object) IconTheme {
-	return iconTheme{
-		Objector: obj,
-	}
+	return iconTheme{obj}
 }
 
 func marshalIconTheme(p uintptr) (interface{}, error) {
@@ -761,7 +761,7 @@ func NewIconTheme() IconTheme {
 
 	var _iconTheme IconTheme // out
 
-	_iconTheme = WrapIconTheme(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_iconTheme = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(IconTheme)
 
 	return _iconTheme
 }

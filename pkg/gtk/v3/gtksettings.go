@@ -60,6 +60,21 @@ type Settings interface {
 	// AsStyleProvider casts the class to the StyleProvider interface.
 	AsStyleProvider() StyleProvider
 
+	// GetIconFactory returns the IconFactory defined to be in use for @path, or
+	// nil if none is defined.
+	//
+	// Deprecated: since version 3.8.
+	//
+	// This method is inherited from StyleProvider
+	GetIconFactory(path *WidgetPath) IconFactory
+	// GetStyle returns the style settings affecting a widget defined by @path,
+	// or nil if @provider doesn’t contemplate styling @path.
+	//
+	// Deprecated: since version 3.8.
+	//
+	// This method is inherited from StyleProvider
+	GetStyle(path *WidgetPath) StyleProperties
+
 	// ResetProperty undoes the effect of calling g_object_set() to install an
 	// application-specific value for a setting. After this call, the setting
 	// will again follow the session-wide value for this setting.
@@ -72,17 +87,17 @@ type Settings interface {
 	SetStringProperty(name string, vString string, origin string)
 }
 
-// settings implements the Settings class.
+// settings implements the Settings interface.
 type settings struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapSettings wraps a GObject to the right type. It is
-// primarily used internally.
+var _ Settings = (*settings)(nil)
+
+// WrapSettings wraps a GObject to a type that implements
+// interface Settings. It is primarily used internally.
 func WrapSettings(obj *externglib.Object) Settings {
-	return settings{
-		Objector: obj,
-	}
+	return settings{obj}
 }
 
 func marshalSettings(p uintptr) (interface{}, error) {
@@ -93,6 +108,14 @@ func marshalSettings(p uintptr) (interface{}, error) {
 
 func (s settings) AsStyleProvider() StyleProvider {
 	return WrapStyleProvider(gextras.InternObject(s))
+}
+
+func (p settings) GetIconFactory(path *WidgetPath) IconFactory {
+	return WrapStyleProvider(gextras.InternObject(p)).GetIconFactory(path)
+}
+
+func (p settings) GetStyle(path *WidgetPath) StyleProperties {
+	return WrapStyleProvider(gextras.InternObject(p)).GetStyle(path)
 }
 
 func (s settings) ResetProperty(name string) {

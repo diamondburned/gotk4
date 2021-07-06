@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -28,20 +29,48 @@ func init() {
 //
 // This object was added in 3.24.
 type EventControllerMotion interface {
-	EventController
+	gextras.Objector
+
+	// AsEventController casts the class to the EventController interface.
+	AsEventController() EventController
+
+	// GetPropagationPhase gets the propagation phase at which @controller
+	// handles events.
+	//
+	// This method is inherited from EventController
+	GetPropagationPhase() PropagationPhase
+	// GetWidget returns the Widget this controller relates to.
+	//
+	// This method is inherited from EventController
+	GetWidget() Widget
+	// Reset resets the @controller to a clean state. Every interaction the
+	// controller did through EventController::handle-event will be dropped at
+	// this point.
+	//
+	// This method is inherited from EventController
+	Reset()
+	// SetPropagationPhase sets the propagation phase at which a controller
+	// handles events.
+	//
+	// If @phase is GTK_PHASE_NONE, no automatic event handling will be
+	// performed, but other additional gesture maintenance will. In that phase,
+	// the events can be managed by calling gtk_event_controller_handle_event().
+	//
+	// This method is inherited from EventController
+	SetPropagationPhase(phase PropagationPhase)
 }
 
-// eventControllerMotion implements the EventControllerMotion class.
+// eventControllerMotion implements the EventControllerMotion interface.
 type eventControllerMotion struct {
-	EventController
+	*externglib.Object
 }
 
-// WrapEventControllerMotion wraps a GObject to the right type. It is
-// primarily used internally.
+var _ EventControllerMotion = (*eventControllerMotion)(nil)
+
+// WrapEventControllerMotion wraps a GObject to a type that implements
+// interface EventControllerMotion. It is primarily used internally.
 func WrapEventControllerMotion(obj *externglib.Object) EventControllerMotion {
-	return eventControllerMotion{
-		EventController: WrapEventController(obj),
-	}
+	return eventControllerMotion{obj}
 }
 
 func marshalEventControllerMotion(p uintptr) (interface{}, error) {
@@ -62,7 +91,27 @@ func NewEventControllerMotion(widget Widget) EventControllerMotion {
 
 	var _eventControllerMotion EventControllerMotion // out
 
-	_eventControllerMotion = WrapEventControllerMotion(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_eventControllerMotion = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(EventControllerMotion)
 
 	return _eventControllerMotion
+}
+
+func (e eventControllerMotion) AsEventController() EventController {
+	return WrapEventController(gextras.InternObject(e))
+}
+
+func (c eventControllerMotion) GetPropagationPhase() PropagationPhase {
+	return WrapEventController(gextras.InternObject(c)).GetPropagationPhase()
+}
+
+func (c eventControllerMotion) GetWidget() Widget {
+	return WrapEventController(gextras.InternObject(c)).GetWidget()
+}
+
+func (c eventControllerMotion) Reset() {
+	WrapEventController(gextras.InternObject(c)).Reset()
+}
+
+func (c eventControllerMotion) SetPropagationPhase(phase PropagationPhase) {
+	WrapEventController(gextras.InternObject(c)).SetPropagationPhase(phase)
 }

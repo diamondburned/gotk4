@@ -346,6 +346,60 @@ type Widget interface {
 	// AsConstraintTarget casts the class to the ConstraintTarget interface.
 	AsConstraintTarget() ConstraintTarget
 
+	// GetAccessibleRole retrieves the `GtkAccessibleRole` for the given
+	// `GtkAccessible`.
+	//
+	// This method is inherited from Accessible
+	GetAccessibleRole() AccessibleRole
+	// ResetProperty resets the accessible @property to its default value.
+	//
+	// This method is inherited from Accessible
+	ResetProperty(property AccessibleProperty)
+	// ResetRelation resets the accessible @relation to its default value.
+	//
+	// This method is inherited from Accessible
+	ResetRelation(relation AccessibleRelation)
+	// ResetState resets the accessible @state to its default value.
+	//
+	// This method is inherited from Accessible
+	ResetState(state AccessibleState)
+	// UpdatePropertyValue updates an array of accessible properties.
+	//
+	// This function should be called by `GtkWidget` types whenever an
+	// accessible property change must be communicated to assistive
+	// technologies.
+	//
+	// This function is meant to be used by language bindings.
+	//
+	// This method is inherited from Accessible
+	UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value)
+	// UpdateRelationValue updates an array of accessible relations.
+	//
+	// This function should be called by `GtkWidget` types whenever an
+	// accessible relation change must be communicated to assistive
+	// technologies.
+	//
+	// This function is meant to be used by language bindings.
+	//
+	// This method is inherited from Accessible
+	UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value)
+	// UpdateStateValue updates an array of accessible states.
+	//
+	// This function should be called by `GtkWidget` types whenever an
+	// accessible state change must be communicated to assistive technologies.
+	//
+	// This function is meant to be used by language bindings.
+	//
+	// This method is inherited from Accessible
+	UpdateStateValue(states []AccessibleState, values []externglib.Value)
+	// GetBuildableID gets the ID of the @buildable object.
+	//
+	// `GtkBuilder` sets the name based on the ID attribute of the <object> tag
+	// used to construct the @buildable.
+	//
+	// This method is inherited from Buildable
+	GetBuildableID() string
+
 	// ActionSetEnabled: enable or disable an action installed with
 	// gtk_widget_class_install_action().
 	ActionSetEnabled(actionName string, enabled bool)
@@ -1467,17 +1521,17 @@ type Widget interface {
 	UnsetStateFlags(flags StateFlags)
 }
 
-// widget implements the Widget class.
+// widget implements the Widget interface.
 type widget struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapWidget wraps a GObject to the right type. It is
-// primarily used internally.
+var _ Widget = (*widget)(nil)
+
+// WrapWidget wraps a GObject to a type that implements
+// interface Widget. It is primarily used internally.
 func WrapWidget(obj *externglib.Object) Widget {
-	return widget{
-		Objector: obj,
-	}
+	return widget{obj}
 }
 
 func marshalWidget(p uintptr) (interface{}, error) {
@@ -1496,6 +1550,38 @@ func (w widget) AsBuildable() Buildable {
 
 func (w widget) AsConstraintTarget() ConstraintTarget {
 	return WrapConstraintTarget(gextras.InternObject(w))
+}
+
+func (s widget) GetAccessibleRole() AccessibleRole {
+	return WrapAccessible(gextras.InternObject(s)).GetAccessibleRole()
+}
+
+func (s widget) ResetProperty(property AccessibleProperty) {
+	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
+}
+
+func (s widget) ResetRelation(relation AccessibleRelation) {
+	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
+}
+
+func (s widget) ResetState(state AccessibleState) {
+	WrapAccessible(gextras.InternObject(s)).ResetState(state)
+}
+
+func (s widget) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
+	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
+}
+
+func (s widget) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
+	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
+}
+
+func (s widget) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
+	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
+}
+
+func (b widget) GetBuildableID() string {
+	return WrapBuildable(gextras.InternObject(b)).GetBuildableID()
 }
 
 func (w widget) ActionSetEnabled(actionName string, enabled bool) {

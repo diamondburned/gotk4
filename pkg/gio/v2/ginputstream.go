@@ -175,17 +175,17 @@ type InputStream interface {
 	SkipFinish(result AsyncResult) (int, error)
 }
 
-// inputStream implements the InputStream class.
+// inputStream implements the InputStream interface.
 type inputStream struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapInputStream wraps a GObject to the right type. It is
-// primarily used internally.
+var _ InputStream = (*inputStream)(nil)
+
+// WrapInputStream wraps a GObject to a type that implements
+// interface InputStream. It is primarily used internally.
 func WrapInputStream(obj *externglib.Object) InputStream {
-	return inputStream{
-		Objector: obj,
-	}
+	return inputStream{obj}
 }
 
 func marshalInputStream(p uintptr) (interface{}, error) {

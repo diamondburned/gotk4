@@ -367,7 +367,7 @@ type TreeModel interface {
 
 // treeModel implements the TreeModel interface.
 type treeModel struct {
-	gextras.Objector
+	*externglib.Object
 }
 
 var _ TreeModel = (*treeModel)(nil)
@@ -375,9 +375,7 @@ var _ TreeModel = (*treeModel)(nil)
 // WrapTreeModel wraps a GObject to a type that implements
 // interface TreeModel. It is primarily used internally.
 func WrapTreeModel(obj *externglib.Object) TreeModel {
-	return treeModel{
-		Objector: obj,
-	}
+	return treeModel{obj}
 }
 
 func marshalTreeModel(p uintptr) (interface{}, error) {

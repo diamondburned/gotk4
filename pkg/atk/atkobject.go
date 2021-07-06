@@ -514,7 +514,7 @@ type ImplementorIface interface {
 
 // implementorIface implements the ImplementorIface interface.
 type implementorIface struct {
-	gextras.Objector
+	*externglib.Object
 }
 
 var _ ImplementorIface = (*implementorIface)(nil)
@@ -522,9 +522,7 @@ var _ ImplementorIface = (*implementorIface)(nil)
 // WrapImplementorIface wraps a GObject to a type that implements
 // interface ImplementorIface. It is primarily used internally.
 func WrapImplementorIface(obj *externglib.Object) ImplementorIface {
-	return implementorIface{
-		Objector: obj,
-	}
+	return implementorIface{obj}
 }
 
 func marshalImplementorIface(p uintptr) (interface{}, error) {
@@ -642,17 +640,17 @@ type Object interface {
 	SetRole(role Role)
 }
 
-// object implements the Object class.
+// object implements the Object interface.
 type object struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapObject wraps a GObject to the right type. It is
-// primarily used internally.
+var _ Object = (*object)(nil)
+
+// WrapObject wraps a GObject to a type that implements
+// interface Object. It is primarily used internally.
 func WrapObject(obj *externglib.Object) Object {
-	return object{
-		Objector: obj,
-	}
+	return object{obj}
 }
 
 func marshalObject(p uintptr) (interface{}, error) {

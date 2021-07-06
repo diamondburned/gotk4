@@ -5,6 +5,7 @@ package gdk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -74,7 +75,78 @@ func init() {
 // [func@Gdk.GLContext.get_current]; you can also unset any `GdkGLContext` that
 // is currently set by calling [func@Gdk.GLContext.clear_current].
 type GLContext interface {
-	DrawContext
+	gextras.Objector
+
+	// AsDrawContext casts the class to the DrawContext interface.
+	AsDrawContext() DrawContext
+
+	// BeginFrame indicates that you are beginning the process of redrawing
+	// @region on the @context's surface.
+	//
+	// Calling this function begins a drawing operation using @context on the
+	// surface that @context was created from. The actual requirements and
+	// guarantees for the drawing operation vary for different implementations
+	// of drawing, so a [class@Gdk.CairoContext] and a [class@Gdk.GLContext]
+	// need to be treated differently.
+	//
+	// A call to this function is a requirement for drawing and must be followed
+	// by a call to [method@Gdk.DrawContext.end_frame], which will complete the
+	// drawing operation and ensure the contents become visible on screen.
+	//
+	// Note that the @region passed to this function is the minimum region that
+	// needs to be drawn and depending on implementation, windowing system and
+	// hardware in use, it might be necessary to draw a larger region. Drawing
+	// implementation must use [method@Gdk.DrawContext.get_frame_region() to
+	// query the region that must be drawn.
+	//
+	// When using GTK, the widget system automatically places calls to
+	// gdk_draw_context_begin_frame() and gdk_draw_context_end_frame() via the
+	// use of [class@Gsk.Renderer]s, so application code does not need to call
+	// these functions explicitly.
+	//
+	// This method is inherited from DrawContext
+	BeginFrame(region *cairo.Region)
+	// EndFrame ends a drawing operation started with
+	// gdk_draw_context_begin_frame().
+	//
+	// This makes the drawing available on screen. See
+	// [method@Gdk.DrawContext.begin_frame] for more details about drawing.
+	//
+	// When using a [class@Gdk.GLContext], this function may call `glFlush()`
+	// implicitly before returning; it is not recommended to call `glFlush()`
+	// explicitly before calling this function.
+	//
+	// This method is inherited from DrawContext
+	EndFrame()
+	// GetDisplay retrieves the `GdkDisplay` the @context is created for
+	//
+	// This method is inherited from DrawContext
+	GetDisplay() Display
+	// GetFrameRegion retrieves the region that is currently being repainted.
+	//
+	// After a call to [method@Gdk.DrawContext.begin_frame] this function will
+	// return a union of the region passed to that function and the area of the
+	// surface that the @context determined needs to be repainted.
+	//
+	// If @context is not in between calls to
+	// [method@Gdk.DrawContext.begin_frame] and
+	// [method@Gdk.DrawContext.end_frame], nil will be returned.
+	//
+	// This method is inherited from DrawContext
+	GetFrameRegion() *cairo.Region
+	// GetSurface retrieves the surface that @context is bound to.
+	//
+	// This method is inherited from DrawContext
+	GetSurface() Surface
+	// IsInFrame returns true if @context is in the process of drawing to its
+	// surface.
+	//
+	// This is the case between calls to [method@Gdk.DrawContext.begin_frame]
+	// and [method@Gdk.DrawContext.end_frame]. In this situation, drawing
+	// commands may be effecting the contents of the @context's surface.
+	//
+	// This method is inherited from DrawContext
+	IsInFrame() bool
 
 	// DebugEnabled retrieves whether the context is doing extra validations and
 	// runtime checking.
@@ -169,23 +241,51 @@ type GLContext interface {
 	SetUseES(useEs int)
 }
 
-// glContext implements the GLContext class.
+// glContext implements the GLContext interface.
 type glContext struct {
-	DrawContext
+	*externglib.Object
 }
 
-// WrapGLContext wraps a GObject to the right type. It is
-// primarily used internally.
+var _ GLContext = (*glContext)(nil)
+
+// WrapGLContext wraps a GObject to a type that implements
+// interface GLContext. It is primarily used internally.
 func WrapGLContext(obj *externglib.Object) GLContext {
-	return glContext{
-		DrawContext: WrapDrawContext(obj),
-	}
+	return glContext{obj}
 }
 
 func marshalGLContext(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapGLContext(obj), nil
+}
+
+func (g glContext) AsDrawContext() DrawContext {
+	return WrapDrawContext(gextras.InternObject(g))
+}
+
+func (c glContext) BeginFrame(region *cairo.Region) {
+	WrapDrawContext(gextras.InternObject(c)).BeginFrame(region)
+}
+
+func (c glContext) EndFrame() {
+	WrapDrawContext(gextras.InternObject(c)).EndFrame()
+}
+
+func (c glContext) GetDisplay() Display {
+	return WrapDrawContext(gextras.InternObject(c)).GetDisplay()
+}
+
+func (c glContext) GetFrameRegion() *cairo.Region {
+	return WrapDrawContext(gextras.InternObject(c)).GetFrameRegion()
+}
+
+func (c glContext) GetSurface() Surface {
+	return WrapDrawContext(gextras.InternObject(c)).GetSurface()
+}
+
+func (c glContext) IsInFrame() bool {
+	return WrapDrawContext(gextras.InternObject(c)).IsInFrame()
 }
 
 func (c glContext) DebugEnabled() bool {

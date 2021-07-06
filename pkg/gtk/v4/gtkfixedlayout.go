@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gsk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -54,20 +55,64 @@ func init() {
 // elements, since you have to reposition all the other elements. This is a
 // long-term maintenance problem for your application.
 type FixedLayout interface {
-	LayoutManager
+	gextras.Objector
+
+	// AsLayoutManager casts the class to the LayoutManager interface.
+	AsLayoutManager() LayoutManager
+
+	// Allocate assigns the given @width, @height, and @baseline to a @widget,
+	// and computes the position and sizes of the children of the @widget using
+	// the layout management policy of @manager.
+	//
+	// This method is inherited from LayoutManager
+	Allocate(widget Widget, width int, height int, baseline int)
+	// GetLayoutChild retrieves a `GtkLayoutChild` instance for the
+	// `GtkLayoutManager`, creating one if necessary.
+	//
+	// The @child widget must be a child of the widget using @manager.
+	//
+	// The `GtkLayoutChild` instance is owned by the `GtkLayoutManager`, and is
+	// guaranteed to exist as long as @child is a child of the `GtkWidget` using
+	// the given `GtkLayoutManager`.
+	//
+	// This method is inherited from LayoutManager
+	GetLayoutChild(child Widget) LayoutChild
+	// GetRequestMode retrieves the request mode of @manager.
+	//
+	// This method is inherited from LayoutManager
+	GetRequestMode() SizeRequestMode
+	// GetWidget retrieves the `GtkWidget` using the given `GtkLayoutManager`.
+	//
+	// This method is inherited from LayoutManager
+	GetWidget() Widget
+	// LayoutChanged queues a resize on the `GtkWidget` using @manager, if any.
+	//
+	// This function should be called by subclasses of `GtkLayoutManager` in
+	// response to changes to their layout management policies.
+	//
+	// This method is inherited from LayoutManager
+	LayoutChanged()
+	// Measure measures the size of the @widget using @manager, for the given
+	// @orientation and size.
+	//
+	// See the [class@Gtk.Widget] documentation on layout management for more
+	// details.
+	//
+	// This method is inherited from LayoutManager
+	Measure(widget Widget, orientation Orientation, forSize int) (minimum int, natural int, minimumBaseline int, naturalBaseline int)
 }
 
-// fixedLayout implements the FixedLayout class.
+// fixedLayout implements the FixedLayout interface.
 type fixedLayout struct {
-	LayoutManager
+	*externglib.Object
 }
 
-// WrapFixedLayout wraps a GObject to the right type. It is
-// primarily used internally.
+var _ FixedLayout = (*fixedLayout)(nil)
+
+// WrapFixedLayout wraps a GObject to a type that implements
+// interface FixedLayout. It is primarily used internally.
 func WrapFixedLayout(obj *externglib.Object) FixedLayout {
-	return fixedLayout{
-		LayoutManager: WrapLayoutManager(obj),
-	}
+	return fixedLayout{obj}
 }
 
 func marshalFixedLayout(p uintptr) (interface{}, error) {
@@ -84,15 +129,57 @@ func NewFixedLayout() FixedLayout {
 
 	var _fixedLayout FixedLayout // out
 
-	_fixedLayout = WrapFixedLayout(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_fixedLayout = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(FixedLayout)
 
 	return _fixedLayout
+}
+
+func (f fixedLayout) AsLayoutManager() LayoutManager {
+	return WrapLayoutManager(gextras.InternObject(f))
+}
+
+func (m fixedLayout) Allocate(widget Widget, width int, height int, baseline int) {
+	WrapLayoutManager(gextras.InternObject(m)).Allocate(widget, width, height, baseline)
+}
+
+func (m fixedLayout) GetLayoutChild(child Widget) LayoutChild {
+	return WrapLayoutManager(gextras.InternObject(m)).GetLayoutChild(child)
+}
+
+func (m fixedLayout) GetRequestMode() SizeRequestMode {
+	return WrapLayoutManager(gextras.InternObject(m)).GetRequestMode()
+}
+
+func (m fixedLayout) GetWidget() Widget {
+	return WrapLayoutManager(gextras.InternObject(m)).GetWidget()
+}
+
+func (m fixedLayout) LayoutChanged() {
+	WrapLayoutManager(gextras.InternObject(m)).LayoutChanged()
+}
+
+func (m fixedLayout) Measure(widget Widget, orientation Orientation, forSize int) (minimum int, natural int, minimumBaseline int, naturalBaseline int) {
+	return WrapLayoutManager(gextras.InternObject(m)).Measure(widget, orientation, forSize)
 }
 
 // FixedLayoutChild: `GtkLayoutChild` subclass for children in a
 // `GtkFixedLayout`.
 type FixedLayoutChild interface {
-	LayoutChild
+	gextras.Objector
+
+	// AsLayoutChild casts the class to the LayoutChild interface.
+	AsLayoutChild() LayoutChild
+
+	// GetChildWidget retrieves the `GtkWidget` associated to the given
+	// @layout_child.
+	//
+	// This method is inherited from LayoutChild
+	GetChildWidget() Widget
+	// GetLayoutManager retrieves the `GtkLayoutManager` instance that created
+	// the given @layout_child.
+	//
+	// This method is inherited from LayoutChild
+	GetLayoutManager() LayoutManager
 
 	// Transform retrieves the transformation of the child.
 	Transform() *gsk.Transform
@@ -100,23 +187,35 @@ type FixedLayoutChild interface {
 	SetTransform(transform *gsk.Transform)
 }
 
-// fixedLayoutChild implements the FixedLayoutChild class.
+// fixedLayoutChild implements the FixedLayoutChild interface.
 type fixedLayoutChild struct {
-	LayoutChild
+	*externglib.Object
 }
 
-// WrapFixedLayoutChild wraps a GObject to the right type. It is
-// primarily used internally.
+var _ FixedLayoutChild = (*fixedLayoutChild)(nil)
+
+// WrapFixedLayoutChild wraps a GObject to a type that implements
+// interface FixedLayoutChild. It is primarily used internally.
 func WrapFixedLayoutChild(obj *externglib.Object) FixedLayoutChild {
-	return fixedLayoutChild{
-		LayoutChild: WrapLayoutChild(obj),
-	}
+	return fixedLayoutChild{obj}
 }
 
 func marshalFixedLayoutChild(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapFixedLayoutChild(obj), nil
+}
+
+func (f fixedLayoutChild) AsLayoutChild() LayoutChild {
+	return WrapLayoutChild(gextras.InternObject(f))
+}
+
+func (l fixedLayoutChild) GetChildWidget() Widget {
+	return WrapLayoutChild(gextras.InternObject(l)).GetChildWidget()
+}
+
+func (l fixedLayoutChild) GetLayoutManager() LayoutManager {
+	return WrapLayoutChild(gextras.InternObject(l)).GetLayoutManager()
 }
 
 func (c fixedLayoutChild) Transform() *gsk.Transform {

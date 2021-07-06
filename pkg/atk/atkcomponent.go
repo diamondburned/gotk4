@@ -140,7 +140,7 @@ type Component interface {
 
 // component implements the Component interface.
 type component struct {
-	gextras.Objector
+	*externglib.Object
 }
 
 var _ Component = (*component)(nil)
@@ -148,9 +148,7 @@ var _ Component = (*component)(nil)
 // WrapComponent wraps a GObject to a type that implements
 // interface Component. It is primarily used internally.
 func WrapComponent(obj *externglib.Object) Component {
-	return component{
-		Objector: obj,
-	}
+	return component{obj}
 }
 
 func marshalComponent(p uintptr) (interface{}, error) {

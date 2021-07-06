@@ -79,17 +79,17 @@ type InetAddress interface {
 	String() string
 }
 
-// inetAddress implements the InetAddress class.
+// inetAddress implements the InetAddress interface.
 type inetAddress struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapInetAddress wraps a GObject to the right type. It is
-// primarily used internally.
+var _ InetAddress = (*inetAddress)(nil)
+
+// WrapInetAddress wraps a GObject to a type that implements
+// interface InetAddress. It is primarily used internally.
 func WrapInetAddress(obj *externglib.Object) InetAddress {
-	return inetAddress{
-		Objector: obj,
-	}
+	return inetAddress{obj}
 }
 
 func marshalInetAddress(p uintptr) (interface{}, error) {
@@ -110,7 +110,7 @@ func NewInetAddressAny(family SocketFamily) InetAddress {
 
 	var _inetAddress InetAddress // out
 
-	_inetAddress = WrapInetAddress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_inetAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(InetAddress)
 
 	return _inetAddress
 }
@@ -128,7 +128,7 @@ func NewInetAddressFromString(_string string) InetAddress {
 
 	var _inetAddress InetAddress // out
 
-	_inetAddress = WrapInetAddress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_inetAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(InetAddress)
 
 	return _inetAddress
 }
@@ -145,7 +145,7 @@ func NewInetAddressLoopback(family SocketFamily) InetAddress {
 
 	var _inetAddress InetAddress // out
 
-	_inetAddress = WrapInetAddress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_inetAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(InetAddress)
 
 	return _inetAddress
 }

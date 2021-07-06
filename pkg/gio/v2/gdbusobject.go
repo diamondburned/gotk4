@@ -47,7 +47,7 @@ type DBusObject interface {
 
 // dBusObject implements the DBusObject interface.
 type dBusObject struct {
-	gextras.Objector
+	*externglib.Object
 }
 
 var _ DBusObject = (*dBusObject)(nil)
@@ -55,9 +55,7 @@ var _ DBusObject = (*dBusObject)(nil)
 // WrapDBusObject wraps a GObject to a type that implements
 // interface DBusObject. It is primarily used internally.
 func WrapDBusObject(obj *externglib.Object) DBusObject {
-	return dBusObject{
-		Objector: obj,
-	}
+	return dBusObject{obj}
 }
 
 func marshalDBusObject(p uintptr) (interface{}, error) {

@@ -68,7 +68,7 @@ type Selection interface {
 
 // selection implements the Selection interface.
 type selection struct {
-	gextras.Objector
+	*externglib.Object
 }
 
 var _ Selection = (*selection)(nil)
@@ -76,9 +76,7 @@ var _ Selection = (*selection)(nil)
 // WrapSelection wraps a GObject to a type that implements
 // interface Selection. It is primarily used internally.
 func WrapSelection(obj *externglib.Object) Selection {
-	return selection{
-		Objector: obj,
-	}
+	return selection{obj}
 }
 
 func marshalSelection(p uintptr) (interface{}, error) {

@@ -230,7 +230,7 @@ type Device interface {
 	// cleaned up when the grab ends, you should handle the EventGrabBroken
 	// events that are emitted when the grab ends unvoluntarily.
 	//
-	// Deprecated: since version 3.20..
+	// Deprecated: since version 3.20.
 	Grab(window Window, grabOwnership GrabOwnership, ownerEvents bool, eventMask EventMask, cursor Cursor, time_ uint32) GrabStatus
 	// SetAxisUse specifies how an axis of a device is used.
 	SetAxisUse(index_ uint, use AxisUse)
@@ -247,7 +247,7 @@ type Device interface {
 	SetMode(mode InputMode) bool
 	// Ungrab: release any grab on @device.
 	//
-	// Deprecated: since version 3.20..
+	// Deprecated: since version 3.20.
 	Ungrab(time_ uint32)
 	// Warp warps @device in @display to the point @x,@y on the screen @screen,
 	// unless the device is confined to a window by a grab, in which case it
@@ -261,17 +261,17 @@ type Device interface {
 	Warp(screen Screen, x int, y int)
 }
 
-// device implements the Device class.
+// device implements the Device interface.
 type device struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapDevice wraps a GObject to the right type. It is
-// primarily used internally.
+var _ Device = (*device)(nil)
+
+// WrapDevice wraps a GObject to a type that implements
+// interface Device. It is primarily used internally.
 func WrapDevice(obj *externglib.Object) Device {
-	return device{
-		Objector: obj,
-	}
+	return device{obj}
 }
 
 func marshalDevice(p uintptr) (interface{}, error) {

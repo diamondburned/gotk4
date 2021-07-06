@@ -154,17 +154,17 @@ type IOStream interface {
 	SpliceAsync(stream2 IOStream, flags IOStreamSpliceFlags, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 }
 
-// ioStream implements the IOStream class.
+// ioStream implements the IOStream interface.
 type ioStream struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapIOStream wraps a GObject to the right type. It is
-// primarily used internally.
+var _ IOStream = (*ioStream)(nil)
+
+// WrapIOStream wraps a GObject to a type that implements
+// interface IOStream. It is primarily used internally.
 func WrapIOStream(obj *externglib.Object) IOStream {
-	return ioStream{
-		Objector: obj,
-	}
+	return ioStream{obj}
 }
 
 func marshalIOStream(p uintptr) (interface{}, error) {

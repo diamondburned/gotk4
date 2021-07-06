@@ -87,17 +87,17 @@ type VFS interface {
 	UnregisterURIScheme(scheme string) bool
 }
 
-// vfS implements the VFS class.
+// vfS implements the VFS interface.
 type vfS struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapVFS wraps a GObject to the right type. It is
-// primarily used internally.
+var _ VFS = (*vfS)(nil)
+
+// WrapVFS wraps a GObject to a type that implements
+// interface VFS. It is primarily used internally.
 func WrapVFS(obj *externglib.Object) VFS {
-	return vfS{
-		Objector: obj,
-	}
+	return vfS{obj}
 }
 
 func marshalVFS(p uintptr) (interface{}, error) {

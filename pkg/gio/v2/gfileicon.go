@@ -3,9 +3,13 @@
 package gio
 
 import (
+	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -24,6 +28,8 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 // #include <glib-object.h>
+//
+// void gotk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 func init() {
@@ -41,21 +47,100 @@ type FileIcon interface {
 	// AsLoadableIcon casts the class to the LoadableIcon interface.
 	AsLoadableIcon() LoadableIcon
 
+	// Equal checks if two icons are equal.
+	//
+	// This method is inherited from Icon
+	Equal(icon2 Icon) bool
+	// Serialize serializes a #GIcon into a #GVariant. An equivalent #GIcon can
+	// be retrieved back by calling g_icon_deserialize() on the returned value.
+	// As serialization will avoid using raw icon data when possible, it only
+	// makes sense to transfer the #GVariant between processes on the same
+	// machine, (as opposed to over the network), and within the same file
+	// system namespace.
+	//
+	// This method is inherited from Icon
+	Serialize() *glib.Variant
+	// ToString generates a textual representation of @icon that can be used for
+	// serialization such as when passing @icon to a different process or saving
+	// it to persistent storage. Use g_icon_new_for_string() to get @icon back
+	// from the returned string.
+	//
+	// The encoding of the returned string is proprietary to #GIcon except in
+	// the following two cases
+	//
+	// - If @icon is a Icon, the returned string is a native path (such as
+	// `/path/to/my icon.png`) without escaping if the #GFile for @icon is a
+	// native file. If the file is not native, the returned string is the result
+	// of g_file_get_uri() (such as `sftp://path/to/my20icon.png`).
+	//
+	// - If @icon is a Icon with exactly one name and no fallbacks, the encoding
+	// is simply the name (such as `network-server`).
+	//
+	// This method is inherited from Icon
+	ToString() string
+	// Load loads a loadable icon. For the asynchronous version of this
+	// function, see g_loadable_icon_load_async().
+	//
+	// This method is inherited from LoadableIcon
+	Load(size int, cancellable Cancellable) (string, InputStream, error)
+	// LoadAsync loads an icon asynchronously. To finish this function, see
+	// g_loadable_icon_load_finish(). For the synchronous, blocking version of
+	// this function, see g_loadable_icon_load().
+	//
+	// This method is inherited from LoadableIcon
+	LoadAsync(size int, cancellable Cancellable, callback AsyncReadyCallback)
+	// LoadFinish finishes an asynchronous icon load started in
+	// g_loadable_icon_load_async().
+	//
+	// This method is inherited from LoadableIcon
+	LoadFinish(res AsyncResult) (string, InputStream, error)
+	// Equal checks if two icons are equal.
+	//
+	// This method is inherited from Icon
+	Equal(icon2 Icon) bool
+	// Serialize serializes a #GIcon into a #GVariant. An equivalent #GIcon can
+	// be retrieved back by calling g_icon_deserialize() on the returned value.
+	// As serialization will avoid using raw icon data when possible, it only
+	// makes sense to transfer the #GVariant between processes on the same
+	// machine, (as opposed to over the network), and within the same file
+	// system namespace.
+	//
+	// This method is inherited from Icon
+	Serialize() *glib.Variant
+	// ToString generates a textual representation of @icon that can be used for
+	// serialization such as when passing @icon to a different process or saving
+	// it to persistent storage. Use g_icon_new_for_string() to get @icon back
+	// from the returned string.
+	//
+	// The encoding of the returned string is proprietary to #GIcon except in
+	// the following two cases
+	//
+	// - If @icon is a Icon, the returned string is a native path (such as
+	// `/path/to/my icon.png`) without escaping if the #GFile for @icon is a
+	// native file. If the file is not native, the returned string is the result
+	// of g_file_get_uri() (such as `sftp://path/to/my20icon.png`).
+	//
+	// - If @icon is a Icon with exactly one name and no fallbacks, the encoding
+	// is simply the name (such as `network-server`).
+	//
+	// This method is inherited from Icon
+	ToString() string
+
 	// File gets the #GFile associated with the given @icon.
 	File() File
 }
 
-// fileIcon implements the FileIcon class.
+// fileIcon implements the FileIcon interface.
 type fileIcon struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapFileIcon wraps a GObject to the right type. It is
-// primarily used internally.
+var _ FileIcon = (*fileIcon)(nil)
+
+// WrapFileIcon wraps a GObject to a type that implements
+// interface FileIcon. It is primarily used internally.
 func WrapFileIcon(obj *externglib.Object) FileIcon {
-	return fileIcon{
-		Objector: obj,
-	}
+	return fileIcon{obj}
 }
 
 func marshalFileIcon(p uintptr) (interface{}, error) {
@@ -75,7 +160,7 @@ func NewFileIcon(file File) FileIcon {
 
 	var _fileIcon FileIcon // out
 
-	_fileIcon = WrapFileIcon(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_fileIcon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(FileIcon)
 
 	return _fileIcon
 }
@@ -86,6 +171,42 @@ func (f fileIcon) AsIcon() Icon {
 
 func (f fileIcon) AsLoadableIcon() LoadableIcon {
 	return WrapLoadableIcon(gextras.InternObject(f))
+}
+
+func (i fileIcon) Equal(icon2 Icon) bool {
+	return WrapIcon(gextras.InternObject(i)).Equal(icon2)
+}
+
+func (i fileIcon) Serialize() *glib.Variant {
+	return WrapIcon(gextras.InternObject(i)).Serialize()
+}
+
+func (i fileIcon) ToString() string {
+	return WrapIcon(gextras.InternObject(i)).ToString()
+}
+
+func (i fileIcon) Load(size int, cancellable Cancellable) (string, InputStream, error) {
+	return WrapLoadableIcon(gextras.InternObject(i)).Load(size, cancellable)
+}
+
+func (i fileIcon) LoadAsync(size int, cancellable Cancellable, callback AsyncReadyCallback) {
+	WrapLoadableIcon(gextras.InternObject(i)).LoadAsync(size, cancellable, callback)
+}
+
+func (i fileIcon) LoadFinish(res AsyncResult) (string, InputStream, error) {
+	return WrapLoadableIcon(gextras.InternObject(i)).LoadFinish(res)
+}
+
+func (i fileIcon) Equal(icon2 Icon) bool {
+	return WrapIcon(gextras.InternObject(i)).Equal(icon2)
+}
+
+func (i fileIcon) Serialize() *glib.Variant {
+	return WrapIcon(gextras.InternObject(i)).Serialize()
+}
+
+func (i fileIcon) ToString() string {
+	return WrapIcon(gextras.InternObject(i)).ToString()
 }
 
 func (i fileIcon) File() File {

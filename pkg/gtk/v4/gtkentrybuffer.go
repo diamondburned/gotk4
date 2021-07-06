@@ -88,17 +88,17 @@ type EntryBuffer interface {
 	SetText(chars string, nChars int)
 }
 
-// entryBuffer implements the EntryBuffer class.
+// entryBuffer implements the EntryBuffer interface.
 type entryBuffer struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapEntryBuffer wraps a GObject to the right type. It is
-// primarily used internally.
+var _ EntryBuffer = (*entryBuffer)(nil)
+
+// WrapEntryBuffer wraps a GObject to a type that implements
+// interface EntryBuffer. It is primarily used internally.
 func WrapEntryBuffer(obj *externglib.Object) EntryBuffer {
-	return entryBuffer{
-		Objector: obj,
-	}
+	return entryBuffer{obj}
 }
 
 func marshalEntryBuffer(p uintptr) (interface{}, error) {
@@ -123,7 +123,7 @@ func NewEntryBuffer(initialChars string, nInitialChars int) EntryBuffer {
 
 	var _entryBuffer EntryBuffer // out
 
-	_entryBuffer = WrapEntryBuffer(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_entryBuffer = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(EntryBuffer)
 
 	return _entryBuffer
 }

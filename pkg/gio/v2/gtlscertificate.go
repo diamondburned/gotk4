@@ -68,17 +68,17 @@ type TLSCertificate interface {
 	Verify(identity SocketConnectable, trustedCa TLSCertificate) TLSCertificateFlags
 }
 
-// tlsCertificate implements the TLSCertificate class.
+// tlsCertificate implements the TLSCertificate interface.
 type tlsCertificate struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapTLSCertificate wraps a GObject to the right type. It is
-// primarily used internally.
+var _ TLSCertificate = (*tlsCertificate)(nil)
+
+// WrapTLSCertificate wraps a GObject to a type that implements
+// interface TLSCertificate. It is primarily used internally.
 func WrapTLSCertificate(obj *externglib.Object) TLSCertificate {
-	return tlsCertificate{
-		Objector: obj,
-	}
+	return tlsCertificate{obj}
 }
 
 func marshalTLSCertificate(p uintptr) (interface{}, error) {
@@ -111,7 +111,7 @@ func NewTLSCertificateFromFile(file string) (TLSCertificate, error) {
 	var _tlsCertificate TLSCertificate // out
 	var _goerr error                   // out
 
-	_tlsCertificate = WrapTLSCertificate(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_tlsCertificate = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(TLSCertificate)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _tlsCertificate, _goerr
@@ -144,7 +144,7 @@ func NewTLSCertificateFromFiles(certFile string, keyFile string) (TLSCertificate
 	var _tlsCertificate TLSCertificate // out
 	var _goerr error                   // out
 
-	_tlsCertificate = WrapTLSCertificate(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_tlsCertificate = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(TLSCertificate)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _tlsCertificate, _goerr
@@ -178,7 +178,7 @@ func NewTLSCertificateFromPem(data string, length int) (TLSCertificate, error) {
 	var _tlsCertificate TLSCertificate // out
 	var _goerr error                   // out
 
-	_tlsCertificate = WrapTLSCertificate(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_tlsCertificate = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(TLSCertificate)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _tlsCertificate, _goerr
@@ -222,7 +222,7 @@ func NewTLSCertificateFromPkcs11Uris(pkcs11Uri string, privateKeyPkcs11Uri strin
 	var _tlsCertificate TLSCertificate // out
 	var _goerr error                   // out
 
-	_tlsCertificate = WrapTLSCertificate(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_tlsCertificate = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(TLSCertificate)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _tlsCertificate, _goerr

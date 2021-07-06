@@ -52,17 +52,17 @@ type VolumeMonitor interface {
 	VolumeForUUID(uuid string) Volume
 }
 
-// volumeMonitor implements the VolumeMonitor class.
+// volumeMonitor implements the VolumeMonitor interface.
 type volumeMonitor struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapVolumeMonitor wraps a GObject to the right type. It is
-// primarily used internally.
+var _ VolumeMonitor = (*volumeMonitor)(nil)
+
+// WrapVolumeMonitor wraps a GObject to a type that implements
+// interface VolumeMonitor. It is primarily used internally.
 func WrapVolumeMonitor(obj *externglib.Object) VolumeMonitor {
-	return volumeMonitor{
-		Objector: obj,
-	}
+	return volumeMonitor{obj}
 }
 
 func marshalVolumeMonitor(p uintptr) (interface{}, error) {

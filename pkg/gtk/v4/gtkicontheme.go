@@ -85,17 +85,17 @@ type IconPaintable interface {
 	IsSymbolic() bool
 }
 
-// iconPaintable implements the IconPaintable class.
+// iconPaintable implements the IconPaintable interface.
 type iconPaintable struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapIconPaintable wraps a GObject to the right type. It is
-// primarily used internally.
+var _ IconPaintable = (*iconPaintable)(nil)
+
+// WrapIconPaintable wraps a GObject to a type that implements
+// interface IconPaintable. It is primarily used internally.
 func WrapIconPaintable(obj *externglib.Object) IconPaintable {
-	return iconPaintable{
-		Objector: obj,
-	}
+	return iconPaintable{obj}
 }
 
 func marshalIconPaintable(p uintptr) (interface{}, error) {
@@ -254,17 +254,17 @@ type IconTheme interface {
 	SetThemeName(themeName string)
 }
 
-// iconTheme implements the IconTheme class.
+// iconTheme implements the IconTheme interface.
 type iconTheme struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapIconTheme wraps a GObject to the right type. It is
-// primarily used internally.
+var _ IconTheme = (*iconTheme)(nil)
+
+// WrapIconTheme wraps a GObject to a type that implements
+// interface IconTheme. It is primarily used internally.
 func WrapIconTheme(obj *externglib.Object) IconTheme {
-	return iconTheme{
-		Objector: obj,
-	}
+	return iconTheme{obj}
 }
 
 func marshalIconTheme(p uintptr) (interface{}, error) {
@@ -285,7 +285,7 @@ func NewIconTheme() IconTheme {
 
 	var _iconTheme IconTheme // out
 
-	_iconTheme = WrapIconTheme(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_iconTheme = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(IconTheme)
 
 	return _iconTheme
 }

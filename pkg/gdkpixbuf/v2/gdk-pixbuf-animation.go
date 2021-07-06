@@ -100,17 +100,17 @@ type PixbufAnimation interface {
 	IsStaticImage() bool
 }
 
-// pixbufAnimation implements the PixbufAnimation class.
+// pixbufAnimation implements the PixbufAnimation interface.
 type pixbufAnimation struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapPixbufAnimation wraps a GObject to the right type. It is
-// primarily used internally.
+var _ PixbufAnimation = (*pixbufAnimation)(nil)
+
+// WrapPixbufAnimation wraps a GObject to a type that implements
+// interface PixbufAnimation. It is primarily used internally.
 func WrapPixbufAnimation(obj *externglib.Object) PixbufAnimation {
-	return pixbufAnimation{
-		Objector: obj,
-	}
+	return pixbufAnimation{obj}
 }
 
 func marshalPixbufAnimation(p uintptr) (interface{}, error) {
@@ -140,7 +140,7 @@ func NewPixbufAnimationFromFile(filename string) (PixbufAnimation, error) {
 	var _pixbufAnimation PixbufAnimation // out
 	var _goerr error                     // out
 
-	_pixbufAnimation = WrapPixbufAnimation(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_pixbufAnimation = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(PixbufAnimation)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _pixbufAnimation, _goerr
@@ -164,7 +164,7 @@ func NewPixbufAnimationFromResource(resourcePath string) (PixbufAnimation, error
 	var _pixbufAnimation PixbufAnimation // out
 	var _goerr error                     // out
 
-	_pixbufAnimation = WrapPixbufAnimation(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_pixbufAnimation = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(PixbufAnimation)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _pixbufAnimation, _goerr
@@ -197,7 +197,7 @@ func NewPixbufAnimationFromStream(stream gio.InputStream, cancellable gio.Cancel
 	var _pixbufAnimation PixbufAnimation // out
 	var _goerr error                     // out
 
-	_pixbufAnimation = WrapPixbufAnimation(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_pixbufAnimation = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(PixbufAnimation)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _pixbufAnimation, _goerr
@@ -343,17 +343,17 @@ type PixbufAnimationIter interface {
 	OnCurrentlyLoadingFrame() bool
 }
 
-// pixbufAnimationIter implements the PixbufAnimationIter class.
+// pixbufAnimationIter implements the PixbufAnimationIter interface.
 type pixbufAnimationIter struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapPixbufAnimationIter wraps a GObject to the right type. It is
-// primarily used internally.
+var _ PixbufAnimationIter = (*pixbufAnimationIter)(nil)
+
+// WrapPixbufAnimationIter wraps a GObject to a type that implements
+// interface PixbufAnimationIter. It is primarily used internally.
 func WrapPixbufAnimationIter(obj *externglib.Object) PixbufAnimationIter {
-	return pixbufAnimationIter{
-		Objector: obj,
-	}
+	return pixbufAnimationIter{obj}
 }
 
 func marshalPixbufAnimationIter(p uintptr) (interface{}, error) {

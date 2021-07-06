@@ -144,17 +144,17 @@ type DeviceManager interface {
 	Display() Display
 }
 
-// deviceManager implements the DeviceManager class.
+// deviceManager implements the DeviceManager interface.
 type deviceManager struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapDeviceManager wraps a GObject to the right type. It is
-// primarily used internally.
+var _ DeviceManager = (*deviceManager)(nil)
+
+// WrapDeviceManager wraps a GObject to a type that implements
+// interface DeviceManager. It is primarily used internally.
 func WrapDeviceManager(obj *externglib.Object) DeviceManager {
-	return deviceManager{
-		Objector: obj,
-	}
+	return deviceManager{obj}
 }
 
 func marshalDeviceManager(p uintptr) (interface{}, error) {

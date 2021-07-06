@@ -194,6 +194,31 @@ type Task interface {
 	// AsAsyncResult casts the class to the AsyncResult interface.
 	AsAsyncResult() AsyncResult
 
+	// GetSourceObject gets the source object from a Result.
+	//
+	// This method is inherited from AsyncResult
+	GetSourceObject() gextras.Objector
+	// GetUserData gets the user data from a Result.
+	//
+	// This method is inherited from AsyncResult
+	GetUserData() interface{}
+	// IsTagged checks if @res has the given @source_tag (generally a function
+	// pointer indicating the function @res was created by).
+	//
+	// This method is inherited from AsyncResult
+	IsTagged(sourceTag interface{}) bool
+	// LegacyPropagateError: if @res is a AsyncResult, this is equivalent to
+	// g_simple_async_result_propagate_error(). Otherwise it returns false.
+	//
+	// This can be used for legacy error handling in async *_finish() wrapper
+	// functions that traditionally handled AsyncResult error returns themselves
+	// rather than calling into the virtual method. This should not be used in
+	// new code; Result errors that are set by virtual methods should also be
+	// extracted by virtual methods, to enable subclasses to chain up correctly.
+	//
+	// This method is inherited from AsyncResult
+	LegacyPropagateError() error
+
 	// Cancellable gets @task's #GCancellable
 	Cancellable() Cancellable
 	// CheckCancellable gets @task's check-cancellable flag. See
@@ -361,17 +386,17 @@ type Task interface {
 	SetSourceTag(sourceTag interface{})
 }
 
-// task implements the Task class.
+// task implements the Task interface.
 type task struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapTask wraps a GObject to the right type. It is
-// primarily used internally.
+var _ Task = (*task)(nil)
+
+// WrapTask wraps a GObject to a type that implements
+// interface Task. It is primarily used internally.
 func WrapTask(obj *externglib.Object) Task {
-	return task{
-		Objector: obj,
-	}
+	return task{obj}
 }
 
 func marshalTask(p uintptr) (interface{}, error) {
@@ -411,13 +436,29 @@ func NewTask(sourceObject gextras.Objector, cancellable Cancellable, callback As
 
 	var _task Task // out
 
-	_task = WrapTask(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_task = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Task)
 
 	return _task
 }
 
 func (t task) AsAsyncResult() AsyncResult {
 	return WrapAsyncResult(gextras.InternObject(t))
+}
+
+func (r task) GetSourceObject() gextras.Objector {
+	return WrapAsyncResult(gextras.InternObject(r)).GetSourceObject()
+}
+
+func (r task) GetUserData() interface{} {
+	return WrapAsyncResult(gextras.InternObject(r)).GetUserData()
+}
+
+func (r task) IsTagged(sourceTag interface{}) bool {
+	return WrapAsyncResult(gextras.InternObject(r)).IsTagged(sourceTag)
+}
+
+func (r task) LegacyPropagateError() error {
+	return WrapAsyncResult(gextras.InternObject(r)).LegacyPropagateError()
 }
 
 func (t task) Cancellable() Cancellable {

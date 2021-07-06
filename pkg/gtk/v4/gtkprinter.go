@@ -179,17 +179,17 @@ type Printer interface {
 	RequestDetails()
 }
 
-// printer implements the Printer class.
+// printer implements the Printer interface.
 type printer struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapPrinter wraps a GObject to the right type. It is
-// primarily used internally.
+var _ Printer = (*printer)(nil)
+
+// WrapPrinter wraps a GObject to a type that implements
+// interface Printer. It is primarily used internally.
 func WrapPrinter(obj *externglib.Object) Printer {
-	return printer{
-		Objector: obj,
-	}
+	return printer{obj}
 }
 
 func marshalPrinter(p uintptr) (interface{}, error) {

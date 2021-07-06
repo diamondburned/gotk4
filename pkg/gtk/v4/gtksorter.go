@@ -122,17 +122,17 @@ type Sorter interface {
 	Order() SorterOrder
 }
 
-// sorter implements the Sorter class.
+// sorter implements the Sorter interface.
 type sorter struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapSorter wraps a GObject to the right type. It is
-// primarily used internally.
+var _ Sorter = (*sorter)(nil)
+
+// WrapSorter wraps a GObject to a type that implements
+// interface Sorter. It is primarily used internally.
 func WrapSorter(obj *externglib.Object) Sorter {
-	return sorter{
-		Objector: obj,
-	}
+	return sorter{obj}
 }
 
 func marshalSorter(p uintptr) (interface{}, error) {

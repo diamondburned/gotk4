@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -83,7 +84,35 @@ func marshalPadActionType(p uintptr) (interface{}, error) {
 // type G_VARIANT_TYPE_DOUBLE bearing the value of the given axis, it is
 // required that those are made stateful and accepting this Type.
 type PadController interface {
-	EventController
+	gextras.Objector
+
+	// AsEventController casts the class to the EventController interface.
+	AsEventController() EventController
+
+	// GetPropagationPhase gets the propagation phase at which @controller
+	// handles events.
+	//
+	// This method is inherited from EventController
+	GetPropagationPhase() PropagationPhase
+	// GetWidget returns the Widget this controller relates to.
+	//
+	// This method is inherited from EventController
+	GetWidget() Widget
+	// Reset resets the @controller to a clean state. Every interaction the
+	// controller did through EventController::handle-event will be dropped at
+	// this point.
+	//
+	// This method is inherited from EventController
+	Reset()
+	// SetPropagationPhase sets the propagation phase at which a controller
+	// handles events.
+	//
+	// If @phase is GTK_PHASE_NONE, no automatic event handling will be
+	// performed, but other additional gesture maintenance will. In that phase,
+	// the events can be managed by calling gtk_event_controller_handle_event().
+	//
+	// This method is inherited from EventController
+	SetPropagationPhase(phase PropagationPhase)
 
 	// SetAction adds an individual action to @controller. This action will only
 	// be activated if the given button/ring/strip number in @index is
@@ -100,17 +129,17 @@ type PadController interface {
 	SetActionEntries(entries []PadActionEntry)
 }
 
-// padController implements the PadController class.
+// padController implements the PadController interface.
 type padController struct {
-	EventController
+	*externglib.Object
 }
 
-// WrapPadController wraps a GObject to the right type. It is
-// primarily used internally.
+var _ PadController = (*padController)(nil)
+
+// WrapPadController wraps a GObject to a type that implements
+// interface PadController. It is primarily used internally.
 func WrapPadController(obj *externglib.Object) PadController {
-	return padController{
-		EventController: WrapEventController(obj),
-	}
+	return padController{obj}
 }
 
 func marshalPadController(p uintptr) (interface{}, error) {
@@ -142,9 +171,29 @@ func NewPadController(window Window, group gio.ActionGroup, pad gdk.Device) PadC
 
 	var _padController PadController // out
 
-	_padController = WrapPadController(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_padController = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(PadController)
 
 	return _padController
+}
+
+func (p padController) AsEventController() EventController {
+	return WrapEventController(gextras.InternObject(p))
+}
+
+func (c padController) GetPropagationPhase() PropagationPhase {
+	return WrapEventController(gextras.InternObject(c)).GetPropagationPhase()
+}
+
+func (c padController) GetWidget() Widget {
+	return WrapEventController(gextras.InternObject(c)).GetWidget()
+}
+
+func (c padController) Reset() {
+	WrapEventController(gextras.InternObject(c)).Reset()
+}
+
+func (c padController) SetPropagationPhase(phase PropagationPhase) {
+	WrapEventController(gextras.InternObject(c)).SetPropagationPhase(phase)
 }
 
 func (c padController) SetAction(typ PadActionType, index int, mode int, label string, actionName string) {

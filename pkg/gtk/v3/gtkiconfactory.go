@@ -6,7 +6,9 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -99,6 +101,61 @@ type IconFactory interface {
 	// AsBuildable casts the class to the Buildable interface.
 	AsBuildable() Buildable
 
+	// AddChild adds a child to @buildable. @type is an optional string
+	// describing how the child should be added.
+	//
+	// This method is inherited from Buildable
+	AddChild(builder Builder, child gextras.Objector, typ string)
+	// ConstructChild constructs a child of @buildable with the name @name.
+	//
+	// Builder calls this function if a “constructor” has been specified in the
+	// UI definition.
+	//
+	// This method is inherited from Buildable
+	ConstructChild(builder Builder, name string) gextras.Objector
+	// CustomFinished: this is similar to gtk_buildable_parser_finished() but is
+	// called once for each custom tag handled by the @buildable.
+	//
+	// This method is inherited from Buildable
+	CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{})
+	// CustomTagEnd: this is called at the end of each custom element handled by
+	// the buildable.
+	//
+	// This method is inherited from Buildable
+	CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data interface{})
+	// CustomTagStart: this is called for each unknown element under <child>.
+	//
+	// This method is inherited from Buildable
+	CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool)
+	// GetInternalChild: get the internal child called @childname of the
+	// @buildable object.
+	//
+	// This method is inherited from Buildable
+	GetInternalChild(builder Builder, childname string) gextras.Objector
+	// GetName gets the name of the @buildable object.
+	//
+	// Builder sets the name based on the [GtkBuilder UI definition][BUILDER-UI]
+	// used to construct the @buildable.
+	//
+	// This method is inherited from Buildable
+	GetName() string
+	// ParserFinished: called when the builder finishes the parsing of a
+	// [GtkBuilder UI definition][BUILDER-UI]. Note that this will be called
+	// once for each time gtk_builder_add_from_file() or
+	// gtk_builder_add_from_string() is called on a builder.
+	//
+	// This method is inherited from Buildable
+	ParserFinished(builder Builder)
+	// SetBuildableProperty sets the property name @name to @value on the
+	// @buildable object.
+	//
+	// This method is inherited from Buildable
+	SetBuildableProperty(builder Builder, name string, value externglib.Value)
+	// SetName sets the name of the @buildable object.
+	//
+	// This method is inherited from Buildable
+	SetName(name string)
+
 	// Add adds the given @icon_set to the icon factory, under the name
 	// @stock_id. @stock_id should be namespaced for your application, e.g.
 	// “myapp-whatever-icon”. Normally applications create a IconFactory, then
@@ -136,17 +193,17 @@ type IconFactory interface {
 	RemoveDefault()
 }
 
-// iconFactory implements the IconFactory class.
+// iconFactory implements the IconFactory interface.
 type iconFactory struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapIconFactory wraps a GObject to the right type. It is
-// primarily used internally.
+var _ IconFactory = (*iconFactory)(nil)
+
+// WrapIconFactory wraps a GObject to a type that implements
+// interface IconFactory. It is primarily used internally.
 func WrapIconFactory(obj *externglib.Object) IconFactory {
-	return iconFactory{
-		Objector: obj,
-	}
+	return iconFactory{obj}
 }
 
 func marshalIconFactory(p uintptr) (interface{}, error) {
@@ -175,13 +232,53 @@ func NewIconFactory() IconFactory {
 
 	var _iconFactory IconFactory // out
 
-	_iconFactory = WrapIconFactory(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_iconFactory = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(IconFactory)
 
 	return _iconFactory
 }
 
 func (i iconFactory) AsBuildable() Buildable {
 	return WrapBuildable(gextras.InternObject(i))
+}
+
+func (b iconFactory) AddChild(builder Builder, child gextras.Objector, typ string) {
+	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+}
+
+func (b iconFactory) ConstructChild(builder Builder, name string) gextras.Objector {
+	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b iconFactory) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b iconFactory) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b iconFactory) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
+}
+
+func (b iconFactory) GetInternalChild(builder Builder, childname string) gextras.Objector {
+	return WrapBuildable(gextras.InternObject(b)).GetInternalChild(builder, childname)
+}
+
+func (b iconFactory) GetName() string {
+	return WrapBuildable(gextras.InternObject(b)).GetName()
+}
+
+func (b iconFactory) ParserFinished(builder Builder) {
+	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
+}
+
+func (b iconFactory) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
+	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
+}
+
+func (b iconFactory) SetName(name string) {
+	WrapBuildable(gextras.InternObject(b)).SetName(name)
 }
 
 func (f iconFactory) Add(stockId string, iconSet *IconSet) {

@@ -38,17 +38,17 @@ type Relation interface {
 	RemoveTarget(target Object) bool
 }
 
-// relation implements the Relation class.
+// relation implements the Relation interface.
 type relation struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapRelation wraps a GObject to the right type. It is
-// primarily used internally.
+var _ Relation = (*relation)(nil)
+
+// WrapRelation wraps a GObject to a type that implements
+// interface Relation. It is primarily used internally.
 func WrapRelation(obj *externglib.Object) Relation {
-	return relation{
-		Objector: obj,
-	}
+	return relation{obj}
 }
 
 func marshalRelation(p uintptr) (interface{}, error) {
@@ -80,7 +80,7 @@ func NewRelation(targets []Object, relationship RelationType) Relation {
 
 	var _relation Relation // out
 
-	_relation = WrapRelation(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_relation = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Relation)
 
 	return _relation
 }

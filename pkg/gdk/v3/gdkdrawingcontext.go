@@ -52,17 +52,17 @@ type DrawingContext interface {
 	IsValid() bool
 }
 
-// drawingContext implements the DrawingContext class.
+// drawingContext implements the DrawingContext interface.
 type drawingContext struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapDrawingContext wraps a GObject to the right type. It is
-// primarily used internally.
+var _ DrawingContext = (*drawingContext)(nil)
+
+// WrapDrawingContext wraps a GObject to a type that implements
+// interface DrawingContext. It is primarily used internally.
 func WrapDrawingContext(obj *externglib.Object) DrawingContext {
-	return drawingContext{
-		Objector: obj,
-	}
+	return drawingContext{obj}
 }
 
 func marshalDrawingContext(p uintptr) (interface{}, error) {

@@ -110,17 +110,17 @@ type Monitor interface {
 	IsPrimary() bool
 }
 
-// monitor implements the Monitor class.
+// monitor implements the Monitor interface.
 type monitor struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapMonitor wraps a GObject to the right type. It is
-// primarily used internally.
+var _ Monitor = (*monitor)(nil)
+
+// WrapMonitor wraps a GObject to a type that implements
+// interface Monitor. It is primarily used internally.
 func WrapMonitor(obj *externglib.Object) Monitor {
-	return monitor{
-		Objector: obj,
-	}
+	return monitor{obj}
 }
 
 func marshalMonitor(p uintptr) (interface{}, error) {

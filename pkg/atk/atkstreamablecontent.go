@@ -6,7 +6,6 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -62,7 +61,7 @@ type StreamableContent interface {
 
 // streamableContent implements the StreamableContent interface.
 type streamableContent struct {
-	gextras.Objector
+	*externglib.Object
 }
 
 var _ StreamableContent = (*streamableContent)(nil)
@@ -70,9 +69,7 @@ var _ StreamableContent = (*streamableContent)(nil)
 // WrapStreamableContent wraps a GObject to a type that implements
 // interface StreamableContent. It is primarily used internally.
 func WrapStreamableContent(obj *externglib.Object) StreamableContent {
-	return streamableContent{
-		Objector: obj,
-	}
+	return streamableContent{obj}
 }
 
 func marshalStreamableContent(p uintptr) (interface{}, error) {

@@ -137,7 +137,7 @@ type AsyncResult interface {
 
 // asyncResult implements the AsyncResult interface.
 type asyncResult struct {
-	gextras.Objector
+	*externglib.Object
 }
 
 var _ AsyncResult = (*asyncResult)(nil)
@@ -145,9 +145,7 @@ var _ AsyncResult = (*asyncResult)(nil)
 // WrapAsyncResult wraps a GObject to a type that implements
 // interface AsyncResult. It is primarily used internally.
 func WrapAsyncResult(obj *externglib.Object) AsyncResult {
-	return asyncResult{
-		Objector: obj,
-	}
+	return asyncResult{obj}
 }
 
 func marshalAsyncResult(p uintptr) (interface{}, error) {

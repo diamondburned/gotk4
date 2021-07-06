@@ -5,7 +5,6 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -47,7 +46,7 @@ type FileDescriptorBased interface {
 
 // fileDescriptorBased implements the FileDescriptorBased interface.
 type fileDescriptorBased struct {
-	gextras.Objector
+	*externglib.Object
 }
 
 var _ FileDescriptorBased = (*fileDescriptorBased)(nil)
@@ -55,9 +54,7 @@ var _ FileDescriptorBased = (*fileDescriptorBased)(nil)
 // WrapFileDescriptorBased wraps a GObject to a type that implements
 // interface FileDescriptorBased. It is primarily used internally.
 func WrapFileDescriptorBased(obj *externglib.Object) FileDescriptorBased {
-	return fileDescriptorBased{
-		Objector: obj,
-	}
+	return fileDescriptorBased{obj}
 }
 
 func marshalFileDescriptorBased(p uintptr) (interface{}, error) {

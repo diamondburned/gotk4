@@ -5,6 +5,7 @@ package gdkx11
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -23,24 +24,57 @@ func init() {
 }
 
 type X11DeviceManagerCore interface {
-	gdk.DeviceManager
+	gextras.Objector
+
+	// AsDeviceManager casts the class to the gdk.DeviceManager interface.
+	AsDeviceManager() gdk.DeviceManager
+
+	// GetClientPointer returns the client pointer, that is, the master pointer
+	// that acts as the core pointer for this application. In X11, window
+	// managers may change this depending on the interaction pattern under the
+	// presence of several pointers.
+	//
+	// You should use this function seldomly, only in code that isn’t triggered
+	// by a Event and there aren’t other means to get a meaningful Device to
+	// operate on.
+	//
+	// Deprecated: since version 3.20.
+	//
+	// This method is inherited from gdk.DeviceManager
+	GetClientPointer() gdk.Device
+	// GetDisplay gets the Display associated to @device_manager.
+	//
+	// This method is inherited from gdk.DeviceManager
+	GetDisplay() gdk.Display
 }
 
-// x11DeviceManagerCore implements the X11DeviceManagerCore class.
+// x11DeviceManagerCore implements the X11DeviceManagerCore interface.
 type x11DeviceManagerCore struct {
-	gdk.DeviceManager
+	*externglib.Object
 }
 
-// WrapX11DeviceManagerCore wraps a GObject to the right type. It is
-// primarily used internally.
+var _ X11DeviceManagerCore = (*x11DeviceManagerCore)(nil)
+
+// WrapX11DeviceManagerCore wraps a GObject to a type that implements
+// interface X11DeviceManagerCore. It is primarily used internally.
 func WrapX11DeviceManagerCore(obj *externglib.Object) X11DeviceManagerCore {
-	return x11DeviceManagerCore{
-		DeviceManager: gdk.WrapDeviceManager(obj),
-	}
+	return x11DeviceManagerCore{obj}
 }
 
 func marshalX11DeviceManagerCore(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapX11DeviceManagerCore(obj), nil
+}
+
+func (x x11DeviceManagerCore) AsDeviceManager() gdk.DeviceManager {
+	return gdk.WrapDeviceManager(gextras.InternObject(x))
+}
+
+func (d x11DeviceManagerCore) GetClientPointer() gdk.Device {
+	return gdk.WrapDeviceManager(gextras.InternObject(d)).GetClientPointer()
+}
+
+func (d x11DeviceManagerCore) GetDisplay() gdk.Display {
+	return gdk.WrapDeviceManager(gextras.InternObject(d)).GetDisplay()
 }

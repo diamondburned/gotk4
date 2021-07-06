@@ -5,6 +5,7 @@ package gdkx11
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -23,24 +24,135 @@ func init() {
 }
 
 type X11Visual interface {
-	gdk.Visual
+	gextras.Objector
+
+	// AsVisual casts the class to the gdk.Visual interface.
+	AsVisual() gdk.Visual
+
+	// GetBitsPerRGB returns the number of significant bits per red, green and
+	// blue value.
+	//
+	// Not all GDK backend provide a meaningful value for this function.
+	//
+	// Deprecated: since version 3.22.
+	//
+	// This method is inherited from gdk.Visual
+	GetBitsPerRGB() int
+	// GetBluePixelDetails obtains values that are needed to calculate blue
+	// pixel values in TrueColor and DirectColor. The “mask” is the significant
+	// bits within the pixel. The “shift” is the number of bits left we must
+	// shift a primary for it to be in position (according to the "mask").
+	// Finally, "precision" refers to how much precision the pixel value
+	// contains for a particular primary.
+	//
+	// This method is inherited from gdk.Visual
+	GetBluePixelDetails() (mask uint32, shift int, precision int)
+	// GetByteOrder returns the byte order of this visual.
+	//
+	// The information returned by this function is only relevant when working
+	// with XImages, and not all backends return meaningful information for
+	// this.
+	//
+	// Deprecated: since version 3.22.
+	//
+	// This method is inherited from gdk.Visual
+	GetByteOrder() gdk.ByteOrder
+	// GetColormapSize returns the size of a colormap for this visual.
+	//
+	// You have to use platform-specific APIs to manipulate colormaps.
+	//
+	// Deprecated: since version 3.22.
+	//
+	// This method is inherited from gdk.Visual
+	GetColormapSize() int
+	// GetDepth returns the bit depth of this visual.
+	//
+	// This method is inherited from gdk.Visual
+	GetDepth() int
+	// GetGreenPixelDetails obtains values that are needed to calculate green
+	// pixel values in TrueColor and DirectColor. The “mask” is the significant
+	// bits within the pixel. The “shift” is the number of bits left we must
+	// shift a primary for it to be in position (according to the "mask").
+	// Finally, "precision" refers to how much precision the pixel value
+	// contains for a particular primary.
+	//
+	// This method is inherited from gdk.Visual
+	GetGreenPixelDetails() (mask uint32, shift int, precision int)
+	// GetRedPixelDetails obtains values that are needed to calculate red pixel
+	// values in TrueColor and DirectColor. The “mask” is the significant bits
+	// within the pixel. The “shift” is the number of bits left we must shift a
+	// primary for it to be in position (according to the "mask"). Finally,
+	// "precision" refers to how much precision the pixel value contains for a
+	// particular primary.
+	//
+	// This method is inherited from gdk.Visual
+	GetRedPixelDetails() (mask uint32, shift int, precision int)
+	// GetScreen gets the screen to which this visual belongs
+	//
+	// This method is inherited from gdk.Visual
+	GetScreen() gdk.Screen
+	// GetVisualType returns the type of visual this is (PseudoColor, TrueColor,
+	// etc).
+	//
+	// This method is inherited from gdk.Visual
+	GetVisualType() gdk.VisualType
 }
 
-// x11Visual implements the X11Visual class.
+// x11Visual implements the X11Visual interface.
 type x11Visual struct {
-	gdk.Visual
+	*externglib.Object
 }
 
-// WrapX11Visual wraps a GObject to the right type. It is
-// primarily used internally.
+var _ X11Visual = (*x11Visual)(nil)
+
+// WrapX11Visual wraps a GObject to a type that implements
+// interface X11Visual. It is primarily used internally.
 func WrapX11Visual(obj *externglib.Object) X11Visual {
-	return x11Visual{
-		Visual: gdk.WrapVisual(obj),
-	}
+	return x11Visual{obj}
 }
 
 func marshalX11Visual(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapX11Visual(obj), nil
+}
+
+func (x x11Visual) AsVisual() gdk.Visual {
+	return gdk.WrapVisual(gextras.InternObject(x))
+}
+
+func (v x11Visual) GetBitsPerRGB() int {
+	return gdk.WrapVisual(gextras.InternObject(v)).GetBitsPerRGB()
+}
+
+func (v x11Visual) GetBluePixelDetails() (mask uint32, shift int, precision int) {
+	return gdk.WrapVisual(gextras.InternObject(v)).GetBluePixelDetails()
+}
+
+func (v x11Visual) GetByteOrder() gdk.ByteOrder {
+	return gdk.WrapVisual(gextras.InternObject(v)).GetByteOrder()
+}
+
+func (v x11Visual) GetColormapSize() int {
+	return gdk.WrapVisual(gextras.InternObject(v)).GetColormapSize()
+}
+
+func (v x11Visual) GetDepth() int {
+	return gdk.WrapVisual(gextras.InternObject(v)).GetDepth()
+}
+
+func (v x11Visual) GetGreenPixelDetails() (mask uint32, shift int, precision int) {
+	return gdk.WrapVisual(gextras.InternObject(v)).GetGreenPixelDetails()
+}
+
+func (v x11Visual) GetRedPixelDetails() (mask uint32, shift int, precision int) {
+	return gdk.WrapVisual(gextras.InternObject(v)).GetRedPixelDetails()
+}
+
+func (v x11Visual) GetScreen() gdk.Screen {
+	return gdk.WrapVisual(gextras.InternObject(v)).GetScreen()
+}
+
+func (v x11Visual) GetVisualType() gdk.VisualType {
+	return gdk.WrapVisual(gextras.InternObject(v)).GetVisualType()
 }

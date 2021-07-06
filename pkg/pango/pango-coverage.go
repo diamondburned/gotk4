@@ -84,17 +84,17 @@ type Coverage interface {
 	Unref()
 }
 
-// coverage implements the Coverage class.
+// coverage implements the Coverage interface.
 type coverage struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapCoverage wraps a GObject to the right type. It is
-// primarily used internally.
+var _ Coverage = (*coverage)(nil)
+
+// WrapCoverage wraps a GObject to a type that implements
+// interface Coverage. It is primarily used internally.
 func WrapCoverage(obj *externglib.Object) Coverage {
-	return coverage{
-		Objector: obj,
-	}
+	return coverage{obj}
 }
 
 func marshalCoverage(p uintptr) (interface{}, error) {
@@ -111,7 +111,7 @@ func NewCoverage() Coverage {
 
 	var _coverage Coverage // out
 
-	_coverage = WrapCoverage(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_coverage = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Coverage)
 
 	return _coverage
 }

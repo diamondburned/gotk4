@@ -201,17 +201,17 @@ type Font interface {
 	HasChar(wc uint32) bool
 }
 
-// font implements the Font class.
+// font implements the Font interface.
 type font struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapFont wraps a GObject to the right type. It is
-// primarily used internally.
+var _ Font = (*font)(nil)
+
+// WrapFont wraps a GObject to a type that implements
+// interface Font. It is primarily used internally.
 func WrapFont(obj *externglib.Object) Font {
-	return font{
-		Objector: obj,
-	}
+	return font{obj}
 }
 
 func marshalFont(p uintptr) (interface{}, error) {
@@ -371,17 +371,17 @@ type FontFace interface {
 	ListSizes() []int
 }
 
-// fontFace implements the FontFace class.
+// fontFace implements the FontFace interface.
 type fontFace struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapFontFace wraps a GObject to the right type. It is
-// primarily used internally.
+var _ FontFace = (*fontFace)(nil)
+
+// WrapFontFace wraps a GObject to a type that implements
+// interface FontFace. It is primarily used internally.
 func WrapFontFace(obj *externglib.Object) FontFace {
-	return fontFace{
-		Objector: obj,
-	}
+	return fontFace{obj}
 }
 
 func marshalFontFace(p uintptr) (interface{}, error) {
@@ -514,17 +514,17 @@ type FontFamily interface {
 	ListFaces() []FontFace
 }
 
-// fontFamily implements the FontFamily class.
+// fontFamily implements the FontFamily interface.
 type fontFamily struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapFontFamily wraps a GObject to the right type. It is
-// primarily used internally.
+var _ FontFamily = (*fontFamily)(nil)
+
+// WrapFontFamily wraps a GObject to a type that implements
+// interface FontFamily. It is primarily used internally.
 func WrapFontFamily(obj *externglib.Object) FontFamily {
-	return fontFamily{
-		Objector: obj,
-	}
+	return fontFamily{obj}
 }
 
 func marshalFontFamily(p uintptr) (interface{}, error) {

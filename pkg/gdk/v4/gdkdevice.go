@@ -150,17 +150,17 @@ type Device interface {
 	HasBidiLayouts() bool
 }
 
-// device implements the Device class.
+// device implements the Device interface.
 type device struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapDevice wraps a GObject to the right type. It is
-// primarily used internally.
+var _ Device = (*device)(nil)
+
+// WrapDevice wraps a GObject to a type that implements
+// interface Device. It is primarily used internally.
 func WrapDevice(obj *externglib.Object) Device {
-	return device{
-		Objector: obj,
-	}
+	return device{obj}
 }
 
 func marshalDevice(p uintptr) (interface{}, error) {

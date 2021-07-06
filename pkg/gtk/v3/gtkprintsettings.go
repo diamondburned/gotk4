@@ -238,17 +238,17 @@ type PrintSettings interface {
 	Unset(key string)
 }
 
-// printSettings implements the PrintSettings class.
+// printSettings implements the PrintSettings interface.
 type printSettings struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapPrintSettings wraps a GObject to the right type. It is
-// primarily used internally.
+var _ PrintSettings = (*printSettings)(nil)
+
+// WrapPrintSettings wraps a GObject to a type that implements
+// interface PrintSettings. It is primarily used internally.
 func WrapPrintSettings(obj *externglib.Object) PrintSettings {
-	return printSettings{
-		Objector: obj,
-	}
+	return printSettings{obj}
 }
 
 func marshalPrintSettings(p uintptr) (interface{}, error) {
@@ -265,7 +265,7 @@ func NewPrintSettings() PrintSettings {
 
 	var _printSettings PrintSettings // out
 
-	_printSettings = WrapPrintSettings(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_printSettings = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(PrintSettings)
 
 	return _printSettings
 }
@@ -287,7 +287,7 @@ func NewPrintSettingsFromFile(fileName string) (PrintSettings, error) {
 	var _printSettings PrintSettings // out
 	var _goerr error                 // out
 
-	_printSettings = WrapPrintSettings(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_printSettings = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(PrintSettings)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _printSettings, _goerr
@@ -305,7 +305,7 @@ func NewPrintSettingsFromGVariant(variant *glib.Variant) PrintSettings {
 
 	var _printSettings PrintSettings // out
 
-	_printSettings = WrapPrintSettings(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_printSettings = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(PrintSettings)
 
 	return _printSettings
 }
@@ -329,7 +329,7 @@ func NewPrintSettingsFromKeyFile(keyFile *glib.KeyFile, groupName string) (Print
 	var _printSettings PrintSettings // out
 	var _goerr error                 // out
 
-	_printSettings = WrapPrintSettings(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_printSettings = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(PrintSettings)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _printSettings, _goerr

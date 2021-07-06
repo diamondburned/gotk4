@@ -270,17 +270,17 @@ type Keymap interface {
 	TranslateKeyboardState(hardwareKeycode uint, state ModifierType, group int) (keyval uint, effectiveGroup int, level int, consumedModifiers ModifierType, ok bool)
 }
 
-// keymap implements the Keymap class.
+// keymap implements the Keymap interface.
 type keymap struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapKeymap wraps a GObject to the right type. It is
-// primarily used internally.
+var _ Keymap = (*keymap)(nil)
+
+// WrapKeymap wraps a GObject to a type that implements
+// interface Keymap. It is primarily used internally.
 func WrapKeymap(obj *externglib.Object) Keymap {
-	return keymap{
-		Objector: obj,
-	}
+	return keymap{obj}
 }
 
 func marshalKeymap(p uintptr) (interface{}, error) {

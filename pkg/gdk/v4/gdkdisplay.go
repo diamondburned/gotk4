@@ -195,17 +195,17 @@ type Display interface {
 	TranslateKey(keycode uint, state ModifierType, group int) (keyval uint, effectiveGroup int, level int, consumed ModifierType, ok bool)
 }
 
-// display implements the Display class.
+// display implements the Display interface.
 type display struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapDisplay wraps a GObject to the right type. It is
-// primarily used internally.
+var _ Display = (*display)(nil)
+
+// WrapDisplay wraps a GObject to a type that implements
+// interface Display. It is primarily used internally.
 func WrapDisplay(obj *externglib.Object) Display {
-	return display{
-		Objector: obj,
-	}
+	return display{obj}
 }
 
 func marshalDisplay(p uintptr) (interface{}, error) {

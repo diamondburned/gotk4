@@ -153,17 +153,17 @@ type Cancellable interface {
 	NewSource() *glib.Source
 }
 
-// cancellable implements the Cancellable class.
+// cancellable implements the Cancellable interface.
 type cancellable struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapCancellable wraps a GObject to the right type. It is
-// primarily used internally.
+var _ Cancellable = (*cancellable)(nil)
+
+// WrapCancellable wraps a GObject to a type that implements
+// interface Cancellable. It is primarily used internally.
 func WrapCancellable(obj *externglib.Object) Cancellable {
-	return cancellable{
-		Objector: obj,
-	}
+	return cancellable{obj}
 }
 
 func marshalCancellable(p uintptr) (interface{}, error) {
@@ -186,7 +186,7 @@ func NewCancellable() Cancellable {
 
 	var _cancellable Cancellable // out
 
-	_cancellable = WrapCancellable(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_cancellable = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Cancellable)
 
 	return _cancellable
 }

@@ -92,17 +92,17 @@ type DrawContext interface {
 	IsInFrame() bool
 }
 
-// drawContext implements the DrawContext class.
+// drawContext implements the DrawContext interface.
 type drawContext struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapDrawContext wraps a GObject to the right type. It is
-// primarily used internally.
+var _ DrawContext = (*drawContext)(nil)
+
+// WrapDrawContext wraps a GObject to a type that implements
+// interface DrawContext. It is primarily used internally.
 func WrapDrawContext(obj *externglib.Object) DrawContext {
-	return drawContext{
-		Objector: obj,
-	}
+	return drawContext{obj}
 }
 
 func marshalDrawContext(p uintptr) (interface{}, error) {

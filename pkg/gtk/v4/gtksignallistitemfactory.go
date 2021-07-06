@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -63,20 +64,23 @@ func init() {
 // [signal@Gtk.SignalListItemFactory::setup] signal and removed again during
 // [signal@Gtk.SignalListItemFactory::teardown].
 type SignalListItemFactory interface {
-	ListItemFactory
+	gextras.Objector
+
+	// AsListItemFactory casts the class to the ListItemFactory interface.
+	AsListItemFactory() ListItemFactory
 }
 
-// signalListItemFactory implements the SignalListItemFactory class.
+// signalListItemFactory implements the SignalListItemFactory interface.
 type signalListItemFactory struct {
-	ListItemFactory
+	*externglib.Object
 }
 
-// WrapSignalListItemFactory wraps a GObject to the right type. It is
-// primarily used internally.
+var _ SignalListItemFactory = (*signalListItemFactory)(nil)
+
+// WrapSignalListItemFactory wraps a GObject to a type that implements
+// interface SignalListItemFactory. It is primarily used internally.
 func WrapSignalListItemFactory(obj *externglib.Object) SignalListItemFactory {
-	return signalListItemFactory{
-		ListItemFactory: WrapListItemFactory(obj),
-	}
+	return signalListItemFactory{obj}
 }
 
 func marshalSignalListItemFactory(p uintptr) (interface{}, error) {
@@ -95,7 +99,11 @@ func NewSignalListItemFactory() SignalListItemFactory {
 
 	var _signalListItemFactory SignalListItemFactory // out
 
-	_signalListItemFactory = WrapSignalListItemFactory(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_signalListItemFactory = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(SignalListItemFactory)
 
 	return _signalListItemFactory
+}
+
+func (s signalListItemFactory) AsListItemFactory() ListItemFactory {
+	return WrapListItemFactory(gextras.InternObject(s))
 }

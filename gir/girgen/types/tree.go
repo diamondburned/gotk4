@@ -166,6 +166,27 @@ func (tree *Tree) resolveParents(parents ...*Resolved) bool {
 	return true
 }
 
+// WithoutGObject returns the Requires list without the GObject item.
+func (tree *Tree) WithoutGObject() []Tree {
+	for _, req := range tree.Requires {
+		if req.IsExternGLib("InitiallyUnowned") || req.IsExternGLib("Object") {
+			goto hasGObject
+		}
+	}
+
+	return tree.Requires
+
+hasGObject:
+	without := make([]Tree, 0, len(tree.Requires))
+	for _, req := range tree.Requires {
+		if req.IsExternGLib("InitiallyUnowned") || req.IsExternGLib("Object") {
+			continue
+		}
+		without = append(without, req)
+	}
+	return without
+}
+
 // PublicEmbeds returns the list of the toplevel type's children as Go exported
 // type names. The namespaces are appropriately prepended if needed.
 func (tree *Tree) PublicEmbeds() []string {
@@ -177,6 +198,22 @@ func (tree *Tree) PublicEmbeds() []string {
 	}
 
 	return names
+}
+
+// Walk walks the tree recursively on what the callback returns. The callback
+// will be called on the root (receiver) tree; it should then return the list of
+// parents of that tree. This process is then repeated for each tree returned.
+func (tree *Tree) Walk(f func(t *Tree, root bool) (traversed []Tree)) {
+	tree.walk(f, true)
+}
+
+func (tree *Tree) walk(f func(*Tree, bool) (traversed []Tree), isRoot bool) {
+	// Get the list of traversed tree nodes.
+	traversed := f(tree, isRoot)
+	// Traverse each of the nodes' own nodes.
+	for i := range traversed {
+		traversed[i].walk(f, false)
+	}
 }
 
 // WrapClass creates a wrapper that uses public fields to create code that wraps

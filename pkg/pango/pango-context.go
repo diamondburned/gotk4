@@ -163,17 +163,17 @@ type Context interface {
 	SetRoundGlyphPositions(roundPositions bool)
 }
 
-// context implements the Context class.
+// context implements the Context interface.
 type context struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapContext wraps a GObject to the right type. It is
-// primarily used internally.
+var _ Context = (*context)(nil)
+
+// WrapContext wraps a GObject to a type that implements
+// interface Context. It is primarily used internally.
 func WrapContext(obj *externglib.Object) Context {
-	return context{
-		Objector: obj,
-	}
+	return context{obj}
 }
 
 func marshalContext(p uintptr) (interface{}, error) {
@@ -199,7 +199,7 @@ func NewContext() Context {
 
 	var _context Context // out
 
-	_context = WrapContext(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_context = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Context)
 
 	return _context
 }

@@ -61,17 +61,17 @@ type Registry interface {
 	SetFactoryType(typ externglib.Type, factoryType externglib.Type)
 }
 
-// registry implements the Registry class.
+// registry implements the Registry interface.
 type registry struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapRegistry wraps a GObject to the right type. It is
-// primarily used internally.
+var _ Registry = (*registry)(nil)
+
+// WrapRegistry wraps a GObject to a type that implements
+// interface Registry. It is primarily used internally.
 func WrapRegistry(obj *externglib.Object) Registry {
-	return registry{
-		Objector: obj,
-	}
+	return registry{obj}
 }
 
 func marshalRegistry(p uintptr) (interface{}, error) {

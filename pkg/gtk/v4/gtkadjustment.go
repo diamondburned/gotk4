@@ -120,17 +120,17 @@ type Adjustment interface {
 	SetValue(value float64)
 }
 
-// adjustment implements the Adjustment class.
+// adjustment implements the Adjustment interface.
 type adjustment struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapAdjustment wraps a GObject to the right type. It is
-// primarily used internally.
+var _ Adjustment = (*adjustment)(nil)
+
+// WrapAdjustment wraps a GObject to a type that implements
+// interface Adjustment. It is primarily used internally.
 func WrapAdjustment(obj *externglib.Object) Adjustment {
-	return adjustment{
-		Objector: obj,
-	}
+	return adjustment{obj}
 }
 
 func marshalAdjustment(p uintptr) (interface{}, error) {
@@ -160,7 +160,7 @@ func NewAdjustment(value float64, lower float64, upper float64, stepIncrement fl
 
 	var _adjustment Adjustment // out
 
-	_adjustment = WrapAdjustment(externglib.Take(unsafe.Pointer(_cret)))
+	_adjustment = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Adjustment)
 
 	return _adjustment
 }

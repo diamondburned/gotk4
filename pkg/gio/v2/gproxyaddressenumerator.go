@@ -5,6 +5,9 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gerror"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -23,6 +26,8 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 // #include <glib-object.h>
+//
+// void gotk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 func init() {
@@ -40,24 +45,74 @@ func init() {
 // there should be no need to manually wrap a AddressEnumerator instance with
 // one.
 type ProxyAddressEnumerator interface {
-	SocketAddressEnumerator
+	gextras.Objector
+
+	// AsSocketAddressEnumerator casts the class to the SocketAddressEnumerator interface.
+	AsSocketAddressEnumerator() SocketAddressEnumerator
+
+	// Next retrieves the next Address from @enumerator. Note that this may
+	// block for some amount of time. (Eg, a Address may need to do a DNS lookup
+	// before it can return an address.) Use
+	// g_socket_address_enumerator_next_async() if you need to avoid blocking.
+	//
+	// If @enumerator is expected to yield addresses, but for some reason is
+	// unable to (eg, because of a DNS error), then the first call to
+	// g_socket_address_enumerator_next() will return an appropriate error in
+	// *@error. However, if the first call to g_socket_address_enumerator_next()
+	// succeeds, then any further internal errors (other than @cancellable being
+	// triggered) will be ignored.
+	//
+	// This method is inherited from SocketAddressEnumerator
+	Next(cancellable Cancellable) (SocketAddress, error)
+	// NextAsync: asynchronously retrieves the next Address from @enumerator and
+	// then calls @callback, which must call
+	// g_socket_address_enumerator_next_finish() to get the result.
+	//
+	// It is an error to call this multiple times before the previous callback
+	// has finished.
+	//
+	// This method is inherited from SocketAddressEnumerator
+	NextAsync(cancellable Cancellable, callback AsyncReadyCallback)
+	// NextFinish retrieves the result of a completed call to
+	// g_socket_address_enumerator_next_async(). See
+	// g_socket_address_enumerator_next() for more information about error
+	// handling.
+	//
+	// This method is inherited from SocketAddressEnumerator
+	NextFinish(result AsyncResult) (SocketAddress, error)
 }
 
-// proxyAddressEnumerator implements the ProxyAddressEnumerator class.
+// proxyAddressEnumerator implements the ProxyAddressEnumerator interface.
 type proxyAddressEnumerator struct {
-	SocketAddressEnumerator
+	*externglib.Object
 }
 
-// WrapProxyAddressEnumerator wraps a GObject to the right type. It is
-// primarily used internally.
+var _ ProxyAddressEnumerator = (*proxyAddressEnumerator)(nil)
+
+// WrapProxyAddressEnumerator wraps a GObject to a type that implements
+// interface ProxyAddressEnumerator. It is primarily used internally.
 func WrapProxyAddressEnumerator(obj *externglib.Object) ProxyAddressEnumerator {
-	return proxyAddressEnumerator{
-		SocketAddressEnumerator: WrapSocketAddressEnumerator(obj),
-	}
+	return proxyAddressEnumerator{obj}
 }
 
 func marshalProxyAddressEnumerator(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapProxyAddressEnumerator(obj), nil
+}
+
+func (p proxyAddressEnumerator) AsSocketAddressEnumerator() SocketAddressEnumerator {
+	return WrapSocketAddressEnumerator(gextras.InternObject(p))
+}
+
+func (e proxyAddressEnumerator) Next(cancellable Cancellable) (SocketAddress, error) {
+	return WrapSocketAddressEnumerator(gextras.InternObject(e)).Next(cancellable)
+}
+
+func (e proxyAddressEnumerator) NextAsync(cancellable Cancellable, callback AsyncReadyCallback) {
+	WrapSocketAddressEnumerator(gextras.InternObject(e)).NextAsync(cancellable, callback)
+}
+
+func (e proxyAddressEnumerator) NextFinish(result AsyncResult) (SocketAddress, error) {
+	return WrapSocketAddressEnumerator(gextras.InternObject(e)).NextFinish(result)
 }

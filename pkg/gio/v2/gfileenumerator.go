@@ -175,17 +175,17 @@ type FileEnumerator interface {
 	SetPending(pending bool)
 }
 
-// fileEnumerator implements the FileEnumerator class.
+// fileEnumerator implements the FileEnumerator interface.
 type fileEnumerator struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapFileEnumerator wraps a GObject to the right type. It is
-// primarily used internally.
+var _ FileEnumerator = (*fileEnumerator)(nil)
+
+// WrapFileEnumerator wraps a GObject to a type that implements
+// interface FileEnumerator. It is primarily used internally.
 func WrapFileEnumerator(obj *externglib.Object) FileEnumerator {
-	return fileEnumerator{
-		Objector: obj,
-	}
+	return fileEnumerator{obj}
 }
 
 func marshalFileEnumerator(p uintptr) (interface{}, error) {

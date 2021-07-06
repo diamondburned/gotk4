@@ -63,7 +63,7 @@ type BuilderScope interface {
 
 // builderScope implements the BuilderScope interface.
 type builderScope struct {
-	gextras.Objector
+	*externglib.Object
 }
 
 var _ BuilderScope = (*builderScope)(nil)
@@ -71,9 +71,7 @@ var _ BuilderScope = (*builderScope)(nil)
 // WrapBuilderScope wraps a GObject to a type that implements
 // interface BuilderScope. It is primarily used internally.
 func WrapBuilderScope(obj *externglib.Object) BuilderScope {
-	return builderScope{
-		Objector: obj,
-	}
+	return builderScope{obj}
 }
 
 func marshalBuilderScope(p uintptr) (interface{}, error) {
@@ -104,17 +102,17 @@ type BuilderCScope interface {
 	AsBuilderScope() BuilderScope
 }
 
-// builderCScope implements the BuilderCScope class.
+// builderCScope implements the BuilderCScope interface.
 type builderCScope struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapBuilderCScope wraps a GObject to the right type. It is
-// primarily used internally.
+var _ BuilderCScope = (*builderCScope)(nil)
+
+// WrapBuilderCScope wraps a GObject to a type that implements
+// interface BuilderCScope. It is primarily used internally.
 func WrapBuilderCScope(obj *externglib.Object) BuilderCScope {
-	return builderCScope{
-		Objector: obj,
-	}
+	return builderCScope{obj}
 }
 
 func marshalBuilderCScope(p uintptr) (interface{}, error) {
@@ -135,7 +133,7 @@ func NewBuilderCScope() BuilderCScope {
 
 	var _builderCScope BuilderCScope // out
 
-	_builderCScope = WrapBuilderCScope(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_builderCScope = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(BuilderCScope)
 
 	return _builderCScope
 }

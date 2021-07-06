@@ -8,6 +8,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -90,6 +91,109 @@ type TreeViewColumn interface {
 	AsBuildable() Buildable
 	// AsCellLayout casts the class to the CellLayout interface.
 	AsCellLayout() CellLayout
+
+	// AddChild adds a child to @buildable. @type is an optional string
+	// describing how the child should be added.
+	//
+	// This method is inherited from Buildable
+	AddChild(builder Builder, child gextras.Objector, typ string)
+	// ConstructChild constructs a child of @buildable with the name @name.
+	//
+	// Builder calls this function if a “constructor” has been specified in the
+	// UI definition.
+	//
+	// This method is inherited from Buildable
+	ConstructChild(builder Builder, name string) gextras.Objector
+	// CustomFinished: this is similar to gtk_buildable_parser_finished() but is
+	// called once for each custom tag handled by the @buildable.
+	//
+	// This method is inherited from Buildable
+	CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{})
+	// CustomTagEnd: this is called at the end of each custom element handled by
+	// the buildable.
+	//
+	// This method is inherited from Buildable
+	CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data interface{})
+	// CustomTagStart: this is called for each unknown element under <child>.
+	//
+	// This method is inherited from Buildable
+	CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool)
+	// GetInternalChild: get the internal child called @childname of the
+	// @buildable object.
+	//
+	// This method is inherited from Buildable
+	GetInternalChild(builder Builder, childname string) gextras.Objector
+	// GetName gets the name of the @buildable object.
+	//
+	// Builder sets the name based on the [GtkBuilder UI definition][BUILDER-UI]
+	// used to construct the @buildable.
+	//
+	// This method is inherited from Buildable
+	GetName() string
+	// ParserFinished: called when the builder finishes the parsing of a
+	// [GtkBuilder UI definition][BUILDER-UI]. Note that this will be called
+	// once for each time gtk_builder_add_from_file() or
+	// gtk_builder_add_from_string() is called on a builder.
+	//
+	// This method is inherited from Buildable
+	ParserFinished(builder Builder)
+	// SetBuildableProperty sets the property name @name to @value on the
+	// @buildable object.
+	//
+	// This method is inherited from Buildable
+	SetBuildableProperty(builder Builder, name string, value externglib.Value)
+	// SetName sets the name of the @buildable object.
+	//
+	// This method is inherited from Buildable
+	SetName(name string)
+	// AddAttribute adds an attribute mapping to the list in @cell_layout.
+	//
+	// The @column is the column of the model to get a value from, and the
+	// @attribute is the parameter on @cell to be set from the value. So for
+	// example if column 2 of the model contains strings, you could have the
+	// “text” attribute of a CellRendererText get its values from column 2.
+	//
+	// This method is inherited from CellLayout
+	AddAttribute(cell CellRenderer, attribute string, column int)
+	// Clear unsets all the mappings on all renderers on @cell_layout and
+	// removes all renderers from @cell_layout.
+	//
+	// This method is inherited from CellLayout
+	Clear()
+	// ClearAttributes clears all existing attributes previously set with
+	// gtk_cell_layout_set_attributes().
+	//
+	// This method is inherited from CellLayout
+	ClearAttributes(cell CellRenderer)
+	// GetArea returns the underlying CellArea which might be @cell_layout if
+	// called on a CellArea or might be nil if no CellArea is used by
+	// @cell_layout.
+	//
+	// This method is inherited from CellLayout
+	GetArea() CellArea
+	// PackEnd adds the @cell to the end of @cell_layout. If @expand is false,
+	// then the @cell is allocated no more space than it needs. Any unused space
+	// is divided evenly between cells for which @expand is true.
+	//
+	// Note that reusing the same cell renderer is not supported.
+	//
+	// This method is inherited from CellLayout
+	PackEnd(cell CellRenderer, expand bool)
+	// PackStart packs the @cell into the beginning of @cell_layout. If @expand
+	// is false, then the @cell is allocated no more space than it needs. Any
+	// unused space is divided evenly between cells for which @expand is true.
+	//
+	// Note that reusing the same cell renderer is not supported.
+	//
+	// This method is inherited from CellLayout
+	PackStart(cell CellRenderer, expand bool)
+	// Reorder re-inserts @cell at @position.
+	//
+	// Note that @cell has already to be packed into @cell_layout for this to
+	// function properly.
+	//
+	// This method is inherited from CellLayout
+	Reorder(cell CellRenderer, position int)
 
 	// AddAttribute adds an attribute mapping to the list in @tree_column. The
 	// @column is the column of the model to get a value from, and the
@@ -269,17 +373,17 @@ type TreeViewColumn interface {
 	SetWidget(widget Widget)
 }
 
-// treeViewColumn implements the TreeViewColumn class.
+// treeViewColumn implements the TreeViewColumn interface.
 type treeViewColumn struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapTreeViewColumn wraps a GObject to the right type. It is
-// primarily used internally.
+var _ TreeViewColumn = (*treeViewColumn)(nil)
+
+// WrapTreeViewColumn wraps a GObject to a type that implements
+// interface TreeViewColumn. It is primarily used internally.
 func WrapTreeViewColumn(obj *externglib.Object) TreeViewColumn {
-	return treeViewColumn{
-		Objector: obj,
-	}
+	return treeViewColumn{obj}
 }
 
 func marshalTreeViewColumn(p uintptr) (interface{}, error) {
@@ -296,7 +400,7 @@ func NewTreeViewColumn() TreeViewColumn {
 
 	var _treeViewColumn TreeViewColumn // out
 
-	_treeViewColumn = WrapTreeViewColumn(externglib.Take(unsafe.Pointer(_cret)))
+	_treeViewColumn = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(TreeViewColumn)
 
 	return _treeViewColumn
 }
@@ -313,7 +417,7 @@ func NewTreeViewColumnWithArea(area CellArea) TreeViewColumn {
 
 	var _treeViewColumn TreeViewColumn // out
 
-	_treeViewColumn = WrapTreeViewColumn(externglib.Take(unsafe.Pointer(_cret)))
+	_treeViewColumn = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(TreeViewColumn)
 
 	return _treeViewColumn
 }
@@ -324,6 +428,74 @@ func (t treeViewColumn) AsBuildable() Buildable {
 
 func (t treeViewColumn) AsCellLayout() CellLayout {
 	return WrapCellLayout(gextras.InternObject(t))
+}
+
+func (b treeViewColumn) AddChild(builder Builder, child gextras.Objector, typ string) {
+	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+}
+
+func (b treeViewColumn) ConstructChild(builder Builder, name string) gextras.Objector {
+	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b treeViewColumn) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b treeViewColumn) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b treeViewColumn) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
+}
+
+func (b treeViewColumn) GetInternalChild(builder Builder, childname string) gextras.Objector {
+	return WrapBuildable(gextras.InternObject(b)).GetInternalChild(builder, childname)
+}
+
+func (b treeViewColumn) GetName() string {
+	return WrapBuildable(gextras.InternObject(b)).GetName()
+}
+
+func (b treeViewColumn) ParserFinished(builder Builder) {
+	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
+}
+
+func (b treeViewColumn) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
+	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
+}
+
+func (b treeViewColumn) SetName(name string) {
+	WrapBuildable(gextras.InternObject(b)).SetName(name)
+}
+
+func (c treeViewColumn) AddAttribute(cell CellRenderer, attribute string, column int) {
+	WrapCellLayout(gextras.InternObject(c)).AddAttribute(cell, attribute, column)
+}
+
+func (c treeViewColumn) Clear() {
+	WrapCellLayout(gextras.InternObject(c)).Clear()
+}
+
+func (c treeViewColumn) ClearAttributes(cell CellRenderer) {
+	WrapCellLayout(gextras.InternObject(c)).ClearAttributes(cell)
+}
+
+func (c treeViewColumn) GetArea() CellArea {
+	return WrapCellLayout(gextras.InternObject(c)).GetArea()
+}
+
+func (c treeViewColumn) PackEnd(cell CellRenderer, expand bool) {
+	WrapCellLayout(gextras.InternObject(c)).PackEnd(cell, expand)
+}
+
+func (c treeViewColumn) PackStart(cell CellRenderer, expand bool) {
+	WrapCellLayout(gextras.InternObject(c)).PackStart(cell, expand)
+}
+
+func (c treeViewColumn) Reorder(cell CellRenderer, position int) {
+	WrapCellLayout(gextras.InternObject(c)).Reorder(cell, position)
 }
 
 func (t treeViewColumn) AddAttribute(cellRenderer CellRenderer, attribute string, column int) {

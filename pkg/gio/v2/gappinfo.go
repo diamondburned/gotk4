@@ -160,7 +160,7 @@ type AppInfo interface {
 
 // appInfo implements the AppInfo interface.
 type appInfo struct {
-	gextras.Objector
+	*externglib.Object
 }
 
 var _ AppInfo = (*appInfo)(nil)
@@ -168,9 +168,7 @@ var _ AppInfo = (*appInfo)(nil)
 // WrapAppInfo wraps a GObject to a type that implements
 // interface AppInfo. It is primarily used internally.
 func WrapAppInfo(obj *externglib.Object) AppInfo {
-	return appInfo{
-		Objector: obj,
-	}
+	return appInfo{obj}
 }
 
 func marshalAppInfo(p uintptr) (interface{}, error) {
@@ -577,17 +575,17 @@ type AppLaunchContext interface {
 	Unsetenv(variable string)
 }
 
-// appLaunchContext implements the AppLaunchContext class.
+// appLaunchContext implements the AppLaunchContext interface.
 type appLaunchContext struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapAppLaunchContext wraps a GObject to the right type. It is
-// primarily used internally.
+var _ AppLaunchContext = (*appLaunchContext)(nil)
+
+// WrapAppLaunchContext wraps a GObject to a type that implements
+// interface AppLaunchContext. It is primarily used internally.
 func WrapAppLaunchContext(obj *externglib.Object) AppLaunchContext {
-	return appLaunchContext{
-		Objector: obj,
-	}
+	return appLaunchContext{obj}
 }
 
 func marshalAppLaunchContext(p uintptr) (interface{}, error) {
@@ -606,7 +604,7 @@ func NewAppLaunchContext() AppLaunchContext {
 
 	var _appLaunchContext AppLaunchContext // out
 
-	_appLaunchContext = WrapAppLaunchContext(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_appLaunchContext = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(AppLaunchContext)
 
 	return _appLaunchContext
 }

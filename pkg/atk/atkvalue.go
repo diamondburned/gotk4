@@ -6,7 +6,6 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -198,7 +197,7 @@ type Value interface {
 
 // value implements the Value interface.
 type value struct {
-	gextras.Objector
+	*externglib.Object
 }
 
 var _ Value = (*value)(nil)
@@ -206,9 +205,7 @@ var _ Value = (*value)(nil)
 // WrapValue wraps a GObject to a type that implements
 // interface Value. It is primarily used internally.
 func WrapValue(obj *externglib.Object) Value {
-	return value{
-		Objector: obj,
-	}
+	return value{obj}
 }
 
 func marshalValue(p uintptr) (interface{}, error) {

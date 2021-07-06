@@ -5,6 +5,7 @@ package gdkwayland
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -28,24 +29,64 @@ func init() {
 // access to the Wayland `wl_seat` object with
 // [method@GdkWayland.WaylandSeat.get_wl_seat].
 type WaylandSeat interface {
-	gdk.Seat
+	gextras.Objector
+
+	// AsSeat casts the class to the gdk.Seat interface.
+	AsSeat() gdk.Seat
+
+	// GetCapabilities returns the capabilities this `GdkSeat` currently has.
+	//
+	// This method is inherited from gdk.Seat
+	GetCapabilities() gdk.SeatCapabilities
+	// GetDisplay returns the `GdkDisplay` this seat belongs to.
+	//
+	// This method is inherited from gdk.Seat
+	GetDisplay() gdk.Display
+	// GetKeyboard returns the device that routes keyboard events.
+	//
+	// This method is inherited from gdk.Seat
+	GetKeyboard() gdk.Device
+	// GetPointer returns the device that routes pointer events.
+	//
+	// This method is inherited from gdk.Seat
+	GetPointer() gdk.Device
 }
 
-// waylandSeat implements the WaylandSeat class.
+// waylandSeat implements the WaylandSeat interface.
 type waylandSeat struct {
-	gdk.Seat
+	*externglib.Object
 }
 
-// WrapWaylandSeat wraps a GObject to the right type. It is
-// primarily used internally.
+var _ WaylandSeat = (*waylandSeat)(nil)
+
+// WrapWaylandSeat wraps a GObject to a type that implements
+// interface WaylandSeat. It is primarily used internally.
 func WrapWaylandSeat(obj *externglib.Object) WaylandSeat {
-	return waylandSeat{
-		Seat: gdk.WrapSeat(obj),
-	}
+	return waylandSeat{obj}
 }
 
 func marshalWaylandSeat(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapWaylandSeat(obj), nil
+}
+
+func (w waylandSeat) AsSeat() gdk.Seat {
+	return gdk.WrapSeat(gextras.InternObject(w))
+}
+
+func (s waylandSeat) GetCapabilities() gdk.SeatCapabilities {
+	return gdk.WrapSeat(gextras.InternObject(s)).GetCapabilities()
+}
+
+func (s waylandSeat) GetDisplay() gdk.Display {
+	return gdk.WrapSeat(gextras.InternObject(s)).GetDisplay()
+}
+
+func (s waylandSeat) GetKeyboard() gdk.Device {
+	return gdk.WrapSeat(gextras.InternObject(s)).GetKeyboard()
+}
+
+func (s waylandSeat) GetPointer() gdk.Device {
+	return gdk.WrapSeat(gextras.InternObject(s)).GetPointer()
 }

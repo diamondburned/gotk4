@@ -79,17 +79,17 @@ type EventController interface {
 	SetPropagationPhase(phase PropagationPhase)
 }
 
-// eventController implements the EventController class.
+// eventController implements the EventController interface.
 type eventController struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapEventController wraps a GObject to the right type. It is
-// primarily used internally.
+var _ EventController = (*eventController)(nil)
+
+// WrapEventController wraps a GObject to a type that implements
+// interface EventController. It is primarily used internally.
 func WrapEventController(obj *externglib.Object) EventController {
-	return eventController{
-		Objector: obj,
-	}
+	return eventController{obj}
 }
 
 func marshalEventController(p uintptr) (interface{}, error) {

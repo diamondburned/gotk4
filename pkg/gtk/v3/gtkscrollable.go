@@ -81,7 +81,7 @@ type Scrollable interface {
 
 // scrollable implements the Scrollable interface.
 type scrollable struct {
-	gextras.Objector
+	*externglib.Object
 }
 
 var _ Scrollable = (*scrollable)(nil)
@@ -89,9 +89,7 @@ var _ Scrollable = (*scrollable)(nil)
 // WrapScrollable wraps a GObject to a type that implements
 // interface Scrollable. It is primarily used internally.
 func WrapScrollable(obj *externglib.Object) Scrollable {
-	return scrollable{
-		Objector: obj,
-	}
+	return scrollable{obj}
 }
 
 func marshalScrollable(p uintptr) (interface{}, error) {

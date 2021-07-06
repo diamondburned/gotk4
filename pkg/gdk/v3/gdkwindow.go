@@ -1595,17 +1595,17 @@ type Window interface {
 	Withdraw()
 }
 
-// window implements the Window class.
+// window implements the Window interface.
 type window struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapWindow wraps a GObject to the right type. It is
-// primarily used internally.
+var _ Window = (*window)(nil)
+
+// WrapWindow wraps a GObject to a type that implements
+// interface Window. It is primarily used internally.
 func WrapWindow(obj *externglib.Object) Window {
-	return window{
-		Objector: obj,
-	}
+	return window{obj}
 }
 
 func marshalWindow(p uintptr) (interface{}, error) {
@@ -1631,7 +1631,7 @@ func NewWindow(parent Window, attributes *WindowAttr, attributesMask WindowAttri
 
 	var _window Window // out
 
-	_window = WrapWindow(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_window = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Window)
 
 	return _window
 }

@@ -62,8 +62,8 @@ type MediaStream interface {
 	//
 	// If the duration is not known, 0 will be returned.
 	Duration() int64
-	// EndedMediaStream returns whether the streams playback is finished.
-	EndedMediaStream() bool
+	// GetEnded returns whether the streams playback is finished.
+	GetEnded() bool
 	// Error: if the stream is in an error state, returns the `GError`
 	// explaining that state.
 	//
@@ -230,17 +230,17 @@ type MediaStream interface {
 	Update(timestamp int64)
 }
 
-// mediaStream implements the MediaStream class.
+// mediaStream implements the MediaStream interface.
 type mediaStream struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapMediaStream wraps a GObject to the right type. It is
-// primarily used internally.
+var _ MediaStream = (*mediaStream)(nil)
+
+// WrapMediaStream wraps a GObject to a type that implements
+// interface MediaStream. It is primarily used internally.
 func WrapMediaStream(obj *externglib.Object) MediaStream {
-	return mediaStream{
-		Objector: obj,
-	}
+	return mediaStream{obj}
 }
 
 func marshalMediaStream(p uintptr) (interface{}, error) {
@@ -282,7 +282,7 @@ func (s mediaStream) Duration() int64 {
 	return _gint64
 }
 
-func (s mediaStream) EndedMediaStream() bool {
+func (s mediaStream) GetEnded() bool {
 	var _arg0 *C.GtkMediaStream // out
 	var _cret C.gboolean        // in
 

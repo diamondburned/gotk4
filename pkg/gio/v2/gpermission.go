@@ -128,17 +128,17 @@ type Permission interface {
 	ReleaseFinish(result AsyncResult) error
 }
 
-// permission implements the Permission class.
+// permission implements the Permission interface.
 type permission struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapPermission wraps a GObject to the right type. It is
-// primarily used internally.
+var _ Permission = (*permission)(nil)
+
+// WrapPermission wraps a GObject to a type that implements
+// interface Permission. It is primarily used internally.
 func WrapPermission(obj *externglib.Object) Permission {
-	return permission{
-		Objector: obj,
-	}
+	return permission{obj}
 }
 
 func marshalPermission(p uintptr) (interface{}, error) {

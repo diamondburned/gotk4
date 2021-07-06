@@ -202,7 +202,7 @@ type Mount interface {
 
 // mount implements the Mount interface.
 type mount struct {
-	gextras.Objector
+	*externglib.Object
 }
 
 var _ Mount = (*mount)(nil)
@@ -210,9 +210,7 @@ var _ Mount = (*mount)(nil)
 // WrapMount wraps a GObject to a type that implements
 // interface Mount. It is primarily used internally.
 func WrapMount(obj *externglib.Object) Mount {
-	return mount{
-		Objector: obj,
-	}
+	return mount{obj}
 }
 
 func marshalMount(p uintptr) (interface{}, error) {

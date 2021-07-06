@@ -62,17 +62,17 @@ type RelationSet interface {
 	Remove(relation Relation)
 }
 
-// relationSet implements the RelationSet class.
+// relationSet implements the RelationSet interface.
 type relationSet struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapRelationSet wraps a GObject to the right type. It is
-// primarily used internally.
+var _ RelationSet = (*relationSet)(nil)
+
+// WrapRelationSet wraps a GObject to a type that implements
+// interface RelationSet. It is primarily used internally.
 func WrapRelationSet(obj *externglib.Object) RelationSet {
-	return relationSet{
-		Objector: obj,
-	}
+	return relationSet{obj}
 }
 
 func marshalRelationSet(p uintptr) (interface{}, error) {
@@ -89,7 +89,7 @@ func NewRelationSet() RelationSet {
 
 	var _relationSet RelationSet // out
 
-	_relationSet = WrapRelationSet(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_relationSet = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(RelationSet)
 
 	return _relationSet
 }

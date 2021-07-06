@@ -77,17 +77,17 @@ type DeviceTool interface {
 	ToolType() DeviceToolType
 }
 
-// deviceTool implements the DeviceTool class.
+// deviceTool implements the DeviceTool interface.
 type deviceTool struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapDeviceTool wraps a GObject to the right type. It is
-// primarily used internally.
+var _ DeviceTool = (*deviceTool)(nil)
+
+// WrapDeviceTool wraps a GObject to a type that implements
+// interface DeviceTool. It is primarily used internally.
 func WrapDeviceTool(obj *externglib.Object) DeviceTool {
-	return deviceTool{
-		Objector: obj,
-	}
+	return deviceTool{obj}
 }
 
 func marshalDeviceTool(p uintptr) (interface{}, error) {

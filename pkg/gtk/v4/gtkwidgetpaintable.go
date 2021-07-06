@@ -51,17 +51,17 @@ type WidgetPaintable interface {
 	SetWidget(widget Widget)
 }
 
-// widgetPaintable implements the WidgetPaintable class.
+// widgetPaintable implements the WidgetPaintable interface.
 type widgetPaintable struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapWidgetPaintable wraps a GObject to the right type. It is
-// primarily used internally.
+var _ WidgetPaintable = (*widgetPaintable)(nil)
+
+// WrapWidgetPaintable wraps a GObject to a type that implements
+// interface WidgetPaintable. It is primarily used internally.
 func WrapWidgetPaintable(obj *externglib.Object) WidgetPaintable {
-	return widgetPaintable{
-		Objector: obj,
-	}
+	return widgetPaintable{obj}
 }
 
 func marshalWidgetPaintable(p uintptr) (interface{}, error) {
@@ -81,7 +81,7 @@ func NewWidgetPaintable(widget Widget) WidgetPaintable {
 
 	var _widgetPaintable WidgetPaintable // out
 
-	_widgetPaintable = WrapWidgetPaintable(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_widgetPaintable = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(WidgetPaintable)
 
 	return _widgetPaintable
 }

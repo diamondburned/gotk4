@@ -162,17 +162,17 @@ type TLSDatabase interface {
 	VerifyChainFinish(result AsyncResult) (TLSCertificateFlags, error)
 }
 
-// tlsDatabase implements the TLSDatabase class.
+// tlsDatabase implements the TLSDatabase interface.
 type tlsDatabase struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapTLSDatabase wraps a GObject to the right type. It is
-// primarily used internally.
+var _ TLSDatabase = (*tlsDatabase)(nil)
+
+// WrapTLSDatabase wraps a GObject to a type that implements
+// interface TLSDatabase. It is primarily used internally.
 func WrapTLSDatabase(obj *externglib.Object) TLSDatabase {
-	return tlsDatabase{
-		Objector: obj,
-	}
+	return tlsDatabase{obj}
 }
 
 func marshalTLSDatabase(p uintptr) (interface{}, error) {

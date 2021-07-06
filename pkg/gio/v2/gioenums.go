@@ -1220,7 +1220,7 @@ func marshalTLSInteractionResult(p uintptr) (interface{}, error) {
 // TLSRehandshakeMode: when to allow rehandshaking. See
 // g_tls_connection_set_rehandshake_mode().
 //
-// Deprecated: since version 2.60..
+// Deprecated: since version 2.60.
 type TLSRehandshakeMode int
 
 const (

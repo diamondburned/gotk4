@@ -31,17 +31,17 @@ type FlattenListModel interface {
 	gextras.Objector
 }
 
-// flattenListModel implements the FlattenListModel class.
+// flattenListModel implements the FlattenListModel interface.
 type flattenListModel struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapFlattenListModel wraps a GObject to the right type. It is
-// primarily used internally.
+var _ FlattenListModel = (*flattenListModel)(nil)
+
+// WrapFlattenListModel wraps a GObject to a type that implements
+// interface FlattenListModel. It is primarily used internally.
 func WrapFlattenListModel(obj *externglib.Object) FlattenListModel {
-	return flattenListModel{
-		Objector: obj,
-	}
+	return flattenListModel{obj}
 }
 
 func marshalFlattenListModel(p uintptr) (interface{}, error) {

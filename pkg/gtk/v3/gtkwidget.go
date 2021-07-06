@@ -13,6 +13,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -245,6 +246,61 @@ type Widget interface {
 
 	// AsBuildable casts the class to the Buildable interface.
 	AsBuildable() Buildable
+
+	// AddChild adds a child to @buildable. @type is an optional string
+	// describing how the child should be added.
+	//
+	// This method is inherited from Buildable
+	AddChild(builder Builder, child gextras.Objector, typ string)
+	// ConstructChild constructs a child of @buildable with the name @name.
+	//
+	// Builder calls this function if a “constructor” has been specified in the
+	// UI definition.
+	//
+	// This method is inherited from Buildable
+	ConstructChild(builder Builder, name string) gextras.Objector
+	// CustomFinished: this is similar to gtk_buildable_parser_finished() but is
+	// called once for each custom tag handled by the @buildable.
+	//
+	// This method is inherited from Buildable
+	CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{})
+	// CustomTagEnd: this is called at the end of each custom element handled by
+	// the buildable.
+	//
+	// This method is inherited from Buildable
+	CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data interface{})
+	// CustomTagStart: this is called for each unknown element under <child>.
+	//
+	// This method is inherited from Buildable
+	CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool)
+	// GetInternalChild: get the internal child called @childname of the
+	// @buildable object.
+	//
+	// This method is inherited from Buildable
+	GetInternalChild(builder Builder, childname string) gextras.Objector
+	// GetName gets the name of the @buildable object.
+	//
+	// Builder sets the name based on the [GtkBuilder UI definition][BUILDER-UI]
+	// used to construct the @buildable.
+	//
+	// This method is inherited from Buildable
+	GetName() string
+	// ParserFinished: called when the builder finishes the parsing of a
+	// [GtkBuilder UI definition][BUILDER-UI]. Note that this will be called
+	// once for each time gtk_builder_add_from_file() or
+	// gtk_builder_add_from_string() is called on a builder.
+	//
+	// This method is inherited from Buildable
+	ParserFinished(builder Builder)
+	// SetBuildableProperty sets the property name @name to @value on the
+	// @buildable object.
+	//
+	// This method is inherited from Buildable
+	SetBuildableProperty(builder Builder, name string, value externglib.Value)
+	// SetName sets the name of the @buildable object.
+	//
+	// This method is inherited from Buildable
+	SetName(name string)
 
 	// Activate: for widgets that can be “activated” (buttons, menu items, etc.)
 	// this function activates them. Activation is what happens when you press
@@ -786,9 +842,9 @@ type Widget interface {
 	// ParentWindow gets @widget’s parent window, or nil if it does not have
 	// one.
 	ParentWindow() gdk.Window
-	// PathWidget returns the WidgetPath representing @widget, if the widget is
-	// not connected to a toplevel widget, a partial path will be created.
-	PathWidget() *WidgetPath
+	// GetPath returns the WidgetPath representing @widget, if the widget is not
+	// connected to a toplevel widget, a partial path will be created.
+	GetPath() *WidgetPath
 	// Pointer obtains the location of the mouse pointer in widget coordinates.
 	// Widget coordinates are a bit odd; for historical reasons, they are
 	// defined as @widget->window coordinates for widgets that return true for
@@ -926,14 +982,14 @@ type Widget interface {
 	// Note that this function can only be called when the Widget is attached to
 	// a toplevel, since the settings object is specific to a particular Screen.
 	Settings() Settings
-	// SizeRequestWidget gets the size request that was explicitly set for the
+	// GetSizeRequest gets the size request that was explicitly set for the
 	// widget using gtk_widget_set_size_request(). A value of -1 stored in
 	// @width or @height indicates that that dimension has not been set
 	// explicitly and the natural requisition of the widget will be used
 	// instead. See gtk_widget_set_size_request(). To get the size a widget will
 	// actually request, call gtk_widget_get_preferred_size() instead of this
 	// function.
-	SizeRequestWidget() (width int, height int)
+	GetSizeRequest() (width int, height int)
 	// State returns the widget’s state. See gtk_widget_set_state().
 	//
 	// Deprecated: since version 3.0.
@@ -2014,17 +2070,17 @@ type Widget interface {
 	UnsetStateFlags(flags StateFlags)
 }
 
-// widget implements the Widget class.
+// widget implements the Widget interface.
 type widget struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapWidget wraps a GObject to the right type. It is
-// primarily used internally.
+var _ Widget = (*widget)(nil)
+
+// WrapWidget wraps a GObject to a type that implements
+// interface Widget. It is primarily used internally.
 func WrapWidget(obj *externglib.Object) Widget {
-	return widget{
-		Objector: obj,
-	}
+	return widget{obj}
 }
 
 func marshalWidget(p uintptr) (interface{}, error) {
@@ -2035,6 +2091,46 @@ func marshalWidget(p uintptr) (interface{}, error) {
 
 func (w widget) AsBuildable() Buildable {
 	return WrapBuildable(gextras.InternObject(w))
+}
+
+func (b widget) AddChild(builder Builder, child gextras.Objector, typ string) {
+	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+}
+
+func (b widget) ConstructChild(builder Builder, name string) gextras.Objector {
+	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b widget) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b widget) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b widget) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
+}
+
+func (b widget) GetInternalChild(builder Builder, childname string) gextras.Objector {
+	return WrapBuildable(gextras.InternObject(b)).GetInternalChild(builder, childname)
+}
+
+func (b widget) GetName() string {
+	return WrapBuildable(gextras.InternObject(b)).GetName()
+}
+
+func (b widget) ParserFinished(builder Builder) {
+	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
+}
+
+func (b widget) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
+	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
+}
+
+func (b widget) SetName(name string) {
+	WrapBuildable(gextras.InternObject(b)).SetName(name)
 }
 
 func (w widget) Activate() bool {
@@ -3240,7 +3336,7 @@ func (w widget) ParentWindow() gdk.Window {
 	return _window
 }
 
-func (w widget) PathWidget() *WidgetPath {
+func (w widget) GetPath() *WidgetPath {
 	var _arg0 *C.GtkWidget     // out
 	var _cret *C.GtkWidgetPath // in
 
@@ -3568,7 +3664,7 @@ func (w widget) Settings() Settings {
 	return _settings
 }
 
-func (w widget) SizeRequestWidget() (width int, height int) {
+func (w widget) GetSizeRequest() (width int, height int) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gint       // in
 	var _arg2 C.gint       // in

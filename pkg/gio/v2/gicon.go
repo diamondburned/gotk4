@@ -6,7 +6,6 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -91,7 +90,7 @@ type Icon interface {
 
 // icon implements the Icon interface.
 type icon struct {
-	gextras.Objector
+	*externglib.Object
 }
 
 var _ Icon = (*icon)(nil)
@@ -99,9 +98,7 @@ var _ Icon = (*icon)(nil)
 // WrapIcon wraps a GObject to a type that implements
 // interface Icon. It is primarily used internally.
 func WrapIcon(obj *externglib.Object) Icon {
-	return icon{
-		Objector: obj,
-	}
+	return icon{obj}
 }
 
 func marshalIcon(p uintptr) (interface{}, error) {

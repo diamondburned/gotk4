@@ -211,17 +211,17 @@ type ApplicationCommandLine interface {
 	SetExitStatus(exitStatus int)
 }
 
-// applicationCommandLine implements the ApplicationCommandLine class.
+// applicationCommandLine implements the ApplicationCommandLine interface.
 type applicationCommandLine struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapApplicationCommandLine wraps a GObject to the right type. It is
-// primarily used internally.
+var _ ApplicationCommandLine = (*applicationCommandLine)(nil)
+
+// WrapApplicationCommandLine wraps a GObject to a type that implements
+// interface ApplicationCommandLine. It is primarily used internally.
 func WrapApplicationCommandLine(obj *externglib.Object) ApplicationCommandLine {
-	return applicationCommandLine{
-		Objector: obj,
-	}
+	return applicationCommandLine{obj}
 }
 
 func marshalApplicationCommandLine(p uintptr) (interface{}, error) {

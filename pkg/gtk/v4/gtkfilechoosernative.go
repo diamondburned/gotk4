@@ -164,10 +164,210 @@ func init() {
 //
 // * Shortcut folders.
 type FileChooserNative interface {
-	NativeDialog
+	gextras.Objector
 
+	// AsNativeDialog casts the class to the NativeDialog interface.
+	AsNativeDialog() NativeDialog
 	// AsFileChooser casts the class to the FileChooser interface.
 	AsFileChooser() FileChooser
+
+	// Destroy destroys a dialog.
+	//
+	// When a dialog is destroyed, it will break any references it holds to
+	// other objects.
+	//
+	// If it is visible it will be hidden and any underlying window system
+	// resources will be destroyed.
+	//
+	// Note that this does not release any reference to the object (as opposed
+	// to destroying a `GtkWindow`) because there is no reference from the
+	// windowing system to the `GtkNativeDialog`.
+	//
+	// This method is inherited from NativeDialog
+	Destroy()
+	// GetModal returns whether the dialog is modal.
+	//
+	// This method is inherited from NativeDialog
+	GetModal() bool
+	// GetTitle gets the title of the `GtkNativeDialog`.
+	//
+	// This method is inherited from NativeDialog
+	GetTitle() string
+	// GetTransientFor fetches the transient parent for this window.
+	//
+	// This method is inherited from NativeDialog
+	GetTransientFor() Window
+	// GetVisible determines whether the dialog is visible.
+	//
+	// This method is inherited from NativeDialog
+	GetVisible() bool
+	// Hide hides the dialog if it is visible, aborting any interaction.
+	//
+	// Once this is called the [signal@Gtk.NativeDialog::response] signal will
+	// *not* be emitted until after the next call to
+	// [method@Gtk.NativeDialog.show].
+	//
+	// If the dialog is not visible this does nothing.
+	//
+	// This method is inherited from NativeDialog
+	Hide()
+	// SetModal sets a dialog modal or non-modal.
+	//
+	// Modal dialogs prevent interaction with other windows in the same
+	// application. To keep modal dialogs on top of main application windows,
+	// use [method@Gtk.NativeDialog.set_transient_for] to make the dialog
+	// transient for the parent; most window managers will then disallow
+	// lowering the dialog below the parent.
+	//
+	// This method is inherited from NativeDialog
+	SetModal(modal bool)
+	// SetTitle sets the title of the `GtkNativeDialog.`
+	//
+	// This method is inherited from NativeDialog
+	SetTitle(title string)
+	// SetTransientFor: dialog windows should be set transient for the main
+	// application window they were spawned from.
+	//
+	// This allows window managers to e.g. keep the dialog on top of the main
+	// window, or center the dialog over the main window.
+	//
+	// Passing nil for @parent unsets the current transient window.
+	//
+	// This method is inherited from NativeDialog
+	SetTransientFor(parent Window)
+	// Show shows the dialog on the display.
+	//
+	// When the user accepts the state of the dialog the dialog will be
+	// automatically hidden and the [signal@Gtk.NativeDialog::response] signal
+	// will be emitted.
+	//
+	// Multiple calls while the dialog is visible will be ignored.
+	//
+	// This method is inherited from NativeDialog
+	Show()
+	// AddChoice adds a 'choice' to the file chooser.
+	//
+	// This is typically implemented as a combobox or, for boolean choices, as a
+	// checkbutton. You can select a value using
+	// [method@Gtk.FileChooser.set_choice] before the dialog is shown, and you
+	// can obtain the user-selected value in the [signal@Gtk.Dialog::response]
+	// signal handler using [method@Gtk.FileChooser.get_choice].
+	//
+	// This method is inherited from FileChooser
+	AddChoice(id string, label string, options []string, optionLabels []string)
+	// AddFilter adds @filter to the list of filters that the user can select
+	// between.
+	//
+	// When a filter is selected, only files that are passed by that filter are
+	// displayed.
+	//
+	// Note that the @chooser takes ownership of the filter if it is floating,
+	// so you have to ref and sink it if you want to keep a reference.
+	//
+	// This method is inherited from FileChooser
+	AddFilter(filter FileFilter)
+	// GetAction gets the type of operation that the file chooser is performing.
+	//
+	// This method is inherited from FileChooser
+	GetAction() FileChooserAction
+	// GetChoice gets the currently selected option in the 'choice' with the
+	// given ID.
+	//
+	// This method is inherited from FileChooser
+	GetChoice(id string) string
+	// GetCreateFolders gets whether file chooser will offer to create new
+	// folders.
+	//
+	// This method is inherited from FileChooser
+	GetCreateFolders() bool
+	// GetCurrentName gets the current name in the file selector, as entered by
+	// the user.
+	//
+	// This is meant to be used in save dialogs, to get the currently typed
+	// filename when the file itself does not exist yet.
+	//
+	// This method is inherited from FileChooser
+	GetCurrentName() string
+	// GetFilter gets the current filter.
+	//
+	// This method is inherited from FileChooser
+	GetFilter() FileFilter
+	// GetSelectMultiple gets whether multiple files can be selected in the file
+	// chooser.
+	//
+	// This method is inherited from FileChooser
+	GetSelectMultiple() bool
+	// RemoveChoice removes a 'choice' that has been added with
+	// gtk_file_chooser_add_choice().
+	//
+	// This method is inherited from FileChooser
+	RemoveChoice(id string)
+	// RemoveFilter removes @filter from the list of filters that the user can
+	// select between.
+	//
+	// This method is inherited from FileChooser
+	RemoveFilter(filter FileFilter)
+	// SetAction sets the type of operation that the chooser is performing.
+	//
+	// The user interface is adapted to suit the selected action.
+	//
+	// For example, an option to create a new folder might be shown if the
+	// action is GTK_FILE_CHOOSER_ACTION_SAVE but not if the action is
+	// GTK_FILE_CHOOSER_ACTION_OPEN.
+	//
+	// This method is inherited from FileChooser
+	SetAction(action FileChooserAction)
+	// SetChoice selects an option in a 'choice' that has been added with
+	// gtk_file_chooser_add_choice().
+	//
+	// For a boolean choice, the possible options are "true" and "false".
+	//
+	// This method is inherited from FileChooser
+	SetChoice(id string, option string)
+	// SetCreateFolders sets whether file chooser will offer to create new
+	// folders.
+	//
+	// This is only relevant if the action is not set to be
+	// GTK_FILE_CHOOSER_ACTION_OPEN.
+	//
+	// This method is inherited from FileChooser
+	SetCreateFolders(createFolders bool)
+	// SetCurrentName sets the current name in the file selector, as if entered
+	// by the user.
+	//
+	// Note that the name passed in here is a UTF-8 string rather than a
+	// filename. This function is meant for such uses as a suggested name in a
+	// “Save As...” dialog. You can pass “Untitled.doc” or a similarly suitable
+	// suggestion for the @name.
+	//
+	// If you want to preselect a particular existing file, you should use
+	// [method@Gtk.FileChooser.set_file] instead.
+	//
+	// Please see the documentation for those functions for an example of using
+	// [method@Gtk.FileChooser.set_current_name] as well.
+	//
+	// This method is inherited from FileChooser
+	SetCurrentName(name string)
+	// SetFilter sets the current filter.
+	//
+	// Only the files that pass the filter will be displayed. If the
+	// user-selectable list of filters is non-empty, then the filter should be
+	// one of the filters in that list.
+	//
+	// Setting the current filter when the list of filters is empty is useful if
+	// you want to restrict the displayed set of files without letting the user
+	// change it.
+	//
+	// This method is inherited from FileChooser
+	SetFilter(filter FileFilter)
+	// SetSelectMultiple sets whether multiple files can be selected in the file
+	// chooser.
+	//
+	// This is only relevant if the action is set to be
+	// GTK_FILE_CHOOSER_ACTION_OPEN or GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER.
+	//
+	// This method is inherited from FileChooser
+	SetSelectMultiple(selectMultiple bool)
 
 	// AcceptLabel retrieves the custom label text for the accept button.
 	AcceptLabel() string
@@ -193,17 +393,17 @@ type FileChooserNative interface {
 	SetCancelLabel(cancelLabel string)
 }
 
-// fileChooserNative implements the FileChooserNative class.
+// fileChooserNative implements the FileChooserNative interface.
 type fileChooserNative struct {
-	NativeDialog
+	*externglib.Object
 }
 
-// WrapFileChooserNative wraps a GObject to the right type. It is
-// primarily used internally.
+var _ FileChooserNative = (*fileChooserNative)(nil)
+
+// WrapFileChooserNative wraps a GObject to a type that implements
+// interface FileChooserNative. It is primarily used internally.
 func WrapFileChooserNative(obj *externglib.Object) FileChooserNative {
-	return fileChooserNative{
-		NativeDialog: WrapNativeDialog(obj),
-	}
+	return fileChooserNative{obj}
 }
 
 func marshalFileChooserNative(p uintptr) (interface{}, error) {
@@ -234,13 +434,121 @@ func NewFileChooserNative(title string, parent Window, action FileChooserAction,
 
 	var _fileChooserNative FileChooserNative // out
 
-	_fileChooserNative = WrapFileChooserNative(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_fileChooserNative = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(FileChooserNative)
 
 	return _fileChooserNative
 }
 
+func (f fileChooserNative) AsNativeDialog() NativeDialog {
+	return WrapNativeDialog(gextras.InternObject(f))
+}
+
 func (f fileChooserNative) AsFileChooser() FileChooser {
 	return WrapFileChooser(gextras.InternObject(f))
+}
+
+func (s fileChooserNative) Destroy() {
+	WrapNativeDialog(gextras.InternObject(s)).Destroy()
+}
+
+func (s fileChooserNative) GetModal() bool {
+	return WrapNativeDialog(gextras.InternObject(s)).GetModal()
+}
+
+func (s fileChooserNative) GetTitle() string {
+	return WrapNativeDialog(gextras.InternObject(s)).GetTitle()
+}
+
+func (s fileChooserNative) GetTransientFor() Window {
+	return WrapNativeDialog(gextras.InternObject(s)).GetTransientFor()
+}
+
+func (s fileChooserNative) GetVisible() bool {
+	return WrapNativeDialog(gextras.InternObject(s)).GetVisible()
+}
+
+func (s fileChooserNative) Hide() {
+	WrapNativeDialog(gextras.InternObject(s)).Hide()
+}
+
+func (s fileChooserNative) SetModal(modal bool) {
+	WrapNativeDialog(gextras.InternObject(s)).SetModal(modal)
+}
+
+func (s fileChooserNative) SetTitle(title string) {
+	WrapNativeDialog(gextras.InternObject(s)).SetTitle(title)
+}
+
+func (s fileChooserNative) SetTransientFor(parent Window) {
+	WrapNativeDialog(gextras.InternObject(s)).SetTransientFor(parent)
+}
+
+func (s fileChooserNative) Show() {
+	WrapNativeDialog(gextras.InternObject(s)).Show()
+}
+
+func (c fileChooserNative) AddChoice(id string, label string, options []string, optionLabels []string) {
+	WrapFileChooser(gextras.InternObject(c)).AddChoice(id, label, options, optionLabels)
+}
+
+func (c fileChooserNative) AddFilter(filter FileFilter) {
+	WrapFileChooser(gextras.InternObject(c)).AddFilter(filter)
+}
+
+func (c fileChooserNative) GetAction() FileChooserAction {
+	return WrapFileChooser(gextras.InternObject(c)).GetAction()
+}
+
+func (c fileChooserNative) GetChoice(id string) string {
+	return WrapFileChooser(gextras.InternObject(c)).GetChoice(id)
+}
+
+func (c fileChooserNative) GetCreateFolders() bool {
+	return WrapFileChooser(gextras.InternObject(c)).GetCreateFolders()
+}
+
+func (c fileChooserNative) GetCurrentName() string {
+	return WrapFileChooser(gextras.InternObject(c)).GetCurrentName()
+}
+
+func (c fileChooserNative) GetFilter() FileFilter {
+	return WrapFileChooser(gextras.InternObject(c)).GetFilter()
+}
+
+func (c fileChooserNative) GetSelectMultiple() bool {
+	return WrapFileChooser(gextras.InternObject(c)).GetSelectMultiple()
+}
+
+func (c fileChooserNative) RemoveChoice(id string) {
+	WrapFileChooser(gextras.InternObject(c)).RemoveChoice(id)
+}
+
+func (c fileChooserNative) RemoveFilter(filter FileFilter) {
+	WrapFileChooser(gextras.InternObject(c)).RemoveFilter(filter)
+}
+
+func (c fileChooserNative) SetAction(action FileChooserAction) {
+	WrapFileChooser(gextras.InternObject(c)).SetAction(action)
+}
+
+func (c fileChooserNative) SetChoice(id string, option string) {
+	WrapFileChooser(gextras.InternObject(c)).SetChoice(id, option)
+}
+
+func (c fileChooserNative) SetCreateFolders(createFolders bool) {
+	WrapFileChooser(gextras.InternObject(c)).SetCreateFolders(createFolders)
+}
+
+func (c fileChooserNative) SetCurrentName(name string) {
+	WrapFileChooser(gextras.InternObject(c)).SetCurrentName(name)
+}
+
+func (c fileChooserNative) SetFilter(filter FileFilter) {
+	WrapFileChooser(gextras.InternObject(c)).SetFilter(filter)
+}
+
+func (c fileChooserNative) SetSelectMultiple(selectMultiple bool) {
+	WrapFileChooser(gextras.InternObject(c)).SetSelectMultiple(selectMultiple)
 }
 
 func (s fileChooserNative) AcceptLabel() string {

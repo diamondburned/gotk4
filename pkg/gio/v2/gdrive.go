@@ -150,7 +150,7 @@ type Drive interface {
 
 // drive implements the Drive interface.
 type drive struct {
-	gextras.Objector
+	*externglib.Object
 }
 
 var _ Drive = (*drive)(nil)
@@ -158,9 +158,7 @@ var _ Drive = (*drive)(nil)
 // WrapDrive wraps a GObject to a type that implements
 // interface Drive. It is primarily used internally.
 func WrapDrive(obj *externglib.Object) Drive {
-	return drive{
-		Objector: obj,
-	}
+	return drive{obj}
 }
 
 func marshalDrive(p uintptr) (interface{}, error) {

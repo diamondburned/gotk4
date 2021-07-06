@@ -8,6 +8,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -51,10 +52,219 @@ func init() {
 // that the buffer's size cannot be reduced below the size of the data within
 // the buffer.
 type BufferedInputStream interface {
-	FilterInputStream
+	gextras.Objector
 
+	// AsFilterInputStream casts the class to the FilterInputStream interface.
+	AsFilterInputStream() FilterInputStream
 	// AsSeekable casts the class to the Seekable interface.
 	AsSeekable() Seekable
+
+	// GetBaseStream gets the base stream for the filter stream.
+	//
+	// This method is inherited from FilterInputStream
+	GetBaseStream() InputStream
+	// GetCloseBaseStream returns whether the base stream will be closed when
+	// @stream is closed.
+	//
+	// This method is inherited from FilterInputStream
+	GetCloseBaseStream() bool
+	// SetCloseBaseStream sets whether the base stream will be closed when
+	// @stream is closed.
+	//
+	// This method is inherited from FilterInputStream
+	SetCloseBaseStream(closeBase bool)
+	// ClearPending clears the pending flag on @stream.
+	//
+	// This method is inherited from InputStream
+	ClearPending()
+	// Close closes the stream, releasing resources related to it.
+	//
+	// Once the stream is closed, all other operations will return
+	// G_IO_ERROR_CLOSED. Closing a stream multiple times will not return an
+	// error.
+	//
+	// Streams will be automatically closed when the last reference is dropped,
+	// but you might want to call this function to make sure resources are
+	// released as early as possible.
+	//
+	// Some streams might keep the backing store of the stream (e.g. a file
+	// descriptor) open after the stream is closed. See the documentation for
+	// the individual stream for details.
+	//
+	// On failure the first error that happened will be reported, but the close
+	// operation will finish as much as possible. A stream that failed to close
+	// will still return G_IO_ERROR_CLOSED for all operations. Still, it is
+	// important to check and report the error to the user.
+	//
+	// If @cancellable is not nil, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+	// Cancelling a close will still leave the stream closed, but some streams
+	// can use a faster close that doesn't block to e.g. check errors.
+	//
+	// This method is inherited from InputStream
+	Close(cancellable Cancellable) error
+	// CloseAsync requests an asynchronous closes of the stream, releasing
+	// resources related to it. When the operation is finished @callback will be
+	// called. You can then call g_input_stream_close_finish() to get the result
+	// of the operation.
+	//
+	// For behaviour details see g_input_stream_close().
+	//
+	// The asynchronous methods have a default fallback that uses threads to
+	// implement asynchronicity, so they are optional for inheriting classes.
+	// However, if you override one you must override all.
+	//
+	// This method is inherited from InputStream
+	CloseAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
+	// CloseFinish finishes closing a stream asynchronously, started from
+	// g_input_stream_close_async().
+	//
+	// This method is inherited from InputStream
+	CloseFinish(result AsyncResult) error
+	// HasPending checks if an input stream has pending actions.
+	//
+	// This method is inherited from InputStream
+	HasPending() bool
+	// IsClosed checks if an input stream is closed.
+	//
+	// This method is inherited from InputStream
+	IsClosed() bool
+	// ReadAllFinish finishes an asynchronous stream read operation started with
+	// g_input_stream_read_all_async().
+	//
+	// As a special exception to the normal conventions for functions that use
+	// #GError, if this function returns false (and sets @error) then
+	// @bytes_read will be set to the number of bytes that were successfully
+	// read before the error was encountered. This functionality is only
+	// available from C. If you need it from another language then you must
+	// write your own loop around g_input_stream_read_async().
+	//
+	// This method is inherited from InputStream
+	ReadAllFinish(result AsyncResult) (uint, error)
+	// ReadBytesAsync: request an asynchronous read of @count bytes from the
+	// stream into a new #GBytes. When the operation is finished @callback will
+	// be called. You can then call g_input_stream_read_bytes_finish() to get
+	// the result of the operation.
+	//
+	// During an async request no other sync and async calls are allowed on
+	// @stream, and will result in G_IO_ERROR_PENDING errors.
+	//
+	// A value of @count larger than G_MAXSSIZE will cause a
+	// G_IO_ERROR_INVALID_ARGUMENT error.
+	//
+	// On success, the new #GBytes will be passed to the callback. It is not an
+	// error if this is smaller than the requested size, as it can happen e.g.
+	// near the end of a file, but generally we try to read as many bytes as
+	// requested. Zero is returned on end of file (or if @count is zero), but
+	// never otherwise.
+	//
+	// Any outstanding I/O request with higher priority (lower numerical value)
+	// will be executed before an outstanding request with lower priority.
+	// Default priority is G_PRIORITY_DEFAULT.
+	//
+	// This method is inherited from InputStream
+	ReadBytesAsync(count uint, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
+	// ReadFinish finishes an asynchronous stream read operation.
+	//
+	// This method is inherited from InputStream
+	ReadFinish(result AsyncResult) (int, error)
+	// SetPending sets @stream to have actions pending. If the pending flag is
+	// already set or @stream is closed, it will return false and set @error.
+	//
+	// This method is inherited from InputStream
+	SetPending() error
+	// Skip tries to skip @count bytes from the stream. Will block during the
+	// operation.
+	//
+	// This is identical to g_input_stream_read(), from a behaviour standpoint,
+	// but the bytes that are skipped are not returned to the user. Some streams
+	// have an implementation that is more efficient than reading the data.
+	//
+	// This function is optional for inherited classes, as the default
+	// implementation emulates it using read.
+	//
+	// If @cancellable is not nil, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned. If an
+	// operation was partially finished when the operation was cancelled the
+	// partial result will be returned, without an error.
+	//
+	// This method is inherited from InputStream
+	Skip(count uint, cancellable Cancellable) (int, error)
+	// SkipAsync: request an asynchronous skip of @count bytes from the stream.
+	// When the operation is finished @callback will be called. You can then
+	// call g_input_stream_skip_finish() to get the result of the operation.
+	//
+	// During an async request no other sync and async calls are allowed, and
+	// will result in G_IO_ERROR_PENDING errors.
+	//
+	// A value of @count larger than G_MAXSSIZE will cause a
+	// G_IO_ERROR_INVALID_ARGUMENT error.
+	//
+	// On success, the number of bytes skipped will be passed to the callback.
+	// It is not an error if this is not the same as the requested size, as it
+	// can happen e.g. near the end of a file, but generally we try to skip as
+	// many bytes as requested. Zero is returned on end of file (or if @count is
+	// zero), but never otherwise.
+	//
+	// Any outstanding i/o request with higher priority (lower numerical value)
+	// will be executed before an outstanding request with lower priority.
+	// Default priority is G_PRIORITY_DEFAULT.
+	//
+	// The asynchronous methods have a default fallback that uses threads to
+	// implement asynchronicity, so they are optional for inheriting classes.
+	// However, if you override one, you must override all.
+	//
+	// This method is inherited from InputStream
+	SkipAsync(count uint, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
+	// SkipFinish finishes a stream skip operation.
+	//
+	// This method is inherited from InputStream
+	SkipFinish(result AsyncResult) (int, error)
+	// CanSeek tests if the stream supports the Iface.
+	//
+	// This method is inherited from Seekable
+	CanSeek() bool
+	// CanTruncate tests if the length of the stream can be adjusted with
+	// g_seekable_truncate().
+	//
+	// This method is inherited from Seekable
+	CanTruncate() bool
+	// Seek seeks in the stream by the given @offset, modified by @type.
+	//
+	// Attempting to seek past the end of the stream will have different results
+	// depending on if the stream is fixed-sized or resizable. If the stream is
+	// resizable then seeking past the end and then writing will result in zeros
+	// filling the empty space. Seeking past the end of a resizable stream and
+	// reading will result in EOF. Seeking past the end of a fixed-sized stream
+	// will fail.
+	//
+	// Any operation that would result in a negative offset will fail.
+	//
+	// If @cancellable is not nil, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+	//
+	// This method is inherited from Seekable
+	Seek(offset int64, typ glib.SeekType, cancellable Cancellable) error
+	// Tell tells the current position within the stream.
+	//
+	// This method is inherited from Seekable
+	Tell() int64
+	// Truncate sets the length of the stream to @offset. If the stream was
+	// previously larger than @offset, the extra data is discarded. If the
+	// stream was previously shorter than @offset, it is extended with NUL
+	// ('\0') bytes.
+	//
+	// If @cancellable is not nil, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned. If an
+	// operation was partially finished when the operation was cancelled the
+	// partial result will be returned, without an error.
+	//
+	// This method is inherited from Seekable
+	Truncate(offset int64, cancellable Cancellable) error
 
 	// Fill tries to read @count bytes from the stream into the buffer. Will
 	// block during this read.
@@ -117,17 +327,17 @@ type BufferedInputStream interface {
 	SetBufferSize(size uint)
 }
 
-// bufferedInputStream implements the BufferedInputStream class.
+// bufferedInputStream implements the BufferedInputStream interface.
 type bufferedInputStream struct {
-	FilterInputStream
+	*externglib.Object
 }
 
-// WrapBufferedInputStream wraps a GObject to the right type. It is
-// primarily used internally.
+var _ BufferedInputStream = (*bufferedInputStream)(nil)
+
+// WrapBufferedInputStream wraps a GObject to a type that implements
+// interface BufferedInputStream. It is primarily used internally.
 func WrapBufferedInputStream(obj *externglib.Object) BufferedInputStream {
-	return bufferedInputStream{
-		FilterInputStream: WrapFilterInputStream(obj),
-	}
+	return bufferedInputStream{obj}
 }
 
 func marshalBufferedInputStream(p uintptr) (interface{}, error) {
@@ -148,7 +358,7 @@ func NewBufferedInputStream(baseStream InputStream) BufferedInputStream {
 
 	var _bufferedInputStream BufferedInputStream // out
 
-	_bufferedInputStream = WrapBufferedInputStream(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_bufferedInputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(BufferedInputStream)
 
 	return _bufferedInputStream
 }
@@ -167,13 +377,101 @@ func NewBufferedInputStreamSized(baseStream InputStream, size uint) BufferedInpu
 
 	var _bufferedInputStream BufferedInputStream // out
 
-	_bufferedInputStream = WrapBufferedInputStream(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_bufferedInputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(BufferedInputStream)
 
 	return _bufferedInputStream
 }
 
+func (b bufferedInputStream) AsFilterInputStream() FilterInputStream {
+	return WrapFilterInputStream(gextras.InternObject(b))
+}
+
 func (b bufferedInputStream) AsSeekable() Seekable {
 	return WrapSeekable(gextras.InternObject(b))
+}
+
+func (s bufferedInputStream) GetBaseStream() InputStream {
+	return WrapFilterInputStream(gextras.InternObject(s)).GetBaseStream()
+}
+
+func (s bufferedInputStream) GetCloseBaseStream() bool {
+	return WrapFilterInputStream(gextras.InternObject(s)).GetCloseBaseStream()
+}
+
+func (s bufferedInputStream) SetCloseBaseStream(closeBase bool) {
+	WrapFilterInputStream(gextras.InternObject(s)).SetCloseBaseStream(closeBase)
+}
+
+func (s bufferedInputStream) ClearPending() {
+	WrapInputStream(gextras.InternObject(s)).ClearPending()
+}
+
+func (s bufferedInputStream) Close(cancellable Cancellable) error {
+	return WrapInputStream(gextras.InternObject(s)).Close(cancellable)
+}
+
+func (s bufferedInputStream) CloseAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+	WrapInputStream(gextras.InternObject(s)).CloseAsync(ioPriority, cancellable, callback)
+}
+
+func (s bufferedInputStream) CloseFinish(result AsyncResult) error {
+	return WrapInputStream(gextras.InternObject(s)).CloseFinish(result)
+}
+
+func (s bufferedInputStream) HasPending() bool {
+	return WrapInputStream(gextras.InternObject(s)).HasPending()
+}
+
+func (s bufferedInputStream) IsClosed() bool {
+	return WrapInputStream(gextras.InternObject(s)).IsClosed()
+}
+
+func (s bufferedInputStream) ReadAllFinish(result AsyncResult) (uint, error) {
+	return WrapInputStream(gextras.InternObject(s)).ReadAllFinish(result)
+}
+
+func (s bufferedInputStream) ReadBytesAsync(count uint, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+	WrapInputStream(gextras.InternObject(s)).ReadBytesAsync(count, ioPriority, cancellable, callback)
+}
+
+func (s bufferedInputStream) ReadFinish(result AsyncResult) (int, error) {
+	return WrapInputStream(gextras.InternObject(s)).ReadFinish(result)
+}
+
+func (s bufferedInputStream) SetPending() error {
+	return WrapInputStream(gextras.InternObject(s)).SetPending()
+}
+
+func (s bufferedInputStream) Skip(count uint, cancellable Cancellable) (int, error) {
+	return WrapInputStream(gextras.InternObject(s)).Skip(count, cancellable)
+}
+
+func (s bufferedInputStream) SkipAsync(count uint, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+	WrapInputStream(gextras.InternObject(s)).SkipAsync(count, ioPriority, cancellable, callback)
+}
+
+func (s bufferedInputStream) SkipFinish(result AsyncResult) (int, error) {
+	return WrapInputStream(gextras.InternObject(s)).SkipFinish(result)
+}
+
+func (s bufferedInputStream) CanSeek() bool {
+	return WrapSeekable(gextras.InternObject(s)).CanSeek()
+}
+
+func (s bufferedInputStream) CanTruncate() bool {
+	return WrapSeekable(gextras.InternObject(s)).CanTruncate()
+}
+
+func (s bufferedInputStream) Seek(offset int64, typ glib.SeekType, cancellable Cancellable) error {
+	return WrapSeekable(gextras.InternObject(s)).Seek(offset, typ, cancellable)
+}
+
+func (s bufferedInputStream) Tell() int64 {
+	return WrapSeekable(gextras.InternObject(s)).Tell()
+}
+
+func (s bufferedInputStream) Truncate(offset int64, cancellable Cancellable) error {
+	return WrapSeekable(gextras.InternObject(s)).Truncate(offset, cancellable)
 }
 
 func (s bufferedInputStream) Fill(count int, cancellable Cancellable) (int, error) {

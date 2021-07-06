@@ -184,17 +184,17 @@ type CellRenderer interface {
 	StopEditing(canceled bool)
 }
 
-// cellRenderer implements the CellRenderer class.
+// cellRenderer implements the CellRenderer interface.
 type cellRenderer struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapCellRenderer wraps a GObject to the right type. It is
-// primarily used internally.
+var _ CellRenderer = (*cellRenderer)(nil)
+
+// WrapCellRenderer wraps a GObject to a type that implements
+// interface CellRenderer. It is primarily used internally.
 func WrapCellRenderer(obj *externglib.Object) CellRenderer {
-	return cellRenderer{
-		Objector: obj,
-	}
+	return cellRenderer{obj}
 }
 
 func marshalCellRenderer(p uintptr) (interface{}, error) {

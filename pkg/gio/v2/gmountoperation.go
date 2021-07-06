@@ -102,17 +102,17 @@ type MountOperation interface {
 	SetUsername(username string)
 }
 
-// mountOperation implements the MountOperation class.
+// mountOperation implements the MountOperation interface.
 type mountOperation struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapMountOperation wraps a GObject to the right type. It is
-// primarily used internally.
+var _ MountOperation = (*mountOperation)(nil)
+
+// WrapMountOperation wraps a GObject to a type that implements
+// interface MountOperation. It is primarily used internally.
 func WrapMountOperation(obj *externglib.Object) MountOperation {
-	return mountOperation{
-		Objector: obj,
-	}
+	return mountOperation{obj}
 }
 
 func marshalMountOperation(p uintptr) (interface{}, error) {
@@ -129,7 +129,7 @@ func NewMountOperation() MountOperation {
 
 	var _mountOperation MountOperation // out
 
-	_mountOperation = WrapMountOperation(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_mountOperation = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(MountOperation)
 
 	return _mountOperation
 }

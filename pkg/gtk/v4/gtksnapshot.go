@@ -41,7 +41,10 @@ func init() {
 // GtkWidgetClass.snapshot() vfunc. If you need to create your own
 // `GtkSnapshot`, use [ctor@Gtk.Snapshot.new].
 type Snapshot interface {
-	gdk.Snapshot
+	gextras.Objector
+
+	// AsSnapshot casts the class to the gdk.Snapshot interface.
+	AsSnapshot() gdk.Snapshot
 
 	// AppendBorder appends a stroked border rectangle inside the given
 	// @outline.
@@ -219,17 +222,17 @@ type Snapshot interface {
 	Translate3D(point *graphene.Point3D)
 }
 
-// snapshot implements the Snapshot class.
+// snapshot implements the Snapshot interface.
 type snapshot struct {
-	gdk.Snapshot
+	*externglib.Object
 }
 
-// WrapSnapshot wraps a GObject to the right type. It is
-// primarily used internally.
+var _ Snapshot = (*snapshot)(nil)
+
+// WrapSnapshot wraps a GObject to a type that implements
+// interface Snapshot. It is primarily used internally.
 func WrapSnapshot(obj *externglib.Object) Snapshot {
-	return snapshot{
-		Snapshot: gdk.WrapSnapshot(obj),
-	}
+	return snapshot{obj}
 }
 
 func marshalSnapshot(p uintptr) (interface{}, error) {
@@ -246,9 +249,13 @@ func NewSnapshot() Snapshot {
 
 	var _snapshot Snapshot // out
 
-	_snapshot = WrapSnapshot(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_snapshot = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Snapshot)
 
 	return _snapshot
+}
+
+func (s snapshot) AsSnapshot() gdk.Snapshot {
+	return gdk.WrapSnapshot(gextras.InternObject(s))
 }
 
 func (s snapshot) AppendBorder(outline *gsk.RoundedRect, borderWidth [4]float32, borderColor [4]gdk.RGBA) {

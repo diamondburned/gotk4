@@ -96,17 +96,17 @@ type NativeDialog interface {
 	Show()
 }
 
-// nativeDialog implements the NativeDialog class.
+// nativeDialog implements the NativeDialog interface.
 type nativeDialog struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapNativeDialog wraps a GObject to the right type. It is
-// primarily used internally.
+var _ NativeDialog = (*nativeDialog)(nil)
+
+// WrapNativeDialog wraps a GObject to a type that implements
+// interface NativeDialog. It is primarily used internally.
 func WrapNativeDialog(obj *externglib.Object) NativeDialog {
-	return nativeDialog{
-		Objector: obj,
-	}
+	return nativeDialog{obj}
 }
 
 func marshalNativeDialog(p uintptr) (interface{}, error) {

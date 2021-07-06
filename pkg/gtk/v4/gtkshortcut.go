@@ -56,17 +56,17 @@ type Shortcut interface {
 	SetTrigger(trigger ShortcutTrigger)
 }
 
-// shortcut implements the Shortcut class.
+// shortcut implements the Shortcut interface.
 type shortcut struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapShortcut wraps a GObject to the right type. It is
-// primarily used internally.
+var _ Shortcut = (*shortcut)(nil)
+
+// WrapShortcut wraps a GObject to a type that implements
+// interface Shortcut. It is primarily used internally.
 func WrapShortcut(obj *externglib.Object) Shortcut {
-	return shortcut{
-		Objector: obj,
-	}
+	return shortcut{obj}
 }
 
 func marshalShortcut(p uintptr) (interface{}, error) {
@@ -89,7 +89,7 @@ func NewShortcut(trigger ShortcutTrigger, action ShortcutAction) Shortcut {
 
 	var _shortcut Shortcut // out
 
-	_shortcut = WrapShortcut(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_shortcut = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Shortcut)
 
 	return _shortcut
 }

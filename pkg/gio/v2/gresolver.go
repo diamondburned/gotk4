@@ -117,17 +117,17 @@ type Resolver interface {
 	SetDefault()
 }
 
-// resolver implements the Resolver class.
+// resolver implements the Resolver interface.
 type resolver struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapResolver wraps a GObject to the right type. It is
-// primarily used internally.
+var _ Resolver = (*resolver)(nil)
+
+// WrapResolver wraps a GObject to a type that implements
+// interface Resolver. It is primarily used internally.
 func WrapResolver(obj *externglib.Object) Resolver {
-	return resolver{
-		Objector: obj,
-	}
+	return resolver{obj}
 }
 
 func marshalResolver(p uintptr) (interface{}, error) {

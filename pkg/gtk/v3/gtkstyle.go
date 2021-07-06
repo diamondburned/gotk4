@@ -737,17 +737,17 @@ type Style interface {
 	SetBackground(window gdk.Window, stateType StateType)
 }
 
-// style implements the Style class.
+// style implements the Style interface.
 type style struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapStyle wraps a GObject to the right type. It is
-// primarily used internally.
+var _ Style = (*style)(nil)
+
+// WrapStyle wraps a GObject to a type that implements
+// interface Style. It is primarily used internally.
 func WrapStyle(obj *externglib.Object) Style {
-	return style{
-		Objector: obj,
-	}
+	return style{obj}
 }
 
 func marshalStyle(p uintptr) (interface{}, error) {
@@ -766,7 +766,7 @@ func NewStyle() Style {
 
 	var _style Style // out
 
-	_style = WrapStyle(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_style = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Style)
 
 	return _style
 }

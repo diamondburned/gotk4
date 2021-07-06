@@ -6,7 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -86,7 +85,7 @@ type Seekable interface {
 
 // seekable implements the Seekable interface.
 type seekable struct {
-	gextras.Objector
+	*externglib.Object
 }
 
 var _ Seekable = (*seekable)(nil)
@@ -94,9 +93,7 @@ var _ Seekable = (*seekable)(nil)
 // WrapSeekable wraps a GObject to a type that implements
 // interface Seekable. It is primarily used internally.
 func WrapSeekable(obj *externglib.Object) Seekable {
-	return seekable{
-		Objector: obj,
-	}
+	return seekable{obj}
 }
 
 func marshalSeekable(p uintptr) (interface{}, error) {

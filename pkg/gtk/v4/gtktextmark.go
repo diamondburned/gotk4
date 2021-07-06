@@ -79,17 +79,17 @@ type TextMark interface {
 	SetVisible(setting bool)
 }
 
-// textMark implements the TextMark class.
+// textMark implements the TextMark interface.
 type textMark struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapTextMark wraps a GObject to the right type. It is
-// primarily used internally.
+var _ TextMark = (*textMark)(nil)
+
+// WrapTextMark wraps a GObject to a type that implements
+// interface TextMark. It is primarily used internally.
 func WrapTextMark(obj *externglib.Object) TextMark {
-	return textMark{
-		Objector: obj,
-	}
+	return textMark{obj}
 }
 
 func marshalTextMark(p uintptr) (interface{}, error) {
@@ -123,7 +123,7 @@ func NewTextMark(name string, leftGravity bool) TextMark {
 
 	var _textMark TextMark // out
 
-	_textMark = WrapTextMark(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_textMark = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(TextMark)
 
 	return _textMark
 }

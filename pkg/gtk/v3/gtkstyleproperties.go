@@ -49,6 +49,21 @@ type StyleProperties interface {
 	// AsStyleProvider casts the class to the StyleProvider interface.
 	AsStyleProvider() StyleProvider
 
+	// GetIconFactory returns the IconFactory defined to be in use for @path, or
+	// nil if none is defined.
+	//
+	// Deprecated: since version 3.8.
+	//
+	// This method is inherited from StyleProvider
+	GetIconFactory(path *WidgetPath) IconFactory
+	// GetStyle returns the style settings affecting a widget defined by @path,
+	// or nil if @provider doesn’t contemplate styling @path.
+	//
+	// Deprecated: since version 3.8.
+	//
+	// This method is inherited from StyleProvider
+	GetStyle(path *WidgetPath) StyleProperties
+
 	// Clear clears all style information from @props.
 	//
 	// Deprecated: since version 3.16.
@@ -74,27 +89,27 @@ type StyleProperties interface {
 	//
 	// Deprecated: since version 3.16.
 	Merge(propsToMerge StyleProperties, replace bool)
-	// SetProperty sets a styling property in @props.
+	// SetPropertyStyleProperties sets a styling property in @props.
 	//
 	// Deprecated: since version 3.16.
-	SetProperty(property string, state StateFlags, value externglib.Value)
+	SetPropertyStyleProperties(property string, state StateFlags, value externglib.Value)
 	// UnsetProperty unsets a style property in @props.
 	//
 	// Deprecated: since version 3.16.
 	UnsetProperty(property string, state StateFlags)
 }
 
-// styleProperties implements the StyleProperties class.
+// styleProperties implements the StyleProperties interface.
 type styleProperties struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapStyleProperties wraps a GObject to the right type. It is
-// primarily used internally.
+var _ StyleProperties = (*styleProperties)(nil)
+
+// WrapStyleProperties wraps a GObject to a type that implements
+// interface StyleProperties. It is primarily used internally.
 func WrapStyleProperties(obj *externglib.Object) StyleProperties {
-	return styleProperties{
-		Objector: obj,
-	}
+	return styleProperties{obj}
 }
 
 func marshalStyleProperties(p uintptr) (interface{}, error) {
@@ -113,13 +128,21 @@ func NewStyleProperties() StyleProperties {
 
 	var _styleProperties StyleProperties // out
 
-	_styleProperties = WrapStyleProperties(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_styleProperties = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(StyleProperties)
 
 	return _styleProperties
 }
 
 func (s styleProperties) AsStyleProvider() StyleProvider {
 	return WrapStyleProvider(gextras.InternObject(s))
+}
+
+func (p styleProperties) GetIconFactory(path *WidgetPath) IconFactory {
+	return WrapStyleProvider(gextras.InternObject(p)).GetIconFactory(path)
+}
+
+func (p styleProperties) GetStyle(path *WidgetPath) StyleProperties {
+	return WrapStyleProvider(gextras.InternObject(p)).GetStyle(path)
 }
 
 func (p styleProperties) Clear() {
@@ -217,7 +240,7 @@ func (p styleProperties) Merge(propsToMerge StyleProperties, replace bool) {
 	C.gtk_style_properties_merge(_arg0, _arg1, _arg2)
 }
 
-func (p styleProperties) SetProperty(property string, state StateFlags, value externglib.Value) {
+func (p styleProperties) SetPropertyStyleProperties(property string, state StateFlags, value externglib.Value) {
 	var _arg0 *C.GtkStyleProperties // out
 	var _arg1 *C.gchar              // out
 	var _arg2 C.GtkStateFlags       // out

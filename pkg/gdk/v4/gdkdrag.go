@@ -96,17 +96,17 @@ type Drag interface {
 	SetHotspot(hotX int, hotY int)
 }
 
-// drag implements the Drag class.
+// drag implements the Drag interface.
 type drag struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapDrag wraps a GObject to the right type. It is
-// primarily used internally.
+var _ Drag = (*drag)(nil)
+
+// WrapDrag wraps a GObject to a type that implements
+// interface Drag. It is primarily used internally.
 func WrapDrag(obj *externglib.Object) Drag {
-	return drag{
-		Objector: obj,
-	}
+	return drag{obj}
 }
 
 func marshalDrag(p uintptr) (interface{}, error) {

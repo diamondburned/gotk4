@@ -108,17 +108,17 @@ type Credentials interface {
 	String() string
 }
 
-// credentials implements the Credentials class.
+// credentials implements the Credentials interface.
 type credentials struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapCredentials wraps a GObject to the right type. It is
-// primarily used internally.
+var _ Credentials = (*credentials)(nil)
+
+// WrapCredentials wraps a GObject to a type that implements
+// interface Credentials. It is primarily used internally.
 func WrapCredentials(obj *externglib.Object) Credentials {
-	return credentials{
-		Objector: obj,
-	}
+	return credentials{obj}
 }
 
 func marshalCredentials(p uintptr) (interface{}, error) {
@@ -136,7 +136,7 @@ func NewCredentials() Credentials {
 
 	var _credentials Credentials // out
 
-	_credentials = WrapCredentials(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_credentials = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Credentials)
 
 	return _credentials
 }

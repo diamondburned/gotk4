@@ -26,17 +26,17 @@ type X11DeviceManagerXI2 interface {
 	gextras.Objector
 }
 
-// x11DeviceManagerXI2 implements the X11DeviceManagerXI2 class.
+// x11DeviceManagerXI2 implements the X11DeviceManagerXI2 interface.
 type x11DeviceManagerXI2 struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapX11DeviceManagerXI2 wraps a GObject to the right type. It is
-// primarily used internally.
+var _ X11DeviceManagerXI2 = (*x11DeviceManagerXI2)(nil)
+
+// WrapX11DeviceManagerXI2 wraps a GObject to a type that implements
+// interface X11DeviceManagerXI2. It is primarily used internally.
 func WrapX11DeviceManagerXI2(obj *externglib.Object) X11DeviceManagerXI2 {
-	return x11DeviceManagerXI2{
-		Objector: obj,
-	}
+	return x11DeviceManagerXI2{obj}
 }
 
 func marshalX11DeviceManagerXI2(p uintptr) (interface{}, error) {

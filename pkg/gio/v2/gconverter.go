@@ -6,7 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -131,7 +130,7 @@ type Converter interface {
 
 // converter implements the Converter interface.
 type converter struct {
-	gextras.Objector
+	*externglib.Object
 }
 
 var _ Converter = (*converter)(nil)
@@ -139,9 +138,7 @@ var _ Converter = (*converter)(nil)
 // WrapConverter wraps a GObject to a type that implements
 // interface Converter. It is primarily used internally.
 func WrapConverter(obj *externglib.Object) Converter {
-	return converter{
-		Objector: obj,
-	}
+	return converter{obj}
 }
 
 func marshalConverter(p uintptr) (interface{}, error) {

@@ -374,17 +374,17 @@ type Builder interface {
 	ValueFromStringType(typ externglib.Type, _string string) (externglib.Value, error)
 }
 
-// builder implements the Builder class.
+// builder implements the Builder interface.
 type builder struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapBuilder wraps a GObject to the right type. It is
-// primarily used internally.
+var _ Builder = (*builder)(nil)
+
+// WrapBuilder wraps a GObject to a type that implements
+// interface Builder. It is primarily used internally.
 func WrapBuilder(obj *externglib.Object) Builder {
-	return builder{
-		Objector: obj,
-	}
+	return builder{obj}
 }
 
 func marshalBuilder(p uintptr) (interface{}, error) {
@@ -406,7 +406,7 @@ func NewBuilder() Builder {
 
 	var _builder Builder // out
 
-	_builder = WrapBuilder(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_builder = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Builder)
 
 	return _builder
 }
@@ -427,7 +427,7 @@ func NewBuilderFromFile(filename string) Builder {
 
 	var _builder Builder // out
 
-	_builder = WrapBuilder(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_builder = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Builder)
 
 	return _builder
 }
@@ -447,7 +447,7 @@ func NewBuilderFromResource(resourcePath string) Builder {
 
 	var _builder Builder // out
 
-	_builder = WrapBuilder(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_builder = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Builder)
 
 	return _builder
 }
@@ -473,7 +473,7 @@ func NewBuilderFromString(_string string, length int) Builder {
 
 	var _builder Builder // out
 
-	_builder = WrapBuilder(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_builder = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Builder)
 
 	return _builder
 }

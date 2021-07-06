@@ -161,17 +161,17 @@ type GLShader interface {
 	UniformType(idx int) GLUniformType
 }
 
-// glShader implements the GLShader class.
+// glShader implements the GLShader interface.
 type glShader struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapGLShader wraps a GObject to the right type. It is
-// primarily used internally.
+var _ GLShader = (*glShader)(nil)
+
+// WrapGLShader wraps a GObject to a type that implements
+// interface GLShader. It is primarily used internally.
 func WrapGLShader(obj *externglib.Object) GLShader {
-	return glShader{
-		Objector: obj,
-	}
+	return glShader{obj}
 }
 
 func marshalGLShader(p uintptr) (interface{}, error) {
@@ -193,7 +193,7 @@ func NewGLShaderFromResource(resourcePath string) GLShader {
 
 	var _glShader GLShader // out
 
-	_glShader = WrapGLShader(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_glShader = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(GLShader)
 
 	return _glShader
 }

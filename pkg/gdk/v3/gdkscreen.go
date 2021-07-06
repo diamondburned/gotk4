@@ -222,17 +222,17 @@ type Screen interface {
 	SetResolution(dpi float64)
 }
 
-// screen implements the Screen class.
+// screen implements the Screen interface.
 type screen struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapScreen wraps a GObject to the right type. It is
-// primarily used internally.
+var _ Screen = (*screen)(nil)
+
+// WrapScreen wraps a GObject to a type that implements
+// interface Screen. It is primarily used internally.
 func WrapScreen(obj *externglib.Object) Screen {
-	return screen{
-		Objector: obj,
-	}
+	return screen{obj}
 }
 
 func marshalScreen(p uintptr) (interface{}, error) {

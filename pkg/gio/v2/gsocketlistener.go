@@ -167,17 +167,17 @@ type SocketListener interface {
 	SetBacklog(listenBacklog int)
 }
 
-// socketListener implements the SocketListener class.
+// socketListener implements the SocketListener interface.
 type socketListener struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapSocketListener wraps a GObject to the right type. It is
-// primarily used internally.
+var _ SocketListener = (*socketListener)(nil)
+
+// WrapSocketListener wraps a GObject to a type that implements
+// interface SocketListener. It is primarily used internally.
 func WrapSocketListener(obj *externglib.Object) SocketListener {
-	return socketListener{
-		Objector: obj,
-	}
+	return socketListener{obj}
 }
 
 func marshalSocketListener(p uintptr) (interface{}, error) {
@@ -196,7 +196,7 @@ func NewSocketListener() SocketListener {
 
 	var _socketListener SocketListener // out
 
-	_socketListener = WrapSocketListener(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_socketListener = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(SocketListener)
 
 	return _socketListener
 }

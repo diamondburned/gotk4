@@ -74,17 +74,17 @@ type ConstraintGuide interface {
 	SetStrength(strength ConstraintStrength)
 }
 
-// constraintGuide implements the ConstraintGuide class.
+// constraintGuide implements the ConstraintGuide interface.
 type constraintGuide struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapConstraintGuide wraps a GObject to the right type. It is
-// primarily used internally.
+var _ ConstraintGuide = (*constraintGuide)(nil)
+
+// WrapConstraintGuide wraps a GObject to a type that implements
+// interface ConstraintGuide. It is primarily used internally.
 func WrapConstraintGuide(obj *externglib.Object) ConstraintGuide {
-	return constraintGuide{
-		Objector: obj,
-	}
+	return constraintGuide{obj}
 }
 
 func marshalConstraintGuide(p uintptr) (interface{}, error) {
@@ -101,7 +101,7 @@ func NewConstraintGuide() ConstraintGuide {
 
 	var _constraintGuide ConstraintGuide // out
 
-	_constraintGuide = WrapConstraintGuide(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_constraintGuide = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(ConstraintGuide)
 
 	return _constraintGuide
 }

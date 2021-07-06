@@ -29,17 +29,17 @@ type Snapshot interface {
 	gextras.Objector
 }
 
-// snapshot implements the Snapshot class.
+// snapshot implements the Snapshot interface.
 type snapshot struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapSnapshot wraps a GObject to the right type. It is
-// primarily used internally.
+var _ Snapshot = (*snapshot)(nil)
+
+// WrapSnapshot wraps a GObject to a type that implements
+// interface Snapshot. It is primarily used internally.
 func WrapSnapshot(obj *externglib.Object) Snapshot {
-	return snapshot{
-		Objector: obj,
-	}
+	return snapshot{obj}
 }
 
 func marshalSnapshot(p uintptr) (interface{}, error) {

@@ -107,20 +107,79 @@ func ValueTakeExpression(value externglib.Value, expression Expression) {
 
 // CClosureExpression: variant of `GtkClosureExpression` using a C closure.
 type CClosureExpression interface {
-	Expression
+	gextras.Objector
+
+	// AsExpression casts the class to the Expression interface.
+	AsExpression() Expression
+
+	// Bind `target`'s property named `property` to `self`.
+	//
+	// The value that `self` evaluates to is set via `g_object_set()` on
+	// `target`. This is repeated whenever `self` changes to ensure that the
+	// object's property stays synchronized with `self`.
+	//
+	// If `self`'s evaluation fails, `target`'s `property` is not updated. You
+	// can ensure that this doesn't happen by using a fallback expression.
+	//
+	// Note that this function takes ownership of `self`. If you want to keep it
+	// around, you should [method@Gtk.Expression.ref] it beforehand.
+	//
+	// This method is inherited from Expression
+	Bind(target gextras.Objector, property string, this_ gextras.Objector) *ExpressionWatch
+	// Evaluate evaluates the given expression and on success stores the result
+	// in @value.
+	//
+	// The `GType` of `value` will be the type given by
+	// [method@Gtk.Expression.get_value_type].
+	//
+	// It is possible that expressions cannot be evaluated - for example when
+	// the expression references objects that have been destroyed or set to
+	// `NULL`. In that case `value` will remain empty and `FALSE` will be
+	// returned.
+	//
+	// This method is inherited from Expression
+	Evaluate(this_ gextras.Objector, value externglib.Value) bool
+	// GetValueType gets the `GType` that this expression evaluates to.
+	//
+	// This type is constant and will not change over the lifetime of this
+	// expression.
+	//
+	// This method is inherited from Expression
+	GetValueType() externglib.Type
+	// IsStatic checks if the expression is static.
+	//
+	// A static expression will never change its result when
+	// [method@Gtk.Expression.evaluate] is called on it with the same arguments.
+	//
+	// That means a call to [method@Gtk.Expression.watch] is not necessary
+	// because it will never trigger a notify.
+	//
+	// This method is inherited from Expression
+	IsStatic() bool
+	// Ref acquires a reference on the given `GtkExpression`.
+	//
+	// This method is inherited from Expression
+	Ref() Expression
+	// Unref releases a reference on the given `GtkExpression`.
+	//
+	// If the reference was the last, the resources associated to the `self` are
+	// freed.
+	//
+	// This method is inherited from Expression
+	Unref()
 }
 
-// cClosureExpression implements the CClosureExpression class.
+// cClosureExpression implements the CClosureExpression interface.
 type cClosureExpression struct {
-	Expression
+	*externglib.Object
 }
 
-// WrapCClosureExpression wraps a GObject to the right type. It is
-// primarily used internally.
+var _ CClosureExpression = (*cClosureExpression)(nil)
+
+// WrapCClosureExpression wraps a GObject to a type that implements
+// interface CClosureExpression. It is primarily used internally.
 func WrapCClosureExpression(obj *externglib.Object) CClosureExpression {
-	return cClosureExpression{
-		Expression: WrapExpression(obj),
-	}
+	return cClosureExpression{obj}
 }
 
 func marshalCClosureExpression(p uintptr) (interface{}, error) {
@@ -129,23 +188,110 @@ func marshalCClosureExpression(p uintptr) (interface{}, error) {
 	return WrapCClosureExpression(obj), nil
 }
 
+func (c cClosureExpression) AsExpression() Expression {
+	return WrapExpression(gextras.InternObject(c))
+}
+
+func (s cClosureExpression) Bind(target gextras.Objector, property string, this_ gextras.Objector) *ExpressionWatch {
+	return WrapExpression(gextras.InternObject(s)).Bind(target, property, this_)
+}
+
+func (s cClosureExpression) Evaluate(this_ gextras.Objector, value externglib.Value) bool {
+	return WrapExpression(gextras.InternObject(s)).Evaluate(this_, value)
+}
+
+func (s cClosureExpression) GetValueType() externglib.Type {
+	return WrapExpression(gextras.InternObject(s)).GetValueType()
+}
+
+func (s cClosureExpression) IsStatic() bool {
+	return WrapExpression(gextras.InternObject(s)).IsStatic()
+}
+
+func (s cClosureExpression) Ref() Expression {
+	return WrapExpression(gextras.InternObject(s)).Ref()
+}
+
+func (s cClosureExpression) Unref() {
+	WrapExpression(gextras.InternObject(s)).Unref()
+}
+
 // ClosureExpression: expression using a custom `GClosure` to compute the value
 // from its parameters.
 type ClosureExpression interface {
-	Expression
+	gextras.Objector
+
+	// AsExpression casts the class to the Expression interface.
+	AsExpression() Expression
+
+	// Bind `target`'s property named `property` to `self`.
+	//
+	// The value that `self` evaluates to is set via `g_object_set()` on
+	// `target`. This is repeated whenever `self` changes to ensure that the
+	// object's property stays synchronized with `self`.
+	//
+	// If `self`'s evaluation fails, `target`'s `property` is not updated. You
+	// can ensure that this doesn't happen by using a fallback expression.
+	//
+	// Note that this function takes ownership of `self`. If you want to keep it
+	// around, you should [method@Gtk.Expression.ref] it beforehand.
+	//
+	// This method is inherited from Expression
+	Bind(target gextras.Objector, property string, this_ gextras.Objector) *ExpressionWatch
+	// Evaluate evaluates the given expression and on success stores the result
+	// in @value.
+	//
+	// The `GType` of `value` will be the type given by
+	// [method@Gtk.Expression.get_value_type].
+	//
+	// It is possible that expressions cannot be evaluated - for example when
+	// the expression references objects that have been destroyed or set to
+	// `NULL`. In that case `value` will remain empty and `FALSE` will be
+	// returned.
+	//
+	// This method is inherited from Expression
+	Evaluate(this_ gextras.Objector, value externglib.Value) bool
+	// GetValueType gets the `GType` that this expression evaluates to.
+	//
+	// This type is constant and will not change over the lifetime of this
+	// expression.
+	//
+	// This method is inherited from Expression
+	GetValueType() externglib.Type
+	// IsStatic checks if the expression is static.
+	//
+	// A static expression will never change its result when
+	// [method@Gtk.Expression.evaluate] is called on it with the same arguments.
+	//
+	// That means a call to [method@Gtk.Expression.watch] is not necessary
+	// because it will never trigger a notify.
+	//
+	// This method is inherited from Expression
+	IsStatic() bool
+	// Ref acquires a reference on the given `GtkExpression`.
+	//
+	// This method is inherited from Expression
+	Ref() Expression
+	// Unref releases a reference on the given `GtkExpression`.
+	//
+	// If the reference was the last, the resources associated to the `self` are
+	// freed.
+	//
+	// This method is inherited from Expression
+	Unref()
 }
 
-// closureExpression implements the ClosureExpression class.
+// closureExpression implements the ClosureExpression interface.
 type closureExpression struct {
-	Expression
+	*externglib.Object
 }
 
-// WrapClosureExpression wraps a GObject to the right type. It is
-// primarily used internally.
+var _ ClosureExpression = (*closureExpression)(nil)
+
+// WrapClosureExpression wraps a GObject to a type that implements
+// interface ClosureExpression. It is primarily used internally.
 func WrapClosureExpression(obj *externglib.Object) ClosureExpression {
-	return closureExpression{
-		Expression: WrapExpression(obj),
-	}
+	return closureExpression{obj}
 }
 
 func marshalClosureExpression(p uintptr) (interface{}, error) {
@@ -154,25 +300,112 @@ func marshalClosureExpression(p uintptr) (interface{}, error) {
 	return WrapClosureExpression(obj), nil
 }
 
+func (c closureExpression) AsExpression() Expression {
+	return WrapExpression(gextras.InternObject(c))
+}
+
+func (s closureExpression) Bind(target gextras.Objector, property string, this_ gextras.Objector) *ExpressionWatch {
+	return WrapExpression(gextras.InternObject(s)).Bind(target, property, this_)
+}
+
+func (s closureExpression) Evaluate(this_ gextras.Objector, value externglib.Value) bool {
+	return WrapExpression(gextras.InternObject(s)).Evaluate(this_, value)
+}
+
+func (s closureExpression) GetValueType() externglib.Type {
+	return WrapExpression(gextras.InternObject(s)).GetValueType()
+}
+
+func (s closureExpression) IsStatic() bool {
+	return WrapExpression(gextras.InternObject(s)).IsStatic()
+}
+
+func (s closureExpression) Ref() Expression {
+	return WrapExpression(gextras.InternObject(s)).Ref()
+}
+
+func (s closureExpression) Unref() {
+	WrapExpression(gextras.InternObject(s)).Unref()
+}
+
 // ConstantExpression: constant value in a `GtkExpression`.
 type ConstantExpression interface {
-	Expression
+	gextras.Objector
+
+	// AsExpression casts the class to the Expression interface.
+	AsExpression() Expression
+
+	// Bind `target`'s property named `property` to `self`.
+	//
+	// The value that `self` evaluates to is set via `g_object_set()` on
+	// `target`. This is repeated whenever `self` changes to ensure that the
+	// object's property stays synchronized with `self`.
+	//
+	// If `self`'s evaluation fails, `target`'s `property` is not updated. You
+	// can ensure that this doesn't happen by using a fallback expression.
+	//
+	// Note that this function takes ownership of `self`. If you want to keep it
+	// around, you should [method@Gtk.Expression.ref] it beforehand.
+	//
+	// This method is inherited from Expression
+	Bind(target gextras.Objector, property string, this_ gextras.Objector) *ExpressionWatch
+	// Evaluate evaluates the given expression and on success stores the result
+	// in @value.
+	//
+	// The `GType` of `value` will be the type given by
+	// [method@Gtk.Expression.get_value_type].
+	//
+	// It is possible that expressions cannot be evaluated - for example when
+	// the expression references objects that have been destroyed or set to
+	// `NULL`. In that case `value` will remain empty and `FALSE` will be
+	// returned.
+	//
+	// This method is inherited from Expression
+	Evaluate(this_ gextras.Objector, value externglib.Value) bool
+	// GetValueType gets the `GType` that this expression evaluates to.
+	//
+	// This type is constant and will not change over the lifetime of this
+	// expression.
+	//
+	// This method is inherited from Expression
+	GetValueType() externglib.Type
+	// IsStatic checks if the expression is static.
+	//
+	// A static expression will never change its result when
+	// [method@Gtk.Expression.evaluate] is called on it with the same arguments.
+	//
+	// That means a call to [method@Gtk.Expression.watch] is not necessary
+	// because it will never trigger a notify.
+	//
+	// This method is inherited from Expression
+	IsStatic() bool
+	// Ref acquires a reference on the given `GtkExpression`.
+	//
+	// This method is inherited from Expression
+	Ref() Expression
+	// Unref releases a reference on the given `GtkExpression`.
+	//
+	// If the reference was the last, the resources associated to the `self` are
+	// freed.
+	//
+	// This method is inherited from Expression
+	Unref()
 
 	// Value gets the value that a constant expression evaluates to.
 	Value() externglib.Value
 }
 
-// constantExpression implements the ConstantExpression class.
+// constantExpression implements the ConstantExpression interface.
 type constantExpression struct {
-	Expression
+	*externglib.Object
 }
 
-// WrapConstantExpression wraps a GObject to the right type. It is
-// primarily used internally.
+var _ ConstantExpression = (*constantExpression)(nil)
+
+// WrapConstantExpression wraps a GObject to a type that implements
+// interface ConstantExpression. It is primarily used internally.
 func WrapConstantExpression(obj *externglib.Object) ConstantExpression {
-	return constantExpression{
-		Expression: WrapExpression(obj),
-	}
+	return constantExpression{obj}
 }
 
 func marshalConstantExpression(p uintptr) (interface{}, error) {
@@ -193,9 +426,37 @@ func NewConstantExpressionForValue(value externglib.Value) ConstantExpression {
 
 	var _constantExpression ConstantExpression // out
 
-	_constantExpression = WrapConstantExpression(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_constantExpression = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(ConstantExpression)
 
 	return _constantExpression
+}
+
+func (c constantExpression) AsExpression() Expression {
+	return WrapExpression(gextras.InternObject(c))
+}
+
+func (s constantExpression) Bind(target gextras.Objector, property string, this_ gextras.Objector) *ExpressionWatch {
+	return WrapExpression(gextras.InternObject(s)).Bind(target, property, this_)
+}
+
+func (s constantExpression) Evaluate(this_ gextras.Objector, value externglib.Value) bool {
+	return WrapExpression(gextras.InternObject(s)).Evaluate(this_, value)
+}
+
+func (s constantExpression) GetValueType() externglib.Type {
+	return WrapExpression(gextras.InternObject(s)).GetValueType()
+}
+
+func (s constantExpression) IsStatic() bool {
+	return WrapExpression(gextras.InternObject(s)).IsStatic()
+}
+
+func (s constantExpression) Ref() Expression {
+	return WrapExpression(gextras.InternObject(s)).Ref()
+}
+
+func (s constantExpression) Unref() {
+	WrapExpression(gextras.InternObject(s)).Unref()
 }
 
 func (e constantExpression) Value() externglib.Value {
@@ -376,17 +637,17 @@ type Expression interface {
 	Unref()
 }
 
-// expression implements the Expression class.
+// expression implements the Expression interface.
 type expression struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapExpression wraps a GObject to the right type. It is
-// primarily used internally.
+var _ Expression = (*expression)(nil)
+
+// WrapExpression wraps a GObject to a type that implements
+// interface Expression. It is primarily used internally.
 func WrapExpression(obj *externglib.Object) Expression {
-	return expression{
-		Objector: obj,
-	}
+	return expression{obj}
 }
 
 func marshalExpression(p uintptr) (interface{}, error) {
@@ -499,23 +760,82 @@ func (s expression) Unref() {
 
 // ObjectExpression: `GObject` value in a `GtkExpression`.
 type ObjectExpression interface {
-	Expression
+	gextras.Objector
+
+	// AsExpression casts the class to the Expression interface.
+	AsExpression() Expression
+
+	// Bind `target`'s property named `property` to `self`.
+	//
+	// The value that `self` evaluates to is set via `g_object_set()` on
+	// `target`. This is repeated whenever `self` changes to ensure that the
+	// object's property stays synchronized with `self`.
+	//
+	// If `self`'s evaluation fails, `target`'s `property` is not updated. You
+	// can ensure that this doesn't happen by using a fallback expression.
+	//
+	// Note that this function takes ownership of `self`. If you want to keep it
+	// around, you should [method@Gtk.Expression.ref] it beforehand.
+	//
+	// This method is inherited from Expression
+	Bind(target gextras.Objector, property string, this_ gextras.Objector) *ExpressionWatch
+	// Evaluate evaluates the given expression and on success stores the result
+	// in @value.
+	//
+	// The `GType` of `value` will be the type given by
+	// [method@Gtk.Expression.get_value_type].
+	//
+	// It is possible that expressions cannot be evaluated - for example when
+	// the expression references objects that have been destroyed or set to
+	// `NULL`. In that case `value` will remain empty and `FALSE` will be
+	// returned.
+	//
+	// This method is inherited from Expression
+	Evaluate(this_ gextras.Objector, value externglib.Value) bool
+	// GetValueType gets the `GType` that this expression evaluates to.
+	//
+	// This type is constant and will not change over the lifetime of this
+	// expression.
+	//
+	// This method is inherited from Expression
+	GetValueType() externglib.Type
+	// IsStatic checks if the expression is static.
+	//
+	// A static expression will never change its result when
+	// [method@Gtk.Expression.evaluate] is called on it with the same arguments.
+	//
+	// That means a call to [method@Gtk.Expression.watch] is not necessary
+	// because it will never trigger a notify.
+	//
+	// This method is inherited from Expression
+	IsStatic() bool
+	// Ref acquires a reference on the given `GtkExpression`.
+	//
+	// This method is inherited from Expression
+	Ref() Expression
+	// Unref releases a reference on the given `GtkExpression`.
+	//
+	// If the reference was the last, the resources associated to the `self` are
+	// freed.
+	//
+	// This method is inherited from Expression
+	Unref()
 
 	// Object gets the object that the expression evaluates to.
 	Object() gextras.Objector
 }
 
-// objectExpression implements the ObjectExpression class.
+// objectExpression implements the ObjectExpression interface.
 type objectExpression struct {
-	Expression
+	*externglib.Object
 }
 
-// WrapObjectExpression wraps a GObject to the right type. It is
-// primarily used internally.
+var _ ObjectExpression = (*objectExpression)(nil)
+
+// WrapObjectExpression wraps a GObject to a type that implements
+// interface ObjectExpression. It is primarily used internally.
 func WrapObjectExpression(obj *externglib.Object) ObjectExpression {
-	return objectExpression{
-		Expression: WrapExpression(obj),
-	}
+	return objectExpression{obj}
 }
 
 func marshalObjectExpression(p uintptr) (interface{}, error) {
@@ -543,9 +863,37 @@ func NewObjectExpression(object gextras.Objector) ObjectExpression {
 
 	var _objectExpression ObjectExpression // out
 
-	_objectExpression = WrapObjectExpression(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_objectExpression = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(ObjectExpression)
 
 	return _objectExpression
+}
+
+func (o objectExpression) AsExpression() Expression {
+	return WrapExpression(gextras.InternObject(o))
+}
+
+func (s objectExpression) Bind(target gextras.Objector, property string, this_ gextras.Objector) *ExpressionWatch {
+	return WrapExpression(gextras.InternObject(s)).Bind(target, property, this_)
+}
+
+func (s objectExpression) Evaluate(this_ gextras.Objector, value externglib.Value) bool {
+	return WrapExpression(gextras.InternObject(s)).Evaluate(this_, value)
+}
+
+func (s objectExpression) GetValueType() externglib.Type {
+	return WrapExpression(gextras.InternObject(s)).GetValueType()
+}
+
+func (s objectExpression) IsStatic() bool {
+	return WrapExpression(gextras.InternObject(s)).IsStatic()
+}
+
+func (s objectExpression) Ref() Expression {
+	return WrapExpression(gextras.InternObject(s)).Ref()
+}
+
+func (s objectExpression) Unref() {
+	WrapExpression(gextras.InternObject(s)).Unref()
 }
 
 func (e objectExpression) Object() gextras.Objector {
@@ -565,24 +913,83 @@ func (e objectExpression) Object() gextras.Objector {
 
 // PropertyExpression: `GObject` property value in a `GtkExpression`.
 type PropertyExpression interface {
-	Expression
+	gextras.Objector
 
-	// ExpressionPropertyExpression gets the expression specifying the object of
-	// a property expression.
-	ExpressionPropertyExpression() Expression
+	// AsExpression casts the class to the Expression interface.
+	AsExpression() Expression
+
+	// Bind `target`'s property named `property` to `self`.
+	//
+	// The value that `self` evaluates to is set via `g_object_set()` on
+	// `target`. This is repeated whenever `self` changes to ensure that the
+	// object's property stays synchronized with `self`.
+	//
+	// If `self`'s evaluation fails, `target`'s `property` is not updated. You
+	// can ensure that this doesn't happen by using a fallback expression.
+	//
+	// Note that this function takes ownership of `self`. If you want to keep it
+	// around, you should [method@Gtk.Expression.ref] it beforehand.
+	//
+	// This method is inherited from Expression
+	Bind(target gextras.Objector, property string, this_ gextras.Objector) *ExpressionWatch
+	// Evaluate evaluates the given expression and on success stores the result
+	// in @value.
+	//
+	// The `GType` of `value` will be the type given by
+	// [method@Gtk.Expression.get_value_type].
+	//
+	// It is possible that expressions cannot be evaluated - for example when
+	// the expression references objects that have been destroyed or set to
+	// `NULL`. In that case `value` will remain empty and `FALSE` will be
+	// returned.
+	//
+	// This method is inherited from Expression
+	Evaluate(this_ gextras.Objector, value externglib.Value) bool
+	// GetValueType gets the `GType` that this expression evaluates to.
+	//
+	// This type is constant and will not change over the lifetime of this
+	// expression.
+	//
+	// This method is inherited from Expression
+	GetValueType() externglib.Type
+	// IsStatic checks if the expression is static.
+	//
+	// A static expression will never change its result when
+	// [method@Gtk.Expression.evaluate] is called on it with the same arguments.
+	//
+	// That means a call to [method@Gtk.Expression.watch] is not necessary
+	// because it will never trigger a notify.
+	//
+	// This method is inherited from Expression
+	IsStatic() bool
+	// Ref acquires a reference on the given `GtkExpression`.
+	//
+	// This method is inherited from Expression
+	Ref() Expression
+	// Unref releases a reference on the given `GtkExpression`.
+	//
+	// If the reference was the last, the resources associated to the `self` are
+	// freed.
+	//
+	// This method is inherited from Expression
+	Unref()
+
+	// Expression gets the expression specifying the object of a property
+	// expression.
+	Expression() Expression
 }
 
-// propertyExpression implements the PropertyExpression class.
+// propertyExpression implements the PropertyExpression interface.
 type propertyExpression struct {
-	Expression
+	*externglib.Object
 }
 
-// WrapPropertyExpression wraps a GObject to the right type. It is
-// primarily used internally.
+var _ PropertyExpression = (*propertyExpression)(nil)
+
+// WrapPropertyExpression wraps a GObject to a type that implements
+// interface PropertyExpression. It is primarily used internally.
 func WrapPropertyExpression(obj *externglib.Object) PropertyExpression {
-	return propertyExpression{
-		Expression: WrapExpression(obj),
-	}
+	return propertyExpression{obj}
 }
 
 func marshalPropertyExpression(p uintptr) (interface{}, error) {
@@ -614,12 +1021,40 @@ func NewPropertyExpression(thisType externglib.Type, expression Expression, prop
 
 	var _propertyExpression PropertyExpression // out
 
-	_propertyExpression = WrapPropertyExpression(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_propertyExpression = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(PropertyExpression)
 
 	return _propertyExpression
 }
 
-func (e propertyExpression) ExpressionPropertyExpression() Expression {
+func (p propertyExpression) AsExpression() Expression {
+	return WrapExpression(gextras.InternObject(p))
+}
+
+func (s propertyExpression) Bind(target gextras.Objector, property string, this_ gextras.Objector) *ExpressionWatch {
+	return WrapExpression(gextras.InternObject(s)).Bind(target, property, this_)
+}
+
+func (s propertyExpression) Evaluate(this_ gextras.Objector, value externglib.Value) bool {
+	return WrapExpression(gextras.InternObject(s)).Evaluate(this_, value)
+}
+
+func (s propertyExpression) GetValueType() externglib.Type {
+	return WrapExpression(gextras.InternObject(s)).GetValueType()
+}
+
+func (s propertyExpression) IsStatic() bool {
+	return WrapExpression(gextras.InternObject(s)).IsStatic()
+}
+
+func (s propertyExpression) Ref() Expression {
+	return WrapExpression(gextras.InternObject(s)).Ref()
+}
+
+func (s propertyExpression) Unref() {
+	WrapExpression(gextras.InternObject(s)).Unref()
+}
+
+func (e propertyExpression) Expression() Expression {
 	var _arg0 *C.GtkExpression // out
 	var _cret *C.GtkExpression // in
 

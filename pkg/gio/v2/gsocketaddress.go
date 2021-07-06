@@ -43,6 +43,31 @@ type SocketAddress interface {
 	// AsSocketConnectable casts the class to the SocketConnectable interface.
 	AsSocketConnectable() SocketConnectable
 
+	// Enumerate creates a AddressEnumerator for @connectable.
+	//
+	// This method is inherited from SocketConnectable
+	Enumerate() SocketAddressEnumerator
+	// ProxyEnumerate creates a AddressEnumerator for @connectable that will
+	// return a Address for each of its addresses that you must connect to via a
+	// proxy.
+	//
+	// If @connectable does not implement
+	// g_socket_connectable_proxy_enumerate(), this will fall back to calling
+	// g_socket_connectable_enumerate().
+	//
+	// This method is inherited from SocketConnectable
+	ProxyEnumerate() SocketAddressEnumerator
+	// ToString: format a Connectable as a string. This is a human-readable
+	// format for use in debugging output, and is not a stable serialization
+	// format. It is not suitable for use in user interfaces as it exposes too
+	// much information for a user.
+	//
+	// If the Connectable implementation does not support string formatting, the
+	// implementation’s type name will be returned as a fallback.
+	//
+	// This method is inherited from SocketConnectable
+	ToString() string
+
 	// Family gets the socket family type of @address.
 	Family() SocketFamily
 	// NativeSize gets the size of @address's native struct sockaddr. You can
@@ -57,17 +82,17 @@ type SocketAddress interface {
 	ToNative(dest interface{}, destlen uint) error
 }
 
-// socketAddress implements the SocketAddress class.
+// socketAddress implements the SocketAddress interface.
 type socketAddress struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapSocketAddress wraps a GObject to the right type. It is
-// primarily used internally.
+var _ SocketAddress = (*socketAddress)(nil)
+
+// WrapSocketAddress wraps a GObject to a type that implements
+// interface SocketAddress. It is primarily used internally.
 func WrapSocketAddress(obj *externglib.Object) SocketAddress {
-	return socketAddress{
-		Objector: obj,
-	}
+	return socketAddress{obj}
 }
 
 func marshalSocketAddress(p uintptr) (interface{}, error) {
@@ -90,13 +115,25 @@ func NewSocketAddressFromNative(native interface{}, len uint) SocketAddress {
 
 	var _socketAddress SocketAddress // out
 
-	_socketAddress = WrapSocketAddress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_socketAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(SocketAddress)
 
 	return _socketAddress
 }
 
 func (s socketAddress) AsSocketConnectable() SocketConnectable {
 	return WrapSocketConnectable(gextras.InternObject(s))
+}
+
+func (c socketAddress) Enumerate() SocketAddressEnumerator {
+	return WrapSocketConnectable(gextras.InternObject(c)).Enumerate()
+}
+
+func (c socketAddress) ProxyEnumerate() SocketAddressEnumerator {
+	return WrapSocketConnectable(gextras.InternObject(c)).ProxyEnumerate()
+}
+
+func (c socketAddress) ToString() string {
+	return WrapSocketConnectable(gextras.InternObject(c)).ToString()
 }
 
 func (a socketAddress) Family() SocketFamily {

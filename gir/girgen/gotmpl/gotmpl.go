@@ -24,6 +24,7 @@ func NewGoTemplate(block string) *template.Template {
 
 		"GoDoc":            cmt.GoDoc,
 		"OverrideSelfName": cmt.OverrideSelfName,
+		"AdditionalString": cmt.AdditionalString,
 	})
 	t = template.Must(t.Parse(block))
 	return t

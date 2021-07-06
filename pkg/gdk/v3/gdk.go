@@ -58,17 +58,17 @@ type DeviceTool interface {
 	ToolType() DeviceToolType
 }
 
-// deviceTool implements the DeviceTool class.
+// deviceTool implements the DeviceTool interface.
 type deviceTool struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapDeviceTool wraps a GObject to the right type. It is
-// primarily used internally.
+var _ DeviceTool = (*deviceTool)(nil)
+
+// WrapDeviceTool wraps a GObject to a type that implements
+// interface DeviceTool. It is primarily used internally.
 func WrapDeviceTool(obj *externglib.Object) DeviceTool {
-	return deviceTool{
-		Objector: obj,
-	}
+	return deviceTool{obj}
 }
 
 func marshalDeviceTool(p uintptr) (interface{}, error) {
@@ -171,17 +171,17 @@ type DragContext interface {
 	SetHotspot(hotX int, hotY int)
 }
 
-// dragContext implements the DragContext class.
+// dragContext implements the DragContext interface.
 type dragContext struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapDragContext wraps a GObject to the right type. It is
-// primarily used internally.
+var _ DragContext = (*dragContext)(nil)
+
+// WrapDragContext wraps a GObject to a type that implements
+// interface DragContext. It is primarily used internally.
 func WrapDragContext(obj *externglib.Object) DragContext {
-	return dragContext{
-		Objector: obj,
-	}
+	return dragContext{obj}
 }
 
 func marshalDragContext(p uintptr) (interface{}, error) {

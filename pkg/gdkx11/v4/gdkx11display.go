@@ -40,7 +40,207 @@ func X11SetSmClientID(smClientId string) {
 }
 
 type X11Display interface {
-	gdk.Display
+	gextras.Objector
+
+	// AsDisplay casts the class to the gdk.Display interface.
+	AsDisplay() gdk.Display
+
+	// Beep emits a short beep on @display
+	//
+	// This method is inherited from gdk.Display
+	Beep()
+	// Close closes the connection to the windowing system for the given
+	// display.
+	//
+	// This cleans up associated resources.
+	//
+	// This method is inherited from gdk.Display
+	Close()
+	// DeviceIsGrabbed returns true if there is an ongoing grab on @device for
+	// @display.
+	//
+	// This method is inherited from gdk.Display
+	DeviceIsGrabbed(device gdk.Device) bool
+	// Flush flushes any requests queued for the windowing system.
+	//
+	// This happens automatically when the main loop blocks waiting for new
+	// events, but if your application is drawing without returning control to
+	// the main loop, you may need to call this function explicitly. A common
+	// case where this function needs to be called is when an application is
+	// executing drawing commands from a thread other than the thread where the
+	// main loop is running.
+	//
+	// This is most useful for X11. On windowing systems where requests are
+	// handled synchronously, this function will do nothing.
+	//
+	// This method is inherited from gdk.Display
+	Flush()
+	// GetAppLaunchContext returns a `GdkAppLaunchContext` suitable for
+	// launching applications on the given display.
+	//
+	// This method is inherited from gdk.Display
+	GetAppLaunchContext() gdk.AppLaunchContext
+	// GetClipboard gets the clipboard used for copy/paste operations.
+	//
+	// This method is inherited from gdk.Display
+	GetClipboard() gdk.Clipboard
+	// GetDefaultSeat returns the default `GdkSeat` for this display.
+	//
+	// Note that a display may not have a seat. In this case, this function will
+	// return nil.
+	//
+	// This method is inherited from gdk.Display
+	GetDefaultSeat() gdk.Seat
+	// GetMonitorAtSurface gets the monitor in which the largest area of
+	// @surface resides.
+	//
+	// Returns a monitor close to @surface if it is outside of all monitors.
+	//
+	// This method is inherited from gdk.Display
+	GetMonitorAtSurface(surface gdk.Surface) gdk.Monitor
+	// GetName gets the name of the display.
+	//
+	// This method is inherited from gdk.Display
+	GetName() string
+	// GetPrimaryClipboard gets the clipboard used for the primary selection.
+	//
+	// On backends where the primary clipboard is not supported natively, GDK
+	// emulates this clipboard locally.
+	//
+	// This method is inherited from gdk.Display
+	GetPrimaryClipboard() gdk.Clipboard
+	// GetSetting retrieves a desktop-wide setting such as double-click time for
+	// the @display.
+	//
+	// This method is inherited from gdk.Display
+	GetSetting(name string, value externglib.Value) bool
+	// GetStartupNotificationID gets the startup notification ID for a Wayland
+	// display, or nil if no ID has been defined.
+	//
+	// This method is inherited from gdk.Display
+	GetStartupNotificationID() string
+	// IsClosed finds out if the display has been closed.
+	//
+	// This method is inherited from gdk.Display
+	IsClosed() bool
+	// IsComposited returns whether surfaces can reasonably be expected to have
+	// their alpha channel drawn correctly on the screen.
+	//
+	// Check [method@Gdk.Display.is_rgba] for whether the display supports an
+	// alpha channel.
+	//
+	// On X11 this function returns whether a compositing manager is compositing
+	// on @display.
+	//
+	// On modern displays, this value is always true.
+	//
+	// This method is inherited from gdk.Display
+	IsComposited() bool
+	// IsRGBA returns whether surfaces on this @display are created with an
+	// alpha channel.
+	//
+	// Even if a true is returned, it is possible that the surface’s alpha
+	// channel won’t be honored when displaying the surface on the screen: in
+	// particular, for X an appropriate windowing manager and compositing
+	// manager must be running to provide appropriate display. Use
+	// [method@Gdk.Display.is_composited] to check if that is the case.
+	//
+	// On modern displays, this value is always true.
+	//
+	// This method is inherited from gdk.Display
+	IsRGBA() bool
+	// MapKeycode returns the keyvals bound to @keycode.
+	//
+	// The Nth `GdkKeymapKey` in @keys is bound to the Nth keyval in @keyvals.
+	//
+	// When a keycode is pressed by the user, the keyval from this list of
+	// entries is selected by considering the effective keyboard group and
+	// level.
+	//
+	// Free the returned arrays with g_free().
+	//
+	// This method is inherited from gdk.Display
+	MapKeycode(keycode uint) ([]gdk.KeymapKey, []uint, bool)
+	// MapKeyval obtains a list of keycode/group/level combinations that will
+	// generate @keyval.
+	//
+	// Groups and levels are two kinds of keyboard mode; in general, the level
+	// determines whether the top or bottom symbol on a key is used, and the
+	// group determines whether the left or right symbol is used.
+	//
+	// On US keyboards, the shift key changes the keyboard level, and there are
+	// no groups. A group switch key might convert a keyboard between Hebrew to
+	// English modes, for example.
+	//
+	// `GdkEventKey` contains a group field that indicates the active keyboard
+	// group. The level is computed from the modifier mask.
+	//
+	// The returned array should be freed with g_free().
+	//
+	// This method is inherited from gdk.Display
+	MapKeyval(keyval uint) ([]gdk.KeymapKey, bool)
+	// NotifyStartupComplete indicates to the GUI environment that the
+	// application has finished loading, using a given identifier.
+	//
+	// GTK will call this function automatically for [class@Gtk.Window] with
+	// custom startup-notification identifier unless
+	// [method@Gtk.Window.set_auto_startup_notification] is called to disable
+	// that feature.
+	//
+	// This method is inherited from gdk.Display
+	NotifyStartupComplete(startupId string)
+	// PutEvent appends the given event onto the front of the event queue for
+	// @display.
+	//
+	// This function is only useful in very special situations and should not be
+	// used by applications.
+	//
+	// This method is inherited from gdk.Display
+	PutEvent(event gdk.Event)
+	// SupportsInputShapes returns true if the display supports input shapes.
+	//
+	// This means that [method@Gdk.Surface.set_input_region] can be used to
+	// modify the input shape of surfaces on @display.
+	//
+	// On modern displays, this value is always true.
+	//
+	// This method is inherited from gdk.Display
+	SupportsInputShapes() bool
+	// Sync flushes any requests queued for the windowing system and waits until
+	// all requests have been handled.
+	//
+	// This is often used for making sure that the display is synchronized with
+	// the current state of the program. Calling [method@Gdk.Display.sync]
+	// before [method@GdkX11.Display.error_trap_pop] makes sure that any errors
+	// generated from earlier requests are handled before the error trap is
+	// removed.
+	//
+	// This is most useful for X11. On windowing systems where requests are
+	// handled synchronously, this function will do nothing.
+	//
+	// This method is inherited from gdk.Display
+	Sync()
+	// TranslateKey translates the contents of a `GdkEventKey` into a keyval,
+	// effective group, and level.
+	//
+	// Modifiers that affected the translation and are thus unavailable for
+	// application use are returned in @consumed_modifiers.
+	//
+	// The @effective_group is the group that was actually used for the
+	// translation; some keys such as Enter are not affected by the active
+	// keyboard group. The @level is derived from @state.
+	//
+	// @consumed_modifiers gives modifiers that should be masked out from @state
+	// when comparing this key press to a keyboard shortcut. For instance, on a
+	// US keyboard, the `plus` symbol is shifted, so when comparing a key press
+	// to a `<Control>plus` accelerator `<Shift>` should be masked out.
+	//
+	// This function should rarely be needed, since `GdkEventKey` already
+	// contains the translated keyval. It is exported for the benefit of
+	// virtualized test environments.
+	//
+	// This method is inherited from gdk.Display
+	TranslateKey(keycode uint, state gdk.ModifierType, group int) (keyval uint, effectiveGroup int, level int, consumed gdk.ModifierType, ok bool)
 
 	// ErrorTrapPop pops the error trap pushed by
 	// gdk_x11_display_error_trap_push(). Will XSync() if necessary and will
@@ -137,23 +337,115 @@ type X11Display interface {
 	UTF8ToCompoundText(str string) (string, int, []byte, bool)
 }
 
-// x11Display implements the X11Display class.
+// x11Display implements the X11Display interface.
 type x11Display struct {
-	gdk.Display
+	*externglib.Object
 }
 
-// WrapX11Display wraps a GObject to the right type. It is
-// primarily used internally.
+var _ X11Display = (*x11Display)(nil)
+
+// WrapX11Display wraps a GObject to a type that implements
+// interface X11Display. It is primarily used internally.
 func WrapX11Display(obj *externglib.Object) X11Display {
-	return x11Display{
-		Display: gdk.WrapDisplay(obj),
-	}
+	return x11Display{obj}
 }
 
 func marshalX11Display(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapX11Display(obj), nil
+}
+
+func (x x11Display) AsDisplay() gdk.Display {
+	return gdk.WrapDisplay(gextras.InternObject(x))
+}
+
+func (d x11Display) Beep() {
+	gdk.WrapDisplay(gextras.InternObject(d)).Beep()
+}
+
+func (d x11Display) Close() {
+	gdk.WrapDisplay(gextras.InternObject(d)).Close()
+}
+
+func (d x11Display) DeviceIsGrabbed(device gdk.Device) bool {
+	return gdk.WrapDisplay(gextras.InternObject(d)).DeviceIsGrabbed(device)
+}
+
+func (d x11Display) Flush() {
+	gdk.WrapDisplay(gextras.InternObject(d)).Flush()
+}
+
+func (d x11Display) GetAppLaunchContext() gdk.AppLaunchContext {
+	return gdk.WrapDisplay(gextras.InternObject(d)).GetAppLaunchContext()
+}
+
+func (d x11Display) GetClipboard() gdk.Clipboard {
+	return gdk.WrapDisplay(gextras.InternObject(d)).GetClipboard()
+}
+
+func (d x11Display) GetDefaultSeat() gdk.Seat {
+	return gdk.WrapDisplay(gextras.InternObject(d)).GetDefaultSeat()
+}
+
+func (d x11Display) GetMonitorAtSurface(surface gdk.Surface) gdk.Monitor {
+	return gdk.WrapDisplay(gextras.InternObject(d)).GetMonitorAtSurface(surface)
+}
+
+func (d x11Display) GetName() string {
+	return gdk.WrapDisplay(gextras.InternObject(d)).GetName()
+}
+
+func (d x11Display) GetPrimaryClipboard() gdk.Clipboard {
+	return gdk.WrapDisplay(gextras.InternObject(d)).GetPrimaryClipboard()
+}
+
+func (d x11Display) GetSetting(name string, value externglib.Value) bool {
+	return gdk.WrapDisplay(gextras.InternObject(d)).GetSetting(name, value)
+}
+
+func (d x11Display) GetStartupNotificationID() string {
+	return gdk.WrapDisplay(gextras.InternObject(d)).GetStartupNotificationID()
+}
+
+func (d x11Display) IsClosed() bool {
+	return gdk.WrapDisplay(gextras.InternObject(d)).IsClosed()
+}
+
+func (d x11Display) IsComposited() bool {
+	return gdk.WrapDisplay(gextras.InternObject(d)).IsComposited()
+}
+
+func (d x11Display) IsRGBA() bool {
+	return gdk.WrapDisplay(gextras.InternObject(d)).IsRGBA()
+}
+
+func (d x11Display) MapKeycode(keycode uint) ([]gdk.KeymapKey, []uint, bool) {
+	return gdk.WrapDisplay(gextras.InternObject(d)).MapKeycode(keycode)
+}
+
+func (d x11Display) MapKeyval(keyval uint) ([]gdk.KeymapKey, bool) {
+	return gdk.WrapDisplay(gextras.InternObject(d)).MapKeyval(keyval)
+}
+
+func (d x11Display) NotifyStartupComplete(startupId string) {
+	gdk.WrapDisplay(gextras.InternObject(d)).NotifyStartupComplete(startupId)
+}
+
+func (d x11Display) PutEvent(event gdk.Event) {
+	gdk.WrapDisplay(gextras.InternObject(d)).PutEvent(event)
+}
+
+func (d x11Display) SupportsInputShapes() bool {
+	return gdk.WrapDisplay(gextras.InternObject(d)).SupportsInputShapes()
+}
+
+func (d x11Display) Sync() {
+	gdk.WrapDisplay(gextras.InternObject(d)).Sync()
+}
+
+func (d x11Display) TranslateKey(keycode uint, state gdk.ModifierType, group int) (keyval uint, effectiveGroup int, level int, consumed gdk.ModifierType, ok bool) {
+	return gdk.WrapDisplay(gextras.InternObject(d)).TranslateKey(keycode, state, group)
 }
 
 func (d x11Display) ErrorTrapPop() int {

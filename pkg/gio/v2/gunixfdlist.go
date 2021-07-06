@@ -75,17 +75,17 @@ type UnixFDList interface {
 	Length() int
 }
 
-// unixFDList implements the UnixFDList class.
+// unixFDList implements the UnixFDList interface.
 type unixFDList struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapUnixFDList wraps a GObject to the right type. It is
-// primarily used internally.
+var _ UnixFDList = (*unixFDList)(nil)
+
+// WrapUnixFDList wraps a GObject to a type that implements
+// interface UnixFDList. It is primarily used internally.
 func WrapUnixFDList(obj *externglib.Object) UnixFDList {
-	return unixFDList{
-		Objector: obj,
-	}
+	return unixFDList{obj}
 }
 
 func marshalUnixFDList(p uintptr) (interface{}, error) {
@@ -102,7 +102,7 @@ func NewUnixFDList() UnixFDList {
 
 	var _unixFDList UnixFDList // out
 
-	_unixFDList = WrapUnixFDList(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_unixFDList = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(UnixFDList)
 
 	return _unixFDList
 }
@@ -126,7 +126,7 @@ func NewUnixFDListFromArray(fds []int) UnixFDList {
 
 	var _unixFDList UnixFDList // out
 
-	_unixFDList = WrapUnixFDList(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_unixFDList = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(UnixFDList)
 
 	return _unixFDList
 }

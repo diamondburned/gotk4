@@ -5,6 +5,8 @@ package gdkpixbuf
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -22,24 +24,110 @@ func init() {
 }
 
 type PixbufSimpleAnimIter interface {
-	PixbufAnimationIter
+	gextras.Objector
+
+	// AsPixbufAnimationIter casts the class to the PixbufAnimationIter interface.
+	AsPixbufAnimationIter() PixbufAnimationIter
+
+	// Advance: possibly advances an animation to a new frame.
+	//
+	// Chooses the frame based on the start time passed to
+	// gdk_pixbuf_animation_get_iter().
+	//
+	// @current_time would normally come from g_get_current_time(), and must be
+	// greater than or equal to the time passed to
+	// gdk_pixbuf_animation_get_iter(), and must increase or remain unchanged
+	// each time gdk_pixbuf_animation_iter_get_pixbuf() is called. That is, you
+	// can't go backward in time; animations only play forward.
+	//
+	// As a shortcut, pass `NULL` for the current time and g_get_current_time()
+	// will be invoked on your behalf. So you only need to explicitly pass
+	// @current_time if you're doing something odd like playing the animation at
+	// double speed.
+	//
+	// If this function returns `FALSE`, there's no need to update the animation
+	// display, assuming the display had been rendered prior to advancing; if
+	// `TRUE`, you need to call gdk_pixbuf_animation_iter_get_pixbuf() and
+	// update the display with the new pixbuf.
+	//
+	// This method is inherited from PixbufAnimationIter
+	Advance(currentTime *glib.TimeVal) bool
+	// GetDelayTime gets the number of milliseconds the current pixbuf should be
+	// displayed, or -1 if the current pixbuf should be displayed forever.
+	//
+	// The `g_timeout_add()` function conveniently takes a timeout in
+	// milliseconds, so you can use a timeout to schedule the next update.
+	//
+	// Note that some formats, like GIF, might clamp the timeout values in the
+	// image file to avoid updates that are just too quick. The minimum timeout
+	// for GIF images is currently 20 milliseconds.
+	//
+	// This method is inherited from PixbufAnimationIter
+	GetDelayTime() int
+	// GetPixbuf gets the current pixbuf which should be displayed.
+	//
+	// The pixbuf might not be the same size as the animation itself
+	// (gdk_pixbuf_animation_get_width(), gdk_pixbuf_animation_get_height()).
+	//
+	// This pixbuf should be displayed for
+	// gdk_pixbuf_animation_iter_get_delay_time() milliseconds.
+	//
+	// The caller of this function does not own a reference to the returned
+	// pixbuf; the returned pixbuf will become invalid when the iterator
+	// advances to the next frame, which may happen anytime you call
+	// gdk_pixbuf_animation_iter_advance().
+	//
+	// Copy the pixbuf to keep it (don't just add a reference), as it may get
+	// recycled as you advance the iterator.
+	//
+	// This method is inherited from PixbufAnimationIter
+	GetPixbuf() Pixbuf
+	// OnCurrentlyLoadingFrame: used to determine how to respond to the
+	// area_updated signal on PixbufLoader when loading an animation.
+	//
+	// The `::area_updated` signal is emitted for an area of the frame currently
+	// streaming in to the loader. So if you're on the currently loading frame,
+	// you will need to redraw the screen for the updated area.
+	//
+	// This method is inherited from PixbufAnimationIter
+	OnCurrentlyLoadingFrame() bool
 }
 
-// pixbufSimpleAnimIter implements the PixbufSimpleAnimIter class.
+// pixbufSimpleAnimIter implements the PixbufSimpleAnimIter interface.
 type pixbufSimpleAnimIter struct {
-	PixbufAnimationIter
+	*externglib.Object
 }
 
-// WrapPixbufSimpleAnimIter wraps a GObject to the right type. It is
-// primarily used internally.
+var _ PixbufSimpleAnimIter = (*pixbufSimpleAnimIter)(nil)
+
+// WrapPixbufSimpleAnimIter wraps a GObject to a type that implements
+// interface PixbufSimpleAnimIter. It is primarily used internally.
 func WrapPixbufSimpleAnimIter(obj *externglib.Object) PixbufSimpleAnimIter {
-	return pixbufSimpleAnimIter{
-		PixbufAnimationIter: WrapPixbufAnimationIter(obj),
-	}
+	return pixbufSimpleAnimIter{obj}
 }
 
 func marshalPixbufSimpleAnimIter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapPixbufSimpleAnimIter(obj), nil
+}
+
+func (p pixbufSimpleAnimIter) AsPixbufAnimationIter() PixbufAnimationIter {
+	return WrapPixbufAnimationIter(gextras.InternObject(p))
+}
+
+func (i pixbufSimpleAnimIter) Advance(currentTime *glib.TimeVal) bool {
+	return WrapPixbufAnimationIter(gextras.InternObject(i)).Advance(currentTime)
+}
+
+func (i pixbufSimpleAnimIter) GetDelayTime() int {
+	return WrapPixbufAnimationIter(gextras.InternObject(i)).GetDelayTime()
+}
+
+func (i pixbufSimpleAnimIter) GetPixbuf() Pixbuf {
+	return WrapPixbufAnimationIter(gextras.InternObject(i)).GetPixbuf()
+}
+
+func (i pixbufSimpleAnimIter) OnCurrentlyLoadingFrame() bool {
+	return WrapPixbufAnimationIter(gextras.InternObject(i)).OnCurrentlyLoadingFrame()
 }

@@ -5,7 +5,9 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -93,6 +95,61 @@ type SizeGroup interface {
 	// AsBuildable casts the class to the Buildable interface.
 	AsBuildable() Buildable
 
+	// AddChild adds a child to @buildable. @type is an optional string
+	// describing how the child should be added.
+	//
+	// This method is inherited from Buildable
+	AddChild(builder Builder, child gextras.Objector, typ string)
+	// ConstructChild constructs a child of @buildable with the name @name.
+	//
+	// Builder calls this function if a “constructor” has been specified in the
+	// UI definition.
+	//
+	// This method is inherited from Buildable
+	ConstructChild(builder Builder, name string) gextras.Objector
+	// CustomFinished: this is similar to gtk_buildable_parser_finished() but is
+	// called once for each custom tag handled by the @buildable.
+	//
+	// This method is inherited from Buildable
+	CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{})
+	// CustomTagEnd: this is called at the end of each custom element handled by
+	// the buildable.
+	//
+	// This method is inherited from Buildable
+	CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data interface{})
+	// CustomTagStart: this is called for each unknown element under <child>.
+	//
+	// This method is inherited from Buildable
+	CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool)
+	// GetInternalChild: get the internal child called @childname of the
+	// @buildable object.
+	//
+	// This method is inherited from Buildable
+	GetInternalChild(builder Builder, childname string) gextras.Objector
+	// GetName gets the name of the @buildable object.
+	//
+	// Builder sets the name based on the [GtkBuilder UI definition][BUILDER-UI]
+	// used to construct the @buildable.
+	//
+	// This method is inherited from Buildable
+	GetName() string
+	// ParserFinished: called when the builder finishes the parsing of a
+	// [GtkBuilder UI definition][BUILDER-UI]. Note that this will be called
+	// once for each time gtk_builder_add_from_file() or
+	// gtk_builder_add_from_string() is called on a builder.
+	//
+	// This method is inherited from Buildable
+	ParserFinished(builder Builder)
+	// SetBuildableProperty sets the property name @name to @value on the
+	// @buildable object.
+	//
+	// This method is inherited from Buildable
+	SetBuildableProperty(builder Builder, name string, value externglib.Value)
+	// SetName sets the name of the @buildable object.
+	//
+	// This method is inherited from Buildable
+	SetName(name string)
+
 	// AddWidget adds a widget to a SizeGroup. In the future, the requisition of
 	// the widget will be determined as the maximum of its requisition and the
 	// requisition of the other widgets in the size group. Whether this applies
@@ -125,17 +182,17 @@ type SizeGroup interface {
 	SetMode(mode SizeGroupMode)
 }
 
-// sizeGroup implements the SizeGroup class.
+// sizeGroup implements the SizeGroup interface.
 type sizeGroup struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapSizeGroup wraps a GObject to the right type. It is
-// primarily used internally.
+var _ SizeGroup = (*sizeGroup)(nil)
+
+// WrapSizeGroup wraps a GObject to a type that implements
+// interface SizeGroup. It is primarily used internally.
 func WrapSizeGroup(obj *externglib.Object) SizeGroup {
-	return sizeGroup{
-		Objector: obj,
-	}
+	return sizeGroup{obj}
 }
 
 func marshalSizeGroup(p uintptr) (interface{}, error) {
@@ -155,13 +212,53 @@ func NewSizeGroup(mode SizeGroupMode) SizeGroup {
 
 	var _sizeGroup SizeGroup // out
 
-	_sizeGroup = WrapSizeGroup(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_sizeGroup = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(SizeGroup)
 
 	return _sizeGroup
 }
 
 func (s sizeGroup) AsBuildable() Buildable {
 	return WrapBuildable(gextras.InternObject(s))
+}
+
+func (b sizeGroup) AddChild(builder Builder, child gextras.Objector, typ string) {
+	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+}
+
+func (b sizeGroup) ConstructChild(builder Builder, name string) gextras.Objector {
+	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b sizeGroup) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b sizeGroup) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b sizeGroup) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
+}
+
+func (b sizeGroup) GetInternalChild(builder Builder, childname string) gextras.Objector {
+	return WrapBuildable(gextras.InternObject(b)).GetInternalChild(builder, childname)
+}
+
+func (b sizeGroup) GetName() string {
+	return WrapBuildable(gextras.InternObject(b)).GetName()
+}
+
+func (b sizeGroup) ParserFinished(builder Builder) {
+	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
+}
+
+func (b sizeGroup) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
+	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
+}
+
+func (b sizeGroup) SetName(name string) {
+	WrapBuildable(gextras.InternObject(b)).SetName(name)
 }
 
 func (s sizeGroup) AddWidget(widget Widget) {

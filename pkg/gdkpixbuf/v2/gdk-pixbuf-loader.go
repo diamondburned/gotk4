@@ -127,17 +127,17 @@ type PixbufLoader interface {
 	Write(buf []byte) error
 }
 
-// pixbufLoader implements the PixbufLoader class.
+// pixbufLoader implements the PixbufLoader interface.
 type pixbufLoader struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapPixbufLoader wraps a GObject to the right type. It is
-// primarily used internally.
+var _ PixbufLoader = (*pixbufLoader)(nil)
+
+// WrapPixbufLoader wraps a GObject to a type that implements
+// interface PixbufLoader. It is primarily used internally.
 func WrapPixbufLoader(obj *externglib.Object) PixbufLoader {
-	return pixbufLoader{
-		Objector: obj,
-	}
+	return pixbufLoader{obj}
 }
 
 func marshalPixbufLoader(p uintptr) (interface{}, error) {
@@ -154,7 +154,7 @@ func NewPixbufLoader() PixbufLoader {
 
 	var _pixbufLoader PixbufLoader // out
 
-	_pixbufLoader = WrapPixbufLoader(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_pixbufLoader = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(PixbufLoader)
 
 	return _pixbufLoader
 }
@@ -185,7 +185,7 @@ func NewPixbufLoaderWithMIMEType(mimeType string) (PixbufLoader, error) {
 	var _pixbufLoader PixbufLoader // out
 	var _goerr error               // out
 
-	_pixbufLoader = WrapPixbufLoader(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_pixbufLoader = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(PixbufLoader)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _pixbufLoader, _goerr
@@ -217,7 +217,7 @@ func NewPixbufLoaderWithType(imageType string) (PixbufLoader, error) {
 	var _pixbufLoader PixbufLoader // out
 	var _goerr error               // out
 
-	_pixbufLoader = WrapPixbufLoader(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_pixbufLoader = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(PixbufLoader)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _pixbufLoader, _goerr

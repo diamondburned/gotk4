@@ -102,17 +102,17 @@ type DisplayManager interface {
 	SetDefaultDisplay(display Display)
 }
 
-// displayManager implements the DisplayManager class.
+// displayManager implements the DisplayManager interface.
 type displayManager struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapDisplayManager wraps a GObject to the right type. It is
-// primarily used internally.
+var _ DisplayManager = (*displayManager)(nil)
+
+// WrapDisplayManager wraps a GObject to a type that implements
+// interface DisplayManager. It is primarily used internally.
 func WrapDisplayManager(obj *externglib.Object) DisplayManager {
-	return displayManager{
-		Objector: obj,
-	}
+	return displayManager{obj}
 }
 
 func marshalDisplayManager(p uintptr) (interface{}, error) {

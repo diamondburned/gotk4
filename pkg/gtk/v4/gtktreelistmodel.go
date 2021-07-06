@@ -79,17 +79,17 @@ type TreeListModel interface {
 	SetAutoexpand(autoexpand bool)
 }
 
-// treeListModel implements the TreeListModel class.
+// treeListModel implements the TreeListModel interface.
 type treeListModel struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapTreeListModel wraps a GObject to the right type. It is
-// primarily used internally.
+var _ TreeListModel = (*treeListModel)(nil)
+
+// WrapTreeListModel wraps a GObject to a type that implements
+// interface TreeListModel. It is primarily used internally.
 func WrapTreeListModel(obj *externglib.Object) TreeListModel {
-	return treeListModel{
-		Objector: obj,
-	}
+	return treeListModel{obj}
 }
 
 func marshalTreeListModel(p uintptr) (interface{}, error) {
@@ -242,17 +242,17 @@ type TreeListRow interface {
 	SetExpanded(expanded bool)
 }
 
-// treeListRow implements the TreeListRow class.
+// treeListRow implements the TreeListRow interface.
 type treeListRow struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapTreeListRow wraps a GObject to the right type. It is
-// primarily used internally.
+var _ TreeListRow = (*treeListRow)(nil)
+
+// WrapTreeListRow wraps a GObject to a type that implements
+// interface TreeListRow. It is primarily used internally.
 func WrapTreeListRow(obj *externglib.Object) TreeListRow {
-	return treeListRow{
-		Objector: obj,
-	}
+	return treeListRow{obj}
 }
 
 func marshalTreeListRow(p uintptr) (interface{}, error) {

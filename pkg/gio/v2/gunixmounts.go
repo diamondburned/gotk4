@@ -477,17 +477,17 @@ type UnixMountMonitor interface {
 	SetRateLimit(limitMsec int)
 }
 
-// unixMountMonitor implements the UnixMountMonitor class.
+// unixMountMonitor implements the UnixMountMonitor interface.
 type unixMountMonitor struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapUnixMountMonitor wraps a GObject to the right type. It is
-// primarily used internally.
+var _ UnixMountMonitor = (*unixMountMonitor)(nil)
+
+// WrapUnixMountMonitor wraps a GObject to a type that implements
+// interface UnixMountMonitor. It is primarily used internally.
 func WrapUnixMountMonitor(obj *externglib.Object) UnixMountMonitor {
-	return unixMountMonitor{
-		Objector: obj,
-	}
+	return unixMountMonitor{obj}
 }
 
 func marshalUnixMountMonitor(p uintptr) (interface{}, error) {
@@ -508,7 +508,7 @@ func NewUnixMountMonitor() UnixMountMonitor {
 
 	var _unixMountMonitor UnixMountMonitor // out
 
-	_unixMountMonitor = WrapUnixMountMonitor(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_unixMountMonitor = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(UnixMountMonitor)
 
 	return _unixMountMonitor
 }

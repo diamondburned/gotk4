@@ -6,7 +6,6 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -243,7 +242,7 @@ type ActionGroup interface {
 
 // actionGroup implements the ActionGroup interface.
 type actionGroup struct {
-	gextras.Objector
+	*externglib.Object
 }
 
 var _ ActionGroup = (*actionGroup)(nil)
@@ -251,9 +250,7 @@ var _ ActionGroup = (*actionGroup)(nil)
 // WrapActionGroup wraps a GObject to a type that implements
 // interface ActionGroup. It is primarily used internally.
 func WrapActionGroup(obj *externglib.Object) ActionGroup {
-	return actionGroup{
-		Objector: obj,
-	}
+	return actionGroup{obj}
 }
 
 func marshalActionGroup(p uintptr) (interface{}, error) {

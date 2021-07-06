@@ -75,17 +75,17 @@ type AppInfoMonitor interface {
 	gextras.Objector
 }
 
-// appInfoMonitor implements the AppInfoMonitor class.
+// appInfoMonitor implements the AppInfoMonitor interface.
 type appInfoMonitor struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapAppInfoMonitor wraps a GObject to the right type. It is
-// primarily used internally.
+var _ AppInfoMonitor = (*appInfoMonitor)(nil)
+
+// WrapAppInfoMonitor wraps a GObject to a type that implements
+// interface AppInfoMonitor. It is primarily used internally.
 func WrapAppInfoMonitor(obj *externglib.Object) AppInfoMonitor {
-	return appInfoMonitor{
-		Objector: obj,
-	}
+	return appInfoMonitor{obj}
 }
 
 func marshalAppInfoMonitor(p uintptr) (interface{}, error) {
@@ -103,19 +103,98 @@ type BytesIcon interface {
 	AsIcon() Icon
 	// AsLoadableIcon casts the class to the LoadableIcon interface.
 	AsLoadableIcon() LoadableIcon
+
+	// Equal checks if two icons are equal.
+	//
+	// This method is inherited from Icon
+	Equal(icon2 Icon) bool
+	// Serialize serializes a #GIcon into a #GVariant. An equivalent #GIcon can
+	// be retrieved back by calling g_icon_deserialize() on the returned value.
+	// As serialization will avoid using raw icon data when possible, it only
+	// makes sense to transfer the #GVariant between processes on the same
+	// machine, (as opposed to over the network), and within the same file
+	// system namespace.
+	//
+	// This method is inherited from Icon
+	Serialize() *glib.Variant
+	// ToString generates a textual representation of @icon that can be used for
+	// serialization such as when passing @icon to a different process or saving
+	// it to persistent storage. Use g_icon_new_for_string() to get @icon back
+	// from the returned string.
+	//
+	// The encoding of the returned string is proprietary to #GIcon except in
+	// the following two cases
+	//
+	// - If @icon is a Icon, the returned string is a native path (such as
+	// `/path/to/my icon.png`) without escaping if the #GFile for @icon is a
+	// native file. If the file is not native, the returned string is the result
+	// of g_file_get_uri() (such as `sftp://path/to/my20icon.png`).
+	//
+	// - If @icon is a Icon with exactly one name and no fallbacks, the encoding
+	// is simply the name (such as `network-server`).
+	//
+	// This method is inherited from Icon
+	ToString() string
+	// Load loads a loadable icon. For the asynchronous version of this
+	// function, see g_loadable_icon_load_async().
+	//
+	// This method is inherited from LoadableIcon
+	Load(size int, cancellable Cancellable) (string, InputStream, error)
+	// LoadAsync loads an icon asynchronously. To finish this function, see
+	// g_loadable_icon_load_finish(). For the synchronous, blocking version of
+	// this function, see g_loadable_icon_load().
+	//
+	// This method is inherited from LoadableIcon
+	LoadAsync(size int, cancellable Cancellable, callback AsyncReadyCallback)
+	// LoadFinish finishes an asynchronous icon load started in
+	// g_loadable_icon_load_async().
+	//
+	// This method is inherited from LoadableIcon
+	LoadFinish(res AsyncResult) (string, InputStream, error)
+	// Equal checks if two icons are equal.
+	//
+	// This method is inherited from Icon
+	Equal(icon2 Icon) bool
+	// Serialize serializes a #GIcon into a #GVariant. An equivalent #GIcon can
+	// be retrieved back by calling g_icon_deserialize() on the returned value.
+	// As serialization will avoid using raw icon data when possible, it only
+	// makes sense to transfer the #GVariant between processes on the same
+	// machine, (as opposed to over the network), and within the same file
+	// system namespace.
+	//
+	// This method is inherited from Icon
+	Serialize() *glib.Variant
+	// ToString generates a textual representation of @icon that can be used for
+	// serialization such as when passing @icon to a different process or saving
+	// it to persistent storage. Use g_icon_new_for_string() to get @icon back
+	// from the returned string.
+	//
+	// The encoding of the returned string is proprietary to #GIcon except in
+	// the following two cases
+	//
+	// - If @icon is a Icon, the returned string is a native path (such as
+	// `/path/to/my icon.png`) without escaping if the #GFile for @icon is a
+	// native file. If the file is not native, the returned string is the result
+	// of g_file_get_uri() (such as `sftp://path/to/my20icon.png`).
+	//
+	// - If @icon is a Icon with exactly one name and no fallbacks, the encoding
+	// is simply the name (such as `network-server`).
+	//
+	// This method is inherited from Icon
+	ToString() string
 }
 
-// bytesIcon implements the BytesIcon class.
+// bytesIcon implements the BytesIcon interface.
 type bytesIcon struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapBytesIcon wraps a GObject to the right type. It is
-// primarily used internally.
+var _ BytesIcon = (*bytesIcon)(nil)
+
+// WrapBytesIcon wraps a GObject to a type that implements
+// interface BytesIcon. It is primarily used internally.
 func WrapBytesIcon(obj *externglib.Object) BytesIcon {
-	return bytesIcon{
-		Objector: obj,
-	}
+	return bytesIcon{obj}
 }
 
 func marshalBytesIcon(p uintptr) (interface{}, error) {
@@ -132,6 +211,42 @@ func (b bytesIcon) AsLoadableIcon() LoadableIcon {
 	return WrapLoadableIcon(gextras.InternObject(b))
 }
 
+func (i bytesIcon) Equal(icon2 Icon) bool {
+	return WrapIcon(gextras.InternObject(i)).Equal(icon2)
+}
+
+func (i bytesIcon) Serialize() *glib.Variant {
+	return WrapIcon(gextras.InternObject(i)).Serialize()
+}
+
+func (i bytesIcon) ToString() string {
+	return WrapIcon(gextras.InternObject(i)).ToString()
+}
+
+func (i bytesIcon) Load(size int, cancellable Cancellable) (string, InputStream, error) {
+	return WrapLoadableIcon(gextras.InternObject(i)).Load(size, cancellable)
+}
+
+func (i bytesIcon) LoadAsync(size int, cancellable Cancellable, callback AsyncReadyCallback) {
+	WrapLoadableIcon(gextras.InternObject(i)).LoadAsync(size, cancellable, callback)
+}
+
+func (i bytesIcon) LoadFinish(res AsyncResult) (string, InputStream, error) {
+	return WrapLoadableIcon(gextras.InternObject(i)).LoadFinish(res)
+}
+
+func (i bytesIcon) Equal(icon2 Icon) bool {
+	return WrapIcon(gextras.InternObject(i)).Equal(icon2)
+}
+
+func (i bytesIcon) Serialize() *glib.Variant {
+	return WrapIcon(gextras.InternObject(i)).Serialize()
+}
+
+func (i bytesIcon) ToString() string {
+	return WrapIcon(gextras.InternObject(i)).ToString()
+}
+
 // DBusActionGroup is an implementation of the Group interface that can be used
 // as a proxy for an action group that is exported over D-Bus with
 // g_dbus_connection_export_action_group().
@@ -142,19 +257,422 @@ type DBusActionGroup interface {
 	AsActionGroup() ActionGroup
 	// AsRemoteActionGroup casts the class to the RemoteActionGroup interface.
 	AsRemoteActionGroup() RemoteActionGroup
+
+	// ActionAdded emits the Group::action-added signal on @action_group.
+	//
+	// This function should only be called by Group implementations.
+	//
+	// This method is inherited from ActionGroup
+	ActionAdded(actionName string)
+	// ActionEnabledChanged emits the Group::action-enabled-changed signal on
+	// @action_group.
+	//
+	// This function should only be called by Group implementations.
+	//
+	// This method is inherited from ActionGroup
+	ActionEnabledChanged(actionName string, enabled bool)
+	// ActionRemoved emits the Group::action-removed signal on @action_group.
+	//
+	// This function should only be called by Group implementations.
+	//
+	// This method is inherited from ActionGroup
+	ActionRemoved(actionName string)
+	// ActionStateChanged emits the Group::action-state-changed signal on
+	// @action_group.
+	//
+	// This function should only be called by Group implementations.
+	//
+	// This method is inherited from ActionGroup
+	ActionStateChanged(actionName string, state *glib.Variant)
+	// ActivateAction: activate the named action within @action_group.
+	//
+	// If the action is expecting a parameter, then the correct type of
+	// parameter must be given as @parameter. If the action is expecting no
+	// parameters then @parameter must be nil. See
+	// g_action_group_get_action_parameter_type().
+	//
+	// If the Group implementation supports asynchronous remote activation over
+	// D-Bus, this call may return before the relevant D-Bus traffic has been
+	// sent, or any replies have been received. In order to block on such
+	// asynchronous activation calls, g_dbus_connection_flush() should be called
+	// prior to the code, which depends on the result of the action activation.
+	// Without flushing the D-Bus connection, there is no guarantee that the
+	// action would have been activated.
+	//
+	// The following code which runs in a remote app instance, shows an example
+	// of a "quit" action being activated on the primary app instance over
+	// D-Bus. Here g_dbus_connection_flush() is called before `exit()`. Without
+	// g_dbus_connection_flush(), the "quit" action may fail to be activated on
+	// the primary instance.
+	//
+	//    // call "quit" action on primary instance
+	//    g_action_group_activate_action (G_ACTION_GROUP (app), "quit", NULL);
+	//
+	//    // make sure the action is activated now
+	//    g_dbus_connection_flush (...);
+	//
+	//    g_debug ("application has been terminated. exiting.");
+	//
+	//    exit (0);
+	//
+	// This method is inherited from ActionGroup
+	ActivateAction(actionName string, parameter *glib.Variant)
+	// ChangeActionState: request for the state of the named action within
+	// @action_group to be changed to @value.
+	//
+	// The action must be stateful and @value must be of the correct type. See
+	// g_action_group_get_action_state_type().
+	//
+	// This call merely requests a change. The action may refuse to change its
+	// state or may change its state to something other than @value. See
+	// g_action_group_get_action_state_hint().
+	//
+	// If the @value GVariant is floating, it is consumed.
+	//
+	// This method is inherited from ActionGroup
+	ChangeActionState(actionName string, value *glib.Variant)
+	// GetActionEnabled checks if the named action within @action_group is
+	// currently enabled.
+	//
+	// An action must be enabled in order to be activated or in order to have
+	// its state changed from outside callers.
+	//
+	// This method is inherited from ActionGroup
+	GetActionEnabled(actionName string) bool
+	// GetActionParameterType queries the type of the parameter that must be
+	// given when activating the named action within @action_group.
+	//
+	// When activating the action using g_action_group_activate_action(), the
+	// #GVariant given to that function must be of the type returned by this
+	// function.
+	//
+	// In the case that this function returns nil, you must not give any
+	// #GVariant, but nil instead.
+	//
+	// The parameter type of a particular action will never change but it is
+	// possible for an action to be removed and for a new action to be added
+	// with the same name but a different parameter type.
+	//
+	// This method is inherited from ActionGroup
+	GetActionParameterType(actionName string) *glib.VariantType
+	// GetActionState queries the current state of the named action within
+	// @action_group.
+	//
+	// If the action is not stateful then nil will be returned. If the action is
+	// stateful then the type of the return value is the type given by
+	// g_action_group_get_action_state_type().
+	//
+	// The return value (if non-nil) should be freed with g_variant_unref() when
+	// it is no longer required.
+	//
+	// This method is inherited from ActionGroup
+	GetActionState(actionName string) *glib.Variant
+	// GetActionStateHint requests a hint about the valid range of values for
+	// the state of the named action within @action_group.
+	//
+	// If nil is returned it either means that the action is not stateful or
+	// that there is no hint about the valid range of values for the state of
+	// the action.
+	//
+	// If a #GVariant array is returned then each item in the array is a
+	// possible value for the state. If a #GVariant pair (ie: two-tuple) is
+	// returned then the tuple specifies the inclusive lower and upper bound of
+	// valid values for the state.
+	//
+	// In any case, the information is merely a hint. It may be possible to have
+	// a state value outside of the hinted range and setting a value within the
+	// range may fail.
+	//
+	// The return value (if non-nil) should be freed with g_variant_unref() when
+	// it is no longer required.
+	//
+	// This method is inherited from ActionGroup
+	GetActionStateHint(actionName string) *glib.Variant
+	// GetActionStateType queries the type of the state of the named action
+	// within @action_group.
+	//
+	// If the action is stateful then this function returns the Type of the
+	// state. All calls to g_action_group_change_action_state() must give a
+	// #GVariant of this type and g_action_group_get_action_state() will return
+	// a #GVariant of the same type.
+	//
+	// If the action is not stateful then this function will return nil. In that
+	// case, g_action_group_get_action_state() will return nil and you must not
+	// call g_action_group_change_action_state().
+	//
+	// The state type of a particular action will never change but it is
+	// possible for an action to be removed and for a new action to be added
+	// with the same name but a different state type.
+	//
+	// This method is inherited from ActionGroup
+	GetActionStateType(actionName string) *glib.VariantType
+	// HasAction checks if the named action exists within @action_group.
+	//
+	// This method is inherited from ActionGroup
+	HasAction(actionName string) bool
+	// ListActions lists the actions contained within @action_group.
+	//
+	// The caller is responsible for freeing the list with g_strfreev() when it
+	// is no longer required.
+	//
+	// This method is inherited from ActionGroup
+	ListActions() []string
+	// QueryAction queries all aspects of the named action within an
+	// @action_group.
+	//
+	// This function acquires the information available from
+	// g_action_group_has_action(), g_action_group_get_action_enabled(),
+	// g_action_group_get_action_parameter_type(),
+	// g_action_group_get_action_state_type(),
+	// g_action_group_get_action_state_hint() and
+	// g_action_group_get_action_state() with a single function call.
+	//
+	// This provides two main benefits.
+	//
+	// The first is the improvement in efficiency that comes with not having to
+	// perform repeated lookups of the action in order to discover different
+	// things about it. The second is that implementing Group can now be done by
+	// only overriding this one virtual function.
+	//
+	// The interface provides a default implementation of this function that
+	// calls the individual functions, as required, to fetch the information.
+	// The interface also provides default implementations of those functions
+	// that call this function. All implementations, therefore, must override
+	// either this function or all of the others.
+	//
+	// If the action exists, true is returned and any of the requested fields
+	// (as indicated by having a non-nil reference passed in) are filled. If the
+	// action doesn't exist, false is returned and the fields may or may not
+	// have been modified.
+	//
+	// This method is inherited from ActionGroup
+	QueryAction(actionName string) (enabled bool, parameterType *glib.VariantType, stateType *glib.VariantType, stateHint *glib.Variant, state *glib.Variant, ok bool)
+	// ActivateActionFull activates the remote action.
+	//
+	// This is the same as g_action_group_activate_action() except that it
+	// allows for provision of "platform data" to be sent along with the
+	// activation request. This typically contains details such as the user
+	// interaction timestamp or startup notification information.
+	//
+	// @platform_data must be non-nil and must have the type
+	// G_VARIANT_TYPE_VARDICT. If it is floating, it will be consumed.
+	//
+	// This method is inherited from RemoteActionGroup
+	ActivateActionFull(actionName string, parameter *glib.Variant, platformData *glib.Variant)
+	// ChangeActionStateFull changes the state of a remote action.
+	//
+	// This is the same as g_action_group_change_action_state() except that it
+	// allows for provision of "platform data" to be sent along with the state
+	// change request. This typically contains details such as the user
+	// interaction timestamp or startup notification information.
+	//
+	// @platform_data must be non-nil and must have the type
+	// G_VARIANT_TYPE_VARDICT. If it is floating, it will be consumed.
+	//
+	// This method is inherited from RemoteActionGroup
+	ChangeActionStateFull(actionName string, value *glib.Variant, platformData *glib.Variant)
+	// ActionAdded emits the Group::action-added signal on @action_group.
+	//
+	// This function should only be called by Group implementations.
+	//
+	// This method is inherited from ActionGroup
+	ActionAdded(actionName string)
+	// ActionEnabledChanged emits the Group::action-enabled-changed signal on
+	// @action_group.
+	//
+	// This function should only be called by Group implementations.
+	//
+	// This method is inherited from ActionGroup
+	ActionEnabledChanged(actionName string, enabled bool)
+	// ActionRemoved emits the Group::action-removed signal on @action_group.
+	//
+	// This function should only be called by Group implementations.
+	//
+	// This method is inherited from ActionGroup
+	ActionRemoved(actionName string)
+	// ActionStateChanged emits the Group::action-state-changed signal on
+	// @action_group.
+	//
+	// This function should only be called by Group implementations.
+	//
+	// This method is inherited from ActionGroup
+	ActionStateChanged(actionName string, state *glib.Variant)
+	// ActivateAction: activate the named action within @action_group.
+	//
+	// If the action is expecting a parameter, then the correct type of
+	// parameter must be given as @parameter. If the action is expecting no
+	// parameters then @parameter must be nil. See
+	// g_action_group_get_action_parameter_type().
+	//
+	// If the Group implementation supports asynchronous remote activation over
+	// D-Bus, this call may return before the relevant D-Bus traffic has been
+	// sent, or any replies have been received. In order to block on such
+	// asynchronous activation calls, g_dbus_connection_flush() should be called
+	// prior to the code, which depends on the result of the action activation.
+	// Without flushing the D-Bus connection, there is no guarantee that the
+	// action would have been activated.
+	//
+	// The following code which runs in a remote app instance, shows an example
+	// of a "quit" action being activated on the primary app instance over
+	// D-Bus. Here g_dbus_connection_flush() is called before `exit()`. Without
+	// g_dbus_connection_flush(), the "quit" action may fail to be activated on
+	// the primary instance.
+	//
+	//    // call "quit" action on primary instance
+	//    g_action_group_activate_action (G_ACTION_GROUP (app), "quit", NULL);
+	//
+	//    // make sure the action is activated now
+	//    g_dbus_connection_flush (...);
+	//
+	//    g_debug ("application has been terminated. exiting.");
+	//
+	//    exit (0);
+	//
+	// This method is inherited from ActionGroup
+	ActivateAction(actionName string, parameter *glib.Variant)
+	// ChangeActionState: request for the state of the named action within
+	// @action_group to be changed to @value.
+	//
+	// The action must be stateful and @value must be of the correct type. See
+	// g_action_group_get_action_state_type().
+	//
+	// This call merely requests a change. The action may refuse to change its
+	// state or may change its state to something other than @value. See
+	// g_action_group_get_action_state_hint().
+	//
+	// If the @value GVariant is floating, it is consumed.
+	//
+	// This method is inherited from ActionGroup
+	ChangeActionState(actionName string, value *glib.Variant)
+	// GetActionEnabled checks if the named action within @action_group is
+	// currently enabled.
+	//
+	// An action must be enabled in order to be activated or in order to have
+	// its state changed from outside callers.
+	//
+	// This method is inherited from ActionGroup
+	GetActionEnabled(actionName string) bool
+	// GetActionParameterType queries the type of the parameter that must be
+	// given when activating the named action within @action_group.
+	//
+	// When activating the action using g_action_group_activate_action(), the
+	// #GVariant given to that function must be of the type returned by this
+	// function.
+	//
+	// In the case that this function returns nil, you must not give any
+	// #GVariant, but nil instead.
+	//
+	// The parameter type of a particular action will never change but it is
+	// possible for an action to be removed and for a new action to be added
+	// with the same name but a different parameter type.
+	//
+	// This method is inherited from ActionGroup
+	GetActionParameterType(actionName string) *glib.VariantType
+	// GetActionState queries the current state of the named action within
+	// @action_group.
+	//
+	// If the action is not stateful then nil will be returned. If the action is
+	// stateful then the type of the return value is the type given by
+	// g_action_group_get_action_state_type().
+	//
+	// The return value (if non-nil) should be freed with g_variant_unref() when
+	// it is no longer required.
+	//
+	// This method is inherited from ActionGroup
+	GetActionState(actionName string) *glib.Variant
+	// GetActionStateHint requests a hint about the valid range of values for
+	// the state of the named action within @action_group.
+	//
+	// If nil is returned it either means that the action is not stateful or
+	// that there is no hint about the valid range of values for the state of
+	// the action.
+	//
+	// If a #GVariant array is returned then each item in the array is a
+	// possible value for the state. If a #GVariant pair (ie: two-tuple) is
+	// returned then the tuple specifies the inclusive lower and upper bound of
+	// valid values for the state.
+	//
+	// In any case, the information is merely a hint. It may be possible to have
+	// a state value outside of the hinted range and setting a value within the
+	// range may fail.
+	//
+	// The return value (if non-nil) should be freed with g_variant_unref() when
+	// it is no longer required.
+	//
+	// This method is inherited from ActionGroup
+	GetActionStateHint(actionName string) *glib.Variant
+	// GetActionStateType queries the type of the state of the named action
+	// within @action_group.
+	//
+	// If the action is stateful then this function returns the Type of the
+	// state. All calls to g_action_group_change_action_state() must give a
+	// #GVariant of this type and g_action_group_get_action_state() will return
+	// a #GVariant of the same type.
+	//
+	// If the action is not stateful then this function will return nil. In that
+	// case, g_action_group_get_action_state() will return nil and you must not
+	// call g_action_group_change_action_state().
+	//
+	// The state type of a particular action will never change but it is
+	// possible for an action to be removed and for a new action to be added
+	// with the same name but a different state type.
+	//
+	// This method is inherited from ActionGroup
+	GetActionStateType(actionName string) *glib.VariantType
+	// HasAction checks if the named action exists within @action_group.
+	//
+	// This method is inherited from ActionGroup
+	HasAction(actionName string) bool
+	// ListActions lists the actions contained within @action_group.
+	//
+	// The caller is responsible for freeing the list with g_strfreev() when it
+	// is no longer required.
+	//
+	// This method is inherited from ActionGroup
+	ListActions() []string
+	// QueryAction queries all aspects of the named action within an
+	// @action_group.
+	//
+	// This function acquires the information available from
+	// g_action_group_has_action(), g_action_group_get_action_enabled(),
+	// g_action_group_get_action_parameter_type(),
+	// g_action_group_get_action_state_type(),
+	// g_action_group_get_action_state_hint() and
+	// g_action_group_get_action_state() with a single function call.
+	//
+	// This provides two main benefits.
+	//
+	// The first is the improvement in efficiency that comes with not having to
+	// perform repeated lookups of the action in order to discover different
+	// things about it. The second is that implementing Group can now be done by
+	// only overriding this one virtual function.
+	//
+	// The interface provides a default implementation of this function that
+	// calls the individual functions, as required, to fetch the information.
+	// The interface also provides default implementations of those functions
+	// that call this function. All implementations, therefore, must override
+	// either this function or all of the others.
+	//
+	// If the action exists, true is returned and any of the requested fields
+	// (as indicated by having a non-nil reference passed in) are filled. If the
+	// action doesn't exist, false is returned and the fields may or may not
+	// have been modified.
+	//
+	// This method is inherited from ActionGroup
+	QueryAction(actionName string) (enabled bool, parameterType *glib.VariantType, stateType *glib.VariantType, stateHint *glib.Variant, state *glib.Variant, ok bool)
 }
 
-// dBusActionGroup implements the DBusActionGroup class.
+// dBusActionGroup implements the DBusActionGroup interface.
 type dBusActionGroup struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapDBusActionGroup wraps a GObject to the right type. It is
-// primarily used internally.
+var _ DBusActionGroup = (*dBusActionGroup)(nil)
+
+// WrapDBusActionGroup wraps a GObject to a type that implements
+// interface DBusActionGroup. It is primarily used internally.
 func WrapDBusActionGroup(obj *externglib.Object) DBusActionGroup {
-	return dBusActionGroup{
-		Objector: obj,
-	}
+	return dBusActionGroup{obj}
 }
 
 func marshalDBusActionGroup(p uintptr) (interface{}, error) {
@@ -169,6 +687,126 @@ func (d dBusActionGroup) AsActionGroup() ActionGroup {
 
 func (d dBusActionGroup) AsRemoteActionGroup() RemoteActionGroup {
 	return WrapRemoteActionGroup(gextras.InternObject(d))
+}
+
+func (a dBusActionGroup) ActionAdded(actionName string) {
+	WrapActionGroup(gextras.InternObject(a)).ActionAdded(actionName)
+}
+
+func (a dBusActionGroup) ActionEnabledChanged(actionName string, enabled bool) {
+	WrapActionGroup(gextras.InternObject(a)).ActionEnabledChanged(actionName, enabled)
+}
+
+func (a dBusActionGroup) ActionRemoved(actionName string) {
+	WrapActionGroup(gextras.InternObject(a)).ActionRemoved(actionName)
+}
+
+func (a dBusActionGroup) ActionStateChanged(actionName string, state *glib.Variant) {
+	WrapActionGroup(gextras.InternObject(a)).ActionStateChanged(actionName, state)
+}
+
+func (a dBusActionGroup) ActivateAction(actionName string, parameter *glib.Variant) {
+	WrapActionGroup(gextras.InternObject(a)).ActivateAction(actionName, parameter)
+}
+
+func (a dBusActionGroup) ChangeActionState(actionName string, value *glib.Variant) {
+	WrapActionGroup(gextras.InternObject(a)).ChangeActionState(actionName, value)
+}
+
+func (a dBusActionGroup) GetActionEnabled(actionName string) bool {
+	return WrapActionGroup(gextras.InternObject(a)).GetActionEnabled(actionName)
+}
+
+func (a dBusActionGroup) GetActionParameterType(actionName string) *glib.VariantType {
+	return WrapActionGroup(gextras.InternObject(a)).GetActionParameterType(actionName)
+}
+
+func (a dBusActionGroup) GetActionState(actionName string) *glib.Variant {
+	return WrapActionGroup(gextras.InternObject(a)).GetActionState(actionName)
+}
+
+func (a dBusActionGroup) GetActionStateHint(actionName string) *glib.Variant {
+	return WrapActionGroup(gextras.InternObject(a)).GetActionStateHint(actionName)
+}
+
+func (a dBusActionGroup) GetActionStateType(actionName string) *glib.VariantType {
+	return WrapActionGroup(gextras.InternObject(a)).GetActionStateType(actionName)
+}
+
+func (a dBusActionGroup) HasAction(actionName string) bool {
+	return WrapActionGroup(gextras.InternObject(a)).HasAction(actionName)
+}
+
+func (a dBusActionGroup) ListActions() []string {
+	return WrapActionGroup(gextras.InternObject(a)).ListActions()
+}
+
+func (a dBusActionGroup) QueryAction(actionName string) (enabled bool, parameterType *glib.VariantType, stateType *glib.VariantType, stateHint *glib.Variant, state *glib.Variant, ok bool) {
+	return WrapActionGroup(gextras.InternObject(a)).QueryAction(actionName)
+}
+
+func (r dBusActionGroup) ActivateActionFull(actionName string, parameter *glib.Variant, platformData *glib.Variant) {
+	WrapRemoteActionGroup(gextras.InternObject(r)).ActivateActionFull(actionName, parameter, platformData)
+}
+
+func (r dBusActionGroup) ChangeActionStateFull(actionName string, value *glib.Variant, platformData *glib.Variant) {
+	WrapRemoteActionGroup(gextras.InternObject(r)).ChangeActionStateFull(actionName, value, platformData)
+}
+
+func (a dBusActionGroup) ActionAdded(actionName string) {
+	WrapActionGroup(gextras.InternObject(a)).ActionAdded(actionName)
+}
+
+func (a dBusActionGroup) ActionEnabledChanged(actionName string, enabled bool) {
+	WrapActionGroup(gextras.InternObject(a)).ActionEnabledChanged(actionName, enabled)
+}
+
+func (a dBusActionGroup) ActionRemoved(actionName string) {
+	WrapActionGroup(gextras.InternObject(a)).ActionRemoved(actionName)
+}
+
+func (a dBusActionGroup) ActionStateChanged(actionName string, state *glib.Variant) {
+	WrapActionGroup(gextras.InternObject(a)).ActionStateChanged(actionName, state)
+}
+
+func (a dBusActionGroup) ActivateAction(actionName string, parameter *glib.Variant) {
+	WrapActionGroup(gextras.InternObject(a)).ActivateAction(actionName, parameter)
+}
+
+func (a dBusActionGroup) ChangeActionState(actionName string, value *glib.Variant) {
+	WrapActionGroup(gextras.InternObject(a)).ChangeActionState(actionName, value)
+}
+
+func (a dBusActionGroup) GetActionEnabled(actionName string) bool {
+	return WrapActionGroup(gextras.InternObject(a)).GetActionEnabled(actionName)
+}
+
+func (a dBusActionGroup) GetActionParameterType(actionName string) *glib.VariantType {
+	return WrapActionGroup(gextras.InternObject(a)).GetActionParameterType(actionName)
+}
+
+func (a dBusActionGroup) GetActionState(actionName string) *glib.Variant {
+	return WrapActionGroup(gextras.InternObject(a)).GetActionState(actionName)
+}
+
+func (a dBusActionGroup) GetActionStateHint(actionName string) *glib.Variant {
+	return WrapActionGroup(gextras.InternObject(a)).GetActionStateHint(actionName)
+}
+
+func (a dBusActionGroup) GetActionStateType(actionName string) *glib.VariantType {
+	return WrapActionGroup(gextras.InternObject(a)).GetActionStateType(actionName)
+}
+
+func (a dBusActionGroup) HasAction(actionName string) bool {
+	return WrapActionGroup(gextras.InternObject(a)).HasAction(actionName)
+}
+
+func (a dBusActionGroup) ListActions() []string {
+	return WrapActionGroup(gextras.InternObject(a)).ListActions()
+}
+
+func (a dBusActionGroup) QueryAction(actionName string) (enabled bool, parameterType *glib.VariantType, stateType *glib.VariantType, stateHint *glib.Variant, state *glib.Variant, ok bool) {
+	return WrapActionGroup(gextras.InternObject(a)).QueryAction(actionName)
 }
 
 // DBusAuthObserver: the BusAuthObserver type provides a mechanism for
@@ -216,17 +854,17 @@ type DBusAuthObserver interface {
 	AuthorizeAuthenticatedPeer(stream IOStream, credentials Credentials) bool
 }
 
-// dBusAuthObserver implements the DBusAuthObserver class.
+// dBusAuthObserver implements the DBusAuthObserver interface.
 type dBusAuthObserver struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapDBusAuthObserver wraps a GObject to the right type. It is
-// primarily used internally.
+var _ DBusAuthObserver = (*dBusAuthObserver)(nil)
+
+// WrapDBusAuthObserver wraps a GObject to a type that implements
+// interface DBusAuthObserver. It is primarily used internally.
 func WrapDBusAuthObserver(obj *externglib.Object) DBusAuthObserver {
-	return dBusAuthObserver{
-		Objector: obj,
-	}
+	return dBusAuthObserver{obj}
 }
 
 func marshalDBusAuthObserver(p uintptr) (interface{}, error) {
@@ -243,7 +881,7 @@ func NewDBusAuthObserver() DBusAuthObserver {
 
 	var _dBusAuthObserver DBusAuthObserver // out
 
-	_dBusAuthObserver = WrapDBusAuthObserver(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_dBusAuthObserver = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(DBusAuthObserver)
 
 	return _dBusAuthObserver
 }
@@ -347,6 +985,97 @@ type DBusConnection interface {
 	AsAsyncInitable() AsyncInitable
 	// AsInitable casts the class to the Initable interface.
 	AsInitable() Initable
+
+	// InitAsync starts asynchronous initialization of the object implementing
+	// the interface. This must be done before any real use of the object after
+	// initial construction. If the object also implements #GInitable you can
+	// optionally call g_initable_init() instead.
+	//
+	// This method is intended for language bindings. If writing in C,
+	// g_async_initable_new_async() should typically be used instead.
+	//
+	// When the initialization is finished, @callback will be called. You can
+	// then call g_async_initable_init_finish() to get the result of the
+	// initialization.
+	//
+	// Implementations may also support cancellation. If @cancellable is not
+	// nil, then initialization can be cancelled by triggering the cancellable
+	// object from another thread. If the operation was cancelled, the error
+	// G_IO_ERROR_CANCELLED will be returned. If @cancellable is not nil, and
+	// the object doesn't support cancellable initialization, the error
+	// G_IO_ERROR_NOT_SUPPORTED will be returned.
+	//
+	// As with #GInitable, if the object is not initialized, or initialization
+	// returns with an error, then all operations on the object except
+	// g_object_ref() and g_object_unref() are considered to be invalid, and
+	// have undefined behaviour. They will often fail with g_critical() or
+	// g_warning(), but this must not be relied on.
+	//
+	// Callers should not assume that a class which implements Initable can be
+	// initialized multiple times; for more information, see g_initable_init().
+	// If a class explicitly supports being initialized multiple times,
+	// implementation requires yielding all subsequent calls to init_async() on
+	// the results of the first call.
+	//
+	// For classes that also support the #GInitable interface, the default
+	// implementation of this method will run the g_initable_init() function in
+	// a thread, so if you want to support asynchronous initialization via
+	// threads, just implement the Initable interface without overriding any
+	// interface methods.
+	//
+	// This method is inherited from AsyncInitable
+	InitAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
+	// InitFinish finishes asynchronous initialization and returns the result.
+	// See g_async_initable_init_async().
+	//
+	// This method is inherited from AsyncInitable
+	InitFinish(res AsyncResult) error
+	// NewFinish finishes the async construction for the various
+	// g_async_initable_new calls, returning the created object or nil on error.
+	//
+	// This method is inherited from AsyncInitable
+	NewFinish(res AsyncResult) (gextras.Objector, error)
+	// Init initializes the object implementing the interface.
+	//
+	// This method is intended for language bindings. If writing in C,
+	// g_initable_new() should typically be used instead.
+	//
+	// The object must be initialized before any real use after initial
+	// construction, either with this function or g_async_initable_init_async().
+	//
+	// Implementations may also support cancellation. If @cancellable is not
+	// nil, then initialization can be cancelled by triggering the cancellable
+	// object from another thread. If the operation was cancelled, the error
+	// G_IO_ERROR_CANCELLED will be returned. If @cancellable is not nil and the
+	// object doesn't support cancellable initialization the error
+	// G_IO_ERROR_NOT_SUPPORTED will be returned.
+	//
+	// If the object is not initialized, or initialization returns with an
+	// error, then all operations on the object except g_object_ref() and
+	// g_object_unref() are considered to be invalid, and have undefined
+	// behaviour. See the [introduction][ginitable] for more details.
+	//
+	// Callers should not assume that a class which implements #GInitable can be
+	// initialized multiple times, unless the class explicitly documents itself
+	// as supporting this. Generally, a class’ implementation of init() can
+	// assume (and assert) that it will only be called once. Previously, this
+	// documentation recommended all #GInitable implementations should be
+	// idempotent; that recommendation was relaxed in GLib 2.54.
+	//
+	// If a class explicitly supports being initialized multiple times, it is
+	// recommended that the method is idempotent: multiple calls with the same
+	// arguments should return the same results. Only the first call initializes
+	// the object; further calls return the result of the first call.
+	//
+	// One reason why a class might need to support idempotent initialization is
+	// if it is designed to be used via the singleton pattern, with a
+	// Class.constructor that sometimes returns an existing instance. In this
+	// pattern, a caller would expect to be able to call g_initable_init() on
+	// the result of g_object_new(), regardless of whether it is in fact a new
+	// instance.
+	//
+	// This method is inherited from Initable
+	Init(cancellable Cancellable) error
 
 	// Call: asynchronously invokes the @method_name method on the
 	// @interface_name D-Bus interface on the remote object at @object_path
@@ -746,17 +1475,17 @@ type DBusConnection interface {
 	UnregisterSubtree(registrationId uint) bool
 }
 
-// dBusConnection implements the DBusConnection class.
+// dBusConnection implements the DBusConnection interface.
 type dBusConnection struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapDBusConnection wraps a GObject to the right type. It is
-// primarily used internally.
+var _ DBusConnection = (*dBusConnection)(nil)
+
+// WrapDBusConnection wraps a GObject to a type that implements
+// interface DBusConnection. It is primarily used internally.
 func WrapDBusConnection(obj *externglib.Object) DBusConnection {
-	return dBusConnection{
-		Objector: obj,
-	}
+	return dBusConnection{obj}
 }
 
 func marshalDBusConnection(p uintptr) (interface{}, error) {
@@ -779,7 +1508,7 @@ func NewDBusConnectionFinish(res AsyncResult) (DBusConnection, error) {
 	var _dBusConnection DBusConnection // out
 	var _goerr error                   // out
 
-	_dBusConnection = WrapDBusConnection(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_dBusConnection = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(DBusConnection)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _dBusConnection, _goerr
@@ -799,7 +1528,7 @@ func NewDBusConnectionForAddressFinish(res AsyncResult) (DBusConnection, error) 
 	var _dBusConnection DBusConnection // out
 	var _goerr error                   // out
 
-	_dBusConnection = WrapDBusConnection(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_dBusConnection = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(DBusConnection)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _dBusConnection, _goerr
@@ -839,7 +1568,7 @@ func NewDBusConnectionForAddressSync(address string, flags DBusConnectionFlags, 
 	var _dBusConnection DBusConnection // out
 	var _goerr error                   // out
 
-	_dBusConnection = WrapDBusConnection(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_dBusConnection = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(DBusConnection)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _dBusConnection, _goerr
@@ -880,7 +1609,7 @@ func NewDBusConnectionSync(stream IOStream, guid string, flags DBusConnectionFla
 	var _dBusConnection DBusConnection // out
 	var _goerr error                   // out
 
-	_dBusConnection = WrapDBusConnection(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_dBusConnection = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(DBusConnection)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _dBusConnection, _goerr
@@ -892,6 +1621,22 @@ func (d dBusConnection) AsAsyncInitable() AsyncInitable {
 
 func (d dBusConnection) AsInitable() Initable {
 	return WrapInitable(gextras.InternObject(d))
+}
+
+func (i dBusConnection) InitAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+	WrapAsyncInitable(gextras.InternObject(i)).InitAsync(ioPriority, cancellable, callback)
+}
+
+func (i dBusConnection) InitFinish(res AsyncResult) error {
+	return WrapAsyncInitable(gextras.InternObject(i)).InitFinish(res)
+}
+
+func (i dBusConnection) NewFinish(res AsyncResult) (gextras.Objector, error) {
+	return WrapAsyncInitable(gextras.InternObject(i)).NewFinish(res)
+}
+
+func (i dBusConnection) Init(cancellable Cancellable) error {
+	return WrapInitable(gextras.InternObject(i)).Init(cancellable)
 }
 
 func (c dBusConnection) Call(busName string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, cancellable Cancellable, callback AsyncReadyCallback) {
@@ -1618,26 +2363,128 @@ func (c dBusConnection) UnregisterSubtree(registrationId uint) bool {
 // menu model that is exported over D-Bus with
 // g_dbus_connection_export_menu_model().
 type DBusMenuModel interface {
-	MenuModel
+	gextras.Objector
+
+	// AsMenuModel casts the class to the MenuModel interface.
+	AsMenuModel() MenuModel
+
+	// GetItemAttributeValue queries the item at position @item_index in @model
+	// for the attribute specified by @attribute.
+	//
+	// If @expected_type is non-nil then it specifies the expected type of the
+	// attribute. If it is nil then any type will be accepted.
+	//
+	// If the attribute exists and matches @expected_type (or if the expected
+	// type is unspecified) then the value is returned.
+	//
+	// If the attribute does not exist, or does not match the expected type then
+	// nil is returned.
+	//
+	// This method is inherited from MenuModel
+	GetItemAttributeValue(itemIndex int, attribute string, expectedType *glib.VariantType) *glib.Variant
+	// GetItemLink queries the item at position @item_index in @model for the
+	// link specified by @link.
+	//
+	// If the link exists, the linked Model is returned. If the link does not
+	// exist, nil is returned.
+	//
+	// This method is inherited from MenuModel
+	GetItemLink(itemIndex int, link string) MenuModel
+	// GetNItems: query the number of items in @model.
+	//
+	// This method is inherited from MenuModel
+	GetNItems() int
+	// IsMutable queries if @model is mutable.
+	//
+	// An immutable Model will never emit the Model::items-changed signal.
+	// Consumers of the model may make optimisations accordingly.
+	//
+	// This method is inherited from MenuModel
+	IsMutable() bool
+	// ItemsChanged requests emission of the Model::items-changed signal on
+	// @model.
+	//
+	// This function should never be called except by Model subclasses. Any
+	// other calls to this function will very likely lead to a violation of the
+	// interface of the model.
+	//
+	// The implementation should update its internal representation of the menu
+	// before emitting the signal. The implementation should further expect to
+	// receive queries about the new state of the menu (and particularly added
+	// menu items) while signal handlers are running.
+	//
+	// The implementation must dispatch this call directly from a mainloop entry
+	// and not in response to calls -- particularly those from the Model API.
+	// Said another way: the menu must not change while user code is running
+	// without returning to the mainloop.
+	//
+	// This method is inherited from MenuModel
+	ItemsChanged(position int, removed int, added int)
+	// IterateItemAttributes creates a AttributeIter to iterate over the
+	// attributes of the item at position @item_index in @model.
+	//
+	// You must free the iterator with g_object_unref() when you are done.
+	//
+	// This method is inherited from MenuModel
+	IterateItemAttributes(itemIndex int) MenuAttributeIter
+	// IterateItemLinks creates a LinkIter to iterate over the links of the item
+	// at position @item_index in @model.
+	//
+	// You must free the iterator with g_object_unref() when you are done.
+	//
+	// This method is inherited from MenuModel
+	IterateItemLinks(itemIndex int) MenuLinkIter
 }
 
-// dBusMenuModel implements the DBusMenuModel class.
+// dBusMenuModel implements the DBusMenuModel interface.
 type dBusMenuModel struct {
-	MenuModel
+	*externglib.Object
 }
 
-// WrapDBusMenuModel wraps a GObject to the right type. It is
-// primarily used internally.
+var _ DBusMenuModel = (*dBusMenuModel)(nil)
+
+// WrapDBusMenuModel wraps a GObject to a type that implements
+// interface DBusMenuModel. It is primarily used internally.
 func WrapDBusMenuModel(obj *externglib.Object) DBusMenuModel {
-	return dBusMenuModel{
-		MenuModel: WrapMenuModel(obj),
-	}
+	return dBusMenuModel{obj}
 }
 
 func marshalDBusMenuModel(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapDBusMenuModel(obj), nil
+}
+
+func (d dBusMenuModel) AsMenuModel() MenuModel {
+	return WrapMenuModel(gextras.InternObject(d))
+}
+
+func (m dBusMenuModel) GetItemAttributeValue(itemIndex int, attribute string, expectedType *glib.VariantType) *glib.Variant {
+	return WrapMenuModel(gextras.InternObject(m)).GetItemAttributeValue(itemIndex, attribute, expectedType)
+}
+
+func (m dBusMenuModel) GetItemLink(itemIndex int, link string) MenuModel {
+	return WrapMenuModel(gextras.InternObject(m)).GetItemLink(itemIndex, link)
+}
+
+func (m dBusMenuModel) GetNItems() int {
+	return WrapMenuModel(gextras.InternObject(m)).GetNItems()
+}
+
+func (m dBusMenuModel) IsMutable() bool {
+	return WrapMenuModel(gextras.InternObject(m)).IsMutable()
+}
+
+func (m dBusMenuModel) ItemsChanged(position int, removed int, added int) {
+	WrapMenuModel(gextras.InternObject(m)).ItemsChanged(position, removed, added)
+}
+
+func (m dBusMenuModel) IterateItemAttributes(itemIndex int) MenuAttributeIter {
+	return WrapMenuModel(gextras.InternObject(m)).IterateItemAttributes(itemIndex)
+}
+
+func (m dBusMenuModel) IterateItemLinks(itemIndex int) MenuLinkIter {
+	return WrapMenuModel(gextras.InternObject(m)).IterateItemLinks(itemIndex)
 }
 
 // DBusMessage: type for representing D-Bus messages that can be sent or
@@ -1817,17 +2664,17 @@ type DBusMessage interface {
 	ToGerror() error
 }
 
-// dBusMessage implements the DBusMessage class.
+// dBusMessage implements the DBusMessage interface.
 type dBusMessage struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapDBusMessage wraps a GObject to the right type. It is
-// primarily used internally.
+var _ DBusMessage = (*dBusMessage)(nil)
+
+// WrapDBusMessage wraps a GObject to a type that implements
+// interface DBusMessage. It is primarily used internally.
 func WrapDBusMessage(obj *externglib.Object) DBusMessage {
-	return dBusMessage{
-		Objector: obj,
-	}
+	return dBusMessage{obj}
 }
 
 func marshalDBusMessage(p uintptr) (interface{}, error) {
@@ -1844,7 +2691,7 @@ func NewDBusMessage() DBusMessage {
 
 	var _dBusMessage DBusMessage // out
 
-	_dBusMessage = WrapDBusMessage(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_dBusMessage = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(DBusMessage)
 
 	return _dBusMessage
 }
@@ -1871,7 +2718,7 @@ func NewDBusMessageFromBlob(blob []byte, capabilities DBusCapabilityFlags) (DBus
 	var _dBusMessage DBusMessage // out
 	var _goerr error             // out
 
-	_dBusMessage = WrapDBusMessage(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_dBusMessage = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(DBusMessage)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _dBusMessage, _goerr
@@ -1898,7 +2745,7 @@ func NewDBusMessageMethodCall(name string, path string, interface_ string, metho
 
 	var _dBusMessage DBusMessage // out
 
-	_dBusMessage = WrapDBusMessage(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_dBusMessage = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(DBusMessage)
 
 	return _dBusMessage
 }
@@ -1921,7 +2768,7 @@ func NewDBusMessageSignal(path string, interface_ string, signal string) DBusMes
 
 	var _dBusMessage DBusMessage // out
 
-	_dBusMessage = WrapDBusMessage(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_dBusMessage = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(DBusMessage)
 
 	return _dBusMessage
 }
@@ -2608,17 +3455,17 @@ type DBusMethodInvocation interface {
 	ReturnValueWithUnixFdList(parameters *glib.Variant, fdList UnixFDList)
 }
 
-// dBusMethodInvocation implements the DBusMethodInvocation class.
+// dBusMethodInvocation implements the DBusMethodInvocation interface.
 type dBusMethodInvocation struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapDBusMethodInvocation wraps a GObject to the right type. It is
-// primarily used internally.
+var _ DBusMethodInvocation = (*dBusMethodInvocation)(nil)
+
+// WrapDBusMethodInvocation wraps a GObject to a type that implements
+// interface DBusMethodInvocation. It is primarily used internally.
 func WrapDBusMethodInvocation(obj *externglib.Object) DBusMethodInvocation {
-	return dBusMethodInvocation{
-		Objector: obj,
-	}
+	return dBusMethodInvocation{obj}
 }
 
 func marshalDBusMethodInvocation(p uintptr) (interface{}, error) {
@@ -2848,6 +3695,48 @@ type DBusServer interface {
 	// AsInitable casts the class to the Initable interface.
 	AsInitable() Initable
 
+	// Init initializes the object implementing the interface.
+	//
+	// This method is intended for language bindings. If writing in C,
+	// g_initable_new() should typically be used instead.
+	//
+	// The object must be initialized before any real use after initial
+	// construction, either with this function or g_async_initable_init_async().
+	//
+	// Implementations may also support cancellation. If @cancellable is not
+	// nil, then initialization can be cancelled by triggering the cancellable
+	// object from another thread. If the operation was cancelled, the error
+	// G_IO_ERROR_CANCELLED will be returned. If @cancellable is not nil and the
+	// object doesn't support cancellable initialization the error
+	// G_IO_ERROR_NOT_SUPPORTED will be returned.
+	//
+	// If the object is not initialized, or initialization returns with an
+	// error, then all operations on the object except g_object_ref() and
+	// g_object_unref() are considered to be invalid, and have undefined
+	// behaviour. See the [introduction][ginitable] for more details.
+	//
+	// Callers should not assume that a class which implements #GInitable can be
+	// initialized multiple times, unless the class explicitly documents itself
+	// as supporting this. Generally, a class’ implementation of init() can
+	// assume (and assert) that it will only be called once. Previously, this
+	// documentation recommended all #GInitable implementations should be
+	// idempotent; that recommendation was relaxed in GLib 2.54.
+	//
+	// If a class explicitly supports being initialized multiple times, it is
+	// recommended that the method is idempotent: multiple calls with the same
+	// arguments should return the same results. Only the first call initializes
+	// the object; further calls return the result of the first call.
+	//
+	// One reason why a class might need to support idempotent initialization is
+	// if it is designed to be used via the singleton pattern, with a
+	// Class.constructor that sometimes returns an existing instance. In this
+	// pattern, a caller would expect to be able to call g_initable_init() on
+	// the result of g_object_new(), regardless of whether it is in fact a new
+	// instance.
+	//
+	// This method is inherited from Initable
+	Init(cancellable Cancellable) error
+
 	// ClientAddress gets a D-Bus address
 	// (https://dbus.freedesktop.org/doc/dbus-specification.html#addresses)
 	// string that can be used by clients to connect to @server.
@@ -2864,17 +3753,17 @@ type DBusServer interface {
 	Stop()
 }
 
-// dBusServer implements the DBusServer class.
+// dBusServer implements the DBusServer interface.
 type dBusServer struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapDBusServer wraps a GObject to the right type. It is
-// primarily used internally.
+var _ DBusServer = (*dBusServer)(nil)
+
+// WrapDBusServer wraps a GObject to a type that implements
+// interface DBusServer. It is primarily used internally.
 func WrapDBusServer(obj *externglib.Object) DBusServer {
-	return dBusServer{
-		Objector: obj,
-	}
+	return dBusServer{obj}
 }
 
 func marshalDBusServer(p uintptr) (interface{}, error) {
@@ -2925,7 +3814,7 @@ func NewDBusServerSync(address string, flags DBusServerFlags, guid string, obser
 	var _dBusServer DBusServer // out
 	var _goerr error           // out
 
-	_dBusServer = WrapDBusServer(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_dBusServer = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(DBusServer)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _dBusServer, _goerr
@@ -2933,6 +3822,10 @@ func NewDBusServerSync(address string, flags DBusServerFlags, guid string, obser
 
 func (d dBusServer) AsInitable() Initable {
 	return WrapInitable(gextras.InternObject(d))
+}
+
+func (i dBusServer) Init(cancellable Cancellable) error {
+	return WrapInitable(gextras.InternObject(i)).Init(cancellable)
 }
 
 func (s dBusServer) ClientAddress() string {
@@ -3021,7 +3914,77 @@ func (s dBusServer) Stop() {
 // g_menu_insert(). To add a section, use g_menu_insert_section(). To add a
 // submenu, use g_menu_insert_submenu().
 type Menu interface {
-	MenuModel
+	gextras.Objector
+
+	// AsMenuModel casts the class to the MenuModel interface.
+	AsMenuModel() MenuModel
+
+	// GetItemAttributeValue queries the item at position @item_index in @model
+	// for the attribute specified by @attribute.
+	//
+	// If @expected_type is non-nil then it specifies the expected type of the
+	// attribute. If it is nil then any type will be accepted.
+	//
+	// If the attribute exists and matches @expected_type (or if the expected
+	// type is unspecified) then the value is returned.
+	//
+	// If the attribute does not exist, or does not match the expected type then
+	// nil is returned.
+	//
+	// This method is inherited from MenuModel
+	GetItemAttributeValue(itemIndex int, attribute string, expectedType *glib.VariantType) *glib.Variant
+	// GetItemLink queries the item at position @item_index in @model for the
+	// link specified by @link.
+	//
+	// If the link exists, the linked Model is returned. If the link does not
+	// exist, nil is returned.
+	//
+	// This method is inherited from MenuModel
+	GetItemLink(itemIndex int, link string) MenuModel
+	// GetNItems: query the number of items in @model.
+	//
+	// This method is inherited from MenuModel
+	GetNItems() int
+	// IsMutable queries if @model is mutable.
+	//
+	// An immutable Model will never emit the Model::items-changed signal.
+	// Consumers of the model may make optimisations accordingly.
+	//
+	// This method is inherited from MenuModel
+	IsMutable() bool
+	// ItemsChanged requests emission of the Model::items-changed signal on
+	// @model.
+	//
+	// This function should never be called except by Model subclasses. Any
+	// other calls to this function will very likely lead to a violation of the
+	// interface of the model.
+	//
+	// The implementation should update its internal representation of the menu
+	// before emitting the signal. The implementation should further expect to
+	// receive queries about the new state of the menu (and particularly added
+	// menu items) while signal handlers are running.
+	//
+	// The implementation must dispatch this call directly from a mainloop entry
+	// and not in response to calls -- particularly those from the Model API.
+	// Said another way: the menu must not change while user code is running
+	// without returning to the mainloop.
+	//
+	// This method is inherited from MenuModel
+	ItemsChanged(position int, removed int, added int)
+	// IterateItemAttributes creates a AttributeIter to iterate over the
+	// attributes of the item at position @item_index in @model.
+	//
+	// You must free the iterator with g_object_unref() when you are done.
+	//
+	// This method is inherited from MenuModel
+	IterateItemAttributes(itemIndex int) MenuAttributeIter
+	// IterateItemLinks creates a LinkIter to iterate over the links of the item
+	// at position @item_index in @model.
+	//
+	// You must free the iterator with g_object_unref() when you are done.
+	//
+	// This method is inherited from MenuModel
+	IterateItemLinks(itemIndex int) MenuLinkIter
 
 	// Append: convenience function for appending a normal menu item to the end
 	// of @menu. Combine g_menu_item_new() and g_menu_insert_item() for a more
@@ -3107,17 +4070,17 @@ type Menu interface {
 	RemoveAll()
 }
 
-// menu implements the Menu class.
+// menu implements the Menu interface.
 type menu struct {
-	MenuModel
+	*externglib.Object
 }
 
-// WrapMenu wraps a GObject to the right type. It is
-// primarily used internally.
+var _ Menu = (*menu)(nil)
+
+// WrapMenu wraps a GObject to a type that implements
+// interface Menu. It is primarily used internally.
 func WrapMenu(obj *externglib.Object) Menu {
-	return menu{
-		MenuModel: WrapMenuModel(obj),
-	}
+	return menu{obj}
 }
 
 func marshalMenu(p uintptr) (interface{}, error) {
@@ -3136,9 +4099,41 @@ func NewMenu() Menu {
 
 	var _menu Menu // out
 
-	_menu = WrapMenu(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_menu = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Menu)
 
 	return _menu
+}
+
+func (m menu) AsMenuModel() MenuModel {
+	return WrapMenuModel(gextras.InternObject(m))
+}
+
+func (m menu) GetItemAttributeValue(itemIndex int, attribute string, expectedType *glib.VariantType) *glib.Variant {
+	return WrapMenuModel(gextras.InternObject(m)).GetItemAttributeValue(itemIndex, attribute, expectedType)
+}
+
+func (m menu) GetItemLink(itemIndex int, link string) MenuModel {
+	return WrapMenuModel(gextras.InternObject(m)).GetItemLink(itemIndex, link)
+}
+
+func (m menu) GetNItems() int {
+	return WrapMenuModel(gextras.InternObject(m)).GetNItems()
+}
+
+func (m menu) IsMutable() bool {
+	return WrapMenuModel(gextras.InternObject(m)).IsMutable()
+}
+
+func (m menu) ItemsChanged(position int, removed int, added int) {
+	WrapMenuModel(gextras.InternObject(m)).ItemsChanged(position, removed, added)
+}
+
+func (m menu) IterateItemAttributes(itemIndex int) MenuAttributeIter {
+	return WrapMenuModel(gextras.InternObject(m)).IterateItemAttributes(itemIndex)
+}
+
+func (m menu) IterateItemLinks(itemIndex int) MenuLinkIter {
+	return WrapMenuModel(gextras.InternObject(m)).IterateItemLinks(itemIndex)
 }
 
 func (m menu) Append(label string, detailedAction string) {
@@ -3453,17 +4448,17 @@ type MenuItem interface {
 	SetSubmenu(submenu MenuModel)
 }
 
-// menuItem implements the MenuItem class.
+// menuItem implements the MenuItem interface.
 type menuItem struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapMenuItem wraps a GObject to the right type. It is
-// primarily used internally.
+var _ MenuItem = (*menuItem)(nil)
+
+// WrapMenuItem wraps a GObject to a type that implements
+// interface MenuItem. It is primarily used internally.
 func WrapMenuItem(obj *externglib.Object) MenuItem {
-	return menuItem{
-		Objector: obj,
-	}
+	return menuItem{obj}
 }
 
 func marshalMenuItem(p uintptr) (interface{}, error) {
@@ -3493,7 +4488,7 @@ func NewMenuItem(label string, detailedAction string) MenuItem {
 
 	var _menuItem MenuItem // out
 
-	_menuItem = WrapMenuItem(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_menuItem = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(MenuItem)
 
 	return _menuItem
 }
@@ -3515,7 +4510,7 @@ func NewMenuItemFromModel(model MenuModel, itemIndex int) MenuItem {
 
 	var _menuItem MenuItem // out
 
-	_menuItem = WrapMenuItem(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_menuItem = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(MenuItem)
 
 	return _menuItem
 }
@@ -3590,7 +4585,7 @@ func NewMenuItemSection(label string, section MenuModel) MenuItem {
 
 	var _menuItem MenuItem // out
 
-	_menuItem = WrapMenuItem(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_menuItem = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(MenuItem)
 
 	return _menuItem
 }
@@ -3612,7 +4607,7 @@ func NewMenuItemSubmenu(label string, submenu MenuModel) MenuItem {
 
 	var _menuItem MenuItem // out
 
-	_menuItem = WrapMenuItem(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_menuItem = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(MenuItem)
 
 	return _menuItem
 }
@@ -3826,17 +4821,17 @@ type Notification interface {
 	SetUrgent(urgent bool)
 }
 
-// notification implements the Notification class.
+// notification implements the Notification interface.
 type notification struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapNotification wraps a GObject to the right type. It is
-// primarily used internally.
+var _ Notification = (*notification)(nil)
+
+// WrapNotification wraps a GObject to a type that implements
+// interface Notification. It is primarily used internally.
 func WrapNotification(obj *externglib.Object) Notification {
-	return notification{
-		Objector: obj,
-	}
+	return notification{obj}
 }
 
 func marshalNotification(p uintptr) (interface{}, error) {
@@ -3861,7 +4856,7 @@ func NewNotification(title string) Notification {
 
 	var _notification Notification // out
 
-	_notification = WrapNotification(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_notification = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Notification)
 
 	return _notification
 }
@@ -4027,19 +5022,111 @@ type PropertyAction interface {
 
 	// AsAction casts the class to the Action interface.
 	AsAction() Action
+
+	// Activate activates the action.
+	//
+	// @parameter must be the correct type of parameter for the action (ie: the
+	// parameter type given at construction time). If the parameter type was nil
+	// then @parameter must also be nil.
+	//
+	// If the @parameter GVariant is floating, it is consumed.
+	//
+	// This method is inherited from Action
+	Activate(parameter *glib.Variant)
+	// ChangeState: request for the state of @action to be changed to @value.
+	//
+	// The action must be stateful and @value must be of the correct type. See
+	// g_action_get_state_type().
+	//
+	// This call merely requests a change. The action may refuse to change its
+	// state or may change its state to something other than @value. See
+	// g_action_get_state_hint().
+	//
+	// If the @value GVariant is floating, it is consumed.
+	//
+	// This method is inherited from Action
+	ChangeState(value *glib.Variant)
+	// GetEnabled checks if @action is currently enabled.
+	//
+	// An action must be enabled in order to be activated or in order to have
+	// its state changed from outside callers.
+	//
+	// This method is inherited from Action
+	GetEnabled() bool
+	// GetName queries the name of @action.
+	//
+	// This method is inherited from Action
+	GetName() string
+	// GetParameterType queries the type of the parameter that must be given
+	// when activating @action.
+	//
+	// When activating the action using g_action_activate(), the #GVariant given
+	// to that function must be of the type returned by this function.
+	//
+	// In the case that this function returns nil, you must not give any
+	// #GVariant, but nil instead.
+	//
+	// This method is inherited from Action
+	GetParameterType() *glib.VariantType
+	// GetState queries the current state of @action.
+	//
+	// If the action is not stateful then nil will be returned. If the action is
+	// stateful then the type of the return value is the type given by
+	// g_action_get_state_type().
+	//
+	// The return value (if non-nil) should be freed with g_variant_unref() when
+	// it is no longer required.
+	//
+	// This method is inherited from Action
+	GetState() *glib.Variant
+	// GetStateHint requests a hint about the valid range of values for the
+	// state of @action.
+	//
+	// If nil is returned it either means that the action is not stateful or
+	// that there is no hint about the valid range of values for the state of
+	// the action.
+	//
+	// If a #GVariant array is returned then each item in the array is a
+	// possible value for the state. If a #GVariant pair (ie: two-tuple) is
+	// returned then the tuple specifies the inclusive lower and upper bound of
+	// valid values for the state.
+	//
+	// In any case, the information is merely a hint. It may be possible to have
+	// a state value outside of the hinted range and setting a value within the
+	// range may fail.
+	//
+	// The return value (if non-nil) should be freed with g_variant_unref() when
+	// it is no longer required.
+	//
+	// This method is inherited from Action
+	GetStateHint() *glib.Variant
+	// GetStateType queries the type of the state of @action.
+	//
+	// If the action is stateful (e.g. created with
+	// g_simple_action_new_stateful()) then this function returns the Type of
+	// the state. This is the type of the initial value given as the state. All
+	// calls to g_action_change_state() must give a #GVariant of this type and
+	// g_action_get_state() will return a #GVariant of the same type.
+	//
+	// If the action is not stateful (e.g. created with g_simple_action_new())
+	// then this function will return nil. In that case, g_action_get_state()
+	// will return nil and you must not call g_action_change_state().
+	//
+	// This method is inherited from Action
+	GetStateType() *glib.VariantType
 }
 
-// propertyAction implements the PropertyAction class.
+// propertyAction implements the PropertyAction interface.
 type propertyAction struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapPropertyAction wraps a GObject to the right type. It is
-// primarily used internally.
+var _ PropertyAction = (*propertyAction)(nil)
+
+// WrapPropertyAction wraps a GObject to a type that implements
+// interface PropertyAction. It is primarily used internally.
 func WrapPropertyAction(obj *externglib.Object) PropertyAction {
-	return propertyAction{
-		Objector: obj,
-	}
+	return propertyAction{obj}
 }
 
 func marshalPropertyAction(p uintptr) (interface{}, error) {
@@ -4072,13 +5159,45 @@ func NewPropertyAction(name string, object gextras.Objector, propertyName string
 
 	var _propertyAction PropertyAction // out
 
-	_propertyAction = WrapPropertyAction(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_propertyAction = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(PropertyAction)
 
 	return _propertyAction
 }
 
 func (p propertyAction) AsAction() Action {
 	return WrapAction(gextras.InternObject(p))
+}
+
+func (a propertyAction) Activate(parameter *glib.Variant) {
+	WrapAction(gextras.InternObject(a)).Activate(parameter)
+}
+
+func (a propertyAction) ChangeState(value *glib.Variant) {
+	WrapAction(gextras.InternObject(a)).ChangeState(value)
+}
+
+func (a propertyAction) GetEnabled() bool {
+	return WrapAction(gextras.InternObject(a)).GetEnabled()
+}
+
+func (a propertyAction) GetName() string {
+	return WrapAction(gextras.InternObject(a)).GetName()
+}
+
+func (a propertyAction) GetParameterType() *glib.VariantType {
+	return WrapAction(gextras.InternObject(a)).GetParameterType()
+}
+
+func (a propertyAction) GetState() *glib.Variant {
+	return WrapAction(gextras.InternObject(a)).GetState()
+}
+
+func (a propertyAction) GetStateHint() *glib.Variant {
+	return WrapAction(gextras.InternObject(a)).GetStateHint()
+}
+
+func (a propertyAction) GetStateType() *glib.VariantType {
+	return WrapAction(gextras.InternObject(a)).GetStateType()
 }
 
 // SimpleAction is the obvious simple implementation of the #GAction interface.
@@ -4091,6 +5210,98 @@ type SimpleAction interface {
 
 	// AsAction casts the class to the Action interface.
 	AsAction() Action
+
+	// Activate activates the action.
+	//
+	// @parameter must be the correct type of parameter for the action (ie: the
+	// parameter type given at construction time). If the parameter type was nil
+	// then @parameter must also be nil.
+	//
+	// If the @parameter GVariant is floating, it is consumed.
+	//
+	// This method is inherited from Action
+	Activate(parameter *glib.Variant)
+	// ChangeState: request for the state of @action to be changed to @value.
+	//
+	// The action must be stateful and @value must be of the correct type. See
+	// g_action_get_state_type().
+	//
+	// This call merely requests a change. The action may refuse to change its
+	// state or may change its state to something other than @value. See
+	// g_action_get_state_hint().
+	//
+	// If the @value GVariant is floating, it is consumed.
+	//
+	// This method is inherited from Action
+	ChangeState(value *glib.Variant)
+	// GetEnabled checks if @action is currently enabled.
+	//
+	// An action must be enabled in order to be activated or in order to have
+	// its state changed from outside callers.
+	//
+	// This method is inherited from Action
+	GetEnabled() bool
+	// GetName queries the name of @action.
+	//
+	// This method is inherited from Action
+	GetName() string
+	// GetParameterType queries the type of the parameter that must be given
+	// when activating @action.
+	//
+	// When activating the action using g_action_activate(), the #GVariant given
+	// to that function must be of the type returned by this function.
+	//
+	// In the case that this function returns nil, you must not give any
+	// #GVariant, but nil instead.
+	//
+	// This method is inherited from Action
+	GetParameterType() *glib.VariantType
+	// GetState queries the current state of @action.
+	//
+	// If the action is not stateful then nil will be returned. If the action is
+	// stateful then the type of the return value is the type given by
+	// g_action_get_state_type().
+	//
+	// The return value (if non-nil) should be freed with g_variant_unref() when
+	// it is no longer required.
+	//
+	// This method is inherited from Action
+	GetState() *glib.Variant
+	// GetStateHint requests a hint about the valid range of values for the
+	// state of @action.
+	//
+	// If nil is returned it either means that the action is not stateful or
+	// that there is no hint about the valid range of values for the state of
+	// the action.
+	//
+	// If a #GVariant array is returned then each item in the array is a
+	// possible value for the state. If a #GVariant pair (ie: two-tuple) is
+	// returned then the tuple specifies the inclusive lower and upper bound of
+	// valid values for the state.
+	//
+	// In any case, the information is merely a hint. It may be possible to have
+	// a state value outside of the hinted range and setting a value within the
+	// range may fail.
+	//
+	// The return value (if non-nil) should be freed with g_variant_unref() when
+	// it is no longer required.
+	//
+	// This method is inherited from Action
+	GetStateHint() *glib.Variant
+	// GetStateType queries the type of the state of @action.
+	//
+	// If the action is stateful (e.g. created with
+	// g_simple_action_new_stateful()) then this function returns the Type of
+	// the state. This is the type of the initial value given as the state. All
+	// calls to g_action_change_state() must give a #GVariant of this type and
+	// g_action_get_state() will return a #GVariant of the same type.
+	//
+	// If the action is not stateful (e.g. created with g_simple_action_new())
+	// then this function will return nil. In that case, g_action_get_state()
+	// will return nil and you must not call g_action_change_state().
+	//
+	// This method is inherited from Action
+	GetStateType() *glib.VariantType
 
 	// SetEnabled sets the action as enabled or not.
 	//
@@ -4117,17 +5328,17 @@ type SimpleAction interface {
 	SetStateHint(stateHint *glib.Variant)
 }
 
-// simpleAction implements the SimpleAction class.
+// simpleAction implements the SimpleAction interface.
 type simpleAction struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapSimpleAction wraps a GObject to the right type. It is
-// primarily used internally.
+var _ SimpleAction = (*simpleAction)(nil)
+
+// WrapSimpleAction wraps a GObject to a type that implements
+// interface SimpleAction. It is primarily used internally.
 func WrapSimpleAction(obj *externglib.Object) SimpleAction {
-	return simpleAction{
-		Objector: obj,
-	}
+	return simpleAction{obj}
 }
 
 func marshalSimpleAction(p uintptr) (interface{}, error) {
@@ -4153,7 +5364,7 @@ func NewSimpleAction(name string, parameterType *glib.VariantType) SimpleAction 
 
 	var _simpleAction SimpleAction // out
 
-	_simpleAction = WrapSimpleAction(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_simpleAction = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(SimpleAction)
 
 	return _simpleAction
 }
@@ -4178,13 +5389,45 @@ func NewSimpleActionStateful(name string, parameterType *glib.VariantType, state
 
 	var _simpleAction SimpleAction // out
 
-	_simpleAction = WrapSimpleAction(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_simpleAction = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(SimpleAction)
 
 	return _simpleAction
 }
 
 func (s simpleAction) AsAction() Action {
 	return WrapAction(gextras.InternObject(s))
+}
+
+func (a simpleAction) Activate(parameter *glib.Variant) {
+	WrapAction(gextras.InternObject(a)).Activate(parameter)
+}
+
+func (a simpleAction) ChangeState(value *glib.Variant) {
+	WrapAction(gextras.InternObject(a)).ChangeState(value)
+}
+
+func (a simpleAction) GetEnabled() bool {
+	return WrapAction(gextras.InternObject(a)).GetEnabled()
+}
+
+func (a simpleAction) GetName() string {
+	return WrapAction(gextras.InternObject(a)).GetName()
+}
+
+func (a simpleAction) GetParameterType() *glib.VariantType {
+	return WrapAction(gextras.InternObject(a)).GetParameterType()
+}
+
+func (a simpleAction) GetState() *glib.Variant {
+	return WrapAction(gextras.InternObject(a)).GetState()
+}
+
+func (a simpleAction) GetStateHint() *glib.Variant {
+	return WrapAction(gextras.InternObject(a)).GetStateHint()
+}
+
+func (a simpleAction) GetStateType() *glib.VariantType {
+	return WrapAction(gextras.InternObject(a)).GetStateType()
 }
 
 func (s simpleAction) SetEnabled(enabled bool) {
@@ -4227,20 +5470,113 @@ func (s simpleAction) SetStateHint(stateHint *glib.Variant) {
 // g_unix_input_stream_new() or g_win32_input_stream_new(), and you want to take
 // advantage of the methods provided by OStream.
 type SimpleIOStream interface {
-	IOStream
+	gextras.Objector
+
+	// AsIOStream casts the class to the IOStream interface.
+	AsIOStream() IOStream
+
+	// ClearPending clears the pending flag on @stream.
+	//
+	// This method is inherited from IOStream
+	ClearPending()
+	// Close closes the stream, releasing resources related to it. This will
+	// also close the individual input and output streams, if they are not
+	// already closed.
+	//
+	// Once the stream is closed, all other operations will return
+	// G_IO_ERROR_CLOSED. Closing a stream multiple times will not return an
+	// error.
+	//
+	// Closing a stream will automatically flush any outstanding buffers in the
+	// stream.
+	//
+	// Streams will be automatically closed when the last reference is dropped,
+	// but you might want to call this function to make sure resources are
+	// released as early as possible.
+	//
+	// Some streams might keep the backing store of the stream (e.g. a file
+	// descriptor) open after the stream is closed. See the documentation for
+	// the individual stream for details.
+	//
+	// On failure the first error that happened will be reported, but the close
+	// operation will finish as much as possible. A stream that failed to close
+	// will still return G_IO_ERROR_CLOSED for all operations. Still, it is
+	// important to check and report the error to the user, otherwise there
+	// might be a loss of data as all data might not be written.
+	//
+	// If @cancellable is not NULL, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+	// Cancelling a close will still leave the stream closed, but some streams
+	// can use a faster close that doesn't block to e.g. check errors.
+	//
+	// The default implementation of this method just calls close on the
+	// individual input/output streams.
+	//
+	// This method is inherited from IOStream
+	Close(cancellable Cancellable) error
+	// CloseAsync requests an asynchronous close of the stream, releasing
+	// resources related to it. When the operation is finished @callback will be
+	// called. You can then call g_io_stream_close_finish() to get the result of
+	// the operation.
+	//
+	// For behaviour details see g_io_stream_close().
+	//
+	// The asynchronous methods have a default fallback that uses threads to
+	// implement asynchronicity, so they are optional for inheriting classes.
+	// However, if you override one you must override all.
+	//
+	// This method is inherited from IOStream
+	CloseAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
+	// CloseFinish closes a stream.
+	//
+	// This method is inherited from IOStream
+	CloseFinish(result AsyncResult) error
+	// GetInputStream gets the input stream for this object. This is used for
+	// reading.
+	//
+	// This method is inherited from IOStream
+	GetInputStream() InputStream
+	// GetOutputStream gets the output stream for this object. This is used for
+	// writing.
+	//
+	// This method is inherited from IOStream
+	GetOutputStream() OutputStream
+	// HasPending checks if a stream has pending actions.
+	//
+	// This method is inherited from IOStream
+	HasPending() bool
+	// IsClosed checks if a stream is closed.
+	//
+	// This method is inherited from IOStream
+	IsClosed() bool
+	// SetPending sets @stream to have actions pending. If the pending flag is
+	// already set or @stream is closed, it will return false and set @error.
+	//
+	// This method is inherited from IOStream
+	SetPending() error
+	// SpliceAsync: asynchronously splice the output stream of @stream1 to the
+	// input stream of @stream2, and splice the output stream of @stream2 to the
+	// input stream of @stream1.
+	//
+	// When the operation is finished @callback will be called. You can then
+	// call g_io_stream_splice_finish() to get the result of the operation.
+	//
+	// This method is inherited from IOStream
+	SpliceAsync(stream2 IOStream, flags IOStreamSpliceFlags, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 }
 
-// simpleIOStream implements the SimpleIOStream class.
+// simpleIOStream implements the SimpleIOStream interface.
 type simpleIOStream struct {
-	IOStream
+	*externglib.Object
 }
 
-// WrapSimpleIOStream wraps a GObject to the right type. It is
-// primarily used internally.
+var _ SimpleIOStream = (*simpleIOStream)(nil)
+
+// WrapSimpleIOStream wraps a GObject to a type that implements
+// interface SimpleIOStream. It is primarily used internally.
 func WrapSimpleIOStream(obj *externglib.Object) SimpleIOStream {
-	return simpleIOStream{
-		IOStream: WrapIOStream(obj),
-	}
+	return simpleIOStream{obj}
 }
 
 func marshalSimpleIOStream(p uintptr) (interface{}, error) {
@@ -4263,9 +5599,53 @@ func NewSimpleIOStream(inputStream InputStream, outputStream OutputStream) Simpl
 
 	var _simpleIOStream SimpleIOStream // out
 
-	_simpleIOStream = WrapSimpleIOStream(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_simpleIOStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(SimpleIOStream)
 
 	return _simpleIOStream
+}
+
+func (s simpleIOStream) AsIOStream() IOStream {
+	return WrapIOStream(gextras.InternObject(s))
+}
+
+func (s simpleIOStream) ClearPending() {
+	WrapIOStream(gextras.InternObject(s)).ClearPending()
+}
+
+func (s simpleIOStream) Close(cancellable Cancellable) error {
+	return WrapIOStream(gextras.InternObject(s)).Close(cancellable)
+}
+
+func (s simpleIOStream) CloseAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+	WrapIOStream(gextras.InternObject(s)).CloseAsync(ioPriority, cancellable, callback)
+}
+
+func (s simpleIOStream) CloseFinish(result AsyncResult) error {
+	return WrapIOStream(gextras.InternObject(s)).CloseFinish(result)
+}
+
+func (s simpleIOStream) GetInputStream() InputStream {
+	return WrapIOStream(gextras.InternObject(s)).GetInputStream()
+}
+
+func (s simpleIOStream) GetOutputStream() OutputStream {
+	return WrapIOStream(gextras.InternObject(s)).GetOutputStream()
+}
+
+func (s simpleIOStream) HasPending() bool {
+	return WrapIOStream(gextras.InternObject(s)).HasPending()
+}
+
+func (s simpleIOStream) IsClosed() bool {
+	return WrapIOStream(gextras.InternObject(s)).IsClosed()
+}
+
+func (s simpleIOStream) SetPending() error {
+	return WrapIOStream(gextras.InternObject(s)).SetPending()
+}
+
+func (s simpleIOStream) SpliceAsync(stream2 IOStream, flags IOStreamSpliceFlags, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+	WrapIOStream(gextras.InternObject(s)).SpliceAsync(stream2, flags, ioPriority, cancellable, callback)
 }
 
 // SimplePermission is a trivial implementation of #GPermission that represents
@@ -4274,20 +5654,118 @@ func NewSimpleIOStream(inputStream InputStream, outputStream OutputStream) Simpl
 //
 // Calling request or release will result in errors.
 type SimplePermission interface {
-	Permission
+	gextras.Objector
+
+	// AsPermission casts the class to the Permission interface.
+	AsPermission() Permission
+
+	// Acquire attempts to acquire the permission represented by @permission.
+	//
+	// The precise method by which this happens depends on the permission and
+	// the underlying authentication mechanism. A simple example is that a
+	// dialog may appear asking the user to enter their password.
+	//
+	// You should check with g_permission_get_can_acquire() before calling this
+	// function.
+	//
+	// If the permission is acquired then true is returned. Otherwise, false is
+	// returned and @error is set appropriately.
+	//
+	// This call is blocking, likely for a very long time (in the case that user
+	// interaction is required). See g_permission_acquire_async() for the
+	// non-blocking version.
+	//
+	// This method is inherited from Permission
+	Acquire(cancellable Cancellable) error
+	// AcquireAsync attempts to acquire the permission represented by
+	// @permission.
+	//
+	// This is the first half of the asynchronous version of
+	// g_permission_acquire().
+	//
+	// This method is inherited from Permission
+	AcquireAsync(cancellable Cancellable, callback AsyncReadyCallback)
+	// AcquireFinish collects the result of attempting to acquire the permission
+	// represented by @permission.
+	//
+	// This is the second half of the asynchronous version of
+	// g_permission_acquire().
+	//
+	// This method is inherited from Permission
+	AcquireFinish(result AsyncResult) error
+	// GetAllowed gets the value of the 'allowed' property. This property is
+	// true if the caller currently has permission to perform the action that
+	// @permission represents the permission to perform.
+	//
+	// This method is inherited from Permission
+	GetAllowed() bool
+	// GetCanAcquire gets the value of the 'can-acquire' property. This property
+	// is true if it is generally possible to acquire the permission by calling
+	// g_permission_acquire().
+	//
+	// This method is inherited from Permission
+	GetCanAcquire() bool
+	// GetCanRelease gets the value of the 'can-release' property. This property
+	// is true if it is generally possible to release the permission by calling
+	// g_permission_release().
+	//
+	// This method is inherited from Permission
+	GetCanRelease() bool
+	// ImplUpdate: this function is called by the #GPermission implementation to
+	// update the properties of the permission. You should never call this
+	// function except from a #GPermission implementation.
+	//
+	// GObject notify signals are generated, as appropriate.
+	//
+	// This method is inherited from Permission
+	ImplUpdate(allowed bool, canAcquire bool, canRelease bool)
+	// Release attempts to release the permission represented by @permission.
+	//
+	// The precise method by which this happens depends on the permission and
+	// the underlying authentication mechanism. In most cases the permission
+	// will be dropped immediately without further action.
+	//
+	// You should check with g_permission_get_can_release() before calling this
+	// function.
+	//
+	// If the permission is released then true is returned. Otherwise, false is
+	// returned and @error is set appropriately.
+	//
+	// This call is blocking, likely for a very long time (in the case that user
+	// interaction is required). See g_permission_release_async() for the
+	// non-blocking version.
+	//
+	// This method is inherited from Permission
+	Release(cancellable Cancellable) error
+	// ReleaseAsync attempts to release the permission represented by
+	// @permission.
+	//
+	// This is the first half of the asynchronous version of
+	// g_permission_release().
+	//
+	// This method is inherited from Permission
+	ReleaseAsync(cancellable Cancellable, callback AsyncReadyCallback)
+	// ReleaseFinish collects the result of attempting to release the permission
+	// represented by @permission.
+	//
+	// This is the second half of the asynchronous version of
+	// g_permission_release().
+	//
+	// This method is inherited from Permission
+	ReleaseFinish(result AsyncResult) error
 }
 
-// simplePermission implements the SimplePermission class.
+// simplePermission implements the SimplePermission interface.
 type simplePermission struct {
-	Permission
+	*externglib.Object
 }
 
-// WrapSimplePermission wraps a GObject to the right type. It is
-// primarily used internally.
+var _ SimplePermission = (*simplePermission)(nil)
+
+// WrapSimplePermission wraps a GObject to a type that implements
+// interface SimplePermission. It is primarily used internally.
 func WrapSimplePermission(obj *externglib.Object) SimplePermission {
-	return simplePermission{
-		Permission: WrapPermission(obj),
-	}
+	return simplePermission{obj}
 }
 
 func marshalSimplePermission(p uintptr) (interface{}, error) {
@@ -4310,9 +5788,53 @@ func NewSimplePermission(allowed bool) SimplePermission {
 
 	var _simplePermission SimplePermission // out
 
-	_simplePermission = WrapSimplePermission(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_simplePermission = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(SimplePermission)
 
 	return _simplePermission
+}
+
+func (s simplePermission) AsPermission() Permission {
+	return WrapPermission(gextras.InternObject(s))
+}
+
+func (p simplePermission) Acquire(cancellable Cancellable) error {
+	return WrapPermission(gextras.InternObject(p)).Acquire(cancellable)
+}
+
+func (p simplePermission) AcquireAsync(cancellable Cancellable, callback AsyncReadyCallback) {
+	WrapPermission(gextras.InternObject(p)).AcquireAsync(cancellable, callback)
+}
+
+func (p simplePermission) AcquireFinish(result AsyncResult) error {
+	return WrapPermission(gextras.InternObject(p)).AcquireFinish(result)
+}
+
+func (p simplePermission) GetAllowed() bool {
+	return WrapPermission(gextras.InternObject(p)).GetAllowed()
+}
+
+func (p simplePermission) GetCanAcquire() bool {
+	return WrapPermission(gextras.InternObject(p)).GetCanAcquire()
+}
+
+func (p simplePermission) GetCanRelease() bool {
+	return WrapPermission(gextras.InternObject(p)).GetCanRelease()
+}
+
+func (p simplePermission) ImplUpdate(allowed bool, canAcquire bool, canRelease bool) {
+	WrapPermission(gextras.InternObject(p)).ImplUpdate(allowed, canAcquire, canRelease)
+}
+
+func (p simplePermission) Release(cancellable Cancellable) error {
+	return WrapPermission(gextras.InternObject(p)).Release(cancellable)
+}
+
+func (p simplePermission) ReleaseAsync(cancellable Cancellable, callback AsyncReadyCallback) {
+	WrapPermission(gextras.InternObject(p)).ReleaseAsync(cancellable, callback)
+}
+
+func (p simplePermission) ReleaseFinish(result AsyncResult) error {
+	return WrapPermission(gextras.InternObject(p)).ReleaseFinish(result)
 }
 
 // Subprocess allows the creation of and interaction with child processes.
@@ -4368,6 +5890,48 @@ type Subprocess interface {
 
 	// AsInitable casts the class to the Initable interface.
 	AsInitable() Initable
+
+	// Init initializes the object implementing the interface.
+	//
+	// This method is intended for language bindings. If writing in C,
+	// g_initable_new() should typically be used instead.
+	//
+	// The object must be initialized before any real use after initial
+	// construction, either with this function or g_async_initable_init_async().
+	//
+	// Implementations may also support cancellation. If @cancellable is not
+	// nil, then initialization can be cancelled by triggering the cancellable
+	// object from another thread. If the operation was cancelled, the error
+	// G_IO_ERROR_CANCELLED will be returned. If @cancellable is not nil and the
+	// object doesn't support cancellable initialization the error
+	// G_IO_ERROR_NOT_SUPPORTED will be returned.
+	//
+	// If the object is not initialized, or initialization returns with an
+	// error, then all operations on the object except g_object_ref() and
+	// g_object_unref() are considered to be invalid, and have undefined
+	// behaviour. See the [introduction][ginitable] for more details.
+	//
+	// Callers should not assume that a class which implements #GInitable can be
+	// initialized multiple times, unless the class explicitly documents itself
+	// as supporting this. Generally, a class’ implementation of init() can
+	// assume (and assert) that it will only be called once. Previously, this
+	// documentation recommended all #GInitable implementations should be
+	// idempotent; that recommendation was relaxed in GLib 2.54.
+	//
+	// If a class explicitly supports being initialized multiple times, it is
+	// recommended that the method is idempotent: multiple calls with the same
+	// arguments should return the same results. Only the first call initializes
+	// the object; further calls return the result of the first call.
+	//
+	// One reason why a class might need to support idempotent initialization is
+	// if it is designed to be used via the singleton pattern, with a
+	// Class.constructor that sometimes returns an existing instance. In this
+	// pattern, a caller would expect to be able to call g_initable_init() on
+	// the result of g_object_new(), regardless of whether it is in fact a new
+	// instance.
+	//
+	// This method is inherited from Initable
+	Init(cancellable Cancellable) error
 
 	// CommunicateUTF8: like g_subprocess_communicate(), but validates the
 	// output of the process as UTF-8, and returns it as a regular NUL
@@ -4503,17 +6067,17 @@ type Subprocess interface {
 	WaitFinish(result AsyncResult) error
 }
 
-// subprocess implements the Subprocess class.
+// subprocess implements the Subprocess interface.
 type subprocess struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapSubprocess wraps a GObject to the right type. It is
-// primarily used internally.
+var _ Subprocess = (*subprocess)(nil)
+
+// WrapSubprocess wraps a GObject to a type that implements
+// interface Subprocess. It is primarily used internally.
 func WrapSubprocess(obj *externglib.Object) Subprocess {
-	return subprocess{
-		Objector: obj,
-	}
+	return subprocess{obj}
 }
 
 func marshalSubprocess(p uintptr) (interface{}, error) {
@@ -4547,7 +6111,7 @@ func NewSubprocessV(argv []string, flags SubprocessFlags) (Subprocess, error) {
 	var _subprocess Subprocess // out
 	var _goerr error           // out
 
-	_subprocess = WrapSubprocess(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_subprocess = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Subprocess)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _subprocess, _goerr
@@ -4555,6 +6119,10 @@ func NewSubprocessV(argv []string, flags SubprocessFlags) (Subprocess, error) {
 
 func (s subprocess) AsInitable() Initable {
 	return WrapInitable(gextras.InternObject(s))
+}
+
+func (i subprocess) Init(cancellable Cancellable) error {
+	return WrapInitable(gextras.InternObject(i)).Init(cancellable)
 }
 
 func (s subprocess) CommunicateUTF8(stdinBuf string, cancellable Cancellable) (stdoutBuf string, stderrBuf string, goerr error) {
@@ -5091,17 +6659,17 @@ type SubprocessLauncher interface {
 	Unsetenv(variable string)
 }
 
-// subprocessLauncher implements the SubprocessLauncher class.
+// subprocessLauncher implements the SubprocessLauncher interface.
 type subprocessLauncher struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapSubprocessLauncher wraps a GObject to the right type. It is
-// primarily used internally.
+var _ SubprocessLauncher = (*subprocessLauncher)(nil)
+
+// WrapSubprocessLauncher wraps a GObject to a type that implements
+// interface SubprocessLauncher. It is primarily used internally.
 func WrapSubprocessLauncher(obj *externglib.Object) SubprocessLauncher {
-	return subprocessLauncher{
-		Objector: obj,
-	}
+	return subprocessLauncher{obj}
 }
 
 func marshalSubprocessLauncher(p uintptr) (interface{}, error) {
@@ -5125,7 +6693,7 @@ func NewSubprocessLauncher(flags SubprocessFlags) SubprocessLauncher {
 
 	var _subprocessLauncher SubprocessLauncher // out
 
-	_subprocessLauncher = WrapSubprocessLauncher(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_subprocessLauncher = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(SubprocessLauncher)
 
 	return _subprocessLauncher
 }
@@ -5435,17 +7003,17 @@ type TestDBus interface {
 	Up()
 }
 
-// testDBus implements the TestDBus class.
+// testDBus implements the TestDBus interface.
 type testDBus struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapTestDBus wraps a GObject to the right type. It is
-// primarily used internally.
+var _ TestDBus = (*testDBus)(nil)
+
+// WrapTestDBus wraps a GObject to a type that implements
+// interface TestDBus. It is primarily used internally.
 func WrapTestDBus(obj *externglib.Object) TestDBus {
-	return testDBus{
-		Objector: obj,
-	}
+	return testDBus{obj}
 }
 
 func marshalTestDBus(p uintptr) (interface{}, error) {
@@ -5465,7 +7033,7 @@ func NewTestDBus(flags TestDBusFlags) TestDBus {
 
 	var _testDBus TestDBus // out
 
-	_testDBus = WrapTestDBus(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_testDBus = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(TestDBus)
 
 	return _testDBus
 }

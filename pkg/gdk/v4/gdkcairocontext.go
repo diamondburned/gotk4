@@ -7,6 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/cairo"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -30,7 +31,78 @@ func init() {
 // [method@Gdk.Surface.create_cairo_context], and the context can then be used
 // to draw on that surface.
 type CairoContext interface {
-	DrawContext
+	gextras.Objector
+
+	// AsDrawContext casts the class to the DrawContext interface.
+	AsDrawContext() DrawContext
+
+	// BeginFrame indicates that you are beginning the process of redrawing
+	// @region on the @context's surface.
+	//
+	// Calling this function begins a drawing operation using @context on the
+	// surface that @context was created from. The actual requirements and
+	// guarantees for the drawing operation vary for different implementations
+	// of drawing, so a [class@Gdk.CairoContext] and a [class@Gdk.GLContext]
+	// need to be treated differently.
+	//
+	// A call to this function is a requirement for drawing and must be followed
+	// by a call to [method@Gdk.DrawContext.end_frame], which will complete the
+	// drawing operation and ensure the contents become visible on screen.
+	//
+	// Note that the @region passed to this function is the minimum region that
+	// needs to be drawn and depending on implementation, windowing system and
+	// hardware in use, it might be necessary to draw a larger region. Drawing
+	// implementation must use [method@Gdk.DrawContext.get_frame_region() to
+	// query the region that must be drawn.
+	//
+	// When using GTK, the widget system automatically places calls to
+	// gdk_draw_context_begin_frame() and gdk_draw_context_end_frame() via the
+	// use of [class@Gsk.Renderer]s, so application code does not need to call
+	// these functions explicitly.
+	//
+	// This method is inherited from DrawContext
+	BeginFrame(region *cairo.Region)
+	// EndFrame ends a drawing operation started with
+	// gdk_draw_context_begin_frame().
+	//
+	// This makes the drawing available on screen. See
+	// [method@Gdk.DrawContext.begin_frame] for more details about drawing.
+	//
+	// When using a [class@Gdk.GLContext], this function may call `glFlush()`
+	// implicitly before returning; it is not recommended to call `glFlush()`
+	// explicitly before calling this function.
+	//
+	// This method is inherited from DrawContext
+	EndFrame()
+	// GetDisplay retrieves the `GdkDisplay` the @context is created for
+	//
+	// This method is inherited from DrawContext
+	GetDisplay() Display
+	// GetFrameRegion retrieves the region that is currently being repainted.
+	//
+	// After a call to [method@Gdk.DrawContext.begin_frame] this function will
+	// return a union of the region passed to that function and the area of the
+	// surface that the @context determined needs to be repainted.
+	//
+	// If @context is not in between calls to
+	// [method@Gdk.DrawContext.begin_frame] and
+	// [method@Gdk.DrawContext.end_frame], nil will be returned.
+	//
+	// This method is inherited from DrawContext
+	GetFrameRegion() *cairo.Region
+	// GetSurface retrieves the surface that @context is bound to.
+	//
+	// This method is inherited from DrawContext
+	GetSurface() Surface
+	// IsInFrame returns true if @context is in the process of drawing to its
+	// surface.
+	//
+	// This is the case between calls to [method@Gdk.DrawContext.begin_frame]
+	// and [method@Gdk.DrawContext.end_frame]. In this situation, drawing
+	// commands may be effecting the contents of the @context's surface.
+	//
+	// This method is inherited from DrawContext
+	IsInFrame() bool
 
 	// CairoCreate retrieves a Cairo context to be used to draw on the
 	// `GdkSurface` of @context.
@@ -43,23 +115,51 @@ type CairoContext interface {
 	CairoCreate() *cairo.Context
 }
 
-// cairoContext implements the CairoContext class.
+// cairoContext implements the CairoContext interface.
 type cairoContext struct {
-	DrawContext
+	*externglib.Object
 }
 
-// WrapCairoContext wraps a GObject to the right type. It is
-// primarily used internally.
+var _ CairoContext = (*cairoContext)(nil)
+
+// WrapCairoContext wraps a GObject to a type that implements
+// interface CairoContext. It is primarily used internally.
 func WrapCairoContext(obj *externglib.Object) CairoContext {
-	return cairoContext{
-		DrawContext: WrapDrawContext(obj),
-	}
+	return cairoContext{obj}
 }
 
 func marshalCairoContext(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapCairoContext(obj), nil
+}
+
+func (c cairoContext) AsDrawContext() DrawContext {
+	return WrapDrawContext(gextras.InternObject(c))
+}
+
+func (c cairoContext) BeginFrame(region *cairo.Region) {
+	WrapDrawContext(gextras.InternObject(c)).BeginFrame(region)
+}
+
+func (c cairoContext) EndFrame() {
+	WrapDrawContext(gextras.InternObject(c)).EndFrame()
+}
+
+func (c cairoContext) GetDisplay() Display {
+	return WrapDrawContext(gextras.InternObject(c)).GetDisplay()
+}
+
+func (c cairoContext) GetFrameRegion() *cairo.Region {
+	return WrapDrawContext(gextras.InternObject(c)).GetFrameRegion()
+}
+
+func (c cairoContext) GetSurface() Surface {
+	return WrapDrawContext(gextras.InternObject(c)).GetSurface()
+}
+
+func (c cairoContext) IsInFrame() bool {
+	return WrapDrawContext(gextras.InternObject(c)).IsInFrame()
 }
 
 func (s cairoContext) CairoCreate() *cairo.Context {

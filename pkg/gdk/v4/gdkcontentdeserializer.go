@@ -74,17 +74,17 @@ type ContentDeserializer interface {
 	ReturnSuccess()
 }
 
-// contentDeserializer implements the ContentDeserializer class.
+// contentDeserializer implements the ContentDeserializer interface.
 type contentDeserializer struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapContentDeserializer wraps a GObject to the right type. It is
-// primarily used internally.
+var _ ContentDeserializer = (*contentDeserializer)(nil)
+
+// WrapContentDeserializer wraps a GObject to a type that implements
+// interface ContentDeserializer. It is primarily used internally.
 func WrapContentDeserializer(obj *externglib.Object) ContentDeserializer {
-	return contentDeserializer{
-		Objector: obj,
-	}
+	return contentDeserializer{obj}
 }
 
 func marshalContentDeserializer(p uintptr) (interface{}, error) {

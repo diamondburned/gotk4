@@ -43,6 +43,16 @@ type DBusObjectSkeleton interface {
 	// AsDBusObject casts the class to the DBusObject interface.
 	AsDBusObject() DBusObject
 
+	// GetInterface gets the D-Bus interface with name @interface_name
+	// associated with @object, if any.
+	//
+	// This method is inherited from DBusObject
+	GetInterface(interfaceName string) DBusInterface
+	// GetObjectPath gets the object path for @object.
+	//
+	// This method is inherited from DBusObject
+	GetObjectPath() string
+
 	// AddInterface adds @interface_ to @object.
 	//
 	// If @object already contains a BusInterfaceSkeleton with the same
@@ -67,17 +77,17 @@ type DBusObjectSkeleton interface {
 	SetObjectPath(objectPath string)
 }
 
-// dBusObjectSkeleton implements the DBusObjectSkeleton class.
+// dBusObjectSkeleton implements the DBusObjectSkeleton interface.
 type dBusObjectSkeleton struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapDBusObjectSkeleton wraps a GObject to the right type. It is
-// primarily used internally.
+var _ DBusObjectSkeleton = (*dBusObjectSkeleton)(nil)
+
+// WrapDBusObjectSkeleton wraps a GObject to a type that implements
+// interface DBusObjectSkeleton. It is primarily used internally.
 func WrapDBusObjectSkeleton(obj *externglib.Object) DBusObjectSkeleton {
-	return dBusObjectSkeleton{
-		Objector: obj,
-	}
+	return dBusObjectSkeleton{obj}
 }
 
 func marshalDBusObjectSkeleton(p uintptr) (interface{}, error) {
@@ -98,13 +108,21 @@ func NewDBusObjectSkeleton(objectPath string) DBusObjectSkeleton {
 
 	var _dBusObjectSkeleton DBusObjectSkeleton // out
 
-	_dBusObjectSkeleton = WrapDBusObjectSkeleton(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_dBusObjectSkeleton = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(DBusObjectSkeleton)
 
 	return _dBusObjectSkeleton
 }
 
 func (d dBusObjectSkeleton) AsDBusObject() DBusObject {
 	return WrapDBusObject(gextras.InternObject(d))
+}
+
+func (o dBusObjectSkeleton) GetInterface(interfaceName string) DBusInterface {
+	return WrapDBusObject(gextras.InternObject(o)).GetInterface(interfaceName)
+}
+
+func (o dBusObjectSkeleton) GetObjectPath() string {
+	return WrapDBusObject(gextras.InternObject(o)).GetObjectPath()
 }
 
 func (o dBusObjectSkeleton) AddInterface(interface_ DBusInterfaceSkeleton) {

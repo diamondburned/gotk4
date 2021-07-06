@@ -76,17 +76,17 @@ type MapListModel interface {
 	HasMap() bool
 }
 
-// mapListModel implements the MapListModel class.
+// mapListModel implements the MapListModel interface.
 type mapListModel struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapMapListModel wraps a GObject to the right type. It is
-// primarily used internally.
+var _ MapListModel = (*mapListModel)(nil)
+
+// WrapMapListModel wraps a GObject to a type that implements
+// interface MapListModel. It is primarily used internally.
 func WrapMapListModel(obj *externglib.Object) MapListModel {
-	return mapListModel{
-		Objector: obj,
-	}
+	return mapListModel{obj}
 }
 
 func marshalMapListModel(p uintptr) (interface{}, error) {

@@ -39,17 +39,17 @@ type TextChildAnchor interface {
 	Deleted() bool
 }
 
-// textChildAnchor implements the TextChildAnchor class.
+// textChildAnchor implements the TextChildAnchor interface.
 type textChildAnchor struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapTextChildAnchor wraps a GObject to the right type. It is
-// primarily used internally.
+var _ TextChildAnchor = (*textChildAnchor)(nil)
+
+// WrapTextChildAnchor wraps a GObject to a type that implements
+// interface TextChildAnchor. It is primarily used internally.
 func WrapTextChildAnchor(obj *externglib.Object) TextChildAnchor {
-	return textChildAnchor{
-		Objector: obj,
-	}
+	return textChildAnchor{obj}
 }
 
 func marshalTextChildAnchor(p uintptr) (interface{}, error) {
@@ -71,7 +71,7 @@ func NewTextChildAnchor() TextChildAnchor {
 
 	var _textChildAnchor TextChildAnchor // out
 
-	_textChildAnchor = WrapTextChildAnchor(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_textChildAnchor = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(TextChildAnchor)
 
 	return _textChildAnchor
 }

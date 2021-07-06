@@ -3,8 +3,10 @@
 package atk
 
 import (
+	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -26,8 +28,10 @@ func init() {
 // is the type of AtkObject which is created if an accessible object is
 // requested for an object type for which no factory type is specified.
 type NoOpObject interface {
-	Object
+	gextras.Objector
 
+	// AsObject casts the class to the Object interface.
+	AsObject() Object
 	// AsAction casts the class to the Action interface.
 	AsAction() Action
 	// AsComponent casts the class to the Component interface.
@@ -52,19 +56,1134 @@ type NoOpObject interface {
 	AsValue() Value
 	// AsWindow casts the class to the Window interface.
 	AsWindow() Window
+
+	// AddRelationship adds a relationship of the specified type with the
+	// specified target.
+	//
+	// This method is inherited from Object
+	AddRelationship(relationship RelationType, target Object) bool
+	// GetAccessibleID gets the accessible id of the accessible.
+	//
+	// This method is inherited from Object
+	GetAccessibleID() string
+	// GetDescription gets the accessible description of the accessible.
+	//
+	// This method is inherited from Object
+	GetDescription() string
+	// GetIndexInParent gets the 0-based index of this accessible in its parent;
+	// returns -1 if the accessible does not have an accessible parent.
+	//
+	// This method is inherited from Object
+	GetIndexInParent() int
+	// GetLayer gets the layer of the accessible.
+	//
+	// Deprecated.
+	//
+	// This method is inherited from Object
+	GetLayer() Layer
+	// GetMDIZOrder gets the zorder of the accessible. The value G_MININT will
+	// be returned if the layer of the accessible is not ATK_LAYER_MDI.
+	//
+	// Deprecated.
+	//
+	// This method is inherited from Object
+	GetMDIZOrder() int
+	// GetNAccessibleChildren gets the number of accessible children of the
+	// accessible.
+	//
+	// This method is inherited from Object
+	GetNAccessibleChildren() int
+	// GetName gets the accessible name of the accessible.
+	//
+	// This method is inherited from Object
+	GetName() string
+	// GetObjectLocale gets a UTF-8 string indicating the POSIX-style
+	// LC_MESSAGES locale of @accessible.
+	//
+	// This method is inherited from Object
+	GetObjectLocale() string
+	// GetParent gets the accessible parent of the accessible. By default this
+	// is the one assigned with atk_object_set_parent(), but it is assumed that
+	// ATK implementors have ways to get the parent of the object without the
+	// need of assigning it manually with atk_object_set_parent(), and will
+	// return it with this method.
+	//
+	// If you are only interested on the parent assigned with
+	// atk_object_set_parent(), use atk_object_peek_parent().
+	//
+	// This method is inherited from Object
+	GetParent() Object
+	// GetRole gets the role of the accessible.
+	//
+	// This method is inherited from Object
+	GetRole() Role
+	// Initialize: this function is called when implementing subclasses of
+	// Object. It does initialization required for the new object. It is
+	// intended that this function should called only in the ..._new() functions
+	// used to create an instance of a subclass of Object
+	//
+	// This method is inherited from Object
+	Initialize(data interface{})
+	// PeekParent gets the accessible parent of the accessible, if it has been
+	// manually assigned with atk_object_set_parent. Otherwise, this function
+	// returns nil.
+	//
+	// This method is intended as an utility for ATK implementors, and not to be
+	// exposed to accessible tools. See atk_object_get_parent() for further
+	// reference.
+	//
+	// This method is inherited from Object
+	PeekParent() Object
+	// RefAccessibleChild gets a reference to the specified accessible child of
+	// the object. The accessible children are 0-based so the first accessible
+	// child is at index 0, the second at index 1 and so on.
+	//
+	// This method is inherited from Object
+	RefAccessibleChild(i int) Object
+	// RefRelationSet gets the RelationSet associated with the object.
+	//
+	// This method is inherited from Object
+	RefRelationSet() RelationSet
+	// RefStateSet gets a reference to the state set of the accessible; the
+	// caller must unreference it when it is no longer needed.
+	//
+	// This method is inherited from Object
+	RefStateSet() StateSet
+	// RemovePropertyChangeHandler removes a property change handler.
+	//
+	// Deprecated: since version 2.12.
+	//
+	// This method is inherited from Object
+	RemovePropertyChangeHandler(handlerId uint)
+	// RemoveRelationship removes a relationship of the specified type with the
+	// specified target.
+	//
+	// This method is inherited from Object
+	RemoveRelationship(relationship RelationType, target Object) bool
+	// SetAccessibleID sets the accessible ID of the accessible. This is not
+	// meant to be presented to the user, but to be an ID which is stable over
+	// application development. Typically, this is the gtkbuilder ID. Such an ID
+	// will be available for instance to identify a given well-known accessible
+	// object for tailored screen reading, or for automatic regression testing.
+	//
+	// This method is inherited from Object
+	SetAccessibleID(name string)
+	// SetDescription sets the accessible description of the accessible. You
+	// can't set the description to NULL. This is reserved for the initial
+	// value. In this aspect NULL is similar to ATK_ROLE_UNKNOWN. If you want to
+	// set the name to a empty value you can use "".
+	//
+	// This method is inherited from Object
+	SetDescription(description string)
+	// SetName sets the accessible name of the accessible. You can't set the
+	// name to NULL. This is reserved for the initial value. In this aspect NULL
+	// is similar to ATK_ROLE_UNKNOWN. If you want to set the name to a empty
+	// value you can use "".
+	//
+	// This method is inherited from Object
+	SetName(name string)
+	// SetParent sets the accessible parent of the accessible. @parent can be
+	// NULL.
+	//
+	// This method is inherited from Object
+	SetParent(parent Object)
+	// SetRole sets the role of the accessible.
+	//
+	// This method is inherited from Object
+	SetRole(role Role)
+	// DoAction: perform the specified action on the object.
+	//
+	// This method is inherited from Action
+	DoAction(i int) bool
+	// GetDescription returns a description of the specified action of the
+	// object.
+	//
+	// This method is inherited from Action
+	GetDescription(i int) string
+	// GetKeybinding gets the keybinding which can be used to activate this
+	// action, if one exists. The string returned should contain localized,
+	// human-readable, key sequences as they would appear when displayed on
+	// screen. It must be in the format "mnemonic;sequence;shortcut".
+	//
+	// - The mnemonic key activates the object if it is presently enabled
+	// onscreen. This typically corresponds to the underlined letter within the
+	// widget. Example: "n" in a traditional "New..." menu item or the "a" in
+	// "Apply" for a button. - The sequence is the full list of keys which
+	// invoke the action even if the relevant element is not currently shown on
+	// screen. For instance, for a menu item the sequence is the keybindings
+	// used to open the parent menus before invoking. The sequence string is
+	// colon-delimited. Example: "Alt+F:N" in a traditional "New..." menu item.
+	// - The shortcut, if it exists, will invoke the same action without showing
+	// the component or its enclosing menus or dialogs. Example: "Ctrl+N" in a
+	// traditional "New..." menu item.
+	//
+	// Example: For a traditional "New..." menu item, the expected return value
+	// would be: "N;Alt+F:N;Ctrl+N" for the English locale and
+	// "N;Alt+D:N;Strg+N" for the German locale. If, hypothetically, this menu
+	// item lacked a mnemonic, it would be represented by ";;Ctrl+N" and
+	// ";;Strg+N" respectively.
+	//
+	// This method is inherited from Action
+	GetKeybinding(i int) string
+	// GetLocalizedName returns the localized name of the specified action of
+	// the object.
+	//
+	// This method is inherited from Action
+	GetLocalizedName(i int) string
+	// GetNActions gets the number of accessible actions available on the
+	// object. If there are more than one, the first one is considered the
+	// "default" action of the object.
+	//
+	// This method is inherited from Action
+	GetNActions() int
+	// GetName returns a non-localized string naming the specified action of the
+	// object. This name is generally not descriptive of the end result of the
+	// action, but instead names the 'interaction type' which the object
+	// supports. By convention, the above strings should be used to represent
+	// the actions which correspond to the common point-and-click interaction
+	// techniques of the same name: i.e. "click", "press", "release", "drag",
+	// "drop", "popup", etc. The "popup" action should be used to pop up a
+	// context menu for the object, if one exists.
+	//
+	// For technical reasons, some toolkits cannot guarantee that the reported
+	// action is actually 'bound' to a nontrivial user event; i.e. the result of
+	// some actions via atk_action_do_action() may be NIL.
+	//
+	// This method is inherited from Action
+	GetName(i int) string
+	// SetDescription sets a description of the specified action of the object.
+	//
+	// This method is inherited from Action
+	SetDescription(i int, desc string) bool
+	// Contains checks whether the specified point is within the extent of the
+	// @component.
+	//
+	// Toolkit implementor note: ATK provides a default implementation for this
+	// virtual method. In general there are little reason to re-implement it.
+	//
+	// This method is inherited from Component
+	Contains(x int, y int, coordType CoordType) bool
+	// GetAlpha returns the alpha value (i.e. the opacity) for this @component,
+	// on a scale from 0 (fully transparent) to 1.0 (fully opaque).
+	//
+	// This method is inherited from Component
+	GetAlpha() float64
+	// GetExtents gets the rectangle which gives the extent of the @component.
+	//
+	// If the extent can not be obtained (e.g. a non-embedded plug or missing
+	// support), all of x, y, width, height are set to -1.
+	//
+	// This method is inherited from Component
+	GetExtents(coordType CoordType) (x int, y int, width int, height int)
+	// GetLayer gets the layer of the component.
+	//
+	// This method is inherited from Component
+	GetLayer() Layer
+	// GetMDIZOrder gets the zorder of the component. The value G_MININT will be
+	// returned if the layer of the component is not ATK_LAYER_MDI or
+	// ATK_LAYER_WINDOW.
+	//
+	// This method is inherited from Component
+	GetMDIZOrder() int
+	// GetPosition gets the position of @component in the form of a point
+	// specifying @component's top-left corner.
+	//
+	// If the position can not be obtained (e.g. a non-embedded plug or missing
+	// support), x and y are set to -1.
+	//
+	// Deprecated.
+	//
+	// This method is inherited from Component
+	GetPosition(coordType CoordType) (x int, y int)
+	// GetSize gets the size of the @component in terms of width and height.
+	//
+	// If the size can not be obtained (e.g. a non-embedded plug or missing
+	// support), width and height are set to -1.
+	//
+	// Deprecated.
+	//
+	// This method is inherited from Component
+	GetSize() (width int, height int)
+	// GrabFocus grabs focus for this @component.
+	//
+	// This method is inherited from Component
+	GrabFocus() bool
+	// RefAccessibleAtPoint gets a reference to the accessible child, if one
+	// exists, at the coordinate point specified by @x and @y.
+	//
+	// This method is inherited from Component
+	RefAccessibleAtPoint(x int, y int, coordType CoordType) Object
+	// RemoveFocusHandler: remove the handler specified by @handler_id from the
+	// list of functions to be executed when this object receives focus events
+	// (in or out).
+	//
+	// Deprecated: since version 2.9.4.
+	//
+	// This method is inherited from Component
+	RemoveFocusHandler(handlerId uint)
+	// ScrollTo makes @component visible on the screen by scrolling all
+	// necessary parents.
+	//
+	// Contrary to atk_component_set_position, this does not actually move
+	// @component in its parent, this only makes the parents scroll so that the
+	// object shows up on the screen, given its current position within the
+	// parents.
+	//
+	// This method is inherited from Component
+	ScrollTo(typ ScrollType) bool
+	// ScrollToPoint: move the top-left of @component to a given position of the
+	// screen by scrolling all necessary parents.
+	//
+	// This method is inherited from Component
+	ScrollToPoint(coords CoordType, x int, y int) bool
+	// SetExtents sets the extents of @component.
+	//
+	// This method is inherited from Component
+	SetExtents(x int, y int, width int, height int, coordType CoordType) bool
+	// SetPosition sets the position of @component.
+	//
+	// Contrary to atk_component_scroll_to, this does not trigger any scrolling,
+	// this just moves @component in its parent.
+	//
+	// This method is inherited from Component
+	SetPosition(x int, y int, coordType CoordType) bool
+	// SetSize: set the size of the @component in terms of width and height.
+	//
+	// This method is inherited from Component
+	SetSize(width int, height int) bool
+	// GetAttributeValue retrieves the value of the given @attribute_name inside
+	// @document.
+	//
+	// This method is inherited from Document
+	GetAttributeValue(attributeName string) string
+	// GetCurrentPageNumber retrieves the current page number inside @document.
+	//
+	// This method is inherited from Document
+	GetCurrentPageNumber() int
+	// GetDocument gets a gpointer that points to an instance of the DOM. It is
+	// up to the caller to check atk_document_get_type to determine how to cast
+	// this pointer.
+	//
+	// Deprecated.
+	//
+	// This method is inherited from Document
+	GetDocument() interface{}
+	// GetDocumentType gets a string indicating the document type.
+	//
+	// Deprecated.
+	//
+	// This method is inherited from Document
+	GetDocumentType() string
+	// GetLocale gets a UTF-8 string indicating the POSIX-style LC_MESSAGES
+	// locale of the content of this document instance. Individual text
+	// substrings or images within this document may have a different locale,
+	// see atk_text_get_attributes and atk_image_get_image_locale.
+	//
+	// Deprecated: since version 2.7.90.
+	//
+	// This method is inherited from Document
+	GetLocale() string
+	// GetPageCount retrieves the total number of pages inside @document.
+	//
+	// This method is inherited from Document
+	GetPageCount() int
+	// SetAttributeValue sets the value for the given @attribute_name inside
+	// @document.
+	//
+	// This method is inherited from Document
+	SetAttributeValue(attributeName string, attributeValue string) bool
+	// CopyText: copy text from @start_pos up to, but not including @end_pos to
+	// the clipboard.
+	//
+	// This method is inherited from EditableText
+	CopyText(startPos int, endPos int)
+	// CutText: copy text from @start_pos up to, but not including @end_pos to
+	// the clipboard and then delete from the widget.
+	//
+	// This method is inherited from EditableText
+	CutText(startPos int, endPos int)
+	// DeleteText: delete text @start_pos up to, but not including @end_pos.
+	//
+	// This method is inherited from EditableText
+	DeleteText(startPos int, endPos int)
+	// InsertText: insert text at a given position.
+	//
+	// This method is inherited from EditableText
+	InsertText(_string string, length int, position *int)
+	// PasteText: paste text from clipboard to specified @position.
+	//
+	// This method is inherited from EditableText
+	PasteText(position int)
+	// SetTextContents: set text contents of @text.
+	//
+	// This method is inherited from EditableText
+	SetTextContents(_string string)
+	// GetLink gets the link in this hypertext document at index @link_index
+	//
+	// This method is inherited from Hypertext
+	GetLink(linkIndex int) Hyperlink
+	// GetLinkIndex gets the index into the array of hyperlinks that is
+	// associated with the character specified by @char_index.
+	//
+	// This method is inherited from Hypertext
+	GetLinkIndex(charIndex int) int
+	// GetNLinks gets the number of links within this hypertext document.
+	//
+	// This method is inherited from Hypertext
+	GetNLinks() int
+	// GetImageDescription: get a textual description of this image.
+	//
+	// This method is inherited from Image
+	GetImageDescription() string
+	// GetImageLocale retrieves the locale identifier associated to the Image.
+	//
+	// This method is inherited from Image
+	GetImageLocale() string
+	// GetImagePosition gets the position of the image in the form of a point
+	// specifying the images top-left corner.
+	//
+	// If the position can not be obtained (e.g. missing support), x and y are
+	// set to -1.
+	//
+	// This method is inherited from Image
+	GetImagePosition(coordType CoordType) (x int, y int)
+	// GetImageSize: get the width and height in pixels for the specified image.
+	// The values of @width and @height are returned as -1 if the values cannot
+	// be obtained (for instance, if the object is not onscreen).
+	//
+	// If the size can not be obtained (e.g. missing support), x and y are set
+	// to -1.
+	//
+	// This method is inherited from Image
+	GetImageSize() (width int, height int)
+	// SetImageDescription sets the textual description for this image.
+	//
+	// This method is inherited from Image
+	SetImageDescription(description string) bool
+	// AddSelection adds the specified accessible child of the object to the
+	// object's selection.
+	//
+	// This method is inherited from Selection
+	AddSelection(i int) bool
+	// ClearSelection clears the selection in the object so that no children in
+	// the object are selected.
+	//
+	// This method is inherited from Selection
+	ClearSelection() bool
+	// GetSelectionCount gets the number of accessible children currently
+	// selected. Note: callers should not rely on nil or on a zero value for
+	// indication of whether AtkSelectionIface is implemented, they should use
+	// type checking/interface checking macros or the atk_get_accessible_value()
+	// convenience method.
+	//
+	// This method is inherited from Selection
+	GetSelectionCount() int
+	// IsChildSelected determines if the current child of this object is
+	// selected Note: callers should not rely on nil or on a zero value for
+	// indication of whether AtkSelectionIface is implemented, they should use
+	// type checking/interface checking macros or the atk_get_accessible_value()
+	// convenience method.
+	//
+	// This method is inherited from Selection
+	IsChildSelected(i int) bool
+	// RefSelection gets a reference to the accessible object representing the
+	// specified selected child of the object. Note: callers should not rely on
+	// nil or on a zero value for indication of whether AtkSelectionIface is
+	// implemented, they should use type checking/interface checking macros or
+	// the atk_get_accessible_value() convenience method.
+	//
+	// This method is inherited from Selection
+	RefSelection(i int) Object
+	// RemoveSelection removes the specified child of the object from the
+	// object's selection.
+	//
+	// This method is inherited from Selection
+	RemoveSelection(i int) bool
+	// SelectAllSelection causes every child of the object to be selected if the
+	// object supports multiple selections.
+	//
+	// This method is inherited from Selection
+	SelectAllSelection() bool
+	// AddColumnSelection adds the specified @column to the selection.
+	//
+	// This method is inherited from Table
+	AddColumnSelection(column int) bool
+	// AddRowSelection adds the specified @row to the selection.
+	//
+	// This method is inherited from Table
+	AddRowSelection(row int) bool
+	// GetCaption gets the caption for the @table.
+	//
+	// This method is inherited from Table
+	GetCaption() Object
+	// GetColumnAtIndex gets a #gint representing the column at the specified
+	// @index_.
+	//
+	// Deprecated.
+	//
+	// This method is inherited from Table
+	GetColumnAtIndex(index_ int) int
+	// GetColumnDescription gets the description text of the specified @column
+	// in the table
+	//
+	// This method is inherited from Table
+	GetColumnDescription(column int) string
+	// GetColumnExtentAt gets the number of columns occupied by the accessible
+	// object at the specified @row and @column in the @table.
+	//
+	// This method is inherited from Table
+	GetColumnExtentAt(row int, column int) int
+	// GetColumnHeader gets the column header of a specified column in an
+	// accessible table.
+	//
+	// This method is inherited from Table
+	GetColumnHeader(column int) Object
+	// GetIndexAt gets a #gint representing the index at the specified @row and
+	// @column.
+	//
+	// Deprecated.
+	//
+	// This method is inherited from Table
+	GetIndexAt(row int, column int) int
+	// GetNColumns gets the number of columns in the table.
+	//
+	// This method is inherited from Table
+	GetNColumns() int
+	// GetNRows gets the number of rows in the table.
+	//
+	// This method is inherited from Table
+	GetNRows() int
+	// GetRowAtIndex gets a #gint representing the row at the specified @index_.
+	//
+	// Deprecated.
+	//
+	// This method is inherited from Table
+	GetRowAtIndex(index_ int) int
+	// GetRowDescription gets the description text of the specified row in the
+	// table
+	//
+	// This method is inherited from Table
+	GetRowDescription(row int) string
+	// GetRowExtentAt gets the number of rows occupied by the accessible object
+	// at a specified @row and @column in the @table.
+	//
+	// This method is inherited from Table
+	GetRowExtentAt(row int, column int) int
+	// GetRowHeader gets the row header of a specified row in an accessible
+	// table.
+	//
+	// This method is inherited from Table
+	GetRowHeader(row int) Object
+	// GetSelectedColumns gets the selected columns of the table by initializing
+	// **selected with the selected column numbers. This array should be freed
+	// by the caller.
+	//
+	// This method is inherited from Table
+	GetSelectedColumns(selected **int) int
+	// GetSelectedRows gets the selected rows of the table by initializing
+	// **selected with the selected row numbers. This array should be freed by
+	// the caller.
+	//
+	// This method is inherited from Table
+	GetSelectedRows(selected **int) int
+	// GetSummary gets the summary description of the table.
+	//
+	// This method is inherited from Table
+	GetSummary() Object
+	// IsColumnSelected gets a boolean value indicating whether the specified
+	// @column is selected
+	//
+	// This method is inherited from Table
+	IsColumnSelected(column int) bool
+	// IsRowSelected gets a boolean value indicating whether the specified @row
+	// is selected
+	//
+	// This method is inherited from Table
+	IsRowSelected(row int) bool
+	// IsSelected gets a boolean value indicating whether the accessible object
+	// at the specified @row and @column is selected
+	//
+	// This method is inherited from Table
+	IsSelected(row int, column int) bool
+	// RefAt: get a reference to the table cell at @row, @column. This cell
+	// should implement the interface TableCell
+	//
+	// This method is inherited from Table
+	RefAt(row int, column int) Object
+	// RemoveColumnSelection adds the specified @column to the selection.
+	//
+	// This method is inherited from Table
+	RemoveColumnSelection(column int) bool
+	// RemoveRowSelection removes the specified @row from the selection.
+	//
+	// This method is inherited from Table
+	RemoveRowSelection(row int) bool
+	// SetCaption sets the caption for the table.
+	//
+	// This method is inherited from Table
+	SetCaption(caption Object)
+	// SetColumnDescription sets the description text for the specified @column
+	// of the @table.
+	//
+	// This method is inherited from Table
+	SetColumnDescription(column int, description string)
+	// SetColumnHeader sets the specified column header to @header.
+	//
+	// This method is inherited from Table
+	SetColumnHeader(column int, header Object)
+	// SetRowDescription sets the description text for the specified @row of
+	// @table.
+	//
+	// This method is inherited from Table
+	SetRowDescription(row int, description string)
+	// SetRowHeader sets the specified row header to @header.
+	//
+	// This method is inherited from Table
+	SetRowHeader(row int, header Object)
+	// SetSummary sets the summary description of the table.
+	//
+	// This method is inherited from Table
+	SetSummary(accessible Object)
+	// GetColumnSpan returns the number of columns occupied by this cell
+	// accessible.
+	//
+	// This method is inherited from TableCell
+	GetColumnSpan() int
+	// GetPosition retrieves the tabular position of this cell.
+	//
+	// This method is inherited from TableCell
+	GetPosition() (row int, column int, ok bool)
+	// GetRowColumnSpan gets the row and column indexes and span of this cell
+	// accessible.
+	//
+	// Note: If the object does not implement this function, then, by default,
+	// atk will implement this function by calling get_row_span and
+	// get_column_span on the object.
+	//
+	// This method is inherited from TableCell
+	GetRowColumnSpan() (row int, column int, rowSpan int, columnSpan int, ok bool)
+	// GetRowSpan returns the number of rows occupied by this cell accessible.
+	//
+	// This method is inherited from TableCell
+	GetRowSpan() int
+	// GetTable returns a reference to the accessible of the containing table.
+	//
+	// This method is inherited from TableCell
+	GetTable() Object
+	// AddRelationship adds a relationship of the specified type with the
+	// specified target.
+	//
+	// This method is inherited from Object
+	AddRelationship(relationship RelationType, target Object) bool
+	// GetAccessibleID gets the accessible id of the accessible.
+	//
+	// This method is inherited from Object
+	GetAccessibleID() string
+	// GetDescription gets the accessible description of the accessible.
+	//
+	// This method is inherited from Object
+	GetDescription() string
+	// GetIndexInParent gets the 0-based index of this accessible in its parent;
+	// returns -1 if the accessible does not have an accessible parent.
+	//
+	// This method is inherited from Object
+	GetIndexInParent() int
+	// GetLayer gets the layer of the accessible.
+	//
+	// Deprecated.
+	//
+	// This method is inherited from Object
+	GetLayer() Layer
+	// GetMDIZOrder gets the zorder of the accessible. The value G_MININT will
+	// be returned if the layer of the accessible is not ATK_LAYER_MDI.
+	//
+	// Deprecated.
+	//
+	// This method is inherited from Object
+	GetMDIZOrder() int
+	// GetNAccessibleChildren gets the number of accessible children of the
+	// accessible.
+	//
+	// This method is inherited from Object
+	GetNAccessibleChildren() int
+	// GetName gets the accessible name of the accessible.
+	//
+	// This method is inherited from Object
+	GetName() string
+	// GetObjectLocale gets a UTF-8 string indicating the POSIX-style
+	// LC_MESSAGES locale of @accessible.
+	//
+	// This method is inherited from Object
+	GetObjectLocale() string
+	// GetParent gets the accessible parent of the accessible. By default this
+	// is the one assigned with atk_object_set_parent(), but it is assumed that
+	// ATK implementors have ways to get the parent of the object without the
+	// need of assigning it manually with atk_object_set_parent(), and will
+	// return it with this method.
+	//
+	// If you are only interested on the parent assigned with
+	// atk_object_set_parent(), use atk_object_peek_parent().
+	//
+	// This method is inherited from Object
+	GetParent() Object
+	// GetRole gets the role of the accessible.
+	//
+	// This method is inherited from Object
+	GetRole() Role
+	// Initialize: this function is called when implementing subclasses of
+	// Object. It does initialization required for the new object. It is
+	// intended that this function should called only in the ..._new() functions
+	// used to create an instance of a subclass of Object
+	//
+	// This method is inherited from Object
+	Initialize(data interface{})
+	// PeekParent gets the accessible parent of the accessible, if it has been
+	// manually assigned with atk_object_set_parent. Otherwise, this function
+	// returns nil.
+	//
+	// This method is intended as an utility for ATK implementors, and not to be
+	// exposed to accessible tools. See atk_object_get_parent() for further
+	// reference.
+	//
+	// This method is inherited from Object
+	PeekParent() Object
+	// RefAccessibleChild gets a reference to the specified accessible child of
+	// the object. The accessible children are 0-based so the first accessible
+	// child is at index 0, the second at index 1 and so on.
+	//
+	// This method is inherited from Object
+	RefAccessibleChild(i int) Object
+	// RefRelationSet gets the RelationSet associated with the object.
+	//
+	// This method is inherited from Object
+	RefRelationSet() RelationSet
+	// RefStateSet gets a reference to the state set of the accessible; the
+	// caller must unreference it when it is no longer needed.
+	//
+	// This method is inherited from Object
+	RefStateSet() StateSet
+	// RemovePropertyChangeHandler removes a property change handler.
+	//
+	// Deprecated: since version 2.12.
+	//
+	// This method is inherited from Object
+	RemovePropertyChangeHandler(handlerId uint)
+	// RemoveRelationship removes a relationship of the specified type with the
+	// specified target.
+	//
+	// This method is inherited from Object
+	RemoveRelationship(relationship RelationType, target Object) bool
+	// SetAccessibleID sets the accessible ID of the accessible. This is not
+	// meant to be presented to the user, but to be an ID which is stable over
+	// application development. Typically, this is the gtkbuilder ID. Such an ID
+	// will be available for instance to identify a given well-known accessible
+	// object for tailored screen reading, or for automatic regression testing.
+	//
+	// This method is inherited from Object
+	SetAccessibleID(name string)
+	// SetDescription sets the accessible description of the accessible. You
+	// can't set the description to NULL. This is reserved for the initial
+	// value. In this aspect NULL is similar to ATK_ROLE_UNKNOWN. If you want to
+	// set the name to a empty value you can use "".
+	//
+	// This method is inherited from Object
+	SetDescription(description string)
+	// SetName sets the accessible name of the accessible. You can't set the
+	// name to NULL. This is reserved for the initial value. In this aspect NULL
+	// is similar to ATK_ROLE_UNKNOWN. If you want to set the name to a empty
+	// value you can use "".
+	//
+	// This method is inherited from Object
+	SetName(name string)
+	// SetParent sets the accessible parent of the accessible. @parent can be
+	// NULL.
+	//
+	// This method is inherited from Object
+	SetParent(parent Object)
+	// SetRole sets the role of the accessible.
+	//
+	// This method is inherited from Object
+	SetRole(role Role)
+	// AddSelection adds a selection bounded by the specified offsets.
+	//
+	// This method is inherited from Text
+	AddSelection(startOffset int, endOffset int) bool
+	// GetBoundedRanges: get the ranges of text in the specified bounding box.
+	//
+	// This method is inherited from Text
+	GetBoundedRanges(rect *TextRectangle, coordType CoordType, xClipType TextClipType, yClipType TextClipType) []*TextRange
+	// GetCaretOffset gets the offset of the position of the caret (cursor).
+	//
+	// This method is inherited from Text
+	GetCaretOffset() int
+	// GetCharacterAtOffset gets the specified text.
+	//
+	// This method is inherited from Text
+	GetCharacterAtOffset(offset int) uint32
+	// GetCharacterCount gets the character count.
+	//
+	// This method is inherited from Text
+	GetCharacterCount() int
+	// GetCharacterExtents: if the extent can not be obtained (e.g. missing
+	// support), all of x, y, width, height are set to -1.
+	//
+	// Get the bounding box containing the glyph representing the character at a
+	// particular text offset.
+	//
+	// This method is inherited from Text
+	GetCharacterExtents(offset int, coords CoordType) (x int, y int, width int, height int)
+	// GetNSelections gets the number of selected regions.
+	//
+	// This method is inherited from Text
+	GetNSelections() int
+	// GetOffsetAtPoint gets the offset of the character located at coordinates
+	// @x and @y. @x and @y are interpreted as being relative to the screen or
+	// this widget's window depending on @coords.
+	//
+	// This method is inherited from Text
+	GetOffsetAtPoint(x int, y int, coords CoordType) int
+	// GetRangeExtents: get the bounding box for text within the specified
+	// range.
+	//
+	// If the extents can not be obtained (e.g. or missing support), the
+	// rectangle fields are set to -1.
+	//
+	// This method is inherited from Text
+	GetRangeExtents(startOffset int, endOffset int, coordType CoordType) TextRectangle
+	// GetSelection gets the text from the specified selection.
+	//
+	// This method is inherited from Text
+	GetSelection(selectionNum int) (startOffset int, endOffset int, utf8 string)
+	// GetStringAtOffset gets a portion of the text exposed through an Text
+	// according to a given @offset and a specific @granularity, along with the
+	// start and end offsets defining the boundaries of such a portion of text.
+	//
+	// If @granularity is ATK_TEXT_GRANULARITY_CHAR the character at the offset
+	// is returned.
+	//
+	// If @granularity is ATK_TEXT_GRANULARITY_WORD the returned string is from
+	// the word start at or before the offset to the word start after the
+	// offset.
+	//
+	// The returned string will contain the word at the offset if the offset is
+	// inside a word and will contain the word before the offset if the offset
+	// is not inside a word.
+	//
+	// If @granularity is ATK_TEXT_GRANULARITY_SENTENCE the returned string is
+	// from the sentence start at or before the offset to the sentence start
+	// after the offset.
+	//
+	// The returned string will contain the sentence at the offset if the offset
+	// is inside a sentence and will contain the sentence before the offset if
+	// the offset is not inside a sentence.
+	//
+	// If @granularity is ATK_TEXT_GRANULARITY_LINE the returned string is from
+	// the line start at or before the offset to the line start after the
+	// offset.
+	//
+	// If @granularity is ATK_TEXT_GRANULARITY_PARAGRAPH the returned string is
+	// from the start of the paragraph at or before the offset to the start of
+	// the following paragraph after the offset.
+	//
+	// This method is inherited from Text
+	GetStringAtOffset(offset int, granularity TextGranularity) (startOffset int, endOffset int, utf8 string)
+	// GetText gets the specified text.
+	//
+	// This method is inherited from Text
+	GetText(startOffset int, endOffset int) string
+	// GetTextAfterOffset gets the specified text.
+	//
+	// Deprecated: since version 2.9.3.
+	//
+	// This method is inherited from Text
+	GetTextAfterOffset(offset int, boundaryType TextBoundary) (startOffset int, endOffset int, utf8 string)
+	// GetTextAtOffset gets the specified text.
+	//
+	// If the boundary_type if ATK_TEXT_BOUNDARY_CHAR the character at the
+	// offset is returned.
+	//
+	// If the boundary_type is ATK_TEXT_BOUNDARY_WORD_START the returned string
+	// is from the word start at or before the offset to the word start after
+	// the offset.
+	//
+	// The returned string will contain the word at the offset if the offset is
+	// inside a word and will contain the word before the offset if the offset
+	// is not inside a word.
+	//
+	// If the boundary type is ATK_TEXT_BOUNDARY_SENTENCE_START the returned
+	// string is from the sentence start at or before the offset to the sentence
+	// start after the offset.
+	//
+	// The returned string will contain the sentence at the offset if the offset
+	// is inside a sentence and will contain the sentence before the offset if
+	// the offset is not inside a sentence.
+	//
+	// If the boundary type is ATK_TEXT_BOUNDARY_LINE_START the returned string
+	// is from the line start at or before the offset to the line start after
+	// the offset.
+	//
+	// Deprecated.
+	//
+	// This method is inherited from Text
+	GetTextAtOffset(offset int, boundaryType TextBoundary) (startOffset int, endOffset int, utf8 string)
+	// GetTextBeforeOffset gets the specified text.
+	//
+	// Deprecated: since version 2.9.3.
+	//
+	// This method is inherited from Text
+	GetTextBeforeOffset(offset int, boundaryType TextBoundary) (startOffset int, endOffset int, utf8 string)
+	// RemoveSelection removes the specified selection.
+	//
+	// This method is inherited from Text
+	RemoveSelection(selectionNum int) bool
+	// ScrollSubstringTo makes a substring of @text visible on the screen by
+	// scrolling all necessary parents.
+	//
+	// This method is inherited from Text
+	ScrollSubstringTo(startOffset int, endOffset int, typ ScrollType) bool
+	// ScrollSubstringToPoint: move the top-left of a substring of @text to a
+	// given position of the screen by scrolling all necessary parents.
+	//
+	// This method is inherited from Text
+	ScrollSubstringToPoint(startOffset int, endOffset int, coords CoordType, x int, y int) bool
+	// SetCaretOffset sets the caret (cursor) position to the specified @offset.
+	//
+	// In the case of rich-text content, this method should either grab focus or
+	// move the sequential focus navigation starting point (if the application
+	// supports this concept) as if the user had clicked on the new caret
+	// position. Typically, this means that the target of this operation is the
+	// node containing the new caret position or one of its ancestors. In other
+	// words, after this method is called, if the user advances focus, it should
+	// move to the first focusable node following the new caret position.
+	//
+	// Calling this method should also scroll the application viewport in a way
+	// that matches the behavior of the application's typical caret motion or
+	// tab navigation as closely as possible. This also means that if the
+	// application's caret motion or focus navigation does not trigger a scroll
+	// operation, this method should not trigger one either. If the application
+	// does not have a caret motion or focus navigation operation, this method
+	// should try to scroll the new caret position into view while minimizing
+	// unnecessary scroll motion.
+	//
+	// This method is inherited from Text
+	SetCaretOffset(offset int) bool
+	// SetSelection changes the start and end offset of the specified selection.
+	//
+	// This method is inherited from Text
+	SetSelection(selectionNum int, startOffset int, endOffset int) bool
+	// GetCurrentValue gets the value of this object.
+	//
+	// Deprecated.
+	//
+	// This method is inherited from Value
+	GetCurrentValue() externglib.Value
+	// GetIncrement gets the minimum increment by which the value of this object
+	// may be changed. If zero, the minimum increment is undefined, which may
+	// mean that it is limited only by the floating point precision of the
+	// platform.
+	//
+	// This method is inherited from Value
+	GetIncrement() float64
+	// GetMaximumValue gets the maximum value of this object.
+	//
+	// Deprecated.
+	//
+	// This method is inherited from Value
+	GetMaximumValue() externglib.Value
+	// GetMinimumIncrement gets the minimum increment by which the value of this
+	// object may be changed. If zero, the minimum increment is undefined, which
+	// may mean that it is limited only by the floating point precision of the
+	// platform.
+	//
+	// Deprecated.
+	//
+	// This method is inherited from Value
+	GetMinimumIncrement() externglib.Value
+	// GetMinimumValue gets the minimum value of this object.
+	//
+	// Deprecated.
+	//
+	// This method is inherited from Value
+	GetMinimumValue() externglib.Value
+	// GetRange gets the range of this object.
+	//
+	// This method is inherited from Value
+	GetRange() *Range
+	// GetValueAndText gets the current value and the human readable text
+	// alternative of @obj. @text is a newly created string, that must be freed
+	// by the caller. Can be NULL if no descriptor is available.
+	//
+	// This method is inherited from Value
+	GetValueAndText() (float64, string)
+	// SetCurrentValue sets the value of this object.
+	//
+	// Deprecated.
+	//
+	// This method is inherited from Value
+	SetCurrentValue(value externglib.Value) bool
+	// SetValue sets the value of this object.
+	//
+	// This method is intended to provide a way to change the value of the
+	// object. In any case, it is possible that the value can't be modified (ie:
+	// a read-only component). If the value changes due this call, it is
+	// possible that the text could change, and will trigger an
+	// Value::value-changed signal emission.
+	//
+	// Note for implementors: the deprecated atk_value_set_current_value()
+	// method returned TRUE or FALSE depending if the value was assigned or not.
+	// In the practice several implementors were not able to decide it, and
+	// returned TRUE in any case. For that reason it is not required anymore to
+	// return if the value was properly assigned or not.
+	//
+	// This method is inherited from Value
+	SetValue(newValue float64)
+	// AddRelationship adds a relationship of the specified type with the
+	// specified target.
+	//
+	// This method is inherited from Object
+	AddRelationship(relationship RelationType, target Object) bool
+	// GetAccessibleID gets the accessible id of the accessible.
+	//
+	// This method is inherited from Object
+	GetAccessibleID() string
+	// GetDescription gets the accessible description of the accessible.
+	//
+	// This method is inherited from Object
+	GetDescription() string
+	// GetIndexInParent gets the 0-based index of this accessible in its parent;
+	// returns -1 if the accessible does not have an accessible parent.
+	//
+	// This method is inherited from Object
+	GetIndexInParent() int
+	// GetLayer gets the layer of the accessible.
+	//
+	// Deprecated.
+	//
+	// This method is inherited from Object
+	GetLayer() Layer
+	// GetMDIZOrder gets the zorder of the accessible. The value G_MININT will
+	// be returned if the layer of the accessible is not ATK_LAYER_MDI.
+	//
+	// Deprecated.
+	//
+	// This method is inherited from Object
+	GetMDIZOrder() int
+	// GetNAccessibleChildren gets the number of accessible children of the
+	// accessible.
+	//
+	// This method is inherited from Object
+	GetNAccessibleChildren() int
+	// GetName gets the accessible name of the accessible.
+	//
+	// This method is inherited from Object
+	GetName() string
+	// GetObjectLocale gets a UTF-8 string indicating the POSIX-style
+	// LC_MESSAGES locale of @accessible.
+	//
+	// This method is inherited from Object
+	GetObjectLocale() string
+	// GetParent gets the accessible parent of the accessible. By default this
+	// is the one assigned with atk_object_set_parent(), but it is assumed that
+	// ATK implementors have ways to get the parent of the object without the
+	// need of assigning it manually with atk_object_set_parent(), and will
+	// return it with this method.
+	//
+	// If you are only interested on the parent assigned with
+	// atk_object_set_parent(), use atk_object_peek_parent().
+	//
+	// This method is inherited from Object
+	GetParent() Object
+	// GetRole gets the role of the accessible.
+	//
+	// This method is inherited from Object
+	GetRole() Role
+	// Initialize: this function is called when implementing subclasses of
+	// Object. It does initialization required for the new object. It is
+	// intended that this function should called only in the ..._new() functions
+	// used to create an instance of a subclass of Object
+	//
+	// This method is inherited from Object
+	Initialize(data interface{})
+	// PeekParent gets the accessible parent of the accessible, if it has been
+	// manually assigned with atk_object_set_parent. Otherwise, this function
+	// returns nil.
+	//
+	// This method is intended as an utility for ATK implementors, and not to be
+	// exposed to accessible tools. See atk_object_get_parent() for further
+	// reference.
+	//
+	// This method is inherited from Object
+	PeekParent() Object
+	// RefAccessibleChild gets a reference to the specified accessible child of
+	// the object. The accessible children are 0-based so the first accessible
+	// child is at index 0, the second at index 1 and so on.
+	//
+	// This method is inherited from Object
+	RefAccessibleChild(i int) Object
+	// RefRelationSet gets the RelationSet associated with the object.
+	//
+	// This method is inherited from Object
+	RefRelationSet() RelationSet
+	// RefStateSet gets a reference to the state set of the accessible; the
+	// caller must unreference it when it is no longer needed.
+	//
+	// This method is inherited from Object
+	RefStateSet() StateSet
+	// RemovePropertyChangeHandler removes a property change handler.
+	//
+	// Deprecated: since version 2.12.
+	//
+	// This method is inherited from Object
+	RemovePropertyChangeHandler(handlerId uint)
+	// RemoveRelationship removes a relationship of the specified type with the
+	// specified target.
+	//
+	// This method is inherited from Object
+	RemoveRelationship(relationship RelationType, target Object) bool
+	// SetAccessibleID sets the accessible ID of the accessible. This is not
+	// meant to be presented to the user, but to be an ID which is stable over
+	// application development. Typically, this is the gtkbuilder ID. Such an ID
+	// will be available for instance to identify a given well-known accessible
+	// object for tailored screen reading, or for automatic regression testing.
+	//
+	// This method is inherited from Object
+	SetAccessibleID(name string)
+	// SetDescription sets the accessible description of the accessible. You
+	// can't set the description to NULL. This is reserved for the initial
+	// value. In this aspect NULL is similar to ATK_ROLE_UNKNOWN. If you want to
+	// set the name to a empty value you can use "".
+	//
+	// This method is inherited from Object
+	SetDescription(description string)
+	// SetName sets the accessible name of the accessible. You can't set the
+	// name to NULL. This is reserved for the initial value. In this aspect NULL
+	// is similar to ATK_ROLE_UNKNOWN. If you want to set the name to a empty
+	// value you can use "".
+	//
+	// This method is inherited from Object
+	SetName(name string)
+	// SetParent sets the accessible parent of the accessible. @parent can be
+	// NULL.
+	//
+	// This method is inherited from Object
+	SetParent(parent Object)
+	// SetRole sets the role of the accessible.
+	//
+	// This method is inherited from Object
+	SetRole(role Role)
 }
 
-// noOpObject implements the NoOpObject class.
+// noOpObject implements the NoOpObject interface.
 type noOpObject struct {
-	Object
+	*externglib.Object
 }
 
-// WrapNoOpObject wraps a GObject to the right type. It is
-// primarily used internally.
+var _ NoOpObject = (*noOpObject)(nil)
+
+// WrapNoOpObject wraps a GObject to a type that implements
+// interface NoOpObject. It is primarily used internally.
 func WrapNoOpObject(obj *externglib.Object) NoOpObject {
-	return noOpObject{
-		Object: WrapObject(obj),
-	}
+	return noOpObject{obj}
 }
 
 func marshalNoOpObject(p uintptr) (interface{}, error) {
@@ -85,9 +1204,13 @@ func NewNoOpObject(obj gextras.Objector) NoOpObject {
 
 	var _noOpObject NoOpObject // out
 
-	_noOpObject = WrapNoOpObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_noOpObject = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(NoOpObject)
 
 	return _noOpObject
+}
+
+func (n noOpObject) AsObject() Object {
+	return WrapObject(gextras.InternObject(n))
 }
 
 func (n noOpObject) AsAction() Action {
@@ -136,4 +1259,732 @@ func (n noOpObject) AsValue() Value {
 
 func (n noOpObject) AsWindow() Window {
 	return WrapWindow(gextras.InternObject(n))
+}
+
+func (o noOpObject) AddRelationship(relationship RelationType, target Object) bool {
+	return WrapObject(gextras.InternObject(o)).AddRelationship(relationship, target)
+}
+
+func (a noOpObject) GetAccessibleID() string {
+	return WrapObject(gextras.InternObject(a)).GetAccessibleID()
+}
+
+func (a noOpObject) GetDescription() string {
+	return WrapObject(gextras.InternObject(a)).GetDescription()
+}
+
+func (a noOpObject) GetIndexInParent() int {
+	return WrapObject(gextras.InternObject(a)).GetIndexInParent()
+}
+
+func (a noOpObject) GetLayer() Layer {
+	return WrapObject(gextras.InternObject(a)).GetLayer()
+}
+
+func (a noOpObject) GetMDIZOrder() int {
+	return WrapObject(gextras.InternObject(a)).GetMDIZOrder()
+}
+
+func (a noOpObject) GetNAccessibleChildren() int {
+	return WrapObject(gextras.InternObject(a)).GetNAccessibleChildren()
+}
+
+func (a noOpObject) GetName() string {
+	return WrapObject(gextras.InternObject(a)).GetName()
+}
+
+func (a noOpObject) GetObjectLocale() string {
+	return WrapObject(gextras.InternObject(a)).GetObjectLocale()
+}
+
+func (a noOpObject) GetParent() Object {
+	return WrapObject(gextras.InternObject(a)).GetParent()
+}
+
+func (a noOpObject) GetRole() Role {
+	return WrapObject(gextras.InternObject(a)).GetRole()
+}
+
+func (a noOpObject) Initialize(data interface{}) {
+	WrapObject(gextras.InternObject(a)).Initialize(data)
+}
+
+func (a noOpObject) PeekParent() Object {
+	return WrapObject(gextras.InternObject(a)).PeekParent()
+}
+
+func (a noOpObject) RefAccessibleChild(i int) Object {
+	return WrapObject(gextras.InternObject(a)).RefAccessibleChild(i)
+}
+
+func (a noOpObject) RefRelationSet() RelationSet {
+	return WrapObject(gextras.InternObject(a)).RefRelationSet()
+}
+
+func (a noOpObject) RefStateSet() StateSet {
+	return WrapObject(gextras.InternObject(a)).RefStateSet()
+}
+
+func (a noOpObject) RemovePropertyChangeHandler(handlerId uint) {
+	WrapObject(gextras.InternObject(a)).RemovePropertyChangeHandler(handlerId)
+}
+
+func (o noOpObject) RemoveRelationship(relationship RelationType, target Object) bool {
+	return WrapObject(gextras.InternObject(o)).RemoveRelationship(relationship, target)
+}
+
+func (a noOpObject) SetAccessibleID(name string) {
+	WrapObject(gextras.InternObject(a)).SetAccessibleID(name)
+}
+
+func (a noOpObject) SetDescription(description string) {
+	WrapObject(gextras.InternObject(a)).SetDescription(description)
+}
+
+func (a noOpObject) SetName(name string) {
+	WrapObject(gextras.InternObject(a)).SetName(name)
+}
+
+func (a noOpObject) SetParent(parent Object) {
+	WrapObject(gextras.InternObject(a)).SetParent(parent)
+}
+
+func (a noOpObject) SetRole(role Role) {
+	WrapObject(gextras.InternObject(a)).SetRole(role)
+}
+
+func (a noOpObject) DoAction(i int) bool {
+	return WrapAction(gextras.InternObject(a)).DoAction(i)
+}
+
+func (a noOpObject) GetDescription(i int) string {
+	return WrapAction(gextras.InternObject(a)).GetDescription(i)
+}
+
+func (a noOpObject) GetKeybinding(i int) string {
+	return WrapAction(gextras.InternObject(a)).GetKeybinding(i)
+}
+
+func (a noOpObject) GetLocalizedName(i int) string {
+	return WrapAction(gextras.InternObject(a)).GetLocalizedName(i)
+}
+
+func (a noOpObject) GetNActions() int {
+	return WrapAction(gextras.InternObject(a)).GetNActions()
+}
+
+func (a noOpObject) GetName(i int) string {
+	return WrapAction(gextras.InternObject(a)).GetName(i)
+}
+
+func (a noOpObject) SetDescription(i int, desc string) bool {
+	return WrapAction(gextras.InternObject(a)).SetDescription(i, desc)
+}
+
+func (c noOpObject) Contains(x int, y int, coordType CoordType) bool {
+	return WrapComponent(gextras.InternObject(c)).Contains(x, y, coordType)
+}
+
+func (c noOpObject) GetAlpha() float64 {
+	return WrapComponent(gextras.InternObject(c)).GetAlpha()
+}
+
+func (c noOpObject) GetExtents(coordType CoordType) (x int, y int, width int, height int) {
+	return WrapComponent(gextras.InternObject(c)).GetExtents(coordType)
+}
+
+func (c noOpObject) GetLayer() Layer {
+	return WrapComponent(gextras.InternObject(c)).GetLayer()
+}
+
+func (c noOpObject) GetMDIZOrder() int {
+	return WrapComponent(gextras.InternObject(c)).GetMDIZOrder()
+}
+
+func (c noOpObject) GetPosition(coordType CoordType) (x int, y int) {
+	return WrapComponent(gextras.InternObject(c)).GetPosition(coordType)
+}
+
+func (c noOpObject) GetSize() (width int, height int) {
+	return WrapComponent(gextras.InternObject(c)).GetSize()
+}
+
+func (c noOpObject) GrabFocus() bool {
+	return WrapComponent(gextras.InternObject(c)).GrabFocus()
+}
+
+func (c noOpObject) RefAccessibleAtPoint(x int, y int, coordType CoordType) Object {
+	return WrapComponent(gextras.InternObject(c)).RefAccessibleAtPoint(x, y, coordType)
+}
+
+func (c noOpObject) RemoveFocusHandler(handlerId uint) {
+	WrapComponent(gextras.InternObject(c)).RemoveFocusHandler(handlerId)
+}
+
+func (c noOpObject) ScrollTo(typ ScrollType) bool {
+	return WrapComponent(gextras.InternObject(c)).ScrollTo(typ)
+}
+
+func (c noOpObject) ScrollToPoint(coords CoordType, x int, y int) bool {
+	return WrapComponent(gextras.InternObject(c)).ScrollToPoint(coords, x, y)
+}
+
+func (c noOpObject) SetExtents(x int, y int, width int, height int, coordType CoordType) bool {
+	return WrapComponent(gextras.InternObject(c)).SetExtents(x, y, width, height, coordType)
+}
+
+func (c noOpObject) SetPosition(x int, y int, coordType CoordType) bool {
+	return WrapComponent(gextras.InternObject(c)).SetPosition(x, y, coordType)
+}
+
+func (c noOpObject) SetSize(width int, height int) bool {
+	return WrapComponent(gextras.InternObject(c)).SetSize(width, height)
+}
+
+func (d noOpObject) GetAttributeValue(attributeName string) string {
+	return WrapDocument(gextras.InternObject(d)).GetAttributeValue(attributeName)
+}
+
+func (d noOpObject) GetCurrentPageNumber() int {
+	return WrapDocument(gextras.InternObject(d)).GetCurrentPageNumber()
+}
+
+func (d noOpObject) GetDocument() interface{} {
+	return WrapDocument(gextras.InternObject(d)).GetDocument()
+}
+
+func (d noOpObject) GetDocumentType() string {
+	return WrapDocument(gextras.InternObject(d)).GetDocumentType()
+}
+
+func (d noOpObject) GetLocale() string {
+	return WrapDocument(gextras.InternObject(d)).GetLocale()
+}
+
+func (d noOpObject) GetPageCount() int {
+	return WrapDocument(gextras.InternObject(d)).GetPageCount()
+}
+
+func (d noOpObject) SetAttributeValue(attributeName string, attributeValue string) bool {
+	return WrapDocument(gextras.InternObject(d)).SetAttributeValue(attributeName, attributeValue)
+}
+
+func (t noOpObject) CopyText(startPos int, endPos int) {
+	WrapEditableText(gextras.InternObject(t)).CopyText(startPos, endPos)
+}
+
+func (t noOpObject) CutText(startPos int, endPos int) {
+	WrapEditableText(gextras.InternObject(t)).CutText(startPos, endPos)
+}
+
+func (t noOpObject) DeleteText(startPos int, endPos int) {
+	WrapEditableText(gextras.InternObject(t)).DeleteText(startPos, endPos)
+}
+
+func (t noOpObject) InsertText(_string string, length int, position *int) {
+	WrapEditableText(gextras.InternObject(t)).InsertText(_string, length, position)
+}
+
+func (t noOpObject) PasteText(position int) {
+	WrapEditableText(gextras.InternObject(t)).PasteText(position)
+}
+
+func (t noOpObject) SetTextContents(_string string) {
+	WrapEditableText(gextras.InternObject(t)).SetTextContents(_string)
+}
+
+func (h noOpObject) GetLink(linkIndex int) Hyperlink {
+	return WrapHypertext(gextras.InternObject(h)).GetLink(linkIndex)
+}
+
+func (h noOpObject) GetLinkIndex(charIndex int) int {
+	return WrapHypertext(gextras.InternObject(h)).GetLinkIndex(charIndex)
+}
+
+func (h noOpObject) GetNLinks() int {
+	return WrapHypertext(gextras.InternObject(h)).GetNLinks()
+}
+
+func (i noOpObject) GetImageDescription() string {
+	return WrapImage(gextras.InternObject(i)).GetImageDescription()
+}
+
+func (i noOpObject) GetImageLocale() string {
+	return WrapImage(gextras.InternObject(i)).GetImageLocale()
+}
+
+func (i noOpObject) GetImagePosition(coordType CoordType) (x int, y int) {
+	return WrapImage(gextras.InternObject(i)).GetImagePosition(coordType)
+}
+
+func (i noOpObject) GetImageSize() (width int, height int) {
+	return WrapImage(gextras.InternObject(i)).GetImageSize()
+}
+
+func (i noOpObject) SetImageDescription(description string) bool {
+	return WrapImage(gextras.InternObject(i)).SetImageDescription(description)
+}
+
+func (s noOpObject) AddSelection(i int) bool {
+	return WrapSelection(gextras.InternObject(s)).AddSelection(i)
+}
+
+func (s noOpObject) ClearSelection() bool {
+	return WrapSelection(gextras.InternObject(s)).ClearSelection()
+}
+
+func (s noOpObject) GetSelectionCount() int {
+	return WrapSelection(gextras.InternObject(s)).GetSelectionCount()
+}
+
+func (s noOpObject) IsChildSelected(i int) bool {
+	return WrapSelection(gextras.InternObject(s)).IsChildSelected(i)
+}
+
+func (s noOpObject) RefSelection(i int) Object {
+	return WrapSelection(gextras.InternObject(s)).RefSelection(i)
+}
+
+func (s noOpObject) RemoveSelection(i int) bool {
+	return WrapSelection(gextras.InternObject(s)).RemoveSelection(i)
+}
+
+func (s noOpObject) SelectAllSelection() bool {
+	return WrapSelection(gextras.InternObject(s)).SelectAllSelection()
+}
+
+func (t noOpObject) AddColumnSelection(column int) bool {
+	return WrapTable(gextras.InternObject(t)).AddColumnSelection(column)
+}
+
+func (t noOpObject) AddRowSelection(row int) bool {
+	return WrapTable(gextras.InternObject(t)).AddRowSelection(row)
+}
+
+func (t noOpObject) GetCaption() Object {
+	return WrapTable(gextras.InternObject(t)).GetCaption()
+}
+
+func (t noOpObject) GetColumnAtIndex(index_ int) int {
+	return WrapTable(gextras.InternObject(t)).GetColumnAtIndex(index_)
+}
+
+func (t noOpObject) GetColumnDescription(column int) string {
+	return WrapTable(gextras.InternObject(t)).GetColumnDescription(column)
+}
+
+func (t noOpObject) GetColumnExtentAt(row int, column int) int {
+	return WrapTable(gextras.InternObject(t)).GetColumnExtentAt(row, column)
+}
+
+func (t noOpObject) GetColumnHeader(column int) Object {
+	return WrapTable(gextras.InternObject(t)).GetColumnHeader(column)
+}
+
+func (t noOpObject) GetIndexAt(row int, column int) int {
+	return WrapTable(gextras.InternObject(t)).GetIndexAt(row, column)
+}
+
+func (t noOpObject) GetNColumns() int {
+	return WrapTable(gextras.InternObject(t)).GetNColumns()
+}
+
+func (t noOpObject) GetNRows() int {
+	return WrapTable(gextras.InternObject(t)).GetNRows()
+}
+
+func (t noOpObject) GetRowAtIndex(index_ int) int {
+	return WrapTable(gextras.InternObject(t)).GetRowAtIndex(index_)
+}
+
+func (t noOpObject) GetRowDescription(row int) string {
+	return WrapTable(gextras.InternObject(t)).GetRowDescription(row)
+}
+
+func (t noOpObject) GetRowExtentAt(row int, column int) int {
+	return WrapTable(gextras.InternObject(t)).GetRowExtentAt(row, column)
+}
+
+func (t noOpObject) GetRowHeader(row int) Object {
+	return WrapTable(gextras.InternObject(t)).GetRowHeader(row)
+}
+
+func (t noOpObject) GetSelectedColumns(selected **int) int {
+	return WrapTable(gextras.InternObject(t)).GetSelectedColumns(selected)
+}
+
+func (t noOpObject) GetSelectedRows(selected **int) int {
+	return WrapTable(gextras.InternObject(t)).GetSelectedRows(selected)
+}
+
+func (t noOpObject) GetSummary() Object {
+	return WrapTable(gextras.InternObject(t)).GetSummary()
+}
+
+func (t noOpObject) IsColumnSelected(column int) bool {
+	return WrapTable(gextras.InternObject(t)).IsColumnSelected(column)
+}
+
+func (t noOpObject) IsRowSelected(row int) bool {
+	return WrapTable(gextras.InternObject(t)).IsRowSelected(row)
+}
+
+func (t noOpObject) IsSelected(row int, column int) bool {
+	return WrapTable(gextras.InternObject(t)).IsSelected(row, column)
+}
+
+func (t noOpObject) RefAt(row int, column int) Object {
+	return WrapTable(gextras.InternObject(t)).RefAt(row, column)
+}
+
+func (t noOpObject) RemoveColumnSelection(column int) bool {
+	return WrapTable(gextras.InternObject(t)).RemoveColumnSelection(column)
+}
+
+func (t noOpObject) RemoveRowSelection(row int) bool {
+	return WrapTable(gextras.InternObject(t)).RemoveRowSelection(row)
+}
+
+func (t noOpObject) SetCaption(caption Object) {
+	WrapTable(gextras.InternObject(t)).SetCaption(caption)
+}
+
+func (t noOpObject) SetColumnDescription(column int, description string) {
+	WrapTable(gextras.InternObject(t)).SetColumnDescription(column, description)
+}
+
+func (t noOpObject) SetColumnHeader(column int, header Object) {
+	WrapTable(gextras.InternObject(t)).SetColumnHeader(column, header)
+}
+
+func (t noOpObject) SetRowDescription(row int, description string) {
+	WrapTable(gextras.InternObject(t)).SetRowDescription(row, description)
+}
+
+func (t noOpObject) SetRowHeader(row int, header Object) {
+	WrapTable(gextras.InternObject(t)).SetRowHeader(row, header)
+}
+
+func (t noOpObject) SetSummary(accessible Object) {
+	WrapTable(gextras.InternObject(t)).SetSummary(accessible)
+}
+
+func (c noOpObject) GetColumnSpan() int {
+	return WrapTableCell(gextras.InternObject(c)).GetColumnSpan()
+}
+
+func (c noOpObject) GetPosition() (row int, column int, ok bool) {
+	return WrapTableCell(gextras.InternObject(c)).GetPosition()
+}
+
+func (c noOpObject) GetRowColumnSpan() (row int, column int, rowSpan int, columnSpan int, ok bool) {
+	return WrapTableCell(gextras.InternObject(c)).GetRowColumnSpan()
+}
+
+func (c noOpObject) GetRowSpan() int {
+	return WrapTableCell(gextras.InternObject(c)).GetRowSpan()
+}
+
+func (c noOpObject) GetTable() Object {
+	return WrapTableCell(gextras.InternObject(c)).GetTable()
+}
+
+func (o noOpObject) AddRelationship(relationship RelationType, target Object) bool {
+	return WrapObject(gextras.InternObject(o)).AddRelationship(relationship, target)
+}
+
+func (a noOpObject) GetAccessibleID() string {
+	return WrapObject(gextras.InternObject(a)).GetAccessibleID()
+}
+
+func (a noOpObject) GetDescription() string {
+	return WrapObject(gextras.InternObject(a)).GetDescription()
+}
+
+func (a noOpObject) GetIndexInParent() int {
+	return WrapObject(gextras.InternObject(a)).GetIndexInParent()
+}
+
+func (a noOpObject) GetLayer() Layer {
+	return WrapObject(gextras.InternObject(a)).GetLayer()
+}
+
+func (a noOpObject) GetMDIZOrder() int {
+	return WrapObject(gextras.InternObject(a)).GetMDIZOrder()
+}
+
+func (a noOpObject) GetNAccessibleChildren() int {
+	return WrapObject(gextras.InternObject(a)).GetNAccessibleChildren()
+}
+
+func (a noOpObject) GetName() string {
+	return WrapObject(gextras.InternObject(a)).GetName()
+}
+
+func (a noOpObject) GetObjectLocale() string {
+	return WrapObject(gextras.InternObject(a)).GetObjectLocale()
+}
+
+func (a noOpObject) GetParent() Object {
+	return WrapObject(gextras.InternObject(a)).GetParent()
+}
+
+func (a noOpObject) GetRole() Role {
+	return WrapObject(gextras.InternObject(a)).GetRole()
+}
+
+func (a noOpObject) Initialize(data interface{}) {
+	WrapObject(gextras.InternObject(a)).Initialize(data)
+}
+
+func (a noOpObject) PeekParent() Object {
+	return WrapObject(gextras.InternObject(a)).PeekParent()
+}
+
+func (a noOpObject) RefAccessibleChild(i int) Object {
+	return WrapObject(gextras.InternObject(a)).RefAccessibleChild(i)
+}
+
+func (a noOpObject) RefRelationSet() RelationSet {
+	return WrapObject(gextras.InternObject(a)).RefRelationSet()
+}
+
+func (a noOpObject) RefStateSet() StateSet {
+	return WrapObject(gextras.InternObject(a)).RefStateSet()
+}
+
+func (a noOpObject) RemovePropertyChangeHandler(handlerId uint) {
+	WrapObject(gextras.InternObject(a)).RemovePropertyChangeHandler(handlerId)
+}
+
+func (o noOpObject) RemoveRelationship(relationship RelationType, target Object) bool {
+	return WrapObject(gextras.InternObject(o)).RemoveRelationship(relationship, target)
+}
+
+func (a noOpObject) SetAccessibleID(name string) {
+	WrapObject(gextras.InternObject(a)).SetAccessibleID(name)
+}
+
+func (a noOpObject) SetDescription(description string) {
+	WrapObject(gextras.InternObject(a)).SetDescription(description)
+}
+
+func (a noOpObject) SetName(name string) {
+	WrapObject(gextras.InternObject(a)).SetName(name)
+}
+
+func (a noOpObject) SetParent(parent Object) {
+	WrapObject(gextras.InternObject(a)).SetParent(parent)
+}
+
+func (a noOpObject) SetRole(role Role) {
+	WrapObject(gextras.InternObject(a)).SetRole(role)
+}
+
+func (t noOpObject) AddSelection(startOffset int, endOffset int) bool {
+	return WrapText(gextras.InternObject(t)).AddSelection(startOffset, endOffset)
+}
+
+func (t noOpObject) GetBoundedRanges(rect *TextRectangle, coordType CoordType, xClipType TextClipType, yClipType TextClipType) []*TextRange {
+	return WrapText(gextras.InternObject(t)).GetBoundedRanges(rect, coordType, xClipType, yClipType)
+}
+
+func (t noOpObject) GetCaretOffset() int {
+	return WrapText(gextras.InternObject(t)).GetCaretOffset()
+}
+
+func (t noOpObject) GetCharacterAtOffset(offset int) uint32 {
+	return WrapText(gextras.InternObject(t)).GetCharacterAtOffset(offset)
+}
+
+func (t noOpObject) GetCharacterCount() int {
+	return WrapText(gextras.InternObject(t)).GetCharacterCount()
+}
+
+func (t noOpObject) GetCharacterExtents(offset int, coords CoordType) (x int, y int, width int, height int) {
+	return WrapText(gextras.InternObject(t)).GetCharacterExtents(offset, coords)
+}
+
+func (t noOpObject) GetNSelections() int {
+	return WrapText(gextras.InternObject(t)).GetNSelections()
+}
+
+func (t noOpObject) GetOffsetAtPoint(x int, y int, coords CoordType) int {
+	return WrapText(gextras.InternObject(t)).GetOffsetAtPoint(x, y, coords)
+}
+
+func (t noOpObject) GetRangeExtents(startOffset int, endOffset int, coordType CoordType) TextRectangle {
+	return WrapText(gextras.InternObject(t)).GetRangeExtents(startOffset, endOffset, coordType)
+}
+
+func (t noOpObject) GetSelection(selectionNum int) (startOffset int, endOffset int, utf8 string) {
+	return WrapText(gextras.InternObject(t)).GetSelection(selectionNum)
+}
+
+func (t noOpObject) GetStringAtOffset(offset int, granularity TextGranularity) (startOffset int, endOffset int, utf8 string) {
+	return WrapText(gextras.InternObject(t)).GetStringAtOffset(offset, granularity)
+}
+
+func (t noOpObject) GetText(startOffset int, endOffset int) string {
+	return WrapText(gextras.InternObject(t)).GetText(startOffset, endOffset)
+}
+
+func (t noOpObject) GetTextAfterOffset(offset int, boundaryType TextBoundary) (startOffset int, endOffset int, utf8 string) {
+	return WrapText(gextras.InternObject(t)).GetTextAfterOffset(offset, boundaryType)
+}
+
+func (t noOpObject) GetTextAtOffset(offset int, boundaryType TextBoundary) (startOffset int, endOffset int, utf8 string) {
+	return WrapText(gextras.InternObject(t)).GetTextAtOffset(offset, boundaryType)
+}
+
+func (t noOpObject) GetTextBeforeOffset(offset int, boundaryType TextBoundary) (startOffset int, endOffset int, utf8 string) {
+	return WrapText(gextras.InternObject(t)).GetTextBeforeOffset(offset, boundaryType)
+}
+
+func (t noOpObject) RemoveSelection(selectionNum int) bool {
+	return WrapText(gextras.InternObject(t)).RemoveSelection(selectionNum)
+}
+
+func (t noOpObject) ScrollSubstringTo(startOffset int, endOffset int, typ ScrollType) bool {
+	return WrapText(gextras.InternObject(t)).ScrollSubstringTo(startOffset, endOffset, typ)
+}
+
+func (t noOpObject) ScrollSubstringToPoint(startOffset int, endOffset int, coords CoordType, x int, y int) bool {
+	return WrapText(gextras.InternObject(t)).ScrollSubstringToPoint(startOffset, endOffset, coords, x, y)
+}
+
+func (t noOpObject) SetCaretOffset(offset int) bool {
+	return WrapText(gextras.InternObject(t)).SetCaretOffset(offset)
+}
+
+func (t noOpObject) SetSelection(selectionNum int, startOffset int, endOffset int) bool {
+	return WrapText(gextras.InternObject(t)).SetSelection(selectionNum, startOffset, endOffset)
+}
+
+func (o noOpObject) GetCurrentValue() externglib.Value {
+	return WrapValue(gextras.InternObject(o)).GetCurrentValue()
+}
+
+func (o noOpObject) GetIncrement() float64 {
+	return WrapValue(gextras.InternObject(o)).GetIncrement()
+}
+
+func (o noOpObject) GetMaximumValue() externglib.Value {
+	return WrapValue(gextras.InternObject(o)).GetMaximumValue()
+}
+
+func (o noOpObject) GetMinimumIncrement() externglib.Value {
+	return WrapValue(gextras.InternObject(o)).GetMinimumIncrement()
+}
+
+func (o noOpObject) GetMinimumValue() externglib.Value {
+	return WrapValue(gextras.InternObject(o)).GetMinimumValue()
+}
+
+func (o noOpObject) GetRange() *Range {
+	return WrapValue(gextras.InternObject(o)).GetRange()
+}
+
+func (o noOpObject) GetValueAndText() (float64, string) {
+	return WrapValue(gextras.InternObject(o)).GetValueAndText()
+}
+
+func (o noOpObject) SetCurrentValue(value externglib.Value) bool {
+	return WrapValue(gextras.InternObject(o)).SetCurrentValue(value)
+}
+
+func (o noOpObject) SetValue(newValue float64) {
+	WrapValue(gextras.InternObject(o)).SetValue(newValue)
+}
+
+func (o noOpObject) AddRelationship(relationship RelationType, target Object) bool {
+	return WrapObject(gextras.InternObject(o)).AddRelationship(relationship, target)
+}
+
+func (a noOpObject) GetAccessibleID() string {
+	return WrapObject(gextras.InternObject(a)).GetAccessibleID()
+}
+
+func (a noOpObject) GetDescription() string {
+	return WrapObject(gextras.InternObject(a)).GetDescription()
+}
+
+func (a noOpObject) GetIndexInParent() int {
+	return WrapObject(gextras.InternObject(a)).GetIndexInParent()
+}
+
+func (a noOpObject) GetLayer() Layer {
+	return WrapObject(gextras.InternObject(a)).GetLayer()
+}
+
+func (a noOpObject) GetMDIZOrder() int {
+	return WrapObject(gextras.InternObject(a)).GetMDIZOrder()
+}
+
+func (a noOpObject) GetNAccessibleChildren() int {
+	return WrapObject(gextras.InternObject(a)).GetNAccessibleChildren()
+}
+
+func (a noOpObject) GetName() string {
+	return WrapObject(gextras.InternObject(a)).GetName()
+}
+
+func (a noOpObject) GetObjectLocale() string {
+	return WrapObject(gextras.InternObject(a)).GetObjectLocale()
+}
+
+func (a noOpObject) GetParent() Object {
+	return WrapObject(gextras.InternObject(a)).GetParent()
+}
+
+func (a noOpObject) GetRole() Role {
+	return WrapObject(gextras.InternObject(a)).GetRole()
+}
+
+func (a noOpObject) Initialize(data interface{}) {
+	WrapObject(gextras.InternObject(a)).Initialize(data)
+}
+
+func (a noOpObject) PeekParent() Object {
+	return WrapObject(gextras.InternObject(a)).PeekParent()
+}
+
+func (a noOpObject) RefAccessibleChild(i int) Object {
+	return WrapObject(gextras.InternObject(a)).RefAccessibleChild(i)
+}
+
+func (a noOpObject) RefRelationSet() RelationSet {
+	return WrapObject(gextras.InternObject(a)).RefRelationSet()
+}
+
+func (a noOpObject) RefStateSet() StateSet {
+	return WrapObject(gextras.InternObject(a)).RefStateSet()
+}
+
+func (a noOpObject) RemovePropertyChangeHandler(handlerId uint) {
+	WrapObject(gextras.InternObject(a)).RemovePropertyChangeHandler(handlerId)
+}
+
+func (o noOpObject) RemoveRelationship(relationship RelationType, target Object) bool {
+	return WrapObject(gextras.InternObject(o)).RemoveRelationship(relationship, target)
+}
+
+func (a noOpObject) SetAccessibleID(name string) {
+	WrapObject(gextras.InternObject(a)).SetAccessibleID(name)
+}
+
+func (a noOpObject) SetDescription(description string) {
+	WrapObject(gextras.InternObject(a)).SetDescription(description)
+}
+
+func (a noOpObject) SetName(name string) {
+	WrapObject(gextras.InternObject(a)).SetName(name)
+}
+
+func (a noOpObject) SetParent(parent Object) {
+	WrapObject(gextras.InternObject(a)).SetParent(parent)
+}
+
+func (a noOpObject) SetRole(role Role) {
+	WrapObject(gextras.InternObject(a)).SetRole(role)
 }

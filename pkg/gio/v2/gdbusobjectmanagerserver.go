@@ -58,6 +58,20 @@ type DBusObjectManagerServer interface {
 	// AsDBusObjectManager casts the class to the DBusObjectManager interface.
 	AsDBusObjectManager() DBusObjectManager
 
+	// GetInterface gets the interface proxy for @interface_name at
+	// @object_path, if any.
+	//
+	// This method is inherited from DBusObjectManager
+	GetInterface(objectPath string, interfaceName string) DBusInterface
+	// GetObject gets the BusObjectProxy at @object_path, if any.
+	//
+	// This method is inherited from DBusObjectManager
+	GetObject(objectPath string) DBusObject
+	// GetObjectPath gets the object path that @manager is for.
+	//
+	// This method is inherited from DBusObjectManager
+	GetObjectPath() string
+
 	// Export exports @object on @manager.
 	//
 	// If there is already a BusObject exported at the object path, then the old
@@ -89,17 +103,17 @@ type DBusObjectManagerServer interface {
 	Unexport(objectPath string) bool
 }
 
-// dBusObjectManagerServer implements the DBusObjectManagerServer class.
+// dBusObjectManagerServer implements the DBusObjectManagerServer interface.
 type dBusObjectManagerServer struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapDBusObjectManagerServer wraps a GObject to the right type. It is
-// primarily used internally.
+var _ DBusObjectManagerServer = (*dBusObjectManagerServer)(nil)
+
+// WrapDBusObjectManagerServer wraps a GObject to a type that implements
+// interface DBusObjectManagerServer. It is primarily used internally.
 func WrapDBusObjectManagerServer(obj *externglib.Object) DBusObjectManagerServer {
-	return dBusObjectManagerServer{
-		Objector: obj,
-	}
+	return dBusObjectManagerServer{obj}
 }
 
 func marshalDBusObjectManagerServer(p uintptr) (interface{}, error) {
@@ -126,13 +140,25 @@ func NewDBusObjectManagerServer(objectPath string) DBusObjectManagerServer {
 
 	var _dBusObjectManagerServer DBusObjectManagerServer // out
 
-	_dBusObjectManagerServer = WrapDBusObjectManagerServer(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_dBusObjectManagerServer = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(DBusObjectManagerServer)
 
 	return _dBusObjectManagerServer
 }
 
 func (d dBusObjectManagerServer) AsDBusObjectManager() DBusObjectManager {
 	return WrapDBusObjectManager(gextras.InternObject(d))
+}
+
+func (m dBusObjectManagerServer) GetInterface(objectPath string, interfaceName string) DBusInterface {
+	return WrapDBusObjectManager(gextras.InternObject(m)).GetInterface(objectPath, interfaceName)
+}
+
+func (m dBusObjectManagerServer) GetObject(objectPath string) DBusObject {
+	return WrapDBusObjectManager(gextras.InternObject(m)).GetObject(objectPath)
+}
+
+func (m dBusObjectManagerServer) GetObjectPath() string {
+	return WrapDBusObjectManager(gextras.InternObject(m)).GetObjectPath()
 }
 
 func (m dBusObjectManagerServer) Export(object DBusObjectSkeleton) {

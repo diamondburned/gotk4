@@ -58,10 +58,46 @@ func init() {
 // </mime-types> <patterns> <pattern>*.txt</pattern> <pattern>*.png</pattern>
 // </patterns> </object> “`
 type FileFilter interface {
-	Filter
+	gextras.Objector
 
+	// AsFilter casts the class to the Filter interface.
+	AsFilter() Filter
 	// AsBuildable casts the class to the Buildable interface.
 	AsBuildable() Buildable
+
+	// Changed emits the Filter::changed signal to notify all users of the
+	// filter that the filter changed. Users of the filter should then check
+	// items again via gtk_filter_match().
+	//
+	// Depending on the @change parameter, not all items need to be changed, but
+	// only some. Refer to the FilterChange documentation for details.
+	//
+	// This function is intended for implementors of Filter subclasses and
+	// should not be called from other functions.
+	//
+	// This method is inherited from Filter
+	Changed(change FilterChange)
+	// GetStrictness gets the known strictness of @filters. If the strictness is
+	// not known, GTK_FILTER_MATCH_SOME is returned.
+	//
+	// This value may change after emission of the Filter::changed signal.
+	//
+	// This function is meant purely for optimization purposes, filters can
+	// choose to omit implementing it, but FilterListModel uses it.
+	//
+	// This method is inherited from Filter
+	GetStrictness() FilterMatch
+	// Match checks if the given @item is matched by the filter or not.
+	//
+	// This method is inherited from Filter
+	Match(item gextras.Objector) bool
+	// GetBuildableID gets the ID of the @buildable object.
+	//
+	// `GtkBuilder` sets the name based on the ID attribute of the <object> tag
+	// used to construct the @buildable.
+	//
+	// This method is inherited from Buildable
+	GetBuildableID() string
 
 	// AddMIMEType adds a rule allowing a given mime type to @filter.
 	AddMIMEType(mimeType string)
@@ -92,17 +128,17 @@ type FileFilter interface {
 	ToGVariant() *glib.Variant
 }
 
-// fileFilter implements the FileFilter class.
+// fileFilter implements the FileFilter interface.
 type fileFilter struct {
-	Filter
+	*externglib.Object
 }
 
-// WrapFileFilter wraps a GObject to the right type. It is
-// primarily used internally.
+var _ FileFilter = (*fileFilter)(nil)
+
+// WrapFileFilter wraps a GObject to a type that implements
+// interface FileFilter. It is primarily used internally.
 func WrapFileFilter(obj *externglib.Object) FileFilter {
-	return fileFilter{
-		Filter: WrapFilter(obj),
-	}
+	return fileFilter{obj}
 }
 
 func marshalFileFilter(p uintptr) (interface{}, error) {
@@ -127,7 +163,7 @@ func NewFileFilter() FileFilter {
 
 	var _fileFilter FileFilter // out
 
-	_fileFilter = WrapFileFilter(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_fileFilter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(FileFilter)
 
 	return _fileFilter
 }
@@ -146,13 +182,33 @@ func NewFileFilterFromGVariant(variant *glib.Variant) FileFilter {
 
 	var _fileFilter FileFilter // out
 
-	_fileFilter = WrapFileFilter(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_fileFilter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(FileFilter)
 
 	return _fileFilter
 }
 
+func (f fileFilter) AsFilter() Filter {
+	return WrapFilter(gextras.InternObject(f))
+}
+
 func (f fileFilter) AsBuildable() Buildable {
 	return WrapBuildable(gextras.InternObject(f))
+}
+
+func (s fileFilter) Changed(change FilterChange) {
+	WrapFilter(gextras.InternObject(s)).Changed(change)
+}
+
+func (s fileFilter) GetStrictness() FilterMatch {
+	return WrapFilter(gextras.InternObject(s)).GetStrictness()
+}
+
+func (s fileFilter) Match(item gextras.Objector) bool {
+	return WrapFilter(gextras.InternObject(s)).Match(item)
+}
+
+func (b fileFilter) GetBuildableID() string {
+	return WrapBuildable(gextras.InternObject(b)).GetBuildableID()
 }
 
 func (f fileFilter) AddMIMEType(mimeType string) {

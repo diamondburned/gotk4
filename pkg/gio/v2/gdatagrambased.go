@@ -7,7 +7,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -244,7 +243,7 @@ type DatagramBased interface {
 
 // datagramBased implements the DatagramBased interface.
 type datagramBased struct {
-	gextras.Objector
+	*externglib.Object
 }
 
 var _ DatagramBased = (*datagramBased)(nil)
@@ -252,9 +251,7 @@ var _ DatagramBased = (*datagramBased)(nil)
 // WrapDatagramBased wraps a GObject to a type that implements
 // interface DatagramBased. It is primarily used internally.
 func WrapDatagramBased(obj *externglib.Object) DatagramBased {
-	return datagramBased{
-		Objector: obj,
-	}
+	return datagramBased{obj}
 }
 
 func marshalDatagramBased(p uintptr) (interface{}, error) {

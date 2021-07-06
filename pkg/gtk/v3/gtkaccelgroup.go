@@ -340,17 +340,17 @@ type AccelGroup interface {
 	Unlock()
 }
 
-// accelGroup implements the AccelGroup class.
+// accelGroup implements the AccelGroup interface.
 type accelGroup struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapAccelGroup wraps a GObject to the right type. It is
-// primarily used internally.
+var _ AccelGroup = (*accelGroup)(nil)
+
+// WrapAccelGroup wraps a GObject to a type that implements
+// interface AccelGroup. It is primarily used internally.
 func WrapAccelGroup(obj *externglib.Object) AccelGroup {
-	return accelGroup{
-		Objector: obj,
-	}
+	return accelGroup{obj}
 }
 
 func marshalAccelGroup(p uintptr) (interface{}, error) {
@@ -367,7 +367,7 @@ func NewAccelGroup() AccelGroup {
 
 	var _accelGroup AccelGroup // out
 
-	_accelGroup = WrapAccelGroup(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_accelGroup = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(AccelGroup)
 
 	return _accelGroup
 }

@@ -349,17 +349,17 @@ type OutputStream interface {
 	WritevFinish(result AsyncResult) (uint, error)
 }
 
-// outputStream implements the OutputStream class.
+// outputStream implements the OutputStream interface.
 type outputStream struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapOutputStream wraps a GObject to the right type. It is
-// primarily used internally.
+var _ OutputStream = (*outputStream)(nil)
+
+// WrapOutputStream wraps a GObject to a type that implements
+// interface OutputStream. It is primarily used internally.
 func WrapOutputStream(obj *externglib.Object) OutputStream {
-	return outputStream{
-		Objector: obj,
-	}
+	return outputStream{obj}
 }
 
 func marshalOutputStream(p uintptr) (interface{}, error) {

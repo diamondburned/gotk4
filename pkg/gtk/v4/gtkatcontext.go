@@ -38,17 +38,17 @@ type ATContext interface {
 	AccessibleRole() AccessibleRole
 }
 
-// atContext implements the ATContext class.
+// atContext implements the ATContext interface.
 type atContext struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapATContext wraps a GObject to the right type. It is
-// primarily used internally.
+var _ ATContext = (*atContext)(nil)
+
+// WrapATContext wraps a GObject to a type that implements
+// interface ATContext. It is primarily used internally.
 func WrapATContext(obj *externglib.Object) ATContext {
-	return atContext{
-		Objector: obj,
-	}
+	return atContext{obj}
 }
 
 func marshalATContext(p uintptr) (interface{}, error) {
@@ -76,7 +76,7 @@ func NewATContextCreate(accessibleRole AccessibleRole, accessible Accessible, di
 
 	var _atContext ATContext // out
 
-	_atContext = WrapATContext(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_atContext = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(ATContext)
 
 	return _atContext
 }

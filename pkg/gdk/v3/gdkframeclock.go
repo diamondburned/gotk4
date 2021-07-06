@@ -135,17 +135,17 @@ type FrameClock interface {
 	RequestPhase(phase FrameClockPhase)
 }
 
-// frameClock implements the FrameClock class.
+// frameClock implements the FrameClock interface.
 type frameClock struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapFrameClock wraps a GObject to the right type. It is
-// primarily used internally.
+var _ FrameClock = (*frameClock)(nil)
+
+// WrapFrameClock wraps a GObject to a type that implements
+// interface FrameClock. It is primarily used internally.
 func WrapFrameClock(obj *externglib.Object) FrameClock {
-	return frameClock{
-		Objector: obj,
-	}
+	return frameClock{obj}
 }
 
 func marshalFrameClock(p uintptr) (interface{}, error) {

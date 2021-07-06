@@ -111,7 +111,7 @@ type SocketConnectable interface {
 
 // socketConnectable implements the SocketConnectable interface.
 type socketConnectable struct {
-	gextras.Objector
+	*externglib.Object
 }
 
 var _ SocketConnectable = (*socketConnectable)(nil)
@@ -119,9 +119,7 @@ var _ SocketConnectable = (*socketConnectable)(nil)
 // WrapSocketConnectable wraps a GObject to a type that implements
 // interface SocketConnectable. It is primarily used internally.
 func WrapSocketConnectable(obj *externglib.Object) SocketConnectable {
-	return socketConnectable{
-		Objector: obj,
-	}
+	return socketConnectable{obj}
 }
 
 func marshalSocketConnectable(p uintptr) (interface{}, error) {

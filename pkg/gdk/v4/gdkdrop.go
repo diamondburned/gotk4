@@ -90,17 +90,17 @@ type Drop interface {
 	Status(actions DragAction, preferred DragAction)
 }
 
-// drop implements the Drop class.
+// drop implements the Drop interface.
 type drop struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapDrop wraps a GObject to the right type. It is
-// primarily used internally.
+var _ Drop = (*drop)(nil)
+
+// WrapDrop wraps a GObject to a type that implements
+// interface Drop. It is primarily used internally.
 func WrapDrop(obj *externglib.Object) Drop {
-	return drop{
-		Objector: obj,
-	}
+	return drop{obj}
 }
 
 func marshalDrop(p uintptr) (interface{}, error) {

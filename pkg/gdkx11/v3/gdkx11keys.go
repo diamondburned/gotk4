@@ -3,9 +3,12 @@
 package gdkx11
 
 import (
+	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
+	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -23,7 +26,109 @@ func init() {
 }
 
 type X11Keymap interface {
-	gdk.Keymap
+	gextras.Objector
+
+	// AsKeymap casts the class to the gdk.Keymap interface.
+	AsKeymap() gdk.Keymap
+
+	// GetCapsLockState returns whether the Caps Lock modifer is locked.
+	//
+	// This method is inherited from gdk.Keymap
+	GetCapsLockState() bool
+	// GetDirection returns the direction of effective layout of the keymap.
+	//
+	// This method is inherited from gdk.Keymap
+	GetDirection() pango.Direction
+	// GetEntriesForKeycode returns the keyvals bound to @hardware_keycode. The
+	// Nth KeymapKey in @keys is bound to the Nth keyval in @keyvals. Free the
+	// returned arrays with g_free(). When a keycode is pressed by the user, the
+	// keyval from this list of entries is selected by considering the effective
+	// keyboard group and level. See gdk_keymap_translate_keyboard_state().
+	//
+	// This method is inherited from gdk.Keymap
+	GetEntriesForKeycode(hardwareKeycode uint) ([]gdk.KeymapKey, []uint, bool)
+	// GetEntriesForKeyval obtains a list of keycode/group/level combinations
+	// that will generate @keyval. Groups and levels are two kinds of keyboard
+	// mode; in general, the level determines whether the top or bottom symbol
+	// on a key is used, and the group determines whether the left or right
+	// symbol is used. On US keyboards, the shift key changes the keyboard
+	// level, and there are no groups. A group switch key might convert a
+	// keyboard between Hebrew to English modes, for example. EventKey contains
+	// a group field that indicates the active keyboard group. The level is
+	// computed from the modifier mask. The returned array should be freed with
+	// g_free().
+	//
+	// This method is inherited from gdk.Keymap
+	GetEntriesForKeyval(keyval uint) ([]gdk.KeymapKey, bool)
+	// GetModifierMask returns the modifier mask the @keymap’s windowing system
+	// backend uses for a particular purpose.
+	//
+	// Note that this function always returns real hardware modifiers, not
+	// virtual ones (e.g. it will return K_MOD1_MASK rather than K_META_MASK if
+	// the backend maps MOD1 to META), so there are use cases where the return
+	// value of this function has to be transformed by
+	// gdk_keymap_add_virtual_modifiers() in order to contain the expected
+	// result.
+	//
+	// This method is inherited from gdk.Keymap
+	GetModifierMask(intent gdk.ModifierIntent) gdk.ModifierType
+	// GetModifierState returns the current modifier state.
+	//
+	// This method is inherited from gdk.Keymap
+	GetModifierState() uint
+	// GetNumLockState returns whether the Num Lock modifer is locked.
+	//
+	// This method is inherited from gdk.Keymap
+	GetNumLockState() bool
+	// GetScrollLockState returns whether the Scroll Lock modifer is locked.
+	//
+	// This method is inherited from gdk.Keymap
+	GetScrollLockState() bool
+	// HaveBidiLayouts determines if keyboard layouts for both right-to-left and
+	// left-to-right languages are in use.
+	//
+	// This method is inherited from gdk.Keymap
+	HaveBidiLayouts() bool
+	// LookupKey looks up the keyval mapped to a keycode/group/level triplet. If
+	// no keyval is bound to @key, returns 0. For normal user input, you want to
+	// use gdk_keymap_translate_keyboard_state() instead of this function, since
+	// the effective group/level may not be the same as the current keyboard
+	// state.
+	//
+	// This method is inherited from gdk.Keymap
+	LookupKey(key *gdk.KeymapKey) uint
+	// TranslateKeyboardState translates the contents of a EventKey into a
+	// keyval, effective group, and level. Modifiers that affected the
+	// translation and are thus unavailable for application use are returned in
+	// @consumed_modifiers. See [Groups][key-group-explanation] for an
+	// explanation of groups and levels. The @effective_group is the group that
+	// was actually used for the translation; some keys such as Enter are not
+	// affected by the active keyboard group. The @level is derived from @state.
+	// For convenience, EventKey already contains the translated keyval, so this
+	// function isn’t as useful as you might think.
+	//
+	// @consumed_modifiers gives modifiers that should be masked outfrom @state
+	// when comparing this key press to a hot key. For instance, on a US
+	// keyboard, the `plus` symbol is shifted, so when comparing a key press to
+	// a `<Control>plus` accelerator `<Shift>` should be masked out.
+	//
+	//    // XXX Don’t do this XXX
+	//    if (keyval == accel_keyval &&
+	//        (event->state & ~consumed & ALL_ACCELS_MASK) == (accel_mods & ~consumed))
+	//      // Accelerator was pressed
+	//
+	// However, this did not work if multi-modifier combinations were used in
+	// the keymap, since, for instance, `<Control>` would be masked out even if
+	// only `<Control><Alt>` was used in the keymap. To support this usage as
+	// well as well as possible, all single modifier combinations that could
+	// affect the key for any combination of modifiers will be returned in
+	// @consumed_modifiers; multi-modifier combinations are returned only when
+	// actually found in @state. When you store accelerators, you should always
+	// store them with consumed modifiers removed. Store `<Control>plus`, not
+	// `<Control><Shift>plus`,
+	//
+	// This method is inherited from gdk.Keymap
+	TranslateKeyboardState(hardwareKeycode uint, state gdk.ModifierType, group int) (keyval uint, effectiveGroup int, level int, consumedModifiers gdk.ModifierType, ok bool)
 
 	// GroupForState extracts the group from the state field sent in an X Key
 	// event. This is only needed for code processing raw X events, since
@@ -37,23 +142,71 @@ type X11Keymap interface {
 	KeyIsModifier(keycode uint) bool
 }
 
-// x11Keymap implements the X11Keymap class.
+// x11Keymap implements the X11Keymap interface.
 type x11Keymap struct {
-	gdk.Keymap
+	*externglib.Object
 }
 
-// WrapX11Keymap wraps a GObject to the right type. It is
-// primarily used internally.
+var _ X11Keymap = (*x11Keymap)(nil)
+
+// WrapX11Keymap wraps a GObject to a type that implements
+// interface X11Keymap. It is primarily used internally.
 func WrapX11Keymap(obj *externglib.Object) X11Keymap {
-	return x11Keymap{
-		Keymap: gdk.WrapKeymap(obj),
-	}
+	return x11Keymap{obj}
 }
 
 func marshalX11Keymap(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapX11Keymap(obj), nil
+}
+
+func (x x11Keymap) AsKeymap() gdk.Keymap {
+	return gdk.WrapKeymap(gextras.InternObject(x))
+}
+
+func (k x11Keymap) GetCapsLockState() bool {
+	return gdk.WrapKeymap(gextras.InternObject(k)).GetCapsLockState()
+}
+
+func (k x11Keymap) GetDirection() pango.Direction {
+	return gdk.WrapKeymap(gextras.InternObject(k)).GetDirection()
+}
+
+func (k x11Keymap) GetEntriesForKeycode(hardwareKeycode uint) ([]gdk.KeymapKey, []uint, bool) {
+	return gdk.WrapKeymap(gextras.InternObject(k)).GetEntriesForKeycode(hardwareKeycode)
+}
+
+func (k x11Keymap) GetEntriesForKeyval(keyval uint) ([]gdk.KeymapKey, bool) {
+	return gdk.WrapKeymap(gextras.InternObject(k)).GetEntriesForKeyval(keyval)
+}
+
+func (k x11Keymap) GetModifierMask(intent gdk.ModifierIntent) gdk.ModifierType {
+	return gdk.WrapKeymap(gextras.InternObject(k)).GetModifierMask(intent)
+}
+
+func (k x11Keymap) GetModifierState() uint {
+	return gdk.WrapKeymap(gextras.InternObject(k)).GetModifierState()
+}
+
+func (k x11Keymap) GetNumLockState() bool {
+	return gdk.WrapKeymap(gextras.InternObject(k)).GetNumLockState()
+}
+
+func (k x11Keymap) GetScrollLockState() bool {
+	return gdk.WrapKeymap(gextras.InternObject(k)).GetScrollLockState()
+}
+
+func (k x11Keymap) HaveBidiLayouts() bool {
+	return gdk.WrapKeymap(gextras.InternObject(k)).HaveBidiLayouts()
+}
+
+func (k x11Keymap) LookupKey(key *gdk.KeymapKey) uint {
+	return gdk.WrapKeymap(gextras.InternObject(k)).LookupKey(key)
+}
+
+func (k x11Keymap) TranslateKeyboardState(hardwareKeycode uint, state gdk.ModifierType, group int) (keyval uint, effectiveGroup int, level int, consumedModifiers gdk.ModifierType, ok bool) {
+	return gdk.WrapKeymap(gextras.InternObject(k)).TranslateKeyboardState(hardwareKeycode, state, group)
 }
 
 func (k x11Keymap) GroupForState(state uint) int {

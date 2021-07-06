@@ -31,7 +31,51 @@ func init() {
 //
 // The center widget is centered regarding the full width of the layout's.
 type CenterLayout interface {
-	LayoutManager
+	gextras.Objector
+
+	// AsLayoutManager casts the class to the LayoutManager interface.
+	AsLayoutManager() LayoutManager
+
+	// Allocate assigns the given @width, @height, and @baseline to a @widget,
+	// and computes the position and sizes of the children of the @widget using
+	// the layout management policy of @manager.
+	//
+	// This method is inherited from LayoutManager
+	Allocate(widget Widget, width int, height int, baseline int)
+	// GetLayoutChild retrieves a `GtkLayoutChild` instance for the
+	// `GtkLayoutManager`, creating one if necessary.
+	//
+	// The @child widget must be a child of the widget using @manager.
+	//
+	// The `GtkLayoutChild` instance is owned by the `GtkLayoutManager`, and is
+	// guaranteed to exist as long as @child is a child of the `GtkWidget` using
+	// the given `GtkLayoutManager`.
+	//
+	// This method is inherited from LayoutManager
+	GetLayoutChild(child Widget) LayoutChild
+	// GetRequestMode retrieves the request mode of @manager.
+	//
+	// This method is inherited from LayoutManager
+	GetRequestMode() SizeRequestMode
+	// GetWidget retrieves the `GtkWidget` using the given `GtkLayoutManager`.
+	//
+	// This method is inherited from LayoutManager
+	GetWidget() Widget
+	// LayoutChanged queues a resize on the `GtkWidget` using @manager, if any.
+	//
+	// This function should be called by subclasses of `GtkLayoutManager` in
+	// response to changes to their layout management policies.
+	//
+	// This method is inherited from LayoutManager
+	LayoutChanged()
+	// Measure measures the size of the @widget using @manager, for the given
+	// @orientation and size.
+	//
+	// See the [class@Gtk.Widget] documentation on layout management for more
+	// details.
+	//
+	// This method is inherited from LayoutManager
+	Measure(widget Widget, orientation Orientation, forSize int) (minimum int, natural int, minimumBaseline int, naturalBaseline int)
 
 	// BaselinePosition returns the baseline position of the layout.
 	BaselinePosition() BaselinePosition
@@ -61,17 +105,17 @@ type CenterLayout interface {
 	SetStartWidget(widget Widget)
 }
 
-// centerLayout implements the CenterLayout class.
+// centerLayout implements the CenterLayout interface.
 type centerLayout struct {
-	LayoutManager
+	*externglib.Object
 }
 
-// WrapCenterLayout wraps a GObject to the right type. It is
-// primarily used internally.
+var _ CenterLayout = (*centerLayout)(nil)
+
+// WrapCenterLayout wraps a GObject to a type that implements
+// interface CenterLayout. It is primarily used internally.
 func WrapCenterLayout(obj *externglib.Object) CenterLayout {
-	return centerLayout{
-		LayoutManager: WrapLayoutManager(obj),
-	}
+	return centerLayout{obj}
 }
 
 func marshalCenterLayout(p uintptr) (interface{}, error) {
@@ -88,9 +132,37 @@ func NewCenterLayout() CenterLayout {
 
 	var _centerLayout CenterLayout // out
 
-	_centerLayout = WrapCenterLayout(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_centerLayout = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(CenterLayout)
 
 	return _centerLayout
+}
+
+func (c centerLayout) AsLayoutManager() LayoutManager {
+	return WrapLayoutManager(gextras.InternObject(c))
+}
+
+func (m centerLayout) Allocate(widget Widget, width int, height int, baseline int) {
+	WrapLayoutManager(gextras.InternObject(m)).Allocate(widget, width, height, baseline)
+}
+
+func (m centerLayout) GetLayoutChild(child Widget) LayoutChild {
+	return WrapLayoutManager(gextras.InternObject(m)).GetLayoutChild(child)
+}
+
+func (m centerLayout) GetRequestMode() SizeRequestMode {
+	return WrapLayoutManager(gextras.InternObject(m)).GetRequestMode()
+}
+
+func (m centerLayout) GetWidget() Widget {
+	return WrapLayoutManager(gextras.InternObject(m)).GetWidget()
+}
+
+func (m centerLayout) LayoutChanged() {
+	WrapLayoutManager(gextras.InternObject(m)).LayoutChanged()
+}
+
+func (m centerLayout) Measure(widget Widget, orientation Orientation, forSize int) (minimum int, natural int, minimumBaseline int, naturalBaseline int) {
+	return WrapLayoutManager(gextras.InternObject(m)).Measure(widget, orientation, forSize)
 }
 
 func (s centerLayout) BaselinePosition() BaselinePosition {

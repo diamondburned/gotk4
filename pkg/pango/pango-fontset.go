@@ -76,17 +76,17 @@ type Fontset interface {
 	Metrics() *FontMetrics
 }
 
-// fontset implements the Fontset class.
+// fontset implements the Fontset interface.
 type fontset struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapFontset wraps a GObject to the right type. It is
-// primarily used internally.
+var _ Fontset = (*fontset)(nil)
+
+// WrapFontset wraps a GObject to a type that implements
+// interface Fontset. It is primarily used internally.
 func WrapFontset(obj *externglib.Object) Fontset {
-	return fontset{
-		Objector: obj,
-	}
+	return fontset{obj}
 }
 
 func marshalFontset(p uintptr) (interface{}, error) {
@@ -149,7 +149,27 @@ func (f fontset) Metrics() *FontMetrics {
 // When creating a `PangoFontsetSimple`, you have to provide the array of fonts
 // that make up the fontset.
 type FontsetSimple interface {
-	Fontset
+	gextras.Objector
+
+	// AsFontset casts the class to the Fontset interface.
+	AsFontset() Fontset
+
+	// Foreach iterates through all the fonts in a fontset, calling @func for
+	// each one.
+	//
+	// If @func returns true, that stops the iteration.
+	//
+	// This method is inherited from Fontset
+	Foreach(fn FontsetForeachFunc)
+	// GetFont returns the font in the fontset that contains the best glyph for
+	// a Unicode character.
+	//
+	// This method is inherited from Fontset
+	GetFont(wc uint) Font
+	// GetMetrics: get overall metric information for the fonts in the fontset.
+	//
+	// This method is inherited from Fontset
+	GetMetrics() *FontMetrics
 
 	// Append adds a font to the fontset.
 	Append(font Font)
@@ -157,17 +177,17 @@ type FontsetSimple interface {
 	Size() int
 }
 
-// fontsetSimple implements the FontsetSimple class.
+// fontsetSimple implements the FontsetSimple interface.
 type fontsetSimple struct {
-	Fontset
+	*externglib.Object
 }
 
-// WrapFontsetSimple wraps a GObject to the right type. It is
-// primarily used internally.
+var _ FontsetSimple = (*fontsetSimple)(nil)
+
+// WrapFontsetSimple wraps a GObject to a type that implements
+// interface FontsetSimple. It is primarily used internally.
 func WrapFontsetSimple(obj *externglib.Object) FontsetSimple {
-	return fontsetSimple{
-		Fontset: WrapFontset(obj),
-	}
+	return fontsetSimple{obj}
 }
 
 func marshalFontsetSimple(p uintptr) (interface{}, error) {
@@ -187,9 +207,25 @@ func NewFontsetSimple(language *Language) FontsetSimple {
 
 	var _fontsetSimple FontsetSimple // out
 
-	_fontsetSimple = WrapFontsetSimple(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_fontsetSimple = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(FontsetSimple)
 
 	return _fontsetSimple
+}
+
+func (f fontsetSimple) AsFontset() Fontset {
+	return WrapFontset(gextras.InternObject(f))
+}
+
+func (f fontsetSimple) Foreach(fn FontsetForeachFunc) {
+	WrapFontset(gextras.InternObject(f)).Foreach(fn)
+}
+
+func (f fontsetSimple) GetFont(wc uint) Font {
+	return WrapFontset(gextras.InternObject(f)).GetFont(wc)
+}
+
+func (f fontsetSimple) GetMetrics() *FontMetrics {
+	return WrapFontset(gextras.InternObject(f)).GetMetrics()
 }
 
 func (f fontsetSimple) Append(font Font) {

@@ -123,17 +123,17 @@ type ThemingEngine interface {
 	StateIsRunning(state StateType) (float64, bool)
 }
 
-// themingEngine implements the ThemingEngine class.
+// themingEngine implements the ThemingEngine interface.
 type themingEngine struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapThemingEngine wraps a GObject to the right type. It is
-// primarily used internally.
+var _ ThemingEngine = (*themingEngine)(nil)
+
+// WrapThemingEngine wraps a GObject to a type that implements
+// interface ThemingEngine. It is primarily used internally.
 func WrapThemingEngine(obj *externglib.Object) ThemingEngine {
-	return themingEngine{
-		Objector: obj,
-	}
+	return themingEngine{obj}
 }
 
 func marshalThemingEngine(p uintptr) (interface{}, error) {

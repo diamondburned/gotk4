@@ -146,17 +146,17 @@ type PrintJob interface {
 	SetTrackPrintStatus(trackStatus bool)
 }
 
-// printJob implements the PrintJob class.
+// printJob implements the PrintJob interface.
 type printJob struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapPrintJob wraps a GObject to the right type. It is
-// primarily used internally.
+var _ PrintJob = (*printJob)(nil)
+
+// WrapPrintJob wraps a GObject to a type that implements
+// interface PrintJob. It is primarily used internally.
 func WrapPrintJob(obj *externglib.Object) PrintJob {
-	return printJob{
-		Objector: obj,
-	}
+	return printJob{obj}
 }
 
 func marshalPrintJob(p uintptr) (interface{}, error) {
@@ -183,7 +183,7 @@ func NewPrintJob(title string, printer Printer, settings PrintSettings, pageSetu
 
 	var _printJob PrintJob // out
 
-	_printJob = WrapPrintJob(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_printJob = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(PrintJob)
 
 	return _printJob
 }

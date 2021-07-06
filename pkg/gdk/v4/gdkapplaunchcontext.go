@@ -45,7 +45,34 @@ func init() {
 //
 // g_object_unref (context); “`
 type AppLaunchContext interface {
-	gio.AppLaunchContext
+	gextras.Objector
+
+	// AsAppLaunchContext casts the class to the gio.AppLaunchContext interface.
+	AsAppLaunchContext() gio.AppLaunchContext
+
+	// GetEnvironment gets the complete environment variable list to be passed
+	// to the child process when @context is used to launch an application. This
+	// is a nil-terminated array of strings, where each string has the form
+	// `KEY=VALUE`.
+	//
+	// This method is inherited from gio.AppLaunchContext
+	GetEnvironment() []string
+	// LaunchFailed: called when an application has failed to launch, so that it
+	// can cancel the application startup notification started in
+	// g_app_launch_context_get_startup_notify_id().
+	//
+	// This method is inherited from gio.AppLaunchContext
+	LaunchFailed(startupNotifyId string)
+	// Setenv arranges for @variable to be set to @value in the child's
+	// environment when @context is used to launch an application.
+	//
+	// This method is inherited from gio.AppLaunchContext
+	Setenv(variable string, value string)
+	// Unsetenv arranges for @variable to be unset in the child's environment
+	// when @context is used to launch an application.
+	//
+	// This method is inherited from gio.AppLaunchContext
+	Unsetenv(variable string)
 
 	// Display gets the `GdkDisplay` that @context is for.
 	Display() Display
@@ -81,23 +108,43 @@ type AppLaunchContext interface {
 	SetTimestamp(timestamp uint32)
 }
 
-// appLaunchContext implements the AppLaunchContext class.
+// appLaunchContext implements the AppLaunchContext interface.
 type appLaunchContext struct {
-	gio.AppLaunchContext
+	*externglib.Object
 }
 
-// WrapAppLaunchContext wraps a GObject to the right type. It is
-// primarily used internally.
+var _ AppLaunchContext = (*appLaunchContext)(nil)
+
+// WrapAppLaunchContext wraps a GObject to a type that implements
+// interface AppLaunchContext. It is primarily used internally.
 func WrapAppLaunchContext(obj *externglib.Object) AppLaunchContext {
-	return appLaunchContext{
-		AppLaunchContext: gio.WrapAppLaunchContext(obj),
-	}
+	return appLaunchContext{obj}
 }
 
 func marshalAppLaunchContext(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapAppLaunchContext(obj), nil
+}
+
+func (a appLaunchContext) AsAppLaunchContext() gio.AppLaunchContext {
+	return gio.WrapAppLaunchContext(gextras.InternObject(a))
+}
+
+func (c appLaunchContext) GetEnvironment() []string {
+	return gio.WrapAppLaunchContext(gextras.InternObject(c)).GetEnvironment()
+}
+
+func (c appLaunchContext) LaunchFailed(startupNotifyId string) {
+	gio.WrapAppLaunchContext(gextras.InternObject(c)).LaunchFailed(startupNotifyId)
+}
+
+func (c appLaunchContext) Setenv(variable string, value string) {
+	gio.WrapAppLaunchContext(gextras.InternObject(c)).Setenv(variable, value)
+}
+
+func (c appLaunchContext) Unsetenv(variable string) {
+	gio.WrapAppLaunchContext(gextras.InternObject(c)).Unsetenv(variable)
 }
 
 func (c appLaunchContext) Display() Display {

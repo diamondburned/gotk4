@@ -231,17 +231,17 @@ type StatusIcon interface {
 	SetVisible(visible bool)
 }
 
-// statusIcon implements the StatusIcon class.
+// statusIcon implements the StatusIcon interface.
 type statusIcon struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapStatusIcon wraps a GObject to the right type. It is
-// primarily used internally.
+var _ StatusIcon = (*statusIcon)(nil)
+
+// WrapStatusIcon wraps a GObject to a type that implements
+// interface StatusIcon. It is primarily used internally.
 func WrapStatusIcon(obj *externglib.Object) StatusIcon {
-	return statusIcon{
-		Objector: obj,
-	}
+	return statusIcon{obj}
 }
 
 func marshalStatusIcon(p uintptr) (interface{}, error) {
@@ -260,7 +260,7 @@ func NewStatusIcon() StatusIcon {
 
 	var _statusIcon StatusIcon // out
 
-	_statusIcon = WrapStatusIcon(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_statusIcon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(StatusIcon)
 
 	return _statusIcon
 }
@@ -282,7 +282,7 @@ func NewStatusIconFromFile(filename string) StatusIcon {
 
 	var _statusIcon StatusIcon // out
 
-	_statusIcon = WrapStatusIcon(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_statusIcon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(StatusIcon)
 
 	return _statusIcon
 }
@@ -303,7 +303,7 @@ func NewStatusIconFromIconName(iconName string) StatusIcon {
 
 	var _statusIcon StatusIcon // out
 
-	_statusIcon = WrapStatusIcon(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_statusIcon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(StatusIcon)
 
 	return _statusIcon
 }
@@ -324,7 +324,7 @@ func NewStatusIconFromPixbuf(pixbuf gdkpixbuf.Pixbuf) StatusIcon {
 
 	var _statusIcon StatusIcon // out
 
-	_statusIcon = WrapStatusIcon(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_statusIcon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(StatusIcon)
 
 	return _statusIcon
 }
@@ -346,7 +346,7 @@ func NewStatusIconFromStock(stockId string) StatusIcon {
 
 	var _statusIcon StatusIcon // out
 
-	_statusIcon = WrapStatusIcon(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_statusIcon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(StatusIcon)
 
 	return _statusIcon
 }

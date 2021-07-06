@@ -389,17 +389,17 @@ type Pixbuf interface {
 	SetOption(key string, value string) bool
 }
 
-// pixbuf implements the Pixbuf class.
+// pixbuf implements the Pixbuf interface.
 type pixbuf struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapPixbuf wraps a GObject to the right type. It is
-// primarily used internally.
+var _ Pixbuf = (*pixbuf)(nil)
+
+// WrapPixbuf wraps a GObject to a type that implements
+// interface Pixbuf. It is primarily used internally.
 func WrapPixbuf(obj *externglib.Object) Pixbuf {
-	return pixbuf{
-		Objector: obj,
-	}
+	return pixbuf{obj}
 }
 
 func marshalPixbuf(p uintptr) (interface{}, error) {
@@ -434,7 +434,7 @@ func NewPixbuf(colorspace Colorspace, hasAlpha bool, bitsPerSample int, width in
 
 	var _pixbuf Pixbuf // out
 
-	_pixbuf = WrapPixbuf(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Pixbuf)
 
 	return _pixbuf
 }
@@ -464,7 +464,7 @@ func NewPixbufFromFile(filename string) (Pixbuf, error) {
 	var _pixbuf Pixbuf // out
 	var _goerr error   // out
 
-	_pixbuf = WrapPixbuf(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Pixbuf)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _pixbuf, _goerr
@@ -513,7 +513,7 @@ func NewPixbufFromFileAtScale(filename string, width int, height int, preserveAs
 	var _pixbuf Pixbuf // out
 	var _goerr error   // out
 
-	_pixbuf = WrapPixbuf(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Pixbuf)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _pixbuf, _goerr
@@ -554,7 +554,7 @@ func NewPixbufFromFileAtSize(filename string, width int, height int) (Pixbuf, er
 	var _pixbuf Pixbuf // out
 	var _goerr error   // out
 
-	_pixbuf = WrapPixbuf(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Pixbuf)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _pixbuf, _goerr
@@ -608,7 +608,7 @@ func NewPixbufFromInline(data []byte, copyPixels bool) (Pixbuf, error) {
 	var _pixbuf Pixbuf // out
 	var _goerr error   // out
 
-	_pixbuf = WrapPixbuf(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Pixbuf)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _pixbuf, _goerr
@@ -632,7 +632,7 @@ func NewPixbufFromResource(resourcePath string) (Pixbuf, error) {
 	var _pixbuf Pixbuf // out
 	var _goerr error   // out
 
-	_pixbuf = WrapPixbuf(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Pixbuf)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _pixbuf, _goerr
@@ -673,7 +673,7 @@ func NewPixbufFromResourceAtScale(resourcePath string, width int, height int, pr
 	var _pixbuf Pixbuf // out
 	var _goerr error   // out
 
-	_pixbuf = WrapPixbuf(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Pixbuf)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _pixbuf, _goerr
@@ -706,7 +706,7 @@ func NewPixbufFromStream(stream gio.InputStream, cancellable gio.Cancellable) (P
 	var _pixbuf Pixbuf // out
 	var _goerr error   // out
 
-	_pixbuf = WrapPixbuf(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Pixbuf)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _pixbuf, _goerr
@@ -756,7 +756,7 @@ func NewPixbufFromStreamAtScale(stream gio.InputStream, width int, height int, p
 	var _pixbuf Pixbuf // out
 	var _goerr error   // out
 
-	_pixbuf = WrapPixbuf(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Pixbuf)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _pixbuf, _goerr
@@ -784,7 +784,7 @@ func NewPixbufFromXpmData(data []string) Pixbuf {
 
 	var _pixbuf Pixbuf // out
 
-	_pixbuf = WrapPixbuf(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Pixbuf)
 
 	return _pixbuf
 }

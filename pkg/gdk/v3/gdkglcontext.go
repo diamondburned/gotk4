@@ -157,17 +157,17 @@ type GLContext interface {
 	SetUseES(useEs int)
 }
 
-// glContext implements the GLContext class.
+// glContext implements the GLContext interface.
 type glContext struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapGLContext wraps a GObject to the right type. It is
-// primarily used internally.
+var _ GLContext = (*glContext)(nil)
+
+// WrapGLContext wraps a GObject to a type that implements
+// interface GLContext. It is primarily used internally.
 func WrapGLContext(obj *externglib.Object) GLContext {
-	return glContext{
-		Objector: obj,
-	}
+	return glContext{obj}
 }
 
 func marshalGLContext(p uintptr) (interface{}, error) {

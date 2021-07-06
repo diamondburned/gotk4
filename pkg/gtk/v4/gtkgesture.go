@@ -111,7 +111,73 @@ func init() {
 // - If the gesture has GTK_PHASE_NONE, ensuring events of type
 // GDK_TOUCHPAD_SWIPE and GDK_TOUCHPAD_PINCH are handled by the `GtkGesture`
 type Gesture interface {
-	EventController
+	gextras.Objector
+
+	// AsEventController casts the class to the EventController interface.
+	AsEventController() EventController
+
+	// GetCurrentEvent returns the event that is currently being handled by the
+	// controller, and nil at other times.
+	//
+	// This method is inherited from EventController
+	GetCurrentEvent() gdk.Event
+	// GetCurrentEventDevice returns the device of the event that is currently
+	// being handled by the controller, and nil otherwise.
+	//
+	// This method is inherited from EventController
+	GetCurrentEventDevice() gdk.Device
+	// GetCurrentEventState returns the modifier state of the event that is
+	// currently being handled by the controller, and 0 otherwise.
+	//
+	// This method is inherited from EventController
+	GetCurrentEventState() gdk.ModifierType
+	// GetCurrentEventTime returns the timestamp of the event that is currently
+	// being handled by the controller, and 0 otherwise.
+	//
+	// This method is inherited from EventController
+	GetCurrentEventTime() uint32
+	// GetName gets the name of @controller.
+	//
+	// This method is inherited from EventController
+	GetName() string
+	// GetPropagationLimit gets the propagation limit of the event controller.
+	//
+	// This method is inherited from EventController
+	GetPropagationLimit() PropagationLimit
+	// GetPropagationPhase gets the propagation phase at which @controller
+	// handles events.
+	//
+	// This method is inherited from EventController
+	GetPropagationPhase() PropagationPhase
+	// GetWidget returns the Widget this controller relates to.
+	//
+	// This method is inherited from EventController
+	GetWidget() Widget
+	// Reset resets the @controller to a clean state.
+	//
+	// This method is inherited from EventController
+	Reset()
+	// SetName sets a name on the controller that can be used for debugging.
+	//
+	// This method is inherited from EventController
+	SetName(name string)
+	// SetPropagationLimit sets the event propagation limit on the event
+	// controller.
+	//
+	// If the limit is set to GTK_LIMIT_SAME_NATIVE, the controller won't handle
+	// events that are targeted at widgets on a different surface, such as
+	// popovers.
+	//
+	// This method is inherited from EventController
+	SetPropagationLimit(limit PropagationLimit)
+	// SetPropagationPhase sets the propagation phase at which a controller
+	// handles events.
+	//
+	// If @phase is GTK_PHASE_NONE, no automatic event handling will be
+	// performed, but other additional gesture maintenance will.
+	//
+	// This method is inherited from EventController
+	SetPropagationPhase(phase PropagationPhase)
 
 	// BoundingBox: if there are touch sequences being currently handled by
 	// @gesture, returns true and fills in @rect with the bounding box
@@ -224,23 +290,75 @@ type Gesture interface {
 	Ungroup()
 }
 
-// gesture implements the Gesture class.
+// gesture implements the Gesture interface.
 type gesture struct {
-	EventController
+	*externglib.Object
 }
 
-// WrapGesture wraps a GObject to the right type. It is
-// primarily used internally.
+var _ Gesture = (*gesture)(nil)
+
+// WrapGesture wraps a GObject to a type that implements
+// interface Gesture. It is primarily used internally.
 func WrapGesture(obj *externglib.Object) Gesture {
-	return gesture{
-		EventController: WrapEventController(obj),
-	}
+	return gesture{obj}
 }
 
 func marshalGesture(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapGesture(obj), nil
+}
+
+func (g gesture) AsEventController() EventController {
+	return WrapEventController(gextras.InternObject(g))
+}
+
+func (c gesture) GetCurrentEvent() gdk.Event {
+	return WrapEventController(gextras.InternObject(c)).GetCurrentEvent()
+}
+
+func (c gesture) GetCurrentEventDevice() gdk.Device {
+	return WrapEventController(gextras.InternObject(c)).GetCurrentEventDevice()
+}
+
+func (c gesture) GetCurrentEventState() gdk.ModifierType {
+	return WrapEventController(gextras.InternObject(c)).GetCurrentEventState()
+}
+
+func (c gesture) GetCurrentEventTime() uint32 {
+	return WrapEventController(gextras.InternObject(c)).GetCurrentEventTime()
+}
+
+func (c gesture) GetName() string {
+	return WrapEventController(gextras.InternObject(c)).GetName()
+}
+
+func (c gesture) GetPropagationLimit() PropagationLimit {
+	return WrapEventController(gextras.InternObject(c)).GetPropagationLimit()
+}
+
+func (c gesture) GetPropagationPhase() PropagationPhase {
+	return WrapEventController(gextras.InternObject(c)).GetPropagationPhase()
+}
+
+func (c gesture) GetWidget() Widget {
+	return WrapEventController(gextras.InternObject(c)).GetWidget()
+}
+
+func (c gesture) Reset() {
+	WrapEventController(gextras.InternObject(c)).Reset()
+}
+
+func (c gesture) SetName(name string) {
+	WrapEventController(gextras.InternObject(c)).SetName(name)
+}
+
+func (c gesture) SetPropagationLimit(limit PropagationLimit) {
+	WrapEventController(gextras.InternObject(c)).SetPropagationLimit(limit)
+}
+
+func (c gesture) SetPropagationPhase(phase PropagationPhase) {
+	WrapEventController(gextras.InternObject(c)).SetPropagationPhase(phase)
 }
 
 func (g gesture) BoundingBox() (gdk.Rectangle, bool) {

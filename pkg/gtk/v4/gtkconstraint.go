@@ -33,7 +33,7 @@ type ConstraintTarget interface {
 
 // constraintTarget implements the ConstraintTarget interface.
 type constraintTarget struct {
-	gextras.Objector
+	*externglib.Object
 }
 
 var _ ConstraintTarget = (*constraintTarget)(nil)
@@ -41,9 +41,7 @@ var _ ConstraintTarget = (*constraintTarget)(nil)
 // WrapConstraintTarget wraps a GObject to a type that implements
 // interface ConstraintTarget. It is primarily used internally.
 func WrapConstraintTarget(obj *externglib.Object) ConstraintTarget {
-	return constraintTarget{
-		Objector: obj,
-	}
+	return constraintTarget{obj}
 }
 
 func marshalConstraintTarget(p uintptr) (interface{}, error) {
@@ -107,17 +105,17 @@ type Constraint interface {
 	IsRequired() bool
 }
 
-// constraint implements the Constraint class.
+// constraint implements the Constraint interface.
 type constraint struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapConstraint wraps a GObject to the right type. It is
-// primarily used internally.
+var _ Constraint = (*constraint)(nil)
+
+// WrapConstraint wraps a GObject to a type that implements
+// interface Constraint. It is primarily used internally.
 func WrapConstraint(obj *externglib.Object) Constraint {
-	return constraint{
-		Objector: obj,
-	}
+	return constraint{obj}
 }
 
 func marshalConstraint(p uintptr) (interface{}, error) {
@@ -152,7 +150,7 @@ func NewConstraint(target ConstraintTarget, targetAttribute ConstraintAttribute,
 
 	var _constraint Constraint // out
 
-	_constraint = WrapConstraint(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_constraint = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Constraint)
 
 	return _constraint
 }
@@ -177,7 +175,7 @@ func NewConstraintConstant(target ConstraintTarget, targetAttribute ConstraintAt
 
 	var _constraint Constraint // out
 
-	_constraint = WrapConstraint(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_constraint = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Constraint)
 
 	return _constraint
 }

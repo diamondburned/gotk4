@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -78,7 +77,7 @@ type Accessible interface {
 
 // accessible implements the Accessible interface.
 type accessible struct {
-	gextras.Objector
+	*externglib.Object
 }
 
 var _ Accessible = (*accessible)(nil)
@@ -86,9 +85,7 @@ var _ Accessible = (*accessible)(nil)
 // WrapAccessible wraps a GObject to a type that implements
 // interface Accessible. It is primarily used internally.
 func WrapAccessible(obj *externglib.Object) Accessible {
-	return accessible{
-		Objector: obj,
-	}
+	return accessible{obj}
 }
 
 func marshalAccessible(p uintptr) (interface{}, error) {

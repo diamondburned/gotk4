@@ -5,8 +5,10 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -288,6 +290,61 @@ type UIManager interface {
 	// AsBuildable casts the class to the Buildable interface.
 	AsBuildable() Buildable
 
+	// AddChild adds a child to @buildable. @type is an optional string
+	// describing how the child should be added.
+	//
+	// This method is inherited from Buildable
+	AddChild(builder Builder, child gextras.Objector, typ string)
+	// ConstructChild constructs a child of @buildable with the name @name.
+	//
+	// Builder calls this function if a “constructor” has been specified in the
+	// UI definition.
+	//
+	// This method is inherited from Buildable
+	ConstructChild(builder Builder, name string) gextras.Objector
+	// CustomFinished: this is similar to gtk_buildable_parser_finished() but is
+	// called once for each custom tag handled by the @buildable.
+	//
+	// This method is inherited from Buildable
+	CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{})
+	// CustomTagEnd: this is called at the end of each custom element handled by
+	// the buildable.
+	//
+	// This method is inherited from Buildable
+	CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data interface{})
+	// CustomTagStart: this is called for each unknown element under <child>.
+	//
+	// This method is inherited from Buildable
+	CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool)
+	// GetInternalChild: get the internal child called @childname of the
+	// @buildable object.
+	//
+	// This method is inherited from Buildable
+	GetInternalChild(builder Builder, childname string) gextras.Objector
+	// GetName gets the name of the @buildable object.
+	//
+	// Builder sets the name based on the [GtkBuilder UI definition][BUILDER-UI]
+	// used to construct the @buildable.
+	//
+	// This method is inherited from Buildable
+	GetName() string
+	// ParserFinished: called when the builder finishes the parsing of a
+	// [GtkBuilder UI definition][BUILDER-UI]. Note that this will be called
+	// once for each time gtk_builder_add_from_file() or
+	// gtk_builder_add_from_string() is called on a builder.
+	//
+	// This method is inherited from Buildable
+	ParserFinished(builder Builder)
+	// SetBuildableProperty sets the property name @name to @value on the
+	// @buildable object.
+	//
+	// This method is inherited from Buildable
+	SetBuildableProperty(builder Builder, name string, value externglib.Value)
+	// SetName sets the name of the @buildable object.
+	//
+	// This method is inherited from Buildable
+	SetName(name string)
+
 	// AddUi adds a UI element to the current contents of @manager.
 	//
 	// If @type is GTK_UI_MANAGER_AUTO, GTK+ inserts a menuitem, toolitem or
@@ -402,17 +459,17 @@ type UIManager interface {
 	SetAddTearoffs(addTearoffs bool)
 }
 
-// uiManager implements the UIManager class.
+// uiManager implements the UIManager interface.
 type uiManager struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapUIManager wraps a GObject to the right type. It is
-// primarily used internally.
+var _ UIManager = (*uiManager)(nil)
+
+// WrapUIManager wraps a GObject to a type that implements
+// interface UIManager. It is primarily used internally.
 func WrapUIManager(obj *externglib.Object) UIManager {
-	return uiManager{
-		Objector: obj,
-	}
+	return uiManager{obj}
 }
 
 func marshalUIManager(p uintptr) (interface{}, error) {
@@ -431,13 +488,53 @@ func NewUIManager() UIManager {
 
 	var _uiManager UIManager // out
 
-	_uiManager = WrapUIManager(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_uiManager = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(UIManager)
 
 	return _uiManager
 }
 
 func (u uiManager) AsBuildable() Buildable {
 	return WrapBuildable(gextras.InternObject(u))
+}
+
+func (b uiManager) AddChild(builder Builder, child gextras.Objector, typ string) {
+	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+}
+
+func (b uiManager) ConstructChild(builder Builder, name string) gextras.Objector {
+	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b uiManager) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b uiManager) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b uiManager) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
+}
+
+func (b uiManager) GetInternalChild(builder Builder, childname string) gextras.Objector {
+	return WrapBuildable(gextras.InternObject(b)).GetInternalChild(builder, childname)
+}
+
+func (b uiManager) GetName() string {
+	return WrapBuildable(gextras.InternObject(b)).GetName()
+}
+
+func (b uiManager) ParserFinished(builder Builder) {
+	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
+}
+
+func (b uiManager) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
+	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
+}
+
+func (b uiManager) SetName(name string) {
+	WrapBuildable(gextras.InternObject(b)).SetName(name)
 }
 
 func (m uiManager) AddUi(mergeId uint, path string, name string, action string, typ UIManagerItemType, top bool) {

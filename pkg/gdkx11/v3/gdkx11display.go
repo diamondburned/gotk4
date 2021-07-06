@@ -5,6 +5,7 @@ package gdkx11
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -62,7 +63,256 @@ func X11SetSmClientID(smClientId string) {
 }
 
 type X11Display interface {
-	gdk.Display
+	gextras.Objector
+
+	// AsDisplay casts the class to the gdk.Display interface.
+	AsDisplay() gdk.Display
+
+	// Beep emits a short beep on @display
+	//
+	// This method is inherited from gdk.Display
+	Beep()
+	// Close closes the connection to the windowing system for the given
+	// display, and cleans up associated resources.
+	//
+	// This method is inherited from gdk.Display
+	Close()
+	// DeviceIsGrabbed returns true if there is an ongoing grab on @device for
+	// @display.
+	//
+	// This method is inherited from gdk.Display
+	DeviceIsGrabbed(device gdk.Device) bool
+	// Flush flushes any requests queued for the windowing system; this happens
+	// automatically when the main loop blocks waiting for new events, but if
+	// your application is drawing without returning control to the main loop,
+	// you may need to call this function explicitly. A common case where this
+	// function needs to be called is when an application is executing drawing
+	// commands from a thread other than the thread where the main loop is
+	// running.
+	//
+	// This is most useful for X11. On windowing systems where requests are
+	// handled synchronously, this function will do nothing.
+	//
+	// This method is inherited from gdk.Display
+	Flush()
+	// GetAppLaunchContext returns a AppLaunchContext suitable for launching
+	// applications on the given display.
+	//
+	// This method is inherited from gdk.Display
+	GetAppLaunchContext() gdk.AppLaunchContext
+	// GetDefaultCursorSize returns the default size to use for cursors on
+	// @display.
+	//
+	// This method is inherited from gdk.Display
+	GetDefaultCursorSize() uint
+	// GetDefaultGroup returns the default group leader window for all toplevel
+	// windows on @display. This window is implicitly created by GDK. See
+	// gdk_window_set_group().
+	//
+	// This method is inherited from gdk.Display
+	GetDefaultGroup() gdk.Window
+	// GetDefaultScreen: get the default Screen for @display.
+	//
+	// This method is inherited from gdk.Display
+	GetDefaultScreen() gdk.Screen
+	// GetDefaultSeat returns the default Seat for this display.
+	//
+	// This method is inherited from gdk.Display
+	GetDefaultSeat() gdk.Seat
+	// GetDeviceManager returns the DeviceManager associated to @display.
+	//
+	// Deprecated: since version 3.20.
+	//
+	// This method is inherited from gdk.Display
+	GetDeviceManager() gdk.DeviceManager
+	// GetMaximalCursorSize gets the maximal size to use for cursors on
+	// @display.
+	//
+	// This method is inherited from gdk.Display
+	GetMaximalCursorSize() (width uint, height uint)
+	// GetMonitor gets a monitor associated with this display.
+	//
+	// This method is inherited from gdk.Display
+	GetMonitor(monitorNum int) gdk.Monitor
+	// GetMonitorAtPoint gets the monitor in which the point (@x, @y) is
+	// located, or a nearby monitor if the point is not in any monitor.
+	//
+	// This method is inherited from gdk.Display
+	GetMonitorAtPoint(x int, y int) gdk.Monitor
+	// GetMonitorAtWindow gets the monitor in which the largest area of @window
+	// resides, or a monitor close to @window if it is outside of all monitors.
+	//
+	// This method is inherited from gdk.Display
+	GetMonitorAtWindow(window gdk.Window) gdk.Monitor
+	// GetNMonitors gets the number of monitors that belong to @display.
+	//
+	// The returned number is valid until the next emission of the
+	// Display::monitor-added or Display::monitor-removed signal.
+	//
+	// This method is inherited from gdk.Display
+	GetNMonitors() int
+	// GetNScreens gets the number of screen managed by the @display.
+	//
+	// Deprecated: since version 3.10.
+	//
+	// This method is inherited from gdk.Display
+	GetNScreens() int
+	// GetName gets the name of the display.
+	//
+	// This method is inherited from gdk.Display
+	GetName() string
+	// GetPointer gets the current location of the pointer and the current
+	// modifier mask for a given display.
+	//
+	// Deprecated: since version 3.0.
+	//
+	// This method is inherited from gdk.Display
+	GetPointer() (screen gdk.Screen, x int, y int, mask gdk.ModifierType)
+	// GetPrimaryMonitor gets the primary monitor for the display.
+	//
+	// The primary monitor is considered the monitor where the “main desktop”
+	// lives. While normal application windows typically allow the window
+	// manager to place the windows, specialized desktop applications such as
+	// panels should place themselves on the primary monitor.
+	//
+	// This method is inherited from gdk.Display
+	GetPrimaryMonitor() gdk.Monitor
+	// GetScreen returns a screen object for one of the screens of the display.
+	//
+	// Deprecated: since version 3.20.
+	//
+	// This method is inherited from gdk.Display
+	GetScreen(screenNum int) gdk.Screen
+	// GetWindowAtPointer obtains the window underneath the mouse pointer,
+	// returning the location of the pointer in that window in @win_x, @win_y
+	// for @screen. Returns nil if the window under the mouse pointer is not
+	// known to GDK (for example, belongs to another application).
+	//
+	// Deprecated: since version 3.0.
+	//
+	// This method is inherited from gdk.Display
+	GetWindowAtPointer() (winX int, winY int, window gdk.Window)
+	// HasPending returns whether the display has events that are waiting to be
+	// processed.
+	//
+	// This method is inherited from gdk.Display
+	HasPending() bool
+	// IsClosed finds out if the display has been closed.
+	//
+	// This method is inherited from gdk.Display
+	IsClosed() bool
+	// KeyboardUngrab: release any keyboard grab
+	//
+	// Deprecated: since version 3.0.
+	//
+	// This method is inherited from gdk.Display
+	KeyboardUngrab(time_ uint32)
+	// NotifyStartupComplete indicates to the GUI environment that the
+	// application has finished loading, using a given identifier.
+	//
+	// GTK+ will call this function automatically for Window with custom
+	// startup-notification identifier unless
+	// gtk_window_set_auto_startup_notification() is called to disable that
+	// feature.
+	//
+	// This method is inherited from gdk.Display
+	NotifyStartupComplete(startupId string)
+	// PointerIsGrabbed: test if the pointer is grabbed.
+	//
+	// Deprecated: since version 3.0.
+	//
+	// This method is inherited from gdk.Display
+	PointerIsGrabbed() bool
+	// PointerUngrab: release any pointer grab.
+	//
+	// Deprecated: since version 3.0.
+	//
+	// This method is inherited from gdk.Display
+	PointerUngrab(time_ uint32)
+	// SetDoubleClickDistance sets the double click distance (two clicks within
+	// this distance count as a double click and result in a K_2BUTTON_PRESS
+	// event). See also gdk_display_set_double_click_time(). Applications should
+	// not set this, it is a global user-configured setting.
+	//
+	// This method is inherited from gdk.Display
+	SetDoubleClickDistance(distance uint)
+	// SetDoubleClickTime sets the double click time (two clicks within this
+	// time interval count as a double click and result in a K_2BUTTON_PRESS
+	// event). Applications should not set this, it is a global user-configured
+	// setting.
+	//
+	// This method is inherited from gdk.Display
+	SetDoubleClickTime(msec uint)
+	// SupportsClipboardPersistence returns whether the speicifed display
+	// supports clipboard persistance; i.e. if it’s possible to store the
+	// clipboard data after an application has quit. On X11 this checks if a
+	// clipboard daemon is running.
+	//
+	// This method is inherited from gdk.Display
+	SupportsClipboardPersistence() bool
+	// SupportsComposite returns true if gdk_window_set_composited() can be used
+	// to redirect drawing on the window using compositing.
+	//
+	// Currently this only works on X11 with XComposite and XDamage extensions
+	// available.
+	//
+	// Deprecated: since version 3.16.
+	//
+	// This method is inherited from gdk.Display
+	SupportsComposite() bool
+	// SupportsCursorAlpha returns true if cursors can use an 8bit alpha channel
+	// on @display. Otherwise, cursors are restricted to bilevel alpha (i.e. a
+	// mask).
+	//
+	// This method is inherited from gdk.Display
+	SupportsCursorAlpha() bool
+	// SupportsCursorColor returns true if multicolored cursors are supported on
+	// @display. Otherwise, cursors have only a forground and a background
+	// color.
+	//
+	// This method is inherited from gdk.Display
+	SupportsCursorColor() bool
+	// SupportsInputShapes returns true if gdk_window_input_shape_combine_mask()
+	// can be used to modify the input shape of windows on @display.
+	//
+	// This method is inherited from gdk.Display
+	SupportsInputShapes() bool
+	// SupportsSelectionNotification returns whether EventOwnerChange events
+	// will be sent when the owner of a selection changes.
+	//
+	// This method is inherited from gdk.Display
+	SupportsSelectionNotification() bool
+	// SupportsShapes returns true if gdk_window_shape_combine_mask() can be
+	// used to create shaped windows on @display.
+	//
+	// This method is inherited from gdk.Display
+	SupportsShapes() bool
+	// Sync flushes any requests queued for the windowing system and waits until
+	// all requests have been handled. This is often used for making sure that
+	// the display is synchronized with the current state of the program.
+	// Calling gdk_display_sync() before gdk_error_trap_pop() makes sure that
+	// any errors generated from earlier requests are handled before the error
+	// trap is removed.
+	//
+	// This is most useful for X11. On windowing systems where requests are
+	// handled synchronously, this function will do nothing.
+	//
+	// This method is inherited from gdk.Display
+	Sync()
+	// WarpPointer warps the pointer of @display to the point @x,@y on the
+	// screen @screen, unless the pointer is confined to a window by a grab, in
+	// which case it will be moved as far as allowed by the grab. Warping the
+	// pointer creates events as if the user had moved the mouse instantaneously
+	// to the destination.
+	//
+	// Note that the pointer should normally be under the control of the user.
+	// This function was added to cover some rare use cases like keyboard
+	// navigation support for the color picker in the ColorSelectionDialog.
+	//
+	// Deprecated: since version 3.0.
+	//
+	// This method is inherited from gdk.Display
+	WarpPointer(screen gdk.Screen, x int, y int)
 
 	// ErrorTrapPop pops the error trap pushed by
 	// gdk_x11_display_error_trap_push(). Will XSync() if necessary and will
@@ -138,23 +388,179 @@ type X11Display interface {
 	Ungrab()
 }
 
-// x11Display implements the X11Display class.
+// x11Display implements the X11Display interface.
 type x11Display struct {
-	gdk.Display
+	*externglib.Object
 }
 
-// WrapX11Display wraps a GObject to the right type. It is
-// primarily used internally.
+var _ X11Display = (*x11Display)(nil)
+
+// WrapX11Display wraps a GObject to a type that implements
+// interface X11Display. It is primarily used internally.
 func WrapX11Display(obj *externglib.Object) X11Display {
-	return x11Display{
-		Display: gdk.WrapDisplay(obj),
-	}
+	return x11Display{obj}
 }
 
 func marshalX11Display(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapX11Display(obj), nil
+}
+
+func (x x11Display) AsDisplay() gdk.Display {
+	return gdk.WrapDisplay(gextras.InternObject(x))
+}
+
+func (d x11Display) Beep() {
+	gdk.WrapDisplay(gextras.InternObject(d)).Beep()
+}
+
+func (d x11Display) Close() {
+	gdk.WrapDisplay(gextras.InternObject(d)).Close()
+}
+
+func (d x11Display) DeviceIsGrabbed(device gdk.Device) bool {
+	return gdk.WrapDisplay(gextras.InternObject(d)).DeviceIsGrabbed(device)
+}
+
+func (d x11Display) Flush() {
+	gdk.WrapDisplay(gextras.InternObject(d)).Flush()
+}
+
+func (d x11Display) GetAppLaunchContext() gdk.AppLaunchContext {
+	return gdk.WrapDisplay(gextras.InternObject(d)).GetAppLaunchContext()
+}
+
+func (d x11Display) GetDefaultCursorSize() uint {
+	return gdk.WrapDisplay(gextras.InternObject(d)).GetDefaultCursorSize()
+}
+
+func (d x11Display) GetDefaultGroup() gdk.Window {
+	return gdk.WrapDisplay(gextras.InternObject(d)).GetDefaultGroup()
+}
+
+func (d x11Display) GetDefaultScreen() gdk.Screen {
+	return gdk.WrapDisplay(gextras.InternObject(d)).GetDefaultScreen()
+}
+
+func (d x11Display) GetDefaultSeat() gdk.Seat {
+	return gdk.WrapDisplay(gextras.InternObject(d)).GetDefaultSeat()
+}
+
+func (d x11Display) GetDeviceManager() gdk.DeviceManager {
+	return gdk.WrapDisplay(gextras.InternObject(d)).GetDeviceManager()
+}
+
+func (d x11Display) GetMaximalCursorSize() (width uint, height uint) {
+	return gdk.WrapDisplay(gextras.InternObject(d)).GetMaximalCursorSize()
+}
+
+func (d x11Display) GetMonitor(monitorNum int) gdk.Monitor {
+	return gdk.WrapDisplay(gextras.InternObject(d)).GetMonitor(monitorNum)
+}
+
+func (d x11Display) GetMonitorAtPoint(x int, y int) gdk.Monitor {
+	return gdk.WrapDisplay(gextras.InternObject(d)).GetMonitorAtPoint(x, y)
+}
+
+func (d x11Display) GetMonitorAtWindow(window gdk.Window) gdk.Monitor {
+	return gdk.WrapDisplay(gextras.InternObject(d)).GetMonitorAtWindow(window)
+}
+
+func (d x11Display) GetNMonitors() int {
+	return gdk.WrapDisplay(gextras.InternObject(d)).GetNMonitors()
+}
+
+func (d x11Display) GetNScreens() int {
+	return gdk.WrapDisplay(gextras.InternObject(d)).GetNScreens()
+}
+
+func (d x11Display) GetName() string {
+	return gdk.WrapDisplay(gextras.InternObject(d)).GetName()
+}
+
+func (d x11Display) GetPointer() (screen gdk.Screen, x int, y int, mask gdk.ModifierType) {
+	return gdk.WrapDisplay(gextras.InternObject(d)).GetPointer()
+}
+
+func (d x11Display) GetPrimaryMonitor() gdk.Monitor {
+	return gdk.WrapDisplay(gextras.InternObject(d)).GetPrimaryMonitor()
+}
+
+func (d x11Display) GetScreen(screenNum int) gdk.Screen {
+	return gdk.WrapDisplay(gextras.InternObject(d)).GetScreen(screenNum)
+}
+
+func (d x11Display) GetWindowAtPointer() (winX int, winY int, window gdk.Window) {
+	return gdk.WrapDisplay(gextras.InternObject(d)).GetWindowAtPointer()
+}
+
+func (d x11Display) HasPending() bool {
+	return gdk.WrapDisplay(gextras.InternObject(d)).HasPending()
+}
+
+func (d x11Display) IsClosed() bool {
+	return gdk.WrapDisplay(gextras.InternObject(d)).IsClosed()
+}
+
+func (d x11Display) KeyboardUngrab(time_ uint32) {
+	gdk.WrapDisplay(gextras.InternObject(d)).KeyboardUngrab(time_)
+}
+
+func (d x11Display) NotifyStartupComplete(startupId string) {
+	gdk.WrapDisplay(gextras.InternObject(d)).NotifyStartupComplete(startupId)
+}
+
+func (d x11Display) PointerIsGrabbed() bool {
+	return gdk.WrapDisplay(gextras.InternObject(d)).PointerIsGrabbed()
+}
+
+func (d x11Display) PointerUngrab(time_ uint32) {
+	gdk.WrapDisplay(gextras.InternObject(d)).PointerUngrab(time_)
+}
+
+func (d x11Display) SetDoubleClickDistance(distance uint) {
+	gdk.WrapDisplay(gextras.InternObject(d)).SetDoubleClickDistance(distance)
+}
+
+func (d x11Display) SetDoubleClickTime(msec uint) {
+	gdk.WrapDisplay(gextras.InternObject(d)).SetDoubleClickTime(msec)
+}
+
+func (d x11Display) SupportsClipboardPersistence() bool {
+	return gdk.WrapDisplay(gextras.InternObject(d)).SupportsClipboardPersistence()
+}
+
+func (d x11Display) SupportsComposite() bool {
+	return gdk.WrapDisplay(gextras.InternObject(d)).SupportsComposite()
+}
+
+func (d x11Display) SupportsCursorAlpha() bool {
+	return gdk.WrapDisplay(gextras.InternObject(d)).SupportsCursorAlpha()
+}
+
+func (d x11Display) SupportsCursorColor() bool {
+	return gdk.WrapDisplay(gextras.InternObject(d)).SupportsCursorColor()
+}
+
+func (d x11Display) SupportsInputShapes() bool {
+	return gdk.WrapDisplay(gextras.InternObject(d)).SupportsInputShapes()
+}
+
+func (d x11Display) SupportsSelectionNotification() bool {
+	return gdk.WrapDisplay(gextras.InternObject(d)).SupportsSelectionNotification()
+}
+
+func (d x11Display) SupportsShapes() bool {
+	return gdk.WrapDisplay(gextras.InternObject(d)).SupportsShapes()
+}
+
+func (d x11Display) Sync() {
+	gdk.WrapDisplay(gextras.InternObject(d)).Sync()
+}
+
+func (d x11Display) WarpPointer(screen gdk.Screen, x int, y int) {
+	gdk.WrapDisplay(gextras.InternObject(d)).WarpPointer(screen, x, y)
 }
 
 func (d x11Display) ErrorTrapPop() int {

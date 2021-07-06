@@ -76,17 +76,17 @@ type FilterListModel interface {
 	SetIncremental(incremental bool)
 }
 
-// filterListModel implements the FilterListModel class.
+// filterListModel implements the FilterListModel interface.
 type filterListModel struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapFilterListModel wraps a GObject to the right type. It is
-// primarily used internally.
+var _ FilterListModel = (*filterListModel)(nil)
+
+// WrapFilterListModel wraps a GObject to a type that implements
+// interface FilterListModel. It is primarily used internally.
 func WrapFilterListModel(obj *externglib.Object) FilterListModel {
-	return filterListModel{
-		Objector: obj,
-	}
+	return filterListModel{obj}
 }
 
 func marshalFilterListModel(p uintptr) (interface{}, error) {

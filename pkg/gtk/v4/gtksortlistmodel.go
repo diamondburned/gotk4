@@ -78,17 +78,17 @@ type SortListModel interface {
 	SetSorter(sorter Sorter)
 }
 
-// sortListModel implements the SortListModel class.
+// sortListModel implements the SortListModel interface.
 type sortListModel struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapSortListModel wraps a GObject to the right type. It is
-// primarily used internally.
+var _ SortListModel = (*sortListModel)(nil)
+
+// WrapSortListModel wraps a GObject to a type that implements
+// interface SortListModel. It is primarily used internally.
 func WrapSortListModel(obj *externglib.Object) SortListModel {
-	return sortListModel{
-		Objector: obj,
-	}
+	return sortListModel{obj}
 }
 
 func marshalSortListModel(p uintptr) (interface{}, error) {

@@ -3,9 +3,11 @@
 package gio
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -44,6 +46,38 @@ type ThemedIcon interface {
 	// AsIcon casts the class to the Icon interface.
 	AsIcon() Icon
 
+	// Equal checks if two icons are equal.
+	//
+	// This method is inherited from Icon
+	Equal(icon2 Icon) bool
+	// Serialize serializes a #GIcon into a #GVariant. An equivalent #GIcon can
+	// be retrieved back by calling g_icon_deserialize() on the returned value.
+	// As serialization will avoid using raw icon data when possible, it only
+	// makes sense to transfer the #GVariant between processes on the same
+	// machine, (as opposed to over the network), and within the same file
+	// system namespace.
+	//
+	// This method is inherited from Icon
+	Serialize() *glib.Variant
+	// ToString generates a textual representation of @icon that can be used for
+	// serialization such as when passing @icon to a different process or saving
+	// it to persistent storage. Use g_icon_new_for_string() to get @icon back
+	// from the returned string.
+	//
+	// The encoding of the returned string is proprietary to #GIcon except in
+	// the following two cases
+	//
+	// - If @icon is a Icon, the returned string is a native path (such as
+	// `/path/to/my icon.png`) without escaping if the #GFile for @icon is a
+	// native file. If the file is not native, the returned string is the result
+	// of g_file_get_uri() (such as `sftp://path/to/my20icon.png`).
+	//
+	// - If @icon is a Icon with exactly one name and no fallbacks, the encoding
+	// is simply the name (such as `network-server`).
+	//
+	// This method is inherited from Icon
+	ToString() string
+
 	// AppendName: append a name to the list of icons from within @icon.
 	//
 	// Note that doing so invalidates the hash computed by prior calls to
@@ -58,17 +92,17 @@ type ThemedIcon interface {
 	PrependName(iconname string)
 }
 
-// themedIcon implements the ThemedIcon class.
+// themedIcon implements the ThemedIcon interface.
 type themedIcon struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapThemedIcon wraps a GObject to the right type. It is
-// primarily used internally.
+var _ ThemedIcon = (*themedIcon)(nil)
+
+// WrapThemedIcon wraps a GObject to a type that implements
+// interface ThemedIcon. It is primarily used internally.
 func WrapThemedIcon(obj *externglib.Object) ThemedIcon {
-	return themedIcon{
-		Objector: obj,
-	}
+	return themedIcon{obj}
 }
 
 func marshalThemedIcon(p uintptr) (interface{}, error) {
@@ -89,7 +123,7 @@ func NewThemedIcon(iconname string) ThemedIcon {
 
 	var _themedIcon ThemedIcon // out
 
-	_themedIcon = WrapThemedIcon(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_themedIcon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(ThemedIcon)
 
 	return _themedIcon
 }
@@ -115,7 +149,7 @@ func NewThemedIconFromNames(iconnames []string) ThemedIcon {
 
 	var _themedIcon ThemedIcon // out
 
-	_themedIcon = WrapThemedIcon(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_themedIcon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(ThemedIcon)
 
 	return _themedIcon
 }
@@ -146,13 +180,25 @@ func NewThemedIconWithDefaultFallbacks(iconname string) ThemedIcon {
 
 	var _themedIcon ThemedIcon // out
 
-	_themedIcon = WrapThemedIcon(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_themedIcon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(ThemedIcon)
 
 	return _themedIcon
 }
 
 func (t themedIcon) AsIcon() Icon {
 	return WrapIcon(gextras.InternObject(t))
+}
+
+func (i themedIcon) Equal(icon2 Icon) bool {
+	return WrapIcon(gextras.InternObject(i)).Equal(icon2)
+}
+
+func (i themedIcon) Serialize() *glib.Variant {
+	return WrapIcon(gextras.InternObject(i)).Serialize()
+}
+
+func (i themedIcon) ToString() string {
+	return WrapIcon(gextras.InternObject(i)).ToString()
 }
 
 func (i themedIcon) AppendName(iconname string) {

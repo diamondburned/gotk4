@@ -3,11 +3,13 @@
 package gio
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -39,7 +41,42 @@ func init() {
 // LoadableIcon extends the #GIcon interface and adds the ability to load icons
 // from streams.
 type LoadableIcon interface {
-	Icon
+	gextras.Objector
+
+	// AsIcon casts the class to the Icon interface.
+	AsIcon() Icon
+
+	// Equal checks if two icons are equal.
+	//
+	// This method is inherited from Icon
+	Equal(icon2 Icon) bool
+	// Serialize serializes a #GIcon into a #GVariant. An equivalent #GIcon can
+	// be retrieved back by calling g_icon_deserialize() on the returned value.
+	// As serialization will avoid using raw icon data when possible, it only
+	// makes sense to transfer the #GVariant between processes on the same
+	// machine, (as opposed to over the network), and within the same file
+	// system namespace.
+	//
+	// This method is inherited from Icon
+	Serialize() *glib.Variant
+	// ToString generates a textual representation of @icon that can be used for
+	// serialization such as when passing @icon to a different process or saving
+	// it to persistent storage. Use g_icon_new_for_string() to get @icon back
+	// from the returned string.
+	//
+	// The encoding of the returned string is proprietary to #GIcon except in
+	// the following two cases
+	//
+	// - If @icon is a Icon, the returned string is a native path (such as
+	// `/path/to/my icon.png`) without escaping if the #GFile for @icon is a
+	// native file. If the file is not native, the returned string is the result
+	// of g_file_get_uri() (such as `sftp://path/to/my20icon.png`).
+	//
+	// - If @icon is a Icon with exactly one name and no fallbacks, the encoding
+	// is simply the name (such as `network-server`).
+	//
+	// This method is inherited from Icon
+	ToString() string
 
 	// Load loads a loadable icon. For the asynchronous version of this
 	// function, see g_loadable_icon_load_async().
@@ -55,7 +92,7 @@ type LoadableIcon interface {
 
 // loadableIcon implements the LoadableIcon interface.
 type loadableIcon struct {
-	Icon
+	*externglib.Object
 }
 
 var _ LoadableIcon = (*loadableIcon)(nil)
@@ -63,15 +100,29 @@ var _ LoadableIcon = (*loadableIcon)(nil)
 // WrapLoadableIcon wraps a GObject to a type that implements
 // interface LoadableIcon. It is primarily used internally.
 func WrapLoadableIcon(obj *externglib.Object) LoadableIcon {
-	return loadableIcon{
-		Icon: WrapIcon(obj),
-	}
+	return loadableIcon{obj}
 }
 
 func marshalLoadableIcon(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapLoadableIcon(obj), nil
+}
+
+func (l loadableIcon) AsIcon() Icon {
+	return WrapIcon(gextras.InternObject(l))
+}
+
+func (i loadableIcon) Equal(icon2 Icon) bool {
+	return WrapIcon(gextras.InternObject(i)).Equal(icon2)
+}
+
+func (i loadableIcon) Serialize() *glib.Variant {
+	return WrapIcon(gextras.InternObject(i)).Serialize()
+}
+
+func (i loadableIcon) ToString() string {
+	return WrapIcon(gextras.InternObject(i)).ToString()
 }
 
 func (i loadableIcon) Load(size int, cancellable Cancellable) (string, InputStream, error) {

@@ -25,7 +25,37 @@ func init() {
 // BoolFilter: `GtkBoolFilter` evaluates a boolean `GtkExpression` to determine
 // whether to include items.
 type BoolFilter interface {
-	Filter
+	gextras.Objector
+
+	// AsFilter casts the class to the Filter interface.
+	AsFilter() Filter
+
+	// Changed emits the Filter::changed signal to notify all users of the
+	// filter that the filter changed. Users of the filter should then check
+	// items again via gtk_filter_match().
+	//
+	// Depending on the @change parameter, not all items need to be changed, but
+	// only some. Refer to the FilterChange documentation for details.
+	//
+	// This function is intended for implementors of Filter subclasses and
+	// should not be called from other functions.
+	//
+	// This method is inherited from Filter
+	Changed(change FilterChange)
+	// GetStrictness gets the known strictness of @filters. If the strictness is
+	// not known, GTK_FILTER_MATCH_SOME is returned.
+	//
+	// This value may change after emission of the Filter::changed signal.
+	//
+	// This function is meant purely for optimization purposes, filters can
+	// choose to omit implementing it, but FilterListModel uses it.
+	//
+	// This method is inherited from Filter
+	GetStrictness() FilterMatch
+	// Match checks if the given @item is matched by the filter or not.
+	//
+	// This method is inherited from Filter
+	Match(item gextras.Objector) bool
 
 	// Expression gets the expression that the filter uses to evaluate if an
 	// item should be filtered.
@@ -41,17 +71,17 @@ type BoolFilter interface {
 	SetInvert(invert bool)
 }
 
-// boolFilter implements the BoolFilter class.
+// boolFilter implements the BoolFilter interface.
 type boolFilter struct {
-	Filter
+	*externglib.Object
 }
 
-// WrapBoolFilter wraps a GObject to the right type. It is
-// primarily used internally.
+var _ BoolFilter = (*boolFilter)(nil)
+
+// WrapBoolFilter wraps a GObject to a type that implements
+// interface BoolFilter. It is primarily used internally.
 func WrapBoolFilter(obj *externglib.Object) BoolFilter {
-	return boolFilter{
-		Filter: WrapFilter(obj),
-	}
+	return boolFilter{obj}
 }
 
 func marshalBoolFilter(p uintptr) (interface{}, error) {
@@ -71,9 +101,25 @@ func NewBoolFilter(expression Expression) BoolFilter {
 
 	var _boolFilter BoolFilter // out
 
-	_boolFilter = WrapBoolFilter(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_boolFilter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(BoolFilter)
 
 	return _boolFilter
+}
+
+func (b boolFilter) AsFilter() Filter {
+	return WrapFilter(gextras.InternObject(b))
+}
+
+func (s boolFilter) Changed(change FilterChange) {
+	WrapFilter(gextras.InternObject(s)).Changed(change)
+}
+
+func (s boolFilter) GetStrictness() FilterMatch {
+	return WrapFilter(gextras.InternObject(s)).GetStrictness()
+}
+
+func (s boolFilter) Match(item gextras.Objector) bool {
+	return WrapFilter(gextras.InternObject(s)).Match(item)
 }
 
 func (s boolFilter) Expression() Expression {

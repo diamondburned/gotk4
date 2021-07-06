@@ -129,17 +129,17 @@ type PrintContext interface {
 	SetCairoContext(cr *cairo.Context, dpiX float64, dpiY float64)
 }
 
-// printContext implements the PrintContext class.
+// printContext implements the PrintContext interface.
 type printContext struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapPrintContext wraps a GObject to the right type. It is
-// primarily used internally.
+var _ PrintContext = (*printContext)(nil)
+
+// WrapPrintContext wraps a GObject to a type that implements
+// interface PrintContext. It is primarily used internally.
 func WrapPrintContext(obj *externglib.Object) PrintContext {
-	return printContext{
-		Objector: obj,
-	}
+	return printContext{obj}
 }
 
 func marshalPrintContext(p uintptr) (interface{}, error) {

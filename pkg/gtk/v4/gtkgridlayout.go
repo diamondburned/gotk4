@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -37,7 +38,51 @@ func init() {
 // attached to the same row or column; however, if you only ever need a single
 // row or column, you should consider using `GtkBoxLayout`.
 type GridLayout interface {
-	LayoutManager
+	gextras.Objector
+
+	// AsLayoutManager casts the class to the LayoutManager interface.
+	AsLayoutManager() LayoutManager
+
+	// Allocate assigns the given @width, @height, and @baseline to a @widget,
+	// and computes the position and sizes of the children of the @widget using
+	// the layout management policy of @manager.
+	//
+	// This method is inherited from LayoutManager
+	Allocate(widget Widget, width int, height int, baseline int)
+	// GetLayoutChild retrieves a `GtkLayoutChild` instance for the
+	// `GtkLayoutManager`, creating one if necessary.
+	//
+	// The @child widget must be a child of the widget using @manager.
+	//
+	// The `GtkLayoutChild` instance is owned by the `GtkLayoutManager`, and is
+	// guaranteed to exist as long as @child is a child of the `GtkWidget` using
+	// the given `GtkLayoutManager`.
+	//
+	// This method is inherited from LayoutManager
+	GetLayoutChild(child Widget) LayoutChild
+	// GetRequestMode retrieves the request mode of @manager.
+	//
+	// This method is inherited from LayoutManager
+	GetRequestMode() SizeRequestMode
+	// GetWidget retrieves the `GtkWidget` using the given `GtkLayoutManager`.
+	//
+	// This method is inherited from LayoutManager
+	GetWidget() Widget
+	// LayoutChanged queues a resize on the `GtkWidget` using @manager, if any.
+	//
+	// This function should be called by subclasses of `GtkLayoutManager` in
+	// response to changes to their layout management policies.
+	//
+	// This method is inherited from LayoutManager
+	LayoutChanged()
+	// Measure measures the size of the @widget using @manager, for the given
+	// @orientation and size.
+	//
+	// See the [class@Gtk.Widget] documentation on layout management for more
+	// details.
+	//
+	// This method is inherited from LayoutManager
+	Measure(widget Widget, orientation Orientation, forSize int) (minimum int, natural int, minimumBaseline int, naturalBaseline int)
 
 	// BaselineRow retrieves the row set with
 	// gtk_grid_layout_set_baseline_row().
@@ -84,17 +129,17 @@ type GridLayout interface {
 	SetRowSpacing(spacing uint)
 }
 
-// gridLayout implements the GridLayout class.
+// gridLayout implements the GridLayout interface.
 type gridLayout struct {
-	LayoutManager
+	*externglib.Object
 }
 
-// WrapGridLayout wraps a GObject to the right type. It is
-// primarily used internally.
+var _ GridLayout = (*gridLayout)(nil)
+
+// WrapGridLayout wraps a GObject to a type that implements
+// interface GridLayout. It is primarily used internally.
 func WrapGridLayout(obj *externglib.Object) GridLayout {
-	return gridLayout{
-		LayoutManager: WrapLayoutManager(obj),
-	}
+	return gridLayout{obj}
 }
 
 func marshalGridLayout(p uintptr) (interface{}, error) {
@@ -111,9 +156,37 @@ func NewGridLayout() GridLayout {
 
 	var _gridLayout GridLayout // out
 
-	_gridLayout = WrapGridLayout(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_gridLayout = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(GridLayout)
 
 	return _gridLayout
+}
+
+func (g gridLayout) AsLayoutManager() LayoutManager {
+	return WrapLayoutManager(gextras.InternObject(g))
+}
+
+func (m gridLayout) Allocate(widget Widget, width int, height int, baseline int) {
+	WrapLayoutManager(gextras.InternObject(m)).Allocate(widget, width, height, baseline)
+}
+
+func (m gridLayout) GetLayoutChild(child Widget) LayoutChild {
+	return WrapLayoutManager(gextras.InternObject(m)).GetLayoutChild(child)
+}
+
+func (m gridLayout) GetRequestMode() SizeRequestMode {
+	return WrapLayoutManager(gextras.InternObject(m)).GetRequestMode()
+}
+
+func (m gridLayout) GetWidget() Widget {
+	return WrapLayoutManager(gextras.InternObject(m)).GetWidget()
+}
+
+func (m gridLayout) LayoutChanged() {
+	WrapLayoutManager(gextras.InternObject(m)).LayoutChanged()
+}
+
+func (m gridLayout) Measure(widget Widget, orientation Orientation, forSize int) (minimum int, natural int, minimumBaseline int, naturalBaseline int) {
+	return WrapLayoutManager(gextras.InternObject(m)).Measure(widget, orientation, forSize)
 }
 
 func (g gridLayout) BaselineRow() int {
@@ -280,7 +353,21 @@ func (g gridLayout) SetRowSpacing(spacing uint) {
 
 // GridLayoutChild: `GtkLayoutChild` subclass for children in a `GtkGridLayout`.
 type GridLayoutChild interface {
-	LayoutChild
+	gextras.Objector
+
+	// AsLayoutChild casts the class to the LayoutChild interface.
+	AsLayoutChild() LayoutChild
+
+	// GetChildWidget retrieves the `GtkWidget` associated to the given
+	// @layout_child.
+	//
+	// This method is inherited from LayoutChild
+	GetChildWidget() Widget
+	// GetLayoutManager retrieves the `GtkLayoutManager` instance that created
+	// the given @layout_child.
+	//
+	// This method is inherited from LayoutChild
+	GetLayoutManager() LayoutManager
 
 	// Column retrieves the column number to which @child attaches its left
 	// side.
@@ -301,23 +388,35 @@ type GridLayoutChild interface {
 	SetRowSpan(span int)
 }
 
-// gridLayoutChild implements the GridLayoutChild class.
+// gridLayoutChild implements the GridLayoutChild interface.
 type gridLayoutChild struct {
-	LayoutChild
+	*externglib.Object
 }
 
-// WrapGridLayoutChild wraps a GObject to the right type. It is
-// primarily used internally.
+var _ GridLayoutChild = (*gridLayoutChild)(nil)
+
+// WrapGridLayoutChild wraps a GObject to a type that implements
+// interface GridLayoutChild. It is primarily used internally.
 func WrapGridLayoutChild(obj *externglib.Object) GridLayoutChild {
-	return gridLayoutChild{
-		LayoutChild: WrapLayoutChild(obj),
-	}
+	return gridLayoutChild{obj}
 }
 
 func marshalGridLayoutChild(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapGridLayoutChild(obj), nil
+}
+
+func (g gridLayoutChild) AsLayoutChild() LayoutChild {
+	return WrapLayoutChild(gextras.InternObject(g))
+}
+
+func (l gridLayoutChild) GetChildWidget() Widget {
+	return WrapLayoutChild(gextras.InternObject(l)).GetChildWidget()
+}
+
+func (l gridLayoutChild) GetLayoutManager() LayoutManager {
+	return WrapLayoutChild(gextras.InternObject(l)).GetLayoutManager()
 }
 
 func (c gridLayoutChild) Column() int {

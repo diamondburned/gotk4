@@ -186,7 +186,7 @@ type RecentChooser interface {
 
 // recentChooser implements the RecentChooser interface.
 type recentChooser struct {
-	gextras.Objector
+	*externglib.Object
 }
 
 var _ RecentChooser = (*recentChooser)(nil)
@@ -194,9 +194,7 @@ var _ RecentChooser = (*recentChooser)(nil)
 // WrapRecentChooser wraps a GObject to a type that implements
 // interface RecentChooser. It is primarily used internally.
 func WrapRecentChooser(obj *externglib.Object) RecentChooser {
-	return recentChooser{
-		Objector: obj,
-	}
+	return recentChooser{obj}
 }
 
 func marshalRecentChooser(p uintptr) (interface{}, error) {

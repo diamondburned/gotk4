@@ -44,7 +44,7 @@ type StyleProvider interface {
 
 // styleProvider implements the StyleProvider interface.
 type styleProvider struct {
-	gextras.Objector
+	*externglib.Object
 }
 
 var _ StyleProvider = (*styleProvider)(nil)
@@ -52,9 +52,7 @@ var _ StyleProvider = (*styleProvider)(nil)
 // WrapStyleProvider wraps a GObject to a type that implements
 // interface StyleProvider. It is primarily used internally.
 func WrapStyleProvider(obj *externglib.Object) StyleProvider {
-	return styleProvider{
-		Objector: obj,
-	}
+	return styleProvider{obj}
 }
 
 func marshalStyleProvider(p uintptr) (interface{}, error) {

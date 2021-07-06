@@ -74,17 +74,17 @@ type ContentSerializer interface {
 	ReturnSuccess()
 }
 
-// contentSerializer implements the ContentSerializer class.
+// contentSerializer implements the ContentSerializer interface.
 type contentSerializer struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapContentSerializer wraps a GObject to the right type. It is
-// primarily used internally.
+var _ ContentSerializer = (*contentSerializer)(nil)
+
+// WrapContentSerializer wraps a GObject to a type that implements
+// interface ContentSerializer. It is primarily used internally.
 func WrapContentSerializer(obj *externglib.Object) ContentSerializer {
-	return contentSerializer{
-		Objector: obj,
-	}
+	return contentSerializer{obj}
 }
 
 func marshalContentSerializer(p uintptr) (interface{}, error) {

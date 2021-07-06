@@ -5,7 +5,11 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/cairo"
+	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdk/v3"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -16,6 +20,9 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+//
+// gboolean gotk4_CellAllocCallback(GtkCellRenderer*, GdkRectangle*, GdkRectangle*, gpointer);
+// gboolean gotk4_CellCallback(GtkCellRenderer*, gpointer);
 import "C"
 
 func init() {
@@ -40,14 +47,478 @@ func init() {
 // gtk_cell_area_cell_set_property() or by specifying the "align" argument to
 // gtk_cell_area_box_pack_start() and gtk_cell_area_box_pack_end().
 type CellAreaBox interface {
-	CellArea
+	gextras.Objector
 
+	// AsCellArea casts the class to the CellArea interface.
+	AsCellArea() CellArea
 	// AsBuildable casts the class to the Buildable interface.
 	AsBuildable() Buildable
 	// AsCellLayout casts the class to the CellLayout interface.
 	AsCellLayout() CellLayout
 	// AsOrientable casts the class to the Orientable interface.
 	AsOrientable() Orientable
+
+	// Activate activates @area, usually by activating the currently focused
+	// cell, however some subclasses which embed widgets in the area can also
+	// activate a widget if it currently has the focus.
+	//
+	// This method is inherited from CellArea
+	Activate(context CellAreaContext, widget Widget, cellArea *gdk.Rectangle, flags CellRendererState, editOnly bool) bool
+	// Add adds @renderer to @area with the default child cell properties.
+	//
+	// This method is inherited from CellArea
+	Add(renderer CellRenderer)
+	// AddFocusSibling adds @sibling to @renderer’s focusable area, focus will
+	// be drawn around @renderer and all of its siblings if @renderer can focus
+	// for a given row.
+	//
+	// Events handled by focus siblings can also activate the given focusable
+	// @renderer.
+	//
+	// This method is inherited from CellArea
+	AddFocusSibling(renderer CellRenderer, sibling CellRenderer)
+	// ApplyAttributes applies any connected attributes to the renderers in
+	// @area by pulling the values from @tree_model.
+	//
+	// This method is inherited from CellArea
+	ApplyAttributes(treeModel TreeModel, iter *TreeIter, isExpander bool, isExpanded bool)
+	// AttributeConnect connects an @attribute to apply values from @column for
+	// the TreeModel in use.
+	//
+	// This method is inherited from CellArea
+	AttributeConnect(renderer CellRenderer, attribute string, column int)
+	// AttributeDisconnect disconnects @attribute for the @renderer in @area so
+	// that attribute will no longer be updated with values from the model.
+	//
+	// This method is inherited from CellArea
+	AttributeDisconnect(renderer CellRenderer, attribute string)
+	// AttributeGetColumn returns the model column that an attribute has been
+	// mapped to, or -1 if the attribute is not mapped.
+	//
+	// This method is inherited from CellArea
+	AttributeGetColumn(renderer CellRenderer, attribute string) int
+	// CellGetProperty gets the value of a cell property for @renderer in @area.
+	//
+	// This method is inherited from CellArea
+	CellGetProperty(renderer CellRenderer, propertyName string, value externglib.Value)
+	// CellSetProperty sets a cell property for @renderer in @area.
+	//
+	// This method is inherited from CellArea
+	CellSetProperty(renderer CellRenderer, propertyName string, value externglib.Value)
+	// CopyContext: this is sometimes needed for cases where rows need to share
+	// alignments in one orientation but may be separately grouped in the
+	// opposing orientation.
+	//
+	// For instance, IconView creates all icons (rows) to have the same width
+	// and the cells theirin to have the same horizontal alignments. However
+	// each row of icons may have a separate collective height. IconView uses
+	// this to request the heights of each row based on a context which was
+	// already used to request all the row widths that are to be displayed.
+	//
+	// This method is inherited from CellArea
+	CopyContext(context CellAreaContext) CellAreaContext
+	// CreateContext creates a CellAreaContext to be used with @area for all
+	// purposes. CellAreaContext stores geometry information for rows for which
+	// it was operated on, it is important to use the same context for the same
+	// row of data at all times (i.e. one should render and handle events with
+	// the same CellAreaContext which was used to request the size of those rows
+	// of data).
+	//
+	// This method is inherited from CellArea
+	CreateContext() CellAreaContext
+	// Focus: this should be called by the @area’s owning layout widget when
+	// focus is to be passed to @area, or moved within @area for a given
+	// @direction and row data.
+	//
+	// Implementing CellArea classes should implement this method to receive and
+	// navigate focus in its own way particular to how it lays out cells.
+	//
+	// This method is inherited from CellArea
+	Focus(direction DirectionType) bool
+	// Foreach calls @callback for every CellRenderer in @area.
+	//
+	// This method is inherited from CellArea
+	Foreach(callback CellCallback)
+	// ForeachAlloc calls @callback for every CellRenderer in @area with the
+	// allocated rectangle inside @cell_area.
+	//
+	// This method is inherited from CellArea
+	ForeachAlloc(context CellAreaContext, widget Widget, cellArea *gdk.Rectangle, backgroundArea *gdk.Rectangle, callback CellAllocCallback)
+	// GetCellAllocation derives the allocation of @renderer inside @area if
+	// @area were to be renderered in @cell_area.
+	//
+	// This method is inherited from CellArea
+	GetCellAllocation(context CellAreaContext, widget Widget, renderer CellRenderer, cellArea *gdk.Rectangle) gdk.Rectangle
+	// GetCellAtPosition gets the CellRenderer at @x and @y coordinates inside
+	// @area and optionally returns the full cell allocation for it inside
+	// @cell_area.
+	//
+	// This method is inherited from CellArea
+	GetCellAtPosition(context CellAreaContext, widget Widget, cellArea *gdk.Rectangle, x int, y int) (gdk.Rectangle, CellRenderer)
+	// GetCurrentPathString gets the current TreePath string for the currently
+	// applied TreeIter, this is implicitly updated when
+	// gtk_cell_area_apply_attributes() is called and can be used to interact
+	// with renderers from CellArea subclasses.
+	//
+	// This method is inherited from CellArea
+	GetCurrentPathString() string
+	// GetEditWidget gets the CellEditable widget currently used to edit the
+	// currently edited cell.
+	//
+	// This method is inherited from CellArea
+	GetEditWidget() CellEditable
+	// GetEditedCell gets the CellRenderer in @area that is currently being
+	// edited.
+	//
+	// This method is inherited from CellArea
+	GetEditedCell() CellRenderer
+	// GetFocusCell retrieves the currently focused cell for @area
+	//
+	// This method is inherited from CellArea
+	GetFocusCell() CellRenderer
+	// GetFocusFromSibling gets the CellRenderer which is expected to be
+	// focusable for which @renderer is, or may be a sibling.
+	//
+	// This is handy for CellArea subclasses when handling events, after
+	// determining the renderer at the event location it can then chose to
+	// activate the focus cell for which the event cell may have been a sibling.
+	//
+	// This method is inherited from CellArea
+	GetFocusFromSibling(renderer CellRenderer) CellRenderer
+	// GetPreferredHeight retrieves a cell area’s initial minimum and natural
+	// height.
+	//
+	// @area will store some geometrical information in @context along the way;
+	// when requesting sizes over an arbitrary number of rows, it’s not
+	// important to check the @minimum_height and @natural_height of this call
+	// but rather to consult gtk_cell_area_context_get_preferred_height() after
+	// a series of requests.
+	//
+	// This method is inherited from CellArea
+	GetPreferredHeight(context CellAreaContext, widget Widget) (minimumHeight int, naturalHeight int)
+	// GetPreferredHeightForWidth retrieves a cell area’s minimum and natural
+	// height if it would be given the specified @width.
+	//
+	// @area stores some geometrical information in @context along the way while
+	// calling gtk_cell_area_get_preferred_width(). It’s important to perform a
+	// series of gtk_cell_area_get_preferred_width() requests with @context
+	// first and then call gtk_cell_area_get_preferred_height_for_width() on
+	// each cell area individually to get the height for width of each fully
+	// requested row.
+	//
+	// If at some point, the width of a single row changes, it should be
+	// requested with gtk_cell_area_get_preferred_width() again and then the
+	// full width of the requested rows checked again with
+	// gtk_cell_area_context_get_preferred_width().
+	//
+	// This method is inherited from CellArea
+	GetPreferredHeightForWidth(context CellAreaContext, widget Widget, width int) (minimumHeight int, naturalHeight int)
+	// GetPreferredWidth retrieves a cell area’s initial minimum and natural
+	// width.
+	//
+	// @area will store some geometrical information in @context along the way;
+	// when requesting sizes over an arbitrary number of rows, it’s not
+	// important to check the @minimum_width and @natural_width of this call but
+	// rather to consult gtk_cell_area_context_get_preferred_width() after a
+	// series of requests.
+	//
+	// This method is inherited from CellArea
+	GetPreferredWidth(context CellAreaContext, widget Widget) (minimumWidth int, naturalWidth int)
+	// GetPreferredWidthForHeight retrieves a cell area’s minimum and natural
+	// width if it would be given the specified @height.
+	//
+	// @area stores some geometrical information in @context along the way while
+	// calling gtk_cell_area_get_preferred_height(). It’s important to perform a
+	// series of gtk_cell_area_get_preferred_height() requests with @context
+	// first and then call gtk_cell_area_get_preferred_width_for_height() on
+	// each cell area individually to get the height for width of each fully
+	// requested row.
+	//
+	// If at some point, the height of a single row changes, it should be
+	// requested with gtk_cell_area_get_preferred_height() again and then the
+	// full height of the requested rows checked again with
+	// gtk_cell_area_context_get_preferred_height().
+	//
+	// This method is inherited from CellArea
+	GetPreferredWidthForHeight(context CellAreaContext, widget Widget, height int) (minimumWidth int, naturalWidth int)
+	// GetRequestMode gets whether the area prefers a height-for-width layout or
+	// a width-for-height layout.
+	//
+	// This method is inherited from CellArea
+	GetRequestMode() SizeRequestMode
+	// HasRenderer checks if @area contains @renderer.
+	//
+	// This method is inherited from CellArea
+	HasRenderer(renderer CellRenderer) bool
+	// InnerCellArea: this is a convenience function for CellArea
+	// implementations to get the inner area where a given CellRenderer will be
+	// rendered. It removes any padding previously added by
+	// gtk_cell_area_request_renderer().
+	//
+	// This method is inherited from CellArea
+	InnerCellArea(widget Widget, cellArea *gdk.Rectangle) gdk.Rectangle
+	// IsActivatable returns whether the area can do anything when activated,
+	// after applying new attributes to @area.
+	//
+	// This method is inherited from CellArea
+	IsActivatable() bool
+	// IsFocusSibling returns whether @sibling is one of @renderer’s focus
+	// siblings (see gtk_cell_area_add_focus_sibling()).
+	//
+	// This method is inherited from CellArea
+	IsFocusSibling(renderer CellRenderer, sibling CellRenderer) bool
+	// Remove removes @renderer from @area.
+	//
+	// This method is inherited from CellArea
+	Remove(renderer CellRenderer)
+	// RemoveFocusSibling removes @sibling from @renderer’s focus sibling list
+	// (see gtk_cell_area_add_focus_sibling()).
+	//
+	// This method is inherited from CellArea
+	RemoveFocusSibling(renderer CellRenderer, sibling CellRenderer)
+	// Render renders @area’s cells according to @area’s layout onto @widget at
+	// the given coordinates.
+	//
+	// This method is inherited from CellArea
+	Render(context CellAreaContext, widget Widget, cr *cairo.Context, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState, paintFocus bool)
+	// RequestRenderer: this is a convenience function for CellArea
+	// implementations to request size for cell renderers. It’s important to use
+	// this function to request size and then use
+	// gtk_cell_area_inner_cell_area() at render and event time since this
+	// function will add padding around the cell for focus painting.
+	//
+	// This method is inherited from CellArea
+	RequestRenderer(renderer CellRenderer, orientation Orientation, widget Widget, forSize int) (minimumSize int, naturalSize int)
+	// SetFocusCell: explicitly sets the currently focused cell to @renderer.
+	//
+	// This is generally called by implementations of CellAreaClass.focus() or
+	// CellAreaClass.event(), however it can also be used to implement functions
+	// such as gtk_tree_view_set_cursor_on_cell().
+	//
+	// This method is inherited from CellArea
+	SetFocusCell(renderer CellRenderer)
+	// StopEditing: explicitly stops the editing of the currently edited cell.
+	//
+	// If @canceled is true, the currently edited cell renderer will emit the
+	// ::editing-canceled signal, otherwise the the ::editing-done signal will
+	// be emitted on the current edit widget.
+	//
+	// See gtk_cell_area_get_edited_cell() and gtk_cell_area_get_edit_widget().
+	//
+	// This method is inherited from CellArea
+	StopEditing(canceled bool)
+	// AddChild adds a child to @buildable. @type is an optional string
+	// describing how the child should be added.
+	//
+	// This method is inherited from Buildable
+	AddChild(builder Builder, child gextras.Objector, typ string)
+	// ConstructChild constructs a child of @buildable with the name @name.
+	//
+	// Builder calls this function if a “constructor” has been specified in the
+	// UI definition.
+	//
+	// This method is inherited from Buildable
+	ConstructChild(builder Builder, name string) gextras.Objector
+	// CustomFinished: this is similar to gtk_buildable_parser_finished() but is
+	// called once for each custom tag handled by the @buildable.
+	//
+	// This method is inherited from Buildable
+	CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{})
+	// CustomTagEnd: this is called at the end of each custom element handled by
+	// the buildable.
+	//
+	// This method is inherited from Buildable
+	CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data interface{})
+	// CustomTagStart: this is called for each unknown element under <child>.
+	//
+	// This method is inherited from Buildable
+	CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool)
+	// GetInternalChild: get the internal child called @childname of the
+	// @buildable object.
+	//
+	// This method is inherited from Buildable
+	GetInternalChild(builder Builder, childname string) gextras.Objector
+	// GetName gets the name of the @buildable object.
+	//
+	// Builder sets the name based on the [GtkBuilder UI definition][BUILDER-UI]
+	// used to construct the @buildable.
+	//
+	// This method is inherited from Buildable
+	GetName() string
+	// ParserFinished: called when the builder finishes the parsing of a
+	// [GtkBuilder UI definition][BUILDER-UI]. Note that this will be called
+	// once for each time gtk_builder_add_from_file() or
+	// gtk_builder_add_from_string() is called on a builder.
+	//
+	// This method is inherited from Buildable
+	ParserFinished(builder Builder)
+	// SetBuildableProperty sets the property name @name to @value on the
+	// @buildable object.
+	//
+	// This method is inherited from Buildable
+	SetBuildableProperty(builder Builder, name string, value externglib.Value)
+	// SetName sets the name of the @buildable object.
+	//
+	// This method is inherited from Buildable
+	SetName(name string)
+	// AddAttribute adds an attribute mapping to the list in @cell_layout.
+	//
+	// The @column is the column of the model to get a value from, and the
+	// @attribute is the parameter on @cell to be set from the value. So for
+	// example if column 2 of the model contains strings, you could have the
+	// “text” attribute of a CellRendererText get its values from column 2.
+	//
+	// This method is inherited from CellLayout
+	AddAttribute(cell CellRenderer, attribute string, column int)
+	// Clear unsets all the mappings on all renderers on @cell_layout and
+	// removes all renderers from @cell_layout.
+	//
+	// This method is inherited from CellLayout
+	Clear()
+	// ClearAttributes clears all existing attributes previously set with
+	// gtk_cell_layout_set_attributes().
+	//
+	// This method is inherited from CellLayout
+	ClearAttributes(cell CellRenderer)
+	// GetArea returns the underlying CellArea which might be @cell_layout if
+	// called on a CellArea or might be nil if no CellArea is used by
+	// @cell_layout.
+	//
+	// This method is inherited from CellLayout
+	GetArea() CellArea
+	// PackEnd adds the @cell to the end of @cell_layout. If @expand is false,
+	// then the @cell is allocated no more space than it needs. Any unused space
+	// is divided evenly between cells for which @expand is true.
+	//
+	// Note that reusing the same cell renderer is not supported.
+	//
+	// This method is inherited from CellLayout
+	PackEnd(cell CellRenderer, expand bool)
+	// PackStart packs the @cell into the beginning of @cell_layout. If @expand
+	// is false, then the @cell is allocated no more space than it needs. Any
+	// unused space is divided evenly between cells for which @expand is true.
+	//
+	// Note that reusing the same cell renderer is not supported.
+	//
+	// This method is inherited from CellLayout
+	PackStart(cell CellRenderer, expand bool)
+	// Reorder re-inserts @cell at @position.
+	//
+	// Note that @cell has already to be packed into @cell_layout for this to
+	// function properly.
+	//
+	// This method is inherited from CellLayout
+	Reorder(cell CellRenderer, position int)
+	// AddChild adds a child to @buildable. @type is an optional string
+	// describing how the child should be added.
+	//
+	// This method is inherited from Buildable
+	AddChild(builder Builder, child gextras.Objector, typ string)
+	// ConstructChild constructs a child of @buildable with the name @name.
+	//
+	// Builder calls this function if a “constructor” has been specified in the
+	// UI definition.
+	//
+	// This method is inherited from Buildable
+	ConstructChild(builder Builder, name string) gextras.Objector
+	// CustomFinished: this is similar to gtk_buildable_parser_finished() but is
+	// called once for each custom tag handled by the @buildable.
+	//
+	// This method is inherited from Buildable
+	CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{})
+	// CustomTagEnd: this is called at the end of each custom element handled by
+	// the buildable.
+	//
+	// This method is inherited from Buildable
+	CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data interface{})
+	// CustomTagStart: this is called for each unknown element under <child>.
+	//
+	// This method is inherited from Buildable
+	CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool)
+	// GetInternalChild: get the internal child called @childname of the
+	// @buildable object.
+	//
+	// This method is inherited from Buildable
+	GetInternalChild(builder Builder, childname string) gextras.Objector
+	// GetName gets the name of the @buildable object.
+	//
+	// Builder sets the name based on the [GtkBuilder UI definition][BUILDER-UI]
+	// used to construct the @buildable.
+	//
+	// This method is inherited from Buildable
+	GetName() string
+	// ParserFinished: called when the builder finishes the parsing of a
+	// [GtkBuilder UI definition][BUILDER-UI]. Note that this will be called
+	// once for each time gtk_builder_add_from_file() or
+	// gtk_builder_add_from_string() is called on a builder.
+	//
+	// This method is inherited from Buildable
+	ParserFinished(builder Builder)
+	// SetBuildableProperty sets the property name @name to @value on the
+	// @buildable object.
+	//
+	// This method is inherited from Buildable
+	SetBuildableProperty(builder Builder, name string, value externglib.Value)
+	// SetName sets the name of the @buildable object.
+	//
+	// This method is inherited from Buildable
+	SetName(name string)
+	// AddAttribute adds an attribute mapping to the list in @cell_layout.
+	//
+	// The @column is the column of the model to get a value from, and the
+	// @attribute is the parameter on @cell to be set from the value. So for
+	// example if column 2 of the model contains strings, you could have the
+	// “text” attribute of a CellRendererText get its values from column 2.
+	//
+	// This method is inherited from CellLayout
+	AddAttribute(cell CellRenderer, attribute string, column int)
+	// Clear unsets all the mappings on all renderers on @cell_layout and
+	// removes all renderers from @cell_layout.
+	//
+	// This method is inherited from CellLayout
+	Clear()
+	// ClearAttributes clears all existing attributes previously set with
+	// gtk_cell_layout_set_attributes().
+	//
+	// This method is inherited from CellLayout
+	ClearAttributes(cell CellRenderer)
+	// GetArea returns the underlying CellArea which might be @cell_layout if
+	// called on a CellArea or might be nil if no CellArea is used by
+	// @cell_layout.
+	//
+	// This method is inherited from CellLayout
+	GetArea() CellArea
+	// PackEnd adds the @cell to the end of @cell_layout. If @expand is false,
+	// then the @cell is allocated no more space than it needs. Any unused space
+	// is divided evenly between cells for which @expand is true.
+	//
+	// Note that reusing the same cell renderer is not supported.
+	//
+	// This method is inherited from CellLayout
+	PackEnd(cell CellRenderer, expand bool)
+	// PackStart packs the @cell into the beginning of @cell_layout. If @expand
+	// is false, then the @cell is allocated no more space than it needs. Any
+	// unused space is divided evenly between cells for which @expand is true.
+	//
+	// Note that reusing the same cell renderer is not supported.
+	//
+	// This method is inherited from CellLayout
+	PackStart(cell CellRenderer, expand bool)
+	// Reorder re-inserts @cell at @position.
+	//
+	// Note that @cell has already to be packed into @cell_layout for this to
+	// function properly.
+	//
+	// This method is inherited from CellLayout
+	Reorder(cell CellRenderer, position int)
+	// GetOrientation retrieves the orientation of the @orientable.
+	//
+	// This method is inherited from Orientable
+	GetOrientation() Orientation
+	// SetOrientation sets the orientation of the @orientable.
+	//
+	// This method is inherited from Orientable
+	SetOrientation(orientation Orientation)
 
 	// Spacing gets the spacing added between cell renderers.
 	Spacing() int
@@ -66,17 +537,17 @@ type CellAreaBox interface {
 	SetSpacing(spacing int)
 }
 
-// cellAreaBox implements the CellAreaBox class.
+// cellAreaBox implements the CellAreaBox interface.
 type cellAreaBox struct {
-	CellArea
+	*externglib.Object
 }
 
-// WrapCellAreaBox wraps a GObject to the right type. It is
-// primarily used internally.
+var _ CellAreaBox = (*cellAreaBox)(nil)
+
+// WrapCellAreaBox wraps a GObject to a type that implements
+// interface CellAreaBox. It is primarily used internally.
 func WrapCellAreaBox(obj *externglib.Object) CellAreaBox {
-	return cellAreaBox{
-		CellArea: WrapCellArea(obj),
-	}
+	return cellAreaBox{obj}
 }
 
 func marshalCellAreaBox(p uintptr) (interface{}, error) {
@@ -93,9 +564,13 @@ func NewCellAreaBox() CellAreaBox {
 
 	var _cellAreaBox CellAreaBox // out
 
-	_cellAreaBox = WrapCellAreaBox(externglib.Take(unsafe.Pointer(_cret)))
+	_cellAreaBox = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(CellAreaBox)
 
 	return _cellAreaBox
+}
+
+func (c cellAreaBox) AsCellArea() CellArea {
+	return WrapCellArea(gextras.InternObject(c))
 }
 
 func (c cellAreaBox) AsBuildable() Buildable {
@@ -108,6 +583,294 @@ func (c cellAreaBox) AsCellLayout() CellLayout {
 
 func (c cellAreaBox) AsOrientable() Orientable {
 	return WrapOrientable(gextras.InternObject(c))
+}
+
+func (a cellAreaBox) Activate(context CellAreaContext, widget Widget, cellArea *gdk.Rectangle, flags CellRendererState, editOnly bool) bool {
+	return WrapCellArea(gextras.InternObject(a)).Activate(context, widget, cellArea, flags, editOnly)
+}
+
+func (a cellAreaBox) Add(renderer CellRenderer) {
+	WrapCellArea(gextras.InternObject(a)).Add(renderer)
+}
+
+func (a cellAreaBox) AddFocusSibling(renderer CellRenderer, sibling CellRenderer) {
+	WrapCellArea(gextras.InternObject(a)).AddFocusSibling(renderer, sibling)
+}
+
+func (a cellAreaBox) ApplyAttributes(treeModel TreeModel, iter *TreeIter, isExpander bool, isExpanded bool) {
+	WrapCellArea(gextras.InternObject(a)).ApplyAttributes(treeModel, iter, isExpander, isExpanded)
+}
+
+func (a cellAreaBox) AttributeConnect(renderer CellRenderer, attribute string, column int) {
+	WrapCellArea(gextras.InternObject(a)).AttributeConnect(renderer, attribute, column)
+}
+
+func (a cellAreaBox) AttributeDisconnect(renderer CellRenderer, attribute string) {
+	WrapCellArea(gextras.InternObject(a)).AttributeDisconnect(renderer, attribute)
+}
+
+func (a cellAreaBox) AttributeGetColumn(renderer CellRenderer, attribute string) int {
+	return WrapCellArea(gextras.InternObject(a)).AttributeGetColumn(renderer, attribute)
+}
+
+func (a cellAreaBox) CellGetProperty(renderer CellRenderer, propertyName string, value externglib.Value) {
+	WrapCellArea(gextras.InternObject(a)).CellGetProperty(renderer, propertyName, value)
+}
+
+func (a cellAreaBox) CellSetProperty(renderer CellRenderer, propertyName string, value externglib.Value) {
+	WrapCellArea(gextras.InternObject(a)).CellSetProperty(renderer, propertyName, value)
+}
+
+func (a cellAreaBox) CopyContext(context CellAreaContext) CellAreaContext {
+	return WrapCellArea(gextras.InternObject(a)).CopyContext(context)
+}
+
+func (a cellAreaBox) CreateContext() CellAreaContext {
+	return WrapCellArea(gextras.InternObject(a)).CreateContext()
+}
+
+func (a cellAreaBox) Focus(direction DirectionType) bool {
+	return WrapCellArea(gextras.InternObject(a)).Focus(direction)
+}
+
+func (a cellAreaBox) Foreach(callback CellCallback) {
+	WrapCellArea(gextras.InternObject(a)).Foreach(callback)
+}
+
+func (a cellAreaBox) ForeachAlloc(context CellAreaContext, widget Widget, cellArea *gdk.Rectangle, backgroundArea *gdk.Rectangle, callback CellAllocCallback) {
+	WrapCellArea(gextras.InternObject(a)).ForeachAlloc(context, widget, cellArea, backgroundArea, callback)
+}
+
+func (a cellAreaBox) GetCellAllocation(context CellAreaContext, widget Widget, renderer CellRenderer, cellArea *gdk.Rectangle) gdk.Rectangle {
+	return WrapCellArea(gextras.InternObject(a)).GetCellAllocation(context, widget, renderer, cellArea)
+}
+
+func (a cellAreaBox) GetCellAtPosition(context CellAreaContext, widget Widget, cellArea *gdk.Rectangle, x int, y int) (gdk.Rectangle, CellRenderer) {
+	return WrapCellArea(gextras.InternObject(a)).GetCellAtPosition(context, widget, cellArea, x, y)
+}
+
+func (a cellAreaBox) GetCurrentPathString() string {
+	return WrapCellArea(gextras.InternObject(a)).GetCurrentPathString()
+}
+
+func (a cellAreaBox) GetEditWidget() CellEditable {
+	return WrapCellArea(gextras.InternObject(a)).GetEditWidget()
+}
+
+func (a cellAreaBox) GetEditedCell() CellRenderer {
+	return WrapCellArea(gextras.InternObject(a)).GetEditedCell()
+}
+
+func (a cellAreaBox) GetFocusCell() CellRenderer {
+	return WrapCellArea(gextras.InternObject(a)).GetFocusCell()
+}
+
+func (a cellAreaBox) GetFocusFromSibling(renderer CellRenderer) CellRenderer {
+	return WrapCellArea(gextras.InternObject(a)).GetFocusFromSibling(renderer)
+}
+
+func (a cellAreaBox) GetPreferredHeight(context CellAreaContext, widget Widget) (minimumHeight int, naturalHeight int) {
+	return WrapCellArea(gextras.InternObject(a)).GetPreferredHeight(context, widget)
+}
+
+func (a cellAreaBox) GetPreferredHeightForWidth(context CellAreaContext, widget Widget, width int) (minimumHeight int, naturalHeight int) {
+	return WrapCellArea(gextras.InternObject(a)).GetPreferredHeightForWidth(context, widget, width)
+}
+
+func (a cellAreaBox) GetPreferredWidth(context CellAreaContext, widget Widget) (minimumWidth int, naturalWidth int) {
+	return WrapCellArea(gextras.InternObject(a)).GetPreferredWidth(context, widget)
+}
+
+func (a cellAreaBox) GetPreferredWidthForHeight(context CellAreaContext, widget Widget, height int) (minimumWidth int, naturalWidth int) {
+	return WrapCellArea(gextras.InternObject(a)).GetPreferredWidthForHeight(context, widget, height)
+}
+
+func (a cellAreaBox) GetRequestMode() SizeRequestMode {
+	return WrapCellArea(gextras.InternObject(a)).GetRequestMode()
+}
+
+func (a cellAreaBox) HasRenderer(renderer CellRenderer) bool {
+	return WrapCellArea(gextras.InternObject(a)).HasRenderer(renderer)
+}
+
+func (a cellAreaBox) InnerCellArea(widget Widget, cellArea *gdk.Rectangle) gdk.Rectangle {
+	return WrapCellArea(gextras.InternObject(a)).InnerCellArea(widget, cellArea)
+}
+
+func (a cellAreaBox) IsActivatable() bool {
+	return WrapCellArea(gextras.InternObject(a)).IsActivatable()
+}
+
+func (a cellAreaBox) IsFocusSibling(renderer CellRenderer, sibling CellRenderer) bool {
+	return WrapCellArea(gextras.InternObject(a)).IsFocusSibling(renderer, sibling)
+}
+
+func (a cellAreaBox) Remove(renderer CellRenderer) {
+	WrapCellArea(gextras.InternObject(a)).Remove(renderer)
+}
+
+func (a cellAreaBox) RemoveFocusSibling(renderer CellRenderer, sibling CellRenderer) {
+	WrapCellArea(gextras.InternObject(a)).RemoveFocusSibling(renderer, sibling)
+}
+
+func (a cellAreaBox) Render(context CellAreaContext, widget Widget, cr *cairo.Context, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState, paintFocus bool) {
+	WrapCellArea(gextras.InternObject(a)).Render(context, widget, cr, backgroundArea, cellArea, flags, paintFocus)
+}
+
+func (a cellAreaBox) RequestRenderer(renderer CellRenderer, orientation Orientation, widget Widget, forSize int) (minimumSize int, naturalSize int) {
+	return WrapCellArea(gextras.InternObject(a)).RequestRenderer(renderer, orientation, widget, forSize)
+}
+
+func (a cellAreaBox) SetFocusCell(renderer CellRenderer) {
+	WrapCellArea(gextras.InternObject(a)).SetFocusCell(renderer)
+}
+
+func (a cellAreaBox) StopEditing(canceled bool) {
+	WrapCellArea(gextras.InternObject(a)).StopEditing(canceled)
+}
+
+func (b cellAreaBox) AddChild(builder Builder, child gextras.Objector, typ string) {
+	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+}
+
+func (b cellAreaBox) ConstructChild(builder Builder, name string) gextras.Objector {
+	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b cellAreaBox) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b cellAreaBox) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b cellAreaBox) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
+}
+
+func (b cellAreaBox) GetInternalChild(builder Builder, childname string) gextras.Objector {
+	return WrapBuildable(gextras.InternObject(b)).GetInternalChild(builder, childname)
+}
+
+func (b cellAreaBox) GetName() string {
+	return WrapBuildable(gextras.InternObject(b)).GetName()
+}
+
+func (b cellAreaBox) ParserFinished(builder Builder) {
+	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
+}
+
+func (b cellAreaBox) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
+	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
+}
+
+func (b cellAreaBox) SetName(name string) {
+	WrapBuildable(gextras.InternObject(b)).SetName(name)
+}
+
+func (c cellAreaBox) AddAttribute(cell CellRenderer, attribute string, column int) {
+	WrapCellLayout(gextras.InternObject(c)).AddAttribute(cell, attribute, column)
+}
+
+func (c cellAreaBox) Clear() {
+	WrapCellLayout(gextras.InternObject(c)).Clear()
+}
+
+func (c cellAreaBox) ClearAttributes(cell CellRenderer) {
+	WrapCellLayout(gextras.InternObject(c)).ClearAttributes(cell)
+}
+
+func (c cellAreaBox) GetArea() CellArea {
+	return WrapCellLayout(gextras.InternObject(c)).GetArea()
+}
+
+func (c cellAreaBox) PackEnd(cell CellRenderer, expand bool) {
+	WrapCellLayout(gextras.InternObject(c)).PackEnd(cell, expand)
+}
+
+func (c cellAreaBox) PackStart(cell CellRenderer, expand bool) {
+	WrapCellLayout(gextras.InternObject(c)).PackStart(cell, expand)
+}
+
+func (c cellAreaBox) Reorder(cell CellRenderer, position int) {
+	WrapCellLayout(gextras.InternObject(c)).Reorder(cell, position)
+}
+
+func (b cellAreaBox) AddChild(builder Builder, child gextras.Objector, typ string) {
+	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+}
+
+func (b cellAreaBox) ConstructChild(builder Builder, name string) gextras.Objector {
+	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b cellAreaBox) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b cellAreaBox) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b cellAreaBox) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
+}
+
+func (b cellAreaBox) GetInternalChild(builder Builder, childname string) gextras.Objector {
+	return WrapBuildable(gextras.InternObject(b)).GetInternalChild(builder, childname)
+}
+
+func (b cellAreaBox) GetName() string {
+	return WrapBuildable(gextras.InternObject(b)).GetName()
+}
+
+func (b cellAreaBox) ParserFinished(builder Builder) {
+	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
+}
+
+func (b cellAreaBox) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
+	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
+}
+
+func (b cellAreaBox) SetName(name string) {
+	WrapBuildable(gextras.InternObject(b)).SetName(name)
+}
+
+func (c cellAreaBox) AddAttribute(cell CellRenderer, attribute string, column int) {
+	WrapCellLayout(gextras.InternObject(c)).AddAttribute(cell, attribute, column)
+}
+
+func (c cellAreaBox) Clear() {
+	WrapCellLayout(gextras.InternObject(c)).Clear()
+}
+
+func (c cellAreaBox) ClearAttributes(cell CellRenderer) {
+	WrapCellLayout(gextras.InternObject(c)).ClearAttributes(cell)
+}
+
+func (c cellAreaBox) GetArea() CellArea {
+	return WrapCellLayout(gextras.InternObject(c)).GetArea()
+}
+
+func (c cellAreaBox) PackEnd(cell CellRenderer, expand bool) {
+	WrapCellLayout(gextras.InternObject(c)).PackEnd(cell, expand)
+}
+
+func (c cellAreaBox) PackStart(cell CellRenderer, expand bool) {
+	WrapCellLayout(gextras.InternObject(c)).PackStart(cell, expand)
+}
+
+func (c cellAreaBox) Reorder(cell CellRenderer, position int) {
+	WrapCellLayout(gextras.InternObject(c)).Reorder(cell, position)
+}
+
+func (o cellAreaBox) GetOrientation() Orientation {
+	return WrapOrientable(gextras.InternObject(o)).GetOrientation()
+}
+
+func (o cellAreaBox) SetOrientation(orientation Orientation) {
+	WrapOrientable(gextras.InternObject(o)).SetOrientation(orientation)
 }
 
 func (b cellAreaBox) Spacing() int {

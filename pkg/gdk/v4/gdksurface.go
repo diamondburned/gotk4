@@ -202,17 +202,17 @@ type Surface interface {
 	SetOpaqueRegion(region *cairo.Region)
 }
 
-// surface implements the Surface class.
+// surface implements the Surface interface.
 type surface struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapSurface wraps a GObject to the right type. It is
-// primarily used internally.
+var _ Surface = (*surface)(nil)
+
+// WrapSurface wraps a GObject to a type that implements
+// interface Surface. It is primarily used internally.
 func WrapSurface(obj *externglib.Object) Surface {
-	return surface{
-		Objector: obj,
-	}
+	return surface{obj}
 }
 
 func marshalSurface(p uintptr) (interface{}, error) {
@@ -239,7 +239,7 @@ func NewSurfacePopup(parent Surface, autohide bool) Surface {
 
 	var _surface Surface // out
 
-	_surface = WrapSurface(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_surface = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Surface)
 
 	return _surface
 }
@@ -255,7 +255,7 @@ func NewSurfaceToplevel(display Display) Surface {
 
 	var _surface Surface // out
 
-	_surface = WrapSurface(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_surface = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Surface)
 
 	return _surface
 }

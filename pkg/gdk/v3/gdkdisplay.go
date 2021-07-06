@@ -76,7 +76,7 @@ type Display interface {
 	DefaultSeat() Seat
 	// DeviceManager returns the DeviceManager associated to @display.
 	//
-	// Deprecated: since version 3.20..
+	// Deprecated: since version 3.20.
 	DeviceManager() DeviceManager
 	// MaximalCursorSize gets the maximal size to use for cursors on @display.
 	MaximalCursorSize() (width uint, height uint)
@@ -211,17 +211,17 @@ type Display interface {
 	WarpPointer(screen Screen, x int, y int)
 }
 
-// display implements the Display class.
+// display implements the Display interface.
 type display struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapDisplay wraps a GObject to the right type. It is
-// primarily used internally.
+var _ Display = (*display)(nil)
+
+// WrapDisplay wraps a GObject to a type that implements
+// interface Display. It is primarily used internally.
 func WrapDisplay(obj *externglib.Object) Display {
-	return display{
-		Objector: obj,
-	}
+	return display{obj}
 }
 
 func marshalDisplay(p uintptr) (interface{}, error) {

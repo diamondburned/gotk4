@@ -72,17 +72,17 @@ type StateSet interface {
 	XorSets(compareSet StateSet) StateSet
 }
 
-// stateSet implements the StateSet class.
+// stateSet implements the StateSet interface.
 type stateSet struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapStateSet wraps a GObject to the right type. It is
-// primarily used internally.
+var _ StateSet = (*stateSet)(nil)
+
+// WrapStateSet wraps a GObject to a type that implements
+// interface StateSet. It is primarily used internally.
 func WrapStateSet(obj *externglib.Object) StateSet {
-	return stateSet{
-		Objector: obj,
-	}
+	return stateSet{obj}
 }
 
 func marshalStateSet(p uintptr) (interface{}, error) {
@@ -99,7 +99,7 @@ func NewStateSet() StateSet {
 
 	var _stateSet StateSet // out
 
-	_stateSet = WrapStateSet(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_stateSet = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(StateSet)
 
 	return _stateSet
 }

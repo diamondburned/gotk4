@@ -47,17 +47,17 @@ type SliceListModel interface {
 	SetSize(size uint)
 }
 
-// sliceListModel implements the SliceListModel class.
+// sliceListModel implements the SliceListModel interface.
 type sliceListModel struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapSliceListModel wraps a GObject to the right type. It is
-// primarily used internally.
+var _ SliceListModel = (*sliceListModel)(nil)
+
+// WrapSliceListModel wraps a GObject to a type that implements
+// interface SliceListModel. It is primarily used internally.
 func WrapSliceListModel(obj *externglib.Object) SliceListModel {
-	return sliceListModel{
-		Objector: obj,
-	}
+	return sliceListModel{obj}
 }
 
 func marshalSliceListModel(p uintptr) (interface{}, error) {

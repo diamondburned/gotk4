@@ -73,17 +73,17 @@ type Renderer interface {
 	Unrealize()
 }
 
-// renderer implements the Renderer class.
+// renderer implements the Renderer interface.
 type renderer struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapRenderer wraps a GObject to the right type. It is
-// primarily used internally.
+var _ Renderer = (*renderer)(nil)
+
+// WrapRenderer wraps a GObject to a type that implements
+// interface Renderer. It is primarily used internally.
 func WrapRenderer(obj *externglib.Object) Renderer {
-	return renderer{
-		Objector: obj,
-	}
+	return renderer{obj}
 }
 
 func marshalRenderer(p uintptr) (interface{}, error) {
@@ -110,7 +110,7 @@ func NewRendererForSurface(surface gdk.Surface) Renderer {
 
 	var _renderer Renderer // out
 
-	_renderer = WrapRenderer(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_renderer = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Renderer)
 
 	return _renderer
 }

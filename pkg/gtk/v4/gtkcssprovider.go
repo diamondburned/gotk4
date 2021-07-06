@@ -83,17 +83,17 @@ type CSSProvider interface {
 	String() string
 }
 
-// cssProvider implements the CSSProvider class.
+// cssProvider implements the CSSProvider interface.
 type cssProvider struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapCSSProvider wraps a GObject to the right type. It is
-// primarily used internally.
+var _ CSSProvider = (*cssProvider)(nil)
+
+// WrapCSSProvider wraps a GObject to a type that implements
+// interface CSSProvider. It is primarily used internally.
 func WrapCSSProvider(obj *externglib.Object) CSSProvider {
-	return cssProvider{
-		Objector: obj,
-	}
+	return cssProvider{obj}
 }
 
 func marshalCSSProvider(p uintptr) (interface{}, error) {
@@ -110,7 +110,7 @@ func NewCSSProvider() CSSProvider {
 
 	var _cssProvider CSSProvider // out
 
-	_cssProvider = WrapCSSProvider(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_cssProvider = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(CSSProvider)
 
 	return _cssProvider
 }

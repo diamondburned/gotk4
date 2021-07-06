@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -181,10 +182,535 @@ func init() {
 //
 // * Shortcut folders.
 type FileChooserNative interface {
-	NativeDialog
+	gextras.Objector
 
+	// AsNativeDialog casts the class to the NativeDialog interface.
+	AsNativeDialog() NativeDialog
 	// AsFileChooser casts the class to the FileChooser interface.
 	AsFileChooser() FileChooser
+
+	// Destroy destroys a dialog.
+	//
+	// When a dialog is destroyed, it will break any references it holds to
+	// other objects. If it is visible it will be hidden and any underlying
+	// window system resources will be destroyed.
+	//
+	// Note that this does not release any reference to the object (as opposed
+	// to destroying a GtkWindow) because there is no reference from the
+	// windowing system to the NativeDialog.
+	//
+	// This method is inherited from NativeDialog
+	Destroy()
+	// GetModal returns whether the dialog is modal. See
+	// gtk_native_dialog_set_modal().
+	//
+	// This method is inherited from NativeDialog
+	GetModal() bool
+	// GetTitle gets the title of the NativeDialog.
+	//
+	// This method is inherited from NativeDialog
+	GetTitle() string
+	// GetTransientFor fetches the transient parent for this window. See
+	// gtk_native_dialog_set_transient_for().
+	//
+	// This method is inherited from NativeDialog
+	GetTransientFor() Window
+	// GetVisible determines whether the dialog is visible.
+	//
+	// This method is inherited from NativeDialog
+	GetVisible() bool
+	// Hide hides the dialog if it is visilbe, aborting any interaction. Once
+	// this is called the NativeDialog::response signal will not be emitted
+	// until after the next call to gtk_native_dialog_show().
+	//
+	// If the dialog is not visible this does nothing.
+	//
+	// This method is inherited from NativeDialog
+	Hide()
+	// Run blocks in a recursive main loop until @self emits the
+	// NativeDialog::response signal. It then returns the response ID from the
+	// ::response signal emission.
+	//
+	// Before entering the recursive main loop, gtk_native_dialog_run() calls
+	// gtk_native_dialog_show() on the dialog for you.
+	//
+	// After gtk_native_dialog_run() returns, then dialog will be hidden.
+	//
+	// Typical usage of this function might be:
+	//
+	//    gint result = gtk_native_dialog_run (GTK_NATIVE_DIALOG (dialog));
+	//    switch (result)
+	//      {
+	//        case GTK_RESPONSE_ACCEPT:
+	//           do_application_specific_something ();
+	//           break;
+	//        default:
+	//           do_nothing_since_dialog_was_cancelled ();
+	//           break;
+	//      }
+	//    g_object_unref (dialog);
+	//
+	// Note that even though the recursive main loop gives the effect of a modal
+	// dialog (it prevents the user from interacting with other windows in the
+	// same window group while the dialog is run), callbacks such as timeouts,
+	// IO channel watches, DND drops, etc, will be triggered during a
+	// gtk_native_dialog_run() call.
+	//
+	// This method is inherited from NativeDialog
+	Run() int
+	// SetModal sets a dialog modal or non-modal. Modal dialogs prevent
+	// interaction with other windows in the same application. To keep modal
+	// dialogs on top of main application windows, use
+	// gtk_native_dialog_set_transient_for() to make the dialog transient for
+	// the parent; most [window managers][gtk-X11-arch] will then disallow
+	// lowering the dialog below the parent.
+	//
+	// This method is inherited from NativeDialog
+	SetModal(modal bool)
+	// SetTitle sets the title of the NativeDialog.
+	//
+	// This method is inherited from NativeDialog
+	SetTitle(title string)
+	// SetTransientFor: dialog windows should be set transient for the main
+	// application window they were spawned from. This allows [window
+	// managers][gtk-X11-arch] to e.g. keep the dialog on top of the main
+	// window, or center the dialog over the main window.
+	//
+	// Passing nil for @parent unsets the current transient window.
+	//
+	// This method is inherited from NativeDialog
+	SetTransientFor(parent Window)
+	// Show shows the dialog on the display, allowing the user to interact with
+	// it. When the user accepts the state of the dialog the dialog will be
+	// automatically hidden and the NativeDialog::response signal will be
+	// emitted.
+	//
+	// Multiple calls while the dialog is visible will be ignored.
+	//
+	// This method is inherited from NativeDialog
+	Show()
+	// AddChoice adds a 'choice' to the file chooser. This is typically
+	// implemented as a combobox or, for boolean choices, as a checkbutton. You
+	// can select a value using gtk_file_chooser_set_choice() before the dialog
+	// is shown, and you can obtain the user-selected value in the ::response
+	// signal handler using gtk_file_chooser_get_choice().
+	//
+	// Compare gtk_file_chooser_set_extra_widget().
+	//
+	// This method is inherited from FileChooser
+	AddChoice(id string, label string, options []string, optionLabels []string)
+	// AddFilter adds @filter to the list of filters that the user can select
+	// between. When a filter is selected, only files that are passed by that
+	// filter are displayed.
+	//
+	// Note that the @chooser takes ownership of the filter, so you have to ref
+	// and sink it if you want to keep a reference.
+	//
+	// This method is inherited from FileChooser
+	AddFilter(filter FileFilter)
+	// AddShortcutFolder adds a folder to be displayed with the shortcut folders
+	// in a file chooser. Note that shortcut folders do not get saved, as they
+	// are provided by the application. For example, you can use this to add a
+	// “/usr/share/mydrawprogram/Clipart” folder to the volume list.
+	//
+	// This method is inherited from FileChooser
+	AddShortcutFolder(folder string) error
+	// AddShortcutFolderURI adds a folder URI to be displayed with the shortcut
+	// folders in a file chooser. Note that shortcut folders do not get saved,
+	// as they are provided by the application. For example, you can use this to
+	// add a “file:///usr/share/mydrawprogram/Clipart” folder to the volume
+	// list.
+	//
+	// This method is inherited from FileChooser
+	AddShortcutFolderURI(uri string) error
+	// GetAction gets the type of operation that the file chooser is performing;
+	// see gtk_file_chooser_set_action().
+	//
+	// This method is inherited from FileChooser
+	GetAction() FileChooserAction
+	// GetChoice gets the currently selected option in the 'choice' with the
+	// given ID.
+	//
+	// This method is inherited from FileChooser
+	GetChoice(id string) string
+	// GetCreateFolders gets whether file choser will offer to create new
+	// folders. See gtk_file_chooser_set_create_folders().
+	//
+	// This method is inherited from FileChooser
+	GetCreateFolders() bool
+	// GetCurrentFolder gets the current folder of @chooser as a local filename.
+	// See gtk_file_chooser_set_current_folder().
+	//
+	// Note that this is the folder that the file chooser is currently
+	// displaying (e.g. "/home/username/Documents"), which is not the same as
+	// the currently-selected folder if the chooser is in
+	// GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER mode (e.g.
+	// "/home/username/Documents/selected-folder/". To get the
+	// currently-selected folder in that mode, use gtk_file_chooser_get_uri() as
+	// the usual way to get the selection.
+	//
+	// This method is inherited from FileChooser
+	GetCurrentFolder() string
+	// GetCurrentFolderURI gets the current folder of @chooser as an URI. See
+	// gtk_file_chooser_set_current_folder_uri().
+	//
+	// Note that this is the folder that the file chooser is currently
+	// displaying (e.g. "file:///home/username/Documents"), which is not the
+	// same as the currently-selected folder if the chooser is in
+	// GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER mode (e.g.
+	// "file:///home/username/Documents/selected-folder/". To get the
+	// currently-selected folder in that mode, use gtk_file_chooser_get_uri() as
+	// the usual way to get the selection.
+	//
+	// This method is inherited from FileChooser
+	GetCurrentFolderURI() string
+	// GetCurrentName gets the current name in the file selector, as entered by
+	// the user in the text entry for “Name”.
+	//
+	// This is meant to be used in save dialogs, to get the currently typed
+	// filename when the file itself does not exist yet. For example, an
+	// application that adds a custom extra widget to the file chooser for “file
+	// format” may want to change the extension of the typed filename based on
+	// the chosen format, say, from “.jpg” to “.png”.
+	//
+	// This method is inherited from FileChooser
+	GetCurrentName() string
+	// GetDoOverwriteConfirmation queries whether a file chooser is set to
+	// confirm for overwriting when the user types a file name that already
+	// exists.
+	//
+	// This method is inherited from FileChooser
+	GetDoOverwriteConfirmation() bool
+	// GetExtraWidget gets the current extra widget; see
+	// gtk_file_chooser_set_extra_widget().
+	//
+	// This method is inherited from FileChooser
+	GetExtraWidget() Widget
+	// GetFilename gets the filename for the currently selected file in the file
+	// selector. The filename is returned as an absolute path. If multiple files
+	// are selected, one of the filenames will be returned at random.
+	//
+	// If the file chooser is in folder mode, this function returns the selected
+	// folder.
+	//
+	// This method is inherited from FileChooser
+	GetFilename() string
+	// GetFilter gets the current filter; see gtk_file_chooser_set_filter().
+	//
+	// This method is inherited from FileChooser
+	GetFilter() FileFilter
+	// GetLocalOnly gets whether only local files can be selected in the file
+	// selector. See gtk_file_chooser_set_local_only()
+	//
+	// This method is inherited from FileChooser
+	GetLocalOnly() bool
+	// GetPreviewFilename gets the filename that should be previewed in a custom
+	// preview widget. See gtk_file_chooser_set_preview_widget().
+	//
+	// This method is inherited from FileChooser
+	GetPreviewFilename() string
+	// GetPreviewURI gets the URI that should be previewed in a custom preview
+	// widget. See gtk_file_chooser_set_preview_widget().
+	//
+	// This method is inherited from FileChooser
+	GetPreviewURI() string
+	// GetPreviewWidget gets the current preview widget; see
+	// gtk_file_chooser_set_preview_widget().
+	//
+	// This method is inherited from FileChooser
+	GetPreviewWidget() Widget
+	// GetPreviewWidgetActive gets whether the preview widget set by
+	// gtk_file_chooser_set_preview_widget() should be shown for the current
+	// filename. See gtk_file_chooser_set_preview_widget_active().
+	//
+	// This method is inherited from FileChooser
+	GetPreviewWidgetActive() bool
+	// GetSelectMultiple gets whether multiple files can be selected in the file
+	// selector. See gtk_file_chooser_set_select_multiple().
+	//
+	// This method is inherited from FileChooser
+	GetSelectMultiple() bool
+	// GetShowHidden gets whether hidden files and folders are displayed in the
+	// file selector. See gtk_file_chooser_set_show_hidden().
+	//
+	// This method is inherited from FileChooser
+	GetShowHidden() bool
+	// GetURI gets the URI for the currently selected file in the file selector.
+	// If multiple files are selected, one of the filenames will be returned at
+	// random.
+	//
+	// If the file chooser is in folder mode, this function returns the selected
+	// folder.
+	//
+	// This method is inherited from FileChooser
+	GetURI() string
+	// GetUsePreviewLabel gets whether a stock label should be drawn with the
+	// name of the previewed file. See gtk_file_chooser_set_use_preview_label().
+	//
+	// This method is inherited from FileChooser
+	GetUsePreviewLabel() bool
+	// RemoveChoice removes a 'choice' that has been added with
+	// gtk_file_chooser_add_choice().
+	//
+	// This method is inherited from FileChooser
+	RemoveChoice(id string)
+	// RemoveFilter removes @filter from the list of filters that the user can
+	// select between.
+	//
+	// This method is inherited from FileChooser
+	RemoveFilter(filter FileFilter)
+	// RemoveShortcutFolder removes a folder from a file chooser’s list of
+	// shortcut folders.
+	//
+	// This method is inherited from FileChooser
+	RemoveShortcutFolder(folder string) error
+	// RemoveShortcutFolderURI removes a folder URI from a file chooser’s list
+	// of shortcut folders.
+	//
+	// This method is inherited from FileChooser
+	RemoveShortcutFolderURI(uri string) error
+	// SelectAll selects all the files in the current folder of a file chooser.
+	//
+	// This method is inherited from FileChooser
+	SelectAll()
+	// SelectFilename selects a filename. If the file name isn’t in the current
+	// folder of @chooser, then the current folder of @chooser will be changed
+	// to the folder containing @filename.
+	//
+	// This method is inherited from FileChooser
+	SelectFilename(filename string) bool
+	// SelectURI selects the file to by @uri. If the URI doesn’t refer to a file
+	// in the current folder of @chooser, then the current folder of @chooser
+	// will be changed to the folder containing @filename.
+	//
+	// This method is inherited from FileChooser
+	SelectURI(uri string) bool
+	// SetAction sets the type of operation that the chooser is performing; the
+	// user interface is adapted to suit the selected action. For example, an
+	// option to create a new folder might be shown if the action is
+	// GTK_FILE_CHOOSER_ACTION_SAVE but not if the action is
+	// GTK_FILE_CHOOSER_ACTION_OPEN.
+	//
+	// This method is inherited from FileChooser
+	SetAction(action FileChooserAction)
+	// SetChoice selects an option in a 'choice' that has been added with
+	// gtk_file_chooser_add_choice(). For a boolean choice, the possible options
+	// are "true" and "false".
+	//
+	// This method is inherited from FileChooser
+	SetChoice(id string, option string)
+	// SetCreateFolders sets whether file choser will offer to create new
+	// folders. This is only relevant if the action is not set to be
+	// GTK_FILE_CHOOSER_ACTION_OPEN.
+	//
+	// This method is inherited from FileChooser
+	SetCreateFolders(createFolders bool)
+	// SetCurrentFolder sets the current folder for @chooser from a local
+	// filename. The user will be shown the full contents of the current folder,
+	// plus user interface elements for navigating to other folders.
+	//
+	// In general, you should not use this function. See the [section on setting
+	// up a file chooser dialog][gtkfilechooserdialog-setting-up] for the
+	// rationale behind this.
+	//
+	// This method is inherited from FileChooser
+	SetCurrentFolder(filename string) bool
+	// SetCurrentFolderURI sets the current folder for @chooser from an URI. The
+	// user will be shown the full contents of the current folder, plus user
+	// interface elements for navigating to other folders.
+	//
+	// In general, you should not use this function. See the [section on setting
+	// up a file chooser dialog][gtkfilechooserdialog-setting-up] for the
+	// rationale behind this.
+	//
+	// This method is inherited from FileChooser
+	SetCurrentFolderURI(uri string) bool
+	// SetCurrentName sets the current name in the file selector, as if entered
+	// by the user. Note that the name passed in here is a UTF-8 string rather
+	// than a filename. This function is meant for such uses as a suggested name
+	// in a “Save As...” dialog. You can pass “Untitled.doc” or a similarly
+	// suitable suggestion for the @name.
+	//
+	// If you want to preselect a particular existing file, you should use
+	// gtk_file_chooser_set_filename() or gtk_file_chooser_set_uri() instead.
+	// Please see the documentation for those functions for an example of using
+	// gtk_file_chooser_set_current_name() as well.
+	//
+	// This method is inherited from FileChooser
+	SetCurrentName(name string)
+	// SetDoOverwriteConfirmation sets whether a file chooser in
+	// GTK_FILE_CHOOSER_ACTION_SAVE mode will present a confirmation dialog if
+	// the user types a file name that already exists. This is false by default.
+	//
+	// If set to true, the @chooser will emit the FileChooser::confirm-overwrite
+	// signal when appropriate.
+	//
+	// If all you need is the stock confirmation dialog, set this property to
+	// true. You can override the way confirmation is done by actually handling
+	// the FileChooser::confirm-overwrite signal; please refer to its
+	// documentation for the details.
+	//
+	// This method is inherited from FileChooser
+	SetDoOverwriteConfirmation(doOverwriteConfirmation bool)
+	// SetExtraWidget sets an application-supplied widget to provide extra
+	// options to the user.
+	//
+	// This method is inherited from FileChooser
+	SetExtraWidget(extraWidget Widget)
+	// SetFilename sets @filename as the current filename for the file chooser,
+	// by changing to the file’s parent folder and actually selecting the file
+	// in list; all other files will be unselected. If the @chooser is in
+	// GTK_FILE_CHOOSER_ACTION_SAVE mode, the file’s base name will also appear
+	// in the dialog’s file name entry.
+	//
+	// Note that the file must exist, or nothing will be done except for the
+	// directory change.
+	//
+	// You should use this function only when implementing a save dialog for
+	// which you already have a file name to which the user may save. For
+	// example, when the user opens an existing file and then does Save As... to
+	// save a copy or a modified version. If you don’t have a file name already
+	// — for example, if the user just created a new file and is saving it for
+	// the first time, do not call this function. Instead, use something similar
+	// to this:
+	//
+	//    if (document_is_new)
+	//      {
+	//        // the user just created a new document
+	//        gtk_file_chooser_set_current_name (chooser, "Untitled document");
+	//      }
+	//    else
+	//      {
+	//        // the user edited an existing document
+	//        gtk_file_chooser_set_filename (chooser, existing_filename);
+	//      }
+	//
+	// In the first case, the file chooser will present the user with useful
+	// suggestions as to where to save his new file. In the second case, the
+	// file’s existing location is already known, so the file chooser will use
+	// it.
+	//
+	// This method is inherited from FileChooser
+	SetFilename(filename string) bool
+	// SetFilter sets the current filter; only the files that pass the filter
+	// will be displayed. If the user-selectable list of filters is non-empty,
+	// then the filter should be one of the filters in that list. Setting the
+	// current filter when the list of filters is empty is useful if you want to
+	// restrict the displayed set of files without letting the user change it.
+	//
+	// This method is inherited from FileChooser
+	SetFilter(filter FileFilter)
+	// SetLocalOnly sets whether only local files can be selected in the file
+	// selector. If @local_only is true (the default), then the selected file or
+	// files are guaranteed to be accessible through the operating systems
+	// native file system and therefore the application only needs to worry
+	// about the filename functions in FileChooser, like
+	// gtk_file_chooser_get_filename(), rather than the URI functions like
+	// gtk_file_chooser_get_uri(),
+	//
+	// On some systems non-native files may still be available using the native
+	// filesystem via a userspace filesystem (FUSE).
+	//
+	// This method is inherited from FileChooser
+	SetLocalOnly(localOnly bool)
+	// SetPreviewWidget sets an application-supplied widget to use to display a
+	// custom preview of the currently selected file. To implement a preview,
+	// after setting the preview widget, you connect to the
+	// FileChooser::update-preview signal, and call
+	// gtk_file_chooser_get_preview_filename() or
+	// gtk_file_chooser_get_preview_uri() on each change. If you can display a
+	// preview of the new file, update your widget and set the preview active
+	// using gtk_file_chooser_set_preview_widget_active(). Otherwise, set the
+	// preview inactive.
+	//
+	// When there is no application-supplied preview widget, or the
+	// application-supplied preview widget is not active, the file chooser will
+	// display no preview at all.
+	//
+	// This method is inherited from FileChooser
+	SetPreviewWidget(previewWidget Widget)
+	// SetPreviewWidgetActive sets whether the preview widget set by
+	// gtk_file_chooser_set_preview_widget() should be shown for the current
+	// filename. When @active is set to false, the file chooser may display an
+	// internally generated preview of the current file or it may display no
+	// preview at all. See gtk_file_chooser_set_preview_widget() for more
+	// details.
+	//
+	// This method is inherited from FileChooser
+	SetPreviewWidgetActive(active bool)
+	// SetSelectMultiple sets whether multiple files can be selected in the file
+	// selector. This is only relevant if the action is set to be
+	// GTK_FILE_CHOOSER_ACTION_OPEN or GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER.
+	//
+	// This method is inherited from FileChooser
+	SetSelectMultiple(selectMultiple bool)
+	// SetShowHidden sets whether hidden files and folders are displayed in the
+	// file selector.
+	//
+	// This method is inherited from FileChooser
+	SetShowHidden(showHidden bool)
+	// SetURI sets the file referred to by @uri as the current file for the file
+	// chooser, by changing to the URI’s parent folder and actually selecting
+	// the URI in the list. If the @chooser is GTK_FILE_CHOOSER_ACTION_SAVE
+	// mode, the URI’s base name will also appear in the dialog’s file name
+	// entry.
+	//
+	// Note that the URI must exist, or nothing will be done except for the
+	// directory change.
+	//
+	// You should use this function only when implementing a save dialog for
+	// which you already have a file name to which the user may save. For
+	// example, when the user opens an existing file and then does Save As... to
+	// save a copy or a modified version. If you don’t have a file name already
+	// — for example, if the user just created a new file and is saving it for
+	// the first time, do not call this function. Instead, use something similar
+	// to this:
+	//
+	//    if (document_is_new)
+	//      {
+	//        // the user just created a new document
+	//        gtk_file_chooser_set_current_name (chooser, "Untitled document");
+	//      }
+	//    else
+	//      {
+	//        // the user edited an existing document
+	//        gtk_file_chooser_set_uri (chooser, existing_uri);
+	//      }
+	//
+	// In the first case, the file chooser will present the user with useful
+	// suggestions as to where to save his new file. In the second case, the
+	// file’s existing location is already known, so the file chooser will use
+	// it.
+	//
+	// This method is inherited from FileChooser
+	SetURI(uri string) bool
+	// SetUsePreviewLabel sets whether the file chooser should display a stock
+	// label with the name of the file that is being previewed; the default is
+	// true. Applications that want to draw the whole preview area themselves
+	// should set this to false and display the name themselves in their preview
+	// widget.
+	//
+	// See also: gtk_file_chooser_set_preview_widget()
+	//
+	// This method is inherited from FileChooser
+	SetUsePreviewLabel(useLabel bool)
+	// UnselectAll unselects all the files in the current folder of a file
+	// chooser.
+	//
+	// This method is inherited from FileChooser
+	UnselectAll()
+	// UnselectFilename unselects a currently selected filename. If the filename
+	// is not in the current directory, does not exist, or is otherwise not
+	// currently selected, does nothing.
+	//
+	// This method is inherited from FileChooser
+	UnselectFilename(filename string)
+	// UnselectURI unselects the file referred to by @uri. If the file is not in
+	// the current directory, does not exist, or is otherwise not currently
+	// selected, does nothing.
+	//
+	// This method is inherited from FileChooser
+	UnselectURI(uri string)
 
 	// AcceptLabel retrieves the custom label text for the accept button.
 	AcceptLabel() string
@@ -208,17 +734,17 @@ type FileChooserNative interface {
 	SetCancelLabel(cancelLabel string)
 }
 
-// fileChooserNative implements the FileChooserNative class.
+// fileChooserNative implements the FileChooserNative interface.
 type fileChooserNative struct {
-	NativeDialog
+	*externglib.Object
 }
 
-// WrapFileChooserNative wraps a GObject to the right type. It is
-// primarily used internally.
+var _ FileChooserNative = (*fileChooserNative)(nil)
+
+// WrapFileChooserNative wraps a GObject to a type that implements
+// interface FileChooserNative. It is primarily used internally.
 func WrapFileChooserNative(obj *externglib.Object) FileChooserNative {
-	return fileChooserNative{
-		NativeDialog: WrapNativeDialog(obj),
-	}
+	return fileChooserNative{obj}
 }
 
 func marshalFileChooserNative(p uintptr) (interface{}, error) {
@@ -249,13 +775,261 @@ func NewFileChooserNative(title string, parent Window, action FileChooserAction,
 
 	var _fileChooserNative FileChooserNative // out
 
-	_fileChooserNative = WrapFileChooserNative(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_fileChooserNative = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(FileChooserNative)
 
 	return _fileChooserNative
 }
 
+func (f fileChooserNative) AsNativeDialog() NativeDialog {
+	return WrapNativeDialog(gextras.InternObject(f))
+}
+
 func (f fileChooserNative) AsFileChooser() FileChooser {
 	return WrapFileChooser(gextras.InternObject(f))
+}
+
+func (s fileChooserNative) Destroy() {
+	WrapNativeDialog(gextras.InternObject(s)).Destroy()
+}
+
+func (s fileChooserNative) GetModal() bool {
+	return WrapNativeDialog(gextras.InternObject(s)).GetModal()
+}
+
+func (s fileChooserNative) GetTitle() string {
+	return WrapNativeDialog(gextras.InternObject(s)).GetTitle()
+}
+
+func (s fileChooserNative) GetTransientFor() Window {
+	return WrapNativeDialog(gextras.InternObject(s)).GetTransientFor()
+}
+
+func (s fileChooserNative) GetVisible() bool {
+	return WrapNativeDialog(gextras.InternObject(s)).GetVisible()
+}
+
+func (s fileChooserNative) Hide() {
+	WrapNativeDialog(gextras.InternObject(s)).Hide()
+}
+
+func (s fileChooserNative) Run() int {
+	return WrapNativeDialog(gextras.InternObject(s)).Run()
+}
+
+func (s fileChooserNative) SetModal(modal bool) {
+	WrapNativeDialog(gextras.InternObject(s)).SetModal(modal)
+}
+
+func (s fileChooserNative) SetTitle(title string) {
+	WrapNativeDialog(gextras.InternObject(s)).SetTitle(title)
+}
+
+func (s fileChooserNative) SetTransientFor(parent Window) {
+	WrapNativeDialog(gextras.InternObject(s)).SetTransientFor(parent)
+}
+
+func (s fileChooserNative) Show() {
+	WrapNativeDialog(gextras.InternObject(s)).Show()
+}
+
+func (c fileChooserNative) AddChoice(id string, label string, options []string, optionLabels []string) {
+	WrapFileChooser(gextras.InternObject(c)).AddChoice(id, label, options, optionLabels)
+}
+
+func (c fileChooserNative) AddFilter(filter FileFilter) {
+	WrapFileChooser(gextras.InternObject(c)).AddFilter(filter)
+}
+
+func (c fileChooserNative) AddShortcutFolder(folder string) error {
+	return WrapFileChooser(gextras.InternObject(c)).AddShortcutFolder(folder)
+}
+
+func (c fileChooserNative) AddShortcutFolderURI(uri string) error {
+	return WrapFileChooser(gextras.InternObject(c)).AddShortcutFolderURI(uri)
+}
+
+func (c fileChooserNative) GetAction() FileChooserAction {
+	return WrapFileChooser(gextras.InternObject(c)).GetAction()
+}
+
+func (c fileChooserNative) GetChoice(id string) string {
+	return WrapFileChooser(gextras.InternObject(c)).GetChoice(id)
+}
+
+func (c fileChooserNative) GetCreateFolders() bool {
+	return WrapFileChooser(gextras.InternObject(c)).GetCreateFolders()
+}
+
+func (c fileChooserNative) GetCurrentFolder() string {
+	return WrapFileChooser(gextras.InternObject(c)).GetCurrentFolder()
+}
+
+func (c fileChooserNative) GetCurrentFolderURI() string {
+	return WrapFileChooser(gextras.InternObject(c)).GetCurrentFolderURI()
+}
+
+func (c fileChooserNative) GetCurrentName() string {
+	return WrapFileChooser(gextras.InternObject(c)).GetCurrentName()
+}
+
+func (c fileChooserNative) GetDoOverwriteConfirmation() bool {
+	return WrapFileChooser(gextras.InternObject(c)).GetDoOverwriteConfirmation()
+}
+
+func (c fileChooserNative) GetExtraWidget() Widget {
+	return WrapFileChooser(gextras.InternObject(c)).GetExtraWidget()
+}
+
+func (c fileChooserNative) GetFilename() string {
+	return WrapFileChooser(gextras.InternObject(c)).GetFilename()
+}
+
+func (c fileChooserNative) GetFilter() FileFilter {
+	return WrapFileChooser(gextras.InternObject(c)).GetFilter()
+}
+
+func (c fileChooserNative) GetLocalOnly() bool {
+	return WrapFileChooser(gextras.InternObject(c)).GetLocalOnly()
+}
+
+func (c fileChooserNative) GetPreviewFilename() string {
+	return WrapFileChooser(gextras.InternObject(c)).GetPreviewFilename()
+}
+
+func (c fileChooserNative) GetPreviewURI() string {
+	return WrapFileChooser(gextras.InternObject(c)).GetPreviewURI()
+}
+
+func (c fileChooserNative) GetPreviewWidget() Widget {
+	return WrapFileChooser(gextras.InternObject(c)).GetPreviewWidget()
+}
+
+func (c fileChooserNative) GetPreviewWidgetActive() bool {
+	return WrapFileChooser(gextras.InternObject(c)).GetPreviewWidgetActive()
+}
+
+func (c fileChooserNative) GetSelectMultiple() bool {
+	return WrapFileChooser(gextras.InternObject(c)).GetSelectMultiple()
+}
+
+func (c fileChooserNative) GetShowHidden() bool {
+	return WrapFileChooser(gextras.InternObject(c)).GetShowHidden()
+}
+
+func (c fileChooserNative) GetURI() string {
+	return WrapFileChooser(gextras.InternObject(c)).GetURI()
+}
+
+func (c fileChooserNative) GetUsePreviewLabel() bool {
+	return WrapFileChooser(gextras.InternObject(c)).GetUsePreviewLabel()
+}
+
+func (c fileChooserNative) RemoveChoice(id string) {
+	WrapFileChooser(gextras.InternObject(c)).RemoveChoice(id)
+}
+
+func (c fileChooserNative) RemoveFilter(filter FileFilter) {
+	WrapFileChooser(gextras.InternObject(c)).RemoveFilter(filter)
+}
+
+func (c fileChooserNative) RemoveShortcutFolder(folder string) error {
+	return WrapFileChooser(gextras.InternObject(c)).RemoveShortcutFolder(folder)
+}
+
+func (c fileChooserNative) RemoveShortcutFolderURI(uri string) error {
+	return WrapFileChooser(gextras.InternObject(c)).RemoveShortcutFolderURI(uri)
+}
+
+func (c fileChooserNative) SelectAll() {
+	WrapFileChooser(gextras.InternObject(c)).SelectAll()
+}
+
+func (c fileChooserNative) SelectFilename(filename string) bool {
+	return WrapFileChooser(gextras.InternObject(c)).SelectFilename(filename)
+}
+
+func (c fileChooserNative) SelectURI(uri string) bool {
+	return WrapFileChooser(gextras.InternObject(c)).SelectURI(uri)
+}
+
+func (c fileChooserNative) SetAction(action FileChooserAction) {
+	WrapFileChooser(gextras.InternObject(c)).SetAction(action)
+}
+
+func (c fileChooserNative) SetChoice(id string, option string) {
+	WrapFileChooser(gextras.InternObject(c)).SetChoice(id, option)
+}
+
+func (c fileChooserNative) SetCreateFolders(createFolders bool) {
+	WrapFileChooser(gextras.InternObject(c)).SetCreateFolders(createFolders)
+}
+
+func (c fileChooserNative) SetCurrentFolder(filename string) bool {
+	return WrapFileChooser(gextras.InternObject(c)).SetCurrentFolder(filename)
+}
+
+func (c fileChooserNative) SetCurrentFolderURI(uri string) bool {
+	return WrapFileChooser(gextras.InternObject(c)).SetCurrentFolderURI(uri)
+}
+
+func (c fileChooserNative) SetCurrentName(name string) {
+	WrapFileChooser(gextras.InternObject(c)).SetCurrentName(name)
+}
+
+func (c fileChooserNative) SetDoOverwriteConfirmation(doOverwriteConfirmation bool) {
+	WrapFileChooser(gextras.InternObject(c)).SetDoOverwriteConfirmation(doOverwriteConfirmation)
+}
+
+func (c fileChooserNative) SetExtraWidget(extraWidget Widget) {
+	WrapFileChooser(gextras.InternObject(c)).SetExtraWidget(extraWidget)
+}
+
+func (c fileChooserNative) SetFilename(filename string) bool {
+	return WrapFileChooser(gextras.InternObject(c)).SetFilename(filename)
+}
+
+func (c fileChooserNative) SetFilter(filter FileFilter) {
+	WrapFileChooser(gextras.InternObject(c)).SetFilter(filter)
+}
+
+func (c fileChooserNative) SetLocalOnly(localOnly bool) {
+	WrapFileChooser(gextras.InternObject(c)).SetLocalOnly(localOnly)
+}
+
+func (c fileChooserNative) SetPreviewWidget(previewWidget Widget) {
+	WrapFileChooser(gextras.InternObject(c)).SetPreviewWidget(previewWidget)
+}
+
+func (c fileChooserNative) SetPreviewWidgetActive(active bool) {
+	WrapFileChooser(gextras.InternObject(c)).SetPreviewWidgetActive(active)
+}
+
+func (c fileChooserNative) SetSelectMultiple(selectMultiple bool) {
+	WrapFileChooser(gextras.InternObject(c)).SetSelectMultiple(selectMultiple)
+}
+
+func (c fileChooserNative) SetShowHidden(showHidden bool) {
+	WrapFileChooser(gextras.InternObject(c)).SetShowHidden(showHidden)
+}
+
+func (c fileChooserNative) SetURI(uri string) bool {
+	return WrapFileChooser(gextras.InternObject(c)).SetURI(uri)
+}
+
+func (c fileChooserNative) SetUsePreviewLabel(useLabel bool) {
+	WrapFileChooser(gextras.InternObject(c)).SetUsePreviewLabel(useLabel)
+}
+
+func (c fileChooserNative) UnselectAll() {
+	WrapFileChooser(gextras.InternObject(c)).UnselectAll()
+}
+
+func (c fileChooserNative) UnselectFilename(filename string) {
+	WrapFileChooser(gextras.InternObject(c)).UnselectFilename(filename)
+}
+
+func (c fileChooserNative) UnselectURI(uri string) {
+	WrapFileChooser(gextras.InternObject(c)).UnselectURI(uri)
 }
 
 func (s fileChooserNative) AcceptLabel() string {

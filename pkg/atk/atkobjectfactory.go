@@ -42,17 +42,17 @@ type ObjectFactory interface {
 	Invalidate()
 }
 
-// objectFactory implements the ObjectFactory class.
+// objectFactory implements the ObjectFactory interface.
 type objectFactory struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapObjectFactory wraps a GObject to the right type. It is
-// primarily used internally.
+var _ ObjectFactory = (*objectFactory)(nil)
+
+// WrapObjectFactory wraps a GObject to a type that implements
+// interface ObjectFactory. It is primarily used internally.
 func WrapObjectFactory(obj *externglib.Object) ObjectFactory {
-	return objectFactory{
-		Objector: obj,
-	}
+	return objectFactory{obj}
 }
 
 func marshalObjectFactory(p uintptr) (interface{}, error) {

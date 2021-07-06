@@ -42,6 +42,138 @@ type CharsetConverter interface {
 	// AsInitable casts the class to the Initable interface.
 	AsInitable() Initable
 
+	// Convert: this is the main operation used when converting data. It is to
+	// be called multiple times in a loop, and each time it will do some work,
+	// i.e. producing some output (in @outbuf) or consuming some input (from
+	// @inbuf) or both. If its not possible to do any work an error is returned.
+	//
+	// Note that a single call may not consume all input (or any input at all).
+	// Also a call may produce output even if given no input, due to state
+	// stored in the converter producing output.
+	//
+	// If any data was either produced or consumed, and then an error happens,
+	// then only the successful conversion is reported and the error is returned
+	// on the next call.
+	//
+	// A full conversion loop involves calling this method repeatedly, each time
+	// giving it new input and space output space. When there is no more input
+	// data after the data in @inbuf, the flag G_CONVERTER_INPUT_AT_END must be
+	// set. The loop will be (unless some error happens) returning
+	// G_CONVERTER_CONVERTED each time until all data is consumed and all output
+	// is produced, then G_CONVERTER_FINISHED is returned instead. Note, that
+	// G_CONVERTER_FINISHED may be returned even if G_CONVERTER_INPUT_AT_END is
+	// not set, for instance in a decompression converter where the end of data
+	// is detectable from the data (and there might even be other data after the
+	// end of the compressed data).
+	//
+	// When some data has successfully been converted @bytes_read and is set to
+	// the number of bytes read from @inbuf, and @bytes_written is set to
+	// indicate how many bytes was written to @outbuf. If there are more data to
+	// output or consume (i.e. unless the G_CONVERTER_INPUT_AT_END is specified)
+	// then G_CONVERTER_CONVERTED is returned, and if no more data is to be
+	// output then G_CONVERTER_FINISHED is returned.
+	//
+	// On error G_CONVERTER_ERROR is returned and @error is set accordingly.
+	// Some errors need special handling:
+	//
+	// G_IO_ERROR_NO_SPACE is returned if there is not enough space to write the
+	// resulting converted data, the application should call the function again
+	// with a larger @outbuf to continue.
+	//
+	// G_IO_ERROR_PARTIAL_INPUT is returned if there is not enough input to
+	// fully determine what the conversion should produce, and the
+	// G_CONVERTER_INPUT_AT_END flag is not set. This happens for example with
+	// an incomplete multibyte sequence when converting text, or when a regexp
+	// matches up to the end of the input (and may match further input). It may
+	// also happen when @inbuf_size is zero and there is no more data to
+	// produce.
+	//
+	// When this happens the application should read more input and then call
+	// the function again. If further input shows that there is no more data
+	// call the function again with the same data but with the
+	// G_CONVERTER_INPUT_AT_END flag set. This may cause the conversion to
+	// finish as e.g. in the regexp match case (or, to fail again with
+	// G_IO_ERROR_PARTIAL_INPUT in e.g. a charset conversion where the input is
+	// actually partial).
+	//
+	// After g_converter_convert() has returned G_CONVERTER_FINISHED the
+	// converter object is in an invalid state where its not allowed to call
+	// g_converter_convert() anymore. At this time you can only free the object
+	// or call g_converter_reset() to reset it to the initial state.
+	//
+	// If the flag G_CONVERTER_FLUSH is set then conversion is modified to try
+	// to write out all internal state to the output. The application has to
+	// call the function multiple times with the flag set, and when the
+	// available input has been consumed and all internal state has been
+	// produced then G_CONVERTER_FLUSHED (or G_CONVERTER_FINISHED if really at
+	// the end) is returned instead of G_CONVERTER_CONVERTED. This is somewhat
+	// similar to what happens at the end of the input stream, but done in the
+	// middle of the data.
+	//
+	// This has different meanings for different conversions. For instance in a
+	// compression converter it would mean that we flush all the compression
+	// state into output such that if you uncompress the compressed data you get
+	// back all the input data. Doing this may make the final file larger due to
+	// padding though. Another example is a regexp conversion, where if you at
+	// the end of the flushed data have a match, but there is also a potential
+	// longer match. In the non-flushed case we would ask for more input, but
+	// when flushing we treat this as the end of input and do the match.
+	//
+	// Flushing is not always possible (like if a charset converter flushes at a
+	// partial multibyte sequence). Converters are supposed to try to produce as
+	// much output as possible and then return an error (typically
+	// G_IO_ERROR_PARTIAL_INPUT).
+	//
+	// This method is inherited from Converter
+	Convert(inbuf []byte, outbuf []byte, flags ConverterFlags) (bytesRead uint, bytesWritten uint, converterResult ConverterResult, goerr error)
+	// Reset resets all internal state in the converter, making it behave as if
+	// it was just created. If the converter has any internal state that would
+	// produce output then that output is lost.
+	//
+	// This method is inherited from Converter
+	Reset()
+	// Init initializes the object implementing the interface.
+	//
+	// This method is intended for language bindings. If writing in C,
+	// g_initable_new() should typically be used instead.
+	//
+	// The object must be initialized before any real use after initial
+	// construction, either with this function or g_async_initable_init_async().
+	//
+	// Implementations may also support cancellation. If @cancellable is not
+	// nil, then initialization can be cancelled by triggering the cancellable
+	// object from another thread. If the operation was cancelled, the error
+	// G_IO_ERROR_CANCELLED will be returned. If @cancellable is not nil and the
+	// object doesn't support cancellable initialization the error
+	// G_IO_ERROR_NOT_SUPPORTED will be returned.
+	//
+	// If the object is not initialized, or initialization returns with an
+	// error, then all operations on the object except g_object_ref() and
+	// g_object_unref() are considered to be invalid, and have undefined
+	// behaviour. See the [introduction][ginitable] for more details.
+	//
+	// Callers should not assume that a class which implements #GInitable can be
+	// initialized multiple times, unless the class explicitly documents itself
+	// as supporting this. Generally, a class’ implementation of init() can
+	// assume (and assert) that it will only be called once. Previously, this
+	// documentation recommended all #GInitable implementations should be
+	// idempotent; that recommendation was relaxed in GLib 2.54.
+	//
+	// If a class explicitly supports being initialized multiple times, it is
+	// recommended that the method is idempotent: multiple calls with the same
+	// arguments should return the same results. Only the first call initializes
+	// the object; further calls return the result of the first call.
+	//
+	// One reason why a class might need to support idempotent initialization is
+	// if it is designed to be used via the singleton pattern, with a
+	// Class.constructor that sometimes returns an existing instance. In this
+	// pattern, a caller would expect to be able to call g_initable_init() on
+	// the result of g_object_new(), regardless of whether it is in fact a new
+	// instance.
+	//
+	// This method is inherited from Initable
+	Init(cancellable Cancellable) error
+
 	// NumFallbacks gets the number of fallbacks that @converter has applied so
 	// far.
 	NumFallbacks() uint
@@ -51,17 +183,17 @@ type CharsetConverter interface {
 	SetUseFallback(useFallback bool)
 }
 
-// charsetConverter implements the CharsetConverter class.
+// charsetConverter implements the CharsetConverter interface.
 type charsetConverter struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapCharsetConverter wraps a GObject to the right type. It is
-// primarily used internally.
+var _ CharsetConverter = (*charsetConverter)(nil)
+
+// WrapCharsetConverter wraps a GObject to a type that implements
+// interface CharsetConverter. It is primarily used internally.
 func WrapCharsetConverter(obj *externglib.Object) CharsetConverter {
-	return charsetConverter{
-		Objector: obj,
-	}
+	return charsetConverter{obj}
 }
 
 func marshalCharsetConverter(p uintptr) (interface{}, error) {
@@ -87,7 +219,7 @@ func NewCharsetConverter(toCharset string, fromCharset string) (CharsetConverter
 	var _charsetConverter CharsetConverter // out
 	var _goerr error                       // out
 
-	_charsetConverter = WrapCharsetConverter(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_charsetConverter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(CharsetConverter)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _charsetConverter, _goerr
@@ -99,6 +231,18 @@ func (c charsetConverter) AsConverter() Converter {
 
 func (c charsetConverter) AsInitable() Initable {
 	return WrapInitable(gextras.InternObject(c))
+}
+
+func (c charsetConverter) Convert(inbuf []byte, outbuf []byte, flags ConverterFlags) (bytesRead uint, bytesWritten uint, converterResult ConverterResult, goerr error) {
+	return WrapConverter(gextras.InternObject(c)).Convert(inbuf, outbuf, flags)
+}
+
+func (c charsetConverter) Reset() {
+	WrapConverter(gextras.InternObject(c)).Reset()
+}
+
+func (i charsetConverter) Init(cancellable Cancellable) error {
+	return WrapInitable(gextras.InternObject(i)).Init(cancellable)
 }
 
 func (c charsetConverter) NumFallbacks() uint {

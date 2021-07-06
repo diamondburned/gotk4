@@ -247,17 +247,17 @@ type FileInfo interface {
 	UnsetAttributeMask()
 }
 
-// fileInfo implements the FileInfo class.
+// fileInfo implements the FileInfo interface.
 type fileInfo struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapFileInfo wraps a GObject to the right type. It is
-// primarily used internally.
+var _ FileInfo = (*fileInfo)(nil)
+
+// WrapFileInfo wraps a GObject to a type that implements
+// interface FileInfo. It is primarily used internally.
 func WrapFileInfo(obj *externglib.Object) FileInfo {
-	return fileInfo{
-		Objector: obj,
-	}
+	return fileInfo{obj}
 }
 
 func marshalFileInfo(p uintptr) (interface{}, error) {
@@ -274,7 +274,7 @@ func NewFileInfo() FileInfo {
 
 	var _fileInfo FileInfo // out
 
-	_fileInfo = WrapFileInfo(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_fileInfo = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(FileInfo)
 
 	return _fileInfo
 }

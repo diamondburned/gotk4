@@ -6,7 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/box"
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -63,7 +62,7 @@ type Document interface {
 
 // document implements the Document interface.
 type document struct {
-	gextras.Objector
+	*externglib.Object
 }
 
 var _ Document = (*document)(nil)
@@ -71,9 +70,7 @@ var _ Document = (*document)(nil)
 // WrapDocument wraps a GObject to a type that implements
 // interface Document. It is primarily used internally.
 func WrapDocument(obj *externglib.Object) Document {
-	return document{
-		Objector: obj,
-	}
+	return document{obj}
 }
 
 func marshalDocument(p uintptr) (interface{}, error) {

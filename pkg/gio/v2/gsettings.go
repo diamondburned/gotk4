@@ -799,17 +799,17 @@ type Settings interface {
 	SetValue(key string, value *glib.Variant) bool
 }
 
-// settings implements the Settings class.
+// settings implements the Settings interface.
 type settings struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapSettings wraps a GObject to the right type. It is
-// primarily used internally.
+var _ Settings = (*settings)(nil)
+
+// WrapSettings wraps a GObject to a type that implements
+// interface Settings. It is primarily used internally.
 func WrapSettings(obj *externglib.Object) Settings {
-	return settings{
-		Objector: obj,
-	}
+	return settings{obj}
 }
 
 func marshalSettings(p uintptr) (interface{}, error) {
@@ -842,7 +842,7 @@ func NewSettings(schemaId string) Settings {
 
 	var _settings Settings // out
 
-	_settings = WrapSettings(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_settings = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Settings)
 
 	return _settings
 }
@@ -873,7 +873,7 @@ func NewSettingsWithPath(schemaId string, path string) Settings {
 
 	var _settings Settings // out
 
-	_settings = WrapSettings(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_settings = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Settings)
 
 	return _settings
 }

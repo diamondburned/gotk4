@@ -87,17 +87,17 @@ type Seat interface {
 	Ungrab()
 }
 
-// seat implements the Seat class.
+// seat implements the Seat interface.
 type seat struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapSeat wraps a GObject to the right type. It is
-// primarily used internally.
+var _ Seat = (*seat)(nil)
+
+// WrapSeat wraps a GObject to a type that implements
+// interface Seat. It is primarily used internally.
 func WrapSeat(obj *externglib.Object) Seat {
-	return seat{
-		Objector: obj,
-	}
+	return seat{obj}
 }
 
 func marshalSeat(p uintptr) (interface{}, error) {

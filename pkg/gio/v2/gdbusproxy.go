@@ -84,6 +84,112 @@ type DBusProxy interface {
 	// AsInitable casts the class to the Initable interface.
 	AsInitable() Initable
 
+	// InitAsync starts asynchronous initialization of the object implementing
+	// the interface. This must be done before any real use of the object after
+	// initial construction. If the object also implements #GInitable you can
+	// optionally call g_initable_init() instead.
+	//
+	// This method is intended for language bindings. If writing in C,
+	// g_async_initable_new_async() should typically be used instead.
+	//
+	// When the initialization is finished, @callback will be called. You can
+	// then call g_async_initable_init_finish() to get the result of the
+	// initialization.
+	//
+	// Implementations may also support cancellation. If @cancellable is not
+	// nil, then initialization can be cancelled by triggering the cancellable
+	// object from another thread. If the operation was cancelled, the error
+	// G_IO_ERROR_CANCELLED will be returned. If @cancellable is not nil, and
+	// the object doesn't support cancellable initialization, the error
+	// G_IO_ERROR_NOT_SUPPORTED will be returned.
+	//
+	// As with #GInitable, if the object is not initialized, or initialization
+	// returns with an error, then all operations on the object except
+	// g_object_ref() and g_object_unref() are considered to be invalid, and
+	// have undefined behaviour. They will often fail with g_critical() or
+	// g_warning(), but this must not be relied on.
+	//
+	// Callers should not assume that a class which implements Initable can be
+	// initialized multiple times; for more information, see g_initable_init().
+	// If a class explicitly supports being initialized multiple times,
+	// implementation requires yielding all subsequent calls to init_async() on
+	// the results of the first call.
+	//
+	// For classes that also support the #GInitable interface, the default
+	// implementation of this method will run the g_initable_init() function in
+	// a thread, so if you want to support asynchronous initialization via
+	// threads, just implement the Initable interface without overriding any
+	// interface methods.
+	//
+	// This method is inherited from AsyncInitable
+	InitAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
+	// InitFinish finishes asynchronous initialization and returns the result.
+	// See g_async_initable_init_async().
+	//
+	// This method is inherited from AsyncInitable
+	InitFinish(res AsyncResult) error
+	// NewFinish finishes the async construction for the various
+	// g_async_initable_new calls, returning the created object or nil on error.
+	//
+	// This method is inherited from AsyncInitable
+	NewFinish(res AsyncResult) (gextras.Objector, error)
+	// DupObject gets the BusObject that @interface_ belongs to, if any.
+	//
+	// This method is inherited from DBusInterface
+	DupObject() DBusObject
+	// GetInfo gets D-Bus introspection information for the D-Bus interface
+	// implemented by @interface_.
+	//
+	// This method is inherited from DBusInterface
+	GetInfo() *DBusInterfaceInfo
+	// SetObject sets the BusObject for @interface_ to @object.
+	//
+	// Note that @interface_ will hold a weak reference to @object.
+	//
+	// This method is inherited from DBusInterface
+	SetObject(object DBusObject)
+	// Init initializes the object implementing the interface.
+	//
+	// This method is intended for language bindings. If writing in C,
+	// g_initable_new() should typically be used instead.
+	//
+	// The object must be initialized before any real use after initial
+	// construction, either with this function or g_async_initable_init_async().
+	//
+	// Implementations may also support cancellation. If @cancellable is not
+	// nil, then initialization can be cancelled by triggering the cancellable
+	// object from another thread. If the operation was cancelled, the error
+	// G_IO_ERROR_CANCELLED will be returned. If @cancellable is not nil and the
+	// object doesn't support cancellable initialization the error
+	// G_IO_ERROR_NOT_SUPPORTED will be returned.
+	//
+	// If the object is not initialized, or initialization returns with an
+	// error, then all operations on the object except g_object_ref() and
+	// g_object_unref() are considered to be invalid, and have undefined
+	// behaviour. See the [introduction][ginitable] for more details.
+	//
+	// Callers should not assume that a class which implements #GInitable can be
+	// initialized multiple times, unless the class explicitly documents itself
+	// as supporting this. Generally, a class’ implementation of init() can
+	// assume (and assert) that it will only be called once. Previously, this
+	// documentation recommended all #GInitable implementations should be
+	// idempotent; that recommendation was relaxed in GLib 2.54.
+	//
+	// If a class explicitly supports being initialized multiple times, it is
+	// recommended that the method is idempotent: multiple calls with the same
+	// arguments should return the same results. Only the first call initializes
+	// the object; further calls return the result of the first call.
+	//
+	// One reason why a class might need to support idempotent initialization is
+	// if it is designed to be used via the singleton pattern, with a
+	// Class.constructor that sometimes returns an existing instance. In this
+	// pattern, a caller would expect to be able to call g_initable_init() on
+	// the result of g_object_new(), regardless of whether it is in fact a new
+	// instance.
+	//
+	// This method is inherited from Initable
+	Init(cancellable Cancellable) error
+
 	// Call: asynchronously invokes the @method_name method on @proxy.
 	//
 	// If @method_name contains any dots, then @name is split into interface and
@@ -249,17 +355,17 @@ type DBusProxy interface {
 	SetInterfaceInfo(info *DBusInterfaceInfo)
 }
 
-// dBusProxy implements the DBusProxy class.
+// dBusProxy implements the DBusProxy interface.
 type dBusProxy struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapDBusProxy wraps a GObject to the right type. It is
-// primarily used internally.
+var _ DBusProxy = (*dBusProxy)(nil)
+
+// WrapDBusProxy wraps a GObject to a type that implements
+// interface DBusProxy. It is primarily used internally.
 func WrapDBusProxy(obj *externglib.Object) DBusProxy {
-	return dBusProxy{
-		Objector: obj,
-	}
+	return dBusProxy{obj}
 }
 
 func marshalDBusProxy(p uintptr) (interface{}, error) {
@@ -281,7 +387,7 @@ func NewDBusProxyFinish(res AsyncResult) (DBusProxy, error) {
 	var _dBusProxy DBusProxy // out
 	var _goerr error         // out
 
-	_dBusProxy = WrapDBusProxy(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_dBusProxy = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(DBusProxy)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _dBusProxy, _goerr
@@ -300,7 +406,7 @@ func NewDBusProxyForBusFinish(res AsyncResult) (DBusProxy, error) {
 	var _dBusProxy DBusProxy // out
 	var _goerr error         // out
 
-	_dBusProxy = WrapDBusProxy(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_dBusProxy = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(DBusProxy)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _dBusProxy, _goerr
@@ -337,7 +443,7 @@ func NewDBusProxyForBusSync(busType BusType, flags DBusProxyFlags, info *DBusInt
 	var _dBusProxy DBusProxy // out
 	var _goerr error         // out
 
-	_dBusProxy = WrapDBusProxy(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_dBusProxy = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(DBusProxy)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _dBusProxy, _goerr
@@ -392,7 +498,7 @@ func NewDBusProxySync(connection DBusConnection, flags DBusProxyFlags, info *DBu
 	var _dBusProxy DBusProxy // out
 	var _goerr error         // out
 
-	_dBusProxy = WrapDBusProxy(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_dBusProxy = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(DBusProxy)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _dBusProxy, _goerr
@@ -408,6 +514,34 @@ func (d dBusProxy) AsDBusInterface() DBusInterface {
 
 func (d dBusProxy) AsInitable() Initable {
 	return WrapInitable(gextras.InternObject(d))
+}
+
+func (i dBusProxy) InitAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+	WrapAsyncInitable(gextras.InternObject(i)).InitAsync(ioPriority, cancellable, callback)
+}
+
+func (i dBusProxy) InitFinish(res AsyncResult) error {
+	return WrapAsyncInitable(gextras.InternObject(i)).InitFinish(res)
+}
+
+func (i dBusProxy) NewFinish(res AsyncResult) (gextras.Objector, error) {
+	return WrapAsyncInitable(gextras.InternObject(i)).NewFinish(res)
+}
+
+func (i dBusProxy) DupObject() DBusObject {
+	return WrapDBusInterface(gextras.InternObject(i)).DupObject()
+}
+
+func (i dBusProxy) GetInfo() *DBusInterfaceInfo {
+	return WrapDBusInterface(gextras.InternObject(i)).GetInfo()
+}
+
+func (i dBusProxy) SetObject(object DBusObject) {
+	WrapDBusInterface(gextras.InternObject(i)).SetObject(object)
+}
+
+func (i dBusProxy) Init(cancellable Cancellable) error {
+	return WrapInitable(gextras.InternObject(i)).Init(cancellable)
 }
 
 func (p dBusProxy) Call(methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int, cancellable Cancellable, callback AsyncReadyCallback) {

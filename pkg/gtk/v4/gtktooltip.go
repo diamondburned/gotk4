@@ -81,17 +81,17 @@ type Tooltip interface {
 	SetTipArea(rect *gdk.Rectangle)
 }
 
-// tooltip implements the Tooltip class.
+// tooltip implements the Tooltip interface.
 type tooltip struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapTooltip wraps a GObject to the right type. It is
-// primarily used internally.
+var _ Tooltip = (*tooltip)(nil)
+
+// WrapTooltip wraps a GObject to a type that implements
+// interface Tooltip. It is primarily used internally.
 func WrapTooltip(obj *externglib.Object) Tooltip {
-	return tooltip{
-		Objector: obj,
-	}
+	return tooltip{obj}
 }
 
 func marshalTooltip(p uintptr) (interface{}, error) {

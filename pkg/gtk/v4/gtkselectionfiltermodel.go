@@ -28,17 +28,17 @@ type SelectionFilterModel interface {
 	gextras.Objector
 }
 
-// selectionFilterModel implements the SelectionFilterModel class.
+// selectionFilterModel implements the SelectionFilterModel interface.
 type selectionFilterModel struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapSelectionFilterModel wraps a GObject to the right type. It is
-// primarily used internally.
+var _ SelectionFilterModel = (*selectionFilterModel)(nil)
+
+// WrapSelectionFilterModel wraps a GObject to a type that implements
+// interface SelectionFilterModel. It is primarily used internally.
 func WrapSelectionFilterModel(obj *externglib.Object) SelectionFilterModel {
-	return selectionFilterModel{
-		Objector: obj,
-	}
+	return selectionFilterModel{obj}
 }
 
 func marshalSelectionFilterModel(p uintptr) (interface{}, error) {

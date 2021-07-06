@@ -5,6 +5,8 @@ package gdk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -56,7 +58,134 @@ func marshalDevicePadFeature(p uintptr) (interface{}, error) {
 // [method@Gdk.DevicePad.get_group_n_modes], and the current mode for a given
 // group will be notified through events of type K_PAD_GROUP_MODE.
 type DevicePad interface {
-	Device
+	gextras.Objector
+
+	// AsDevice casts the class to the Device interface.
+	AsDevice() Device
+
+	// GetCapsLockState retrieves whether the Caps Lock modifier of the keyboard
+	// is locked.
+	//
+	// This is only relevant for keyboard devices.
+	//
+	// This method is inherited from Device
+	GetCapsLockState() bool
+	// GetDeviceTool retrieves the current tool for @device.
+	//
+	// This method is inherited from Device
+	GetDeviceTool() DeviceTool
+	// GetDirection returns the direction of effective layout of the keyboard.
+	//
+	// This is only relevant for keyboard devices.
+	//
+	// The direction of a layout is the direction of the majority of its
+	// symbols. See [func@Pango.unichar_direction].
+	//
+	// This method is inherited from Device
+	GetDirection() pango.Direction
+	// GetDisplay returns the `GdkDisplay` to which @device pertains.
+	//
+	// This method is inherited from Device
+	GetDisplay() Display
+	// GetHasCursor determines whether the pointer follows device motion.
+	//
+	// This is not meaningful for keyboard devices, which don't have a pointer.
+	//
+	// This method is inherited from Device
+	GetHasCursor() bool
+	// GetModifierState retrieves the current modifier state of the keyboard.
+	//
+	// This is only relevant for keyboard devices.
+	//
+	// This method is inherited from Device
+	GetModifierState() ModifierType
+	// GetName: the name of the device, suitable for showing in a user
+	// interface.
+	//
+	// This method is inherited from Device
+	GetName() string
+	// GetNumLockState retrieves whether the Num Lock modifier of the keyboard
+	// is locked.
+	//
+	// This is only relevant for keyboard devices.
+	//
+	// This method is inherited from Device
+	GetNumLockState() bool
+	// GetNumTouches retrieves the number of touch points associated to @device.
+	//
+	// This method is inherited from Device
+	GetNumTouches() uint
+	// GetProductID returns the product ID of this device.
+	//
+	// This ID is retrieved from the device, and does not change. See
+	// [method@Gdk.Device.get_vendor_id] for more information.
+	//
+	// This method is inherited from Device
+	GetProductID() string
+	// GetScrollLockState retrieves whether the Scroll Lock modifier of the
+	// keyboard is locked.
+	//
+	// This is only relevant for keyboard devices.
+	//
+	// This method is inherited from Device
+	GetScrollLockState() bool
+	// GetSeat returns the `GdkSeat` the device belongs to.
+	//
+	// This method is inherited from Device
+	GetSeat() Seat
+	// GetSource determines the type of the device.
+	//
+	// This method is inherited from Device
+	GetSource() InputSource
+	// GetSurfaceAtPosition obtains the surface underneath @device, returning
+	// the location of the device in @win_x and @win_y
+	//
+	// Returns nil if the surface tree under @device is not known to GDK (for
+	// example, belongs to another application).
+	//
+	// This method is inherited from Device
+	GetSurfaceAtPosition() (winX float64, winY float64, surface Surface)
+	// GetTimestamp returns the timestamp of the last activity for this device.
+	//
+	// In practice, this means the timestamp of the last event that was received
+	// from the OS for this device. (GTK may occasionally produce events for a
+	// device that are not received from the OS, and will not update the
+	// timestamp).
+	//
+	// This method is inherited from Device
+	GetTimestamp() uint32
+	// GetVendorID returns the vendor ID of this device.
+	//
+	// This ID is retrieved from the device, and does not change.
+	//
+	// This function, together with [method@Gdk.Device.get_product_id], can be
+	// used to eg. compose `GSettings` paths to store settings for this device.
+	//
+	// “`c static GSettings * get_device_settings (GdkDevice *device) { const
+	// char *vendor, *product; GSettings *settings; GdkDevice *device; char
+	// *path;
+	//
+	//      vendor = gdk_device_get_vendor_id (device);
+	//      product = gdk_device_get_product_id (device);
+	//
+	//      path = g_strdup_printf ("/org/example/app/devices/s:s/", vendor, product);
+	//      settings = g_settings_new_with_path (DEVICE_SCHEMA, path);
+	//      g_free (path);
+	//
+	//      return settings;
+	//    }
+	//
+	// “`
+	//
+	// This method is inherited from Device
+	GetVendorID() string
+	// HasBidiLayouts determines if layouts for both right-to-left and
+	// left-to-right languages are in use on the keyboard.
+	//
+	// This is only relevant for keyboard devices.
+	//
+	// This method is inherited from Device
+	HasBidiLayouts() bool
 
 	// FeatureGroup returns the group the given @feature and @idx belong to.
 	//
@@ -75,7 +204,7 @@ type DevicePad interface {
 
 // devicePad implements the DevicePad interface.
 type devicePad struct {
-	Device
+	*externglib.Object
 }
 
 var _ DevicePad = (*devicePad)(nil)
@@ -83,15 +212,85 @@ var _ DevicePad = (*devicePad)(nil)
 // WrapDevicePad wraps a GObject to a type that implements
 // interface DevicePad. It is primarily used internally.
 func WrapDevicePad(obj *externglib.Object) DevicePad {
-	return devicePad{
-		Device: WrapDevice(obj),
-	}
+	return devicePad{obj}
 }
 
 func marshalDevicePad(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapDevicePad(obj), nil
+}
+
+func (d devicePad) AsDevice() Device {
+	return WrapDevice(gextras.InternObject(d))
+}
+
+func (d devicePad) GetCapsLockState() bool {
+	return WrapDevice(gextras.InternObject(d)).GetCapsLockState()
+}
+
+func (d devicePad) GetDeviceTool() DeviceTool {
+	return WrapDevice(gextras.InternObject(d)).GetDeviceTool()
+}
+
+func (d devicePad) GetDirection() pango.Direction {
+	return WrapDevice(gextras.InternObject(d)).GetDirection()
+}
+
+func (d devicePad) GetDisplay() Display {
+	return WrapDevice(gextras.InternObject(d)).GetDisplay()
+}
+
+func (d devicePad) GetHasCursor() bool {
+	return WrapDevice(gextras.InternObject(d)).GetHasCursor()
+}
+
+func (d devicePad) GetModifierState() ModifierType {
+	return WrapDevice(gextras.InternObject(d)).GetModifierState()
+}
+
+func (d devicePad) GetName() string {
+	return WrapDevice(gextras.InternObject(d)).GetName()
+}
+
+func (d devicePad) GetNumLockState() bool {
+	return WrapDevice(gextras.InternObject(d)).GetNumLockState()
+}
+
+func (d devicePad) GetNumTouches() uint {
+	return WrapDevice(gextras.InternObject(d)).GetNumTouches()
+}
+
+func (d devicePad) GetProductID() string {
+	return WrapDevice(gextras.InternObject(d)).GetProductID()
+}
+
+func (d devicePad) GetScrollLockState() bool {
+	return WrapDevice(gextras.InternObject(d)).GetScrollLockState()
+}
+
+func (d devicePad) GetSeat() Seat {
+	return WrapDevice(gextras.InternObject(d)).GetSeat()
+}
+
+func (d devicePad) GetSource() InputSource {
+	return WrapDevice(gextras.InternObject(d)).GetSource()
+}
+
+func (d devicePad) GetSurfaceAtPosition() (winX float64, winY float64, surface Surface) {
+	return WrapDevice(gextras.InternObject(d)).GetSurfaceAtPosition()
+}
+
+func (d devicePad) GetTimestamp() uint32 {
+	return WrapDevice(gextras.InternObject(d)).GetTimestamp()
+}
+
+func (d devicePad) GetVendorID() string {
+	return WrapDevice(gextras.InternObject(d)).GetVendorID()
+}
+
+func (d devicePad) HasBidiLayouts() bool {
+	return WrapDevice(gextras.InternObject(d)).HasBidiLayouts()
 }
 
 func (p devicePad) FeatureGroup(feature DevicePadFeature, featureIdx int) int {

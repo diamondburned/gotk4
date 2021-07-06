@@ -129,17 +129,17 @@ type CellAreaContext interface {
 	Reset()
 }
 
-// cellAreaContext implements the CellAreaContext class.
+// cellAreaContext implements the CellAreaContext interface.
 type cellAreaContext struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapCellAreaContext wraps a GObject to the right type. It is
-// primarily used internally.
+var _ CellAreaContext = (*cellAreaContext)(nil)
+
+// WrapCellAreaContext wraps a GObject to a type that implements
+// interface CellAreaContext. It is primarily used internally.
 func WrapCellAreaContext(obj *externglib.Object) CellAreaContext {
-	return cellAreaContext{
-		Objector: obj,
-	}
+	return cellAreaContext{obj}
 }
 
 func marshalCellAreaContext(p uintptr) (interface{}, error) {

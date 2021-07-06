@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -64,7 +63,7 @@ type ColorChooser interface {
 
 // colorChooser implements the ColorChooser interface.
 type colorChooser struct {
-	gextras.Objector
+	*externglib.Object
 }
 
 var _ ColorChooser = (*colorChooser)(nil)
@@ -72,9 +71,7 @@ var _ ColorChooser = (*colorChooser)(nil)
 // WrapColorChooser wraps a GObject to a type that implements
 // interface ColorChooser. It is primarily used internally.
 func WrapColorChooser(obj *externglib.Object) ColorChooser {
-	return colorChooser{
-		Objector: obj,
-	}
+	return colorChooser{obj}
 }
 
 func marshalColorChooser(p uintptr) (interface{}, error) {

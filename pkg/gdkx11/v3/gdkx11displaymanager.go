@@ -5,6 +5,7 @@ package gdkx11
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -23,24 +24,56 @@ func init() {
 }
 
 type X11DisplayManager interface {
-	gdk.DisplayManager
+	gextras.Objector
+
+	// AsDisplayManager casts the class to the gdk.DisplayManager interface.
+	AsDisplayManager() gdk.DisplayManager
+
+	// GetDefaultDisplay gets the default Display.
+	//
+	// This method is inherited from gdk.DisplayManager
+	GetDefaultDisplay() gdk.Display
+	// OpenDisplay opens a display.
+	//
+	// This method is inherited from gdk.DisplayManager
+	OpenDisplay(name string) gdk.Display
+	// SetDefaultDisplay sets @display as the default display.
+	//
+	// This method is inherited from gdk.DisplayManager
+	SetDefaultDisplay(display gdk.Display)
 }
 
-// x11DisplayManager implements the X11DisplayManager class.
+// x11DisplayManager implements the X11DisplayManager interface.
 type x11DisplayManager struct {
-	gdk.DisplayManager
+	*externglib.Object
 }
 
-// WrapX11DisplayManager wraps a GObject to the right type. It is
-// primarily used internally.
+var _ X11DisplayManager = (*x11DisplayManager)(nil)
+
+// WrapX11DisplayManager wraps a GObject to a type that implements
+// interface X11DisplayManager. It is primarily used internally.
 func WrapX11DisplayManager(obj *externglib.Object) X11DisplayManager {
-	return x11DisplayManager{
-		DisplayManager: gdk.WrapDisplayManager(obj),
-	}
+	return x11DisplayManager{obj}
 }
 
 func marshalX11DisplayManager(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapX11DisplayManager(obj), nil
+}
+
+func (x x11DisplayManager) AsDisplayManager() gdk.DisplayManager {
+	return gdk.WrapDisplayManager(gextras.InternObject(x))
+}
+
+func (m x11DisplayManager) GetDefaultDisplay() gdk.Display {
+	return gdk.WrapDisplayManager(gextras.InternObject(m)).GetDefaultDisplay()
+}
+
+func (m x11DisplayManager) OpenDisplay(name string) gdk.Display {
+	return gdk.WrapDisplayManager(gextras.InternObject(m)).OpenDisplay(name)
+}
+
+func (m x11DisplayManager) SetDefaultDisplay(display gdk.Display) {
+	gdk.WrapDisplayManager(gextras.InternObject(m)).SetDefaultDisplay(display)
 }

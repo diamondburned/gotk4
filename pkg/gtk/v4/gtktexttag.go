@@ -66,17 +66,17 @@ type TextTag interface {
 	SetPriority(priority int)
 }
 
-// textTag implements the TextTag class.
+// textTag implements the TextTag interface.
 type textTag struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapTextTag wraps a GObject to the right type. It is
-// primarily used internally.
+var _ TextTag = (*textTag)(nil)
+
+// WrapTextTag wraps a GObject to a type that implements
+// interface TextTag. It is primarily used internally.
 func WrapTextTag(obj *externglib.Object) TextTag {
-	return textTag{
-		Objector: obj,
-	}
+	return textTag{obj}
 }
 
 func marshalTextTag(p uintptr) (interface{}, error) {
@@ -97,7 +97,7 @@ func NewTextTag(name string) TextTag {
 
 	var _textTag TextTag // out
 
-	_textTag = WrapTextTag(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_textTag = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(TextTag)
 
 	return _textTag
 }

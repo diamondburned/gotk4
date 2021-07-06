@@ -5,6 +5,8 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -46,10 +48,79 @@ func init() {
 // interfaces, thus you have to use the `gio-unix-2.0.pc` pkg-config file when
 // using it.
 type UnixSocketAddress interface {
-	SocketAddress
+	gextras.Objector
 
+	// AsSocketAddress casts the class to the SocketAddress interface.
+	AsSocketAddress() SocketAddress
 	// AsSocketConnectable casts the class to the SocketConnectable interface.
 	AsSocketConnectable() SocketConnectable
+
+	// GetFamily gets the socket family type of @address.
+	//
+	// This method is inherited from SocketAddress
+	GetFamily() SocketFamily
+	// GetNativeSize gets the size of @address's native struct sockaddr. You can
+	// use this to allocate memory to pass to g_socket_address_to_native().
+	//
+	// This method is inherited from SocketAddress
+	GetNativeSize() int
+	// ToNative converts a Address to a native struct sockaddr, which can be
+	// passed to low-level functions like connect() or bind().
+	//
+	// If not enough space is available, a G_IO_ERROR_NO_SPACE error is
+	// returned. If the address type is not known on the system then a
+	// G_IO_ERROR_NOT_SUPPORTED error is returned.
+	//
+	// This method is inherited from SocketAddress
+	ToNative(dest interface{}, destlen uint) error
+	// Enumerate creates a AddressEnumerator for @connectable.
+	//
+	// This method is inherited from SocketConnectable
+	Enumerate() SocketAddressEnumerator
+	// ProxyEnumerate creates a AddressEnumerator for @connectable that will
+	// return a Address for each of its addresses that you must connect to via a
+	// proxy.
+	//
+	// If @connectable does not implement
+	// g_socket_connectable_proxy_enumerate(), this will fall back to calling
+	// g_socket_connectable_enumerate().
+	//
+	// This method is inherited from SocketConnectable
+	ProxyEnumerate() SocketAddressEnumerator
+	// ToString: format a Connectable as a string. This is a human-readable
+	// format for use in debugging output, and is not a stable serialization
+	// format. It is not suitable for use in user interfaces as it exposes too
+	// much information for a user.
+	//
+	// If the Connectable implementation does not support string formatting, the
+	// implementation’s type name will be returned as a fallback.
+	//
+	// This method is inherited from SocketConnectable
+	ToString() string
+	// Enumerate creates a AddressEnumerator for @connectable.
+	//
+	// This method is inherited from SocketConnectable
+	Enumerate() SocketAddressEnumerator
+	// ProxyEnumerate creates a AddressEnumerator for @connectable that will
+	// return a Address for each of its addresses that you must connect to via a
+	// proxy.
+	//
+	// If @connectable does not implement
+	// g_socket_connectable_proxy_enumerate(), this will fall back to calling
+	// g_socket_connectable_enumerate().
+	//
+	// This method is inherited from SocketConnectable
+	ProxyEnumerate() SocketAddressEnumerator
+	// ToString: format a Connectable as a string. This is a human-readable
+	// format for use in debugging output, and is not a stable serialization
+	// format. It is not suitable for use in user interfaces as it exposes too
+	// much information for a user.
+	//
+	// If the Connectable implementation does not support string formatting, the
+	// implementation’s type name will be returned as a fallback.
+	//
+	// This method is inherited from SocketConnectable
+	ToString() string
 
 	// AddressType gets @address's type.
 	AddressType() UnixSocketAddressType
@@ -70,17 +141,17 @@ type UnixSocketAddress interface {
 	PathLen() uint
 }
 
-// unixSocketAddress implements the UnixSocketAddress class.
+// unixSocketAddress implements the UnixSocketAddress interface.
 type unixSocketAddress struct {
-	SocketAddress
+	*externglib.Object
 }
 
-// WrapUnixSocketAddress wraps a GObject to the right type. It is
-// primarily used internally.
+var _ UnixSocketAddress = (*unixSocketAddress)(nil)
+
+// WrapUnixSocketAddress wraps a GObject to a type that implements
+// interface UnixSocketAddress. It is primarily used internally.
 func WrapUnixSocketAddress(obj *externglib.Object) UnixSocketAddress {
-	return unixSocketAddress{
-		SocketAddress: WrapSocketAddress(obj),
-	}
+	return unixSocketAddress{obj}
 }
 
 func marshalUnixSocketAddress(p uintptr) (interface{}, error) {
@@ -104,7 +175,7 @@ func NewUnixSocketAddress(path string) UnixSocketAddress {
 
 	var _unixSocketAddress UnixSocketAddress // out
 
-	_unixSocketAddress = WrapUnixSocketAddress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_unixSocketAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(UnixSocketAddress)
 
 	return _unixSocketAddress
 }
@@ -125,7 +196,7 @@ func NewUnixSocketAddressAbstract(path []byte) UnixSocketAddress {
 
 	var _unixSocketAddress UnixSocketAddress // out
 
-	_unixSocketAddress = WrapUnixSocketAddress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_unixSocketAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(UnixSocketAddress)
 
 	return _unixSocketAddress
 }
@@ -175,13 +246,53 @@ func NewUnixSocketAddressWithType(path []byte, typ UnixSocketAddressType) UnixSo
 
 	var _unixSocketAddress UnixSocketAddress // out
 
-	_unixSocketAddress = WrapUnixSocketAddress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_unixSocketAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(UnixSocketAddress)
 
 	return _unixSocketAddress
 }
 
+func (u unixSocketAddress) AsSocketAddress() SocketAddress {
+	return WrapSocketAddress(gextras.InternObject(u))
+}
+
 func (u unixSocketAddress) AsSocketConnectable() SocketConnectable {
 	return WrapSocketConnectable(gextras.InternObject(u))
+}
+
+func (a unixSocketAddress) GetFamily() SocketFamily {
+	return WrapSocketAddress(gextras.InternObject(a)).GetFamily()
+}
+
+func (a unixSocketAddress) GetNativeSize() int {
+	return WrapSocketAddress(gextras.InternObject(a)).GetNativeSize()
+}
+
+func (a unixSocketAddress) ToNative(dest interface{}, destlen uint) error {
+	return WrapSocketAddress(gextras.InternObject(a)).ToNative(dest, destlen)
+}
+
+func (c unixSocketAddress) Enumerate() SocketAddressEnumerator {
+	return WrapSocketConnectable(gextras.InternObject(c)).Enumerate()
+}
+
+func (c unixSocketAddress) ProxyEnumerate() SocketAddressEnumerator {
+	return WrapSocketConnectable(gextras.InternObject(c)).ProxyEnumerate()
+}
+
+func (c unixSocketAddress) ToString() string {
+	return WrapSocketConnectable(gextras.InternObject(c)).ToString()
+}
+
+func (c unixSocketAddress) Enumerate() SocketAddressEnumerator {
+	return WrapSocketConnectable(gextras.InternObject(c)).Enumerate()
+}
+
+func (c unixSocketAddress) ProxyEnumerate() SocketAddressEnumerator {
+	return WrapSocketConnectable(gextras.InternObject(c)).ProxyEnumerate()
+}
+
+func (c unixSocketAddress) ToString() string {
+	return WrapSocketConnectable(gextras.InternObject(c)).ToString()
 }
 
 func (a unixSocketAddress) AddressType() UnixSocketAddressType {

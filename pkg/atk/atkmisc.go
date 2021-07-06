@@ -47,17 +47,17 @@ type Misc interface {
 	ThreadsLeave()
 }
 
-// misc implements the Misc class.
+// misc implements the Misc interface.
 type misc struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapMisc wraps a GObject to the right type. It is
-// primarily used internally.
+var _ Misc = (*misc)(nil)
+
+// WrapMisc wraps a GObject to a type that implements
+// interface Misc. It is primarily used internally.
 func WrapMisc(obj *externglib.Object) Misc {
-	return misc{
-		Objector: obj,
-	}
+	return misc{obj}
 }
 
 func marshalMisc(p uintptr) (interface{}, error) {

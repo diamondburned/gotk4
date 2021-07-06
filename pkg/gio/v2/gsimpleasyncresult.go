@@ -221,6 +221,31 @@ type SimpleAsyncResult interface {
 	// AsAsyncResult casts the class to the AsyncResult interface.
 	AsAsyncResult() AsyncResult
 
+	// GetSourceObject gets the source object from a Result.
+	//
+	// This method is inherited from AsyncResult
+	GetSourceObject() gextras.Objector
+	// GetUserData gets the user data from a Result.
+	//
+	// This method is inherited from AsyncResult
+	GetUserData() interface{}
+	// IsTagged checks if @res has the given @source_tag (generally a function
+	// pointer indicating the function @res was created by).
+	//
+	// This method is inherited from AsyncResult
+	IsTagged(sourceTag interface{}) bool
+	// LegacyPropagateError: if @res is a AsyncResult, this is equivalent to
+	// g_simple_async_result_propagate_error(). Otherwise it returns false.
+	//
+	// This can be used for legacy error handling in async *_finish() wrapper
+	// functions that traditionally handled AsyncResult error returns themselves
+	// rather than calling into the virtual method. This should not be used in
+	// new code; Result errors that are set by virtual methods should also be
+	// extracted by virtual methods, to enable subclasses to chain up correctly.
+	//
+	// This method is inherited from AsyncResult
+	LegacyPropagateError() error
+
 	// Complete completes an asynchronous I/O job immediately. Must be called in
 	// the thread where the asynchronous result was to be delivered, as it
 	// invokes the callback directly. If you are in a different thread use
@@ -303,17 +328,17 @@ type SimpleAsyncResult interface {
 	SetOpResGssize(opRes int)
 }
 
-// simpleAsyncResult implements the SimpleAsyncResult class.
+// simpleAsyncResult implements the SimpleAsyncResult interface.
 type simpleAsyncResult struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapSimpleAsyncResult wraps a GObject to the right type. It is
-// primarily used internally.
+var _ SimpleAsyncResult = (*simpleAsyncResult)(nil)
+
+// WrapSimpleAsyncResult wraps a GObject to a type that implements
+// interface SimpleAsyncResult. It is primarily used internally.
 func WrapSimpleAsyncResult(obj *externglib.Object) SimpleAsyncResult {
-	return simpleAsyncResult{
-		Objector: obj,
-	}
+	return simpleAsyncResult{obj}
 }
 
 func marshalSimpleAsyncResult(p uintptr) (interface{}, error) {
@@ -350,7 +375,7 @@ func NewSimpleAsyncResult(sourceObject gextras.Objector, callback AsyncReadyCall
 
 	var _simpleAsyncResult SimpleAsyncResult // out
 
-	_simpleAsyncResult = WrapSimpleAsyncResult(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_simpleAsyncResult = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(SimpleAsyncResult)
 
 	return _simpleAsyncResult
 }
@@ -377,13 +402,29 @@ func NewSimpleAsyncResultFromError(sourceObject gextras.Objector, callback Async
 
 	var _simpleAsyncResult SimpleAsyncResult // out
 
-	_simpleAsyncResult = WrapSimpleAsyncResult(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_simpleAsyncResult = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(SimpleAsyncResult)
 
 	return _simpleAsyncResult
 }
 
 func (s simpleAsyncResult) AsAsyncResult() AsyncResult {
 	return WrapAsyncResult(gextras.InternObject(s))
+}
+
+func (r simpleAsyncResult) GetSourceObject() gextras.Objector {
+	return WrapAsyncResult(gextras.InternObject(r)).GetSourceObject()
+}
+
+func (r simpleAsyncResult) GetUserData() interface{} {
+	return WrapAsyncResult(gextras.InternObject(r)).GetUserData()
+}
+
+func (r simpleAsyncResult) IsTagged(sourceTag interface{}) bool {
+	return WrapAsyncResult(gextras.InternObject(r)).IsTagged(sourceTag)
+}
+
+func (r simpleAsyncResult) LegacyPropagateError() error {
+	return WrapAsyncResult(gextras.InternObject(r)).LegacyPropagateError()
 }
 
 func (s simpleAsyncResult) Complete() {

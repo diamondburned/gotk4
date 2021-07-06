@@ -53,17 +53,17 @@ type WindowGroup interface {
 	RemoveWindow(window Window)
 }
 
-// windowGroup implements the WindowGroup class.
+// windowGroup implements the WindowGroup interface.
 type windowGroup struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapWindowGroup wraps a GObject to the right type. It is
-// primarily used internally.
+var _ WindowGroup = (*windowGroup)(nil)
+
+// WrapWindowGroup wraps a GObject to a type that implements
+// interface WindowGroup. It is primarily used internally.
 func WrapWindowGroup(obj *externglib.Object) WindowGroup {
-	return windowGroup{
-		Objector: obj,
-	}
+	return windowGroup{obj}
 }
 
 func marshalWindowGroup(p uintptr) (interface{}, error) {
@@ -81,7 +81,7 @@ func NewWindowGroup() WindowGroup {
 
 	var _windowGroup WindowGroup // out
 
-	_windowGroup = WrapWindowGroup(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_windowGroup = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(WindowGroup)
 
 	return _windowGroup
 }

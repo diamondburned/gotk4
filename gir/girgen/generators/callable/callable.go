@@ -1,3 +1,4 @@
+// Package callable provides a generic callable generator.
 package callable
 
 import (
@@ -25,7 +26,7 @@ type Generator struct {
 	Tail  string
 	Block string
 
-	Constructor bool
+	constructor bool
 	Converts    []string
 
 	Conv    *typeconv.Converter
@@ -66,12 +67,11 @@ func (g *Generator) Reset() {
 	g.GoRets.Reset(", ")
 
 	*g = Generator{
-		pen:         g.pen,
-		gen:         g.gen,
-		hdr:         g.hdr,
-		GoArgs:      g.GoArgs,
-		GoRets:      g.GoRets,
-		Constructor: g.Constructor,
+		pen:    g.pen,
+		gen:    g.gen,
+		hdr:    g.hdr,
+		GoArgs: g.GoArgs,
+		GoRets: g.GoRets,
 	}
 }
 
@@ -82,9 +82,23 @@ func (g *Generator) Header() *file.Header {
 	return &g.hdr
 }
 
+// FileGenerator returns the generator's internal file generator.
+func (g *Generator) FileGenerator() FileGenerator {
+	return g.gen
+}
+
 // Use uses the given CallableAttrs for the generator.
 func (g *Generator) Use(cattrs *gir.CallableAttrs) bool {
 	return g.UseFromNamespace(cattrs, g.gen.Namespace())
+}
+
+// UseConstructor calls Use with the constructor flag.
+func (g *Generator) UseConstructor(cattrs *gir.CallableAttrs) bool {
+	g.constructor = true
+	ok := g.Use(cattrs)
+	g.constructor = false
+
+	return ok
 }
 
 // UseFromNamespace uses the given CallableAttrs from the given namespace
@@ -201,7 +215,7 @@ func (g *Generator) renderBlock() bool {
 				"_cret", returnName, typeconv.ConvertCToGo, *g.ReturnValue,
 			)
 			// Use the return value's type if we're generating the constructor.
-			value.ManualCast = g.Constructor
+			value.ManualCast = g.constructor
 
 			callableValues = append(callableValues, value)
 		}

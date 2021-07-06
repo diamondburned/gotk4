@@ -43,7 +43,100 @@ func init() {
 //
 // For DTLS (Datagram TLS) support, see Connection.
 type TLSConnection interface {
-	IOStream
+	gextras.Objector
+
+	// AsIOStream casts the class to the IOStream interface.
+	AsIOStream() IOStream
+
+	// ClearPending clears the pending flag on @stream.
+	//
+	// This method is inherited from IOStream
+	ClearPending()
+	// Close closes the stream, releasing resources related to it. This will
+	// also close the individual input and output streams, if they are not
+	// already closed.
+	//
+	// Once the stream is closed, all other operations will return
+	// G_IO_ERROR_CLOSED. Closing a stream multiple times will not return an
+	// error.
+	//
+	// Closing a stream will automatically flush any outstanding buffers in the
+	// stream.
+	//
+	// Streams will be automatically closed when the last reference is dropped,
+	// but you might want to call this function to make sure resources are
+	// released as early as possible.
+	//
+	// Some streams might keep the backing store of the stream (e.g. a file
+	// descriptor) open after the stream is closed. See the documentation for
+	// the individual stream for details.
+	//
+	// On failure the first error that happened will be reported, but the close
+	// operation will finish as much as possible. A stream that failed to close
+	// will still return G_IO_ERROR_CLOSED for all operations. Still, it is
+	// important to check and report the error to the user, otherwise there
+	// might be a loss of data as all data might not be written.
+	//
+	// If @cancellable is not NULL, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+	// Cancelling a close will still leave the stream closed, but some streams
+	// can use a faster close that doesn't block to e.g. check errors.
+	//
+	// The default implementation of this method just calls close on the
+	// individual input/output streams.
+	//
+	// This method is inherited from IOStream
+	Close(cancellable Cancellable) error
+	// CloseAsync requests an asynchronous close of the stream, releasing
+	// resources related to it. When the operation is finished @callback will be
+	// called. You can then call g_io_stream_close_finish() to get the result of
+	// the operation.
+	//
+	// For behaviour details see g_io_stream_close().
+	//
+	// The asynchronous methods have a default fallback that uses threads to
+	// implement asynchronicity, so they are optional for inheriting classes.
+	// However, if you override one you must override all.
+	//
+	// This method is inherited from IOStream
+	CloseAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
+	// CloseFinish closes a stream.
+	//
+	// This method is inherited from IOStream
+	CloseFinish(result AsyncResult) error
+	// GetInputStream gets the input stream for this object. This is used for
+	// reading.
+	//
+	// This method is inherited from IOStream
+	GetInputStream() InputStream
+	// GetOutputStream gets the output stream for this object. This is used for
+	// writing.
+	//
+	// This method is inherited from IOStream
+	GetOutputStream() OutputStream
+	// HasPending checks if a stream has pending actions.
+	//
+	// This method is inherited from IOStream
+	HasPending() bool
+	// IsClosed checks if a stream is closed.
+	//
+	// This method is inherited from IOStream
+	IsClosed() bool
+	// SetPending sets @stream to have actions pending. If the pending flag is
+	// already set or @stream is closed, it will return false and set @error.
+	//
+	// This method is inherited from IOStream
+	SetPending() error
+	// SpliceAsync: asynchronously splice the output stream of @stream1 to the
+	// input stream of @stream2, and splice the output stream of @stream2 to the
+	// input stream of @stream1.
+	//
+	// When the operation is finished @callback will be called. You can then
+	// call g_io_stream_splice_finish() to get the result of the operation.
+	//
+	// This method is inherited from IOStream
+	SpliceAsync(stream2 IOStream, flags IOStreamSpliceFlags, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 
 	// EmitAcceptCertificate: used by Connection implementations to emit the
 	// Connection::accept-certificate signal.
@@ -92,18 +185,18 @@ type TLSConnection interface {
 	// RehandshakeMode gets @conn rehandshaking mode. See
 	// g_tls_connection_set_rehandshake_mode() for details.
 	//
-	// Deprecated: since version 2.60..
+	// Deprecated: since version 2.60.
 	RehandshakeMode() TLSRehandshakeMode
 	// RequireCloseNotify tests whether or not @conn expects a proper TLS close
 	// notification when the connection is closed. See
 	// g_tls_connection_set_require_close_notify() for details.
 	RequireCloseNotify() bool
-	// UseSystemCertdb gets whether @conn uses the system certificate database
+	// UseSystemCertDB gets whether @conn uses the system certificate database
 	// to verify peer certificates. See
 	// g_tls_connection_set_use_system_certdb().
 	//
 	// Deprecated: since version 2.30.
-	UseSystemCertdb() bool
+	UseSystemCertDB() bool
 	// Handshake attempts a TLS handshake on @conn.
 	//
 	// On the client side, it is never necessary to call this method; although
@@ -187,7 +280,7 @@ type TLSConnection interface {
 	// been removed from the TLS protocol, replaced by separate post-handshake
 	// authentication and rekey operations.
 	//
-	// Deprecated: since version 2.60..
+	// Deprecated: since version 2.60.
 	SetRehandshakeMode(mode TLSRehandshakeMode)
 	// SetRequireCloseNotify sets whether or not @conn expects a proper TLS
 	// close notification before the connection is closed. If this is true (the
@@ -216,7 +309,7 @@ type TLSConnection interface {
 	// but note that this may only be done when no other operations are pending
 	// on @conn or the base I/O stream.
 	SetRequireCloseNotify(requireCloseNotify bool)
-	// SetUseSystemCertdb sets whether @conn uses the system certificate
+	// SetUseSystemCertDB sets whether @conn uses the system certificate
 	// database to verify peer certificates. This is true by default. If set to
 	// false, then peer certificate validation will always set the
 	// G_TLS_CERTIFICATE_UNKNOWN_CA error (meaning
@@ -225,26 +318,70 @@ type TLSConnection interface {
 	// ClientConnection:validation-flags).
 	//
 	// Deprecated: since version 2.30.
-	SetUseSystemCertdb(useSystemCertdb bool)
+	SetUseSystemCertDB(useSystemCertdb bool)
 }
 
-// tlsConnection implements the TLSConnection class.
+// tlsConnection implements the TLSConnection interface.
 type tlsConnection struct {
-	IOStream
+	*externglib.Object
 }
 
-// WrapTLSConnection wraps a GObject to the right type. It is
-// primarily used internally.
+var _ TLSConnection = (*tlsConnection)(nil)
+
+// WrapTLSConnection wraps a GObject to a type that implements
+// interface TLSConnection. It is primarily used internally.
 func WrapTLSConnection(obj *externglib.Object) TLSConnection {
-	return tlsConnection{
-		IOStream: WrapIOStream(obj),
-	}
+	return tlsConnection{obj}
 }
 
 func marshalTLSConnection(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapTLSConnection(obj), nil
+}
+
+func (t tlsConnection) AsIOStream() IOStream {
+	return WrapIOStream(gextras.InternObject(t))
+}
+
+func (s tlsConnection) ClearPending() {
+	WrapIOStream(gextras.InternObject(s)).ClearPending()
+}
+
+func (s tlsConnection) Close(cancellable Cancellable) error {
+	return WrapIOStream(gextras.InternObject(s)).Close(cancellable)
+}
+
+func (s tlsConnection) CloseAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+	WrapIOStream(gextras.InternObject(s)).CloseAsync(ioPriority, cancellable, callback)
+}
+
+func (s tlsConnection) CloseFinish(result AsyncResult) error {
+	return WrapIOStream(gextras.InternObject(s)).CloseFinish(result)
+}
+
+func (s tlsConnection) GetInputStream() InputStream {
+	return WrapIOStream(gextras.InternObject(s)).GetInputStream()
+}
+
+func (s tlsConnection) GetOutputStream() OutputStream {
+	return WrapIOStream(gextras.InternObject(s)).GetOutputStream()
+}
+
+func (s tlsConnection) HasPending() bool {
+	return WrapIOStream(gextras.InternObject(s)).HasPending()
+}
+
+func (s tlsConnection) IsClosed() bool {
+	return WrapIOStream(gextras.InternObject(s)).IsClosed()
+}
+
+func (s tlsConnection) SetPending() error {
+	return WrapIOStream(gextras.InternObject(s)).SetPending()
+}
+
+func (s tlsConnection) SpliceAsync(stream2 IOStream, flags IOStreamSpliceFlags, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+	WrapIOStream(gextras.InternObject(s)).SpliceAsync(stream2, flags, ioPriority, cancellable, callback)
 }
 
 func (c tlsConnection) EmitAcceptCertificate(peerCert TLSCertificate, errors TLSCertificateFlags) bool {
@@ -411,7 +548,7 @@ func (c tlsConnection) RequireCloseNotify() bool {
 	return _ok
 }
 
-func (c tlsConnection) UseSystemCertdb() bool {
+func (c tlsConnection) UseSystemCertDB() bool {
 	var _arg0 *C.GTlsConnection // out
 	var _cret C.gboolean        // in
 
@@ -548,7 +685,7 @@ func (c tlsConnection) SetRequireCloseNotify(requireCloseNotify bool) {
 	C.g_tls_connection_set_require_close_notify(_arg0, _arg1)
 }
 
-func (c tlsConnection) SetUseSystemCertdb(useSystemCertdb bool) {
+func (c tlsConnection) SetUseSystemCertDB(useSystemCertdb bool) {
 	var _arg0 *C.GTlsConnection // out
 	var _arg1 C.gboolean        // out
 

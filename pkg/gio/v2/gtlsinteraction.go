@@ -188,17 +188,17 @@ type TLSInteraction interface {
 	RequestCertificateFinish(result AsyncResult) (TLSInteractionResult, error)
 }
 
-// tlsInteraction implements the TLSInteraction class.
+// tlsInteraction implements the TLSInteraction interface.
 type tlsInteraction struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapTLSInteraction wraps a GObject to the right type. It is
-// primarily used internally.
+var _ TLSInteraction = (*tlsInteraction)(nil)
+
+// WrapTLSInteraction wraps a GObject to a type that implements
+// interface TLSInteraction. It is primarily used internally.
 func WrapTLSInteraction(obj *externglib.Object) TLSInteraction {
-	return tlsInteraction{
-		Objector: obj,
-	}
+	return tlsInteraction{obj}
 }
 
 func marshalTLSInteraction(p uintptr) (interface{}, error) {

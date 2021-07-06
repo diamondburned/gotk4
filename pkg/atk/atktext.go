@@ -6,7 +6,6 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -348,7 +347,7 @@ type Text interface {
 
 // text implements the Text interface.
 type text struct {
-	gextras.Objector
+	*externglib.Object
 }
 
 var _ Text = (*text)(nil)
@@ -356,9 +355,7 @@ var _ Text = (*text)(nil)
 // WrapText wraps a GObject to a type that implements
 // interface Text. It is primarily used internally.
 func WrapText(obj *externglib.Object) Text {
-	return text{
-		Objector: obj,
-	}
+	return text{obj}
 }
 
 func marshalText(p uintptr) (interface{}, error) {

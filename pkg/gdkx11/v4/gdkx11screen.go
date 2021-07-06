@@ -55,17 +55,17 @@ type X11Screen interface {
 	SupportsNetWmHint(propertyName string) bool
 }
 
-// x11Screen implements the X11Screen class.
+// x11Screen implements the X11Screen interface.
 type x11Screen struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapX11Screen wraps a GObject to the right type. It is
-// primarily used internally.
+var _ X11Screen = (*x11Screen)(nil)
+
+// WrapX11Screen wraps a GObject to a type that implements
+// interface X11Screen. It is primarily used internally.
 func WrapX11Screen(obj *externglib.Object) X11Screen {
-	return x11Screen{
-		Objector: obj,
-	}
+	return x11Screen{obj}
 }
 
 func marshalX11Screen(p uintptr) (interface{}, error) {

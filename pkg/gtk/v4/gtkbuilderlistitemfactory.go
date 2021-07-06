@@ -34,7 +34,10 @@ func init() {
 // name="item">GtkListItem</lookup> </lookup> </binding> </object> </property>
 // </template> </interface> “`
 type BuilderListItemFactory interface {
-	ListItemFactory
+	gextras.Objector
+
+	// AsListItemFactory casts the class to the ListItemFactory interface.
+	AsListItemFactory() ListItemFactory
 
 	// Resource: if the data references a resource, gets the path of that
 	// resource.
@@ -43,17 +46,17 @@ type BuilderListItemFactory interface {
 	Scope() BuilderScope
 }
 
-// builderListItemFactory implements the BuilderListItemFactory class.
+// builderListItemFactory implements the BuilderListItemFactory interface.
 type builderListItemFactory struct {
-	ListItemFactory
+	*externglib.Object
 }
 
-// WrapBuilderListItemFactory wraps a GObject to the right type. It is
-// primarily used internally.
+var _ BuilderListItemFactory = (*builderListItemFactory)(nil)
+
+// WrapBuilderListItemFactory wraps a GObject to a type that implements
+// interface BuilderListItemFactory. It is primarily used internally.
 func WrapBuilderListItemFactory(obj *externglib.Object) BuilderListItemFactory {
-	return builderListItemFactory{
-		ListItemFactory: WrapListItemFactory(obj),
-	}
+	return builderListItemFactory{obj}
 }
 
 func marshalBuilderListItemFactory(p uintptr) (interface{}, error) {
@@ -78,9 +81,13 @@ func NewBuilderListItemFactoryFromResource(scope BuilderScope, resourcePath stri
 
 	var _builderListItemFactory BuilderListItemFactory // out
 
-	_builderListItemFactory = WrapBuilderListItemFactory(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_builderListItemFactory = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(BuilderListItemFactory)
 
 	return _builderListItemFactory
+}
+
+func (b builderListItemFactory) AsListItemFactory() ListItemFactory {
+	return WrapListItemFactory(gextras.InternObject(b))
 }
 
 func (s builderListItemFactory) Resource() string {

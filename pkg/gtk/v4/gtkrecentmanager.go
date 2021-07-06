@@ -142,17 +142,17 @@ type RecentManager interface {
 	RemoveItem(uri string) error
 }
 
-// recentManager implements the RecentManager class.
+// recentManager implements the RecentManager interface.
 type recentManager struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapRecentManager wraps a GObject to the right type. It is
-// primarily used internally.
+var _ RecentManager = (*recentManager)(nil)
+
+// WrapRecentManager wraps a GObject to a type that implements
+// interface RecentManager. It is primarily used internally.
 func WrapRecentManager(obj *externglib.Object) RecentManager {
-	return recentManager{
-		Objector: obj,
-	}
+	return recentManager{obj}
 }
 
 func marshalRecentManager(p uintptr) (interface{}, error) {
@@ -177,7 +177,7 @@ func NewRecentManager() RecentManager {
 
 	var _recentManager RecentManager // out
 
-	_recentManager = WrapRecentManager(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_recentManager = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(RecentManager)
 
 	return _recentManager
 }

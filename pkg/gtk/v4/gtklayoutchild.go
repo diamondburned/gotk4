@@ -42,17 +42,17 @@ type LayoutChild interface {
 	LayoutManager() LayoutManager
 }
 
-// layoutChild implements the LayoutChild class.
+// layoutChild implements the LayoutChild interface.
 type layoutChild struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapLayoutChild wraps a GObject to the right type. It is
-// primarily used internally.
+var _ LayoutChild = (*layoutChild)(nil)
+
+// WrapLayoutChild wraps a GObject to a type that implements
+// interface LayoutChild. It is primarily used internally.
 func WrapLayoutChild(obj *externglib.Object) LayoutChild {
-	return layoutChild{
-		Objector: obj,
-	}
+	return layoutChild{obj}
 }
 
 func marshalLayoutChild(p uintptr) (interface{}, error) {

@@ -100,17 +100,17 @@ type ColumnViewColumn interface {
 	SetVisible(visible bool)
 }
 
-// columnViewColumn implements the ColumnViewColumn class.
+// columnViewColumn implements the ColumnViewColumn interface.
 type columnViewColumn struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapColumnViewColumn wraps a GObject to the right type. It is
-// primarily used internally.
+var _ ColumnViewColumn = (*columnViewColumn)(nil)
+
+// WrapColumnViewColumn wraps a GObject to a type that implements
+// interface ColumnViewColumn. It is primarily used internally.
 func WrapColumnViewColumn(obj *externglib.Object) ColumnViewColumn {
-	return columnViewColumn{
-		Objector: obj,
-	}
+	return columnViewColumn{obj}
 }
 
 func marshalColumnViewColumn(p uintptr) (interface{}, error) {
@@ -141,7 +141,7 @@ func NewColumnViewColumn(title string, factory ListItemFactory) ColumnViewColumn
 
 	var _columnViewColumn ColumnViewColumn // out
 
-	_columnViewColumn = WrapColumnViewColumn(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_columnViewColumn = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(ColumnViewColumn)
 
 	return _columnViewColumn
 }

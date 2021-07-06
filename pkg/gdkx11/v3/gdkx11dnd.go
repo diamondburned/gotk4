@@ -5,6 +5,7 @@ package gdkx11
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -23,24 +24,142 @@ func init() {
 }
 
 type X11DragContext interface {
-	gdk.DragContext
+	gextras.Objector
+
+	// AsDragContext casts the class to the gdk.DragContext interface.
+	AsDragContext() gdk.DragContext
+
+	// GetActions determines the bitmask of actions proposed by the source if
+	// gdk_drag_context_get_suggested_action() returns GDK_ACTION_ASK.
+	//
+	// This method is inherited from gdk.DragContext
+	GetActions() gdk.DragAction
+	// GetDestWindow returns the destination window for the DND operation.
+	//
+	// This method is inherited from gdk.DragContext
+	GetDestWindow() gdk.Window
+	// GetDevice returns the Device associated to the drag context.
+	//
+	// This method is inherited from gdk.DragContext
+	GetDevice() gdk.Device
+	// GetDragWindow returns the window on which the drag icon should be
+	// rendered during the drag operation. Note that the window may not be
+	// available until the drag operation has begun. GDK will move the window in
+	// accordance with the ongoing drag operation. The window is owned by
+	// @context and will be destroyed when the drag operation is over.
+	//
+	// This method is inherited from gdk.DragContext
+	GetDragWindow() gdk.Window
+	// GetProtocol returns the drag protocol that is used by this context.
+	//
+	// This method is inherited from gdk.DragContext
+	GetProtocol() gdk.DragProtocol
+	// GetSelectedAction determines the action chosen by the drag destination.
+	//
+	// This method is inherited from gdk.DragContext
+	GetSelectedAction() gdk.DragAction
+	// GetSourceWindow returns the Window where the DND operation started.
+	//
+	// This method is inherited from gdk.DragContext
+	GetSourceWindow() gdk.Window
+	// GetSuggestedAction determines the suggested drag action of the context.
+	//
+	// This method is inherited from gdk.DragContext
+	GetSuggestedAction() gdk.DragAction
+	// ManageDnd requests the drag and drop operation to be managed by @context.
+	// When a drag and drop operation becomes managed, the DragContext will
+	// internally handle all input and source-side EventDND events as required
+	// by the windowing system.
+	//
+	// Once the drag and drop operation is managed, the drag context will emit
+	// the following signals: - The DragContext::action-changed signal whenever
+	// the final action to be performed by the drag and drop operation changes.
+	// - The DragContext::drop-performed signal after the user performs the drag
+	// and drop gesture (typically by releasing the mouse button). - The
+	// DragContext::dnd-finished signal after the drag and drop operation
+	// concludes (after all Selection transfers happen). - The
+	// DragContext::cancel signal if the drag and drop operation is finished but
+	// doesn't happen over an accepting destination, or is cancelled through
+	// other means.
+	//
+	// This method is inherited from gdk.DragContext
+	ManageDnd(ipcWindow gdk.Window, actions gdk.DragAction) bool
+	// SetDevice associates a Device to @context, so all Drag and Drop events
+	// for @context are emitted as if they came from this device.
+	//
+	// This method is inherited from gdk.DragContext
+	SetDevice(device gdk.Device)
+	// SetHotspot sets the position of the drag window that will be kept under
+	// the cursor hotspot. Initially, the hotspot is at the top left corner of
+	// the drag window.
+	//
+	// This method is inherited from gdk.DragContext
+	SetHotspot(hotX int, hotY int)
 }
 
-// x11DragContext implements the X11DragContext class.
+// x11DragContext implements the X11DragContext interface.
 type x11DragContext struct {
-	gdk.DragContext
+	*externglib.Object
 }
 
-// WrapX11DragContext wraps a GObject to the right type. It is
-// primarily used internally.
+var _ X11DragContext = (*x11DragContext)(nil)
+
+// WrapX11DragContext wraps a GObject to a type that implements
+// interface X11DragContext. It is primarily used internally.
 func WrapX11DragContext(obj *externglib.Object) X11DragContext {
-	return x11DragContext{
-		DragContext: gdk.WrapDragContext(obj),
-	}
+	return x11DragContext{obj}
 }
 
 func marshalX11DragContext(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapX11DragContext(obj), nil
+}
+
+func (x x11DragContext) AsDragContext() gdk.DragContext {
+	return gdk.WrapDragContext(gextras.InternObject(x))
+}
+
+func (c x11DragContext) GetActions() gdk.DragAction {
+	return gdk.WrapDragContext(gextras.InternObject(c)).GetActions()
+}
+
+func (c x11DragContext) GetDestWindow() gdk.Window {
+	return gdk.WrapDragContext(gextras.InternObject(c)).GetDestWindow()
+}
+
+func (c x11DragContext) GetDevice() gdk.Device {
+	return gdk.WrapDragContext(gextras.InternObject(c)).GetDevice()
+}
+
+func (c x11DragContext) GetDragWindow() gdk.Window {
+	return gdk.WrapDragContext(gextras.InternObject(c)).GetDragWindow()
+}
+
+func (c x11DragContext) GetProtocol() gdk.DragProtocol {
+	return gdk.WrapDragContext(gextras.InternObject(c)).GetProtocol()
+}
+
+func (c x11DragContext) GetSelectedAction() gdk.DragAction {
+	return gdk.WrapDragContext(gextras.InternObject(c)).GetSelectedAction()
+}
+
+func (c x11DragContext) GetSourceWindow() gdk.Window {
+	return gdk.WrapDragContext(gextras.InternObject(c)).GetSourceWindow()
+}
+
+func (c x11DragContext) GetSuggestedAction() gdk.DragAction {
+	return gdk.WrapDragContext(gextras.InternObject(c)).GetSuggestedAction()
+}
+
+func (c x11DragContext) ManageDnd(ipcWindow gdk.Window, actions gdk.DragAction) bool {
+	return gdk.WrapDragContext(gextras.InternObject(c)).ManageDnd(ipcWindow, actions)
+}
+
+func (c x11DragContext) SetDevice(device gdk.Device) {
+	gdk.WrapDragContext(gextras.InternObject(c)).SetDevice(device)
+}
+
+func (c x11DragContext) SetHotspot(hotX int, hotY int) {
+	gdk.WrapDragContext(gextras.InternObject(c)).SetHotspot(hotX, hotY)
 }

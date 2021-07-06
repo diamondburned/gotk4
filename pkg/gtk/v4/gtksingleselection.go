@@ -69,17 +69,17 @@ type SingleSelection interface {
 	SetSelected(position uint)
 }
 
-// singleSelection implements the SingleSelection class.
+// singleSelection implements the SingleSelection interface.
 type singleSelection struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapSingleSelection wraps a GObject to the right type. It is
-// primarily used internally.
+var _ SingleSelection = (*singleSelection)(nil)
+
+// WrapSingleSelection wraps a GObject to a type that implements
+// interface SingleSelection. It is primarily used internally.
 func WrapSingleSelection(obj *externglib.Object) SingleSelection {
-	return singleSelection{
-		Objector: obj,
-	}
+	return singleSelection{obj}
 }
 
 func marshalSingleSelection(p uintptr) (interface{}, error) {

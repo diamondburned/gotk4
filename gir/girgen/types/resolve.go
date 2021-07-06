@@ -390,15 +390,20 @@ func (typ *Resolved) ImplType(needsNamespace bool) string {
 // interface type is returned.
 func (typ *Resolved) PublicType(needsNamespace bool) string {
 	switch {
-	case
-		typ.IsExternGLib("InitiallyUnowned"),
-		typ.IsExternGLib("Object"):
+	case typ.IsExternGLib("InitiallyUnowned"), typ.IsExternGLib("Object"):
+		if !needsNamespace {
+			return typ.ptr(true) + "Objector"
+		}
 
-		// TODO: there should be a better way to do this; one that adds imports.
 		return typ.ptr(true) + "gextras.Objector"
 	}
 
 	if typ.Builtin != nil {
+		if !needsNamespace {
+			parts := strings.Split(*typ.Builtin, ".")
+			return typ.ptr(false) + parts[len(parts)-1]
+		}
+
 		return typ.ptr(false) + *typ.Builtin
 	}
 

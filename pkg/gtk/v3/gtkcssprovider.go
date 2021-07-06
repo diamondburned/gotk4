@@ -77,6 +77,21 @@ type CSSProvider interface {
 	// AsStyleProvider casts the class to the StyleProvider interface.
 	AsStyleProvider() StyleProvider
 
+	// GetIconFactory returns the IconFactory defined to be in use for @path, or
+	// nil if none is defined.
+	//
+	// Deprecated: since version 3.8.
+	//
+	// This method is inherited from StyleProvider
+	GetIconFactory(path *WidgetPath) IconFactory
+	// GetStyle returns the style settings affecting a widget defined by @path,
+	// or nil if @provider doesn’t contemplate styling @path.
+	//
+	// Deprecated: since version 3.8.
+	//
+	// This method is inherited from StyleProvider
+	GetStyle(path *WidgetPath) StyleProperties
+
 	// LoadFromData loads @data into @css_provider, and by doing so clears any
 	// previously loaded information.
 	LoadFromData(data []byte) error
@@ -98,17 +113,17 @@ type CSSProvider interface {
 	String() string
 }
 
-// cssProvider implements the CSSProvider class.
+// cssProvider implements the CSSProvider interface.
 type cssProvider struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapCSSProvider wraps a GObject to the right type. It is
-// primarily used internally.
+var _ CSSProvider = (*cssProvider)(nil)
+
+// WrapCSSProvider wraps a GObject to a type that implements
+// interface CSSProvider. It is primarily used internally.
 func WrapCSSProvider(obj *externglib.Object) CSSProvider {
-	return cssProvider{
-		Objector: obj,
-	}
+	return cssProvider{obj}
 }
 
 func marshalCSSProvider(p uintptr) (interface{}, error) {
@@ -125,13 +140,21 @@ func NewCSSProvider() CSSProvider {
 
 	var _cssProvider CSSProvider // out
 
-	_cssProvider = WrapCSSProvider(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_cssProvider = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(CSSProvider)
 
 	return _cssProvider
 }
 
 func (c cssProvider) AsStyleProvider() StyleProvider {
 	return WrapStyleProvider(gextras.InternObject(c))
+}
+
+func (p cssProvider) GetIconFactory(path *WidgetPath) IconFactory {
+	return WrapStyleProvider(gextras.InternObject(p)).GetIconFactory(path)
+}
+
+func (p cssProvider) GetStyle(path *WidgetPath) StyleProperties {
+	return WrapStyleProvider(gextras.InternObject(p)).GetStyle(path)
 }
 
 func (c cssProvider) LoadFromData(data []byte) error {

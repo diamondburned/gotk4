@@ -78,17 +78,17 @@ type AccelMap interface {
 	gextras.Objector
 }
 
-// accelMap implements the AccelMap class.
+// accelMap implements the AccelMap interface.
 type accelMap struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapAccelMap wraps a GObject to the right type. It is
-// primarily used internally.
+var _ AccelMap = (*accelMap)(nil)
+
+// WrapAccelMap wraps a GObject to a type that implements
+// interface AccelMap. It is primarily used internally.
 func WrapAccelMap(obj *externglib.Object) AccelMap {
-	return accelMap{
-		Objector: obj,
-	}
+	return accelMap{obj}
 }
 
 func marshalAccelMap(p uintptr) (interface{}, error) {

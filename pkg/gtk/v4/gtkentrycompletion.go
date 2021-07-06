@@ -102,6 +102,62 @@ type EntryCompletion interface {
 	// AsCellLayout casts the class to the CellLayout interface.
 	AsCellLayout() CellLayout
 
+	// GetBuildableID gets the ID of the @buildable object.
+	//
+	// `GtkBuilder` sets the name based on the ID attribute of the <object> tag
+	// used to construct the @buildable.
+	//
+	// This method is inherited from Buildable
+	GetBuildableID() string
+	// AddAttribute adds an attribute mapping to the list in @cell_layout.
+	//
+	// The @column is the column of the model to get a value from, and the
+	// @attribute is the parameter on @cell to be set from the value. So for
+	// example if column 2 of the model contains strings, you could have the
+	// “text” attribute of a CellRendererText get its values from column 2.
+	//
+	// This method is inherited from CellLayout
+	AddAttribute(cell CellRenderer, attribute string, column int)
+	// Clear unsets all the mappings on all renderers on @cell_layout and
+	// removes all renderers from @cell_layout.
+	//
+	// This method is inherited from CellLayout
+	Clear()
+	// ClearAttributes clears all existing attributes previously set with
+	// gtk_cell_layout_set_attributes().
+	//
+	// This method is inherited from CellLayout
+	ClearAttributes(cell CellRenderer)
+	// GetArea returns the underlying CellArea which might be @cell_layout if
+	// called on a CellArea or might be nil if no CellArea is used by
+	// @cell_layout.
+	//
+	// This method is inherited from CellLayout
+	GetArea() CellArea
+	// PackEnd adds the @cell to the end of @cell_layout. If @expand is false,
+	// then the @cell is allocated no more space than it needs. Any unused space
+	// is divided evenly between cells for which @expand is true.
+	//
+	// Note that reusing the same cell renderer is not supported.
+	//
+	// This method is inherited from CellLayout
+	PackEnd(cell CellRenderer, expand bool)
+	// PackStart packs the @cell into the beginning of @cell_layout. If @expand
+	// is false, then the @cell is allocated no more space than it needs. Any
+	// unused space is divided evenly between cells for which @expand is true.
+	//
+	// Note that reusing the same cell renderer is not supported.
+	//
+	// This method is inherited from CellLayout
+	PackStart(cell CellRenderer, expand bool)
+	// Reorder re-inserts @cell at @position.
+	//
+	// Note that @cell has already to be packed into @cell_layout for this to
+	// function properly.
+	//
+	// This method is inherited from CellLayout
+	Reorder(cell CellRenderer, position int)
+
 	// Complete requests a completion operation, or in other words a refiltering
 	// of the current list with completions, using the current key.
 	//
@@ -188,17 +244,17 @@ type EntryCompletion interface {
 	SetTextColumn(column int)
 }
 
-// entryCompletion implements the EntryCompletion class.
+// entryCompletion implements the EntryCompletion interface.
 type entryCompletion struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapEntryCompletion wraps a GObject to the right type. It is
-// primarily used internally.
+var _ EntryCompletion = (*entryCompletion)(nil)
+
+// WrapEntryCompletion wraps a GObject to a type that implements
+// interface EntryCompletion. It is primarily used internally.
 func WrapEntryCompletion(obj *externglib.Object) EntryCompletion {
-	return entryCompletion{
-		Objector: obj,
-	}
+	return entryCompletion{obj}
 }
 
 func marshalEntryCompletion(p uintptr) (interface{}, error) {
@@ -215,7 +271,7 @@ func NewEntryCompletion() EntryCompletion {
 
 	var _entryCompletion EntryCompletion // out
 
-	_entryCompletion = WrapEntryCompletion(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_entryCompletion = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(EntryCompletion)
 
 	return _entryCompletion
 }
@@ -235,7 +291,7 @@ func NewEntryCompletionWithArea(area CellArea) EntryCompletion {
 
 	var _entryCompletion EntryCompletion // out
 
-	_entryCompletion = WrapEntryCompletion(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_entryCompletion = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(EntryCompletion)
 
 	return _entryCompletion
 }
@@ -246,6 +302,38 @@ func (e entryCompletion) AsBuildable() Buildable {
 
 func (e entryCompletion) AsCellLayout() CellLayout {
 	return WrapCellLayout(gextras.InternObject(e))
+}
+
+func (b entryCompletion) GetBuildableID() string {
+	return WrapBuildable(gextras.InternObject(b)).GetBuildableID()
+}
+
+func (c entryCompletion) AddAttribute(cell CellRenderer, attribute string, column int) {
+	WrapCellLayout(gextras.InternObject(c)).AddAttribute(cell, attribute, column)
+}
+
+func (c entryCompletion) Clear() {
+	WrapCellLayout(gextras.InternObject(c)).Clear()
+}
+
+func (c entryCompletion) ClearAttributes(cell CellRenderer) {
+	WrapCellLayout(gextras.InternObject(c)).ClearAttributes(cell)
+}
+
+func (c entryCompletion) GetArea() CellArea {
+	return WrapCellLayout(gextras.InternObject(c)).GetArea()
+}
+
+func (c entryCompletion) PackEnd(cell CellRenderer, expand bool) {
+	WrapCellLayout(gextras.InternObject(c)).PackEnd(cell, expand)
+}
+
+func (c entryCompletion) PackStart(cell CellRenderer, expand bool) {
+	WrapCellLayout(gextras.InternObject(c)).PackStart(cell, expand)
+}
+
+func (c entryCompletion) Reorder(cell CellRenderer, position int) {
+	WrapCellLayout(gextras.InternObject(c)).Reorder(cell, position)
 }
 
 func (c entryCompletion) Complete() {

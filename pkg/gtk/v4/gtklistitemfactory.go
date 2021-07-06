@@ -75,17 +75,17 @@ type ListItemFactory interface {
 	gextras.Objector
 }
 
-// listItemFactory implements the ListItemFactory class.
+// listItemFactory implements the ListItemFactory interface.
 type listItemFactory struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapListItemFactory wraps a GObject to the right type. It is
-// primarily used internally.
+var _ ListItemFactory = (*listItemFactory)(nil)
+
+// WrapListItemFactory wraps a GObject to a type that implements
+// interface ListItemFactory. It is primarily used internally.
 func WrapListItemFactory(obj *externglib.Object) ListItemFactory {
-	return listItemFactory{
-		Objector: obj,
-	}
+	return listItemFactory{obj}
 }
 
 func marshalListItemFactory(p uintptr) (interface{}, error) {

@@ -97,17 +97,17 @@ type RenderNode interface {
 	WriteToFile(filename string) error
 }
 
-// renderNode implements the RenderNode class.
+// renderNode implements the RenderNode interface.
 type renderNode struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapRenderNode wraps a GObject to the right type. It is
-// primarily used internally.
+var _ RenderNode = (*renderNode)(nil)
+
+// WrapRenderNode wraps a GObject to a type that implements
+// interface RenderNode. It is primarily used internally.
 func WrapRenderNode(obj *externglib.Object) RenderNode {
-	return renderNode{
-		Objector: obj,
-	}
+	return renderNode{obj}
 }
 
 func marshalRenderNode(p uintptr) (interface{}, error) {

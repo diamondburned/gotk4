@@ -1264,7 +1264,7 @@ type File interface {
 
 // file implements the File interface.
 type file struct {
-	gextras.Objector
+	*externglib.Object
 }
 
 var _ File = (*file)(nil)
@@ -1272,9 +1272,7 @@ var _ File = (*file)(nil)
 // WrapFile wraps a GObject to a type that implements
 // interface File. It is primarily used internally.
 func WrapFile(obj *externglib.Object) File {
-	return file{
-		Objector: obj,
-	}
+	return file{obj}
 }
 
 func marshalFile(p uintptr) (interface{}, error) {

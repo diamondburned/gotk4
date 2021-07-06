@@ -140,17 +140,17 @@ type IMContext interface {
 	SetUsePreedit(usePreedit bool)
 }
 
-// imContext implements the IMContext class.
+// imContext implements the IMContext interface.
 type imContext struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapIMContext wraps a GObject to the right type. It is
-// primarily used internally.
+var _ IMContext = (*imContext)(nil)
+
+// WrapIMContext wraps a GObject to a type that implements
+// interface IMContext. It is primarily used internally.
 func WrapIMContext(obj *externglib.Object) IMContext {
-	return imContext{
-		Objector: obj,
-	}
+	return imContext{obj}
 }
 
 func marshalIMContext(p uintptr) (interface{}, error) {

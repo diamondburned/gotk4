@@ -491,17 +491,17 @@ type Layout interface {
 	XYToIndex(x int, y int) (index_ int, trailing int, ok bool)
 }
 
-// layout implements the Layout class.
+// layout implements the Layout interface.
 type layout struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapLayout wraps a GObject to the right type. It is
-// primarily used internally.
+var _ Layout = (*layout)(nil)
+
+// WrapLayout wraps a GObject to a type that implements
+// interface Layout. It is primarily used internally.
 func WrapLayout(obj *externglib.Object) Layout {
-	return layout{
-		Objector: obj,
-	}
+	return layout{obj}
 }
 
 func marshalLayout(p uintptr) (interface{}, error) {
@@ -522,7 +522,7 @@ func NewLayout(context Context) Layout {
 
 	var _layout Layout // out
 
-	_layout = WrapLayout(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_layout = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Layout)
 
 	return _layout
 }

@@ -293,17 +293,17 @@ type Clipboard interface {
 	WaitIsUrisAvailable() bool
 }
 
-// clipboard implements the Clipboard class.
+// clipboard implements the Clipboard interface.
 type clipboard struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapClipboard wraps a GObject to the right type. It is
-// primarily used internally.
+var _ Clipboard = (*clipboard)(nil)
+
+// WrapClipboard wraps a GObject to a type that implements
+// interface Clipboard. It is primarily used internally.
 func WrapClipboard(obj *externglib.Object) Clipboard {
-	return clipboard{
-		Objector: obj,
-	}
+	return clipboard{obj}
 }
 
 func marshalClipboard(p uintptr) (interface{}, error) {

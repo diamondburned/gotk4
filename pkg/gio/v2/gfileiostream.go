@@ -8,6 +8,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -54,10 +55,145 @@ func init() {
 // implementation of #GSeekable just call into the same operations on the output
 // stream.
 type FileIOStream interface {
-	IOStream
+	gextras.Objector
 
+	// AsIOStream casts the class to the IOStream interface.
+	AsIOStream() IOStream
 	// AsSeekable casts the class to the Seekable interface.
 	AsSeekable() Seekable
+
+	// ClearPending clears the pending flag on @stream.
+	//
+	// This method is inherited from IOStream
+	ClearPending()
+	// Close closes the stream, releasing resources related to it. This will
+	// also close the individual input and output streams, if they are not
+	// already closed.
+	//
+	// Once the stream is closed, all other operations will return
+	// G_IO_ERROR_CLOSED. Closing a stream multiple times will not return an
+	// error.
+	//
+	// Closing a stream will automatically flush any outstanding buffers in the
+	// stream.
+	//
+	// Streams will be automatically closed when the last reference is dropped,
+	// but you might want to call this function to make sure resources are
+	// released as early as possible.
+	//
+	// Some streams might keep the backing store of the stream (e.g. a file
+	// descriptor) open after the stream is closed. See the documentation for
+	// the individual stream for details.
+	//
+	// On failure the first error that happened will be reported, but the close
+	// operation will finish as much as possible. A stream that failed to close
+	// will still return G_IO_ERROR_CLOSED for all operations. Still, it is
+	// important to check and report the error to the user, otherwise there
+	// might be a loss of data as all data might not be written.
+	//
+	// If @cancellable is not NULL, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+	// Cancelling a close will still leave the stream closed, but some streams
+	// can use a faster close that doesn't block to e.g. check errors.
+	//
+	// The default implementation of this method just calls close on the
+	// individual input/output streams.
+	//
+	// This method is inherited from IOStream
+	Close(cancellable Cancellable) error
+	// CloseAsync requests an asynchronous close of the stream, releasing
+	// resources related to it. When the operation is finished @callback will be
+	// called. You can then call g_io_stream_close_finish() to get the result of
+	// the operation.
+	//
+	// For behaviour details see g_io_stream_close().
+	//
+	// The asynchronous methods have a default fallback that uses threads to
+	// implement asynchronicity, so they are optional for inheriting classes.
+	// However, if you override one you must override all.
+	//
+	// This method is inherited from IOStream
+	CloseAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
+	// CloseFinish closes a stream.
+	//
+	// This method is inherited from IOStream
+	CloseFinish(result AsyncResult) error
+	// GetInputStream gets the input stream for this object. This is used for
+	// reading.
+	//
+	// This method is inherited from IOStream
+	GetInputStream() InputStream
+	// GetOutputStream gets the output stream for this object. This is used for
+	// writing.
+	//
+	// This method is inherited from IOStream
+	GetOutputStream() OutputStream
+	// HasPending checks if a stream has pending actions.
+	//
+	// This method is inherited from IOStream
+	HasPending() bool
+	// IsClosed checks if a stream is closed.
+	//
+	// This method is inherited from IOStream
+	IsClosed() bool
+	// SetPending sets @stream to have actions pending. If the pending flag is
+	// already set or @stream is closed, it will return false and set @error.
+	//
+	// This method is inherited from IOStream
+	SetPending() error
+	// SpliceAsync: asynchronously splice the output stream of @stream1 to the
+	// input stream of @stream2, and splice the output stream of @stream2 to the
+	// input stream of @stream1.
+	//
+	// When the operation is finished @callback will be called. You can then
+	// call g_io_stream_splice_finish() to get the result of the operation.
+	//
+	// This method is inherited from IOStream
+	SpliceAsync(stream2 IOStream, flags IOStreamSpliceFlags, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
+	// CanSeek tests if the stream supports the Iface.
+	//
+	// This method is inherited from Seekable
+	CanSeek() bool
+	// CanTruncate tests if the length of the stream can be adjusted with
+	// g_seekable_truncate().
+	//
+	// This method is inherited from Seekable
+	CanTruncate() bool
+	// Seek seeks in the stream by the given @offset, modified by @type.
+	//
+	// Attempting to seek past the end of the stream will have different results
+	// depending on if the stream is fixed-sized or resizable. If the stream is
+	// resizable then seeking past the end and then writing will result in zeros
+	// filling the empty space. Seeking past the end of a resizable stream and
+	// reading will result in EOF. Seeking past the end of a fixed-sized stream
+	// will fail.
+	//
+	// Any operation that would result in a negative offset will fail.
+	//
+	// If @cancellable is not nil, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+	//
+	// This method is inherited from Seekable
+	Seek(offset int64, typ glib.SeekType, cancellable Cancellable) error
+	// Tell tells the current position within the stream.
+	//
+	// This method is inherited from Seekable
+	Tell() int64
+	// Truncate sets the length of the stream to @offset. If the stream was
+	// previously larger than @offset, the extra data is discarded. If the
+	// stream was previously shorter than @offset, it is extended with NUL
+	// ('\0') bytes.
+	//
+	// If @cancellable is not nil, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned. If an
+	// operation was partially finished when the operation was cancelled the
+	// partial result will be returned, without an error.
+	//
+	// This method is inherited from Seekable
+	Truncate(offset int64, cancellable Cancellable) error
 
 	// Etag gets the entity tag for the file when it has been written. This must
 	// be called after the stream has been written and closed, as the etag can
@@ -92,17 +228,17 @@ type FileIOStream interface {
 	QueryInfoFinish(result AsyncResult) (FileInfo, error)
 }
 
-// fileIOStream implements the FileIOStream class.
+// fileIOStream implements the FileIOStream interface.
 type fileIOStream struct {
-	IOStream
+	*externglib.Object
 }
 
-// WrapFileIOStream wraps a GObject to the right type. It is
-// primarily used internally.
+var _ FileIOStream = (*fileIOStream)(nil)
+
+// WrapFileIOStream wraps a GObject to a type that implements
+// interface FileIOStream. It is primarily used internally.
 func WrapFileIOStream(obj *externglib.Object) FileIOStream {
-	return fileIOStream{
-		IOStream: WrapIOStream(obj),
-	}
+	return fileIOStream{obj}
 }
 
 func marshalFileIOStream(p uintptr) (interface{}, error) {
@@ -111,8 +247,72 @@ func marshalFileIOStream(p uintptr) (interface{}, error) {
 	return WrapFileIOStream(obj), nil
 }
 
+func (f fileIOStream) AsIOStream() IOStream {
+	return WrapIOStream(gextras.InternObject(f))
+}
+
 func (f fileIOStream) AsSeekable() Seekable {
 	return WrapSeekable(gextras.InternObject(f))
+}
+
+func (s fileIOStream) ClearPending() {
+	WrapIOStream(gextras.InternObject(s)).ClearPending()
+}
+
+func (s fileIOStream) Close(cancellable Cancellable) error {
+	return WrapIOStream(gextras.InternObject(s)).Close(cancellable)
+}
+
+func (s fileIOStream) CloseAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+	WrapIOStream(gextras.InternObject(s)).CloseAsync(ioPriority, cancellable, callback)
+}
+
+func (s fileIOStream) CloseFinish(result AsyncResult) error {
+	return WrapIOStream(gextras.InternObject(s)).CloseFinish(result)
+}
+
+func (s fileIOStream) GetInputStream() InputStream {
+	return WrapIOStream(gextras.InternObject(s)).GetInputStream()
+}
+
+func (s fileIOStream) GetOutputStream() OutputStream {
+	return WrapIOStream(gextras.InternObject(s)).GetOutputStream()
+}
+
+func (s fileIOStream) HasPending() bool {
+	return WrapIOStream(gextras.InternObject(s)).HasPending()
+}
+
+func (s fileIOStream) IsClosed() bool {
+	return WrapIOStream(gextras.InternObject(s)).IsClosed()
+}
+
+func (s fileIOStream) SetPending() error {
+	return WrapIOStream(gextras.InternObject(s)).SetPending()
+}
+
+func (s fileIOStream) SpliceAsync(stream2 IOStream, flags IOStreamSpliceFlags, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+	WrapIOStream(gextras.InternObject(s)).SpliceAsync(stream2, flags, ioPriority, cancellable, callback)
+}
+
+func (s fileIOStream) CanSeek() bool {
+	return WrapSeekable(gextras.InternObject(s)).CanSeek()
+}
+
+func (s fileIOStream) CanTruncate() bool {
+	return WrapSeekable(gextras.InternObject(s)).CanTruncate()
+}
+
+func (s fileIOStream) Seek(offset int64, typ glib.SeekType, cancellable Cancellable) error {
+	return WrapSeekable(gextras.InternObject(s)).Seek(offset, typ, cancellable)
+}
+
+func (s fileIOStream) Tell() int64 {
+	return WrapSeekable(gextras.InternObject(s)).Tell()
+}
+
+func (s fileIOStream) Truncate(offset int64, cancellable Cancellable) error {
+	return WrapSeekable(gextras.InternObject(s)).Truncate(offset, cancellable)
 }
 
 func (s fileIOStream) Etag() string {

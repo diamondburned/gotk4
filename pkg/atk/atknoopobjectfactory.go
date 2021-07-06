@@ -5,6 +5,7 @@ package atk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -25,20 +26,41 @@ func init() {
 // instance of this is created by an AtkRegistry if no factory type has not been
 // specified to create an accessible object of a particular type.
 type NoOpObjectFactory interface {
-	ObjectFactory
+	gextras.Objector
+
+	// AsObjectFactory casts the class to the ObjectFactory interface.
+	AsObjectFactory() ObjectFactory
+
+	// CreateAccessible provides an Object that implements an accessibility
+	// interface on behalf of @obj
+	//
+	// This method is inherited from ObjectFactory
+	CreateAccessible(obj gextras.Objector) Object
+	// GetAccessibleType gets the GType of the accessible which is created by
+	// the factory.
+	//
+	// This method is inherited from ObjectFactory
+	GetAccessibleType() externglib.Type
+	// Invalidate: inform @factory that it is no longer being used to create
+	// accessibles. When called, @factory may need to inform Objects which it
+	// has created that they need to be re-instantiated. Note: primarily used
+	// for runtime replacement of ObjectFactorys in object registries.
+	//
+	// This method is inherited from ObjectFactory
+	Invalidate()
 }
 
-// noOpObjectFactory implements the NoOpObjectFactory class.
+// noOpObjectFactory implements the NoOpObjectFactory interface.
 type noOpObjectFactory struct {
-	ObjectFactory
+	*externglib.Object
 }
 
-// WrapNoOpObjectFactory wraps a GObject to the right type. It is
-// primarily used internally.
+var _ NoOpObjectFactory = (*noOpObjectFactory)(nil)
+
+// WrapNoOpObjectFactory wraps a GObject to a type that implements
+// interface NoOpObjectFactory. It is primarily used internally.
 func WrapNoOpObjectFactory(obj *externglib.Object) NoOpObjectFactory {
-	return noOpObjectFactory{
-		ObjectFactory: WrapObjectFactory(obj),
-	}
+	return noOpObjectFactory{obj}
 }
 
 func marshalNoOpObjectFactory(p uintptr) (interface{}, error) {
@@ -56,7 +78,23 @@ func NewNoOpObjectFactory() NoOpObjectFactory {
 
 	var _noOpObjectFactory NoOpObjectFactory // out
 
-	_noOpObjectFactory = WrapNoOpObjectFactory(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_noOpObjectFactory = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(NoOpObjectFactory)
 
 	return _noOpObjectFactory
+}
+
+func (n noOpObjectFactory) AsObjectFactory() ObjectFactory {
+	return WrapObjectFactory(gextras.InternObject(n))
+}
+
+func (f noOpObjectFactory) CreateAccessible(obj gextras.Objector) Object {
+	return WrapObjectFactory(gextras.InternObject(f)).CreateAccessible(obj)
+}
+
+func (f noOpObjectFactory) GetAccessibleType() externglib.Type {
+	return WrapObjectFactory(gextras.InternObject(f)).GetAccessibleType()
+}
+
+func (f noOpObjectFactory) Invalidate() {
+	WrapObjectFactory(gextras.InternObject(f)).Invalidate()
 }

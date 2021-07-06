@@ -6,7 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -101,7 +100,7 @@ type Initable interface {
 
 // initable implements the Initable interface.
 type initable struct {
-	gextras.Objector
+	*externglib.Object
 }
 
 var _ Initable = (*initable)(nil)
@@ -109,9 +108,7 @@ var _ Initable = (*initable)(nil)
 // WrapInitable wraps a GObject to a type that implements
 // interface Initable. It is primarily used internally.
 func WrapInitable(obj *externglib.Object) Initable {
-	return initable{
-		Objector: obj,
-	}
+	return initable{obj}
 }
 
 func marshalInitable(p uintptr) (interface{}, error) {

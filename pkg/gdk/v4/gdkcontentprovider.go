@@ -60,17 +60,17 @@ type ContentProvider interface {
 	RefStorableFormats() *ContentFormats
 }
 
-// contentProvider implements the ContentProvider class.
+// contentProvider implements the ContentProvider interface.
 type contentProvider struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapContentProvider wraps a GObject to the right type. It is
-// primarily used internally.
+var _ ContentProvider = (*contentProvider)(nil)
+
+// WrapContentProvider wraps a GObject to a type that implements
+// interface ContentProvider. It is primarily used internally.
 func WrapContentProvider(obj *externglib.Object) ContentProvider {
-	return contentProvider{
-		Objector: obj,
-	}
+	return contentProvider{obj}
 }
 
 func marshalContentProvider(p uintptr) (interface{}, error) {
@@ -91,7 +91,7 @@ func NewContentProviderForValue(value externglib.Value) ContentProvider {
 
 	var _contentProvider ContentProvider // out
 
-	_contentProvider = WrapContentProvider(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_contentProvider = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(ContentProvider)
 
 	return _contentProvider
 }
@@ -126,7 +126,7 @@ func NewContentProviderUnion(providers []ContentProvider) ContentProvider {
 
 	var _contentProvider ContentProvider // out
 
-	_contentProvider = WrapContentProvider(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_contentProvider = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(ContentProvider)
 
 	return _contentProvider
 }

@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -38,7 +37,7 @@ type Orientable interface {
 
 // orientable implements the Orientable interface.
 type orientable struct {
-	gextras.Objector
+	*externglib.Object
 }
 
 var _ Orientable = (*orientable)(nil)
@@ -46,9 +45,7 @@ var _ Orientable = (*orientable)(nil)
 // WrapOrientable wraps a GObject to a type that implements
 // interface Orientable. It is primarily used internally.
 func WrapOrientable(obj *externglib.Object) Orientable {
-	return orientable{
-		Objector: obj,
-	}
+	return orientable{obj}
 }
 
 func marshalOrientable(p uintptr) (interface{}, error) {

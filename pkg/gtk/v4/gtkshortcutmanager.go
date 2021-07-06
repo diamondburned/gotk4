@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -40,7 +39,7 @@ type ShortcutManager interface {
 
 // shortcutManager implements the ShortcutManager interface.
 type shortcutManager struct {
-	gextras.Objector
+	*externglib.Object
 }
 
 var _ ShortcutManager = (*shortcutManager)(nil)
@@ -48,9 +47,7 @@ var _ ShortcutManager = (*shortcutManager)(nil)
 // WrapShortcutManager wraps a GObject to a type that implements
 // interface ShortcutManager. It is primarily used internally.
 func WrapShortcutManager(obj *externglib.Object) ShortcutManager {
-	return shortcutManager{
-		Objector: obj,
-	}
+	return shortcutManager{obj}
 }
 
 func marshalShortcutManager(p uintptr) (interface{}, error) {

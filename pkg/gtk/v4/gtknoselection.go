@@ -31,17 +31,17 @@ type NoSelection interface {
 	gextras.Objector
 }
 
-// noSelection implements the NoSelection class.
+// noSelection implements the NoSelection interface.
 type noSelection struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapNoSelection wraps a GObject to the right type. It is
-// primarily used internally.
+var _ NoSelection = (*noSelection)(nil)
+
+// WrapNoSelection wraps a GObject to a type that implements
+// interface NoSelection. It is primarily used internally.
 func WrapNoSelection(obj *externglib.Object) NoSelection {
-	return noSelection{
-		Objector: obj,
-	}
+	return noSelection{obj}
 }
 
 func marshalNoSelection(p uintptr) (interface{}, error) {

@@ -5,6 +5,8 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -24,6 +26,8 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 // #include <glib-object.h>
+//
+// void gotk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 func init() {
@@ -35,7 +39,324 @@ func init() {
 // TLSClientConnection is the client-side subclass of Connection, representing a
 // client-side TLS connection.
 type TLSClientConnection interface {
-	TLSConnection
+	gextras.Objector
+
+	// AsTLSConnection casts the class to the TLSConnection interface.
+	AsTLSConnection() TLSConnection
+
+	// EmitAcceptCertificate: used by Connection implementations to emit the
+	// Connection::accept-certificate signal.
+	//
+	// This method is inherited from TLSConnection
+	EmitAcceptCertificate(peerCert TLSCertificate, errors TLSCertificateFlags) bool
+	// GetCertificate gets @conn's certificate, as set by
+	// g_tls_connection_set_certificate().
+	//
+	// This method is inherited from TLSConnection
+	GetCertificate() TLSCertificate
+	// GetChannelBindingData: query the TLS backend for TLS channel binding data
+	// of @type for @conn.
+	//
+	// This call retrieves TLS channel binding data as specified in RFC 5056
+	// (https://tools.ietf.org/html/rfc5056), RFC 5929
+	// (https://tools.ietf.org/html/rfc5929), and related RFCs. The binding data
+	// is returned in @data. The @data is resized by the callee using Array
+	// buffer management and will be freed when the @data is destroyed by
+	// g_byte_array_unref(). If @data is nil, it will only check whether TLS
+	// backend is able to fetch the data (e.g. whether @type is supported by the
+	// TLS backend). It does not guarantee that the data will be available
+	// though. That could happen if TLS connection does not support @type or the
+	// binding data is not available yet due to additional negotiation or input
+	// required.
+	//
+	// This method is inherited from TLSConnection
+	GetChannelBindingData(typ TLSChannelBindingType) ([]byte, error)
+	// GetDatabase gets the certificate database that @conn uses to verify peer
+	// certificates. See g_tls_connection_set_database().
+	//
+	// This method is inherited from TLSConnection
+	GetDatabase() TLSDatabase
+	// GetInteraction: get the object that will be used to interact with the
+	// user. It will be used for things like prompting the user for passwords.
+	// If nil is returned, then no user interaction will occur for this
+	// connection.
+	//
+	// This method is inherited from TLSConnection
+	GetInteraction() TLSInteraction
+	// GetNegotiatedProtocol gets the name of the application-layer protocol
+	// negotiated during the handshake.
+	//
+	// If the peer did not use the ALPN extension, or did not advertise a
+	// protocol that matched one of @conn's protocols, or the TLS backend does
+	// not support ALPN, then this will be nil. See
+	// g_tls_connection_set_advertised_protocols().
+	//
+	// This method is inherited from TLSConnection
+	GetNegotiatedProtocol() string
+	// GetPeerCertificate gets @conn's peer's certificate after the handshake
+	// has completed or failed. (It is not set during the emission of
+	// Connection::accept-certificate.)
+	//
+	// This method is inherited from TLSConnection
+	GetPeerCertificate() TLSCertificate
+	// GetPeerCertificateErrors gets the errors associated with validating
+	// @conn's peer's certificate, after the handshake has completed or failed.
+	// (It is not set during the emission of Connection::accept-certificate.)
+	//
+	// This method is inherited from TLSConnection
+	GetPeerCertificateErrors() TLSCertificateFlags
+	// GetRehandshakeMode gets @conn rehandshaking mode. See
+	// g_tls_connection_set_rehandshake_mode() for details.
+	//
+	// Deprecated: since version 2.60.
+	//
+	// This method is inherited from TLSConnection
+	GetRehandshakeMode() TLSRehandshakeMode
+	// GetRequireCloseNotify tests whether or not @conn expects a proper TLS
+	// close notification when the connection is closed. See
+	// g_tls_connection_set_require_close_notify() for details.
+	//
+	// This method is inherited from TLSConnection
+	GetRequireCloseNotify() bool
+	// GetUseSystemCertDB gets whether @conn uses the system certificate
+	// database to verify peer certificates. See
+	// g_tls_connection_set_use_system_certdb().
+	//
+	// Deprecated: since version 2.30.
+	//
+	// This method is inherited from TLSConnection
+	GetUseSystemCertDB() bool
+	// Handshake attempts a TLS handshake on @conn.
+	//
+	// On the client side, it is never necessary to call this method; although
+	// the connection needs to perform a handshake after connecting (or after
+	// sending a "STARTTLS"-type command), Connection will handle this for you
+	// automatically when you try to send or receive data on the connection. You
+	// can call g_tls_connection_handshake() manually if you want to know
+	// whether the initial handshake succeeded or failed (as opposed to just
+	// immediately trying to use @conn to read or write, in which case, if it
+	// fails, it may not be possible to tell if it failed before or after
+	// completing the handshake), but beware that servers may reject client
+	// authentication after the handshake has completed, so a successful
+	// handshake does not indicate the connection will be usable.
+	//
+	// Likewise, on the server side, although a handshake is necessary at the
+	// beginning of the communication, you do not need to call this function
+	// explicitly unless you want clearer error reporting.
+	//
+	// Previously, calling g_tls_connection_handshake() after the initial
+	// handshake would trigger a rehandshake; however, this usage was deprecated
+	// in GLib 2.60 because rehandshaking was removed from the TLS protocol in
+	// TLS 1.3. Since GLib 2.64, calling this function after the initial
+	// handshake will no longer do anything.
+	//
+	// When using a Connection created by Client, the Client performs the
+	// initial handshake, so calling this function manually is not recommended.
+	//
+	// Connection::accept_certificate may be emitted during the handshake.
+	//
+	// This method is inherited from TLSConnection
+	Handshake(cancellable Cancellable) error
+	// HandshakeAsync: asynchronously performs a TLS handshake on @conn. See
+	// g_tls_connection_handshake() for more information.
+	//
+	// This method is inherited from TLSConnection
+	HandshakeAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
+	// HandshakeFinish: finish an asynchronous TLS handshake operation. See
+	// g_tls_connection_handshake() for more information.
+	//
+	// This method is inherited from TLSConnection
+	HandshakeFinish(result AsyncResult) error
+	// SetAdvertisedProtocols sets the list of application-layer protocols to
+	// advertise that the caller is willing to speak on this connection. The
+	// Application-Layer Protocol Negotiation (ALPN) extension will be used to
+	// negotiate a compatible protocol with the peer; use
+	// g_tls_connection_get_negotiated_protocol() to find the negotiated
+	// protocol after the handshake. Specifying nil for the the value of
+	// @protocols will disable ALPN negotiation.
+	//
+	// See IANA TLS ALPN Protocol IDs
+	// (https://www.iana.org/assignments/tls-extensiontype-values/tls-extensiontype-values.xhtml#alpn-protocol-ids)
+	// for a list of registered protocol IDs.
+	//
+	// This method is inherited from TLSConnection
+	SetAdvertisedProtocols(protocols []string)
+	// SetCertificate: this sets the certificate that @conn will present to its
+	// peer during the TLS handshake. For a ServerConnection, it is mandatory to
+	// set this, and that will normally be done at construct time.
+	//
+	// For a ClientConnection, this is optional. If a handshake fails with
+	// G_TLS_ERROR_CERTIFICATE_REQUIRED, that means that the server requires a
+	// certificate, and if you try connecting again, you should call this method
+	// first. You can call g_tls_client_connection_get_accepted_cas() on the
+	// failed connection to get a list of Certificate Authorities that the
+	// server will accept certificates from.
+	//
+	// (It is also possible that a server will allow the connection with or
+	// without a certificate; in that case, if you don't provide a certificate,
+	// you can tell that the server requested one by the fact that
+	// g_tls_client_connection_get_accepted_cas() will return non-nil.)
+	//
+	// This method is inherited from TLSConnection
+	SetCertificate(certificate TLSCertificate)
+	// SetDatabase sets the certificate database that is used to verify peer
+	// certificates. This is set to the default database by default. See
+	// g_tls_backend_get_default_database(). If set to nil, then peer
+	// certificate validation will always set the G_TLS_CERTIFICATE_UNKNOWN_CA
+	// error (meaning Connection::accept-certificate will always be emitted on
+	// client-side connections, unless that bit is not set in
+	// ClientConnection:validation-flags).
+	//
+	// This method is inherited from TLSConnection
+	SetDatabase(database TLSDatabase)
+	// SetInteraction: set the object that will be used to interact with the
+	// user. It will be used for things like prompting the user for passwords.
+	//
+	// The @interaction argument will normally be a derived subclass of
+	// Interaction. nil can also be provided if no user interaction should occur
+	// for this connection.
+	//
+	// This method is inherited from TLSConnection
+	SetInteraction(interaction TLSInteraction)
+	// SetRehandshakeMode: since GLib 2.64, changing the rehandshake mode is no
+	// longer supported and will have no effect. With TLS 1.3, rehandshaking has
+	// been removed from the TLS protocol, replaced by separate post-handshake
+	// authentication and rekey operations.
+	//
+	// Deprecated: since version 2.60.
+	//
+	// This method is inherited from TLSConnection
+	SetRehandshakeMode(mode TLSRehandshakeMode)
+	// SetRequireCloseNotify sets whether or not @conn expects a proper TLS
+	// close notification before the connection is closed. If this is true (the
+	// default), then @conn will expect to receive a TLS close notification from
+	// its peer before the connection is closed, and will return a
+	// G_TLS_ERROR_EOF error if the connection is closed without proper
+	// notification (since this may indicate a network error, or
+	// man-in-the-middle attack).
+	//
+	// In some protocols, the application will know whether or not the
+	// connection was closed cleanly based on application-level data (because
+	// the application-level data includes a length field, or is somehow
+	// self-delimiting); in this case, the close notify is redundant and
+	// sometimes omitted. (TLS 1.1 explicitly allows this; in TLS 1.0 it is
+	// technically an error, but often done anyway.) You can use
+	// g_tls_connection_set_require_close_notify() to tell @conn to allow an
+	// "unannounced" connection close, in which case the close will show up as a
+	// 0-length read, as in a non-TLS Connection, and it is up to the
+	// application to check that the data has been fully received.
+	//
+	// Note that this only affects the behavior when the peer closes the
+	// connection; when the application calls g_io_stream_close() itself on
+	// @conn, this will send a close notification regardless of the setting of
+	// this property. If you explicitly want to do an unclean close, you can
+	// close @conn's Connection:base-io-stream rather than closing @conn itself,
+	// but note that this may only be done when no other operations are pending
+	// on @conn or the base I/O stream.
+	//
+	// This method is inherited from TLSConnection
+	SetRequireCloseNotify(requireCloseNotify bool)
+	// SetUseSystemCertDB sets whether @conn uses the system certificate
+	// database to verify peer certificates. This is true by default. If set to
+	// false, then peer certificate validation will always set the
+	// G_TLS_CERTIFICATE_UNKNOWN_CA error (meaning
+	// Connection::accept-certificate will always be emitted on client-side
+	// connections, unless that bit is not set in
+	// ClientConnection:validation-flags).
+	//
+	// Deprecated: since version 2.30.
+	//
+	// This method is inherited from TLSConnection
+	SetUseSystemCertDB(useSystemCertdb bool)
+	// ClearPending clears the pending flag on @stream.
+	//
+	// This method is inherited from IOStream
+	ClearPending()
+	// Close closes the stream, releasing resources related to it. This will
+	// also close the individual input and output streams, if they are not
+	// already closed.
+	//
+	// Once the stream is closed, all other operations will return
+	// G_IO_ERROR_CLOSED. Closing a stream multiple times will not return an
+	// error.
+	//
+	// Closing a stream will automatically flush any outstanding buffers in the
+	// stream.
+	//
+	// Streams will be automatically closed when the last reference is dropped,
+	// but you might want to call this function to make sure resources are
+	// released as early as possible.
+	//
+	// Some streams might keep the backing store of the stream (e.g. a file
+	// descriptor) open after the stream is closed. See the documentation for
+	// the individual stream for details.
+	//
+	// On failure the first error that happened will be reported, but the close
+	// operation will finish as much as possible. A stream that failed to close
+	// will still return G_IO_ERROR_CLOSED for all operations. Still, it is
+	// important to check and report the error to the user, otherwise there
+	// might be a loss of data as all data might not be written.
+	//
+	// If @cancellable is not NULL, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+	// Cancelling a close will still leave the stream closed, but some streams
+	// can use a faster close that doesn't block to e.g. check errors.
+	//
+	// The default implementation of this method just calls close on the
+	// individual input/output streams.
+	//
+	// This method is inherited from IOStream
+	Close(cancellable Cancellable) error
+	// CloseAsync requests an asynchronous close of the stream, releasing
+	// resources related to it. When the operation is finished @callback will be
+	// called. You can then call g_io_stream_close_finish() to get the result of
+	// the operation.
+	//
+	// For behaviour details see g_io_stream_close().
+	//
+	// The asynchronous methods have a default fallback that uses threads to
+	// implement asynchronicity, so they are optional for inheriting classes.
+	// However, if you override one you must override all.
+	//
+	// This method is inherited from IOStream
+	CloseAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
+	// CloseFinish closes a stream.
+	//
+	// This method is inherited from IOStream
+	CloseFinish(result AsyncResult) error
+	// GetInputStream gets the input stream for this object. This is used for
+	// reading.
+	//
+	// This method is inherited from IOStream
+	GetInputStream() InputStream
+	// GetOutputStream gets the output stream for this object. This is used for
+	// writing.
+	//
+	// This method is inherited from IOStream
+	GetOutputStream() OutputStream
+	// HasPending checks if a stream has pending actions.
+	//
+	// This method is inherited from IOStream
+	HasPending() bool
+	// IsClosed checks if a stream is closed.
+	//
+	// This method is inherited from IOStream
+	IsClosed() bool
+	// SetPending sets @stream to have actions pending. If the pending flag is
+	// already set or @stream is closed, it will return false and set @error.
+	//
+	// This method is inherited from IOStream
+	SetPending() error
+	// SpliceAsync: asynchronously splice the output stream of @stream1 to the
+	// input stream of @stream2, and splice the output stream of @stream2 to the
+	// input stream of @stream1.
+	//
+	// When the operation is finished @callback will be called. You can then
+	// call g_io_stream_splice_finish() to get the result of the operation.
+	//
+	// This method is inherited from IOStream
+	SpliceAsync(stream2 IOStream, flags IOStreamSpliceFlags, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 
 	// CopySessionState: possibly copies session state from one connection to
 	// another, for use in TLS session resumption. This is not normally needed,
@@ -99,7 +420,7 @@ type TLSClientConnection interface {
 
 // tlsClientConnection implements the TLSClientConnection interface.
 type tlsClientConnection struct {
-	TLSConnection
+	*externglib.Object
 }
 
 var _ TLSClientConnection = (*tlsClientConnection)(nil)
@@ -107,15 +428,141 @@ var _ TLSClientConnection = (*tlsClientConnection)(nil)
 // WrapTLSClientConnection wraps a GObject to a type that implements
 // interface TLSClientConnection. It is primarily used internally.
 func WrapTLSClientConnection(obj *externglib.Object) TLSClientConnection {
-	return tlsClientConnection{
-		TLSConnection: WrapTLSConnection(obj),
-	}
+	return tlsClientConnection{obj}
 }
 
 func marshalTLSClientConnection(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapTLSClientConnection(obj), nil
+}
+
+func (t tlsClientConnection) AsTLSConnection() TLSConnection {
+	return WrapTLSConnection(gextras.InternObject(t))
+}
+
+func (c tlsClientConnection) EmitAcceptCertificate(peerCert TLSCertificate, errors TLSCertificateFlags) bool {
+	return WrapTLSConnection(gextras.InternObject(c)).EmitAcceptCertificate(peerCert, errors)
+}
+
+func (c tlsClientConnection) GetCertificate() TLSCertificate {
+	return WrapTLSConnection(gextras.InternObject(c)).GetCertificate()
+}
+
+func (c tlsClientConnection) GetChannelBindingData(typ TLSChannelBindingType) ([]byte, error) {
+	return WrapTLSConnection(gextras.InternObject(c)).GetChannelBindingData(typ)
+}
+
+func (c tlsClientConnection) GetDatabase() TLSDatabase {
+	return WrapTLSConnection(gextras.InternObject(c)).GetDatabase()
+}
+
+func (c tlsClientConnection) GetInteraction() TLSInteraction {
+	return WrapTLSConnection(gextras.InternObject(c)).GetInteraction()
+}
+
+func (c tlsClientConnection) GetNegotiatedProtocol() string {
+	return WrapTLSConnection(gextras.InternObject(c)).GetNegotiatedProtocol()
+}
+
+func (c tlsClientConnection) GetPeerCertificate() TLSCertificate {
+	return WrapTLSConnection(gextras.InternObject(c)).GetPeerCertificate()
+}
+
+func (c tlsClientConnection) GetPeerCertificateErrors() TLSCertificateFlags {
+	return WrapTLSConnection(gextras.InternObject(c)).GetPeerCertificateErrors()
+}
+
+func (c tlsClientConnection) GetRehandshakeMode() TLSRehandshakeMode {
+	return WrapTLSConnection(gextras.InternObject(c)).GetRehandshakeMode()
+}
+
+func (c tlsClientConnection) GetRequireCloseNotify() bool {
+	return WrapTLSConnection(gextras.InternObject(c)).GetRequireCloseNotify()
+}
+
+func (c tlsClientConnection) GetUseSystemCertDB() bool {
+	return WrapTLSConnection(gextras.InternObject(c)).GetUseSystemCertDB()
+}
+
+func (c tlsClientConnection) Handshake(cancellable Cancellable) error {
+	return WrapTLSConnection(gextras.InternObject(c)).Handshake(cancellable)
+}
+
+func (c tlsClientConnection) HandshakeAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+	WrapTLSConnection(gextras.InternObject(c)).HandshakeAsync(ioPriority, cancellable, callback)
+}
+
+func (c tlsClientConnection) HandshakeFinish(result AsyncResult) error {
+	return WrapTLSConnection(gextras.InternObject(c)).HandshakeFinish(result)
+}
+
+func (c tlsClientConnection) SetAdvertisedProtocols(protocols []string) {
+	WrapTLSConnection(gextras.InternObject(c)).SetAdvertisedProtocols(protocols)
+}
+
+func (c tlsClientConnection) SetCertificate(certificate TLSCertificate) {
+	WrapTLSConnection(gextras.InternObject(c)).SetCertificate(certificate)
+}
+
+func (c tlsClientConnection) SetDatabase(database TLSDatabase) {
+	WrapTLSConnection(gextras.InternObject(c)).SetDatabase(database)
+}
+
+func (c tlsClientConnection) SetInteraction(interaction TLSInteraction) {
+	WrapTLSConnection(gextras.InternObject(c)).SetInteraction(interaction)
+}
+
+func (c tlsClientConnection) SetRehandshakeMode(mode TLSRehandshakeMode) {
+	WrapTLSConnection(gextras.InternObject(c)).SetRehandshakeMode(mode)
+}
+
+func (c tlsClientConnection) SetRequireCloseNotify(requireCloseNotify bool) {
+	WrapTLSConnection(gextras.InternObject(c)).SetRequireCloseNotify(requireCloseNotify)
+}
+
+func (c tlsClientConnection) SetUseSystemCertDB(useSystemCertdb bool) {
+	WrapTLSConnection(gextras.InternObject(c)).SetUseSystemCertDB(useSystemCertdb)
+}
+
+func (s tlsClientConnection) ClearPending() {
+	WrapIOStream(gextras.InternObject(s)).ClearPending()
+}
+
+func (s tlsClientConnection) Close(cancellable Cancellable) error {
+	return WrapIOStream(gextras.InternObject(s)).Close(cancellable)
+}
+
+func (s tlsClientConnection) CloseAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+	WrapIOStream(gextras.InternObject(s)).CloseAsync(ioPriority, cancellable, callback)
+}
+
+func (s tlsClientConnection) CloseFinish(result AsyncResult) error {
+	return WrapIOStream(gextras.InternObject(s)).CloseFinish(result)
+}
+
+func (s tlsClientConnection) GetInputStream() InputStream {
+	return WrapIOStream(gextras.InternObject(s)).GetInputStream()
+}
+
+func (s tlsClientConnection) GetOutputStream() OutputStream {
+	return WrapIOStream(gextras.InternObject(s)).GetOutputStream()
+}
+
+func (s tlsClientConnection) HasPending() bool {
+	return WrapIOStream(gextras.InternObject(s)).HasPending()
+}
+
+func (s tlsClientConnection) IsClosed() bool {
+	return WrapIOStream(gextras.InternObject(s)).IsClosed()
+}
+
+func (s tlsClientConnection) SetPending() error {
+	return WrapIOStream(gextras.InternObject(s)).SetPending()
+}
+
+func (s tlsClientConnection) SpliceAsync(stream2 IOStream, flags IOStreamSpliceFlags, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+	WrapIOStream(gextras.InternObject(s)).SpliceAsync(stream2, flags, ioPriority, cancellable, callback)
 }
 
 func (c tlsClientConnection) CopySessionState(source TLSClientConnection) {

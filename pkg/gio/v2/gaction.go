@@ -6,7 +6,6 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -142,7 +141,7 @@ type Action interface {
 
 // action implements the Action interface.
 type action struct {
-	gextras.Objector
+	*externglib.Object
 }
 
 var _ Action = (*action)(nil)
@@ -150,9 +149,7 @@ var _ Action = (*action)(nil)
 // WrapAction wraps a GObject to a type that implements
 // interface Action. It is primarily used internally.
 func WrapAction(obj *externglib.Object) Action {
-	return action{
-		Objector: obj,
-	}
+	return action{obj}
 }
 
 func marshalAction(p uintptr) (interface{}, error) {

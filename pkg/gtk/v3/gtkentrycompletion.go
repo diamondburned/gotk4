@@ -7,6 +7,7 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -104,6 +105,109 @@ type EntryCompletion interface {
 	// AsCellLayout casts the class to the CellLayout interface.
 	AsCellLayout() CellLayout
 
+	// AddChild adds a child to @buildable. @type is an optional string
+	// describing how the child should be added.
+	//
+	// This method is inherited from Buildable
+	AddChild(builder Builder, child gextras.Objector, typ string)
+	// ConstructChild constructs a child of @buildable with the name @name.
+	//
+	// Builder calls this function if a “constructor” has been specified in the
+	// UI definition.
+	//
+	// This method is inherited from Buildable
+	ConstructChild(builder Builder, name string) gextras.Objector
+	// CustomFinished: this is similar to gtk_buildable_parser_finished() but is
+	// called once for each custom tag handled by the @buildable.
+	//
+	// This method is inherited from Buildable
+	CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{})
+	// CustomTagEnd: this is called at the end of each custom element handled by
+	// the buildable.
+	//
+	// This method is inherited from Buildable
+	CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data interface{})
+	// CustomTagStart: this is called for each unknown element under <child>.
+	//
+	// This method is inherited from Buildable
+	CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool)
+	// GetInternalChild: get the internal child called @childname of the
+	// @buildable object.
+	//
+	// This method is inherited from Buildable
+	GetInternalChild(builder Builder, childname string) gextras.Objector
+	// GetName gets the name of the @buildable object.
+	//
+	// Builder sets the name based on the [GtkBuilder UI definition][BUILDER-UI]
+	// used to construct the @buildable.
+	//
+	// This method is inherited from Buildable
+	GetName() string
+	// ParserFinished: called when the builder finishes the parsing of a
+	// [GtkBuilder UI definition][BUILDER-UI]. Note that this will be called
+	// once for each time gtk_builder_add_from_file() or
+	// gtk_builder_add_from_string() is called on a builder.
+	//
+	// This method is inherited from Buildable
+	ParserFinished(builder Builder)
+	// SetBuildableProperty sets the property name @name to @value on the
+	// @buildable object.
+	//
+	// This method is inherited from Buildable
+	SetBuildableProperty(builder Builder, name string, value externglib.Value)
+	// SetName sets the name of the @buildable object.
+	//
+	// This method is inherited from Buildable
+	SetName(name string)
+	// AddAttribute adds an attribute mapping to the list in @cell_layout.
+	//
+	// The @column is the column of the model to get a value from, and the
+	// @attribute is the parameter on @cell to be set from the value. So for
+	// example if column 2 of the model contains strings, you could have the
+	// “text” attribute of a CellRendererText get its values from column 2.
+	//
+	// This method is inherited from CellLayout
+	AddAttribute(cell CellRenderer, attribute string, column int)
+	// Clear unsets all the mappings on all renderers on @cell_layout and
+	// removes all renderers from @cell_layout.
+	//
+	// This method is inherited from CellLayout
+	Clear()
+	// ClearAttributes clears all existing attributes previously set with
+	// gtk_cell_layout_set_attributes().
+	//
+	// This method is inherited from CellLayout
+	ClearAttributes(cell CellRenderer)
+	// GetArea returns the underlying CellArea which might be @cell_layout if
+	// called on a CellArea or might be nil if no CellArea is used by
+	// @cell_layout.
+	//
+	// This method is inherited from CellLayout
+	GetArea() CellArea
+	// PackEnd adds the @cell to the end of @cell_layout. If @expand is false,
+	// then the @cell is allocated no more space than it needs. Any unused space
+	// is divided evenly between cells for which @expand is true.
+	//
+	// Note that reusing the same cell renderer is not supported.
+	//
+	// This method is inherited from CellLayout
+	PackEnd(cell CellRenderer, expand bool)
+	// PackStart packs the @cell into the beginning of @cell_layout. If @expand
+	// is false, then the @cell is allocated no more space than it needs. Any
+	// unused space is divided evenly between cells for which @expand is true.
+	//
+	// Note that reusing the same cell renderer is not supported.
+	//
+	// This method is inherited from CellLayout
+	PackStart(cell CellRenderer, expand bool)
+	// Reorder re-inserts @cell at @position.
+	//
+	// Note that @cell has already to be packed into @cell_layout for this to
+	// function properly.
+	//
+	// This method is inherited from CellLayout
+	Reorder(cell CellRenderer, position int)
+
 	// Complete requests a completion operation, or in other words a refiltering
 	// of the current list with completions, using the current key. The
 	// completion list view will be updated accordingly.
@@ -197,17 +301,17 @@ type EntryCompletion interface {
 	SetTextColumn(column int)
 }
 
-// entryCompletion implements the EntryCompletion class.
+// entryCompletion implements the EntryCompletion interface.
 type entryCompletion struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapEntryCompletion wraps a GObject to the right type. It is
-// primarily used internally.
+var _ EntryCompletion = (*entryCompletion)(nil)
+
+// WrapEntryCompletion wraps a GObject to a type that implements
+// interface EntryCompletion. It is primarily used internally.
 func WrapEntryCompletion(obj *externglib.Object) EntryCompletion {
-	return entryCompletion{
-		Objector: obj,
-	}
+	return entryCompletion{obj}
 }
 
 func marshalEntryCompletion(p uintptr) (interface{}, error) {
@@ -224,7 +328,7 @@ func NewEntryCompletion() EntryCompletion {
 
 	var _entryCompletion EntryCompletion // out
 
-	_entryCompletion = WrapEntryCompletion(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_entryCompletion = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(EntryCompletion)
 
 	return _entryCompletion
 }
@@ -242,7 +346,7 @@ func NewEntryCompletionWithArea(area CellArea) EntryCompletion {
 
 	var _entryCompletion EntryCompletion // out
 
-	_entryCompletion = WrapEntryCompletion(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_entryCompletion = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(EntryCompletion)
 
 	return _entryCompletion
 }
@@ -253,6 +357,74 @@ func (e entryCompletion) AsBuildable() Buildable {
 
 func (e entryCompletion) AsCellLayout() CellLayout {
 	return WrapCellLayout(gextras.InternObject(e))
+}
+
+func (b entryCompletion) AddChild(builder Builder, child gextras.Objector, typ string) {
+	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
+}
+
+func (b entryCompletion) ConstructChild(builder Builder, name string) gextras.Objector {
+	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
+}
+
+func (b entryCompletion) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
+}
+
+func (b entryCompletion) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
+}
+
+func (b entryCompletion) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
+	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
+}
+
+func (b entryCompletion) GetInternalChild(builder Builder, childname string) gextras.Objector {
+	return WrapBuildable(gextras.InternObject(b)).GetInternalChild(builder, childname)
+}
+
+func (b entryCompletion) GetName() string {
+	return WrapBuildable(gextras.InternObject(b)).GetName()
+}
+
+func (b entryCompletion) ParserFinished(builder Builder) {
+	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
+}
+
+func (b entryCompletion) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
+	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
+}
+
+func (b entryCompletion) SetName(name string) {
+	WrapBuildable(gextras.InternObject(b)).SetName(name)
+}
+
+func (c entryCompletion) AddAttribute(cell CellRenderer, attribute string, column int) {
+	WrapCellLayout(gextras.InternObject(c)).AddAttribute(cell, attribute, column)
+}
+
+func (c entryCompletion) Clear() {
+	WrapCellLayout(gextras.InternObject(c)).Clear()
+}
+
+func (c entryCompletion) ClearAttributes(cell CellRenderer) {
+	WrapCellLayout(gextras.InternObject(c)).ClearAttributes(cell)
+}
+
+func (c entryCompletion) GetArea() CellArea {
+	return WrapCellLayout(gextras.InternObject(c)).GetArea()
+}
+
+func (c entryCompletion) PackEnd(cell CellRenderer, expand bool) {
+	WrapCellLayout(gextras.InternObject(c)).PackEnd(cell, expand)
+}
+
+func (c entryCompletion) PackStart(cell CellRenderer, expand bool) {
+	WrapCellLayout(gextras.InternObject(c)).PackStart(cell, expand)
+}
+
+func (c entryCompletion) Reorder(cell CellRenderer, position int) {
+	WrapCellLayout(gextras.InternObject(c)).Reorder(cell, position)
 }
 
 func (c entryCompletion) Complete() {

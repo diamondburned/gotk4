@@ -56,17 +56,17 @@ type BookmarkList interface {
 	SetIOPriority(ioPriority int)
 }
 
-// bookmarkList implements the BookmarkList class.
+// bookmarkList implements the BookmarkList interface.
 type bookmarkList struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapBookmarkList wraps a GObject to the right type. It is
-// primarily used internally.
+var _ BookmarkList = (*bookmarkList)(nil)
+
+// WrapBookmarkList wraps a GObject to a type that implements
+// interface BookmarkList. It is primarily used internally.
 func WrapBookmarkList(obj *externglib.Object) BookmarkList {
-	return bookmarkList{
-		Objector: obj,
-	}
+	return bookmarkList{obj}
 }
 
 func marshalBookmarkList(p uintptr) (interface{}, error) {
@@ -90,7 +90,7 @@ func NewBookmarkList(filename string, attributes string) BookmarkList {
 
 	var _bookmarkList BookmarkList // out
 
-	_bookmarkList = WrapBookmarkList(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_bookmarkList = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(BookmarkList)
 
 	return _bookmarkList
 }

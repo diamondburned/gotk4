@@ -316,7 +316,7 @@ type Activatable interface {
 
 // activatable implements the Activatable interface.
 type activatable struct {
-	gextras.Objector
+	*externglib.Object
 }
 
 var _ Activatable = (*activatable)(nil)
@@ -324,9 +324,7 @@ var _ Activatable = (*activatable)(nil)
 // WrapActivatable wraps a GObject to a type that implements
 // interface Activatable. It is primarily used internally.
 func WrapActivatable(obj *externglib.Object) Activatable {
-	return activatable{
-		Objector: obj,
-	}
+	return activatable{obj}
 }
 
 func marshalActivatable(p uintptr) (interface{}, error) {

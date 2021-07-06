@@ -202,7 +202,7 @@ type FileChooser interface {
 
 // fileChooser implements the FileChooser interface.
 type fileChooser struct {
-	gextras.Objector
+	*externglib.Object
 }
 
 var _ FileChooser = (*fileChooser)(nil)
@@ -210,9 +210,7 @@ var _ FileChooser = (*fileChooser)(nil)
 // WrapFileChooser wraps a GObject to a type that implements
 // interface FileChooser. It is primarily used internally.
 func WrapFileChooser(obj *externglib.Object) FileChooser {
-	return fileChooser{
-		Objector: obj,
-	}
+	return fileChooser{obj}
 }
 
 func marshalFileChooser(p uintptr) (interface{}, error) {

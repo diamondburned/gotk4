@@ -5,6 +5,8 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -34,10 +36,121 @@ func init() {
 
 // ProxyAddress: support for proxied SocketAddress.
 type ProxyAddress interface {
-	InetSocketAddress
+	gextras.Objector
 
+	// AsInetSocketAddress casts the class to the InetSocketAddress interface.
+	AsInetSocketAddress() InetSocketAddress
 	// AsSocketConnectable casts the class to the SocketConnectable interface.
 	AsSocketConnectable() SocketConnectable
+
+	// GetAddress gets @address's Address.
+	//
+	// This method is inherited from InetSocketAddress
+	GetAddress() InetAddress
+	// GetFlowinfo gets the `sin6_flowinfo` field from @address, which must be
+	// an IPv6 address.
+	//
+	// This method is inherited from InetSocketAddress
+	GetFlowinfo() uint32
+	// GetPort gets @address's port.
+	//
+	// This method is inherited from InetSocketAddress
+	GetPort() uint16
+	// GetScopeID gets the `sin6_scope_id` field from @address, which must be an
+	// IPv6 address.
+	//
+	// This method is inherited from InetSocketAddress
+	GetScopeID() uint32
+	// GetFamily gets the socket family type of @address.
+	//
+	// This method is inherited from SocketAddress
+	GetFamily() SocketFamily
+	// GetNativeSize gets the size of @address's native struct sockaddr. You can
+	// use this to allocate memory to pass to g_socket_address_to_native().
+	//
+	// This method is inherited from SocketAddress
+	GetNativeSize() int
+	// ToNative converts a Address to a native struct sockaddr, which can be
+	// passed to low-level functions like connect() or bind().
+	//
+	// If not enough space is available, a G_IO_ERROR_NO_SPACE error is
+	// returned. If the address type is not known on the system then a
+	// G_IO_ERROR_NOT_SUPPORTED error is returned.
+	//
+	// This method is inherited from SocketAddress
+	ToNative(dest interface{}, destlen uint) error
+	// Enumerate creates a AddressEnumerator for @connectable.
+	//
+	// This method is inherited from SocketConnectable
+	Enumerate() SocketAddressEnumerator
+	// ProxyEnumerate creates a AddressEnumerator for @connectable that will
+	// return a Address for each of its addresses that you must connect to via a
+	// proxy.
+	//
+	// If @connectable does not implement
+	// g_socket_connectable_proxy_enumerate(), this will fall back to calling
+	// g_socket_connectable_enumerate().
+	//
+	// This method is inherited from SocketConnectable
+	ProxyEnumerate() SocketAddressEnumerator
+	// ToString: format a Connectable as a string. This is a human-readable
+	// format for use in debugging output, and is not a stable serialization
+	// format. It is not suitable for use in user interfaces as it exposes too
+	// much information for a user.
+	//
+	// If the Connectable implementation does not support string formatting, the
+	// implementation’s type name will be returned as a fallback.
+	//
+	// This method is inherited from SocketConnectable
+	ToString() string
+	// Enumerate creates a AddressEnumerator for @connectable.
+	//
+	// This method is inherited from SocketConnectable
+	Enumerate() SocketAddressEnumerator
+	// ProxyEnumerate creates a AddressEnumerator for @connectable that will
+	// return a Address for each of its addresses that you must connect to via a
+	// proxy.
+	//
+	// If @connectable does not implement
+	// g_socket_connectable_proxy_enumerate(), this will fall back to calling
+	// g_socket_connectable_enumerate().
+	//
+	// This method is inherited from SocketConnectable
+	ProxyEnumerate() SocketAddressEnumerator
+	// ToString: format a Connectable as a string. This is a human-readable
+	// format for use in debugging output, and is not a stable serialization
+	// format. It is not suitable for use in user interfaces as it exposes too
+	// much information for a user.
+	//
+	// If the Connectable implementation does not support string formatting, the
+	// implementation’s type name will be returned as a fallback.
+	//
+	// This method is inherited from SocketConnectable
+	ToString() string
+	// Enumerate creates a AddressEnumerator for @connectable.
+	//
+	// This method is inherited from SocketConnectable
+	Enumerate() SocketAddressEnumerator
+	// ProxyEnumerate creates a AddressEnumerator for @connectable that will
+	// return a Address for each of its addresses that you must connect to via a
+	// proxy.
+	//
+	// If @connectable does not implement
+	// g_socket_connectable_proxy_enumerate(), this will fall back to calling
+	// g_socket_connectable_enumerate().
+	//
+	// This method is inherited from SocketConnectable
+	ProxyEnumerate() SocketAddressEnumerator
+	// ToString: format a Connectable as a string. This is a human-readable
+	// format for use in debugging output, and is not a stable serialization
+	// format. It is not suitable for use in user interfaces as it exposes too
+	// much information for a user.
+	//
+	// If the Connectable implementation does not support string formatting, the
+	// implementation’s type name will be returned as a fallback.
+	//
+	// This method is inherited from SocketConnectable
+	ToString() string
 
 	// DestinationHostname gets @proxy's destination hostname; that is, the name
 	// of the host that will be connected to via the proxy, not the name of the
@@ -60,17 +173,17 @@ type ProxyAddress interface {
 	Username() string
 }
 
-// proxyAddress implements the ProxyAddress class.
+// proxyAddress implements the ProxyAddress interface.
 type proxyAddress struct {
-	InetSocketAddress
+	*externglib.Object
 }
 
-// WrapProxyAddress wraps a GObject to the right type. It is
-// primarily used internally.
+var _ ProxyAddress = (*proxyAddress)(nil)
+
+// WrapProxyAddress wraps a GObject to a type that implements
+// interface ProxyAddress. It is primarily used internally.
 func WrapProxyAddress(obj *externglib.Object) ProxyAddress {
-	return proxyAddress{
-		InetSocketAddress: WrapInetSocketAddress(obj),
-	}
+	return proxyAddress{obj}
 }
 
 func marshalProxyAddress(p uintptr) (interface{}, error) {
@@ -111,13 +224,81 @@ func NewProxyAddress(inetaddr InetAddress, port uint16, protocol string, destHos
 
 	var _proxyAddress ProxyAddress // out
 
-	_proxyAddress = WrapProxyAddress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_proxyAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(ProxyAddress)
 
 	return _proxyAddress
 }
 
+func (p proxyAddress) AsInetSocketAddress() InetSocketAddress {
+	return WrapInetSocketAddress(gextras.InternObject(p))
+}
+
 func (p proxyAddress) AsSocketConnectable() SocketConnectable {
 	return WrapSocketConnectable(gextras.InternObject(p))
+}
+
+func (a proxyAddress) GetAddress() InetAddress {
+	return WrapInetSocketAddress(gextras.InternObject(a)).GetAddress()
+}
+
+func (a proxyAddress) GetFlowinfo() uint32 {
+	return WrapInetSocketAddress(gextras.InternObject(a)).GetFlowinfo()
+}
+
+func (a proxyAddress) GetPort() uint16 {
+	return WrapInetSocketAddress(gextras.InternObject(a)).GetPort()
+}
+
+func (a proxyAddress) GetScopeID() uint32 {
+	return WrapInetSocketAddress(gextras.InternObject(a)).GetScopeID()
+}
+
+func (a proxyAddress) GetFamily() SocketFamily {
+	return WrapSocketAddress(gextras.InternObject(a)).GetFamily()
+}
+
+func (a proxyAddress) GetNativeSize() int {
+	return WrapSocketAddress(gextras.InternObject(a)).GetNativeSize()
+}
+
+func (a proxyAddress) ToNative(dest interface{}, destlen uint) error {
+	return WrapSocketAddress(gextras.InternObject(a)).ToNative(dest, destlen)
+}
+
+func (c proxyAddress) Enumerate() SocketAddressEnumerator {
+	return WrapSocketConnectable(gextras.InternObject(c)).Enumerate()
+}
+
+func (c proxyAddress) ProxyEnumerate() SocketAddressEnumerator {
+	return WrapSocketConnectable(gextras.InternObject(c)).ProxyEnumerate()
+}
+
+func (c proxyAddress) ToString() string {
+	return WrapSocketConnectable(gextras.InternObject(c)).ToString()
+}
+
+func (c proxyAddress) Enumerate() SocketAddressEnumerator {
+	return WrapSocketConnectable(gextras.InternObject(c)).Enumerate()
+}
+
+func (c proxyAddress) ProxyEnumerate() SocketAddressEnumerator {
+	return WrapSocketConnectable(gextras.InternObject(c)).ProxyEnumerate()
+}
+
+func (c proxyAddress) ToString() string {
+	return WrapSocketConnectable(gextras.InternObject(c)).ToString()
+}
+
+func (c proxyAddress) Enumerate() SocketAddressEnumerator {
+	return WrapSocketConnectable(gextras.InternObject(c)).Enumerate()
+}
+
+func (c proxyAddress) ProxyEnumerate() SocketAddressEnumerator {
+	return WrapSocketConnectable(gextras.InternObject(c)).ProxyEnumerate()
+}
+
+func (c proxyAddress) ToString() string {
+	return WrapSocketConnectable(gextras.InternObject(c)).ToString()
 }
 
 func (p proxyAddress) DestinationHostname() string {

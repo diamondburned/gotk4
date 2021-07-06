@@ -76,7 +76,7 @@ type TLSBackend interface {
 
 // tlsBackend implements the TLSBackend interface.
 type tlsBackend struct {
-	gextras.Objector
+	*externglib.Object
 }
 
 var _ TLSBackend = (*tlsBackend)(nil)
@@ -84,9 +84,7 @@ var _ TLSBackend = (*tlsBackend)(nil)
 // WrapTLSBackend wraps a GObject to a type that implements
 // interface TLSBackend. It is primarily used internally.
 func WrapTLSBackend(obj *externglib.Object) TLSBackend {
-	return tlsBackend{
-		Objector: obj,
-	}
+	return tlsBackend{obj}
 }
 
 func marshalTLSBackend(p uintptr) (interface{}, error) {

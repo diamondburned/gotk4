@@ -43,6 +43,22 @@ type DBusInterfaceSkeleton interface {
 	// AsDBusInterface casts the class to the DBusInterface interface.
 	AsDBusInterface() DBusInterface
 
+	// DupObject gets the BusObject that @interface_ belongs to, if any.
+	//
+	// This method is inherited from DBusInterface
+	DupObject() DBusObject
+	// GetInfo gets D-Bus introspection information for the D-Bus interface
+	// implemented by @interface_.
+	//
+	// This method is inherited from DBusInterface
+	GetInfo() *DBusInterfaceInfo
+	// SetObject sets the BusObject for @interface_ to @object.
+	//
+	// Note that @interface_ will hold a weak reference to @object.
+	//
+	// This method is inherited from DBusInterface
+	SetObject(object DBusObject)
+
 	// Export exports @interface_ at @object_path on @connection.
 	//
 	// This can be called multiple times to export the same @interface_ onto
@@ -89,17 +105,17 @@ type DBusInterfaceSkeleton interface {
 	UnexportFromConnection(connection DBusConnection)
 }
 
-// dBusInterfaceSkeleton implements the DBusInterfaceSkeleton class.
+// dBusInterfaceSkeleton implements the DBusInterfaceSkeleton interface.
 type dBusInterfaceSkeleton struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapDBusInterfaceSkeleton wraps a GObject to the right type. It is
-// primarily used internally.
+var _ DBusInterfaceSkeleton = (*dBusInterfaceSkeleton)(nil)
+
+// WrapDBusInterfaceSkeleton wraps a GObject to a type that implements
+// interface DBusInterfaceSkeleton. It is primarily used internally.
 func WrapDBusInterfaceSkeleton(obj *externglib.Object) DBusInterfaceSkeleton {
-	return dBusInterfaceSkeleton{
-		Objector: obj,
-	}
+	return dBusInterfaceSkeleton{obj}
 }
 
 func marshalDBusInterfaceSkeleton(p uintptr) (interface{}, error) {
@@ -110,6 +126,18 @@ func marshalDBusInterfaceSkeleton(p uintptr) (interface{}, error) {
 
 func (d dBusInterfaceSkeleton) AsDBusInterface() DBusInterface {
 	return WrapDBusInterface(gextras.InternObject(d))
+}
+
+func (i dBusInterfaceSkeleton) DupObject() DBusObject {
+	return WrapDBusInterface(gextras.InternObject(i)).DupObject()
+}
+
+func (i dBusInterfaceSkeleton) GetInfo() *DBusInterfaceInfo {
+	return WrapDBusInterface(gextras.InternObject(i)).GetInfo()
+}
+
+func (i dBusInterfaceSkeleton) SetObject(object DBusObject) {
+	WrapDBusInterface(gextras.InternObject(i)).SetObject(object)
 }
 
 func (i dBusInterfaceSkeleton) Export(connection DBusConnection, objectPath string) error {

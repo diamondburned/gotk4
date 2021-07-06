@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -27,24 +28,96 @@ func init() {
 // functions for size negotiation, as a convenience API to ease the porting
 // towards the corresponding `GtkLayoutManager virtual functions.
 type CustomLayout interface {
-	LayoutManager
+	gextras.Objector
+
+	// AsLayoutManager casts the class to the LayoutManager interface.
+	AsLayoutManager() LayoutManager
+
+	// Allocate assigns the given @width, @height, and @baseline to a @widget,
+	// and computes the position and sizes of the children of the @widget using
+	// the layout management policy of @manager.
+	//
+	// This method is inherited from LayoutManager
+	Allocate(widget Widget, width int, height int, baseline int)
+	// GetLayoutChild retrieves a `GtkLayoutChild` instance for the
+	// `GtkLayoutManager`, creating one if necessary.
+	//
+	// The @child widget must be a child of the widget using @manager.
+	//
+	// The `GtkLayoutChild` instance is owned by the `GtkLayoutManager`, and is
+	// guaranteed to exist as long as @child is a child of the `GtkWidget` using
+	// the given `GtkLayoutManager`.
+	//
+	// This method is inherited from LayoutManager
+	GetLayoutChild(child Widget) LayoutChild
+	// GetRequestMode retrieves the request mode of @manager.
+	//
+	// This method is inherited from LayoutManager
+	GetRequestMode() SizeRequestMode
+	// GetWidget retrieves the `GtkWidget` using the given `GtkLayoutManager`.
+	//
+	// This method is inherited from LayoutManager
+	GetWidget() Widget
+	// LayoutChanged queues a resize on the `GtkWidget` using @manager, if any.
+	//
+	// This function should be called by subclasses of `GtkLayoutManager` in
+	// response to changes to their layout management policies.
+	//
+	// This method is inherited from LayoutManager
+	LayoutChanged()
+	// Measure measures the size of the @widget using @manager, for the given
+	// @orientation and size.
+	//
+	// See the [class@Gtk.Widget] documentation on layout management for more
+	// details.
+	//
+	// This method is inherited from LayoutManager
+	Measure(widget Widget, orientation Orientation, forSize int) (minimum int, natural int, minimumBaseline int, naturalBaseline int)
 }
 
-// customLayout implements the CustomLayout class.
+// customLayout implements the CustomLayout interface.
 type customLayout struct {
-	LayoutManager
+	*externglib.Object
 }
 
-// WrapCustomLayout wraps a GObject to the right type. It is
-// primarily used internally.
+var _ CustomLayout = (*customLayout)(nil)
+
+// WrapCustomLayout wraps a GObject to a type that implements
+// interface CustomLayout. It is primarily used internally.
 func WrapCustomLayout(obj *externglib.Object) CustomLayout {
-	return customLayout{
-		LayoutManager: WrapLayoutManager(obj),
-	}
+	return customLayout{obj}
 }
 
 func marshalCustomLayout(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapCustomLayout(obj), nil
+}
+
+func (c customLayout) AsLayoutManager() LayoutManager {
+	return WrapLayoutManager(gextras.InternObject(c))
+}
+
+func (m customLayout) Allocate(widget Widget, width int, height int, baseline int) {
+	WrapLayoutManager(gextras.InternObject(m)).Allocate(widget, width, height, baseline)
+}
+
+func (m customLayout) GetLayoutChild(child Widget) LayoutChild {
+	return WrapLayoutManager(gextras.InternObject(m)).GetLayoutChild(child)
+}
+
+func (m customLayout) GetRequestMode() SizeRequestMode {
+	return WrapLayoutManager(gextras.InternObject(m)).GetRequestMode()
+}
+
+func (m customLayout) GetWidget() Widget {
+	return WrapLayoutManager(gextras.InternObject(m)).GetWidget()
+}
+
+func (m customLayout) LayoutChanged() {
+	WrapLayoutManager(gextras.InternObject(m)).LayoutChanged()
+}
+
+func (m customLayout) Measure(widget Widget, orientation Orientation, forSize int) (minimum int, natural int, minimumBaseline int, naturalBaseline int) {
+	return WrapLayoutManager(gextras.InternObject(m)).Measure(widget, orientation, forSize)
 }

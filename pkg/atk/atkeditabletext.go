@@ -5,7 +5,6 @@ package atk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -51,7 +50,7 @@ type EditableText interface {
 
 // editableText implements the EditableText interface.
 type editableText struct {
-	gextras.Objector
+	*externglib.Object
 }
 
 var _ EditableText = (*editableText)(nil)
@@ -59,9 +58,7 @@ var _ EditableText = (*editableText)(nil)
 // WrapEditableText wraps a GObject to a type that implements
 // interface EditableText. It is primarily used internally.
 func WrapEditableText(obj *externglib.Object) EditableText {
-	return editableText{
-		Objector: obj,
-	}
+	return editableText{obj}
 }
 
 func marshalEditableText(p uintptr) (interface{}, error) {

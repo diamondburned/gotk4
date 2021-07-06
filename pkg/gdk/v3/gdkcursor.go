@@ -234,17 +234,17 @@ type Cursor interface {
 	Unref()
 }
 
-// cursor implements the Cursor class.
+// cursor implements the Cursor interface.
 type cursor struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapCursor wraps a GObject to the right type. It is
-// primarily used internally.
+var _ Cursor = (*cursor)(nil)
+
+// WrapCursor wraps a GObject to a type that implements
+// interface Cursor. It is primarily used internally.
 func WrapCursor(obj *externglib.Object) Cursor {
-	return cursor{
-		Objector: obj,
-	}
+	return cursor{obj}
 }
 
 func marshalCursor(p uintptr) (interface{}, error) {
@@ -269,7 +269,7 @@ func NewCursor(cursorType CursorType) Cursor {
 
 	var _cursor Cursor // out
 
-	_cursor = WrapCursor(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_cursor = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Cursor)
 
 	return _cursor
 }
@@ -287,7 +287,7 @@ func NewCursorForDisplay(display Display, cursorType CursorType) Cursor {
 
 	var _cursor Cursor // out
 
-	_cursor = WrapCursor(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_cursor = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Cursor)
 
 	return _cursor
 }
@@ -327,7 +327,7 @@ func NewCursorFromName(display Display, name string) Cursor {
 
 	var _cursor Cursor // out
 
-	_cursor = WrapCursor(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_cursor = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Cursor)
 
 	return _cursor
 }
@@ -363,7 +363,7 @@ func NewCursorFromPixbuf(display Display, pixbuf gdkpixbuf.Pixbuf, x int, y int)
 
 	var _cursor Cursor // out
 
-	_cursor = WrapCursor(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_cursor = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Cursor)
 
 	return _cursor
 }
@@ -395,7 +395,7 @@ func NewCursorFromSurface(display Display, surface *cairo.Surface, x float64, y 
 
 	var _cursor Cursor // out
 
-	_cursor = WrapCursor(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_cursor = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Cursor)
 
 	return _cursor
 }

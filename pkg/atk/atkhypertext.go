@@ -43,7 +43,7 @@ type Hypertext interface {
 
 // hypertext implements the Hypertext interface.
 type hypertext struct {
-	gextras.Objector
+	*externglib.Object
 }
 
 var _ Hypertext = (*hypertext)(nil)
@@ -51,9 +51,7 @@ var _ Hypertext = (*hypertext)(nil)
 // WrapHypertext wraps a GObject to a type that implements
 // interface Hypertext. It is primarily used internally.
 func WrapHypertext(obj *externglib.Object) Hypertext {
-	return hypertext{
-		Objector: obj,
-	}
+	return hypertext{obj}
 }
 
 func marshalHypertext(p uintptr) (interface{}, error) {

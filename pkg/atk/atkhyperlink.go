@@ -46,6 +46,71 @@ type Hyperlink interface {
 	// AsAction casts the class to the Action interface.
 	AsAction() Action
 
+	// DoAction: perform the specified action on the object.
+	//
+	// This method is inherited from Action
+	DoAction(i int) bool
+	// GetDescription returns a description of the specified action of the
+	// object.
+	//
+	// This method is inherited from Action
+	GetDescription(i int) string
+	// GetKeybinding gets the keybinding which can be used to activate this
+	// action, if one exists. The string returned should contain localized,
+	// human-readable, key sequences as they would appear when displayed on
+	// screen. It must be in the format "mnemonic;sequence;shortcut".
+	//
+	// - The mnemonic key activates the object if it is presently enabled
+	// onscreen. This typically corresponds to the underlined letter within the
+	// widget. Example: "n" in a traditional "New..." menu item or the "a" in
+	// "Apply" for a button. - The sequence is the full list of keys which
+	// invoke the action even if the relevant element is not currently shown on
+	// screen. For instance, for a menu item the sequence is the keybindings
+	// used to open the parent menus before invoking. The sequence string is
+	// colon-delimited. Example: "Alt+F:N" in a traditional "New..." menu item.
+	// - The shortcut, if it exists, will invoke the same action without showing
+	// the component or its enclosing menus or dialogs. Example: "Ctrl+N" in a
+	// traditional "New..." menu item.
+	//
+	// Example: For a traditional "New..." menu item, the expected return value
+	// would be: "N;Alt+F:N;Ctrl+N" for the English locale and
+	// "N;Alt+D:N;Strg+N" for the German locale. If, hypothetically, this menu
+	// item lacked a mnemonic, it would be represented by ";;Ctrl+N" and
+	// ";;Strg+N" respectively.
+	//
+	// This method is inherited from Action
+	GetKeybinding(i int) string
+	// GetLocalizedName returns the localized name of the specified action of
+	// the object.
+	//
+	// This method is inherited from Action
+	GetLocalizedName(i int) string
+	// GetNActions gets the number of accessible actions available on the
+	// object. If there are more than one, the first one is considered the
+	// "default" action of the object.
+	//
+	// This method is inherited from Action
+	GetNActions() int
+	// GetName returns a non-localized string naming the specified action of the
+	// object. This name is generally not descriptive of the end result of the
+	// action, but instead names the 'interaction type' which the object
+	// supports. By convention, the above strings should be used to represent
+	// the actions which correspond to the common point-and-click interaction
+	// techniques of the same name: i.e. "click", "press", "release", "drag",
+	// "drop", "popup", etc. The "popup" action should be used to pop up a
+	// context menu for the object, if one exists.
+	//
+	// For technical reasons, some toolkits cannot guarantee that the reported
+	// action is actually 'bound' to a nontrivial user event; i.e. the result of
+	// some actions via atk_action_do_action() may be NIL.
+	//
+	// This method is inherited from Action
+	GetName(i int) string
+	// SetDescription sets a description of the specified action of the object.
+	//
+	// This method is inherited from Action
+	SetDescription(i int, desc string) bool
+
 	// EndIndex gets the index with the hypertext document at which this link
 	// ends.
 	EndIndex() int
@@ -78,17 +143,17 @@ type Hyperlink interface {
 	IsValid() bool
 }
 
-// hyperlink implements the Hyperlink class.
+// hyperlink implements the Hyperlink interface.
 type hyperlink struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapHyperlink wraps a GObject to the right type. It is
-// primarily used internally.
+var _ Hyperlink = (*hyperlink)(nil)
+
+// WrapHyperlink wraps a GObject to a type that implements
+// interface Hyperlink. It is primarily used internally.
 func WrapHyperlink(obj *externglib.Object) Hyperlink {
-	return hyperlink{
-		Objector: obj,
-	}
+	return hyperlink{obj}
 }
 
 func marshalHyperlink(p uintptr) (interface{}, error) {
@@ -99,6 +164,34 @@ func marshalHyperlink(p uintptr) (interface{}, error) {
 
 func (h hyperlink) AsAction() Action {
 	return WrapAction(gextras.InternObject(h))
+}
+
+func (a hyperlink) DoAction(i int) bool {
+	return WrapAction(gextras.InternObject(a)).DoAction(i)
+}
+
+func (a hyperlink) GetDescription(i int) string {
+	return WrapAction(gextras.InternObject(a)).GetDescription(i)
+}
+
+func (a hyperlink) GetKeybinding(i int) string {
+	return WrapAction(gextras.InternObject(a)).GetKeybinding(i)
+}
+
+func (a hyperlink) GetLocalizedName(i int) string {
+	return WrapAction(gextras.InternObject(a)).GetLocalizedName(i)
+}
+
+func (a hyperlink) GetNActions() int {
+	return WrapAction(gextras.InternObject(a)).GetNActions()
+}
+
+func (a hyperlink) GetName(i int) string {
+	return WrapAction(gextras.InternObject(a)).GetName(i)
+}
+
+func (a hyperlink) SetDescription(i int, desc string) bool {
+	return WrapAction(gextras.InternObject(a)).SetDescription(i, desc)
 }
 
 func (l hyperlink) EndIndex() int {

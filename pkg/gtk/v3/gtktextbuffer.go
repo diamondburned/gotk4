@@ -187,11 +187,10 @@ type TextBuffer interface {
 	// HasSelection indicates whether the buffer has some text currently
 	// selected.
 	HasSelection() bool
-	// InsertTextBuffer returns the mark that represents the cursor (insertion
-	// point). Equivalent to calling gtk_text_buffer_get_mark() to get the mark
-	// named “insert”, but very slightly more efficient, and involves less
-	// typing.
-	InsertTextBuffer() TextMark
+	// GetInsert returns the mark that represents the cursor (insertion point).
+	// Equivalent to calling gtk_text_buffer_get_mark() to get the mark named
+	// “insert”, but very slightly more efficient, and involves less typing.
+	GetInsert() TextMark
 	// IterAtChildAnchor obtains the location of @anchor within @buffer.
 	IterAtChildAnchor(anchor TextChildAnchor) TextIter
 	// IterAtLine initializes @iter to the start of the given line. If
@@ -405,17 +404,17 @@ type TextBuffer interface {
 	SetText(text string, len int)
 }
 
-// textBuffer implements the TextBuffer class.
+// textBuffer implements the TextBuffer interface.
 type textBuffer struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapTextBuffer wraps a GObject to the right type. It is
-// primarily used internally.
+var _ TextBuffer = (*textBuffer)(nil)
+
+// WrapTextBuffer wraps a GObject to a type that implements
+// interface TextBuffer. It is primarily used internally.
 func WrapTextBuffer(obj *externglib.Object) TextBuffer {
-	return textBuffer{
-		Objector: obj,
-	}
+	return textBuffer{obj}
 }
 
 func marshalTextBuffer(p uintptr) (interface{}, error) {
@@ -435,7 +434,7 @@ func NewTextBuffer(table TextTagTable) TextBuffer {
 
 	var _textBuffer TextBuffer // out
 
-	_textBuffer = WrapTextBuffer(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_textBuffer = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(TextBuffer)
 
 	return _textBuffer
 }
@@ -796,7 +795,7 @@ func (b textBuffer) HasSelection() bool {
 	return _ok
 }
 
-func (b textBuffer) InsertTextBuffer() TextMark {
+func (b textBuffer) GetInsert() TextMark {
 	var _arg0 *C.GtkTextBuffer // out
 	var _cret *C.GtkTextMark   // in
 

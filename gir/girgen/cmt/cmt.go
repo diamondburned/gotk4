@@ -118,14 +118,20 @@ type Option interface{ opts() }
 type (
 	overrideSelfName string
 	originalTypeName string
+	additionalString string
 )
 
 func (overrideSelfName) opts() {}
 func (originalTypeName) opts() {}
+func (additionalString) opts() {}
 
 // OverrideSelfName overrides the Go type name that's implicitly converted
 // automatically by GoDoc.
 func OverrideSelfName(self string) Option { return overrideSelfName(self) }
+
+// AdditionalString adds the given string into the tail of the command as
+// another paragraph.
+func AdditionalString(str string) Option { return additionalString(str) }
 
 func isLower(s string) bool {
 	return strings.IndexFunc(s, unicode.IsUpper) == -1
@@ -159,7 +165,8 @@ func GoDoc(v interface{}, indentLvl int, opts ...Option) string {
 			doc.WriteString("\n\n")
 		}
 		if inf.Attrs.DeprecatedVersion != "" {
-			fmt.Fprintf(&doc, "Deprecated: since version %s.", inf.Attrs.DeprecatedVersion)
+			v := strings.TrimSuffix(inf.Attrs.DeprecatedVersion, ".")
+			fmt.Fprintf(&doc, "Deprecated: since version %s.", v)
 		} else {
 			fmt.Fprintf(&doc, "Deprecated.")
 		}
@@ -169,6 +176,12 @@ func GoDoc(v interface{}, indentLvl int, opts ...Option) string {
 		switch opt := opt.(type) {
 		case overrideSelfName:
 			self = string(opt)
+
+		case additionalString:
+			if doc.Len() > 0 {
+				doc.WriteString("\n\n")
+			}
+			doc.WriteString(string(opt))
 		}
 	}
 

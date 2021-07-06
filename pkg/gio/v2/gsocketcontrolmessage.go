@@ -71,17 +71,17 @@ type SocketControlMessage interface {
 	Serialize(data interface{})
 }
 
-// socketControlMessage implements the SocketControlMessage class.
+// socketControlMessage implements the SocketControlMessage interface.
 type socketControlMessage struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapSocketControlMessage wraps a GObject to the right type. It is
-// primarily used internally.
+var _ SocketControlMessage = (*socketControlMessage)(nil)
+
+// WrapSocketControlMessage wraps a GObject to a type that implements
+// interface SocketControlMessage. It is primarily used internally.
 func WrapSocketControlMessage(obj *externglib.Object) SocketControlMessage {
-	return socketControlMessage{
-		Objector: obj,
-	}
+	return socketControlMessage{obj}
 }
 
 func marshalSocketControlMessage(p uintptr) (interface{}, error) {

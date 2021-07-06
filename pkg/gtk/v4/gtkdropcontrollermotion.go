@@ -32,7 +32,73 @@ func init() {
 // This controller is not able to accept drops, use [class@Gtk.DropTarget] for
 // that purpose.
 type DropControllerMotion interface {
-	EventController
+	gextras.Objector
+
+	// AsEventController casts the class to the EventController interface.
+	AsEventController() EventController
+
+	// GetCurrentEvent returns the event that is currently being handled by the
+	// controller, and nil at other times.
+	//
+	// This method is inherited from EventController
+	GetCurrentEvent() gdk.Event
+	// GetCurrentEventDevice returns the device of the event that is currently
+	// being handled by the controller, and nil otherwise.
+	//
+	// This method is inherited from EventController
+	GetCurrentEventDevice() gdk.Device
+	// GetCurrentEventState returns the modifier state of the event that is
+	// currently being handled by the controller, and 0 otherwise.
+	//
+	// This method is inherited from EventController
+	GetCurrentEventState() gdk.ModifierType
+	// GetCurrentEventTime returns the timestamp of the event that is currently
+	// being handled by the controller, and 0 otherwise.
+	//
+	// This method is inherited from EventController
+	GetCurrentEventTime() uint32
+	// GetName gets the name of @controller.
+	//
+	// This method is inherited from EventController
+	GetName() string
+	// GetPropagationLimit gets the propagation limit of the event controller.
+	//
+	// This method is inherited from EventController
+	GetPropagationLimit() PropagationLimit
+	// GetPropagationPhase gets the propagation phase at which @controller
+	// handles events.
+	//
+	// This method is inherited from EventController
+	GetPropagationPhase() PropagationPhase
+	// GetWidget returns the Widget this controller relates to.
+	//
+	// This method is inherited from EventController
+	GetWidget() Widget
+	// Reset resets the @controller to a clean state.
+	//
+	// This method is inherited from EventController
+	Reset()
+	// SetName sets a name on the controller that can be used for debugging.
+	//
+	// This method is inherited from EventController
+	SetName(name string)
+	// SetPropagationLimit sets the event propagation limit on the event
+	// controller.
+	//
+	// If the limit is set to GTK_LIMIT_SAME_NATIVE, the controller won't handle
+	// events that are targeted at widgets on a different surface, such as
+	// popovers.
+	//
+	// This method is inherited from EventController
+	SetPropagationLimit(limit PropagationLimit)
+	// SetPropagationPhase sets the propagation phase at which a controller
+	// handles events.
+	//
+	// If @phase is GTK_PHASE_NONE, no automatic event handling will be
+	// performed, but other additional gesture maintenance will.
+	//
+	// This method is inherited from EventController
+	SetPropagationPhase(phase PropagationPhase)
 
 	// ContainsPointer returns if a Drag-and-Drop operation is within the widget
 	// @self or one of its children.
@@ -45,17 +111,17 @@ type DropControllerMotion interface {
 	IsPointer() bool
 }
 
-// dropControllerMotion implements the DropControllerMotion class.
+// dropControllerMotion implements the DropControllerMotion interface.
 type dropControllerMotion struct {
-	EventController
+	*externglib.Object
 }
 
-// WrapDropControllerMotion wraps a GObject to the right type. It is
-// primarily used internally.
+var _ DropControllerMotion = (*dropControllerMotion)(nil)
+
+// WrapDropControllerMotion wraps a GObject to a type that implements
+// interface DropControllerMotion. It is primarily used internally.
 func WrapDropControllerMotion(obj *externglib.Object) DropControllerMotion {
-	return dropControllerMotion{
-		EventController: WrapEventController(obj),
-	}
+	return dropControllerMotion{obj}
 }
 
 func marshalDropControllerMotion(p uintptr) (interface{}, error) {
@@ -73,9 +139,61 @@ func NewDropControllerMotion() DropControllerMotion {
 
 	var _dropControllerMotion DropControllerMotion // out
 
-	_dropControllerMotion = WrapDropControllerMotion(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_dropControllerMotion = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(DropControllerMotion)
 
 	return _dropControllerMotion
+}
+
+func (d dropControllerMotion) AsEventController() EventController {
+	return WrapEventController(gextras.InternObject(d))
+}
+
+func (c dropControllerMotion) GetCurrentEvent() gdk.Event {
+	return WrapEventController(gextras.InternObject(c)).GetCurrentEvent()
+}
+
+func (c dropControllerMotion) GetCurrentEventDevice() gdk.Device {
+	return WrapEventController(gextras.InternObject(c)).GetCurrentEventDevice()
+}
+
+func (c dropControllerMotion) GetCurrentEventState() gdk.ModifierType {
+	return WrapEventController(gextras.InternObject(c)).GetCurrentEventState()
+}
+
+func (c dropControllerMotion) GetCurrentEventTime() uint32 {
+	return WrapEventController(gextras.InternObject(c)).GetCurrentEventTime()
+}
+
+func (c dropControllerMotion) GetName() string {
+	return WrapEventController(gextras.InternObject(c)).GetName()
+}
+
+func (c dropControllerMotion) GetPropagationLimit() PropagationLimit {
+	return WrapEventController(gextras.InternObject(c)).GetPropagationLimit()
+}
+
+func (c dropControllerMotion) GetPropagationPhase() PropagationPhase {
+	return WrapEventController(gextras.InternObject(c)).GetPropagationPhase()
+}
+
+func (c dropControllerMotion) GetWidget() Widget {
+	return WrapEventController(gextras.InternObject(c)).GetWidget()
+}
+
+func (c dropControllerMotion) Reset() {
+	WrapEventController(gextras.InternObject(c)).Reset()
+}
+
+func (c dropControllerMotion) SetName(name string) {
+	WrapEventController(gextras.InternObject(c)).SetName(name)
+}
+
+func (c dropControllerMotion) SetPropagationLimit(limit PropagationLimit) {
+	WrapEventController(gextras.InternObject(c)).SetPropagationLimit(limit)
+}
+
+func (c dropControllerMotion) SetPropagationPhase(phase PropagationPhase) {
+	WrapEventController(gextras.InternObject(c)).SetPropagationPhase(phase)
 }
 
 func (s dropControllerMotion) ContainsPointer() bool {

@@ -37,10 +37,61 @@ func init() {
 // If you want to specify the amount of space placed between each child, you can
 // use the [property@Gtk.BoxLayout:spacing] property.
 type BoxLayout interface {
-	LayoutManager
+	gextras.Objector
 
+	// AsLayoutManager casts the class to the LayoutManager interface.
+	AsLayoutManager() LayoutManager
 	// AsOrientable casts the class to the Orientable interface.
 	AsOrientable() Orientable
+
+	// Allocate assigns the given @width, @height, and @baseline to a @widget,
+	// and computes the position and sizes of the children of the @widget using
+	// the layout management policy of @manager.
+	//
+	// This method is inherited from LayoutManager
+	Allocate(widget Widget, width int, height int, baseline int)
+	// GetLayoutChild retrieves a `GtkLayoutChild` instance for the
+	// `GtkLayoutManager`, creating one if necessary.
+	//
+	// The @child widget must be a child of the widget using @manager.
+	//
+	// The `GtkLayoutChild` instance is owned by the `GtkLayoutManager`, and is
+	// guaranteed to exist as long as @child is a child of the `GtkWidget` using
+	// the given `GtkLayoutManager`.
+	//
+	// This method is inherited from LayoutManager
+	GetLayoutChild(child Widget) LayoutChild
+	// GetRequestMode retrieves the request mode of @manager.
+	//
+	// This method is inherited from LayoutManager
+	GetRequestMode() SizeRequestMode
+	// GetWidget retrieves the `GtkWidget` using the given `GtkLayoutManager`.
+	//
+	// This method is inherited from LayoutManager
+	GetWidget() Widget
+	// LayoutChanged queues a resize on the `GtkWidget` using @manager, if any.
+	//
+	// This function should be called by subclasses of `GtkLayoutManager` in
+	// response to changes to their layout management policies.
+	//
+	// This method is inherited from LayoutManager
+	LayoutChanged()
+	// Measure measures the size of the @widget using @manager, for the given
+	// @orientation and size.
+	//
+	// See the [class@Gtk.Widget] documentation on layout management for more
+	// details.
+	//
+	// This method is inherited from LayoutManager
+	Measure(widget Widget, orientation Orientation, forSize int) (minimum int, natural int, minimumBaseline int, naturalBaseline int)
+	// GetOrientation retrieves the orientation of the @orientable.
+	//
+	// This method is inherited from Orientable
+	GetOrientation() Orientation
+	// SetOrientation sets the orientation of the @orientable.
+	//
+	// This method is inherited from Orientable
+	SetOrientation(orientation Orientation)
 
 	// BaselinePosition gets the value set by
 	// gtk_box_layout_set_baseline_position().
@@ -64,17 +115,17 @@ type BoxLayout interface {
 	SetSpacing(spacing uint)
 }
 
-// boxLayout implements the BoxLayout class.
+// boxLayout implements the BoxLayout interface.
 type boxLayout struct {
-	LayoutManager
+	*externglib.Object
 }
 
-// WrapBoxLayout wraps a GObject to the right type. It is
-// primarily used internally.
+var _ BoxLayout = (*boxLayout)(nil)
+
+// WrapBoxLayout wraps a GObject to a type that implements
+// interface BoxLayout. It is primarily used internally.
 func WrapBoxLayout(obj *externglib.Object) BoxLayout {
-	return boxLayout{
-		LayoutManager: WrapLayoutManager(obj),
-	}
+	return boxLayout{obj}
 }
 
 func marshalBoxLayout(p uintptr) (interface{}, error) {
@@ -94,13 +145,49 @@ func NewBoxLayout(orientation Orientation) BoxLayout {
 
 	var _boxLayout BoxLayout // out
 
-	_boxLayout = WrapBoxLayout(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_boxLayout = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(BoxLayout)
 
 	return _boxLayout
 }
 
+func (b boxLayout) AsLayoutManager() LayoutManager {
+	return WrapLayoutManager(gextras.InternObject(b))
+}
+
 func (b boxLayout) AsOrientable() Orientable {
 	return WrapOrientable(gextras.InternObject(b))
+}
+
+func (m boxLayout) Allocate(widget Widget, width int, height int, baseline int) {
+	WrapLayoutManager(gextras.InternObject(m)).Allocate(widget, width, height, baseline)
+}
+
+func (m boxLayout) GetLayoutChild(child Widget) LayoutChild {
+	return WrapLayoutManager(gextras.InternObject(m)).GetLayoutChild(child)
+}
+
+func (m boxLayout) GetRequestMode() SizeRequestMode {
+	return WrapLayoutManager(gextras.InternObject(m)).GetRequestMode()
+}
+
+func (m boxLayout) GetWidget() Widget {
+	return WrapLayoutManager(gextras.InternObject(m)).GetWidget()
+}
+
+func (m boxLayout) LayoutChanged() {
+	WrapLayoutManager(gextras.InternObject(m)).LayoutChanged()
+}
+
+func (m boxLayout) Measure(widget Widget, orientation Orientation, forSize int) (minimum int, natural int, minimumBaseline int, naturalBaseline int) {
+	return WrapLayoutManager(gextras.InternObject(m)).Measure(widget, orientation, forSize)
+}
+
+func (o boxLayout) GetOrientation() Orientation {
+	return WrapOrientable(gextras.InternObject(o)).GetOrientation()
+}
+
+func (o boxLayout) SetOrientation(orientation Orientation) {
+	WrapOrientable(gextras.InternObject(o)).SetOrientation(orientation)
 }
 
 func (b boxLayout) BaselinePosition() BaselinePosition {

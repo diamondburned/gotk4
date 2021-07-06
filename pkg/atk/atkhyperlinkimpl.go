@@ -55,7 +55,7 @@ type HyperlinkImpl interface {
 
 // hyperlinkImpl implements the HyperlinkImpl interface.
 type hyperlinkImpl struct {
-	gextras.Objector
+	*externglib.Object
 }
 
 var _ HyperlinkImpl = (*hyperlinkImpl)(nil)
@@ -63,9 +63,7 @@ var _ HyperlinkImpl = (*hyperlinkImpl)(nil)
 // WrapHyperlinkImpl wraps a GObject to a type that implements
 // interface HyperlinkImpl. It is primarily used internally.
 func WrapHyperlinkImpl(obj *externglib.Object) HyperlinkImpl {
-	return hyperlinkImpl{
-		Objector: obj,
-	}
+	return hyperlinkImpl{obj}
 }
 
 func marshalHyperlinkImpl(p uintptr) (interface{}, error) {

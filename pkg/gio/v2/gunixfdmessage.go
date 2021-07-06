@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -46,7 +47,34 @@ func init() {
 // interfaces, thus you have to use the `gio-unix-2.0.pc` pkg-config file when
 // using it.
 type UnixFDMessage interface {
-	SocketControlMessage
+	gextras.Objector
+
+	// AsSocketControlMessage casts the class to the SocketControlMessage interface.
+	AsSocketControlMessage() SocketControlMessage
+
+	// GetLevel returns the "level" (i.e. the originating protocol) of the
+	// control message. This is often SOL_SOCKET.
+	//
+	// This method is inherited from SocketControlMessage
+	GetLevel() int
+	// GetMsgType returns the protocol specific type of the control message. For
+	// instance, for UNIX fd passing this would be SCM_RIGHTS.
+	//
+	// This method is inherited from SocketControlMessage
+	GetMsgType() int
+	// GetSize returns the space required for the control message, not including
+	// headers or alignment.
+	//
+	// This method is inherited from SocketControlMessage
+	GetSize() uint
+	// Serialize converts the data in the message to bytes placed in the
+	// message.
+	//
+	// @data is guaranteed to have enough space to fit the size returned by
+	// g_socket_control_message_get_size() on this object.
+	//
+	// This method is inherited from SocketControlMessage
+	Serialize(data interface{})
 
 	// AppendFd adds a file descriptor to @message.
 	//
@@ -63,17 +91,17 @@ type UnixFDMessage interface {
 	FdList() UnixFDList
 }
 
-// unixFDMessage implements the UnixFDMessage class.
+// unixFDMessage implements the UnixFDMessage interface.
 type unixFDMessage struct {
-	SocketControlMessage
+	*externglib.Object
 }
 
-// WrapUnixFDMessage wraps a GObject to the right type. It is
-// primarily used internally.
+var _ UnixFDMessage = (*unixFDMessage)(nil)
+
+// WrapUnixFDMessage wraps a GObject to a type that implements
+// interface UnixFDMessage. It is primarily used internally.
 func WrapUnixFDMessage(obj *externglib.Object) UnixFDMessage {
-	return unixFDMessage{
-		SocketControlMessage: WrapSocketControlMessage(obj),
-	}
+	return unixFDMessage{obj}
 }
 
 func marshalUnixFDMessage(p uintptr) (interface{}, error) {
@@ -91,7 +119,7 @@ func NewUnixFDMessage() UnixFDMessage {
 
 	var _unixFDMessage UnixFDMessage // out
 
-	_unixFDMessage = WrapUnixFDMessage(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_unixFDMessage = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(UnixFDMessage)
 
 	return _unixFDMessage
 }
@@ -107,9 +135,29 @@ func NewUnixFDMessageWithFdList(fdList UnixFDList) UnixFDMessage {
 
 	var _unixFDMessage UnixFDMessage // out
 
-	_unixFDMessage = WrapUnixFDMessage(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_unixFDMessage = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(UnixFDMessage)
 
 	return _unixFDMessage
+}
+
+func (u unixFDMessage) AsSocketControlMessage() SocketControlMessage {
+	return WrapSocketControlMessage(gextras.InternObject(u))
+}
+
+func (m unixFDMessage) GetLevel() int {
+	return WrapSocketControlMessage(gextras.InternObject(m)).GetLevel()
+}
+
+func (m unixFDMessage) GetMsgType() int {
+	return WrapSocketControlMessage(gextras.InternObject(m)).GetMsgType()
+}
+
+func (m unixFDMessage) GetSize() uint {
+	return WrapSocketControlMessage(gextras.InternObject(m)).GetSize()
+}
+
+func (m unixFDMessage) Serialize(data interface{}) {
+	WrapSocketControlMessage(gextras.InternObject(m)).Serialize(data)
 }
 
 func (m unixFDMessage) AppendFd(fd int) error {

@@ -7,7 +7,6 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -74,7 +73,7 @@ type ProxyResolver interface {
 
 // proxyResolver implements the ProxyResolver interface.
 type proxyResolver struct {
-	gextras.Objector
+	*externglib.Object
 }
 
 var _ ProxyResolver = (*proxyResolver)(nil)
@@ -82,9 +81,7 @@ var _ ProxyResolver = (*proxyResolver)(nil)
 // WrapProxyResolver wraps a GObject to a type that implements
 // interface ProxyResolver. It is primarily used internally.
 func WrapProxyResolver(obj *externglib.Object) ProxyResolver {
-	return proxyResolver{
-		Objector: obj,
-	}
+	return proxyResolver{obj}
 }
 
 func marshalProxyResolver(p uintptr) (interface{}, error) {

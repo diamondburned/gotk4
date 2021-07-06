@@ -113,17 +113,17 @@ type Filter interface {
 	Match(item gextras.Objector) bool
 }
 
-// filter implements the Filter class.
+// filter implements the Filter interface.
 type filter struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapFilter wraps a GObject to the right type. It is
-// primarily used internally.
+var _ Filter = (*filter)(nil)
+
+// WrapFilter wraps a GObject to a type that implements
+// interface Filter. It is primarily used internally.
 func WrapFilter(obj *externglib.Object) Filter {
-	return filter{
-		Objector: obj,
-	}
+	return filter{obj}
 }
 
 func marshalFilter(p uintptr) (interface{}, error) {

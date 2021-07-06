@@ -69,17 +69,17 @@ type TLSPassword interface {
 	SetWarning(warning string)
 }
 
-// tlsPassword implements the TLSPassword class.
+// tlsPassword implements the TLSPassword interface.
 type tlsPassword struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapTLSPassword wraps a GObject to the right type. It is
-// primarily used internally.
+var _ TLSPassword = (*tlsPassword)(nil)
+
+// WrapTLSPassword wraps a GObject to a type that implements
+// interface TLSPassword. It is primarily used internally.
 func WrapTLSPassword(obj *externglib.Object) TLSPassword {
-	return tlsPassword{
-		Objector: obj,
-	}
+	return tlsPassword{obj}
 }
 
 func marshalTLSPassword(p uintptr) (interface{}, error) {
@@ -102,7 +102,7 @@ func NewTLSPassword(flags TLSPasswordFlags, description string) TLSPassword {
 
 	var _tlsPassword TLSPassword // out
 
-	_tlsPassword = WrapTLSPassword(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_tlsPassword = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(TLSPassword)
 
 	return _tlsPassword
 }

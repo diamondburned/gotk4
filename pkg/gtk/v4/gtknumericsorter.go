@@ -27,7 +27,48 @@ func init() {
 // To obtain the numbers to compare, this sorter evaluates a
 // [class@Gtk.Expression].
 type NumericSorter interface {
-	Sorter
+	gextras.Objector
+
+	// AsSorter casts the class to the Sorter interface.
+	AsSorter() Sorter
+
+	// Changed emits the [signal@Gtk.Sorter::changed] signal to notify all users
+	// of the sorter that it has changed.
+	//
+	// Users of the sorter should then update the sort order via
+	// gtk_sorter_compare().
+	//
+	// Depending on the @change parameter, it may be possible to update the sort
+	// order without a full resorting. Refer to the [enum@Gtk.SorterChange]
+	// documentation for details.
+	//
+	// This function is intended for implementors of `GtkSorter` subclasses and
+	// should not be called from other functions.
+	//
+	// This method is inherited from Sorter
+	Changed(change SorterChange)
+	// Compare compares two given items according to the sort order implemented
+	// by the sorter.
+	//
+	// Sorters implement a partial order:
+	//
+	// * It is reflexive, ie a = a * It is antisymmetric, ie if a < b and b < a,
+	// then a = b * It is transitive, ie given any 3 items with a ≤ b and b ≤ c,
+	// then a ≤ c
+	//
+	// The sorter may signal it conforms to additional constraints via the
+	// return value of [method@Gtk.Sorter.get_order].
+	//
+	// This method is inherited from Sorter
+	Compare(item1 gextras.Objector, item2 gextras.Objector) Ordering
+	// GetOrder gets the order that @self conforms to.
+	//
+	// See [enum@Gtk.SorterOrder] for details of the possible return values.
+	//
+	// This function is intended to allow optimizations.
+	//
+	// This method is inherited from Sorter
+	GetOrder() SorterOrder
 
 	// Expression gets the expression that is evaluated to obtain numbers from
 	// items.
@@ -47,17 +88,17 @@ type NumericSorter interface {
 	SetSortOrder(sortOrder SortType)
 }
 
-// numericSorter implements the NumericSorter class.
+// numericSorter implements the NumericSorter interface.
 type numericSorter struct {
-	Sorter
+	*externglib.Object
 }
 
-// WrapNumericSorter wraps a GObject to the right type. It is
-// primarily used internally.
+var _ NumericSorter = (*numericSorter)(nil)
+
+// WrapNumericSorter wraps a GObject to a type that implements
+// interface NumericSorter. It is primarily used internally.
 func WrapNumericSorter(obj *externglib.Object) NumericSorter {
-	return numericSorter{
-		Sorter: WrapSorter(obj),
-	}
+	return numericSorter{obj}
 }
 
 func marshalNumericSorter(p uintptr) (interface{}, error) {
@@ -80,9 +121,25 @@ func NewNumericSorter(expression Expression) NumericSorter {
 
 	var _numericSorter NumericSorter // out
 
-	_numericSorter = WrapNumericSorter(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_numericSorter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(NumericSorter)
 
 	return _numericSorter
+}
+
+func (n numericSorter) AsSorter() Sorter {
+	return WrapSorter(gextras.InternObject(n))
+}
+
+func (s numericSorter) Changed(change SorterChange) {
+	WrapSorter(gextras.InternObject(s)).Changed(change)
+}
+
+func (s numericSorter) Compare(item1 gextras.Objector, item2 gextras.Objector) Ordering {
+	return WrapSorter(gextras.InternObject(s)).Compare(item1, item2)
+}
+
+func (s numericSorter) GetOrder() SorterOrder {
+	return WrapSorter(gextras.InternObject(s)).GetOrder()
 }
 
 func (s numericSorter) Expression() Expression {

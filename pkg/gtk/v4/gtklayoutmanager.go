@@ -95,17 +95,17 @@ type LayoutManager interface {
 	Measure(widget Widget, orientation Orientation, forSize int) (minimum int, natural int, minimumBaseline int, naturalBaseline int)
 }
 
-// layoutManager implements the LayoutManager class.
+// layoutManager implements the LayoutManager interface.
 type layoutManager struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapLayoutManager wraps a GObject to the right type. It is
-// primarily used internally.
+var _ LayoutManager = (*layoutManager)(nil)
+
+// WrapLayoutManager wraps a GObject to a type that implements
+// interface LayoutManager. It is primarily used internally.
 func WrapLayoutManager(obj *externglib.Object) LayoutManager {
-	return layoutManager{
-		Objector: obj,
-	}
+	return layoutManager{obj}
 }
 
 func marshalLayoutManager(p uintptr) (interface{}, error) {

@@ -72,17 +72,17 @@ type FontMap interface {
 	LoadFontset(context Context, desc *FontDescription, language *Language) Fontset
 }
 
-// fontMap implements the FontMap class.
+// fontMap implements the FontMap interface.
 type fontMap struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapFontMap wraps a GObject to the right type. It is
-// primarily used internally.
+var _ FontMap = (*fontMap)(nil)
+
+// WrapFontMap wraps a GObject to a type that implements
+// interface FontMap. It is primarily used internally.
 func WrapFontMap(obj *externglib.Object) FontMap {
-	return fontMap{
-		Objector: obj,
-	}
+	return fontMap{obj}
 }
 
 func marshalFontMap(p uintptr) (interface{}, error) {

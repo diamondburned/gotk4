@@ -62,17 +62,17 @@ type Settings interface {
 	ResetProperty(name string)
 }
 
-// settings implements the Settings class.
+// settings implements the Settings interface.
 type settings struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapSettings wraps a GObject to the right type. It is
-// primarily used internally.
+var _ Settings = (*settings)(nil)
+
+// WrapSettings wraps a GObject to a type that implements
+// interface Settings. It is primarily used internally.
 func WrapSettings(obj *externglib.Object) Settings {
-	return settings{
-		Objector: obj,
-	}
+	return settings{obj}
 }
 
 func marshalSettings(p uintptr) (interface{}, error) {

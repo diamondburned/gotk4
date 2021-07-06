@@ -160,17 +160,17 @@ type TreeSelection interface {
 	UnselectRange(startPath *TreePath, endPath *TreePath)
 }
 
-// treeSelection implements the TreeSelection class.
+// treeSelection implements the TreeSelection interface.
 type treeSelection struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapTreeSelection wraps a GObject to the right type. It is
-// primarily used internally.
+var _ TreeSelection = (*treeSelection)(nil)
+
+// WrapTreeSelection wraps a GObject to a type that implements
+// interface TreeSelection. It is primarily used internally.
 func WrapTreeSelection(obj *externglib.Object) TreeSelection {
-	return treeSelection{
-		Objector: obj,
-	}
+	return treeSelection{obj}
 }
 
 func marshalTreeSelection(p uintptr) (interface{}, error) {

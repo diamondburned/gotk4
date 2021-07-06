@@ -109,7 +109,7 @@ type Visual interface {
 	//
 	// Not all GDK backend provide a meaningful value for this function.
 	//
-	// Deprecated: since version 3.22..
+	// Deprecated: since version 3.22.
 	BitsPerRGB() int
 	// BluePixelDetails obtains values that are needed to calculate blue pixel
 	// values in TrueColor and DirectColor. The “mask” is the significant bits
@@ -155,17 +155,17 @@ type Visual interface {
 	VisualType() VisualType
 }
 
-// visual implements the Visual class.
+// visual implements the Visual interface.
 type visual struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapVisual wraps a GObject to the right type. It is
-// primarily used internally.
+var _ Visual = (*visual)(nil)
+
+// WrapVisual wraps a GObject to a type that implements
+// interface Visual. It is primarily used internally.
 func WrapVisual(obj *externglib.Object) Visual {
-	return visual{
-		Objector: obj,
-	}
+	return visual{obj}
 }
 
 func marshalVisual(p uintptr) (interface{}, error) {

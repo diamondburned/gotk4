@@ -134,7 +134,7 @@ type Table interface {
 
 // table implements the Table interface.
 type table struct {
-	gextras.Objector
+	*externglib.Object
 }
 
 var _ Table = (*table)(nil)
@@ -142,9 +142,7 @@ var _ Table = (*table)(nil)
 // WrapTable wraps a GObject to a type that implements
 // interface Table. It is primarily used internally.
 func WrapTable(obj *externglib.Object) Table {
-	return table{
-		Objector: obj,
-	}
+	return table{obj}
 }
 
 func marshalTable(p uintptr) (interface{}, error) {

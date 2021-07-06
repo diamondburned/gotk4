@@ -54,7 +54,7 @@ type DBusObjectManager interface {
 
 // dBusObjectManager implements the DBusObjectManager interface.
 type dBusObjectManager struct {
-	gextras.Objector
+	*externglib.Object
 }
 
 var _ DBusObjectManager = (*dBusObjectManager)(nil)
@@ -62,9 +62,7 @@ var _ DBusObjectManager = (*dBusObjectManager)(nil)
 // WrapDBusObjectManager wraps a GObject to a type that implements
 // interface DBusObjectManager. It is primarily used internally.
 func WrapDBusObjectManager(obj *externglib.Object) DBusObjectManager {
-	return dBusObjectManager{
-		Objector: obj,
-	}
+	return dBusObjectManager{obj}
 }
 
 func marshalDBusObjectManager(p uintptr) (interface{}, error) {

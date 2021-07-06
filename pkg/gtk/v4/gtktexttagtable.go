@@ -65,6 +65,14 @@ type TextTagTable interface {
 	// AsBuildable casts the class to the Buildable interface.
 	AsBuildable() Buildable
 
+	// GetBuildableID gets the ID of the @buildable object.
+	//
+	// `GtkBuilder` sets the name based on the ID attribute of the <object> tag
+	// used to construct the @buildable.
+	//
+	// This method is inherited from Buildable
+	GetBuildableID() string
+
 	// Add a tag to the table.
 	//
 	// The tag is assigned the highest priority in the table.
@@ -89,17 +97,17 @@ type TextTagTable interface {
 	Remove(tag TextTag)
 }
 
-// textTagTable implements the TextTagTable class.
+// textTagTable implements the TextTagTable interface.
 type textTagTable struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapTextTagTable wraps a GObject to the right type. It is
-// primarily used internally.
+var _ TextTagTable = (*textTagTable)(nil)
+
+// WrapTextTagTable wraps a GObject to a type that implements
+// interface TextTagTable. It is primarily used internally.
 func WrapTextTagTable(obj *externglib.Object) TextTagTable {
-	return textTagTable{
-		Objector: obj,
-	}
+	return textTagTable{obj}
 }
 
 func marshalTextTagTable(p uintptr) (interface{}, error) {
@@ -118,13 +126,17 @@ func NewTextTagTable() TextTagTable {
 
 	var _textTagTable TextTagTable // out
 
-	_textTagTable = WrapTextTagTable(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_textTagTable = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(TextTagTable)
 
 	return _textTagTable
 }
 
 func (t textTagTable) AsBuildable() Buildable {
 	return WrapBuildable(gextras.InternObject(t))
+}
+
+func (b textTagTable) GetBuildableID() string {
+	return WrapBuildable(gextras.InternObject(b)).GetBuildableID()
 }
 
 func (t textTagTable) Add(tag TextTag) bool {

@@ -192,7 +192,7 @@ type Paintable interface {
 
 // paintable implements the Paintable interface.
 type paintable struct {
-	gextras.Objector
+	*externglib.Object
 }
 
 var _ Paintable = (*paintable)(nil)
@@ -200,9 +200,7 @@ var _ Paintable = (*paintable)(nil)
 // WrapPaintable wraps a GObject to a type that implements
 // interface Paintable. It is primarily used internally.
 func WrapPaintable(obj *externglib.Object) Paintable {
-	return paintable{
-		Objector: obj,
-	}
+	return paintable{obj}
 }
 
 func marshalPaintable(p uintptr) (interface{}, error) {

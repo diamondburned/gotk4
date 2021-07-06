@@ -170,7 +170,7 @@ type FontChooser interface {
 
 // fontChooser implements the FontChooser interface.
 type fontChooser struct {
-	gextras.Objector
+	*externglib.Object
 }
 
 var _ FontChooser = (*fontChooser)(nil)
@@ -178,9 +178,7 @@ var _ FontChooser = (*fontChooser)(nil)
 // WrapFontChooser wraps a GObject to a type that implements
 // interface FontChooser. It is primarily used internally.
 func WrapFontChooser(obj *externglib.Object) FontChooser {
-	return fontChooser{
-		Objector: obj,
-	}
+	return fontChooser{obj}
 }
 
 func marshalFontChooser(p uintptr) (interface{}, error) {

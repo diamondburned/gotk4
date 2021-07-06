@@ -5,6 +5,8 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -27,20 +29,86 @@ func init() {
 // It should only be used as a last resort if none of the other event
 // controllers or gestures do the job.
 type EventControllerLegacy interface {
-	EventController
+	gextras.Objector
+
+	// AsEventController casts the class to the EventController interface.
+	AsEventController() EventController
+
+	// GetCurrentEvent returns the event that is currently being handled by the
+	// controller, and nil at other times.
+	//
+	// This method is inherited from EventController
+	GetCurrentEvent() gdk.Event
+	// GetCurrentEventDevice returns the device of the event that is currently
+	// being handled by the controller, and nil otherwise.
+	//
+	// This method is inherited from EventController
+	GetCurrentEventDevice() gdk.Device
+	// GetCurrentEventState returns the modifier state of the event that is
+	// currently being handled by the controller, and 0 otherwise.
+	//
+	// This method is inherited from EventController
+	GetCurrentEventState() gdk.ModifierType
+	// GetCurrentEventTime returns the timestamp of the event that is currently
+	// being handled by the controller, and 0 otherwise.
+	//
+	// This method is inherited from EventController
+	GetCurrentEventTime() uint32
+	// GetName gets the name of @controller.
+	//
+	// This method is inherited from EventController
+	GetName() string
+	// GetPropagationLimit gets the propagation limit of the event controller.
+	//
+	// This method is inherited from EventController
+	GetPropagationLimit() PropagationLimit
+	// GetPropagationPhase gets the propagation phase at which @controller
+	// handles events.
+	//
+	// This method is inherited from EventController
+	GetPropagationPhase() PropagationPhase
+	// GetWidget returns the Widget this controller relates to.
+	//
+	// This method is inherited from EventController
+	GetWidget() Widget
+	// Reset resets the @controller to a clean state.
+	//
+	// This method is inherited from EventController
+	Reset()
+	// SetName sets a name on the controller that can be used for debugging.
+	//
+	// This method is inherited from EventController
+	SetName(name string)
+	// SetPropagationLimit sets the event propagation limit on the event
+	// controller.
+	//
+	// If the limit is set to GTK_LIMIT_SAME_NATIVE, the controller won't handle
+	// events that are targeted at widgets on a different surface, such as
+	// popovers.
+	//
+	// This method is inherited from EventController
+	SetPropagationLimit(limit PropagationLimit)
+	// SetPropagationPhase sets the propagation phase at which a controller
+	// handles events.
+	//
+	// If @phase is GTK_PHASE_NONE, no automatic event handling will be
+	// performed, but other additional gesture maintenance will.
+	//
+	// This method is inherited from EventController
+	SetPropagationPhase(phase PropagationPhase)
 }
 
-// eventControllerLegacy implements the EventControllerLegacy class.
+// eventControllerLegacy implements the EventControllerLegacy interface.
 type eventControllerLegacy struct {
-	EventController
+	*externglib.Object
 }
 
-// WrapEventControllerLegacy wraps a GObject to the right type. It is
-// primarily used internally.
+var _ EventControllerLegacy = (*eventControllerLegacy)(nil)
+
+// WrapEventControllerLegacy wraps a GObject to a type that implements
+// interface EventControllerLegacy. It is primarily used internally.
 func WrapEventControllerLegacy(obj *externglib.Object) EventControllerLegacy {
-	return eventControllerLegacy{
-		EventController: WrapEventController(obj),
-	}
+	return eventControllerLegacy{obj}
 }
 
 func marshalEventControllerLegacy(p uintptr) (interface{}, error) {
@@ -57,7 +125,59 @@ func NewEventControllerLegacy() EventControllerLegacy {
 
 	var _eventControllerLegacy EventControllerLegacy // out
 
-	_eventControllerLegacy = WrapEventControllerLegacy(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_eventControllerLegacy = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(EventControllerLegacy)
 
 	return _eventControllerLegacy
+}
+
+func (e eventControllerLegacy) AsEventController() EventController {
+	return WrapEventController(gextras.InternObject(e))
+}
+
+func (c eventControllerLegacy) GetCurrentEvent() gdk.Event {
+	return WrapEventController(gextras.InternObject(c)).GetCurrentEvent()
+}
+
+func (c eventControllerLegacy) GetCurrentEventDevice() gdk.Device {
+	return WrapEventController(gextras.InternObject(c)).GetCurrentEventDevice()
+}
+
+func (c eventControllerLegacy) GetCurrentEventState() gdk.ModifierType {
+	return WrapEventController(gextras.InternObject(c)).GetCurrentEventState()
+}
+
+func (c eventControllerLegacy) GetCurrentEventTime() uint32 {
+	return WrapEventController(gextras.InternObject(c)).GetCurrentEventTime()
+}
+
+func (c eventControllerLegacy) GetName() string {
+	return WrapEventController(gextras.InternObject(c)).GetName()
+}
+
+func (c eventControllerLegacy) GetPropagationLimit() PropagationLimit {
+	return WrapEventController(gextras.InternObject(c)).GetPropagationLimit()
+}
+
+func (c eventControllerLegacy) GetPropagationPhase() PropagationPhase {
+	return WrapEventController(gextras.InternObject(c)).GetPropagationPhase()
+}
+
+func (c eventControllerLegacy) GetWidget() Widget {
+	return WrapEventController(gextras.InternObject(c)).GetWidget()
+}
+
+func (c eventControllerLegacy) Reset() {
+	WrapEventController(gextras.InternObject(c)).Reset()
+}
+
+func (c eventControllerLegacy) SetName(name string) {
+	WrapEventController(gextras.InternObject(c)).SetName(name)
+}
+
+func (c eventControllerLegacy) SetPropagationLimit(limit PropagationLimit) {
+	WrapEventController(gextras.InternObject(c)).SetPropagationLimit(limit)
+}
+
+func (c eventControllerLegacy) SetPropagationPhase(phase PropagationPhase) {
+	WrapEventController(gextras.InternObject(c)).SetPropagationPhase(phase)
 }

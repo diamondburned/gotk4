@@ -98,17 +98,17 @@ type DirectoryList interface {
 	SetMonitored(monitored bool)
 }
 
-// directoryList implements the DirectoryList class.
+// directoryList implements the DirectoryList interface.
 type directoryList struct {
-	gextras.Objector
+	*externglib.Object
 }
 
-// WrapDirectoryList wraps a GObject to the right type. It is
-// primarily used internally.
+var _ DirectoryList = (*directoryList)(nil)
+
+// WrapDirectoryList wraps a GObject to a type that implements
+// interface DirectoryList. It is primarily used internally.
 func WrapDirectoryList(obj *externglib.Object) DirectoryList {
-	return directoryList{
-		Objector: obj,
-	}
+	return directoryList{obj}
 }
 
 func marshalDirectoryList(p uintptr) (interface{}, error) {

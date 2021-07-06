@@ -35,6 +35,16 @@ func init() {
 	})
 }
 
+// InfoBarOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type InfoBarOverrider interface {
+	Close()
+	// Response emits the “response” signal with the given @response_id.
+	Response(responseId int)
+}
+
 // InfoBar is a widget that can be used to show messages to the user without
 // showing a dialog. It is often temporarily shown at the top or bottom of a
 // document. In contrast to Dialog, which has a action area at the bottom,
@@ -2895,7 +2905,6 @@ type InfoBar interface {
 	ContentArea() Box
 	// MessageType returns the message type of the message area.
 	MessageType() MessageType
-
 	Revealed() bool
 	// ShowCloseButton returns whether the widget will display a standard close
 	// button.

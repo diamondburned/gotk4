@@ -36,6 +36,33 @@ func init() {
 	})
 }
 
+// IOStreamOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type IOStreamOverrider interface {
+	// CloseAsync requests an asynchronous close of the stream, releasing
+	// resources related to it. When the operation is finished @callback will be
+	// called. You can then call g_io_stream_close_finish() to get the result of
+	// the operation.
+	//
+	// For behaviour details see g_io_stream_close().
+	//
+	// The asynchronous methods have a default fallback that uses threads to
+	// implement asynchronicity, so they are optional for inheriting classes.
+	// However, if you override one you must override all.
+	CloseAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
+	// CloseFinish closes a stream.
+	CloseFinish(result AsyncResult) error
+	CloseFn(cancellable Cancellable) error
+	// InputStream gets the input stream for this object. This is used for
+	// reading.
+	InputStream() InputStream
+	// OutputStream gets the output stream for this object. This is used for
+	// writing.
+	OutputStream() OutputStream
+}
+
 // IOStream represents an object that has both read and write streams. Generally
 // the two streams act as separate input and output streams, but they share some
 // common resources and state. For instance, for seekable streams, both streams

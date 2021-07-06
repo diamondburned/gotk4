@@ -33,6 +33,24 @@ func init() {
 	})
 }
 
+// IconOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type IconOverrider interface {
+	// Equal checks if two icons are equal.
+	Equal(icon2 Icon) bool
+	// Hash gets a hash for an icon.
+	Hash() uint
+	// Serialize serializes a #GIcon into a #GVariant. An equivalent #GIcon can
+	// be retrieved back by calling g_icon_deserialize() on the returned value.
+	// As serialization will avoid using raw icon data when possible, it only
+	// makes sense to transfer the #GVariant between processes on the same
+	// machine, (as opposed to over the network), and within the same file
+	// system namespace.
+	Serialize() *glib.Variant
+}
+
 // Icon is a very minimal interface for icons. It provides functions for
 // checking the equality of two icons, hashing of icons and serializing an icon
 // to and from strings.

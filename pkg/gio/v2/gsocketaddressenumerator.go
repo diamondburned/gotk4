@@ -36,6 +36,37 @@ func init() {
 	})
 }
 
+// SocketAddressEnumeratorOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type SocketAddressEnumeratorOverrider interface {
+	// Next retrieves the next Address from @enumerator. Note that this may
+	// block for some amount of time. (Eg, a Address may need to do a DNS lookup
+	// before it can return an address.) Use
+	// g_socket_address_enumerator_next_async() if you need to avoid blocking.
+	//
+	// If @enumerator is expected to yield addresses, but for some reason is
+	// unable to (eg, because of a DNS error), then the first call to
+	// g_socket_address_enumerator_next() will return an appropriate error in
+	// *@error. However, if the first call to g_socket_address_enumerator_next()
+	// succeeds, then any further internal errors (other than @cancellable being
+	// triggered) will be ignored.
+	Next(cancellable Cancellable) (SocketAddress, error)
+	// NextAsync: asynchronously retrieves the next Address from @enumerator and
+	// then calls @callback, which must call
+	// g_socket_address_enumerator_next_finish() to get the result.
+	//
+	// It is an error to call this multiple times before the previous callback
+	// has finished.
+	NextAsync(cancellable Cancellable, callback AsyncReadyCallback)
+	// NextFinish retrieves the result of a completed call to
+	// g_socket_address_enumerator_next_async(). See
+	// g_socket_address_enumerator_next() for more information about error
+	// handling.
+	NextFinish(result AsyncResult) (SocketAddress, error)
+}
+
 // SocketAddressEnumerator is an enumerator type for Address instances. It is
 // returned by enumeration functions such as g_socket_connectable_enumerate(),
 // which returns a AddressEnumerator to list each Address which could be used to

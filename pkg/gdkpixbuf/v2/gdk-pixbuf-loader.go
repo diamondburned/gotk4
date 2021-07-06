@@ -23,6 +23,17 @@ func init() {
 	})
 }
 
+// PixbufLoaderOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type PixbufLoaderOverrider interface {
+	AreaPrepared()
+	AreaUpdated(x int, y int, width int, height int)
+	Closed()
+	SizePrepared(width int, height int)
+}
+
 // PixbufLoader: incremental image loader.
 //
 // `GdkPixbufLoader` provides a way for applications to drive the process of

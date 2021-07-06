@@ -35,6 +35,14 @@ func init() {
 	})
 }
 
+// LinkButtonOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type LinkButtonOverrider interface {
+	ActivateLink() bool
+}
+
 // LinkButton is a Button with a hyperlink, similar to the one used by web
 // browsers, which triggers an action when clicked. It is useful to show quick
 // links to resources.

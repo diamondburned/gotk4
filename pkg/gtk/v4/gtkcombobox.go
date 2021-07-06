@@ -28,6 +28,15 @@ func init() {
 	})
 }
 
+// ComboBoxOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type ComboBoxOverrider interface {
+	Changed()
+	FormatEntryText(path string) string
+}
+
 // ComboBox: `GtkComboBox` is a widget that allows the user to choose from a
 // list of valid choices.
 //

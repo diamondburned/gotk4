@@ -2868,6 +2868,14 @@ func (b listBox) UnselectRow(row ListBoxRow) {
 	C.gtk_list_box_unselect_row(_arg0, _arg1)
 }
 
+// ListBoxRowOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type ListBoxRowOverrider interface {
+	Activate()
+}
+
 // ListBoxRow: `GtkListBoxRow` is the kind of widget that can be added to a
 // `GtkListBox`.
 type ListBoxRow interface {

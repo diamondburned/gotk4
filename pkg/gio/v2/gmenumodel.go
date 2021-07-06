@@ -36,6 +36,28 @@ func init() {
 	})
 }
 
+// MenuAttributeIterOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type MenuAttributeIterOverrider interface {
+	// Next: this function combines g_menu_attribute_iter_next() with
+	// g_menu_attribute_iter_get_name() and g_menu_attribute_iter_get_value().
+	//
+	// First the iterator is advanced to the next (possibly first) attribute. If
+	// that fails, then false is returned and there are no other effects.
+	//
+	// If successful, @name and @value are set to the name and value of the
+	// attribute that has just been advanced to. At this point,
+	// g_menu_attribute_iter_get_name() and g_menu_attribute_iter_get_value()
+	// will return the same values again.
+	//
+	// The value returned in @name remains valid for as long as the iterator
+	// remains at the current position. The value returned in @value must be
+	// unreffed using g_variant_unref() when it is no longer in use.
+	Next() (string, *glib.Variant, bool)
+}
+
 // MenuAttributeIter is an opaque structure type. You must access it using the
 // functions below.
 type MenuAttributeIter interface {
@@ -173,6 +195,28 @@ func (i menuAttributeIter) Next() bool {
 	return _ok
 }
 
+// MenuLinkIterOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type MenuLinkIterOverrider interface {
+	// Next: this function combines g_menu_link_iter_next() with
+	// g_menu_link_iter_get_name() and g_menu_link_iter_get_value().
+	//
+	// First the iterator is advanced to the next (possibly first) link. If that
+	// fails, then false is returned and there are no other effects.
+	//
+	// If successful, @out_link and @value are set to the name and Model of the
+	// link that has just been advanced to. At this point,
+	// g_menu_link_iter_get_name() and g_menu_link_iter_get_value() will return
+	// the same values again.
+	//
+	// The value returned in @out_link remains valid for as long as the iterator
+	// remains at the current position. The value returned in @value must be
+	// unreffed using g_object_unref() when it is no longer in use.
+	Next() (string, MenuModel, bool)
+}
+
 // MenuLinkIter is an opaque structure type. You must access it using the
 // functions below.
 type MenuLinkIter interface {
@@ -298,6 +342,53 @@ func (i menuLinkIter) Next() bool {
 	}
 
 	return _ok
+}
+
+// MenuModelOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type MenuModelOverrider interface {
+	// ItemAttributeValue queries the item at position @item_index in @model for
+	// the attribute specified by @attribute.
+	//
+	// If @expected_type is non-nil then it specifies the expected type of the
+	// attribute. If it is nil then any type will be accepted.
+	//
+	// If the attribute exists and matches @expected_type (or if the expected
+	// type is unspecified) then the value is returned.
+	//
+	// If the attribute does not exist, or does not match the expected type then
+	// nil is returned.
+	ItemAttributeValue(itemIndex int, attribute string, expectedType *glib.VariantType) *glib.Variant
+	// ItemAttributes gets all the attributes associated with the item in the
+	// menu model.
+	ItemAttributes(itemIndex int) *glib.HashTable
+	// ItemLink queries the item at position @item_index in @model for the link
+	// specified by @link.
+	//
+	// If the link exists, the linked Model is returned. If the link does not
+	// exist, nil is returned.
+	ItemLink(itemIndex int, link string) MenuModel
+	// ItemLinks gets all the links associated with the item in the menu model.
+	ItemLinks(itemIndex int) *glib.HashTable
+	// NItems: query the number of items in @model.
+	NItems() int
+	// IsMutable queries if @model is mutable.
+	//
+	// An immutable Model will never emit the Model::items-changed signal.
+	// Consumers of the model may make optimisations accordingly.
+	IsMutable() bool
+	// IterateItemAttributes creates a AttributeIter to iterate over the
+	// attributes of the item at position @item_index in @model.
+	//
+	// You must free the iterator with g_object_unref() when you are done.
+	IterateItemAttributes(itemIndex int) MenuAttributeIter
+	// IterateItemLinks creates a LinkIter to iterate over the links of the item
+	// at position @item_index in @model.
+	//
+	// You must free the iterator with g_object_unref() when you are done.
+	IterateItemLinks(itemIndex int) MenuLinkIter
 }
 
 // MenuModel represents the contents of a menu -- an ordered list of menu items.

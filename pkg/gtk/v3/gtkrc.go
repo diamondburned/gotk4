@@ -37,18 +37,18 @@ func init() {
 type PathPriorityType int
 
 const (
-	// lowest: deprecated
-	PathPriorityTypeLowest PathPriorityType = 0
-	// gtk: deprecated
-	PathPriorityTypeGTK PathPriorityType = 4
-	// application: deprecated
-	PathPriorityTypeApplication PathPriorityType = 8
-	// theme: deprecated
-	PathPriorityTypeTheme PathPriorityType = 10
-	// rc: deprecated
-	PathPriorityTypeRC PathPriorityType = 12
-	// highest: deprecated
-	PathPriorityTypeHighest PathPriorityType = 15
+	// Lowest: deprecated
+	Lowest PathPriorityType = 0
+	// GTK: deprecated
+	GTK PathPriorityType = 4
+	// Application: deprecated
+	Application PathPriorityType = 8
+	// Theme: deprecated
+	Theme PathPriorityType = 10
+	// RC: deprecated
+	RC PathPriorityType = 12
+	// Highest: deprecated
+	Highest PathPriorityType = 15
 )
 
 func marshalPathPriorityType(p uintptr) (interface{}, error) {
@@ -61,12 +61,12 @@ func marshalPathPriorityType(p uintptr) (interface{}, error) {
 type PathType int
 
 const (
-	// widget: deprecated
-	PathTypeWidget PathType = iota
+	// Widget: deprecated
+	Widget PathType = iota
 	// WidgetClass: deprecated
-	PathTypeWidgetClass
-	// class: deprecated
-	PathTypeClass
+	WidgetClass
+	// Class: deprecated
+	Class
 )
 
 func marshalPathType(p uintptr) (interface{}, error) {
@@ -81,86 +81,86 @@ func marshalPathType(p uintptr) (interface{}, error) {
 type RCTokenType int
 
 const (
-	// invalid: deprecated
-	RCTokenTypeInvalid RCTokenType = 270
-	// include: deprecated
-	RCTokenTypeInclude RCTokenType = 271
-	// normal: deprecated
-	RCTokenTypeNormal RCTokenType = 272
-	// active: deprecated
-	RCTokenTypeActive RCTokenType = 273
-	// prelight: deprecated
-	RCTokenTypePrelight RCTokenType = 274
-	// selected: deprecated
-	RCTokenTypeSelected RCTokenType = 275
-	// insensitive: deprecated
-	RCTokenTypeInsensitive RCTokenType = 276
-	// fg: deprecated
-	RCTokenTypeFg RCTokenType = 277
-	// bg: deprecated
-	RCTokenTypeBg RCTokenType = 278
-	// text: deprecated
-	RCTokenTypeText RCTokenType = 279
-	// base: deprecated
-	RCTokenTypeBase RCTokenType = 280
-	// xthickness: deprecated
-	RCTokenTypeXthickness RCTokenType = 281
-	// ythickness: deprecated
-	RCTokenTypeYthickness RCTokenType = 282
-	// font: deprecated
-	RCTokenTypeFont RCTokenType = 283
-	// fontset: deprecated
-	RCTokenTypeFontset RCTokenType = 284
+	// Invalid: deprecated
+	Invalid RCTokenType = 270
+	// Include: deprecated
+	Include RCTokenType = 271
+	// Normal: deprecated
+	Normal RCTokenType = 272
+	// Active: deprecated
+	Active RCTokenType = 273
+	// Prelight: deprecated
+	Prelight RCTokenType = 274
+	// Selected: deprecated
+	Selected RCTokenType = 275
+	// Insensitive: deprecated
+	Insensitive RCTokenType = 276
+	// Fg: deprecated
+	Fg RCTokenType = 277
+	// Bg: deprecated
+	Bg RCTokenType = 278
+	// Text: deprecated
+	Text RCTokenType = 279
+	// Base: deprecated
+	Base RCTokenType = 280
+	// Xthickness: deprecated
+	Xthickness RCTokenType = 281
+	// Ythickness: deprecated
+	Ythickness RCTokenType = 282
+	// Font: deprecated
+	Font RCTokenType = 283
+	// Fontset: deprecated
+	Fontset RCTokenType = 284
 	// FontName: deprecated
-	RCTokenTypeFontName RCTokenType = 285
+	FontName RCTokenType = 285
 	// BgPixmap: deprecated
-	RCTokenTypeBgPixmap RCTokenType = 286
+	BgPixmap RCTokenType = 286
 	// PixmapPath: deprecated
-	RCTokenTypePixmapPath RCTokenType = 287
-	// style: deprecated
-	RCTokenTypeStyle RCTokenType = 288
-	// binding: deprecated
-	RCTokenTypeBinding RCTokenType = 289
-	// bind: deprecated
-	RCTokenTypeBind RCTokenType = 290
-	// widget: deprecated
-	RCTokenTypeWidget RCTokenType = 291
+	PixmapPath RCTokenType = 287
+	// Style: deprecated
+	Style RCTokenType = 288
+	// Binding: deprecated
+	Binding RCTokenType = 289
+	// Bind: deprecated
+	Bind RCTokenType = 290
+	// Widget: deprecated
+	Widget RCTokenType = 291
 	// WidgetClass: deprecated
-	RCTokenTypeWidgetClass RCTokenType = 292
-	// class: deprecated
-	RCTokenTypeClass RCTokenType = 293
-	// lowest: deprecated
-	RCTokenTypeLowest RCTokenType = 294
-	// gtk: deprecated
-	RCTokenTypeGTK RCTokenType = 295
-	// application: deprecated
-	RCTokenTypeApplication RCTokenType = 296
-	// theme: deprecated
-	RCTokenTypeTheme RCTokenType = 297
-	// rc: deprecated
-	RCTokenTypeRC RCTokenType = 298
-	// highest: deprecated
-	RCTokenTypeHighest RCTokenType = 299
-	// engine: deprecated
-	RCTokenTypeEngine RCTokenType = 300
+	WidgetClass RCTokenType = 292
+	// Class: deprecated
+	Class RCTokenType = 293
+	// Lowest: deprecated
+	Lowest RCTokenType = 294
+	// GTK: deprecated
+	GTK RCTokenType = 295
+	// Application: deprecated
+	Application RCTokenType = 296
+	// Theme: deprecated
+	Theme RCTokenType = 297
+	// RC: deprecated
+	RC RCTokenType = 298
+	// Highest: deprecated
+	Highest RCTokenType = 299
+	// Engine: deprecated
+	Engine RCTokenType = 300
 	// ModulePath: deprecated
-	RCTokenTypeModulePath RCTokenType = 301
+	ModulePath RCTokenType = 301
 	// ImModulePath: deprecated
-	RCTokenTypeImModulePath RCTokenType = 302
+	ImModulePath RCTokenType = 302
 	// ImModuleFile: deprecated
-	RCTokenTypeImModuleFile RCTokenType = 303
-	// stock: deprecated
-	RCTokenTypeStock RCTokenType = 304
-	// ltr: deprecated
-	RCTokenTypeLTR RCTokenType = 305
-	// rtl: deprecated
-	RCTokenTypeRTL RCTokenType = 306
-	// color: deprecated
-	RCTokenTypeColor RCTokenType = 307
-	// unbind: deprecated
-	RCTokenTypeUnbind RCTokenType = 308
-	// last: deprecated
-	RCTokenTypeLast RCTokenType = 309
+	ImModuleFile RCTokenType = 303
+	// Stock: deprecated
+	Stock RCTokenType = 304
+	// LTR: deprecated
+	LTR RCTokenType = 305
+	// RTL: deprecated
+	RTL RCTokenType = 306
+	// Color: deprecated
+	Color RCTokenType = 307
+	// Unbind: deprecated
+	Unbind RCTokenType = 308
+	// Last: deprecated
+	Last RCTokenType = 309
 )
 
 func marshalRCTokenType(p uintptr) (interface{}, error) {
@@ -621,6 +621,15 @@ func RCSetDefaultFiles(filenames []string) {
 	}
 
 	C.gtk_rc_set_default_files(_arg1)
+}
+
+// RCStyleOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type RCStyleOverrider interface {
+	Merge(src RCStyle)
+	Parse(settings Settings, scanner *glib.Scanner) uint
 }
 
 // RCStyle: the RcStyle-struct is used to represent a set of information about

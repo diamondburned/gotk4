@@ -22,6 +22,18 @@ func init() {
 	})
 }
 
+// ObjectFactoryOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type ObjectFactoryOverrider interface {
+	// Invalidate: inform @factory that it is no longer being used to create
+	// accessibles. When called, @factory may need to inform Objects which it
+	// has created that they need to be re-instantiated. Note: primarily used
+	// for runtime replacement of ObjectFactorys in object registries.
+	Invalidate()
+}
+
 // ObjectFactory: this class is the base object class for a factory used to
 // create an accessible object for a specific GType. The function
 // atk_registry_set_factory_type() is normally called to store in the registry

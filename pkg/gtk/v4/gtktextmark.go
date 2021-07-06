@@ -75,7 +75,6 @@ type TextMark interface {
 	//
 	// A cursor is displayed for visible marks.
 	Visible() bool
-
 	SetVisible(setting bool)
 }
 

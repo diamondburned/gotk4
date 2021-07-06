@@ -119,11 +119,13 @@ type (
 	overrideSelfName string
 	originalTypeName string
 	additionalString string
+	trailingNewLine  struct{}
 )
 
 func (overrideSelfName) opts() {}
 func (originalTypeName) opts() {}
 func (additionalString) opts() {}
+func (trailingNewLine) opts()  {}
 
 // OverrideSelfName overrides the Go type name that's implicitly converted
 // automatically by GoDoc.
@@ -132,6 +134,9 @@ func OverrideSelfName(self string) Option { return overrideSelfName(self) }
 // AdditionalString adds the given string into the tail of the command as
 // another paragraph.
 func AdditionalString(str string) Option { return additionalString(str) }
+
+// TrailingNewLine adds a trailing new line during documentation generation.
+func TrailingNewLine() Option { return trailingNewLine{} }
 
 func isLower(s string) bool {
 	return strings.IndexFunc(s, unicode.IsUpper) == -1
@@ -148,7 +153,7 @@ func GoDoc(v interface{}, indentLvl int, opts ...Option) string {
 	if inf.Name != nil {
 		orig = *inf.Name
 
-		if strings.Contains(orig, "_") && isLower(orig) {
+		if strings.Contains(orig, "_") || isLower(orig) {
 			self = strcases.SnakeToGo(true, orig)
 		} else {
 			self = strcases.PascalToGo(orig)
@@ -187,8 +192,7 @@ func GoDoc(v interface{}, indentLvl int, opts ...Option) string {
 
 	return CommentReflowLinesIndent(
 		indentLvl, self, doc.String(),
-		// options
-		originalTypeName(orig),
+		append(opts, originalTypeName(orig))...,
 	)
 }
 
@@ -350,7 +354,16 @@ func CommentReflowLinesIndent(indentLvl int, self, cmt string, opts ...Option) s
 		lines[i] = ident + "// " + line
 	}
 
-	return strings.Join(lines, "\n")
+	complete := strings.Join(lines, "\n")
+
+	for _, opt := range opts {
+		if _, ok := opt.(trailingNewLine); ok {
+			complete += "\n"
+			break
+		}
+	}
+
+	return complete
 }
 
 // tidyParagraphs cleans up new lines without touching codeblocks.

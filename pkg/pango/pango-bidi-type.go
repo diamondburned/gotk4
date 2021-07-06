@@ -30,44 +30,44 @@ func init() {
 type BidiType int
 
 const (
-	// l: left-to-Right
-	BidiTypeL BidiType = iota
-	// lre: left-to-Right Embedding
-	BidiTypeLre
-	// lro: left-to-Right Override
-	BidiTypeLro
-	// r: right-to-Left
-	BidiTypeR
-	// al: right-to-Left Arabic
-	BidiTypeAl
-	// rle: right-to-Left Embedding
-	BidiTypeRle
-	// rlo: right-to-Left Override
-	BidiTypeRlo
-	// pdf: pop Directional Format
-	BidiTypePDF
-	// en: european Number
-	BidiTypeEn
-	// es: european Number Separator
-	BidiTypeES
-	// et: european Number Terminator
-	BidiTypeEt
-	// an: arabic Number
-	BidiTypeAn
-	// cs: common Number Separator
-	BidiTypeCs
-	// nsm: nonspacing Mark
-	BidiTypeNsm
-	// bn: boundary Neutral
-	BidiTypeBn
-	// b: paragraph Separator
-	BidiTypeB
-	// s: segment Separator
-	BidiTypeS
-	// ws: whitespace
-	BidiTypeWs
-	// on: other Neutrals
-	BidiTypeOn
+	// L: left-to-Right
+	L BidiType = iota
+	// Lre: left-to-Right Embedding
+	Lre
+	// Lro: left-to-Right Override
+	Lro
+	// R: right-to-Left
+	R
+	// Al: right-to-Left Arabic
+	Al
+	// Rle: right-to-Left Embedding
+	Rle
+	// Rlo: right-to-Left Override
+	Rlo
+	// PDF: pop Directional Format
+	PDF
+	// En: european Number
+	En
+	// ES: european Number Separator
+	ES
+	// Et: european Number Terminator
+	Et
+	// An: arabic Number
+	An
+	// Cs: common Number Separator
+	Cs
+	// Nsm: nonspacing Mark
+	Nsm
+	// Bn: boundary Neutral
+	Bn
+	// B: paragraph Separator
+	B
+	// S: segment Separator
+	S
+	// Ws: whitespace
+	Ws
+	// On: other Neutrals
+	On
 )
 
 func marshalBidiType(p uintptr) (interface{}, error) {

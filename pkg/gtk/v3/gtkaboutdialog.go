@@ -43,50 +43,58 @@ func init() {
 type License int
 
 const (
-	// unknown: no license specified
-	LicenseUnknown License = iota
-	// custom: license text is going to be specified by the developer
-	LicenseCustom
+	// Unknown: no license specified
+	Unknown License = iota
+	// Custom: license text is going to be specified by the developer
+	Custom
 	// GPL20: the GNU General Public License, version 2.0 or later
-	LicenseGPL20
+	GPL20
 	// GPL30: the GNU General Public License, version 3.0 or later
-	LicenseGPL30
+	GPL30
 	// LGPL21: the GNU Lesser General Public License, version 2.1 or later
-	LicenseLGPL21
+	LGPL21
 	// LGPL30: the GNU Lesser General Public License, version 3.0 or later
-	LicenseLGPL30
-	// bsd: the BSD standard license
-	LicenseBSD
+	LGPL30
+	// BSD: the BSD standard license
+	BSD
 	// MITX11: the MIT/X11 standard license
-	LicenseMITX11
-	// artistic: the Artistic License, version 2.0
-	LicenseArtistic
+	MITX11
+	// Artistic: the Artistic License, version 2.0
+	Artistic
 	// GPL20Only: the GNU General Public License, version 2.0 only. Since 3.12.
-	LicenseGPL20Only
+	GPL20Only
 	// GPL30Only: the GNU General Public License, version 3.0 only. Since 3.12.
-	LicenseGPL30Only
+	GPL30Only
 	// LGPL21Only: the GNU Lesser General Public License, version 2.1 only.
 	// Since 3.12.
-	LicenseLGPL21Only
+	LGPL21Only
 	// LGPL30Only: the GNU Lesser General Public License, version 3.0 only.
 	// Since 3.12.
-	LicenseLGPL30Only
+	LGPL30Only
 	// AGPL30: the GNU Affero General Public License, version 3.0 or later.
 	// Since: 3.22.
-	LicenseAGPL30
+	AGPL30
 	// AGPL30Only: the GNU Affero General Public License, version 3.0 only.
 	// Since: 3.22.27.
-	LicenseAGPL30Only
+	AGPL30Only
 	// BSD3: the 3-clause BSD licence. Since: 3.24.20.
-	LicenseBSD3
+	BSD3
 	// Apache20: the Apache License, version 2.0. Since: 3.24.20.
-	LicenseApache20
+	Apache20
 	// MPL20: the Mozilla Public License, version 2.0. Since: 3.24.20.
-	LicenseMPL20
+	MPL20
 )
 
 func marshalLicense(p uintptr) (interface{}, error) {
 	return License(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// AboutDialogOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type AboutDialogOverrider interface {
+	ActivateLink(uri string) bool
 }
 
 // AboutDialog: the GtkAboutDialog offers a simple way to display information

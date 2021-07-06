@@ -105,13 +105,16 @@ func (g *Generator) UseConstructor(cattrs *gir.CallableAttrs) bool {
 // instead of the current namespace.
 func (g *Generator) UseFromNamespace(cattrs *gir.CallableAttrs, n *gir.NamespaceFindResult) bool {
 	g.Reset()
+	g.Name = strcases.SnakeToGo(true, cattrs.Name)
+	g.CallableAttrs = cattrs
+	g.src = n
 
 	if cattrs.ShadowedBy != "" || cattrs.MovedTo != "" {
 		// Skip this one. Hope the caller reaches the Shadows method,
 		// eventually.
 		return false
 	}
-	if cattrs.CIdentifier == "" || !cattrs.IsIntrospectable() {
+	if !cattrs.IsIntrospectable() {
 		return false
 	}
 
@@ -121,10 +124,6 @@ func (g *Generator) UseFromNamespace(cattrs *gir.CallableAttrs, n *gir.Namespace
 			break
 		}
 	}
-
-	g.Name = strcases.SnakeToGo(true, cattrs.Name)
-	g.CallableAttrs = cattrs
-	g.src = n
 
 	if !g.renderBlock() {
 		return false

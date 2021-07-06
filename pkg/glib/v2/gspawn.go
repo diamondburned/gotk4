@@ -22,49 +22,49 @@ import "C"
 type SpawnError int
 
 const (
-	// fork: fork failed due to lack of memory.
-	SpawnErrorFork SpawnError = 0
-	// read: read or select on pipes failed.
-	SpawnErrorRead SpawnError = 1
-	// chdir: changing to working directory failed.
-	SpawnErrorChdir SpawnError = 2
-	// acces: execv() returned `EACCES`
-	SpawnErrorAcces SpawnError = 3
-	// perm: execv() returned `EPERM`
-	SpawnErrorPerm SpawnError = 4
+	// Fork: fork failed due to lack of memory.
+	Fork SpawnError = 0
+	// Read: read or select on pipes failed.
+	Read SpawnError = 1
+	// Chdir: changing to working directory failed.
+	Chdir SpawnError = 2
+	// Acces: execv() returned `EACCES`
+	Acces SpawnError = 3
+	// Perm: execv() returned `EPERM`
+	Perm SpawnError = 4
 	// TooBig: execv() returned `E2BIG`
-	SpawnErrorTooBig SpawnError = 5
-	// 2big: deprecated alias for G_SPAWN_ERROR_TOO_BIG (deprecated since GLib
+	TooBig SpawnError = 5
+	// 2Big: deprecated alias for G_SPAWN_ERROR_TOO_BIG (deprecated since GLib
 	// 2.32)
-	SpawnError2Big SpawnError = 5
-	// noexec: execv() returned `ENOEXEC`
-	SpawnErrorNoexec SpawnError = 6
-	// nametoolong: execv() returned `ENAMETOOLONG`
-	SpawnErrorNametoolong SpawnError = 7
-	// noent: execv() returned `ENOENT`
-	SpawnErrorNoent SpawnError = 8
-	// nomem: execv() returned `ENOMEM`
-	SpawnErrorNOMEM SpawnError = 9
-	// notdir: execv() returned `ENOTDIR`
-	SpawnErrorNotdir SpawnError = 10
-	// loop: execv() returned `ELOOP`
-	SpawnErrorLoop SpawnError = 11
-	// txtbusy: execv() returned `ETXTBUSY`
-	SpawnErrorTxtbusy SpawnError = 12
-	// io: execv() returned `EIO`
-	SpawnErrorIO SpawnError = 13
-	// nfile: execv() returned `ENFILE`
-	SpawnErrorNfile SpawnError = 14
-	// mfile: execv() returned `EMFILE`
-	SpawnErrorMfile SpawnError = 15
-	// inval: execv() returned `EINVAL`
-	SpawnErrorInval SpawnError = 16
-	// isdir: execv() returned `EISDIR`
-	SpawnErrorIsdir SpawnError = 17
-	// libbad: execv() returned `ELIBBAD`
-	SpawnErrorLibbad SpawnError = 18
-	// failed: some other fatal failure, `error->message` should explain.
-	SpawnErrorFailed SpawnError = 19
+	TwoBig SpawnError = 5
+	// Noexec: execv() returned `ENOEXEC`
+	Noexec SpawnError = 6
+	// Nametoolong: execv() returned `ENAMETOOLONG`
+	Nametoolong SpawnError = 7
+	// Noent: execv() returned `ENOENT`
+	Noent SpawnError = 8
+	// NOMEM: execv() returned `ENOMEM`
+	NOMEM SpawnError = 9
+	// Notdir: execv() returned `ENOTDIR`
+	Notdir SpawnError = 10
+	// Loop: execv() returned `ELOOP`
+	Loop SpawnError = 11
+	// Txtbusy: execv() returned `ETXTBUSY`
+	Txtbusy SpawnError = 12
+	// IO: execv() returned `EIO`
+	IO SpawnError = 13
+	// Nfile: execv() returned `ENFILE`
+	Nfile SpawnError = 14
+	// Mfile: execv() returned `EMFILE`
+	Mfile SpawnError = 15
+	// Inval: execv() returned `EINVAL`
+	Inval SpawnError = 16
+	// Isdir: execv() returned `EISDIR`
+	Isdir SpawnError = 17
+	// Libbad: execv() returned `ELIBBAD`
+	Libbad SpawnError = 18
+	// Failed: some other fatal failure, `error->message` should explain.
+	Failed SpawnError = 19
 )
 
 // SpawnFlags flags passed to g_spawn_sync(), g_spawn_async() and

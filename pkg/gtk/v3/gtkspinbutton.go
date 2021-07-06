@@ -41,11 +41,11 @@ func init() {
 type SpinButtonUpdatePolicy int
 
 const (
-	// always: when refreshing your SpinButton, the value is always displayed
-	SpinButtonUpdatePolicyAlways SpinButtonUpdatePolicy = iota
+	// Always: when refreshing your SpinButton, the value is always displayed
+	Always SpinButtonUpdatePolicy = iota
 	// IfValid: when refreshing your SpinButton, the value is only displayed if
 	// it is valid within the bounds of the spin button's adjustment
-	SpinButtonUpdatePolicyIfValid
+	IfValid
 )
 
 func marshalSpinButtonUpdatePolicy(p uintptr) (interface{}, error) {
@@ -58,23 +58,35 @@ type SpinType int
 
 const (
 	// StepForward: increment by the adjustments step increment.
-	SpinTypeStepForward SpinType = iota
+	StepForward SpinType = iota
 	// StepBackward: decrement by the adjustments step increment.
-	SpinTypeStepBackward
+	StepBackward
 	// PageForward: increment by the adjustments page increment.
-	SpinTypePageForward
+	PageForward
 	// PageBackward: decrement by the adjustments page increment.
-	SpinTypePageBackward
-	// home: go to the adjustments lower bound.
-	SpinTypeHome
-	// end: go to the adjustments upper bound.
-	SpinTypeEnd
+	PageBackward
+	// Home: go to the adjustments lower bound.
+	Home
+	// End: go to the adjustments upper bound.
+	End
 	// UserDefined: change by a specified amount.
-	SpinTypeUserDefined
+	UserDefined
 )
 
 func marshalSpinType(p uintptr) (interface{}, error) {
 	return SpinType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// SpinButtonOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type SpinButtonOverrider interface {
+	ChangeValue(scroll ScrollType)
+	Input(newValue *float64) int
+	Output() int
+	ValueChanged()
+	Wrapped()
 }
 
 // SpinButton is an ideal way to allow the user to set the value of some

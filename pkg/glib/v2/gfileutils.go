@@ -30,87 +30,87 @@ import "C"
 type FileError int
 
 const (
-	// exist: operation not permitted; only the owner of the file (or other
+	// Exist: operation not permitted; only the owner of the file (or other
 	// resource) or processes with special privileges can perform the operation.
-	FileErrorExist FileError = iota
-	// isdir: file is a directory; you cannot open a directory for writing, or
+	Exist FileError = iota
+	// Isdir: file is a directory; you cannot open a directory for writing, or
 	// create or remove hard links to it.
-	FileErrorIsdir
-	// acces: permission denied; the file permissions do not allow the attempted
+	Isdir
+	// Acces: permission denied; the file permissions do not allow the attempted
 	// operation.
-	FileErrorAcces
-	// nametoolong: filename too long.
-	FileErrorNametoolong
-	// noent: no such file or directory. This is a "file doesn't exist" error
+	Acces
+	// Nametoolong: filename too long.
+	Nametoolong
+	// Noent: no such file or directory. This is a "file doesn't exist" error
 	// for ordinary files that are referenced in contexts where they are
 	// expected to already exist.
-	FileErrorNoent
-	// notdir: file that isn't a directory was specified when a directory is
+	Noent
+	// Notdir: file that isn't a directory was specified when a directory is
 	// required.
-	FileErrorNotdir
-	// nxio: no such device or address. The system tried to use the device
+	Notdir
+	// Nxio: no such device or address. The system tried to use the device
 	// represented by a file you specified, and it couldn't find the device.
 	// This can mean that the device file was installed incorrectly, or that the
 	// physical device is missing or not correctly attached to the computer.
-	FileErrorNxio
-	// nodev: the underlying file system of the specified file does not support
+	Nxio
+	// Nodev: the underlying file system of the specified file does not support
 	// memory mapping.
-	FileErrorNodev
-	// rofs: the directory containing the new link can't be modified because
+	Nodev
+	// Rofs: the directory containing the new link can't be modified because
 	// it's on a read-only file system.
-	FileErrorRofs
-	// txtbsy: text file busy.
-	FileErrorTxtbsy
-	// fault: you passed in a pointer to bad memory. (GLib won't reliably return
+	Rofs
+	// Txtbsy: text file busy.
+	Txtbsy
+	// Fault: you passed in a pointer to bad memory. (GLib won't reliably return
 	// this, don't pass in pointers to bad memory.)
-	FileErrorFault
-	// loop: too many levels of symbolic links were encountered in looking up a
+	Fault
+	// Loop: too many levels of symbolic links were encountered in looking up a
 	// file name. This often indicates a cycle of symbolic links.
-	FileErrorLoop
-	// nospc: no space left on device; write operation on a file failed because
+	Loop
+	// Nospc: no space left on device; write operation on a file failed because
 	// the disk is full.
-	FileErrorNospc
-	// nomem: no memory available. The system cannot allocate more virtual
+	Nospc
+	// NOMEM: no memory available. The system cannot allocate more virtual
 	// memory because its capacity is full.
-	FileErrorNOMEM
-	// mfile: the current process has too many files open and can't open any
+	NOMEM
+	// Mfile: the current process has too many files open and can't open any
 	// more. Duplicate descriptors do count toward this limit.
-	FileErrorMfile
-	// nfile: there are too many distinct file openings in the entire system.
-	FileErrorNfile
-	// badf: bad file descriptor; for example, I/O on a descriptor that has been
+	Mfile
+	// Nfile: there are too many distinct file openings in the entire system.
+	Nfile
+	// Badf: bad file descriptor; for example, I/O on a descriptor that has been
 	// closed or reading from a descriptor open only for writing (or vice
 	// versa).
-	FileErrorBadf
-	// inval: invalid argument. This is used to indicate various kinds of
+	Badf
+	// Inval: invalid argument. This is used to indicate various kinds of
 	// problems with passing the wrong argument to a library function.
-	FileErrorInval
-	// pipe: broken pipe; there is no process reading from the other end of a
+	Inval
+	// Pipe: broken pipe; there is no process reading from the other end of a
 	// pipe. Every library function that returns this error code also generates
 	// a 'SIGPIPE' signal; this signal terminates the program if not handled or
 	// blocked. Thus, your program will never actually see this code unless it
 	// has handled or blocked 'SIGPIPE'.
-	FileErrorPipe
-	// again: resource temporarily unavailable; the call might work if you try
+	Pipe
+	// Again: resource temporarily unavailable; the call might work if you try
 	// again later.
-	FileErrorAgain
-	// intr: interrupted function call; an asynchronous signal occurred and
+	Again
+	// Intr: interrupted function call; an asynchronous signal occurred and
 	// prevented completion of the call. When this happens, you should try the
 	// call again.
-	FileErrorIntr
-	// io: input/output error; usually used for physical read or write errors.
+	Intr
+	// IO: input/output error; usually used for physical read or write errors.
 	// i.e. the disk or other physical device hardware is returning errors.
-	FileErrorIO
-	// perm: operation not permitted; only the owner of the file (or other
+	IO
+	// Perm: operation not permitted; only the owner of the file (or other
 	// resource) or processes with special privileges can perform the operation.
-	FileErrorPerm
-	// nosys: function not implemented; this indicates that the system is
+	Perm
+	// Nosys: function not implemented; this indicates that the system is
 	// missing some functionality.
-	FileErrorNosys
-	// failed does not correspond to a UNIX error code; this is the standard
+	Nosys
+	// Failed does not correspond to a UNIX error code; this is the standard
 	// "failed for unspecified reason" error code present in all #GError error
 	// code enumerations. Returned if no specific code applies.
-	FileErrorFailed
+	Failed
 )
 
 // FileSetContentsFlags flags to pass to g_file_set_contents_full() to affect

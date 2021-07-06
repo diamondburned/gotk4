@@ -393,7 +393,7 @@ func (t *VariantType) First() *VariantType {
 // In the case that @type is nil, this function does nothing.
 //
 // Since 2.24
-func (t *VariantType) Free() {
+func (t *VariantType) free() {
 	var _arg0 *C.GVariantType // out
 
 	_arg0 = (*C.GVariantType)(unsafe.Pointer(t))

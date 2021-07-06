@@ -35,6 +35,63 @@ func init() {
 	})
 }
 
+// ContainerOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type ContainerOverrider interface {
+	// Add adds @widget to @container. Typically used for simple containers such
+	// as Window, Frame, or Button; for more complicated layout containers such
+	// as Box or Grid, this function will pick default packing parameters that
+	// may not be correct. So consider functions such as gtk_box_pack_start()
+	// and gtk_grid_attach() as an alternative to gtk_container_add() in those
+	// cases. A widget may be added to only one container at a time; you can’t
+	// place the same widget inside two different containers.
+	//
+	// Note that some containers, such as ScrolledWindow or ListBox, may add
+	// intermediate children between the added widget and the container.
+	Add(widget Widget)
+	CheckResize()
+	// ChildType returns the type of the children supported by the container.
+	//
+	// Note that this may return G_TYPE_NONE to indicate that no more children
+	// can be added, e.g. for a Paned which already has two children.
+	ChildType() externglib.Type
+	CompositeName(child Widget) string
+	// Forall invokes @callback on each direct child of @container, including
+	// children that are considered “internal” (implementation details of the
+	// container). “Internal” children generally weren’t added by the user of
+	// the container, but were added by the container implementation itself.
+	//
+	// Most applications should use gtk_container_foreach(), rather than
+	// gtk_container_forall().
+	Forall(includeInternals bool, callback Callback)
+	// PathForChild returns a newly created widget path representing all the
+	// widget hierarchy from the toplevel down to and including @child.
+	PathForChild(child Widget) *WidgetPath
+	// Remove removes @widget from @container. @widget must be inside
+	// @container. Note that @container will own a reference to @widget, and
+	// that this may be the last reference held; so removing a widget from its
+	// container can destroy that widget. If you want to use @widget again, you
+	// need to add a reference to it before removing it from a container, using
+	// g_object_ref(). If you don’t want to use @widget again it’s usually more
+	// efficient to simply destroy it directly using gtk_widget_destroy() since
+	// this will remove it from the container and help break any circular
+	// reference count cycles.
+	Remove(widget Widget)
+	// SetFocusChild: sets, or unsets if @child is nil, the focused child of
+	// @container.
+	//
+	// This function emits the GtkContainer::set_focus_child signal of
+	// @container. Implementations of Container can override the default
+	// behaviour by overriding the class closure of this signal.
+	//
+	// This is function is mostly meant to be used by widgets. Applications can
+	// use gtk_widget_grab_focus() to manually set the focus to a specific
+	// widget.
+	SetFocusChild(child Widget)
+}
+
 // Container: GTK+ user interface is constructed by nesting widgets inside
 // widgets. Container widgets are the inner nodes in the resulting tree of
 // widgets: they contain other widgets. So, for example, you might have a Window
@@ -2586,7 +2643,6 @@ type Container interface {
 	// Note that some containers, such as ScrolledWindow or ListBox, may add
 	// intermediate children between the added widget and the container.
 	Add(widget Widget)
-
 	CheckResize()
 	// ChildGetProperty gets the value of a child property for @child and
 	// @container.

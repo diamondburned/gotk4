@@ -50,6 +50,15 @@ func marshalApplicationInhibitFlags(p uintptr) (interface{}, error) {
 	return ApplicationInhibitFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// ApplicationOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type ApplicationOverrider interface {
+	WindowAdded(window Window)
+	WindowRemoved(window Window)
+}
+
 // Application: `GtkApplication` is a high-level API for writing applications.
 //
 // It supports many aspects of writing a GTK application in a convenient

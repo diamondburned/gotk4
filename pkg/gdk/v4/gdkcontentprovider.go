@@ -24,6 +24,36 @@ func init() {
 	})
 }
 
+// ContentProviderOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type ContentProviderOverrider interface {
+	AttachClipboard(clipboard Clipboard)
+	// ContentChanged emits the ::content-changed signal.
+	ContentChanged()
+	DetachClipboard(clipboard Clipboard)
+	// Value gets the contents of @provider stored in @value.
+	//
+	// The @value will have been initialized to the `GType` the value should be
+	// provided in. This given `GType` does not need to be listed in the formats
+	// returned by [method@Gdk.ContentProvider.ref_formats]. However, if the
+	// given `GType` is not supported, this operation can fail and
+	// IO_ERROR_NOT_SUPPORTED will be reported.
+	Value(value externglib.Value) error
+	// RefFormats gets the formats that the provider can provide its current
+	// contents in.
+	RefFormats() *ContentFormats
+	// RefStorableFormats gets the formats that the provider suggests other
+	// applications to store the data in.
+	//
+	// An example of such an application would be a clipboard manager.
+	//
+	// This can be assumed to be a subset of
+	// [method@Gdk.ContentProvider.ref_formats].
+	RefStorableFormats() *ContentFormats
+}
+
 // ContentProvider: `GdkContentProvider` is used to provide content for the
 // clipboard or for drag-and-drop operations in a number of formats.
 //

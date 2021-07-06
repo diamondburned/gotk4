@@ -2,6 +2,8 @@ package generators
 
 import (
 	"strconv"
+	"unicode"
+	"unicode/utf8"
 
 	"github.com/diamondburned/gotk4/gir"
 	"github.com/diamondburned/gotk4/gir/girgen/gotmpl"
@@ -15,24 +17,20 @@ var enumTmpl = gotmpl.NewGoTemplate(`
 
 	{{ if .IsIota }}
 	const (
-		{{ range $ix, $member := .Members -}}
-		{{- if .Doc -}}
-		{{ GoDoc . 1 }}
-		{{ end -}}
-		{{- if (eq $ix 0) -}}
-		{{ $.FormatMember .Name }} {{ $.GoName }} = iota
-		{{ else -}}
-		{{ $.FormatMember .Name }}
-		{{ end -}}
+		{{ range $ix, $member := .Members }}
+		{{- GoDoc . 1 TrailingNewLine -}}
+		{{- if (eq $ix 0) }}
+		{{- $.FormatMember .Name }} {{ $.GoName }} = iota
+		{{- else }}
+		{{- $.FormatMember .Name }}
+		{{- end }}
 		{{ end }}
 	)
 	{{ else }}
 	const (
-		{{ range .Members -}}
-		{{- if .Doc -}}
-		{{ GoDoc . 1 }}
-		{{ end -}}
-		{{ $.FormatMember .Name }} {{ $.GoName }} = {{ .Value }}
+		{{ range .Members }}
+		{{- GoDoc . 1 TrailingNewLine -}}
+		{{- $.FormatMember .Name }} {{ $.GoName }} = {{ .Value }}
 		{{ end -}}
 	)
 	{{ end }}
@@ -50,8 +48,28 @@ type enumData struct {
 	IsIota bool
 }
 
+var numberMap = map[rune]string{
+	'0': "Zero",
+	'1': "One",
+	'2': "Two",
+	'3': "Three",
+	'4': "Four",
+	'5': "Five",
+	'6': "Six",
+	'7': "Seven",
+	'8': "Eight",
+	'9': "Nine",
+}
+
 func (eg *enumData) FormatMember(memberName string) string {
-	return strcases.PascalToGo(eg.Name) + strcases.SnakeToGo(true, memberName)
+	memberName = strcases.SnakeToGo(true, memberName)
+
+	r, sz := utf8.DecodeRuneInString(memberName)
+	if sz > 0 && unicode.IsNumber(r) {
+		memberName = numberMap[r] + memberName[sz:]
+	}
+
+	return memberName
 }
 
 // CanGenerateEnum returns false if the given enum cannot be generated.

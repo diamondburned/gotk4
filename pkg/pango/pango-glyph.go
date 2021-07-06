@@ -242,8 +242,8 @@ func (g *GlyphString) ExtentsRange(start int, end int, font Font) (inkRect Recta
 	return _inkRect, _logicalRect
 }
 
-// Free a glyph string and associated storage.
-func (s *GlyphString) Free() {
+// Free: free a glyph string and associated storage.
+func (s *GlyphString) free() {
 	var _arg0 *C.PangoGlyphString // out
 
 	_arg0 = (*C.PangoGlyphString)(unsafe.Pointer(s))

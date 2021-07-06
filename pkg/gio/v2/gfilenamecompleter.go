@@ -32,6 +32,14 @@ func init() {
 	})
 }
 
+// FilenameCompleterOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type FilenameCompleterOverrider interface {
+	GotCompletionData()
+}
+
 // FilenameCompleter completes partial file and directory names given a partial
 // string by looking in the file system for clues. Can return a list of possible
 // completion strings for widget implementations.

@@ -35,25 +35,25 @@ type MovementStep int
 
 const (
 	// LogicalPositions: move forward or back by graphemes
-	MovementStepLogicalPositions MovementStep = iota
+	LogicalPositions MovementStep = iota
 	// VisualPositions: move left or right by graphemes
-	MovementStepVisualPositions
-	// words: move forward or back by words
-	MovementStepWords
+	VisualPositions
+	// Words: move forward or back by words
+	Words
 	// DisplayLines: move up or down lines (wrapped lines)
-	MovementStepDisplayLines
+	DisplayLines
 	// DisplayLineEnds: move to either end of a line
-	MovementStepDisplayLineEnds
-	// paragraphs: move up or down paragraphs (newline-ended lines)
-	MovementStepParagraphs
+	DisplayLineEnds
+	// Paragraphs: move up or down paragraphs (newline-ended lines)
+	Paragraphs
 	// ParagraphEnds: move to either end of a paragraph
-	MovementStepParagraphEnds
-	// pages: move by pages
-	MovementStepPages
+	ParagraphEnds
+	// Pages: move by pages
+	Pages
 	// BufferEnds: move to ends of the buffer
-	MovementStepBufferEnds
+	BufferEnds
 	// HorizontalPages: move horizontally by pages
-	MovementStepHorizontalPages
+	HorizontalPages
 )
 
 func marshalMovementStep(p uintptr) (interface{}, error) {
@@ -63,8 +63,8 @@ func marshalMovementStep(p uintptr) (interface{}, error) {
 type NotebookTab int
 
 const (
-	NotebookTabFirst NotebookTab = iota
-	NotebookTabLast
+	First NotebookTab = iota
+	Last
 )
 
 func marshalNotebookTab(p uintptr) (interface{}, error) {
@@ -74,12 +74,12 @@ func marshalNotebookTab(p uintptr) (interface{}, error) {
 type ResizeMode int
 
 const (
-	// parent pass resize request to the parent
-	ResizeModeParent ResizeMode = iota
-	// queue: queue resizes on this widget
-	ResizeModeQueue
-	// immediate: resize immediately. Deprecated.
-	ResizeModeImmediate
+	// Parent pass resize request to the parent
+	Parent ResizeMode = iota
+	// Queue: queue resizes on this widget
+	Queue
+	// Immediate: resize immediately. Deprecated.
+	Immediate
 )
 
 func marshalResizeMode(p uintptr) (interface{}, error) {
@@ -89,18 +89,18 @@ func marshalResizeMode(p uintptr) (interface{}, error) {
 type ScrollStep int
 
 const (
-	// steps: scroll in steps.
-	ScrollStepSteps ScrollStep = iota
-	// pages: scroll by pages.
-	ScrollStepPages
-	// ends: scroll to ends.
-	ScrollStepEnds
+	// Steps: scroll in steps.
+	Steps ScrollStep = iota
+	// Pages: scroll by pages.
+	Pages
+	// Ends: scroll to ends.
+	Ends
 	// HorizontalSteps: scroll in horizontal steps.
-	ScrollStepHorizontalSteps
+	HorizontalSteps
 	// HorizontalPages: scroll by horizontal pages.
-	ScrollStepHorizontalPages
+	HorizontalPages
 	// HorizontalEnds: scroll to the horizontal ends.
-	ScrollStepHorizontalEnds
+	HorizontalEnds
 )
 
 func marshalScrollStep(p uintptr) (interface{}, error) {

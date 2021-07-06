@@ -81,20 +81,20 @@ func init() {
 type AccessibleAutocomplete int
 
 const (
-	// none: automatic suggestions are not displayed.
-	AccessibleAutocompleteNone AccessibleAutocomplete = iota
-	// inline: when a user is providing input, text suggesting one way to
+	// None: automatic suggestions are not displayed.
+	None AccessibleAutocomplete = iota
+	// Inline: when a user is providing input, text suggesting one way to
 	// complete the provided input may be dynamically inserted after the caret.
-	AccessibleAutocompleteInline
-	// list: when a user is providing input, an element containing a collection
+	Inline
+	// List: when a user is providing input, an element containing a collection
 	// of values that could complete the provided input may be displayed.
-	AccessibleAutocompleteList
-	// both: when a user is providing input, an element containing a collection
+	List
+	// Both: when a user is providing input, an element containing a collection
 	// of values that could complete the provided input may be displayed. If
 	// displayed, one value in the collection is automatically selected, and the
 	// text needed to complete the automatically selected value appears after
 	// the caret in the input.
-	AccessibleAutocompleteBoth
+	Both
 )
 
 func marshalAccessibleAutocomplete(p uintptr) (interface{}, error) {
@@ -109,14 +109,14 @@ func marshalAccessibleAutocomplete(p uintptr) (interface{}, error) {
 type AccessibleInvalidState int
 
 const (
-	// false: there are no detected errors in the value
-	AccessibleInvalidStateFalse AccessibleInvalidState = iota
-	// true: the value entered by the user has failed validation
-	AccessibleInvalidStateTrue
-	// grammar: grammatical error was detected
-	AccessibleInvalidStateGrammar
-	// spelling error was detected
-	AccessibleInvalidStateSpelling
+	// False: there are no detected errors in the value
+	False AccessibleInvalidState = iota
+	// True: the value entered by the user has failed validation
+	True
+	// Grammar: grammatical error was detected
+	Grammar
+	// Spelling error was detected
+	Spelling
 )
 
 func marshalAccessibleInvalidState(p uintptr) (interface{}, error) {
@@ -127,67 +127,67 @@ func marshalAccessibleInvalidState(p uintptr) (interface{}, error) {
 type AccessibleProperty int
 
 const (
-	// autocomplete indicates whether inputting text could trigger display of
+	// Autocomplete indicates whether inputting text could trigger display of
 	// one or more predictions of the user's intended value for a combobox,
 	// searchbox, or textbox and specifies how predictions would be presented if
 	// they were made. Value type: AccessibleAutocomplete
-	AccessiblePropertyAutocomplete AccessibleProperty = iota
-	// description defines a string value that describes or annotates the
+	Autocomplete AccessibleProperty = iota
+	// Description defines a string value that describes or annotates the
 	// current element. Value type: string
-	AccessiblePropertyDescription
+	Description
 	// HasPopup indicates the availability and type of interactive popup
 	// element, such as menu or dialog, that can be triggered by an element.
-	AccessiblePropertyHasPopup
+	HasPopup
 	// KeyShortcuts indicates keyboard shortcuts that an author has implemented
 	// to activate or give focus to an element. Value type: string
-	AccessiblePropertyKeyShortcuts
-	// label defines a string value that labels the current element. Value type:
+	KeyShortcuts
+	// Label defines a string value that labels the current element. Value type:
 	// string
-	AccessiblePropertyLabel
-	// level defines the hierarchical level of an element within a structure.
+	Label
+	// Level defines the hierarchical level of an element within a structure.
 	// Value type: integer
-	AccessiblePropertyLevel
-	// modal indicates whether an element is modal when displayed. Value type:
+	Level
+	// Modal indicates whether an element is modal when displayed. Value type:
 	// boolean
-	AccessiblePropertyModal
+	Modal
 	// MultiLine indicates whether a text box accepts multiple lines of input or
 	// only a single line. Value type: boolean
-	AccessiblePropertyMultiLine
+	MultiLine
 	// MultiSelectable indicates that the user may select more than one item
 	// from the current selectable descendants. Value type: boolean
-	AccessiblePropertyMultiSelectable
-	// orientation indicates whether the element's orientation is horizontal,
+	MultiSelectable
+	// Orientation indicates whether the element's orientation is horizontal,
 	// vertical, or unknown/ambiguous. Value type: Orientation
-	AccessiblePropertyOrientation
-	// placeholder defines a short hint (a word or short phrase) intended to aid
+	Orientation
+	// Placeholder defines a short hint (a word or short phrase) intended to aid
 	// the user with data entry when the control has no value. A hint could be a
 	// sample value or a brief description of the expected format. Value type:
 	// string
-	AccessiblePropertyPlaceholder
+	Placeholder
 	// ReadOnly indicates that the element is not editable, but is otherwise
 	// operable. Value type: boolean
-	AccessiblePropertyReadOnly
-	// required indicates that user input is required on the element before a
+	ReadOnly
+	// Required indicates that user input is required on the element before a
 	// form may be submitted. Value type: boolean
-	AccessiblePropertyRequired
+	Required
 	// RoleDescription defines a human-readable, author-localized description
 	// for the role of an element. Value type: string
-	AccessiblePropertyRoleDescription
-	// sort indicates if items in a table or grid are sorted in ascending or
+	RoleDescription
+	// Sort indicates if items in a table or grid are sorted in ascending or
 	// descending order. Possible property values are in the AccessibleSort
 	// enumeration. Value type: AccessibleSort
-	AccessiblePropertySort
+	Sort
 	// ValueMax defines the maximum allowed value for a range widget. Value
 	// type: double
-	AccessiblePropertyValueMax
+	ValueMax
 	// ValueMin defines the minimum allowed value for a range widget. Value
 	// type: double
-	AccessiblePropertyValueMin
+	ValueMin
 	// ValueNow defines the current value for a range widget. Value type: double
-	AccessiblePropertyValueNow
+	ValueNow
 	// ValueText defines the human readable text alternative of aria-valuenow
 	// for a range widget. Value type: string
-	AccessiblePropertyValueText
+	ValueText
 )
 
 func marshalAccessibleProperty(p uintptr) (interface{}, error) {
@@ -203,64 +203,64 @@ const (
 	// ActiveDescendant identifies the currently active element when focus is on
 	// a composite widget, combobox, textbox, group, or application. Value type:
 	// reference
-	AccessibleRelationActiveDescendant AccessibleRelation = iota
+	ActiveDescendant AccessibleRelation = iota
 	// ColCount defines the total number of columns in a table, grid, or
 	// treegrid. Value type: integer
-	AccessibleRelationColCount
+	ColCount
 	// ColIndex defines an element's column index or position with respect to
 	// the total number of columns within a table, grid, or treegrid. Value
 	// type: integer
-	AccessibleRelationColIndex
+	ColIndex
 	// ColIndexText defines a human readable text alternative of
 	// GTK_ACCESSIBLE_RELATION_COL_INDEX. Value type: string
-	AccessibleRelationColIndexText
+	ColIndexText
 	// ColSpan defines the number of columns spanned by a cell or gridcell
 	// within a table, grid, or treegrid. Value type: integer
-	AccessibleRelationColSpan
-	// controls identifies the element (or elements) whose contents or presence
+	ColSpan
+	// Controls identifies the element (or elements) whose contents or presence
 	// are controlled by the current element. Value type: reference
-	AccessibleRelationControls
+	Controls
 	// DescribedBy identifies the element (or elements) that describes the
 	// object. Value type: reference
-	AccessibleRelationDescribedBy
-	// details identifies the element (or elements) that provide additional
+	DescribedBy
+	// Details identifies the element (or elements) that provide additional
 	// information related to the object. Value type: reference
-	AccessibleRelationDetails
+	Details
 	// ErrorMessage identifies the element that provides an error message for an
 	// object. Value type: reference
-	AccessibleRelationErrorMessage
+	ErrorMessage
 	// FlowTo identifies the next element (or elements) in an alternate reading
 	// order of content which, at the user's discretion, allows assistive
 	// technology to override the general default of reading in document source
 	// order. Value type: reference
-	AccessibleRelationFlowTo
+	FlowTo
 	// LabelledBy identifies the element (or elements) that labels the current
 	// element. Value type: reference
-	AccessibleRelationLabelledBy
-	// owns identifies an element (or elements) in order to define a visual,
+	LabelledBy
+	// Owns identifies an element (or elements) in order to define a visual,
 	// functional, or contextual parent/child relationship between elements
 	// where the widget hierarchy cannot be used to represent the relationship.
 	// Value type: reference
-	AccessibleRelationOwns
+	Owns
 	// PosInSet defines an element's number or position in the current set of
 	// listitems or treeitems. Value type: integer
-	AccessibleRelationPosInSet
+	PosInSet
 	// RowCount defines the total number of rows in a table, grid, or treegrid.
 	// Value type: integer
-	AccessibleRelationRowCount
+	RowCount
 	// RowIndex defines an element's row index or position with respect to the
 	// total number of rows within a table, grid, or treegrid. Value type:
 	// integer
-	AccessibleRelationRowIndex
+	RowIndex
 	// RowIndexText defines a human readable text alternative of aria-rowindex.
 	// Value type: string
-	AccessibleRelationRowIndexText
+	RowIndexText
 	// RowSpan defines the number of rows spanned by a cell or gridcell within a
 	// table, grid, or treegrid. Value type: integer
-	AccessibleRelationRowSpan
+	RowSpan
 	// SetSize defines the number of items in the current set of listitems or
 	// treeitems. Value type: integer
-	AccessibleRelationSetSize
+	SetSize
 )
 
 func marshalAccessibleRelation(p uintptr) (interface{}, error) {
@@ -274,178 +274,178 @@ func marshalAccessibleRelation(p uintptr) (interface{}, error) {
 type AccessibleRole int
 
 const (
-	// alert: element with important, and usually time-sensitive, information
-	AccessibleRoleAlert AccessibleRole = iota
+	// Alert: element with important, and usually time-sensitive, information
+	Alert AccessibleRole = iota
 	// AlertDialog: type of dialog that contains an alert message
-	AccessibleRoleAlertDialog
-	// banner: unused
-	AccessibleRoleBanner
-	// button: input element that allows for user-triggered actions when clicked
+	AlertDialog
+	// Banner: unused
+	Banner
+	// Button: input element that allows for user-triggered actions when clicked
 	// or pressed
-	AccessibleRoleButton
-	// caption: unused
-	AccessibleRoleCaption
-	// cell: unused
-	AccessibleRoleCell
-	// checkbox: checkable input element that has three possible values: `true`,
+	Button
+	// Caption: unused
+	Caption
+	// Cell: unused
+	Cell
+	// Checkbox: checkable input element that has three possible values: `true`,
 	// `false`, or `mixed`
-	AccessibleRoleCheckbox
+	Checkbox
 	// ColumnHeader: header in a columned list.
-	AccessibleRoleColumnHeader
+	ColumnHeader
 	// ComboBox: input that controls another element, such as a list or a grid,
 	// that can dynamically pop up to help the user set the value of the input
-	AccessibleRoleComboBox
-	// command: abstract role.
-	AccessibleRoleCommand
-	// composite: abstract role.
-	AccessibleRoleComposite
-	// dialog is a window that is designed to interrupt the current processing
+	ComboBox
+	// Command: abstract role.
+	Command
+	// Composite: abstract role.
+	Composite
+	// Dialog is a window that is designed to interrupt the current processing
 	// of an application in order to prompt the user to enter information or
 	// require a response.
-	AccessibleRoleDialog
-	// document: unused
-	AccessibleRoleDocument
-	// feed: unused
-	AccessibleRoleFeed
-	// form: unused
-	AccessibleRoleForm
-	// generic: unused
-	AccessibleRoleGeneric
-	// grid of items.
-	AccessibleRoleGrid
+	Dialog
+	// Document: unused
+	Document
+	// Feed: unused
+	Feed
+	// Form: unused
+	Form
+	// Generic: unused
+	Generic
+	// Grid of items.
+	Grid
 	// GridCell: item in a grid or tree grid.
-	AccessibleRoleGridCell
-	// group: element that groups multiple widgets. GTK uses this role for
+	GridCell
+	// Group: element that groups multiple widgets. GTK uses this role for
 	// various containers, like Box, Viewport, and HeaderBar.
-	AccessibleRoleGroup
-	// heading: unused
-	AccessibleRoleHeading
-	// img: image.
-	AccessibleRoleImg
-	// input: abstract role.
-	AccessibleRoleInput
-	// label: visible name or caption for a user interface component.
-	AccessibleRoleLabel
-	// landmark: abstract role.
-	AccessibleRoleLandmark
-	// legend: unused
-	AccessibleRoleLegend
-	// link: clickable link.
-	AccessibleRoleLink
-	// list of items.
-	AccessibleRoleList
+	Group
+	// Heading: unused
+	Heading
+	// Img: image.
+	Img
+	// Input: abstract role.
+	Input
+	// Label: visible name or caption for a user interface component.
+	Label
+	// Landmark: abstract role.
+	Landmark
+	// Legend: unused
+	Legend
+	// Link: clickable link.
+	Link
+	// List of items.
+	List
 	// ListBox: unused.
-	AccessibleRoleListBox
+	ListBox
 	// ListItem: item in a list.
-	AccessibleRoleListItem
-	// log: unused
-	AccessibleRoleLog
-	// main: unused
-	AccessibleRoleMain
-	// marquee: unused
-	AccessibleRoleMarquee
-	// math: unused
-	AccessibleRoleMath
-	// meter: element that represents a value within a known range.
-	AccessibleRoleMeter
-	// menu: menu.
-	AccessibleRoleMenu
+	ListItem
+	// Log: unused
+	Log
+	// Main: unused
+	Main
+	// Marquee: unused
+	Marquee
+	// Math: unused
+	Math
+	// Meter: element that represents a value within a known range.
+	Meter
+	// Menu: menu.
+	Menu
 	// MenuBar: menubar.
-	AccessibleRoleMenuBar
+	MenuBar
 	// MenuItem: item in a menu.
-	AccessibleRoleMenuItem
+	MenuItem
 	// MenuItemCheckbox: check item in a menu.
-	AccessibleRoleMenuItemCheckbox
+	MenuItemCheckbox
 	// MenuItemRadio: radio item in a menu.
-	AccessibleRoleMenuItemRadio
-	// navigation: unused
-	AccessibleRoleNavigation
-	// none: element that is not represented to accessibility technologies.
-	AccessibleRoleNone
-	// note: unused
-	AccessibleRoleNote
-	// option: unused
-	AccessibleRoleOption
-	// presentation: element that is not represented to accessibility
+	MenuItemRadio
+	// Navigation: unused
+	Navigation
+	// None: element that is not represented to accessibility technologies.
+	None
+	// Note: unused
+	Note
+	// Option: unused
+	Option
+	// Presentation: element that is not represented to accessibility
 	// technologies.
-	AccessibleRolePresentation
+	Presentation
 	// ProgressBar: element that displays the progress status for tasks that
 	// take a long time.
-	AccessibleRoleProgressBar
-	// radio: checkable input in a group of radio roles, only one of which can
+	ProgressBar
+	// Radio: checkable input in a group of radio roles, only one of which can
 	// be checked at a time.
-	AccessibleRoleRadio
+	Radio
 	// RadioGroup: unused
-	AccessibleRoleRadioGroup
-	// range: abstract role.
-	AccessibleRoleRange
-	// region: unused
-	AccessibleRoleRegion
-	// row in a columned list.
-	AccessibleRoleRow
+	RadioGroup
+	// Range: abstract role.
+	Range
+	// Region: unused
+	Region
+	// Row in a columned list.
+	Row
 	// RowGroup: unused
-	AccessibleRoleRowGroup
+	RowGroup
 	// RowHeader: unused
-	AccessibleRoleRowHeader
-	// scrollbar: graphical object that controls the scrolling of content within
+	RowHeader
+	// Scrollbar: graphical object that controls the scrolling of content within
 	// a viewing area, regardless of whether the content is fully displayed
 	// within the viewing area.
-	AccessibleRoleScrollbar
-	// search: unused
-	AccessibleRoleSearch
+	Scrollbar
+	// Search: unused
+	Search
 	// SearchBox: type of textbox intended for specifying search criteria.
-	AccessibleRoleSearchBox
-	// section: abstract role.
-	AccessibleRoleSection
+	SearchBox
+	// Section: abstract role.
+	Section
 	// SectionHead: abstract role.
-	AccessibleRoleSectionHead
-	// select: abstract role.
-	AccessibleRoleSelect
-	// separator: divider that separates and distinguishes sections of content
+	SectionHead
+	// Select: abstract role.
+	Select
+	// Separator: divider that separates and distinguishes sections of content
 	// or groups of menuitems.
-	AccessibleRoleSeparator
-	// slider: user input where the user selects a value from within a given
+	Separator
+	// Slider: user input where the user selects a value from within a given
 	// range.
-	AccessibleRoleSlider
+	Slider
 	// SpinButton: form of range that expects the user to select from among
 	// discrete choices.
-	AccessibleRoleSpinButton
-	// status: unused
-	AccessibleRoleStatus
-	// structure: abstract role.
-	AccessibleRoleStructure
-	// switch: type of checkbox that represents on/off values, as opposed to
+	SpinButton
+	// Status: unused
+	Status
+	// Structure: abstract role.
+	Structure
+	// Switch: type of checkbox that represents on/off values, as opposed to
 	// checked/unchecked values.
-	AccessibleRoleSwitch
-	// tab: item in a list of tab used for switching pages.
-	AccessibleRoleTab
-	// table: unused
-	AccessibleRoleTable
+	Switch
+	// Tab: item in a list of tab used for switching pages.
+	Tab
+	// Table: unused
+	Table
 	// TabList: list of tabs for switching pages.
-	AccessibleRoleTabList
+	TabList
 	// TabPanel: page in a notebook or stack.
-	AccessibleRoleTabPanel
+	TabPanel
 	// TextBox: type of input that allows free-form text as its value.
-	AccessibleRoleTextBox
-	// time: unused
-	AccessibleRoleTime
-	// timer: unused
-	AccessibleRoleTimer
-	// toolbar: unused
-	AccessibleRoleToolbar
-	// tooltip: unused
-	AccessibleRoleTooltip
-	// tree: unused
-	AccessibleRoleTree
+	TextBox
+	// Time: unused
+	Time
+	// Timer: unused
+	Timer
+	// Toolbar: unused
+	Toolbar
+	// Tooltip: unused
+	Tooltip
+	// Tree: unused
+	Tree
 	// TreeGrid: treeview-like, columned list.
-	AccessibleRoleTreeGrid
+	TreeGrid
 	// TreeItem: unused
-	AccessibleRoleTreeItem
-	// widget: interactive component of a graphical user interface. This is the
+	TreeItem
+	// Widget: interactive component of a graphical user interface. This is the
 	// role that GTK uses by default for widgets.
-	AccessibleRoleWidget
-	// window: application window.
-	AccessibleRoleWindow
+	Widget
+	// Window: application window.
+	Window
 )
 
 func marshalAccessibleRole(p uintptr) (interface{}, error) {
@@ -457,15 +457,15 @@ func marshalAccessibleRole(p uintptr) (interface{}, error) {
 type AccessibleSort int
 
 const (
-	// none: there is no defined sort applied to the column.
-	AccessibleSortNone AccessibleSort = iota
-	// ascending items are sorted in ascending order by this column.
-	AccessibleSortAscending
-	// descending items are sorted in descending order by this column.
-	AccessibleSortDescending
-	// other: sort algorithm other than ascending or descending has been
+	// None: there is no defined sort applied to the column.
+	None AccessibleSort = iota
+	// Ascending items are sorted in ascending order by this column.
+	Ascending
+	// Descending items are sorted in descending order by this column.
+	Descending
+	// Other: sort algorithm other than ascending or descending has been
 	// applied.
-	AccessibleSortOther
+	Other
 )
 
 func marshalAccessibleSort(p uintptr) (interface{}, error) {
@@ -476,32 +476,32 @@ func marshalAccessibleSort(p uintptr) (interface{}, error) {
 type AccessibleState int
 
 const (
-	// busy: “busy” state. This state has boolean values
-	AccessibleStateBusy AccessibleState = iota
-	// checked: “checked” state; indicates the current state of a CheckButton.
+	// Busy: “busy” state. This state has boolean values
+	Busy AccessibleState = iota
+	// Checked: “checked” state; indicates the current state of a CheckButton.
 	// Value type: AccessibleTristate
-	AccessibleStateChecked
-	// disabled: “disabled” state; corresponds to the Widget:sensitive property
+	Checked
+	// Disabled: “disabled” state; corresponds to the Widget:sensitive property
 	// on Widget. It indicates a UI element that is perceivable, but not
 	// editable or operable. Value type: boolean
-	AccessibleStateDisabled
-	// expanded: “expanded” state; corresponds to the Expander:expanded property
+	Disabled
+	// Expanded: “expanded” state; corresponds to the Expander:expanded property
 	// on Expander. Value type: boolean or undefined
-	AccessibleStateExpanded
-	// hidden: “hidden” state; corresponds to the Widget:visible property on
+	Expanded
+	// Hidden: “hidden” state; corresponds to the Widget:visible property on
 	// Widget. You can use this state explicitly on UI elements that should not
 	// be exposed to an assistive technology. Value type: boolean See also:
 	// GTK_ACCESSIBLE_STATE_DISABLED
-	AccessibleStateHidden
-	// invalid: “invalid” state; set when a widget is showing an error. Value
+	Hidden
+	// Invalid: “invalid” state; set when a widget is showing an error. Value
 	// type: AccessibleInvalidState
-	AccessibleStateInvalid
-	// pressed: “pressed” state; indicates the current state of a ToggleButton.
+	Invalid
+	// Pressed: “pressed” state; indicates the current state of a ToggleButton.
 	// Value type: AccessibleTristate enumeration
-	AccessibleStatePressed
-	// selected: “selected” state; set when a widget is selected. Value type:
+	Pressed
+	// Selected: “selected” state; set when a widget is selected. Value type:
 	// boolean or undefined
-	AccessibleStateSelected
+	Selected
 )
 
 func marshalAccessibleState(p uintptr) (interface{}, error) {
@@ -516,12 +516,12 @@ func marshalAccessibleState(p uintptr) (interface{}, error) {
 type AccessibleTristate int
 
 const (
-	// false: the state is `false`
-	AccessibleTristateFalse AccessibleTristate = iota
-	// true: the state is `true`
-	AccessibleTristateTrue
-	// mixed: the state is `mixed`
-	AccessibleTristateMixed
+	// False: the state is `false`
+	False AccessibleTristate = iota
+	// True: the state is `true`
+	True
+	// Mixed: the state is `mixed`
+	Mixed
 )
 
 func marshalAccessibleTristate(p uintptr) (interface{}, error) {
@@ -546,17 +546,17 @@ func marshalAccessibleTristate(p uintptr) (interface{}, error) {
 type Align int
 
 const (
-	// fill: stretch to fill all space if possible, center if no meaningful way
+	// Fill: stretch to fill all space if possible, center if no meaningful way
 	// to stretch
-	AlignFill Align = iota
-	// start: snap to left or top side, leaving space on right or bottom
-	AlignStart
-	// end: snap to right or bottom side, leaving space on left or top
-	AlignEnd
-	// center natural width of widget inside the allocation
-	AlignCenter
-	// baseline: align the widget according to the baseline. See Widget
-	AlignBaseline
+	Fill Align = iota
+	// Start: snap to left or top side, leaving space on right or bottom
+	Start
+	// End: snap to right or bottom side, leaving space on left or top
+	End
+	// Center natural width of widget inside the allocation
+	Center
+	// Baseline: align the widget according to the baseline. See Widget
+	Baseline
 )
 
 func marshalAlign(p uintptr) (interface{}, error) {
@@ -567,16 +567,16 @@ func marshalAlign(p uintptr) (interface{}, error) {
 type ArrowType int
 
 const (
-	// up represents an upward pointing arrow.
-	ArrowTypeUp ArrowType = iota
-	// down represents a downward pointing arrow.
-	ArrowTypeDown
-	// left represents a left pointing arrow.
-	ArrowTypeLeft
-	// right represents a right pointing arrow.
-	ArrowTypeRight
-	// none: no arrow.
-	ArrowTypeNone
+	// Up represents an upward pointing arrow.
+	Up ArrowType = iota
+	// Down represents a downward pointing arrow.
+	Down
+	// Left represents a left pointing arrow.
+	Left
+	// Right represents a right pointing arrow.
+	Right
+	// None: no arrow.
+	None
 )
 
 func marshalArrowType(p uintptr) (interface{}, error) {
@@ -593,12 +593,12 @@ func marshalArrowType(p uintptr) (interface{}, error) {
 type BaselinePosition int
 
 const (
-	// top: align the baseline at the top
-	BaselinePositionTop BaselinePosition = iota
-	// center: center the baseline
-	BaselinePositionCenter
-	// bottom: align the baseline at the bottom
-	BaselinePositionBottom
+	// Top: align the baseline at the top
+	Top BaselinePosition = iota
+	// Center: center the baseline
+	Center
+	// Bottom: align the baseline at the bottom
+	Bottom
 )
 
 func marshalBaselinePosition(p uintptr) (interface{}, error) {
@@ -609,26 +609,26 @@ func marshalBaselinePosition(p uintptr) (interface{}, error) {
 type BorderStyle int
 
 const (
-	// none: no visible border
-	BorderStyleNone BorderStyle = iota
-	// hidden: same as GTK_BORDER_STYLE_NONE
-	BorderStyleHidden
-	// solid: single line segment
-	BorderStyleSolid
-	// inset looks as if the content is sunken into the canvas
-	BorderStyleInset
-	// outset looks as if the content is coming out of the canvas
-	BorderStyleOutset
-	// dotted series of round dots
-	BorderStyleDotted
-	// dashed series of square-ended dashes
-	BorderStyleDashed
-	// double: two parallel lines with some space between them
-	BorderStyleDouble
-	// groove looks as if it were carved in the canvas
-	BorderStyleGroove
-	// ridge looks as if it were coming out of the canvas
-	BorderStyleRidge
+	// None: no visible border
+	None BorderStyle = iota
+	// Hidden: same as GTK_BORDER_STYLE_NONE
+	Hidden
+	// Solid: single line segment
+	Solid
+	// Inset looks as if the content is sunken into the canvas
+	Inset
+	// Outset looks as if the content is coming out of the canvas
+	Outset
+	// Dotted series of round dots
+	Dotted
+	// Dashed series of square-ended dashes
+	Dashed
+	// Double: two parallel lines with some space between them
+	Double
+	// Groove looks as if it were carved in the canvas
+	Groove
+	// Ridge looks as if it were coming out of the canvas
+	Ridge
 )
 
 func marshalBorderStyle(p uintptr) (interface{}, error) {
@@ -640,34 +640,34 @@ func marshalBorderStyle(p uintptr) (interface{}, error) {
 type ConstraintAttribute int
 
 const (
-	// none: no attribute, used for constant relations
-	ConstraintAttributeNone ConstraintAttribute = iota
-	// left: the left edge of a widget, regardless of text direction
-	ConstraintAttributeLeft
-	// right: the right edge of a widget, regardless of text direction
-	ConstraintAttributeRight
-	// top: the top edge of a widget
-	ConstraintAttributeTop
-	// bottom: the bottom edge of a widget
-	ConstraintAttributeBottom
-	// start: the leading edge of a widget, depending on text direction;
+	// None: no attribute, used for constant relations
+	None ConstraintAttribute = iota
+	// Left: the left edge of a widget, regardless of text direction
+	Left
+	// Right: the right edge of a widget, regardless of text direction
+	Right
+	// Top: the top edge of a widget
+	Top
+	// Bottom: the bottom edge of a widget
+	Bottom
+	// Start: the leading edge of a widget, depending on text direction;
 	// equivalent to GTK_CONSTRAINT_ATTRIBUTE_LEFT for LTR languages, and
 	// GTK_CONSTRAINT_ATTRIBUTE_RIGHT for RTL ones
-	ConstraintAttributeStart
-	// end: the trailing edge of a widget, depending on text direction;
+	Start
+	// End: the trailing edge of a widget, depending on text direction;
 	// equivalent to GTK_CONSTRAINT_ATTRIBUTE_RIGHT for LTR languages, and
 	// GTK_CONSTRAINT_ATTRIBUTE_LEFT for RTL ones
-	ConstraintAttributeEnd
-	// width: the width of a widget
-	ConstraintAttributeWidth
-	// height: the height of a widget
-	ConstraintAttributeHeight
+	End
+	// Width: the width of a widget
+	Width
+	// Height: the height of a widget
+	Height
 	// CenterX: the center of a widget, on the horizontal axis
-	ConstraintAttributeCenterX
+	CenterX
 	// CenterY: the center of a widget, on the vertical axis
-	ConstraintAttributeCenterY
-	// baseline: the baseline of a widget
-	ConstraintAttributeBaseline
+	CenterY
+	// Baseline: the baseline of a widget
+	Baseline
 )
 
 func marshalConstraintAttribute(p uintptr) (interface{}, error) {
@@ -678,12 +678,12 @@ func marshalConstraintAttribute(p uintptr) (interface{}, error) {
 type ConstraintRelation int
 
 const (
-	// le less than, or equal
-	ConstraintRelationLe ConstraintRelation = -1
-	// eq: equal
-	ConstraintRelationEq ConstraintRelation = 0
-	// ge: greater than, or equal
-	ConstraintRelationGe ConstraintRelation = 1
+	// Le less than, or equal
+	Le ConstraintRelation = -1
+	// Eq: equal
+	Eq ConstraintRelation = 0
+	// Ge: greater than, or equal
+	Ge ConstraintRelation = 1
 )
 
 func marshalConstraintRelation(p uintptr) (interface{}, error) {
@@ -698,14 +698,14 @@ func marshalConstraintRelation(p uintptr) (interface{}, error) {
 type ConstraintStrength int
 
 const (
-	// required: the constraint is required towards solving the layout
-	ConstraintStrengthRequired ConstraintStrength = 1001001000
-	// strong constraint
-	ConstraintStrengthStrong ConstraintStrength = 1000000000
-	// medium constraint
-	ConstraintStrengthMedium ConstraintStrength = 1000
-	// weak constraint
-	ConstraintStrengthWeak ConstraintStrength = 1
+	// Required: the constraint is required towards solving the layout
+	Required ConstraintStrength = 1001001000
+	// Strong constraint
+	Strong ConstraintStrength = 1000000000
+	// Medium constraint
+	Medium ConstraintStrength = 1000
+	// Weak constraint
+	Weak ConstraintStrength = 1
 )
 
 func marshalConstraintStrength(p uintptr) (interface{}, error) {
@@ -716,18 +716,18 @@ func marshalConstraintStrength(p uintptr) (interface{}, error) {
 type ConstraintVflParserError int
 
 const (
-	// symbol: invalid or unknown symbol
-	ConstraintVflParserErrorSymbol ConstraintVflParserError = iota
-	// attribute: invalid or unknown attribute
-	ConstraintVflParserErrorAttribute
-	// view: invalid or unknown view
-	ConstraintVflParserErrorView
-	// metric: invalid or unknown metric
-	ConstraintVflParserErrorMetric
-	// priority: invalid or unknown priority
-	ConstraintVflParserErrorPriority
-	// relation: invalid or unknown relation
-	ConstraintVflParserErrorRelation
+	// Symbol: invalid or unknown symbol
+	Symbol ConstraintVflParserError = iota
+	// Attribute: invalid or unknown attribute
+	Attribute
+	// View: invalid or unknown view
+	View
+	// Metric: invalid or unknown metric
+	Metric
+	// Priority: invalid or unknown priority
+	Priority
+	// Relation: invalid or unknown relation
+	Relation
 )
 
 func marshalConstraintVflParserError(p uintptr) (interface{}, error) {
@@ -738,27 +738,27 @@ func marshalConstraintVflParserError(p uintptr) (interface{}, error) {
 type DeleteType int
 
 const (
-	// chars: delete characters.
-	DeleteTypeChars DeleteType = iota
+	// Chars: delete characters.
+	Chars DeleteType = iota
 	// WordEnds: delete only the portion of the word to the left/right of cursor
 	// if we’re in the middle of a word.
-	DeleteTypeWordEnds
-	// words: delete words.
-	DeleteTypeWords
+	WordEnds
+	// Words: delete words.
+	Words
 	// DisplayLines: delete display-lines. Display-lines refers to the visible
 	// lines, with respect to the current line breaks. As opposed to paragraphs,
 	// which are defined by line breaks in the input.
-	DeleteTypeDisplayLines
+	DisplayLines
 	// DisplayLineEnds: delete only the portion of the display-line to the
 	// left/right of cursor.
-	DeleteTypeDisplayLineEnds
+	DisplayLineEnds
 	// ParagraphEnds: delete to the end of the paragraph. Like C-k in Emacs (or
 	// its reverse).
-	DeleteTypeParagraphEnds
-	// paragraphs: delete entire line. Like C-k in pico.
-	DeleteTypeParagraphs
-	// whitespace: delete only whitespace. Like M-\ in Emacs.
-	DeleteTypeWhitespace
+	ParagraphEnds
+	// Paragraphs: delete entire line. Like C-k in pico.
+	Paragraphs
+	// Whitespace: delete only whitespace. Like M-\ in Emacs.
+	Whitespace
 )
 
 func marshalDeleteType(p uintptr) (interface{}, error) {
@@ -770,17 +770,17 @@ type DirectionType int
 
 const (
 	// TabForward: move forward.
-	DirectionTypeTabForward DirectionType = iota
+	TabForward DirectionType = iota
 	// TabBackward: move backward.
-	DirectionTypeTabBackward
-	// up: move up.
-	DirectionTypeUp
-	// down: move down.
-	DirectionTypeDown
-	// left: move left.
-	DirectionTypeLeft
-	// right: move right.
-	DirectionTypeRight
+	TabBackward
+	// Up: move up.
+	Up
+	// Down: move down.
+	Down
+	// Left: move left.
+	Left
+	// Right: move right.
+	Right
 )
 
 func marshalDirectionType(p uintptr) (interface{}, error) {
@@ -792,12 +792,12 @@ func marshalDirectionType(p uintptr) (interface{}, error) {
 type EventSequenceState int
 
 const (
-	// none: the sequence is handled, but not grabbed.
-	EventSequenceStateNone EventSequenceState = iota
-	// claimed: the sequence is handled and grabbed.
-	EventSequenceStateClaimed
-	// denied: the sequence is denied.
-	EventSequenceStateDenied
+	// None: the sequence is handled, but not grabbed.
+	None EventSequenceState = iota
+	// Claimed: the sequence is handled and grabbed.
+	Claimed
+	// Denied: the sequence is denied.
+	Denied
 )
 
 func marshalEventSequenceState(p uintptr) (interface{}, error) {
@@ -815,12 +815,12 @@ func marshalEventSequenceState(p uintptr) (interface{}, error) {
 type IconSize int
 
 const (
-	// inherit: keep the size of the parent element
-	IconSizeInherit IconSize = iota
-	// normal: size similar to text size
-	IconSizeNormal
-	// large: large size, for example in an icon view
-	IconSizeLarge
+	// Inherit: keep the size of the parent element
+	Inherit IconSize = iota
+	// Normal: size similar to text size
+	Normal
+	// Large: large size, for example in an icon view
+	Large
 )
 
 func marshalIconSize(p uintptr) (interface{}, error) {
@@ -848,27 +848,27 @@ type InputPurpose int
 
 const (
 	// FreeForm: allow any character
-	InputPurposeFreeForm InputPurpose = iota
-	// alpha: allow only alphabetic characters
-	InputPurposeAlpha
-	// digits: allow only digits
-	InputPurposeDigits
-	// number: edited field expects numbers
-	InputPurposeNumber
-	// phone: edited field expects phone number
-	InputPurposePhone
-	// url: edited field expects URL
-	InputPurposeURL
-	// email: edited field expects email address
-	InputPurposeEmail
-	// name: edited field expects the name of a person
-	InputPurposeName
-	// password: like GTK_INPUT_PURPOSE_FREE_FORM, but characters are hidden
-	InputPurposePassword
-	// pin: like GTK_INPUT_PURPOSE_DIGITS, but characters are hidden
-	InputPurposePin
-	// terminal: allow any character, in addition to control codes
-	InputPurposeTerminal
+	FreeForm InputPurpose = iota
+	// Alpha: allow only alphabetic characters
+	Alpha
+	// Digits: allow only digits
+	Digits
+	// Number: edited field expects numbers
+	Number
+	// Phone: edited field expects phone number
+	Phone
+	// URL: edited field expects URL
+	URL
+	// Email: edited field expects email address
+	Email
+	// Name: edited field expects the name of a person
+	Name
+	// Password: like GTK_INPUT_PURPOSE_FREE_FORM, but characters are hidden
+	Password
+	// Pin: like GTK_INPUT_PURPOSE_DIGITS, but characters are hidden
+	Pin
+	// Terminal: allow any character, in addition to control codes
+	Terminal
 )
 
 func marshalInputPurpose(p uintptr) (interface{}, error) {
@@ -879,14 +879,14 @@ func marshalInputPurpose(p uintptr) (interface{}, error) {
 type Justification int
 
 const (
-	// left: the text is placed at the left edge of the label.
-	JustificationLeft Justification = iota
-	// right: the text is placed at the right edge of the label.
-	JustificationRight
-	// center: the text is placed in the center of the label.
-	JustificationCenter
-	// fill: the text is placed is distributed across the label.
-	JustificationFill
+	// Left: the text is placed at the left edge of the label.
+	Left Justification = iota
+	// Right: the text is placed at the right edge of the label.
+	Right
+	// Center: the text is placed in the center of the label.
+	Center
+	// Fill: the text is placed is distributed across the label.
+	Fill
 )
 
 func marshalJustification(p uintptr) (interface{}, error) {
@@ -900,10 +900,10 @@ func marshalJustification(p uintptr) (interface{}, error) {
 type LevelBarMode int
 
 const (
-	// continuous: the bar has a continuous mode
-	LevelBarModeContinuous LevelBarMode = iota
-	// discrete: the bar has a discrete mode
-	LevelBarModeDiscrete
+	// Continuous: the bar has a continuous mode
+	Continuous LevelBarMode = iota
+	// Discrete: the bar has a discrete mode
+	Discrete
 )
 
 func marshalLevelBarMode(p uintptr) (interface{}, error) {
@@ -914,16 +914,16 @@ func marshalLevelBarMode(p uintptr) (interface{}, error) {
 type MessageType int
 
 const (
-	// info: informational message
-	MessageTypeInfo MessageType = iota
-	// warning: non-fatal warning message
-	MessageTypeWarning
-	// question: question requiring a choice
-	MessageTypeQuestion
-	// error: fatal error message
-	MessageTypeError
-	// other: none of the above
-	MessageTypeOther
+	// Info: informational message
+	Info MessageType = iota
+	// Warning: non-fatal warning message
+	Warning
+	// Question: question requiring a choice
+	Question
+	// Error: fatal error message
+	Error
+	// Other: none of the above
+	Other
 )
 
 func marshalMessageType(p uintptr) (interface{}, error) {
@@ -936,25 +936,25 @@ type MovementStep int
 
 const (
 	// LogicalPositions: move forward or back by graphemes
-	MovementStepLogicalPositions MovementStep = iota
+	LogicalPositions MovementStep = iota
 	// VisualPositions: move left or right by graphemes
-	MovementStepVisualPositions
-	// words: move forward or back by words
-	MovementStepWords
+	VisualPositions
+	// Words: move forward or back by words
+	Words
 	// DisplayLines: move up or down lines (wrapped lines)
-	MovementStepDisplayLines
+	DisplayLines
 	// DisplayLineEnds: move to either end of a line
-	MovementStepDisplayLineEnds
-	// paragraphs: move up or down paragraphs (newline-ended lines)
-	MovementStepParagraphs
+	DisplayLineEnds
+	// Paragraphs: move up or down paragraphs (newline-ended lines)
+	Paragraphs
 	// ParagraphEnds: move to either end of a paragraph
-	MovementStepParagraphEnds
-	// pages: move by pages
-	MovementStepPages
+	ParagraphEnds
+	// Pages: move by pages
+	Pages
 	// BufferEnds: move to ends of the buffer
-	MovementStepBufferEnds
+	BufferEnds
 	// HorizontalPages: move horizontally by pages
-	MovementStepHorizontalPages
+	HorizontalPages
 )
 
 func marshalMovementStep(p uintptr) (interface{}, error) {
@@ -966,22 +966,22 @@ func marshalMovementStep(p uintptr) (interface{}, error) {
 type NumberUpLayout int
 
 const (
-	// lrtb: ! (layout-lrtb.png)
-	NumberUpLayoutLrtb NumberUpLayout = iota
-	// lrbt: ! (layout-lrbt.png)
-	NumberUpLayoutLrbt
-	// rltb: ! (layout-rltb.png)
-	NumberUpLayoutRltb
-	// rlbt: ! (layout-rlbt.png)
-	NumberUpLayoutRlbt
-	// tblr: ! (layout-tblr.png)
-	NumberUpLayoutTblr
-	// tbrl: ! (layout-tbrl.png)
-	NumberUpLayoutTbrl
-	// btlr: ! (layout-btlr.png)
-	NumberUpLayoutBtlr
-	// btrl: ! (layout-btrl.png)
-	NumberUpLayoutBtrl
+	// Lrtb: ! (layout-lrtb.png)
+	Lrtb NumberUpLayout = iota
+	// Lrbt: ! (layout-lrbt.png)
+	Lrbt
+	// Rltb: ! (layout-rltb.png)
+	Rltb
+	// Rlbt: ! (layout-rlbt.png)
+	Rlbt
+	// Tblr: ! (layout-tblr.png)
+	Tblr
+	// Tbrl: ! (layout-tbrl.png)
+	Tbrl
+	// Btlr: ! (layout-btlr.png)
+	Btlr
+	// Btrl: ! (layout-btrl.png)
+	Btrl
 )
 
 func marshalNumberUpLayout(p uintptr) (interface{}, error) {
@@ -996,12 +996,12 @@ func marshalNumberUpLayout(p uintptr) (interface{}, error) {
 type Ordering int
 
 const (
-	// smaller: the first value is smaller than the second
-	OrderingSmaller Ordering = -1
-	// equal: the two values are equal
-	OrderingEqual Ordering = 0
-	// larger: the first value is larger than the second
-	OrderingLarger Ordering = 1
+	// Smaller: the first value is smaller than the second
+	Smaller Ordering = -1
+	// Equal: the two values are equal
+	Equal Ordering = 0
+	// Larger: the first value is larger than the second
+	Larger Ordering = 1
 )
 
 func marshalOrdering(p uintptr) (interface{}, error) {
@@ -1014,10 +1014,10 @@ func marshalOrdering(p uintptr) (interface{}, error) {
 type Orientation int
 
 const (
-	// horizontal: the element is in horizontal orientation.
-	OrientationHorizontal Orientation = iota
-	// vertical: the element is in vertical orientation.
-	OrientationVertical
+	// Horizontal: the element is in horizontal orientation.
+	Horizontal Orientation = iota
+	// Vertical: the element is in vertical orientation.
+	Vertical
 )
 
 func marshalOrientation(p uintptr) (interface{}, error) {
@@ -1032,12 +1032,12 @@ func marshalOrientation(p uintptr) (interface{}, error) {
 type Overflow int
 
 const (
-	// visible: no change is applied. Content is drawn at the specified
+	// Visible: no change is applied. Content is drawn at the specified
 	// position.
-	OverflowVisible Overflow = iota
-	// hidden: content is clipped to the bounds of the area. Content outside the
+	Visible Overflow = iota
+	// Hidden: content is clipped to the bounds of the area. Content outside the
 	// area is not drawn and cannot be interacted with.
-	OverflowHidden
+	Hidden
 )
 
 func marshalOverflow(p uintptr) (interface{}, error) {
@@ -1050,10 +1050,10 @@ func marshalOverflow(p uintptr) (interface{}, error) {
 type PackType int
 
 const (
-	// start: the child is packed into the start of the widget
-	PackTypeStart PackType = iota
-	// end: the child is packed into the end of the widget
-	PackTypeEnd
+	// Start: the child is packed into the start of the widget
+	Start PackType = iota
+	// End: the child is packed into the end of the widget
+	End
 )
 
 func marshalPackType(p uintptr) (interface{}, error) {
@@ -1064,14 +1064,14 @@ func marshalPackType(p uintptr) (interface{}, error) {
 type PageOrientation int
 
 const (
-	// portrait: portrait mode.
-	PageOrientationPortrait PageOrientation = iota
-	// landscape: landscape mode.
-	PageOrientationLandscape
+	// Portrait: portrait mode.
+	Portrait PageOrientation = iota
+	// Landscape: landscape mode.
+	Landscape
 	// ReversePortrait: reverse portrait mode.
-	PageOrientationReversePortrait
+	ReversePortrait
 	// ReverseLandscape: reverse landscape mode.
-	PageOrientationReverseLandscape
+	ReverseLandscape
 )
 
 func marshalPageOrientation(p uintptr) (interface{}, error) {
@@ -1082,12 +1082,12 @@ func marshalPageOrientation(p uintptr) (interface{}, error) {
 type PageSet int
 
 const (
-	// all: all pages.
-	PageSetAll PageSet = iota
-	// even: even pages.
-	PageSetEven
-	// odd: odd pages.
-	PageSetOdd
+	// All: all pages.
+	All PageSet = iota
+	// Even: even pages.
+	Even
+	// Odd: odd pages.
+	Odd
 )
 
 func marshalPageSet(p uintptr) (interface{}, error) {
@@ -1098,14 +1098,14 @@ func marshalPageSet(p uintptr) (interface{}, error) {
 type PanDirection int
 
 const (
-	// left: panned towards the left
-	PanDirectionLeft PanDirection = iota
-	// right: panned towards the right
-	PanDirectionRight
-	// up: panned upwards
-	PanDirectionUp
-	// down: panned downwards
-	PanDirectionDown
+	// Left: panned towards the left
+	Left PanDirection = iota
+	// Right: panned towards the right
+	Right
+	// Up: panned upwards
+	Up
+	// Down: panned downwards
+	Down
 )
 
 func marshalPanDirection(p uintptr) (interface{}, error) {
@@ -1119,14 +1119,14 @@ func marshalPanDirection(p uintptr) (interface{}, error) {
 type PositionType int
 
 const (
-	// left: the feature is at the left edge.
-	PositionTypeLeft PositionType = iota
-	// right: the feature is at the right edge.
-	PositionTypeRight
-	// top: the feature is at the top edge.
-	PositionTypeTop
-	// bottom: the feature is at the bottom edge.
-	PositionTypeBottom
+	// Left: the feature is at the left edge.
+	Left PositionType = iota
+	// Right: the feature is at the right edge.
+	Right
+	// Top: the feature is at the top edge.
+	Top
+	// Bottom: the feature is at the bottom edge.
+	Bottom
 )
 
 func marshalPositionType(p uintptr) (interface{}, error) {
@@ -1137,12 +1137,12 @@ func marshalPositionType(p uintptr) (interface{}, error) {
 type PrintDuplex int
 
 const (
-	// simplex: no duplex.
-	PrintDuplexSimplex PrintDuplex = iota
-	// horizontal: horizontal duplex.
-	PrintDuplexHorizontal
-	// vertical: vertical duplex.
-	PrintDuplexVertical
+	// Simplex: no duplex.
+	Simplex PrintDuplex = iota
+	// Horizontal: horizontal duplex.
+	Horizontal
+	// Vertical: vertical duplex.
+	Vertical
 )
 
 func marshalPrintDuplex(p uintptr) (interface{}, error) {
@@ -1153,14 +1153,14 @@ func marshalPrintDuplex(p uintptr) (interface{}, error) {
 type PrintPages int
 
 const (
-	// all: all pages.
-	PrintPagesAll PrintPages = iota
-	// current: current page.
-	PrintPagesCurrent
-	// ranges: range of pages.
-	PrintPagesRanges
-	// selection: selected pages.
-	PrintPagesSelection
+	// All: all pages.
+	All PrintPages = iota
+	// Current: current page.
+	Current
+	// Ranges: range of pages.
+	Ranges
+	// Selection: selected pages.
+	Selection
 )
 
 func marshalPrintPages(p uintptr) (interface{}, error) {
@@ -1171,14 +1171,14 @@ func marshalPrintPages(p uintptr) (interface{}, error) {
 type PrintQuality int
 
 const (
-	// low: low quality.
-	PrintQualityLow PrintQuality = iota
-	// normal: normal quality.
-	PrintQualityNormal
-	// high: high quality.
-	PrintQualityHigh
-	// draft: draft quality.
-	PrintQualityDraft
+	// Low: low quality.
+	Low PrintQuality = iota
+	// Normal: normal quality.
+	Normal
+	// High: high quality.
+	High
+	// Draft: draft quality.
+	Draft
 )
 
 func marshalPrintQuality(p uintptr) (interface{}, error) {
@@ -1190,12 +1190,12 @@ func marshalPrintQuality(p uintptr) (interface{}, error) {
 type PropagationLimit int
 
 const (
-	// none events are handled regardless of what their target is.
-	PropagationLimitNone PropagationLimit = iota
+	// None events are handled regardless of what their target is.
+	None PropagationLimit = iota
 	// SameNative events are only handled if their target is in the same Native
 	// as the event controllers widget. Note that some event types have two
 	// targets (origin and destination).
-	PropagationLimitSameNative
+	SameNative
 )
 
 func marshalPropagationLimit(p uintptr) (interface{}, error) {
@@ -1207,21 +1207,21 @@ func marshalPropagationLimit(p uintptr) (interface{}, error) {
 type PropagationPhase int
 
 const (
-	// none events are not delivered.
-	PropagationPhaseNone PropagationPhase = iota
-	// capture events are delivered in the capture phase. The capture phase
+	// None events are not delivered.
+	None PropagationPhase = iota
+	// Capture events are delivered in the capture phase. The capture phase
 	// happens before the bubble phase, runs from the toplevel down to the event
 	// widget. This option should only be used on containers that might possibly
 	// handle events before their children do.
-	PropagationPhaseCapture
-	// bubble events are delivered in the bubble phase. The bubble phase happens
+	Capture
+	// Bubble events are delivered in the bubble phase. The bubble phase happens
 	// after the capture phase, and before the default handlers are run. This
 	// phase runs from the event widget, up to the toplevel.
-	PropagationPhaseBubble
-	// target events are delivered in the default widget event handlers, note
+	Bubble
+	// Target events are delivered in the default widget event handlers, note
 	// that widget implementations must chain up on button, motion, touch and
 	// grab broken handlers for controllers in this phase to be run.
-	PropagationPhaseTarget
+	Target
 )
 
 func marshalPropagationPhase(p uintptr) (interface{}, error) {
@@ -1232,18 +1232,18 @@ func marshalPropagationPhase(p uintptr) (interface{}, error) {
 type ScrollStep int
 
 const (
-	// steps: scroll in steps.
-	ScrollStepSteps ScrollStep = iota
-	// pages: scroll by pages.
-	ScrollStepPages
-	// ends: scroll to ends.
-	ScrollStepEnds
+	// Steps: scroll in steps.
+	Steps ScrollStep = iota
+	// Pages: scroll by pages.
+	Pages
+	// Ends: scroll to ends.
+	Ends
 	// HorizontalSteps: scroll in horizontal steps.
-	ScrollStepHorizontalSteps
+	HorizontalSteps
 	// HorizontalPages: scroll by horizontal pages.
-	ScrollStepHorizontalPages
+	HorizontalPages
 	// HorizontalEnds: scroll to the horizontal ends.
-	ScrollStepHorizontalEnds
+	HorizontalEnds
 )
 
 func marshalScrollStep(p uintptr) (interface{}, error) {
@@ -1254,38 +1254,38 @@ func marshalScrollStep(p uintptr) (interface{}, error) {
 type ScrollType int
 
 const (
-	// none: no scrolling.
-	ScrollTypeNone ScrollType = iota
-	// jump: jump to new location.
-	ScrollTypeJump
+	// None: no scrolling.
+	None ScrollType = iota
+	// Jump: jump to new location.
+	Jump
 	// StepBackward: step backward.
-	ScrollTypeStepBackward
+	StepBackward
 	// StepForward: step forward.
-	ScrollTypeStepForward
+	StepForward
 	// PageBackward: page backward.
-	ScrollTypePageBackward
+	PageBackward
 	// PageForward: page forward.
-	ScrollTypePageForward
+	PageForward
 	// StepUp: step up.
-	ScrollTypeStepUp
+	StepUp
 	// StepDown: step down.
-	ScrollTypeStepDown
+	StepDown
 	// PageUp: page up.
-	ScrollTypePageUp
+	PageUp
 	// PageDown: page down.
-	ScrollTypePageDown
+	PageDown
 	// StepLeft: step to the left.
-	ScrollTypeStepLeft
+	StepLeft
 	// StepRight: step to the right.
-	ScrollTypeStepRight
+	StepRight
 	// PageLeft: page to the left.
-	ScrollTypePageLeft
+	PageLeft
 	// PageRight: page to the right.
-	ScrollTypePageRight
-	// start: scroll to start.
-	ScrollTypeStart
-	// end: scroll to end.
-	ScrollTypeEnd
+	PageRight
+	// Start: scroll to start.
+	Start
+	// End: scroll to end.
+	End
 )
 
 func marshalScrollType(p uintptr) (interface{}, error) {
@@ -1297,10 +1297,10 @@ func marshalScrollType(p uintptr) (interface{}, error) {
 type ScrollablePolicy int
 
 const (
-	// minimum: scrollable adjustments are based on the minimum size
-	ScrollablePolicyMinimum ScrollablePolicy = iota
-	// natural: scrollable adjustments are based on the natural size
-	ScrollablePolicyNatural
+	// Minimum: scrollable adjustments are based on the minimum size
+	Minimum ScrollablePolicy = iota
+	// Natural: scrollable adjustments are based on the natural size
+	Natural
 )
 
 func marshalScrollablePolicy(p uintptr) (interface{}, error) {
@@ -1311,21 +1311,21 @@ func marshalScrollablePolicy(p uintptr) (interface{}, error) {
 type SelectionMode int
 
 const (
-	// none: no selection is possible.
-	SelectionModeNone SelectionMode = iota
-	// single: zero or one element may be selected.
-	SelectionModeSingle
-	// browse: exactly one element is selected. In some circumstances, such as
+	// None: no selection is possible.
+	None SelectionMode = iota
+	// Single: zero or one element may be selected.
+	Single
+	// Browse: exactly one element is selected. In some circumstances, such as
 	// initially or during a search operation, it’s possible for no element to
 	// be selected with GTK_SELECTION_BROWSE. What is really enforced is that
 	// the user can’t deselect a currently selected element except by selecting
 	// another element.
-	SelectionModeBrowse
-	// multiple: any number of elements may be selected. The Ctrl key may be
+	Browse
+	// Multiple: any number of elements may be selected. The Ctrl key may be
 	// used to enlarge the selection, and Shift key to select between the focus
 	// and the child pointed to. Some widgets may also allow Click-drag to
 	// select a range of elements.
-	SelectionModeMultiple
+	Multiple
 )
 
 func marshalSelectionMode(p uintptr) (interface{}, error) {
@@ -1337,12 +1337,12 @@ func marshalSelectionMode(p uintptr) (interface{}, error) {
 type SensitivityType int
 
 const (
-	// auto: the control is made insensitive if no action can be triggered
-	SensitivityTypeAuto SensitivityType = iota
-	// on: the control is always sensitive
-	SensitivityTypeOn
-	// off: the control is always insensitive
-	SensitivityTypeOff
+	// Auto: the control is made insensitive if no action can be triggered
+	Auto SensitivityType = iota
+	// On: the control is always sensitive
+	On
+	// Off: the control is always insensitive
+	Off
 )
 
 func marshalSensitivityType(p uintptr) (interface{}, error) {
@@ -1354,13 +1354,13 @@ func marshalSensitivityType(p uintptr) (interface{}, error) {
 type ShortcutScope int
 
 const (
-	// local shortcuts are handled inside the widget the controller belongs to.
-	ShortcutScopeLocal ShortcutScope = iota
-	// managed shortcuts are handled by the first ancestor that is a
+	// Local shortcuts are handled inside the widget the controller belongs to.
+	Local ShortcutScope = iota
+	// Managed shortcuts are handled by the first ancestor that is a
 	// ShortcutManager
-	ShortcutScopeManaged
-	// global shortcuts are handled by the root widget.
-	ShortcutScopeGlobal
+	Managed
+	// Global shortcuts are handled by the root widget.
+	Global
 )
 
 func marshalShortcutScope(p uintptr) (interface{}, error) {
@@ -1372,14 +1372,14 @@ func marshalShortcutScope(p uintptr) (interface{}, error) {
 type SizeGroupMode int
 
 const (
-	// none: group has no effect
-	SizeGroupModeNone SizeGroupMode = iota
-	// horizontal: group affects horizontal requisition
-	SizeGroupModeHorizontal
-	// vertical: group affects vertical requisition
-	SizeGroupModeVertical
-	// both: group affects both horizontal and vertical requisition
-	SizeGroupModeBoth
+	// None: group has no effect
+	None SizeGroupMode = iota
+	// Horizontal: group affects horizontal requisition
+	Horizontal
+	// Vertical: group affects vertical requisition
+	Vertical
+	// Both: group affects both horizontal and vertical requisition
+	Both
 )
 
 func marshalSizeGroupMode(p uintptr) (interface{}, error) {
@@ -1392,11 +1392,11 @@ type SizeRequestMode int
 
 const (
 	// HeightForWidth: prefer height-for-width geometry management
-	SizeRequestModeHeightForWidth SizeRequestMode = iota
+	HeightForWidth SizeRequestMode = iota
 	// WidthForHeight: prefer width-for-height geometry management
-	SizeRequestModeWidthForHeight
+	WidthForHeight
 	// ConstantSize: don’t trade height-for-width or width-for-height
-	SizeRequestModeConstantSize
+	ConstantSize
 )
 
 func marshalSizeRequestMode(p uintptr) (interface{}, error) {
@@ -1407,10 +1407,10 @@ func marshalSizeRequestMode(p uintptr) (interface{}, error) {
 type SortType int
 
 const (
-	// ascending: sorting is in ascending order.
-	SortTypeAscending SortType = iota
-	// descending: sorting is in descending order.
-	SortTypeDescending
+	// Ascending: sorting is in ascending order.
+	Ascending SortType = iota
+	// Descending: sorting is in descending order.
+	Descending
 )
 
 func marshalSortType(p uintptr) (interface{}, error) {
@@ -1429,20 +1429,20 @@ func marshalSortType(p uintptr) (interface{}, error) {
 type SystemSetting int
 
 const (
-	// dpi: the Settings:gtk-xft-dpi setting has changed
-	SystemSettingDPI SystemSetting = iota
+	// DPI: the Settings:gtk-xft-dpi setting has changed
+	DPI SystemSetting = iota
 	// FontName: the Settings:gtk-font-name setting has changed
-	SystemSettingFontName
+	FontName
 	// FontConfig: the font configuration has changed in a way that requires
 	// text to be redrawn. This can be any of the Settings:gtk-xft-antialias,
 	// Settings:gtk-xft-hinting, Settings:gtk-xft-hintstyle,
 	// Settings:gtk-xft-rgba or Settings:gtk-fontconfig-timestamp settings
-	SystemSettingFontConfig
-	// display: the display has changed
-	SystemSettingDisplay
+	FontConfig
+	// Display: the display has changed
+	Display
 	// IconTheme: the icon theme has changed in a way that requires icons to be
 	// looked up again
-	SystemSettingIconTheme
+	IconTheme
 )
 
 func marshalSystemSetting(p uintptr) (interface{}, error) {
@@ -1453,12 +1453,12 @@ func marshalSystemSetting(p uintptr) (interface{}, error) {
 type TextDirection int
 
 const (
-	// none: no direction.
-	TextDirectionNone TextDirection = iota
-	// ltr: left to right text direction.
-	TextDirectionLTR
-	// rtl: right to left text direction.
-	TextDirectionRTL
+	// None: no direction.
+	None TextDirection = iota
+	// LTR: left to right text direction.
+	LTR
+	// RTL: right to left text direction.
+	RTL
 )
 
 func marshalTextDirection(p uintptr) (interface{}, error) {
@@ -1469,14 +1469,14 @@ func marshalTextDirection(p uintptr) (interface{}, error) {
 type TreeViewGridLines int
 
 const (
-	// none: no grid lines.
-	TreeViewGridLinesNone TreeViewGridLines = iota
-	// horizontal: horizontal grid lines.
-	TreeViewGridLinesHorizontal
-	// vertical: vertical grid lines.
-	TreeViewGridLinesVertical
-	// both: horizontal and vertical grid lines.
-	TreeViewGridLinesBoth
+	// None: no grid lines.
+	None TreeViewGridLines = iota
+	// Horizontal: horizontal grid lines.
+	Horizontal
+	// Vertical: vertical grid lines.
+	Vertical
+	// Both: horizontal and vertical grid lines.
+	Both
 )
 
 func marshalTreeViewGridLines(p uintptr) (interface{}, error) {
@@ -1487,14 +1487,14 @@ func marshalTreeViewGridLines(p uintptr) (interface{}, error) {
 type Unit int
 
 const (
-	// none: no units.
-	UnitNone Unit = iota
-	// points dimensions in points.
-	UnitPoints
-	// inch dimensions in inches.
-	UnitInch
-	// mm dimensions in millimeters
-	UnitMm
+	// None: no units.
+	None Unit = iota
+	// Points dimensions in points.
+	Points
+	// Inch dimensions in inches.
+	Inch
+	// Mm dimensions in millimeters
+	Mm
 )
 
 func marshalUnit(p uintptr) (interface{}, error) {
@@ -1505,17 +1505,17 @@ func marshalUnit(p uintptr) (interface{}, error) {
 type WrapMode int
 
 const (
-	// none: do not wrap lines; just make the text area wider
-	WrapModeNone WrapMode = iota
-	// char: wrap text, breaking lines anywhere the cursor can appear (between
+	// None: do not wrap lines; just make the text area wider
+	None WrapMode = iota
+	// Char: wrap text, breaking lines anywhere the cursor can appear (between
 	// characters, usually - if you want to be technical, between graphemes, see
 	// pango_get_log_attrs())
-	WrapModeChar
-	// word: wrap text, breaking lines in between words
-	WrapModeWord
+	Char
+	// Word: wrap text, breaking lines in between words
+	Word
 	// WordChar: wrap text, breaking lines in between words, or if that is not
 	// enough, also between graphemes
-	WrapModeWordChar
+	WordChar
 )
 
 func marshalWrapMode(p uintptr) (interface{}, error) {

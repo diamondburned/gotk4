@@ -32,6 +32,16 @@ func init() {
 	})
 }
 
+// FileMonitorOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type FileMonitorOverrider interface {
+	// Cancel cancels a file monitor.
+	Cancel() bool
+	Changed(file File, otherFile File, eventType FileMonitorEvent)
+}
+
 // FileMonitor monitors a file or directory for changes.
 //
 // To obtain a Monitor for a file or directory, use g_file_monitor(),

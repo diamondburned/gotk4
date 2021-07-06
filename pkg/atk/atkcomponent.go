@@ -31,30 +31,104 @@ type ScrollType int
 const (
 	// TopLeft: scroll the object vertically and horizontally to bring its top
 	// left corner to the top left corner of the window.
-	ScrollTypeTopLeft ScrollType = iota
+	TopLeft ScrollType = iota
 	// BottomRight: scroll the object vertically and horizontally to bring its
 	// bottom right corner to the bottom right corner of the window.
-	ScrollTypeBottomRight
+	BottomRight
 	// TopEdge: scroll the object vertically to bring its top edge to the top
 	// edge of the window.
-	ScrollTypeTopEdge
+	TopEdge
 	// BottomEdge: scroll the object vertically to bring its bottom edge to the
 	// bottom edge of the window.
-	ScrollTypeBottomEdge
+	BottomEdge
 	// LeftEdge: scroll the object vertically and horizontally to bring its left
 	// edge to the left edge of the window.
-	ScrollTypeLeftEdge
+	LeftEdge
 	// RightEdge: scroll the object vertically and horizontally to bring its
 	// right edge to the right edge of the window.
-	ScrollTypeRightEdge
-	// anywhere: scroll the object vertically and horizontally so that as much
+	RightEdge
+	// Anywhere: scroll the object vertically and horizontally so that as much
 	// as possible of the object becomes visible. The exact placement is
 	// determined by the application.
-	ScrollTypeAnywhere
+	Anywhere
 )
 
 func marshalScrollType(p uintptr) (interface{}, error) {
 	return ScrollType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// ComponentOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type ComponentOverrider interface {
+	BoundsChanged(bounds *Rectangle)
+	// Contains checks whether the specified point is within the extent of the
+	// @component.
+	//
+	// Toolkit implementor note: ATK provides a default implementation for this
+	// virtual method. In general there are little reason to re-implement it.
+	Contains(x int, y int, coordType CoordType) bool
+	// Alpha returns the alpha value (i.e. the opacity) for this @component, on
+	// a scale from 0 (fully transparent) to 1.0 (fully opaque).
+	Alpha() float64
+	// Extents gets the rectangle which gives the extent of the @component.
+	//
+	// If the extent can not be obtained (e.g. a non-embedded plug or missing
+	// support), all of x, y, width, height are set to -1.
+	Extents(coordType CoordType) (x int, y int, width int, height int)
+	// Layer gets the layer of the component.
+	Layer() Layer
+	// MDIZOrder gets the zorder of the component. The value G_MININT will be
+	// returned if the layer of the component is not ATK_LAYER_MDI or
+	// ATK_LAYER_WINDOW.
+	MDIZOrder() int
+	// Position gets the position of @component in the form of a point
+	// specifying @component's top-left corner.
+	//
+	// If the position can not be obtained (e.g. a non-embedded plug or missing
+	// support), x and y are set to -1.
+	//
+	// Deprecated.
+	Position(coordType CoordType) (x int, y int)
+	// Size gets the size of the @component in terms of width and height.
+	//
+	// If the size can not be obtained (e.g. a non-embedded plug or missing
+	// support), width and height are set to -1.
+	//
+	// Deprecated.
+	Size() (width int, height int)
+	// GrabFocus grabs focus for this @component.
+	GrabFocus() bool
+	// RefAccessibleAtPoint gets a reference to the accessible child, if one
+	// exists, at the coordinate point specified by @x and @y.
+	RefAccessibleAtPoint(x int, y int, coordType CoordType) Object
+	// RemoveFocusHandler: remove the handler specified by @handler_id from the
+	// list of functions to be executed when this object receives focus events
+	// (in or out).
+	//
+	// Deprecated: since version 2.9.4.
+	RemoveFocusHandler(handlerId uint)
+	// ScrollTo makes @component visible on the screen by scrolling all
+	// necessary parents.
+	//
+	// Contrary to atk_component_set_position, this does not actually move
+	// @component in its parent, this only makes the parents scroll so that the
+	// object shows up on the screen, given its current position within the
+	// parents.
+	ScrollTo(typ ScrollType) bool
+	// ScrollToPoint: move the top-left of @component to a given position of the
+	// screen by scrolling all necessary parents.
+	ScrollToPoint(coords CoordType, x int, y int) bool
+	// SetExtents sets the extents of @component.
+	SetExtents(x int, y int, width int, height int, coordType CoordType) bool
+	// SetPosition sets the position of @component.
+	//
+	// Contrary to atk_component_scroll_to, this does not trigger any scrolling,
+	// this just moves @component in its parent.
+	SetPosition(x int, y int, coordType CoordType) bool
+	// SetSize: set the size of the @component in terms of width and height.
+	SetSize(width int, height int) bool
 }
 
 // Component should be implemented by most if not all UI elements with an actual

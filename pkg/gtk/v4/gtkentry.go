@@ -35,14 +35,22 @@ func init() {
 type EntryIconPosition int
 
 const (
-	// primary: at the beginning of the entry (depending on the text direction).
-	EntryIconPositionPrimary EntryIconPosition = iota
-	// secondary: at the end of the entry (depending on the text direction).
-	EntryIconPositionSecondary
+	// Primary: at the beginning of the entry (depending on the text direction).
+	Primary EntryIconPosition = iota
+	// Secondary: at the end of the entry (depending on the text direction).
+	Secondary
 )
 
 func marshalEntryIconPosition(p uintptr) (interface{}, error) {
 	return EntryIconPosition(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// EntryOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type EntryOverrider interface {
+	Activate()
 }
 
 // Entry: `GtkEntry` is a single line text entry widget.

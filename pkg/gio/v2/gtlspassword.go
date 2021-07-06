@@ -32,6 +32,19 @@ func init() {
 	})
 }
 
+// TLSPasswordOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type TLSPasswordOverrider interface {
+	DefaultWarning() string
+	// Value: get the password value. If @length is not nil then it will be
+	// filled in with the length of the password value. (Note that the password
+	// value is not nul-terminated, so you can only pass nil for @length in
+	// contexts where you know the password will have a certain fixed length.)
+	Value(length *uint) *byte
+}
+
 // TLSPassword holds a password used in TLS.
 type TLSPassword interface {
 	gextras.Objector

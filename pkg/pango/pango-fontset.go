@@ -54,6 +54,24 @@ func gotk4_FontsetForeachFunc(arg0 *C.PangoFontset, arg1 *C.PangoFont, arg2 C.gp
 	return cret
 }
 
+// FontsetOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type FontsetOverrider interface {
+	// Foreach iterates through all the fonts in a fontset, calling @func for
+	// each one.
+	//
+	// If @func returns true, that stops the iteration.
+	Foreach(fn FontsetForeachFunc)
+	// Font returns the font in the fontset that contains the best glyph for a
+	// Unicode character.
+	Font(wc uint) Font
+	Language() *Language
+	// Metrics: get overall metric information for the fonts in the fontset.
+	Metrics() *FontMetrics
+}
+
 // Fontset: `PangoFontset` represents a set of `PangoFont` to use when rendering
 // text.
 //

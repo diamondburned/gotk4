@@ -29,24 +29,24 @@ type VisualType int
 
 const (
 	// StaticGray: each pixel value indexes a grayscale value directly.
-	VisualTypeStaticGray VisualType = iota
-	// grayscale: each pixel is an index into a color map that maps pixel values
+	StaticGray VisualType = iota
+	// Grayscale: each pixel is an index into a color map that maps pixel values
 	// into grayscale values. The color map can be changed by an application.
-	VisualTypeGrayscale
+	Grayscale
 	// StaticColor: each pixel value is an index into a predefined, unmodifiable
 	// color map that maps pixel values into RGB values.
-	VisualTypeStaticColor
+	StaticColor
 	// PseudoColor: each pixel is an index into a color map that maps pixel
 	// values into rgb values. The color map can be changed by an application.
-	VisualTypePseudoColor
+	PseudoColor
 	// TrueColor: each pixel value directly contains red, green, and blue
 	// components. Use gdk_visual_get_red_pixel_details(), etc, to obtain
 	// information about how the components are assembled into a pixel value.
-	VisualTypeTrueColor
+	TrueColor
 	// DirectColor: each pixel value contains red, green, and blue components as
 	// for GDK_VISUAL_TRUE_COLOR, but the components are mapped via a color
 	// table into the final output table instead of being converted directly.
-	VisualTypeDirectColor
+	DirectColor
 )
 
 func marshalVisualType(p uintptr) (interface{}, error) {

@@ -318,7 +318,6 @@ type ContainerCellAccessible interface {
 	SetDescription(i int, desc string) bool
 
 	AddChild(child CellAccessible)
-
 	RemoveChild(child CellAccessible)
 }
 

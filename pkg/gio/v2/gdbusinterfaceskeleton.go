@@ -35,6 +35,27 @@ func init() {
 	})
 }
 
+// DBusInterfaceSkeletonOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type DBusInterfaceSkeletonOverrider interface {
+	// Flush: if @interface_ has outstanding changes, request for these changes
+	// to be emitted immediately.
+	//
+	// For example, an exported D-Bus interface may queue up property changes
+	// and emit the `org.freedesktop.DBus.Properties.PropertiesChanged` signal
+	// later (e.g. in an idle handler). This technique is useful for collapsing
+	// multiple property changes into one.
+	Flush()
+	GAuthorizeMethod(invocation DBusMethodInvocation) bool
+	// Info gets D-Bus introspection information for the D-Bus interface
+	// implemented by @interface_.
+	Info() *DBusInterfaceInfo
+	// Properties gets all D-Bus properties for @interface_.
+	Properties() *glib.Variant
+}
+
 // DBusInterfaceSkeleton: abstract base class for D-Bus interfaces on the
 // service side.
 type DBusInterfaceSkeleton interface {

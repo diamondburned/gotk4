@@ -89,8 +89,8 @@ func (s *Range) Copy() *Range {
 	return __range
 }
 
-// Free @range
-func (r *Range) Free() {
+// Free: free @range
+func (r *Range) free() {
 	var _arg0 *C.AtkRange // out
 
 	_arg0 = (*C.AtkRange)(unsafe.Pointer(r))

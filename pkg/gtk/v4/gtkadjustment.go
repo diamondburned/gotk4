@@ -22,6 +22,15 @@ func init() {
 	})
 }
 
+// AdjustmentOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type AdjustmentOverrider interface {
+	Changed()
+	ValueChanged()
+}
+
 // Adjustment: `GtkAdjustment` is a model for a numeric value.
 //
 // The `GtkAdjustment has an associated lower and upper bound. It also contains

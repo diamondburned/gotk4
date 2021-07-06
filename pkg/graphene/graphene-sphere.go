@@ -120,7 +120,7 @@ func (a *Sphere) Equal(b *Sphere) bool {
 }
 
 // Free frees the resources allocated by graphene_sphere_alloc().
-func (s *Sphere) Free() {
+func (s *Sphere) free() {
 	var _arg0 *C.graphene_sphere_t // out
 
 	_arg0 = (*C.graphene_sphere_t)(unsafe.Pointer(s))

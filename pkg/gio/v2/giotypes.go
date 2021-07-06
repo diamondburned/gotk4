@@ -433,7 +433,7 @@ func (m *FileAttributeMatcher) MatchesOnly(attribute string) bool {
 }
 
 // Ref references a file attribute matcher.
-func (m *FileAttributeMatcher) Ref() *FileAttributeMatcher {
+func (m *FileAttributeMatcher) ref() *FileAttributeMatcher {
 	var _arg0 *C.GFileAttributeMatcher // out
 	var _cret *C.GFileAttributeMatcher // in
 
@@ -502,7 +502,7 @@ func (m *FileAttributeMatcher) String() string {
 
 // Unref unreferences @matcher. If the reference count falls below 1, the
 // @matcher is automatically freed.
-func (m *FileAttributeMatcher) Unref() {
+func (m *FileAttributeMatcher) unref() {
 	var _arg0 *C.GFileAttributeMatcher // out
 
 	_arg0 = (*C.GFileAttributeMatcher)(unsafe.Pointer(m))
@@ -873,7 +873,7 @@ func (r *Resource) OpenStream(path string, lookupFlags ResourceLookupFlags) (Inp
 
 // Ref: atomically increments the reference count of @resource by one. This
 // function is MT-safe and may be called from any thread.
-func (r *Resource) Ref() *Resource {
+func (r *Resource) ref() *Resource {
 	var _arg0 *C.GResource // out
 	var _cret *C.GResource // in
 
@@ -895,7 +895,7 @@ func (r *Resource) Ref() *Resource {
 // Unref: atomically decrements the reference count of @resource by one. If the
 // reference count drops to 0, all memory allocated by the resource is released.
 // This function is MT-safe and may be called from any thread.
-func (r *Resource) Unref() {
+func (r *Resource) unref() {
 	var _arg0 *C.GResource // out
 
 	_arg0 = (*C.GResource)(unsafe.Pointer(r))
@@ -981,7 +981,7 @@ func (t *SrvTarget) Copy() *SrvTarget {
 }
 
 // Free frees @target
-func (t *SrvTarget) Free() {
+func (t *SrvTarget) free() {
 	var _arg0 *C.GSrvTarget // out
 
 	_arg0 = (*C.GSrvTarget)(unsafe.Pointer(t))

@@ -195,7 +195,7 @@ func (l *ToplevelLayout) Resizable() bool {
 }
 
 // Ref increases the reference count of @layout.
-func (l *ToplevelLayout) Ref() *ToplevelLayout {
+func (l *ToplevelLayout) ref() *ToplevelLayout {
 	var _arg0 *C.GdkToplevelLayout // out
 	var _cret *C.GdkToplevelLayout // in
 
@@ -259,7 +259,7 @@ func (l *ToplevelLayout) SetResizable(resizable bool) {
 }
 
 // Unref decreases the reference count of @layout.
-func (l *ToplevelLayout) Unref() {
+func (l *ToplevelLayout) unref() {
 	var _arg0 *C.GdkToplevelLayout // out
 
 	_arg0 = (*C.GdkToplevelLayout)(unsafe.Pointer(l))

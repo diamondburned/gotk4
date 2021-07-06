@@ -29,6 +29,15 @@ func init() {
 	})
 }
 
+// ButtonOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type ButtonOverrider interface {
+	Activate()
+	Clicked()
+}
+
 // Button: the `GtkButton` widget is generally used to trigger a callback
 // function that is called when the button is pressed.
 //

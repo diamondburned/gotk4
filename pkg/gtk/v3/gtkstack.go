@@ -43,50 +43,50 @@ func init() {
 type StackTransitionType int
 
 const (
-	// none: no transition
-	StackTransitionTypeNone StackTransitionType = iota
-	// crossfade: cross-fade
-	StackTransitionTypeCrossfade
+	// None: no transition
+	None StackTransitionType = iota
+	// Crossfade: cross-fade
+	Crossfade
 	// SlideRight: slide from left to right
-	StackTransitionTypeSlideRight
+	SlideRight
 	// SlideLeft: slide from right to left
-	StackTransitionTypeSlideLeft
+	SlideLeft
 	// SlideUp: slide from bottom up
-	StackTransitionTypeSlideUp
+	SlideUp
 	// SlideDown: slide from top down
-	StackTransitionTypeSlideDown
+	SlideDown
 	// SlideLeftRight: slide from left or right according to the children order
-	StackTransitionTypeSlideLeftRight
+	SlideLeftRight
 	// SlideUpDown: slide from top down or bottom up according to the order
-	StackTransitionTypeSlideUpDown
+	SlideUpDown
 	// OverUp: cover the old page by sliding up. Since 3.12
-	StackTransitionTypeOverUp
+	OverUp
 	// OverDown: cover the old page by sliding down. Since: 3.12
-	StackTransitionTypeOverDown
+	OverDown
 	// OverLeft: cover the old page by sliding to the left. Since: 3.12
-	StackTransitionTypeOverLeft
+	OverLeft
 	// OverRight: cover the old page by sliding to the right. Since: 3.12
-	StackTransitionTypeOverRight
+	OverRight
 	// UnderUp: uncover the new page by sliding up. Since 3.12
-	StackTransitionTypeUnderUp
+	UnderUp
 	// UnderDown: uncover the new page by sliding down. Since: 3.12
-	StackTransitionTypeUnderDown
+	UnderDown
 	// UnderLeft: uncover the new page by sliding to the left. Since: 3.12
-	StackTransitionTypeUnderLeft
+	UnderLeft
 	// UnderRight: uncover the new page by sliding to the right. Since: 3.12
-	StackTransitionTypeUnderRight
+	UnderRight
 	// OverUpDown: cover the old page sliding up or uncover the new page sliding
 	// down, according to order. Since: 3.12
-	StackTransitionTypeOverUpDown
+	OverUpDown
 	// OverDownUp: cover the old page sliding down or uncover the new page
 	// sliding up, according to order. Since: 3.14
-	StackTransitionTypeOverDownUp
+	OverDownUp
 	// OverLeftRight: cover the old page sliding left or uncover the new page
 	// sliding right, according to order. Since: 3.14
-	StackTransitionTypeOverLeftRight
+	OverLeftRight
 	// OverRightLeft: cover the old page sliding right or uncover the new page
 	// sliding left, according to order. Since: 3.14
-	StackTransitionTypeOverRightLeft
+	OverRightLeft
 )
 
 func marshalStackTransitionType(p uintptr) (interface{}, error) {

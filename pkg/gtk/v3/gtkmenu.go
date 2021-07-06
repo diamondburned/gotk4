@@ -42,12 +42,12 @@ func init() {
 type ArrowPlacement int
 
 const (
-	// both: place one arrow on each end of the menu.
-	ArrowPlacementBoth ArrowPlacement = iota
-	// start: place both arrows at the top of the menu.
-	ArrowPlacementStart
-	// end: place both arrows at the bottom of the menu.
-	ArrowPlacementEnd
+	// Both: place one arrow on each end of the menu.
+	Both ArrowPlacement = iota
+	// Start: place both arrows at the top of the menu.
+	Start
+	// End: place both arrows at the bottom of the menu.
+	End
 )
 
 func marshalArrowPlacement(p uintptr) (interface{}, error) {

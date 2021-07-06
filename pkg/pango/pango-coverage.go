@@ -32,19 +32,19 @@ func init() {
 type CoverageLevel int
 
 const (
-	// none: the character is not representable with the font.
-	CoverageLevelNone CoverageLevel = iota
-	// fallback: the character is represented in a way that may be
+	// None: the character is not representable with the font.
+	None CoverageLevel = iota
+	// Fallback: the character is represented in a way that may be
 	// comprehensible but is not the correct graphical form. For instance, a
 	// Hangul character represented as a a sequence of Jamos, or a Latin
 	// transliteration of a Cyrillic word.
-	CoverageLevelFallback
-	// approximate: the character is represented as basically the correct
+	Fallback
+	// Approximate: the character is represented as basically the correct
 	// graphical form, but with a stylistic variant inappropriate for the
 	// current script.
-	CoverageLevelApproximate
-	// exact: the character is represented as the correct graphical form.
-	CoverageLevelExact
+	Approximate
+	// Exact: the character is represented as the correct graphical form.
+	Exact
 )
 
 func marshalCoverageLevel(p uintptr) (interface{}, error) {
@@ -71,7 +71,7 @@ type Coverage interface {
 	// Deprecated: since version 1.44.
 	Max(other Coverage)
 	// Ref: increase the reference count on the `PangoCoverage` by one.
-	Ref() Coverage
+	ref() Coverage
 	// Set: modify a particular index within @coverage
 	Set(index_ int, level CoverageLevel)
 	// ToBytes: convert a `PangoCoverage` structure into a flat binary format.
@@ -81,7 +81,7 @@ type Coverage interface {
 	// Unref: decrease the reference count on the `PangoCoverage` by one.
 	//
 	// If the result is zero, free the coverage and all associated memory.
-	Unref()
+	unref()
 }
 
 // coverage implements the Coverage interface.
@@ -158,7 +158,7 @@ func (c coverage) Max(other Coverage) {
 	C.pango_coverage_max(_arg0, _arg1)
 }
 
-func (c coverage) Ref() Coverage {
+func (c coverage) ref() Coverage {
 	var _arg0 *C.PangoCoverage // out
 	var _cret *C.PangoCoverage // in
 
@@ -204,7 +204,7 @@ func (c coverage) ToBytes() []byte {
 	return _bytes
 }
 
-func (c coverage) Unref() {
+func (c coverage) unref() {
 	var _arg0 *C.PangoCoverage // out
 
 	_arg0 = (*C.PangoCoverage)(unsafe.Pointer(c.Native()))

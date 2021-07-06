@@ -107,7 +107,7 @@ func (s *CSSSection) StartLocation() *CSSLocation {
 }
 
 // Ref increments the reference count on `section`.
-func (s *CSSSection) Ref() *CSSSection {
+func (s *CSSSection) ref() *CSSSection {
 	var _arg0 *C.GtkCssSection // out
 	var _cret *C.GtkCssSection // in
 
@@ -146,7 +146,7 @@ func (s *CSSSection) String() string {
 
 // Unref decrements the reference count on `section`, freeing the structure if
 // the reference count reaches 0.
-func (s *CSSSection) Unref() {
+func (s *CSSSection) unref() {
 	var _arg0 *C.GtkCssSection // out
 
 	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(s))

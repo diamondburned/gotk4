@@ -36,6 +36,15 @@ func init() {
 	})
 }
 
+// SocketListenerOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type SocketListenerOverrider interface {
+	Changed()
+	Event(event SocketListenerEvent, socket Socket)
+}
+
 // SocketListener is an object that keeps track of a set of server sockets and
 // helps you accept sockets from any of the socket, either sync or async.
 //

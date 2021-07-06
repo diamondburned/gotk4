@@ -35,23 +35,31 @@ type RecentManagerError int
 const (
 	// NotFound: the URI specified does not exists in the recently used
 	// resources list.
-	RecentManagerErrorNotFound RecentManagerError = iota
+	NotFound RecentManagerError = iota
 	// InvalidURI: the URI specified is not valid.
-	RecentManagerErrorInvalidURI
+	InvalidURI
 	// InvalidEncoding: the supplied string is not UTF-8 encoded.
-	RecentManagerErrorInvalidEncoding
+	InvalidEncoding
 	// NotRegistered: no application has registered the specified item.
-	RecentManagerErrorNotRegistered
-	// read: failure while reading the recently used resources file.
-	RecentManagerErrorRead
-	// write: failure while writing the recently used resources file.
-	RecentManagerErrorWrite
-	// unknown: unspecified error.
-	RecentManagerErrorUnknown
+	NotRegistered
+	// Read: failure while reading the recently used resources file.
+	Read
+	// Write: failure while writing the recently used resources file.
+	Write
+	// Unknown: unspecified error.
+	Unknown
 )
 
 func marshalRecentManagerError(p uintptr) (interface{}, error) {
 	return RecentManagerError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// RecentManagerOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type RecentManagerOverrider interface {
+	Changed()
 }
 
 // RecentManager provides a facility for adding, removing and looking up
@@ -735,7 +743,7 @@ func (i *RecentInfo) Match(infoB *RecentInfo) bool {
 }
 
 // Ref increases the reference count of @recent_info by one.
-func (i *RecentInfo) Ref() *RecentInfo {
+func (i *RecentInfo) ref() *RecentInfo {
 	var _arg0 *C.GtkRecentInfo // out
 	var _cret *C.GtkRecentInfo // in
 
@@ -756,7 +764,7 @@ func (i *RecentInfo) Ref() *RecentInfo {
 
 // Unref decreases the reference count of @info by one. If the reference count
 // reaches zero, @info is deallocated, and the memory freed.
-func (i *RecentInfo) Unref() {
+func (i *RecentInfo) unref() {
 	var _arg0 *C.GtkRecentInfo // out
 
 	_arg0 = (*C.GtkRecentInfo)(unsafe.Pointer(i))

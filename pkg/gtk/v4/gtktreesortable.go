@@ -62,6 +62,35 @@ func gotk4_TreeIterCompareFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 *
 	return cret
 }
 
+// TreeSortableOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type TreeSortableOverrider interface {
+	// SortColumnID fills in @sort_column_id and @order with the current sort
+	// column and the order. It returns true unless the @sort_column_id is
+	// GTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID or
+	// GTK_TREE_SORTABLE_UNSORTED_SORT_COLUMN_ID.
+	SortColumnID() (int, SortType, bool)
+	// HasDefaultSortFunc returns true if the model has a default sort function.
+	// This is used primarily by GtkTreeViewColumns in order to determine if a
+	// model can go back to the default state, or not.
+	HasDefaultSortFunc() bool
+	// SetSortColumnID sets the current sort column to be @sort_column_id. The
+	// @sortable will resort itself to reflect this change, after emitting a
+	// TreeSortable::sort-column-changed signal. @sort_column_id may either be a
+	// regular column id, or one of the following special values:
+	//
+	// - GTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID: the default sort function
+	// will be used, if it is set
+	//
+	// - GTK_TREE_SORTABLE_UNSORTED_SORT_COLUMN_ID: no sorting will occur
+	SetSortColumnID(sortColumnId int, order SortType)
+	// SortColumnChanged emits a TreeSortable::sort-column-changed signal on
+	// @sortable.
+	SortColumnChanged()
+}
+
 // TreeSortable: the interface for sortable models used by GtkTreeView
 //
 // TreeSortable is an interface to be implemented by tree models which support

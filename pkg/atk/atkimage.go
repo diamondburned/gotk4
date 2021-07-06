@@ -21,6 +21,32 @@ func init() {
 	})
 }
 
+// ImageOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type ImageOverrider interface {
+	// ImageDescription: get a textual description of this image.
+	ImageDescription() string
+	// ImageLocale retrieves the locale identifier associated to the Image.
+	ImageLocale() string
+	// ImagePosition gets the position of the image in the form of a point
+	// specifying the images top-left corner.
+	//
+	// If the position can not be obtained (e.g. missing support), x and y are
+	// set to -1.
+	ImagePosition(coordType CoordType) (x int, y int)
+	// ImageSize: get the width and height in pixels for the specified image.
+	// The values of @width and @height are returned as -1 if the values cannot
+	// be obtained (for instance, if the object is not onscreen).
+	//
+	// If the size can not be obtained (e.g. missing support), x and y are set
+	// to -1.
+	ImageSize() (width int, height int)
+	// SetImageDescription sets the textual description for this image.
+	SetImageDescription(description string) bool
+}
+
 // Image should be implemented by Object subtypes on behalf of components which
 // display image/pixmap information onscreen, and which provide information
 // (other than just widget borders, etc.) via that image content. For instance,

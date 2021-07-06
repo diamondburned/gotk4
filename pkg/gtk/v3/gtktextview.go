@@ -43,12 +43,12 @@ func init() {
 type TextExtendSelection int
 
 const (
-	// word selects the current word. It is triggered by a double-click for
+	// Word selects the current word. It is triggered by a double-click for
 	// example.
-	TextExtendSelectionWord TextExtendSelection = iota
-	// line selects the current line. It is triggered by a triple-click for
+	Word TextExtendSelection = iota
+	// Line selects the current line. It is triggered by a triple-click for
 	// example.
-	TextExtendSelectionLine
+	Line
 )
 
 func marshalTextExtendSelection(p uintptr) (interface{}, error) {
@@ -60,15 +60,15 @@ func marshalTextExtendSelection(p uintptr) (interface{}, error) {
 type TextViewLayer int
 
 const (
-	// below: old deprecated layer, use GTK_TEXT_VIEW_LAYER_BELOW_TEXT instead
-	TextViewLayerBelow TextViewLayer = iota
-	// above: old deprecated layer, use GTK_TEXT_VIEW_LAYER_ABOVE_TEXT instead
-	TextViewLayerAbove
+	// Below: old deprecated layer, use GTK_TEXT_VIEW_LAYER_BELOW_TEXT instead
+	Below TextViewLayer = iota
+	// Above: old deprecated layer, use GTK_TEXT_VIEW_LAYER_ABOVE_TEXT instead
+	Above
 	// BelowText: the layer rendered below the text (but above the background).
 	// Since: 3.20
-	TextViewLayerBelowText
+	BelowText
 	// AboveText: the layer rendered above the text. Since: 3.20
-	TextViewLayerAboveText
+	AboveText
 )
 
 func marshalTextViewLayer(p uintptr) (interface{}, error) {
@@ -79,24 +79,44 @@ func marshalTextViewLayer(p uintptr) (interface{}, error) {
 type TextWindowType int
 
 const (
-	// private: invalid value, used as a marker
-	TextWindowTypePrivate TextWindowType = iota
-	// widget: window that floats over scrolling areas.
-	TextWindowTypeWidget
-	// text: scrollable text window.
-	TextWindowTypeText
-	// left: left side border window.
-	TextWindowTypeLeft
-	// right: right side border window.
-	TextWindowTypeRight
-	// top: top border window.
-	TextWindowTypeTop
-	// bottom: bottom border window.
-	TextWindowTypeBottom
+	// Private: invalid value, used as a marker
+	Private TextWindowType = iota
+	// Widget: window that floats over scrolling areas.
+	Widget
+	// Text: scrollable text window.
+	Text
+	// Left: left side border window.
+	Left
+	// Right: right side border window.
+	Right
+	// Top: top border window.
+	Top
+	// Bottom: bottom border window.
+	Bottom
 )
 
 func marshalTextWindowType(p uintptr) (interface{}, error) {
 	return TextWindowType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// TextViewOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type TextViewOverrider interface {
+	Backspace()
+	CopyClipboard()
+	CutClipboard()
+	DeleteFromCursor(typ DeleteType, count int)
+	DrawLayer(layer TextViewLayer, cr *cairo.Context)
+	ExtendSelection(granularity TextExtendSelection, location *TextIter, start *TextIter, end *TextIter) bool
+	InsertAtCursor(str string)
+	InsertEmoji()
+	MoveCursor(step MovementStep, count int, extendSelection bool)
+	PasteClipboard()
+	PopulatePopup(popup Widget)
+	SetAnchor()
+	ToggleOverwrite()
 }
 
 // TextView: you may wish to begin by reading the [text widget conceptual

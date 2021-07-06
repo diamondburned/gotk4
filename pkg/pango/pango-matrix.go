@@ -82,8 +82,8 @@ func (m *Matrix) Copy() *Matrix {
 	return _ret
 }
 
-// Free a `PangoMatrix`.
-func (m *Matrix) Free() {
+// Free: free a `PangoMatrix`.
+func (m *Matrix) free() {
 	var _arg0 *C.PangoMatrix // out
 
 	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(m))

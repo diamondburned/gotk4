@@ -84,6 +84,15 @@ func gotk4_TreeModelFilterVisibleFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter,
 	return cret
 }
 
+// TreeModelFilterOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type TreeModelFilterOverrider interface {
+	Modify(childModel TreeModel, iter *TreeIter, value externglib.Value, column int)
+	Visible(childModel TreeModel, iter *TreeIter) bool
+}
+
 // TreeModelFilter is a tree model which wraps another tree model, and can do
 // the following things:
 //

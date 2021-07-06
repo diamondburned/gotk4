@@ -38,6 +38,89 @@ func init() {
 	})
 }
 
+// DTLSConnectionOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type DTLSConnectionOverrider interface {
+	AcceptCertificate(peerCert TLSCertificate, errors TLSCertificateFlags) bool
+	BindingData(typ TLSChannelBindingType, data []byte) error
+	// NegotiatedProtocol gets the name of the application-layer protocol
+	// negotiated during the handshake.
+	//
+	// If the peer did not use the ALPN extension, or did not advertise a
+	// protocol that matched one of @conn's protocols, or the TLS backend does
+	// not support ALPN, then this will be nil. See
+	// g_dtls_connection_set_advertised_protocols().
+	NegotiatedProtocol() string
+	// Handshake attempts a TLS handshake on @conn.
+	//
+	// On the client side, it is never necessary to call this method; although
+	// the connection needs to perform a handshake after connecting, Connection
+	// will handle this for you automatically when you try to send or receive
+	// data on the connection. You can call g_dtls_connection_handshake()
+	// manually if you want to know whether the initial handshake succeeded or
+	// failed (as opposed to just immediately trying to use @conn to read or
+	// write, in which case, if it fails, it may not be possible to tell if it
+	// failed before or after completing the handshake), but beware that servers
+	// may reject client authentication after the handshake has completed, so a
+	// successful handshake does not indicate the connection will be usable.
+	//
+	// Likewise, on the server side, although a handshake is necessary at the
+	// beginning of the communication, you do not need to call this function
+	// explicitly unless you want clearer error reporting.
+	//
+	// Previously, calling g_dtls_connection_handshake() after the initial
+	// handshake would trigger a rehandshake; however, this usage was deprecated
+	// in GLib 2.60 because rehandshaking was removed from the TLS protocol in
+	// TLS 1.3. Since GLib 2.64, calling this function after the initial
+	// handshake will no longer do anything.
+	//
+	// Connection::accept_certificate may be emitted during the handshake.
+	Handshake(cancellable Cancellable) error
+	// HandshakeAsync: asynchronously performs a TLS handshake on @conn. See
+	// g_dtls_connection_handshake() for more information.
+	HandshakeAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
+	// HandshakeFinish: finish an asynchronous TLS handshake operation. See
+	// g_dtls_connection_handshake() for more information.
+	HandshakeFinish(result AsyncResult) error
+	// SetAdvertisedProtocols sets the list of application-layer protocols to
+	// advertise that the caller is willing to speak on this connection. The
+	// Application-Layer Protocol Negotiation (ALPN) extension will be used to
+	// negotiate a compatible protocol with the peer; use
+	// g_dtls_connection_get_negotiated_protocol() to find the negotiated
+	// protocol after the handshake. Specifying nil for the the value of
+	// @protocols will disable ALPN negotiation.
+	//
+	// See IANA TLS ALPN Protocol IDs
+	// (https://www.iana.org/assignments/tls-extensiontype-values/tls-extensiontype-values.xhtml#alpn-protocol-ids)
+	// for a list of registered protocol IDs.
+	SetAdvertisedProtocols(protocols []string)
+	// Shutdown: shut down part or all of a DTLS connection.
+	//
+	// If @shutdown_read is true then the receiving side of the connection is
+	// shut down, and further reading is disallowed. Subsequent calls to
+	// g_datagram_based_receive_messages() will return G_IO_ERROR_CLOSED.
+	//
+	// If @shutdown_write is true then the sending side of the connection is
+	// shut down, and further writing is disallowed. Subsequent calls to
+	// g_datagram_based_send_messages() will return G_IO_ERROR_CLOSED.
+	//
+	// It is allowed for both @shutdown_read and @shutdown_write to be TRUE —
+	// this is equivalent to calling g_dtls_connection_close().
+	//
+	// If @cancellable is cancelled, the Connection may be left partially-closed
+	// and any pending untransmitted data may be lost. Call
+	// g_dtls_connection_shutdown() again to complete closing the Connection.
+	Shutdown(shutdownRead bool, shutdownWrite bool, cancellable Cancellable) error
+	// ShutdownAsync: asynchronously shut down part or all of the DTLS
+	// connection. See g_dtls_connection_shutdown() for more information.
+	ShutdownAsync(shutdownRead bool, shutdownWrite bool, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
+	// ShutdownFinish: finish an asynchronous TLS shutdown operation. See
+	// g_dtls_connection_shutdown() for more information.
+	ShutdownFinish(result AsyncResult) error
+}
+
 // DTLSConnection is the base DTLS connection class type, which wraps a Based
 // and provides DTLS encryption on top of it. Its subclasses, ClientConnection
 // and ServerConnection, implement client-side and server-side DTLS,

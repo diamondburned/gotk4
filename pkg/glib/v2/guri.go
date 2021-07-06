@@ -27,28 +27,28 @@ func init() {
 type URIError int
 
 const (
-	// failed: generic error if no more specific error is available. See the
+	// Failed: generic error if no more specific error is available. See the
 	// error message for details.
-	URIErrorFailed URIError = iota
+	Failed URIError = iota
 	// BadScheme: the scheme of a URI could not be parsed.
-	URIErrorBadScheme
+	BadScheme
 	// BadUser: the user/userinfo of a URI could not be parsed.
-	URIErrorBadUser
+	BadUser
 	// BadPassword: the password of a URI could not be parsed.
-	URIErrorBadPassword
+	BadPassword
 	// BadAuthParams: the authentication parameters of a URI could not be
 	// parsed.
-	URIErrorBadAuthParams
+	BadAuthParams
 	// BadHost: the host of a URI could not be parsed.
-	URIErrorBadHost
+	BadHost
 	// BadPort: the port of a URI could not be parsed.
-	URIErrorBadPort
+	BadPort
 	// BadPath: the path of a URI could not be parsed.
-	URIErrorBadPath
+	BadPath
 	// BadQuery: the query of a URI could not be parsed.
-	URIErrorBadQuery
+	BadQuery
 	// BadFragment: the fragment of a URI could not be parsed.
-	URIErrorBadFragment
+	BadFragment
 )
 
 // URIFlags flags that describe a URI.

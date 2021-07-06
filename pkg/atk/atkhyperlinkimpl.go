@@ -22,6 +22,15 @@ func init() {
 	})
 }
 
+// HyperlinkImplOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type HyperlinkImplOverrider interface {
+	// Hyperlink gets the hyperlink associated with this object.
+	Hyperlink() Hyperlink
+}
+
 // HyperlinkImpl allows AtkObjects to refer to their associated AtkHyperlink
 // instance, if one exists. AtkHyperlinkImpl differs from AtkHyperlink in that
 // AtkHyperlinkImpl is an interface, whereas AtkHyperlink is a object type. The

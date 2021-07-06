@@ -35,6 +35,14 @@ func init() {
 	})
 }
 
+// PopoverOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type PopoverOverrider interface {
+	Closed()
+}
+
 // Popover is a bubble-like context window, primarily meant to provide
 // context-dependent information or options. Popovers are attached to a widget,
 // passed at construction time on gtk_popover_new(), or updated afterwards

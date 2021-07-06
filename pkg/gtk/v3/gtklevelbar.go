@@ -33,6 +33,14 @@ func init() {
 	})
 }
 
+// LevelBarOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type LevelBarOverrider interface {
+	OffsetChanged(name string)
+}
+
 // LevelBar: the LevelBar is a bar widget that can be used as a level indicator.
 // Typical use cases are displaying the strength of a password, or showing the
 // charge level of a battery.

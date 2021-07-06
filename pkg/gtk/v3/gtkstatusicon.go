@@ -26,6 +26,20 @@ func init() {
 	})
 }
 
+// StatusIconOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type StatusIconOverrider interface {
+	Activate()
+	ButtonPressEvent(event *gdk.EventButton) bool
+	ButtonReleaseEvent(event *gdk.EventButton) bool
+	PopupMenu(button uint, activateTime uint32)
+	QueryTooltip(x int, y int, keyboardMode bool, tooltip Tooltip) bool
+	ScrollEvent(event *gdk.EventScroll) bool
+	SizeChanged(size int) bool
+}
+
 // StatusIcon: the “system tray” or notification area is normally used for
 // transient icons that indicate some special state. For example, a system tray
 // icon might appear to tell the user that they have new mail, or have an

@@ -605,7 +605,7 @@ func (m *UnixMountPoint) Copy() *UnixMountPoint {
 }
 
 // Free frees a unix mount point.
-func (m *UnixMountPoint) Free() {
+func (m *UnixMountPoint) free() {
 	var _arg0 *C.GUnixMountPoint // out
 
 	_arg0 = (*C.GUnixMountPoint)(unsafe.Pointer(m))

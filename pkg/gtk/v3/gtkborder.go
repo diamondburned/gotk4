@@ -82,7 +82,7 @@ func (b *Border) Copy() *Border {
 }
 
 // Free frees a Border-struct.
-func (b *Border) Free() {
+func (b *Border) free() {
 	var _arg0 *C.GtkBorder // out
 
 	_arg0 = (*C.GtkBorder)(unsafe.Pointer(b))

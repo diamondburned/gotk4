@@ -25,6 +25,15 @@ func init() {
 	})
 }
 
+// MediaFileOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type MediaFileOverrider interface {
+	Close()
+	Open()
+}
+
 // MediaFile: `GtkMediaFile` implements `GtkMediaStream` for files.
 //
 // This provides a simple way to play back video files with GTK.

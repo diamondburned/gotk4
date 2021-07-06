@@ -22,6 +22,55 @@ func init() {
 	})
 }
 
+// CellAreaContextOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type CellAreaContextOverrider interface {
+	// Allocate allocates a width and/or a height for all rows which are to be
+	// rendered with @context.
+	//
+	// Usually allocation is performed only horizontally or sometimes vertically
+	// since a group of rows are usually rendered side by side vertically or
+	// horizontally and share either the same width or the same height.
+	// Sometimes they are allocated in both horizontal and vertical orientations
+	// producing a homogeneous effect of the rows. This is generally the case
+	// for TreeView when TreeView:fixed-height-mode is enabled.
+	Allocate(width int, height int)
+	// PreferredHeightForWidth gets the accumulative preferred height for @width
+	// for all rows which have been requested for the same said @width with this
+	// context.
+	//
+	// After gtk_cell_area_context_reset() is called and/or before ever
+	// requesting the size of a CellArea, the returned values are -1.
+	PreferredHeightForWidth(width int) (minimumHeight int, naturalHeight int)
+	// PreferredWidthForHeight gets the accumulative preferred width for @height
+	// for all rows which have been requested for the same said @height with
+	// this context.
+	//
+	// After gtk_cell_area_context_reset() is called and/or before ever
+	// requesting the size of a CellArea, the returned values are -1.
+	PreferredWidthForHeight(height int) (minimumWidth int, naturalWidth int)
+	// Reset resets any previously cached request and allocation data.
+	//
+	// When underlying TreeModel data changes its important to reset the context
+	// if the content size is allowed to shrink. If the content size is only
+	// allowed to grow (this is usually an option for views rendering large data
+	// stores as a measure of optimization), then only the row that changed or
+	// was inserted needs to be (re)requested with
+	// gtk_cell_area_get_preferred_width().
+	//
+	// When the new overall size of the context requires that the allocated size
+	// changes (or whenever this allocation changes at all), the variable row
+	// sizes need to be re-requested for every row.
+	//
+	// For instance, if the rows are displayed all with the same width from top
+	// to bottom then a change in the allocated width necessitates a
+	// recalculation of all the displayed row heights using
+	// gtk_cell_area_get_preferred_height_for_width().
+	Reset()
+}
+
 // CellAreaContext stores geometrical information for a series of rows in a
 // GtkCellArea
 //

@@ -24,6 +24,37 @@ func init() {
 	})
 }
 
+// EntryBufferOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type EntryBufferOverrider interface {
+	// DeleteText deletes a sequence of characters from the buffer. @n_chars
+	// characters are deleted starting at @position. If @n_chars is negative,
+	// then all characters until the end of the text are deleted.
+	//
+	// If @position or @n_chars are out of bounds, then they are coerced to sane
+	// values.
+	//
+	// Note that the positions are specified in characters, not bytes.
+	DeleteText(position uint, nChars uint) uint
+	DeletedText(position uint, nChars uint)
+	// Length retrieves the length in characters of the buffer.
+	Length() uint
+	Text(nBytes *uint) string
+	// InsertText inserts @n_chars characters of @chars into the contents of the
+	// buffer, at position @position.
+	//
+	// If @n_chars is negative, then characters from chars will be inserted
+	// until a null-terminator is found. If @position or @n_chars are out of
+	// bounds, or the maximum buffer text length is exceeded, then they are
+	// coerced to sane values.
+	//
+	// Note that the position and length are in characters, not in bytes.
+	InsertText(position uint, chars string, nChars uint) uint
+	InsertedText(position uint, chars string, nChars uint)
+}
+
 // EntryBuffer: the EntryBuffer class contains the actual text displayed in a
 // Entry widget.
 //

@@ -23,6 +23,29 @@ func init() {
 	})
 }
 
+// StreamableContentOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type StreamableContentOverrider interface {
+	// MIMEType gets the character string of the specified mime type. The first
+	// mime type is at position 0, the second at position 1, and so on.
+	MIMEType(i int) string
+	// NMIMETypes gets the number of mime types supported by this object.
+	NMIMETypes() int
+	// Stream gets the content in the specified mime type.
+	Stream(mimeType string) *glib.IOChannel
+	// URI: get a string representing a URI in IETF standard format (see
+	// http://www.ietf.org/rfc/rfc2396.txt) from which the object's content may
+	// be streamed in the specified mime-type, if one is available. If mime_type
+	// is NULL, the URI for the default (and possibly only) mime-type is
+	// returned.
+	//
+	// Note that it is possible for get_uri to return NULL but for get_stream to
+	// work nonetheless, since not all GIOChannels connect to URIs.
+	URI(mimeType string) string
+}
+
 // StreamableContent: interface whereby an object allows its backing content to
 // be streamed to clients. Typical implementors would be images or icons, HTML
 // content, or multimedia display/rendering widgets.

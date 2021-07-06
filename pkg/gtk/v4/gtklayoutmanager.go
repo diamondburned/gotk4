@@ -22,6 +22,29 @@ func init() {
 	})
 }
 
+// LayoutManagerOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type LayoutManagerOverrider interface {
+	// Allocate assigns the given @width, @height, and @baseline to a @widget,
+	// and computes the position and sizes of the children of the @widget using
+	// the layout management policy of @manager.
+	Allocate(widget Widget, width int, height int, baseline int)
+	// CreateLayoutChild: create a LayoutChild instance for the given @for_child
+	// widget.
+	CreateLayoutChild(widget Widget, forChild Widget) LayoutChild
+	RequestMode(widget Widget) SizeRequestMode
+	// Measure measures the size of the @widget using @manager, for the given
+	// @orientation and size.
+	//
+	// See the [class@Gtk.Widget] documentation on layout management for more
+	// details.
+	Measure(widget Widget, orientation Orientation, forSize int) (minimum int, natural int, minimumBaseline int, naturalBaseline int)
+	Root()
+	Unroot()
+}
+
 // LayoutManager: layout managers are delegate classes that handle the preferred
 // size and the allocation of a widget.
 //

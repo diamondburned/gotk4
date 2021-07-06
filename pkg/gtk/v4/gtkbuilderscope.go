@@ -43,6 +43,15 @@ func marshalBuilderClosureFlags(p uintptr) (interface{}, error) {
 	return BuilderClosureFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// BuilderScopeOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type BuilderScopeOverrider interface {
+	TypeFromFunction(builder Builder, functionName string) externglib.Type
+	TypeFromName(builder Builder, typeName string) externglib.Type
+}
+
 // BuilderScope: `GtkBuilderScope` is an interface to provide language binding
 // support to `GtkBuilder`.
 //

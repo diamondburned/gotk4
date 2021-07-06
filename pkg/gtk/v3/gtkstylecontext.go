@@ -97,6 +97,14 @@ func RenderInsertionCursor(context StyleContext, cr *cairo.Context, x float64, y
 	C.gtk_render_insertion_cursor(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
 }
 
+// StyleContextOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type StyleContextOverrider interface {
+	Changed()
+}
+
 // StyleContext is an object that stores styling information affecting a widget
 // defined by WidgetPath.
 //

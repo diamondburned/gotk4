@@ -81,12 +81,12 @@ type RenderNode interface {
 	// NodeType returns the type of the @node.
 	NodeType() RenderNodeType
 	// Ref acquires a reference on the given `GskRenderNode`.
-	Ref() RenderNode
+	ref() RenderNode
 	// Unref releases a reference on the given `GskRenderNode`.
 	//
 	// If the reference was the last, the resources associated to the @node are
 	// freed.
-	Unref()
+	unref()
 	// WriteToFile: this function is equivalent to calling
 	// gsk_render_node_serialize() followed by g_file_set_contents().
 	//
@@ -166,7 +166,7 @@ func (n renderNode) NodeType() RenderNodeType {
 	return _renderNodeType
 }
 
-func (n renderNode) Ref() RenderNode {
+func (n renderNode) ref() RenderNode {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GskRenderNode // in
 
@@ -181,7 +181,7 @@ func (n renderNode) Ref() RenderNode {
 	return _renderNode
 }
 
-func (n renderNode) Unref() {
+func (n renderNode) unref() {
 	var _arg0 *C.GskRenderNode // out
 
 	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(n.Native()))

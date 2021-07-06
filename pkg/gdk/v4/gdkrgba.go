@@ -92,7 +92,7 @@ func (p *RGBA) Equal(p2 RGBA) bool {
 }
 
 // Free frees a `GdkRGBA`.
-func (r *RGBA) Free() {
+func (r *RGBA) free() {
 	var _arg0 *C.GdkRGBA // out
 
 	_arg0 = (*C.GdkRGBA)(unsafe.Pointer(r))

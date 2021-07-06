@@ -28,6 +28,30 @@ func init() {
 	})
 }
 
+// CellEditableOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type CellEditableOverrider interface {
+	// EditingDone emits the CellEditable::editing-done signal.
+	EditingDone()
+	// RemoveWidget emits the CellEditable::remove-widget signal.
+	RemoveWidget()
+	// StartEditing begins editing on a @cell_editable.
+	//
+	// The CellRenderer for the cell creates and returns a CellEditable from
+	// gtk_cell_renderer_start_editing(), configured for the CellRenderer type.
+	//
+	// gtk_cell_editable_start_editing() can then set up @cell_editable suitably
+	// for editing a cell, e.g. making the Esc key emit
+	// CellEditable::editing-done.
+	//
+	// Note that the @cell_editable is created on-demand for the current edit;
+	// its lifetime is temporary and does not persist across other edits and/or
+	// cells.
+	StartEditing(event gdk.Event)
+}
+
 // CellEditable: interface for widgets that can be used for editing cells
 //
 // The CellEditable interface must be implemented for widgets to be usable to

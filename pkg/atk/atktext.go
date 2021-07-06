@@ -31,88 +31,88 @@ func init() {
 type TextAttribute int
 
 const (
-	// invalid: invalid attribute, like bad spelling or grammar.
-	TextAttributeInvalid TextAttribute = iota
+	// Invalid: invalid attribute, like bad spelling or grammar.
+	Invalid TextAttribute = iota
 	// LeftMargin: the pixel width of the left margin
-	TextAttributeLeftMargin
+	LeftMargin
 	// RightMargin: the pixel width of the right margin
-	TextAttributeRightMargin
-	// indent: the number of pixels that the text is indented
-	TextAttributeIndent
-	// invisible: either "true" or "false" indicating whether text is visible or
+	RightMargin
+	// Indent: the number of pixels that the text is indented
+	Indent
+	// Invisible: either "true" or "false" indicating whether text is visible or
 	// not
-	TextAttributeInvisible
-	// editable: either "true" or "false" indicating whether text is editable or
+	Invisible
+	// Editable: either "true" or "false" indicating whether text is editable or
 	// not
-	TextAttributeEditable
+	Editable
 	// PixelsAboveLines pixels of blank space to leave above each
 	// newline-terminated line.
-	TextAttributePixelsAboveLines
+	PixelsAboveLines
 	// PixelsBelowLines pixels of blank space to leave below each
 	// newline-terminated line.
-	TextAttributePixelsBelowLines
+	PixelsBelowLines
 	// PixelsInsideWrap pixels of blank space to leave between wrapped lines
 	// inside the same newline-terminated line (paragraph).
-	TextAttributePixelsInsideWrap
+	PixelsInsideWrap
 	// BgFullHeight: "true" or "false" whether to make the background color for
 	// each character the height of the highest font used on the current line,
 	// or the height of the font used for the current character.
-	TextAttributeBgFullHeight
-	// rise: number of pixels that the characters are risen above the baseline.
+	BgFullHeight
+	// Rise: number of pixels that the characters are risen above the baseline.
 	// See also ATK_TEXT_ATTR_TEXT_POSITION.
-	TextAttributeRise
-	// underline: "none", "single", "double", "low", or "error"
-	TextAttributeUnderline
-	// strikethrough: "true" or "false" whether the text is strikethrough
-	TextAttributeStrikethrough
-	// size: the size of the characters in points. eg: 10
-	TextAttributeSize
-	// scale: the scale of the characters. The value is a string representation
+	Rise
+	// Underline: "none", "single", "double", "low", or "error"
+	Underline
+	// Strikethrough: "true" or "false" whether the text is strikethrough
+	Strikethrough
+	// Size: the size of the characters in points. eg: 10
+	Size
+	// Scale: the scale of the characters. The value is a string representation
 	// of a double
-	TextAttributeScale
-	// weight: the weight of the characters.
-	TextAttributeWeight
-	// language: the language used
-	TextAttributeLanguage
+	Scale
+	// Weight: the weight of the characters.
+	Weight
+	// Language: the language used
+	Language
 	// FamilyName: the font family name
-	TextAttributeFamilyName
+	FamilyName
 	// BgColor: the background color. The value is an RGB value of the format
 	// "u,u,u"
-	TextAttributeBgColor
+	BgColor
 	// FgColor: the foreground color. The value is an RGB value of the format
 	// "u,u,u"
-	TextAttributeFgColor
+	FgColor
 	// BgStipple: "true" if a Bitmap is set for stippling the background color.
-	TextAttributeBgStipple
+	BgStipple
 	// FgStipple: "true" if a Bitmap is set for stippling the foreground color.
-	TextAttributeFgStipple
+	FgStipple
 	// WrapMode: the wrap mode of the text, if any. Values are "none", "char",
 	// "word", or "word_char".
-	TextAttributeWrapMode
-	// direction: the direction of the text, if set. Values are "none", "ltr" or
+	WrapMode
+	// Direction: the direction of the text, if set. Values are "none", "ltr" or
 	// "rtl"
-	TextAttributeDirection
-	// justification: the justification of the text, if set. Values are "left",
+	Direction
+	// Justification: the justification of the text, if set. Values are "left",
 	// "right", "center" or "fill"
-	TextAttributeJustification
-	// stretch: the stretch of the text, if set. Values are "ultra_condensed",
+	Justification
+	// Stretch: the stretch of the text, if set. Values are "ultra_condensed",
 	// "extra_condensed", "condensed", "semi_condensed", "normal",
 	// "semi_expanded", "expanded", "extra_expanded" or "ultra_expanded"
-	TextAttributeStretch
-	// variant: the capitalization variant of the text, if set. Values are
+	Stretch
+	// Variant: the capitalization variant of the text, if set. Values are
 	// "normal" or "small_caps"
-	TextAttributeVariant
-	// style: the slant style of the text, if set. Values are "normal",
+	Variant
+	// Style: the slant style of the text, if set. Values are "normal",
 	// "oblique" or "italic"
-	TextAttributeStyle
+	Style
 	// TextPosition: the vertical position with respect to the baseline. Values
 	// are "baseline", "super", or "sub". Note that a super or sub text
 	// attribute refers to position with respect to the baseline of the prior
 	// character.
-	TextAttributeTextPosition
+	TextPosition
 	// LastDefined: not a valid text attribute, used for finding end of
 	// enumeration
-	TextAttributeLastDefined
+	LastDefined
 )
 
 func marshalTextAttribute(p uintptr) (interface{}, error) {
@@ -125,24 +125,24 @@ func marshalTextAttribute(p uintptr) (interface{}, error) {
 type TextBoundary int
 
 const (
-	// char: boundary is the boundary between characters (including non-printing
+	// Char: boundary is the boundary between characters (including non-printing
 	// characters)
-	TextBoundaryChar TextBoundary = iota
+	Char TextBoundary = iota
 	// WordStart: boundary is the start (i.e. first character) of a word.
-	TextBoundaryWordStart
+	WordStart
 	// WordEnd: boundary is the end (i.e. last character) of a word.
-	TextBoundaryWordEnd
+	WordEnd
 	// SentenceStart: boundary is the first character in a sentence.
-	TextBoundarySentenceStart
+	SentenceStart
 	// SentenceEnd: boundary is the last (terminal) character in a sentence; in
 	// languages which use "sentence stop" punctuation such as English, the
 	// boundary is thus the '.', '?', or similar terminal punctuation character.
-	TextBoundarySentenceEnd
+	SentenceEnd
 	// LineStart: boundary is the initial character of the content or a
 	// character immediately following a newline, linefeed, or return character.
-	TextBoundaryLineStart
+	LineStart
 	// LineEnd: boundary is the linefeed, or return character.
-	TextBoundaryLineEnd
+	LineEnd
 )
 
 func marshalTextBoundary(p uintptr) (interface{}, error) {
@@ -153,14 +153,14 @@ func marshalTextBoundary(p uintptr) (interface{}, error) {
 type TextClipType int
 
 const (
-	// none: no clipping to be done
-	TextClipTypeNone TextClipType = iota
-	// min: text clipped by min coordinate is omitted
-	TextClipTypeMin
-	// max: text clipped by max coordinate is omitted
-	TextClipTypeMax
-	// both: only text fully within mix/max bound is retained
-	TextClipTypeBoth
+	// None: no clipping to be done
+	None TextClipType = iota
+	// Min: text clipped by min coordinate is omitted
+	Min
+	// Max: text clipped by max coordinate is omitted
+	Max
+	// Both: only text fully within mix/max bound is retained
+	Both
 )
 
 func marshalTextClipType(p uintptr) (interface{}, error) {
@@ -172,29 +172,166 @@ func marshalTextClipType(p uintptr) (interface{}, error) {
 type TextGranularity int
 
 const (
-	// char: granularity is defined by the boundaries between characters
+	// Char: granularity is defined by the boundaries between characters
 	// (including non-printing characters)
-	TextGranularityChar TextGranularity = iota
-	// word: granularity is defined by the boundaries of a word, starting at the
+	Char TextGranularity = iota
+	// Word: granularity is defined by the boundaries of a word, starting at the
 	// beginning of the current word and finishing at the beginning of the
 	// following one, if present.
-	TextGranularityWord
-	// sentence: granularity is defined by the boundaries of a sentence,
+	Word
+	// Sentence: granularity is defined by the boundaries of a sentence,
 	// starting at the beginning of the current sentence and finishing at the
 	// beginning of the following one, if present.
-	TextGranularitySentence
-	// line: granularity is defined by the boundaries of a line, starting at the
+	Sentence
+	// Line: granularity is defined by the boundaries of a line, starting at the
 	// beginning of the current line and finishing at the beginning of the
 	// following one, if present.
-	TextGranularityLine
-	// paragraph: granularity is defined by the boundaries of a paragraph,
+	Line
+	// Paragraph: granularity is defined by the boundaries of a paragraph,
 	// starting at the beginning of the current paragraph and finishing at the
 	// beginning of the following one, if present.
-	TextGranularityParagraph
+	Paragraph
 )
 
 func marshalTextGranularity(p uintptr) (interface{}, error) {
 	return TextGranularity(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// TextOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type TextOverrider interface {
+	// AddSelection adds a selection bounded by the specified offsets.
+	AddSelection(startOffset int, endOffset int) bool
+	// BoundedRanges: get the ranges of text in the specified bounding box.
+	BoundedRanges(rect *TextRectangle, coordType CoordType, xClipType TextClipType, yClipType TextClipType) []*TextRange
+	// CaretOffset gets the offset of the position of the caret (cursor).
+	CaretOffset() int
+	// CharacterAtOffset gets the specified text.
+	CharacterAtOffset(offset int) uint32
+	// CharacterCount gets the character count.
+	CharacterCount() int
+	// CharacterExtents: if the extent can not be obtained (e.g. missing
+	// support), all of x, y, width, height are set to -1.
+	//
+	// Get the bounding box containing the glyph representing the character at a
+	// particular text offset.
+	CharacterExtents(offset int, coords CoordType) (x int, y int, width int, height int)
+	// NSelections gets the number of selected regions.
+	NSelections() int
+	// OffsetAtPoint gets the offset of the character located at coordinates @x
+	// and @y. @x and @y are interpreted as being relative to the screen or this
+	// widget's window depending on @coords.
+	OffsetAtPoint(x int, y int, coords CoordType) int
+	// RangeExtents: get the bounding box for text within the specified range.
+	//
+	// If the extents can not be obtained (e.g. or missing support), the
+	// rectangle fields are set to -1.
+	RangeExtents(startOffset int, endOffset int, coordType CoordType) TextRectangle
+	// Selection gets the text from the specified selection.
+	Selection(selectionNum int) (startOffset int, endOffset int, utf8 string)
+	// StringAtOffset gets a portion of the text exposed through an Text
+	// according to a given @offset and a specific @granularity, along with the
+	// start and end offsets defining the boundaries of such a portion of text.
+	//
+	// If @granularity is ATK_TEXT_GRANULARITY_CHAR the character at the offset
+	// is returned.
+	//
+	// If @granularity is ATK_TEXT_GRANULARITY_WORD the returned string is from
+	// the word start at or before the offset to the word start after the
+	// offset.
+	//
+	// The returned string will contain the word at the offset if the offset is
+	// inside a word and will contain the word before the offset if the offset
+	// is not inside a word.
+	//
+	// If @granularity is ATK_TEXT_GRANULARITY_SENTENCE the returned string is
+	// from the sentence start at or before the offset to the sentence start
+	// after the offset.
+	//
+	// The returned string will contain the sentence at the offset if the offset
+	// is inside a sentence and will contain the sentence before the offset if
+	// the offset is not inside a sentence.
+	//
+	// If @granularity is ATK_TEXT_GRANULARITY_LINE the returned string is from
+	// the line start at or before the offset to the line start after the
+	// offset.
+	//
+	// If @granularity is ATK_TEXT_GRANULARITY_PARAGRAPH the returned string is
+	// from the start of the paragraph at or before the offset to the start of
+	// the following paragraph after the offset.
+	StringAtOffset(offset int, granularity TextGranularity) (startOffset int, endOffset int, utf8 string)
+	// Text gets the specified text.
+	Text(startOffset int, endOffset int) string
+	// TextAfterOffset gets the specified text.
+	//
+	// Deprecated: since version 2.9.3.
+	TextAfterOffset(offset int, boundaryType TextBoundary) (startOffset int, endOffset int, utf8 string)
+	// TextAtOffset gets the specified text.
+	//
+	// If the boundary_type if ATK_TEXT_BOUNDARY_CHAR the character at the
+	// offset is returned.
+	//
+	// If the boundary_type is ATK_TEXT_BOUNDARY_WORD_START the returned string
+	// is from the word start at or before the offset to the word start after
+	// the offset.
+	//
+	// The returned string will contain the word at the offset if the offset is
+	// inside a word and will contain the word before the offset if the offset
+	// is not inside a word.
+	//
+	// If the boundary type is ATK_TEXT_BOUNDARY_SENTENCE_START the returned
+	// string is from the sentence start at or before the offset to the sentence
+	// start after the offset.
+	//
+	// The returned string will contain the sentence at the offset if the offset
+	// is inside a sentence and will contain the sentence before the offset if
+	// the offset is not inside a sentence.
+	//
+	// If the boundary type is ATK_TEXT_BOUNDARY_LINE_START the returned string
+	// is from the line start at or before the offset to the line start after
+	// the offset.
+	//
+	// Deprecated.
+	TextAtOffset(offset int, boundaryType TextBoundary) (startOffset int, endOffset int, utf8 string)
+	// TextBeforeOffset gets the specified text.
+	//
+	// Deprecated: since version 2.9.3.
+	TextBeforeOffset(offset int, boundaryType TextBoundary) (startOffset int, endOffset int, utf8 string)
+	// RemoveSelection removes the specified selection.
+	RemoveSelection(selectionNum int) bool
+	// ScrollSubstringTo makes a substring of @text visible on the screen by
+	// scrolling all necessary parents.
+	ScrollSubstringTo(startOffset int, endOffset int, typ ScrollType) bool
+	// ScrollSubstringToPoint: move the top-left of a substring of @text to a
+	// given position of the screen by scrolling all necessary parents.
+	ScrollSubstringToPoint(startOffset int, endOffset int, coords CoordType, x int, y int) bool
+	// SetCaretOffset sets the caret (cursor) position to the specified @offset.
+	//
+	// In the case of rich-text content, this method should either grab focus or
+	// move the sequential focus navigation starting point (if the application
+	// supports this concept) as if the user had clicked on the new caret
+	// position. Typically, this means that the target of this operation is the
+	// node containing the new caret position or one of its ancestors. In other
+	// words, after this method is called, if the user advances focus, it should
+	// move to the first focusable node following the new caret position.
+	//
+	// Calling this method should also scroll the application viewport in a way
+	// that matches the behavior of the application's typical caret motion or
+	// tab navigation as closely as possible. This also means that if the
+	// application's caret motion or focus navigation does not trigger a scroll
+	// operation, this method should not trigger one either. If the application
+	// does not have a caret motion or focus navigation operation, this method
+	// should try to scroll the new caret position into view while minimizing
+	// unnecessary scroll motion.
+	SetCaretOffset(offset int) bool
+	// SetSelection changes the start and end offset of the specified selection.
+	SetSelection(selectionNum int, startOffset int, endOffset int) bool
+	TextAttributesChanged()
+	TextCaretMoved(location int)
+	TextChanged(position int, length int)
+	TextSelectionChanged()
 }
 
 // Text should be implemented by Objects on behalf of widgets that have text

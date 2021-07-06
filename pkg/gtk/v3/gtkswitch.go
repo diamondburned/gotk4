@@ -33,6 +33,15 @@ func init() {
 	})
 }
 
+// SwitchOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type SwitchOverrider interface {
+	Activate()
+	StateSet(state bool) bool
+}
+
 // Switch is a widget that has two states: on or off. The user can control which
 // state should be active by clicking the empty area, or by dragging the handle.
 //

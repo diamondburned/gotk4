@@ -35,6 +35,14 @@ func init() {
 	})
 }
 
+// FontButtonOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type FontButtonOverrider interface {
+	FontSet()
+}
+
 // FontButton: the FontButton is a button which displays the currently selected
 // font an allows to open a font chooser dialog to change the font. It is
 // suitable widget for selecting a font in a preference dialog.

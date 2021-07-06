@@ -22,6 +22,43 @@ func init() {
 	})
 }
 
+// FontMapOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type FontMapOverrider interface {
+	// Changed forces a change in the context, which will cause any
+	// `PangoContext` using this fontmap to change.
+	//
+	// This function is only useful when implementing a new backend for Pango,
+	// something applications won't do. Backends should call this function if
+	// they have attached extra data to the context and such data is changed.
+	Changed()
+	// Family gets a font family by name.
+	Family(name string) FontFamily
+	// Serial returns the current serial number of @fontmap.
+	//
+	// The serial number is initialized to an small number larger than zero when
+	// a new fontmap is created and is increased whenever the fontmap is
+	// changed. It may wrap, but will never have the value 0. Since it can wrap,
+	// never compare it with "less than", always use "not equals".
+	//
+	// The fontmap can only be changed using backend-specific API, like changing
+	// fontmap resolution.
+	//
+	// This can be used to automatically detect changes to a `PangoFontMap`,
+	// like in `PangoContext`.
+	Serial() uint
+	// ListFamilies: list all families for a fontmap.
+	ListFamilies() []FontFamily
+	// LoadFont: load the font in the fontmap that is the closest match for
+	// @desc.
+	LoadFont(context Context, desc *FontDescription) Font
+	// LoadFontset: load a set of fonts in the fontmap that can be used to
+	// render a font matching @desc.
+	LoadFontset(context Context, desc *FontDescription, language *Language) Fontset
+}
+
 // FontMap: `PangoFontMap` represents the set of fonts available for a
 // particular rendering system.
 //

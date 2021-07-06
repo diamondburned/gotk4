@@ -35,6 +35,14 @@ func init() {
 	})
 }
 
+// ColorButtonOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type ColorButtonOverrider interface {
+	ColorSet()
+}
+
 // ColorButton: the ColorButton is a button which displays the currently
 // selected color and allows to open a color selection dialog to change the
 // color. It is suitable widget for selecting a color in a preference dialog.

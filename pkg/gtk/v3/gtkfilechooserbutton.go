@@ -36,6 +36,14 @@ func init() {
 	})
 }
 
+// FileChooserButtonOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type FileChooserButtonOverrider interface {
+	FileSet()
+}
+
 // FileChooserButton: the FileChooserButton is a widget that lets the user
 // select a file. It implements the FileChooser interface. Visually, it is a
 // file name with a button to bring up a FileChooserDialog. The user can then

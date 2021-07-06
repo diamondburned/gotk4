@@ -34,6 +34,25 @@ func init() {
 	})
 }
 
+// SocketAddressOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type SocketAddressOverrider interface {
+	// Family gets the socket family type of @address.
+	Family() SocketFamily
+	// NativeSize gets the size of @address's native struct sockaddr. You can
+	// use this to allocate memory to pass to g_socket_address_to_native().
+	NativeSize() int
+	// ToNative converts a Address to a native struct sockaddr, which can be
+	// passed to low-level functions like connect() or bind().
+	//
+	// If not enough space is available, a G_IO_ERROR_NO_SPACE error is
+	// returned. If the address type is not known on the system then a
+	// G_IO_ERROR_NOT_SUPPORTED error is returned.
+	ToNative(dest interface{}, destlen uint) error
+}
+
 // SocketAddress is the equivalent of struct sockaddr in the BSD sockets API.
 // This is an abstract class; use SocketAddress for internet sockets, or
 // SocketAddress for UNIX domain sockets.

@@ -62,6 +62,137 @@ func gotk4_TickCallback(arg0 *C.GtkWidget, arg1 *C.GdkFrameClock, arg2 C.gpointe
 	return cret
 }
 
+// WidgetOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type WidgetOverrider interface {
+	ComputeExpand(hexpandP *bool, vexpandP *bool)
+	// Contains tests if the point at (@x, @y) is contained in @widget.
+	//
+	// The coordinates for (@x, @y) must be in widget coordinates, so (0, 0) is
+	// assumed to be the top left of @widget's content area.
+	Contains(x float64, y float64) bool
+	DirectionChanged(previousDirection TextDirection)
+	Focus(direction DirectionType) bool
+	// RequestMode gets whether the widget prefers a height-for-width layout or
+	// a width-for-height layout.
+	//
+	// Single-child widgets generally propagate the preference of their child,
+	// more complex widgets need to request something either in context of their
+	// children or in context of their allocation capabilities.
+	RequestMode() SizeRequestMode
+	// GrabFocus causes @widget to have the keyboard focus for the `GtkWindow`
+	// it's inside.
+	//
+	// If @widget is not focusable, or its ::grab_focus implementation cannot
+	// transfer the focus to a descendant of @widget that is focusable, it will
+	// not take focus and false will be returned.
+	//
+	// Calling [method@Gtk.Widget.grab_focus] on an already focused widget is
+	// allowed, should not have an effect, and return true.
+	GrabFocus() bool
+	// Hide reverses the effects of gtk_widget_show().
+	//
+	// This is causing the widget to be hidden (invisible to the user).
+	Hide()
+	// KeynavFailed emits the `::keynav-failed` signal on the widget.
+	//
+	// This function should be called whenever keyboard navigation within a
+	// single widget hits a boundary.
+	//
+	// The return value of this function should be interpreted in a way similar
+	// to the return value of [method@Gtk.Widget.child_focus]. When true is
+	// returned, stay in the widget, the failed keyboard navigation is OK and/or
+	// there is nowhere we can/should move the focus to. When false is returned,
+	// the caller should continue with keyboard navigation outside the widget,
+	// e.g. by calling [method@Gtk.Widget.child_focus] on the widget’s toplevel.
+	//
+	// The default [signal@Gtk.Widget::keynav-failed] handler returns false for
+	// GTK_DIR_TAB_FORWARD and GTK_DIR_TAB_BACKWARD. For the other values of
+	// DirectionType it returns true.
+	//
+	// Whenever the default handler returns true, it also calls
+	// [method@Gtk.Widget.error_bell] to notify the user of the failed keyboard
+	// navigation.
+	//
+	// A use case for providing an own implementation of ::keynav-failed (either
+	// by connecting to it or by overriding it) would be a row of
+	// [class@Gtk.Entry] widgets where the user should be able to navigate the
+	// entire row with the cursor keys, as e.g. known from user interfaces that
+	// require entering license keys.
+	KeynavFailed(direction DirectionType) bool
+	// Map causes a widget to be mapped if it isn’t already.
+	//
+	// This function is only for use in widget implementations.
+	Map()
+	// Measure measures @widget in the orientation @orientation and for the
+	// given @for_size.
+	//
+	// As an example, if @orientation is GTK_ORIENTATION_HORIZONTAL and
+	// @for_size is 300, this functions will compute the minimum and natural
+	// width of @widget if it is allocated at a height of 300 pixels.
+	//
+	// See GtkWidget’s geometry management section
+	// (class.Widget.html#height-for-width-geometry-management) for a more
+	// details on implementing WidgetClass.measure().
+	Measure(orientation Orientation, forSize int) (minimum int, natural int, minimumBaseline int, naturalBaseline int)
+	// MnemonicActivate emits the `GtkWidget`::mnemonic-activate signal.
+	MnemonicActivate(groupCycling bool) bool
+	MoveFocus(direction DirectionType)
+	QueryTooltip(x int, y int, keyboardTooltip bool, tooltip Tooltip) bool
+	// Realize creates the GDK resources associated with a widget.
+	//
+	// Normally realization happens implicitly; if you show a widget and all its
+	// parent containers, then the widget will be realized and mapped
+	// automatically.
+	//
+	// Realizing a widget requires all the widget’s parent widgets to be
+	// realized; calling this function realizes the widget’s parents in addition
+	// to @widget itself. If a widget is not yet inside a toplevel window when
+	// you realize it, bad things will happen.
+	//
+	// This function is primarily used in widget implementations, and isn’t very
+	// useful otherwise. Many times when you think you might need it, a better
+	// approach is to connect to a signal that will be called after the widget
+	// is realized automatically, such as [signal@Gtk.Widget::realize].
+	Realize()
+	Root()
+	// SetFocusChild: set @child as the current focus child of @widget.
+	//
+	// The previous focus child will be unset.
+	//
+	// This function is only suitable for widget implementations. If you want a
+	// certain widget to get the input focus, call
+	// [method@Gtk.Widget.grab_focus] on it.
+	SetFocusChild(child Widget)
+	// Show flags a widget to be displayed.
+	//
+	// Any widget that isn’t shown will not appear on the screen.
+	//
+	// Remember that you have to show the containers containing a widget, in
+	// addition to the widget itself, before it will appear onscreen.
+	//
+	// When a toplevel container is shown, it is immediately realized and
+	// mapped; other shown widgets are realized and mapped when their toplevel
+	// container is realized and mapped.
+	Show()
+	SizeAllocate(width int, height int, baseline int)
+	Snapshot(snapshot Snapshot)
+	StateFlagsChanged(previousStateFlags StateFlags)
+	SystemSettingChanged(settings SystemSetting)
+	// Unmap causes a widget to be unmapped if it’s currently mapped.
+	//
+	// This function is only for use in widget implementations.
+	Unmap()
+	// Unrealize causes a widget to be unrealized (frees all GDK resources
+	// associated with the widget).
+	//
+	// This function is only useful in widget implementations.
+	Unrealize()
+	Unroot()
+}
+
 // Widget: the base class for all widgets.
 //
 // `GtkWidget` is the base class all widgets in GTK derive from. It manages the
@@ -3871,7 +4002,7 @@ func (r *Requisition) Copy() *Requisition {
 }
 
 // Free frees a `GtkRequisition`.
-func (r *Requisition) Free() {
+func (r *Requisition) free() {
 	var _arg0 *C.GtkRequisition // out
 
 	_arg0 = (*C.GtkRequisition)(unsafe.Pointer(r))

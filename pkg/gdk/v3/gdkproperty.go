@@ -26,12 +26,12 @@ func init() {
 type PropMode int
 
 const (
-	// replace: the new data replaces the existing data.
-	PropModeReplace PropMode = iota
-	// prepend: the new data is prepended to the existing data.
-	PropModePrepend
-	// append: the new data is appended to the existing data.
-	PropModeAppend
+	// Replace: the new data replaces the existing data.
+	Replace PropMode = iota
+	// Prepend: the new data is prepended to the existing data.
+	Prepend
+	// Append: the new data is appended to the existing data.
+	Append
 )
 
 func marshalPropMode(p uintptr) (interface{}, error) {

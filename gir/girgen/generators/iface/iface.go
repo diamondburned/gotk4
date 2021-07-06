@@ -72,15 +72,6 @@ func (g *Generator) Header() *file.Header {
 	return &g.header
 }
 
-// InterfaceClassAdapter is an adapter for the InterfaceGenerator to generate Go
-// code for an interface or class.
-type InterfaceClassAdapter struct {
-	Name     string
-	CType    string
-	Methods  []gir.Method
-	Virtuals []gir.VirtualMethod
-}
-
 // Use accepts either a *gir.Class or a *gir.Interface; any other type will make
 // it panic.
 func (g *Generator) Use(typ interface{}) bool {

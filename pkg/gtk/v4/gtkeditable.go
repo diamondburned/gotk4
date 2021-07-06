@@ -28,6 +28,58 @@ func init() {
 	})
 }
 
+// EditableOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type EditableOverrider interface {
+	Changed()
+	// DeleteText deletes a sequence of characters.
+	//
+	// The characters that are deleted are those characters at positions from
+	// @start_pos up to, but not including @end_pos. If @end_pos is negative,
+	// then the characters deleted are those from @start_pos to the end of the
+	// text.
+	//
+	// Note that the positions are specified in characters, not bytes.
+	DeleteText(startPos int, endPos int)
+	// DoDeleteText deletes a sequence of characters.
+	//
+	// The characters that are deleted are those characters at positions from
+	// @start_pos up to, but not including @end_pos. If @end_pos is negative,
+	// then the characters deleted are those from @start_pos to the end of the
+	// text.
+	//
+	// Note that the positions are specified in characters, not bytes.
+	DoDeleteText(startPos int, endPos int)
+	// Delegate gets the `GtkEditable` that @editable is delegating its
+	// implementation to.
+	//
+	// Typically, the delegate is a [class@Gtk.Text] widget.
+	Delegate() Editable
+	// SelectionBounds retrieves the selection bound of the editable.
+	//
+	// @start_pos will be filled with the start of the selection and @end_pos
+	// with end. If no text was selected both will be identical and false will
+	// be returned.
+	//
+	// Note that positions are specified in characters, not bytes.
+	SelectionBounds() (startPos int, endPos int, ok bool)
+	// Text retrieves the contents of @editable.
+	//
+	// The returned string is owned by GTK and must not be modified or freed.
+	Text() string
+	// SetSelectionBounds selects a region of text.
+	//
+	// The characters that are selected are those characters at positions from
+	// @start_pos up to, but not including @end_pos. If @end_pos is negative,
+	// then the characters selected are those characters from @start_pos to the
+	// end of the text.
+	//
+	// Note that positions are specified in characters, not bytes.
+	SetSelectionBounds(startPos int, endPos int)
+}
+
 // Editable: `GtkEditable` is an interface for text editing widgets.
 //
 // Typical examples of editable widgets are [class@Gtk.Entry] and

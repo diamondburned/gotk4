@@ -179,7 +179,7 @@ func (n *Transform) Perspective(depth float32) *Transform {
 }
 
 // Ref acquires a reference on the given `GskTransform`.
-func (s *Transform) Ref() *Transform {
+func (s *Transform) ref() *Transform {
 	var _arg0 *C.GskTransform // out
 	var _cret *C.GskTransform // in
 
@@ -569,7 +569,7 @@ func (n *Transform) Translate3D(point *graphene.Point3D) *Transform {
 //
 // If the reference was the last, the resources associated to the @self are
 // freed.
-func (s *Transform) Unref() {
+func (s *Transform) unref() {
 	var _arg0 *C.GskTransform // out
 
 	_arg0 = (*C.GskTransform)(unsafe.Pointer(s))

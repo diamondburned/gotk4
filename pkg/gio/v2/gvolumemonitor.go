@@ -32,6 +32,30 @@ func init() {
 	})
 }
 
+// VolumeMonitorOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type VolumeMonitorOverrider interface {
+	DriveChanged(drive Drive)
+	DriveConnected(drive Drive)
+	DriveDisconnected(drive Drive)
+	DriveEjectButton(drive Drive)
+	DriveStopButton(drive Drive)
+	// MountForUUID finds a #GMount object by its UUID (see g_mount_get_uuid())
+	MountForUUID(uuid string) Mount
+	// VolumeForUUID finds a #GVolume object by its UUID (see
+	// g_volume_get_uuid())
+	VolumeForUUID(uuid string) Volume
+	MountAdded(mount Mount)
+	MountChanged(mount Mount)
+	MountPreUnmount(mount Mount)
+	MountRemoved(mount Mount)
+	VolumeAdded(volume Volume)
+	VolumeChanged(volume Volume)
+	VolumeRemoved(volume Volume)
+}
+
 // VolumeMonitor is for listing the user interesting devices and volumes on the
 // computer. In other words, what a file selector or file manager would show in
 // a sidebar.

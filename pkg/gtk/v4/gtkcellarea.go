@@ -82,6 +82,111 @@ func gotk4_CellCallback(arg0 *C.GtkCellRenderer, arg1 C.gpointer) (cret C.gboole
 	return cret
 }
 
+// CellAreaOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type CellAreaOverrider interface {
+	// Activate activates @area, usually by activating the currently focused
+	// cell, however some subclasses which embed widgets in the area can also
+	// activate a widget if it currently has the focus.
+	Activate(context CellAreaContext, widget Widget, cellArea *gdk.Rectangle, flags CellRendererState, editOnly bool) bool
+	// Add adds @renderer to @area with the default child cell properties.
+	Add(renderer CellRenderer)
+	// ApplyAttributes applies any connected attributes to the renderers in
+	// @area by pulling the values from @tree_model.
+	ApplyAttributes(treeModel TreeModel, iter *TreeIter, isExpander bool, isExpanded bool)
+	// CopyContext: this is sometimes needed for cases where rows need to share
+	// alignments in one orientation but may be separately grouped in the
+	// opposing orientation.
+	//
+	// For instance, IconView creates all icons (rows) to have the same width
+	// and the cells theirin to have the same horizontal alignments. However
+	// each row of icons may have a separate collective height. IconView uses
+	// this to request the heights of each row based on a context which was
+	// already used to request all the row widths that are to be displayed.
+	CopyContext(context CellAreaContext) CellAreaContext
+	// CreateContext creates a CellAreaContext to be used with @area for all
+	// purposes. CellAreaContext stores geometry information for rows for which
+	// it was operated on, it is important to use the same context for the same
+	// row of data at all times (i.e. one should render and handle events with
+	// the same CellAreaContext which was used to request the size of those rows
+	// of data).
+	CreateContext() CellAreaContext
+	// Event delegates event handling to a CellArea.
+	Event(context CellAreaContext, widget Widget, event gdk.Event, cellArea *gdk.Rectangle, flags CellRendererState) int
+	// Focus: this should be called by the @area’s owning layout widget when
+	// focus is to be passed to @area, or moved within @area for a given
+	// @direction and row data.
+	//
+	// Implementing CellArea classes should implement this method to receive and
+	// navigate focus in its own way particular to how it lays out cells.
+	Focus(direction DirectionType) bool
+	// Foreach calls @callback for every CellRenderer in @area.
+	Foreach(callback CellCallback)
+	// ForeachAlloc calls @callback for every CellRenderer in @area with the
+	// allocated rectangle inside @cell_area.
+	ForeachAlloc(context CellAreaContext, widget Widget, cellArea *gdk.Rectangle, backgroundArea *gdk.Rectangle, callback CellAllocCallback)
+	// PreferredHeight retrieves a cell area’s initial minimum and natural
+	// height.
+	//
+	// @area will store some geometrical information in @context along the way;
+	// when requesting sizes over an arbitrary number of rows, it’s not
+	// important to check the @minimum_height and @natural_height of this call
+	// but rather to consult gtk_cell_area_context_get_preferred_height() after
+	// a series of requests.
+	PreferredHeight(context CellAreaContext, widget Widget) (minimumHeight int, naturalHeight int)
+	// PreferredHeightForWidth retrieves a cell area’s minimum and natural
+	// height if it would be given the specified @width.
+	//
+	// @area stores some geometrical information in @context along the way while
+	// calling gtk_cell_area_get_preferred_width(). It’s important to perform a
+	// series of gtk_cell_area_get_preferred_width() requests with @context
+	// first and then call gtk_cell_area_get_preferred_height_for_width() on
+	// each cell area individually to get the height for width of each fully
+	// requested row.
+	//
+	// If at some point, the width of a single row changes, it should be
+	// requested with gtk_cell_area_get_preferred_width() again and then the
+	// full width of the requested rows checked again with
+	// gtk_cell_area_context_get_preferred_width().
+	PreferredHeightForWidth(context CellAreaContext, widget Widget, width int) (minimumHeight int, naturalHeight int)
+	// PreferredWidth retrieves a cell area’s initial minimum and natural width.
+	//
+	// @area will store some geometrical information in @context along the way;
+	// when requesting sizes over an arbitrary number of rows, it’s not
+	// important to check the @minimum_width and @natural_width of this call but
+	// rather to consult gtk_cell_area_context_get_preferred_width() after a
+	// series of requests.
+	PreferredWidth(context CellAreaContext, widget Widget) (minimumWidth int, naturalWidth int)
+	// PreferredWidthForHeight retrieves a cell area’s minimum and natural width
+	// if it would be given the specified @height.
+	//
+	// @area stores some geometrical information in @context along the way while
+	// calling gtk_cell_area_get_preferred_height(). It’s important to perform a
+	// series of gtk_cell_area_get_preferred_height() requests with @context
+	// first and then call gtk_cell_area_get_preferred_width_for_height() on
+	// each cell area individually to get the height for width of each fully
+	// requested row.
+	//
+	// If at some point, the height of a single row changes, it should be
+	// requested with gtk_cell_area_get_preferred_height() again and then the
+	// full height of the requested rows checked again with
+	// gtk_cell_area_context_get_preferred_height().
+	PreferredWidthForHeight(context CellAreaContext, widget Widget, height int) (minimumWidth int, naturalWidth int)
+	// RequestMode gets whether the area prefers a height-for-width layout or a
+	// width-for-height layout.
+	RequestMode() SizeRequestMode
+	// IsActivatable returns whether the area can do anything when activated,
+	// after applying new attributes to @area.
+	IsActivatable() bool
+	// Remove removes @renderer from @area.
+	Remove(renderer CellRenderer)
+	// Snapshot snapshots @area’s cells according to @area’s layout onto at the
+	// given coordinates.
+	Snapshot(context CellAreaContext, widget Widget, snapshot Snapshot, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState, paintFocus bool)
+}
+
 // CellArea: abstract class for laying out GtkCellRenderers
 //
 // The CellArea is an abstract class for CellLayout widgets (also referred to as

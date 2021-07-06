@@ -160,7 +160,7 @@ func (v *Vec2) Equal(v2 *Vec2) bool {
 }
 
 // Free frees the resources allocated by @v
-func (v *Vec2) Free() {
+func (v *Vec2) free() {
 	var _arg0 *C.graphene_vec2_t // out
 
 	_arg0 = (*C.graphene_vec2_t)(unsafe.Pointer(v))

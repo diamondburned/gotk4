@@ -33,6 +33,22 @@ func init() {
 	})
 }
 
+// DBusInterfaceOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type DBusInterfaceOverrider interface {
+	// DupObject gets the BusObject that @interface_ belongs to, if any.
+	DupObject() DBusObject
+	// Info gets D-Bus introspection information for the D-Bus interface
+	// implemented by @interface_.
+	Info() *DBusInterfaceInfo
+	// SetObject sets the BusObject for @interface_ to @object.
+	//
+	// Note that @interface_ will hold a weak reference to @object.
+	SetObject(object DBusObject)
+}
+
 // DBusInterface: the BusInterface type is the base type for D-Bus interfaces
 // both on the service side (see BusInterfaceSkeleton) and client side (see
 // BusProxy).

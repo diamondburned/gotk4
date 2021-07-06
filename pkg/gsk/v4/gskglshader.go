@@ -366,7 +366,7 @@ func (s *ShaderArgsBuilder) Native() unsafe.Pointer {
 }
 
 // Ref increases the reference count of a `GskShaderArgsBuilder` by one.
-func (b *ShaderArgsBuilder) Ref() *ShaderArgsBuilder {
+func (b *ShaderArgsBuilder) ref() *ShaderArgsBuilder {
 	var _arg0 *C.GskShaderArgsBuilder // out
 	var _cret *C.GskShaderArgsBuilder // in
 
@@ -495,7 +495,7 @@ func (b *ShaderArgsBuilder) SetVec4(idx int, value *graphene.Vec4) {
 // Unref decreases the reference count of a `GskShaderArgBuilder` by one.
 //
 // If the resulting reference count is zero, frees the builder.
-func (b *ShaderArgsBuilder) Unref() {
+func (b *ShaderArgsBuilder) unref() {
 	var _arg0 *C.GskShaderArgsBuilder // out
 
 	_arg0 = (*C.GskShaderArgsBuilder)(unsafe.Pointer(b))

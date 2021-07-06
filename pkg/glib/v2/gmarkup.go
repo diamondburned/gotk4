@@ -29,23 +29,23 @@ type MarkupError int
 
 const (
 	// BadUTF8: text being parsed was not valid UTF-8
-	MarkupErrorBadUTF8 MarkupError = iota
-	// empty: document contained nothing, or only whitespace
-	MarkupErrorEmpty
-	// parse: document was ill-formed
-	MarkupErrorParse
+	BadUTF8 MarkupError = iota
+	// Empty: document contained nothing, or only whitespace
+	Empty
+	// Parse: document was ill-formed
+	Parse
 	// UnknownElement: error should be set by Parser functions; element wasn't
 	// known
-	MarkupErrorUnknownElement
+	UnknownElement
 	// UnknownAttribute: error should be set by Parser functions; attribute
 	// wasn't known
-	MarkupErrorUnknownAttribute
+	UnknownAttribute
 	// InvalidContent: error should be set by Parser functions; content was
 	// invalid
-	MarkupErrorInvalidContent
+	InvalidContent
 	// MissingAttribute: error should be set by Parser functions; a required
 	// attribute was missing
-	MarkupErrorMissingAttribute
+	MissingAttribute
 )
 
 // MarkupCollectType: mixed enumerated type and flags field. You must specify
@@ -188,7 +188,7 @@ func (c *MarkupParseContext) EndParse() error {
 //
 // This function can't be called from inside one of the Parser functions or
 // while a subparser is pushed.
-func (c *MarkupParseContext) Free() {
+func (c *MarkupParseContext) free() {
 	var _arg0 *C.GMarkupParseContext // out
 
 	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c))
@@ -370,7 +370,7 @@ func (c *MarkupParseContext) Push(parser *MarkupParser, userData interface{}) {
 }
 
 // Ref increases the reference count of @context.
-func (c *MarkupParseContext) Ref() *MarkupParseContext {
+func (c *MarkupParseContext) ref() *MarkupParseContext {
 	var _arg0 *C.GMarkupParseContext // out
 	var _cret *C.GMarkupParseContext // in
 
@@ -391,7 +391,7 @@ func (c *MarkupParseContext) Ref() *MarkupParseContext {
 
 // Unref decreases the reference count of @context. When its reference count
 // drops to 0, it is freed.
-func (c *MarkupParseContext) Unref() {
+func (c *MarkupParseContext) unref() {
 	var _arg0 *C.GMarkupParseContext // out
 
 	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c))

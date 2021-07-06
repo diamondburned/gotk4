@@ -26,6 +26,17 @@ func init() {
 	})
 }
 
+// ToggleActionOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type ToggleActionOverrider interface {
+	// Toggled emits the “toggled” signal on the toggle action.
+	//
+	// Deprecated: since version 3.10.
+	Toggled()
+}
+
 // ToggleAction corresponds roughly to a CheckMenuItem. It has an “active” state
 // specifying whether the action has been checked or not.
 type ToggleAction interface {

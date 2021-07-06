@@ -33,6 +33,51 @@ func init() {
 	})
 }
 
+// ActionableOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type ActionableOverrider interface {
+	// ActionName gets the action name for @actionable.
+	//
+	// See gtk_actionable_set_action_name() for more information.
+	ActionName() string
+	// ActionTargetValue gets the current target value of @actionable.
+	//
+	// See gtk_actionable_set_action_target_value() for more information.
+	ActionTargetValue() *glib.Variant
+	// SetActionName specifies the name of the action with which this widget
+	// should be associated. If @action_name is nil then the widget will be
+	// unassociated from any previous action.
+	//
+	// Usually this function is used when the widget is located (or will be
+	// located) within the hierarchy of a ApplicationWindow.
+	//
+	// Names are of the form “win.save” or “app.quit” for actions on the
+	// containing ApplicationWindow or its associated Application, respectively.
+	// This is the same form used for actions in the #GMenu associated with the
+	// window.
+	SetActionName(actionName string)
+	// SetActionTargetValue sets the target value of an actionable widget.
+	//
+	// If @target_value is nil then the target value is unset.
+	//
+	// The target value has two purposes. First, it is used as the parameter to
+	// activation of the action associated with the Actionable widget. Second,
+	// it is used to determine if the widget should be rendered as “active” —
+	// the widget is active if the state is equal to the given target.
+	//
+	// Consider the example of associating a set of buttons with a #GAction with
+	// string state in a typical “radio button” situation. Each button will be
+	// associated with the same action, but with a different target value for
+	// that action. Clicking on a particular button will activate the action
+	// with the target of that button, which will typically cause the action’s
+	// state to change to that value. Since the action’s state is now equal to
+	// the target value of the button, the button will now be rendered as active
+	// (and the other buttons, with different targets, rendered inactive).
+	SetActionTargetValue(targetValue *glib.Variant)
+}
+
 // Actionable: this interface provides a convenient way of associating widgets
 // with actions on a ApplicationWindow or Application.
 //

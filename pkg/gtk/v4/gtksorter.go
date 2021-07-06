@@ -29,19 +29,19 @@ func init() {
 type SorterChange int
 
 const (
-	// different: the sorter change cannot be described by any of the other
+	// Different: the sorter change cannot be described by any of the other
 	// enumeration values
-	SorterChangeDifferent SorterChange = iota
-	// inverted: the sort order was inverted. Comparisons that returned
+	Different SorterChange = iota
+	// Inverted: the sort order was inverted. Comparisons that returned
 	// GTK_ORDERING_SMALLER now return GTK_ORDERING_LARGER and vice versa. Other
 	// comparisons return the same values as before.
-	SorterChangeInverted
+	Inverted
 	// LessStrict: the sorter is less strict: Comparisons may now return
 	// GTK_ORDERING_EQUAL that did not do so before.
-	SorterChangeLessStrict
+	LessStrict
 	// MoreStrict: the sorter is more strict: Comparisons that did return
 	// GTK_ORDERING_EQUAL may not do so anymore.
-	SorterChangeMoreStrict
+	MoreStrict
 )
 
 func marshalSorterChange(p uintptr) (interface{}, error) {
@@ -52,19 +52,44 @@ func marshalSorterChange(p uintptr) (interface{}, error) {
 type SorterOrder int
 
 const (
-	// partial order. Any Ordering is possible.
-	SorterOrderPartial SorterOrder = iota
-	// none: no order, all elements are considered equal. gtk_sorter_compare()
+	// Partial order. Any Ordering is possible.
+	Partial SorterOrder = iota
+	// None: no order, all elements are considered equal. gtk_sorter_compare()
 	// will only return GTK_ORDERING_EQUAL.
-	SorterOrderNone
-	// total order. gtk_sorter_compare() will only return GTK_ORDERING_EQUAL if
+	None
+	// Total order. gtk_sorter_compare() will only return GTK_ORDERING_EQUAL if
 	// an item is compared with itself. Two different items will never cause
 	// this value to be returned.
-	SorterOrderTotal
+	Total
 )
 
 func marshalSorterOrder(p uintptr) (interface{}, error) {
 	return SorterOrder(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// SorterOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type SorterOverrider interface {
+	// Compare compares two given items according to the sort order implemented
+	// by the sorter.
+	//
+	// Sorters implement a partial order:
+	//
+	// * It is reflexive, ie a = a * It is antisymmetric, ie if a < b and b < a,
+	// then a = b * It is transitive, ie given any 3 items with a ≤ b and b ≤ c,
+	// then a ≤ c
+	//
+	// The sorter may signal it conforms to additional constraints via the
+	// return value of [method@Gtk.Sorter.get_order].
+	Compare(item1 gextras.Objector, item2 gextras.Objector) Ordering
+	// Order gets the order that @self conforms to.
+	//
+	// See [enum@Gtk.SorterOrder] for details of the possible return values.
+	//
+	// This function is intended to allow optimizations.
+	Order() SorterOrder
 }
 
 // Sorter: `GtkSorter` is an object to describe sorting criteria.

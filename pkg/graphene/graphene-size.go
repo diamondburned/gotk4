@@ -80,7 +80,7 @@ func (a *Size) Equal(b *Size) bool {
 }
 
 // Free frees the resources allocated by graphene_size_alloc().
-func (s *Size) Free() {
+func (s *Size) free() {
 	var _arg0 *C.graphene_size_t // out
 
 	_arg0 = (*C.graphene_size_t)(unsafe.Pointer(s))

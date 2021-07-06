@@ -139,7 +139,7 @@ func (d *TargetEntry) Copy() *TargetEntry {
 
 // Free frees a TargetEntry returned from gtk_target_entry_new() or
 // gtk_target_entry_copy().
-func (d *TargetEntry) Free() {
+func (d *TargetEntry) free() {
 	var _arg0 *C.GtkTargetEntry // out
 
 	_arg0 = (*C.GtkTargetEntry)(unsafe.Pointer(d))
@@ -265,7 +265,7 @@ func (l *TargetList) AddURITargets(info uint) {
 }
 
 // Ref increases the reference count of a TargetList by one.
-func (l *TargetList) Ref() *TargetList {
+func (l *TargetList) ref() *TargetList {
 	var _arg0 *C.GtkTargetList // out
 	var _cret *C.GtkTargetList // in
 
@@ -286,7 +286,7 @@ func (l *TargetList) Ref() *TargetList {
 
 // Unref decreases the reference count of a TargetList by one. If the resulting
 // reference count is zero, frees the list.
-func (l *TargetList) Unref() {
+func (l *TargetList) unref() {
 	var _arg0 *C.GtkTargetList // out
 
 	_arg0 = (*C.GtkTargetList)(unsafe.Pointer(l))

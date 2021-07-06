@@ -33,6 +33,17 @@ func init() {
 	})
 }
 
+// LabelOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type LabelOverrider interface {
+	ActivateLink(uri string) bool
+	CopyClipboard()
+	MoveCursor(step MovementStep, count int, extendSelection bool)
+	PopulatePopup(menu Menu)
+}
+
 // Label: the Label widget displays a small amount of text. As the name implies,
 // most labels are used to label another widget such as a Button, a MenuItem, or
 // a ComboBox.

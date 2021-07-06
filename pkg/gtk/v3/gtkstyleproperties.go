@@ -376,7 +376,7 @@ func (g *Gradient) AddColorStop(offset float64, color *SymbolicColor) {
 // Ref increases the reference count of @gradient.
 //
 // Deprecated: since version 3.8.
-func (g *Gradient) Ref() *Gradient {
+func (g *Gradient) ref() *Gradient {
 	var _arg0 *C.GtkGradient // out
 	var _cret *C.GtkGradient // in
 
@@ -470,7 +470,7 @@ func (g *Gradient) String() string {
 // reference count reaches 0.
 //
 // Deprecated: since version 3.8.
-func (g *Gradient) Unref() {
+func (g *Gradient) unref() {
 	var _arg0 *C.GtkGradient // out
 
 	_arg0 = (*C.GtkGradient)(unsafe.Pointer(g))
@@ -645,7 +645,7 @@ func (s *SymbolicColor) Native() unsafe.Pointer {
 // Ref increases the reference count of @color
 //
 // Deprecated: since version 3.8.
-func (c *SymbolicColor) Ref() *SymbolicColor {
+func (c *SymbolicColor) ref() *SymbolicColor {
 	var _arg0 *C.GtkSymbolicColor // out
 	var _cret *C.GtkSymbolicColor // in
 
@@ -732,7 +732,7 @@ func (c *SymbolicColor) String() string {
 // reference count reaches 0.
 //
 // Deprecated: since version 3.8.
-func (c *SymbolicColor) Unref() {
+func (c *SymbolicColor) unref() {
 	var _arg0 *C.GtkSymbolicColor // out
 
 	_arg0 = (*C.GtkSymbolicColor)(unsafe.Pointer(c))

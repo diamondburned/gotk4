@@ -34,39 +34,50 @@ type BuilderError int
 const (
 	// InvalidTypeFunction: type-func attribute didn’t name a function that
 	// returns a #GType.
-	BuilderErrorInvalidTypeFunction BuilderError = iota
+	InvalidTypeFunction BuilderError = iota
 	// UnhandledTag: the input contained a tag that Builder can’t handle.
-	BuilderErrorUnhandledTag
+	UnhandledTag
 	// MissingAttribute: attribute that is required by Builder was missing.
-	BuilderErrorMissingAttribute
+	MissingAttribute
 	// InvalidAttribute found an attribute that it doesn’t understand.
-	BuilderErrorInvalidAttribute
+	InvalidAttribute
 	// InvalidTag found a tag that it doesn’t understand.
-	BuilderErrorInvalidTag
+	InvalidTag
 	// MissingPropertyValue: required property value was missing.
-	BuilderErrorMissingPropertyValue
+	MissingPropertyValue
 	// InvalidValue couldn’t parse some attribute value.
-	BuilderErrorInvalidValue
+	InvalidValue
 	// VersionMismatch: the input file requires a newer version of GTK+.
-	BuilderErrorVersionMismatch
+	VersionMismatch
 	// DuplicateID: object id occurred twice.
-	BuilderErrorDuplicateID
+	DuplicateID
 	// ObjectTypeRefused: specified object type is of the same type or derived
 	// from the type of the composite class being extended with builder XML.
-	BuilderErrorObjectTypeRefused
+	ObjectTypeRefused
 	// TemplateMismatch: the wrong type was specified in a composite class’s
 	// template XML
-	BuilderErrorTemplateMismatch
+	TemplateMismatch
 	// InvalidProperty: the specified property is unknown for the object class.
-	BuilderErrorInvalidProperty
+	InvalidProperty
 	// InvalidSignal: the specified signal is unknown for the object class.
-	BuilderErrorInvalidSignal
+	InvalidSignal
 	// InvalidID: object id is unknown
-	BuilderErrorInvalidID
+	InvalidID
 )
 
 func marshalBuilderError(p uintptr) (interface{}, error) {
 	return BuilderError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// BuilderOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type BuilderOverrider interface {
+	// TypeFromName looks up a type by name, using the virtual function that
+	// Builder has for that purpose. This is mainly used when implementing the
+	// Buildable interface on a type.
+	TypeFromName(typeName string) externglib.Type
 }
 
 // Builder is an auxiliary object that reads textual descriptions of a user

@@ -5,6 +5,8 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -19,6 +21,31 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_buildable_get_type()), F: marshalBuildable},
 	})
+}
+
+// BuildableOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type BuildableOverrider interface {
+	// AddChild adds a child to @buildable. @type is an optional string
+	// describing how the child should be added.
+	AddChild(builder Builder, child gextras.Objector, typ string)
+	// CustomFinished: similar to gtk_buildable_parser_finished() but is called
+	// once for each custom tag handled by the @buildable.
+	CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{})
+	// CustomTagEnd: called at the end of each custom element handled by the
+	// buildable.
+	CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data interface{})
+	// CustomTagStart: called for each unknown element under `<child>`.
+	CustomTagStart(builder Builder, child gextras.Objector, tagname string) (BuildableParser, interface{}, bool)
+	ID() string
+	// InternalChild retrieves the internal child called @childname of the
+	// @buildable object.
+	InternalChild(builder Builder, childname string) gextras.Objector
+	ParserFinished(builder Builder)
+	SetBuildableProperty(builder Builder, name string, value externglib.Value)
+	SetID(id string)
 }
 
 // Buildable: `GtkBuildable` allows objects to extend and customize their

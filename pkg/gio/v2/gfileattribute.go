@@ -144,7 +144,7 @@ func (l *FileAttributeInfoList) Lookup(name string) *FileAttributeInfo {
 }
 
 // Ref references a file attribute info list.
-func (l *FileAttributeInfoList) Ref() *FileAttributeInfoList {
+func (l *FileAttributeInfoList) ref() *FileAttributeInfoList {
 	var _arg0 *C.GFileAttributeInfoList // out
 	var _cret *C.GFileAttributeInfoList // in
 
@@ -165,7 +165,7 @@ func (l *FileAttributeInfoList) Ref() *FileAttributeInfoList {
 
 // Unref removes a reference from the given @list. If the reference count falls
 // to zero, the @list is deleted.
-func (l *FileAttributeInfoList) Unref() {
+func (l *FileAttributeInfoList) unref() {
 	var _arg0 *C.GFileAttributeInfoList // out
 
 	_arg0 = (*C.GFileAttributeInfoList)(unsafe.Pointer(l))

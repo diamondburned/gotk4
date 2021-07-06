@@ -34,6 +34,33 @@ func init() {
 	})
 }
 
+// RemoteActionGroupOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type RemoteActionGroupOverrider interface {
+	// ActivateActionFull activates the remote action.
+	//
+	// This is the same as g_action_group_activate_action() except that it
+	// allows for provision of "platform data" to be sent along with the
+	// activation request. This typically contains details such as the user
+	// interaction timestamp or startup notification information.
+	//
+	// @platform_data must be non-nil and must have the type
+	// G_VARIANT_TYPE_VARDICT. If it is floating, it will be consumed.
+	ActivateActionFull(actionName string, parameter *glib.Variant, platformData *glib.Variant)
+	// ChangeActionStateFull changes the state of a remote action.
+	//
+	// This is the same as g_action_group_change_action_state() except that it
+	// allows for provision of "platform data" to be sent along with the state
+	// change request. This typically contains details such as the user
+	// interaction timestamp or startup notification information.
+	//
+	// @platform_data must be non-nil and must have the type
+	// G_VARIANT_TYPE_VARDICT. If it is floating, it will be consumed.
+	ChangeActionStateFull(actionName string, value *glib.Variant, platformData *glib.Variant)
+}
+
 // RemoteActionGroup: the GRemoteActionGroup interface is implemented by Group
 // instances that either transmit action invocations to other processes or
 // receive action invocations in the local process from other processes.

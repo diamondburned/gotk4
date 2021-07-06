@@ -37,6 +37,37 @@ func init() {
 	})
 }
 
+// FileInputStreamOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type FileInputStreamOverrider interface {
+	CanSeek() bool
+	// QueryInfo queries a file input stream the given @attributes. This
+	// function blocks while querying the stream. For the asynchronous
+	// (non-blocking) version of this function, see
+	// g_file_input_stream_query_info_async(). While the stream is blocked, the
+	// stream will set the pending flag internally, and any other operations on
+	// the stream will fail with G_IO_ERROR_PENDING.
+	QueryInfo(attributes string, cancellable Cancellable) (FileInfo, error)
+	// QueryInfoAsync queries the stream information asynchronously. When the
+	// operation is finished @callback will be called. You can then call
+	// g_file_input_stream_query_info_finish() to get the result of the
+	// operation.
+	//
+	// For the synchronous version of this function, see
+	// g_file_input_stream_query_info().
+	//
+	// If @cancellable is not nil, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be set
+	QueryInfoAsync(attributes string, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
+	// QueryInfoFinish finishes an asynchronous info query operation.
+	QueryInfoFinish(result AsyncResult) (FileInfo, error)
+	Seek(offset int64, typ glib.SeekType, cancellable Cancellable) error
+	Tell() int64
+}
+
 // FileInputStream provides input streams that take their content from a file.
 //
 // GFileInputStream implements #GSeekable, which allows the input stream to jump

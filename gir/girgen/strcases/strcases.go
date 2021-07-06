@@ -247,7 +247,7 @@ func SnakeNoGo(snake string) string {
 
 	_, isKeyword := GoKeywords[snake]
 	if isKeyword {
-		snake = "_" + snake
+		return "_" + snake
 	}
 
 	return snake

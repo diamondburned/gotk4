@@ -42,20 +42,20 @@ func init() {
 type Direction int
 
 const (
-	// ltr: strong left-to-right direction
-	DirectionLTR Direction = iota
-	// rtl: strong right-to-left direction
-	DirectionRTL
+	// LTR: strong left-to-right direction
+	LTR Direction = iota
+	// RTL: strong right-to-left direction
+	RTL
 	// TtbLTR: deprecated value; treated the same as PANGO_DIRECTION_RTL.
-	DirectionTtbLTR
+	TtbLTR
 	// TtbRTL: deprecated value; treated the same as PANGO_DIRECTION_LTR
-	DirectionTtbRTL
+	TtbRTL
 	// WeakLTR: weak left-to-right direction
-	DirectionWeakLTR
+	WeakLTR
 	// WeakRTL: weak right-to-left direction
-	DirectionWeakRTL
-	// neutral: no direction specified
-	DirectionNeutral
+	WeakRTL
+	// Neutral: no direction specified
+	Neutral
 )
 
 func marshalDirection(p uintptr) (interface{}, error) {

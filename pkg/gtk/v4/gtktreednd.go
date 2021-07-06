@@ -74,6 +74,26 @@ func TreeGetRowDragData(value externglib.Value) (TreeModel, *TreePath, bool) {
 	return _treeModel, _path, _ok
 }
 
+// TreeDragDestOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type TreeDragDestOverrider interface {
+	// DragDataReceived asks the TreeDragDest to insert a row before the path
+	// @dest, deriving the contents of the row from @value. If @dest is outside
+	// the tree so that inserting before it is impossible, false will be
+	// returned. Also, false may be returned if the new row is not created for
+	// some model-specific reason. Should robustly handle a @dest no longer
+	// found in the model!
+	DragDataReceived(dest *TreePath, value externglib.Value) bool
+	// RowDropPossible determines whether a drop is possible before the given
+	// @dest_path, at the same depth as @dest_path. i.e., can we drop the data
+	// in @value at that location. @dest_path does not have to exist; the return
+	// value will almost certainly be false if the parent of @dest_path doesn’t
+	// exist, though.
+	RowDropPossible(destPath *TreePath, value externglib.Value) bool
+}
+
 // TreeDragDest: interface for Drag-and-Drop destinations in `GtkTreeView`.
 type TreeDragDest interface {
 	gextras.Objector
@@ -152,6 +172,27 @@ func (d treeDragDest) RowDropPossible(destPath *TreePath, value externglib.Value
 	}
 
 	return _ok
+}
+
+// TreeDragSourceOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type TreeDragSourceOverrider interface {
+	// DragDataDelete asks the TreeDragSource to delete the row at @path,
+	// because it was moved somewhere else via drag-and-drop. Returns false if
+	// the deletion fails because @path no longer exists, or for some
+	// model-specific reason. Should robustly handle a @path no longer found in
+	// the model!
+	DragDataDelete(path *TreePath) bool
+	// DragDataGet asks the TreeDragSource to return a ContentProvider
+	// representing the row at @path. Should robustly handle a @path no longer
+	// found in the model!
+	DragDataGet(path *TreePath) gdk.ContentProvider
+	// RowDraggable asks the TreeDragSource whether a particular row can be used
+	// as the source of a DND operation. If the source doesn’t implement this
+	// interface, the row is assumed draggable.
+	RowDraggable(path *TreePath) bool
 }
 
 // TreeDragSource: interface for Drag-and-Drop destinations in `GtkTreeView`.

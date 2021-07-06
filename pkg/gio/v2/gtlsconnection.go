@@ -36,6 +36,50 @@ func init() {
 	})
 }
 
+// TLSConnectionOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type TLSConnectionOverrider interface {
+	AcceptCertificate(peerCert TLSCertificate, errors TLSCertificateFlags) bool
+	BindingData(typ TLSChannelBindingType, data []byte) error
+	// Handshake attempts a TLS handshake on @conn.
+	//
+	// On the client side, it is never necessary to call this method; although
+	// the connection needs to perform a handshake after connecting (or after
+	// sending a "STARTTLS"-type command), Connection will handle this for you
+	// automatically when you try to send or receive data on the connection. You
+	// can call g_tls_connection_handshake() manually if you want to know
+	// whether the initial handshake succeeded or failed (as opposed to just
+	// immediately trying to use @conn to read or write, in which case, if it
+	// fails, it may not be possible to tell if it failed before or after
+	// completing the handshake), but beware that servers may reject client
+	// authentication after the handshake has completed, so a successful
+	// handshake does not indicate the connection will be usable.
+	//
+	// Likewise, on the server side, although a handshake is necessary at the
+	// beginning of the communication, you do not need to call this function
+	// explicitly unless you want clearer error reporting.
+	//
+	// Previously, calling g_tls_connection_handshake() after the initial
+	// handshake would trigger a rehandshake; however, this usage was deprecated
+	// in GLib 2.60 because rehandshaking was removed from the TLS protocol in
+	// TLS 1.3. Since GLib 2.64, calling this function after the initial
+	// handshake will no longer do anything.
+	//
+	// When using a Connection created by Client, the Client performs the
+	// initial handshake, so calling this function manually is not recommended.
+	//
+	// Connection::accept_certificate may be emitted during the handshake.
+	Handshake(cancellable Cancellable) error
+	// HandshakeAsync: asynchronously performs a TLS handshake on @conn. See
+	// g_tls_connection_handshake() for more information.
+	HandshakeAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
+	// HandshakeFinish: finish an asynchronous TLS handshake operation. See
+	// g_tls_connection_handshake() for more information.
+	HandshakeFinish(result AsyncResult) error
+}
+
 // TLSConnection is the base TLS connection class type, which wraps a OStream
 // and provides TLS encryption on top of it. Its subclasses, ClientConnection
 // and ServerConnection, implement client-side and server-side TLS,

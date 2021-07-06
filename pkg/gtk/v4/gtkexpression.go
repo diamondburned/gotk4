@@ -159,14 +159,14 @@ type CClosureExpression interface {
 	// Ref acquires a reference on the given `GtkExpression`.
 	//
 	// This method is inherited from Expression
-	Ref() Expression
+	ref() Expression
 	// Unref releases a reference on the given `GtkExpression`.
 	//
 	// If the reference was the last, the resources associated to the `self` are
 	// freed.
 	//
 	// This method is inherited from Expression
-	Unref()
+	unref()
 }
 
 // cClosureExpression implements the CClosureExpression interface.
@@ -208,12 +208,12 @@ func (s cClosureExpression) IsStatic() bool {
 	return WrapExpression(gextras.InternObject(s)).IsStatic()
 }
 
-func (s cClosureExpression) Ref() Expression {
-	return WrapExpression(gextras.InternObject(s)).Ref()
+func (s cClosureExpression) ref() Expression {
+	return WrapExpression(gextras.InternObject(s)).ref()
 }
 
-func (s cClosureExpression) Unref() {
-	WrapExpression(gextras.InternObject(s)).Unref()
+func (s cClosureExpression) unref() {
+	WrapExpression(gextras.InternObject(s)).unref()
 }
 
 // ClosureExpression: expression using a custom `GClosure` to compute the value
@@ -271,14 +271,14 @@ type ClosureExpression interface {
 	// Ref acquires a reference on the given `GtkExpression`.
 	//
 	// This method is inherited from Expression
-	Ref() Expression
+	ref() Expression
 	// Unref releases a reference on the given `GtkExpression`.
 	//
 	// If the reference was the last, the resources associated to the `self` are
 	// freed.
 	//
 	// This method is inherited from Expression
-	Unref()
+	unref()
 }
 
 // closureExpression implements the ClosureExpression interface.
@@ -320,12 +320,12 @@ func (s closureExpression) IsStatic() bool {
 	return WrapExpression(gextras.InternObject(s)).IsStatic()
 }
 
-func (s closureExpression) Ref() Expression {
-	return WrapExpression(gextras.InternObject(s)).Ref()
+func (s closureExpression) ref() Expression {
+	return WrapExpression(gextras.InternObject(s)).ref()
 }
 
-func (s closureExpression) Unref() {
-	WrapExpression(gextras.InternObject(s)).Unref()
+func (s closureExpression) unref() {
+	WrapExpression(gextras.InternObject(s)).unref()
 }
 
 // ConstantExpression: constant value in a `GtkExpression`.
@@ -382,14 +382,14 @@ type ConstantExpression interface {
 	// Ref acquires a reference on the given `GtkExpression`.
 	//
 	// This method is inherited from Expression
-	Ref() Expression
+	ref() Expression
 	// Unref releases a reference on the given `GtkExpression`.
 	//
 	// If the reference was the last, the resources associated to the `self` are
 	// freed.
 	//
 	// This method is inherited from Expression
-	Unref()
+	unref()
 
 	// Value gets the value that a constant expression evaluates to.
 	Value() externglib.Value
@@ -451,12 +451,12 @@ func (s constantExpression) IsStatic() bool {
 	return WrapExpression(gextras.InternObject(s)).IsStatic()
 }
 
-func (s constantExpression) Ref() Expression {
-	return WrapExpression(gextras.InternObject(s)).Ref()
+func (s constantExpression) ref() Expression {
+	return WrapExpression(gextras.InternObject(s)).ref()
 }
 
-func (s constantExpression) Unref() {
-	WrapExpression(gextras.InternObject(s)).Unref()
+func (s constantExpression) unref() {
+	WrapExpression(gextras.InternObject(s)).unref()
 }
 
 func (e constantExpression) Value() externglib.Value {
@@ -629,12 +629,12 @@ type Expression interface {
 	// because it will never trigger a notify.
 	IsStatic() bool
 	// Ref acquires a reference on the given `GtkExpression`.
-	Ref() Expression
+	ref() Expression
 	// Unref releases a reference on the given `GtkExpression`.
 	//
 	// If the reference was the last, the resources associated to the `self` are
 	// freed.
-	Unref()
+	unref()
 }
 
 // expression implements the Expression interface.
@@ -735,7 +735,7 @@ func (s expression) IsStatic() bool {
 	return _ok
 }
 
-func (s expression) Ref() Expression {
+func (s expression) ref() Expression {
 	var _arg0 *C.GtkExpression // out
 	var _cret *C.GtkExpression // in
 
@@ -750,7 +750,7 @@ func (s expression) Ref() Expression {
 	return _expression
 }
 
-func (s expression) Unref() {
+func (s expression) unref() {
 	var _arg0 *C.GtkExpression // out
 
 	_arg0 = (*C.GtkExpression)(unsafe.Pointer(s.Native()))
@@ -812,14 +812,14 @@ type ObjectExpression interface {
 	// Ref acquires a reference on the given `GtkExpression`.
 	//
 	// This method is inherited from Expression
-	Ref() Expression
+	ref() Expression
 	// Unref releases a reference on the given `GtkExpression`.
 	//
 	// If the reference was the last, the resources associated to the `self` are
 	// freed.
 	//
 	// This method is inherited from Expression
-	Unref()
+	unref()
 
 	// Object gets the object that the expression evaluates to.
 	Object() gextras.Objector
@@ -888,12 +888,12 @@ func (s objectExpression) IsStatic() bool {
 	return WrapExpression(gextras.InternObject(s)).IsStatic()
 }
 
-func (s objectExpression) Ref() Expression {
-	return WrapExpression(gextras.InternObject(s)).Ref()
+func (s objectExpression) ref() Expression {
+	return WrapExpression(gextras.InternObject(s)).ref()
 }
 
-func (s objectExpression) Unref() {
-	WrapExpression(gextras.InternObject(s)).Unref()
+func (s objectExpression) unref() {
+	WrapExpression(gextras.InternObject(s)).unref()
 }
 
 func (e objectExpression) Object() gextras.Objector {
@@ -965,14 +965,14 @@ type PropertyExpression interface {
 	// Ref acquires a reference on the given `GtkExpression`.
 	//
 	// This method is inherited from Expression
-	Ref() Expression
+	ref() Expression
 	// Unref releases a reference on the given `GtkExpression`.
 	//
 	// If the reference was the last, the resources associated to the `self` are
 	// freed.
 	//
 	// This method is inherited from Expression
-	Unref()
+	unref()
 
 	// Expression gets the expression specifying the object of a property
 	// expression.
@@ -1046,12 +1046,12 @@ func (s propertyExpression) IsStatic() bool {
 	return WrapExpression(gextras.InternObject(s)).IsStatic()
 }
 
-func (s propertyExpression) Ref() Expression {
-	return WrapExpression(gextras.InternObject(s)).Ref()
+func (s propertyExpression) ref() Expression {
+	return WrapExpression(gextras.InternObject(s)).ref()
 }
 
-func (s propertyExpression) Unref() {
-	WrapExpression(gextras.InternObject(s)).Unref()
+func (s propertyExpression) unref() {
+	WrapExpression(gextras.InternObject(s)).unref()
 }
 
 func (e propertyExpression) Expression() Expression {
@@ -1118,7 +1118,7 @@ func (w *ExpressionWatch) Evaluate(value externglib.Value) bool {
 }
 
 // Ref acquires a reference on the given `GtkExpressionWatch`.
-func (w *ExpressionWatch) Ref() *ExpressionWatch {
+func (w *ExpressionWatch) ref() *ExpressionWatch {
 	var _arg0 *C.GtkExpressionWatch // out
 	var _cret *C.GtkExpressionWatch // in
 
@@ -1140,7 +1140,7 @@ func (w *ExpressionWatch) Ref() *ExpressionWatch {
 // Unref releases a reference on the given `GtkExpressionWatch`.
 //
 // If the reference was the last, the resources associated to `self` are freed.
-func (w *ExpressionWatch) Unref() {
+func (w *ExpressionWatch) unref() {
 	var _arg0 *C.GtkExpressionWatch // out
 
 	_arg0 = (*C.GtkExpressionWatch)(unsafe.Pointer(w))

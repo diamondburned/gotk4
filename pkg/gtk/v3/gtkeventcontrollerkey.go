@@ -60,11 +60,9 @@ type EventControllerKey interface {
 	SetPropagationPhase(phase PropagationPhase)
 
 	Forward(widget Widget) bool
-
 	Group() uint
 	// ImContext gets the IM context of a key controller.
 	ImContext() IMContext
-
 	SetImContext(imContext IMContext)
 }
 

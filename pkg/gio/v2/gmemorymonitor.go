@@ -33,6 +33,14 @@ func init() {
 	})
 }
 
+// MemoryMonitorOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type MemoryMonitorOverrider interface {
+	LowMemoryWarning(level MemoryMonitorWarningLevel)
+}
+
 // MemoryMonitor will monitor system memory and suggest to the application when
 // to free memory so as to leave more room for other applications. It is
 // implemented on Linux using the Low Memory Monitor

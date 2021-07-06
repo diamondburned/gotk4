@@ -35,6 +35,24 @@ func init() {
 	})
 }
 
+// DesktopAppInfoLookupOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type DesktopAppInfoLookupOverrider interface {
+	// DefaultForURIScheme gets the default application for launching
+	// applications using this URI scheme for a particular AppInfoLookup
+	// implementation.
+	//
+	// The AppInfoLookup interface and this function is used to implement
+	// g_app_info_get_default_for_uri_scheme() backends in a GIO module. There
+	// is no reason for applications to use it directly. Applications should use
+	// g_app_info_get_default_for_uri_scheme().
+	//
+	// Deprecated: since version 2.28.
+	DefaultForURIScheme(uriScheme string) AppInfo
+}
+
 // DesktopAppInfoLookup is an opaque data structure and can only be accessed
 // using the following functions.
 //

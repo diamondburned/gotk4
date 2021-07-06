@@ -30,16 +30,16 @@ func init() {
 type ChecksumType int
 
 const (
-	// md5: use the MD5 hashing algorithm
-	ChecksumTypeMD5 ChecksumType = iota
-	// sha1: use the SHA-1 hashing algorithm
-	ChecksumTypeSHA1
-	// sha256: use the SHA-256 hashing algorithm
-	ChecksumTypeSHA256
-	// sha512: use the SHA-512 hashing algorithm (Since: 2.36)
-	ChecksumTypeSHA512
-	// sha384: use the SHA-384 hashing algorithm (Since: 2.51)
-	ChecksumTypeSHA384
+	// MD5: use the MD5 hashing algorithm
+	MD5 ChecksumType = iota
+	// SHA1: use the SHA-1 hashing algorithm
+	SHA1
+	// SHA256: use the SHA-256 hashing algorithm
+	SHA256
+	// SHA512: use the SHA-512 hashing algorithm (Since: 2.36)
+	SHA512
+	// SHA384: use the SHA-384 hashing algorithm (Since: 2.51)
+	SHA384
 )
 
 // ComputeChecksumForData computes the checksum for a binary @data of @length.
@@ -155,7 +155,7 @@ func (c *Checksum) Copy() *Checksum {
 }
 
 // Free frees the memory allocated for @checksum.
-func (c *Checksum) Free() {
+func (c *Checksum) free() {
 	var _arg0 *C.GChecksum // out
 
 	_arg0 = (*C.GChecksum)(unsafe.Pointer(c))

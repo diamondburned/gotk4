@@ -36,49 +36,49 @@ func init() {
 type BlendMode int
 
 const (
-	// default: the default blend mode, which specifies no blending
-	BlendModeDefault BlendMode = iota
-	// multiply: the source color is multiplied by the destination and replaces
+	// Default: the default blend mode, which specifies no blending
+	Default BlendMode = iota
+	// Multiply: the source color is multiplied by the destination and replaces
 	// the destination
-	BlendModeMultiply
-	// screen multiplies the complements of the destination and source color
+	Multiply
+	// Screen multiplies the complements of the destination and source color
 	// values, then complements the result.
-	BlendModeScreen
-	// overlay multiplies or screens the colors, depending on the destination
+	Screen
+	// Overlay multiplies or screens the colors, depending on the destination
 	// color value. This is the inverse of hard-list
-	BlendModeOverlay
-	// darken selects the darker of the destination and source colors
-	BlendModeDarken
-	// lighten selects the lighter of the destination and source colors
-	BlendModeLighten
+	Overlay
+	// Darken selects the darker of the destination and source colors
+	Darken
+	// Lighten selects the lighter of the destination and source colors
+	Lighten
 	// ColorDodge brightens the destination color to reflect the source color
-	BlendModeColorDodge
+	ColorDodge
 	// ColorBurn darkens the destination color to reflect the source color
-	BlendModeColorBurn
+	ColorBurn
 	// HardLight multiplies or screens the colors, depending on the source color
 	// value
-	BlendModeHardLight
+	HardLight
 	// SoftLight darkens or lightens the colors, depending on the source color
 	// value
-	BlendModeSoftLight
-	// difference subtracts the darker of the two constituent colors from the
+	SoftLight
+	// Difference subtracts the darker of the two constituent colors from the
 	// lighter color
-	BlendModeDifference
-	// exclusion produces an effect similar to that of the difference mode but
+	Difference
+	// Exclusion produces an effect similar to that of the difference mode but
 	// lower in contrast
-	BlendModeExclusion
-	// color creates a color with the hue and saturation of the source color and
+	Exclusion
+	// Color creates a color with the hue and saturation of the source color and
 	// the luminosity of the destination color
-	BlendModeColor
-	// hue creates a color with the hue of the source color and the saturation
+	Color
+	// Hue creates a color with the hue of the source color and the saturation
 	// and luminosity of the destination color
-	BlendModeHue
-	// saturation creates a color with the saturation of the source color and
+	Hue
+	// Saturation creates a color with the saturation of the source color and
 	// the hue and luminosity of the destination color
-	BlendModeSaturation
-	// luminosity creates a color with the luminosity of the source color and
+	Saturation
+	// Luminosity creates a color with the luminosity of the source color and
 	// the hue and saturation of the destination color
-	BlendModeLuminosity
+	Luminosity
 )
 
 func marshalBlendMode(p uintptr) (interface{}, error) {
@@ -90,13 +90,13 @@ type Corner int
 
 const (
 	// TopLeft: the top left corner
-	CornerTopLeft Corner = iota
+	TopLeft Corner = iota
 	// TopRight: the top right corner
-	CornerTopRight
+	TopRight
 	// BottomRight: the bottom right corner
-	CornerBottomRight
+	BottomRight
 	// BottomLeft: the bottom left corner
-	CornerBottomLeft
+	BottomLeft
 )
 
 func marshalCorner(p uintptr) (interface{}, error) {
@@ -111,22 +111,22 @@ func marshalCorner(p uintptr) (interface{}, error) {
 type GLUniformType int
 
 const (
-	// none: no type, used for uninitialized or unspecified values.
-	GLUniformTypeNone GLUniformType = iota
-	// float uniform
-	GLUniformTypeFloat
-	// int: GLSL int / gint32 uniform
-	GLUniformTypeInt
-	// uint: GLSL uint / guint32 uniform
-	GLUniformTypeUint
-	// bool: GLSL bool / gboolean uniform
-	GLUniformTypeBool
-	// vec2: GLSL vec2 / graphene_vec2_t uniform
-	GLUniformTypeVec2
-	// vec3: GLSL vec3 / graphene_vec3_t uniform
-	GLUniformTypeVec3
-	// vec4: GLSL vec4 / graphene_vec4_t uniform
-	GLUniformTypeVec4
+	// None: no type, used for uninitialized or unspecified values.
+	None GLUniformType = iota
+	// Float uniform
+	Float
+	// Int: GLSL int / gint32 uniform
+	Int
+	// Uint: GLSL uint / guint32 uniform
+	Uint
+	// Bool: GLSL bool / gboolean uniform
+	Bool
+	// Vec2: GLSL vec2 / graphene_vec2_t uniform
+	Vec2
+	// Vec3: GLSL vec3 / graphene_vec3_t uniform
+	Vec3
+	// Vec4: GLSL vec4 / graphene_vec4_t uniform
+	Vec4
 )
 
 func marshalGLUniformType(p uintptr) (interface{}, error) {
@@ -138,58 +138,58 @@ type RenderNodeType int
 
 const (
 	// NotARenderNode: error type. No node will ever have this type.
-	RenderNodeTypeNotARenderNode RenderNodeType = iota
+	NotARenderNode RenderNodeType = iota
 	// ContainerNode: node containing a stack of children
-	RenderNodeTypeContainerNode
+	ContainerNode
 	// CairoNode: node drawing a #cairo_surface_t
-	RenderNodeTypeCairoNode
+	CairoNode
 	// ColorNode: node drawing a single color rectangle
-	RenderNodeTypeColorNode
+	ColorNode
 	// LinearGradientNode: node drawing a linear gradient
-	RenderNodeTypeLinearGradientNode
+	LinearGradientNode
 	// RepeatingLinearGradientNode: node drawing a repeating linear gradient
-	RenderNodeTypeRepeatingLinearGradientNode
+	RepeatingLinearGradientNode
 	// RadialGradientNode: node drawing a radial gradient
-	RenderNodeTypeRadialGradientNode
+	RadialGradientNode
 	// RepeatingRadialGradientNode: node drawing a repeating radial gradient
-	RenderNodeTypeRepeatingRadialGradientNode
+	RepeatingRadialGradientNode
 	// ConicGradientNode: node drawing a conic gradient
-	RenderNodeTypeConicGradientNode
+	ConicGradientNode
 	// BorderNode: node stroking a border around an area
-	RenderNodeTypeBorderNode
+	BorderNode
 	// TextureNode: node drawing a Texture
-	RenderNodeTypeTextureNode
+	TextureNode
 	// InsetShadowNode: node drawing an inset shadow
-	RenderNodeTypeInsetShadowNode
+	InsetShadowNode
 	// OutsetShadowNode: node drawing an outset shadow
-	RenderNodeTypeOutsetShadowNode
+	OutsetShadowNode
 	// TransformNode: node that renders its child after applying a matrix
 	// transform
-	RenderNodeTypeTransformNode
+	TransformNode
 	// OpacityNode: node that changes the opacity of its child
-	RenderNodeTypeOpacityNode
+	OpacityNode
 	// ColorMatrixNode: node that applies a color matrix to every pixel
-	RenderNodeTypeColorMatrixNode
+	ColorMatrixNode
 	// RepeatNode: node that repeats the child's contents
-	RenderNodeTypeRepeatNode
+	RepeatNode
 	// ClipNode: node that clips its child to a rectangular area
-	RenderNodeTypeClipNode
+	ClipNode
 	// RoundedClipNode: node that clips its child to a rounded rectangle
-	RenderNodeTypeRoundedClipNode
+	RoundedClipNode
 	// ShadowNode: node that draws a shadow below its child
-	RenderNodeTypeShadowNode
+	ShadowNode
 	// BlendNode: node that blends two children together
-	RenderNodeTypeBlendNode
+	BlendNode
 	// CrossFadeNode: node that cross-fades between two children
-	RenderNodeTypeCrossFadeNode
+	CrossFadeNode
 	// TextNode: node containing a glyph string
-	RenderNodeTypeTextNode
+	TextNode
 	// BlurNode: node that applies a blur
-	RenderNodeTypeBlurNode
+	BlurNode
 	// DebugNode: debug information that does not affect the rendering
-	RenderNodeTypeDebugNode
+	DebugNode
 	// GLShaderNode: node that uses OpenGL fragment shaders to render
-	RenderNodeTypeGLShaderNode
+	GLShaderNode
 )
 
 func marshalRenderNodeType(p uintptr) (interface{}, error) {
@@ -203,13 +203,13 @@ func marshalRenderNodeType(p uintptr) (interface{}, error) {
 type ScalingFilter int
 
 const (
-	// linear interpolation filter
-	ScalingFilterLinear ScalingFilter = iota
-	// nearest neighbor interpolation filter
-	ScalingFilterNearest
-	// trilinear: linear interpolation along each axis, plus mipmap generation,
+	// Linear interpolation filter
+	Linear ScalingFilter = iota
+	// Nearest neighbor interpolation filter
+	Nearest
+	// Trilinear: linear interpolation along each axis, plus mipmap generation,
 	// with linear interpolation along the mipmap levels
-	ScalingFilterTrilinear
+	Trilinear
 )
 
 func marshalScalingFilter(p uintptr) (interface{}, error) {
@@ -221,11 +221,11 @@ type SerializationError int
 
 const (
 	// UnsupportedFormat: the format can not be identified
-	SerializationErrorUnsupportedFormat SerializationError = iota
+	UnsupportedFormat SerializationError = iota
 	// UnsupportedVersion: the version of the data is not understood
-	SerializationErrorUnsupportedVersion
+	UnsupportedVersion
 	// InvalidData: the given data may not exist in a proper serialization
-	SerializationErrorInvalidData
+	InvalidData
 )
 
 func marshalSerializationError(p uintptr) (interface{}, error) {
@@ -245,26 +245,26 @@ func marshalSerializationError(p uintptr) (interface{}, error) {
 type TransformCategory int
 
 const (
-	// unknown: the category of the matrix has not been determined.
-	TransformCategoryUnknown TransformCategory = iota
-	// any: analyzing the matrix concluded that it does not fit in any other
+	// Unknown: the category of the matrix has not been determined.
+	Unknown TransformCategory = iota
+	// Any: analyzing the matrix concluded that it does not fit in any other
 	// category.
-	TransformCategoryAny
+	Any
 	// 3D: the matrix is a 3D matrix. This means that the w column (the last
 	// column) has the values (0, 0, 0, 1).
-	TransformCategory3D
+	ThreeD
 	// 2D: the matrix is a 2D matrix. This is equivalent to
 	// graphene_matrix_is_2d() returning true. In particular, this means that
 	// Cairo can deal with the matrix.
-	TransformCategory2D
+	TwoD
 	// 2DAffine: the matrix is a combination of 2D scale and 2D translation
 	// operations. In particular, this means that any rectangle can be
 	// transformed exactly using this matrix.
-	TransformCategory2DAffine
+	TwoDAffine
 	// 2DTranslate: the matrix is a 2D translation.
-	TransformCategory2DTranslate
-	// identity: the matrix is the identity matrix.
-	TransformCategoryIdentity
+	TwoDTranslate
+	// Identity: the matrix is the identity matrix.
+	Identity
 )
 
 func marshalTransformCategory(p uintptr) (interface{}, error) {

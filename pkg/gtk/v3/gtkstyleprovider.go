@@ -24,6 +24,23 @@ func init() {
 	})
 }
 
+// StyleProviderOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type StyleProviderOverrider interface {
+	// IconFactory returns the IconFactory defined to be in use for @path, or
+	// nil if none is defined.
+	//
+	// Deprecated: since version 3.8.
+	IconFactory(path *WidgetPath) IconFactory
+	// Style returns the style settings affecting a widget defined by @path, or
+	// nil if @provider doesn’t contemplate styling @path.
+	//
+	// Deprecated: since version 3.8.
+	Style(path *WidgetPath) StyleProperties
+}
+
 // StyleProvider is an interface used to provide style information to a
 // StyleContext. See gtk_style_context_add_provider() and
 // gtk_style_context_add_provider_for_screen().

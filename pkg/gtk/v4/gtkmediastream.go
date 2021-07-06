@@ -24,6 +24,51 @@ func init() {
 	})
 }
 
+// MediaStreamOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type MediaStreamOverrider interface {
+	// Pause pauses playback of the stream.
+	//
+	// If the stream is not playing, do nothing.
+	Pause()
+	Play() bool
+	// Realize: called by users to attach the media stream to a `GdkSurface`
+	// they manage.
+	//
+	// The stream can then access the resources of @surface for its rendering
+	// purposes. In particular, media streams might want to create a
+	// `GdkGLContext` or sync to the `GdkFrameClock`.
+	//
+	// Whoever calls this function is responsible for calling
+	// [method@Gtk.MediaStream.unrealize] before either the stream or @surface
+	// get destroyed.
+	//
+	// Multiple calls to this function may happen from different users of the
+	// video, even with the same @surface. Each of these calls must be followed
+	// by its own call to [method@Gtk.MediaStream.unrealize].
+	//
+	// It is not required to call this function to make a media stream work.
+	Realize(surface gdk.Surface)
+	// Seek: start a seek operation on @self to @timestamp.
+	//
+	// If @timestamp is out of range, it will be clamped.
+	//
+	// Seek operations may not finish instantly. While a seek operation is in
+	// process, the [property@Gtk.MediaStream:seeking] property will be set.
+	//
+	// When calling gtk_media_stream_seek() during an ongoing seek operation,
+	// the new seek will override any pending seek.
+	Seek(timestamp int64)
+	// Unrealize undoes a previous call to gtk_media_stream_realize().
+	//
+	// This causes the stream to release all resources it had allocated from
+	// @surface.
+	Unrealize(surface gdk.Surface)
+	UpdateAudio(muted bool, volume float64)
+}
+
 // MediaStream: `GtkMediaStream` is the integration point for media playback
 // inside GTK.
 //

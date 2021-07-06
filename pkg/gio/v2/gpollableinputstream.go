@@ -38,6 +38,50 @@ func init() {
 	})
 }
 
+// PollableInputStreamOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type PollableInputStreamOverrider interface {
+	// CanPoll checks if @stream is actually pollable. Some classes may
+	// implement InputStream but have only certain instances of that class be
+	// pollable. If this method returns false, then the behavior of other
+	// InputStream methods is undefined.
+	//
+	// For any given stream, the value returned by this method is constant; a
+	// stream cannot switch from pollable to non-pollable or vice versa.
+	CanPoll() bool
+	// CreateSource creates a #GSource that triggers when @stream can be read,
+	// or @cancellable is triggered or an error occurs. The callback on the
+	// source is of the SourceFunc type.
+	//
+	// As with g_pollable_input_stream_is_readable(), it is possible that the
+	// stream may not actually be readable even after the source triggers, so
+	// you should use g_pollable_input_stream_read_nonblocking() rather than
+	// g_input_stream_read() from the callback.
+	CreateSource(cancellable Cancellable) *glib.Source
+	// IsReadable checks if @stream can be read.
+	//
+	// Note that some stream types may not be able to implement this 100%
+	// reliably, and it is possible that a call to g_input_stream_read() after
+	// this returns true would still block. To guarantee non-blocking behavior,
+	// you should always use g_pollable_input_stream_read_nonblocking(), which
+	// will return a G_IO_ERROR_WOULD_BLOCK error rather than blocking.
+	IsReadable() bool
+	// ReadNonblocking attempts to read up to @count bytes from @stream into
+	// @buffer, as with g_input_stream_read(). If @stream is not currently
+	// readable, this will immediately return G_IO_ERROR_WOULD_BLOCK, and you
+	// can use g_pollable_input_stream_create_source() to create a #GSource that
+	// will be triggered when @stream is readable.
+	//
+	// Note that since this method never blocks, you cannot actually use
+	// @cancellable to cancel it. However, it will return an error if
+	// @cancellable has already been cancelled when you call, which may happen
+	// if you call this method after a source triggers due to having been
+	// cancelled.
+	ReadNonblocking(buffer []byte) (int, error)
+}
+
 // PollableInputStream is implemented by Streams that can be polled for
 // readiness to read. This can be used when interfacing with a non-GIO API that
 // expects UNIX-file-descriptor-style asynchronous I/O rather than GIO-style.

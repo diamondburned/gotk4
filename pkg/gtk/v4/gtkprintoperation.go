@@ -35,15 +35,15 @@ func init() {
 type PrintError int
 
 const (
-	// general: unspecified error occurred.
-	PrintErrorGeneral PrintError = iota
+	// General: unspecified error occurred.
+	General PrintError = iota
 	// InternalError: internal error occurred.
-	PrintErrorInternalError
-	// nomem: memory allocation failed.
-	PrintErrorNOMEM
+	InternalError
+	// NOMEM: memory allocation failed.
+	NOMEM
 	// InvalidFile: error occurred while loading a page setup or paper size from
 	// a key file.
-	PrintErrorInvalidFile
+	InvalidFile
 )
 
 func marshalPrintError(p uintptr) (interface{}, error) {
@@ -58,15 +58,15 @@ type PrintOperationAction int
 
 const (
 	// PrintDialog: show the print dialog.
-	PrintOperationActionPrintDialog PrintOperationAction = iota
-	// print: start to print without showing the print dialog, based on the
+	PrintDialog PrintOperationAction = iota
+	// Print: start to print without showing the print dialog, based on the
 	// current print settings.
-	PrintOperationActionPrint
-	// preview: show the print preview.
-	PrintOperationActionPreview
-	// export: export to a file. This requires the export-filename property to
+	Print
+	// Preview: show the print preview.
+	Preview
+	// Export: export to a file. This requires the export-filename property to
 	// be set.
-	PrintOperationActionExport
+	Export
 )
 
 func marshalPrintOperationAction(p uintptr) (interface{}, error) {
@@ -79,16 +79,16 @@ func marshalPrintOperationAction(p uintptr) (interface{}, error) {
 type PrintOperationResult int
 
 const (
-	// error has occurred.
-	PrintOperationResultError PrintOperationResult = iota
-	// apply: the print settings should be stored.
-	PrintOperationResultApply
-	// cancel: the print operation has been canceled, the print settings should
+	// Error has occurred.
+	Error PrintOperationResult = iota
+	// Apply: the print settings should be stored.
+	Apply
+	// Cancel: the print operation has been canceled, the print settings should
 	// not be stored.
-	PrintOperationResultCancel
+	Cancel
 	// InProgress: the print operation is not complete yet. This value will only
 	// be returned when running asynchronously.
-	PrintOperationResultInProgress
+	InProgress
 )
 
 func marshalPrintOperationResult(p uintptr) (interface{}, error) {
@@ -100,28 +100,28 @@ func marshalPrintOperationResult(p uintptr) (interface{}, error) {
 type PrintStatus int
 
 const (
-	// initial: the printing has not started yet; this status is set initially,
+	// Initial: the printing has not started yet; this status is set initially,
 	// and while the print dialog is shown.
-	PrintStatusInitial PrintStatus = iota
-	// preparing: this status is set while the begin-print signal is emitted and
+	Initial PrintStatus = iota
+	// Preparing: this status is set while the begin-print signal is emitted and
 	// during pagination.
-	PrintStatusPreparing
+	Preparing
 	// GeneratingData: this status is set while the pages are being rendered.
-	PrintStatusGeneratingData
+	GeneratingData
 	// SendingData: the print job is being sent off to the printer.
-	PrintStatusSendingData
-	// pending: the print job has been sent to the printer, but is not printed
+	SendingData
+	// Pending: the print job has been sent to the printer, but is not printed
 	// for some reason, e.g. the printer may be stopped.
-	PrintStatusPending
+	Pending
 	// PendingIssue: some problem has occurred during printing, e.g. a paper
 	// jam.
-	PrintStatusPendingIssue
-	// printing: the printer is processing the print job.
-	PrintStatusPrinting
-	// finished: the printing has been completed successfully.
-	PrintStatusFinished
+	PendingIssue
+	// Printing: the printer is processing the print job.
+	Printing
+	// Finished: the printing has been completed successfully.
+	Finished
 	// FinishedAborted: the printing has been aborted.
-	PrintStatusFinishedAborted
+	FinishedAborted
 )
 
 func marshalPrintStatus(p uintptr) (interface{}, error) {
@@ -196,6 +196,23 @@ func PrintRunPageSetupDialogAsync(parent Window, pageSetup PageSetup, settings P
 	_arg5 = C.gpointer(box.Assign(doneCb))
 
 	C.gtk_print_run_page_setup_dialog_async(_arg1, _arg2, _arg3, _arg4, _arg5)
+}
+
+// PrintOperationOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type PrintOperationOverrider interface {
+	BeginPrint(context PrintContext)
+	CustomWidgetApply(widget Widget)
+	Done(result PrintOperationResult)
+	DrawPage(context PrintContext, pageNr int)
+	EndPrint(context PrintContext)
+	Paginate(context PrintContext) bool
+	Preview(preview PrintOperationPreview, context PrintContext, parent Window) bool
+	RequestPageSetup(context PrintContext, pageNr int, setup PageSetup)
+	StatusChanged()
+	UpdateCustomWidget(widget Widget, setup PageSetup, settings PrintSettings)
 }
 
 // PrintOperation: `GtkPrintOperation` is the high-level, portable printing API.

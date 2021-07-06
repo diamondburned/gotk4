@@ -32,6 +32,20 @@ func init() {
 	})
 }
 
+// MountOperationOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type MountOperationOverrider interface {
+	Aborted()
+	AskPassword(message string, defaultUser string, defaultDomain string, flags AskPasswordFlags)
+	// AskQuestion: virtual implementation of Operation::ask-question.
+	AskQuestion(message string, choices []string)
+	// Reply emits the Operation::reply signal.
+	Reply(result MountOperationResult)
+	ShowUnmountProgress(message string, timeLeft int64, bytesLeft int64)
+}
+
 // MountOperation provides a mechanism for interacting with the user. It can be
 // used for authenticating mountable operations, such as loop mounting files,
 // hard drive partitions or server locations. It can also be used to ask the

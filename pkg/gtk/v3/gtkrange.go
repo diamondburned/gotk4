@@ -33,6 +33,19 @@ func init() {
 	})
 }
 
+// RangeOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type RangeOverrider interface {
+	AdjustBounds(newValue float64)
+	ChangeValue(scroll ScrollType, newValue float64) bool
+	RangeBorder(border_ *Border)
+	RangeSizeRequest(orientation Orientation, minimum *int, natural *int)
+	MoveSlider(scroll ScrollType)
+	ValueChanged()
+}
+
 // Range is the common base class for widgets which visualize an adjustment, e.g
 // Scale or Scrollbar.
 //

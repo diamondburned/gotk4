@@ -26,6 +26,14 @@ func init() {
 	})
 }
 
+// CellRendererToggleOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type CellRendererToggleOverrider interface {
+	Toggled(path string)
+}
+
 // CellRendererToggle renders a toggle button in a cell. The button is drawn as
 // a radio or a checkbutton, depending on the CellRendererToggle:radio property.
 // When activated, it emits the CellRendererToggle::toggled signal.

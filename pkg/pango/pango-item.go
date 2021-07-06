@@ -101,8 +101,8 @@ func (i *Item) Copy() *Item {
 	return _ret
 }
 
-// Free a `PangoItem` and all associated memory.
-func (i *Item) Free() {
+// Free: free a `PangoItem` and all associated memory.
+func (i *Item) free() {
 	var _arg0 *C.PangoItem // out
 
 	_arg0 = (*C.PangoItem)(unsafe.Pointer(i))

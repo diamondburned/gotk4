@@ -26,6 +26,17 @@ func init() {
 	})
 }
 
+// ActionGroupOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type ActionGroupOverrider interface {
+	// Action looks up an action in the action group by name.
+	//
+	// Deprecated: since version 3.10.
+	Action(actionName string) Action
+}
+
 // ActionGroup actions are organised into groups. An action group is essentially
 // a map from names to Action objects.
 //

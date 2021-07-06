@@ -38,12 +38,12 @@ func init() {
 type TextExtendSelection int
 
 const (
-	// word selects the current word. It is triggered by a double-click for
+	// Word selects the current word. It is triggered by a double-click for
 	// example.
-	TextExtendSelectionWord TextExtendSelection = iota
-	// line selects the current line. It is triggered by a triple-click for
+	Word TextExtendSelection = iota
+	// Line selects the current line. It is triggered by a triple-click for
 	// example.
-	TextExtendSelectionLine
+	Line
 )
 
 func marshalTextExtendSelection(p uintptr) (interface{}, error) {
@@ -56,9 +56,9 @@ type TextViewLayer int
 
 const (
 	// BelowText: the layer rendered below the text (but above the background).
-	TextViewLayerBelowText TextViewLayer = iota
+	BelowText TextViewLayer = iota
 	// AboveText: the layer rendered above the text.
-	TextViewLayerAboveText
+	AboveText
 )
 
 func marshalTextViewLayer(p uintptr) (interface{}, error) {
@@ -69,22 +69,41 @@ func marshalTextViewLayer(p uintptr) (interface{}, error) {
 type TextWindowType int
 
 const (
-	// widget: window that floats over scrolling areas.
-	TextWindowTypeWidget TextWindowType = 1
-	// text: scrollable text window.
-	TextWindowTypeText TextWindowType = 2
-	// left: left side border window.
-	TextWindowTypeLeft TextWindowType = 3
-	// right: right side border window.
-	TextWindowTypeRight TextWindowType = 4
-	// top: top border window.
-	TextWindowTypeTop TextWindowType = 5
-	// bottom: bottom border window.
-	TextWindowTypeBottom TextWindowType = 6
+	// Widget: window that floats over scrolling areas.
+	Widget TextWindowType = 1
+	// Text: scrollable text window.
+	Text TextWindowType = 2
+	// Left: left side border window.
+	Left TextWindowType = 3
+	// Right: right side border window.
+	Right TextWindowType = 4
+	// Top: top border window.
+	Top TextWindowType = 5
+	// Bottom: bottom border window.
+	Bottom TextWindowType = 6
 )
 
 func marshalTextWindowType(p uintptr) (interface{}, error) {
 	return TextWindowType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// TextViewOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type TextViewOverrider interface {
+	Backspace()
+	CopyClipboard()
+	CutClipboard()
+	DeleteFromCursor(typ DeleteType, count int)
+	ExtendSelection(granularity TextExtendSelection, location *TextIter, start *TextIter, end *TextIter) bool
+	InsertAtCursor(str string)
+	InsertEmoji()
+	MoveCursor(step MovementStep, count int, extendSelection bool)
+	PasteClipboard()
+	SetAnchor()
+	SnapshotLayer(layer TextViewLayer, snapshot Snapshot)
+	ToggleOverwrite()
 }
 
 // TextView: widget that displays the contents of a [class@Gtk.TextBuffer].

@@ -26,6 +26,20 @@ func init() {
 	})
 }
 
+// AccessibleOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type AccessibleOverrider interface {
+	// ConnectWidgetDestroyed: this function specifies the callback function to
+	// be called when the widget corresponding to a GtkAccessible is destroyed.
+	//
+	// Deprecated: since version 3.4.
+	ConnectWidgetDestroyed()
+	WidgetSet()
+	WidgetUnset()
+}
+
 // Accessible: the Accessible class is the base class for accessible
 // implementations for Widget subclasses. It is a thin wrapper around Object,
 // which adds facilities for associating a widget with its accessible object.

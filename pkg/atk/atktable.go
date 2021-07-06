@@ -22,6 +22,101 @@ func init() {
 	})
 }
 
+// TableOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type TableOverrider interface {
+	// AddColumnSelection adds the specified @column to the selection.
+	AddColumnSelection(column int) bool
+	// AddRowSelection adds the specified @row to the selection.
+	AddRowSelection(row int) bool
+	ColumnDeleted(column int, numDeleted int)
+	ColumnInserted(column int, numInserted int)
+	ColumnReordered()
+	// Caption gets the caption for the @table.
+	Caption() Object
+	// ColumnAtIndex gets a #gint representing the column at the specified
+	// @index_.
+	//
+	// Deprecated.
+	ColumnAtIndex(index_ int) int
+	// ColumnDescription gets the description text of the specified @column in
+	// the table
+	ColumnDescription(column int) string
+	// ColumnExtentAt gets the number of columns occupied by the accessible
+	// object at the specified @row and @column in the @table.
+	ColumnExtentAt(row int, column int) int
+	// ColumnHeader gets the column header of a specified column in an
+	// accessible table.
+	ColumnHeader(column int) Object
+	// IndexAt gets a #gint representing the index at the specified @row and
+	// @column.
+	//
+	// Deprecated.
+	IndexAt(row int, column int) int
+	// NColumns gets the number of columns in the table.
+	NColumns() int
+	// NRows gets the number of rows in the table.
+	NRows() int
+	// RowAtIndex gets a #gint representing the row at the specified @index_.
+	//
+	// Deprecated.
+	RowAtIndex(index_ int) int
+	// RowDescription gets the description text of the specified row in the
+	// table
+	RowDescription(row int) string
+	// RowExtentAt gets the number of rows occupied by the accessible object at
+	// a specified @row and @column in the @table.
+	RowExtentAt(row int, column int) int
+	// RowHeader gets the row header of a specified row in an accessible table.
+	RowHeader(row int) Object
+	// SelectedColumns gets the selected columns of the table by initializing
+	// **selected with the selected column numbers. This array should be freed
+	// by the caller.
+	SelectedColumns(selected **int) int
+	// SelectedRows gets the selected rows of the table by initializing
+	// **selected with the selected row numbers. This array should be freed by
+	// the caller.
+	SelectedRows(selected **int) int
+	// Summary gets the summary description of the table.
+	Summary() Object
+	// IsColumnSelected gets a boolean value indicating whether the specified
+	// @column is selected
+	IsColumnSelected(column int) bool
+	// IsRowSelected gets a boolean value indicating whether the specified @row
+	// is selected
+	IsRowSelected(row int) bool
+	// IsSelected gets a boolean value indicating whether the accessible object
+	// at the specified @row and @column is selected
+	IsSelected(row int, column int) bool
+	ModelChanged()
+	// RefAt: get a reference to the table cell at @row, @column. This cell
+	// should implement the interface TableCell
+	RefAt(row int, column int) Object
+	// RemoveColumnSelection adds the specified @column to the selection.
+	RemoveColumnSelection(column int) bool
+	// RemoveRowSelection removes the specified @row from the selection.
+	RemoveRowSelection(row int) bool
+	RowDeleted(row int, numDeleted int)
+	RowInserted(row int, numInserted int)
+	RowReordered()
+	// SetCaption sets the caption for the table.
+	SetCaption(caption Object)
+	// SetColumnDescription sets the description text for the specified @column
+	// of the @table.
+	SetColumnDescription(column int, description string)
+	// SetColumnHeader sets the specified column header to @header.
+	SetColumnHeader(column int, header Object)
+	// SetRowDescription sets the description text for the specified @row of
+	// @table.
+	SetRowDescription(row int, description string)
+	// SetRowHeader sets the specified row header to @header.
+	SetRowHeader(row int, header Object)
+	// SetSummary sets the summary description of the table.
+	SetSummary(accessible Object)
+}
+
 // Table should be implemented by components which present elements ordered via
 // rows and columns. It may also be used to present tree-structured information
 // if the nodes of the trees can be said to contain multiple "columns".

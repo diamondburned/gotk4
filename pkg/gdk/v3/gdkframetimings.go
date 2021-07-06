@@ -168,7 +168,7 @@ func (t *FrameTimings) RefreshInterval() int64 {
 }
 
 // Ref increases the reference count of @timings.
-func (t *FrameTimings) Ref() *FrameTimings {
+func (t *FrameTimings) ref() *FrameTimings {
 	var _arg0 *C.GdkFrameTimings // out
 	var _cret *C.GdkFrameTimings // in
 
@@ -189,7 +189,7 @@ func (t *FrameTimings) Ref() *FrameTimings {
 
 // Unref decreases the reference count of @timings. If @timings is no longer
 // referenced, it will be freed.
-func (t *FrameTimings) Unref() {
+func (t *FrameTimings) unref() {
 	var _arg0 *C.GdkFrameTimings // out
 
 	_arg0 = (*C.GdkFrameTimings)(unsafe.Pointer(t))

@@ -42,17 +42,17 @@ type IconViewDropPosition int
 
 const (
 	// NoDrop: no drop possible
-	IconViewDropPositionNoDrop IconViewDropPosition = iota
+	NoDrop IconViewDropPosition = iota
 	// DropInto: dropped item replaces the item
-	IconViewDropPositionDropInto
+	DropInto
 	// DropLeft: droppped item is inserted to the left
-	IconViewDropPositionDropLeft
+	DropLeft
 	// DropRight: dropped item is inserted to the right
-	IconViewDropPositionDropRight
+	DropRight
 	// DropAbove: dropped item is inserted above
-	IconViewDropPositionDropAbove
+	DropAbove
 	// DropBelow: dropped item is inserted below
-	IconViewDropPositionDropBelow
+	DropBelow
 )
 
 func marshalIconViewDropPosition(p uintptr) (interface{}, error) {
@@ -78,6 +78,25 @@ func gotk4_IconViewForeachFunc(arg0 *C.GtkIconView, arg1 *C.GtkTreePath, arg2 C.
 
 	fn := v.(IconViewForeachFunc)
 	fn(iconView, path)
+}
+
+// IconViewOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type IconViewOverrider interface {
+	ActivateCursorItem() bool
+	// ItemActivated activates the item determined by @path.
+	ItemActivated(path *TreePath)
+	MoveCursor(step MovementStep, count int) bool
+	// SelectAll selects all the icons. @icon_view must has its selection mode
+	// set to K_SELECTION_MULTIPLE.
+	SelectAll()
+	SelectCursorItem()
+	SelectionChanged()
+	ToggleCursorItem()
+	// UnselectAll unselects all the icons.
+	UnselectAll()
 }
 
 // IconView provides an alternative view on a TreeModel. It displays the model

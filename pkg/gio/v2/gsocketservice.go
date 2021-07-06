@@ -36,6 +36,14 @@ func init() {
 	})
 }
 
+// SocketServiceOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type SocketServiceOverrider interface {
+	Incoming(connection SocketConnection, sourceObject gextras.Objector) bool
+}
+
 // SocketService is an object that represents a service that is provided to the
 // network or over local sockets. When a new connection is made to the service
 // the Service::incoming signal is emitted.

@@ -36,6 +36,47 @@ func init() {
 	})
 }
 
+// ApplicationOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type ApplicationOverrider interface {
+	// Activate activates the application.
+	//
+	// In essence, this results in the #GApplication::activate signal being
+	// emitted in the primary instance.
+	//
+	// The application must be registered before calling this function.
+	Activate()
+	AddPlatformData(builder *glib.VariantBuilder)
+	AfterEmit(platformData *glib.Variant)
+	BeforeEmit(platformData *glib.Variant)
+	CommandLine(commandLine ApplicationCommandLine) int
+	DBusRegister(connection DBusConnection, objectPath string) error
+	DBusUnregister(connection DBusConnection, objectPath string)
+	HandleLocalOptions(options *glib.VariantDict) int
+	NameLost() bool
+	// Open opens the given files.
+	//
+	// In essence, this results in the #GApplication::open signal being emitted
+	// in the primary instance.
+	//
+	// @n_files must be greater than zero.
+	//
+	// @hint is simply passed through to the ::open signal. It is intended to be
+	// used by applications that have multiple modes for opening files (eg:
+	// "view" vs "edit", etc). Unless you have a need for this functionality,
+	// you should use "".
+	//
+	// The application must be registered before calling this function and it
+	// must have the G_APPLICATION_HANDLES_OPEN flag set.
+	Open(files []File, hint string)
+	QuitMainloop()
+	RunMainloop()
+	Shutdown()
+	Startup()
+}
+
 // Application is the foundation of an application. It wraps some low-level
 // platform-specific services and is intended to act as the foundation for
 // higher-level application classes such as Application or Application. In

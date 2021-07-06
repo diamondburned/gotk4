@@ -45,10 +45,10 @@ type Allocation = gdk.Rectangle
 type WidgetHelpType int
 
 const (
-	// tooltip: tooltip.
-	WidgetHelpTypeTooltip WidgetHelpType = iota
+	// Tooltip: tooltip.
+	Tooltip WidgetHelpType = iota
 	// WhatsThis what’s this.
-	WidgetHelpTypeWhatsThis
+	WhatsThis
 )
 
 func marshalWidgetHelpType(p uintptr) (interface{}, error) {
@@ -147,6 +147,275 @@ func CairoTransformToWindow(cr *cairo.Context, widget Widget, window gdk.Window)
 	_arg3 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	C.gtk_cairo_transform_to_window(_arg1, _arg2, _arg3)
+}
+
+// WidgetOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type WidgetOverrider interface {
+	AdjustBaselineAllocation(baseline *int)
+	AdjustBaselineRequest(minimumBaseline *int, naturalBaseline *int)
+	AdjustSizeAllocation(orientation Orientation, minimumSize *int, naturalSize *int, allocatedPos *int, allocatedSize *int)
+	AdjustSizeRequest(orientation Orientation, minimumSize *int, naturalSize *int)
+	ButtonPressEvent(event *gdk.EventButton) bool
+	ButtonReleaseEvent(event *gdk.EventButton) bool
+	// CanActivateAccel determines whether an accelerator that activates the
+	// signal identified by @signal_id can currently be activated. This is done
+	// by emitting the Widget::can-activate-accel signal on @widget; if the
+	// signal isn’t overridden by a handler or in a derived widget, then the
+	// default check is that the widget must be sensitive, and the widget and
+	// all its ancestors mapped.
+	CanActivateAccel(signalId uint) bool
+	CompositedChanged()
+	ComputeExpand(hexpandP *bool, vexpandP *bool)
+	ConfigureEvent(event *gdk.EventConfigure) bool
+	DamageEvent(event *gdk.EventExpose) bool
+	DeleteEvent(event *gdk.EventAny) bool
+	// Destroy destroys a widget.
+	//
+	// When a widget is destroyed all references it holds on other objects will
+	// be released:
+	//
+	//    - if the widget is inside a container, it will be removed from its
+	//    parent
+	//    - if the widget is a container, all its children will be destroyed,
+	//    recursively
+	//    - if the widget is a top level, it will be removed from the list
+	//    of top level widgets that GTK+ maintains internally
+	//
+	// It's expected that all references held on the widget will also be
+	// released; you should connect to the Widget::destroy signal if you hold a
+	// reference to @widget and you wish to remove it when this function is
+	// called. It is not necessary to do so if you are implementing a Container,
+	// as you'll be able to use the ContainerClass.remove() virtual function for
+	// that.
+	//
+	// It's important to notice that gtk_widget_destroy() will only cause the
+	// @widget to be finalized if no additional references, acquired using
+	// g_object_ref(), are held on it. In case additional references are in
+	// place, the @widget will be in an "inert" state after calling this
+	// function; @widget will still point to valid memory, allowing you to
+	// release the references you hold, but you may not query the widget's own
+	// state.
+	//
+	// You should typically call this function on top level widgets, and rarely
+	// on child widgets.
+	//
+	// See also: gtk_container_remove()
+	Destroy()
+	DestroyEvent(event *gdk.EventAny) bool
+	DirectionChanged(previousDirection TextDirection)
+	DragBegin(context gdk.DragContext)
+	DragDataDelete(context gdk.DragContext)
+	DragDataGet(context gdk.DragContext, selectionData *SelectionData, info uint, time_ uint)
+	DragDataReceived(context gdk.DragContext, x int, y int, selectionData *SelectionData, info uint, time_ uint)
+	DragDrop(context gdk.DragContext, x int, y int, time_ uint) bool
+	DragEnd(context gdk.DragContext)
+	DragFailed(context gdk.DragContext, result DragResult) bool
+	DragLeave(context gdk.DragContext, time_ uint)
+	DragMotion(context gdk.DragContext, x int, y int, time_ uint) bool
+	Draw(cr *cairo.Context) bool
+	EnterNotifyEvent(event *gdk.EventCrossing) bool
+	Focus(direction DirectionType) bool
+	FocusInEvent(event *gdk.EventFocus) bool
+	FocusOutEvent(event *gdk.EventFocus) bool
+	// Accessible returns the accessible object that describes the widget to an
+	// assistive technology.
+	//
+	// If accessibility support is not available, this Object instance may be a
+	// no-op. Likewise, if no class-specific Object implementation is available
+	// for the widget instance in question, it will inherit an Object
+	// implementation from the first ancestor class for which such an
+	// implementation is defined.
+	//
+	// The documentation of the ATK (http://developer.gnome.org/atk/stable/)
+	// library contains more information about accessible objects and their
+	// uses.
+	Accessible() atk.Object
+	// PreferredHeight retrieves a widget’s initial minimum and natural height.
+	//
+	// This call is specific to width-for-height requests.
+	//
+	// The returned request will be modified by the
+	// GtkWidgetClass::adjust_size_request virtual method and by any SizeGroups
+	// that have been applied. That is, the returned request is the one that
+	// should be used for layout, not necessarily the one returned by the widget
+	// itself.
+	PreferredHeight() (minimumHeight int, naturalHeight int)
+	// PreferredHeightAndBaselineForWidth retrieves a widget’s minimum and
+	// natural height and the corresponding baselines if it would be given the
+	// specified @width, or the default height if @width is -1. The baselines
+	// may be -1 which means that no baseline is requested for this widget.
+	//
+	// The returned request will be modified by the
+	// GtkWidgetClass::adjust_size_request and
+	// GtkWidgetClass::adjust_baseline_request virtual methods and by any
+	// SizeGroups that have been applied. That is, the returned request is the
+	// one that should be used for layout, not necessarily the one returned by
+	// the widget itself.
+	PreferredHeightAndBaselineForWidth(width int) (minimumHeight int, naturalHeight int, minimumBaseline int, naturalBaseline int)
+	// PreferredHeightForWidth retrieves a widget’s minimum and natural height
+	// if it would be given the specified @width.
+	//
+	// The returned request will be modified by the
+	// GtkWidgetClass::adjust_size_request virtual method and by any SizeGroups
+	// that have been applied. That is, the returned request is the one that
+	// should be used for layout, not necessarily the one returned by the widget
+	// itself.
+	PreferredHeightForWidth(width int) (minimumHeight int, naturalHeight int)
+	// PreferredWidth retrieves a widget’s initial minimum and natural width.
+	//
+	// This call is specific to height-for-width requests.
+	//
+	// The returned request will be modified by the
+	// GtkWidgetClass::adjust_size_request virtual method and by any SizeGroups
+	// that have been applied. That is, the returned request is the one that
+	// should be used for layout, not necessarily the one returned by the widget
+	// itself.
+	PreferredWidth() (minimumWidth int, naturalWidth int)
+	// PreferredWidthForHeight retrieves a widget’s minimum and natural width if
+	// it would be given the specified @height.
+	//
+	// The returned request will be modified by the
+	// GtkWidgetClass::adjust_size_request virtual method and by any SizeGroups
+	// that have been applied. That is, the returned request is the one that
+	// should be used for layout, not necessarily the one returned by the widget
+	// itself.
+	PreferredWidthForHeight(height int) (minimumWidth int, naturalWidth int)
+	// RequestMode gets whether the widget prefers a height-for-width layout or
+	// a width-for-height layout.
+	//
+	// Bin widgets generally propagate the preference of their child, container
+	// widgets need to request something either in context of their children or
+	// in context of their allocation capabilities.
+	RequestMode() SizeRequestMode
+	GrabBrokenEvent(event *gdk.EventGrabBroken) bool
+	// GrabFocus causes @widget to have the keyboard focus for the Window it's
+	// inside. @widget must be a focusable widget, such as a Entry; something
+	// like Frame won’t work.
+	//
+	// More precisely, it must have the GTK_CAN_FOCUS flag set. Use
+	// gtk_widget_set_can_focus() to modify that flag.
+	//
+	// The widget also needs to be realized and mapped. This is indicated by the
+	// related signals. Grabbing the focus immediately after creating the widget
+	// will likely fail and cause critical warnings.
+	GrabFocus()
+	GrabNotify(wasGrabbed bool)
+	// Hide reverses the effects of gtk_widget_show(), causing the widget to be
+	// hidden (invisible to the user).
+	Hide()
+	HierarchyChanged(previousToplevel Widget)
+	KeyPressEvent(event *gdk.EventKey) bool
+	KeyReleaseEvent(event *gdk.EventKey) bool
+	// KeynavFailed: this function should be called whenever keyboard navigation
+	// within a single widget hits a boundary. The function emits the
+	// Widget::keynav-failed signal on the widget and its return value should be
+	// interpreted in a way similar to the return value of
+	// gtk_widget_child_focus():
+	//
+	// When true is returned, stay in the widget, the failed keyboard navigation
+	// is OK and/or there is nowhere we can/should move the focus to.
+	//
+	// When false is returned, the caller should continue with keyboard
+	// navigation outside the widget, e.g. by calling gtk_widget_child_focus()
+	// on the widget’s toplevel.
+	//
+	// The default ::keynav-failed handler returns false for GTK_DIR_TAB_FORWARD
+	// and GTK_DIR_TAB_BACKWARD. For the other values of DirectionType it
+	// returns true.
+	//
+	// Whenever the default handler returns true, it also calls
+	// gtk_widget_error_bell() to notify the user of the failed keyboard
+	// navigation.
+	//
+	// A use case for providing an own implementation of ::keynav-failed (either
+	// by connecting to it or by overriding it) would be a row of Entry widgets
+	// where the user should be able to navigate the entire row with the cursor
+	// keys, as e.g. known from user interfaces that require entering license
+	// keys.
+	KeynavFailed(direction DirectionType) bool
+	LeaveNotifyEvent(event *gdk.EventCrossing) bool
+	// Map: this function is only for use in widget implementations. Causes a
+	// widget to be mapped if it isn’t already.
+	Map()
+	MapEvent(event *gdk.EventAny) bool
+	// MnemonicActivate emits the Widget::mnemonic-activate signal.
+	MnemonicActivate(groupCycling bool) bool
+	MotionNotifyEvent(event *gdk.EventMotion) bool
+	MoveFocus(direction DirectionType)
+	ParentSet(previousParent Widget)
+	PopupMenu() bool
+	PropertyNotifyEvent(event *gdk.EventProperty) bool
+	ProximityInEvent(event *gdk.EventProximity) bool
+	ProximityOutEvent(event *gdk.EventProximity) bool
+	QueryTooltip(x int, y int, keyboardTooltip bool, tooltip Tooltip) bool
+	// QueueDrawRegion invalidates the area of @widget defined by @region by
+	// calling gdk_window_invalidate_region() on the widget’s window and all its
+	// child windows. Once the main loop becomes idle (after the current batch
+	// of events has been processed, roughly), the window will receive expose
+	// events for the union of all regions that have been invalidated.
+	//
+	// Normally you would only use this function in widget implementations. You
+	// might also use it to schedule a redraw of a DrawingArea or some portion
+	// thereof.
+	QueueDrawRegion(region *cairo.Region)
+	// Realize creates the GDK (windowing system) resources associated with a
+	// widget. For example, @widget->window will be created when a widget is
+	// realized. Normally realization happens implicitly; if you show a widget
+	// and all its parent containers, then the widget will be realized and
+	// mapped automatically.
+	//
+	// Realizing a widget requires all the widget’s parent widgets to be
+	// realized; calling gtk_widget_realize() realizes the widget’s parents in
+	// addition to @widget itself. If a widget is not yet inside a toplevel
+	// window when you realize it, bad things will happen.
+	//
+	// This function is primarily used in widget implementations, and isn’t very
+	// useful otherwise. Many times when you think you might need it, a better
+	// approach is to connect to a signal that will be called after the widget
+	// is realized automatically, such as Widget::draw. Or simply
+	// g_signal_connect () to the Widget::realize signal.
+	Realize()
+	ScreenChanged(previousScreen gdk.Screen)
+	ScrollEvent(event *gdk.EventScroll) bool
+	SelectionClearEvent(event *gdk.EventSelection) bool
+	SelectionGet(selectionData *SelectionData, info uint, time_ uint)
+	SelectionNotifyEvent(event *gdk.EventSelection) bool
+	SelectionReceived(selectionData *SelectionData, time_ uint)
+	SelectionRequestEvent(event *gdk.EventSelection) bool
+	// Show flags a widget to be displayed. Any widget that isn’t shown will not
+	// appear on the screen. If you want to show all the widgets in a container,
+	// it’s easier to call gtk_widget_show_all() on the container, instead of
+	// individually showing the widgets.
+	//
+	// Remember that you have to show the containers containing a widget, in
+	// addition to the widget itself, before it will appear onscreen.
+	//
+	// When a toplevel container is shown, it is immediately realized and
+	// mapped; other shown widgets are realized and mapped when their toplevel
+	// container is realized and mapped.
+	Show()
+	// ShowAll: recursively shows a widget, and any child widgets (if the widget
+	// is a container).
+	ShowAll()
+	ShowHelp(helpType WidgetHelpType) bool
+	StateChanged(previousState StateType)
+	StateFlagsChanged(previousStateFlags StateFlags)
+	StyleSet(previousStyle Style)
+	StyleUpdated()
+	TouchEvent(event *gdk.EventTouch) bool
+	// Unmap: this function is only for use in widget implementations. Causes a
+	// widget to be unmapped if it’s currently mapped.
+	Unmap()
+	UnmapEvent(event *gdk.EventAny) bool
+	// Unrealize: this function is only useful in widget implementations. Causes
+	// a widget to be unrealized (frees all GDK resources associated with the
+	// widget, such as @widget->window).
+	Unrealize()
+	VisibilityNotifyEvent(event *gdk.EventVisibility) bool
+	WindowStateEvent(event *gdk.EventWindowState) bool
 }
 
 // Widget is the base class all widgets in GTK+ derive from. It manages the
@@ -5541,7 +5810,7 @@ func (r *Requisition) Copy() *Requisition {
 }
 
 // Free frees a Requisition.
-func (r *Requisition) Free() {
+func (r *Requisition) free() {
 	var _arg0 *C.GtkRequisition // out
 
 	_arg0 = (*C.GtkRequisition)(unsafe.Pointer(r))

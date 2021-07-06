@@ -22,6 +22,35 @@ func init() {
 	})
 }
 
+// ColorChooserOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type ColorChooserOverrider interface {
+	// AddPalette adds a palette to the color chooser.
+	//
+	// If @orientation is horizontal, the colors are grouped in rows, with
+	// @colors_per_line colors in each row. If @horizontal is false, the colors
+	// are grouped in columns instead.
+	//
+	// The default color palette of [class@Gtk.ColorChooserWidget] has 45
+	// colors, organized in columns of 5 colors (this includes some grays).
+	//
+	// The layout of the color chooser widget works best when the palettes have
+	// 9-10 columns.
+	//
+	// Calling this function for the first time has the side effect of removing
+	// the default color palette from the color chooser.
+	//
+	// If @colors is nil, removes all previously added palettes.
+	AddPalette(orientation Orientation, colorsPerLine int, colors []gdk.RGBA)
+	ColorActivated(color *gdk.RGBA)
+	// RGBA gets the currently-selected color.
+	RGBA() gdk.RGBA
+	// SetRGBA sets the color.
+	SetRGBA(color *gdk.RGBA)
+}
+
 // ColorChooser: `GtkColorChooser` is an interface that is implemented by
 // widgets for choosing colors.
 //

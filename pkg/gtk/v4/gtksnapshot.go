@@ -64,7 +64,6 @@ type Snapshot interface {
 	AppendConicGradient(bounds *graphene.Rect, center *graphene.Point, rotation float32, stops []gsk.ColorStop)
 	// AppendInsetShadow appends an inset shadow into the box given by @outline.
 	AppendInsetShadow(outline *gsk.RoundedRect, color *gdk.RGBA, dx float32, dy float32, spread float32, blurRadius float32)
-
 	AppendLayout(layout pango.Layout, color *gdk.RGBA)
 	// AppendLinearGradient appends a linear gradient node with the given stops
 	// to @snapshot.

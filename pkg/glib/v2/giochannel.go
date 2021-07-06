@@ -27,24 +27,24 @@ func init() {
 type IOChannelError int
 
 const (
-	// fbig: file too large.
-	IOChannelErrorFbig IOChannelError = iota
-	// inval: invalid argument.
-	IOChannelErrorInval
-	// io: IO error.
-	IOChannelErrorIO
-	// isdir: file is a directory.
-	IOChannelErrorIsdir
-	// nospc: no space left on device.
-	IOChannelErrorNospc
-	// nxio: no such device or address.
-	IOChannelErrorNxio
-	// overflow: value too large for defined datatype.
-	IOChannelErrorOverflow
-	// pipe: broken pipe.
-	IOChannelErrorPipe
-	// failed: some other error.
-	IOChannelErrorFailed
+	// Fbig: file too large.
+	Fbig IOChannelError = iota
+	// Inval: invalid argument.
+	Inval
+	// IO: IO error.
+	IO
+	// Isdir: file is a directory.
+	Isdir
+	// Nospc: no space left on device.
+	Nospc
+	// Nxio: no such device or address.
+	Nxio
+	// Overflow: value too large for defined datatype.
+	Overflow
+	// Pipe: broken pipe.
+	Pipe
+	// Failed: some other error.
+	Failed
 )
 
 // IOError is only used by the deprecated functions g_io_channel_read(),
@@ -52,28 +52,28 @@ const (
 type IOError int
 
 const (
-	// none: no error
-	IOErrorNone IOError = iota
-	// again: EAGAIN error occurred
-	IOErrorAgain
-	// inval: EINVAL error occurred
-	IOErrorInval
-	// unknown: another error occurred
-	IOErrorUnknown
+	// None: no error
+	None IOError = iota
+	// Again: EAGAIN error occurred
+	Again
+	// Inval: EINVAL error occurred
+	Inval
+	// Unknown: another error occurred
+	Unknown
 )
 
 // IOStatus statuses returned by most of the OFuncs functions.
 type IOStatus int
 
 const (
-	// error occurred.
-	IOStatusError IOStatus = iota
-	// normal: success.
-	IOStatusNormal
-	// eof: end of file.
-	IOStatusEOF
-	// again: resource temporarily unavailable.
-	IOStatusAgain
+	// Error occurred.
+	Error IOStatus = iota
+	// Normal: success.
+	Normal
+	// EOF: end of file.
+	EOF
+	// Again: resource temporarily unavailable.
+	Again
 )
 
 // SeekType: enumeration specifying the base position for a
@@ -81,12 +81,12 @@ const (
 type SeekType int
 
 const (
-	// cur: the current position in the file.
-	SeekTypeCur SeekType = iota
-	// set: the start of the file.
-	SeekTypeSet
-	// end: the end of the file.
-	SeekTypeEnd
+	// Cur: the current position in the file.
+	Cur SeekType = iota
+	// Set: the start of the file.
+	Set
+	// End: the end of the file.
+	End
 )
 
 // IOFlags specifies properties of a OChannel. Some of the flags can only be
@@ -513,7 +513,7 @@ func (c *IOChannel) ReadUnichar() (uint32, IOStatus, error) {
 }
 
 // Ref increments the reference count of a OChannel.
-func (c *IOChannel) Ref() *IOChannel {
+func (c *IOChannel) ref() *IOChannel {
 	var _arg0 *C.GIOChannel // out
 	var _cret *C.GIOChannel // in
 
@@ -770,7 +770,7 @@ func (c *IOChannel) UnixGetFd() int {
 }
 
 // Unref decrements the reference count of a OChannel.
-func (c *IOChannel) Unref() {
+func (c *IOChannel) unref() {
 	var _arg0 *C.GIOChannel // out
 
 	_arg0 = (*C.GIOChannel)(unsafe.Pointer(c))

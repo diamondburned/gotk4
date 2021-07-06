@@ -32,6 +32,21 @@ func init() {
 	})
 }
 
+// TLSBackendOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type TLSBackendOverrider interface {
+	// DefaultDatabase gets the default Database used to verify TLS connections.
+	DefaultDatabase() TLSDatabase
+	// SupportsDTLS checks if DTLS is supported. DTLS support may not be
+	// available even if TLS support is available, and vice-versa.
+	SupportsDTLS() bool
+	// SupportsTLS checks if TLS is supported; if this returns false for the
+	// default Backend, it means no "real" TLS backend is available.
+	SupportsTLS() bool
+}
+
 // TLSBackend: TLS (Transport Layer Security, aka SSL) and DTLS backend.
 type TLSBackend interface {
 	gextras.Objector

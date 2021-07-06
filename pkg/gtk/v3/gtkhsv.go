@@ -33,6 +33,15 @@ func init() {
 	})
 }
 
+// HSVOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type HSVOverrider interface {
+	Changed()
+	Move(typ DirectionType)
+}
+
 // HSV is the “color wheel” part of a complete color selector widget. It allows
 // to select a color by determining its HSV components in an intuitive way.
 // Moving the selection around the outer ring changes the hue, and moving the

@@ -26,6 +26,14 @@ func init() {
 	})
 }
 
+// CellAccessibleOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type CellAccessibleOverrider interface {
+	UpdateCache(emitSignal bool)
+}
+
 type CellAccessible interface {
 	gextras.Objector
 

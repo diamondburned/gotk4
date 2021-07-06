@@ -57,6 +57,14 @@ func gotk4_DrawingAreaDrawFunc(arg0 *C.GtkDrawingArea, arg1 *C.cairo_t, arg2 C.i
 	fn(drawingArea, cr, width, height)
 }
 
+// DrawingAreaOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type DrawingAreaOverrider interface {
+	Resize(width int, height int)
+}
+
 // DrawingArea: `GtkDrawingArea` is a widget that allows drawing with cairo.
 //
 // !An example GtkDrawingArea (drawingarea.png)

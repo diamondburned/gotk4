@@ -35,6 +35,16 @@ func init() {
 	})
 }
 
+// ToggleButtonOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type ToggleButtonOverrider interface {
+	// Toggled emits the ToggleButton::toggled signal on the ToggleButton. There
+	// is no good reason for an application ever to call this function.
+	Toggled()
+}
+
 // ToggleButton is a Button which will remain “pressed-in” when clicked.
 // Clicking again will cause the toggle button to return to its normal state.
 //

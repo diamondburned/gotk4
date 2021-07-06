@@ -34,26 +34,26 @@ func init() {
 type RevealerTransitionType int
 
 const (
-	// none: no transition
-	RevealerTransitionTypeNone RevealerTransitionType = iota
-	// crossfade: fade in
-	RevealerTransitionTypeCrossfade
+	// None: no transition
+	None RevealerTransitionType = iota
+	// Crossfade: fade in
+	Crossfade
 	// SlideRight: slide in from the left
-	RevealerTransitionTypeSlideRight
+	SlideRight
 	// SlideLeft: slide in from the right
-	RevealerTransitionTypeSlideLeft
+	SlideLeft
 	// SlideUp: slide in from the bottom
-	RevealerTransitionTypeSlideUp
+	SlideUp
 	// SlideDown: slide in from the top
-	RevealerTransitionTypeSlideDown
+	SlideDown
 	// SwingRight: floop in from the left
-	RevealerTransitionTypeSwingRight
+	SwingRight
 	// SwingLeft: floop in from the right
-	RevealerTransitionTypeSwingLeft
+	SwingLeft
 	// SwingUp: floop in from the bottom
-	RevealerTransitionTypeSwingUp
+	SwingUp
 	// SwingDown: floop in from the top
-	RevealerTransitionTypeSwingDown
+	SwingDown
 )
 
 func marshalRevealerTransitionType(p uintptr) (interface{}, error) {

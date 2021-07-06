@@ -35,6 +35,29 @@ func init() {
 	})
 }
 
+// MenuShellOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type MenuShellOverrider interface {
+	ActivateCurrent(forceHide bool)
+	// Cancel cancels the selection within the menu shell.
+	Cancel()
+	// Deactivate deactivates the menu shell.
+	//
+	// Typically this results in the menu shell being erased from the screen.
+	Deactivate()
+	PopupDelay() int
+	// Insert adds a new MenuItem to the menu shell’s item list at the position
+	// indicated by @position.
+	Insert(child Widget, position int)
+	MoveCurrent(direction MenuDirectionType)
+	MoveSelected(distance int) bool
+	// SelectItem selects the menu item from the menu shell.
+	SelectItem(menuItem Widget)
+	SelectionDone()
+}
+
 // MenuShell is the abstract base class used to derive the Menu and MenuBar
 // subclasses.
 //

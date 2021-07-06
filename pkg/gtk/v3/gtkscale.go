@@ -33,6 +33,23 @@ func init() {
 	})
 }
 
+// ScaleOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type ScaleOverrider interface {
+	DrawValue()
+	FormatValue(value float64) string
+	// LayoutOffsets obtains the coordinates where the scale will draw the
+	// Layout representing the text in the scale. Remember when using the Layout
+	// function you need to convert to and from pixels using PANGO_PIXELS() or
+	// NGO_SCALE.
+	//
+	// If the Scale:draw-value property is false, the return values are
+	// undefined.
+	LayoutOffsets() (x int, y int)
+}
+
 // Scale is a slider control used to select a numeric value. To use it, you’ll
 // probably want to investigate the methods on its base class, Range, in
 // addition to the methods for GtkScale itself. To set the value of a scale, you

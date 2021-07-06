@@ -34,6 +34,20 @@ func init() {
 	})
 }
 
+// AsyncResultOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type AsyncResultOverrider interface {
+	// SourceObject gets the source object from a Result.
+	SourceObject() gextras.Objector
+	// UserData gets the user data from a Result.
+	UserData() interface{}
+	// IsTagged checks if @res has the given @source_tag (generally a function
+	// pointer indicating the function @res was created by).
+	IsTagged(sourceTag interface{}) bool
+}
+
 // AsyncResult provides a base class for implementing asynchronous function
 // results.
 //

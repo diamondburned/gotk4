@@ -35,6 +35,14 @@ func init() {
 	})
 }
 
+// ToolButtonOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type ToolButtonOverrider interface {
+	Clicked()
+}
+
 // ToolButton are ToolItems containing buttons.
 //
 // Use gtk_tool_button_new() to create a new ToolButton.

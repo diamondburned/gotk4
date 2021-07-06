@@ -35,6 +35,27 @@ func init() {
 	})
 }
 
+// MenuItemOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type MenuItemOverrider interface {
+	// Activate emits the MenuItem::activate signal on the given item
+	Activate()
+	ActivateItem()
+	// Deselect emits the MenuItem::deselect signal on the given item.
+	Deselect()
+	// Label sets @text on the @menu_item label
+	Label() string
+	// Select emits the MenuItem::select signal on the given item.
+	Select()
+	// SetLabel sets @text on the @menu_item label
+	SetLabel(label string)
+	// ToggleSizeAllocate emits the MenuItem::toggle-size-allocate signal on the
+	// given item.
+	ToggleSizeAllocate(allocation int)
+}
+
 // MenuItem: the MenuItem widget and the derived widgets are the only valid
 // children for menus. Their function is to correctly handle highlighting,
 // alignment, events and submenus.

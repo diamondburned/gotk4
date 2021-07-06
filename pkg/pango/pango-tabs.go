@@ -28,8 +28,8 @@ func init() {
 type TabAlign int
 
 const (
-	// left: the tab stop appears to the left of the text.
-	TabAlignLeft TabAlign = iota
+	// Left: the tab stop appears to the left of the text.
+	Left TabAlign = iota
 )
 
 func marshalTabAlign(p uintptr) (interface{}, error) {
@@ -103,7 +103,7 @@ func (s *TabArray) Copy() *TabArray {
 }
 
 // Free frees a tab array and associated resources.
-func (t *TabArray) Free() {
+func (t *TabArray) free() {
 	var _arg0 *C.PangoTabArray // out
 
 	_arg0 = (*C.PangoTabArray)(unsafe.Pointer(t))

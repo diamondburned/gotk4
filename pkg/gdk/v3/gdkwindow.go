@@ -44,9 +44,9 @@ type FullscreenMode int
 
 const (
 	// CurrentMonitor: fullscreen on current monitor only.
-	FullscreenModeCurrentMonitor FullscreenMode = iota
+	CurrentMonitor FullscreenMode = iota
 	// AllMonitors: span across all monitors when fullscreen.
-	FullscreenModeAllMonitors
+	AllMonitors
 )
 
 func marshalFullscreenMode(p uintptr) (interface{}, error) {
@@ -62,26 +62,26 @@ type Gravity int
 
 const (
 	// NorthWest: the reference point is at the top left corner.
-	GravityNorthWest Gravity = 1
-	// north: the reference point is in the middle of the top edge.
-	GravityNorth Gravity = 2
+	NorthWest Gravity = 1
+	// North: the reference point is in the middle of the top edge.
+	North Gravity = 2
 	// NorthEast: the reference point is at the top right corner.
-	GravityNorthEast Gravity = 3
-	// west: the reference point is at the middle of the left edge.
-	GravityWest Gravity = 4
-	// center: the reference point is at the center of the window.
-	GravityCenter Gravity = 5
-	// east: the reference point is at the middle of the right edge.
-	GravityEast Gravity = 6
+	NorthEast Gravity = 3
+	// West: the reference point is at the middle of the left edge.
+	West Gravity = 4
+	// Center: the reference point is at the center of the window.
+	Center Gravity = 5
+	// East: the reference point is at the middle of the right edge.
+	East Gravity = 6
 	// SouthWest: the reference point is at the lower left corner.
-	GravitySouthWest Gravity = 7
-	// south: the reference point is at the middle of the lower edge.
-	GravitySouth Gravity = 8
+	SouthWest Gravity = 7
+	// South: the reference point is at the middle of the lower edge.
+	South Gravity = 8
 	// SouthEast: the reference point is at the lower right corner.
-	GravitySouthEast Gravity = 9
-	// static: the reference point is at the top left corner of the window
+	SouthEast Gravity = 9
+	// Static: the reference point is at the top left corner of the window
 	// itself, ignoring window manager decorations.
-	GravityStatic Gravity = 10
+	Static Gravity = 10
 )
 
 func marshalGravity(p uintptr) (interface{}, error) {
@@ -93,21 +93,21 @@ type WindowEdge int
 
 const (
 	// NorthWest: the top left corner.
-	WindowEdgeNorthWest WindowEdge = iota
-	// north: the top edge.
-	WindowEdgeNorth
+	NorthWest WindowEdge = iota
+	// North: the top edge.
+	North
 	// NorthEast: the top right corner.
-	WindowEdgeNorthEast
-	// west: the left edge.
-	WindowEdgeWest
-	// east: the right edge.
-	WindowEdgeEast
+	NorthEast
+	// West: the left edge.
+	West
+	// East: the right edge.
+	East
 	// SouthWest: the lower left corner.
-	WindowEdgeSouthWest
-	// south: the lower edge.
-	WindowEdgeSouth
+	SouthWest
+	// South: the lower edge.
+	South
 	// SouthEast: the lower right corner.
-	WindowEdgeSouthEast
+	SouthEast
 )
 
 func marshalWindowEdge(p uintptr) (interface{}, error) {
@@ -118,23 +118,23 @@ func marshalWindowEdge(p uintptr) (interface{}, error) {
 type WindowType int
 
 const (
-	// root window; this window has no parent, covers the entire screen, and is
+	// Root window; this window has no parent, covers the entire screen, and is
 	// created by the window system
-	WindowTypeRoot WindowType = iota
-	// toplevel window (used to implement Window)
-	WindowTypeToplevel
-	// child window (used to implement e.g. Entry)
-	WindowTypeChild
-	// temp: override redirect temporary window (used to implement Menu)
-	WindowTypeTemp
-	// foreign window (see gdk_window_foreign_new())
-	WindowTypeForeign
-	// offscreen window (see [Offscreen Windows][OFFSCREEN-WINDOWS]). Since 2.18
-	WindowTypeOffscreen
-	// subsurface: subsurface-based window; This window is visually tied to a
+	Root WindowType = iota
+	// Toplevel window (used to implement Window)
+	Toplevel
+	// Child window (used to implement e.g. Entry)
+	Child
+	// Temp: override redirect temporary window (used to implement Menu)
+	Temp
+	// Foreign window (see gdk_window_foreign_new())
+	Foreign
+	// Offscreen window (see [Offscreen Windows][OFFSCREEN-WINDOWS]). Since 2.18
+	Offscreen
+	// Subsurface: subsurface-based window; This window is visually tied to a
 	// toplevel, and is moved/stacked with it. Currently this window type is
 	// only implemented in Wayland. Since 3.14
-	WindowTypeSubsurface
+	Subsurface
 )
 
 func marshalWindowType(p uintptr) (interface{}, error) {
@@ -150,9 +150,9 @@ type WindowWindowClass int
 
 const (
 	// InputOutput: window for graphics and events
-	WindowWindowClassInputOutput WindowWindowClass = iota
+	InputOutput WindowWindowClass = iota
 	// InputOnly: window for events only
-	WindowWindowClassInputOnly
+	InputOnly
 )
 
 func marshalWindowWindowClass(p uintptr) (interface{}, error) {
@@ -410,6 +410,16 @@ func OffscreenWindowSetEmbedder(window Window, embedder Window) {
 	C.gdk_offscreen_window_set_embedder(_arg1, _arg2)
 }
 
+// WindowOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type WindowOverrider interface {
+	CreateSurface(width int, height int) *cairo.Surface
+	FromEmbedder(embedderX float64, embedderY float64, offscreenX *float64, offscreenY *float64)
+	ToEmbedder(offscreenX float64, offscreenY float64, embedderX *float64, embedderY *float64)
+}
+
 type Window interface {
 	gextras.Objector
 
@@ -611,7 +621,6 @@ type Window interface {
 	// count reaches zero. You must call this function yourself before that
 	// happens.
 	Destroy()
-
 	DestroyNotify()
 	// EnableSynchronizedConfigure does nothing, present only for compatiblity.
 	//

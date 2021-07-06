@@ -36,6 +36,100 @@ func init() {
 	})
 }
 
+// DriveOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type DriveOverrider interface {
+	// CanEject checks if a drive can be ejected.
+	CanEject() bool
+	// CanPollForMedia checks if a drive can be polled for media changes.
+	CanPollForMedia() bool
+	// CanStart checks if a drive can be started.
+	CanStart() bool
+	// CanStartDegraded checks if a drive can be started degraded.
+	CanStartDegraded() bool
+	// CanStop checks if a drive can be stopped.
+	CanStop() bool
+	Changed()
+	Disconnected()
+	// Eject: asynchronously ejects a drive.
+	//
+	// When the operation is finished, @callback will be called. You can then
+	// call g_drive_eject_finish() to obtain the result of the operation.
+	//
+	// Deprecated: since version 2.22.
+	Eject(flags MountUnmountFlags, cancellable Cancellable, callback AsyncReadyCallback)
+	EjectButton()
+	// EjectFinish finishes ejecting a drive.
+	//
+	// Deprecated: since version 2.22.
+	EjectFinish(result AsyncResult) error
+	// EjectWithOperation ejects a drive. This is an asynchronous operation, and
+	// is finished by calling g_drive_eject_with_operation_finish() with the
+	// @drive and Result data returned in the @callback.
+	EjectWithOperation(flags MountUnmountFlags, mountOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback)
+	// EjectWithOperationFinish finishes ejecting a drive. If any errors
+	// occurred during the operation, @error will be set to contain the errors
+	// and false will be returned.
+	EjectWithOperationFinish(result AsyncResult) error
+	// EnumerateIdentifiers gets the kinds of identifiers that @drive has. Use
+	// g_drive_get_identifier() to obtain the identifiers themselves.
+	EnumerateIdentifiers() []string
+	// Icon gets the icon for @drive.
+	Icon() Icon
+	// Identifier gets the identifier of the given kind for @drive. The only
+	// identifier currently available is DRIVE_IDENTIFIER_KIND_UNIX_DEVICE.
+	Identifier(kind string) string
+	// Name gets the name of @drive.
+	Name() string
+	// SortKey gets the sort key for @drive, if any.
+	SortKey() string
+	// StartStopType gets a hint about how a drive can be started/stopped.
+	StartStopType() DriveStartStopType
+	// SymbolicIcon gets the icon for @drive.
+	SymbolicIcon() Icon
+	// HasMedia checks if the @drive has media. Note that the OS may not be
+	// polling the drive for media changes; see
+	// g_drive_is_media_check_automatic() for more details.
+	HasMedia() bool
+	// HasVolumes: check if @drive has any mountable volumes.
+	HasVolumes() bool
+	// IsMediaCheckAutomatic checks if @drive is capable of automatically
+	// detecting media changes.
+	IsMediaCheckAutomatic() bool
+	// IsMediaRemovable checks if the @drive supports removable media.
+	IsMediaRemovable() bool
+	// IsRemovable checks if the #GDrive and/or its media is considered
+	// removable by the user. See g_drive_is_media_removable().
+	IsRemovable() bool
+	// PollForMedia: asynchronously polls @drive to see if media has been
+	// inserted or removed.
+	//
+	// When the operation is finished, @callback will be called. You can then
+	// call g_drive_poll_for_media_finish() to obtain the result of the
+	// operation.
+	PollForMedia(cancellable Cancellable, callback AsyncReadyCallback)
+	// PollForMediaFinish finishes an operation started with
+	// g_drive_poll_for_media() on a drive.
+	PollForMediaFinish(result AsyncResult) error
+	// Start: asynchronously starts a drive.
+	//
+	// When the operation is finished, @callback will be called. You can then
+	// call g_drive_start_finish() to obtain the result of the operation.
+	Start(flags DriveStartFlags, mountOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback)
+	// StartFinish finishes starting a drive.
+	StartFinish(result AsyncResult) error
+	// Stop: asynchronously stops a drive.
+	//
+	// When the operation is finished, @callback will be called. You can then
+	// call g_drive_stop_finish() to obtain the result of the operation.
+	Stop(flags MountUnmountFlags, mountOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback)
+	StopButton()
+	// StopFinish finishes stopping a drive.
+	StopFinish(result AsyncResult) error
+}
+
 // Drive - this represent a piece of hardware connected to the machine. It's
 // generally only created for removable hardware or hardware with removable
 // media.

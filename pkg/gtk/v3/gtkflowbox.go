@@ -131,6 +131,23 @@ func gotk4_FlowBoxSortFunc(arg0 *C.GtkFlowBoxChild, arg1 *C.GtkFlowBoxChild, arg
 	return cret
 }
 
+// FlowBoxOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type FlowBoxOverrider interface {
+	ActivateCursorChild()
+	ChildActivated(child FlowBoxChild)
+	MoveCursor(step MovementStep, count int) bool
+	// SelectAll: select all children of @box, if the selection mode allows it.
+	SelectAll()
+	SelectedChildrenChanged()
+	ToggleCursorChild()
+	// UnselectAll: unselect all children of @box, if the selection mode allows
+	// it.
+	UnselectAll()
+}
+
 // FlowBox positions child widgets in sequence according to its orientation.
 //
 // For instance, with the horizontal orientation, the widgets will be arranged
@@ -4451,6 +4468,14 @@ func (b flowBox) UnselectChild(child FlowBoxChild) {
 	_arg1 = (*C.GtkFlowBoxChild)(unsafe.Pointer(child.Native()))
 
 	C.gtk_flow_box_unselect_child(_arg0, _arg1)
+}
+
+// FlowBoxChildOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type FlowBoxChildOverrider interface {
+	Activate()
 }
 
 type FlowBoxChild interface {

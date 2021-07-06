@@ -84,14 +84,14 @@ type BlendNode interface {
 	// Ref acquires a reference on the given `GskRenderNode`.
 	//
 	// This method is inherited from RenderNode
-	Ref() RenderNode
+	ref() RenderNode
 	// Unref releases a reference on the given `GskRenderNode`.
 	//
 	// If the reference was the last, the resources associated to the @node are
 	// freed.
 	//
 	// This method is inherited from RenderNode
-	Unref()
+	unref()
 	// WriteToFile: this function is equivalent to calling
 	// gsk_render_node_serialize() followed by g_file_set_contents().
 	//
@@ -167,12 +167,12 @@ func (n blendNode) GetNodeType() RenderNodeType {
 	return WrapRenderNode(gextras.InternObject(n)).GetNodeType()
 }
 
-func (n blendNode) Ref() RenderNode {
-	return WrapRenderNode(gextras.InternObject(n)).Ref()
+func (n blendNode) ref() RenderNode {
+	return WrapRenderNode(gextras.InternObject(n)).ref()
 }
 
-func (n blendNode) Unref() {
-	WrapRenderNode(gextras.InternObject(n)).Unref()
+func (n blendNode) unref() {
+	WrapRenderNode(gextras.InternObject(n)).unref()
 }
 
 func (n blendNode) WriteToFile(filename string) error {
@@ -255,14 +255,14 @@ type BlurNode interface {
 	// Ref acquires a reference on the given `GskRenderNode`.
 	//
 	// This method is inherited from RenderNode
-	Ref() RenderNode
+	ref() RenderNode
 	// Unref releases a reference on the given `GskRenderNode`.
 	//
 	// If the reference was the last, the resources associated to the @node are
 	// freed.
 	//
 	// This method is inherited from RenderNode
-	Unref()
+	unref()
 	// WriteToFile: this function is equivalent to calling
 	// gsk_render_node_serialize() followed by g_file_set_contents().
 	//
@@ -333,12 +333,12 @@ func (n blurNode) GetNodeType() RenderNodeType {
 	return WrapRenderNode(gextras.InternObject(n)).GetNodeType()
 }
 
-func (n blurNode) Ref() RenderNode {
-	return WrapRenderNode(gextras.InternObject(n)).Ref()
+func (n blurNode) ref() RenderNode {
+	return WrapRenderNode(gextras.InternObject(n)).ref()
 }
 
-func (n blurNode) Unref() {
-	WrapRenderNode(gextras.InternObject(n)).Unref()
+func (n blurNode) unref() {
+	WrapRenderNode(gextras.InternObject(n)).unref()
 }
 
 func (n blurNode) WriteToFile(filename string) error {
@@ -406,14 +406,14 @@ type BorderNode interface {
 	// Ref acquires a reference on the given `GskRenderNode`.
 	//
 	// This method is inherited from RenderNode
-	Ref() RenderNode
+	ref() RenderNode
 	// Unref releases a reference on the given `GskRenderNode`.
 	//
 	// If the reference was the last, the resources associated to the @node are
 	// freed.
 	//
 	// This method is inherited from RenderNode
-	Unref()
+	unref()
 	// WriteToFile: this function is equivalent to calling
 	// gsk_render_node_serialize() followed by g_file_set_contents().
 	//
@@ -491,12 +491,12 @@ func (n borderNode) GetNodeType() RenderNodeType {
 	return WrapRenderNode(gextras.InternObject(n)).GetNodeType()
 }
 
-func (n borderNode) Ref() RenderNode {
-	return WrapRenderNode(gextras.InternObject(n)).Ref()
+func (n borderNode) ref() RenderNode {
+	return WrapRenderNode(gextras.InternObject(n)).ref()
 }
 
-func (n borderNode) Unref() {
-	WrapRenderNode(gextras.InternObject(n)).Unref()
+func (n borderNode) unref() {
+	WrapRenderNode(gextras.InternObject(n)).unref()
 }
 
 func (n borderNode) WriteToFile(filename string) error {
@@ -579,14 +579,14 @@ type CairoNode interface {
 	// Ref acquires a reference on the given `GskRenderNode`.
 	//
 	// This method is inherited from RenderNode
-	Ref() RenderNode
+	ref() RenderNode
 	// Unref releases a reference on the given `GskRenderNode`.
 	//
 	// If the reference was the last, the resources associated to the @node are
 	// freed.
 	//
 	// This method is inherited from RenderNode
-	Unref()
+	unref()
 	// WriteToFile: this function is equivalent to calling
 	// gsk_render_node_serialize() followed by g_file_set_contents().
 	//
@@ -663,12 +663,12 @@ func (n cairoNode) GetNodeType() RenderNodeType {
 	return WrapRenderNode(gextras.InternObject(n)).GetNodeType()
 }
 
-func (n cairoNode) Ref() RenderNode {
-	return WrapRenderNode(gextras.InternObject(n)).Ref()
+func (n cairoNode) ref() RenderNode {
+	return WrapRenderNode(gextras.InternObject(n)).ref()
 }
 
-func (n cairoNode) Unref() {
-	WrapRenderNode(gextras.InternObject(n)).Unref()
+func (n cairoNode) unref() {
+	WrapRenderNode(gextras.InternObject(n)).unref()
 }
 
 func (n cairoNode) WriteToFile(filename string) error {
@@ -739,14 +739,14 @@ type ClipNode interface {
 	// Ref acquires a reference on the given `GskRenderNode`.
 	//
 	// This method is inherited from RenderNode
-	Ref() RenderNode
+	ref() RenderNode
 	// Unref releases a reference on the given `GskRenderNode`.
 	//
 	// If the reference was the last, the resources associated to the @node are
 	// freed.
 	//
 	// This method is inherited from RenderNode
-	Unref()
+	unref()
 	// WriteToFile: this function is equivalent to calling
 	// gsk_render_node_serialize() followed by g_file_set_contents().
 	//
@@ -818,12 +818,12 @@ func (n clipNode) GetNodeType() RenderNodeType {
 	return WrapRenderNode(gextras.InternObject(n)).GetNodeType()
 }
 
-func (n clipNode) Ref() RenderNode {
-	return WrapRenderNode(gextras.InternObject(n)).Ref()
+func (n clipNode) ref() RenderNode {
+	return WrapRenderNode(gextras.InternObject(n)).ref()
 }
 
-func (n clipNode) Unref() {
-	WrapRenderNode(gextras.InternObject(n)).Unref()
+func (n clipNode) unref() {
+	WrapRenderNode(gextras.InternObject(n)).unref()
 }
 
 func (n clipNode) WriteToFile(filename string) error {
@@ -892,14 +892,14 @@ type ColorMatrixNode interface {
 	// Ref acquires a reference on the given `GskRenderNode`.
 	//
 	// This method is inherited from RenderNode
-	Ref() RenderNode
+	ref() RenderNode
 	// Unref releases a reference on the given `GskRenderNode`.
 	//
 	// If the reference was the last, the resources associated to the @node are
 	// freed.
 	//
 	// This method is inherited from RenderNode
-	Unref()
+	unref()
 	// WriteToFile: this function is equivalent to calling
 	// gsk_render_node_serialize() followed by g_file_set_contents().
 	//
@@ -982,12 +982,12 @@ func (n colorMatrixNode) GetNodeType() RenderNodeType {
 	return WrapRenderNode(gextras.InternObject(n)).GetNodeType()
 }
 
-func (n colorMatrixNode) Ref() RenderNode {
-	return WrapRenderNode(gextras.InternObject(n)).Ref()
+func (n colorMatrixNode) ref() RenderNode {
+	return WrapRenderNode(gextras.InternObject(n)).ref()
 }
 
-func (n colorMatrixNode) Unref() {
-	WrapRenderNode(gextras.InternObject(n)).Unref()
+func (n colorMatrixNode) unref() {
+	WrapRenderNode(gextras.InternObject(n)).unref()
 }
 
 func (n colorMatrixNode) WriteToFile(filename string) error {
@@ -1070,14 +1070,14 @@ type ColorNode interface {
 	// Ref acquires a reference on the given `GskRenderNode`.
 	//
 	// This method is inherited from RenderNode
-	Ref() RenderNode
+	ref() RenderNode
 	// Unref releases a reference on the given `GskRenderNode`.
 	//
 	// If the reference was the last, the resources associated to the @node are
 	// freed.
 	//
 	// This method is inherited from RenderNode
-	Unref()
+	unref()
 	// WriteToFile: this function is equivalent to calling
 	// gsk_render_node_serialize() followed by g_file_set_contents().
 	//
@@ -1147,12 +1147,12 @@ func (n colorNode) GetNodeType() RenderNodeType {
 	return WrapRenderNode(gextras.InternObject(n)).GetNodeType()
 }
 
-func (n colorNode) Ref() RenderNode {
-	return WrapRenderNode(gextras.InternObject(n)).Ref()
+func (n colorNode) ref() RenderNode {
+	return WrapRenderNode(gextras.InternObject(n)).ref()
 }
 
-func (n colorNode) Unref() {
-	WrapRenderNode(gextras.InternObject(n)).Unref()
+func (n colorNode) unref() {
+	WrapRenderNode(gextras.InternObject(n)).unref()
 }
 
 func (n colorNode) WriteToFile(filename string) error {
@@ -1205,14 +1205,14 @@ type ConicGradientNode interface {
 	// Ref acquires a reference on the given `GskRenderNode`.
 	//
 	// This method is inherited from RenderNode
-	Ref() RenderNode
+	ref() RenderNode
 	// Unref releases a reference on the given `GskRenderNode`.
 	//
 	// If the reference was the last, the resources associated to the @node are
 	// freed.
 	//
 	// This method is inherited from RenderNode
-	Unref()
+	unref()
 	// WriteToFile: this function is equivalent to calling
 	// gsk_render_node_serialize() followed by g_file_set_contents().
 	//
@@ -1303,12 +1303,12 @@ func (n conicGradientNode) GetNodeType() RenderNodeType {
 	return WrapRenderNode(gextras.InternObject(n)).GetNodeType()
 }
 
-func (n conicGradientNode) Ref() RenderNode {
-	return WrapRenderNode(gextras.InternObject(n)).Ref()
+func (n conicGradientNode) ref() RenderNode {
+	return WrapRenderNode(gextras.InternObject(n)).ref()
 }
 
-func (n conicGradientNode) Unref() {
-	WrapRenderNode(gextras.InternObject(n)).Unref()
+func (n conicGradientNode) unref() {
+	WrapRenderNode(gextras.InternObject(n)).unref()
 }
 
 func (n conicGradientNode) WriteToFile(filename string) error {
@@ -1406,14 +1406,14 @@ type ContainerNode interface {
 	// Ref acquires a reference on the given `GskRenderNode`.
 	//
 	// This method is inherited from RenderNode
-	Ref() RenderNode
+	ref() RenderNode
 	// Unref releases a reference on the given `GskRenderNode`.
 	//
 	// If the reference was the last, the resources associated to the @node are
 	// freed.
 	//
 	// This method is inherited from RenderNode
-	Unref()
+	unref()
 	// WriteToFile: this function is equivalent to calling
 	// gsk_render_node_serialize() followed by g_file_set_contents().
 	//
@@ -1494,12 +1494,12 @@ func (n containerNode) GetNodeType() RenderNodeType {
 	return WrapRenderNode(gextras.InternObject(n)).GetNodeType()
 }
 
-func (n containerNode) Ref() RenderNode {
-	return WrapRenderNode(gextras.InternObject(n)).Ref()
+func (n containerNode) ref() RenderNode {
+	return WrapRenderNode(gextras.InternObject(n)).ref()
 }
 
-func (n containerNode) Unref() {
-	WrapRenderNode(gextras.InternObject(n)).Unref()
+func (n containerNode) unref() {
+	WrapRenderNode(gextras.InternObject(n)).unref()
 }
 
 func (n containerNode) WriteToFile(filename string) error {
@@ -1569,14 +1569,14 @@ type CrossFadeNode interface {
 	// Ref acquires a reference on the given `GskRenderNode`.
 	//
 	// This method is inherited from RenderNode
-	Ref() RenderNode
+	ref() RenderNode
 	// Unref releases a reference on the given `GskRenderNode`.
 	//
 	// If the reference was the last, the resources associated to the @node are
 	// freed.
 	//
 	// This method is inherited from RenderNode
-	Unref()
+	unref()
 	// WriteToFile: this function is equivalent to calling
 	// gsk_render_node_serialize() followed by g_file_set_contents().
 	//
@@ -1654,12 +1654,12 @@ func (n crossFadeNode) GetNodeType() RenderNodeType {
 	return WrapRenderNode(gextras.InternObject(n)).GetNodeType()
 }
 
-func (n crossFadeNode) Ref() RenderNode {
-	return WrapRenderNode(gextras.InternObject(n)).Ref()
+func (n crossFadeNode) ref() RenderNode {
+	return WrapRenderNode(gextras.InternObject(n)).ref()
 }
 
-func (n crossFadeNode) Unref() {
-	WrapRenderNode(gextras.InternObject(n)).Unref()
+func (n crossFadeNode) unref() {
+	WrapRenderNode(gextras.InternObject(n)).unref()
 }
 
 func (n crossFadeNode) WriteToFile(filename string) error {
@@ -1743,14 +1743,14 @@ type DebugNode interface {
 	// Ref acquires a reference on the given `GskRenderNode`.
 	//
 	// This method is inherited from RenderNode
-	Ref() RenderNode
+	ref() RenderNode
 	// Unref releases a reference on the given `GskRenderNode`.
 	//
 	// If the reference was the last, the resources associated to the @node are
 	// freed.
 	//
 	// This method is inherited from RenderNode
-	Unref()
+	unref()
 	// WriteToFile: this function is equivalent to calling
 	// gsk_render_node_serialize() followed by g_file_set_contents().
 	//
@@ -1824,12 +1824,12 @@ func (n debugNode) GetNodeType() RenderNodeType {
 	return WrapRenderNode(gextras.InternObject(n)).GetNodeType()
 }
 
-func (n debugNode) Ref() RenderNode {
-	return WrapRenderNode(gextras.InternObject(n)).Ref()
+func (n debugNode) ref() RenderNode {
+	return WrapRenderNode(gextras.InternObject(n)).ref()
 }
 
-func (n debugNode) Unref() {
-	WrapRenderNode(gextras.InternObject(n)).Unref()
+func (n debugNode) unref() {
+	WrapRenderNode(gextras.InternObject(n)).unref()
 }
 
 func (n debugNode) WriteToFile(filename string) error {
@@ -1897,14 +1897,14 @@ type GLShaderNode interface {
 	// Ref acquires a reference on the given `GskRenderNode`.
 	//
 	// This method is inherited from RenderNode
-	Ref() RenderNode
+	ref() RenderNode
 	// Unref releases a reference on the given `GskRenderNode`.
 	//
 	// If the reference was the last, the resources associated to the @node are
 	// freed.
 	//
 	// This method is inherited from RenderNode
-	Unref()
+	unref()
 	// WriteToFile: this function is equivalent to calling
 	// gsk_render_node_serialize() followed by g_file_set_contents().
 	//
@@ -1959,12 +1959,12 @@ func (n glShaderNode) GetNodeType() RenderNodeType {
 	return WrapRenderNode(gextras.InternObject(n)).GetNodeType()
 }
 
-func (n glShaderNode) Ref() RenderNode {
-	return WrapRenderNode(gextras.InternObject(n)).Ref()
+func (n glShaderNode) ref() RenderNode {
+	return WrapRenderNode(gextras.InternObject(n)).ref()
 }
 
-func (n glShaderNode) Unref() {
-	WrapRenderNode(gextras.InternObject(n)).Unref()
+func (n glShaderNode) unref() {
+	WrapRenderNode(gextras.InternObject(n)).unref()
 }
 
 func (n glShaderNode) WriteToFile(filename string) error {
@@ -2049,14 +2049,14 @@ type InsetShadowNode interface {
 	// Ref acquires a reference on the given `GskRenderNode`.
 	//
 	// This method is inherited from RenderNode
-	Ref() RenderNode
+	ref() RenderNode
 	// Unref releases a reference on the given `GskRenderNode`.
 	//
 	// If the reference was the last, the resources associated to the @node are
 	// freed.
 	//
 	// This method is inherited from RenderNode
-	Unref()
+	unref()
 	// WriteToFile: this function is equivalent to calling
 	// gsk_render_node_serialize() followed by g_file_set_contents().
 	//
@@ -2144,12 +2144,12 @@ func (n insetShadowNode) GetNodeType() RenderNodeType {
 	return WrapRenderNode(gextras.InternObject(n)).GetNodeType()
 }
 
-func (n insetShadowNode) Ref() RenderNode {
-	return WrapRenderNode(gextras.InternObject(n)).Ref()
+func (n insetShadowNode) ref() RenderNode {
+	return WrapRenderNode(gextras.InternObject(n)).ref()
 }
 
-func (n insetShadowNode) Unref() {
-	WrapRenderNode(gextras.InternObject(n)).Unref()
+func (n insetShadowNode) unref() {
+	WrapRenderNode(gextras.InternObject(n)).unref()
 }
 
 func (n insetShadowNode) WriteToFile(filename string) error {
@@ -2277,14 +2277,14 @@ type LinearGradientNode interface {
 	// Ref acquires a reference on the given `GskRenderNode`.
 	//
 	// This method is inherited from RenderNode
-	Ref() RenderNode
+	ref() RenderNode
 	// Unref releases a reference on the given `GskRenderNode`.
 	//
 	// If the reference was the last, the resources associated to the @node are
 	// freed.
 	//
 	// This method is inherited from RenderNode
-	Unref()
+	unref()
 	// WriteToFile: this function is equivalent to calling
 	// gsk_render_node_serialize() followed by g_file_set_contents().
 	//
@@ -2365,12 +2365,12 @@ func (n linearGradientNode) GetNodeType() RenderNodeType {
 	return WrapRenderNode(gextras.InternObject(n)).GetNodeType()
 }
 
-func (n linearGradientNode) Ref() RenderNode {
-	return WrapRenderNode(gextras.InternObject(n)).Ref()
+func (n linearGradientNode) ref() RenderNode {
+	return WrapRenderNode(gextras.InternObject(n)).ref()
 }
 
-func (n linearGradientNode) Unref() {
-	WrapRenderNode(gextras.InternObject(n)).Unref()
+func (n linearGradientNode) unref() {
+	WrapRenderNode(gextras.InternObject(n)).unref()
 }
 
 func (n linearGradientNode) WriteToFile(filename string) error {
@@ -2453,14 +2453,14 @@ type OpacityNode interface {
 	// Ref acquires a reference on the given `GskRenderNode`.
 	//
 	// This method is inherited from RenderNode
-	Ref() RenderNode
+	ref() RenderNode
 	// Unref releases a reference on the given `GskRenderNode`.
 	//
 	// If the reference was the last, the resources associated to the @node are
 	// freed.
 	//
 	// This method is inherited from RenderNode
-	Unref()
+	unref()
 	// WriteToFile: this function is equivalent to calling
 	// gsk_render_node_serialize() followed by g_file_set_contents().
 	//
@@ -2532,12 +2532,12 @@ func (n opacityNode) GetNodeType() RenderNodeType {
 	return WrapRenderNode(gextras.InternObject(n)).GetNodeType()
 }
 
-func (n opacityNode) Ref() RenderNode {
-	return WrapRenderNode(gextras.InternObject(n)).Ref()
+func (n opacityNode) ref() RenderNode {
+	return WrapRenderNode(gextras.InternObject(n)).ref()
 }
 
-func (n opacityNode) Unref() {
-	WrapRenderNode(gextras.InternObject(n)).Unref()
+func (n opacityNode) unref() {
+	WrapRenderNode(gextras.InternObject(n)).unref()
 }
 
 func (n opacityNode) WriteToFile(filename string) error {
@@ -2605,14 +2605,14 @@ type OutsetShadowNode interface {
 	// Ref acquires a reference on the given `GskRenderNode`.
 	//
 	// This method is inherited from RenderNode
-	Ref() RenderNode
+	ref() RenderNode
 	// Unref releases a reference on the given `GskRenderNode`.
 	//
 	// If the reference was the last, the resources associated to the @node are
 	// freed.
 	//
 	// This method is inherited from RenderNode
-	Unref()
+	unref()
 	// WriteToFile: this function is equivalent to calling
 	// gsk_render_node_serialize() followed by g_file_set_contents().
 	//
@@ -2700,12 +2700,12 @@ func (n outsetShadowNode) GetNodeType() RenderNodeType {
 	return WrapRenderNode(gextras.InternObject(n)).GetNodeType()
 }
 
-func (n outsetShadowNode) Ref() RenderNode {
-	return WrapRenderNode(gextras.InternObject(n)).Ref()
+func (n outsetShadowNode) ref() RenderNode {
+	return WrapRenderNode(gextras.InternObject(n)).ref()
 }
 
-func (n outsetShadowNode) Unref() {
-	WrapRenderNode(gextras.InternObject(n)).Unref()
+func (n outsetShadowNode) unref() {
+	WrapRenderNode(gextras.InternObject(n)).unref()
 }
 
 func (n outsetShadowNode) WriteToFile(filename string) error {
@@ -2833,14 +2833,14 @@ type RadialGradientNode interface {
 	// Ref acquires a reference on the given `GskRenderNode`.
 	//
 	// This method is inherited from RenderNode
-	Ref() RenderNode
+	ref() RenderNode
 	// Unref releases a reference on the given `GskRenderNode`.
 	//
 	// If the reference was the last, the resources associated to the @node are
 	// freed.
 	//
 	// This method is inherited from RenderNode
-	Unref()
+	unref()
 	// WriteToFile: this function is equivalent to calling
 	// gsk_render_node_serialize() followed by g_file_set_contents().
 	//
@@ -2935,12 +2935,12 @@ func (n radialGradientNode) GetNodeType() RenderNodeType {
 	return WrapRenderNode(gextras.InternObject(n)).GetNodeType()
 }
 
-func (n radialGradientNode) Ref() RenderNode {
-	return WrapRenderNode(gextras.InternObject(n)).Ref()
+func (n radialGradientNode) ref() RenderNode {
+	return WrapRenderNode(gextras.InternObject(n)).ref()
 }
 
-func (n radialGradientNode) Unref() {
-	WrapRenderNode(gextras.InternObject(n)).Unref()
+func (n radialGradientNode) unref() {
+	WrapRenderNode(gextras.InternObject(n)).unref()
 }
 
 func (n radialGradientNode) WriteToFile(filename string) error {
@@ -3068,14 +3068,14 @@ type RepeatNode interface {
 	// Ref acquires a reference on the given `GskRenderNode`.
 	//
 	// This method is inherited from RenderNode
-	Ref() RenderNode
+	ref() RenderNode
 	// Unref releases a reference on the given `GskRenderNode`.
 	//
 	// If the reference was the last, the resources associated to the @node are
 	// freed.
 	//
 	// This method is inherited from RenderNode
-	Unref()
+	unref()
 	// WriteToFile: this function is equivalent to calling
 	// gsk_render_node_serialize() followed by g_file_set_contents().
 	//
@@ -3149,12 +3149,12 @@ func (n repeatNode) GetNodeType() RenderNodeType {
 	return WrapRenderNode(gextras.InternObject(n)).GetNodeType()
 }
 
-func (n repeatNode) Ref() RenderNode {
-	return WrapRenderNode(gextras.InternObject(n)).Ref()
+func (n repeatNode) ref() RenderNode {
+	return WrapRenderNode(gextras.InternObject(n)).ref()
 }
 
-func (n repeatNode) Unref() {
-	WrapRenderNode(gextras.InternObject(n)).Unref()
+func (n repeatNode) unref() {
+	WrapRenderNode(gextras.InternObject(n)).unref()
 }
 
 func (n repeatNode) WriteToFile(filename string) error {
@@ -3222,14 +3222,14 @@ type RepeatingLinearGradientNode interface {
 	// Ref acquires a reference on the given `GskRenderNode`.
 	//
 	// This method is inherited from RenderNode
-	Ref() RenderNode
+	ref() RenderNode
 	// Unref releases a reference on the given `GskRenderNode`.
 	//
 	// If the reference was the last, the resources associated to the @node are
 	// freed.
 	//
 	// This method is inherited from RenderNode
-	Unref()
+	unref()
 	// WriteToFile: this function is equivalent to calling
 	// gsk_render_node_serialize() followed by g_file_set_contents().
 	//
@@ -3303,12 +3303,12 @@ func (n repeatingLinearGradientNode) GetNodeType() RenderNodeType {
 	return WrapRenderNode(gextras.InternObject(n)).GetNodeType()
 }
 
-func (n repeatingLinearGradientNode) Ref() RenderNode {
-	return WrapRenderNode(gextras.InternObject(n)).Ref()
+func (n repeatingLinearGradientNode) ref() RenderNode {
+	return WrapRenderNode(gextras.InternObject(n)).ref()
 }
 
-func (n repeatingLinearGradientNode) Unref() {
-	WrapRenderNode(gextras.InternObject(n)).Unref()
+func (n repeatingLinearGradientNode) unref() {
+	WrapRenderNode(gextras.InternObject(n)).unref()
 }
 
 func (n repeatingLinearGradientNode) WriteToFile(filename string) error {
@@ -3346,14 +3346,14 @@ type RepeatingRadialGradientNode interface {
 	// Ref acquires a reference on the given `GskRenderNode`.
 	//
 	// This method is inherited from RenderNode
-	Ref() RenderNode
+	ref() RenderNode
 	// Unref releases a reference on the given `GskRenderNode`.
 	//
 	// If the reference was the last, the resources associated to the @node are
 	// freed.
 	//
 	// This method is inherited from RenderNode
-	Unref()
+	unref()
 	// WriteToFile: this function is equivalent to calling
 	// gsk_render_node_serialize() followed by g_file_set_contents().
 	//
@@ -3436,12 +3436,12 @@ func (n repeatingRadialGradientNode) GetNodeType() RenderNodeType {
 	return WrapRenderNode(gextras.InternObject(n)).GetNodeType()
 }
 
-func (n repeatingRadialGradientNode) Ref() RenderNode {
-	return WrapRenderNode(gextras.InternObject(n)).Ref()
+func (n repeatingRadialGradientNode) ref() RenderNode {
+	return WrapRenderNode(gextras.InternObject(n)).ref()
 }
 
-func (n repeatingRadialGradientNode) Unref() {
-	WrapRenderNode(gextras.InternObject(n)).Unref()
+func (n repeatingRadialGradientNode) unref() {
+	WrapRenderNode(gextras.InternObject(n)).unref()
 }
 
 func (n repeatingRadialGradientNode) WriteToFile(filename string) error {
@@ -3480,14 +3480,14 @@ type RoundedClipNode interface {
 	// Ref acquires a reference on the given `GskRenderNode`.
 	//
 	// This method is inherited from RenderNode
-	Ref() RenderNode
+	ref() RenderNode
 	// Unref releases a reference on the given `GskRenderNode`.
 	//
 	// If the reference was the last, the resources associated to the @node are
 	// freed.
 	//
 	// This method is inherited from RenderNode
-	Unref()
+	unref()
 	// WriteToFile: this function is equivalent to calling
 	// gsk_render_node_serialize() followed by g_file_set_contents().
 	//
@@ -3560,12 +3560,12 @@ func (n roundedClipNode) GetNodeType() RenderNodeType {
 	return WrapRenderNode(gextras.InternObject(n)).GetNodeType()
 }
 
-func (n roundedClipNode) Ref() RenderNode {
-	return WrapRenderNode(gextras.InternObject(n)).Ref()
+func (n roundedClipNode) ref() RenderNode {
+	return WrapRenderNode(gextras.InternObject(n)).ref()
 }
 
-func (n roundedClipNode) Unref() {
-	WrapRenderNode(gextras.InternObject(n)).Unref()
+func (n roundedClipNode) unref() {
+	WrapRenderNode(gextras.InternObject(n)).unref()
 }
 
 func (n roundedClipNode) WriteToFile(filename string) error {
@@ -3634,14 +3634,14 @@ type ShadowNode interface {
 	// Ref acquires a reference on the given `GskRenderNode`.
 	//
 	// This method is inherited from RenderNode
-	Ref() RenderNode
+	ref() RenderNode
 	// Unref releases a reference on the given `GskRenderNode`.
 	//
 	// If the reference was the last, the resources associated to the @node are
 	// freed.
 	//
 	// This method is inherited from RenderNode
-	Unref()
+	unref()
 	// WriteToFile: this function is equivalent to calling
 	// gsk_render_node_serialize() followed by g_file_set_contents().
 	//
@@ -3717,12 +3717,12 @@ func (n shadowNode) GetNodeType() RenderNodeType {
 	return WrapRenderNode(gextras.InternObject(n)).GetNodeType()
 }
 
-func (n shadowNode) Ref() RenderNode {
-	return WrapRenderNode(gextras.InternObject(n)).Ref()
+func (n shadowNode) ref() RenderNode {
+	return WrapRenderNode(gextras.InternObject(n)).ref()
 }
 
-func (n shadowNode) Unref() {
-	WrapRenderNode(gextras.InternObject(n)).Unref()
+func (n shadowNode) unref() {
+	WrapRenderNode(gextras.InternObject(n)).unref()
 }
 
 func (n shadowNode) WriteToFile(filename string) error {
@@ -3807,14 +3807,14 @@ type TextNode interface {
 	// Ref acquires a reference on the given `GskRenderNode`.
 	//
 	// This method is inherited from RenderNode
-	Ref() RenderNode
+	ref() RenderNode
 	// Unref releases a reference on the given `GskRenderNode`.
 	//
 	// If the reference was the last, the resources associated to the @node are
 	// freed.
 	//
 	// This method is inherited from RenderNode
-	Unref()
+	unref()
 	// WriteToFile: this function is equivalent to calling
 	// gsk_render_node_serialize() followed by g_file_set_contents().
 	//
@@ -3897,12 +3897,12 @@ func (n textNode) GetNodeType() RenderNodeType {
 	return WrapRenderNode(gextras.InternObject(n)).GetNodeType()
 }
 
-func (n textNode) Ref() RenderNode {
-	return WrapRenderNode(gextras.InternObject(n)).Ref()
+func (n textNode) ref() RenderNode {
+	return WrapRenderNode(gextras.InternObject(n)).ref()
 }
 
-func (n textNode) Unref() {
-	WrapRenderNode(gextras.InternObject(n)).Unref()
+func (n textNode) unref() {
+	WrapRenderNode(gextras.InternObject(n)).unref()
 }
 
 func (n textNode) WriteToFile(filename string) error {
@@ -4017,14 +4017,14 @@ type TextureNode interface {
 	// Ref acquires a reference on the given `GskRenderNode`.
 	//
 	// This method is inherited from RenderNode
-	Ref() RenderNode
+	ref() RenderNode
 	// Unref releases a reference on the given `GskRenderNode`.
 	//
 	// If the reference was the last, the resources associated to the @node are
 	// freed.
 	//
 	// This method is inherited from RenderNode
-	Unref()
+	unref()
 	// WriteToFile: this function is equivalent to calling
 	// gsk_render_node_serialize() followed by g_file_set_contents().
 	//
@@ -4095,12 +4095,12 @@ func (n textureNode) GetNodeType() RenderNodeType {
 	return WrapRenderNode(gextras.InternObject(n)).GetNodeType()
 }
 
-func (n textureNode) Ref() RenderNode {
-	return WrapRenderNode(gextras.InternObject(n)).Ref()
+func (n textureNode) ref() RenderNode {
+	return WrapRenderNode(gextras.InternObject(n)).ref()
 }
 
-func (n textureNode) Unref() {
-	WrapRenderNode(gextras.InternObject(n)).Unref()
+func (n textureNode) unref() {
+	WrapRenderNode(gextras.InternObject(n)).unref()
 }
 
 func (n textureNode) WriteToFile(filename string) error {
@@ -4154,14 +4154,14 @@ type TransformNode interface {
 	// Ref acquires a reference on the given `GskRenderNode`.
 	//
 	// This method is inherited from RenderNode
-	Ref() RenderNode
+	ref() RenderNode
 	// Unref releases a reference on the given `GskRenderNode`.
 	//
 	// If the reference was the last, the resources associated to the @node are
 	// freed.
 	//
 	// This method is inherited from RenderNode
-	Unref()
+	unref()
 	// WriteToFile: this function is equivalent to calling
 	// gsk_render_node_serialize() followed by g_file_set_contents().
 	//
@@ -4233,12 +4233,12 @@ func (n transformNode) GetNodeType() RenderNodeType {
 	return WrapRenderNode(gextras.InternObject(n)).GetNodeType()
 }
 
-func (n transformNode) Ref() RenderNode {
-	return WrapRenderNode(gextras.InternObject(n)).Ref()
+func (n transformNode) ref() RenderNode {
+	return WrapRenderNode(gextras.InternObject(n)).ref()
 }
 
-func (n transformNode) Unref() {
-	WrapRenderNode(gextras.InternObject(n)).Unref()
+func (n transformNode) unref() {
+	WrapRenderNode(gextras.InternObject(n)).unref()
 }
 
 func (n transformNode) WriteToFile(filename string) error {

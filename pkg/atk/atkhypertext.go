@@ -22,6 +22,21 @@ func init() {
 	})
 }
 
+// HypertextOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type HypertextOverrider interface {
+	// Link gets the link in this hypertext document at index @link_index
+	Link(linkIndex int) Hyperlink
+	// LinkIndex gets the index into the array of hyperlinks that is associated
+	// with the character specified by @char_index.
+	LinkIndex(charIndex int) int
+	// NLinks gets the number of links within this hypertext document.
+	NLinks() int
+	LinkSelected(linkIndex int)
+}
+
 // Hypertext: interface used for objects which implement linking between
 // multiple resource or content locations, or multiple 'markers' within a single
 // document. A Hypertext instance is associated with one or more Hyperlinks,

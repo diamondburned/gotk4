@@ -22,6 +22,40 @@ func init() {
 	})
 }
 
+// DocumentOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type DocumentOverrider interface {
+	// CurrentPageNumber retrieves the current page number inside @document.
+	CurrentPageNumber() int
+	// Document gets a gpointer that points to an instance of the DOM. It is up
+	// to the caller to check atk_document_get_type to determine how to cast
+	// this pointer.
+	//
+	// Deprecated.
+	Document() interface{}
+	// DocumentAttributeValue retrieves the value of the given @attribute_name
+	// inside @document.
+	DocumentAttributeValue(attributeName string) string
+	// DocumentLocale gets a UTF-8 string indicating the POSIX-style LC_MESSAGES
+	// locale of the content of this document instance. Individual text
+	// substrings or images within this document may have a different locale,
+	// see atk_text_get_attributes and atk_image_get_image_locale.
+	//
+	// Deprecated: since version 2.7.90.
+	DocumentLocale() string
+	// DocumentType gets a string indicating the document type.
+	//
+	// Deprecated.
+	DocumentType() string
+	// PageCount retrieves the total number of pages inside @document.
+	PageCount() int
+	// SetDocumentAttribute sets the value for the given @attribute_name inside
+	// @document.
+	SetDocumentAttribute(attributeName string, attributeValue string) bool
+}
+
 // Document: the AtkDocument interface should be supported by any object whose
 // content is a representation or view of a document. The AtkDocument interface
 // should appear on the toplevel container for the document content; however

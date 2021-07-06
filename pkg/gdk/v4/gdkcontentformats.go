@@ -120,7 +120,7 @@ func (b *ContentFormatsBuilder) AddMIMEType(mimeType string) {
 //
 // This function is intended primarily for bindings. `GdkContentFormatsBuilder`
 // objects should not be kept around.
-func (b *ContentFormatsBuilder) Ref() *ContentFormatsBuilder {
+func (b *ContentFormatsBuilder) ref() *ContentFormatsBuilder {
 	var _arg0 *C.GdkContentFormatsBuilder // out
 	var _cret *C.GdkContentFormatsBuilder // in
 
@@ -166,7 +166,7 @@ func (b *ContentFormatsBuilder) ToFormats() *ContentFormats {
 }
 
 // Unref releases a reference on the given @builder.
-func (b *ContentFormatsBuilder) Unref() {
+func (b *ContentFormatsBuilder) unref() {
 	var _arg0 *C.GdkContentFormatsBuilder // out
 
 	_arg0 = (*C.GdkContentFormatsBuilder)(unsafe.Pointer(b))

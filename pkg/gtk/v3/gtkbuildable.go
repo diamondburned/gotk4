@@ -26,6 +26,47 @@ func init() {
 	})
 }
 
+// BuildableOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type BuildableOverrider interface {
+	// AddChild adds a child to @buildable. @type is an optional string
+	// describing how the child should be added.
+	AddChild(builder Builder, child gextras.Objector, typ string)
+	// ConstructChild constructs a child of @buildable with the name @name.
+	//
+	// Builder calls this function if a “constructor” has been specified in the
+	// UI definition.
+	ConstructChild(builder Builder, name string) gextras.Objector
+	// CustomFinished: this is similar to gtk_buildable_parser_finished() but is
+	// called once for each custom tag handled by the @buildable.
+	CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{})
+	// CustomTagEnd: this is called at the end of each custom element handled by
+	// the buildable.
+	CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data interface{})
+	// CustomTagStart: this is called for each unknown element under <child>.
+	CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool)
+	// InternalChild: get the internal child called @childname of the @buildable
+	// object.
+	InternalChild(builder Builder, childname string) gextras.Objector
+	// Name gets the name of the @buildable object.
+	//
+	// Builder sets the name based on the [GtkBuilder UI definition][BUILDER-UI]
+	// used to construct the @buildable.
+	Name() string
+	// ParserFinished: called when the builder finishes the parsing of a
+	// [GtkBuilder UI definition][BUILDER-UI]. Note that this will be called
+	// once for each time gtk_builder_add_from_file() or
+	// gtk_builder_add_from_string() is called on a builder.
+	ParserFinished(builder Builder)
+	// SetBuildableProperty sets the property name @name to @value on the
+	// @buildable object.
+	SetBuildableProperty(builder Builder, name string, value externglib.Value)
+	// SetName sets the name of the @buildable object.
+	SetName(name string)
+}
+
 // Buildable allows objects to extend and customize their deserialization from
 // [GtkBuilder UI descriptions][BUILDER-UI]. The interface includes methods for
 // setting names and properties of objects, parsing custom tags and constructing

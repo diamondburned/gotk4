@@ -100,7 +100,7 @@ func (a *Triangle) Equal(b *Triangle) bool {
 }
 
 // Free frees the resources allocated by graphene_triangle_alloc().
-func (t *Triangle) Free() {
+func (t *Triangle) free() {
 	var _arg0 *C.graphene_triangle_t // out
 
 	_arg0 = (*C.graphene_triangle_t)(unsafe.Pointer(t))

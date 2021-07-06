@@ -37,11 +37,11 @@ func init() {
 type SpinButtonUpdatePolicy int
 
 const (
-	// always: when refreshing your SpinButton, the value is always displayed
-	SpinButtonUpdatePolicyAlways SpinButtonUpdatePolicy = iota
+	// Always: when refreshing your SpinButton, the value is always displayed
+	Always SpinButtonUpdatePolicy = iota
 	// IfValid: when refreshing your SpinButton, the value is only displayed if
 	// it is valid within the bounds of the spin button's adjustment
-	SpinButtonUpdatePolicyIfValid
+	IfValid
 )
 
 func marshalSpinButtonUpdatePolicy(p uintptr) (interface{}, error) {
@@ -54,19 +54,19 @@ type SpinType int
 
 const (
 	// StepForward: increment by the adjustments step increment.
-	SpinTypeStepForward SpinType = iota
+	StepForward SpinType = iota
 	// StepBackward: decrement by the adjustments step increment.
-	SpinTypeStepBackward
+	StepBackward
 	// PageForward: increment by the adjustments page increment.
-	SpinTypePageForward
+	PageForward
 	// PageBackward: decrement by the adjustments page increment.
-	SpinTypePageBackward
-	// home: go to the adjustments lower bound.
-	SpinTypeHome
-	// end: go to the adjustments upper bound.
-	SpinTypeEnd
+	PageBackward
+	// Home: go to the adjustments lower bound.
+	Home
+	// End: go to the adjustments upper bound.
+	End
 	// UserDefined: change by a specified amount.
-	SpinTypeUserDefined
+	UserDefined
 )
 
 func marshalSpinType(p uintptr) (interface{}, error) {

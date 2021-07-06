@@ -13,19 +13,19 @@ type BookmarkFileError int
 
 const (
 	// InvalidURI: URI was ill-formed
-	BookmarkFileErrorInvalidURI BookmarkFileError = iota
+	InvalidURI BookmarkFileError = iota
 	// InvalidValue: requested field was not found
-	BookmarkFileErrorInvalidValue
+	InvalidValue
 	// AppNotRegistered: requested application did not register a bookmark
-	BookmarkFileErrorAppNotRegistered
+	AppNotRegistered
 	// URINotFound: requested URI was not found
-	BookmarkFileErrorURINotFound
-	// read: document was ill formed
-	BookmarkFileErrorRead
+	URINotFound
+	// Read: document was ill formed
+	Read
 	// UnknownEncoding: the text being parsed was in an unknown encoding
-	BookmarkFileErrorUnknownEncoding
-	// write: error occurred while writing
-	BookmarkFileErrorWrite
+	UnknownEncoding
+	// Write: error occurred while writing
+	Write
 	// FileNotFound: requested file was not found
-	BookmarkFileErrorFileNotFound
+	FileNotFound
 )

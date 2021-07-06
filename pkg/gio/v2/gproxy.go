@@ -36,6 +36,30 @@ func init() {
 	})
 }
 
+// ProxyOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type ProxyOverrider interface {
+	// ConnectProxy: given @connection to communicate with a proxy (eg, a
+	// Connection that is connected to the proxy server), this does the
+	// necessary handshake to connect to @proxy_address, and if required, wraps
+	// the OStream to handle proxy payload.
+	ConnectProxy(connection IOStream, proxyAddress ProxyAddress, cancellable Cancellable) (IOStream, error)
+	// ConnectAsync asynchronous version of g_proxy_connect().
+	ConnectAsync(connection IOStream, proxyAddress ProxyAddress, cancellable Cancellable, callback AsyncReadyCallback)
+	// ConnectFinish: see g_proxy_connect().
+	ConnectFinish(result AsyncResult) (IOStream, error)
+	// SupportsHostname: some proxy protocols expect to be passed a hostname,
+	// which they will resolve to an IP address themselves. Others, like SOCKS4,
+	// do not allow this. This function will return false if @proxy is
+	// implementing such a protocol. When false is returned, the caller should
+	// resolve the destination hostname first, and then pass a Address
+	// containing the stringified IP address to g_proxy_connect() or
+	// g_proxy_connect_async().
+	SupportsHostname() bool
+}
+
 // Proxy handles connecting to a remote host via a given type of proxy server.
 // It is implemented by the 'gio-proxy' extension point. The extensions are
 // named after their proxy protocol name. As an example, a SOCKS5 proxy

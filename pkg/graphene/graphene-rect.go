@@ -144,7 +144,7 @@ func (r *Rect) Expand(p *Point) Rect {
 }
 
 // Free frees the resources allocated by graphene_rect_alloc().
-func (r *Rect) Free() {
+func (r *Rect) free() {
 	var _arg0 *C.graphene_rect_t // out
 
 	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r))

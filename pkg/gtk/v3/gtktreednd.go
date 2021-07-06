@@ -83,6 +83,26 @@ func TreeSetRowDragData(selectionData *SelectionData, treeModel TreeModel, path 
 	return _ok
 }
 
+// TreeDragDestOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type TreeDragDestOverrider interface {
+	// DragDataReceived asks the TreeDragDest to insert a row before the path
+	// @dest, deriving the contents of the row from @selection_data. If @dest is
+	// outside the tree so that inserting before it is impossible, false will be
+	// returned. Also, false may be returned if the new row is not created for
+	// some model-specific reason. Should robustly handle a @dest no longer
+	// found in the model!
+	DragDataReceived(dest *TreePath, selectionData *SelectionData) bool
+	// RowDropPossible determines whether a drop is possible before the given
+	// @dest_path, at the same depth as @dest_path. i.e., can we drop the data
+	// in @selection_data at that location. @dest_path does not have to exist;
+	// the return value will almost certainly be false if the parent of
+	// @dest_path doesn’t exist, though.
+	RowDropPossible(destPath *TreePath, selectionData *SelectionData) bool
+}
+
 type TreeDragDest interface {
 	gextras.Objector
 
@@ -160,6 +180,28 @@ func (d treeDragDest) RowDropPossible(destPath *TreePath, selectionData *Selecti
 	}
 
 	return _ok
+}
+
+// TreeDragSourceOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type TreeDragSourceOverrider interface {
+	// DragDataDelete asks the TreeDragSource to delete the row at @path,
+	// because it was moved somewhere else via drag-and-drop. Returns false if
+	// the deletion fails because @path no longer exists, or for some
+	// model-specific reason. Should robustly handle a @path no longer found in
+	// the model!
+	DragDataDelete(path *TreePath) bool
+	// DragDataGet asks the TreeDragSource to fill in @selection_data with a
+	// representation of the row at @path. @selection_data->target gives the
+	// required type of the data. Should robustly handle a @path no longer found
+	// in the model!
+	DragDataGet(path *TreePath, selectionData *SelectionData) bool
+	// RowDraggable asks the TreeDragSource whether a particular row can be used
+	// as the source of a DND operation. If the source doesn’t implement this
+	// interface, the row is assumed draggable.
+	RowDraggable(path *TreePath) bool
 }
 
 type TreeDragSource interface {

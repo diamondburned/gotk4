@@ -32,6 +32,31 @@ func init() {
 	})
 }
 
+// ListModelOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type ListModelOverrider interface {
+	// Item: get the item at @position. If @position is greater than the number
+	// of items in @list, nil is returned.
+	//
+	// nil is never returned for an index that is smaller than the length of the
+	// list. See g_list_model_get_n_items().
+	Item(position uint) gextras.Objector
+	// ItemType gets the type of the items in @list. All items returned from
+	// g_list_model_get_type() are of that type or a subtype, or are an
+	// implementation of that interface.
+	//
+	// The item type of a Model can not change during the life of the model.
+	ItemType() externglib.Type
+	// NItems gets the number of items in @list.
+	//
+	// Depending on the model implementation, calling this function may be less
+	// efficient than iterating the list with increasing values for @position
+	// until g_list_model_get_item() returns nil.
+	NItems() uint
+}
+
 // ListModel is an interface that represents a mutable list of #GObjects. Its
 // main intention is as a model for various widgets in user interfaces, such as
 // list views, but it can also be used as a convenient method of returning lists

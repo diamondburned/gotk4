@@ -28,89 +28,89 @@ func init() {
 type VariantClass int
 
 const (
-	// boolean: the #GVariant is a boolean.
-	VariantClassBoolean VariantClass = 98
-	// byte: the #GVariant is a byte.
-	VariantClassByte VariantClass = 121
-	// int16: the #GVariant is a signed 16 bit integer.
-	VariantClassInt16 VariantClass = 110
-	// uint16: the #GVariant is an unsigned 16 bit integer.
-	VariantClassUint16 VariantClass = 113
-	// int32: the #GVariant is a signed 32 bit integer.
-	VariantClassInt32 VariantClass = 105
-	// uint32: the #GVariant is an unsigned 32 bit integer.
-	VariantClassUint32 VariantClass = 117
-	// int64: the #GVariant is a signed 64 bit integer.
-	VariantClassInt64 VariantClass = 120
-	// uint64: the #GVariant is an unsigned 64 bit integer.
-	VariantClassUint64 VariantClass = 116
-	// handle: the #GVariant is a file handle index.
-	VariantClassHandle VariantClass = 104
-	// double: the #GVariant is a double precision floating point value.
-	VariantClassDouble VariantClass = 100
-	// string: the #GVariant is a normal string.
-	VariantClassString VariantClass = 115
+	// Boolean: the #GVariant is a boolean.
+	Boolean VariantClass = 98
+	// Byte: the #GVariant is a byte.
+	Byte VariantClass = 121
+	// Int16: the #GVariant is a signed 16 bit integer.
+	Int16 VariantClass = 110
+	// Uint16: the #GVariant is an unsigned 16 bit integer.
+	Uint16 VariantClass = 113
+	// Int32: the #GVariant is a signed 32 bit integer.
+	Int32 VariantClass = 105
+	// Uint32: the #GVariant is an unsigned 32 bit integer.
+	Uint32 VariantClass = 117
+	// Int64: the #GVariant is a signed 64 bit integer.
+	Int64 VariantClass = 120
+	// Uint64: the #GVariant is an unsigned 64 bit integer.
+	Uint64 VariantClass = 116
+	// Handle: the #GVariant is a file handle index.
+	Handle VariantClass = 104
+	// Double: the #GVariant is a double precision floating point value.
+	Double VariantClass = 100
+	// String: the #GVariant is a normal string.
+	String VariantClass = 115
 	// ObjectPath: the #GVariant is a D-Bus object path string.
-	VariantClassObjectPath VariantClass = 111
-	// signature: the #GVariant is a D-Bus signature string.
-	VariantClassSignature VariantClass = 103
-	// variant: the #GVariant is a variant.
-	VariantClassVariant VariantClass = 118
-	// maybe: the #GVariant is a maybe-typed value.
-	VariantClassMaybe VariantClass = 109
-	// array: the #GVariant is an array.
-	VariantClassArray VariantClass = 97
-	// tuple: the #GVariant is a tuple.
-	VariantClassTuple VariantClass = 40
+	ObjectPath VariantClass = 111
+	// Signature: the #GVariant is a D-Bus signature string.
+	Signature VariantClass = 103
+	// Variant: the #GVariant is a variant.
+	Variant VariantClass = 118
+	// Maybe: the #GVariant is a maybe-typed value.
+	Maybe VariantClass = 109
+	// Array: the #GVariant is an array.
+	Array VariantClass = 97
+	// Tuple: the #GVariant is a tuple.
+	Tuple VariantClass = 40
 	// DictEntry: the #GVariant is a dictionary entry.
-	VariantClassDictEntry VariantClass = 123
+	DictEntry VariantClass = 123
 )
 
 // VariantParseError: error codes returned by parsing text-format GVariants.
 type VariantParseError int
 
 const (
-	// failed: generic error (unused)
-	VariantParseErrorFailed VariantParseError = iota
+	// Failed: generic error (unused)
+	Failed VariantParseError = iota
 	// BasicTypeExpected: non-basic Type was given where a basic type was
 	// expected
-	VariantParseErrorBasicTypeExpected
+	BasicTypeExpected
 	// CannotInferType: cannot infer the Type
-	VariantParseErrorCannotInferType
+	CannotInferType
 	// DefiniteTypeExpected: indefinite Type was given where a definite type was
 	// expected
-	VariantParseErrorDefiniteTypeExpected
+	DefiniteTypeExpected
 	// InputNotAtEnd: extra data after parsing finished
-	VariantParseErrorInputNotAtEnd
+	InputNotAtEnd
 	// InvalidCharacter: invalid character in number or unicode escape
-	VariantParseErrorInvalidCharacter
+	InvalidCharacter
 	// InvalidFormatString: not a valid #GVariant format string
-	VariantParseErrorInvalidFormatString
+	InvalidFormatString
 	// InvalidObjectPath: not a valid object path
-	VariantParseErrorInvalidObjectPath
+	InvalidObjectPath
 	// InvalidSignature: not a valid type signature
-	VariantParseErrorInvalidSignature
+	InvalidSignature
 	// InvalidTypeString: not a valid #GVariant type string
-	VariantParseErrorInvalidTypeString
+	InvalidTypeString
 	// NoCommonType: could not find a common type for array entries
-	VariantParseErrorNoCommonType
+	NoCommonType
 	// NumberOutOfRange: the numerical value is out of range of the given type
-	VariantParseErrorNumberOutOfRange
+	NumberOutOfRange
 	// NumberTooBig: the numerical value is out of range for any type
-	VariantParseErrorNumberTooBig
+	NumberTooBig
 	// TypeError: cannot parse as variant of the specified type
-	VariantParseErrorTypeError
+	TypeError
 	// UnexpectedToken: unexpected token was encountered
-	VariantParseErrorUnexpectedToken
+	UnexpectedToken
 	// UnknownKeyword: unknown keyword was encountered
-	VariantParseErrorUnknownKeyword
+	UnknownKeyword
 	// UnterminatedStringConstant: unterminated string constant
-	VariantParseErrorUnterminatedStringConstant
+	UnterminatedStringConstant
 	// ValueExpected: no value given
-	VariantParseErrorValueExpected
-	// recursion: variant was too deeply nested; #GVariant is only guaranteed to
+	ValueExpected
+	// Recursion: variant was too deeply nested; #GVariant is only guaranteed to
 	// handle nesting up to 64 levels (Since: 2.64)
-	VariantParseErrorRecursion
+	Recursion
 )
 
 // Variant is a variant datatype; it can contain one or more values along with
@@ -1749,7 +1749,7 @@ func (v *Variant) Print(typeAnnotate bool) string {
 }
 
 // Ref increases the reference count of @value.
-func (v *Variant) Ref() *Variant {
+func (v *Variant) ref() *Variant {
 	var _arg0 *C.GVariant // out
 	var _cret *C.GVariant // in
 
@@ -1879,7 +1879,7 @@ func (v *Variant) TakeRef() *Variant {
 
 // Unref decreases the reference count of @value. When its reference count drops
 // to 0, the memory used by the variant is freed.
-func (v *Variant) Unref() {
+func (v *Variant) unref() {
 	var _arg0 *C.GVariant // out
 
 	_arg0 = (*C.GVariant)(unsafe.Pointer(v))
@@ -2051,7 +2051,7 @@ func (b *VariantBuilder) Open(typ *VariantType) {
 //
 // Don't call this on stack-allocated Builder instances or bad things will
 // happen.
-func (b *VariantBuilder) Ref() *VariantBuilder {
+func (b *VariantBuilder) ref() *VariantBuilder {
 	var _arg0 *C.GVariantBuilder // out
 	var _cret *C.GVariantBuilder // in
 
@@ -2077,7 +2077,7 @@ func (b *VariantBuilder) Ref() *VariantBuilder {
 //
 // Don't call this on stack-allocated Builder instances or bad things will
 // happen.
-func (b *VariantBuilder) Unref() {
+func (b *VariantBuilder) unref() {
 	var _arg0 *C.GVariantBuilder // out
 
 	_arg0 = (*C.GVariantBuilder)(unsafe.Pointer(b))
@@ -2302,7 +2302,7 @@ func (d *VariantDict) LookupValue(key string, expectedType *VariantType) *Varian
 // Ref increases the reference count on @dict.
 //
 // Don't call this on stack-allocated Dict instances or bad things will happen.
-func (d *VariantDict) Ref() *VariantDict {
+func (d *VariantDict) ref() *VariantDict {
 	var _arg0 *C.GVariantDict // out
 	var _cret *C.GVariantDict // in
 
@@ -2348,7 +2348,7 @@ func (d *VariantDict) Remove(key string) bool {
 // associated with the Dict.
 //
 // Don't call this on stack-allocated Dict instances or bad things will happen.
-func (d *VariantDict) Unref() {
+func (d *VariantDict) unref() {
 	var _arg0 *C.GVariantDict // out
 
 	_arg0 = (*C.GVariantDict)(unsafe.Pointer(d))

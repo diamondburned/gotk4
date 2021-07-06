@@ -23,10 +23,10 @@ import "C"
 type LogWriterOutput int
 
 const (
-	// handled: log writer has handled the log entry.
-	LogWriterOutputHandled LogWriterOutput = 1
-	// unhandled: log writer could not handle the log entry.
-	LogWriterOutputUnhandled LogWriterOutput = 0
+	// Handled: log writer has handled the log entry.
+	Handled LogWriterOutput = 1
+	// Unhandled: log writer could not handle the log entry.
+	Unhandled LogWriterOutput = 0
 )
 
 // LogLevelFlags flags specifying the level of log messages.

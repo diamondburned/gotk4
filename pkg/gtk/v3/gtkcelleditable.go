@@ -33,6 +33,17 @@ func init() {
 	})
 }
 
+// CellEditableOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type CellEditableOverrider interface {
+	// EditingDone emits the CellEditable::editing-done signal.
+	EditingDone()
+	// RemoveWidget emits the CellEditable::remove-widget signal.
+	RemoveWidget()
+}
+
 // CellEditable: the CellEditable interface must be implemented for widgets to
 // be usable to edit the contents of a TreeView cell. It provides a way to
 // specify how temporary widgets should be configured for editing, get the new

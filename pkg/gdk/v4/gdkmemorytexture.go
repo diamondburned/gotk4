@@ -40,28 +40,28 @@ type MemoryFormat int
 const (
 	// B8G8R8A8Premultiplied: 4 bytes; for blue, green, red, alpha. The color
 	// values are premultiplied with the alpha value.
-	MemoryFormatB8G8R8A8Premultiplied MemoryFormat = iota
+	B8G8R8A8Premultiplied MemoryFormat = iota
 	// A8R8G8B8Premultiplied: 4 bytes; for alpha, red, green, blue. The color
 	// values are premultiplied with the alpha value.
-	MemoryFormatA8R8G8B8Premultiplied
+	A8R8G8B8Premultiplied
 	// R8G8B8A8Premultiplied: 4 bytes; for red, green, blue, alpha The color
 	// values are premultiplied with the alpha value.
-	MemoryFormatR8G8B8A8Premultiplied
-	// b8g8r8a8: 4 bytes; for blue, green, red, alpha.
-	MemoryFormatB8G8R8A8
-	// a8r8g8b8: 4 bytes; for alpha, red, green, blue.
-	MemoryFormatA8R8G8B8
-	// r8g8b8a8: 4 bytes; for red, green, blue, alpha.
-	MemoryFormatR8G8B8A8
-	// a8b8g8r8: 4 bytes; for alpha, blue, green, red.
-	MemoryFormatA8B8G8R8
-	// r8g8b8: 3 bytes; for red, green, blue. The data is opaque.
-	MemoryFormatR8G8B8
-	// b8g8r8: 3 bytes; for blue, green, red. The data is opaque.
-	MemoryFormatB8G8R8
+	R8G8B8A8Premultiplied
+	// B8G8R8A8: 4 bytes; for blue, green, red, alpha.
+	B8G8R8A8
+	// A8R8G8B8: 4 bytes; for alpha, red, green, blue.
+	A8R8G8B8
+	// R8G8B8A8: 4 bytes; for red, green, blue, alpha.
+	R8G8B8A8
+	// A8B8G8R8: 4 bytes; for alpha, blue, green, red.
+	A8B8G8R8
+	// R8G8B8: 3 bytes; for red, green, blue. The data is opaque.
+	R8G8B8
+	// B8G8R8: 3 bytes; for blue, green, red. The data is opaque.
+	B8G8R8
 	// NFormats: the number of formats. This value will change as more formats
 	// get added, so do not rely on its concrete integer.
-	MemoryFormatNFormats
+	NFormats
 )
 
 func marshalMemoryFormat(p uintptr) (interface{}, error) {

@@ -35,6 +35,15 @@ func init() {
 	})
 }
 
+// HandleBoxOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type HandleBoxOverrider interface {
+	ChildAttached(child Widget)
+	ChildDetached(child Widget)
+}
+
 // HandleBox: the HandleBox widget allows a portion of a window to be "torn
 // off". It is a bin widget which displays its child and a handle that the user
 // can drag to tear off a separate window (the “float window”) containing the

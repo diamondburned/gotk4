@@ -638,7 +638,7 @@ func (c *MainContext) PushThreadDefault() {
 }
 
 // Ref increases the reference count on a Context object by one.
-func (c *MainContext) Ref() *MainContext {
+func (c *MainContext) ref() *MainContext {
 	var _arg0 *C.GMainContext // out
 	var _cret *C.GMainContext // in
 
@@ -683,7 +683,7 @@ func (c *MainContext) RemovePoll(fd *PollFD) {
 
 // Unref decreases the reference count on a Context object by one. If the result
 // is zero, free the context and free all associated memory.
-func (c *MainContext) Unref() {
+func (c *MainContext) unref() {
 	var _arg0 *C.GMainContext // out
 
 	_arg0 = (*C.GMainContext)(unsafe.Pointer(c))
@@ -813,7 +813,7 @@ func (l *MainLoop) Quit() {
 }
 
 // Ref increases the reference count on a Loop object by one.
-func (l *MainLoop) Ref() *MainLoop {
+func (l *MainLoop) ref() *MainLoop {
 	var _arg0 *C.GMainLoop // out
 	var _cret *C.GMainLoop // in
 
@@ -845,7 +845,7 @@ func (l *MainLoop) Run() {
 
 // Unref decreases the reference count on a Loop object by one. If the result is
 // zero, free the loop and free all associated memory.
-func (l *MainLoop) Unref() {
+func (l *MainLoop) unref() {
 	var _arg0 *C.GMainLoop // out
 
 	_arg0 = (*C.GMainLoop)(unsafe.Pointer(l))
@@ -1267,7 +1267,7 @@ func (s *Source) QueryUnixFd(tag interface{}) IOCondition {
 }
 
 // Ref increases the reference count on a source by one.
-func (s *Source) Ref() *Source {
+func (s *Source) ref() *Source {
 	var _arg0 *C.GSource // out
 	var _cret *C.GSource // in
 
@@ -1461,7 +1461,7 @@ func (s *Source) SetReadyTime(readyTime int64) {
 
 // Unref decreases the reference count of a source by one. If the resulting
 // reference count is zero the source and associated memory will be destroyed.
-func (s *Source) Unref() {
+func (s *Source) unref() {
 	var _arg0 *C.GSource // out
 
 	_arg0 = (*C.GSource)(unsafe.Pointer(s))

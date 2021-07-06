@@ -36,6 +36,14 @@ func init() {
 	})
 }
 
+// ThreadedSocketServiceOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type ThreadedSocketServiceOverrider interface {
+	Run(connection SocketConnection, sourceObject gextras.Objector) bool
+}
+
 // ThreadedSocketService is a simple subclass of Service that handles incoming
 // connections by creating a worker thread and dispatching the connection to it
 // by emitting the SocketService::run signal in the new thread.

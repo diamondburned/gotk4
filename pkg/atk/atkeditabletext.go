@@ -21,6 +21,27 @@ func init() {
 	})
 }
 
+// EditableTextOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type EditableTextOverrider interface {
+	// CopyText: copy text from @start_pos up to, but not including @end_pos to
+	// the clipboard.
+	CopyText(startPos int, endPos int)
+	// CutText: copy text from @start_pos up to, but not including @end_pos to
+	// the clipboard and then delete from the widget.
+	CutText(startPos int, endPos int)
+	// DeleteText: delete text @start_pos up to, but not including @end_pos.
+	DeleteText(startPos int, endPos int)
+	// InsertText: insert text at a given position.
+	InsertText(_string string, length int, position *int)
+	// PasteText: paste text from clipboard to specified @position.
+	PasteText(position int)
+	// SetTextContents: set text contents of @text.
+	SetTextContents(_string string)
+}
+
 // EditableText should be implemented by UI components which contain text which
 // the user can edit, via the Object corresponding to that component (see
 // Object).

@@ -69,7 +69,7 @@ func (o *GlyphItem) Copy() *GlyphItem {
 }
 
 // Free frees a `PangoGlyphItem` and resources to which it points.
-func (g *GlyphItem) Free() {
+func (g *GlyphItem) free() {
 	var _arg0 *C.PangoGlyphItem // out
 
 	_arg0 = (*C.PangoGlyphItem)(unsafe.Pointer(g))
@@ -182,7 +182,7 @@ func (o *GlyphItemIter) Copy() *GlyphItemIter {
 }
 
 // Free frees a `PangoGlyphItem`Iter.
-func (i *GlyphItemIter) Free() {
+func (i *GlyphItemIter) free() {
 	var _arg0 *C.PangoGlyphItemIter // out
 
 	_arg0 = (*C.PangoGlyphItemIter)(unsafe.Pointer(i))

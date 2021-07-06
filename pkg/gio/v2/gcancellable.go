@@ -35,6 +35,14 @@ func init() {
 	})
 }
 
+// CancellableOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type CancellableOverrider interface {
+	Cancelled()
+}
+
 // Cancellable is a thread-safe operation cancellation stack used throughout GIO
 // to allow for cancellation of synchronous and asynchronous operations.
 type Cancellable interface {

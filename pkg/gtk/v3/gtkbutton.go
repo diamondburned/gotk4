@@ -35,6 +35,32 @@ func init() {
 	})
 }
 
+// ButtonOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type ButtonOverrider interface {
+	Activate()
+	// Clicked emits a Button::clicked signal to the given Button.
+	Clicked()
+	// Enter emits a Button::enter signal to the given Button.
+	//
+	// Deprecated: since version 2.20.
+	Enter()
+	// Leave emits a Button::leave signal to the given Button.
+	//
+	// Deprecated: since version 2.20.
+	Leave()
+	// Pressed emits a Button::pressed signal to the given Button.
+	//
+	// Deprecated: since version 2.20.
+	Pressed()
+	// Released emits a Button::released signal to the given Button.
+	//
+	// Deprecated: since version 2.20.
+	Released()
+}
+
 // Button: the Button widget is generally used to trigger a callback function
 // that is called when the button is pressed. The various signals and how to use
 // them are outlined below.

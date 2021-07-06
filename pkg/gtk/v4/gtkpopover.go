@@ -28,6 +28,15 @@ func init() {
 	})
 }
 
+// PopoverOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type PopoverOverrider interface {
+	ActivateDefault()
+	Closed()
+}
+
 // Popover: `GtkPopover` is a bubble-like context popup.
 //
 // !An example GtkPopover (popover.png)

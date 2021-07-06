@@ -35,14 +35,14 @@ func init() {
 type ExpanderStyle int
 
 const (
-	// collapsed: the style used for a collapsed subtree.
-	ExpanderStyleCollapsed ExpanderStyle = iota
+	// Collapsed: the style used for a collapsed subtree.
+	Collapsed ExpanderStyle = iota
 	// SemiCollapsed: intermediate style used during animation.
-	ExpanderStyleSemiCollapsed
+	SemiCollapsed
 	// SemiExpanded: intermediate style used during animation.
-	ExpanderStyleSemiExpanded
-	// expanded: the style used for an expanded subtree.
-	ExpanderStyleExpanded
+	SemiExpanded
+	// Expanded: the style used for an expanded subtree.
+	Expanded
 )
 
 func marshalExpanderStyle(p uintptr) (interface{}, error) {
@@ -677,6 +677,47 @@ func PaintVline(style Style, cr *cairo.Context, stateType StateType, widget Widg
 	_arg8 = C.gint(x)
 
 	C.gtk_paint_vline(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8)
+}
+
+// StyleOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type StyleOverrider interface {
+	Copy(src Style)
+	DrawArrow(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widget, detail string, arrowType ArrowType, fill bool, x int, y int, width int, height int)
+	DrawBox(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widget, detail string, x int, y int, width int, height int)
+	DrawBoxGap(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widget, detail string, x int, y int, width int, height int, gapSide PositionType, gapX int, gapWidth int)
+	DrawCheck(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widget, detail string, x int, y int, width int, height int)
+	DrawDiamond(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widget, detail string, x int, y int, width int, height int)
+	DrawExpander(cr *cairo.Context, stateType StateType, widget Widget, detail string, x int, y int, expanderStyle ExpanderStyle)
+	DrawExtension(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widget, detail string, x int, y int, width int, height int, gapSide PositionType)
+	DrawFlatBox(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widget, detail string, x int, y int, width int, height int)
+	DrawFocus(cr *cairo.Context, stateType StateType, widget Widget, detail string, x int, y int, width int, height int)
+	DrawHandle(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widget, detail string, x int, y int, width int, height int, orientation Orientation)
+	DrawHline(cr *cairo.Context, stateType StateType, widget Widget, detail string, x1 int, x2 int, y int)
+	DrawLayout(cr *cairo.Context, stateType StateType, useText bool, widget Widget, detail string, x int, y int, layout pango.Layout)
+	DrawOption(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widget, detail string, x int, y int, width int, height int)
+	DrawResizeGrip(cr *cairo.Context, stateType StateType, widget Widget, detail string, edge gdk.WindowEdge, x int, y int, width int, height int)
+	DrawShadow(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widget, detail string, x int, y int, width int, height int)
+	DrawShadowGap(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widget, detail string, x int, y int, width int, height int, gapSide PositionType, gapX int, gapWidth int)
+	DrawSlider(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widget, detail string, x int, y int, width int, height int, orientation Orientation)
+	DrawSpinner(cr *cairo.Context, stateType StateType, widget Widget, detail string, step uint, x int, y int, width int, height int)
+	DrawTab(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widget, detail string, x int, y int, width int, height int)
+	DrawVline(cr *cairo.Context, stateType StateType, widget Widget, detail string, y1 int, y2 int, x int)
+	InitFromRC(rcStyle RCStyle)
+	Realize()
+	// RenderIcon renders the icon specified by @source at the given @size
+	// according to the given parameters and returns the result in a pixbuf.
+	//
+	// Deprecated: since version 3.0.
+	RenderIcon(source *IconSource, direction TextDirection, state StateType, size int, widget Widget, detail string) gdkpixbuf.Pixbuf
+	// SetBackground sets the background of @window to the background color or
+	// pixmap specified by @style for the given state.
+	//
+	// Deprecated: since version 3.0.
+	SetBackground(window gdk.Window, stateType StateType)
+	Unrealize()
 }
 
 // Style object encapsulates the information that provides the look and feel for

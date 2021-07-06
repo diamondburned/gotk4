@@ -91,6 +91,20 @@ func gotk4_CalendarDetailFunc(arg0 *C.GtkCalendar, arg1 C.guint, arg2 C.guint, a
 	return cret
 }
 
+// CalendarOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type CalendarOverrider interface {
+	DaySelected()
+	DaySelectedDoubleClick()
+	MonthChanged()
+	NextMonth()
+	NextYear()
+	PrevMonth()
+	PrevYear()
+}
+
 // Calendar is a widget that displays a Gregorian calendar, one month at a time.
 // It can be created with gtk_calendar_new().
 //

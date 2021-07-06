@@ -37,14 +37,14 @@ func init() {
 type TreeViewDropPosition int
 
 const (
-	// before: dropped row is inserted before
-	TreeViewDropPositionBefore TreeViewDropPosition = iota
-	// after: dropped row is inserted after
-	TreeViewDropPositionAfter
+	// Before: dropped row is inserted before
+	Before TreeViewDropPosition = iota
+	// After: dropped row is inserted after
+	After
 	// IntoOrBefore: dropped row becomes a child or is inserted before
-	TreeViewDropPositionIntoOrBefore
+	IntoOrBefore
 	// IntoOrAfter: dropped row becomes a child or is inserted after
-	TreeViewDropPositionIntoOrAfter
+	IntoOrAfter
 )
 
 func marshalTreeViewDropPosition(p uintptr) (interface{}, error) {
@@ -168,6 +168,29 @@ func gotk4_TreeViewSearchEqualFunc(arg0 *C.GtkTreeModel, arg1 C.int, arg2 *C.cha
 	}
 
 	return cret
+}
+
+// TreeViewOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type TreeViewOverrider interface {
+	ColumnsChanged()
+	CursorChanged()
+	ExpandCollapseCursorRow(logical bool, expand bool, openAll bool) bool
+	MoveCursor(step MovementStep, count int, extend bool, modify bool) bool
+	// RowActivated activates the cell determined by @path and @column.
+	RowActivated(path *TreePath, column TreeViewColumn)
+	RowCollapsed(iter *TreeIter, path *TreePath)
+	RowExpanded(iter *TreeIter, path *TreePath)
+	SelectAll() bool
+	SelectCursorParent() bool
+	SelectCursorRow(startEditing bool) bool
+	StartInteractiveSearch() bool
+	TestCollapseRow(iter *TreeIter, path *TreePath) bool
+	TestExpandRow(iter *TreeIter, path *TreePath) bool
+	ToggleCursorRow() bool
+	UnselectAll() bool
 }
 
 // TreeView: widget for displaying both trees and lists

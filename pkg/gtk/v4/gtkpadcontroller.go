@@ -28,12 +28,12 @@ func init() {
 type PadActionType int
 
 const (
-	// button: action is triggered by a pad button
-	PadActionTypeButton PadActionType = iota
-	// ring: action is triggered by a pad ring
-	PadActionTypeRing
-	// strip: action is triggered by a pad strip
-	PadActionTypeStrip
+	// Button: action is triggered by a pad button
+	Button PadActionType = iota
+	// Ring: action is triggered by a pad ring
+	Ring
+	// Strip: action is triggered by a pad strip
+	Strip
 )
 
 func marshalPadActionType(p uintptr) (interface{}, error) {

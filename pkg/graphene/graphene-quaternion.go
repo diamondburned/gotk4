@@ -129,7 +129,7 @@ func (a *Quaternion) Equal(b *Quaternion) bool {
 }
 
 // Free releases the resources allocated by graphene_quaternion_alloc().
-func (q *Quaternion) Free() {
+func (q *Quaternion) free() {
 	var _arg0 *C.graphene_quaternion_t // out
 
 	_arg0 = (*C.graphene_quaternion_t)(unsafe.Pointer(q))

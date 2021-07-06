@@ -110,7 +110,7 @@ func (q *Quad) Contains(p *Point) bool {
 }
 
 // Free frees the resources allocated by graphene_quad_alloc()
-func (q *Quad) Free() {
+func (q *Quad) free() {
 	var _arg0 *C.graphene_quad_t // out
 
 	_arg0 = (*C.graphene_quad_t)(unsafe.Pointer(q))

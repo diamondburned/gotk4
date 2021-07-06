@@ -50,6 +50,47 @@ func gotk4_CellLayoutDataFunc(arg0 *C.GtkCellLayout, arg1 *C.GtkCellRenderer, ar
 	fn(cellLayout, cell, treeModel, iter)
 }
 
+// CellLayoutOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type CellLayoutOverrider interface {
+	// AddAttribute adds an attribute mapping to the list in @cell_layout.
+	//
+	// The @column is the column of the model to get a value from, and the
+	// @attribute is the parameter on @cell to be set from the value. So for
+	// example if column 2 of the model contains strings, you could have the
+	// “text” attribute of a CellRendererText get its values from column 2.
+	AddAttribute(cell CellRenderer, attribute string, column int)
+	// Clear unsets all the mappings on all renderers on @cell_layout and
+	// removes all renderers from @cell_layout.
+	Clear()
+	// ClearAttributes clears all existing attributes previously set with
+	// gtk_cell_layout_set_attributes().
+	ClearAttributes(cell CellRenderer)
+	// Area returns the underlying CellArea which might be @cell_layout if
+	// called on a CellArea or might be nil if no CellArea is used by
+	// @cell_layout.
+	Area() CellArea
+	// PackEnd adds the @cell to the end of @cell_layout. If @expand is false,
+	// then the @cell is allocated no more space than it needs. Any unused space
+	// is divided evenly between cells for which @expand is true.
+	//
+	// Note that reusing the same cell renderer is not supported.
+	PackEnd(cell CellRenderer, expand bool)
+	// PackStart packs the @cell into the beginning of @cell_layout. If @expand
+	// is false, then the @cell is allocated no more space than it needs. Any
+	// unused space is divided evenly between cells for which @expand is true.
+	//
+	// Note that reusing the same cell renderer is not supported.
+	PackStart(cell CellRenderer, expand bool)
+	// Reorder re-inserts @cell at @position.
+	//
+	// Note that @cell has already to be packed into @cell_layout for this to
+	// function properly.
+	Reorder(cell CellRenderer, position int)
+}
+
 // CellLayout is an interface to be implemented by all objects which want to
 // provide a TreeViewColumn like API for packing cells, setting attributes and
 // data funcs.

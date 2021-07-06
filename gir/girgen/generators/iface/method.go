@@ -6,6 +6,7 @@ import (
 	"github.com/diamondburned/gotk4/gir"
 	"github.com/diamondburned/gotk4/gir/girgen/file"
 	"github.com/diamondburned/gotk4/gir/girgen/generators/callable"
+	"github.com/diamondburned/gotk4/gir/girgen/logger"
 	"github.com/diamondburned/gotk4/gir/girgen/types"
 )
 
@@ -61,10 +62,13 @@ func (m *Methods) setMethods(methods []gir.Method, p generateParams) {
 	m.reset(len(methods))
 
 	for i := range methods {
-		if p.cgen.UseFromNamespace(&methods[i].CallableAttrs, p.source) {
-			p.cgen.Header().ApplyHeader(p.header)
-			*m = append(*m, newMethod(p.cgen))
+		if !p.cgen.UseFromNamespace(&methods[i].CallableAttrs, p.source) {
+			p.cgen.Logln(logger.Debug, "setMethods skipped", methods[i].CIdentifier)
+			continue
 		}
+
+		p.cgen.Header().ApplyHeader(p.header)
+		*m = append(*m, newMethod(p.cgen))
 	}
 
 	m.renameGetters(p.self)
@@ -74,10 +78,13 @@ func (m *Methods) setVirtuals(virtuals []gir.VirtualMethod, p generateParams) {
 	m.reset(len(virtuals))
 
 	for i := range virtuals {
-		if p.cgen.UseFromNamespace(&virtuals[i].CallableAttrs, p.source) {
-			p.cgen.Header().ApplyHeader(p.header)
-			*m = append(*m, newMethod(p.cgen))
+		if !p.cgen.UseFromNamespace(&virtuals[i].CallableAttrs, p.source) {
+			p.cgen.Logln(logger.Debug, "setVirtuals skipped", virtuals[i].CIdentifier)
+			continue
 		}
+
+		p.cgen.Header().ApplyHeader(p.header)
+		*m = append(*m, newMethod(p.cgen))
 	}
 
 	m.renameGetters(p.self)

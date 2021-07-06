@@ -162,7 +162,7 @@ func (t *Tree) Nnodes() int {
 // Ref increments the reference count of @tree by one.
 //
 // It is safe to call this function from any thread.
-func (t *Tree) Ref() *Tree {
+func (t *Tree) ref() *Tree {
 	var _arg0 *C.GTree // out
 	var _cret *C.GTree // in
 
@@ -251,7 +251,7 @@ func (t *Tree) Steal(key interface{}) bool {
 // specified) and all memory allocated by @tree will be released.
 //
 // It is safe to call this function from any thread.
-func (t *Tree) Unref() {
+func (t *Tree) unref() {
 	var _arg0 *C.GTree // out
 
 	_arg0 = (*C.GTree)(unsafe.Pointer(t))

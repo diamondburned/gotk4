@@ -38,23 +38,23 @@ type Stretch int
 
 const (
 	// UltraCondensed: ultra condensed width
-	StretchUltraCondensed Stretch = iota
+	UltraCondensed Stretch = iota
 	// ExtraCondensed: extra condensed width
-	StretchExtraCondensed
-	// condensed width
-	StretchCondensed
+	ExtraCondensed
+	// Condensed width
+	Condensed
 	// SemiCondensed: semi condensed width
-	StretchSemiCondensed
-	// normal: the normal width
-	StretchNormal
+	SemiCondensed
+	// Normal: the normal width
+	Normal
 	// SemiExpanded: semi expanded width
-	StretchSemiExpanded
-	// expanded width
-	StretchExpanded
+	SemiExpanded
+	// Expanded width
+	Expanded
 	// ExtraExpanded: extra expanded width
-	StretchExtraExpanded
+	ExtraExpanded
 	// UltraExpanded: ultra expanded width
-	StretchUltraExpanded
+	UltraExpanded
 )
 
 func marshalStretch(p uintptr) (interface{}, error) {
@@ -65,12 +65,12 @@ func marshalStretch(p uintptr) (interface{}, error) {
 type Style int
 
 const (
-	// normal: the font is upright.
-	StyleNormal Style = iota
-	// oblique: the font is slanted, but in a roman style.
-	StyleOblique
-	// italic: the font is slanted in an italic style.
-	StyleItalic
+	// Normal: the font is upright.
+	Normal Style = iota
+	// Oblique: the font is slanted, but in a roman style.
+	Oblique
+	// Italic: the font is slanted in an italic style.
+	Italic
 )
 
 func marshalStyle(p uintptr) (interface{}, error) {
@@ -81,11 +81,11 @@ func marshalStyle(p uintptr) (interface{}, error) {
 type Variant int
 
 const (
-	// normal font.
-	VariantNormal Variant = iota
+	// Normal font.
+	Normal Variant = iota
 	// SmallCaps: font with the lower case characters replaced by smaller
 	// variants of the capital characters.
-	VariantSmallCaps
+	SmallCaps
 )
 
 func marshalVariant(p uintptr) (interface{}, error) {
@@ -99,30 +99,30 @@ func marshalVariant(p uintptr) (interface{}, error) {
 type Weight int
 
 const (
-	// thin: the thin weight (= 100; Since: 1.24)
-	WeightThin Weight = 100
-	// ultralight: the ultralight weight (= 200)
-	WeightUltralight Weight = 200
-	// light: the light weight (= 300)
-	WeightLight Weight = 300
-	// semilight: the semilight weight (= 350; Since: 1.36.7)
-	WeightSemilight Weight = 350
-	// book: the book weight (= 380; Since: 1.24)
-	WeightBook Weight = 380
-	// normal: the default weight (= 400)
-	WeightNormal Weight = 400
-	// medium: the normal weight (= 500; Since: 1.24)
-	WeightMedium Weight = 500
-	// semibold: the semibold weight (= 600)
-	WeightSemibold Weight = 600
-	// bold: the bold weight (= 700)
-	WeightBold Weight = 700
-	// ultrabold: the ultrabold weight (= 800)
-	WeightUltrabold Weight = 800
-	// heavy: the heavy weight (= 900)
-	WeightHeavy Weight = 900
-	// ultraheavy: the ultraheavy weight (= 1000; Since: 1.24)
-	WeightUltraheavy Weight = 1000
+	// Thin: the thin weight (= 100; Since: 1.24)
+	Thin Weight = 100
+	// Ultralight: the ultralight weight (= 200)
+	Ultralight Weight = 200
+	// Light: the light weight (= 300)
+	Light Weight = 300
+	// Semilight: the semilight weight (= 350; Since: 1.36.7)
+	Semilight Weight = 350
+	// Book: the book weight (= 380; Since: 1.24)
+	Book Weight = 380
+	// Normal: the default weight (= 400)
+	Normal Weight = 400
+	// Medium: the normal weight (= 500; Since: 1.24)
+	Medium Weight = 500
+	// Semibold: the semibold weight (= 600)
+	Semibold Weight = 600
+	// Bold: the bold weight (= 700)
+	Bold Weight = 700
+	// Ultrabold: the ultrabold weight (= 800)
+	Ultrabold Weight = 800
+	// Heavy: the heavy weight (= 900)
+	Heavy Weight = 900
+	// Ultraheavy: the ultraheavy weight (= 1000; Since: 1.24)
+	Ultraheavy Weight = 1000
 )
 
 func marshalWeight(p uintptr) (interface{}, error) {
@@ -154,6 +154,41 @@ const (
 
 func marshalFontMask(p uintptr) (interface{}, error) {
 	return FontMask(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// FontOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type FontOverrider interface {
+	// Describe returns a description of the font, with font size set in points.
+	//
+	// Use [method@Pango.Font.describe_with_absolute_size] if you want the font
+	// size in device units.
+	Describe() *FontDescription
+	DescribeAbsolute() *FontDescription
+	// Coverage computes the coverage map for a given font and language tag.
+	Coverage(language *Language) Coverage
+	// FontMap gets the font map for which the font was created.
+	//
+	// Note that the font maintains a *weak* reference to the font map, so if
+	// all references to font map are dropped, the font map will be finalized
+	// even if there are fonts created with the font map that are still alive.
+	// In that case this function will return nil.
+	//
+	// It is the responsibility of the user to ensure that the font map is kept
+	// alive. In most uses this is not an issue as a Context holds a reference
+	// to the font map.
+	FontMap() FontMap
+	// Metrics gets overall metric information for a font.
+	//
+	// Since the metrics may be substantially different for different scripts, a
+	// language tag can be provided to indicate that the metrics should be
+	// retrieved that correspond to the script(s) used by that language.
+	//
+	// If @font is nil, this function gracefully sets some sane values in the
+	// output variables and returns.
+	Metrics(language *Language) *FontMetrics
 }
 
 // Font: `PangoFont` is used to represent a font in a
@@ -343,6 +378,34 @@ func (f font) HasChar(wc uint32) bool {
 	return _ok
 }
 
+// FontFaceOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type FontFaceOverrider interface {
+	// Describe returns the family, style, variant, weight and stretch of a
+	// `PangoFontFace`. The size field of the resulting font description will be
+	// unset.
+	Describe() *FontDescription
+	// FaceName gets a name representing the style of this face among the
+	// different faces in the `PangoFontFamily` for the face. The name is
+	// suitable for displaying to users.
+	FaceName() string
+	// Family gets the `PangoFontFamily` that @face belongs to.
+	Family() FontFamily
+	// IsSynthesized returns whether a `PangoFontFace` is synthesized by the
+	// underlying font rendering engine from another face, perhaps by shearing,
+	// emboldening, or lightening it.
+	IsSynthesized() bool
+	// ListSizes: list the available sizes for a font.
+	//
+	// This is only applicable to bitmap fonts. For scalable fonts, stores nil
+	// at the location pointed to by @sizes and 0 at the location pointed to by
+	// @n_sizes. The sizes returned are in Pango units and are sorted in
+	// ascending order.
+	ListSizes() []int
+}
+
 // FontFace: `PangoFontFace` is used to represent a group of fonts with the same
 // family, slant, weight, and width, but varying sizes.
 type FontFace interface {
@@ -472,6 +535,43 @@ func (f fontFace) ListSizes() []int {
 	})
 
 	return _sizes
+}
+
+// FontFamilyOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type FontFamilyOverrider interface {
+	// Face gets the `PangoFontFace` of @family with the given name.
+	Face(name string) FontFace
+	// Name gets the name of the family.
+	//
+	// The name is unique among all fonts for the font backend and can be used
+	// in a `PangoFontDescription` to specify that a face from this family is
+	// desired.
+	Name() string
+	// IsMonospace: monospace font is a font designed for text display where the
+	// the characters form a regular grid.
+	//
+	// For Western languages this would mean that the advance width of all
+	// characters are the same, but this categorization also includes Asian
+	// fonts which include double-width characters: characters that occupy two
+	// grid cells. g_unichar_iswide() returns a result that indicates whether a
+	// character is typically double-width in a monospace font.
+	//
+	// The best way to find out the grid-cell size is to call
+	// [method@Pango.FontMetrics.get_approximate_digit_width], since the results
+	// of [method@Pango.FontMetrics.get_approximate_char_width] may be affected
+	// by double-width characters.
+	IsMonospace() bool
+	// IsVariable: variable font is a font which has axes that can be modified
+	// to produce different faces.
+	IsVariable() bool
+	// ListFaces lists the different font faces that make up @family.
+	//
+	// The faces in a family share a common design, but differ in slant, weight,
+	// width and other aspects.
+	ListFaces() []FontFace
 }
 
 // FontFamily: `PangoFontFamily` is used to represent a family of related font
@@ -767,7 +867,7 @@ func (d *FontDescription) Equal(desc2 *FontDescription) bool {
 }
 
 // Free frees a font description.
-func (d *FontDescription) Free() {
+func (d *FontDescription) free() {
 	var _arg0 *C.PangoFontDescription // out
 
 	_arg0 = (*C.PangoFontDescription)(unsafe.Pointer(d))
@@ -1467,7 +1567,7 @@ func (m *FontMetrics) UnderlineThickness() int {
 }
 
 // Ref: increase the reference count of a font metrics structure by one.
-func (m *FontMetrics) Ref() *FontMetrics {
+func (m *FontMetrics) ref() *FontMetrics {
 	var _arg0 *C.PangoFontMetrics // out
 	var _cret *C.PangoFontMetrics // in
 
@@ -1488,7 +1588,7 @@ func (m *FontMetrics) Ref() *FontMetrics {
 
 // Unref: decrease the reference count of a font metrics structure by one. If
 // the result is zero, frees the structure and any associated memory.
-func (m *FontMetrics) Unref() {
+func (m *FontMetrics) unref() {
 	var _arg0 *C.PangoFontMetrics // out
 
 	_arg0 = (*C.PangoFontMetrics)(unsafe.Pointer(m))

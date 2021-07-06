@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -60,6 +61,33 @@ func gotk4_VFSFileLookupFunc(arg0 *C.GVfs, arg1 *C.char, arg2 C.gpointer) (cret 
 	cret = (*C.GFile)(unsafe.Pointer(file.Native()))
 
 	return cret
+}
+
+// VFSOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type VFSOverrider interface {
+	AddWritableNamespaces(list *FileAttributeInfoList)
+	// FileForPath gets a #GFile for @path.
+	FileForPath(path string) File
+	// FileForURI gets a #GFile for @uri.
+	//
+	// This operation never fails, but the returned object might not support any
+	// I/O operation if the URI is malformed or if the URI scheme is not
+	// supported.
+	FileForURI(uri string) File
+	// SupportedURISchemes gets a list of URI schemes supported by @vfs.
+	SupportedURISchemes() []string
+	// IsActive checks if the VFS is active.
+	IsActive() bool
+	LocalFileMoved(source string, dest string)
+	LocalFileRemoved(filename string)
+	LocalFileSetAttributes(filename string, info FileInfo, flags FileQueryInfoFlags, cancellable Cancellable) error
+	// ParseName: this operation never fails, but the returned object might not
+	// support any I/O operations if the @parse_name cannot be parsed by the
+	// #GVfs module.
+	ParseName(parseName string) File
 }
 
 // VFS: entry point for using GIO functionality.

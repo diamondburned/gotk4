@@ -35,6 +35,18 @@ func init() {
 	})
 }
 
+// ToolItemOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type ToolItemOverrider interface {
+	CreateMenuProxy() bool
+	// ToolbarReconfigured emits the signal ToolItem::toolbar_reconfigured on
+	// @tool_item. Toolbar and other ToolShell implementations use this function
+	// to notify children, when some aspect of their configuration changes.
+	ToolbarReconfigured()
+}
+
 // ToolItem are widgets that can appear on a toolbar. To create a toolbar item
 // that contain something else than a button, use gtk_tool_item_new(). Use
 // gtk_container_add() to add a child widget to the tool item.

@@ -37,6 +37,49 @@ func init() {
 	})
 }
 
+// FileOutputStreamOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type FileOutputStreamOverrider interface {
+	CanSeek() bool
+	CanTruncate() bool
+	// Etag gets the entity tag for the file when it has been written. This must
+	// be called after the stream has been written and closed, as the etag can
+	// change while writing.
+	Etag() string
+	// QueryInfo queries a file output stream for the given @attributes. This
+	// function blocks while querying the stream. For the asynchronous version
+	// of this function, see g_file_output_stream_query_info_async(). While the
+	// stream is blocked, the stream will set the pending flag internally, and
+	// any other operations on the stream will fail with G_IO_ERROR_PENDING.
+	//
+	// Can fail if the stream was already closed (with @error being set to
+	// G_IO_ERROR_CLOSED), the stream has pending operations (with @error being
+	// set to G_IO_ERROR_PENDING), or if querying info is not supported for the
+	// stream's interface (with @error being set to G_IO_ERROR_NOT_SUPPORTED).
+	// In all cases of failure, nil will be returned.
+	//
+	// If @cancellable is not nil, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be set, and nil will
+	// be returned.
+	QueryInfo(attributes string, cancellable Cancellable) (FileInfo, error)
+	// QueryInfoAsync: asynchronously queries the @stream for a Info. When
+	// completed, @callback will be called with a Result which can be used to
+	// finish the operation with g_file_output_stream_query_info_finish().
+	//
+	// For the synchronous version of this function, see
+	// g_file_output_stream_query_info().
+	QueryInfoAsync(attributes string, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
+	// QueryInfoFinish finalizes the asynchronous query started by
+	// g_file_output_stream_query_info_async().
+	QueryInfoFinish(result AsyncResult) (FileInfo, error)
+	Seek(offset int64, typ glib.SeekType, cancellable Cancellable) error
+	Tell() int64
+	TruncateFn(size int64, cancellable Cancellable) error
+}
+
 // FileOutputStream provides output streams that write their content to a file.
 //
 // GFileOutputStream implements #GSeekable, which allows the output stream to

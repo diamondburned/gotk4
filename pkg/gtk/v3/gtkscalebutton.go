@@ -35,6 +35,14 @@ func init() {
 	})
 }
 
+// ScaleButtonOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type ScaleButtonOverrider interface {
+	ValueChanged(value float64)
+}
+
 // ScaleButton provides a button which pops up a scale widget. This kind of
 // widget is commonly used for volume controls in multimedia applications, and
 // GTK+ provides a VolumeButton subclass that is tailored for this use case.

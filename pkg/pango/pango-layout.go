@@ -42,12 +42,12 @@ type LayoutRun = GlyphItem
 type Alignment int
 
 const (
-	// left: put all available space on the right
-	AlignmentLeft Alignment = iota
-	// center: center the line within the available space
-	AlignmentCenter
-	// right: put all available space on the left
-	AlignmentRight
+	// Left: put all available space on the right
+	Left Alignment = iota
+	// Center: center the line within the available space
+	Center
+	// Right: put all available space on the left
+	Right
 )
 
 func marshalAlignment(p uintptr) (interface{}, error) {
@@ -62,14 +62,14 @@ func marshalAlignment(p uintptr) (interface{}, error) {
 type EllipsizeMode int
 
 const (
-	// none: no ellipsization
-	EllipsizeModeNone EllipsizeMode = iota
-	// start: omit characters at the start of the text
-	EllipsizeModeStart
-	// middle: omit characters in the middle of the text
-	EllipsizeModeMiddle
-	// end: omit characters at the end of the text
-	EllipsizeModeEnd
+	// None: no ellipsization
+	None EllipsizeMode = iota
+	// Start: omit characters at the start of the text
+	Start
+	// Middle: omit characters in the middle of the text
+	Middle
+	// End: omit characters at the end of the text
+	End
 )
 
 func marshalEllipsizeMode(p uintptr) (interface{}, error) {
@@ -81,13 +81,13 @@ func marshalEllipsizeMode(p uintptr) (interface{}, error) {
 type WrapMode int
 
 const (
-	// word: wrap lines at word boundaries.
-	WrapModeWord WrapMode = iota
-	// char: wrap lines at character boundaries.
-	WrapModeChar
+	// Word: wrap lines at word boundaries.
+	Word WrapMode = iota
+	// Char: wrap lines at character boundaries.
+	Char
 	// WordChar: wrap lines at word boundaries, but fall back to character
 	// boundaries if there is not enough space for a full word.
-	WrapModeWordChar
+	WordChar
 )
 
 func marshalWrapMode(p uintptr) (interface{}, error) {
@@ -1482,7 +1482,7 @@ func (i *LayoutIter) Copy() *LayoutIter {
 }
 
 // Free frees an iterator that's no longer in use.
-func (i *LayoutIter) Free() {
+func (i *LayoutIter) free() {
 	var _arg0 *C.PangoLayoutIter // out
 
 	_arg0 = (*C.PangoLayoutIter)(unsafe.Pointer(i))

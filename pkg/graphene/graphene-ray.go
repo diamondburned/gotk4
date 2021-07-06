@@ -26,12 +26,12 @@ func init() {
 type RayIntersectionKind int
 
 const (
-	// none: no intersection
-	RayIntersectionKindNone RayIntersectionKind = iota
-	// enter: the ray is entering the intersected object
-	RayIntersectionKindEnter
-	// leave: the ray is leaving the intersected object
-	RayIntersectionKindLeave
+	// None: no intersection
+	None RayIntersectionKind = iota
+	// Enter: the ray is entering the intersected object
+	Enter
+	// Leave: the ray is leaving the intersected object
+	Leave
 )
 
 // Ray: ray emitted from an origin in a given direction.
@@ -95,7 +95,7 @@ func (a *Ray) Equal(b *Ray) bool {
 }
 
 // Free frees the resources allocated by graphene_ray_alloc().
-func (r *Ray) Free() {
+func (r *Ray) free() {
 	var _arg0 *C.graphene_ray_t // out
 
 	_arg0 = (*C.graphene_ray_t)(unsafe.Pointer(r))

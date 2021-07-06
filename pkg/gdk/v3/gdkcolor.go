@@ -94,7 +94,7 @@ func (c *Color) Equal(colorb *Color) bool {
 // Free frees a Color created with gdk_color_copy().
 //
 // Deprecated: since version 3.14.
-func (c *Color) Free() {
+func (c *Color) free() {
 	var _arg0 *C.GdkColor // out
 
 	_arg0 = (*C.GdkColor)(unsafe.Pointer(c))

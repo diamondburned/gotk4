@@ -38,6 +38,72 @@ func init() {
 	})
 }
 
+// PollableOutputStreamOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type PollableOutputStreamOverrider interface {
+	// CanPoll checks if @stream is actually pollable. Some classes may
+	// implement OutputStream but have only certain instances of that class be
+	// pollable. If this method returns false, then the behavior of other
+	// OutputStream methods is undefined.
+	//
+	// For any given stream, the value returned by this method is constant; a
+	// stream cannot switch from pollable to non-pollable or vice versa.
+	CanPoll() bool
+	// CreateSource creates a #GSource that triggers when @stream can be
+	// written, or @cancellable is triggered or an error occurs. The callback on
+	// the source is of the SourceFunc type.
+	//
+	// As with g_pollable_output_stream_is_writable(), it is possible that the
+	// stream may not actually be writable even after the source triggers, so
+	// you should use g_pollable_output_stream_write_nonblocking() rather than
+	// g_output_stream_write() from the callback.
+	CreateSource(cancellable Cancellable) *glib.Source
+	// IsWritable checks if @stream can be written.
+	//
+	// Note that some stream types may not be able to implement this 100%
+	// reliably, and it is possible that a call to g_output_stream_write() after
+	// this returns true would still block. To guarantee non-blocking behavior,
+	// you should always use g_pollable_output_stream_write_nonblocking(), which
+	// will return a G_IO_ERROR_WOULD_BLOCK error rather than blocking.
+	IsWritable() bool
+	// WriteNonblocking attempts to write up to @count bytes from @buffer to
+	// @stream, as with g_output_stream_write(). If @stream is not currently
+	// writable, this will immediately return G_IO_ERROR_WOULD_BLOCK, and you
+	// can use g_pollable_output_stream_create_source() to create a #GSource
+	// that will be triggered when @stream is writable.
+	//
+	// Note that since this method never blocks, you cannot actually use
+	// @cancellable to cancel it. However, it will return an error if
+	// @cancellable has already been cancelled when you call, which may happen
+	// if you call this method after a source triggers due to having been
+	// cancelled.
+	//
+	// Also note that if G_IO_ERROR_WOULD_BLOCK is returned some underlying
+	// transports like D/TLS require that you re-send the same @buffer and
+	// @count in the next write call.
+	WriteNonblocking(buffer []byte) (int, error)
+	// WritevNonblocking attempts to write the bytes contained in the @n_vectors
+	// @vectors to @stream, as with g_output_stream_writev(). If @stream is not
+	// currently writable, this will immediately return
+	// %@G_POLLABLE_RETURN_WOULD_BLOCK, and you can use
+	// g_pollable_output_stream_create_source() to create a #GSource that will
+	// be triggered when @stream is writable. @error will *not* be set in that
+	// case.
+	//
+	// Note that since this method never blocks, you cannot actually use
+	// @cancellable to cancel it. However, it will return an error if
+	// @cancellable has already been cancelled when you call, which may happen
+	// if you call this method after a source triggers due to having been
+	// cancelled.
+	//
+	// Also note that if G_POLLABLE_RETURN_WOULD_BLOCK is returned some
+	// underlying transports like D/TLS require that you re-send the same
+	// @vectors and @n_vectors in the next write call.
+	WritevNonblocking(vectors []OutputVector) (uint, PollableReturn, error)
+}
+
 // PollableOutputStream is implemented by Streams that can be polled for
 // readiness to write. This can be used when interfacing with a non-GIO API that
 // expects UNIX-file-descriptor-style asynchronous I/O rather than GIO-style.

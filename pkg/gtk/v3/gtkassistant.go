@@ -49,26 +49,26 @@ func init() {
 type AssistantPageType int
 
 const (
-	// content: the page has regular contents. Both the Back and forward buttons
+	// Content: the page has regular contents. Both the Back and forward buttons
 	// will be shown.
-	AssistantPageTypeContent AssistantPageType = iota
-	// intro: the page contains an introduction to the assistant task. Only the
+	Content AssistantPageType = iota
+	// Intro: the page contains an introduction to the assistant task. Only the
 	// Forward button will be shown if there is a next page.
-	AssistantPageTypeIntro
-	// confirm: the page lets the user confirm or deny the changes. The Back and
+	Intro
+	// Confirm: the page lets the user confirm or deny the changes. The Back and
 	// Apply buttons will be shown.
-	AssistantPageTypeConfirm
-	// summary: the page informs the user of the changes done. Only the Close
+	Confirm
+	// Summary: the page informs the user of the changes done. Only the Close
 	// button will be shown.
-	AssistantPageTypeSummary
-	// progress: used for tasks that take a long time to complete, blocks the
+	Summary
+	// Progress: used for tasks that take a long time to complete, blocks the
 	// assistant until the page is marked as complete. Only the back button will
 	// be shown.
-	AssistantPageTypeProgress
-	// custom: used for when other page types are not appropriate. No buttons
+	Progress
+	// Custom: used for when other page types are not appropriate. No buttons
 	// will be shown, and the application must add its own buttons through
 	// gtk_assistant_add_action_widget().
-	AssistantPageTypeCustom
+	Custom
 )
 
 func marshalAssistantPageType(p uintptr) (interface{}, error) {
@@ -98,6 +98,17 @@ func gotk4_AssistantPageFunc(arg0 C.gint, arg1 C.gpointer) (cret C.gint) {
 	cret = C.gint(gint)
 
 	return cret
+}
+
+// AssistantOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type AssistantOverrider interface {
+	Apply()
+	Cancel()
+	Close()
+	Prepare(page Widget)
 }
 
 // Assistant is a widget used to represent a generally complex operation

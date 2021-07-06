@@ -29,26 +29,81 @@ func init() {
 type ValueType int
 
 const (
-	ValueTypeVeryWeak ValueType = iota
-	ValueTypeWeak
-	ValueTypeAcceptable
-	ValueTypeStrong
-	ValueTypeVeryStrong
-	ValueTypeVeryLow
-	ValueTypeLow
-	ValueTypeMedium
-	ValueTypeHigh
-	ValueTypeVeryHigh
-	ValueTypeVeryBad
-	ValueTypeBad
-	ValueTypeGood
-	ValueTypeVeryGood
-	ValueTypeBest
-	ValueTypeLastDefined
+	VeryWeak ValueType = iota
+	Weak
+	Acceptable
+	Strong
+	VeryStrong
+	VeryLow
+	Low
+	Medium
+	High
+	VeryHigh
+	VeryBad
+	Bad
+	Good
+	VeryGood
+	Best
+	LastDefined
 )
 
 func marshalValueType(p uintptr) (interface{}, error) {
 	return ValueType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// ValueOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type ValueOverrider interface {
+	// CurrentValue gets the value of this object.
+	//
+	// Deprecated.
+	CurrentValue() externglib.Value
+	// Increment gets the minimum increment by which the value of this object
+	// may be changed. If zero, the minimum increment is undefined, which may
+	// mean that it is limited only by the floating point precision of the
+	// platform.
+	Increment() float64
+	// MaximumValue gets the maximum value of this object.
+	//
+	// Deprecated.
+	MaximumValue() externglib.Value
+	// MinimumIncrement gets the minimum increment by which the value of this
+	// object may be changed. If zero, the minimum increment is undefined, which
+	// may mean that it is limited only by the floating point precision of the
+	// platform.
+	//
+	// Deprecated.
+	MinimumIncrement() externglib.Value
+	// MinimumValue gets the minimum value of this object.
+	//
+	// Deprecated.
+	MinimumValue() externglib.Value
+	// Range gets the range of this object.
+	Range() *Range
+	// ValueAndText gets the current value and the human readable text
+	// alternative of @obj. @text is a newly created string, that must be freed
+	// by the caller. Can be NULL if no descriptor is available.
+	ValueAndText() (float64, string)
+	// SetCurrentValue sets the value of this object.
+	//
+	// Deprecated.
+	SetCurrentValue(value externglib.Value) bool
+	// SetValue sets the value of this object.
+	//
+	// This method is intended to provide a way to change the value of the
+	// object. In any case, it is possible that the value can't be modified (ie:
+	// a read-only component). If the value changes due this call, it is
+	// possible that the text could change, and will trigger an
+	// Value::value-changed signal emission.
+	//
+	// Note for implementors: the deprecated atk_value_set_current_value()
+	// method returned TRUE or FALSE depending if the value was assigned or not.
+	// In the practice several implementors were not able to decide it, and
+	// returned TRUE in any case. For that reason it is not required anymore to
+	// return if the value was properly assigned or not.
+	SetValue(newValue float64)
 }
 
 // Value should be implemented for components which either display a value from

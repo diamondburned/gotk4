@@ -101,7 +101,7 @@ func (a *Plane) Equal(b *Plane) bool {
 }
 
 // Free frees the resources allocated by graphene_plane_alloc().
-func (p *Plane) Free() {
+func (p *Plane) free() {
 	var _arg0 *C.graphene_plane_t // out
 
 	_arg0 = (*C.graphene_plane_t)(unsafe.Pointer(p))

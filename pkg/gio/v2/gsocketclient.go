@@ -36,6 +36,14 @@ func init() {
 	})
 }
 
+// SocketClientOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type SocketClientOverrider interface {
+	Event(event SocketClientEvent, connectable SocketConnectable, connection IOStream)
+}
+
 // SocketClient is a lightweight high-level utility class for connecting to a
 // network host using a connection oriented socket type.
 //

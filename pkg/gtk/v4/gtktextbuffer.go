@@ -23,6 +23,72 @@ func init() {
 	})
 }
 
+// TextBufferOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type TextBufferOverrider interface {
+	// ApplyTag emits the “apply-tag” signal on @buffer.
+	//
+	// The default handler for the signal applies @tag to the given range.
+	// @start and @end do not have to be in order.
+	ApplyTag(tag TextTag, start *TextIter, end *TextIter)
+	// BeginUserAction: called to indicate that the buffer operations between
+	// here and a call to gtk_text_buffer_end_user_action() are part of a single
+	// user-visible operation.
+	//
+	// The operations between gtk_text_buffer_begin_user_action() and
+	// gtk_text_buffer_end_user_action() can then be grouped when creating an
+	// undo stack. `GtkTextBuffer` maintains a count of calls to
+	// gtk_text_buffer_begin_user_action() that have not been closed with a call
+	// to gtk_text_buffer_end_user_action(), and emits the “begin-user-action”
+	// and “end-user-action” signals only for the outermost pair of calls. This
+	// allows you to build user actions from other user actions.
+	//
+	// The “interactive” buffer mutation functions, such as
+	// [method@Gtk.TextBuffer.insert_interactive], automatically call begin/end
+	// user action around the buffer operations they perform, so there's no need
+	// to add extra calls if you user action consists solely of a single call to
+	// one of those functions.
+	BeginUserAction()
+	Changed()
+	DeleteRange(start *TextIter, end *TextIter)
+	// EndUserAction ends a user-visible operation.
+	//
+	// Should be paired with a call to
+	// [method@Gtk.TextBuffer.begin_user_action]. See that function for a full
+	// explanation.
+	EndUserAction()
+	// InsertChildAnchor inserts a child widget anchor into the text buffer at
+	// @iter.
+	//
+	// The anchor will be counted as one character in character counts, and when
+	// obtaining the buffer contents as a string, will be represented by the
+	// Unicode “object replacement character” 0xFFFC. Note that the “slice”
+	// variants for obtaining portions of the buffer as a string include this
+	// character for child anchors, but the “text” variants do not. E.g. see
+	// [method@Gtk.TextBuffer.get_slice] and [method@Gtk.TextBuffer.get_text].
+	//
+	// Consider [method@Gtk.TextBuffer.create_child_anchor] as a more convenient
+	// alternative to this function. The buffer will add a reference to the
+	// anchor, so you can unref it after insertion.
+	InsertChildAnchor(iter *TextIter, anchor TextChildAnchor)
+	InsertText(pos *TextIter, newText string, newTextLength int)
+	MarkDeleted(mark TextMark)
+	MarkSet(location *TextIter, mark TextMark)
+	ModifiedChanged()
+	PasteDone(clipboard gdk.Clipboard)
+	// Redo redoes the next redoable action on the buffer, if there is one.
+	Redo()
+	// RemoveTag emits the “remove-tag” signal.
+	//
+	// The default handler for the signal removes all occurrences of @tag from
+	// the given range. @start and @end don’t have to be in order.
+	RemoveTag(tag TextTag, start *TextIter, end *TextIter)
+	// Undo undoes the last undoable action on the buffer, if there is one.
+	Undo()
+}
+
 // TextBuffer stores text and attributes for display in a `GtkTextView`.
 //
 // You may wish to begin by reading the text widget conceptual overview

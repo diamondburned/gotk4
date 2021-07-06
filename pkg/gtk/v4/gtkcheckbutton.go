@@ -29,6 +29,15 @@ func init() {
 	})
 }
 
+// CheckButtonOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type CheckButtonOverrider interface {
+	Activate()
+	Toggled()
+}
+
 // CheckButton: `GtkCheckButton` places a label next to an indicator.
 //
 // !Example GtkCheckButtons (check-button.png)

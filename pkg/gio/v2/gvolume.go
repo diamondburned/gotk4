@@ -36,6 +36,93 @@ func init() {
 	})
 }
 
+// VolumeOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type VolumeOverrider interface {
+	// CanEject checks if a volume can be ejected.
+	CanEject() bool
+	// CanMount checks if a volume can be mounted.
+	CanMount() bool
+	Changed()
+	// Eject ejects a volume. This is an asynchronous operation, and is finished
+	// by calling g_volume_eject_finish() with the @volume and Result returned
+	// in the @callback.
+	//
+	// Deprecated: since version 2.22.
+	Eject(flags MountUnmountFlags, cancellable Cancellable, callback AsyncReadyCallback)
+	// EjectFinish finishes ejecting a volume. If any errors occurred during the
+	// operation, @error will be set to contain the errors and false will be
+	// returned.
+	//
+	// Deprecated: since version 2.22.
+	EjectFinish(result AsyncResult) error
+	// EjectWithOperation ejects a volume. This is an asynchronous operation,
+	// and is finished by calling g_volume_eject_with_operation_finish() with
+	// the @volume and Result data returned in the @callback.
+	EjectWithOperation(flags MountUnmountFlags, mountOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback)
+	// EjectWithOperationFinish finishes ejecting a volume. If any errors
+	// occurred during the operation, @error will be set to contain the errors
+	// and false will be returned.
+	EjectWithOperationFinish(result AsyncResult) error
+	// EnumerateIdentifiers gets the kinds of [identifiers][volume-identifier]
+	// that @volume has. Use g_volume_get_identifier() to obtain the identifiers
+	// themselves.
+	EnumerateIdentifiers() []string
+	// ActivationRoot gets the activation root for a #GVolume if it is known
+	// ahead of mount time. Returns nil otherwise. If not nil and if @volume is
+	// mounted, then the result of g_mount_get_root() on the #GMount object
+	// obtained from g_volume_get_mount() will always either be equal or a
+	// prefix of what this function returns. In other words, in code
+	//
+	//    (g_file_has_prefix (volume_activation_root, mount_root) ||
+	//     g_file_equal (volume_activation_root, mount_root))
+	//
+	// will always be true.
+	//
+	// Activation roots are typically used in Monitor implementations to find
+	// the underlying mount to shadow, see g_mount_is_shadowed() for more
+	// details.
+	ActivationRoot() File
+	// Drive gets the drive for the @volume.
+	Drive() Drive
+	// Icon gets the icon for @volume.
+	Icon() Icon
+	// Identifier gets the identifier of the given kind for @volume. See the
+	// [introduction][volume-identifier] for more information about volume
+	// identifiers.
+	Identifier(kind string) string
+	// Mount gets the mount for the @volume.
+	Mount() Mount
+	// Name gets the name of @volume.
+	Name() string
+	// SortKey gets the sort key for @volume, if any.
+	SortKey() string
+	// SymbolicIcon gets the symbolic icon for @volume.
+	SymbolicIcon() Icon
+	// UUID gets the UUID for the @volume. The reference is typically based on
+	// the file system UUID for the volume in question and should be considered
+	// an opaque string. Returns nil if there is no UUID available.
+	UUID() string
+	// MountFinish finishes mounting a volume. If any errors occurred during the
+	// operation, @error will be set to contain the errors and false will be
+	// returned.
+	//
+	// If the mount operation succeeded, g_volume_get_mount() on @volume is
+	// guaranteed to return the mount right after calling this function; there's
+	// no need to listen for the 'mount-added' signal on Monitor.
+	MountFinish(result AsyncResult) error
+	// MountFn mounts a volume. This is an asynchronous operation, and is
+	// finished by calling g_volume_mount_finish() with the @volume and Result
+	// returned in the @callback.
+	MountFn(flags MountMountFlags, mountOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback)
+	Removed()
+	// ShouldAutomount returns whether the volume should be automatically
+	// mounted.
+	ShouldAutomount() bool
+}
+
 // Volume: the #GVolume interface represents user-visible objects that can be
 // mounted. Note, when porting from GnomeVFS, #GVolume is the moral equivalent
 // of VFSDrive.

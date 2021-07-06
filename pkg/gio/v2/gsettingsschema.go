@@ -237,7 +237,7 @@ func (s *SettingsSchema) ListKeys() []string {
 }
 
 // Ref: increase the reference count of @schema, returning a new reference.
-func (s *SettingsSchema) Ref() *SettingsSchema {
+func (s *SettingsSchema) ref() *SettingsSchema {
 	var _arg0 *C.GSettingsSchema // out
 	var _cret *C.GSettingsSchema // in
 
@@ -257,7 +257,7 @@ func (s *SettingsSchema) Ref() *SettingsSchema {
 }
 
 // Unref: decrease the reference count of @schema, possibly freeing it.
-func (s *SettingsSchema) Unref() {
+func (s *SettingsSchema) unref() {
 	var _arg0 *C.GSettingsSchema // out
 
 	_arg0 = (*C.GSettingsSchema)(unsafe.Pointer(s))
@@ -473,7 +473,7 @@ func (k *SettingsSchemaKey) RangeCheck(value *glib.Variant) bool {
 }
 
 // Ref: increase the reference count of @key, returning a new reference.
-func (k *SettingsSchemaKey) Ref() *SettingsSchemaKey {
+func (k *SettingsSchemaKey) ref() *SettingsSchemaKey {
 	var _arg0 *C.GSettingsSchemaKey // out
 	var _cret *C.GSettingsSchemaKey // in
 
@@ -493,7 +493,7 @@ func (k *SettingsSchemaKey) Ref() *SettingsSchemaKey {
 }
 
 // Unref: decrease the reference count of @key, possibly freeing it.
-func (k *SettingsSchemaKey) Unref() {
+func (k *SettingsSchemaKey) unref() {
 	var _arg0 *C.GSettingsSchemaKey // out
 
 	_arg0 = (*C.GSettingsSchemaKey)(unsafe.Pointer(k))
@@ -649,7 +649,7 @@ func (s *SettingsSchemaSource) Lookup(schemaId string, recursive bool) *Settings
 }
 
 // Ref: increase the reference count of @source, returning a new reference.
-func (s *SettingsSchemaSource) Ref() *SettingsSchemaSource {
+func (s *SettingsSchemaSource) ref() *SettingsSchemaSource {
 	var _arg0 *C.GSettingsSchemaSource // out
 	var _cret *C.GSettingsSchemaSource // in
 
@@ -669,7 +669,7 @@ func (s *SettingsSchemaSource) Ref() *SettingsSchemaSource {
 }
 
 // Unref: decrease the reference count of @source, possibly freeing it.
-func (s *SettingsSchemaSource) Unref() {
+func (s *SettingsSchemaSource) unref() {
 	var _arg0 *C.GSettingsSchemaSource // out
 
 	_arg0 = (*C.GSettingsSchemaSource)(unsafe.Pointer(s))

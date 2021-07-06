@@ -33,6 +33,50 @@ func init() {
 	})
 }
 
+// ToolShellOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type ToolShellOverrider interface {
+	// EllipsizeMode retrieves the current ellipsize mode for the tool shell.
+	// Tool items must not call this function directly, but rely on
+	// gtk_tool_item_get_ellipsize_mode() instead.
+	EllipsizeMode() pango.EllipsizeMode
+	IconSize() IconSize
+	// Orientation retrieves the current orientation for the tool shell. Tool
+	// items must not call this function directly, but rely on
+	// gtk_tool_item_get_orientation() instead.
+	Orientation() Orientation
+	// ReliefStyle returns the relief style of buttons on @shell. Tool items
+	// must not call this function directly, but rely on
+	// gtk_tool_item_get_relief_style() instead.
+	ReliefStyle() ReliefStyle
+	// Style retrieves whether the tool shell has text, icons, or both. Tool
+	// items must not call this function directly, but rely on
+	// gtk_tool_item_get_toolbar_style() instead.
+	Style() ToolbarStyle
+	// TextAlignment retrieves the current text alignment for the tool shell.
+	// Tool items must not call this function directly, but rely on
+	// gtk_tool_item_get_text_alignment() instead.
+	TextAlignment() float32
+	// TextOrientation retrieves the current text orientation for the tool
+	// shell. Tool items must not call this function directly, but rely on
+	// gtk_tool_item_get_text_orientation() instead.
+	TextOrientation() Orientation
+	// TextSizeGroup retrieves the current text size group for the tool shell.
+	// Tool items must not call this function directly, but rely on
+	// gtk_tool_item_get_text_size_group() instead.
+	TextSizeGroup() SizeGroup
+	// RebuildMenu: calling this function signals the tool shell that the
+	// overflow menu item for tool items have changed. If there is an overflow
+	// menu and if it is visible when this function it called, the menu will be
+	// rebuilt.
+	//
+	// Tool items must not call this function directly, but rely on
+	// gtk_tool_item_rebuild_menu() instead.
+	RebuildMenu()
+}
+
 // ToolShell: the ToolShell interface allows container widgets to provide
 // additional information when embedding ToolItem widgets.
 type ToolShell interface {

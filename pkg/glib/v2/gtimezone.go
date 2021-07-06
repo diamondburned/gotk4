@@ -32,12 +32,12 @@ func init() {
 type TimeType int
 
 const (
-	// standard: the time is in local standard time
-	TimeTypeStandard TimeType = iota
-	// daylight: the time is in local daylight time
-	TimeTypeDaylight
-	// universal: the time is in UTC
-	TimeTypeUniversal
+	// Standard: the time is in local standard time
+	Standard TimeType = iota
+	// Daylight: the time is in local daylight time
+	Daylight
+	// Universal: the time is in UTC
+	Universal
 )
 
 // TimeZone is an opaque structure whose members cannot be accessed directly.
@@ -315,7 +315,7 @@ func (t *TimeZone) IsDst(interval int) bool {
 }
 
 // Ref increases the reference count on @tz.
-func (t *TimeZone) Ref() *TimeZone {
+func (t *TimeZone) ref() *TimeZone {
 	var _arg0 *C.GTimeZone // out
 	var _cret *C.GTimeZone // in
 
@@ -335,7 +335,7 @@ func (t *TimeZone) Ref() *TimeZone {
 }
 
 // Unref decreases the reference count on @tz.
-func (t *TimeZone) Unref() {
+func (t *TimeZone) unref() {
 	var _arg0 *C.GTimeZone // out
 
 	_arg0 = (*C.GTimeZone)(unsafe.Pointer(t))

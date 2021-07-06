@@ -29,31 +29,31 @@ func init() {
 type OptionArg int
 
 const (
-	// none: no extra argument. This is useful for simple flags.
-	OptionArgNone OptionArg = iota
-	// string: the option takes a UTF-8 string argument.
-	OptionArgString
-	// int: the option takes an integer argument.
-	OptionArgInt
-	// callback: the option provides a callback (of type ArgFunc) to parse the
+	// None: no extra argument. This is useful for simple flags.
+	None OptionArg = iota
+	// String: the option takes a UTF-8 string argument.
+	String
+	// Int: the option takes an integer argument.
+	Int
+	// Callback: the option provides a callback (of type ArgFunc) to parse the
 	// extra argument.
-	OptionArgCallback
-	// filename: the option takes a filename as argument, which will be in the
+	Callback
+	// Filename: the option takes a filename as argument, which will be in the
 	// GLib filename encoding rather than UTF-8.
-	OptionArgFilename
+	Filename
 	// StringArray: the option takes a string argument, multiple uses of the
 	// option are collected into an array of strings.
-	OptionArgStringArray
+	StringArray
 	// FilenameArray: the option takes a filename as argument, multiple uses of
 	// the option are collected into an array of strings.
-	OptionArgFilenameArray
-	// double: the option takes a double argument. The argument can be formatted
+	FilenameArray
+	// Double: the option takes a double argument. The argument can be formatted
 	// either for the user's locale or for the "C" locale. Since 2.12
-	OptionArgDouble
-	// int64: the option takes a 64-bit integer. Like G_OPTION_ARG_INT but for
+	Double
+	// Int64: the option takes a 64-bit integer. Like G_OPTION_ARG_INT but for
 	// larger numbers. The number can be in decimal base, or in hexadecimal
 	// (when prefixed with `0x`, for example, `0xffffffff`). Since 2.12
-	OptionArgInt64
+	Int64
 )
 
 // OptionError: error codes returned by option parsing.
@@ -63,11 +63,11 @@ const (
 	// UnknownOption: option was not known to the parser. This error will only
 	// be reported, if the parser hasn't been instructed to ignore unknown
 	// options, see g_option_context_set_ignore_unknown_options().
-	OptionErrorUnknownOption OptionError = iota
+	UnknownOption OptionError = iota
 	// BadValue: value couldn't be parsed.
-	OptionErrorBadValue
-	// failed callback failed.
-	OptionErrorFailed
+	BadValue
+	// Failed callback failed.
+	Failed
 )
 
 // OptionFlags flags which modify individual options.
@@ -169,7 +169,7 @@ func (g *OptionGroup) AddEntries(entries []OptionEntry) {
 // to a Context.
 //
 // Deprecated: since version 2.44.
-func (g *OptionGroup) Free() {
+func (g *OptionGroup) free() {
 	var _arg0 *C.GOptionGroup // out
 
 	_arg0 = (*C.GOptionGroup)(unsafe.Pointer(g))
@@ -178,7 +178,7 @@ func (g *OptionGroup) Free() {
 }
 
 // Ref increments the reference count of @group by one.
-func (g *OptionGroup) Ref() *OptionGroup {
+func (g *OptionGroup) ref() *OptionGroup {
 	var _arg0 *C.GOptionGroup // out
 	var _cret *C.GOptionGroup // in
 
@@ -213,7 +213,7 @@ func (g *OptionGroup) SetTranslationDomain(domain string) {
 // Unref decrements the reference count of @group by one. If the reference count
 // drops to 0, the @group will be freed. and all memory allocated by the @group
 // is released.
-func (g *OptionGroup) Unref() {
+func (g *OptionGroup) unref() {
 	var _arg0 *C.GOptionGroup // out
 
 	_arg0 = (*C.GOptionGroup)(unsafe.Pointer(g))

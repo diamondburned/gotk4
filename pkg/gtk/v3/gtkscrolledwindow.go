@@ -45,13 +45,13 @@ type CornerType int
 const (
 	// TopLeft: place the scrollbars on the right and bottom of the widget
 	// (default behaviour).
-	CornerTypeTopLeft CornerType = iota
+	TopLeft CornerType = iota
 	// BottomLeft: place the scrollbars on the top and right of the widget.
-	CornerTypeBottomLeft
+	BottomLeft
 	// TopRight: place the scrollbars on the left and bottom of the widget.
-	CornerTypeTopRight
+	TopRight
 	// BottomRight: place the scrollbars on the top and left of the widget.
-	CornerTypeBottomRight
+	BottomRight
 )
 
 func marshalCornerType(p uintptr) (interface{}, error) {
@@ -63,23 +63,32 @@ func marshalCornerType(p uintptr) (interface{}, error) {
 type PolicyType int
 
 const (
-	// always: the scrollbar is always visible. The view size is independent of
+	// Always: the scrollbar is always visible. The view size is independent of
 	// the content.
-	PolicyTypeAlways PolicyType = iota
-	// automatic: the scrollbar will appear and disappear as necessary. For
+	Always PolicyType = iota
+	// Automatic: the scrollbar will appear and disappear as necessary. For
 	// example, when all of a TreeView can not be seen.
-	PolicyTypeAutomatic
-	// never: the scrollbar should never appear. In this mode the content
+	Automatic
+	// Never: the scrollbar should never appear. In this mode the content
 	// determines the size.
-	PolicyTypeNever
-	// external: don't show a scrollbar, but don't force the size to follow the
+	Never
+	// External: don't show a scrollbar, but don't force the size to follow the
 	// content. This can be used e.g. to make multiple scrolled windows share a
 	// scrollbar. Since: 3.16
-	PolicyTypeExternal
+	External
 )
 
 func marshalPolicyType(p uintptr) (interface{}, error) {
 	return PolicyType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// ScrolledWindowOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type ScrolledWindowOverrider interface {
+	MoveFocusOut(direction DirectionType)
+	ScrollChild(scroll ScrollType, horizontal bool) bool
 }
 
 // ScrolledWindow is a container that accepts a single child widget, makes that

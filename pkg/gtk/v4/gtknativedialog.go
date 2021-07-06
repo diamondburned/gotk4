@@ -22,6 +22,30 @@ func init() {
 	})
 }
 
+// NativeDialogOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type NativeDialogOverrider interface {
+	// Hide hides the dialog if it is visible, aborting any interaction.
+	//
+	// Once this is called the [signal@Gtk.NativeDialog::response] signal will
+	// *not* be emitted until after the next call to
+	// [method@Gtk.NativeDialog.show].
+	//
+	// If the dialog is not visible this does nothing.
+	Hide()
+	Response(responseId int)
+	// Show shows the dialog on the display.
+	//
+	// When the user accepts the state of the dialog the dialog will be
+	// automatically hidden and the [signal@Gtk.NativeDialog::response] signal
+	// will be emitted.
+	//
+	// Multiple calls while the dialog is visible will be ignored.
+	Show()
+}
+
 // NativeDialog: native dialogs are platform dialogs that don't use `GtkDialog`.
 //
 // They are used in order to integrate better with a platform, by looking the

@@ -62,14 +62,14 @@ type X11Cursor interface {
 	// Deprecated: since version 3.0.
 	//
 	// This method is inherited from gdk.Cursor
-	Ref() gdk.Cursor
+	ref() gdk.Cursor
 	// Unref removes a reference from @cursor, deallocating the cursor if no
 	// references remain.
 	//
 	// Deprecated: since version 3.0.
 	//
 	// This method is inherited from gdk.Cursor
-	Unref()
+	unref()
 }
 
 // x11Cursor implements the X11Cursor interface.
@@ -111,10 +111,10 @@ func (c x11Cursor) GetSurface() (xHot float64, yHot float64, surface *cairo.Surf
 	return gdk.WrapCursor(gextras.InternObject(c)).GetSurface()
 }
 
-func (c x11Cursor) Ref() gdk.Cursor {
-	return gdk.WrapCursor(gextras.InternObject(c)).Ref()
+func (c x11Cursor) ref() gdk.Cursor {
+	return gdk.WrapCursor(gextras.InternObject(c)).ref()
 }
 
-func (c x11Cursor) Unref() {
-	gdk.WrapCursor(gextras.InternObject(c)).Unref()
+func (c x11Cursor) unref() {
+	gdk.WrapCursor(gextras.InternObject(c)).unref()
 }

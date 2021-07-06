@@ -28,6 +28,18 @@ func init() {
 	})
 }
 
+// WindowOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type WindowOverrider interface {
+	ActivateDefault()
+	ActivateFocus()
+	CloseRequest() bool
+	EnableDebugging(toggle bool) bool
+	KeysChanged()
+}
+
 // Window: `GtkWindow` is a toplevel window which can contain other widgets.
 //
 // !An example GtkWindow (window.png)

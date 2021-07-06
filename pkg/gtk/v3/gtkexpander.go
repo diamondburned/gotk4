@@ -35,6 +35,14 @@ func init() {
 	})
 }
 
+// ExpanderOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type ExpanderOverrider interface {
+	Activate()
+}
+
 // Expander allows the user to hide or show its child by clicking on an expander
 // triangle similar to the triangles used in a TreeView.
 //

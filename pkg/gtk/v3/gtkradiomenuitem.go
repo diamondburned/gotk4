@@ -35,6 +35,14 @@ func init() {
 	})
 }
 
+// RadioMenuItemOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type RadioMenuItemOverrider interface {
+	GroupChanged()
+}
+
 // RadioMenuItem: radio menu item is a check menu item that belongs to a group.
 // At each instant exactly one of the radio menu items from a group is selected.
 //

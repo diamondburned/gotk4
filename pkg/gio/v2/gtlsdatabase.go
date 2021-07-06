@@ -36,6 +36,125 @@ func init() {
 	})
 }
 
+// TLSDatabaseOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type TLSDatabaseOverrider interface {
+	// CreateCertificateHandle: create a handle string for the certificate. The
+	// database will only be able to create a handle for certificates that
+	// originate from the database. In cases where the database cannot create a
+	// handle for a certificate, nil will be returned.
+	//
+	// This handle should be stable across various instances of the application,
+	// and between applications. If a certificate is modified in the database,
+	// then it is not guaranteed that this handle will continue to point to it.
+	CreateCertificateHandle(certificate TLSCertificate) string
+	// LookupCertificateForHandle: look up a certificate by its handle.
+	//
+	// The handle should have been created by calling
+	// g_tls_database_create_certificate_handle() on a Database object of the
+	// same TLS backend. The handle is designed to remain valid across
+	// instantiations of the database.
+	//
+	// If the handle is no longer valid, or does not point to a certificate in
+	// this database, then nil will be returned.
+	//
+	// This function can block, use
+	// g_tls_database_lookup_certificate_for_handle_async() to perform the
+	// lookup operation asynchronously.
+	LookupCertificateForHandle(handle string, interaction TLSInteraction, flags TLSDatabaseLookupFlags, cancellable Cancellable) (TLSCertificate, error)
+	// LookupCertificateForHandleAsync: asynchronously look up a certificate by
+	// its handle in the database. See
+	// g_tls_database_lookup_certificate_for_handle() for more information.
+	LookupCertificateForHandleAsync(handle string, interaction TLSInteraction, flags TLSDatabaseLookupFlags, cancellable Cancellable, callback AsyncReadyCallback)
+	// LookupCertificateForHandleFinish: finish an asynchronous lookup of a
+	// certificate by its handle. See
+	// g_tls_database_lookup_certificate_for_handle() for more information.
+	//
+	// If the handle is no longer valid, or does not point to a certificate in
+	// this database, then nil will be returned.
+	LookupCertificateForHandleFinish(result AsyncResult) (TLSCertificate, error)
+	// LookupCertificateIssuer: look up the issuer of @certificate in the
+	// database.
+	//
+	// The Certificate:issuer property of @certificate is not modified, and the
+	// two certificates are not hooked into a chain.
+	//
+	// This function can block, use
+	// g_tls_database_lookup_certificate_issuer_async() to perform the lookup
+	// operation asynchronously.
+	LookupCertificateIssuer(certificate TLSCertificate, interaction TLSInteraction, flags TLSDatabaseLookupFlags, cancellable Cancellable) (TLSCertificate, error)
+	// LookupCertificateIssuerAsync: asynchronously look up the issuer of
+	// @certificate in the database. See
+	// g_tls_database_lookup_certificate_issuer() for more information.
+	LookupCertificateIssuerAsync(certificate TLSCertificate, interaction TLSInteraction, flags TLSDatabaseLookupFlags, cancellable Cancellable, callback AsyncReadyCallback)
+	// LookupCertificateIssuerFinish: finish an asynchronous lookup issuer
+	// operation. See g_tls_database_lookup_certificate_issuer() for more
+	// information.
+	LookupCertificateIssuerFinish(result AsyncResult) (TLSCertificate, error)
+	// LookupCertificatesIssuedByAsync: asynchronously look up certificates
+	// issued by this issuer in the database. See
+	// g_tls_database_lookup_certificates_issued_by() for more information.
+	//
+	// The database may choose to hold a reference to the issuer byte array for
+	// the duration of of this asynchronous operation. The byte array should not
+	// be modified during this time.
+	LookupCertificatesIssuedByAsync(issuerRawDn []byte, interaction TLSInteraction, flags TLSDatabaseLookupFlags, cancellable Cancellable, callback AsyncReadyCallback)
+	// VerifyChain determines the validity of a certificate chain after looking
+	// up and adding any missing certificates to the chain.
+	//
+	// @chain is a chain of Certificate objects each pointing to the next
+	// certificate in the chain by its Certificate:issuer property. The chain
+	// may initially consist of one or more certificates. After the verification
+	// process is complete, @chain may be modified by adding missing
+	// certificates, or removing extra certificates. If a certificate anchor was
+	// found, then it is added to the @chain.
+	//
+	// @purpose describes the purpose (or usage) for which the certificate is
+	// being used. Typically @purpose will be set to
+	// TLS_DATABASE_PURPOSE_AUTHENTICATE_SERVER which means that the certificate
+	// is being used to authenticate a server (and we are acting as the client).
+	//
+	// The @identity is used to ensure the server certificate is valid for the
+	// expected peer identity. If the identity does not match the certificate,
+	// G_TLS_CERTIFICATE_BAD_IDENTITY will be set in the return value. If
+	// @identity is nil, that bit will never be set in the return value. The
+	// peer identity may also be used to check for pinned certificates (trust
+	// exceptions) in the database. These may override the normal verification
+	// process on a host-by-host basis.
+	//
+	// Currently there are no @flags, and G_TLS_DATABASE_VERIFY_NONE should be
+	// used.
+	//
+	// If @chain is found to be valid, then the return value will be 0. If
+	// @chain is found to be invalid, then the return value will indicate the
+	// problems found. If the function is unable to determine whether @chain is
+	// valid or not (eg, because @cancellable is triggered before it completes)
+	// then the return value will be G_TLS_CERTIFICATE_GENERIC_ERROR and @error
+	// will be set accordingly. @error is not set when @chain is successfully
+	// analyzed but found to be invalid.
+	//
+	// This function can block, use g_tls_database_verify_chain_async() to
+	// perform the verification operation asynchronously.
+	VerifyChain(chain TLSCertificate, purpose string, identity SocketConnectable, interaction TLSInteraction, flags TLSDatabaseVerifyFlags, cancellable Cancellable) (TLSCertificateFlags, error)
+	// VerifyChainAsync: asynchronously determines the validity of a certificate
+	// chain after looking up and adding any missing certificates to the chain.
+	// See g_tls_database_verify_chain() for more information.
+	VerifyChainAsync(chain TLSCertificate, purpose string, identity SocketConnectable, interaction TLSInteraction, flags TLSDatabaseVerifyFlags, cancellable Cancellable, callback AsyncReadyCallback)
+	// VerifyChainFinish: finish an asynchronous verify chain operation. See
+	// g_tls_database_verify_chain() for more information.
+	//
+	// If @chain is found to be valid, then the return value will be 0. If
+	// @chain is found to be invalid, then the return value will indicate the
+	// problems found. If the function is unable to determine whether @chain is
+	// valid or not (eg, because @cancellable is triggered before it completes)
+	// then the return value will be G_TLS_CERTIFICATE_GENERIC_ERROR and @error
+	// will be set accordingly. @error is not set when @chain is successfully
+	// analyzed but found to be invalid.
+	VerifyChainFinish(result AsyncResult) (TLSCertificateFlags, error)
+}
+
 // TLSDatabase is used to look up certificates and other information from a
 // certificate or key store. It is an abstract base class which TLS library
 // specific subtypes override.

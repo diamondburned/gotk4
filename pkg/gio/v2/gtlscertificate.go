@@ -33,6 +33,31 @@ func init() {
 	})
 }
 
+// TLSCertificateOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type TLSCertificateOverrider interface {
+	// Verify: this verifies @cert and returns a set of CertificateFlags
+	// indicating any problems found with it. This can be used to verify a
+	// certificate outside the context of making a connection, or to check a
+	// certificate against a CA that is not part of the system CA database.
+	//
+	// If @identity is not nil, @cert's name(s) will be compared against it, and
+	// G_TLS_CERTIFICATE_BAD_IDENTITY will be set in the return value if it does
+	// not match. If @identity is nil, that bit will never be set in the return
+	// value.
+	//
+	// If @trusted_ca is not nil, then @cert (or one of the certificates in its
+	// chain) must be signed by it, or else G_TLS_CERTIFICATE_UNKNOWN_CA will be
+	// set in the return value. If @trusted_ca is nil, that bit will never be
+	// set in the return value.
+	//
+	// (All other CertificateFlags values will always be set or unset as
+	// appropriate.)
+	Verify(identity SocketConnectable, trustedCa TLSCertificate) TLSCertificateFlags
+}
+
 // TLSCertificate: certificate used for TLS authentication and encryption. This
 // can represent either a certificate only (eg, the certificate received by a
 // client from a server), or the combination of a certificate and a private key

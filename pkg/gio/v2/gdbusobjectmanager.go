@@ -32,6 +32,24 @@ func init() {
 	})
 }
 
+// DBusObjectManagerOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type DBusObjectManagerOverrider interface {
+	// Interface gets the interface proxy for @interface_name at @object_path,
+	// if any.
+	Interface(objectPath string, interfaceName string) DBusInterface
+	// Object gets the BusObjectProxy at @object_path, if any.
+	Object(objectPath string) DBusObject
+	// ObjectPath gets the object path that @manager is for.
+	ObjectPath() string
+	InterfaceAdded(object DBusObject, interface_ DBusInterface)
+	InterfaceRemoved(object DBusObject, interface_ DBusInterface)
+	ObjectAdded(object DBusObject)
+	ObjectRemoved(object DBusObject)
+}
+
 // DBusObjectManager: the BusObjectManager type is the base type for service-
 // and client-side implementations of the standardized
 // org.freedesktop.DBus.ObjectManager

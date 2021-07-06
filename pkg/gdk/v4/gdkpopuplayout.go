@@ -291,7 +291,7 @@ func (l *PopupLayout) SurfaceAnchor() Gravity {
 }
 
 // Ref increases the reference count of @value.
-func (l *PopupLayout) Ref() *PopupLayout {
+func (l *PopupLayout) ref() *PopupLayout {
 	var _arg0 *C.GdkPopupLayout // out
 	var _cret *C.GdkPopupLayout // in
 
@@ -394,7 +394,7 @@ func (l *PopupLayout) SetSurfaceAnchor(anchor Gravity) {
 }
 
 // Unref decreases the reference count of @value.
-func (l *PopupLayout) Unref() {
+func (l *PopupLayout) unref() {
 	var _arg0 *C.GdkPopupLayout // out
 
 	_arg0 = (*C.GdkPopupLayout)(unsafe.Pointer(l))

@@ -35,6 +35,15 @@ func init() {
 	})
 }
 
+// StatusbarOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type StatusbarOverrider interface {
+	TextPopped(contextId uint, text string)
+	TextPushed(contextId uint, text string)
+}
+
 // Statusbar is usually placed along the bottom of an application's main Window.
 // It may provide a regular commentary of the application's status (as is
 // usually the case in a web browser, for example), or may be used to simply

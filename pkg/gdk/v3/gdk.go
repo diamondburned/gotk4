@@ -27,11 +27,11 @@ func init() {
 type Status int
 
 const (
-	StatusOk         Status = 0
-	StatusError      Status = -1
-	StatusErrorParam Status = -2
-	StatusErrorFile  Status = -3
-	StatusErrorMem   Status = -4
+	Ok         Status = 0
+	Error      Status = -1
+	ErrorParam Status = -2
+	ErrorFile  Status = -3
+	ErrorMem   Status = -4
 )
 
 func marshalStatus(p uintptr) (interface{}, error) {

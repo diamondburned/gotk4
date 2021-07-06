@@ -36,6 +36,65 @@ func init() {
 	})
 }
 
+// FileEnumeratorOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type FileEnumeratorOverrider interface {
+	// CloseAsync: asynchronously closes the file enumerator.
+	//
+	// If @cancellable is not nil, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned in
+	// g_file_enumerator_close_finish().
+	CloseAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
+	// CloseFinish finishes closing a file enumerator, started from
+	// g_file_enumerator_close_async().
+	//
+	// If the file enumerator was already closed when
+	// g_file_enumerator_close_async() was called, then this function will
+	// report G_IO_ERROR_CLOSED in @error, and return false. If the file
+	// enumerator had pending operation when the close operation was started,
+	// then this function will report G_IO_ERROR_PENDING, and return false. If
+	// @cancellable was not nil, then the operation may have been cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be set, and false will
+	// be returned.
+	CloseFinish(result AsyncResult) error
+	CloseFn(cancellable Cancellable) error
+	// NextFile returns information for the next file in the enumerated object.
+	// Will block until the information is available. The Info returned from
+	// this function will contain attributes that match the attribute string
+	// that was passed when the Enumerator was created.
+	//
+	// See the documentation of Enumerator for information about the order of
+	// returned files.
+	//
+	// On error, returns nil and sets @error to the error. If the enumerator is
+	// at the end, nil will be returned and @error will be unset.
+	NextFile(cancellable Cancellable) (FileInfo, error)
+	// NextFilesAsync: request information for a number of files from the
+	// enumerator asynchronously. When all i/o for the operation is finished the
+	// @callback will be called with the requested information.
+	//
+	// See the documentation of Enumerator for information about the order of
+	// returned files.
+	//
+	// The callback can be called with less than @num_files files in case of
+	// error or at the end of the enumerator. In case of a partial error the
+	// callback will be called with any succeeding items and no error, and on
+	// the next request the error will be reported. If a request is cancelled
+	// the callback will be called with G_IO_ERROR_CANCELLED.
+	//
+	// During an async request no other sync and async calls are allowed, and
+	// will result in G_IO_ERROR_PENDING errors.
+	//
+	// Any outstanding i/o request with higher priority (lower numerical value)
+	// will be executed before an outstanding request with lower priority.
+	// Default priority is G_PRIORITY_DEFAULT.
+	NextFilesAsync(numFiles int, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
+}
+
 // FileEnumerator allows you to operate on a set of #GFiles, returning a Info
 // structure for each file enumerated (e.g. g_file_enumerate_children() will
 // return a Enumerator for each of the children within a directory).

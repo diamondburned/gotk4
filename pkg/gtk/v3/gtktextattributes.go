@@ -113,7 +113,7 @@ func (s *TextAttributes) CopyValues(dest *TextAttributes) {
 }
 
 // Ref increments the reference count on @values.
-func (v *TextAttributes) Ref() *TextAttributes {
+func (v *TextAttributes) ref() *TextAttributes {
 	var _arg0 *C.GtkTextAttributes // out
 	var _cret *C.GtkTextAttributes // in
 
@@ -134,7 +134,7 @@ func (v *TextAttributes) Ref() *TextAttributes {
 
 // Unref decrements the reference count on @values, freeing the structure if the
 // reference count reaches 0.
-func (v *TextAttributes) Unref() {
+func (v *TextAttributes) unref() {
 	var _arg0 *C.GtkTextAttributes // out
 
 	_arg0 = (*C.GtkTextAttributes)(unsafe.Pointer(v))

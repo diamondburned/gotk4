@@ -158,6 +158,24 @@ func gotk4_ListBoxUpdateHeaderFunc(arg0 *C.GtkListBoxRow, arg1 *C.GtkListBoxRow,
 	fn(row, before)
 }
 
+// ListBoxOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type ListBoxOverrider interface {
+	ActivateCursorRow()
+	MoveCursor(step MovementStep, count int)
+	RowActivated(row ListBoxRow)
+	RowSelected(row ListBoxRow)
+	// SelectAll: select all children of @box, if the selection mode allows it.
+	SelectAll()
+	SelectedRowsChanged()
+	ToggleCursorRow()
+	// UnselectAll: unselect all children of @box, if the selection mode allows
+	// it.
+	UnselectAll()
+}
+
 // ListBox is a vertical container that contains GtkListBoxRow children. These
 // rows can by dynamically sorted and filtered, and headers can be added
 // dynamically depending on the row content. It also allows keyboard and mouse
@@ -4373,6 +4391,14 @@ func (b listBox) UnselectRow(row ListBoxRow) {
 	_arg1 = (*C.GtkListBoxRow)(unsafe.Pointer(row.Native()))
 
 	C.gtk_list_box_unselect_row(_arg0, _arg1)
+}
+
+// ListBoxRowOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type ListBoxRowOverrider interface {
+	Activate()
 }
 
 type ListBoxRow interface {

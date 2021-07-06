@@ -19,11 +19,11 @@ type ShellError int
 
 const (
 	// BadQuoting: mismatched or otherwise mangled quoting.
-	ShellErrorBadQuoting ShellError = iota
+	BadQuoting ShellError = iota
 	// EmptyString: string to be parsed was empty.
-	ShellErrorEmptyString
-	// failed: some other error.
-	ShellErrorFailed
+	EmptyString
+	// Failed: some other error.
+	Failed
 )
 
 // ShellParseArgv parses a command line into an argument vector, in much the

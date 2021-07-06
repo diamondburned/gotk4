@@ -16,9 +16,9 @@ var classInterfaceTmpl = gotmpl.NewGoTemplate(`
 	// As of right now, interface overriding and subclassing is not supported
 	// yet, so the interface currently has no use.
 	type {{ .InterfaceName }}Overrider interface {
-		{{ range .Virtuals -}}
-		{{ GoDoc . 1 }}
-		{{ .Name }}{{ .Tail }}
+		{{ range .Virtuals }}
+		{{- GoDoc . 1 TrailingNewLine -}}
+		{{- .Name }}{{ .Tail }}
 		{{ end }}
 	}
 	{{ end }}
@@ -33,13 +33,16 @@ var classInterfaceTmpl = gotmpl.NewGoTemplate(`
 		{{ end }}
 
 		{{ range .InheritedMethods }}
-		{{ GoDoc . 1 (AdditionalString (printf "This method is inherited from %s" .Parent)) }}
-		{{ .Name }}{{ .Tail -}}
+		{{- GoDoc . 1
+			(TrailingNewLine)
+			(AdditionalString (printf "This method is inherited from %s" .Parent))
+		 -}}
+		{{- .Name }}{{ .Tail }}
 		{{ end }}
 
-		{{ range .Methods -}}
-		{{ GoDoc . 1 }}
-		{{ .Name }}{{ .Tail }}
+		{{ range .Methods }}
+		{{- GoDoc . 1 TrailingNewLine -}}
+		{{- .Name }}{{ .Tail }}
 		{{ end }}
 	}
 

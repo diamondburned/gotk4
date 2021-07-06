@@ -45,6 +45,16 @@ func gotk4_TextTagTableForeach(arg0 *C.GtkTextTag, arg1 C.gpointer) {
 	fn(tag)
 }
 
+// TextTagTableOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type TextTagTableOverrider interface {
+	TagAdded(tag TextTag)
+	TagChanged(tag TextTag, sizeChanged bool)
+	TagRemoved(tag TextTag)
+}
+
 // TextTagTable: you may wish to begin by reading the [text widget conceptual
 // overview][TextWidget] which gives an overview of all the objects and data
 // types related to the text widget and how they work together.

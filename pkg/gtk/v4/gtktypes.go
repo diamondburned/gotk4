@@ -380,7 +380,7 @@ func (s *Bitset) IsEmpty() bool {
 }
 
 // Ref acquires a reference on the given `GtkBitset`.
-func (s *Bitset) Ref() *Bitset {
+func (s *Bitset) ref() *Bitset {
 	var _arg0 *C.GtkBitset // out
 	var _cret *C.GtkBitset // in
 
@@ -561,7 +561,7 @@ func (s *Bitset) Union(other *Bitset) {
 //
 // If the reference was the last, the resources associated to the @self are
 // freed.
-func (s *Bitset) Unref() {
+func (s *Bitset) unref() {
 	var _arg0 *C.GtkBitset // out
 
 	_arg0 = (*C.GtkBitset)(unsafe.Pointer(s))

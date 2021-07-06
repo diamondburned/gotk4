@@ -35,6 +35,19 @@ func init() {
 	})
 }
 
+// PanedOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type PanedOverrider interface {
+	AcceptPosition() bool
+	CancelPosition() bool
+	CycleChildFocus(reverse bool) bool
+	CycleHandleFocus(reverse bool) bool
+	MoveHandle(scroll ScrollType) bool
+	ToggleHandleFocus() bool
+}
+
 // Paned has two panes, arranged either horizontally or vertically. The division
 // between the two panes is adjustable by the user by dragging a handle.
 //

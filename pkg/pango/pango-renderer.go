@@ -28,20 +28,81 @@ func init() {
 type RenderPart int
 
 const (
-	// foreground: the text itself
-	RenderPartForeground RenderPart = iota
-	// background: the area behind the text
-	RenderPartBackground
-	// underline: underlines
-	RenderPartUnderline
-	// strikethrough lines
-	RenderPartStrikethrough
-	// overline: overlines
-	RenderPartOverline
+	// Foreground: the text itself
+	Foreground RenderPart = iota
+	// Background: the area behind the text
+	Background
+	// Underline: underlines
+	Underline
+	// Strikethrough lines
+	Strikethrough
+	// Overline: overlines
+	Overline
 )
 
 func marshalRenderPart(p uintptr) (interface{}, error) {
 	return RenderPart(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// RendererOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type RendererOverrider interface {
+	Begin()
+	// DrawErrorUnderline: draw a squiggly line that approximately covers the
+	// given rectangle in the style of an underline used to indicate a spelling
+	// error.
+	//
+	// The width of the underline is rounded to an integer number of up/down
+	// segments and the resulting rectangle is centered in the original
+	// rectangle.
+	//
+	// This should be called while @renderer is already active. Use
+	// [method@Pango.Renderer.activate] to activate a renderer.
+	DrawErrorUnderline(x int, y int, width int, height int)
+	// DrawGlyphItem draws the glyphs in @glyph_item with the specified
+	// `PangoRenderer`, embedding the text associated with the glyphs in the
+	// output if the output format supports it.
+	//
+	// This is useful for rendering text in PDF.
+	//
+	// Note that @text is the start of the text for layout, which is then
+	// indexed by `glyph_item->item->offset`.
+	//
+	// If @text is nil, this simply calls [method@Pango.Renderer.draw_glyphs].
+	//
+	// The default implementation of this method simply falls back to
+	// [method@Pango.Renderer.draw_glyphs].
+	DrawGlyphItem(text string, glyphItem *GlyphItem, x int, y int)
+	// DrawGlyphs draws the glyphs in @glyphs with the specified
+	// `PangoRenderer`.
+	DrawGlyphs(font Font, glyphs *GlyphString, x int, y int)
+	// DrawRectangle draws an axis-aligned rectangle in user space coordinates
+	// with the specified `PangoRenderer`.
+	//
+	// This should be called while @renderer is already active. Use
+	// [method@Pango.Renderer.activate] to activate a renderer.
+	DrawRectangle(part RenderPart, x int, y int, width int, height int)
+	DrawShape(attr *AttrShape, x int, y int)
+	// DrawTrapezoid draws a trapezoid with the parallel sides aligned with the
+	// X axis using the given `PangoRenderer`; coordinates are in device space.
+	DrawTrapezoid(part RenderPart, y1 float64, x11 float64, x21 float64, y2 float64, x12 float64, x22 float64)
+	End()
+	// PartChanged informs Pango that the way that the rendering is done for
+	// @part has changed.
+	//
+	// This should be called if the rendering changes in a way that would
+	// prevent multiple pieces being joined together into one drawing call. For
+	// instance, if a subclass of `PangoRenderer` was to add a stipple option
+	// for drawing underlines, it needs to call
+	//
+	// “` pango_renderer_part_changed (render, PANGO_RENDER_PART_UNDERLINE); “`
+	//
+	// When the stipple changes or underlines with different stipples might be
+	// joined together. Pango automatically calls this for changes to colors.
+	// (See [method@Pango.Renderer.set_color])
+	PartChanged(part RenderPart)
 }
 
 // Renderer: `PangoRenderer` is a base class for objects that can render text

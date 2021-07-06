@@ -38,6 +38,15 @@ func init() {
 	})
 }
 
+// DBusProxyOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type DBusProxyOverrider interface {
+	GPropertiesChanged(changedProperties *glib.Variant, invalidatedProperties *string)
+	GSignal(senderName string, signalName string, parameters *glib.Variant)
+}
+
 // DBusProxy is a base class used for proxies to access a D-Bus interface on a
 // remote object. A BusProxy can be constructed for both well-known and unique
 // names.

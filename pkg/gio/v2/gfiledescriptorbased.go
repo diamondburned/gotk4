@@ -31,6 +31,15 @@ func init() {
 	})
 }
 
+// FileDescriptorBasedOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type FileDescriptorBasedOverrider interface {
+	// Fd gets the underlying file descriptor.
+	Fd() int
+}
+
 // FileDescriptorBased is implemented by streams (implementations of Stream or
 // Stream) that are based on file descriptors.
 //

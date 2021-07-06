@@ -104,7 +104,7 @@ func (a *Frustum) Equal(b *Frustum) bool {
 }
 
 // Free frees the resources allocated by graphene_frustum_alloc().
-func (f *Frustum) Free() {
+func (f *Frustum) free() {
 	var _arg0 *C.graphene_frustum_t // out
 
 	_arg0 = (*C.graphene_frustum_t)(unsafe.Pointer(f))

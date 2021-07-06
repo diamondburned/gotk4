@@ -166,6 +166,15 @@ func gotk4_SettingsGetMapping(arg0 *C.GVariant, arg1 *C.gpointer, arg2 C.gpointe
 	return cret
 }
 
+// SettingsOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type SettingsOverrider interface {
+	Changed(key string)
+	WritableChanged(key string)
+}
+
 // Settings: the #GSettings class provides a convenient API for storing and
 // retrieving application settings.
 //

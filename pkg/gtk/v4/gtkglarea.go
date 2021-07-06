@@ -29,6 +29,15 @@ func init() {
 	})
 }
 
+// GLAreaOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type GLAreaOverrider interface {
+	Render(context gdk.GLContext) bool
+	Resize(width int, height int)
+}
+
 // GLArea: `GtkGLArea` is a widget that allows drawing with OpenGL.
 //
 // !An example GtkGLArea (glarea.png)

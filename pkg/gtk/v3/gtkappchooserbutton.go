@@ -35,6 +35,14 @@ func init() {
 	})
 }
 
+// AppChooserButtonOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type AppChooserButtonOverrider interface {
+	CustomItemActivated(itemName string)
+}
+
 // AppChooserButton: the AppChooserButton is a widget that lets the user select
 // an application. It implements the AppChooser interface.
 //

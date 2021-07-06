@@ -24,6 +24,21 @@ func init() {
 	})
 }
 
+// ActivatableOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type ActivatableOverrider interface {
+	// SyncActionProperties: this is called to update the activatable
+	// completely, this is called internally when the Activatable:related-action
+	// property is set or unset and by the implementing class when
+	// Activatable:use-action-appearance changes.
+	//
+	// Deprecated: since version 3.10.
+	SyncActionProperties(action Action)
+	Update(action Action, propertyName string)
+}
+
 // Activatable widgets can be connected to a Action and reflects the state of
 // its action. A Activatable can also provide feedback through its action, as
 // they are responsible for activating their related actions.

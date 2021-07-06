@@ -32,6 +32,14 @@ func init() {
 	})
 }
 
+// DBusObjectSkeletonOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type DBusObjectSkeletonOverrider interface {
+	AuthorizeMethod(interface_ DBusInterfaceSkeleton, invocation DBusMethodInvocation) bool
+}
+
 // DBusObjectSkeleton instance is essentially a group of D-Bus interfaces. The
 // set of exported interfaces on the object may be dynamic and change at
 // runtime.

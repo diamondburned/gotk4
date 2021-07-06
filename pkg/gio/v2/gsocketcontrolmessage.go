@@ -33,6 +33,26 @@ func init() {
 	})
 }
 
+// SocketControlMessageOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type SocketControlMessageOverrider interface {
+	// Level returns the "level" (i.e. the originating protocol) of the control
+	// message. This is often SOL_SOCKET.
+	Level() int
+	// Size returns the space required for the control message, not including
+	// headers or alignment.
+	Size() uint
+	Type() int
+	// Serialize converts the data in the message to bytes placed in the
+	// message.
+	//
+	// @data is guaranteed to have enough space to fit the size returned by
+	// g_socket_control_message_get_size() on this object.
+	Serialize(data interface{})
+}
+
 // SocketControlMessage is a special-purpose utility message that can be sent to
 // or received from a #GSocket. These types of messages are often called
 // "ancillary data".

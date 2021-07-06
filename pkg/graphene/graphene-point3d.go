@@ -157,7 +157,7 @@ func (a *Point3D) Equal(b *Point3D) bool {
 }
 
 // Free frees the resources allocated via graphene_point3d_alloc().
-func (p *Point3D) Free() {
+func (p *Point3D) free() {
 	var _arg0 *C.graphene_point3d_t // out
 
 	_arg0 = (*C.graphene_point3d_t)(unsafe.Pointer(p))

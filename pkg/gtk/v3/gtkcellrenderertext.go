@@ -26,6 +26,14 @@ func init() {
 	})
 }
 
+// CellRendererTextOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type CellRendererTextOverrider interface {
+	Edited(path string, newText string)
+}
+
 // CellRendererText renders a given text in its cell, using the font, color and
 // style information provided by its properties. The text will be ellipsized if
 // it is too long and the CellRendererText:ellipsize property allows it.

@@ -2876,6 +2876,14 @@ func (b flowBox) UnselectChild(child FlowBoxChild) {
 	C.gtk_flow_box_unselect_child(_arg0, _arg1)
 }
 
+// FlowBoxChildOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type FlowBoxChildOverrider interface {
+	Activate()
+}
+
 // FlowBoxChild: `GtkFlowBoxChild` is the kind of widget that can be added to a
 // `GtkFlowBox`.
 type FlowBoxChild interface {

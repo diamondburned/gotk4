@@ -171,7 +171,7 @@ func (i *IconSet) Sizes() []int {
 // Ref increments the reference count on @icon_set.
 //
 // Deprecated: since version 3.10.
-func (i *IconSet) Ref() *IconSet {
+func (i *IconSet) ref() *IconSet {
 	var _arg0 *C.GtkIconSet // out
 	var _cret *C.GtkIconSet // in
 
@@ -290,7 +290,7 @@ func (i *IconSet) RenderIconSurface(context StyleContext, size int, scale int, f
 // reference count reaches 0.
 //
 // Deprecated: since version 3.10.
-func (i *IconSet) Unref() {
+func (i *IconSet) unref() {
 	var _arg0 *C.GtkIconSet // out
 
 	_arg0 = (*C.GtkIconSet)(unsafe.Pointer(i))
@@ -359,7 +359,7 @@ func (s *IconSource) Copy() *IconSource {
 // size, and pixbuf fields if those are not nil.
 //
 // Deprecated: since version 3.10.
-func (s *IconSource) Free() {
+func (s *IconSource) free() {
 	var _arg0 *C.GtkIconSource // out
 
 	_arg0 = (*C.GtkIconSource)(unsafe.Pointer(s))
@@ -759,7 +759,7 @@ func (d *SelectionData) Copy() *SelectionData {
 }
 
 // Free frees a SelectionData-struct returned from gtk_selection_data_copy().
-func (d *SelectionData) Free() {
+func (d *SelectionData) free() {
 	var _arg0 *C.GtkSelectionData // out
 
 	_arg0 = (*C.GtkSelectionData)(unsafe.Pointer(d))
@@ -1189,7 +1189,7 @@ func (p *WidgetPath) Copy() *WidgetPath {
 
 // Free decrements the reference count on @path, freeing the structure if the
 // reference count reaches 0.
-func (p *WidgetPath) Free() {
+func (p *WidgetPath) free() {
 	var _arg0 *C.GtkWidgetPath // out
 
 	_arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(p))
@@ -1645,7 +1645,7 @@ func (p *WidgetPath) PrependType(typ externglib.Type) {
 }
 
 // Ref increments the reference count on @path.
-func (p *WidgetPath) Ref() *WidgetPath {
+func (p *WidgetPath) ref() *WidgetPath {
 	var _arg0 *C.GtkWidgetPath // out
 	var _cret *C.GtkWidgetPath // in
 
@@ -1688,7 +1688,7 @@ func (p *WidgetPath) String() string {
 
 // Unref decrements the reference count on @path, freeing the structure if the
 // reference count reaches 0.
-func (p *WidgetPath) Unref() {
+func (p *WidgetPath) unref() {
 	var _arg0 *C.GtkWidgetPath // out
 
 	_arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(p))

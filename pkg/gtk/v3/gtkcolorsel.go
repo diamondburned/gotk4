@@ -35,6 +35,14 @@ func init() {
 	})
 }
 
+// ColorSelectionOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type ColorSelectionOverrider interface {
+	ColorChanged()
+}
+
 type ColorSelection interface {
 	gextras.Objector
 

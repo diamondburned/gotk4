@@ -32,6 +32,15 @@ func init() {
 	})
 }
 
+// InetAddressOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type InetAddressOverrider interface {
+	// String converts @address to string form.
+	String() string
+}
+
 // InetAddress represents an IPv4 or IPv6 internet address. Use
 // g_resolver_lookup_by_name() or g_resolver_lookup_by_name_async() to look up
 // the Address for a hostname. Use g_resolver_lookup_by_address() or

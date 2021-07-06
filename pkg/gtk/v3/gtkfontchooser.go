@@ -78,6 +78,50 @@ func gotk4_FontFilterFunc(arg0 *C.PangoFontFamily, arg1 *C.PangoFontFace, arg2 C
 	return cret
 }
 
+// FontChooserOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type FontChooserOverrider interface {
+	FontActivated(fontname string)
+	// FontFace gets the FontFace representing the selected font group details
+	// (i.e. family, slant, weight, width, etc).
+	//
+	// If the selected font is not installed, returns nil.
+	FontFace() pango.FontFace
+	// FontFamily gets the FontFamily representing the selected font family.
+	// Font families are a collection of font faces.
+	//
+	// If the selected font is not installed, returns nil.
+	FontFamily() pango.FontFamily
+	// FontMap gets the custom font map of this font chooser widget, or nil if
+	// it does not have one.
+	FontMap() pango.FontMap
+	// FontSize: the selected font size.
+	FontSize() int
+	// SetFontMap sets a custom font map to use for this font chooser widget. A
+	// custom font map can be used to present application-specific fonts instead
+	// of or in addition to the normal system fonts.
+	//
+	//    FcConfig *config;
+	//    PangoFontMap *fontmap;
+	//
+	//    config = FcInitLoadConfigAndFonts ();
+	//    FcConfigAppFontAddFile (config, my_app_font_file);
+	//
+	//    fontmap = pango_cairo_font_map_new_for_font_type (CAIRO_FONT_TYPE_FT);
+	//    pango_fc_font_map_set_config (PANGO_FC_FONT_MAP (fontmap), config);
+	//
+	//    gtk_font_chooser_set_font_map (font_chooser, fontmap);
+	//
+	// Note that other GTK+ widgets will only be able to use the
+	// application-specific font if it is present in the font map they use:
+	//
+	//    context = gtk_widget_get_pango_context (label);
+	//    pango_context_set_font_map (context, fontmap);
+	SetFontMap(fontmap pango.FontMap)
+}
+
 // FontChooser is an interface that can be implemented by widgets displaying the
 // list of fonts. In GTK+, the main objects that implement this interface are
 // FontChooserWidget, FontChooserDialog and FontButton. The GtkFontChooser

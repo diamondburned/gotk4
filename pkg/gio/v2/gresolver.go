@@ -54,6 +54,50 @@ func marshalResolverNameLookupFlags(p uintptr) (interface{}, error) {
 	return ResolverNameLookupFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// ResolverOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type ResolverOverrider interface {
+	// LookupByAddress: synchronously reverse-resolves @address to determine its
+	// associated hostname.
+	//
+	// If the DNS resolution fails, @error (if non-nil) will be set to a value
+	// from Error.
+	//
+	// If @cancellable is non-nil, it can be used to cancel the operation, in
+	// which case @error (if non-nil) will be set to G_IO_ERROR_CANCELLED.
+	LookupByAddress(address InetAddress, cancellable Cancellable) (string, error)
+	// LookupByAddressAsync begins asynchronously reverse-resolving @address to
+	// determine its associated hostname, and eventually calls @callback, which
+	// must call g_resolver_lookup_by_address_finish() to get the final result.
+	LookupByAddressAsync(address InetAddress, cancellable Cancellable, callback AsyncReadyCallback)
+	// LookupByAddressFinish retrieves the result of a previous call to
+	// g_resolver_lookup_by_address_async().
+	//
+	// If the DNS resolution failed, @error (if non-nil) will be set to a value
+	// from Error. If the operation was cancelled, @error will be set to
+	// G_IO_ERROR_CANCELLED.
+	LookupByAddressFinish(result AsyncResult) (string, error)
+	// LookupByNameAsync begins asynchronously resolving @hostname to determine
+	// its associated IP address(es), and eventually calls @callback, which must
+	// call g_resolver_lookup_by_name_finish() to get the result. See
+	// g_resolver_lookup_by_name() for more details.
+	LookupByNameAsync(hostname string, cancellable Cancellable, callback AsyncReadyCallback)
+	// LookupByNameWithFlagsAsync begins asynchronously resolving @hostname to
+	// determine its associated IP address(es), and eventually calls @callback,
+	// which must call g_resolver_lookup_by_name_with_flags_finish() to get the
+	// result. See g_resolver_lookup_by_name() for more details.
+	LookupByNameWithFlagsAsync(hostname string, flags ResolverNameLookupFlags, cancellable Cancellable, callback AsyncReadyCallback)
+	// LookupRecordsAsync begins asynchronously performing a DNS lookup for the
+	// given @rrname, and eventually calls @callback, which must call
+	// g_resolver_lookup_records_finish() to get the final result. See
+	// g_resolver_lookup_records() for more details.
+	LookupRecordsAsync(rrname string, recordType ResolverRecordType, cancellable Cancellable, callback AsyncReadyCallback)
+	LookupServiceAsync(rrname string, cancellable Cancellable, callback AsyncReadyCallback)
+	Reload()
+}
+
 // Resolver provides cancellable synchronous and asynchronous DNS resolution,
 // for hostnames (g_resolver_lookup_by_address(), g_resolver_lookup_by_name()
 // and their async variants) and SRV (service) records

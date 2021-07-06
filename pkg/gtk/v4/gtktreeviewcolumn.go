@@ -31,12 +31,12 @@ type TreeViewColumnSizing int
 
 const (
 	// GrowOnly columns only get bigger in reaction to changes in the model
-	TreeViewColumnSizingGrowOnly TreeViewColumnSizing = iota
-	// autosize columns resize to be the optimal size every time the model
+	GrowOnly TreeViewColumnSizing = iota
+	// Autosize columns resize to be the optimal size every time the model
 	// changes.
-	TreeViewColumnSizingAutosize
-	// fixed columns are a fixed numbers of pixels wide.
-	TreeViewColumnSizingFixed
+	Autosize
+	// Fixed columns are a fixed numbers of pixels wide.
+	Fixed
 )
 
 func marshalTreeViewColumnSizing(p uintptr) (interface{}, error) {

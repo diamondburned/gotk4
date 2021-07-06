@@ -86,6 +86,14 @@ func gotk4_TreeSelectionFunc(arg0 *C.GtkTreeSelection, arg1 *C.GtkTreeModel, arg
 	return cret
 }
 
+// TreeSelectionOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type TreeSelectionOverrider interface {
+	Changed()
+}
+
 // TreeSelection: the TreeSelection object is a helper object to manage the
 // selection for a TreeView widget. The TreeSelection object is automatically
 // created when a new TreeView widget is created, and cannot exist independently

@@ -48,6 +48,14 @@ func marshalStyleContextPrintFlags(p uintptr) (interface{}, error) {
 	return StyleContextPrintFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// StyleContextOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type StyleContextOverrider interface {
+	Changed()
+}
+
 // StyleContext: `GtkStyleContext` stores styling information affecting a
 // widget.
 //

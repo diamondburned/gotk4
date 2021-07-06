@@ -25,27 +25,35 @@ func init() {
 	})
 }
 
+// CellAccessibleParentOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type CellAccessibleParentOverrider interface {
+	Activate(cell CellAccessible)
+	Edit(cell CellAccessible)
+	ExpandCollapse(cell CellAccessible)
+	CellArea(cell CellAccessible) gdk.Rectangle
+	CellExtents(cell CellAccessible, coordType atk.CoordType) (x int, y int, width int, height int)
+	CellPosition(cell CellAccessible) (row int, column int)
+	ChildIndex(cell CellAccessible) int
+	RendererState(cell CellAccessible) CellRendererState
+	GrabFocus(cell CellAccessible) bool
+	UpdateRelationset(cell CellAccessible, relationset atk.RelationSet)
+}
+
 type CellAccessibleParent interface {
 	gextras.Objector
 
 	Activate(cell CellAccessible)
-
 	Edit(cell CellAccessible)
-
 	ExpandCollapse(cell CellAccessible)
-
 	CellArea(cell CellAccessible) gdk.Rectangle
-
 	CellExtents(cell CellAccessible, coordType atk.CoordType) (x int, y int, width int, height int)
-
 	CellPosition(cell CellAccessible) (row int, column int)
-
 	ChildIndex(cell CellAccessible) int
-
 	RendererState(cell CellAccessible) CellRendererState
-
 	GrabFocus(cell CellAccessible) bool
-
 	UpdateRelationset(cell CellAccessible, relationset atk.RelationSet)
 }
 

@@ -46,29 +46,29 @@ func init() {
 type CrossingMode int
 
 const (
-	// normal: crossing because of pointer motion.
-	CrossingModeNormal CrossingMode = iota
-	// grab: crossing because a grab is activated.
-	CrossingModeGrab
-	// ungrab: crossing because a grab is deactivated.
-	CrossingModeUngrab
+	// Normal: crossing because of pointer motion.
+	Normal CrossingMode = iota
+	// Grab: crossing because a grab is activated.
+	Grab
+	// Ungrab: crossing because a grab is deactivated.
+	Ungrab
 	// GTKGrab: crossing because a GTK grab is activated.
-	CrossingModeGTKGrab
+	GTKGrab
 	// GTKUngrab: crossing because a GTK grab is deactivated.
-	CrossingModeGTKUngrab
+	GTKUngrab
 	// StateChanged: crossing because a GTK widget changed state (e.g.
 	// sensitivity).
-	CrossingModeStateChanged
+	StateChanged
 	// TouchBegin: crossing because a touch sequence has begun, this event is
 	// synthetic as the pointer might have not left the surface.
-	CrossingModeTouchBegin
+	TouchBegin
 	// TouchEnd: crossing because a touch sequence has ended, this event is
 	// synthetic as the pointer might have not left the surface.
-	CrossingModeTouchEnd
+	TouchEnd
 	// DeviceSwitch: crossing because of a device switch (i.e. a mouse taking
 	// control of the pointer after a touch device), this event is synthetic as
 	// the pointer didn’t leave the surface.
-	CrossingModeDeviceSwitch
+	DeviceSwitch
 )
 
 func marshalCrossingMode(p uintptr) (interface{}, error) {
@@ -79,71 +79,71 @@ func marshalCrossingMode(p uintptr) (interface{}, error) {
 type EventType int
 
 const (
-	// delete: the window manager has requested that the toplevel surface be
+	// Delete: the window manager has requested that the toplevel surface be
 	// hidden or destroyed, usually when the user clicks on a special icon in
 	// the title bar.
-	EventTypeDelete EventType = iota
+	Delete EventType = iota
 	// MotionNotify: the pointer (usually a mouse) has moved.
-	EventTypeMotionNotify
+	MotionNotify
 	// ButtonPress: mouse button has been pressed.
-	EventTypeButtonPress
+	ButtonPress
 	// ButtonRelease: mouse button has been released.
-	EventTypeButtonRelease
+	ButtonRelease
 	// KeyPress: key has been pressed.
-	EventTypeKeyPress
+	KeyPress
 	// KeyRelease: key has been released.
-	EventTypeKeyRelease
+	KeyRelease
 	// EnterNotify: the pointer has entered the surface.
-	EventTypeEnterNotify
+	EnterNotify
 	// LeaveNotify: the pointer has left the surface.
-	EventTypeLeaveNotify
+	LeaveNotify
 	// FocusChange: the keyboard focus has entered or left the surface.
-	EventTypeFocusChange
+	FocusChange
 	// ProximityIn: input device has moved into contact with a sensing surface
 	// (e.g. a touchscreen or graphics tablet).
-	EventTypeProximityIn
+	ProximityIn
 	// ProximityOut: input device has moved out of contact with a sensing
 	// surface.
-	EventTypeProximityOut
+	ProximityOut
 	// DragEnter: the mouse has entered the surface while a drag is in progress.
-	EventTypeDragEnter
+	DragEnter
 	// DragLeave: the mouse has left the surface while a drag is in progress.
-	EventTypeDragLeave
+	DragLeave
 	// DragMotion: the mouse has moved in the surface while a drag is in
 	// progress.
-	EventTypeDragMotion
+	DragMotion
 	// DropStart: drop operation onto the surface has started.
-	EventTypeDropStart
-	// scroll: the scroll wheel was turned
-	EventTypeScroll
+	DropStart
+	// Scroll: the scroll wheel was turned
+	Scroll
 	// GrabBroken: pointer or keyboard grab was broken.
-	EventTypeGrabBroken
+	GrabBroken
 	// TouchBegin: new touch event sequence has just started.
-	EventTypeTouchBegin
+	TouchBegin
 	// TouchUpdate: touch event sequence has been updated.
-	EventTypeTouchUpdate
+	TouchUpdate
 	// TouchEnd: touch event sequence has finished.
-	EventTypeTouchEnd
+	TouchEnd
 	// TouchCancel: touch event sequence has been canceled.
-	EventTypeTouchCancel
+	TouchCancel
 	// TouchpadSwipe: touchpad swipe gesture event, the current state is
 	// determined by its phase field.
-	EventTypeTouchpadSwipe
+	TouchpadSwipe
 	// TouchpadPinch: touchpad pinch gesture event, the current state is
 	// determined by its phase field.
-	EventTypeTouchpadPinch
+	TouchpadPinch
 	// PadButtonPress: tablet pad button press event.
-	EventTypePadButtonPress
+	PadButtonPress
 	// PadButtonRelease: tablet pad button release event.
-	EventTypePadButtonRelease
+	PadButtonRelease
 	// PadRing: tablet pad axis event from a "ring".
-	EventTypePadRing
+	PadRing
 	// PadStrip: tablet pad axis event from a "strip".
-	EventTypePadStrip
+	PadStrip
 	// PadGroupMode: tablet pad group mode change.
-	EventTypePadGroupMode
+	PadGroupMode
 	// EventLast marks the end of the GdkEventType enumeration.
-	EventTypeEventLast
+	EventLast
 )
 
 func marshalEventType(p uintptr) (interface{}, error) {
@@ -156,13 +156,13 @@ func marshalEventType(p uintptr) (interface{}, error) {
 type KeyMatch int
 
 const (
-	// none: the key event does not match
-	KeyMatchNone KeyMatch = iota
-	// partial: the key event matches if keyboard state (specifically, the
+	// None: the key event does not match
+	None KeyMatch = iota
+	// Partial: the key event matches if keyboard state (specifically, the
 	// currently active group) is ignored
-	KeyMatchPartial
-	// exact: the key event matches
-	KeyMatchExact
+	Partial
+	// Exact: the key event matches
+	Exact
 )
 
 func marshalKeyMatch(p uintptr) (interface{}, error) {
@@ -176,24 +176,24 @@ func marshalKeyMatch(p uintptr) (interface{}, error) {
 type NotifyType int
 
 const (
-	// ancestor: the surface is entered from an ancestor or left towards an
+	// Ancestor: the surface is entered from an ancestor or left towards an
 	// ancestor.
-	NotifyTypeAncestor NotifyType = iota
-	// virtual: the pointer moves between an ancestor and an inferior of the
+	Ancestor NotifyType = iota
+	// Virtual: the pointer moves between an ancestor and an inferior of the
 	// surface.
-	NotifyTypeVirtual
-	// inferior: the surface is entered from an inferior or left towards an
+	Virtual
+	// Inferior: the surface is entered from an inferior or left towards an
 	// inferior.
-	NotifyTypeInferior
-	// nonlinear: the surface is entered from or left towards a surface which is
+	Inferior
+	// Nonlinear: the surface is entered from or left towards a surface which is
 	// neither an ancestor nor an inferior.
-	NotifyTypeNonlinear
+	Nonlinear
 	// NonlinearVirtual: the pointer moves between two surfaces which are not
 	// ancestors of each other and the surface is part of the ancestor chain
 	// between one of these surfaces and their least common ancestor.
-	NotifyTypeNonlinearVirtual
-	// unknown type of enter/leave event occurred.
-	NotifyTypeUnknown
+	NonlinearVirtual
+	// Unknown type of enter/leave event occurred.
+	Unknown
 )
 
 func marshalNotifyType(p uintptr) (interface{}, error) {
@@ -204,17 +204,17 @@ func marshalNotifyType(p uintptr) (interface{}, error) {
 type ScrollDirection int
 
 const (
-	// up: the surface is scrolled up.
-	ScrollDirectionUp ScrollDirection = iota
-	// down: the surface is scrolled down.
-	ScrollDirectionDown
-	// left: the surface is scrolled to the left.
-	ScrollDirectionLeft
-	// right: the surface is scrolled to the right.
-	ScrollDirectionRight
-	// smooth: the scrolling is determined by the delta values in scroll events.
+	// Up: the surface is scrolled up.
+	Up ScrollDirection = iota
+	// Down: the surface is scrolled down.
+	Down
+	// Left: the surface is scrolled to the left.
+	Left
+	// Right: the surface is scrolled to the right.
+	Right
+	// Smooth: the scrolling is determined by the delta values in scroll events.
 	// See gdk_scroll_event_get_deltas()
-	ScrollDirectionSmooth
+	Smooth
 )
 
 func marshalScrollDirection(p uintptr) (interface{}, error) {
@@ -241,14 +241,14 @@ func marshalScrollDirection(p uintptr) (interface{}, error) {
 type TouchpadGesturePhase int
 
 const (
-	// begin: the gesture has begun.
-	TouchpadGesturePhaseBegin TouchpadGesturePhase = iota
-	// update: the gesture has been updated.
-	TouchpadGesturePhaseUpdate
-	// end: the gesture was finished, changes should be permanently applied.
-	TouchpadGesturePhaseEnd
-	// cancel: the gesture was cancelled, all changes should be undone.
-	TouchpadGesturePhaseCancel
+	// Begin: the gesture has begun.
+	Begin TouchpadGesturePhase = iota
+	// Update: the gesture has been updated.
+	Update
+	// End: the gesture was finished, changes should be permanently applied.
+	End
+	// Cancel: the gesture was cancelled, all changes should be undone.
+	Cancel
 )
 
 func marshalTouchpadGesturePhase(p uintptr) (interface{}, error) {
@@ -421,7 +421,7 @@ type ButtonEvent interface {
 	// Ref: increase the ref count of @event.
 	//
 	// This method is inherited from Event
-	Ref() Event
+	ref() Event
 	// TriggersContextMenu returns whether a `GdkEvent` should trigger a context
 	// menu, according to platform conventions.
 	//
@@ -437,7 +437,7 @@ type ButtonEvent interface {
 	// If the last reference is dropped, the structure is freed.
 	//
 	// This method is inherited from Event
-	Unref()
+	unref()
 
 	// Button: extract the button number from a button event.
 	Button() uint
@@ -518,16 +518,16 @@ func (e buttonEvent) GetTime() uint32 {
 	return WrapEvent(gextras.InternObject(e)).GetTime()
 }
 
-func (e buttonEvent) Ref() Event {
-	return WrapEvent(gextras.InternObject(e)).Ref()
+func (e buttonEvent) ref() Event {
+	return WrapEvent(gextras.InternObject(e)).ref()
 }
 
 func (e buttonEvent) TriggersContextMenu() bool {
 	return WrapEvent(gextras.InternObject(e)).TriggersContextMenu()
 }
 
-func (e buttonEvent) Unref() {
-	WrapEvent(gextras.InternObject(e)).Unref()
+func (e buttonEvent) unref() {
+	WrapEvent(gextras.InternObject(e)).unref()
 }
 
 func (e buttonEvent) Button() uint {
@@ -626,7 +626,7 @@ type CrossingEvent interface {
 	// Ref: increase the ref count of @event.
 	//
 	// This method is inherited from Event
-	Ref() Event
+	ref() Event
 	// TriggersContextMenu returns whether a `GdkEvent` should trigger a context
 	// menu, according to platform conventions.
 	//
@@ -642,7 +642,7 @@ type CrossingEvent interface {
 	// If the last reference is dropped, the structure is freed.
 	//
 	// This method is inherited from Event
-	Unref()
+	unref()
 
 	// Detail extracts the notify detail from a crossing event.
 	Detail() NotifyType
@@ -727,16 +727,16 @@ func (e crossingEvent) GetTime() uint32 {
 	return WrapEvent(gextras.InternObject(e)).GetTime()
 }
 
-func (e crossingEvent) Ref() Event {
-	return WrapEvent(gextras.InternObject(e)).Ref()
+func (e crossingEvent) ref() Event {
+	return WrapEvent(gextras.InternObject(e)).ref()
 }
 
 func (e crossingEvent) TriggersContextMenu() bool {
 	return WrapEvent(gextras.InternObject(e)).TriggersContextMenu()
 }
 
-func (e crossingEvent) Unref() {
-	WrapEvent(gextras.InternObject(e)).Unref()
+func (e crossingEvent) unref() {
+	WrapEvent(gextras.InternObject(e)).unref()
 }
 
 func (e crossingEvent) Detail() NotifyType {
@@ -867,7 +867,7 @@ type DNDEvent interface {
 	// Ref: increase the ref count of @event.
 	//
 	// This method is inherited from Event
-	Ref() Event
+	ref() Event
 	// TriggersContextMenu returns whether a `GdkEvent` should trigger a context
 	// menu, according to platform conventions.
 	//
@@ -883,7 +883,7 @@ type DNDEvent interface {
 	// If the last reference is dropped, the structure is freed.
 	//
 	// This method is inherited from Event
-	Unref()
+	unref()
 
 	// Drop gets the `GdkDrop` object from a DND event.
 	Drop() Drop
@@ -964,16 +964,16 @@ func (e dndEvent) GetTime() uint32 {
 	return WrapEvent(gextras.InternObject(e)).GetTime()
 }
 
-func (e dndEvent) Ref() Event {
-	return WrapEvent(gextras.InternObject(e)).Ref()
+func (e dndEvent) ref() Event {
+	return WrapEvent(gextras.InternObject(e)).ref()
 }
 
 func (e dndEvent) TriggersContextMenu() bool {
 	return WrapEvent(gextras.InternObject(e)).TriggersContextMenu()
 }
 
-func (e dndEvent) Unref() {
-	WrapEvent(gextras.InternObject(e)).Unref()
+func (e dndEvent) unref() {
+	WrapEvent(gextras.InternObject(e)).unref()
 }
 
 func (e dndEvent) Drop() Drop {
@@ -1072,7 +1072,7 @@ type DeleteEvent interface {
 	// Ref: increase the ref count of @event.
 	//
 	// This method is inherited from Event
-	Ref() Event
+	ref() Event
 	// TriggersContextMenu returns whether a `GdkEvent` should trigger a context
 	// menu, according to platform conventions.
 	//
@@ -1088,7 +1088,7 @@ type DeleteEvent interface {
 	// If the last reference is dropped, the structure is freed.
 	//
 	// This method is inherited from Event
-	Unref()
+	unref()
 }
 
 // deleteEvent implements the DeleteEvent interface.
@@ -1166,16 +1166,16 @@ func (e deleteEvent) GetTime() uint32 {
 	return WrapEvent(gextras.InternObject(e)).GetTime()
 }
 
-func (e deleteEvent) Ref() Event {
-	return WrapEvent(gextras.InternObject(e)).Ref()
+func (e deleteEvent) ref() Event {
+	return WrapEvent(gextras.InternObject(e)).ref()
 }
 
 func (e deleteEvent) TriggersContextMenu() bool {
 	return WrapEvent(gextras.InternObject(e)).TriggersContextMenu()
 }
 
-func (e deleteEvent) Unref() {
-	WrapEvent(gextras.InternObject(e)).Unref()
+func (e deleteEvent) unref() {
+	WrapEvent(gextras.InternObject(e)).unref()
 }
 
 // Event `GdkEvent`s are immutable data structures, created by GDK to represent
@@ -1233,7 +1233,7 @@ type Event interface {
 	// GDK_CURRENT_TIME.
 	Time() uint32
 	// Ref: increase the ref count of @event.
-	Ref() Event
+	ref() Event
 	// TriggersContextMenu returns whether a `GdkEvent` should trigger a context
 	// menu, according to platform conventions.
 	//
@@ -1245,7 +1245,7 @@ type Event interface {
 	// Unref: decrease the ref count of @event.
 	//
 	// If the last reference is dropped, the structure is freed.
-	Unref()
+	unref()
 }
 
 // event implements the Event interface.
@@ -1486,7 +1486,7 @@ func (e event) Time() uint32 {
 	return _guint32
 }
 
-func (e event) Ref() Event {
+func (e event) ref() Event {
 	var _arg0 *C.GdkEvent // out
 	var _cret *C.GdkEvent // in
 
@@ -1518,7 +1518,7 @@ func (e event) TriggersContextMenu() bool {
 	return _ok
 }
 
-func (e event) Unref() {
+func (e event) unref() {
 	var _arg0 *C.GdkEvent // out
 
 	_arg0 = (*C.GdkEvent)(unsafe.Pointer(e.Native()))
@@ -1607,7 +1607,7 @@ type FocusEvent interface {
 	// Ref: increase the ref count of @event.
 	//
 	// This method is inherited from Event
-	Ref() Event
+	ref() Event
 	// TriggersContextMenu returns whether a `GdkEvent` should trigger a context
 	// menu, according to platform conventions.
 	//
@@ -1623,7 +1623,7 @@ type FocusEvent interface {
 	// If the last reference is dropped, the structure is freed.
 	//
 	// This method is inherited from Event
-	Unref()
+	unref()
 
 	// In extracts whether this event is about focus entering or leaving the
 	// surface.
@@ -1705,16 +1705,16 @@ func (e focusEvent) GetTime() uint32 {
 	return WrapEvent(gextras.InternObject(e)).GetTime()
 }
 
-func (e focusEvent) Ref() Event {
-	return WrapEvent(gextras.InternObject(e)).Ref()
+func (e focusEvent) ref() Event {
+	return WrapEvent(gextras.InternObject(e)).ref()
 }
 
 func (e focusEvent) TriggersContextMenu() bool {
 	return WrapEvent(gextras.InternObject(e)).TriggersContextMenu()
 }
 
-func (e focusEvent) Unref() {
-	WrapEvent(gextras.InternObject(e)).Unref()
+func (e focusEvent) unref() {
+	WrapEvent(gextras.InternObject(e)).unref()
 }
 
 func (e focusEvent) In() bool {
@@ -1815,7 +1815,7 @@ type GrabBrokenEvent interface {
 	// Ref: increase the ref count of @event.
 	//
 	// This method is inherited from Event
-	Ref() Event
+	ref() Event
 	// TriggersContextMenu returns whether a `GdkEvent` should trigger a context
 	// menu, according to platform conventions.
 	//
@@ -1831,7 +1831,7 @@ type GrabBrokenEvent interface {
 	// If the last reference is dropped, the structure is freed.
 	//
 	// This method is inherited from Event
-	Unref()
+	unref()
 
 	// GrabSurface extracts the grab surface from a grab broken event.
 	GrabSurface() Surface
@@ -1914,16 +1914,16 @@ func (e grabBrokenEvent) GetTime() uint32 {
 	return WrapEvent(gextras.InternObject(e)).GetTime()
 }
 
-func (e grabBrokenEvent) Ref() Event {
-	return WrapEvent(gextras.InternObject(e)).Ref()
+func (e grabBrokenEvent) ref() Event {
+	return WrapEvent(gextras.InternObject(e)).ref()
 }
 
 func (e grabBrokenEvent) TriggersContextMenu() bool {
 	return WrapEvent(gextras.InternObject(e)).TriggersContextMenu()
 }
 
-func (e grabBrokenEvent) Unref() {
-	WrapEvent(gextras.InternObject(e)).Unref()
+func (e grabBrokenEvent) unref() {
+	WrapEvent(gextras.InternObject(e)).unref()
 }
 
 func (e grabBrokenEvent) GrabSurface() Surface {
@@ -2039,7 +2039,7 @@ type KeyEvent interface {
 	// Ref: increase the ref count of @event.
 	//
 	// This method is inherited from Event
-	Ref() Event
+	ref() Event
 	// TriggersContextMenu returns whether a `GdkEvent` should trigger a context
 	// menu, according to platform conventions.
 	//
@@ -2055,7 +2055,7 @@ type KeyEvent interface {
 	// If the last reference is dropped, the structure is freed.
 	//
 	// This method is inherited from Event
-	Unref()
+	unref()
 
 	// ConsumedModifiers extracts the consumed modifiers from a key event.
 	ConsumedModifiers() ModifierType
@@ -2159,16 +2159,16 @@ func (e keyEvent) GetTime() uint32 {
 	return WrapEvent(gextras.InternObject(e)).GetTime()
 }
 
-func (e keyEvent) Ref() Event {
-	return WrapEvent(gextras.InternObject(e)).Ref()
+func (e keyEvent) ref() Event {
+	return WrapEvent(gextras.InternObject(e)).ref()
 }
 
 func (e keyEvent) TriggersContextMenu() bool {
 	return WrapEvent(gextras.InternObject(e)).TriggersContextMenu()
 }
 
-func (e keyEvent) Unref() {
-	WrapEvent(gextras.InternObject(e)).Unref()
+func (e keyEvent) unref() {
+	WrapEvent(gextras.InternObject(e)).unref()
 }
 
 func (e keyEvent) ConsumedModifiers() ModifierType {
@@ -2386,7 +2386,7 @@ type MotionEvent interface {
 	// Ref: increase the ref count of @event.
 	//
 	// This method is inherited from Event
-	Ref() Event
+	ref() Event
 	// TriggersContextMenu returns whether a `GdkEvent` should trigger a context
 	// menu, according to platform conventions.
 	//
@@ -2402,7 +2402,7 @@ type MotionEvent interface {
 	// If the last reference is dropped, the structure is freed.
 	//
 	// This method is inherited from Event
-	Unref()
+	unref()
 }
 
 // motionEvent implements the MotionEvent interface.
@@ -2480,16 +2480,16 @@ func (e motionEvent) GetTime() uint32 {
 	return WrapEvent(gextras.InternObject(e)).GetTime()
 }
 
-func (e motionEvent) Ref() Event {
-	return WrapEvent(gextras.InternObject(e)).Ref()
+func (e motionEvent) ref() Event {
+	return WrapEvent(gextras.InternObject(e)).ref()
 }
 
 func (e motionEvent) TriggersContextMenu() bool {
 	return WrapEvent(gextras.InternObject(e)).TriggersContextMenu()
 }
 
-func (e motionEvent) Unref() {
-	WrapEvent(gextras.InternObject(e)).Unref()
+func (e motionEvent) unref() {
+	WrapEvent(gextras.InternObject(e)).unref()
 }
 
 // PadEvent: event related to a pad-based device.
@@ -2573,7 +2573,7 @@ type PadEvent interface {
 	// Ref: increase the ref count of @event.
 	//
 	// This method is inherited from Event
-	Ref() Event
+	ref() Event
 	// TriggersContextMenu returns whether a `GdkEvent` should trigger a context
 	// menu, according to platform conventions.
 	//
@@ -2589,7 +2589,7 @@ type PadEvent interface {
 	// If the last reference is dropped, the structure is freed.
 	//
 	// This method is inherited from Event
-	Unref()
+	unref()
 
 	// AxisValue extracts the information from a pad strip or ring event.
 	AxisValue() (uint, float64)
@@ -2674,16 +2674,16 @@ func (e padEvent) GetTime() uint32 {
 	return WrapEvent(gextras.InternObject(e)).GetTime()
 }
 
-func (e padEvent) Ref() Event {
-	return WrapEvent(gextras.InternObject(e)).Ref()
+func (e padEvent) ref() Event {
+	return WrapEvent(gextras.InternObject(e)).ref()
 }
 
 func (e padEvent) TriggersContextMenu() bool {
 	return WrapEvent(gextras.InternObject(e)).TriggersContextMenu()
 }
 
-func (e padEvent) Unref() {
-	WrapEvent(gextras.InternObject(e)).Unref()
+func (e padEvent) unref() {
+	WrapEvent(gextras.InternObject(e)).unref()
 }
 
 func (e padEvent) AxisValue() (uint, float64) {
@@ -2818,7 +2818,7 @@ type ProximityEvent interface {
 	// Ref: increase the ref count of @event.
 	//
 	// This method is inherited from Event
-	Ref() Event
+	ref() Event
 	// TriggersContextMenu returns whether a `GdkEvent` should trigger a context
 	// menu, according to platform conventions.
 	//
@@ -2834,7 +2834,7 @@ type ProximityEvent interface {
 	// If the last reference is dropped, the structure is freed.
 	//
 	// This method is inherited from Event
-	Unref()
+	unref()
 }
 
 // proximityEvent implements the ProximityEvent interface.
@@ -2912,16 +2912,16 @@ func (e proximityEvent) GetTime() uint32 {
 	return WrapEvent(gextras.InternObject(e)).GetTime()
 }
 
-func (e proximityEvent) Ref() Event {
-	return WrapEvent(gextras.InternObject(e)).Ref()
+func (e proximityEvent) ref() Event {
+	return WrapEvent(gextras.InternObject(e)).ref()
 }
 
 func (e proximityEvent) TriggersContextMenu() bool {
 	return WrapEvent(gextras.InternObject(e)).TriggersContextMenu()
 }
 
-func (e proximityEvent) Unref() {
-	WrapEvent(gextras.InternObject(e)).Unref()
+func (e proximityEvent) unref() {
+	WrapEvent(gextras.InternObject(e)).unref()
 }
 
 // ScrollEvent: event related to a scrolling motion.
@@ -3005,7 +3005,7 @@ type ScrollEvent interface {
 	// Ref: increase the ref count of @event.
 	//
 	// This method is inherited from Event
-	Ref() Event
+	ref() Event
 	// TriggersContextMenu returns whether a `GdkEvent` should trigger a context
 	// menu, according to platform conventions.
 	//
@@ -3021,7 +3021,7 @@ type ScrollEvent interface {
 	// If the last reference is dropped, the structure is freed.
 	//
 	// This method is inherited from Event
-	Unref()
+	unref()
 
 	// Deltas extracts the scroll deltas of a scroll event.
 	//
@@ -3115,16 +3115,16 @@ func (e scrollEvent) GetTime() uint32 {
 	return WrapEvent(gextras.InternObject(e)).GetTime()
 }
 
-func (e scrollEvent) Ref() Event {
-	return WrapEvent(gextras.InternObject(e)).Ref()
+func (e scrollEvent) ref() Event {
+	return WrapEvent(gextras.InternObject(e)).ref()
 }
 
 func (e scrollEvent) TriggersContextMenu() bool {
 	return WrapEvent(gextras.InternObject(e)).TriggersContextMenu()
 }
 
-func (e scrollEvent) Unref() {
-	WrapEvent(gextras.InternObject(e)).Unref()
+func (e scrollEvent) unref() {
+	WrapEvent(gextras.InternObject(e)).unref()
 }
 
 func (e scrollEvent) Deltas() (deltaX float64, deltaY float64) {
@@ -3258,7 +3258,7 @@ type TouchEvent interface {
 	// Ref: increase the ref count of @event.
 	//
 	// This method is inherited from Event
-	Ref() Event
+	ref() Event
 	// TriggersContextMenu returns whether a `GdkEvent` should trigger a context
 	// menu, according to platform conventions.
 	//
@@ -3274,7 +3274,7 @@ type TouchEvent interface {
 	// If the last reference is dropped, the structure is freed.
 	//
 	// This method is inherited from Event
-	Unref()
+	unref()
 
 	// EmulatingPointer extracts whether a touch event is emulating a pointer
 	// event.
@@ -3356,16 +3356,16 @@ func (e touchEvent) GetTime() uint32 {
 	return WrapEvent(gextras.InternObject(e)).GetTime()
 }
 
-func (e touchEvent) Ref() Event {
-	return WrapEvent(gextras.InternObject(e)).Ref()
+func (e touchEvent) ref() Event {
+	return WrapEvent(gextras.InternObject(e)).ref()
 }
 
 func (e touchEvent) TriggersContextMenu() bool {
 	return WrapEvent(gextras.InternObject(e)).TriggersContextMenu()
 }
 
-func (e touchEvent) Unref() {
-	WrapEvent(gextras.InternObject(e)).Unref()
+func (e touchEvent) unref() {
+	WrapEvent(gextras.InternObject(e)).unref()
 }
 
 func (e touchEvent) EmulatingPointer() bool {
@@ -3471,7 +3471,7 @@ type TouchpadEvent interface {
 	// Ref: increase the ref count of @event.
 	//
 	// This method is inherited from Event
-	Ref() Event
+	ref() Event
 	// TriggersContextMenu returns whether a `GdkEvent` should trigger a context
 	// menu, according to platform conventions.
 	//
@@ -3487,7 +3487,7 @@ type TouchpadEvent interface {
 	// If the last reference is dropped, the structure is freed.
 	//
 	// This method is inherited from Event
-	Unref()
+	unref()
 
 	// Deltas extracts delta information from a touchpad event.
 	Deltas() (dx float64, dy float64)
@@ -3576,16 +3576,16 @@ func (e touchpadEvent) GetTime() uint32 {
 	return WrapEvent(gextras.InternObject(e)).GetTime()
 }
 
-func (e touchpadEvent) Ref() Event {
-	return WrapEvent(gextras.InternObject(e)).Ref()
+func (e touchpadEvent) ref() Event {
+	return WrapEvent(gextras.InternObject(e)).ref()
 }
 
 func (e touchpadEvent) TriggersContextMenu() bool {
 	return WrapEvent(gextras.InternObject(e)).TriggersContextMenu()
 }
 
-func (e touchpadEvent) Unref() {
-	WrapEvent(gextras.InternObject(e)).Unref()
+func (e touchpadEvent) unref() {
+	WrapEvent(gextras.InternObject(e)).unref()
 }
 
 func (e touchpadEvent) Deltas() (dx float64, dy float64) {

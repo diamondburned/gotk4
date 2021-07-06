@@ -33,6 +33,46 @@ func init() {
 	})
 }
 
+// SeekableOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type SeekableOverrider interface {
+	// CanSeek tests if the stream supports the Iface.
+	CanSeek() bool
+	// CanTruncate tests if the length of the stream can be adjusted with
+	// g_seekable_truncate().
+	CanTruncate() bool
+	// Seek seeks in the stream by the given @offset, modified by @type.
+	//
+	// Attempting to seek past the end of the stream will have different results
+	// depending on if the stream is fixed-sized or resizable. If the stream is
+	// resizable then seeking past the end and then writing will result in zeros
+	// filling the empty space. Seeking past the end of a resizable stream and
+	// reading will result in EOF. Seeking past the end of a fixed-sized stream
+	// will fail.
+	//
+	// Any operation that would result in a negative offset will fail.
+	//
+	// If @cancellable is not nil, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+	Seek(offset int64, typ glib.SeekType, cancellable Cancellable) error
+	// Tell tells the current position within the stream.
+	Tell() int64
+	// TruncateFn sets the length of the stream to @offset. If the stream was
+	// previously larger than @offset, the extra data is discarded. If the
+	// stream was previously shorter than @offset, it is extended with NUL
+	// ('\0') bytes.
+	//
+	// If @cancellable is not nil, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned. If an
+	// operation was partially finished when the operation was cancelled the
+	// partial result will be returned, without an error.
+	TruncateFn(offset int64, cancellable Cancellable) error
+}
+
 // Seekable is implemented by streams (implementations of Stream or Stream) that
 // support seeking.
 //

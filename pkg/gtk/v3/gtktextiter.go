@@ -1312,10 +1312,10 @@ func (i *TextIter) ForwardWordEnds(count int) bool {
 	return _ok
 }
 
-// Free an iterator allocated on the heap. This function is intended for use in
-// language bindings, and is not especially useful for applications, because
-// iterators can simply be allocated on the stack.
-func (i *TextIter) Free() {
+// Free: free an iterator allocated on the heap. This function is intended for
+// use in language bindings, and is not especially useful for applications,
+// because iterators can simply be allocated on the stack.
+func (i *TextIter) free() {
 	var _arg0 *C.GtkTextIter // out
 
 	_arg0 = (*C.GtkTextIter)(unsafe.Pointer(i))

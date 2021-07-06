@@ -42,14 +42,24 @@ func init() {
 type ToolbarSpaceStyle int
 
 const (
-	// empty: use blank spacers.
-	ToolbarSpaceStyleEmpty ToolbarSpaceStyle = iota
-	// line: use vertical lines for spacers.
-	ToolbarSpaceStyleLine
+	// Empty: use blank spacers.
+	Empty ToolbarSpaceStyle = iota
+	// Line: use vertical lines for spacers.
+	Line
 )
 
 func marshalToolbarSpaceStyle(p uintptr) (interface{}, error) {
 	return ToolbarSpaceStyle(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// ToolbarOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type ToolbarOverrider interface {
+	OrientationChanged(orientation Orientation)
+	PopupContextMenu(x int, y int, buttonNumber int) bool
+	StyleChanged(style ToolbarStyle)
 }
 
 // Toolbar: toolbar is created with a call to gtk_toolbar_new().

@@ -37,9 +37,9 @@ type IconThemeError int
 
 const (
 	// NotFound: the icon specified does not exist in the theme
-	IconThemeErrorNotFound IconThemeError = iota
-	// failed: unspecified error occurred.
-	IconThemeErrorFailed
+	NotFound IconThemeError = iota
+	// Failed: unspecified error occurred.
+	Failed
 )
 
 func marshalIconThemeError(p uintptr) (interface{}, error) {
@@ -534,6 +534,14 @@ func (i iconInfo) SetRawCoordinates(rawCoordinates bool) {
 	}
 
 	C.gtk_icon_info_set_raw_coordinates(_arg0, _arg1)
+}
+
+// IconThemeOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type IconThemeOverrider interface {
+	Changed()
 }
 
 // IconTheme provides a facility for looking up icons by name and size. The main

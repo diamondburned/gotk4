@@ -8,6 +8,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -34,6 +35,15 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.g_dbus_object_manager_client_get_type()), F: marshalDBusObjectManagerClient},
 	})
+}
+
+// DBusObjectManagerClientOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type DBusObjectManagerClientOverrider interface {
+	InterfaceProxyPropertiesChanged(objectProxy DBusObjectProxy, interfaceProxy DBusProxy, changedProperties *glib.Variant, invalidatedProperties *string)
+	InterfaceProxySignal(objectProxy DBusObjectProxy, interfaceProxy DBusProxy, senderName string, signalName string, parameters *glib.Variant)
 }
 
 // DBusObjectManagerClient is used to create, monitor and delete object proxies

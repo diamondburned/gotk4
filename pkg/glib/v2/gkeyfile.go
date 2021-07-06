@@ -28,17 +28,17 @@ type KeyFileError int
 
 const (
 	// UnknownEncoding: the text being parsed was in an unknown encoding
-	KeyFileErrorUnknownEncoding KeyFileError = iota
-	// parse: document was ill-formed
-	KeyFileErrorParse
+	UnknownEncoding KeyFileError = iota
+	// Parse: document was ill-formed
+	Parse
 	// NotFound: the file was not found
-	KeyFileErrorNotFound
+	NotFound
 	// KeyNotFound: requested key was not found
-	KeyFileErrorKeyNotFound
+	KeyNotFound
 	// GroupNotFound: requested group was not found
-	KeyFileErrorGroupNotFound
+	GroupNotFound
 	// InvalidValue: value could not be parsed
-	KeyFileErrorInvalidValue
+	InvalidValue
 )
 
 // KeyFileFlags flags which influence the parsing.
@@ -1084,7 +1084,7 @@ func (k *KeyFile) ToData() (uint, string, error) {
 
 // Unref decreases the reference count of @key_file by 1. If the reference count
 // reaches zero, frees the key file and all its allocated memory.
-func (k *KeyFile) Unref() {
+func (k *KeyFile) unref() {
 	var _arg0 *C.GKeyFile // out
 
 	_arg0 = (*C.GKeyFile)(unsafe.Pointer(k))

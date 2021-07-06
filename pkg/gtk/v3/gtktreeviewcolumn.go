@@ -35,12 +35,12 @@ type TreeViewColumnSizing int
 
 const (
 	// GrowOnly columns only get bigger in reaction to changes in the model
-	TreeViewColumnSizingGrowOnly TreeViewColumnSizing = iota
-	// autosize columns resize to be the optimal size everytime the model
+	GrowOnly TreeViewColumnSizing = iota
+	// Autosize columns resize to be the optimal size everytime the model
 	// changes.
-	TreeViewColumnSizingAutosize
-	// fixed columns are a fixed numbers of pixels wide.
-	TreeViewColumnSizingFixed
+	Autosize
+	// Fixed columns are a fixed numbers of pixels wide.
+	Fixed
 )
 
 func marshalTreeViewColumnSizing(p uintptr) (interface{}, error) {
@@ -74,6 +74,16 @@ func gotk4_TreeCellDataFunc(arg0 *C.GtkTreeViewColumn, arg1 *C.GtkCellRenderer, 
 
 	fn := v.(TreeCellDataFunc)
 	fn(treeColumn, cell, treeModel, iter)
+}
+
+// TreeViewColumnOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type TreeViewColumnOverrider interface {
+	// Clicked emits the “clicked” signal on the column. This function will only
+	// work if @tree_column is clickable.
+	Clicked()
 }
 
 // TreeViewColumn: the GtkTreeViewColumn object represents a visible column in a

@@ -35,6 +35,14 @@ func init() {
 	})
 }
 
+// RadioButtonOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type RadioButtonOverrider interface {
+	GroupChanged()
+}
+
 // RadioButton: single radio button performs the same basic function as a
 // CheckButton, as its position in the object hierarchy reflects. It is only
 // when multiple radio buttons are grouped together that they become a different

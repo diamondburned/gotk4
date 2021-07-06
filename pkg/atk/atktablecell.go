@@ -23,6 +23,29 @@ func init() {
 	})
 }
 
+// TableCellOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type TableCellOverrider interface {
+	// ColumnSpan returns the number of columns occupied by this cell
+	// accessible.
+	ColumnSpan() int
+	// Position retrieves the tabular position of this cell.
+	Position() (row int, column int, ok bool)
+	// RowColumnSpan gets the row and column indexes and span of this cell
+	// accessible.
+	//
+	// Note: If the object does not implement this function, then, by default,
+	// atk will implement this function by calling get_row_span and
+	// get_column_span on the object.
+	RowColumnSpan() (row int, column int, rowSpan int, columnSpan int, ok bool)
+	// RowSpan returns the number of rows occupied by this cell accessible.
+	RowSpan() int
+	// Table returns a reference to the accessible of the containing table.
+	Table() Object
+}
+
 // TableCell: being Table a component which present elements ordered via rows
 // and columns, an TableCell is the interface which each of those elements, so
 // "cells" should implement.

@@ -6,8 +6,10 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
+	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
 	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -25,6 +27,29 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_theming_engine_get_type()), F: marshalThemingEngine},
 	})
+}
+
+// ThemingEngineOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type ThemingEngineOverrider interface {
+	RenderActivity(cr *cairo.Context, x float64, y float64, width float64, height float64)
+	RenderArrow(cr *cairo.Context, angle float64, x float64, y float64, size float64)
+	RenderBackground(cr *cairo.Context, x float64, y float64, width float64, height float64)
+	RenderCheck(cr *cairo.Context, x float64, y float64, width float64, height float64)
+	RenderExpander(cr *cairo.Context, x float64, y float64, width float64, height float64)
+	RenderExtension(cr *cairo.Context, x float64, y float64, width float64, height float64, gapSide PositionType)
+	RenderFocus(cr *cairo.Context, x float64, y float64, width float64, height float64)
+	RenderFrame(cr *cairo.Context, x float64, y float64, width float64, height float64)
+	RenderFrameGap(cr *cairo.Context, x float64, y float64, width float64, height float64, gapSide PositionType, xy0Gap float64, xy1Gap float64)
+	RenderHandle(cr *cairo.Context, x float64, y float64, width float64, height float64)
+	RenderIcon(cr *cairo.Context, pixbuf gdkpixbuf.Pixbuf, x float64, y float64)
+	RenderIconSurface(cr *cairo.Context, surface *cairo.Surface, x float64, y float64)
+	RenderLayout(cr *cairo.Context, x float64, y float64, layout pango.Layout)
+	RenderLine(cr *cairo.Context, x0 float64, y0 float64, x1 float64, y1 float64)
+	RenderOption(cr *cairo.Context, x float64, y float64, width float64, height float64)
+	RenderSlider(cr *cairo.Context, x float64, y float64, width float64, height float64, orientation Orientation)
 }
 
 // ThemingEngine was the object used for rendering themed content in GTK+

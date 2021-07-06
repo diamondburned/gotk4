@@ -220,8 +220,8 @@ func (o *PaperSize) Copy() *PaperSize {
 	return _paperSize
 }
 
-// Free the given PaperSize object.
-func (s *PaperSize) Free() {
+// Free: free the given PaperSize object.
+func (s *PaperSize) free() {
 	var _arg0 *C.GtkPaperSize // out
 
 	_arg0 = (*C.GtkPaperSize)(unsafe.Pointer(s))

@@ -23,6 +23,22 @@ func init() {
 	})
 }
 
+// SocketOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type SocketOverrider interface {
+	// Embed embeds the children of an Plug as the children of the Socket. The
+	// plug may be in the same process or in a different process.
+	//
+	// The class item used by this function should be filled in by the IPC layer
+	// (usually at-spi2-atk). The implementor of the AtkSocket should call this
+	// function and pass the id for the plug as returned by atk_plug_get_id().
+	// It is the responsibility of the application to pass the plug id on to the
+	// process implementing the Socket as needed.
+	Embed(plugId string)
+}
+
 // Socket: together with Plug, Socket provides the ability to embed accessibles
 // from one process into another in a fashion that is transparent to assistive
 // technologies. Socket works as the container of Plug, embedding it using the

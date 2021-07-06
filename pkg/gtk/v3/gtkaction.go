@@ -26,6 +26,39 @@ func init() {
 	})
 }
 
+// ActionOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type ActionOverrider interface {
+	// Activate emits the “activate” signal on the specified action, if it isn't
+	// insensitive. This gets called by the proxy widgets when they get
+	// activated.
+	//
+	// It can also be used to manually activate an action.
+	//
+	// Deprecated: since version 3.10.
+	Activate()
+	ConnectProxy(proxy Widget)
+	// CreateMenu: if @action provides a Menu widget as a submenu for the menu
+	// item or the toolbar item it creates, this function returns an instance of
+	// that menu.
+	//
+	// Deprecated: since version 3.10.
+	CreateMenu() Widget
+	// CreateMenuItem creates a menu item widget that proxies for the given
+	// action.
+	//
+	// Deprecated: since version 3.10.
+	CreateMenuItem() Widget
+	// CreateToolItem creates a toolbar item widget that proxies for the given
+	// action.
+	//
+	// Deprecated: since version 3.10.
+	CreateToolItem() Widget
+	DisconnectProxy(proxy Widget)
+}
+
 // Action: > In GTK+ 3.10, GtkAction has been deprecated. Use #GAction >
 // instead, and associate actions with Actionable widgets. Use > Model for
 // creating menus with gtk_menu_new_from_model().

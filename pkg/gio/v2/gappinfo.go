@@ -7,6 +7,7 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -32,6 +33,90 @@ func init() {
 		{T: externglib.Type(C.g_app_info_get_type()), F: marshalAppInfo},
 		{T: externglib.Type(C.g_app_launch_context_get_type()), F: marshalAppLaunchContext},
 	})
+}
+
+// AppInfoOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type AppInfoOverrider interface {
+	// AddSupportsType adds a content type to the application information to
+	// indicate the application is capable of opening files with the given
+	// content type.
+	AddSupportsType(contentType string) error
+	// CanDelete obtains the information whether the Info can be deleted. See
+	// g_app_info_delete().
+	CanDelete() bool
+	// CanRemoveSupportsType checks if a supported content type can be removed
+	// from an application.
+	CanRemoveSupportsType() bool
+	// DoDelete tries to delete a Info.
+	//
+	// On some platforms, there may be a difference between user-defined Infos
+	// which can be deleted, and system-wide ones which cannot. See
+	// g_app_info_can_delete().
+	DoDelete() bool
+	// Dup creates a duplicate of a Info.
+	Dup() AppInfo
+	// Equal checks if two Infos are equal.
+	//
+	// Note that the check *may not* compare each individual field, and only
+	// does an identity check. In case detecting changes in the contents is
+	// needed, program code must additionally compare relevant fields.
+	Equal(appinfo2 AppInfo) bool
+	// Commandline gets the commandline with which the application will be
+	// started.
+	Commandline() string
+	// Description gets a human-readable description of an installed
+	// application.
+	Description() string
+	// DisplayName gets the display name of the application. The display name is
+	// often more descriptive to the user than the name itself.
+	DisplayName() string
+	// Executable gets the executable's name for the installed application.
+	Executable() string
+	// Icon gets the icon for the application.
+	Icon() Icon
+	// ID gets the ID of an application. An id is a string that identifies the
+	// application. The exact format of the id is platform dependent. For
+	// instance, on Unix this is the desktop file id from the xdg menu
+	// specification.
+	//
+	// Note that the returned ID may be nil, depending on how the @appinfo has
+	// been constructed.
+	ID() string
+	// Name gets the installed name of the application.
+	Name() string
+	// SupportedTypes retrieves the list of content types that @app_info claims
+	// to support. If this information is not provided by the environment, this
+	// function will return nil. This function does not take in consideration
+	// associations added with g_app_info_add_supports_type(), but only those
+	// exported directly by the application.
+	SupportedTypes() []string
+	// LaunchUrisFinish finishes a g_app_info_launch_uris_async() operation.
+	LaunchUrisFinish(result AsyncResult) error
+	// RemoveSupportsType removes a supported type from an application, if
+	// possible.
+	RemoveSupportsType(contentType string) error
+	// SetAsDefaultForExtension sets the application as the default handler for
+	// the given file extension.
+	SetAsDefaultForExtension(extension string) error
+	// SetAsDefaultForType sets the application as the default handler for a
+	// given type.
+	SetAsDefaultForType(contentType string) error
+	// SetAsLastUsedForType sets the application as the last used application
+	// for a given type. This will make the application appear as first in the
+	// list returned by g_app_info_get_recommended_for_type(), regardless of the
+	// default application for that content type.
+	SetAsLastUsedForType(contentType string) error
+	// ShouldShow checks if the application info should be shown in menus that
+	// list available applications.
+	ShouldShow() bool
+	// SupportsFiles checks if the application accepts files as arguments.
+	SupportsFiles() bool
+	// SupportsUris checks if the application supports reading files and
+	// directories from URIs.
+	SupportsUris() bool
 }
 
 // AppInfo and LaunchContext are used for describing and launching applications
@@ -550,6 +635,18 @@ func (a appInfo) SupportsUris() bool {
 	}
 
 	return _ok
+}
+
+// AppLaunchContextOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type AppLaunchContextOverrider interface {
+	// LaunchFailed: called when an application has failed to launch, so that it
+	// can cancel the application startup notification started in
+	// g_app_launch_context_get_startup_notify_id().
+	LaunchFailed(startupNotifyId string)
+	Launched(info AppInfo, platformData *glib.Variant)
 }
 
 // AppLaunchContext: integrating the launch with the launching application. This

@@ -44,17 +44,17 @@ func init() {
 type WindowPosition int
 
 const (
-	// none: no influence is made on placement.
-	WindowPositionNone WindowPosition = iota
-	// center windows should be placed in the center of the screen.
-	WindowPositionCenter
-	// mouse windows should be placed at the current mouse position.
-	WindowPositionMouse
+	// None: no influence is made on placement.
+	None WindowPosition = iota
+	// Center windows should be placed in the center of the screen.
+	Center
+	// Mouse windows should be placed at the current mouse position.
+	Mouse
 	// CenterAlways: keep window centered as it changes size, etc.
-	WindowPositionCenterAlways
+	CenterAlways
 	// CenterOnParent: center the window on its transient parent (see
 	// gtk_window_set_transient_for()).
-	WindowPositionCenterOnParent
+	CenterOnParent
 )
 
 func marshalWindowPosition(p uintptr) (interface{}, error) {
@@ -76,14 +76,31 @@ func marshalWindowPosition(p uintptr) (interface{}, error) {
 type WindowType int
 
 const (
-	// toplevel: regular window, such as a dialog.
-	WindowTypeToplevel WindowType = iota
-	// popup: special window such as a tooltip.
-	WindowTypePopup
+	// Toplevel: regular window, such as a dialog.
+	Toplevel WindowType = iota
+	// Popup: special window such as a tooltip.
+	Popup
 )
 
 func marshalWindowType(p uintptr) (interface{}, error) {
 	return WindowType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// WindowOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type WindowOverrider interface {
+	ActivateDefault()
+	ActivateFocus()
+	EnableDebugging(toggle bool) bool
+	KeysChanged()
+	// SetFocus: if @focus is not the current focus widget, and is focusable,
+	// sets it as the focus widget for the window. If @focus is nil, unsets the
+	// focus widget for this window. To set the focus to a particular widget in
+	// the toplevel, it is usually more convenient to use
+	// gtk_widget_grab_focus() instead of this function.
+	SetFocus(focus Widget)
 }
 
 // Window is a toplevel window which can contain other widgets. Windows normally

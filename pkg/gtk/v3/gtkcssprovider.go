@@ -30,22 +30,30 @@ func init() {
 type CSSProviderError int
 
 const (
-	// failed: failed.
-	CSSProviderErrorFailed CSSProviderError = iota
-	// syntax: syntax error.
-	CSSProviderErrorSyntax
-	// import: import error.
-	CSSProviderErrorImport
-	// name: name error.
-	CSSProviderErrorName
-	// deprecated: deprecation error.
-	CSSProviderErrorDeprecated
+	// Failed: failed.
+	Failed CSSProviderError = iota
+	// Syntax: syntax error.
+	Syntax
+	// Import: import error.
+	Import
+	// Name: name error.
+	Name
+	// Deprecated: deprecation error.
+	Deprecated
 	// UnknownValue: unknown value.
-	CSSProviderErrorUnknownValue
+	UnknownValue
 )
 
 func marshalCSSProviderError(p uintptr) (interface{}, error) {
 	return CSSProviderError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// CSSProviderOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type CSSProviderOverrider interface {
+	ParsingError(section *CSSSection, err error)
 }
 
 // CSSProvider is an object implementing the StyleProvider interface. It is able

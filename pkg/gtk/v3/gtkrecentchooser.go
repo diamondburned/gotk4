@@ -35,9 +35,9 @@ type RecentChooserError int
 
 const (
 	// NotFound indicates that a file does not exist
-	RecentChooserErrorNotFound RecentChooserError = iota
+	NotFound RecentChooserError = iota
 	// InvalidURI indicates a malformed URI
-	RecentChooserErrorInvalidURI
+	InvalidURI
 )
 
 func marshalRecentChooserError(p uintptr) (interface{}, error) {
@@ -49,15 +49,15 @@ func marshalRecentChooserError(p uintptr) (interface{}, error) {
 type RecentSortType int
 
 const (
-	// none: do not sort the returned list of recently used resources.
-	RecentSortTypeNone RecentSortType = iota
-	// mru: sort the returned list with the most recently used items first.
-	RecentSortTypeMru
-	// lru: sort the returned list with the least recently used items first.
-	RecentSortTypeLru
-	// custom: sort the returned list using a custom sorting function passed
+	// None: do not sort the returned list of recently used resources.
+	None RecentSortType = iota
+	// Mru: sort the returned list with the most recently used items first.
+	Mru
+	// Lru: sort the returned list with the least recently used items first.
+	Lru
+	// Custom: sort the returned list using a custom sorting function passed
 	// using gtk_recent_chooser_set_sort_func().
-	RecentSortTypeCustom
+	Custom
 )
 
 func marshalRecentSortType(p uintptr) (interface{}, error) {
@@ -93,6 +93,37 @@ func gotk4_RecentSortFunc(arg0 *C.GtkRecentInfo, arg1 *C.GtkRecentInfo, arg2 C.g
 	cret = C.gint(gint)
 
 	return cret
+}
+
+// RecentChooserOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type RecentChooserOverrider interface {
+	// AddFilter adds @filter to the list of RecentFilter objects held by
+	// @chooser.
+	//
+	// If no previous filter objects were defined, this function will call
+	// gtk_recent_chooser_set_filter().
+	AddFilter(filter RecentFilter)
+	// CurrentURI gets the URI currently selected by @chooser.
+	CurrentURI() string
+	ItemActivated()
+	// RemoveFilter removes @filter from the list of RecentFilter objects held
+	// by @chooser.
+	RemoveFilter(filter RecentFilter)
+	// SelectAll selects all the items inside @chooser, if the @chooser supports
+	// multiple selection.
+	SelectAll()
+	// SelectURI selects @uri inside @chooser.
+	SelectURI(uri string) error
+	SelectionChanged()
+	// SetCurrentURI sets @uri as the current URI for @chooser.
+	SetCurrentURI(uri string) error
+	// UnselectAll unselects all the items inside @chooser.
+	UnselectAll()
+	// UnselectURI unselects @uri inside @chooser.
+	UnselectURI(uri string)
 }
 
 // RecentChooser is an interface that can be implemented by widgets displaying

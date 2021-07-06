@@ -36,6 +36,125 @@ func init() {
 	})
 }
 
+// MountOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type MountOverrider interface {
+	// CanEject checks if @mount can be ejected.
+	CanEject() bool
+	// CanUnmount checks if @mount can be unmounted.
+	CanUnmount() bool
+	Changed()
+	// Eject ejects a mount. This is an asynchronous operation, and is finished
+	// by calling g_mount_eject_finish() with the @mount and Result data
+	// returned in the @callback.
+	//
+	// Deprecated: since version 2.22.
+	Eject(flags MountUnmountFlags, cancellable Cancellable, callback AsyncReadyCallback)
+	// EjectFinish finishes ejecting a mount. If any errors occurred during the
+	// operation, @error will be set to contain the errors and false will be
+	// returned.
+	//
+	// Deprecated: since version 2.22.
+	EjectFinish(result AsyncResult) error
+	// EjectWithOperation ejects a mount. This is an asynchronous operation, and
+	// is finished by calling g_mount_eject_with_operation_finish() with the
+	// @mount and Result data returned in the @callback.
+	EjectWithOperation(flags MountUnmountFlags, mountOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback)
+	// EjectWithOperationFinish finishes ejecting a mount. If any errors
+	// occurred during the operation, @error will be set to contain the errors
+	// and false will be returned.
+	EjectWithOperationFinish(result AsyncResult) error
+	// DefaultLocation gets the default location of @mount. The default location
+	// of the given @mount is a path that reflects the main entry point for the
+	// user (e.g. the home directory, or the root of the volume).
+	DefaultLocation() File
+	// Drive gets the drive for the @mount.
+	//
+	// This is a convenience method for getting the #GVolume and then using that
+	// object to get the #GDrive.
+	Drive() Drive
+	// Icon gets the icon for @mount.
+	Icon() Icon
+	// Name gets the name of @mount.
+	Name() string
+	// Root gets the root directory on @mount.
+	Root() File
+	// SortKey gets the sort key for @mount, if any.
+	SortKey() string
+	// SymbolicIcon gets the symbolic icon for @mount.
+	SymbolicIcon() Icon
+	// UUID gets the UUID for the @mount. The reference is typically based on
+	// the file system UUID for the mount in question and should be considered
+	// an opaque string. Returns nil if there is no UUID available.
+	UUID() string
+	// Volume gets the volume for the @mount.
+	Volume() Volume
+	// GuessContentType tries to guess the type of content stored on @mount.
+	// Returns one or more textual identifiers of well-known content types
+	// (typically prefixed with "x-content/"), e.g. x-content/image-dcf for
+	// camera memory cards. See the shared-mime-info
+	// (http://www.freedesktop.org/wiki/Specifications/shared-mime-info-spec)
+	// specification for more on x-content types.
+	//
+	// This is an asynchronous operation (see g_mount_guess_content_type_sync()
+	// for the synchronous version), and is finished by calling
+	// g_mount_guess_content_type_finish() with the @mount and Result data
+	// returned in the @callback.
+	GuessContentType(forceRescan bool, cancellable Cancellable, callback AsyncReadyCallback)
+	// GuessContentTypeFinish finishes guessing content types of @mount. If any
+	// errors occurred during the operation, @error will be set to contain the
+	// errors and false will be returned. In particular, you may get an
+	// G_IO_ERROR_NOT_SUPPORTED if the mount does not support content guessing.
+	GuessContentTypeFinish(result AsyncResult) ([]string, error)
+	// GuessContentTypeSync tries to guess the type of content stored on @mount.
+	// Returns one or more textual identifiers of well-known content types
+	// (typically prefixed with "x-content/"), e.g. x-content/image-dcf for
+	// camera memory cards. See the shared-mime-info
+	// (http://www.freedesktop.org/wiki/Specifications/shared-mime-info-spec)
+	// specification for more on x-content types.
+	//
+	// This is a synchronous operation and as such may block doing IO; see
+	// g_mount_guess_content_type() for the asynchronous version.
+	GuessContentTypeSync(forceRescan bool, cancellable Cancellable) ([]string, error)
+	PreUnmount()
+	// Remount remounts a mount. This is an asynchronous operation, and is
+	// finished by calling g_mount_remount_finish() with the @mount and Results
+	// data returned in the @callback.
+	//
+	// Remounting is useful when some setting affecting the operation of the
+	// volume has been changed, as these may need a remount to take affect.
+	// While this is semantically equivalent with unmounting and then remounting
+	// not all backends might need to actually be unmounted.
+	Remount(flags MountMountFlags, mountOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback)
+	// RemountFinish finishes remounting a mount. If any errors occurred during
+	// the operation, @error will be set to contain the errors and false will be
+	// returned.
+	RemountFinish(result AsyncResult) error
+	// Unmount unmounts a mount. This is an asynchronous operation, and is
+	// finished by calling g_mount_unmount_finish() with the @mount and Result
+	// data returned in the @callback.
+	//
+	// Deprecated: since version 2.22.
+	Unmount(flags MountUnmountFlags, cancellable Cancellable, callback AsyncReadyCallback)
+	// UnmountFinish finishes unmounting a mount. If any errors occurred during
+	// the operation, @error will be set to contain the errors and false will be
+	// returned.
+	//
+	// Deprecated: since version 2.22.
+	UnmountFinish(result AsyncResult) error
+	// UnmountWithOperation unmounts a mount. This is an asynchronous operation,
+	// and is finished by calling g_mount_unmount_with_operation_finish() with
+	// the @mount and Result data returned in the @callback.
+	UnmountWithOperation(flags MountUnmountFlags, mountOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback)
+	// UnmountWithOperationFinish finishes unmounting a mount. If any errors
+	// occurred during the operation, @error will be set to contain the errors
+	// and false will be returned.
+	UnmountWithOperationFinish(result AsyncResult) error
+	Unmounted()
+}
+
 // Mount: the #GMount interface represents user-visible mounts. Note, when
 // porting from GnomeVFS, #GMount is the moral equivalent of VFSVolume.
 //

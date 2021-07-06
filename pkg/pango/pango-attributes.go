@@ -44,75 +44,75 @@ func init() {
 type AttrType int
 
 const (
-	// invalid does not happen
-	AttrTypeInvalid AttrType = iota
-	// language ([struct@Pango.AttrLanguage])
-	AttrTypeLanguage
-	// family: font family name list ([struct@Pango.AttrString])
-	AttrTypeFamily
-	// style: font slant style ([struct@Pango.AttrInt])
-	AttrTypeStyle
-	// weight: font weight ([struct@Pango.AttrInt])
-	AttrTypeWeight
-	// variant: font variant (normal or small caps) ([struct@Pango.AttrInt])
-	AttrTypeVariant
-	// stretch: font stretch ([struct@Pango.AttrInt])
-	AttrTypeStretch
-	// size: font size in points scaled by PANGO_SCALE ([struct@Pango.AttrInt])
-	AttrTypeSize
+	// Invalid does not happen
+	Invalid AttrType = iota
+	// Language ([struct@Pango.AttrLanguage])
+	Language
+	// Family: font family name list ([struct@Pango.AttrString])
+	Family
+	// Style: font slant style ([struct@Pango.AttrInt])
+	Style
+	// Weight: font weight ([struct@Pango.AttrInt])
+	Weight
+	// Variant: font variant (normal or small caps) ([struct@Pango.AttrInt])
+	Variant
+	// Stretch: font stretch ([struct@Pango.AttrInt])
+	Stretch
+	// Size: font size in points scaled by PANGO_SCALE ([struct@Pango.AttrInt])
+	Size
 	// FontDesc: font description ([struct@Pango.AttrFontDesc])
-	AttrTypeFontDesc
-	// foreground color ([struct@Pango.AttrColor])
-	AttrTypeForeground
-	// background color ([struct@Pango.AttrColor])
-	AttrTypeBackground
-	// underline: whether the text has an underline ([struct@Pango.AttrInt])
-	AttrTypeUnderline
-	// strikethrough: whether the text is struck-through
+	FontDesc
+	// Foreground color ([struct@Pango.AttrColor])
+	Foreground
+	// Background color ([struct@Pango.AttrColor])
+	Background
+	// Underline: whether the text has an underline ([struct@Pango.AttrInt])
+	Underline
+	// Strikethrough: whether the text is struck-through
 	// ([struct@Pango.AttrInt])
-	AttrTypeStrikethrough
-	// rise: baseline displacement ([struct@Pango.AttrInt])
-	AttrTypeRise
-	// shape ([struct@Pango.AttrShape])
-	AttrTypeShape
-	// scale: font size scale factor ([struct@Pango.AttrFloat])
-	AttrTypeScale
-	// fallback: whether fallback is enabled ([struct@Pango.AttrInt])
-	AttrTypeFallback
+	Strikethrough
+	// Rise: baseline displacement ([struct@Pango.AttrInt])
+	Rise
+	// Shape ([struct@Pango.AttrShape])
+	Shape
+	// Scale: font size scale factor ([struct@Pango.AttrFloat])
+	Scale
+	// Fallback: whether fallback is enabled ([struct@Pango.AttrInt])
+	Fallback
 	// LetterSpacing: letter spacing ([struct@PangoAttrInt])
-	AttrTypeLetterSpacing
+	LetterSpacing
 	// UnderlineColor: underline color ([struct@Pango.AttrColor])
-	AttrTypeUnderlineColor
+	UnderlineColor
 	// StrikethroughColor: strikethrough color ([struct@Pango.AttrColor])
-	AttrTypeStrikethroughColor
+	StrikethroughColor
 	// AbsoluteSize: font size in pixels scaled by PANGO_SCALE
 	// ([struct@Pango.AttrInt])
-	AttrTypeAbsoluteSize
-	// gravity: base text gravity ([struct@Pango.AttrInt])
-	AttrTypeGravity
+	AbsoluteSize
+	// Gravity: base text gravity ([struct@Pango.AttrInt])
+	Gravity
 	// GravityHint: gravity hint ([struct@Pango.AttrInt])
-	AttrTypeGravityHint
+	GravityHint
 	// FontFeatures: openType font features ([struct@Pango.AttrString]). Since
 	// 1.38
-	AttrTypeFontFeatures
+	FontFeatures
 	// ForegroundAlpha: foreground alpha ([struct@Pango.AttrInt]). Since 1.38
-	AttrTypeForegroundAlpha
+	ForegroundAlpha
 	// BackgroundAlpha: background alpha ([struct@Pango.AttrInt]). Since 1.38
-	AttrTypeBackgroundAlpha
+	BackgroundAlpha
 	// AllowBreaks: whether breaks are allowed ([struct@Pango.AttrInt]). Since
 	// 1.44
-	AttrTypeAllowBreaks
-	// show: how to render invisible characters ([struct@Pango.AttrInt]). Since
+	AllowBreaks
+	// Show: how to render invisible characters ([struct@Pango.AttrInt]). Since
 	// 1.44
-	AttrTypeShow
+	Show
 	// InsertHyphens: whether to insert hyphens at intra-word line breaks
 	// ([struct@Pango.AttrInt]). Since 1.44
-	AttrTypeInsertHyphens
-	// overline: whether the text has an overline ([struct@Pango.AttrInt]).
+	InsertHyphens
+	// Overline: whether the text has an overline ([struct@Pango.AttrInt]).
 	// Since 1.46
-	AttrTypeOverline
+	Overline
 	// OverlineColor: overline color ([struct@Pango.AttrColor]). Since 1.46
-	AttrTypeOverlineColor
+	OverlineColor
 )
 
 func marshalAttrType(p uintptr) (interface{}, error) {
@@ -124,11 +124,11 @@ func marshalAttrType(p uintptr) (interface{}, error) {
 type Overline int
 
 const (
-	// none: no overline should be drawn
-	OverlineNone Overline = iota
-	// single: draw a single line above the ink extents of the text being
+	// None: no overline should be drawn
+	None Overline = iota
+	// Single: draw a single line above the ink extents of the text being
 	// underlined.
-	OverlineSingle
+	Single
 )
 
 func marshalOverline(p uintptr) (interface{}, error) {
@@ -140,31 +140,31 @@ func marshalOverline(p uintptr) (interface{}, error) {
 type Underline int
 
 const (
-	// none: no underline should be drawn
-	UnderlineNone Underline = iota
-	// single underline should be drawn
-	UnderlineSingle
-	// double underline should be drawn
-	UnderlineDouble
-	// low: single underline should be drawn at a position beneath the ink
+	// None: no underline should be drawn
+	None Underline = iota
+	// Single underline should be drawn
+	Single
+	// Double underline should be drawn
+	Double
+	// Low: single underline should be drawn at a position beneath the ink
 	// extents of the text being underlined. This should be used only for
 	// underlining single characters, such as for keyboard accelerators.
 	// PANGO_UNDERLINE_SINGLE should be used for extended portions of text.
-	UnderlineLow
-	// error: wavy underline should be drawn below. This underline is typically
+	Low
+	// Error: wavy underline should be drawn below. This underline is typically
 	// used to indicate an error such as a possible mispelling; in some cases a
 	// contrasting color may automatically be used. This type of underlining is
 	// available since Pango 1.4.
-	UnderlineError
+	Error
 	// SingleLine: like @PANGO_UNDERLINE_SINGLE, but drawn continuously across
 	// multiple runs. This type of underlining is available since Pango 1.46.
-	UnderlineSingleLine
+	SingleLine
 	// DoubleLine: like @PANGO_UNDERLINE_DOUBLE, but drawn continuously across
 	// multiple runs. This type of underlining is available since Pango 1.46.
-	UnderlineDoubleLine
+	DoubleLine
 	// ErrorLine: like @PANGO_UNDERLINE_ERROR, but drawn continuously across
 	// multiple runs. This type of underlining is available since Pango 1.46.
-	UnderlineErrorLine
+	ErrorLine
 )
 
 func marshalUnderline(p uintptr) (interface{}, error) {
@@ -1271,7 +1271,7 @@ func (l *AttrList) InsertBefore(attr *Attribute) {
 }
 
 // Ref: increase the reference count of the given attribute list by one.
-func (l *AttrList) Ref() *AttrList {
+func (l *AttrList) ref() *AttrList {
 	var _arg0 *C.PangoAttrList // out
 	var _cret *C.PangoAttrList // in
 
@@ -1316,7 +1316,7 @@ func (l *AttrList) Splice(other *AttrList, pos int, len int) {
 
 // Unref: decrease the reference count of the given attribute list by one. If
 // the result is zero, free the attribute list and the attributes it contains.
-func (l *AttrList) Unref() {
+func (l *AttrList) unref() {
 	var _arg0 *C.PangoAttrList // out
 
 	_arg0 = (*C.PangoAttrList)(unsafe.Pointer(l))
@@ -1525,7 +1525,7 @@ func (s *Color) Copy() *Color {
 }
 
 // Free frees a color allocated by pango_color_copy().
-func (c *Color) Free() {
+func (c *Color) free() {
 	var _arg0 *C.PangoColor // out
 
 	_arg0 = (*C.PangoColor)(unsafe.Pointer(c))

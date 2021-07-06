@@ -37,6 +37,47 @@ func init() {
 	})
 }
 
+// BufferedInputStreamOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type BufferedInputStreamOverrider interface {
+	// Fill tries to read @count bytes from the stream into the buffer. Will
+	// block during this read.
+	//
+	// If @count is zero, returns zero and does nothing. A value of @count
+	// larger than G_MAXSSIZE will cause a G_IO_ERROR_INVALID_ARGUMENT error.
+	//
+	// On success, the number of bytes read into the buffer is returned. It is
+	// not an error if this is not the same as the requested size, as it can
+	// happen e.g. near the end of a file. Zero is returned on end of file (or
+	// if @count is zero), but never otherwise.
+	//
+	// If @count is -1 then the attempted read size is equal to the number of
+	// bytes that are required to fill the buffer.
+	//
+	// If @cancellable is not nil, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned. If an
+	// operation was partially finished when the operation was cancelled the
+	// partial result will be returned, without an error.
+	//
+	// On error -1 is returned and @error is set accordingly.
+	//
+	// For the asynchronous, non-blocking, version of this function, see
+	// g_buffered_input_stream_fill_async().
+	Fill(count int, cancellable Cancellable) (int, error)
+	// FillAsync reads data into @stream's buffer asynchronously, up to @count
+	// size. @io_priority can be used to prioritize reads. For the synchronous
+	// version of this function, see g_buffered_input_stream_fill().
+	//
+	// If @count is -1 then the attempted read size is equal to the number of
+	// bytes that are required to fill the buffer.
+	FillAsync(count int, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
+	// FillFinish finishes an asynchronous read.
+	FillFinish(result AsyncResult) (int, error)
+}
+
 // BufferedInputStream: buffered input stream implements InputStream and
 // provides for buffered reads.
 //

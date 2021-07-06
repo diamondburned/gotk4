@@ -36,6 +36,53 @@ func init() {
 	})
 }
 
+// AsyncInitableOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type AsyncInitableOverrider interface {
+	// InitAsync starts asynchronous initialization of the object implementing
+	// the interface. This must be done before any real use of the object after
+	// initial construction. If the object also implements #GInitable you can
+	// optionally call g_initable_init() instead.
+	//
+	// This method is intended for language bindings. If writing in C,
+	// g_async_initable_new_async() should typically be used instead.
+	//
+	// When the initialization is finished, @callback will be called. You can
+	// then call g_async_initable_init_finish() to get the result of the
+	// initialization.
+	//
+	// Implementations may also support cancellation. If @cancellable is not
+	// nil, then initialization can be cancelled by triggering the cancellable
+	// object from another thread. If the operation was cancelled, the error
+	// G_IO_ERROR_CANCELLED will be returned. If @cancellable is not nil, and
+	// the object doesn't support cancellable initialization, the error
+	// G_IO_ERROR_NOT_SUPPORTED will be returned.
+	//
+	// As with #GInitable, if the object is not initialized, or initialization
+	// returns with an error, then all operations on the object except
+	// g_object_ref() and g_object_unref() are considered to be invalid, and
+	// have undefined behaviour. They will often fail with g_critical() or
+	// g_warning(), but this must not be relied on.
+	//
+	// Callers should not assume that a class which implements Initable can be
+	// initialized multiple times; for more information, see g_initable_init().
+	// If a class explicitly supports being initialized multiple times,
+	// implementation requires yielding all subsequent calls to init_async() on
+	// the results of the first call.
+	//
+	// For classes that also support the #GInitable interface, the default
+	// implementation of this method will run the g_initable_init() function in
+	// a thread, so if you want to support asynchronous initialization via
+	// threads, just implement the Initable interface without overriding any
+	// interface methods.
+	InitAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
+	// InitFinish finishes asynchronous initialization and returns the result.
+	// See g_async_initable_init_async().
+	InitFinish(res AsyncResult) error
+}
+
 // AsyncInitable: this is the asynchronous version of #GInitable; it behaves the
 // same in all ways except that initialization is asynchronous. For more details
 // see the descriptions on #GInitable.

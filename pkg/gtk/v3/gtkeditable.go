@@ -23,6 +23,61 @@ func init() {
 	})
 }
 
+// EditableOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type EditableOverrider interface {
+	Changed()
+	// DeleteText deletes a sequence of characters. The characters that are
+	// deleted are those characters at positions from @start_pos up to, but not
+	// including @end_pos. If @end_pos is negative, then the characters deleted
+	// are those from @start_pos to the end of the text.
+	//
+	// Note that the positions are specified in characters, not bytes.
+	DeleteText(startPos int, endPos int)
+	// DoDeleteText deletes a sequence of characters. The characters that are
+	// deleted are those characters at positions from @start_pos up to, but not
+	// including @end_pos. If @end_pos is negative, then the characters deleted
+	// are those from @start_pos to the end of the text.
+	//
+	// Note that the positions are specified in characters, not bytes.
+	DoDeleteText(startPos int, endPos int)
+	// Chars retrieves a sequence of characters. The characters that are
+	// retrieved are those characters at positions from @start_pos up to, but
+	// not including @end_pos. If @end_pos is negative, then the characters
+	// retrieved are those characters from @start_pos to the end of the text.
+	//
+	// Note that positions are specified in characters, not bytes.
+	Chars(startPos int, endPos int) string
+	// Position retrieves the current position of the cursor relative to the
+	// start of the content of the editable.
+	//
+	// Note that this position is in characters, not in bytes.
+	Position() int
+	// SelectionBounds retrieves the selection bound of the editable. start_pos
+	// will be filled with the start of the selection and @end_pos with end. If
+	// no text was selected both will be identical and false will be returned.
+	//
+	// Note that positions are specified in characters, not bytes.
+	SelectionBounds() (startPos int, endPos int, ok bool)
+	// SetPosition sets the cursor position in the editable to the given value.
+	//
+	// The cursor is displayed before the character with the given (base 0)
+	// index in the contents of the editable. The value must be less than or
+	// equal to the number of characters in the editable. A value of -1
+	// indicates that the position should be set after the last character of the
+	// editable. Note that @position is in characters, not in bytes.
+	SetPosition(position int)
+	// SetSelectionBounds selects a region of text. The characters that are
+	// selected are those characters at positions from @start_pos up to, but not
+	// including @end_pos. If @end_pos is negative, then the characters selected
+	// are those characters from @start_pos to the end of the text.
+	//
+	// Note that positions are specified in characters, not bytes.
+	SetSelectionBounds(startPos int, endPos int)
+}
+
 // Editable: the Editable interface is an interface which should be implemented
 // by text editing widgets, such as Entry and SpinButton. It contains functions
 // for generically manipulating an editable widget, a large number of action

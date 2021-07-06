@@ -33,6 +33,29 @@ func init() {
 	})
 }
 
+// ActionMapOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type ActionMapOverrider interface {
+	// AddAction adds an action to the @action_map.
+	//
+	// If the action map already contains an action with the same name as
+	// @action then the old action is dropped from the action map.
+	//
+	// The action map takes its own reference on @action.
+	AddAction(action Action)
+	// LookupAction looks up the action with the name @action_name in
+	// @action_map.
+	//
+	// If no such action exists, returns nil.
+	LookupAction(actionName string) Action
+	// RemoveAction removes the named action from the action map.
+	//
+	// If no action of this name is in the map then nothing happens.
+	RemoveAction(actionName string)
+}
+
 // ActionMap: the GActionMap interface is implemented by Group implementations
 // that operate by containing a number of named #GAction instances, such as
 // ActionGroup.

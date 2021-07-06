@@ -36,6 +36,14 @@ func init() {
 	})
 }
 
+// PlugOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type PlugOverrider interface {
+	Embedded()
+}
+
 // Plug: together with Socket, Plug provides the ability to embed widgets from
 // one process into another process in a fashion that is transparent to the
 // user. One process creates a Socket widget and passes the ID of that widget’s

@@ -29,23 +29,23 @@ func init() {
 type InputSource int
 
 const (
-	// mouse: the device is a mouse. (This will be reported for the core
+	// Mouse: the device is a mouse. (This will be reported for the core
 	// pointer, even if it is something else, such as a trackball.)
-	InputSourceMouse InputSource = iota
-	// pen: the device is a stylus of a graphics tablet or similar device.
-	InputSourcePen
-	// keyboard: the device is a keyboard.
-	InputSourceKeyboard
-	// touchscreen: the device is a direct-input touch device, such as a
+	Mouse InputSource = iota
+	// Pen: the device is a stylus of a graphics tablet or similar device.
+	Pen
+	// Keyboard: the device is a keyboard.
+	Keyboard
+	// Touchscreen: the device is a direct-input touch device, such as a
 	// touchscreen or tablet
-	InputSourceTouchscreen
-	// touchpad: the device is an indirect touch device, such as a touchpad
-	InputSourceTouchpad
-	// trackpoint: the device is a trackpoint
-	InputSourceTrackpoint
+	Touchscreen
+	// Touchpad: the device is an indirect touch device, such as a touchpad
+	Touchpad
+	// Trackpoint: the device is a trackpoint
+	Trackpoint
 	// TabletPad: the device is a "pad", a collection of buttons, rings and
 	// strips found in drawing tablets
-	InputSourceTabletPad
+	TabletPad
 )
 
 func marshalInputSource(p uintptr) (interface{}, error) {

@@ -21,6 +21,15 @@ func init() {
 	})
 }
 
+// ShortcutManagerOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type ShortcutManagerOverrider interface {
+	AddController(controller ShortcutController)
+	RemoveController(controller ShortcutController)
+}
+
 // ShortcutManager: the `GtkShortcutManager` interface is used to implement
 // shortcut scopes.
 //

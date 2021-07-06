@@ -34,14 +34,23 @@ func init() {
 type CellRendererAccelMode int
 
 const (
-	// gtk: GTK+ accelerators mode
-	CellRendererAccelModeGTK CellRendererAccelMode = iota
-	// other: other accelerator mode
-	CellRendererAccelModeOther
+	// GTK: GTK+ accelerators mode
+	GTK CellRendererAccelMode = iota
+	// Other: other accelerator mode
+	Other
 )
 
 func marshalCellRendererAccelMode(p uintptr) (interface{}, error) {
 	return CellRendererAccelMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// CellRendererAccelOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type CellRendererAccelOverrider interface {
+	AccelCleared(pathString string)
+	AccelEdited(pathString string, accelKey uint, accelMods gdk.ModifierType, hardwareKeycode uint)
 }
 
 // CellRendererAccel displays a keyboard accelerator (i.e. a key combination

@@ -36,6 +36,69 @@ func init() {
 	})
 }
 
+// PermissionOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type PermissionOverrider interface {
+	// Acquire attempts to acquire the permission represented by @permission.
+	//
+	// The precise method by which this happens depends on the permission and
+	// the underlying authentication mechanism. A simple example is that a
+	// dialog may appear asking the user to enter their password.
+	//
+	// You should check with g_permission_get_can_acquire() before calling this
+	// function.
+	//
+	// If the permission is acquired then true is returned. Otherwise, false is
+	// returned and @error is set appropriately.
+	//
+	// This call is blocking, likely for a very long time (in the case that user
+	// interaction is required). See g_permission_acquire_async() for the
+	// non-blocking version.
+	Acquire(cancellable Cancellable) error
+	// AcquireAsync attempts to acquire the permission represented by
+	// @permission.
+	//
+	// This is the first half of the asynchronous version of
+	// g_permission_acquire().
+	AcquireAsync(cancellable Cancellable, callback AsyncReadyCallback)
+	// AcquireFinish collects the result of attempting to acquire the permission
+	// represented by @permission.
+	//
+	// This is the second half of the asynchronous version of
+	// g_permission_acquire().
+	AcquireFinish(result AsyncResult) error
+	// Release attempts to release the permission represented by @permission.
+	//
+	// The precise method by which this happens depends on the permission and
+	// the underlying authentication mechanism. In most cases the permission
+	// will be dropped immediately without further action.
+	//
+	// You should check with g_permission_get_can_release() before calling this
+	// function.
+	//
+	// If the permission is released then true is returned. Otherwise, false is
+	// returned and @error is set appropriately.
+	//
+	// This call is blocking, likely for a very long time (in the case that user
+	// interaction is required). See g_permission_release_async() for the
+	// non-blocking version.
+	Release(cancellable Cancellable) error
+	// ReleaseAsync attempts to release the permission represented by
+	// @permission.
+	//
+	// This is the first half of the asynchronous version of
+	// g_permission_release().
+	ReleaseAsync(cancellable Cancellable, callback AsyncReadyCallback)
+	// ReleaseFinish collects the result of attempting to release the permission
+	// represented by @permission.
+	//
+	// This is the second half of the asynchronous version of
+	// g_permission_release().
+	ReleaseFinish(result AsyncResult) error
+}
+
 // Permission represents the status of the caller's permission to perform a
 // certain action.
 //

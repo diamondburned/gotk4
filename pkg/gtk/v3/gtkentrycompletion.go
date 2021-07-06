@@ -59,6 +59,18 @@ func gotk4_EntryCompletionMatchFunc(arg0 *C.GtkEntryCompletion, arg1 *C.gchar, a
 	return cret
 }
 
+// EntryCompletionOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type EntryCompletionOverrider interface {
+	ActionActivated(index_ int)
+	CursorOnMatch(model TreeModel, iter *TreeIter) bool
+	InsertPrefix(prefix string) bool
+	MatchSelected(model TreeModel, iter *TreeIter) bool
+	NoMatches()
+}
+
 // EntryCompletion is an auxiliary object to be used in conjunction with Entry
 // to provide the completion functionality. It implements the CellLayout
 // interface, to allow the user to add extra cells to the TreeView with

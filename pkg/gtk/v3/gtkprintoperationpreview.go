@@ -23,6 +23,31 @@ func init() {
 	})
 }
 
+// PrintOperationPreviewOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type PrintOperationPreviewOverrider interface {
+	// EndPreview ends a preview.
+	//
+	// This function must be called to finish a custom print preview.
+	EndPreview()
+	GotPageSize(context PrintContext, pageSetup PageSetup)
+	// IsSelected returns whether the given page is included in the set of pages
+	// that have been selected for printing.
+	IsSelected(pageNr int) bool
+	Ready(context PrintContext)
+	// RenderPage renders a page to the preview, using the print context that
+	// was passed to the PrintOperation::preview handler together with @preview.
+	//
+	// A custom iprint preview should use this function in its ::expose handler
+	// to render the currently selected page.
+	//
+	// Note that this function requires a suitable cairo context to be
+	// associated with the print context.
+	RenderPage(pageNr int)
+}
+
 type PrintOperationPreview interface {
 	gextras.Objector
 

@@ -38,32 +38,32 @@ func init() {
 type AxisUse int
 
 const (
-	// ignore: the axis is ignored.
-	AxisUseIgnore AxisUse = iota
-	// x: the axis is used as the x axis.
-	AxisUseX
-	// y: the axis is used as the y axis.
-	AxisUseY
+	// Ignore: the axis is ignored.
+	Ignore AxisUse = iota
+	// X: the axis is used as the x axis.
+	X
+	// Y: the axis is used as the y axis.
+	Y
 	// DeltaX: the axis is used as the scroll x delta
-	AxisUseDeltaX
+	DeltaX
 	// DeltaY: the axis is used as the scroll y delta
-	AxisUseDeltaY
-	// pressure: the axis is used for pressure information.
-	AxisUsePressure
-	// xtilt: the axis is used for x tilt information.
-	AxisUseXtilt
-	// ytilt: the axis is used for y tilt information.
-	AxisUseYtilt
-	// wheel: the axis is used for wheel information.
-	AxisUseWheel
-	// distance: the axis is used for pen/tablet distance information
-	AxisUseDistance
-	// rotation: the axis is used for pen rotation information
-	AxisUseRotation
-	// slider: the axis is used for pen slider information
-	AxisUseSlider
-	// last: constant equal to the numerically highest axis value.
-	AxisUseLast
+	DeltaY
+	// Pressure: the axis is used for pressure information.
+	Pressure
+	// Xtilt: the axis is used for x tilt information.
+	Xtilt
+	// Ytilt: the axis is used for y tilt information.
+	Ytilt
+	// Wheel: the axis is used for wheel information.
+	Wheel
+	// Distance: the axis is used for pen/tablet distance information
+	Distance
+	// Rotation: the axis is used for pen rotation information
+	Rotation
+	// Slider: the axis is used for pen slider information
+	Slider
+	// Last: constant equal to the numerically highest axis value.
+	Last
 )
 
 func marshalAxisUse(p uintptr) (interface{}, error) {
@@ -75,15 +75,15 @@ type GLError int
 
 const (
 	// NotAvailable: openGL support is not available
-	GLErrorNotAvailable GLError = iota
+	NotAvailable GLError = iota
 	// UnsupportedFormat: the requested visual format is not supported
-	GLErrorUnsupportedFormat
+	UnsupportedFormat
 	// UnsupportedProfile: the requested profile is not supported
-	GLErrorUnsupportedProfile
+	UnsupportedProfile
 	// CompilationFailed: the shader compilation failed
-	GLErrorCompilationFailed
+	CompilationFailed
 	// LinkFailed: the shader linking failed
-	GLErrorLinkFailed
+	LinkFailed
 )
 
 func marshalGLError(p uintptr) (interface{}, error) {
@@ -95,26 +95,26 @@ type Gravity int
 
 const (
 	// NorthWest: the reference point is at the top left corner.
-	GravityNorthWest Gravity = 1
-	// north: the reference point is in the middle of the top edge.
-	GravityNorth Gravity = 2
+	NorthWest Gravity = 1
+	// North: the reference point is in the middle of the top edge.
+	North Gravity = 2
 	// NorthEast: the reference point is at the top right corner.
-	GravityNorthEast Gravity = 3
-	// west: the reference point is at the middle of the left edge.
-	GravityWest Gravity = 4
-	// center: the reference point is at the center of the surface.
-	GravityCenter Gravity = 5
-	// east: the reference point is at the middle of the right edge.
-	GravityEast Gravity = 6
+	NorthEast Gravity = 3
+	// West: the reference point is at the middle of the left edge.
+	West Gravity = 4
+	// Center: the reference point is at the center of the surface.
+	Center Gravity = 5
+	// East: the reference point is at the middle of the right edge.
+	East Gravity = 6
 	// SouthWest: the reference point is at the lower left corner.
-	GravitySouthWest Gravity = 7
-	// south: the reference point is at the middle of the lower edge.
-	GravitySouth Gravity = 8
+	SouthWest Gravity = 7
+	// South: the reference point is at the middle of the lower edge.
+	South Gravity = 8
 	// SouthEast: the reference point is at the lower right corner.
-	GravitySouthEast Gravity = 9
-	// static: the reference point is at the top left corner of the surface
+	SouthEast Gravity = 9
+	// Static: the reference point is at the top left corner of the surface
 	// itself, ignoring window manager decorations.
-	GravityStatic Gravity = 10
+	Static Gravity = 10
 )
 
 func marshalGravity(p uintptr) (interface{}, error) {
@@ -125,11 +125,11 @@ func marshalGravity(p uintptr) (interface{}, error) {
 type VulkanError int
 
 const (
-	// unsupported: vulkan is not supported on this backend or has not been
+	// Unsupported: vulkan is not supported on this backend or has not been
 	// compiled in.
-	VulkanErrorUnsupported VulkanError = iota
+	Unsupported VulkanError = iota
 	// NotAvailable: vulkan support is not available on this Surface
-	VulkanErrorNotAvailable
+	NotAvailable
 )
 
 func marshalVulkanError(p uintptr) (interface{}, error) {
@@ -441,7 +441,7 @@ func (f *ContentFormats) MatchMIMEType(second *ContentFormats) string {
 }
 
 // Ref increases the reference count of a `GdkContentFormats` by one.
-func (f *ContentFormats) Ref() *ContentFormats {
+func (f *ContentFormats) ref() *ContentFormats {
 	var _arg0 *C.GdkContentFormats // out
 	var _cret *C.GdkContentFormats // in
 
@@ -590,7 +590,7 @@ func (f *ContentFormats) UnionSerializeMIMETypes() *ContentFormats {
 // Unref decreases the reference count of a `GdkContentFormats` by one.
 //
 // If the resulting reference count is zero, frees the formats.
-func (f *ContentFormats) Unref() {
+func (f *ContentFormats) unref() {
 	var _arg0 *C.GdkContentFormats // out
 
 	_arg0 = (*C.GdkContentFormats)(unsafe.Pointer(f))

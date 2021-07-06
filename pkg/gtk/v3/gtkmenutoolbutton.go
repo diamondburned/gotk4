@@ -35,6 +35,14 @@ func init() {
 	})
 }
 
+// MenuToolButtonOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type MenuToolButtonOverrider interface {
+	ShowMenu()
+}
+
 // MenuToolButton is a ToolItem that contains a button and a small additional
 // button with an arrow. When clicked, the arrow button pops up a dropdown menu.
 //

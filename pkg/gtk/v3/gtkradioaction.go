@@ -26,6 +26,14 @@ func init() {
 	})
 }
 
+// RadioActionOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type RadioActionOverrider interface {
+	Changed(current RadioAction)
+}
+
 // RadioAction is similar to RadioMenuItem. A number of radio actions can be
 // linked together so that only one may be active at any one time.
 type RadioAction interface {

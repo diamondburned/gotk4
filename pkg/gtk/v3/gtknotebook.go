@@ -35,6 +35,23 @@ func init() {
 	})
 }
 
+// NotebookOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type NotebookOverrider interface {
+	ChangeCurrentPage(offset int) bool
+	FocusTab(typ NotebookTab) bool
+	InsertPage(child Widget, tabLabel Widget, menuLabel Widget, position int) int
+	MoveFocusOut(direction DirectionType)
+	PageAdded(child Widget, pageNum uint)
+	PageRemoved(child Widget, pageNum uint)
+	PageReordered(child Widget, pageNum uint)
+	ReorderTab(direction DirectionType, moveToLast bool) bool
+	SelectPage(moveFocus bool) bool
+	SwitchPage(page Widget, pageNum uint)
+}
+
 // Notebook: the Notebook widget is a Container whose children are pages that
 // can be switched between using tab labels along one edge.
 //

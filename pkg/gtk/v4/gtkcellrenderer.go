@@ -29,14 +29,14 @@ func init() {
 type CellRendererMode int
 
 const (
-	// inert: the cell is just for display and cannot be interacted with. Note
+	// Inert: the cell is just for display and cannot be interacted with. Note
 	// that this doesn’t mean that eg. the row being drawn can’t be selected --
 	// just that a particular element of it cannot be individually modified.
-	CellRendererModeInert CellRendererMode = iota
-	// activatable: the cell can be clicked.
-	CellRendererModeActivatable
-	// editable: the cell can be edited or otherwise modified.
-	CellRendererModeEditable
+	Inert CellRendererMode = iota
+	// Activatable: the cell can be clicked.
+	Activatable
+	// Editable: the cell can be edited or otherwise modified.
+	Editable
 )
 
 func marshalCellRendererMode(p uintptr) (interface{}, error) {
@@ -66,6 +66,49 @@ const (
 
 func marshalCellRendererState(p uintptr) (interface{}, error) {
 	return CellRendererState(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// CellRendererOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type CellRendererOverrider interface {
+	// Activate passes an activate event to the cell renderer for possible
+	// processing. Some cell renderers may use events; for example,
+	// CellRendererToggle toggles when it gets a mouse click.
+	Activate(event gdk.Event, widget Widget, path string, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState) bool
+	EditingCanceled()
+	EditingStarted(editable CellEditable, path string)
+	// AlignedArea gets the aligned area used by @cell inside @cell_area. Used
+	// for finding the appropriate edit and focus rectangle.
+	AlignedArea(widget Widget, flags CellRendererState, cellArea *gdk.Rectangle) gdk.Rectangle
+	// PreferredHeight retrieves a renderer’s natural size when rendered to
+	// @widget.
+	PreferredHeight(widget Widget) (minimumSize int, naturalSize int)
+	// PreferredHeightForWidth retrieves a cell renderers’s minimum and natural
+	// height if it were rendered to @widget with the specified @width.
+	PreferredHeightForWidth(widget Widget, width int) (minimumHeight int, naturalHeight int)
+	// PreferredWidth retrieves a renderer’s natural size when rendered to
+	// @widget.
+	PreferredWidth(widget Widget) (minimumSize int, naturalSize int)
+	// PreferredWidthForHeight retrieves a cell renderers’s minimum and natural
+	// width if it were rendered to @widget with the specified @height.
+	PreferredWidthForHeight(widget Widget, height int) (minimumWidth int, naturalWidth int)
+	// RequestMode gets whether the cell renderer prefers a height-for-width
+	// layout or a width-for-height layout.
+	RequestMode() SizeRequestMode
+	// Snapshot invokes the virtual render function of the CellRenderer. The
+	// three passed-in rectangles are areas in @cr. Most renderers will draw
+	// within @cell_area; the xalign, yalign, xpad, and ypad fields of the
+	// CellRenderer should be honored with respect to @cell_area.
+	// @background_area includes the blank space around the cell, and also the
+	// area containing the tree expander; so the @background_area rectangles for
+	// all cells tile to cover the entire @window.
+	Snapshot(snapshot Snapshot, widget Widget, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState)
+	// StartEditing starts editing the contents of this @cell, through a new
+	// CellEditable widget created by the CellRendererClass.start_editing
+	// virtual function.
+	StartEditing(event gdk.Event, widget Widget, path string, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState) CellEditable
 }
 
 // CellRenderer: object for rendering a single cell

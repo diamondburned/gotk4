@@ -52,6 +52,22 @@ func gotk4_ScaleFormatValueFunc(arg0 *C.GtkScale, arg1 C.double, arg2 C.gpointer
 	return cret
 }
 
+// ScaleOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type ScaleOverrider interface {
+	// LayoutOffsets obtains the coordinates where the scale will draw the
+	// `PangoLayout` representing the text in the scale.
+	//
+	// Remember when using the `PangoLayout` function you need to convert to and
+	// from pixels using `PANGO_PIXELS()` or `PANGO_SCALE`.
+	//
+	// If the [property@GtkScale:draw-value] property is false, the return
+	// values are undefined.
+	LayoutOffsets() (x int, y int)
+}
+
 // Scale: `GtkScale` is a slider control used to select a numeric value.
 //
 // !An example GtkScale (scales.png)

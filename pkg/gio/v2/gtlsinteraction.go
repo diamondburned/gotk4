@@ -36,6 +36,99 @@ func init() {
 	})
 }
 
+// TLSInteractionOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type TLSInteractionOverrider interface {
+	// AskPassword: run synchronous interaction to ask the user for a password.
+	// In general, g_tls_interaction_invoke_ask_password() should be used
+	// instead of this function.
+	//
+	// Derived subclasses usually implement a password prompt, although they may
+	// also choose to provide a password from elsewhere. The @password value
+	// will be filled in and then @callback will be called. Alternatively the
+	// user may abort this password request, which will usually abort the TLS
+	// connection.
+	//
+	// If the interaction is cancelled by the cancellation object, or by the
+	// user then G_TLS_INTERACTION_FAILED will be returned with an error that
+	// contains a G_IO_ERROR_CANCELLED error code. Certain implementations may
+	// not support immediate cancellation.
+	AskPassword(password TLSPassword, cancellable Cancellable) (TLSInteractionResult, error)
+	// AskPasswordAsync: run asynchronous interaction to ask the user for a
+	// password. In general, g_tls_interaction_invoke_ask_password() should be
+	// used instead of this function.
+	//
+	// Derived subclasses usually implement a password prompt, although they may
+	// also choose to provide a password from elsewhere. The @password value
+	// will be filled in and then @callback will be called. Alternatively the
+	// user may abort this password request, which will usually abort the TLS
+	// connection.
+	//
+	// If the interaction is cancelled by the cancellation object, or by the
+	// user then G_TLS_INTERACTION_FAILED will be returned with an error that
+	// contains a G_IO_ERROR_CANCELLED error code. Certain implementations may
+	// not support immediate cancellation.
+	//
+	// Certain implementations may not support immediate cancellation.
+	AskPasswordAsync(password TLSPassword, cancellable Cancellable, callback AsyncReadyCallback)
+	// AskPasswordFinish: complete an ask password user interaction request.
+	// This should be once the g_tls_interaction_ask_password_async() completion
+	// callback is called.
+	//
+	// If G_TLS_INTERACTION_HANDLED is returned, then the Password passed to
+	// g_tls_interaction_ask_password() will have its password filled in.
+	//
+	// If the interaction is cancelled by the cancellation object, or by the
+	// user then G_TLS_INTERACTION_FAILED will be returned with an error that
+	// contains a G_IO_ERROR_CANCELLED error code.
+	AskPasswordFinish(result AsyncResult) (TLSInteractionResult, error)
+	// RequestCertificate: run synchronous interaction to ask the user to choose
+	// a certificate to use with the connection. In general,
+	// g_tls_interaction_invoke_request_certificate() should be used instead of
+	// this function.
+	//
+	// Derived subclasses usually implement a certificate selector, although
+	// they may also choose to provide a certificate from elsewhere.
+	// Alternatively the user may abort this certificate request, which will
+	// usually abort the TLS connection.
+	//
+	// If G_TLS_INTERACTION_HANDLED is returned, then the Connection passed to
+	// g_tls_interaction_request_certificate() will have had its
+	// Connection:certificate filled in.
+	//
+	// If the interaction is cancelled by the cancellation object, or by the
+	// user then G_TLS_INTERACTION_FAILED will be returned with an error that
+	// contains a G_IO_ERROR_CANCELLED error code. Certain implementations may
+	// not support immediate cancellation.
+	RequestCertificate(connection TLSConnection, flags TLSCertificateRequestFlags, cancellable Cancellable) (TLSInteractionResult, error)
+	// RequestCertificateAsync: run asynchronous interaction to ask the user for
+	// a certificate to use with the connection. In general,
+	// g_tls_interaction_invoke_request_certificate() should be used instead of
+	// this function.
+	//
+	// Derived subclasses usually implement a certificate selector, although
+	// they may also choose to provide a certificate from elsewhere. @callback
+	// will be called when the operation completes. Alternatively the user may
+	// abort this certificate request, which will usually abort the TLS
+	// connection.
+	RequestCertificateAsync(connection TLSConnection, flags TLSCertificateRequestFlags, cancellable Cancellable, callback AsyncReadyCallback)
+	// RequestCertificateFinish: complete a request certificate user interaction
+	// request. This should be once the
+	// g_tls_interaction_request_certificate_async() completion callback is
+	// called.
+	//
+	// If G_TLS_INTERACTION_HANDLED is returned, then the Connection passed to
+	// g_tls_interaction_request_certificate_async() will have had its
+	// Connection:certificate filled in.
+	//
+	// If the interaction is cancelled by the cancellation object, or by the
+	// user then G_TLS_INTERACTION_FAILED will be returned with an error that
+	// contains a G_IO_ERROR_CANCELLED error code.
+	RequestCertificateFinish(result AsyncResult) (TLSInteractionResult, error)
+}
+
 // TLSInteraction provides a mechanism for the TLS connection and database code
 // to interact with the user. It can be used to ask the user for passwords.
 //

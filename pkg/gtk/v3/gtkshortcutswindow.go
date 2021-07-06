@@ -36,6 +36,15 @@ func init() {
 	})
 }
 
+// ShortcutsWindowOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type ShortcutsWindowOverrider interface {
+	Close()
+	Search()
+}
+
 // ShortcutsWindow shows brief information about the keyboard shortcuts and
 // gestures of an application. The shortcuts can be grouped, and you can have
 // multiple sections in this window, corresponding to the major modes of your

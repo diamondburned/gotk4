@@ -31,13 +31,13 @@ func init() {
 type CoordType int
 
 const (
-	// screen specifies xy coordinates relative to the screen
-	CoordTypeScreen CoordType = iota
-	// window specifies xy coordinates relative to the widget's top-level window
-	CoordTypeWindow
-	// parent specifies xy coordinates relative to the widget's immediate
+	// Screen specifies xy coordinates relative to the screen
+	Screen CoordType = iota
+	// Window specifies xy coordinates relative to the widget's top-level window
+	Window
+	// Parent specifies xy coordinates relative to the widget's immediate
 	// parent. Since: 2.30
-	CoordTypeParent
+	Parent
 )
 
 func marshalCoordType(p uintptr) (interface{}, error) {
@@ -48,12 +48,12 @@ func marshalCoordType(p uintptr) (interface{}, error) {
 type KeyEventType int
 
 const (
-	// press specifies a key press event
-	KeyEventTypePress KeyEventType = iota
-	// release specifies a key release event
-	KeyEventTypeRelease
+	// Press specifies a key press event
+	Press KeyEventType = iota
+	// Release specifies a key release event
+	Release
 	// LastDefined: not a valid value; specifies end of enumeration
-	KeyEventTypeLastDefined
+	LastDefined
 )
 
 func marshalKeyEventType(p uintptr) (interface{}, error) {

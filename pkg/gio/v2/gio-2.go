@@ -6488,7 +6488,7 @@ type SubprocessLauncher interface {
 	// is provided separately so that garbage collected language bindings can
 	// call it earlier to guarantee when FDs are closed.
 	Close()
-	// env returns the value of the environment variable @variable in the
+	// Env returns the value of the environment variable @variable in the
 	// environment of processes launched from this launcher.
 	//
 	// On UNIX, the returned string can be an arbitrary byte string. On Windows,

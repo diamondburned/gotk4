@@ -35,6 +35,14 @@ func init() {
 	})
 }
 
+// CheckButtonOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type CheckButtonOverrider interface {
+	DrawIndicator(cr *cairo.Context)
+}
+
 // CheckButton places a discrete ToggleButton next to a widget, (usually a
 // Label). See the section on ToggleButton widgets for more information about
 // toggle/check buttons.

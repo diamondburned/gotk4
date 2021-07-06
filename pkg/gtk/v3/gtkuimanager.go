@@ -65,6 +65,41 @@ func marshalUIManagerItemType(p uintptr) (interface{}, error) {
 	return UIManagerItemType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// UIManagerOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type UIManagerOverrider interface {
+	ActionsChanged()
+	AddWidget(widget Widget)
+	ConnectProxy(action Action, proxy Widget)
+	DisconnectProxy(action Action, proxy Widget)
+	// Action looks up an action by following a path. See
+	// gtk_ui_manager_get_widget() for more information about paths.
+	//
+	// Deprecated: since version 3.10.
+	Action(path string) Action
+	// Widget looks up a widget by following a path. The path consists of the
+	// names specified in the XML description of the UI. separated by “/”.
+	// Elements which don’t have a name or action attribute in the XML (e.g.
+	// <popup>) can be addressed by their XML element name (e.g. "popup"). The
+	// root element ("/ui") can be omitted in the path.
+	//
+	// Note that the widget found by following a path that ends in a <menu>;
+	// element is the menuitem to which the menu is attached, not the menu it
+	// manages.
+	//
+	// Also note that the widgets constructed by a ui manager are not tied to
+	// the lifecycle of the ui manager. If you add the widgets returned by this
+	// function to some container or explicitly ref them, they will survive the
+	// destruction of the ui manager.
+	//
+	// Deprecated: since version 3.10.
+	Widget(path string) Widget
+	PostActivate(action Action)
+	PreActivate(action Action)
+}
+
 // UIManager: > GtkUIManager is deprecated since GTK+ 3.10. To construct user
 // interfaces > from XML definitions, you should use Builder, Model, et al. To >
 // work with actions, use #GAction, Actionable et al. These newer classes >

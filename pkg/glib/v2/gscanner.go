@@ -17,22 +17,22 @@ import "C"
 type ErrorType int
 
 const (
-	// unknown error
-	ErrorTypeUnknown ErrorType = iota
+	// Unknown error
+	Unknown ErrorType = iota
 	// UnexpEOF: unexpected end of file
-	ErrorTypeUnexpEOF
+	UnexpEOF
 	// UnexpEOFInString: unterminated string constant
-	ErrorTypeUnexpEOFInString
+	UnexpEOFInString
 	// UnexpEOFInComment: unterminated comment
-	ErrorTypeUnexpEOFInComment
+	UnexpEOFInComment
 	// NonDigitInConst: non-digit character in a number
-	ErrorTypeNonDigitInConst
+	NonDigitInConst
 	// DigitRadix: digit beyond radix in a number
-	ErrorTypeDigitRadix
+	DigitRadix
 	// FloatRadix: non-decimal floating point number
-	ErrorTypeFloatRadix
+	FloatRadix
 	// FloatMalformed: malformed floating point number
-	ErrorTypeFloatMalformed
+	FloatMalformed
 )
 
 // TokenType: the possible types of token returned from each
@@ -40,52 +40,52 @@ const (
 type TokenType int
 
 const (
-	// eof: the end of the file
-	TokenTypeEOF TokenType = 0
+	// EOF: the end of the file
+	EOF TokenType = 0
 	// LeftParen: '(' character
-	TokenTypeLeftParen TokenType = 40
+	LeftParen TokenType = 40
 	// RightParen: ')' character
-	TokenTypeRightParen TokenType = 41
+	RightParen TokenType = 41
 	// LeftCurly: '{' character
-	TokenTypeLeftCurly TokenType = 123
+	LeftCurly TokenType = 123
 	// RightCurly: '}' character
-	TokenTypeRightCurly TokenType = 125
+	RightCurly TokenType = 125
 	// LeftBrace: '[' character
-	TokenTypeLeftBrace TokenType = 91
+	LeftBrace TokenType = 91
 	// RightBrace: ']' character
-	TokenTypeRightBrace TokenType = 93
+	RightBrace TokenType = 93
 	// EqualSign: '=' character
-	TokenTypeEqualSign TokenType = 61
-	// comma: ',' character
-	TokenTypeComma TokenType = 44
-	// none: not a token
-	TokenTypeNone TokenType = 256
-	// error occurred
-	TokenTypeError TokenType = 257
-	// char: character
-	TokenTypeChar TokenType = 258
-	// binary integer
-	TokenTypeBinary TokenType = 259
-	// octal integer
-	TokenTypeOctal TokenType = 260
-	// int: integer
-	TokenTypeInt TokenType = 261
-	// hex integer
-	TokenTypeHex TokenType = 262
-	// float: floating point number
-	TokenTypeFloat TokenType = 263
-	// string: string
-	TokenTypeString TokenType = 264
-	// symbol: symbol
-	TokenTypeSymbol TokenType = 265
-	// identifier: identifier
-	TokenTypeIdentifier TokenType = 266
+	EqualSign TokenType = 61
+	// Comma: ',' character
+	Comma TokenType = 44
+	// None: not a token
+	None TokenType = 256
+	// Error occurred
+	Error TokenType = 257
+	// Char: character
+	Char TokenType = 258
+	// Binary integer
+	Binary TokenType = 259
+	// Octal integer
+	Octal TokenType = 260
+	// Int: integer
+	Int TokenType = 261
+	// Hex integer
+	Hex TokenType = 262
+	// Float: floating point number
+	Float TokenType = 263
+	// String: string
+	String TokenType = 264
+	// Symbol: symbol
+	Symbol TokenType = 265
+	// Identifier: identifier
+	Identifier TokenType = 266
 	// IdentifierNull: null identifier
-	TokenTypeIdentifierNull TokenType = 267
+	IdentifierNull TokenType = 267
 	// CommentSingle: one line comment
-	TokenTypeCommentSingle TokenType = 268
+	CommentSingle TokenType = 268
 	// CommentMulti: multi line comment
-	TokenTypeCommentMulti TokenType = 269
+	CommentMulti TokenType = 269
 )
 
 // ScannerConfig specifies the #GScanner parser configuration. Most settings can

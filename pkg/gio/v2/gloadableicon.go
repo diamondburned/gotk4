@@ -38,6 +38,23 @@ func init() {
 	})
 }
 
+// LoadableIconOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type LoadableIconOverrider interface {
+	// Load loads a loadable icon. For the asynchronous version of this
+	// function, see g_loadable_icon_load_async().
+	Load(size int, cancellable Cancellable) (string, InputStream, error)
+	// LoadAsync loads an icon asynchronously. To finish this function, see
+	// g_loadable_icon_load_finish(). For the synchronous, blocking version of
+	// this function, see g_loadable_icon_load().
+	LoadAsync(size int, cancellable Cancellable, callback AsyncReadyCallback)
+	// LoadFinish finishes an asynchronous icon load started in
+	// g_loadable_icon_load_async().
+	LoadFinish(res AsyncResult) (string, InputStream, error)
+}
+
 // LoadableIcon extends the #GIcon interface and adds the ability to load icons
 // from streams.
 type LoadableIcon interface {

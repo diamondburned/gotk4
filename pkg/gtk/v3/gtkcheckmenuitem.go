@@ -35,6 +35,16 @@ func init() {
 	})
 }
 
+// CheckMenuItemOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type CheckMenuItemOverrider interface {
+	DrawIndicator(cr *cairo.Context)
+	// Toggled emits the CheckMenuItem::toggled signal.
+	Toggled()
+}
+
 // CheckMenuItem is a menu item that maintains the state of a boolean value in
 // addition to a MenuItem usual role in activating application code.
 //

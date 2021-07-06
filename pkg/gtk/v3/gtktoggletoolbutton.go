@@ -35,6 +35,14 @@ func init() {
 	})
 }
 
+// ToggleToolButtonOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type ToggleToolButtonOverrider interface {
+	Toggled()
+}
+
 // ToggleToolButton is a ToolItem that contains a toggle button.
 //
 // Use gtk_toggle_tool_button_new() to create a new GtkToggleToolButton.

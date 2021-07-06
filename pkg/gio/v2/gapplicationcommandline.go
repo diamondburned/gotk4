@@ -34,6 +34,25 @@ func init() {
 	})
 }
 
+// ApplicationCommandLineOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type ApplicationCommandLineOverrider interface {
+	// Stdin gets the stdin of the invoking process.
+	//
+	// The Stream can be used to read data passed to the standard input of the
+	// invoking process. This doesn't work on all platforms. Presently, it is
+	// only available on UNIX when using a D-Bus daemon capable of passing file
+	// descriptors. If stdin is not available then nil will be returned. In the
+	// future, support may be expanded to other platforms.
+	//
+	// You must only call this function once per commandline invocation.
+	Stdin() InputStream
+	PrintLiteral(message string)
+	PrinterrLiteral(message string)
+}
+
 // ApplicationCommandLine represents a command-line invocation of an
 // application. It is created by #GApplication and emitted in the
 // #GApplication::command-line signal and virtual function.
@@ -175,7 +194,7 @@ type ApplicationCommandLine interface {
 	//
 	// You must only call this function once per commandline invocation.
 	Stdin() InputStream
-	// env gets the value of a particular environment variable of the command
+	// Env gets the value of a particular environment variable of the command
 	// line invocation, as would be returned by g_getenv(). The strings may
 	// contain non-utf8 data.
 	//

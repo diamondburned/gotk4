@@ -80,6 +80,122 @@ func gotk4_TreeModelForeachFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreePath, arg2 
 	return cret
 }
 
+// TreeModelOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type TreeModelOverrider interface {
+	// ColumnType returns the type of the column.
+	ColumnType(index_ int) externglib.Type
+	// Flags returns a set of flags supported by this interface.
+	//
+	// The flags are a bitwise combination of TreeModelFlags. The flags
+	// supported should not change during the lifetime of the @tree_model.
+	Flags() TreeModelFlags
+	// Iter sets @iter to a valid iterator pointing to @path. If @path does not
+	// exist, @iter is set to an invalid iterator and false is returned.
+	Iter(path *TreePath) (TreeIter, bool)
+	// NColumns returns the number of columns supported by @tree_model.
+	NColumns() int
+	// Path returns a newly-created TreePath-struct referenced by @iter.
+	//
+	// This path should be freed with gtk_tree_path_free().
+	Path(iter *TreeIter) *TreePath
+	// Value initializes and sets @value to that at @column.
+	//
+	// When done with @value, g_value_unset() needs to be called to free any
+	// allocated memory.
+	Value(iter *TreeIter, column int) externglib.Value
+	// IterChildren sets @iter to point to the first child of @parent.
+	//
+	// If @parent has no children, false is returned and @iter is set to be
+	// invalid. @parent will remain a valid node after this function has been
+	// called.
+	//
+	// If @parent is nil returns the first node, equivalent to
+	// `gtk_tree_model_get_iter_first (tree_model, iter);`
+	IterChildren(parent *TreeIter) (TreeIter, bool)
+	// IterHasChild returns true if @iter has children, false otherwise.
+	IterHasChild(iter *TreeIter) bool
+	// IterNChildren returns the number of children that @iter has.
+	//
+	// As a special case, if @iter is nil, then the number of toplevel nodes is
+	// returned.
+	IterNChildren(iter *TreeIter) int
+	// IterNext sets @iter to point to the node following it at the current
+	// level.
+	//
+	// If there is no next @iter, false is returned and @iter is set to be
+	// invalid.
+	IterNext(iter *TreeIter) bool
+	// IterNthChild sets @iter to be the child of @parent, using the given
+	// index.
+	//
+	// The first index is 0. If @n is too big, or @parent has no children, @iter
+	// is set to an invalid iterator and false is returned. @parent will remain
+	// a valid node after this function has been called. As a special case, if
+	// @parent is nil, then the @n-th root node is set.
+	IterNthChild(parent *TreeIter, n int) (TreeIter, bool)
+	// IterParent sets @iter to be the parent of @child.
+	//
+	// If @child is at the toplevel, and doesn’t have a parent, then @iter is
+	// set to an invalid iterator and false is returned. @child will remain a
+	// valid node after this function has been called.
+	//
+	// @iter will be initialized before the lookup is performed, so @child and
+	// @iter cannot point to the same memory location.
+	IterParent(child *TreeIter) (TreeIter, bool)
+	// IterPrevious sets @iter to point to the previous node at the current
+	// level.
+	//
+	// If there is no previous @iter, false is returned and @iter is set to be
+	// invalid.
+	IterPrevious(iter *TreeIter) bool
+	// RefNode lets the tree ref the node.
+	//
+	// This is an optional method for models to implement. To be more specific,
+	// models may ignore this call as it exists primarily for performance
+	// reasons.
+	//
+	// This function is primarily meant as a way for views to let caching models
+	// know when nodes are being displayed (and hence, whether or not to cache
+	// that node). Being displayed means a node is in an expanded branch,
+	// regardless of whether the node is currently visible in the viewport. For
+	// example, a file-system based model would not want to keep the entire
+	// file-hierarchy in memory, just the sections that are currently being
+	// displayed by every current view.
+	//
+	// A model should be expected to be able to get an iter independent of its
+	// reffed state.
+	RefNode(iter *TreeIter)
+	// RowChanged emits the TreeModel::row-changed signal on @tree_model.
+	RowChanged(path *TreePath, iter *TreeIter)
+	// RowDeleted emits the TreeModel::row-deleted signal on @tree_model.
+	//
+	// This should be called by models after a row has been removed. The
+	// location pointed to by @path should be the location that the row
+	// previously was at. It may not be a valid location anymore.
+	//
+	// Nodes that are deleted are not unreffed, this means that any outstanding
+	// references on the deleted node should not be released.
+	RowDeleted(path *TreePath)
+	// RowHasChildToggled emits the TreeModel::row-has-child-toggled signal on
+	// @tree_model. This should be called by models after the child state of a
+	// node changes.
+	RowHasChildToggled(path *TreePath, iter *TreeIter)
+	// RowInserted emits the TreeModel::row-inserted signal on @tree_model.
+	RowInserted(path *TreePath, iter *TreeIter)
+	// UnrefNode lets the tree unref the node.
+	//
+	// This is an optional method for models to implement. To be more specific,
+	// models may ignore this call as it exists primarily for performance
+	// reasons. For more information on what this means, see
+	// gtk_tree_model_ref_node().
+	//
+	// Please note that nodes that are deleted are not unreffed.
+	UnrefNode(iter *TreeIter)
+}
+
 // TreeModel: the TreeModel interface defines a generic tree interface for use
 // by the TreeView widget. It is an abstract interface, and is designed to be
 // usable with any appropriate data structure. The programmer just has to
@@ -925,7 +1041,7 @@ func (i *TreeIter) Copy() *TreeIter {
 // Free frees an iterator that has been allocated by gtk_tree_iter_copy().
 //
 // This function is mainly used for language bindings.
-func (i *TreeIter) Free() {
+func (i *TreeIter) free() {
 	var _arg0 *C.GtkTreeIter // out
 
 	_arg0 = (*C.GtkTreeIter)(unsafe.Pointer(i))
@@ -1089,7 +1205,7 @@ func (p *TreePath) Down() {
 }
 
 // Free frees @path. If @path is nil, it simply returns.
-func (p *TreePath) Free() {
+func (p *TreePath) free() {
 	var _arg0 *C.GtkTreePath // out
 
 	_arg0 = (*C.GtkTreePath)(unsafe.Pointer(p))
@@ -1319,7 +1435,7 @@ func (r *TreeRowReference) Copy() *TreeRowReference {
 }
 
 // Free free’s @reference. @reference may be nil
-func (r *TreeRowReference) Free() {
+func (r *TreeRowReference) free() {
 	var _arg0 *C.GtkTreeRowReference // out
 
 	_arg0 = (*C.GtkTreeRowReference)(unsafe.Pointer(r))

@@ -228,7 +228,7 @@ func (a *Matrix) EqualFast(b *Matrix) bool {
 }
 
 // Free frees the resources allocated by graphene_matrix_alloc().
-func (m *Matrix) Free() {
+func (m *Matrix) free() {
 	var _arg0 *C.graphene_matrix_t // out
 
 	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m))

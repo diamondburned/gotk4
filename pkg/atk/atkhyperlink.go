@@ -35,6 +35,41 @@ func marshalHyperlinkStateFlags(p uintptr) (interface{}, error) {
 	return HyperlinkStateFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// HyperlinkOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type HyperlinkOverrider interface {
+	// EndIndex gets the index with the hypertext document at which this link
+	// ends.
+	EndIndex() int
+	// NAnchors gets the number of anchors associated with this hyperlink.
+	NAnchors() int
+	// Object returns the item associated with this hyperlinks nth anchor. For
+	// instance, the returned Object will implement Text if @link_ is a text
+	// hyperlink, Image if @link_ is an image hyperlink etc.
+	//
+	// Multiple anchors are primarily used by client-side image maps.
+	Object(i int) Object
+	// StartIndex gets the index with the hypertext document at which this link
+	// begins.
+	StartIndex() int
+	// URI: get a the URI associated with the anchor specified by @i of @link_.
+	//
+	// Multiple anchors are primarily used by client-side image maps.
+	URI(i int) string
+	// IsSelectedLink determines whether this AtkHyperlink is selected
+	//
+	// Deprecated: since version 1.8.
+	IsSelectedLink() bool
+	// IsValid: since the document that a link is associated with may have
+	// changed this method returns true if the link is still valid (with respect
+	// to the document it references) and false otherwise.
+	IsValid() bool
+	LinkActivated()
+	LinkState() uint
+}
+
 // Hyperlink: ATK object which encapsulates a link or set of links (for instance
 // in the case of client-side image maps) in a hypertext document. It may
 // implement the AtkAction interface. AtkHyperlink may also be used to refer to

@@ -86,7 +86,7 @@ func (p *RGBA) Equal(p2 RGBA) bool {
 }
 
 // Free frees a RGBA created with gdk_rgba_copy()
-func (r *RGBA) Free() {
+func (r *RGBA) free() {
 	var _arg0 *C.GdkRGBA // out
 
 	_arg0 = (*C.GdkRGBA)(unsafe.Pointer(r))

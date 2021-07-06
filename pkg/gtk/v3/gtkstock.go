@@ -130,7 +130,7 @@ func (s *StockItem) Native() unsafe.Pointer {
 // are not nil.
 //
 // Deprecated: since version 3.10.
-func (i *StockItem) Free() {
+func (i *StockItem) free() {
 	var _arg0 *C.GtkStockItem // out
 
 	_arg0 = (*C.GtkStockItem)(unsafe.Pointer(i))

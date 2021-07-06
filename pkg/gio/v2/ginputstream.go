@@ -36,6 +36,73 @@ func init() {
 	})
 }
 
+// InputStreamOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type InputStreamOverrider interface {
+	// CloseAsync requests an asynchronous closes of the stream, releasing
+	// resources related to it. When the operation is finished @callback will be
+	// called. You can then call g_input_stream_close_finish() to get the result
+	// of the operation.
+	//
+	// For behaviour details see g_input_stream_close().
+	//
+	// The asynchronous methods have a default fallback that uses threads to
+	// implement asynchronicity, so they are optional for inheriting classes.
+	// However, if you override one you must override all.
+	CloseAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
+	// CloseFinish finishes closing a stream asynchronously, started from
+	// g_input_stream_close_async().
+	CloseFinish(result AsyncResult) error
+	CloseFn(cancellable Cancellable) error
+	// ReadFinish finishes an asynchronous stream read operation.
+	ReadFinish(result AsyncResult) (int, error)
+	ReadFn(buffer interface{}, count uint, cancellable Cancellable) (int, error)
+	// Skip tries to skip @count bytes from the stream. Will block during the
+	// operation.
+	//
+	// This is identical to g_input_stream_read(), from a behaviour standpoint,
+	// but the bytes that are skipped are not returned to the user. Some streams
+	// have an implementation that is more efficient than reading the data.
+	//
+	// This function is optional for inherited classes, as the default
+	// implementation emulates it using read.
+	//
+	// If @cancellable is not nil, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned. If an
+	// operation was partially finished when the operation was cancelled the
+	// partial result will be returned, without an error.
+	Skip(count uint, cancellable Cancellable) (int, error)
+	// SkipAsync: request an asynchronous skip of @count bytes from the stream.
+	// When the operation is finished @callback will be called. You can then
+	// call g_input_stream_skip_finish() to get the result of the operation.
+	//
+	// During an async request no other sync and async calls are allowed, and
+	// will result in G_IO_ERROR_PENDING errors.
+	//
+	// A value of @count larger than G_MAXSSIZE will cause a
+	// G_IO_ERROR_INVALID_ARGUMENT error.
+	//
+	// On success, the number of bytes skipped will be passed to the callback.
+	// It is not an error if this is not the same as the requested size, as it
+	// can happen e.g. near the end of a file, but generally we try to skip as
+	// many bytes as requested. Zero is returned on end of file (or if @count is
+	// zero), but never otherwise.
+	//
+	// Any outstanding i/o request with higher priority (lower numerical value)
+	// will be executed before an outstanding request with lower priority.
+	// Default priority is G_PRIORITY_DEFAULT.
+	//
+	// The asynchronous methods have a default fallback that uses threads to
+	// implement asynchronicity, so they are optional for inheriting classes.
+	// However, if you override one, you must override all.
+	SkipAsync(count uint, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
+	// SkipFinish finishes a stream skip operation.
+	SkipFinish(result AsyncResult) (int, error)
+}
+
 // InputStream has functions to read from a stream (g_input_stream_read()), to
 // close a stream (g_input_stream_close()) and to skip some content
 // (g_input_stream_skip()).

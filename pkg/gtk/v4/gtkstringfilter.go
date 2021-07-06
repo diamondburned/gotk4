@@ -27,13 +27,13 @@ func init() {
 type StringFilterMatchMode int
 
 const (
-	// exact: the search string and text must match exactly.
-	StringFilterMatchModeExact StringFilterMatchMode = iota
-	// substring: the search string must be contained as a substring inside the
+	// Exact: the search string and text must match exactly.
+	Exact StringFilterMatchMode = iota
+	// Substring: the search string must be contained as a substring inside the
 	// text.
-	StringFilterMatchModeSubstring
-	// prefix: the text must begin with the search string.
-	StringFilterMatchModePrefix
+	Substring
+	// Prefix: the text must begin with the search string.
+	Prefix
 )
 
 func marshalStringFilterMatchMode(p uintptr) (interface{}, error) {

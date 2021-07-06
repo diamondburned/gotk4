@@ -24,6 +24,25 @@ func init() {
 	})
 }
 
+// AdjustmentOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type AdjustmentOverrider interface {
+	// Changed emits a Adjustment::changed signal from the Adjustment. This is
+	// typically called by the owner of the Adjustment after it has changed any
+	// of the Adjustment properties other than the value.
+	//
+	// Deprecated: since version 3.18.
+	Changed()
+	// ValueChanged emits a Adjustment::value-changed signal from the
+	// Adjustment. This is typically called by the owner of the Adjustment after
+	// it has changed the Adjustment:value property.
+	//
+	// Deprecated: since version 3.18.
+	ValueChanged()
+}
+
 // Adjustment: the Adjustment object represents a value which has an associated
 // lower and upper bound, together with step and page increments, and a page
 // size. It is used within several GTK+ widgets, including SpinButton, Viewport,

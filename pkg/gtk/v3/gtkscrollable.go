@@ -24,6 +24,18 @@ func init() {
 	})
 }
 
+// ScrollableOverrider contains methods that are overridable .
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type ScrollableOverrider interface {
+	// Border returns the size of a non-scrolling border around the outside of
+	// the scrollable. An example for this would be treeview headers. GTK+ can
+	// use this information to display overlayed graphics, like the overshoot
+	// indication, at the right position.
+	Border() (Border, bool)
+}
+
 // Scrollable is an interface that is implemented by widgets with native
 // scrolling ability.
 //

@@ -210,7 +210,7 @@ func (b *Box) ExpandVec3(vec *Vec3) Box {
 }
 
 // Free frees the resources allocated by graphene_box_alloc().
-func (b *Box) Free() {
+func (b *Box) free() {
 	var _arg0 *C.graphene_box_t // out
 
 	_arg0 = (*C.graphene_box_t)(unsafe.Pointer(b))

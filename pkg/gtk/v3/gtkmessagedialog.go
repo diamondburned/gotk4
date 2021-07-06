@@ -47,18 +47,18 @@ func init() {
 type ButtonsType int
 
 const (
-	// none: no buttons at all
-	ButtonsTypeNone ButtonsType = iota
-	// ok: OK button
-	ButtonsTypeOk
-	// close: close button
-	ButtonsTypeClose
-	// cancel: cancel button
-	ButtonsTypeCancel
+	// None: no buttons at all
+	None ButtonsType = iota
+	// Ok: OK button
+	Ok
+	// Close: close button
+	Close
+	// Cancel: cancel button
+	Cancel
 	// YesNo yes and No buttons
-	ButtonsTypeYesNo
+	YesNo
 	// OkCancel: OK and Cancel buttons
-	ButtonsTypeOkCancel
+	OkCancel
 )
 
 func marshalButtonsType(p uintptr) (interface{}, error) {

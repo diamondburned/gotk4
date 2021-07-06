@@ -35,29 +35,29 @@ func init() {
 type CSSSectionType int
 
 const (
-	// document: the section describes a complete document. This section time is
+	// Document: the section describes a complete document. This section time is
 	// the only one where gtk_css_section_get_parent() might return nil.
-	CSSSectionTypeDocument CSSSectionType = iota
-	// import: the section defines an import rule.
-	CSSSectionTypeImport
+	Document CSSSectionType = iota
+	// Import: the section defines an import rule.
+	Import
 	// ColorDefinition: the section defines a color. This is a GTK extension to
 	// CSS.
-	CSSSectionTypeColorDefinition
+	ColorDefinition
 	// BindingSet: the section defines a binding set. This is a GTK extension to
 	// CSS.
-	CSSSectionTypeBindingSet
-	// ruleset: the section defines a CSS ruleset.
-	CSSSectionTypeRuleset
-	// selector: the section defines a CSS selector.
-	CSSSectionTypeSelector
-	// declaration: the section defines the declaration of a CSS variable.
-	CSSSectionTypeDeclaration
-	// value: the section defines the value of a CSS declaration.
-	CSSSectionTypeValue
-	// keyframes: the section defines keyframes. See [CSS
+	BindingSet
+	// Ruleset: the section defines a CSS ruleset.
+	Ruleset
+	// Selector: the section defines a CSS selector.
+	Selector
+	// Declaration: the section defines the declaration of a CSS variable.
+	Declaration
+	// Value: the section defines the value of a CSS declaration.
+	Value
+	// Keyframes: the section defines keyframes. See [CSS
 	// Animations](http://dev.w3.org/csswg/css3-animations/#keyframes) for
 	// details. Since 3.6
-	CSSSectionTypeKeyframes
+	Keyframes
 )
 
 func marshalCSSSectionType(p uintptr) (interface{}, error) {
@@ -206,7 +206,7 @@ func (s *CSSSection) StartPosition() uint {
 }
 
 // Ref increments the reference count on @section.
-func (s *CSSSection) Ref() *CSSSection {
+func (s *CSSSection) ref() *CSSSection {
 	var _arg0 *C.GtkCssSection // out
 	var _cret *C.GtkCssSection // in
 
@@ -227,7 +227,7 @@ func (s *CSSSection) Ref() *CSSSection {
 
 // Unref decrements the reference count on @section, freeing the structure if
 // the reference count reaches 0.
-func (s *CSSSection) Unref() {
+func (s *CSSSection) unref() {
 	var _arg0 *C.GtkCssSection // out
 
 	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(s))

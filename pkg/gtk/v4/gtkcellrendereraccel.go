@@ -31,10 +31,10 @@ func init() {
 type CellRendererAccelMode int
 
 const (
-	// gtk: GTK accelerators mode
-	CellRendererAccelModeGTK CellRendererAccelMode = iota
-	// other: other accelerator mode
-	CellRendererAccelModeOther
+	// GTK: GTK accelerators mode
+	GTK CellRendererAccelMode = iota
+	// Other: other accelerator mode
+	Other
 )
 
 func marshalCellRendererAccelMode(p uintptr) (interface{}, error) {

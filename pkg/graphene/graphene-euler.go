@@ -29,75 +29,75 @@ func init() {
 type EulerOrder int
 
 const (
-	// default: rotate in the default order; the default order is one of the
+	// Default: rotate in the default order; the default order is one of the
 	// following enumeration values
-	EulerOrderDefault EulerOrder = -1
+	Default EulerOrder = -1
 	// XYZ: rotate in the X, Y, and Z order. Deprecated in Graphene 1.10, it's
 	// an alias for GRAPHENE_EULER_ORDER_SXYZ
-	EulerOrderXYZ EulerOrder = 0
+	XYZ EulerOrder = 0
 	// YZX: rotate in the Y, Z, and X order. Deprecated in Graphene 1.10, it's
 	// an alias for GRAPHENE_EULER_ORDER_SYZX
-	EulerOrderYZX EulerOrder = 1
+	YZX EulerOrder = 1
 	// ZXY: rotate in the Z, X, and Y order. Deprecated in Graphene 1.10, it's
 	// an alias for GRAPHENE_EULER_ORDER_SZXY
-	EulerOrderZXY EulerOrder = 2
+	ZXY EulerOrder = 2
 	// XZY: rotate in the X, Z, and Y order. Deprecated in Graphene 1.10, it's
 	// an alias for GRAPHENE_EULER_ORDER_SXZY
-	EulerOrderXZY EulerOrder = 3
+	XZY EulerOrder = 3
 	// YXZ: rotate in the Y, X, and Z order. Deprecated in Graphene 1.10, it's
 	// an alias for GRAPHENE_EULER_ORDER_SYXZ
-	EulerOrderYXZ EulerOrder = 4
+	YXZ EulerOrder = 4
 	// ZYX: rotate in the Z, Y, and X order. Deprecated in Graphene 1.10, it's
 	// an alias for GRAPHENE_EULER_ORDER_SZYX
-	EulerOrderZYX EulerOrder = 5
-	// sXYZ defines a static rotation along the X, Y, and Z axes (Since: 1.10)
-	EulerOrderSXYZ EulerOrder = 6
-	// sXYX defines a static rotation along the X, Y, and X axes (Since: 1.10)
-	EulerOrderSXYX EulerOrder = 7
-	// sXZY defines a static rotation along the X, Z, and Y axes (Since: 1.10)
-	EulerOrderSXZY EulerOrder = 8
-	// sXZX defines a static rotation along the X, Z, and X axes (Since: 1.10)
-	EulerOrderSXZX EulerOrder = 9
-	// sYZX defines a static rotation along the Y, Z, and X axes (Since: 1.10)
-	EulerOrderSYZX EulerOrder = 10
-	// sYZY defines a static rotation along the Y, Z, and Y axes (Since: 1.10)
-	EulerOrderSYZY EulerOrder = 11
-	// sYXZ defines a static rotation along the Y, X, and Z axes (Since: 1.10)
-	EulerOrderSYXZ EulerOrder = 12
-	// sYXY defines a static rotation along the Y, X, and Y axes (Since: 1.10)
-	EulerOrderSYXY EulerOrder = 13
-	// sZXY defines a static rotation along the Z, X, and Y axes (Since: 1.10)
-	EulerOrderSZXY EulerOrder = 14
-	// sZXZ defines a static rotation along the Z, X, and Z axes (Since: 1.10)
-	EulerOrderSZXZ EulerOrder = 15
-	// sZYX defines a static rotation along the Z, Y, and X axes (Since: 1.10)
-	EulerOrderSZYX EulerOrder = 16
-	// sZYZ defines a static rotation along the Z, Y, and Z axes (Since: 1.10)
-	EulerOrderSZYZ EulerOrder = 17
-	// rZYX defines a relative rotation along the Z, Y, and X axes (Since: 1.10)
-	EulerOrderRZYX EulerOrder = 18
-	// rXYX defines a relative rotation along the X, Y, and X axes (Since: 1.10)
-	EulerOrderRXYX EulerOrder = 19
-	// rYZX defines a relative rotation along the Y, Z, and X axes (Since: 1.10)
-	EulerOrderRYZX EulerOrder = 20
-	// rXZX defines a relative rotation along the X, Z, and X axes (Since: 1.10)
-	EulerOrderRXZX EulerOrder = 21
-	// rXZY defines a relative rotation along the X, Z, and Y axes (Since: 1.10)
-	EulerOrderRXZY EulerOrder = 22
-	// rYZY defines a relative rotation along the Y, Z, and Y axes (Since: 1.10)
-	EulerOrderRYZY EulerOrder = 23
-	// rZXY defines a relative rotation along the Z, X, and Y axes (Since: 1.10)
-	EulerOrderRZXY EulerOrder = 24
-	// rYXY defines a relative rotation along the Y, X, and Y axes (Since: 1.10)
-	EulerOrderRYXY EulerOrder = 25
-	// rYXZ defines a relative rotation along the Y, X, and Z axes (Since: 1.10)
-	EulerOrderRYXZ EulerOrder = 26
-	// rZXZ defines a relative rotation along the Z, X, and Z axes (Since: 1.10)
-	EulerOrderRZXZ EulerOrder = 27
-	// rXYZ defines a relative rotation along the X, Y, and Z axes (Since: 1.10)
-	EulerOrderRXYZ EulerOrder = 28
-	// rZYZ defines a relative rotation along the Z, Y, and Z axes (Since: 1.10)
-	EulerOrderRZYZ EulerOrder = 29
+	ZYX EulerOrder = 5
+	// SXYZ defines a static rotation along the X, Y, and Z axes (Since: 1.10)
+	SXYZ EulerOrder = 6
+	// SXYX defines a static rotation along the X, Y, and X axes (Since: 1.10)
+	SXYX EulerOrder = 7
+	// SXZY defines a static rotation along the X, Z, and Y axes (Since: 1.10)
+	SXZY EulerOrder = 8
+	// SXZX defines a static rotation along the X, Z, and X axes (Since: 1.10)
+	SXZX EulerOrder = 9
+	// SYZX defines a static rotation along the Y, Z, and X axes (Since: 1.10)
+	SYZX EulerOrder = 10
+	// SYZY defines a static rotation along the Y, Z, and Y axes (Since: 1.10)
+	SYZY EulerOrder = 11
+	// SYXZ defines a static rotation along the Y, X, and Z axes (Since: 1.10)
+	SYXZ EulerOrder = 12
+	// SYXY defines a static rotation along the Y, X, and Y axes (Since: 1.10)
+	SYXY EulerOrder = 13
+	// SZXY defines a static rotation along the Z, X, and Y axes (Since: 1.10)
+	SZXY EulerOrder = 14
+	// SZXZ defines a static rotation along the Z, X, and Z axes (Since: 1.10)
+	SZXZ EulerOrder = 15
+	// SZYX defines a static rotation along the Z, Y, and X axes (Since: 1.10)
+	SZYX EulerOrder = 16
+	// SZYZ defines a static rotation along the Z, Y, and Z axes (Since: 1.10)
+	SZYZ EulerOrder = 17
+	// RZYX defines a relative rotation along the Z, Y, and X axes (Since: 1.10)
+	RZYX EulerOrder = 18
+	// RXYX defines a relative rotation along the X, Y, and X axes (Since: 1.10)
+	RXYX EulerOrder = 19
+	// RYZX defines a relative rotation along the Y, Z, and X axes (Since: 1.10)
+	RYZX EulerOrder = 20
+	// RXZX defines a relative rotation along the X, Z, and X axes (Since: 1.10)
+	RXZX EulerOrder = 21
+	// RXZY defines a relative rotation along the X, Z, and Y axes (Since: 1.10)
+	RXZY EulerOrder = 22
+	// RYZY defines a relative rotation along the Y, Z, and Y axes (Since: 1.10)
+	RYZY EulerOrder = 23
+	// RZXY defines a relative rotation along the Z, X, and Y axes (Since: 1.10)
+	RZXY EulerOrder = 24
+	// RYXY defines a relative rotation along the Y, X, and Y axes (Since: 1.10)
+	RYXY EulerOrder = 25
+	// RYXZ defines a relative rotation along the Y, X, and Z axes (Since: 1.10)
+	RYXZ EulerOrder = 26
+	// RZXZ defines a relative rotation along the Z, X, and Z axes (Since: 1.10)
+	RZXZ EulerOrder = 27
+	// RXYZ defines a relative rotation along the X, Y, and Z axes (Since: 1.10)
+	RXYZ EulerOrder = 28
+	// RZYZ defines a relative rotation along the Z, Y, and Z axes (Since: 1.10)
+	RZYZ EulerOrder = 29
 )
 
 // Euler: describe a rotation using Euler angles.
@@ -161,7 +161,7 @@ func (a *Euler) Equal(b *Euler) bool {
 }
 
 // Free frees the resources allocated by graphene_euler_alloc().
-func (e *Euler) Free() {
+func (e *Euler) free() {
 	var _arg0 *C.graphene_euler_t // out
 
 	_arg0 = (*C.graphene_euler_t)(unsafe.Pointer(e))

@@ -93,7 +93,7 @@ type BufferedInputStreamOverrider interface {
 // that the buffer's size cannot be reduced below the size of the data within
 // the buffer.
 type BufferedInputStream interface {
-	gextras.Objector
+	FilterInputStream
 
 	// AsFilterInputStream casts the class to the FilterInputStream interface.
 	AsFilterInputStream() FilterInputStream

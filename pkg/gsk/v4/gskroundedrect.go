@@ -49,7 +49,7 @@ func (r *RoundedRect) Bounds() graphene.Rect {
 		var refTmpIn *C.graphene_rect_t
 		var refTmpOut *graphene.Rect
 
-		in0 := &r.bounds
+		in0 := &r.native.bounds
 		refTmpIn = in0
 
 		refTmpOut = (*graphene.Rect)(unsafe.Pointer(refTmpIn))
@@ -62,7 +62,7 @@ func (r *RoundedRect) Bounds() graphene.Rect {
 // Corner: the size of the 4 rounded corners
 func (r *RoundedRect) Corner() [4]graphene.Size {
 	var v [4]graphene.Size
-	v = *(*[4]graphene.Size)(unsafe.Pointer(&r.corner))
+	v = *(*[4]graphene.Size)(unsafe.Pointer(&r.native.corner))
 	return v
 }
 

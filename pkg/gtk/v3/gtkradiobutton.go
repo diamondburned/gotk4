@@ -104,7 +104,7 @@ type RadioButtonOverrider interface {
 // Inside the ToggleButton::toggled handler, gtk_toggle_button_get_active() can
 // be used to determine if the button has been selected or deselected.
 type RadioButton interface {
-	gextras.Objector
+	CheckButton
 
 	// AsCheckButton casts the class to the CheckButton interface.
 	AsCheckButton() CheckButton

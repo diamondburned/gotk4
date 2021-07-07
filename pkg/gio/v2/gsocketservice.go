@@ -67,7 +67,7 @@ type SocketServiceOverrider interface {
 // stop the service are thread-safe so these can be used from threads that
 // handle incoming clients.
 type SocketService interface {
-	gextras.Objector
+	SocketListener
 
 	// AsSocketListener casts the class to the SocketListener interface.
 	AsSocketListener() SocketListener

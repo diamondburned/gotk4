@@ -74,7 +74,7 @@ func marshalShortcutType(p uintptr) (interface{}, error) {
 // ShortcutsShortcut represents a single keyboard shortcut or gesture with a
 // short text. This widget is only meant to be used with ShortcutsWindow.
 type ShortcutsShortcut interface {
-	gextras.Objector
+	Box
 
 	// AsBox casts the class to the Box interface.
 	AsBox() Box

@@ -85,7 +85,7 @@ func marshalEventControllerScrollFlags(p uintptr) (interface{}, error) {
 // scrolling with two X/Y velocity arguments that are consistent with the motion
 // that was received.
 type EventControllerScroll interface {
-	gextras.Objector
+	EventController
 
 	// AsEventController casts the class to the EventController interface.
 	AsEventController() EventController

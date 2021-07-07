@@ -115,7 +115,7 @@ func NewReturnValue(in, out string, dir ConversionDirection, ret gir.ReturnValue
 // The struct is assumed to have a native field.
 func NewFieldValue(recv, out string, field gir.Field) ConversionValue {
 	return ConversionValue{
-		InName:         fmt.Sprintf("%s.%s", recv, strcases.CGoField(field.Name)),
+		InName:         fmt.Sprintf("%s.native.%s", recv, strcases.CGoField(field.Name)),
 		OutName:        out,
 		Direction:      ConvertCToGo,
 		ParameterIndex: UnknownValueIndex,

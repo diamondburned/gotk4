@@ -355,7 +355,7 @@ func (r *RecentData) Native() unsafe.Pointer {
 // resource to be displayed, or nil;
 func (r *RecentData) DisplayName() string {
 	var v string // out
-	v = C.GoString(r.display_name)
+	v = C.GoString(r.native.display_name)
 	return v
 }
 
@@ -363,14 +363,14 @@ func (r *RecentData) DisplayName() string {
 // resource, or nil;
 func (r *RecentData) Description() string {
 	var v string // out
-	v = C.GoString(r.description)
+	v = C.GoString(r.native.description)
 	return v
 }
 
 // MIMEType: the MIME type of the resource;
 func (r *RecentData) MIMEType() string {
 	var v string // out
-	v = C.GoString(r.mime_type)
+	v = C.GoString(r.native.mime_type)
 	return v
 }
 
@@ -378,7 +378,7 @@ func (r *RecentData) MIMEType() string {
 // resource;
 func (r *RecentData) AppName() string {
 	var v string // out
-	v = C.GoString(r.app_name)
+	v = C.GoString(r.native.app_name)
 	return v
 }
 
@@ -387,7 +387,7 @@ func (r *RecentData) AppName() string {
 // URI respectively when the command line is retrieved;
 func (r *RecentData) AppExec() string {
 	var v string // out
-	v = C.GoString(r.app_exec)
+	v = C.GoString(r.native.app_exec)
 	return v
 }
 
@@ -397,11 +397,11 @@ func (r *RecentData) Groups() []string {
 	{
 		var i int
 		var z *C.char
-		for p := r.groups; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+		for p := r.native.groups; *p != z; p = &unsafe.Slice(p, i+1)[i] {
 			i++
 		}
 
-		src := unsafe.Slice(r.groups, i)
+		src := unsafe.Slice(r.native.groups, i)
 		v = make([]string, i)
 		for i := range src {
 			v[i] = C.GoString(src[i])
@@ -414,7 +414,7 @@ func (r *RecentData) Groups() []string {
 // that have registered it or not.
 func (r *RecentData) IsPrivate() bool {
 	var v bool // out
-	if r.is_private != 0 {
+	if r.native.is_private != 0 {
 		v = true
 	}
 	return v

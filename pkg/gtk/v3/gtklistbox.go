@@ -212,7 +212,7 @@ type ListBoxOverrider interface {
 // single CSS node named row. The row nodes get the .activatable style class
 // added when appropriate.
 type ListBox interface {
-	gextras.Objector
+	Container
 
 	// AsContainer casts the class to the Container interface.
 	AsContainer() Container
@@ -4402,7 +4402,7 @@ type ListBoxRowOverrider interface {
 }
 
 type ListBoxRow interface {
-	gextras.Objector
+	Bin
 
 	// AsBin casts the class to the Bin interface.
 	AsBin() Bin

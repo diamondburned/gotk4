@@ -117,7 +117,7 @@ func init() {
 // GtkMenuButton has a single CSS node with name button. To differentiate it
 // from a plain Button, it gets the .popup style class.
 type MenuButton interface {
-	gextras.Objector
+	ToggleButton
 
 	// AsToggleButton casts the class to the ToggleButton interface.
 	AsToggleButton() ToggleButton

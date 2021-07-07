@@ -39,7 +39,7 @@ func init() {
 // window. It is useful since it allows you to catch events for widgets which do
 // not have their own window.
 type EventBox interface {
-	gextras.Objector
+	Bin
 
 	// AsBin casts the class to the Bin interface.
 	AsBin() Bin

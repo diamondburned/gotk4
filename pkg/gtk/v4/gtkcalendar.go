@@ -69,7 +69,7 @@ func init() {
 //
 // Marked day labels get the :selected state assigned.
 type Calendar interface {
-	gextras.Objector
+	Widget
 
 	// AsWidget casts the class to the Widget interface.
 	AsWidget() Widget

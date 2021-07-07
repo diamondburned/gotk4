@@ -55,7 +55,7 @@ func init() {
 // BlendNode: render node applying a blending function between its two child
 // nodes.
 type BlendNode interface {
-	gextras.Objector
+	RenderNode
 
 	// AsRenderNode casts the class to the RenderNode interface.
 	AsRenderNode() RenderNode
@@ -226,7 +226,7 @@ func (n blendNode) TopChild() RenderNode {
 
 // BlurNode: render node applying a blur effect to its single child.
 type BlurNode interface {
-	gextras.Objector
+	RenderNode
 
 	// AsRenderNode casts the class to the RenderNode interface.
 	AsRenderNode() RenderNode
@@ -377,7 +377,7 @@ func (n blurNode) Radius() float32 {
 
 // BorderNode: render node for a border.
 type BorderNode interface {
-	gextras.Objector
+	RenderNode
 
 	// AsRenderNode casts the class to the RenderNode interface.
 	AsRenderNode() RenderNode
@@ -550,7 +550,7 @@ func (n borderNode) Widths() [4]float32 {
 
 // CairoNode: render node for a Cairo surface.
 type CairoNode interface {
-	gextras.Objector
+	RenderNode
 
 	// AsRenderNode casts the class to the RenderNode interface.
 	AsRenderNode() RenderNode
@@ -710,7 +710,7 @@ func (n cairoNode) Surface() *cairo.Surface {
 
 // ClipNode: render node applying a rectangular clip to its single child node.
 type ClipNode interface {
-	gextras.Objector
+	RenderNode
 
 	// AsRenderNode casts the class to the RenderNode interface.
 	AsRenderNode() RenderNode
@@ -863,7 +863,7 @@ func (n clipNode) Clip() *graphene.Rect {
 // ColorMatrixNode: render node controlling the color matrix of its single child
 // node.
 type ColorMatrixNode interface {
-	gextras.Objector
+	RenderNode
 
 	// AsRenderNode casts the class to the RenderNode interface.
 	AsRenderNode() RenderNode
@@ -1041,7 +1041,7 @@ func (n colorMatrixNode) ColorOffset() *graphene.Vec4 {
 
 // ColorNode: render node for a solid color.
 type ColorNode interface {
-	gextras.Objector
+	RenderNode
 
 	// AsRenderNode casts the class to the RenderNode interface.
 	AsRenderNode() RenderNode
@@ -1176,7 +1176,7 @@ func (n colorNode) Color() *gdk.RGBA {
 
 // ConicGradientNode: render node for a conic gradient.
 type ConicGradientNode interface {
-	gextras.Objector
+	RenderNode
 
 	// AsRenderNode casts the class to the RenderNode interface.
 	AsRenderNode() RenderNode
@@ -1377,7 +1377,7 @@ func (n conicGradientNode) Rotation() float32 {
 
 // ContainerNode: render node that can contain other render nodes.
 type ContainerNode interface {
-	gextras.Objector
+	RenderNode
 
 	// AsRenderNode casts the class to the RenderNode interface.
 	AsRenderNode() RenderNode
@@ -1540,7 +1540,7 @@ func (n containerNode) NChildren() uint {
 
 // CrossFadeNode: render node cross fading between two child nodes.
 type CrossFadeNode interface {
-	gextras.Objector
+	RenderNode
 
 	// AsRenderNode casts the class to the RenderNode interface.
 	AsRenderNode() RenderNode
@@ -1714,7 +1714,7 @@ func (n crossFadeNode) StartChild() RenderNode {
 // DebugNode: render node that emits a debugging message when drawing its child
 // node.
 type DebugNode interface {
-	gextras.Objector
+	RenderNode
 
 	// AsRenderNode casts the class to the RenderNode interface.
 	AsRenderNode() RenderNode
@@ -1868,7 +1868,7 @@ func (n debugNode) Message() string {
 
 // GLShaderNode: render node using a GL shader when drawing its children nodes.
 type GLShaderNode interface {
-	gextras.Objector
+	RenderNode
 
 	// AsRenderNode casts the class to the RenderNode interface.
 	AsRenderNode() RenderNode
@@ -2020,7 +2020,7 @@ func (n glShaderNode) Shader() GLShader {
 
 // InsetShadowNode: render node for an inset shadow.
 type InsetShadowNode interface {
-	gextras.Objector
+	RenderNode
 
 	// AsRenderNode casts the class to the RenderNode interface.
 	AsRenderNode() RenderNode
@@ -2248,7 +2248,7 @@ func (n insetShadowNode) Spread() float32 {
 
 // LinearGradientNode: render node for a linear gradient.
 type LinearGradientNode interface {
-	gextras.Objector
+	RenderNode
 
 	// AsRenderNode casts the class to the RenderNode interface.
 	AsRenderNode() RenderNode
@@ -2424,7 +2424,7 @@ func (n linearGradientNode) Start() *graphene.Point {
 
 // OpacityNode: render node controlling the opacity of its single child node.
 type OpacityNode interface {
-	gextras.Objector
+	RenderNode
 
 	// AsRenderNode casts the class to the RenderNode interface.
 	AsRenderNode() RenderNode
@@ -2576,7 +2576,7 @@ func (n opacityNode) Opacity() float32 {
 
 // OutsetShadowNode: render node for an outset shadow.
 type OutsetShadowNode interface {
-	gextras.Objector
+	RenderNode
 
 	// AsRenderNode casts the class to the RenderNode interface.
 	AsRenderNode() RenderNode
@@ -2804,7 +2804,7 @@ func (n outsetShadowNode) Spread() float32 {
 
 // RadialGradientNode: render node for a radial gradient.
 type RadialGradientNode interface {
-	gextras.Objector
+	RenderNode
 
 	// AsRenderNode casts the class to the RenderNode interface.
 	AsRenderNode() RenderNode
@@ -3039,7 +3039,7 @@ func (n radialGradientNode) Vradius() float32 {
 
 // RepeatNode: render node repeating its single child node.
 type RepeatNode interface {
-	gextras.Objector
+	RenderNode
 
 	// AsRenderNode casts the class to the RenderNode interface.
 	AsRenderNode() RenderNode
@@ -3193,7 +3193,7 @@ func (n repeatNode) ChildBounds() *graphene.Rect {
 
 // RepeatingLinearGradientNode: render node for a repeating linear gradient.
 type RepeatingLinearGradientNode interface {
-	gextras.Objector
+	RenderNode
 
 	// AsRenderNode casts the class to the RenderNode interface.
 	AsRenderNode() RenderNode
@@ -3317,7 +3317,7 @@ func (n repeatingLinearGradientNode) WriteToFile(filename string) error {
 
 // RepeatingRadialGradientNode: render node for a repeating radial gradient.
 type RepeatingRadialGradientNode interface {
-	gextras.Objector
+	RenderNode
 
 	// AsRenderNode casts the class to the RenderNode interface.
 	AsRenderNode() RenderNode
@@ -3451,7 +3451,7 @@ func (n repeatingRadialGradientNode) WriteToFile(filename string) error {
 // RoundedClipNode: render node applying a rounded rectangle clip to its single
 // child.
 type RoundedClipNode interface {
-	gextras.Objector
+	RenderNode
 
 	// AsRenderNode casts the class to the RenderNode interface.
 	AsRenderNode() RenderNode
@@ -3605,7 +3605,7 @@ func (n roundedClipNode) Clip() *RoundedRect {
 // ShadowNode: render node drawing one or more shadows behind its single child
 // node.
 type ShadowNode interface {
-	gextras.Objector
+	RenderNode
 
 	// AsRenderNode casts the class to the RenderNode interface.
 	AsRenderNode() RenderNode
@@ -3778,7 +3778,7 @@ func (n shadowNode) Shadow(i uint) *Shadow {
 
 // TextNode: render node drawing a set of glyphs.
 type TextNode interface {
-	gextras.Objector
+	RenderNode
 
 	// AsRenderNode casts the class to the RenderNode interface.
 	AsRenderNode() RenderNode
@@ -3988,7 +3988,7 @@ func (n textNode) HasColorGlyphs() bool {
 
 // TextureNode: render node for a Texture.
 type TextureNode interface {
-	gextras.Objector
+	RenderNode
 
 	// AsRenderNode casts the class to the RenderNode interface.
 	AsRenderNode() RenderNode
@@ -4125,7 +4125,7 @@ func (n textureNode) Texture() gdk.Texture {
 // TransformNode: render node applying a `GskTransform` to its single child
 // node.
 type TransformNode interface {
-	gextras.Objector
+	RenderNode
 
 	// AsRenderNode casts the class to the RenderNode interface.
 	AsRenderNode() RenderNode

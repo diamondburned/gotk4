@@ -33,7 +33,7 @@ func init() {
 // updated to reflect focus changes inside the widget hierarchy that is rooted
 // at the controllers widget.
 type EventControllerFocus interface {
-	gextras.Objector
+	EventController
 
 	// AsEventController casts the class to the EventController interface.
 	AsEventController() EventController

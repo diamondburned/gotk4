@@ -104,7 +104,7 @@ type ToggleButtonOverrider interface {
 //
 // } “`
 type ToggleButton interface {
-	gextras.Objector
+	Button
 
 	// AsButton casts the class to the Button interface.
 	AsButton() Button

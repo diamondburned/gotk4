@@ -25,7 +25,7 @@ func init() {
 }
 
 type X11AppLaunchContext interface {
-	gextras.Objector
+	gdk.AppLaunchContext
 
 	// AsAppLaunchContext casts the class to the gdk.AppLaunchContext interface.
 	AsAppLaunchContext() gdk.AppLaunchContext

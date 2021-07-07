@@ -92,7 +92,7 @@ type FileOutputStreamOverrider interface {
 // output stream supports truncating, use g_seekable_can_truncate(). To truncate
 // a file output stream, use g_seekable_truncate().
 type FileOutputStream interface {
-	gextras.Objector
+	OutputStream
 
 	// AsOutputStream casts the class to the OutputStream interface.
 	AsOutputStream() OutputStream

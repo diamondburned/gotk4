@@ -40,7 +40,7 @@ type ToggleActionOverrider interface {
 // ToggleAction corresponds roughly to a CheckMenuItem. It has an “active” state
 // specifying whether the action has been checked or not.
 type ToggleAction interface {
-	gextras.Objector
+	Action
 
 	// AsAction casts the class to the Action interface.
 	AsAction() Action

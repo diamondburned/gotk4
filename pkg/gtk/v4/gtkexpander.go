@@ -102,7 +102,7 @@ func init() {
 //
 // `GtkExpander` uses the GTK_ACCESSIBLE_ROLE_BUTTON role.
 type Expander interface {
-	gextras.Objector
+	Widget
 
 	// AsWidget casts the class to the Widget interface.
 	AsWidget() Widget

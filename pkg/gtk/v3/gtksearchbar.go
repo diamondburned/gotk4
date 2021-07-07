@@ -60,7 +60,7 @@ func init() {
 // A simple example
 // (https://gitlab.gnome.org/GNOME/gtk/blob/gtk-3-24/examples/search-bar.c)
 type SearchBar interface {
-	gextras.Objector
+	Bin
 
 	// AsBin casts the class to the Bin interface.
 	AsBin() Bin

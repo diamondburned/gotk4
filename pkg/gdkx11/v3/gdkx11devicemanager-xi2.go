@@ -24,7 +24,7 @@ func init() {
 }
 
 type X11DeviceManagerXI2 interface {
-	gextras.Objector
+	X11DeviceManagerCore
 
 	// AsX11DeviceManagerCore casts the class to the X11DeviceManagerCore interface.
 	AsX11DeviceManagerCore() X11DeviceManagerCore

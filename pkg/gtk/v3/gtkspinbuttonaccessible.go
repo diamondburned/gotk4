@@ -27,7 +27,7 @@ func init() {
 }
 
 type SpinButtonAccessible interface {
-	gextras.Objector
+	EntryAccessible
 
 	// AsEntryAccessible casts the class to the EntryAccessible interface.
 	AsEntryAccessible() EntryAccessible

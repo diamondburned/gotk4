@@ -31,7 +31,7 @@ func init() {
 //
 // The CellRendererProgress cell renderer was added in GTK+ 2.6.
 type CellRendererProgress interface {
-	gextras.Objector
+	CellRenderer
 
 	// AsCellRenderer casts the class to the CellRenderer interface.
 	AsCellRenderer() CellRenderer

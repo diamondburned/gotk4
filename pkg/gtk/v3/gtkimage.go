@@ -125,7 +125,7 @@ func marshalImageType(p uintptr) (interface{}, error) {
 // GtkImage has a single CSS node with the name image. The style classes may
 // appear on image CSS nodes: .icon-dropshadow, .lowres-icon.
 type Image interface {
-	gextras.Objector
+	Misc
 
 	// AsMisc casts the class to the Misc interface.
 	AsMisc() Misc

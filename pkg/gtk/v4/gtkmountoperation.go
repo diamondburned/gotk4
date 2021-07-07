@@ -38,7 +38,7 @@ func init() {
 // When necessary, `GtkMountOperation` shows dialogs to let the user enter
 // passwords, ask questions or show processes blocking unmount.
 type MountOperation interface {
-	gextras.Objector
+	gio.MountOperation
 
 	// AsMountOperation casts the class to the gio.MountOperation interface.
 	AsMountOperation() gio.MountOperation

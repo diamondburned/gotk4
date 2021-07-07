@@ -27,7 +27,7 @@ func init() {
 }
 
 type RadioMenuItemAccessible interface {
-	gextras.Objector
+	CheckMenuItemAccessible
 
 	// AsCheckMenuItemAccessible casts the class to the CheckMenuItemAccessible interface.
 	AsCheckMenuItemAccessible() CheckMenuItemAccessible

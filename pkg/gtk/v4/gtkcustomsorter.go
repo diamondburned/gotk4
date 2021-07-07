@@ -25,7 +25,7 @@ func init() {
 // CustomSorter: `GtkCustomSorter` is a `GtkSorter` implementation that sorts
 // via a callback function.
 type CustomSorter interface {
-	gextras.Objector
+	Sorter
 
 	// AsSorter casts the class to the Sorter interface.
 	AsSorter() Sorter

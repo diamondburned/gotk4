@@ -34,7 +34,7 @@ func init() {
 // The main use case for `GtkShortcutLabel` is inside a
 // [class@Gtk.ShortcutsWindow].
 type ShortcutLabel interface {
-	gextras.Objector
+	Widget
 
 	// AsWidget casts the class to the Widget interface.
 	AsWidget() Widget

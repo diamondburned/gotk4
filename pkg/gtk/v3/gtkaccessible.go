@@ -50,7 +50,7 @@ type AccessibleOverrider interface {
 // corresponding acccessible implementation, override the get_accessible vfunc
 // in WidgetClass.
 type Accessible interface {
-	gextras.Objector
+	atk.Object
 
 	// AsObject casts the class to the atk.Object interface.
 	AsObject() atk.Object

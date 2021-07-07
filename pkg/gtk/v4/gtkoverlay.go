@@ -62,7 +62,7 @@ func init() {
 // whose alignments cause them to be positioned at an edge get the style classes
 // “.left”, “.right”, “.top”, and/or “.bottom” according to their position.
 type Overlay interface {
-	gextras.Objector
+	Widget
 
 	// AsWidget casts the class to the Widget interface.
 	AsWidget() Widget

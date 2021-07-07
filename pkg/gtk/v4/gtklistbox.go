@@ -203,7 +203,7 @@ func gotk4_ListBoxUpdateHeaderFunc(arg0 *C.GtkListBoxRow, arg1 *C.GtkListBoxRow,
 // `GtkListBox` uses the GTK_ACCESSIBLE_ROLE_LIST role and `GtkListBoxRow` uses
 // the GTK_ACCESSIBLE_ROLE_LIST_ITEM role.
 type ListBox interface {
-	gextras.Objector
+	Widget
 
 	// AsWidget casts the class to the Widget interface.
 	AsWidget() Widget
@@ -2879,7 +2879,7 @@ type ListBoxRowOverrider interface {
 // ListBoxRow: `GtkListBoxRow` is the kind of widget that can be added to a
 // `GtkListBox`.
 type ListBoxRow interface {
-	gextras.Objector
+	Widget
 
 	// AsWidget casts the class to the Widget interface.
 	AsWidget() Widget

@@ -51,7 +51,7 @@ func init() {
 //
 // GtkCellView has a single CSS node with name cellview.
 type CellView interface {
-	gextras.Objector
+	Widget
 
 	// AsWidget casts the class to the Widget interface.
 	AsWidget() Widget

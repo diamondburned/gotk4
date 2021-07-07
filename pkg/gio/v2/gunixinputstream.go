@@ -47,7 +47,7 @@ func init() {
 // interfaces, thus you have to use the `gio-unix-2.0.pc` pkg-config file when
 // using it.
 type UnixInputStream interface {
-	gextras.Objector
+	InputStream
 
 	// AsInputStream casts the class to the InputStream interface.
 	AsInputStream() InputStream

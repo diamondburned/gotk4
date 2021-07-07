@@ -27,7 +27,7 @@ func init() {
 }
 
 type X11Cursor interface {
-	gextras.Objector
+	gdk.Cursor
 
 	// AsCursor casts the class to the gdk.Cursor interface.
 	AsCursor() gdk.Cursor

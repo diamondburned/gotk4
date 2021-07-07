@@ -71,7 +71,7 @@ func init() {
 // end of the GtkProgressBar. The .osd class on the progressbar node is for use
 // in overlays like the one Epiphany has for page loading progress.
 type ProgressBar interface {
-	gextras.Objector
+	Widget
 
 	// AsWidget casts the class to the Widget interface.
 	AsWidget() Widget

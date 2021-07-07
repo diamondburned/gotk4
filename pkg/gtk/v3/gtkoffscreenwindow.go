@@ -52,7 +52,7 @@ func init() {
 // When contained offscreen widgets are redrawn, GtkOffscreenWindow will emit a
 // Widget::damage-event signal.
 type OffscreenWindow interface {
-	gextras.Objector
+	Window
 
 	// AsWindow casts the class to the Window interface.
 	AsWindow() Window

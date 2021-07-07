@@ -43,7 +43,7 @@ func init() {
 // the [class@Gdk.Paintable] API and a media framework such as Gstreamer
 // directly.
 type Video interface {
-	gextras.Objector
+	Widget
 
 	// AsWidget casts the class to the Widget interface.
 	AsWidget() Widget

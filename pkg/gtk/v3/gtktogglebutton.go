@@ -105,7 +105,7 @@ type ToggleButtonOverrider interface {
 //      gtk_widget_show_all (window);
 //    }
 type ToggleButton interface {
-	gextras.Objector
+	Button
 
 	// AsButton casts the class to the Button interface.
 	AsButton() Button

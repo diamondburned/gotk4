@@ -98,7 +98,7 @@ type FileIOStreamOverrider interface {
 // implementation of #GSeekable just call into the same operations on the output
 // stream.
 type FileIOStream interface {
-	gextras.Objector
+	IOStream
 
 	// AsIOStream casts the class to the IOStream interface.
 	AsIOStream() IOStream

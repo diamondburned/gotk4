@@ -53,7 +53,7 @@ func init() {
 //
 // `GtkSwitch` uses the GTK_ACCESSIBLE_ROLE_SWITCH role.
 type Switch interface {
-	gextras.Objector
+	Widget
 
 	// AsWidget casts the class to the Widget interface.
 	AsWidget() Widget

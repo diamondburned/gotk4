@@ -38,7 +38,7 @@ func init() {
 // attached to the same row or column; however, if you only ever need a single
 // row or column, you should consider using `GtkBoxLayout`.
 type GridLayout interface {
-	gextras.Objector
+	LayoutManager
 
 	// AsLayoutManager casts the class to the LayoutManager interface.
 	AsLayoutManager() LayoutManager
@@ -353,7 +353,7 @@ func (g gridLayout) SetRowSpacing(spacing uint) {
 
 // GridLayoutChild: `GtkLayoutChild` subclass for children in a `GtkGridLayout`.
 type GridLayoutChild interface {
-	gextras.Objector
+	LayoutChild
 
 	// AsLayoutChild casts the class to the LayoutChild interface.
 	AsLayoutChild() LayoutChild

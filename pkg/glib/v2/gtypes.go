@@ -109,14 +109,14 @@ func (t *TimeVal) Native() unsafe.Pointer {
 // TvSec: seconds
 func (t *TimeVal) TvSec() int32 {
 	var v int32 // out
-	v = int32(t.tv_sec)
+	v = int32(t.native.tv_sec)
 	return v
 }
 
 // TvUsec: microseconds
 func (t *TimeVal) TvUsec() int32 {
 	var v int32 // out
-	v = int32(t.tv_usec)
+	v = int32(t.native.tv_usec)
 	return v
 }
 

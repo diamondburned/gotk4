@@ -50,7 +50,7 @@ func init() {
 //
 // GtkSeparatorToolItem has a single CSS node with name separator.
 type SeparatorToolItem interface {
-	gextras.Objector
+	ToolItem
 
 	// AsToolItem casts the class to the ToolItem interface.
 	AsToolItem() ToolItem

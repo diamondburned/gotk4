@@ -57,7 +57,7 @@ func init() {
 // `GtkShortcutAction`. See [ctor@Gtk.ShortcutTrigger.parse_string] to learn
 // more about the syntax for triggers.
 type ShortcutController interface {
-	gextras.Objector
+	EventController
 
 	// AsEventController casts the class to the EventController interface.
 	AsEventController() EventController

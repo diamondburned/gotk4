@@ -89,7 +89,7 @@ func init() {
 // are using the GTK_ACCESSIBLE_ROLE_ROW role, and individual cells are using
 // the GTK_ACCESSIBLE_ROLE_GRID_CELL role
 type ColumnView interface {
-	gextras.Objector
+	Widget
 
 	// AsWidget casts the class to the Widget interface.
 	AsWidget() Widget

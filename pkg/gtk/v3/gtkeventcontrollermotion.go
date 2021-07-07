@@ -29,7 +29,7 @@ func init() {
 //
 // This object was added in 3.24.
 type EventControllerMotion interface {
-	gextras.Objector
+	EventController
 
 	// AsEventController casts the class to the EventController interface.
 	AsEventController() EventController

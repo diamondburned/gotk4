@@ -36,7 +36,7 @@ func init() {
 // used files in the popup menu, use a RecentAction as the action for a
 // <toolitem> element.
 type RecentAction interface {
-	gextras.Objector
+	Action
 
 	// AsAction casts the class to the Action interface.
 	AsAction() Action

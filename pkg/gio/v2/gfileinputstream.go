@@ -77,7 +77,7 @@ type FileInputStreamOverrider interface {
 // g_seekable_can_seek(). To position a file input stream, use
 // g_seekable_seek().
 type FileInputStream interface {
-	gextras.Objector
+	InputStream
 
 	// AsInputStream casts the class to the InputStream interface.
 	AsInputStream() InputStream

@@ -28,7 +28,7 @@ func init() {
 //
 // The provided signals just relay the basic information of the stylus events.
 type GestureStylus interface {
-	gextras.Objector
+	GestureSingle
 
 	// AsGestureSingle casts the class to the GestureSingle interface.
 	AsGestureSingle() GestureSingle

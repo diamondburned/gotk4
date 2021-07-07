@@ -156,7 +156,7 @@ type WindowOverrider interface {
 // GtkWindow adds the .titlebar and .default-decoration style classes to the
 // widget that is added as a titlebar child.
 type Window interface {
-	gextras.Objector
+	Bin
 
 	// AsBin casts the class to the Bin interface.
 	AsBin() Bin

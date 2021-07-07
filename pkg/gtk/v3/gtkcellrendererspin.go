@@ -40,7 +40,7 @@ func init() {
 //
 // The CellRendererSpin cell renderer was added in GTK+ 2.10.
 type CellRendererSpin interface {
-	gextras.Objector
+	CellRendererText
 
 	// AsCellRendererText casts the class to the CellRendererText interface.
 	AsCellRendererText() CellRendererText

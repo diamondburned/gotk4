@@ -31,7 +31,7 @@ func init() {
 //
 // The center widget is centered regarding the full width of the layout's.
 type CenterLayout interface {
-	gextras.Objector
+	LayoutManager
 
 	// AsLayoutManager casts the class to the LayoutManager interface.
 	AsLayoutManager() LayoutManager

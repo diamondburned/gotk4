@@ -27,7 +27,7 @@ func init() {
 }
 
 type RadioButtonAccessible interface {
-	gextras.Objector
+	ToggleButtonAccessible
 
 	// AsToggleButtonAccessible casts the class to the ToggleButtonAccessible interface.
 	AsToggleButtonAccessible() ToggleButtonAccessible

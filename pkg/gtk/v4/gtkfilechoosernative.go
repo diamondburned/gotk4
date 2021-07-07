@@ -164,7 +164,7 @@ func init() {
 //
 // * Shortcut folders.
 type FileChooserNative interface {
-	gextras.Objector
+	NativeDialog
 
 	// AsNativeDialog casts the class to the NativeDialog interface.
 	AsNativeDialog() NativeDialog

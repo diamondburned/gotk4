@@ -187,7 +187,7 @@ type FlowBoxOverrider interface {
 // single CSS node with name flowboxchild. For rubberband selection, a subnode
 // with name rubberband is used.
 type FlowBox interface {
-	gextras.Objector
+	Container
 
 	// AsContainer casts the class to the Container interface.
 	AsContainer() Container
@@ -4479,7 +4479,7 @@ type FlowBoxChildOverrider interface {
 }
 
 type FlowBoxChild interface {
-	gextras.Objector
+	Bin
 
 	// AsBin casts the class to the Bin interface.
 	AsBin() Bin

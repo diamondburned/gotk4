@@ -43,7 +43,7 @@ func X11GetServerTime(surface X11Surface) uint32 {
 }
 
 type X11Surface interface {
-	gextras.Objector
+	gdk.Surface
 
 	// AsSurface casts the class to the gdk.Surface interface.
 	AsSurface() gdk.Surface

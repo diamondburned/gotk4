@@ -27,7 +27,7 @@ func init() {
 }
 
 type MenuAccessible interface {
-	gextras.Objector
+	MenuShellAccessible
 
 	// AsMenuShellAccessible casts the class to the MenuShellAccessible interface.
 	AsMenuShellAccessible() MenuShellAccessible

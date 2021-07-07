@@ -44,7 +44,7 @@ func X11GetServerTime(window X11Window) uint32 {
 }
 
 type X11Window interface {
-	gextras.Objector
+	gdk.Window
 
 	// AsWindow casts the class to the gdk.Window interface.
 	AsWindow() gdk.Window

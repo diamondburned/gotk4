@@ -58,7 +58,7 @@ type ThreadedSocketServiceOverrider interface {
 // As with Service, you may connect to SocketService::run, or subclass and
 // override the default handler.
 type ThreadedSocketService interface {
-	gextras.Objector
+	SocketService
 
 	// AsSocketService casts the class to the SocketService interface.
 	AsSocketService() SocketService

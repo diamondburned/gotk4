@@ -36,7 +36,7 @@ func init() {
 //
 // All velocities are reported in pixels/sec units.
 type GestureSwipe interface {
-	gextras.Objector
+	GestureSingle
 
 	// AsGestureSingle casts the class to the GestureSingle interface.
 	AsGestureSingle() GestureSingle

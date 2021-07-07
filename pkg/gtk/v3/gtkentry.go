@@ -136,7 +136,7 @@ type EntryOverrider interface {
 // just a single handle for the text cursor, it gets the style class
 // .insertion-cursor.
 type Entry interface {
-	gextras.Objector
+	Widget
 
 	// AsWidget casts the class to the Widget interface.
 	AsWidget() Widget

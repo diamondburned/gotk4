@@ -32,7 +32,7 @@ func init() {
 // can be extracted through [method@Gtk.GestureDrag.get_offset] and
 // [method@Gtk.GestureDrag.get_start_point].
 type GestureDrag interface {
-	gextras.Objector
+	GestureSingle
 
 	// AsGestureSingle casts the class to the GestureSingle interface.
 	AsGestureSingle() GestureSingle

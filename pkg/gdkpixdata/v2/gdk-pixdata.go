@@ -146,7 +146,7 @@ func (p *Pixdata) Native() unsafe.Pointer {
 // `GDK_PIXBUF_MAGIC_NUMBER` here
 func (p *Pixdata) Magic() uint32 {
 	var v uint32 // out
-	v = uint32(p.magic)
+	v = uint32(p.native.magic)
 	return v
 }
 
@@ -154,7 +154,7 @@ func (p *Pixdata) Magic() uint32 {
 // `GDK_PIXDATA_HEADER_LENGTH` plus the length of `pixel_data`
 func (p *Pixdata) Length() int32 {
 	var v int32 // out
-	v = int32(p.length)
+	v = int32(p.native.length)
 	return v
 }
 
@@ -162,28 +162,28 @@ func (p *Pixdata) Length() int32 {
 // `GdkPixdataType`
 func (p *Pixdata) PixdataType() uint32 {
 	var v uint32 // out
-	v = uint32(p.pixdata_type)
+	v = uint32(p.native.pixdata_type)
 	return v
 }
 
 // Rowstride: distance in bytes between rows
 func (p *Pixdata) Rowstride() uint32 {
 	var v uint32 // out
-	v = uint32(p.rowstride)
+	v = uint32(p.native.rowstride)
 	return v
 }
 
 // Width of the image in pixels
 func (p *Pixdata) Width() uint32 {
 	var v uint32 // out
-	v = uint32(p.width)
+	v = uint32(p.native.width)
 	return v
 }
 
 // Height of the image in pixels
 func (p *Pixdata) Height() uint32 {
 	var v uint32 // out
-	v = uint32(p.height)
+	v = uint32(p.native.height)
 	return v
 }
 

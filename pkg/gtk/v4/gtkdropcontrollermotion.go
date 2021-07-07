@@ -32,7 +32,7 @@ func init() {
 // This controller is not able to accept drops, use [class@Gtk.DropTarget] for
 // that purpose.
 type DropControllerMotion interface {
-	gextras.Objector
+	EventController
 
 	// AsEventController casts the class to the EventController interface.
 	AsEventController() EventController

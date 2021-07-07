@@ -60,7 +60,7 @@ type SocketOverrider interface {
 // All the logic related to those functions will be implemented by the IPC
 // layer.
 type Socket interface {
-	gextras.Objector
+	Object
 
 	// AsObject casts the class to the Object interface.
 	AsObject() Object

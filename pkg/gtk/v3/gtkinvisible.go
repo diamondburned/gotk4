@@ -39,7 +39,7 @@ func init() {
 // It is used for reliable pointer grabs and selection handling in the code for
 // drag-and-drop.
 type Invisible interface {
-	gextras.Objector
+	Widget
 
 	// AsWidget casts the class to the Widget interface.
 	AsWidget() Widget

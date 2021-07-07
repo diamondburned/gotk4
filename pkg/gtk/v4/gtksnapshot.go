@@ -41,7 +41,7 @@ func init() {
 // GtkWidgetClass.snapshot() vfunc. If you need to create your own
 // `GtkSnapshot`, use [ctor@Gtk.Snapshot.new].
 type Snapshot interface {
-	gextras.Objector
+	gdk.Snapshot
 
 	// AsSnapshot casts the class to the gdk.Snapshot interface.
 	AsSnapshot() gdk.Snapshot

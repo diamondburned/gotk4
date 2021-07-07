@@ -28,7 +28,7 @@ func init() {
 }
 
 type TreeViewAccessible interface {
-	gextras.Objector
+	ContainerAccessible
 
 	// AsContainerAccessible casts the class to the ContainerAccessible interface.
 	AsContainerAccessible() ContainerAccessible

@@ -219,7 +219,7 @@ func (a *ActionEntry) Native() unsafe.Pointer {
 // Name: the name of the action
 func (a *ActionEntry) Name() string {
 	var v string // out
-	v = C.GoString(a.name)
+	v = C.GoString(a.native.name)
 	return v
 }
 
@@ -228,7 +228,7 @@ func (a *ActionEntry) Name() string {
 // no parameter)
 func (a *ActionEntry) ParameterType() string {
 	var v string // out
-	v = C.GoString(a.parameter_type)
+	v = C.GoString(a.native.parameter_type)
 	return v
 }
 
@@ -238,6 +238,6 @@ func (a *ActionEntry) ParameterType() string {
 // actions should give nil here.
 func (a *ActionEntry) State() string {
 	var v string // out
-	v = C.GoString(a.state)
+	v = C.GoString(a.native.state)
 	return v
 }

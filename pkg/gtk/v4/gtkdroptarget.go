@@ -86,7 +86,7 @@ func init() {
 // state during a Drag-and-Drop operation (e.g. switching tabs), you can use
 // [class@Gtk.DropControllerMotion].
 type DropTarget interface {
-	gextras.Objector
+	EventController
 
 	// AsEventController casts the class to the EventController interface.
 	AsEventController() EventController

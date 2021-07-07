@@ -48,7 +48,7 @@ func (t *TextAppearance) BgColor() gdk.Color {
 		var refTmpIn *C.GdkColor
 		var refTmpOut *gdk.Color
 
-		in0 := &t.bg_color
+		in0 := &t.native.bg_color
 		refTmpIn = in0
 
 		refTmpOut = (*gdk.Color)(unsafe.Pointer(refTmpIn))
@@ -65,7 +65,7 @@ func (t *TextAppearance) FgColor() gdk.Color {
 		var refTmpIn *C.GdkColor
 		var refTmpOut *gdk.Color
 
-		in0 := &t.fg_color
+		in0 := &t.native.fg_color
 		refTmpIn = in0
 
 		refTmpOut = (*gdk.Color)(unsafe.Pointer(refTmpIn))
@@ -78,7 +78,7 @@ func (t *TextAppearance) FgColor() gdk.Color {
 // Rise: super/subscript rise, can be negative.
 func (t *TextAppearance) Rise() int {
 	var v int // out
-	v = int(t.rise)
+	v = int(t.native.rise)
 	return v
 }
 
@@ -130,7 +130,7 @@ func (t *TextAttributes) Appearance() TextAppearance {
 		var refTmpIn *C.GtkTextAppearance
 		var refTmpOut *TextAppearance
 
-		in0 := &t.appearance
+		in0 := &t.native.appearance
 		refTmpIn = in0
 
 		refTmpOut = (*TextAppearance)(unsafe.Pointer(refTmpIn))
@@ -143,98 +143,98 @@ func (t *TextAttributes) Appearance() TextAppearance {
 // Justification for text.
 func (t *TextAttributes) Justification() Justification {
 	var v Justification // out
-	v = Justification(t.justification)
+	v = Justification(t.native.justification)
 	return v
 }
 
 // Direction for text.
 func (t *TextAttributes) Direction() TextDirection {
 	var v TextDirection // out
-	v = TextDirection(t.direction)
+	v = TextDirection(t.native.direction)
 	return v
 }
 
 // Font for text.
 func (t *TextAttributes) Font() *pango.FontDescription {
 	var v *pango.FontDescription // out
-	v = (*pango.FontDescription)(unsafe.Pointer(t.font))
+	v = (*pango.FontDescription)(unsafe.Pointer(t.native.font))
 	return v
 }
 
 // FontScale: font scale factor.
 func (t *TextAttributes) FontScale() float64 {
 	var v float64 // out
-	v = float64(t.font_scale)
+	v = float64(t.native.font_scale)
 	return v
 }
 
 // LeftMargin: width of the left margin in pixels.
 func (t *TextAttributes) LeftMargin() int {
 	var v int // out
-	v = int(t.left_margin)
+	v = int(t.native.left_margin)
 	return v
 }
 
 // RightMargin: width of the right margin in pixels.
 func (t *TextAttributes) RightMargin() int {
 	var v int // out
-	v = int(t.right_margin)
+	v = int(t.native.right_margin)
 	return v
 }
 
 // Indent: amount to indent the paragraph, in pixels.
 func (t *TextAttributes) Indent() int {
 	var v int // out
-	v = int(t.indent)
+	v = int(t.native.indent)
 	return v
 }
 
 // PixelsAboveLines pixels of blank space above paragraphs.
 func (t *TextAttributes) PixelsAboveLines() int {
 	var v int // out
-	v = int(t.pixels_above_lines)
+	v = int(t.native.pixels_above_lines)
 	return v
 }
 
 // PixelsBelowLines pixels of blank space below paragraphs.
 func (t *TextAttributes) PixelsBelowLines() int {
 	var v int // out
-	v = int(t.pixels_below_lines)
+	v = int(t.native.pixels_below_lines)
 	return v
 }
 
 // PixelsInsideWrap pixels of blank space between wrapped lines in a paragraph.
 func (t *TextAttributes) PixelsInsideWrap() int {
 	var v int // out
-	v = int(t.pixels_inside_wrap)
+	v = int(t.native.pixels_inside_wrap)
 	return v
 }
 
 // Tabs: custom TabArray for this text.
 func (t *TextAttributes) Tabs() *pango.TabArray {
 	var v *pango.TabArray // out
-	v = (*pango.TabArray)(unsafe.Pointer(t.tabs))
+	v = (*pango.TabArray)(unsafe.Pointer(t.native.tabs))
 	return v
 }
 
 // WrapMode for text.
 func (t *TextAttributes) WrapMode() WrapMode {
 	var v WrapMode // out
-	v = WrapMode(t.wrap_mode)
+	v = WrapMode(t.native.wrap_mode)
 	return v
 }
 
 // Language for text.
 func (t *TextAttributes) Language() *pango.Language {
 	var v *pango.Language // out
-	v = (*pango.Language)(unsafe.Pointer(t.language))
+	v = (*pango.Language)(unsafe.Pointer(t.native.language))
 	return v
 }
 
 // LetterSpacing: extra space to insert between graphemes, in Pango units
 func (t *TextAttributes) LetterSpacing() int {
 	var v int // out
-	v = int(t.letter_spacing)
+	v = int(t.native.letter_spacing)
 	return v
 }
 

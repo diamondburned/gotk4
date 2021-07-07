@@ -130,7 +130,7 @@ func (o *OptionEntry) Native() unsafe.Pointer {
 // possible to specify the option as `--groupname-long_name`.
 func (o *OptionEntry) LongName() string {
 	var v string // out
-	v = C.GoString(o.long_name)
+	v = C.GoString(o.native.long_name)
 	return v
 }
 
@@ -139,21 +139,21 @@ func (o *OptionEntry) LongName() string {
 // from '-', or zero if the option has no short name.
 func (o *OptionEntry) ShortName() byte {
 	var v byte // out
-	v = byte(o.short_name)
+	v = byte(o.native.short_name)
 	return v
 }
 
 // Flags from Flags
 func (o *OptionEntry) Flags() int {
 	var v int // out
-	v = int(o.flags)
+	v = int(o.native.flags)
 	return v
 }
 
 // Arg: the type of the option, as a Arg
 func (o *OptionEntry) Arg() OptionArg {
 	var v OptionArg // out
-	v = OptionArg(o.arg)
+	v = OptionArg(o.native.arg)
 	return v
 }
 
@@ -171,7 +171,7 @@ func (o *OptionEntry) Arg() OptionArg {
 // freed using g_strfreev().
 func (o *OptionEntry) ArgData() interface{} {
 	var v interface{} // out
-	v = box.Get(uintptr(o.arg_data))
+	v = box.Get(uintptr(o.native.arg_data))
 	return v
 }
 
@@ -180,7 +180,7 @@ func (o *OptionEntry) ArgData() interface{} {
 // g_option_group_set_translation_domain().
 func (o *OptionEntry) Description() string {
 	var v string // out
-	v = C.GoString(o.description)
+	v = C.GoString(o.native.description)
 	return v
 }
 
@@ -189,7 +189,7 @@ func (o *OptionEntry) Description() string {
 // @translate_func of the group, see g_option_group_set_translation_domain().
 func (o *OptionEntry) ArgDescription() string {
 	var v string // out
-	v = C.GoString(o.arg_description)
+	v = C.GoString(o.native.arg_description)
 	return v
 }
 

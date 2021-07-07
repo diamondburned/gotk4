@@ -70,7 +70,7 @@ func init() {
 // `GtkPrintUnixDialog` has a single CSS node with name window. The style
 // classes dialog and print are added.
 type PrintUnixDialog interface {
-	gextras.Objector
+	Dialog
 
 	// AsDialog casts the class to the Dialog interface.
 	AsDialog() Dialog

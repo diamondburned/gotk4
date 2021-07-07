@@ -82,7 +82,7 @@ type ComboBoxOverrider interface {
 // button, both with the .combo class added. The button also contains another
 // node with name arrow.
 type ComboBox interface {
-	gextras.Objector
+	Bin
 
 	// AsBin casts the class to the Bin interface.
 	AsBin() Bin

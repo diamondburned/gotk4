@@ -5793,14 +5793,14 @@ func (r *Requisition) Native() unsafe.Pointer {
 // Width: the widget’s desired width
 func (r *Requisition) Width() int {
 	var v int // out
-	v = int(r.width)
+	v = int(r.native.width)
 	return v
 }
 
 // Height: the widget’s desired height
 func (r *Requisition) Height() int {
 	var v int // out
-	v = int(r.height)
+	v = int(r.native.height)
 	return v
 }
 

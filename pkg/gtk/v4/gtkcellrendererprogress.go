@@ -28,7 +28,7 @@ func init() {
 // CellRendererProgress renders a numeric value as a progress par in a cell.
 // Additionally, it can display a text on top of the progress bar.
 type CellRendererProgress interface {
-	gextras.Objector
+	CellRenderer
 
 	// AsCellRenderer casts the class to the CellRenderer interface.
 	AsCellRenderer() CellRenderer

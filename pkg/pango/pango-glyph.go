@@ -92,7 +92,7 @@ func (g *GlyphInfo) Geometry() GlyphGeometry {
 		var refTmpIn *C.PangoGlyphGeometry
 		var refTmpOut *GlyphGeometry
 
-		in0 := &g.geometry
+		in0 := &g.native.geometry
 		refTmpIn = in0
 
 		refTmpOut = (*GlyphGeometry)(unsafe.Pointer(refTmpIn))
@@ -109,7 +109,7 @@ func (g *GlyphInfo) Attr() GlyphVisAttr {
 		var refTmpIn *C.PangoGlyphVisAttr
 		var refTmpOut *GlyphVisAttr
 
-		in0 := &g.attr
+		in0 := &g.native.attr
 		refTmpIn = in0
 
 		refTmpOut = (*GlyphVisAttr)(unsafe.Pointer(refTmpIn))
@@ -163,7 +163,7 @@ func (g *GlyphString) Native() unsafe.Pointer {
 // NumGlyphs: number of the glyphs in this glyph string.
 func (g *GlyphString) NumGlyphs() int {
 	var v int // out
-	v = int(g.num_glyphs)
+	v = int(g.native.num_glyphs)
 	return v
 }
 
@@ -171,7 +171,7 @@ func (g *GlyphString) NumGlyphs() int {
 // corresponding to the glyph string.
 func (g *GlyphString) LogClusters() *int {
 	var v *int // out
-	v = (*int)(unsafe.Pointer(g.log_clusters))
+	v = (*int)(unsafe.Pointer(g.native.log_clusters))
 	return v
 }
 

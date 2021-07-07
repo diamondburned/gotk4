@@ -63,7 +63,7 @@ type MenuToolButtonOverrider interface {
 //      </child>
 //    </object>
 type MenuToolButton interface {
-	gextras.Objector
+	ToolButton
 
 	// AsToolButton casts the class to the ToolButton interface.
 	AsToolButton() ToolButton

@@ -48,7 +48,7 @@ type ScaleButtonOverrider interface {
 // `GtkScaleButton` has a single CSS node with name button. To differentiate it
 // from a plain `GtkButton`, it gets the .scale style class.
 type ScaleButton interface {
-	gextras.Objector
+	Widget
 
 	// AsWidget casts the class to the Widget interface.
 	AsWidget() Widget

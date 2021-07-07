@@ -64,7 +64,7 @@ func init() {
 // whose alignments cause them to be positioned at an edge get the style classes
 // “.left”, “.right”, “.top”, and/or “.bottom” according to their position.
 type Overlay interface {
-	gextras.Objector
+	Bin
 
 	// AsBin casts the class to the Bin interface.
 	AsBin() Bin

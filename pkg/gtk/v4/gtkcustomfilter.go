@@ -54,7 +54,7 @@ func gotk4_CustomFilterFunc(arg0 C.gpointer, arg1 C.gpointer) (cret C.gboolean) 
 // CustomFilter: `GtkCustomFilter` determines whether to include items with a
 // callback.
 type CustomFilter interface {
-	gextras.Objector
+	Filter
 
 	// AsFilter casts the class to the Filter interface.
 	AsFilter() Filter

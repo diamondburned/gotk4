@@ -37,7 +37,7 @@ func init() {
 // If you want to specify the amount of space placed between each child, you can
 // use the [property@Gtk.BoxLayout:spacing] property.
 type BoxLayout interface {
-	gextras.Objector
+	LayoutManager
 
 	// AsLayoutManager casts the class to the LayoutManager interface.
 	AsLayoutManager() LayoutManager

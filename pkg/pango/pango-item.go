@@ -65,21 +65,21 @@ func (i *Item) Native() unsafe.Pointer {
 // Offset: byte offset of the start of this item in text.
 func (i *Item) Offset() int {
 	var v int // out
-	v = int(i.offset)
+	v = int(i.native.offset)
 	return v
 }
 
 // Length: length of this item in bytes.
 func (i *Item) Length() int {
 	var v int // out
-	v = int(i.length)
+	v = int(i.native.length)
 	return v
 }
 
 // NumChars: number of Unicode characters in the item.
 func (i *Item) NumChars() int {
 	var v int // out
-	v = int(i.num_chars)
+	v = int(i.native.num_chars)
 	return v
 }
 

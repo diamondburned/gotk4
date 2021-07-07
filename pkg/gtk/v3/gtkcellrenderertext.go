@@ -41,7 +41,7 @@ type CellRendererTextOverrider interface {
 // If the CellRenderer:mode is GTK_CELL_RENDERER_MODE_EDITABLE, the
 // CellRendererText allows to edit its text using an entry.
 type CellRendererText interface {
-	gextras.Objector
+	CellRenderer
 
 	// AsCellRenderer casts the class to the CellRenderer interface.
 	AsCellRenderer() CellRenderer

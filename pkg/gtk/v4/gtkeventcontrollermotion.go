@@ -33,7 +33,7 @@ func init() {
 // updated to reflect changes in the pointer position as it moves over the
 // widget.
 type EventControllerMotion interface {
-	gextras.Objector
+	EventController
 
 	// AsEventController casts the class to the EventController interface.
 	AsEventController() EventController

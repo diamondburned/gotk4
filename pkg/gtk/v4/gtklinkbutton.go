@@ -58,7 +58,7 @@ func init() {
 //
 // `GtkLinkButton` uses the K_ACCESSIBLE_ROLE_LINK role.
 type LinkButton interface {
-	gextras.Objector
+	Button
 
 	// AsButton casts the class to the Button interface.
 	AsButton() Button

@@ -80,7 +80,7 @@ func init() {
 // [signal@Gtk.DragSource::drag-end] signal and delete the data after it has
 // been transferred.
 type DragSource interface {
-	gextras.Objector
+	GestureSingle
 
 	// AsGestureSingle casts the class to the GestureSingle interface.
 	AsGestureSingle() GestureSingle

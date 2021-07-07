@@ -84,7 +84,7 @@ type ComboBoxOverrider interface {
 //
 // `GtkComboBox` uses the GTK_ACCESSIBLE_ROLE_COMBO_BOX role.
 type ComboBox interface {
-	gextras.Objector
+	Widget
 
 	// AsWidget casts the class to the Widget interface.
 	AsWidget() Widget

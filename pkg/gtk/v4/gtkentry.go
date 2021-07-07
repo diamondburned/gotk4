@@ -131,7 +131,7 @@ type EntryOverrider interface {
 //
 // `GtkEntry` uses the GTK_ACCESSIBLE_ROLE_TEXT_BOX role.
 type Entry interface {
-	gextras.Objector
+	Widget
 
 	// AsWidget casts the class to the Widget interface.
 	AsWidget() Widget

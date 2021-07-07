@@ -55,7 +55,7 @@ func init() {
 //
 // GtkAppChooserWidget has a single CSS node with name appchooser.
 type AppChooserWidget interface {
-	gextras.Objector
+	Box
 
 	// AsBox casts the class to the Box interface.
 	AsBox() Box

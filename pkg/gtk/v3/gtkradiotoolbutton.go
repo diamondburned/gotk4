@@ -48,7 +48,7 @@ func init() {
 //
 // GtkRadioToolButton has a single CSS node with name toolbutton.
 type RadioToolButton interface {
-	gextras.Objector
+	ToggleToolButton
 
 	// AsToggleToolButton casts the class to the ToggleToolButton interface.
 	AsToggleToolButton() ToggleToolButton

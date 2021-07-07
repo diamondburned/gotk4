@@ -63,21 +63,21 @@ func (d *DBusAnnotationInfo) Native() unsafe.Pointer {
 // RefCount: the reference count or -1 if statically allocated.
 func (d *DBusAnnotationInfo) RefCount() int {
 	var v int // out
-	v = int(d.ref_count)
+	v = int(d.native.ref_count)
 	return v
 }
 
 // Key: the name of the annotation, e.g. "org.freedesktop.DBus.Deprecated".
 func (d *DBusAnnotationInfo) Key() string {
 	var v string // out
-	v = C.GoString(d.key)
+	v = C.GoString(d.native.key)
 	return v
 }
 
 // Value: the value of the annotation.
 func (d *DBusAnnotationInfo) Value() string {
 	var v string // out
-	v = C.GoString(d.value)
+	v = C.GoString(d.native.value)
 	return v
 }
 
@@ -88,11 +88,11 @@ func (d *DBusAnnotationInfo) Annotations() []*DBusAnnotationInfo {
 	{
 		var i int
 		var z *C.GDBusAnnotationInfo
-		for p := d.annotations; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+		for p := d.native.annotations; *p != z; p = &unsafe.Slice(p, i+1)[i] {
 			i++
 		}
 
-		src := unsafe.Slice(d.annotations, i)
+		src := unsafe.Slice(d.native.annotations, i)
 		v = make([]*DBusAnnotationInfo, i)
 		for i := range src {
 			v[i] = (*DBusAnnotationInfo)(unsafe.Pointer(src[i]))
@@ -161,21 +161,21 @@ func (d *DBusArgInfo) Native() unsafe.Pointer {
 // RefCount: the reference count or -1 if statically allocated.
 func (d *DBusArgInfo) RefCount() int {
 	var v int // out
-	v = int(d.ref_count)
+	v = int(d.native.ref_count)
 	return v
 }
 
 // Name of the argument, e.g. @unix_user_id.
 func (d *DBusArgInfo) Name() string {
 	var v string // out
-	v = C.GoString(d.name)
+	v = C.GoString(d.native.name)
 	return v
 }
 
 // Signature d-Bus signature of the argument (a single complete type).
 func (d *DBusArgInfo) Signature() string {
 	var v string // out
-	v = C.GoString(d.signature)
+	v = C.GoString(d.native.signature)
 	return v
 }
 
@@ -186,11 +186,11 @@ func (d *DBusArgInfo) Annotations() []*DBusAnnotationInfo {
 	{
 		var i int
 		var z *C.GDBusAnnotationInfo
-		for p := d.annotations; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+		for p := d.native.annotations; *p != z; p = &unsafe.Slice(p, i+1)[i] {
 			i++
 		}
 
-		src := unsafe.Slice(d.annotations, i)
+		src := unsafe.Slice(d.native.annotations, i)
 		v = make([]*DBusAnnotationInfo, i)
 		for i := range src {
 			v[i] = (*DBusAnnotationInfo)(unsafe.Pointer(src[i]))
@@ -259,7 +259,7 @@ func (d *DBusInterfaceInfo) Native() unsafe.Pointer {
 // RefCount: the reference count or -1 if statically allocated.
 func (d *DBusInterfaceInfo) RefCount() int {
 	var v int // out
-	v = int(d.ref_count)
+	v = int(d.native.ref_count)
 	return v
 }
 
@@ -267,7 +267,7 @@ func (d *DBusInterfaceInfo) RefCount() int {
 // "org.freedesktop.DBus.Properties".
 func (d *DBusInterfaceInfo) Name() string {
 	var v string // out
-	v = C.GoString(d.name)
+	v = C.GoString(d.native.name)
 	return v
 }
 
@@ -278,11 +278,11 @@ func (d *DBusInterfaceInfo) Methods() []*DBusMethodInfo {
 	{
 		var i int
 		var z *C.GDBusMethodInfo
-		for p := d.methods; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+		for p := d.native.methods; *p != z; p = &unsafe.Slice(p, i+1)[i] {
 			i++
 		}
 
-		src := unsafe.Slice(d.methods, i)
+		src := unsafe.Slice(d.native.methods, i)
 		v = make([]*DBusMethodInfo, i)
 		for i := range src {
 			v[i] = (*DBusMethodInfo)(unsafe.Pointer(src[i]))
@@ -302,11 +302,11 @@ func (d *DBusInterfaceInfo) Signals() []*DBusSignalInfo {
 	{
 		var i int
 		var z *C.GDBusSignalInfo
-		for p := d.signals; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+		for p := d.native.signals; *p != z; p = &unsafe.Slice(p, i+1)[i] {
 			i++
 		}
 
-		src := unsafe.Slice(d.signals, i)
+		src := unsafe.Slice(d.native.signals, i)
 		v = make([]*DBusSignalInfo, i)
 		for i := range src {
 			v[i] = (*DBusSignalInfo)(unsafe.Pointer(src[i]))
@@ -326,11 +326,11 @@ func (d *DBusInterfaceInfo) Properties() []*DBusPropertyInfo {
 	{
 		var i int
 		var z *C.GDBusPropertyInfo
-		for p := d.properties; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+		for p := d.native.properties; *p != z; p = &unsafe.Slice(p, i+1)[i] {
 			i++
 		}
 
-		src := unsafe.Slice(d.properties, i)
+		src := unsafe.Slice(d.native.properties, i)
 		v = make([]*DBusPropertyInfo, i)
 		for i := range src {
 			v[i] = (*DBusPropertyInfo)(unsafe.Pointer(src[i]))
@@ -350,11 +350,11 @@ func (d *DBusInterfaceInfo) Annotations() []*DBusAnnotationInfo {
 	{
 		var i int
 		var z *C.GDBusAnnotationInfo
-		for p := d.annotations; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+		for p := d.native.annotations; *p != z; p = &unsafe.Slice(p, i+1)[i] {
 			i++
 		}
 
-		src := unsafe.Slice(d.annotations, i)
+		src := unsafe.Slice(d.native.annotations, i)
 		v = make([]*DBusAnnotationInfo, i)
 		for i := range src {
 			v[i] = (*DBusAnnotationInfo)(unsafe.Pointer(src[i]))
@@ -529,14 +529,14 @@ func (d *DBusMethodInfo) Native() unsafe.Pointer {
 // RefCount: the reference count or -1 if statically allocated.
 func (d *DBusMethodInfo) RefCount() int {
 	var v int // out
-	v = int(d.ref_count)
+	v = int(d.native.ref_count)
 	return v
 }
 
 // Name: the name of the D-Bus method, e.g. @RequestName.
 func (d *DBusMethodInfo) Name() string {
 	var v string // out
-	v = C.GoString(d.name)
+	v = C.GoString(d.native.name)
 	return v
 }
 
@@ -547,11 +547,11 @@ func (d *DBusMethodInfo) InArgs() []*DBusArgInfo {
 	{
 		var i int
 		var z *C.GDBusArgInfo
-		for p := d.in_args; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+		for p := d.native.in_args; *p != z; p = &unsafe.Slice(p, i+1)[i] {
 			i++
 		}
 
-		src := unsafe.Slice(d.in_args, i)
+		src := unsafe.Slice(d.native.in_args, i)
 		v = make([]*DBusArgInfo, i)
 		for i := range src {
 			v[i] = (*DBusArgInfo)(unsafe.Pointer(src[i]))
@@ -571,11 +571,11 @@ func (d *DBusMethodInfo) OutArgs() []*DBusArgInfo {
 	{
 		var i int
 		var z *C.GDBusArgInfo
-		for p := d.out_args; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+		for p := d.native.out_args; *p != z; p = &unsafe.Slice(p, i+1)[i] {
 			i++
 		}
 
-		src := unsafe.Slice(d.out_args, i)
+		src := unsafe.Slice(d.native.out_args, i)
 		v = make([]*DBusArgInfo, i)
 		for i := range src {
 			v[i] = (*DBusArgInfo)(unsafe.Pointer(src[i]))
@@ -595,11 +595,11 @@ func (d *DBusMethodInfo) Annotations() []*DBusAnnotationInfo {
 	{
 		var i int
 		var z *C.GDBusAnnotationInfo
-		for p := d.annotations; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+		for p := d.native.annotations; *p != z; p = &unsafe.Slice(p, i+1)[i] {
 			i++
 		}
 
-		src := unsafe.Slice(d.annotations, i)
+		src := unsafe.Slice(d.native.annotations, i)
 		v = make([]*DBusAnnotationInfo, i)
 		for i := range src {
 			v[i] = (*DBusAnnotationInfo)(unsafe.Pointer(src[i]))
@@ -692,7 +692,7 @@ func (d *DBusNodeInfo) Native() unsafe.Pointer {
 // RefCount: the reference count or -1 if statically allocated.
 func (d *DBusNodeInfo) RefCount() int {
 	var v int // out
-	v = int(d.ref_count)
+	v = int(d.native.ref_count)
 	return v
 }
 
@@ -700,7 +700,7 @@ func (d *DBusNodeInfo) RefCount() int {
 // relative path. See the D-Bus specification for more details.
 func (d *DBusNodeInfo) Path() string {
 	var v string // out
-	v = C.GoString(d.path)
+	v = C.GoString(d.native.path)
 	return v
 }
 
@@ -711,11 +711,11 @@ func (d *DBusNodeInfo) Interfaces() []*DBusInterfaceInfo {
 	{
 		var i int
 		var z *C.GDBusInterfaceInfo
-		for p := d.interfaces; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+		for p := d.native.interfaces; *p != z; p = &unsafe.Slice(p, i+1)[i] {
 			i++
 		}
 
-		src := unsafe.Slice(d.interfaces, i)
+		src := unsafe.Slice(d.native.interfaces, i)
 		v = make([]*DBusInterfaceInfo, i)
 		for i := range src {
 			v[i] = (*DBusInterfaceInfo)(unsafe.Pointer(src[i]))
@@ -735,11 +735,11 @@ func (d *DBusNodeInfo) Nodes() []*DBusNodeInfo {
 	{
 		var i int
 		var z *C.GDBusNodeInfo
-		for p := d.nodes; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+		for p := d.native.nodes; *p != z; p = &unsafe.Slice(p, i+1)[i] {
 			i++
 		}
 
-		src := unsafe.Slice(d.nodes, i)
+		src := unsafe.Slice(d.native.nodes, i)
 		v = make([]*DBusNodeInfo, i)
 		for i := range src {
 			v[i] = (*DBusNodeInfo)(unsafe.Pointer(src[i]))
@@ -759,11 +759,11 @@ func (d *DBusNodeInfo) Annotations() []*DBusAnnotationInfo {
 	{
 		var i int
 		var z *C.GDBusAnnotationInfo
-		for p := d.annotations; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+		for p := d.native.annotations; *p != z; p = &unsafe.Slice(p, i+1)[i] {
 			i++
 		}
 
-		src := unsafe.Slice(d.annotations, i)
+		src := unsafe.Slice(d.native.annotations, i)
 		v = make([]*DBusAnnotationInfo, i)
 		for i := range src {
 			v[i] = (*DBusAnnotationInfo)(unsafe.Pointer(src[i]))
@@ -857,28 +857,28 @@ func (d *DBusPropertyInfo) Native() unsafe.Pointer {
 // RefCount: the reference count or -1 if statically allocated.
 func (d *DBusPropertyInfo) RefCount() int {
 	var v int // out
-	v = int(d.ref_count)
+	v = int(d.native.ref_count)
 	return v
 }
 
 // Name: the name of the D-Bus property, e.g. "SupportedFilesystems".
 func (d *DBusPropertyInfo) Name() string {
 	var v string // out
-	v = C.GoString(d.name)
+	v = C.GoString(d.native.name)
 	return v
 }
 
 // Signature: the D-Bus signature of the property (a single complete type).
 func (d *DBusPropertyInfo) Signature() string {
 	var v string // out
-	v = C.GoString(d.signature)
+	v = C.GoString(d.native.signature)
 	return v
 }
 
 // Flags access control flags for the property.
 func (d *DBusPropertyInfo) Flags() DBusPropertyInfoFlags {
 	var v DBusPropertyInfoFlags // out
-	v = DBusPropertyInfoFlags(d.flags)
+	v = DBusPropertyInfoFlags(d.native.flags)
 	return v
 }
 
@@ -889,11 +889,11 @@ func (d *DBusPropertyInfo) Annotations() []*DBusAnnotationInfo {
 	{
 		var i int
 		var z *C.GDBusAnnotationInfo
-		for p := d.annotations; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+		for p := d.native.annotations; *p != z; p = &unsafe.Slice(p, i+1)[i] {
 			i++
 		}
 
-		src := unsafe.Slice(d.annotations, i)
+		src := unsafe.Slice(d.native.annotations, i)
 		v = make([]*DBusAnnotationInfo, i)
 		for i := range src {
 			v[i] = (*DBusAnnotationInfo)(unsafe.Pointer(src[i]))
@@ -962,14 +962,14 @@ func (d *DBusSignalInfo) Native() unsafe.Pointer {
 // RefCount: the reference count or -1 if statically allocated.
 func (d *DBusSignalInfo) RefCount() int {
 	var v int // out
-	v = int(d.ref_count)
+	v = int(d.native.ref_count)
 	return v
 }
 
 // Name: the name of the D-Bus signal, e.g. "NameOwnerChanged".
 func (d *DBusSignalInfo) Name() string {
 	var v string // out
-	v = C.GoString(d.name)
+	v = C.GoString(d.native.name)
 	return v
 }
 
@@ -980,11 +980,11 @@ func (d *DBusSignalInfo) Args() []*DBusArgInfo {
 	{
 		var i int
 		var z *C.GDBusArgInfo
-		for p := d.args; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+		for p := d.native.args; *p != z; p = &unsafe.Slice(p, i+1)[i] {
 			i++
 		}
 
-		src := unsafe.Slice(d.args, i)
+		src := unsafe.Slice(d.native.args, i)
 		v = make([]*DBusArgInfo, i)
 		for i := range src {
 			v[i] = (*DBusArgInfo)(unsafe.Pointer(src[i]))
@@ -1004,11 +1004,11 @@ func (d *DBusSignalInfo) Annotations() []*DBusAnnotationInfo {
 	{
 		var i int
 		var z *C.GDBusAnnotationInfo
-		for p := d.annotations; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+		for p := d.native.annotations; *p != z; p = &unsafe.Slice(p, i+1)[i] {
 			i++
 		}
 
-		src := unsafe.Slice(d.annotations, i)
+		src := unsafe.Slice(d.native.annotations, i)
 		v = make([]*DBusAnnotationInfo, i)
 		for i := range src {
 			v[i] = (*DBusAnnotationInfo)(unsafe.Pointer(src[i]))

@@ -227,7 +227,7 @@ func (c *ColorStop) Native() unsafe.Pointer {
 // Offset: the offset of the color stop
 func (c *ColorStop) Offset() float32 {
 	var v float32 // out
-	v = float32(c.offset)
+	v = float32(c.native.offset)
 	return v
 }
 
@@ -238,7 +238,7 @@ func (c *ColorStop) Color() gdk.RGBA {
 		var refTmpIn *C.GdkRGBA
 		var refTmpOut *gdk.RGBA
 
-		in0 := &c.color
+		in0 := &c.native.color
 		refTmpIn = in0
 
 		refTmpOut = (*gdk.RGBA)(unsafe.Pointer(refTmpIn))
@@ -267,35 +267,35 @@ func (p *ParseLocation) Native() unsafe.Pointer {
 // Bytes: the offset of the location in the parse buffer, as bytes
 func (p *ParseLocation) Bytes() uint {
 	var v uint // out
-	v = uint(p.bytes)
+	v = uint(p.native.bytes)
 	return v
 }
 
 // Chars: the offset of the location in the parse buffer, as characters
 func (p *ParseLocation) Chars() uint {
 	var v uint // out
-	v = uint(p.chars)
+	v = uint(p.native.chars)
 	return v
 }
 
 // Lines: the line of the location in the parse buffer
 func (p *ParseLocation) Lines() uint {
 	var v uint // out
-	v = uint(p.lines)
+	v = uint(p.native.lines)
 	return v
 }
 
 // LineBytes: the position in the line, as bytes
 func (p *ParseLocation) LineBytes() uint {
 	var v uint // out
-	v = uint(p.line_bytes)
+	v = uint(p.native.line_bytes)
 	return v
 }
 
 // LineChars: the position in the line, as characters
 func (p *ParseLocation) LineChars() uint {
 	var v uint // out
-	v = uint(p.line_chars)
+	v = uint(p.native.line_chars)
 	return v
 }
 
@@ -322,7 +322,7 @@ func (s *Shadow) Color() gdk.RGBA {
 		var refTmpIn *C.GdkRGBA
 		var refTmpOut *gdk.RGBA
 
-		in0 := &s.color
+		in0 := &s.native.color
 		refTmpIn = in0
 
 		refTmpOut = (*gdk.RGBA)(unsafe.Pointer(refTmpIn))
@@ -335,20 +335,20 @@ func (s *Shadow) Color() gdk.RGBA {
 // Dx: the horizontal offset of the shadow
 func (s *Shadow) Dx() float32 {
 	var v float32 // out
-	v = float32(s.dx)
+	v = float32(s.native.dx)
 	return v
 }
 
 // Dy: the vertical offset of the shadow
 func (s *Shadow) Dy() float32 {
 	var v float32 // out
-	v = float32(s.dy)
+	v = float32(s.native.dy)
 	return v
 }
 
 // Radius: the radius of the shadow
 func (s *Shadow) Radius() float32 {
 	var v float32 // out
-	v = float32(s.radius)
+	v = float32(s.native.radius)
 	return v
 }

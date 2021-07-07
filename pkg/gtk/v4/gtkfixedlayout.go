@@ -55,7 +55,7 @@ func init() {
 // elements, since you have to reposition all the other elements. This is a
 // long-term maintenance problem for your application.
 type FixedLayout interface {
-	gextras.Objector
+	LayoutManager
 
 	// AsLayoutManager casts the class to the LayoutManager interface.
 	AsLayoutManager() LayoutManager
@@ -165,7 +165,7 @@ func (m fixedLayout) Measure(widget Widget, orientation Orientation, forSize int
 // FixedLayoutChild: `GtkLayoutChild` subclass for children in a
 // `GtkFixedLayout`.
 type FixedLayoutChild interface {
-	gextras.Objector
+	LayoutChild
 
 	// AsLayoutChild casts the class to the LayoutChild interface.
 	AsLayoutChild() LayoutChild

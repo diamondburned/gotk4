@@ -133,7 +133,7 @@ func marshalPopoverMenuFlags(p uintptr) (interface{}, error) {
 // GTK_ACCESSIBLE_ROLE_MENU_ITEM_RADIO roles, depending on the action they are
 // connected to.
 type PopoverMenu interface {
-	gextras.Objector
+	Popover
 
 	// AsPopover casts the class to the Popover interface.
 	AsPopover() Popover

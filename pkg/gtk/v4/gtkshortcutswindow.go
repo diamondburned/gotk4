@@ -73,7 +73,7 @@ func init() {
 // The .ui file for this example can be found here
 // (https://gitlab.gnome.org/GNOME/gtk/tree/master/demos/gtk-demo/shortcuts-builder.ui).
 type ShortcutsWindow interface {
-	gextras.Objector
+	Window
 
 	// AsWindow casts the class to the Window interface.
 	AsWindow() Window

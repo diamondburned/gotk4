@@ -30,7 +30,7 @@ func init() {
 
 // WaylandPopup: the Wayland implementation of `GdkPopup`.
 type WaylandPopup interface {
-	gextras.Objector
+	WaylandSurface
 
 	// AsWaylandSurface casts the class to the WaylandSurface interface.
 	AsWaylandSurface() WaylandSurface
@@ -367,7 +367,7 @@ func (s waylandPopup) SetOpaqueRegion(region *cairo.Region) {
 // to the Wayland `wl_surface` object with
 // [method@GdkWayland.WaylandSurface.get_wl_surface].
 type WaylandSurface interface {
-	gextras.Objector
+	gdk.Surface
 
 	// AsSurface casts the class to the gdk.Surface interface.
 	AsSurface() gdk.Surface
@@ -705,7 +705,7 @@ func (s waylandSurface) SetOpaqueRegion(region *cairo.Region) {
 // [method@GdkWayland.WaylandToplevel.export_handle] and
 // [method@GdkWayland.WaylandToplevel.set_transient_for_exported].
 type WaylandToplevel interface {
-	gextras.Objector
+	WaylandSurface
 
 	// AsWaylandSurface casts the class to the WaylandSurface interface.
 	AsWaylandSurface() WaylandSurface

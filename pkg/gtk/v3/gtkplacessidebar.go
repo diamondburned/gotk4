@@ -111,7 +111,7 @@ func marshalPlacesOpenFlags(p uintptr) (interface{}, error) {
 // .sidebar-placeholder-row for a row that is a placeholder - .has-open-popup
 // when a popup is open for a row
 type PlacesSidebar interface {
-	gextras.Objector
+	ScrolledWindow
 
 	// AsScrolledWindow casts the class to the ScrolledWindow interface.
 	AsScrolledWindow() ScrolledWindow

@@ -43,7 +43,7 @@ func init() {
 //
 // GtkMenuBar has a single CSS node with name menubar.
 type MenuBar interface {
-	gextras.Objector
+	MenuShell
 
 	// AsMenuShell casts the class to the MenuShell interface.
 	AsMenuShell() MenuShell

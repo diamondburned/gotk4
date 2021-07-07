@@ -33,7 +33,7 @@ func init() {
 // far of the initial press point, the GestureLongPress::cancelled signal will
 // be emitted.
 type GestureLongPress interface {
-	gextras.Objector
+	GestureSingle
 
 	// AsGestureSingle casts the class to the GestureSingle interface.
 	AsGestureSingle() GestureSingle

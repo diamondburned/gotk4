@@ -32,7 +32,7 @@ func init() {
 // implement their `im-module` property for switching between different input
 // methods.
 type IMMulticontext interface {
-	gextras.Objector
+	IMContext
 
 	// AsIMContext casts the class to the IMContext interface.
 	AsIMContext() IMContext

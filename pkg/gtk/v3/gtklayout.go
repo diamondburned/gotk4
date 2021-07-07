@@ -48,7 +48,7 @@ func init() {
 // by gtk_layout_get_bin_window(), rather than to the one returned by
 // gtk_widget_get_window() as you would for a DrawingArea.
 type Layout interface {
-	gextras.Objector
+	Container
 
 	// AsContainer casts the class to the Container interface.
 	AsContainer() Container

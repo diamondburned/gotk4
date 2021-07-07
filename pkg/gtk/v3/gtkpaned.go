@@ -88,7 +88,7 @@ type PanedOverrider interface {
 //    gtk_paned_pack2 (GTK_PANED (hpaned), frame2, FALSE, FALSE);
 //    gtk_widget_set_size_request (frame2, 50, -1);
 type Paned interface {
-	gextras.Objector
+	Container
 
 	// AsContainer casts the class to the Container interface.
 	AsContainer() Container

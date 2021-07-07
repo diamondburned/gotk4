@@ -24,7 +24,7 @@ func init() {
 }
 
 type PixbufSimpleAnimIter interface {
-	gextras.Objector
+	PixbufAnimationIter
 
 	// AsPixbufAnimationIter casts the class to the PixbufAnimationIter interface.
 	AsPixbufAnimationIter() PixbufAnimationIter

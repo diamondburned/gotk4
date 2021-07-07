@@ -47,7 +47,7 @@ func marshalCellRendererAccelMode(p uintptr) (interface{}, error) {
 // like `Control + a`). If the cell renderer is editable, the accelerator can be
 // changed by simply typing the new combination.
 type CellRendererAccel interface {
-	gextras.Objector
+	CellRendererText
 
 	// AsCellRendererText casts the class to the CellRendererText interface.
 	AsCellRendererText() CellRendererText

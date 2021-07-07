@@ -99,7 +99,7 @@ type GLAreaOverrider interface {
 // If you need to change the options for creating the GLContext you should use
 // the GLArea::create-context signal.
 type GLArea interface {
-	gextras.Objector
+	Widget
 
 	// AsWidget casts the class to the Widget interface.
 	AsWidget() Widget

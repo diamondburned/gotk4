@@ -52,14 +52,14 @@ func (g *GlyphItem) Native() unsafe.Pointer {
 // Item: corresponding `PangoItem`
 func (g *GlyphItem) Item() *Item {
 	var v *Item // out
-	v = (*Item)(unsafe.Pointer(g.item))
+	v = (*Item)(unsafe.Pointer(g.native.item))
 	return v
 }
 
 // Glyphs: corresponding `PangoGlyphString`
 func (g *GlyphItem) Glyphs() *GlyphString {
 	var v *GlyphString // out
-	v = (*GlyphString)(unsafe.Pointer(g.glyphs))
+	v = (*GlyphString)(unsafe.Pointer(g.native.glyphs))
 	return v
 }
 
@@ -178,49 +178,49 @@ func (g *GlyphItemIter) Native() unsafe.Pointer {
 
 func (g *GlyphItemIter) GlyphItem() *GlyphItem {
 	var v *GlyphItem // out
-	v = (*GlyphItem)(unsafe.Pointer(g.glyph_item))
+	v = (*GlyphItem)(unsafe.Pointer(g.native.glyph_item))
 	return v
 }
 
 func (g *GlyphItemIter) Text() string {
 	var v string // out
-	v = C.GoString(g.text)
+	v = C.GoString(g.native.text)
 	return v
 }
 
 func (g *GlyphItemIter) StartGlyph() int {
 	var v int // out
-	v = int(g.start_glyph)
+	v = int(g.native.start_glyph)
 	return v
 }
 
 func (g *GlyphItemIter) StartIndex() int {
 	var v int // out
-	v = int(g.start_index)
+	v = int(g.native.start_index)
 	return v
 }
 
 func (g *GlyphItemIter) StartChar() int {
 	var v int // out
-	v = int(g.start_char)
+	v = int(g.native.start_char)
 	return v
 }
 
 func (g *GlyphItemIter) EndGlyph() int {
 	var v int // out
-	v = int(g.end_glyph)
+	v = int(g.native.end_glyph)
 	return v
 }
 
 func (g *GlyphItemIter) EndIndex() int {
 	var v int // out
-	v = int(g.end_index)
+	v = int(g.native.end_index)
 	return v
 }
 
 func (g *GlyphItemIter) EndChar() int {
 	var v int // out
-	v = int(g.end_char)
+	v = int(g.native.end_char)
 	return v
 }
 

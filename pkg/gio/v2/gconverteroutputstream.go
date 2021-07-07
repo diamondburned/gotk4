@@ -43,7 +43,7 @@ func init() {
 //
 // As of GLib 2.34, OutputStream implements OutputStream.
 type ConverterOutputStream interface {
-	gextras.Objector
+	FilterOutputStream
 
 	// AsFilterOutputStream casts the class to the FilterOutputStream interface.
 	AsFilterOutputStream() FilterOutputStream

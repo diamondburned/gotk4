@@ -736,13 +736,13 @@ func (d *DebugKey) Native() unsafe.Pointer {
 // Key: the string
 func (d *DebugKey) Key() string {
 	var v string // out
-	v = C.GoString(d.key)
+	v = C.GoString(d.native.key)
 	return v
 }
 
 // Value: the flag
 func (d *DebugKey) Value() uint {
 	var v uint // out
-	v = uint(d.value)
+	v = uint(d.native.value)
 	return v
 }

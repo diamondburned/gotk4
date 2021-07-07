@@ -114,7 +114,7 @@ func marshalNotebookTab(p uintptr) (interface{}, error) {
 //    - GTK_ACCESSIBLE_ROLE_TAB role for each tab
 //    - GTK_ACCESSIBLE_ROLE_TAB_PANEL for each page
 type Notebook interface {
-	gextras.Objector
+	Widget
 
 	// AsWidget casts the class to the Widget interface.
 	AsWidget() Widget

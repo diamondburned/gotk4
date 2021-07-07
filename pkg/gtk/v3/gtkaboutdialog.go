@@ -134,7 +134,7 @@ type AboutDialogOverrider interface {
 // gtk_dialog_run(). In this case, you might need to know that the “Close”
 // button returns the K_RESPONSE_CANCEL response id.
 type AboutDialog interface {
-	gextras.Objector
+	Dialog
 
 	// AsDialog casts the class to the Dialog interface.
 	AsDialog() Dialog

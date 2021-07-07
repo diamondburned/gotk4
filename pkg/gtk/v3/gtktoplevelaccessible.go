@@ -27,7 +27,7 @@ func init() {
 }
 
 type ToplevelAccessible interface {
-	gextras.Objector
+	atk.Object
 
 	// AsObject casts the class to the atk.Object interface.
 	AsObject() atk.Object

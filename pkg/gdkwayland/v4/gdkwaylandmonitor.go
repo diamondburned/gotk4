@@ -29,7 +29,7 @@ func init() {
 // to the Wayland `wl_output` object with
 // [method@GdkWayland.WaylandMonitor.get_wl_output].
 type WaylandMonitor interface {
-	gextras.Objector
+	gdk.Monitor
 
 	// AsMonitor casts the class to the gdk.Monitor interface.
 	AsMonitor() gdk.Monitor

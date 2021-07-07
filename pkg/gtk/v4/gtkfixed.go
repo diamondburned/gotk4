@@ -66,7 +66,7 @@ func init() {
 // prefer the simplicity of `GtkFixed`, by all means use the widget. But you
 // should be aware of the tradeoffs.
 type Fixed interface {
-	gextras.Objector
+	Widget
 
 	// AsWidget casts the class to the Widget interface.
 	AsWidget() Widget

@@ -137,7 +137,7 @@ func marshalStackTransitionType(p uintptr) (interface{}, error) {
 // `GtkStack` uses the GTK_ACCESSIBLE_ROLE_TAB_PANEL for the stack pages, which
 // are the accessible parent objects of the child widgets.
 type Stack interface {
-	gextras.Objector
+	Widget
 
 	// AsWidget casts the class to the Widget interface.
 	AsWidget() Widget

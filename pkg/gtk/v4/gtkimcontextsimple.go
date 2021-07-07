@@ -50,7 +50,7 @@ func init() {
 //
 // yields U+0123 LATIN SMALL LETTER G WITH CEDILLA, i.e. ģ.
 type IMContextSimple interface {
-	gextras.Objector
+	IMContext
 
 	// AsIMContext casts the class to the IMContext interface.
 	AsIMContext() IMContext

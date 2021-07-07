@@ -32,7 +32,7 @@ func init() {
 // [signal@Gtk.GestureClick::stopped] is emitted, and the click counter is
 // reset.
 type GestureClick interface {
-	gextras.Objector
+	GestureSingle
 
 	// AsGestureSingle casts the class to the GestureSingle interface.
 	AsGestureSingle() GestureSingle

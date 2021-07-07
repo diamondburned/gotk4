@@ -39,7 +39,7 @@ func init() {
 // ColorChooserDialog: the ColorChooserDialog widget is a dialog for choosing a
 // color. It implements the ColorChooser interface.
 type ColorChooserDialog interface {
-	gextras.Objector
+	Dialog
 
 	// AsDialog casts the class to the Dialog interface.
 	AsDialog() Dialog

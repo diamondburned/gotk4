@@ -99,7 +99,7 @@ func gotk4_IconViewForeachFunc(arg0 *C.GtkIconView, arg1 *C.GtkTreePath, arg2 C.
 // `GtkIconView` has a single CSS node with name iconview and style class .view.
 // For rubberband selection, a subnode with name rubberband is used.
 type IconView interface {
-	gextras.Objector
+	Widget
 
 	// AsWidget casts the class to the Widget interface.
 	AsWidget() Widget

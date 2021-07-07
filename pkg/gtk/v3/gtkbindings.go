@@ -83,7 +83,7 @@ func (b *BindingArg) Native() unsafe.Pointer {
 // ArgType: implementation detail
 func (b *BindingArg) ArgType() externglib.Type {
 	var v externglib.Type // out
-	v = externglib.Type(b.arg_type)
+	v = externglib.Type(b.native.arg_type)
 	return v
 }
 
@@ -107,35 +107,35 @@ func (b *BindingEntry) Native() unsafe.Pointer {
 // Keyval: key value to match
 func (b *BindingEntry) Keyval() uint {
 	var v uint // out
-	v = uint(b.keyval)
+	v = uint(b.native.keyval)
 	return v
 }
 
 // Modifiers: key modifiers to match
 func (b *BindingEntry) Modifiers() gdk.ModifierType {
 	var v gdk.ModifierType // out
-	v = gdk.ModifierType(b.modifiers)
+	v = gdk.ModifierType(b.native.modifiers)
 	return v
 }
 
 // SetNext: linked list of entries maintained by binding set
 func (b *BindingEntry) SetNext() *BindingEntry {
 	var v *BindingEntry // out
-	v = (*BindingEntry)(unsafe.Pointer(b.set_next))
+	v = (*BindingEntry)(unsafe.Pointer(b.native.set_next))
 	return v
 }
 
 // HashNext: implementation detail
 func (b *BindingEntry) HashNext() *BindingEntry {
 	var v *BindingEntry // out
-	v = (*BindingEntry)(unsafe.Pointer(b.hash_next))
+	v = (*BindingEntry)(unsafe.Pointer(b.native.hash_next))
 	return v
 }
 
 // Signals: action signals of this entry
 func (b *BindingEntry) Signals() *BindingSignal {
 	var v *BindingSignal // out
-	v = (*BindingSignal)(unsafe.Pointer(b.signals))
+	v = (*BindingSignal)(unsafe.Pointer(b.native.signals))
 	return v
 }
 
@@ -159,20 +159,20 @@ func (b *BindingSignal) Native() unsafe.Pointer {
 // Next: implementation detail
 func (b *BindingSignal) Next() *BindingSignal {
 	var v *BindingSignal // out
-	v = (*BindingSignal)(unsafe.Pointer(b.next))
+	v = (*BindingSignal)(unsafe.Pointer(b.native.next))
 	return v
 }
 
 // SignalName: the action signal to be emitted
 func (b *BindingSignal) SignalName() string {
 	var v string // out
-	v = C.GoString(b.signal_name)
+	v = C.GoString(b.native.signal_name)
 	return v
 }
 
 // NArgs: number of arguments specified for the signal
 func (b *BindingSignal) NArgs() uint {
 	var v uint // out
-	v = uint(b.n_args)
+	v = uint(b.native.n_args)
 	return v
 }

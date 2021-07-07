@@ -51,7 +51,7 @@ func init() {
 // When circumstances require it, GtkStackSidebar adds the .needs-attention
 // style class to the widgets representing the stack pages.
 type StackSidebar interface {
-	gextras.Objector
+	Bin
 
 	// AsBin casts the class to the Bin interface.
 	AsBin() Bin

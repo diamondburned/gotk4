@@ -41,7 +41,7 @@ func init() {
 //
 // GtkVScale has been deprecated, use Scale instead.
 type VScale interface {
-	gextras.Objector
+	Scale
 
 	// AsScale casts the class to the Scale interface.
 	AsScale() Scale

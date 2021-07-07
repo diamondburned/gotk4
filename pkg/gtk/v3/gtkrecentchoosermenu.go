@@ -56,7 +56,7 @@ func init() {
 //
 // Recently used files are supported since GTK+ 2.10.
 type RecentChooserMenu interface {
-	gextras.Objector
+	Menu
 
 	// AsMenu casts the class to the Menu interface.
 	AsMenu() Menu

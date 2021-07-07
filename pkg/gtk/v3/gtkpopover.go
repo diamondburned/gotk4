@@ -102,7 +102,7 @@ type PopoverOverrider interface {
 // in Entry or TextView get style classes like .touch-selection or .magnifier to
 // differentiate from plain popovers.
 type Popover interface {
-	gextras.Objector
+	Bin
 
 	// AsBin casts the class to the Bin interface.
 	AsBin() Bin

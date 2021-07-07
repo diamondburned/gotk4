@@ -68,7 +68,7 @@ func init() {
 // [property@Gtk.LockButton:tooltip-unlock] and
 // [property@Gtk.LockButton:tooltip-not-authorized] properties.
 type LockButton interface {
-	gextras.Objector
+	Button
 
 	// AsButton casts the class to the Button interface.
 	AsButton() Button

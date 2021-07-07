@@ -74,7 +74,7 @@ func init() {
 //
 // `GtkProgressBar` uses the K_ACCESSIBLE_ROLE_PROGRESS_BAR role.
 type ProgressBar interface {
-	gextras.Objector
+	Widget
 
 	// AsWidget casts the class to the Widget interface.
 	AsWidget() Widget

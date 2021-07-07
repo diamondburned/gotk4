@@ -44,7 +44,7 @@ func init() {
 // `GtkFontButton` has a single CSS node with name fontbutton which contains a
 // button node with the .font style class.
 type FontButton interface {
-	gextras.Objector
+	Widget
 
 	// AsWidget casts the class to the Widget interface.
 	AsWidget() Widget

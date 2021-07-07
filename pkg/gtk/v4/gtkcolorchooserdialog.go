@@ -41,7 +41,7 @@ func init() {
 // [method@Gtk.ColorChooser.set_rgba]. To get the selected color use
 // [method@Gtk.ColorChooser.get_rgba].
 type ColorChooserDialog interface {
-	gextras.Objector
+	Dialog
 
 	// AsDialog casts the class to the Dialog interface.
 	AsDialog() Dialog

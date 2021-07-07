@@ -52,7 +52,7 @@ type ToggleToolButtonOverrider interface {
 //
 // GtkToggleToolButton has a single CSS node with name togglebutton.
 type ToggleToolButton interface {
-	gextras.Objector
+	ToolButton
 
 	// AsToolButton casts the class to the ToolButton interface.
 	AsToolButton() ToolButton

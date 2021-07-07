@@ -168,7 +168,7 @@ func init() {
 // “` // width of button1 must be equal to width of button2 // divided by 2 plus
 // 12 [button1(button2 / 2 + 12)] “`
 type ConstraintLayout interface {
-	gextras.Objector
+	LayoutManager
 
 	// AsLayoutManager casts the class to the LayoutManager interface.
 	AsLayoutManager() LayoutManager
@@ -374,7 +374,7 @@ func (l constraintLayout) RemoveGuide(guide ConstraintGuide) {
 // ConstraintLayoutChild: `GtkLayoutChild` subclass for children in a
 // `GtkConstraintLayout`.
 type ConstraintLayoutChild interface {
-	gextras.Objector
+	LayoutChild
 
 	// AsLayoutChild casts the class to the LayoutChild interface.
 	AsLayoutChild() LayoutChild

@@ -27,7 +27,7 @@ func init() {
 }
 
 type PlugAccessible interface {
-	gextras.Objector
+	WindowAccessible
 
 	// AsWindowAccessible casts the class to the WindowAccessible interface.
 	AsWindowAccessible() WindowAccessible

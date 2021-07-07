@@ -36,7 +36,7 @@ func init() {
 // CellRendererCombo:text-column property. Further properties of the combo box
 // can be set in a handler for the CellRenderer::editing-started signal.
 type CellRendererCombo interface {
-	gextras.Objector
+	CellRendererText
 
 	// AsCellRendererText casts the class to the CellRendererText interface.
 	AsCellRendererText() CellRendererText

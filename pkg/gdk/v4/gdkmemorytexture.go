@@ -70,7 +70,7 @@ func marshalMemoryFormat(p uintptr) (interface{}, error) {
 
 // MemoryTexture: `GdkTexture` representing image data in memory.
 type MemoryTexture interface {
-	gextras.Objector
+	Texture
 
 	// AsTexture casts the class to the Texture interface.
 	AsTexture() Texture

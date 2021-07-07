@@ -69,7 +69,7 @@ func init() {
 //
 // `GtkSearchBar` uses the GTK_ACCESSIBLE_ROLE_SEARCH role.
 type SearchBar interface {
-	gextras.Objector
+	Widget
 
 	// AsWidget casts the class to the Widget interface.
 	AsWidget() Widget

@@ -167,7 +167,7 @@ func (f fontset) Metrics() *FontMetrics {
 // When creating a `PangoFontsetSimple`, you have to provide the array of fonts
 // that make up the fontset.
 type FontsetSimple interface {
-	gextras.Objector
+	Fontset
 
 	// AsFontset casts the class to the Fontset interface.
 	AsFontset() Fontset

@@ -183,7 +183,7 @@ func init() {
 // To summarize, make sure you use a predefined response code when you use
 // `GtkFileChooserDialog` to ensure proper operation.
 type FileChooserDialog interface {
-	gextras.Objector
+	Dialog
 
 	// AsDialog casts the class to the Dialog interface.
 	AsDialog() Dialog

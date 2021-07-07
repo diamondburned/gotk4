@@ -38,7 +38,7 @@ func init() {
 // the CellRendererPixbuf:pixbuf-expander-closed property is set to a pixbuf, it
 // renders that one.
 type CellRendererPixbuf interface {
-	gextras.Objector
+	CellRenderer
 
 	// AsCellRenderer casts the class to the CellRenderer interface.
 	AsCellRenderer() CellRenderer

@@ -34,7 +34,7 @@ func init() {
 // name="item">GtkListItem</lookup> </lookup> </binding> </object> </property>
 // </template> </interface> “`
 type BuilderListItemFactory interface {
-	gextras.Objector
+	ListItemFactory
 
 	// AsListItemFactory casts the class to the ListItemFactory interface.
 	AsListItemFactory() ListItemFactory

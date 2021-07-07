@@ -28,7 +28,7 @@ func init() {
 // functions for size negotiation, as a convenience API to ease the porting
 // towards the corresponding `GtkLayoutManager virtual functions.
 type CustomLayout interface {
-	gextras.Objector
+	LayoutManager
 
 	// AsLayoutManager casts the class to the LayoutManager interface.
 	AsLayoutManager() LayoutManager

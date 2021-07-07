@@ -39,7 +39,7 @@ func init() {
 // determined by the [property@Gtk.Settings:gtk-long-press-time] setting. It can
 // be modified by the [property@Gtk.GestureLongPress:delay-factor] property.
 type GestureLongPress interface {
-	gextras.Objector
+	GestureSingle
 
 	// AsGestureSingle casts the class to the GestureSingle interface.
 	AsGestureSingle() GestureSingle

@@ -430,21 +430,21 @@ func (f *FileFilterInfo) Native() unsafe.Pointer {
 // Contains flags indicating which of the following fields need are filled
 func (f *FileFilterInfo) Contains() FileFilterFlags {
 	var v FileFilterFlags // out
-	v = FileFilterFlags(f.contains)
+	v = FileFilterFlags(f.native.contains)
 	return v
 }
 
 // Filename: the filename of the file being tested
 func (f *FileFilterInfo) Filename() string {
 	var v string // out
-	v = C.GoString(f.filename)
+	v = C.GoString(f.native.filename)
 	return v
 }
 
 // URI: the URI for the file being tested
 func (f *FileFilterInfo) URI() string {
 	var v string // out
-	v = C.GoString(f.uri)
+	v = C.GoString(f.native.uri)
 	return v
 }
 
@@ -452,13 +452,13 @@ func (f *FileFilterInfo) URI() string {
 // chooser
 func (f *FileFilterInfo) DisplayName() string {
 	var v string // out
-	v = C.GoString(f.display_name)
+	v = C.GoString(f.native.display_name)
 	return v
 }
 
 // MIMEType: the mime type of the file
 func (f *FileFilterInfo) MIMEType() string {
 	var v string // out
-	v = C.GoString(f.mime_type)
+	v = C.GoString(f.native.mime_type)
 	return v
 }

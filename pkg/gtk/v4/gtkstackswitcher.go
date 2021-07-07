@@ -57,7 +57,7 @@ func init() {
 // `GtkStackSwitcher` uses the GTK_ACCESSIBLE_ROLE_TAB_LIST role and uses the
 // GTK_ACCESSIBLE_ROLE_TAB for its buttons.
 type StackSwitcher interface {
-	gextras.Objector
+	Widget
 
 	// AsWidget casts the class to the Widget interface.
 	AsWidget() Widget

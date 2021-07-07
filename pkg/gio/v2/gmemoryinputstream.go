@@ -43,7 +43,7 @@ func init() {
 //
 // As of GLib 2.34, InputStream implements InputStream.
 type MemoryInputStream interface {
-	gextras.Objector
+	InputStream
 
 	// AsInputStream casts the class to the InputStream interface.
 	AsInputStream() InputStream

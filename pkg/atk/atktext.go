@@ -989,7 +989,7 @@ func (t *TextRange) Bounds() TextRectangle {
 		var refTmpIn *C.AtkTextRectangle
 		var refTmpOut *TextRectangle
 
-		in0 := &t.bounds
+		in0 := &t.native.bounds
 		refTmpIn = in0
 
 		refTmpOut = (*TextRectangle)(unsafe.Pointer(refTmpIn))
@@ -1002,21 +1002,21 @@ func (t *TextRange) Bounds() TextRectangle {
 // StartOffset: the start offset of a AtkTextRange
 func (t *TextRange) StartOffset() int {
 	var v int // out
-	v = int(t.start_offset)
+	v = int(t.native.start_offset)
 	return v
 }
 
 // EndOffset: the end offset of a AtkTextRange
 func (t *TextRange) EndOffset() int {
 	var v int // out
-	v = int(t.end_offset)
+	v = int(t.native.end_offset)
 	return v
 }
 
 // Content: the text in the text range
 func (t *TextRange) Content() string {
 	var v string // out
-	v = C.GoString(t.content)
+	v = C.GoString(t.native.content)
 	return v
 }
 
@@ -1039,27 +1039,27 @@ func (t *TextRectangle) Native() unsafe.Pointer {
 // X: the horizontal coordinate of a rectangle
 func (t *TextRectangle) X() int {
 	var v int // out
-	v = int(t.x)
+	v = int(t.native.x)
 	return v
 }
 
 // Y: the vertical coordinate of a rectangle
 func (t *TextRectangle) Y() int {
 	var v int // out
-	v = int(t.y)
+	v = int(t.native.y)
 	return v
 }
 
 // Width: the width of a rectangle
 func (t *TextRectangle) Width() int {
 	var v int // out
-	v = int(t.width)
+	v = int(t.native.width)
 	return v
 }
 
 // Height: the height of a rectangle
 func (t *TextRectangle) Height() int {
 	var v int // out
-	v = int(t.height)
+	v = int(t.native.height)
 	return v
 }

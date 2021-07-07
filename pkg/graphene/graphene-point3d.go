@@ -62,21 +62,21 @@ func (p *Point3D) Native() unsafe.Pointer {
 // X: the X coordinate
 func (p *Point3D) X() float32 {
 	var v float32 // out
-	v = float32(p.x)
+	v = float32(p.native.x)
 	return v
 }
 
 // Y: the Y coordinate
 func (p *Point3D) Y() float32 {
 	var v float32 // out
-	v = float32(p.y)
+	v = float32(p.native.y)
 	return v
 }
 
 // Z: the Z coordinate
 func (p *Point3D) Z() float32 {
 	var v float32 // out
-	v = float32(p.z)
+	v = float32(p.native.z)
 	return v
 }
 

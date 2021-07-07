@@ -535,7 +535,7 @@ func (k *KeymapKey) Native() unsafe.Pointer {
 // key.
 func (k *KeymapKey) Keycode() uint {
 	var v uint // out
-	v = uint(k.keycode)
+	v = uint(k.native.keycode)
 	return v
 }
 
@@ -545,7 +545,7 @@ func (k *KeymapKey) Keycode() uint {
 // characters will be printed on the key next to the English characters.
 func (k *KeymapKey) Group() int {
 	var v int // out
-	v = int(k.group)
+	v = int(k.native.group)
 	return v
 }
 
@@ -557,6 +557,6 @@ func (k *KeymapKey) Group() int {
 // though only the uppercase letter is printed.
 func (k *KeymapKey) Level() int {
 	var v int // out
-	v = int(k.level)
+	v = int(k.native.level)
 	return v
 }

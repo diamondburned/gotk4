@@ -893,7 +893,7 @@ func (a *AttrColor) Attr() Attribute {
 		var refTmpIn *C.PangoAttribute
 		var refTmpOut *Attribute
 
-		in0 := &a.attr
+		in0 := &a.native.attr
 		refTmpIn = in0
 
 		refTmpOut = (*Attribute)(unsafe.Pointer(refTmpIn))
@@ -910,7 +910,7 @@ func (a *AttrColor) Color() Color {
 		var refTmpIn *C.PangoColor
 		var refTmpOut *Color
 
-		in0 := &a.color
+		in0 := &a.native.color
 		refTmpIn = in0
 
 		refTmpOut = (*Color)(unsafe.Pointer(refTmpIn))
@@ -944,7 +944,7 @@ func (a *AttrFloat) Attr() Attribute {
 		var refTmpIn *C.PangoAttribute
 		var refTmpOut *Attribute
 
-		in0 := &a.attr
+		in0 := &a.native.attr
 		refTmpIn = in0
 
 		refTmpOut = (*Attribute)(unsafe.Pointer(refTmpIn))
@@ -957,7 +957,7 @@ func (a *AttrFloat) Attr() Attribute {
 // Value: the value of the attribute
 func (a *AttrFloat) Value() float64 {
 	var v float64 // out
-	v = float64(a.value)
+	v = float64(a.native.value)
 	return v
 }
 
@@ -985,7 +985,7 @@ func (a *AttrFontDesc) Attr() Attribute {
 		var refTmpIn *C.PangoAttribute
 		var refTmpOut *Attribute
 
-		in0 := &a.attr
+		in0 := &a.native.attr
 		refTmpIn = in0
 
 		refTmpOut = (*Attribute)(unsafe.Pointer(refTmpIn))
@@ -998,7 +998,7 @@ func (a *AttrFontDesc) Attr() Attribute {
 // Desc: the font description which is the value of this attribute
 func (a *AttrFontDesc) Desc() *FontDescription {
 	var v *FontDescription // out
-	v = (*FontDescription)(unsafe.Pointer(a.desc))
+	v = (*FontDescription)(unsafe.Pointer(a.native.desc))
 	return v
 }
 
@@ -1026,7 +1026,7 @@ func (a *AttrFontFeatures) Attr() Attribute {
 		var refTmpIn *C.PangoAttribute
 		var refTmpOut *Attribute
 
-		in0 := &a.attr
+		in0 := &a.native.attr
 		refTmpIn = in0
 
 		refTmpOut = (*Attribute)(unsafe.Pointer(refTmpIn))
@@ -1039,7 +1039,7 @@ func (a *AttrFontFeatures) Attr() Attribute {
 // Features: the featues, as a string in CSS syntax
 func (a *AttrFontFeatures) Features() string {
 	var v string // out
-	v = C.GoString(a.features)
+	v = C.GoString(a.native.features)
 	return v
 }
 
@@ -1067,7 +1067,7 @@ func (a *AttrInt) Attr() Attribute {
 		var refTmpIn *C.PangoAttribute
 		var refTmpOut *Attribute
 
-		in0 := &a.attr
+		in0 := &a.native.attr
 		refTmpIn = in0
 
 		refTmpOut = (*Attribute)(unsafe.Pointer(refTmpIn))
@@ -1080,7 +1080,7 @@ func (a *AttrInt) Attr() Attribute {
 // Value: the value of the attribute
 func (a *AttrInt) Value() int {
 	var v int // out
-	v = int(a.value)
+	v = int(a.native.value)
 	return v
 }
 
@@ -1224,7 +1224,7 @@ func (a *AttrLanguage) Attr() Attribute {
 		var refTmpIn *C.PangoAttribute
 		var refTmpOut *Attribute
 
-		in0 := &a.attr
+		in0 := &a.native.attr
 		refTmpIn = in0
 
 		refTmpOut = (*Attribute)(unsafe.Pointer(refTmpIn))
@@ -1237,7 +1237,7 @@ func (a *AttrLanguage) Attr() Attribute {
 // Value: the `PangoLanguage` which is the value of the attribute
 func (a *AttrLanguage) Value() *Language {
 	var v *Language // out
-	v = (*Language)(unsafe.Pointer(a.value))
+	v = (*Language)(unsafe.Pointer(a.native.value))
 	return v
 }
 
@@ -1529,7 +1529,7 @@ func (a *AttrShape) Attr() Attribute {
 		var refTmpIn *C.PangoAttribute
 		var refTmpOut *Attribute
 
-		in0 := &a.attr
+		in0 := &a.native.attr
 		refTmpIn = in0
 
 		refTmpOut = (*Attribute)(unsafe.Pointer(refTmpIn))
@@ -1546,7 +1546,7 @@ func (a *AttrShape) InkRect() Rectangle {
 		var refTmpIn *C.PangoRectangle
 		var refTmpOut *Rectangle
 
-		in0 := &a.ink_rect
+		in0 := &a.native.ink_rect
 		refTmpIn = in0
 
 		refTmpOut = (*Rectangle)(unsafe.Pointer(refTmpIn))
@@ -1563,7 +1563,7 @@ func (a *AttrShape) LogicalRect() Rectangle {
 		var refTmpIn *C.PangoRectangle
 		var refTmpOut *Rectangle
 
-		in0 := &a.logical_rect
+		in0 := &a.native.logical_rect
 		refTmpIn = in0
 
 		refTmpOut = (*Rectangle)(unsafe.Pointer(refTmpIn))
@@ -1576,7 +1576,7 @@ func (a *AttrShape) LogicalRect() Rectangle {
 // Data: user data set (see [type_func@Pango.AttrShape.new_with_data])
 func (a *AttrShape) Data() interface{} {
 	var v interface{} // out
-	v = box.Get(uintptr(a.data))
+	v = box.Get(uintptr(a.native.data))
 	return v
 }
 
@@ -1604,7 +1604,7 @@ func (a *AttrSize) Attr() Attribute {
 		var refTmpIn *C.PangoAttribute
 		var refTmpOut *Attribute
 
-		in0 := &a.attr
+		in0 := &a.native.attr
 		refTmpIn = in0
 
 		refTmpOut = (*Attribute)(unsafe.Pointer(refTmpIn))
@@ -1618,7 +1618,7 @@ func (a *AttrSize) Attr() Attribute {
 // PANGO_ATTR_SIZE) or of a device unit (for PANGO_ATTR_ABSOLUTE_SIZE)
 func (a *AttrSize) Size() int {
 	var v int // out
-	v = int(a.size)
+	v = int(a.native.size)
 	return v
 }
 
@@ -1646,7 +1646,7 @@ func (a *AttrString) Attr() Attribute {
 		var refTmpIn *C.PangoAttribute
 		var refTmpOut *Attribute
 
-		in0 := &a.attr
+		in0 := &a.native.attr
 		refTmpIn = in0
 
 		refTmpOut = (*Attribute)(unsafe.Pointer(refTmpIn))
@@ -1659,7 +1659,7 @@ func (a *AttrString) Attr() Attribute {
 // Value: the string which is the value of the attribute
 func (a *AttrString) Value() string {
 	var v string // out
-	v = C.GoString(a.value)
+	v = C.GoString(a.native.value)
 	return v
 }
 
@@ -1694,7 +1694,7 @@ func (a *Attribute) Native() unsafe.Pointer {
 // StartIndex: the start index of the range (in bytes).
 func (a *Attribute) StartIndex() uint {
 	var v uint // out
-	v = uint(a.start_index)
+	v = uint(a.native.start_index)
 	return v
 }
 
@@ -1702,7 +1702,7 @@ func (a *Attribute) StartIndex() uint {
 // not included in the range.
 func (a *Attribute) EndIndex() uint {
 	var v uint // out
-	v = uint(a.end_index)
+	v = uint(a.native.end_index)
 	return v
 }
 
@@ -1780,21 +1780,21 @@ func (c *Color) Native() unsafe.Pointer {
 // Red: value of red component
 func (c *Color) Red() uint16 {
 	var v uint16 // out
-	v = uint16(c.red)
+	v = uint16(c.native.red)
 	return v
 }
 
 // Green: value of green component
 func (c *Color) Green() uint16 {
 	var v uint16 // out
-	v = uint16(c.green)
+	v = uint16(c.native.green)
 	return v
 }
 
 // Blue: value of blue component
 func (c *Color) Blue() uint16 {
 	var v uint16 // out
-	v = uint16(c.blue)
+	v = uint16(c.native.blue)
 	return v
 }
 

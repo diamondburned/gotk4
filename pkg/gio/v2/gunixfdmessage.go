@@ -47,7 +47,7 @@ func init() {
 // interfaces, thus you have to use the `gio-unix-2.0.pc` pkg-config file when
 // using it.
 type UnixFDMessage interface {
-	gextras.Objector
+	SocketControlMessage
 
 	// AsSocketControlMessage casts the class to the SocketControlMessage interface.
 	AsSocketControlMessage() SocketControlMessage

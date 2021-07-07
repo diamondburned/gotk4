@@ -109,7 +109,7 @@ func marshalStackTransitionType(p uintptr) (interface{}, error) {
 //
 // GtkStack has a single CSS node named stack.
 type Stack interface {
-	gextras.Objector
+	Container
 
 	// AsContainer casts the class to the Container interface.
 	AsContainer() Container

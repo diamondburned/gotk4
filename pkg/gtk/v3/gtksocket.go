@@ -91,7 +91,7 @@ type SocketOverrider interface {
 // X11Display. To use Plug and Socket, you need to include the `gtk/gtkx.h`
 // header.
 type Socket interface {
-	gextras.Objector
+	Container
 
 	// AsContainer casts the class to the Container interface.
 	AsContainer() Container

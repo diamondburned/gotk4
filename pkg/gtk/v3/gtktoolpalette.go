@@ -99,7 +99,7 @@ func marshalToolPaletteDragTargets(p uintptr) (interface{}, error) {
 //
 // GtkToolPalette has a single CSS node named toolpalette.
 type ToolPalette interface {
-	gextras.Objector
+	Container
 
 	// AsContainer casts the class to the Container interface.
 	AsContainer() Container

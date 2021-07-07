@@ -33,7 +33,7 @@ func init() {
 //
 // !An example GtkVolumeButton (volumebutton.png)
 type VolumeButton interface {
-	gextras.Objector
+	ScaleButton
 
 	// AsScaleButton casts the class to the ScaleButton interface.
 	AsScaleButton() ScaleButton

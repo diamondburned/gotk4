@@ -53,7 +53,7 @@ func init() {
 // For more information about migrating to Grid, see [Migrating from other
 // containers to GtkGrid][gtk-migrating-GtkGrid].
 type HBox interface {
-	gextras.Objector
+	Box
 
 	// AsBox casts the class to the Box interface.
 	AsBox() Box

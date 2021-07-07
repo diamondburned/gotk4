@@ -60,7 +60,7 @@ type LabelOverrider interface {
 // It is possible to implement custom handling for links and their tooltips with
 // the Label::activate-link signal and the gtk_label_get_current_uri() function.
 type Label interface {
-	gextras.Objector
+	Misc
 
 	// AsMisc casts the class to the Misc interface.
 	AsMisc() Misc

@@ -30,7 +30,7 @@ func init() {
 // [signal@Gtk.GestureZoom::scale-changed] signal is emitted to report the scale
 // factor.
 type GestureZoom interface {
-	gextras.Objector
+	Gesture
 
 	// AsGesture casts the class to the Gesture interface.
 	AsGesture() Gesture

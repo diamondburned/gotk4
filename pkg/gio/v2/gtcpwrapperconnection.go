@@ -41,7 +41,7 @@ func init() {
 // that it can always return a Connection, even when the connection it has
 // actually created is not directly a Connection.
 type TCPWrapperConnection interface {
-	gextras.Objector
+	TCPConnection
 
 	// AsTCPConnection casts the class to the TCPConnection interface.
 	AsTCPConnection() TCPConnection

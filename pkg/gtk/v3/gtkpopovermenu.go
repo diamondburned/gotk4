@@ -104,7 +104,7 @@ func init() {
 // PopoverMenu instances have a single css node called "popover" and get the
 // .menu style class.
 type PopoverMenu interface {
-	gextras.Objector
+	Popover
 
 	// AsPopover casts the class to the Popover interface.
 	AsPopover() Popover

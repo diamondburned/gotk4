@@ -60,7 +60,7 @@ func (r *Rect) Origin() Point {
 		var refTmpIn *C.graphene_point_t
 		var refTmpOut *Point
 
-		in0 := &r.origin
+		in0 := &r.native.origin
 		refTmpIn = in0
 
 		refTmpOut = (*Point)(unsafe.Pointer(refTmpIn))
@@ -77,7 +77,7 @@ func (r *Rect) Size() Size {
 		var refTmpIn *C.graphene_size_t
 		var refTmpOut *Size
 
-		in0 := &r.size
+		in0 := &r.native.size
 		refTmpIn = in0
 
 		refTmpOut = (*Size)(unsafe.Pointer(refTmpIn))

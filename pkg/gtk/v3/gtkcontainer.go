@@ -265,7 +265,7 @@ type ContainerOverrider interface {
 //      </focus-chain>
 //    </object>
 type Container interface {
-	gextras.Objector
+	Widget
 
 	// AsWidget casts the class to the Widget interface.
 	AsWidget() Widget

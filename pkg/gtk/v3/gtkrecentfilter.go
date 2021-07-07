@@ -453,14 +453,14 @@ func (r *RecentFilterInfo) Native() unsafe.Pointer {
 // Contains to indicate which fields are set.
 func (r *RecentFilterInfo) Contains() RecentFilterFlags {
 	var v RecentFilterFlags // out
-	v = RecentFilterFlags(r.contains)
+	v = RecentFilterFlags(r.native.contains)
 	return v
 }
 
 // URI: the URI of the file being tested.
 func (r *RecentFilterInfo) URI() string {
 	var v string // out
-	v = C.GoString(r.uri)
+	v = C.GoString(r.native.uri)
 	return v
 }
 
@@ -468,14 +468,14 @@ func (r *RecentFilterInfo) URI() string {
 // chooser.
 func (r *RecentFilterInfo) DisplayName() string {
 	var v string // out
-	v = C.GoString(r.display_name)
+	v = C.GoString(r.native.display_name)
 	return v
 }
 
 // MIMEType: MIME type of the file.
 func (r *RecentFilterInfo) MIMEType() string {
 	var v string // out
-	v = C.GoString(r.mime_type)
+	v = C.GoString(r.native.mime_type)
 	return v
 }
 
@@ -485,11 +485,11 @@ func (r *RecentFilterInfo) Applications() []string {
 	{
 		var i int
 		var z *C.gchar
-		for p := r.applications; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+		for p := r.native.applications; *p != z; p = &unsafe.Slice(p, i+1)[i] {
 			i++
 		}
 
-		src := unsafe.Slice(r.applications, i)
+		src := unsafe.Slice(r.native.applications, i)
 		v = make([]string, i)
 		for i := range src {
 			v[i] = C.GoString(src[i])
@@ -504,11 +504,11 @@ func (r *RecentFilterInfo) Groups() []string {
 	{
 		var i int
 		var z *C.gchar
-		for p := r.groups; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+		for p := r.native.groups; *p != z; p = &unsafe.Slice(p, i+1)[i] {
 			i++
 		}
 
-		src := unsafe.Slice(r.groups, i)
+		src := unsafe.Slice(r.native.groups, i)
 		v = make([]string, i)
 		for i := range src {
 			v[i] = C.GoString(src[i])
@@ -520,6 +520,6 @@ func (r *RecentFilterInfo) Groups() []string {
 // Age: the number of days elapsed since the file has been registered.
 func (r *RecentFilterInfo) Age() int {
 	var v int // out
-	v = int(r.age)
+	v = int(r.native.age)
 	return v
 }

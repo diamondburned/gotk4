@@ -110,7 +110,7 @@ func init() {
 // `GtkListView` uses the GTK_ACCESSIBLE_ROLE_LIST role, and the list items use
 // the GTK_ACCESSIBLE_ROLE_LIST_ITEM role.
 type ListView interface {
-	gextras.Objector
+	ListBase
 
 	// AsListBase casts the class to the ListBase interface.
 	AsListBase() ListBase

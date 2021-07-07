@@ -114,7 +114,7 @@ func init() {
 // the gesture has GTK_PHASE_NONE, ensuring events of type GDK_TOUCHPAD_SWIPE
 // and GDK_TOUCHPAD_PINCH are handled by the Gesture
 type Gesture interface {
-	gextras.Objector
+	EventController
 
 	// AsEventController casts the class to the EventController interface.
 	AsEventController() EventController

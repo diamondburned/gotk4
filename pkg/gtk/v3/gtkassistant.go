@@ -139,7 +139,7 @@ type AssistantOverrider interface {
 //
 // GtkAssistant has a single CSS node with the name assistant.
 type Assistant interface {
-	gextras.Objector
+	Window
 
 	// AsWindow casts the class to the Window interface.
 	AsWindow() Window

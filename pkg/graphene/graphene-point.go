@@ -62,14 +62,14 @@ func (p *Point) Native() unsafe.Pointer {
 // X: the X coordinate of the point
 func (p *Point) X() float32 {
 	var v float32 // out
-	v = float32(p.x)
+	v = float32(p.native.x)
 	return v
 }
 
 // Y: the Y coordinate of the point
 func (p *Point) Y() float32 {
 	var v float32 // out
-	v = float32(p.y)
+	v = float32(p.native.y)
 	return v
 }
 

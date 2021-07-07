@@ -53,7 +53,7 @@ func init() {
 //
 // GtkFontChooserWidget has a single CSS node with name fontchooser.
 type FontChooserWidget interface {
-	gextras.Objector
+	Box
 
 	// AsBox casts the class to the Box interface.
 	AsBox() Box

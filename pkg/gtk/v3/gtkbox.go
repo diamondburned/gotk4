@@ -81,7 +81,7 @@ func init() {
 // left to right. So :first-child will always select the leftmost child,
 // regardless of text direction.
 type Box interface {
-	gextras.Objector
+	Container
 
 	// AsContainer casts the class to the Container interface.
 	AsContainer() Container

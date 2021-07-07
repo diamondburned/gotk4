@@ -64,7 +64,7 @@ func init() {
 // [signal@Gtk.SignalListItemFactory::setup] signal and removed again during
 // [signal@Gtk.SignalListItemFactory::teardown].
 type SignalListItemFactory interface {
-	gextras.Objector
+	ListItemFactory
 
 	// AsListItemFactory casts the class to the ListItemFactory interface.
 	AsListItemFactory() ListItemFactory

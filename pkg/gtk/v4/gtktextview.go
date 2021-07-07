@@ -135,7 +135,7 @@ type TextViewOverrider interface {
 //
 // `GtkTextView` uses the K_ACCESSIBLE_ROLE_TEXT_BOX role.
 type TextView interface {
-	gextras.Objector
+	Widget
 
 	// AsWidget casts the class to the Widget interface.
 	AsWidget() Widget

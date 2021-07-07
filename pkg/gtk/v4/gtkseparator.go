@@ -46,7 +46,7 @@ func init() {
 //
 // `GtkSeparator` uses the K_ACCESSIBLE_ROLE_SEPARATOR role.
 type Separator interface {
-	gextras.Objector
+	Widget
 
 	// AsWidget casts the class to the Widget interface.
 	AsWidget() Widget

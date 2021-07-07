@@ -139,7 +139,7 @@ type ApplicationOverrider interface {
 // Getting Started with GTK+: Basics
 // (https://developer.gnome.org/gtk3/stable/gtk-getting-started.html#id-1.2.3.3)
 type Application interface {
-	gextras.Objector
+	gio.Application
 
 	// AsApplication casts the class to the gio.Application interface.
 	AsApplication() gio.Application

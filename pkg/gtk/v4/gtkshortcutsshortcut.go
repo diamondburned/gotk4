@@ -76,7 +76,7 @@ func marshalShortcutType(p uintptr) (interface{}, error) {
 //
 // This widget is only meant to be used with `GtkShortcutsWindow`.
 type ShortcutsShortcut interface {
-	gextras.Objector
+	Widget
 
 	// AsWidget casts the class to the Widget interface.
 	AsWidget() Widget

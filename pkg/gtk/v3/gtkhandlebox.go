@@ -68,7 +68,7 @@ type HandleBoxOverrider interface {
 // make it useful and most importantly does not fit well into modern >
 // application design. Do not use it. There is no replacement.
 type HandleBox interface {
-	gextras.Objector
+	Bin
 
 	// AsBin casts the class to the Bin interface.
 	AsBin() Bin

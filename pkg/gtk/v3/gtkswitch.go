@@ -56,7 +56,7 @@ type SwitchOverrider interface {
 // GtkSwitch has two css nodes, the main node with the name switch and a subnode
 // named slider. Neither of them is using any style classes.
 type Switch interface {
-	gextras.Objector
+	Widget
 
 	// AsWidget casts the class to the Widget interface.
 	AsWidget() Widget

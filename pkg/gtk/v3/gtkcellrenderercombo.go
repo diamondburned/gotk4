@@ -39,7 +39,7 @@ func init() {
 //
 // The CellRendererCombo cell renderer was added in GTK+ 2.6.
 type CellRendererCombo interface {
-	gextras.Objector
+	CellRendererText
 
 	// AsCellRendererText casts the class to the CellRendererText interface.
 	AsCellRendererText() CellRendererText

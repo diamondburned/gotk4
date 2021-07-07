@@ -25,7 +25,7 @@ func init() {
 }
 
 type X11Drag interface {
-	gextras.Objector
+	gdk.Drag
 
 	// AsDrag casts the class to the gdk.Drag interface.
 	AsDrag() gdk.Drag

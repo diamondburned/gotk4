@@ -39,7 +39,7 @@ func init() {
 // setting 0. While the gesture is active, the button being currently pressed
 // can be known through gtk_gesture_single_get_current_button().
 type GestureSingle interface {
-	gextras.Objector
+	Gesture
 
 	// AsGesture casts the class to the Gesture interface.
 	AsGesture() Gesture

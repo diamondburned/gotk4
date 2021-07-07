@@ -39,7 +39,7 @@ func init() {
 //
 // GtkVSeparator has been deprecated, use Separator instead.
 type VSeparator interface {
-	gextras.Objector
+	Separator
 
 	// AsSeparator casts the class to the Separator interface.
 	AsSeparator() Separator

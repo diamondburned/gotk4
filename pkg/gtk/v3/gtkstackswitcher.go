@@ -57,7 +57,7 @@ func init() {
 // When circumstances require it, GtkStackSwitcher adds the .needs-attention
 // style class to the widgets representing the stack pages.
 type StackSwitcher interface {
-	gextras.Objector
+	Box
 
 	// AsBox casts the class to the Box interface.
 	AsBox() Box

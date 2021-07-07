@@ -33,7 +33,7 @@ const (
 )
 
 type X11DeviceXI2 interface {
-	gextras.Objector
+	gdk.Device
 
 	// AsDevice casts the class to the gdk.Device interface.
 	AsDevice() gdk.Device

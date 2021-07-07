@@ -40,7 +40,7 @@ func X11SetSmClientID(smClientId string) {
 }
 
 type X11Display interface {
-	gextras.Objector
+	gdk.Display
 
 	// AsDisplay casts the class to the gdk.Display interface.
 	AsDisplay() gdk.Display

@@ -65,28 +65,28 @@ func (b *Border) Native() unsafe.Pointer {
 // Left: the width of the left border
 func (b *Border) Left() int16 {
 	var v int16 // out
-	v = int16(b.left)
+	v = int16(b.native.left)
 	return v
 }
 
 // Right: the width of the right border
 func (b *Border) Right() int16 {
 	var v int16 // out
-	v = int16(b.right)
+	v = int16(b.native.right)
 	return v
 }
 
 // Top: the width of the top border
 func (b *Border) Top() int16 {
 	var v int16 // out
-	v = int16(b.top)
+	v = int16(b.native.top)
 	return v
 }
 
 // Bottom: the width of the bottom border
 func (b *Border) Bottom() int16 {
 	var v int16 // out
-	v = int16(b.bottom)
+	v = int16(b.native.bottom)
 	return v
 }
 

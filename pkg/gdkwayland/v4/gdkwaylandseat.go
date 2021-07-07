@@ -29,7 +29,7 @@ func init() {
 // access to the Wayland `wl_seat` object with
 // [method@GdkWayland.WaylandSeat.get_wl_seat].
 type WaylandSeat interface {
-	gextras.Objector
+	gdk.Seat
 
 	// AsSeat casts the class to the gdk.Seat interface.
 	AsSeat() gdk.Seat

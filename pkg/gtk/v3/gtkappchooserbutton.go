@@ -65,7 +65,7 @@ type AppChooserButtonOverrider interface {
 // To track changes in the selected application, use the ComboBox::changed
 // signal.
 type AppChooserButton interface {
-	gextras.Objector
+	ComboBox
 
 	// AsComboBox casts the class to the ComboBox interface.
 	AsComboBox() ComboBox

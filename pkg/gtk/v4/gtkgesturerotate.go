@@ -28,7 +28,7 @@ func init() {
 // Whenever the angle between both handled sequences changes, the
 // [signal@Gtk.GestureRotate::angle-changed] signal is emitted.
 type GestureRotate interface {
-	gextras.Objector
+	Gesture
 
 	// AsGesture casts the class to the Gesture interface.
 	AsGesture() Gesture

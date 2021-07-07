@@ -87,7 +87,7 @@ type ToolbarOverrider interface {
 //
 // GtkToolbar has a single CSS node with name toolbar.
 type Toolbar interface {
-	gextras.Objector
+	Container
 
 	// AsContainer casts the class to the Container interface.
 	AsContainer() Container

@@ -44,7 +44,7 @@ func init() {
 // GtkSeparator has a single CSS node with name separator. The node gets one of
 // the .horizontal or .vertical style classes.
 type Separator interface {
-	gextras.Objector
+	Widget
 
 	// AsWidget casts the class to the Widget interface.
 	AsWidget() Widget

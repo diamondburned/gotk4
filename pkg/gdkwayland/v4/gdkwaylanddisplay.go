@@ -34,7 +34,7 @@ func init() {
 // You can find out what Wayland globals are supported by a display with
 // [method@GdkWayland.WaylandDisplay.query_registry].
 type WaylandDisplay interface {
-	gextras.Objector
+	gdk.Display
 
 	// AsDisplay casts the class to the gdk.Display interface.
 	AsDisplay() gdk.Display

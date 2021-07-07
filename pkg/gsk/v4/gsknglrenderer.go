@@ -27,7 +27,7 @@ func init() {
 }
 
 type NglRenderer interface {
-	gextras.Objector
+	Renderer
 
 	// AsRenderer casts the class to the Renderer interface.
 	AsRenderer() Renderer

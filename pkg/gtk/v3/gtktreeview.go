@@ -311,7 +311,7 @@ type TreeViewOverrider interface {
 // widgets' CSS nodes. For rubberband selection, a subnode with name rubberband
 // is used.
 type TreeView interface {
-	gextras.Objector
+	Container
 
 	// AsContainer casts the class to the Container interface.
 	AsContainer() Container

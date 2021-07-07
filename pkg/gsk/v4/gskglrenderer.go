@@ -28,7 +28,7 @@ func init() {
 
 // GLRenderer: GSK renderer that is using OpenGL.
 type GLRenderer interface {
-	gextras.Objector
+	Renderer
 
 	// AsRenderer casts the class to the Renderer interface.
 	AsRenderer() Renderer

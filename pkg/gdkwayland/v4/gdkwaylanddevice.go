@@ -32,7 +32,7 @@ func init() {
 // [method@GdkWayland.WaylandDevice.get_wl_keyboard] and the `wl_pointer` with
 // [method@GdkWayland.WaylandDevice.get_wl_pointer].
 type WaylandDevice interface {
-	gextras.Objector
+	gdk.Device
 
 	// AsDevice casts the class to the gdk.Device interface.
 	AsDevice() gdk.Device

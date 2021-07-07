@@ -68,7 +68,7 @@ func init() {
 //
 // `GtkScrollbar` uses the GTK_ACCESSIBLE_ROLE_SCROLLBAR role.
 type Scrollbar interface {
-	gextras.Objector
+	Widget
 
 	// AsWidget casts the class to the Widget interface.
 	AsWidget() Widget

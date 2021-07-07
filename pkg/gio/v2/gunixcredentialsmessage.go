@@ -43,7 +43,7 @@ func init() {
 // g_unix_connection_receive_credentials(). To receive credentials of a foreign
 // process connected to a socket, use g_socket_get_credentials().
 type UnixCredentialsMessage interface {
-	gextras.Objector
+	SocketControlMessage
 
 	// AsSocketControlMessage casts the class to the SocketControlMessage interface.
 	AsSocketControlMessage() SocketControlMessage

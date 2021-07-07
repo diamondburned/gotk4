@@ -30,7 +30,7 @@ func init() {
 
 // ListBase: `GtkListBase` is the abstract base class for GTK's list widgets.
 type ListBase interface {
-	gextras.Objector
+	Widget
 
 	// AsWidget casts the class to the Widget interface.
 	AsWidget() Widget

@@ -62,7 +62,7 @@ func init() {
 // visible border. You can set the appearance of the border using CSS properties
 // like “border-style” on this node.
 type Frame interface {
-	gextras.Objector
+	Widget
 
 	// AsWidget casts the class to the Widget interface.
 	AsWidget() Widget

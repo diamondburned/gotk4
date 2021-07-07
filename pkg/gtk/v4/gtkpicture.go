@@ -76,7 +76,7 @@ func init() {
 //
 // `GtkPicture` uses the `GTK_ACCESSIBLE_ROLE_IMG` role.
 type Picture interface {
-	gextras.Objector
+	Widget
 
 	// AsWidget casts the class to the Widget interface.
 	AsWidget() Widget

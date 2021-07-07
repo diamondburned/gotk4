@@ -26,7 +26,7 @@ func init() {
 // instance of this is created by an AtkRegistry if no factory type has not been
 // specified to create an accessible object of a particular type.
 type NoOpObjectFactory interface {
-	gextras.Objector
+	ObjectFactory
 
 	// AsObjectFactory casts the class to the ObjectFactory interface.
 	AsObjectFactory() ObjectFactory

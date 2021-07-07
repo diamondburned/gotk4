@@ -35,7 +35,7 @@ type CellAccessibleOverrider interface {
 }
 
 type CellAccessible interface {
-	gextras.Objector
+	Accessible
 
 	// AsAccessible casts the class to the Accessible interface.
 	AsAccessible() Accessible

@@ -27,7 +27,7 @@ func init() {
 }
 
 type BooleanCellAccessible interface {
-	gextras.Objector
+	RendererCellAccessible
 
 	// AsRendererCellAccessible casts the class to the RendererCellAccessible interface.
 	AsRendererCellAccessible() RendererCellAccessible

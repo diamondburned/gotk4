@@ -120,7 +120,7 @@ type ScaleOverrider interface {
 // If the scale is displaying the value (see Scale:draw-value), there is subnode
 // with name value.
 type Scale interface {
-	gextras.Objector
+	Range
 
 	// AsRange casts the class to the Range interface.
 	AsRange() Range

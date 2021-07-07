@@ -38,7 +38,7 @@ type CellRendererToggleOverrider interface {
 // a radio or a checkbutton, depending on the CellRendererToggle:radio property.
 // When activated, it emits the CellRendererToggle::toggled signal.
 type CellRendererToggle interface {
-	gextras.Objector
+	CellRenderer
 
 	// AsCellRenderer casts the class to the CellRenderer interface.
 	AsCellRenderer() CellRenderer

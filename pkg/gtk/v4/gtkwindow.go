@@ -88,7 +88,7 @@ type WindowOverrider interface {
 //
 // `GtkWindow` uses the GTK_ACCESSIBLE_ROLE_WINDOW role.
 type Window interface {
-	gextras.Objector
+	Widget
 
 	// AsWidget casts the class to the Widget interface.
 	AsWidget() Widget

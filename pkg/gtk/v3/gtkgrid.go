@@ -53,7 +53,7 @@ func init() {
 //
 // GtkGrid uses a single CSS node with name grid.
 type Grid interface {
-	gextras.Objector
+	Container
 
 	// AsContainer casts the class to the Container interface.
 	AsContainer() Container

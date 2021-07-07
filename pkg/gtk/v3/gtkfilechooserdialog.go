@@ -179,7 +179,7 @@ func init() {
 // code][gtkfilechooserdialog-responses] when you use FileChooserDialog to
 // ensure proper operation.
 type FileChooserDialog interface {
-	gextras.Objector
+	Dialog
 
 	// AsDialog casts the class to the Dialog interface.
 	AsDialog() Dialog

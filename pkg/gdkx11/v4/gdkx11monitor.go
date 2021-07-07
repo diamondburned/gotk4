@@ -24,7 +24,7 @@ func init() {
 }
 
 type X11Monitor interface {
-	gextras.Objector
+	gdk.Monitor
 
 	// AsMonitor casts the class to the gdk.Monitor interface.
 	AsMonitor() gdk.Monitor

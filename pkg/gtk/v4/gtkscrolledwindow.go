@@ -160,7 +160,7 @@ func marshalPolicyType(p uintptr) (interface{}, error) {
 //
 // `GtkScrolledWindow` uses the GTK_ACCESSIBLE_ROLE_GROUP role.
 type ScrolledWindow interface {
-	gextras.Objector
+	Widget
 
 	// AsWidget casts the class to the Widget interface.
 	AsWidget() Widget

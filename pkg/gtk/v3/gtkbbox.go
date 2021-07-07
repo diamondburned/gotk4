@@ -65,7 +65,7 @@ func marshalButtonBoxStyle(p uintptr) (interface{}, error) {
 }
 
 type ButtonBox interface {
-	gextras.Objector
+	Box
 
 	// AsBox casts the class to the Box interface.
 	AsBox() Box

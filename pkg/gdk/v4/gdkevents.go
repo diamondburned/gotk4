@@ -342,7 +342,7 @@ func EventsGetDistance(event1 Event, event2 Event) (float64, bool) {
 
 // ButtonEvent: event related to a button on a pointer device.
 type ButtonEvent interface {
-	gextras.Objector
+	Event
 
 	// AsEvent casts the class to the Event interface.
 	AsEvent() Event
@@ -547,7 +547,7 @@ func (e buttonEvent) Button() uint {
 
 // CrossingEvent: event caused by a pointing device moving between surfaces.
 type CrossingEvent interface {
-	gextras.Objector
+	Event
 
 	// AsEvent casts the class to the Event interface.
 	AsEvent() Event
@@ -788,7 +788,7 @@ func (e crossingEvent) Mode() CrossingMode {
 
 // DNDEvent: event related to drag and drop operations.
 type DNDEvent interface {
-	gextras.Objector
+	Event
 
 	// AsEvent casts the class to the Event interface.
 	AsEvent() Event
@@ -993,7 +993,7 @@ func (e dndEvent) Drop() Drop {
 
 // DeleteEvent: event related to closing a top-level surface.
 type DeleteEvent interface {
-	gextras.Objector
+	Event
 
 	// AsEvent casts the class to the Event interface.
 	AsEvent() Event
@@ -1528,7 +1528,7 @@ func (e event) unref() {
 
 // FocusEvent: event related to a keyboard focus change.
 type FocusEvent interface {
-	gextras.Objector
+	Event
 
 	// AsEvent casts the class to the Event interface.
 	AsEvent() Event
@@ -1736,7 +1736,7 @@ func (e focusEvent) In() bool {
 
 // GrabBrokenEvent: event related to a broken windowing system grab.
 type GrabBrokenEvent interface {
-	gextras.Objector
+	Event
 
 	// AsEvent casts the class to the Event interface.
 	AsEvent() Event
@@ -1960,7 +1960,7 @@ func (e grabBrokenEvent) Implicit() bool {
 
 // KeyEvent: event related to a key-based device.
 type KeyEvent interface {
-	gextras.Objector
+	Event
 
 	// AsEvent casts the class to the Event interface.
 	AsEvent() Event
@@ -2307,7 +2307,7 @@ func (e keyEvent) Matches(keyval uint, modifiers ModifierType) KeyMatch {
 
 // MotionEvent: event related to a pointer or touch device motion.
 type MotionEvent interface {
-	gextras.Objector
+	Event
 
 	// AsEvent casts the class to the Event interface.
 	AsEvent() Event
@@ -2494,7 +2494,7 @@ func (e motionEvent) unref() {
 
 // PadEvent: event related to a pad-based device.
 type PadEvent interface {
-	gextras.Objector
+	Event
 
 	// AsEvent casts the class to the Event interface.
 	AsEvent() Event
@@ -2739,7 +2739,7 @@ func (e padEvent) GroupMode() (group uint, mode uint) {
 
 // ProximityEvent: event related to the proximity of a tool to a device.
 type ProximityEvent interface {
-	gextras.Objector
+	Event
 
 	// AsEvent casts the class to the Event interface.
 	AsEvent() Event
@@ -2926,7 +2926,7 @@ func (e proximityEvent) unref() {
 
 // ScrollEvent: event related to a scrolling motion.
 type ScrollEvent interface {
-	gextras.Objector
+	Event
 
 	// AsEvent casts the class to the Event interface.
 	AsEvent() Event
@@ -3179,7 +3179,7 @@ func (e scrollEvent) IsStop() bool {
 
 // TouchEvent: event related to a touch-based device.
 type TouchEvent interface {
-	gextras.Objector
+	Event
 
 	// AsEvent casts the class to the Event interface.
 	AsEvent() Event
@@ -3392,7 +3392,7 @@ func (e touchEvent) EmulatingPointer() bool {
 // touchpad gestures are typically processed by the system, resulting in these
 // events.
 type TouchpadEvent interface {
-	gextras.Objector
+	Event
 
 	// AsEvent casts the class to the Event interface.
 	AsEvent() Event

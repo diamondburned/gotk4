@@ -33,28 +33,28 @@ func (i *IMContextInfo) Native() unsafe.Pointer {
 // ContextID: the unique identification string of the input method.
 func (i *IMContextInfo) ContextID() string {
 	var v string // out
-	v = C.GoString(i.context_id)
+	v = C.GoString(i.native.context_id)
 	return v
 }
 
 // ContextName: the human-readable name of the input method.
 func (i *IMContextInfo) ContextName() string {
 	var v string // out
-	v = C.GoString(i.context_name)
+	v = C.GoString(i.native.context_name)
 	return v
 }
 
 // Domain: translation domain to be used with dgettext()
 func (i *IMContextInfo) Domain() string {
 	var v string // out
-	v = C.GoString(i.domain)
+	v = C.GoString(i.native.domain)
 	return v
 }
 
 // DomainDirname: name of locale directory for use with bindtextdomain()
 func (i *IMContextInfo) DomainDirname() string {
 	var v string // out
-	v = C.GoString(i.domain_dirname)
+	v = C.GoString(i.native.domain_dirname)
 	return v
 }
 
@@ -62,6 +62,6 @@ func (i *IMContextInfo) DomainDirname() string {
 // should be the default. The asterisk “*” sets the default for all locales.
 func (i *IMContextInfo) DefaultLocales() string {
 	var v string // out
-	v = C.GoString(i.default_locales)
+	v = C.GoString(i.native.default_locales)
 	return v
 }

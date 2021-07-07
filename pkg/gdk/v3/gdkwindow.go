@@ -3731,7 +3731,7 @@ func (g *Geometry) Native() unsafe.Pointer {
 // only)
 func (g *Geometry) MinWidth() int {
 	var v int // out
-	v = int(g.min_width)
+	v = int(g.native.min_width)
 	return v
 }
 
@@ -3739,7 +3739,7 @@ func (g *Geometry) MinWidth() int {
 // only)
 func (g *Geometry) MinHeight() int {
 	var v int // out
-	v = int(g.min_height)
+	v = int(g.native.min_height)
 	return v
 }
 
@@ -3747,7 +3747,7 @@ func (g *Geometry) MinHeight() int {
 // only)
 func (g *Geometry) MaxWidth() int {
 	var v int // out
-	v = int(g.max_width)
+	v = int(g.native.max_width)
 	return v
 }
 
@@ -3755,7 +3755,7 @@ func (g *Geometry) MaxWidth() int {
 // only)
 func (g *Geometry) MaxHeight() int {
 	var v int // out
-	v = int(g.max_height)
+	v = int(g.native.max_height)
 	return v
 }
 
@@ -3763,7 +3763,7 @@ func (g *Geometry) MaxHeight() int {
 // any integer (-1 allowed with Window)
 func (g *Geometry) BaseWidth() int {
 	var v int // out
-	v = int(g.base_width)
+	v = int(g.native.base_width)
 	return v
 }
 
@@ -3771,42 +3771,42 @@ func (g *Geometry) BaseWidth() int {
 // is any integer (-1 allowed with Window)
 func (g *Geometry) BaseHeight() int {
 	var v int // out
-	v = int(g.base_height)
+	v = int(g.native.base_height)
 	return v
 }
 
 // WidthInc: width resize increment
 func (g *Geometry) WidthInc() int {
 	var v int // out
-	v = int(g.width_inc)
+	v = int(g.native.width_inc)
 	return v
 }
 
 // HeightInc: height resize increment
 func (g *Geometry) HeightInc() int {
 	var v int // out
-	v = int(g.height_inc)
+	v = int(g.native.height_inc)
 	return v
 }
 
 // MinAspect: minimum width/height ratio
 func (g *Geometry) MinAspect() float64 {
 	var v float64 // out
-	v = float64(g.min_aspect)
+	v = float64(g.native.min_aspect)
 	return v
 }
 
 // MaxAspect: maximum width/height ratio
 func (g *Geometry) MaxAspect() float64 {
 	var v float64 // out
-	v = float64(g.max_aspect)
+	v = float64(g.native.max_aspect)
 	return v
 }
 
 // WinGravity: window gravity, see gtk_window_set_gravity()
 func (g *Geometry) WinGravity() Gravity {
 	var v Gravity // out
-	v = Gravity(g.win_gravity)
+	v = Gravity(g.native.win_gravity)
 	return v
 }
 
@@ -3829,42 +3829,42 @@ func (w *WindowAttr) Native() unsafe.Pointer {
 // Title: title of the window (for toplevel windows)
 func (w *WindowAttr) Title() string {
 	var v string // out
-	v = C.GoString(w.title)
+	v = C.GoString(w.native.title)
 	return v
 }
 
 // EventMask: event mask (see gdk_window_set_events())
 func (w *WindowAttr) EventMask() int {
 	var v int // out
-	v = int(w.event_mask)
+	v = int(w.native.event_mask)
 	return v
 }
 
 // X coordinate relative to parent window (see gdk_window_move())
 func (w *WindowAttr) X() int {
 	var v int // out
-	v = int(w.x)
+	v = int(w.native.x)
 	return v
 }
 
 // Y coordinate relative to parent window (see gdk_window_move())
 func (w *WindowAttr) Y() int {
 	var v int // out
-	v = int(w.y)
+	v = int(w.native.y)
 	return v
 }
 
 // Width: width of window
 func (w *WindowAttr) Width() int {
 	var v int // out
-	v = int(w.width)
+	v = int(w.native.width)
 	return v
 }
 
 // Height: height of window
 func (w *WindowAttr) Height() int {
 	var v int // out
-	v = int(w.height)
+	v = int(w.native.height)
 	return v
 }
 
@@ -3872,49 +3872,49 @@ func (w *WindowAttr) Height() int {
 // events)
 func (w *WindowAttr) Wclass() WindowWindowClass {
 	var v WindowWindowClass // out
-	v = WindowWindowClass(w.wclass)
+	v = WindowWindowClass(w.native.wclass)
 	return v
 }
 
 // Visual for window
 func (w *WindowAttr) Visual() Visual {
 	var v Visual // out
-	v = gextras.CastObject(externglib.Take(unsafe.Pointer(w.visual))).(Visual)
+	v = gextras.CastObject(externglib.Take(unsafe.Pointer(w.native.visual))).(Visual)
 	return v
 }
 
 // WindowType: type of window
 func (w *WindowAttr) WindowType() WindowType {
 	var v WindowType // out
-	v = WindowType(w.window_type)
+	v = WindowType(w.native.window_type)
 	return v
 }
 
 // Cursor: cursor for the window (see gdk_window_set_cursor())
 func (w *WindowAttr) Cursor() Cursor {
 	var v Cursor // out
-	v = gextras.CastObject(externglib.Take(unsafe.Pointer(w.cursor))).(Cursor)
+	v = gextras.CastObject(externglib.Take(unsafe.Pointer(w.native.cursor))).(Cursor)
 	return v
 }
 
 // WmclassName: don’t use (see gtk_window_set_wmclass())
 func (w *WindowAttr) WmclassName() string {
 	var v string // out
-	v = C.GoString(w.wmclass_name)
+	v = C.GoString(w.native.wmclass_name)
 	return v
 }
 
 // WmclassClass: don’t use (see gtk_window_set_wmclass())
 func (w *WindowAttr) WmclassClass() string {
 	var v string // out
-	v = C.GoString(w.wmclass_class)
+	v = C.GoString(w.native.wmclass_class)
 	return v
 }
 
 // OverrideRedirect: true to bypass the window manager
 func (w *WindowAttr) OverrideRedirect() bool {
 	var v bool // out
-	if w.override_redirect != 0 {
+	if w.native.override_redirect != 0 {
 		v = true
 	}
 	return v
@@ -3923,6 +3923,6 @@ func (w *WindowAttr) OverrideRedirect() bool {
 // TypeHint: hint of the function of the window
 func (w *WindowAttr) TypeHint() WindowTypeHint {
 	var v WindowTypeHint // out
-	v = WindowTypeHint(w.type_hint)
+	v = WindowTypeHint(w.native.type_hint)
 	return v
 }

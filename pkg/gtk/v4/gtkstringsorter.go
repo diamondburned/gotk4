@@ -31,7 +31,7 @@ func init() {
 // To obtain the strings to compare, this sorter evaluates a
 // [class@Gtk.Expression].
 type StringSorter interface {
-	gextras.Objector
+	Sorter
 
 	// AsSorter casts the class to the Sorter interface.
 	AsSorter() Sorter

@@ -51,21 +51,21 @@ func (f *FileAttributeInfo) Native() unsafe.Pointer {
 // Name: the name of the attribute.
 func (f *FileAttributeInfo) Name() string {
 	var v string // out
-	v = C.GoString(f.name)
+	v = C.GoString(f.native.name)
 	return v
 }
 
 // Type: the AttributeType type of the attribute.
 func (f *FileAttributeInfo) Type() FileAttributeType {
 	var v FileAttributeType // out
-	v = FileAttributeType(f._type)
+	v = FileAttributeType(f.native._type)
 	return v
 }
 
 // Flags: set of AttributeInfoFlags.
 func (f *FileAttributeInfo) Flags() FileAttributeInfoFlags {
 	var v FileAttributeInfoFlags // out
-	v = FileAttributeInfoFlags(f.flags)
+	v = FileAttributeInfoFlags(f.native.flags)
 	return v
 }
 
@@ -111,14 +111,14 @@ func (f *FileAttributeInfoList) Native() unsafe.Pointer {
 // Infos: array of AttributeInfos.
 func (f *FileAttributeInfoList) Infos() *FileAttributeInfo {
 	var v *FileAttributeInfo // out
-	v = (*FileAttributeInfo)(unsafe.Pointer(f.infos))
+	v = (*FileAttributeInfo)(unsafe.Pointer(f.native.infos))
 	return v
 }
 
 // NInfos: the number of values in the array.
 func (f *FileAttributeInfoList) NInfos() int {
 	var v int // out
-	v = int(f.n_infos)
+	v = int(f.native.n_infos)
 	return v
 }
 

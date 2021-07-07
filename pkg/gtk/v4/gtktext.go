@@ -87,7 +87,7 @@ func init() {
 // as a delegate for a `GtkEditable` implementation that will be represented to
 // accessibility.
 type Text interface {
-	gextras.Objector
+	Widget
 
 	// AsWidget casts the class to the Widget interface.
 	AsWidget() Widget

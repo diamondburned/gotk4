@@ -636,25 +636,25 @@ func (r *Rectangle) Native() unsafe.Pointer {
 
 func (r *Rectangle) X() float64 {
 	var v float64 // out
-	v = float64(r.x)
+	v = float64(r.native.x)
 	return v
 }
 
 func (r *Rectangle) Y() float64 {
 	var v float64 // out
-	v = float64(r.y)
+	v = float64(r.native.y)
 	return v
 }
 
 func (r *Rectangle) Width() float64 {
 	var v float64 // out
-	v = float64(r.width)
+	v = float64(r.native.width)
 	return v
 }
 
 func (r *Rectangle) Height() float64 {
 	var v float64 // out
-	v = float64(r.height)
+	v = float64(r.native.height)
 	return v
 }
 
@@ -680,24 +680,24 @@ func (r *RectangleInt) Native() unsafe.Pointer {
 
 func (r *RectangleInt) X() int {
 	var v int // out
-	v = int(r.x)
+	v = int(r.native.x)
 	return v
 }
 
 func (r *RectangleInt) Y() int {
 	var v int // out
-	v = int(r.y)
+	v = int(r.native.y)
 	return v
 }
 
 func (r *RectangleInt) Width() int {
 	var v int // out
-	v = int(r.width)
+	v = int(r.native.width)
 	return v
 }
 
 func (r *RectangleInt) Height() int {
 	var v int // out
-	v = int(r.height)
+	v = int(r.native.height)
 	return v
 }

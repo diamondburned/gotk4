@@ -50,7 +50,7 @@ func init() {
 // titlebar widget of a Window (see gtk_window_set_titlebar()), as it gives
 // features typical of titlebars while allowing the addition of child widgets.
 type HeaderBar interface {
-	gextras.Objector
+	Container
 
 	// AsContainer casts the class to the Container interface.
 	AsContainer() Container

@@ -551,7 +551,7 @@ func (i *InputMessage) Address() SocketAddress {
 		var refTmpIn *C.GSocketAddress
 		var refTmpOut socketAddress
 
-		refTmpIn = *i.address
+		refTmpIn = *i.native.address
 
 		refTmpOut = gextras.CastObject(externglib.Take(unsafe.Pointer(refTmpIn))).(socketAddress)
 
@@ -566,21 +566,21 @@ func (i *InputMessage) Address() SocketAddress {
 // NumVectors: the number of input vectors pointed to by @vectors
 func (i *InputMessage) NumVectors() uint {
 	var v uint // out
-	v = uint(i.num_vectors)
+	v = uint(i.native.num_vectors)
 	return v
 }
 
 // BytesReceived: will be set to the number of bytes that have been received
 func (i *InputMessage) BytesReceived() uint {
 	var v uint // out
-	v = uint(i.bytes_received)
+	v = uint(i.native.bytes_received)
 	return v
 }
 
 // Flags: collection of MsgFlags for the received message, outputted by the call
 func (i *InputMessage) Flags() int {
 	var v int // out
-	v = int(i.flags)
+	v = int(i.native.flags)
 	return v
 }
 
@@ -588,7 +588,7 @@ func (i *InputMessage) Flags() int {
 // @control_messages
 func (i *InputMessage) NumControlMessages() *uint {
 	var v *uint // out
-	v = (*uint)(unsafe.Pointer(i.num_control_messages))
+	v = (*uint)(unsafe.Pointer(i.native.num_control_messages))
 	return v
 }
 
@@ -613,14 +613,14 @@ func (i *InputVector) Native() unsafe.Pointer {
 // Buffer: pointer to a buffer where data will be written.
 func (i *InputVector) Buffer() interface{} {
 	var v interface{} // out
-	v = box.Get(uintptr(i.buffer))
+	v = box.Get(uintptr(i.native.buffer))
 	return v
 }
 
 // Size: the available size in @buffer.
 func (i *InputVector) Size() uint {
 	var v uint // out
-	v = uint(i.size)
+	v = uint(i.native.size)
 	return v
 }
 
@@ -649,21 +649,21 @@ func (o *OutputMessage) Native() unsafe.Pointer {
 // Address or nil
 func (o *OutputMessage) Address() SocketAddress {
 	var v SocketAddress // out
-	v = gextras.CastObject(externglib.Take(unsafe.Pointer(o.address))).(SocketAddress)
+	v = gextras.CastObject(externglib.Take(unsafe.Pointer(o.native.address))).(SocketAddress)
 	return v
 }
 
 // Vectors: pointer to an array of output vectors
 func (o *OutputMessage) Vectors() *OutputVector {
 	var v *OutputVector // out
-	v = (*OutputVector)(unsafe.Pointer(o.vectors))
+	v = (*OutputVector)(unsafe.Pointer(o.native.vectors))
 	return v
 }
 
 // NumVectors: the number of output vectors pointed to by @vectors.
 func (o *OutputMessage) NumVectors() uint {
 	var v uint // out
-	v = uint(o.num_vectors)
+	v = uint(o.native.num_vectors)
 	return v
 }
 
@@ -671,14 +671,14 @@ func (o *OutputMessage) NumVectors() uint {
 // sent
 func (o *OutputMessage) BytesSent() uint {
 	var v uint // out
-	v = uint(o.bytes_sent)
+	v = uint(o.native.bytes_sent)
 	return v
 }
 
 // NumControlMessages: number of elements in @control_messages.
 func (o *OutputMessage) NumControlMessages() uint {
 	var v uint // out
-	v = uint(o.num_control_messages)
+	v = uint(o.native.num_control_messages)
 	return v
 }
 
@@ -703,14 +703,14 @@ func (o *OutputVector) Native() unsafe.Pointer {
 // Buffer: pointer to a buffer of data to read.
 func (o *OutputVector) Buffer() interface{} {
 	var v interface{} // out
-	v = box.Get(uintptr(o.buffer))
+	v = box.Get(uintptr(o.native.buffer))
 	return v
 }
 
 // Size: the size of @buffer.
 func (o *OutputVector) Size() uint {
 	var v uint // out
-	v = uint(o.size)
+	v = uint(o.native.size)
 	return v
 }
 

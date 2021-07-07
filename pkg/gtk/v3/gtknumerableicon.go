@@ -33,7 +33,7 @@ func init() {
 //
 // Typical numerable icons: ! (numerableicon.png) ! (numerableicon2.png)
 type NumerableIcon interface {
-	gextras.Objector
+	gio.EmblemedIcon
 
 	// AsEmblemedIcon casts the class to the gio.EmblemedIcon interface.
 	AsEmblemedIcon() gio.EmblemedIcon

@@ -50,7 +50,7 @@ type RangeOverrider interface {
 // `GtkRange` provides properties and methods for setting a “fill level” on
 // range widgets. See [method@Gtk.Range.set_fill_level].
 type Range interface {
-	gextras.Objector
+	Widget
 
 	// AsWidget casts the class to the Widget interface.
 	AsWidget() Widget

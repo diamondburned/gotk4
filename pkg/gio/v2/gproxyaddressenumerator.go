@@ -45,7 +45,7 @@ func init() {
 // there should be no need to manually wrap a AddressEnumerator instance with
 // one.
 type ProxyAddressEnumerator interface {
-	gextras.Objector
+	SocketAddressEnumerator
 
 	// AsSocketAddressEnumerator casts the class to the SocketAddressEnumerator interface.
 	AsSocketAddressEnumerator() SocketAddressEnumerator

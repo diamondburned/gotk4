@@ -39,7 +39,7 @@ func init() {
 // TCPConnection: this is the subclass of Connection that is created for TCP/IP
 // sockets.
 type TCPConnection interface {
-	gextras.Objector
+	SocketConnection
 
 	// AsSocketConnection casts the class to the SocketConnection interface.
 	AsSocketConnection() SocketConnection

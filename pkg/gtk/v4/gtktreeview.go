@@ -264,7 +264,7 @@ type TreeViewOverrider interface {
 // For the drop target location during DND, a subnode with name `dndtarget` is
 // used.
 type TreeView interface {
-	gextras.Objector
+	Widget
 
 	// AsWidget casts the class to the Widget interface.
 	AsWidget() Widget

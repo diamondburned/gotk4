@@ -589,20 +589,20 @@ func (l *LogField) Native() unsafe.Pointer {
 // Key: field name (UTF-8 string)
 func (l *LogField) Key() string {
 	var v string // out
-	v = C.GoString(l.key)
+	v = C.GoString(l.native.key)
 	return v
 }
 
 // Value: field value (arbitrary bytes)
 func (l *LogField) Value() interface{} {
 	var v interface{} // out
-	v = box.Get(uintptr(l.value))
+	v = box.Get(uintptr(l.native.value))
 	return v
 }
 
 // Length: length of @value, in bytes, or -1 if it is nul-terminated
 func (l *LogField) Length() int {
 	var v int // out
-	v = int(l.length)
+	v = int(l.native.length)
 	return v
 }

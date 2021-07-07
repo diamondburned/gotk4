@@ -44,7 +44,7 @@ type ColorSelectionOverrider interface {
 }
 
 type ColorSelection interface {
-	gextras.Objector
+	Box
 
 	// AsBox casts the class to the Box interface.
 	AsBox() Box

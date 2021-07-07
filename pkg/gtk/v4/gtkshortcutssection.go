@@ -42,7 +42,7 @@ func init() {
 //
 // This widget is only meant to be used with [class@Gtk.ShortcutsWindow].
 type ShortcutsSection interface {
-	gextras.Objector
+	Box
 
 	// AsBox casts the class to the Box interface.
 	AsBox() Box

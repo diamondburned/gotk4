@@ -42,7 +42,7 @@ func init() {
 // Many GTK+ widgets are subclasses of Bin, including Window, Button, Frame,
 // HandleBox or ScrolledWindow.
 type Bin interface {
-	gextras.Objector
+	Container
 
 	// AsContainer casts the class to the Container interface.
 	AsContainer() Container

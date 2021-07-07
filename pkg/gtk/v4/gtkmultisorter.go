@@ -28,7 +28,7 @@ func init() {
 // If the first sorter compares two items as equal, the second is tried next,
 // and so on.
 type MultiSorter interface {
-	gextras.Objector
+	Sorter
 
 	// AsSorter casts the class to the Sorter interface.
 	AsSorter() Sorter

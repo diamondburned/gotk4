@@ -29,7 +29,7 @@ func init() {
 // It should only be used as a last resort if none of the other event
 // controllers or gestures do the job.
 type EventControllerLegacy interface {
-	gextras.Objector
+	EventController
 
 	// AsEventController casts the class to the EventController interface.
 	AsEventController() EventController

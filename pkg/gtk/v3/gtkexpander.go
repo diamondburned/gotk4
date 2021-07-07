@@ -71,7 +71,7 @@ type ExpanderOverrider interface {
 // subnode with name title and node below it with name arrow. The arrow of an
 // expander that is showing its child gets the :checked pseudoclass added to it.
 type Expander interface {
-	gextras.Objector
+	Bin
 
 	// AsBin casts the class to the Bin interface.
 	AsBin() Bin

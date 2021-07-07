@@ -52,7 +52,7 @@ func init() {
 // To close a Connection, use g_io_stream_close(). Closing both substreams of
 // the OStream separately will not close the underlying #GSocket.
 type SocketConnection interface {
-	gextras.Objector
+	IOStream
 
 	// AsIOStream casts the class to the IOStream interface.
 	AsIOStream() IOStream

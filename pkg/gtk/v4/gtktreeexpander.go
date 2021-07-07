@@ -65,7 +65,7 @@ func init() {
 // is represented as a GTK_ACCESSIBLE_ROLE_BUTTON, labelled by the expander's
 // child, and toggling it will change the GTK_ACCESSIBLE_STATE_EXPANDED state.
 type TreeExpander interface {
-	gextras.Objector
+	Widget
 
 	// AsWidget casts the class to the Widget interface.
 	AsWidget() Widget

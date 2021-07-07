@@ -78,7 +78,7 @@ func marshalAttachOptions(p uintptr) (interface{}, error) {
 // capabilities as GtkTable for arranging widgets in a rectangular grid, but >
 // does support height-for-width geometry management.
 type Table interface {
-	gextras.Objector
+	Container
 
 	// AsContainer casts the class to the Container interface.
 	AsContainer() Container
@@ -4257,43 +4257,43 @@ func (t *TableChild) Native() unsafe.Pointer {
 
 func (t *TableChild) Widget() Widget {
 	var v Widget // out
-	v = gextras.CastObject(externglib.Take(unsafe.Pointer(t.widget))).(Widget)
+	v = gextras.CastObject(externglib.Take(unsafe.Pointer(t.native.widget))).(Widget)
 	return v
 }
 
 func (t *TableChild) LeftAttach() uint16 {
 	var v uint16 // out
-	v = uint16(t.left_attach)
+	v = uint16(t.native.left_attach)
 	return v
 }
 
 func (t *TableChild) RightAttach() uint16 {
 	var v uint16 // out
-	v = uint16(t.right_attach)
+	v = uint16(t.native.right_attach)
 	return v
 }
 
 func (t *TableChild) TopAttach() uint16 {
 	var v uint16 // out
-	v = uint16(t.top_attach)
+	v = uint16(t.native.top_attach)
 	return v
 }
 
 func (t *TableChild) BottomAttach() uint16 {
 	var v uint16 // out
-	v = uint16(t.bottom_attach)
+	v = uint16(t.native.bottom_attach)
 	return v
 }
 
 func (t *TableChild) Xpadding() uint16 {
 	var v uint16 // out
-	v = uint16(t.xpadding)
+	v = uint16(t.native.xpadding)
 	return v
 }
 
 func (t *TableChild) Ypadding() uint16 {
 	var v uint16 // out
-	v = uint16(t.ypadding)
+	v = uint16(t.native.ypadding)
 	return v
 }
 
@@ -4314,18 +4314,18 @@ func (t *TableRowCol) Native() unsafe.Pointer {
 
 func (t *TableRowCol) Requisition() uint16 {
 	var v uint16 // out
-	v = uint16(t.requisition)
+	v = uint16(t.native.requisition)
 	return v
 }
 
 func (t *TableRowCol) Allocation() uint16 {
 	var v uint16 // out
-	v = uint16(t.allocation)
+	v = uint16(t.native.allocation)
 	return v
 }
 
 func (t *TableRowCol) Spacing() uint16 {
 	var v uint16 // out
-	v = uint16(t.spacing)
+	v = uint16(t.native.spacing)
 	return v
 }

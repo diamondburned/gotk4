@@ -121,14 +121,14 @@ func (t *TargetEntry) Native() unsafe.Pointer {
 // Target: string representation of the target type
 func (t *TargetEntry) Target() string {
 	var v string // out
-	v = C.GoString(t.target)
+	v = C.GoString(t.native.target)
 	return v
 }
 
 // Flags for DND
 func (t *TargetEntry) Flags() uint {
 	var v uint // out
-	v = uint(t.flags)
+	v = uint(t.native.flags)
 	return v
 }
 
@@ -137,7 +137,7 @@ func (t *TargetEntry) Flags() uint {
 // the target type without extensive string compares.
 func (t *TargetEntry) Info() uint {
 	var v uint // out
-	v = uint(t.info)
+	v = uint(t.native.info)
 	return v
 }
 
@@ -337,7 +337,7 @@ func (t *TargetPair) Native() unsafe.Pointer {
 // Flags for DND
 func (t *TargetPair) Flags() uint {
 	var v uint // out
-	v = uint(t.flags)
+	v = uint(t.native.flags)
 	return v
 }
 
@@ -346,6 +346,6 @@ func (t *TargetPair) Flags() uint {
 // the target type without extensive string compares.
 func (t *TargetPair) Info() uint {
 	var v uint // out
-	v = uint(t.info)
+	v = uint(t.native.info)
 	return v
 }

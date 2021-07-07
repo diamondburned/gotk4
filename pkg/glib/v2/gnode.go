@@ -81,7 +81,7 @@ func (n *Node) Native() unsafe.Pointer {
 // Data contains the actual data of the node.
 func (n *Node) Data() interface{} {
 	var v interface{} // out
-	v = box.Get(uintptr(n.data))
+	v = box.Get(uintptr(n.native.data))
 	return v
 }
 
@@ -89,14 +89,14 @@ func (n *Node) Data() interface{} {
 // same parent).
 func (n *Node) Next() *Node {
 	var v *Node // out
-	v = (*Node)(unsafe.Pointer(n.next))
+	v = (*Node)(unsafe.Pointer(n.native.next))
 	return v
 }
 
 // Prev points to the node's previous sibling.
 func (n *Node) Prev() *Node {
 	var v *Node // out
-	v = (*Node)(unsafe.Pointer(n.prev))
+	v = (*Node)(unsafe.Pointer(n.native.prev))
 	return v
 }
 
@@ -104,7 +104,7 @@ func (n *Node) Prev() *Node {
 // root of the tree.
 func (n *Node) Parent() *Node {
 	var v *Node // out
-	v = (*Node)(unsafe.Pointer(n.parent))
+	v = (*Node)(unsafe.Pointer(n.native.parent))
 	return v
 }
 
@@ -112,7 +112,7 @@ func (n *Node) Parent() *Node {
 // accessed by using the @next pointer of each child.
 func (n *Node) Children() *Node {
 	var v *Node // out
-	v = (*Node)(unsafe.Pointer(n.children))
+	v = (*Node)(unsafe.Pointer(n.native.children))
 	return v
 }
 

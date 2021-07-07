@@ -49,7 +49,7 @@ func init() {
 // widget, so GtkMisc should not be used in new code. To reflect this fact, all
 // Misc API has been deprecated.
 type Misc interface {
-	gextras.Objector
+	Widget
 
 	// AsWidget casts the class to the Widget interface.
 	AsWidget() Widget

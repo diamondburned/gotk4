@@ -57,7 +57,7 @@ func init() {
 // `GtkGridView` uses the GTK_ACCESSIBLE_ROLE_GRID role, and the items use the
 // GTK_ACCESSIBLE_ROLE_GRID_CELL role.
 type GridView interface {
-	gextras.Objector
+	ListBase
 
 	// AsListBase casts the class to the ListBase interface.
 	AsListBase() ListBase

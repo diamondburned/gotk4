@@ -28,7 +28,7 @@ func init() {
 
 // VulkanRenderer: GSK renderer that is using Vulkan.
 type VulkanRenderer interface {
-	gextras.Objector
+	Renderer
 
 	// AsRenderer casts the class to the Renderer interface.
 	AsRenderer() Renderer

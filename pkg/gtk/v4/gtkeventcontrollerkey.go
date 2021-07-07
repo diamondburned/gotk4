@@ -26,7 +26,7 @@ func init() {
 // EventControllerKey: `GtkEventControllerKey` is an event controller that
 // provides access to key events.
 type EventControllerKey interface {
-	gextras.Objector
+	EventController
 
 	// AsEventController casts the class to the EventController interface.
 	AsEventController() EventController

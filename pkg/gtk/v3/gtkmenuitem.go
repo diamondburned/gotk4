@@ -77,7 +77,7 @@ type MenuItemOverrider interface {
 // submenu, it gets another CSS node with name arrow, which has the .left or
 // .right style class.
 type MenuItem interface {
-	gextras.Objector
+	Bin
 
 	// AsBin casts the class to the Bin interface.
 	AsBin() Bin

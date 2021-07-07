@@ -83,7 +83,7 @@ type MenuShellOverrider interface {
 // selected menu item.) The current menu is the menu that contains the current
 // menu item. It will always have a GTK grab and receive all key presses.
 type MenuShell interface {
-	gextras.Objector
+	Container
 
 	// AsContainer casts the class to the Container interface.
 	AsContainer() Container

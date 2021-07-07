@@ -27,7 +27,7 @@ func init() {
 }
 
 type ScaleButtonAccessible interface {
-	gextras.Objector
+	ButtonAccessible
 
 	// AsButtonAccessible casts the class to the ButtonAccessible interface.
 	AsButtonAccessible() ButtonAccessible

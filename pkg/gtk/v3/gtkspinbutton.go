@@ -133,7 +133,7 @@ type SpinButtonOverrider interface {
 //      gtk_widget_show_all (window);
 //    }
 type SpinButton interface {
-	gextras.Objector
+	Entry
 
 	// AsEntry casts the class to the Entry interface.
 	AsEntry() Entry

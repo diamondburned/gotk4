@@ -65,7 +65,7 @@ type ToolButtonOverrider interface {
 //
 // GtkToolButton has a single CSS node with name toolbutton.
 type ToolButton interface {
-	gextras.Objector
+	ToolItem
 
 	// AsToolItem casts the class to the ToolItem interface.
 	AsToolItem() ToolItem

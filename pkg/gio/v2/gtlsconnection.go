@@ -87,7 +87,7 @@ type TLSConnectionOverrider interface {
 //
 // For DTLS (Datagram TLS) support, see Connection.
 type TLSConnection interface {
-	gextras.Objector
+	IOStream
 
 	// AsIOStream casts the class to the IOStream interface.
 	AsIOStream() IOStream

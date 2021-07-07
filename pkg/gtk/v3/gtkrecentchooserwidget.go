@@ -46,7 +46,7 @@ func init() {
 //
 // Recently used files are supported since GTK+ 2.10.
 type RecentChooserWidget interface {
-	gextras.Objector
+	Box
 
 	// AsBox casts the class to the Box interface.
 	AsBox() Box

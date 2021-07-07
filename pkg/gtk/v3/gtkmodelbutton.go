@@ -122,7 +122,7 @@ func marshalButtonRole(p uintptr) (interface{}, error) {
 // node to button and add a .model style class to it. The indicator subnode is
 // invisible in this case.
 type ModelButton interface {
-	gextras.Objector
+	Button
 
 	// AsButton casts the class to the Button interface.
 	AsButton() Button

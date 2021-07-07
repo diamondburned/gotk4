@@ -68,7 +68,7 @@ type SearchEntryOverrider interface {
 // SearchBar. If that is not the case, you can use
 // gtk_search_entry_handle_event() to pass events.
 type SearchEntry interface {
-	gextras.Objector
+	Entry
 
 	// AsEntry casts the class to the Entry interface.
 	AsEntry() Entry

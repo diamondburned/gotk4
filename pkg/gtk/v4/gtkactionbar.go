@@ -45,7 +45,7 @@ func init() {
 //
 // `GtkActionBar` has a single CSS node with name actionbar.
 type ActionBar interface {
-	gextras.Objector
+	Widget
 
 	// AsWidget casts the class to the Widget interface.
 	AsWidget() Widget

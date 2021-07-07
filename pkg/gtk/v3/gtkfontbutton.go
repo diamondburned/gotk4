@@ -52,7 +52,7 @@ type FontButtonOverrider interface {
 //
 // GtkFontButton has a single CSS node with name button and style class .font.
 type FontButton interface {
-	gextras.Objector
+	Button
 
 	// AsButton casts the class to the Button interface.
 	AsButton() Button

@@ -79,7 +79,7 @@ func (p *PollFD) Native() unsafe.Pointer {
 // Fd: the file descriptor to poll (or a HANDLE on Win32)
 func (p *PollFD) Fd() int {
 	var v int // out
-	v = int(p.fd)
+	v = int(p.native.fd)
 	return v
 }
 
@@ -89,7 +89,7 @@ func (p *PollFD) Fd() int {
 // G_IO_ERR.
 func (p *PollFD) Events() uint16 {
 	var v uint16 // out
-	v = uint16(p.events)
+	v = uint16(p.native.events)
 	return v
 }
 
@@ -97,6 +97,6 @@ func (p *PollFD) Events() uint16 {
 // poll() function to indicate which events occurred.
 func (p *PollFD) Revents() uint16 {
 	var v uint16 // out
-	v = uint16(p.revents)
+	v = uint16(p.native.revents)
 	return v
 }

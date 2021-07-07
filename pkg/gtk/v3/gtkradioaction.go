@@ -37,7 +37,7 @@ type RadioActionOverrider interface {
 // RadioAction is similar to RadioMenuItem. A number of radio actions can be
 // linked together so that only one may be active at any one time.
 type RadioAction interface {
-	gextras.Objector
+	ToggleAction
 
 	// AsToggleAction casts the class to the ToggleAction interface.
 	AsToggleAction() ToggleAction

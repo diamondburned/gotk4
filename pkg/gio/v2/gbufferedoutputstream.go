@@ -52,7 +52,7 @@ func init() {
 // that the buffer's size cannot be reduced below the size of the data within
 // the buffer.
 type BufferedOutputStream interface {
-	gextras.Objector
+	FilterOutputStream
 
 	// AsFilterOutputStream casts the class to the FilterOutputStream interface.
 	AsFilterOutputStream() FilterOutputStream

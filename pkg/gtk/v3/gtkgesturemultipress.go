@@ -36,7 +36,7 @@ func init() {
 // touch/button press through gtk_gesture_multi_press_set_area(), so any click
 // happening outside that area is considered to be a first click of its own.
 type GestureMultiPress interface {
-	gextras.Objector
+	GestureSingle
 
 	// AsGestureSingle casts the class to the GestureSingle interface.
 	AsGestureSingle() GestureSingle

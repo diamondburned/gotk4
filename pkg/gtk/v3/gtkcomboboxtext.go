@@ -83,7 +83,7 @@ func init() {
 // class .combo to the main CSS nodes of its entry and button children, and the
 // .linked class to the node of its internal box.
 type ComboBoxText interface {
-	gextras.Objector
+	ComboBox
 
 	// AsComboBox casts the class to the ComboBox interface.
 	AsComboBox() ComboBox

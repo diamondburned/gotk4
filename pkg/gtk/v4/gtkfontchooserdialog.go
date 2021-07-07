@@ -45,7 +45,7 @@ func init() {
 // The `GtkFontChooserDialog` implementation of the `GtkBuildable` interface
 // exposes the buttons with the names “select_button” and “cancel_button”.
 type FontChooserDialog interface {
-	gextras.Objector
+	Dialog
 
 	// AsDialog casts the class to the Dialog interface.
 	AsDialog() Dialog

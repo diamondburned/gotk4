@@ -123,7 +123,7 @@ func gotk4_MenuPositionFunc(arg0 *C.GtkMenu, arg1 *C.gint, arg2 *C.gint, arg3 *C
 // name arrow, for scrolling menu arrows. These subnodes get the .top and
 // .bottom style classes.
 type Menu interface {
-	gextras.Objector
+	MenuShell
 
 	// AsMenuShell casts the class to the MenuShell interface.
 	AsMenuShell() MenuShell

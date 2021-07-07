@@ -107,7 +107,7 @@ func ValueTakeExpression(value externglib.Value, expression Expression) {
 
 // CClosureExpression: variant of `GtkClosureExpression` using a C closure.
 type CClosureExpression interface {
-	gextras.Objector
+	Expression
 
 	// AsExpression casts the class to the Expression interface.
 	AsExpression() Expression
@@ -219,7 +219,7 @@ func (s cClosureExpression) unref() {
 // ClosureExpression: expression using a custom `GClosure` to compute the value
 // from its parameters.
 type ClosureExpression interface {
-	gextras.Objector
+	Expression
 
 	// AsExpression casts the class to the Expression interface.
 	AsExpression() Expression
@@ -330,7 +330,7 @@ func (s closureExpression) unref() {
 
 // ConstantExpression: constant value in a `GtkExpression`.
 type ConstantExpression interface {
-	gextras.Objector
+	Expression
 
 	// AsExpression casts the class to the Expression interface.
 	AsExpression() Expression
@@ -760,7 +760,7 @@ func (s expression) unref() {
 
 // ObjectExpression: `GObject` value in a `GtkExpression`.
 type ObjectExpression interface {
-	gextras.Objector
+	Expression
 
 	// AsExpression casts the class to the Expression interface.
 	AsExpression() Expression
@@ -913,7 +913,7 @@ func (e objectExpression) Object() gextras.Objector {
 
 // PropertyExpression: `GObject` property value in a `GtkExpression`.
 type PropertyExpression interface {
-	gextras.Objector
+	Expression
 
 	// AsExpression casts the class to the Expression interface.
 	AsExpression() Expression

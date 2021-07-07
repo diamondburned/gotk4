@@ -76,7 +76,7 @@ type FileChooserButtonOverrider interface {
 // GtkFileChooserButton has a CSS node with name “filechooserbutton”, containing
 // a subnode for the internal button with name “button” and style class “.file”.
 type FileChooserButton interface {
-	gextras.Objector
+	Box
 
 	// AsBox casts the class to the Box interface.
 	AsBox() Box

@@ -25,7 +25,7 @@ func init() {
 // BoolFilter: `GtkBoolFilter` evaluates a boolean `GtkExpression` to determine
 // whether to include items.
 type BoolFilter interface {
-	gextras.Objector
+	Filter
 
 	// AsFilter casts the class to the Filter interface.
 	AsFilter() Filter

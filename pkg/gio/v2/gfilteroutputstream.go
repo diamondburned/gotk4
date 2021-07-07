@@ -41,7 +41,7 @@ func init() {
 // filtering operations are character set conversion, compression and byte order
 // flipping.
 type FilterOutputStream interface {
-	gextras.Objector
+	OutputStream
 
 	// AsOutputStream casts the class to the OutputStream interface.
 	AsOutputStream() OutputStream

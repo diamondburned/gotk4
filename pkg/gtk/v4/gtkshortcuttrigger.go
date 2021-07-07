@@ -33,7 +33,7 @@ func init() {
 //
 // This can be cascaded to combine more than two triggers.
 type AlternativeTrigger interface {
-	gextras.Objector
+	ShortcutTrigger
 
 	// AsShortcutTrigger casts the class to the ShortcutTrigger interface.
 	AsShortcutTrigger() ShortcutTrigger
@@ -205,7 +205,7 @@ func (s alternativeTrigger) Second() ShortcutTrigger {
 // KeyvalTrigger: `GtkShortcutTrigger` that triggers when a specific keyval and
 // modifiers are pressed.
 type KeyvalTrigger interface {
-	gextras.Objector
+	ShortcutTrigger
 
 	// AsShortcutTrigger casts the class to the ShortcutTrigger interface.
 	AsShortcutTrigger() ShortcutTrigger
@@ -372,7 +372,7 @@ func (s keyvalTrigger) Modifiers() gdk.ModifierType {
 // Mnemonics require a *mnemonic modifier* (typically <kbd>Alt</kbd>) to be
 // pressed together with the mnemonic key.
 type MnemonicTrigger interface {
-	gextras.Objector
+	ShortcutTrigger
 
 	// AsShortcutTrigger casts the class to the ShortcutTrigger interface.
 	AsShortcutTrigger() ShortcutTrigger
@@ -518,7 +518,7 @@ func (s mnemonicTrigger) Keyval() uint {
 
 // NeverTrigger: `GtkShortcutTrigger` that never triggers.
 type NeverTrigger interface {
-	gextras.Objector
+	ShortcutTrigger
 
 	// AsShortcutTrigger casts the class to the ShortcutTrigger interface.
 	AsShortcutTrigger() ShortcutTrigger

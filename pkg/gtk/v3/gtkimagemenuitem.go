@@ -60,7 +60,7 @@ func init() {
 //
 //      gtk_widget_show_all (menu_item);
 type ImageMenuItem interface {
-	gextras.Objector
+	MenuItem
 
 	// AsMenuItem casts the class to the MenuItem interface.
 	AsMenuItem() MenuItem

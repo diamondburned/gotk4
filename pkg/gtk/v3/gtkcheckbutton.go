@@ -60,7 +60,7 @@ type CheckButtonOverrider interface {
 // button and adds a .check style class to it. The subnode is invisible in this
 // case.
 type CheckButton interface {
-	gextras.Objector
+	ToggleButton
 
 	// AsToggleButton casts the class to the ToggleButton interface.
 	AsToggleButton() ToggleButton

@@ -116,7 +116,7 @@ type InfoBarOverrider interface {
 // the style classes .info, .warning, .error or .question, depending on the
 // message type.
 type InfoBar interface {
-	gextras.Objector
+	Box
 
 	// AsBox casts the class to the Box interface.
 	AsBox() Box

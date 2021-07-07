@@ -2363,7 +2363,7 @@ func (c dBusConnection) UnregisterSubtree(registrationId uint) bool {
 // menu model that is exported over D-Bus with
 // g_dbus_connection_export_menu_model().
 type DBusMenuModel interface {
-	gextras.Objector
+	MenuModel
 
 	// AsMenuModel casts the class to the MenuModel interface.
 	AsMenuModel() MenuModel
@@ -3914,7 +3914,7 @@ func (s dBusServer) Stop() {
 // g_menu_insert(). To add a section, use g_menu_insert_section(). To add a
 // submenu, use g_menu_insert_submenu().
 type Menu interface {
-	gextras.Objector
+	MenuModel
 
 	// AsMenuModel casts the class to the MenuModel interface.
 	AsMenuModel() MenuModel
@@ -5470,7 +5470,7 @@ func (s simpleAction) SetStateHint(stateHint *glib.Variant) {
 // g_unix_input_stream_new() or g_win32_input_stream_new(), and you want to take
 // advantage of the methods provided by OStream.
 type SimpleIOStream interface {
-	gextras.Objector
+	IOStream
 
 	// AsIOStream casts the class to the IOStream interface.
 	AsIOStream() IOStream
@@ -5654,7 +5654,7 @@ func (s simpleIOStream) SpliceAsync(stream2 IOStream, flags IOStreamSpliceFlags,
 //
 // Calling request or release will result in errors.
 type SimplePermission interface {
-	gextras.Objector
+	Permission
 
 	// AsPermission casts the class to the Permission interface.
 	AsPermission() Permission

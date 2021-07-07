@@ -119,7 +119,7 @@ func init() {
 //
 // `GtkLevelBar` uses the K_ACCESSIBLE_ROLE_METER role.
 type LevelBar interface {
-	gextras.Objector
+	Widget
 
 	// AsWidget casts the class to the Widget interface.
 	AsWidget() Widget

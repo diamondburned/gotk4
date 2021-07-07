@@ -27,7 +27,7 @@ func init() {
 }
 
 type ExpanderAccessible interface {
-	gextras.Objector
+	ContainerAccessible
 
 	// AsContainerAccessible casts the class to the ContainerAccessible interface.
 	AsContainerAccessible() ContainerAccessible

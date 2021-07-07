@@ -41,7 +41,7 @@ func init() {
 //
 // GtkHScrollbar has been deprecated, use Scrollbar instead.
 type HScrollbar interface {
-	gextras.Objector
+	Scrollbar
 
 	// AsScrollbar casts the class to the Scrollbar interface.
 	AsScrollbar() Scrollbar

@@ -38,7 +38,7 @@ func init() {
 // ShortcutLabel is a widget that represents a single keyboard shortcut or
 // gesture in the user interface.
 type ShortcutLabel interface {
-	gextras.Objector
+	Box
 
 	// AsBox casts the class to the Box interface.
 	AsBox() Box

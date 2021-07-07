@@ -29,7 +29,7 @@ func init() {
 //
 // To add filters to a `GtkAnyFilter`, use [method@Gtk.MultiFilter.append].
 type AnyFilter interface {
-	gextras.Objector
+	MultiFilter
 
 	// AsMultiFilter casts the class to the MultiFilter interface.
 	AsMultiFilter() MultiFilter
@@ -169,7 +169,7 @@ func (b anyFilter) GetBuildableID() string {
 //
 // To add filters to a `GtkEveryFilter`, use [method@Gtk.MultiFilter.append].
 type EveryFilter interface {
-	gextras.Objector
+	MultiFilter
 
 	// AsMultiFilter casts the class to the MultiFilter interface.
 	AsMultiFilter() MultiFilter
@@ -307,7 +307,7 @@ func (b everyFilter) GetBuildableID() string {
 // MultiFilter: `GtkMultiFilter` is the base class for filters that combine
 // multiple filters.
 type MultiFilter interface {
-	gextras.Objector
+	Filter
 
 	// AsFilter casts the class to the Filter interface.
 	AsFilter() Filter

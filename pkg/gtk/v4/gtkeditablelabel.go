@@ -51,7 +51,7 @@ func init() {
 // For all the subnodes added to the text node in various situations, see
 // [class@Gtk.Text].
 type EditableLabel interface {
-	gextras.Objector
+	Widget
 
 	// AsWidget casts the class to the Widget interface.
 	AsWidget() Widget

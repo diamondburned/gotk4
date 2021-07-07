@@ -1087,13 +1087,13 @@ func (a *Attribute) Native() unsafe.Pointer {
 // Name: the attribute name.
 func (a *Attribute) Name() string {
 	var v string // out
-	v = C.GoString(a.name)
+	v = C.GoString(a.native.name)
 	return v
 }
 
 // Value: the value of the attribute, represented as a string.
 func (a *Attribute) Value() string {
 	var v string // out
-	v = C.GoString(a.value)
+	v = C.GoString(a.native.value)
 	return v
 }

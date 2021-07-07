@@ -50,7 +50,7 @@ func (c *Color) Native() unsafe.Pointer {
 // screen. Not used anymore.
 func (c *Color) Pixel() uint32 {
 	var v uint32 // out
-	v = uint32(c.pixel)
+	v = uint32(c.native.pixel)
 	return v
 }
 
@@ -58,21 +58,21 @@ func (c *Color) Pixel() uint32 {
 // with 65535 indicating full intensity
 func (c *Color) Red() uint16 {
 	var v uint16 // out
-	v = uint16(c.red)
+	v = uint16(c.native.red)
 	return v
 }
 
 // Green: the green component of the color
 func (c *Color) Green() uint16 {
 	var v uint16 // out
-	v = uint16(c.green)
+	v = uint16(c.native.green)
 	return v
 }
 
 // Blue: the blue component of the color
 func (c *Color) Blue() uint16 {
 	var v uint16 // out
-	v = uint16(c.blue)
+	v = uint16(c.native.blue)
 	return v
 }
 

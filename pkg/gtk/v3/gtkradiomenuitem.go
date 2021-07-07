@@ -61,7 +61,7 @@ type RadioMenuItemOverrider interface {
 // GtkRadioMenuItem has a main CSS node with name menuitem, and a subnode with
 // name radio, which gets the .left or .right style class.
 type RadioMenuItem interface {
-	gextras.Objector
+	CheckMenuItem
 
 	// AsCheckMenuItem casts the class to the CheckMenuItem interface.
 	AsCheckMenuItem() CheckMenuItem

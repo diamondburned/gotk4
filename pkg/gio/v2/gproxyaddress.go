@@ -36,7 +36,7 @@ func init() {
 
 // ProxyAddress: support for proxied SocketAddress.
 type ProxyAddress interface {
-	gextras.Objector
+	InetSocketAddress
 
 	// AsInetSocketAddress casts the class to the InetSocketAddress interface.
 	AsInetSocketAddress() InetSocketAddress

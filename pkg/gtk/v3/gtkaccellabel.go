@@ -66,7 +66,7 @@ func init() {
 // Like Label, GtkAccelLabel has a main CSS node with the name label. It adds a
 // subnode with name accelerator.
 type AccelLabel interface {
-	gextras.Objector
+	Label
 
 	// AsLabel casts the class to the Label interface.
 	AsLabel() Label

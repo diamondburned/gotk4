@@ -38,7 +38,7 @@ func init() {
 //
 // `GtkAspectFrame` uses a CSS node with name `frame`.
 type AspectFrame interface {
-	gextras.Objector
+	Widget
 
 	// AsWidget casts the class to the Widget interface.
 	AsWidget() Widget

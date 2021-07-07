@@ -33,7 +33,7 @@ func init() {
 // Support for `GdkVulkanContext` is platform-specific and context creation can
 // fail, returning nil context.
 type VulkanContext interface {
-	gextras.Objector
+	DrawContext
 
 	// AsDrawContext casts the class to the DrawContext interface.
 	AsDrawContext() DrawContext

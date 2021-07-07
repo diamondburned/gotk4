@@ -38,7 +38,7 @@ func X11GetDefaultScreen() int {
 }
 
 type X11Screen interface {
-	gextras.Objector
+	gdk.Screen
 
 	// AsScreen casts the class to the gdk.Screen interface.
 	AsScreen() gdk.Screen

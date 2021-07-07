@@ -167,7 +167,7 @@ type ScrolledWindowOverrider interface {
 // If both scrollbars are visible, the area where they meet is drawn with a
 // subnode named junction.
 type ScrolledWindow interface {
-	gextras.Objector
+	Bin
 
 	// AsBin casts the class to the Bin interface.
 	AsBin() Bin

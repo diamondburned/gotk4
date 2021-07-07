@@ -45,7 +45,7 @@ func init() {
 //
 // g_object_unref (context); “`
 type AppLaunchContext interface {
-	gextras.Objector
+	gio.AppLaunchContext
 
 	// AsAppLaunchContext casts the class to the gio.AppLaunchContext interface.
 	AsAppLaunchContext() gio.AppLaunchContext

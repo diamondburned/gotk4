@@ -245,7 +245,7 @@ type DialogOverrider interface {
 //      </action-widgets>
 //    </object>
 type Dialog interface {
-	gextras.Objector
+	Window
 
 	// AsWindow casts the class to the Window interface.
 	AsWindow() Window

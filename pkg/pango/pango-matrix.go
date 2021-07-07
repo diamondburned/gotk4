@@ -53,42 +53,42 @@ func (m *Matrix) Native() unsafe.Pointer {
 // XX: 1st component of the transformation matrix
 func (m *Matrix) XX() float64 {
 	var v float64 // out
-	v = float64(m.xx)
+	v = float64(m.native.xx)
 	return v
 }
 
 // XY: 2nd component of the transformation matrix
 func (m *Matrix) XY() float64 {
 	var v float64 // out
-	v = float64(m.xy)
+	v = float64(m.native.xy)
 	return v
 }
 
 // YX: 3rd component of the transformation matrix
 func (m *Matrix) YX() float64 {
 	var v float64 // out
-	v = float64(m.yx)
+	v = float64(m.native.yx)
 	return v
 }
 
 // YY: 4th component of the transformation matrix
 func (m *Matrix) YY() float64 {
 	var v float64 // out
-	v = float64(m.yy)
+	v = float64(m.native.yy)
 	return v
 }
 
 // X0: x translation
 func (m *Matrix) X0() float64 {
 	var v float64 // out
-	v = float64(m.x0)
+	v = float64(m.native.x0)
 	return v
 }
 
 // Y0: y translation
 func (m *Matrix) Y0() float64 {
 	var v float64 // out
-	v = float64(m.y0)
+	v = float64(m.native.y0)
 	return v
 }
 

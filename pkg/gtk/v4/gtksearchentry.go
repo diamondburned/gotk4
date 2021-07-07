@@ -72,7 +72,7 @@ func init() {
 //
 // `GtkSearchEntry` uses the GTK_ACCESSIBLE_ROLE_SEARCH_BOX role.
 type SearchEntry interface {
-	gextras.Objector
+	Widget
 
 	// AsWidget casts the class to the Widget interface.
 	AsWidget() Widget

@@ -25,7 +25,7 @@ func init() {
 
 // PixbufSimpleAnim: opaque struct representing a simple animation.
 type PixbufSimpleAnim interface {
-	gextras.Objector
+	PixbufAnimation
 
 	// AsPixbufAnimation casts the class to the PixbufAnimation interface.
 	AsPixbufAnimation() PixbufAnimation

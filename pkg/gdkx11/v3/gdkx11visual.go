@@ -24,7 +24,7 @@ func init() {
 }
 
 type X11Visual interface {
-	gextras.Objector
+	gdk.Visual
 
 	// AsVisual casts the class to the gdk.Visual interface.
 	AsVisual() gdk.Visual

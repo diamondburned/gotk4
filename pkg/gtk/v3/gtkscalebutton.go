@@ -55,7 +55,7 @@ type ScaleButtonOverrider interface {
 //
 // The popup widget that contains the scale has a .scale-popup style class.
 type ScaleButton interface {
-	gextras.Objector
+	Button
 
 	// AsButton casts the class to the Button interface.
 	AsButton() Button

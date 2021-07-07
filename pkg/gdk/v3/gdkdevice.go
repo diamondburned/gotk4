@@ -735,13 +735,13 @@ func (t *TimeCoord) Native() unsafe.Pointer {
 // Time: the timestamp for this event.
 func (t *TimeCoord) Time() uint32 {
 	var v uint32 // out
-	v = uint32(t.time)
+	v = uint32(t.native.time)
 	return v
 }
 
 // Axes: the values of the device’s axes.
 func (t *TimeCoord) Axes() [128]float64 {
 	var v [128]float64
-	v = *(*[128]float64)(unsafe.Pointer(&t.axes))
+	v = *(*[128]float64)(unsafe.Pointer(&t.native.axes))
 	return v
 }

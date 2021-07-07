@@ -43,7 +43,7 @@ type MediaFileOverrider interface {
 //
 // GTK itself includes implementations using GStreamer and ffmpeg.
 type MediaFile interface {
-	gextras.Objector
+	MediaStream
 
 	// AsMediaStream casts the class to the MediaStream interface.
 	AsMediaStream() MediaStream

@@ -171,7 +171,7 @@ func gotk4_FlowBoxSortFunc(arg0 *C.GtkFlowBoxChild, arg1 *C.GtkFlowBoxChild, arg
 // `GtkFlowBox` uses the GTK_ACCESSIBLE_ROLE_GRID role, and `GtkFlowBoxChild`
 // uses the GTK_ACCESSIBLE_ROLE_GRID_CELL role.
 type FlowBox interface {
-	gextras.Objector
+	Widget
 
 	// AsWidget casts the class to the Widget interface.
 	AsWidget() Widget
@@ -2887,7 +2887,7 @@ type FlowBoxChildOverrider interface {
 // FlowBoxChild: `GtkFlowBoxChild` is the kind of widget that can be added to a
 // `GtkFlowBox`.
 type FlowBoxChild interface {
-	gextras.Objector
+	Widget
 
 	// AsWidget casts the class to the Widget interface.
 	AsWidget() Widget

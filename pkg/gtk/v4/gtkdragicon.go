@@ -40,7 +40,7 @@ func init() {
 //
 // Keep in mind that drag icons do not allow user input.
 type DragIcon interface {
-	gextras.Objector
+	Widget
 
 	// AsWidget casts the class to the Widget interface.
 	AsWidget() Widget

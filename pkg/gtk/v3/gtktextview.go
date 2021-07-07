@@ -144,7 +144,7 @@ type TextViewOverrider interface {
 // If a context menu is opened, the window node will appear as a subnode of the
 // main node.
 type TextView interface {
-	gextras.Objector
+	Container
 
 	// AsContainer casts the class to the Container interface.
 	AsContainer() Container

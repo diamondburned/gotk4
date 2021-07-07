@@ -61,7 +61,7 @@ type PlugOverrider interface {
 // X11Display. To use Plug and Socket, you need to include the `gtk/gtkx.h`
 // header.
 type Plug interface {
-	gextras.Objector
+	Window
 
 	// AsWindow casts the class to the Window interface.
 	AsWindow() Window

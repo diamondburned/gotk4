@@ -188,7 +188,7 @@ func init() {
 // the [signal@Gtk.Label::activate-link] signal and the
 // [method@Gtk.Label.get_current_uri] function.
 type Label interface {
-	gextras.Objector
+	Widget
 
 	// AsWidget casts the class to the Widget interface.
 	AsWidget() Widget

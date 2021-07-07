@@ -27,7 +27,7 @@ func init() {
 // To obtain the numbers to compare, this sorter evaluates a
 // [class@Gtk.Expression].
 type NumericSorter interface {
-	gextras.Objector
+	Sorter
 
 	// AsSorter casts the class to the Sorter interface.
 	AsSorter() Sorter

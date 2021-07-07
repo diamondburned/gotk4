@@ -33,7 +33,7 @@ func init() {
 }
 
 type NativeVolumeMonitor interface {
-	gextras.Objector
+	VolumeMonitor
 
 	// AsVolumeMonitor casts the class to the VolumeMonitor interface.
 	AsVolumeMonitor() VolumeMonitor

@@ -57,7 +57,7 @@ type ToolItemOverrider interface {
 // See the Toolbar class for a description of the toolbar widget, and ToolShell
 // for a description of the tool shell interface.
 type ToolItem interface {
-	gextras.Objector
+	Bin
 
 	// AsBin casts the class to the Bin interface.
 	AsBin() Bin

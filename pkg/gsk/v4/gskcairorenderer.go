@@ -30,7 +30,7 @@ func init() {
 //
 // Since it is using cairo, this renderer cannot support 3D transformations.
 type CairoRenderer interface {
-	gextras.Objector
+	Renderer
 
 	// AsRenderer casts the class to the Renderer interface.
 	AsRenderer() Renderer

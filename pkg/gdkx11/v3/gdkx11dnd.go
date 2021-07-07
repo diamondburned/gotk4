@@ -24,7 +24,7 @@ func init() {
 }
 
 type X11DragContext interface {
-	gextras.Objector
+	gdk.DragContext
 
 	// AsDragContext casts the class to the gdk.DragContext interface.
 	AsDragContext() gdk.DragContext

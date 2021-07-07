@@ -41,7 +41,7 @@ func init() {
 //
 // GtkVScrollbar has been deprecated, use Scrollbar instead.
 type VScrollbar interface {
-	gextras.Objector
+	Scrollbar
 
 	// AsScrollbar casts the class to the Scrollbar interface.
 	AsScrollbar() Scrollbar

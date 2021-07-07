@@ -45,7 +45,7 @@ func init() {
 // gtk_cell_area_cell_set_property() or by specifying the "align" argument to
 // gtk_cell_area_box_pack_start() and gtk_cell_area_box_pack_end().
 type CellAreaBox interface {
-	gextras.Objector
+	CellArea
 
 	// AsCellArea casts the class to the CellArea interface.
 	AsCellArea() CellArea

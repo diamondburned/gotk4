@@ -37,7 +37,7 @@ func init() {
 }
 
 type ColorSelectionDialog interface {
-	gextras.Objector
+	Dialog
 
 	// AsDialog casts the class to the Dialog interface.
 	AsDialog() Dialog

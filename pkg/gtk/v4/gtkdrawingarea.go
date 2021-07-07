@@ -135,7 +135,7 @@ type DrawingAreaOverrider interface {
 // If you need more complex control over your widget, you should consider
 // creating your own `GtkWidget` subclass.
 type DrawingArea interface {
-	gextras.Objector
+	Widget
 
 	// AsWidget casts the class to the Widget interface.
 	AsWidget() Widget

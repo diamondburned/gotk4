@@ -27,7 +27,7 @@ func init() {
 }
 
 type ImageAccessible interface {
-	gextras.Objector
+	WidgetAccessible
 
 	// AsWidgetAccessible casts the class to the WidgetAccessible interface.
 	AsWidgetAccessible() WidgetAccessible

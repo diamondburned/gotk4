@@ -50,7 +50,7 @@ func init() {
 // between different emoji categories consists of buttons with the
 // .emoji-section style class and gets the .emoji-toolbar style class itself.
 type EmojiChooser interface {
-	gextras.Objector
+	Popover
 
 	// AsPopover casts the class to the Popover interface.
 	AsPopover() Popover

@@ -130,7 +130,7 @@ func init() {
 // The following attributes are used when constructing submenus: - "label": a
 // user-visible string to display - "icon": icon name to display
 type ApplicationWindow interface {
-	gextras.Objector
+	Window
 
 	// AsWindow casts the class to the Window interface.
 	AsWindow() Window

@@ -46,7 +46,7 @@ func init() {
 // GtkSpinner has a single CSS node with the name spinner. When the animation is
 // active, the :checked pseudoclass is added to this node.
 type Spinner interface {
-	gextras.Objector
+	Widget
 
 	// AsWidget casts the class to the Widget interface.
 	AsWidget() Widget

@@ -38,7 +38,7 @@ func init() {
 //
 // `GtkFileChooserWidget` has a single CSS node with name filechooser.
 type FileChooserWidget interface {
-	gextras.Objector
+	Widget
 
 	// AsWidget casts the class to the Widget interface.
 	AsWidget() Widget

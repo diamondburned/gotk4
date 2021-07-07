@@ -30,7 +30,7 @@ func init() {
 // [property@Gtk.Widget:halign], and [property@Gtk.Widget:valign] properties of
 // each child to determine where they should be positioned.
 type BinLayout interface {
-	gextras.Objector
+	LayoutManager
 
 	// AsLayoutManager casts the class to the LayoutManager interface.
 	AsLayoutManager() LayoutManager

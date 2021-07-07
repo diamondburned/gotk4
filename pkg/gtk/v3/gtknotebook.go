@@ -129,7 +129,7 @@ type NotebookOverrider interface {
 // The nodes are always arranged from left-to-right, regarldess of text
 // direction.
 type Notebook interface {
-	gextras.Objector
+	Container
 
 	// AsContainer casts the class to the Container interface.
 	AsContainer() Container

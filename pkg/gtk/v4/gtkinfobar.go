@@ -86,7 +86,7 @@ func init() {
 // message type. If the info bar shows a close button, that button will have the
 // .close style class applied.
 type InfoBar interface {
-	gextras.Objector
+	Widget
 
 	// AsWidget casts the class to the Widget interface.
 	AsWidget() Widget

@@ -52,7 +52,7 @@ func init() {
 // same effect with an image, use the icon names “pan-start-symbolic“ and
 // “pan-end-symbolic“, which react to the text direction.
 type Arrow interface {
-	gextras.Objector
+	Misc
 
 	// AsMisc casts the class to the Misc interface.
 	AsMisc() Misc

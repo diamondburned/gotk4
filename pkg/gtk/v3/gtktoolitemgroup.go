@@ -43,7 +43,7 @@ func init() {
 //
 // GtkToolItemGroup has a single CSS node named toolitemgroup.
 type ToolItemGroup interface {
-	gextras.Objector
+	Container
 
 	// AsContainer casts the class to the Container interface.
 	AsContainer() Container

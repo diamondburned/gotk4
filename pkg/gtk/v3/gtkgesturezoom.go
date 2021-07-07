@@ -29,7 +29,7 @@ func init() {
 // gestures, whenever the distance between both tracked sequences changes, the
 // GestureZoom::scale-changed signal is emitted to report the scale factor.
 type GestureZoom interface {
-	gextras.Objector
+	Gesture
 
 	// AsGesture casts the class to the Gesture interface.
 	AsGesture() Gesture

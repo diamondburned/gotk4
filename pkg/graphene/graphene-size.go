@@ -62,14 +62,14 @@ func (s *Size) Native() unsafe.Pointer {
 // Width: the width
 func (s *Size) Width() float32 {
 	var v float32 // out
-	v = float32(s.width)
+	v = float32(s.native.width)
 	return v
 }
 
 // Height: the height
 func (s *Size) Height() float32 {
 	var v float32 // out
-	v = float32(s.height)
+	v = float32(s.native.height)
 	return v
 }
 

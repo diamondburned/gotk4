@@ -41,7 +41,7 @@ func init() {
 //
 // GtkHPaned has been deprecated, use Paned instead.
 type HPaned interface {
-	gextras.Objector
+	Paned
 
 	// AsPaned casts the class to the Paned interface.
 	AsPaned() Paned

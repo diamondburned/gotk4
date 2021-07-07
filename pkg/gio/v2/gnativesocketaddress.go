@@ -36,7 +36,7 @@ func init() {
 
 // NativeSocketAddress: socket address of some unknown native type.
 type NativeSocketAddress interface {
-	gextras.Objector
+	SocketAddress
 
 	// AsSocketAddress casts the class to the SocketAddress interface.
 	AsSocketAddress() SocketAddress

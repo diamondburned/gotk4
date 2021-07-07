@@ -29,7 +29,7 @@ func init() {
 // MountOperation: this should not be accessed directly. Use the accessor
 // functions below.
 type MountOperation interface {
-	gextras.Objector
+	gio.MountOperation
 
 	// AsMountOperation casts the class to the gio.MountOperation interface.
 	AsMountOperation() gio.MountOperation

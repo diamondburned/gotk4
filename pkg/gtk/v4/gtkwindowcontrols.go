@@ -71,7 +71,7 @@ func init() {
 //
 // `GtkWindowControls` uses the GTK_ACCESSIBLE_ROLE_GROUP role.
 type WindowControls interface {
-	gextras.Objector
+	Widget
 
 	// AsWidget casts the class to the Widget interface.
 	AsWidget() Widget

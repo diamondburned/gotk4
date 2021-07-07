@@ -25,7 +25,7 @@ func init() {
 }
 
 type X11GLContext interface {
-	gextras.Objector
+	gdk.GLContext
 
 	// AsGLContext casts the class to the gdk.GLContext interface.
 	AsGLContext() gdk.GLContext

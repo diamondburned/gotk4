@@ -45,7 +45,7 @@ func init() {
 // When circumstances require it, `GtkStackSidebar` adds the .needs-attention
 // style class to the widgets representing the stack pages.
 type StackSidebar interface {
-	gextras.Objector
+	Widget
 
 	// AsWidget casts the class to the Widget interface.
 	AsWidget() Widget

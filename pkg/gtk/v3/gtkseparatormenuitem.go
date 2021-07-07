@@ -44,7 +44,7 @@ func init() {
 //
 // GtkSeparatorMenuItem has a single CSS node with name separator.
 type SeparatorMenuItem interface {
-	gextras.Objector
+	MenuItem
 
 	// AsMenuItem casts the class to the MenuItem interface.
 	AsMenuItem() MenuItem

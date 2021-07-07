@@ -508,7 +508,7 @@ func (r *RadioActionEntry) Native() unsafe.Pointer {
 // Name: the name of the action.
 func (r *RadioActionEntry) Name() string {
 	var v string // out
-	v = C.GoString(r.name)
+	v = C.GoString(r.native.name)
 	return v
 }
 
@@ -516,7 +516,7 @@ func (r *RadioActionEntry) Name() string {
 // theme.
 func (r *RadioActionEntry) StockID() string {
 	var v string // out
-	v = C.GoString(r.stock_id)
+	v = C.GoString(r.native.stock_id)
 	return v
 }
 
@@ -524,7 +524,7 @@ func (r *RadioActionEntry) StockID() string {
 // translation, see gtk_action_group_set_translation_domain().
 func (r *RadioActionEntry) Label() string {
 	var v string // out
-	v = C.GoString(r.label)
+	v = C.GoString(r.native.label)
 	return v
 }
 
@@ -532,7 +532,7 @@ func (r *RadioActionEntry) Label() string {
 // gtk_accelerator_parse().
 func (r *RadioActionEntry) Accelerator() string {
 	var v string // out
-	v = C.GoString(r.accelerator)
+	v = C.GoString(r.native.accelerator)
 	return v
 }
 
@@ -540,7 +540,7 @@ func (r *RadioActionEntry) Accelerator() string {
 // for translation, see gtk_action_group_set_translation_domain().
 func (r *RadioActionEntry) Tooltip() string {
 	var v string // out
-	v = C.GoString(r.tooltip)
+	v = C.GoString(r.native.tooltip)
 	return v
 }
 
@@ -548,6 +548,6 @@ func (r *RadioActionEntry) Tooltip() string {
 // gtk_radio_action_get_current_value().
 func (r *RadioActionEntry) Value() int {
 	var v int // out
-	v = int(r.value)
+	v = int(r.native.value)
 	return v
 }

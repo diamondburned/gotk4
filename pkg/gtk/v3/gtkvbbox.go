@@ -36,7 +36,7 @@ func init() {
 }
 
 type VButtonBox interface {
-	gextras.Objector
+	ButtonBox
 
 	// AsButtonBox casts the class to the ButtonBox interface.
 	AsButtonBox() ButtonBox

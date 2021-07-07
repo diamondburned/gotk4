@@ -85,7 +85,7 @@ func marshalRevealerTransitionType(p uintptr) (interface{}, error) {
 // The child of `GtkRevealer`, if set, is always available in the accessibility
 // tree, regardless of the state of the revealer widget.
 type Revealer interface {
-	gextras.Objector
+	Widget
 
 	// AsWidget casts the class to the Widget interface.
 	AsWidget() Widget

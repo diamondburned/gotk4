@@ -126,7 +126,7 @@ type CalendarOverrider interface {
 // calendar in most countries, it was adopted progressively between 1582 and
 // 1929. Display before these dates is likely to be historically incorrect.
 type Calendar interface {
-	gextras.Objector
+	Widget
 
 	// AsWidget casts the class to the Widget interface.
 	AsWidget() Widget

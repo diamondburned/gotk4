@@ -75,7 +75,7 @@ func init() {
 // [func@Gdk.GLContext.get_current]; you can also unset any `GdkGLContext` that
 // is currently set by calling [func@Gdk.GLContext.clear_current].
 type GLContext interface {
-	gextras.Objector
+	DrawContext
 
 	// AsDrawContext casts the class to the DrawContext interface.
 	AsDrawContext() DrawContext

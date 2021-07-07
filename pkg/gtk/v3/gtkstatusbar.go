@@ -77,7 +77,7 @@ type StatusbarOverrider interface {
 //
 // GtkStatusbar has a single CSS node with name statusbar.
 type Statusbar interface {
-	gextras.Objector
+	Box
 
 	// AsBox casts the class to the Box interface.
 	AsBox() Box

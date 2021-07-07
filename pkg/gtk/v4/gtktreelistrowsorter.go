@@ -34,7 +34,7 @@ func init() {
 // gtk_single_selection_new (sort_model); gtk_column_view_set_model (view,
 // G_LIST_MODEL (selection)); “`
 type TreeListRowSorter interface {
-	gextras.Objector
+	Sorter
 
 	// AsSorter casts the class to the Sorter interface.
 	AsSorter() Sorter

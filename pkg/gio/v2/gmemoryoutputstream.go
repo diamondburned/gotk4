@@ -44,7 +44,7 @@ func init() {
 // As of GLib 2.34, OutputStream trivially implements OutputStream: it always
 // polls as ready.
 type MemoryOutputStream interface {
-	gextras.Objector
+	OutputStream
 
 	// AsOutputStream casts the class to the OutputStream interface.
 	AsOutputStream() OutputStream

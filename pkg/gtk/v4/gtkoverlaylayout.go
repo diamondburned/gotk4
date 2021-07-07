@@ -31,7 +31,7 @@ func init() {
 // `GtkOverlay`. It only listed here so that its layout properties get
 // documented.
 type OverlayLayout interface {
-	gextras.Objector
+	LayoutManager
 
 	// AsLayoutManager casts the class to the LayoutManager interface.
 	AsLayoutManager() LayoutManager
@@ -141,7 +141,7 @@ func (m overlayLayout) Measure(widget Widget, orientation Orientation, forSize i
 // OverlayLayoutChild: `GtkLayoutChild` subclass for children in a
 // `GtkOverlayLayout`.
 type OverlayLayoutChild interface {
-	gextras.Objector
+	LayoutChild
 
 	// AsLayoutChild casts the class to the LayoutChild interface.
 	AsLayoutChild() LayoutChild

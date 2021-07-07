@@ -33,7 +33,7 @@ type PlugOverrider interface {
 
 // Plug: see Socket
 type Plug interface {
-	gextras.Objector
+	Object
 
 	// AsObject casts the class to the Object interface.
 	AsObject() Object

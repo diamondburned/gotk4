@@ -75,7 +75,7 @@ func init() {
 // gtk_frame_set_shadow_type() with GTK_SHADOW_NONE to add the “.flat” class or
 // any other shadow type to remove it.
 type Frame interface {
-	gextras.Objector
+	Bin
 
 	// AsBin casts the class to the Bin interface.
 	AsBin() Bin

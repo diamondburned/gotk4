@@ -31,7 +31,7 @@ func init() {
 // [method@Gdk.Surface.create_cairo_context], and the context can then be used
 // to draw on that surface.
 type CairoContext interface {
-	gextras.Objector
+	DrawContext
 
 	// AsDrawContext casts the class to the DrawContext interface.
 	AsDrawContext() DrawContext

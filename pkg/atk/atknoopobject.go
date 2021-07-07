@@ -28,7 +28,7 @@ func init() {
 // is the type of AtkObject which is created if an accessible object is
 // requested for an object type for which no factory type is specified.
 type NoOpObject interface {
-	gextras.Objector
+	Object
 
 	// AsObject casts the class to the Object interface.
 	AsObject() Object

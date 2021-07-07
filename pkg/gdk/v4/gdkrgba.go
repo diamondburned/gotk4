@@ -53,21 +53,21 @@ func (r *RGBA) Native() unsafe.Pointer {
 // Red: the intensity of the red channel from 0.0 to 1.0 inclusive
 func (r *RGBA) Red() float32 {
 	var v float32 // out
-	v = float32(r.red)
+	v = float32(r.native.red)
 	return v
 }
 
 // Green: the intensity of the green channel from 0.0 to 1.0 inclusive
 func (r *RGBA) Green() float32 {
 	var v float32 // out
-	v = float32(r.green)
+	v = float32(r.native.green)
 	return v
 }
 
 // Blue: the intensity of the blue channel from 0.0 to 1.0 inclusive
 func (r *RGBA) Blue() float32 {
 	var v float32 // out
-	v = float32(r.blue)
+	v = float32(r.native.blue)
 	return v
 }
 
@@ -75,7 +75,7 @@ func (r *RGBA) Blue() float32 {
 // for opaque
 func (r *RGBA) Alpha() float32 {
 	var v float32 // out
-	v = float32(r.alpha)
+	v = float32(r.native.alpha)
 	return v
 }
 

@@ -50,7 +50,7 @@ func init() {
 // > TearoffMenuItem is deprecated and should not be used in newly > written
 // code. Menus are not meant to be torn around.
 type TearoffMenuItem interface {
-	gextras.Objector
+	MenuItem
 
 	// AsMenuItem casts the class to the MenuItem interface.
 	AsMenuItem() MenuItem

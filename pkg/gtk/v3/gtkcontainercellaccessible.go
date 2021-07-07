@@ -27,7 +27,7 @@ func init() {
 }
 
 type ContainerCellAccessible interface {
-	gextras.Objector
+	CellAccessible
 
 	// AsCellAccessible casts the class to the CellAccessible interface.
 	AsCellAccessible() CellAccessible

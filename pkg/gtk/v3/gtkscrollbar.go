@@ -72,7 +72,7 @@ func init() {
 // classes related to overlay scrolling (.overlay-indicator, .dragging,
 // .hovering).
 type Scrollbar interface {
-	gextras.Objector
+	Range
 
 	// AsRange casts the class to the Range interface.
 	AsRange() Range

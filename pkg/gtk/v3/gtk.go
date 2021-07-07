@@ -139,7 +139,7 @@ func marshalDebugFlag(p uintptr) (interface{}, error) {
 }
 
 type EntryIconAccessible interface {
-	gextras.Objector
+	atk.Object
 
 	// AsObject casts the class to the atk.Object interface.
 	AsObject() atk.Object

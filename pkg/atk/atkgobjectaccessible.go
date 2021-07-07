@@ -28,7 +28,7 @@ func init() {
 // not derived from GtkWidget. One example of its use is in providing an
 // accessible object for GnomeCanvasItem in the GAIL library.
 type GObjectAccessible interface {
-	gextras.Objector
+	Object
 
 	// AsObject casts the class to the Object interface.
 	AsObject() Object

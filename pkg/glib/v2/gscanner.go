@@ -111,7 +111,7 @@ func (s *ScannerConfig) Native() unsafe.Pointer {
 // carriage-return and line-feed).
 func (s *ScannerConfig) CsetSkipCharacters() string {
 	var v string // out
-	v = C.GoString(s.cset_skip_characters)
+	v = C.GoString(s.native.cset_skip_characters)
 	return v
 }
 
@@ -119,7 +119,7 @@ func (s *ScannerConfig) CsetSkipCharacters() string {
 // default is CSET_a_2_z, "_", and CSET_A_2_Z).
 func (s *ScannerConfig) CsetIdentifierFirst() string {
 	var v string // out
-	v = C.GoString(s.cset_identifier_first)
+	v = C.GoString(s.native.cset_identifier_first)
 	return v
 }
 
@@ -128,7 +128,7 @@ func (s *ScannerConfig) CsetIdentifierFirst() string {
 // CSET_A_2_Z, CSET_LATINS, CSET_LATINC).
 func (s *ScannerConfig) CsetIdentifierNth() string {
 	var v string // out
-	v = C.GoString(s.cset_identifier_nth)
+	v = C.GoString(s.native.cset_identifier_nth)
 	return v
 }
 
@@ -137,6 +137,6 @@ func (s *ScannerConfig) CsetIdentifierNth() string {
 // comments start with a '#' and continue until a '\n' (end of line).
 func (s *ScannerConfig) CpairCommentSingle() string {
 	var v string // out
-	v = C.GoString(s.cpair_comment_single)
+	v = C.GoString(s.native.cpair_comment_single)
 	return v
 }

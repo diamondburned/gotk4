@@ -38,7 +38,7 @@ func init() {
 // VolumeButton is a subclass of ScaleButton that has been tailored for use as a
 // volume control widget with suitable icons, tooltips and accessible labels.
 type VolumeButton interface {
-	gextras.Objector
+	ScaleButton
 
 	// AsScaleButton casts the class to the ScaleButton interface.
 	AsScaleButton() ScaleButton

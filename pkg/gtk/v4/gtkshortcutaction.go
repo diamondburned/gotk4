@@ -80,7 +80,7 @@ func gotk4_ShortcutFunc(arg0 *C.GtkWidget, arg1 *C.GVariant, arg2 C.gpointer) (c
 
 // ActivateAction: `GtkShortcutAction` that calls gtk_widget_activate().
 type ActivateAction interface {
-	gextras.Objector
+	ShortcutAction
 
 	// AsShortcutAction casts the class to the ShortcutAction interface.
 	AsShortcutAction() ShortcutAction
@@ -137,7 +137,7 @@ func (s activateAction) ToString() string {
 
 // CallbackAction: `GtkShortcutAction` that invokes a callback.
 type CallbackAction interface {
-	gextras.Objector
+	ShortcutAction
 
 	// AsShortcutAction casts the class to the ShortcutAction interface.
 	AsShortcutAction() ShortcutAction
@@ -195,7 +195,7 @@ func (s callbackAction) ToString() string {
 // MnemonicAction: `GtkShortcutAction` that calls
 // gtk_widget_mnemonic_activate().
 type MnemonicAction interface {
-	gextras.Objector
+	ShortcutAction
 
 	// AsShortcutAction casts the class to the ShortcutAction interface.
 	AsShortcutAction() ShortcutAction
@@ -252,7 +252,7 @@ func (s mnemonicAction) ToString() string {
 
 // NamedAction: `GtkShortcutAction` that activates an action by name.
 type NamedAction interface {
-	gextras.Objector
+	ShortcutAction
 
 	// AsShortcutAction casts the class to the ShortcutAction interface.
 	AsShortcutAction() ShortcutAction
@@ -350,7 +350,7 @@ func (s namedAction) ActionName() string {
 
 // NothingAction: `GtkShortcutAction` that does nothing.
 type NothingAction interface {
-	gextras.Objector
+	ShortcutAction
 
 	// AsShortcutAction casts the class to the ShortcutAction interface.
 	AsShortcutAction() ShortcutAction
@@ -540,7 +540,7 @@ func (s shortcutAction) String() string {
 // Signals that are used in this way are referred to as keybinding signals, and
 // they are expected to be defined with the G_SIGNAL_ACTION flag.
 type SignalAction interface {
-	gextras.Objector
+	ShortcutAction
 
 	// AsShortcutAction casts the class to the ShortcutAction interface.
 	AsShortcutAction() ShortcutAction

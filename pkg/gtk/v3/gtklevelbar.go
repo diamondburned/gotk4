@@ -75,7 +75,7 @@ type LevelBarOverrider interface {
 // In horizontal orientation, the nodes are always arranged from left to right,
 // regardless of text direction.
 type LevelBar interface {
-	gextras.Objector
+	Widget
 
 	// AsWidget casts the class to the Widget interface.
 	AsWidget() Widget

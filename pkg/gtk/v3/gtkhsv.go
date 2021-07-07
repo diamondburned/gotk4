@@ -49,7 +49,7 @@ type HSVOverrider interface {
 //
 // HSV has been deprecated together with ColorSelection, where it was used.
 type HSV interface {
-	gextras.Objector
+	Widget
 
 	// AsWidget casts the class to the Widget interface.
 	AsWidget() Widget

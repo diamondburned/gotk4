@@ -54,7 +54,7 @@ func init() {
 // items use the GTK_ACCESSIBLE_ROLE_MENU_ITEM role and the menus use the
 // GTK_ACCESSIBLE_ROLE_MENU role.
 type PopoverMenuBar interface {
-	gextras.Objector
+	Widget
 
 	// AsWidget casts the class to the Widget interface.
 	AsWidget() Widget

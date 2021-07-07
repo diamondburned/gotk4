@@ -254,7 +254,7 @@ func (k *KeyEventStruct) Native() unsafe.Pointer {
 // ATK_KEY_EVENT_RELEASE
 func (k *KeyEventStruct) Type() int {
 	var v int // out
-	v = int(k._type)
+	v = int(k.native._type)
 	return v
 }
 
@@ -264,7 +264,7 @@ func (k *KeyEventStruct) Type() int {
 // http://developer.gnome.org/doc/API/2.0/gdk/gdk-Event-Structures.htmlEventKey
 func (k *KeyEventStruct) State() uint {
 	var v uint // out
-	v = uint(k.state)
+	v = uint(k.native.state)
 	return v
 }
 
@@ -272,14 +272,14 @@ func (k *KeyEventStruct) State() uint {
 // and X11: see /usr/X11/include/keysymdef.h.
 func (k *KeyEventStruct) Keyval() uint {
 	var v uint // out
-	v = uint(k.keyval)
+	v = uint(k.native.keyval)
 	return v
 }
 
 // Length: the length of member #string.
 func (k *KeyEventStruct) Length() int {
 	var v int // out
-	v = int(k.length)
+	v = int(k.native.length)
 	return v
 }
 
@@ -290,7 +290,7 @@ func (k *KeyEventStruct) Length() int {
 // instance "A". "0", "semicolon", "aacute". Keypad keys have the prefix "KP".
 func (k *KeyEventStruct) String() string {
 	var v string // out
-	v = C.GoString(k._string)
+	v = C.GoString(k.native._string)
 	return v
 }
 
@@ -298,7 +298,7 @@ func (k *KeyEventStruct) String() string {
 // raraly useful.
 func (k *KeyEventStruct) Keycode() uint16 {
 	var v uint16 // out
-	v = uint16(k.keycode)
+	v = uint16(k.native.keycode)
 	return v
 }
 
@@ -308,6 +308,6 @@ func (k *KeyEventStruct) Keycode() uint16 {
 // another.
 func (k *KeyEventStruct) Timestamp() uint32 {
 	var v uint32 // out
-	v = uint32(k.timestamp)
+	v = uint32(k.native.timestamp)
 	return v
 }

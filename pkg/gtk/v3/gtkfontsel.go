@@ -38,7 +38,7 @@ func init() {
 }
 
 type FontSelection interface {
-	gextras.Objector
+	Box
 
 	// AsBox casts the class to the Box interface.
 	AsBox() Box
@@ -4395,7 +4395,7 @@ func (f fontSelection) SetPreviewText(text string) {
 }
 
 type FontSelectionDialog interface {
-	gextras.Objector
+	Dialog
 
 	// AsDialog casts the class to the Dialog interface.
 	AsDialog() Dialog

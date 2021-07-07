@@ -58,7 +58,7 @@ func init() {
 // </mime-types> <patterns> <pattern>*.txt</pattern> <pattern>*.png</pattern>
 // </patterns> </object> “`
 type FileFilter interface {
-	gextras.Objector
+	Filter
 
 	// AsFilter casts the class to the Filter interface.
 	AsFilter() Filter

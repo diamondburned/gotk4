@@ -29,7 +29,7 @@ func init() {
 // GestureStylus is a Gesture implementation specific to stylus input. The
 // provided signals just provide the basic information
 type GestureStylus interface {
-	gextras.Objector
+	GestureSingle
 
 	// AsGestureSingle casts the class to the GestureSingle interface.
 	AsGestureSingle() GestureSingle

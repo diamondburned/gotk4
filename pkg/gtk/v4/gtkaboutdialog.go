@@ -121,7 +121,7 @@ func marshalLicense(p uintptr) (interface{}, error) {
 // `GtkAboutDialog` has a single CSS node with the name `window` and style class
 // `.aboutdialog`.
 type AboutDialog interface {
-	gextras.Objector
+	Window
 
 	// AsWindow casts the class to the Window interface.
 	AsWindow() Window

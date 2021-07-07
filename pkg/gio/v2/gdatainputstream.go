@@ -40,7 +40,7 @@ func init() {
 // DataInputStream: data input stream implements Stream and includes functions
 // for reading structured data directly from a binary input stream.
 type DataInputStream interface {
-	gextras.Objector
+	BufferedInputStream
 
 	// AsBufferedInputStream casts the class to the BufferedInputStream interface.
 	AsBufferedInputStream() BufferedInputStream

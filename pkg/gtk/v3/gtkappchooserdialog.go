@@ -46,7 +46,7 @@ func init() {
 // To set the heading that is shown above the AppChooserWidget, use
 // gtk_app_chooser_dialog_set_heading().
 type AppChooserDialog interface {
-	gextras.Objector
+	Dialog
 
 	// AsDialog casts the class to the Dialog interface.
 	AsDialog() Dialog

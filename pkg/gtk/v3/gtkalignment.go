@@ -53,7 +53,7 @@ func init() {
 // Widget:halign, Widget:valign and Widget:margin properties on the child
 // widget.
 type Alignment interface {
-	gextras.Objector
+	Bin
 
 	// AsBin casts the class to the Bin interface.
 	AsBin() Bin

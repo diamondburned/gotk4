@@ -74,7 +74,7 @@ func marshalRevealerTransitionType(p uintptr) (interface{}, error) {
 //
 // The GtkRevealer widget was added in GTK+ 3.10.
 type Revealer interface {
-	gextras.Objector
+	Bin
 
 	// AsBin casts the class to the Bin interface.
 	AsBin() Bin

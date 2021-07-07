@@ -48,7 +48,7 @@ func init() {
 //
 // GtkActionBar has a single CSS node with name actionbar.
 type ActionBar interface {
-	gextras.Objector
+	Bin
 
 	// AsBin casts the class to the Bin interface.
 	AsBin() Bin

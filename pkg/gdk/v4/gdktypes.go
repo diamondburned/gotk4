@@ -618,7 +618,7 @@ func (k *KeymapKey) Native() unsafe.Pointer {
 // key.
 func (k *KeymapKey) Keycode() uint {
 	var v uint // out
-	v = uint(k.keycode)
+	v = uint(k.native.keycode)
 	return v
 }
 
@@ -628,7 +628,7 @@ func (k *KeymapKey) Keycode() uint {
 // characters will be printed on the key next to the English characters.
 func (k *KeymapKey) Group() int {
 	var v int // out
-	v = int(k.group)
+	v = int(k.native.group)
 	return v
 }
 
@@ -640,7 +640,7 @@ func (k *KeymapKey) Group() int {
 // though only the uppercase letter is printed.
 func (k *KeymapKey) Level() int {
 	var v int // out
-	v = int(k.level)
+	v = int(k.native.level)
 	return v
 }
 
@@ -682,28 +682,28 @@ func (r *Rectangle) Native() unsafe.Pointer {
 // X: the x coordinate of the top left corner
 func (r *Rectangle) X() int {
 	var v int // out
-	v = int(r.x)
+	v = int(r.native.x)
 	return v
 }
 
 // Y: the y coordinate of the top left corner
 func (r *Rectangle) Y() int {
 	var v int // out
-	v = int(r.y)
+	v = int(r.native.y)
 	return v
 }
 
 // Width: the width of the rectangle
 func (r *Rectangle) Width() int {
 	var v int // out
-	v = int(r.width)
+	v = int(r.native.width)
 	return v
 }
 
 // Height: the height of the rectangle
 func (r *Rectangle) Height() int {
 	var v int // out
-	v = int(r.height)
+	v = int(r.native.height)
 	return v
 }
 

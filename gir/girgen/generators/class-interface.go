@@ -25,7 +25,7 @@ var classInterfaceTmpl = gotmpl.NewGoTemplate(`
 
 	{{ GoDoc . 0 }}
 	type {{ .InterfaceName }} interface {
-		gextras.Objector
+		{{ .ParentInterface }}
 
 		{{ range .Implements }}
 		// As{{.Name}} casts the class to the {{.Type}} interface.

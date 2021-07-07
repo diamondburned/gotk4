@@ -108,7 +108,7 @@ func gotk4_MenuButtonCreatePopupFunc(arg0 *C.GtkMenuButton, arg1 C.gpointer) {
 //
 // `GtkMenuButton` uses the K_ACCESSIBLE_ROLE_BUTTON role.
 type MenuButton interface {
-	gextras.Objector
+	Widget
 
 	// AsWidget casts the class to the Widget interface.
 	AsWidget() Widget

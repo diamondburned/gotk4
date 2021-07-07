@@ -1379,13 +1379,13 @@ func (p *PageRange) Native() unsafe.Pointer {
 // Start: start of page range.
 func (p *PageRange) Start() int {
 	var v int // out
-	v = int(p.start)
+	v = int(p.native.start)
 	return v
 }
 
 // End: end of page range.
 func (p *PageRange) End() int {
 	var v int // out
-	v = int(p.end)
+	v = int(p.native.end)
 	return v
 }

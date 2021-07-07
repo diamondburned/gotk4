@@ -37,7 +37,7 @@ func init() {
 // InetSocketAddress: IPv4 or IPv6 socket address; that is, the combination of a
 // Address and a port number.
 type InetSocketAddress interface {
-	gextras.Objector
+	SocketAddress
 
 	// AsSocketAddress casts the class to the SocketAddress interface.
 	AsSocketAddress() SocketAddress

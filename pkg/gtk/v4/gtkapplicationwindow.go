@@ -87,7 +87,7 @@ func init() {
 //
 // GtkWidget *window = gtk_application_window_new (app); “`
 type ApplicationWindow interface {
-	gextras.Objector
+	Window
 
 	// AsWindow casts the class to the Window interface.
 	AsWindow() Window

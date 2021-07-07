@@ -84,7 +84,7 @@ type ButtonOverrider interface {
 // .toggle, .popup, .scale, .lock, .color, .font, .file to differentiate
 // themselves from a plain GtkButton.
 type Button interface {
-	gextras.Objector
+	Bin
 
 	// AsBin casts the class to the Bin interface.
 	AsBin() Bin

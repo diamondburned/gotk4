@@ -46,7 +46,7 @@ func init() {
 // interfaces, thus you have to use the `gio-unix-2.0.pc` pkg-config file when
 // using it.
 type UnixConnection interface {
-	gextras.Objector
+	SocketConnection
 
 	// AsSocketConnection casts the class to the SocketConnection interface.
 	AsSocketConnection() SocketConnection

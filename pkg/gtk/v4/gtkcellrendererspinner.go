@@ -35,7 +35,7 @@ func init() {
 // to bind them to columns in your tree model using e.g.
 // gtk_tree_view_column_add_attribute().
 type CellRendererSpinner interface {
-	gextras.Objector
+	CellRenderer
 
 	// AsCellRenderer casts the class to the CellRenderer interface.
 	AsCellRenderer() CellRenderer

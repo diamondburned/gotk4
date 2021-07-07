@@ -37,7 +37,7 @@ func init() {
 // portability offered by the high-level printing API in
 // [class@Gtk.PrintOperation].
 type PageSetupUnixDialog interface {
-	gextras.Objector
+	Dialog
 
 	// AsDialog casts the class to the Dialog interface.
 	AsDialog() Dialog

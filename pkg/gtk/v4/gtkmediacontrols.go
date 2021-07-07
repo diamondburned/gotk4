@@ -34,7 +34,7 @@ func init() {
 //
 // Usually, `GtkMediaControls` is used as part of [class@Gtk.Video].
 type MediaControls interface {
-	gextras.Objector
+	Widget
 
 	// AsWidget casts the class to the Widget interface.
 	AsWidget() Widget

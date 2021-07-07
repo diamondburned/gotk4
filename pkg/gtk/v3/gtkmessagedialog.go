@@ -102,7 +102,7 @@ func marshalButtonsType(p uintptr) (interface{}, error) {
 // The GtkMessageDialog implementation of the GtkBuildable interface exposes the
 // message area as an internal child with the name “message_area”.
 type MessageDialog interface {
-	gextras.Objector
+	Dialog
 
 	// AsDialog casts the class to the Dialog interface.
 	AsDialog() Dialog

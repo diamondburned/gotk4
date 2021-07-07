@@ -26,7 +26,7 @@ func init() {
 }
 
 type X11Keymap interface {
-	gextras.Objector
+	gdk.Keymap
 
 	// AsKeymap casts the class to the gdk.Keymap interface.
 	AsKeymap() gdk.Keymap

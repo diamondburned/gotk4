@@ -24,7 +24,7 @@ func init() {
 }
 
 type X11DisplayManager interface {
-	gextras.Objector
+	gdk.DisplayManager
 
 	// AsDisplayManager casts the class to the gdk.DisplayManager interface.
 	AsDisplayManager() gdk.DisplayManager

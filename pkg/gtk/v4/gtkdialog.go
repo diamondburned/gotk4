@@ -201,7 +201,7 @@ type DialogOverrider interface {
 //
 // `GtkDialog` uses the GTK_ACCESSIBLE_ROLE_DIALOG role.
 type Dialog interface {
-	gextras.Objector
+	Window
 
 	// AsWindow casts the class to the Window interface.
 	AsWindow() Window

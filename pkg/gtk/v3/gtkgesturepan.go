@@ -39,7 +39,7 @@ func init() {
 // GesturePan::pan signal will be emitted as input events are received,
 // containing the offset in the given axis.
 type GesturePan interface {
-	gextras.Objector
+	GestureDrag
 
 	// AsGestureDrag casts the class to the GestureDrag interface.
 	AsGestureDrag() GestureDrag

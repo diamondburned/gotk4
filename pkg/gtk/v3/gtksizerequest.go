@@ -62,20 +62,20 @@ func (r *RequestedSize) Native() unsafe.Pointer {
 // Data: client pointer
 func (r *RequestedSize) Data() interface{} {
 	var v interface{} // out
-	v = box.Get(uintptr(r.data))
+	v = box.Get(uintptr(r.native.data))
 	return v
 }
 
 // MinimumSize: the minimum size needed for allocation in a given orientation
 func (r *RequestedSize) MinimumSize() int {
 	var v int // out
-	v = int(r.minimum_size)
+	v = int(r.native.minimum_size)
 	return v
 }
 
 // NaturalSize: the natural size for allocation in a given orientation
 func (r *RequestedSize) NaturalSize() int {
 	var v int // out
-	v = int(r.natural_size)
+	v = int(r.native.natural_size)
 	return v
 }

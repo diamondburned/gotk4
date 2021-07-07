@@ -87,7 +87,7 @@ func init() {
 // gtk_paned_set_end_child_shrink (GTK_PANED (hpaned), FALSE);
 // gtk_widget_set_size_request (frame2, 50, -1); “`
 type Paned interface {
-	gextras.Objector
+	Widget
 
 	// AsWidget casts the class to the Widget interface.
 	AsWidget() Widget

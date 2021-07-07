@@ -129,35 +129,35 @@ func (s *StockItem) Native() unsafe.Pointer {
 // StockID: identifier.
 func (s *StockItem) StockID() string {
 	var v string // out
-	v = C.GoString(s.stock_id)
+	v = C.GoString(s.native.stock_id)
 	return v
 }
 
 // Label: user visible label.
 func (s *StockItem) Label() string {
 	var v string // out
-	v = C.GoString(s.label)
+	v = C.GoString(s.native.label)
 	return v
 }
 
 // Modifier type for keyboard accelerator
 func (s *StockItem) Modifier() gdk.ModifierType {
 	var v gdk.ModifierType // out
-	v = gdk.ModifierType(s.modifier)
+	v = gdk.ModifierType(s.native.modifier)
 	return v
 }
 
 // Keyval: keyboard accelerator
 func (s *StockItem) Keyval() uint {
 	var v uint // out
-	v = uint(s.keyval)
+	v = uint(s.native.keyval)
 	return v
 }
 
 // TranslationDomain: translation domain of the menu or toolbar item
 func (s *StockItem) TranslationDomain() string {
 	var v string // out
-	v = C.GoString(s.translation_domain)
+	v = C.GoString(s.native.translation_domain)
 	return v
 }
 

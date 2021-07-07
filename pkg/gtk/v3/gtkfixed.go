@@ -73,7 +73,7 @@ func init() {
 // See also Layout, which shares the ability to perform fixed positioning of
 // child widgets and additionally adds custom drawing and scrollability.
 type Fixed interface {
-	gextras.Objector
+	Container
 
 	// AsContainer casts the class to the Container interface.
 	AsContainer() Container
@@ -3970,18 +3970,18 @@ func (f *FixedChild) Native() unsafe.Pointer {
 
 func (f *FixedChild) Widget() Widget {
 	var v Widget // out
-	v = gextras.CastObject(externglib.Take(unsafe.Pointer(f.widget))).(Widget)
+	v = gextras.CastObject(externglib.Take(unsafe.Pointer(f.native.widget))).(Widget)
 	return v
 }
 
 func (f *FixedChild) X() int {
 	var v int // out
-	v = int(f.x)
+	v = int(f.native.x)
 	return v
 }
 
 func (f *FixedChild) Y() int {
 	var v int // out
-	v = int(f.y)
+	v = int(f.native.y)
 	return v
 }

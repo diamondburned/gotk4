@@ -28,7 +28,7 @@ func init() {
 }
 
 type IMMulticontext interface {
-	gextras.Objector
+	IMContext
 
 	// AsIMContext casts the class to the IMContext interface.
 	AsIMContext() IMContext

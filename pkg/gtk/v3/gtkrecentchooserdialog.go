@@ -77,7 +77,7 @@ func init() {
 //
 // Recently used files are supported since GTK+ 2.10.
 type RecentChooserDialog interface {
-	gextras.Objector
+	Dialog
 
 	// AsDialog casts the class to the Dialog interface.
 	AsDialog() Dialog

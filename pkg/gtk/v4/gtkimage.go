@@ -97,7 +97,7 @@ func marshalImageType(p uintptr) (interface{}, error) {
 //
 // `GtkImage` uses the `GTK_ACCESSIBLE_ROLE_IMG` role.
 type Image interface {
-	gextras.Objector
+	Widget
 
 	// AsWidget casts the class to the Widget interface.
 	AsWidget() Widget

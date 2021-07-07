@@ -99,7 +99,7 @@ type PopoverOverrider interface {
 // border-radius, only one border width (border-bottom-width is used) and no
 // box-shadow.
 type Popover interface {
-	gextras.Objector
+	Widget
 
 	// AsWidget casts the class to the Widget interface.
 	AsWidget() Widget

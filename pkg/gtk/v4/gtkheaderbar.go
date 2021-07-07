@@ -84,7 +84,7 @@ func init() {
 //
 // `GtkHeaderBar` uses the GTK_ACCESSIBLE_ROLE_GROUP role.
 type HeaderBar interface {
-	gextras.Objector
+	Widget
 
 	// AsWidget casts the class to the Widget interface.
 	AsWidget() Widget

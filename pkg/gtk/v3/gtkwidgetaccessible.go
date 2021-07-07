@@ -27,7 +27,7 @@ func init() {
 }
 
 type WidgetAccessible interface {
-	gextras.Objector
+	Accessible
 
 	// AsAccessible casts the class to the Accessible interface.
 	AsAccessible() Accessible

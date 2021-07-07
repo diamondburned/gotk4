@@ -84,7 +84,7 @@ func marshalPadActionType(p uintptr) (interface{}, error) {
 // type G_VARIANT_TYPE_DOUBLE bearing the value of the given axis, it is
 // required that those are made stateful and accepting this Type.
 type PadController interface {
-	gextras.Objector
+	EventController
 
 	// AsEventController casts the class to the EventController interface.
 	AsEventController() EventController
@@ -247,7 +247,7 @@ func (p *PadActionEntry) Native() unsafe.Pointer {
 // Type: the type of pad feature that will trigger this action entry.
 func (p *PadActionEntry) Type() PadActionType {
 	var v PadActionType // out
-	v = PadActionType(p._type)
+	v = PadActionType(p.native._type)
 	return v
 }
 
@@ -255,14 +255,14 @@ func (p *PadActionEntry) Type() PadActionType {
 // entry.
 func (p *PadActionEntry) Index() int {
 	var v int // out
-	v = int(p.index)
+	v = int(p.native.index)
 	return v
 }
 
 // Mode: the mode that will trigger this action entry, or -1 for all modes.
 func (p *PadActionEntry) Mode() int {
 	var v int // out
-	v = int(p.mode)
+	v = int(p.native.mode)
 	return v
 }
 
@@ -270,13 +270,13 @@ func (p *PadActionEntry) Mode() int {
 // deemed user-visible.
 func (p *PadActionEntry) Label() string {
 	var v string // out
-	v = C.GoString(p.label)
+	v = C.GoString(p.native.label)
 	return v
 }
 
 // ActionName: action name that will be activated in the Group.
 func (p *PadActionEntry) ActionName() string {
 	var v string // out
-	v = C.GoString(p.action_name)
+	v = C.GoString(p.native.action_name)
 	return v
 }

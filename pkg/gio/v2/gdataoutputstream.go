@@ -40,7 +40,7 @@ func init() {
 // DataOutputStream: data output stream implements Stream and includes functions
 // for writing data directly to an output stream.
 type DataOutputStream interface {
-	gextras.Objector
+	FilterOutputStream
 
 	// AsFilterOutputStream casts the class to the FilterOutputStream interface.
 	AsFilterOutputStream() FilterOutputStream

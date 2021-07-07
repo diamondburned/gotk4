@@ -137,7 +137,7 @@ type ScaleOverrider interface {
 //
 // `GtkScale` uses the GTK_ACCESSIBLE_ROLE_SLIDER role.
 type Scale interface {
-	gextras.Objector
+	Range
 
 	// AsRange casts the class to the Range interface.
 	AsRange() Range

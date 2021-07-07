@@ -64,7 +64,7 @@ type LinkButtonOverrider interface {
 // GtkLinkButton has a single CSS node with name button. To differentiate it
 // from a plain Button, it gets the .link style class.
 type LinkButton interface {
-	gextras.Objector
+	Button
 
 	// AsButton casts the class to the Button interface.
 	AsButton() Button

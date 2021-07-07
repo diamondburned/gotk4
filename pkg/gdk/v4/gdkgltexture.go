@@ -24,7 +24,7 @@ func init() {
 
 // GLTexture: gdkTexture representing a GL texture object.
 type GLTexture interface {
-	gextras.Objector
+	Texture
 
 	// AsTexture casts the class to the Texture interface.
 	AsTexture() Texture

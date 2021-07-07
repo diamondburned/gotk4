@@ -84,7 +84,7 @@ func marshalEventControllerScrollFlags(p uintptr) (interface{}, error) {
 //
 // This object was added in 3.24.
 type EventControllerScroll interface {
-	gextras.Objector
+	EventController
 
 	// AsEventController casts the class to the EventController interface.
 	AsEventController() EventController

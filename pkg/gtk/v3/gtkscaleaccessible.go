@@ -27,7 +27,7 @@ func init() {
 }
 
 type ScaleAccessible interface {
-	gextras.Objector
+	RangeAccessible
 
 	// AsRangeAccessible casts the class to the RangeAccessible interface.
 	AsRangeAccessible() RangeAccessible

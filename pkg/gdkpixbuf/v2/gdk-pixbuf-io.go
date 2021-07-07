@@ -183,13 +183,13 @@ func (p *PixbufModule) Native() unsafe.Pointer {
 // extension for images of this type, eg. "xpm", "jpeg" or "png".
 func (p *PixbufModule) ModuleName() string {
 	var v string // out
-	v = C.GoString(p.module_name)
+	v = C.GoString(p.native.module_name)
 	return v
 }
 
 // ModulePath: the path from which the module is loaded.
 func (p *PixbufModule) ModulePath() string {
 	var v string // out
-	v = C.GoString(p.module_path)
+	v = C.GoString(p.native.module_path)
 	return v
 }

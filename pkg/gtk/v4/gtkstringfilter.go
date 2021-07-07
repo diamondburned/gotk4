@@ -54,7 +54,7 @@ func marshalStringFilterMatchMode(p uintptr) (interface{}, error) {
 // It is also possible to make case-insensitive comparisons, with
 // [method@Gtk.StringFilter.set_ignore_case].
 type StringFilter interface {
-	gextras.Objector
+	Filter
 
 	// AsFilter casts the class to the Filter interface.
 	AsFilter() Filter

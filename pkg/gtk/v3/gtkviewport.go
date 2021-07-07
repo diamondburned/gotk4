@@ -54,7 +54,7 @@ func init() {
 //
 // GtkViewport has a single CSS node with name viewport.
 type Viewport interface {
-	gextras.Objector
+	Bin
 
 	// AsBin casts the class to the Bin interface.
 	AsBin() Bin

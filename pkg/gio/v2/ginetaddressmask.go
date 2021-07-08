@@ -40,51 +40,6 @@ func init() {
 type InetAddressMask interface {
 	gextras.Objector
 
-	// AsInitable casts the class to the Initable interface.
-	AsInitable() Initable
-
-	// Init initializes the object implementing the interface.
-	//
-	// This method is intended for language bindings. If writing in C,
-	// g_initable_new() should typically be used instead.
-	//
-	// The object must be initialized before any real use after initial
-	// construction, either with this function or g_async_initable_init_async().
-	//
-	// Implementations may also support cancellation. If @cancellable is not
-	// nil, then initialization can be cancelled by triggering the cancellable
-	// object from another thread. If the operation was cancelled, the error
-	// G_IO_ERROR_CANCELLED will be returned. If @cancellable is not nil and the
-	// object doesn't support cancellable initialization the error
-	// G_IO_ERROR_NOT_SUPPORTED will be returned.
-	//
-	// If the object is not initialized, or initialization returns with an
-	// error, then all operations on the object except g_object_ref() and
-	// g_object_unref() are considered to be invalid, and have undefined
-	// behaviour. See the [introduction][ginitable] for more details.
-	//
-	// Callers should not assume that a class which implements #GInitable can be
-	// initialized multiple times, unless the class explicitly documents itself
-	// as supporting this. Generally, a class’ implementation of init() can
-	// assume (and assert) that it will only be called once. Previously, this
-	// documentation recommended all #GInitable implementations should be
-	// idempotent; that recommendation was relaxed in GLib 2.54.
-	//
-	// If a class explicitly supports being initialized multiple times, it is
-	// recommended that the method is idempotent: multiple calls with the same
-	// arguments should return the same results. Only the first call initializes
-	// the object; further calls return the result of the first call.
-	//
-	// One reason why a class might need to support idempotent initialization is
-	// if it is designed to be used via the singleton pattern, with a
-	// Class.constructor that sometimes returns an existing instance. In this
-	// pattern, a caller would expect to be able to call g_initable_init() on
-	// the result of g_object_new(), regardless of whether it is in fact a new
-	// instance.
-	//
-	// This method is inherited from Initable
-	Init(cancellable Cancellable) error
-
 	// Equal tests if @mask and @mask2 are the same mask.
 	Equal(mask2 InetAddressMask) bool
 	// Address gets @mask's base address
@@ -99,23 +54,27 @@ type InetAddressMask interface {
 	String() string
 }
 
-// inetAddressMask implements the InetAddressMask interface.
-type inetAddressMask struct {
+// InetAddressMaskClass implements the InetAddressMask interface.
+type InetAddressMaskClass struct {
 	*externglib.Object
+	InitableInterface
 }
 
-var _ InetAddressMask = (*inetAddressMask)(nil)
+var _ InetAddressMask = (*InetAddressMaskClass)(nil)
 
-// WrapInetAddressMask wraps a GObject to a type that implements
-// interface InetAddressMask. It is primarily used internally.
-func WrapInetAddressMask(obj *externglib.Object) InetAddressMask {
-	return inetAddressMask{obj}
+func wrapInetAddressMask(obj *externglib.Object) InetAddressMask {
+	return &InetAddressMaskClass{
+		Object: obj,
+		InitableInterface: InitableInterface{
+			Object: obj,
+		},
+	}
 }
 
 func marshalInetAddressMask(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapInetAddressMask(obj), nil
+	return wrapInetAddressMask(obj), nil
 }
 
 // NewInetAddressMask creates a new AddressMask representing all addresses whose
@@ -163,15 +122,8 @@ func NewInetAddressMaskFromString(maskString string) (InetAddressMask, error) {
 	return _inetAddressMask, _goerr
 }
 
-func (i inetAddressMask) AsInitable() Initable {
-	return WrapInitable(gextras.InternObject(i))
-}
-
-func (i inetAddressMask) Init(cancellable Cancellable) error {
-	return WrapInitable(gextras.InternObject(i)).Init(cancellable)
-}
-
-func (m inetAddressMask) Equal(mask2 InetAddressMask) bool {
+// Equal tests if @mask and @mask2 are the same mask.
+func (m *InetAddressMaskClass) Equal(mask2 InetAddressMask) bool {
 	var _arg0 *C.GInetAddressMask // out
 	var _arg1 *C.GInetAddressMask // out
 	var _cret C.gboolean          // in
@@ -190,7 +142,8 @@ func (m inetAddressMask) Equal(mask2 InetAddressMask) bool {
 	return _ok
 }
 
-func (m inetAddressMask) Address() InetAddress {
+// Address gets @mask's base address
+func (m *InetAddressMaskClass) Address() InetAddress {
 	var _arg0 *C.GInetAddressMask // out
 	var _cret *C.GInetAddress     // in
 
@@ -205,7 +158,8 @@ func (m inetAddressMask) Address() InetAddress {
 	return _inetAddress
 }
 
-func (m inetAddressMask) Family() SocketFamily {
+// Family gets the Family of @mask's address
+func (m *InetAddressMaskClass) Family() SocketFamily {
 	var _arg0 *C.GInetAddressMask // out
 	var _cret C.GSocketFamily     // in
 
@@ -220,7 +174,8 @@ func (m inetAddressMask) Family() SocketFamily {
 	return _socketFamily
 }
 
-func (m inetAddressMask) Length() uint {
+// Length gets @mask's length
+func (m *InetAddressMaskClass) Length() uint {
 	var _arg0 *C.GInetAddressMask // out
 	var _cret C.guint             // in
 
@@ -235,7 +190,8 @@ func (m inetAddressMask) Length() uint {
 	return _guint
 }
 
-func (m inetAddressMask) Matches(address InetAddress) bool {
+// Matches tests if @address falls within the range described by @mask.
+func (m *InetAddressMaskClass) Matches(address InetAddress) bool {
 	var _arg0 *C.GInetAddressMask // out
 	var _arg1 *C.GInetAddress     // out
 	var _cret C.gboolean          // in
@@ -254,7 +210,8 @@ func (m inetAddressMask) Matches(address InetAddress) bool {
 	return _ok
 }
 
-func (m inetAddressMask) String() string {
+// String converts @mask back to its corresponding string form.
+func (m *InetAddressMaskClass) String() string {
 	var _arg0 *C.GInetAddressMask // out
 	var _cret *C.gchar            // in
 

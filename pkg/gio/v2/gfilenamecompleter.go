@@ -32,7 +32,7 @@ func init() {
 	})
 }
 
-// FilenameCompleterOverrider contains methods that are overridable .
+// FilenameCompleterOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
@@ -55,23 +55,23 @@ type FilenameCompleter interface {
 	SetDirsOnly(dirsOnly bool)
 }
 
-// filenameCompleter implements the FilenameCompleter interface.
-type filenameCompleter struct {
+// FilenameCompleterClass implements the FilenameCompleter interface.
+type FilenameCompleterClass struct {
 	*externglib.Object
 }
 
-var _ FilenameCompleter = (*filenameCompleter)(nil)
+var _ FilenameCompleter = (*FilenameCompleterClass)(nil)
 
-// WrapFilenameCompleter wraps a GObject to a type that implements
-// interface FilenameCompleter. It is primarily used internally.
-func WrapFilenameCompleter(obj *externglib.Object) FilenameCompleter {
-	return filenameCompleter{obj}
+func wrapFilenameCompleter(obj *externglib.Object) FilenameCompleter {
+	return &FilenameCompleterClass{
+		Object: obj,
+	}
 }
 
 func marshalFilenameCompleter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapFilenameCompleter(obj), nil
+	return wrapFilenameCompleter(obj), nil
 }
 
 // NewFilenameCompleter creates a new filename completer.
@@ -87,7 +87,8 @@ func NewFilenameCompleter() FilenameCompleter {
 	return _filenameCompleter
 }
 
-func (c filenameCompleter) CompletionSuffix(initialText string) string {
+// CompletionSuffix obtains a completion for @initial_text from @completer.
+func (c *FilenameCompleterClass) CompletionSuffix(initialText string) string {
 	var _arg0 *C.GFilenameCompleter // out
 	var _arg1 *C.char               // out
 	var _cret *C.char               // in
@@ -106,7 +107,8 @@ func (c filenameCompleter) CompletionSuffix(initialText string) string {
 	return _utf8
 }
 
-func (c filenameCompleter) Completions(initialText string) []string {
+// Completions gets an array of completion strings for a given initial text.
+func (c *FilenameCompleterClass) Completions(initialText string) []string {
 	var _arg0 *C.GFilenameCompleter // out
 	var _arg1 *C.char               // out
 	var _cret **C.char
@@ -137,7 +139,9 @@ func (c filenameCompleter) Completions(initialText string) []string {
 	return _utf8s
 }
 
-func (c filenameCompleter) SetDirsOnly(dirsOnly bool) {
+// SetDirsOnly: if @dirs_only is true, @completer will only complete directory
+// names, and not file names.
+func (c *FilenameCompleterClass) SetDirsOnly(dirsOnly bool) {
 	var _arg0 *C.GFilenameCompleter // out
 	var _arg1 C.gboolean            // out
 

@@ -60,18 +60,6 @@ func SelectionRemoveAll(widget Widget) {
 	C.gtk_selection_remove_all(_arg1)
 }
 
-// TargetTableFree: this function frees a target table as returned by
-// gtk_target_table_new_from_list()
-func TargetTableFree(targets []TargetEntry) {
-	var _arg1 *C.GtkTargetEntry
-	var _arg2 C.gint
-
-	_arg2 = C.gint(len(targets))
-	_arg1 = (*C.GtkTargetEntry)(unsafe.Pointer(&targets[0]))
-
-	C.gtk_target_table_free(_arg1, _arg2)
-}
-
 // TargetEntry represents a single type of data than can be supplied for by a
 // widget for a selection or for supplied or received during drag-and-drop.
 type TargetEntry struct {
@@ -187,28 +175,6 @@ func marshalTargetList(p uintptr) (interface{}, error) {
 	return (*TargetList)(unsafe.Pointer(b)), nil
 }
 
-// NewTargetList constructs a struct TargetList.
-func NewTargetList(targets []TargetEntry) *TargetList {
-	var _arg1 *C.GtkTargetEntry
-	var _arg2 C.guint
-	var _cret *C.GtkTargetList // in
-
-	_arg2 = C.guint(len(targets))
-	_arg1 = (*C.GtkTargetEntry)(unsafe.Pointer(&targets[0]))
-
-	_cret = C.gtk_target_list_new(_arg1, _arg2)
-
-	var _targetList *TargetList // out
-
-	_targetList = (*TargetList)(unsafe.Pointer(_cret))
-	C.gtk_target_list_ref(_cret)
-	runtime.SetFinalizer(_targetList, func(v *TargetList) {
-		C.gtk_target_list_unref((*C.GtkTargetList)(unsafe.Pointer(v)))
-	})
-
-	return _targetList
-}
-
 // Native returns the underlying C source pointer.
 func (t *TargetList) Native() unsafe.Pointer {
 	return unsafe.Pointer(&t.native)
@@ -248,19 +214,6 @@ func (l *TargetList) AddRichTextTargets(info uint, deserializable bool, buffer T
 	_arg3 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
 
 	C.gtk_target_list_add_rich_text_targets(_arg0, _arg1, _arg2, _arg3)
-}
-
-// AddTable prepends a table of TargetEntry to a target list.
-func (l *TargetList) AddTable(targets []TargetEntry) {
-	var _arg0 *C.GtkTargetList // out
-	var _arg1 *C.GtkTargetEntry
-	var _arg2 C.guint
-
-	_arg0 = (*C.GtkTargetList)(unsafe.Pointer(l))
-	_arg2 = C.guint(len(targets))
-	_arg1 = (*C.GtkTargetEntry)(unsafe.Pointer(&targets[0]))
-
-	C.gtk_target_list_add_table(_arg0, _arg1, _arg2)
 }
 
 // AddTextTargets appends the text targets supported by SelectionData to the

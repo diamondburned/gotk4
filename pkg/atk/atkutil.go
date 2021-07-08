@@ -32,12 +32,12 @@ type CoordType int
 
 const (
 	// Screen specifies xy coordinates relative to the screen
-	XYScreen CoordType = iota
+	CoordTypeScreen CoordType = iota
 	// Window specifies xy coordinates relative to the widget's top-level window
-	XYWindow
+	CoordTypeWindow
 	// Parent specifies xy coordinates relative to the widget's immediate
 	// parent. Since: 2.30
-	XYParent
+	CoordTypeParent
 )
 
 func marshalCoordType(p uintptr) (interface{}, error) {
@@ -49,11 +49,11 @@ type KeyEventType int
 
 const (
 	// Press specifies a key press event
-	KeyEventPress KeyEventType = iota
+	KeyEventTypePress KeyEventType = iota
 	// Release specifies a key release event
-	KeyEventRelease
+	KeyEventTypeRelease
 	// LastDefined: not a valid value; specifies end of enumeration
-	KeyEventLastDefined
+	KeyEventTypeLastDefined
 )
 
 func marshalKeyEventType(p uintptr) (interface{}, error) {
@@ -213,26 +213,30 @@ func RemoveKeyEventListener(listenerId uint) {
 // version.
 type Util interface {
 	gextras.Objector
+
+	privateUtilClass()
 }
 
-// util implements the Util interface.
-type util struct {
+// UtilClass implements the Util interface.
+type UtilClass struct {
 	*externglib.Object
 }
 
-var _ Util = (*util)(nil)
+var _ Util = (*UtilClass)(nil)
 
-// WrapUtil wraps a GObject to a type that implements
-// interface Util. It is primarily used internally.
-func WrapUtil(obj *externglib.Object) Util {
-	return util{obj}
+func wrapUtil(obj *externglib.Object) Util {
+	return &UtilClass{
+		Object: obj,
+	}
 }
 
 func marshalUtil(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapUtil(obj), nil
+	return wrapUtil(obj), nil
 }
+
+func (*UtilClass) privateUtilClass() {}
 
 // KeyEventStruct encapsulates information about a key event.
 type KeyEventStruct struct {
@@ -290,7 +294,7 @@ func (k *KeyEventStruct) Length() int {
 // instance "A". "0", "semicolon", "aacute". Keypad keys have the prefix "KP".
 func (k *KeyEventStruct) String() string {
 	var v string // out
-	v = C.GoString(k.native._string)
+	v = C.GoString(k.native.string)
 	return v
 }
 

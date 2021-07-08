@@ -3,7 +3,6 @@
 package pangocairo
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/cairo"
@@ -336,119 +335,35 @@ func UpdateLayout(cr *cairo.Context, layout pango.Layout) {
 type Font interface {
 	gextras.Objector
 
-	// AsFont casts the class to the pango.Font interface.
-	AsFont() pango.Font
-
-	// Describe returns a description of the font, with font size set in points.
-	//
-	// Use [method@Pango.Font.describe_with_absolute_size] if you want the font
-	// size in device units.
-	//
-	// This method is inherited from pango.Font
-	Describe() *pango.FontDescription
-	// DescribeWithAbsoluteSize returns a description of the font, with absolute
-	// font size set in device units.
-	//
-	// Use [method@Pango.Font.describe] if you want the font size in points.
-	//
-	// This method is inherited from pango.Font
-	DescribeWithAbsoluteSize() *pango.FontDescription
-	// GetCoverage computes the coverage map for a given font and language tag.
-	//
-	// This method is inherited from pango.Font
-	GetCoverage(language *pango.Language) pango.Coverage
-	// GetFace gets the `PangoFontFace` to which @font belongs.
-	//
-	// This method is inherited from pango.Font
-	GetFace() pango.FontFace
-	// GetFontMap gets the font map for which the font was created.
-	//
-	// Note that the font maintains a *weak* reference to the font map, so if
-	// all references to font map are dropped, the font map will be finalized
-	// even if there are fonts created with the font map that are still alive.
-	// In that case this function will return nil.
-	//
-	// It is the responsibility of the user to ensure that the font map is kept
-	// alive. In most uses this is not an issue as a Context holds a reference
-	// to the font map.
-	//
-	// This method is inherited from pango.Font
-	GetFontMap() pango.FontMap
-	// GetMetrics gets overall metric information for a font.
-	//
-	// Since the metrics may be substantially different for different scripts, a
-	// language tag can be provided to indicate that the metrics should be
-	// retrieved that correspond to the script(s) used by that language.
-	//
-	// If @font is nil, this function gracefully sets some sane values in the
-	// output variables and returns.
-	//
-	// This method is inherited from pango.Font
-	GetMetrics(language *pango.Language) *pango.FontMetrics
-	// HasChar returns whether the font provides a glyph for this character.
-	//
-	// Returns true if @font can render @wc
-	//
-	// This method is inherited from pango.Font
-	HasChar(wc uint32) bool
-
 	// ScaledFont gets the `cairo_scaled_font_t` used by @font. The scaled font
 	// can be referenced and kept using cairo_scaled_font_reference().
 	ScaledFont() *cairo.ScaledFont
 }
 
-// font implements the Font interface.
-type font struct {
-	*externglib.Object
+// FontInterface implements the Font interface.
+type FontInterface struct {
+	pango.FontClass
 }
 
-var _ Font = (*font)(nil)
+var _ Font = (*FontInterface)(nil)
 
-// WrapFont wraps a GObject to a type that implements
-// interface Font. It is primarily used internally.
-func WrapFont(obj *externglib.Object) Font {
-	return font{obj}
+func wrapFont(obj *externglib.Object) Font {
+	return &FontInterface{
+		FontClass: pango.FontClass{
+			Object: obj,
+		},
+	}
 }
 
 func marshalFont(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapFont(obj), nil
+	return wrapFont(obj), nil
 }
 
-func (f font) AsFont() pango.Font {
-	return pango.WrapFont(gextras.InternObject(f))
-}
-
-func (f font) Describe() *pango.FontDescription {
-	return pango.WrapFont(gextras.InternObject(f)).Describe()
-}
-
-func (f font) DescribeWithAbsoluteSize() *pango.FontDescription {
-	return pango.WrapFont(gextras.InternObject(f)).DescribeWithAbsoluteSize()
-}
-
-func (f font) GetCoverage(language *pango.Language) pango.Coverage {
-	return pango.WrapFont(gextras.InternObject(f)).GetCoverage(language)
-}
-
-func (f font) GetFace() pango.FontFace {
-	return pango.WrapFont(gextras.InternObject(f)).GetFace()
-}
-
-func (f font) GetFontMap() pango.FontMap {
-	return pango.WrapFont(gextras.InternObject(f)).GetFontMap()
-}
-
-func (f font) GetMetrics(language *pango.Language) *pango.FontMetrics {
-	return pango.WrapFont(gextras.InternObject(f)).GetMetrics(language)
-}
-
-func (f font) HasChar(wc uint32) bool {
-	return pango.WrapFont(gextras.InternObject(f)).HasChar(wc)
-}
-
-func (f font) ScaledFont() *cairo.ScaledFont {
+// ScaledFont gets the `cairo_scaled_font_t` used by @font. The scaled font can
+// be referenced and kept using cairo_scaled_font_reference().
+func (f *FontInterface) ScaledFont() *cairo.ScaledFont {
 	var _arg0 *C.PangoCairoFont      // out
 	var _cret *C.cairo_scaled_font_t // in
 
@@ -470,64 +385,6 @@ func (f font) ScaledFont() *cairo.ScaledFont {
 // Cairo was compiled to use.
 type FontMap interface {
 	gextras.Objector
-
-	// AsFontMap casts the class to the pango.FontMap interface.
-	AsFontMap() pango.FontMap
-
-	// Changed forces a change in the context, which will cause any
-	// `PangoContext` using this fontmap to change.
-	//
-	// This function is only useful when implementing a new backend for Pango,
-	// something applications won't do. Backends should call this function if
-	// they have attached extra data to the context and such data is changed.
-	//
-	// This method is inherited from pango.FontMap
-	Changed()
-	// CreateContext creates a `PangoContext` connected to @fontmap.
-	//
-	// This is equivalent to [ctor@Pango.Context.new] followed by
-	// [method@Pango.Context.set_font_map].
-	//
-	// If you are using Pango as part of a higher-level system, that system may
-	// have it's own way of create a `PangoContext`. For instance, the GTK
-	// toolkit has, among others, gtk_widget_get_pango_context(). Use those
-	// instead.
-	//
-	// This method is inherited from pango.FontMap
-	CreateContext() pango.Context
-	// GetFamily gets a font family by name.
-	//
-	// This method is inherited from pango.FontMap
-	GetFamily(name string) pango.FontFamily
-	// GetSerial returns the current serial number of @fontmap.
-	//
-	// The serial number is initialized to an small number larger than zero when
-	// a new fontmap is created and is increased whenever the fontmap is
-	// changed. It may wrap, but will never have the value 0. Since it can wrap,
-	// never compare it with "less than", always use "not equals".
-	//
-	// The fontmap can only be changed using backend-specific API, like changing
-	// fontmap resolution.
-	//
-	// This can be used to automatically detect changes to a `PangoFontMap`,
-	// like in `PangoContext`.
-	//
-	// This method is inherited from pango.FontMap
-	GetSerial() uint
-	// ListFamilies: list all families for a fontmap.
-	//
-	// This method is inherited from pango.FontMap
-	ListFamilies() []pango.FontFamily
-	// LoadFont: load the font in the fontmap that is the closest match for
-	// @desc.
-	//
-	// This method is inherited from pango.FontMap
-	LoadFont(context pango.Context, desc *pango.FontDescription) pango.Font
-	// LoadFontset: load a set of fonts in the fontmap that can be used to
-	// render a font matching @desc.
-	//
-	// This method is inherited from pango.FontMap
-	LoadFontset(context pango.Context, desc *pango.FontDescription, language *pango.Language) pango.Fontset
 
 	// FontType gets the type of Cairo font backend that @fontmap uses.
 	FontType() cairo.FontType
@@ -558,58 +415,29 @@ type FontMap interface {
 	SetResolution(dpi float64)
 }
 
-// fontMap implements the FontMap interface.
-type fontMap struct {
-	*externglib.Object
+// FontMapInterface implements the FontMap interface.
+type FontMapInterface struct {
+	pango.FontMapClass
 }
 
-var _ FontMap = (*fontMap)(nil)
+var _ FontMap = (*FontMapInterface)(nil)
 
-// WrapFontMap wraps a GObject to a type that implements
-// interface FontMap. It is primarily used internally.
-func WrapFontMap(obj *externglib.Object) FontMap {
-	return fontMap{obj}
+func wrapFontMap(obj *externglib.Object) FontMap {
+	return &FontMapInterface{
+		FontMapClass: pango.FontMapClass{
+			Object: obj,
+		},
+	}
 }
 
 func marshalFontMap(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapFontMap(obj), nil
+	return wrapFontMap(obj), nil
 }
 
-func (f fontMap) AsFontMap() pango.FontMap {
-	return pango.WrapFontMap(gextras.InternObject(f))
-}
-
-func (f fontMap) Changed() {
-	pango.WrapFontMap(gextras.InternObject(f)).Changed()
-}
-
-func (f fontMap) CreateContext() pango.Context {
-	return pango.WrapFontMap(gextras.InternObject(f)).CreateContext()
-}
-
-func (f fontMap) GetFamily(name string) pango.FontFamily {
-	return pango.WrapFontMap(gextras.InternObject(f)).GetFamily(name)
-}
-
-func (f fontMap) GetSerial() uint {
-	return pango.WrapFontMap(gextras.InternObject(f)).GetSerial()
-}
-
-func (f fontMap) ListFamilies() []pango.FontFamily {
-	return pango.WrapFontMap(gextras.InternObject(f)).ListFamilies()
-}
-
-func (f fontMap) LoadFont(context pango.Context, desc *pango.FontDescription) pango.Font {
-	return pango.WrapFontMap(gextras.InternObject(f)).LoadFont(context, desc)
-}
-
-func (f fontMap) LoadFontset(context pango.Context, desc *pango.FontDescription, language *pango.Language) pango.Fontset {
-	return pango.WrapFontMap(gextras.InternObject(f)).LoadFontset(context, desc, language)
-}
-
-func (f fontMap) FontType() cairo.FontType {
+// FontType gets the type of Cairo font backend that @fontmap uses.
+func (f *FontMapInterface) FontType() cairo.FontType {
 	var _arg0 *C.PangoCairoFontMap // out
 	var _cret C.cairo_font_type_t  // in
 
@@ -624,7 +452,10 @@ func (f fontMap) FontType() cairo.FontType {
 	return _fontType
 }
 
-func (f fontMap) Resolution() float64 {
+// Resolution gets the resolution for the fontmap.
+//
+// See [method@PangoCairo.FontMap.set_resolution].
+func (f *FontMapInterface) Resolution() float64 {
 	var _arg0 *C.PangoCairoFontMap // out
 	var _cret C.double             // in
 
@@ -639,7 +470,21 @@ func (f fontMap) Resolution() float64 {
 	return _gdouble
 }
 
-func (f fontMap) SetDefault() {
+// SetDefault sets a default `PangoCairoFontMap` to use with Cairo.
+//
+// This can be used to change the Cairo font backend that the default fontmap
+// uses for example. The old default font map is unreffed and the new font map
+// referenced.
+//
+// Note that since Pango 1.32.6, the default fontmap is per-thread. This
+// function only changes the default fontmap for the current thread. Default
+// fontmaps of existing threads are not changed. Default fontmaps of any new
+// threads will still be created using [type_func@PangoCairo.FontMap.new].
+//
+// A value of nil for @fontmap will cause the current default font map to be
+// released and a new default font map to be created on demand, using
+// [type_func@PangoCairo.FontMap.new].
+func (f *FontMapInterface) SetDefault() {
 	var _arg0 *C.PangoCairoFontMap // out
 
 	_arg0 = (*C.PangoCairoFontMap)(unsafe.Pointer(f.Native()))
@@ -647,7 +492,12 @@ func (f fontMap) SetDefault() {
 	C.pango_cairo_font_map_set_default(_arg0)
 }
 
-func (f fontMap) SetResolution(dpi float64) {
+// SetResolution sets the resolution for the fontmap.
+//
+// This is a scale factor between points specified in a `PangoFontDescription`
+// and Cairo units. The default value is 96, meaning that a 10 point font will
+// be 13 units high. (10 * 96. / 72. = 13.3).
+func (f *FontMapInterface) SetResolution(dpi float64) {
 	var _arg0 *C.PangoCairoFontMap // out
 	var _arg1 C.double             // out
 

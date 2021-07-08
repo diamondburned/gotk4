@@ -5,7 +5,6 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -33,7 +32,7 @@ func init() {
 	})
 }
 
-// MemoryMonitorOverrider contains methods that are overridable .
+// MemoryMonitorOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
@@ -86,75 +85,28 @@ type MemoryMonitorOverrider interface {
 type MemoryMonitor interface {
 	gextras.Objector
 
-	// AsInitable casts the class to the Initable interface.
-	AsInitable() Initable
-
-	// Init initializes the object implementing the interface.
-	//
-	// This method is intended for language bindings. If writing in C,
-	// g_initable_new() should typically be used instead.
-	//
-	// The object must be initialized before any real use after initial
-	// construction, either with this function or g_async_initable_init_async().
-	//
-	// Implementations may also support cancellation. If @cancellable is not
-	// nil, then initialization can be cancelled by triggering the cancellable
-	// object from another thread. If the operation was cancelled, the error
-	// G_IO_ERROR_CANCELLED will be returned. If @cancellable is not nil and the
-	// object doesn't support cancellable initialization the error
-	// G_IO_ERROR_NOT_SUPPORTED will be returned.
-	//
-	// If the object is not initialized, or initialization returns with an
-	// error, then all operations on the object except g_object_ref() and
-	// g_object_unref() are considered to be invalid, and have undefined
-	// behaviour. See the [introduction][ginitable] for more details.
-	//
-	// Callers should not assume that a class which implements #GInitable can be
-	// initialized multiple times, unless the class explicitly documents itself
-	// as supporting this. Generally, a class’ implementation of init() can
-	// assume (and assert) that it will only be called once. Previously, this
-	// documentation recommended all #GInitable implementations should be
-	// idempotent; that recommendation was relaxed in GLib 2.54.
-	//
-	// If a class explicitly supports being initialized multiple times, it is
-	// recommended that the method is idempotent: multiple calls with the same
-	// arguments should return the same results. Only the first call initializes
-	// the object; further calls return the result of the first call.
-	//
-	// One reason why a class might need to support idempotent initialization is
-	// if it is designed to be used via the singleton pattern, with a
-	// Class.constructor that sometimes returns an existing instance. In this
-	// pattern, a caller would expect to be able to call g_initable_init() on
-	// the result of g_object_new(), regardless of whether it is in fact a new
-	// instance.
-	//
-	// This method is inherited from Initable
-	Init(cancellable Cancellable) error
+	privateMemoryMonitorInterface()
 }
 
-// memoryMonitor implements the MemoryMonitor interface.
-type memoryMonitor struct {
-	*externglib.Object
+// MemoryMonitorInterface implements the MemoryMonitor interface.
+type MemoryMonitorInterface struct {
+	InitableInterface
 }
 
-var _ MemoryMonitor = (*memoryMonitor)(nil)
+var _ MemoryMonitor = (*MemoryMonitorInterface)(nil)
 
-// WrapMemoryMonitor wraps a GObject to a type that implements
-// interface MemoryMonitor. It is primarily used internally.
-func WrapMemoryMonitor(obj *externglib.Object) MemoryMonitor {
-	return memoryMonitor{obj}
+func wrapMemoryMonitor(obj *externglib.Object) MemoryMonitor {
+	return &MemoryMonitorInterface{
+		InitableInterface: InitableInterface{
+			Object: obj,
+		},
+	}
 }
 
 func marshalMemoryMonitor(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapMemoryMonitor(obj), nil
+	return wrapMemoryMonitor(obj), nil
 }
 
-func (m memoryMonitor) AsInitable() Initable {
-	return WrapInitable(gextras.InternObject(m))
-}
-
-func (i memoryMonitor) Init(cancellable Cancellable) error {
-	return WrapInitable(gextras.InternObject(i)).Init(cancellable)
-}
+func (*MemoryMonitorInterface) privateMemoryMonitorInterface() {}

@@ -5,8 +5,6 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
-	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -48,79 +46,7 @@ func init() {
 // interfaces, thus you have to use the `gio-unix-2.0.pc` pkg-config file when
 // using it.
 type UnixSocketAddress interface {
-	SocketAddress
-
-	// AsSocketAddress casts the class to the SocketAddress interface.
-	AsSocketAddress() SocketAddress
-	// AsSocketConnectable casts the class to the SocketConnectable interface.
-	AsSocketConnectable() SocketConnectable
-
-	// GetFamily gets the socket family type of @address.
-	//
-	// This method is inherited from SocketAddress
-	GetFamily() SocketFamily
-	// GetNativeSize gets the size of @address's native struct sockaddr. You can
-	// use this to allocate memory to pass to g_socket_address_to_native().
-	//
-	// This method is inherited from SocketAddress
-	GetNativeSize() int
-	// ToNative converts a Address to a native struct sockaddr, which can be
-	// passed to low-level functions like connect() or bind().
-	//
-	// If not enough space is available, a G_IO_ERROR_NO_SPACE error is
-	// returned. If the address type is not known on the system then a
-	// G_IO_ERROR_NOT_SUPPORTED error is returned.
-	//
-	// This method is inherited from SocketAddress
-	ToNative(dest interface{}, destlen uint) error
-	// Enumerate creates a AddressEnumerator for @connectable.
-	//
-	// This method is inherited from SocketConnectable
-	Enumerate() SocketAddressEnumerator
-	// ProxyEnumerate creates a AddressEnumerator for @connectable that will
-	// return a Address for each of its addresses that you must connect to via a
-	// proxy.
-	//
-	// If @connectable does not implement
-	// g_socket_connectable_proxy_enumerate(), this will fall back to calling
-	// g_socket_connectable_enumerate().
-	//
-	// This method is inherited from SocketConnectable
-	ProxyEnumerate() SocketAddressEnumerator
-	// ToString: format a Connectable as a string. This is a human-readable
-	// format for use in debugging output, and is not a stable serialization
-	// format. It is not suitable for use in user interfaces as it exposes too
-	// much information for a user.
-	//
-	// If the Connectable implementation does not support string formatting, the
-	// implementation’s type name will be returned as a fallback.
-	//
-	// This method is inherited from SocketConnectable
-	ToString() string
-	// Enumerate creates a AddressEnumerator for @connectable.
-	//
-	// This method is inherited from SocketConnectable
-	Enumerate() SocketAddressEnumerator
-	// ProxyEnumerate creates a AddressEnumerator for @connectable that will
-	// return a Address for each of its addresses that you must connect to via a
-	// proxy.
-	//
-	// If @connectable does not implement
-	// g_socket_connectable_proxy_enumerate(), this will fall back to calling
-	// g_socket_connectable_enumerate().
-	//
-	// This method is inherited from SocketConnectable
-	ProxyEnumerate() SocketAddressEnumerator
-	// ToString: format a Connectable as a string. This is a human-readable
-	// format for use in debugging output, and is not a stable serialization
-	// format. It is not suitable for use in user interfaces as it exposes too
-	// much information for a user.
-	//
-	// If the Connectable implementation does not support string formatting, the
-	// implementation’s type name will be returned as a fallback.
-	//
-	// This method is inherited from SocketConnectable
-	ToString() string
+	gextras.Objector
 
 	// AddressType gets @address's type.
 	AddressType() UnixSocketAddressType
@@ -141,23 +67,34 @@ type UnixSocketAddress interface {
 	PathLen() uint
 }
 
-// unixSocketAddress implements the UnixSocketAddress interface.
-type unixSocketAddress struct {
+// UnixSocketAddressClass implements the UnixSocketAddress interface.
+type UnixSocketAddressClass struct {
 	*externglib.Object
+	SocketAddressClass
+	SocketConnectableInterface
 }
 
-var _ UnixSocketAddress = (*unixSocketAddress)(nil)
+var _ UnixSocketAddress = (*UnixSocketAddressClass)(nil)
 
-// WrapUnixSocketAddress wraps a GObject to a type that implements
-// interface UnixSocketAddress. It is primarily used internally.
-func WrapUnixSocketAddress(obj *externglib.Object) UnixSocketAddress {
-	return unixSocketAddress{obj}
+func wrapUnixSocketAddress(obj *externglib.Object) UnixSocketAddress {
+	return &UnixSocketAddressClass{
+		Object: obj,
+		SocketAddressClass: SocketAddressClass{
+			Object: obj,
+			SocketConnectableInterface: SocketConnectableInterface{
+				Object: obj,
+			},
+		},
+		SocketConnectableInterface: SocketConnectableInterface{
+			Object: obj,
+		},
+	}
 }
 
 func marshalUnixSocketAddress(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapUnixSocketAddress(obj), nil
+	return wrapUnixSocketAddress(obj), nil
 }
 
 // NewUnixSocketAddress creates a new SocketAddress for @path.
@@ -251,51 +188,8 @@ func NewUnixSocketAddressWithType(path []byte, typ UnixSocketAddressType) UnixSo
 	return _unixSocketAddress
 }
 
-func (u unixSocketAddress) AsSocketAddress() SocketAddress {
-	return WrapSocketAddress(gextras.InternObject(u))
-}
-
-func (u unixSocketAddress) AsSocketConnectable() SocketConnectable {
-	return WrapSocketConnectable(gextras.InternObject(u))
-}
-
-func (a unixSocketAddress) GetFamily() SocketFamily {
-	return WrapSocketAddress(gextras.InternObject(a)).GetFamily()
-}
-
-func (a unixSocketAddress) GetNativeSize() int {
-	return WrapSocketAddress(gextras.InternObject(a)).GetNativeSize()
-}
-
-func (a unixSocketAddress) ToNative(dest interface{}, destlen uint) error {
-	return WrapSocketAddress(gextras.InternObject(a)).ToNative(dest, destlen)
-}
-
-func (c unixSocketAddress) Enumerate() SocketAddressEnumerator {
-	return WrapSocketConnectable(gextras.InternObject(c)).Enumerate()
-}
-
-func (c unixSocketAddress) ProxyEnumerate() SocketAddressEnumerator {
-	return WrapSocketConnectable(gextras.InternObject(c)).ProxyEnumerate()
-}
-
-func (c unixSocketAddress) ToString() string {
-	return WrapSocketConnectable(gextras.InternObject(c)).ToString()
-}
-
-func (c unixSocketAddress) Enumerate() SocketAddressEnumerator {
-	return WrapSocketConnectable(gextras.InternObject(c)).Enumerate()
-}
-
-func (c unixSocketAddress) ProxyEnumerate() SocketAddressEnumerator {
-	return WrapSocketConnectable(gextras.InternObject(c)).ProxyEnumerate()
-}
-
-func (c unixSocketAddress) ToString() string {
-	return WrapSocketConnectable(gextras.InternObject(c)).ToString()
-}
-
-func (a unixSocketAddress) AddressType() UnixSocketAddressType {
+// AddressType gets @address's type.
+func (a *UnixSocketAddressClass) AddressType() UnixSocketAddressType {
 	var _arg0 *C.GUnixSocketAddress    // out
 	var _cret C.GUnixSocketAddressType // in
 
@@ -310,7 +204,10 @@ func (a unixSocketAddress) AddressType() UnixSocketAddressType {
 	return _unixSocketAddressType
 }
 
-func (a unixSocketAddress) IsAbstract() bool {
+// IsAbstract tests if @address is abstract.
+//
+// Deprecated.
+func (a *UnixSocketAddressClass) IsAbstract() bool {
 	var _arg0 *C.GUnixSocketAddress // out
 	var _cret C.gboolean            // in
 
@@ -327,7 +224,12 @@ func (a unixSocketAddress) IsAbstract() bool {
 	return _ok
 }
 
-func (a unixSocketAddress) Path() string {
+// Path gets @address's path, or for abstract sockets the "name".
+//
+// Guaranteed to be zero-terminated, but an abstract socket may contain embedded
+// zeros, and thus you should use g_unix_socket_address_get_path_len() to get
+// the true length of this string.
+func (a *UnixSocketAddressClass) Path() string {
 	var _arg0 *C.GUnixSocketAddress // out
 	var _cret *C.char               // in
 
@@ -342,7 +244,10 @@ func (a unixSocketAddress) Path() string {
 	return _utf8
 }
 
-func (a unixSocketAddress) PathLen() uint {
+// PathLen gets the length of @address's path.
+//
+// For details, see g_unix_socket_address_get_path().
+func (a *UnixSocketAddressClass) PathLen() uint {
 	var _arg0 *C.GUnixSocketAddress // out
 	var _cret C.gsize               // in
 

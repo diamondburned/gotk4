@@ -36,18 +36,18 @@ const (
 	// Nearest: nearest neighbor sampling; this is the fastest and lowest
 	// quality mode. Quality is normally unacceptable when scaling down, but may
 	// be OK when scaling up.
-	InterpNearest InterpType = iota
+	InterpTypeNearest InterpType = iota
 	// Tiles: this is an accurate simulation of the PostScript image operator
 	// without any interpolation enabled. Each pixel is rendered as a tiny
 	// parallelogram of solid color, the edges of which are implemented with
 	// antialiasing. It resembles nearest neighbor for enlargement, and bilinear
 	// for reduction.
-	InterpTiles
+	InterpTypeTiles
 	// Bilinear: best quality/speed balance; use this mode by default. Bilinear
 	// interpolation. For enlargement, it is equivalent to point-sampling the
 	// ideal bilinear-interpolated image. For reduction, it is equivalent to
 	// laying down small tiles and integrating over the coverage area.
-	InterpBilinear
+	InterpTypeBilinear
 	// Hyper: this is the slowest and highest quality reconstruction function.
 	// It is derived from the hyperbolic filters in Wolberg's "Digital Image
 	// Warping", and is formally defined as the hyperbolic-filter sampling the
@@ -55,7 +55,7 @@ const (
 	// idempotent for 1:1 pixel mapping). **Deprecated**: this interpolation
 	// filter is deprecated, as in reality it has a lower quality than the
 	// @GDK_INTERP_BILINEAR filter (Since: 2.38)
-	InterpHyper
+	InterpTypeHyper
 )
 
 func marshalInterpType(p uintptr) (interface{}, error) {
@@ -70,13 +70,13 @@ type PixbufRotation int
 
 const (
 	// None: no rotation.
-	PixbufRotateNone PixbufRotation = 0
+	PixbufRotationNone PixbufRotation = 0
 	// Counterclockwise: rotate by 90 degrees.
-	PixbufRotateCounterclockwise PixbufRotation = 90
+	PixbufRotationCounterclockwise PixbufRotation = 90
 	// Upsidedown: rotate by 180 degrees.
-	PixbufRotateUpsidedown PixbufRotation = 180
+	PixbufRotationUpsidedown PixbufRotation = 180
 	// Clockwise: rotate by 270 degrees.
-	PixbufRotateClockwise PixbufRotation = 270
+	PixbufRotationClockwise PixbufRotation = 270
 )
 
 func marshalPixbufRotation(p uintptr) (interface{}, error) {

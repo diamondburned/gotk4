@@ -64,29 +64,30 @@ func init() {
 // [signal@Gtk.SignalListItemFactory::setup] signal and removed again during
 // [signal@Gtk.SignalListItemFactory::teardown].
 type SignalListItemFactory interface {
-	ListItemFactory
+	gextras.Objector
 
-	// AsListItemFactory casts the class to the ListItemFactory interface.
-	AsListItemFactory() ListItemFactory
+	privateSignalListItemFactoryClass()
 }
 
-// signalListItemFactory implements the SignalListItemFactory interface.
-type signalListItemFactory struct {
-	*externglib.Object
+// SignalListItemFactoryClass implements the SignalListItemFactory interface.
+type SignalListItemFactoryClass struct {
+	ListItemFactoryClass
 }
 
-var _ SignalListItemFactory = (*signalListItemFactory)(nil)
+var _ SignalListItemFactory = (*SignalListItemFactoryClass)(nil)
 
-// WrapSignalListItemFactory wraps a GObject to a type that implements
-// interface SignalListItemFactory. It is primarily used internally.
-func WrapSignalListItemFactory(obj *externglib.Object) SignalListItemFactory {
-	return signalListItemFactory{obj}
+func wrapSignalListItemFactory(obj *externglib.Object) SignalListItemFactory {
+	return &SignalListItemFactoryClass{
+		ListItemFactoryClass: ListItemFactoryClass{
+			Object: obj,
+		},
+	}
 }
 
 func marshalSignalListItemFactory(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapSignalListItemFactory(obj), nil
+	return wrapSignalListItemFactory(obj), nil
 }
 
 // NewSignalListItemFactory creates a new `GtkSignalListItemFactory`.
@@ -104,6 +105,4 @@ func NewSignalListItemFactory() SignalListItemFactory {
 	return _signalListItemFactory
 }
 
-func (s signalListItemFactory) AsListItemFactory() ListItemFactory {
-	return WrapListItemFactory(gextras.InternObject(s))
-}
+func (*SignalListItemFactoryClass) privateSignalListItemFactoryClass() {}

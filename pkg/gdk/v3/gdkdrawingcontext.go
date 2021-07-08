@@ -52,26 +52,32 @@ type DrawingContext interface {
 	IsValid() bool
 }
 
-// drawingContext implements the DrawingContext interface.
-type drawingContext struct {
+// DrawingContextClass implements the DrawingContext interface.
+type DrawingContextClass struct {
 	*externglib.Object
 }
 
-var _ DrawingContext = (*drawingContext)(nil)
+var _ DrawingContext = (*DrawingContextClass)(nil)
 
-// WrapDrawingContext wraps a GObject to a type that implements
-// interface DrawingContext. It is primarily used internally.
-func WrapDrawingContext(obj *externglib.Object) DrawingContext {
-	return drawingContext{obj}
+func wrapDrawingContext(obj *externglib.Object) DrawingContext {
+	return &DrawingContextClass{
+		Object: obj,
+	}
 }
 
 func marshalDrawingContext(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapDrawingContext(obj), nil
+	return wrapDrawingContext(obj), nil
 }
 
-func (c drawingContext) CairoContext() *cairo.Context {
+// CairoContext retrieves a Cairo context to be used to draw on the Window that
+// created the DrawingContext.
+//
+// The returned context is guaranteed to be valid as long as the DrawingContext
+// is valid, that is between a call to gdk_window_begin_draw_frame() and
+// gdk_window_end_draw_frame().
+func (c *DrawingContextClass) CairoContext() *cairo.Context {
 	var _arg0 *C.GdkDrawingContext // out
 	var _cret *C.cairo_t           // in
 
@@ -86,7 +92,8 @@ func (c drawingContext) CairoContext() *cairo.Context {
 	return _ret
 }
 
-func (c drawingContext) Clip() *cairo.Region {
+// Clip retrieves a copy of the clip region used when creating the @context.
+func (c *DrawingContextClass) Clip() *cairo.Region {
 	var _arg0 *C.GdkDrawingContext // out
 	var _cret *C.cairo_region_t    // in
 
@@ -104,7 +111,8 @@ func (c drawingContext) Clip() *cairo.Region {
 	return _region
 }
 
-func (c drawingContext) Window() Window {
+// Window retrieves the window that created the drawing @context.
+func (c *DrawingContextClass) Window() Window {
 	var _arg0 *C.GdkDrawingContext // out
 	var _cret *C.GdkWindow         // in
 
@@ -119,7 +127,8 @@ func (c drawingContext) Window() Window {
 	return _window
 }
 
-func (c drawingContext) IsValid() bool {
+// IsValid checks whether the given DrawingContext is valid.
+func (c *DrawingContextClass) IsValid() bool {
 	var _arg0 *C.GdkDrawingContext // out
 	var _cret C.gboolean           // in
 

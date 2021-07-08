@@ -29,7 +29,7 @@ type TabAlign int
 
 const (
 	// Left: the tab stop appears to the left of the text.
-	TabLeft TabAlign = iota
+	TabAlignLeft TabAlign = iota
 )
 
 func marshalTabAlign(p uintptr) (interface{}, error) {

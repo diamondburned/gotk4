@@ -47,26 +47,27 @@ type SliceListModel interface {
 	SetSize(size uint)
 }
 
-// sliceListModel implements the SliceListModel interface.
-type sliceListModel struct {
+// SliceListModelClass implements the SliceListModel interface.
+type SliceListModelClass struct {
 	*externglib.Object
 }
 
-var _ SliceListModel = (*sliceListModel)(nil)
+var _ SliceListModel = (*SliceListModelClass)(nil)
 
-// WrapSliceListModel wraps a GObject to a type that implements
-// interface SliceListModel. It is primarily used internally.
-func WrapSliceListModel(obj *externglib.Object) SliceListModel {
-	return sliceListModel{obj}
+func wrapSliceListModel(obj *externglib.Object) SliceListModel {
+	return &SliceListModelClass{
+		Object: obj,
+	}
 }
 
 func marshalSliceListModel(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapSliceListModel(obj), nil
+	return wrapSliceListModel(obj), nil
 }
 
-func (s sliceListModel) Offset() uint {
+// Offset gets the offset set via gtk_slice_list_model_set_offset().
+func (s *SliceListModelClass) Offset() uint {
 	var _arg0 *C.GtkSliceListModel // out
 	var _cret C.guint              // in
 
@@ -81,7 +82,8 @@ func (s sliceListModel) Offset() uint {
 	return _guint
 }
 
-func (s sliceListModel) Size() uint {
+// Size gets the size set via gtk_slice_list_model_set_size().
+func (s *SliceListModelClass) Size() uint {
 	var _arg0 *C.GtkSliceListModel // out
 	var _cret C.guint              // in
 
@@ -96,7 +98,10 @@ func (s sliceListModel) Size() uint {
 	return _guint
 }
 
-func (s sliceListModel) SetOffset(offset uint) {
+// SetOffset sets the offset into the original model for this slice.
+//
+// If the offset is too large for the sliced model, @self will end up empty.
+func (s *SliceListModelClass) SetOffset(offset uint) {
 	var _arg0 *C.GtkSliceListModel // out
 	var _arg1 C.guint              // out
 
@@ -106,7 +111,11 @@ func (s sliceListModel) SetOffset(offset uint) {
 	C.gtk_slice_list_model_set_offset(_arg0, _arg1)
 }
 
-func (s sliceListModel) SetSize(size uint) {
+// SetSize sets the maximum size. @self will never have more items than @size.
+//
+// It can however have fewer items if the offset is too large or the model
+// sliced from doesn't have enough items.
+func (s *SliceListModelClass) SetSize(size uint) {
 	var _arg0 *C.GtkSliceListModel // out
 	var _arg1 C.guint              // out
 

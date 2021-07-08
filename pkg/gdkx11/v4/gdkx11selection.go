@@ -21,26 +21,3 @@ func X11FreeCompoundText(ctext *byte) {
 
 	C.gdk_x11_free_compound_text(_arg1)
 }
-
-// X11FreeTextList frees the array of strings created by
-// gdk_x11_display_text_property_to_text_list().
-func X11FreeTextList(list *string) {
-	var _arg1 **C.char // out
-
-	{
-		var refTmpIn string
-		var refTmpOut *C.char
-
-		refTmpIn = *list
-
-		refTmpOut = (*C.char)(C.CString(refTmpIn))
-		defer C.free(unsafe.Pointer(refTmpOut))
-
-		if refTmpOut != nil {
-			out0 := &refTmpOut
-			_arg1 = out0
-		}
-	}
-
-	C.gdk_x11_free_text_list(_arg1)
-}

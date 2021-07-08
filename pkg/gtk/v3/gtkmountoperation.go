@@ -29,95 +29,7 @@ func init() {
 // MountOperation: this should not be accessed directly. Use the accessor
 // functions below.
 type MountOperation interface {
-	gio.MountOperation
-
-	// AsMountOperation casts the class to the gio.MountOperation interface.
-	AsMountOperation() gio.MountOperation
-
-	// GetAnonymous: check to see whether the mount operation is being used for
-	// an anonymous user.
-	//
-	// This method is inherited from gio.MountOperation
-	GetAnonymous() bool
-	// GetChoice gets a choice from the mount operation.
-	//
-	// This method is inherited from gio.MountOperation
-	GetChoice() int
-	// GetDomain gets the domain of the mount operation.
-	//
-	// This method is inherited from gio.MountOperation
-	GetDomain() string
-	// GetIsTcryptHiddenVolume: check to see whether the mount operation is
-	// being used for a TCRYPT hidden volume.
-	//
-	// This method is inherited from gio.MountOperation
-	GetIsTcryptHiddenVolume() bool
-	// GetIsTcryptSystemVolume: check to see whether the mount operation is
-	// being used for a TCRYPT system volume.
-	//
-	// This method is inherited from gio.MountOperation
-	GetIsTcryptSystemVolume() bool
-	// GetPassword gets a password from the mount operation.
-	//
-	// This method is inherited from gio.MountOperation
-	GetPassword() string
-	// GetPasswordSave gets the state of saving passwords for the mount
-	// operation.
-	//
-	// This method is inherited from gio.MountOperation
-	GetPasswordSave() gio.PasswordSave
-	// GetPim gets a PIM from the mount operation.
-	//
-	// This method is inherited from gio.MountOperation
-	GetPim() uint
-	// GetUsername: get the user name from the mount operation.
-	//
-	// This method is inherited from gio.MountOperation
-	GetUsername() string
-	// Reply emits the Operation::reply signal.
-	//
-	// This method is inherited from gio.MountOperation
-	Reply(result gio.MountOperationResult)
-	// SetAnonymous sets the mount operation to use an anonymous user if
-	// @anonymous is true.
-	//
-	// This method is inherited from gio.MountOperation
-	SetAnonymous(anonymous bool)
-	// SetChoice sets a default choice for the mount operation.
-	//
-	// This method is inherited from gio.MountOperation
-	SetChoice(choice int)
-	// SetDomain sets the mount operation's domain.
-	//
-	// This method is inherited from gio.MountOperation
-	SetDomain(domain string)
-	// SetIsTcryptHiddenVolume sets the mount operation to use a hidden volume
-	// if @hidden_volume is true.
-	//
-	// This method is inherited from gio.MountOperation
-	SetIsTcryptHiddenVolume(hiddenVolume bool)
-	// SetIsTcryptSystemVolume sets the mount operation to use a system volume
-	// if @system_volume is true.
-	//
-	// This method is inherited from gio.MountOperation
-	SetIsTcryptSystemVolume(systemVolume bool)
-	// SetPassword sets the mount operation's password to @password.
-	//
-	// This method is inherited from gio.MountOperation
-	SetPassword(password string)
-	// SetPasswordSave sets the state of saving passwords for the mount
-	// operation.
-	//
-	// This method is inherited from gio.MountOperation
-	SetPasswordSave(save gio.PasswordSave)
-	// SetPim sets the mount operation's PIM to @pim.
-	//
-	// This method is inherited from gio.MountOperation
-	SetPim(pim uint)
-	// SetUsername sets the user name within @op to @username.
-	//
-	// This method is inherited from gio.MountOperation
-	SetUsername(username string)
+	gextras.Objector
 
 	// Parent gets the transient parent used by the MountOperation
 	Parent() Window
@@ -134,23 +46,25 @@ type MountOperation interface {
 	SetScreen(screen gdk.Screen)
 }
 
-// mountOperation implements the MountOperation interface.
-type mountOperation struct {
-	*externglib.Object
+// MountOperationClass implements the MountOperation interface.
+type MountOperationClass struct {
+	gio.MountOperationClass
 }
 
-var _ MountOperation = (*mountOperation)(nil)
+var _ MountOperation = (*MountOperationClass)(nil)
 
-// WrapMountOperation wraps a GObject to a type that implements
-// interface MountOperation. It is primarily used internally.
-func WrapMountOperation(obj *externglib.Object) MountOperation {
-	return mountOperation{obj}
+func wrapMountOperation(obj *externglib.Object) MountOperation {
+	return &MountOperationClass{
+		MountOperationClass: gio.MountOperationClass{
+			Object: obj,
+		},
+	}
 }
 
 func marshalMountOperation(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapMountOperation(obj), nil
+	return wrapMountOperation(obj), nil
 }
 
 // NewMountOperation creates a new MountOperation
@@ -169,87 +83,8 @@ func NewMountOperation(parent Window) MountOperation {
 	return _mountOperation
 }
 
-func (m mountOperation) AsMountOperation() gio.MountOperation {
-	return gio.WrapMountOperation(gextras.InternObject(m))
-}
-
-func (o mountOperation) GetAnonymous() bool {
-	return gio.WrapMountOperation(gextras.InternObject(o)).GetAnonymous()
-}
-
-func (o mountOperation) GetChoice() int {
-	return gio.WrapMountOperation(gextras.InternObject(o)).GetChoice()
-}
-
-func (o mountOperation) GetDomain() string {
-	return gio.WrapMountOperation(gextras.InternObject(o)).GetDomain()
-}
-
-func (o mountOperation) GetIsTcryptHiddenVolume() bool {
-	return gio.WrapMountOperation(gextras.InternObject(o)).GetIsTcryptHiddenVolume()
-}
-
-func (o mountOperation) GetIsTcryptSystemVolume() bool {
-	return gio.WrapMountOperation(gextras.InternObject(o)).GetIsTcryptSystemVolume()
-}
-
-func (o mountOperation) GetPassword() string {
-	return gio.WrapMountOperation(gextras.InternObject(o)).GetPassword()
-}
-
-func (o mountOperation) GetPasswordSave() gio.PasswordSave {
-	return gio.WrapMountOperation(gextras.InternObject(o)).GetPasswordSave()
-}
-
-func (o mountOperation) GetPim() uint {
-	return gio.WrapMountOperation(gextras.InternObject(o)).GetPim()
-}
-
-func (o mountOperation) GetUsername() string {
-	return gio.WrapMountOperation(gextras.InternObject(o)).GetUsername()
-}
-
-func (o mountOperation) Reply(result gio.MountOperationResult) {
-	gio.WrapMountOperation(gextras.InternObject(o)).Reply(result)
-}
-
-func (o mountOperation) SetAnonymous(anonymous bool) {
-	gio.WrapMountOperation(gextras.InternObject(o)).SetAnonymous(anonymous)
-}
-
-func (o mountOperation) SetChoice(choice int) {
-	gio.WrapMountOperation(gextras.InternObject(o)).SetChoice(choice)
-}
-
-func (o mountOperation) SetDomain(domain string) {
-	gio.WrapMountOperation(gextras.InternObject(o)).SetDomain(domain)
-}
-
-func (o mountOperation) SetIsTcryptHiddenVolume(hiddenVolume bool) {
-	gio.WrapMountOperation(gextras.InternObject(o)).SetIsTcryptHiddenVolume(hiddenVolume)
-}
-
-func (o mountOperation) SetIsTcryptSystemVolume(systemVolume bool) {
-	gio.WrapMountOperation(gextras.InternObject(o)).SetIsTcryptSystemVolume(systemVolume)
-}
-
-func (o mountOperation) SetPassword(password string) {
-	gio.WrapMountOperation(gextras.InternObject(o)).SetPassword(password)
-}
-
-func (o mountOperation) SetPasswordSave(save gio.PasswordSave) {
-	gio.WrapMountOperation(gextras.InternObject(o)).SetPasswordSave(save)
-}
-
-func (o mountOperation) SetPim(pim uint) {
-	gio.WrapMountOperation(gextras.InternObject(o)).SetPim(pim)
-}
-
-func (o mountOperation) SetUsername(username string) {
-	gio.WrapMountOperation(gextras.InternObject(o)).SetUsername(username)
-}
-
-func (o mountOperation) Parent() Window {
+// Parent gets the transient parent used by the MountOperation
+func (o *MountOperationClass) Parent() Window {
 	var _arg0 *C.GtkMountOperation // out
 	var _cret *C.GtkWindow         // in
 
@@ -264,7 +99,8 @@ func (o mountOperation) Parent() Window {
 	return _window
 }
 
-func (o mountOperation) Screen() gdk.Screen {
+// Screen gets the screen on which windows of the MountOperation will be shown.
+func (o *MountOperationClass) Screen() gdk.Screen {
 	var _arg0 *C.GtkMountOperation // out
 	var _cret *C.GdkScreen         // in
 
@@ -279,7 +115,9 @@ func (o mountOperation) Screen() gdk.Screen {
 	return _screen
 }
 
-func (o mountOperation) IsShowing() bool {
+// IsShowing returns whether the MountOperation is currently displaying a
+// window.
+func (o *MountOperationClass) IsShowing() bool {
 	var _arg0 *C.GtkMountOperation // out
 	var _cret C.gboolean           // in
 
@@ -296,7 +134,8 @@ func (o mountOperation) IsShowing() bool {
 	return _ok
 }
 
-func (o mountOperation) SetParent(parent Window) {
+// SetParent sets the transient parent for windows shown by the MountOperation.
+func (o *MountOperationClass) SetParent(parent Window) {
 	var _arg0 *C.GtkMountOperation // out
 	var _arg1 *C.GtkWindow         // out
 
@@ -306,7 +145,8 @@ func (o mountOperation) SetParent(parent Window) {
 	C.gtk_mount_operation_set_parent(_arg0, _arg1)
 }
 
-func (o mountOperation) SetScreen(screen gdk.Screen) {
+// SetScreen sets the screen to show windows of the MountOperation on.
+func (o *MountOperationClass) SetScreen(screen gdk.Screen) {
 	var _arg0 *C.GtkMountOperation // out
 	var _arg1 *C.GdkScreen         // out
 

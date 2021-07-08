@@ -11,7 +11,7 @@ import (
 
 var classInterfaceTmpl = gotmpl.NewGoTemplate(`
 	{{ if .Virtuals }}
-	// {{ .InterfaceName }}Overrider contains methods that are overridable .
+	// {{ .InterfaceName }}Overrider contains methods that are overridable.
 	//
 	// As of right now, interface overriding and subclassing is not supported
 	// yet, so the interface currently has no use.
@@ -25,45 +25,34 @@ var classInterfaceTmpl = gotmpl.NewGoTemplate(`
 
 	{{ GoDoc . 0 }}
 	type {{ .InterfaceName }} interface {
-		{{ .ParentInterface }}
-
-		{{ range .Implements }}
-		// As{{.Name}} casts the class to the {{.Type}} interface.
-		As{{.Name}}() {{ .Type -}}
-		{{ end }}
-
-		{{ range .InheritedMethods }}
-		{{- GoDoc . 1
-			(TrailingNewLine)
-			(AdditionalString (printf "This method is inherited from %s" .Parent))
-		 -}}
-		{{- .Name }}{{ .Tail }}
-		{{ end }}
+		gextras.Objector
 
 		{{ range .Methods }}
 		{{- GoDoc . 1 TrailingNewLine -}}
 		{{- .Name }}{{ .Tail }}
+		{{ else }}
+		private{{ .StructName }}()
 		{{ end }}
 	}
 
 	// {{ .StructName }} implements the {{ .InterfaceName }} interface.
 	type {{ .StructName }} struct {
-		*externglib.Object
+		{{ range .Tree.ImplTypes -}}
+		{{ . }}
+		{{ end }}
 	}
 
 	var _ {{ .InterfaceName }} = (*{{ .StructName }})(nil)
 
-	// Wrap{{ .InterfaceName }} wraps a GObject to a type that implements
-	// interface {{ .InterfaceName }}. It is primarily used internally.
-	func Wrap{{ .InterfaceName }}(obj *externglib.Object) {{ .InterfaceName }} {
-		return {{ .StructName }}{obj}
+	func wrap{{ .InterfaceName }}(obj *externglib.Object) {{ .InterfaceName }} {
+		return {{ .Tree.Wrap "obj" }}
 	}
 
 	{{ if .GLibGetType }}
 	func marshal{{ .InterfaceName }}(p uintptr) (interface{}, error) {
 		val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 		obj := externglib.Take(unsafe.Pointer(val))
-		return Wrap{{ .InterfaceName }}(obj), nil
+		return wrap{{ .InterfaceName }}(obj), nil
 	}
 	{{ end }}
 
@@ -72,22 +61,11 @@ var classInterfaceTmpl = gotmpl.NewGoTemplate(`
 	func {{ .Name }}{{ .Tail }} {{ .Block }}
 	{{ end }}
 
-	{{ $recv := (FirstLetter .StructName) }}
-	{{ range .Implements }}
-	func ({{ $recv }} {{ $.StructName }}) As{{.Name}}() {{ .Type }} {
-		return {{ .Wrapper }}(gextras.InternObject({{ $recv }}))
-	}
-	{{ end }}
-
-	{{ range .InheritedMethods }}
-	func ({{ .Recv }} {{ $.StructName }}) {{ .Name }}{{ .Tail }} {
-		{{ if .Return }} return {{ end -}}
-		{{ .Wrapper }}(gextras.InternObject({{ .Recv }})).{{ .Name }}({{ .CallParams }})
-	}
-	{{ end }}
-
 	{{ range .Methods }}
-	func ({{ .Recv }} {{ $.StructName }}) {{ .Name }}{{ .Tail }} {{ .Block }}
+	{{ GoDoc . 0 }}
+	func ({{ .Recv }} *{{ $.StructName }}) {{ .Name }}{{ .Tail }} {{ .Block }}
+	{{ else }}
+	func (*{{ .StructName }}) private{{ $.StructName }}() {}
 	{{ end }}
 `)
 
@@ -100,8 +78,7 @@ func GenerateInterface(gen FileGeneratorWriter, iface *gir.Interface) bool {
 		return false
 	}
 
-	writer := FileWriterFromType(gen, iface)
-	generateInterfaceGenerator(gen, writer, &igen)
+	generateInterfaceGenerator(gen, &igen)
 	return true
 }
 
@@ -112,13 +89,19 @@ func GenerateClass(gen FileGeneratorWriter, class *gir.Class) bool {
 		return false
 	}
 
-	writer := FileWriterFromType(gen, class)
-	generateInterfaceGenerator(gen, writer, &igen)
+	generateInterfaceGenerator(gen, &igen)
 	return true
 }
 
-func generateInterfaceGenerator(gen FileGenerator, writer FileWriter, igen *ifacegen.Generator) {
+func generateInterfaceGenerator(gen FileGeneratorWriter, igen *ifacegen.Generator) {
+	writer := FileWriterFromType(gen, igen)
 	writer.Header().NeedsExternGLib()
+	writer.Header().ImportCore("gextras")
+
+	// Import for implementation types.
+	for _, parent := range igen.Tree.Requires {
+		writer.Header().ImportImpl(parent.Resolved)
+	}
 
 	if igen.GLibGetType != "" && !types.FilterCType(gen, igen.GLibGetType) {
 		writer.Header().AddMarshaler(igen.GLibGetType, igen.InterfaceName)

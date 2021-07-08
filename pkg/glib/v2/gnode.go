@@ -28,16 +28,16 @@ const (
 	// InOrder vists a node's left child first, then the node itself, then its
 	// right child. This is the one to use if you want the output sorted
 	// according to the compare function.
-	InOrder TraverseType = iota
+	TraverseTypeInOrder TraverseType = iota
 	// PreOrder visits a node, then its children.
-	PreOrder
+	TraverseTypePreOrder
 	// PostOrder visits the node's children, then the node itself.
-	PostOrder
+	TraverseTypePostOrder
 	// LevelOrder is not implemented for [balanced binary
 	// trees][glib-Balanced-Binary-Trees]. For [n-ary trees][glib-N-ary-Trees],
 	// it vists the root node first, then its children, then its grandchildren,
 	// and so on. Note that this is less efficient than the other orders.
-	LevelOrder
+	TraverseTypeLevelOrder
 )
 
 // TraverseFlags specifies which nodes are visited during several of the tree

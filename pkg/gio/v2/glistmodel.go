@@ -32,7 +32,7 @@ func init() {
 	})
 }
 
-// ListModelOverrider contains methods that are overridable .
+// ListModelOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
@@ -114,12 +114,12 @@ type ListModel interface {
 	// efficient than iterating the list with increasing values for @position
 	// until g_list_model_get_item() returns nil.
 	NItems() uint
-	// Object: get the item at @position. If @position is greater than the
+	// GetObject: get the item at @position. If @position is greater than the
 	// number of items in @list, nil is returned.
 	//
 	// nil is never returned for an index that is smaller than the length of the
 	// list. See g_list_model_get_n_items().
-	Object(position uint) gextras.Objector
+	GetObject(position uint) gextras.Objector
 	// ItemsChanged emits the Model::items-changed signal on @list.
 	//
 	// This function should only be called by classes implementing Model. It has
@@ -142,26 +142,31 @@ type ListModel interface {
 	ItemsChanged(position uint, removed uint, added uint)
 }
 
-// listModel implements the ListModel interface.
-type listModel struct {
+// ListModelInterface implements the ListModel interface.
+type ListModelInterface struct {
 	*externglib.Object
 }
 
-var _ ListModel = (*listModel)(nil)
+var _ ListModel = (*ListModelInterface)(nil)
 
-// WrapListModel wraps a GObject to a type that implements
-// interface ListModel. It is primarily used internally.
-func WrapListModel(obj *externglib.Object) ListModel {
-	return listModel{obj}
+func wrapListModel(obj *externglib.Object) ListModel {
+	return &ListModelInterface{
+		Object: obj,
+	}
 }
 
 func marshalListModel(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapListModel(obj), nil
+	return wrapListModel(obj), nil
 }
 
-func (l listModel) ItemType() externglib.Type {
+// ItemType gets the type of the items in @list. All items returned from
+// g_list_model_get_type() are of that type or a subtype, or are an
+// implementation of that interface.
+//
+// The item type of a Model can not change during the life of the model.
+func (l *ListModelInterface) ItemType() externglib.Type {
 	var _arg0 *C.GListModel // out
 	var _cret C.GType       // in
 
@@ -176,7 +181,12 @@ func (l listModel) ItemType() externglib.Type {
 	return _gType
 }
 
-func (l listModel) NItems() uint {
+// NItems gets the number of items in @list.
+//
+// Depending on the model implementation, calling this function may be less
+// efficient than iterating the list with increasing values for @position until
+// g_list_model_get_item() returns nil.
+func (l *ListModelInterface) NItems() uint {
 	var _arg0 *C.GListModel // out
 	var _cret C.guint       // in
 
@@ -191,7 +201,12 @@ func (l listModel) NItems() uint {
 	return _guint
 }
 
-func (l listModel) Object(position uint) gextras.Objector {
+// GetObject: get the item at @position. If @position is greater than the number
+// of items in @list, nil is returned.
+//
+// nil is never returned for an index that is smaller than the length of the
+// list. See g_list_model_get_n_items().
+func (l *ListModelInterface) GetObject(position uint) gextras.Objector {
 	var _arg0 *C.GListModel // out
 	var _arg1 C.guint       // out
 	var _cret *C.GObject    // in
@@ -208,7 +223,26 @@ func (l listModel) Object(position uint) gextras.Objector {
 	return _object
 }
 
-func (l listModel) ItemsChanged(position uint, removed uint, added uint) {
+// ItemsChanged emits the Model::items-changed signal on @list.
+//
+// This function should only be called by classes implementing Model. It has to
+// be called after the internal representation of @list has been updated,
+// because handlers connected to this signal might query the new state of the
+// list.
+//
+// Implementations must only make changes to the model (as visible to its
+// consumer) in places that will not cause problems for that consumer. For
+// models that are driven directly by a write API (such as Store), changes can
+// be reported in response to uses of that API. For models that represent remote
+// data, changes should only be made from a fresh mainloop dispatch. It is
+// particularly not permitted to make changes in response to a call to the Model
+// consumer API.
+//
+// Stated another way: in general, it is assumed that code making a series of
+// accesses to the model via the API, without returning to the mainloop, and
+// without calling other code, will continue to view the same contents of the
+// model.
+func (l *ListModelInterface) ItemsChanged(position uint, removed uint, added uint) {
 	var _arg0 *C.GListModel // out
 	var _arg1 C.guint       // out
 	var _arg2 C.guint       // out

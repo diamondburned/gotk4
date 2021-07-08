@@ -22,7 +22,7 @@ func init() {
 	})
 }
 
-// HypertextOverrider contains methods that are overridable .
+// HypertextOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
@@ -56,26 +56,27 @@ type Hypertext interface {
 	NLinks() int
 }
 
-// hypertext implements the Hypertext interface.
-type hypertext struct {
+// HypertextInterface implements the Hypertext interface.
+type HypertextInterface struct {
 	*externglib.Object
 }
 
-var _ Hypertext = (*hypertext)(nil)
+var _ Hypertext = (*HypertextInterface)(nil)
 
-// WrapHypertext wraps a GObject to a type that implements
-// interface Hypertext. It is primarily used internally.
-func WrapHypertext(obj *externglib.Object) Hypertext {
-	return hypertext{obj}
+func wrapHypertext(obj *externglib.Object) Hypertext {
+	return &HypertextInterface{
+		Object: obj,
+	}
 }
 
 func marshalHypertext(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapHypertext(obj), nil
+	return wrapHypertext(obj), nil
 }
 
-func (h hypertext) Link(linkIndex int) Hyperlink {
+// Link gets the link in this hypertext document at index @link_index
+func (h *HypertextInterface) Link(linkIndex int) Hyperlink {
 	var _arg0 *C.AtkHypertext // out
 	var _arg1 C.gint          // out
 	var _cret *C.AtkHyperlink // in
@@ -92,7 +93,9 @@ func (h hypertext) Link(linkIndex int) Hyperlink {
 	return _hyperlink
 }
 
-func (h hypertext) LinkIndex(charIndex int) int {
+// LinkIndex gets the index into the array of hyperlinks that is associated with
+// the character specified by @char_index.
+func (h *HypertextInterface) LinkIndex(charIndex int) int {
 	var _arg0 *C.AtkHypertext // out
 	var _arg1 C.gint          // out
 	var _cret C.gint          // in
@@ -109,7 +112,8 @@ func (h hypertext) LinkIndex(charIndex int) int {
 	return _gint
 }
 
-func (h hypertext) NLinks() int {
+// NLinks gets the number of links within this hypertext document.
+func (h *HypertextInterface) NLinks() int {
 	var _arg0 *C.AtkHypertext // out
 	var _cret C.gint          // in
 

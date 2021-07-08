@@ -230,7 +230,7 @@ type ValueConverted struct {
 	header  file.Header
 }
 
-func newValueConverted(conv *Converter, value *ConversionValue) ValueConverted {
+func newValueConverted(value *ConversionValue) ValueConverted {
 	return ValueConverted{
 		ConversionValue: *value,
 		InCall:          value.InName,
@@ -250,10 +250,10 @@ func (value *ValueConverted) finalize() {
 	value.OutDeclare = value.outDecl.String()
 	value.Conversion = value.p.String()
 
-	// Allow GC to collect the internal buffers.
-	value.inDecl = nil
-	value.outDecl = nil
-	value.p = nil
+	// // Allow GC to collect the internal buffers.
+	// value.inDecl = nil
+	// value.outDecl = nil
+	// value.p = nil
 }
 
 func (value *ValueConverted) logln(conv *Converter, lvl logger.Level, v ...interface{}) {
@@ -296,7 +296,7 @@ func (value *ValueConverted) resolveType(conv *Converter) bool {
 	}
 
 	// If this is the output parameter, then the pointer count should be less.
-	// This only affects the Go type.
+	// This only affects the Go 1	ype.
 	if value.ParameterIsOutput() && value.Resolved.Ptr > 0 {
 		value.Resolved.Ptr--
 	}
@@ -327,7 +327,7 @@ func (value *ValueConverted) resolveType(conv *Converter) bool {
 
 // cgoSetObject generates a glib.Take or glib.AssumeOwnership into a new
 // function. This should only be used for C to Go conversion.
-func (value *ValueConverted) cgoSetObject() {
+func (value *ValueConverted) cgoSetObject(conv *Converter) {
 	var gobjectFunction string
 	if value.isTransferring() {
 		// Full or container means we implicitly own the object, so we must
@@ -343,14 +343,23 @@ func (value *ValueConverted) cgoSetObject() {
 	value.header.Import("unsafe")
 
 	if value.ManualCast {
-		// This is only ever used for local constructors, so we don't need to
-		// mess with namespaces.
-		// TODO: maybe not make such a bad assumption.
-		value.p.Linef(
-			"%s = Wrap%s(externglib.%s(unsafe.Pointer(%s)))",
-			value.OutName, value.Resolved.PublicType(false), gobjectFunction, value.InName,
-		)
-		return
+		if !value.Resolved.NeedsNamespace(conv.currentNamespace) {
+			value.p.Linef(
+				"%s = wrap%s(externglib.%s(unsafe.Pointer(%s)))",
+				value.OutName, value.Resolved.PublicType(false), gobjectFunction, value.InName,
+			)
+			return
+		}
+
+		if tree := types.NewTree(conv.fgen); tree.ResolveFromType(value.Resolved) {
+			value.p.Descend()
+			value.p.Linef("obj := externglib.%s(unsafe.Pointer(%s))", gobjectFunction, value.InName)
+			value.p.Linef("%s = %s", value.OutName, tree.Wrap("obj"))
+			value.p.Ascend()
+			return
+		}
+
+		// Fallback.
 	}
 
 	value.header.ImportCore("gextras")
@@ -390,14 +399,21 @@ func (value *ValueConverted) ptrsz() string {
 }
 
 func (value *ValueConverted) logPrefix() string {
+	var prefix string
 	switch value.Direction {
 	case ConvertCToGo:
-		return fmt.Sprintf("C %s -> Go %s", value.InName, value.OutName)
+		prefix = fmt.Sprintf("C %s -> Go %s", value.InName, value.OutName)
 	case ConvertGoToC:
-		return fmt.Sprintf("Go %s -> C %s", value.InName, value.OutName)
+		prefix = fmt.Sprintf("Go %s -> C %s", value.InName, value.OutName)
 	default:
 		return ""
 	}
+
+	if value.Resolved != nil {
+		prefix += fmt.Sprintf(" (%s)", value.Resolved.PublicType(true))
+	}
+
+	return prefix
 }
 
 // isPtr checks pointer coherency for C types and Go types. It's mostly used to

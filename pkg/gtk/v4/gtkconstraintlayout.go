@@ -168,60 +168,7 @@ func init() {
 // “` // width of button1 must be equal to width of button2 // divided by 2 plus
 // 12 [button1(button2 / 2 + 12)] “`
 type ConstraintLayout interface {
-	LayoutManager
-
-	// AsLayoutManager casts the class to the LayoutManager interface.
-	AsLayoutManager() LayoutManager
-	// AsBuildable casts the class to the Buildable interface.
-	AsBuildable() Buildable
-
-	// Allocate assigns the given @width, @height, and @baseline to a @widget,
-	// and computes the position and sizes of the children of the @widget using
-	// the layout management policy of @manager.
-	//
-	// This method is inherited from LayoutManager
-	Allocate(widget Widget, width int, height int, baseline int)
-	// GetLayoutChild retrieves a `GtkLayoutChild` instance for the
-	// `GtkLayoutManager`, creating one if necessary.
-	//
-	// The @child widget must be a child of the widget using @manager.
-	//
-	// The `GtkLayoutChild` instance is owned by the `GtkLayoutManager`, and is
-	// guaranteed to exist as long as @child is a child of the `GtkWidget` using
-	// the given `GtkLayoutManager`.
-	//
-	// This method is inherited from LayoutManager
-	GetLayoutChild(child Widget) LayoutChild
-	// GetRequestMode retrieves the request mode of @manager.
-	//
-	// This method is inherited from LayoutManager
-	GetRequestMode() SizeRequestMode
-	// GetWidget retrieves the `GtkWidget` using the given `GtkLayoutManager`.
-	//
-	// This method is inherited from LayoutManager
-	GetWidget() Widget
-	// LayoutChanged queues a resize on the `GtkWidget` using @manager, if any.
-	//
-	// This function should be called by subclasses of `GtkLayoutManager` in
-	// response to changes to their layout management policies.
-	//
-	// This method is inherited from LayoutManager
-	LayoutChanged()
-	// Measure measures the size of the @widget using @manager, for the given
-	// @orientation and size.
-	//
-	// See the [class@Gtk.Widget] documentation on layout management for more
-	// details.
-	//
-	// This method is inherited from LayoutManager
-	Measure(widget Widget, orientation Orientation, forSize int) (minimum int, natural int, minimumBaseline int, naturalBaseline int)
-	// GetBuildableID gets the ID of the @buildable object.
-	//
-	// `GtkBuilder` sets the name based on the ID attribute of the <object> tag
-	// used to construct the @buildable.
-	//
-	// This method is inherited from Buildable
-	GetBuildableID() string
+	gextras.Objector
 
 	// AddConstraint adds a constraint to the layout manager.
 	//
@@ -255,23 +202,31 @@ type ConstraintLayout interface {
 	RemoveGuide(guide ConstraintGuide)
 }
 
-// constraintLayout implements the ConstraintLayout interface.
-type constraintLayout struct {
+// ConstraintLayoutClass implements the ConstraintLayout interface.
+type ConstraintLayoutClass struct {
 	*externglib.Object
+	LayoutManagerClass
+	BuildableInterface
 }
 
-var _ ConstraintLayout = (*constraintLayout)(nil)
+var _ ConstraintLayout = (*ConstraintLayoutClass)(nil)
 
-// WrapConstraintLayout wraps a GObject to a type that implements
-// interface ConstraintLayout. It is primarily used internally.
-func WrapConstraintLayout(obj *externglib.Object) ConstraintLayout {
-	return constraintLayout{obj}
+func wrapConstraintLayout(obj *externglib.Object) ConstraintLayout {
+	return &ConstraintLayoutClass{
+		Object: obj,
+		LayoutManagerClass: LayoutManagerClass{
+			Object: obj,
+		},
+		BuildableInterface: BuildableInterface{
+			Object: obj,
+		},
+	}
 }
 
 func marshalConstraintLayout(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapConstraintLayout(obj), nil
+	return wrapConstraintLayout(obj), nil
 }
 
 // NewConstraintLayout creates a new `GtkConstraintLayout` layout manager.
@@ -287,43 +242,20 @@ func NewConstraintLayout() ConstraintLayout {
 	return _constraintLayout
 }
 
-func (c constraintLayout) AsLayoutManager() LayoutManager {
-	return WrapLayoutManager(gextras.InternObject(c))
-}
-
-func (c constraintLayout) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(c))
-}
-
-func (m constraintLayout) Allocate(widget Widget, width int, height int, baseline int) {
-	WrapLayoutManager(gextras.InternObject(m)).Allocate(widget, width, height, baseline)
-}
-
-func (m constraintLayout) GetLayoutChild(child Widget) LayoutChild {
-	return WrapLayoutManager(gextras.InternObject(m)).GetLayoutChild(child)
-}
-
-func (m constraintLayout) GetRequestMode() SizeRequestMode {
-	return WrapLayoutManager(gextras.InternObject(m)).GetRequestMode()
-}
-
-func (m constraintLayout) GetWidget() Widget {
-	return WrapLayoutManager(gextras.InternObject(m)).GetWidget()
-}
-
-func (m constraintLayout) LayoutChanged() {
-	WrapLayoutManager(gextras.InternObject(m)).LayoutChanged()
-}
-
-func (m constraintLayout) Measure(widget Widget, orientation Orientation, forSize int) (minimum int, natural int, minimumBaseline int, naturalBaseline int) {
-	return WrapLayoutManager(gextras.InternObject(m)).Measure(widget, orientation, forSize)
-}
-
-func (b constraintLayout) GetBuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).GetBuildableID()
-}
-
-func (l constraintLayout) AddConstraint(constraint Constraint) {
+// AddConstraint adds a constraint to the layout manager.
+//
+// The [property@Gtk.Constraint:source] and [property@Gtk.Constraint:target]
+// properties of `constraint` can be:
+//
+//    - set to `NULL` to indicate that the constraint refers to the
+//      widget using `layout`
+//    - set to the [class@Gtk.Widget] using `layout`
+//    - set to a child of the [class@Gtk.Widget] using `layout`
+//    - set to a [class@Gtk.ConstraintGuide] that is part of `layout`
+//
+// The @layout acquires the ownership of @constraint after calling this
+// function.
+func (l *ConstraintLayoutClass) AddConstraint(constraint Constraint) {
 	var _arg0 *C.GtkConstraintLayout // out
 	var _arg1 *C.GtkConstraint       // out
 
@@ -333,7 +265,13 @@ func (l constraintLayout) AddConstraint(constraint Constraint) {
 	C.gtk_constraint_layout_add_constraint(_arg0, _arg1)
 }
 
-func (l constraintLayout) AddGuide(guide ConstraintGuide) {
+// AddGuide adds a guide to `layout`.
+//
+// A guide can be used as the source or target of constraints, like a widget,
+// but it is not visible.
+//
+// The `layout` acquires the ownership of `guide` after calling this function.
+func (l *ConstraintLayoutClass) AddGuide(guide ConstraintGuide) {
 	var _arg0 *C.GtkConstraintLayout // out
 	var _arg1 *C.GtkConstraintGuide  // out
 
@@ -343,7 +281,8 @@ func (l constraintLayout) AddGuide(guide ConstraintGuide) {
 	C.gtk_constraint_layout_add_guide(_arg0, _arg1)
 }
 
-func (l constraintLayout) RemoveAllConstraints() {
+// RemoveAllConstraints removes all constraints from the layout manager.
+func (l *ConstraintLayoutClass) RemoveAllConstraints() {
 	var _arg0 *C.GtkConstraintLayout // out
 
 	_arg0 = (*C.GtkConstraintLayout)(unsafe.Pointer(l.Native()))
@@ -351,7 +290,9 @@ func (l constraintLayout) RemoveAllConstraints() {
 	C.gtk_constraint_layout_remove_all_constraints(_arg0)
 }
 
-func (l constraintLayout) RemoveConstraint(constraint Constraint) {
+// RemoveConstraint removes `constraint` from the layout manager, so that it no
+// longer influences the layout.
+func (l *ConstraintLayoutClass) RemoveConstraint(constraint Constraint) {
 	var _arg0 *C.GtkConstraintLayout // out
 	var _arg1 *C.GtkConstraint       // out
 
@@ -361,7 +302,9 @@ func (l constraintLayout) RemoveConstraint(constraint Constraint) {
 	C.gtk_constraint_layout_remove_constraint(_arg0, _arg1)
 }
 
-func (l constraintLayout) RemoveGuide(guide ConstraintGuide) {
+// RemoveGuide removes `guide` from the layout manager, so that it no longer
+// influences the layout.
+func (l *ConstraintLayoutClass) RemoveGuide(guide ConstraintGuide) {
 	var _arg0 *C.GtkConstraintLayout // out
 	var _arg1 *C.GtkConstraintGuide  // out
 
@@ -374,50 +317,30 @@ func (l constraintLayout) RemoveGuide(guide ConstraintGuide) {
 // ConstraintLayoutChild: `GtkLayoutChild` subclass for children in a
 // `GtkConstraintLayout`.
 type ConstraintLayoutChild interface {
-	LayoutChild
+	gextras.Objector
 
-	// AsLayoutChild casts the class to the LayoutChild interface.
-	AsLayoutChild() LayoutChild
-
-	// GetChildWidget retrieves the `GtkWidget` associated to the given
-	// @layout_child.
-	//
-	// This method is inherited from LayoutChild
-	GetChildWidget() Widget
-	// GetLayoutManager retrieves the `GtkLayoutManager` instance that created
-	// the given @layout_child.
-	//
-	// This method is inherited from LayoutChild
-	GetLayoutManager() LayoutManager
+	privateConstraintLayoutChildClass()
 }
 
-// constraintLayoutChild implements the ConstraintLayoutChild interface.
-type constraintLayoutChild struct {
-	*externglib.Object
+// ConstraintLayoutChildClass implements the ConstraintLayoutChild interface.
+type ConstraintLayoutChildClass struct {
+	LayoutChildClass
 }
 
-var _ ConstraintLayoutChild = (*constraintLayoutChild)(nil)
+var _ ConstraintLayoutChild = (*ConstraintLayoutChildClass)(nil)
 
-// WrapConstraintLayoutChild wraps a GObject to a type that implements
-// interface ConstraintLayoutChild. It is primarily used internally.
-func WrapConstraintLayoutChild(obj *externglib.Object) ConstraintLayoutChild {
-	return constraintLayoutChild{obj}
+func wrapConstraintLayoutChild(obj *externglib.Object) ConstraintLayoutChild {
+	return &ConstraintLayoutChildClass{
+		LayoutChildClass: LayoutChildClass{
+			Object: obj,
+		},
+	}
 }
 
 func marshalConstraintLayoutChild(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapConstraintLayoutChild(obj), nil
+	return wrapConstraintLayoutChild(obj), nil
 }
 
-func (c constraintLayoutChild) AsLayoutChild() LayoutChild {
-	return WrapLayoutChild(gextras.InternObject(c))
-}
-
-func (l constraintLayoutChild) GetChildWidget() Widget {
-	return WrapLayoutChild(gextras.InternObject(l)).GetChildWidget()
-}
-
-func (l constraintLayoutChild) GetLayoutManager() LayoutManager {
-	return WrapLayoutChild(gextras.InternObject(l)).GetLayoutManager()
-}
+func (*ConstraintLayoutChildClass) privateConstraintLayoutChildClass() {}

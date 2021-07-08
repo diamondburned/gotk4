@@ -48,7 +48,7 @@ func marshalStyleContextPrintFlags(p uintptr) (interface{}, error) {
 	return StyleContextPrintFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// StyleContextOverrider contains methods that are overridable .
+// StyleContextOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
@@ -120,16 +120,8 @@ type StyleContext interface {
 	// this function takes precedence over another added through
 	// [func@Gtk.StyleContext.add_provider_for_display].
 	AddProvider(provider StyleProvider, priority uint)
-	// Border gets the border for a given state as a `GtkBorder`.
-	Border() Border
-	// Color gets the foreground color for a given state.
-	Color() gdk.RGBA
 	// Display returns the `GdkDisplay` to which @context is attached.
 	Display() gdk.Display
-	// Margin gets the margin for a given state as a `GtkBorder`.
-	Margin() Border
-	// Padding gets the padding for a given state as a `GtkBorder`.
-	Padding() Border
 	// Scale returns the scale used for assets.
 	Scale() int
 	// State returns the state used for style matching.
@@ -142,8 +134,6 @@ type StyleContext interface {
 	// HasClass returns true if @context currently has defined the given class
 	// name.
 	HasClass(className string) bool
-	// LookupColor looks up and resolves a color name in the @context color map.
-	LookupColor(colorName string) (gdk.RGBA, bool)
 	// RemoveClass removes @class_name from @context.
 	RemoveClass(className string)
 	// RemoveProvider removes @provider from the style providers list in
@@ -189,26 +179,36 @@ type StyleContext interface {
 	String(flags StyleContextPrintFlags) string
 }
 
-// styleContext implements the StyleContext interface.
-type styleContext struct {
+// StyleContextClass implements the StyleContext interface.
+type StyleContextClass struct {
 	*externglib.Object
 }
 
-var _ StyleContext = (*styleContext)(nil)
+var _ StyleContext = (*StyleContextClass)(nil)
 
-// WrapStyleContext wraps a GObject to a type that implements
-// interface StyleContext. It is primarily used internally.
-func WrapStyleContext(obj *externglib.Object) StyleContext {
-	return styleContext{obj}
+func wrapStyleContext(obj *externglib.Object) StyleContext {
+	return &StyleContextClass{
+		Object: obj,
+	}
 }
 
 func marshalStyleContext(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapStyleContext(obj), nil
+	return wrapStyleContext(obj), nil
 }
 
-func (c styleContext) AddClass(className string) {
+// AddClass adds a style class to @context, so later uses of the style context
+// will make use of this new class for styling.
+//
+// In the CSS file format, a `GtkEntry` defining a “search” class, would be
+// matched by:
+//
+// “`css entry.search { ... } “`
+//
+// While any widget defining a “search” class would be matched by: “`css .search
+// { ... } “`
+func (c *StyleContextClass) AddClass(className string) {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 *C.char            // out
 
@@ -219,7 +219,17 @@ func (c styleContext) AddClass(className string) {
 	C.gtk_style_context_add_class(_arg0, _arg1)
 }
 
-func (c styleContext) AddProvider(provider StyleProvider, priority uint) {
+// AddProvider adds a style provider to @context, to be used in style
+// construction.
+//
+// Note that a style provider added by this function only affects the style of
+// the widget to which @context belongs. If you want to affect the style of all
+// widgets, use [func@Gtk.StyleContext.add_provider_for_display].
+//
+// Note: If both priorities are the same, a `GtkStyleProvider` added through
+// this function takes precedence over another added through
+// [func@Gtk.StyleContext.add_provider_for_display].
+func (c *StyleContextClass) AddProvider(provider StyleProvider, priority uint) {
 	var _arg0 *C.GtkStyleContext  // out
 	var _arg1 *C.GtkStyleProvider // out
 	var _arg2 C.guint             // out
@@ -231,57 +241,8 @@ func (c styleContext) AddProvider(provider StyleProvider, priority uint) {
 	C.gtk_style_context_add_provider(_arg0, _arg1, _arg2)
 }
 
-func (c styleContext) Border() Border {
-	var _arg0 *C.GtkStyleContext // out
-	var _arg1 C.GtkBorder        // in
-
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
-
-	C.gtk_style_context_get_border(_arg0, &_arg1)
-
-	var _border Border // out
-
-	{
-		var refTmpIn *C.GtkBorder
-		var refTmpOut *Border
-
-		in0 := &_arg1
-		refTmpIn = in0
-
-		refTmpOut = (*Border)(unsafe.Pointer(refTmpIn))
-
-		_border = *refTmpOut
-	}
-
-	return _border
-}
-
-func (c styleContext) Color() gdk.RGBA {
-	var _arg0 *C.GtkStyleContext // out
-	var _arg1 C.GdkRGBA          // in
-
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
-
-	C.gtk_style_context_get_color(_arg0, &_arg1)
-
-	var _color gdk.RGBA // out
-
-	{
-		var refTmpIn *C.GdkRGBA
-		var refTmpOut *gdk.RGBA
-
-		in0 := &_arg1
-		refTmpIn = in0
-
-		refTmpOut = (*gdk.RGBA)(unsafe.Pointer(refTmpIn))
-
-		_color = *refTmpOut
-	}
-
-	return _color
-}
-
-func (c styleContext) Display() gdk.Display {
+// Display returns the `GdkDisplay` to which @context is attached.
+func (c *StyleContextClass) Display() gdk.Display {
 	var _arg0 *C.GtkStyleContext // out
 	var _cret *C.GdkDisplay      // in
 
@@ -296,57 +257,8 @@ func (c styleContext) Display() gdk.Display {
 	return _display
 }
 
-func (c styleContext) Margin() Border {
-	var _arg0 *C.GtkStyleContext // out
-	var _arg1 C.GtkBorder        // in
-
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
-
-	C.gtk_style_context_get_margin(_arg0, &_arg1)
-
-	var _margin Border // out
-
-	{
-		var refTmpIn *C.GtkBorder
-		var refTmpOut *Border
-
-		in0 := &_arg1
-		refTmpIn = in0
-
-		refTmpOut = (*Border)(unsafe.Pointer(refTmpIn))
-
-		_margin = *refTmpOut
-	}
-
-	return _margin
-}
-
-func (c styleContext) Padding() Border {
-	var _arg0 *C.GtkStyleContext // out
-	var _arg1 C.GtkBorder        // in
-
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
-
-	C.gtk_style_context_get_padding(_arg0, &_arg1)
-
-	var _padding Border // out
-
-	{
-		var refTmpIn *C.GtkBorder
-		var refTmpOut *Border
-
-		in0 := &_arg1
-		refTmpIn = in0
-
-		refTmpOut = (*Border)(unsafe.Pointer(refTmpIn))
-
-		_padding = *refTmpOut
-	}
-
-	return _padding
-}
-
-func (c styleContext) Scale() int {
+// Scale returns the scale used for assets.
+func (c *StyleContextClass) Scale() int {
 	var _arg0 *C.GtkStyleContext // out
 	var _cret C.int              // in
 
@@ -361,7 +273,13 @@ func (c styleContext) Scale() int {
 	return _gint
 }
 
-func (c styleContext) State() StateFlags {
+// State returns the state used for style matching.
+//
+// This method should only be used to retrieve the `GtkStateFlags` to pass to
+// `GtkStyleContext` methods, like [method@Gtk.StyleContext.get_padding]. If you
+// need to retrieve the current state of a `GtkWidget`, use
+// [method@Gtk.Widget.get_state_flags].
+func (c *StyleContextClass) State() StateFlags {
 	var _arg0 *C.GtkStyleContext // out
 	var _cret C.GtkStateFlags    // in
 
@@ -376,7 +294,8 @@ func (c styleContext) State() StateFlags {
 	return _stateFlags
 }
 
-func (c styleContext) HasClass(className string) bool {
+// HasClass returns true if @context currently has defined the given class name.
+func (c *StyleContextClass) HasClass(className string) bool {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 *C.char            // out
 	var _cret C.gboolean         // in
@@ -396,40 +315,8 @@ func (c styleContext) HasClass(className string) bool {
 	return _ok
 }
 
-func (c styleContext) LookupColor(colorName string) (gdk.RGBA, bool) {
-	var _arg0 *C.GtkStyleContext // out
-	var _arg1 *C.char            // out
-	var _arg2 C.GdkRGBA          // in
-	var _cret C.gboolean         // in
-
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
-	_arg1 = (*C.char)(C.CString(colorName))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	_cret = C.gtk_style_context_lookup_color(_arg0, _arg1, &_arg2)
-
-	var _color gdk.RGBA // out
-	var _ok bool        // out
-
-	{
-		var refTmpIn *C.GdkRGBA
-		var refTmpOut *gdk.RGBA
-
-		in0 := &_arg2
-		refTmpIn = in0
-
-		refTmpOut = (*gdk.RGBA)(unsafe.Pointer(refTmpIn))
-
-		_color = *refTmpOut
-	}
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _color, _ok
-}
-
-func (c styleContext) RemoveClass(className string) {
+// RemoveClass removes @class_name from @context.
+func (c *StyleContextClass) RemoveClass(className string) {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 *C.char            // out
 
@@ -440,7 +327,8 @@ func (c styleContext) RemoveClass(className string) {
 	C.gtk_style_context_remove_class(_arg0, _arg1)
 }
 
-func (c styleContext) RemoveProvider(provider StyleProvider) {
+// RemoveProvider removes @provider from the style providers list in @context.
+func (c *StyleContextClass) RemoveProvider(provider StyleProvider) {
 	var _arg0 *C.GtkStyleContext  // out
 	var _arg1 *C.GtkStyleProvider // out
 
@@ -450,7 +338,10 @@ func (c styleContext) RemoveProvider(provider StyleProvider) {
 	C.gtk_style_context_remove_provider(_arg0, _arg1)
 }
 
-func (c styleContext) Restore() {
+// Restore restores @context state to a previous stage.
+//
+// See [method@Gtk.StyleContext.save].
+func (c *StyleContextClass) Restore() {
 	var _arg0 *C.GtkStyleContext // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
@@ -458,7 +349,16 @@ func (c styleContext) Restore() {
 	C.gtk_style_context_restore(_arg0)
 }
 
-func (c styleContext) Save() {
+// Save saves the @context state.
+//
+// This allows temporary modifications done through
+// [method@Gtk.StyleContext.add_class], [method@Gtk.StyleContext.remove_class],
+// [method@Gtk.StyleContext.set_state] to be quickly reverted in one go through
+// [method@Gtk.StyleContext.restore].
+//
+// The matching call to [method@Gtk.StyleContext.restore] must be done before
+// GTK returns to the main loop.
+func (c *StyleContextClass) Save() {
 	var _arg0 *C.GtkStyleContext // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
@@ -466,7 +366,14 @@ func (c styleContext) Save() {
 	C.gtk_style_context_save(_arg0)
 }
 
-func (c styleContext) SetDisplay(display gdk.Display) {
+// SetDisplay attaches @context to the given display.
+//
+// The display is used to add style information from “global” style providers,
+// such as the display's `GtkSettings` instance.
+//
+// If you are using a `GtkStyleContext` returned from
+// [method@Gtk.Widget.get_style_context], you do not need to call this yourself.
+func (c *StyleContextClass) SetDisplay(display gdk.Display) {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 *C.GdkDisplay      // out
 
@@ -476,7 +383,8 @@ func (c styleContext) SetDisplay(display gdk.Display) {
 	C.gtk_style_context_set_display(_arg0, _arg1)
 }
 
-func (c styleContext) SetScale(scale int) {
+// SetScale sets the scale to use when getting image assets for the style.
+func (c *StyleContextClass) SetScale(scale int) {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 C.int              // out
 
@@ -486,7 +394,8 @@ func (c styleContext) SetScale(scale int) {
 	C.gtk_style_context_set_scale(_arg0, _arg1)
 }
 
-func (c styleContext) SetState(flags StateFlags) {
+// SetState sets the state to be used for style matching.
+func (c *StyleContextClass) SetState(flags StateFlags) {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 C.GtkStateFlags    // out
 
@@ -496,7 +405,16 @@ func (c styleContext) SetState(flags StateFlags) {
 	C.gtk_style_context_set_state(_arg0, _arg1)
 }
 
-func (c styleContext) String(flags StyleContextPrintFlags) string {
+// String converts the style context into a string representation.
+//
+// The string representation always includes information about the name, state,
+// id, visibility and style classes of the CSS node that is backing @context.
+// Depending on the flags, more information may be included.
+//
+// This function is intended for testing and debugging of the CSS implementation
+// in GTK. There are no guarantees about the format of the returned string, it
+// may change.
+func (c *StyleContextClass) String(flags StyleContextPrintFlags) string {
 	var _arg0 *C.GtkStyleContext          // out
 	var _arg1 C.GtkStyleContextPrintFlags // out
 	var _cret *C.char                     // in

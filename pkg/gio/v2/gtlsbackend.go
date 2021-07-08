@@ -32,7 +32,7 @@ func init() {
 	})
 }
 
-// TLSBackendOverrider contains methods that are overridable .
+// TLSBackendOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
@@ -89,26 +89,27 @@ type TLSBackend interface {
 	SupportsTLS() bool
 }
 
-// tlsBackend implements the TLSBackend interface.
-type tlsBackend struct {
+// TLSBackendInterface implements the TLSBackend interface.
+type TLSBackendInterface struct {
 	*externglib.Object
 }
 
-var _ TLSBackend = (*tlsBackend)(nil)
+var _ TLSBackend = (*TLSBackendInterface)(nil)
 
-// WrapTLSBackend wraps a GObject to a type that implements
-// interface TLSBackend. It is primarily used internally.
-func WrapTLSBackend(obj *externglib.Object) TLSBackend {
-	return tlsBackend{obj}
+func wrapTLSBackend(obj *externglib.Object) TLSBackend {
+	return &TLSBackendInterface{
+		Object: obj,
+	}
 }
 
 func marshalTLSBackend(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapTLSBackend(obj), nil
+	return wrapTLSBackend(obj), nil
 }
 
-func (b tlsBackend) CertificateType() externglib.Type {
+// CertificateType gets the #GType of @backend's Certificate implementation.
+func (b *TLSBackendInterface) CertificateType() externglib.Type {
 	var _arg0 *C.GTlsBackend // out
 	var _cret C.GType        // in
 
@@ -123,7 +124,9 @@ func (b tlsBackend) CertificateType() externglib.Type {
 	return _gType
 }
 
-func (b tlsBackend) ClientConnectionType() externglib.Type {
+// ClientConnectionType gets the #GType of @backend's ClientConnection
+// implementation.
+func (b *TLSBackendInterface) ClientConnectionType() externglib.Type {
 	var _arg0 *C.GTlsBackend // out
 	var _cret C.GType        // in
 
@@ -138,7 +141,8 @@ func (b tlsBackend) ClientConnectionType() externglib.Type {
 	return _gType
 }
 
-func (b tlsBackend) DefaultDatabase() TLSDatabase {
+// DefaultDatabase gets the default Database used to verify TLS connections.
+func (b *TLSBackendInterface) DefaultDatabase() TLSDatabase {
 	var _arg0 *C.GTlsBackend  // out
 	var _cret *C.GTlsDatabase // in
 
@@ -153,7 +157,9 @@ func (b tlsBackend) DefaultDatabase() TLSDatabase {
 	return _tlsDatabase
 }
 
-func (b tlsBackend) DTLSClientConnectionType() externglib.Type {
+// DTLSClientConnectionType gets the #GType of @backend’s ClientConnection
+// implementation.
+func (b *TLSBackendInterface) DTLSClientConnectionType() externglib.Type {
 	var _arg0 *C.GTlsBackend // out
 	var _cret C.GType        // in
 
@@ -168,7 +174,9 @@ func (b tlsBackend) DTLSClientConnectionType() externglib.Type {
 	return _gType
 }
 
-func (b tlsBackend) DTLSServerConnectionType() externglib.Type {
+// DTLSServerConnectionType gets the #GType of @backend’s ServerConnection
+// implementation.
+func (b *TLSBackendInterface) DTLSServerConnectionType() externglib.Type {
 	var _arg0 *C.GTlsBackend // out
 	var _cret C.GType        // in
 
@@ -183,7 +191,8 @@ func (b tlsBackend) DTLSServerConnectionType() externglib.Type {
 	return _gType
 }
 
-func (b tlsBackend) FileDatabaseType() externglib.Type {
+// FileDatabaseType gets the #GType of @backend's FileDatabase implementation.
+func (b *TLSBackendInterface) FileDatabaseType() externglib.Type {
 	var _arg0 *C.GTlsBackend // out
 	var _cret C.GType        // in
 
@@ -198,7 +207,9 @@ func (b tlsBackend) FileDatabaseType() externglib.Type {
 	return _gType
 }
 
-func (b tlsBackend) ServerConnectionType() externglib.Type {
+// ServerConnectionType gets the #GType of @backend's ServerConnection
+// implementation.
+func (b *TLSBackendInterface) ServerConnectionType() externglib.Type {
 	var _arg0 *C.GTlsBackend // out
 	var _cret C.GType        // in
 
@@ -213,7 +224,15 @@ func (b tlsBackend) ServerConnectionType() externglib.Type {
 	return _gType
 }
 
-func (b tlsBackend) SetDefaultDatabase(database TLSDatabase) {
+// SetDefaultDatabase: set the default Database used to verify TLS connections
+//
+// Any subsequent call to g_tls_backend_get_default_database() will return the
+// database set in this call. Existing databases and connections are not
+// modified.
+//
+// Setting a nil default database will reset to using the system default
+// database as if g_tls_backend_set_default_database() had never been called.
+func (b *TLSBackendInterface) SetDefaultDatabase(database TLSDatabase) {
 	var _arg0 *C.GTlsBackend  // out
 	var _arg1 *C.GTlsDatabase // out
 
@@ -223,7 +242,9 @@ func (b tlsBackend) SetDefaultDatabase(database TLSDatabase) {
 	C.g_tls_backend_set_default_database(_arg0, _arg1)
 }
 
-func (b tlsBackend) SupportsDTLS() bool {
+// SupportsDTLS checks if DTLS is supported. DTLS support may not be available
+// even if TLS support is available, and vice-versa.
+func (b *TLSBackendInterface) SupportsDTLS() bool {
 	var _arg0 *C.GTlsBackend // out
 	var _cret C.gboolean     // in
 
@@ -240,7 +261,9 @@ func (b tlsBackend) SupportsDTLS() bool {
 	return _ok
 }
 
-func (b tlsBackend) SupportsTLS() bool {
+// SupportsTLS checks if TLS is supported; if this returns false for the default
+// Backend, it means no "real" TLS backend is available.
+func (b *TLSBackendInterface) SupportsTLS() bool {
 	var _arg0 *C.GTlsBackend // out
 	var _cret C.gboolean     // in
 

@@ -23,7 +23,7 @@ func init() {
 	})
 }
 
-// BuildableOverrider contains methods that are overridable .
+// BuildableOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
@@ -37,8 +37,6 @@ type BuildableOverrider interface {
 	// CustomTagEnd: called at the end of each custom element handled by the
 	// buildable.
 	CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data interface{})
-	// CustomTagStart: called for each unknown element under `<child>`.
-	CustomTagStart(builder Builder, child gextras.Objector, tagname string) (BuildableParser, interface{}, bool)
 	ID() string
 	// InternalChild retrieves the internal child called @childname of the
 	// @buildable object.
@@ -71,26 +69,30 @@ type Buildable interface {
 	BuildableID() string
 }
 
-// buildable implements the Buildable interface.
-type buildable struct {
+// BuildableInterface implements the Buildable interface.
+type BuildableInterface struct {
 	*externglib.Object
 }
 
-var _ Buildable = (*buildable)(nil)
+var _ Buildable = (*BuildableInterface)(nil)
 
-// WrapBuildable wraps a GObject to a type that implements
-// interface Buildable. It is primarily used internally.
-func WrapBuildable(obj *externglib.Object) Buildable {
-	return buildable{obj}
+func wrapBuildable(obj *externglib.Object) Buildable {
+	return &BuildableInterface{
+		Object: obj,
+	}
 }
 
 func marshalBuildable(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapBuildable(obj), nil
+	return wrapBuildable(obj), nil
 }
 
-func (b buildable) BuildableID() string {
+// BuildableID gets the ID of the @buildable object.
+//
+// `GtkBuilder` sets the name based on the ID attribute of the <object> tag used
+// to construct the @buildable.
+func (b *BuildableInterface) BuildableID() string {
 	var _arg0 *C.GtkBuildable // out
 	var _cret *C.char         // in
 

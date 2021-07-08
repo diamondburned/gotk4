@@ -218,34 +218,6 @@ func SimpleAsyncReportGerrorInIdle(object gextras.Objector, callback AsyncReadyC
 type SimpleAsyncResult interface {
 	gextras.Objector
 
-	// AsAsyncResult casts the class to the AsyncResult interface.
-	AsAsyncResult() AsyncResult
-
-	// GetSourceObject gets the source object from a Result.
-	//
-	// This method is inherited from AsyncResult
-	GetSourceObject() gextras.Objector
-	// GetUserData gets the user data from a Result.
-	//
-	// This method is inherited from AsyncResult
-	GetUserData() interface{}
-	// IsTagged checks if @res has the given @source_tag (generally a function
-	// pointer indicating the function @res was created by).
-	//
-	// This method is inherited from AsyncResult
-	IsTagged(sourceTag interface{}) bool
-	// LegacyPropagateError: if @res is a AsyncResult, this is equivalent to
-	// g_simple_async_result_propagate_error(). Otherwise it returns false.
-	//
-	// This can be used for legacy error handling in async *_finish() wrapper
-	// functions that traditionally handled AsyncResult error returns themselves
-	// rather than calling into the virtual method. This should not be used in
-	// new code; Result errors that are set by virtual methods should also be
-	// extracted by virtual methods, to enable subclasses to chain up correctly.
-	//
-	// This method is inherited from AsyncResult
-	LegacyPropagateError() error
-
 	// Complete completes an asynchronous I/O job immediately. Must be called in
 	// the thread where the asynchronous result was to be delivered, as it
 	// invokes the callback directly. If you are in a different thread use
@@ -328,23 +300,27 @@ type SimpleAsyncResult interface {
 	SetOpResGssize(opRes int)
 }
 
-// simpleAsyncResult implements the SimpleAsyncResult interface.
-type simpleAsyncResult struct {
+// SimpleAsyncResultClass implements the SimpleAsyncResult interface.
+type SimpleAsyncResultClass struct {
 	*externglib.Object
+	AsyncResultInterface
 }
 
-var _ SimpleAsyncResult = (*simpleAsyncResult)(nil)
+var _ SimpleAsyncResult = (*SimpleAsyncResultClass)(nil)
 
-// WrapSimpleAsyncResult wraps a GObject to a type that implements
-// interface SimpleAsyncResult. It is primarily used internally.
-func WrapSimpleAsyncResult(obj *externglib.Object) SimpleAsyncResult {
-	return simpleAsyncResult{obj}
+func wrapSimpleAsyncResult(obj *externglib.Object) SimpleAsyncResult {
+	return &SimpleAsyncResultClass{
+		Object: obj,
+		AsyncResultInterface: AsyncResultInterface{
+			Object: obj,
+		},
+	}
 }
 
 func marshalSimpleAsyncResult(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapSimpleAsyncResult(obj), nil
+	return wrapSimpleAsyncResult(obj), nil
 }
 
 // NewSimpleAsyncResult creates a AsyncResult.
@@ -407,27 +383,16 @@ func NewSimpleAsyncResultFromError(sourceObject gextras.Objector, callback Async
 	return _simpleAsyncResult
 }
 
-func (s simpleAsyncResult) AsAsyncResult() AsyncResult {
-	return WrapAsyncResult(gextras.InternObject(s))
-}
-
-func (r simpleAsyncResult) GetSourceObject() gextras.Objector {
-	return WrapAsyncResult(gextras.InternObject(r)).GetSourceObject()
-}
-
-func (r simpleAsyncResult) GetUserData() interface{} {
-	return WrapAsyncResult(gextras.InternObject(r)).GetUserData()
-}
-
-func (r simpleAsyncResult) IsTagged(sourceTag interface{}) bool {
-	return WrapAsyncResult(gextras.InternObject(r)).IsTagged(sourceTag)
-}
-
-func (r simpleAsyncResult) LegacyPropagateError() error {
-	return WrapAsyncResult(gextras.InternObject(r)).LegacyPropagateError()
-}
-
-func (s simpleAsyncResult) Complete() {
+// Complete completes an asynchronous I/O job immediately. Must be called in the
+// thread where the asynchronous result was to be delivered, as it invokes the
+// callback directly. If you are in a different thread use
+// g_simple_async_result_complete_in_idle().
+//
+// Calling this function takes a reference to @simple for as long as is needed
+// to complete the call.
+//
+// Deprecated: since version 2.46.
+func (s *SimpleAsyncResultClass) Complete() {
 	var _arg0 *C.GSimpleAsyncResult // out
 
 	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer(s.Native()))
@@ -435,7 +400,16 @@ func (s simpleAsyncResult) Complete() {
 	C.g_simple_async_result_complete(_arg0)
 }
 
-func (s simpleAsyncResult) CompleteInIdle() {
+// CompleteInIdle completes an asynchronous function in an idle handler in the
+// [thread-default main context][g-main-context-push-thread-default] of the
+// thread that @simple was initially created in (and re-pushes that context
+// around the invocation of the callback).
+//
+// Calling this function takes a reference to @simple for as long as is needed
+// to complete the call.
+//
+// Deprecated: since version 2.46.
+func (s *SimpleAsyncResultClass) CompleteInIdle() {
 	var _arg0 *C.GSimpleAsyncResult // out
 
 	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer(s.Native()))
@@ -443,7 +417,11 @@ func (s simpleAsyncResult) CompleteInIdle() {
 	C.g_simple_async_result_complete_in_idle(_arg0)
 }
 
-func (s simpleAsyncResult) OpResGboolean() bool {
+// OpResGboolean gets the operation result boolean from within the asynchronous
+// result.
+//
+// Deprecated: since version 2.46.
+func (s *SimpleAsyncResultClass) OpResGboolean() bool {
 	var _arg0 *C.GSimpleAsyncResult // out
 	var _cret C.gboolean            // in
 
@@ -460,7 +438,10 @@ func (s simpleAsyncResult) OpResGboolean() bool {
 	return _ok
 }
 
-func (s simpleAsyncResult) OpResGssize() int {
+// OpResGssize gets a gssize from the asynchronous result.
+//
+// Deprecated: since version 2.46.
+func (s *SimpleAsyncResultClass) OpResGssize() int {
 	var _arg0 *C.GSimpleAsyncResult // out
 	var _cret C.gssize              // in
 
@@ -475,7 +456,15 @@ func (s simpleAsyncResult) OpResGssize() int {
 	return _gssize
 }
 
-func (s simpleAsyncResult) PropagateError() error {
+// PropagateError propagates an error from within the simple asynchronous result
+// to a given destination.
+//
+// If the #GCancellable given to a prior call to
+// g_simple_async_result_set_check_cancellable() is cancelled then this function
+// will return true with @dest set appropriately.
+//
+// Deprecated: since version 2.46.
+func (s *SimpleAsyncResultClass) PropagateError() error {
 	var _arg0 *C.GSimpleAsyncResult // out
 	var _cerr *C.GError             // in
 
@@ -490,7 +479,24 @@ func (s simpleAsyncResult) PropagateError() error {
 	return _goerr
 }
 
-func (s simpleAsyncResult) SetCheckCancellable(checkCancellable Cancellable) {
+// SetCheckCancellable sets a #GCancellable to check before dispatching results.
+//
+// This function has one very specific purpose: the provided cancellable is
+// checked at the time of g_simple_async_result_propagate_error() If it is
+// cancelled, these functions will return an "Operation was cancelled" error
+// (G_IO_ERROR_CANCELLED).
+//
+// Implementors of cancellable asynchronous functions should use this in order
+// to provide a guarantee to their callers that cancelling an async operation
+// will reliably result in an error being returned for that operation (even if a
+// positive result for the operation has already been sent as an idle to the
+// main context to be dispatched).
+//
+// The checking described above is done regardless of any call to the unrelated
+// g_simple_async_result_set_handle_cancellation() function.
+//
+// Deprecated: since version 2.46.
+func (s *SimpleAsyncResultClass) SetCheckCancellable(checkCancellable Cancellable) {
 	var _arg0 *C.GSimpleAsyncResult // out
 	var _arg1 *C.GCancellable       // out
 
@@ -500,7 +506,10 @@ func (s simpleAsyncResult) SetCheckCancellable(checkCancellable Cancellable) {
 	C.g_simple_async_result_set_check_cancellable(_arg0, _arg1)
 }
 
-func (s simpleAsyncResult) SetFromError(err error) {
+// SetFromError sets the result from a #GError.
+//
+// Deprecated: since version 2.46.
+func (s *SimpleAsyncResultClass) SetFromError(err error) {
 	var _arg0 *C.GSimpleAsyncResult // out
 	var _arg1 *C.GError             // out
 
@@ -513,7 +522,15 @@ func (s simpleAsyncResult) SetFromError(err error) {
 	C.g_simple_async_result_set_from_error(_arg0, _arg1)
 }
 
-func (s simpleAsyncResult) SetHandleCancellation(handleCancellation bool) {
+// SetHandleCancellation sets whether to handle cancellation within the
+// asynchronous operation.
+//
+// This function has nothing to do with
+// g_simple_async_result_set_check_cancellable(). It only refers to the
+// #GCancellable passed to g_simple_async_result_run_in_thread().
+//
+// Deprecated: since version 2.46.
+func (s *SimpleAsyncResultClass) SetHandleCancellation(handleCancellation bool) {
 	var _arg0 *C.GSimpleAsyncResult // out
 	var _arg1 C.gboolean            // out
 
@@ -525,7 +542,11 @@ func (s simpleAsyncResult) SetHandleCancellation(handleCancellation bool) {
 	C.g_simple_async_result_set_handle_cancellation(_arg0, _arg1)
 }
 
-func (s simpleAsyncResult) SetOpResGboolean(opRes bool) {
+// SetOpResGboolean sets the operation result to a boolean within the
+// asynchronous result.
+//
+// Deprecated: since version 2.46.
+func (s *SimpleAsyncResultClass) SetOpResGboolean(opRes bool) {
 	var _arg0 *C.GSimpleAsyncResult // out
 	var _arg1 C.gboolean            // out
 
@@ -537,7 +558,11 @@ func (s simpleAsyncResult) SetOpResGboolean(opRes bool) {
 	C.g_simple_async_result_set_op_res_gboolean(_arg0, _arg1)
 }
 
-func (s simpleAsyncResult) SetOpResGssize(opRes int) {
+// SetOpResGssize sets the operation result within the asynchronous result to
+// the given @op_res.
+//
+// Deprecated: since version 2.46.
+func (s *SimpleAsyncResultClass) SetOpResGssize(opRes int) {
 	var _arg0 *C.GSimpleAsyncResult // out
 	var _arg1 C.gssize              // out
 

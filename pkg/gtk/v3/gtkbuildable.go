@@ -7,7 +7,6 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -26,7 +25,7 @@ func init() {
 	})
 }
 
-// BuildableOverrider contains methods that are overridable .
+// BuildableOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
@@ -45,8 +44,6 @@ type BuildableOverrider interface {
 	// CustomTagEnd: this is called at the end of each custom element handled by
 	// the buildable.
 	CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data interface{})
-	// CustomTagStart: this is called for each unknown element under <child>.
-	CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool)
 	// InternalChild: get the internal child called @childname of the @buildable
 	// object.
 	InternalChild(builder Builder, childname string) gextras.Objector
@@ -96,8 +93,6 @@ type Buildable interface {
 	// CustomTagEnd: this is called at the end of each custom element handled by
 	// the buildable.
 	CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data interface{})
-	// CustomTagStart: this is called for each unknown element under <child>.
-	CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool)
 	// InternalChild: get the internal child called @childname of the @buildable
 	// object.
 	InternalChild(builder Builder, childname string) gextras.Objector
@@ -118,26 +113,28 @@ type Buildable interface {
 	SetName(name string)
 }
 
-// buildable implements the Buildable interface.
-type buildable struct {
+// BuildableInterface implements the Buildable interface.
+type BuildableInterface struct {
 	*externglib.Object
 }
 
-var _ Buildable = (*buildable)(nil)
+var _ Buildable = (*BuildableInterface)(nil)
 
-// WrapBuildable wraps a GObject to a type that implements
-// interface Buildable. It is primarily used internally.
-func WrapBuildable(obj *externglib.Object) Buildable {
-	return buildable{obj}
+func wrapBuildable(obj *externglib.Object) Buildable {
+	return &BuildableInterface{
+		Object: obj,
+	}
 }
 
 func marshalBuildable(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapBuildable(obj), nil
+	return wrapBuildable(obj), nil
 }
 
-func (b buildable) AddChild(builder Builder, child gextras.Objector, typ string) {
+// AddChild adds a child to @buildable. @type is an optional string describing
+// how the child should be added.
+func (b *BuildableInterface) AddChild(builder Builder, child gextras.Objector, typ string) {
 	var _arg0 *C.GtkBuildable // out
 	var _arg1 *C.GtkBuilder   // out
 	var _arg2 *C.GObject      // out
@@ -152,7 +149,11 @@ func (b buildable) AddChild(builder Builder, child gextras.Objector, typ string)
 	C.gtk_buildable_add_child(_arg0, _arg1, _arg2, _arg3)
 }
 
-func (b buildable) ConstructChild(builder Builder, name string) gextras.Objector {
+// ConstructChild constructs a child of @buildable with the name @name.
+//
+// Builder calls this function if a “constructor” has been specified in the UI
+// definition.
+func (b *BuildableInterface) ConstructChild(builder Builder, name string) gextras.Objector {
 	var _arg0 *C.GtkBuildable // out
 	var _arg1 *C.GtkBuilder   // out
 	var _arg2 *C.gchar        // out
@@ -172,7 +173,9 @@ func (b buildable) ConstructChild(builder Builder, name string) gextras.Objector
 	return _object
 }
 
-func (b buildable) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+// CustomFinished: this is similar to gtk_buildable_parser_finished() but is
+// called once for each custom tag handled by the @buildable.
+func (b *BuildableInterface) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
 	var _arg0 *C.GtkBuildable // out
 	var _arg1 *C.GtkBuilder   // out
 	var _arg2 *C.GObject      // out
@@ -189,7 +192,9 @@ func (b buildable) CustomFinished(builder Builder, child gextras.Objector, tagna
 	C.gtk_buildable_custom_finished(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
-func (b buildable) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+// CustomTagEnd: this is called at the end of each custom element handled by the
+// buildable.
+func (b *BuildableInterface) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data interface{}) {
 	var _arg0 *C.GtkBuildable // out
 	var _arg1 *C.GtkBuilder   // out
 	var _arg2 *C.GObject      // out
@@ -206,47 +211,9 @@ func (b buildable) CustomTagEnd(builder Builder, child gextras.Objector, tagname
 	C.gtk_buildable_custom_tag_end(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
-func (b buildable) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	var _arg0 *C.GtkBuildable // out
-	var _arg1 *C.GtkBuilder   // out
-	var _arg2 *C.GObject      // out
-	var _arg3 *C.gchar        // out
-	var _arg4 C.GMarkupParser // in
-	var _arg5 C.gpointer      // in
-	var _cret C.gboolean      // in
-
-	_arg0 = (*C.GtkBuildable)(unsafe.Pointer(b.Native()))
-	_arg1 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
-	_arg2 = (*C.GObject)(unsafe.Pointer(child.Native()))
-	_arg3 = (*C.gchar)(C.CString(tagname))
-	defer C.free(unsafe.Pointer(_arg3))
-
-	_cret = C.gtk_buildable_custom_tag_start(_arg0, _arg1, _arg2, _arg3, &_arg4, &_arg5)
-
-	var _parser glib.MarkupParser // out
-	var _data interface{}         // out
-	var _ok bool                  // out
-
-	{
-		var refTmpIn *C.GMarkupParser
-		var refTmpOut *glib.MarkupParser
-
-		in0 := &_arg4
-		refTmpIn = in0
-
-		refTmpOut = (*glib.MarkupParser)(unsafe.Pointer(refTmpIn))
-
-		_parser = *refTmpOut
-	}
-	_data = box.Get(uintptr(_arg5))
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _parser, _data, _ok
-}
-
-func (b buildable) InternalChild(builder Builder, childname string) gextras.Objector {
+// InternalChild: get the internal child called @childname of the @buildable
+// object.
+func (b *BuildableInterface) InternalChild(builder Builder, childname string) gextras.Objector {
 	var _arg0 *C.GtkBuildable // out
 	var _arg1 *C.GtkBuilder   // out
 	var _arg2 *C.gchar        // out
@@ -266,7 +233,11 @@ func (b buildable) InternalChild(builder Builder, childname string) gextras.Obje
 	return _object
 }
 
-func (b buildable) Name() string {
+// Name gets the name of the @buildable object.
+//
+// Builder sets the name based on the [GtkBuilder UI definition][BUILDER-UI]
+// used to construct the @buildable.
+func (b *BuildableInterface) Name() string {
 	var _arg0 *C.GtkBuildable // out
 	var _cret *C.gchar        // in
 
@@ -281,7 +252,11 @@ func (b buildable) Name() string {
 	return _utf8
 }
 
-func (b buildable) ParserFinished(builder Builder) {
+// ParserFinished: called when the builder finishes the parsing of a [GtkBuilder
+// UI definition][BUILDER-UI]. Note that this will be called once for each time
+// gtk_builder_add_from_file() or gtk_builder_add_from_string() is called on a
+// builder.
+func (b *BuildableInterface) ParserFinished(builder Builder) {
 	var _arg0 *C.GtkBuildable // out
 	var _arg1 *C.GtkBuilder   // out
 
@@ -291,7 +266,9 @@ func (b buildable) ParserFinished(builder Builder) {
 	C.gtk_buildable_parser_finished(_arg0, _arg1)
 }
 
-func (b buildable) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
+// SetBuildableProperty sets the property name @name to @value on the @buildable
+// object.
+func (b *BuildableInterface) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
 	var _arg0 *C.GtkBuildable // out
 	var _arg1 *C.GtkBuilder   // out
 	var _arg2 *C.gchar        // out
@@ -306,7 +283,8 @@ func (b buildable) SetBuildableProperty(builder Builder, name string, value exte
 	C.gtk_buildable_set_buildable_property(_arg0, _arg1, _arg2, _arg3)
 }
 
-func (b buildable) SetName(name string) {
+// SetName sets the name of the @buildable object.
+func (b *BuildableInterface) SetName(name string) {
 	var _arg0 *C.GtkBuildable // out
 	var _arg1 *C.gchar        // out
 

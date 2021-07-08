@@ -24,26 +24,26 @@ type NormalizeMode int
 const (
 	// Default: standardize differences that do not affect the text content,
 	// such as the above-mentioned accent representation
-	NormalizeDefault NormalizeMode = 0
+	NormalizeModeDefault NormalizeMode = 0
 	// NFD: another name for G_NORMALIZE_DEFAULT
-	NormalizeNFD NormalizeMode = 0
+	NormalizeModeNFD NormalizeMode = 0
 	// DefaultCompose: like G_NORMALIZE_DEFAULT, but with composed forms rather
 	// than a maximally decomposed form
-	NormalizeDefaultCompose NormalizeMode = 1
+	NormalizeModeDefaultCompose NormalizeMode = 1
 	// NFC: another name for G_NORMALIZE_DEFAULT_COMPOSE
-	NormalizeNFC NormalizeMode = 1
+	NormalizeModeNFC NormalizeMode = 1
 	// All: beyond G_NORMALIZE_DEFAULT also standardize the "compatibility"
 	// characters in Unicode, such as SUPERSCRIPT THREE to the standard forms
 	// (in this case DIGIT THREE). Formatting information may be lost but for
 	// most text operations such characters should be considered the same
-	NormalizeAll NormalizeMode = 2
+	NormalizeModeAll NormalizeMode = 2
 	// NFKD: another name for G_NORMALIZE_ALL
-	NormalizeNFKD NormalizeMode = 2
+	NormalizeModeNFKD NormalizeMode = 2
 	// AllCompose: like G_NORMALIZE_ALL, but with composed forms rather than a
 	// maximally decomposed form
-	NormalizeAllCompose NormalizeMode = 3
+	NormalizeModeAllCompose NormalizeMode = 3
 	// NFKC: another name for G_NORMALIZE_ALL_COMPOSE
-	NormalizeNFKC NormalizeMode = 3
+	NormalizeModeNFKC NormalizeMode = 3
 )
 
 // UnicodeBreakType: these are the possible line break classifications.
@@ -58,92 +58,92 @@ type UnicodeBreakType int
 
 const (
 	// Mandatory: mandatory Break (BK)
-	UnicodeBreakMandatory UnicodeBreakType = iota
+	UnicodeBreakTypeMandatory UnicodeBreakType = iota
 	// CarriageReturn: carriage Return (CR)
-	UnicodeBreakCarriageReturn
+	UnicodeBreakTypeCarriageReturn
 	// LineFeed: line Feed (LF)
-	UnicodeBreakLineFeed
+	UnicodeBreakTypeLineFeed
 	// CombiningMark: attached Characters and Combining Marks (CM)
-	UnicodeBreakCombiningMark
+	UnicodeBreakTypeCombiningMark
 	// Surrogate surrogates (SG)
-	UnicodeBreakSurrogate
+	UnicodeBreakTypeSurrogate
 	// ZeroWidthSpace: zero Width Space (ZW)
-	UnicodeBreakZeroWidthSpace
+	UnicodeBreakTypeZeroWidthSpace
 	// Inseparable: inseparable (IN)
-	UnicodeBreakInseparable
+	UnicodeBreakTypeInseparable
 	// NonBreakingGlue: non-breaking ("Glue") (GL)
-	UnicodeBreakNonBreakingGlue
+	UnicodeBreakTypeNonBreakingGlue
 	// Contingent: contingent Break Opportunity (CB)
-	UnicodeBreakContingent
+	UnicodeBreakTypeContingent
 	// Space: space (SP)
-	UnicodeBreakSpace
+	UnicodeBreakTypeSpace
 	// After: break Opportunity After (BA)
-	UnicodeBreakAfter
+	UnicodeBreakTypeAfter
 	// Before: break Opportunity Before (BB)
-	UnicodeBreakBefore
+	UnicodeBreakTypeBefore
 	// BeforeAndAfter: break Opportunity Before and After (B2)
-	UnicodeBreakBeforeAndAfter
+	UnicodeBreakTypeBeforeAndAfter
 	// Hyphen: hyphen (HY)
-	UnicodeBreakHyphen
+	UnicodeBreakTypeHyphen
 	// NonStarter: nonstarter (NS)
-	UnicodeBreakNonStarter
+	UnicodeBreakTypeNonStarter
 	// OpenPunctuation: opening Punctuation (OP)
-	UnicodeBreakOpenPunctuation
+	UnicodeBreakTypeOpenPunctuation
 	// ClosePunctuation: closing Punctuation (CL)
-	UnicodeBreakClosePunctuation
+	UnicodeBreakTypeClosePunctuation
 	// Quotation ambiguous Quotation (QU)
-	UnicodeBreakQuotation
+	UnicodeBreakTypeQuotation
 	// Exclamation: exclamation/Interrogation (EX)
-	UnicodeBreakExclamation
+	UnicodeBreakTypeExclamation
 	// Ideographic: ideographic (ID)
-	UnicodeBreakIdeographic
+	UnicodeBreakTypeIdeographic
 	// Numeric: numeric (NU)
-	UnicodeBreakNumeric
+	UnicodeBreakTypeNumeric
 	// InfixSeparator: infix Separator (Numeric) (IS)
-	UnicodeBreakInfixSeparator
+	UnicodeBreakTypeInfixSeparator
 	// Symbol symbols Allowing Break After (SY)
-	UnicodeBreakSymbol
+	UnicodeBreakTypeSymbol
 	// Alphabetic: ordinary Alphabetic and Symbol Characters (AL)
-	UnicodeBreakAlphabetic
+	UnicodeBreakTypeAlphabetic
 	// Prefix: prefix (Numeric) (PR)
-	UnicodeBreakPrefix
+	UnicodeBreakTypePrefix
 	// Postfix: postfix (Numeric) (PO)
-	UnicodeBreakPostfix
+	UnicodeBreakTypePostfix
 	// ComplexContext: complex Content Dependent (South East Asian) (SA)
-	UnicodeBreakComplexContext
+	UnicodeBreakTypeComplexContext
 	// Ambiguous ambiguous (Alphabetic or Ideographic) (AI)
-	UnicodeBreakAmbiguous
+	UnicodeBreakTypeAmbiguous
 	// Unknown: unknown (XX)
-	UnicodeBreakUnknown
+	UnicodeBreakTypeUnknown
 	// NextLine: next Line (NL)
-	UnicodeBreakNextLine
+	UnicodeBreakTypeNextLine
 	// WordJoiner: word Joiner (WJ)
-	UnicodeBreakWordJoiner
+	UnicodeBreakTypeWordJoiner
 	// HangulLJamo: hangul L Jamo (JL)
-	UnicodeBreakHangulLJamo
+	UnicodeBreakTypeHangulLJamo
 	// HangulVJamo: hangul V Jamo (JV)
-	UnicodeBreakHangulVJamo
+	UnicodeBreakTypeHangulVJamo
 	// HangulTJamo: hangul T Jamo (JT)
-	UnicodeBreakHangulTJamo
+	UnicodeBreakTypeHangulTJamo
 	// HangulLvSyllable: hangul LV Syllable (H2)
-	UnicodeBreakHangulLvSyllable
+	UnicodeBreakTypeHangulLvSyllable
 	// HangulLvtSyllable: hangul LVT Syllable (H3)
-	UnicodeBreakHangulLvtSyllable
+	UnicodeBreakTypeHangulLvtSyllable
 	// CloseParanthesis: closing Parenthesis (CP). Since 2.28
-	UnicodeBreakCloseParanthesis
+	UnicodeBreakTypeCloseParanthesis
 	// ConditionalJapaneseStarter: conditional Japanese Starter (CJ). Since:
 	// 2.32
-	UnicodeBreakConditionalJapaneseStarter
+	UnicodeBreakTypeConditionalJapaneseStarter
 	// HebrewLetter: hebrew Letter (HL). Since: 2.32
-	UnicodeBreakHebrewLetter
+	UnicodeBreakTypeHebrewLetter
 	// RegionalIndicator: regional Indicator (RI). Since: 2.36
-	UnicodeBreakRegionalIndicator
+	UnicodeBreakTypeRegionalIndicator
 	// EmojiBase: emoji Base (EB). Since: 2.50
-	UnicodeBreakEmojiBase
+	UnicodeBreakTypeEmojiBase
 	// EmojiModifier: emoji Modifier (EM). Since: 2.50
-	UnicodeBreakEmojiModifier
+	UnicodeBreakTypeEmojiModifier
 	// ZeroWidthJoiner: zero Width Joiner (ZWJ). Since: 2.50
-	UnicodeBreakZeroWidthJoiner
+	UnicodeBreakTypeZeroWidthJoiner
 )
 
 // UnicodeScript: the Script enumeration identifies different writing systems.
@@ -482,65 +482,65 @@ type UnicodeType int
 
 const (
 	// Control: general category "Other, Control" (Cc)
-	UnicodeControl UnicodeType = iota
+	UnicodeTypeControl UnicodeType = iota
 	// Format: general category "Other, Format" (Cf)
-	UnicodeFormat
+	UnicodeTypeFormat
 	// Unassigned: general category "Other, Not Assigned" (Cn)
-	UnicodeUnassigned
+	UnicodeTypeUnassigned
 	// PrivateUse: general category "Other, Private Use" (Co)
-	UnicodePrivateUse
+	UnicodeTypePrivateUse
 	// Surrogate: general category "Other, Surrogate" (Cs)
-	UnicodeSurrogate
+	UnicodeTypeSurrogate
 	// LowercaseLetter: general category "Letter, Lowercase" (Ll)
-	UnicodeLowercaseLetter
+	UnicodeTypeLowercaseLetter
 	// ModifierLetter: general category "Letter, Modifier" (Lm)
-	UnicodeModifierLetter
+	UnicodeTypeModifierLetter
 	// OtherLetter: general category "Letter, Other" (Lo)
-	UnicodeOtherLetter
+	UnicodeTypeOtherLetter
 	// TitlecaseLetter: general category "Letter, Titlecase" (Lt)
-	UnicodeTitlecaseLetter
+	UnicodeTypeTitlecaseLetter
 	// UppercaseLetter: general category "Letter, Uppercase" (Lu)
-	UnicodeUppercaseLetter
+	UnicodeTypeUppercaseLetter
 	// SpacingMark: general category "Mark, Spacing" (Mc)
-	UnicodeSpacingMark
+	UnicodeTypeSpacingMark
 	// EnclosingMark: general category "Mark, Enclosing" (Me)
-	UnicodeEnclosingMark
+	UnicodeTypeEnclosingMark
 	// NonSpacingMark: general category "Mark, Nonspacing" (Mn)
-	UnicodeNonSpacingMark
+	UnicodeTypeNonSpacingMark
 	// DecimalNumber: general category "Number, Decimal Digit" (Nd)
-	UnicodeDecimalNumber
+	UnicodeTypeDecimalNumber
 	// LetterNumber: general category "Number, Letter" (Nl)
-	UnicodeLetterNumber
+	UnicodeTypeLetterNumber
 	// OtherNumber: general category "Number, Other" (No)
-	UnicodeOtherNumber
+	UnicodeTypeOtherNumber
 	// ConnectPunctuation: general category "Punctuation, Connector" (Pc)
-	UnicodeConnectPunctuation
+	UnicodeTypeConnectPunctuation
 	// DashPunctuation: general category "Punctuation, Dash" (Pd)
-	UnicodeDashPunctuation
+	UnicodeTypeDashPunctuation
 	// ClosePunctuation: general category "Punctuation, Close" (Pe)
-	UnicodeClosePunctuation
+	UnicodeTypeClosePunctuation
 	// FinalPunctuation: general category "Punctuation, Final quote" (Pf)
-	UnicodeFinalPunctuation
+	UnicodeTypeFinalPunctuation
 	// InitialPunctuation: general category "Punctuation, Initial quote" (Pi)
-	UnicodeInitialPunctuation
+	UnicodeTypeInitialPunctuation
 	// OtherPunctuation: general category "Punctuation, Other" (Po)
-	UnicodeOtherPunctuation
+	UnicodeTypeOtherPunctuation
 	// OpenPunctuation: general category "Punctuation, Open" (Ps)
-	UnicodeOpenPunctuation
+	UnicodeTypeOpenPunctuation
 	// CurrencySymbol: general category "Symbol, Currency" (Sc)
-	UnicodeCurrencySymbol
+	UnicodeTypeCurrencySymbol
 	// ModifierSymbol: general category "Symbol, Modifier" (Sk)
-	UnicodeModifierSymbol
+	UnicodeTypeModifierSymbol
 	// MathSymbol: general category "Symbol, Math" (Sm)
-	UnicodeMathSymbol
+	UnicodeTypeMathSymbol
 	// OtherSymbol: general category "Symbol, Other" (So)
-	UnicodeOtherSymbol
+	UnicodeTypeOtherSymbol
 	// LineSeparator: general category "Separator, Line" (Zl)
-	UnicodeLineSeparator
+	UnicodeTypeLineSeparator
 	// ParagraphSeparator: general category "Separator, Paragraph" (Zp)
-	UnicodeParagraphSeparator
+	UnicodeTypeParagraphSeparator
 	// SpaceSeparator: general category "Separator, Space" (Zs)
-	UnicodeSpaceSeparator
+	UnicodeTypeSpaceSeparator
 )
 
 // UCS4ToUTF16: convert a string from UCS-4 to UTF-16. A 0 character will be

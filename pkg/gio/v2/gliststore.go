@@ -44,56 +44,6 @@ func init() {
 type ListStore interface {
 	gextras.Objector
 
-	// AsListModel casts the class to the ListModel interface.
-	AsListModel() ListModel
-
-	// GetItemType gets the type of the items in @list. All items returned from
-	// g_list_model_get_type() are of that type or a subtype, or are an
-	// implementation of that interface.
-	//
-	// The item type of a Model can not change during the life of the model.
-	//
-	// This method is inherited from ListModel
-	GetItemType() externglib.Type
-	// GetNItems gets the number of items in @list.
-	//
-	// Depending on the model implementation, calling this function may be less
-	// efficient than iterating the list with increasing values for @position
-	// until g_list_model_get_item() returns nil.
-	//
-	// This method is inherited from ListModel
-	GetNItems() uint
-	// GetObject: get the item at @position. If @position is greater than the
-	// number of items in @list, nil is returned.
-	//
-	// nil is never returned for an index that is smaller than the length of the
-	// list. See g_list_model_get_n_items().
-	//
-	// This method is inherited from ListModel
-	GetObject(position uint) gextras.Objector
-	// ItemsChanged emits the Model::items-changed signal on @list.
-	//
-	// This function should only be called by classes implementing Model. It has
-	// to be called after the internal representation of @list has been updated,
-	// because handlers connected to this signal might query the new state of
-	// the list.
-	//
-	// Implementations must only make changes to the model (as visible to its
-	// consumer) in places that will not cause problems for that consumer. For
-	// models that are driven directly by a write API (such as Store), changes
-	// can be reported in response to uses of that API. For models that
-	// represent remote data, changes should only be made from a fresh mainloop
-	// dispatch. It is particularly not permitted to make changes in response to
-	// a call to the Model consumer API.
-	//
-	// Stated another way: in general, it is assumed that code making a series
-	// of accesses to the model via the API, without returning to the mainloop,
-	// and without calling other code, will continue to view the same contents
-	// of the model.
-	//
-	// This method is inherited from ListModel
-	ItemsChanged(position uint, removed uint, added uint)
-
 	// Append appends @item to @store. @item must be of type Store:item-type.
 	//
 	// This function takes a ref on @item.
@@ -152,23 +102,27 @@ type ListStore interface {
 	Splice(position uint, nRemovals uint, additions []gextras.Objector)
 }
 
-// listStore implements the ListStore interface.
-type listStore struct {
+// ListStoreClass implements the ListStore interface.
+type ListStoreClass struct {
 	*externglib.Object
+	ListModelInterface
 }
 
-var _ ListStore = (*listStore)(nil)
+var _ ListStore = (*ListStoreClass)(nil)
 
-// WrapListStore wraps a GObject to a type that implements
-// interface ListStore. It is primarily used internally.
-func WrapListStore(obj *externglib.Object) ListStore {
-	return listStore{obj}
+func wrapListStore(obj *externglib.Object) ListStore {
+	return &ListStoreClass{
+		Object: obj,
+		ListModelInterface: ListModelInterface{
+			Object: obj,
+		},
+	}
 }
 
 func marshalListStore(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapListStore(obj), nil
+	return wrapListStore(obj), nil
 }
 
 // NewListStore creates a new Store with items of type @item_type. @item_type
@@ -188,27 +142,13 @@ func NewListStore(itemType externglib.Type) ListStore {
 	return _listStore
 }
 
-func (l listStore) AsListModel() ListModel {
-	return WrapListModel(gextras.InternObject(l))
-}
-
-func (l listStore) GetItemType() externglib.Type {
-	return WrapListModel(gextras.InternObject(l)).GetItemType()
-}
-
-func (l listStore) GetNItems() uint {
-	return WrapListModel(gextras.InternObject(l)).GetNItems()
-}
-
-func (l listStore) GetObject(position uint) gextras.Objector {
-	return WrapListModel(gextras.InternObject(l)).GetObject(position)
-}
-
-func (l listStore) ItemsChanged(position uint, removed uint, added uint) {
-	WrapListModel(gextras.InternObject(l)).ItemsChanged(position, removed, added)
-}
-
-func (s listStore) Append(item gextras.Objector) {
+// Append appends @item to @store. @item must be of type Store:item-type.
+//
+// This function takes a ref on @item.
+//
+// Use g_list_store_splice() to append multiple items at the same time
+// efficiently.
+func (s *ListStoreClass) Append(item gextras.Objector) {
 	var _arg0 *C.GListStore // out
 	var _arg1 C.gpointer    // out
 
@@ -218,7 +158,13 @@ func (s listStore) Append(item gextras.Objector) {
 	C.g_list_store_append(_arg0, _arg1)
 }
 
-func (s listStore) Find(item gextras.Objector) (uint, bool) {
+// Find looks up the given @item in the list store by looping over the items
+// until the first occurrence of @item. If @item was not found, then @position
+// will not be set, and this method will return false.
+//
+// If you need to compare the two items with a custom comparison function, use
+// g_list_store_find_with_equal_func() with a custom Func instead.
+func (s *ListStoreClass) Find(item gextras.Objector) (uint, bool) {
 	var _arg0 *C.GListStore // out
 	var _arg1 C.gpointer    // out
 	var _arg2 C.guint       // in
@@ -240,7 +186,15 @@ func (s listStore) Find(item gextras.Objector) (uint, bool) {
 	return _position, _ok
 }
 
-func (s listStore) Insert(position uint, item gextras.Objector) {
+// Insert inserts @item into @store at @position. @item must be of type
+// Store:item-type or derived from it. @position must be smaller than the length
+// of the list, or equal to it to append.
+//
+// This function takes a ref on @item.
+//
+// Use g_list_store_splice() to insert multiple items at the same time
+// efficiently.
+func (s *ListStoreClass) Insert(position uint, item gextras.Objector) {
 	var _arg0 *C.GListStore // out
 	var _arg1 C.guint       // out
 	var _arg2 C.gpointer    // out
@@ -252,7 +206,15 @@ func (s listStore) Insert(position uint, item gextras.Objector) {
 	C.g_list_store_insert(_arg0, _arg1, _arg2)
 }
 
-func (s listStore) InsertSorted(item gextras.Objector, compareFunc glib.CompareDataFunc) uint {
+// InsertSorted inserts @item into @store at a position to be determined by the
+// @compare_func.
+//
+// The list must already be sorted before calling this function or the result is
+// undefined. Usually you would approach this by only ever inserting items by
+// way of this function.
+//
+// This function takes a ref on @item.
+func (s *ListStoreClass) InsertSorted(item gextras.Objector, compareFunc glib.CompareDataFunc) uint {
 	var _arg0 *C.GListStore      // out
 	var _arg1 C.gpointer         // out
 	var _arg2 C.GCompareDataFunc // out
@@ -273,7 +235,12 @@ func (s listStore) InsertSorted(item gextras.Objector, compareFunc glib.CompareD
 	return _guint
 }
 
-func (s listStore) Remove(position uint) {
+// Remove removes the item from @store that is at @position. @position must be
+// smaller than the current length of the list.
+//
+// Use g_list_store_splice() to remove multiple items at the same time
+// efficiently.
+func (s *ListStoreClass) Remove(position uint) {
 	var _arg0 *C.GListStore // out
 	var _arg1 C.guint       // out
 
@@ -283,7 +250,8 @@ func (s listStore) Remove(position uint) {
 	C.g_list_store_remove(_arg0, _arg1)
 }
 
-func (s listStore) RemoveAll() {
+// RemoveAll removes all items from @store.
+func (s *ListStoreClass) RemoveAll() {
 	var _arg0 *C.GListStore // out
 
 	_arg0 = (*C.GListStore)(unsafe.Pointer(s.Native()))
@@ -291,7 +259,8 @@ func (s listStore) RemoveAll() {
 	C.g_list_store_remove_all(_arg0)
 }
 
-func (s listStore) Sort(compareFunc glib.CompareDataFunc) {
+// Sort the items in @store according to @compare_func.
+func (s *ListStoreClass) Sort(compareFunc glib.CompareDataFunc) {
 	var _arg0 *C.GListStore      // out
 	var _arg1 C.GCompareDataFunc // out
 	var _arg2 C.gpointer
@@ -303,7 +272,20 @@ func (s listStore) Sort(compareFunc glib.CompareDataFunc) {
 	C.g_list_store_sort(_arg0, _arg1, _arg2)
 }
 
-func (s listStore) Splice(position uint, nRemovals uint, additions []gextras.Objector) {
+// Splice changes @store by removing @n_removals items and adding @n_additions
+// items to it. @additions must contain @n_additions items of type
+// Store:item-type. nil is not permitted.
+//
+// This function is more efficient than g_list_store_insert() and
+// g_list_store_remove(), because it only emits Model::items-changed once for
+// the change.
+//
+// This function takes a ref on each item in @additions.
+//
+// The parameters @position and @n_removals must be correct (ie: @position +
+// @n_removals must be less than or equal to the length of the list at the time
+// this function is called).
+func (s *ListStoreClass) Splice(position uint, nRemovals uint, additions []gextras.Objector) {
 	var _arg0 *C.GListStore // out
 	var _arg1 C.guint       // out
 	var _arg2 C.guint       // out

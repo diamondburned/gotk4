@@ -57,24 +57,6 @@ func init() {
 type Settings interface {
 	gextras.Objector
 
-	// AsStyleProvider casts the class to the StyleProvider interface.
-	AsStyleProvider() StyleProvider
-
-	// GetIconFactory returns the IconFactory defined to be in use for @path, or
-	// nil if none is defined.
-	//
-	// Deprecated: since version 3.8.
-	//
-	// This method is inherited from StyleProvider
-	GetIconFactory(path *WidgetPath) IconFactory
-	// GetStyle returns the style settings affecting a widget defined by @path,
-	// or nil if @provider doesn’t contemplate styling @path.
-	//
-	// Deprecated: since version 3.8.
-	//
-	// This method is inherited from StyleProvider
-	GetStyle(path *WidgetPath) StyleProperties
-
 	// ResetProperty undoes the effect of calling g_object_set() to install an
 	// application-specific value for a setting. After this call, the setting
 	// will again follow the session-wide value for this setting.
@@ -87,38 +69,33 @@ type Settings interface {
 	SetStringProperty(name string, vString string, origin string)
 }
 
-// settings implements the Settings interface.
-type settings struct {
+// SettingsClass implements the Settings interface.
+type SettingsClass struct {
 	*externglib.Object
+	StyleProviderInterface
 }
 
-var _ Settings = (*settings)(nil)
+var _ Settings = (*SettingsClass)(nil)
 
-// WrapSettings wraps a GObject to a type that implements
-// interface Settings. It is primarily used internally.
-func WrapSettings(obj *externglib.Object) Settings {
-	return settings{obj}
+func wrapSettings(obj *externglib.Object) Settings {
+	return &SettingsClass{
+		Object: obj,
+		StyleProviderInterface: StyleProviderInterface{
+			Object: obj,
+		},
+	}
 }
 
 func marshalSettings(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapSettings(obj), nil
+	return wrapSettings(obj), nil
 }
 
-func (s settings) AsStyleProvider() StyleProvider {
-	return WrapStyleProvider(gextras.InternObject(s))
-}
-
-func (p settings) GetIconFactory(path *WidgetPath) IconFactory {
-	return WrapStyleProvider(gextras.InternObject(p)).GetIconFactory(path)
-}
-
-func (p settings) GetStyle(path *WidgetPath) StyleProperties {
-	return WrapStyleProvider(gextras.InternObject(p)).GetStyle(path)
-}
-
-func (s settings) ResetProperty(name string) {
+// ResetProperty undoes the effect of calling g_object_set() to install an
+// application-specific value for a setting. After this call, the setting will
+// again follow the session-wide value for this setting.
+func (s *SettingsClass) ResetProperty(name string) {
 	var _arg0 *C.GtkSettings // out
 	var _arg1 *C.gchar       // out
 
@@ -129,7 +106,8 @@ func (s settings) ResetProperty(name string) {
 	C.gtk_settings_reset_property(_arg0, _arg1)
 }
 
-func (s settings) SetDoubleProperty(name string, vDouble float64, origin string) {
+// SetDoubleProperty: deprecated: since version 3.16.
+func (s *SettingsClass) SetDoubleProperty(name string, vDouble float64, origin string) {
 	var _arg0 *C.GtkSettings // out
 	var _arg1 *C.gchar       // out
 	var _arg2 C.gdouble      // out
@@ -145,7 +123,8 @@ func (s settings) SetDoubleProperty(name string, vDouble float64, origin string)
 	C.gtk_settings_set_double_property(_arg0, _arg1, _arg2, _arg3)
 }
 
-func (s settings) SetLongProperty(name string, vLong int32, origin string) {
+// SetLongProperty: deprecated: since version 3.16.
+func (s *SettingsClass) SetLongProperty(name string, vLong int32, origin string) {
 	var _arg0 *C.GtkSettings // out
 	var _arg1 *C.gchar       // out
 	var _arg2 C.glong        // out
@@ -161,7 +140,8 @@ func (s settings) SetLongProperty(name string, vLong int32, origin string) {
 	C.gtk_settings_set_long_property(_arg0, _arg1, _arg2, _arg3)
 }
 
-func (s settings) SetStringProperty(name string, vString string, origin string) {
+// SetStringProperty: deprecated: since version 3.16.
+func (s *SettingsClass) SetStringProperty(name string, vString string, origin string) {
 	var _arg0 *C.GtkSettings // out
 	var _arg1 *C.gchar       // out
 	var _arg2 *C.gchar       // out

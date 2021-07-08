@@ -29,35 +29,7 @@ func init() {
 //
 // This object was added in 3.24.
 type EventControllerKey interface {
-	EventController
-
-	// AsEventController casts the class to the EventController interface.
-	AsEventController() EventController
-
-	// GetPropagationPhase gets the propagation phase at which @controller
-	// handles events.
-	//
-	// This method is inherited from EventController
-	GetPropagationPhase() PropagationPhase
-	// GetWidget returns the Widget this controller relates to.
-	//
-	// This method is inherited from EventController
-	GetWidget() Widget
-	// Reset resets the @controller to a clean state. Every interaction the
-	// controller did through EventController::handle-event will be dropped at
-	// this point.
-	//
-	// This method is inherited from EventController
-	Reset()
-	// SetPropagationPhase sets the propagation phase at which a controller
-	// handles events.
-	//
-	// If @phase is GTK_PHASE_NONE, no automatic event handling will be
-	// performed, but other additional gesture maintenance will. In that phase,
-	// the events can be managed by calling gtk_event_controller_handle_event().
-	//
-	// This method is inherited from EventController
-	SetPropagationPhase(phase PropagationPhase)
+	gextras.Objector
 
 	Forward(widget Widget) bool
 	Group() uint
@@ -66,23 +38,25 @@ type EventControllerKey interface {
 	SetImContext(imContext IMContext)
 }
 
-// eventControllerKey implements the EventControllerKey interface.
-type eventControllerKey struct {
-	*externglib.Object
+// EventControllerKeyClass implements the EventControllerKey interface.
+type EventControllerKeyClass struct {
+	EventControllerClass
 }
 
-var _ EventControllerKey = (*eventControllerKey)(nil)
+var _ EventControllerKey = (*EventControllerKeyClass)(nil)
 
-// WrapEventControllerKey wraps a GObject to a type that implements
-// interface EventControllerKey. It is primarily used internally.
-func WrapEventControllerKey(obj *externglib.Object) EventControllerKey {
-	return eventControllerKey{obj}
+func wrapEventControllerKey(obj *externglib.Object) EventControllerKey {
+	return &EventControllerKeyClass{
+		EventControllerClass: EventControllerClass{
+			Object: obj,
+		},
+	}
 }
 
 func marshalEventControllerKey(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapEventControllerKey(obj), nil
+	return wrapEventControllerKey(obj), nil
 }
 
 func NewEventControllerKey(widget Widget) EventControllerKey {
@@ -100,27 +74,7 @@ func NewEventControllerKey(widget Widget) EventControllerKey {
 	return _eventControllerKey
 }
 
-func (e eventControllerKey) AsEventController() EventController {
-	return WrapEventController(gextras.InternObject(e))
-}
-
-func (c eventControllerKey) GetPropagationPhase() PropagationPhase {
-	return WrapEventController(gextras.InternObject(c)).GetPropagationPhase()
-}
-
-func (c eventControllerKey) GetWidget() Widget {
-	return WrapEventController(gextras.InternObject(c)).GetWidget()
-}
-
-func (c eventControllerKey) Reset() {
-	WrapEventController(gextras.InternObject(c)).Reset()
-}
-
-func (c eventControllerKey) SetPropagationPhase(phase PropagationPhase) {
-	WrapEventController(gextras.InternObject(c)).SetPropagationPhase(phase)
-}
-
-func (c eventControllerKey) Forward(widget Widget) bool {
+func (c *EventControllerKeyClass) Forward(widget Widget) bool {
 	var _arg0 *C.GtkEventControllerKey // out
 	var _arg1 *C.GtkWidget             // out
 	var _cret C.gboolean               // in
@@ -139,7 +93,7 @@ func (c eventControllerKey) Forward(widget Widget) bool {
 	return _ok
 }
 
-func (c eventControllerKey) Group() uint {
+func (c *EventControllerKeyClass) Group() uint {
 	var _arg0 *C.GtkEventControllerKey // out
 	var _cret C.guint                  // in
 
@@ -154,7 +108,8 @@ func (c eventControllerKey) Group() uint {
 	return _guint
 }
 
-func (c eventControllerKey) ImContext() IMContext {
+// ImContext gets the IM context of a key controller.
+func (c *EventControllerKeyClass) ImContext() IMContext {
 	var _arg0 *C.GtkEventControllerKey // out
 	var _cret *C.GtkIMContext          // in
 
@@ -169,7 +124,7 @@ func (c eventControllerKey) ImContext() IMContext {
 	return _imContext
 }
 
-func (c eventControllerKey) SetImContext(imContext IMContext) {
+func (c *EventControllerKeyClass) SetImContext(imContext IMContext) {
 	var _arg0 *C.GtkEventControllerKey // out
 	var _arg1 *C.GtkIMContext          // out
 

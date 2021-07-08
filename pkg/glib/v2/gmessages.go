@@ -24,9 +24,9 @@ type LogWriterOutput int
 
 const (
 	// Handled: log writer has handled the log entry.
-	LogWriterHandled LogWriterOutput = 1
+	LogWriterOutputHandled LogWriterOutput = 1
 	// Unhandled: log writer could not handle the log entry.
-	LogWriterUnhandled LogWriterOutput = 0
+	LogWriterOutputUnhandled LogWriterOutput = 0
 )
 
 // LogLevelFlags flags specifying the level of log messages.
@@ -89,48 +89,6 @@ func gotk4_LogFunc(arg0 *C.gchar, arg1 C.GLogLevelFlags, arg2 *C.gchar, arg3 C.g
 
 	fn := v.(LogFunc)
 	fn(logDomain, logLevel, message)
-}
-
-// LogWriterFunc: writer function for log entries. A log entry is a collection
-// of one or more Fields, using the standard [field names from journal
-// specification](https://www.freedesktop.org/software/systemd/man/systemd.journal-fields.html).
-// See g_log_structured() for more information.
-//
-// Writer functions must ignore fields which they do not recognise, unless they
-// can write arbitrary binary output, as field values may be arbitrary binary.
-//
-// @log_level is guaranteed to be included in @fields as the `PRIORITY` field,
-// but is provided separately for convenience of deciding whether or where to
-// output the log entry.
-//
-// Writer functions should return G_LOG_WRITER_HANDLED if they handled the log
-// message successfully or if they deliberately ignored it. If there was an
-// error handling the message (for example, if the writer function is meant to
-// send messages to a remote logging server and there is a network error), it
-// should return G_LOG_WRITER_UNHANDLED. This allows writer functions to be
-// chained and fall back to simpler handlers in case of failure.
-type LogWriterFunc func(logLevel LogLevelFlags, fields []LogField) (logWriterOutput LogWriterOutput)
-
-//export gotk4_LogWriterFunc
-func gotk4_LogWriterFunc(arg0 C.GLogLevelFlags, arg1 *C.GLogField, arg2 C.gsize, arg3 C.gpointer) (cret C.GLogWriterOutput) {
-	v := box.Get(uintptr(arg3))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	var logLevel LogLevelFlags // out
-	var fields []LogField
-
-	logLevel = LogLevelFlags(arg0)
-	fields = make([]LogField, arg2)
-	copy(fields, unsafe.Slice((*LogField)(unsafe.Pointer(arg1)), arg2))
-
-	fn := v.(LogWriterFunc)
-	logWriterOutput := fn(logLevel, fields)
-
-	cret = C.GLogWriterOutput(logWriterOutput)
-
-	return cret
 }
 
 func AssertWarning(logDomain string, file string, line int, prettyFunction string, expression string) {
@@ -270,27 +228,6 @@ func LogSetFatalMask(logDomain string, fatalMask LogLevelFlags) LogLevelFlags {
 	return _logLevelFlags
 }
 
-// LogStructuredArray: log a message with structured data. The message will be
-// passed through to the log writer set by the application using
-// g_log_set_writer_func(). If the message is fatal (i.e. its log level is
-// G_LOG_LEVEL_ERROR), the program will be aborted at the end of this function.
-//
-// See g_log_structured() for more documentation.
-//
-// This assumes that @log_level is already present in @fields (typically as the
-// `PRIORITY` field).
-func LogStructuredArray(logLevel LogLevelFlags, fields []LogField) {
-	var _arg1 C.GLogLevelFlags // out
-	var _arg2 *C.GLogField
-	var _arg3 C.gsize
-
-	_arg1 = C.GLogLevelFlags(logLevel)
-	_arg3 = C.gsize(len(fields))
-	_arg2 = (*C.GLogField)(unsafe.Pointer(&fields[0]))
-
-	C.g_log_structured_array(_arg1, _arg2, _arg3)
-}
-
 // LogVariant: log a message with structured data, accepting the data within a
 // #GVariant. This version is especially useful for use in other languages, via
 // introspection.
@@ -319,46 +256,6 @@ func LogVariant(logDomain string, logLevel LogLevelFlags, fields *Variant) {
 	_arg3 = (*C.GVariant)(unsafe.Pointer(fields))
 
 	C.g_log_variant(_arg1, _arg2, _arg3)
-}
-
-// LogWriterDefault: format a structured log message and output it to the
-// default log destination for the platform. On Linux, this is typically the
-// systemd journal, falling back to `stdout` or `stderr` if running from the
-// terminal or if output is being redirected to a file.
-//
-// Support for other platform-specific logging mechanisms may be added in
-// future. Distributors of GLib may modify this function to impose their own
-// (documented) platform-specific log writing policies.
-//
-// This is suitable for use as a WriterFunc, and is the default writer used if
-// no other is set using g_log_set_writer_func().
-//
-// As with g_log_default_handler(), this function drops debug and informational
-// messages unless their log domain (or `all`) is listed in the space-separated
-// `G_MESSAGES_DEBUG` environment variable.
-//
-// g_log_writer_default() uses the mask set by g_log_set_always_fatal() to
-// determine which messages are fatal. When using a custom writer func instead
-// it is up to the writer function to determine which log messages are fatal.
-func LogWriterDefault(logLevel LogLevelFlags, fields []LogField, userData interface{}) LogWriterOutput {
-	var _arg1 C.GLogLevelFlags // out
-	var _arg2 *C.GLogField
-	var _arg3 C.gsize
-	var _arg4 C.gpointer         // out
-	var _cret C.GLogWriterOutput // in
-
-	_arg1 = C.GLogLevelFlags(logLevel)
-	_arg3 = C.gsize(len(fields))
-	_arg2 = (*C.GLogField)(unsafe.Pointer(&fields[0]))
-	_arg4 = (C.gpointer)(box.Assign(userData))
-
-	_cret = C.g_log_writer_default(_arg1, _arg2, _arg3, _arg4)
-
-	var _logWriterOutput LogWriterOutput // out
-
-	_logWriterOutput = LogWriterOutput(_cret)
-
-	return _logWriterOutput
 }
 
 // LogWriterDefaultSetUseStderr: configure whether the built-in log functions
@@ -422,39 +319,6 @@ func LogWriterDefaultWouldDrop(logLevel LogLevelFlags, logDomain string) bool {
 	return _ok
 }
 
-// LogWriterFormatFields: format a structured log message as a string suitable
-// for outputting to the terminal (or elsewhere). This will include the values
-// of all fields it knows how to interpret, which includes `MESSAGE` and
-// `GLIB_DOMAIN` (see the documentation for g_log_structured()). It does not
-// include values from unknown fields.
-//
-// The returned string does **not** have a trailing new-line character. It is
-// encoded in the character set of the current locale, which is not necessarily
-// UTF-8.
-func LogWriterFormatFields(logLevel LogLevelFlags, fields []LogField, useColor bool) string {
-	var _arg1 C.GLogLevelFlags // out
-	var _arg2 *C.GLogField
-	var _arg3 C.gsize
-	var _arg4 C.gboolean // out
-	var _cret *C.gchar   // in
-
-	_arg1 = C.GLogLevelFlags(logLevel)
-	_arg3 = C.gsize(len(fields))
-	_arg2 = (*C.GLogField)(unsafe.Pointer(&fields[0]))
-	if useColor {
-		_arg4 = C.TRUE
-	}
-
-	_cret = C.g_log_writer_format_fields(_arg1, _arg2, _arg3, _arg4)
-
-	var _utf8 string // out
-
-	_utf8 = C.GoString(_cret)
-	defer C.free(unsafe.Pointer(_cret))
-
-	return _utf8
-}
-
 // LogWriterIsJournald: check whether the given @output_fd file descriptor is a
 // connection to the systemd journal, or something else (like a log file or
 // `stdout` or `stderr`).
@@ -478,70 +342,6 @@ func LogWriterIsJournald(outputFd int) bool {
 	}
 
 	return _ok
-}
-
-// LogWriterJournald: format a structured log message and send it to the systemd
-// journal as a set of key–value pairs. All fields are sent to the journal, but
-// if a field has length zero (indicating program-specific data) then only its
-// key will be sent.
-//
-// This is suitable for use as a WriterFunc.
-//
-// If GLib has been compiled without systemd support, this function is still
-// defined, but will always return G_LOG_WRITER_UNHANDLED.
-func LogWriterJournald(logLevel LogLevelFlags, fields []LogField, userData interface{}) LogWriterOutput {
-	var _arg1 C.GLogLevelFlags // out
-	var _arg2 *C.GLogField
-	var _arg3 C.gsize
-	var _arg4 C.gpointer         // out
-	var _cret C.GLogWriterOutput // in
-
-	_arg1 = C.GLogLevelFlags(logLevel)
-	_arg3 = C.gsize(len(fields))
-	_arg2 = (*C.GLogField)(unsafe.Pointer(&fields[0]))
-	_arg4 = (C.gpointer)(box.Assign(userData))
-
-	_cret = C.g_log_writer_journald(_arg1, _arg2, _arg3, _arg4)
-
-	var _logWriterOutput LogWriterOutput // out
-
-	_logWriterOutput = LogWriterOutput(_cret)
-
-	return _logWriterOutput
-}
-
-// LogWriterStandardStreams: format a structured log message and print it to
-// either `stdout` or `stderr`, depending on its log level. G_LOG_LEVEL_INFO and
-// G_LOG_LEVEL_DEBUG messages are sent to `stdout`, or to `stderr` if requested
-// by g_log_writer_default_set_use_stderr(); all other log levels are sent to
-// `stderr`. Only fields which are understood by this function are included in
-// the formatted string which is printed.
-//
-// If the output stream supports ANSI color escape sequences, they will be used
-// in the output.
-//
-// A trailing new-line character is added to the log message when it is printed.
-//
-// This is suitable for use as a WriterFunc.
-func LogWriterStandardStreams(logLevel LogLevelFlags, fields []LogField, userData interface{}) LogWriterOutput {
-	var _arg1 C.GLogLevelFlags // out
-	var _arg2 *C.GLogField
-	var _arg3 C.gsize
-	var _arg4 C.gpointer         // out
-	var _cret C.GLogWriterOutput // in
-
-	_arg1 = C.GLogLevelFlags(logLevel)
-	_arg3 = C.gsize(len(fields))
-	_arg2 = (*C.GLogField)(unsafe.Pointer(&fields[0]))
-	_arg4 = (C.gpointer)(box.Assign(userData))
-
-	_cret = C.g_log_writer_standard_streams(_arg1, _arg2, _arg3, _arg4)
-
-	var _logWriterOutput LogWriterOutput // out
-
-	_logWriterOutput = LogWriterOutput(_cret)
-
-	return _logWriterOutput
 }
 
 // LogWriterSupportsColor: check whether the given @output_fd file descriptor

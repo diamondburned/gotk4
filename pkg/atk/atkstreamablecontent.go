@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -23,7 +24,7 @@ func init() {
 	})
 }
 
-// StreamableContentOverrider contains methods that are overridable .
+// StreamableContentOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
@@ -82,26 +83,28 @@ type StreamableContent interface {
 	URI(mimeType string) string
 }
 
-// streamableContent implements the StreamableContent interface.
-type streamableContent struct {
+// StreamableContentInterface implements the StreamableContent interface.
+type StreamableContentInterface struct {
 	*externglib.Object
 }
 
-var _ StreamableContent = (*streamableContent)(nil)
+var _ StreamableContent = (*StreamableContentInterface)(nil)
 
-// WrapStreamableContent wraps a GObject to a type that implements
-// interface StreamableContent. It is primarily used internally.
-func WrapStreamableContent(obj *externglib.Object) StreamableContent {
-	return streamableContent{obj}
+func wrapStreamableContent(obj *externglib.Object) StreamableContent {
+	return &StreamableContentInterface{
+		Object: obj,
+	}
 }
 
 func marshalStreamableContent(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapStreamableContent(obj), nil
+	return wrapStreamableContent(obj), nil
 }
 
-func (s streamableContent) MIMEType(i int) string {
+// MIMEType gets the character string of the specified mime type. The first mime
+// type is at position 0, the second at position 1, and so on.
+func (s *StreamableContentInterface) MIMEType(i int) string {
 	var _arg0 *C.AtkStreamableContent // out
 	var _arg1 C.gint                  // out
 	var _cret *C.gchar                // in
@@ -118,7 +121,8 @@ func (s streamableContent) MIMEType(i int) string {
 	return _utf8
 }
 
-func (s streamableContent) NMIMETypes() int {
+// NMIMETypes gets the number of mime types supported by this object.
+func (s *StreamableContentInterface) NMIMETypes() int {
 	var _arg0 *C.AtkStreamableContent // out
 	var _cret C.gint                  // in
 
@@ -133,7 +137,8 @@ func (s streamableContent) NMIMETypes() int {
 	return _gint
 }
 
-func (s streamableContent) Stream(mimeType string) *glib.IOChannel {
+// Stream gets the content in the specified mime type.
+func (s *StreamableContentInterface) Stream(mimeType string) *glib.IOChannel {
 	var _arg0 *C.AtkStreamableContent // out
 	var _arg1 *C.gchar                // out
 	var _cret *C.GIOChannel           // in
@@ -155,7 +160,14 @@ func (s streamableContent) Stream(mimeType string) *glib.IOChannel {
 	return _ioChannel
 }
 
-func (s streamableContent) URI(mimeType string) string {
+// URI: get a string representing a URI in IETF standard format (see
+// http://www.ietf.org/rfc/rfc2396.txt) from which the object's content may be
+// streamed in the specified mime-type, if one is available. If mime_type is
+// NULL, the URI for the default (and possibly only) mime-type is returned.
+//
+// Note that it is possible for get_uri to return NULL but for get_stream to
+// work nonetheless, since not all GIOChannels connect to URIs.
+func (s *StreamableContentInterface) URI(mimeType string) string {
 	var _arg0 *C.AtkStreamableContent // out
 	var _arg1 *C.gchar                // out
 	var _cret *C.gchar                // in

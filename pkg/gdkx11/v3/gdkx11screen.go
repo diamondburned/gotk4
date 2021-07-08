@@ -5,7 +5,6 @@ package gdkx11
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -38,250 +37,7 @@ func X11GetDefaultScreen() int {
 }
 
 type X11Screen interface {
-	gdk.Screen
-
-	// AsScreen casts the class to the gdk.Screen interface.
-	AsScreen() gdk.Screen
-
-	// GetActiveWindow returns the screen’s currently active window.
-	//
-	// On X11, this is done by inspecting the _NET_ACTIVE_WINDOW property on the
-	// root window, as described in the Extended Window Manager Hints
-	// (http://www.freedesktop.org/Standards/wm-spec). If there is no currently
-	// currently active window, or the window manager does not support the
-	// _NET_ACTIVE_WINDOW hint, this function returns nil.
-	//
-	// On other platforms, this function may return nil, depending on whether it
-	// is implementable on that platform.
-	//
-	// The returned window should be unrefed using g_object_unref() when no
-	// longer needed.
-	//
-	// Deprecated: since version 3.22.
-	//
-	// This method is inherited from gdk.Screen
-	GetActiveWindow() gdk.Window
-	// GetDisplay gets the display to which the @screen belongs.
-	//
-	// This method is inherited from gdk.Screen
-	GetDisplay() gdk.Display
-	// GetFontOptions gets any options previously set with
-	// gdk_screen_set_font_options().
-	//
-	// This method is inherited from gdk.Screen
-	GetFontOptions() *cairo.FontOptions
-	// GetHeight gets the height of @screen in pixels. The returned size is in
-	// ”application pixels”, not in ”device pixels” (see
-	// gdk_screen_get_monitor_scale_factor()).
-	//
-	// Deprecated: since version 3.22.
-	//
-	// This method is inherited from gdk.Screen
-	GetHeight() int
-	// GetHeightMm returns the height of @screen in millimeters.
-	//
-	// Note that this value is somewhat ill-defined when the screen has multiple
-	// monitors of different resolution. It is recommended to use the monitor
-	// dimensions instead.
-	//
-	// Deprecated: since version 3.22.
-	//
-	// This method is inherited from gdk.Screen
-	GetHeightMm() int
-	// GetMonitorAtPoint returns the monitor number in which the point (@x,@y)
-	// is located.
-	//
-	// Deprecated: since version 3.22.
-	//
-	// This method is inherited from gdk.Screen
-	GetMonitorAtPoint(x int, y int) int
-	// GetMonitorAtWindow returns the number of the monitor in which the largest
-	// area of the bounding rectangle of @window resides.
-	//
-	// Deprecated: since version 3.22.
-	//
-	// This method is inherited from gdk.Screen
-	GetMonitorAtWindow(window gdk.Window) int
-	// GetMonitorGeometry retrieves the Rectangle representing the size and
-	// position of the individual monitor within the entire screen area. The
-	// returned geometry is in ”application pixels”, not in ”device pixels” (see
-	// gdk_screen_get_monitor_scale_factor()).
-	//
-	// Monitor numbers start at 0. To obtain the number of monitors of @screen,
-	// use gdk_screen_get_n_monitors().
-	//
-	// Note that the size of the entire screen area can be retrieved via
-	// gdk_screen_get_width() and gdk_screen_get_height().
-	//
-	// Deprecated: since version 3.22.
-	//
-	// This method is inherited from gdk.Screen
-	GetMonitorGeometry(monitorNum int) gdk.Rectangle
-	// GetMonitorHeightMm gets the height in millimeters of the specified
-	// monitor.
-	//
-	// Deprecated: since version 3.22.
-	//
-	// This method is inherited from gdk.Screen
-	GetMonitorHeightMm(monitorNum int) int
-	// GetMonitorPlugName returns the output name of the specified monitor.
-	// Usually something like VGA, DVI, or TV, not the actual product name of
-	// the display device.
-	//
-	// Deprecated: since version 3.22.
-	//
-	// This method is inherited from gdk.Screen
-	GetMonitorPlugName(monitorNum int) string
-	// GetMonitorScaleFactor returns the internal scale factor that maps from
-	// monitor coordinates to the actual device pixels. On traditional systems
-	// this is 1, but on very high density outputs this can be a higher value
-	// (often 2).
-	//
-	// This can be used if you want to create pixel based data for a particular
-	// monitor, but most of the time you’re drawing to a window where it is
-	// better to use gdk_window_get_scale_factor() instead.
-	//
-	// Deprecated: since version 3.22.
-	//
-	// This method is inherited from gdk.Screen
-	GetMonitorScaleFactor(monitorNum int) int
-	// GetMonitorWidthMm gets the width in millimeters of the specified monitor,
-	// if available.
-	//
-	// Deprecated: since version 3.22.
-	//
-	// This method is inherited from gdk.Screen
-	GetMonitorWidthMm(monitorNum int) int
-	// GetMonitorWorkarea retrieves the Rectangle representing the size and
-	// position of the “work area” on a monitor within the entire screen area.
-	// The returned geometry is in ”application pixels”, not in ”device pixels”
-	// (see gdk_screen_get_monitor_scale_factor()).
-	//
-	// The work area should be considered when positioning menus and similar
-	// popups, to avoid placing them below panels, docks or other desktop
-	// components.
-	//
-	// Note that not all backends may have a concept of workarea. This function
-	// will return the monitor geometry if a workarea is not available, or does
-	// not apply.
-	//
-	// Monitor numbers start at 0. To obtain the number of monitors of @screen,
-	// use gdk_screen_get_n_monitors().
-	//
-	// Deprecated: since version 3.22.
-	//
-	// This method is inherited from gdk.Screen
-	GetMonitorWorkarea(monitorNum int) gdk.Rectangle
-	// GetNMonitors returns the number of monitors which @screen consists of.
-	//
-	// Deprecated: since version 3.22.
-	//
-	// This method is inherited from gdk.Screen
-	GetNMonitors() int
-	// GetNumber gets the index of @screen among the screens in the display to
-	// which it belongs. (See gdk_screen_get_display())
-	//
-	// Deprecated: since version 3.22.
-	//
-	// This method is inherited from gdk.Screen
-	GetNumber() int
-	// GetPrimaryMonitor gets the primary monitor for @screen. The primary
-	// monitor is considered the monitor where the “main desktop” lives. While
-	// normal application windows typically allow the window manager to place
-	// the windows, specialized desktop applications such as panels should place
-	// themselves on the primary monitor.
-	//
-	// If no primary monitor is configured by the user, the return value will be
-	// 0, defaulting to the first monitor.
-	//
-	// Deprecated: since version 3.22.
-	//
-	// This method is inherited from gdk.Screen
-	GetPrimaryMonitor() int
-	// GetResolution gets the resolution for font handling on the screen; see
-	// gdk_screen_set_resolution() for full details.
-	//
-	// This method is inherited from gdk.Screen
-	GetResolution() float64
-	// GetRGBAVisual gets a visual to use for creating windows with an alpha
-	// channel. The windowing system on which GTK+ is running may not support
-	// this capability, in which case nil will be returned. Even if a non-nil
-	// value is returned, its possible that the window’s alpha channel won’t be
-	// honored when displaying the window on the screen: in particular, for X an
-	// appropriate windowing manager and compositing manager must be running to
-	// provide appropriate display.
-	//
-	// This functionality is not implemented in the Windows backend.
-	//
-	// For setting an overall opacity for a top-level window, see
-	// gdk_window_set_opacity().
-	//
-	// This method is inherited from gdk.Screen
-	GetRGBAVisual() gdk.Visual
-	// GetRootWindow gets the root window of @screen.
-	//
-	// This method is inherited from gdk.Screen
-	GetRootWindow() gdk.Window
-	// GetSetting retrieves a desktop-wide setting such as double-click time for
-	// the Screen @screen.
-	//
-	// FIXME needs a list of valid settings here, or a link to more information.
-	//
-	// This method is inherited from gdk.Screen
-	GetSetting(name string, value externglib.Value) bool
-	// GetSystemVisual: get the system’s default visual for @screen. This is the
-	// visual for the root window of the display. The return value should not be
-	// freed.
-	//
-	// This method is inherited from gdk.Screen
-	GetSystemVisual() gdk.Visual
-	// GetWidth gets the width of @screen in pixels. The returned size is in
-	// ”application pixels”, not in ”device pixels” (see
-	// gdk_screen_get_monitor_scale_factor()).
-	//
-	// Deprecated: since version 3.22.
-	//
-	// This method is inherited from gdk.Screen
-	GetWidth() int
-	// GetWidthMm gets the width of @screen in millimeters.
-	//
-	// Note that this value is somewhat ill-defined when the screen has multiple
-	// monitors of different resolution. It is recommended to use the monitor
-	// dimensions instead.
-	//
-	// Deprecated: since version 3.22.
-	//
-	// This method is inherited from gdk.Screen
-	GetWidthMm() int
-	// IsComposited returns whether windows with an RGBA visual can reasonably
-	// be expected to have their alpha channel drawn correctly on the screen.
-	//
-	// On X11 this function returns whether a compositing manager is compositing
-	// @screen.
-	//
-	// This method is inherited from gdk.Screen
-	IsComposited() bool
-	// MakeDisplayName determines the name to pass to gdk_display_open() to get
-	// a Display with this screen as the default screen.
-	//
-	// Deprecated: since version 3.22.
-	//
-	// This method is inherited from gdk.Screen
-	MakeDisplayName() string
-	// SetFontOptions sets the default font options for the screen. These
-	// options will be set on any Context’s newly created with
-	// gdk_pango_context_get_for_screen(). Changing the default set of font
-	// options does not affect contexts that have already been created.
-	//
-	// This method is inherited from gdk.Screen
-	SetFontOptions(options *cairo.FontOptions)
-	// SetResolution sets the resolution for font handling on the screen. This
-	// is a scale factor between points specified in a FontDescription and cairo
-	// units. The default value is 96, meaning that a 10 point font will be 13
-	// units high. (10 * 96. / 72. = 13.3).
-	//
-	// This method is inherited from gdk.Screen
-	SetResolution(dpi float64)
+	gextras.Objector
 
 	// CurrentDesktop returns the current workspace for @screen when running
 	// under a window manager that supports multiple workspaces, as described in
@@ -299,138 +55,32 @@ type X11Screen interface {
 	WindowManagerName() string
 }
 
-// x11Screen implements the X11Screen interface.
-type x11Screen struct {
-	*externglib.Object
+// X11ScreenClass implements the X11Screen interface.
+type X11ScreenClass struct {
+	gdk.ScreenClass
 }
 
-var _ X11Screen = (*x11Screen)(nil)
+var _ X11Screen = (*X11ScreenClass)(nil)
 
-// WrapX11Screen wraps a GObject to a type that implements
-// interface X11Screen. It is primarily used internally.
-func WrapX11Screen(obj *externglib.Object) X11Screen {
-	return x11Screen{obj}
+func wrapX11Screen(obj *externglib.Object) X11Screen {
+	return &X11ScreenClass{
+		ScreenClass: gdk.ScreenClass{
+			Object: obj,
+		},
+	}
 }
 
 func marshalX11Screen(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapX11Screen(obj), nil
+	return wrapX11Screen(obj), nil
 }
 
-func (x x11Screen) AsScreen() gdk.Screen {
-	return gdk.WrapScreen(gextras.InternObject(x))
-}
-
-func (s x11Screen) GetActiveWindow() gdk.Window {
-	return gdk.WrapScreen(gextras.InternObject(s)).GetActiveWindow()
-}
-
-func (s x11Screen) GetDisplay() gdk.Display {
-	return gdk.WrapScreen(gextras.InternObject(s)).GetDisplay()
-}
-
-func (s x11Screen) GetFontOptions() *cairo.FontOptions {
-	return gdk.WrapScreen(gextras.InternObject(s)).GetFontOptions()
-}
-
-func (s x11Screen) GetHeight() int {
-	return gdk.WrapScreen(gextras.InternObject(s)).GetHeight()
-}
-
-func (s x11Screen) GetHeightMm() int {
-	return gdk.WrapScreen(gextras.InternObject(s)).GetHeightMm()
-}
-
-func (s x11Screen) GetMonitorAtPoint(x int, y int) int {
-	return gdk.WrapScreen(gextras.InternObject(s)).GetMonitorAtPoint(x, y)
-}
-
-func (s x11Screen) GetMonitorAtWindow(window gdk.Window) int {
-	return gdk.WrapScreen(gextras.InternObject(s)).GetMonitorAtWindow(window)
-}
-
-func (s x11Screen) GetMonitorGeometry(monitorNum int) gdk.Rectangle {
-	return gdk.WrapScreen(gextras.InternObject(s)).GetMonitorGeometry(monitorNum)
-}
-
-func (s x11Screen) GetMonitorHeightMm(monitorNum int) int {
-	return gdk.WrapScreen(gextras.InternObject(s)).GetMonitorHeightMm(monitorNum)
-}
-
-func (s x11Screen) GetMonitorPlugName(monitorNum int) string {
-	return gdk.WrapScreen(gextras.InternObject(s)).GetMonitorPlugName(monitorNum)
-}
-
-func (s x11Screen) GetMonitorScaleFactor(monitorNum int) int {
-	return gdk.WrapScreen(gextras.InternObject(s)).GetMonitorScaleFactor(monitorNum)
-}
-
-func (s x11Screen) GetMonitorWidthMm(monitorNum int) int {
-	return gdk.WrapScreen(gextras.InternObject(s)).GetMonitorWidthMm(monitorNum)
-}
-
-func (s x11Screen) GetMonitorWorkarea(monitorNum int) gdk.Rectangle {
-	return gdk.WrapScreen(gextras.InternObject(s)).GetMonitorWorkarea(monitorNum)
-}
-
-func (s x11Screen) GetNMonitors() int {
-	return gdk.WrapScreen(gextras.InternObject(s)).GetNMonitors()
-}
-
-func (s x11Screen) GetNumber() int {
-	return gdk.WrapScreen(gextras.InternObject(s)).GetNumber()
-}
-
-func (s x11Screen) GetPrimaryMonitor() int {
-	return gdk.WrapScreen(gextras.InternObject(s)).GetPrimaryMonitor()
-}
-
-func (s x11Screen) GetResolution() float64 {
-	return gdk.WrapScreen(gextras.InternObject(s)).GetResolution()
-}
-
-func (s x11Screen) GetRGBAVisual() gdk.Visual {
-	return gdk.WrapScreen(gextras.InternObject(s)).GetRGBAVisual()
-}
-
-func (s x11Screen) GetRootWindow() gdk.Window {
-	return gdk.WrapScreen(gextras.InternObject(s)).GetRootWindow()
-}
-
-func (s x11Screen) GetSetting(name string, value externglib.Value) bool {
-	return gdk.WrapScreen(gextras.InternObject(s)).GetSetting(name, value)
-}
-
-func (s x11Screen) GetSystemVisual() gdk.Visual {
-	return gdk.WrapScreen(gextras.InternObject(s)).GetSystemVisual()
-}
-
-func (s x11Screen) GetWidth() int {
-	return gdk.WrapScreen(gextras.InternObject(s)).GetWidth()
-}
-
-func (s x11Screen) GetWidthMm() int {
-	return gdk.WrapScreen(gextras.InternObject(s)).GetWidthMm()
-}
-
-func (s x11Screen) IsComposited() bool {
-	return gdk.WrapScreen(gextras.InternObject(s)).IsComposited()
-}
-
-func (s x11Screen) MakeDisplayName() string {
-	return gdk.WrapScreen(gextras.InternObject(s)).MakeDisplayName()
-}
-
-func (s x11Screen) SetFontOptions(options *cairo.FontOptions) {
-	gdk.WrapScreen(gextras.InternObject(s)).SetFontOptions(options)
-}
-
-func (s x11Screen) SetResolution(dpi float64) {
-	gdk.WrapScreen(gextras.InternObject(s)).SetResolution(dpi)
-}
-
-func (s x11Screen) CurrentDesktop() uint32 {
+// CurrentDesktop returns the current workspace for @screen when running under a
+// window manager that supports multiple workspaces, as described in the
+// Extended Window Manager Hints (http://www.freedesktop.org/Standards/wm-spec)
+// specification.
+func (s *X11ScreenClass) CurrentDesktop() uint32 {
 	var _arg0 *C.GdkScreen // out
 	var _cret C.guint32    // in
 
@@ -445,7 +95,11 @@ func (s x11Screen) CurrentDesktop() uint32 {
 	return _guint32
 }
 
-func (s x11Screen) NumberOfDesktops() uint32 {
+// NumberOfDesktops returns the number of workspaces for @screen when running
+// under a window manager that supports multiple workspaces, as described in the
+// Extended Window Manager Hints (http://www.freedesktop.org/Standards/wm-spec)
+// specification.
+func (s *X11ScreenClass) NumberOfDesktops() uint32 {
 	var _arg0 *C.GdkScreen // out
 	var _cret C.guint32    // in
 
@@ -460,7 +114,8 @@ func (s x11Screen) NumberOfDesktops() uint32 {
 	return _guint32
 }
 
-func (s x11Screen) ScreenNumber() int {
+// ScreenNumber returns the index of a Screen.
+func (s *X11ScreenClass) ScreenNumber() int {
 	var _arg0 *C.GdkScreen // out
 	var _cret C.int        // in
 
@@ -475,7 +130,8 @@ func (s x11Screen) ScreenNumber() int {
 	return _gint
 }
 
-func (s x11Screen) WindowManagerName() string {
+// WindowManagerName returns the name of the window manager for @screen.
+func (s *X11ScreenClass) WindowManagerName() string {
 	var _arg0 *C.GdkScreen // out
 	var _cret *C.char      // in
 

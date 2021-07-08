@@ -33,7 +33,7 @@ func init() {
 	})
 }
 
-// TLSCertificateOverrider contains methods that are overridable .
+// TLSCertificateOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
@@ -93,23 +93,23 @@ type TLSCertificate interface {
 	Verify(identity SocketConnectable, trustedCa TLSCertificate) TLSCertificateFlags
 }
 
-// tlsCertificate implements the TLSCertificate interface.
-type tlsCertificate struct {
+// TLSCertificateClass implements the TLSCertificate interface.
+type TLSCertificateClass struct {
 	*externglib.Object
 }
 
-var _ TLSCertificate = (*tlsCertificate)(nil)
+var _ TLSCertificate = (*TLSCertificateClass)(nil)
 
-// WrapTLSCertificate wraps a GObject to a type that implements
-// interface TLSCertificate. It is primarily used internally.
-func WrapTLSCertificate(obj *externglib.Object) TLSCertificate {
-	return tlsCertificate{obj}
+func wrapTLSCertificate(obj *externglib.Object) TLSCertificate {
+	return &TLSCertificateClass{
+		Object: obj,
+	}
 }
 
 func marshalTLSCertificate(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapTLSCertificate(obj), nil
+	return wrapTLSCertificate(obj), nil
 }
 
 // NewTLSCertificateFromFile creates a Certificate from the PEM-encoded data in
@@ -253,7 +253,8 @@ func NewTLSCertificateFromPkcs11Uris(pkcs11Uri string, privateKeyPkcs11Uri strin
 	return _tlsCertificate, _goerr
 }
 
-func (c tlsCertificate) Issuer() TLSCertificate {
+// Issuer gets the Certificate representing @cert's issuer, if known
+func (c *TLSCertificateClass) Issuer() TLSCertificate {
 	var _arg0 *C.GTlsCertificate // out
 	var _cret *C.GTlsCertificate // in
 
@@ -268,7 +269,12 @@ func (c tlsCertificate) Issuer() TLSCertificate {
 	return _tlsCertificate
 }
 
-func (c tlsCertificate) IsSame(certTwo TLSCertificate) bool {
+// IsSame: check if two Certificate objects represent the same certificate. The
+// raw DER byte data of the two certificates are checked for equality. This has
+// the effect that two certificates may compare equal even if their
+// Certificate:issuer, Certificate:private-key, or Certificate:private-key-pem
+// properties differ.
+func (c *TLSCertificateClass) IsSame(certTwo TLSCertificate) bool {
 	var _arg0 *C.GTlsCertificate // out
 	var _arg1 *C.GTlsCertificate // out
 	var _cret C.gboolean         // in
@@ -287,7 +293,23 @@ func (c tlsCertificate) IsSame(certTwo TLSCertificate) bool {
 	return _ok
 }
 
-func (c tlsCertificate) Verify(identity SocketConnectable, trustedCa TLSCertificate) TLSCertificateFlags {
+// Verify: this verifies @cert and returns a set of CertificateFlags indicating
+// any problems found with it. This can be used to verify a certificate outside
+// the context of making a connection, or to check a certificate against a CA
+// that is not part of the system CA database.
+//
+// If @identity is not nil, @cert's name(s) will be compared against it, and
+// G_TLS_CERTIFICATE_BAD_IDENTITY will be set in the return value if it does not
+// match. If @identity is nil, that bit will never be set in the return value.
+//
+// If @trusted_ca is not nil, then @cert (or one of the certificates in its
+// chain) must be signed by it, or else G_TLS_CERTIFICATE_UNKNOWN_CA will be set
+// in the return value. If @trusted_ca is nil, that bit will never be set in the
+// return value.
+//
+// (All other CertificateFlags values will always be set or unset as
+// appropriate.)
+func (c *TLSCertificateClass) Verify(identity SocketConnectable, trustedCa TLSCertificate) TLSCertificateFlags {
 	var _arg0 *C.GTlsCertificate     // out
 	var _arg1 *C.GSocketConnectable  // out
 	var _arg2 *C.GTlsCertificate     // out

@@ -108,23 +108,23 @@ type Credentials interface {
 	String() string
 }
 
-// credentials implements the Credentials interface.
-type credentials struct {
+// CredentialsClass implements the Credentials interface.
+type CredentialsClass struct {
 	*externglib.Object
 }
 
-var _ Credentials = (*credentials)(nil)
+var _ Credentials = (*CredentialsClass)(nil)
 
-// WrapCredentials wraps a GObject to a type that implements
-// interface Credentials. It is primarily used internally.
-func WrapCredentials(obj *externglib.Object) Credentials {
-	return credentials{obj}
+func wrapCredentials(obj *externglib.Object) Credentials {
+	return &CredentialsClass{
+		Object: obj,
+	}
 }
 
 func marshalCredentials(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapCredentials(obj), nil
+	return wrapCredentials(obj), nil
 }
 
 // NewCredentials creates a new #GCredentials object with credentials matching
@@ -141,7 +141,13 @@ func NewCredentials() Credentials {
 	return _credentials
 }
 
-func (c credentials) UnixPid() (int, error) {
+// UnixPid tries to get the UNIX process identifier from @credentials. This
+// method is only available on UNIX platforms.
+//
+// This operation can fail if #GCredentials is not supported on the OS or if the
+// native credentials type does not contain information about the UNIX process
+// ID (for example this is the case for G_CREDENTIALS_TYPE_APPLE_XUCRED).
+func (c *CredentialsClass) UnixPid() (int, error) {
 	var _arg0 *C.GCredentials // out
 	var _cret C.pid_t         // in
 	var _cerr *C.GError       // in
@@ -159,7 +165,12 @@ func (c credentials) UnixPid() (int, error) {
 	return _gint, _goerr
 }
 
-func (c credentials) UnixUser() (uint, error) {
+// UnixUser tries to get the UNIX user identifier from @credentials. This method
+// is only available on UNIX platforms.
+//
+// This operation can fail if #GCredentials is not supported on the OS or if the
+// native credentials type does not contain information about the UNIX user.
+func (c *CredentialsClass) UnixUser() (uint, error) {
 	var _arg0 *C.GCredentials // out
 	var _cret C.uid_t         // in
 	var _cerr *C.GError       // in
@@ -177,7 +188,10 @@ func (c credentials) UnixUser() (uint, error) {
 	return _guint, _goerr
 }
 
-func (c credentials) IsSameUser(otherCredentials Credentials) error {
+// IsSameUser checks if @credentials and @other_credentials is the same user.
+//
+// This operation can fail if #GCredentials is not supported on the the OS.
+func (c *CredentialsClass) IsSameUser(otherCredentials Credentials) error {
 	var _arg0 *C.GCredentials // out
 	var _arg1 *C.GCredentials // out
 	var _cerr *C.GError       // in
@@ -194,7 +208,13 @@ func (c credentials) IsSameUser(otherCredentials Credentials) error {
 	return _goerr
 }
 
-func (c credentials) SetNative(nativeType CredentialsType, native interface{}) {
+// SetNative copies the native credentials of type @native_type from @native
+// into @credentials.
+//
+// It is a programming error (which will cause a warning to be logged) to use
+// this method if there is no #GCredentials support for the OS or if
+// @native_type isn't supported by the OS.
+func (c *CredentialsClass) SetNative(nativeType CredentialsType, native interface{}) {
 	var _arg0 *C.GCredentials    // out
 	var _arg1 C.GCredentialsType // out
 	var _arg2 C.gpointer         // out
@@ -206,7 +226,13 @@ func (c credentials) SetNative(nativeType CredentialsType, native interface{}) {
 	C.g_credentials_set_native(_arg0, _arg1, _arg2)
 }
 
-func (c credentials) SetUnixUser(uid uint) error {
+// SetUnixUser tries to set the UNIX user identifier on @credentials. This
+// method is only available on UNIX platforms.
+//
+// This operation can fail if #GCredentials is not supported on the OS or if the
+// native credentials type does not contain information about the UNIX user. It
+// can also fail if the OS does not allow the use of "spoofed" credentials.
+func (c *CredentialsClass) SetUnixUser(uid uint) error {
 	var _arg0 *C.GCredentials // out
 	var _arg1 C.uid_t         // out
 	var _cerr *C.GError       // in
@@ -223,7 +249,10 @@ func (c credentials) SetUnixUser(uid uint) error {
 	return _goerr
 }
 
-func (c credentials) String() string {
+// String creates a human-readable textual representation of @credentials that
+// can be used in logging and debug messages. The format of the returned string
+// may change in future GLib release.
+func (c *CredentialsClass) String() string {
 	var _arg0 *C.GCredentials // out
 	var _cret *C.gchar        // in
 

@@ -2,9 +2,6 @@ package generators
 
 import (
 	"strconv"
-	"strings"
-	"unicode"
-	"unicode/utf8"
 
 	"github.com/diamondburned/gotk4/gir"
 	"github.com/diamondburned/gotk4/gir/girgen/gotmpl"
@@ -63,20 +60,23 @@ var numberMap = map[rune]string{
 }
 
 func (eg *enumData) FormatMember(member gir.Member) string {
-	// Pop the namespace off. Probably works most of the time.
-	if parts := strings.SplitN(member.CIdentifier, "_", 2); len(parts) == 2 {
-		member.CIdentifier = parts[1]
-	}
+	return eg.GoName + strcases.SnakeToGo(true, member.Name)
 
-	memberName := strcases.SnakeToGo(true, strings.ToLower(member.CIdentifier))
+	// This is a bad idea, since it collides with struct names.
+	// // Pop the namespace off. Probably works most of the time.
+	// if parts := strings.SplitN(member.CIdentifier, "_", 2); len(parts) == 2 {
+	// 	member.CIdentifier = parts[1]
+	// }
 
-	// TODO: prepend GoName instead.
-	r, sz := utf8.DecodeRuneInString(memberName)
-	if sz > 0 && unicode.IsNumber(r) {
-		memberName = numberMap[r] + memberName[sz:]
-	}
+	// memberName := strcases.SnakeToGo(true, strings.ToLower(member.CIdentifier))
 
-	return memberName
+	// // TODO: prepend GoName instead.
+	// r, sz := utf8.DecodeRuneInString(memberName)
+	// if sz > 0 && unicode.IsNumber(r) {
+	// 	memberName = numberMap[r] + memberName[sz:]
+	// }
+
+	// return memberName
 }
 
 // CanGenerateEnum returns false if the given enum cannot be generated.

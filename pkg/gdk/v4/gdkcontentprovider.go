@@ -24,7 +24,7 @@ func init() {
 	})
 }
 
-// ContentProviderOverrider contains methods that are overridable .
+// ContentProviderOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
@@ -90,23 +90,23 @@ type ContentProvider interface {
 	RefStorableFormats() *ContentFormats
 }
 
-// contentProvider implements the ContentProvider interface.
-type contentProvider struct {
+// ContentProviderClass implements the ContentProvider interface.
+type ContentProviderClass struct {
 	*externglib.Object
 }
 
-var _ ContentProvider = (*contentProvider)(nil)
+var _ ContentProvider = (*ContentProviderClass)(nil)
 
-// WrapContentProvider wraps a GObject to a type that implements
-// interface ContentProvider. It is primarily used internally.
-func WrapContentProvider(obj *externglib.Object) ContentProvider {
-	return contentProvider{obj}
+func wrapContentProvider(obj *externglib.Object) ContentProvider {
+	return &ContentProviderClass{
+		Object: obj,
+	}
 }
 
 func marshalContentProvider(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapContentProvider(obj), nil
+	return wrapContentProvider(obj), nil
 }
 
 // NewContentProviderForValue: create a content provider that provides the given
@@ -161,7 +161,8 @@ func NewContentProviderUnion(providers []ContentProvider) ContentProvider {
 	return _contentProvider
 }
 
-func (p contentProvider) ContentChanged() {
+// ContentChanged emits the ::content-changed signal.
+func (p *ContentProviderClass) ContentChanged() {
 	var _arg0 *C.GdkContentProvider // out
 
 	_arg0 = (*C.GdkContentProvider)(unsafe.Pointer(p.Native()))
@@ -169,7 +170,14 @@ func (p contentProvider) ContentChanged() {
 	C.gdk_content_provider_content_changed(_arg0)
 }
 
-func (p contentProvider) Value(value externglib.Value) error {
+// Value gets the contents of @provider stored in @value.
+//
+// The @value will have been initialized to the `GType` the value should be
+// provided in. This given `GType` does not need to be listed in the formats
+// returned by [method@Gdk.ContentProvider.ref_formats]. However, if the given
+// `GType` is not supported, this operation can fail and IO_ERROR_NOT_SUPPORTED
+// will be reported.
+func (p *ContentProviderClass) Value(value externglib.Value) error {
 	var _arg0 *C.GdkContentProvider // out
 	var _arg1 *C.GValue             // out
 	var _cerr *C.GError             // in
@@ -186,7 +194,9 @@ func (p contentProvider) Value(value externglib.Value) error {
 	return _goerr
 }
 
-func (p contentProvider) RefFormats() *ContentFormats {
+// RefFormats gets the formats that the provider can provide its current
+// contents in.
+func (p *ContentProviderClass) RefFormats() *ContentFormats {
 	var _arg0 *C.GdkContentProvider // out
 	var _cret *C.GdkContentFormats  // in
 
@@ -205,7 +215,14 @@ func (p contentProvider) RefFormats() *ContentFormats {
 	return _contentFormats
 }
 
-func (p contentProvider) RefStorableFormats() *ContentFormats {
+// RefStorableFormats gets the formats that the provider suggests other
+// applications to store the data in.
+//
+// An example of such an application would be a clipboard manager.
+//
+// This can be assumed to be a subset of
+// [method@Gdk.ContentProvider.ref_formats].
+func (p *ContentProviderClass) RefStorableFormats() *ContentFormats {
 	var _arg0 *C.GdkContentProvider // out
 	var _cret *C.GdkContentFormats  // in
 

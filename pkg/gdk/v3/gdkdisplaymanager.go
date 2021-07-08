@@ -68,26 +68,27 @@ type DisplayManager interface {
 	SetDefaultDisplay(display Display)
 }
 
-// displayManager implements the DisplayManager interface.
-type displayManager struct {
+// DisplayManagerClass implements the DisplayManager interface.
+type DisplayManagerClass struct {
 	*externglib.Object
 }
 
-var _ DisplayManager = (*displayManager)(nil)
+var _ DisplayManager = (*DisplayManagerClass)(nil)
 
-// WrapDisplayManager wraps a GObject to a type that implements
-// interface DisplayManager. It is primarily used internally.
-func WrapDisplayManager(obj *externglib.Object) DisplayManager {
-	return displayManager{obj}
+func wrapDisplayManager(obj *externglib.Object) DisplayManager {
+	return &DisplayManagerClass{
+		Object: obj,
+	}
 }
 
 func marshalDisplayManager(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapDisplayManager(obj), nil
+	return wrapDisplayManager(obj), nil
 }
 
-func (m displayManager) DefaultDisplay() Display {
+// DefaultDisplay gets the default Display.
+func (m *DisplayManagerClass) DefaultDisplay() Display {
 	var _arg0 *C.GdkDisplayManager // out
 	var _cret *C.GdkDisplay        // in
 
@@ -102,7 +103,8 @@ func (m displayManager) DefaultDisplay() Display {
 	return _display
 }
 
-func (m displayManager) OpenDisplay(name string) Display {
+// OpenDisplay opens a display.
+func (m *DisplayManagerClass) OpenDisplay(name string) Display {
 	var _arg0 *C.GdkDisplayManager // out
 	var _arg1 *C.gchar             // out
 	var _cret *C.GdkDisplay        // in
@@ -120,7 +122,8 @@ func (m displayManager) OpenDisplay(name string) Display {
 	return _display
 }
 
-func (m displayManager) SetDefaultDisplay(display Display) {
+// SetDefaultDisplay sets @display as the default display.
+func (m *DisplayManagerClass) SetDefaultDisplay(display Display) {
 	var _arg0 *C.GdkDisplayManager // out
 	var _arg1 *C.GdkDisplay        // out
 

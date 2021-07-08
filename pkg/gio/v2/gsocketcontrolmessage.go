@@ -33,7 +33,7 @@ func init() {
 	})
 }
 
-// SocketControlMessageOverrider contains methods that are overridable .
+// SocketControlMessageOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
@@ -91,26 +91,28 @@ type SocketControlMessage interface {
 	Serialize(data interface{})
 }
 
-// socketControlMessage implements the SocketControlMessage interface.
-type socketControlMessage struct {
+// SocketControlMessageClass implements the SocketControlMessage interface.
+type SocketControlMessageClass struct {
 	*externglib.Object
 }
 
-var _ SocketControlMessage = (*socketControlMessage)(nil)
+var _ SocketControlMessage = (*SocketControlMessageClass)(nil)
 
-// WrapSocketControlMessage wraps a GObject to a type that implements
-// interface SocketControlMessage. It is primarily used internally.
-func WrapSocketControlMessage(obj *externglib.Object) SocketControlMessage {
-	return socketControlMessage{obj}
+func wrapSocketControlMessage(obj *externglib.Object) SocketControlMessage {
+	return &SocketControlMessageClass{
+		Object: obj,
+	}
 }
 
 func marshalSocketControlMessage(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapSocketControlMessage(obj), nil
+	return wrapSocketControlMessage(obj), nil
 }
 
-func (m socketControlMessage) Level() int {
+// Level returns the "level" (i.e. the originating protocol) of the control
+// message. This is often SOL_SOCKET.
+func (m *SocketControlMessageClass) Level() int {
 	var _arg0 *C.GSocketControlMessage // out
 	var _cret C.int                    // in
 
@@ -125,7 +127,9 @@ func (m socketControlMessage) Level() int {
 	return _gint
 }
 
-func (m socketControlMessage) MsgType() int {
+// MsgType returns the protocol specific type of the control message. For
+// instance, for UNIX fd passing this would be SCM_RIGHTS.
+func (m *SocketControlMessageClass) MsgType() int {
 	var _arg0 *C.GSocketControlMessage // out
 	var _cret C.int                    // in
 
@@ -140,7 +144,9 @@ func (m socketControlMessage) MsgType() int {
 	return _gint
 }
 
-func (m socketControlMessage) Size() uint {
+// Size returns the space required for the control message, not including
+// headers or alignment.
+func (m *SocketControlMessageClass) Size() uint {
 	var _arg0 *C.GSocketControlMessage // out
 	var _cret C.gsize                  // in
 
@@ -155,7 +161,11 @@ func (m socketControlMessage) Size() uint {
 	return _gsize
 }
 
-func (m socketControlMessage) Serialize(data interface{}) {
+// Serialize converts the data in the message to bytes placed in the message.
+//
+// @data is guaranteed to have enough space to fit the size returned by
+// g_socket_control_message_get_size() on this object.
+func (m *SocketControlMessageClass) Serialize(data interface{}) {
 	var _arg0 *C.GSocketControlMessage // out
 	var _arg1 C.gpointer               // out
 

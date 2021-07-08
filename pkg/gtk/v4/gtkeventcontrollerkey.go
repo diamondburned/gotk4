@@ -6,7 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -26,73 +25,7 @@ func init() {
 // EventControllerKey: `GtkEventControllerKey` is an event controller that
 // provides access to key events.
 type EventControllerKey interface {
-	EventController
-
-	// AsEventController casts the class to the EventController interface.
-	AsEventController() EventController
-
-	// GetCurrentEvent returns the event that is currently being handled by the
-	// controller, and nil at other times.
-	//
-	// This method is inherited from EventController
-	GetCurrentEvent() gdk.Event
-	// GetCurrentEventDevice returns the device of the event that is currently
-	// being handled by the controller, and nil otherwise.
-	//
-	// This method is inherited from EventController
-	GetCurrentEventDevice() gdk.Device
-	// GetCurrentEventState returns the modifier state of the event that is
-	// currently being handled by the controller, and 0 otherwise.
-	//
-	// This method is inherited from EventController
-	GetCurrentEventState() gdk.ModifierType
-	// GetCurrentEventTime returns the timestamp of the event that is currently
-	// being handled by the controller, and 0 otherwise.
-	//
-	// This method is inherited from EventController
-	GetCurrentEventTime() uint32
-	// GetName gets the name of @controller.
-	//
-	// This method is inherited from EventController
-	GetName() string
-	// GetPropagationLimit gets the propagation limit of the event controller.
-	//
-	// This method is inherited from EventController
-	GetPropagationLimit() PropagationLimit
-	// GetPropagationPhase gets the propagation phase at which @controller
-	// handles events.
-	//
-	// This method is inherited from EventController
-	GetPropagationPhase() PropagationPhase
-	// GetWidget returns the Widget this controller relates to.
-	//
-	// This method is inherited from EventController
-	GetWidget() Widget
-	// Reset resets the @controller to a clean state.
-	//
-	// This method is inherited from EventController
-	Reset()
-	// SetName sets a name on the controller that can be used for debugging.
-	//
-	// This method is inherited from EventController
-	SetName(name string)
-	// SetPropagationLimit sets the event propagation limit on the event
-	// controller.
-	//
-	// If the limit is set to GTK_LIMIT_SAME_NATIVE, the controller won't handle
-	// events that are targeted at widgets on a different surface, such as
-	// popovers.
-	//
-	// This method is inherited from EventController
-	SetPropagationLimit(limit PropagationLimit)
-	// SetPropagationPhase sets the propagation phase at which a controller
-	// handles events.
-	//
-	// If @phase is GTK_PHASE_NONE, no automatic event handling will be
-	// performed, but other additional gesture maintenance will.
-	//
-	// This method is inherited from EventController
-	SetPropagationPhase(phase PropagationPhase)
+	gextras.Objector
 
 	// Forward forwards the current event of this @controller to a @widget.
 	//
@@ -111,23 +44,25 @@ type EventControllerKey interface {
 	SetImContext(imContext IMContext)
 }
 
-// eventControllerKey implements the EventControllerKey interface.
-type eventControllerKey struct {
-	*externglib.Object
+// EventControllerKeyClass implements the EventControllerKey interface.
+type EventControllerKeyClass struct {
+	EventControllerClass
 }
 
-var _ EventControllerKey = (*eventControllerKey)(nil)
+var _ EventControllerKey = (*EventControllerKeyClass)(nil)
 
-// WrapEventControllerKey wraps a GObject to a type that implements
-// interface EventControllerKey. It is primarily used internally.
-func WrapEventControllerKey(obj *externglib.Object) EventControllerKey {
-	return eventControllerKey{obj}
+func wrapEventControllerKey(obj *externglib.Object) EventControllerKey {
+	return &EventControllerKeyClass{
+		EventControllerClass: EventControllerClass{
+			Object: obj,
+		},
+	}
 }
 
 func marshalEventControllerKey(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapEventControllerKey(obj), nil
+	return wrapEventControllerKey(obj), nil
 }
 
 // NewEventControllerKey creates a new event controller that will handle key
@@ -144,59 +79,13 @@ func NewEventControllerKey() EventControllerKey {
 	return _eventControllerKey
 }
 
-func (e eventControllerKey) AsEventController() EventController {
-	return WrapEventController(gextras.InternObject(e))
-}
-
-func (c eventControllerKey) GetCurrentEvent() gdk.Event {
-	return WrapEventController(gextras.InternObject(c)).GetCurrentEvent()
-}
-
-func (c eventControllerKey) GetCurrentEventDevice() gdk.Device {
-	return WrapEventController(gextras.InternObject(c)).GetCurrentEventDevice()
-}
-
-func (c eventControllerKey) GetCurrentEventState() gdk.ModifierType {
-	return WrapEventController(gextras.InternObject(c)).GetCurrentEventState()
-}
-
-func (c eventControllerKey) GetCurrentEventTime() uint32 {
-	return WrapEventController(gextras.InternObject(c)).GetCurrentEventTime()
-}
-
-func (c eventControllerKey) GetName() string {
-	return WrapEventController(gextras.InternObject(c)).GetName()
-}
-
-func (c eventControllerKey) GetPropagationLimit() PropagationLimit {
-	return WrapEventController(gextras.InternObject(c)).GetPropagationLimit()
-}
-
-func (c eventControllerKey) GetPropagationPhase() PropagationPhase {
-	return WrapEventController(gextras.InternObject(c)).GetPropagationPhase()
-}
-
-func (c eventControllerKey) GetWidget() Widget {
-	return WrapEventController(gextras.InternObject(c)).GetWidget()
-}
-
-func (c eventControllerKey) Reset() {
-	WrapEventController(gextras.InternObject(c)).Reset()
-}
-
-func (c eventControllerKey) SetName(name string) {
-	WrapEventController(gextras.InternObject(c)).SetName(name)
-}
-
-func (c eventControllerKey) SetPropagationLimit(limit PropagationLimit) {
-	WrapEventController(gextras.InternObject(c)).SetPropagationLimit(limit)
-}
-
-func (c eventControllerKey) SetPropagationPhase(phase PropagationPhase) {
-	WrapEventController(gextras.InternObject(c)).SetPropagationPhase(phase)
-}
-
-func (c eventControllerKey) Forward(widget Widget) bool {
+// Forward forwards the current event of this @controller to a @widget.
+//
+// This function can only be used in handlers for the
+// [signal@Gtk.EventControllerKey::key-pressed],
+// [signal@Gtk.EventControllerKey::key-released] or
+// [signal@Gtk.EventControllerKey::modifiers] signals.
+func (c *EventControllerKeyClass) Forward(widget Widget) bool {
 	var _arg0 *C.GtkEventControllerKey // out
 	var _arg1 *C.GtkWidget             // out
 	var _cret C.gboolean               // in
@@ -215,7 +104,10 @@ func (c eventControllerKey) Forward(widget Widget) bool {
 	return _ok
 }
 
-func (c eventControllerKey) Group() uint {
+// Group gets the key group of the current event of this @controller.
+//
+// See [method@Gdk.KeyEvent.get_layout].
+func (c *EventControllerKeyClass) Group() uint {
 	var _arg0 *C.GtkEventControllerKey // out
 	var _cret C.guint                  // in
 
@@ -230,7 +122,8 @@ func (c eventControllerKey) Group() uint {
 	return _guint
 }
 
-func (c eventControllerKey) ImContext() IMContext {
+// ImContext gets the input method context of the key @controller.
+func (c *EventControllerKeyClass) ImContext() IMContext {
 	var _arg0 *C.GtkEventControllerKey // out
 	var _cret *C.GtkIMContext          // in
 
@@ -245,7 +138,8 @@ func (c eventControllerKey) ImContext() IMContext {
 	return _imContext
 }
 
-func (c eventControllerKey) SetImContext(imContext IMContext) {
+// SetImContext sets the input method context of the key @controller.
+func (c *EventControllerKeyClass) SetImContext(imContext IMContext) {
 	var _arg0 *C.GtkEventControllerKey // out
 	var _arg1 *C.GtkIMContext          // out
 

@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -21,7 +22,7 @@ func init() {
 	})
 }
 
-// PrintOperationPreviewOverrider contains methods that are overridable .
+// PrintOperationPreviewOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
@@ -76,26 +77,29 @@ type PrintOperationPreview interface {
 	RenderPage(pageNr int)
 }
 
-// printOperationPreview implements the PrintOperationPreview interface.
-type printOperationPreview struct {
+// PrintOperationPreviewInterface implements the PrintOperationPreview interface.
+type PrintOperationPreviewInterface struct {
 	*externglib.Object
 }
 
-var _ PrintOperationPreview = (*printOperationPreview)(nil)
+var _ PrintOperationPreview = (*PrintOperationPreviewInterface)(nil)
 
-// WrapPrintOperationPreview wraps a GObject to a type that implements
-// interface PrintOperationPreview. It is primarily used internally.
-func WrapPrintOperationPreview(obj *externglib.Object) PrintOperationPreview {
-	return printOperationPreview{obj}
+func wrapPrintOperationPreview(obj *externglib.Object) PrintOperationPreview {
+	return &PrintOperationPreviewInterface{
+		Object: obj,
+	}
 }
 
 func marshalPrintOperationPreview(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapPrintOperationPreview(obj), nil
+	return wrapPrintOperationPreview(obj), nil
 }
 
-func (p printOperationPreview) EndPreview() {
+// EndPreview ends a preview.
+//
+// This function must be called to finish a custom print preview.
+func (p *PrintOperationPreviewInterface) EndPreview() {
 	var _arg0 *C.GtkPrintOperationPreview // out
 
 	_arg0 = (*C.GtkPrintOperationPreview)(unsafe.Pointer(p.Native()))
@@ -103,7 +107,9 @@ func (p printOperationPreview) EndPreview() {
 	C.gtk_print_operation_preview_end_preview(_arg0)
 }
 
-func (p printOperationPreview) IsSelected(pageNr int) bool {
+// IsSelected returns whether the given page is included in the set of pages
+// that have been selected for printing.
+func (p *PrintOperationPreviewInterface) IsSelected(pageNr int) bool {
 	var _arg0 *C.GtkPrintOperationPreview // out
 	var _arg1 C.int                       // out
 	var _cret C.gboolean                  // in
@@ -122,7 +128,17 @@ func (p printOperationPreview) IsSelected(pageNr int) bool {
 	return _ok
 }
 
-func (p printOperationPreview) RenderPage(pageNr int) {
+// RenderPage renders a page to the preview.
+//
+// This is using the print context that was passed to the
+// [signal@Gtk.PrintOperation::preview] handler together with @preview.
+//
+// A custom print preview should use this function to render the currently
+// selected page.
+//
+// Note that this function requires a suitable cairo context to be associated
+// with the print context.
+func (p *PrintOperationPreviewInterface) RenderPage(pageNr int) {
 	var _arg0 *C.GtkPrintOperationPreview // out
 	var _arg1 C.int                       // out
 

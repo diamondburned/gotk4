@@ -87,26 +87,27 @@ type Seat interface {
 	Ungrab()
 }
 
-// seat implements the Seat interface.
-type seat struct {
+// SeatClass implements the Seat interface.
+type SeatClass struct {
 	*externglib.Object
 }
 
-var _ Seat = (*seat)(nil)
+var _ Seat = (*SeatClass)(nil)
 
-// WrapSeat wraps a GObject to a type that implements
-// interface Seat. It is primarily used internally.
-func WrapSeat(obj *externglib.Object) Seat {
-	return seat{obj}
+func wrapSeat(obj *externglib.Object) Seat {
+	return &SeatClass{
+		Object: obj,
+	}
 }
 
 func marshalSeat(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapSeat(obj), nil
+	return wrapSeat(obj), nil
 }
 
-func (s seat) Capabilities() SeatCapabilities {
+// Capabilities returns the capabilities this Seat currently has.
+func (s *SeatClass) Capabilities() SeatCapabilities {
 	var _arg0 *C.GdkSeat            // out
 	var _cret C.GdkSeatCapabilities // in
 
@@ -121,7 +122,8 @@ func (s seat) Capabilities() SeatCapabilities {
 	return _seatCapabilities
 }
 
-func (s seat) Display() Display {
+// Display returns the Display this seat belongs to.
+func (s *SeatClass) Display() Display {
 	var _arg0 *C.GdkSeat    // out
 	var _cret *C.GdkDisplay // in
 
@@ -136,7 +138,8 @@ func (s seat) Display() Display {
 	return _display
 }
 
-func (s seat) Keyboard() Device {
+// Keyboard returns the master device that routes keyboard events.
+func (s *SeatClass) Keyboard() Device {
 	var _arg0 *C.GdkSeat   // out
 	var _cret *C.GdkDevice // in
 
@@ -151,7 +154,8 @@ func (s seat) Keyboard() Device {
 	return _device
 }
 
-func (s seat) Pointer() Device {
+// Pointer returns the master device that routes pointer events.
+func (s *SeatClass) Pointer() Device {
 	var _arg0 *C.GdkSeat   // out
 	var _cret *C.GdkDevice // in
 
@@ -166,7 +170,8 @@ func (s seat) Pointer() Device {
 	return _device
 }
 
-func (s seat) Ungrab() {
+// Ungrab releases a grab added through gdk_seat_grab().
+func (s *SeatClass) Ungrab() {
 	var _arg0 *C.GdkSeat // out
 
 	_arg0 = (*C.GdkSeat)(unsafe.Pointer(s.Native()))

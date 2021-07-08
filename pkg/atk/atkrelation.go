@@ -38,23 +38,23 @@ type Relation interface {
 	RemoveTarget(target Object) bool
 }
 
-// relation implements the Relation interface.
-type relation struct {
+// RelationClass implements the Relation interface.
+type RelationClass struct {
 	*externglib.Object
 }
 
-var _ Relation = (*relation)(nil)
+var _ Relation = (*RelationClass)(nil)
 
-// WrapRelation wraps a GObject to a type that implements
-// interface Relation. It is primarily used internally.
-func WrapRelation(obj *externglib.Object) Relation {
-	return relation{obj}
+func wrapRelation(obj *externglib.Object) Relation {
+	return &RelationClass{
+		Object: obj,
+	}
 }
 
 func marshalRelation(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapRelation(obj), nil
+	return wrapRelation(obj), nil
 }
 
 // NewRelation: create a new relation for the specified key and the specified
@@ -85,7 +85,9 @@ func NewRelation(targets []Object, relationship RelationType) Relation {
 	return _relation
 }
 
-func (r relation) AddTarget(target Object) {
+// AddTarget adds the specified AtkObject to the target for the relation, if it
+// is not already present. See also atk_object_add_relationship().
+func (r *RelationClass) AddTarget(target Object) {
 	var _arg0 *C.AtkRelation // out
 	var _arg1 *C.AtkObject   // out
 
@@ -95,7 +97,8 @@ func (r relation) AddTarget(target Object) {
 	C.atk_relation_add_target(_arg0, _arg1)
 }
 
-func (r relation) RelationType() RelationType {
+// RelationType gets the type of @relation
+func (r *RelationClass) RelationType() RelationType {
 	var _arg0 *C.AtkRelation    // out
 	var _cret C.AtkRelationType // in
 
@@ -110,7 +113,9 @@ func (r relation) RelationType() RelationType {
 	return _relationType
 }
 
-func (r relation) RemoveTarget(target Object) bool {
+// RemoveTarget: remove the specified AtkObject from the target for the
+// relation.
+func (r *RelationClass) RemoveTarget(target Object) bool {
 	var _arg0 *C.AtkRelation // out
 	var _arg1 *C.AtkObject   // out
 	var _cret C.gboolean     // in

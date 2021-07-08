@@ -273,60 +273,6 @@ func (i *TextIter) BackwardLines(count int) bool {
 	return _ok
 }
 
-// BackwardSearch: same as gtk_text_iter_forward_search(), but moves backward.
-//
-// @match_end will never be set to a TextIter located after @iter, even if there
-// is a possible @match_start before or at @iter.
-func (i *TextIter) BackwardSearch(str string, flags TextSearchFlags, limit *TextIter) (matchStart TextIter, matchEnd TextIter, ok bool) {
-	var _arg0 *C.GtkTextIter       // out
-	var _arg1 *C.gchar             // out
-	var _arg2 C.GtkTextSearchFlags // out
-	var _arg3 C.GtkTextIter        // in
-	var _arg4 C.GtkTextIter        // in
-	var _arg5 *C.GtkTextIter       // out
-	var _cret C.gboolean           // in
-
-	_arg0 = (*C.GtkTextIter)(unsafe.Pointer(i))
-	_arg1 = (*C.gchar)(C.CString(str))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.GtkTextSearchFlags(flags)
-	_arg5 = (*C.GtkTextIter)(unsafe.Pointer(limit))
-
-	_cret = C.gtk_text_iter_backward_search(_arg0, _arg1, _arg2, &_arg3, &_arg4, _arg5)
-
-	var _matchStart TextIter // out
-	var _matchEnd TextIter   // out
-	var _ok bool             // out
-
-	{
-		var refTmpIn *C.GtkTextIter
-		var refTmpOut *TextIter
-
-		in0 := &_arg3
-		refTmpIn = in0
-
-		refTmpOut = (*TextIter)(unsafe.Pointer(refTmpIn))
-
-		_matchStart = *refTmpOut
-	}
-	{
-		var refTmpIn *C.GtkTextIter
-		var refTmpOut *TextIter
-
-		in0 := &_arg4
-		refTmpIn = in0
-
-		refTmpOut = (*TextIter)(unsafe.Pointer(refTmpIn))
-
-		_matchEnd = *refTmpOut
-	}
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _matchStart, _matchEnd, _ok
-}
-
 // BackwardSentenceStart moves backward to the previous sentence start; if @iter
 // is already at the start of a sentence, moves backward to the next one.
 // Sentence boundaries are determined by Pango and should be correct for nearly
@@ -981,64 +927,6 @@ func (i *TextIter) ForwardLines(count int) bool {
 	return _ok
 }
 
-// ForwardSearch searches forward for @str. Any match is returned by setting
-// @match_start to the first character of the match and @match_end to the first
-// character after the match. The search will not continue past @limit. Note
-// that a search is a linear or O(n) operation, so you may wish to use @limit to
-// avoid locking up your UI on large buffers.
-//
-// @match_start will never be set to a TextIter located before @iter, even if
-// there is a possible @match_end after or at @iter.
-func (i *TextIter) ForwardSearch(str string, flags TextSearchFlags, limit *TextIter) (matchStart TextIter, matchEnd TextIter, ok bool) {
-	var _arg0 *C.GtkTextIter       // out
-	var _arg1 *C.gchar             // out
-	var _arg2 C.GtkTextSearchFlags // out
-	var _arg3 C.GtkTextIter        // in
-	var _arg4 C.GtkTextIter        // in
-	var _arg5 *C.GtkTextIter       // out
-	var _cret C.gboolean           // in
-
-	_arg0 = (*C.GtkTextIter)(unsafe.Pointer(i))
-	_arg1 = (*C.gchar)(C.CString(str))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.GtkTextSearchFlags(flags)
-	_arg5 = (*C.GtkTextIter)(unsafe.Pointer(limit))
-
-	_cret = C.gtk_text_iter_forward_search(_arg0, _arg1, _arg2, &_arg3, &_arg4, _arg5)
-
-	var _matchStart TextIter // out
-	var _matchEnd TextIter   // out
-	var _ok bool             // out
-
-	{
-		var refTmpIn *C.GtkTextIter
-		var refTmpOut *TextIter
-
-		in0 := &_arg3
-		refTmpIn = in0
-
-		refTmpOut = (*TextIter)(unsafe.Pointer(refTmpIn))
-
-		_matchStart = *refTmpOut
-	}
-	{
-		var refTmpIn *C.GtkTextIter
-		var refTmpOut *TextIter
-
-		in0 := &_arg4
-		refTmpIn = in0
-
-		refTmpOut = (*TextIter)(unsafe.Pointer(refTmpIn))
-
-		_matchEnd = *refTmpOut
-	}
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _matchStart, _matchEnd, _ok
-}
-
 // ForwardSentenceEnd moves forward to the next sentence end. (If @iter is at
 // the end of a sentence, moves to the next end of sentence.) Sentence
 // boundaries are determined by Pango and should be correct for nearly any
@@ -1321,48 +1209,6 @@ func (i *TextIter) free() {
 	_arg0 = (*C.GtkTextIter)(unsafe.Pointer(i))
 
 	C.gtk_text_iter_free(_arg0)
-}
-
-// Attributes computes the effect of any tags applied to this spot in the text.
-// The @values parameter should be initialized to the default settings you wish
-// to use if no tags are in effect. You’d typically obtain the defaults from
-// gtk_text_view_get_default_attributes().
-//
-// gtk_text_iter_get_attributes() will modify @values, applying the effects of
-// any tags present at @iter. If any tags affected @values, the function returns
-// true.
-func (i *TextIter) Attributes() (TextAttributes, bool) {
-	var _arg0 *C.GtkTextIter      // out
-	var _arg1 C.GtkTextAttributes // in
-	var _cret C.gboolean          // in
-
-	_arg0 = (*C.GtkTextIter)(unsafe.Pointer(i))
-
-	_cret = C.gtk_text_iter_get_attributes(_arg0, &_arg1)
-
-	var _values TextAttributes // out
-	var _ok bool               // out
-
-	{
-		var refTmpIn *C.GtkTextAttributes
-		var refTmpOut *TextAttributes
-
-		in0 := &_arg1
-		refTmpIn = in0
-
-		refTmpOut = (*TextAttributes)(unsafe.Pointer(refTmpIn))
-		C.gtk_text_attributes_ref(refTmpIn)
-		runtime.SetFinalizer(refTmpOut, func(v *TextAttributes) {
-			C.gtk_text_attributes_unref((*C.GtkTextAttributes)(unsafe.Pointer(v)))
-		})
-
-		_values = *refTmpOut
-	}
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _values, _ok
 }
 
 // Buffer returns the TextBuffer this iterator is associated with.

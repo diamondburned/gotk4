@@ -62,23 +62,23 @@ type TextTag interface {
 	SetPriority(priority int)
 }
 
-// textTag implements the TextTag interface.
-type textTag struct {
+// TextTagClass implements the TextTag interface.
+type TextTagClass struct {
 	*externglib.Object
 }
 
-var _ TextTag = (*textTag)(nil)
+var _ TextTag = (*TextTagClass)(nil)
 
-// WrapTextTag wraps a GObject to a type that implements
-// interface TextTag. It is primarily used internally.
-func WrapTextTag(obj *externglib.Object) TextTag {
-	return textTag{obj}
+func wrapTextTag(obj *externglib.Object) TextTag {
+	return &TextTagClass{
+		Object: obj,
+	}
 }
 
 func marshalTextTag(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapTextTag(obj), nil
+	return wrapTextTag(obj), nil
 }
 
 // NewTextTag creates a TextTag. Configure the tag using object arguments, i.e.
@@ -99,7 +99,12 @@ func NewTextTag(name string) TextTag {
 	return _textTag
 }
 
-func (t textTag) Changed(sizeChanged bool) {
+// Changed emits the TextTagTable::tag-changed signal on the TextTagTable where
+// the tag is included.
+//
+// The signal is already emitted when setting a TextTag property. This function
+// is useful for a TextTag subclass.
+func (t *TextTagClass) Changed(sizeChanged bool) {
 	var _arg0 *C.GtkTextTag // out
 	var _arg1 C.gboolean    // out
 
@@ -111,7 +116,8 @@ func (t textTag) Changed(sizeChanged bool) {
 	C.gtk_text_tag_changed(_arg0, _arg1)
 }
 
-func (t textTag) Priority() int {
+// Priority: get the tag priority.
+func (t *TextTagClass) Priority() int {
 	var _arg0 *C.GtkTextTag // out
 	var _cret C.gint        // in
 
@@ -126,7 +132,17 @@ func (t textTag) Priority() int {
 	return _gint
 }
 
-func (t textTag) SetPriority(priority int) {
+// SetPriority sets the priority of a TextTag. Valid priorities start at 0 and
+// go to one less than gtk_text_tag_table_get_size(). Each tag in a table has a
+// unique priority; setting the priority of one tag shifts the priorities of all
+// the other tags in the table to maintain a unique priority for each tag.
+// Higher priority tags “win” if two tags both set the same text attribute. When
+// adding a tag to a tag table, it will be assigned the highest priority in the
+// table by default; so normally the precedence of a set of tags is the order in
+// which they were added to the table, or created with
+// gtk_text_buffer_create_tag(), which adds the tag to the buffer’s table
+// automatically.
+func (t *TextTagClass) SetPriority(priority int) {
 	var _arg0 *C.GtkTextTag // out
 	var _arg1 C.gint        // out
 

@@ -157,26 +157,28 @@ type GLContext interface {
 	SetUseES(useEs int)
 }
 
-// glContext implements the GLContext interface.
-type glContext struct {
+// GLContextClass implements the GLContext interface.
+type GLContextClass struct {
 	*externglib.Object
 }
 
-var _ GLContext = (*glContext)(nil)
+var _ GLContext = (*GLContextClass)(nil)
 
-// WrapGLContext wraps a GObject to a type that implements
-// interface GLContext. It is primarily used internally.
-func WrapGLContext(obj *externglib.Object) GLContext {
-	return glContext{obj}
+func wrapGLContext(obj *externglib.Object) GLContext {
+	return &GLContextClass{
+		Object: obj,
+	}
 }
 
 func marshalGLContext(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapGLContext(obj), nil
+	return wrapGLContext(obj), nil
 }
 
-func (c glContext) DebugEnabled() bool {
+// DebugEnabled retrieves the value set using
+// gdk_gl_context_set_debug_enabled().
+func (c *GLContextClass) DebugEnabled() bool {
 	var _arg0 *C.GdkGLContext // out
 	var _cret C.gboolean      // in
 
@@ -193,7 +195,8 @@ func (c glContext) DebugEnabled() bool {
 	return _ok
 }
 
-func (c glContext) Display() Display {
+// Display retrieves the Display the @context is created for
+func (c *GLContextClass) Display() Display {
 	var _arg0 *C.GdkGLContext // out
 	var _cret *C.GdkDisplay   // in
 
@@ -208,7 +211,9 @@ func (c glContext) Display() Display {
 	return _display
 }
 
-func (c glContext) ForwardCompatible() bool {
+// ForwardCompatible retrieves the value set using
+// gdk_gl_context_set_forward_compatible().
+func (c *GLContextClass) ForwardCompatible() bool {
 	var _arg0 *C.GdkGLContext // out
 	var _cret C.gboolean      // in
 
@@ -225,7 +230,9 @@ func (c glContext) ForwardCompatible() bool {
 	return _ok
 }
 
-func (c glContext) RequiredVersion() (major int, minor int) {
+// RequiredVersion retrieves the major and minor version requested by calling
+// gdk_gl_context_set_required_version().
+func (c *GLContextClass) RequiredVersion() (major int, minor int) {
 	var _arg0 *C.GdkGLContext // out
 	var _arg1 C.int           // in
 	var _arg2 C.int           // in
@@ -243,7 +250,8 @@ func (c glContext) RequiredVersion() (major int, minor int) {
 	return _major, _minor
 }
 
-func (c glContext) SharedContext() GLContext {
+// SharedContext retrieves the GLContext that this @context share data with.
+func (c *GLContextClass) SharedContext() GLContext {
 	var _arg0 *C.GdkGLContext // out
 	var _cret *C.GdkGLContext // in
 
@@ -258,7 +266,8 @@ func (c glContext) SharedContext() GLContext {
 	return _glContext
 }
 
-func (c glContext) UseES() bool {
+// UseES checks whether the @context is using an OpenGL or OpenGL ES profile.
+func (c *GLContextClass) UseES() bool {
 	var _arg0 *C.GdkGLContext // out
 	var _cret C.gboolean      // in
 
@@ -275,7 +284,10 @@ func (c glContext) UseES() bool {
 	return _ok
 }
 
-func (c glContext) Version() (major int, minor int) {
+// Version retrieves the OpenGL version of the @context.
+//
+// The @context must be realized prior to calling this function.
+func (c *GLContextClass) Version() (major int, minor int) {
 	var _arg0 *C.GdkGLContext // out
 	var _arg1 C.int           // in
 	var _arg2 C.int           // in
@@ -293,7 +305,8 @@ func (c glContext) Version() (major int, minor int) {
 	return _major, _minor
 }
 
-func (c glContext) Window() Window {
+// Window retrieves the Window used by the @context.
+func (c *GLContextClass) Window() Window {
 	var _arg0 *C.GdkGLContext // out
 	var _cret *C.GdkWindow    // in
 
@@ -308,7 +321,23 @@ func (c glContext) Window() Window {
 	return _window
 }
 
-func (c glContext) IsLegacy() bool {
+// IsLegacy: whether the GLContext is in legacy mode or not.
+//
+// The GLContext must be realized before calling this function.
+//
+// When realizing a GL context, GDK will try to use the OpenGL 3.2 core profile;
+// this profile removes all the OpenGL API that was deprecated prior to the 3.2
+// version of the specification. If the realization is successful, this function
+// will return false.
+//
+// If the underlying OpenGL implementation does not support core profiles, GDK
+// will fall back to a pre-3.2 compatibility profile, and this function will
+// return true.
+//
+// You can use the value returned by this function to decide which kind of
+// OpenGL API to use, or whether to do extension discovery, or what kind of
+// shader programs to load.
+func (c *GLContextClass) IsLegacy() bool {
 	var _arg0 *C.GdkGLContext // out
 	var _cret C.gboolean      // in
 
@@ -325,7 +354,8 @@ func (c glContext) IsLegacy() bool {
 	return _ok
 }
 
-func (c glContext) MakeCurrent() {
+// MakeCurrent makes the @context the current one.
+func (c *GLContextClass) MakeCurrent() {
 	var _arg0 *C.GdkGLContext // out
 
 	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(c.Native()))
@@ -333,7 +363,10 @@ func (c glContext) MakeCurrent() {
 	C.gdk_gl_context_make_current(_arg0)
 }
 
-func (c glContext) Realize() error {
+// Realize realizes the given GLContext.
+//
+// It is safe to call this function on a realized GLContext.
+func (c *GLContextClass) Realize() error {
 	var _arg0 *C.GdkGLContext // out
 	var _cerr *C.GError       // in
 
@@ -348,7 +381,13 @@ func (c glContext) Realize() error {
 	return _goerr
 }
 
-func (c glContext) SetDebugEnabled(enabled bool) {
+// SetDebugEnabled sets whether the GLContext should perform extra validations
+// and run time checking. This is useful during development, but has additional
+// overhead.
+//
+// The GLContext must not be realized or made current prior to calling this
+// function.
+func (c *GLContextClass) SetDebugEnabled(enabled bool) {
 	var _arg0 *C.GdkGLContext // out
 	var _arg1 C.gboolean      // out
 
@@ -360,7 +399,16 @@ func (c glContext) SetDebugEnabled(enabled bool) {
 	C.gdk_gl_context_set_debug_enabled(_arg0, _arg1)
 }
 
-func (c glContext) SetForwardCompatible(compatible bool) {
+// SetForwardCompatible sets whether the GLContext should be forward compatible.
+//
+// Forward compatibile contexts must not support OpenGL functionality that has
+// been marked as deprecated in the requested version; non-forward compatible
+// contexts, on the other hand, must support both deprecated and non deprecated
+// functionality.
+//
+// The GLContext must not be realized or made current prior to calling this
+// function.
+func (c *GLContextClass) SetForwardCompatible(compatible bool) {
 	var _arg0 *C.GdkGLContext // out
 	var _arg1 C.gboolean      // out
 
@@ -372,7 +420,13 @@ func (c glContext) SetForwardCompatible(compatible bool) {
 	C.gdk_gl_context_set_forward_compatible(_arg0, _arg1)
 }
 
-func (c glContext) SetRequiredVersion(major int, minor int) {
+// SetRequiredVersion sets the major and minor version of OpenGL to request.
+//
+// Setting @major and @minor to zero will use the default values.
+//
+// The GLContext must not be realized or made current prior to calling this
+// function.
+func (c *GLContextClass) SetRequiredVersion(major int, minor int) {
 	var _arg0 *C.GdkGLContext // out
 	var _arg1 C.int           // out
 	var _arg2 C.int           // out
@@ -384,7 +438,18 @@ func (c glContext) SetRequiredVersion(major int, minor int) {
 	C.gdk_gl_context_set_required_version(_arg0, _arg1, _arg2)
 }
 
-func (c glContext) SetUseES(useEs int) {
+// SetUseES requests that GDK create a OpenGL ES context instead of an OpenGL
+// one, if the platform and windowing system allows it.
+//
+// The @context must not have been realized.
+//
+// By default, GDK will attempt to automatically detect whether the underlying
+// GL implementation is OpenGL or OpenGL ES once the @context is realized.
+//
+// You should check the return value of gdk_gl_context_get_use_es() after
+// calling gdk_gl_context_realize() to decide whether to use the OpenGL or
+// OpenGL ES API, extensions, or shaders.
+func (c *GLContextClass) SetUseES(useEs int) {
 	var _arg0 *C.GdkGLContext // out
 	var _arg1 C.int           // out
 

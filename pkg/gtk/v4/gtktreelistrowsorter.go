@@ -34,48 +34,7 @@ func init() {
 // gtk_single_selection_new (sort_model); gtk_column_view_set_model (view,
 // G_LIST_MODEL (selection)); “`
 type TreeListRowSorter interface {
-	Sorter
-
-	// AsSorter casts the class to the Sorter interface.
-	AsSorter() Sorter
-
-	// Changed emits the [signal@Gtk.Sorter::changed] signal to notify all users
-	// of the sorter that it has changed.
-	//
-	// Users of the sorter should then update the sort order via
-	// gtk_sorter_compare().
-	//
-	// Depending on the @change parameter, it may be possible to update the sort
-	// order without a full resorting. Refer to the [enum@Gtk.SorterChange]
-	// documentation for details.
-	//
-	// This function is intended for implementors of `GtkSorter` subclasses and
-	// should not be called from other functions.
-	//
-	// This method is inherited from Sorter
-	Changed(change SorterChange)
-	// Compare compares two given items according to the sort order implemented
-	// by the sorter.
-	//
-	// Sorters implement a partial order:
-	//
-	// * It is reflexive, ie a = a * It is antisymmetric, ie if a < b and b < a,
-	// then a = b * It is transitive, ie given any 3 items with a ≤ b and b ≤ c,
-	// then a ≤ c
-	//
-	// The sorter may signal it conforms to additional constraints via the
-	// return value of [method@Gtk.Sorter.get_order].
-	//
-	// This method is inherited from Sorter
-	Compare(item1 gextras.Objector, item2 gextras.Objector) Ordering
-	// GetOrder gets the order that @self conforms to.
-	//
-	// See [enum@Gtk.SorterOrder] for details of the possible return values.
-	//
-	// This function is intended to allow optimizations.
-	//
-	// This method is inherited from Sorter
-	GetOrder() SorterOrder
+	gextras.Objector
 
 	// Sorter returns the sorter used by @self.
 	Sorter() Sorter
@@ -86,23 +45,25 @@ type TreeListRowSorter interface {
 	SetSorter(sorter Sorter)
 }
 
-// treeListRowSorter implements the TreeListRowSorter interface.
-type treeListRowSorter struct {
-	*externglib.Object
+// TreeListRowSorterClass implements the TreeListRowSorter interface.
+type TreeListRowSorterClass struct {
+	SorterClass
 }
 
-var _ TreeListRowSorter = (*treeListRowSorter)(nil)
+var _ TreeListRowSorter = (*TreeListRowSorterClass)(nil)
 
-// WrapTreeListRowSorter wraps a GObject to a type that implements
-// interface TreeListRowSorter. It is primarily used internally.
-func WrapTreeListRowSorter(obj *externglib.Object) TreeListRowSorter {
-	return treeListRowSorter{obj}
+func wrapTreeListRowSorter(obj *externglib.Object) TreeListRowSorter {
+	return &TreeListRowSorterClass{
+		SorterClass: SorterClass{
+			Object: obj,
+		},
+	}
 }
 
 func marshalTreeListRowSorter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapTreeListRowSorter(obj), nil
+	return wrapTreeListRowSorter(obj), nil
 }
 
 // NewTreeListRowSorter: create a special-purpose sorter that applies the
@@ -125,23 +86,8 @@ func NewTreeListRowSorter(sorter Sorter) TreeListRowSorter {
 	return _treeListRowSorter
 }
 
-func (t treeListRowSorter) AsSorter() Sorter {
-	return WrapSorter(gextras.InternObject(t))
-}
-
-func (s treeListRowSorter) Changed(change SorterChange) {
-	WrapSorter(gextras.InternObject(s)).Changed(change)
-}
-
-func (s treeListRowSorter) Compare(item1 gextras.Objector, item2 gextras.Objector) Ordering {
-	return WrapSorter(gextras.InternObject(s)).Compare(item1, item2)
-}
-
-func (s treeListRowSorter) GetOrder() SorterOrder {
-	return WrapSorter(gextras.InternObject(s)).GetOrder()
-}
-
-func (s treeListRowSorter) Sorter() Sorter {
+// Sorter returns the sorter used by @self.
+func (s *TreeListRowSorterClass) Sorter() Sorter {
 	var _arg0 *C.GtkTreeListRowSorter // out
 	var _cret *C.GtkSorter            // in
 
@@ -156,7 +102,11 @@ func (s treeListRowSorter) Sorter() Sorter {
 	return _sorter
 }
 
-func (s treeListRowSorter) SetSorter(sorter Sorter) {
+// SetSorter sets the sorter to use for items with the same parent.
+//
+// This sorter will be passed the [property@Gtk.TreeListRow:item] of the tree
+// list rows passed to @self.
+func (s *TreeListRowSorterClass) SetSorter(sorter Sorter) {
 	var _arg0 *C.GtkTreeListRowSorter // out
 	var _arg1 *C.GtkSorter            // out
 

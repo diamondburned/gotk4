@@ -5,8 +5,6 @@ package gdkpixbuf
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
-	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -60,10 +58,10 @@ const (
 	// Bilevel clipping mask (black and white) will be created and used to draw
 	// the image. Pixels below 0.5 opacity will be considered fully transparent,
 	// and all others will be considered fully opaque.
-	PixbufAlphaBilevel PixbufAlphaMode = iota
+	PixbufAlphaModeBilevel PixbufAlphaMode = iota
 	// Full: for now falls back to K_PIXBUF_ALPHA_BILEVEL. In the future it will
 	// do full alpha compositing.
-	PixbufAlphaFull
+	PixbufAlphaModeFull
 )
 
 func marshalPixbufAlphaMode(p uintptr) (interface{}, error) {
@@ -96,50 +94,4 @@ const (
 
 func marshalPixbufError(p uintptr) (interface{}, error) {
 	return PixbufError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
-}
-
-// PixbufSaveFunc: save functions used by
-// [method@GdkPixbuf.Pixbuf.save_to_callback].
-//
-// This function is called once for each block of bytes that is "written" by
-// `gdk_pixbuf_save_to_callback()`.
-//
-// If successful it should return `TRUE`; if an error occurs it should set
-// `error` and return `FALSE`, in which case `gdk_pixbuf_save_to_callback()`
-// will fail with the same error.
-type PixbufSaveFunc func(buf []byte) (err error, ok bool)
-
-//export gotk4_PixbufSaveFunc
-func gotk4_PixbufSaveFunc(arg0 *C.gchar, arg1 C.gsize, arg2 **C.GError, arg3 C.gpointer) (cret C.gboolean) {
-	v := box.Get(uintptr(arg3))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	var buf []byte
-
-	buf = make([]byte, arg1)
-	copy(buf, unsafe.Slice((*byte)(unsafe.Pointer(arg0)), arg1))
-
-	fn := v.(PixbufSaveFunc)
-	err, ok := fn(buf)
-
-	{
-		var refTmpIn error
-		var refTmpOut *C.GError
-
-		refTmpIn = err
-
-		refTmpOut = (*C.GError)(gerror.New(refTmpIn))
-
-		if refTmpOut != nil {
-			out0 := &refTmpOut
-			arg2 = out0
-		}
-	}
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
 }

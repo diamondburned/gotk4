@@ -477,23 +477,23 @@ type UnixMountMonitor interface {
 	SetRateLimit(limitMsec int)
 }
 
-// unixMountMonitor implements the UnixMountMonitor interface.
-type unixMountMonitor struct {
+// UnixMountMonitorClass implements the UnixMountMonitor interface.
+type UnixMountMonitorClass struct {
 	*externglib.Object
 }
 
-var _ UnixMountMonitor = (*unixMountMonitor)(nil)
+var _ UnixMountMonitor = (*UnixMountMonitorClass)(nil)
 
-// WrapUnixMountMonitor wraps a GObject to a type that implements
-// interface UnixMountMonitor. It is primarily used internally.
-func WrapUnixMountMonitor(obj *externglib.Object) UnixMountMonitor {
-	return unixMountMonitor{obj}
+func wrapUnixMountMonitor(obj *externglib.Object) UnixMountMonitor {
+	return &UnixMountMonitorClass{
+		Object: obj,
+	}
 }
 
 func marshalUnixMountMonitor(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapUnixMountMonitor(obj), nil
+	return wrapUnixMountMonitor(obj), nil
 }
 
 // NewUnixMountMonitor: deprecated alias for g_unix_mount_monitor_get().
@@ -513,7 +513,15 @@ func NewUnixMountMonitor() UnixMountMonitor {
 	return _unixMountMonitor
 }
 
-func (m unixMountMonitor) SetRateLimit(limitMsec int) {
+// SetRateLimit: this function does nothing.
+//
+// Before 2.44, this was a partially-effective way of controlling the rate at
+// which events would be reported under some uncommon circumstances. Since
+// @mount_monitor is a singleton, it also meant that calling this function would
+// have side effects for other users of the monitor.
+//
+// Deprecated: since version 2.44.
+func (m *UnixMountMonitorClass) SetRateLimit(limitMsec int) {
 	var _arg0 *C.GUnixMountMonitor // out
 	var _arg1 C.int                // out
 

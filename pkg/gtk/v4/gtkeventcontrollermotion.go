@@ -6,7 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -33,73 +32,7 @@ func init() {
 // updated to reflect changes in the pointer position as it moves over the
 // widget.
 type EventControllerMotion interface {
-	EventController
-
-	// AsEventController casts the class to the EventController interface.
-	AsEventController() EventController
-
-	// GetCurrentEvent returns the event that is currently being handled by the
-	// controller, and nil at other times.
-	//
-	// This method is inherited from EventController
-	GetCurrentEvent() gdk.Event
-	// GetCurrentEventDevice returns the device of the event that is currently
-	// being handled by the controller, and nil otherwise.
-	//
-	// This method is inherited from EventController
-	GetCurrentEventDevice() gdk.Device
-	// GetCurrentEventState returns the modifier state of the event that is
-	// currently being handled by the controller, and 0 otherwise.
-	//
-	// This method is inherited from EventController
-	GetCurrentEventState() gdk.ModifierType
-	// GetCurrentEventTime returns the timestamp of the event that is currently
-	// being handled by the controller, and 0 otherwise.
-	//
-	// This method is inherited from EventController
-	GetCurrentEventTime() uint32
-	// GetName gets the name of @controller.
-	//
-	// This method is inherited from EventController
-	GetName() string
-	// GetPropagationLimit gets the propagation limit of the event controller.
-	//
-	// This method is inherited from EventController
-	GetPropagationLimit() PropagationLimit
-	// GetPropagationPhase gets the propagation phase at which @controller
-	// handles events.
-	//
-	// This method is inherited from EventController
-	GetPropagationPhase() PropagationPhase
-	// GetWidget returns the Widget this controller relates to.
-	//
-	// This method is inherited from EventController
-	GetWidget() Widget
-	// Reset resets the @controller to a clean state.
-	//
-	// This method is inherited from EventController
-	Reset()
-	// SetName sets a name on the controller that can be used for debugging.
-	//
-	// This method is inherited from EventController
-	SetName(name string)
-	// SetPropagationLimit sets the event propagation limit on the event
-	// controller.
-	//
-	// If the limit is set to GTK_LIMIT_SAME_NATIVE, the controller won't handle
-	// events that are targeted at widgets on a different surface, such as
-	// popovers.
-	//
-	// This method is inherited from EventController
-	SetPropagationLimit(limit PropagationLimit)
-	// SetPropagationPhase sets the propagation phase at which a controller
-	// handles events.
-	//
-	// If @phase is GTK_PHASE_NONE, no automatic event handling will be
-	// performed, but other additional gesture maintenance will.
-	//
-	// This method is inherited from EventController
-	SetPropagationPhase(phase PropagationPhase)
+	gextras.Objector
 
 	// ContainsPointer returns if a pointer is within @self or one of its
 	// children.
@@ -109,23 +42,25 @@ type EventControllerMotion interface {
 	IsPointer() bool
 }
 
-// eventControllerMotion implements the EventControllerMotion interface.
-type eventControllerMotion struct {
-	*externglib.Object
+// EventControllerMotionClass implements the EventControllerMotion interface.
+type EventControllerMotionClass struct {
+	EventControllerClass
 }
 
-var _ EventControllerMotion = (*eventControllerMotion)(nil)
+var _ EventControllerMotion = (*EventControllerMotionClass)(nil)
 
-// WrapEventControllerMotion wraps a GObject to a type that implements
-// interface EventControllerMotion. It is primarily used internally.
-func WrapEventControllerMotion(obj *externglib.Object) EventControllerMotion {
-	return eventControllerMotion{obj}
+func wrapEventControllerMotion(obj *externglib.Object) EventControllerMotion {
+	return &EventControllerMotionClass{
+		EventControllerClass: EventControllerClass{
+			Object: obj,
+		},
+	}
 }
 
 func marshalEventControllerMotion(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapEventControllerMotion(obj), nil
+	return wrapEventControllerMotion(obj), nil
 }
 
 // NewEventControllerMotion creates a new event controller that will handle
@@ -142,59 +77,8 @@ func NewEventControllerMotion() EventControllerMotion {
 	return _eventControllerMotion
 }
 
-func (e eventControllerMotion) AsEventController() EventController {
-	return WrapEventController(gextras.InternObject(e))
-}
-
-func (c eventControllerMotion) GetCurrentEvent() gdk.Event {
-	return WrapEventController(gextras.InternObject(c)).GetCurrentEvent()
-}
-
-func (c eventControllerMotion) GetCurrentEventDevice() gdk.Device {
-	return WrapEventController(gextras.InternObject(c)).GetCurrentEventDevice()
-}
-
-func (c eventControllerMotion) GetCurrentEventState() gdk.ModifierType {
-	return WrapEventController(gextras.InternObject(c)).GetCurrentEventState()
-}
-
-func (c eventControllerMotion) GetCurrentEventTime() uint32 {
-	return WrapEventController(gextras.InternObject(c)).GetCurrentEventTime()
-}
-
-func (c eventControllerMotion) GetName() string {
-	return WrapEventController(gextras.InternObject(c)).GetName()
-}
-
-func (c eventControllerMotion) GetPropagationLimit() PropagationLimit {
-	return WrapEventController(gextras.InternObject(c)).GetPropagationLimit()
-}
-
-func (c eventControllerMotion) GetPropagationPhase() PropagationPhase {
-	return WrapEventController(gextras.InternObject(c)).GetPropagationPhase()
-}
-
-func (c eventControllerMotion) GetWidget() Widget {
-	return WrapEventController(gextras.InternObject(c)).GetWidget()
-}
-
-func (c eventControllerMotion) Reset() {
-	WrapEventController(gextras.InternObject(c)).Reset()
-}
-
-func (c eventControllerMotion) SetName(name string) {
-	WrapEventController(gextras.InternObject(c)).SetName(name)
-}
-
-func (c eventControllerMotion) SetPropagationLimit(limit PropagationLimit) {
-	WrapEventController(gextras.InternObject(c)).SetPropagationLimit(limit)
-}
-
-func (c eventControllerMotion) SetPropagationPhase(phase PropagationPhase) {
-	WrapEventController(gextras.InternObject(c)).SetPropagationPhase(phase)
-}
-
-func (s eventControllerMotion) ContainsPointer() bool {
+// ContainsPointer returns if a pointer is within @self or one of its children.
+func (s *EventControllerMotionClass) ContainsPointer() bool {
 	var _arg0 *C.GtkEventControllerMotion // out
 	var _cret C.gboolean                  // in
 
@@ -211,7 +95,8 @@ func (s eventControllerMotion) ContainsPointer() bool {
 	return _ok
 }
 
-func (s eventControllerMotion) IsPointer() bool {
+// IsPointer returns if a pointer is within @self, but not one of its children.
+func (s *EventControllerMotionClass) IsPointer() bool {
 	var _arg0 *C.GtkEventControllerMotion // out
 	var _cret C.gboolean                  // in
 

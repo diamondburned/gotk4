@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -32,23 +33,27 @@ func init() {
 // [iface@Gtk.CssProvider].
 type StyleProvider interface {
 	gextras.Objector
+
+	privateStyleProviderInterface()
 }
 
-// styleProvider implements the StyleProvider interface.
-type styleProvider struct {
+// StyleProviderInterface implements the StyleProvider interface.
+type StyleProviderInterface struct {
 	*externglib.Object
 }
 
-var _ StyleProvider = (*styleProvider)(nil)
+var _ StyleProvider = (*StyleProviderInterface)(nil)
 
-// WrapStyleProvider wraps a GObject to a type that implements
-// interface StyleProvider. It is primarily used internally.
-func WrapStyleProvider(obj *externglib.Object) StyleProvider {
-	return styleProvider{obj}
+func wrapStyleProvider(obj *externglib.Object) StyleProvider {
+	return &StyleProviderInterface{
+		Object: obj,
+	}
 }
 
 func marshalStyleProvider(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapStyleProvider(obj), nil
+	return wrapStyleProvider(obj), nil
 }
+
+func (*StyleProviderInterface) privateStyleProviderInterface() {}

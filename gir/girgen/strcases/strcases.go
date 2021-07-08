@@ -169,8 +169,8 @@ func SnakeToGo(pascal bool, snakeString string) string {
 	return PascalToGo(snakeString)
 }
 
-// GoKeywords includes both Go types and keywords. This is primarily to prevent
-// collisions with meaningful Go words.
+// GoKeywords includes Go keywords. This is primarily to prevent collisions with
+// meaningful Go words.
 var GoKeywords = map[string]struct{}{
 	// Keywords.
 	"break":       {},
@@ -198,7 +198,10 @@ var GoKeywords = map[string]struct{}{
 	"import":      {},
 	"return":      {},
 	"var":         {},
+}
 
+// GoBuiltinTypes contains Go built-in types.
+var GoBuiltinTypes = map[string]struct{}{
 	// Types.
 	"bool":       {},
 	"byte":       {},
@@ -247,6 +250,11 @@ func SnakeNoGo(snake string) string {
 
 	_, isKeyword := GoKeywords[snake]
 	if isKeyword {
+		return "_" + snake
+	}
+
+	_, isType := GoBuiltinTypes[snake]
+	if isType {
 		return "_" + snake
 	}
 

@@ -138,58 +138,58 @@ type RenderNodeType int
 
 const (
 	// NotARenderNode: error type. No node will ever have this type.
-	NotARenderNode RenderNodeType = iota
+	RenderNodeTypeNotARenderNode RenderNodeType = iota
 	// ContainerNode: node containing a stack of children
-	ContainerNode
+	RenderNodeTypeContainerNode
 	// CairoNode: node drawing a #cairo_surface_t
-	CairoNode
+	RenderNodeTypeCairoNode
 	// ColorNode: node drawing a single color rectangle
-	ColorNode
+	RenderNodeTypeColorNode
 	// LinearGradientNode: node drawing a linear gradient
-	LinearGradientNode
+	RenderNodeTypeLinearGradientNode
 	// RepeatingLinearGradientNode: node drawing a repeating linear gradient
-	RepeatingLinearGradientNode
+	RenderNodeTypeRepeatingLinearGradientNode
 	// RadialGradientNode: node drawing a radial gradient
-	RadialGradientNode
+	RenderNodeTypeRadialGradientNode
 	// RepeatingRadialGradientNode: node drawing a repeating radial gradient
-	RepeatingRadialGradientNode
+	RenderNodeTypeRepeatingRadialGradientNode
 	// ConicGradientNode: node drawing a conic gradient
-	ConicGradientNode
+	RenderNodeTypeConicGradientNode
 	// BorderNode: node stroking a border around an area
-	BorderNode
+	RenderNodeTypeBorderNode
 	// TextureNode: node drawing a Texture
-	TextureNode
+	RenderNodeTypeTextureNode
 	// InsetShadowNode: node drawing an inset shadow
-	InsetShadowNode
+	RenderNodeTypeInsetShadowNode
 	// OutsetShadowNode: node drawing an outset shadow
-	OutsetShadowNode
+	RenderNodeTypeOutsetShadowNode
 	// TransformNode: node that renders its child after applying a matrix
 	// transform
-	TransformNode
+	RenderNodeTypeTransformNode
 	// OpacityNode: node that changes the opacity of its child
-	OpacityNode
+	RenderNodeTypeOpacityNode
 	// ColorMatrixNode: node that applies a color matrix to every pixel
-	ColorMatrixNode
+	RenderNodeTypeColorMatrixNode
 	// RepeatNode: node that repeats the child's contents
-	RepeatNode
+	RenderNodeTypeRepeatNode
 	// ClipNode: node that clips its child to a rectangular area
-	ClipNode
+	RenderNodeTypeClipNode
 	// RoundedClipNode: node that clips its child to a rounded rectangle
-	RoundedClipNode
+	RenderNodeTypeRoundedClipNode
 	// ShadowNode: node that draws a shadow below its child
-	ShadowNode
+	RenderNodeTypeShadowNode
 	// BlendNode: node that blends two children together
-	BlendNode
+	RenderNodeTypeBlendNode
 	// CrossFadeNode: node that cross-fades between two children
-	CrossFadeNode
+	RenderNodeTypeCrossFadeNode
 	// TextNode: node containing a glyph string
-	TextNode
+	RenderNodeTypeTextNode
 	// BlurNode: node that applies a blur
-	BlurNode
+	RenderNodeTypeBlurNode
 	// DebugNode: debug information that does not affect the rendering
-	DebugNode
+	RenderNodeTypeDebugNode
 	// GLShaderNode: node that uses OpenGL fragment shaders to render
-	GLShaderNode
+	RenderNodeTypeGLShaderNode
 )
 
 func marshalRenderNodeType(p uintptr) (interface{}, error) {
@@ -221,11 +221,11 @@ type SerializationError int
 
 const (
 	// UnsupportedFormat: the format can not be identified
-	SerializationUnsupportedFormat SerializationError = iota
+	SerializationErrorUnsupportedFormat SerializationError = iota
 	// UnsupportedVersion: the version of the data is not understood
-	SerializationUnsupportedVersion
+	SerializationErrorUnsupportedVersion
 	// InvalidData: the given data may not exist in a proper serialization
-	SerializationInvalidData
+	SerializationErrorInvalidData
 )
 
 func marshalSerializationError(p uintptr) (interface{}, error) {

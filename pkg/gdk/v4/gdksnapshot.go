@@ -27,23 +27,27 @@ func init() {
 // The subclass of `GdkSnapshot` used by GTK is [class@Gtk.Snapshot].
 type Snapshot interface {
 	gextras.Objector
+
+	privateSnapshotClass()
 }
 
-// snapshot implements the Snapshot interface.
-type snapshot struct {
+// SnapshotClass implements the Snapshot interface.
+type SnapshotClass struct {
 	*externglib.Object
 }
 
-var _ Snapshot = (*snapshot)(nil)
+var _ Snapshot = (*SnapshotClass)(nil)
 
-// WrapSnapshot wraps a GObject to a type that implements
-// interface Snapshot. It is primarily used internally.
-func WrapSnapshot(obj *externglib.Object) Snapshot {
-	return snapshot{obj}
+func wrapSnapshot(obj *externglib.Object) Snapshot {
+	return &SnapshotClass{
+		Object: obj,
+	}
 }
 
 func marshalSnapshot(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapSnapshot(obj), nil
+	return wrapSnapshot(obj), nil
 }
+
+func (*SnapshotClass) privateSnapshotClass() {}

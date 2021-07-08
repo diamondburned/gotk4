@@ -82,17 +82,6 @@ func init() {
 type SizeGroup interface {
 	gextras.Objector
 
-	// AsBuildable casts the class to the Buildable interface.
-	AsBuildable() Buildable
-
-	// GetBuildableID gets the ID of the @buildable object.
-	//
-	// `GtkBuilder` sets the name based on the ID attribute of the <object> tag
-	// used to construct the @buildable.
-	//
-	// This method is inherited from Buildable
-	GetBuildableID() string
-
 	// AddWidget adds a widget to a `GtkSizeGroup`.
 	//
 	// In the future, the requisition of the widget will be determined as the
@@ -118,23 +107,27 @@ type SizeGroup interface {
 	SetMode(mode SizeGroupMode)
 }
 
-// sizeGroup implements the SizeGroup interface.
-type sizeGroup struct {
+// SizeGroupClass implements the SizeGroup interface.
+type SizeGroupClass struct {
 	*externglib.Object
+	BuildableInterface
 }
 
-var _ SizeGroup = (*sizeGroup)(nil)
+var _ SizeGroup = (*SizeGroupClass)(nil)
 
-// WrapSizeGroup wraps a GObject to a type that implements
-// interface SizeGroup. It is primarily used internally.
-func WrapSizeGroup(obj *externglib.Object) SizeGroup {
-	return sizeGroup{obj}
+func wrapSizeGroup(obj *externglib.Object) SizeGroup {
+	return &SizeGroupClass{
+		Object: obj,
+		BuildableInterface: BuildableInterface{
+			Object: obj,
+		},
+	}
 }
 
 func marshalSizeGroup(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapSizeGroup(obj), nil
+	return wrapSizeGroup(obj), nil
 }
 
 // NewSizeGroup: create a new `GtkSizeGroup`.
@@ -153,15 +146,17 @@ func NewSizeGroup(mode SizeGroupMode) SizeGroup {
 	return _sizeGroup
 }
 
-func (s sizeGroup) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(s))
-}
-
-func (b sizeGroup) GetBuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).GetBuildableID()
-}
-
-func (s sizeGroup) AddWidget(widget Widget) {
+// AddWidget adds a widget to a `GtkSizeGroup`.
+//
+// In the future, the requisition of the widget will be determined as the
+// maximum of its requisition and the requisition of the other widgets in the
+// size group. Whether this applies horizontally, vertically, or in both
+// directions depends on the mode of the size group. See
+// [method@Gtk.SizeGroup.set_mode].
+//
+// When the widget is destroyed or no longer referenced elsewhere, it will be
+// removed from the size group.
+func (s *SizeGroupClass) AddWidget(widget Widget) {
 	var _arg0 *C.GtkSizeGroup // out
 	var _arg1 *C.GtkWidget    // out
 
@@ -171,7 +166,8 @@ func (s sizeGroup) AddWidget(widget Widget) {
 	C.gtk_size_group_add_widget(_arg0, _arg1)
 }
 
-func (s sizeGroup) Mode() SizeGroupMode {
+// Mode gets the current mode of the size group.
+func (s *SizeGroupClass) Mode() SizeGroupMode {
 	var _arg0 *C.GtkSizeGroup    // out
 	var _cret C.GtkSizeGroupMode // in
 
@@ -186,7 +182,8 @@ func (s sizeGroup) Mode() SizeGroupMode {
 	return _sizeGroupMode
 }
 
-func (s sizeGroup) RemoveWidget(widget Widget) {
+// RemoveWidget removes a widget from a `GtkSizeGroup`.
+func (s *SizeGroupClass) RemoveWidget(widget Widget) {
 	var _arg0 *C.GtkSizeGroup // out
 	var _arg1 *C.GtkWidget    // out
 
@@ -196,7 +193,13 @@ func (s sizeGroup) RemoveWidget(widget Widget) {
 	C.gtk_size_group_remove_widget(_arg0, _arg1)
 }
 
-func (s sizeGroup) SetMode(mode SizeGroupMode) {
+// SetMode sets the `GtkSizeGroupMode` of the size group.
+//
+// The mode of the size group determines whether the widgets in the size group
+// should all have the same horizontal requisition (GTK_SIZE_GROUP_HORIZONTAL)
+// all have the same vertical requisition (GTK_SIZE_GROUP_VERTICAL), or should
+// all have the same requisition in both directions (GTK_SIZE_GROUP_BOTH).
+func (s *SizeGroupClass) SetMode(mode SizeGroupMode) {
 	var _arg0 *C.GtkSizeGroup    // out
 	var _arg1 C.GtkSizeGroupMode // out
 

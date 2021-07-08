@@ -69,6 +69,12 @@ func (h *Header) ImportAlias(path, alias string) {
 		h.Imports = map[string]string{}
 	}
 
+	// if old, ok := h.Imports[path]; ok {
+	// 	if old != alias {
+	// 		log.Panicf("duplicate alias old %q != new %q", old, alias)
+	// 	}
+	// }
+
 	h.Imports[path] = alias
 }
 
@@ -113,6 +119,28 @@ func (h *Header) ImportImpl(resolved *types.Resolved) {
 			h.AddCallback(callback)
 		}
 	}
+}
+
+// DashImportPubl is to be used for go:linkname.
+func (h *Header) DashImportPubl(resolved *types.Resolved) {
+	if h.stop || resolved == nil {
+		return
+	}
+
+	// Wrap doesn't matter. For now.
+	if resolved.PublImport.Path == "" {
+		return
+	}
+
+	if h.Imports == nil {
+		h.Imports = map[string]string{}
+	}
+
+	if _, ok := h.Imports[resolved.PublImport.Path]; ok {
+		return
+	}
+
+	h.Imports[resolved.PublImport.Path] = "_"
 }
 
 func (h *Header) ImportResolvedType(imports types.ResolvedImport) {

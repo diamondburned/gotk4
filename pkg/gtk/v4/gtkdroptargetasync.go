@@ -58,73 +58,7 @@ func init() {
 // drop target, and will receive the GTK_STATE_FLAG_DROP_ACTIVE state, which can
 // be used by themes to style the widget as a drop target.
 type DropTargetAsync interface {
-	EventController
-
-	// AsEventController casts the class to the EventController interface.
-	AsEventController() EventController
-
-	// GetCurrentEvent returns the event that is currently being handled by the
-	// controller, and nil at other times.
-	//
-	// This method is inherited from EventController
-	GetCurrentEvent() gdk.Event
-	// GetCurrentEventDevice returns the device of the event that is currently
-	// being handled by the controller, and nil otherwise.
-	//
-	// This method is inherited from EventController
-	GetCurrentEventDevice() gdk.Device
-	// GetCurrentEventState returns the modifier state of the event that is
-	// currently being handled by the controller, and 0 otherwise.
-	//
-	// This method is inherited from EventController
-	GetCurrentEventState() gdk.ModifierType
-	// GetCurrentEventTime returns the timestamp of the event that is currently
-	// being handled by the controller, and 0 otherwise.
-	//
-	// This method is inherited from EventController
-	GetCurrentEventTime() uint32
-	// GetName gets the name of @controller.
-	//
-	// This method is inherited from EventController
-	GetName() string
-	// GetPropagationLimit gets the propagation limit of the event controller.
-	//
-	// This method is inherited from EventController
-	GetPropagationLimit() PropagationLimit
-	// GetPropagationPhase gets the propagation phase at which @controller
-	// handles events.
-	//
-	// This method is inherited from EventController
-	GetPropagationPhase() PropagationPhase
-	// GetWidget returns the Widget this controller relates to.
-	//
-	// This method is inherited from EventController
-	GetWidget() Widget
-	// Reset resets the @controller to a clean state.
-	//
-	// This method is inherited from EventController
-	Reset()
-	// SetName sets a name on the controller that can be used for debugging.
-	//
-	// This method is inherited from EventController
-	SetName(name string)
-	// SetPropagationLimit sets the event propagation limit on the event
-	// controller.
-	//
-	// If the limit is set to GTK_LIMIT_SAME_NATIVE, the controller won't handle
-	// events that are targeted at widgets on a different surface, such as
-	// popovers.
-	//
-	// This method is inherited from EventController
-	SetPropagationLimit(limit PropagationLimit)
-	// SetPropagationPhase sets the propagation phase at which a controller
-	// handles events.
-	//
-	// If @phase is GTK_PHASE_NONE, no automatic event handling will be
-	// performed, but other additional gesture maintenance will.
-	//
-	// This method is inherited from EventController
-	SetPropagationPhase(phase PropagationPhase)
+	gextras.Objector
 
 	// Actions gets the actions that this drop target supports.
 	Actions() gdk.DragAction
@@ -143,23 +77,25 @@ type DropTargetAsync interface {
 	SetFormats(formats *gdk.ContentFormats)
 }
 
-// dropTargetAsync implements the DropTargetAsync interface.
-type dropTargetAsync struct {
-	*externglib.Object
+// DropTargetAsyncClass implements the DropTargetAsync interface.
+type DropTargetAsyncClass struct {
+	EventControllerClass
 }
 
-var _ DropTargetAsync = (*dropTargetAsync)(nil)
+var _ DropTargetAsync = (*DropTargetAsyncClass)(nil)
 
-// WrapDropTargetAsync wraps a GObject to a type that implements
-// interface DropTargetAsync. It is primarily used internally.
-func WrapDropTargetAsync(obj *externglib.Object) DropTargetAsync {
-	return dropTargetAsync{obj}
+func wrapDropTargetAsync(obj *externglib.Object) DropTargetAsync {
+	return &DropTargetAsyncClass{
+		EventControllerClass: EventControllerClass{
+			Object: obj,
+		},
+	}
 }
 
 func marshalDropTargetAsync(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapDropTargetAsync(obj), nil
+	return wrapDropTargetAsync(obj), nil
 }
 
 // NewDropTargetAsync creates a new `GtkDropTargetAsync` object.
@@ -180,59 +116,8 @@ func NewDropTargetAsync(formats *gdk.ContentFormats, actions gdk.DragAction) Dro
 	return _dropTargetAsync
 }
 
-func (d dropTargetAsync) AsEventController() EventController {
-	return WrapEventController(gextras.InternObject(d))
-}
-
-func (c dropTargetAsync) GetCurrentEvent() gdk.Event {
-	return WrapEventController(gextras.InternObject(c)).GetCurrentEvent()
-}
-
-func (c dropTargetAsync) GetCurrentEventDevice() gdk.Device {
-	return WrapEventController(gextras.InternObject(c)).GetCurrentEventDevice()
-}
-
-func (c dropTargetAsync) GetCurrentEventState() gdk.ModifierType {
-	return WrapEventController(gextras.InternObject(c)).GetCurrentEventState()
-}
-
-func (c dropTargetAsync) GetCurrentEventTime() uint32 {
-	return WrapEventController(gextras.InternObject(c)).GetCurrentEventTime()
-}
-
-func (c dropTargetAsync) GetName() string {
-	return WrapEventController(gextras.InternObject(c)).GetName()
-}
-
-func (c dropTargetAsync) GetPropagationLimit() PropagationLimit {
-	return WrapEventController(gextras.InternObject(c)).GetPropagationLimit()
-}
-
-func (c dropTargetAsync) GetPropagationPhase() PropagationPhase {
-	return WrapEventController(gextras.InternObject(c)).GetPropagationPhase()
-}
-
-func (c dropTargetAsync) GetWidget() Widget {
-	return WrapEventController(gextras.InternObject(c)).GetWidget()
-}
-
-func (c dropTargetAsync) Reset() {
-	WrapEventController(gextras.InternObject(c)).Reset()
-}
-
-func (c dropTargetAsync) SetName(name string) {
-	WrapEventController(gextras.InternObject(c)).SetName(name)
-}
-
-func (c dropTargetAsync) SetPropagationLimit(limit PropagationLimit) {
-	WrapEventController(gextras.InternObject(c)).SetPropagationLimit(limit)
-}
-
-func (c dropTargetAsync) SetPropagationPhase(phase PropagationPhase) {
-	WrapEventController(gextras.InternObject(c)).SetPropagationPhase(phase)
-}
-
-func (s dropTargetAsync) Actions() gdk.DragAction {
+// Actions gets the actions that this drop target supports.
+func (s *DropTargetAsyncClass) Actions() gdk.DragAction {
 	var _arg0 *C.GtkDropTargetAsync // out
 	var _cret C.GdkDragAction       // in
 
@@ -247,7 +132,10 @@ func (s dropTargetAsync) Actions() gdk.DragAction {
 	return _dragAction
 }
 
-func (s dropTargetAsync) Formats() *gdk.ContentFormats {
+// Formats gets the data formats that this drop target accepts.
+//
+// If the result is nil, all formats are expected to be supported.
+func (s *DropTargetAsyncClass) Formats() *gdk.ContentFormats {
 	var _arg0 *C.GtkDropTargetAsync // out
 	var _cret *C.GdkContentFormats  // in
 
@@ -266,7 +154,11 @@ func (s dropTargetAsync) Formats() *gdk.ContentFormats {
 	return _contentFormats
 }
 
-func (s dropTargetAsync) RejectDrop(drop gdk.Drop) {
+// RejectDrop sets the @drop as not accepted on this drag site.
+//
+// This function should be used when delaying the decision on whether to accept
+// a drag or not until after reading the data.
+func (s *DropTargetAsyncClass) RejectDrop(drop gdk.Drop) {
 	var _arg0 *C.GtkDropTargetAsync // out
 	var _arg1 *C.GdkDrop            // out
 
@@ -276,7 +168,8 @@ func (s dropTargetAsync) RejectDrop(drop gdk.Drop) {
 	C.gtk_drop_target_async_reject_drop(_arg0, _arg1)
 }
 
-func (s dropTargetAsync) SetActions(actions gdk.DragAction) {
+// SetActions sets the actions that this drop target supports.
+func (s *DropTargetAsyncClass) SetActions(actions gdk.DragAction) {
 	var _arg0 *C.GtkDropTargetAsync // out
 	var _arg1 C.GdkDragAction       // out
 
@@ -286,7 +179,8 @@ func (s dropTargetAsync) SetActions(actions gdk.DragAction) {
 	C.gtk_drop_target_async_set_actions(_arg0, _arg1)
 }
 
-func (s dropTargetAsync) SetFormats(formats *gdk.ContentFormats) {
+// SetFormats sets the data formats that this drop target will accept.
+func (s *DropTargetAsyncClass) SetFormats(formats *gdk.ContentFormats) {
 	var _arg0 *C.GtkDropTargetAsync // out
 	var _arg1 *C.GdkContentFormats  // out
 

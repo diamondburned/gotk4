@@ -24,23 +24,27 @@ func init() {
 
 type X11DeviceManagerXI2 interface {
 	gextras.Objector
+
+	privateX11DeviceManagerXI2Class()
 }
 
-// x11DeviceManagerXI2 implements the X11DeviceManagerXI2 interface.
-type x11DeviceManagerXI2 struct {
+// X11DeviceManagerXI2Class implements the X11DeviceManagerXI2 interface.
+type X11DeviceManagerXI2Class struct {
 	*externglib.Object
 }
 
-var _ X11DeviceManagerXI2 = (*x11DeviceManagerXI2)(nil)
+var _ X11DeviceManagerXI2 = (*X11DeviceManagerXI2Class)(nil)
 
-// WrapX11DeviceManagerXI2 wraps a GObject to a type that implements
-// interface X11DeviceManagerXI2. It is primarily used internally.
-func WrapX11DeviceManagerXI2(obj *externglib.Object) X11DeviceManagerXI2 {
-	return x11DeviceManagerXI2{obj}
+func wrapX11DeviceManagerXI2(obj *externglib.Object) X11DeviceManagerXI2 {
+	return &X11DeviceManagerXI2Class{
+		Object: obj,
+	}
 }
 
 func marshalX11DeviceManagerXI2(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapX11DeviceManagerXI2(obj), nil
+	return wrapX11DeviceManagerXI2(obj), nil
 }
+
+func (*X11DeviceManagerXI2Class) privateX11DeviceManagerXI2Class() {}

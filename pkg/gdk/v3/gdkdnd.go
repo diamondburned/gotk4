@@ -30,11 +30,11 @@ type DragCancelReason int
 
 const (
 	// NoTarget: there is no suitable drop target.
-	DragCancelNoTarget DragCancelReason = iota
+	DragCancelReasonNoTarget DragCancelReason = iota
 	// UserCancelled: drag cancelled by the user
-	DragCancelUserCancelled
+	DragCancelReasonUserCancelled
 	// Error: unspecified error.
-	DragCancelError
+	DragCancelReasonError
 )
 
 func marshalDragCancelReason(p uintptr) (interface{}, error) {
@@ -47,21 +47,21 @@ type DragProtocol int
 
 const (
 	// None: no protocol.
-	DragProtoNone DragProtocol = iota
+	DragProtocolNone DragProtocol = iota
 	// Motif: the Motif DND protocol. No longer supported
-	DragProtoMotif
+	DragProtocolMotif
 	// Xdnd: the Xdnd protocol.
-	DragProtoXdnd
+	DragProtocolXdnd
 	// Rootwin: extension to the Xdnd protocol for unclaimed root window drops.
-	DragProtoRootwin
+	DragProtocolRootwin
 	// Win32Dropfiles: the simple WM_DROPFILES protocol.
-	DragProtoWin32Dropfiles
+	DragProtocolWin32Dropfiles
 	// Ole2: the complex OLE2 DND protocol (not implemented).
-	DragProtoOle2
+	DragProtocolOle2
 	// Local: intra-application DND.
-	DragProtoLocal
+	DragProtocolLocal
 	// Wayland: wayland DND protocol.
-	DragProtoWayland
+	DragProtocolWayland
 )
 
 func marshalDragProtocol(p uintptr) (interface{}, error) {

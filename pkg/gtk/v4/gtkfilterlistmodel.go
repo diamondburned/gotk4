@@ -76,26 +76,27 @@ type FilterListModel interface {
 	SetIncremental(incremental bool)
 }
 
-// filterListModel implements the FilterListModel interface.
-type filterListModel struct {
+// FilterListModelClass implements the FilterListModel interface.
+type FilterListModelClass struct {
 	*externglib.Object
 }
 
-var _ FilterListModel = (*filterListModel)(nil)
+var _ FilterListModel = (*FilterListModelClass)(nil)
 
-// WrapFilterListModel wraps a GObject to a type that implements
-// interface FilterListModel. It is primarily used internally.
-func WrapFilterListModel(obj *externglib.Object) FilterListModel {
-	return filterListModel{obj}
+func wrapFilterListModel(obj *externglib.Object) FilterListModel {
+	return &FilterListModelClass{
+		Object: obj,
+	}
 }
 
 func marshalFilterListModel(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapFilterListModel(obj), nil
+	return wrapFilterListModel(obj), nil
 }
 
-func (s filterListModel) Filter() Filter {
+// Filter gets the `GtkFilter` currently set on @self.
+func (s *FilterListModelClass) Filter() Filter {
 	var _arg0 *C.GtkFilterListModel // out
 	var _cret *C.GtkFilter          // in
 
@@ -110,7 +111,10 @@ func (s filterListModel) Filter() Filter {
 	return _filter
 }
 
-func (s filterListModel) Incremental() bool {
+// Incremental returns whether incremental filtering is enabled.
+//
+// See [method@Gtk.FilterListModel.set_incremental].
+func (s *FilterListModelClass) Incremental() bool {
 	var _arg0 *C.GtkFilterListModel // out
 	var _cret C.gboolean            // in
 
@@ -127,7 +131,21 @@ func (s filterListModel) Incremental() bool {
 	return _ok
 }
 
-func (s filterListModel) Pending() uint {
+// Pending returns the number of items that have not been filtered yet.
+//
+// You can use this value to check if @self is busy filtering by comparing the
+// return value to 0 or you can compute the percentage of the filter remaining
+// by dividing the return value by the total number of items in the underlying
+// model:
+//
+// “`c pending = gtk_filter_list_model_get_pending (self); model =
+// gtk_filter_list_model_get_model (self); percentage = pending / (double)
+// g_list_model_get_n_items (model); “`
+//
+// If no filter operation is ongoing - in particular when
+// [property@Gtk.FilterListModel:incremental] is false - this function returns
+// 0.
+func (s *FilterListModelClass) Pending() uint {
 	var _arg0 *C.GtkFilterListModel // out
 	var _cret C.guint               // in
 
@@ -142,7 +160,8 @@ func (s filterListModel) Pending() uint {
 	return _guint
 }
 
-func (s filterListModel) SetFilter(filter Filter) {
+// SetFilter sets the filter used to filter items.
+func (s *FilterListModelClass) SetFilter(filter Filter) {
 	var _arg0 *C.GtkFilterListModel // out
 	var _arg1 *C.GtkFilter          // out
 
@@ -152,7 +171,23 @@ func (s filterListModel) SetFilter(filter Filter) {
 	C.gtk_filter_list_model_set_filter(_arg0, _arg1)
 }
 
-func (s filterListModel) SetIncremental(incremental bool) {
+// SetIncremental sets the filter model to do an incremental sort.
+//
+// When incremental filtering is enabled, the `GtkFilterListModel` will not run
+// filters immediately, but will instead queue an idle handler that
+// incrementally filters the items and adds them to the list. This of course
+// means that items are not instantly added to the list, but only appear
+// incrementally.
+//
+// When your filter blocks the UI while filtering, you might consider turning
+// this on. Depending on your model and filters, this may become interesting
+// around 10,000 to 100,000 items.
+//
+// By default, incremental filtering is disabled.
+//
+// See [method@Gtk.FilterListModel.get_pending] for progress information about
+// an ongoing incremental filtering operation.
+func (s *FilterListModelClass) SetIncremental(incremental bool) {
 	var _arg0 *C.GtkFilterListModel // out
 	var _arg1 C.gboolean            // out
 

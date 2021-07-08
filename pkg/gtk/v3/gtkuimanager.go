@@ -5,10 +5,8 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -65,7 +63,7 @@ func marshalUIManagerItemType(p uintptr) (interface{}, error) {
 	return UIManagerItemType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// UIManagerOverrider contains methods that are overridable .
+// UIManagerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
@@ -322,64 +320,6 @@ type UIManagerOverrider interface {
 type UIManager interface {
 	gextras.Objector
 
-	// AsBuildable casts the class to the Buildable interface.
-	AsBuildable() Buildable
-
-	// AddChild adds a child to @buildable. @type is an optional string
-	// describing how the child should be added.
-	//
-	// This method is inherited from Buildable
-	AddChild(builder Builder, child gextras.Objector, typ string)
-	// ConstructChild constructs a child of @buildable with the name @name.
-	//
-	// Builder calls this function if a “constructor” has been specified in the
-	// UI definition.
-	//
-	// This method is inherited from Buildable
-	ConstructChild(builder Builder, name string) gextras.Objector
-	// CustomFinished: this is similar to gtk_buildable_parser_finished() but is
-	// called once for each custom tag handled by the @buildable.
-	//
-	// This method is inherited from Buildable
-	CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{})
-	// CustomTagEnd: this is called at the end of each custom element handled by
-	// the buildable.
-	//
-	// This method is inherited from Buildable
-	CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data interface{})
-	// CustomTagStart: this is called for each unknown element under <child>.
-	//
-	// This method is inherited from Buildable
-	CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool)
-	// GetInternalChild: get the internal child called @childname of the
-	// @buildable object.
-	//
-	// This method is inherited from Buildable
-	GetInternalChild(builder Builder, childname string) gextras.Objector
-	// GetName gets the name of the @buildable object.
-	//
-	// Builder sets the name based on the [GtkBuilder UI definition][BUILDER-UI]
-	// used to construct the @buildable.
-	//
-	// This method is inherited from Buildable
-	GetName() string
-	// ParserFinished: called when the builder finishes the parsing of a
-	// [GtkBuilder UI definition][BUILDER-UI]. Note that this will be called
-	// once for each time gtk_builder_add_from_file() or
-	// gtk_builder_add_from_string() is called on a builder.
-	//
-	// This method is inherited from Buildable
-	ParserFinished(builder Builder)
-	// SetBuildableProperty sets the property name @name to @value on the
-	// @buildable object.
-	//
-	// This method is inherited from Buildable
-	SetBuildableProperty(builder Builder, name string, value externglib.Value)
-	// SetName sets the name of the @buildable object.
-	//
-	// This method is inherited from Buildable
-	SetName(name string)
-
 	// AddUi adds a UI element to the current contents of @manager.
 	//
 	// If @type is GTK_UI_MANAGER_AUTO, GTK+ inserts a menuitem, toolitem or
@@ -494,23 +434,27 @@ type UIManager interface {
 	SetAddTearoffs(addTearoffs bool)
 }
 
-// uiManager implements the UIManager interface.
-type uiManager struct {
+// UIManagerClass implements the UIManager interface.
+type UIManagerClass struct {
 	*externglib.Object
+	BuildableInterface
 }
 
-var _ UIManager = (*uiManager)(nil)
+var _ UIManager = (*UIManagerClass)(nil)
 
-// WrapUIManager wraps a GObject to a type that implements
-// interface UIManager. It is primarily used internally.
-func WrapUIManager(obj *externglib.Object) UIManager {
-	return uiManager{obj}
+func wrapUIManager(obj *externglib.Object) UIManager {
+	return &UIManagerClass{
+		Object: obj,
+		BuildableInterface: BuildableInterface{
+			Object: obj,
+		},
+	}
 }
 
 func marshalUIManager(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapUIManager(obj), nil
+	return wrapUIManager(obj), nil
 }
 
 // NewUIManager creates a new ui manager object.
@@ -528,51 +472,18 @@ func NewUIManager() UIManager {
 	return _uiManager
 }
 
-func (u uiManager) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(u))
-}
-
-func (b uiManager) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
-}
-
-func (b uiManager) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b uiManager) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b uiManager) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b uiManager) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b uiManager) GetInternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).GetInternalChild(builder, childname)
-}
-
-func (b uiManager) GetName() string {
-	return WrapBuildable(gextras.InternObject(b)).GetName()
-}
-
-func (b uiManager) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b uiManager) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b uiManager) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (m uiManager) AddUi(mergeId uint, path string, name string, action string, typ UIManagerItemType, top bool) {
+// AddUi adds a UI element to the current contents of @manager.
+//
+// If @type is GTK_UI_MANAGER_AUTO, GTK+ inserts a menuitem, toolitem or
+// separator if such an element can be inserted at the place determined by
+// @path. Otherwise @type must indicate an element that can be inserted at the
+// place determined by @path.
+//
+// If @path points to a menuitem or toolitem, the new element will be inserted
+// before or after this item, depending on @top.
+//
+// Deprecated: since version 3.10.
+func (m *UIManagerClass) AddUi(mergeId uint, path string, name string, action string, typ UIManagerItemType, top bool) {
 	var _arg0 *C.GtkUIManager        // out
 	var _arg1 C.guint                // out
 	var _arg2 *C.gchar               // out
@@ -597,7 +508,11 @@ func (m uiManager) AddUi(mergeId uint, path string, name string, action string, 
 	C.gtk_ui_manager_add_ui(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }
 
-func (m uiManager) AddUiFromFile(filename string) (uint, error) {
+// AddUiFromFile parses a file containing a [UI definition][XML-UI] and merges
+// it with the current contents of @manager.
+//
+// Deprecated: since version 3.10.
+func (m *UIManagerClass) AddUiFromFile(filename string) (uint, error) {
 	var _arg0 *C.GtkUIManager // out
 	var _arg1 *C.gchar        // out
 	var _cret C.guint         // in
@@ -618,7 +533,11 @@ func (m uiManager) AddUiFromFile(filename string) (uint, error) {
 	return _guint, _goerr
 }
 
-func (m uiManager) AddUiFromResource(resourcePath string) (uint, error) {
+// AddUiFromResource parses a resource file containing a [UI definition][XML-UI]
+// and merges it with the current contents of @manager.
+//
+// Deprecated: since version 3.10.
+func (m *UIManagerClass) AddUiFromResource(resourcePath string) (uint, error) {
 	var _arg0 *C.GtkUIManager // out
 	var _arg1 *C.gchar        // out
 	var _cret C.guint         // in
@@ -639,7 +558,12 @@ func (m uiManager) AddUiFromResource(resourcePath string) (uint, error) {
 	return _guint, _goerr
 }
 
-func (m uiManager) AddUiFromString(buffer string, length int) (uint, error) {
+// AddUiFromString parses a string containing a [UI definition][XML-UI] and
+// merges it with the current contents of @manager. An enclosing <ui> element is
+// added if it is missing.
+//
+// Deprecated: since version 3.10.
+func (m *UIManagerClass) AddUiFromString(buffer string, length int) (uint, error) {
 	var _arg0 *C.GtkUIManager // out
 	var _arg1 *C.gchar        // out
 	var _arg2 C.gssize        // out
@@ -662,7 +586,23 @@ func (m uiManager) AddUiFromString(buffer string, length int) (uint, error) {
 	return _guint, _goerr
 }
 
-func (m uiManager) EnsureUpdate() {
+// EnsureUpdate makes sure that all pending updates to the UI have been
+// completed.
+//
+// This may occasionally be necessary, since UIManager updates the UI in an idle
+// function. A typical example where this function is useful is to enforce that
+// the menubar and toolbar have been added to the main window before showing it:
+//
+//    gtk_container_add (GTK_CONTAINER (window), vbox);
+//    g_signal_connect (merge, "add-widget",
+//                      G_CALLBACK (add_widget), vbox);
+//    gtk_ui_manager_add_ui_from_file (merge, "my-menus");
+//    gtk_ui_manager_add_ui_from_file (merge, "my-toolbars");
+//    gtk_ui_manager_ensure_update (merge);
+//    gtk_widget_show (window);
+//
+// Deprecated: since version 3.10.
+func (m *UIManagerClass) EnsureUpdate() {
 	var _arg0 *C.GtkUIManager // out
 
 	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(m.Native()))
@@ -670,7 +610,10 @@ func (m uiManager) EnsureUpdate() {
 	C.gtk_ui_manager_ensure_update(_arg0)
 }
 
-func (m uiManager) AccelGroup() AccelGroup {
+// AccelGroup returns the AccelGroup associated with @manager.
+//
+// Deprecated: since version 3.10.
+func (m *UIManagerClass) AccelGroup() AccelGroup {
 	var _arg0 *C.GtkUIManager  // out
 	var _cret *C.GtkAccelGroup // in
 
@@ -685,7 +628,11 @@ func (m uiManager) AccelGroup() AccelGroup {
 	return _accelGroup
 }
 
-func (m uiManager) Action(path string) Action {
+// Action looks up an action by following a path. See
+// gtk_ui_manager_get_widget() for more information about paths.
+//
+// Deprecated: since version 3.10.
+func (m *UIManagerClass) Action(path string) Action {
 	var _arg0 *C.GtkUIManager // out
 	var _arg1 *C.gchar        // out
 	var _cret *C.GtkAction    // in
@@ -703,7 +650,11 @@ func (m uiManager) Action(path string) Action {
 	return _action
 }
 
-func (m uiManager) AddTearoffs() bool {
+// AddTearoffs returns whether menus generated by this UIManager will have
+// tearoff menu items.
+//
+// Deprecated: since version 3.4.
+func (m *UIManagerClass) AddTearoffs() bool {
 	var _arg0 *C.GtkUIManager // out
 	var _cret C.gboolean      // in
 
@@ -720,7 +671,10 @@ func (m uiManager) AddTearoffs() bool {
 	return _ok
 }
 
-func (m uiManager) Ui() string {
+// Ui creates a [UI definition][XML-UI] of the merged UI.
+//
+// Deprecated: since version 3.10.
+func (m *UIManagerClass) Ui() string {
 	var _arg0 *C.GtkUIManager // out
 	var _cret *C.gchar        // in
 
@@ -736,7 +690,22 @@ func (m uiManager) Ui() string {
 	return _utf8
 }
 
-func (m uiManager) Widget(path string) Widget {
+// Widget looks up a widget by following a path. The path consists of the names
+// specified in the XML description of the UI. separated by “/”. Elements which
+// don’t have a name or action attribute in the XML (e.g. <popup>) can be
+// addressed by their XML element name (e.g. "popup"). The root element ("/ui")
+// can be omitted in the path.
+//
+// Note that the widget found by following a path that ends in a <menu>; element
+// is the menuitem to which the menu is attached, not the menu it manages.
+//
+// Also note that the widgets constructed by a ui manager are not tied to the
+// lifecycle of the ui manager. If you add the widgets returned by this function
+// to some container or explicitly ref them, they will survive the destruction
+// of the ui manager.
+//
+// Deprecated: since version 3.10.
+func (m *UIManagerClass) Widget(path string) Widget {
 	var _arg0 *C.GtkUIManager // out
 	var _arg1 *C.gchar        // out
 	var _cret *C.GtkWidget    // in
@@ -754,7 +723,15 @@ func (m uiManager) Widget(path string) Widget {
 	return _widget
 }
 
-func (m uiManager) InsertActionGroup(actionGroup ActionGroup, pos int) {
+// InsertActionGroup inserts an action group into the list of action groups
+// associated with @manager. Actions in earlier groups hide actions with the
+// same name in later groups.
+//
+// If @pos is larger than the number of action groups in @manager, or negative,
+// @action_group will be inserted at the end of the internal list.
+//
+// Deprecated: since version 3.10.
+func (m *UIManagerClass) InsertActionGroup(actionGroup ActionGroup, pos int) {
 	var _arg0 *C.GtkUIManager   // out
 	var _arg1 *C.GtkActionGroup // out
 	var _arg2 C.gint            // out
@@ -766,7 +743,11 @@ func (m uiManager) InsertActionGroup(actionGroup ActionGroup, pos int) {
 	C.gtk_ui_manager_insert_action_group(_arg0, _arg1, _arg2)
 }
 
-func (m uiManager) NewMergeID() uint {
+// NewMergeID returns an unused merge id, suitable for use with
+// gtk_ui_manager_add_ui().
+//
+// Deprecated: since version 3.10.
+func (m *UIManagerClass) NewMergeID() uint {
 	var _arg0 *C.GtkUIManager // out
 	var _cret C.guint         // in
 
@@ -781,7 +762,11 @@ func (m uiManager) NewMergeID() uint {
 	return _guint
 }
 
-func (m uiManager) RemoveActionGroup(actionGroup ActionGroup) {
+// RemoveActionGroup removes an action group from the list of action groups
+// associated with @manager.
+//
+// Deprecated: since version 3.10.
+func (m *UIManagerClass) RemoveActionGroup(actionGroup ActionGroup) {
 	var _arg0 *C.GtkUIManager   // out
 	var _arg1 *C.GtkActionGroup // out
 
@@ -791,7 +776,10 @@ func (m uiManager) RemoveActionGroup(actionGroup ActionGroup) {
 	C.gtk_ui_manager_remove_action_group(_arg0, _arg1)
 }
 
-func (m uiManager) RemoveUi(mergeId uint) {
+// RemoveUi unmerges the part of @manager's content identified by @merge_id.
+//
+// Deprecated: since version 3.10.
+func (m *UIManagerClass) RemoveUi(mergeId uint) {
 	var _arg0 *C.GtkUIManager // out
 	var _arg1 C.guint         // out
 
@@ -801,7 +789,14 @@ func (m uiManager) RemoveUi(mergeId uint) {
 	C.gtk_ui_manager_remove_ui(_arg0, _arg1)
 }
 
-func (m uiManager) SetAddTearoffs(addTearoffs bool) {
+// SetAddTearoffs sets the “add_tearoffs” property, which controls whether menus
+// generated by this UIManager will have tearoff menu items.
+//
+// Note that this only affects regular menus. Generated popup menus never have
+// tearoff menu items.
+//
+// Deprecated: since version 3.4.
+func (m *UIManagerClass) SetAddTearoffs(addTearoffs bool) {
 	var _arg0 *C.GtkUIManager // out
 	var _arg1 C.gboolean      // out
 

@@ -32,7 +32,7 @@ func init() {
 	})
 }
 
-// DBusObjectManagerOverrider contains methods that are overridable .
+// DBusObjectManagerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
@@ -40,8 +40,8 @@ type DBusObjectManagerOverrider interface {
 	// Interface gets the interface proxy for @interface_name at @object_path,
 	// if any.
 	Interface(objectPath string, interfaceName string) DBusInterface
-	// Object gets the BusObjectProxy at @object_path, if any.
-	Object(objectPath string) DBusObject
+	// GetObject gets the BusObjectProxy at @object_path, if any.
+	GetObject(objectPath string) DBusObject
 	// ObjectPath gets the object path that @manager is for.
 	ObjectPath() string
 	InterfaceAdded(object DBusObject, interface_ DBusInterface)
@@ -64,32 +64,34 @@ type DBusObjectManager interface {
 	// Interface gets the interface proxy for @interface_name at @object_path,
 	// if any.
 	Interface(objectPath string, interfaceName string) DBusInterface
-	// Object gets the BusObjectProxy at @object_path, if any.
-	Object(objectPath string) DBusObject
+	// GetObject gets the BusObjectProxy at @object_path, if any.
+	GetObject(objectPath string) DBusObject
 	// ObjectPath gets the object path that @manager is for.
 	ObjectPath() string
 }
 
-// dBusObjectManager implements the DBusObjectManager interface.
-type dBusObjectManager struct {
+// DBusObjectManagerInterface implements the DBusObjectManager interface.
+type DBusObjectManagerInterface struct {
 	*externglib.Object
 }
 
-var _ DBusObjectManager = (*dBusObjectManager)(nil)
+var _ DBusObjectManager = (*DBusObjectManagerInterface)(nil)
 
-// WrapDBusObjectManager wraps a GObject to a type that implements
-// interface DBusObjectManager. It is primarily used internally.
-func WrapDBusObjectManager(obj *externglib.Object) DBusObjectManager {
-	return dBusObjectManager{obj}
+func wrapDBusObjectManager(obj *externglib.Object) DBusObjectManager {
+	return &DBusObjectManagerInterface{
+		Object: obj,
+	}
 }
 
 func marshalDBusObjectManager(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapDBusObjectManager(obj), nil
+	return wrapDBusObjectManager(obj), nil
 }
 
-func (m dBusObjectManager) Interface(objectPath string, interfaceName string) DBusInterface {
+// Interface gets the interface proxy for @interface_name at @object_path, if
+// any.
+func (m *DBusObjectManagerInterface) Interface(objectPath string, interfaceName string) DBusInterface {
 	var _arg0 *C.GDBusObjectManager // out
 	var _arg1 *C.gchar              // out
 	var _arg2 *C.gchar              // out
@@ -110,7 +112,8 @@ func (m dBusObjectManager) Interface(objectPath string, interfaceName string) DB
 	return _dBusInterface
 }
 
-func (m dBusObjectManager) Object(objectPath string) DBusObject {
+// GetObject gets the BusObjectProxy at @object_path, if any.
+func (m *DBusObjectManagerInterface) GetObject(objectPath string) DBusObject {
 	var _arg0 *C.GDBusObjectManager // out
 	var _arg1 *C.gchar              // out
 	var _cret *C.GDBusObject        // in
@@ -128,7 +131,8 @@ func (m dBusObjectManager) Object(objectPath string) DBusObject {
 	return _dBusObject
 }
 
-func (m dBusObjectManager) ObjectPath() string {
+// ObjectPath gets the object path that @manager is for.
+func (m *DBusObjectManagerInterface) ObjectPath() string {
 	var _arg0 *C.GDBusObjectManager // out
 	var _cret *C.gchar              // in
 

@@ -38,23 +38,23 @@ type ATContext interface {
 	AccessibleRole() AccessibleRole
 }
 
-// atContext implements the ATContext interface.
-type atContext struct {
+// ATContextClass implements the ATContext interface.
+type ATContextClass struct {
 	*externglib.Object
 }
 
-var _ ATContext = (*atContext)(nil)
+var _ ATContext = (*ATContextClass)(nil)
 
-// WrapATContext wraps a GObject to a type that implements
-// interface ATContext. It is primarily used internally.
-func WrapATContext(obj *externglib.Object) ATContext {
-	return atContext{obj}
+func wrapATContext(obj *externglib.Object) ATContext {
+	return &ATContextClass{
+		Object: obj,
+	}
 }
 
 func marshalATContext(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapATContext(obj), nil
+	return wrapATContext(obj), nil
 }
 
 // NewATContextCreate creates a new `GtkATContext` instance for the given
@@ -81,7 +81,8 @@ func NewATContextCreate(accessibleRole AccessibleRole, accessible Accessible, di
 	return _atContext
 }
 
-func (s atContext) Accessible() Accessible {
+// Accessible retrieves the `GtkAccessible` using this context.
+func (s *ATContextClass) Accessible() Accessible {
 	var _arg0 *C.GtkATContext  // out
 	var _cret *C.GtkAccessible // in
 
@@ -96,7 +97,8 @@ func (s atContext) Accessible() Accessible {
 	return _accessible
 }
 
-func (s atContext) AccessibleRole() AccessibleRole {
+// AccessibleRole retrieves the accessible role of this context.
+func (s *ATContextClass) AccessibleRole() AccessibleRole {
 	var _arg0 *C.GtkATContext     // out
 	var _cret C.GtkAccessibleRole // in
 

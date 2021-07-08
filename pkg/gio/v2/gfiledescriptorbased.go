@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -31,7 +32,7 @@ func init() {
 	})
 }
 
-// FileDescriptorBasedOverrider contains methods that are overridable .
+// FileDescriptorBasedOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
@@ -53,26 +54,27 @@ type FileDescriptorBased interface {
 	Fd() int
 }
 
-// fileDescriptorBased implements the FileDescriptorBased interface.
-type fileDescriptorBased struct {
+// FileDescriptorBasedInterface implements the FileDescriptorBased interface.
+type FileDescriptorBasedInterface struct {
 	*externglib.Object
 }
 
-var _ FileDescriptorBased = (*fileDescriptorBased)(nil)
+var _ FileDescriptorBased = (*FileDescriptorBasedInterface)(nil)
 
-// WrapFileDescriptorBased wraps a GObject to a type that implements
-// interface FileDescriptorBased. It is primarily used internally.
-func WrapFileDescriptorBased(obj *externglib.Object) FileDescriptorBased {
-	return fileDescriptorBased{obj}
+func wrapFileDescriptorBased(obj *externglib.Object) FileDescriptorBased {
+	return &FileDescriptorBasedInterface{
+		Object: obj,
+	}
 }
 
 func marshalFileDescriptorBased(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapFileDescriptorBased(obj), nil
+	return wrapFileDescriptorBased(obj), nil
 }
 
-func (f fileDescriptorBased) Fd() int {
+// Fd gets the underlying file descriptor.
+func (f *FileDescriptorBasedInterface) Fd() int {
 	var _arg0 *C.GFileDescriptorBased // out
 	var _cret C.int                   // in
 

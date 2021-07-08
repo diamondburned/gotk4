@@ -82,11 +82,11 @@ type SeekType int
 
 const (
 	// Cur: the current position in the file.
-	SeekCur SeekType = iota
+	SeekTypeCur SeekType = iota
 	// Set: the start of the file.
-	SeekSet
+	SeekTypeSet
 	// End: the end of the file.
-	SeekEnd
+	SeekTypeEnd
 )
 
 // IOFlags specifies properties of a OChannel. Some of the flags can only be

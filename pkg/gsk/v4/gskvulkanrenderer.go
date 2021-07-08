@@ -5,11 +5,7 @@ package gsk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/cairo"
-	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/gdk/v4"
-	"github.com/diamondburned/gotk4/pkg/graphene"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -28,73 +24,30 @@ func init() {
 
 // VulkanRenderer: GSK renderer that is using Vulkan.
 type VulkanRenderer interface {
-	Renderer
+	gextras.Objector
 
-	// AsRenderer casts the class to the Renderer interface.
-	AsRenderer() Renderer
-
-	// GetSurface retrieves the `GdkSurface` set using gsk_enderer_realize().
-	//
-	// If the renderer has not been realized yet, nil will be returned.
-	//
-	// This method is inherited from Renderer
-	GetSurface() gdk.Surface
-	// IsRealized checks whether the @renderer is realized or not.
-	//
-	// This method is inherited from Renderer
-	IsRealized() bool
-	// Realize creates the resources needed by the @renderer to render the scene
-	// graph.
-	//
-	// This method is inherited from Renderer
-	Realize(surface gdk.Surface) error
-	// Render renders the scene graph, described by a tree of `GskRenderNode`
-	// instances, ensuring that the given @region gets redrawn.
-	//
-	// Renderers must ensure that changes of the contents given by the @root
-	// node as well as the area given by @region are redrawn. They are however
-	// free to not redraw any pixel outside of @region if they can guarantee
-	// that it didn't change.
-	//
-	// The @renderer will acquire a reference on the `GskRenderNode` tree while
-	// the rendering is in progress.
-	//
-	// This method is inherited from Renderer
-	Render(root RenderNode, region *cairo.Region)
-	// RenderTexture renders the scene graph, described by a tree of
-	// `GskRenderNode` instances, to a `GdkTexture`.
-	//
-	// The @renderer will acquire a reference on the `GskRenderNode` tree while
-	// the rendering is in progress.
-	//
-	// If you want to apply any transformations to @root, you should put it into
-	// a transform node and pass that node instead.
-	//
-	// This method is inherited from Renderer
-	RenderTexture(root RenderNode, viewport *graphene.Rect) gdk.Texture
-	// Unrealize releases all the resources created by gsk_renderer_realize().
-	//
-	// This method is inherited from Renderer
-	Unrealize()
+	privateVulkanRendererClass()
 }
 
-// vulkanRenderer implements the VulkanRenderer interface.
-type vulkanRenderer struct {
-	*externglib.Object
+// VulkanRendererClass implements the VulkanRenderer interface.
+type VulkanRendererClass struct {
+	RendererClass
 }
 
-var _ VulkanRenderer = (*vulkanRenderer)(nil)
+var _ VulkanRenderer = (*VulkanRendererClass)(nil)
 
-// WrapVulkanRenderer wraps a GObject to a type that implements
-// interface VulkanRenderer. It is primarily used internally.
-func WrapVulkanRenderer(obj *externglib.Object) VulkanRenderer {
-	return vulkanRenderer{obj}
+func wrapVulkanRenderer(obj *externglib.Object) VulkanRenderer {
+	return &VulkanRendererClass{
+		RendererClass: RendererClass{
+			Object: obj,
+		},
+	}
 }
 
 func marshalVulkanRenderer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapVulkanRenderer(obj), nil
+	return wrapVulkanRenderer(obj), nil
 }
 
 func NewVulkanRenderer() VulkanRenderer {
@@ -109,30 +62,4 @@ func NewVulkanRenderer() VulkanRenderer {
 	return _vulkanRenderer
 }
 
-func (v vulkanRenderer) AsRenderer() Renderer {
-	return WrapRenderer(gextras.InternObject(v))
-}
-
-func (r vulkanRenderer) GetSurface() gdk.Surface {
-	return WrapRenderer(gextras.InternObject(r)).GetSurface()
-}
-
-func (r vulkanRenderer) IsRealized() bool {
-	return WrapRenderer(gextras.InternObject(r)).IsRealized()
-}
-
-func (r vulkanRenderer) Realize(surface gdk.Surface) error {
-	return WrapRenderer(gextras.InternObject(r)).Realize(surface)
-}
-
-func (r vulkanRenderer) Render(root RenderNode, region *cairo.Region) {
-	WrapRenderer(gextras.InternObject(r)).Render(root, region)
-}
-
-func (r vulkanRenderer) RenderTexture(root RenderNode, viewport *graphene.Rect) gdk.Texture {
-	return WrapRenderer(gextras.InternObject(r)).RenderTexture(root, viewport)
-}
-
-func (r vulkanRenderer) Unrealize() {
-	WrapRenderer(gextras.InternObject(r)).Unrealize()
-}
+func (*VulkanRendererClass) privateVulkanRendererClass() {}

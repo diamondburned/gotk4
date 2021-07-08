@@ -3,11 +3,9 @@
 package gio
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -43,41 +41,6 @@ func init() {
 type ThemedIcon interface {
 	gextras.Objector
 
-	// AsIcon casts the class to the Icon interface.
-	AsIcon() Icon
-
-	// Equal checks if two icons are equal.
-	//
-	// This method is inherited from Icon
-	Equal(icon2 Icon) bool
-	// Serialize serializes a #GIcon into a #GVariant. An equivalent #GIcon can
-	// be retrieved back by calling g_icon_deserialize() on the returned value.
-	// As serialization will avoid using raw icon data when possible, it only
-	// makes sense to transfer the #GVariant between processes on the same
-	// machine, (as opposed to over the network), and within the same file
-	// system namespace.
-	//
-	// This method is inherited from Icon
-	Serialize() *glib.Variant
-	// ToString generates a textual representation of @icon that can be used for
-	// serialization such as when passing @icon to a different process or saving
-	// it to persistent storage. Use g_icon_new_for_string() to get @icon back
-	// from the returned string.
-	//
-	// The encoding of the returned string is proprietary to #GIcon except in
-	// the following two cases
-	//
-	// - If @icon is a Icon, the returned string is a native path (such as
-	// `/path/to/my icon.png`) without escaping if the #GFile for @icon is a
-	// native file. If the file is not native, the returned string is the result
-	// of g_file_get_uri() (such as `sftp://path/to/my20icon.png`).
-	//
-	// - If @icon is a Icon with exactly one name and no fallbacks, the encoding
-	// is simply the name (such as `network-server`).
-	//
-	// This method is inherited from Icon
-	ToString() string
-
 	// AppendName: append a name to the list of icons from within @icon.
 	//
 	// Note that doing so invalidates the hash computed by prior calls to
@@ -92,23 +55,27 @@ type ThemedIcon interface {
 	PrependName(iconname string)
 }
 
-// themedIcon implements the ThemedIcon interface.
-type themedIcon struct {
+// ThemedIconClass implements the ThemedIcon interface.
+type ThemedIconClass struct {
 	*externglib.Object
+	IconInterface
 }
 
-var _ ThemedIcon = (*themedIcon)(nil)
+var _ ThemedIcon = (*ThemedIconClass)(nil)
 
-// WrapThemedIcon wraps a GObject to a type that implements
-// interface ThemedIcon. It is primarily used internally.
-func WrapThemedIcon(obj *externglib.Object) ThemedIcon {
-	return themedIcon{obj}
+func wrapThemedIcon(obj *externglib.Object) ThemedIcon {
+	return &ThemedIconClass{
+		Object: obj,
+		IconInterface: IconInterface{
+			Object: obj,
+		},
+	}
 }
 
 func marshalThemedIcon(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapThemedIcon(obj), nil
+	return wrapThemedIcon(obj), nil
 }
 
 // NewThemedIcon creates a new themed icon for @iconname.
@@ -185,23 +152,11 @@ func NewThemedIconWithDefaultFallbacks(iconname string) ThemedIcon {
 	return _themedIcon
 }
 
-func (t themedIcon) AsIcon() Icon {
-	return WrapIcon(gextras.InternObject(t))
-}
-
-func (i themedIcon) Equal(icon2 Icon) bool {
-	return WrapIcon(gextras.InternObject(i)).Equal(icon2)
-}
-
-func (i themedIcon) Serialize() *glib.Variant {
-	return WrapIcon(gextras.InternObject(i)).Serialize()
-}
-
-func (i themedIcon) ToString() string {
-	return WrapIcon(gextras.InternObject(i)).ToString()
-}
-
-func (i themedIcon) AppendName(iconname string) {
+// AppendName: append a name to the list of icons from within @icon.
+//
+// Note that doing so invalidates the hash computed by prior calls to
+// g_icon_hash().
+func (i *ThemedIconClass) AppendName(iconname string) {
 	var _arg0 *C.GThemedIcon // out
 	var _arg1 *C.char        // out
 
@@ -212,7 +167,8 @@ func (i themedIcon) AppendName(iconname string) {
 	C.g_themed_icon_append_name(_arg0, _arg1)
 }
 
-func (i themedIcon) Names() []string {
+// Names gets the names of icons from within @icon.
+func (i *ThemedIconClass) Names() []string {
 	var _arg0 *C.GThemedIcon // out
 	var _cret **C.gchar
 
@@ -239,7 +195,11 @@ func (i themedIcon) Names() []string {
 	return _utf8s
 }
 
-func (i themedIcon) PrependName(iconname string) {
+// PrependName: prepend a name to the list of icons from within @icon.
+//
+// Note that doing so invalidates the hash computed by prior calls to
+// g_icon_hash().
+func (i *ThemedIconClass) PrependName(iconname string) {
 	var _arg0 *C.GThemedIcon // out
 	var _arg1 *C.char        // out
 

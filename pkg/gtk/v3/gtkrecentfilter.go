@@ -7,7 +7,6 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -127,64 +126,6 @@ func gotk4_RecentFilterFunc(arg0 *C.GtkRecentFilterInfo, arg1 C.gpointer) (cret 
 type RecentFilter interface {
 	gextras.Objector
 
-	// AsBuildable casts the class to the Buildable interface.
-	AsBuildable() Buildable
-
-	// AddChild adds a child to @buildable. @type is an optional string
-	// describing how the child should be added.
-	//
-	// This method is inherited from Buildable
-	AddChild(builder Builder, child gextras.Objector, typ string)
-	// ConstructChild constructs a child of @buildable with the name @name.
-	//
-	// Builder calls this function if a “constructor” has been specified in the
-	// UI definition.
-	//
-	// This method is inherited from Buildable
-	ConstructChild(builder Builder, name string) gextras.Objector
-	// CustomFinished: this is similar to gtk_buildable_parser_finished() but is
-	// called once for each custom tag handled by the @buildable.
-	//
-	// This method is inherited from Buildable
-	CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{})
-	// CustomTagEnd: this is called at the end of each custom element handled by
-	// the buildable.
-	//
-	// This method is inherited from Buildable
-	CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data interface{})
-	// CustomTagStart: this is called for each unknown element under <child>.
-	//
-	// This method is inherited from Buildable
-	CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool)
-	// GetInternalChild: get the internal child called @childname of the
-	// @buildable object.
-	//
-	// This method is inherited from Buildable
-	GetInternalChild(builder Builder, childname string) gextras.Objector
-	// GetName gets the name of the @buildable object.
-	//
-	// Builder sets the name based on the [GtkBuilder UI definition][BUILDER-UI]
-	// used to construct the @buildable.
-	//
-	// This method is inherited from Buildable
-	GetName() string
-	// ParserFinished: called when the builder finishes the parsing of a
-	// [GtkBuilder UI definition][BUILDER-UI]. Note that this will be called
-	// once for each time gtk_builder_add_from_file() or
-	// gtk_builder_add_from_string() is called on a builder.
-	//
-	// This method is inherited from Buildable
-	ParserFinished(builder Builder)
-	// SetBuildableProperty sets the property name @name to @value on the
-	// @buildable object.
-	//
-	// This method is inherited from Buildable
-	SetBuildableProperty(builder Builder, name string, value externglib.Value)
-	// SetName sets the name of the @buildable object.
-	//
-	// This method is inherited from Buildable
-	SetName(name string)
-
 	// AddAge adds a rule that allows resources based on their age - that is,
 	// the number of days elapsed since they were last modified.
 	AddAge(days int)
@@ -227,23 +168,29 @@ type RecentFilter interface {
 	SetName(name string)
 }
 
-// recentFilter implements the RecentFilter interface.
-type recentFilter struct {
+// RecentFilterClass implements the RecentFilter interface.
+type RecentFilterClass struct {
 	*externglib.Object
+	externglib.InitiallyUnowned
+	BuildableInterface
 }
 
-var _ RecentFilter = (*recentFilter)(nil)
+var _ RecentFilter = (*RecentFilterClass)(nil)
 
-// WrapRecentFilter wraps a GObject to a type that implements
-// interface RecentFilter. It is primarily used internally.
-func WrapRecentFilter(obj *externglib.Object) RecentFilter {
-	return recentFilter{obj}
+func wrapRecentFilter(obj *externglib.Object) RecentFilter {
+	return &RecentFilterClass{
+		Object:           obj,
+		InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
+		BuildableInterface: BuildableInterface{
+			Object: obj,
+		},
+	}
 }
 
 func marshalRecentFilter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapRecentFilter(obj), nil
+	return wrapRecentFilter(obj), nil
 }
 
 // NewRecentFilter creates a new RecentFilter with no rules added to it. Such
@@ -267,51 +214,9 @@ func NewRecentFilter() RecentFilter {
 	return _recentFilter
 }
 
-func (r recentFilter) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(r))
-}
-
-func (b recentFilter) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
-}
-
-func (b recentFilter) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b recentFilter) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b recentFilter) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b recentFilter) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b recentFilter) GetInternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).GetInternalChild(builder, childname)
-}
-
-func (b recentFilter) GetName() string {
-	return WrapBuildable(gextras.InternObject(b)).GetName()
-}
-
-func (b recentFilter) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b recentFilter) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b recentFilter) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (f recentFilter) AddAge(days int) {
+// AddAge adds a rule that allows resources based on their age - that is, the
+// number of days elapsed since they were last modified.
+func (f *RecentFilterClass) AddAge(days int) {
 	var _arg0 *C.GtkRecentFilter // out
 	var _arg1 C.gint             // out
 
@@ -321,7 +226,9 @@ func (f recentFilter) AddAge(days int) {
 	C.gtk_recent_filter_add_age(_arg0, _arg1)
 }
 
-func (f recentFilter) AddApplication(application string) {
+// AddApplication adds a rule that allows resources based on the name of the
+// application that has registered them.
+func (f *RecentFilterClass) AddApplication(application string) {
 	var _arg0 *C.GtkRecentFilter // out
 	var _arg1 *C.gchar           // out
 
@@ -332,7 +239,9 @@ func (f recentFilter) AddApplication(application string) {
 	C.gtk_recent_filter_add_application(_arg0, _arg1)
 }
 
-func (f recentFilter) AddGroup(group string) {
+// AddGroup adds a rule that allows resources based on the name of the group to
+// which they belong
+func (f *RecentFilterClass) AddGroup(group string) {
 	var _arg0 *C.GtkRecentFilter // out
 	var _arg1 *C.gchar           // out
 
@@ -343,7 +252,9 @@ func (f recentFilter) AddGroup(group string) {
 	C.gtk_recent_filter_add_group(_arg0, _arg1)
 }
 
-func (f recentFilter) AddMIMEType(mimeType string) {
+// AddMIMEType adds a rule that allows resources based on their registered MIME
+// type.
+func (f *RecentFilterClass) AddMIMEType(mimeType string) {
 	var _arg0 *C.GtkRecentFilter // out
 	var _arg1 *C.gchar           // out
 
@@ -354,7 +265,9 @@ func (f recentFilter) AddMIMEType(mimeType string) {
 	C.gtk_recent_filter_add_mime_type(_arg0, _arg1)
 }
 
-func (f recentFilter) AddPattern(pattern string) {
+// AddPattern adds a rule that allows resources based on a pattern matching
+// their display name.
+func (f *RecentFilterClass) AddPattern(pattern string) {
 	var _arg0 *C.GtkRecentFilter // out
 	var _arg1 *C.gchar           // out
 
@@ -365,7 +278,9 @@ func (f recentFilter) AddPattern(pattern string) {
 	C.gtk_recent_filter_add_pattern(_arg0, _arg1)
 }
 
-func (f recentFilter) AddPixbufFormats() {
+// AddPixbufFormats adds a rule allowing image files in the formats supported by
+// GdkPixbuf.
+func (f *RecentFilterClass) AddPixbufFormats() {
 	var _arg0 *C.GtkRecentFilter // out
 
 	_arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(f.Native()))
@@ -373,7 +288,14 @@ func (f recentFilter) AddPixbufFormats() {
 	C.gtk_recent_filter_add_pixbuf_formats(_arg0)
 }
 
-func (f recentFilter) Filter(filterInfo *RecentFilterInfo) bool {
+// Filter tests whether a file should be displayed according to @filter. The
+// RecentFilterInfo @filter_info should include the fields returned from
+// gtk_recent_filter_get_needed(), and must set the RecentFilterInfo.contains
+// field of @filter_info to indicate which fields have been set.
+//
+// This function will not typically be used by applications; it is intended
+// principally for use in the implementation of RecentChooser.
+func (f *RecentFilterClass) Filter(filterInfo *RecentFilterInfo) bool {
 	var _arg0 *C.GtkRecentFilter     // out
 	var _arg1 *C.GtkRecentFilterInfo // out
 	var _cret C.gboolean             // in
@@ -392,7 +314,9 @@ func (f recentFilter) Filter(filterInfo *RecentFilterInfo) bool {
 	return _ok
 }
 
-func (f recentFilter) Name() string {
+// Name gets the human-readable name for the filter. See
+// gtk_recent_filter_set_name().
+func (f *RecentFilterClass) Name() string {
 	var _arg0 *C.GtkRecentFilter // out
 	var _cret *C.gchar           // in
 
@@ -407,7 +331,12 @@ func (f recentFilter) Name() string {
 	return _utf8
 }
 
-func (f recentFilter) Needed() RecentFilterFlags {
+// Needed gets the fields that need to be filled in for the RecentFilterInfo
+// passed to gtk_recent_filter_filter()
+//
+// This function will not typically be used by applications; it is intended
+// principally for use in the implementation of RecentChooser.
+func (f *RecentFilterClass) Needed() RecentFilterFlags {
 	var _arg0 *C.GtkRecentFilter     // out
 	var _cret C.GtkRecentFilterFlags // in
 
@@ -422,7 +351,10 @@ func (f recentFilter) Needed() RecentFilterFlags {
 	return _recentFilterFlags
 }
 
-func (f recentFilter) SetName(name string) {
+// SetName sets the human-readable name of the filter; this is the string that
+// will be displayed in the recently used resources selector user interface if
+// there is a selectable list of filters.
+func (f *RecentFilterClass) SetName(name string) {
 	var _arg0 *C.GtkRecentFilter // out
 	var _arg1 *C.gchar           // out
 

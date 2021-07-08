@@ -22,7 +22,7 @@ func init() {
 	})
 }
 
-// HyperlinkImplOverrider contains methods that are overridable .
+// HyperlinkImplOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
@@ -62,26 +62,27 @@ type HyperlinkImpl interface {
 	Hyperlink() Hyperlink
 }
 
-// hyperlinkImpl implements the HyperlinkImpl interface.
-type hyperlinkImpl struct {
+// HyperlinkImplInterface implements the HyperlinkImpl interface.
+type HyperlinkImplInterface struct {
 	*externglib.Object
 }
 
-var _ HyperlinkImpl = (*hyperlinkImpl)(nil)
+var _ HyperlinkImpl = (*HyperlinkImplInterface)(nil)
 
-// WrapHyperlinkImpl wraps a GObject to a type that implements
-// interface HyperlinkImpl. It is primarily used internally.
-func WrapHyperlinkImpl(obj *externglib.Object) HyperlinkImpl {
-	return hyperlinkImpl{obj}
+func wrapHyperlinkImpl(obj *externglib.Object) HyperlinkImpl {
+	return &HyperlinkImplInterface{
+		Object: obj,
+	}
 }
 
 func marshalHyperlinkImpl(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapHyperlinkImpl(obj), nil
+	return wrapHyperlinkImpl(obj), nil
 }
 
-func (i hyperlinkImpl) Hyperlink() Hyperlink {
+// Hyperlink gets the hyperlink associated with this object.
+func (i *HyperlinkImplInterface) Hyperlink() Hyperlink {
 	var _arg0 *C.AtkHyperlinkImpl // out
 	var _cret *C.AtkHyperlink     // in
 

@@ -27,7 +27,7 @@ func (conv *Converter) gocConvert(value *ValueConverted) bool {
 func (conv *Converter) gocArrayConverter(value *ValueConverted) bool {
 	if value.AnyType.Array.Type == nil {
 		conv.Logln(logger.Debug, "Go->C skipping nested array", value.AnyType.Array.CType)
-		return value.Optional
+		return false
 	}
 
 	array := *value.AnyType.Array
@@ -272,7 +272,7 @@ func (conv *Converter) gocArrayConverter(value *ValueConverted) bool {
 
 func (conv *Converter) gocConverter(value *ValueConverted) bool {
 	for _, unsupported := range types.UnsupportedCTypes {
-		if unsupported == value.AnyType.Type.CType {
+		if unsupported == types.CleanCType(value.AnyType.Type.CType, true) {
 			return false
 		}
 	}
@@ -292,7 +292,7 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 
 	case value.Resolved.IsBuiltin("string"):
 		if !value.isPtr(1) {
-			return conv.convertRef(value, 1, 0)
+			return false
 		}
 
 		value.p.Linef("%s = (%s)(C.CString(%s))", value.OutName, value.OutType, value.InName)
@@ -307,7 +307,7 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 
 	case value.Resolved.IsBuiltin("bool"):
 		if !value.isPtr(0) {
-			return conv.convertRef(value, 0, 0)
+			return false
 		}
 
 		switch types.CleanCType(value.Resolved.CType, true) {
@@ -325,7 +325,7 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 
 	case value.Resolved.IsBuiltin("error"):
 		if !value.isPtr(1) {
-			return conv.convertRef(value, 1, 0)
+			return false
 		}
 
 		value.header.ImportCore("gerror")
@@ -370,7 +370,7 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 
 	case "GObject.Value":
 		if !value.isPtr(1) {
-			return conv.convertRef(value, 1, 1)
+			return false
 		}
 
 		value.header.NeedsGLibObject()
@@ -382,7 +382,7 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 
 	case "GObject.Object", "GObject.InitiallyUnowned":
 		if !value.isPtr(1) {
-			return conv.convertRef(value, 1, 1)
+			return false
 		}
 
 		value.header.Import("unsafe")
@@ -405,14 +405,14 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 			value.header.Import("unsafe")
 			value.p.Linef("%s = (%s)(unsafe.Pointer(%s))", value.OutName, value.OutType, value.InName)
 		default:
-			return conv.convertRef(value, 1, 1)
+			return false
 		}
 
 		return true
 
 	case *gir.Class, *gir.Interface:
 		if !value.isPtr(1) {
-			return conv.convertRef(value, 1, 0)
+			return false
 		}
 
 		value.header.Import("unsafe")
@@ -424,7 +424,7 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 
 	case *gir.Record:
 		if !value.isPtr(1) {
-			return conv.convertRef(value, 1, 1)
+			return false
 		}
 
 		value.header.Import("unsafe")
@@ -448,12 +448,13 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 		// Callbacks must have the closure attribute to store the closure
 		// pointer.
 		if value.Closure == nil {
-			conv.Logln(logger.Debug, "Go->C callback", exportedName, "since missing closure")
+			conv.Logln(logger.Debug, exportedName, "missing closure")
 			return false
 		}
 
 		closure := conv.convertParam(*value.Closure)
 		if closure == nil {
+			value.logln(conv, logger.Debug, exportedName, "closure", *value.Closure, "not found")
 			return false
 		}
 

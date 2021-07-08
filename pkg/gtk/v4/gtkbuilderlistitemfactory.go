@@ -34,10 +34,7 @@ func init() {
 // name="item">GtkListItem</lookup> </lookup> </binding> </object> </property>
 // </template> </interface> “`
 type BuilderListItemFactory interface {
-	ListItemFactory
-
-	// AsListItemFactory casts the class to the ListItemFactory interface.
-	AsListItemFactory() ListItemFactory
+	gextras.Objector
 
 	// Resource: if the data references a resource, gets the path of that
 	// resource.
@@ -46,23 +43,25 @@ type BuilderListItemFactory interface {
 	Scope() BuilderScope
 }
 
-// builderListItemFactory implements the BuilderListItemFactory interface.
-type builderListItemFactory struct {
-	*externglib.Object
+// BuilderListItemFactoryClass implements the BuilderListItemFactory interface.
+type BuilderListItemFactoryClass struct {
+	ListItemFactoryClass
 }
 
-var _ BuilderListItemFactory = (*builderListItemFactory)(nil)
+var _ BuilderListItemFactory = (*BuilderListItemFactoryClass)(nil)
 
-// WrapBuilderListItemFactory wraps a GObject to a type that implements
-// interface BuilderListItemFactory. It is primarily used internally.
-func WrapBuilderListItemFactory(obj *externglib.Object) BuilderListItemFactory {
-	return builderListItemFactory{obj}
+func wrapBuilderListItemFactory(obj *externglib.Object) BuilderListItemFactory {
+	return &BuilderListItemFactoryClass{
+		ListItemFactoryClass: ListItemFactoryClass{
+			Object: obj,
+		},
+	}
 }
 
 func marshalBuilderListItemFactory(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapBuilderListItemFactory(obj), nil
+	return wrapBuilderListItemFactory(obj), nil
 }
 
 // NewBuilderListItemFactoryFromResource creates a new
@@ -86,11 +85,8 @@ func NewBuilderListItemFactoryFromResource(scope BuilderScope, resourcePath stri
 	return _builderListItemFactory
 }
 
-func (b builderListItemFactory) AsListItemFactory() ListItemFactory {
-	return WrapListItemFactory(gextras.InternObject(b))
-}
-
-func (s builderListItemFactory) Resource() string {
+// Resource: if the data references a resource, gets the path of that resource.
+func (s *BuilderListItemFactoryClass) Resource() string {
 	var _arg0 *C.GtkBuilderListItemFactory // out
 	var _cret *C.char                      // in
 
@@ -105,7 +101,8 @@ func (s builderListItemFactory) Resource() string {
 	return _utf8
 }
 
-func (s builderListItemFactory) Scope() BuilderScope {
+// Scope gets the scope used when constructing listitems.
+func (s *BuilderListItemFactoryClass) Scope() BuilderScope {
 	var _arg0 *C.GtkBuilderListItemFactory // out
 	var _cret *C.GtkBuilderScope           // in
 

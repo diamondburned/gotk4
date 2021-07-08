@@ -54,70 +54,30 @@ func gotk4_CustomFilterFunc(arg0 C.gpointer, arg1 C.gpointer) (cret C.gboolean) 
 // CustomFilter: `GtkCustomFilter` determines whether to include items with a
 // callback.
 type CustomFilter interface {
-	Filter
+	gextras.Objector
 
-	// AsFilter casts the class to the Filter interface.
-	AsFilter() Filter
-
-	// Changed emits the Filter::changed signal to notify all users of the
-	// filter that the filter changed. Users of the filter should then check
-	// items again via gtk_filter_match().
-	//
-	// Depending on the @change parameter, not all items need to be changed, but
-	// only some. Refer to the FilterChange documentation for details.
-	//
-	// This function is intended for implementors of Filter subclasses and
-	// should not be called from other functions.
-	//
-	// This method is inherited from Filter
-	Changed(change FilterChange)
-	// GetStrictness gets the known strictness of @filters. If the strictness is
-	// not known, GTK_FILTER_MATCH_SOME is returned.
-	//
-	// This value may change after emission of the Filter::changed signal.
-	//
-	// This function is meant purely for optimization purposes, filters can
-	// choose to omit implementing it, but FilterListModel uses it.
-	//
-	// This method is inherited from Filter
-	GetStrictness() FilterMatch
-	// Match checks if the given @item is matched by the filter or not.
-	//
-	// This method is inherited from Filter
-	Match(item gextras.Objector) bool
+	privateCustomFilterClass()
 }
 
-// customFilter implements the CustomFilter interface.
-type customFilter struct {
-	*externglib.Object
+// CustomFilterClass implements the CustomFilter interface.
+type CustomFilterClass struct {
+	FilterClass
 }
 
-var _ CustomFilter = (*customFilter)(nil)
+var _ CustomFilter = (*CustomFilterClass)(nil)
 
-// WrapCustomFilter wraps a GObject to a type that implements
-// interface CustomFilter. It is primarily used internally.
-func WrapCustomFilter(obj *externglib.Object) CustomFilter {
-	return customFilter{obj}
+func wrapCustomFilter(obj *externglib.Object) CustomFilter {
+	return &CustomFilterClass{
+		FilterClass: FilterClass{
+			Object: obj,
+		},
+	}
 }
 
 func marshalCustomFilter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapCustomFilter(obj), nil
+	return wrapCustomFilter(obj), nil
 }
 
-func (c customFilter) AsFilter() Filter {
-	return WrapFilter(gextras.InternObject(c))
-}
-
-func (s customFilter) Changed(change FilterChange) {
-	WrapFilter(gextras.InternObject(s)).Changed(change)
-}
-
-func (s customFilter) GetStrictness() FilterMatch {
-	return WrapFilter(gextras.InternObject(s)).GetStrictness()
-}
-
-func (s customFilter) Match(item gextras.Objector) bool {
-	return WrapFilter(gextras.InternObject(s)).Match(item)
-}
+func (*CustomFilterClass) privateCustomFilterClass() {}

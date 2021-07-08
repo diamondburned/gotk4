@@ -29,84 +29,42 @@ func init() {
 //
 // To add filters to a `GtkAnyFilter`, use [method@Gtk.MultiFilter.append].
 type AnyFilter interface {
-	MultiFilter
+	gextras.Objector
 
-	// AsMultiFilter casts the class to the MultiFilter interface.
-	AsMultiFilter() MultiFilter
-	// AsBuildable casts the class to the Buildable interface.
-	AsBuildable() Buildable
-
-	// Append adds a @filter to @self to use for matching.
-	//
-	// This method is inherited from MultiFilter
-	Append(filter Filter)
-	// Remove removes the filter at the given @position from the list of filters
-	// used by @self.
-	//
-	// If @position is larger than the number of filters, nothing happens and
-	// the function returns.
-	//
-	// This method is inherited from MultiFilter
-	Remove(position uint)
-	// Changed emits the Filter::changed signal to notify all users of the
-	// filter that the filter changed. Users of the filter should then check
-	// items again via gtk_filter_match().
-	//
-	// Depending on the @change parameter, not all items need to be changed, but
-	// only some. Refer to the FilterChange documentation for details.
-	//
-	// This function is intended for implementors of Filter subclasses and
-	// should not be called from other functions.
-	//
-	// This method is inherited from Filter
-	Changed(change FilterChange)
-	// GetStrictness gets the known strictness of @filters. If the strictness is
-	// not known, GTK_FILTER_MATCH_SOME is returned.
-	//
-	// This value may change after emission of the Filter::changed signal.
-	//
-	// This function is meant purely for optimization purposes, filters can
-	// choose to omit implementing it, but FilterListModel uses it.
-	//
-	// This method is inherited from Filter
-	GetStrictness() FilterMatch
-	// Match checks if the given @item is matched by the filter or not.
-	//
-	// This method is inherited from Filter
-	Match(item gextras.Objector) bool
-	// GetBuildableID gets the ID of the @buildable object.
-	//
-	// `GtkBuilder` sets the name based on the ID attribute of the <object> tag
-	// used to construct the @buildable.
-	//
-	// This method is inherited from Buildable
-	GetBuildableID() string
-	// GetBuildableID gets the ID of the @buildable object.
-	//
-	// `GtkBuilder` sets the name based on the ID attribute of the <object> tag
-	// used to construct the @buildable.
-	//
-	// This method is inherited from Buildable
-	GetBuildableID() string
+	privateAnyFilterClass()
 }
 
-// anyFilter implements the AnyFilter interface.
-type anyFilter struct {
+// AnyFilterClass implements the AnyFilter interface.
+type AnyFilterClass struct {
 	*externglib.Object
+	MultiFilterClass
+	BuildableInterface
 }
 
-var _ AnyFilter = (*anyFilter)(nil)
+var _ AnyFilter = (*AnyFilterClass)(nil)
 
-// WrapAnyFilter wraps a GObject to a type that implements
-// interface AnyFilter. It is primarily used internally.
-func WrapAnyFilter(obj *externglib.Object) AnyFilter {
-	return anyFilter{obj}
+func wrapAnyFilter(obj *externglib.Object) AnyFilter {
+	return &AnyFilterClass{
+		Object: obj,
+		MultiFilterClass: MultiFilterClass{
+			Object: obj,
+			FilterClass: FilterClass{
+				Object: obj,
+			},
+			BuildableInterface: BuildableInterface{
+				Object: obj,
+			},
+		},
+		BuildableInterface: BuildableInterface{
+			Object: obj,
+		},
+	}
 }
 
 func marshalAnyFilter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapAnyFilter(obj), nil
+	return wrapAnyFilter(obj), nil
 }
 
 // NewAnyFilter creates a new empty "any" filter.
@@ -128,125 +86,49 @@ func NewAnyFilter() AnyFilter {
 	return _anyFilter
 }
 
-func (a anyFilter) AsMultiFilter() MultiFilter {
-	return WrapMultiFilter(gextras.InternObject(a))
-}
-
-func (a anyFilter) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(a))
-}
-
-func (s anyFilter) Append(filter Filter) {
-	WrapMultiFilter(gextras.InternObject(s)).Append(filter)
-}
-
-func (s anyFilter) Remove(position uint) {
-	WrapMultiFilter(gextras.InternObject(s)).Remove(position)
-}
-
-func (s anyFilter) Changed(change FilterChange) {
-	WrapFilter(gextras.InternObject(s)).Changed(change)
-}
-
-func (s anyFilter) GetStrictness() FilterMatch {
-	return WrapFilter(gextras.InternObject(s)).GetStrictness()
-}
-
-func (s anyFilter) Match(item gextras.Objector) bool {
-	return WrapFilter(gextras.InternObject(s)).Match(item)
-}
-
-func (b anyFilter) GetBuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).GetBuildableID()
-}
-
-func (b anyFilter) GetBuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).GetBuildableID()
-}
+func (*AnyFilterClass) privateAnyFilterClass() {}
 
 // EveryFilter: `GtkEveryFilter` matches an item when each of its filters
 // matches.
 //
 // To add filters to a `GtkEveryFilter`, use [method@Gtk.MultiFilter.append].
 type EveryFilter interface {
-	MultiFilter
+	gextras.Objector
 
-	// AsMultiFilter casts the class to the MultiFilter interface.
-	AsMultiFilter() MultiFilter
-	// AsBuildable casts the class to the Buildable interface.
-	AsBuildable() Buildable
-
-	// Append adds a @filter to @self to use for matching.
-	//
-	// This method is inherited from MultiFilter
-	Append(filter Filter)
-	// Remove removes the filter at the given @position from the list of filters
-	// used by @self.
-	//
-	// If @position is larger than the number of filters, nothing happens and
-	// the function returns.
-	//
-	// This method is inherited from MultiFilter
-	Remove(position uint)
-	// Changed emits the Filter::changed signal to notify all users of the
-	// filter that the filter changed. Users of the filter should then check
-	// items again via gtk_filter_match().
-	//
-	// Depending on the @change parameter, not all items need to be changed, but
-	// only some. Refer to the FilterChange documentation for details.
-	//
-	// This function is intended for implementors of Filter subclasses and
-	// should not be called from other functions.
-	//
-	// This method is inherited from Filter
-	Changed(change FilterChange)
-	// GetStrictness gets the known strictness of @filters. If the strictness is
-	// not known, GTK_FILTER_MATCH_SOME is returned.
-	//
-	// This value may change after emission of the Filter::changed signal.
-	//
-	// This function is meant purely for optimization purposes, filters can
-	// choose to omit implementing it, but FilterListModel uses it.
-	//
-	// This method is inherited from Filter
-	GetStrictness() FilterMatch
-	// Match checks if the given @item is matched by the filter or not.
-	//
-	// This method is inherited from Filter
-	Match(item gextras.Objector) bool
-	// GetBuildableID gets the ID of the @buildable object.
-	//
-	// `GtkBuilder` sets the name based on the ID attribute of the <object> tag
-	// used to construct the @buildable.
-	//
-	// This method is inherited from Buildable
-	GetBuildableID() string
-	// GetBuildableID gets the ID of the @buildable object.
-	//
-	// `GtkBuilder` sets the name based on the ID attribute of the <object> tag
-	// used to construct the @buildable.
-	//
-	// This method is inherited from Buildable
-	GetBuildableID() string
+	privateEveryFilterClass()
 }
 
-// everyFilter implements the EveryFilter interface.
-type everyFilter struct {
+// EveryFilterClass implements the EveryFilter interface.
+type EveryFilterClass struct {
 	*externglib.Object
+	MultiFilterClass
+	BuildableInterface
 }
 
-var _ EveryFilter = (*everyFilter)(nil)
+var _ EveryFilter = (*EveryFilterClass)(nil)
 
-// WrapEveryFilter wraps a GObject to a type that implements
-// interface EveryFilter. It is primarily used internally.
-func WrapEveryFilter(obj *externglib.Object) EveryFilter {
-	return everyFilter{obj}
+func wrapEveryFilter(obj *externglib.Object) EveryFilter {
+	return &EveryFilterClass{
+		Object: obj,
+		MultiFilterClass: MultiFilterClass{
+			Object: obj,
+			FilterClass: FilterClass{
+				Object: obj,
+			},
+			BuildableInterface: BuildableInterface{
+				Object: obj,
+			},
+		},
+		BuildableInterface: BuildableInterface{
+			Object: obj,
+		},
+	}
 }
 
 func marshalEveryFilter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapEveryFilter(obj), nil
+	return wrapEveryFilter(obj), nil
 }
 
 // NewEveryFilter creates a new empty "every" filter.
@@ -268,85 +150,12 @@ func NewEveryFilter() EveryFilter {
 	return _everyFilter
 }
 
-func (e everyFilter) AsMultiFilter() MultiFilter {
-	return WrapMultiFilter(gextras.InternObject(e))
-}
-
-func (e everyFilter) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(e))
-}
-
-func (s everyFilter) Append(filter Filter) {
-	WrapMultiFilter(gextras.InternObject(s)).Append(filter)
-}
-
-func (s everyFilter) Remove(position uint) {
-	WrapMultiFilter(gextras.InternObject(s)).Remove(position)
-}
-
-func (s everyFilter) Changed(change FilterChange) {
-	WrapFilter(gextras.InternObject(s)).Changed(change)
-}
-
-func (s everyFilter) GetStrictness() FilterMatch {
-	return WrapFilter(gextras.InternObject(s)).GetStrictness()
-}
-
-func (s everyFilter) Match(item gextras.Objector) bool {
-	return WrapFilter(gextras.InternObject(s)).Match(item)
-}
-
-func (b everyFilter) GetBuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).GetBuildableID()
-}
-
-func (b everyFilter) GetBuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).GetBuildableID()
-}
+func (*EveryFilterClass) privateEveryFilterClass() {}
 
 // MultiFilter: `GtkMultiFilter` is the base class for filters that combine
 // multiple filters.
 type MultiFilter interface {
-	Filter
-
-	// AsFilter casts the class to the Filter interface.
-	AsFilter() Filter
-	// AsBuildable casts the class to the Buildable interface.
-	AsBuildable() Buildable
-
-	// Changed emits the Filter::changed signal to notify all users of the
-	// filter that the filter changed. Users of the filter should then check
-	// items again via gtk_filter_match().
-	//
-	// Depending on the @change parameter, not all items need to be changed, but
-	// only some. Refer to the FilterChange documentation for details.
-	//
-	// This function is intended for implementors of Filter subclasses and
-	// should not be called from other functions.
-	//
-	// This method is inherited from Filter
-	Changed(change FilterChange)
-	// GetStrictness gets the known strictness of @filters. If the strictness is
-	// not known, GTK_FILTER_MATCH_SOME is returned.
-	//
-	// This value may change after emission of the Filter::changed signal.
-	//
-	// This function is meant purely for optimization purposes, filters can
-	// choose to omit implementing it, but FilterListModel uses it.
-	//
-	// This method is inherited from Filter
-	GetStrictness() FilterMatch
-	// Match checks if the given @item is matched by the filter or not.
-	//
-	// This method is inherited from Filter
-	Match(item gextras.Objector) bool
-	// GetBuildableID gets the ID of the @buildable object.
-	//
-	// `GtkBuilder` sets the name based on the ID attribute of the <object> tag
-	// used to construct the @buildable.
-	//
-	// This method is inherited from Buildable
-	GetBuildableID() string
+	gextras.Objector
 
 	// Append adds a @filter to @self to use for matching.
 	Append(filter Filter)
@@ -358,50 +167,35 @@ type MultiFilter interface {
 	Remove(position uint)
 }
 
-// multiFilter implements the MultiFilter interface.
-type multiFilter struct {
+// MultiFilterClass implements the MultiFilter interface.
+type MultiFilterClass struct {
 	*externglib.Object
+	FilterClass
+	BuildableInterface
 }
 
-var _ MultiFilter = (*multiFilter)(nil)
+var _ MultiFilter = (*MultiFilterClass)(nil)
 
-// WrapMultiFilter wraps a GObject to a type that implements
-// interface MultiFilter. It is primarily used internally.
-func WrapMultiFilter(obj *externglib.Object) MultiFilter {
-	return multiFilter{obj}
+func wrapMultiFilter(obj *externglib.Object) MultiFilter {
+	return &MultiFilterClass{
+		Object: obj,
+		FilterClass: FilterClass{
+			Object: obj,
+		},
+		BuildableInterface: BuildableInterface{
+			Object: obj,
+		},
+	}
 }
 
 func marshalMultiFilter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapMultiFilter(obj), nil
+	return wrapMultiFilter(obj), nil
 }
 
-func (m multiFilter) AsFilter() Filter {
-	return WrapFilter(gextras.InternObject(m))
-}
-
-func (m multiFilter) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(m))
-}
-
-func (s multiFilter) Changed(change FilterChange) {
-	WrapFilter(gextras.InternObject(s)).Changed(change)
-}
-
-func (s multiFilter) GetStrictness() FilterMatch {
-	return WrapFilter(gextras.InternObject(s)).GetStrictness()
-}
-
-func (s multiFilter) Match(item gextras.Objector) bool {
-	return WrapFilter(gextras.InternObject(s)).Match(item)
-}
-
-func (b multiFilter) GetBuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).GetBuildableID()
-}
-
-func (s multiFilter) Append(filter Filter) {
+// Append adds a @filter to @self to use for matching.
+func (s *MultiFilterClass) Append(filter Filter) {
 	var _arg0 *C.GtkMultiFilter // out
 	var _arg1 *C.GtkFilter      // out
 
@@ -411,7 +205,12 @@ func (s multiFilter) Append(filter Filter) {
 	C.gtk_multi_filter_append(_arg0, _arg1)
 }
 
-func (s multiFilter) Remove(position uint) {
+// Remove removes the filter at the given @position from the list of filters
+// used by @self.
+//
+// If @position is larger than the number of filters, nothing happens and the
+// function returns.
+func (s *MultiFilterClass) Remove(position uint) {
 	var _arg0 *C.GtkMultiFilter // out
 	var _arg1 C.guint           // out
 

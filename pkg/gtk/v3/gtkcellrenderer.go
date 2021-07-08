@@ -73,16 +73,13 @@ func marshalCellRendererState(p uintptr) (interface{}, error) {
 	return CellRendererState(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// CellRendererOverrider contains methods that are overridable .
+// CellRendererOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type CellRendererOverrider interface {
 	EditingCanceled()
 	EditingStarted(editable CellEditable, path string)
-	// AlignedArea gets the aligned area used by @cell inside @cell_area. Used
-	// for finding the appropriate edit and focus rectangle.
-	AlignedArea(widget Widget, flags CellRendererState, cellArea *gdk.Rectangle) gdk.Rectangle
 	// PreferredHeight retreives a renderer’s natural size when rendered to
 	// @widget.
 	PreferredHeight(widget Widget) (minimumSize int, naturalSize int)
@@ -153,9 +150,6 @@ type CellRendererOverrider interface {
 type CellRenderer interface {
 	gextras.Objector
 
-	// AlignedArea gets the aligned area used by @cell inside @cell_area. Used
-	// for finding the appropriate edit and focus rectangle.
-	AlignedArea(widget Widget, flags CellRendererState, cellArea *gdk.Rectangle) gdk.Rectangle
 	// Alignment fills in @xalign and @yalign with the appropriate values of
 	// @cell.
 	Alignment() (xalign float32, yalign float32)
@@ -169,9 +163,6 @@ type CellRenderer interface {
 	// PreferredHeightForWidth retreives a cell renderers’s minimum and natural
 	// height if it were rendered to @widget with the specified @width.
 	PreferredHeightForWidth(widget Widget, width int) (minimumHeight int, naturalHeight int)
-	// PreferredSize retrieves the minimum and natural size of a cell taking
-	// into account the widget’s preference for height-for-width management.
-	PreferredSize(widget Widget) (minimumSize Requisition, naturalSize Requisition)
 	// PreferredWidth retreives a renderer’s natural size when rendered to
 	// @widget.
 	PreferredWidth(widget Widget) (minimumSize int, naturalSize int)
@@ -229,57 +220,27 @@ type CellRenderer interface {
 	StopEditing(canceled bool)
 }
 
-// cellRenderer implements the CellRenderer interface.
-type cellRenderer struct {
-	*externglib.Object
+// CellRendererClass implements the CellRenderer interface.
+type CellRendererClass struct {
+	externglib.InitiallyUnowned
 }
 
-var _ CellRenderer = (*cellRenderer)(nil)
+var _ CellRenderer = (*CellRendererClass)(nil)
 
-// WrapCellRenderer wraps a GObject to a type that implements
-// interface CellRenderer. It is primarily used internally.
-func WrapCellRenderer(obj *externglib.Object) CellRenderer {
-	return cellRenderer{obj}
+func wrapCellRenderer(obj *externglib.Object) CellRenderer {
+	return &CellRendererClass{
+		InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
+	}
 }
 
 func marshalCellRenderer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapCellRenderer(obj), nil
+	return wrapCellRenderer(obj), nil
 }
 
-func (c cellRenderer) AlignedArea(widget Widget, flags CellRendererState, cellArea *gdk.Rectangle) gdk.Rectangle {
-	var _arg0 *C.GtkCellRenderer     // out
-	var _arg1 *C.GtkWidget           // out
-	var _arg2 C.GtkCellRendererState // out
-	var _arg3 *C.GdkRectangle        // out
-	var _arg4 C.GdkRectangle         // in
-
-	_arg0 = (*C.GtkCellRenderer)(unsafe.Pointer(c.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg2 = C.GtkCellRendererState(flags)
-	_arg3 = (*C.GdkRectangle)(unsafe.Pointer(cellArea))
-
-	C.gtk_cell_renderer_get_aligned_area(_arg0, _arg1, _arg2, _arg3, &_arg4)
-
-	var _alignedArea gdk.Rectangle // out
-
-	{
-		var refTmpIn *C.GdkRectangle
-		var refTmpOut *gdk.Rectangle
-
-		in0 := &_arg4
-		refTmpIn = in0
-
-		refTmpOut = (*gdk.Rectangle)(unsafe.Pointer(refTmpIn))
-
-		_alignedArea = *refTmpOut
-	}
-
-	return _alignedArea
-}
-
-func (c cellRenderer) Alignment() (xalign float32, yalign float32) {
+// Alignment fills in @xalign and @yalign with the appropriate values of @cell.
+func (c *CellRendererClass) Alignment() (xalign float32, yalign float32) {
 	var _arg0 *C.GtkCellRenderer // out
 	var _arg1 C.gfloat           // in
 	var _arg2 C.gfloat           // in
@@ -297,7 +258,8 @@ func (c cellRenderer) Alignment() (xalign float32, yalign float32) {
 	return _xalign, _yalign
 }
 
-func (c cellRenderer) FixedSize() (width int, height int) {
+// FixedSize fills in @width and @height with the appropriate size of @cell.
+func (c *CellRendererClass) FixedSize() (width int, height int) {
 	var _arg0 *C.GtkCellRenderer // out
 	var _arg1 C.gint             // in
 	var _arg2 C.gint             // in
@@ -315,7 +277,8 @@ func (c cellRenderer) FixedSize() (width int, height int) {
 	return _width, _height
 }
 
-func (c cellRenderer) Padding() (xpad int, ypad int) {
+// Padding fills in @xpad and @ypad with the appropriate values of @cell.
+func (c *CellRendererClass) Padding() (xpad int, ypad int) {
 	var _arg0 *C.GtkCellRenderer // out
 	var _arg1 C.gint             // in
 	var _arg2 C.gint             // in
@@ -333,7 +296,8 @@ func (c cellRenderer) Padding() (xpad int, ypad int) {
 	return _xpad, _ypad
 }
 
-func (c cellRenderer) PreferredHeight(widget Widget) (minimumSize int, naturalSize int) {
+// PreferredHeight retreives a renderer’s natural size when rendered to @widget.
+func (c *CellRendererClass) PreferredHeight(widget Widget) (minimumSize int, naturalSize int) {
 	var _arg0 *C.GtkCellRenderer // out
 	var _arg1 *C.GtkWidget       // out
 	var _arg2 C.gint             // in
@@ -353,7 +317,9 @@ func (c cellRenderer) PreferredHeight(widget Widget) (minimumSize int, naturalSi
 	return _minimumSize, _naturalSize
 }
 
-func (c cellRenderer) PreferredHeightForWidth(widget Widget, width int) (minimumHeight int, naturalHeight int) {
+// PreferredHeightForWidth retreives a cell renderers’s minimum and natural
+// height if it were rendered to @widget with the specified @width.
+func (c *CellRendererClass) PreferredHeightForWidth(widget Widget, width int) (minimumHeight int, naturalHeight int) {
 	var _arg0 *C.GtkCellRenderer // out
 	var _arg1 *C.GtkWidget       // out
 	var _arg2 C.gint             // out
@@ -375,47 +341,8 @@ func (c cellRenderer) PreferredHeightForWidth(widget Widget, width int) (minimum
 	return _minimumHeight, _naturalHeight
 }
 
-func (c cellRenderer) PreferredSize(widget Widget) (minimumSize Requisition, naturalSize Requisition) {
-	var _arg0 *C.GtkCellRenderer // out
-	var _arg1 *C.GtkWidget       // out
-	var _arg2 C.GtkRequisition   // in
-	var _arg3 C.GtkRequisition   // in
-
-	_arg0 = (*C.GtkCellRenderer)(unsafe.Pointer(c.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	C.gtk_cell_renderer_get_preferred_size(_arg0, _arg1, &_arg2, &_arg3)
-
-	var _minimumSize Requisition // out
-	var _naturalSize Requisition // out
-
-	{
-		var refTmpIn *C.GtkRequisition
-		var refTmpOut *Requisition
-
-		in0 := &_arg2
-		refTmpIn = in0
-
-		refTmpOut = (*Requisition)(unsafe.Pointer(refTmpIn))
-
-		_minimumSize = *refTmpOut
-	}
-	{
-		var refTmpIn *C.GtkRequisition
-		var refTmpOut *Requisition
-
-		in0 := &_arg3
-		refTmpIn = in0
-
-		refTmpOut = (*Requisition)(unsafe.Pointer(refTmpIn))
-
-		_naturalSize = *refTmpOut
-	}
-
-	return _minimumSize, _naturalSize
-}
-
-func (c cellRenderer) PreferredWidth(widget Widget) (minimumSize int, naturalSize int) {
+// PreferredWidth retreives a renderer’s natural size when rendered to @widget.
+func (c *CellRendererClass) PreferredWidth(widget Widget) (minimumSize int, naturalSize int) {
 	var _arg0 *C.GtkCellRenderer // out
 	var _arg1 *C.GtkWidget       // out
 	var _arg2 C.gint             // in
@@ -435,7 +362,9 @@ func (c cellRenderer) PreferredWidth(widget Widget) (minimumSize int, naturalSiz
 	return _minimumSize, _naturalSize
 }
 
-func (c cellRenderer) PreferredWidthForHeight(widget Widget, height int) (minimumWidth int, naturalWidth int) {
+// PreferredWidthForHeight retreives a cell renderers’s minimum and natural
+// width if it were rendered to @widget with the specified @height.
+func (c *CellRendererClass) PreferredWidthForHeight(widget Widget, height int) (minimumWidth int, naturalWidth int) {
 	var _arg0 *C.GtkCellRenderer // out
 	var _arg1 *C.GtkWidget       // out
 	var _arg2 C.gint             // out
@@ -457,7 +386,9 @@ func (c cellRenderer) PreferredWidthForHeight(widget Widget, height int) (minimu
 	return _minimumWidth, _naturalWidth
 }
 
-func (c cellRenderer) RequestMode() SizeRequestMode {
+// RequestMode gets whether the cell renderer prefers a height-for-width layout
+// or a width-for-height layout.
+func (c *CellRendererClass) RequestMode() SizeRequestMode {
 	var _arg0 *C.GtkCellRenderer   // out
 	var _cret C.GtkSizeRequestMode // in
 
@@ -472,7 +403,8 @@ func (c cellRenderer) RequestMode() SizeRequestMode {
 	return _sizeRequestMode
 }
 
-func (c cellRenderer) Sensitive() bool {
+// Sensitive returns the cell renderer’s sensitivity.
+func (c *CellRendererClass) Sensitive() bool {
 	var _arg0 *C.GtkCellRenderer // out
 	var _cret C.gboolean         // in
 
@@ -489,7 +421,16 @@ func (c cellRenderer) Sensitive() bool {
 	return _ok
 }
 
-func (c cellRenderer) Size(widget Widget, cellArea *gdk.Rectangle) (xOffset int, yOffset int, width int, height int) {
+// Size obtains the width and height needed to render the cell. Used by view
+// widgets to determine the appropriate size for the cell_area passed to
+// gtk_cell_renderer_render(). If @cell_area is not nil, fills in the x and y
+// offsets (if set) of the cell relative to this location.
+//
+// Please note that the values set in @width and @height, as well as those in
+// @x_offset and @y_offset are inclusive of the xpad and ypad properties.
+//
+// Deprecated: since version 3.0.
+func (c *CellRendererClass) Size(widget Widget, cellArea *gdk.Rectangle) (xOffset int, yOffset int, width int, height int) {
 	var _arg0 *C.GtkCellRenderer // out
 	var _arg1 *C.GtkWidget       // out
 	var _arg2 *C.GdkRectangle    // out
@@ -517,7 +458,9 @@ func (c cellRenderer) Size(widget Widget, cellArea *gdk.Rectangle) (xOffset int,
 	return _xOffset, _yOffset, _width, _height
 }
 
-func (c cellRenderer) State(widget Widget, cellState CellRendererState) StateFlags {
+// State translates the cell renderer state to StateFlags, based on the cell
+// renderer and widget sensitivity, and the given CellRendererState.
+func (c *CellRendererClass) State(widget Widget, cellState CellRendererState) StateFlags {
 	var _arg0 *C.GtkCellRenderer     // out
 	var _arg1 *C.GtkWidget           // out
 	var _arg2 C.GtkCellRendererState // out
@@ -536,7 +479,8 @@ func (c cellRenderer) State(widget Widget, cellState CellRendererState) StateFla
 	return _stateFlags
 }
 
-func (c cellRenderer) Visible() bool {
+// Visible returns the cell renderer’s visibility.
+func (c *CellRendererClass) Visible() bool {
 	var _arg0 *C.GtkCellRenderer // out
 	var _cret C.gboolean         // in
 
@@ -553,7 +497,9 @@ func (c cellRenderer) Visible() bool {
 	return _ok
 }
 
-func (c cellRenderer) IsActivatable() bool {
+// IsActivatable checks whether the cell renderer can do something when
+// activated.
+func (c *CellRendererClass) IsActivatable() bool {
 	var _arg0 *C.GtkCellRenderer // out
 	var _cret C.gboolean         // in
 
@@ -570,7 +516,14 @@ func (c cellRenderer) IsActivatable() bool {
 	return _ok
 }
 
-func (c cellRenderer) Render(cr *cairo.Context, widget Widget, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState) {
+// Render invokes the virtual render function of the CellRenderer. The three
+// passed-in rectangles are areas in @cr. Most renderers will draw within
+// @cell_area; the xalign, yalign, xpad, and ypad fields of the CellRenderer
+// should be honored with respect to @cell_area. @background_area includes the
+// blank space around the cell, and also the area containing the tree expander;
+// so the @background_area rectangles for all cells tile to cover the entire
+// @window.
+func (c *CellRendererClass) Render(cr *cairo.Context, widget Widget, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState) {
 	var _arg0 *C.GtkCellRenderer     // out
 	var _arg1 *C.cairo_t             // out
 	var _arg2 *C.GtkWidget           // out
@@ -588,7 +541,8 @@ func (c cellRenderer) Render(cr *cairo.Context, widget Widget, backgroundArea *g
 	C.gtk_cell_renderer_render(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
 
-func (c cellRenderer) SetAlignment(xalign float32, yalign float32) {
+// SetAlignment sets the renderer’s alignment within its available space.
+func (c *CellRendererClass) SetAlignment(xalign float32, yalign float32) {
 	var _arg0 *C.GtkCellRenderer // out
 	var _arg1 C.gfloat           // out
 	var _arg2 C.gfloat           // out
@@ -600,7 +554,9 @@ func (c cellRenderer) SetAlignment(xalign float32, yalign float32) {
 	C.gtk_cell_renderer_set_alignment(_arg0, _arg1, _arg2)
 }
 
-func (c cellRenderer) SetFixedSize(width int, height int) {
+// SetFixedSize sets the renderer size to be explicit, independent of the
+// properties set.
+func (c *CellRendererClass) SetFixedSize(width int, height int) {
 	var _arg0 *C.GtkCellRenderer // out
 	var _arg1 C.gint             // out
 	var _arg2 C.gint             // out
@@ -612,7 +568,8 @@ func (c cellRenderer) SetFixedSize(width int, height int) {
 	C.gtk_cell_renderer_set_fixed_size(_arg0, _arg1, _arg2)
 }
 
-func (c cellRenderer) SetPadding(xpad int, ypad int) {
+// SetPadding sets the renderer’s padding.
+func (c *CellRendererClass) SetPadding(xpad int, ypad int) {
 	var _arg0 *C.GtkCellRenderer // out
 	var _arg1 C.gint             // out
 	var _arg2 C.gint             // out
@@ -624,7 +581,8 @@ func (c cellRenderer) SetPadding(xpad int, ypad int) {
 	C.gtk_cell_renderer_set_padding(_arg0, _arg1, _arg2)
 }
 
-func (c cellRenderer) SetSensitive(sensitive bool) {
+// SetSensitive sets the cell renderer’s sensitivity.
+func (c *CellRendererClass) SetSensitive(sensitive bool) {
 	var _arg0 *C.GtkCellRenderer // out
 	var _arg1 C.gboolean         // out
 
@@ -636,7 +594,8 @@ func (c cellRenderer) SetSensitive(sensitive bool) {
 	C.gtk_cell_renderer_set_sensitive(_arg0, _arg1)
 }
 
-func (c cellRenderer) SetVisible(visible bool) {
+// SetVisible sets the cell renderer’s visibility.
+func (c *CellRendererClass) SetVisible(visible bool) {
 	var _arg0 *C.GtkCellRenderer // out
 	var _arg1 C.gboolean         // out
 
@@ -648,7 +607,13 @@ func (c cellRenderer) SetVisible(visible bool) {
 	C.gtk_cell_renderer_set_visible(_arg0, _arg1)
 }
 
-func (c cellRenderer) StopEditing(canceled bool) {
+// StopEditing informs the cell renderer that the editing is stopped. If
+// @canceled is true, the cell renderer will emit the
+// CellRenderer::editing-canceled signal.
+//
+// This function should be called by cell renderer implementations in response
+// to the CellEditable::editing-done signal of CellEditable.
+func (c *CellRendererClass) StopEditing(canceled bool) {
 	var _arg0 *C.GtkCellRenderer // out
 	var _arg1 C.gboolean         // out
 

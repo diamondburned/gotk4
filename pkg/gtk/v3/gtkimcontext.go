@@ -27,7 +27,7 @@ func init() {
 	})
 }
 
-// IMContextOverrider contains methods that are overridable .
+// IMContextOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
@@ -221,26 +221,42 @@ type IMContext interface {
 	SetUsePreedit(usePreedit bool)
 }
 
-// imContext implements the IMContext interface.
-type imContext struct {
+// IMContextClass implements the IMContext interface.
+type IMContextClass struct {
 	*externglib.Object
 }
 
-var _ IMContext = (*imContext)(nil)
+var _ IMContext = (*IMContextClass)(nil)
 
-// WrapIMContext wraps a GObject to a type that implements
-// interface IMContext. It is primarily used internally.
-func WrapIMContext(obj *externglib.Object) IMContext {
-	return imContext{obj}
+func wrapIMContext(obj *externglib.Object) IMContext {
+	return &IMContextClass{
+		Object: obj,
+	}
 }
 
 func marshalIMContext(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapIMContext(obj), nil
+	return wrapIMContext(obj), nil
 }
 
-func (c imContext) DeleteSurrounding(offset int, nChars int) bool {
+// DeleteSurrounding asks the widget that the input context is attached to to
+// delete characters around the cursor position by emitting the
+// GtkIMContext::delete_surrounding signal. Note that @offset and @n_chars are
+// in characters not in bytes which differs from the usage other places in
+// IMContext.
+//
+// In order to use this function, you should first call
+// gtk_im_context_get_surrounding() to get the current context, and call this
+// function immediately afterwards to make sure that you know what you are
+// deleting. You should also account for the fact that even if the signal was
+// handled, the input context might not have deleted all the characters that
+// were requested to be deleted.
+//
+// This function is used by an input method that wants to make subsitutions in
+// the existing text in response to new input. It is not useful for
+// applications.
+func (c *IMContextClass) DeleteSurrounding(offset int, nChars int) bool {
 	var _arg0 *C.GtkIMContext // out
 	var _arg1 C.gint          // out
 	var _arg2 C.gint          // out
@@ -261,7 +277,10 @@ func (c imContext) DeleteSurrounding(offset int, nChars int) bool {
 	return _ok
 }
 
-func (c imContext) FilterKeypress(event *gdk.EventKey) bool {
+// FilterKeypress: allow an input method to internally handle key press and
+// release events. If this function returns true, then no further processing
+// should be done for this key event.
+func (c *IMContextClass) FilterKeypress(event *gdk.EventKey) bool {
 	var _arg0 *C.GtkIMContext // out
 	var _arg1 *C.GdkEventKey  // out
 	var _cret C.gboolean      // in
@@ -280,7 +299,10 @@ func (c imContext) FilterKeypress(event *gdk.EventKey) bool {
 	return _ok
 }
 
-func (c imContext) FocusIn() {
+// FocusIn: notify the input method that the widget to which this input context
+// corresponds has gained focus. The input method may, for example, change the
+// displayed feedback to reflect this change.
+func (c *IMContextClass) FocusIn() {
 	var _arg0 *C.GtkIMContext // out
 
 	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(c.Native()))
@@ -288,7 +310,10 @@ func (c imContext) FocusIn() {
 	C.gtk_im_context_focus_in(_arg0)
 }
 
-func (c imContext) FocusOut() {
+// FocusOut: notify the input method that the widget to which this input context
+// corresponds has lost focus. The input method may, for example, change the
+// displayed feedback or reset the contexts state to reflect this change.
+func (c *IMContextClass) FocusOut() {
 	var _arg0 *C.GtkIMContext // out
 
 	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(c.Native()))
@@ -296,7 +321,10 @@ func (c imContext) FocusOut() {
 	C.gtk_im_context_focus_out(_arg0)
 }
 
-func (c imContext) PreeditString() (string, *pango.AttrList, int) {
+// PreeditString: retrieve the current preedit string for the input context, and
+// a list of attributes to apply to the string. This string should be displayed
+// inserted at the insertion point.
+func (c *IMContextClass) PreeditString() (string, *pango.AttrList, int) {
 	var _arg0 *C.GtkIMContext  // out
 	var _arg1 *C.gchar         // in
 	var _arg2 *C.PangoAttrList // in
@@ -322,7 +350,18 @@ func (c imContext) PreeditString() (string, *pango.AttrList, int) {
 	return _str, _attrs, _cursorPos
 }
 
-func (c imContext) Surrounding() (string, int, bool) {
+// Surrounding retrieves context around the insertion point. Input methods
+// typically want context in order to constrain input text based on existing
+// text; this is important for languages such as Thai where only some sequences
+// of characters are allowed.
+//
+// This function is implemented by emitting the
+// GtkIMContext::retrieve_surrounding signal on the input method; in response to
+// this signal, a widget should provide as much context as is available, up to
+// an entire paragraph, by calling gtk_im_context_set_surrounding(). Note that
+// there is no obligation for a widget to respond to the ::retrieve_surrounding
+// signal, so input methods must be prepared to function without context.
+func (c *IMContextClass) Surrounding() (string, int, bool) {
 	var _arg0 *C.GtkIMContext // out
 	var _arg1 *C.gchar        // in
 	var _arg2 C.gint          // in
@@ -346,7 +385,10 @@ func (c imContext) Surrounding() (string, int, bool) {
 	return _text, _cursorIndex, _ok
 }
 
-func (c imContext) Reset() {
+// Reset: notify the input method that a change such as a change in cursor
+// position has been made. This will typically cause the input method to clear
+// the preedit state.
+func (c *IMContextClass) Reset() {
 	var _arg0 *C.GtkIMContext // out
 
 	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(c.Native()))
@@ -354,7 +396,11 @@ func (c imContext) Reset() {
 	C.gtk_im_context_reset(_arg0)
 }
 
-func (c imContext) SetClientWindow(window gdk.Window) {
+// SetClientWindow: set the client window for the input context; this is the
+// Window in which the input appears. This window is used in order to correctly
+// position status windows, and may also be used for purposes internal to the
+// input method.
+func (c *IMContextClass) SetClientWindow(window gdk.Window) {
 	var _arg0 *C.GtkIMContext // out
 	var _arg1 *C.GdkWindow    // out
 
@@ -364,7 +410,9 @@ func (c imContext) SetClientWindow(window gdk.Window) {
 	C.gtk_im_context_set_client_window(_arg0, _arg1)
 }
 
-func (c imContext) SetCursorLocation(area *gdk.Rectangle) {
+// SetCursorLocation: notify the input method that a change in cursor position
+// has been made. The location is relative to the client window.
+func (c *IMContextClass) SetCursorLocation(area *gdk.Rectangle) {
 	var _arg0 *C.GtkIMContext // out
 	var _arg1 *C.GdkRectangle // out
 
@@ -374,7 +422,11 @@ func (c imContext) SetCursorLocation(area *gdk.Rectangle) {
 	C.gtk_im_context_set_cursor_location(_arg0, _arg1)
 }
 
-func (c imContext) SetSurrounding(text string, len int, cursorIndex int) {
+// SetSurrounding sets surrounding context around the insertion point and
+// preedit string. This function is expected to be called in response to the
+// GtkIMContext::retrieve_surrounding signal, and will likely have no effect if
+// called at other times.
+func (c *IMContextClass) SetSurrounding(text string, len int, cursorIndex int) {
 	var _arg0 *C.GtkIMContext // out
 	var _arg1 *C.gchar        // out
 	var _arg2 C.gint          // out
@@ -389,7 +441,11 @@ func (c imContext) SetSurrounding(text string, len int, cursorIndex int) {
 	C.gtk_im_context_set_surrounding(_arg0, _arg1, _arg2, _arg3)
 }
 
-func (c imContext) SetUsePreedit(usePreedit bool) {
+// SetUsePreedit sets whether the IM context should use the preedit string to
+// display feedback. If @use_preedit is FALSE (default is TRUE), then the IM
+// context may use some other method to display feedback, such as displaying it
+// in a child of the root window.
+func (c *IMContextClass) SetUsePreedit(usePreedit bool) {
 	var _arg0 *C.GtkIMContext // out
 	var _arg1 C.gboolean      // out
 

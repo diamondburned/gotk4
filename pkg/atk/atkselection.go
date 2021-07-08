@@ -22,7 +22,7 @@ func init() {
 	})
 }
 
-// SelectionOverrider contains methods that are overridable .
+// SelectionOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
@@ -104,26 +104,28 @@ type Selection interface {
 	SelectAllSelection() bool
 }
 
-// selection implements the Selection interface.
-type selection struct {
+// SelectionInterface implements the Selection interface.
+type SelectionInterface struct {
 	*externglib.Object
 }
 
-var _ Selection = (*selection)(nil)
+var _ Selection = (*SelectionInterface)(nil)
 
-// WrapSelection wraps a GObject to a type that implements
-// interface Selection. It is primarily used internally.
-func WrapSelection(obj *externglib.Object) Selection {
-	return selection{obj}
+func wrapSelection(obj *externglib.Object) Selection {
+	return &SelectionInterface{
+		Object: obj,
+	}
 }
 
 func marshalSelection(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapSelection(obj), nil
+	return wrapSelection(obj), nil
 }
 
-func (s selection) AddSelection(i int) bool {
+// AddSelection adds the specified accessible child of the object to the
+// object's selection.
+func (s *SelectionInterface) AddSelection(i int) bool {
 	var _arg0 *C.AtkSelection // out
 	var _arg1 C.gint          // out
 	var _cret C.gboolean      // in
@@ -142,7 +144,9 @@ func (s selection) AddSelection(i int) bool {
 	return _ok
 }
 
-func (s selection) ClearSelection() bool {
+// ClearSelection clears the selection in the object so that no children in the
+// object are selected.
+func (s *SelectionInterface) ClearSelection() bool {
 	var _arg0 *C.AtkSelection // out
 	var _cret C.gboolean      // in
 
@@ -159,7 +163,12 @@ func (s selection) ClearSelection() bool {
 	return _ok
 }
 
-func (s selection) SelectionCount() int {
+// SelectionCount gets the number of accessible children currently selected.
+// Note: callers should not rely on nil or on a zero value for indication of
+// whether AtkSelectionIface is implemented, they should use type
+// checking/interface checking macros or the atk_get_accessible_value()
+// convenience method.
+func (s *SelectionInterface) SelectionCount() int {
 	var _arg0 *C.AtkSelection // out
 	var _cret C.gint          // in
 
@@ -174,7 +183,12 @@ func (s selection) SelectionCount() int {
 	return _gint
 }
 
-func (s selection) IsChildSelected(i int) bool {
+// IsChildSelected determines if the current child of this object is selected
+// Note: callers should not rely on nil or on a zero value for indication of
+// whether AtkSelectionIface is implemented, they should use type
+// checking/interface checking macros or the atk_get_accessible_value()
+// convenience method.
+func (s *SelectionInterface) IsChildSelected(i int) bool {
 	var _arg0 *C.AtkSelection // out
 	var _arg1 C.gint          // out
 	var _cret C.gboolean      // in
@@ -193,7 +207,12 @@ func (s selection) IsChildSelected(i int) bool {
 	return _ok
 }
 
-func (s selection) RefSelection(i int) Object {
+// RefSelection gets a reference to the accessible object representing the
+// specified selected child of the object. Note: callers should not rely on nil
+// or on a zero value for indication of whether AtkSelectionIface is
+// implemented, they should use type checking/interface checking macros or the
+// atk_get_accessible_value() convenience method.
+func (s *SelectionInterface) RefSelection(i int) Object {
 	var _arg0 *C.AtkSelection // out
 	var _arg1 C.gint          // out
 	var _cret *C.AtkObject    // in
@@ -210,7 +229,9 @@ func (s selection) RefSelection(i int) Object {
 	return _object
 }
 
-func (s selection) RemoveSelection(i int) bool {
+// RemoveSelection removes the specified child of the object from the object's
+// selection.
+func (s *SelectionInterface) RemoveSelection(i int) bool {
 	var _arg0 *C.AtkSelection // out
 	var _arg1 C.gint          // out
 	var _cret C.gboolean      // in
@@ -229,7 +250,9 @@ func (s selection) RemoveSelection(i int) bool {
 	return _ok
 }
 
-func (s selection) SelectAllSelection() bool {
+// SelectAllSelection causes every child of the object to be selected if the
+// object supports multiple selections.
+func (s *SelectionInterface) SelectAllSelection() bool {
 	var _arg0 *C.AtkSelection // out
 	var _cret C.gboolean      // in
 

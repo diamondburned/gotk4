@@ -5,7 +5,6 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -47,34 +46,7 @@ func init() {
 // interfaces, thus you have to use the `gio-unix-2.0.pc` pkg-config file when
 // using it.
 type UnixFDMessage interface {
-	SocketControlMessage
-
-	// AsSocketControlMessage casts the class to the SocketControlMessage interface.
-	AsSocketControlMessage() SocketControlMessage
-
-	// GetLevel returns the "level" (i.e. the originating protocol) of the
-	// control message. This is often SOL_SOCKET.
-	//
-	// This method is inherited from SocketControlMessage
-	GetLevel() int
-	// GetMsgType returns the protocol specific type of the control message. For
-	// instance, for UNIX fd passing this would be SCM_RIGHTS.
-	//
-	// This method is inherited from SocketControlMessage
-	GetMsgType() int
-	// GetSize returns the space required for the control message, not including
-	// headers or alignment.
-	//
-	// This method is inherited from SocketControlMessage
-	GetSize() uint
-	// Serialize converts the data in the message to bytes placed in the
-	// message.
-	//
-	// @data is guaranteed to have enough space to fit the size returned by
-	// g_socket_control_message_get_size() on this object.
-	//
-	// This method is inherited from SocketControlMessage
-	Serialize(data interface{})
+	gextras.Objector
 
 	// AppendFd adds a file descriptor to @message.
 	//
@@ -91,23 +63,25 @@ type UnixFDMessage interface {
 	FdList() UnixFDList
 }
 
-// unixFDMessage implements the UnixFDMessage interface.
-type unixFDMessage struct {
-	*externglib.Object
+// UnixFDMessageClass implements the UnixFDMessage interface.
+type UnixFDMessageClass struct {
+	SocketControlMessageClass
 }
 
-var _ UnixFDMessage = (*unixFDMessage)(nil)
+var _ UnixFDMessage = (*UnixFDMessageClass)(nil)
 
-// WrapUnixFDMessage wraps a GObject to a type that implements
-// interface UnixFDMessage. It is primarily used internally.
-func WrapUnixFDMessage(obj *externglib.Object) UnixFDMessage {
-	return unixFDMessage{obj}
+func wrapUnixFDMessage(obj *externglib.Object) UnixFDMessage {
+	return &UnixFDMessageClass{
+		SocketControlMessageClass: SocketControlMessageClass{
+			Object: obj,
+		},
+	}
 }
 
 func marshalUnixFDMessage(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapUnixFDMessage(obj), nil
+	return wrapUnixFDMessage(obj), nil
 }
 
 // NewUnixFDMessage creates a new FDMessage containing an empty file descriptor
@@ -140,27 +114,15 @@ func NewUnixFDMessageWithFdList(fdList UnixFDList) UnixFDMessage {
 	return _unixFDMessage
 }
 
-func (u unixFDMessage) AsSocketControlMessage() SocketControlMessage {
-	return WrapSocketControlMessage(gextras.InternObject(u))
-}
-
-func (m unixFDMessage) GetLevel() int {
-	return WrapSocketControlMessage(gextras.InternObject(m)).GetLevel()
-}
-
-func (m unixFDMessage) GetMsgType() int {
-	return WrapSocketControlMessage(gextras.InternObject(m)).GetMsgType()
-}
-
-func (m unixFDMessage) GetSize() uint {
-	return WrapSocketControlMessage(gextras.InternObject(m)).GetSize()
-}
-
-func (m unixFDMessage) Serialize(data interface{}) {
-	WrapSocketControlMessage(gextras.InternObject(m)).Serialize(data)
-}
-
-func (m unixFDMessage) AppendFd(fd int) error {
+// AppendFd adds a file descriptor to @message.
+//
+// The file descriptor is duplicated using dup(). You keep your copy of the
+// descriptor and the copy contained in @message will be closed when @message is
+// finalized.
+//
+// A possible cause of failure is exceeding the per-process or system-wide file
+// descriptor limit.
+func (m *UnixFDMessageClass) AppendFd(fd int) error {
 	var _arg0 *C.GUnixFDMessage // out
 	var _arg1 C.gint            // out
 	var _cerr *C.GError         // in
@@ -177,7 +139,10 @@ func (m unixFDMessage) AppendFd(fd int) error {
 	return _goerr
 }
 
-func (m unixFDMessage) FdList() UnixFDList {
+// FdList gets the FDList contained in @message. This function does not return a
+// reference to the caller, but the returned list is valid for the lifetime of
+// @message.
+func (m *UnixFDMessageClass) FdList() UnixFDList {
 	var _arg0 *C.GUnixFDMessage // out
 	var _cret *C.GUnixFDList    // in
 

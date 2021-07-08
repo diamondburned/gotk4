@@ -5,8 +5,6 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
-	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -26,8 +24,6 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 // #include <glib-object.h>
-//
-// void gotk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 func init() {
@@ -46,42 +42,6 @@ func init() {
 type SimpleProxyResolver interface {
 	gextras.Objector
 
-	// AsProxyResolver casts the class to the ProxyResolver interface.
-	AsProxyResolver() ProxyResolver
-
-	// IsSupported checks if @resolver can be used on this system. (This is used
-	// internally; g_proxy_resolver_get_default() will only return a proxy
-	// resolver that returns true for this method.)
-	//
-	// This method is inherited from ProxyResolver
-	IsSupported() bool
-	// Lookup looks into the system proxy configuration to determine what proxy,
-	// if any, to use to connect to @uri. The returned proxy URIs are of the
-	// form `<protocol>://[user[:password]@]host:port` or `direct://`, where
-	// <protocol> could be http, rtsp, socks or other proxying protocol.
-	//
-	// If you don't know what network protocol is being used on the socket, you
-	// should use `none` as the URI protocol. In this case, the resolver might
-	// still return a generic proxy type (such as SOCKS), but would not return
-	// protocol-specific proxy types (such as http).
-	//
-	// `direct://` is used when no proxy is needed. Direct connection should not
-	// be attempted unless it is part of the returned array of proxies.
-	//
-	// This method is inherited from ProxyResolver
-	Lookup(uri string, cancellable Cancellable) ([]string, error)
-	// LookupAsync asynchronous lookup of proxy. See g_proxy_resolver_lookup()
-	// for more details.
-	//
-	// This method is inherited from ProxyResolver
-	LookupAsync(uri string, cancellable Cancellable, callback AsyncReadyCallback)
-	// LookupFinish: call this function to obtain the array of proxy URIs when
-	// g_proxy_resolver_lookup_async() is complete. See
-	// g_proxy_resolver_lookup() for more details.
-	//
-	// This method is inherited from ProxyResolver
-	LookupFinish(result AsyncResult) ([]string, error)
-
 	// SetDefaultProxy sets the default proxy on @resolver, to be used for any
 	// URIs that don't match ProxyResolver:ignore-hosts or a proxy set via
 	// g_simple_proxy_resolver_set_uri_proxy().
@@ -89,11 +49,6 @@ type SimpleProxyResolver interface {
 	// If @default_proxy starts with "socks://", ProxyResolver will treat it as
 	// referring to all three of the socks5, socks4a, and socks4 proxy types.
 	SetDefaultProxy(defaultProxy string)
-	// SetIgnoreHosts sets the list of ignored hosts.
-	//
-	// See ProxyResolver:ignore-hosts for more details on how the @ignore_hosts
-	// argument is interpreted.
-	SetIgnoreHosts(ignoreHosts *string)
 	// SetURIProxy adds a URI-scheme-specific proxy to @resolver; URIs whose
 	// scheme matches @uri_scheme (and which don't match
 	// ProxyResolver:ignore-hosts) will be proxied via @proxy.
@@ -104,46 +59,36 @@ type SimpleProxyResolver interface {
 	SetURIProxy(uriScheme string, proxy string)
 }
 
-// simpleProxyResolver implements the SimpleProxyResolver interface.
-type simpleProxyResolver struct {
+// SimpleProxyResolverClass implements the SimpleProxyResolver interface.
+type SimpleProxyResolverClass struct {
 	*externglib.Object
+	ProxyResolverInterface
 }
 
-var _ SimpleProxyResolver = (*simpleProxyResolver)(nil)
+var _ SimpleProxyResolver = (*SimpleProxyResolverClass)(nil)
 
-// WrapSimpleProxyResolver wraps a GObject to a type that implements
-// interface SimpleProxyResolver. It is primarily used internally.
-func WrapSimpleProxyResolver(obj *externglib.Object) SimpleProxyResolver {
-	return simpleProxyResolver{obj}
+func wrapSimpleProxyResolver(obj *externglib.Object) SimpleProxyResolver {
+	return &SimpleProxyResolverClass{
+		Object: obj,
+		ProxyResolverInterface: ProxyResolverInterface{
+			Object: obj,
+		},
+	}
 }
 
 func marshalSimpleProxyResolver(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapSimpleProxyResolver(obj), nil
+	return wrapSimpleProxyResolver(obj), nil
 }
 
-func (s simpleProxyResolver) AsProxyResolver() ProxyResolver {
-	return WrapProxyResolver(gextras.InternObject(s))
-}
-
-func (r simpleProxyResolver) IsSupported() bool {
-	return WrapProxyResolver(gextras.InternObject(r)).IsSupported()
-}
-
-func (r simpleProxyResolver) Lookup(uri string, cancellable Cancellable) ([]string, error) {
-	return WrapProxyResolver(gextras.InternObject(r)).Lookup(uri, cancellable)
-}
-
-func (r simpleProxyResolver) LookupAsync(uri string, cancellable Cancellable, callback AsyncReadyCallback) {
-	WrapProxyResolver(gextras.InternObject(r)).LookupAsync(uri, cancellable, callback)
-}
-
-func (r simpleProxyResolver) LookupFinish(result AsyncResult) ([]string, error) {
-	return WrapProxyResolver(gextras.InternObject(r)).LookupFinish(result)
-}
-
-func (r simpleProxyResolver) SetDefaultProxy(defaultProxy string) {
+// SetDefaultProxy sets the default proxy on @resolver, to be used for any URIs
+// that don't match ProxyResolver:ignore-hosts or a proxy set via
+// g_simple_proxy_resolver_set_uri_proxy().
+//
+// If @default_proxy starts with "socks://", ProxyResolver will treat it as
+// referring to all three of the socks5, socks4a, and socks4 proxy types.
+func (r *SimpleProxyResolverClass) SetDefaultProxy(defaultProxy string) {
 	var _arg0 *C.GSimpleProxyResolver // out
 	var _arg1 *C.gchar                // out
 
@@ -154,30 +99,14 @@ func (r simpleProxyResolver) SetDefaultProxy(defaultProxy string) {
 	C.g_simple_proxy_resolver_set_default_proxy(_arg0, _arg1)
 }
 
-func (r simpleProxyResolver) SetIgnoreHosts(ignoreHosts *string) {
-	var _arg0 *C.GSimpleProxyResolver // out
-	var _arg1 **C.gchar               // out
-
-	_arg0 = (*C.GSimpleProxyResolver)(unsafe.Pointer(r.Native()))
-	{
-		var refTmpIn string
-		var refTmpOut *C.gchar
-
-		refTmpIn = *ignoreHosts
-
-		refTmpOut = (*C.gchar)(C.CString(refTmpIn))
-		defer C.free(unsafe.Pointer(refTmpOut))
-
-		if refTmpOut != nil {
-			out0 := &refTmpOut
-			_arg1 = out0
-		}
-	}
-
-	C.g_simple_proxy_resolver_set_ignore_hosts(_arg0, _arg1)
-}
-
-func (r simpleProxyResolver) SetURIProxy(uriScheme string, proxy string) {
+// SetURIProxy adds a URI-scheme-specific proxy to @resolver; URIs whose scheme
+// matches @uri_scheme (and which don't match ProxyResolver:ignore-hosts) will
+// be proxied via @proxy.
+//
+// As with ProxyResolver:default-proxy, if @proxy starts with "socks://",
+// ProxyResolver will treat it as referring to all three of the socks5, socks4a,
+// and socks4 proxy types.
+func (r *SimpleProxyResolverClass) SetURIProxy(uriScheme string, proxy string) {
 	var _arg0 *C.GSimpleProxyResolver // out
 	var _arg1 *C.gchar                // out
 	var _arg2 *C.gchar                // out

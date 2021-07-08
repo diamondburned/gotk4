@@ -36,7 +36,7 @@ func init() {
 	})
 }
 
-// SocketAddressEnumeratorOverrider contains methods that are overridable .
+// SocketAddressEnumeratorOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
@@ -108,26 +108,37 @@ type SocketAddressEnumerator interface {
 	NextFinish(result AsyncResult) (SocketAddress, error)
 }
 
-// socketAddressEnumerator implements the SocketAddressEnumerator interface.
-type socketAddressEnumerator struct {
+// SocketAddressEnumeratorClass implements the SocketAddressEnumerator interface.
+type SocketAddressEnumeratorClass struct {
 	*externglib.Object
 }
 
-var _ SocketAddressEnumerator = (*socketAddressEnumerator)(nil)
+var _ SocketAddressEnumerator = (*SocketAddressEnumeratorClass)(nil)
 
-// WrapSocketAddressEnumerator wraps a GObject to a type that implements
-// interface SocketAddressEnumerator. It is primarily used internally.
-func WrapSocketAddressEnumerator(obj *externglib.Object) SocketAddressEnumerator {
-	return socketAddressEnumerator{obj}
+func wrapSocketAddressEnumerator(obj *externglib.Object) SocketAddressEnumerator {
+	return &SocketAddressEnumeratorClass{
+		Object: obj,
+	}
 }
 
 func marshalSocketAddressEnumerator(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapSocketAddressEnumerator(obj), nil
+	return wrapSocketAddressEnumerator(obj), nil
 }
 
-func (e socketAddressEnumerator) Next(cancellable Cancellable) (SocketAddress, error) {
+// Next retrieves the next Address from @enumerator. Note that this may block
+// for some amount of time. (Eg, a Address may need to do a DNS lookup before it
+// can return an address.) Use g_socket_address_enumerator_next_async() if you
+// need to avoid blocking.
+//
+// If @enumerator is expected to yield addresses, but for some reason is unable
+// to (eg, because of a DNS error), then the first call to
+// g_socket_address_enumerator_next() will return an appropriate error in
+// *@error. However, if the first call to g_socket_address_enumerator_next()
+// succeeds, then any further internal errors (other than @cancellable being
+// triggered) will be ignored.
+func (e *SocketAddressEnumeratorClass) Next(cancellable Cancellable) (SocketAddress, error) {
 	var _arg0 *C.GSocketAddressEnumerator // out
 	var _arg1 *C.GCancellable             // out
 	var _cret *C.GSocketAddress           // in
@@ -147,7 +158,13 @@ func (e socketAddressEnumerator) Next(cancellable Cancellable) (SocketAddress, e
 	return _socketAddress, _goerr
 }
 
-func (e socketAddressEnumerator) NextAsync(cancellable Cancellable, callback AsyncReadyCallback) {
+// NextAsync: asynchronously retrieves the next Address from @enumerator and
+// then calls @callback, which must call
+// g_socket_address_enumerator_next_finish() to get the result.
+//
+// It is an error to call this multiple times before the previous callback has
+// finished.
+func (e *SocketAddressEnumeratorClass) NextAsync(cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GSocketAddressEnumerator // out
 	var _arg1 *C.GCancellable             // out
 	var _arg2 C.GAsyncReadyCallback       // out
@@ -161,7 +178,10 @@ func (e socketAddressEnumerator) NextAsync(cancellable Cancellable, callback Asy
 	C.g_socket_address_enumerator_next_async(_arg0, _arg1, _arg2, _arg3)
 }
 
-func (e socketAddressEnumerator) NextFinish(result AsyncResult) (SocketAddress, error) {
+// NextFinish retrieves the result of a completed call to
+// g_socket_address_enumerator_next_async(). See
+// g_socket_address_enumerator_next() for more information about error handling.
+func (e *SocketAddressEnumeratorClass) NextFinish(result AsyncResult) (SocketAddress, error) {
 	var _arg0 *C.GSocketAddressEnumerator // out
 	var _arg1 *C.GAsyncResult             // out
 	var _cret *C.GSocketAddress           // in

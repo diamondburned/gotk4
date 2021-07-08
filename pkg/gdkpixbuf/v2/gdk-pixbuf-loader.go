@@ -23,7 +23,7 @@ func init() {
 	})
 }
 
-// PixbufLoaderOverrider contains methods that are overridable .
+// PixbufLoaderOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
@@ -138,23 +138,23 @@ type PixbufLoader interface {
 	Write(buf []byte) error
 }
 
-// pixbufLoader implements the PixbufLoader interface.
-type pixbufLoader struct {
+// PixbufLoaderClass implements the PixbufLoader interface.
+type PixbufLoaderClass struct {
 	*externglib.Object
 }
 
-var _ PixbufLoader = (*pixbufLoader)(nil)
+var _ PixbufLoader = (*PixbufLoaderClass)(nil)
 
-// WrapPixbufLoader wraps a GObject to a type that implements
-// interface PixbufLoader. It is primarily used internally.
-func WrapPixbufLoader(obj *externglib.Object) PixbufLoader {
-	return pixbufLoader{obj}
+func wrapPixbufLoader(obj *externglib.Object) PixbufLoader {
+	return &PixbufLoaderClass{
+		Object: obj,
+	}
 }
 
 func marshalPixbufLoader(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapPixbufLoader(obj), nil
+	return wrapPixbufLoader(obj), nil
 }
 
 // NewPixbufLoader creates a new pixbuf loader object.
@@ -234,7 +234,22 @@ func NewPixbufLoaderWithType(imageType string) (PixbufLoader, error) {
 	return _pixbufLoader, _goerr
 }
 
-func (l pixbufLoader) Close() error {
+// Close informs a pixbuf loader that no further writes with
+// gdk_pixbuf_loader_write() will occur, so that it can free its internal
+// loading structures.
+//
+// This function also tries to parse any data that hasn't yet been parsed; if
+// the remaining data is partial or corrupt, an error will be returned.
+//
+// If `FALSE` is returned, `error` will be set to an error from the
+// `GDK_PIXBUF_ERROR` or `G_FILE_ERROR` domains.
+//
+// If you're just cancelling a load rather than expecting it to be finished,
+// passing `NULL` for `error` to ignore it is reasonable.
+//
+// Remember that this function does not release a reference on the loader, so
+// you will need to explicitly release any reference you hold.
+func (l *PixbufLoaderClass) Close() error {
 	var _arg0 *C.GdkPixbufLoader // out
 	var _cerr *C.GError          // in
 
@@ -249,7 +264,16 @@ func (l pixbufLoader) Close() error {
 	return _goerr
 }
 
-func (l pixbufLoader) Animation() PixbufAnimation {
+// Animation queries the PixbufAnimation that a pixbuf loader is currently
+// creating.
+//
+// In general it only makes sense to call this function after the
+// [signal@GdkPixbuf.PixbufLoader::area-prepared] signal has been emitted by the
+// loader.
+//
+// If the loader doesn't have enough bytes yet, and hasn't emitted the
+// `area-prepared` signal, this function will return `NULL`.
+func (l *PixbufLoaderClass) Animation() PixbufAnimation {
 	var _arg0 *C.GdkPixbufLoader    // out
 	var _cret *C.GdkPixbufAnimation // in
 
@@ -264,7 +288,22 @@ func (l pixbufLoader) Animation() PixbufAnimation {
 	return _pixbufAnimation
 }
 
-func (l pixbufLoader) Pixbuf() Pixbuf {
+// Pixbuf queries the Pixbuf that a pixbuf loader is currently creating.
+//
+// In general it only makes sense to call this function after the
+// [signal@GdkPixbuf.PixbufLoader::area-prepared] signal has been emitted by the
+// loader; this means that enough data has been read to know the size of the
+// image that will be allocated.
+//
+// If the loader has not received enough data via gdk_pixbuf_loader_write(),
+// then this function returns `NULL`.
+//
+// The returned pixbuf will be the same in all future calls to the loader, so if
+// you want to keep using it, you should acquire a reference to it.
+//
+// Additionally, if the loader is an animation, it will return the "static
+// image" of the animation (see gdk_pixbuf_animation_get_static_image()).
+func (l *PixbufLoaderClass) Pixbuf() Pixbuf {
 	var _arg0 *C.GdkPixbufLoader // out
 	var _cret *C.GdkPixbuf       // in
 
@@ -279,7 +318,15 @@ func (l pixbufLoader) Pixbuf() Pixbuf {
 	return _pixbuf
 }
 
-func (l pixbufLoader) SetSize(width int, height int) {
+// SetSize causes the image to be scaled while it is loaded.
+//
+// The desired image size can be determined relative to the original size of the
+// image by calling gdk_pixbuf_loader_set_size() from a signal handler for the
+// ::size-prepared signal.
+//
+// Attempts to set the desired image size are ignored after the emission of the
+// ::size-prepared signal.
+func (l *PixbufLoaderClass) SetSize(width int, height int) {
 	var _arg0 *C.GdkPixbufLoader // out
 	var _arg1 C.int              // out
 	var _arg2 C.int              // out
@@ -291,7 +338,8 @@ func (l pixbufLoader) SetSize(width int, height int) {
 	C.gdk_pixbuf_loader_set_size(_arg0, _arg1, _arg2)
 }
 
-func (l pixbufLoader) Write(buf []byte) error {
+// Write parses the next `count` bytes in the given image buffer.
+func (l *PixbufLoaderClass) Write(buf []byte) error {
 	var _arg0 *C.GdkPixbufLoader // out
 	var _arg1 *C.guchar
 	var _arg2 C.gsize

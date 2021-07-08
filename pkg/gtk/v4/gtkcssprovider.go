@@ -53,9 +53,6 @@ func init() {
 type CSSProvider interface {
 	gextras.Objector
 
-	// AsStyleProvider casts the class to the StyleProvider interface.
-	AsStyleProvider() StyleProvider
-
 	// LoadFromData loads @data into @css_provider.
 	//
 	// This clears any previously loaded information.
@@ -83,23 +80,27 @@ type CSSProvider interface {
 	String() string
 }
 
-// cssProvider implements the CSSProvider interface.
-type cssProvider struct {
+// CSSProviderClass implements the CSSProvider interface.
+type CSSProviderClass struct {
 	*externglib.Object
+	StyleProviderInterface
 }
 
-var _ CSSProvider = (*cssProvider)(nil)
+var _ CSSProvider = (*CSSProviderClass)(nil)
 
-// WrapCSSProvider wraps a GObject to a type that implements
-// interface CSSProvider. It is primarily used internally.
-func WrapCSSProvider(obj *externglib.Object) CSSProvider {
-	return cssProvider{obj}
+func wrapCSSProvider(obj *externglib.Object) CSSProvider {
+	return &CSSProviderClass{
+		Object: obj,
+		StyleProviderInterface: StyleProviderInterface{
+			Object: obj,
+		},
+	}
 }
 
 func marshalCSSProvider(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapCSSProvider(obj), nil
+	return wrapCSSProvider(obj), nil
 }
 
 // NewCSSProvider returns a newly created `GtkCssProvider`.
@@ -115,11 +116,10 @@ func NewCSSProvider() CSSProvider {
 	return _cssProvider
 }
 
-func (c cssProvider) AsStyleProvider() StyleProvider {
-	return WrapStyleProvider(gextras.InternObject(c))
-}
-
-func (c cssProvider) LoadFromData(data []byte) {
+// LoadFromData loads @data into @css_provider.
+//
+// This clears any previously loaded information.
+func (c *CSSProviderClass) LoadFromData(data []byte) {
 	var _arg0 *C.GtkCssProvider // out
 	var _arg1 *C.char
 	var _arg2 C.gssize
@@ -131,7 +131,10 @@ func (c cssProvider) LoadFromData(data []byte) {
 	C.gtk_css_provider_load_from_data(_arg0, _arg1, _arg2)
 }
 
-func (c cssProvider) LoadFromPath(path string) {
+// LoadFromPath loads the data contained in @path into @css_provider.
+//
+// This clears any previously loaded information.
+func (c *CSSProviderClass) LoadFromPath(path string) {
 	var _arg0 *C.GtkCssProvider // out
 	var _arg1 *C.char           // out
 
@@ -142,7 +145,11 @@ func (c cssProvider) LoadFromPath(path string) {
 	C.gtk_css_provider_load_from_path(_arg0, _arg1)
 }
 
-func (c cssProvider) LoadFromResource(resourcePath string) {
+// LoadFromResource loads the data contained in the resource at @resource_path
+// into the @css_provider.
+//
+// This clears any previously loaded information.
+func (c *CSSProviderClass) LoadFromResource(resourcePath string) {
 	var _arg0 *C.GtkCssProvider // out
 	var _arg1 *C.char           // out
 
@@ -153,7 +160,12 @@ func (c cssProvider) LoadFromResource(resourcePath string) {
 	C.gtk_css_provider_load_from_resource(_arg0, _arg1)
 }
 
-func (p cssProvider) LoadNamed(name string, variant string) {
+// LoadNamed loads a theme from the usual theme paths.
+//
+// The actual process of finding the theme might change between releases, but it
+// is guaranteed that this function uses the same mechanism to load the theme
+// that GTK uses for loading its own theme.
+func (p *CSSProviderClass) LoadNamed(name string, variant string) {
 	var _arg0 *C.GtkCssProvider // out
 	var _arg1 *C.char           // out
 	var _arg2 *C.char           // out
@@ -167,7 +179,12 @@ func (p cssProvider) LoadNamed(name string, variant string) {
 	C.gtk_css_provider_load_named(_arg0, _arg1, _arg2)
 }
 
-func (p cssProvider) String() string {
+// String converts the @provider into a string representation in CSS format.
+//
+// Using [method@Gtk.CssProvider.load_from_data] with the return value from this
+// function on a new provider created with [ctor@Gtk.CssProvider.new] will
+// basically create a duplicate of this @provider.
+func (p *CSSProviderClass) String() string {
 	var _arg0 *C.GtkCssProvider // out
 	var _cret *C.char           // in
 

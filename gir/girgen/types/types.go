@@ -122,19 +122,7 @@ func EnsureNamespace(nsp *gir.NamespaceFindResult, girType string) string {
 }
 
 func countPtrs(typ gir.Type, result *gir.TypeFindResult) uint8 {
-	ptr := uint8(strings.Count(typ.CType, "*"))
-
-	if ptr > 0 && result != nil {
-		// Edge case: interfaces must not be pointers. We should still
-		// sometimes allow for pointers to interfaces, if needed, but this
-		// likely won't work.
-		switch result.Type.(type) {
-		case *gir.Interface, *gir.Class:
-			ptr--
-		}
-	}
-
-	return ptr
+	return uint8(strings.Count(typ.CType, "*"))
 }
 
 var objectorMethods = map[string]struct{}{

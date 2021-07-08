@@ -24,7 +24,7 @@ func init() {
 	})
 }
 
-// StyleProviderOverrider contains methods that are overridable .
+// StyleProviderOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
@@ -59,26 +59,30 @@ type StyleProvider interface {
 	Style(path *WidgetPath) StyleProperties
 }
 
-// styleProvider implements the StyleProvider interface.
-type styleProvider struct {
+// StyleProviderInterface implements the StyleProvider interface.
+type StyleProviderInterface struct {
 	*externglib.Object
 }
 
-var _ StyleProvider = (*styleProvider)(nil)
+var _ StyleProvider = (*StyleProviderInterface)(nil)
 
-// WrapStyleProvider wraps a GObject to a type that implements
-// interface StyleProvider. It is primarily used internally.
-func WrapStyleProvider(obj *externglib.Object) StyleProvider {
-	return styleProvider{obj}
+func wrapStyleProvider(obj *externglib.Object) StyleProvider {
+	return &StyleProviderInterface{
+		Object: obj,
+	}
 }
 
 func marshalStyleProvider(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapStyleProvider(obj), nil
+	return wrapStyleProvider(obj), nil
 }
 
-func (p styleProvider) IconFactory(path *WidgetPath) IconFactory {
+// IconFactory returns the IconFactory defined to be in use for @path, or nil if
+// none is defined.
+//
+// Deprecated: since version 3.8.
+func (p *StyleProviderInterface) IconFactory(path *WidgetPath) IconFactory {
 	var _arg0 *C.GtkStyleProvider // out
 	var _arg1 *C.GtkWidgetPath    // out
 	var _cret *C.GtkIconFactory   // in
@@ -95,7 +99,11 @@ func (p styleProvider) IconFactory(path *WidgetPath) IconFactory {
 	return _iconFactory
 }
 
-func (p styleProvider) Style(path *WidgetPath) StyleProperties {
+// Style returns the style settings affecting a widget defined by @path, or nil
+// if @provider doesn’t contemplate styling @path.
+//
+// Deprecated: since version 3.8.
+func (p *StyleProviderInterface) Style(path *WidgetPath) StyleProperties {
 	var _arg0 *C.GtkStyleProvider   // out
 	var _arg1 *C.GtkWidgetPath      // out
 	var _cret *C.GtkStyleProperties // in

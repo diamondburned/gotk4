@@ -36,7 +36,7 @@ func init() {
 	})
 }
 
-// ProxyOverrider contains methods that are overridable .
+// ProxyOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
@@ -87,26 +87,30 @@ type Proxy interface {
 	SupportsHostname() bool
 }
 
-// proxy implements the Proxy interface.
-type proxy struct {
+// ProxyInterface implements the Proxy interface.
+type ProxyInterface struct {
 	*externglib.Object
 }
 
-var _ Proxy = (*proxy)(nil)
+var _ Proxy = (*ProxyInterface)(nil)
 
-// WrapProxy wraps a GObject to a type that implements
-// interface Proxy. It is primarily used internally.
-func WrapProxy(obj *externglib.Object) Proxy {
-	return proxy{obj}
+func wrapProxy(obj *externglib.Object) Proxy {
+	return &ProxyInterface{
+		Object: obj,
+	}
 }
 
 func marshalProxy(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapProxy(obj), nil
+	return wrapProxy(obj), nil
 }
 
-func (p proxy) ConnectProxy(connection IOStream, proxyAddress ProxyAddress, cancellable Cancellable) (IOStream, error) {
+// ConnectProxy: given @connection to communicate with a proxy (eg, a Connection
+// that is connected to the proxy server), this does the necessary handshake to
+// connect to @proxy_address, and if required, wraps the OStream to handle proxy
+// payload.
+func (p *ProxyInterface) ConnectProxy(connection IOStream, proxyAddress ProxyAddress, cancellable Cancellable) (IOStream, error) {
 	var _arg0 *C.GProxy        // out
 	var _arg1 *C.GIOStream     // out
 	var _arg2 *C.GProxyAddress // out
@@ -130,7 +134,8 @@ func (p proxy) ConnectProxy(connection IOStream, proxyAddress ProxyAddress, canc
 	return _ioStream, _goerr
 }
 
-func (p proxy) ConnectAsync(connection IOStream, proxyAddress ProxyAddress, cancellable Cancellable, callback AsyncReadyCallback) {
+// ConnectAsync asynchronous version of g_proxy_connect().
+func (p *ProxyInterface) ConnectAsync(connection IOStream, proxyAddress ProxyAddress, cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GProxy             // out
 	var _arg1 *C.GIOStream          // out
 	var _arg2 *C.GProxyAddress      // out
@@ -148,7 +153,8 @@ func (p proxy) ConnectAsync(connection IOStream, proxyAddress ProxyAddress, canc
 	C.g_proxy_connect_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
 
-func (p proxy) ConnectFinish(result AsyncResult) (IOStream, error) {
+// ConnectFinish: see g_proxy_connect().
+func (p *ProxyInterface) ConnectFinish(result AsyncResult) (IOStream, error) {
 	var _arg0 *C.GProxy       // out
 	var _arg1 *C.GAsyncResult // out
 	var _cret *C.GIOStream    // in
@@ -168,7 +174,13 @@ func (p proxy) ConnectFinish(result AsyncResult) (IOStream, error) {
 	return _ioStream, _goerr
 }
 
-func (p proxy) SupportsHostname() bool {
+// SupportsHostname: some proxy protocols expect to be passed a hostname, which
+// they will resolve to an IP address themselves. Others, like SOCKS4, do not
+// allow this. This function will return false if @proxy is implementing such a
+// protocol. When false is returned, the caller should resolve the destination
+// hostname first, and then pass a Address containing the stringified IP address
+// to g_proxy_connect() or g_proxy_connect_async().
+func (p *ProxyInterface) SupportsHostname() bool {
 	var _arg0 *C.GProxy  // out
 	var _cret C.gboolean // in
 

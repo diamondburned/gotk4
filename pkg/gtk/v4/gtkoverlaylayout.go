@@ -31,70 +31,30 @@ func init() {
 // `GtkOverlay`. It only listed here so that its layout properties get
 // documented.
 type OverlayLayout interface {
-	LayoutManager
+	gextras.Objector
 
-	// AsLayoutManager casts the class to the LayoutManager interface.
-	AsLayoutManager() LayoutManager
-
-	// Allocate assigns the given @width, @height, and @baseline to a @widget,
-	// and computes the position and sizes of the children of the @widget using
-	// the layout management policy of @manager.
-	//
-	// This method is inherited from LayoutManager
-	Allocate(widget Widget, width int, height int, baseline int)
-	// GetLayoutChild retrieves a `GtkLayoutChild` instance for the
-	// `GtkLayoutManager`, creating one if necessary.
-	//
-	// The @child widget must be a child of the widget using @manager.
-	//
-	// The `GtkLayoutChild` instance is owned by the `GtkLayoutManager`, and is
-	// guaranteed to exist as long as @child is a child of the `GtkWidget` using
-	// the given `GtkLayoutManager`.
-	//
-	// This method is inherited from LayoutManager
-	GetLayoutChild(child Widget) LayoutChild
-	// GetRequestMode retrieves the request mode of @manager.
-	//
-	// This method is inherited from LayoutManager
-	GetRequestMode() SizeRequestMode
-	// GetWidget retrieves the `GtkWidget` using the given `GtkLayoutManager`.
-	//
-	// This method is inherited from LayoutManager
-	GetWidget() Widget
-	// LayoutChanged queues a resize on the `GtkWidget` using @manager, if any.
-	//
-	// This function should be called by subclasses of `GtkLayoutManager` in
-	// response to changes to their layout management policies.
-	//
-	// This method is inherited from LayoutManager
-	LayoutChanged()
-	// Measure measures the size of the @widget using @manager, for the given
-	// @orientation and size.
-	//
-	// See the [class@Gtk.Widget] documentation on layout management for more
-	// details.
-	//
-	// This method is inherited from LayoutManager
-	Measure(widget Widget, orientation Orientation, forSize int) (minimum int, natural int, minimumBaseline int, naturalBaseline int)
+	privateOverlayLayoutClass()
 }
 
-// overlayLayout implements the OverlayLayout interface.
-type overlayLayout struct {
-	*externglib.Object
+// OverlayLayoutClass implements the OverlayLayout interface.
+type OverlayLayoutClass struct {
+	LayoutManagerClass
 }
 
-var _ OverlayLayout = (*overlayLayout)(nil)
+var _ OverlayLayout = (*OverlayLayoutClass)(nil)
 
-// WrapOverlayLayout wraps a GObject to a type that implements
-// interface OverlayLayout. It is primarily used internally.
-func WrapOverlayLayout(obj *externglib.Object) OverlayLayout {
-	return overlayLayout{obj}
+func wrapOverlayLayout(obj *externglib.Object) OverlayLayout {
+	return &OverlayLayoutClass{
+		LayoutManagerClass: LayoutManagerClass{
+			Object: obj,
+		},
+	}
 }
 
 func marshalOverlayLayout(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapOverlayLayout(obj), nil
+	return wrapOverlayLayout(obj), nil
 }
 
 // NewOverlayLayout creates a new `GtkOverlayLayout` instance.
@@ -110,52 +70,12 @@ func NewOverlayLayout() OverlayLayout {
 	return _overlayLayout
 }
 
-func (o overlayLayout) AsLayoutManager() LayoutManager {
-	return WrapLayoutManager(gextras.InternObject(o))
-}
-
-func (m overlayLayout) Allocate(widget Widget, width int, height int, baseline int) {
-	WrapLayoutManager(gextras.InternObject(m)).Allocate(widget, width, height, baseline)
-}
-
-func (m overlayLayout) GetLayoutChild(child Widget) LayoutChild {
-	return WrapLayoutManager(gextras.InternObject(m)).GetLayoutChild(child)
-}
-
-func (m overlayLayout) GetRequestMode() SizeRequestMode {
-	return WrapLayoutManager(gextras.InternObject(m)).GetRequestMode()
-}
-
-func (m overlayLayout) GetWidget() Widget {
-	return WrapLayoutManager(gextras.InternObject(m)).GetWidget()
-}
-
-func (m overlayLayout) LayoutChanged() {
-	WrapLayoutManager(gextras.InternObject(m)).LayoutChanged()
-}
-
-func (m overlayLayout) Measure(widget Widget, orientation Orientation, forSize int) (minimum int, natural int, minimumBaseline int, naturalBaseline int) {
-	return WrapLayoutManager(gextras.InternObject(m)).Measure(widget, orientation, forSize)
-}
+func (*OverlayLayoutClass) privateOverlayLayoutClass() {}
 
 // OverlayLayoutChild: `GtkLayoutChild` subclass for children in a
 // `GtkOverlayLayout`.
 type OverlayLayoutChild interface {
-	LayoutChild
-
-	// AsLayoutChild casts the class to the LayoutChild interface.
-	AsLayoutChild() LayoutChild
-
-	// GetChildWidget retrieves the `GtkWidget` associated to the given
-	// @layout_child.
-	//
-	// This method is inherited from LayoutChild
-	GetChildWidget() Widget
-	// GetLayoutManager retrieves the `GtkLayoutManager` instance that created
-	// the given @layout_child.
-	//
-	// This method is inherited from LayoutChild
-	GetLayoutManager() LayoutManager
+	gextras.Objector
 
 	// ClipOverlay retrieves whether the child is clipped.
 	ClipOverlay() bool
@@ -167,38 +87,29 @@ type OverlayLayoutChild interface {
 	SetMeasure(measure bool)
 }
 
-// overlayLayoutChild implements the OverlayLayoutChild interface.
-type overlayLayoutChild struct {
-	*externglib.Object
+// OverlayLayoutChildClass implements the OverlayLayoutChild interface.
+type OverlayLayoutChildClass struct {
+	LayoutChildClass
 }
 
-var _ OverlayLayoutChild = (*overlayLayoutChild)(nil)
+var _ OverlayLayoutChild = (*OverlayLayoutChildClass)(nil)
 
-// WrapOverlayLayoutChild wraps a GObject to a type that implements
-// interface OverlayLayoutChild. It is primarily used internally.
-func WrapOverlayLayoutChild(obj *externglib.Object) OverlayLayoutChild {
-	return overlayLayoutChild{obj}
+func wrapOverlayLayoutChild(obj *externglib.Object) OverlayLayoutChild {
+	return &OverlayLayoutChildClass{
+		LayoutChildClass: LayoutChildClass{
+			Object: obj,
+		},
+	}
 }
 
 func marshalOverlayLayoutChild(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapOverlayLayoutChild(obj), nil
+	return wrapOverlayLayoutChild(obj), nil
 }
 
-func (o overlayLayoutChild) AsLayoutChild() LayoutChild {
-	return WrapLayoutChild(gextras.InternObject(o))
-}
-
-func (l overlayLayoutChild) GetChildWidget() Widget {
-	return WrapLayoutChild(gextras.InternObject(l)).GetChildWidget()
-}
-
-func (l overlayLayoutChild) GetLayoutManager() LayoutManager {
-	return WrapLayoutChild(gextras.InternObject(l)).GetLayoutManager()
-}
-
-func (c overlayLayoutChild) ClipOverlay() bool {
+// ClipOverlay retrieves whether the child is clipped.
+func (c *OverlayLayoutChildClass) ClipOverlay() bool {
 	var _arg0 *C.GtkOverlayLayoutChild // out
 	var _cret C.gboolean               // in
 
@@ -215,7 +126,8 @@ func (c overlayLayoutChild) ClipOverlay() bool {
 	return _ok
 }
 
-func (c overlayLayoutChild) Measure() bool {
+// Measure retrieves whether the child is measured.
+func (c *OverlayLayoutChildClass) Measure() bool {
 	var _arg0 *C.GtkOverlayLayoutChild // out
 	var _cret C.gboolean               // in
 
@@ -232,7 +144,8 @@ func (c overlayLayoutChild) Measure() bool {
 	return _ok
 }
 
-func (c overlayLayoutChild) SetClipOverlay(clipOverlay bool) {
+// SetClipOverlay sets whether to clip this child.
+func (c *OverlayLayoutChildClass) SetClipOverlay(clipOverlay bool) {
 	var _arg0 *C.GtkOverlayLayoutChild // out
 	var _arg1 C.gboolean               // out
 
@@ -244,7 +157,8 @@ func (c overlayLayoutChild) SetClipOverlay(clipOverlay bool) {
 	C.gtk_overlay_layout_child_set_clip_overlay(_arg0, _arg1)
 }
 
-func (c overlayLayoutChild) SetMeasure(measure bool) {
+// SetMeasure sets whether to measure this child.
+func (c *OverlayLayoutChildClass) SetMeasure(measure bool) {
 	var _arg0 *C.GtkOverlayLayoutChild // out
 	var _arg1 C.gboolean               // out
 

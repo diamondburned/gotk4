@@ -5,11 +5,7 @@ package gsk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/cairo"
-	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/gdk/v4"
-	"github.com/diamondburned/gotk4/pkg/graphene"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -27,73 +23,30 @@ func init() {
 }
 
 type NglRenderer interface {
-	Renderer
+	gextras.Objector
 
-	// AsRenderer casts the class to the Renderer interface.
-	AsRenderer() Renderer
-
-	// GetSurface retrieves the `GdkSurface` set using gsk_enderer_realize().
-	//
-	// If the renderer has not been realized yet, nil will be returned.
-	//
-	// This method is inherited from Renderer
-	GetSurface() gdk.Surface
-	// IsRealized checks whether the @renderer is realized or not.
-	//
-	// This method is inherited from Renderer
-	IsRealized() bool
-	// Realize creates the resources needed by the @renderer to render the scene
-	// graph.
-	//
-	// This method is inherited from Renderer
-	Realize(surface gdk.Surface) error
-	// Render renders the scene graph, described by a tree of `GskRenderNode`
-	// instances, ensuring that the given @region gets redrawn.
-	//
-	// Renderers must ensure that changes of the contents given by the @root
-	// node as well as the area given by @region are redrawn. They are however
-	// free to not redraw any pixel outside of @region if they can guarantee
-	// that it didn't change.
-	//
-	// The @renderer will acquire a reference on the `GskRenderNode` tree while
-	// the rendering is in progress.
-	//
-	// This method is inherited from Renderer
-	Render(root RenderNode, region *cairo.Region)
-	// RenderTexture renders the scene graph, described by a tree of
-	// `GskRenderNode` instances, to a `GdkTexture`.
-	//
-	// The @renderer will acquire a reference on the `GskRenderNode` tree while
-	// the rendering is in progress.
-	//
-	// If you want to apply any transformations to @root, you should put it into
-	// a transform node and pass that node instead.
-	//
-	// This method is inherited from Renderer
-	RenderTexture(root RenderNode, viewport *graphene.Rect) gdk.Texture
-	// Unrealize releases all the resources created by gsk_renderer_realize().
-	//
-	// This method is inherited from Renderer
-	Unrealize()
+	privateNglRendererClass()
 }
 
-// nglRenderer implements the NglRenderer interface.
-type nglRenderer struct {
-	*externglib.Object
+// NglRendererClass implements the NglRenderer interface.
+type NglRendererClass struct {
+	RendererClass
 }
 
-var _ NglRenderer = (*nglRenderer)(nil)
+var _ NglRenderer = (*NglRendererClass)(nil)
 
-// WrapNglRenderer wraps a GObject to a type that implements
-// interface NglRenderer. It is primarily used internally.
-func WrapNglRenderer(obj *externglib.Object) NglRenderer {
-	return nglRenderer{obj}
+func wrapNglRenderer(obj *externglib.Object) NglRenderer {
+	return &NglRendererClass{
+		RendererClass: RendererClass{
+			Object: obj,
+		},
+	}
 }
 
 func marshalNglRenderer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapNglRenderer(obj), nil
+	return wrapNglRenderer(obj), nil
 }
 
 // NewNglRenderer creates a new Renderer using the new OpenGL renderer.
@@ -109,30 +62,4 @@ func NewNglRenderer() NglRenderer {
 	return _nglRenderer
 }
 
-func (n nglRenderer) AsRenderer() Renderer {
-	return WrapRenderer(gextras.InternObject(n))
-}
-
-func (r nglRenderer) GetSurface() gdk.Surface {
-	return WrapRenderer(gextras.InternObject(r)).GetSurface()
-}
-
-func (r nglRenderer) IsRealized() bool {
-	return WrapRenderer(gextras.InternObject(r)).IsRealized()
-}
-
-func (r nglRenderer) Realize(surface gdk.Surface) error {
-	return WrapRenderer(gextras.InternObject(r)).Realize(surface)
-}
-
-func (r nglRenderer) Render(root RenderNode, region *cairo.Region) {
-	WrapRenderer(gextras.InternObject(r)).Render(root, region)
-}
-
-func (r nglRenderer) RenderTexture(root RenderNode, viewport *graphene.Rect) gdk.Texture {
-	return WrapRenderer(gextras.InternObject(r)).RenderTexture(root, viewport)
-}
-
-func (r nglRenderer) Unrealize() {
-	WrapRenderer(gextras.InternObject(r)).Unrealize()
-}
+func (*NglRendererClass) privateNglRendererClass() {}

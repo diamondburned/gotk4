@@ -6,7 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -38,17 +37,17 @@ type PathPriorityType int
 
 const (
 	// Lowest: deprecated
-	PathPrioLowest PathPriorityType = 0
+	PathPriorityTypeLowest PathPriorityType = 0
 	// GTK: deprecated
-	PathPrioGTK PathPriorityType = 4
+	PathPriorityTypeGTK PathPriorityType = 4
 	// Application: deprecated
-	PathPrioApplication PathPriorityType = 8
+	PathPriorityTypeApplication PathPriorityType = 8
 	// Theme: deprecated
-	PathPrioTheme PathPriorityType = 10
+	PathPriorityTypeTheme PathPriorityType = 10
 	// RC: deprecated
-	PathPrioRC PathPriorityType = 12
+	PathPriorityTypeRC PathPriorityType = 12
 	// Highest: deprecated
-	PathPrioHighest PathPriorityType = 15
+	PathPriorityTypeHighest PathPriorityType = 15
 )
 
 func marshalPathPriorityType(p uintptr) (interface{}, error) {
@@ -62,11 +61,11 @@ type PathType int
 
 const (
 	// Widget: deprecated
-	PathWidget PathType = iota
+	PathTypeWidget PathType = iota
 	// WidgetClass: deprecated
-	PathWidgetClass
+	PathTypeWidgetClass
 	// Class: deprecated
-	PathClass
+	PathTypeClass
 )
 
 func marshalPathType(p uintptr) (interface{}, error) {
@@ -82,85 +81,85 @@ type RCTokenType int
 
 const (
 	// Invalid: deprecated
-	RCTokenInvalid RCTokenType = 270
+	RCTokenTypeInvalid RCTokenType = 270
 	// Include: deprecated
-	RCTokenInclude RCTokenType = 271
+	RCTokenTypeInclude RCTokenType = 271
 	// Normal: deprecated
-	RCTokenNormal RCTokenType = 272
+	RCTokenTypeNormal RCTokenType = 272
 	// Active: deprecated
-	RCTokenActive RCTokenType = 273
+	RCTokenTypeActive RCTokenType = 273
 	// Prelight: deprecated
-	RCTokenPrelight RCTokenType = 274
+	RCTokenTypePrelight RCTokenType = 274
 	// Selected: deprecated
-	RCTokenSelected RCTokenType = 275
+	RCTokenTypeSelected RCTokenType = 275
 	// Insensitive: deprecated
-	RCTokenInsensitive RCTokenType = 276
+	RCTokenTypeInsensitive RCTokenType = 276
 	// Fg: deprecated
-	RCTokenFg RCTokenType = 277
+	RCTokenTypeFg RCTokenType = 277
 	// Bg: deprecated
-	RCTokenBg RCTokenType = 278
+	RCTokenTypeBg RCTokenType = 278
 	// Text: deprecated
-	RCTokenText RCTokenType = 279
+	RCTokenTypeText RCTokenType = 279
 	// Base: deprecated
-	RCTokenBase RCTokenType = 280
+	RCTokenTypeBase RCTokenType = 280
 	// Xthickness: deprecated
-	RCTokenXthickness RCTokenType = 281
+	RCTokenTypeXthickness RCTokenType = 281
 	// Ythickness: deprecated
-	RCTokenYthickness RCTokenType = 282
+	RCTokenTypeYthickness RCTokenType = 282
 	// Font: deprecated
-	RCTokenFont RCTokenType = 283
+	RCTokenTypeFont RCTokenType = 283
 	// Fontset: deprecated
-	RCTokenFontset RCTokenType = 284
+	RCTokenTypeFontset RCTokenType = 284
 	// FontName: deprecated
-	RCTokenFontName RCTokenType = 285
+	RCTokenTypeFontName RCTokenType = 285
 	// BgPixmap: deprecated
-	RCTokenBgPixmap RCTokenType = 286
+	RCTokenTypeBgPixmap RCTokenType = 286
 	// PixmapPath: deprecated
-	RCTokenPixmapPath RCTokenType = 287
+	RCTokenTypePixmapPath RCTokenType = 287
 	// Style: deprecated
-	RCTokenStyle RCTokenType = 288
+	RCTokenTypeStyle RCTokenType = 288
 	// Binding: deprecated
-	RCTokenBinding RCTokenType = 289
+	RCTokenTypeBinding RCTokenType = 289
 	// Bind: deprecated
-	RCTokenBind RCTokenType = 290
+	RCTokenTypeBind RCTokenType = 290
 	// Widget: deprecated
-	RCTokenWidget RCTokenType = 291
+	RCTokenTypeWidget RCTokenType = 291
 	// WidgetClass: deprecated
-	RCTokenWidgetClass RCTokenType = 292
+	RCTokenTypeWidgetClass RCTokenType = 292
 	// Class: deprecated
-	RCTokenClass RCTokenType = 293
+	RCTokenTypeClass RCTokenType = 293
 	// Lowest: deprecated
-	RCTokenLowest RCTokenType = 294
+	RCTokenTypeLowest RCTokenType = 294
 	// GTK: deprecated
-	RCTokenGTK RCTokenType = 295
+	RCTokenTypeGTK RCTokenType = 295
 	// Application: deprecated
-	RCTokenApplication RCTokenType = 296
+	RCTokenTypeApplication RCTokenType = 296
 	// Theme: deprecated
-	RCTokenTheme RCTokenType = 297
+	RCTokenTypeTheme RCTokenType = 297
 	// RC: deprecated
-	RCTokenRC RCTokenType = 298
+	RCTokenTypeRC RCTokenType = 298
 	// Highest: deprecated
-	RCTokenHighest RCTokenType = 299
+	RCTokenTypeHighest RCTokenType = 299
 	// Engine: deprecated
-	RCTokenEngine RCTokenType = 300
+	RCTokenTypeEngine RCTokenType = 300
 	// ModulePath: deprecated
-	RCTokenModulePath RCTokenType = 301
+	RCTokenTypeModulePath RCTokenType = 301
 	// ImModulePath: deprecated
-	RCTokenImModulePath RCTokenType = 302
+	RCTokenTypeImModulePath RCTokenType = 302
 	// ImModuleFile: deprecated
-	RCTokenImModuleFile RCTokenType = 303
+	RCTokenTypeImModuleFile RCTokenType = 303
 	// Stock: deprecated
-	RCTokenStock RCTokenType = 304
+	RCTokenTypeStock RCTokenType = 304
 	// LTR: deprecated
-	RCTokenLTR RCTokenType = 305
+	RCTokenTypeLTR RCTokenType = 305
 	// RTL: deprecated
-	RCTokenRTL RCTokenType = 306
+	RCTokenTypeRTL RCTokenType = 306
 	// Color: deprecated
-	RCTokenColor RCTokenType = 307
+	RCTokenTypeColor RCTokenType = 307
 	// Unbind: deprecated
-	RCTokenUnbind RCTokenType = 308
+	RCTokenTypeUnbind RCTokenType = 308
 	// Last: deprecated
-	RCTokenLast RCTokenType = 309
+	RCTokenTypeLast RCTokenType = 309
 )
 
 func marshalRCTokenType(p uintptr) (interface{}, error) {
@@ -416,75 +415,6 @@ func RCParse(filename string) {
 	C.gtk_rc_parse(_arg1)
 }
 
-// RCParseColor parses a color in the format expected in a RC file.
-//
-// Note that theme engines should use gtk_rc_parse_color_full() in order to
-// support symbolic colors.
-//
-// Deprecated: since version 3.0.
-func RCParseColor(scanner *glib.Scanner) (gdk.Color, uint) {
-	var _arg1 *C.GScanner // out
-	var _arg2 C.GdkColor  // in
-	var _cret C.guint     // in
-
-	_arg1 = (*C.GScanner)(unsafe.Pointer(scanner))
-
-	_cret = C.gtk_rc_parse_color(_arg1, &_arg2)
-
-	var _color gdk.Color // out
-	var _guint uint      // out
-
-	{
-		var refTmpIn *C.GdkColor
-		var refTmpOut *gdk.Color
-
-		in0 := &_arg2
-		refTmpIn = in0
-
-		refTmpOut = (*gdk.Color)(unsafe.Pointer(refTmpIn))
-
-		_color = *refTmpOut
-	}
-	_guint = uint(_cret)
-
-	return _color, _guint
-}
-
-// RCParseColorFull parses a color in the format expected in a RC file. If
-// @style is not nil, it will be consulted to resolve references to symbolic
-// colors.
-//
-// Deprecated: since version 3.0.
-func RCParseColorFull(scanner *glib.Scanner, style RCStyle) (gdk.Color, uint) {
-	var _arg1 *C.GScanner   // out
-	var _arg2 *C.GtkRcStyle // out
-	var _arg3 C.GdkColor    // in
-	var _cret C.guint       // in
-
-	_arg1 = (*C.GScanner)(unsafe.Pointer(scanner))
-	_arg2 = (*C.GtkRcStyle)(unsafe.Pointer(style.Native()))
-
-	_cret = C.gtk_rc_parse_color_full(_arg1, _arg2, &_arg3)
-
-	var _color gdk.Color // out
-	var _guint uint      // out
-
-	{
-		var refTmpIn *C.GdkColor
-		var refTmpOut *gdk.Color
-
-		in0 := &_arg3
-		refTmpIn = in0
-
-		refTmpOut = (*gdk.Color)(unsafe.Pointer(refTmpIn))
-
-		_color = *refTmpOut
-	}
-	_guint = uint(_cret)
-
-	return _color, _guint
-}
-
 // RCParsePriority parses a PathPriorityType variable from the format expected
 // in a RC file.
 //
@@ -623,7 +553,7 @@ func RCSetDefaultFiles(filenames []string) {
 	C.gtk_rc_set_default_files(_arg1)
 }
 
-// RCStyleOverrider contains methods that are overridable .
+// RCStyleOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
@@ -645,23 +575,23 @@ type RCStyle interface {
 	Copy() RCStyle
 }
 
-// rcStyle implements the RCStyle interface.
-type rcStyle struct {
+// RCStyleClass implements the RCStyle interface.
+type RCStyleClass struct {
 	*externglib.Object
 }
 
-var _ RCStyle = (*rcStyle)(nil)
+var _ RCStyle = (*RCStyleClass)(nil)
 
-// WrapRCStyle wraps a GObject to a type that implements
-// interface RCStyle. It is primarily used internally.
-func WrapRCStyle(obj *externglib.Object) RCStyle {
-	return rcStyle{obj}
+func wrapRCStyle(obj *externglib.Object) RCStyle {
+	return &RCStyleClass{
+		Object: obj,
+	}
 }
 
 func marshalRCStyle(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapRCStyle(obj), nil
+	return wrapRCStyle(obj), nil
 }
 
 // NewRCStyle creates a new RcStyle with no fields set and a reference count of
@@ -680,7 +610,11 @@ func NewRCStyle() RCStyle {
 	return _rcStyle
 }
 
-func (o rcStyle) Copy() RCStyle {
+// Copy makes a copy of the specified RcStyle. This function will correctly copy
+// an RC style that is a member of a class derived from RcStyle.
+//
+// Deprecated: since version 3.0.
+func (o *RCStyleClass) Copy() RCStyle {
 	var _arg0 *C.GtkRcStyle // out
 	var _cret *C.GtkRcStyle // in
 

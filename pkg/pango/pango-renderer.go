@@ -44,7 +44,7 @@ func marshalRenderPart(p uintptr) (interface{}, error) {
 	return RenderPart(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// RendererOverrider contains methods that are overridable .
+// RendererOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
@@ -209,26 +209,33 @@ type Renderer interface {
 	SetMatrix(matrix *Matrix)
 }
 
-// renderer implements the Renderer interface.
-type renderer struct {
+// RendererClass implements the Renderer interface.
+type RendererClass struct {
 	*externglib.Object
 }
 
-var _ Renderer = (*renderer)(nil)
+var _ Renderer = (*RendererClass)(nil)
 
-// WrapRenderer wraps a GObject to a type that implements
-// interface Renderer. It is primarily used internally.
-func WrapRenderer(obj *externglib.Object) Renderer {
-	return renderer{obj}
+func wrapRenderer(obj *externglib.Object) Renderer {
+	return &RendererClass{
+		Object: obj,
+	}
 }
 
 func marshalRenderer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapRenderer(obj), nil
+	return wrapRenderer(obj), nil
 }
 
-func (r renderer) Activate() {
+// Activate does initial setup before rendering operations on @renderer.
+//
+// [method@Pango.Renderer.deactivate] should be called when done drawing. Calls
+// such as [method@Pango.Renderer.draw_layout] automatically activate the layout
+// before drawing on it. Calls to `pango_renderer_activate()` and
+// `pango_renderer_deactivate()` can be nested and the renderer will only be
+// initialized and deinitialized once.
+func (r *RendererClass) Activate() {
 	var _arg0 *C.PangoRenderer // out
 
 	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(r.Native()))
@@ -236,7 +243,10 @@ func (r renderer) Activate() {
 	C.pango_renderer_activate(_arg0)
 }
 
-func (r renderer) Deactivate() {
+// Deactivate cleans up after rendering operations on @renderer.
+//
+// See docs for [method@Pango.Renderer.activate].
+func (r *RendererClass) Deactivate() {
 	var _arg0 *C.PangoRenderer // out
 
 	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(r.Native()))
@@ -244,7 +254,15 @@ func (r renderer) Deactivate() {
 	C.pango_renderer_deactivate(_arg0)
 }
 
-func (r renderer) DrawErrorUnderline(x int, y int, width int, height int) {
+// DrawErrorUnderline: draw a squiggly line that approximately covers the given
+// rectangle in the style of an underline used to indicate a spelling error.
+//
+// The width of the underline is rounded to an integer number of up/down
+// segments and the resulting rectangle is centered in the original rectangle.
+//
+// This should be called while @renderer is already active. Use
+// [method@Pango.Renderer.activate] to activate a renderer.
+func (r *RendererClass) DrawErrorUnderline(x int, y int, width int, height int) {
 	var _arg0 *C.PangoRenderer // out
 	var _arg1 C.int            // out
 	var _arg2 C.int            // out
@@ -260,7 +278,20 @@ func (r renderer) DrawErrorUnderline(x int, y int, width int, height int) {
 	C.pango_renderer_draw_error_underline(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
-func (r renderer) DrawGlyphItem(text string, glyphItem *GlyphItem, x int, y int) {
+// DrawGlyphItem draws the glyphs in @glyph_item with the specified
+// `PangoRenderer`, embedding the text associated with the glyphs in the output
+// if the output format supports it.
+//
+// This is useful for rendering text in PDF.
+//
+// Note that @text is the start of the text for layout, which is then indexed by
+// `glyph_item->item->offset`.
+//
+// If @text is nil, this simply calls [method@Pango.Renderer.draw_glyphs].
+//
+// The default implementation of this method simply falls back to
+// [method@Pango.Renderer.draw_glyphs].
+func (r *RendererClass) DrawGlyphItem(text string, glyphItem *GlyphItem, x int, y int) {
 	var _arg0 *C.PangoRenderer  // out
 	var _arg1 *C.char           // out
 	var _arg2 *C.PangoGlyphItem // out
@@ -277,7 +308,8 @@ func (r renderer) DrawGlyphItem(text string, glyphItem *GlyphItem, x int, y int)
 	C.pango_renderer_draw_glyph_item(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
-func (r renderer) DrawGlyphs(font Font, glyphs *GlyphString, x int, y int) {
+// DrawGlyphs draws the glyphs in @glyphs with the specified `PangoRenderer`.
+func (r *RendererClass) DrawGlyphs(font Font, glyphs *GlyphString, x int, y int) {
 	var _arg0 *C.PangoRenderer    // out
 	var _arg1 *C.PangoFont        // out
 	var _arg2 *C.PangoGlyphString // out
@@ -293,7 +325,8 @@ func (r renderer) DrawGlyphs(font Font, glyphs *GlyphString, x int, y int) {
 	C.pango_renderer_draw_glyphs(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
-func (r renderer) DrawLayout(layout Layout, x int, y int) {
+// DrawLayout draws @layout with the specified `PangoRenderer`.
+func (r *RendererClass) DrawLayout(layout Layout, x int, y int) {
 	var _arg0 *C.PangoRenderer // out
 	var _arg1 *C.PangoLayout   // out
 	var _arg2 C.int            // out
@@ -307,7 +340,12 @@ func (r renderer) DrawLayout(layout Layout, x int, y int) {
 	C.pango_renderer_draw_layout(_arg0, _arg1, _arg2, _arg3)
 }
 
-func (r renderer) DrawRectangle(part RenderPart, x int, y int, width int, height int) {
+// DrawRectangle draws an axis-aligned rectangle in user space coordinates with
+// the specified `PangoRenderer`.
+//
+// This should be called while @renderer is already active. Use
+// [method@Pango.Renderer.activate] to activate a renderer.
+func (r *RendererClass) DrawRectangle(part RenderPart, x int, y int, width int, height int) {
 	var _arg0 *C.PangoRenderer  // out
 	var _arg1 C.PangoRenderPart // out
 	var _arg2 C.int             // out
@@ -325,7 +363,9 @@ func (r renderer) DrawRectangle(part RenderPart, x int, y int, width int, height
 	C.pango_renderer_draw_rectangle(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
 
-func (r renderer) DrawTrapezoid(part RenderPart, y1 float64, x11 float64, x21 float64, y2 float64, x12 float64, x22 float64) {
+// DrawTrapezoid draws a trapezoid with the parallel sides aligned with the X
+// axis using the given `PangoRenderer`; coordinates are in device space.
+func (r *RendererClass) DrawTrapezoid(part RenderPart, y1 float64, x11 float64, x21 float64, y2 float64, x12 float64, x22 float64) {
 	var _arg0 *C.PangoRenderer  // out
 	var _arg1 C.PangoRenderPart // out
 	var _arg2 C.double          // out
@@ -347,7 +387,8 @@ func (r renderer) DrawTrapezoid(part RenderPart, y1 float64, x11 float64, x21 fl
 	C.pango_renderer_draw_trapezoid(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
 }
 
-func (r renderer) Alpha(part RenderPart) uint16 {
+// Alpha gets the current alpha for the specified part.
+func (r *RendererClass) Alpha(part RenderPart) uint16 {
 	var _arg0 *C.PangoRenderer  // out
 	var _arg1 C.PangoRenderPart // out
 	var _cret C.guint16         // in
@@ -364,7 +405,8 @@ func (r renderer) Alpha(part RenderPart) uint16 {
 	return _guint16
 }
 
-func (r renderer) Color(part RenderPart) *Color {
+// Color gets the current rendering color for the specified part.
+func (r *RendererClass) Color(part RenderPart) *Color {
 	var _arg0 *C.PangoRenderer  // out
 	var _arg1 C.PangoRenderPart // out
 	var _cret *C.PangoColor     // in
@@ -381,7 +423,13 @@ func (r renderer) Color(part RenderPart) *Color {
 	return _color
 }
 
-func (r renderer) Layout() Layout {
+// Layout gets the layout currently being rendered using @renderer.
+//
+// Calling this function only makes sense from inside a subclass's methods, like
+// in its draw_shape vfunc, for example.
+//
+// The returned layout should not be modified while still being rendered.
+func (r *RendererClass) Layout() Layout {
 	var _arg0 *C.PangoRenderer // out
 	var _cret *C.PangoLayout   // in
 
@@ -396,7 +444,10 @@ func (r renderer) Layout() Layout {
 	return _layout
 }
 
-func (r renderer) Matrix() *Matrix {
+// Matrix gets the transformation matrix that will be applied when rendering.
+//
+// See [method@Pango.Renderer.set_matrix].
+func (r *RendererClass) Matrix() *Matrix {
 	var _arg0 *C.PangoRenderer // out
 	var _cret *C.PangoMatrix   // in
 
@@ -411,7 +462,20 @@ func (r renderer) Matrix() *Matrix {
 	return _matrix
 }
 
-func (r renderer) PartChanged(part RenderPart) {
+// PartChanged informs Pango that the way that the rendering is done for @part
+// has changed.
+//
+// This should be called if the rendering changes in a way that would prevent
+// multiple pieces being joined together into one drawing call. For instance, if
+// a subclass of `PangoRenderer` was to add a stipple option for drawing
+// underlines, it needs to call
+//
+// “` pango_renderer_part_changed (render, PANGO_RENDER_PART_UNDERLINE); “`
+//
+// When the stipple changes or underlines with different stipples might be
+// joined together. Pango automatically calls this for changes to colors. (See
+// [method@Pango.Renderer.set_color])
+func (r *RendererClass) PartChanged(part RenderPart) {
 	var _arg0 *C.PangoRenderer  // out
 	var _arg1 C.PangoRenderPart // out
 
@@ -421,7 +485,11 @@ func (r renderer) PartChanged(part RenderPart) {
 	C.pango_renderer_part_changed(_arg0, _arg1)
 }
 
-func (r renderer) SetAlpha(part RenderPart, alpha uint16) {
+// SetAlpha sets the alpha for part of the rendering.
+//
+// Note that the alpha may only be used if a color is specified for @part as
+// well.
+func (r *RendererClass) SetAlpha(part RenderPart, alpha uint16) {
 	var _arg0 *C.PangoRenderer  // out
 	var _arg1 C.PangoRenderPart // out
 	var _arg2 C.guint16         // out
@@ -433,7 +501,10 @@ func (r renderer) SetAlpha(part RenderPart, alpha uint16) {
 	C.pango_renderer_set_alpha(_arg0, _arg1, _arg2)
 }
 
-func (r renderer) SetColor(part RenderPart, color *Color) {
+// SetColor sets the color for part of the rendering.
+//
+// Also see [method@Pango.Renderer.set_alpha].
+func (r *RendererClass) SetColor(part RenderPart, color *Color) {
 	var _arg0 *C.PangoRenderer  // out
 	var _arg1 C.PangoRenderPart // out
 	var _arg2 *C.PangoColor     // out
@@ -445,7 +516,8 @@ func (r renderer) SetColor(part RenderPart, color *Color) {
 	C.pango_renderer_set_color(_arg0, _arg1, _arg2)
 }
 
-func (r renderer) SetMatrix(matrix *Matrix) {
+// SetMatrix sets the transformation matrix that will be applied when rendering.
+func (r *RendererClass) SetMatrix(matrix *Matrix) {
 	var _arg0 *C.PangoRenderer // out
 	var _arg1 *C.PangoMatrix   // out
 

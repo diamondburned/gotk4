@@ -36,13 +36,13 @@ type ExpanderStyle int
 
 const (
 	// Collapsed: the style used for a collapsed subtree.
-	ExpanderCollapsed ExpanderStyle = iota
+	ExpanderStyleCollapsed ExpanderStyle = iota
 	// SemiCollapsed: intermediate style used during animation.
-	ExpanderSemiCollapsed
+	ExpanderStyleSemiCollapsed
 	// SemiExpanded: intermediate style used during animation.
-	ExpanderSemiExpanded
+	ExpanderStyleSemiExpanded
 	// Expanded: the style used for an expanded subtree.
-	ExpanderExpanded
+	ExpanderStyleExpanded
 )
 
 func marshalExpanderStyle(p uintptr) (interface{}, error) {
@@ -679,7 +679,7 @@ func PaintVline(style Style, cr *cairo.Context, stateType StateType, widget Widg
 	C.gtk_paint_vline(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8)
 }
 
-// StyleOverrider contains methods that are overridable .
+// StyleOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
@@ -748,18 +748,8 @@ type Style interface {
 	//
 	// Deprecated: since version 3.0.
 	Detach()
-	// StyleProperty queries the value of a style property corresponding to a
-	// widget class is in the given style.
-	StyleProperty(widgetType externglib.Type, propertyName string) externglib.Value
 	// HasContext returns whether @style has an associated StyleContext.
 	HasContext() bool
-	// LookupColor looks up @color_name in the style’s logical color mappings,
-	// filling in @color and returning true if found, otherwise returning false.
-	// Do not cache the found mapping, because it depends on the Style and might
-	// change when a theme switch occurs.
-	//
-	// Deprecated: since version 3.0.
-	LookupColor(colorName string) (gdk.Color, bool)
 	// LookupIconSet looks up @stock_id in the icon factories associated with
 	// @style and the default icon factory, returning an icon set if found,
 	// otherwise nil.
@@ -778,23 +768,23 @@ type Style interface {
 	SetBackground(window gdk.Window, stateType StateType)
 }
 
-// style implements the Style interface.
-type style struct {
+// StyleClass implements the Style interface.
+type StyleClass struct {
 	*externglib.Object
 }
 
-var _ Style = (*style)(nil)
+var _ Style = (*StyleClass)(nil)
 
-// WrapStyle wraps a GObject to a type that implements
-// interface Style. It is primarily used internally.
-func WrapStyle(obj *externglib.Object) Style {
-	return style{obj}
+func wrapStyle(obj *externglib.Object) Style {
+	return &StyleClass{
+		Object: obj,
+	}
 }
 
 func marshalStyle(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapStyle(obj), nil
+	return wrapStyle(obj), nil
 }
 
 // NewStyle creates a new Style.
@@ -812,7 +802,8 @@ func NewStyle() Style {
 	return _style
 }
 
-func (s style) ApplyDefaultBackground(cr *cairo.Context, window gdk.Window, stateType StateType, x int, y int, width int, height int) {
+// ApplyDefaultBackground: deprecated: since version 3.0.
+func (s *StyleClass) ApplyDefaultBackground(cr *cairo.Context, window gdk.Window, stateType StateType, x int, y int, width int, height int) {
 	var _arg0 *C.GtkStyle    // out
 	var _arg1 *C.cairo_t     // out
 	var _arg2 *C.GdkWindow   // out
@@ -834,7 +825,10 @@ func (s style) ApplyDefaultBackground(cr *cairo.Context, window gdk.Window, stat
 	C.gtk_style_apply_default_background(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
 }
 
-func (s style) Copy() Style {
+// Copy creates a copy of the passed in Style object.
+//
+// Deprecated: since version 3.0.
+func (s *StyleClass) Copy() Style {
 	var _arg0 *C.GtkStyle // out
 	var _cret *C.GtkStyle // in
 
@@ -849,7 +843,11 @@ func (s style) Copy() Style {
 	return _ret
 }
 
-func (s style) Detach() {
+// Detach detaches a style from a window. If the style is not attached to any
+// windows anymore, it is unrealized. See gtk_style_attach().
+//
+// Deprecated: since version 3.0.
+func (s *StyleClass) Detach() {
 	var _arg0 *C.GtkStyle // out
 
 	_arg0 = (*C.GtkStyle)(unsafe.Pointer(s.Native()))
@@ -857,37 +855,8 @@ func (s style) Detach() {
 	C.gtk_style_detach(_arg0)
 }
 
-func (s style) StyleProperty(widgetType externglib.Type, propertyName string) externglib.Value {
-	var _arg0 *C.GtkStyle // out
-	var _arg1 C.GType     // out
-	var _arg2 *C.gchar    // out
-	var _arg3 C.GValue    // in
-
-	_arg0 = (*C.GtkStyle)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.GType)(widgetType)
-	_arg2 = (*C.gchar)(C.CString(propertyName))
-	defer C.free(unsafe.Pointer(_arg2))
-
-	C.gtk_style_get_style_property(_arg0, _arg1, _arg2, &_arg3)
-
-	var _value externglib.Value // out
-
-	{
-		var refTmpIn *C.GValue
-		var refTmpOut *externglib.Value
-
-		in0 := &_arg3
-		refTmpIn = in0
-
-		refTmpOut = externglib.ValueFromNative(unsafe.Pointer(refTmpIn))
-
-		_value = *refTmpOut
-	}
-
-	return _value
-}
-
-func (s style) HasContext() bool {
+// HasContext returns whether @style has an associated StyleContext.
+func (s *StyleClass) HasContext() bool {
 	var _arg0 *C.GtkStyle // out
 	var _cret C.gboolean  // in
 
@@ -904,40 +873,11 @@ func (s style) HasContext() bool {
 	return _ok
 }
 
-func (s style) LookupColor(colorName string) (gdk.Color, bool) {
-	var _arg0 *C.GtkStyle // out
-	var _arg1 *C.gchar    // out
-	var _arg2 C.GdkColor  // in
-	var _cret C.gboolean  // in
-
-	_arg0 = (*C.GtkStyle)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.gchar)(C.CString(colorName))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	_cret = C.gtk_style_lookup_color(_arg0, _arg1, &_arg2)
-
-	var _color gdk.Color // out
-	var _ok bool         // out
-
-	{
-		var refTmpIn *C.GdkColor
-		var refTmpOut *gdk.Color
-
-		in0 := &_arg2
-		refTmpIn = in0
-
-		refTmpOut = (*gdk.Color)(unsafe.Pointer(refTmpIn))
-
-		_color = *refTmpOut
-	}
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _color, _ok
-}
-
-func (s style) LookupIconSet(stockId string) *IconSet {
+// LookupIconSet looks up @stock_id in the icon factories associated with @style
+// and the default icon factory, returning an icon set if found, otherwise nil.
+//
+// Deprecated: since version 3.0.
+func (s *StyleClass) LookupIconSet(stockId string) *IconSet {
 	var _arg0 *C.GtkStyle   // out
 	var _arg1 *C.gchar      // out
 	var _cret *C.GtkIconSet // in
@@ -959,7 +899,11 @@ func (s style) LookupIconSet(stockId string) *IconSet {
 	return _iconSet
 }
 
-func (s style) RenderIcon(source *IconSource, direction TextDirection, state StateType, size int, widget Widget, detail string) gdkpixbuf.Pixbuf {
+// RenderIcon renders the icon specified by @source at the given @size according
+// to the given parameters and returns the result in a pixbuf.
+//
+// Deprecated: since version 3.0.
+func (s *StyleClass) RenderIcon(source *IconSource, direction TextDirection, state StateType, size int, widget Widget, detail string) gdkpixbuf.Pixbuf {
 	var _arg0 *C.GtkStyle        // out
 	var _arg1 *C.GtkIconSource   // out
 	var _arg2 C.GtkTextDirection // out
@@ -987,7 +931,11 @@ func (s style) RenderIcon(source *IconSource, direction TextDirection, state Sta
 	return _pixbuf
 }
 
-func (s style) SetBackground(window gdk.Window, stateType StateType) {
+// SetBackground sets the background of @window to the background color or
+// pixmap specified by @style for the given state.
+//
+// Deprecated: since version 3.0.
+func (s *StyleClass) SetBackground(window gdk.Window, stateType StateType) {
 	var _arg0 *C.GtkStyle    // out
 	var _arg1 *C.GdkWindow   // out
 	var _arg2 C.GtkStateType // out

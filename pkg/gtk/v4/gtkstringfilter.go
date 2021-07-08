@@ -54,37 +54,7 @@ func marshalStringFilterMatchMode(p uintptr) (interface{}, error) {
 // It is also possible to make case-insensitive comparisons, with
 // [method@Gtk.StringFilter.set_ignore_case].
 type StringFilter interface {
-	Filter
-
-	// AsFilter casts the class to the Filter interface.
-	AsFilter() Filter
-
-	// Changed emits the Filter::changed signal to notify all users of the
-	// filter that the filter changed. Users of the filter should then check
-	// items again via gtk_filter_match().
-	//
-	// Depending on the @change parameter, not all items need to be changed, but
-	// only some. Refer to the FilterChange documentation for details.
-	//
-	// This function is intended for implementors of Filter subclasses and
-	// should not be called from other functions.
-	//
-	// This method is inherited from Filter
-	Changed(change FilterChange)
-	// GetStrictness gets the known strictness of @filters. If the strictness is
-	// not known, GTK_FILTER_MATCH_SOME is returned.
-	//
-	// This value may change after emission of the Filter::changed signal.
-	//
-	// This function is meant purely for optimization purposes, filters can
-	// choose to omit implementing it, but FilterListModel uses it.
-	//
-	// This method is inherited from Filter
-	GetStrictness() FilterMatch
-	// Match checks if the given @item is matched by the filter or not.
-	//
-	// This method is inherited from Filter
-	Match(item gextras.Objector) bool
+	gextras.Objector
 
 	// Expression gets the expression that the string filter uses to obtain
 	// strings from items.
@@ -108,23 +78,25 @@ type StringFilter interface {
 	SetSearch(search string)
 }
 
-// stringFilter implements the StringFilter interface.
-type stringFilter struct {
-	*externglib.Object
+// StringFilterClass implements the StringFilter interface.
+type StringFilterClass struct {
+	FilterClass
 }
 
-var _ StringFilter = (*stringFilter)(nil)
+var _ StringFilter = (*StringFilterClass)(nil)
 
-// WrapStringFilter wraps a GObject to a type that implements
-// interface StringFilter. It is primarily used internally.
-func WrapStringFilter(obj *externglib.Object) StringFilter {
-	return stringFilter{obj}
+func wrapStringFilter(obj *externglib.Object) StringFilter {
+	return &StringFilterClass{
+		FilterClass: FilterClass{
+			Object: obj,
+		},
+	}
 }
 
 func marshalStringFilter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapStringFilter(obj), nil
+	return wrapStringFilter(obj), nil
 }
 
 // NewStringFilter creates a new string filter.
@@ -146,23 +118,9 @@ func NewStringFilter(expression Expression) StringFilter {
 	return _stringFilter
 }
 
-func (s stringFilter) AsFilter() Filter {
-	return WrapFilter(gextras.InternObject(s))
-}
-
-func (s stringFilter) Changed(change FilterChange) {
-	WrapFilter(gextras.InternObject(s)).Changed(change)
-}
-
-func (s stringFilter) GetStrictness() FilterMatch {
-	return WrapFilter(gextras.InternObject(s)).GetStrictness()
-}
-
-func (s stringFilter) Match(item gextras.Objector) bool {
-	return WrapFilter(gextras.InternObject(s)).Match(item)
-}
-
-func (s stringFilter) Expression() Expression {
+// Expression gets the expression that the string filter uses to obtain strings
+// from items.
+func (s *StringFilterClass) Expression() Expression {
 	var _arg0 *C.GtkStringFilter // out
 	var _cret *C.GtkExpression   // in
 
@@ -177,7 +135,8 @@ func (s stringFilter) Expression() Expression {
 	return _expression
 }
 
-func (s stringFilter) IgnoreCase() bool {
+// IgnoreCase returns whether the filter ignores case differences.
+func (s *StringFilterClass) IgnoreCase() bool {
 	var _arg0 *C.GtkStringFilter // out
 	var _cret C.gboolean         // in
 
@@ -194,7 +153,8 @@ func (s stringFilter) IgnoreCase() bool {
 	return _ok
 }
 
-func (s stringFilter) MatchMode() StringFilterMatchMode {
+// MatchMode returns the match mode that the filter is using.
+func (s *StringFilterClass) MatchMode() StringFilterMatchMode {
 	var _arg0 *C.GtkStringFilter         // out
 	var _cret C.GtkStringFilterMatchMode // in
 
@@ -209,7 +169,8 @@ func (s stringFilter) MatchMode() StringFilterMatchMode {
 	return _stringFilterMatchMode
 }
 
-func (s stringFilter) Search() string {
+// Search gets the search term.
+func (s *StringFilterClass) Search() string {
 	var _arg0 *C.GtkStringFilter // out
 	var _cret *C.char            // in
 
@@ -224,7 +185,11 @@ func (s stringFilter) Search() string {
 	return _utf8
 }
 
-func (s stringFilter) SetExpression(expression Expression) {
+// SetExpression sets the expression that the string filter uses to obtain
+// strings from items.
+//
+// The expression must have a value type of G_TYPE_STRING.
+func (s *StringFilterClass) SetExpression(expression Expression) {
 	var _arg0 *C.GtkStringFilter // out
 	var _arg1 *C.GtkExpression   // out
 
@@ -234,7 +199,8 @@ func (s stringFilter) SetExpression(expression Expression) {
 	C.gtk_string_filter_set_expression(_arg0, _arg1)
 }
 
-func (s stringFilter) SetIgnoreCase(ignoreCase bool) {
+// SetIgnoreCase sets whether the filter ignores case differences.
+func (s *StringFilterClass) SetIgnoreCase(ignoreCase bool) {
 	var _arg0 *C.GtkStringFilter // out
 	var _arg1 C.gboolean         // out
 
@@ -246,7 +212,8 @@ func (s stringFilter) SetIgnoreCase(ignoreCase bool) {
 	C.gtk_string_filter_set_ignore_case(_arg0, _arg1)
 }
 
-func (s stringFilter) SetMatchMode(mode StringFilterMatchMode) {
+// SetMatchMode sets the match mode for the filter.
+func (s *StringFilterClass) SetMatchMode(mode StringFilterMatchMode) {
 	var _arg0 *C.GtkStringFilter         // out
 	var _arg1 C.GtkStringFilterMatchMode // out
 
@@ -256,7 +223,8 @@ func (s stringFilter) SetMatchMode(mode StringFilterMatchMode) {
 	C.gtk_string_filter_set_match_mode(_arg0, _arg1)
 }
 
-func (s stringFilter) SetSearch(search string) {
+// SetSearch sets the string to search for.
+func (s *StringFilterClass) SetSearch(search string) {
 	var _arg0 *C.GtkStringFilter // out
 	var _arg1 *C.char            // out
 

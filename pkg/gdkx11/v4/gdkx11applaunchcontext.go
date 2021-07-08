@@ -7,7 +7,6 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -25,127 +24,32 @@ func init() {
 }
 
 type X11AppLaunchContext interface {
-	gdk.AppLaunchContext
+	gextras.Objector
 
-	// AsAppLaunchContext casts the class to the gdk.AppLaunchContext interface.
-	AsAppLaunchContext() gdk.AppLaunchContext
-
-	// GetDisplay gets the `GdkDisplay` that @context is for.
-	//
-	// This method is inherited from gdk.AppLaunchContext
-	GetDisplay() gdk.Display
-	// SetDesktop sets the workspace on which applications will be launched.
-	//
-	// This only works when running under a window manager that supports
-	// multiple workspaces, as described in the Extended Window Manager Hints
-	// (http://www.freedesktop.org/Standards/wm-spec).
-	//
-	// When the workspace is not specified or @desktop is set to -1, it is up to
-	// the window manager to pick one, typically it will be the current
-	// workspace.
-	//
-	// This method is inherited from gdk.AppLaunchContext
-	SetDesktop(desktop int)
-	// SetIconName sets the icon for applications that are launched with this
-	// context.
-	//
-	// The @icon_name will be interpreted in the same way as the Icon field in
-	// desktop files. See also [method@Gdk.AppLaunchContext.set_icon()].
-	//
-	// If both @icon and @icon_name are set, the @icon_name takes priority. If
-	// neither @icon or @icon_name is set, the icon is taken from either the
-	// file that is passed to launched application or from the `GAppInfo` for
-	// the launched application itself.
-	//
-	// This method is inherited from gdk.AppLaunchContext
-	SetIconName(iconName string)
-	// SetTimestamp sets the timestamp of @context.
-	//
-	// The timestamp should ideally be taken from the event that triggered the
-	// launch.
-	//
-	// Window managers can use this information to avoid moving the focus to the
-	// newly launched application when the user is busy typing in another
-	// window. This is also known as 'focus stealing prevention'.
-	//
-	// This method is inherited from gdk.AppLaunchContext
-	SetTimestamp(timestamp uint32)
-	// GetEnvironment gets the complete environment variable list to be passed
-	// to the child process when @context is used to launch an application. This
-	// is a nil-terminated array of strings, where each string has the form
-	// `KEY=VALUE`.
-	//
-	// This method is inherited from gio.AppLaunchContext
-	GetEnvironment() []string
-	// LaunchFailed: called when an application has failed to launch, so that it
-	// can cancel the application startup notification started in
-	// g_app_launch_context_get_startup_notify_id().
-	//
-	// This method is inherited from gio.AppLaunchContext
-	LaunchFailed(startupNotifyId string)
-	// Setenv arranges for @variable to be set to @value in the child's
-	// environment when @context is used to launch an application.
-	//
-	// This method is inherited from gio.AppLaunchContext
-	Setenv(variable string, value string)
-	// Unsetenv arranges for @variable to be unset in the child's environment
-	// when @context is used to launch an application.
-	//
-	// This method is inherited from gio.AppLaunchContext
-	Unsetenv(variable string)
+	privateX11AppLaunchContextClass()
 }
 
-// x11AppLaunchContext implements the X11AppLaunchContext interface.
-type x11AppLaunchContext struct {
-	*externglib.Object
+// X11AppLaunchContextClass implements the X11AppLaunchContext interface.
+type X11AppLaunchContextClass struct {
+	gdk.AppLaunchContextClass
 }
 
-var _ X11AppLaunchContext = (*x11AppLaunchContext)(nil)
+var _ X11AppLaunchContext = (*X11AppLaunchContextClass)(nil)
 
-// WrapX11AppLaunchContext wraps a GObject to a type that implements
-// interface X11AppLaunchContext. It is primarily used internally.
-func WrapX11AppLaunchContext(obj *externglib.Object) X11AppLaunchContext {
-	return x11AppLaunchContext{obj}
+func wrapX11AppLaunchContext(obj *externglib.Object) X11AppLaunchContext {
+	return &X11AppLaunchContextClass{
+		AppLaunchContextClass: gdk.AppLaunchContextClass{
+			AppLaunchContextClass: gio.AppLaunchContextClass{
+				Object: obj,
+			},
+		},
+	}
 }
 
 func marshalX11AppLaunchContext(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapX11AppLaunchContext(obj), nil
+	return wrapX11AppLaunchContext(obj), nil
 }
 
-func (x x11AppLaunchContext) AsAppLaunchContext() gdk.AppLaunchContext {
-	return gdk.WrapAppLaunchContext(gextras.InternObject(x))
-}
-
-func (c x11AppLaunchContext) GetDisplay() gdk.Display {
-	return gdk.WrapAppLaunchContext(gextras.InternObject(c)).GetDisplay()
-}
-
-func (c x11AppLaunchContext) SetDesktop(desktop int) {
-	gdk.WrapAppLaunchContext(gextras.InternObject(c)).SetDesktop(desktop)
-}
-
-func (c x11AppLaunchContext) SetIconName(iconName string) {
-	gdk.WrapAppLaunchContext(gextras.InternObject(c)).SetIconName(iconName)
-}
-
-func (c x11AppLaunchContext) SetTimestamp(timestamp uint32) {
-	gdk.WrapAppLaunchContext(gextras.InternObject(c)).SetTimestamp(timestamp)
-}
-
-func (c x11AppLaunchContext) GetEnvironment() []string {
-	return gio.WrapAppLaunchContext(gextras.InternObject(c)).GetEnvironment()
-}
-
-func (c x11AppLaunchContext) LaunchFailed(startupNotifyId string) {
-	gio.WrapAppLaunchContext(gextras.InternObject(c)).LaunchFailed(startupNotifyId)
-}
-
-func (c x11AppLaunchContext) Setenv(variable string, value string) {
-	gio.WrapAppLaunchContext(gextras.InternObject(c)).Setenv(variable, value)
-}
-
-func (c x11AppLaunchContext) Unsetenv(variable string) {
-	gio.WrapAppLaunchContext(gextras.InternObject(c)).Unsetenv(variable)
-}
+func (*X11AppLaunchContextClass) privateX11AppLaunchContextClass() {}

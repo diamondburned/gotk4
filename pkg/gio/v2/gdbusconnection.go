@@ -31,53 +31,6 @@ import (
 // void gotk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
-// DBusInterfaceGetPropertyFunc: the type of the @get_property function in
-// BusInterfaceVTable.
-type DBusInterfaceGetPropertyFunc func(connection DBusConnection, sender string, objectPath string, interfaceName string, propertyName string) (err error, variant *glib.Variant)
-
-//export gotk4_DBusInterfaceGetPropertyFunc
-func gotk4_DBusInterfaceGetPropertyFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gchar, arg3 *C.gchar, arg4 *C.gchar, arg5 **C.GError, arg6 C.gpointer) (cret *C.GVariant) {
-	v := box.Get(uintptr(arg6))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	var connection DBusConnection // out
-	var sender string             // out
-	var objectPath string         // out
-	var interfaceName string      // out
-	var propertyName string       // out
-
-	connection = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0))).(DBusConnection)
-	sender = C.GoString(arg1)
-	objectPath = C.GoString(arg2)
-	interfaceName = C.GoString(arg3)
-	propertyName = C.GoString(arg4)
-
-	fn := v.(DBusInterfaceGetPropertyFunc)
-	err, variant := fn(connection, sender, objectPath, interfaceName, propertyName)
-
-	{
-		var refTmpIn error
-		var refTmpOut *C.GError
-
-		refTmpIn = err
-
-		refTmpOut = (*C.GError)(gerror.New(refTmpIn))
-		if refTmpOut != nil {
-			defer C.g_error_free(refTmpOut)
-		}
-
-		if refTmpOut != nil {
-			out0 := &refTmpOut
-			arg5 = out0
-		}
-	}
-	cret = (*C.GVariant)(unsafe.Pointer(variant))
-
-	return cret
-}
-
 // DBusInterfaceMethodCallFunc: the type of the @method_call function in
 // BusInterfaceVTable.
 type DBusInterfaceMethodCallFunc func(connection DBusConnection, sender string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, invocation DBusMethodInvocation)
@@ -111,61 +64,6 @@ func gotk4_DBusInterfaceMethodCallFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, a
 
 	fn := v.(DBusInterfaceMethodCallFunc)
 	fn(connection, sender, objectPath, interfaceName, methodName, parameters, invocation)
-}
-
-// DBusInterfaceSetPropertyFunc: the type of the @set_property function in
-// BusInterfaceVTable.
-type DBusInterfaceSetPropertyFunc func(connection DBusConnection, sender string, objectPath string, interfaceName string, propertyName string, value *glib.Variant) (err error, ok bool)
-
-//export gotk4_DBusInterfaceSetPropertyFunc
-func gotk4_DBusInterfaceSetPropertyFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gchar, arg3 *C.gchar, arg4 *C.gchar, arg5 *C.GVariant, arg6 **C.GError, arg7 C.gpointer) (cret C.gboolean) {
-	v := box.Get(uintptr(arg7))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	var connection DBusConnection // out
-	var sender string             // out
-	var objectPath string         // out
-	var interfaceName string      // out
-	var propertyName string       // out
-	var value *glib.Variant       // out
-
-	connection = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0))).(DBusConnection)
-	sender = C.GoString(arg1)
-	objectPath = C.GoString(arg2)
-	interfaceName = C.GoString(arg3)
-	propertyName = C.GoString(arg4)
-	value = (*glib.Variant)(unsafe.Pointer(arg5))
-	C.g_variant_ref(arg5)
-	runtime.SetFinalizer(value, func(v *glib.Variant) {
-		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
-	})
-
-	fn := v.(DBusInterfaceSetPropertyFunc)
-	err, ok := fn(connection, sender, objectPath, interfaceName, propertyName, value)
-
-	{
-		var refTmpIn error
-		var refTmpOut *C.GError
-
-		refTmpIn = err
-
-		refTmpOut = (*C.GError)(gerror.New(refTmpIn))
-		if refTmpOut != nil {
-			defer C.g_error_free(refTmpOut)
-		}
-
-		if refTmpOut != nil {
-			out0 := &refTmpOut
-			arg6 = out0
-		}
-	}
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
 }
 
 // DBusMessageFilterFunction: signature for function used in

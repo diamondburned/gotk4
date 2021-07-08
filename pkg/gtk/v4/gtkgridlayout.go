@@ -38,51 +38,7 @@ func init() {
 // attached to the same row or column; however, if you only ever need a single
 // row or column, you should consider using `GtkBoxLayout`.
 type GridLayout interface {
-	LayoutManager
-
-	// AsLayoutManager casts the class to the LayoutManager interface.
-	AsLayoutManager() LayoutManager
-
-	// Allocate assigns the given @width, @height, and @baseline to a @widget,
-	// and computes the position and sizes of the children of the @widget using
-	// the layout management policy of @manager.
-	//
-	// This method is inherited from LayoutManager
-	Allocate(widget Widget, width int, height int, baseline int)
-	// GetLayoutChild retrieves a `GtkLayoutChild` instance for the
-	// `GtkLayoutManager`, creating one if necessary.
-	//
-	// The @child widget must be a child of the widget using @manager.
-	//
-	// The `GtkLayoutChild` instance is owned by the `GtkLayoutManager`, and is
-	// guaranteed to exist as long as @child is a child of the `GtkWidget` using
-	// the given `GtkLayoutManager`.
-	//
-	// This method is inherited from LayoutManager
-	GetLayoutChild(child Widget) LayoutChild
-	// GetRequestMode retrieves the request mode of @manager.
-	//
-	// This method is inherited from LayoutManager
-	GetRequestMode() SizeRequestMode
-	// GetWidget retrieves the `GtkWidget` using the given `GtkLayoutManager`.
-	//
-	// This method is inherited from LayoutManager
-	GetWidget() Widget
-	// LayoutChanged queues a resize on the `GtkWidget` using @manager, if any.
-	//
-	// This function should be called by subclasses of `GtkLayoutManager` in
-	// response to changes to their layout management policies.
-	//
-	// This method is inherited from LayoutManager
-	LayoutChanged()
-	// Measure measures the size of the @widget using @manager, for the given
-	// @orientation and size.
-	//
-	// See the [class@Gtk.Widget] documentation on layout management for more
-	// details.
-	//
-	// This method is inherited from LayoutManager
-	Measure(widget Widget, orientation Orientation, forSize int) (minimum int, natural int, minimumBaseline int, naturalBaseline int)
+	gextras.Objector
 
 	// BaselineRow retrieves the row set with
 	// gtk_grid_layout_set_baseline_row().
@@ -129,23 +85,25 @@ type GridLayout interface {
 	SetRowSpacing(spacing uint)
 }
 
-// gridLayout implements the GridLayout interface.
-type gridLayout struct {
-	*externglib.Object
+// GridLayoutClass implements the GridLayout interface.
+type GridLayoutClass struct {
+	LayoutManagerClass
 }
 
-var _ GridLayout = (*gridLayout)(nil)
+var _ GridLayout = (*GridLayoutClass)(nil)
 
-// WrapGridLayout wraps a GObject to a type that implements
-// interface GridLayout. It is primarily used internally.
-func WrapGridLayout(obj *externglib.Object) GridLayout {
-	return gridLayout{obj}
+func wrapGridLayout(obj *externglib.Object) GridLayout {
+	return &GridLayoutClass{
+		LayoutManagerClass: LayoutManagerClass{
+			Object: obj,
+		},
+	}
 }
 
 func marshalGridLayout(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapGridLayout(obj), nil
+	return wrapGridLayout(obj), nil
 }
 
 // NewGridLayout creates a new `GtkGridLayout`.
@@ -161,35 +119,8 @@ func NewGridLayout() GridLayout {
 	return _gridLayout
 }
 
-func (g gridLayout) AsLayoutManager() LayoutManager {
-	return WrapLayoutManager(gextras.InternObject(g))
-}
-
-func (m gridLayout) Allocate(widget Widget, width int, height int, baseline int) {
-	WrapLayoutManager(gextras.InternObject(m)).Allocate(widget, width, height, baseline)
-}
-
-func (m gridLayout) GetLayoutChild(child Widget) LayoutChild {
-	return WrapLayoutManager(gextras.InternObject(m)).GetLayoutChild(child)
-}
-
-func (m gridLayout) GetRequestMode() SizeRequestMode {
-	return WrapLayoutManager(gextras.InternObject(m)).GetRequestMode()
-}
-
-func (m gridLayout) GetWidget() Widget {
-	return WrapLayoutManager(gextras.InternObject(m)).GetWidget()
-}
-
-func (m gridLayout) LayoutChanged() {
-	WrapLayoutManager(gextras.InternObject(m)).LayoutChanged()
-}
-
-func (m gridLayout) Measure(widget Widget, orientation Orientation, forSize int) (minimum int, natural int, minimumBaseline int, naturalBaseline int) {
-	return WrapLayoutManager(gextras.InternObject(m)).Measure(widget, orientation, forSize)
-}
-
-func (g gridLayout) BaselineRow() int {
+// BaselineRow retrieves the row set with gtk_grid_layout_set_baseline_row().
+func (g *GridLayoutClass) BaselineRow() int {
 	var _arg0 *C.GtkGridLayout // out
 	var _cret C.int            // in
 
@@ -204,7 +135,9 @@ func (g gridLayout) BaselineRow() int {
 	return _gint
 }
 
-func (g gridLayout) ColumnHomogeneous() bool {
+// ColumnHomogeneous checks whether all columns of @grid should have the same
+// width.
+func (g *GridLayoutClass) ColumnHomogeneous() bool {
 	var _arg0 *C.GtkGridLayout // out
 	var _cret C.gboolean       // in
 
@@ -221,7 +154,9 @@ func (g gridLayout) ColumnHomogeneous() bool {
 	return _ok
 }
 
-func (g gridLayout) ColumnSpacing() uint {
+// ColumnSpacing retrieves the spacing set with
+// gtk_grid_layout_set_column_spacing().
+func (g *GridLayoutClass) ColumnSpacing() uint {
 	var _arg0 *C.GtkGridLayout // out
 	var _cret C.guint          // in
 
@@ -236,7 +171,12 @@ func (g gridLayout) ColumnSpacing() uint {
 	return _guint
 }
 
-func (g gridLayout) RowBaselinePosition(row int) BaselinePosition {
+// RowBaselinePosition returns the baseline position of @row.
+//
+// If no value has been set with
+// [method@Gtk.GridLayout.set_row_baseline_position], the default value of
+// GTK_BASELINE_POSITION_CENTER is returned.
+func (g *GridLayoutClass) RowBaselinePosition(row int) BaselinePosition {
 	var _arg0 *C.GtkGridLayout      // out
 	var _arg1 C.int                 // out
 	var _cret C.GtkBaselinePosition // in
@@ -253,7 +193,8 @@ func (g gridLayout) RowBaselinePosition(row int) BaselinePosition {
 	return _baselinePosition
 }
 
-func (g gridLayout) RowHomogeneous() bool {
+// RowHomogeneous checks whether all rows of @grid should have the same height.
+func (g *GridLayoutClass) RowHomogeneous() bool {
 	var _arg0 *C.GtkGridLayout // out
 	var _cret C.gboolean       // in
 
@@ -270,7 +211,8 @@ func (g gridLayout) RowHomogeneous() bool {
 	return _ok
 }
 
-func (g gridLayout) RowSpacing() uint {
+// RowSpacing retrieves the spacing set with gtk_grid_layout_set_row_spacing().
+func (g *GridLayoutClass) RowSpacing() uint {
 	var _arg0 *C.GtkGridLayout // out
 	var _cret C.guint          // in
 
@@ -285,7 +227,12 @@ func (g gridLayout) RowSpacing() uint {
 	return _guint
 }
 
-func (g gridLayout) SetBaselineRow(row int) {
+// SetBaselineRow sets which row defines the global baseline for the entire
+// grid.
+//
+// Each row in the grid can have its own local baseline, but only one of those
+// is global, meaning it will be the baseline in the parent of the @grid.
+func (g *GridLayoutClass) SetBaselineRow(row int) {
 	var _arg0 *C.GtkGridLayout // out
 	var _arg1 C.int            // out
 
@@ -295,7 +242,9 @@ func (g gridLayout) SetBaselineRow(row int) {
 	C.gtk_grid_layout_set_baseline_row(_arg0, _arg1)
 }
 
-func (g gridLayout) SetColumnHomogeneous(homogeneous bool) {
+// SetColumnHomogeneous sets whether all columns of @grid should have the same
+// width.
+func (g *GridLayoutClass) SetColumnHomogeneous(homogeneous bool) {
 	var _arg0 *C.GtkGridLayout // out
 	var _arg1 C.gboolean       // out
 
@@ -307,7 +256,9 @@ func (g gridLayout) SetColumnHomogeneous(homogeneous bool) {
 	C.gtk_grid_layout_set_column_homogeneous(_arg0, _arg1)
 }
 
-func (g gridLayout) SetColumnSpacing(spacing uint) {
+// SetColumnSpacing sets the amount of space to insert between consecutive
+// columns.
+func (g *GridLayoutClass) SetColumnSpacing(spacing uint) {
 	var _arg0 *C.GtkGridLayout // out
 	var _arg1 C.guint          // out
 
@@ -317,7 +268,9 @@ func (g gridLayout) SetColumnSpacing(spacing uint) {
 	C.gtk_grid_layout_set_column_spacing(_arg0, _arg1)
 }
 
-func (g gridLayout) SetRowBaselinePosition(row int, pos BaselinePosition) {
+// SetRowBaselinePosition sets how the baseline should be positioned on @row of
+// the grid, in case that row is assigned more space than is requested.
+func (g *GridLayoutClass) SetRowBaselinePosition(row int, pos BaselinePosition) {
 	var _arg0 *C.GtkGridLayout      // out
 	var _arg1 C.int                 // out
 	var _arg2 C.GtkBaselinePosition // out
@@ -329,7 +282,8 @@ func (g gridLayout) SetRowBaselinePosition(row int, pos BaselinePosition) {
 	C.gtk_grid_layout_set_row_baseline_position(_arg0, _arg1, _arg2)
 }
 
-func (g gridLayout) SetRowHomogeneous(homogeneous bool) {
+// SetRowHomogeneous sets whether all rows of @grid should have the same height.
+func (g *GridLayoutClass) SetRowHomogeneous(homogeneous bool) {
 	var _arg0 *C.GtkGridLayout // out
 	var _arg1 C.gboolean       // out
 
@@ -341,7 +295,8 @@ func (g gridLayout) SetRowHomogeneous(homogeneous bool) {
 	C.gtk_grid_layout_set_row_homogeneous(_arg0, _arg1)
 }
 
-func (g gridLayout) SetRowSpacing(spacing uint) {
+// SetRowSpacing sets the amount of space to insert between consecutive rows.
+func (g *GridLayoutClass) SetRowSpacing(spacing uint) {
 	var _arg0 *C.GtkGridLayout // out
 	var _arg1 C.guint          // out
 
@@ -353,21 +308,7 @@ func (g gridLayout) SetRowSpacing(spacing uint) {
 
 // GridLayoutChild: `GtkLayoutChild` subclass for children in a `GtkGridLayout`.
 type GridLayoutChild interface {
-	LayoutChild
-
-	// AsLayoutChild casts the class to the LayoutChild interface.
-	AsLayoutChild() LayoutChild
-
-	// GetChildWidget retrieves the `GtkWidget` associated to the given
-	// @layout_child.
-	//
-	// This method is inherited from LayoutChild
-	GetChildWidget() Widget
-	// GetLayoutManager retrieves the `GtkLayoutManager` instance that created
-	// the given @layout_child.
-	//
-	// This method is inherited from LayoutChild
-	GetLayoutManager() LayoutManager
+	gextras.Objector
 
 	// Column retrieves the column number to which @child attaches its left
 	// side.
@@ -388,38 +329,29 @@ type GridLayoutChild interface {
 	SetRowSpan(span int)
 }
 
-// gridLayoutChild implements the GridLayoutChild interface.
-type gridLayoutChild struct {
-	*externglib.Object
+// GridLayoutChildClass implements the GridLayoutChild interface.
+type GridLayoutChildClass struct {
+	LayoutChildClass
 }
 
-var _ GridLayoutChild = (*gridLayoutChild)(nil)
+var _ GridLayoutChild = (*GridLayoutChildClass)(nil)
 
-// WrapGridLayoutChild wraps a GObject to a type that implements
-// interface GridLayoutChild. It is primarily used internally.
-func WrapGridLayoutChild(obj *externglib.Object) GridLayoutChild {
-	return gridLayoutChild{obj}
+func wrapGridLayoutChild(obj *externglib.Object) GridLayoutChild {
+	return &GridLayoutChildClass{
+		LayoutChildClass: LayoutChildClass{
+			Object: obj,
+		},
+	}
 }
 
 func marshalGridLayoutChild(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapGridLayoutChild(obj), nil
+	return wrapGridLayoutChild(obj), nil
 }
 
-func (g gridLayoutChild) AsLayoutChild() LayoutChild {
-	return WrapLayoutChild(gextras.InternObject(g))
-}
-
-func (l gridLayoutChild) GetChildWidget() Widget {
-	return WrapLayoutChild(gextras.InternObject(l)).GetChildWidget()
-}
-
-func (l gridLayoutChild) GetLayoutManager() LayoutManager {
-	return WrapLayoutChild(gextras.InternObject(l)).GetLayoutManager()
-}
-
-func (c gridLayoutChild) Column() int {
+// Column retrieves the column number to which @child attaches its left side.
+func (c *GridLayoutChildClass) Column() int {
 	var _arg0 *C.GtkGridLayoutChild // out
 	var _cret C.int                 // in
 
@@ -434,7 +366,8 @@ func (c gridLayoutChild) Column() int {
 	return _gint
 }
 
-func (c gridLayoutChild) ColumnSpan() int {
+// ColumnSpan retrieves the number of columns that @child spans to.
+func (c *GridLayoutChildClass) ColumnSpan() int {
 	var _arg0 *C.GtkGridLayoutChild // out
 	var _cret C.int                 // in
 
@@ -449,7 +382,8 @@ func (c gridLayoutChild) ColumnSpan() int {
 	return _gint
 }
 
-func (c gridLayoutChild) Row() int {
+// Row retrieves the row number to which @child attaches its top side.
+func (c *GridLayoutChildClass) Row() int {
 	var _arg0 *C.GtkGridLayoutChild // out
 	var _cret C.int                 // in
 
@@ -464,7 +398,8 @@ func (c gridLayoutChild) Row() int {
 	return _gint
 }
 
-func (c gridLayoutChild) RowSpan() int {
+// RowSpan retrieves the number of rows that @child spans to.
+func (c *GridLayoutChildClass) RowSpan() int {
 	var _arg0 *C.GtkGridLayoutChild // out
 	var _cret C.int                 // in
 
@@ -479,7 +414,8 @@ func (c gridLayoutChild) RowSpan() int {
 	return _gint
 }
 
-func (c gridLayoutChild) SetColumn(column int) {
+// SetColumn sets the column number to attach the left side of @child.
+func (c *GridLayoutChildClass) SetColumn(column int) {
 	var _arg0 *C.GtkGridLayoutChild // out
 	var _arg1 C.int                 // out
 
@@ -489,7 +425,8 @@ func (c gridLayoutChild) SetColumn(column int) {
 	C.gtk_grid_layout_child_set_column(_arg0, _arg1)
 }
 
-func (c gridLayoutChild) SetColumnSpan(span int) {
+// SetColumnSpan sets the number of columns @child spans to.
+func (c *GridLayoutChildClass) SetColumnSpan(span int) {
 	var _arg0 *C.GtkGridLayoutChild // out
 	var _arg1 C.int                 // out
 
@@ -499,7 +436,8 @@ func (c gridLayoutChild) SetColumnSpan(span int) {
 	C.gtk_grid_layout_child_set_column_span(_arg0, _arg1)
 }
 
-func (c gridLayoutChild) SetRow(row int) {
+// SetRow sets the row to place @child in.
+func (c *GridLayoutChildClass) SetRow(row int) {
 	var _arg0 *C.GtkGridLayoutChild // out
 	var _arg1 C.int                 // out
 
@@ -509,7 +447,8 @@ func (c gridLayoutChild) SetRow(row int) {
 	C.gtk_grid_layout_child_set_row(_arg0, _arg1)
 }
 
-func (c gridLayoutChild) SetRowSpan(span int) {
+// SetRowSpan sets the number of rows @child spans to.
+func (c *GridLayoutChildClass) SetRowSpan(span int) {
 	var _arg0 *C.GtkGridLayoutChild // out
 	var _arg1 C.int                 // out
 

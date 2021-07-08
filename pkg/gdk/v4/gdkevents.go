@@ -47,28 +47,28 @@ type CrossingMode int
 
 const (
 	// Normal: crossing because of pointer motion.
-	CrossingNormal CrossingMode = iota
+	CrossingModeNormal CrossingMode = iota
 	// Grab: crossing because a grab is activated.
-	CrossingGrab
+	CrossingModeGrab
 	// Ungrab: crossing because a grab is deactivated.
-	CrossingUngrab
+	CrossingModeUngrab
 	// GTKGrab: crossing because a GTK grab is activated.
-	CrossingGTKGrab
+	CrossingModeGTKGrab
 	// GTKUngrab: crossing because a GTK grab is deactivated.
-	CrossingGTKUngrab
+	CrossingModeGTKUngrab
 	// StateChanged: crossing because a GTK widget changed state (e.g.
 	// sensitivity).
-	CrossingStateChanged
+	CrossingModeStateChanged
 	// TouchBegin: crossing because a touch sequence has begun, this event is
 	// synthetic as the pointer might have not left the surface.
-	CrossingTouchBegin
+	CrossingModeTouchBegin
 	// TouchEnd: crossing because a touch sequence has ended, this event is
 	// synthetic as the pointer might have not left the surface.
-	CrossingTouchEnd
+	CrossingModeTouchEnd
 	// DeviceSwitch: crossing because of a device switch (i.e. a mouse taking
 	// control of the pointer after a touch device), this event is synthetic as
 	// the pointer didn’t leave the surface.
-	CrossingDeviceSwitch
+	CrossingModeDeviceSwitch
 )
 
 func marshalCrossingMode(p uintptr) (interface{}, error) {
@@ -82,68 +82,68 @@ const (
 	// Delete: the window manager has requested that the toplevel surface be
 	// hidden or destroyed, usually when the user clicks on a special icon in
 	// the title bar.
-	Delete EventType = iota
+	EventTypeDelete EventType = iota
 	// MotionNotify: the pointer (usually a mouse) has moved.
-	MotionNotify
+	EventTypeMotionNotify
 	// ButtonPress: mouse button has been pressed.
-	ButtonPress
+	EventTypeButtonPress
 	// ButtonRelease: mouse button has been released.
-	ButtonRelease
+	EventTypeButtonRelease
 	// KeyPress: key has been pressed.
-	KeyPress
+	EventTypeKeyPress
 	// KeyRelease: key has been released.
-	KeyRelease
+	EventTypeKeyRelease
 	// EnterNotify: the pointer has entered the surface.
-	EnterNotify
+	EventTypeEnterNotify
 	// LeaveNotify: the pointer has left the surface.
-	LeaveNotify
+	EventTypeLeaveNotify
 	// FocusChange: the keyboard focus has entered or left the surface.
-	FocusChange
+	EventTypeFocusChange
 	// ProximityIn: input device has moved into contact with a sensing surface
 	// (e.g. a touchscreen or graphics tablet).
-	ProximityIn
+	EventTypeProximityIn
 	// ProximityOut: input device has moved out of contact with a sensing
 	// surface.
-	ProximityOut
+	EventTypeProximityOut
 	// DragEnter: the mouse has entered the surface while a drag is in progress.
-	DragEnter
+	EventTypeDragEnter
 	// DragLeave: the mouse has left the surface while a drag is in progress.
-	DragLeave
+	EventTypeDragLeave
 	// DragMotion: the mouse has moved in the surface while a drag is in
 	// progress.
-	DragMotion
+	EventTypeDragMotion
 	// DropStart: drop operation onto the surface has started.
-	DropStart
+	EventTypeDropStart
 	// Scroll: the scroll wheel was turned
-	Scroll
+	EventTypeScroll
 	// GrabBroken: pointer or keyboard grab was broken.
-	GrabBroken
+	EventTypeGrabBroken
 	// TouchBegin: new touch event sequence has just started.
-	TouchBegin
+	EventTypeTouchBegin
 	// TouchUpdate: touch event sequence has been updated.
-	TouchUpdate
+	EventTypeTouchUpdate
 	// TouchEnd: touch event sequence has finished.
-	TouchEnd
+	EventTypeTouchEnd
 	// TouchCancel: touch event sequence has been canceled.
-	TouchCancel
+	EventTypeTouchCancel
 	// TouchpadSwipe: touchpad swipe gesture event, the current state is
 	// determined by its phase field.
-	TouchpadSwipe
+	EventTypeTouchpadSwipe
 	// TouchpadPinch: touchpad pinch gesture event, the current state is
 	// determined by its phase field.
-	TouchpadPinch
+	EventTypeTouchpadPinch
 	// PadButtonPress: tablet pad button press event.
-	PadButtonPress
+	EventTypePadButtonPress
 	// PadButtonRelease: tablet pad button release event.
-	PadButtonRelease
+	EventTypePadButtonRelease
 	// PadRing: tablet pad axis event from a "ring".
-	PadRing
+	EventTypePadRing
 	// PadStrip: tablet pad axis event from a "strip".
-	PadStrip
+	EventTypePadStrip
 	// PadGroupMode: tablet pad group mode change.
-	PadGroupMode
+	EventTypePadGroupMode
 	// EventLast marks the end of the GdkEventType enumeration.
-	EventLast
+	EventTypeEventLast
 )
 
 func marshalEventType(p uintptr) (interface{}, error) {
@@ -178,22 +178,22 @@ type NotifyType int
 const (
 	// Ancestor: the surface is entered from an ancestor or left towards an
 	// ancestor.
-	NotifyAncestor NotifyType = iota
+	NotifyTypeAncestor NotifyType = iota
 	// Virtual: the pointer moves between an ancestor and an inferior of the
 	// surface.
-	NotifyVirtual
+	NotifyTypeVirtual
 	// Inferior: the surface is entered from an inferior or left towards an
 	// inferior.
-	NotifyInferior
+	NotifyTypeInferior
 	// Nonlinear: the surface is entered from or left towards a surface which is
 	// neither an ancestor nor an inferior.
-	NotifyNonlinear
+	NotifyTypeNonlinear
 	// NonlinearVirtual: the pointer moves between two surfaces which are not
 	// ancestors of each other and the surface is part of the ancestor chain
 	// between one of these surfaces and their least common ancestor.
-	NotifyNonlinearVirtual
+	NotifyTypeNonlinearVirtual
 	// Unknown type of enter/leave event occurred.
-	NotifyUnknown
+	NotifyTypeUnknown
 )
 
 func marshalNotifyType(p uintptr) (interface{}, error) {
@@ -205,16 +205,16 @@ type ScrollDirection int
 
 const (
 	// Up: the surface is scrolled up.
-	ScrollUp ScrollDirection = iota
+	ScrollDirectionUp ScrollDirection = iota
 	// Down: the surface is scrolled down.
-	ScrollDown
+	ScrollDirectionDown
 	// Left: the surface is scrolled to the left.
-	ScrollLeft
+	ScrollDirectionLeft
 	// Right: the surface is scrolled to the right.
-	ScrollRight
+	ScrollDirectionRight
 	// Smooth: the scrolling is determined by the delta values in scroll events.
 	// See gdk_scroll_event_get_deltas()
-	ScrollSmooth
+	ScrollDirectionSmooth
 )
 
 func marshalScrollDirection(p uintptr) (interface{}, error) {
@@ -342,195 +342,35 @@ func EventsGetDistance(event1 Event, event2 Event) (float64, bool) {
 
 // ButtonEvent: event related to a button on a pointer device.
 type ButtonEvent interface {
-	Event
-
-	// AsEvent casts the class to the Event interface.
-	AsEvent() Event
-
-	// GetAxes extracts all axis values from an event.
-	//
-	// This method is inherited from Event
-	GetAxes() ([]float64, bool)
-	// GetAxis: extract the axis value for a particular axis use from an event
-	// structure.
-	//
-	// This method is inherited from Event
-	GetAxis(axisUse AxisUse) (float64, bool)
-	// GetDevice returns the device of an event.
-	//
-	// This method is inherited from Event
-	GetDevice() Device
-	// GetDeviceTool returns a `GdkDeviceTool` representing the tool that caused
-	// the event.
-	//
-	// If the was not generated by a device that supports different tools (such
-	// as a tablet), this function will return nil.
-	//
-	// Note: the `GdkDeviceTool` will be constant during the application
-	// lifetime, if settings must be stored persistently across runs, see
-	// [method@Gdk.DeviceTool.get_serial].
-	//
-	// This method is inherited from Event
-	GetDeviceTool() DeviceTool
-	// GetDisplay retrieves the display associated to the @event.
-	//
-	// This method is inherited from Event
-	GetDisplay() Display
-	// GetEventSequence retuns the event sequence to which the event belongs.
-	//
-	// Related touch events are connected in a sequence. Other events typically
-	// don't have event sequence information.
-	//
-	// This method is inherited from Event
-	GetEventSequence() *EventSequence
-	// GetEventType retrieves the type of the event.
-	//
-	// This method is inherited from Event
-	GetEventType() EventType
-	// GetModifierState returns the modifier state field of an event.
-	//
-	// This method is inherited from Event
-	GetModifierState() ModifierType
-	// GetPointerEmulated returns whether this event is an 'emulated' pointer
-	// event.
-	//
-	// Emulated pointer events typically originate from a touch events.
-	//
-	// This method is inherited from Event
-	GetPointerEmulated() bool
-	// GetPosition: extract the event surface relative x/y coordinates from an
-	// event.
-	//
-	// This method is inherited from Event
-	GetPosition() (x float64, y float64, ok bool)
-	// GetSeat returns the seat that originated the event.
-	//
-	// This method is inherited from Event
-	GetSeat() Seat
-	// GetSurface extracts the surface associated with an event.
-	//
-	// This method is inherited from Event
-	GetSurface() Surface
-	// GetTime returns the timestamp of @event.
-	//
-	// Not all events have timestamps. In that case, this function returns
-	// GDK_CURRENT_TIME.
-	//
-	// This method is inherited from Event
-	GetTime() uint32
-	// Ref: increase the ref count of @event.
-	//
-	// This method is inherited from Event
-	ref() Event
-	// TriggersContextMenu returns whether a `GdkEvent` should trigger a context
-	// menu, according to platform conventions.
-	//
-	// The right mouse button typically triggers context menus.
-	//
-	// This function should always be used instead of simply checking for
-	// event->button == GDK_BUTTON_SECONDARY.
-	//
-	// This method is inherited from Event
-	TriggersContextMenu() bool
-	// Unref: decrease the ref count of @event.
-	//
-	// If the last reference is dropped, the structure is freed.
-	//
-	// This method is inherited from Event
-	unref()
+	gextras.Objector
 
 	// Button: extract the button number from a button event.
 	Button() uint
 }
 
-// buttonEvent implements the ButtonEvent interface.
-type buttonEvent struct {
-	*externglib.Object
+// ButtonEventClass implements the ButtonEvent interface.
+type ButtonEventClass struct {
+	EventClass
 }
 
-var _ ButtonEvent = (*buttonEvent)(nil)
+var _ ButtonEvent = (*ButtonEventClass)(nil)
 
-// WrapButtonEvent wraps a GObject to a type that implements
-// interface ButtonEvent. It is primarily used internally.
-func WrapButtonEvent(obj *externglib.Object) ButtonEvent {
-	return buttonEvent{obj}
+func wrapButtonEvent(obj *externglib.Object) ButtonEvent {
+	return &ButtonEventClass{
+		EventClass: EventClass{
+			Object: obj,
+		},
+	}
 }
 
 func marshalButtonEvent(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapButtonEvent(obj), nil
+	return wrapButtonEvent(obj), nil
 }
 
-func (b buttonEvent) AsEvent() Event {
-	return WrapEvent(gextras.InternObject(b))
-}
-
-func (e buttonEvent) GetAxes() ([]float64, bool) {
-	return WrapEvent(gextras.InternObject(e)).GetAxes()
-}
-
-func (e buttonEvent) GetAxis(axisUse AxisUse) (float64, bool) {
-	return WrapEvent(gextras.InternObject(e)).GetAxis(axisUse)
-}
-
-func (e buttonEvent) GetDevice() Device {
-	return WrapEvent(gextras.InternObject(e)).GetDevice()
-}
-
-func (e buttonEvent) GetDeviceTool() DeviceTool {
-	return WrapEvent(gextras.InternObject(e)).GetDeviceTool()
-}
-
-func (e buttonEvent) GetDisplay() Display {
-	return WrapEvent(gextras.InternObject(e)).GetDisplay()
-}
-
-func (e buttonEvent) GetEventSequence() *EventSequence {
-	return WrapEvent(gextras.InternObject(e)).GetEventSequence()
-}
-
-func (e buttonEvent) GetEventType() EventType {
-	return WrapEvent(gextras.InternObject(e)).GetEventType()
-}
-
-func (e buttonEvent) GetModifierState() ModifierType {
-	return WrapEvent(gextras.InternObject(e)).GetModifierState()
-}
-
-func (e buttonEvent) GetPointerEmulated() bool {
-	return WrapEvent(gextras.InternObject(e)).GetPointerEmulated()
-}
-
-func (e buttonEvent) GetPosition() (x float64, y float64, ok bool) {
-	return WrapEvent(gextras.InternObject(e)).GetPosition()
-}
-
-func (e buttonEvent) GetSeat() Seat {
-	return WrapEvent(gextras.InternObject(e)).GetSeat()
-}
-
-func (e buttonEvent) GetSurface() Surface {
-	return WrapEvent(gextras.InternObject(e)).GetSurface()
-}
-
-func (e buttonEvent) GetTime() uint32 {
-	return WrapEvent(gextras.InternObject(e)).GetTime()
-}
-
-func (e buttonEvent) ref() Event {
-	return WrapEvent(gextras.InternObject(e)).ref()
-}
-
-func (e buttonEvent) TriggersContextMenu() bool {
-	return WrapEvent(gextras.InternObject(e)).TriggersContextMenu()
-}
-
-func (e buttonEvent) unref() {
-	WrapEvent(gextras.InternObject(e)).unref()
-}
-
-func (e buttonEvent) Button() uint {
+// Button: extract the button number from a button event.
+func (e *ButtonEventClass) Button() uint {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.guint     // in
 
@@ -547,102 +387,7 @@ func (e buttonEvent) Button() uint {
 
 // CrossingEvent: event caused by a pointing device moving between surfaces.
 type CrossingEvent interface {
-	Event
-
-	// AsEvent casts the class to the Event interface.
-	AsEvent() Event
-
-	// GetAxes extracts all axis values from an event.
-	//
-	// This method is inherited from Event
-	GetAxes() ([]float64, bool)
-	// GetAxis: extract the axis value for a particular axis use from an event
-	// structure.
-	//
-	// This method is inherited from Event
-	GetAxis(axisUse AxisUse) (float64, bool)
-	// GetDevice returns the device of an event.
-	//
-	// This method is inherited from Event
-	GetDevice() Device
-	// GetDeviceTool returns a `GdkDeviceTool` representing the tool that caused
-	// the event.
-	//
-	// If the was not generated by a device that supports different tools (such
-	// as a tablet), this function will return nil.
-	//
-	// Note: the `GdkDeviceTool` will be constant during the application
-	// lifetime, if settings must be stored persistently across runs, see
-	// [method@Gdk.DeviceTool.get_serial].
-	//
-	// This method is inherited from Event
-	GetDeviceTool() DeviceTool
-	// GetDisplay retrieves the display associated to the @event.
-	//
-	// This method is inherited from Event
-	GetDisplay() Display
-	// GetEventSequence retuns the event sequence to which the event belongs.
-	//
-	// Related touch events are connected in a sequence. Other events typically
-	// don't have event sequence information.
-	//
-	// This method is inherited from Event
-	GetEventSequence() *EventSequence
-	// GetEventType retrieves the type of the event.
-	//
-	// This method is inherited from Event
-	GetEventType() EventType
-	// GetModifierState returns the modifier state field of an event.
-	//
-	// This method is inherited from Event
-	GetModifierState() ModifierType
-	// GetPointerEmulated returns whether this event is an 'emulated' pointer
-	// event.
-	//
-	// Emulated pointer events typically originate from a touch events.
-	//
-	// This method is inherited from Event
-	GetPointerEmulated() bool
-	// GetPosition: extract the event surface relative x/y coordinates from an
-	// event.
-	//
-	// This method is inherited from Event
-	GetPosition() (x float64, y float64, ok bool)
-	// GetSeat returns the seat that originated the event.
-	//
-	// This method is inherited from Event
-	GetSeat() Seat
-	// GetSurface extracts the surface associated with an event.
-	//
-	// This method is inherited from Event
-	GetSurface() Surface
-	// GetTime returns the timestamp of @event.
-	//
-	// Not all events have timestamps. In that case, this function returns
-	// GDK_CURRENT_TIME.
-	//
-	// This method is inherited from Event
-	GetTime() uint32
-	// Ref: increase the ref count of @event.
-	//
-	// This method is inherited from Event
-	ref() Event
-	// TriggersContextMenu returns whether a `GdkEvent` should trigger a context
-	// menu, according to platform conventions.
-	//
-	// The right mouse button typically triggers context menus.
-	//
-	// This function should always be used instead of simply checking for
-	// event->button == GDK_BUTTON_SECONDARY.
-	//
-	// This method is inherited from Event
-	TriggersContextMenu() bool
-	// Unref: decrease the ref count of @event.
-	//
-	// If the last reference is dropped, the structure is freed.
-	//
-	// This method is inherited from Event
-	unref()
+	gextras.Objector
 
 	// Detail extracts the notify detail from a crossing event.
 	Detail() NotifyType
@@ -652,94 +397,29 @@ type CrossingEvent interface {
 	Mode() CrossingMode
 }
 
-// crossingEvent implements the CrossingEvent interface.
-type crossingEvent struct {
-	*externglib.Object
+// CrossingEventClass implements the CrossingEvent interface.
+type CrossingEventClass struct {
+	EventClass
 }
 
-var _ CrossingEvent = (*crossingEvent)(nil)
+var _ CrossingEvent = (*CrossingEventClass)(nil)
 
-// WrapCrossingEvent wraps a GObject to a type that implements
-// interface CrossingEvent. It is primarily used internally.
-func WrapCrossingEvent(obj *externglib.Object) CrossingEvent {
-	return crossingEvent{obj}
+func wrapCrossingEvent(obj *externglib.Object) CrossingEvent {
+	return &CrossingEventClass{
+		EventClass: EventClass{
+			Object: obj,
+		},
+	}
 }
 
 func marshalCrossingEvent(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapCrossingEvent(obj), nil
+	return wrapCrossingEvent(obj), nil
 }
 
-func (c crossingEvent) AsEvent() Event {
-	return WrapEvent(gextras.InternObject(c))
-}
-
-func (e crossingEvent) GetAxes() ([]float64, bool) {
-	return WrapEvent(gextras.InternObject(e)).GetAxes()
-}
-
-func (e crossingEvent) GetAxis(axisUse AxisUse) (float64, bool) {
-	return WrapEvent(gextras.InternObject(e)).GetAxis(axisUse)
-}
-
-func (e crossingEvent) GetDevice() Device {
-	return WrapEvent(gextras.InternObject(e)).GetDevice()
-}
-
-func (e crossingEvent) GetDeviceTool() DeviceTool {
-	return WrapEvent(gextras.InternObject(e)).GetDeviceTool()
-}
-
-func (e crossingEvent) GetDisplay() Display {
-	return WrapEvent(gextras.InternObject(e)).GetDisplay()
-}
-
-func (e crossingEvent) GetEventSequence() *EventSequence {
-	return WrapEvent(gextras.InternObject(e)).GetEventSequence()
-}
-
-func (e crossingEvent) GetEventType() EventType {
-	return WrapEvent(gextras.InternObject(e)).GetEventType()
-}
-
-func (e crossingEvent) GetModifierState() ModifierType {
-	return WrapEvent(gextras.InternObject(e)).GetModifierState()
-}
-
-func (e crossingEvent) GetPointerEmulated() bool {
-	return WrapEvent(gextras.InternObject(e)).GetPointerEmulated()
-}
-
-func (e crossingEvent) GetPosition() (x float64, y float64, ok bool) {
-	return WrapEvent(gextras.InternObject(e)).GetPosition()
-}
-
-func (e crossingEvent) GetSeat() Seat {
-	return WrapEvent(gextras.InternObject(e)).GetSeat()
-}
-
-func (e crossingEvent) GetSurface() Surface {
-	return WrapEvent(gextras.InternObject(e)).GetSurface()
-}
-
-func (e crossingEvent) GetTime() uint32 {
-	return WrapEvent(gextras.InternObject(e)).GetTime()
-}
-
-func (e crossingEvent) ref() Event {
-	return WrapEvent(gextras.InternObject(e)).ref()
-}
-
-func (e crossingEvent) TriggersContextMenu() bool {
-	return WrapEvent(gextras.InternObject(e)).TriggersContextMenu()
-}
-
-func (e crossingEvent) unref() {
-	WrapEvent(gextras.InternObject(e)).unref()
-}
-
-func (e crossingEvent) Detail() NotifyType {
+// Detail extracts the notify detail from a crossing event.
+func (e *CrossingEventClass) Detail() NotifyType {
 	var _arg0 *C.GdkEvent     // out
 	var _cret C.GdkNotifyType // in
 
@@ -754,7 +434,8 @@ func (e crossingEvent) Detail() NotifyType {
 	return _notifyType
 }
 
-func (e crossingEvent) Focus() bool {
+// Focus checks if the @event surface is the focus surface.
+func (e *CrossingEventClass) Focus() bool {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.gboolean  // in
 
@@ -771,7 +452,8 @@ func (e crossingEvent) Focus() bool {
 	return _ok
 }
 
-func (e crossingEvent) Mode() CrossingMode {
+// Mode extracts the crossing mode from a crossing event.
+func (e *CrossingEventClass) Mode() CrossingMode {
 	var _arg0 *C.GdkEvent       // out
 	var _cret C.GdkCrossingMode // in
 
@@ -788,195 +470,35 @@ func (e crossingEvent) Mode() CrossingMode {
 
 // DNDEvent: event related to drag and drop operations.
 type DNDEvent interface {
-	Event
-
-	// AsEvent casts the class to the Event interface.
-	AsEvent() Event
-
-	// GetAxes extracts all axis values from an event.
-	//
-	// This method is inherited from Event
-	GetAxes() ([]float64, bool)
-	// GetAxis: extract the axis value for a particular axis use from an event
-	// structure.
-	//
-	// This method is inherited from Event
-	GetAxis(axisUse AxisUse) (float64, bool)
-	// GetDevice returns the device of an event.
-	//
-	// This method is inherited from Event
-	GetDevice() Device
-	// GetDeviceTool returns a `GdkDeviceTool` representing the tool that caused
-	// the event.
-	//
-	// If the was not generated by a device that supports different tools (such
-	// as a tablet), this function will return nil.
-	//
-	// Note: the `GdkDeviceTool` will be constant during the application
-	// lifetime, if settings must be stored persistently across runs, see
-	// [method@Gdk.DeviceTool.get_serial].
-	//
-	// This method is inherited from Event
-	GetDeviceTool() DeviceTool
-	// GetDisplay retrieves the display associated to the @event.
-	//
-	// This method is inherited from Event
-	GetDisplay() Display
-	// GetEventSequence retuns the event sequence to which the event belongs.
-	//
-	// Related touch events are connected in a sequence. Other events typically
-	// don't have event sequence information.
-	//
-	// This method is inherited from Event
-	GetEventSequence() *EventSequence
-	// GetEventType retrieves the type of the event.
-	//
-	// This method is inherited from Event
-	GetEventType() EventType
-	// GetModifierState returns the modifier state field of an event.
-	//
-	// This method is inherited from Event
-	GetModifierState() ModifierType
-	// GetPointerEmulated returns whether this event is an 'emulated' pointer
-	// event.
-	//
-	// Emulated pointer events typically originate from a touch events.
-	//
-	// This method is inherited from Event
-	GetPointerEmulated() bool
-	// GetPosition: extract the event surface relative x/y coordinates from an
-	// event.
-	//
-	// This method is inherited from Event
-	GetPosition() (x float64, y float64, ok bool)
-	// GetSeat returns the seat that originated the event.
-	//
-	// This method is inherited from Event
-	GetSeat() Seat
-	// GetSurface extracts the surface associated with an event.
-	//
-	// This method is inherited from Event
-	GetSurface() Surface
-	// GetTime returns the timestamp of @event.
-	//
-	// Not all events have timestamps. In that case, this function returns
-	// GDK_CURRENT_TIME.
-	//
-	// This method is inherited from Event
-	GetTime() uint32
-	// Ref: increase the ref count of @event.
-	//
-	// This method is inherited from Event
-	ref() Event
-	// TriggersContextMenu returns whether a `GdkEvent` should trigger a context
-	// menu, according to platform conventions.
-	//
-	// The right mouse button typically triggers context menus.
-	//
-	// This function should always be used instead of simply checking for
-	// event->button == GDK_BUTTON_SECONDARY.
-	//
-	// This method is inherited from Event
-	TriggersContextMenu() bool
-	// Unref: decrease the ref count of @event.
-	//
-	// If the last reference is dropped, the structure is freed.
-	//
-	// This method is inherited from Event
-	unref()
+	gextras.Objector
 
 	// Drop gets the `GdkDrop` object from a DND event.
 	Drop() Drop
 }
 
-// dndEvent implements the DNDEvent interface.
-type dndEvent struct {
-	*externglib.Object
+// DNDEventClass implements the DNDEvent interface.
+type DNDEventClass struct {
+	EventClass
 }
 
-var _ DNDEvent = (*dndEvent)(nil)
+var _ DNDEvent = (*DNDEventClass)(nil)
 
-// WrapDNDEvent wraps a GObject to a type that implements
-// interface DNDEvent. It is primarily used internally.
-func WrapDNDEvent(obj *externglib.Object) DNDEvent {
-	return dndEvent{obj}
+func wrapDNDEvent(obj *externglib.Object) DNDEvent {
+	return &DNDEventClass{
+		EventClass: EventClass{
+			Object: obj,
+		},
+	}
 }
 
 func marshalDNDEvent(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapDNDEvent(obj), nil
+	return wrapDNDEvent(obj), nil
 }
 
-func (d dndEvent) AsEvent() Event {
-	return WrapEvent(gextras.InternObject(d))
-}
-
-func (e dndEvent) GetAxes() ([]float64, bool) {
-	return WrapEvent(gextras.InternObject(e)).GetAxes()
-}
-
-func (e dndEvent) GetAxis(axisUse AxisUse) (float64, bool) {
-	return WrapEvent(gextras.InternObject(e)).GetAxis(axisUse)
-}
-
-func (e dndEvent) GetDevice() Device {
-	return WrapEvent(gextras.InternObject(e)).GetDevice()
-}
-
-func (e dndEvent) GetDeviceTool() DeviceTool {
-	return WrapEvent(gextras.InternObject(e)).GetDeviceTool()
-}
-
-func (e dndEvent) GetDisplay() Display {
-	return WrapEvent(gextras.InternObject(e)).GetDisplay()
-}
-
-func (e dndEvent) GetEventSequence() *EventSequence {
-	return WrapEvent(gextras.InternObject(e)).GetEventSequence()
-}
-
-func (e dndEvent) GetEventType() EventType {
-	return WrapEvent(gextras.InternObject(e)).GetEventType()
-}
-
-func (e dndEvent) GetModifierState() ModifierType {
-	return WrapEvent(gextras.InternObject(e)).GetModifierState()
-}
-
-func (e dndEvent) GetPointerEmulated() bool {
-	return WrapEvent(gextras.InternObject(e)).GetPointerEmulated()
-}
-
-func (e dndEvent) GetPosition() (x float64, y float64, ok bool) {
-	return WrapEvent(gextras.InternObject(e)).GetPosition()
-}
-
-func (e dndEvent) GetSeat() Seat {
-	return WrapEvent(gextras.InternObject(e)).GetSeat()
-}
-
-func (e dndEvent) GetSurface() Surface {
-	return WrapEvent(gextras.InternObject(e)).GetSurface()
-}
-
-func (e dndEvent) GetTime() uint32 {
-	return WrapEvent(gextras.InternObject(e)).GetTime()
-}
-
-func (e dndEvent) ref() Event {
-	return WrapEvent(gextras.InternObject(e)).ref()
-}
-
-func (e dndEvent) TriggersContextMenu() bool {
-	return WrapEvent(gextras.InternObject(e)).TriggersContextMenu()
-}
-
-func (e dndEvent) unref() {
-	WrapEvent(gextras.InternObject(e)).unref()
-}
-
-func (e dndEvent) Drop() Drop {
+// Drop gets the `GdkDrop` object from a DND event.
+func (e *DNDEventClass) Drop() Drop {
 	var _arg0 *C.GdkEvent // out
 	var _cret *C.GdkDrop  // in
 
@@ -993,190 +515,33 @@ func (e dndEvent) Drop() Drop {
 
 // DeleteEvent: event related to closing a top-level surface.
 type DeleteEvent interface {
-	Event
+	gextras.Objector
 
-	// AsEvent casts the class to the Event interface.
-	AsEvent() Event
-
-	// GetAxes extracts all axis values from an event.
-	//
-	// This method is inherited from Event
-	GetAxes() ([]float64, bool)
-	// GetAxis: extract the axis value for a particular axis use from an event
-	// structure.
-	//
-	// This method is inherited from Event
-	GetAxis(axisUse AxisUse) (float64, bool)
-	// GetDevice returns the device of an event.
-	//
-	// This method is inherited from Event
-	GetDevice() Device
-	// GetDeviceTool returns a `GdkDeviceTool` representing the tool that caused
-	// the event.
-	//
-	// If the was not generated by a device that supports different tools (such
-	// as a tablet), this function will return nil.
-	//
-	// Note: the `GdkDeviceTool` will be constant during the application
-	// lifetime, if settings must be stored persistently across runs, see
-	// [method@Gdk.DeviceTool.get_serial].
-	//
-	// This method is inherited from Event
-	GetDeviceTool() DeviceTool
-	// GetDisplay retrieves the display associated to the @event.
-	//
-	// This method is inherited from Event
-	GetDisplay() Display
-	// GetEventSequence retuns the event sequence to which the event belongs.
-	//
-	// Related touch events are connected in a sequence. Other events typically
-	// don't have event sequence information.
-	//
-	// This method is inherited from Event
-	GetEventSequence() *EventSequence
-	// GetEventType retrieves the type of the event.
-	//
-	// This method is inherited from Event
-	GetEventType() EventType
-	// GetModifierState returns the modifier state field of an event.
-	//
-	// This method is inherited from Event
-	GetModifierState() ModifierType
-	// GetPointerEmulated returns whether this event is an 'emulated' pointer
-	// event.
-	//
-	// Emulated pointer events typically originate from a touch events.
-	//
-	// This method is inherited from Event
-	GetPointerEmulated() bool
-	// GetPosition: extract the event surface relative x/y coordinates from an
-	// event.
-	//
-	// This method is inherited from Event
-	GetPosition() (x float64, y float64, ok bool)
-	// GetSeat returns the seat that originated the event.
-	//
-	// This method is inherited from Event
-	GetSeat() Seat
-	// GetSurface extracts the surface associated with an event.
-	//
-	// This method is inherited from Event
-	GetSurface() Surface
-	// GetTime returns the timestamp of @event.
-	//
-	// Not all events have timestamps. In that case, this function returns
-	// GDK_CURRENT_TIME.
-	//
-	// This method is inherited from Event
-	GetTime() uint32
-	// Ref: increase the ref count of @event.
-	//
-	// This method is inherited from Event
-	ref() Event
-	// TriggersContextMenu returns whether a `GdkEvent` should trigger a context
-	// menu, according to platform conventions.
-	//
-	// The right mouse button typically triggers context menus.
-	//
-	// This function should always be used instead of simply checking for
-	// event->button == GDK_BUTTON_SECONDARY.
-	//
-	// This method is inherited from Event
-	TriggersContextMenu() bool
-	// Unref: decrease the ref count of @event.
-	//
-	// If the last reference is dropped, the structure is freed.
-	//
-	// This method is inherited from Event
-	unref()
+	privateDeleteEventClass()
 }
 
-// deleteEvent implements the DeleteEvent interface.
-type deleteEvent struct {
-	*externglib.Object
+// DeleteEventClass implements the DeleteEvent interface.
+type DeleteEventClass struct {
+	EventClass
 }
 
-var _ DeleteEvent = (*deleteEvent)(nil)
+var _ DeleteEvent = (*DeleteEventClass)(nil)
 
-// WrapDeleteEvent wraps a GObject to a type that implements
-// interface DeleteEvent. It is primarily used internally.
-func WrapDeleteEvent(obj *externglib.Object) DeleteEvent {
-	return deleteEvent{obj}
+func wrapDeleteEvent(obj *externglib.Object) DeleteEvent {
+	return &DeleteEventClass{
+		EventClass: EventClass{
+			Object: obj,
+		},
+	}
 }
 
 func marshalDeleteEvent(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapDeleteEvent(obj), nil
+	return wrapDeleteEvent(obj), nil
 }
 
-func (d deleteEvent) AsEvent() Event {
-	return WrapEvent(gextras.InternObject(d))
-}
-
-func (e deleteEvent) GetAxes() ([]float64, bool) {
-	return WrapEvent(gextras.InternObject(e)).GetAxes()
-}
-
-func (e deleteEvent) GetAxis(axisUse AxisUse) (float64, bool) {
-	return WrapEvent(gextras.InternObject(e)).GetAxis(axisUse)
-}
-
-func (e deleteEvent) GetDevice() Device {
-	return WrapEvent(gextras.InternObject(e)).GetDevice()
-}
-
-func (e deleteEvent) GetDeviceTool() DeviceTool {
-	return WrapEvent(gextras.InternObject(e)).GetDeviceTool()
-}
-
-func (e deleteEvent) GetDisplay() Display {
-	return WrapEvent(gextras.InternObject(e)).GetDisplay()
-}
-
-func (e deleteEvent) GetEventSequence() *EventSequence {
-	return WrapEvent(gextras.InternObject(e)).GetEventSequence()
-}
-
-func (e deleteEvent) GetEventType() EventType {
-	return WrapEvent(gextras.InternObject(e)).GetEventType()
-}
-
-func (e deleteEvent) GetModifierState() ModifierType {
-	return WrapEvent(gextras.InternObject(e)).GetModifierState()
-}
-
-func (e deleteEvent) GetPointerEmulated() bool {
-	return WrapEvent(gextras.InternObject(e)).GetPointerEmulated()
-}
-
-func (e deleteEvent) GetPosition() (x float64, y float64, ok bool) {
-	return WrapEvent(gextras.InternObject(e)).GetPosition()
-}
-
-func (e deleteEvent) GetSeat() Seat {
-	return WrapEvent(gextras.InternObject(e)).GetSeat()
-}
-
-func (e deleteEvent) GetSurface() Surface {
-	return WrapEvent(gextras.InternObject(e)).GetSurface()
-}
-
-func (e deleteEvent) GetTime() uint32 {
-	return WrapEvent(gextras.InternObject(e)).GetTime()
-}
-
-func (e deleteEvent) ref() Event {
-	return WrapEvent(gextras.InternObject(e)).ref()
-}
-
-func (e deleteEvent) TriggersContextMenu() bool {
-	return WrapEvent(gextras.InternObject(e)).TriggersContextMenu()
-}
-
-func (e deleteEvent) unref() {
-	WrapEvent(gextras.InternObject(e)).unref()
-}
+func (*DeleteEventClass) privateDeleteEventClass() {}
 
 // Event `GdkEvent`s are immutable data structures, created by GDK to represent
 // windowing system events.
@@ -1248,26 +613,27 @@ type Event interface {
 	unref()
 }
 
-// event implements the Event interface.
-type event struct {
+// EventClass implements the Event interface.
+type EventClass struct {
 	*externglib.Object
 }
 
-var _ Event = (*event)(nil)
+var _ Event = (*EventClass)(nil)
 
-// WrapEvent wraps a GObject to a type that implements
-// interface Event. It is primarily used internally.
-func WrapEvent(obj *externglib.Object) Event {
-	return event{obj}
+func wrapEvent(obj *externglib.Object) Event {
+	return &EventClass{
+		Object: obj,
+	}
 }
 
 func marshalEvent(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapEvent(obj), nil
+	return wrapEvent(obj), nil
 }
 
-func (e event) Axes() ([]float64, bool) {
+// Axes extracts all axis values from an event.
+func (e *EventClass) Axes() ([]float64, bool) {
 	var _arg0 *C.GdkEvent // out
 	var _arg1 *C.double
 	var _arg2 C.guint    // in
@@ -1289,7 +655,9 @@ func (e event) Axes() ([]float64, bool) {
 	return _axes, _ok
 }
 
-func (e event) Axis(axisUse AxisUse) (float64, bool) {
+// Axis: extract the axis value for a particular axis use from an event
+// structure.
+func (e *EventClass) Axis(axisUse AxisUse) (float64, bool) {
 	var _arg0 *C.GdkEvent  // out
 	var _arg1 C.GdkAxisUse // out
 	var _arg2 C.double     // in
@@ -1311,7 +679,8 @@ func (e event) Axis(axisUse AxisUse) (float64, bool) {
 	return _value, _ok
 }
 
-func (e event) Device() Device {
+// Device returns the device of an event.
+func (e *EventClass) Device() Device {
 	var _arg0 *C.GdkEvent  // out
 	var _cret *C.GdkDevice // in
 
@@ -1326,7 +695,16 @@ func (e event) Device() Device {
 	return _device
 }
 
-func (e event) DeviceTool() DeviceTool {
+// DeviceTool returns a `GdkDeviceTool` representing the tool that caused the
+// event.
+//
+// If the was not generated by a device that supports different tools (such as a
+// tablet), this function will return nil.
+//
+// Note: the `GdkDeviceTool` will be constant during the application lifetime,
+// if settings must be stored persistently across runs, see
+// [method@Gdk.DeviceTool.get_serial].
+func (e *EventClass) DeviceTool() DeviceTool {
 	var _arg0 *C.GdkEvent      // out
 	var _cret *C.GdkDeviceTool // in
 
@@ -1341,7 +719,8 @@ func (e event) DeviceTool() DeviceTool {
 	return _deviceTool
 }
 
-func (e event) Display() Display {
+// Display retrieves the display associated to the @event.
+func (e *EventClass) Display() Display {
 	var _arg0 *C.GdkEvent   // out
 	var _cret *C.GdkDisplay // in
 
@@ -1356,7 +735,11 @@ func (e event) Display() Display {
 	return _display
 }
 
-func (e event) EventSequence() *EventSequence {
+// EventSequence retuns the event sequence to which the event belongs.
+//
+// Related touch events are connected in a sequence. Other events typically
+// don't have event sequence information.
+func (e *EventClass) EventSequence() *EventSequence {
 	var _arg0 *C.GdkEvent         // out
 	var _cret *C.GdkEventSequence // in
 
@@ -1371,7 +754,8 @@ func (e event) EventSequence() *EventSequence {
 	return _eventSequence
 }
 
-func (e event) EventType() EventType {
+// EventType retrieves the type of the event.
+func (e *EventClass) EventType() EventType {
 	var _arg0 *C.GdkEvent    // out
 	var _cret C.GdkEventType // in
 
@@ -1386,7 +770,8 @@ func (e event) EventType() EventType {
 	return _eventType
 }
 
-func (e event) ModifierState() ModifierType {
+// ModifierState returns the modifier state field of an event.
+func (e *EventClass) ModifierState() ModifierType {
 	var _arg0 *C.GdkEvent       // out
 	var _cret C.GdkModifierType // in
 
@@ -1401,7 +786,10 @@ func (e event) ModifierState() ModifierType {
 	return _modifierType
 }
 
-func (e event) PointerEmulated() bool {
+// PointerEmulated returns whether this event is an 'emulated' pointer event.
+//
+// Emulated pointer events typically originate from a touch events.
+func (e *EventClass) PointerEmulated() bool {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.gboolean  // in
 
@@ -1418,7 +806,8 @@ func (e event) PointerEmulated() bool {
 	return _ok
 }
 
-func (e event) Position() (x float64, y float64, ok bool) {
+// Position: extract the event surface relative x/y coordinates from an event.
+func (e *EventClass) Position() (x float64, y float64, ok bool) {
 	var _arg0 *C.GdkEvent // out
 	var _arg1 C.double    // in
 	var _arg2 C.double    // in
@@ -1441,7 +830,8 @@ func (e event) Position() (x float64, y float64, ok bool) {
 	return _x, _y, _ok
 }
 
-func (e event) Seat() Seat {
+// Seat returns the seat that originated the event.
+func (e *EventClass) Seat() Seat {
 	var _arg0 *C.GdkEvent // out
 	var _cret *C.GdkSeat  // in
 
@@ -1456,7 +846,8 @@ func (e event) Seat() Seat {
 	return _seat
 }
 
-func (e event) Surface() Surface {
+// Surface extracts the surface associated with an event.
+func (e *EventClass) Surface() Surface {
 	var _arg0 *C.GdkEvent   // out
 	var _cret *C.GdkSurface // in
 
@@ -1471,7 +862,11 @@ func (e event) Surface() Surface {
 	return _surface
 }
 
-func (e event) Time() uint32 {
+// Time returns the timestamp of @event.
+//
+// Not all events have timestamps. In that case, this function returns
+// GDK_CURRENT_TIME.
+func (e *EventClass) Time() uint32 {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.guint32   // in
 
@@ -1486,7 +881,8 @@ func (e event) Time() uint32 {
 	return _guint32
 }
 
-func (e event) ref() Event {
+// Ref: increase the ref count of @event.
+func (e *EventClass) ref() Event {
 	var _arg0 *C.GdkEvent // out
 	var _cret *C.GdkEvent // in
 
@@ -1501,7 +897,14 @@ func (e event) ref() Event {
 	return _ret
 }
 
-func (e event) TriggersContextMenu() bool {
+// TriggersContextMenu returns whether a `GdkEvent` should trigger a context
+// menu, according to platform conventions.
+//
+// The right mouse button typically triggers context menus.
+//
+// This function should always be used instead of simply checking for
+// event->button == GDK_BUTTON_SECONDARY.
+func (e *EventClass) TriggersContextMenu() bool {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.gboolean  // in
 
@@ -1518,7 +921,10 @@ func (e event) TriggersContextMenu() bool {
 	return _ok
 }
 
-func (e event) unref() {
+// Unref: decrease the ref count of @event.
+//
+// If the last reference is dropped, the structure is freed.
+func (e *EventClass) unref() {
 	var _arg0 *C.GdkEvent // out
 
 	_arg0 = (*C.GdkEvent)(unsafe.Pointer(e.Native()))
@@ -1528,196 +934,37 @@ func (e event) unref() {
 
 // FocusEvent: event related to a keyboard focus change.
 type FocusEvent interface {
-	Event
-
-	// AsEvent casts the class to the Event interface.
-	AsEvent() Event
-
-	// GetAxes extracts all axis values from an event.
-	//
-	// This method is inherited from Event
-	GetAxes() ([]float64, bool)
-	// GetAxis: extract the axis value for a particular axis use from an event
-	// structure.
-	//
-	// This method is inherited from Event
-	GetAxis(axisUse AxisUse) (float64, bool)
-	// GetDevice returns the device of an event.
-	//
-	// This method is inherited from Event
-	GetDevice() Device
-	// GetDeviceTool returns a `GdkDeviceTool` representing the tool that caused
-	// the event.
-	//
-	// If the was not generated by a device that supports different tools (such
-	// as a tablet), this function will return nil.
-	//
-	// Note: the `GdkDeviceTool` will be constant during the application
-	// lifetime, if settings must be stored persistently across runs, see
-	// [method@Gdk.DeviceTool.get_serial].
-	//
-	// This method is inherited from Event
-	GetDeviceTool() DeviceTool
-	// GetDisplay retrieves the display associated to the @event.
-	//
-	// This method is inherited from Event
-	GetDisplay() Display
-	// GetEventSequence retuns the event sequence to which the event belongs.
-	//
-	// Related touch events are connected in a sequence. Other events typically
-	// don't have event sequence information.
-	//
-	// This method is inherited from Event
-	GetEventSequence() *EventSequence
-	// GetEventType retrieves the type of the event.
-	//
-	// This method is inherited from Event
-	GetEventType() EventType
-	// GetModifierState returns the modifier state field of an event.
-	//
-	// This method is inherited from Event
-	GetModifierState() ModifierType
-	// GetPointerEmulated returns whether this event is an 'emulated' pointer
-	// event.
-	//
-	// Emulated pointer events typically originate from a touch events.
-	//
-	// This method is inherited from Event
-	GetPointerEmulated() bool
-	// GetPosition: extract the event surface relative x/y coordinates from an
-	// event.
-	//
-	// This method is inherited from Event
-	GetPosition() (x float64, y float64, ok bool)
-	// GetSeat returns the seat that originated the event.
-	//
-	// This method is inherited from Event
-	GetSeat() Seat
-	// GetSurface extracts the surface associated with an event.
-	//
-	// This method is inherited from Event
-	GetSurface() Surface
-	// GetTime returns the timestamp of @event.
-	//
-	// Not all events have timestamps. In that case, this function returns
-	// GDK_CURRENT_TIME.
-	//
-	// This method is inherited from Event
-	GetTime() uint32
-	// Ref: increase the ref count of @event.
-	//
-	// This method is inherited from Event
-	ref() Event
-	// TriggersContextMenu returns whether a `GdkEvent` should trigger a context
-	// menu, according to platform conventions.
-	//
-	// The right mouse button typically triggers context menus.
-	//
-	// This function should always be used instead of simply checking for
-	// event->button == GDK_BUTTON_SECONDARY.
-	//
-	// This method is inherited from Event
-	TriggersContextMenu() bool
-	// Unref: decrease the ref count of @event.
-	//
-	// If the last reference is dropped, the structure is freed.
-	//
-	// This method is inherited from Event
-	unref()
+	gextras.Objector
 
 	// In extracts whether this event is about focus entering or leaving the
 	// surface.
 	In() bool
 }
 
-// focusEvent implements the FocusEvent interface.
-type focusEvent struct {
-	*externglib.Object
+// FocusEventClass implements the FocusEvent interface.
+type FocusEventClass struct {
+	EventClass
 }
 
-var _ FocusEvent = (*focusEvent)(nil)
+var _ FocusEvent = (*FocusEventClass)(nil)
 
-// WrapFocusEvent wraps a GObject to a type that implements
-// interface FocusEvent. It is primarily used internally.
-func WrapFocusEvent(obj *externglib.Object) FocusEvent {
-	return focusEvent{obj}
+func wrapFocusEvent(obj *externglib.Object) FocusEvent {
+	return &FocusEventClass{
+		EventClass: EventClass{
+			Object: obj,
+		},
+	}
 }
 
 func marshalFocusEvent(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapFocusEvent(obj), nil
+	return wrapFocusEvent(obj), nil
 }
 
-func (f focusEvent) AsEvent() Event {
-	return WrapEvent(gextras.InternObject(f))
-}
-
-func (e focusEvent) GetAxes() ([]float64, bool) {
-	return WrapEvent(gextras.InternObject(e)).GetAxes()
-}
-
-func (e focusEvent) GetAxis(axisUse AxisUse) (float64, bool) {
-	return WrapEvent(gextras.InternObject(e)).GetAxis(axisUse)
-}
-
-func (e focusEvent) GetDevice() Device {
-	return WrapEvent(gextras.InternObject(e)).GetDevice()
-}
-
-func (e focusEvent) GetDeviceTool() DeviceTool {
-	return WrapEvent(gextras.InternObject(e)).GetDeviceTool()
-}
-
-func (e focusEvent) GetDisplay() Display {
-	return WrapEvent(gextras.InternObject(e)).GetDisplay()
-}
-
-func (e focusEvent) GetEventSequence() *EventSequence {
-	return WrapEvent(gextras.InternObject(e)).GetEventSequence()
-}
-
-func (e focusEvent) GetEventType() EventType {
-	return WrapEvent(gextras.InternObject(e)).GetEventType()
-}
-
-func (e focusEvent) GetModifierState() ModifierType {
-	return WrapEvent(gextras.InternObject(e)).GetModifierState()
-}
-
-func (e focusEvent) GetPointerEmulated() bool {
-	return WrapEvent(gextras.InternObject(e)).GetPointerEmulated()
-}
-
-func (e focusEvent) GetPosition() (x float64, y float64, ok bool) {
-	return WrapEvent(gextras.InternObject(e)).GetPosition()
-}
-
-func (e focusEvent) GetSeat() Seat {
-	return WrapEvent(gextras.InternObject(e)).GetSeat()
-}
-
-func (e focusEvent) GetSurface() Surface {
-	return WrapEvent(gextras.InternObject(e)).GetSurface()
-}
-
-func (e focusEvent) GetTime() uint32 {
-	return WrapEvent(gextras.InternObject(e)).GetTime()
-}
-
-func (e focusEvent) ref() Event {
-	return WrapEvent(gextras.InternObject(e)).ref()
-}
-
-func (e focusEvent) TriggersContextMenu() bool {
-	return WrapEvent(gextras.InternObject(e)).TriggersContextMenu()
-}
-
-func (e focusEvent) unref() {
-	WrapEvent(gextras.InternObject(e)).unref()
-}
-
-func (e focusEvent) In() bool {
+// In extracts whether this event is about focus entering or leaving the
+// surface.
+func (e *FocusEventClass) In() bool {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.gboolean  // in
 
@@ -1736,102 +983,7 @@ func (e focusEvent) In() bool {
 
 // GrabBrokenEvent: event related to a broken windowing system grab.
 type GrabBrokenEvent interface {
-	Event
-
-	// AsEvent casts the class to the Event interface.
-	AsEvent() Event
-
-	// GetAxes extracts all axis values from an event.
-	//
-	// This method is inherited from Event
-	GetAxes() ([]float64, bool)
-	// GetAxis: extract the axis value for a particular axis use from an event
-	// structure.
-	//
-	// This method is inherited from Event
-	GetAxis(axisUse AxisUse) (float64, bool)
-	// GetDevice returns the device of an event.
-	//
-	// This method is inherited from Event
-	GetDevice() Device
-	// GetDeviceTool returns a `GdkDeviceTool` representing the tool that caused
-	// the event.
-	//
-	// If the was not generated by a device that supports different tools (such
-	// as a tablet), this function will return nil.
-	//
-	// Note: the `GdkDeviceTool` will be constant during the application
-	// lifetime, if settings must be stored persistently across runs, see
-	// [method@Gdk.DeviceTool.get_serial].
-	//
-	// This method is inherited from Event
-	GetDeviceTool() DeviceTool
-	// GetDisplay retrieves the display associated to the @event.
-	//
-	// This method is inherited from Event
-	GetDisplay() Display
-	// GetEventSequence retuns the event sequence to which the event belongs.
-	//
-	// Related touch events are connected in a sequence. Other events typically
-	// don't have event sequence information.
-	//
-	// This method is inherited from Event
-	GetEventSequence() *EventSequence
-	// GetEventType retrieves the type of the event.
-	//
-	// This method is inherited from Event
-	GetEventType() EventType
-	// GetModifierState returns the modifier state field of an event.
-	//
-	// This method is inherited from Event
-	GetModifierState() ModifierType
-	// GetPointerEmulated returns whether this event is an 'emulated' pointer
-	// event.
-	//
-	// Emulated pointer events typically originate from a touch events.
-	//
-	// This method is inherited from Event
-	GetPointerEmulated() bool
-	// GetPosition: extract the event surface relative x/y coordinates from an
-	// event.
-	//
-	// This method is inherited from Event
-	GetPosition() (x float64, y float64, ok bool)
-	// GetSeat returns the seat that originated the event.
-	//
-	// This method is inherited from Event
-	GetSeat() Seat
-	// GetSurface extracts the surface associated with an event.
-	//
-	// This method is inherited from Event
-	GetSurface() Surface
-	// GetTime returns the timestamp of @event.
-	//
-	// Not all events have timestamps. In that case, this function returns
-	// GDK_CURRENT_TIME.
-	//
-	// This method is inherited from Event
-	GetTime() uint32
-	// Ref: increase the ref count of @event.
-	//
-	// This method is inherited from Event
-	ref() Event
-	// TriggersContextMenu returns whether a `GdkEvent` should trigger a context
-	// menu, according to platform conventions.
-	//
-	// The right mouse button typically triggers context menus.
-	//
-	// This function should always be used instead of simply checking for
-	// event->button == GDK_BUTTON_SECONDARY.
-	//
-	// This method is inherited from Event
-	TriggersContextMenu() bool
-	// Unref: decrease the ref count of @event.
-	//
-	// If the last reference is dropped, the structure is freed.
-	//
-	// This method is inherited from Event
-	unref()
+	gextras.Objector
 
 	// GrabSurface extracts the grab surface from a grab broken event.
 	GrabSurface() Surface
@@ -1839,94 +991,29 @@ type GrabBrokenEvent interface {
 	Implicit() bool
 }
 
-// grabBrokenEvent implements the GrabBrokenEvent interface.
-type grabBrokenEvent struct {
-	*externglib.Object
+// GrabBrokenEventClass implements the GrabBrokenEvent interface.
+type GrabBrokenEventClass struct {
+	EventClass
 }
 
-var _ GrabBrokenEvent = (*grabBrokenEvent)(nil)
+var _ GrabBrokenEvent = (*GrabBrokenEventClass)(nil)
 
-// WrapGrabBrokenEvent wraps a GObject to a type that implements
-// interface GrabBrokenEvent. It is primarily used internally.
-func WrapGrabBrokenEvent(obj *externglib.Object) GrabBrokenEvent {
-	return grabBrokenEvent{obj}
+func wrapGrabBrokenEvent(obj *externglib.Object) GrabBrokenEvent {
+	return &GrabBrokenEventClass{
+		EventClass: EventClass{
+			Object: obj,
+		},
+	}
 }
 
 func marshalGrabBrokenEvent(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapGrabBrokenEvent(obj), nil
+	return wrapGrabBrokenEvent(obj), nil
 }
 
-func (g grabBrokenEvent) AsEvent() Event {
-	return WrapEvent(gextras.InternObject(g))
-}
-
-func (e grabBrokenEvent) GetAxes() ([]float64, bool) {
-	return WrapEvent(gextras.InternObject(e)).GetAxes()
-}
-
-func (e grabBrokenEvent) GetAxis(axisUse AxisUse) (float64, bool) {
-	return WrapEvent(gextras.InternObject(e)).GetAxis(axisUse)
-}
-
-func (e grabBrokenEvent) GetDevice() Device {
-	return WrapEvent(gextras.InternObject(e)).GetDevice()
-}
-
-func (e grabBrokenEvent) GetDeviceTool() DeviceTool {
-	return WrapEvent(gextras.InternObject(e)).GetDeviceTool()
-}
-
-func (e grabBrokenEvent) GetDisplay() Display {
-	return WrapEvent(gextras.InternObject(e)).GetDisplay()
-}
-
-func (e grabBrokenEvent) GetEventSequence() *EventSequence {
-	return WrapEvent(gextras.InternObject(e)).GetEventSequence()
-}
-
-func (e grabBrokenEvent) GetEventType() EventType {
-	return WrapEvent(gextras.InternObject(e)).GetEventType()
-}
-
-func (e grabBrokenEvent) GetModifierState() ModifierType {
-	return WrapEvent(gextras.InternObject(e)).GetModifierState()
-}
-
-func (e grabBrokenEvent) GetPointerEmulated() bool {
-	return WrapEvent(gextras.InternObject(e)).GetPointerEmulated()
-}
-
-func (e grabBrokenEvent) GetPosition() (x float64, y float64, ok bool) {
-	return WrapEvent(gextras.InternObject(e)).GetPosition()
-}
-
-func (e grabBrokenEvent) GetSeat() Seat {
-	return WrapEvent(gextras.InternObject(e)).GetSeat()
-}
-
-func (e grabBrokenEvent) GetSurface() Surface {
-	return WrapEvent(gextras.InternObject(e)).GetSurface()
-}
-
-func (e grabBrokenEvent) GetTime() uint32 {
-	return WrapEvent(gextras.InternObject(e)).GetTime()
-}
-
-func (e grabBrokenEvent) ref() Event {
-	return WrapEvent(gextras.InternObject(e)).ref()
-}
-
-func (e grabBrokenEvent) TriggersContextMenu() bool {
-	return WrapEvent(gextras.InternObject(e)).TriggersContextMenu()
-}
-
-func (e grabBrokenEvent) unref() {
-	WrapEvent(gextras.InternObject(e)).unref()
-}
-
-func (e grabBrokenEvent) GrabSurface() Surface {
+// GrabSurface extracts the grab surface from a grab broken event.
+func (e *GrabBrokenEventClass) GrabSurface() Surface {
 	var _arg0 *C.GdkEvent   // out
 	var _cret *C.GdkSurface // in
 
@@ -1941,7 +1028,8 @@ func (e grabBrokenEvent) GrabSurface() Surface {
 	return _surface
 }
 
-func (e grabBrokenEvent) Implicit() bool {
+// Implicit checks whether the grab broken event is for an implicit grab.
+func (e *GrabBrokenEventClass) Implicit() bool {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.gboolean  // in
 
@@ -1960,102 +1048,7 @@ func (e grabBrokenEvent) Implicit() bool {
 
 // KeyEvent: event related to a key-based device.
 type KeyEvent interface {
-	Event
-
-	// AsEvent casts the class to the Event interface.
-	AsEvent() Event
-
-	// GetAxes extracts all axis values from an event.
-	//
-	// This method is inherited from Event
-	GetAxes() ([]float64, bool)
-	// GetAxis: extract the axis value for a particular axis use from an event
-	// structure.
-	//
-	// This method is inherited from Event
-	GetAxis(axisUse AxisUse) (float64, bool)
-	// GetDevice returns the device of an event.
-	//
-	// This method is inherited from Event
-	GetDevice() Device
-	// GetDeviceTool returns a `GdkDeviceTool` representing the tool that caused
-	// the event.
-	//
-	// If the was not generated by a device that supports different tools (such
-	// as a tablet), this function will return nil.
-	//
-	// Note: the `GdkDeviceTool` will be constant during the application
-	// lifetime, if settings must be stored persistently across runs, see
-	// [method@Gdk.DeviceTool.get_serial].
-	//
-	// This method is inherited from Event
-	GetDeviceTool() DeviceTool
-	// GetDisplay retrieves the display associated to the @event.
-	//
-	// This method is inherited from Event
-	GetDisplay() Display
-	// GetEventSequence retuns the event sequence to which the event belongs.
-	//
-	// Related touch events are connected in a sequence. Other events typically
-	// don't have event sequence information.
-	//
-	// This method is inherited from Event
-	GetEventSequence() *EventSequence
-	// GetEventType retrieves the type of the event.
-	//
-	// This method is inherited from Event
-	GetEventType() EventType
-	// GetModifierState returns the modifier state field of an event.
-	//
-	// This method is inherited from Event
-	GetModifierState() ModifierType
-	// GetPointerEmulated returns whether this event is an 'emulated' pointer
-	// event.
-	//
-	// Emulated pointer events typically originate from a touch events.
-	//
-	// This method is inherited from Event
-	GetPointerEmulated() bool
-	// GetPosition: extract the event surface relative x/y coordinates from an
-	// event.
-	//
-	// This method is inherited from Event
-	GetPosition() (x float64, y float64, ok bool)
-	// GetSeat returns the seat that originated the event.
-	//
-	// This method is inherited from Event
-	GetSeat() Seat
-	// GetSurface extracts the surface associated with an event.
-	//
-	// This method is inherited from Event
-	GetSurface() Surface
-	// GetTime returns the timestamp of @event.
-	//
-	// Not all events have timestamps. In that case, this function returns
-	// GDK_CURRENT_TIME.
-	//
-	// This method is inherited from Event
-	GetTime() uint32
-	// Ref: increase the ref count of @event.
-	//
-	// This method is inherited from Event
-	ref() Event
-	// TriggersContextMenu returns whether a `GdkEvent` should trigger a context
-	// menu, according to platform conventions.
-	//
-	// The right mouse button typically triggers context menus.
-	//
-	// This function should always be used instead of simply checking for
-	// event->button == GDK_BUTTON_SECONDARY.
-	//
-	// This method is inherited from Event
-	TriggersContextMenu() bool
-	// Unref: decrease the ref count of @event.
-	//
-	// If the last reference is dropped, the structure is freed.
-	//
-	// This method is inherited from Event
-	unref()
+	gextras.Objector
 
 	// ConsumedModifiers extracts the consumed modifiers from a key event.
 	ConsumedModifiers() ModifierType
@@ -2084,94 +1077,29 @@ type KeyEvent interface {
 	Matches(keyval uint, modifiers ModifierType) KeyMatch
 }
 
-// keyEvent implements the KeyEvent interface.
-type keyEvent struct {
-	*externglib.Object
+// KeyEventClass implements the KeyEvent interface.
+type KeyEventClass struct {
+	EventClass
 }
 
-var _ KeyEvent = (*keyEvent)(nil)
+var _ KeyEvent = (*KeyEventClass)(nil)
 
-// WrapKeyEvent wraps a GObject to a type that implements
-// interface KeyEvent. It is primarily used internally.
-func WrapKeyEvent(obj *externglib.Object) KeyEvent {
-	return keyEvent{obj}
+func wrapKeyEvent(obj *externglib.Object) KeyEvent {
+	return &KeyEventClass{
+		EventClass: EventClass{
+			Object: obj,
+		},
+	}
 }
 
 func marshalKeyEvent(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapKeyEvent(obj), nil
+	return wrapKeyEvent(obj), nil
 }
 
-func (k keyEvent) AsEvent() Event {
-	return WrapEvent(gextras.InternObject(k))
-}
-
-func (e keyEvent) GetAxes() ([]float64, bool) {
-	return WrapEvent(gextras.InternObject(e)).GetAxes()
-}
-
-func (e keyEvent) GetAxis(axisUse AxisUse) (float64, bool) {
-	return WrapEvent(gextras.InternObject(e)).GetAxis(axisUse)
-}
-
-func (e keyEvent) GetDevice() Device {
-	return WrapEvent(gextras.InternObject(e)).GetDevice()
-}
-
-func (e keyEvent) GetDeviceTool() DeviceTool {
-	return WrapEvent(gextras.InternObject(e)).GetDeviceTool()
-}
-
-func (e keyEvent) GetDisplay() Display {
-	return WrapEvent(gextras.InternObject(e)).GetDisplay()
-}
-
-func (e keyEvent) GetEventSequence() *EventSequence {
-	return WrapEvent(gextras.InternObject(e)).GetEventSequence()
-}
-
-func (e keyEvent) GetEventType() EventType {
-	return WrapEvent(gextras.InternObject(e)).GetEventType()
-}
-
-func (e keyEvent) GetModifierState() ModifierType {
-	return WrapEvent(gextras.InternObject(e)).GetModifierState()
-}
-
-func (e keyEvent) GetPointerEmulated() bool {
-	return WrapEvent(gextras.InternObject(e)).GetPointerEmulated()
-}
-
-func (e keyEvent) GetPosition() (x float64, y float64, ok bool) {
-	return WrapEvent(gextras.InternObject(e)).GetPosition()
-}
-
-func (e keyEvent) GetSeat() Seat {
-	return WrapEvent(gextras.InternObject(e)).GetSeat()
-}
-
-func (e keyEvent) GetSurface() Surface {
-	return WrapEvent(gextras.InternObject(e)).GetSurface()
-}
-
-func (e keyEvent) GetTime() uint32 {
-	return WrapEvent(gextras.InternObject(e)).GetTime()
-}
-
-func (e keyEvent) ref() Event {
-	return WrapEvent(gextras.InternObject(e)).ref()
-}
-
-func (e keyEvent) TriggersContextMenu() bool {
-	return WrapEvent(gextras.InternObject(e)).TriggersContextMenu()
-}
-
-func (e keyEvent) unref() {
-	WrapEvent(gextras.InternObject(e)).unref()
-}
-
-func (e keyEvent) ConsumedModifiers() ModifierType {
+// ConsumedModifiers extracts the consumed modifiers from a key event.
+func (e *KeyEventClass) ConsumedModifiers() ModifierType {
 	var _arg0 *C.GdkEvent       // out
 	var _cret C.GdkModifierType // in
 
@@ -2186,7 +1114,8 @@ func (e keyEvent) ConsumedModifiers() ModifierType {
 	return _modifierType
 }
 
-func (e keyEvent) Keycode() uint {
+// Keycode extracts the keycode from a key event.
+func (e *KeyEventClass) Keycode() uint {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.guint     // in
 
@@ -2201,7 +1130,8 @@ func (e keyEvent) Keycode() uint {
 	return _guint
 }
 
-func (e keyEvent) Keyval() uint {
+// Keyval extracts the keyval from a key event.
+func (e *KeyEventClass) Keyval() uint {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.guint     // in
 
@@ -2216,7 +1146,8 @@ func (e keyEvent) Keyval() uint {
 	return _guint
 }
 
-func (e keyEvent) Layout() uint {
+// Layout extracts the layout from a key event.
+func (e *KeyEventClass) Layout() uint {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.guint     // in
 
@@ -2231,7 +1162,8 @@ func (e keyEvent) Layout() uint {
 	return _guint
 }
 
-func (e keyEvent) Level() uint {
+// Level extracts the shift level from a key event.
+func (e *KeyEventClass) Level() uint {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.guint     // in
 
@@ -2246,7 +1178,10 @@ func (e keyEvent) Level() uint {
 	return _guint
 }
 
-func (e keyEvent) Match() (uint, ModifierType, bool) {
+// Match gets a keyval and modifier combination that will match the event.
+//
+// See [method@Gdk.KeyEvent.matches].
+func (e *KeyEventClass) Match() (uint, ModifierType, bool) {
 	var _arg0 *C.GdkEvent       // out
 	var _arg1 C.guint           // in
 	var _arg2 C.GdkModifierType // in
@@ -2269,7 +1204,8 @@ func (e keyEvent) Match() (uint, ModifierType, bool) {
 	return _keyval, _modifiers, _ok
 }
 
-func (e keyEvent) IsModifier() bool {
+// IsModifier extracts whether the key event is for a modifier key.
+func (e *KeyEventClass) IsModifier() bool {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.gboolean  // in
 
@@ -2286,7 +1222,15 @@ func (e keyEvent) IsModifier() bool {
 	return _ok
 }
 
-func (e keyEvent) Matches(keyval uint, modifiers ModifierType) KeyMatch {
+// Matches a key event against a keyval and modifiers.
+//
+// This is typically used to trigger keyboard shortcuts such as Ctrl-C.
+//
+// Partial matches are possible where the combination matches if the currently
+// active group is ignored.
+//
+// Note that we ignore Caps Lock for matching.
+func (e *KeyEventClass) Matches(keyval uint, modifiers ModifierType) KeyMatch {
 	var _arg0 *C.GdkEvent       // out
 	var _arg1 C.guint           // out
 	var _arg2 C.GdkModifierType // out
@@ -2307,289 +1251,37 @@ func (e keyEvent) Matches(keyval uint, modifiers ModifierType) KeyMatch {
 
 // MotionEvent: event related to a pointer or touch device motion.
 type MotionEvent interface {
-	Event
+	gextras.Objector
 
-	// AsEvent casts the class to the Event interface.
-	AsEvent() Event
-
-	// GetAxes extracts all axis values from an event.
-	//
-	// This method is inherited from Event
-	GetAxes() ([]float64, bool)
-	// GetAxis: extract the axis value for a particular axis use from an event
-	// structure.
-	//
-	// This method is inherited from Event
-	GetAxis(axisUse AxisUse) (float64, bool)
-	// GetDevice returns the device of an event.
-	//
-	// This method is inherited from Event
-	GetDevice() Device
-	// GetDeviceTool returns a `GdkDeviceTool` representing the tool that caused
-	// the event.
-	//
-	// If the was not generated by a device that supports different tools (such
-	// as a tablet), this function will return nil.
-	//
-	// Note: the `GdkDeviceTool` will be constant during the application
-	// lifetime, if settings must be stored persistently across runs, see
-	// [method@Gdk.DeviceTool.get_serial].
-	//
-	// This method is inherited from Event
-	GetDeviceTool() DeviceTool
-	// GetDisplay retrieves the display associated to the @event.
-	//
-	// This method is inherited from Event
-	GetDisplay() Display
-	// GetEventSequence retuns the event sequence to which the event belongs.
-	//
-	// Related touch events are connected in a sequence. Other events typically
-	// don't have event sequence information.
-	//
-	// This method is inherited from Event
-	GetEventSequence() *EventSequence
-	// GetEventType retrieves the type of the event.
-	//
-	// This method is inherited from Event
-	GetEventType() EventType
-	// GetModifierState returns the modifier state field of an event.
-	//
-	// This method is inherited from Event
-	GetModifierState() ModifierType
-	// GetPointerEmulated returns whether this event is an 'emulated' pointer
-	// event.
-	//
-	// Emulated pointer events typically originate from a touch events.
-	//
-	// This method is inherited from Event
-	GetPointerEmulated() bool
-	// GetPosition: extract the event surface relative x/y coordinates from an
-	// event.
-	//
-	// This method is inherited from Event
-	GetPosition() (x float64, y float64, ok bool)
-	// GetSeat returns the seat that originated the event.
-	//
-	// This method is inherited from Event
-	GetSeat() Seat
-	// GetSurface extracts the surface associated with an event.
-	//
-	// This method is inherited from Event
-	GetSurface() Surface
-	// GetTime returns the timestamp of @event.
-	//
-	// Not all events have timestamps. In that case, this function returns
-	// GDK_CURRENT_TIME.
-	//
-	// This method is inherited from Event
-	GetTime() uint32
-	// Ref: increase the ref count of @event.
-	//
-	// This method is inherited from Event
-	ref() Event
-	// TriggersContextMenu returns whether a `GdkEvent` should trigger a context
-	// menu, according to platform conventions.
-	//
-	// The right mouse button typically triggers context menus.
-	//
-	// This function should always be used instead of simply checking for
-	// event->button == GDK_BUTTON_SECONDARY.
-	//
-	// This method is inherited from Event
-	TriggersContextMenu() bool
-	// Unref: decrease the ref count of @event.
-	//
-	// If the last reference is dropped, the structure is freed.
-	//
-	// This method is inherited from Event
-	unref()
+	privateMotionEventClass()
 }
 
-// motionEvent implements the MotionEvent interface.
-type motionEvent struct {
-	*externglib.Object
+// MotionEventClass implements the MotionEvent interface.
+type MotionEventClass struct {
+	EventClass
 }
 
-var _ MotionEvent = (*motionEvent)(nil)
+var _ MotionEvent = (*MotionEventClass)(nil)
 
-// WrapMotionEvent wraps a GObject to a type that implements
-// interface MotionEvent. It is primarily used internally.
-func WrapMotionEvent(obj *externglib.Object) MotionEvent {
-	return motionEvent{obj}
+func wrapMotionEvent(obj *externglib.Object) MotionEvent {
+	return &MotionEventClass{
+		EventClass: EventClass{
+			Object: obj,
+		},
+	}
 }
 
 func marshalMotionEvent(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapMotionEvent(obj), nil
+	return wrapMotionEvent(obj), nil
 }
 
-func (m motionEvent) AsEvent() Event {
-	return WrapEvent(gextras.InternObject(m))
-}
-
-func (e motionEvent) GetAxes() ([]float64, bool) {
-	return WrapEvent(gextras.InternObject(e)).GetAxes()
-}
-
-func (e motionEvent) GetAxis(axisUse AxisUse) (float64, bool) {
-	return WrapEvent(gextras.InternObject(e)).GetAxis(axisUse)
-}
-
-func (e motionEvent) GetDevice() Device {
-	return WrapEvent(gextras.InternObject(e)).GetDevice()
-}
-
-func (e motionEvent) GetDeviceTool() DeviceTool {
-	return WrapEvent(gextras.InternObject(e)).GetDeviceTool()
-}
-
-func (e motionEvent) GetDisplay() Display {
-	return WrapEvent(gextras.InternObject(e)).GetDisplay()
-}
-
-func (e motionEvent) GetEventSequence() *EventSequence {
-	return WrapEvent(gextras.InternObject(e)).GetEventSequence()
-}
-
-func (e motionEvent) GetEventType() EventType {
-	return WrapEvent(gextras.InternObject(e)).GetEventType()
-}
-
-func (e motionEvent) GetModifierState() ModifierType {
-	return WrapEvent(gextras.InternObject(e)).GetModifierState()
-}
-
-func (e motionEvent) GetPointerEmulated() bool {
-	return WrapEvent(gextras.InternObject(e)).GetPointerEmulated()
-}
-
-func (e motionEvent) GetPosition() (x float64, y float64, ok bool) {
-	return WrapEvent(gextras.InternObject(e)).GetPosition()
-}
-
-func (e motionEvent) GetSeat() Seat {
-	return WrapEvent(gextras.InternObject(e)).GetSeat()
-}
-
-func (e motionEvent) GetSurface() Surface {
-	return WrapEvent(gextras.InternObject(e)).GetSurface()
-}
-
-func (e motionEvent) GetTime() uint32 {
-	return WrapEvent(gextras.InternObject(e)).GetTime()
-}
-
-func (e motionEvent) ref() Event {
-	return WrapEvent(gextras.InternObject(e)).ref()
-}
-
-func (e motionEvent) TriggersContextMenu() bool {
-	return WrapEvent(gextras.InternObject(e)).TriggersContextMenu()
-}
-
-func (e motionEvent) unref() {
-	WrapEvent(gextras.InternObject(e)).unref()
-}
+func (*MotionEventClass) privateMotionEventClass() {}
 
 // PadEvent: event related to a pad-based device.
 type PadEvent interface {
-	Event
-
-	// AsEvent casts the class to the Event interface.
-	AsEvent() Event
-
-	// GetAxes extracts all axis values from an event.
-	//
-	// This method is inherited from Event
-	GetAxes() ([]float64, bool)
-	// GetAxis: extract the axis value for a particular axis use from an event
-	// structure.
-	//
-	// This method is inherited from Event
-	GetAxis(axisUse AxisUse) (float64, bool)
-	// GetDevice returns the device of an event.
-	//
-	// This method is inherited from Event
-	GetDevice() Device
-	// GetDeviceTool returns a `GdkDeviceTool` representing the tool that caused
-	// the event.
-	//
-	// If the was not generated by a device that supports different tools (such
-	// as a tablet), this function will return nil.
-	//
-	// Note: the `GdkDeviceTool` will be constant during the application
-	// lifetime, if settings must be stored persistently across runs, see
-	// [method@Gdk.DeviceTool.get_serial].
-	//
-	// This method is inherited from Event
-	GetDeviceTool() DeviceTool
-	// GetDisplay retrieves the display associated to the @event.
-	//
-	// This method is inherited from Event
-	GetDisplay() Display
-	// GetEventSequence retuns the event sequence to which the event belongs.
-	//
-	// Related touch events are connected in a sequence. Other events typically
-	// don't have event sequence information.
-	//
-	// This method is inherited from Event
-	GetEventSequence() *EventSequence
-	// GetEventType retrieves the type of the event.
-	//
-	// This method is inherited from Event
-	GetEventType() EventType
-	// GetModifierState returns the modifier state field of an event.
-	//
-	// This method is inherited from Event
-	GetModifierState() ModifierType
-	// GetPointerEmulated returns whether this event is an 'emulated' pointer
-	// event.
-	//
-	// Emulated pointer events typically originate from a touch events.
-	//
-	// This method is inherited from Event
-	GetPointerEmulated() bool
-	// GetPosition: extract the event surface relative x/y coordinates from an
-	// event.
-	//
-	// This method is inherited from Event
-	GetPosition() (x float64, y float64, ok bool)
-	// GetSeat returns the seat that originated the event.
-	//
-	// This method is inherited from Event
-	GetSeat() Seat
-	// GetSurface extracts the surface associated with an event.
-	//
-	// This method is inherited from Event
-	GetSurface() Surface
-	// GetTime returns the timestamp of @event.
-	//
-	// Not all events have timestamps. In that case, this function returns
-	// GDK_CURRENT_TIME.
-	//
-	// This method is inherited from Event
-	GetTime() uint32
-	// Ref: increase the ref count of @event.
-	//
-	// This method is inherited from Event
-	ref() Event
-	// TriggersContextMenu returns whether a `GdkEvent` should trigger a context
-	// menu, according to platform conventions.
-	//
-	// The right mouse button typically triggers context menus.
-	//
-	// This function should always be used instead of simply checking for
-	// event->button == GDK_BUTTON_SECONDARY.
-	//
-	// This method is inherited from Event
-	TriggersContextMenu() bool
-	// Unref: decrease the ref count of @event.
-	//
-	// If the last reference is dropped, the structure is freed.
-	//
-	// This method is inherited from Event
-	unref()
+	gextras.Objector
 
 	// AxisValue extracts the information from a pad strip or ring event.
 	AxisValue() (uint, float64)
@@ -2599,94 +1291,29 @@ type PadEvent interface {
 	GroupMode() (group uint, mode uint)
 }
 
-// padEvent implements the PadEvent interface.
-type padEvent struct {
-	*externglib.Object
+// PadEventClass implements the PadEvent interface.
+type PadEventClass struct {
+	EventClass
 }
 
-var _ PadEvent = (*padEvent)(nil)
+var _ PadEvent = (*PadEventClass)(nil)
 
-// WrapPadEvent wraps a GObject to a type that implements
-// interface PadEvent. It is primarily used internally.
-func WrapPadEvent(obj *externglib.Object) PadEvent {
-	return padEvent{obj}
+func wrapPadEvent(obj *externglib.Object) PadEvent {
+	return &PadEventClass{
+		EventClass: EventClass{
+			Object: obj,
+		},
+	}
 }
 
 func marshalPadEvent(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapPadEvent(obj), nil
+	return wrapPadEvent(obj), nil
 }
 
-func (p padEvent) AsEvent() Event {
-	return WrapEvent(gextras.InternObject(p))
-}
-
-func (e padEvent) GetAxes() ([]float64, bool) {
-	return WrapEvent(gextras.InternObject(e)).GetAxes()
-}
-
-func (e padEvent) GetAxis(axisUse AxisUse) (float64, bool) {
-	return WrapEvent(gextras.InternObject(e)).GetAxis(axisUse)
-}
-
-func (e padEvent) GetDevice() Device {
-	return WrapEvent(gextras.InternObject(e)).GetDevice()
-}
-
-func (e padEvent) GetDeviceTool() DeviceTool {
-	return WrapEvent(gextras.InternObject(e)).GetDeviceTool()
-}
-
-func (e padEvent) GetDisplay() Display {
-	return WrapEvent(gextras.InternObject(e)).GetDisplay()
-}
-
-func (e padEvent) GetEventSequence() *EventSequence {
-	return WrapEvent(gextras.InternObject(e)).GetEventSequence()
-}
-
-func (e padEvent) GetEventType() EventType {
-	return WrapEvent(gextras.InternObject(e)).GetEventType()
-}
-
-func (e padEvent) GetModifierState() ModifierType {
-	return WrapEvent(gextras.InternObject(e)).GetModifierState()
-}
-
-func (e padEvent) GetPointerEmulated() bool {
-	return WrapEvent(gextras.InternObject(e)).GetPointerEmulated()
-}
-
-func (e padEvent) GetPosition() (x float64, y float64, ok bool) {
-	return WrapEvent(gextras.InternObject(e)).GetPosition()
-}
-
-func (e padEvent) GetSeat() Seat {
-	return WrapEvent(gextras.InternObject(e)).GetSeat()
-}
-
-func (e padEvent) GetSurface() Surface {
-	return WrapEvent(gextras.InternObject(e)).GetSurface()
-}
-
-func (e padEvent) GetTime() uint32 {
-	return WrapEvent(gextras.InternObject(e)).GetTime()
-}
-
-func (e padEvent) ref() Event {
-	return WrapEvent(gextras.InternObject(e)).ref()
-}
-
-func (e padEvent) TriggersContextMenu() bool {
-	return WrapEvent(gextras.InternObject(e)).TriggersContextMenu()
-}
-
-func (e padEvent) unref() {
-	WrapEvent(gextras.InternObject(e)).unref()
-}
-
-func (e padEvent) AxisValue() (uint, float64) {
+// AxisValue extracts the information from a pad strip or ring event.
+func (e *PadEventClass) AxisValue() (uint, float64) {
 	var _arg0 *C.GdkEvent // out
 	var _arg1 C.guint     // in
 	var _arg2 C.double    // in
@@ -2704,7 +1331,8 @@ func (e padEvent) AxisValue() (uint, float64) {
 	return _index, _value
 }
 
-func (e padEvent) Button() uint {
+// Button extracts information about the pressed button from a pad event.
+func (e *PadEventClass) Button() uint {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.guint     // in
 
@@ -2719,7 +1347,8 @@ func (e padEvent) Button() uint {
 	return _guint
 }
 
-func (e padEvent) GroupMode() (group uint, mode uint) {
+// GroupMode extracts group and mode information from a pad event.
+func (e *PadEventClass) GroupMode() (group uint, mode uint) {
 	var _arg0 *C.GdkEvent // out
 	var _arg1 C.guint     // in
 	var _arg2 C.guint     // in
@@ -2739,289 +1368,37 @@ func (e padEvent) GroupMode() (group uint, mode uint) {
 
 // ProximityEvent: event related to the proximity of a tool to a device.
 type ProximityEvent interface {
-	Event
+	gextras.Objector
 
-	// AsEvent casts the class to the Event interface.
-	AsEvent() Event
-
-	// GetAxes extracts all axis values from an event.
-	//
-	// This method is inherited from Event
-	GetAxes() ([]float64, bool)
-	// GetAxis: extract the axis value for a particular axis use from an event
-	// structure.
-	//
-	// This method is inherited from Event
-	GetAxis(axisUse AxisUse) (float64, bool)
-	// GetDevice returns the device of an event.
-	//
-	// This method is inherited from Event
-	GetDevice() Device
-	// GetDeviceTool returns a `GdkDeviceTool` representing the tool that caused
-	// the event.
-	//
-	// If the was not generated by a device that supports different tools (such
-	// as a tablet), this function will return nil.
-	//
-	// Note: the `GdkDeviceTool` will be constant during the application
-	// lifetime, if settings must be stored persistently across runs, see
-	// [method@Gdk.DeviceTool.get_serial].
-	//
-	// This method is inherited from Event
-	GetDeviceTool() DeviceTool
-	// GetDisplay retrieves the display associated to the @event.
-	//
-	// This method is inherited from Event
-	GetDisplay() Display
-	// GetEventSequence retuns the event sequence to which the event belongs.
-	//
-	// Related touch events are connected in a sequence. Other events typically
-	// don't have event sequence information.
-	//
-	// This method is inherited from Event
-	GetEventSequence() *EventSequence
-	// GetEventType retrieves the type of the event.
-	//
-	// This method is inherited from Event
-	GetEventType() EventType
-	// GetModifierState returns the modifier state field of an event.
-	//
-	// This method is inherited from Event
-	GetModifierState() ModifierType
-	// GetPointerEmulated returns whether this event is an 'emulated' pointer
-	// event.
-	//
-	// Emulated pointer events typically originate from a touch events.
-	//
-	// This method is inherited from Event
-	GetPointerEmulated() bool
-	// GetPosition: extract the event surface relative x/y coordinates from an
-	// event.
-	//
-	// This method is inherited from Event
-	GetPosition() (x float64, y float64, ok bool)
-	// GetSeat returns the seat that originated the event.
-	//
-	// This method is inherited from Event
-	GetSeat() Seat
-	// GetSurface extracts the surface associated with an event.
-	//
-	// This method is inherited from Event
-	GetSurface() Surface
-	// GetTime returns the timestamp of @event.
-	//
-	// Not all events have timestamps. In that case, this function returns
-	// GDK_CURRENT_TIME.
-	//
-	// This method is inherited from Event
-	GetTime() uint32
-	// Ref: increase the ref count of @event.
-	//
-	// This method is inherited from Event
-	ref() Event
-	// TriggersContextMenu returns whether a `GdkEvent` should trigger a context
-	// menu, according to platform conventions.
-	//
-	// The right mouse button typically triggers context menus.
-	//
-	// This function should always be used instead of simply checking for
-	// event->button == GDK_BUTTON_SECONDARY.
-	//
-	// This method is inherited from Event
-	TriggersContextMenu() bool
-	// Unref: decrease the ref count of @event.
-	//
-	// If the last reference is dropped, the structure is freed.
-	//
-	// This method is inherited from Event
-	unref()
+	privateProximityEventClass()
 }
 
-// proximityEvent implements the ProximityEvent interface.
-type proximityEvent struct {
-	*externglib.Object
+// ProximityEventClass implements the ProximityEvent interface.
+type ProximityEventClass struct {
+	EventClass
 }
 
-var _ ProximityEvent = (*proximityEvent)(nil)
+var _ ProximityEvent = (*ProximityEventClass)(nil)
 
-// WrapProximityEvent wraps a GObject to a type that implements
-// interface ProximityEvent. It is primarily used internally.
-func WrapProximityEvent(obj *externglib.Object) ProximityEvent {
-	return proximityEvent{obj}
+func wrapProximityEvent(obj *externglib.Object) ProximityEvent {
+	return &ProximityEventClass{
+		EventClass: EventClass{
+			Object: obj,
+		},
+	}
 }
 
 func marshalProximityEvent(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapProximityEvent(obj), nil
+	return wrapProximityEvent(obj), nil
 }
 
-func (p proximityEvent) AsEvent() Event {
-	return WrapEvent(gextras.InternObject(p))
-}
-
-func (e proximityEvent) GetAxes() ([]float64, bool) {
-	return WrapEvent(gextras.InternObject(e)).GetAxes()
-}
-
-func (e proximityEvent) GetAxis(axisUse AxisUse) (float64, bool) {
-	return WrapEvent(gextras.InternObject(e)).GetAxis(axisUse)
-}
-
-func (e proximityEvent) GetDevice() Device {
-	return WrapEvent(gextras.InternObject(e)).GetDevice()
-}
-
-func (e proximityEvent) GetDeviceTool() DeviceTool {
-	return WrapEvent(gextras.InternObject(e)).GetDeviceTool()
-}
-
-func (e proximityEvent) GetDisplay() Display {
-	return WrapEvent(gextras.InternObject(e)).GetDisplay()
-}
-
-func (e proximityEvent) GetEventSequence() *EventSequence {
-	return WrapEvent(gextras.InternObject(e)).GetEventSequence()
-}
-
-func (e proximityEvent) GetEventType() EventType {
-	return WrapEvent(gextras.InternObject(e)).GetEventType()
-}
-
-func (e proximityEvent) GetModifierState() ModifierType {
-	return WrapEvent(gextras.InternObject(e)).GetModifierState()
-}
-
-func (e proximityEvent) GetPointerEmulated() bool {
-	return WrapEvent(gextras.InternObject(e)).GetPointerEmulated()
-}
-
-func (e proximityEvent) GetPosition() (x float64, y float64, ok bool) {
-	return WrapEvent(gextras.InternObject(e)).GetPosition()
-}
-
-func (e proximityEvent) GetSeat() Seat {
-	return WrapEvent(gextras.InternObject(e)).GetSeat()
-}
-
-func (e proximityEvent) GetSurface() Surface {
-	return WrapEvent(gextras.InternObject(e)).GetSurface()
-}
-
-func (e proximityEvent) GetTime() uint32 {
-	return WrapEvent(gextras.InternObject(e)).GetTime()
-}
-
-func (e proximityEvent) ref() Event {
-	return WrapEvent(gextras.InternObject(e)).ref()
-}
-
-func (e proximityEvent) TriggersContextMenu() bool {
-	return WrapEvent(gextras.InternObject(e)).TriggersContextMenu()
-}
-
-func (e proximityEvent) unref() {
-	WrapEvent(gextras.InternObject(e)).unref()
-}
+func (*ProximityEventClass) privateProximityEventClass() {}
 
 // ScrollEvent: event related to a scrolling motion.
 type ScrollEvent interface {
-	Event
-
-	// AsEvent casts the class to the Event interface.
-	AsEvent() Event
-
-	// GetAxes extracts all axis values from an event.
-	//
-	// This method is inherited from Event
-	GetAxes() ([]float64, bool)
-	// GetAxis: extract the axis value for a particular axis use from an event
-	// structure.
-	//
-	// This method is inherited from Event
-	GetAxis(axisUse AxisUse) (float64, bool)
-	// GetDevice returns the device of an event.
-	//
-	// This method is inherited from Event
-	GetDevice() Device
-	// GetDeviceTool returns a `GdkDeviceTool` representing the tool that caused
-	// the event.
-	//
-	// If the was not generated by a device that supports different tools (such
-	// as a tablet), this function will return nil.
-	//
-	// Note: the `GdkDeviceTool` will be constant during the application
-	// lifetime, if settings must be stored persistently across runs, see
-	// [method@Gdk.DeviceTool.get_serial].
-	//
-	// This method is inherited from Event
-	GetDeviceTool() DeviceTool
-	// GetDisplay retrieves the display associated to the @event.
-	//
-	// This method is inherited from Event
-	GetDisplay() Display
-	// GetEventSequence retuns the event sequence to which the event belongs.
-	//
-	// Related touch events are connected in a sequence. Other events typically
-	// don't have event sequence information.
-	//
-	// This method is inherited from Event
-	GetEventSequence() *EventSequence
-	// GetEventType retrieves the type of the event.
-	//
-	// This method is inherited from Event
-	GetEventType() EventType
-	// GetModifierState returns the modifier state field of an event.
-	//
-	// This method is inherited from Event
-	GetModifierState() ModifierType
-	// GetPointerEmulated returns whether this event is an 'emulated' pointer
-	// event.
-	//
-	// Emulated pointer events typically originate from a touch events.
-	//
-	// This method is inherited from Event
-	GetPointerEmulated() bool
-	// GetPosition: extract the event surface relative x/y coordinates from an
-	// event.
-	//
-	// This method is inherited from Event
-	GetPosition() (x float64, y float64, ok bool)
-	// GetSeat returns the seat that originated the event.
-	//
-	// This method is inherited from Event
-	GetSeat() Seat
-	// GetSurface extracts the surface associated with an event.
-	//
-	// This method is inherited from Event
-	GetSurface() Surface
-	// GetTime returns the timestamp of @event.
-	//
-	// Not all events have timestamps. In that case, this function returns
-	// GDK_CURRENT_TIME.
-	//
-	// This method is inherited from Event
-	GetTime() uint32
-	// Ref: increase the ref count of @event.
-	//
-	// This method is inherited from Event
-	ref() Event
-	// TriggersContextMenu returns whether a `GdkEvent` should trigger a context
-	// menu, according to platform conventions.
-	//
-	// The right mouse button typically triggers context menus.
-	//
-	// This function should always be used instead of simply checking for
-	// event->button == GDK_BUTTON_SECONDARY.
-	//
-	// This method is inherited from Event
-	TriggersContextMenu() bool
-	// Unref: decrease the ref count of @event.
-	//
-	// If the last reference is dropped, the structure is freed.
-	//
-	// This method is inherited from Event
-	unref()
+	gextras.Objector
 
 	// Deltas extracts the scroll deltas of a scroll event.
 	//
@@ -3040,94 +1417,31 @@ type ScrollEvent interface {
 	IsStop() bool
 }
 
-// scrollEvent implements the ScrollEvent interface.
-type scrollEvent struct {
-	*externglib.Object
+// ScrollEventClass implements the ScrollEvent interface.
+type ScrollEventClass struct {
+	EventClass
 }
 
-var _ ScrollEvent = (*scrollEvent)(nil)
+var _ ScrollEvent = (*ScrollEventClass)(nil)
 
-// WrapScrollEvent wraps a GObject to a type that implements
-// interface ScrollEvent. It is primarily used internally.
-func WrapScrollEvent(obj *externglib.Object) ScrollEvent {
-	return scrollEvent{obj}
+func wrapScrollEvent(obj *externglib.Object) ScrollEvent {
+	return &ScrollEventClass{
+		EventClass: EventClass{
+			Object: obj,
+		},
+	}
 }
 
 func marshalScrollEvent(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapScrollEvent(obj), nil
+	return wrapScrollEvent(obj), nil
 }
 
-func (s scrollEvent) AsEvent() Event {
-	return WrapEvent(gextras.InternObject(s))
-}
-
-func (e scrollEvent) GetAxes() ([]float64, bool) {
-	return WrapEvent(gextras.InternObject(e)).GetAxes()
-}
-
-func (e scrollEvent) GetAxis(axisUse AxisUse) (float64, bool) {
-	return WrapEvent(gextras.InternObject(e)).GetAxis(axisUse)
-}
-
-func (e scrollEvent) GetDevice() Device {
-	return WrapEvent(gextras.InternObject(e)).GetDevice()
-}
-
-func (e scrollEvent) GetDeviceTool() DeviceTool {
-	return WrapEvent(gextras.InternObject(e)).GetDeviceTool()
-}
-
-func (e scrollEvent) GetDisplay() Display {
-	return WrapEvent(gextras.InternObject(e)).GetDisplay()
-}
-
-func (e scrollEvent) GetEventSequence() *EventSequence {
-	return WrapEvent(gextras.InternObject(e)).GetEventSequence()
-}
-
-func (e scrollEvent) GetEventType() EventType {
-	return WrapEvent(gextras.InternObject(e)).GetEventType()
-}
-
-func (e scrollEvent) GetModifierState() ModifierType {
-	return WrapEvent(gextras.InternObject(e)).GetModifierState()
-}
-
-func (e scrollEvent) GetPointerEmulated() bool {
-	return WrapEvent(gextras.InternObject(e)).GetPointerEmulated()
-}
-
-func (e scrollEvent) GetPosition() (x float64, y float64, ok bool) {
-	return WrapEvent(gextras.InternObject(e)).GetPosition()
-}
-
-func (e scrollEvent) GetSeat() Seat {
-	return WrapEvent(gextras.InternObject(e)).GetSeat()
-}
-
-func (e scrollEvent) GetSurface() Surface {
-	return WrapEvent(gextras.InternObject(e)).GetSurface()
-}
-
-func (e scrollEvent) GetTime() uint32 {
-	return WrapEvent(gextras.InternObject(e)).GetTime()
-}
-
-func (e scrollEvent) ref() Event {
-	return WrapEvent(gextras.InternObject(e)).ref()
-}
-
-func (e scrollEvent) TriggersContextMenu() bool {
-	return WrapEvent(gextras.InternObject(e)).TriggersContextMenu()
-}
-
-func (e scrollEvent) unref() {
-	WrapEvent(gextras.InternObject(e)).unref()
-}
-
-func (e scrollEvent) Deltas() (deltaX float64, deltaY float64) {
+// Deltas extracts the scroll deltas of a scroll event.
+//
+// The deltas will be zero unless the scroll direction is GDK_SCROLL_SMOOTH.
+func (e *ScrollEventClass) Deltas() (deltaX float64, deltaY float64) {
 	var _arg0 *C.GdkEvent // out
 	var _arg1 C.double    // in
 	var _arg2 C.double    // in
@@ -3145,7 +1459,8 @@ func (e scrollEvent) Deltas() (deltaX float64, deltaY float64) {
 	return _deltaX, _deltaY
 }
 
-func (e scrollEvent) Direction() ScrollDirection {
+// Direction extracts the direction of a scroll event.
+func (e *ScrollEventClass) Direction() ScrollDirection {
 	var _arg0 *C.GdkEvent          // out
 	var _cret C.GdkScrollDirection // in
 
@@ -3160,7 +1475,15 @@ func (e scrollEvent) Direction() ScrollDirection {
 	return _scrollDirection
 }
 
-func (e scrollEvent) IsStop() bool {
+// IsStop: check whether a scroll event is a stop scroll event.
+//
+// Scroll sequences with smooth scroll information may provide a stop scroll
+// event once the interaction with the device finishes, e.g. by lifting a
+// finger. This stop scroll event is the signal that a widget may trigger
+// kinetic scrolling based on the current velocity.
+//
+// Stop scroll events always have a delta of 0/0.
+func (e *ScrollEventClass) IsStop() bool {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.gboolean  // in
 
@@ -3179,196 +1502,36 @@ func (e scrollEvent) IsStop() bool {
 
 // TouchEvent: event related to a touch-based device.
 type TouchEvent interface {
-	Event
-
-	// AsEvent casts the class to the Event interface.
-	AsEvent() Event
-
-	// GetAxes extracts all axis values from an event.
-	//
-	// This method is inherited from Event
-	GetAxes() ([]float64, bool)
-	// GetAxis: extract the axis value for a particular axis use from an event
-	// structure.
-	//
-	// This method is inherited from Event
-	GetAxis(axisUse AxisUse) (float64, bool)
-	// GetDevice returns the device of an event.
-	//
-	// This method is inherited from Event
-	GetDevice() Device
-	// GetDeviceTool returns a `GdkDeviceTool` representing the tool that caused
-	// the event.
-	//
-	// If the was not generated by a device that supports different tools (such
-	// as a tablet), this function will return nil.
-	//
-	// Note: the `GdkDeviceTool` will be constant during the application
-	// lifetime, if settings must be stored persistently across runs, see
-	// [method@Gdk.DeviceTool.get_serial].
-	//
-	// This method is inherited from Event
-	GetDeviceTool() DeviceTool
-	// GetDisplay retrieves the display associated to the @event.
-	//
-	// This method is inherited from Event
-	GetDisplay() Display
-	// GetEventSequence retuns the event sequence to which the event belongs.
-	//
-	// Related touch events are connected in a sequence. Other events typically
-	// don't have event sequence information.
-	//
-	// This method is inherited from Event
-	GetEventSequence() *EventSequence
-	// GetEventType retrieves the type of the event.
-	//
-	// This method is inherited from Event
-	GetEventType() EventType
-	// GetModifierState returns the modifier state field of an event.
-	//
-	// This method is inherited from Event
-	GetModifierState() ModifierType
-	// GetPointerEmulated returns whether this event is an 'emulated' pointer
-	// event.
-	//
-	// Emulated pointer events typically originate from a touch events.
-	//
-	// This method is inherited from Event
-	GetPointerEmulated() bool
-	// GetPosition: extract the event surface relative x/y coordinates from an
-	// event.
-	//
-	// This method is inherited from Event
-	GetPosition() (x float64, y float64, ok bool)
-	// GetSeat returns the seat that originated the event.
-	//
-	// This method is inherited from Event
-	GetSeat() Seat
-	// GetSurface extracts the surface associated with an event.
-	//
-	// This method is inherited from Event
-	GetSurface() Surface
-	// GetTime returns the timestamp of @event.
-	//
-	// Not all events have timestamps. In that case, this function returns
-	// GDK_CURRENT_TIME.
-	//
-	// This method is inherited from Event
-	GetTime() uint32
-	// Ref: increase the ref count of @event.
-	//
-	// This method is inherited from Event
-	ref() Event
-	// TriggersContextMenu returns whether a `GdkEvent` should trigger a context
-	// menu, according to platform conventions.
-	//
-	// The right mouse button typically triggers context menus.
-	//
-	// This function should always be used instead of simply checking for
-	// event->button == GDK_BUTTON_SECONDARY.
-	//
-	// This method is inherited from Event
-	TriggersContextMenu() bool
-	// Unref: decrease the ref count of @event.
-	//
-	// If the last reference is dropped, the structure is freed.
-	//
-	// This method is inherited from Event
-	unref()
+	gextras.Objector
 
 	// EmulatingPointer extracts whether a touch event is emulating a pointer
 	// event.
 	EmulatingPointer() bool
 }
 
-// touchEvent implements the TouchEvent interface.
-type touchEvent struct {
-	*externglib.Object
+// TouchEventClass implements the TouchEvent interface.
+type TouchEventClass struct {
+	EventClass
 }
 
-var _ TouchEvent = (*touchEvent)(nil)
+var _ TouchEvent = (*TouchEventClass)(nil)
 
-// WrapTouchEvent wraps a GObject to a type that implements
-// interface TouchEvent. It is primarily used internally.
-func WrapTouchEvent(obj *externglib.Object) TouchEvent {
-	return touchEvent{obj}
+func wrapTouchEvent(obj *externglib.Object) TouchEvent {
+	return &TouchEventClass{
+		EventClass: EventClass{
+			Object: obj,
+		},
+	}
 }
 
 func marshalTouchEvent(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapTouchEvent(obj), nil
+	return wrapTouchEvent(obj), nil
 }
 
-func (t touchEvent) AsEvent() Event {
-	return WrapEvent(gextras.InternObject(t))
-}
-
-func (e touchEvent) GetAxes() ([]float64, bool) {
-	return WrapEvent(gextras.InternObject(e)).GetAxes()
-}
-
-func (e touchEvent) GetAxis(axisUse AxisUse) (float64, bool) {
-	return WrapEvent(gextras.InternObject(e)).GetAxis(axisUse)
-}
-
-func (e touchEvent) GetDevice() Device {
-	return WrapEvent(gextras.InternObject(e)).GetDevice()
-}
-
-func (e touchEvent) GetDeviceTool() DeviceTool {
-	return WrapEvent(gextras.InternObject(e)).GetDeviceTool()
-}
-
-func (e touchEvent) GetDisplay() Display {
-	return WrapEvent(gextras.InternObject(e)).GetDisplay()
-}
-
-func (e touchEvent) GetEventSequence() *EventSequence {
-	return WrapEvent(gextras.InternObject(e)).GetEventSequence()
-}
-
-func (e touchEvent) GetEventType() EventType {
-	return WrapEvent(gextras.InternObject(e)).GetEventType()
-}
-
-func (e touchEvent) GetModifierState() ModifierType {
-	return WrapEvent(gextras.InternObject(e)).GetModifierState()
-}
-
-func (e touchEvent) GetPointerEmulated() bool {
-	return WrapEvent(gextras.InternObject(e)).GetPointerEmulated()
-}
-
-func (e touchEvent) GetPosition() (x float64, y float64, ok bool) {
-	return WrapEvent(gextras.InternObject(e)).GetPosition()
-}
-
-func (e touchEvent) GetSeat() Seat {
-	return WrapEvent(gextras.InternObject(e)).GetSeat()
-}
-
-func (e touchEvent) GetSurface() Surface {
-	return WrapEvent(gextras.InternObject(e)).GetSurface()
-}
-
-func (e touchEvent) GetTime() uint32 {
-	return WrapEvent(gextras.InternObject(e)).GetTime()
-}
-
-func (e touchEvent) ref() Event {
-	return WrapEvent(gextras.InternObject(e)).ref()
-}
-
-func (e touchEvent) TriggersContextMenu() bool {
-	return WrapEvent(gextras.InternObject(e)).TriggersContextMenu()
-}
-
-func (e touchEvent) unref() {
-	WrapEvent(gextras.InternObject(e)).unref()
-}
-
-func (e touchEvent) EmulatingPointer() bool {
+// EmulatingPointer extracts whether a touch event is emulating a pointer event.
+func (e *TouchEventClass) EmulatingPointer() bool {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.gboolean  // in
 
@@ -3392,102 +1555,7 @@ func (e touchEvent) EmulatingPointer() bool {
 // touchpad gestures are typically processed by the system, resulting in these
 // events.
 type TouchpadEvent interface {
-	Event
-
-	// AsEvent casts the class to the Event interface.
-	AsEvent() Event
-
-	// GetAxes extracts all axis values from an event.
-	//
-	// This method is inherited from Event
-	GetAxes() ([]float64, bool)
-	// GetAxis: extract the axis value for a particular axis use from an event
-	// structure.
-	//
-	// This method is inherited from Event
-	GetAxis(axisUse AxisUse) (float64, bool)
-	// GetDevice returns the device of an event.
-	//
-	// This method is inherited from Event
-	GetDevice() Device
-	// GetDeviceTool returns a `GdkDeviceTool` representing the tool that caused
-	// the event.
-	//
-	// If the was not generated by a device that supports different tools (such
-	// as a tablet), this function will return nil.
-	//
-	// Note: the `GdkDeviceTool` will be constant during the application
-	// lifetime, if settings must be stored persistently across runs, see
-	// [method@Gdk.DeviceTool.get_serial].
-	//
-	// This method is inherited from Event
-	GetDeviceTool() DeviceTool
-	// GetDisplay retrieves the display associated to the @event.
-	//
-	// This method is inherited from Event
-	GetDisplay() Display
-	// GetEventSequence retuns the event sequence to which the event belongs.
-	//
-	// Related touch events are connected in a sequence. Other events typically
-	// don't have event sequence information.
-	//
-	// This method is inherited from Event
-	GetEventSequence() *EventSequence
-	// GetEventType retrieves the type of the event.
-	//
-	// This method is inherited from Event
-	GetEventType() EventType
-	// GetModifierState returns the modifier state field of an event.
-	//
-	// This method is inherited from Event
-	GetModifierState() ModifierType
-	// GetPointerEmulated returns whether this event is an 'emulated' pointer
-	// event.
-	//
-	// Emulated pointer events typically originate from a touch events.
-	//
-	// This method is inherited from Event
-	GetPointerEmulated() bool
-	// GetPosition: extract the event surface relative x/y coordinates from an
-	// event.
-	//
-	// This method is inherited from Event
-	GetPosition() (x float64, y float64, ok bool)
-	// GetSeat returns the seat that originated the event.
-	//
-	// This method is inherited from Event
-	GetSeat() Seat
-	// GetSurface extracts the surface associated with an event.
-	//
-	// This method is inherited from Event
-	GetSurface() Surface
-	// GetTime returns the timestamp of @event.
-	//
-	// Not all events have timestamps. In that case, this function returns
-	// GDK_CURRENT_TIME.
-	//
-	// This method is inherited from Event
-	GetTime() uint32
-	// Ref: increase the ref count of @event.
-	//
-	// This method is inherited from Event
-	ref() Event
-	// TriggersContextMenu returns whether a `GdkEvent` should trigger a context
-	// menu, according to platform conventions.
-	//
-	// The right mouse button typically triggers context menus.
-	//
-	// This function should always be used instead of simply checking for
-	// event->button == GDK_BUTTON_SECONDARY.
-	//
-	// This method is inherited from Event
-	TriggersContextMenu() bool
-	// Unref: decrease the ref count of @event.
-	//
-	// If the last reference is dropped, the structure is freed.
-	//
-	// This method is inherited from Event
-	unref()
+	gextras.Objector
 
 	// Deltas extracts delta information from a touchpad event.
 	Deltas() (dx float64, dy float64)
@@ -3501,94 +1569,29 @@ type TouchpadEvent interface {
 	PinchScale() float64
 }
 
-// touchpadEvent implements the TouchpadEvent interface.
-type touchpadEvent struct {
-	*externglib.Object
+// TouchpadEventClass implements the TouchpadEvent interface.
+type TouchpadEventClass struct {
+	EventClass
 }
 
-var _ TouchpadEvent = (*touchpadEvent)(nil)
+var _ TouchpadEvent = (*TouchpadEventClass)(nil)
 
-// WrapTouchpadEvent wraps a GObject to a type that implements
-// interface TouchpadEvent. It is primarily used internally.
-func WrapTouchpadEvent(obj *externglib.Object) TouchpadEvent {
-	return touchpadEvent{obj}
+func wrapTouchpadEvent(obj *externglib.Object) TouchpadEvent {
+	return &TouchpadEventClass{
+		EventClass: EventClass{
+			Object: obj,
+		},
+	}
 }
 
 func marshalTouchpadEvent(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapTouchpadEvent(obj), nil
+	return wrapTouchpadEvent(obj), nil
 }
 
-func (t touchpadEvent) AsEvent() Event {
-	return WrapEvent(gextras.InternObject(t))
-}
-
-func (e touchpadEvent) GetAxes() ([]float64, bool) {
-	return WrapEvent(gextras.InternObject(e)).GetAxes()
-}
-
-func (e touchpadEvent) GetAxis(axisUse AxisUse) (float64, bool) {
-	return WrapEvent(gextras.InternObject(e)).GetAxis(axisUse)
-}
-
-func (e touchpadEvent) GetDevice() Device {
-	return WrapEvent(gextras.InternObject(e)).GetDevice()
-}
-
-func (e touchpadEvent) GetDeviceTool() DeviceTool {
-	return WrapEvent(gextras.InternObject(e)).GetDeviceTool()
-}
-
-func (e touchpadEvent) GetDisplay() Display {
-	return WrapEvent(gextras.InternObject(e)).GetDisplay()
-}
-
-func (e touchpadEvent) GetEventSequence() *EventSequence {
-	return WrapEvent(gextras.InternObject(e)).GetEventSequence()
-}
-
-func (e touchpadEvent) GetEventType() EventType {
-	return WrapEvent(gextras.InternObject(e)).GetEventType()
-}
-
-func (e touchpadEvent) GetModifierState() ModifierType {
-	return WrapEvent(gextras.InternObject(e)).GetModifierState()
-}
-
-func (e touchpadEvent) GetPointerEmulated() bool {
-	return WrapEvent(gextras.InternObject(e)).GetPointerEmulated()
-}
-
-func (e touchpadEvent) GetPosition() (x float64, y float64, ok bool) {
-	return WrapEvent(gextras.InternObject(e)).GetPosition()
-}
-
-func (e touchpadEvent) GetSeat() Seat {
-	return WrapEvent(gextras.InternObject(e)).GetSeat()
-}
-
-func (e touchpadEvent) GetSurface() Surface {
-	return WrapEvent(gextras.InternObject(e)).GetSurface()
-}
-
-func (e touchpadEvent) GetTime() uint32 {
-	return WrapEvent(gextras.InternObject(e)).GetTime()
-}
-
-func (e touchpadEvent) ref() Event {
-	return WrapEvent(gextras.InternObject(e)).ref()
-}
-
-func (e touchpadEvent) TriggersContextMenu() bool {
-	return WrapEvent(gextras.InternObject(e)).TriggersContextMenu()
-}
-
-func (e touchpadEvent) unref() {
-	WrapEvent(gextras.InternObject(e)).unref()
-}
-
-func (e touchpadEvent) Deltas() (dx float64, dy float64) {
+// Deltas extracts delta information from a touchpad event.
+func (e *TouchpadEventClass) Deltas() (dx float64, dy float64) {
 	var _arg0 *C.GdkEvent // out
 	var _arg1 C.double    // in
 	var _arg2 C.double    // in
@@ -3606,7 +1609,8 @@ func (e touchpadEvent) Deltas() (dx float64, dy float64) {
 	return _dx, _dy
 }
 
-func (e touchpadEvent) GesturePhase() TouchpadGesturePhase {
+// GesturePhase extracts the touchpad gesture phase from a touchpad event.
+func (e *TouchpadEventClass) GesturePhase() TouchpadGesturePhase {
 	var _arg0 *C.GdkEvent               // out
 	var _cret C.GdkTouchpadGesturePhase // in
 
@@ -3621,7 +1625,8 @@ func (e touchpadEvent) GesturePhase() TouchpadGesturePhase {
 	return _touchpadGesturePhase
 }
 
-func (e touchpadEvent) NFingers() uint {
+// NFingers extracts the number of fingers from a touchpad event.
+func (e *TouchpadEventClass) NFingers() uint {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.guint     // in
 
@@ -3636,7 +1641,8 @@ func (e touchpadEvent) NFingers() uint {
 	return _guint
 }
 
-func (e touchpadEvent) PinchAngleDelta() float64 {
+// PinchAngleDelta extracts the angle delta from a touchpad pinch event.
+func (e *TouchpadEventClass) PinchAngleDelta() float64 {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.double    // in
 
@@ -3651,7 +1657,8 @@ func (e touchpadEvent) PinchAngleDelta() float64 {
 	return _gdouble
 }
 
-func (e touchpadEvent) PinchScale() float64 {
+// PinchScale extracts the scale from a touchpad pinch event.
+func (e *TouchpadEventClass) PinchScale() float64 {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.double    // in
 

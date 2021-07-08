@@ -5,6 +5,7 @@ package atk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -21,7 +22,7 @@ func init() {
 	})
 }
 
-// ActionOverrider contains methods that are overridable .
+// ActionOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
@@ -145,26 +146,27 @@ type Action interface {
 	SetDescription(i int, desc string) bool
 }
 
-// action implements the Action interface.
-type action struct {
+// ActionInterface implements the Action interface.
+type ActionInterface struct {
 	*externglib.Object
 }
 
-var _ Action = (*action)(nil)
+var _ Action = (*ActionInterface)(nil)
 
-// WrapAction wraps a GObject to a type that implements
-// interface Action. It is primarily used internally.
-func WrapAction(obj *externglib.Object) Action {
-	return action{obj}
+func wrapAction(obj *externglib.Object) Action {
+	return &ActionInterface{
+		Object: obj,
+	}
 }
 
 func marshalAction(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapAction(obj), nil
+	return wrapAction(obj), nil
 }
 
-func (a action) DoAction(i int) bool {
+// DoAction: perform the specified action on the object.
+func (a *ActionInterface) DoAction(i int) bool {
 	var _arg0 *C.AtkAction // out
 	var _arg1 C.gint       // out
 	var _cret C.gboolean   // in
@@ -183,7 +185,8 @@ func (a action) DoAction(i int) bool {
 	return _ok
 }
 
-func (a action) Description(i int) string {
+// Description returns a description of the specified action of the object.
+func (a *ActionInterface) Description(i int) string {
 	var _arg0 *C.AtkAction // out
 	var _arg1 C.gint       // out
 	var _cret *C.gchar     // in
@@ -200,7 +203,27 @@ func (a action) Description(i int) string {
 	return _utf8
 }
 
-func (a action) Keybinding(i int) string {
+// Keybinding gets the keybinding which can be used to activate this action, if
+// one exists. The string returned should contain localized, human-readable, key
+// sequences as they would appear when displayed on screen. It must be in the
+// format "mnemonic;sequence;shortcut".
+//
+// - The mnemonic key activates the object if it is presently enabled onscreen.
+// This typically corresponds to the underlined letter within the widget.
+// Example: "n" in a traditional "New..." menu item or the "a" in "Apply" for a
+// button. - The sequence is the full list of keys which invoke the action even
+// if the relevant element is not currently shown on screen. For instance, for a
+// menu item the sequence is the keybindings used to open the parent menus
+// before invoking. The sequence string is colon-delimited. Example: "Alt+F:N"
+// in a traditional "New..." menu item. - The shortcut, if it exists, will
+// invoke the same action without showing the component or its enclosing menus
+// or dialogs. Example: "Ctrl+N" in a traditional "New..." menu item.
+//
+// Example: For a traditional "New..." menu item, the expected return value
+// would be: "N;Alt+F:N;Ctrl+N" for the English locale and "N;Alt+D:N;Strg+N"
+// for the German locale. If, hypothetically, this menu item lacked a mnemonic,
+// it would be represented by ";;Ctrl+N" and ";;Strg+N" respectively.
+func (a *ActionInterface) Keybinding(i int) string {
 	var _arg0 *C.AtkAction // out
 	var _arg1 C.gint       // out
 	var _cret *C.gchar     // in
@@ -217,7 +240,9 @@ func (a action) Keybinding(i int) string {
 	return _utf8
 }
 
-func (a action) LocalizedName(i int) string {
+// LocalizedName returns the localized name of the specified action of the
+// object.
+func (a *ActionInterface) LocalizedName(i int) string {
 	var _arg0 *C.AtkAction // out
 	var _arg1 C.gint       // out
 	var _cret *C.gchar     // in
@@ -234,7 +259,10 @@ func (a action) LocalizedName(i int) string {
 	return _utf8
 }
 
-func (a action) NActions() int {
+// NActions gets the number of accessible actions available on the object. If
+// there are more than one, the first one is considered the "default" action of
+// the object.
+func (a *ActionInterface) NActions() int {
 	var _arg0 *C.AtkAction // out
 	var _cret C.gint       // in
 
@@ -249,7 +277,19 @@ func (a action) NActions() int {
 	return _gint
 }
 
-func (a action) Name(i int) string {
+// Name returns a non-localized string naming the specified action of the
+// object. This name is generally not descriptive of the end result of the
+// action, but instead names the 'interaction type' which the object supports.
+// By convention, the above strings should be used to represent the actions
+// which correspond to the common point-and-click interaction techniques of the
+// same name: i.e. "click", "press", "release", "drag", "drop", "popup", etc.
+// The "popup" action should be used to pop up a context menu for the object, if
+// one exists.
+//
+// For technical reasons, some toolkits cannot guarantee that the reported
+// action is actually 'bound' to a nontrivial user event; i.e. the result of
+// some actions via atk_action_do_action() may be NIL.
+func (a *ActionInterface) Name(i int) string {
 	var _arg0 *C.AtkAction // out
 	var _arg1 C.gint       // out
 	var _cret *C.gchar     // in
@@ -266,7 +306,8 @@ func (a action) Name(i int) string {
 	return _utf8
 }
 
-func (a action) SetDescription(i int, desc string) bool {
+// SetDescription sets a description of the specified action of the object.
+func (a *ActionInterface) SetDescription(i int, desc string) bool {
 	var _arg0 *C.AtkAction // out
 	var _arg1 C.gint       // out
 	var _arg2 *C.gchar     // out

@@ -8,7 +8,6 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -40,337 +39,7 @@ func init() {
 // DataInputStream: data input stream implements Stream and includes functions
 // for reading structured data directly from a binary input stream.
 type DataInputStream interface {
-	BufferedInputStream
-
-	// AsBufferedInputStream casts the class to the BufferedInputStream interface.
-	AsBufferedInputStream() BufferedInputStream
-	// AsSeekable casts the class to the Seekable interface.
-	AsSeekable() Seekable
-
-	// Fill tries to read @count bytes from the stream into the buffer. Will
-	// block during this read.
-	//
-	// If @count is zero, returns zero and does nothing. A value of @count
-	// larger than G_MAXSSIZE will cause a G_IO_ERROR_INVALID_ARGUMENT error.
-	//
-	// On success, the number of bytes read into the buffer is returned. It is
-	// not an error if this is not the same as the requested size, as it can
-	// happen e.g. near the end of a file. Zero is returned on end of file (or
-	// if @count is zero), but never otherwise.
-	//
-	// If @count is -1 then the attempted read size is equal to the number of
-	// bytes that are required to fill the buffer.
-	//
-	// If @cancellable is not nil, then the operation can be cancelled by
-	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned. If an
-	// operation was partially finished when the operation was cancelled the
-	// partial result will be returned, without an error.
-	//
-	// On error -1 is returned and @error is set accordingly.
-	//
-	// For the asynchronous, non-blocking, version of this function, see
-	// g_buffered_input_stream_fill_async().
-	//
-	// This method is inherited from BufferedInputStream
-	Fill(count int, cancellable Cancellable) (int, error)
-	// FillAsync reads data into @stream's buffer asynchronously, up to @count
-	// size. @io_priority can be used to prioritize reads. For the synchronous
-	// version of this function, see g_buffered_input_stream_fill().
-	//
-	// If @count is -1 then the attempted read size is equal to the number of
-	// bytes that are required to fill the buffer.
-	//
-	// This method is inherited from BufferedInputStream
-	FillAsync(count int, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
-	// FillFinish finishes an asynchronous read.
-	//
-	// This method is inherited from BufferedInputStream
-	FillFinish(result AsyncResult) (int, error)
-	// GetAvailable gets the size of the available data within the stream.
-	//
-	// This method is inherited from BufferedInputStream
-	GetAvailable() uint
-	// GetBufferSize gets the size of the input buffer.
-	//
-	// This method is inherited from BufferedInputStream
-	GetBufferSize() uint
-	// Peek peeks in the buffer, copying data of size @count into @buffer,
-	// offset @offset bytes.
-	//
-	// This method is inherited from BufferedInputStream
-	Peek(buffer []byte, offset uint) uint
-	// ReadByte tries to read a single byte from the stream or the buffer. Will
-	// block during this read.
-	//
-	// On success, the byte read from the stream is returned. On end of stream
-	// -1 is returned but it's not an exceptional error and @error is not set.
-	//
-	// If @cancellable is not nil, then the operation can be cancelled by
-	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned. If an
-	// operation was partially finished when the operation was cancelled the
-	// partial result will be returned, without an error.
-	//
-	// On error -1 is returned and @error is set accordingly.
-	//
-	// This method is inherited from BufferedInputStream
-	ReadByte(cancellable Cancellable) (int, error)
-	// SetBufferSize sets the size of the internal buffer of @stream to @size,
-	// or to the size of the contents of the buffer. The buffer can never be
-	// resized smaller than its current contents.
-	//
-	// This method is inherited from BufferedInputStream
-	SetBufferSize(size uint)
-	// GetBaseStream gets the base stream for the filter stream.
-	//
-	// This method is inherited from FilterInputStream
-	GetBaseStream() InputStream
-	// GetCloseBaseStream returns whether the base stream will be closed when
-	// @stream is closed.
-	//
-	// This method is inherited from FilterInputStream
-	GetCloseBaseStream() bool
-	// SetCloseBaseStream sets whether the base stream will be closed when
-	// @stream is closed.
-	//
-	// This method is inherited from FilterInputStream
-	SetCloseBaseStream(closeBase bool)
-	// ClearPending clears the pending flag on @stream.
-	//
-	// This method is inherited from InputStream
-	ClearPending()
-	// Close closes the stream, releasing resources related to it.
-	//
-	// Once the stream is closed, all other operations will return
-	// G_IO_ERROR_CLOSED. Closing a stream multiple times will not return an
-	// error.
-	//
-	// Streams will be automatically closed when the last reference is dropped,
-	// but you might want to call this function to make sure resources are
-	// released as early as possible.
-	//
-	// Some streams might keep the backing store of the stream (e.g. a file
-	// descriptor) open after the stream is closed. See the documentation for
-	// the individual stream for details.
-	//
-	// On failure the first error that happened will be reported, but the close
-	// operation will finish as much as possible. A stream that failed to close
-	// will still return G_IO_ERROR_CLOSED for all operations. Still, it is
-	// important to check and report the error to the user.
-	//
-	// If @cancellable is not nil, then the operation can be cancelled by
-	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	// Cancelling a close will still leave the stream closed, but some streams
-	// can use a faster close that doesn't block to e.g. check errors.
-	//
-	// This method is inherited from InputStream
-	Close(cancellable Cancellable) error
-	// CloseAsync requests an asynchronous closes of the stream, releasing
-	// resources related to it. When the operation is finished @callback will be
-	// called. You can then call g_input_stream_close_finish() to get the result
-	// of the operation.
-	//
-	// For behaviour details see g_input_stream_close().
-	//
-	// The asynchronous methods have a default fallback that uses threads to
-	// implement asynchronicity, so they are optional for inheriting classes.
-	// However, if you override one you must override all.
-	//
-	// This method is inherited from InputStream
-	CloseAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
-	// CloseFinish finishes closing a stream asynchronously, started from
-	// g_input_stream_close_async().
-	//
-	// This method is inherited from InputStream
-	CloseFinish(result AsyncResult) error
-	// HasPending checks if an input stream has pending actions.
-	//
-	// This method is inherited from InputStream
-	HasPending() bool
-	// IsClosed checks if an input stream is closed.
-	//
-	// This method is inherited from InputStream
-	IsClosed() bool
-	// ReadAllFinish finishes an asynchronous stream read operation started with
-	// g_input_stream_read_all_async().
-	//
-	// As a special exception to the normal conventions for functions that use
-	// #GError, if this function returns false (and sets @error) then
-	// @bytes_read will be set to the number of bytes that were successfully
-	// read before the error was encountered. This functionality is only
-	// available from C. If you need it from another language then you must
-	// write your own loop around g_input_stream_read_async().
-	//
-	// This method is inherited from InputStream
-	ReadAllFinish(result AsyncResult) (uint, error)
-	// ReadBytesAsync: request an asynchronous read of @count bytes from the
-	// stream into a new #GBytes. When the operation is finished @callback will
-	// be called. You can then call g_input_stream_read_bytes_finish() to get
-	// the result of the operation.
-	//
-	// During an async request no other sync and async calls are allowed on
-	// @stream, and will result in G_IO_ERROR_PENDING errors.
-	//
-	// A value of @count larger than G_MAXSSIZE will cause a
-	// G_IO_ERROR_INVALID_ARGUMENT error.
-	//
-	// On success, the new #GBytes will be passed to the callback. It is not an
-	// error if this is smaller than the requested size, as it can happen e.g.
-	// near the end of a file, but generally we try to read as many bytes as
-	// requested. Zero is returned on end of file (or if @count is zero), but
-	// never otherwise.
-	//
-	// Any outstanding I/O request with higher priority (lower numerical value)
-	// will be executed before an outstanding request with lower priority.
-	// Default priority is G_PRIORITY_DEFAULT.
-	//
-	// This method is inherited from InputStream
-	ReadBytesAsync(count uint, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
-	// ReadFinish finishes an asynchronous stream read operation.
-	//
-	// This method is inherited from InputStream
-	ReadFinish(result AsyncResult) (int, error)
-	// SetPending sets @stream to have actions pending. If the pending flag is
-	// already set or @stream is closed, it will return false and set @error.
-	//
-	// This method is inherited from InputStream
-	SetPending() error
-	// Skip tries to skip @count bytes from the stream. Will block during the
-	// operation.
-	//
-	// This is identical to g_input_stream_read(), from a behaviour standpoint,
-	// but the bytes that are skipped are not returned to the user. Some streams
-	// have an implementation that is more efficient than reading the data.
-	//
-	// This function is optional for inherited classes, as the default
-	// implementation emulates it using read.
-	//
-	// If @cancellable is not nil, then the operation can be cancelled by
-	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned. If an
-	// operation was partially finished when the operation was cancelled the
-	// partial result will be returned, without an error.
-	//
-	// This method is inherited from InputStream
-	Skip(count uint, cancellable Cancellable) (int, error)
-	// SkipAsync: request an asynchronous skip of @count bytes from the stream.
-	// When the operation is finished @callback will be called. You can then
-	// call g_input_stream_skip_finish() to get the result of the operation.
-	//
-	// During an async request no other sync and async calls are allowed, and
-	// will result in G_IO_ERROR_PENDING errors.
-	//
-	// A value of @count larger than G_MAXSSIZE will cause a
-	// G_IO_ERROR_INVALID_ARGUMENT error.
-	//
-	// On success, the number of bytes skipped will be passed to the callback.
-	// It is not an error if this is not the same as the requested size, as it
-	// can happen e.g. near the end of a file, but generally we try to skip as
-	// many bytes as requested. Zero is returned on end of file (or if @count is
-	// zero), but never otherwise.
-	//
-	// Any outstanding i/o request with higher priority (lower numerical value)
-	// will be executed before an outstanding request with lower priority.
-	// Default priority is G_PRIORITY_DEFAULT.
-	//
-	// The asynchronous methods have a default fallback that uses threads to
-	// implement asynchronicity, so they are optional for inheriting classes.
-	// However, if you override one, you must override all.
-	//
-	// This method is inherited from InputStream
-	SkipAsync(count uint, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
-	// SkipFinish finishes a stream skip operation.
-	//
-	// This method is inherited from InputStream
-	SkipFinish(result AsyncResult) (int, error)
-	// CanSeek tests if the stream supports the Iface.
-	//
-	// This method is inherited from Seekable
-	CanSeek() bool
-	// CanTruncate tests if the length of the stream can be adjusted with
-	// g_seekable_truncate().
-	//
-	// This method is inherited from Seekable
-	CanTruncate() bool
-	// Seek seeks in the stream by the given @offset, modified by @type.
-	//
-	// Attempting to seek past the end of the stream will have different results
-	// depending on if the stream is fixed-sized or resizable. If the stream is
-	// resizable then seeking past the end and then writing will result in zeros
-	// filling the empty space. Seeking past the end of a resizable stream and
-	// reading will result in EOF. Seeking past the end of a fixed-sized stream
-	// will fail.
-	//
-	// Any operation that would result in a negative offset will fail.
-	//
-	// If @cancellable is not nil, then the operation can be cancelled by
-	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	//
-	// This method is inherited from Seekable
-	Seek(offset int64, typ glib.SeekType, cancellable Cancellable) error
-	// Tell tells the current position within the stream.
-	//
-	// This method is inherited from Seekable
-	Tell() int64
-	// Truncate sets the length of the stream to @offset. If the stream was
-	// previously larger than @offset, the extra data is discarded. If the
-	// stream was previously shorter than @offset, it is extended with NUL
-	// ('\0') bytes.
-	//
-	// If @cancellable is not nil, then the operation can be cancelled by
-	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned. If an
-	// operation was partially finished when the operation was cancelled the
-	// partial result will be returned, without an error.
-	//
-	// This method is inherited from Seekable
-	Truncate(offset int64, cancellable Cancellable) error
-	// CanSeek tests if the stream supports the Iface.
-	//
-	// This method is inherited from Seekable
-	CanSeek() bool
-	// CanTruncate tests if the length of the stream can be adjusted with
-	// g_seekable_truncate().
-	//
-	// This method is inherited from Seekable
-	CanTruncate() bool
-	// Seek seeks in the stream by the given @offset, modified by @type.
-	//
-	// Attempting to seek past the end of the stream will have different results
-	// depending on if the stream is fixed-sized or resizable. If the stream is
-	// resizable then seeking past the end and then writing will result in zeros
-	// filling the empty space. Seeking past the end of a resizable stream and
-	// reading will result in EOF. Seeking past the end of a fixed-sized stream
-	// will fail.
-	//
-	// Any operation that would result in a negative offset will fail.
-	//
-	// If @cancellable is not nil, then the operation can be cancelled by
-	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	//
-	// This method is inherited from Seekable
-	Seek(offset int64, typ glib.SeekType, cancellable Cancellable) error
-	// Tell tells the current position within the stream.
-	//
-	// This method is inherited from Seekable
-	Tell() int64
-	// Truncate sets the length of the stream to @offset. If the stream was
-	// previously larger than @offset, the extra data is discarded. If the
-	// stream was previously shorter than @offset, it is extended with NUL
-	// ('\0') bytes.
-	//
-	// If @cancellable is not nil, then the operation can be cancelled by
-	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned. If an
-	// operation was partially finished when the operation was cancelled the
-	// partial result will be returned, without an error.
-	//
-	// This method is inherited from Seekable
-	Truncate(offset int64, cancellable Cancellable) error
+	gextras.Objector
 
 	// ByteOrder gets the byte order for the data input stream.
 	ByteOrder() DataStreamByteOrder
@@ -544,23 +213,39 @@ type DataInputStream interface {
 	SetNewlineType(typ DataStreamNewlineType)
 }
 
-// dataInputStream implements the DataInputStream interface.
-type dataInputStream struct {
+// DataInputStreamClass implements the DataInputStream interface.
+type DataInputStreamClass struct {
 	*externglib.Object
+	BufferedInputStreamClass
+	SeekableInterface
 }
 
-var _ DataInputStream = (*dataInputStream)(nil)
+var _ DataInputStream = (*DataInputStreamClass)(nil)
 
-// WrapDataInputStream wraps a GObject to a type that implements
-// interface DataInputStream. It is primarily used internally.
-func WrapDataInputStream(obj *externglib.Object) DataInputStream {
-	return dataInputStream{obj}
+func wrapDataInputStream(obj *externglib.Object) DataInputStream {
+	return &DataInputStreamClass{
+		Object: obj,
+		BufferedInputStreamClass: BufferedInputStreamClass{
+			Object: obj,
+			FilterInputStreamClass: FilterInputStreamClass{
+				InputStreamClass: InputStreamClass{
+					Object: obj,
+				},
+			},
+			SeekableInterface: SeekableInterface{
+				Object: obj,
+			},
+		},
+		SeekableInterface: SeekableInterface{
+			Object: obj,
+		},
+	}
 }
 
 func marshalDataInputStream(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapDataInputStream(obj), nil
+	return wrapDataInputStream(obj), nil
 }
 
 // NewDataInputStream creates a new data input stream for the @base_stream.
@@ -579,151 +264,8 @@ func NewDataInputStream(baseStream InputStream) DataInputStream {
 	return _dataInputStream
 }
 
-func (d dataInputStream) AsBufferedInputStream() BufferedInputStream {
-	return WrapBufferedInputStream(gextras.InternObject(d))
-}
-
-func (d dataInputStream) AsSeekable() Seekable {
-	return WrapSeekable(gextras.InternObject(d))
-}
-
-func (s dataInputStream) Fill(count int, cancellable Cancellable) (int, error) {
-	return WrapBufferedInputStream(gextras.InternObject(s)).Fill(count, cancellable)
-}
-
-func (s dataInputStream) FillAsync(count int, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
-	WrapBufferedInputStream(gextras.InternObject(s)).FillAsync(count, ioPriority, cancellable, callback)
-}
-
-func (s dataInputStream) FillFinish(result AsyncResult) (int, error) {
-	return WrapBufferedInputStream(gextras.InternObject(s)).FillFinish(result)
-}
-
-func (s dataInputStream) GetAvailable() uint {
-	return WrapBufferedInputStream(gextras.InternObject(s)).GetAvailable()
-}
-
-func (s dataInputStream) GetBufferSize() uint {
-	return WrapBufferedInputStream(gextras.InternObject(s)).GetBufferSize()
-}
-
-func (s dataInputStream) Peek(buffer []byte, offset uint) uint {
-	return WrapBufferedInputStream(gextras.InternObject(s)).Peek(buffer, offset)
-}
-
-func (s dataInputStream) ReadByte(cancellable Cancellable) (int, error) {
-	return WrapBufferedInputStream(gextras.InternObject(s)).ReadByte(cancellable)
-}
-
-func (s dataInputStream) SetBufferSize(size uint) {
-	WrapBufferedInputStream(gextras.InternObject(s)).SetBufferSize(size)
-}
-
-func (s dataInputStream) GetBaseStream() InputStream {
-	return WrapFilterInputStream(gextras.InternObject(s)).GetBaseStream()
-}
-
-func (s dataInputStream) GetCloseBaseStream() bool {
-	return WrapFilterInputStream(gextras.InternObject(s)).GetCloseBaseStream()
-}
-
-func (s dataInputStream) SetCloseBaseStream(closeBase bool) {
-	WrapFilterInputStream(gextras.InternObject(s)).SetCloseBaseStream(closeBase)
-}
-
-func (s dataInputStream) ClearPending() {
-	WrapInputStream(gextras.InternObject(s)).ClearPending()
-}
-
-func (s dataInputStream) Close(cancellable Cancellable) error {
-	return WrapInputStream(gextras.InternObject(s)).Close(cancellable)
-}
-
-func (s dataInputStream) CloseAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
-	WrapInputStream(gextras.InternObject(s)).CloseAsync(ioPriority, cancellable, callback)
-}
-
-func (s dataInputStream) CloseFinish(result AsyncResult) error {
-	return WrapInputStream(gextras.InternObject(s)).CloseFinish(result)
-}
-
-func (s dataInputStream) HasPending() bool {
-	return WrapInputStream(gextras.InternObject(s)).HasPending()
-}
-
-func (s dataInputStream) IsClosed() bool {
-	return WrapInputStream(gextras.InternObject(s)).IsClosed()
-}
-
-func (s dataInputStream) ReadAllFinish(result AsyncResult) (uint, error) {
-	return WrapInputStream(gextras.InternObject(s)).ReadAllFinish(result)
-}
-
-func (s dataInputStream) ReadBytesAsync(count uint, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
-	WrapInputStream(gextras.InternObject(s)).ReadBytesAsync(count, ioPriority, cancellable, callback)
-}
-
-func (s dataInputStream) ReadFinish(result AsyncResult) (int, error) {
-	return WrapInputStream(gextras.InternObject(s)).ReadFinish(result)
-}
-
-func (s dataInputStream) SetPending() error {
-	return WrapInputStream(gextras.InternObject(s)).SetPending()
-}
-
-func (s dataInputStream) Skip(count uint, cancellable Cancellable) (int, error) {
-	return WrapInputStream(gextras.InternObject(s)).Skip(count, cancellable)
-}
-
-func (s dataInputStream) SkipAsync(count uint, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
-	WrapInputStream(gextras.InternObject(s)).SkipAsync(count, ioPriority, cancellable, callback)
-}
-
-func (s dataInputStream) SkipFinish(result AsyncResult) (int, error) {
-	return WrapInputStream(gextras.InternObject(s)).SkipFinish(result)
-}
-
-func (s dataInputStream) CanSeek() bool {
-	return WrapSeekable(gextras.InternObject(s)).CanSeek()
-}
-
-func (s dataInputStream) CanTruncate() bool {
-	return WrapSeekable(gextras.InternObject(s)).CanTruncate()
-}
-
-func (s dataInputStream) Seek(offset int64, typ glib.SeekType, cancellable Cancellable) error {
-	return WrapSeekable(gextras.InternObject(s)).Seek(offset, typ, cancellable)
-}
-
-func (s dataInputStream) Tell() int64 {
-	return WrapSeekable(gextras.InternObject(s)).Tell()
-}
-
-func (s dataInputStream) Truncate(offset int64, cancellable Cancellable) error {
-	return WrapSeekable(gextras.InternObject(s)).Truncate(offset, cancellable)
-}
-
-func (s dataInputStream) CanSeek() bool {
-	return WrapSeekable(gextras.InternObject(s)).CanSeek()
-}
-
-func (s dataInputStream) CanTruncate() bool {
-	return WrapSeekable(gextras.InternObject(s)).CanTruncate()
-}
-
-func (s dataInputStream) Seek(offset int64, typ glib.SeekType, cancellable Cancellable) error {
-	return WrapSeekable(gextras.InternObject(s)).Seek(offset, typ, cancellable)
-}
-
-func (s dataInputStream) Tell() int64 {
-	return WrapSeekable(gextras.InternObject(s)).Tell()
-}
-
-func (s dataInputStream) Truncate(offset int64, cancellable Cancellable) error {
-	return WrapSeekable(gextras.InternObject(s)).Truncate(offset, cancellable)
-}
-
-func (s dataInputStream) ByteOrder() DataStreamByteOrder {
+// ByteOrder gets the byte order for the data input stream.
+func (s *DataInputStreamClass) ByteOrder() DataStreamByteOrder {
 	var _arg0 *C.GDataInputStream    // out
 	var _cret C.GDataStreamByteOrder // in
 
@@ -738,7 +280,8 @@ func (s dataInputStream) ByteOrder() DataStreamByteOrder {
 	return _dataStreamByteOrder
 }
 
-func (s dataInputStream) NewlineType() DataStreamNewlineType {
+// NewlineType gets the current newline type for the @stream.
+func (s *DataInputStreamClass) NewlineType() DataStreamNewlineType {
 	var _arg0 *C.GDataInputStream      // out
 	var _cret C.GDataStreamNewlineType // in
 
@@ -753,7 +296,8 @@ func (s dataInputStream) NewlineType() DataStreamNewlineType {
 	return _dataStreamNewlineType
 }
 
-func (s dataInputStream) ReadByte(cancellable Cancellable) (byte, error) {
+// ReadByte reads an unsigned 8-bit/1-byte value from @stream.
+func (s *DataInputStreamClass) ReadByte(cancellable Cancellable) (byte, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 *C.GCancellable     // out
 	var _cret C.guchar            // in
@@ -773,7 +317,12 @@ func (s dataInputStream) ReadByte(cancellable Cancellable) (byte, error) {
 	return _guint8, _goerr
 }
 
-func (s dataInputStream) ReadInt16(cancellable Cancellable) (int16, error) {
+// ReadInt16 reads a 16-bit/2-byte value from @stream.
+//
+// In order to get the correct byte order for this read operation, see
+// g_data_input_stream_get_byte_order() and
+// g_data_input_stream_set_byte_order().
+func (s *DataInputStreamClass) ReadInt16(cancellable Cancellable) (int16, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 *C.GCancellable     // out
 	var _cret C.gint16            // in
@@ -793,7 +342,16 @@ func (s dataInputStream) ReadInt16(cancellable Cancellable) (int16, error) {
 	return _gint16, _goerr
 }
 
-func (s dataInputStream) ReadInt32(cancellable Cancellable) (int32, error) {
+// ReadInt32 reads a signed 32-bit/4-byte value from @stream.
+//
+// In order to get the correct byte order for this read operation, see
+// g_data_input_stream_get_byte_order() and
+// g_data_input_stream_set_byte_order().
+//
+// If @cancellable is not nil, then the operation can be cancelled by triggering
+// the cancellable object from another thread. If the operation was cancelled,
+// the error G_IO_ERROR_CANCELLED will be returned.
+func (s *DataInputStreamClass) ReadInt32(cancellable Cancellable) (int32, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 *C.GCancellable     // out
 	var _cret C.gint32            // in
@@ -813,7 +371,16 @@ func (s dataInputStream) ReadInt32(cancellable Cancellable) (int32, error) {
 	return _gint32, _goerr
 }
 
-func (s dataInputStream) ReadInt64(cancellable Cancellable) (int64, error) {
+// ReadInt64 reads a 64-bit/8-byte value from @stream.
+//
+// In order to get the correct byte order for this read operation, see
+// g_data_input_stream_get_byte_order() and
+// g_data_input_stream_set_byte_order().
+//
+// If @cancellable is not nil, then the operation can be cancelled by triggering
+// the cancellable object from another thread. If the operation was cancelled,
+// the error G_IO_ERROR_CANCELLED will be returned.
+func (s *DataInputStreamClass) ReadInt64(cancellable Cancellable) (int64, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 *C.GCancellable     // out
 	var _cret C.gint64            // in
@@ -833,7 +400,14 @@ func (s dataInputStream) ReadInt64(cancellable Cancellable) (int64, error) {
 	return _gint64, _goerr
 }
 
-func (s dataInputStream) ReadLine(cancellable Cancellable) (uint, []byte, error) {
+// ReadLine reads a line from the data input stream. Note that no encoding
+// checks or conversion is performed; the input is not guaranteed to be UTF-8,
+// and may in fact have embedded NUL characters.
+//
+// If @cancellable is not nil, then the operation can be cancelled by triggering
+// the cancellable object from another thread. If the operation was cancelled,
+// the error G_IO_ERROR_CANCELLED will be returned.
+func (s *DataInputStreamClass) ReadLine(cancellable Cancellable) (uint, []byte, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 C.gsize             // in
 	var _arg2 *C.GCancellable     // out
@@ -868,7 +442,12 @@ func (s dataInputStream) ReadLine(cancellable Cancellable) (uint, []byte, error)
 	return _length, _guint8s, _goerr
 }
 
-func (s dataInputStream) ReadLineAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+// ReadLineAsync: the asynchronous version of g_data_input_stream_read_line().
+// It is an error to have two outstanding calls to this function.
+//
+// When the operation is finished, @callback will be called. You can then call
+// g_data_input_stream_read_line_finish() to get the result of the operation.
+func (s *DataInputStreamClass) ReadLineAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GDataInputStream   // out
 	var _arg1 C.gint                // out
 	var _arg2 *C.GCancellable       // out
@@ -884,7 +463,10 @@ func (s dataInputStream) ReadLineAsync(ioPriority int, cancellable Cancellable, 
 	C.g_data_input_stream_read_line_async(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
-func (s dataInputStream) ReadLineFinish(result AsyncResult) (uint, []byte, error) {
+// ReadLineFinish: finish an asynchronous call started by
+// g_data_input_stream_read_line_async(). Note the warning about string encoding
+// in g_data_input_stream_read_line() applies here as well.
+func (s *DataInputStreamClass) ReadLineFinish(result AsyncResult) (uint, []byte, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 *C.GAsyncResult     // out
 	var _arg2 C.gsize             // in
@@ -919,7 +501,9 @@ func (s dataInputStream) ReadLineFinish(result AsyncResult) (uint, []byte, error
 	return _length, _guint8s, _goerr
 }
 
-func (s dataInputStream) ReadLineFinishUTF8(result AsyncResult) (uint, string, error) {
+// ReadLineFinishUTF8: finish an asynchronous call started by
+// g_data_input_stream_read_line_async().
+func (s *DataInputStreamClass) ReadLineFinishUTF8(result AsyncResult) (uint, string, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 *C.GAsyncResult     // out
 	var _arg2 C.gsize             // in
@@ -943,7 +527,12 @@ func (s dataInputStream) ReadLineFinishUTF8(result AsyncResult) (uint, string, e
 	return _length, _utf8, _goerr
 }
 
-func (s dataInputStream) ReadLineUTF8(cancellable Cancellable) (uint, string, error) {
+// ReadLineUTF8 reads a UTF-8 encoded line from the data input stream.
+//
+// If @cancellable is not nil, then the operation can be cancelled by triggering
+// the cancellable object from another thread. If the operation was cancelled,
+// the error G_IO_ERROR_CANCELLED will be returned.
+func (s *DataInputStreamClass) ReadLineUTF8(cancellable Cancellable) (uint, string, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 C.gsize             // in
 	var _arg2 *C.GCancellable     // out
@@ -967,7 +556,12 @@ func (s dataInputStream) ReadLineUTF8(cancellable Cancellable) (uint, string, er
 	return _length, _utf8, _goerr
 }
 
-func (s dataInputStream) ReadUint16(cancellable Cancellable) (uint16, error) {
+// ReadUint16 reads an unsigned 16-bit/2-byte value from @stream.
+//
+// In order to get the correct byte order for this read operation, see
+// g_data_input_stream_get_byte_order() and
+// g_data_input_stream_set_byte_order().
+func (s *DataInputStreamClass) ReadUint16(cancellable Cancellable) (uint16, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 *C.GCancellable     // out
 	var _cret C.guint16           // in
@@ -987,7 +581,16 @@ func (s dataInputStream) ReadUint16(cancellable Cancellable) (uint16, error) {
 	return _guint16, _goerr
 }
 
-func (s dataInputStream) ReadUint32(cancellable Cancellable) (uint32, error) {
+// ReadUint32 reads an unsigned 32-bit/4-byte value from @stream.
+//
+// In order to get the correct byte order for this read operation, see
+// g_data_input_stream_get_byte_order() and
+// g_data_input_stream_set_byte_order().
+//
+// If @cancellable is not nil, then the operation can be cancelled by triggering
+// the cancellable object from another thread. If the operation was cancelled,
+// the error G_IO_ERROR_CANCELLED will be returned.
+func (s *DataInputStreamClass) ReadUint32(cancellable Cancellable) (uint32, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 *C.GCancellable     // out
 	var _cret C.guint32           // in
@@ -1007,7 +610,15 @@ func (s dataInputStream) ReadUint32(cancellable Cancellable) (uint32, error) {
 	return _guint32, _goerr
 }
 
-func (s dataInputStream) ReadUint64(cancellable Cancellable) (uint64, error) {
+// ReadUint64 reads an unsigned 64-bit/8-byte value from @stream.
+//
+// In order to get the correct byte order for this read operation, see
+// g_data_input_stream_get_byte_order().
+//
+// If @cancellable is not nil, then the operation can be cancelled by triggering
+// the cancellable object from another thread. If the operation was cancelled,
+// the error G_IO_ERROR_CANCELLED will be returned.
+func (s *DataInputStreamClass) ReadUint64(cancellable Cancellable) (uint64, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 *C.GCancellable     // out
 	var _cret C.guint64           // in
@@ -1027,7 +638,19 @@ func (s dataInputStream) ReadUint64(cancellable Cancellable) (uint64, error) {
 	return _guint64, _goerr
 }
 
-func (s dataInputStream) ReadUntil(stopChars string, cancellable Cancellable) (uint, string, error) {
+// ReadUntil reads a string from the data input stream, up to the first
+// occurrence of any of the stop characters.
+//
+// Note that, in contrast to g_data_input_stream_read_until_async(), this
+// function consumes the stop character that it finds.
+//
+// Don't use this function in new code. Its functionality is inconsistent with
+// g_data_input_stream_read_until_async(). Both functions will be marked as
+// deprecated in a future release. Use g_data_input_stream_read_upto() instead,
+// but note that that function does not consume the stop character.
+//
+// Deprecated: since version 2.56.
+func (s *DataInputStreamClass) ReadUntil(stopChars string, cancellable Cancellable) (uint, string, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 *C.gchar            // out
 	var _arg2 C.gsize             // in
@@ -1054,7 +677,22 @@ func (s dataInputStream) ReadUntil(stopChars string, cancellable Cancellable) (u
 	return _length, _utf8, _goerr
 }
 
-func (s dataInputStream) ReadUntilAsync(stopChars string, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+// ReadUntilAsync: the asynchronous version of g_data_input_stream_read_until().
+// It is an error to have two outstanding calls to this function.
+//
+// Note that, in contrast to g_data_input_stream_read_until(), this function
+// does not consume the stop character that it finds. You must read it for
+// yourself.
+//
+// When the operation is finished, @callback will be called. You can then call
+// g_data_input_stream_read_until_finish() to get the result of the operation.
+//
+// Don't use this function in new code. Its functionality is inconsistent with
+// g_data_input_stream_read_until(). Both functions will be marked as deprecated
+// in a future release. Use g_data_input_stream_read_upto_async() instead.
+//
+// Deprecated: since version 2.56.
+func (s *DataInputStreamClass) ReadUntilAsync(stopChars string, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GDataInputStream   // out
 	var _arg1 *C.gchar              // out
 	var _arg2 C.gint                // out
@@ -1073,7 +711,11 @@ func (s dataInputStream) ReadUntilAsync(stopChars string, ioPriority int, cancel
 	C.g_data_input_stream_read_until_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
 
-func (s dataInputStream) ReadUntilFinish(result AsyncResult) (uint, string, error) {
+// ReadUntilFinish: finish an asynchronous call started by
+// g_data_input_stream_read_until_async().
+//
+// Deprecated: since version 2.56.
+func (s *DataInputStreamClass) ReadUntilFinish(result AsyncResult) (uint, string, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 *C.GAsyncResult     // out
 	var _arg2 C.gsize             // in
@@ -1097,7 +739,17 @@ func (s dataInputStream) ReadUntilFinish(result AsyncResult) (uint, string, erro
 	return _length, _utf8, _goerr
 }
 
-func (s dataInputStream) ReadUpto(stopChars string, stopCharsLen int, cancellable Cancellable) (uint, string, error) {
+// ReadUpto reads a string from the data input stream, up to the first
+// occurrence of any of the stop characters.
+//
+// In contrast to g_data_input_stream_read_until(), this function does not
+// consume the stop character. You have to use g_data_input_stream_read_byte()
+// to get it before calling g_data_input_stream_read_upto() again.
+//
+// Note that @stop_chars may contain '\0' if @stop_chars_len is specified.
+//
+// The returned string will always be nul-terminated on success.
+func (s *DataInputStreamClass) ReadUpto(stopChars string, stopCharsLen int, cancellable Cancellable) (uint, string, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 *C.gchar            // out
 	var _arg2 C.gssize            // out
@@ -1126,7 +778,18 @@ func (s dataInputStream) ReadUpto(stopChars string, stopCharsLen int, cancellabl
 	return _length, _utf8, _goerr
 }
 
-func (s dataInputStream) ReadUptoAsync(stopChars string, stopCharsLen int, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+// ReadUptoAsync: the asynchronous version of g_data_input_stream_read_upto().
+// It is an error to have two outstanding calls to this function.
+//
+// In contrast to g_data_input_stream_read_until(), this function does not
+// consume the stop character. You have to use g_data_input_stream_read_byte()
+// to get it before calling g_data_input_stream_read_upto() again.
+//
+// Note that @stop_chars may contain '\0' if @stop_chars_len is specified.
+//
+// When the operation is finished, @callback will be called. You can then call
+// g_data_input_stream_read_upto_finish() to get the result of the operation.
+func (s *DataInputStreamClass) ReadUptoAsync(stopChars string, stopCharsLen int, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GDataInputStream   // out
 	var _arg1 *C.gchar              // out
 	var _arg2 C.gssize              // out
@@ -1147,7 +810,15 @@ func (s dataInputStream) ReadUptoAsync(stopChars string, stopCharsLen int, ioPri
 	C.g_data_input_stream_read_upto_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }
 
-func (s dataInputStream) ReadUptoFinish(result AsyncResult) (uint, string, error) {
+// ReadUptoFinish: finish an asynchronous call started by
+// g_data_input_stream_read_upto_async().
+//
+// Note that this function does not consume the stop character. You have to use
+// g_data_input_stream_read_byte() to get it before calling
+// g_data_input_stream_read_upto_async() again.
+//
+// The returned string will always be nul-terminated on success.
+func (s *DataInputStreamClass) ReadUptoFinish(result AsyncResult) (uint, string, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 *C.GAsyncResult     // out
 	var _arg2 C.gsize             // in
@@ -1171,7 +842,9 @@ func (s dataInputStream) ReadUptoFinish(result AsyncResult) (uint, string, error
 	return _length, _utf8, _goerr
 }
 
-func (s dataInputStream) SetByteOrder(order DataStreamByteOrder) {
+// SetByteOrder: this function sets the byte order for the given @stream. All
+// subsequent reads from the @stream will be read in the given @order.
+func (s *DataInputStreamClass) SetByteOrder(order DataStreamByteOrder) {
 	var _arg0 *C.GDataInputStream    // out
 	var _arg1 C.GDataStreamByteOrder // out
 
@@ -1181,7 +854,12 @@ func (s dataInputStream) SetByteOrder(order DataStreamByteOrder) {
 	C.g_data_input_stream_set_byte_order(_arg0, _arg1)
 }
 
-func (s dataInputStream) SetNewlineType(typ DataStreamNewlineType) {
+// SetNewlineType sets the newline type for the @stream.
+//
+// Note that using G_DATA_STREAM_NEWLINE_TYPE_ANY is slightly unsafe. If a read
+// chunk ends in "CR" we must read an additional byte to know if this is "CR" or
+// "CR LF", and this might block if there is no more data available.
+func (s *DataInputStreamClass) SetNewlineType(typ DataStreamNewlineType) {
 	var _arg0 *C.GDataInputStream      // out
 	var _arg1 C.GDataStreamNewlineType // out
 

@@ -40,28 +40,28 @@ type MemoryFormat int
 const (
 	// B8G8R8A8Premultiplied: 4 bytes; for blue, green, red, alpha. The color
 	// values are premultiplied with the alpha value.
-	MemoryB8G8R8A8Premultiplied MemoryFormat = iota
+	MemoryFormatB8G8R8A8Premultiplied MemoryFormat = iota
 	// A8R8G8B8Premultiplied: 4 bytes; for alpha, red, green, blue. The color
 	// values are premultiplied with the alpha value.
-	MemoryA8R8G8B8Premultiplied
+	MemoryFormatA8R8G8B8Premultiplied
 	// R8G8B8A8Premultiplied: 4 bytes; for red, green, blue, alpha The color
 	// values are premultiplied with the alpha value.
-	MemoryR8G8B8A8Premultiplied
+	MemoryFormatR8G8B8A8Premultiplied
 	// B8G8R8A8: 4 bytes; for blue, green, red, alpha.
-	MemoryB8G8R8A8
+	MemoryFormatB8G8R8A8
 	// A8R8G8B8: 4 bytes; for alpha, red, green, blue.
-	MemoryA8R8G8B8
+	MemoryFormatA8R8G8B8
 	// R8G8B8A8: 4 bytes; for red, green, blue, alpha.
-	MemoryR8G8B8A8
+	MemoryFormatR8G8B8A8
 	// A8B8G8R8: 4 bytes; for alpha, blue, green, red.
-	MemoryA8B8G8R8
+	MemoryFormatA8B8G8R8
 	// R8G8B8: 3 bytes; for red, green, blue. The data is opaque.
-	MemoryR8G8B8
+	MemoryFormatR8G8B8
 	// B8G8R8: 3 bytes; for blue, green, red. The data is opaque.
-	MemoryB8G8R8
+	MemoryFormatB8G8R8
 	// NFormats: the number of formats. This value will change as more formats
 	// get added, so do not rely on its concrete integer.
-	MemoryNFormats
+	MemoryFormatNFormats
 )
 
 func marshalMemoryFormat(p uintptr) (interface{}, error) {
@@ -70,373 +70,39 @@ func marshalMemoryFormat(p uintptr) (interface{}, error) {
 
 // MemoryTexture: `GdkTexture` representing image data in memory.
 type MemoryTexture interface {
-	Texture
+	gextras.Objector
 
-	// AsTexture casts the class to the Texture interface.
-	AsTexture() Texture
-	// AsPaintable casts the class to the Paintable interface.
-	AsPaintable() Paintable
-
-	// GetHeight returns the height of the @texture, in pixels.
-	//
-	// This method is inherited from Texture
-	GetHeight() int
-	// GetWidth returns the width of @texture, in pixels.
-	//
-	// This method is inherited from Texture
-	GetWidth() int
-	// SaveToPng: store the given @texture to the @filename as a PNG file.
-	//
-	// This is a utility function intended for debugging and testing. If you
-	// want more control over formats, proper error handling or want to store to
-	// a `GFile` or other location, you might want to look into using the
-	// gdk-pixbuf library.
-	//
-	// This method is inherited from Texture
-	SaveToPng(filename string) bool
-	// ComputeConcreteSize: compute a concrete size for the `GdkPaintable`.
-	//
-	// Applies the sizing algorithm outlined in the CSS Image spec
-	// (https://drafts.csswg.org/css-images-3/#default-sizing) to the given
-	// @paintable. See that link for more details.
-	//
-	// It is not necessary to call this function when both @specified_width and
-	// @specified_height are known, but it is useful to call this function in
-	// GtkWidget:measure implementations to compute the other dimension when
-	// only one dimension is given.
-	//
-	// This method is inherited from Paintable
-	ComputeConcreteSize(specifiedWidth float64, specifiedHeight float64, defaultWidth float64, defaultHeight float64) (concreteWidth float64, concreteHeight float64)
-	// GetCurrentImage gets an immutable paintable for the current contents
-	// displayed by @paintable.
-	//
-	// This is useful when you want to retain the current state of an animation,
-	// for example to take a screenshot of a running animation.
-	//
-	// If the @paintable is already immutable, it will return itself.
-	//
-	// This method is inherited from Paintable
-	GetCurrentImage() Paintable
-	// GetFlags: get flags for the paintable.
-	//
-	// This is oftentimes useful for optimizations.
-	//
-	// See [flags@Gdk.PaintableFlags] for the flags and what they mean.
-	//
-	// This method is inherited from Paintable
-	GetFlags() PaintableFlags
-	// GetIntrinsicAspectRatio gets the preferred aspect ratio the @paintable
-	// would like to be displayed at.
-	//
-	// The aspect ratio is the width divided by the height, so a value of 0.5
-	// means that the @paintable prefers to be displayed twice as high as it is
-	// wide. Consumers of this interface can use this to preserve aspect ratio
-	// when displaying the paintable.
-	//
-	// This is a purely informational value and does not in any way limit the
-	// values that may be passed to [method@Gdk.Paintable.snapshot].
-	//
-	// Usually when a @paintable returns nonzero values from
-	// [method@Gdk.Paintable.get_intrinsic_width] and
-	// [method@Gdk.Paintable.get_intrinsic_height] the aspect ratio should
-	// conform to those values, though that is not required.
-	//
-	// If the @paintable does not have a preferred aspect ratio, it returns 0.
-	// Negative values are never returned.
-	//
-	// This method is inherited from Paintable
-	GetIntrinsicAspectRatio() float64
-	// GetIntrinsicHeight gets the preferred height the @paintable would like to
-	// be displayed at.
-	//
-	// Consumers of this interface can use this to reserve enough space to draw
-	// the paintable.
-	//
-	// This is a purely informational value and does not in any way limit the
-	// values that may be passed to [method@Gdk.Paintable.snapshot].
-	//
-	// If the @paintable does not have a preferred height, it returns 0.
-	// Negative values are never returned.
-	//
-	// This method is inherited from Paintable
-	GetIntrinsicHeight() int
-	// GetIntrinsicWidth gets the preferred width the @paintable would like to
-	// be displayed at.
-	//
-	// Consumers of this interface can use this to reserve enough space to draw
-	// the paintable.
-	//
-	// This is a purely informational value and does not in any way limit the
-	// values that may be passed to [method@Gdk.Paintable.snapshot].
-	//
-	// If the @paintable does not have a preferred width, it returns 0. Negative
-	// values are never returned.
-	//
-	// This method is inherited from Paintable
-	GetIntrinsicWidth() int
-	// InvalidateContents: called by implementations of `GdkPaintable` to
-	// invalidate their contents.
-	//
-	// Unless the contents are invalidated, implementations must guarantee that
-	// multiple calls of [method@Gdk.Paintable.snapshot] produce the same
-	// output.
-	//
-	// This function will emit the [signal@Gdk.Paintable::invalidate-contents]
-	// signal.
-	//
-	// If a @paintable reports the GDK_PAINTABLE_STATIC_CONTENTS flag, it must
-	// not call this function.
-	//
-	// This method is inherited from Paintable
-	InvalidateContents()
-	// InvalidateSize: called by implementations of `GdkPaintable` to invalidate
-	// their size.
-	//
-	// As long as the size is not invalidated, @paintable must return the same
-	// values for its intrinsic width, height and aspect ratio.
-	//
-	// This function will emit the [signal@Gdk.Paintable::invalidate-size]
-	// signal.
-	//
-	// If a @paintable reports the GDK_PAINTABLE_STATIC_SIZE flag, it must not
-	// call this function.
-	//
-	// This method is inherited from Paintable
-	InvalidateSize()
-	// Snapshot snapshots the given paintable with the given @width and @height.
-	//
-	// The paintable is drawn at the current (0,0) offset of the @snapshot. If
-	// @width and @height are not larger than zero, this function will do
-	// nothing.
-	//
-	// This method is inherited from Paintable
-	Snapshot(snapshot Snapshot, width float64, height float64)
-	// ComputeConcreteSize: compute a concrete size for the `GdkPaintable`.
-	//
-	// Applies the sizing algorithm outlined in the CSS Image spec
-	// (https://drafts.csswg.org/css-images-3/#default-sizing) to the given
-	// @paintable. See that link for more details.
-	//
-	// It is not necessary to call this function when both @specified_width and
-	// @specified_height are known, but it is useful to call this function in
-	// GtkWidget:measure implementations to compute the other dimension when
-	// only one dimension is given.
-	//
-	// This method is inherited from Paintable
-	ComputeConcreteSize(specifiedWidth float64, specifiedHeight float64, defaultWidth float64, defaultHeight float64) (concreteWidth float64, concreteHeight float64)
-	// GetCurrentImage gets an immutable paintable for the current contents
-	// displayed by @paintable.
-	//
-	// This is useful when you want to retain the current state of an animation,
-	// for example to take a screenshot of a running animation.
-	//
-	// If the @paintable is already immutable, it will return itself.
-	//
-	// This method is inherited from Paintable
-	GetCurrentImage() Paintable
-	// GetFlags: get flags for the paintable.
-	//
-	// This is oftentimes useful for optimizations.
-	//
-	// See [flags@Gdk.PaintableFlags] for the flags and what they mean.
-	//
-	// This method is inherited from Paintable
-	GetFlags() PaintableFlags
-	// GetIntrinsicAspectRatio gets the preferred aspect ratio the @paintable
-	// would like to be displayed at.
-	//
-	// The aspect ratio is the width divided by the height, so a value of 0.5
-	// means that the @paintable prefers to be displayed twice as high as it is
-	// wide. Consumers of this interface can use this to preserve aspect ratio
-	// when displaying the paintable.
-	//
-	// This is a purely informational value and does not in any way limit the
-	// values that may be passed to [method@Gdk.Paintable.snapshot].
-	//
-	// Usually when a @paintable returns nonzero values from
-	// [method@Gdk.Paintable.get_intrinsic_width] and
-	// [method@Gdk.Paintable.get_intrinsic_height] the aspect ratio should
-	// conform to those values, though that is not required.
-	//
-	// If the @paintable does not have a preferred aspect ratio, it returns 0.
-	// Negative values are never returned.
-	//
-	// This method is inherited from Paintable
-	GetIntrinsicAspectRatio() float64
-	// GetIntrinsicHeight gets the preferred height the @paintable would like to
-	// be displayed at.
-	//
-	// Consumers of this interface can use this to reserve enough space to draw
-	// the paintable.
-	//
-	// This is a purely informational value and does not in any way limit the
-	// values that may be passed to [method@Gdk.Paintable.snapshot].
-	//
-	// If the @paintable does not have a preferred height, it returns 0.
-	// Negative values are never returned.
-	//
-	// This method is inherited from Paintable
-	GetIntrinsicHeight() int
-	// GetIntrinsicWidth gets the preferred width the @paintable would like to
-	// be displayed at.
-	//
-	// Consumers of this interface can use this to reserve enough space to draw
-	// the paintable.
-	//
-	// This is a purely informational value and does not in any way limit the
-	// values that may be passed to [method@Gdk.Paintable.snapshot].
-	//
-	// If the @paintable does not have a preferred width, it returns 0. Negative
-	// values are never returned.
-	//
-	// This method is inherited from Paintable
-	GetIntrinsicWidth() int
-	// InvalidateContents: called by implementations of `GdkPaintable` to
-	// invalidate their contents.
-	//
-	// Unless the contents are invalidated, implementations must guarantee that
-	// multiple calls of [method@Gdk.Paintable.snapshot] produce the same
-	// output.
-	//
-	// This function will emit the [signal@Gdk.Paintable::invalidate-contents]
-	// signal.
-	//
-	// If a @paintable reports the GDK_PAINTABLE_STATIC_CONTENTS flag, it must
-	// not call this function.
-	//
-	// This method is inherited from Paintable
-	InvalidateContents()
-	// InvalidateSize: called by implementations of `GdkPaintable` to invalidate
-	// their size.
-	//
-	// As long as the size is not invalidated, @paintable must return the same
-	// values for its intrinsic width, height and aspect ratio.
-	//
-	// This function will emit the [signal@Gdk.Paintable::invalidate-size]
-	// signal.
-	//
-	// If a @paintable reports the GDK_PAINTABLE_STATIC_SIZE flag, it must not
-	// call this function.
-	//
-	// This method is inherited from Paintable
-	InvalidateSize()
-	// Snapshot snapshots the given paintable with the given @width and @height.
-	//
-	// The paintable is drawn at the current (0,0) offset of the @snapshot. If
-	// @width and @height are not larger than zero, this function will do
-	// nothing.
-	//
-	// This method is inherited from Paintable
-	Snapshot(snapshot Snapshot, width float64, height float64)
+	privateMemoryTextureClass()
 }
 
-// memoryTexture implements the MemoryTexture interface.
-type memoryTexture struct {
+// MemoryTextureClass implements the MemoryTexture interface.
+type MemoryTextureClass struct {
 	*externglib.Object
+	TextureClass
+	PaintableInterface
 }
 
-var _ MemoryTexture = (*memoryTexture)(nil)
+var _ MemoryTexture = (*MemoryTextureClass)(nil)
 
-// WrapMemoryTexture wraps a GObject to a type that implements
-// interface MemoryTexture. It is primarily used internally.
-func WrapMemoryTexture(obj *externglib.Object) MemoryTexture {
-	return memoryTexture{obj}
+func wrapMemoryTexture(obj *externglib.Object) MemoryTexture {
+	return &MemoryTextureClass{
+		Object: obj,
+		TextureClass: TextureClass{
+			Object: obj,
+			PaintableInterface: PaintableInterface{
+				Object: obj,
+			},
+		},
+		PaintableInterface: PaintableInterface{
+			Object: obj,
+		},
+	}
 }
 
 func marshalMemoryTexture(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapMemoryTexture(obj), nil
+	return wrapMemoryTexture(obj), nil
 }
 
-func (m memoryTexture) AsTexture() Texture {
-	return WrapTexture(gextras.InternObject(m))
-}
-
-func (m memoryTexture) AsPaintable() Paintable {
-	return WrapPaintable(gextras.InternObject(m))
-}
-
-func (t memoryTexture) GetHeight() int {
-	return WrapTexture(gextras.InternObject(t)).GetHeight()
-}
-
-func (t memoryTexture) GetWidth() int {
-	return WrapTexture(gextras.InternObject(t)).GetWidth()
-}
-
-func (t memoryTexture) SaveToPng(filename string) bool {
-	return WrapTexture(gextras.InternObject(t)).SaveToPng(filename)
-}
-
-func (p memoryTexture) ComputeConcreteSize(specifiedWidth float64, specifiedHeight float64, defaultWidth float64, defaultHeight float64) (concreteWidth float64, concreteHeight float64) {
-	return WrapPaintable(gextras.InternObject(p)).ComputeConcreteSize(specifiedWidth, specifiedHeight, defaultWidth, defaultHeight)
-}
-
-func (p memoryTexture) GetCurrentImage() Paintable {
-	return WrapPaintable(gextras.InternObject(p)).GetCurrentImage()
-}
-
-func (p memoryTexture) GetFlags() PaintableFlags {
-	return WrapPaintable(gextras.InternObject(p)).GetFlags()
-}
-
-func (p memoryTexture) GetIntrinsicAspectRatio() float64 {
-	return WrapPaintable(gextras.InternObject(p)).GetIntrinsicAspectRatio()
-}
-
-func (p memoryTexture) GetIntrinsicHeight() int {
-	return WrapPaintable(gextras.InternObject(p)).GetIntrinsicHeight()
-}
-
-func (p memoryTexture) GetIntrinsicWidth() int {
-	return WrapPaintable(gextras.InternObject(p)).GetIntrinsicWidth()
-}
-
-func (p memoryTexture) InvalidateContents() {
-	WrapPaintable(gextras.InternObject(p)).InvalidateContents()
-}
-
-func (p memoryTexture) InvalidateSize() {
-	WrapPaintable(gextras.InternObject(p)).InvalidateSize()
-}
-
-func (p memoryTexture) Snapshot(snapshot Snapshot, width float64, height float64) {
-	WrapPaintable(gextras.InternObject(p)).Snapshot(snapshot, width, height)
-}
-
-func (p memoryTexture) ComputeConcreteSize(specifiedWidth float64, specifiedHeight float64, defaultWidth float64, defaultHeight float64) (concreteWidth float64, concreteHeight float64) {
-	return WrapPaintable(gextras.InternObject(p)).ComputeConcreteSize(specifiedWidth, specifiedHeight, defaultWidth, defaultHeight)
-}
-
-func (p memoryTexture) GetCurrentImage() Paintable {
-	return WrapPaintable(gextras.InternObject(p)).GetCurrentImage()
-}
-
-func (p memoryTexture) GetFlags() PaintableFlags {
-	return WrapPaintable(gextras.InternObject(p)).GetFlags()
-}
-
-func (p memoryTexture) GetIntrinsicAspectRatio() float64 {
-	return WrapPaintable(gextras.InternObject(p)).GetIntrinsicAspectRatio()
-}
-
-func (p memoryTexture) GetIntrinsicHeight() int {
-	return WrapPaintable(gextras.InternObject(p)).GetIntrinsicHeight()
-}
-
-func (p memoryTexture) GetIntrinsicWidth() int {
-	return WrapPaintable(gextras.InternObject(p)).GetIntrinsicWidth()
-}
-
-func (p memoryTexture) InvalidateContents() {
-	WrapPaintable(gextras.InternObject(p)).InvalidateContents()
-}
-
-func (p memoryTexture) InvalidateSize() {
-	WrapPaintable(gextras.InternObject(p)).InvalidateSize()
-}
-
-func (p memoryTexture) Snapshot(snapshot Snapshot, width float64, height float64) {
-	WrapPaintable(gextras.InternObject(p)).Snapshot(snapshot, width, height)
-}
+func (*MemoryTextureClass) privateMemoryTextureClass() {}

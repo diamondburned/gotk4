@@ -32,11 +32,11 @@ type PadActionType int
 
 const (
 	// Button: action is triggered by a pad button
-	PadActionButton PadActionType = iota
+	PadActionTypeButton PadActionType = iota
 	// Ring: action is triggered by a pad ring
-	PadActionRing
+	PadActionTypeRing
 	// Strip: action is triggered by a pad strip
-	PadActionStrip
+	PadActionTypeStrip
 )
 
 func marshalPadActionType(p uintptr) (interface{}, error) {
@@ -84,35 +84,7 @@ func marshalPadActionType(p uintptr) (interface{}, error) {
 // type G_VARIANT_TYPE_DOUBLE bearing the value of the given axis, it is
 // required that those are made stateful and accepting this Type.
 type PadController interface {
-	EventController
-
-	// AsEventController casts the class to the EventController interface.
-	AsEventController() EventController
-
-	// GetPropagationPhase gets the propagation phase at which @controller
-	// handles events.
-	//
-	// This method is inherited from EventController
-	GetPropagationPhase() PropagationPhase
-	// GetWidget returns the Widget this controller relates to.
-	//
-	// This method is inherited from EventController
-	GetWidget() Widget
-	// Reset resets the @controller to a clean state. Every interaction the
-	// controller did through EventController::handle-event will be dropped at
-	// this point.
-	//
-	// This method is inherited from EventController
-	Reset()
-	// SetPropagationPhase sets the propagation phase at which a controller
-	// handles events.
-	//
-	// If @phase is GTK_PHASE_NONE, no automatic event handling will be
-	// performed, but other additional gesture maintenance will. In that phase,
-	// the events can be managed by calling gtk_event_controller_handle_event().
-	//
-	// This method is inherited from EventController
-	SetPropagationPhase(phase PropagationPhase)
+	gextras.Objector
 
 	// SetAction adds an individual action to @controller. This action will only
 	// be activated if the given button/ring/strip number in @index is
@@ -123,29 +95,27 @@ type PadController interface {
 	// internationalization rules apply. Some windowing systems may be able to
 	// use those for user feedback.
 	SetAction(typ PadActionType, index int, mode int, label string, actionName string)
-	// SetActionEntries: this is a convenience function to add a group of action
-	// entries on @controller. See PadActionEntry and
-	// gtk_pad_controller_set_action().
-	SetActionEntries(entries []PadActionEntry)
 }
 
-// padController implements the PadController interface.
-type padController struct {
-	*externglib.Object
+// PadControllerClass implements the PadController interface.
+type PadControllerClass struct {
+	EventControllerClass
 }
 
-var _ PadController = (*padController)(nil)
+var _ PadController = (*PadControllerClass)(nil)
 
-// WrapPadController wraps a GObject to a type that implements
-// interface PadController. It is primarily used internally.
-func WrapPadController(obj *externglib.Object) PadController {
-	return padController{obj}
+func wrapPadController(obj *externglib.Object) PadController {
+	return &PadControllerClass{
+		EventControllerClass: EventControllerClass{
+			Object: obj,
+		},
+	}
 }
 
 func marshalPadController(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapPadController(obj), nil
+	return wrapPadController(obj), nil
 }
 
 // NewPadController creates a new PadController that will associate events from
@@ -176,27 +146,15 @@ func NewPadController(window Window, group gio.ActionGroup, pad gdk.Device) PadC
 	return _padController
 }
 
-func (p padController) AsEventController() EventController {
-	return WrapEventController(gextras.InternObject(p))
-}
-
-func (c padController) GetPropagationPhase() PropagationPhase {
-	return WrapEventController(gextras.InternObject(c)).GetPropagationPhase()
-}
-
-func (c padController) GetWidget() Widget {
-	return WrapEventController(gextras.InternObject(c)).GetWidget()
-}
-
-func (c padController) Reset() {
-	WrapEventController(gextras.InternObject(c)).Reset()
-}
-
-func (c padController) SetPropagationPhase(phase PropagationPhase) {
-	WrapEventController(gextras.InternObject(c)).SetPropagationPhase(phase)
-}
-
-func (c padController) SetAction(typ PadActionType, index int, mode int, label string, actionName string) {
+// SetAction adds an individual action to @controller. This action will only be
+// activated if the given button/ring/strip number in @index is interacted while
+// the current mode is @mode. -1 may be used for simple cases, so the action is
+// triggered on all modes.
+//
+// The given @label should be considered user-visible, so internationalization
+// rules apply. Some windowing systems may be able to use those for user
+// feedback.
+func (c *PadControllerClass) SetAction(typ PadActionType, index int, mode int, label string, actionName string) {
 	var _arg0 *C.GtkPadController // out
 	var _arg1 C.GtkPadActionType  // out
 	var _arg2 C.gint              // out
@@ -214,18 +172,6 @@ func (c padController) SetAction(typ PadActionType, index int, mode int, label s
 	defer C.free(unsafe.Pointer(_arg5))
 
 	C.gtk_pad_controller_set_action(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
-}
-
-func (c padController) SetActionEntries(entries []PadActionEntry) {
-	var _arg0 *C.GtkPadController // out
-	var _arg1 *C.GtkPadActionEntry
-	var _arg2 C.gint
-
-	_arg0 = (*C.GtkPadController)(unsafe.Pointer(c.Native()))
-	_arg2 = C.gint(len(entries))
-	_arg1 = (*C.GtkPadActionEntry)(unsafe.Pointer(&entries[0]))
-
-	C.gtk_pad_controller_set_action_entries(_arg0, _arg1, _arg2)
 }
 
 // PadActionEntry: struct defining a pad action entry.

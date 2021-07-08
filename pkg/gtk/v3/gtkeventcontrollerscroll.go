@@ -84,35 +84,7 @@ func marshalEventControllerScrollFlags(p uintptr) (interface{}, error) {
 //
 // This object was added in 3.24.
 type EventControllerScroll interface {
-	EventController
-
-	// AsEventController casts the class to the EventController interface.
-	AsEventController() EventController
-
-	// GetPropagationPhase gets the propagation phase at which @controller
-	// handles events.
-	//
-	// This method is inherited from EventController
-	GetPropagationPhase() PropagationPhase
-	// GetWidget returns the Widget this controller relates to.
-	//
-	// This method is inherited from EventController
-	GetWidget() Widget
-	// Reset resets the @controller to a clean state. Every interaction the
-	// controller did through EventController::handle-event will be dropped at
-	// this point.
-	//
-	// This method is inherited from EventController
-	Reset()
-	// SetPropagationPhase sets the propagation phase at which a controller
-	// handles events.
-	//
-	// If @phase is GTK_PHASE_NONE, no automatic event handling will be
-	// performed, but other additional gesture maintenance will. In that phase,
-	// the events can be managed by calling gtk_event_controller_handle_event().
-	//
-	// This method is inherited from EventController
-	SetPropagationPhase(phase PropagationPhase)
+	gextras.Objector
 
 	// Flags gets the flags conditioning the scroll controller behavior.
 	Flags() EventControllerScrollFlags
@@ -120,23 +92,25 @@ type EventControllerScroll interface {
 	SetFlags(flags EventControllerScrollFlags)
 }
 
-// eventControllerScroll implements the EventControllerScroll interface.
-type eventControllerScroll struct {
-	*externglib.Object
+// EventControllerScrollClass implements the EventControllerScroll interface.
+type EventControllerScrollClass struct {
+	EventControllerClass
 }
 
-var _ EventControllerScroll = (*eventControllerScroll)(nil)
+var _ EventControllerScroll = (*EventControllerScrollClass)(nil)
 
-// WrapEventControllerScroll wraps a GObject to a type that implements
-// interface EventControllerScroll. It is primarily used internally.
-func WrapEventControllerScroll(obj *externglib.Object) EventControllerScroll {
-	return eventControllerScroll{obj}
+func wrapEventControllerScroll(obj *externglib.Object) EventControllerScroll {
+	return &EventControllerScrollClass{
+		EventControllerClass: EventControllerClass{
+			Object: obj,
+		},
+	}
 }
 
 func marshalEventControllerScroll(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapEventControllerScroll(obj), nil
+	return wrapEventControllerScroll(obj), nil
 }
 
 // NewEventControllerScroll creates a new event controller that will handle
@@ -158,27 +132,8 @@ func NewEventControllerScroll(widget Widget, flags EventControllerScrollFlags) E
 	return _eventControllerScroll
 }
 
-func (e eventControllerScroll) AsEventController() EventController {
-	return WrapEventController(gextras.InternObject(e))
-}
-
-func (c eventControllerScroll) GetPropagationPhase() PropagationPhase {
-	return WrapEventController(gextras.InternObject(c)).GetPropagationPhase()
-}
-
-func (c eventControllerScroll) GetWidget() Widget {
-	return WrapEventController(gextras.InternObject(c)).GetWidget()
-}
-
-func (c eventControllerScroll) Reset() {
-	WrapEventController(gextras.InternObject(c)).Reset()
-}
-
-func (c eventControllerScroll) SetPropagationPhase(phase PropagationPhase) {
-	WrapEventController(gextras.InternObject(c)).SetPropagationPhase(phase)
-}
-
-func (c eventControllerScroll) Flags() EventControllerScrollFlags {
+// Flags gets the flags conditioning the scroll controller behavior.
+func (c *EventControllerScrollClass) Flags() EventControllerScrollFlags {
 	var _arg0 *C.GtkEventControllerScroll     // out
 	var _cret C.GtkEventControllerScrollFlags // in
 
@@ -193,7 +148,8 @@ func (c eventControllerScroll) Flags() EventControllerScrollFlags {
 	return _eventControllerScrollFlags
 }
 
-func (c eventControllerScroll) SetFlags(flags EventControllerScrollFlags) {
+// SetFlags sets the flags conditioning scroll controller behavior.
+func (c *EventControllerScrollClass) SetFlags(flags EventControllerScrollFlags) {
 	var _arg0 *C.GtkEventControllerScroll     // out
 	var _arg1 C.GtkEventControllerScrollFlags // out
 

@@ -3,11 +3,9 @@
 package gio
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -43,41 +41,6 @@ func init() {
 type EmblemedIcon interface {
 	gextras.Objector
 
-	// AsIcon casts the class to the Icon interface.
-	AsIcon() Icon
-
-	// Equal checks if two icons are equal.
-	//
-	// This method is inherited from Icon
-	Equal(icon2 Icon) bool
-	// Serialize serializes a #GIcon into a #GVariant. An equivalent #GIcon can
-	// be retrieved back by calling g_icon_deserialize() on the returned value.
-	// As serialization will avoid using raw icon data when possible, it only
-	// makes sense to transfer the #GVariant between processes on the same
-	// machine, (as opposed to over the network), and within the same file
-	// system namespace.
-	//
-	// This method is inherited from Icon
-	Serialize() *glib.Variant
-	// ToString generates a textual representation of @icon that can be used for
-	// serialization such as when passing @icon to a different process or saving
-	// it to persistent storage. Use g_icon_new_for_string() to get @icon back
-	// from the returned string.
-	//
-	// The encoding of the returned string is proprietary to #GIcon except in
-	// the following two cases
-	//
-	// - If @icon is a Icon, the returned string is a native path (such as
-	// `/path/to/my icon.png`) without escaping if the #GFile for @icon is a
-	// native file. If the file is not native, the returned string is the result
-	// of g_file_get_uri() (such as `sftp://path/to/my20icon.png`).
-	//
-	// - If @icon is a Icon with exactly one name and no fallbacks, the encoding
-	// is simply the name (such as `network-server`).
-	//
-	// This method is inherited from Icon
-	ToString() string
-
 	// AddEmblem adds @emblem to the #GList of #GEmblems.
 	AddEmblem(emblem Emblem)
 	// ClearEmblems removes all the emblems from @icon.
@@ -86,23 +49,27 @@ type EmblemedIcon interface {
 	Icon() Icon
 }
 
-// emblemedIcon implements the EmblemedIcon interface.
-type emblemedIcon struct {
+// EmblemedIconClass implements the EmblemedIcon interface.
+type EmblemedIconClass struct {
 	*externglib.Object
+	IconInterface
 }
 
-var _ EmblemedIcon = (*emblemedIcon)(nil)
+var _ EmblemedIcon = (*EmblemedIconClass)(nil)
 
-// WrapEmblemedIcon wraps a GObject to a type that implements
-// interface EmblemedIcon. It is primarily used internally.
-func WrapEmblemedIcon(obj *externglib.Object) EmblemedIcon {
-	return emblemedIcon{obj}
+func wrapEmblemedIcon(obj *externglib.Object) EmblemedIcon {
+	return &EmblemedIconClass{
+		Object: obj,
+		IconInterface: IconInterface{
+			Object: obj,
+		},
+	}
 }
 
 func marshalEmblemedIcon(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapEmblemedIcon(obj), nil
+	return wrapEmblemedIcon(obj), nil
 }
 
 // NewEmblemedIcon creates a new emblemed icon for @icon with the emblem
@@ -124,23 +91,8 @@ func NewEmblemedIcon(icon Icon, emblem Emblem) EmblemedIcon {
 	return _emblemedIcon
 }
 
-func (e emblemedIcon) AsIcon() Icon {
-	return WrapIcon(gextras.InternObject(e))
-}
-
-func (i emblemedIcon) Equal(icon2 Icon) bool {
-	return WrapIcon(gextras.InternObject(i)).Equal(icon2)
-}
-
-func (i emblemedIcon) Serialize() *glib.Variant {
-	return WrapIcon(gextras.InternObject(i)).Serialize()
-}
-
-func (i emblemedIcon) ToString() string {
-	return WrapIcon(gextras.InternObject(i)).ToString()
-}
-
-func (e emblemedIcon) AddEmblem(emblem Emblem) {
+// AddEmblem adds @emblem to the #GList of #GEmblems.
+func (e *EmblemedIconClass) AddEmblem(emblem Emblem) {
 	var _arg0 *C.GEmblemedIcon // out
 	var _arg1 *C.GEmblem       // out
 
@@ -150,7 +102,8 @@ func (e emblemedIcon) AddEmblem(emblem Emblem) {
 	C.g_emblemed_icon_add_emblem(_arg0, _arg1)
 }
 
-func (e emblemedIcon) ClearEmblems() {
+// ClearEmblems removes all the emblems from @icon.
+func (e *EmblemedIconClass) ClearEmblems() {
 	var _arg0 *C.GEmblemedIcon // out
 
 	_arg0 = (*C.GEmblemedIcon)(unsafe.Pointer(e.Native()))
@@ -158,7 +111,8 @@ func (e emblemedIcon) ClearEmblems() {
 	C.g_emblemed_icon_clear_emblems(_arg0)
 }
 
-func (e emblemedIcon) Icon() Icon {
+// Icon gets the main icon for @emblemed.
+func (e *EmblemedIconClass) Icon() Icon {
 	var _arg0 *C.GEmblemedIcon // out
 	var _cret *C.GIcon         // in
 

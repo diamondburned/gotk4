@@ -161,23 +161,23 @@ type GLShader interface {
 	UniformType(idx int) GLUniformType
 }
 
-// glShader implements the GLShader interface.
-type glShader struct {
+// GLShaderClass implements the GLShader interface.
+type GLShaderClass struct {
 	*externglib.Object
 }
 
-var _ GLShader = (*glShader)(nil)
+var _ GLShader = (*GLShaderClass)(nil)
 
-// WrapGLShader wraps a GObject to a type that implements
-// interface GLShader. It is primarily used internally.
-func WrapGLShader(obj *externglib.Object) GLShader {
-	return glShader{obj}
+func wrapGLShader(obj *externglib.Object) GLShader {
+	return &GLShaderClass{
+		Object: obj,
+	}
 }
 
 func marshalGLShader(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapGLShader(obj), nil
+	return wrapGLShader(obj), nil
 }
 
 // NewGLShaderFromResource creates a `GskGLShader` that will render pixels using
@@ -198,7 +198,17 @@ func NewGLShaderFromResource(resourcePath string) GLShader {
 	return _glShader
 }
 
-func (s glShader) Compile(renderer Renderer) error {
+// Compile tries to compile the @shader for the given @renderer.
+//
+// If there is a problem, this function returns false and reports an error. You
+// should use this function before relying on the shader for rendering and use a
+// fallback with a simpler shader or without shaders if it fails.
+//
+// Note that this will modify the rendering state (for example change the
+// current GL context) and requires the renderer to be set up. This means that
+// the widget has to be realized. Commonly you want to call this from the
+// realize signal of a widget, or during widget snapshot.
+func (s *GLShaderClass) Compile(renderer Renderer) error {
 	var _arg0 *C.GskGLShader // out
 	var _arg1 *C.GskRenderer // out
 	var _cerr *C.GError      // in
@@ -215,7 +225,9 @@ func (s glShader) Compile(renderer Renderer) error {
 	return _goerr
 }
 
-func (s glShader) FindUniformByName(name string) int {
+// FindUniformByName looks for a uniform by the name @name, and returns the
+// index of the uniform, or -1 if it was not found.
+func (s *GLShaderClass) FindUniformByName(name string) int {
 	var _arg0 *C.GskGLShader // out
 	var _arg1 *C.char        // out
 	var _cret C.int          // in
@@ -233,7 +245,9 @@ func (s glShader) FindUniformByName(name string) int {
 	return _gint
 }
 
-func (s glShader) ArgsSize() uint {
+// ArgsSize: get the size of the data block used to specify arguments for this
+// shader.
+func (s *GLShaderClass) ArgsSize() uint {
 	var _arg0 *C.GskGLShader // out
 	var _cret C.gsize        // in
 
@@ -248,7 +262,12 @@ func (s glShader) ArgsSize() uint {
 	return _gsize
 }
 
-func (s glShader) NTextures() int {
+// NTextures returns the number of textures that the shader requires.
+//
+// This can be used to check that the a passed shader works in your usecase. It
+// is determined by looking at the highest u_textureN value that the shader
+// defines.
+func (s *GLShaderClass) NTextures() int {
 	var _arg0 *C.GskGLShader // out
 	var _cret C.int          // in
 
@@ -263,7 +282,8 @@ func (s glShader) NTextures() int {
 	return _gint
 }
 
-func (s glShader) NUniforms() int {
+// NUniforms: get the number of declared uniforms for this shader.
+func (s *GLShaderClass) NUniforms() int {
 	var _arg0 *C.GskGLShader // out
 	var _cret C.int          // in
 
@@ -278,7 +298,9 @@ func (s glShader) NUniforms() int {
 	return _gint
 }
 
-func (s glShader) Resource() string {
+// Resource gets the resource path for the GLSL sourcecode being used to render
+// this shader.
+func (s *GLShaderClass) Resource() string {
 	var _arg0 *C.GskGLShader // out
 	var _cret *C.char        // in
 
@@ -293,7 +315,9 @@ func (s glShader) Resource() string {
 	return _utf8
 }
 
-func (s glShader) UniformName(idx int) string {
+// UniformName: get the name of the declared uniform for this shader at index
+// @idx.
+func (s *GLShaderClass) UniformName(idx int) string {
 	var _arg0 *C.GskGLShader // out
 	var _arg1 C.int          // out
 	var _cret *C.char        // in
@@ -310,7 +334,9 @@ func (s glShader) UniformName(idx int) string {
 	return _utf8
 }
 
-func (s glShader) UniformOffset(idx int) int {
+// UniformOffset: get the offset into the data block where data for this
+// uniforms is stored.
+func (s *GLShaderClass) UniformOffset(idx int) int {
 	var _arg0 *C.GskGLShader // out
 	var _arg1 C.int          // out
 	var _cret C.int          // in
@@ -327,7 +353,9 @@ func (s glShader) UniformOffset(idx int) int {
 	return _gint
 }
 
-func (s glShader) UniformType(idx int) GLUniformType {
+// UniformType: get the type of the declared uniform for this shader at index
+// @idx.
+func (s *GLShaderClass) UniformType(idx int) GLUniformType {
 	var _arg0 *C.GskGLShader     // out
 	var _arg1 C.int              // out
 	var _cret C.GskGLUniformType // in

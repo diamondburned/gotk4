@@ -55,23 +55,6 @@ func init() {
 type DBusObjectManagerServer interface {
 	gextras.Objector
 
-	// AsDBusObjectManager casts the class to the DBusObjectManager interface.
-	AsDBusObjectManager() DBusObjectManager
-
-	// GetInterface gets the interface proxy for @interface_name at
-	// @object_path, if any.
-	//
-	// This method is inherited from DBusObjectManager
-	GetInterface(objectPath string, interfaceName string) DBusInterface
-	// GetObject gets the BusObjectProxy at @object_path, if any.
-	//
-	// This method is inherited from DBusObjectManager
-	GetObject(objectPath string) DBusObject
-	// GetObjectPath gets the object path that @manager is for.
-	//
-	// This method is inherited from DBusObjectManager
-	GetObjectPath() string
-
 	// Export exports @object on @manager.
 	//
 	// If there is already a BusObject exported at the object path, then the old
@@ -103,23 +86,27 @@ type DBusObjectManagerServer interface {
 	Unexport(objectPath string) bool
 }
 
-// dBusObjectManagerServer implements the DBusObjectManagerServer interface.
-type dBusObjectManagerServer struct {
+// DBusObjectManagerServerClass implements the DBusObjectManagerServer interface.
+type DBusObjectManagerServerClass struct {
 	*externglib.Object
+	DBusObjectManagerInterface
 }
 
-var _ DBusObjectManagerServer = (*dBusObjectManagerServer)(nil)
+var _ DBusObjectManagerServer = (*DBusObjectManagerServerClass)(nil)
 
-// WrapDBusObjectManagerServer wraps a GObject to a type that implements
-// interface DBusObjectManagerServer. It is primarily used internally.
-func WrapDBusObjectManagerServer(obj *externglib.Object) DBusObjectManagerServer {
-	return dBusObjectManagerServer{obj}
+func wrapDBusObjectManagerServer(obj *externglib.Object) DBusObjectManagerServer {
+	return &DBusObjectManagerServerClass{
+		Object: obj,
+		DBusObjectManagerInterface: DBusObjectManagerInterface{
+			Object: obj,
+		},
+	}
 }
 
 func marshalDBusObjectManagerServer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapDBusObjectManagerServer(obj), nil
+	return wrapDBusObjectManagerServer(obj), nil
 }
 
 // NewDBusObjectManagerServer creates a new BusObjectManagerServer object.
@@ -145,23 +132,17 @@ func NewDBusObjectManagerServer(objectPath string) DBusObjectManagerServer {
 	return _dBusObjectManagerServer
 }
 
-func (d dBusObjectManagerServer) AsDBusObjectManager() DBusObjectManager {
-	return WrapDBusObjectManager(gextras.InternObject(d))
-}
-
-func (m dBusObjectManagerServer) GetInterface(objectPath string, interfaceName string) DBusInterface {
-	return WrapDBusObjectManager(gextras.InternObject(m)).GetInterface(objectPath, interfaceName)
-}
-
-func (m dBusObjectManagerServer) GetObject(objectPath string) DBusObject {
-	return WrapDBusObjectManager(gextras.InternObject(m)).GetObject(objectPath)
-}
-
-func (m dBusObjectManagerServer) GetObjectPath() string {
-	return WrapDBusObjectManager(gextras.InternObject(m)).GetObjectPath()
-}
-
-func (m dBusObjectManagerServer) Export(object DBusObjectSkeleton) {
+// Export exports @object on @manager.
+//
+// If there is already a BusObject exported at the object path, then the old
+// object is removed.
+//
+// The object path for @object must be in the hierarchy rooted by the object
+// path for @manager.
+//
+// Note that @manager will take a reference on @object for as long as it is
+// exported.
+func (m *DBusObjectManagerServerClass) Export(object DBusObjectSkeleton) {
 	var _arg0 *C.GDBusObjectManagerServer // out
 	var _arg1 *C.GDBusObjectSkeleton      // out
 
@@ -171,7 +152,11 @@ func (m dBusObjectManagerServer) Export(object DBusObjectSkeleton) {
 	C.g_dbus_object_manager_server_export(_arg0, _arg1)
 }
 
-func (m dBusObjectManagerServer) ExportUniquely(object DBusObjectSkeleton) {
+// ExportUniquely: like g_dbus_object_manager_server_export() but appends a
+// string of the form _N (with N being a natural number) to @object's object
+// path if an object with the given path already exists. As such, the
+// BusObjectProxy:g-object-path property of @object may be modified.
+func (m *DBusObjectManagerServerClass) ExportUniquely(object DBusObjectSkeleton) {
 	var _arg0 *C.GDBusObjectManagerServer // out
 	var _arg1 *C.GDBusObjectSkeleton      // out
 
@@ -181,7 +166,8 @@ func (m dBusObjectManagerServer) ExportUniquely(object DBusObjectSkeleton) {
 	C.g_dbus_object_manager_server_export_uniquely(_arg0, _arg1)
 }
 
-func (m dBusObjectManagerServer) Connection() DBusConnection {
+// Connection gets the BusConnection used by @manager.
+func (m *DBusObjectManagerServerClass) Connection() DBusConnection {
 	var _arg0 *C.GDBusObjectManagerServer // out
 	var _cret *C.GDBusConnection          // in
 
@@ -196,7 +182,8 @@ func (m dBusObjectManagerServer) Connection() DBusConnection {
 	return _dBusConnection
 }
 
-func (m dBusObjectManagerServer) IsExported(object DBusObjectSkeleton) bool {
+// IsExported returns whether @object is currently exported on @manager.
+func (m *DBusObjectManagerServerClass) IsExported(object DBusObjectSkeleton) bool {
 	var _arg0 *C.GDBusObjectManagerServer // out
 	var _arg1 *C.GDBusObjectSkeleton      // out
 	var _cret C.gboolean                  // in
@@ -215,7 +202,9 @@ func (m dBusObjectManagerServer) IsExported(object DBusObjectSkeleton) bool {
 	return _ok
 }
 
-func (m dBusObjectManagerServer) SetConnection(connection DBusConnection) {
+// SetConnection exports all objects managed by @manager on @connection. If
+// @connection is nil, stops exporting objects.
+func (m *DBusObjectManagerServerClass) SetConnection(connection DBusConnection) {
 	var _arg0 *C.GDBusObjectManagerServer // out
 	var _arg1 *C.GDBusConnection          // out
 
@@ -225,7 +214,12 @@ func (m dBusObjectManagerServer) SetConnection(connection DBusConnection) {
 	C.g_dbus_object_manager_server_set_connection(_arg0, _arg1)
 }
 
-func (m dBusObjectManagerServer) Unexport(objectPath string) bool {
+// Unexport: if @manager has an object at @path, removes the object. Otherwise
+// does nothing.
+//
+// Note that @object_path must be in the hierarchy rooted by the object path for
+// @manager.
+func (m *DBusObjectManagerServerClass) Unexport(objectPath string) bool {
 	var _arg0 *C.GDBusObjectManagerServer // out
 	var _arg1 *C.gchar                    // out
 	var _cret C.gboolean                  // in

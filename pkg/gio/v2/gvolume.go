@@ -36,7 +36,7 @@ func init() {
 	})
 }
 
-// VolumeOverrider contains methods that are overridable .
+// VolumeOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
@@ -239,26 +239,27 @@ type Volume interface {
 	ShouldAutomount() bool
 }
 
-// volume implements the Volume interface.
-type volume struct {
+// VolumeInterface implements the Volume interface.
+type VolumeInterface struct {
 	*externglib.Object
 }
 
-var _ Volume = (*volume)(nil)
+var _ Volume = (*VolumeInterface)(nil)
 
-// WrapVolume wraps a GObject to a type that implements
-// interface Volume. It is primarily used internally.
-func WrapVolume(obj *externglib.Object) Volume {
-	return volume{obj}
+func wrapVolume(obj *externglib.Object) Volume {
+	return &VolumeInterface{
+		Object: obj,
+	}
 }
 
 func marshalVolume(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapVolume(obj), nil
+	return wrapVolume(obj), nil
 }
 
-func (v volume) CanEject() bool {
+// CanEject checks if a volume can be ejected.
+func (v *VolumeInterface) CanEject() bool {
 	var _arg0 *C.GVolume // out
 	var _cret C.gboolean // in
 
@@ -275,7 +276,8 @@ func (v volume) CanEject() bool {
 	return _ok
 }
 
-func (v volume) CanMount() bool {
+// CanMount checks if a volume can be mounted.
+func (v *VolumeInterface) CanMount() bool {
 	var _arg0 *C.GVolume // out
 	var _cret C.gboolean // in
 
@@ -292,7 +294,12 @@ func (v volume) CanMount() bool {
 	return _ok
 }
 
-func (v volume) Eject(flags MountUnmountFlags, cancellable Cancellable, callback AsyncReadyCallback) {
+// Eject ejects a volume. This is an asynchronous operation, and is finished by
+// calling g_volume_eject_finish() with the @volume and Result returned in the
+// @callback.
+//
+// Deprecated: since version 2.22.
+func (v *VolumeInterface) Eject(flags MountUnmountFlags, cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GVolume            // out
 	var _arg1 C.GMountUnmountFlags  // out
 	var _arg2 *C.GCancellable       // out
@@ -308,7 +315,12 @@ func (v volume) Eject(flags MountUnmountFlags, cancellable Cancellable, callback
 	C.g_volume_eject(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
-func (v volume) EjectFinish(result AsyncResult) error {
+// EjectFinish finishes ejecting a volume. If any errors occurred during the
+// operation, @error will be set to contain the errors and false will be
+// returned.
+//
+// Deprecated: since version 2.22.
+func (v *VolumeInterface) EjectFinish(result AsyncResult) error {
 	var _arg0 *C.GVolume      // out
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
@@ -325,7 +337,10 @@ func (v volume) EjectFinish(result AsyncResult) error {
 	return _goerr
 }
 
-func (v volume) EjectWithOperation(flags MountUnmountFlags, mountOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback) {
+// EjectWithOperation ejects a volume. This is an asynchronous operation, and is
+// finished by calling g_volume_eject_with_operation_finish() with the @volume
+// and Result data returned in the @callback.
+func (v *VolumeInterface) EjectWithOperation(flags MountUnmountFlags, mountOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GVolume            // out
 	var _arg1 C.GMountUnmountFlags  // out
 	var _arg2 *C.GMountOperation    // out
@@ -343,7 +358,10 @@ func (v volume) EjectWithOperation(flags MountUnmountFlags, mountOperation Mount
 	C.g_volume_eject_with_operation(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
 
-func (v volume) EjectWithOperationFinish(result AsyncResult) error {
+// EjectWithOperationFinish finishes ejecting a volume. If any errors occurred
+// during the operation, @error will be set to contain the errors and false will
+// be returned.
+func (v *VolumeInterface) EjectWithOperationFinish(result AsyncResult) error {
 	var _arg0 *C.GVolume      // out
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
@@ -360,7 +378,10 @@ func (v volume) EjectWithOperationFinish(result AsyncResult) error {
 	return _goerr
 }
 
-func (v volume) EnumerateIdentifiers() []string {
+// EnumerateIdentifiers gets the kinds of [identifiers][volume-identifier] that
+// @volume has. Use g_volume_get_identifier() to obtain the identifiers
+// themselves.
+func (v *VolumeInterface) EnumerateIdentifiers() []string {
 	var _arg0 *C.GVolume // out
 	var _cret **C.char
 
@@ -388,7 +409,20 @@ func (v volume) EnumerateIdentifiers() []string {
 	return _utf8s
 }
 
-func (v volume) ActivationRoot() File {
+// ActivationRoot gets the activation root for a #GVolume if it is known ahead
+// of mount time. Returns nil otherwise. If not nil and if @volume is mounted,
+// then the result of g_mount_get_root() on the #GMount object obtained from
+// g_volume_get_mount() will always either be equal or a prefix of what this
+// function returns. In other words, in code
+//
+//    (g_file_has_prefix (volume_activation_root, mount_root) ||
+//     g_file_equal (volume_activation_root, mount_root))
+//
+// will always be true.
+//
+// Activation roots are typically used in Monitor implementations to find the
+// underlying mount to shadow, see g_mount_is_shadowed() for more details.
+func (v *VolumeInterface) ActivationRoot() File {
 	var _arg0 *C.GVolume // out
 	var _cret *C.GFile   // in
 
@@ -403,7 +437,8 @@ func (v volume) ActivationRoot() File {
 	return _file
 }
 
-func (v volume) Drive() Drive {
+// Drive gets the drive for the @volume.
+func (v *VolumeInterface) Drive() Drive {
 	var _arg0 *C.GVolume // out
 	var _cret *C.GDrive  // in
 
@@ -418,7 +453,8 @@ func (v volume) Drive() Drive {
 	return _drive
 }
 
-func (v volume) Icon() Icon {
+// Icon gets the icon for @volume.
+func (v *VolumeInterface) Icon() Icon {
 	var _arg0 *C.GVolume // out
 	var _cret *C.GIcon   // in
 
@@ -433,7 +469,10 @@ func (v volume) Icon() Icon {
 	return _icon
 }
 
-func (v volume) Identifier(kind string) string {
+// Identifier gets the identifier of the given kind for @volume. See the
+// [introduction][volume-identifier] for more information about volume
+// identifiers.
+func (v *VolumeInterface) Identifier(kind string) string {
 	var _arg0 *C.GVolume // out
 	var _arg1 *C.char    // out
 	var _cret *C.char    // in
@@ -452,7 +491,8 @@ func (v volume) Identifier(kind string) string {
 	return _utf8
 }
 
-func (v volume) GetMount() Mount {
+// GetMount gets the mount for the @volume.
+func (v *VolumeInterface) GetMount() Mount {
 	var _arg0 *C.GVolume // out
 	var _cret *C.GMount  // in
 
@@ -467,7 +507,8 @@ func (v volume) GetMount() Mount {
 	return _mount
 }
 
-func (v volume) Name() string {
+// Name gets the name of @volume.
+func (v *VolumeInterface) Name() string {
 	var _arg0 *C.GVolume // out
 	var _cret *C.char    // in
 
@@ -483,7 +524,8 @@ func (v volume) Name() string {
 	return _utf8
 }
 
-func (v volume) SortKey() string {
+// SortKey gets the sort key for @volume, if any.
+func (v *VolumeInterface) SortKey() string {
 	var _arg0 *C.GVolume // out
 	var _cret *C.gchar   // in
 
@@ -498,7 +540,8 @@ func (v volume) SortKey() string {
 	return _utf8
 }
 
-func (v volume) SymbolicIcon() Icon {
+// SymbolicIcon gets the symbolic icon for @volume.
+func (v *VolumeInterface) SymbolicIcon() Icon {
 	var _arg0 *C.GVolume // out
 	var _cret *C.GIcon   // in
 
@@ -513,7 +556,10 @@ func (v volume) SymbolicIcon() Icon {
 	return _icon
 }
 
-func (v volume) UUID() string {
+// UUID gets the UUID for the @volume. The reference is typically based on the
+// file system UUID for the volume in question and should be considered an
+// opaque string. Returns nil if there is no UUID available.
+func (v *VolumeInterface) UUID() string {
 	var _arg0 *C.GVolume // out
 	var _cret *C.char    // in
 
@@ -529,7 +575,10 @@ func (v volume) UUID() string {
 	return _utf8
 }
 
-func (v volume) Mount(flags MountMountFlags, mountOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback) {
+// Mount mounts a volume. This is an asynchronous operation, and is finished by
+// calling g_volume_mount_finish() with the @volume and Result returned in the
+// @callback.
+func (v *VolumeInterface) Mount(flags MountMountFlags, mountOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GVolume            // out
 	var _arg1 C.GMountMountFlags    // out
 	var _arg2 *C.GMountOperation    // out
@@ -547,7 +596,14 @@ func (v volume) Mount(flags MountMountFlags, mountOperation MountOperation, canc
 	C.g_volume_mount(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
 
-func (v volume) MountFinish(result AsyncResult) error {
+// MountFinish finishes mounting a volume. If any errors occurred during the
+// operation, @error will be set to contain the errors and false will be
+// returned.
+//
+// If the mount operation succeeded, g_volume_get_mount() on @volume is
+// guaranteed to return the mount right after calling this function; there's no
+// need to listen for the 'mount-added' signal on Monitor.
+func (v *VolumeInterface) MountFinish(result AsyncResult) error {
 	var _arg0 *C.GVolume      // out
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
@@ -564,7 +620,8 @@ func (v volume) MountFinish(result AsyncResult) error {
 	return _goerr
 }
 
-func (v volume) ShouldAutomount() bool {
+// ShouldAutomount returns whether the volume should be automatically mounted.
+func (v *VolumeInterface) ShouldAutomount() bool {
 	var _arg0 *C.GVolume // out
 	var _cret C.gboolean // in
 

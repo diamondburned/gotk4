@@ -28,57 +28,7 @@ func init() {
 // If the first sorter compares two items as equal, the second is tried next,
 // and so on.
 type MultiSorter interface {
-	Sorter
-
-	// AsSorter casts the class to the Sorter interface.
-	AsSorter() Sorter
-	// AsBuildable casts the class to the Buildable interface.
-	AsBuildable() Buildable
-
-	// Changed emits the [signal@Gtk.Sorter::changed] signal to notify all users
-	// of the sorter that it has changed.
-	//
-	// Users of the sorter should then update the sort order via
-	// gtk_sorter_compare().
-	//
-	// Depending on the @change parameter, it may be possible to update the sort
-	// order without a full resorting. Refer to the [enum@Gtk.SorterChange]
-	// documentation for details.
-	//
-	// This function is intended for implementors of `GtkSorter` subclasses and
-	// should not be called from other functions.
-	//
-	// This method is inherited from Sorter
-	Changed(change SorterChange)
-	// Compare compares two given items according to the sort order implemented
-	// by the sorter.
-	//
-	// Sorters implement a partial order:
-	//
-	// * It is reflexive, ie a = a * It is antisymmetric, ie if a < b and b < a,
-	// then a = b * It is transitive, ie given any 3 items with a ≤ b and b ≤ c,
-	// then a ≤ c
-	//
-	// The sorter may signal it conforms to additional constraints via the
-	// return value of [method@Gtk.Sorter.get_order].
-	//
-	// This method is inherited from Sorter
-	Compare(item1 gextras.Objector, item2 gextras.Objector) Ordering
-	// GetOrder gets the order that @self conforms to.
-	//
-	// See [enum@Gtk.SorterOrder] for details of the possible return values.
-	//
-	// This function is intended to allow optimizations.
-	//
-	// This method is inherited from Sorter
-	GetOrder() SorterOrder
-	// GetBuildableID gets the ID of the @buildable object.
-	//
-	// `GtkBuilder` sets the name based on the ID attribute of the <object> tag
-	// used to construct the @buildable.
-	//
-	// This method is inherited from Buildable
-	GetBuildableID() string
+	gextras.Objector
 
 	// Append: add @sorter to @self to use for sorting at the end.
 	//
@@ -92,23 +42,31 @@ type MultiSorter interface {
 	Remove(position uint)
 }
 
-// multiSorter implements the MultiSorter interface.
-type multiSorter struct {
+// MultiSorterClass implements the MultiSorter interface.
+type MultiSorterClass struct {
 	*externglib.Object
+	SorterClass
+	BuildableInterface
 }
 
-var _ MultiSorter = (*multiSorter)(nil)
+var _ MultiSorter = (*MultiSorterClass)(nil)
 
-// WrapMultiSorter wraps a GObject to a type that implements
-// interface MultiSorter. It is primarily used internally.
-func WrapMultiSorter(obj *externglib.Object) MultiSorter {
-	return multiSorter{obj}
+func wrapMultiSorter(obj *externglib.Object) MultiSorter {
+	return &MultiSorterClass{
+		Object: obj,
+		SorterClass: SorterClass{
+			Object: obj,
+		},
+		BuildableInterface: BuildableInterface{
+			Object: obj,
+		},
+	}
 }
 
 func marshalMultiSorter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapMultiSorter(obj), nil
+	return wrapMultiSorter(obj), nil
 }
 
 // NewMultiSorter creates a new multi sorter.
@@ -128,31 +86,11 @@ func NewMultiSorter() MultiSorter {
 	return _multiSorter
 }
 
-func (m multiSorter) AsSorter() Sorter {
-	return WrapSorter(gextras.InternObject(m))
-}
-
-func (m multiSorter) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(m))
-}
-
-func (s multiSorter) Changed(change SorterChange) {
-	WrapSorter(gextras.InternObject(s)).Changed(change)
-}
-
-func (s multiSorter) Compare(item1 gextras.Objector, item2 gextras.Objector) Ordering {
-	return WrapSorter(gextras.InternObject(s)).Compare(item1, item2)
-}
-
-func (s multiSorter) GetOrder() SorterOrder {
-	return WrapSorter(gextras.InternObject(s)).GetOrder()
-}
-
-func (b multiSorter) GetBuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).GetBuildableID()
-}
-
-func (s multiSorter) Append(sorter Sorter) {
+// Append: add @sorter to @self to use for sorting at the end.
+//
+// @self will consult all existing sorters before it will sort with the given
+// @sorter.
+func (s *MultiSorterClass) Append(sorter Sorter) {
 	var _arg0 *C.GtkMultiSorter // out
 	var _arg1 *C.GtkSorter      // out
 
@@ -162,7 +100,11 @@ func (s multiSorter) Append(sorter Sorter) {
 	C.gtk_multi_sorter_append(_arg0, _arg1)
 }
 
-func (s multiSorter) Remove(position uint) {
+// Remove removes the sorter at the given @position from the list of sorter used
+// by @self.
+//
+// If @position is larger than the number of sorters, nothing happens.
+func (s *MultiSorterClass) Remove(position uint) {
 	var _arg0 *C.GtkMultiSorter // out
 	var _arg1 C.guint           // out
 

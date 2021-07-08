@@ -24,7 +24,7 @@ func init() {
 	})
 }
 
-// AdjustmentOverrider contains methods that are overridable .
+// AdjustmentOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
@@ -145,23 +145,23 @@ type Adjustment interface {
 	ValueChanged()
 }
 
-// adjustment implements the Adjustment interface.
-type adjustment struct {
-	*externglib.Object
+// AdjustmentClass implements the Adjustment interface.
+type AdjustmentClass struct {
+	externglib.InitiallyUnowned
 }
 
-var _ Adjustment = (*adjustment)(nil)
+var _ Adjustment = (*AdjustmentClass)(nil)
 
-// WrapAdjustment wraps a GObject to a type that implements
-// interface Adjustment. It is primarily used internally.
-func WrapAdjustment(obj *externglib.Object) Adjustment {
-	return adjustment{obj}
+func wrapAdjustment(obj *externglib.Object) Adjustment {
+	return &AdjustmentClass{
+		InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
+	}
 }
 
 func marshalAdjustment(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapAdjustment(obj), nil
+	return wrapAdjustment(obj), nil
 }
 
 // NewAdjustment creates a new Adjustment.
@@ -190,7 +190,12 @@ func NewAdjustment(value float64, lower float64, upper float64, stepIncrement fl
 	return _adjustment
 }
 
-func (a adjustment) Changed() {
+// Changed emits a Adjustment::changed signal from the Adjustment. This is
+// typically called by the owner of the Adjustment after it has changed any of
+// the Adjustment properties other than the value.
+//
+// Deprecated: since version 3.18.
+func (a *AdjustmentClass) Changed() {
 	var _arg0 *C.GtkAdjustment // out
 
 	_arg0 = (*C.GtkAdjustment)(unsafe.Pointer(a.Native()))
@@ -198,7 +203,14 @@ func (a adjustment) Changed() {
 	C.gtk_adjustment_changed(_arg0)
 }
 
-func (a adjustment) ClampPage(lower float64, upper float64) {
+// ClampPage updates the Adjustment:value property to ensure that the range
+// between @lower and @upper is in the current page (i.e. between
+// Adjustment:value and Adjustment:value + Adjustment:page-size). If the range
+// is larger than the page size, then only the start of it will be in the
+// current page.
+//
+// A Adjustment::value-changed signal will be emitted if the value is changed.
+func (a *AdjustmentClass) ClampPage(lower float64, upper float64) {
 	var _arg0 *C.GtkAdjustment // out
 	var _arg1 C.gdouble        // out
 	var _arg2 C.gdouble        // out
@@ -210,7 +222,12 @@ func (a adjustment) ClampPage(lower float64, upper float64) {
 	C.gtk_adjustment_clamp_page(_arg0, _arg1, _arg2)
 }
 
-func (a adjustment) Configure(value float64, lower float64, upper float64, stepIncrement float64, pageIncrement float64, pageSize float64) {
+// Configure sets all properties of the adjustment at once.
+//
+// Use this function to avoid multiple emissions of the Adjustment::changed
+// signal. See gtk_adjustment_set_lower() for an alternative way of compressing
+// multiple emissions of Adjustment::changed into one.
+func (a *AdjustmentClass) Configure(value float64, lower float64, upper float64, stepIncrement float64, pageIncrement float64, pageSize float64) {
 	var _arg0 *C.GtkAdjustment // out
 	var _arg1 C.gdouble        // out
 	var _arg2 C.gdouble        // out
@@ -230,7 +247,8 @@ func (a adjustment) Configure(value float64, lower float64, upper float64, stepI
 	C.gtk_adjustment_configure(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }
 
-func (a adjustment) Lower() float64 {
+// Lower retrieves the minimum value of the adjustment.
+func (a *AdjustmentClass) Lower() float64 {
 	var _arg0 *C.GtkAdjustment // out
 	var _cret C.gdouble        // in
 
@@ -245,7 +263,8 @@ func (a adjustment) Lower() float64 {
 	return _gdouble
 }
 
-func (a adjustment) MinimumIncrement() float64 {
+// MinimumIncrement gets the smaller of step increment and page increment.
+func (a *AdjustmentClass) MinimumIncrement() float64 {
 	var _arg0 *C.GtkAdjustment // out
 	var _cret C.gdouble        // in
 
@@ -260,7 +279,8 @@ func (a adjustment) MinimumIncrement() float64 {
 	return _gdouble
 }
 
-func (a adjustment) PageIncrement() float64 {
+// PageIncrement retrieves the page increment of the adjustment.
+func (a *AdjustmentClass) PageIncrement() float64 {
 	var _arg0 *C.GtkAdjustment // out
 	var _cret C.gdouble        // in
 
@@ -275,7 +295,8 @@ func (a adjustment) PageIncrement() float64 {
 	return _gdouble
 }
 
-func (a adjustment) PageSize() float64 {
+// PageSize retrieves the page size of the adjustment.
+func (a *AdjustmentClass) PageSize() float64 {
 	var _arg0 *C.GtkAdjustment // out
 	var _cret C.gdouble        // in
 
@@ -290,7 +311,8 @@ func (a adjustment) PageSize() float64 {
 	return _gdouble
 }
 
-func (a adjustment) StepIncrement() float64 {
+// StepIncrement retrieves the step increment of the adjustment.
+func (a *AdjustmentClass) StepIncrement() float64 {
 	var _arg0 *C.GtkAdjustment // out
 	var _cret C.gdouble        // in
 
@@ -305,7 +327,8 @@ func (a adjustment) StepIncrement() float64 {
 	return _gdouble
 }
 
-func (a adjustment) Upper() float64 {
+// Upper retrieves the maximum value of the adjustment.
+func (a *AdjustmentClass) Upper() float64 {
 	var _arg0 *C.GtkAdjustment // out
 	var _cret C.gdouble        // in
 
@@ -320,7 +343,9 @@ func (a adjustment) Upper() float64 {
 	return _gdouble
 }
 
-func (a adjustment) Value() float64 {
+// Value gets the current value of the adjustment. See
+// gtk_adjustment_set_value().
+func (a *AdjustmentClass) Value() float64 {
 	var _arg0 *C.GtkAdjustment // out
 	var _cret C.gdouble        // in
 
@@ -335,7 +360,19 @@ func (a adjustment) Value() float64 {
 	return _gdouble
 }
 
-func (a adjustment) SetLower(lower float64) {
+// SetLower sets the minimum value of the adjustment.
+//
+// When setting multiple adjustment properties via their individual setters,
+// multiple Adjustment::changed signals will be emitted. However, since the
+// emission of the Adjustment::changed signal is tied to the emission of the
+// #GObject::notify signals of the changed properties, it’s possible to compress
+// the Adjustment::changed signals into one by calling g_object_freeze_notify()
+// and g_object_thaw_notify() around the calls to the individual setters.
+//
+// Alternatively, using a single g_object_set() for all the properties to
+// change, or using gtk_adjustment_configure() has the same effect of
+// compressing Adjustment::changed emissions.
+func (a *AdjustmentClass) SetLower(lower float64) {
 	var _arg0 *C.GtkAdjustment // out
 	var _arg1 C.gdouble        // out
 
@@ -345,7 +382,11 @@ func (a adjustment) SetLower(lower float64) {
 	C.gtk_adjustment_set_lower(_arg0, _arg1)
 }
 
-func (a adjustment) SetPageIncrement(pageIncrement float64) {
+// SetPageIncrement sets the page increment of the adjustment.
+//
+// See gtk_adjustment_set_lower() about how to compress multiple emissions of
+// the Adjustment::changed signal when setting multiple adjustment properties.
+func (a *AdjustmentClass) SetPageIncrement(pageIncrement float64) {
 	var _arg0 *C.GtkAdjustment // out
 	var _arg1 C.gdouble        // out
 
@@ -355,7 +396,12 @@ func (a adjustment) SetPageIncrement(pageIncrement float64) {
 	C.gtk_adjustment_set_page_increment(_arg0, _arg1)
 }
 
-func (a adjustment) SetPageSize(pageSize float64) {
+// SetPageSize sets the page size of the adjustment.
+//
+// See gtk_adjustment_set_lower() about how to compress multiple emissions of
+// the GtkAdjustment::changed signal when setting multiple adjustment
+// properties.
+func (a *AdjustmentClass) SetPageSize(pageSize float64) {
 	var _arg0 *C.GtkAdjustment // out
 	var _arg1 C.gdouble        // out
 
@@ -365,7 +411,11 @@ func (a adjustment) SetPageSize(pageSize float64) {
 	C.gtk_adjustment_set_page_size(_arg0, _arg1)
 }
 
-func (a adjustment) SetStepIncrement(stepIncrement float64) {
+// SetStepIncrement sets the step increment of the adjustment.
+//
+// See gtk_adjustment_set_lower() about how to compress multiple emissions of
+// the Adjustment::changed signal when setting multiple adjustment properties.
+func (a *AdjustmentClass) SetStepIncrement(stepIncrement float64) {
 	var _arg0 *C.GtkAdjustment // out
 	var _arg1 C.gdouble        // out
 
@@ -375,7 +425,14 @@ func (a adjustment) SetStepIncrement(stepIncrement float64) {
 	C.gtk_adjustment_set_step_increment(_arg0, _arg1)
 }
 
-func (a adjustment) SetUpper(upper float64) {
+// SetUpper sets the maximum value of the adjustment.
+//
+// Note that values will be restricted by `upper - page-size` if the page-size
+// property is nonzero.
+//
+// See gtk_adjustment_set_lower() about how to compress multiple emissions of
+// the Adjustment::changed signal when setting multiple adjustment properties.
+func (a *AdjustmentClass) SetUpper(upper float64) {
 	var _arg0 *C.GtkAdjustment // out
 	var _arg1 C.gdouble        // out
 
@@ -385,7 +442,13 @@ func (a adjustment) SetUpper(upper float64) {
 	C.gtk_adjustment_set_upper(_arg0, _arg1)
 }
 
-func (a adjustment) SetValue(value float64) {
+// SetValue sets the Adjustment value. The value is clamped to lie between
+// Adjustment:lower and Adjustment:upper.
+//
+// Note that for adjustments which are used in a Scrollbar, the effective range
+// of allowed values goes from Adjustment:lower to Adjustment:upper -
+// Adjustment:page-size.
+func (a *AdjustmentClass) SetValue(value float64) {
 	var _arg0 *C.GtkAdjustment // out
 	var _arg1 C.gdouble        // out
 
@@ -395,7 +458,12 @@ func (a adjustment) SetValue(value float64) {
 	C.gtk_adjustment_set_value(_arg0, _arg1)
 }
 
-func (a adjustment) ValueChanged() {
+// ValueChanged emits a Adjustment::value-changed signal from the Adjustment.
+// This is typically called by the owner of the Adjustment after it has changed
+// the Adjustment:value property.
+//
+// Deprecated: since version 3.18.
+func (a *AdjustmentClass) ValueChanged() {
 	var _arg0 *C.GtkAdjustment // out
 
 	_arg0 = (*C.GtkAdjustment)(unsafe.Pointer(a.Native()))

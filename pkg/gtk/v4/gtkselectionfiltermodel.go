@@ -26,23 +26,27 @@ func init() {
 // the selection from a `GtkSelectionModel`.
 type SelectionFilterModel interface {
 	gextras.Objector
+
+	privateSelectionFilterModelClass()
 }
 
-// selectionFilterModel implements the SelectionFilterModel interface.
-type selectionFilterModel struct {
+// SelectionFilterModelClass implements the SelectionFilterModel interface.
+type SelectionFilterModelClass struct {
 	*externglib.Object
 }
 
-var _ SelectionFilterModel = (*selectionFilterModel)(nil)
+var _ SelectionFilterModel = (*SelectionFilterModelClass)(nil)
 
-// WrapSelectionFilterModel wraps a GObject to a type that implements
-// interface SelectionFilterModel. It is primarily used internally.
-func WrapSelectionFilterModel(obj *externglib.Object) SelectionFilterModel {
-	return selectionFilterModel{obj}
+func wrapSelectionFilterModel(obj *externglib.Object) SelectionFilterModel {
+	return &SelectionFilterModelClass{
+		Object: obj,
+	}
 }
 
 func marshalSelectionFilterModel(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapSelectionFilterModel(obj), nil
+	return wrapSelectionFilterModel(obj), nil
 }
+
+func (*SelectionFilterModelClass) privateSelectionFilterModelClass() {}

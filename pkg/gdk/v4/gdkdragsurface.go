@@ -3,11 +3,8 @@
 package gdk
 
 import (
-	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/cairo"
-	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -29,339 +26,33 @@ func init() {
 type DragSurface interface {
 	gextras.Objector
 
-	// AsSurface casts the class to the Surface interface.
-	AsSurface() Surface
-
-	// Beep emits a short beep associated to @surface.
-	//
-	// If the display of @surface does not support per-surface beeps, emits a
-	// short beep on the display just as [method@Gdk.Display.beep].
-	//
-	// This method is inherited from Surface
-	Beep()
-	// CreateCairoContext creates a new `GdkCairoContext` for rendering on
-	// @surface.
-	//
-	// This method is inherited from Surface
-	CreateCairoContext() CairoContext
-	// CreateGLContext creates a new `GdkGLContext` for the `GdkSurface`.
-	//
-	// The context is disconnected from any particular surface or surface. If
-	// the creation of the `GdkGLContext` failed, @error will be set. Before
-	// using the returned `GdkGLContext`, you will need to call
-	// [method@Gdk.GLContext.make_current] or [method@Gdk.GLContext.realize].
-	//
-	// This method is inherited from Surface
-	CreateGLContext() (GLContext, error)
-	// CreateSimilarSurface: create a new Cairo surface that is as compatible as
-	// possible with the given @surface.
-	//
-	// For example the new surface will have the same fallback resolution and
-	// font options as @surface. Generally, the new surface will also use the
-	// same backend as @surface, unless that is not possible for some reason.
-	// The type of the returned surface may be examined with
-	// cairo_surface_get_type().
-	//
-	// Initially the surface contents are all 0 (transparent if contents have
-	// transparency, black otherwise.)
-	//
-	// This function always returns a valid pointer, but it will return a
-	// pointer to a “nil” surface if @other is already in an error state or any
-	// other error occurs.
-	//
-	// This method is inherited from Surface
-	CreateSimilarSurface(content cairo.Content, width int, height int) *cairo.Surface
-	// CreateVulkanContext creates a new `GdkVulkanContext` for rendering on
-	// @surface.
-	//
-	// If the creation of the `GdkVulkanContext` failed, @error will be set.
-	//
-	// This method is inherited from Surface
-	CreateVulkanContext() (VulkanContext, error)
-	// Destroy destroys the window system resources associated with @surface and
-	// decrements @surface's reference count.
-	//
-	// The window system resources for all children of @surface are also
-	// destroyed, but the children’s reference counts are not decremented.
-	//
-	// Note that a surface will not be destroyed automatically when its
-	// reference count reaches zero. You must call this function yourself before
-	// that happens.
-	//
-	// This method is inherited from Surface
-	Destroy()
-	// GetCursor retrieves a `GdkCursor` pointer for the cursor currently set on
-	// the `GdkSurface`.
-	//
-	// If the return value is nil then there is no custom cursor set on the
-	// surface, and it is using the cursor for its parent surface.
-	//
-	// This method is inherited from Surface
-	GetCursor() Cursor
-	// GetDeviceCursor retrieves a `GdkCursor` pointer for the @device currently
-	// set on the specified `GdkSurface`.
-	//
-	// If the return value is nil then there is no custom cursor set on the
-	// specified surface, and it is using the cursor for its parent surface.
-	//
-	// This method is inherited from Surface
-	GetDeviceCursor(device Device) Cursor
-	// GetDevicePosition obtains the current device position and modifier state.
-	//
-	// The position is given in coordinates relative to the upper left corner of
-	// @surface.
-	//
-	// This method is inherited from Surface
-	GetDevicePosition(device Device) (x float64, y float64, mask ModifierType, ok bool)
-	// GetDisplay gets the `GdkDisplay` associated with a `GdkSurface`.
-	//
-	// This method is inherited from Surface
-	GetDisplay() Display
-	// GetFrameClock gets the frame clock for the surface.
-	//
-	// The frame clock for a surface never changes unless the surface is
-	// reparented to a new toplevel surface.
-	//
-	// This method is inherited from Surface
-	GetFrameClock() FrameClock
-	// GetHeight returns the height of the given @surface.
-	//
-	// Surface size is reported in ”application pixels”, not ”device pixels”
-	// (see [method@Gdk.Surface.get_scale_factor]).
-	//
-	// This method is inherited from Surface
-	GetHeight() int
-	// GetMapped checks whether the surface has been mapped.
-	//
-	// A surface is mapped with [method@Gdk.Toplevel.present] or
-	// [method@Gdk.Popup.present].
-	//
-	// This method is inherited from Surface
-	GetMapped() bool
-	// GetScaleFactor returns the internal scale factor that maps from surface
-	// coordinates to the actual device pixels.
-	//
-	// On traditional systems this is 1, but on very high density outputs this
-	// can be a higher value (often 2). A higher value means that drawing is
-	// automatically scaled up to a higher resolution, so any code doing drawing
-	// will automatically look nicer. However, if you are supplying pixel-based
-	// data the scale value can be used to determine whether to use a pixel
-	// resource with higher resolution data.
-	//
-	// The scale of a surface may change during runtime.
-	//
-	// This method is inherited from Surface
-	GetScaleFactor() int
-	// GetWidth returns the width of the given @surface.
-	//
-	// Surface size is reported in ”application pixels”, not ”device pixels”
-	// (see [method@Gdk.Surface.get_scale_factor]).
-	//
-	// This method is inherited from Surface
-	GetWidth() int
-	// Hide the surface.
-	//
-	// For toplevel surfaces, withdraws them, so they will no longer be known to
-	// the window manager; for all surfaces, unmaps them, so they won’t be
-	// displayed. Normally done automatically as part of
-	// [method@Gtk.Widget.hide].
-	//
-	// This method is inherited from Surface
-	Hide()
-	// IsDestroyed: check to see if a surface is destroyed.
-	//
-	// This method is inherited from Surface
-	IsDestroyed() bool
-	// QueueRender forces a [signal@Gdk.Surface::render] signal emission for
-	// @surface to be scheduled.
-	//
-	// This function is useful for implementations that track invalid regions on
-	// their own.
-	//
-	// This method is inherited from Surface
-	QueueRender()
-	// RequestLayout: request a layout phase from the surface's frame clock.
-	//
-	// See [method@Gdk.FrameClock.request_phase].
-	//
-	// This method is inherited from Surface
-	RequestLayout()
-	// SetCursor sets the default mouse pointer for a `GdkSurface`.
-	//
-	// Passing nil for the @cursor argument means that @surface will use the
-	// cursor of its parent surface. Most surfaces should use this default. Note
-	// that @cursor must be for the same display as @surface.
-	//
-	// Use [ctor@Gdk.Cursor.new_from_name] or [ctor@Gdk.Cursor.new_from_texture]
-	// to create the cursor. To make the cursor invisible, use GDK_BLANK_CURSOR.
-	//
-	// This method is inherited from Surface
-	SetCursor(cursor Cursor)
-	// SetDeviceCursor sets a specific `GdkCursor` for a given device when it
-	// gets inside @surface.
-	//
-	// Passing nil for the @cursor argument means that @surface will use the
-	// cursor of its parent surface. Most surfaces should use this default.
-	//
-	// Use [ctor@Gdk.Cursor.new_from_name] or [ctor@Gdk.Cursor.new_from_texture]
-	// to create the cursor. To make the cursor invisible, use GDK_BLANK_CURSOR.
-	//
-	// This method is inherited from Surface
-	SetDeviceCursor(device Device, cursor Cursor)
-	// SetInputRegion: apply the region to the surface for the purpose of event
-	// handling.
-	//
-	// Mouse events which happen while the pointer position corresponds to an
-	// unset bit in the mask will be passed on the surface below @surface.
-	//
-	// An input region is typically used with RGBA surfaces. The alpha channel
-	// of the surface defines which pixels are invisible and allows for nicely
-	// antialiased borders, and the input region controls where the surface is
-	// “clickable”.
-	//
-	// Use [method@Gdk.Display.supports_input_shapes] to find out if a
-	// particular backend supports input regions.
-	//
-	// This method is inherited from Surface
-	SetInputRegion(region *cairo.Region)
-	// SetOpaqueRegion marks a region of the `GdkSurface` as opaque.
-	//
-	// For optimisation purposes, compositing window managers may like to not
-	// draw obscured regions of surfaces, or turn off blending during for these
-	// regions. With RGB windows with no transparency, this is just the shape of
-	// the window, but with ARGB32 windows, the compositor does not know what
-	// regions of the window are transparent or not.
-	//
-	// This function only works for toplevel surfaces.
-	//
-	// GTK will update this property automatically if the @surface background is
-	// opaque, as we know where the opaque regions are. If your surface
-	// background is not opaque, please update this property in your
-	// WidgetClass.css_changed() handler.
-	//
-	// This method is inherited from Surface
-	SetOpaqueRegion(region *cairo.Region)
-
 	// Present @drag_surface.
 	Present(width int, height int) bool
 }
 
-// dragSurface implements the DragSurface interface.
-type dragSurface struct {
-	*externglib.Object
+// DragSurfaceInterface implements the DragSurface interface.
+type DragSurfaceInterface struct {
+	SurfaceClass
 }
 
-var _ DragSurface = (*dragSurface)(nil)
+var _ DragSurface = (*DragSurfaceInterface)(nil)
 
-// WrapDragSurface wraps a GObject to a type that implements
-// interface DragSurface. It is primarily used internally.
-func WrapDragSurface(obj *externglib.Object) DragSurface {
-	return dragSurface{obj}
+func wrapDragSurface(obj *externglib.Object) DragSurface {
+	return &DragSurfaceInterface{
+		SurfaceClass: SurfaceClass{
+			Object: obj,
+		},
+	}
 }
 
 func marshalDragSurface(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapDragSurface(obj), nil
+	return wrapDragSurface(obj), nil
 }
 
-func (d dragSurface) AsSurface() Surface {
-	return WrapSurface(gextras.InternObject(d))
-}
-
-func (s dragSurface) Beep() {
-	WrapSurface(gextras.InternObject(s)).Beep()
-}
-
-func (s dragSurface) CreateCairoContext() CairoContext {
-	return WrapSurface(gextras.InternObject(s)).CreateCairoContext()
-}
-
-func (s dragSurface) CreateGLContext() (GLContext, error) {
-	return WrapSurface(gextras.InternObject(s)).CreateGLContext()
-}
-
-func (s dragSurface) CreateSimilarSurface(content cairo.Content, width int, height int) *cairo.Surface {
-	return WrapSurface(gextras.InternObject(s)).CreateSimilarSurface(content, width, height)
-}
-
-func (s dragSurface) CreateVulkanContext() (VulkanContext, error) {
-	return WrapSurface(gextras.InternObject(s)).CreateVulkanContext()
-}
-
-func (s dragSurface) Destroy() {
-	WrapSurface(gextras.InternObject(s)).Destroy()
-}
-
-func (s dragSurface) GetCursor() Cursor {
-	return WrapSurface(gextras.InternObject(s)).GetCursor()
-}
-
-func (s dragSurface) GetDeviceCursor(device Device) Cursor {
-	return WrapSurface(gextras.InternObject(s)).GetDeviceCursor(device)
-}
-
-func (s dragSurface) GetDevicePosition(device Device) (x float64, y float64, mask ModifierType, ok bool) {
-	return WrapSurface(gextras.InternObject(s)).GetDevicePosition(device)
-}
-
-func (s dragSurface) GetDisplay() Display {
-	return WrapSurface(gextras.InternObject(s)).GetDisplay()
-}
-
-func (s dragSurface) GetFrameClock() FrameClock {
-	return WrapSurface(gextras.InternObject(s)).GetFrameClock()
-}
-
-func (s dragSurface) GetHeight() int {
-	return WrapSurface(gextras.InternObject(s)).GetHeight()
-}
-
-func (s dragSurface) GetMapped() bool {
-	return WrapSurface(gextras.InternObject(s)).GetMapped()
-}
-
-func (s dragSurface) GetScaleFactor() int {
-	return WrapSurface(gextras.InternObject(s)).GetScaleFactor()
-}
-
-func (s dragSurface) GetWidth() int {
-	return WrapSurface(gextras.InternObject(s)).GetWidth()
-}
-
-func (s dragSurface) Hide() {
-	WrapSurface(gextras.InternObject(s)).Hide()
-}
-
-func (s dragSurface) IsDestroyed() bool {
-	return WrapSurface(gextras.InternObject(s)).IsDestroyed()
-}
-
-func (s dragSurface) QueueRender() {
-	WrapSurface(gextras.InternObject(s)).QueueRender()
-}
-
-func (s dragSurface) RequestLayout() {
-	WrapSurface(gextras.InternObject(s)).RequestLayout()
-}
-
-func (s dragSurface) SetCursor(cursor Cursor) {
-	WrapSurface(gextras.InternObject(s)).SetCursor(cursor)
-}
-
-func (s dragSurface) SetDeviceCursor(device Device, cursor Cursor) {
-	WrapSurface(gextras.InternObject(s)).SetDeviceCursor(device, cursor)
-}
-
-func (s dragSurface) SetInputRegion(region *cairo.Region) {
-	WrapSurface(gextras.InternObject(s)).SetInputRegion(region)
-}
-
-func (s dragSurface) SetOpaqueRegion(region *cairo.Region) {
-	WrapSurface(gextras.InternObject(s)).SetOpaqueRegion(region)
-}
-
-func (d dragSurface) Present(width int, height int) bool {
+// Present @drag_surface.
+func (d *DragSurfaceInterface) Present(width int, height int) bool {
 	var _arg0 *C.GdkDragSurface // out
 	var _arg1 C.int             // out
 	var _arg2 C.int             // out

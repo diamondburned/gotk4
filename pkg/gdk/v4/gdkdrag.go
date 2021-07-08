@@ -30,11 +30,11 @@ type DragCancelReason int
 
 const (
 	// NoTarget: there is no suitable drop target.
-	DragCancelNoTarget DragCancelReason = iota
+	DragCancelReasonNoTarget DragCancelReason = iota
 	// UserCancelled: drag cancelled by the user
-	DragCancelUserCancelled
+	DragCancelReasonUserCancelled
 	// Error: unspecified error.
-	DragCancelError
+	DragCancelReasonError
 )
 
 func marshalDragCancelReason(p uintptr) (interface{}, error) {
@@ -96,26 +96,36 @@ type Drag interface {
 	SetHotspot(hotX int, hotY int)
 }
 
-// drag implements the Drag interface.
-type drag struct {
+// DragClass implements the Drag interface.
+type DragClass struct {
 	*externglib.Object
 }
 
-var _ Drag = (*drag)(nil)
+var _ Drag = (*DragClass)(nil)
 
-// WrapDrag wraps a GObject to a type that implements
-// interface Drag. It is primarily used internally.
-func WrapDrag(obj *externglib.Object) Drag {
-	return drag{obj}
+func wrapDrag(obj *externglib.Object) Drag {
+	return &DragClass{
+		Object: obj,
+	}
 }
 
 func marshalDrag(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapDrag(obj), nil
+	return wrapDrag(obj), nil
 }
 
-func (d drag) DropDone(success bool) {
+// DropDone informs GDK that the drop ended.
+//
+// Passing false for @success may trigger a drag cancellation animation.
+//
+// This function is called by the drag source, and should be the last call
+// before dropping the reference to the @drag.
+//
+// The `GdkDrag` will only take the first [method@Gdk.Drag.drop_done] call as
+// effective, if this function is called multiple times, all subsequent calls
+// will be ignored.
+func (d *DragClass) DropDone(success bool) {
 	var _arg0 *C.GdkDrag // out
 	var _arg1 C.gboolean // out
 
@@ -127,7 +137,8 @@ func (d drag) DropDone(success bool) {
 	C.gdk_drag_drop_done(_arg0, _arg1)
 }
 
-func (d drag) Actions() DragAction {
+// Actions determines the bitmask of possible actions proposed by the source.
+func (d *DragClass) Actions() DragAction {
 	var _arg0 *C.GdkDrag      // out
 	var _cret C.GdkDragAction // in
 
@@ -142,7 +153,8 @@ func (d drag) Actions() DragAction {
 	return _dragAction
 }
 
-func (d drag) Content() ContentProvider {
+// Content returns the `GdkContentProvider` associated to the `GdkDrag` object.
+func (d *DragClass) Content() ContentProvider {
 	var _arg0 *C.GdkDrag            // out
 	var _cret *C.GdkContentProvider // in
 
@@ -157,7 +169,8 @@ func (d drag) Content() ContentProvider {
 	return _contentProvider
 }
 
-func (d drag) Device() Device {
+// Device returns the `GdkDevice` associated to the `GdkDrag` object.
+func (d *DragClass) Device() Device {
 	var _arg0 *C.GdkDrag   // out
 	var _cret *C.GdkDevice // in
 
@@ -172,7 +185,8 @@ func (d drag) Device() Device {
 	return _device
 }
 
-func (d drag) Display() Display {
+// Display gets the `GdkDisplay` that the drag object was created for.
+func (d *DragClass) Display() Display {
 	var _arg0 *C.GdkDrag    // out
 	var _cret *C.GdkDisplay // in
 
@@ -187,7 +201,14 @@ func (d drag) Display() Display {
 	return _display
 }
 
-func (d drag) DragSurface() Surface {
+// DragSurface returns the surface on which the drag icon should be rendered
+// during the drag operation.
+//
+// Note that the surface may not be available until the drag operation has
+// begun. GDK will move the surface in accordance with the ongoing drag
+// operation. The surface is owned by @drag and will be destroyed when the drag
+// operation is over.
+func (d *DragClass) DragSurface() Surface {
 	var _arg0 *C.GdkDrag    // out
 	var _cret *C.GdkSurface // in
 
@@ -202,7 +223,8 @@ func (d drag) DragSurface() Surface {
 	return _surface
 }
 
-func (d drag) Formats() *ContentFormats {
+// Formats retrieves the formats supported by this `GdkDrag` object.
+func (d *DragClass) Formats() *ContentFormats {
 	var _arg0 *C.GdkDrag           // out
 	var _cret *C.GdkContentFormats // in
 
@@ -221,7 +243,8 @@ func (d drag) Formats() *ContentFormats {
 	return _contentFormats
 }
 
-func (d drag) SelectedAction() DragAction {
+// SelectedAction determines the action chosen by the drag destination.
+func (d *DragClass) SelectedAction() DragAction {
 	var _arg0 *C.GdkDrag      // out
 	var _cret C.GdkDragAction // in
 
@@ -236,7 +259,8 @@ func (d drag) SelectedAction() DragAction {
 	return _dragAction
 }
 
-func (d drag) Surface() Surface {
+// Surface returns the `GdkSurface` where the drag originates.
+func (d *DragClass) Surface() Surface {
 	var _arg0 *C.GdkDrag    // out
 	var _cret *C.GdkSurface // in
 
@@ -251,7 +275,11 @@ func (d drag) Surface() Surface {
 	return _surface
 }
 
-func (d drag) SetHotspot(hotX int, hotY int) {
+// SetHotspot sets the position of the drag surface that will be kept under the
+// cursor hotspot.
+//
+// Initially, the hotspot is at the top left corner of the drag surface.
+func (d *DragClass) SetHotspot(hotX int, hotY int) {
 	var _arg0 *C.GdkDrag // out
 	var _arg1 C.int      // out
 	var _arg2 C.int      // out

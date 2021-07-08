@@ -113,64 +113,6 @@ func gotk4_FileFilterFunc(arg0 *C.GtkFileFilterInfo, arg1 C.gpointer) (cret C.gb
 type FileFilter interface {
 	gextras.Objector
 
-	// AsBuildable casts the class to the Buildable interface.
-	AsBuildable() Buildable
-
-	// AddChild adds a child to @buildable. @type is an optional string
-	// describing how the child should be added.
-	//
-	// This method is inherited from Buildable
-	AddChild(builder Builder, child gextras.Objector, typ string)
-	// ConstructChild constructs a child of @buildable with the name @name.
-	//
-	// Builder calls this function if a “constructor” has been specified in the
-	// UI definition.
-	//
-	// This method is inherited from Buildable
-	ConstructChild(builder Builder, name string) gextras.Objector
-	// CustomFinished: this is similar to gtk_buildable_parser_finished() but is
-	// called once for each custom tag handled by the @buildable.
-	//
-	// This method is inherited from Buildable
-	CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{})
-	// CustomTagEnd: this is called at the end of each custom element handled by
-	// the buildable.
-	//
-	// This method is inherited from Buildable
-	CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data interface{})
-	// CustomTagStart: this is called for each unknown element under <child>.
-	//
-	// This method is inherited from Buildable
-	CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool)
-	// GetInternalChild: get the internal child called @childname of the
-	// @buildable object.
-	//
-	// This method is inherited from Buildable
-	GetInternalChild(builder Builder, childname string) gextras.Objector
-	// GetName gets the name of the @buildable object.
-	//
-	// Builder sets the name based on the [GtkBuilder UI definition][BUILDER-UI]
-	// used to construct the @buildable.
-	//
-	// This method is inherited from Buildable
-	GetName() string
-	// ParserFinished: called when the builder finishes the parsing of a
-	// [GtkBuilder UI definition][BUILDER-UI]. Note that this will be called
-	// once for each time gtk_builder_add_from_file() or
-	// gtk_builder_add_from_string() is called on a builder.
-	//
-	// This method is inherited from Buildable
-	ParserFinished(builder Builder)
-	// SetBuildableProperty sets the property name @name to @value on the
-	// @buildable object.
-	//
-	// This method is inherited from Buildable
-	SetBuildableProperty(builder Builder, name string, value externglib.Value)
-	// SetName sets the name of the @buildable object.
-	//
-	// This method is inherited from Buildable
-	SetName(name string)
-
 	// AddMIMEType adds a rule allowing a given mime type to @filter.
 	AddMIMEType(mimeType string)
 	// AddPattern adds a rule allowing a shell style glob to a filter.
@@ -202,23 +144,29 @@ type FileFilter interface {
 	ToGVariant() *glib.Variant
 }
 
-// fileFilter implements the FileFilter interface.
-type fileFilter struct {
+// FileFilterClass implements the FileFilter interface.
+type FileFilterClass struct {
 	*externglib.Object
+	externglib.InitiallyUnowned
+	BuildableInterface
 }
 
-var _ FileFilter = (*fileFilter)(nil)
+var _ FileFilter = (*FileFilterClass)(nil)
 
-// WrapFileFilter wraps a GObject to a type that implements
-// interface FileFilter. It is primarily used internally.
-func WrapFileFilter(obj *externglib.Object) FileFilter {
-	return fileFilter{obj}
+func wrapFileFilter(obj *externglib.Object) FileFilter {
+	return &FileFilterClass{
+		Object:           obj,
+		InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
+		BuildableInterface: BuildableInterface{
+			Object: obj,
+		},
+	}
 }
 
 func marshalFileFilter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapFileFilter(obj), nil
+	return wrapFileFilter(obj), nil
 }
 
 // NewFileFilter creates a new FileFilter with no rules added to it. Such a
@@ -257,51 +205,8 @@ func NewFileFilterFromGVariant(variant *glib.Variant) FileFilter {
 	return _fileFilter
 }
 
-func (f fileFilter) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(f))
-}
-
-func (b fileFilter) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
-}
-
-func (b fileFilter) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b fileFilter) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b fileFilter) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b fileFilter) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b fileFilter) GetInternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).GetInternalChild(builder, childname)
-}
-
-func (b fileFilter) GetName() string {
-	return WrapBuildable(gextras.InternObject(b)).GetName()
-}
-
-func (b fileFilter) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b fileFilter) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b fileFilter) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (f fileFilter) AddMIMEType(mimeType string) {
+// AddMIMEType adds a rule allowing a given mime type to @filter.
+func (f *FileFilterClass) AddMIMEType(mimeType string) {
 	var _arg0 *C.GtkFileFilter // out
 	var _arg1 *C.gchar         // out
 
@@ -312,7 +217,8 @@ func (f fileFilter) AddMIMEType(mimeType string) {
 	C.gtk_file_filter_add_mime_type(_arg0, _arg1)
 }
 
-func (f fileFilter) AddPattern(pattern string) {
+// AddPattern adds a rule allowing a shell style glob to a filter.
+func (f *FileFilterClass) AddPattern(pattern string) {
 	var _arg0 *C.GtkFileFilter // out
 	var _arg1 *C.gchar         // out
 
@@ -323,7 +229,9 @@ func (f fileFilter) AddPattern(pattern string) {
 	C.gtk_file_filter_add_pattern(_arg0, _arg1)
 }
 
-func (f fileFilter) AddPixbufFormats() {
+// AddPixbufFormats adds a rule allowing image files in the formats supported by
+// GdkPixbuf.
+func (f *FileFilterClass) AddPixbufFormats() {
 	var _arg0 *C.GtkFileFilter // out
 
 	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(f.Native()))
@@ -331,7 +239,13 @@ func (f fileFilter) AddPixbufFormats() {
 	C.gtk_file_filter_add_pixbuf_formats(_arg0)
 }
 
-func (f fileFilter) Filter(filterInfo *FileFilterInfo) bool {
+// Filter tests whether a file should be displayed according to @filter. The
+// FileFilterInfo @filter_info should include the fields returned from
+// gtk_file_filter_get_needed().
+//
+// This function will not typically be used by applications; it is intended
+// principally for use in the implementation of FileChooser.
+func (f *FileFilterClass) Filter(filterInfo *FileFilterInfo) bool {
 	var _arg0 *C.GtkFileFilter     // out
 	var _arg1 *C.GtkFileFilterInfo // out
 	var _cret C.gboolean           // in
@@ -350,7 +264,9 @@ func (f fileFilter) Filter(filterInfo *FileFilterInfo) bool {
 	return _ok
 }
 
-func (f fileFilter) Name() string {
+// Name gets the human-readable name for the filter. See
+// gtk_file_filter_set_name().
+func (f *FileFilterClass) Name() string {
 	var _arg0 *C.GtkFileFilter // out
 	var _cret *C.gchar         // in
 
@@ -365,7 +281,12 @@ func (f fileFilter) Name() string {
 	return _utf8
 }
 
-func (f fileFilter) Needed() FileFilterFlags {
+// Needed gets the fields that need to be filled in for the FileFilterInfo
+// passed to gtk_file_filter_filter()
+//
+// This function will not typically be used by applications; it is intended
+// principally for use in the implementation of FileChooser.
+func (f *FileFilterClass) Needed() FileFilterFlags {
 	var _arg0 *C.GtkFileFilter     // out
 	var _cret C.GtkFileFilterFlags // in
 
@@ -380,7 +301,10 @@ func (f fileFilter) Needed() FileFilterFlags {
 	return _fileFilterFlags
 }
 
-func (f fileFilter) SetName(name string) {
+// SetName sets the human-readable name of the filter; this is the string that
+// will be displayed in the file selector user interface if there is a
+// selectable list of filters.
+func (f *FileFilterClass) SetName(name string) {
 	var _arg0 *C.GtkFileFilter // out
 	var _arg1 *C.gchar         // out
 
@@ -391,7 +315,8 @@ func (f fileFilter) SetName(name string) {
 	C.gtk_file_filter_set_name(_arg0, _arg1)
 }
 
-func (f fileFilter) ToGVariant() *glib.Variant {
+// ToGVariant: serialize a file filter to an a{sv} variant.
+func (f *FileFilterClass) ToGVariant() *glib.Variant {
 	var _arg0 *C.GtkFileFilter // out
 	var _cret *C.GVariant      // in
 

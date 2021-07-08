@@ -26,23 +26,27 @@ func init() {
 // selecting multiple elements.
 type MultiSelection interface {
 	gextras.Objector
+
+	privateMultiSelectionClass()
 }
 
-// multiSelection implements the MultiSelection interface.
-type multiSelection struct {
+// MultiSelectionClass implements the MultiSelection interface.
+type MultiSelectionClass struct {
 	*externglib.Object
 }
 
-var _ MultiSelection = (*multiSelection)(nil)
+var _ MultiSelection = (*MultiSelectionClass)(nil)
 
-// WrapMultiSelection wraps a GObject to a type that implements
-// interface MultiSelection. It is primarily used internally.
-func WrapMultiSelection(obj *externglib.Object) MultiSelection {
-	return multiSelection{obj}
+func wrapMultiSelection(obj *externglib.Object) MultiSelection {
+	return &MultiSelectionClass{
+		Object: obj,
+	}
 }
 
 func marshalMultiSelection(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapMultiSelection(obj), nil
+	return wrapMultiSelection(obj), nil
 }
+
+func (*MultiSelectionClass) privateMultiSelectionClass() {}

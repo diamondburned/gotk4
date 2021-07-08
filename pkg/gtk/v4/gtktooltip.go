@@ -81,26 +81,30 @@ type Tooltip interface {
 	SetTipArea(rect *gdk.Rectangle)
 }
 
-// tooltip implements the Tooltip interface.
-type tooltip struct {
+// TooltipClass implements the Tooltip interface.
+type TooltipClass struct {
 	*externglib.Object
 }
 
-var _ Tooltip = (*tooltip)(nil)
+var _ Tooltip = (*TooltipClass)(nil)
 
-// WrapTooltip wraps a GObject to a type that implements
-// interface Tooltip. It is primarily used internally.
-func WrapTooltip(obj *externglib.Object) Tooltip {
-	return tooltip{obj}
+func wrapTooltip(obj *externglib.Object) Tooltip {
+	return &TooltipClass{
+		Object: obj,
+	}
 }
 
 func marshalTooltip(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapTooltip(obj), nil
+	return wrapTooltip(obj), nil
 }
 
-func (t tooltip) SetCustom(customWidget Widget) {
+// SetCustom replaces the widget packed into the tooltip with @custom_widget.
+// @custom_widget does not get destroyed when the tooltip goes away. By default
+// a box with a Image and Label is embedded in the tooltip, which can be
+// configured using gtk_tooltip_set_markup() and gtk_tooltip_set_icon().
+func (t *TooltipClass) SetCustom(customWidget Widget) {
 	var _arg0 *C.GtkTooltip // out
 	var _arg1 *C.GtkWidget  // out
 
@@ -110,7 +114,10 @@ func (t tooltip) SetCustom(customWidget Widget) {
 	C.gtk_tooltip_set_custom(_arg0, _arg1)
 }
 
-func (t tooltip) SetIconFromIconName(iconName string) {
+// SetIconFromIconName sets the icon of the tooltip (which is in front of the
+// text) to be the icon indicated by @icon_name with the size indicated by
+// @size. If @icon_name is nil, the image will be hidden.
+func (t *TooltipClass) SetIconFromIconName(iconName string) {
 	var _arg0 *C.GtkTooltip // out
 	var _arg1 *C.char       // out
 
@@ -121,7 +128,11 @@ func (t tooltip) SetIconFromIconName(iconName string) {
 	C.gtk_tooltip_set_icon_from_icon_name(_arg0, _arg1)
 }
 
-func (t tooltip) SetMarkup(markup string) {
+// SetMarkup sets the text of the tooltip to be @markup.
+//
+// The string must be marked up with Pango markup. If @markup is nil, the label
+// will be hidden.
+func (t *TooltipClass) SetMarkup(markup string) {
 	var _arg0 *C.GtkTooltip // out
 	var _arg1 *C.char       // out
 
@@ -132,7 +143,11 @@ func (t tooltip) SetMarkup(markup string) {
 	C.gtk_tooltip_set_markup(_arg0, _arg1)
 }
 
-func (t tooltip) SetText(text string) {
+// SetText sets the text of the tooltip to be @text.
+//
+// If @text is nil, the label will be hidden. See also
+// [method@Gtk.Tooltip.set_markup].
+func (t *TooltipClass) SetText(text string) {
 	var _arg0 *C.GtkTooltip // out
 	var _arg1 *C.char       // out
 
@@ -143,7 +158,14 @@ func (t tooltip) SetText(text string) {
 	C.gtk_tooltip_set_text(_arg0, _arg1)
 }
 
-func (t tooltip) SetTipArea(rect *gdk.Rectangle) {
+// SetTipArea sets the area of the widget, where the contents of this tooltip
+// apply, to be @rect (in widget coordinates). This is especially useful for
+// properly setting tooltips on TreeView rows and cells, IconViews, etc.
+//
+// For setting tooltips on TreeView, please refer to the convenience functions
+// for this: gtk_tree_view_set_tooltip_row() and
+// gtk_tree_view_set_tooltip_cell().
+func (t *TooltipClass) SetTipArea(rect *gdk.Rectangle) {
 	var _arg0 *C.GtkTooltip   // out
 	var _arg1 *C.GdkRectangle // out
 

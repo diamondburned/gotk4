@@ -32,7 +32,7 @@ func init() {
 	})
 }
 
-// FileMonitorOverrider contains methods that are overridable .
+// FileMonitorOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
@@ -72,26 +72,27 @@ type FileMonitor interface {
 	SetRateLimit(limitMsecs int)
 }
 
-// fileMonitor implements the FileMonitor interface.
-type fileMonitor struct {
+// FileMonitorClass implements the FileMonitor interface.
+type FileMonitorClass struct {
 	*externglib.Object
 }
 
-var _ FileMonitor = (*fileMonitor)(nil)
+var _ FileMonitor = (*FileMonitorClass)(nil)
 
-// WrapFileMonitor wraps a GObject to a type that implements
-// interface FileMonitor. It is primarily used internally.
-func WrapFileMonitor(obj *externglib.Object) FileMonitor {
-	return fileMonitor{obj}
+func wrapFileMonitor(obj *externglib.Object) FileMonitor {
+	return &FileMonitorClass{
+		Object: obj,
+	}
 }
 
 func marshalFileMonitor(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapFileMonitor(obj), nil
+	return wrapFileMonitor(obj), nil
 }
 
-func (m fileMonitor) Cancel() bool {
+// Cancel cancels a file monitor.
+func (m *FileMonitorClass) Cancel() bool {
 	var _arg0 *C.GFileMonitor // out
 	var _cret C.gboolean      // in
 
@@ -108,7 +109,13 @@ func (m fileMonitor) Cancel() bool {
 	return _ok
 }
 
-func (m fileMonitor) EmitEvent(child File, otherFile File, eventType FileMonitorEvent) {
+// EmitEvent emits the Monitor::changed signal if a change has taken place.
+// Should be called from file monitor implementations only.
+//
+// Implementations are responsible to call this method from the [thread-default
+// main context][g-main-context-push-thread-default] of the thread that the
+// monitor was created in.
+func (m *FileMonitorClass) EmitEvent(child File, otherFile File, eventType FileMonitorEvent) {
 	var _arg0 *C.GFileMonitor     // out
 	var _arg1 *C.GFile            // out
 	var _arg2 *C.GFile            // out
@@ -122,7 +129,8 @@ func (m fileMonitor) EmitEvent(child File, otherFile File, eventType FileMonitor
 	C.g_file_monitor_emit_event(_arg0, _arg1, _arg2, _arg3)
 }
 
-func (m fileMonitor) IsCancelled() bool {
+// IsCancelled returns whether the monitor is canceled.
+func (m *FileMonitorClass) IsCancelled() bool {
 	var _arg0 *C.GFileMonitor // out
 	var _cret C.gboolean      // in
 
@@ -139,7 +147,9 @@ func (m fileMonitor) IsCancelled() bool {
 	return _ok
 }
 
-func (m fileMonitor) SetRateLimit(limitMsecs int) {
+// SetRateLimit sets the rate limit to which the @monitor will report
+// consecutive change events to the same file.
+func (m *FileMonitorClass) SetRateLimit(limitMsecs int) {
 	var _arg0 *C.GFileMonitor // out
 	var _arg1 C.gint          // out
 

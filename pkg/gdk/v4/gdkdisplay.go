@@ -3,7 +3,6 @@
 package gdk
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -115,32 +114,6 @@ type Display interface {
 	//
 	// On modern displays, this value is always true.
 	IsRGBA() bool
-	// MapKeycode returns the keyvals bound to @keycode.
-	//
-	// The Nth `GdkKeymapKey` in @keys is bound to the Nth keyval in @keyvals.
-	//
-	// When a keycode is pressed by the user, the keyval from this list of
-	// entries is selected by considering the effective keyboard group and
-	// level.
-	//
-	// Free the returned arrays with g_free().
-	MapKeycode(keycode uint) ([]KeymapKey, []uint, bool)
-	// MapKeyval obtains a list of keycode/group/level combinations that will
-	// generate @keyval.
-	//
-	// Groups and levels are two kinds of keyboard mode; in general, the level
-	// determines whether the top or bottom symbol on a key is used, and the
-	// group determines whether the left or right symbol is used.
-	//
-	// On US keyboards, the shift key changes the keyboard level, and there are
-	// no groups. A group switch key might convert a keyboard between Hebrew to
-	// English modes, for example.
-	//
-	// `GdkEventKey` contains a group field that indicates the active keyboard
-	// group. The level is computed from the modifier mask.
-	//
-	// The returned array should be freed with g_free().
-	MapKeyval(keyval uint) ([]KeymapKey, bool)
 	// NotifyStartupComplete indicates to the GUI environment that the
 	// application has finished loading, using a given identifier.
 	//
@@ -195,26 +168,27 @@ type Display interface {
 	TranslateKey(keycode uint, state ModifierType, group int) (keyval uint, effectiveGroup int, level int, consumed ModifierType, ok bool)
 }
 
-// display implements the Display interface.
-type display struct {
+// DisplayClass implements the Display interface.
+type DisplayClass struct {
 	*externglib.Object
 }
 
-var _ Display = (*display)(nil)
+var _ Display = (*DisplayClass)(nil)
 
-// WrapDisplay wraps a GObject to a type that implements
-// interface Display. It is primarily used internally.
-func WrapDisplay(obj *externglib.Object) Display {
-	return display{obj}
+func wrapDisplay(obj *externglib.Object) Display {
+	return &DisplayClass{
+		Object: obj,
+	}
 }
 
 func marshalDisplay(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapDisplay(obj), nil
+	return wrapDisplay(obj), nil
 }
 
-func (d display) Beep() {
+// Beep emits a short beep on @display
+func (d *DisplayClass) Beep() {
 	var _arg0 *C.GdkDisplay // out
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
@@ -222,7 +196,10 @@ func (d display) Beep() {
 	C.gdk_display_beep(_arg0)
 }
 
-func (d display) Close() {
+// Close closes the connection to the windowing system for the given display.
+//
+// This cleans up associated resources.
+func (d *DisplayClass) Close() {
 	var _arg0 *C.GdkDisplay // out
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
@@ -230,7 +207,9 @@ func (d display) Close() {
 	C.gdk_display_close(_arg0)
 }
 
-func (d display) DeviceIsGrabbed(device Device) bool {
+// DeviceIsGrabbed returns true if there is an ongoing grab on @device for
+// @display.
+func (d *DisplayClass) DeviceIsGrabbed(device Device) bool {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.GdkDevice  // out
 	var _cret C.gboolean    // in
@@ -249,7 +228,17 @@ func (d display) DeviceIsGrabbed(device Device) bool {
 	return _ok
 }
 
-func (d display) Flush() {
+// Flush flushes any requests queued for the windowing system.
+//
+// This happens automatically when the main loop blocks waiting for new events,
+// but if your application is drawing without returning control to the main
+// loop, you may need to call this function explicitly. A common case where this
+// function needs to be called is when an application is executing drawing
+// commands from a thread other than the thread where the main loop is running.
+//
+// This is most useful for X11. On windowing systems where requests are handled
+// synchronously, this function will do nothing.
+func (d *DisplayClass) Flush() {
 	var _arg0 *C.GdkDisplay // out
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
@@ -257,7 +246,9 @@ func (d display) Flush() {
 	C.gdk_display_flush(_arg0)
 }
 
-func (d display) AppLaunchContext() AppLaunchContext {
+// AppLaunchContext returns a `GdkAppLaunchContext` suitable for launching
+// applications on the given display.
+func (d *DisplayClass) AppLaunchContext() AppLaunchContext {
 	var _arg0 *C.GdkDisplay          // out
 	var _cret *C.GdkAppLaunchContext // in
 
@@ -272,7 +263,8 @@ func (d display) AppLaunchContext() AppLaunchContext {
 	return _appLaunchContext
 }
 
-func (d display) Clipboard() Clipboard {
+// Clipboard gets the clipboard used for copy/paste operations.
+func (d *DisplayClass) Clipboard() Clipboard {
 	var _arg0 *C.GdkDisplay   // out
 	var _cret *C.GdkClipboard // in
 
@@ -287,7 +279,11 @@ func (d display) Clipboard() Clipboard {
 	return _clipboard
 }
 
-func (d display) DefaultSeat() Seat {
+// DefaultSeat returns the default `GdkSeat` for this display.
+//
+// Note that a display may not have a seat. In this case, this function will
+// return nil.
+func (d *DisplayClass) DefaultSeat() Seat {
 	var _arg0 *C.GdkDisplay // out
 	var _cret *C.GdkSeat    // in
 
@@ -302,7 +298,11 @@ func (d display) DefaultSeat() Seat {
 	return _seat
 }
 
-func (d display) MonitorAtSurface(surface Surface) Monitor {
+// MonitorAtSurface gets the monitor in which the largest area of @surface
+// resides.
+//
+// Returns a monitor close to @surface if it is outside of all monitors.
+func (d *DisplayClass) MonitorAtSurface(surface Surface) Monitor {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.GdkSurface // out
 	var _cret *C.GdkMonitor // in
@@ -319,7 +319,8 @@ func (d display) MonitorAtSurface(surface Surface) Monitor {
 	return _monitor
 }
 
-func (d display) Name() string {
+// Name gets the name of the display.
+func (d *DisplayClass) Name() string {
 	var _arg0 *C.GdkDisplay // out
 	var _cret *C.char       // in
 
@@ -334,7 +335,11 @@ func (d display) Name() string {
 	return _utf8
 }
 
-func (d display) PrimaryClipboard() Clipboard {
+// PrimaryClipboard gets the clipboard used for the primary selection.
+//
+// On backends where the primary clipboard is not supported natively, GDK
+// emulates this clipboard locally.
+func (d *DisplayClass) PrimaryClipboard() Clipboard {
 	var _arg0 *C.GdkDisplay   // out
 	var _cret *C.GdkClipboard // in
 
@@ -349,7 +354,9 @@ func (d display) PrimaryClipboard() Clipboard {
 	return _clipboard
 }
 
-func (d display) Setting(name string, value externglib.Value) bool {
+// Setting retrieves a desktop-wide setting such as double-click time for the
+// @display.
+func (d *DisplayClass) Setting(name string, value externglib.Value) bool {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.char       // out
 	var _arg2 *C.GValue     // out
@@ -371,7 +378,9 @@ func (d display) Setting(name string, value externglib.Value) bool {
 	return _ok
 }
 
-func (d display) StartupNotificationID() string {
+// StartupNotificationID gets the startup notification ID for a Wayland display,
+// or nil if no ID has been defined.
+func (d *DisplayClass) StartupNotificationID() string {
 	var _arg0 *C.GdkDisplay // out
 	var _cret *C.char       // in
 
@@ -386,7 +395,8 @@ func (d display) StartupNotificationID() string {
 	return _utf8
 }
 
-func (d display) IsClosed() bool {
+// IsClosed finds out if the display has been closed.
+func (d *DisplayClass) IsClosed() bool {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.gboolean    // in
 
@@ -403,7 +413,17 @@ func (d display) IsClosed() bool {
 	return _ok
 }
 
-func (d display) IsComposited() bool {
+// IsComposited returns whether surfaces can reasonably be expected to have
+// their alpha channel drawn correctly on the screen.
+//
+// Check [method@Gdk.Display.is_rgba] for whether the display supports an alpha
+// channel.
+//
+// On X11 this function returns whether a compositing manager is compositing on
+// @display.
+//
+// On modern displays, this value is always true.
+func (d *DisplayClass) IsComposited() bool {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.gboolean    // in
 
@@ -420,7 +440,17 @@ func (d display) IsComposited() bool {
 	return _ok
 }
 
-func (d display) IsRGBA() bool {
+// IsRGBA returns whether surfaces on this @display are created with an alpha
+// channel.
+//
+// Even if a true is returned, it is possible that the surface’s alpha channel
+// won’t be honored when displaying the surface on the screen: in particular,
+// for X an appropriate windowing manager and compositing manager must be
+// running to provide appropriate display. Use
+// [method@Gdk.Display.is_composited] to check if that is the case.
+//
+// On modern displays, this value is always true.
+func (d *DisplayClass) IsRGBA() bool {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.gboolean    // in
 
@@ -437,66 +467,14 @@ func (d display) IsRGBA() bool {
 	return _ok
 }
 
-func (d display) MapKeycode(keycode uint) ([]KeymapKey, []uint, bool) {
-	var _arg0 *C.GdkDisplay // out
-	var _arg1 C.guint       // out
-	var _arg2 *C.GdkKeymapKey
-	var _arg4 C.int // in
-	var _arg3 *C.guint
-	var _arg4 C.int      // in
-	var _cret C.gboolean // in
-
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
-	_arg1 = C.guint(keycode)
-
-	_cret = C.gdk_display_map_keycode(_arg0, _arg1, &_arg2, &_arg3, &_arg4)
-
-	var _keys []KeymapKey
-	var _keyvals []uint
-	var _ok bool // out
-
-	_keys = unsafe.Slice((*KeymapKey)(unsafe.Pointer(_arg2)), _arg4)
-	runtime.SetFinalizer(&_keys, func(v *[]KeymapKey) {
-		C.free(unsafe.Pointer(&(*v)[0]))
-	})
-	_keyvals = unsafe.Slice((*uint)(unsafe.Pointer(_arg3)), _arg4)
-	runtime.SetFinalizer(&_keyvals, func(v *[]uint) {
-		C.free(unsafe.Pointer(&(*v)[0]))
-	})
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _keys, _keyvals, _ok
-}
-
-func (d display) MapKeyval(keyval uint) ([]KeymapKey, bool) {
-	var _arg0 *C.GdkDisplay // out
-	var _arg1 C.guint       // out
-	var _arg2 *C.GdkKeymapKey
-	var _arg3 C.int      // in
-	var _cret C.gboolean // in
-
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
-	_arg1 = C.guint(keyval)
-
-	_cret = C.gdk_display_map_keyval(_arg0, _arg1, &_arg2, &_arg3)
-
-	var _keys []KeymapKey
-	var _ok bool // out
-
-	_keys = unsafe.Slice((*KeymapKey)(unsafe.Pointer(_arg2)), _arg3)
-	runtime.SetFinalizer(&_keys, func(v *[]KeymapKey) {
-		C.free(unsafe.Pointer(&(*v)[0]))
-	})
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _keys, _ok
-}
-
-func (d display) NotifyStartupComplete(startupId string) {
+// NotifyStartupComplete indicates to the GUI environment that the application
+// has finished loading, using a given identifier.
+//
+// GTK will call this function automatically for [class@Gtk.Window] with custom
+// startup-notification identifier unless
+// [method@Gtk.Window.set_auto_startup_notification] is called to disable that
+// feature.
+func (d *DisplayClass) NotifyStartupComplete(startupId string) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.char       // out
 
@@ -507,7 +485,12 @@ func (d display) NotifyStartupComplete(startupId string) {
 	C.gdk_display_notify_startup_complete(_arg0, _arg1)
 }
 
-func (d display) PutEvent(event Event) {
+// PutEvent appends the given event onto the front of the event queue for
+// @display.
+//
+// This function is only useful in very special situations and should not be
+// used by applications.
+func (d *DisplayClass) PutEvent(event Event) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.GdkEvent   // out
 
@@ -517,7 +500,13 @@ func (d display) PutEvent(event Event) {
 	C.gdk_display_put_event(_arg0, _arg1)
 }
 
-func (d display) SupportsInputShapes() bool {
+// SupportsInputShapes returns true if the display supports input shapes.
+//
+// This means that [method@Gdk.Surface.set_input_region] can be used to modify
+// the input shape of surfaces on @display.
+//
+// On modern displays, this value is always true.
+func (d *DisplayClass) SupportsInputShapes() bool {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.gboolean    // in
 
@@ -534,7 +523,17 @@ func (d display) SupportsInputShapes() bool {
 	return _ok
 }
 
-func (d display) Sync() {
+// Sync flushes any requests queued for the windowing system and waits until all
+// requests have been handled.
+//
+// This is often used for making sure that the display is synchronized with the
+// current state of the program. Calling [method@Gdk.Display.sync] before
+// [method@GdkX11.Display.error_trap_pop] makes sure that any errors generated
+// from earlier requests are handled before the error trap is removed.
+//
+// This is most useful for X11. On windowing systems where requests are handled
+// synchronously, this function will do nothing.
+func (d *DisplayClass) Sync() {
 	var _arg0 *C.GdkDisplay // out
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
@@ -542,7 +541,25 @@ func (d display) Sync() {
 	C.gdk_display_sync(_arg0)
 }
 
-func (d display) TranslateKey(keycode uint, state ModifierType, group int) (keyval uint, effectiveGroup int, level int, consumed ModifierType, ok bool) {
+// TranslateKey translates the contents of a `GdkEventKey` into a keyval,
+// effective group, and level.
+//
+// Modifiers that affected the translation and are thus unavailable for
+// application use are returned in @consumed_modifiers.
+//
+// The @effective_group is the group that was actually used for the translation;
+// some keys such as Enter are not affected by the active keyboard group. The
+// @level is derived from @state.
+//
+// @consumed_modifiers gives modifiers that should be masked out from @state
+// when comparing this key press to a keyboard shortcut. For instance, on a US
+// keyboard, the `plus` symbol is shifted, so when comparing a key press to a
+// `<Control>plus` accelerator `<Shift>` should be masked out.
+//
+// This function should rarely be needed, since `GdkEventKey` already contains
+// the translated keyval. It is exported for the benefit of virtualized test
+// environments.
+func (d *DisplayClass) TranslateKey(keycode uint, state ModifierType, group int) (keyval uint, effectiveGroup int, level int, consumed ModifierType, ok bool) {
 	var _arg0 *C.GdkDisplay     // out
 	var _arg1 C.guint           // out
 	var _arg2 C.GdkModifierType // out

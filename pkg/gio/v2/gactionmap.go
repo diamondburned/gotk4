@@ -5,7 +5,6 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -33,7 +32,7 @@ func init() {
 	})
 }
 
-// ActionMapOverrider contains methods that are overridable .
+// ActionMapOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
@@ -73,42 +72,6 @@ type ActionMap interface {
 	//
 	// The action map takes its own reference on @action.
 	AddAction(action Action)
-	// AddActionEntries: convenience function for creating multiple Action
-	// instances and adding them to a Map.
-	//
-	// Each action is constructed as per one Entry.
-	//
-	//    static void
-	//    activate_quit (GSimpleAction *simple,
-	//                   GVariant      *parameter,
-	//                   gpointer       user_data)
-	//    {
-	//      exit (0);
-	//    }
-	//
-	//    static void
-	//    activate_print_string (GSimpleAction *simple,
-	//                           GVariant      *parameter,
-	//                           gpointer       user_data)
-	//    {
-	//      g_print ("s\n", g_variant_get_string (parameter, NULL));
-	//    }
-	//
-	//    static GActionGroup *
-	//    create_action_group (void)
-	//    {
-	//      const GActionEntry entries[] = {
-	//        { "quit",         activate_quit              },
-	//        { "print-string", activate_print_string, "s" }
-	//      };
-	//      GSimpleActionGroup *group;
-	//
-	//      group = g_simple_action_group_new ();
-	//      g_action_map_add_action_entries (G_ACTION_MAP (group), entries, G_N_ELEMENTS (entries), NULL);
-	//
-	//      return G_ACTION_GROUP (group);
-	//    }
-	AddActionEntries(entries []ActionEntry, userData interface{})
 	// LookupAction looks up the action with the name @action_name in
 	// @action_map.
 	//
@@ -120,26 +83,32 @@ type ActionMap interface {
 	RemoveAction(actionName string)
 }
 
-// actionMap implements the ActionMap interface.
-type actionMap struct {
+// ActionMapInterface implements the ActionMap interface.
+type ActionMapInterface struct {
 	*externglib.Object
 }
 
-var _ ActionMap = (*actionMap)(nil)
+var _ ActionMap = (*ActionMapInterface)(nil)
 
-// WrapActionMap wraps a GObject to a type that implements
-// interface ActionMap. It is primarily used internally.
-func WrapActionMap(obj *externglib.Object) ActionMap {
-	return actionMap{obj}
+func wrapActionMap(obj *externglib.Object) ActionMap {
+	return &ActionMapInterface{
+		Object: obj,
+	}
 }
 
 func marshalActionMap(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapActionMap(obj), nil
+	return wrapActionMap(obj), nil
 }
 
-func (a actionMap) AddAction(action Action) {
+// AddAction adds an action to the @action_map.
+//
+// If the action map already contains an action with the same name as @action
+// then the old action is dropped from the action map.
+//
+// The action map takes its own reference on @action.
+func (a *ActionMapInterface) AddAction(action Action) {
 	var _arg0 *C.GActionMap // out
 	var _arg1 *C.GAction    // out
 
@@ -149,21 +118,10 @@ func (a actionMap) AddAction(action Action) {
 	C.g_action_map_add_action(_arg0, _arg1)
 }
 
-func (a actionMap) AddActionEntries(entries []ActionEntry, userData interface{}) {
-	var _arg0 *C.GActionMap // out
-	var _arg1 *C.GActionEntry
-	var _arg2 C.gint
-	var _arg3 C.gpointer // out
-
-	_arg0 = (*C.GActionMap)(unsafe.Pointer(a.Native()))
-	_arg2 = C.gint(len(entries))
-	_arg1 = (*C.GActionEntry)(unsafe.Pointer(&entries[0]))
-	_arg3 = (C.gpointer)(box.Assign(userData))
-
-	C.g_action_map_add_action_entries(_arg0, _arg1, _arg2, _arg3)
-}
-
-func (a actionMap) LookupAction(actionName string) Action {
+// LookupAction looks up the action with the name @action_name in @action_map.
+//
+// If no such action exists, returns nil.
+func (a *ActionMapInterface) LookupAction(actionName string) Action {
 	var _arg0 *C.GActionMap // out
 	var _arg1 *C.gchar      // out
 	var _cret *C.GAction    // in
@@ -181,7 +139,10 @@ func (a actionMap) LookupAction(actionName string) Action {
 	return _action
 }
 
-func (a actionMap) RemoveAction(actionName string) {
+// RemoveAction removes the named action from the action map.
+//
+// If no action of this name is in the map then nothing happens.
+func (a *ActionMapInterface) RemoveAction(actionName string) {
 	var _arg0 *C.GActionMap // out
 	var _arg1 *C.gchar      // out
 

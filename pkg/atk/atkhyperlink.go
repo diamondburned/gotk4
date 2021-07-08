@@ -35,7 +35,7 @@ func marshalHyperlinkStateFlags(p uintptr) (interface{}, error) {
 	return HyperlinkStateFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// HyperlinkOverrider contains methods that are overridable .
+// HyperlinkOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
@@ -45,12 +45,12 @@ type HyperlinkOverrider interface {
 	EndIndex() int
 	// NAnchors gets the number of anchors associated with this hyperlink.
 	NAnchors() int
-	// Object returns the item associated with this hyperlinks nth anchor. For
-	// instance, the returned Object will implement Text if @link_ is a text
+	// GetObject returns the item associated with this hyperlinks nth anchor.
+	// For instance, the returned Object will implement Text if @link_ is a text
 	// hyperlink, Image if @link_ is an image hyperlink etc.
 	//
 	// Multiple anchors are primarily used by client-side image maps.
-	Object(i int) Object
+	GetObject(i int) Object
 	// StartIndex gets the index with the hypertext document at which this link
 	// begins.
 	StartIndex() int
@@ -78,85 +78,17 @@ type HyperlinkOverrider interface {
 type Hyperlink interface {
 	gextras.Objector
 
-	// AsAction casts the class to the Action interface.
-	AsAction() Action
-
-	// DoAction: perform the specified action on the object.
-	//
-	// This method is inherited from Action
-	DoAction(i int) bool
-	// GetDescription returns a description of the specified action of the
-	// object.
-	//
-	// This method is inherited from Action
-	GetDescription(i int) string
-	// GetKeybinding gets the keybinding which can be used to activate this
-	// action, if one exists. The string returned should contain localized,
-	// human-readable, key sequences as they would appear when displayed on
-	// screen. It must be in the format "mnemonic;sequence;shortcut".
-	//
-	// - The mnemonic key activates the object if it is presently enabled
-	// onscreen. This typically corresponds to the underlined letter within the
-	// widget. Example: "n" in a traditional "New..." menu item or the "a" in
-	// "Apply" for a button. - The sequence is the full list of keys which
-	// invoke the action even if the relevant element is not currently shown on
-	// screen. For instance, for a menu item the sequence is the keybindings
-	// used to open the parent menus before invoking. The sequence string is
-	// colon-delimited. Example: "Alt+F:N" in a traditional "New..." menu item.
-	// - The shortcut, if it exists, will invoke the same action without showing
-	// the component or its enclosing menus or dialogs. Example: "Ctrl+N" in a
-	// traditional "New..." menu item.
-	//
-	// Example: For a traditional "New..." menu item, the expected return value
-	// would be: "N;Alt+F:N;Ctrl+N" for the English locale and
-	// "N;Alt+D:N;Strg+N" for the German locale. If, hypothetically, this menu
-	// item lacked a mnemonic, it would be represented by ";;Ctrl+N" and
-	// ";;Strg+N" respectively.
-	//
-	// This method is inherited from Action
-	GetKeybinding(i int) string
-	// GetLocalizedName returns the localized name of the specified action of
-	// the object.
-	//
-	// This method is inherited from Action
-	GetLocalizedName(i int) string
-	// GetNActions gets the number of accessible actions available on the
-	// object. If there are more than one, the first one is considered the
-	// "default" action of the object.
-	//
-	// This method is inherited from Action
-	GetNActions() int
-	// GetName returns a non-localized string naming the specified action of the
-	// object. This name is generally not descriptive of the end result of the
-	// action, but instead names the 'interaction type' which the object
-	// supports. By convention, the above strings should be used to represent
-	// the actions which correspond to the common point-and-click interaction
-	// techniques of the same name: i.e. "click", "press", "release", "drag",
-	// "drop", "popup", etc. The "popup" action should be used to pop up a
-	// context menu for the object, if one exists.
-	//
-	// For technical reasons, some toolkits cannot guarantee that the reported
-	// action is actually 'bound' to a nontrivial user event; i.e. the result of
-	// some actions via atk_action_do_action() may be NIL.
-	//
-	// This method is inherited from Action
-	GetName(i int) string
-	// SetDescription sets a description of the specified action of the object.
-	//
-	// This method is inherited from Action
-	SetDescription(i int, desc string) bool
-
 	// EndIndex gets the index with the hypertext document at which this link
 	// ends.
 	EndIndex() int
 	// NAnchors gets the number of anchors associated with this hyperlink.
 	NAnchors() int
-	// Object returns the item associated with this hyperlinks nth anchor. For
-	// instance, the returned Object will implement Text if @link_ is a text
+	// GetObject returns the item associated with this hyperlinks nth anchor.
+	// For instance, the returned Object will implement Text if @link_ is a text
 	// hyperlink, Image if @link_ is an image hyperlink etc.
 	//
 	// Multiple anchors are primarily used by client-side image maps.
-	Object(i int) Object
+	GetObject(i int) Object
 	// StartIndex gets the index with the hypertext document at which this link
 	// begins.
 	StartIndex() int
@@ -178,58 +110,31 @@ type Hyperlink interface {
 	IsValid() bool
 }
 
-// hyperlink implements the Hyperlink interface.
-type hyperlink struct {
+// HyperlinkClass implements the Hyperlink interface.
+type HyperlinkClass struct {
 	*externglib.Object
+	ActionInterface
 }
 
-var _ Hyperlink = (*hyperlink)(nil)
+var _ Hyperlink = (*HyperlinkClass)(nil)
 
-// WrapHyperlink wraps a GObject to a type that implements
-// interface Hyperlink. It is primarily used internally.
-func WrapHyperlink(obj *externglib.Object) Hyperlink {
-	return hyperlink{obj}
+func wrapHyperlink(obj *externglib.Object) Hyperlink {
+	return &HyperlinkClass{
+		Object: obj,
+		ActionInterface: ActionInterface{
+			Object: obj,
+		},
+	}
 }
 
 func marshalHyperlink(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapHyperlink(obj), nil
+	return wrapHyperlink(obj), nil
 }
 
-func (h hyperlink) AsAction() Action {
-	return WrapAction(gextras.InternObject(h))
-}
-
-func (a hyperlink) DoAction(i int) bool {
-	return WrapAction(gextras.InternObject(a)).DoAction(i)
-}
-
-func (a hyperlink) GetDescription(i int) string {
-	return WrapAction(gextras.InternObject(a)).GetDescription(i)
-}
-
-func (a hyperlink) GetKeybinding(i int) string {
-	return WrapAction(gextras.InternObject(a)).GetKeybinding(i)
-}
-
-func (a hyperlink) GetLocalizedName(i int) string {
-	return WrapAction(gextras.InternObject(a)).GetLocalizedName(i)
-}
-
-func (a hyperlink) GetNActions() int {
-	return WrapAction(gextras.InternObject(a)).GetNActions()
-}
-
-func (a hyperlink) GetName(i int) string {
-	return WrapAction(gextras.InternObject(a)).GetName(i)
-}
-
-func (a hyperlink) SetDescription(i int, desc string) bool {
-	return WrapAction(gextras.InternObject(a)).SetDescription(i, desc)
-}
-
-func (l hyperlink) EndIndex() int {
+// EndIndex gets the index with the hypertext document at which this link ends.
+func (l *HyperlinkClass) EndIndex() int {
 	var _arg0 *C.AtkHyperlink // out
 	var _cret C.gint          // in
 
@@ -244,7 +149,8 @@ func (l hyperlink) EndIndex() int {
 	return _gint
 }
 
-func (l hyperlink) NAnchors() int {
+// NAnchors gets the number of anchors associated with this hyperlink.
+func (l *HyperlinkClass) NAnchors() int {
 	var _arg0 *C.AtkHyperlink // out
 	var _cret C.gint          // in
 
@@ -259,7 +165,12 @@ func (l hyperlink) NAnchors() int {
 	return _gint
 }
 
-func (l hyperlink) Object(i int) Object {
+// GetObject returns the item associated with this hyperlinks nth anchor. For
+// instance, the returned Object will implement Text if @link_ is a text
+// hyperlink, Image if @link_ is an image hyperlink etc.
+//
+// Multiple anchors are primarily used by client-side image maps.
+func (l *HyperlinkClass) GetObject(i int) Object {
 	var _arg0 *C.AtkHyperlink // out
 	var _arg1 C.gint          // out
 	var _cret *C.AtkObject    // in
@@ -276,7 +187,9 @@ func (l hyperlink) Object(i int) Object {
 	return _object
 }
 
-func (l hyperlink) StartIndex() int {
+// StartIndex gets the index with the hypertext document at which this link
+// begins.
+func (l *HyperlinkClass) StartIndex() int {
 	var _arg0 *C.AtkHyperlink // out
 	var _cret C.gint          // in
 
@@ -291,7 +204,10 @@ func (l hyperlink) StartIndex() int {
 	return _gint
 }
 
-func (l hyperlink) URI(i int) string {
+// URI: get a the URI associated with the anchor specified by @i of @link_.
+//
+// Multiple anchors are primarily used by client-side image maps.
+func (l *HyperlinkClass) URI(i int) string {
 	var _arg0 *C.AtkHyperlink // out
 	var _arg1 C.gint          // out
 	var _cret *C.gchar        // in
@@ -309,7 +225,10 @@ func (l hyperlink) URI(i int) string {
 	return _utf8
 }
 
-func (l hyperlink) IsInline() bool {
+// IsInline indicates whether the link currently displays some or all of its
+// content inline. Ordinary HTML links will usually return false, but an inline
+// &lt;src&gt; HTML element will return true.
+func (l *HyperlinkClass) IsInline() bool {
 	var _arg0 *C.AtkHyperlink // out
 	var _cret C.gboolean      // in
 
@@ -326,7 +245,10 @@ func (l hyperlink) IsInline() bool {
 	return _ok
 }
 
-func (l hyperlink) IsSelectedLink() bool {
+// IsSelectedLink determines whether this AtkHyperlink is selected
+//
+// Deprecated: since version 1.8.
+func (l *HyperlinkClass) IsSelectedLink() bool {
 	var _arg0 *C.AtkHyperlink // out
 	var _cret C.gboolean      // in
 
@@ -343,7 +265,10 @@ func (l hyperlink) IsSelectedLink() bool {
 	return _ok
 }
 
-func (l hyperlink) IsValid() bool {
+// IsValid: since the document that a link is associated with may have changed
+// this method returns true if the link is still valid (with respect to the
+// document it references) and false otherwise.
+func (l *HyperlinkClass) IsValid() bool {
 	var _arg0 *C.AtkHyperlink // out
 	var _cret C.gboolean      // in
 

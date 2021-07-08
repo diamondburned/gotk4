@@ -36,7 +36,7 @@ func init() {
 	})
 }
 
-// NetworkMonitorOverrider contains methods that are overridable .
+// NetworkMonitorOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
@@ -80,51 +80,6 @@ type NetworkMonitorOverrider interface {
 // There is also an implementation for use inside Flatpak sandboxes.
 type NetworkMonitor interface {
 	gextras.Objector
-
-	// AsInitable casts the class to the Initable interface.
-	AsInitable() Initable
-
-	// Init initializes the object implementing the interface.
-	//
-	// This method is intended for language bindings. If writing in C,
-	// g_initable_new() should typically be used instead.
-	//
-	// The object must be initialized before any real use after initial
-	// construction, either with this function or g_async_initable_init_async().
-	//
-	// Implementations may also support cancellation. If @cancellable is not
-	// nil, then initialization can be cancelled by triggering the cancellable
-	// object from another thread. If the operation was cancelled, the error
-	// G_IO_ERROR_CANCELLED will be returned. If @cancellable is not nil and the
-	// object doesn't support cancellable initialization the error
-	// G_IO_ERROR_NOT_SUPPORTED will be returned.
-	//
-	// If the object is not initialized, or initialization returns with an
-	// error, then all operations on the object except g_object_ref() and
-	// g_object_unref() are considered to be invalid, and have undefined
-	// behaviour. See the [introduction][ginitable] for more details.
-	//
-	// Callers should not assume that a class which implements #GInitable can be
-	// initialized multiple times, unless the class explicitly documents itself
-	// as supporting this. Generally, a class’ implementation of init() can
-	// assume (and assert) that it will only be called once. Previously, this
-	// documentation recommended all #GInitable implementations should be
-	// idempotent; that recommendation was relaxed in GLib 2.54.
-	//
-	// If a class explicitly supports being initialized multiple times, it is
-	// recommended that the method is idempotent: multiple calls with the same
-	// arguments should return the same results. Only the first call initializes
-	// the object; further calls return the result of the first call.
-	//
-	// One reason why a class might need to support idempotent initialization is
-	// if it is designed to be used via the singleton pattern, with a
-	// Class.constructor that sometimes returns an existing instance. In this
-	// pattern, a caller would expect to be able to call g_initable_init() on
-	// the result of g_object_new(), regardless of whether it is in fact a new
-	// instance.
-	//
-	// This method is inherited from Initable
-	Init(cancellable Cancellable) error
 
 	// CanReach attempts to determine whether or not the host pointed to by
 	// @connectable can be reached, without actually trying to connect to it.
@@ -185,34 +140,43 @@ type NetworkMonitor interface {
 	NetworkMetered() bool
 }
 
-// networkMonitor implements the NetworkMonitor interface.
-type networkMonitor struct {
-	*externglib.Object
+// NetworkMonitorInterface implements the NetworkMonitor interface.
+type NetworkMonitorInterface struct {
+	InitableInterface
 }
 
-var _ NetworkMonitor = (*networkMonitor)(nil)
+var _ NetworkMonitor = (*NetworkMonitorInterface)(nil)
 
-// WrapNetworkMonitor wraps a GObject to a type that implements
-// interface NetworkMonitor. It is primarily used internally.
-func WrapNetworkMonitor(obj *externglib.Object) NetworkMonitor {
-	return networkMonitor{obj}
+func wrapNetworkMonitor(obj *externglib.Object) NetworkMonitor {
+	return &NetworkMonitorInterface{
+		InitableInterface: InitableInterface{
+			Object: obj,
+		},
+	}
 }
 
 func marshalNetworkMonitor(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapNetworkMonitor(obj), nil
+	return wrapNetworkMonitor(obj), nil
 }
 
-func (n networkMonitor) AsInitable() Initable {
-	return WrapInitable(gextras.InternObject(n))
-}
-
-func (i networkMonitor) Init(cancellable Cancellable) error {
-	return WrapInitable(gextras.InternObject(i)).Init(cancellable)
-}
-
-func (m networkMonitor) CanReach(connectable SocketConnectable, cancellable Cancellable) error {
+// CanReach attempts to determine whether or not the host pointed to by
+// @connectable can be reached, without actually trying to connect to it.
+//
+// This may return true even when Monitor:network-available is false, if, for
+// example, @monitor can determine that @connectable refers to a host on a local
+// network.
+//
+// If @monitor believes that an attempt to connect to @connectable will succeed,
+// it will return true. Otherwise, it will return false and set @error to an
+// appropriate error (such as G_IO_ERROR_HOST_UNREACHABLE).
+//
+// Note that although this does not attempt to connect to @connectable, it may
+// still block for a brief period of time (eg, trying to do multicast DNS on the
+// local network), so if you do not want to block, you should use
+// g_network_monitor_can_reach_async().
+func (m *NetworkMonitorInterface) CanReach(connectable SocketConnectable, cancellable Cancellable) error {
 	var _arg0 *C.GNetworkMonitor    // out
 	var _arg1 *C.GSocketConnectable // out
 	var _arg2 *C.GCancellable       // out
@@ -231,7 +195,15 @@ func (m networkMonitor) CanReach(connectable SocketConnectable, cancellable Canc
 	return _goerr
 }
 
-func (m networkMonitor) CanReachAsync(connectable SocketConnectable, cancellable Cancellable, callback AsyncReadyCallback) {
+// CanReachAsync: asynchronously attempts to determine whether or not the host
+// pointed to by @connectable can be reached, without actually trying to connect
+// to it.
+//
+// For more details, see g_network_monitor_can_reach().
+//
+// When the operation is finished, @callback will be called. You can then call
+// g_network_monitor_can_reach_finish() to get the result of the operation.
+func (m *NetworkMonitorInterface) CanReachAsync(connectable SocketConnectable, cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GNetworkMonitor    // out
 	var _arg1 *C.GSocketConnectable // out
 	var _arg2 *C.GCancellable       // out
@@ -247,7 +219,9 @@ func (m networkMonitor) CanReachAsync(connectable SocketConnectable, cancellable
 	C.g_network_monitor_can_reach_async(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
-func (m networkMonitor) CanReachFinish(result AsyncResult) error {
+// CanReachFinish finishes an async network connectivity test. See
+// g_network_monitor_can_reach_async().
+func (m *NetworkMonitorInterface) CanReachFinish(result AsyncResult) error {
 	var _arg0 *C.GNetworkMonitor // out
 	var _arg1 *C.GAsyncResult    // out
 	var _cerr *C.GError          // in
@@ -264,7 +238,26 @@ func (m networkMonitor) CanReachFinish(result AsyncResult) error {
 	return _goerr
 }
 
-func (m networkMonitor) Connectivity() NetworkConnectivity {
+// Connectivity gets a more detailed networking state than
+// g_network_monitor_get_network_available().
+//
+// If Monitor:network-available is false, then the connectivity state will be
+// G_NETWORK_CONNECTIVITY_LOCAL.
+//
+// If Monitor:network-available is true, then the connectivity state will be
+// G_NETWORK_CONNECTIVITY_FULL (if there is full Internet connectivity),
+// G_NETWORK_CONNECTIVITY_LIMITED (if the host has a default route, but appears
+// to be unable to actually reach the full Internet), or
+// G_NETWORK_CONNECTIVITY_PORTAL (if the host is trapped behind a "captive
+// portal" that requires some sort of login or acknowledgement before allowing
+// full Internet access).
+//
+// Note that in the case of G_NETWORK_CONNECTIVITY_LIMITED and
+// G_NETWORK_CONNECTIVITY_PORTAL, it is possible that some sites are reachable
+// but others are not. In this case, applications can attempt to connect to
+// remote servers, but should gracefully fall back to their "offline" behavior
+// if the connection attempt fails.
+func (m *NetworkMonitorInterface) Connectivity() NetworkConnectivity {
 	var _arg0 *C.GNetworkMonitor     // out
 	var _cret C.GNetworkConnectivity // in
 
@@ -279,7 +272,11 @@ func (m networkMonitor) Connectivity() NetworkConnectivity {
 	return _networkConnectivity
 }
 
-func (m networkMonitor) NetworkAvailable() bool {
+// NetworkAvailable checks if the network is available. "Available" here means
+// that the system has a default route available for at least one of IPv4 or
+// IPv6. It does not necessarily imply that the public Internet is reachable.
+// See Monitor:network-available for more details.
+func (m *NetworkMonitorInterface) NetworkAvailable() bool {
 	var _arg0 *C.GNetworkMonitor // out
 	var _cret C.gboolean         // in
 
@@ -296,7 +293,9 @@ func (m networkMonitor) NetworkAvailable() bool {
 	return _ok
 }
 
-func (m networkMonitor) NetworkMetered() bool {
+// NetworkMetered checks if the network is metered. See Monitor:network-metered
+// for more details.
+func (m *NetworkMonitorInterface) NetworkMetered() bool {
 	var _arg0 *C.GNetworkMonitor // out
 	var _cret C.gboolean         // in
 

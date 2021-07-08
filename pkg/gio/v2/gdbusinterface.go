@@ -33,7 +33,7 @@ func init() {
 	})
 }
 
-// DBusInterfaceOverrider contains methods that are overridable .
+// DBusInterfaceOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
@@ -66,26 +66,27 @@ type DBusInterface interface {
 	SetObject(object DBusObject)
 }
 
-// dBusInterface implements the DBusInterface interface.
-type dBusInterface struct {
+// DBusInterfaceInterface implements the DBusInterface interface.
+type DBusInterfaceInterface struct {
 	*externglib.Object
 }
 
-var _ DBusInterface = (*dBusInterface)(nil)
+var _ DBusInterface = (*DBusInterfaceInterface)(nil)
 
-// WrapDBusInterface wraps a GObject to a type that implements
-// interface DBusInterface. It is primarily used internally.
-func WrapDBusInterface(obj *externglib.Object) DBusInterface {
-	return dBusInterface{obj}
+func wrapDBusInterface(obj *externglib.Object) DBusInterface {
+	return &DBusInterfaceInterface{
+		Object: obj,
+	}
 }
 
 func marshalDBusInterface(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapDBusInterface(obj), nil
+	return wrapDBusInterface(obj), nil
 }
 
-func (i dBusInterface) DupObject() DBusObject {
+// DupObject gets the BusObject that @interface_ belongs to, if any.
+func (i *DBusInterfaceInterface) DupObject() DBusObject {
 	var _arg0 *C.GDBusInterface // out
 	var _cret *C.GDBusObject    // in
 
@@ -100,7 +101,9 @@ func (i dBusInterface) DupObject() DBusObject {
 	return _dBusObject
 }
 
-func (i dBusInterface) Info() *DBusInterfaceInfo {
+// Info gets D-Bus introspection information for the D-Bus interface implemented
+// by @interface_.
+func (i *DBusInterfaceInterface) Info() *DBusInterfaceInfo {
 	var _arg0 *C.GDBusInterface     // out
 	var _cret *C.GDBusInterfaceInfo // in
 
@@ -119,7 +122,10 @@ func (i dBusInterface) Info() *DBusInterfaceInfo {
 	return _dBusInterfaceInfo
 }
 
-func (i dBusInterface) SetObject(object DBusObject) {
+// SetObject sets the BusObject for @interface_ to @object.
+//
+// Note that @interface_ will hold a weak reference to @object.
+func (i *DBusInterfaceInterface) SetObject(object DBusObject) {
 	var _arg0 *C.GDBusInterface // out
 	var _arg1 *C.GDBusObject    // out
 

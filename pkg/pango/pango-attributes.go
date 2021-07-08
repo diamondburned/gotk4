@@ -45,74 +45,74 @@ type AttrType int
 
 const (
 	// Invalid does not happen
-	AttrInvalid AttrType = iota
+	AttrTypeInvalid AttrType = iota
 	// Language ([struct@Pango.AttrLanguage])
-	AttrLanguage
+	AttrTypeLanguage
 	// Family: font family name list ([struct@Pango.AttrString])
-	AttrFamily
+	AttrTypeFamily
 	// Style: font slant style ([struct@Pango.AttrInt])
-	AttrStyle
+	AttrTypeStyle
 	// Weight: font weight ([struct@Pango.AttrInt])
-	AttrWeight
+	AttrTypeWeight
 	// Variant: font variant (normal or small caps) ([struct@Pango.AttrInt])
-	AttrVariant
+	AttrTypeVariant
 	// Stretch: font stretch ([struct@Pango.AttrInt])
-	AttrStretch
+	AttrTypeStretch
 	// Size: font size in points scaled by PANGO_SCALE ([struct@Pango.AttrInt])
-	AttrSize
+	AttrTypeSize
 	// FontDesc: font description ([struct@Pango.AttrFontDesc])
-	AttrFontDesc
+	AttrTypeFontDesc
 	// Foreground color ([struct@Pango.AttrColor])
-	AttrForeground
+	AttrTypeForeground
 	// Background color ([struct@Pango.AttrColor])
-	AttrBackground
+	AttrTypeBackground
 	// Underline: whether the text has an underline ([struct@Pango.AttrInt])
-	AttrUnderline
+	AttrTypeUnderline
 	// Strikethrough: whether the text is struck-through
 	// ([struct@Pango.AttrInt])
-	AttrStrikethrough
+	AttrTypeStrikethrough
 	// Rise: baseline displacement ([struct@Pango.AttrInt])
-	AttrRise
+	AttrTypeRise
 	// Shape ([struct@Pango.AttrShape])
-	AttrShape
+	AttrTypeShape
 	// Scale: font size scale factor ([struct@Pango.AttrFloat])
-	AttrScale
+	AttrTypeScale
 	// Fallback: whether fallback is enabled ([struct@Pango.AttrInt])
-	AttrFallback
+	AttrTypeFallback
 	// LetterSpacing: letter spacing ([struct@PangoAttrInt])
-	AttrLetterSpacing
+	AttrTypeLetterSpacing
 	// UnderlineColor: underline color ([struct@Pango.AttrColor])
-	AttrUnderlineColor
+	AttrTypeUnderlineColor
 	// StrikethroughColor: strikethrough color ([struct@Pango.AttrColor])
-	AttrStrikethroughColor
+	AttrTypeStrikethroughColor
 	// AbsoluteSize: font size in pixels scaled by PANGO_SCALE
 	// ([struct@Pango.AttrInt])
-	AttrAbsoluteSize
+	AttrTypeAbsoluteSize
 	// Gravity: base text gravity ([struct@Pango.AttrInt])
-	AttrGravity
+	AttrTypeGravity
 	// GravityHint: gravity hint ([struct@Pango.AttrInt])
-	AttrGravityHint
+	AttrTypeGravityHint
 	// FontFeatures: openType font features ([struct@Pango.AttrString]). Since
 	// 1.38
-	AttrFontFeatures
+	AttrTypeFontFeatures
 	// ForegroundAlpha: foreground alpha ([struct@Pango.AttrInt]). Since 1.38
-	AttrForegroundAlpha
+	AttrTypeForegroundAlpha
 	// BackgroundAlpha: background alpha ([struct@Pango.AttrInt]). Since 1.38
-	AttrBackgroundAlpha
+	AttrTypeBackgroundAlpha
 	// AllowBreaks: whether breaks are allowed ([struct@Pango.AttrInt]). Since
 	// 1.44
-	AttrAllowBreaks
+	AttrTypeAllowBreaks
 	// Show: how to render invisible characters ([struct@Pango.AttrInt]). Since
 	// 1.44
-	AttrShow
+	AttrTypeShow
 	// InsertHyphens: whether to insert hyphens at intra-word line breaks
 	// ([struct@Pango.AttrInt]). Since 1.44
-	AttrInsertHyphens
+	AttrTypeInsertHyphens
 	// Overline: whether the text has an overline ([struct@Pango.AttrInt]).
 	// Since 1.46
-	AttrOverline
+	AttrTypeOverline
 	// OverlineColor: overline color ([struct@Pango.AttrColor]). Since 1.46
-	AttrOverlineColor
+	AttrTypeOverlineColor
 )
 
 func marshalAttrType(p uintptr) (interface{}, error) {
@@ -886,40 +886,6 @@ func (a *AttrColor) Native() unsafe.Pointer {
 	return unsafe.Pointer(&a.native)
 }
 
-// Attr: the common portion of the attribute
-func (a *AttrColor) Attr() Attribute {
-	var v Attribute // out
-	{
-		var refTmpIn *C.PangoAttribute
-		var refTmpOut *Attribute
-
-		in0 := &a.native.attr
-		refTmpIn = in0
-
-		refTmpOut = (*Attribute)(unsafe.Pointer(refTmpIn))
-
-		v = *refTmpOut
-	}
-	return v
-}
-
-// Color: the `PangoColor` which is the value of the attribute
-func (a *AttrColor) Color() Color {
-	var v Color // out
-	{
-		var refTmpIn *C.PangoColor
-		var refTmpOut *Color
-
-		in0 := &a.native.color
-		refTmpIn = in0
-
-		refTmpOut = (*Color)(unsafe.Pointer(refTmpIn))
-
-		v = *refTmpOut
-	}
-	return v
-}
-
 // AttrFloat: the `PangoAttrFloat` structure is used to represent attributes
 // with a float or double value.
 type AttrFloat struct {
@@ -935,23 +901,6 @@ func WrapAttrFloat(ptr unsafe.Pointer) *AttrFloat {
 // Native returns the underlying C source pointer.
 func (a *AttrFloat) Native() unsafe.Pointer {
 	return unsafe.Pointer(&a.native)
-}
-
-// Attr: the common portion of the attribute
-func (a *AttrFloat) Attr() Attribute {
-	var v Attribute // out
-	{
-		var refTmpIn *C.PangoAttribute
-		var refTmpOut *Attribute
-
-		in0 := &a.native.attr
-		refTmpIn = in0
-
-		refTmpOut = (*Attribute)(unsafe.Pointer(refTmpIn))
-
-		v = *refTmpOut
-	}
-	return v
 }
 
 // Value: the value of the attribute
@@ -978,23 +927,6 @@ func (a *AttrFontDesc) Native() unsafe.Pointer {
 	return unsafe.Pointer(&a.native)
 }
 
-// Attr: the common portion of the attribute
-func (a *AttrFontDesc) Attr() Attribute {
-	var v Attribute // out
-	{
-		var refTmpIn *C.PangoAttribute
-		var refTmpOut *Attribute
-
-		in0 := &a.native.attr
-		refTmpIn = in0
-
-		refTmpOut = (*Attribute)(unsafe.Pointer(refTmpIn))
-
-		v = *refTmpOut
-	}
-	return v
-}
-
 // Desc: the font description which is the value of this attribute
 func (a *AttrFontDesc) Desc() *FontDescription {
 	var v *FontDescription // out
@@ -1019,23 +951,6 @@ func (a *AttrFontFeatures) Native() unsafe.Pointer {
 	return unsafe.Pointer(&a.native)
 }
 
-// Attr: the common portion of the attribute
-func (a *AttrFontFeatures) Attr() Attribute {
-	var v Attribute // out
-	{
-		var refTmpIn *C.PangoAttribute
-		var refTmpOut *Attribute
-
-		in0 := &a.native.attr
-		refTmpIn = in0
-
-		refTmpOut = (*Attribute)(unsafe.Pointer(refTmpIn))
-
-		v = *refTmpOut
-	}
-	return v
-}
-
 // Features: the featues, as a string in CSS syntax
 func (a *AttrFontFeatures) Features() string {
 	var v string // out
@@ -1058,23 +973,6 @@ func WrapAttrInt(ptr unsafe.Pointer) *AttrInt {
 // Native returns the underlying C source pointer.
 func (a *AttrInt) Native() unsafe.Pointer {
 	return unsafe.Pointer(&a.native)
-}
-
-// Attr: the common portion of the attribute
-func (a *AttrInt) Attr() Attribute {
-	var v Attribute // out
-	{
-		var refTmpIn *C.PangoAttribute
-		var refTmpOut *Attribute
-
-		in0 := &a.native.attr
-		refTmpIn = in0
-
-		refTmpOut = (*Attribute)(unsafe.Pointer(refTmpIn))
-
-		v = *refTmpOut
-	}
-	return v
 }
 
 // Value: the value of the attribute
@@ -1215,23 +1113,6 @@ func WrapAttrLanguage(ptr unsafe.Pointer) *AttrLanguage {
 // Native returns the underlying C source pointer.
 func (a *AttrLanguage) Native() unsafe.Pointer {
 	return unsafe.Pointer(&a.native)
-}
-
-// Attr: the common portion of the attribute
-func (a *AttrLanguage) Attr() Attribute {
-	var v Attribute // out
-	{
-		var refTmpIn *C.PangoAttribute
-		var refTmpOut *Attribute
-
-		in0 := &a.native.attr
-		refTmpIn = in0
-
-		refTmpOut = (*Attribute)(unsafe.Pointer(refTmpIn))
-
-		v = *refTmpOut
-	}
-	return v
 }
 
 // Value: the `PangoLanguage` which is the value of the attribute
@@ -1522,57 +1403,6 @@ func (a *AttrShape) Native() unsafe.Pointer {
 	return unsafe.Pointer(&a.native)
 }
 
-// Attr: the common portion of the attribute
-func (a *AttrShape) Attr() Attribute {
-	var v Attribute // out
-	{
-		var refTmpIn *C.PangoAttribute
-		var refTmpOut *Attribute
-
-		in0 := &a.native.attr
-		refTmpIn = in0
-
-		refTmpOut = (*Attribute)(unsafe.Pointer(refTmpIn))
-
-		v = *refTmpOut
-	}
-	return v
-}
-
-// InkRect: the ink rectangle to restrict to
-func (a *AttrShape) InkRect() Rectangle {
-	var v Rectangle // out
-	{
-		var refTmpIn *C.PangoRectangle
-		var refTmpOut *Rectangle
-
-		in0 := &a.native.ink_rect
-		refTmpIn = in0
-
-		refTmpOut = (*Rectangle)(unsafe.Pointer(refTmpIn))
-
-		v = *refTmpOut
-	}
-	return v
-}
-
-// LogicalRect: the logical rectangle to restrict to
-func (a *AttrShape) LogicalRect() Rectangle {
-	var v Rectangle // out
-	{
-		var refTmpIn *C.PangoRectangle
-		var refTmpOut *Rectangle
-
-		in0 := &a.native.logical_rect
-		refTmpIn = in0
-
-		refTmpOut = (*Rectangle)(unsafe.Pointer(refTmpIn))
-
-		v = *refTmpOut
-	}
-	return v
-}
-
 // Data: user data set (see [type_func@Pango.AttrShape.new_with_data])
 func (a *AttrShape) Data() interface{} {
 	var v interface{} // out
@@ -1595,23 +1425,6 @@ func WrapAttrSize(ptr unsafe.Pointer) *AttrSize {
 // Native returns the underlying C source pointer.
 func (a *AttrSize) Native() unsafe.Pointer {
 	return unsafe.Pointer(&a.native)
-}
-
-// Attr: the common portion of the attribute
-func (a *AttrSize) Attr() Attribute {
-	var v Attribute // out
-	{
-		var refTmpIn *C.PangoAttribute
-		var refTmpOut *Attribute
-
-		in0 := &a.native.attr
-		refTmpIn = in0
-
-		refTmpOut = (*Attribute)(unsafe.Pointer(refTmpIn))
-
-		v = *refTmpOut
-	}
-	return v
 }
 
 // Size: size of font, in units of 1/PANGO_SCALE of a point (for
@@ -1637,23 +1450,6 @@ func WrapAttrString(ptr unsafe.Pointer) *AttrString {
 // Native returns the underlying C source pointer.
 func (a *AttrString) Native() unsafe.Pointer {
 	return unsafe.Pointer(&a.native)
-}
-
-// Attr: the common portion of the attribute
-func (a *AttrString) Attr() Attribute {
-	var v Attribute // out
-	{
-		var refTmpIn *C.PangoAttribute
-		var refTmpOut *Attribute
-
-		in0 := &a.native.attr
-		refTmpIn = in0
-
-		refTmpOut = (*Attribute)(unsafe.Pointer(refTmpIn))
-
-		v = *refTmpOut
-	}
-	return v
 }
 
 // Value: the string which is the value of the attribute

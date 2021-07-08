@@ -5,7 +5,6 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -43,56 +42,31 @@ func init() {
 // g_unix_connection_receive_credentials(). To receive credentials of a foreign
 // process connected to a socket, use g_socket_get_credentials().
 type UnixCredentialsMessage interface {
-	SocketControlMessage
-
-	// AsSocketControlMessage casts the class to the SocketControlMessage interface.
-	AsSocketControlMessage() SocketControlMessage
-
-	// GetLevel returns the "level" (i.e. the originating protocol) of the
-	// control message. This is often SOL_SOCKET.
-	//
-	// This method is inherited from SocketControlMessage
-	GetLevel() int
-	// GetMsgType returns the protocol specific type of the control message. For
-	// instance, for UNIX fd passing this would be SCM_RIGHTS.
-	//
-	// This method is inherited from SocketControlMessage
-	GetMsgType() int
-	// GetSize returns the space required for the control message, not including
-	// headers or alignment.
-	//
-	// This method is inherited from SocketControlMessage
-	GetSize() uint
-	// Serialize converts the data in the message to bytes placed in the
-	// message.
-	//
-	// @data is guaranteed to have enough space to fit the size returned by
-	// g_socket_control_message_get_size() on this object.
-	//
-	// This method is inherited from SocketControlMessage
-	Serialize(data interface{})
+	gextras.Objector
 
 	// Credentials gets the credentials stored in @message.
 	Credentials() Credentials
 }
 
-// unixCredentialsMessage implements the UnixCredentialsMessage interface.
-type unixCredentialsMessage struct {
-	*externglib.Object
+// UnixCredentialsMessageClass implements the UnixCredentialsMessage interface.
+type UnixCredentialsMessageClass struct {
+	SocketControlMessageClass
 }
 
-var _ UnixCredentialsMessage = (*unixCredentialsMessage)(nil)
+var _ UnixCredentialsMessage = (*UnixCredentialsMessageClass)(nil)
 
-// WrapUnixCredentialsMessage wraps a GObject to a type that implements
-// interface UnixCredentialsMessage. It is primarily used internally.
-func WrapUnixCredentialsMessage(obj *externglib.Object) UnixCredentialsMessage {
-	return unixCredentialsMessage{obj}
+func wrapUnixCredentialsMessage(obj *externglib.Object) UnixCredentialsMessage {
+	return &UnixCredentialsMessageClass{
+		SocketControlMessageClass: SocketControlMessageClass{
+			Object: obj,
+		},
+	}
 }
 
 func marshalUnixCredentialsMessage(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapUnixCredentialsMessage(obj), nil
+	return wrapUnixCredentialsMessage(obj), nil
 }
 
 // NewUnixCredentialsMessage creates a new CredentialsMessage with credentials
@@ -126,27 +100,8 @@ func NewUnixCredentialsMessageWithCredentials(credentials Credentials) UnixCrede
 	return _unixCredentialsMessage
 }
 
-func (u unixCredentialsMessage) AsSocketControlMessage() SocketControlMessage {
-	return WrapSocketControlMessage(gextras.InternObject(u))
-}
-
-func (m unixCredentialsMessage) GetLevel() int {
-	return WrapSocketControlMessage(gextras.InternObject(m)).GetLevel()
-}
-
-func (m unixCredentialsMessage) GetMsgType() int {
-	return WrapSocketControlMessage(gextras.InternObject(m)).GetMsgType()
-}
-
-func (m unixCredentialsMessage) GetSize() uint {
-	return WrapSocketControlMessage(gextras.InternObject(m)).GetSize()
-}
-
-func (m unixCredentialsMessage) Serialize(data interface{}) {
-	WrapSocketControlMessage(gextras.InternObject(m)).Serialize(data)
-}
-
-func (m unixCredentialsMessage) Credentials() Credentials {
+// Credentials gets the credentials stored in @message.
+func (m *UnixCredentialsMessageClass) Credentials() Credentials {
 	var _arg0 *C.GUnixCredentialsMessage // out
 	var _cret *C.GCredentials            // in
 

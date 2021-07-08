@@ -5,9 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -26,7 +24,7 @@ func init() {
 	})
 }
 
-// ActionGroupOverrider contains methods that are overridable .
+// ActionGroupOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
@@ -88,64 +86,6 @@ type ActionGroupOverrider interface {
 //    </object>
 type ActionGroup interface {
 	gextras.Objector
-
-	// AsBuildable casts the class to the Buildable interface.
-	AsBuildable() Buildable
-
-	// AddChild adds a child to @buildable. @type is an optional string
-	// describing how the child should be added.
-	//
-	// This method is inherited from Buildable
-	AddChild(builder Builder, child gextras.Objector, typ string)
-	// ConstructChild constructs a child of @buildable with the name @name.
-	//
-	// Builder calls this function if a “constructor” has been specified in the
-	// UI definition.
-	//
-	// This method is inherited from Buildable
-	ConstructChild(builder Builder, name string) gextras.Objector
-	// CustomFinished: this is similar to gtk_buildable_parser_finished() but is
-	// called once for each custom tag handled by the @buildable.
-	//
-	// This method is inherited from Buildable
-	CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{})
-	// CustomTagEnd: this is called at the end of each custom element handled by
-	// the buildable.
-	//
-	// This method is inherited from Buildable
-	CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data interface{})
-	// CustomTagStart: this is called for each unknown element under <child>.
-	//
-	// This method is inherited from Buildable
-	CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool)
-	// GetInternalChild: get the internal child called @childname of the
-	// @buildable object.
-	//
-	// This method is inherited from Buildable
-	GetInternalChild(builder Builder, childname string) gextras.Objector
-	// GetName gets the name of the @buildable object.
-	//
-	// Builder sets the name based on the [GtkBuilder UI definition][BUILDER-UI]
-	// used to construct the @buildable.
-	//
-	// This method is inherited from Buildable
-	GetName() string
-	// ParserFinished: called when the builder finishes the parsing of a
-	// [GtkBuilder UI definition][BUILDER-UI]. Note that this will be called
-	// once for each time gtk_builder_add_from_file() or
-	// gtk_builder_add_from_string() is called on a builder.
-	//
-	// This method is inherited from Buildable
-	ParserFinished(builder Builder)
-	// SetBuildableProperty sets the property name @name to @value on the
-	// @buildable object.
-	//
-	// This method is inherited from Buildable
-	SetBuildableProperty(builder Builder, name string, value externglib.Value)
-	// SetName sets the name of the @buildable object.
-	//
-	// This method is inherited from Buildable
-	SetName(name string)
 
 	// AddAction adds an action object to the action group. Note that this
 	// function does not set up the accel path of the action, which can lead to
@@ -225,23 +165,27 @@ type ActionGroup interface {
 	TranslateString(_string string) string
 }
 
-// actionGroup implements the ActionGroup interface.
-type actionGroup struct {
+// ActionGroupClass implements the ActionGroup interface.
+type ActionGroupClass struct {
 	*externglib.Object
+	BuildableInterface
 }
 
-var _ ActionGroup = (*actionGroup)(nil)
+var _ ActionGroup = (*ActionGroupClass)(nil)
 
-// WrapActionGroup wraps a GObject to a type that implements
-// interface ActionGroup. It is primarily used internally.
-func WrapActionGroup(obj *externglib.Object) ActionGroup {
-	return actionGroup{obj}
+func wrapActionGroup(obj *externglib.Object) ActionGroup {
+	return &ActionGroupClass{
+		Object: obj,
+		BuildableInterface: BuildableInterface{
+			Object: obj,
+		},
+	}
 }
 
 func marshalActionGroup(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapActionGroup(obj), nil
+	return wrapActionGroup(obj), nil
 }
 
 // NewActionGroup creates a new ActionGroup object. The name of the action group
@@ -264,51 +208,15 @@ func NewActionGroup(name string) ActionGroup {
 	return _actionGroup
 }
 
-func (a actionGroup) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(a))
-}
-
-func (b actionGroup) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
-}
-
-func (b actionGroup) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b actionGroup) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b actionGroup) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b actionGroup) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b actionGroup) GetInternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).GetInternalChild(builder, childname)
-}
-
-func (b actionGroup) GetName() string {
-	return WrapBuildable(gextras.InternObject(b)).GetName()
-}
-
-func (b actionGroup) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b actionGroup) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b actionGroup) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (a actionGroup) AddAction(action Action) {
+// AddAction adds an action object to the action group. Note that this function
+// does not set up the accel path of the action, which can lead to problems if a
+// user tries to modify the accelerator of a menuitem associated with the
+// action. Therefore you must either set the accel path yourself with
+// gtk_action_set_accel_path(), or use `gtk_action_group_add_action_with_accel
+// (..., NULL)`.
+//
+// Deprecated: since version 3.10.
+func (a *ActionGroupClass) AddAction(action Action) {
 	var _arg0 *C.GtkActionGroup // out
 	var _arg1 *C.GtkAction      // out
 
@@ -318,7 +226,16 @@ func (a actionGroup) AddAction(action Action) {
 	C.gtk_action_group_add_action(_arg0, _arg1)
 }
 
-func (a actionGroup) AddActionWithAccel(action Action, accelerator string) {
+// AddActionWithAccel adds an action object to the action group and sets up the
+// accelerator.
+//
+// If @accelerator is nil, attempts to use the accelerator associated with the
+// stock_id of the action.
+//
+// Accel paths are set to `<Actions>/group-name/action-name`.
+//
+// Deprecated: since version 3.10.
+func (a *ActionGroupClass) AddActionWithAccel(action Action, accelerator string) {
 	var _arg0 *C.GtkActionGroup // out
 	var _arg1 *C.GtkAction      // out
 	var _arg2 *C.gchar          // out
@@ -331,7 +248,10 @@ func (a actionGroup) AddActionWithAccel(action Action, accelerator string) {
 	C.gtk_action_group_add_action_with_accel(_arg0, _arg1, _arg2)
 }
 
-func (a actionGroup) AccelGroup() AccelGroup {
+// AccelGroup gets the accelerator group.
+//
+// Deprecated: since version 3.10.
+func (a *ActionGroupClass) AccelGroup() AccelGroup {
 	var _arg0 *C.GtkActionGroup // out
 	var _cret *C.GtkAccelGroup  // in
 
@@ -346,7 +266,10 @@ func (a actionGroup) AccelGroup() AccelGroup {
 	return _accelGroup
 }
 
-func (a actionGroup) Action(actionName string) Action {
+// Action looks up an action in the action group by name.
+//
+// Deprecated: since version 3.10.
+func (a *ActionGroupClass) Action(actionName string) Action {
 	var _arg0 *C.GtkActionGroup // out
 	var _arg1 *C.gchar          // out
 	var _cret *C.GtkAction      // in
@@ -364,7 +287,10 @@ func (a actionGroup) Action(actionName string) Action {
 	return _action
 }
 
-func (a actionGroup) Name() string {
+// Name gets the name of the action group.
+//
+// Deprecated: since version 3.10.
+func (a *ActionGroupClass) Name() string {
 	var _arg0 *C.GtkActionGroup // out
 	var _cret *C.gchar          // in
 
@@ -379,7 +305,12 @@ func (a actionGroup) Name() string {
 	return _utf8
 }
 
-func (a actionGroup) Sensitive() bool {
+// Sensitive returns true if the group is sensitive. The constituent actions can
+// only be logically sensitive (see gtk_action_is_sensitive()) if they are
+// sensitive (see gtk_action_get_sensitive()) and their group is sensitive.
+//
+// Deprecated: since version 3.10.
+func (a *ActionGroupClass) Sensitive() bool {
 	var _arg0 *C.GtkActionGroup // out
 	var _cret C.gboolean        // in
 
@@ -396,7 +327,12 @@ func (a actionGroup) Sensitive() bool {
 	return _ok
 }
 
-func (a actionGroup) Visible() bool {
+// Visible returns true if the group is visible. The constituent actions can
+// only be logically visible (see gtk_action_is_visible()) if they are visible
+// (see gtk_action_get_visible()) and their group is visible.
+//
+// Deprecated: since version 3.10.
+func (a *ActionGroupClass) Visible() bool {
 	var _arg0 *C.GtkActionGroup // out
 	var _cret C.gboolean        // in
 
@@ -413,7 +349,10 @@ func (a actionGroup) Visible() bool {
 	return _ok
 }
 
-func (a actionGroup) RemoveAction(action Action) {
+// RemoveAction removes an action object from the action group.
+//
+// Deprecated: since version 3.10.
+func (a *ActionGroupClass) RemoveAction(action Action) {
 	var _arg0 *C.GtkActionGroup // out
 	var _arg1 *C.GtkAction      // out
 
@@ -423,7 +362,11 @@ func (a actionGroup) RemoveAction(action Action) {
 	C.gtk_action_group_remove_action(_arg0, _arg1)
 }
 
-func (a actionGroup) SetAccelGroup(accelGroup AccelGroup) {
+// SetAccelGroup sets the accelerator group to be used by every action in this
+// group.
+//
+// Deprecated: since version 3.10.
+func (a *ActionGroupClass) SetAccelGroup(accelGroup AccelGroup) {
 	var _arg0 *C.GtkActionGroup // out
 	var _arg1 *C.GtkAccelGroup  // out
 
@@ -433,7 +376,10 @@ func (a actionGroup) SetAccelGroup(accelGroup AccelGroup) {
 	C.gtk_action_group_set_accel_group(_arg0, _arg1)
 }
 
-func (a actionGroup) SetSensitive(sensitive bool) {
+// SetSensitive changes the sensitivity of @action_group
+//
+// Deprecated: since version 3.10.
+func (a *ActionGroupClass) SetSensitive(sensitive bool) {
 	var _arg0 *C.GtkActionGroup // out
 	var _arg1 C.gboolean        // out
 
@@ -445,7 +391,15 @@ func (a actionGroup) SetSensitive(sensitive bool) {
 	C.gtk_action_group_set_sensitive(_arg0, _arg1)
 }
 
-func (a actionGroup) SetTranslationDomain(domain string) {
+// SetTranslationDomain sets the translation domain and uses g_dgettext() for
+// translating the @label and @tooltip of ActionEntrys added by
+// gtk_action_group_add_actions().
+//
+// If you’re not using gettext() for localization, see
+// gtk_action_group_set_translate_func().
+//
+// Deprecated: since version 3.10.
+func (a *ActionGroupClass) SetTranslationDomain(domain string) {
 	var _arg0 *C.GtkActionGroup // out
 	var _arg1 *C.gchar          // out
 
@@ -456,7 +410,10 @@ func (a actionGroup) SetTranslationDomain(domain string) {
 	C.gtk_action_group_set_translation_domain(_arg0, _arg1)
 }
 
-func (a actionGroup) SetVisible(visible bool) {
+// SetVisible changes the visible of @action_group.
+//
+// Deprecated: since version 3.10.
+func (a *ActionGroupClass) SetVisible(visible bool) {
 	var _arg0 *C.GtkActionGroup // out
 	var _arg1 C.gboolean        // out
 
@@ -468,7 +425,12 @@ func (a actionGroup) SetVisible(visible bool) {
 	C.gtk_action_group_set_visible(_arg0, _arg1)
 }
 
-func (a actionGroup) TranslateString(_string string) string {
+// TranslateString translates a string using the function set with
+// gtk_action_group_set_translate_func(). This is mainly intended for language
+// bindings.
+//
+// Deprecated: since version 3.10.
+func (a *ActionGroupClass) TranslateString(_string string) string {
 	var _arg0 *C.GtkActionGroup // out
 	var _arg1 *C.gchar          // out
 	var _cret *C.gchar          // in

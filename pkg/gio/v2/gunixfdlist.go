@@ -75,23 +75,23 @@ type UnixFDList interface {
 	Length() int
 }
 
-// unixFDList implements the UnixFDList interface.
-type unixFDList struct {
+// UnixFDListClass implements the UnixFDList interface.
+type UnixFDListClass struct {
 	*externglib.Object
 }
 
-var _ UnixFDList = (*unixFDList)(nil)
+var _ UnixFDList = (*UnixFDListClass)(nil)
 
-// WrapUnixFDList wraps a GObject to a type that implements
-// interface UnixFDList. It is primarily used internally.
-func WrapUnixFDList(obj *externglib.Object) UnixFDList {
-	return unixFDList{obj}
+func wrapUnixFDList(obj *externglib.Object) UnixFDList {
+	return &UnixFDListClass{
+		Object: obj,
+	}
 }
 
 func marshalUnixFDList(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapUnixFDList(obj), nil
+	return wrapUnixFDList(obj), nil
 }
 
 // NewUnixFDList creates a new FDList containing no file descriptors.
@@ -131,7 +131,19 @@ func NewUnixFDListFromArray(fds []int) UnixFDList {
 	return _unixFDList
 }
 
-func (l unixFDList) Append(fd int) (int, error) {
+// Append adds a file descriptor to @list.
+//
+// The file descriptor is duplicated using dup(). You keep your copy of the
+// descriptor and the copy contained in @list will be closed when @list is
+// finalized.
+//
+// A possible cause of failure is exceeding the per-process or system-wide file
+// descriptor limit.
+//
+// The index of the file descriptor in the list is returned. If you use this
+// index with g_unix_fd_list_get() then you will receive back a duplicated copy
+// of the same file descriptor.
+func (l *UnixFDListClass) Append(fd int) (int, error) {
 	var _arg0 *C.GUnixFDList // out
 	var _arg1 C.gint         // out
 	var _cret C.gint         // in
@@ -151,7 +163,17 @@ func (l unixFDList) Append(fd int) (int, error) {
 	return _gint, _goerr
 }
 
-func (l unixFDList) Get(index_ int) (int, error) {
+// Get gets a file descriptor out of @list.
+//
+// @index_ specifies the index of the file descriptor to get. It is a programmer
+// error for @index_ to be out of range; see g_unix_fd_list_get_length().
+//
+// The file descriptor is duplicated using dup() and set as close-on-exec before
+// being returned. You must call close() on it when you are done.
+//
+// A possible cause of failure is exceeding the per-process or system-wide file
+// descriptor limit.
+func (l *UnixFDListClass) Get(index_ int) (int, error) {
 	var _arg0 *C.GUnixFDList // out
 	var _arg1 C.gint         // out
 	var _cret C.gint         // in
@@ -171,7 +193,9 @@ func (l unixFDList) Get(index_ int) (int, error) {
 	return _gint, _goerr
 }
 
-func (l unixFDList) Length() int {
+// Length gets the length of @list (ie: the number of file descriptors contained
+// within).
+func (l *UnixFDListClass) Length() int {
 	var _arg0 *C.GUnixFDList // out
 	var _cret C.gint         // in
 

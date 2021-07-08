@@ -51,23 +51,23 @@ type WidgetPaintable interface {
 	SetWidget(widget Widget)
 }
 
-// widgetPaintable implements the WidgetPaintable interface.
-type widgetPaintable struct {
+// WidgetPaintableClass implements the WidgetPaintable interface.
+type WidgetPaintableClass struct {
 	*externglib.Object
 }
 
-var _ WidgetPaintable = (*widgetPaintable)(nil)
+var _ WidgetPaintable = (*WidgetPaintableClass)(nil)
 
-// WrapWidgetPaintable wraps a GObject to a type that implements
-// interface WidgetPaintable. It is primarily used internally.
-func WrapWidgetPaintable(obj *externglib.Object) WidgetPaintable {
-	return widgetPaintable{obj}
+func wrapWidgetPaintable(obj *externglib.Object) WidgetPaintable {
+	return &WidgetPaintableClass{
+		Object: obj,
+	}
 }
 
 func marshalWidgetPaintable(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapWidgetPaintable(obj), nil
+	return wrapWidgetPaintable(obj), nil
 }
 
 // NewWidgetPaintable creates a new widget paintable observing the given widget.
@@ -86,7 +86,8 @@ func NewWidgetPaintable(widget Widget) WidgetPaintable {
 	return _widgetPaintable
 }
 
-func (s widgetPaintable) Widget() Widget {
+// Widget returns the widget that is observed or nil if none.
+func (s *WidgetPaintableClass) Widget() Widget {
 	var _arg0 *C.GtkWidgetPaintable // out
 	var _cret *C.GtkWidget          // in
 
@@ -101,7 +102,8 @@ func (s widgetPaintable) Widget() Widget {
 	return _widget
 }
 
-func (s widgetPaintable) SetWidget(widget Widget) {
+// SetWidget sets the widget that should be observed.
+func (s *WidgetPaintableClass) SetWidget(widget Widget) {
 	var _arg0 *C.GtkWidgetPaintable // out
 	var _arg1 *C.GtkWidget          // out
 

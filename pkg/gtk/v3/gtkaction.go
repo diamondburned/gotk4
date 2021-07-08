@@ -5,9 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -26,7 +24,7 @@ func init() {
 	})
 }
 
-// ActionOverrider contains methods that are overridable .
+// ActionOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
@@ -104,64 +102,6 @@ type ActionOverrider interface {
 // When the proxy is activated, it should activate its action.
 type Action interface {
 	gextras.Objector
-
-	// AsBuildable casts the class to the Buildable interface.
-	AsBuildable() Buildable
-
-	// AddChild adds a child to @buildable. @type is an optional string
-	// describing how the child should be added.
-	//
-	// This method is inherited from Buildable
-	AddChild(builder Builder, child gextras.Objector, typ string)
-	// ConstructChild constructs a child of @buildable with the name @name.
-	//
-	// Builder calls this function if a “constructor” has been specified in the
-	// UI definition.
-	//
-	// This method is inherited from Buildable
-	ConstructChild(builder Builder, name string) gextras.Objector
-	// CustomFinished: this is similar to gtk_buildable_parser_finished() but is
-	// called once for each custom tag handled by the @buildable.
-	//
-	// This method is inherited from Buildable
-	CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{})
-	// CustomTagEnd: this is called at the end of each custom element handled by
-	// the buildable.
-	//
-	// This method is inherited from Buildable
-	CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data interface{})
-	// CustomTagStart: this is called for each unknown element under <child>.
-	//
-	// This method is inherited from Buildable
-	CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool)
-	// GetInternalChild: get the internal child called @childname of the
-	// @buildable object.
-	//
-	// This method is inherited from Buildable
-	GetInternalChild(builder Builder, childname string) gextras.Objector
-	// GetName gets the name of the @buildable object.
-	//
-	// Builder sets the name based on the [GtkBuilder UI definition][BUILDER-UI]
-	// used to construct the @buildable.
-	//
-	// This method is inherited from Buildable
-	GetName() string
-	// ParserFinished: called when the builder finishes the parsing of a
-	// [GtkBuilder UI definition][BUILDER-UI]. Note that this will be called
-	// once for each time gtk_builder_add_from_file() or
-	// gtk_builder_add_from_string() is called on a builder.
-	//
-	// This method is inherited from Buildable
-	ParserFinished(builder Builder)
-	// SetBuildableProperty sets the property name @name to @value on the
-	// @buildable object.
-	//
-	// This method is inherited from Buildable
-	SetBuildableProperty(builder Builder, name string, value externglib.Value)
-	// SetName sets the name of the @buildable object.
-	//
-	// This method is inherited from Buildable
-	SetName(name string)
 
 	// Activate emits the “activate” signal on the specified action, if it isn't
 	// insensitive. This gets called by the proxy widgets when they get
@@ -357,23 +297,27 @@ type Action interface {
 	UnblockActivate()
 }
 
-// action implements the Action interface.
-type action struct {
+// ActionClass implements the Action interface.
+type ActionClass struct {
 	*externglib.Object
+	BuildableInterface
 }
 
-var _ Action = (*action)(nil)
+var _ Action = (*ActionClass)(nil)
 
-// WrapAction wraps a GObject to a type that implements
-// interface Action. It is primarily used internally.
-func WrapAction(obj *externglib.Object) Action {
-	return action{obj}
+func wrapAction(obj *externglib.Object) Action {
+	return &ActionClass{
+		Object: obj,
+		BuildableInterface: BuildableInterface{
+			Object: obj,
+		},
+	}
 }
 
 func marshalAction(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapAction(obj), nil
+	return wrapAction(obj), nil
 }
 
 // NewAction creates a new Action object. To add the action to a ActionGroup and
@@ -407,51 +351,13 @@ func NewAction(name string, label string, tooltip string, stockId string) Action
 	return _action
 }
 
-func (a action) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(a))
-}
-
-func (b action) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
-}
-
-func (b action) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b action) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b action) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b action) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b action) GetInternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).GetInternalChild(builder, childname)
-}
-
-func (b action) GetName() string {
-	return WrapBuildable(gextras.InternObject(b)).GetName()
-}
-
-func (b action) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b action) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b action) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (a action) Activate() {
+// Activate emits the “activate” signal on the specified action, if it isn't
+// insensitive. This gets called by the proxy widgets when they get activated.
+//
+// It can also be used to manually activate an action.
+//
+// Deprecated: since version 3.10.
+func (a *ActionClass) Activate() {
 	var _arg0 *C.GtkAction // out
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
@@ -459,7 +365,14 @@ func (a action) Activate() {
 	C.gtk_action_activate(_arg0)
 }
 
-func (a action) BlockActivate() {
+// BlockActivate: disable activation signals from the action
+//
+// This is needed when updating the state of your proxy Activatable widget could
+// result in calling gtk_action_activate(), this is a convenience function to
+// avoid recursing in those cases (updating toggle state for instance).
+//
+// Deprecated: since version 3.10.
+func (a *ActionClass) BlockActivate() {
 	var _arg0 *C.GtkAction // out
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
@@ -467,7 +380,17 @@ func (a action) BlockActivate() {
 	C.gtk_action_block_activate(_arg0)
 }
 
-func (a action) ConnectAccelerator() {
+// ConnectAccelerator installs the accelerator for @action if @action has an
+// accel path and group. See gtk_action_set_accel_path() and
+// gtk_action_set_accel_group()
+//
+// Since multiple proxies may independently trigger the installation of the
+// accelerator, the @action counts the number of times this function has been
+// called and doesn’t remove the accelerator until
+// gtk_action_disconnect_accelerator() has been called as many times.
+//
+// Deprecated: since version 3.10.
+func (a *ActionClass) ConnectAccelerator() {
 	var _arg0 *C.GtkAction // out
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
@@ -475,7 +398,11 @@ func (a action) ConnectAccelerator() {
 	C.gtk_action_connect_accelerator(_arg0)
 }
 
-func (a action) CreateIcon(iconSize int) Widget {
+// CreateIcon: this function is intended for use by action implementations to
+// create icons displayed in the proxy widgets.
+//
+// Deprecated: since version 3.10.
+func (a *ActionClass) CreateIcon(iconSize int) Widget {
 	var _arg0 *C.GtkAction  // out
 	var _arg1 C.GtkIconSize // out
 	var _cret *C.GtkWidget  // in
@@ -492,7 +419,12 @@ func (a action) CreateIcon(iconSize int) Widget {
 	return _widget
 }
 
-func (a action) CreateMenu() Widget {
+// CreateMenu: if @action provides a Menu widget as a submenu for the menu item
+// or the toolbar item it creates, this function returns an instance of that
+// menu.
+//
+// Deprecated: since version 3.10.
+func (a *ActionClass) CreateMenu() Widget {
 	var _arg0 *C.GtkAction // out
 	var _cret *C.GtkWidget // in
 
@@ -507,7 +439,10 @@ func (a action) CreateMenu() Widget {
 	return _widget
 }
 
-func (a action) CreateMenuItem() Widget {
+// CreateMenuItem creates a menu item widget that proxies for the given action.
+//
+// Deprecated: since version 3.10.
+func (a *ActionClass) CreateMenuItem() Widget {
 	var _arg0 *C.GtkAction // out
 	var _cret *C.GtkWidget // in
 
@@ -522,7 +457,11 @@ func (a action) CreateMenuItem() Widget {
 	return _widget
 }
 
-func (a action) CreateToolItem() Widget {
+// CreateToolItem creates a toolbar item widget that proxies for the given
+// action.
+//
+// Deprecated: since version 3.10.
+func (a *ActionClass) CreateToolItem() Widget {
 	var _arg0 *C.GtkAction // out
 	var _cret *C.GtkWidget // in
 
@@ -537,7 +476,11 @@ func (a action) CreateToolItem() Widget {
 	return _widget
 }
 
-func (a action) DisconnectAccelerator() {
+// DisconnectAccelerator undoes the effect of one call to
+// gtk_action_connect_accelerator().
+//
+// Deprecated: since version 3.10.
+func (a *ActionClass) DisconnectAccelerator() {
 	var _arg0 *C.GtkAction // out
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
@@ -545,7 +488,10 @@ func (a action) DisconnectAccelerator() {
 	C.gtk_action_disconnect_accelerator(_arg0)
 }
 
-func (a action) AccelPath() string {
+// AccelPath returns the accel path for this action.
+//
+// Deprecated: since version 3.10.
+func (a *ActionClass) AccelPath() string {
 	var _arg0 *C.GtkAction // out
 	var _cret *C.gchar     // in
 
@@ -560,7 +506,11 @@ func (a action) AccelPath() string {
 	return _utf8
 }
 
-func (a action) AlwaysShowImage() bool {
+// AlwaysShowImage returns whether @action's menu item proxies will always show
+// their image, if available.
+//
+// Deprecated: since version 3.10.
+func (a *ActionClass) AlwaysShowImage() bool {
 	var _arg0 *C.GtkAction // out
 	var _cret C.gboolean   // in
 
@@ -577,7 +527,10 @@ func (a action) AlwaysShowImage() bool {
 	return _ok
 }
 
-func (a action) IconName() string {
+// IconName gets the icon name of @action.
+//
+// Deprecated: since version 3.10.
+func (a *ActionClass) IconName() string {
 	var _arg0 *C.GtkAction // out
 	var _cret *C.gchar     // in
 
@@ -592,7 +545,10 @@ func (a action) IconName() string {
 	return _utf8
 }
 
-func (a action) IsImportant() bool {
+// IsImportant checks whether @action is important or not
+//
+// Deprecated: since version 3.10.
+func (a *ActionClass) IsImportant() bool {
 	var _arg0 *C.GtkAction // out
 	var _cret C.gboolean   // in
 
@@ -609,7 +565,10 @@ func (a action) IsImportant() bool {
 	return _ok
 }
 
-func (a action) Label() string {
+// Label gets the label text of @action.
+//
+// Deprecated: since version 3.10.
+func (a *ActionClass) Label() string {
 	var _arg0 *C.GtkAction // out
 	var _cret *C.gchar     // in
 
@@ -624,7 +583,10 @@ func (a action) Label() string {
 	return _utf8
 }
 
-func (a action) Name() string {
+// Name returns the name of the action.
+//
+// Deprecated: since version 3.10.
+func (a *ActionClass) Name() string {
 	var _arg0 *C.GtkAction // out
 	var _cret *C.gchar     // in
 
@@ -639,7 +601,12 @@ func (a action) Name() string {
 	return _utf8
 }
 
-func (a action) Sensitive() bool {
+// Sensitive returns whether the action itself is sensitive. Note that this
+// doesn’t necessarily mean effective sensitivity. See gtk_action_is_sensitive()
+// for that.
+//
+// Deprecated: since version 3.10.
+func (a *ActionClass) Sensitive() bool {
 	var _arg0 *C.GtkAction // out
 	var _cret C.gboolean   // in
 
@@ -656,7 +623,10 @@ func (a action) Sensitive() bool {
 	return _ok
 }
 
-func (a action) ShortLabel() string {
+// ShortLabel gets the short label text of @action.
+//
+// Deprecated: since version 3.10.
+func (a *ActionClass) ShortLabel() string {
 	var _arg0 *C.GtkAction // out
 	var _cret *C.gchar     // in
 
@@ -671,7 +641,10 @@ func (a action) ShortLabel() string {
 	return _utf8
 }
 
-func (a action) StockID() string {
+// StockID gets the stock id of @action.
+//
+// Deprecated: since version 3.10.
+func (a *ActionClass) StockID() string {
 	var _arg0 *C.GtkAction // out
 	var _cret *C.gchar     // in
 
@@ -686,7 +659,10 @@ func (a action) StockID() string {
 	return _utf8
 }
 
-func (a action) Tooltip() string {
+// Tooltip gets the tooltip text of @action.
+//
+// Deprecated: since version 3.10.
+func (a *ActionClass) Tooltip() string {
 	var _arg0 *C.GtkAction // out
 	var _cret *C.gchar     // in
 
@@ -701,7 +677,12 @@ func (a action) Tooltip() string {
 	return _utf8
 }
 
-func (a action) Visible() bool {
+// Visible returns whether the action itself is visible. Note that this doesn’t
+// necessarily mean effective visibility. See gtk_action_is_sensitive() for
+// that.
+//
+// Deprecated: since version 3.10.
+func (a *ActionClass) Visible() bool {
 	var _arg0 *C.GtkAction // out
 	var _cret C.gboolean   // in
 
@@ -718,7 +699,10 @@ func (a action) Visible() bool {
 	return _ok
 }
 
-func (a action) VisibleHorizontal() bool {
+// VisibleHorizontal checks whether @action is visible when horizontal
+//
+// Deprecated: since version 3.10.
+func (a *ActionClass) VisibleHorizontal() bool {
 	var _arg0 *C.GtkAction // out
 	var _cret C.gboolean   // in
 
@@ -735,7 +719,10 @@ func (a action) VisibleHorizontal() bool {
 	return _ok
 }
 
-func (a action) VisibleVertical() bool {
+// VisibleVertical checks whether @action is visible when horizontal
+//
+// Deprecated: since version 3.10.
+func (a *ActionClass) VisibleVertical() bool {
 	var _arg0 *C.GtkAction // out
 	var _cret C.gboolean   // in
 
@@ -752,7 +739,10 @@ func (a action) VisibleVertical() bool {
 	return _ok
 }
 
-func (a action) IsSensitive() bool {
+// IsSensitive returns whether the action is effectively sensitive.
+//
+// Deprecated: since version 3.10.
+func (a *ActionClass) IsSensitive() bool {
 	var _arg0 *C.GtkAction // out
 	var _cret C.gboolean   // in
 
@@ -769,7 +759,10 @@ func (a action) IsSensitive() bool {
 	return _ok
 }
 
-func (a action) IsVisible() bool {
+// IsVisible returns whether the action is effectively visible.
+//
+// Deprecated: since version 3.10.
+func (a *ActionClass) IsVisible() bool {
 	var _arg0 *C.GtkAction // out
 	var _cret C.gboolean   // in
 
@@ -786,7 +779,11 @@ func (a action) IsVisible() bool {
 	return _ok
 }
 
-func (a action) SetAccelGroup(accelGroup AccelGroup) {
+// SetAccelGroup sets the AccelGroup in which the accelerator for this action
+// will be installed.
+//
+// Deprecated: since version 3.10.
+func (a *ActionClass) SetAccelGroup(accelGroup AccelGroup) {
 	var _arg0 *C.GtkAction     // out
 	var _arg1 *C.GtkAccelGroup // out
 
@@ -796,7 +793,16 @@ func (a action) SetAccelGroup(accelGroup AccelGroup) {
 	C.gtk_action_set_accel_group(_arg0, _arg1)
 }
 
-func (a action) SetAccelPath(accelPath string) {
+// SetAccelPath sets the accel path for this action. All proxy widgets
+// associated with the action will have this accel path, so that their
+// accelerators are consistent.
+//
+// Note that @accel_path string will be stored in a #GQuark. Therefore, if you
+// pass a static string, you can save some memory by interning it first with
+// g_intern_static_string().
+//
+// Deprecated: since version 3.10.
+func (a *ActionClass) SetAccelPath(accelPath string) {
 	var _arg0 *C.GtkAction // out
 	var _arg1 *C.gchar     // out
 
@@ -807,7 +813,14 @@ func (a action) SetAccelPath(accelPath string) {
 	C.gtk_action_set_accel_path(_arg0, _arg1)
 }
 
-func (a action) SetAlwaysShowImage(alwaysShow bool) {
+// SetAlwaysShowImage sets whether @action's menu item proxies will ignore the
+// Settings:gtk-menu-images setting and always show their image, if available.
+//
+// Use this if the menu item would be useless or hard to use without their
+// image.
+//
+// Deprecated: since version 3.10.
+func (a *ActionClass) SetAlwaysShowImage(alwaysShow bool) {
 	var _arg0 *C.GtkAction // out
 	var _arg1 C.gboolean   // out
 
@@ -819,7 +832,10 @@ func (a action) SetAlwaysShowImage(alwaysShow bool) {
 	C.gtk_action_set_always_show_image(_arg0, _arg1)
 }
 
-func (a action) SetIconName(iconName string) {
+// SetIconName sets the icon name on @action
+//
+// Deprecated: since version 3.10.
+func (a *ActionClass) SetIconName(iconName string) {
 	var _arg0 *C.GtkAction // out
 	var _arg1 *C.gchar     // out
 
@@ -830,7 +846,11 @@ func (a action) SetIconName(iconName string) {
 	C.gtk_action_set_icon_name(_arg0, _arg1)
 }
 
-func (a action) SetIsImportant(isImportant bool) {
+// SetIsImportant sets whether the action is important, this attribute is used
+// primarily by toolbar items to decide whether to show a label or not.
+//
+// Deprecated: since version 3.10.
+func (a *ActionClass) SetIsImportant(isImportant bool) {
 	var _arg0 *C.GtkAction // out
 	var _arg1 C.gboolean   // out
 
@@ -842,7 +862,10 @@ func (a action) SetIsImportant(isImportant bool) {
 	C.gtk_action_set_is_important(_arg0, _arg1)
 }
 
-func (a action) SetLabel(label string) {
+// SetLabel sets the label of @action.
+//
+// Deprecated: since version 3.10.
+func (a *ActionClass) SetLabel(label string) {
 	var _arg0 *C.GtkAction // out
 	var _arg1 *C.gchar     // out
 
@@ -853,7 +876,12 @@ func (a action) SetLabel(label string) {
 	C.gtk_action_set_label(_arg0, _arg1)
 }
 
-func (a action) SetSensitive(sensitive bool) {
+// SetSensitive sets the :sensitive property of the action to @sensitive. Note
+// that this doesn’t necessarily mean effective sensitivity. See
+// gtk_action_is_sensitive() for that.
+//
+// Deprecated: since version 3.10.
+func (a *ActionClass) SetSensitive(sensitive bool) {
 	var _arg0 *C.GtkAction // out
 	var _arg1 C.gboolean   // out
 
@@ -865,7 +893,10 @@ func (a action) SetSensitive(sensitive bool) {
 	C.gtk_action_set_sensitive(_arg0, _arg1)
 }
 
-func (a action) SetShortLabel(shortLabel string) {
+// SetShortLabel sets a shorter label text on @action.
+//
+// Deprecated: since version 3.10.
+func (a *ActionClass) SetShortLabel(shortLabel string) {
 	var _arg0 *C.GtkAction // out
 	var _arg1 *C.gchar     // out
 
@@ -876,7 +907,10 @@ func (a action) SetShortLabel(shortLabel string) {
 	C.gtk_action_set_short_label(_arg0, _arg1)
 }
 
-func (a action) SetStockID(stockId string) {
+// SetStockID sets the stock id on @action
+//
+// Deprecated: since version 3.10.
+func (a *ActionClass) SetStockID(stockId string) {
 	var _arg0 *C.GtkAction // out
 	var _arg1 *C.gchar     // out
 
@@ -887,7 +921,10 @@ func (a action) SetStockID(stockId string) {
 	C.gtk_action_set_stock_id(_arg0, _arg1)
 }
 
-func (a action) SetTooltip(tooltip string) {
+// SetTooltip sets the tooltip text on @action
+//
+// Deprecated: since version 3.10.
+func (a *ActionClass) SetTooltip(tooltip string) {
 	var _arg0 *C.GtkAction // out
 	var _arg1 *C.gchar     // out
 
@@ -898,7 +935,12 @@ func (a action) SetTooltip(tooltip string) {
 	C.gtk_action_set_tooltip(_arg0, _arg1)
 }
 
-func (a action) SetVisible(visible bool) {
+// SetVisible sets the :visible property of the action to @visible. Note that
+// this doesn’t necessarily mean effective visibility. See
+// gtk_action_is_visible() for that.
+//
+// Deprecated: since version 3.10.
+func (a *ActionClass) SetVisible(visible bool) {
 	var _arg0 *C.GtkAction // out
 	var _arg1 C.gboolean   // out
 
@@ -910,7 +952,10 @@ func (a action) SetVisible(visible bool) {
 	C.gtk_action_set_visible(_arg0, _arg1)
 }
 
-func (a action) SetVisibleHorizontal(visibleHorizontal bool) {
+// SetVisibleHorizontal sets whether @action is visible when horizontal
+//
+// Deprecated: since version 3.10.
+func (a *ActionClass) SetVisibleHorizontal(visibleHorizontal bool) {
 	var _arg0 *C.GtkAction // out
 	var _arg1 C.gboolean   // out
 
@@ -922,7 +967,10 @@ func (a action) SetVisibleHorizontal(visibleHorizontal bool) {
 	C.gtk_action_set_visible_horizontal(_arg0, _arg1)
 }
 
-func (a action) SetVisibleVertical(visibleVertical bool) {
+// SetVisibleVertical sets whether @action is visible when vertical
+//
+// Deprecated: since version 3.10.
+func (a *ActionClass) SetVisibleVertical(visibleVertical bool) {
 	var _arg0 *C.GtkAction // out
 	var _arg1 C.gboolean   // out
 
@@ -934,7 +982,10 @@ func (a action) SetVisibleVertical(visibleVertical bool) {
 	C.gtk_action_set_visible_vertical(_arg0, _arg1)
 }
 
-func (a action) UnblockActivate() {
+// UnblockActivate: reenable activation signals from the action
+//
+// Deprecated: since version 3.10.
+func (a *ActionClass) UnblockActivate() {
 	var _arg0 *C.GtkAction // out
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))

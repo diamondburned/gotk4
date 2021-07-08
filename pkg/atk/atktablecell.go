@@ -5,7 +5,6 @@ package atk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -23,7 +22,7 @@ func init() {
 	})
 }
 
-// TableCellOverrider contains methods that are overridable .
+// TableCellOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
@@ -54,144 +53,6 @@ type TableCellOverrider interface {
 type TableCell interface {
 	gextras.Objector
 
-	// AsObject casts the class to the Object interface.
-	AsObject() Object
-
-	// AddRelationship adds a relationship of the specified type with the
-	// specified target.
-	//
-	// This method is inherited from Object
-	AddRelationship(relationship RelationType, target Object) bool
-	// GetAccessibleID gets the accessible id of the accessible.
-	//
-	// This method is inherited from Object
-	GetAccessibleID() string
-	// GetDescription gets the accessible description of the accessible.
-	//
-	// This method is inherited from Object
-	GetDescription() string
-	// GetIndexInParent gets the 0-based index of this accessible in its parent;
-	// returns -1 if the accessible does not have an accessible parent.
-	//
-	// This method is inherited from Object
-	GetIndexInParent() int
-	// GetLayer gets the layer of the accessible.
-	//
-	// Deprecated.
-	//
-	// This method is inherited from Object
-	GetLayer() Layer
-	// GetMDIZOrder gets the zorder of the accessible. The value G_MININT will
-	// be returned if the layer of the accessible is not ATK_LAYER_MDI.
-	//
-	// Deprecated.
-	//
-	// This method is inherited from Object
-	GetMDIZOrder() int
-	// GetNAccessibleChildren gets the number of accessible children of the
-	// accessible.
-	//
-	// This method is inherited from Object
-	GetNAccessibleChildren() int
-	// GetName gets the accessible name of the accessible.
-	//
-	// This method is inherited from Object
-	GetName() string
-	// GetObjectLocale gets a UTF-8 string indicating the POSIX-style
-	// LC_MESSAGES locale of @accessible.
-	//
-	// This method is inherited from Object
-	GetObjectLocale() string
-	// GetParent gets the accessible parent of the accessible. By default this
-	// is the one assigned with atk_object_set_parent(), but it is assumed that
-	// ATK implementors have ways to get the parent of the object without the
-	// need of assigning it manually with atk_object_set_parent(), and will
-	// return it with this method.
-	//
-	// If you are only interested on the parent assigned with
-	// atk_object_set_parent(), use atk_object_peek_parent().
-	//
-	// This method is inherited from Object
-	GetParent() Object
-	// GetRole gets the role of the accessible.
-	//
-	// This method is inherited from Object
-	GetRole() Role
-	// Initialize: this function is called when implementing subclasses of
-	// Object. It does initialization required for the new object. It is
-	// intended that this function should called only in the ..._new() functions
-	// used to create an instance of a subclass of Object
-	//
-	// This method is inherited from Object
-	Initialize(data interface{})
-	// PeekParent gets the accessible parent of the accessible, if it has been
-	// manually assigned with atk_object_set_parent. Otherwise, this function
-	// returns nil.
-	//
-	// This method is intended as an utility for ATK implementors, and not to be
-	// exposed to accessible tools. See atk_object_get_parent() for further
-	// reference.
-	//
-	// This method is inherited from Object
-	PeekParent() Object
-	// RefAccessibleChild gets a reference to the specified accessible child of
-	// the object. The accessible children are 0-based so the first accessible
-	// child is at index 0, the second at index 1 and so on.
-	//
-	// This method is inherited from Object
-	RefAccessibleChild(i int) Object
-	// RefRelationSet gets the RelationSet associated with the object.
-	//
-	// This method is inherited from Object
-	RefRelationSet() RelationSet
-	// RefStateSet gets a reference to the state set of the accessible; the
-	// caller must unreference it when it is no longer needed.
-	//
-	// This method is inherited from Object
-	RefStateSet() StateSet
-	// RemovePropertyChangeHandler removes a property change handler.
-	//
-	// Deprecated: since version 2.12.
-	//
-	// This method is inherited from Object
-	RemovePropertyChangeHandler(handlerId uint)
-	// RemoveRelationship removes a relationship of the specified type with the
-	// specified target.
-	//
-	// This method is inherited from Object
-	RemoveRelationship(relationship RelationType, target Object) bool
-	// SetAccessibleID sets the accessible ID of the accessible. This is not
-	// meant to be presented to the user, but to be an ID which is stable over
-	// application development. Typically, this is the gtkbuilder ID. Such an ID
-	// will be available for instance to identify a given well-known accessible
-	// object for tailored screen reading, or for automatic regression testing.
-	//
-	// This method is inherited from Object
-	SetAccessibleID(name string)
-	// SetDescription sets the accessible description of the accessible. You
-	// can't set the description to NULL. This is reserved for the initial
-	// value. In this aspect NULL is similar to ATK_ROLE_UNKNOWN. If you want to
-	// set the name to a empty value you can use "".
-	//
-	// This method is inherited from Object
-	SetDescription(description string)
-	// SetName sets the accessible name of the accessible. You can't set the
-	// name to NULL. This is reserved for the initial value. In this aspect NULL
-	// is similar to ATK_ROLE_UNKNOWN. If you want to set the name to a empty
-	// value you can use "".
-	//
-	// This method is inherited from Object
-	SetName(name string)
-	// SetParent sets the accessible parent of the accessible. @parent can be
-	// NULL.
-	//
-	// This method is inherited from Object
-	SetParent(parent Object)
-	// SetRole sets the role of the accessible.
-	//
-	// This method is inherited from Object
-	SetRole(role Role)
-
 	// ColumnSpan returns the number of columns occupied by this cell
 	// accessible.
 	ColumnSpan() int
@@ -210,122 +71,29 @@ type TableCell interface {
 	Table() Object
 }
 
-// tableCell implements the TableCell interface.
-type tableCell struct {
-	*externglib.Object
+// TableCellInterface implements the TableCell interface.
+type TableCellInterface struct {
+	ObjectClass
 }
 
-var _ TableCell = (*tableCell)(nil)
+var _ TableCell = (*TableCellInterface)(nil)
 
-// WrapTableCell wraps a GObject to a type that implements
-// interface TableCell. It is primarily used internally.
-func WrapTableCell(obj *externglib.Object) TableCell {
-	return tableCell{obj}
+func wrapTableCell(obj *externglib.Object) TableCell {
+	return &TableCellInterface{
+		ObjectClass: ObjectClass{
+			Object: obj,
+		},
+	}
 }
 
 func marshalTableCell(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapTableCell(obj), nil
+	return wrapTableCell(obj), nil
 }
 
-func (t tableCell) AsObject() Object {
-	return WrapObject(gextras.InternObject(t))
-}
-
-func (o tableCell) AddRelationship(relationship RelationType, target Object) bool {
-	return WrapObject(gextras.InternObject(o)).AddRelationship(relationship, target)
-}
-
-func (a tableCell) GetAccessibleID() string {
-	return WrapObject(gextras.InternObject(a)).GetAccessibleID()
-}
-
-func (a tableCell) GetDescription() string {
-	return WrapObject(gextras.InternObject(a)).GetDescription()
-}
-
-func (a tableCell) GetIndexInParent() int {
-	return WrapObject(gextras.InternObject(a)).GetIndexInParent()
-}
-
-func (a tableCell) GetLayer() Layer {
-	return WrapObject(gextras.InternObject(a)).GetLayer()
-}
-
-func (a tableCell) GetMDIZOrder() int {
-	return WrapObject(gextras.InternObject(a)).GetMDIZOrder()
-}
-
-func (a tableCell) GetNAccessibleChildren() int {
-	return WrapObject(gextras.InternObject(a)).GetNAccessibleChildren()
-}
-
-func (a tableCell) GetName() string {
-	return WrapObject(gextras.InternObject(a)).GetName()
-}
-
-func (a tableCell) GetObjectLocale() string {
-	return WrapObject(gextras.InternObject(a)).GetObjectLocale()
-}
-
-func (a tableCell) GetParent() Object {
-	return WrapObject(gextras.InternObject(a)).GetParent()
-}
-
-func (a tableCell) GetRole() Role {
-	return WrapObject(gextras.InternObject(a)).GetRole()
-}
-
-func (a tableCell) Initialize(data interface{}) {
-	WrapObject(gextras.InternObject(a)).Initialize(data)
-}
-
-func (a tableCell) PeekParent() Object {
-	return WrapObject(gextras.InternObject(a)).PeekParent()
-}
-
-func (a tableCell) RefAccessibleChild(i int) Object {
-	return WrapObject(gextras.InternObject(a)).RefAccessibleChild(i)
-}
-
-func (a tableCell) RefRelationSet() RelationSet {
-	return WrapObject(gextras.InternObject(a)).RefRelationSet()
-}
-
-func (a tableCell) RefStateSet() StateSet {
-	return WrapObject(gextras.InternObject(a)).RefStateSet()
-}
-
-func (a tableCell) RemovePropertyChangeHandler(handlerId uint) {
-	WrapObject(gextras.InternObject(a)).RemovePropertyChangeHandler(handlerId)
-}
-
-func (o tableCell) RemoveRelationship(relationship RelationType, target Object) bool {
-	return WrapObject(gextras.InternObject(o)).RemoveRelationship(relationship, target)
-}
-
-func (a tableCell) SetAccessibleID(name string) {
-	WrapObject(gextras.InternObject(a)).SetAccessibleID(name)
-}
-
-func (a tableCell) SetDescription(description string) {
-	WrapObject(gextras.InternObject(a)).SetDescription(description)
-}
-
-func (a tableCell) SetName(name string) {
-	WrapObject(gextras.InternObject(a)).SetName(name)
-}
-
-func (a tableCell) SetParent(parent Object) {
-	WrapObject(gextras.InternObject(a)).SetParent(parent)
-}
-
-func (a tableCell) SetRole(role Role) {
-	WrapObject(gextras.InternObject(a)).SetRole(role)
-}
-
-func (c tableCell) ColumnSpan() int {
+// ColumnSpan returns the number of columns occupied by this cell accessible.
+func (c *TableCellInterface) ColumnSpan() int {
 	var _arg0 *C.AtkTableCell // out
 	var _cret C.gint          // in
 
@@ -340,7 +108,8 @@ func (c tableCell) ColumnSpan() int {
 	return _gint
 }
 
-func (c tableCell) Position() (row int, column int, ok bool) {
+// Position retrieves the tabular position of this cell.
+func (c *TableCellInterface) Position() (row int, column int, ok bool) {
 	var _arg0 *C.AtkTableCell // out
 	var _arg1 C.gint          // in
 	var _arg2 C.gint          // in
@@ -363,7 +132,13 @@ func (c tableCell) Position() (row int, column int, ok bool) {
 	return _row, _column, _ok
 }
 
-func (c tableCell) RowColumnSpan() (row int, column int, rowSpan int, columnSpan int, ok bool) {
+// RowColumnSpan gets the row and column indexes and span of this cell
+// accessible.
+//
+// Note: If the object does not implement this function, then, by default, atk
+// will implement this function by calling get_row_span and get_column_span on
+// the object.
+func (c *TableCellInterface) RowColumnSpan() (row int, column int, rowSpan int, columnSpan int, ok bool) {
 	var _arg0 *C.AtkTableCell // out
 	var _arg1 C.gint          // in
 	var _arg2 C.gint          // in
@@ -392,7 +167,8 @@ func (c tableCell) RowColumnSpan() (row int, column int, rowSpan int, columnSpan
 	return _row, _column, _rowSpan, _columnSpan, _ok
 }
 
-func (c tableCell) RowSpan() int {
+// RowSpan returns the number of rows occupied by this cell accessible.
+func (c *TableCellInterface) RowSpan() int {
 	var _arg0 *C.AtkTableCell // out
 	var _cret C.gint          // in
 
@@ -407,7 +183,8 @@ func (c tableCell) RowSpan() int {
 	return _gint
 }
 
-func (c tableCell) Table() Object {
+// Table returns a reference to the accessible of the containing table.
+func (c *TableCellInterface) Table() Object {
 	var _arg0 *C.AtkTableCell // out
 	var _cret *C.AtkObject    // in
 

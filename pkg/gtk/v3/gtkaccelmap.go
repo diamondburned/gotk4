@@ -76,23 +76,27 @@ func init() {
 // using it as a detail of the AccelMap::changed signal.
 type AccelMap interface {
 	gextras.Objector
+
+	privateAccelMapClass()
 }
 
-// accelMap implements the AccelMap interface.
-type accelMap struct {
+// AccelMapClass implements the AccelMap interface.
+type AccelMapClass struct {
 	*externglib.Object
 }
 
-var _ AccelMap = (*accelMap)(nil)
+var _ AccelMap = (*AccelMapClass)(nil)
 
-// WrapAccelMap wraps a GObject to a type that implements
-// interface AccelMap. It is primarily used internally.
-func WrapAccelMap(obj *externglib.Object) AccelMap {
-	return accelMap{obj}
+func wrapAccelMap(obj *externglib.Object) AccelMap {
+	return &AccelMapClass{
+		Object: obj,
+	}
 }
 
 func marshalAccelMap(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapAccelMap(obj), nil
+	return wrapAccelMap(obj), nil
 }
+
+func (*AccelMapClass) privateAccelMapClass() {}

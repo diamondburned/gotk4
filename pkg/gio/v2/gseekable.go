@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -33,7 +34,7 @@ func init() {
 	})
 }
 
-// SeekableOverrider contains methods that are overridable .
+// SeekableOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
@@ -123,26 +124,27 @@ type Seekable interface {
 	Truncate(offset int64, cancellable Cancellable) error
 }
 
-// seekable implements the Seekable interface.
-type seekable struct {
+// SeekableInterface implements the Seekable interface.
+type SeekableInterface struct {
 	*externglib.Object
 }
 
-var _ Seekable = (*seekable)(nil)
+var _ Seekable = (*SeekableInterface)(nil)
 
-// WrapSeekable wraps a GObject to a type that implements
-// interface Seekable. It is primarily used internally.
-func WrapSeekable(obj *externglib.Object) Seekable {
-	return seekable{obj}
+func wrapSeekable(obj *externglib.Object) Seekable {
+	return &SeekableInterface{
+		Object: obj,
+	}
 }
 
 func marshalSeekable(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapSeekable(obj), nil
+	return wrapSeekable(obj), nil
 }
 
-func (s seekable) CanSeek() bool {
+// CanSeek tests if the stream supports the Iface.
+func (s *SeekableInterface) CanSeek() bool {
 	var _arg0 *C.GSeekable // out
 	var _cret C.gboolean   // in
 
@@ -159,7 +161,9 @@ func (s seekable) CanSeek() bool {
 	return _ok
 }
 
-func (s seekable) CanTruncate() bool {
+// CanTruncate tests if the length of the stream can be adjusted with
+// g_seekable_truncate().
+func (s *SeekableInterface) CanTruncate() bool {
 	var _arg0 *C.GSeekable // out
 	var _cret C.gboolean   // in
 
@@ -176,7 +180,21 @@ func (s seekable) CanTruncate() bool {
 	return _ok
 }
 
-func (s seekable) Seek(offset int64, typ glib.SeekType, cancellable Cancellable) error {
+// Seek seeks in the stream by the given @offset, modified by @type.
+//
+// Attempting to seek past the end of the stream will have different results
+// depending on if the stream is fixed-sized or resizable. If the stream is
+// resizable then seeking past the end and then writing will result in zeros
+// filling the empty space. Seeking past the end of a resizable stream and
+// reading will result in EOF. Seeking past the end of a fixed-sized stream will
+// fail.
+//
+// Any operation that would result in a negative offset will fail.
+//
+// If @cancellable is not nil, then the operation can be cancelled by triggering
+// the cancellable object from another thread. If the operation was cancelled,
+// the error G_IO_ERROR_CANCELLED will be returned.
+func (s *SeekableInterface) Seek(offset int64, typ glib.SeekType, cancellable Cancellable) error {
 	var _arg0 *C.GSeekable    // out
 	var _arg1 C.goffset       // out
 	var _arg2 C.GSeekType     // out
@@ -197,7 +215,8 @@ func (s seekable) Seek(offset int64, typ glib.SeekType, cancellable Cancellable)
 	return _goerr
 }
 
-func (s seekable) Tell() int64 {
+// Tell tells the current position within the stream.
+func (s *SeekableInterface) Tell() int64 {
 	var _arg0 *C.GSeekable // out
 	var _cret C.goffset    // in
 
@@ -212,7 +231,16 @@ func (s seekable) Tell() int64 {
 	return _gint64
 }
 
-func (s seekable) Truncate(offset int64, cancellable Cancellable) error {
+// Truncate sets the length of the stream to @offset. If the stream was
+// previously larger than @offset, the extra data is discarded. If the stream
+// was previously shorter than @offset, it is extended with NUL ('\0') bytes.
+//
+// If @cancellable is not nil, then the operation can be cancelled by triggering
+// the cancellable object from another thread. If the operation was cancelled,
+// the error G_IO_ERROR_CANCELLED will be returned. If an operation was
+// partially finished when the operation was cancelled the partial result will
+// be returned, without an error.
+func (s *SeekableInterface) Truncate(offset int64, cancellable Cancellable) error {
 	var _arg0 *C.GSeekable    // out
 	var _arg1 C.goffset       // out
 	var _arg2 *C.GCancellable // out

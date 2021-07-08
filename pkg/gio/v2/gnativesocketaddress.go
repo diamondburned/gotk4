@@ -6,7 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/box"
-	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -36,98 +35,39 @@ func init() {
 
 // NativeSocketAddress: socket address of some unknown native type.
 type NativeSocketAddress interface {
-	SocketAddress
+	gextras.Objector
 
-	// AsSocketAddress casts the class to the SocketAddress interface.
-	AsSocketAddress() SocketAddress
-	// AsSocketConnectable casts the class to the SocketConnectable interface.
-	AsSocketConnectable() SocketConnectable
-
-	// GetFamily gets the socket family type of @address.
-	//
-	// This method is inherited from SocketAddress
-	GetFamily() SocketFamily
-	// GetNativeSize gets the size of @address's native struct sockaddr. You can
-	// use this to allocate memory to pass to g_socket_address_to_native().
-	//
-	// This method is inherited from SocketAddress
-	GetNativeSize() int
-	// ToNative converts a Address to a native struct sockaddr, which can be
-	// passed to low-level functions like connect() or bind().
-	//
-	// If not enough space is available, a G_IO_ERROR_NO_SPACE error is
-	// returned. If the address type is not known on the system then a
-	// G_IO_ERROR_NOT_SUPPORTED error is returned.
-	//
-	// This method is inherited from SocketAddress
-	ToNative(dest interface{}, destlen uint) error
-	// Enumerate creates a AddressEnumerator for @connectable.
-	//
-	// This method is inherited from SocketConnectable
-	Enumerate() SocketAddressEnumerator
-	// ProxyEnumerate creates a AddressEnumerator for @connectable that will
-	// return a Address for each of its addresses that you must connect to via a
-	// proxy.
-	//
-	// If @connectable does not implement
-	// g_socket_connectable_proxy_enumerate(), this will fall back to calling
-	// g_socket_connectable_enumerate().
-	//
-	// This method is inherited from SocketConnectable
-	ProxyEnumerate() SocketAddressEnumerator
-	// ToString: format a Connectable as a string. This is a human-readable
-	// format for use in debugging output, and is not a stable serialization
-	// format. It is not suitable for use in user interfaces as it exposes too
-	// much information for a user.
-	//
-	// If the Connectable implementation does not support string formatting, the
-	// implementation’s type name will be returned as a fallback.
-	//
-	// This method is inherited from SocketConnectable
-	ToString() string
-	// Enumerate creates a AddressEnumerator for @connectable.
-	//
-	// This method is inherited from SocketConnectable
-	Enumerate() SocketAddressEnumerator
-	// ProxyEnumerate creates a AddressEnumerator for @connectable that will
-	// return a Address for each of its addresses that you must connect to via a
-	// proxy.
-	//
-	// If @connectable does not implement
-	// g_socket_connectable_proxy_enumerate(), this will fall back to calling
-	// g_socket_connectable_enumerate().
-	//
-	// This method is inherited from SocketConnectable
-	ProxyEnumerate() SocketAddressEnumerator
-	// ToString: format a Connectable as a string. This is a human-readable
-	// format for use in debugging output, and is not a stable serialization
-	// format. It is not suitable for use in user interfaces as it exposes too
-	// much information for a user.
-	//
-	// If the Connectable implementation does not support string formatting, the
-	// implementation’s type name will be returned as a fallback.
-	//
-	// This method is inherited from SocketConnectable
-	ToString() string
+	privateNativeSocketAddressClass()
 }
 
-// nativeSocketAddress implements the NativeSocketAddress interface.
-type nativeSocketAddress struct {
+// NativeSocketAddressClass implements the NativeSocketAddress interface.
+type NativeSocketAddressClass struct {
 	*externglib.Object
+	SocketAddressClass
+	SocketConnectableInterface
 }
 
-var _ NativeSocketAddress = (*nativeSocketAddress)(nil)
+var _ NativeSocketAddress = (*NativeSocketAddressClass)(nil)
 
-// WrapNativeSocketAddress wraps a GObject to a type that implements
-// interface NativeSocketAddress. It is primarily used internally.
-func WrapNativeSocketAddress(obj *externglib.Object) NativeSocketAddress {
-	return nativeSocketAddress{obj}
+func wrapNativeSocketAddress(obj *externglib.Object) NativeSocketAddress {
+	return &NativeSocketAddressClass{
+		Object: obj,
+		SocketAddressClass: SocketAddressClass{
+			Object: obj,
+			SocketConnectableInterface: SocketConnectableInterface{
+				Object: obj,
+			},
+		},
+		SocketConnectableInterface: SocketConnectableInterface{
+			Object: obj,
+		},
+	}
 }
 
 func marshalNativeSocketAddress(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapNativeSocketAddress(obj), nil
+	return wrapNativeSocketAddress(obj), nil
 }
 
 // NewNativeSocketAddress creates a new SocketAddress for @native and @len.
@@ -148,46 +88,4 @@ func NewNativeSocketAddress(native interface{}, len uint) NativeSocketAddress {
 	return _nativeSocketAddress
 }
 
-func (n nativeSocketAddress) AsSocketAddress() SocketAddress {
-	return WrapSocketAddress(gextras.InternObject(n))
-}
-
-func (n nativeSocketAddress) AsSocketConnectable() SocketConnectable {
-	return WrapSocketConnectable(gextras.InternObject(n))
-}
-
-func (a nativeSocketAddress) GetFamily() SocketFamily {
-	return WrapSocketAddress(gextras.InternObject(a)).GetFamily()
-}
-
-func (a nativeSocketAddress) GetNativeSize() int {
-	return WrapSocketAddress(gextras.InternObject(a)).GetNativeSize()
-}
-
-func (a nativeSocketAddress) ToNative(dest interface{}, destlen uint) error {
-	return WrapSocketAddress(gextras.InternObject(a)).ToNative(dest, destlen)
-}
-
-func (c nativeSocketAddress) Enumerate() SocketAddressEnumerator {
-	return WrapSocketConnectable(gextras.InternObject(c)).Enumerate()
-}
-
-func (c nativeSocketAddress) ProxyEnumerate() SocketAddressEnumerator {
-	return WrapSocketConnectable(gextras.InternObject(c)).ProxyEnumerate()
-}
-
-func (c nativeSocketAddress) ToString() string {
-	return WrapSocketConnectable(gextras.InternObject(c)).ToString()
-}
-
-func (c nativeSocketAddress) Enumerate() SocketAddressEnumerator {
-	return WrapSocketConnectable(gextras.InternObject(c)).Enumerate()
-}
-
-func (c nativeSocketAddress) ProxyEnumerate() SocketAddressEnumerator {
-	return WrapSocketConnectable(gextras.InternObject(c)).ProxyEnumerate()
-}
-
-func (c nativeSocketAddress) ToString() string {
-	return WrapSocketConnectable(gextras.InternObject(c)).ToString()
-}
+func (*NativeSocketAddressClass) privateNativeSocketAddressClass() {}

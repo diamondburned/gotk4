@@ -38,12 +38,11 @@ func init() {
 	})
 }
 
-// DBusProxyOverrider contains methods that are overridable .
+// DBusProxyOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type DBusProxyOverrider interface {
-	GPropertiesChanged(changedProperties *glib.Variant, invalidatedProperties *string)
 	GSignal(senderName string, signalName string, parameters *glib.Variant)
 }
 
@@ -85,119 +84,6 @@ type DBusProxyOverrider interface {
 // (https://git.gnome.org/browse/glib/tree/gio/tests/gdbus-example-watch-proxy.c)
 type DBusProxy interface {
 	gextras.Objector
-
-	// AsAsyncInitable casts the class to the AsyncInitable interface.
-	AsAsyncInitable() AsyncInitable
-	// AsDBusInterface casts the class to the DBusInterface interface.
-	AsDBusInterface() DBusInterface
-	// AsInitable casts the class to the Initable interface.
-	AsInitable() Initable
-
-	// InitAsync starts asynchronous initialization of the object implementing
-	// the interface. This must be done before any real use of the object after
-	// initial construction. If the object also implements #GInitable you can
-	// optionally call g_initable_init() instead.
-	//
-	// This method is intended for language bindings. If writing in C,
-	// g_async_initable_new_async() should typically be used instead.
-	//
-	// When the initialization is finished, @callback will be called. You can
-	// then call g_async_initable_init_finish() to get the result of the
-	// initialization.
-	//
-	// Implementations may also support cancellation. If @cancellable is not
-	// nil, then initialization can be cancelled by triggering the cancellable
-	// object from another thread. If the operation was cancelled, the error
-	// G_IO_ERROR_CANCELLED will be returned. If @cancellable is not nil, and
-	// the object doesn't support cancellable initialization, the error
-	// G_IO_ERROR_NOT_SUPPORTED will be returned.
-	//
-	// As with #GInitable, if the object is not initialized, or initialization
-	// returns with an error, then all operations on the object except
-	// g_object_ref() and g_object_unref() are considered to be invalid, and
-	// have undefined behaviour. They will often fail with g_critical() or
-	// g_warning(), but this must not be relied on.
-	//
-	// Callers should not assume that a class which implements Initable can be
-	// initialized multiple times; for more information, see g_initable_init().
-	// If a class explicitly supports being initialized multiple times,
-	// implementation requires yielding all subsequent calls to init_async() on
-	// the results of the first call.
-	//
-	// For classes that also support the #GInitable interface, the default
-	// implementation of this method will run the g_initable_init() function in
-	// a thread, so if you want to support asynchronous initialization via
-	// threads, just implement the Initable interface without overriding any
-	// interface methods.
-	//
-	// This method is inherited from AsyncInitable
-	InitAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
-	// InitFinish finishes asynchronous initialization and returns the result.
-	// See g_async_initable_init_async().
-	//
-	// This method is inherited from AsyncInitable
-	InitFinish(res AsyncResult) error
-	// NewFinish finishes the async construction for the various
-	// g_async_initable_new calls, returning the created object or nil on error.
-	//
-	// This method is inherited from AsyncInitable
-	NewFinish(res AsyncResult) (gextras.Objector, error)
-	// DupObject gets the BusObject that @interface_ belongs to, if any.
-	//
-	// This method is inherited from DBusInterface
-	DupObject() DBusObject
-	// GetInfo gets D-Bus introspection information for the D-Bus interface
-	// implemented by @interface_.
-	//
-	// This method is inherited from DBusInterface
-	GetInfo() *DBusInterfaceInfo
-	// SetObject sets the BusObject for @interface_ to @object.
-	//
-	// Note that @interface_ will hold a weak reference to @object.
-	//
-	// This method is inherited from DBusInterface
-	SetObject(object DBusObject)
-	// Init initializes the object implementing the interface.
-	//
-	// This method is intended for language bindings. If writing in C,
-	// g_initable_new() should typically be used instead.
-	//
-	// The object must be initialized before any real use after initial
-	// construction, either with this function or g_async_initable_init_async().
-	//
-	// Implementations may also support cancellation. If @cancellable is not
-	// nil, then initialization can be cancelled by triggering the cancellable
-	// object from another thread. If the operation was cancelled, the error
-	// G_IO_ERROR_CANCELLED will be returned. If @cancellable is not nil and the
-	// object doesn't support cancellable initialization the error
-	// G_IO_ERROR_NOT_SUPPORTED will be returned.
-	//
-	// If the object is not initialized, or initialization returns with an
-	// error, then all operations on the object except g_object_ref() and
-	// g_object_unref() are considered to be invalid, and have undefined
-	// behaviour. See the [introduction][ginitable] for more details.
-	//
-	// Callers should not assume that a class which implements #GInitable can be
-	// initialized multiple times, unless the class explicitly documents itself
-	// as supporting this. Generally, a class’ implementation of init() can
-	// assume (and assert) that it will only be called once. Previously, this
-	// documentation recommended all #GInitable implementations should be
-	// idempotent; that recommendation was relaxed in GLib 2.54.
-	//
-	// If a class explicitly supports being initialized multiple times, it is
-	// recommended that the method is idempotent: multiple calls with the same
-	// arguments should return the same results. Only the first call initializes
-	// the object; further calls return the result of the first call.
-	//
-	// One reason why a class might need to support idempotent initialization is
-	// if it is designed to be used via the singleton pattern, with a
-	// Class.constructor that sometimes returns an existing instance. In this
-	// pattern, a caller would expect to be able to call g_initable_init() on
-	// the result of g_object_new(), regardless of whether it is in fact a new
-	// instance.
-	//
-	// This method is inherited from Initable
-	Init(cancellable Cancellable) error
 
 	// Call: asynchronously invokes the @method_name method on @proxy.
 	//
@@ -364,23 +250,35 @@ type DBusProxy interface {
 	SetInterfaceInfo(info *DBusInterfaceInfo)
 }
 
-// dBusProxy implements the DBusProxy interface.
-type dBusProxy struct {
+// DBusProxyClass implements the DBusProxy interface.
+type DBusProxyClass struct {
 	*externglib.Object
+	AsyncInitableInterface
+	DBusInterfaceInterface
+	InitableInterface
 }
 
-var _ DBusProxy = (*dBusProxy)(nil)
+var _ DBusProxy = (*DBusProxyClass)(nil)
 
-// WrapDBusProxy wraps a GObject to a type that implements
-// interface DBusProxy. It is primarily used internally.
-func WrapDBusProxy(obj *externglib.Object) DBusProxy {
-	return dBusProxy{obj}
+func wrapDBusProxy(obj *externglib.Object) DBusProxy {
+	return &DBusProxyClass{
+		Object: obj,
+		AsyncInitableInterface: AsyncInitableInterface{
+			Object: obj,
+		},
+		DBusInterfaceInterface: DBusInterfaceInterface{
+			Object: obj,
+		},
+		InitableInterface: InitableInterface{
+			Object: obj,
+		},
+	}
 }
 
 func marshalDBusProxy(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapDBusProxy(obj), nil
+	return wrapDBusProxy(obj), nil
 }
 
 // NewDBusProxyFinish finishes creating a BusProxy.
@@ -513,47 +411,46 @@ func NewDBusProxySync(connection DBusConnection, flags DBusProxyFlags, info *DBu
 	return _dBusProxy, _goerr
 }
 
-func (d dBusProxy) AsAsyncInitable() AsyncInitable {
-	return WrapAsyncInitable(gextras.InternObject(d))
-}
-
-func (d dBusProxy) AsDBusInterface() DBusInterface {
-	return WrapDBusInterface(gextras.InternObject(d))
-}
-
-func (d dBusProxy) AsInitable() Initable {
-	return WrapInitable(gextras.InternObject(d))
-}
-
-func (i dBusProxy) InitAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
-	WrapAsyncInitable(gextras.InternObject(i)).InitAsync(ioPriority, cancellable, callback)
-}
-
-func (i dBusProxy) InitFinish(res AsyncResult) error {
-	return WrapAsyncInitable(gextras.InternObject(i)).InitFinish(res)
-}
-
-func (i dBusProxy) NewFinish(res AsyncResult) (gextras.Objector, error) {
-	return WrapAsyncInitable(gextras.InternObject(i)).NewFinish(res)
-}
-
-func (i dBusProxy) DupObject() DBusObject {
-	return WrapDBusInterface(gextras.InternObject(i)).DupObject()
-}
-
-func (i dBusProxy) GetInfo() *DBusInterfaceInfo {
-	return WrapDBusInterface(gextras.InternObject(i)).GetInfo()
-}
-
-func (i dBusProxy) SetObject(object DBusObject) {
-	WrapDBusInterface(gextras.InternObject(i)).SetObject(object)
-}
-
-func (i dBusProxy) Init(cancellable Cancellable) error {
-	return WrapInitable(gextras.InternObject(i)).Init(cancellable)
-}
-
-func (p dBusProxy) Call(methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int, cancellable Cancellable, callback AsyncReadyCallback) {
+// Call: asynchronously invokes the @method_name method on @proxy.
+//
+// If @method_name contains any dots, then @name is split into interface and
+// method name parts. This allows using @proxy for invoking methods on other
+// interfaces.
+//
+// If the BusConnection associated with @proxy is closed then the operation will
+// fail with G_IO_ERROR_CLOSED. If @cancellable is canceled, the operation will
+// fail with G_IO_ERROR_CANCELLED. If @parameters contains a value not
+// compatible with the D-Bus protocol, the operation fails with
+// G_IO_ERROR_INVALID_ARGUMENT.
+//
+// If the @parameters #GVariant is floating, it is consumed. This allows
+// convenient 'inline' use of g_variant_new(), e.g.:
+//
+//    g_dbus_proxy_call (proxy,
+//                       "TwoStrings",
+//                       g_variant_new ("(ss)",
+//                                      "Thing One",
+//                                      "Thing Two"),
+//                       G_DBUS_CALL_FLAGS_NONE,
+//                       -1,
+//                       NULL,
+//                       (GAsyncReadyCallback) two_strings_done,
+//                       &data);
+//
+// If @proxy has an expected interface (see BusProxy:g-interface-info) and
+// @method_name is referenced by it, then the return value is checked against
+// the return type.
+//
+// This is an asynchronous method. When the operation is finished, @callback
+// will be invoked in the [thread-default main
+// context][g-main-context-push-thread-default] of the thread you are calling
+// this method from. You can then call g_dbus_proxy_call_finish() to get the
+// result of the operation. See g_dbus_proxy_call_sync() for the synchronous
+// version of this method.
+//
+// If @callback is nil then the D-Bus method call message will be sent with the
+// G_DBUS_MESSAGE_FLAGS_NO_REPLY_EXPECTED flag set.
+func (p *DBusProxyClass) Call(methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int, cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GDBusProxy         // out
 	var _arg1 *C.gchar              // out
 	var _arg2 *C.GVariant           // out
@@ -576,7 +473,8 @@ func (p dBusProxy) Call(methodName string, parameters *glib.Variant, flags DBusC
 	C.g_dbus_proxy_call(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
 }
 
-func (p dBusProxy) CallFinish(res AsyncResult) (*glib.Variant, error) {
+// CallFinish finishes an operation started with g_dbus_proxy_call().
+func (p *DBusProxyClass) CallFinish(res AsyncResult) (*glib.Variant, error) {
 	var _arg0 *C.GDBusProxy   // out
 	var _arg1 *C.GAsyncResult // out
 	var _cret *C.GVariant     // in
@@ -600,7 +498,38 @@ func (p dBusProxy) CallFinish(res AsyncResult) (*glib.Variant, error) {
 	return _variant, _goerr
 }
 
-func (p dBusProxy) CallSync(methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int, cancellable Cancellable) (*glib.Variant, error) {
+// CallSync: synchronously invokes the @method_name method on @proxy.
+//
+// If @method_name contains any dots, then @name is split into interface and
+// method name parts. This allows using @proxy for invoking methods on other
+// interfaces.
+//
+// If the BusConnection associated with @proxy is disconnected then the
+// operation will fail with G_IO_ERROR_CLOSED. If @cancellable is canceled, the
+// operation will fail with G_IO_ERROR_CANCELLED. If @parameters contains a
+// value not compatible with the D-Bus protocol, the operation fails with
+// G_IO_ERROR_INVALID_ARGUMENT.
+//
+// If the @parameters #GVariant is floating, it is consumed. This allows
+// convenient 'inline' use of g_variant_new(), e.g.:
+//
+//    g_dbus_proxy_call_sync (proxy,
+//                            "TwoStrings",
+//                            g_variant_new ("(ss)",
+//                                           "Thing One",
+//                                           "Thing Two"),
+//                            G_DBUS_CALL_FLAGS_NONE,
+//                            -1,
+//                            NULL,
+//                            &error);
+//
+// The calling thread is blocked until a reply is received. See
+// g_dbus_proxy_call() for the asynchronous version of this method.
+//
+// If @proxy has an expected interface (see BusProxy:g-interface-info) and
+// @method_name is referenced by it, then the return value is checked against
+// the return type.
+func (p *DBusProxyClass) CallSync(methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int, cancellable Cancellable) (*glib.Variant, error) {
 	var _arg0 *C.GDBusProxy    // out
 	var _arg1 *C.gchar         // out
 	var _arg2 *C.GVariant      // out
@@ -633,7 +562,10 @@ func (p dBusProxy) CallSync(methodName string, parameters *glib.Variant, flags D
 	return _variant, _goerr
 }
 
-func (p dBusProxy) CallWithUnixFdList(methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int, fdList UnixFDList, cancellable Cancellable, callback AsyncReadyCallback) {
+// CallWithUnixFdList: like g_dbus_proxy_call() but also takes a FDList object.
+//
+// This method is only available on UNIX.
+func (p *DBusProxyClass) CallWithUnixFdList(methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int, fdList UnixFDList, cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GDBusProxy         // out
 	var _arg1 *C.gchar              // out
 	var _arg2 *C.GVariant           // out
@@ -658,7 +590,9 @@ func (p dBusProxy) CallWithUnixFdList(methodName string, parameters *glib.Varian
 	C.g_dbus_proxy_call_with_unix_fd_list(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8)
 }
 
-func (p dBusProxy) CallWithUnixFdListFinish(res AsyncResult) (UnixFDList, *glib.Variant, error) {
+// CallWithUnixFdListFinish finishes an operation started with
+// g_dbus_proxy_call_with_unix_fd_list().
+func (p *DBusProxyClass) CallWithUnixFdListFinish(res AsyncResult) (UnixFDList, *glib.Variant, error) {
 	var _arg0 *C.GDBusProxy   // out
 	var _arg1 *C.GUnixFDList  // in
 	var _arg2 *C.GAsyncResult // out
@@ -685,7 +619,11 @@ func (p dBusProxy) CallWithUnixFdListFinish(res AsyncResult) (UnixFDList, *glib.
 	return _outFdList, _variant, _goerr
 }
 
-func (p dBusProxy) CallWithUnixFdListSync(methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int, fdList UnixFDList, cancellable Cancellable) (UnixFDList, *glib.Variant, error) {
+// CallWithUnixFdListSync: like g_dbus_proxy_call_sync() but also takes and
+// returns FDList objects.
+//
+// This method is only available on UNIX.
+func (p *DBusProxyClass) CallWithUnixFdListSync(methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int, fdList UnixFDList, cancellable Cancellable) (UnixFDList, *glib.Variant, error) {
 	var _arg0 *C.GDBusProxy    // out
 	var _arg1 *C.gchar         // out
 	var _arg2 *C.GVariant      // out
@@ -723,7 +661,13 @@ func (p dBusProxy) CallWithUnixFdListSync(methodName string, parameters *glib.Va
 	return _outFdList, _variant, _goerr
 }
 
-func (p dBusProxy) CachedProperty(propertyName string) *glib.Variant {
+// CachedProperty looks up the value for a property from the cache. This call
+// does no blocking IO.
+//
+// If @proxy has an expected interface (see BusProxy:g-interface-info) and
+// @property_name is referenced by it, then @value is checked against the type
+// of the property.
+func (p *DBusProxyClass) CachedProperty(propertyName string) *glib.Variant {
 	var _arg0 *C.GDBusProxy // out
 	var _arg1 *C.gchar      // out
 	var _cret *C.GVariant   // in
@@ -745,7 +689,8 @@ func (p dBusProxy) CachedProperty(propertyName string) *glib.Variant {
 	return _variant
 }
 
-func (p dBusProxy) CachedPropertyNames() []string {
+// CachedPropertyNames gets the names of all cached properties on @proxy.
+func (p *DBusProxyClass) CachedPropertyNames() []string {
 	var _arg0 *C.GDBusProxy // out
 	var _cret **C.gchar
 
@@ -773,7 +718,8 @@ func (p dBusProxy) CachedPropertyNames() []string {
 	return _utf8s
 }
 
-func (p dBusProxy) Connection() DBusConnection {
+// Connection gets the connection @proxy is for.
+func (p *DBusProxyClass) Connection() DBusConnection {
 	var _arg0 *C.GDBusProxy      // out
 	var _cret *C.GDBusConnection // in
 
@@ -788,7 +734,12 @@ func (p dBusProxy) Connection() DBusConnection {
 	return _dBusConnection
 }
 
-func (p dBusProxy) DefaultTimeout() int {
+// DefaultTimeout gets the timeout to use if -1 (specifying default timeout) is
+// passed as @timeout_msec in the g_dbus_proxy_call() and
+// g_dbus_proxy_call_sync() functions.
+//
+// See the BusProxy:g-default-timeout property for more details.
+func (p *DBusProxyClass) DefaultTimeout() int {
 	var _arg0 *C.GDBusProxy // out
 	var _cret C.gint        // in
 
@@ -803,7 +754,8 @@ func (p dBusProxy) DefaultTimeout() int {
 	return _gint
 }
 
-func (p dBusProxy) Flags() DBusProxyFlags {
+// Flags gets the flags that @proxy was constructed with.
+func (p *DBusProxyClass) Flags() DBusProxyFlags {
 	var _arg0 *C.GDBusProxy     // out
 	var _cret C.GDBusProxyFlags // in
 
@@ -818,7 +770,10 @@ func (p dBusProxy) Flags() DBusProxyFlags {
 	return _dBusProxyFlags
 }
 
-func (p dBusProxy) InterfaceInfo() *DBusInterfaceInfo {
+// InterfaceInfo returns the BusInterfaceInfo, if any, specifying the interface
+// that @proxy conforms to. See the BusProxy:g-interface-info property for more
+// details.
+func (p *DBusProxyClass) InterfaceInfo() *DBusInterfaceInfo {
 	var _arg0 *C.GDBusProxy         // out
 	var _cret *C.GDBusInterfaceInfo // in
 
@@ -837,7 +792,8 @@ func (p dBusProxy) InterfaceInfo() *DBusInterfaceInfo {
 	return _dBusInterfaceInfo
 }
 
-func (p dBusProxy) InterfaceName() string {
+// InterfaceName gets the D-Bus interface name @proxy is for.
+func (p *DBusProxyClass) InterfaceName() string {
 	var _arg0 *C.GDBusProxy // out
 	var _cret *C.gchar      // in
 
@@ -852,7 +808,8 @@ func (p dBusProxy) InterfaceName() string {
 	return _utf8
 }
 
-func (p dBusProxy) Name() string {
+// Name gets the name that @proxy was constructed for.
+func (p *DBusProxyClass) Name() string {
 	var _arg0 *C.GDBusProxy // out
 	var _cret *C.gchar      // in
 
@@ -867,7 +824,10 @@ func (p dBusProxy) Name() string {
 	return _utf8
 }
 
-func (p dBusProxy) NameOwner() string {
+// NameOwner: the unique name that owns the name that @proxy is for or nil if
+// no-one currently owns that name. You may connect to the #GObject::notify
+// signal to track changes to the BusProxy:g-name-owner property.
+func (p *DBusProxyClass) NameOwner() string {
 	var _arg0 *C.GDBusProxy // out
 	var _cret *C.gchar      // in
 
@@ -883,7 +843,8 @@ func (p dBusProxy) NameOwner() string {
 	return _utf8
 }
 
-func (p dBusProxy) ObjectPath() string {
+// ObjectPath gets the object path @proxy is for.
+func (p *DBusProxyClass) ObjectPath() string {
 	var _arg0 *C.GDBusProxy // out
 	var _cret *C.gchar      // in
 
@@ -898,7 +859,37 @@ func (p dBusProxy) ObjectPath() string {
 	return _utf8
 }
 
-func (p dBusProxy) SetCachedProperty(propertyName string, value *glib.Variant) {
+// SetCachedProperty: if @value is not nil, sets the cached value for the
+// property with name @property_name to the value in @value.
+//
+// If @value is nil, then the cached value is removed from the property cache.
+//
+// If @proxy has an expected interface (see BusProxy:g-interface-info) and
+// @property_name is referenced by it, then @value is checked against the type
+// of the property.
+//
+// If the @value #GVariant is floating, it is consumed. This allows convenient
+// 'inline' use of g_variant_new(), e.g.
+//
+//    g_dbus_proxy_set_cached_property (proxy,
+//                                      "SomeProperty",
+//                                      g_variant_new ("(si)",
+//                                                    "A String",
+//                                                    42));
+//
+// Normally you will not need to use this method since @proxy is tracking
+// changes using the `org.freedesktop.DBus.Properties.PropertiesChanged` D-Bus
+// signal. However, for performance reasons an object may decide to not use this
+// signal for some properties and instead use a proprietary out-of-band
+// mechanism to transmit changes.
+//
+// As a concrete example, consider an object with a property
+// `ChatroomParticipants` which is an array of strings. Instead of transmitting
+// the same (long) array every time the property changes, it is more efficient
+// to only transmit the delta using e.g. signals
+// `ChatroomParticipantJoined(String name)` and
+// `ChatroomParticipantParted(String name)`.
+func (p *DBusProxyClass) SetCachedProperty(propertyName string, value *glib.Variant) {
 	var _arg0 *C.GDBusProxy // out
 	var _arg1 *C.gchar      // out
 	var _arg2 *C.GVariant   // out
@@ -911,7 +902,12 @@ func (p dBusProxy) SetCachedProperty(propertyName string, value *glib.Variant) {
 	C.g_dbus_proxy_set_cached_property(_arg0, _arg1, _arg2)
 }
 
-func (p dBusProxy) SetDefaultTimeout(timeoutMsec int) {
+// SetDefaultTimeout sets the timeout to use if -1 (specifying default timeout)
+// is passed as @timeout_msec in the g_dbus_proxy_call() and
+// g_dbus_proxy_call_sync() functions.
+//
+// See the BusProxy:g-default-timeout property for more details.
+func (p *DBusProxyClass) SetDefaultTimeout(timeoutMsec int) {
 	var _arg0 *C.GDBusProxy // out
 	var _arg1 C.gint        // out
 
@@ -921,7 +917,9 @@ func (p dBusProxy) SetDefaultTimeout(timeoutMsec int) {
 	C.g_dbus_proxy_set_default_timeout(_arg0, _arg1)
 }
 
-func (p dBusProxy) SetInterfaceInfo(info *DBusInterfaceInfo) {
+// SetInterfaceInfo: ensure that interactions with @proxy conform to the given
+// interface. See the BusProxy:g-interface-info property for more details.
+func (p *DBusProxyClass) SetInterfaceInfo(info *DBusInterfaceInfo) {
 	var _arg0 *C.GDBusProxy         // out
 	var _arg1 *C.GDBusInterfaceInfo // out
 

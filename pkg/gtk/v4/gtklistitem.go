@@ -93,26 +93,28 @@ type ListItem interface {
 	SetSelectable(selectable bool)
 }
 
-// listItem implements the ListItem interface.
-type listItem struct {
+// ListItemClass implements the ListItem interface.
+type ListItemClass struct {
 	*externglib.Object
 }
 
-var _ ListItem = (*listItem)(nil)
+var _ ListItem = (*ListItemClass)(nil)
 
-// WrapListItem wraps a GObject to a type that implements
-// interface ListItem. It is primarily used internally.
-func WrapListItem(obj *externglib.Object) ListItem {
-	return listItem{obj}
+func wrapListItem(obj *externglib.Object) ListItem {
+	return &ListItemClass{
+		Object: obj,
+	}
 }
 
 func marshalListItem(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapListItem(obj), nil
+	return wrapListItem(obj), nil
 }
 
-func (s listItem) Activatable() bool {
+// Activatable checks if a list item has been set to be activatable via
+// gtk_list_item_set_activatable().
+func (s *ListItemClass) Activatable() bool {
 	var _arg0 *C.GtkListItem // out
 	var _cret C.gboolean     // in
 
@@ -129,7 +131,9 @@ func (s listItem) Activatable() bool {
 	return _ok
 }
 
-func (s listItem) Child() Widget {
+// Child gets the child previously set via gtk_list_item_set_child() or nil if
+// none was set.
+func (s *ListItemClass) Child() Widget {
 	var _arg0 *C.GtkListItem // out
 	var _cret *C.GtkWidget   // in
 
@@ -144,7 +148,10 @@ func (s listItem) Child() Widget {
 	return _widget
 }
 
-func (s listItem) Item() gextras.Objector {
+// Item gets the model item that associated with @self.
+//
+// If @self is unbound, this function returns nil.
+func (s *ListItemClass) Item() gextras.Objector {
 	var _arg0 *C.GtkListItem // out
 	var _cret C.gpointer     // in
 
@@ -159,7 +166,10 @@ func (s listItem) Item() gextras.Objector {
 	return _object
 }
 
-func (s listItem) Position() uint {
+// Position gets the position in the model that @self currently displays.
+//
+// If @self is unbound, GTK_INVALID_LIST_POSITION is returned.
+func (s *ListItemClass) Position() uint {
 	var _arg0 *C.GtkListItem // out
 	var _cret C.guint        // in
 
@@ -174,7 +184,11 @@ func (s listItem) Position() uint {
 	return _guint
 }
 
-func (s listItem) Selectable() bool {
+// Selectable checks if a list item has been set to be selectable via
+// gtk_list_item_set_selectable().
+//
+// Do not confuse this function with [method@Gtk.ListItem.get_selected].
+func (s *ListItemClass) Selectable() bool {
 	var _arg0 *C.GtkListItem // out
 	var _cret C.gboolean     // in
 
@@ -191,7 +205,11 @@ func (s listItem) Selectable() bool {
 	return _ok
 }
 
-func (s listItem) Selected() bool {
+// Selected checks if the item is displayed as selected.
+//
+// The selected state is maintained by the liste widget and its model and cannot
+// be set otherwise.
+func (s *ListItemClass) Selected() bool {
 	var _arg0 *C.GtkListItem // out
 	var _cret C.gboolean     // in
 
@@ -208,7 +226,15 @@ func (s listItem) Selected() bool {
 	return _ok
 }
 
-func (s listItem) SetActivatable(activatable bool) {
+// SetActivatable sets @self to be activatable.
+//
+// If an item is activatable, double-clicking on the item, using the Return key
+// or calling gtk_widget_activate() will activate the item. Activating instructs
+// the containing view to handle activation. `GtkListView` for example will be
+// emitting the [signal@Gtk.ListView::activate] signal.
+//
+// By default, list items are activatable.
+func (s *ListItemClass) SetActivatable(activatable bool) {
 	var _arg0 *C.GtkListItem // out
 	var _arg1 C.gboolean     // out
 
@@ -220,7 +246,11 @@ func (s listItem) SetActivatable(activatable bool) {
 	C.gtk_list_item_set_activatable(_arg0, _arg1)
 }
 
-func (s listItem) SetChild(child Widget) {
+// SetChild sets the child to be used for this listitem.
+//
+// This function is typically called by applications when setting up a listitem
+// so that the widget can be reused when binding it multiple times.
+func (s *ListItemClass) SetChild(child Widget) {
 	var _arg0 *C.GtkListItem // out
 	var _arg1 *C.GtkWidget   // out
 
@@ -230,7 +260,18 @@ func (s listItem) SetChild(child Widget) {
 	C.gtk_list_item_set_child(_arg0, _arg1)
 }
 
-func (s listItem) SetSelectable(selectable bool) {
+// SetSelectable sets @self to be selectable.
+//
+// If an item is selectable, clicking on the item or using the keyboard will try
+// to select or unselect the item. If this succeeds is up to the model to
+// determine, as it is managing the selected state.
+//
+// Note that this means that making an item non-selectable has no influence on
+// the selected state at all. A non-selectable item may still be selected.
+//
+// By default, list items are selectable. When rebinding them to a new item,
+// they will also be reset to be selectable by GTK.
+func (s *ListItemClass) SetSelectable(selectable bool) {
 	var _arg0 *C.GtkListItem // out
 	var _arg1 C.gboolean     // out
 

@@ -51,9 +51,6 @@ func init() {
 type Settings interface {
 	gextras.Objector
 
-	// AsStyleProvider casts the class to the StyleProvider interface.
-	AsStyleProvider() StyleProvider
-
 	// ResetProperty undoes the effect of calling g_object_set() to install an
 	// application-specific value for a setting.
 	//
@@ -62,30 +59,35 @@ type Settings interface {
 	ResetProperty(name string)
 }
 
-// settings implements the Settings interface.
-type settings struct {
+// SettingsClass implements the Settings interface.
+type SettingsClass struct {
 	*externglib.Object
+	StyleProviderInterface
 }
 
-var _ Settings = (*settings)(nil)
+var _ Settings = (*SettingsClass)(nil)
 
-// WrapSettings wraps a GObject to a type that implements
-// interface Settings. It is primarily used internally.
-func WrapSettings(obj *externglib.Object) Settings {
-	return settings{obj}
+func wrapSettings(obj *externglib.Object) Settings {
+	return &SettingsClass{
+		Object: obj,
+		StyleProviderInterface: StyleProviderInterface{
+			Object: obj,
+		},
+	}
 }
 
 func marshalSettings(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapSettings(obj), nil
+	return wrapSettings(obj), nil
 }
 
-func (s settings) AsStyleProvider() StyleProvider {
-	return WrapStyleProvider(gextras.InternObject(s))
-}
-
-func (s settings) ResetProperty(name string) {
+// ResetProperty undoes the effect of calling g_object_set() to install an
+// application-specific value for a setting.
+//
+// After this call, the setting will again follow the session-wide value for
+// this setting.
+func (s *SettingsClass) ResetProperty(name string) {
 	var _arg0 *C.GtkSettings // out
 	var _arg1 *C.char        // out
 

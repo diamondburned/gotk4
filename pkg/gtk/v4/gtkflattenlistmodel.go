@@ -29,23 +29,27 @@ func init() {
 // it into a single model.
 type FlattenListModel interface {
 	gextras.Objector
+
+	privateFlattenListModelClass()
 }
 
-// flattenListModel implements the FlattenListModel interface.
-type flattenListModel struct {
+// FlattenListModelClass implements the FlattenListModel interface.
+type FlattenListModelClass struct {
 	*externglib.Object
 }
 
-var _ FlattenListModel = (*flattenListModel)(nil)
+var _ FlattenListModel = (*FlattenListModelClass)(nil)
 
-// WrapFlattenListModel wraps a GObject to a type that implements
-// interface FlattenListModel. It is primarily used internally.
-func WrapFlattenListModel(obj *externglib.Object) FlattenListModel {
-	return flattenListModel{obj}
+func wrapFlattenListModel(obj *externglib.Object) FlattenListModel {
+	return &FlattenListModelClass{
+		Object: obj,
+	}
 }
 
 func marshalFlattenListModel(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapFlattenListModel(obj), nil
+	return wrapFlattenListModel(obj), nil
 }
+
+func (*FlattenListModelClass) privateFlattenListModelClass() {}

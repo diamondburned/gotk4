@@ -6,13 +6,9 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
-	"github.com/diamondburned/gotk4/pkg/graphene"
-	"github.com/diamondburned/gotk4/pkg/gsk/v4"
 	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -70,24 +66,24 @@ type TextWindowType int
 
 const (
 	// Widget: window that floats over scrolling areas.
-	TextWindowWidget TextWindowType = 1
+	TextWindowTypeWidget TextWindowType = 1
 	// Text: scrollable text window.
-	TextWindowText TextWindowType = 2
+	TextWindowTypeText TextWindowType = 2
 	// Left: left side border window.
-	TextWindowLeft TextWindowType = 3
+	TextWindowTypeLeft TextWindowType = 3
 	// Right: right side border window.
-	TextWindowRight TextWindowType = 4
+	TextWindowTypeRight TextWindowType = 4
 	// Top: top border window.
-	TextWindowTop TextWindowType = 5
+	TextWindowTypeTop TextWindowType = 5
 	// Bottom: bottom border window.
-	TextWindowBottom TextWindowType = 6
+	TextWindowTypeBottom TextWindowType = 6
 )
 
 func marshalTextWindowType(p uintptr) (interface{}, error) {
 	return TextWindowType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// TextViewOverrider contains methods that are overridable .
+// TextViewOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
@@ -135,1596 +131,7 @@ type TextViewOverrider interface {
 //
 // `GtkTextView` uses the K_ACCESSIBLE_ROLE_TEXT_BOX role.
 type TextView interface {
-	Widget
-
-	// AsWidget casts the class to the Widget interface.
-	AsWidget() Widget
-	// AsAccessible casts the class to the Accessible interface.
-	AsAccessible() Accessible
-	// AsBuildable casts the class to the Buildable interface.
-	AsBuildable() Buildable
-	// AsConstraintTarget casts the class to the ConstraintTarget interface.
-	AsConstraintTarget() ConstraintTarget
-	// AsScrollable casts the class to the Scrollable interface.
-	AsScrollable() Scrollable
-
-	// ActionSetEnabled: enable or disable an action installed with
-	// gtk_widget_class_install_action().
-	//
-	// This method is inherited from Widget
-	ActionSetEnabled(actionName string, enabled bool)
-	// Activate: for widgets that can be “activated” (buttons, menu items, etc.)
-	// this function activates them.
-	//
-	// The activation will emit the signal set using
-	// gtk_widget_class_set_activate_signal() during class initialization.
-	//
-	// Activation is what happens when you press Enter on a widget during key
-	// navigation.
-	//
-	// If you wish to handle the activation keybinding yourself, it is
-	// recommended to use gtk_widget_class_add_shortcut() with an action created
-	// with gtk_signal_action_new().
-	//
-	// If @widget isn't activatable, the function returns false.
-	//
-	// This method is inherited from Widget
-	Activate() bool
-	// ActivateActionVariant looks up the action in the action groups associated
-	// with @widget and its ancestors, and activates it.
-	//
-	// If the action is in an action group added with
-	// [method@Gtk.Widget.insert_action_group], the @name is expected to be
-	// prefixed with the prefix that was used when the group was inserted.
-	//
-	// The arguments must match the actions expected parameter type, as returned
-	// by `g_action_get_parameter_type()`.
-	//
-	// This method is inherited from Widget
-	ActivateActionVariant(name string, args *glib.Variant) bool
-	// ActivateDefault activates the `default.activate` action from @widget.
-	//
-	// This method is inherited from Widget
-	ActivateDefault()
-	// AddController adds @controller to @widget so that it will receive events.
-	//
-	// You will usually want to call this function right after creating any kind
-	// of [class@Gtk.EventController].
-	//
-	// This method is inherited from Widget
-	AddController(controller EventController)
-	// AddCSSClass adds a style class to @widget.
-	//
-	// After calling this function, the widgets style will match for @css_class,
-	// according to CSS matching rules.
-	//
-	// Use [method@Gtk.Widget.remove_css_class] to remove the style again.
-	//
-	// This method is inherited from Widget
-	AddCSSClass(cssClass string)
-	// AddMnemonicLabel adds a widget to the list of mnemonic labels for this
-	// widget.
-	//
-	// See [method@Gtk.Widget.list_mnemonic_labels]. Note the list of mnemonic
-	// labels for the widget is cleared when the widget is destroyed, so the
-	// caller must make sure to update its internal state at this point as well,
-	// by using a connection to the [signal@Gtk.Widget::destroy] signal or a
-	// weak notifier.
-	//
-	// This method is inherited from Widget
-	AddMnemonicLabel(label Widget)
-	// Allocate: this function is only used by `GtkWidget` subclasses, to assign
-	// a size, position and (optionally) baseline to their child widgets.
-	//
-	// In this function, the allocation and baseline may be adjusted. The given
-	// allocation will be forced to be bigger than the widget's minimum size, as
-	// well as at least 0×0 in size.
-	//
-	// For a version that does not take a transform, see
-	// [method@Gtk.Widget.size_allocate].
-	//
-	// This method is inherited from Widget
-	Allocate(width int, height int, baseline int, transform *gsk.Transform)
-	// ChildFocus: called by widgets as the user moves around the window using
-	// keyboard shortcuts.
-	//
-	// The @direction argument indicates what kind of motion is taking place
-	// (up, down, left, right, tab forward, tab backward).
-	//
-	// This function calls the [vfunc@Gtk.Widget.focus] virtual function;
-	// widgets can override the virtual function in order to implement
-	// appropriate focus behavior.
-	//
-	// The default `focus()` virtual function for a widget should return `TRUE`
-	// if moving in @direction left the focus on a focusable location inside
-	// that widget, and `FALSE` if moving in @direction moved the focus outside
-	// the widget. When returning `TRUE`, widgets normallycall
-	// [method@Gtk.Widget.grab_focus] to place the focus accordingly; when
-	// returning `FALSE`, they don’t modify the current focus location.
-	//
-	// This function is used by custom widget implementations; if you're writing
-	// an app, you’d use [method@Gtk.Widget.grab_focus] to move the focus to a
-	// particular widget.
-	//
-	// This method is inherited from Widget
-	ChildFocus(direction DirectionType) bool
-	// ComputeBounds computes the bounds for @widget in the coordinate space of
-	// @target.
-	//
-	// FIXME: Explain what "bounds" are.
-	//
-	// If the operation is successful, true is returned. If @widget has no
-	// bounds or the bounds cannot be expressed in @target's coordinate space
-	// (for example if both widgets are in different windows), false is returned
-	// and @bounds is set to the zero rectangle.
-	//
-	// It is valid for @widget and @target to be the same widget.
-	//
-	// This method is inherited from Widget
-	ComputeBounds(target Widget) (graphene.Rect, bool)
-	// ComputeExpand computes whether a container should give this widget extra
-	// space when possible.
-	//
-	// Containers should check this, rather than looking at
-	// [method@Gtk.Widget.get_hexpand] or [method@Gtk.Widget.get_vexpand].
-	//
-	// This function already checks whether the widget is visible, so visibility
-	// does not need to be checked separately. Non-visible widgets are not
-	// expanded.
-	//
-	// The computed expand value uses either the expand setting explicitly set
-	// on the widget itself, or, if none has been explicitly set, the widget may
-	// expand if some of its children do.
-	//
-	// This method is inherited from Widget
-	ComputeExpand(orientation Orientation) bool
-	// ComputePoint translates the given @point in @widget's coordinates to
-	// coordinates relative to @target’s coordinate system.
-	//
-	// In order to perform this operation, both widgets must share a common
-	// ancestor.
-	//
-	// This method is inherited from Widget
-	ComputePoint(target Widget, point *graphene.Point) (graphene.Point, bool)
-	// ComputeTransform computes a matrix suitable to describe a transformation
-	// from @widget's coordinate system into @target's coordinate system.
-	//
-	// This method is inherited from Widget
-	ComputeTransform(target Widget) (graphene.Matrix, bool)
-	// Contains tests if the point at (@x, @y) is contained in @widget.
-	//
-	// The coordinates for (@x, @y) must be in widget coordinates, so (0, 0) is
-	// assumed to be the top left of @widget's content area.
-	//
-	// This method is inherited from Widget
-	Contains(x float64, y float64) bool
-	// CreatePangoContext creates a new `PangoContext` with the appropriate font
-	// map, font options, font description, and base direction for drawing text
-	// for this widget.
-	//
-	// See also [method@Gtk.Widget.get_pango_context].
-	//
-	// This method is inherited from Widget
-	CreatePangoContext() pango.Context
-	// CreatePangoLayout creates a new `PangoLayout` with the appropriate font
-	// map, font description, and base direction for drawing text for this
-	// widget.
-	//
-	// If you keep a `PangoLayout` created in this way around, you need to
-	// re-create it when the widget `PangoContext` is replaced. This can be
-	// tracked by listening to changes of the [property@Gtk.Widget:root]
-	// property on the widget.
-	//
-	// This method is inherited from Widget
-	CreatePangoLayout(text string) pango.Layout
-	// DragCheckThreshold checks to see if a drag movement has passed the GTK
-	// drag threshold.
-	//
-	// This method is inherited from Widget
-	DragCheckThreshold(startX int, startY int, currentX int, currentY int) bool
-	// ErrorBell notifies the user about an input-related error on this widget.
-	//
-	// If the [property@Gtk.Settings:gtk-error-bell] setting is true, it calls
-	// [method@Gdk.Surface.beep], otherwise it does nothing.
-	//
-	// Note that the effect of [method@Gdk.Surface.beep] can be configured in
-	// many ways, depending on the windowing backend and the desktop environment
-	// or window manager that is used.
-	//
-	// This method is inherited from Widget
-	ErrorBell()
-	// GetAllocatedBaseline returns the baseline that has currently been
-	// allocated to @widget.
-	//
-	// This function is intended to be used when implementing handlers for the
-	// `GtkWidget`Class.snapshot() function, and when allocating child widgets
-	// in `GtkWidget`Class.size_allocate().
-	//
-	// This method is inherited from Widget
-	GetAllocatedBaseline() int
-	// GetAllocatedHeight returns the height that has currently been allocated
-	// to @widget.
-	//
-	// This method is inherited from Widget
-	GetAllocatedHeight() int
-	// GetAllocatedWidth returns the width that has currently been allocated to
-	// @widget.
-	//
-	// This method is inherited from Widget
-	GetAllocatedWidth() int
-	// GetAncestor gets the first ancestor of @widget with type @widget_type.
-	//
-	// For example, `gtk_widget_get_ancestor (widget, GTK_TYPE_BOX)` gets the
-	// first `GtkBox` that’s an ancestor of @widget. No reference will be added
-	// to the returned widget; it should not be unreferenced.
-	//
-	// Note that unlike [method@Gtk.Widget.is_ancestor], this function considers
-	// @widget to be an ancestor of itself.
-	//
-	// This method is inherited from Widget
-	GetAncestor(widgetType externglib.Type) Widget
-	// GetCanFocus determines whether the input focus can enter @widget or any
-	// of its children.
-	//
-	// See [method@Gtk.Widget.set_focusable].
-	//
-	// This method is inherited from Widget
-	GetCanFocus() bool
-	// GetCanTarget queries whether @widget can be the target of pointer events.
-	//
-	// This method is inherited from Widget
-	GetCanTarget() bool
-	// GetChildVisible gets the value set with gtk_widget_set_child_visible().
-	//
-	// If you feel a need to use this function, your code probably needs
-	// reorganization.
-	//
-	// This function is only useful for container implementations and should
-	// never be called by an application.
-	//
-	// This method is inherited from Widget
-	GetChildVisible() bool
-	// GetClipboard gets the clipboard object for @widget.
-	//
-	// This is a utility function to get the clipboard object for the
-	// `GdkDisplay` that @widget is using.
-	//
-	// Note that this function always works, even when @widget is not realized
-	// yet.
-	//
-	// This method is inherited from Widget
-	GetClipboard() gdk.Clipboard
-	// GetCSSClasses returns the list of style classes applied to @widget.
-	//
-	// This method is inherited from Widget
-	GetCSSClasses() []string
-	// GetCSSName returns the CSS name that is used for @self.
-	//
-	// This method is inherited from Widget
-	GetCSSName() string
-	// GetCursor queries the cursor set on @widget.
-	//
-	// See [method@Gtk.Widget.set_cursor] for details.
-	//
-	// This method is inherited from Widget
-	GetCursor() gdk.Cursor
-	// GetDirection gets the reading direction for a particular widget.
-	//
-	// See [method@Gtk.Widget.set_direction].
-	//
-	// This method is inherited from Widget
-	GetDirection() TextDirection
-	// GetDisplay: get the `GdkDisplay` for the toplevel window associated with
-	// this widget.
-	//
-	// This function can only be called after the widget has been added to a
-	// widget hierarchy with a `GtkWindow` at the top.
-	//
-	// In general, you should only create display specific resources when a
-	// widget has been realized, and you should free those resources when the
-	// widget is unrealized.
-	//
-	// This method is inherited from Widget
-	GetDisplay() gdk.Display
-	// GetFirstChild returns the widgets first child.
-	//
-	// This API is primarily meant for widget implementations.
-	//
-	// This method is inherited from Widget
-	GetFirstChild() Widget
-	// GetFocusChild returns the current focus child of @widget.
-	//
-	// This method is inherited from Widget
-	GetFocusChild() Widget
-	// GetFocusOnClick returns whether the widget should grab focus when it is
-	// clicked with the mouse.
-	//
-	// See [method@Gtk.Widget.set_focus_on_click].
-	//
-	// This method is inherited from Widget
-	GetFocusOnClick() bool
-	// GetFocusable determines whether @widget can own the input focus.
-	//
-	// See [method@Gtk.Widget.set_focusable].
-	//
-	// This method is inherited from Widget
-	GetFocusable() bool
-	// GetFontMap gets the font map of @widget.
-	//
-	// See [method@Gtk.Widget.set_font_map].
-	//
-	// This method is inherited from Widget
-	GetFontMap() pango.FontMap
-	// GetFontOptions returns the `cairo_font_options_t` used for Pango
-	// rendering.
-	//
-	// When not set, the defaults font options for the `GdkDisplay` will be
-	// used.
-	//
-	// This method is inherited from Widget
-	GetFontOptions() *cairo.FontOptions
-	// GetFrameClock obtains the frame clock for a widget.
-	//
-	// The frame clock is a global “ticker” that can be used to drive animations
-	// and repaints. The most common reason to get the frame clock is to call
-	// [method@Gdk.FrameClock.get_frame_time], in order to get a time to use for
-	// animating. For example you might record the start of the animation with
-	// an initial value from [method@Gdk.FrameClock.get_frame_time], and then
-	// update the animation by calling [method@Gdk.FrameClock.get_frame_time]
-	// again during each repaint.
-	//
-	// [method@Gdk.FrameClock.request_phase] will result in a new frame on the
-	// clock, but won’t necessarily repaint any widgets. To repaint a widget,
-	// you have to use [method@Gtk.Widget.queue_draw] which invalidates the
-	// widget (thus scheduling it to receive a draw on the next frame).
-	// gtk_widget_queue_draw() will also end up requesting a frame on the
-	// appropriate frame clock.
-	//
-	// A widget’s frame clock will not change while the widget is mapped.
-	// Reparenting a widget (which implies a temporary unmap) can change the
-	// widget’s frame clock.
-	//
-	// Unrealized widgets do not have a frame clock.
-	//
-	// This method is inherited from Widget
-	GetFrameClock() gdk.FrameClock
-	// GetHAlign gets the horizontal alignment of @widget.
-	//
-	// For backwards compatibility reasons this method will never return
-	// GTK_ALIGN_BASELINE, but instead it will convert it to GTK_ALIGN_FILL.
-	// Baselines are not supported for horizontal alignment.
-	//
-	// This method is inherited from Widget
-	GetHAlign() Align
-	// GetHasTooltip returns the current value of the `has-tooltip` property.
-	//
-	// This method is inherited from Widget
-	GetHasTooltip() bool
-	// GetHeight returns the content height of the widget.
-	//
-	// This function returns the size passed to its size-allocate
-	// implementation, which is the size you should be using in
-	// GtkWidgetClass.snapshot().
-	//
-	// For pointer events, see [method@Gtk.Widget.contains].
-	//
-	// This method is inherited from Widget
-	GetHeight() int
-	// GetHExpand gets whether the widget would like any available extra
-	// horizontal space.
-	//
-	// When a user resizes a `GtkWindow`, widgets with expand=TRUE generally
-	// receive the extra space. For example, a list or scrollable area or
-	// document in your window would often be set to expand.
-	//
-	// Containers should use [method@Gtk.Widget.compute_expand] rather than this
-	// function, to see whether a widget, or any of its children, has the expand
-	// flag set. If any child of a widget wants to expand, the parent may ask to
-	// expand also.
-	//
-	// This function only looks at the widget’s own hexpand flag, rather than
-	// computing whether the entire widget tree rooted at this widget wants to
-	// expand.
-	//
-	// This method is inherited from Widget
-	GetHExpand() bool
-	// GetHExpandSet gets whether gtk_widget_set_hexpand() has been used to
-	// explicitly set the expand flag on this widget.
-	//
-	// If [property@Gtk.Widget:hexpand] property is set, then it overrides any
-	// computed expand value based on child widgets. If `hexpand` is not set,
-	// then the expand value depends on whether any children of the widget would
-	// like to expand.
-	//
-	// There are few reasons to use this function, but it’s here for
-	// completeness and consistency.
-	//
-	// This method is inherited from Widget
-	GetHExpandSet() bool
-	// GetLastChild returns the widgets last child.
-	//
-	// This API is primarily meant for widget implementations.
-	//
-	// This method is inherited from Widget
-	GetLastChild() Widget
-	// GetLayoutManager retrieves the layout manager used by @widget
-	//
-	// See [method@Gtk.Widget.set_layout_manager].
-	//
-	// This method is inherited from Widget
-	GetLayoutManager() LayoutManager
-	// GetMapped: whether the widget is mapped.
-	//
-	// This method is inherited from Widget
-	GetMapped() bool
-	// GetMarginBottom gets the bottom margin of @widget.
-	//
-	// This method is inherited from Widget
-	GetMarginBottom() int
-	// GetMarginEnd gets the end margin of @widget.
-	//
-	// This method is inherited from Widget
-	GetMarginEnd() int
-	// GetMarginStart gets the start margin of @widget.
-	//
-	// This method is inherited from Widget
-	GetMarginStart() int
-	// GetMarginTop gets the top margin of @widget.
-	//
-	// This method is inherited from Widget
-	GetMarginTop() int
-	// GetName retrieves the name of a widget.
-	//
-	// See [method@Gtk.Widget.set_name] for the significance of widget names.
-	//
-	// This method is inherited from Widget
-	GetName() string
-	// GetNative returns the `GtkNative` widget that contains @widget.
-	//
-	// This function will return nil if the widget is not contained inside a
-	// widget tree with a native ancestor.
-	//
-	// `GtkNative` widgets will return themselves here.
-	//
-	// This method is inherited from Widget
-	GetNative() Native
-	// GetNextSibling returns the widgets next sibling.
-	//
-	// This API is primarily meant for widget implementations.
-	//
-	// This method is inherited from Widget
-	GetNextSibling() Widget
-	// GetOpacity the requested opacity for this widget.
-	//
-	// See [method@Gtk.Widget.set_opacity].
-	//
-	// This method is inherited from Widget
-	GetOpacity() float64
-	// GetOverflow returns the widgets overflow value.
-	//
-	// This method is inherited from Widget
-	GetOverflow() Overflow
-	// GetPangoContext gets a `PangoContext` with the appropriate font map, font
-	// description, and base direction for this widget.
-	//
-	// Unlike the context returned by [method@Gtk.Widget.create_pango_context],
-	// this context is owned by the widget (it can be used until the screen for
-	// the widget changes or the widget is removed from its toplevel), and will
-	// be updated to match any changes to the widget’s attributes. This can be
-	// tracked by listening to changes of the [property@Gtk.Widget:root]
-	// property on the widget.
-	//
-	// This method is inherited from Widget
-	GetPangoContext() pango.Context
-	// GetParent returns the parent widget of @widget.
-	//
-	// This method is inherited from Widget
-	GetParent() Widget
-	// GetPreferredSize retrieves the minimum and natural size of a widget,
-	// taking into account the widget’s preference for height-for-width
-	// management.
-	//
-	// This is used to retrieve a suitable size by container widgets which do
-	// not impose any restrictions on the child placement. It can be used to
-	// deduce toplevel window and menu sizes as well as child widgets in
-	// free-form containers such as `GtkFixed`.
-	//
-	// Handle with care. Note that the natural height of a height-for-width
-	// widget will generally be a smaller size than the minimum height, since
-	// the required height for the natural width is generally smaller than the
-	// required height for the minimum width.
-	//
-	// Use [id@gtk_widget_measure] if you want to support baseline alignment.
-	//
-	// This method is inherited from Widget
-	GetPreferredSize() (minimumSize Requisition, naturalSize Requisition)
-	// GetPrevSibling returns the widgets previous sibling.
-	//
-	// This API is primarily meant for widget implementations.
-	//
-	// This method is inherited from Widget
-	GetPrevSibling() Widget
-	// GetPrimaryClipboard gets the primary clipboard of @widget.
-	//
-	// This is a utility function to get the primary clipboard object for the
-	// `GdkDisplay` that @widget is using.
-	//
-	// Note that this function always works, even when @widget is not realized
-	// yet.
-	//
-	// This method is inherited from Widget
-	GetPrimaryClipboard() gdk.Clipboard
-	// GetRealized determines whether @widget is realized.
-	//
-	// This method is inherited from Widget
-	GetRealized() bool
-	// GetReceivesDefault determines whether @widget is always treated as the
-	// default widget within its toplevel when it has the focus, even if another
-	// widget is the default.
-	//
-	// See [method@Gtk.Widget.set_receives_default].
-	//
-	// This method is inherited from Widget
-	GetReceivesDefault() bool
-	// GetRequestMode gets whether the widget prefers a height-for-width layout
-	// or a width-for-height layout.
-	//
-	// Single-child widgets generally propagate the preference of their child,
-	// more complex widgets need to request something either in context of their
-	// children or in context of their allocation capabilities.
-	//
-	// This method is inherited from Widget
-	GetRequestMode() SizeRequestMode
-	// GetRoot returns the `GtkRoot` widget of @widget.
-	//
-	// This function will return nil if the widget is not contained inside a
-	// widget tree with a root widget.
-	//
-	// `GtkRoot` widgets will return themselves here.
-	//
-	// This method is inherited from Widget
-	GetRoot() Root
-	// GetScaleFactor retrieves the internal scale factor that maps from window
-	// coordinates to the actual device pixels.
-	//
-	// On traditional systems this is 1, on high density outputs, it can be a
-	// higher value (typically 2).
-	//
-	// See [method@Gdk.Surface.get_scale_factor].
-	//
-	// This method is inherited from Widget
-	GetScaleFactor() int
-	// GetSensitive returns the widget’s sensitivity.
-	//
-	// This function returns the value that has been set using
-	// [method@Gtk.Widget.set_sensitive]).
-	//
-	// The effective sensitivity of a widget is however determined by both its
-	// own and its parent widget’s sensitivity. See
-	// [method@Gtk.Widget.is_sensitive].
-	//
-	// This method is inherited from Widget
-	GetSensitive() bool
-	// GetSettings gets the settings object holding the settings used for this
-	// widget.
-	//
-	// Note that this function can only be called when the `GtkWidget` is
-	// attached to a toplevel, since the settings object is specific to a
-	// particular `GdkDisplay`. If you want to monitor the widget for changes in
-	// its settings, connect to notify::display.
-	//
-	// This method is inherited from Widget
-	GetSettings() Settings
-	// GetSize returns the content width or height of the widget.
-	//
-	// Which dimension is returned depends on @orientation.
-	//
-	// This is equivalent to calling [method@Gtk.Widget.get_width] for
-	// GTK_ORIENTATION_HORIZONTAL or [method@Gtk.Widget.get_height] for
-	// GTK_ORIENTATION_VERTICAL, but can be used when writing
-	// orientation-independent code, such as when implementing
-	// [iface@Gtk.Orientable] widgets.
-	//
-	// This method is inherited from Widget
-	GetSize(orientation Orientation) int
-	// GetSizeRequest gets the size request that was explicitly set for the
-	// widget using gtk_widget_set_size_request().
-	//
-	// A value of -1 stored in @width or @height indicates that that dimension
-	// has not been set explicitly and the natural requisition of the widget
-	// will be used instead. See [method@Gtk.Widget.set_size_request]. To get
-	// the size a widget will actually request, call [method@Gtk.Widget.measure]
-	// instead of this function.
-	//
-	// This method is inherited from Widget
-	GetSizeRequest() (width int, height int)
-	// GetStateFlags returns the widget state as a flag set.
-	//
-	// It is worth mentioning that the effective GTK_STATE_FLAG_INSENSITIVE
-	// state will be returned, that is, also based on parent insensitivity, even
-	// if @widget itself is sensitive.
-	//
-	// Also note that if you are looking for a way to obtain the
-	// [flags@Gtk.StateFlags] to pass to a [class@Gtk.StyleContext] method, you
-	// should look at [method@Gtk.StyleContext.get_state].
-	//
-	// This method is inherited from Widget
-	GetStateFlags() StateFlags
-	// GetStyleContext returns the style context associated to @widget.
-	//
-	// The returned object is guaranteed to be the same for the lifetime of
-	// @widget.
-	//
-	// This method is inherited from Widget
-	GetStyleContext() StyleContext
-	// GetTemplateChild: fetch an object build from the template XML for
-	// @widget_type in this @widget instance.
-	//
-	// This will only report children which were previously declared with
-	// [method@Gtk.WidgetClass.bind_template_child_full] or one of its variants.
-	//
-	// This function is only meant to be called for code which is private to the
-	// @widget_type which declared the child and is meant for language bindings
-	// which cannot easily make use of the GObject structure offsets.
-	//
-	// This method is inherited from Widget
-	GetTemplateChild(widgetType externglib.Type, name string) gextras.Objector
-	// GetTooltipMarkup gets the contents of the tooltip for @widget.
-	//
-	// If the tooltip has not been set using
-	// [method@Gtk.Widget.set_tooltip_markup], this function returns nil.
-	//
-	// This method is inherited from Widget
-	GetTooltipMarkup() string
-	// GetTooltipText gets the contents of the tooltip for @widget.
-	//
-	// If the @widget's tooltip was set using
-	// [method@Gtk.Widget.set_tooltip_markup], this function will return the
-	// escaped text.
-	//
-	// This method is inherited from Widget
-	GetTooltipText() string
-	// GetVAlign gets the vertical alignment of @widget.
-	//
-	// This method is inherited from Widget
-	GetVAlign() Align
-	// GetVExpand gets whether the widget would like any available extra
-	// vertical space.
-	//
-	// See [method@Gtk.Widget.get_hexpand] for more detail.
-	//
-	// This method is inherited from Widget
-	GetVExpand() bool
-	// GetVExpandSet gets whether gtk_widget_set_vexpand() has been used to
-	// explicitly set the expand flag on this widget.
-	//
-	// See [method@Gtk.Widget.get_hexpand_set] for more detail.
-	//
-	// This method is inherited from Widget
-	GetVExpandSet() bool
-	// GetVisible determines whether the widget is visible.
-	//
-	// If you want to take into account whether the widget’s parent is also
-	// marked as visible, use [method@Gtk.Widget.is_visible] instead.
-	//
-	// This function does not check if the widget is obscured in any way.
-	//
-	// See [method@Gtk.Widget.set_visible].
-	//
-	// This method is inherited from Widget
-	GetVisible() bool
-	// GetWidth returns the content width of the widget.
-	//
-	// This function returns the size passed to its size-allocate
-	// implementation, which is the size you should be using in
-	// GtkWidgetClass.snapshot().
-	//
-	// For pointer events, see [method@Gtk.Widget.contains].
-	//
-	// This method is inherited from Widget
-	GetWidth() int
-	// GrabFocus causes @widget to have the keyboard focus for the `GtkWindow`
-	// it's inside.
-	//
-	// If @widget is not focusable, or its ::grab_focus implementation cannot
-	// transfer the focus to a descendant of @widget that is focusable, it will
-	// not take focus and false will be returned.
-	//
-	// Calling [method@Gtk.Widget.grab_focus] on an already focused widget is
-	// allowed, should not have an effect, and return true.
-	//
-	// This method is inherited from Widget
-	GrabFocus() bool
-	// HasCSSClass returns whether @css_class is currently applied to @widget.
-	//
-	// This method is inherited from Widget
-	HasCSSClass(cssClass string) bool
-	// HasDefault determines whether @widget is the current default widget
-	// within its toplevel.
-	//
-	// This method is inherited from Widget
-	HasDefault() bool
-	// HasFocus determines if the widget has the global input focus.
-	//
-	// See [method@Gtk.Widget.is_focus] for the difference between having the
-	// global input focus, and only having the focus within a toplevel.
-	//
-	// This method is inherited from Widget
-	HasFocus() bool
-	// HasVisibleFocus determines if the widget should show a visible indication
-	// that it has the global input focus.
-	//
-	// This is a convenience function that takes into account whether focus
-	// indication should currently be shown in the toplevel window of @widget.
-	// See [method@Gtk.Window.get_focus_visible] for more information about
-	// focus indication.
-	//
-	// To find out if the widget has the global input focus, use
-	// [method@Gtk.Widget.has_focus].
-	//
-	// This method is inherited from Widget
-	HasVisibleFocus() bool
-	// Hide reverses the effects of gtk_widget_show().
-	//
-	// This is causing the widget to be hidden (invisible to the user).
-	//
-	// This method is inherited from Widget
-	Hide()
-	// InDestruction returns whether the widget is currently being destroyed.
-	//
-	// This information can sometimes be used to avoid doing unnecessary work.
-	//
-	// This method is inherited from Widget
-	InDestruction() bool
-	// InitTemplate creates and initializes child widgets defined in templates.
-	//
-	// This function must be called in the instance initializer for any class
-	// which assigned itself a template using
-	// [method@Gtk.WidgetClass.set_template].
-	//
-	// It is important to call this function in the instance initializer of a
-	// `GtkWidget` subclass and not in `GObject.constructed()` or
-	// `GObject.constructor()` for two reasons:
-	//
-	//    - derived widgets will assume that the composite widgets
-	//      defined by its parent classes have been created in their
-	//      relative instance initializers
-	//    - when calling `g_object_new()` on a widget with composite templates,
-	//      it’s important to build the composite widgets before the construct
-	//      properties are set. Properties passed to `g_object_new()` should
-	//      take precedence over properties set in the private template XML
-	//
-	// A good rule of thumb is to call this function as the first thing in an
-	// instance initialization function.
-	//
-	// This method is inherited from Widget
-	InitTemplate()
-	// InsertAfter inserts @widget into the child widget list of @parent.
-	//
-	// It will be placed after @previous_sibling, or at the beginning if
-	// @previous_sibling is nil.
-	//
-	// After calling this function, `gtk_widget_get_prev_sibling(widget)` will
-	// return @previous_sibling.
-	//
-	// If @parent is already set as the parent widget of @widget, this function
-	// can also be used to reorder @widget in the child widget list of @parent.
-	//
-	// This API is primarily meant for widget implementations; if you are just
-	// using a widget, you *must* use its own API for adding children.
-	//
-	// This method is inherited from Widget
-	InsertAfter(parent Widget, previousSibling Widget)
-	// InsertBefore inserts @widget into the child widget list of @parent.
-	//
-	// It will be placed before @next_sibling, or at the end if @next_sibling is
-	// nil.
-	//
-	// After calling this function, `gtk_widget_get_next_sibling(widget)` will
-	// return @next_sibling.
-	//
-	// If @parent is already set as the parent widget of @widget, this function
-	// can also be used to reorder @widget in the child widget list of @parent.
-	//
-	// This API is primarily meant for widget implementations; if you are just
-	// using a widget, you *must* use its own API for adding children.
-	//
-	// This method is inherited from Widget
-	InsertBefore(parent Widget, nextSibling Widget)
-	// IsAncestor determines whether @widget is somewhere inside @ancestor,
-	// possibly with intermediate containers.
-	//
-	// This method is inherited from Widget
-	IsAncestor(ancestor Widget) bool
-	// IsDrawable determines whether @widget can be drawn to.
-	//
-	// A widget can be drawn if it is mapped and visible.
-	//
-	// This method is inherited from Widget
-	IsDrawable() bool
-	// IsFocus determines if the widget is the focus widget within its toplevel.
-	//
-	// This does not mean that the [property@Gtk.Widget:has-focus] property is
-	// necessarily set; [property@Gtk,Widget:has-focus] will only be set if the
-	// toplevel widget additionally has the global input focus.)
-	//
-	// This method is inherited from Widget
-	IsFocus() bool
-	// IsSensitive returns the widget’s effective sensitivity.
-	//
-	// This means it is sensitive itself and also its parent widget is
-	// sensitive.
-	//
-	// This method is inherited from Widget
-	IsSensitive() bool
-	// IsVisible determines whether the widget and all its parents are marked as
-	// visible.
-	//
-	// This function does not check if the widget is obscured in any way.
-	//
-	// See also [method@Gtk.Widget.get_visible] and
-	// [method@Gtk.Widget.set_visible].
-	//
-	// This method is inherited from Widget
-	IsVisible() bool
-	// KeynavFailed emits the `::keynav-failed` signal on the widget.
-	//
-	// This function should be called whenever keyboard navigation within a
-	// single widget hits a boundary.
-	//
-	// The return value of this function should be interpreted in a way similar
-	// to the return value of [method@Gtk.Widget.child_focus]. When true is
-	// returned, stay in the widget, the failed keyboard navigation is OK and/or
-	// there is nowhere we can/should move the focus to. When false is returned,
-	// the caller should continue with keyboard navigation outside the widget,
-	// e.g. by calling [method@Gtk.Widget.child_focus] on the widget’s toplevel.
-	//
-	// The default [signal@Gtk.Widget::keynav-failed] handler returns false for
-	// GTK_DIR_TAB_FORWARD and GTK_DIR_TAB_BACKWARD. For the other values of
-	// DirectionType it returns true.
-	//
-	// Whenever the default handler returns true, it also calls
-	// [method@Gtk.Widget.error_bell] to notify the user of the failed keyboard
-	// navigation.
-	//
-	// A use case for providing an own implementation of ::keynav-failed (either
-	// by connecting to it or by overriding it) would be a row of
-	// [class@Gtk.Entry] widgets where the user should be able to navigate the
-	// entire row with the cursor keys, as e.g. known from user interfaces that
-	// require entering license keys.
-	//
-	// This method is inherited from Widget
-	KeynavFailed(direction DirectionType) bool
-	// Map causes a widget to be mapped if it isn’t already.
-	//
-	// This function is only for use in widget implementations.
-	//
-	// This method is inherited from Widget
-	Map()
-	// Measure measures @widget in the orientation @orientation and for the
-	// given @for_size.
-	//
-	// As an example, if @orientation is GTK_ORIENTATION_HORIZONTAL and
-	// @for_size is 300, this functions will compute the minimum and natural
-	// width of @widget if it is allocated at a height of 300 pixels.
-	//
-	// See GtkWidget’s geometry management section
-	// (class.Widget.html#height-for-width-geometry-management) for a more
-	// details on implementing WidgetClass.measure().
-	//
-	// This method is inherited from Widget
-	Measure(orientation Orientation, forSize int) (minimum int, natural int, minimumBaseline int, naturalBaseline int)
-	// MnemonicActivate emits the `GtkWidget`::mnemonic-activate signal.
-	//
-	// This method is inherited from Widget
-	MnemonicActivate(groupCycling bool) bool
-	// Pick finds the descendant of @widget closest to the screen at the point
-	// (@x, @y).
-	//
-	// The point must be given in widget coordinates, so (0, 0) is assumed to be
-	// the top left of @widget's content area.
-	//
-	// Usually widgets will return nil if the given coordinate is not contained
-	// in @widget checked via [method@Gtk.Widget.contains]. Otherwise they will
-	// recursively try to find a child that does not return nil. Widgets are
-	// however free to customize their picking algorithm.
-	//
-	// This function is used on the toplevel to determine the widget below the
-	// mouse cursor for purposes of hover highlighting and delivering events.
-	//
-	// This method is inherited from Widget
-	Pick(x float64, y float64, flags PickFlags) Widget
-	// QueueAllocate flags the widget for a rerun of the
-	// GtkWidgetClass::size_allocate function.
-	//
-	// Use this function instead of [method@Gtk.Widget.queue_resize] when the
-	// @widget's size request didn't change but it wants to reposition its
-	// contents.
-	//
-	// An example user of this function is [method@Gtk.Widget.set_halign].
-	//
-	// This function is only for use in widget implementations.
-	//
-	// This method is inherited from Widget
-	QueueAllocate()
-	// QueueDraw schedules this widget to be redrawn in paint phase of the
-	// current or the next frame.
-	//
-	// This means @widget's GtkWidgetClass.snapshot() implementation will be
-	// called.
-	//
-	// This method is inherited from Widget
-	QueueDraw()
-	// QueueResize flags a widget to have its size renegotiated.
-	//
-	// This should be called when a widget for some reason has a new size
-	// request. For example, when you change the text in a [class@Gtk.Label],
-	// the label queues a resize to ensure there’s enough space for the new
-	// text.
-	//
-	// Note that you cannot call gtk_widget_queue_resize() on a widget from
-	// inside its implementation of the GtkWidgetClass::size_allocate virtual
-	// method. Calls to gtk_widget_queue_resize() from inside
-	// GtkWidgetClass::size_allocate will be silently ignored.
-	//
-	// This function is only for use in widget implementations.
-	//
-	// This method is inherited from Widget
-	QueueResize()
-	// Realize creates the GDK resources associated with a widget.
-	//
-	// Normally realization happens implicitly; if you show a widget and all its
-	// parent containers, then the widget will be realized and mapped
-	// automatically.
-	//
-	// Realizing a widget requires all the widget’s parent widgets to be
-	// realized; calling this function realizes the widget’s parents in addition
-	// to @widget itself. If a widget is not yet inside a toplevel window when
-	// you realize it, bad things will happen.
-	//
-	// This function is primarily used in widget implementations, and isn’t very
-	// useful otherwise. Many times when you think you might need it, a better
-	// approach is to connect to a signal that will be called after the widget
-	// is realized automatically, such as [signal@Gtk.Widget::realize].
-	//
-	// This method is inherited from Widget
-	Realize()
-	// RemoveController removes @controller from @widget, so that it doesn't
-	// process events anymore.
-	//
-	// It should not be used again.
-	//
-	// Widgets will remove all event controllers automatically when they are
-	// destroyed, there is normally no need to call this function.
-	//
-	// This method is inherited from Widget
-	RemoveController(controller EventController)
-	// RemoveCSSClass removes a style from @widget.
-	//
-	// After this, the style of @widget will stop matching for @css_class.
-	//
-	// This method is inherited from Widget
-	RemoveCSSClass(cssClass string)
-	// RemoveMnemonicLabel removes a widget from the list of mnemonic labels for
-	// this widget.
-	//
-	// See [method@Gtk.Widget.list_mnemonic_labels]. The widget must have
-	// previously been added to the list with
-	// [method@Gtk.Widget.add_mnemonic_label].
-	//
-	// This method is inherited from Widget
-	RemoveMnemonicLabel(label Widget)
-	// RemoveTickCallback removes a tick callback previously registered with
-	// gtk_widget_add_tick_callback().
-	//
-	// This method is inherited from Widget
-	RemoveTickCallback(id uint)
-	// SetCanFocus specifies whether the input focus can enter the widget or any
-	// of its children.
-	//
-	// Applications should set @can_focus to false to mark a widget as for
-	// pointer/touch use only.
-	//
-	// Note that having @can_focus be true is only one of the necessary
-	// conditions for being focusable. A widget must also be sensitive and
-	// focusable and not have an ancestor that is marked as not can-focus in
-	// order to receive input focus.
-	//
-	// See [method@Gtk.Widget.grab_focus] for actually setting the input focus
-	// on a widget.
-	//
-	// This method is inherited from Widget
-	SetCanFocus(canFocus bool)
-	// SetCanTarget sets whether @widget can be the target of pointer events.
-	//
-	// This method is inherited from Widget
-	SetCanTarget(canTarget bool)
-	// SetChildVisible sets whether @widget should be mapped along with its
-	// parent.
-	//
-	// The child visibility can be set for widget before it is added to a
-	// container with [method@Gtk.Widget.set_parent], to avoid mapping children
-	// unnecessary before immediately unmapping them. However it will be reset
-	// to its default state of true when the widget is removed from a container.
-	//
-	// Note that changing the child visibility of a widget does not queue a
-	// resize on the widget. Most of the time, the size of a widget is computed
-	// from all visible children, whether or not they are mapped. If this is not
-	// the case, the container can queue a resize itself.
-	//
-	// This function is only useful for container implementations and should
-	// never be called by an application.
-	//
-	// This method is inherited from Widget
-	SetChildVisible(childVisible bool)
-	// SetCSSClasses: will clear all style classes applied to @widget and
-	// replace them with @classes.
-	//
-	// This method is inherited from Widget
-	SetCSSClasses(classes []string)
-	// SetCursor sets the cursor to be shown when pointer devices point towards
-	// @widget.
-	//
-	// If the @cursor is NULL, @widget will use the cursor inherited from the
-	// parent widget.
-	//
-	// This method is inherited from Widget
-	SetCursor(cursor gdk.Cursor)
-	// SetCursorFromName sets a named cursor to be shown when pointer devices
-	// point towards @widget.
-	//
-	// This is a utility function that creates a cursor via
-	// [ctor@Gdk.Cursor.new_from_name] and then sets it on @widget with
-	// [method@Gtk.Widget.set_cursor]. See those functions for details.
-	//
-	// On top of that, this function allows @name to be nil, which will do the
-	// same as calling [method@Gtk.Widget.set_cursor] with a nil cursor.
-	//
-	// This method is inherited from Widget
-	SetCursorFromName(name string)
-	// SetDirection sets the reading direction on a particular widget.
-	//
-	// This direction controls the primary direction for widgets containing
-	// text, and also the direction in which the children of a container are
-	// packed. The ability to set the direction is present in order so that
-	// correct localization into languages with right-to-left reading directions
-	// can be done. Generally, applications will let the default reading
-	// direction present, except for containers where the containers are
-	// arranged in an order that is explicitly visual rather than logical (such
-	// as buttons for text justification).
-	//
-	// If the direction is set to GTK_TEXT_DIR_NONE, then the value set by
-	// [func@Gtk.Widget.set_default_direction] will be used.
-	//
-	// This method is inherited from Widget
-	SetDirection(dir TextDirection)
-	// SetFocusChild: set @child as the current focus child of @widget.
-	//
-	// The previous focus child will be unset.
-	//
-	// This function is only suitable for widget implementations. If you want a
-	// certain widget to get the input focus, call
-	// [method@Gtk.Widget.grab_focus] on it.
-	//
-	// This method is inherited from Widget
-	SetFocusChild(child Widget)
-	// SetFocusOnClick sets whether the widget should grab focus when it is
-	// clicked with the mouse.
-	//
-	// Making mouse clicks not grab focus is useful in places like toolbars
-	// where you don’t want the keyboard focus removed from the main area of the
-	// application.
-	//
-	// This method is inherited from Widget
-	SetFocusOnClick(focusOnClick bool)
-	// SetFocusable specifies whether @widget can own the input focus.
-	//
-	// Widget implementations should set @focusable to true in their init()
-	// function if they want to receive keyboard input.
-	//
-	// Note that having @focusable be true is only one of the necessary
-	// conditions for being focusable. A widget must also be sensitive and
-	// can-focus and not have an ancestor that is marked as not can-focus in
-	// order to receive input focus.
-	//
-	// See [method@Gtk.Widget.grab_focus] for actually setting the input focus
-	// on a widget.
-	//
-	// This method is inherited from Widget
-	SetFocusable(focusable bool)
-	// SetFontMap sets the font map to use for Pango rendering.
-	//
-	// The font map is the object that is used to look up fonts. Setting a
-	// custom font map can be useful in special situations, e.g. when you need
-	// to add application-specific fonts to the set of available fonts.
-	//
-	// When not set, the widget will inherit the font map from its parent.
-	//
-	// This method is inherited from Widget
-	SetFontMap(fontMap pango.FontMap)
-	// SetFontOptions sets the `cairo_font_options_t` used for Pango rendering
-	// in this widget.
-	//
-	// When not set, the default font options for the `GdkDisplay` will be used.
-	//
-	// This method is inherited from Widget
-	SetFontOptions(options *cairo.FontOptions)
-	// SetHAlign sets the horizontal alignment of @widget.
-	//
-	// This method is inherited from Widget
-	SetHAlign(align Align)
-	// SetHasTooltip sets the `has-tooltip` property on @widget to @has_tooltip.
-	//
-	// This method is inherited from Widget
-	SetHasTooltip(hasTooltip bool)
-	// SetHExpand sets whether the widget would like any available extra
-	// horizontal space.
-	//
-	// When a user resizes a `GtkWindow`, widgets with expand=TRUE generally
-	// receive the extra space. For example, a list or scrollable area or
-	// document in your window would often be set to expand.
-	//
-	// Call this function to set the expand flag if you would like your widget
-	// to become larger horizontally when the window has extra room.
-	//
-	// By default, widgets automatically expand if any of their children want to
-	// expand. (To see if a widget will automatically expand given its current
-	// children and state, call [method@Gtk.Widget.compute_expand]. A container
-	// can decide how the expandability of children affects the expansion of the
-	// container by overriding the compute_expand virtual method on
-	// `GtkWidget`.).
-	//
-	// Setting hexpand explicitly with this function will override the automatic
-	// expand behavior.
-	//
-	// This function forces the widget to expand or not to expand, regardless of
-	// children. The override occurs because [method@Gtk.Widget.set_hexpand]
-	// sets the hexpand-set property (see [method@Gtk.Widget.set_hexpand_set])
-	// which causes the widget’s hexpand value to be used, rather than looking
-	// at children and widget state.
-	//
-	// This method is inherited from Widget
-	SetHExpand(expand bool)
-	// SetHExpandSet sets whether the hexpand flag will be used.
-	//
-	// The [property@Gtk.Widget:hexpand-set] property will be set automatically
-	// when you call [method@Gtk.Widget.set_hexpand] to set hexpand, so the most
-	// likely reason to use this function would be to unset an explicit expand
-	// flag.
-	//
-	// If hexpand is set, then it overrides any computed expand value based on
-	// child widgets. If hexpand is not set, then the expand value depends on
-	// whether any children of the widget would like to expand.
-	//
-	// There are few reasons to use this function, but it’s here for
-	// completeness and consistency.
-	//
-	// This method is inherited from Widget
-	SetHExpandSet(set bool)
-	// SetLayoutManager sets the layout manager delegate instance that provides
-	// an implementation for measuring and allocating the children of @widget.
-	//
-	// This method is inherited from Widget
-	SetLayoutManager(layoutManager LayoutManager)
-	// SetMarginBottom sets the bottom margin of @widget.
-	//
-	// This method is inherited from Widget
-	SetMarginBottom(margin int)
-	// SetMarginEnd sets the end margin of @widget.
-	//
-	// This method is inherited from Widget
-	SetMarginEnd(margin int)
-	// SetMarginStart sets the start margin of @widget.
-	//
-	// This method is inherited from Widget
-	SetMarginStart(margin int)
-	// SetMarginTop sets the top margin of @widget.
-	//
-	// This method is inherited from Widget
-	SetMarginTop(margin int)
-	// SetName sets a widgets name.
-	//
-	// Setting a name allows you to refer to the widget from a CSS file. You can
-	// apply a style to widgets with a particular name in the CSS file. See the
-	// documentation for the CSS syntax (on the same page as the docs for
-	// [class@Gtk.StyleContext].
-	//
-	// Note that the CSS syntax has certain special characters to delimit and
-	// represent elements in a selector (period, #, >, *...), so using these
-	// will make your widget impossible to match by name. Any combination of
-	// alphanumeric symbols, dashes and underscores will suffice.
-	//
-	// This method is inherited from Widget
-	SetName(name string)
-	// SetOpacity: request the @widget to be rendered partially transparent.
-	//
-	// An opacity of 0 is fully transparent and an opacity of 1 is fully opaque.
-	//
-	// Opacity works on both toplevel widgets and child widgets, although there
-	// are some limitations: For toplevel widgets, applying opacity depends on
-	// the capabilities of the windowing system. On X11, this has any effect
-	// only on X displays with a compositing manager, see
-	// gdk_display_is_composited(). On Windows and Wayland it should always
-	// work, although setting a window’s opacity after the window has been shown
-	// may cause some flicker.
-	//
-	// Note that the opacity is inherited through inclusion — if you set a
-	// toplevel to be partially translucent, all of its content will appear
-	// translucent, since it is ultimatively rendered on that toplevel. The
-	// opacity value itself is not inherited by child widgets (since that would
-	// make widgets deeper in the hierarchy progressively more translucent). As
-	// a consequence, [class@Gtk.Popover]s and other [class@Gtk.Native] widgets
-	// with their own surface will use their own opacity value, and thus by
-	// default appear non-translucent, even if they are attached to a toplevel
-	// that is translucent.
-	//
-	// This method is inherited from Widget
-	SetOpacity(opacity float64)
-	// SetOverflow sets how @widget treats content that is drawn outside the
-	// widget's content area.
-	//
-	// See the definition of [enum@Gtk.Overflow] for details.
-	//
-	// This setting is provided for widget implementations and should not be
-	// used by application code.
-	//
-	// The default value is GTK_OVERFLOW_VISIBLE.
-	//
-	// This method is inherited from Widget
-	SetOverflow(overflow Overflow)
-	// SetParent sets @parent as the parent widget of @widget.
-	//
-	// This takes care of details such as updating the state and style of the
-	// child to reflect its new location and resizing the parent. The opposite
-	// function is [method@Gtk.Widget.unparent].
-	//
-	// This function is useful only when implementing subclasses of `GtkWidget`.
-	//
-	// This method is inherited from Widget
-	SetParent(parent Widget)
-	// SetReceivesDefault specifies whether @widget will be treated as the
-	// default widget within its toplevel when it has the focus, even if another
-	// widget is the default.
-	//
-	// This method is inherited from Widget
-	SetReceivesDefault(receivesDefault bool)
-	// SetSensitive sets the sensitivity of a widget.
-	//
-	// A widget is sensitive if the user can interact with it. Insensitive
-	// widgets are “grayed out” and the user can’t interact with them.
-	// Insensitive widgets are known as “inactive”, “disabled”, or “ghosted” in
-	// some other toolkits.
-	//
-	// This method is inherited from Widget
-	SetSensitive(sensitive bool)
-	// SetSizeRequest sets the minimum size of a widget.
-	//
-	// That is, the widget’s size request will be at least @width by @height.
-	// You can use this function to force a widget to be larger than it normally
-	// would be.
-	//
-	// In most cases, [method@Gtk.Window.set_default_size] is a better choice
-	// for toplevel windows than this function; setting the default size will
-	// still allow users to shrink the window. Setting the size request will
-	// force them to leave the window at least as large as the size request.
-	//
-	// Note the inherent danger of setting any fixed size - themes, translations
-	// into other languages, different fonts, and user action can all change the
-	// appropriate size for a given widget. So, it's basically impossible to
-	// hardcode a size that will always be correct.
-	//
-	// The size request of a widget is the smallest size a widget can accept
-	// while still functioning well and drawing itself correctly. However in
-	// some strange cases a widget may be allocated less than its requested
-	// size, and in many cases a widget may be allocated more space than it
-	// requested.
-	//
-	// If the size request in a given direction is -1 (unset), then the
-	// “natural” size request of the widget will be used instead.
-	//
-	// The size request set here does not include any margin from the properties
-	// [property@Gtk.Widget:margin-start], [property@Gtk.Widget:margin-end],
-	// [property@Gtk.Widget:margin-top], and
-	// [property@Gtk.Widget:margin-bottom], but it does include pretty much all
-	// other padding or border properties set by any subclass of `GtkWidget`.
-	//
-	// This method is inherited from Widget
-	SetSizeRequest(width int, height int)
-	// SetStateFlags turns on flag values in the current widget state.
-	//
-	// Typical widget states are insensitive, prelighted, etc.
-	//
-	// This function accepts the values GTK_STATE_FLAG_DIR_LTR and
-	// GTK_STATE_FLAG_DIR_RTL but ignores them. If you want to set the widget's
-	// direction, use [method@Gtk.Widget.set_direction].
-	//
-	// This function is for use in widget implementations.
-	//
-	// This method is inherited from Widget
-	SetStateFlags(flags StateFlags, clear bool)
-	// SetTooltipMarkup sets @markup as the contents of the tooltip, which is
-	// marked up with Pango markup.
-	//
-	// This function will take care of setting the
-	// [property@Gtk.Widget:has-tooltip] as a side effect, and of the default
-	// handler for the [signal@Gtk.Widget::query-tooltip] signal.
-	//
-	// See also [method@Gtk.Tooltip.set_markup].
-	//
-	// This method is inherited from Widget
-	SetTooltipMarkup(markup string)
-	// SetTooltipText sets @text as the contents of the tooltip.
-	//
-	// If @text contains any markup, it will be escaped.
-	//
-	// This function will take care of setting [property@Gtk.Widget:has-tooltip]
-	// as a side effect, and of the default handler for the
-	// [signal@Gtk.Widget::query-tooltip] signal.
-	//
-	// See also [method@Gtk.Tooltip.set_text].
-	//
-	// This method is inherited from Widget
-	SetTooltipText(text string)
-	// SetVAlign sets the vertical alignment of @widget.
-	//
-	// This method is inherited from Widget
-	SetVAlign(align Align)
-	// SetVExpand sets whether the widget would like any available extra
-	// vertical space.
-	//
-	// See [method@Gtk.Widget.set_hexpand] for more detail.
-	//
-	// This method is inherited from Widget
-	SetVExpand(expand bool)
-	// SetVExpandSet sets whether the vexpand flag will be used.
-	//
-	// See [method@Gtk.Widget.set_hexpand_set] for more detail.
-	//
-	// This method is inherited from Widget
-	SetVExpandSet(set bool)
-	// SetVisible sets the visibility state of @widget.
-	//
-	// Note that setting this to true doesn’t mean the widget is actually
-	// viewable, see [method@Gtk.Widget.get_visible].
-	//
-	// This function simply calls [method@Gtk.Widget.show] or
-	// [method@Gtk.Widget.hide] but is nicer to use when the visibility of the
-	// widget depends on some condition.
-	//
-	// This method is inherited from Widget
-	SetVisible(visible bool)
-	// ShouldLayout returns whether @widget should contribute to the measuring
-	// and allocation of its parent.
-	//
-	// This is false for invisible children, but also for children that have
-	// their own surface.
-	//
-	// This method is inherited from Widget
-	ShouldLayout() bool
-	// Show flags a widget to be displayed.
-	//
-	// Any widget that isn’t shown will not appear on the screen.
-	//
-	// Remember that you have to show the containers containing a widget, in
-	// addition to the widget itself, before it will appear onscreen.
-	//
-	// When a toplevel container is shown, it is immediately realized and
-	// mapped; other shown widgets are realized and mapped when their toplevel
-	// container is realized and mapped.
-	//
-	// This method is inherited from Widget
-	Show()
-	// SnapshotChild: snapshot the a child of @widget.
-	//
-	// When a widget receives a call to the snapshot function, it must send
-	// synthetic `GtkWidget`Class.snapshot() calls to all children. This
-	// function provides a convenient way of doing this. A widget, when it
-	// receives a call to its `GtkWidget`Class.snapshot() function, calls
-	// gtk_widget_snapshot_child() once for each child, passing in the @snapshot
-	// the widget received.
-	//
-	// gtk_widget_snapshot_child() takes care of translating the origin of
-	// @snapshot, and deciding whether the child needs to be snapshot.
-	//
-	// This function does nothing for children that implement `GtkNative`.
-	//
-	// This method is inherited from Widget
-	SnapshotChild(child Widget, snapshot Snapshot)
-	// TranslateCoordinates: translate coordinates relative to @src_widget’s
-	// allocation to coordinates relative to @dest_widget’s allocations.
-	//
-	// In order to perform this operation, both widget must share a common
-	// ancestor.
-	//
-	// This method is inherited from Widget
-	TranslateCoordinates(destWidget Widget, srcX float64, srcY float64) (destX float64, destY float64, ok bool)
-	// TriggerTooltipQuery triggers a tooltip query on the display where the
-	// toplevel of @widget is located.
-	//
-	// This method is inherited from Widget
-	TriggerTooltipQuery()
-	// Unmap causes a widget to be unmapped if it’s currently mapped.
-	//
-	// This function is only for use in widget implementations.
-	//
-	// This method is inherited from Widget
-	Unmap()
-	// Unparent: dissociate @widget from its parent.
-	//
-	// This function is only for use in widget implementations, typically in
-	// dispose.
-	//
-	// This method is inherited from Widget
-	Unparent()
-	// Unrealize causes a widget to be unrealized (frees all GDK resources
-	// associated with the widget).
-	//
-	// This function is only useful in widget implementations.
-	//
-	// This method is inherited from Widget
-	Unrealize()
-	// UnsetStateFlags turns off flag values for the current widget state.
-	//
-	// See [method@Gtk.Widget.set_state_flags].
-	//
-	// This function is for use in widget implementations.
-	//
-	// This method is inherited from Widget
-	UnsetStateFlags(flags StateFlags)
-	// GetAccessibleRole retrieves the `GtkAccessibleRole` for the given
-	// `GtkAccessible`.
-	//
-	// This method is inherited from Accessible
-	GetAccessibleRole() AccessibleRole
-	// ResetProperty resets the accessible @property to its default value.
-	//
-	// This method is inherited from Accessible
-	ResetProperty(property AccessibleProperty)
-	// ResetRelation resets the accessible @relation to its default value.
-	//
-	// This method is inherited from Accessible
-	ResetRelation(relation AccessibleRelation)
-	// ResetState resets the accessible @state to its default value.
-	//
-	// This method is inherited from Accessible
-	ResetState(state AccessibleState)
-	// UpdatePropertyValue updates an array of accessible properties.
-	//
-	// This function should be called by `GtkWidget` types whenever an
-	// accessible property change must be communicated to assistive
-	// technologies.
-	//
-	// This function is meant to be used by language bindings.
-	//
-	// This method is inherited from Accessible
-	UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value)
-	// UpdateRelationValue updates an array of accessible relations.
-	//
-	// This function should be called by `GtkWidget` types whenever an
-	// accessible relation change must be communicated to assistive
-	// technologies.
-	//
-	// This function is meant to be used by language bindings.
-	//
-	// This method is inherited from Accessible
-	UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value)
-	// UpdateStateValue updates an array of accessible states.
-	//
-	// This function should be called by `GtkWidget` types whenever an
-	// accessible state change must be communicated to assistive technologies.
-	//
-	// This function is meant to be used by language bindings.
-	//
-	// This method is inherited from Accessible
-	UpdateStateValue(states []AccessibleState, values []externglib.Value)
-	// GetBuildableID gets the ID of the @buildable object.
-	//
-	// `GtkBuilder` sets the name based on the ID attribute of the <object> tag
-	// used to construct the @buildable.
-	//
-	// This method is inherited from Buildable
-	GetBuildableID() string
-	// GetAccessibleRole retrieves the `GtkAccessibleRole` for the given
-	// `GtkAccessible`.
-	//
-	// This method is inherited from Accessible
-	GetAccessibleRole() AccessibleRole
-	// ResetProperty resets the accessible @property to its default value.
-	//
-	// This method is inherited from Accessible
-	ResetProperty(property AccessibleProperty)
-	// ResetRelation resets the accessible @relation to its default value.
-	//
-	// This method is inherited from Accessible
-	ResetRelation(relation AccessibleRelation)
-	// ResetState resets the accessible @state to its default value.
-	//
-	// This method is inherited from Accessible
-	ResetState(state AccessibleState)
-	// UpdatePropertyValue updates an array of accessible properties.
-	//
-	// This function should be called by `GtkWidget` types whenever an
-	// accessible property change must be communicated to assistive
-	// technologies.
-	//
-	// This function is meant to be used by language bindings.
-	//
-	// This method is inherited from Accessible
-	UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value)
-	// UpdateRelationValue updates an array of accessible relations.
-	//
-	// This function should be called by `GtkWidget` types whenever an
-	// accessible relation change must be communicated to assistive
-	// technologies.
-	//
-	// This function is meant to be used by language bindings.
-	//
-	// This method is inherited from Accessible
-	UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value)
-	// UpdateStateValue updates an array of accessible states.
-	//
-	// This function should be called by `GtkWidget` types whenever an
-	// accessible state change must be communicated to assistive technologies.
-	//
-	// This function is meant to be used by language bindings.
-	//
-	// This method is inherited from Accessible
-	UpdateStateValue(states []AccessibleState, values []externglib.Value)
-	// GetBuildableID gets the ID of the @buildable object.
-	//
-	// `GtkBuilder` sets the name based on the ID attribute of the <object> tag
-	// used to construct the @buildable.
-	//
-	// This method is inherited from Buildable
-	GetBuildableID() string
-	// GetBorder returns the size of a non-scrolling border around the outside
-	// of the scrollable.
-	//
-	// An example for this would be treeview headers. GTK can use this
-	// information to display overlaid graphics, like the overshoot indication,
-	// at the right position.
-	//
-	// This method is inherited from Scrollable
-	GetBorder() (Border, bool)
-	// GetHAdjustment retrieves the `GtkAdjustment` used for horizontal
-	// scrolling.
-	//
-	// This method is inherited from Scrollable
-	GetHAdjustment() Adjustment
-	// GetHscrollPolicy gets the horizontal `GtkScrollablePolicy`.
-	//
-	// This method is inherited from Scrollable
-	GetHscrollPolicy() ScrollablePolicy
-	// GetVAdjustment retrieves the `GtkAdjustment` used for vertical scrolling.
-	//
-	// This method is inherited from Scrollable
-	GetVAdjustment() Adjustment
-	// GetVscrollPolicy gets the vertical `GtkScrollablePolicy`.
-	//
-	// This method is inherited from Scrollable
-	GetVscrollPolicy() ScrollablePolicy
-	// SetHAdjustment sets the horizontal adjustment of the `GtkScrollable`.
-	//
-	// This method is inherited from Scrollable
-	SetHAdjustment(hadjustment Adjustment)
-	// SetHscrollPolicy sets the `GtkScrollablePolicy`.
-	//
-	// The policy determines whether horizontal scrolling should start below the
-	// minimum width or below the natural width.
-	//
-	// This method is inherited from Scrollable
-	SetHscrollPolicy(policy ScrollablePolicy)
-	// SetVAdjustment sets the vertical adjustment of the `GtkScrollable`.
-	//
-	// This method is inherited from Scrollable
-	SetVAdjustment(vadjustment Adjustment)
-	// SetVscrollPolicy sets the `GtkScrollablePolicy`.
-	//
-	// The policy determines whether vertical scrolling should start below the
-	// minimum height or below the natural height.
-	//
-	// This method is inherited from Scrollable
-	SetVscrollPolicy(policy ScrollablePolicy)
+	gextras.Objector
 
 	// AddChildAtAnchor adds a child widget in the text buffer, at the given
 	// @anchor.
@@ -1798,27 +205,6 @@ type TextView interface {
 	// The reference count on the buffer is not incremented; the caller of this
 	// function won’t own a new reference.
 	Buffer() TextBuffer
-	// CursorLocations: determine the positions of the strong and weak cursors
-	// if the insertion point is at @iter.
-	//
-	// The position of each cursor is stored as a zero-width rectangle. The
-	// strong cursor location is the location where characters of the
-	// directionality equal to the base direction of the paragraph are inserted.
-	// The weak cursor location is the location where characters of the
-	// directionality opposite to the base direction of the paragraph are
-	// inserted.
-	//
-	// If @iter is nil, the actual cursor position is used.
-	//
-	// Note that if @iter happens to be the actual cursor position, and there is
-	// currently an IM preedit sequence being entered, the returned locations
-	// will be adjusted to account for the preedit cursor’s offset within the
-	// preedit sequence.
-	//
-	// The rectangle position is in buffer coordinates; use
-	// [method@Gtk.TextView.buffer_to_window_coords] to convert these
-	// coordinates to coordinates for one of the windows in the text view.
-	CursorLocations(iter *TextIter) (strong gdk.Rectangle, weak gdk.Rectangle)
 	// CursorVisible: find out whether the cursor should be displayed.
 	CursorVisible() bool
 	// Editable returns the default editability of the `GtkTextView`.
@@ -1844,32 +230,6 @@ type TextView interface {
 	InputHints() InputHints
 	// InputPurpose gets the `input-purpose` of the `GtkTextView`.
 	InputPurpose() InputPurpose
-	// IterAtLocation retrieves the iterator at buffer coordinates @x and @y.
-	//
-	// Buffer coordinates are coordinates for the entire buffer, not just the
-	// currently-displayed portion. If you have coordinates from an event, you
-	// have to convert those to buffer coordinates with
-	// [method@Gtk.TextView.window_to_buffer_coords].
-	IterAtLocation(x int, y int) (TextIter, bool)
-	// IterAtPosition retrieves the iterator pointing to the character at buffer
-	// coordinates @x and @y.
-	//
-	// Buffer coordinates are coordinates for the entire buffer, not just the
-	// currently-displayed portion. If you have coordinates from an event, you
-	// have to convert those to buffer coordinates with
-	// [method@Gtk.TextView.window_to_buffer_coords].
-	//
-	// Note that this is different from
-	// [method@Gtk.TextView.get_iter_at_location], which returns cursor
-	// locations, i.e. positions between characters.
-	IterAtPosition(x int, y int) (TextIter, int, bool)
-	// IterLocation gets a rectangle which roughly contains the character at
-	// @iter.
-	//
-	// The rectangle position is in buffer coordinates; use
-	// [method@Gtk.TextView.buffer_to_window_coords] to convert these
-	// coordinates to coordinates for one of the windows in the text view.
-	IterLocation(iter *TextIter) gdk.Rectangle
 	// Justification gets the default justification of paragraphs in @text_view.
 	//
 	// Tags in the buffer may override the default.
@@ -1879,13 +239,6 @@ type TextView interface {
 	//
 	// Tags in the buffer may override the default.
 	LeftMargin() int
-	// LineAtY gets the `GtkTextIter` at the start of the line containing the
-	// coordinate @y.
-	//
-	// @y is in buffer coordinates, convert from window coordinates with
-	// [method@Gtk.TextView.window_to_buffer_coords]. If non-nil, @line_top will
-	// be filled with the coordinate of the top edge of the line.
-	LineAtY(y int) (TextIter, int)
 	// LineYrange gets the y coordinate of the top of the line containing @iter,
 	// and the height of the line.
 	//
@@ -1923,12 +276,6 @@ type TextView interface {
 	Tabs() *pango.TabArray
 	// TopMargin gets the top margin for text in the @text_view.
 	TopMargin() int
-	// VisibleRect fills @visible_rect with the currently-visible region of the
-	// buffer, in buffer coordinates.
-	//
-	// Convert to window coordinates with
-	// [method@Gtk.TextView.buffer_to_window_coords].
-	VisibleRect() gdk.Rectangle
 	// WrapMode gets the line wrapping for the view.
 	WrapMode() WrapMode
 	// ImContextFilterKeypress: allow the `GtkTextView` input method to
@@ -2139,23 +486,53 @@ type TextView interface {
 	WindowToBufferCoords(win TextWindowType, windowX int, windowY int) (bufferX int, bufferY int)
 }
 
-// textView implements the TextView interface.
-type textView struct {
+// TextViewClass implements the TextView interface.
+type TextViewClass struct {
 	*externglib.Object
+	WidgetClass
+	AccessibleInterface
+	BuildableInterface
+	ConstraintTargetInterface
+	ScrollableInterface
 }
 
-var _ TextView = (*textView)(nil)
+var _ TextView = (*TextViewClass)(nil)
 
-// WrapTextView wraps a GObject to a type that implements
-// interface TextView. It is primarily used internally.
-func WrapTextView(obj *externglib.Object) TextView {
-	return textView{obj}
+func wrapTextView(obj *externglib.Object) TextView {
+	return &TextViewClass{
+		Object: obj,
+		WidgetClass: WidgetClass{
+			Object:           obj,
+			InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
+			AccessibleInterface: AccessibleInterface{
+				Object: obj,
+			},
+			BuildableInterface: BuildableInterface{
+				Object: obj,
+			},
+			ConstraintTargetInterface: ConstraintTargetInterface{
+				Object: obj,
+			},
+		},
+		AccessibleInterface: AccessibleInterface{
+			Object: obj,
+		},
+		BuildableInterface: BuildableInterface{
+			Object: obj,
+		},
+		ConstraintTargetInterface: ConstraintTargetInterface{
+			Object: obj,
+		},
+		ScrollableInterface: ScrollableInterface{
+			Object: obj,
+		},
+	}
 }
 
 func marshalTextView(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapTextView(obj), nil
+	return wrapTextView(obj), nil
 }
 
 // NewTextView creates a new `GtkTextView`.
@@ -2198,731 +575,9 @@ func NewTextViewWithBuffer(buffer TextBuffer) TextView {
 	return _textView
 }
 
-func (t textView) AsWidget() Widget {
-	return WrapWidget(gextras.InternObject(t))
-}
-
-func (t textView) AsAccessible() Accessible {
-	return WrapAccessible(gextras.InternObject(t))
-}
-
-func (t textView) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(t))
-}
-
-func (t textView) AsConstraintTarget() ConstraintTarget {
-	return WrapConstraintTarget(gextras.InternObject(t))
-}
-
-func (t textView) AsScrollable() Scrollable {
-	return WrapScrollable(gextras.InternObject(t))
-}
-
-func (w textView) ActionSetEnabled(actionName string, enabled bool) {
-	WrapWidget(gextras.InternObject(w)).ActionSetEnabled(actionName, enabled)
-}
-
-func (w textView) Activate() bool {
-	return WrapWidget(gextras.InternObject(w)).Activate()
-}
-
-func (w textView) ActivateActionVariant(name string, args *glib.Variant) bool {
-	return WrapWidget(gextras.InternObject(w)).ActivateActionVariant(name, args)
-}
-
-func (w textView) ActivateDefault() {
-	WrapWidget(gextras.InternObject(w)).ActivateDefault()
-}
-
-func (w textView) AddController(controller EventController) {
-	WrapWidget(gextras.InternObject(w)).AddController(controller)
-}
-
-func (w textView) AddCSSClass(cssClass string) {
-	WrapWidget(gextras.InternObject(w)).AddCSSClass(cssClass)
-}
-
-func (w textView) AddMnemonicLabel(label Widget) {
-	WrapWidget(gextras.InternObject(w)).AddMnemonicLabel(label)
-}
-
-func (w textView) Allocate(width int, height int, baseline int, transform *gsk.Transform) {
-	WrapWidget(gextras.InternObject(w)).Allocate(width, height, baseline, transform)
-}
-
-func (w textView) ChildFocus(direction DirectionType) bool {
-	return WrapWidget(gextras.InternObject(w)).ChildFocus(direction)
-}
-
-func (w textView) ComputeBounds(target Widget) (graphene.Rect, bool) {
-	return WrapWidget(gextras.InternObject(w)).ComputeBounds(target)
-}
-
-func (w textView) ComputeExpand(orientation Orientation) bool {
-	return WrapWidget(gextras.InternObject(w)).ComputeExpand(orientation)
-}
-
-func (w textView) ComputePoint(target Widget, point *graphene.Point) (graphene.Point, bool) {
-	return WrapWidget(gextras.InternObject(w)).ComputePoint(target, point)
-}
-
-func (w textView) ComputeTransform(target Widget) (graphene.Matrix, bool) {
-	return WrapWidget(gextras.InternObject(w)).ComputeTransform(target)
-}
-
-func (w textView) Contains(x float64, y float64) bool {
-	return WrapWidget(gextras.InternObject(w)).Contains(x, y)
-}
-
-func (w textView) CreatePangoContext() pango.Context {
-	return WrapWidget(gextras.InternObject(w)).CreatePangoContext()
-}
-
-func (w textView) CreatePangoLayout(text string) pango.Layout {
-	return WrapWidget(gextras.InternObject(w)).CreatePangoLayout(text)
-}
-
-func (w textView) DragCheckThreshold(startX int, startY int, currentX int, currentY int) bool {
-	return WrapWidget(gextras.InternObject(w)).DragCheckThreshold(startX, startY, currentX, currentY)
-}
-
-func (w textView) ErrorBell() {
-	WrapWidget(gextras.InternObject(w)).ErrorBell()
-}
-
-func (w textView) GetAllocatedBaseline() int {
-	return WrapWidget(gextras.InternObject(w)).GetAllocatedBaseline()
-}
-
-func (w textView) GetAllocatedHeight() int {
-	return WrapWidget(gextras.InternObject(w)).GetAllocatedHeight()
-}
-
-func (w textView) GetAllocatedWidth() int {
-	return WrapWidget(gextras.InternObject(w)).GetAllocatedWidth()
-}
-
-func (w textView) GetAncestor(widgetType externglib.Type) Widget {
-	return WrapWidget(gextras.InternObject(w)).GetAncestor(widgetType)
-}
-
-func (w textView) GetCanFocus() bool {
-	return WrapWidget(gextras.InternObject(w)).GetCanFocus()
-}
-
-func (w textView) GetCanTarget() bool {
-	return WrapWidget(gextras.InternObject(w)).GetCanTarget()
-}
-
-func (w textView) GetChildVisible() bool {
-	return WrapWidget(gextras.InternObject(w)).GetChildVisible()
-}
-
-func (w textView) GetClipboard() gdk.Clipboard {
-	return WrapWidget(gextras.InternObject(w)).GetClipboard()
-}
-
-func (w textView) GetCSSClasses() []string {
-	return WrapWidget(gextras.InternObject(w)).GetCSSClasses()
-}
-
-func (s textView) GetCSSName() string {
-	return WrapWidget(gextras.InternObject(s)).GetCSSName()
-}
-
-func (w textView) GetCursor() gdk.Cursor {
-	return WrapWidget(gextras.InternObject(w)).GetCursor()
-}
-
-func (w textView) GetDirection() TextDirection {
-	return WrapWidget(gextras.InternObject(w)).GetDirection()
-}
-
-func (w textView) GetDisplay() gdk.Display {
-	return WrapWidget(gextras.InternObject(w)).GetDisplay()
-}
-
-func (w textView) GetFirstChild() Widget {
-	return WrapWidget(gextras.InternObject(w)).GetFirstChild()
-}
-
-func (w textView) GetFocusChild() Widget {
-	return WrapWidget(gextras.InternObject(w)).GetFocusChild()
-}
-
-func (w textView) GetFocusOnClick() bool {
-	return WrapWidget(gextras.InternObject(w)).GetFocusOnClick()
-}
-
-func (w textView) GetFocusable() bool {
-	return WrapWidget(gextras.InternObject(w)).GetFocusable()
-}
-
-func (w textView) GetFontMap() pango.FontMap {
-	return WrapWidget(gextras.InternObject(w)).GetFontMap()
-}
-
-func (w textView) GetFontOptions() *cairo.FontOptions {
-	return WrapWidget(gextras.InternObject(w)).GetFontOptions()
-}
-
-func (w textView) GetFrameClock() gdk.FrameClock {
-	return WrapWidget(gextras.InternObject(w)).GetFrameClock()
-}
-
-func (w textView) GetHAlign() Align {
-	return WrapWidget(gextras.InternObject(w)).GetHAlign()
-}
-
-func (w textView) GetHasTooltip() bool {
-	return WrapWidget(gextras.InternObject(w)).GetHasTooltip()
-}
-
-func (w textView) GetHeight() int {
-	return WrapWidget(gextras.InternObject(w)).GetHeight()
-}
-
-func (w textView) GetHExpand() bool {
-	return WrapWidget(gextras.InternObject(w)).GetHExpand()
-}
-
-func (w textView) GetHExpandSet() bool {
-	return WrapWidget(gextras.InternObject(w)).GetHExpandSet()
-}
-
-func (w textView) GetLastChild() Widget {
-	return WrapWidget(gextras.InternObject(w)).GetLastChild()
-}
-
-func (w textView) GetLayoutManager() LayoutManager {
-	return WrapWidget(gextras.InternObject(w)).GetLayoutManager()
-}
-
-func (w textView) GetMapped() bool {
-	return WrapWidget(gextras.InternObject(w)).GetMapped()
-}
-
-func (w textView) GetMarginBottom() int {
-	return WrapWidget(gextras.InternObject(w)).GetMarginBottom()
-}
-
-func (w textView) GetMarginEnd() int {
-	return WrapWidget(gextras.InternObject(w)).GetMarginEnd()
-}
-
-func (w textView) GetMarginStart() int {
-	return WrapWidget(gextras.InternObject(w)).GetMarginStart()
-}
-
-func (w textView) GetMarginTop() int {
-	return WrapWidget(gextras.InternObject(w)).GetMarginTop()
-}
-
-func (w textView) GetName() string {
-	return WrapWidget(gextras.InternObject(w)).GetName()
-}
-
-func (w textView) GetNative() Native {
-	return WrapWidget(gextras.InternObject(w)).GetNative()
-}
-
-func (w textView) GetNextSibling() Widget {
-	return WrapWidget(gextras.InternObject(w)).GetNextSibling()
-}
-
-func (w textView) GetOpacity() float64 {
-	return WrapWidget(gextras.InternObject(w)).GetOpacity()
-}
-
-func (w textView) GetOverflow() Overflow {
-	return WrapWidget(gextras.InternObject(w)).GetOverflow()
-}
-
-func (w textView) GetPangoContext() pango.Context {
-	return WrapWidget(gextras.InternObject(w)).GetPangoContext()
-}
-
-func (w textView) GetParent() Widget {
-	return WrapWidget(gextras.InternObject(w)).GetParent()
-}
-
-func (w textView) GetPreferredSize() (minimumSize Requisition, naturalSize Requisition) {
-	return WrapWidget(gextras.InternObject(w)).GetPreferredSize()
-}
-
-func (w textView) GetPrevSibling() Widget {
-	return WrapWidget(gextras.InternObject(w)).GetPrevSibling()
-}
-
-func (w textView) GetPrimaryClipboard() gdk.Clipboard {
-	return WrapWidget(gextras.InternObject(w)).GetPrimaryClipboard()
-}
-
-func (w textView) GetRealized() bool {
-	return WrapWidget(gextras.InternObject(w)).GetRealized()
-}
-
-func (w textView) GetReceivesDefault() bool {
-	return WrapWidget(gextras.InternObject(w)).GetReceivesDefault()
-}
-
-func (w textView) GetRequestMode() SizeRequestMode {
-	return WrapWidget(gextras.InternObject(w)).GetRequestMode()
-}
-
-func (w textView) GetRoot() Root {
-	return WrapWidget(gextras.InternObject(w)).GetRoot()
-}
-
-func (w textView) GetScaleFactor() int {
-	return WrapWidget(gextras.InternObject(w)).GetScaleFactor()
-}
-
-func (w textView) GetSensitive() bool {
-	return WrapWidget(gextras.InternObject(w)).GetSensitive()
-}
-
-func (w textView) GetSettings() Settings {
-	return WrapWidget(gextras.InternObject(w)).GetSettings()
-}
-
-func (w textView) GetSize(orientation Orientation) int {
-	return WrapWidget(gextras.InternObject(w)).GetSize(orientation)
-}
-
-func (w textView) GetSizeRequest() (width int, height int) {
-	return WrapWidget(gextras.InternObject(w)).GetSizeRequest()
-}
-
-func (w textView) GetStateFlags() StateFlags {
-	return WrapWidget(gextras.InternObject(w)).GetStateFlags()
-}
-
-func (w textView) GetStyleContext() StyleContext {
-	return WrapWidget(gextras.InternObject(w)).GetStyleContext()
-}
-
-func (w textView) GetTemplateChild(widgetType externglib.Type, name string) gextras.Objector {
-	return WrapWidget(gextras.InternObject(w)).GetTemplateChild(widgetType, name)
-}
-
-func (w textView) GetTooltipMarkup() string {
-	return WrapWidget(gextras.InternObject(w)).GetTooltipMarkup()
-}
-
-func (w textView) GetTooltipText() string {
-	return WrapWidget(gextras.InternObject(w)).GetTooltipText()
-}
-
-func (w textView) GetVAlign() Align {
-	return WrapWidget(gextras.InternObject(w)).GetVAlign()
-}
-
-func (w textView) GetVExpand() bool {
-	return WrapWidget(gextras.InternObject(w)).GetVExpand()
-}
-
-func (w textView) GetVExpandSet() bool {
-	return WrapWidget(gextras.InternObject(w)).GetVExpandSet()
-}
-
-func (w textView) GetVisible() bool {
-	return WrapWidget(gextras.InternObject(w)).GetVisible()
-}
-
-func (w textView) GetWidth() int {
-	return WrapWidget(gextras.InternObject(w)).GetWidth()
-}
-
-func (w textView) GrabFocus() bool {
-	return WrapWidget(gextras.InternObject(w)).GrabFocus()
-}
-
-func (w textView) HasCSSClass(cssClass string) bool {
-	return WrapWidget(gextras.InternObject(w)).HasCSSClass(cssClass)
-}
-
-func (w textView) HasDefault() bool {
-	return WrapWidget(gextras.InternObject(w)).HasDefault()
-}
-
-func (w textView) HasFocus() bool {
-	return WrapWidget(gextras.InternObject(w)).HasFocus()
-}
-
-func (w textView) HasVisibleFocus() bool {
-	return WrapWidget(gextras.InternObject(w)).HasVisibleFocus()
-}
-
-func (w textView) Hide() {
-	WrapWidget(gextras.InternObject(w)).Hide()
-}
-
-func (w textView) InDestruction() bool {
-	return WrapWidget(gextras.InternObject(w)).InDestruction()
-}
-
-func (w textView) InitTemplate() {
-	WrapWidget(gextras.InternObject(w)).InitTemplate()
-}
-
-func (w textView) InsertAfter(parent Widget, previousSibling Widget) {
-	WrapWidget(gextras.InternObject(w)).InsertAfter(parent, previousSibling)
-}
-
-func (w textView) InsertBefore(parent Widget, nextSibling Widget) {
-	WrapWidget(gextras.InternObject(w)).InsertBefore(parent, nextSibling)
-}
-
-func (w textView) IsAncestor(ancestor Widget) bool {
-	return WrapWidget(gextras.InternObject(w)).IsAncestor(ancestor)
-}
-
-func (w textView) IsDrawable() bool {
-	return WrapWidget(gextras.InternObject(w)).IsDrawable()
-}
-
-func (w textView) IsFocus() bool {
-	return WrapWidget(gextras.InternObject(w)).IsFocus()
-}
-
-func (w textView) IsSensitive() bool {
-	return WrapWidget(gextras.InternObject(w)).IsSensitive()
-}
-
-func (w textView) IsVisible() bool {
-	return WrapWidget(gextras.InternObject(w)).IsVisible()
-}
-
-func (w textView) KeynavFailed(direction DirectionType) bool {
-	return WrapWidget(gextras.InternObject(w)).KeynavFailed(direction)
-}
-
-func (w textView) Map() {
-	WrapWidget(gextras.InternObject(w)).Map()
-}
-
-func (w textView) Measure(orientation Orientation, forSize int) (minimum int, natural int, minimumBaseline int, naturalBaseline int) {
-	return WrapWidget(gextras.InternObject(w)).Measure(orientation, forSize)
-}
-
-func (w textView) MnemonicActivate(groupCycling bool) bool {
-	return WrapWidget(gextras.InternObject(w)).MnemonicActivate(groupCycling)
-}
-
-func (w textView) Pick(x float64, y float64, flags PickFlags) Widget {
-	return WrapWidget(gextras.InternObject(w)).Pick(x, y, flags)
-}
-
-func (w textView) QueueAllocate() {
-	WrapWidget(gextras.InternObject(w)).QueueAllocate()
-}
-
-func (w textView) QueueDraw() {
-	WrapWidget(gextras.InternObject(w)).QueueDraw()
-}
-
-func (w textView) QueueResize() {
-	WrapWidget(gextras.InternObject(w)).QueueResize()
-}
-
-func (w textView) Realize() {
-	WrapWidget(gextras.InternObject(w)).Realize()
-}
-
-func (w textView) RemoveController(controller EventController) {
-	WrapWidget(gextras.InternObject(w)).RemoveController(controller)
-}
-
-func (w textView) RemoveCSSClass(cssClass string) {
-	WrapWidget(gextras.InternObject(w)).RemoveCSSClass(cssClass)
-}
-
-func (w textView) RemoveMnemonicLabel(label Widget) {
-	WrapWidget(gextras.InternObject(w)).RemoveMnemonicLabel(label)
-}
-
-func (w textView) RemoveTickCallback(id uint) {
-	WrapWidget(gextras.InternObject(w)).RemoveTickCallback(id)
-}
-
-func (w textView) SetCanFocus(canFocus bool) {
-	WrapWidget(gextras.InternObject(w)).SetCanFocus(canFocus)
-}
-
-func (w textView) SetCanTarget(canTarget bool) {
-	WrapWidget(gextras.InternObject(w)).SetCanTarget(canTarget)
-}
-
-func (w textView) SetChildVisible(childVisible bool) {
-	WrapWidget(gextras.InternObject(w)).SetChildVisible(childVisible)
-}
-
-func (w textView) SetCSSClasses(classes []string) {
-	WrapWidget(gextras.InternObject(w)).SetCSSClasses(classes)
-}
-
-func (w textView) SetCursor(cursor gdk.Cursor) {
-	WrapWidget(gextras.InternObject(w)).SetCursor(cursor)
-}
-
-func (w textView) SetCursorFromName(name string) {
-	WrapWidget(gextras.InternObject(w)).SetCursorFromName(name)
-}
-
-func (w textView) SetDirection(dir TextDirection) {
-	WrapWidget(gextras.InternObject(w)).SetDirection(dir)
-}
-
-func (w textView) SetFocusChild(child Widget) {
-	WrapWidget(gextras.InternObject(w)).SetFocusChild(child)
-}
-
-func (w textView) SetFocusOnClick(focusOnClick bool) {
-	WrapWidget(gextras.InternObject(w)).SetFocusOnClick(focusOnClick)
-}
-
-func (w textView) SetFocusable(focusable bool) {
-	WrapWidget(gextras.InternObject(w)).SetFocusable(focusable)
-}
-
-func (w textView) SetFontMap(fontMap pango.FontMap) {
-	WrapWidget(gextras.InternObject(w)).SetFontMap(fontMap)
-}
-
-func (w textView) SetFontOptions(options *cairo.FontOptions) {
-	WrapWidget(gextras.InternObject(w)).SetFontOptions(options)
-}
-
-func (w textView) SetHAlign(align Align) {
-	WrapWidget(gextras.InternObject(w)).SetHAlign(align)
-}
-
-func (w textView) SetHasTooltip(hasTooltip bool) {
-	WrapWidget(gextras.InternObject(w)).SetHasTooltip(hasTooltip)
-}
-
-func (w textView) SetHExpand(expand bool) {
-	WrapWidget(gextras.InternObject(w)).SetHExpand(expand)
-}
-
-func (w textView) SetHExpandSet(set bool) {
-	WrapWidget(gextras.InternObject(w)).SetHExpandSet(set)
-}
-
-func (w textView) SetLayoutManager(layoutManager LayoutManager) {
-	WrapWidget(gextras.InternObject(w)).SetLayoutManager(layoutManager)
-}
-
-func (w textView) SetMarginBottom(margin int) {
-	WrapWidget(gextras.InternObject(w)).SetMarginBottom(margin)
-}
-
-func (w textView) SetMarginEnd(margin int) {
-	WrapWidget(gextras.InternObject(w)).SetMarginEnd(margin)
-}
-
-func (w textView) SetMarginStart(margin int) {
-	WrapWidget(gextras.InternObject(w)).SetMarginStart(margin)
-}
-
-func (w textView) SetMarginTop(margin int) {
-	WrapWidget(gextras.InternObject(w)).SetMarginTop(margin)
-}
-
-func (w textView) SetName(name string) {
-	WrapWidget(gextras.InternObject(w)).SetName(name)
-}
-
-func (w textView) SetOpacity(opacity float64) {
-	WrapWidget(gextras.InternObject(w)).SetOpacity(opacity)
-}
-
-func (w textView) SetOverflow(overflow Overflow) {
-	WrapWidget(gextras.InternObject(w)).SetOverflow(overflow)
-}
-
-func (w textView) SetParent(parent Widget) {
-	WrapWidget(gextras.InternObject(w)).SetParent(parent)
-}
-
-func (w textView) SetReceivesDefault(receivesDefault bool) {
-	WrapWidget(gextras.InternObject(w)).SetReceivesDefault(receivesDefault)
-}
-
-func (w textView) SetSensitive(sensitive bool) {
-	WrapWidget(gextras.InternObject(w)).SetSensitive(sensitive)
-}
-
-func (w textView) SetSizeRequest(width int, height int) {
-	WrapWidget(gextras.InternObject(w)).SetSizeRequest(width, height)
-}
-
-func (w textView) SetStateFlags(flags StateFlags, clear bool) {
-	WrapWidget(gextras.InternObject(w)).SetStateFlags(flags, clear)
-}
-
-func (w textView) SetTooltipMarkup(markup string) {
-	WrapWidget(gextras.InternObject(w)).SetTooltipMarkup(markup)
-}
-
-func (w textView) SetTooltipText(text string) {
-	WrapWidget(gextras.InternObject(w)).SetTooltipText(text)
-}
-
-func (w textView) SetVAlign(align Align) {
-	WrapWidget(gextras.InternObject(w)).SetVAlign(align)
-}
-
-func (w textView) SetVExpand(expand bool) {
-	WrapWidget(gextras.InternObject(w)).SetVExpand(expand)
-}
-
-func (w textView) SetVExpandSet(set bool) {
-	WrapWidget(gextras.InternObject(w)).SetVExpandSet(set)
-}
-
-func (w textView) SetVisible(visible bool) {
-	WrapWidget(gextras.InternObject(w)).SetVisible(visible)
-}
-
-func (w textView) ShouldLayout() bool {
-	return WrapWidget(gextras.InternObject(w)).ShouldLayout()
-}
-
-func (w textView) Show() {
-	WrapWidget(gextras.InternObject(w)).Show()
-}
-
-func (w textView) SnapshotChild(child Widget, snapshot Snapshot) {
-	WrapWidget(gextras.InternObject(w)).SnapshotChild(child, snapshot)
-}
-
-func (s textView) TranslateCoordinates(destWidget Widget, srcX float64, srcY float64) (destX float64, destY float64, ok bool) {
-	return WrapWidget(gextras.InternObject(s)).TranslateCoordinates(destWidget, srcX, srcY)
-}
-
-func (w textView) TriggerTooltipQuery() {
-	WrapWidget(gextras.InternObject(w)).TriggerTooltipQuery()
-}
-
-func (w textView) Unmap() {
-	WrapWidget(gextras.InternObject(w)).Unmap()
-}
-
-func (w textView) Unparent() {
-	WrapWidget(gextras.InternObject(w)).Unparent()
-}
-
-func (w textView) Unrealize() {
-	WrapWidget(gextras.InternObject(w)).Unrealize()
-}
-
-func (w textView) UnsetStateFlags(flags StateFlags) {
-	WrapWidget(gextras.InternObject(w)).UnsetStateFlags(flags)
-}
-
-func (s textView) GetAccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).GetAccessibleRole()
-}
-
-func (s textView) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
-}
-
-func (s textView) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
-}
-
-func (s textView) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s textView) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s textView) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s textView) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b textView) GetBuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).GetBuildableID()
-}
-
-func (s textView) GetAccessibleRole() AccessibleRole {
-	return WrapAccessible(gextras.InternObject(s)).GetAccessibleRole()
-}
-
-func (s textView) ResetProperty(property AccessibleProperty) {
-	WrapAccessible(gextras.InternObject(s)).ResetProperty(property)
-}
-
-func (s textView) ResetRelation(relation AccessibleRelation) {
-	WrapAccessible(gextras.InternObject(s)).ResetRelation(relation)
-}
-
-func (s textView) ResetState(state AccessibleState) {
-	WrapAccessible(gextras.InternObject(s)).ResetState(state)
-}
-
-func (s textView) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdatePropertyValue(properties, values)
-}
-
-func (s textView) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateRelationValue(relations, values)
-}
-
-func (s textView) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
-	WrapAccessible(gextras.InternObject(s)).UpdateStateValue(states, values)
-}
-
-func (b textView) GetBuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).GetBuildableID()
-}
-
-func (s textView) GetBorder() (Border, bool) {
-	return WrapScrollable(gextras.InternObject(s)).GetBorder()
-}
-
-func (s textView) GetHAdjustment() Adjustment {
-	return WrapScrollable(gextras.InternObject(s)).GetHAdjustment()
-}
-
-func (s textView) GetHscrollPolicy() ScrollablePolicy {
-	return WrapScrollable(gextras.InternObject(s)).GetHscrollPolicy()
-}
-
-func (s textView) GetVAdjustment() Adjustment {
-	return WrapScrollable(gextras.InternObject(s)).GetVAdjustment()
-}
-
-func (s textView) GetVscrollPolicy() ScrollablePolicy {
-	return WrapScrollable(gextras.InternObject(s)).GetVscrollPolicy()
-}
-
-func (s textView) SetHAdjustment(hadjustment Adjustment) {
-	WrapScrollable(gextras.InternObject(s)).SetHAdjustment(hadjustment)
-}
-
-func (s textView) SetHscrollPolicy(policy ScrollablePolicy) {
-	WrapScrollable(gextras.InternObject(s)).SetHscrollPolicy(policy)
-}
-
-func (s textView) SetVAdjustment(vadjustment Adjustment) {
-	WrapScrollable(gextras.InternObject(s)).SetVAdjustment(vadjustment)
-}
-
-func (s textView) SetVscrollPolicy(policy ScrollablePolicy) {
-	WrapScrollable(gextras.InternObject(s)).SetVscrollPolicy(policy)
-}
-
-func (t textView) AddChildAtAnchor(child Widget, anchor TextChildAnchor) {
+// AddChildAtAnchor adds a child widget in the text buffer, at the given
+// @anchor.
+func (t *TextViewClass) AddChildAtAnchor(child Widget, anchor TextChildAnchor) {
 	var _arg0 *C.GtkTextView        // out
 	var _arg1 *C.GtkWidget          // out
 	var _arg2 *C.GtkTextChildAnchor // out
@@ -2934,7 +589,17 @@ func (t textView) AddChildAtAnchor(child Widget, anchor TextChildAnchor) {
 	C.gtk_text_view_add_child_at_anchor(_arg0, _arg1, _arg2)
 }
 
-func (t textView) AddOverlay(child Widget, xpos int, ypos int) {
+// AddOverlay adds @child at a fixed coordinate in the `GtkTextView`'s text
+// window.
+//
+// The @xpos and @ypos must be in buffer coordinates (see
+// [method@Gtk.TextView.get_iter_location] to convert to buffer coordinates).
+//
+// @child will scroll with the text view.
+//
+// If instead you want a widget that will not move with the `GtkTextView`
+// contents see Overlay.
+func (t *TextViewClass) AddOverlay(child Widget, xpos int, ypos int) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 *C.GtkWidget   // out
 	var _arg2 C.int          // out
@@ -2948,7 +613,16 @@ func (t textView) AddOverlay(child Widget, xpos int, ypos int) {
 	C.gtk_text_view_add_overlay(_arg0, _arg1, _arg2, _arg3)
 }
 
-func (t textView) BackwardDisplayLine(iter *TextIter) bool {
+// BackwardDisplayLine moves the given @iter backward by one display (wrapped)
+// line.
+//
+// A display line is different from a paragraph. Paragraphs are separated by
+// newlines or other paragraph separator characters. Display lines are created
+// by line-wrapping a paragraph. If wrapping is turned off, display lines and
+// paragraphs will be the same. Display lines are divided differently for each
+// view, since they depend on the view’s width; paragraphs are the same in all
+// views, since they depend on the contents of the `GtkTextBuffer`.
+func (t *TextViewClass) BackwardDisplayLine(iter *TextIter) bool {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 *C.GtkTextIter // out
 	var _cret C.gboolean     // in
@@ -2967,7 +641,16 @@ func (t textView) BackwardDisplayLine(iter *TextIter) bool {
 	return _ok
 }
 
-func (t textView) BackwardDisplayLineStart(iter *TextIter) bool {
+// BackwardDisplayLineStart moves the given @iter backward to the next display
+// line start.
+//
+// A display line is different from a paragraph. Paragraphs are separated by
+// newlines or other paragraph separator characters. Display lines are created
+// by line-wrapping a paragraph. If wrapping is turned off, display lines and
+// paragraphs will be the same. Display lines are divided differently for each
+// view, since they depend on the view’s width; paragraphs are the same in all
+// views, since they depend on the contents of the `GtkTextBuffer`.
+func (t *TextViewClass) BackwardDisplayLineStart(iter *TextIter) bool {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 *C.GtkTextIter // out
 	var _cret C.gboolean     // in
@@ -2986,7 +669,8 @@ func (t textView) BackwardDisplayLineStart(iter *TextIter) bool {
 	return _ok
 }
 
-func (t textView) BufferToWindowCoords(win TextWindowType, bufferX int, bufferY int) (windowX int, windowY int) {
+// BufferToWindowCoords converts buffer coordinates to window coordinates.
+func (t *TextViewClass) BufferToWindowCoords(win TextWindowType, bufferX int, bufferY int) (windowX int, windowY int) {
 	var _arg0 *C.GtkTextView      // out
 	var _arg1 C.GtkTextWindowType // out
 	var _arg2 C.int               // out
@@ -3010,7 +694,16 @@ func (t textView) BufferToWindowCoords(win TextWindowType, bufferX int, bufferY 
 	return _windowX, _windowY
 }
 
-func (t textView) ForwardDisplayLine(iter *TextIter) bool {
+// ForwardDisplayLine moves the given @iter forward by one display (wrapped)
+// line.
+//
+// A display line is different from a paragraph. Paragraphs are separated by
+// newlines or other paragraph separator characters. Display lines are created
+// by line-wrapping a paragraph. If wrapping is turned off, display lines and
+// paragraphs will be the same. Display lines are divided differently for each
+// view, since they depend on the view’s width; paragraphs are the same in all
+// views, since they depend on the contents of the `GtkTextBuffer`.
+func (t *TextViewClass) ForwardDisplayLine(iter *TextIter) bool {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 *C.GtkTextIter // out
 	var _cret C.gboolean     // in
@@ -3029,7 +722,16 @@ func (t textView) ForwardDisplayLine(iter *TextIter) bool {
 	return _ok
 }
 
-func (t textView) ForwardDisplayLineEnd(iter *TextIter) bool {
+// ForwardDisplayLineEnd moves the given @iter forward to the next display line
+// end.
+//
+// A display line is different from a paragraph. Paragraphs are separated by
+// newlines or other paragraph separator characters. Display lines are created
+// by line-wrapping a paragraph. If wrapping is turned off, display lines and
+// paragraphs will be the same. Display lines are divided differently for each
+// view, since they depend on the view’s width; paragraphs are the same in all
+// views, since they depend on the contents of the `GtkTextBuffer`.
+func (t *TextViewClass) ForwardDisplayLineEnd(iter *TextIter) bool {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 *C.GtkTextIter // out
 	var _cret C.gboolean     // in
@@ -3048,7 +750,10 @@ func (t textView) ForwardDisplayLineEnd(iter *TextIter) bool {
 	return _ok
 }
 
-func (t textView) AcceptsTab() bool {
+// AcceptsTab returns whether pressing the Tab key inserts a tab characters.
+//
+// See [method@Gtk.TextView.set_accepts_tab].
+func (t *TextViewClass) AcceptsTab() bool {
 	var _arg0 *C.GtkTextView // out
 	var _cret C.gboolean     // in
 
@@ -3065,7 +770,8 @@ func (t textView) AcceptsTab() bool {
 	return _ok
 }
 
-func (t textView) BottomMargin() int {
+// BottomMargin gets the bottom margin for text in the @text_view.
+func (t *TextViewClass) BottomMargin() int {
 	var _arg0 *C.GtkTextView // out
 	var _cret C.int          // in
 
@@ -3080,7 +786,11 @@ func (t textView) BottomMargin() int {
 	return _gint
 }
 
-func (t textView) Buffer() TextBuffer {
+// Buffer returns the `GtkTextBuffer` being displayed by this text view.
+//
+// The reference count on the buffer is not incremented; the caller of this
+// function won’t own a new reference.
+func (t *TextViewClass) Buffer() TextBuffer {
 	var _arg0 *C.GtkTextView   // out
 	var _cret *C.GtkTextBuffer // in
 
@@ -3095,47 +805,8 @@ func (t textView) Buffer() TextBuffer {
 	return _textBuffer
 }
 
-func (t textView) CursorLocations(iter *TextIter) (strong gdk.Rectangle, weak gdk.Rectangle) {
-	var _arg0 *C.GtkTextView // out
-	var _arg1 *C.GtkTextIter // out
-	var _arg2 C.GdkRectangle // in
-	var _arg3 C.GdkRectangle // in
-
-	_arg0 = (*C.GtkTextView)(unsafe.Pointer(t.Native()))
-	_arg1 = (*C.GtkTextIter)(unsafe.Pointer(iter))
-
-	C.gtk_text_view_get_cursor_locations(_arg0, _arg1, &_arg2, &_arg3)
-
-	var _strong gdk.Rectangle // out
-	var _weak gdk.Rectangle   // out
-
-	{
-		var refTmpIn *C.GdkRectangle
-		var refTmpOut *gdk.Rectangle
-
-		in0 := &_arg2
-		refTmpIn = in0
-
-		refTmpOut = (*gdk.Rectangle)(unsafe.Pointer(refTmpIn))
-
-		_strong = *refTmpOut
-	}
-	{
-		var refTmpIn *C.GdkRectangle
-		var refTmpOut *gdk.Rectangle
-
-		in0 := &_arg3
-		refTmpIn = in0
-
-		refTmpOut = (*gdk.Rectangle)(unsafe.Pointer(refTmpIn))
-
-		_weak = *refTmpOut
-	}
-
-	return _strong, _weak
-}
-
-func (t textView) CursorVisible() bool {
+// CursorVisible: find out whether the cursor should be displayed.
+func (t *TextViewClass) CursorVisible() bool {
 	var _arg0 *C.GtkTextView // out
 	var _cret C.gboolean     // in
 
@@ -3152,7 +823,10 @@ func (t textView) CursorVisible() bool {
 	return _ok
 }
 
-func (t textView) Editable() bool {
+// Editable returns the default editability of the `GtkTextView`.
+//
+// Tags in the buffer may override this setting for some ranges of text.
+func (t *TextViewClass) Editable() bool {
 	var _arg0 *C.GtkTextView // out
 	var _cret C.gboolean     // in
 
@@ -3169,7 +843,9 @@ func (t textView) Editable() bool {
 	return _ok
 }
 
-func (t textView) ExtraMenu() gio.MenuModel {
+// ExtraMenu gets the menu model that gets added to the context menu or nil if
+// none has been set.
+func (t *TextViewClass) ExtraMenu() gio.MenuModel {
 	var _arg0 *C.GtkTextView // out
 	var _cret *C.GMenuModel  // in
 
@@ -3184,7 +860,13 @@ func (t textView) ExtraMenu() gio.MenuModel {
 	return _menuModel
 }
 
-func (t textView) Gutter(win TextWindowType) Widget {
+// Gutter gets a `GtkWidget` that has previously been set as gutter.
+//
+// See [method@Gtk.TextView.set_gutter].
+//
+// @win must be one of GTK_TEXT_WINDOW_LEFT, GTK_TEXT_WINDOW_RIGHT,
+// GTK_TEXT_WINDOW_TOP, or GTK_TEXT_WINDOW_BOTTOM.
+func (t *TextViewClass) Gutter(win TextWindowType) Widget {
 	var _arg0 *C.GtkTextView      // out
 	var _arg1 C.GtkTextWindowType // out
 	var _cret *C.GtkWidget        // in
@@ -3201,7 +883,11 @@ func (t textView) Gutter(win TextWindowType) Widget {
 	return _widget
 }
 
-func (t textView) Indent() int {
+// Indent gets the default indentation of paragraphs in @text_view.
+//
+// Tags in the view’s buffer may override the default. The indentation may be
+// negative.
+func (t *TextViewClass) Indent() int {
 	var _arg0 *C.GtkTextView // out
 	var _cret C.int          // in
 
@@ -3216,7 +902,8 @@ func (t textView) Indent() int {
 	return _gint
 }
 
-func (t textView) InputHints() InputHints {
+// InputHints gets the `input-hints` of the `GtkTextView`.
+func (t *TextViewClass) InputHints() InputHints {
 	var _arg0 *C.GtkTextView  // out
 	var _cret C.GtkInputHints // in
 
@@ -3231,7 +918,8 @@ func (t textView) InputHints() InputHints {
 	return _inputHints
 }
 
-func (t textView) InputPurpose() InputPurpose {
+// InputPurpose gets the `input-purpose` of the `GtkTextView`.
+func (t *TextViewClass) InputPurpose() InputPurpose {
 	var _arg0 *C.GtkTextView    // out
 	var _cret C.GtkInputPurpose // in
 
@@ -3246,105 +934,10 @@ func (t textView) InputPurpose() InputPurpose {
 	return _inputPurpose
 }
 
-func (t textView) IterAtLocation(x int, y int) (TextIter, bool) {
-	var _arg0 *C.GtkTextView // out
-	var _arg1 C.GtkTextIter  // in
-	var _arg2 C.int          // out
-	var _arg3 C.int          // out
-	var _cret C.gboolean     // in
-
-	_arg0 = (*C.GtkTextView)(unsafe.Pointer(t.Native()))
-	_arg2 = C.int(x)
-	_arg3 = C.int(y)
-
-	_cret = C.gtk_text_view_get_iter_at_location(_arg0, &_arg1, _arg2, _arg3)
-
-	var _iter TextIter // out
-	var _ok bool       // out
-
-	{
-		var refTmpIn *C.GtkTextIter
-		var refTmpOut *TextIter
-
-		in0 := &_arg1
-		refTmpIn = in0
-
-		refTmpOut = (*TextIter)(unsafe.Pointer(refTmpIn))
-
-		_iter = *refTmpOut
-	}
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _iter, _ok
-}
-
-func (t textView) IterAtPosition(x int, y int) (TextIter, int, bool) {
-	var _arg0 *C.GtkTextView // out
-	var _arg1 C.GtkTextIter  // in
-	var _arg2 C.int          // in
-	var _arg3 C.int          // out
-	var _arg4 C.int          // out
-	var _cret C.gboolean     // in
-
-	_arg0 = (*C.GtkTextView)(unsafe.Pointer(t.Native()))
-	_arg3 = C.int(x)
-	_arg4 = C.int(y)
-
-	_cret = C.gtk_text_view_get_iter_at_position(_arg0, &_arg1, &_arg2, _arg3, _arg4)
-
-	var _iter TextIter // out
-	var _trailing int  // out
-	var _ok bool       // out
-
-	{
-		var refTmpIn *C.GtkTextIter
-		var refTmpOut *TextIter
-
-		in0 := &_arg1
-		refTmpIn = in0
-
-		refTmpOut = (*TextIter)(unsafe.Pointer(refTmpIn))
-
-		_iter = *refTmpOut
-	}
-	_trailing = int(_arg2)
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _iter, _trailing, _ok
-}
-
-func (t textView) IterLocation(iter *TextIter) gdk.Rectangle {
-	var _arg0 *C.GtkTextView // out
-	var _arg1 *C.GtkTextIter // out
-	var _arg2 C.GdkRectangle // in
-
-	_arg0 = (*C.GtkTextView)(unsafe.Pointer(t.Native()))
-	_arg1 = (*C.GtkTextIter)(unsafe.Pointer(iter))
-
-	C.gtk_text_view_get_iter_location(_arg0, _arg1, &_arg2)
-
-	var _location gdk.Rectangle // out
-
-	{
-		var refTmpIn *C.GdkRectangle
-		var refTmpOut *gdk.Rectangle
-
-		in0 := &_arg2
-		refTmpIn = in0
-
-		refTmpOut = (*gdk.Rectangle)(unsafe.Pointer(refTmpIn))
-
-		_location = *refTmpOut
-	}
-
-	return _location
-}
-
-func (t textView) Justification() Justification {
+// Justification gets the default justification of paragraphs in @text_view.
+//
+// Tags in the buffer may override the default.
+func (t *TextViewClass) Justification() Justification {
 	var _arg0 *C.GtkTextView     // out
 	var _cret C.GtkJustification // in
 
@@ -3359,7 +952,10 @@ func (t textView) Justification() Justification {
 	return _justification
 }
 
-func (t textView) LeftMargin() int {
+// LeftMargin gets the default left margin size of paragraphs in the @text_view.
+//
+// Tags in the buffer may override the default.
+func (t *TextViewClass) LeftMargin() int {
 	var _arg0 *C.GtkTextView // out
 	var _cret C.int          // in
 
@@ -3374,37 +970,12 @@ func (t textView) LeftMargin() int {
 	return _gint
 }
 
-func (t textView) LineAtY(y int) (TextIter, int) {
-	var _arg0 *C.GtkTextView // out
-	var _arg1 C.GtkTextIter  // in
-	var _arg2 C.int          // out
-	var _arg3 C.int          // in
-
-	_arg0 = (*C.GtkTextView)(unsafe.Pointer(t.Native()))
-	_arg2 = C.int(y)
-
-	C.gtk_text_view_get_line_at_y(_arg0, &_arg1, _arg2, &_arg3)
-
-	var _targetIter TextIter // out
-	var _lineTop int         // out
-
-	{
-		var refTmpIn *C.GtkTextIter
-		var refTmpOut *TextIter
-
-		in0 := &_arg1
-		refTmpIn = in0
-
-		refTmpOut = (*TextIter)(unsafe.Pointer(refTmpIn))
-
-		_targetIter = *refTmpOut
-	}
-	_lineTop = int(_arg3)
-
-	return _targetIter, _lineTop
-}
-
-func (t textView) LineYrange(iter *TextIter) (y int, height int) {
+// LineYrange gets the y coordinate of the top of the line containing @iter, and
+// the height of the line.
+//
+// The coordinate is a buffer coordinate; convert to window coordinates with
+// [method@Gtk.TextView.buffer_to_window_coords].
+func (t *TextViewClass) LineYrange(iter *TextIter) (y int, height int) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 *C.GtkTextIter // out
 	var _arg2 C.int          // in
@@ -3424,7 +995,8 @@ func (t textView) LineYrange(iter *TextIter) (y int, height int) {
 	return _y, _height
 }
 
-func (t textView) Monospace() bool {
+// Monospace gets whether the `GtkTextView` uses monospace styling.
+func (t *TextViewClass) Monospace() bool {
 	var _arg0 *C.GtkTextView // out
 	var _cret C.gboolean     // in
 
@@ -3441,7 +1013,8 @@ func (t textView) Monospace() bool {
 	return _ok
 }
 
-func (t textView) Overwrite() bool {
+// Overwrite returns whether the `GtkTextView` is in overwrite mode or not.
+func (t *TextViewClass) Overwrite() bool {
 	var _arg0 *C.GtkTextView // out
 	var _cret C.gboolean     // in
 
@@ -3458,7 +1031,11 @@ func (t textView) Overwrite() bool {
 	return _ok
 }
 
-func (t textView) PixelsAboveLines() int {
+// PixelsAboveLines gets the default number of pixels to put above paragraphs.
+//
+// Adding this function with [method@Gtk.TextView.get_pixels_below_lines] is
+// equal to the line space between each paragraph.
+func (t *TextViewClass) PixelsAboveLines() int {
 	var _arg0 *C.GtkTextView // out
 	var _cret C.int          // in
 
@@ -3473,7 +1050,11 @@ func (t textView) PixelsAboveLines() int {
 	return _gint
 }
 
-func (t textView) PixelsBelowLines() int {
+// PixelsBelowLines gets the default number of pixels to put below paragraphs.
+//
+// The line space is the sum of the value returned by this function and the
+// value returned by [method@Gtk.TextView.get_pixels_above_lines].
+func (t *TextViewClass) PixelsBelowLines() int {
 	var _arg0 *C.GtkTextView // out
 	var _cret C.int          // in
 
@@ -3488,7 +1069,9 @@ func (t textView) PixelsBelowLines() int {
 	return _gint
 }
 
-func (t textView) PixelsInsideWrap() int {
+// PixelsInsideWrap gets the default number of pixels to put between wrapped
+// lines inside a paragraph.
+func (t *TextViewClass) PixelsInsideWrap() int {
 	var _arg0 *C.GtkTextView // out
 	var _cret C.int          // in
 
@@ -3503,7 +1086,10 @@ func (t textView) PixelsInsideWrap() int {
 	return _gint
 }
 
-func (t textView) RightMargin() int {
+// RightMargin gets the default right margin for text in @text_view.
+//
+// Tags in the buffer may override the default.
+func (t *TextViewClass) RightMargin() int {
 	var _arg0 *C.GtkTextView // out
 	var _cret C.int          // in
 
@@ -3518,7 +1104,12 @@ func (t textView) RightMargin() int {
 	return _gint
 }
 
-func (t textView) Tabs() *pango.TabArray {
+// Tabs gets the default tabs for @text_view.
+//
+// Tags in the buffer may override the defaults. The returned array will be nil
+// if “standard” (8-space) tabs are used. Free the return value with
+// [method@Pango.TabArray.free].
+func (t *TextViewClass) Tabs() *pango.TabArray {
 	var _arg0 *C.GtkTextView   // out
 	var _cret *C.PangoTabArray // in
 
@@ -3536,7 +1127,8 @@ func (t textView) Tabs() *pango.TabArray {
 	return _tabArray
 }
 
-func (t textView) TopMargin() int {
+// TopMargin gets the top margin for text in the @text_view.
+func (t *TextViewClass) TopMargin() int {
 	var _arg0 *C.GtkTextView // out
 	var _cret C.int          // in
 
@@ -3551,32 +1143,8 @@ func (t textView) TopMargin() int {
 	return _gint
 }
 
-func (t textView) VisibleRect() gdk.Rectangle {
-	var _arg0 *C.GtkTextView // out
-	var _arg1 C.GdkRectangle // in
-
-	_arg0 = (*C.GtkTextView)(unsafe.Pointer(t.Native()))
-
-	C.gtk_text_view_get_visible_rect(_arg0, &_arg1)
-
-	var _visibleRect gdk.Rectangle // out
-
-	{
-		var refTmpIn *C.GdkRectangle
-		var refTmpOut *gdk.Rectangle
-
-		in0 := &_arg1
-		refTmpIn = in0
-
-		refTmpOut = (*gdk.Rectangle)(unsafe.Pointer(refTmpIn))
-
-		_visibleRect = *refTmpOut
-	}
-
-	return _visibleRect
-}
-
-func (t textView) WrapMode() WrapMode {
+// WrapMode gets the line wrapping for the view.
+func (t *TextViewClass) WrapMode() WrapMode {
 	var _arg0 *C.GtkTextView // out
 	var _cret C.GtkWrapMode  // in
 
@@ -3591,7 +1159,34 @@ func (t textView) WrapMode() WrapMode {
 	return _wrapMode
 }
 
-func (t textView) ImContextFilterKeypress(event gdk.Event) bool {
+// ImContextFilterKeypress: allow the `GtkTextView` input method to internally
+// handle key press and release events.
+//
+// If this function returns true, then no further processing should be done for
+// this key event. See [method@Gtk.IMContext.filter_keypress].
+//
+// Note that you are expected to call this function from your handler when
+// overriding key event handling. This is needed in the case when you need to
+// insert your own key handling between the input method and the default key
+// event handling of the `GtkTextView`.
+//
+// “`c static gboolean gtk_foo_bar_key_press_event (GtkWidget *widget, GdkEvent
+// *event) { guint keyval;
+//
+//    gdk_event_get_keyval ((GdkEvent*)event, &keyval);
+//
+//    if (keyval == GDK_KEY_Return || keyval == GDK_KEY_KP_Enter)
+//      {
+//        if (gtk_text_view_im_context_filter_keypress (GTK_TEXT_VIEW (widget), event))
+//          return TRUE;
+//      }
+//
+//    // Do some stuff
+//
+//    return GTK_WIDGET_CLASS (gtk_foo_bar_parent_class)->key_press_event (widget, event);
+//
+// } “`
+func (t *TextViewClass) ImContextFilterKeypress(event gdk.Event) bool {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 *C.GdkEvent    // out
 	var _cret C.gboolean     // in
@@ -3610,7 +1205,9 @@ func (t textView) ImContextFilterKeypress(event gdk.Event) bool {
 	return _ok
 }
 
-func (t textView) MoveMarkOnscreen(mark TextMark) bool {
+// MoveMarkOnscreen moves a mark within the buffer so that it's located within
+// the currently-visible text area.
+func (t *TextViewClass) MoveMarkOnscreen(mark TextMark) bool {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 *C.GtkTextMark // out
 	var _cret C.gboolean     // in
@@ -3629,7 +1226,10 @@ func (t textView) MoveMarkOnscreen(mark TextMark) bool {
 	return _ok
 }
 
-func (t textView) MoveOverlay(child Widget, xpos int, ypos int) {
+// MoveOverlay updates the position of a child.
+//
+// See [method@Gtk.TextView.add_overlay].
+func (t *TextViewClass) MoveOverlay(child Widget, xpos int, ypos int) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 *C.GtkWidget   // out
 	var _arg2 C.int          // out
@@ -3643,7 +1243,18 @@ func (t textView) MoveOverlay(child Widget, xpos int, ypos int) {
 	C.gtk_text_view_move_overlay(_arg0, _arg1, _arg2, _arg3)
 }
 
-func (t textView) MoveVisually(iter *TextIter, count int) bool {
+// MoveVisually: move the iterator a given number of characters visually,
+// treating it as the strong cursor position.
+//
+// If @count is positive, then the new strong cursor position will be @count
+// positions to the right of the old cursor position. If @count is negative then
+// the new strong cursor position will be @count positions to the left of the
+// old cursor position.
+//
+// In the presence of bi-directional text, the correspondence between logical
+// and visual order will depend on the direction of the current run, and there
+// may be jumps when the cursor is moved off of the end of a run.
+func (t *TextViewClass) MoveVisually(iter *TextIter, count int) bool {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 *C.GtkTextIter // out
 	var _arg2 C.int          // out
@@ -3664,7 +1275,9 @@ func (t textView) MoveVisually(iter *TextIter, count int) bool {
 	return _ok
 }
 
-func (t textView) PlaceCursorOnscreen() bool {
+// PlaceCursorOnscreen moves the cursor to the currently visible region of the
+// buffer.
+func (t *TextViewClass) PlaceCursorOnscreen() bool {
 	var _arg0 *C.GtkTextView // out
 	var _cret C.gboolean     // in
 
@@ -3681,7 +1294,8 @@ func (t textView) PlaceCursorOnscreen() bool {
 	return _ok
 }
 
-func (t textView) Remove(child Widget) {
+// Remove removes a child widget from @text_view.
+func (t *TextViewClass) Remove(child Widget) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 *C.GtkWidget   // out
 
@@ -3691,7 +1305,14 @@ func (t textView) Remove(child Widget) {
 	C.gtk_text_view_remove(_arg0, _arg1)
 }
 
-func (t textView) ResetCursorBlink() {
+// ResetCursorBlink ensures that the cursor is shown.
+//
+// This also resets the time that it will stay blinking (or visible, in case
+// blinking is disabled).
+//
+// This function should be called in response to user input (e.g. from derived
+// classes that override the textview's event handlers).
+func (t *TextViewClass) ResetCursorBlink() {
 	var _arg0 *C.GtkTextView // out
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(t.Native()))
@@ -3699,7 +1320,11 @@ func (t textView) ResetCursorBlink() {
 	C.gtk_text_view_reset_cursor_blink(_arg0)
 }
 
-func (t textView) ResetImContext() {
+// ResetImContext: reset the input method context of the text view if needed.
+//
+// This can be necessary in the case where modifying the buffer would confuse
+// on-going input method behavior.
+func (t *TextViewClass) ResetImContext() {
 	var _arg0 *C.GtkTextView // out
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(t.Native()))
@@ -3707,7 +1332,9 @@ func (t textView) ResetImContext() {
 	C.gtk_text_view_reset_im_context(_arg0)
 }
 
-func (t textView) ScrollMarkOnscreen(mark TextMark) {
+// ScrollMarkOnscreen scrolls @text_view the minimum distance such that @mark is
+// contained within the visible area of the widget.
+func (t *TextViewClass) ScrollMarkOnscreen(mark TextMark) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 *C.GtkTextMark // out
 
@@ -3717,7 +1344,21 @@ func (t textView) ScrollMarkOnscreen(mark TextMark) {
 	C.gtk_text_view_scroll_mark_onscreen(_arg0, _arg1)
 }
 
-func (t textView) ScrollToIter(iter *TextIter, withinMargin float64, useAlign bool, xalign float64, yalign float64) bool {
+// ScrollToIter scrolls @text_view so that @iter is on the screen in the
+// position indicated by @xalign and @yalign.
+//
+// An alignment of 0.0 indicates left or top, 1.0 indicates right or bottom, 0.5
+// means center. If @use_align is false, the text scrolls the minimal distance
+// to get the mark onscreen, possibly not scrolling at all. The effective screen
+// for purposes of this function is reduced by a margin of size @within_margin.
+//
+// Note that this function uses the currently-computed height of the lines in
+// the text buffer. Line heights are computed in an idle handler; so this
+// function may not have the desired effect if it’s called before the height
+// computations. To avoid oddness, consider using
+// [method@Gtk.TextView.scroll_to_mark] which saves a point to be scrolled to
+// after line validation.
+func (t *TextViewClass) ScrollToIter(iter *TextIter, withinMargin float64, useAlign bool, xalign float64, yalign float64) bool {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 *C.GtkTextIter // out
 	var _arg2 C.double       // out
@@ -3746,7 +1387,14 @@ func (t textView) ScrollToIter(iter *TextIter, withinMargin float64, useAlign bo
 	return _ok
 }
 
-func (t textView) ScrollToMark(mark TextMark, withinMargin float64, useAlign bool, xalign float64, yalign float64) {
+// ScrollToMark scrolls @text_view so that @mark is on the screen in the
+// position indicated by @xalign and @yalign.
+//
+// An alignment of 0.0 indicates left or top, 1.0 indicates right or bottom, 0.5
+// means center. If @use_align is false, the text scrolls the minimal distance
+// to get the mark onscreen, possibly not scrolling at all. The effective screen
+// for purposes of this function is reduced by a margin of size @within_margin.
+func (t *TextViewClass) ScrollToMark(mark TextMark, withinMargin float64, useAlign bool, xalign float64, yalign float64) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 *C.GtkTextMark // out
 	var _arg2 C.double       // out
@@ -3766,7 +1414,12 @@ func (t textView) ScrollToMark(mark TextMark, withinMargin float64, useAlign boo
 	C.gtk_text_view_scroll_to_mark(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
 
-func (t textView) SetAcceptsTab(acceptsTab bool) {
+// SetAcceptsTab sets the behavior of the text widget when the Tab key is
+// pressed.
+//
+// If @accepts_tab is true, a tab character is inserted. If @accepts_tab is
+// false the keyboard focus is moved to the next widget in the focus chain.
+func (t *TextViewClass) SetAcceptsTab(acceptsTab bool) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 C.gboolean     // out
 
@@ -3778,7 +1431,11 @@ func (t textView) SetAcceptsTab(acceptsTab bool) {
 	C.gtk_text_view_set_accepts_tab(_arg0, _arg1)
 }
 
-func (t textView) SetBottomMargin(bottomMargin int) {
+// SetBottomMargin sets the bottom margin for text in @text_view.
+//
+// Note that this function is confusingly named. In CSS terms, the value set
+// here is padding.
+func (t *TextViewClass) SetBottomMargin(bottomMargin int) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 C.int          // out
 
@@ -3788,7 +1445,13 @@ func (t textView) SetBottomMargin(bottomMargin int) {
 	C.gtk_text_view_set_bottom_margin(_arg0, _arg1)
 }
 
-func (t textView) SetBuffer(buffer TextBuffer) {
+// SetBuffer sets @buffer as the buffer being displayed by @text_view.
+//
+// The previous buffer displayed by the text view is unreferenced, and a
+// reference is added to @buffer. If you owned a reference to @buffer before
+// passing it to this function, you must remove that reference yourself;
+// `GtkTextView` will not “adopt” it.
+func (t *TextViewClass) SetBuffer(buffer TextBuffer) {
 	var _arg0 *C.GtkTextView   // out
 	var _arg1 *C.GtkTextBuffer // out
 
@@ -3798,7 +1461,14 @@ func (t textView) SetBuffer(buffer TextBuffer) {
 	C.gtk_text_view_set_buffer(_arg0, _arg1)
 }
 
-func (t textView) SetCursorVisible(setting bool) {
+// SetCursorVisible toggles whether the insertion point should be displayed.
+//
+// A buffer with no editable text probably shouldn’t have a visible cursor, so
+// you may want to turn the cursor off.
+//
+// Note that this property may be overridden by the
+// [property@GtkSettings:gtk-keynav-use-caret] setting.
+func (t *TextViewClass) SetCursorVisible(setting bool) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 C.gboolean     // out
 
@@ -3810,7 +1480,11 @@ func (t textView) SetCursorVisible(setting bool) {
 	C.gtk_text_view_set_cursor_visible(_arg0, _arg1)
 }
 
-func (t textView) SetEditable(setting bool) {
+// SetEditable sets the default editability of the `GtkTextView`.
+//
+// You can override this default setting with tags in the buffer, using the
+// “editable” attribute of tags.
+func (t *TextViewClass) SetEditable(setting bool) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 C.gboolean     // out
 
@@ -3822,7 +1496,11 @@ func (t textView) SetEditable(setting bool) {
 	C.gtk_text_view_set_editable(_arg0, _arg1)
 }
 
-func (t textView) SetExtraMenu(model gio.MenuModel) {
+// SetExtraMenu sets a menu model to add when constructing the context menu for
+// @text_view.
+//
+// You can pass nil to remove a previously set extra menu.
+func (t *TextViewClass) SetExtraMenu(model gio.MenuModel) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 *C.GMenuModel  // out
 
@@ -3832,7 +1510,11 @@ func (t textView) SetExtraMenu(model gio.MenuModel) {
 	C.gtk_text_view_set_extra_menu(_arg0, _arg1)
 }
 
-func (t textView) SetGutter(win TextWindowType, widget Widget) {
+// SetGutter places @widget into the gutter specified by @win.
+//
+// @win must be one of GTK_TEXT_WINDOW_LEFT, GTK_TEXT_WINDOW_RIGHT,
+// GTK_TEXT_WINDOW_TOP, or GTK_TEXT_WINDOW_BOTTOM.
+func (t *TextViewClass) SetGutter(win TextWindowType, widget Widget) {
 	var _arg0 *C.GtkTextView      // out
 	var _arg1 C.GtkTextWindowType // out
 	var _arg2 *C.GtkWidget        // out
@@ -3844,7 +1526,10 @@ func (t textView) SetGutter(win TextWindowType, widget Widget) {
 	C.gtk_text_view_set_gutter(_arg0, _arg1, _arg2)
 }
 
-func (t textView) SetIndent(indent int) {
+// SetIndent sets the default indentation for paragraphs in @text_view.
+//
+// Tags in the buffer may override the default.
+func (t *TextViewClass) SetIndent(indent int) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 C.int          // out
 
@@ -3854,7 +1539,10 @@ func (t textView) SetIndent(indent int) {
 	C.gtk_text_view_set_indent(_arg0, _arg1)
 }
 
-func (t textView) SetInputHints(hints InputHints) {
+// SetInputHints sets the `input-hints` of the `GtkTextView`.
+//
+// The `input-hints` allow input methods to fine-tune their behaviour.
+func (t *TextViewClass) SetInputHints(hints InputHints) {
 	var _arg0 *C.GtkTextView  // out
 	var _arg1 C.GtkInputHints // out
 
@@ -3864,7 +1552,11 @@ func (t textView) SetInputHints(hints InputHints) {
 	C.gtk_text_view_set_input_hints(_arg0, _arg1)
 }
 
-func (t textView) SetInputPurpose(purpose InputPurpose) {
+// SetInputPurpose sets the `input-purpose` of the `GtkTextView`.
+//
+// The `input-purpose` can be used by on-screen keyboards and other input
+// methods to adjust their behaviour.
+func (t *TextViewClass) SetInputPurpose(purpose InputPurpose) {
 	var _arg0 *C.GtkTextView    // out
 	var _arg1 C.GtkInputPurpose // out
 
@@ -3874,7 +1566,10 @@ func (t textView) SetInputPurpose(purpose InputPurpose) {
 	C.gtk_text_view_set_input_purpose(_arg0, _arg1)
 }
 
-func (t textView) SetJustification(justification Justification) {
+// SetJustification sets the default justification of text in @text_view.
+//
+// Tags in the view’s buffer may override the default.
+func (t *TextViewClass) SetJustification(justification Justification) {
 	var _arg0 *C.GtkTextView     // out
 	var _arg1 C.GtkJustification // out
 
@@ -3884,7 +1579,13 @@ func (t textView) SetJustification(justification Justification) {
 	C.gtk_text_view_set_justification(_arg0, _arg1)
 }
 
-func (t textView) SetLeftMargin(leftMargin int) {
+// SetLeftMargin sets the default left margin for text in @text_view.
+//
+// Tags in the buffer may override the default.
+//
+// Note that this function is confusingly named. In CSS terms, the value set
+// here is padding.
+func (t *TextViewClass) SetLeftMargin(leftMargin int) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 C.int          // out
 
@@ -3894,7 +1595,9 @@ func (t textView) SetLeftMargin(leftMargin int) {
 	C.gtk_text_view_set_left_margin(_arg0, _arg1)
 }
 
-func (t textView) SetMonospace(monospace bool) {
+// SetMonospace sets whether the `GtkTextView` should display text in monospace
+// styling.
+func (t *TextViewClass) SetMonospace(monospace bool) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 C.gboolean     // out
 
@@ -3906,7 +1609,8 @@ func (t textView) SetMonospace(monospace bool) {
 	C.gtk_text_view_set_monospace(_arg0, _arg1)
 }
 
-func (t textView) SetOverwrite(overwrite bool) {
+// SetOverwrite changes the `GtkTextView` overwrite mode.
+func (t *TextViewClass) SetOverwrite(overwrite bool) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 C.gboolean     // out
 
@@ -3918,7 +1622,11 @@ func (t textView) SetOverwrite(overwrite bool) {
 	C.gtk_text_view_set_overwrite(_arg0, _arg1)
 }
 
-func (t textView) SetPixelsAboveLines(pixelsAboveLines int) {
+// SetPixelsAboveLines sets the default number of blank pixels above paragraphs
+// in @text_view.
+//
+// Tags in the buffer for @text_view may override the defaults.
+func (t *TextViewClass) SetPixelsAboveLines(pixelsAboveLines int) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 C.int          // out
 
@@ -3928,7 +1636,11 @@ func (t textView) SetPixelsAboveLines(pixelsAboveLines int) {
 	C.gtk_text_view_set_pixels_above_lines(_arg0, _arg1)
 }
 
-func (t textView) SetPixelsBelowLines(pixelsBelowLines int) {
+// SetPixelsBelowLines sets the default number of pixels of blank space to put
+// below paragraphs in @text_view.
+//
+// May be overridden by tags applied to @text_view’s buffer.
+func (t *TextViewClass) SetPixelsBelowLines(pixelsBelowLines int) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 C.int          // out
 
@@ -3938,7 +1650,11 @@ func (t textView) SetPixelsBelowLines(pixelsBelowLines int) {
 	C.gtk_text_view_set_pixels_below_lines(_arg0, _arg1)
 }
 
-func (t textView) SetPixelsInsideWrap(pixelsInsideWrap int) {
+// SetPixelsInsideWrap sets the default number of pixels of blank space to leave
+// between display/wrapped lines within a paragraph.
+//
+// May be overridden by tags in @text_view’s buffer.
+func (t *TextViewClass) SetPixelsInsideWrap(pixelsInsideWrap int) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 C.int          // out
 
@@ -3948,7 +1664,13 @@ func (t textView) SetPixelsInsideWrap(pixelsInsideWrap int) {
 	C.gtk_text_view_set_pixels_inside_wrap(_arg0, _arg1)
 }
 
-func (t textView) SetRightMargin(rightMargin int) {
+// SetRightMargin sets the default right margin for text in the text view.
+//
+// Tags in the buffer may override the default.
+//
+// Note that this function is confusingly named. In CSS terms, the value set
+// here is padding.
+func (t *TextViewClass) SetRightMargin(rightMargin int) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 C.int          // out
 
@@ -3958,7 +1680,10 @@ func (t textView) SetRightMargin(rightMargin int) {
 	C.gtk_text_view_set_right_margin(_arg0, _arg1)
 }
 
-func (t textView) SetTabs(tabs *pango.TabArray) {
+// SetTabs sets the default tab stops for paragraphs in @text_view.
+//
+// Tags in the buffer may override the default.
+func (t *TextViewClass) SetTabs(tabs *pango.TabArray) {
 	var _arg0 *C.GtkTextView   // out
 	var _arg1 *C.PangoTabArray // out
 
@@ -3968,7 +1693,11 @@ func (t textView) SetTabs(tabs *pango.TabArray) {
 	C.gtk_text_view_set_tabs(_arg0, _arg1)
 }
 
-func (t textView) SetTopMargin(topMargin int) {
+// SetTopMargin sets the top margin for text in @text_view.
+//
+// Note that this function is confusingly named. In CSS terms, the value set
+// here is padding.
+func (t *TextViewClass) SetTopMargin(topMargin int) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 C.int          // out
 
@@ -3978,7 +1707,8 @@ func (t textView) SetTopMargin(topMargin int) {
 	C.gtk_text_view_set_top_margin(_arg0, _arg1)
 }
 
-func (t textView) SetWrapMode(wrapMode WrapMode) {
+// SetWrapMode sets the line wrapping for the view.
+func (t *TextViewClass) SetWrapMode(wrapMode WrapMode) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 C.GtkWrapMode  // out
 
@@ -3988,7 +1718,11 @@ func (t textView) SetWrapMode(wrapMode WrapMode) {
 	C.gtk_text_view_set_wrap_mode(_arg0, _arg1)
 }
 
-func (t textView) StartsDisplayLine(iter *TextIter) bool {
+// StartsDisplayLine determines whether @iter is at the start of a display line.
+//
+// See [method@Gtk.TextView.forward_display_line] for an explanation of display
+// lines vs. paragraphs.
+func (t *TextViewClass) StartsDisplayLine(iter *TextIter) bool {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 *C.GtkTextIter // out
 	var _cret C.gboolean     // in
@@ -4007,7 +1741,9 @@ func (t textView) StartsDisplayLine(iter *TextIter) bool {
 	return _ok
 }
 
-func (t textView) WindowToBufferCoords(win TextWindowType, windowX int, windowY int) (bufferX int, bufferY int) {
+// WindowToBufferCoords converts coordinates on the window identified by @win to
+// buffer coordinates.
+func (t *TextViewClass) WindowToBufferCoords(win TextWindowType, windowX int, windowY int) (bufferX int, bufferY int) {
 	var _arg0 *C.GtkTextView      // out
 	var _arg1 C.GtkTextWindowType // out
 	var _arg2 C.int               // out

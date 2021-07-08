@@ -5,8 +5,6 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
-	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -26,8 +24,6 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 // #include <glib-object.h>
-//
-// void gotk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 func init() {
@@ -42,208 +38,28 @@ func init() {
 type TLSFileDatabase interface {
 	gextras.Objector
 
-	// AsTLSDatabase casts the class to the TLSDatabase interface.
-	AsTLSDatabase() TLSDatabase
-
-	// CreateCertificateHandle: create a handle string for the certificate. The
-	// database will only be able to create a handle for certificates that
-	// originate from the database. In cases where the database cannot create a
-	// handle for a certificate, nil will be returned.
-	//
-	// This handle should be stable across various instances of the application,
-	// and between applications. If a certificate is modified in the database,
-	// then it is not guaranteed that this handle will continue to point to it.
-	//
-	// This method is inherited from TLSDatabase
-	CreateCertificateHandle(certificate TLSCertificate) string
-	// LookupCertificateForHandle: look up a certificate by its handle.
-	//
-	// The handle should have been created by calling
-	// g_tls_database_create_certificate_handle() on a Database object of the
-	// same TLS backend. The handle is designed to remain valid across
-	// instantiations of the database.
-	//
-	// If the handle is no longer valid, or does not point to a certificate in
-	// this database, then nil will be returned.
-	//
-	// This function can block, use
-	// g_tls_database_lookup_certificate_for_handle_async() to perform the
-	// lookup operation asynchronously.
-	//
-	// This method is inherited from TLSDatabase
-	LookupCertificateForHandle(handle string, interaction TLSInteraction, flags TLSDatabaseLookupFlags, cancellable Cancellable) (TLSCertificate, error)
-	// LookupCertificateForHandleAsync: asynchronously look up a certificate by
-	// its handle in the database. See
-	// g_tls_database_lookup_certificate_for_handle() for more information.
-	//
-	// This method is inherited from TLSDatabase
-	LookupCertificateForHandleAsync(handle string, interaction TLSInteraction, flags TLSDatabaseLookupFlags, cancellable Cancellable, callback AsyncReadyCallback)
-	// LookupCertificateForHandleFinish: finish an asynchronous lookup of a
-	// certificate by its handle. See
-	// g_tls_database_lookup_certificate_for_handle() for more information.
-	//
-	// If the handle is no longer valid, or does not point to a certificate in
-	// this database, then nil will be returned.
-	//
-	// This method is inherited from TLSDatabase
-	LookupCertificateForHandleFinish(result AsyncResult) (TLSCertificate, error)
-	// LookupCertificateIssuer: look up the issuer of @certificate in the
-	// database.
-	//
-	// The Certificate:issuer property of @certificate is not modified, and the
-	// two certificates are not hooked into a chain.
-	//
-	// This function can block, use
-	// g_tls_database_lookup_certificate_issuer_async() to perform the lookup
-	// operation asynchronously.
-	//
-	// This method is inherited from TLSDatabase
-	LookupCertificateIssuer(certificate TLSCertificate, interaction TLSInteraction, flags TLSDatabaseLookupFlags, cancellable Cancellable) (TLSCertificate, error)
-	// LookupCertificateIssuerAsync: asynchronously look up the issuer of
-	// @certificate in the database. See
-	// g_tls_database_lookup_certificate_issuer() for more information.
-	//
-	// This method is inherited from TLSDatabase
-	LookupCertificateIssuerAsync(certificate TLSCertificate, interaction TLSInteraction, flags TLSDatabaseLookupFlags, cancellable Cancellable, callback AsyncReadyCallback)
-	// LookupCertificateIssuerFinish: finish an asynchronous lookup issuer
-	// operation. See g_tls_database_lookup_certificate_issuer() for more
-	// information.
-	//
-	// This method is inherited from TLSDatabase
-	LookupCertificateIssuerFinish(result AsyncResult) (TLSCertificate, error)
-	// LookupCertificatesIssuedByAsync: asynchronously look up certificates
-	// issued by this issuer in the database. See
-	// g_tls_database_lookup_certificates_issued_by() for more information.
-	//
-	// The database may choose to hold a reference to the issuer byte array for
-	// the duration of of this asynchronous operation. The byte array should not
-	// be modified during this time.
-	//
-	// This method is inherited from TLSDatabase
-	LookupCertificatesIssuedByAsync(issuerRawDn []byte, interaction TLSInteraction, flags TLSDatabaseLookupFlags, cancellable Cancellable, callback AsyncReadyCallback)
-	// VerifyChain determines the validity of a certificate chain after looking
-	// up and adding any missing certificates to the chain.
-	//
-	// @chain is a chain of Certificate objects each pointing to the next
-	// certificate in the chain by its Certificate:issuer property. The chain
-	// may initially consist of one or more certificates. After the verification
-	// process is complete, @chain may be modified by adding missing
-	// certificates, or removing extra certificates. If a certificate anchor was
-	// found, then it is added to the @chain.
-	//
-	// @purpose describes the purpose (or usage) for which the certificate is
-	// being used. Typically @purpose will be set to
-	// TLS_DATABASE_PURPOSE_AUTHENTICATE_SERVER which means that the certificate
-	// is being used to authenticate a server (and we are acting as the client).
-	//
-	// The @identity is used to ensure the server certificate is valid for the
-	// expected peer identity. If the identity does not match the certificate,
-	// G_TLS_CERTIFICATE_BAD_IDENTITY will be set in the return value. If
-	// @identity is nil, that bit will never be set in the return value. The
-	// peer identity may also be used to check for pinned certificates (trust
-	// exceptions) in the database. These may override the normal verification
-	// process on a host-by-host basis.
-	//
-	// Currently there are no @flags, and G_TLS_DATABASE_VERIFY_NONE should be
-	// used.
-	//
-	// If @chain is found to be valid, then the return value will be 0. If
-	// @chain is found to be invalid, then the return value will indicate the
-	// problems found. If the function is unable to determine whether @chain is
-	// valid or not (eg, because @cancellable is triggered before it completes)
-	// then the return value will be G_TLS_CERTIFICATE_GENERIC_ERROR and @error
-	// will be set accordingly. @error is not set when @chain is successfully
-	// analyzed but found to be invalid.
-	//
-	// This function can block, use g_tls_database_verify_chain_async() to
-	// perform the verification operation asynchronously.
-	//
-	// This method is inherited from TLSDatabase
-	VerifyChain(chain TLSCertificate, purpose string, identity SocketConnectable, interaction TLSInteraction, flags TLSDatabaseVerifyFlags, cancellable Cancellable) (TLSCertificateFlags, error)
-	// VerifyChainAsync: asynchronously determines the validity of a certificate
-	// chain after looking up and adding any missing certificates to the chain.
-	// See g_tls_database_verify_chain() for more information.
-	//
-	// This method is inherited from TLSDatabase
-	VerifyChainAsync(chain TLSCertificate, purpose string, identity SocketConnectable, interaction TLSInteraction, flags TLSDatabaseVerifyFlags, cancellable Cancellable, callback AsyncReadyCallback)
-	// VerifyChainFinish: finish an asynchronous verify chain operation. See
-	// g_tls_database_verify_chain() for more information.
-	//
-	// If @chain is found to be valid, then the return value will be 0. If
-	// @chain is found to be invalid, then the return value will indicate the
-	// problems found. If the function is unable to determine whether @chain is
-	// valid or not (eg, because @cancellable is triggered before it completes)
-	// then the return value will be G_TLS_CERTIFICATE_GENERIC_ERROR and @error
-	// will be set accordingly. @error is not set when @chain is successfully
-	// analyzed but found to be invalid.
-	//
-	// This method is inherited from TLSDatabase
-	VerifyChainFinish(result AsyncResult) (TLSCertificateFlags, error)
+	privateTLSFileDatabaseInterface()
 }
 
-// tlsFileDatabase implements the TLSFileDatabase interface.
-type tlsFileDatabase struct {
-	*externglib.Object
+// TLSFileDatabaseInterface implements the TLSFileDatabase interface.
+type TLSFileDatabaseInterface struct {
+	TLSDatabaseClass
 }
 
-var _ TLSFileDatabase = (*tlsFileDatabase)(nil)
+var _ TLSFileDatabase = (*TLSFileDatabaseInterface)(nil)
 
-// WrapTLSFileDatabase wraps a GObject to a type that implements
-// interface TLSFileDatabase. It is primarily used internally.
-func WrapTLSFileDatabase(obj *externglib.Object) TLSFileDatabase {
-	return tlsFileDatabase{obj}
+func wrapTLSFileDatabase(obj *externglib.Object) TLSFileDatabase {
+	return &TLSFileDatabaseInterface{
+		TLSDatabaseClass: TLSDatabaseClass{
+			Object: obj,
+		},
+	}
 }
 
 func marshalTLSFileDatabase(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapTLSFileDatabase(obj), nil
+	return wrapTLSFileDatabase(obj), nil
 }
 
-func (t tlsFileDatabase) AsTLSDatabase() TLSDatabase {
-	return WrapTLSDatabase(gextras.InternObject(t))
-}
-
-func (s tlsFileDatabase) CreateCertificateHandle(certificate TLSCertificate) string {
-	return WrapTLSDatabase(gextras.InternObject(s)).CreateCertificateHandle(certificate)
-}
-
-func (s tlsFileDatabase) LookupCertificateForHandle(handle string, interaction TLSInteraction, flags TLSDatabaseLookupFlags, cancellable Cancellable) (TLSCertificate, error) {
-	return WrapTLSDatabase(gextras.InternObject(s)).LookupCertificateForHandle(handle, interaction, flags, cancellable)
-}
-
-func (s tlsFileDatabase) LookupCertificateForHandleAsync(handle string, interaction TLSInteraction, flags TLSDatabaseLookupFlags, cancellable Cancellable, callback AsyncReadyCallback) {
-	WrapTLSDatabase(gextras.InternObject(s)).LookupCertificateForHandleAsync(handle, interaction, flags, cancellable, callback)
-}
-
-func (s tlsFileDatabase) LookupCertificateForHandleFinish(result AsyncResult) (TLSCertificate, error) {
-	return WrapTLSDatabase(gextras.InternObject(s)).LookupCertificateForHandleFinish(result)
-}
-
-func (s tlsFileDatabase) LookupCertificateIssuer(certificate TLSCertificate, interaction TLSInteraction, flags TLSDatabaseLookupFlags, cancellable Cancellable) (TLSCertificate, error) {
-	return WrapTLSDatabase(gextras.InternObject(s)).LookupCertificateIssuer(certificate, interaction, flags, cancellable)
-}
-
-func (s tlsFileDatabase) LookupCertificateIssuerAsync(certificate TLSCertificate, interaction TLSInteraction, flags TLSDatabaseLookupFlags, cancellable Cancellable, callback AsyncReadyCallback) {
-	WrapTLSDatabase(gextras.InternObject(s)).LookupCertificateIssuerAsync(certificate, interaction, flags, cancellable, callback)
-}
-
-func (s tlsFileDatabase) LookupCertificateIssuerFinish(result AsyncResult) (TLSCertificate, error) {
-	return WrapTLSDatabase(gextras.InternObject(s)).LookupCertificateIssuerFinish(result)
-}
-
-func (s tlsFileDatabase) LookupCertificatesIssuedByAsync(issuerRawDn []byte, interaction TLSInteraction, flags TLSDatabaseLookupFlags, cancellable Cancellable, callback AsyncReadyCallback) {
-	WrapTLSDatabase(gextras.InternObject(s)).LookupCertificatesIssuedByAsync(issuerRawDn, interaction, flags, cancellable, callback)
-}
-
-func (s tlsFileDatabase) VerifyChain(chain TLSCertificate, purpose string, identity SocketConnectable, interaction TLSInteraction, flags TLSDatabaseVerifyFlags, cancellable Cancellable) (TLSCertificateFlags, error) {
-	return WrapTLSDatabase(gextras.InternObject(s)).VerifyChain(chain, purpose, identity, interaction, flags, cancellable)
-}
-
-func (s tlsFileDatabase) VerifyChainAsync(chain TLSCertificate, purpose string, identity SocketConnectable, interaction TLSInteraction, flags TLSDatabaseVerifyFlags, cancellable Cancellable, callback AsyncReadyCallback) {
-	WrapTLSDatabase(gextras.InternObject(s)).VerifyChainAsync(chain, purpose, identity, interaction, flags, cancellable, callback)
-}
-
-func (s tlsFileDatabase) VerifyChainFinish(result AsyncResult) (TLSCertificateFlags, error) {
-	return WrapTLSDatabase(gextras.InternObject(s)).VerifyChainFinish(result)
-}
+func (*TLSFileDatabaseInterface) privateTLSFileDatabaseInterface() {}

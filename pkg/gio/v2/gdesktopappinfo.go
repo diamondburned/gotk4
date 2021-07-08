@@ -5,7 +5,6 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -35,7 +34,7 @@ func init() {
 	})
 }
 
-// DesktopAppInfoLookupOverrider contains methods that are overridable .
+// DesktopAppInfoLookupOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
@@ -73,26 +72,35 @@ type DesktopAppInfoLookup interface {
 	DefaultForURIScheme(uriScheme string) AppInfo
 }
 
-// desktopAppInfoLookup implements the DesktopAppInfoLookup interface.
-type desktopAppInfoLookup struct {
+// DesktopAppInfoLookupInterface implements the DesktopAppInfoLookup interface.
+type DesktopAppInfoLookupInterface struct {
 	*externglib.Object
 }
 
-var _ DesktopAppInfoLookup = (*desktopAppInfoLookup)(nil)
+var _ DesktopAppInfoLookup = (*DesktopAppInfoLookupInterface)(nil)
 
-// WrapDesktopAppInfoLookup wraps a GObject to a type that implements
-// interface DesktopAppInfoLookup. It is primarily used internally.
-func WrapDesktopAppInfoLookup(obj *externglib.Object) DesktopAppInfoLookup {
-	return desktopAppInfoLookup{obj}
+func wrapDesktopAppInfoLookup(obj *externglib.Object) DesktopAppInfoLookup {
+	return &DesktopAppInfoLookupInterface{
+		Object: obj,
+	}
 }
 
 func marshalDesktopAppInfoLookup(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapDesktopAppInfoLookup(obj), nil
+	return wrapDesktopAppInfoLookup(obj), nil
 }
 
-func (l desktopAppInfoLookup) DefaultForURIScheme(uriScheme string) AppInfo {
+// DefaultForURIScheme gets the default application for launching applications
+// using this URI scheme for a particular AppInfoLookup implementation.
+//
+// The AppInfoLookup interface and this function is used to implement
+// g_app_info_get_default_for_uri_scheme() backends in a GIO module. There is no
+// reason for applications to use it directly. Applications should use
+// g_app_info_get_default_for_uri_scheme().
+//
+// Deprecated: since version 2.28.
+func (l *DesktopAppInfoLookupInterface) DefaultForURIScheme(uriScheme string) AppInfo {
 	var _arg0 *C.GDesktopAppInfoLookup // out
 	var _arg1 *C.char                  // out
 	var _cret *C.GAppInfo              // in
@@ -117,131 +125,6 @@ func (l desktopAppInfoLookup) DefaultForURIScheme(uriScheme string) AppInfo {
 // using it.
 type DesktopAppInfo interface {
 	gextras.Objector
-
-	// AsAppInfo casts the class to the AppInfo interface.
-	AsAppInfo() AppInfo
-
-	// AddSupportsType adds a content type to the application information to
-	// indicate the application is capable of opening files with the given
-	// content type.
-	//
-	// This method is inherited from AppInfo
-	AddSupportsType(contentType string) error
-	// CanDelete obtains the information whether the Info can be deleted. See
-	// g_app_info_delete().
-	//
-	// This method is inherited from AppInfo
-	CanDelete() bool
-	// CanRemoveSupportsType checks if a supported content type can be removed
-	// from an application.
-	//
-	// This method is inherited from AppInfo
-	CanRemoveSupportsType() bool
-	// Delete tries to delete a Info.
-	//
-	// On some platforms, there may be a difference between user-defined Infos
-	// which can be deleted, and system-wide ones which cannot. See
-	// g_app_info_can_delete().
-	//
-	// This method is inherited from AppInfo
-	Delete() bool
-	// Dup creates a duplicate of a Info.
-	//
-	// This method is inherited from AppInfo
-	Dup() AppInfo
-	// Equal checks if two Infos are equal.
-	//
-	// Note that the check *may not* compare each individual field, and only
-	// does an identity check. In case detecting changes in the contents is
-	// needed, program code must additionally compare relevant fields.
-	//
-	// This method is inherited from AppInfo
-	Equal(appinfo2 AppInfo) bool
-	// GetCommandline gets the commandline with which the application will be
-	// started.
-	//
-	// This method is inherited from AppInfo
-	GetCommandline() string
-	// GetDescription gets a human-readable description of an installed
-	// application.
-	//
-	// This method is inherited from AppInfo
-	GetDescription() string
-	// GetDisplayName gets the display name of the application. The display name
-	// is often more descriptive to the user than the name itself.
-	//
-	// This method is inherited from AppInfo
-	GetDisplayName() string
-	// GetExecutable gets the executable's name for the installed application.
-	//
-	// This method is inherited from AppInfo
-	GetExecutable() string
-	// GetIcon gets the icon for the application.
-	//
-	// This method is inherited from AppInfo
-	GetIcon() Icon
-	// GetID gets the ID of an application. An id is a string that identifies
-	// the application. The exact format of the id is platform dependent. For
-	// instance, on Unix this is the desktop file id from the xdg menu
-	// specification.
-	//
-	// Note that the returned ID may be nil, depending on how the @appinfo has
-	// been constructed.
-	//
-	// This method is inherited from AppInfo
-	GetID() string
-	// GetName gets the installed name of the application.
-	//
-	// This method is inherited from AppInfo
-	GetName() string
-	// GetSupportedTypes retrieves the list of content types that @app_info
-	// claims to support. If this information is not provided by the
-	// environment, this function will return nil. This function does not take
-	// in consideration associations added with g_app_info_add_supports_type(),
-	// but only those exported directly by the application.
-	//
-	// This method is inherited from AppInfo
-	GetSupportedTypes() []string
-	// LaunchUrisFinish finishes a g_app_info_launch_uris_async() operation.
-	//
-	// This method is inherited from AppInfo
-	LaunchUrisFinish(result AsyncResult) error
-	// RemoveSupportsType removes a supported type from an application, if
-	// possible.
-	//
-	// This method is inherited from AppInfo
-	RemoveSupportsType(contentType string) error
-	// SetAsDefaultForExtension sets the application as the default handler for
-	// the given file extension.
-	//
-	// This method is inherited from AppInfo
-	SetAsDefaultForExtension(extension string) error
-	// SetAsDefaultForType sets the application as the default handler for a
-	// given type.
-	//
-	// This method is inherited from AppInfo
-	SetAsDefaultForType(contentType string) error
-	// SetAsLastUsedForType sets the application as the last used application
-	// for a given type. This will make the application appear as first in the
-	// list returned by g_app_info_get_recommended_for_type(), regardless of the
-	// default application for that content type.
-	//
-	// This method is inherited from AppInfo
-	SetAsLastUsedForType(contentType string) error
-	// ShouldShow checks if the application info should be shown in menus that
-	// list available applications.
-	//
-	// This method is inherited from AppInfo
-	ShouldShow() bool
-	// SupportsFiles checks if the application accepts files as arguments.
-	//
-	// This method is inherited from AppInfo
-	SupportsFiles() bool
-	// SupportsUris checks if the application supports reading files and
-	// directories from URIs.
-	//
-	// This method is inherited from AppInfo
-	SupportsUris() bool
 
 	// ActionName gets the user-visible display name of the "additional
 	// application action" specified by @action_name.
@@ -321,23 +204,27 @@ type DesktopAppInfo interface {
 	ListActions() []string
 }
 
-// desktopAppInfo implements the DesktopAppInfo interface.
-type desktopAppInfo struct {
+// DesktopAppInfoClass implements the DesktopAppInfo interface.
+type DesktopAppInfoClass struct {
 	*externglib.Object
+	AppInfoInterface
 }
 
-var _ DesktopAppInfo = (*desktopAppInfo)(nil)
+var _ DesktopAppInfo = (*DesktopAppInfoClass)(nil)
 
-// WrapDesktopAppInfo wraps a GObject to a type that implements
-// interface DesktopAppInfo. It is primarily used internally.
-func WrapDesktopAppInfo(obj *externglib.Object) DesktopAppInfo {
-	return desktopAppInfo{obj}
+func wrapDesktopAppInfo(obj *externglib.Object) DesktopAppInfo {
+	return &DesktopAppInfoClass{
+		Object: obj,
+		AppInfoInterface: AppInfoInterface{
+			Object: obj,
+		},
+	}
 }
 
 func marshalDesktopAppInfo(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapDesktopAppInfo(obj), nil
+	return wrapDesktopAppInfo(obj), nil
 }
 
 // NewDesktopAppInfo creates a new AppInfo based on a desktop file id.
@@ -399,99 +286,11 @@ func NewDesktopAppInfoFromKeyfile(keyFile *glib.KeyFile) DesktopAppInfo {
 	return _desktopAppInfo
 }
 
-func (d desktopAppInfo) AsAppInfo() AppInfo {
-	return WrapAppInfo(gextras.InternObject(d))
-}
-
-func (a desktopAppInfo) AddSupportsType(contentType string) error {
-	return WrapAppInfo(gextras.InternObject(a)).AddSupportsType(contentType)
-}
-
-func (a desktopAppInfo) CanDelete() bool {
-	return WrapAppInfo(gextras.InternObject(a)).CanDelete()
-}
-
-func (a desktopAppInfo) CanRemoveSupportsType() bool {
-	return WrapAppInfo(gextras.InternObject(a)).CanRemoveSupportsType()
-}
-
-func (a desktopAppInfo) Delete() bool {
-	return WrapAppInfo(gextras.InternObject(a)).Delete()
-}
-
-func (a desktopAppInfo) Dup() AppInfo {
-	return WrapAppInfo(gextras.InternObject(a)).Dup()
-}
-
-func (a desktopAppInfo) Equal(appinfo2 AppInfo) bool {
-	return WrapAppInfo(gextras.InternObject(a)).Equal(appinfo2)
-}
-
-func (a desktopAppInfo) GetCommandline() string {
-	return WrapAppInfo(gextras.InternObject(a)).GetCommandline()
-}
-
-func (a desktopAppInfo) GetDescription() string {
-	return WrapAppInfo(gextras.InternObject(a)).GetDescription()
-}
-
-func (a desktopAppInfo) GetDisplayName() string {
-	return WrapAppInfo(gextras.InternObject(a)).GetDisplayName()
-}
-
-func (a desktopAppInfo) GetExecutable() string {
-	return WrapAppInfo(gextras.InternObject(a)).GetExecutable()
-}
-
-func (a desktopAppInfo) GetIcon() Icon {
-	return WrapAppInfo(gextras.InternObject(a)).GetIcon()
-}
-
-func (a desktopAppInfo) GetID() string {
-	return WrapAppInfo(gextras.InternObject(a)).GetID()
-}
-
-func (a desktopAppInfo) GetName() string {
-	return WrapAppInfo(gextras.InternObject(a)).GetName()
-}
-
-func (a desktopAppInfo) GetSupportedTypes() []string {
-	return WrapAppInfo(gextras.InternObject(a)).GetSupportedTypes()
-}
-
-func (a desktopAppInfo) LaunchUrisFinish(result AsyncResult) error {
-	return WrapAppInfo(gextras.InternObject(a)).LaunchUrisFinish(result)
-}
-
-func (a desktopAppInfo) RemoveSupportsType(contentType string) error {
-	return WrapAppInfo(gextras.InternObject(a)).RemoveSupportsType(contentType)
-}
-
-func (a desktopAppInfo) SetAsDefaultForExtension(extension string) error {
-	return WrapAppInfo(gextras.InternObject(a)).SetAsDefaultForExtension(extension)
-}
-
-func (a desktopAppInfo) SetAsDefaultForType(contentType string) error {
-	return WrapAppInfo(gextras.InternObject(a)).SetAsDefaultForType(contentType)
-}
-
-func (a desktopAppInfo) SetAsLastUsedForType(contentType string) error {
-	return WrapAppInfo(gextras.InternObject(a)).SetAsLastUsedForType(contentType)
-}
-
-func (a desktopAppInfo) ShouldShow() bool {
-	return WrapAppInfo(gextras.InternObject(a)).ShouldShow()
-}
-
-func (a desktopAppInfo) SupportsFiles() bool {
-	return WrapAppInfo(gextras.InternObject(a)).SupportsFiles()
-}
-
-func (a desktopAppInfo) SupportsUris() bool {
-	return WrapAppInfo(gextras.InternObject(a)).SupportsUris()
-}
-
-func (i desktopAppInfo) ActionName(actionName string) string {
+// ActionName gets the user-visible display name of the "additional application
+// action" specified by @action_name.
+//
+// This corresponds to the "Name" key within the keyfile group for the action.
+func (i *DesktopAppInfoClass) ActionName(actionName string) string {
 	var _arg0 *C.GDesktopAppInfo // out
 	var _arg1 *C.gchar           // out
 	var _cret *C.gchar           // in
@@ -510,7 +309,10 @@ func (i desktopAppInfo) ActionName(actionName string) string {
 	return _utf8
 }
 
-func (i desktopAppInfo) Boolean(key string) bool {
+// Boolean looks up a boolean value in the keyfile backing @info.
+//
+// The @key is looked up in the "Desktop Entry" group.
+func (i *DesktopAppInfoClass) Boolean(key string) bool {
 	var _arg0 *C.GDesktopAppInfo // out
 	var _arg1 *C.char            // out
 	var _cret C.gboolean         // in
@@ -530,7 +332,8 @@ func (i desktopAppInfo) Boolean(key string) bool {
 	return _ok
 }
 
-func (i desktopAppInfo) Categories() string {
+// Categories gets the categories from the desktop file.
+func (i *DesktopAppInfoClass) Categories() string {
 	var _arg0 *C.GDesktopAppInfo // out
 	var _cret *C.char            // in
 
@@ -545,7 +348,10 @@ func (i desktopAppInfo) Categories() string {
 	return _utf8
 }
 
-func (i desktopAppInfo) Filename() string {
+// Filename: when @info was created from a known filename, return it. In some
+// situations such as the AppInfo returned from
+// g_desktop_app_info_new_from_keyfile(), this function will return nil.
+func (i *DesktopAppInfoClass) Filename() string {
 	var _arg0 *C.GDesktopAppInfo // out
 	var _cret *C.char            // in
 
@@ -560,7 +366,8 @@ func (i desktopAppInfo) Filename() string {
 	return _filename
 }
 
-func (i desktopAppInfo) GenericName() string {
+// GenericName gets the generic name from the desktop file.
+func (i *DesktopAppInfoClass) GenericName() string {
 	var _arg0 *C.GDesktopAppInfo // out
 	var _cret *C.char            // in
 
@@ -575,7 +382,8 @@ func (i desktopAppInfo) GenericName() string {
 	return _utf8
 }
 
-func (i desktopAppInfo) IsHidden() bool {
+// IsHidden: desktop file is hidden if the Hidden key in it is set to True.
+func (i *DesktopAppInfoClass) IsHidden() bool {
 	var _arg0 *C.GDesktopAppInfo // out
 	var _cret C.gboolean         // in
 
@@ -592,7 +400,8 @@ func (i desktopAppInfo) IsHidden() bool {
 	return _ok
 }
 
-func (i desktopAppInfo) Keywords() []string {
+// Keywords gets the keywords from the desktop file.
+func (i *DesktopAppInfoClass) Keywords() []string {
 	var _arg0 *C.GDesktopAppInfo // out
 	var _cret **C.char
 
@@ -619,7 +428,11 @@ func (i desktopAppInfo) Keywords() []string {
 	return _utf8s
 }
 
-func (i desktopAppInfo) LocaleString(key string) string {
+// LocaleString looks up a localized string value in the keyfile backing @info
+// translated to the current locale.
+//
+// The @key is looked up in the "Desktop Entry" group.
+func (i *DesktopAppInfoClass) LocaleString(key string) string {
 	var _arg0 *C.GDesktopAppInfo // out
 	var _arg1 *C.char            // out
 	var _cret *C.char            // in
@@ -638,7 +451,10 @@ func (i desktopAppInfo) LocaleString(key string) string {
 	return _utf8
 }
 
-func (i desktopAppInfo) Nodisplay() bool {
+// Nodisplay gets the value of the NoDisplay key, which helps determine if the
+// application info should be shown in menus. See
+// KEY_FILE_DESKTOP_KEY_NO_DISPLAY and g_app_info_should_show().
+func (i *DesktopAppInfoClass) Nodisplay() bool {
 	var _arg0 *C.GDesktopAppInfo // out
 	var _cret C.gboolean         // in
 
@@ -655,7 +471,18 @@ func (i desktopAppInfo) Nodisplay() bool {
 	return _ok
 }
 
-func (i desktopAppInfo) ShowIn(desktopEnv string) bool {
+// ShowIn checks if the application info should be shown in menus that list
+// available applications for a specific name of the desktop, based on the
+// `OnlyShowIn` and `NotShowIn` keys.
+//
+// @desktop_env should typically be given as nil, in which case the
+// `XDG_CURRENT_DESKTOP` environment variable is consulted. If you want to
+// override the default mechanism then you may specify @desktop_env, but this is
+// not recommended.
+//
+// Note that g_app_info_should_show() for @info will include this check (with
+// nil for @desktop_env) as well as additional checks.
+func (i *DesktopAppInfoClass) ShowIn(desktopEnv string) bool {
 	var _arg0 *C.GDesktopAppInfo // out
 	var _arg1 *C.gchar           // out
 	var _cret C.gboolean         // in
@@ -675,7 +502,10 @@ func (i desktopAppInfo) ShowIn(desktopEnv string) bool {
 	return _ok
 }
 
-func (i desktopAppInfo) StartupWmClass() string {
+// StartupWmClass retrieves the StartupWMClass field from @info. This represents
+// the WM_CLASS property of the main window of the application, if launched
+// through @info.
+func (i *DesktopAppInfoClass) StartupWmClass() string {
 	var _arg0 *C.GDesktopAppInfo // out
 	var _cret *C.char            // in
 
@@ -690,7 +520,10 @@ func (i desktopAppInfo) StartupWmClass() string {
 	return _utf8
 }
 
-func (i desktopAppInfo) String(key string) string {
+// String looks up a string value in the keyfile backing @info.
+//
+// The @key is looked up in the "Desktop Entry" group.
+func (i *DesktopAppInfoClass) String(key string) string {
 	var _arg0 *C.GDesktopAppInfo // out
 	var _arg1 *C.char            // out
 	var _cret *C.char            // in
@@ -709,7 +542,9 @@ func (i desktopAppInfo) String(key string) string {
 	return _utf8
 }
 
-func (i desktopAppInfo) HasKey(key string) bool {
+// HasKey returns whether @key exists in the "Desktop Entry" group of the
+// keyfile backing @info.
+func (i *DesktopAppInfoClass) HasKey(key string) bool {
 	var _arg0 *C.GDesktopAppInfo // out
 	var _arg1 *C.char            // out
 	var _cret C.gboolean         // in
@@ -729,7 +564,22 @@ func (i desktopAppInfo) HasKey(key string) bool {
 	return _ok
 }
 
-func (i desktopAppInfo) LaunchAction(actionName string, launchContext AppLaunchContext) {
+// LaunchAction activates the named application action.
+//
+// You may only call this function on action names that were returned from
+// g_desktop_app_info_list_actions().
+//
+// Note that if the main entry of the desktop file indicates that the
+// application supports startup notification, and @launch_context is non-nil,
+// then startup notification will be used when activating the action (and as
+// such, invocation of the action on the receiving side must signal the end of
+// startup notification when it is completed). This is the expected behaviour of
+// applications declaring additional actions, as per the desktop file
+// specification.
+//
+// As with g_app_info_launch() there is no way to detect failures that occur
+// while using this function.
+func (i *DesktopAppInfoClass) LaunchAction(actionName string, launchContext AppLaunchContext) {
 	var _arg0 *C.GDesktopAppInfo   // out
 	var _arg1 *C.gchar             // out
 	var _arg2 *C.GAppLaunchContext // out
@@ -742,7 +592,12 @@ func (i desktopAppInfo) LaunchAction(actionName string, launchContext AppLaunchC
 	C.g_desktop_app_info_launch_action(_arg0, _arg1, _arg2)
 }
 
-func (i desktopAppInfo) ListActions() []string {
+// ListActions returns the list of "additional application actions" supported on
+// the desktop file, as per the desktop file specification.
+//
+// As per the specification, this is the list of actions that are explicitly
+// listed in the "Actions" key of the [Desktop Entry] group.
+func (i *DesktopAppInfoClass) ListActions() []string {
 	var _arg0 *C.GDesktopAppInfo // out
 	var _cret **C.gchar
 

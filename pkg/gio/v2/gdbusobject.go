@@ -32,7 +32,7 @@ func init() {
 	})
 }
 
-// DBusObjectOverrider contains methods that are overridable .
+// DBusObjectOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
@@ -59,26 +59,28 @@ type DBusObject interface {
 	ObjectPath() string
 }
 
-// dBusObject implements the DBusObject interface.
-type dBusObject struct {
+// DBusObjectInterface implements the DBusObject interface.
+type DBusObjectInterface struct {
 	*externglib.Object
 }
 
-var _ DBusObject = (*dBusObject)(nil)
+var _ DBusObject = (*DBusObjectInterface)(nil)
 
-// WrapDBusObject wraps a GObject to a type that implements
-// interface DBusObject. It is primarily used internally.
-func WrapDBusObject(obj *externglib.Object) DBusObject {
-	return dBusObject{obj}
+func wrapDBusObject(obj *externglib.Object) DBusObject {
+	return &DBusObjectInterface{
+		Object: obj,
+	}
 }
 
 func marshalDBusObject(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapDBusObject(obj), nil
+	return wrapDBusObject(obj), nil
 }
 
-func (o dBusObject) Interface(interfaceName string) DBusInterface {
+// Interface gets the D-Bus interface with name @interface_name associated with
+// @object, if any.
+func (o *DBusObjectInterface) Interface(interfaceName string) DBusInterface {
 	var _arg0 *C.GDBusObject    // out
 	var _arg1 *C.gchar          // out
 	var _cret *C.GDBusInterface // in
@@ -96,7 +98,8 @@ func (o dBusObject) Interface(interfaceName string) DBusInterface {
 	return _dBusInterface
 }
 
-func (o dBusObject) ObjectPath() string {
+// ObjectPath gets the object path for @object.
+func (o *DBusObjectInterface) ObjectPath() string {
 	var _arg0 *C.GDBusObject // out
 	var _cret *C.gchar       // in
 

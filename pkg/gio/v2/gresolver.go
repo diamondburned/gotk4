@@ -54,7 +54,7 @@ func marshalResolverNameLookupFlags(p uintptr) (interface{}, error) {
 	return ResolverNameLookupFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// ResolverOverrider contains methods that are overridable .
+// ResolverOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
@@ -161,26 +161,34 @@ type Resolver interface {
 	SetDefault()
 }
 
-// resolver implements the Resolver interface.
-type resolver struct {
+// ResolverClass implements the Resolver interface.
+type ResolverClass struct {
 	*externglib.Object
 }
 
-var _ Resolver = (*resolver)(nil)
+var _ Resolver = (*ResolverClass)(nil)
 
-// WrapResolver wraps a GObject to a type that implements
-// interface Resolver. It is primarily used internally.
-func WrapResolver(obj *externglib.Object) Resolver {
-	return resolver{obj}
+func wrapResolver(obj *externglib.Object) Resolver {
+	return &ResolverClass{
+		Object: obj,
+	}
 }
 
 func marshalResolver(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapResolver(obj), nil
+	return wrapResolver(obj), nil
 }
 
-func (r resolver) LookupByAddress(address InetAddress, cancellable Cancellable) (string, error) {
+// LookupByAddress: synchronously reverse-resolves @address to determine its
+// associated hostname.
+//
+// If the DNS resolution fails, @error (if non-nil) will be set to a value from
+// Error.
+//
+// If @cancellable is non-nil, it can be used to cancel the operation, in which
+// case @error (if non-nil) will be set to G_IO_ERROR_CANCELLED.
+func (r *ResolverClass) LookupByAddress(address InetAddress, cancellable Cancellable) (string, error) {
 	var _arg0 *C.GResolver    // out
 	var _arg1 *C.GInetAddress // out
 	var _arg2 *C.GCancellable // out
@@ -203,7 +211,10 @@ func (r resolver) LookupByAddress(address InetAddress, cancellable Cancellable) 
 	return _utf8, _goerr
 }
 
-func (r resolver) LookupByAddressAsync(address InetAddress, cancellable Cancellable, callback AsyncReadyCallback) {
+// LookupByAddressAsync begins asynchronously reverse-resolving @address to
+// determine its associated hostname, and eventually calls @callback, which must
+// call g_resolver_lookup_by_address_finish() to get the final result.
+func (r *ResolverClass) LookupByAddressAsync(address InetAddress, cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GResolver          // out
 	var _arg1 *C.GInetAddress       // out
 	var _arg2 *C.GCancellable       // out
@@ -219,7 +230,13 @@ func (r resolver) LookupByAddressAsync(address InetAddress, cancellable Cancella
 	C.g_resolver_lookup_by_address_async(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
-func (r resolver) LookupByAddressFinish(result AsyncResult) (string, error) {
+// LookupByAddressFinish retrieves the result of a previous call to
+// g_resolver_lookup_by_address_async().
+//
+// If the DNS resolution failed, @error (if non-nil) will be set to a value from
+// Error. If the operation was cancelled, @error will be set to
+// G_IO_ERROR_CANCELLED.
+func (r *ResolverClass) LookupByAddressFinish(result AsyncResult) (string, error) {
 	var _arg0 *C.GResolver    // out
 	var _arg1 *C.GAsyncResult // out
 	var _cret *C.gchar        // in
@@ -240,7 +257,11 @@ func (r resolver) LookupByAddressFinish(result AsyncResult) (string, error) {
 	return _utf8, _goerr
 }
 
-func (r resolver) LookupByNameAsync(hostname string, cancellable Cancellable, callback AsyncReadyCallback) {
+// LookupByNameAsync begins asynchronously resolving @hostname to determine its
+// associated IP address(es), and eventually calls @callback, which must call
+// g_resolver_lookup_by_name_finish() to get the result. See
+// g_resolver_lookup_by_name() for more details.
+func (r *ResolverClass) LookupByNameAsync(hostname string, cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GResolver          // out
 	var _arg1 *C.gchar              // out
 	var _arg2 *C.GCancellable       // out
@@ -257,7 +278,11 @@ func (r resolver) LookupByNameAsync(hostname string, cancellable Cancellable, ca
 	C.g_resolver_lookup_by_name_async(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
-func (r resolver) LookupByNameWithFlagsAsync(hostname string, flags ResolverNameLookupFlags, cancellable Cancellable, callback AsyncReadyCallback) {
+// LookupByNameWithFlagsAsync begins asynchronously resolving @hostname to
+// determine its associated IP address(es), and eventually calls @callback,
+// which must call g_resolver_lookup_by_name_with_flags_finish() to get the
+// result. See g_resolver_lookup_by_name() for more details.
+func (r *ResolverClass) LookupByNameWithFlagsAsync(hostname string, flags ResolverNameLookupFlags, cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GResolver               // out
 	var _arg1 *C.gchar                   // out
 	var _arg2 C.GResolverNameLookupFlags // out
@@ -276,7 +301,11 @@ func (r resolver) LookupByNameWithFlagsAsync(hostname string, flags ResolverName
 	C.g_resolver_lookup_by_name_with_flags_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
 
-func (r resolver) LookupRecordsAsync(rrname string, recordType ResolverRecordType, cancellable Cancellable, callback AsyncReadyCallback) {
+// LookupRecordsAsync begins asynchronously performing a DNS lookup for the
+// given @rrname, and eventually calls @callback, which must call
+// g_resolver_lookup_records_finish() to get the final result. See
+// g_resolver_lookup_records() for more details.
+func (r *ResolverClass) LookupRecordsAsync(rrname string, recordType ResolverRecordType, cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GResolver          // out
 	var _arg1 *C.gchar              // out
 	var _arg2 C.GResolverRecordType // out
@@ -295,7 +324,11 @@ func (r resolver) LookupRecordsAsync(rrname string, recordType ResolverRecordTyp
 	C.g_resolver_lookup_records_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
 
-func (r resolver) LookupServiceAsync(service string, protocol string, domain string, cancellable Cancellable, callback AsyncReadyCallback) {
+// LookupServiceAsync begins asynchronously performing a DNS SRV lookup for the
+// given @service and @protocol in the given @domain, and eventually calls
+// @callback, which must call g_resolver_lookup_service_finish() to get the
+// final result. See g_resolver_lookup_service() for more details.
+func (r *ResolverClass) LookupServiceAsync(service string, protocol string, domain string, cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GResolver          // out
 	var _arg1 *C.gchar              // out
 	var _arg2 *C.gchar              // out
@@ -318,7 +351,16 @@ func (r resolver) LookupServiceAsync(service string, protocol string, domain str
 	C.g_resolver_lookup_service_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }
 
-func (r resolver) SetDefault() {
+// SetDefault sets @resolver to be the application's default resolver (reffing
+// @resolver, and unreffing the previous default resolver, if any). Future calls
+// to g_resolver_get_default() will return this resolver.
+//
+// This can be used if an application wants to perform any sort of DNS caching
+// or "pinning"; it can implement its own #GResolver that calls the original
+// default resolver for DNS operations, and implements its own cache policies on
+// top of that, and then set itself as the default resolver for all later code
+// to use.
+func (r *ResolverClass) SetDefault() {
 	var _arg0 *C.GResolver // out
 
 	_arg0 = (*C.GResolver)(unsafe.Pointer(r.Native()))

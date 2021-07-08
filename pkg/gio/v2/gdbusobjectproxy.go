@@ -38,40 +38,31 @@ func init() {
 type DBusObjectProxy interface {
 	gextras.Objector
 
-	// AsDBusObject casts the class to the DBusObject interface.
-	AsDBusObject() DBusObject
-
-	// GetInterface gets the D-Bus interface with name @interface_name
-	// associated with @object, if any.
-	//
-	// This method is inherited from DBusObject
-	GetInterface(interfaceName string) DBusInterface
-	// GetObjectPath gets the object path for @object.
-	//
-	// This method is inherited from DBusObject
-	GetObjectPath() string
-
 	// Connection gets the connection that @proxy is for.
 	Connection() DBusConnection
 }
 
-// dBusObjectProxy implements the DBusObjectProxy interface.
-type dBusObjectProxy struct {
+// DBusObjectProxyClass implements the DBusObjectProxy interface.
+type DBusObjectProxyClass struct {
 	*externglib.Object
+	DBusObjectInterface
 }
 
-var _ DBusObjectProxy = (*dBusObjectProxy)(nil)
+var _ DBusObjectProxy = (*DBusObjectProxyClass)(nil)
 
-// WrapDBusObjectProxy wraps a GObject to a type that implements
-// interface DBusObjectProxy. It is primarily used internally.
-func WrapDBusObjectProxy(obj *externglib.Object) DBusObjectProxy {
-	return dBusObjectProxy{obj}
+func wrapDBusObjectProxy(obj *externglib.Object) DBusObjectProxy {
+	return &DBusObjectProxyClass{
+		Object: obj,
+		DBusObjectInterface: DBusObjectInterface{
+			Object: obj,
+		},
+	}
 }
 
 func marshalDBusObjectProxy(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapDBusObjectProxy(obj), nil
+	return wrapDBusObjectProxy(obj), nil
 }
 
 // NewDBusObjectProxy creates a new BusObjectProxy for the given connection and
@@ -94,19 +85,8 @@ func NewDBusObjectProxy(connection DBusConnection, objectPath string) DBusObject
 	return _dBusObjectProxy
 }
 
-func (d dBusObjectProxy) AsDBusObject() DBusObject {
-	return WrapDBusObject(gextras.InternObject(d))
-}
-
-func (o dBusObjectProxy) GetInterface(interfaceName string) DBusInterface {
-	return WrapDBusObject(gextras.InternObject(o)).GetInterface(interfaceName)
-}
-
-func (o dBusObjectProxy) GetObjectPath() string {
-	return WrapDBusObject(gextras.InternObject(o)).GetObjectPath()
-}
-
-func (p dBusObjectProxy) Connection() DBusConnection {
+// Connection gets the connection that @proxy is for.
+func (p *DBusObjectProxyClass) Connection() DBusConnection {
 	var _arg0 *C.GDBusObjectProxy // out
 	var _cret *C.GDBusConnection  // in
 

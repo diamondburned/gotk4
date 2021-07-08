@@ -5,7 +5,6 @@ package gdkx11
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -25,206 +24,30 @@ func init() {
 }
 
 type X11GLContext interface {
-	gdk.GLContext
+	gextras.Objector
 
-	// AsGLContext casts the class to the gdk.GLContext interface.
-	AsGLContext() gdk.GLContext
-
-	// GetDebugEnabled retrieves the value set using
-	// gdk_gl_context_set_debug_enabled().
-	//
-	// This method is inherited from gdk.GLContext
-	GetDebugEnabled() bool
-	// GetDisplay retrieves the Display the @context is created for
-	//
-	// This method is inherited from gdk.GLContext
-	GetDisplay() gdk.Display
-	// GetForwardCompatible retrieves the value set using
-	// gdk_gl_context_set_forward_compatible().
-	//
-	// This method is inherited from gdk.GLContext
-	GetForwardCompatible() bool
-	// GetRequiredVersion retrieves the major and minor version requested by
-	// calling gdk_gl_context_set_required_version().
-	//
-	// This method is inherited from gdk.GLContext
-	GetRequiredVersion() (major int, minor int)
-	// GetSharedContext retrieves the GLContext that this @context share data
-	// with.
-	//
-	// This method is inherited from gdk.GLContext
-	GetSharedContext() gdk.GLContext
-	// GetUseES checks whether the @context is using an OpenGL or OpenGL ES
-	// profile.
-	//
-	// This method is inherited from gdk.GLContext
-	GetUseES() bool
-	// GetVersion retrieves the OpenGL version of the @context.
-	//
-	// The @context must be realized prior to calling this function.
-	//
-	// This method is inherited from gdk.GLContext
-	GetVersion() (major int, minor int)
-	// GetWindow retrieves the Window used by the @context.
-	//
-	// This method is inherited from gdk.GLContext
-	GetWindow() gdk.Window
-	// IsLegacy: whether the GLContext is in legacy mode or not.
-	//
-	// The GLContext must be realized before calling this function.
-	//
-	// When realizing a GL context, GDK will try to use the OpenGL 3.2 core
-	// profile; this profile removes all the OpenGL API that was deprecated
-	// prior to the 3.2 version of the specification. If the realization is
-	// successful, this function will return false.
-	//
-	// If the underlying OpenGL implementation does not support core profiles,
-	// GDK will fall back to a pre-3.2 compatibility profile, and this function
-	// will return true.
-	//
-	// You can use the value returned by this function to decide which kind of
-	// OpenGL API to use, or whether to do extension discovery, or what kind of
-	// shader programs to load.
-	//
-	// This method is inherited from gdk.GLContext
-	IsLegacy() bool
-	// MakeCurrent makes the @context the current one.
-	//
-	// This method is inherited from gdk.GLContext
-	MakeCurrent()
-	// Realize realizes the given GLContext.
-	//
-	// It is safe to call this function on a realized GLContext.
-	//
-	// This method is inherited from gdk.GLContext
-	Realize() error
-	// SetDebugEnabled sets whether the GLContext should perform extra
-	// validations and run time checking. This is useful during development, but
-	// has additional overhead.
-	//
-	// The GLContext must not be realized or made current prior to calling this
-	// function.
-	//
-	// This method is inherited from gdk.GLContext
-	SetDebugEnabled(enabled bool)
-	// SetForwardCompatible sets whether the GLContext should be forward
-	// compatible.
-	//
-	// Forward compatibile contexts must not support OpenGL functionality that
-	// has been marked as deprecated in the requested version; non-forward
-	// compatible contexts, on the other hand, must support both deprecated and
-	// non deprecated functionality.
-	//
-	// The GLContext must not be realized or made current prior to calling this
-	// function.
-	//
-	// This method is inherited from gdk.GLContext
-	SetForwardCompatible(compatible bool)
-	// SetRequiredVersion sets the major and minor version of OpenGL to request.
-	//
-	// Setting @major and @minor to zero will use the default values.
-	//
-	// The GLContext must not be realized or made current prior to calling this
-	// function.
-	//
-	// This method is inherited from gdk.GLContext
-	SetRequiredVersion(major int, minor int)
-	// SetUseES requests that GDK create a OpenGL ES context instead of an
-	// OpenGL one, if the platform and windowing system allows it.
-	//
-	// The @context must not have been realized.
-	//
-	// By default, GDK will attempt to automatically detect whether the
-	// underlying GL implementation is OpenGL or OpenGL ES once the @context is
-	// realized.
-	//
-	// You should check the return value of gdk_gl_context_get_use_es() after
-	// calling gdk_gl_context_realize() to decide whether to use the OpenGL or
-	// OpenGL ES API, extensions, or shaders.
-	//
-	// This method is inherited from gdk.GLContext
-	SetUseES(useEs int)
+	privateX11GLContextClass()
 }
 
-// x11GLContext implements the X11GLContext interface.
-type x11GLContext struct {
-	*externglib.Object
+// X11GLContextClass implements the X11GLContext interface.
+type X11GLContextClass struct {
+	gdk.GLContextClass
 }
 
-var _ X11GLContext = (*x11GLContext)(nil)
+var _ X11GLContext = (*X11GLContextClass)(nil)
 
-// WrapX11GLContext wraps a GObject to a type that implements
-// interface X11GLContext. It is primarily used internally.
-func WrapX11GLContext(obj *externglib.Object) X11GLContext {
-	return x11GLContext{obj}
+func wrapX11GLContext(obj *externglib.Object) X11GLContext {
+	return &X11GLContextClass{
+		GLContextClass: gdk.GLContextClass{
+			Object: obj,
+		},
+	}
 }
 
 func marshalX11GLContext(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapX11GLContext(obj), nil
+	return wrapX11GLContext(obj), nil
 }
 
-func (x x11GLContext) AsGLContext() gdk.GLContext {
-	return gdk.WrapGLContext(gextras.InternObject(x))
-}
-
-func (c x11GLContext) GetDebugEnabled() bool {
-	return gdk.WrapGLContext(gextras.InternObject(c)).GetDebugEnabled()
-}
-
-func (c x11GLContext) GetDisplay() gdk.Display {
-	return gdk.WrapGLContext(gextras.InternObject(c)).GetDisplay()
-}
-
-func (c x11GLContext) GetForwardCompatible() bool {
-	return gdk.WrapGLContext(gextras.InternObject(c)).GetForwardCompatible()
-}
-
-func (c x11GLContext) GetRequiredVersion() (major int, minor int) {
-	return gdk.WrapGLContext(gextras.InternObject(c)).GetRequiredVersion()
-}
-
-func (c x11GLContext) GetSharedContext() gdk.GLContext {
-	return gdk.WrapGLContext(gextras.InternObject(c)).GetSharedContext()
-}
-
-func (c x11GLContext) GetUseES() bool {
-	return gdk.WrapGLContext(gextras.InternObject(c)).GetUseES()
-}
-
-func (c x11GLContext) GetVersion() (major int, minor int) {
-	return gdk.WrapGLContext(gextras.InternObject(c)).GetVersion()
-}
-
-func (c x11GLContext) GetWindow() gdk.Window {
-	return gdk.WrapGLContext(gextras.InternObject(c)).GetWindow()
-}
-
-func (c x11GLContext) IsLegacy() bool {
-	return gdk.WrapGLContext(gextras.InternObject(c)).IsLegacy()
-}
-
-func (c x11GLContext) MakeCurrent() {
-	gdk.WrapGLContext(gextras.InternObject(c)).MakeCurrent()
-}
-
-func (c x11GLContext) Realize() error {
-	return gdk.WrapGLContext(gextras.InternObject(c)).Realize()
-}
-
-func (c x11GLContext) SetDebugEnabled(enabled bool) {
-	gdk.WrapGLContext(gextras.InternObject(c)).SetDebugEnabled(enabled)
-}
-
-func (c x11GLContext) SetForwardCompatible(compatible bool) {
-	gdk.WrapGLContext(gextras.InternObject(c)).SetForwardCompatible(compatible)
-}
-
-func (c x11GLContext) SetRequiredVersion(major int, minor int) {
-	gdk.WrapGLContext(gextras.InternObject(c)).SetRequiredVersion(major, minor)
-}
-
-func (c x11GLContext) SetUseES(useEs int) {
-	gdk.WrapGLContext(gextras.InternObject(c)).SetUseES(useEs)
-}
+func (*X11GLContextClass) privateX11GLContextClass() {}

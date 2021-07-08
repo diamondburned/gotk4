@@ -43,34 +43,6 @@ func init() {
 type NetworkAddress interface {
 	gextras.Objector
 
-	// AsSocketConnectable casts the class to the SocketConnectable interface.
-	AsSocketConnectable() SocketConnectable
-
-	// Enumerate creates a AddressEnumerator for @connectable.
-	//
-	// This method is inherited from SocketConnectable
-	Enumerate() SocketAddressEnumerator
-	// ProxyEnumerate creates a AddressEnumerator for @connectable that will
-	// return a Address for each of its addresses that you must connect to via a
-	// proxy.
-	//
-	// If @connectable does not implement
-	// g_socket_connectable_proxy_enumerate(), this will fall back to calling
-	// g_socket_connectable_enumerate().
-	//
-	// This method is inherited from SocketConnectable
-	ProxyEnumerate() SocketAddressEnumerator
-	// ToString: format a Connectable as a string. This is a human-readable
-	// format for use in debugging output, and is not a stable serialization
-	// format. It is not suitable for use in user interfaces as it exposes too
-	// much information for a user.
-	//
-	// If the Connectable implementation does not support string formatting, the
-	// implementation’s type name will be returned as a fallback.
-	//
-	// This method is inherited from SocketConnectable
-	ToString() string
-
 	// Hostname gets @addr's hostname. This might be either UTF-8 or
 	// ASCII-encoded, depending on what @addr was created with.
 	Hostname() string
@@ -80,23 +52,27 @@ type NetworkAddress interface {
 	Scheme() string
 }
 
-// networkAddress implements the NetworkAddress interface.
-type networkAddress struct {
+// NetworkAddressClass implements the NetworkAddress interface.
+type NetworkAddressClass struct {
 	*externglib.Object
+	SocketConnectableInterface
 }
 
-var _ NetworkAddress = (*networkAddress)(nil)
+var _ NetworkAddress = (*NetworkAddressClass)(nil)
 
-// WrapNetworkAddress wraps a GObject to a type that implements
-// interface NetworkAddress. It is primarily used internally.
-func WrapNetworkAddress(obj *externglib.Object) NetworkAddress {
-	return networkAddress{obj}
+func wrapNetworkAddress(obj *externglib.Object) NetworkAddress {
+	return &NetworkAddressClass{
+		Object: obj,
+		SocketConnectableInterface: SocketConnectableInterface{
+			Object: obj,
+		},
+	}
 }
 
 func marshalNetworkAddress(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapNetworkAddress(obj), nil
+	return wrapNetworkAddress(obj), nil
 }
 
 // NewNetworkAddress creates a new Connectable for connecting to the given
@@ -150,23 +126,9 @@ func NewNetworkAddressLoopback(port uint16) NetworkAddress {
 	return _networkAddress
 }
 
-func (n networkAddress) AsSocketConnectable() SocketConnectable {
-	return WrapSocketConnectable(gextras.InternObject(n))
-}
-
-func (c networkAddress) Enumerate() SocketAddressEnumerator {
-	return WrapSocketConnectable(gextras.InternObject(c)).Enumerate()
-}
-
-func (c networkAddress) ProxyEnumerate() SocketAddressEnumerator {
-	return WrapSocketConnectable(gextras.InternObject(c)).ProxyEnumerate()
-}
-
-func (c networkAddress) ToString() string {
-	return WrapSocketConnectable(gextras.InternObject(c)).ToString()
-}
-
-func (a networkAddress) Hostname() string {
+// Hostname gets @addr's hostname. This might be either UTF-8 or ASCII-encoded,
+// depending on what @addr was created with.
+func (a *NetworkAddressClass) Hostname() string {
 	var _arg0 *C.GNetworkAddress // out
 	var _cret *C.gchar           // in
 
@@ -181,7 +143,8 @@ func (a networkAddress) Hostname() string {
 	return _utf8
 }
 
-func (a networkAddress) Port() uint16 {
+// Port gets @addr's port number
+func (a *NetworkAddressClass) Port() uint16 {
 	var _arg0 *C.GNetworkAddress // out
 	var _cret C.guint16          // in
 
@@ -196,7 +159,8 @@ func (a networkAddress) Port() uint16 {
 	return _guint16
 }
 
-func (a networkAddress) Scheme() string {
+// Scheme gets @addr's scheme
+func (a *NetworkAddressClass) Scheme() string {
 	var _arg0 *C.GNetworkAddress // out
 	var _cret *C.gchar           // in
 

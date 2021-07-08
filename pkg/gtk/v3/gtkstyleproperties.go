@@ -46,34 +46,10 @@ func init() {
 type StyleProperties interface {
 	gextras.Objector
 
-	// AsStyleProvider casts the class to the StyleProvider interface.
-	AsStyleProvider() StyleProvider
-
-	// GetIconFactory returns the IconFactory defined to be in use for @path, or
-	// nil if none is defined.
-	//
-	// Deprecated: since version 3.8.
-	//
-	// This method is inherited from StyleProvider
-	GetIconFactory(path *WidgetPath) IconFactory
-	// GetStyle returns the style settings affecting a widget defined by @path,
-	// or nil if @provider doesn’t contemplate styling @path.
-	//
-	// Deprecated: since version 3.8.
-	//
-	// This method is inherited from StyleProvider
-	GetStyle(path *WidgetPath) StyleProperties
-
 	// Clear clears all style information from @props.
 	//
 	// Deprecated: since version 3.16.
 	Clear()
-	// Property gets a style property from @props for the given state. When done
-	// with @value, g_value_unset() needs to be called to free any allocated
-	// memory.
-	//
-	// Deprecated: since version 3.16.
-	Property(property string, state StateFlags) (externglib.Value, bool)
 	// LookupColor returns the symbolic color that is mapped to @name.
 	//
 	// Deprecated: since version 3.8.
@@ -99,23 +75,27 @@ type StyleProperties interface {
 	UnsetProperty(property string, state StateFlags)
 }
 
-// styleProperties implements the StyleProperties interface.
-type styleProperties struct {
+// StylePropertiesClass implements the StyleProperties interface.
+type StylePropertiesClass struct {
 	*externglib.Object
+	StyleProviderInterface
 }
 
-var _ StyleProperties = (*styleProperties)(nil)
+var _ StyleProperties = (*StylePropertiesClass)(nil)
 
-// WrapStyleProperties wraps a GObject to a type that implements
-// interface StyleProperties. It is primarily used internally.
-func WrapStyleProperties(obj *externglib.Object) StyleProperties {
-	return styleProperties{obj}
+func wrapStyleProperties(obj *externglib.Object) StyleProperties {
+	return &StylePropertiesClass{
+		Object: obj,
+		StyleProviderInterface: StyleProviderInterface{
+			Object: obj,
+		},
+	}
 }
 
 func marshalStyleProperties(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapStyleProperties(obj), nil
+	return wrapStyleProperties(obj), nil
 }
 
 // NewStyleProperties returns a newly created StyleProperties
@@ -133,19 +113,10 @@ func NewStyleProperties() StyleProperties {
 	return _styleProperties
 }
 
-func (s styleProperties) AsStyleProvider() StyleProvider {
-	return WrapStyleProvider(gextras.InternObject(s))
-}
-
-func (p styleProperties) GetIconFactory(path *WidgetPath) IconFactory {
-	return WrapStyleProvider(gextras.InternObject(p)).GetIconFactory(path)
-}
-
-func (p styleProperties) GetStyle(path *WidgetPath) StyleProperties {
-	return WrapStyleProvider(gextras.InternObject(p)).GetStyle(path)
-}
-
-func (p styleProperties) Clear() {
+// Clear clears all style information from @props.
+//
+// Deprecated: since version 3.16.
+func (p *StylePropertiesClass) Clear() {
 	var _arg0 *C.GtkStyleProperties // out
 
 	_arg0 = (*C.GtkStyleProperties)(unsafe.Pointer(p.Native()))
@@ -153,45 +124,10 @@ func (p styleProperties) Clear() {
 	C.gtk_style_properties_clear(_arg0)
 }
 
-func (p styleProperties) Property(property string, state StateFlags) (externglib.Value, bool) {
-	var _arg0 *C.GtkStyleProperties // out
-	var _arg1 *C.gchar              // out
-	var _arg2 C.GtkStateFlags       // out
-	var _arg3 C.GValue              // in
-	var _cret C.gboolean            // in
-
-	_arg0 = (*C.GtkStyleProperties)(unsafe.Pointer(p.Native()))
-	_arg1 = (*C.gchar)(C.CString(property))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.GtkStateFlags(state)
-
-	_cret = C.gtk_style_properties_get_property(_arg0, _arg1, _arg2, &_arg3)
-
-	var _value externglib.Value // out
-	var _ok bool                // out
-
-	{
-		var refTmpIn *C.GValue
-		var refTmpOut *externglib.Value
-
-		in0 := &_arg3
-		refTmpIn = in0
-
-		refTmpOut = externglib.ValueFromNative(unsafe.Pointer(refTmpIn))
-		runtime.SetFinalizer(refTmpOut, func(v *externglib.Value) {
-			C.g_value_unset((*C.GValue)(v.GValue))
-		})
-
-		_value = *refTmpOut
-	}
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _value, _ok
-}
-
-func (p styleProperties) LookupColor(name string) *SymbolicColor {
+// LookupColor returns the symbolic color that is mapped to @name.
+//
+// Deprecated: since version 3.8.
+func (p *StylePropertiesClass) LookupColor(name string) *SymbolicColor {
 	var _arg0 *C.GtkStyleProperties // out
 	var _arg1 *C.gchar              // out
 	var _cret *C.GtkSymbolicColor   // in
@@ -213,7 +149,11 @@ func (p styleProperties) LookupColor(name string) *SymbolicColor {
 	return _symbolicColor
 }
 
-func (p styleProperties) MapColor(name string, color *SymbolicColor) {
+// MapColor maps @color so it can be referenced by @name. See
+// gtk_style_properties_lookup_color()
+//
+// Deprecated: since version 3.8.
+func (p *StylePropertiesClass) MapColor(name string, color *SymbolicColor) {
 	var _arg0 *C.GtkStyleProperties // out
 	var _arg1 *C.gchar              // out
 	var _arg2 *C.GtkSymbolicColor   // out
@@ -226,7 +166,12 @@ func (p styleProperties) MapColor(name string, color *SymbolicColor) {
 	C.gtk_style_properties_map_color(_arg0, _arg1, _arg2)
 }
 
-func (p styleProperties) Merge(propsToMerge StyleProperties, replace bool) {
+// Merge merges into @props all the style information contained in
+// @props_to_merge. If @replace is true, the values will be overwritten, if it
+// is false, the older values will prevail.
+//
+// Deprecated: since version 3.16.
+func (p *StylePropertiesClass) Merge(propsToMerge StyleProperties, replace bool) {
 	var _arg0 *C.GtkStyleProperties // out
 	var _arg1 *C.GtkStyleProperties // out
 	var _arg2 C.gboolean            // out
@@ -240,7 +185,10 @@ func (p styleProperties) Merge(propsToMerge StyleProperties, replace bool) {
 	C.gtk_style_properties_merge(_arg0, _arg1, _arg2)
 }
 
-func (p styleProperties) SetPropertyStyleProperties(property string, state StateFlags, value externglib.Value) {
+// SetPropertyStyleProperties sets a styling property in @props.
+//
+// Deprecated: since version 3.16.
+func (p *StylePropertiesClass) SetPropertyStyleProperties(property string, state StateFlags, value externglib.Value) {
 	var _arg0 *C.GtkStyleProperties // out
 	var _arg1 *C.gchar              // out
 	var _arg2 C.GtkStateFlags       // out
@@ -255,7 +203,10 @@ func (p styleProperties) SetPropertyStyleProperties(property string, state State
 	C.gtk_style_properties_set_property(_arg0, _arg1, _arg2, _arg3)
 }
 
-func (p styleProperties) UnsetProperty(property string, state StateFlags) {
+// UnsetProperty unsets a style property in @props.
+//
+// Deprecated: since version 3.16.
+func (p *StylePropertiesClass) UnsetProperty(property string, state StateFlags) {
 	var _arg0 *C.GtkStyleProperties // out
 	var _arg1 *C.gchar              // out
 	var _arg2 C.GtkStateFlags       // out
@@ -662,47 +613,6 @@ func (c *SymbolicColor) ref() *SymbolicColor {
 	})
 
 	return _symbolicColor
-}
-
-// Resolve: if @color is resolvable, @resolved_color will be filled in with the
-// resolved color, and true will be returned. Generally, if @color can’t be
-// resolved, it is due to it being defined on top of a named color that doesn’t
-// exist in @props.
-//
-// When @props is nil, resolving of named colors will fail, so if your @color is
-// or references such a color, this function will return false.
-//
-// Deprecated: since version 3.8.
-func (c *SymbolicColor) Resolve(props StyleProperties) (gdk.RGBA, bool) {
-	var _arg0 *C.GtkSymbolicColor   // out
-	var _arg1 *C.GtkStyleProperties // out
-	var _arg2 C.GdkRGBA             // in
-	var _cret C.gboolean            // in
-
-	_arg0 = (*C.GtkSymbolicColor)(unsafe.Pointer(c))
-	_arg1 = (*C.GtkStyleProperties)(unsafe.Pointer(props.Native()))
-
-	_cret = C.gtk_symbolic_color_resolve(_arg0, _arg1, &_arg2)
-
-	var _resolvedColor gdk.RGBA // out
-	var _ok bool                // out
-
-	{
-		var refTmpIn *C.GdkRGBA
-		var refTmpOut *gdk.RGBA
-
-		in0 := &_arg2
-		refTmpIn = in0
-
-		refTmpOut = (*gdk.RGBA)(unsafe.Pointer(refTmpIn))
-
-		_resolvedColor = *refTmpOut
-	}
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _resolvedColor, _ok
 }
 
 // String converts the given @color to a string representation. This is useful

@@ -33,50 +33,30 @@ func init() {
 }
 
 type NativeVolumeMonitor interface {
-	VolumeMonitor
+	gextras.Objector
 
-	// AsVolumeMonitor casts the class to the VolumeMonitor interface.
-	AsVolumeMonitor() VolumeMonitor
-
-	// GetMountForUUID finds a #GMount object by its UUID (see
-	// g_mount_get_uuid())
-	//
-	// This method is inherited from VolumeMonitor
-	GetMountForUUID(uuid string) Mount
-	// GetVolumeForUUID finds a #GVolume object by its UUID (see
-	// g_volume_get_uuid())
-	//
-	// This method is inherited from VolumeMonitor
-	GetVolumeForUUID(uuid string) Volume
+	privateNativeVolumeMonitorClass()
 }
 
-// nativeVolumeMonitor implements the NativeVolumeMonitor interface.
-type nativeVolumeMonitor struct {
-	*externglib.Object
+// NativeVolumeMonitorClass implements the NativeVolumeMonitor interface.
+type NativeVolumeMonitorClass struct {
+	VolumeMonitorClass
 }
 
-var _ NativeVolumeMonitor = (*nativeVolumeMonitor)(nil)
+var _ NativeVolumeMonitor = (*NativeVolumeMonitorClass)(nil)
 
-// WrapNativeVolumeMonitor wraps a GObject to a type that implements
-// interface NativeVolumeMonitor. It is primarily used internally.
-func WrapNativeVolumeMonitor(obj *externglib.Object) NativeVolumeMonitor {
-	return nativeVolumeMonitor{obj}
+func wrapNativeVolumeMonitor(obj *externglib.Object) NativeVolumeMonitor {
+	return &NativeVolumeMonitorClass{
+		VolumeMonitorClass: VolumeMonitorClass{
+			Object: obj,
+		},
+	}
 }
 
 func marshalNativeVolumeMonitor(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapNativeVolumeMonitor(obj), nil
+	return wrapNativeVolumeMonitor(obj), nil
 }
 
-func (n nativeVolumeMonitor) AsVolumeMonitor() VolumeMonitor {
-	return WrapVolumeMonitor(gextras.InternObject(n))
-}
-
-func (v nativeVolumeMonitor) GetMountForUUID(uuid string) Mount {
-	return WrapVolumeMonitor(gextras.InternObject(v)).GetMountForUUID(uuid)
-}
-
-func (v nativeVolumeMonitor) GetVolumeForUUID(uuid string) Volume {
-	return WrapVolumeMonitor(gextras.InternObject(v)).GetVolumeForUUID(uuid)
-}
+func (*NativeVolumeMonitorClass) privateNativeVolumeMonitorClass() {}

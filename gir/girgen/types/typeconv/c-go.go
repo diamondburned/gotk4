@@ -25,7 +25,7 @@ func (conv *Converter) cgoConvert(value *ValueConverted) bool {
 func (conv *Converter) cgoArrayConverter(value *ValueConverted) bool {
 	if value.AnyType.Array.Type == nil {
 		conv.Logln(logger.Debug, "C->Go skipping nested array", value.AnyType.Array.CType)
-		return value.Optional // ok if optional
+		return false
 	}
 
 	array := *value.AnyType.Array
@@ -176,6 +176,8 @@ func (conv *Converter) cgoArrayConverter(value *ValueConverted) bool {
 		value.header.Import("unsafe")
 
 		if value.isTransferring() {
+			value.header.Import("runtime")
+
 			value.p.Descend()
 			value.p.Linef("var len uintptr")
 			// If we're fully getting the backing array, then we can just steal
@@ -246,7 +248,7 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 
 	case value.Resolved.IsBuiltin("string"):
 		if !value.isPtr(1) {
-			return conv.convertRef(value, 1, 0)
+			return false
 		}
 
 		value.p.Linef("%s = C.GoString(%s)", value.OutName, value.InName)
@@ -259,7 +261,7 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 
 	case value.Resolved.IsBuiltin("bool"):
 		if !value.isPtr(0) {
-			return conv.convertRef(value, 0, 0)
+			return false
 		}
 
 		switch types.CleanCType(value.Resolved.CType, true) {
@@ -277,7 +279,7 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 
 	case value.Resolved.IsBuiltin("error"):
 		if !value.isPtr(1) {
-			return conv.convertRef(value, 1, 0)
+			return false
 		}
 
 		value.header.ImportCore("gerror")
@@ -319,7 +321,7 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 
 	case "GObject.Value":
 		if !value.isPtr(1) {
-			return conv.convertRef(value, 1, 1)
+			return false
 		}
 
 		value.header.Import("unsafe")
@@ -344,10 +346,10 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 
 	case "GObject.Object", "GObject.InitiallyUnowned":
 		if !value.isPtr(1) {
-			return conv.convertRef(value, 1, 1)
+			return false
 		}
 
-		value.cgoSetObject()
+		value.cgoSetObject(conv)
 		return true
 	}
 
@@ -366,7 +368,7 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 	switch v := value.Resolved.Extern.Type.(type) {
 	case *gir.Enum, *gir.Bitfield:
 		if !value.isPtr(0) {
-			return conv.convertRef(value, 0, 0)
+			return false
 		}
 
 		value.p.Linef("%s = %s(%s)", value.OutName, value.OutType, value.InName)
@@ -374,10 +376,10 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 
 	case *gir.Class, *gir.Interface:
 		if !value.isPtr(1) {
-			return conv.convertRef(value, 1, 0)
+			return false
 		}
 
-		value.cgoSetObject()
+		value.cgoSetObject(conv)
 		return true
 
 	case *gir.Record:
@@ -399,7 +401,7 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 
 		// Require 1 pointer to avoid weird copies.
 		if !value.isPtr(1) {
-			return conv.convertRef(value, 1, 1)
+			return false
 		}
 
 		value.header.Import("unsafe")

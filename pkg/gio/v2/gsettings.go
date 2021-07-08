@@ -166,7 +166,7 @@ func gotk4_SettingsGetMapping(arg0 *C.GVariant, arg1 *C.gpointer, arg2 C.gpointe
 	return cret
 }
 
-// SettingsOverrider contains methods that are overridable .
+// SettingsOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
@@ -808,23 +808,23 @@ type Settings interface {
 	SetValue(key string, value *glib.Variant) bool
 }
 
-// settings implements the Settings interface.
-type settings struct {
+// SettingsClass implements the Settings interface.
+type SettingsClass struct {
 	*externglib.Object
 }
 
-var _ Settings = (*settings)(nil)
+var _ Settings = (*SettingsClass)(nil)
 
-// WrapSettings wraps a GObject to a type that implements
-// interface Settings. It is primarily used internally.
-func WrapSettings(obj *externglib.Object) Settings {
-	return settings{obj}
+func wrapSettings(obj *externglib.Object) Settings {
+	return &SettingsClass{
+		Object: obj,
+	}
 }
 
 func marshalSettings(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapSettings(obj), nil
+	return wrapSettings(obj), nil
 }
 
 // NewSettings creates a new #GSettings object with the schema specified by
@@ -887,7 +887,11 @@ func NewSettingsWithPath(schemaId string, path string) Settings {
 	return _settings
 }
 
-func (s settings) Apply() {
+// Apply applies any changes that have been made to the settings. This function
+// does nothing unless @settings is in 'delay-apply' mode; see
+// g_settings_delay(). In the normal case settings are always applied
+// immediately.
+func (s *SettingsClass) Apply() {
 	var _arg0 *C.GSettings // out
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
@@ -895,7 +899,24 @@ func (s settings) Apply() {
 	C.g_settings_apply(_arg0)
 }
 
-func (s settings) Bind(key string, object gextras.Objector, property string, flags SettingsBindFlags) {
+// Bind: create a binding between the @key in the @settings object and the
+// property @property of @object.
+//
+// The binding uses the default GIO mapping functions to map between the
+// settings and property values. These functions handle booleans, numeric types
+// and string types in a straightforward way. Use g_settings_bind_with_mapping()
+// if you need a custom mapping, or map between types that are not supported by
+// the default mapping functions.
+//
+// Unless the @flags include G_SETTINGS_BIND_NO_SENSITIVITY, this function also
+// establishes a binding between the writability of @key and the "sensitive"
+// property of @object (if @object has a boolean property by that name). See
+// g_settings_bind_writable() for more details about writable bindings.
+//
+// Note that the lifecycle of the binding is tied to @object, and that you can
+// have only one binding per object property. If you bind the same property
+// twice on the same object, the second binding overrides the first one.
+func (s *SettingsClass) Bind(key string, object gextras.Objector, property string, flags SettingsBindFlags) {
 	var _arg0 *C.GSettings         // out
 	var _arg1 *C.gchar             // out
 	var _arg2 C.gpointer           // out
@@ -913,7 +934,22 @@ func (s settings) Bind(key string, object gextras.Objector, property string, fla
 	C.g_settings_bind(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
-func (s settings) BindWritable(key string, object gextras.Objector, property string, inverted bool) {
+// BindWritable: create a binding between the writability of @key in the
+// @settings object and the property @property of @object. The property must be
+// boolean; "sensitive" or "visible" properties of widgets are the most likely
+// candidates.
+//
+// Writable bindings are always uni-directional; changes of the writability of
+// the setting will be propagated to the object property, not the other way.
+//
+// When the @inverted argument is true, the binding inverts the value as it
+// passes from the setting to the object, i.e. @property will be set to true if
+// the key is not writable.
+//
+// Note that the lifecycle of the binding is tied to @object, and that you can
+// have only one binding per object property. If you bind the same property
+// twice on the same object, the second binding overrides the first one.
+func (s *SettingsClass) BindWritable(key string, object gextras.Objector, property string, inverted bool) {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _arg2 C.gpointer   // out
@@ -933,7 +969,19 @@ func (s settings) BindWritable(key string, object gextras.Objector, property str
 	C.g_settings_bind_writable(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
-func (s settings) CreateAction(key string) Action {
+// CreateAction creates a #GAction corresponding to a given #GSettings key.
+//
+// The action has the same name as the key.
+//
+// The value of the key becomes the state of the action and the action is
+// enabled when the key is writable. Changing the state of the action results in
+// the key being written to. Changes to the value or writability of the key
+// cause appropriate change notifications to be emitted for the action.
+//
+// For boolean-valued keys, action activations take no parameter and result in
+// the toggling of the value. For all other types, activations take the new
+// value for the key (which must have the correct type).
+func (s *SettingsClass) CreateAction(key string) Action {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _cret *C.GAction   // in
@@ -951,7 +999,10 @@ func (s settings) CreateAction(key string) Action {
 	return _action
 }
 
-func (s settings) Delay() {
+// Delay changes the #GSettings object into 'delay-apply' mode. In this mode,
+// changes to @settings are not immediately propagated to the backend, but kept
+// locally until g_settings_apply() is called.
+func (s *SettingsClass) Delay() {
 	var _arg0 *C.GSettings // out
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
@@ -959,7 +1010,13 @@ func (s settings) Delay() {
 	C.g_settings_delay(_arg0)
 }
 
-func (s settings) Boolean(key string) bool {
+// Boolean gets the value that is stored at @key in @settings.
+//
+// A convenience variant of g_settings_get() for booleans.
+//
+// It is a programmer error to give a @key that isn't specified as having a
+// boolean type in the schema for @settings.
+func (s *SettingsClass) Boolean(key string) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _cret C.gboolean   // in
@@ -979,7 +1036,12 @@ func (s settings) Boolean(key string) bool {
 	return _ok
 }
 
-func (s settings) Child(name string) Settings {
+// Child creates a child settings object which has a base path of
+// `base-path/@name`, where `base-path` is the base path of @settings.
+//
+// The schema for the child settings object must have been declared in the
+// schema of @settings using a <child> element.
+func (s *SettingsClass) Child(name string) Settings {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _cret *C.GSettings // in
@@ -997,7 +1059,27 @@ func (s settings) Child(name string) Settings {
 	return _ret
 }
 
-func (s settings) DefaultValue(key string) *glib.Variant {
+// DefaultValue gets the "default value" of a key.
+//
+// This is the value that would be read if g_settings_reset() were to be called
+// on the key.
+//
+// Note that this may be a different value than returned by
+// g_settings_schema_key_get_default_value() if the system administrator has
+// provided a default value.
+//
+// Comparing the return values of g_settings_get_default_value() and
+// g_settings_get_value() is not sufficient for determining if a value has been
+// set because the user may have explicitly set the value to something that
+// happens to be equal to the default. The difference here is that if the
+// default changes in the future, the user's key will still be set.
+//
+// This function may be useful for adding an indication to a UI of what the
+// default value was before the user set it.
+//
+// It is a programmer error to give a @key that isn't contained in the schema
+// for @settings.
+func (s *SettingsClass) DefaultValue(key string) *glib.Variant {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _cret *C.GVariant  // in
@@ -1019,7 +1101,13 @@ func (s settings) DefaultValue(key string) *glib.Variant {
 	return _variant
 }
 
-func (s settings) Double(key string) float64 {
+// Double gets the value that is stored at @key in @settings.
+//
+// A convenience variant of g_settings_get() for doubles.
+//
+// It is a programmer error to give a @key that isn't specified as having a
+// 'double' type in the schema for @settings.
+func (s *SettingsClass) Double(key string) float64 {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _cret C.gdouble    // in
@@ -1037,7 +1125,18 @@ func (s settings) Double(key string) float64 {
 	return _gdouble
 }
 
-func (s settings) Enum(key string) int {
+// Enum gets the value that is stored in @settings for @key and converts it to
+// the enum value that it represents.
+//
+// In order to use this function the type of the value must be a string and it
+// must be marked in the schema file as an enumerated type.
+//
+// It is a programmer error to give a @key that isn't contained in the schema
+// for @settings or is not marked as an enumerated type.
+//
+// If the value stored in the configuration database is not a valid value for
+// the enumerated type then this function will return the default value.
+func (s *SettingsClass) Enum(key string) int {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _cret C.gint       // in
@@ -1055,7 +1154,18 @@ func (s settings) Enum(key string) int {
 	return _gint
 }
 
-func (s settings) Flags(key string) uint {
+// Flags gets the value that is stored in @settings for @key and converts it to
+// the flags value that it represents.
+//
+// In order to use this function the type of the value must be an array of
+// strings and it must be marked in the schema file as a flags type.
+//
+// It is a programmer error to give a @key that isn't contained in the schema
+// for @settings or is not marked as a flags type.
+//
+// If the value stored in the configuration database is not a valid value for
+// the flags type then this function will return the default value.
+func (s *SettingsClass) Flags(key string) uint {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _cret C.guint      // in
@@ -1073,7 +1183,9 @@ func (s settings) Flags(key string) uint {
 	return _guint
 }
 
-func (s settings) HasUnapplied() bool {
+// HasUnapplied returns whether the #GSettings object has any unapplied changes.
+// This can only be the case if it is in 'delayed-apply' mode.
+func (s *SettingsClass) HasUnapplied() bool {
 	var _arg0 *C.GSettings // out
 	var _cret C.gboolean   // in
 
@@ -1090,7 +1202,13 @@ func (s settings) HasUnapplied() bool {
 	return _ok
 }
 
-func (s settings) Int(key string) int {
+// Int gets the value that is stored at @key in @settings.
+//
+// A convenience variant of g_settings_get() for 32-bit integers.
+//
+// It is a programmer error to give a @key that isn't specified as having a
+// int32 type in the schema for @settings.
+func (s *SettingsClass) Int(key string) int {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _cret C.gint       // in
@@ -1108,7 +1226,13 @@ func (s settings) Int(key string) int {
 	return _gint
 }
 
-func (s settings) Int64(key string) int64 {
+// Int64 gets the value that is stored at @key in @settings.
+//
+// A convenience variant of g_settings_get() for 64-bit integers.
+//
+// It is a programmer error to give a @key that isn't specified as having a
+// int64 type in the schema for @settings.
+func (s *SettingsClass) Int64(key string) int64 {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _cret C.gint64     // in
@@ -1126,7 +1250,33 @@ func (s settings) Int64(key string) int64 {
 	return _gint64
 }
 
-func (s settings) Mapped(key string, mapping SettingsGetMapping) interface{} {
+// Mapped gets the value that is stored at @key in @settings, subject to
+// application-level validation/mapping.
+//
+// You should use this function when the application needs to perform some
+// processing on the value of the key (for example, parsing). The @mapping
+// function performs that processing. If the function indicates that the
+// processing was unsuccessful (due to a parse error, for example) then the
+// mapping is tried again with another value.
+//
+// This allows a robust 'fall back to defaults' behaviour to be implemented
+// somewhat automatically.
+//
+// The first value that is tried is the user's setting for the key. If the
+// mapping function fails to map this value, other values may be tried in an
+// unspecified order (system or site defaults, translated schema default values,
+// untranslated schema default values, etc).
+//
+// If the mapping function fails for all possible values, one additional attempt
+// is made: the mapping function is called with a nil value. If the mapping
+// function still indicates failure at this point then the application will be
+// aborted.
+//
+// The result parameter for the @mapping function is pointed to a #gpointer
+// which is initially set to nil. The same pointer is given to each invocation
+// of @mapping. The final value of that #gpointer is what is returned by this
+// function. nil is valid; it is returned just as any other value would be.
+func (s *SettingsClass) Mapped(key string, mapping SettingsGetMapping) interface{} {
 	var _arg0 *C.GSettings          // out
 	var _arg1 *C.gchar              // out
 	var _arg2 C.GSettingsGetMapping // out
@@ -1148,7 +1298,10 @@ func (s settings) Mapped(key string, mapping SettingsGetMapping) interface{} {
 	return _gpointer
 }
 
-func (s settings) Range(key string) *glib.Variant {
+// Range queries the range of a key.
+//
+// Deprecated: since version 2.40.
+func (s *SettingsClass) Range(key string) *glib.Variant {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _cret *C.GVariant  // in
@@ -1170,7 +1323,13 @@ func (s settings) Range(key string) *glib.Variant {
 	return _variant
 }
 
-func (s settings) String(key string) string {
+// String gets the value that is stored at @key in @settings.
+//
+// A convenience variant of g_settings_get() for strings.
+//
+// It is a programmer error to give a @key that isn't specified as having a
+// string type in the schema for @settings.
+func (s *SettingsClass) String(key string) string {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _cret *C.gchar     // in
@@ -1189,7 +1348,11 @@ func (s settings) String(key string) string {
 	return _utf8
 }
 
-func (s settings) Strv(key string) []string {
+// Strv: convenience variant of g_settings_get() for string arrays.
+//
+// It is a programmer error to give a @key that isn't specified as having an
+// array of strings type in the schema for @settings.
+func (s *SettingsClass) Strv(key string) []string {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _cret **C.gchar
@@ -1220,7 +1383,13 @@ func (s settings) Strv(key string) []string {
 	return _utf8s
 }
 
-func (s settings) Uint(key string) uint {
+// Uint gets the value that is stored at @key in @settings.
+//
+// A convenience variant of g_settings_get() for 32-bit unsigned integers.
+//
+// It is a programmer error to give a @key that isn't specified as having a
+// uint32 type in the schema for @settings.
+func (s *SettingsClass) Uint(key string) uint {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _cret C.guint      // in
@@ -1238,7 +1407,13 @@ func (s settings) Uint(key string) uint {
 	return _guint
 }
 
-func (s settings) Uint64(key string) uint64 {
+// Uint64 gets the value that is stored at @key in @settings.
+//
+// A convenience variant of g_settings_get() for 64-bit unsigned integers.
+//
+// It is a programmer error to give a @key that isn't specified as having a
+// uint64 type in the schema for @settings.
+func (s *SettingsClass) Uint64(key string) uint64 {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _cret C.guint64    // in
@@ -1256,7 +1431,24 @@ func (s settings) Uint64(key string) uint64 {
 	return _guint64
 }
 
-func (s settings) UserValue(key string) *glib.Variant {
+// UserValue checks the "user value" of a key, if there is one.
+//
+// The user value of a key is the last value that was set by the user.
+//
+// After calling g_settings_reset() this function should always return nil
+// (assuming something is not wrong with the system configuration).
+//
+// It is possible that g_settings_get_value() will return a different value than
+// this function. This can happen in the case that the user set a value for a
+// key that was subsequently locked down by the system administrator -- this
+// function will return the user's old value.
+//
+// This function may be useful for adding a "reset" option to a UI or for
+// providing indication that a particular value has been changed.
+//
+// It is a programmer error to give a @key that isn't contained in the schema
+// for @settings.
+func (s *SettingsClass) UserValue(key string) *glib.Variant {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _cret *C.GVariant  // in
@@ -1278,7 +1470,11 @@ func (s settings) UserValue(key string) *glib.Variant {
 	return _variant
 }
 
-func (s settings) Value(key string) *glib.Variant {
+// Value gets the value that is stored in @settings for @key.
+//
+// It is a programmer error to give a @key that isn't contained in the schema
+// for @settings.
+func (s *SettingsClass) Value(key string) *glib.Variant {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _cret *C.GVariant  // in
@@ -1300,7 +1496,8 @@ func (s settings) Value(key string) *glib.Variant {
 	return _variant
 }
 
-func (s settings) IsWritable(name string) bool {
+// IsWritable finds out if a key can be written or not
+func (s *SettingsClass) IsWritable(name string) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _cret C.gboolean   // in
@@ -1320,7 +1517,17 @@ func (s settings) IsWritable(name string) bool {
 	return _ok
 }
 
-func (s settings) ListChildren() []string {
+// ListChildren gets the list of children on @settings.
+//
+// The list is exactly the list of strings for which it is not an error to call
+// g_settings_get_child().
+//
+// There is little reason to call this function from "normal" code, since you
+// should already know what children are in your schema. This function may still
+// be useful there for introspection reasons, however.
+//
+// You should free the return value with g_strfreev() when you are done with it.
+func (s *SettingsClass) ListChildren() []string {
 	var _arg0 *C.GSettings // out
 	var _cret **C.gchar
 
@@ -1348,7 +1555,16 @@ func (s settings) ListChildren() []string {
 	return _utf8s
 }
 
-func (s settings) ListKeys() []string {
+// ListKeys introspects the list of keys on @settings.
+//
+// You should probably not be calling this function from "normal" code (since
+// you should already know what keys are in your schema). This function is
+// intended for introspection reasons.
+//
+// You should free the return value with g_strfreev() when you are done with it.
+//
+// Deprecated: since version 2.46.
+func (s *SettingsClass) ListKeys() []string {
 	var _arg0 *C.GSettings // out
 	var _cret **C.gchar
 
@@ -1376,7 +1592,11 @@ func (s settings) ListKeys() []string {
 	return _utf8s
 }
 
-func (s settings) RangeCheck(key string, value *glib.Variant) bool {
+// RangeCheck checks if the given @value is of the correct type and within the
+// permitted range for @key.
+//
+// Deprecated: since version 2.40.
+func (s *SettingsClass) RangeCheck(key string, value *glib.Variant) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _arg2 *C.GVariant  // out
@@ -1398,7 +1618,12 @@ func (s settings) RangeCheck(key string, value *glib.Variant) bool {
 	return _ok
 }
 
-func (s settings) Reset(key string) {
+// Reset resets @key to its default value.
+//
+// This call resets the key, as much as possible, to its default value. That
+// might be the value specified in the schema or the one set by the
+// administrator.
+func (s *SettingsClass) Reset(key string) {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 
@@ -1409,7 +1634,12 @@ func (s settings) Reset(key string) {
 	C.g_settings_reset(_arg0, _arg1)
 }
 
-func (s settings) Revert() {
+// Revert reverts all non-applied changes to the settings. This function does
+// nothing unless @settings is in 'delay-apply' mode; see g_settings_delay(). In
+// the normal case settings are always applied immediately.
+//
+// Change notifications will be emitted for affected keys.
+func (s *SettingsClass) Revert() {
 	var _arg0 *C.GSettings // out
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
@@ -1417,7 +1647,13 @@ func (s settings) Revert() {
 	C.g_settings_revert(_arg0)
 }
 
-func (s settings) SetBoolean(key string, value bool) bool {
+// SetBoolean sets @key in @settings to @value.
+//
+// A convenience variant of g_settings_set() for booleans.
+//
+// It is a programmer error to give a @key that isn't specified as having a
+// boolean type in the schema for @settings.
+func (s *SettingsClass) SetBoolean(key string, value bool) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _arg2 C.gboolean   // out
@@ -1441,7 +1677,13 @@ func (s settings) SetBoolean(key string, value bool) bool {
 	return _ok
 }
 
-func (s settings) SetDouble(key string, value float64) bool {
+// SetDouble sets @key in @settings to @value.
+//
+// A convenience variant of g_settings_set() for doubles.
+//
+// It is a programmer error to give a @key that isn't specified as having a
+// 'double' type in the schema for @settings.
+func (s *SettingsClass) SetDouble(key string, value float64) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _arg2 C.gdouble    // out
@@ -1463,7 +1705,16 @@ func (s settings) SetDouble(key string, value float64) bool {
 	return _ok
 }
 
-func (s settings) SetEnum(key string, value int) bool {
+// SetEnum looks up the enumerated type nick for @value and writes it to @key,
+// within @settings.
+//
+// It is a programmer error to give a @key that isn't contained in the schema
+// for @settings or is not marked as an enumerated type, or for @value not to be
+// a valid value for the named type.
+//
+// After performing the write, accessing @key directly with
+// g_settings_get_string() will return the 'nick' associated with @value.
+func (s *SettingsClass) SetEnum(key string, value int) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _arg2 C.gint       // out
@@ -1485,7 +1736,17 @@ func (s settings) SetEnum(key string, value int) bool {
 	return _ok
 }
 
-func (s settings) SetFlags(key string, value uint) bool {
+// SetFlags looks up the flags type nicks for the bits specified by @value, puts
+// them in an array of strings and writes the array to @key, within @settings.
+//
+// It is a programmer error to give a @key that isn't contained in the schema
+// for @settings or is not marked as a flags type, or for @value to contain any
+// bits that are not value for the named type.
+//
+// After performing the write, accessing @key directly with
+// g_settings_get_strv() will return an array of 'nicks'; one for each bit in
+// @value.
+func (s *SettingsClass) SetFlags(key string, value uint) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _arg2 C.guint      // out
@@ -1507,7 +1768,13 @@ func (s settings) SetFlags(key string, value uint) bool {
 	return _ok
 }
 
-func (s settings) SetInt(key string, value int) bool {
+// SetInt sets @key in @settings to @value.
+//
+// A convenience variant of g_settings_set() for 32-bit integers.
+//
+// It is a programmer error to give a @key that isn't specified as having a
+// int32 type in the schema for @settings.
+func (s *SettingsClass) SetInt(key string, value int) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _arg2 C.gint       // out
@@ -1529,7 +1796,13 @@ func (s settings) SetInt(key string, value int) bool {
 	return _ok
 }
 
-func (s settings) SetInt64(key string, value int64) bool {
+// SetInt64 sets @key in @settings to @value.
+//
+// A convenience variant of g_settings_set() for 64-bit integers.
+//
+// It is a programmer error to give a @key that isn't specified as having a
+// int64 type in the schema for @settings.
+func (s *SettingsClass) SetInt64(key string, value int64) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _arg2 C.gint64     // out
@@ -1551,7 +1824,13 @@ func (s settings) SetInt64(key string, value int64) bool {
 	return _ok
 }
 
-func (s settings) SetString(key string, value string) bool {
+// SetString sets @key in @settings to @value.
+//
+// A convenience variant of g_settings_set() for strings.
+//
+// It is a programmer error to give a @key that isn't specified as having a
+// string type in the schema for @settings.
+func (s *SettingsClass) SetString(key string, value string) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _arg2 *C.gchar     // out
@@ -1574,7 +1853,14 @@ func (s settings) SetString(key string, value string) bool {
 	return _ok
 }
 
-func (s settings) SetStrv(key string, value []string) bool {
+// SetStrv sets @key in @settings to @value.
+//
+// A convenience variant of g_settings_set() for string arrays. If @value is
+// nil, then @key is set to be the empty array.
+//
+// It is a programmer error to give a @key that isn't specified as having an
+// array of strings type in the schema for @settings.
+func (s *SettingsClass) SetStrv(key string, value []string) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _arg2 **C.gchar
@@ -1604,7 +1890,13 @@ func (s settings) SetStrv(key string, value []string) bool {
 	return _ok
 }
 
-func (s settings) SetUint(key string, value uint) bool {
+// SetUint sets @key in @settings to @value.
+//
+// A convenience variant of g_settings_set() for 32-bit unsigned integers.
+//
+// It is a programmer error to give a @key that isn't specified as having a
+// uint32 type in the schema for @settings.
+func (s *SettingsClass) SetUint(key string, value uint) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _arg2 C.guint      // out
@@ -1626,7 +1918,13 @@ func (s settings) SetUint(key string, value uint) bool {
 	return _ok
 }
 
-func (s settings) SetUint64(key string, value uint64) bool {
+// SetUint64 sets @key in @settings to @value.
+//
+// A convenience variant of g_settings_set() for 64-bit unsigned integers.
+//
+// It is a programmer error to give a @key that isn't specified as having a
+// uint64 type in the schema for @settings.
+func (s *SettingsClass) SetUint64(key string, value uint64) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _arg2 C.guint64    // out
@@ -1648,7 +1946,13 @@ func (s settings) SetUint64(key string, value uint64) bool {
 	return _ok
 }
 
-func (s settings) SetValue(key string, value *glib.Variant) bool {
+// SetValue sets @key in @settings to @value.
+//
+// It is a programmer error to give a @key that isn't contained in the schema
+// for @settings or for @value to have the incorrect type, per the schema.
+//
+// If @value is floating then this function consumes the reference.
+func (s *SettingsClass) SetValue(key string, value *glib.Variant) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _arg2 *C.GVariant  // out

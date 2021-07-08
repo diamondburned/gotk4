@@ -31,51 +31,7 @@ func init() {
 //
 // The center widget is centered regarding the full width of the layout's.
 type CenterLayout interface {
-	LayoutManager
-
-	// AsLayoutManager casts the class to the LayoutManager interface.
-	AsLayoutManager() LayoutManager
-
-	// Allocate assigns the given @width, @height, and @baseline to a @widget,
-	// and computes the position and sizes of the children of the @widget using
-	// the layout management policy of @manager.
-	//
-	// This method is inherited from LayoutManager
-	Allocate(widget Widget, width int, height int, baseline int)
-	// GetLayoutChild retrieves a `GtkLayoutChild` instance for the
-	// `GtkLayoutManager`, creating one if necessary.
-	//
-	// The @child widget must be a child of the widget using @manager.
-	//
-	// The `GtkLayoutChild` instance is owned by the `GtkLayoutManager`, and is
-	// guaranteed to exist as long as @child is a child of the `GtkWidget` using
-	// the given `GtkLayoutManager`.
-	//
-	// This method is inherited from LayoutManager
-	GetLayoutChild(child Widget) LayoutChild
-	// GetRequestMode retrieves the request mode of @manager.
-	//
-	// This method is inherited from LayoutManager
-	GetRequestMode() SizeRequestMode
-	// GetWidget retrieves the `GtkWidget` using the given `GtkLayoutManager`.
-	//
-	// This method is inherited from LayoutManager
-	GetWidget() Widget
-	// LayoutChanged queues a resize on the `GtkWidget` using @manager, if any.
-	//
-	// This function should be called by subclasses of `GtkLayoutManager` in
-	// response to changes to their layout management policies.
-	//
-	// This method is inherited from LayoutManager
-	LayoutChanged()
-	// Measure measures the size of the @widget using @manager, for the given
-	// @orientation and size.
-	//
-	// See the [class@Gtk.Widget] documentation on layout management for more
-	// details.
-	//
-	// This method is inherited from LayoutManager
-	Measure(widget Widget, orientation Orientation, forSize int) (minimum int, natural int, minimumBaseline int, naturalBaseline int)
+	gextras.Objector
 
 	// BaselinePosition returns the baseline position of the layout.
 	BaselinePosition() BaselinePosition
@@ -105,23 +61,25 @@ type CenterLayout interface {
 	SetStartWidget(widget Widget)
 }
 
-// centerLayout implements the CenterLayout interface.
-type centerLayout struct {
-	*externglib.Object
+// CenterLayoutClass implements the CenterLayout interface.
+type CenterLayoutClass struct {
+	LayoutManagerClass
 }
 
-var _ CenterLayout = (*centerLayout)(nil)
+var _ CenterLayout = (*CenterLayoutClass)(nil)
 
-// WrapCenterLayout wraps a GObject to a type that implements
-// interface CenterLayout. It is primarily used internally.
-func WrapCenterLayout(obj *externglib.Object) CenterLayout {
-	return centerLayout{obj}
+func wrapCenterLayout(obj *externglib.Object) CenterLayout {
+	return &CenterLayoutClass{
+		LayoutManagerClass: LayoutManagerClass{
+			Object: obj,
+		},
+	}
 }
 
 func marshalCenterLayout(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapCenterLayout(obj), nil
+	return wrapCenterLayout(obj), nil
 }
 
 // NewCenterLayout creates a new `GtkCenterLayout`.
@@ -137,35 +95,8 @@ func NewCenterLayout() CenterLayout {
 	return _centerLayout
 }
 
-func (c centerLayout) AsLayoutManager() LayoutManager {
-	return WrapLayoutManager(gextras.InternObject(c))
-}
-
-func (m centerLayout) Allocate(widget Widget, width int, height int, baseline int) {
-	WrapLayoutManager(gextras.InternObject(m)).Allocate(widget, width, height, baseline)
-}
-
-func (m centerLayout) GetLayoutChild(child Widget) LayoutChild {
-	return WrapLayoutManager(gextras.InternObject(m)).GetLayoutChild(child)
-}
-
-func (m centerLayout) GetRequestMode() SizeRequestMode {
-	return WrapLayoutManager(gextras.InternObject(m)).GetRequestMode()
-}
-
-func (m centerLayout) GetWidget() Widget {
-	return WrapLayoutManager(gextras.InternObject(m)).GetWidget()
-}
-
-func (m centerLayout) LayoutChanged() {
-	WrapLayoutManager(gextras.InternObject(m)).LayoutChanged()
-}
-
-func (m centerLayout) Measure(widget Widget, orientation Orientation, forSize int) (minimum int, natural int, minimumBaseline int, naturalBaseline int) {
-	return WrapLayoutManager(gextras.InternObject(m)).Measure(widget, orientation, forSize)
-}
-
-func (s centerLayout) BaselinePosition() BaselinePosition {
+// BaselinePosition returns the baseline position of the layout.
+func (s *CenterLayoutClass) BaselinePosition() BaselinePosition {
 	var _arg0 *C.GtkCenterLayout    // out
 	var _cret C.GtkBaselinePosition // in
 
@@ -180,7 +111,8 @@ func (s centerLayout) BaselinePosition() BaselinePosition {
 	return _baselinePosition
 }
 
-func (s centerLayout) CenterWidget() Widget {
+// CenterWidget returns the center widget of the layout.
+func (s *CenterLayoutClass) CenterWidget() Widget {
 	var _arg0 *C.GtkCenterLayout // out
 	var _cret *C.GtkWidget       // in
 
@@ -195,7 +127,8 @@ func (s centerLayout) CenterWidget() Widget {
 	return _widget
 }
 
-func (s centerLayout) EndWidget() Widget {
+// EndWidget returns the end widget of the layout.
+func (s *CenterLayoutClass) EndWidget() Widget {
 	var _arg0 *C.GtkCenterLayout // out
 	var _cret *C.GtkWidget       // in
 
@@ -210,7 +143,8 @@ func (s centerLayout) EndWidget() Widget {
 	return _widget
 }
 
-func (s centerLayout) Orientation() Orientation {
+// Orientation gets the current orienration of the layout manager.
+func (s *CenterLayoutClass) Orientation() Orientation {
 	var _arg0 *C.GtkCenterLayout // out
 	var _cret C.GtkOrientation   // in
 
@@ -225,7 +159,8 @@ func (s centerLayout) Orientation() Orientation {
 	return _orientation
 }
 
-func (s centerLayout) StartWidget() Widget {
+// StartWidget returns the start widget fo the layout.
+func (s *CenterLayoutClass) StartWidget() Widget {
 	var _arg0 *C.GtkCenterLayout // out
 	var _cret *C.GtkWidget       // in
 
@@ -240,7 +175,8 @@ func (s centerLayout) StartWidget() Widget {
 	return _widget
 }
 
-func (s centerLayout) SetBaselinePosition(baselinePosition BaselinePosition) {
+// SetBaselinePosition sets the new baseline position of @self
+func (s *CenterLayoutClass) SetBaselinePosition(baselinePosition BaselinePosition) {
 	var _arg0 *C.GtkCenterLayout    // out
 	var _arg1 C.GtkBaselinePosition // out
 
@@ -250,7 +186,10 @@ func (s centerLayout) SetBaselinePosition(baselinePosition BaselinePosition) {
 	C.gtk_center_layout_set_baseline_position(_arg0, _arg1)
 }
 
-func (s centerLayout) SetCenterWidget(widget Widget) {
+// SetCenterWidget sets the new center widget of @self.
+//
+// To remove the existing center widget, pass nil.
+func (s *CenterLayoutClass) SetCenterWidget(widget Widget) {
 	var _arg0 *C.GtkCenterLayout // out
 	var _arg1 *C.GtkWidget       // out
 
@@ -260,7 +199,10 @@ func (s centerLayout) SetCenterWidget(widget Widget) {
 	C.gtk_center_layout_set_center_widget(_arg0, _arg1)
 }
 
-func (s centerLayout) SetEndWidget(widget Widget) {
+// SetEndWidget sets the new end widget of @self.
+//
+// To remove the existing center widget, pass nil.
+func (s *CenterLayoutClass) SetEndWidget(widget Widget) {
 	var _arg0 *C.GtkCenterLayout // out
 	var _arg1 *C.GtkWidget       // out
 
@@ -270,7 +212,8 @@ func (s centerLayout) SetEndWidget(widget Widget) {
 	C.gtk_center_layout_set_end_widget(_arg0, _arg1)
 }
 
-func (s centerLayout) SetOrientation(orientation Orientation) {
+// SetOrientation sets the orientation of @self.
+func (s *CenterLayoutClass) SetOrientation(orientation Orientation) {
 	var _arg0 *C.GtkCenterLayout // out
 	var _arg1 C.GtkOrientation   // out
 
@@ -280,7 +223,10 @@ func (s centerLayout) SetOrientation(orientation Orientation) {
 	C.gtk_center_layout_set_orientation(_arg0, _arg1)
 }
 
-func (s centerLayout) SetStartWidget(widget Widget) {
+// SetStartWidget sets the new start widget of @self.
+//
+// To remove the existing start widget, pass nil.
+func (s *CenterLayoutClass) SetStartWidget(widget Widget) {
 	var _arg0 *C.GtkCenterLayout // out
 	var _arg1 *C.GtkWidget       // out
 

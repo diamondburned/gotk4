@@ -42,34 +42,6 @@ func init() {
 type NetworkService interface {
 	gextras.Objector
 
-	// AsSocketConnectable casts the class to the SocketConnectable interface.
-	AsSocketConnectable() SocketConnectable
-
-	// Enumerate creates a AddressEnumerator for @connectable.
-	//
-	// This method is inherited from SocketConnectable
-	Enumerate() SocketAddressEnumerator
-	// ProxyEnumerate creates a AddressEnumerator for @connectable that will
-	// return a Address for each of its addresses that you must connect to via a
-	// proxy.
-	//
-	// If @connectable does not implement
-	// g_socket_connectable_proxy_enumerate(), this will fall back to calling
-	// g_socket_connectable_enumerate().
-	//
-	// This method is inherited from SocketConnectable
-	ProxyEnumerate() SocketAddressEnumerator
-	// ToString: format a Connectable as a string. This is a human-readable
-	// format for use in debugging output, and is not a stable serialization
-	// format. It is not suitable for use in user interfaces as it exposes too
-	// much information for a user.
-	//
-	// If the Connectable implementation does not support string formatting, the
-	// implementation’s type name will be returned as a fallback.
-	//
-	// This method is inherited from SocketConnectable
-	ToString() string
-
 	// Domain gets the domain that @srv serves. This might be either UTF-8 or
 	// ASCII-encoded, depending on what @srv was created with.
 	Domain() string
@@ -85,23 +57,27 @@ type NetworkService interface {
 	SetScheme(scheme string)
 }
 
-// networkService implements the NetworkService interface.
-type networkService struct {
+// NetworkServiceClass implements the NetworkService interface.
+type NetworkServiceClass struct {
 	*externglib.Object
+	SocketConnectableInterface
 }
 
-var _ NetworkService = (*networkService)(nil)
+var _ NetworkService = (*NetworkServiceClass)(nil)
 
-// WrapNetworkService wraps a GObject to a type that implements
-// interface NetworkService. It is primarily used internally.
-func WrapNetworkService(obj *externglib.Object) NetworkService {
-	return networkService{obj}
+func wrapNetworkService(obj *externglib.Object) NetworkService {
+	return &NetworkServiceClass{
+		Object: obj,
+		SocketConnectableInterface: SocketConnectableInterface{
+			Object: obj,
+		},
+	}
 }
 
 func marshalNetworkService(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapNetworkService(obj), nil
+	return wrapNetworkService(obj), nil
 }
 
 // NewNetworkService creates a new Service representing the given @service,
@@ -129,23 +105,9 @@ func NewNetworkService(service string, protocol string, domain string) NetworkSe
 	return _networkService
 }
 
-func (n networkService) AsSocketConnectable() SocketConnectable {
-	return WrapSocketConnectable(gextras.InternObject(n))
-}
-
-func (c networkService) Enumerate() SocketAddressEnumerator {
-	return WrapSocketConnectable(gextras.InternObject(c)).Enumerate()
-}
-
-func (c networkService) ProxyEnumerate() SocketAddressEnumerator {
-	return WrapSocketConnectable(gextras.InternObject(c)).ProxyEnumerate()
-}
-
-func (c networkService) ToString() string {
-	return WrapSocketConnectable(gextras.InternObject(c)).ToString()
-}
-
-func (s networkService) Domain() string {
+// Domain gets the domain that @srv serves. This might be either UTF-8 or
+// ASCII-encoded, depending on what @srv was created with.
+func (s *NetworkServiceClass) Domain() string {
 	var _arg0 *C.GNetworkService // out
 	var _cret *C.gchar           // in
 
@@ -160,7 +122,8 @@ func (s networkService) Domain() string {
 	return _utf8
 }
 
-func (s networkService) Protocol() string {
+// Protocol gets @srv's protocol name (eg, "tcp").
+func (s *NetworkServiceClass) Protocol() string {
 	var _arg0 *C.GNetworkService // out
 	var _cret *C.gchar           // in
 
@@ -175,7 +138,9 @@ func (s networkService) Protocol() string {
 	return _utf8
 }
 
-func (s networkService) Scheme() string {
+// Scheme gets the URI scheme used to resolve proxies. By default, the service
+// name is used as scheme.
+func (s *NetworkServiceClass) Scheme() string {
 	var _arg0 *C.GNetworkService // out
 	var _cret *C.gchar           // in
 
@@ -190,7 +155,8 @@ func (s networkService) Scheme() string {
 	return _utf8
 }
 
-func (s networkService) Service() string {
+// Service gets @srv's service name (eg, "ldap").
+func (s *NetworkServiceClass) Service() string {
 	var _arg0 *C.GNetworkService // out
 	var _cret *C.gchar           // in
 
@@ -205,7 +171,9 @@ func (s networkService) Service() string {
 	return _utf8
 }
 
-func (s networkService) SetScheme(scheme string) {
+// SetScheme set's the URI scheme used to resolve proxies. By default, the
+// service name is used as scheme.
+func (s *NetworkServiceClass) SetScheme(scheme string) {
 	var _arg0 *C.GNetworkService // out
 	var _arg1 *C.gchar           // out
 

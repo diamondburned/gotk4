@@ -286,60 +286,6 @@ func (i *TextIter) BackwardLines(count int) bool {
 	return _ok
 }
 
-// BackwardSearch: same as gtk_text_iter_forward_search(), but moves backward.
-//
-// @match_end will never be set to a `GtkTextIter` located after @iter, even if
-// there is a possible @match_start before or at @iter.
-func (i *TextIter) BackwardSearch(str string, flags TextSearchFlags, limit *TextIter) (matchStart TextIter, matchEnd TextIter, ok bool) {
-	var _arg0 *C.GtkTextIter       // out
-	var _arg1 *C.char              // out
-	var _arg2 C.GtkTextSearchFlags // out
-	var _arg3 C.GtkTextIter        // in
-	var _arg4 C.GtkTextIter        // in
-	var _arg5 *C.GtkTextIter       // out
-	var _cret C.gboolean           // in
-
-	_arg0 = (*C.GtkTextIter)(unsafe.Pointer(i))
-	_arg1 = (*C.char)(C.CString(str))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.GtkTextSearchFlags(flags)
-	_arg5 = (*C.GtkTextIter)(unsafe.Pointer(limit))
-
-	_cret = C.gtk_text_iter_backward_search(_arg0, _arg1, _arg2, &_arg3, &_arg4, _arg5)
-
-	var _matchStart TextIter // out
-	var _matchEnd TextIter   // out
-	var _ok bool             // out
-
-	{
-		var refTmpIn *C.GtkTextIter
-		var refTmpOut *TextIter
-
-		in0 := &_arg3
-		refTmpIn = in0
-
-		refTmpOut = (*TextIter)(unsafe.Pointer(refTmpIn))
-
-		_matchStart = *refTmpOut
-	}
-	{
-		var refTmpIn *C.GtkTextIter
-		var refTmpOut *TextIter
-
-		in0 := &_arg4
-		refTmpIn = in0
-
-		refTmpOut = (*TextIter)(unsafe.Pointer(refTmpIn))
-
-		_matchEnd = *refTmpOut
-	}
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _matchStart, _matchEnd, _ok
-}
-
 // BackwardSentenceStart moves backward to the previous sentence start.
 //
 // If @iter is already at the start of a sentence, moves backward to the next
@@ -1008,65 +954,6 @@ func (i *TextIter) ForwardLines(count int) bool {
 	}
 
 	return _ok
-}
-
-// ForwardSearch searches forward for @str.
-//
-// Any match is returned by setting @match_start to the first character of the
-// match and @match_end to the first character after the match. The search will
-// not continue past @limit. Note that a search is a linear or O(n) operation,
-// so you may wish to use @limit to avoid locking up your UI on large buffers.
-//
-// @match_start will never be set to a `GtkTextIter` located before @iter, even
-// if there is a possible @match_end after or at @iter.
-func (i *TextIter) ForwardSearch(str string, flags TextSearchFlags, limit *TextIter) (matchStart TextIter, matchEnd TextIter, ok bool) {
-	var _arg0 *C.GtkTextIter       // out
-	var _arg1 *C.char              // out
-	var _arg2 C.GtkTextSearchFlags // out
-	var _arg3 C.GtkTextIter        // in
-	var _arg4 C.GtkTextIter        // in
-	var _arg5 *C.GtkTextIter       // out
-	var _cret C.gboolean           // in
-
-	_arg0 = (*C.GtkTextIter)(unsafe.Pointer(i))
-	_arg1 = (*C.char)(C.CString(str))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.GtkTextSearchFlags(flags)
-	_arg5 = (*C.GtkTextIter)(unsafe.Pointer(limit))
-
-	_cret = C.gtk_text_iter_forward_search(_arg0, _arg1, _arg2, &_arg3, &_arg4, _arg5)
-
-	var _matchStart TextIter // out
-	var _matchEnd TextIter   // out
-	var _ok bool             // out
-
-	{
-		var refTmpIn *C.GtkTextIter
-		var refTmpOut *TextIter
-
-		in0 := &_arg3
-		refTmpIn = in0
-
-		refTmpOut = (*TextIter)(unsafe.Pointer(refTmpIn))
-
-		_matchStart = *refTmpOut
-	}
-	{
-		var refTmpIn *C.GtkTextIter
-		var refTmpOut *TextIter
-
-		in0 := &_arg4
-		refTmpIn = in0
-
-		refTmpOut = (*TextIter)(unsafe.Pointer(refTmpIn))
-
-		_matchEnd = *refTmpOut
-	}
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _matchStart, _matchEnd, _ok
 }
 
 // ForwardSentenceEnd moves forward to the next sentence end.

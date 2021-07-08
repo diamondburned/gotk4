@@ -73,23 +73,23 @@ type Renderer interface {
 	Unrealize()
 }
 
-// renderer implements the Renderer interface.
-type renderer struct {
+// RendererClass implements the Renderer interface.
+type RendererClass struct {
 	*externglib.Object
 }
 
-var _ Renderer = (*renderer)(nil)
+var _ Renderer = (*RendererClass)(nil)
 
-// WrapRenderer wraps a GObject to a type that implements
-// interface Renderer. It is primarily used internally.
-func WrapRenderer(obj *externglib.Object) Renderer {
-	return renderer{obj}
+func wrapRenderer(obj *externglib.Object) Renderer {
+	return &RendererClass{
+		Object: obj,
+	}
 }
 
 func marshalRenderer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapRenderer(obj), nil
+	return wrapRenderer(obj), nil
 }
 
 // NewRendererForSurface creates an appropriate `GskRenderer` instance for the
@@ -115,7 +115,10 @@ func NewRendererForSurface(surface gdk.Surface) Renderer {
 	return _renderer
 }
 
-func (r renderer) Surface() gdk.Surface {
+// Surface retrieves the `GdkSurface` set using gsk_enderer_realize().
+//
+// If the renderer has not been realized yet, nil will be returned.
+func (r *RendererClass) Surface() gdk.Surface {
 	var _arg0 *C.GskRenderer // out
 	var _cret *C.GdkSurface  // in
 
@@ -130,7 +133,8 @@ func (r renderer) Surface() gdk.Surface {
 	return _surface
 }
 
-func (r renderer) IsRealized() bool {
+// IsRealized checks whether the @renderer is realized or not.
+func (r *RendererClass) IsRealized() bool {
 	var _arg0 *C.GskRenderer // out
 	var _cret C.gboolean     // in
 
@@ -147,7 +151,9 @@ func (r renderer) IsRealized() bool {
 	return _ok
 }
 
-func (r renderer) Realize(surface gdk.Surface) error {
+// Realize creates the resources needed by the @renderer to render the scene
+// graph.
+func (r *RendererClass) Realize(surface gdk.Surface) error {
 	var _arg0 *C.GskRenderer // out
 	var _arg1 *C.GdkSurface  // out
 	var _cerr *C.GError      // in
@@ -164,7 +170,17 @@ func (r renderer) Realize(surface gdk.Surface) error {
 	return _goerr
 }
 
-func (r renderer) Render(root RenderNode, region *cairo.Region) {
+// Render renders the scene graph, described by a tree of `GskRenderNode`
+// instances, ensuring that the given @region gets redrawn.
+//
+// Renderers must ensure that changes of the contents given by the @root node as
+// well as the area given by @region are redrawn. They are however free to not
+// redraw any pixel outside of @region if they can guarantee that it didn't
+// change.
+//
+// The @renderer will acquire a reference on the `GskRenderNode` tree while the
+// rendering is in progress.
+func (r *RendererClass) Render(root RenderNode, region *cairo.Region) {
 	var _arg0 *C.GskRenderer    // out
 	var _arg1 *C.GskRenderNode  // out
 	var _arg2 *C.cairo_region_t // out
@@ -176,7 +192,15 @@ func (r renderer) Render(root RenderNode, region *cairo.Region) {
 	C.gsk_renderer_render(_arg0, _arg1, _arg2)
 }
 
-func (r renderer) RenderTexture(root RenderNode, viewport *graphene.Rect) gdk.Texture {
+// RenderTexture renders the scene graph, described by a tree of `GskRenderNode`
+// instances, to a `GdkTexture`.
+//
+// The @renderer will acquire a reference on the `GskRenderNode` tree while the
+// rendering is in progress.
+//
+// If you want to apply any transformations to @root, you should put it into a
+// transform node and pass that node instead.
+func (r *RendererClass) RenderTexture(root RenderNode, viewport *graphene.Rect) gdk.Texture {
 	var _arg0 *C.GskRenderer     // out
 	var _arg1 *C.GskRenderNode   // out
 	var _arg2 *C.graphene_rect_t // out
@@ -195,7 +219,8 @@ func (r renderer) RenderTexture(root RenderNode, viewport *graphene.Rect) gdk.Te
 	return _texture
 }
 
-func (r renderer) Unrealize() {
+// Unrealize releases all the resources created by gsk_renderer_realize().
+func (r *RendererClass) Unrealize() {
 	var _arg0 *C.GskRenderer // out
 
 	_arg0 = (*C.GskRenderer)(unsafe.Pointer(r.Native()))

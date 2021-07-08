@@ -37,61 +37,7 @@ func init() {
 // If you want to specify the amount of space placed between each child, you can
 // use the [property@Gtk.BoxLayout:spacing] property.
 type BoxLayout interface {
-	LayoutManager
-
-	// AsLayoutManager casts the class to the LayoutManager interface.
-	AsLayoutManager() LayoutManager
-	// AsOrientable casts the class to the Orientable interface.
-	AsOrientable() Orientable
-
-	// Allocate assigns the given @width, @height, and @baseline to a @widget,
-	// and computes the position and sizes of the children of the @widget using
-	// the layout management policy of @manager.
-	//
-	// This method is inherited from LayoutManager
-	Allocate(widget Widget, width int, height int, baseline int)
-	// GetLayoutChild retrieves a `GtkLayoutChild` instance for the
-	// `GtkLayoutManager`, creating one if necessary.
-	//
-	// The @child widget must be a child of the widget using @manager.
-	//
-	// The `GtkLayoutChild` instance is owned by the `GtkLayoutManager`, and is
-	// guaranteed to exist as long as @child is a child of the `GtkWidget` using
-	// the given `GtkLayoutManager`.
-	//
-	// This method is inherited from LayoutManager
-	GetLayoutChild(child Widget) LayoutChild
-	// GetRequestMode retrieves the request mode of @manager.
-	//
-	// This method is inherited from LayoutManager
-	GetRequestMode() SizeRequestMode
-	// GetWidget retrieves the `GtkWidget` using the given `GtkLayoutManager`.
-	//
-	// This method is inherited from LayoutManager
-	GetWidget() Widget
-	// LayoutChanged queues a resize on the `GtkWidget` using @manager, if any.
-	//
-	// This function should be called by subclasses of `GtkLayoutManager` in
-	// response to changes to their layout management policies.
-	//
-	// This method is inherited from LayoutManager
-	LayoutChanged()
-	// Measure measures the size of the @widget using @manager, for the given
-	// @orientation and size.
-	//
-	// See the [class@Gtk.Widget] documentation on layout management for more
-	// details.
-	//
-	// This method is inherited from LayoutManager
-	Measure(widget Widget, orientation Orientation, forSize int) (minimum int, natural int, minimumBaseline int, naturalBaseline int)
-	// GetOrientation retrieves the orientation of the @orientable.
-	//
-	// This method is inherited from Orientable
-	GetOrientation() Orientation
-	// SetOrientation sets the orientation of the @orientable.
-	//
-	// This method is inherited from Orientable
-	SetOrientation(orientation Orientation)
+	gextras.Objector
 
 	// BaselinePosition gets the value set by
 	// gtk_box_layout_set_baseline_position().
@@ -115,23 +61,31 @@ type BoxLayout interface {
 	SetSpacing(spacing uint)
 }
 
-// boxLayout implements the BoxLayout interface.
-type boxLayout struct {
+// BoxLayoutClass implements the BoxLayout interface.
+type BoxLayoutClass struct {
 	*externglib.Object
+	LayoutManagerClass
+	OrientableInterface
 }
 
-var _ BoxLayout = (*boxLayout)(nil)
+var _ BoxLayout = (*BoxLayoutClass)(nil)
 
-// WrapBoxLayout wraps a GObject to a type that implements
-// interface BoxLayout. It is primarily used internally.
-func WrapBoxLayout(obj *externglib.Object) BoxLayout {
-	return boxLayout{obj}
+func wrapBoxLayout(obj *externglib.Object) BoxLayout {
+	return &BoxLayoutClass{
+		Object: obj,
+		LayoutManagerClass: LayoutManagerClass{
+			Object: obj,
+		},
+		OrientableInterface: OrientableInterface{
+			Object: obj,
+		},
+	}
 }
 
 func marshalBoxLayout(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapBoxLayout(obj), nil
+	return wrapBoxLayout(obj), nil
 }
 
 // NewBoxLayout creates a new `GtkBoxLayout`.
@@ -150,47 +104,9 @@ func NewBoxLayout(orientation Orientation) BoxLayout {
 	return _boxLayout
 }
 
-func (b boxLayout) AsLayoutManager() LayoutManager {
-	return WrapLayoutManager(gextras.InternObject(b))
-}
-
-func (b boxLayout) AsOrientable() Orientable {
-	return WrapOrientable(gextras.InternObject(b))
-}
-
-func (m boxLayout) Allocate(widget Widget, width int, height int, baseline int) {
-	WrapLayoutManager(gextras.InternObject(m)).Allocate(widget, width, height, baseline)
-}
-
-func (m boxLayout) GetLayoutChild(child Widget) LayoutChild {
-	return WrapLayoutManager(gextras.InternObject(m)).GetLayoutChild(child)
-}
-
-func (m boxLayout) GetRequestMode() SizeRequestMode {
-	return WrapLayoutManager(gextras.InternObject(m)).GetRequestMode()
-}
-
-func (m boxLayout) GetWidget() Widget {
-	return WrapLayoutManager(gextras.InternObject(m)).GetWidget()
-}
-
-func (m boxLayout) LayoutChanged() {
-	WrapLayoutManager(gextras.InternObject(m)).LayoutChanged()
-}
-
-func (m boxLayout) Measure(widget Widget, orientation Orientation, forSize int) (minimum int, natural int, minimumBaseline int, naturalBaseline int) {
-	return WrapLayoutManager(gextras.InternObject(m)).Measure(widget, orientation, forSize)
-}
-
-func (o boxLayout) GetOrientation() Orientation {
-	return WrapOrientable(gextras.InternObject(o)).GetOrientation()
-}
-
-func (o boxLayout) SetOrientation(orientation Orientation) {
-	WrapOrientable(gextras.InternObject(o)).SetOrientation(orientation)
-}
-
-func (b boxLayout) BaselinePosition() BaselinePosition {
+// BaselinePosition gets the value set by
+// gtk_box_layout_set_baseline_position().
+func (b *BoxLayoutClass) BaselinePosition() BaselinePosition {
 	var _arg0 *C.GtkBoxLayout       // out
 	var _cret C.GtkBaselinePosition // in
 
@@ -205,7 +121,8 @@ func (b boxLayout) BaselinePosition() BaselinePosition {
 	return _baselinePosition
 }
 
-func (b boxLayout) Homogeneous() bool {
+// Homogeneous returns whether the layout is set to be homogeneous.
+func (b *BoxLayoutClass) Homogeneous() bool {
 	var _arg0 *C.GtkBoxLayout // out
 	var _cret C.gboolean      // in
 
@@ -222,7 +139,8 @@ func (b boxLayout) Homogeneous() bool {
 	return _ok
 }
 
-func (b boxLayout) Spacing() uint {
+// Spacing returns the space that @box_layout puts between children.
+func (b *BoxLayoutClass) Spacing() uint {
 	var _arg0 *C.GtkBoxLayout // out
 	var _cret C.guint         // in
 
@@ -237,7 +155,13 @@ func (b boxLayout) Spacing() uint {
 	return _guint
 }
 
-func (b boxLayout) SetBaselinePosition(position BaselinePosition) {
+// SetBaselinePosition sets the baseline position of a box layout.
+//
+// The baseline position affects only horizontal boxes with at least one
+// baseline aligned child. If there is more vertical space available than
+// requested, and the baseline is not allocated by the parent then the given
+// @position is used to allocate the baseline within the extra space available.
+func (b *BoxLayoutClass) SetBaselinePosition(position BaselinePosition) {
 	var _arg0 *C.GtkBoxLayout       // out
 	var _arg1 C.GtkBaselinePosition // out
 
@@ -247,7 +171,9 @@ func (b boxLayout) SetBaselinePosition(position BaselinePosition) {
 	C.gtk_box_layout_set_baseline_position(_arg0, _arg1)
 }
 
-func (b boxLayout) SetHomogeneous(homogeneous bool) {
+// SetHomogeneous sets whether the box layout will allocate the same size to all
+// children.
+func (b *BoxLayoutClass) SetHomogeneous(homogeneous bool) {
 	var _arg0 *C.GtkBoxLayout // out
 	var _arg1 C.gboolean      // out
 
@@ -259,7 +185,8 @@ func (b boxLayout) SetHomogeneous(homogeneous bool) {
 	C.gtk_box_layout_set_homogeneous(_arg0, _arg1)
 }
 
-func (b boxLayout) SetSpacing(spacing uint) {
+// SetSpacing sets how much spacing to put between children.
+func (b *BoxLayoutClass) SetSpacing(spacing uint) {
 	var _arg0 *C.GtkBoxLayout // out
 	var _arg1 C.guint         // out
 

@@ -6,7 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -24,57 +23,32 @@ func init() {
 }
 
 type X11DeviceManagerXI2 interface {
-	X11DeviceManagerCore
+	gextras.Objector
 
-	// AsX11DeviceManagerCore casts the class to the X11DeviceManagerCore interface.
-	AsX11DeviceManagerCore() X11DeviceManagerCore
-
-	// GetClientPointer returns the client pointer, that is, the master pointer
-	// that acts as the core pointer for this application. In X11, window
-	// managers may change this depending on the interaction pattern under the
-	// presence of several pointers.
-	//
-	// You should use this function seldomly, only in code that isn’t triggered
-	// by a Event and there aren’t other means to get a meaningful Device to
-	// operate on.
-	//
-	// Deprecated: since version 3.20.
-	//
-	// This method is inherited from gdk.DeviceManager
-	GetClientPointer() gdk.Device
-	// GetDisplay gets the Display associated to @device_manager.
-	//
-	// This method is inherited from gdk.DeviceManager
-	GetDisplay() gdk.Display
+	privateX11DeviceManagerXI2Class()
 }
 
-// x11DeviceManagerXI2 implements the X11DeviceManagerXI2 interface.
-type x11DeviceManagerXI2 struct {
-	*externglib.Object
+// X11DeviceManagerXI2Class implements the X11DeviceManagerXI2 interface.
+type X11DeviceManagerXI2Class struct {
+	X11DeviceManagerCoreClass
 }
 
-var _ X11DeviceManagerXI2 = (*x11DeviceManagerXI2)(nil)
+var _ X11DeviceManagerXI2 = (*X11DeviceManagerXI2Class)(nil)
 
-// WrapX11DeviceManagerXI2 wraps a GObject to a type that implements
-// interface X11DeviceManagerXI2. It is primarily used internally.
-func WrapX11DeviceManagerXI2(obj *externglib.Object) X11DeviceManagerXI2 {
-	return x11DeviceManagerXI2{obj}
+func wrapX11DeviceManagerXI2(obj *externglib.Object) X11DeviceManagerXI2 {
+	return &X11DeviceManagerXI2Class{
+		X11DeviceManagerCoreClass: X11DeviceManagerCoreClass{
+			DeviceManagerClass: gdk.DeviceManagerClass{
+				Object: obj,
+			},
+		},
+	}
 }
 
 func marshalX11DeviceManagerXI2(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapX11DeviceManagerXI2(obj), nil
+	return wrapX11DeviceManagerXI2(obj), nil
 }
 
-func (x x11DeviceManagerXI2) AsX11DeviceManagerCore() X11DeviceManagerCore {
-	return WrapX11DeviceManagerCore(gextras.InternObject(x))
-}
-
-func (d x11DeviceManagerXI2) GetClientPointer() gdk.Device {
-	return gdk.WrapDeviceManager(gextras.InternObject(d)).GetClientPointer()
-}
-
-func (d x11DeviceManagerXI2) GetDisplay() gdk.Display {
-	return gdk.WrapDeviceManager(gextras.InternObject(d)).GetDisplay()
-}
+func (*X11DeviceManagerXI2Class) privateX11DeviceManagerXI2Class() {}

@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -35,26 +36,27 @@ type Orientable interface {
 	SetOrientation(orientation Orientation)
 }
 
-// orientable implements the Orientable interface.
-type orientable struct {
+// OrientableInterface implements the Orientable interface.
+type OrientableInterface struct {
 	*externglib.Object
 }
 
-var _ Orientable = (*orientable)(nil)
+var _ Orientable = (*OrientableInterface)(nil)
 
-// WrapOrientable wraps a GObject to a type that implements
-// interface Orientable. It is primarily used internally.
-func WrapOrientable(obj *externglib.Object) Orientable {
-	return orientable{obj}
+func wrapOrientable(obj *externglib.Object) Orientable {
+	return &OrientableInterface{
+		Object: obj,
+	}
 }
 
 func marshalOrientable(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapOrientable(obj), nil
+	return wrapOrientable(obj), nil
 }
 
-func (o orientable) Orientation() Orientation {
+// Orientation retrieves the orientation of the @orientable.
+func (o *OrientableInterface) Orientation() Orientation {
 	var _arg0 *C.GtkOrientable // out
 	var _cret C.GtkOrientation // in
 
@@ -69,7 +71,8 @@ func (o orientable) Orientation() Orientation {
 	return _orientation
 }
 
-func (o orientable) SetOrientation(orientation Orientation) {
+// SetOrientation sets the orientation of the @orientable.
+func (o *OrientableInterface) SetOrientation(orientation Orientation) {
 	var _arg0 *C.GtkOrientable // out
 	var _arg1 C.GtkOrientation // out
 

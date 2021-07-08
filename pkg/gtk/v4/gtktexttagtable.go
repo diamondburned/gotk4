@@ -62,17 +62,6 @@ func gotk4_TextTagTableForeach(arg0 *C.GtkTextTag, arg1 C.gpointer) {
 type TextTagTable interface {
 	gextras.Objector
 
-	// AsBuildable casts the class to the Buildable interface.
-	AsBuildable() Buildable
-
-	// GetBuildableID gets the ID of the @buildable object.
-	//
-	// `GtkBuilder` sets the name based on the ID attribute of the <object> tag
-	// used to construct the @buildable.
-	//
-	// This method is inherited from Buildable
-	GetBuildableID() string
-
 	// Add a tag to the table.
 	//
 	// The tag is assigned the highest priority in the table.
@@ -97,23 +86,27 @@ type TextTagTable interface {
 	Remove(tag TextTag)
 }
 
-// textTagTable implements the TextTagTable interface.
-type textTagTable struct {
+// TextTagTableClass implements the TextTagTable interface.
+type TextTagTableClass struct {
 	*externglib.Object
+	BuildableInterface
 }
 
-var _ TextTagTable = (*textTagTable)(nil)
+var _ TextTagTable = (*TextTagTableClass)(nil)
 
-// WrapTextTagTable wraps a GObject to a type that implements
-// interface TextTagTable. It is primarily used internally.
-func WrapTextTagTable(obj *externglib.Object) TextTagTable {
-	return textTagTable{obj}
+func wrapTextTagTable(obj *externglib.Object) TextTagTable {
+	return &TextTagTableClass{
+		Object: obj,
+		BuildableInterface: BuildableInterface{
+			Object: obj,
+		},
+	}
 }
 
 func marshalTextTagTable(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapTextTagTable(obj), nil
+	return wrapTextTagTable(obj), nil
 }
 
 // NewTextTagTable creates a new `GtkTextTagTable`.
@@ -131,15 +124,13 @@ func NewTextTagTable() TextTagTable {
 	return _textTagTable
 }
 
-func (t textTagTable) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(t))
-}
-
-func (b textTagTable) GetBuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).GetBuildableID()
-}
-
-func (t textTagTable) Add(tag TextTag) bool {
+// Add a tag to the table.
+//
+// The tag is assigned the highest priority in the table.
+//
+// @tag must not be in a tag table already, and may not have the same name as an
+// already-added tag.
+func (t *TextTagTableClass) Add(tag TextTag) bool {
 	var _arg0 *C.GtkTextTagTable // out
 	var _arg1 *C.GtkTextTag      // out
 	var _cret C.gboolean         // in
@@ -158,7 +149,11 @@ func (t textTagTable) Add(tag TextTag) bool {
 	return _ok
 }
 
-func (t textTagTable) Foreach(fn TextTagTableForeach) {
+// Foreach calls @func on each tag in @table, with user data @data.
+//
+// Note that the table may not be modified while iterating over it (you can’t
+// add/remove tags).
+func (t *TextTagTableClass) Foreach(fn TextTagTableForeach) {
 	var _arg0 *C.GtkTextTagTable       // out
 	var _arg1 C.GtkTextTagTableForeach // out
 	var _arg2 C.gpointer
@@ -170,7 +165,8 @@ func (t textTagTable) Foreach(fn TextTagTableForeach) {
 	C.gtk_text_tag_table_foreach(_arg0, _arg1, _arg2)
 }
 
-func (t textTagTable) Size() int {
+// Size returns the size of the table (number of tags)
+func (t *TextTagTableClass) Size() int {
 	var _arg0 *C.GtkTextTagTable // out
 	var _cret C.int              // in
 
@@ -185,7 +181,8 @@ func (t textTagTable) Size() int {
 	return _gint
 }
 
-func (t textTagTable) Lookup(name string) TextTag {
+// Lookup: look up a named tag.
+func (t *TextTagTableClass) Lookup(name string) TextTag {
 	var _arg0 *C.GtkTextTagTable // out
 	var _arg1 *C.char            // out
 	var _cret *C.GtkTextTag      // in
@@ -203,7 +200,12 @@ func (t textTagTable) Lookup(name string) TextTag {
 	return _textTag
 }
 
-func (t textTagTable) Remove(tag TextTag) {
+// Remove a tag from the table.
+//
+// If a `GtkTextBuffer` has @table as its tag table, the tag is removed from the
+// buffer. The table’s reference to the tag is removed, so the tag will end up
+// destroyed if you don’t have a reference to it.
+func (t *TextTagTableClass) Remove(tag TextTag) {
 	var _arg0 *C.GtkTextTagTable // out
 	var _arg1 *C.GtkTextTag      // out
 

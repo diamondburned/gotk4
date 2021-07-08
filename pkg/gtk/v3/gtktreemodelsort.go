@@ -6,7 +6,6 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -18,8 +17,6 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-//
-// gboolean gotk4_TreeModelForeachFunc(GtkTreeModel*, GtkTreePath*, GtkTreeIter*, gpointer);
 import "C"
 
 func init() {
@@ -87,435 +84,6 @@ func init() {
 type TreeModelSort interface {
 	gextras.Objector
 
-	// AsTreeDragSource casts the class to the TreeDragSource interface.
-	AsTreeDragSource() TreeDragSource
-	// AsTreeModel casts the class to the TreeModel interface.
-	AsTreeModel() TreeModel
-	// AsTreeSortable casts the class to the TreeSortable interface.
-	AsTreeSortable() TreeSortable
-
-	// DragDataDelete asks the TreeDragSource to delete the row at @path,
-	// because it was moved somewhere else via drag-and-drop. Returns false if
-	// the deletion fails because @path no longer exists, or for some
-	// model-specific reason. Should robustly handle a @path no longer found in
-	// the model!
-	//
-	// This method is inherited from TreeDragSource
-	DragDataDelete(path *TreePath) bool
-	// DragDataGet asks the TreeDragSource to fill in @selection_data with a
-	// representation of the row at @path. @selection_data->target gives the
-	// required type of the data. Should robustly handle a @path no longer found
-	// in the model!
-	//
-	// This method is inherited from TreeDragSource
-	DragDataGet(path *TreePath, selectionData *SelectionData) bool
-	// RowDraggable asks the TreeDragSource whether a particular row can be used
-	// as the source of a DND operation. If the source doesn’t implement this
-	// interface, the row is assumed draggable.
-	//
-	// This method is inherited from TreeDragSource
-	RowDraggable(path *TreePath) bool
-	// NewFilter creates a new TreeModel, with @child_model as the child_model
-	// and @root as the virtual root.
-	//
-	// This method is inherited from TreeModel
-	NewFilter(root *TreePath) TreeModel
-	// Foreach calls func on each node in model in a depth-first fashion.
-	//
-	// If @func returns true, then the tree ceases to be walked, and
-	// gtk_tree_model_foreach() returns.
-	//
-	// This method is inherited from TreeModel
-	Foreach(fn TreeModelForeachFunc)
-	// GetColumnType returns the type of the column.
-	//
-	// This method is inherited from TreeModel
-	GetColumnType(index_ int) externglib.Type
-	// GetFlags returns a set of flags supported by this interface.
-	//
-	// The flags are a bitwise combination of TreeModelFlags. The flags
-	// supported should not change during the lifetime of the @tree_model.
-	//
-	// This method is inherited from TreeModel
-	GetFlags() TreeModelFlags
-	// GetIter sets @iter to a valid iterator pointing to @path. If @path does
-	// not exist, @iter is set to an invalid iterator and false is returned.
-	//
-	// This method is inherited from TreeModel
-	GetIter(path *TreePath) (TreeIter, bool)
-	// GetIterFirst initializes @iter with the first iterator in the tree (the
-	// one at the path "0") and returns true. Returns false if the tree is
-	// empty.
-	//
-	// This method is inherited from TreeModel
-	GetIterFirst() (TreeIter, bool)
-	// GetIterFromString sets @iter to a valid iterator pointing to
-	// @path_string, if it exists. Otherwise, @iter is left invalid and false is
-	// returned.
-	//
-	// This method is inherited from TreeModel
-	GetIterFromString(pathString string) (TreeIter, bool)
-	// GetNColumns returns the number of columns supported by @tree_model.
-	//
-	// This method is inherited from TreeModel
-	GetNColumns() int
-	// GetPath returns a newly-created TreePath-struct referenced by @iter.
-	//
-	// This path should be freed with gtk_tree_path_free().
-	//
-	// This method is inherited from TreeModel
-	GetPath(iter *TreeIter) *TreePath
-	// GetStringFromIter generates a string representation of the iter.
-	//
-	// This string is a “:” separated list of numbers. For example, “4:10:0:3”
-	// would be an acceptable return value for this string.
-	//
-	// This method is inherited from TreeModel
-	GetStringFromIter(iter *TreeIter) string
-	// GetValue initializes and sets @value to that at @column.
-	//
-	// When done with @value, g_value_unset() needs to be called to free any
-	// allocated memory.
-	//
-	// This method is inherited from TreeModel
-	GetValue(iter *TreeIter, column int) externglib.Value
-	// IterChildren sets @iter to point to the first child of @parent.
-	//
-	// If @parent has no children, false is returned and @iter is set to be
-	// invalid. @parent will remain a valid node after this function has been
-	// called.
-	//
-	// If @parent is nil returns the first node, equivalent to
-	// `gtk_tree_model_get_iter_first (tree_model, iter);`
-	//
-	// This method is inherited from TreeModel
-	IterChildren(parent *TreeIter) (TreeIter, bool)
-	// IterHasChild returns true if @iter has children, false otherwise.
-	//
-	// This method is inherited from TreeModel
-	IterHasChild(iter *TreeIter) bool
-	// IterNChildren returns the number of children that @iter has.
-	//
-	// As a special case, if @iter is nil, then the number of toplevel nodes is
-	// returned.
-	//
-	// This method is inherited from TreeModel
-	IterNChildren(iter *TreeIter) int
-	// IterNext sets @iter to point to the node following it at the current
-	// level.
-	//
-	// If there is no next @iter, false is returned and @iter is set to be
-	// invalid.
-	//
-	// This method is inherited from TreeModel
-	IterNext(iter *TreeIter) bool
-	// IterNthChild sets @iter to be the child of @parent, using the given
-	// index.
-	//
-	// The first index is 0. If @n is too big, or @parent has no children, @iter
-	// is set to an invalid iterator and false is returned. @parent will remain
-	// a valid node after this function has been called. As a special case, if
-	// @parent is nil, then the @n-th root node is set.
-	//
-	// This method is inherited from TreeModel
-	IterNthChild(parent *TreeIter, n int) (TreeIter, bool)
-	// IterParent sets @iter to be the parent of @child.
-	//
-	// If @child is at the toplevel, and doesn’t have a parent, then @iter is
-	// set to an invalid iterator and false is returned. @child will remain a
-	// valid node after this function has been called.
-	//
-	// @iter will be initialized before the lookup is performed, so @child and
-	// @iter cannot point to the same memory location.
-	//
-	// This method is inherited from TreeModel
-	IterParent(child *TreeIter) (TreeIter, bool)
-	// IterPrevious sets @iter to point to the previous node at the current
-	// level.
-	//
-	// If there is no previous @iter, false is returned and @iter is set to be
-	// invalid.
-	//
-	// This method is inherited from TreeModel
-	IterPrevious(iter *TreeIter) bool
-	// RefNode lets the tree ref the node.
-	//
-	// This is an optional method for models to implement. To be more specific,
-	// models may ignore this call as it exists primarily for performance
-	// reasons.
-	//
-	// This function is primarily meant as a way for views to let caching models
-	// know when nodes are being displayed (and hence, whether or not to cache
-	// that node). Being displayed means a node is in an expanded branch,
-	// regardless of whether the node is currently visible in the viewport. For
-	// example, a file-system based model would not want to keep the entire
-	// file-hierarchy in memory, just the sections that are currently being
-	// displayed by every current view.
-	//
-	// A model should be expected to be able to get an iter independent of its
-	// reffed state.
-	//
-	// This method is inherited from TreeModel
-	RefNode(iter *TreeIter)
-	// RowChanged emits the TreeModel::row-changed signal on @tree_model.
-	//
-	// This method is inherited from TreeModel
-	RowChanged(path *TreePath, iter *TreeIter)
-	// RowDeleted emits the TreeModel::row-deleted signal on @tree_model.
-	//
-	// This should be called by models after a row has been removed. The
-	// location pointed to by @path should be the location that the row
-	// previously was at. It may not be a valid location anymore.
-	//
-	// Nodes that are deleted are not unreffed, this means that any outstanding
-	// references on the deleted node should not be released.
-	//
-	// This method is inherited from TreeModel
-	RowDeleted(path *TreePath)
-	// RowHasChildToggled emits the TreeModel::row-has-child-toggled signal on
-	// @tree_model. This should be called by models after the child state of a
-	// node changes.
-	//
-	// This method is inherited from TreeModel
-	RowHasChildToggled(path *TreePath, iter *TreeIter)
-	// RowInserted emits the TreeModel::row-inserted signal on @tree_model.
-	//
-	// This method is inherited from TreeModel
-	RowInserted(path *TreePath, iter *TreeIter)
-	// RowsReorderedWithLength emits the TreeModel::rows-reordered signal on
-	// @tree_model.
-	//
-	// This should be called by models when their rows have been reordered.
-	//
-	// This method is inherited from TreeModel
-	RowsReorderedWithLength(path *TreePath, iter *TreeIter, newOrder []int)
-	// UnrefNode lets the tree unref the node.
-	//
-	// This is an optional method for models to implement. To be more specific,
-	// models may ignore this call as it exists primarily for performance
-	// reasons. For more information on what this means, see
-	// gtk_tree_model_ref_node().
-	//
-	// Please note that nodes that are deleted are not unreffed.
-	//
-	// This method is inherited from TreeModel
-	UnrefNode(iter *TreeIter)
-	// GetSortColumnID fills in @sort_column_id and @order with the current sort
-	// column and the order. It returns true unless the @sort_column_id is
-	// GTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID or
-	// GTK_TREE_SORTABLE_UNSORTED_SORT_COLUMN_ID.
-	//
-	// This method is inherited from TreeSortable
-	GetSortColumnID() (int, SortType, bool)
-	// HasDefaultSortFunc returns true if the model has a default sort function.
-	// This is used primarily by GtkTreeViewColumns in order to determine if a
-	// model can go back to the default state, or not.
-	//
-	// This method is inherited from TreeSortable
-	HasDefaultSortFunc() bool
-	// SetSortColumnID sets the current sort column to be @sort_column_id. The
-	// @sortable will resort itself to reflect this change, after emitting a
-	// TreeSortable::sort-column-changed signal. @sort_column_id may either be a
-	// regular column id, or one of the following special values:
-	//
-	// - GTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID: the default sort function
-	// will be used, if it is set
-	//
-	// - GTK_TREE_SORTABLE_UNSORTED_SORT_COLUMN_ID: no sorting will occur
-	//
-	// This method is inherited from TreeSortable
-	SetSortColumnID(sortColumnId int, order SortType)
-	// SortColumnChanged emits a TreeSortable::sort-column-changed signal on
-	// @sortable.
-	//
-	// This method is inherited from TreeSortable
-	SortColumnChanged()
-	// NewFilter creates a new TreeModel, with @child_model as the child_model
-	// and @root as the virtual root.
-	//
-	// This method is inherited from TreeModel
-	NewFilter(root *TreePath) TreeModel
-	// Foreach calls func on each node in model in a depth-first fashion.
-	//
-	// If @func returns true, then the tree ceases to be walked, and
-	// gtk_tree_model_foreach() returns.
-	//
-	// This method is inherited from TreeModel
-	Foreach(fn TreeModelForeachFunc)
-	// GetColumnType returns the type of the column.
-	//
-	// This method is inherited from TreeModel
-	GetColumnType(index_ int) externglib.Type
-	// GetFlags returns a set of flags supported by this interface.
-	//
-	// The flags are a bitwise combination of TreeModelFlags. The flags
-	// supported should not change during the lifetime of the @tree_model.
-	//
-	// This method is inherited from TreeModel
-	GetFlags() TreeModelFlags
-	// GetIter sets @iter to a valid iterator pointing to @path. If @path does
-	// not exist, @iter is set to an invalid iterator and false is returned.
-	//
-	// This method is inherited from TreeModel
-	GetIter(path *TreePath) (TreeIter, bool)
-	// GetIterFirst initializes @iter with the first iterator in the tree (the
-	// one at the path "0") and returns true. Returns false if the tree is
-	// empty.
-	//
-	// This method is inherited from TreeModel
-	GetIterFirst() (TreeIter, bool)
-	// GetIterFromString sets @iter to a valid iterator pointing to
-	// @path_string, if it exists. Otherwise, @iter is left invalid and false is
-	// returned.
-	//
-	// This method is inherited from TreeModel
-	GetIterFromString(pathString string) (TreeIter, bool)
-	// GetNColumns returns the number of columns supported by @tree_model.
-	//
-	// This method is inherited from TreeModel
-	GetNColumns() int
-	// GetPath returns a newly-created TreePath-struct referenced by @iter.
-	//
-	// This path should be freed with gtk_tree_path_free().
-	//
-	// This method is inherited from TreeModel
-	GetPath(iter *TreeIter) *TreePath
-	// GetStringFromIter generates a string representation of the iter.
-	//
-	// This string is a “:” separated list of numbers. For example, “4:10:0:3”
-	// would be an acceptable return value for this string.
-	//
-	// This method is inherited from TreeModel
-	GetStringFromIter(iter *TreeIter) string
-	// GetValue initializes and sets @value to that at @column.
-	//
-	// When done with @value, g_value_unset() needs to be called to free any
-	// allocated memory.
-	//
-	// This method is inherited from TreeModel
-	GetValue(iter *TreeIter, column int) externglib.Value
-	// IterChildren sets @iter to point to the first child of @parent.
-	//
-	// If @parent has no children, false is returned and @iter is set to be
-	// invalid. @parent will remain a valid node after this function has been
-	// called.
-	//
-	// If @parent is nil returns the first node, equivalent to
-	// `gtk_tree_model_get_iter_first (tree_model, iter);`
-	//
-	// This method is inherited from TreeModel
-	IterChildren(parent *TreeIter) (TreeIter, bool)
-	// IterHasChild returns true if @iter has children, false otherwise.
-	//
-	// This method is inherited from TreeModel
-	IterHasChild(iter *TreeIter) bool
-	// IterNChildren returns the number of children that @iter has.
-	//
-	// As a special case, if @iter is nil, then the number of toplevel nodes is
-	// returned.
-	//
-	// This method is inherited from TreeModel
-	IterNChildren(iter *TreeIter) int
-	// IterNext sets @iter to point to the node following it at the current
-	// level.
-	//
-	// If there is no next @iter, false is returned and @iter is set to be
-	// invalid.
-	//
-	// This method is inherited from TreeModel
-	IterNext(iter *TreeIter) bool
-	// IterNthChild sets @iter to be the child of @parent, using the given
-	// index.
-	//
-	// The first index is 0. If @n is too big, or @parent has no children, @iter
-	// is set to an invalid iterator and false is returned. @parent will remain
-	// a valid node after this function has been called. As a special case, if
-	// @parent is nil, then the @n-th root node is set.
-	//
-	// This method is inherited from TreeModel
-	IterNthChild(parent *TreeIter, n int) (TreeIter, bool)
-	// IterParent sets @iter to be the parent of @child.
-	//
-	// If @child is at the toplevel, and doesn’t have a parent, then @iter is
-	// set to an invalid iterator and false is returned. @child will remain a
-	// valid node after this function has been called.
-	//
-	// @iter will be initialized before the lookup is performed, so @child and
-	// @iter cannot point to the same memory location.
-	//
-	// This method is inherited from TreeModel
-	IterParent(child *TreeIter) (TreeIter, bool)
-	// IterPrevious sets @iter to point to the previous node at the current
-	// level.
-	//
-	// If there is no previous @iter, false is returned and @iter is set to be
-	// invalid.
-	//
-	// This method is inherited from TreeModel
-	IterPrevious(iter *TreeIter) bool
-	// RefNode lets the tree ref the node.
-	//
-	// This is an optional method for models to implement. To be more specific,
-	// models may ignore this call as it exists primarily for performance
-	// reasons.
-	//
-	// This function is primarily meant as a way for views to let caching models
-	// know when nodes are being displayed (and hence, whether or not to cache
-	// that node). Being displayed means a node is in an expanded branch,
-	// regardless of whether the node is currently visible in the viewport. For
-	// example, a file-system based model would not want to keep the entire
-	// file-hierarchy in memory, just the sections that are currently being
-	// displayed by every current view.
-	//
-	// A model should be expected to be able to get an iter independent of its
-	// reffed state.
-	//
-	// This method is inherited from TreeModel
-	RefNode(iter *TreeIter)
-	// RowChanged emits the TreeModel::row-changed signal on @tree_model.
-	//
-	// This method is inherited from TreeModel
-	RowChanged(path *TreePath, iter *TreeIter)
-	// RowDeleted emits the TreeModel::row-deleted signal on @tree_model.
-	//
-	// This should be called by models after a row has been removed. The
-	// location pointed to by @path should be the location that the row
-	// previously was at. It may not be a valid location anymore.
-	//
-	// Nodes that are deleted are not unreffed, this means that any outstanding
-	// references on the deleted node should not be released.
-	//
-	// This method is inherited from TreeModel
-	RowDeleted(path *TreePath)
-	// RowHasChildToggled emits the TreeModel::row-has-child-toggled signal on
-	// @tree_model. This should be called by models after the child state of a
-	// node changes.
-	//
-	// This method is inherited from TreeModel
-	RowHasChildToggled(path *TreePath, iter *TreeIter)
-	// RowInserted emits the TreeModel::row-inserted signal on @tree_model.
-	//
-	// This method is inherited from TreeModel
-	RowInserted(path *TreePath, iter *TreeIter)
-	// RowsReorderedWithLength emits the TreeModel::rows-reordered signal on
-	// @tree_model.
-	//
-	// This should be called by models when their rows have been reordered.
-	//
-	// This method is inherited from TreeModel
-	RowsReorderedWithLength(path *TreePath, iter *TreeIter, newOrder []int)
-	// UnrefNode lets the tree unref the node.
-	//
-	// This is an optional method for models to implement. To be more specific,
-	// models may ignore this call as it exists primarily for performance
-	// reasons. For more information on what this means, see
-	// gtk_tree_model_ref_node().
-	//
-	// Please note that nodes that are deleted are not unreffed.
-	//
-	// This method is inherited from TreeModel
-	UnrefNode(iter *TreeIter)
-
 	// ClearCache: this function should almost never be called. It clears the
 	// @tree_model_sort of any cached iterators that haven’t been reffed with
 	// gtk_tree_model_ref_node(). This might be useful if the child model being
@@ -523,20 +91,12 @@ type TreeModelSort interface {
 	// unreffed access to nodes. As a side effect of this function, all unreffed
 	// iters will be invalid.
 	ClearCache()
-	// ConvertChildIterToIter sets @sort_iter to point to the row in
-	// @tree_model_sort that corresponds to the row pointed at by @child_iter.
-	// If @sort_iter was not set, false is returned. Note: a boolean is only
-	// returned since 2.14.
-	ConvertChildIterToIter(childIter *TreeIter) (TreeIter, bool)
 	// ConvertChildPathToPath converts @child_path to a path relative to
 	// @tree_model_sort. That is, @child_path points to a path in the child
 	// model. The returned path will point to the same row in the sorted model.
 	// If @child_path isn’t a valid path on the child model, then nil is
 	// returned.
 	ConvertChildPathToPath(childPath *TreePath) *TreePath
-	// ConvertIterToChildIter sets @child_iter to point to the row pointed to by
-	// @sorted_iter.
-	ConvertIterToChildIter(sortedIter *TreeIter) TreeIter
 	// ConvertPathToChildPath converts @sorted_path to a path on the child model
 	// of @tree_model_sort. That is, @sorted_path points to a location in
 	// @tree_model_sort. The returned path will point to the same location in
@@ -557,23 +117,37 @@ type TreeModelSort interface {
 	ResetDefaultSortFunc()
 }
 
-// treeModelSort implements the TreeModelSort interface.
-type treeModelSort struct {
+// TreeModelSortClass implements the TreeModelSort interface.
+type TreeModelSortClass struct {
 	*externglib.Object
+	TreeDragSourceInterface
+	TreeModelInterface
+	TreeSortableInterface
 }
 
-var _ TreeModelSort = (*treeModelSort)(nil)
+var _ TreeModelSort = (*TreeModelSortClass)(nil)
 
-// WrapTreeModelSort wraps a GObject to a type that implements
-// interface TreeModelSort. It is primarily used internally.
-func WrapTreeModelSort(obj *externglib.Object) TreeModelSort {
-	return treeModelSort{obj}
+func wrapTreeModelSort(obj *externglib.Object) TreeModelSort {
+	return &TreeModelSortClass{
+		Object: obj,
+		TreeDragSourceInterface: TreeDragSourceInterface{
+			Object: obj,
+		},
+		TreeModelInterface: TreeModelInterface{
+			Object: obj,
+		},
+		TreeSortableInterface: TreeSortableInterface{
+			TreeModelInterface: TreeModelInterface{
+				Object: obj,
+			},
+		},
+	}
 }
 
 func marshalTreeModelSort(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapTreeModelSort(obj), nil
+	return wrapTreeModelSort(obj), nil
 }
 
 // NewTreeModelSortWithModel creates a new TreeModelSort, with @child_model as
@@ -593,247 +167,13 @@ func NewTreeModelSortWithModel(childModel TreeModel) TreeModelSort {
 	return _treeModelSort
 }
 
-func (t treeModelSort) AsTreeDragSource() TreeDragSource {
-	return WrapTreeDragSource(gextras.InternObject(t))
-}
-
-func (t treeModelSort) AsTreeModel() TreeModel {
-	return WrapTreeModel(gextras.InternObject(t))
-}
-
-func (t treeModelSort) AsTreeSortable() TreeSortable {
-	return WrapTreeSortable(gextras.InternObject(t))
-}
-
-func (d treeModelSort) DragDataDelete(path *TreePath) bool {
-	return WrapTreeDragSource(gextras.InternObject(d)).DragDataDelete(path)
-}
-
-func (d treeModelSort) DragDataGet(path *TreePath, selectionData *SelectionData) bool {
-	return WrapTreeDragSource(gextras.InternObject(d)).DragDataGet(path, selectionData)
-}
-
-func (d treeModelSort) RowDraggable(path *TreePath) bool {
-	return WrapTreeDragSource(gextras.InternObject(d)).RowDraggable(path)
-}
-
-func (c treeModelSort) NewFilter(root *TreePath) TreeModel {
-	return WrapTreeModel(gextras.InternObject(c)).NewFilter(root)
-}
-
-func (m treeModelSort) Foreach(fn TreeModelForeachFunc) {
-	WrapTreeModel(gextras.InternObject(m)).Foreach(fn)
-}
-
-func (t treeModelSort) GetColumnType(index_ int) externglib.Type {
-	return WrapTreeModel(gextras.InternObject(t)).GetColumnType(index_)
-}
-
-func (t treeModelSort) GetFlags() TreeModelFlags {
-	return WrapTreeModel(gextras.InternObject(t)).GetFlags()
-}
-
-func (t treeModelSort) GetIter(path *TreePath) (TreeIter, bool) {
-	return WrapTreeModel(gextras.InternObject(t)).GetIter(path)
-}
-
-func (t treeModelSort) GetIterFirst() (TreeIter, bool) {
-	return WrapTreeModel(gextras.InternObject(t)).GetIterFirst()
-}
-
-func (t treeModelSort) GetIterFromString(pathString string) (TreeIter, bool) {
-	return WrapTreeModel(gextras.InternObject(t)).GetIterFromString(pathString)
-}
-
-func (t treeModelSort) GetNColumns() int {
-	return WrapTreeModel(gextras.InternObject(t)).GetNColumns()
-}
-
-func (t treeModelSort) GetPath(iter *TreeIter) *TreePath {
-	return WrapTreeModel(gextras.InternObject(t)).GetPath(iter)
-}
-
-func (t treeModelSort) GetStringFromIter(iter *TreeIter) string {
-	return WrapTreeModel(gextras.InternObject(t)).GetStringFromIter(iter)
-}
-
-func (t treeModelSort) GetValue(iter *TreeIter, column int) externglib.Value {
-	return WrapTreeModel(gextras.InternObject(t)).GetValue(iter, column)
-}
-
-func (t treeModelSort) IterChildren(parent *TreeIter) (TreeIter, bool) {
-	return WrapTreeModel(gextras.InternObject(t)).IterChildren(parent)
-}
-
-func (t treeModelSort) IterHasChild(iter *TreeIter) bool {
-	return WrapTreeModel(gextras.InternObject(t)).IterHasChild(iter)
-}
-
-func (t treeModelSort) IterNChildren(iter *TreeIter) int {
-	return WrapTreeModel(gextras.InternObject(t)).IterNChildren(iter)
-}
-
-func (t treeModelSort) IterNext(iter *TreeIter) bool {
-	return WrapTreeModel(gextras.InternObject(t)).IterNext(iter)
-}
-
-func (t treeModelSort) IterNthChild(parent *TreeIter, n int) (TreeIter, bool) {
-	return WrapTreeModel(gextras.InternObject(t)).IterNthChild(parent, n)
-}
-
-func (t treeModelSort) IterParent(child *TreeIter) (TreeIter, bool) {
-	return WrapTreeModel(gextras.InternObject(t)).IterParent(child)
-}
-
-func (t treeModelSort) IterPrevious(iter *TreeIter) bool {
-	return WrapTreeModel(gextras.InternObject(t)).IterPrevious(iter)
-}
-
-func (t treeModelSort) RefNode(iter *TreeIter) {
-	WrapTreeModel(gextras.InternObject(t)).RefNode(iter)
-}
-
-func (t treeModelSort) RowChanged(path *TreePath, iter *TreeIter) {
-	WrapTreeModel(gextras.InternObject(t)).RowChanged(path, iter)
-}
-
-func (t treeModelSort) RowDeleted(path *TreePath) {
-	WrapTreeModel(gextras.InternObject(t)).RowDeleted(path)
-}
-
-func (t treeModelSort) RowHasChildToggled(path *TreePath, iter *TreeIter) {
-	WrapTreeModel(gextras.InternObject(t)).RowHasChildToggled(path, iter)
-}
-
-func (t treeModelSort) RowInserted(path *TreePath, iter *TreeIter) {
-	WrapTreeModel(gextras.InternObject(t)).RowInserted(path, iter)
-}
-
-func (t treeModelSort) RowsReorderedWithLength(path *TreePath, iter *TreeIter, newOrder []int) {
-	WrapTreeModel(gextras.InternObject(t)).RowsReorderedWithLength(path, iter, newOrder)
-}
-
-func (t treeModelSort) UnrefNode(iter *TreeIter) {
-	WrapTreeModel(gextras.InternObject(t)).UnrefNode(iter)
-}
-
-func (s treeModelSort) GetSortColumnID() (int, SortType, bool) {
-	return WrapTreeSortable(gextras.InternObject(s)).GetSortColumnID()
-}
-
-func (s treeModelSort) HasDefaultSortFunc() bool {
-	return WrapTreeSortable(gextras.InternObject(s)).HasDefaultSortFunc()
-}
-
-func (s treeModelSort) SetSortColumnID(sortColumnId int, order SortType) {
-	WrapTreeSortable(gextras.InternObject(s)).SetSortColumnID(sortColumnId, order)
-}
-
-func (s treeModelSort) SortColumnChanged() {
-	WrapTreeSortable(gextras.InternObject(s)).SortColumnChanged()
-}
-
-func (c treeModelSort) NewFilter(root *TreePath) TreeModel {
-	return WrapTreeModel(gextras.InternObject(c)).NewFilter(root)
-}
-
-func (m treeModelSort) Foreach(fn TreeModelForeachFunc) {
-	WrapTreeModel(gextras.InternObject(m)).Foreach(fn)
-}
-
-func (t treeModelSort) GetColumnType(index_ int) externglib.Type {
-	return WrapTreeModel(gextras.InternObject(t)).GetColumnType(index_)
-}
-
-func (t treeModelSort) GetFlags() TreeModelFlags {
-	return WrapTreeModel(gextras.InternObject(t)).GetFlags()
-}
-
-func (t treeModelSort) GetIter(path *TreePath) (TreeIter, bool) {
-	return WrapTreeModel(gextras.InternObject(t)).GetIter(path)
-}
-
-func (t treeModelSort) GetIterFirst() (TreeIter, bool) {
-	return WrapTreeModel(gextras.InternObject(t)).GetIterFirst()
-}
-
-func (t treeModelSort) GetIterFromString(pathString string) (TreeIter, bool) {
-	return WrapTreeModel(gextras.InternObject(t)).GetIterFromString(pathString)
-}
-
-func (t treeModelSort) GetNColumns() int {
-	return WrapTreeModel(gextras.InternObject(t)).GetNColumns()
-}
-
-func (t treeModelSort) GetPath(iter *TreeIter) *TreePath {
-	return WrapTreeModel(gextras.InternObject(t)).GetPath(iter)
-}
-
-func (t treeModelSort) GetStringFromIter(iter *TreeIter) string {
-	return WrapTreeModel(gextras.InternObject(t)).GetStringFromIter(iter)
-}
-
-func (t treeModelSort) GetValue(iter *TreeIter, column int) externglib.Value {
-	return WrapTreeModel(gextras.InternObject(t)).GetValue(iter, column)
-}
-
-func (t treeModelSort) IterChildren(parent *TreeIter) (TreeIter, bool) {
-	return WrapTreeModel(gextras.InternObject(t)).IterChildren(parent)
-}
-
-func (t treeModelSort) IterHasChild(iter *TreeIter) bool {
-	return WrapTreeModel(gextras.InternObject(t)).IterHasChild(iter)
-}
-
-func (t treeModelSort) IterNChildren(iter *TreeIter) int {
-	return WrapTreeModel(gextras.InternObject(t)).IterNChildren(iter)
-}
-
-func (t treeModelSort) IterNext(iter *TreeIter) bool {
-	return WrapTreeModel(gextras.InternObject(t)).IterNext(iter)
-}
-
-func (t treeModelSort) IterNthChild(parent *TreeIter, n int) (TreeIter, bool) {
-	return WrapTreeModel(gextras.InternObject(t)).IterNthChild(parent, n)
-}
-
-func (t treeModelSort) IterParent(child *TreeIter) (TreeIter, bool) {
-	return WrapTreeModel(gextras.InternObject(t)).IterParent(child)
-}
-
-func (t treeModelSort) IterPrevious(iter *TreeIter) bool {
-	return WrapTreeModel(gextras.InternObject(t)).IterPrevious(iter)
-}
-
-func (t treeModelSort) RefNode(iter *TreeIter) {
-	WrapTreeModel(gextras.InternObject(t)).RefNode(iter)
-}
-
-func (t treeModelSort) RowChanged(path *TreePath, iter *TreeIter) {
-	WrapTreeModel(gextras.InternObject(t)).RowChanged(path, iter)
-}
-
-func (t treeModelSort) RowDeleted(path *TreePath) {
-	WrapTreeModel(gextras.InternObject(t)).RowDeleted(path)
-}
-
-func (t treeModelSort) RowHasChildToggled(path *TreePath, iter *TreeIter) {
-	WrapTreeModel(gextras.InternObject(t)).RowHasChildToggled(path, iter)
-}
-
-func (t treeModelSort) RowInserted(path *TreePath, iter *TreeIter) {
-	WrapTreeModel(gextras.InternObject(t)).RowInserted(path, iter)
-}
-
-func (t treeModelSort) RowsReorderedWithLength(path *TreePath, iter *TreeIter, newOrder []int) {
-	WrapTreeModel(gextras.InternObject(t)).RowsReorderedWithLength(path, iter, newOrder)
-}
-
-func (t treeModelSort) UnrefNode(iter *TreeIter) {
-	WrapTreeModel(gextras.InternObject(t)).UnrefNode(iter)
-}
-
-func (t treeModelSort) ClearCache() {
+// ClearCache: this function should almost never be called. It clears the
+// @tree_model_sort of any cached iterators that haven’t been reffed with
+// gtk_tree_model_ref_node(). This might be useful if the child model being
+// sorted is static (and doesn’t change often) and there has been a lot of
+// unreffed access to nodes. As a side effect of this function, all unreffed
+// iters will be invalid.
+func (t *TreeModelSortClass) ClearCache() {
 	var _arg0 *C.GtkTreeModelSort // out
 
 	_arg0 = (*C.GtkTreeModelSort)(unsafe.Pointer(t.Native()))
@@ -841,39 +181,11 @@ func (t treeModelSort) ClearCache() {
 	C.gtk_tree_model_sort_clear_cache(_arg0)
 }
 
-func (t treeModelSort) ConvertChildIterToIter(childIter *TreeIter) (TreeIter, bool) {
-	var _arg0 *C.GtkTreeModelSort // out
-	var _arg1 C.GtkTreeIter       // in
-	var _arg2 *C.GtkTreeIter      // out
-	var _cret C.gboolean          // in
-
-	_arg0 = (*C.GtkTreeModelSort)(unsafe.Pointer(t.Native()))
-	_arg2 = (*C.GtkTreeIter)(unsafe.Pointer(childIter))
-
-	_cret = C.gtk_tree_model_sort_convert_child_iter_to_iter(_arg0, &_arg1, _arg2)
-
-	var _sortIter TreeIter // out
-	var _ok bool           // out
-
-	{
-		var refTmpIn *C.GtkTreeIter
-		var refTmpOut *TreeIter
-
-		in0 := &_arg1
-		refTmpIn = in0
-
-		refTmpOut = (*TreeIter)(unsafe.Pointer(refTmpIn))
-
-		_sortIter = *refTmpOut
-	}
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _sortIter, _ok
-}
-
-func (t treeModelSort) ConvertChildPathToPath(childPath *TreePath) *TreePath {
+// ConvertChildPathToPath converts @child_path to a path relative to
+// @tree_model_sort. That is, @child_path points to a path in the child model.
+// The returned path will point to the same row in the sorted model. If
+// @child_path isn’t a valid path on the child model, then nil is returned.
+func (t *TreeModelSortClass) ConvertChildPathToPath(childPath *TreePath) *TreePath {
 	var _arg0 *C.GtkTreeModelSort // out
 	var _arg1 *C.GtkTreePath      // out
 	var _cret *C.GtkTreePath      // in
@@ -893,34 +205,12 @@ func (t treeModelSort) ConvertChildPathToPath(childPath *TreePath) *TreePath {
 	return _treePath
 }
 
-func (t treeModelSort) ConvertIterToChildIter(sortedIter *TreeIter) TreeIter {
-	var _arg0 *C.GtkTreeModelSort // out
-	var _arg1 C.GtkTreeIter       // in
-	var _arg2 *C.GtkTreeIter      // out
-
-	_arg0 = (*C.GtkTreeModelSort)(unsafe.Pointer(t.Native()))
-	_arg2 = (*C.GtkTreeIter)(unsafe.Pointer(sortedIter))
-
-	C.gtk_tree_model_sort_convert_iter_to_child_iter(_arg0, &_arg1, _arg2)
-
-	var _childIter TreeIter // out
-
-	{
-		var refTmpIn *C.GtkTreeIter
-		var refTmpOut *TreeIter
-
-		in0 := &_arg1
-		refTmpIn = in0
-
-		refTmpOut = (*TreeIter)(unsafe.Pointer(refTmpIn))
-
-		_childIter = *refTmpOut
-	}
-
-	return _childIter
-}
-
-func (t treeModelSort) ConvertPathToChildPath(sortedPath *TreePath) *TreePath {
+// ConvertPathToChildPath converts @sorted_path to a path on the child model of
+// @tree_model_sort. That is, @sorted_path points to a location in
+// @tree_model_sort. The returned path will point to the same location in the
+// model not being sorted. If @sorted_path does not point to a location in the
+// child model, nil is returned.
+func (t *TreeModelSortClass) ConvertPathToChildPath(sortedPath *TreePath) *TreePath {
 	var _arg0 *C.GtkTreeModelSort // out
 	var _arg1 *C.GtkTreePath      // out
 	var _cret *C.GtkTreePath      // in
@@ -940,7 +230,8 @@ func (t treeModelSort) ConvertPathToChildPath(sortedPath *TreePath) *TreePath {
 	return _treePath
 }
 
-func (t treeModelSort) Model() TreeModel {
+// Model returns the model the TreeModelSort is sorting.
+func (t *TreeModelSortClass) Model() TreeModel {
 	var _arg0 *C.GtkTreeModelSort // out
 	var _cret *C.GtkTreeModel     // in
 
@@ -955,7 +246,11 @@ func (t treeModelSort) Model() TreeModel {
 	return _treeModel
 }
 
-func (t treeModelSort) IterIsValid(iter *TreeIter) bool {
+// IterIsValid: > This function is slow. Only use it for debugging and/or
+// testing > purposes.
+//
+// Checks if the given iter is a valid iter for this TreeModelSort.
+func (t *TreeModelSortClass) IterIsValid(iter *TreeIter) bool {
 	var _arg0 *C.GtkTreeModelSort // out
 	var _arg1 *C.GtkTreeIter      // out
 	var _cret C.gboolean          // in
@@ -974,7 +269,11 @@ func (t treeModelSort) IterIsValid(iter *TreeIter) bool {
 	return _ok
 }
 
-func (t treeModelSort) ResetDefaultSortFunc() {
+// ResetDefaultSortFunc: this resets the default sort function to be in the
+// “unsorted” state. That is, it is in the same order as the child model. It
+// will re-sort the model to be in the same order as the child model only if the
+// TreeModelSort is in “unsorted” state.
+func (t *TreeModelSortClass) ResetDefaultSortFunc() {
 	var _arg0 *C.GtkTreeModelSort // out
 
 	_arg0 = (*C.GtkTreeModelSort)(unsafe.Pointer(t.Native()))

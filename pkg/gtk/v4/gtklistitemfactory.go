@@ -73,23 +73,27 @@ func init() {
 // is allowed, but very uncommon.
 type ListItemFactory interface {
 	gextras.Objector
+
+	privateListItemFactoryClass()
 }
 
-// listItemFactory implements the ListItemFactory interface.
-type listItemFactory struct {
+// ListItemFactoryClass implements the ListItemFactory interface.
+type ListItemFactoryClass struct {
 	*externglib.Object
 }
 
-var _ ListItemFactory = (*listItemFactory)(nil)
+var _ ListItemFactory = (*ListItemFactoryClass)(nil)
 
-// WrapListItemFactory wraps a GObject to a type that implements
-// interface ListItemFactory. It is primarily used internally.
-func WrapListItemFactory(obj *externglib.Object) ListItemFactory {
-	return listItemFactory{obj}
+func wrapListItemFactory(obj *externglib.Object) ListItemFactory {
+	return &ListItemFactoryClass{
+		Object: obj,
+	}
 }
 
 func marshalListItemFactory(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapListItemFactory(obj), nil
+	return wrapListItemFactory(obj), nil
 }
+
+func (*ListItemFactoryClass) privateListItemFactoryClass() {}

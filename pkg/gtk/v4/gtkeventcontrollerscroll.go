@@ -6,7 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -85,73 +84,7 @@ func marshalEventControllerScrollFlags(p uintptr) (interface{}, error) {
 // scrolling with two X/Y velocity arguments that are consistent with the motion
 // that was received.
 type EventControllerScroll interface {
-	EventController
-
-	// AsEventController casts the class to the EventController interface.
-	AsEventController() EventController
-
-	// GetCurrentEvent returns the event that is currently being handled by the
-	// controller, and nil at other times.
-	//
-	// This method is inherited from EventController
-	GetCurrentEvent() gdk.Event
-	// GetCurrentEventDevice returns the device of the event that is currently
-	// being handled by the controller, and nil otherwise.
-	//
-	// This method is inherited from EventController
-	GetCurrentEventDevice() gdk.Device
-	// GetCurrentEventState returns the modifier state of the event that is
-	// currently being handled by the controller, and 0 otherwise.
-	//
-	// This method is inherited from EventController
-	GetCurrentEventState() gdk.ModifierType
-	// GetCurrentEventTime returns the timestamp of the event that is currently
-	// being handled by the controller, and 0 otherwise.
-	//
-	// This method is inherited from EventController
-	GetCurrentEventTime() uint32
-	// GetName gets the name of @controller.
-	//
-	// This method is inherited from EventController
-	GetName() string
-	// GetPropagationLimit gets the propagation limit of the event controller.
-	//
-	// This method is inherited from EventController
-	GetPropagationLimit() PropagationLimit
-	// GetPropagationPhase gets the propagation phase at which @controller
-	// handles events.
-	//
-	// This method is inherited from EventController
-	GetPropagationPhase() PropagationPhase
-	// GetWidget returns the Widget this controller relates to.
-	//
-	// This method is inherited from EventController
-	GetWidget() Widget
-	// Reset resets the @controller to a clean state.
-	//
-	// This method is inherited from EventController
-	Reset()
-	// SetName sets a name on the controller that can be used for debugging.
-	//
-	// This method is inherited from EventController
-	SetName(name string)
-	// SetPropagationLimit sets the event propagation limit on the event
-	// controller.
-	//
-	// If the limit is set to GTK_LIMIT_SAME_NATIVE, the controller won't handle
-	// events that are targeted at widgets on a different surface, such as
-	// popovers.
-	//
-	// This method is inherited from EventController
-	SetPropagationLimit(limit PropagationLimit)
-	// SetPropagationPhase sets the propagation phase at which a controller
-	// handles events.
-	//
-	// If @phase is GTK_PHASE_NONE, no automatic event handling will be
-	// performed, but other additional gesture maintenance will.
-	//
-	// This method is inherited from EventController
-	SetPropagationPhase(phase PropagationPhase)
+	gextras.Objector
 
 	// Flags gets the flags conditioning the scroll controller behavior.
 	Flags() EventControllerScrollFlags
@@ -159,23 +92,25 @@ type EventControllerScroll interface {
 	SetFlags(flags EventControllerScrollFlags)
 }
 
-// eventControllerScroll implements the EventControllerScroll interface.
-type eventControllerScroll struct {
-	*externglib.Object
+// EventControllerScrollClass implements the EventControllerScroll interface.
+type EventControllerScrollClass struct {
+	EventControllerClass
 }
 
-var _ EventControllerScroll = (*eventControllerScroll)(nil)
+var _ EventControllerScroll = (*EventControllerScrollClass)(nil)
 
-// WrapEventControllerScroll wraps a GObject to a type that implements
-// interface EventControllerScroll. It is primarily used internally.
-func WrapEventControllerScroll(obj *externglib.Object) EventControllerScroll {
-	return eventControllerScroll{obj}
+func wrapEventControllerScroll(obj *externglib.Object) EventControllerScroll {
+	return &EventControllerScrollClass{
+		EventControllerClass: EventControllerClass{
+			Object: obj,
+		},
+	}
 }
 
 func marshalEventControllerScroll(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapEventControllerScroll(obj), nil
+	return wrapEventControllerScroll(obj), nil
 }
 
 // NewEventControllerScroll creates a new event controller that will handle
@@ -195,59 +130,8 @@ func NewEventControllerScroll(flags EventControllerScrollFlags) EventControllerS
 	return _eventControllerScroll
 }
 
-func (e eventControllerScroll) AsEventController() EventController {
-	return WrapEventController(gextras.InternObject(e))
-}
-
-func (c eventControllerScroll) GetCurrentEvent() gdk.Event {
-	return WrapEventController(gextras.InternObject(c)).GetCurrentEvent()
-}
-
-func (c eventControllerScroll) GetCurrentEventDevice() gdk.Device {
-	return WrapEventController(gextras.InternObject(c)).GetCurrentEventDevice()
-}
-
-func (c eventControllerScroll) GetCurrentEventState() gdk.ModifierType {
-	return WrapEventController(gextras.InternObject(c)).GetCurrentEventState()
-}
-
-func (c eventControllerScroll) GetCurrentEventTime() uint32 {
-	return WrapEventController(gextras.InternObject(c)).GetCurrentEventTime()
-}
-
-func (c eventControllerScroll) GetName() string {
-	return WrapEventController(gextras.InternObject(c)).GetName()
-}
-
-func (c eventControllerScroll) GetPropagationLimit() PropagationLimit {
-	return WrapEventController(gextras.InternObject(c)).GetPropagationLimit()
-}
-
-func (c eventControllerScroll) GetPropagationPhase() PropagationPhase {
-	return WrapEventController(gextras.InternObject(c)).GetPropagationPhase()
-}
-
-func (c eventControllerScroll) GetWidget() Widget {
-	return WrapEventController(gextras.InternObject(c)).GetWidget()
-}
-
-func (c eventControllerScroll) Reset() {
-	WrapEventController(gextras.InternObject(c)).Reset()
-}
-
-func (c eventControllerScroll) SetName(name string) {
-	WrapEventController(gextras.InternObject(c)).SetName(name)
-}
-
-func (c eventControllerScroll) SetPropagationLimit(limit PropagationLimit) {
-	WrapEventController(gextras.InternObject(c)).SetPropagationLimit(limit)
-}
-
-func (c eventControllerScroll) SetPropagationPhase(phase PropagationPhase) {
-	WrapEventController(gextras.InternObject(c)).SetPropagationPhase(phase)
-}
-
-func (s eventControllerScroll) Flags() EventControllerScrollFlags {
+// Flags gets the flags conditioning the scroll controller behavior.
+func (s *EventControllerScrollClass) Flags() EventControllerScrollFlags {
 	var _arg0 *C.GtkEventControllerScroll     // out
 	var _cret C.GtkEventControllerScrollFlags // in
 
@@ -262,7 +146,8 @@ func (s eventControllerScroll) Flags() EventControllerScrollFlags {
 	return _eventControllerScrollFlags
 }
 
-func (s eventControllerScroll) SetFlags(flags EventControllerScrollFlags) {
+// SetFlags sets the flags conditioning scroll controller behavior.
+func (s *EventControllerScrollClass) SetFlags(flags EventControllerScrollFlags) {
 	var _arg0 *C.GtkEventControllerScroll     // out
 	var _arg1 C.GtkEventControllerScrollFlags // out
 

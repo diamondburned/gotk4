@@ -3,11 +3,8 @@
 package gdkx11
 
 import (
-	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/cairo"
-	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -43,220 +40,7 @@ func X11GetServerTime(surface X11Surface) uint32 {
 }
 
 type X11Surface interface {
-	gdk.Surface
-
-	// AsSurface casts the class to the gdk.Surface interface.
-	AsSurface() gdk.Surface
-
-	// Beep emits a short beep associated to @surface.
-	//
-	// If the display of @surface does not support per-surface beeps, emits a
-	// short beep on the display just as [method@Gdk.Display.beep].
-	//
-	// This method is inherited from gdk.Surface
-	Beep()
-	// CreateCairoContext creates a new `GdkCairoContext` for rendering on
-	// @surface.
-	//
-	// This method is inherited from gdk.Surface
-	CreateCairoContext() gdk.CairoContext
-	// CreateGLContext creates a new `GdkGLContext` for the `GdkSurface`.
-	//
-	// The context is disconnected from any particular surface or surface. If
-	// the creation of the `GdkGLContext` failed, @error will be set. Before
-	// using the returned `GdkGLContext`, you will need to call
-	// [method@Gdk.GLContext.make_current] or [method@Gdk.GLContext.realize].
-	//
-	// This method is inherited from gdk.Surface
-	CreateGLContext() (gdk.GLContext, error)
-	// CreateSimilarSurface: create a new Cairo surface that is as compatible as
-	// possible with the given @surface.
-	//
-	// For example the new surface will have the same fallback resolution and
-	// font options as @surface. Generally, the new surface will also use the
-	// same backend as @surface, unless that is not possible for some reason.
-	// The type of the returned surface may be examined with
-	// cairo_surface_get_type().
-	//
-	// Initially the surface contents are all 0 (transparent if contents have
-	// transparency, black otherwise.)
-	//
-	// This function always returns a valid pointer, but it will return a
-	// pointer to a “nil” surface if @other is already in an error state or any
-	// other error occurs.
-	//
-	// This method is inherited from gdk.Surface
-	CreateSimilarSurface(content cairo.Content, width int, height int) *cairo.Surface
-	// CreateVulkanContext creates a new `GdkVulkanContext` for rendering on
-	// @surface.
-	//
-	// If the creation of the `GdkVulkanContext` failed, @error will be set.
-	//
-	// This method is inherited from gdk.Surface
-	CreateVulkanContext() (gdk.VulkanContext, error)
-	// Destroy destroys the window system resources associated with @surface and
-	// decrements @surface's reference count.
-	//
-	// The window system resources for all children of @surface are also
-	// destroyed, but the children’s reference counts are not decremented.
-	//
-	// Note that a surface will not be destroyed automatically when its
-	// reference count reaches zero. You must call this function yourself before
-	// that happens.
-	//
-	// This method is inherited from gdk.Surface
-	Destroy()
-	// GetCursor retrieves a `GdkCursor` pointer for the cursor currently set on
-	// the `GdkSurface`.
-	//
-	// If the return value is nil then there is no custom cursor set on the
-	// surface, and it is using the cursor for its parent surface.
-	//
-	// This method is inherited from gdk.Surface
-	GetCursor() gdk.Cursor
-	// GetDeviceCursor retrieves a `GdkCursor` pointer for the @device currently
-	// set on the specified `GdkSurface`.
-	//
-	// If the return value is nil then there is no custom cursor set on the
-	// specified surface, and it is using the cursor for its parent surface.
-	//
-	// This method is inherited from gdk.Surface
-	GetDeviceCursor(device gdk.Device) gdk.Cursor
-	// GetDevicePosition obtains the current device position and modifier state.
-	//
-	// The position is given in coordinates relative to the upper left corner of
-	// @surface.
-	//
-	// This method is inherited from gdk.Surface
-	GetDevicePosition(device gdk.Device) (x float64, y float64, mask gdk.ModifierType, ok bool)
-	// GetDisplay gets the `GdkDisplay` associated with a `GdkSurface`.
-	//
-	// This method is inherited from gdk.Surface
-	GetDisplay() gdk.Display
-	// GetFrameClock gets the frame clock for the surface.
-	//
-	// The frame clock for a surface never changes unless the surface is
-	// reparented to a new toplevel surface.
-	//
-	// This method is inherited from gdk.Surface
-	GetFrameClock() gdk.FrameClock
-	// GetHeight returns the height of the given @surface.
-	//
-	// Surface size is reported in ”application pixels”, not ”device pixels”
-	// (see [method@Gdk.Surface.get_scale_factor]).
-	//
-	// This method is inherited from gdk.Surface
-	GetHeight() int
-	// GetMapped checks whether the surface has been mapped.
-	//
-	// A surface is mapped with [method@Gdk.Toplevel.present] or
-	// [method@Gdk.Popup.present].
-	//
-	// This method is inherited from gdk.Surface
-	GetMapped() bool
-	// GetScaleFactor returns the internal scale factor that maps from surface
-	// coordinates to the actual device pixels.
-	//
-	// On traditional systems this is 1, but on very high density outputs this
-	// can be a higher value (often 2). A higher value means that drawing is
-	// automatically scaled up to a higher resolution, so any code doing drawing
-	// will automatically look nicer. However, if you are supplying pixel-based
-	// data the scale value can be used to determine whether to use a pixel
-	// resource with higher resolution data.
-	//
-	// The scale of a surface may change during runtime.
-	//
-	// This method is inherited from gdk.Surface
-	GetScaleFactor() int
-	// GetWidth returns the width of the given @surface.
-	//
-	// Surface size is reported in ”application pixels”, not ”device pixels”
-	// (see [method@Gdk.Surface.get_scale_factor]).
-	//
-	// This method is inherited from gdk.Surface
-	GetWidth() int
-	// Hide the surface.
-	//
-	// For toplevel surfaces, withdraws them, so they will no longer be known to
-	// the window manager; for all surfaces, unmaps them, so they won’t be
-	// displayed. Normally done automatically as part of
-	// [method@Gtk.Widget.hide].
-	//
-	// This method is inherited from gdk.Surface
-	Hide()
-	// IsDestroyed: check to see if a surface is destroyed.
-	//
-	// This method is inherited from gdk.Surface
-	IsDestroyed() bool
-	// QueueRender forces a [signal@Gdk.Surface::render] signal emission for
-	// @surface to be scheduled.
-	//
-	// This function is useful for implementations that track invalid regions on
-	// their own.
-	//
-	// This method is inherited from gdk.Surface
-	QueueRender()
-	// RequestLayout: request a layout phase from the surface's frame clock.
-	//
-	// See [method@Gdk.FrameClock.request_phase].
-	//
-	// This method is inherited from gdk.Surface
-	RequestLayout()
-	// SetCursor sets the default mouse pointer for a `GdkSurface`.
-	//
-	// Passing nil for the @cursor argument means that @surface will use the
-	// cursor of its parent surface. Most surfaces should use this default. Note
-	// that @cursor must be for the same display as @surface.
-	//
-	// Use [ctor@Gdk.Cursor.new_from_name] or [ctor@Gdk.Cursor.new_from_texture]
-	// to create the cursor. To make the cursor invisible, use GDK_BLANK_CURSOR.
-	//
-	// This method is inherited from gdk.Surface
-	SetCursor(cursor gdk.Cursor)
-	// SetDeviceCursor sets a specific `GdkCursor` for a given device when it
-	// gets inside @surface.
-	//
-	// Passing nil for the @cursor argument means that @surface will use the
-	// cursor of its parent surface. Most surfaces should use this default.
-	//
-	// Use [ctor@Gdk.Cursor.new_from_name] or [ctor@Gdk.Cursor.new_from_texture]
-	// to create the cursor. To make the cursor invisible, use GDK_BLANK_CURSOR.
-	//
-	// This method is inherited from gdk.Surface
-	SetDeviceCursor(device gdk.Device, cursor gdk.Cursor)
-	// SetInputRegion: apply the region to the surface for the purpose of event
-	// handling.
-	//
-	// Mouse events which happen while the pointer position corresponds to an
-	// unset bit in the mask will be passed on the surface below @surface.
-	//
-	// An input region is typically used with RGBA surfaces. The alpha channel
-	// of the surface defines which pixels are invisible and allows for nicely
-	// antialiased borders, and the input region controls where the surface is
-	// “clickable”.
-	//
-	// Use [method@Gdk.Display.supports_input_shapes] to find out if a
-	// particular backend supports input regions.
-	//
-	// This method is inherited from gdk.Surface
-	SetInputRegion(region *cairo.Region)
-	// SetOpaqueRegion marks a region of the `GdkSurface` as opaque.
-	//
-	// For optimisation purposes, compositing window managers may like to not
-	// draw obscured regions of surfaces, or turn off blending during for these
-	// regions. With RGB windows with no transparency, this is just the shape of
-	// the window, but with ARGB32 windows, the compositor does not know what
-	// regions of the window are transparent or not.
-	//
-	// This function only works for toplevel surfaces.
-	//
-	// GTK will update this property automatically if the @surface background is
-	// opaque, as we know where the opaque regions are. If your surface
-	// background is not opaque, please update this property in your
-	// WidgetClass.css_changed() handler.
-	//
-	// This method is inherited from gdk.Surface
-	SetOpaqueRegion(region *cairo.Region)
+	gextras.Objector
 
 	// Desktop gets the number of the workspace @surface is on.
 	Desktop() uint32
@@ -322,122 +106,29 @@ type X11Surface interface {
 	SetUTF8Property(name string, value string)
 }
 
-// x11Surface implements the X11Surface interface.
-type x11Surface struct {
-	*externglib.Object
+// X11SurfaceClass implements the X11Surface interface.
+type X11SurfaceClass struct {
+	gdk.SurfaceClass
 }
 
-var _ X11Surface = (*x11Surface)(nil)
+var _ X11Surface = (*X11SurfaceClass)(nil)
 
-// WrapX11Surface wraps a GObject to a type that implements
-// interface X11Surface. It is primarily used internally.
-func WrapX11Surface(obj *externglib.Object) X11Surface {
-	return x11Surface{obj}
+func wrapX11Surface(obj *externglib.Object) X11Surface {
+	return &X11SurfaceClass{
+		SurfaceClass: gdk.SurfaceClass{
+			Object: obj,
+		},
+	}
 }
 
 func marshalX11Surface(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapX11Surface(obj), nil
+	return wrapX11Surface(obj), nil
 }
 
-func (x x11Surface) AsSurface() gdk.Surface {
-	return gdk.WrapSurface(gextras.InternObject(x))
-}
-
-func (s x11Surface) Beep() {
-	gdk.WrapSurface(gextras.InternObject(s)).Beep()
-}
-
-func (s x11Surface) CreateCairoContext() gdk.CairoContext {
-	return gdk.WrapSurface(gextras.InternObject(s)).CreateCairoContext()
-}
-
-func (s x11Surface) CreateGLContext() (gdk.GLContext, error) {
-	return gdk.WrapSurface(gextras.InternObject(s)).CreateGLContext()
-}
-
-func (s x11Surface) CreateSimilarSurface(content cairo.Content, width int, height int) *cairo.Surface {
-	return gdk.WrapSurface(gextras.InternObject(s)).CreateSimilarSurface(content, width, height)
-}
-
-func (s x11Surface) CreateVulkanContext() (gdk.VulkanContext, error) {
-	return gdk.WrapSurface(gextras.InternObject(s)).CreateVulkanContext()
-}
-
-func (s x11Surface) Destroy() {
-	gdk.WrapSurface(gextras.InternObject(s)).Destroy()
-}
-
-func (s x11Surface) GetCursor() gdk.Cursor {
-	return gdk.WrapSurface(gextras.InternObject(s)).GetCursor()
-}
-
-func (s x11Surface) GetDeviceCursor(device gdk.Device) gdk.Cursor {
-	return gdk.WrapSurface(gextras.InternObject(s)).GetDeviceCursor(device)
-}
-
-func (s x11Surface) GetDevicePosition(device gdk.Device) (x float64, y float64, mask gdk.ModifierType, ok bool) {
-	return gdk.WrapSurface(gextras.InternObject(s)).GetDevicePosition(device)
-}
-
-func (s x11Surface) GetDisplay() gdk.Display {
-	return gdk.WrapSurface(gextras.InternObject(s)).GetDisplay()
-}
-
-func (s x11Surface) GetFrameClock() gdk.FrameClock {
-	return gdk.WrapSurface(gextras.InternObject(s)).GetFrameClock()
-}
-
-func (s x11Surface) GetHeight() int {
-	return gdk.WrapSurface(gextras.InternObject(s)).GetHeight()
-}
-
-func (s x11Surface) GetMapped() bool {
-	return gdk.WrapSurface(gextras.InternObject(s)).GetMapped()
-}
-
-func (s x11Surface) GetScaleFactor() int {
-	return gdk.WrapSurface(gextras.InternObject(s)).GetScaleFactor()
-}
-
-func (s x11Surface) GetWidth() int {
-	return gdk.WrapSurface(gextras.InternObject(s)).GetWidth()
-}
-
-func (s x11Surface) Hide() {
-	gdk.WrapSurface(gextras.InternObject(s)).Hide()
-}
-
-func (s x11Surface) IsDestroyed() bool {
-	return gdk.WrapSurface(gextras.InternObject(s)).IsDestroyed()
-}
-
-func (s x11Surface) QueueRender() {
-	gdk.WrapSurface(gextras.InternObject(s)).QueueRender()
-}
-
-func (s x11Surface) RequestLayout() {
-	gdk.WrapSurface(gextras.InternObject(s)).RequestLayout()
-}
-
-func (s x11Surface) SetCursor(cursor gdk.Cursor) {
-	gdk.WrapSurface(gextras.InternObject(s)).SetCursor(cursor)
-}
-
-func (s x11Surface) SetDeviceCursor(device gdk.Device, cursor gdk.Cursor) {
-	gdk.WrapSurface(gextras.InternObject(s)).SetDeviceCursor(device, cursor)
-}
-
-func (s x11Surface) SetInputRegion(region *cairo.Region) {
-	gdk.WrapSurface(gextras.InternObject(s)).SetInputRegion(region)
-}
-
-func (s x11Surface) SetOpaqueRegion(region *cairo.Region) {
-	gdk.WrapSurface(gextras.InternObject(s)).SetOpaqueRegion(region)
-}
-
-func (s x11Surface) Desktop() uint32 {
+// Desktop gets the number of the workspace @surface is on.
+func (s *X11SurfaceClass) Desktop() uint32 {
 	var _arg0 *C.GdkSurface // out
 	var _cret C.guint32     // in
 
@@ -452,7 +143,8 @@ func (s x11Surface) Desktop() uint32 {
 	return _guint32
 }
 
-func (s x11Surface) Group() gdk.Surface {
+// Group returns the group this surface belongs to.
+func (s *X11SurfaceClass) Group() gdk.Surface {
 	var _arg0 *C.GdkSurface // out
 	var _cret *C.GdkSurface // in
 
@@ -467,7 +159,12 @@ func (s x11Surface) Group() gdk.Surface {
 	return _ret
 }
 
-func (s x11Surface) MoveToCurrentDesktop() {
+// MoveToCurrentDesktop moves the surface to the correct workspace when running
+// under a window manager that supports multiple workspaces, as described in the
+// Extended Window Manager Hints (http://www.freedesktop.org/Standards/wm-spec)
+// specification. Will not do anything if the surface is already on all
+// workspaces.
+func (s *X11SurfaceClass) MoveToCurrentDesktop() {
 	var _arg0 *C.GdkSurface // out
 
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
@@ -475,7 +172,11 @@ func (s x11Surface) MoveToCurrentDesktop() {
 	C.gdk_x11_surface_move_to_current_desktop(_arg0)
 }
 
-func (s x11Surface) MoveToDesktop(desktop uint32) {
+// MoveToDesktop moves the surface to the given workspace when running unde a
+// window manager that supports multiple workspaces, as described in the
+// Extended Window Manager Hints (http://www.freedesktop.org/Standards/wm-spec)
+// specification.
+func (s *X11SurfaceClass) MoveToDesktop(desktop uint32) {
 	var _arg0 *C.GdkSurface // out
 	var _arg1 C.guint32     // out
 
@@ -485,7 +186,13 @@ func (s x11Surface) MoveToDesktop(desktop uint32) {
 	C.gdk_x11_surface_move_to_desktop(_arg0, _arg1)
 }
 
-func (s x11Surface) SetFrameSyncEnabled(frameSyncEnabled bool) {
+// SetFrameSyncEnabled: this function can be used to disable frame
+// synchronization for a surface. Normally frame synchronziation will be enabled
+// or disabled based on whether the system has a compositor that supports frame
+// synchronization, but if the surface is not directly managed by the window
+// manager, then frame synchronziation may need to be disabled. This is the case
+// for a surface embedded via the XEMBED protocol.
+func (s *X11SurfaceClass) SetFrameSyncEnabled(frameSyncEnabled bool) {
 	var _arg0 *C.GdkSurface // out
 	var _arg1 C.gboolean    // out
 
@@ -497,7 +204,9 @@ func (s x11Surface) SetFrameSyncEnabled(frameSyncEnabled bool) {
 	C.gdk_x11_surface_set_frame_sync_enabled(_arg0, _arg1)
 }
 
-func (s x11Surface) SetGroup(leader gdk.Surface) {
+// SetGroup sets the group leader of @surface to be @leader. See the ICCCM for
+// details.
+func (s *X11SurfaceClass) SetGroup(leader gdk.Surface) {
 	var _arg0 *C.GdkSurface // out
 	var _arg1 *C.GdkSurface // out
 
@@ -507,7 +216,9 @@ func (s x11Surface) SetGroup(leader gdk.Surface) {
 	C.gdk_x11_surface_set_group(_arg0, _arg1)
 }
 
-func (s x11Surface) SetSkipPagerHint(skipsPager bool) {
+// SetSkipPagerHint sets a hint on @surface that pagers should not display it.
+// See the EWMH for details.
+func (s *X11SurfaceClass) SetSkipPagerHint(skipsPager bool) {
 	var _arg0 *C.GdkSurface // out
 	var _arg1 C.gboolean    // out
 
@@ -519,7 +230,9 @@ func (s x11Surface) SetSkipPagerHint(skipsPager bool) {
 	C.gdk_x11_surface_set_skip_pager_hint(_arg0, _arg1)
 }
 
-func (s x11Surface) SetSkipTaskbarHint(skipsTaskbar bool) {
+// SetSkipTaskbarHint sets a hint on @surface that taskbars should not display
+// it. See the EWMH for details.
+func (s *X11SurfaceClass) SetSkipTaskbarHint(skipsTaskbar bool) {
 	var _arg0 *C.GdkSurface // out
 	var _arg1 C.gboolean    // out
 
@@ -531,7 +244,15 @@ func (s x11Surface) SetSkipTaskbarHint(skipsTaskbar bool) {
 	C.gdk_x11_surface_set_skip_taskbar_hint(_arg0, _arg1)
 }
 
-func (s x11Surface) SetThemeVariant(variant string) {
+// SetThemeVariant: GTK applications can request a dark theme variant. In order
+// to make other applications - namely window managers using GTK for themeing -
+// aware of this choice, GTK uses this function to export the requested theme
+// variant as _GTK_THEME_VARIANT property on toplevel surfaces.
+//
+// Note that this property is automatically updated by GTK, so this function
+// should only be used by applications which do not use GTK to create toplevel
+// surfaces.
+func (s *X11SurfaceClass) SetThemeVariant(variant string) {
 	var _arg0 *C.GdkSurface // out
 	var _arg1 *C.char       // out
 
@@ -542,7 +263,9 @@ func (s x11Surface) SetThemeVariant(variant string) {
 	C.gdk_x11_surface_set_theme_variant(_arg0, _arg1)
 }
 
-func (s x11Surface) SetUrgencyHint(urgent bool) {
+// SetUrgencyHint sets a hint on @surface that it needs user attention. See the
+// ICCCM for details.
+func (s *X11SurfaceClass) SetUrgencyHint(urgent bool) {
 	var _arg0 *C.GdkSurface // out
 	var _arg1 C.gboolean    // out
 
@@ -554,7 +277,17 @@ func (s x11Surface) SetUrgencyHint(urgent bool) {
 	C.gdk_x11_surface_set_urgency_hint(_arg0, _arg1)
 }
 
-func (s x11Surface) SetUserTime(timestamp uint32) {
+// SetUserTime: the application can use this call to update the
+// _NET_WM_USER_TIME property on a toplevel surface. This property stores an
+// Xserver time which represents the time of the last user input event received
+// for this surface. This property may be used by the window manager to alter
+// the focus, stacking, and/or placement behavior of surfaces when they are
+// mapped depending on whether the new surface was created by a user action or
+// is a "pop-up" surface activated by a timer or some other event.
+//
+// Note that this property is automatically updated by GDK, so this function
+// should only be used by applications which handle input events bypassing GDK.
+func (s *X11SurfaceClass) SetUserTime(timestamp uint32) {
 	var _arg0 *C.GdkSurface // out
 	var _arg1 C.guint32     // out
 
@@ -564,7 +297,10 @@ func (s x11Surface) SetUserTime(timestamp uint32) {
 	C.gdk_x11_surface_set_user_time(_arg0, _arg1)
 }
 
-func (s x11Surface) SetUTF8Property(name string, value string) {
+// SetUTF8Property: this function modifies or removes an arbitrary X11 window
+// property of type UTF8_STRING. If the given @surface is not a toplevel
+// surface, it is ignored.
+func (s *X11SurfaceClass) SetUTF8Property(name string, value string) {
 	var _arg0 *C.GdkSurface // out
 	var _arg1 *C.char       // out
 	var _arg2 *C.char       // out

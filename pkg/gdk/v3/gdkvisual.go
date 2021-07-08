@@ -29,24 +29,24 @@ type VisualType int
 
 const (
 	// StaticGray: each pixel value indexes a grayscale value directly.
-	VisualStaticGray VisualType = iota
+	VisualTypeStaticGray VisualType = iota
 	// Grayscale: each pixel is an index into a color map that maps pixel values
 	// into grayscale values. The color map can be changed by an application.
-	VisualGrayscale
+	VisualTypeGrayscale
 	// StaticColor: each pixel value is an index into a predefined, unmodifiable
 	// color map that maps pixel values into RGB values.
-	VisualStaticColor
+	VisualTypeStaticColor
 	// PseudoColor: each pixel is an index into a color map that maps pixel
 	// values into rgb values. The color map can be changed by an application.
-	VisualPseudoColor
+	VisualTypePseudoColor
 	// TrueColor: each pixel value directly contains red, green, and blue
 	// components. Use gdk_visual_get_red_pixel_details(), etc, to obtain
 	// information about how the components are assembled into a pixel value.
-	VisualTrueColor
+	VisualTypeTrueColor
 	// DirectColor: each pixel value contains red, green, and blue components as
 	// for GDK_VISUAL_TRUE_COLOR, but the components are mapped via a color
 	// table into the final output table instead of being converted directly.
-	VisualDirectColor
+	VisualTypeDirectColor
 )
 
 func marshalVisualType(p uintptr) (interface{}, error) {
@@ -155,26 +155,32 @@ type Visual interface {
 	VisualType() VisualType
 }
 
-// visual implements the Visual interface.
-type visual struct {
+// VisualClass implements the Visual interface.
+type VisualClass struct {
 	*externglib.Object
 }
 
-var _ Visual = (*visual)(nil)
+var _ Visual = (*VisualClass)(nil)
 
-// WrapVisual wraps a GObject to a type that implements
-// interface Visual. It is primarily used internally.
-func WrapVisual(obj *externglib.Object) Visual {
-	return visual{obj}
+func wrapVisual(obj *externglib.Object) Visual {
+	return &VisualClass{
+		Object: obj,
+	}
 }
 
 func marshalVisual(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapVisual(obj), nil
+	return wrapVisual(obj), nil
 }
 
-func (v visual) BitsPerRGB() int {
+// BitsPerRGB returns the number of significant bits per red, green and blue
+// value.
+//
+// Not all GDK backend provide a meaningful value for this function.
+//
+// Deprecated: since version 3.22.
+func (v *VisualClass) BitsPerRGB() int {
 	var _arg0 *C.GdkVisual // out
 	var _cret C.gint       // in
 
@@ -189,7 +195,13 @@ func (v visual) BitsPerRGB() int {
 	return _gint
 }
 
-func (v visual) BluePixelDetails() (mask uint32, shift int, precision int) {
+// BluePixelDetails obtains values that are needed to calculate blue pixel
+// values in TrueColor and DirectColor. The “mask” is the significant bits
+// within the pixel. The “shift” is the number of bits left we must shift a
+// primary for it to be in position (according to the "mask"). Finally,
+// "precision" refers to how much precision the pixel value contains for a
+// particular primary.
+func (v *VisualClass) BluePixelDetails() (mask uint32, shift int, precision int) {
 	var _arg0 *C.GdkVisual // out
 	var _arg1 C.guint32    // in
 	var _arg2 C.gint       // in
@@ -210,7 +222,13 @@ func (v visual) BluePixelDetails() (mask uint32, shift int, precision int) {
 	return _mask, _shift, _precision
 }
 
-func (v visual) ByteOrder() ByteOrder {
+// ByteOrder returns the byte order of this visual.
+//
+// The information returned by this function is only relevant when working with
+// XImages, and not all backends return meaningful information for this.
+//
+// Deprecated: since version 3.22.
+func (v *VisualClass) ByteOrder() ByteOrder {
 	var _arg0 *C.GdkVisual   // out
 	var _cret C.GdkByteOrder // in
 
@@ -225,7 +243,12 @@ func (v visual) ByteOrder() ByteOrder {
 	return _byteOrder
 }
 
-func (v visual) ColormapSize() int {
+// ColormapSize returns the size of a colormap for this visual.
+//
+// You have to use platform-specific APIs to manipulate colormaps.
+//
+// Deprecated: since version 3.22.
+func (v *VisualClass) ColormapSize() int {
 	var _arg0 *C.GdkVisual // out
 	var _cret C.gint       // in
 
@@ -240,7 +263,8 @@ func (v visual) ColormapSize() int {
 	return _gint
 }
 
-func (v visual) Depth() int {
+// Depth returns the bit depth of this visual.
+func (v *VisualClass) Depth() int {
 	var _arg0 *C.GdkVisual // out
 	var _cret C.gint       // in
 
@@ -255,7 +279,13 @@ func (v visual) Depth() int {
 	return _gint
 }
 
-func (v visual) GreenPixelDetails() (mask uint32, shift int, precision int) {
+// GreenPixelDetails obtains values that are needed to calculate green pixel
+// values in TrueColor and DirectColor. The “mask” is the significant bits
+// within the pixel. The “shift” is the number of bits left we must shift a
+// primary for it to be in position (according to the "mask"). Finally,
+// "precision" refers to how much precision the pixel value contains for a
+// particular primary.
+func (v *VisualClass) GreenPixelDetails() (mask uint32, shift int, precision int) {
 	var _arg0 *C.GdkVisual // out
 	var _arg1 C.guint32    // in
 	var _arg2 C.gint       // in
@@ -276,7 +306,12 @@ func (v visual) GreenPixelDetails() (mask uint32, shift int, precision int) {
 	return _mask, _shift, _precision
 }
 
-func (v visual) RedPixelDetails() (mask uint32, shift int, precision int) {
+// RedPixelDetails obtains values that are needed to calculate red pixel values
+// in TrueColor and DirectColor. The “mask” is the significant bits within the
+// pixel. The “shift” is the number of bits left we must shift a primary for it
+// to be in position (according to the "mask"). Finally, "precision" refers to
+// how much precision the pixel value contains for a particular primary.
+func (v *VisualClass) RedPixelDetails() (mask uint32, shift int, precision int) {
 	var _arg0 *C.GdkVisual // out
 	var _arg1 C.guint32    // in
 	var _arg2 C.gint       // in
@@ -297,7 +332,8 @@ func (v visual) RedPixelDetails() (mask uint32, shift int, precision int) {
 	return _mask, _shift, _precision
 }
 
-func (v visual) Screen() Screen {
+// Screen gets the screen to which this visual belongs
+func (v *VisualClass) Screen() Screen {
 	var _arg0 *C.GdkVisual // out
 	var _cret *C.GdkScreen // in
 
@@ -312,7 +348,8 @@ func (v visual) Screen() Screen {
 	return _screen
 }
 
-func (v visual) VisualType() VisualType {
+// VisualType returns the type of visual this is (PseudoColor, TrueColor, etc).
+func (v *VisualClass) VisualType() VisualType {
 	var _arg0 *C.GdkVisual    // out
 	var _cret C.GdkVisualType // in
 

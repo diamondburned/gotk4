@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -22,7 +23,7 @@ func init() {
 	})
 }
 
-// DocumentOverrider contains methods that are overridable .
+// DocumentOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
@@ -94,26 +95,28 @@ type Document interface {
 	SetAttributeValue(attributeName string, attributeValue string) bool
 }
 
-// document implements the Document interface.
-type document struct {
+// DocumentInterface implements the Document interface.
+type DocumentInterface struct {
 	*externglib.Object
 }
 
-var _ Document = (*document)(nil)
+var _ Document = (*DocumentInterface)(nil)
 
-// WrapDocument wraps a GObject to a type that implements
-// interface Document. It is primarily used internally.
-func WrapDocument(obj *externglib.Object) Document {
-	return document{obj}
+func wrapDocument(obj *externglib.Object) Document {
+	return &DocumentInterface{
+		Object: obj,
+	}
 }
 
 func marshalDocument(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapDocument(obj), nil
+	return wrapDocument(obj), nil
 }
 
-func (d document) AttributeValue(attributeName string) string {
+// AttributeValue retrieves the value of the given @attribute_name inside
+// @document.
+func (d *DocumentInterface) AttributeValue(attributeName string) string {
 	var _arg0 *C.AtkDocument // out
 	var _arg1 *C.gchar       // out
 	var _cret *C.gchar       // in
@@ -131,7 +134,8 @@ func (d document) AttributeValue(attributeName string) string {
 	return _utf8
 }
 
-func (d document) CurrentPageNumber() int {
+// CurrentPageNumber retrieves the current page number inside @document.
+func (d *DocumentInterface) CurrentPageNumber() int {
 	var _arg0 *C.AtkDocument // out
 	var _cret C.gint         // in
 
@@ -146,7 +150,12 @@ func (d document) CurrentPageNumber() int {
 	return _gint
 }
 
-func (d document) Document() interface{} {
+// Document gets a gpointer that points to an instance of the DOM. It is up to
+// the caller to check atk_document_get_type to determine how to cast this
+// pointer.
+//
+// Deprecated.
+func (d *DocumentInterface) Document() interface{} {
 	var _arg0 *C.AtkDocument // out
 	var _cret C.gpointer     // in
 
@@ -161,7 +170,10 @@ func (d document) Document() interface{} {
 	return _gpointer
 }
 
-func (d document) DocumentType() string {
+// DocumentType gets a string indicating the document type.
+//
+// Deprecated.
+func (d *DocumentInterface) DocumentType() string {
 	var _arg0 *C.AtkDocument // out
 	var _cret *C.gchar       // in
 
@@ -176,7 +188,13 @@ func (d document) DocumentType() string {
 	return _utf8
 }
 
-func (d document) Locale() string {
+// Locale gets a UTF-8 string indicating the POSIX-style LC_MESSAGES locale of
+// the content of this document instance. Individual text substrings or images
+// within this document may have a different locale, see atk_text_get_attributes
+// and atk_image_get_image_locale.
+//
+// Deprecated: since version 2.7.90.
+func (d *DocumentInterface) Locale() string {
 	var _arg0 *C.AtkDocument // out
 	var _cret *C.gchar       // in
 
@@ -191,7 +209,8 @@ func (d document) Locale() string {
 	return _utf8
 }
 
-func (d document) PageCount() int {
+// PageCount retrieves the total number of pages inside @document.
+func (d *DocumentInterface) PageCount() int {
 	var _arg0 *C.AtkDocument // out
 	var _cret C.gint         // in
 
@@ -206,7 +225,9 @@ func (d document) PageCount() int {
 	return _gint
 }
 
-func (d document) SetAttributeValue(attributeName string, attributeValue string) bool {
+// SetAttributeValue sets the value for the given @attribute_name inside
+// @document.
+func (d *DocumentInterface) SetAttributeValue(attributeName string, attributeValue string) bool {
 	var _arg0 *C.AtkDocument // out
 	var _arg1 *C.gchar       // out
 	var _arg2 *C.gchar       // out

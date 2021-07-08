@@ -93,23 +93,23 @@ type Cursor interface {
 	Texture() Texture
 }
 
-// cursor implements the Cursor interface.
-type cursor struct {
+// CursorClass implements the Cursor interface.
+type CursorClass struct {
 	*externglib.Object
 }
 
-var _ Cursor = (*cursor)(nil)
+var _ Cursor = (*CursorClass)(nil)
 
-// WrapCursor wraps a GObject to a type that implements
-// interface Cursor. It is primarily used internally.
-func WrapCursor(obj *externglib.Object) Cursor {
-	return cursor{obj}
+func wrapCursor(obj *externglib.Object) Cursor {
+	return &CursorClass{
+		Object: obj,
+	}
 }
 
 func marshalCursor(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapCursor(obj), nil
+	return wrapCursor(obj), nil
 }
 
 // NewCursorFromName creates a new cursor by looking up @name in the current
@@ -177,7 +177,14 @@ func NewCursorFromTexture(texture Texture, hotspotX int, hotspotY int, fallback 
 	return _cursor
 }
 
-func (c cursor) Fallback() Cursor {
+// Fallback returns the fallback for this @cursor.
+//
+// The fallback will be used if this cursor is not available on a given
+// `GdkDisplay`. For named cursors, this can happen when using nonstandard names
+// or when using an incomplete cursor theme. For textured cursors, this can
+// happen when the texture is too large or when the `GdkDisplay` it is used on
+// does not support textured cursors.
+func (c *CursorClass) Fallback() Cursor {
 	var _arg0 *C.GdkCursor // out
 	var _cret *C.GdkCursor // in
 
@@ -192,7 +199,14 @@ func (c cursor) Fallback() Cursor {
 	return _ret
 }
 
-func (c cursor) HotspotX() int {
+// HotspotX returns the horizontal offset of the hotspot.
+//
+// The hotspot indicates the pixel that will be directly above the cursor.
+//
+// Note that named cursors may have a nonzero hotspot, but this function will
+// only return the hotspot position for cursors created with
+// [ctor@Gdk.Cursor.new_from_texture].
+func (c *CursorClass) HotspotX() int {
 	var _arg0 *C.GdkCursor // out
 	var _cret C.int        // in
 
@@ -207,7 +221,14 @@ func (c cursor) HotspotX() int {
 	return _gint
 }
 
-func (c cursor) HotspotY() int {
+// HotspotY returns the vertical offset of the hotspot.
+//
+// The hotspot indicates the pixel that will be directly above the cursor.
+//
+// Note that named cursors may have a nonzero hotspot, but this function will
+// only return the hotspot position for cursors created with
+// [ctor@Gdk.Cursor.new_from_texture].
+func (c *CursorClass) HotspotY() int {
 	var _arg0 *C.GdkCursor // out
 	var _cret C.int        // in
 
@@ -222,7 +243,10 @@ func (c cursor) HotspotY() int {
 	return _gint
 }
 
-func (c cursor) Name() string {
+// Name returns the name of the cursor.
+//
+// If the cursor is not a named cursor, nil will be returned.
+func (c *CursorClass) Name() string {
 	var _arg0 *C.GdkCursor // out
 	var _cret *C.char      // in
 
@@ -237,7 +261,10 @@ func (c cursor) Name() string {
 	return _utf8
 }
 
-func (c cursor) Texture() Texture {
+// Texture returns the texture for the cursor.
+//
+// If the cursor is a named cursor, nil will be returned.
+func (c *CursorClass) Texture() Texture {
 	var _arg0 *C.GdkCursor  // out
 	var _cret *C.GdkTexture // in
 

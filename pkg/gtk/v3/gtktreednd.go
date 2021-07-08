@@ -83,7 +83,7 @@ func TreeSetRowDragData(selectionData *SelectionData, treeModel TreeModel, path 
 	return _ok
 }
 
-// TreeDragDestOverrider contains methods that are overridable .
+// TreeDragDestOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
@@ -121,26 +121,32 @@ type TreeDragDest interface {
 	RowDropPossible(destPath *TreePath, selectionData *SelectionData) bool
 }
 
-// treeDragDest implements the TreeDragDest interface.
-type treeDragDest struct {
+// TreeDragDestInterface implements the TreeDragDest interface.
+type TreeDragDestInterface struct {
 	*externglib.Object
 }
 
-var _ TreeDragDest = (*treeDragDest)(nil)
+var _ TreeDragDest = (*TreeDragDestInterface)(nil)
 
-// WrapTreeDragDest wraps a GObject to a type that implements
-// interface TreeDragDest. It is primarily used internally.
-func WrapTreeDragDest(obj *externglib.Object) TreeDragDest {
-	return treeDragDest{obj}
+func wrapTreeDragDest(obj *externglib.Object) TreeDragDest {
+	return &TreeDragDestInterface{
+		Object: obj,
+	}
 }
 
 func marshalTreeDragDest(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapTreeDragDest(obj), nil
+	return wrapTreeDragDest(obj), nil
 }
 
-func (d treeDragDest) DragDataReceived(dest *TreePath, selectionData *SelectionData) bool {
+// DragDataReceived asks the TreeDragDest to insert a row before the path @dest,
+// deriving the contents of the row from @selection_data. If @dest is outside
+// the tree so that inserting before it is impossible, false will be returned.
+// Also, false may be returned if the new row is not created for some
+// model-specific reason. Should robustly handle a @dest no longer found in the
+// model!
+func (d *TreeDragDestInterface) DragDataReceived(dest *TreePath, selectionData *SelectionData) bool {
 	var _arg0 *C.GtkTreeDragDest  // out
 	var _arg1 *C.GtkTreePath      // out
 	var _arg2 *C.GtkSelectionData // out
@@ -161,7 +167,12 @@ func (d treeDragDest) DragDataReceived(dest *TreePath, selectionData *SelectionD
 	return _ok
 }
 
-func (d treeDragDest) RowDropPossible(destPath *TreePath, selectionData *SelectionData) bool {
+// RowDropPossible determines whether a drop is possible before the given
+// @dest_path, at the same depth as @dest_path. i.e., can we drop the data in
+// @selection_data at that location. @dest_path does not have to exist; the
+// return value will almost certainly be false if the parent of @dest_path
+// doesn’t exist, though.
+func (d *TreeDragDestInterface) RowDropPossible(destPath *TreePath, selectionData *SelectionData) bool {
 	var _arg0 *C.GtkTreeDragDest  // out
 	var _arg1 *C.GtkTreePath      // out
 	var _arg2 *C.GtkSelectionData // out
@@ -182,7 +193,7 @@ func (d treeDragDest) RowDropPossible(destPath *TreePath, selectionData *Selecti
 	return _ok
 }
 
-// TreeDragSourceOverrider contains methods that are overridable .
+// TreeDragSourceOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
@@ -224,26 +235,30 @@ type TreeDragSource interface {
 	RowDraggable(path *TreePath) bool
 }
 
-// treeDragSource implements the TreeDragSource interface.
-type treeDragSource struct {
+// TreeDragSourceInterface implements the TreeDragSource interface.
+type TreeDragSourceInterface struct {
 	*externglib.Object
 }
 
-var _ TreeDragSource = (*treeDragSource)(nil)
+var _ TreeDragSource = (*TreeDragSourceInterface)(nil)
 
-// WrapTreeDragSource wraps a GObject to a type that implements
-// interface TreeDragSource. It is primarily used internally.
-func WrapTreeDragSource(obj *externglib.Object) TreeDragSource {
-	return treeDragSource{obj}
+func wrapTreeDragSource(obj *externglib.Object) TreeDragSource {
+	return &TreeDragSourceInterface{
+		Object: obj,
+	}
 }
 
 func marshalTreeDragSource(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapTreeDragSource(obj), nil
+	return wrapTreeDragSource(obj), nil
 }
 
-func (d treeDragSource) DragDataDelete(path *TreePath) bool {
+// DragDataDelete asks the TreeDragSource to delete the row at @path, because it
+// was moved somewhere else via drag-and-drop. Returns false if the deletion
+// fails because @path no longer exists, or for some model-specific reason.
+// Should robustly handle a @path no longer found in the model!
+func (d *TreeDragSourceInterface) DragDataDelete(path *TreePath) bool {
 	var _arg0 *C.GtkTreeDragSource // out
 	var _arg1 *C.GtkTreePath       // out
 	var _cret C.gboolean           // in
@@ -262,7 +277,11 @@ func (d treeDragSource) DragDataDelete(path *TreePath) bool {
 	return _ok
 }
 
-func (d treeDragSource) DragDataGet(path *TreePath, selectionData *SelectionData) bool {
+// DragDataGet asks the TreeDragSource to fill in @selection_data with a
+// representation of the row at @path. @selection_data->target gives the
+// required type of the data. Should robustly handle a @path no longer found in
+// the model!
+func (d *TreeDragSourceInterface) DragDataGet(path *TreePath, selectionData *SelectionData) bool {
 	var _arg0 *C.GtkTreeDragSource // out
 	var _arg1 *C.GtkTreePath       // out
 	var _arg2 *C.GtkSelectionData  // out
@@ -283,7 +302,10 @@ func (d treeDragSource) DragDataGet(path *TreePath, selectionData *SelectionData
 	return _ok
 }
 
-func (d treeDragSource) RowDraggable(path *TreePath) bool {
+// RowDraggable asks the TreeDragSource whether a particular row can be used as
+// the source of a DND operation. If the source doesn’t implement this
+// interface, the row is assumed draggable.
+func (d *TreeDragSourceInterface) RowDraggable(path *TreePath) bool {
 	var _arg0 *C.GtkTreeDragSource // out
 	var _arg1 *C.GtkTreePath       // out
 	var _cret C.gboolean           // in

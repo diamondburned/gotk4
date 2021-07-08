@@ -21,15 +21,12 @@ type Generator struct {
 	InfoAttrs    *gir.InfoAttrs
 	InfoElements *gir.InfoElements
 
-	InterfaceName   string
-	StructName      string
-	ParentInterface string
+	InterfaceName string
+	StructName    string
 
-	Implements       []InterfaceImplements
-	InheritedMethods InheritedMethods
-	Virtuals         Methods // for overrider
-	Methods          Methods // for big interface
-	Constructors     Methods
+	Virtuals     Methods // for overrider
+	Methods      Methods // for big interface
+	Constructors Methods
 
 	Tree types.Tree
 
@@ -63,8 +60,7 @@ func (g *Generator) Reset() {
 	g.Tree.Reset()
 	g.Methods.reset(0)
 	g.Virtuals.reset(0)
-	g.Implements = g.Implements[:0]
-	g.InheritedMethods.reset()
+	// g.Implements = g.Implements[:0]
 }
 
 // Header returns the callback generator's current header.
@@ -89,6 +85,8 @@ func (g *Generator) Use(typ interface{}) bool {
 		g.InfoElements = &typ.InfoElements
 
 		g.InterfaceName = strcases.PascalToGo(typ.Name)
+		g.StructName = g.InterfaceName + "Class"
+
 		methods = typ.Methods
 		virtuals = typ.VirtualMethods
 
@@ -100,9 +98,6 @@ func (g *Generator) Use(typ interface{}) bool {
 			g.Logln(logger.Debug, "class cannot be type-resolved")
 			return false
 		}
-
-		g.ParentInterface = types.GoPublicType(g.gen, g.Tree.Requires[0].Resolved)
-		g.header.ImportPubl(g.Tree.Requires[0].Resolved)
 
 		for _, ctor := range typ.Constructors {
 			// Copy and bodge this so the constructors and stuff are named properly.
@@ -124,6 +119,8 @@ func (g *Generator) Use(typ interface{}) bool {
 		g.InfoElements = &typ.InfoElements
 
 		g.InterfaceName = strcases.PascalToGo(typ.Name)
+		g.StructName = g.InterfaceName + "Interface"
+
 		methods = typ.Methods
 		virtuals = typ.VirtualMethods
 
@@ -135,57 +132,51 @@ func (g *Generator) Use(typ interface{}) bool {
 			g.Logln(logger.Debug, "interface cannot be type-resolved")
 			return false
 		}
-
-		g.ParentInterface = "gextras.Objector"
-		g.header.NeedsExternGLib()
 	}
 
-	g.StructName = strcases.UnexportPascal(g.InterfaceName)
 	g.source = g.gen.Namespace()
-	g.Implements = g.Implements[:0]
 	g.header.NeedsExternGLib()
 
-	for _, imp := range g.Tree.WithoutGObject() {
-		// Import everything for the embedded types inside the interface.
-		g.header.ImportPubl(imp.Resolved)
-		// Import gextras for InternObject.
-		g.header.ImportCore("gextras")
+	g.Methods.setMethods(g, methods)
+	g.Virtuals.setVirtuals(g, virtuals)
 
-		needsNamespace := imp.NeedsNamespace(g.gen.Namespace())
-		wrapper := imp.WrapName(needsNamespace)
-
-		g.Implements = append(g.Implements, InterfaceImplements{
-			Name:    imp.PublicType(false),
-			Type:    imp.PublicType(needsNamespace),
-			Wrapper: wrapper,
-		})
-	}
-
-	genParams := generateParams{
-		self:   g.InterfaceName,
-		cgen:   &g.cgen,
-		header: &g.header,
-		source: g.source,
-	}
-
-	g.Methods.setMethods(methods, genParams)
-	g.Virtuals.setVirtuals(virtuals, genParams)
-
-	g.Tree.Walk(func(t *types.Tree, isRoot bool) []types.Tree {
-		if !isRoot {
-			g.InheritedMethods.add(&g.cgen, &g.header, t.Resolved)
-		}
-
-		return t.WithoutGObject()
-	})
+	g.renameGetters(g.Methods)
+	g.renameGetters(g.Virtuals)
 
 	return true
 }
 
-// Wrap returns a wrapper block that wraps around the given *glib.Object
-// variable name.
-func (g *Generator) Wrap(obj string) string {
-	return g.Tree.WrapInterface(obj)
+func (g *Generator) renameGetters(methods Methods) {
+	for i, method := range methods {
+		newName, ok := callable.RenameGetter(method.Name)
+
+		if g.hasMethod(newName) || methods.find(newName, i) {
+			if ok {
+				// Duplicate getter field; just skip renaming.
+				continue
+			}
+
+			// Field is duplicate even when it wasn't renamed; work around this.
+			newName += g.InterfaceName
+		}
+
+		methods[i].Name = newName
+	}
+}
+
+func (g *Generator) hasMethod(name string) bool {
+	for _, parent := range g.Tree.Requires {
+		if parent.Name() == name {
+			return true
+		}
+	}
+
+	// Never override Object's methods.
+	if types.IsObjectorMethod(name) {
+		return true
+	}
+
+	return false
 }
 
 // bodgeClassCtor bodges the given constructor to return exactly the class type

@@ -43,7 +43,7 @@ func marshalBuilderClosureFlags(p uintptr) (interface{}, error) {
 	return BuilderClosureFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// BuilderScopeOverrider contains methods that are overridable .
+// BuilderScopeOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
@@ -68,26 +68,30 @@ type BuilderScopeOverrider interface {
 // C language which can be created via [ctor@Gtk.BuilderCScope.new].
 type BuilderScope interface {
 	gextras.Objector
+
+	privateBuilderScopeInterface()
 }
 
-// builderScope implements the BuilderScope interface.
-type builderScope struct {
+// BuilderScopeInterface implements the BuilderScope interface.
+type BuilderScopeInterface struct {
 	*externglib.Object
 }
 
-var _ BuilderScope = (*builderScope)(nil)
+var _ BuilderScope = (*BuilderScopeInterface)(nil)
 
-// WrapBuilderScope wraps a GObject to a type that implements
-// interface BuilderScope. It is primarily used internally.
-func WrapBuilderScope(obj *externglib.Object) BuilderScope {
-	return builderScope{obj}
+func wrapBuilderScope(obj *externglib.Object) BuilderScope {
+	return &BuilderScopeInterface{
+		Object: obj,
+	}
 }
 
 func marshalBuilderScope(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapBuilderScope(obj), nil
+	return wrapBuilderScope(obj), nil
 }
+
+func (*BuilderScopeInterface) privateBuilderScopeInterface() {}
 
 // BuilderCScope: `GtkBuilderScope` implementation for the C language.
 //
@@ -107,27 +111,30 @@ func marshalBuilderScope(p uintptr) (interface{}, error) {
 type BuilderCScope interface {
 	gextras.Objector
 
-	// AsBuilderScope casts the class to the BuilderScope interface.
-	AsBuilderScope() BuilderScope
+	privateBuilderCScopeClass()
 }
 
-// builderCScope implements the BuilderCScope interface.
-type builderCScope struct {
+// BuilderCScopeClass implements the BuilderCScope interface.
+type BuilderCScopeClass struct {
 	*externglib.Object
+	BuilderScopeInterface
 }
 
-var _ BuilderCScope = (*builderCScope)(nil)
+var _ BuilderCScope = (*BuilderCScopeClass)(nil)
 
-// WrapBuilderCScope wraps a GObject to a type that implements
-// interface BuilderCScope. It is primarily used internally.
-func WrapBuilderCScope(obj *externglib.Object) BuilderCScope {
-	return builderCScope{obj}
+func wrapBuilderCScope(obj *externglib.Object) BuilderCScope {
+	return &BuilderCScopeClass{
+		Object: obj,
+		BuilderScopeInterface: BuilderScopeInterface{
+			Object: obj,
+		},
+	}
 }
 
 func marshalBuilderCScope(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapBuilderCScope(obj), nil
+	return wrapBuilderCScope(obj), nil
 }
 
 // NewBuilderCScope creates a new `GtkBuilderCScope` object to use with future
@@ -147,6 +154,4 @@ func NewBuilderCScope() BuilderCScope {
 	return _builderCScope
 }
 
-func (b builderCScope) AsBuilderScope() BuilderScope {
-	return WrapBuilderScope(gextras.InternObject(b))
-}
+func (*BuilderCScopeClass) privateBuilderCScopeClass() {}

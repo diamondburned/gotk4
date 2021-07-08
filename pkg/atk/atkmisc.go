@@ -22,7 +22,7 @@ func init() {
 	})
 }
 
-// MiscOverrider contains methods that are overridable .
+// MiscOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
@@ -72,26 +72,31 @@ type Misc interface {
 	ThreadsLeave()
 }
 
-// misc implements the Misc interface.
-type misc struct {
+// MiscClass implements the Misc interface.
+type MiscClass struct {
 	*externglib.Object
 }
 
-var _ Misc = (*misc)(nil)
+var _ Misc = (*MiscClass)(nil)
 
-// WrapMisc wraps a GObject to a type that implements
-// interface Misc. It is primarily used internally.
-func WrapMisc(obj *externglib.Object) Misc {
-	return misc{obj}
+func wrapMisc(obj *externglib.Object) Misc {
+	return &MiscClass{
+		Object: obj,
+	}
 }
 
 func marshalMisc(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapMisc(obj), nil
+	return wrapMisc(obj), nil
 }
 
-func (m misc) ThreadsEnter() {
+// ThreadsEnter: take the thread mutex for the GUI toolkit, if one exists. (This
+// method is implemented by the toolkit ATK implementation layer; for instance,
+// for GTK+, GAIL implements this via GDK_THREADS_ENTER).
+//
+// Deprecated.
+func (m *MiscClass) ThreadsEnter() {
 	var _arg0 *C.AtkMisc // out
 
 	_arg0 = (*C.AtkMisc)(unsafe.Pointer(m.Native()))
@@ -99,7 +104,17 @@ func (m misc) ThreadsEnter() {
 	C.atk_misc_threads_enter(_arg0)
 }
 
-func (m misc) ThreadsLeave() {
+// ThreadsLeave: release the thread mutex for the GUI toolkit, if one exists.
+// This method, and atk_misc_threads_enter, are needed in some situations by
+// threaded application code which services ATK requests, since fulfilling ATK
+// requests often requires calling into the GUI toolkit. If a long-running or
+// potentially blocking call takes place inside such a block, it should be
+// bracketed by atk_misc_threads_leave/atk_misc_threads_enter calls. (This
+// method is implemented by the toolkit ATK implementation layer; for instance,
+// for GTK+, GAIL implements this via GDK_THREADS_LEAVE).
+//
+// Deprecated.
+func (m *MiscClass) ThreadsLeave() {
 	var _arg0 *C.AtkMisc // out
 
 	_arg0 = (*C.AtkMisc)(unsafe.Pointer(m.Native()))

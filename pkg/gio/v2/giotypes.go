@@ -544,25 +544,6 @@ func (i *InputMessage) Native() unsafe.Pointer {
 	return unsafe.Pointer(&i.native)
 }
 
-// Address: return location for a Address, or nil
-func (i *InputMessage) Address() SocketAddress {
-	var v SocketAddress // out
-	{
-		var refTmpIn *C.GSocketAddress
-		var refTmpOut socketAddress
-
-		refTmpIn = *i.native.address
-
-		refTmpOut = gextras.CastObject(externglib.Take(unsafe.Pointer(refTmpIn))).(socketAddress)
-
-		if refTmpOut != nil {
-			out0 := &refTmpOut
-			v = out0
-		}
-	}
-	return v
-}
-
 // NumVectors: the number of input vectors pointed to by @vectors
 func (i *InputMessage) NumVectors() uint {
 	var v uint // out

@@ -29,23 +29,27 @@ func init() {
 // a `GtkSelectionModel` is required.
 type NoSelection interface {
 	gextras.Objector
+
+	privateNoSelectionClass()
 }
 
-// noSelection implements the NoSelection interface.
-type noSelection struct {
+// NoSelectionClass implements the NoSelection interface.
+type NoSelectionClass struct {
 	*externglib.Object
 }
 
-var _ NoSelection = (*noSelection)(nil)
+var _ NoSelection = (*NoSelectionClass)(nil)
 
-// WrapNoSelection wraps a GObject to a type that implements
-// interface NoSelection. It is primarily used internally.
-func WrapNoSelection(obj *externglib.Object) NoSelection {
-	return noSelection{obj}
+func wrapNoSelection(obj *externglib.Object) NoSelection {
+	return &NoSelectionClass{
+		Object: obj,
+	}
 }
 
 func marshalNoSelection(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapNoSelection(obj), nil
+	return wrapNoSelection(obj), nil
 }
+
+func (*NoSelectionClass) privateNoSelectionClass() {}

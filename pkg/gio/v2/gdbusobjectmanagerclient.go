@@ -5,7 +5,6 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
@@ -27,8 +26,6 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 // #include <glib-object.h>
-//
-// void gotk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 func init() {
@@ -37,12 +34,11 @@ func init() {
 	})
 }
 
-// DBusObjectManagerClientOverrider contains methods that are overridable .
+// DBusObjectManagerClientOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type DBusObjectManagerClientOverrider interface {
-	InterfaceProxyPropertiesChanged(objectProxy DBusObjectProxy, interfaceProxy DBusProxy, changedProperties *glib.Variant, invalidatedProperties *string)
 	InterfaceProxySignal(objectProxy DBusObjectProxy, interfaceProxy DBusProxy, senderName string, signalName string, parameters *glib.Variant)
 }
 
@@ -112,117 +108,6 @@ type DBusObjectManagerClientOverrider interface {
 type DBusObjectManagerClient interface {
 	gextras.Objector
 
-	// AsAsyncInitable casts the class to the AsyncInitable interface.
-	AsAsyncInitable() AsyncInitable
-	// AsDBusObjectManager casts the class to the DBusObjectManager interface.
-	AsDBusObjectManager() DBusObjectManager
-	// AsInitable casts the class to the Initable interface.
-	AsInitable() Initable
-
-	// InitAsync starts asynchronous initialization of the object implementing
-	// the interface. This must be done before any real use of the object after
-	// initial construction. If the object also implements #GInitable you can
-	// optionally call g_initable_init() instead.
-	//
-	// This method is intended for language bindings. If writing in C,
-	// g_async_initable_new_async() should typically be used instead.
-	//
-	// When the initialization is finished, @callback will be called. You can
-	// then call g_async_initable_init_finish() to get the result of the
-	// initialization.
-	//
-	// Implementations may also support cancellation. If @cancellable is not
-	// nil, then initialization can be cancelled by triggering the cancellable
-	// object from another thread. If the operation was cancelled, the error
-	// G_IO_ERROR_CANCELLED will be returned. If @cancellable is not nil, and
-	// the object doesn't support cancellable initialization, the error
-	// G_IO_ERROR_NOT_SUPPORTED will be returned.
-	//
-	// As with #GInitable, if the object is not initialized, or initialization
-	// returns with an error, then all operations on the object except
-	// g_object_ref() and g_object_unref() are considered to be invalid, and
-	// have undefined behaviour. They will often fail with g_critical() or
-	// g_warning(), but this must not be relied on.
-	//
-	// Callers should not assume that a class which implements Initable can be
-	// initialized multiple times; for more information, see g_initable_init().
-	// If a class explicitly supports being initialized multiple times,
-	// implementation requires yielding all subsequent calls to init_async() on
-	// the results of the first call.
-	//
-	// For classes that also support the #GInitable interface, the default
-	// implementation of this method will run the g_initable_init() function in
-	// a thread, so if you want to support asynchronous initialization via
-	// threads, just implement the Initable interface without overriding any
-	// interface methods.
-	//
-	// This method is inherited from AsyncInitable
-	InitAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
-	// InitFinish finishes asynchronous initialization and returns the result.
-	// See g_async_initable_init_async().
-	//
-	// This method is inherited from AsyncInitable
-	InitFinish(res AsyncResult) error
-	// NewFinish finishes the async construction for the various
-	// g_async_initable_new calls, returning the created object or nil on error.
-	//
-	// This method is inherited from AsyncInitable
-	NewFinish(res AsyncResult) (gextras.Objector, error)
-	// GetInterface gets the interface proxy for @interface_name at
-	// @object_path, if any.
-	//
-	// This method is inherited from DBusObjectManager
-	GetInterface(objectPath string, interfaceName string) DBusInterface
-	// GetObject gets the BusObjectProxy at @object_path, if any.
-	//
-	// This method is inherited from DBusObjectManager
-	GetObject(objectPath string) DBusObject
-	// GetObjectPath gets the object path that @manager is for.
-	//
-	// This method is inherited from DBusObjectManager
-	GetObjectPath() string
-	// Init initializes the object implementing the interface.
-	//
-	// This method is intended for language bindings. If writing in C,
-	// g_initable_new() should typically be used instead.
-	//
-	// The object must be initialized before any real use after initial
-	// construction, either with this function or g_async_initable_init_async().
-	//
-	// Implementations may also support cancellation. If @cancellable is not
-	// nil, then initialization can be cancelled by triggering the cancellable
-	// object from another thread. If the operation was cancelled, the error
-	// G_IO_ERROR_CANCELLED will be returned. If @cancellable is not nil and the
-	// object doesn't support cancellable initialization the error
-	// G_IO_ERROR_NOT_SUPPORTED will be returned.
-	//
-	// If the object is not initialized, or initialization returns with an
-	// error, then all operations on the object except g_object_ref() and
-	// g_object_unref() are considered to be invalid, and have undefined
-	// behaviour. See the [introduction][ginitable] for more details.
-	//
-	// Callers should not assume that a class which implements #GInitable can be
-	// initialized multiple times, unless the class explicitly documents itself
-	// as supporting this. Generally, a class’ implementation of init() can
-	// assume (and assert) that it will only be called once. Previously, this
-	// documentation recommended all #GInitable implementations should be
-	// idempotent; that recommendation was relaxed in GLib 2.54.
-	//
-	// If a class explicitly supports being initialized multiple times, it is
-	// recommended that the method is idempotent: multiple calls with the same
-	// arguments should return the same results. Only the first call initializes
-	// the object; further calls return the result of the first call.
-	//
-	// One reason why a class might need to support idempotent initialization is
-	// if it is designed to be used via the singleton pattern, with a
-	// Class.constructor that sometimes returns an existing instance. In this
-	// pattern, a caller would expect to be able to call g_initable_init() on
-	// the result of g_object_new(), regardless of whether it is in fact a new
-	// instance.
-	//
-	// This method is inherited from Initable
-	Init(cancellable Cancellable) error
-
 	// Connection gets the BusConnection used by @manager.
 	Connection() DBusConnection
 	// Flags gets the flags that @manager was constructed with.
@@ -237,23 +122,35 @@ type DBusObjectManagerClient interface {
 	NameOwner() string
 }
 
-// dBusObjectManagerClient implements the DBusObjectManagerClient interface.
-type dBusObjectManagerClient struct {
+// DBusObjectManagerClientClass implements the DBusObjectManagerClient interface.
+type DBusObjectManagerClientClass struct {
 	*externglib.Object
+	AsyncInitableInterface
+	DBusObjectManagerInterface
+	InitableInterface
 }
 
-var _ DBusObjectManagerClient = (*dBusObjectManagerClient)(nil)
+var _ DBusObjectManagerClient = (*DBusObjectManagerClientClass)(nil)
 
-// WrapDBusObjectManagerClient wraps a GObject to a type that implements
-// interface DBusObjectManagerClient. It is primarily used internally.
-func WrapDBusObjectManagerClient(obj *externglib.Object) DBusObjectManagerClient {
-	return dBusObjectManagerClient{obj}
+func wrapDBusObjectManagerClient(obj *externglib.Object) DBusObjectManagerClient {
+	return &DBusObjectManagerClientClass{
+		Object: obj,
+		AsyncInitableInterface: AsyncInitableInterface{
+			Object: obj,
+		},
+		DBusObjectManagerInterface: DBusObjectManagerInterface{
+			Object: obj,
+		},
+		InitableInterface: InitableInterface{
+			Object: obj,
+		},
+	}
 }
 
 func marshalDBusObjectManagerClient(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapDBusObjectManagerClient(obj), nil
+	return wrapDBusObjectManagerClient(obj), nil
 }
 
 // NewDBusObjectManagerClientFinish finishes an operation started with
@@ -296,47 +193,8 @@ func NewDBusObjectManagerClientForBusFinish(res AsyncResult) (DBusObjectManagerC
 	return _dBusObjectManagerClient, _goerr
 }
 
-func (d dBusObjectManagerClient) AsAsyncInitable() AsyncInitable {
-	return WrapAsyncInitable(gextras.InternObject(d))
-}
-
-func (d dBusObjectManagerClient) AsDBusObjectManager() DBusObjectManager {
-	return WrapDBusObjectManager(gextras.InternObject(d))
-}
-
-func (d dBusObjectManagerClient) AsInitable() Initable {
-	return WrapInitable(gextras.InternObject(d))
-}
-
-func (i dBusObjectManagerClient) InitAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
-	WrapAsyncInitable(gextras.InternObject(i)).InitAsync(ioPriority, cancellable, callback)
-}
-
-func (i dBusObjectManagerClient) InitFinish(res AsyncResult) error {
-	return WrapAsyncInitable(gextras.InternObject(i)).InitFinish(res)
-}
-
-func (i dBusObjectManagerClient) NewFinish(res AsyncResult) (gextras.Objector, error) {
-	return WrapAsyncInitable(gextras.InternObject(i)).NewFinish(res)
-}
-
-func (m dBusObjectManagerClient) GetInterface(objectPath string, interfaceName string) DBusInterface {
-	return WrapDBusObjectManager(gextras.InternObject(m)).GetInterface(objectPath, interfaceName)
-}
-
-func (m dBusObjectManagerClient) GetObject(objectPath string) DBusObject {
-	return WrapDBusObjectManager(gextras.InternObject(m)).GetObject(objectPath)
-}
-
-func (m dBusObjectManagerClient) GetObjectPath() string {
-	return WrapDBusObjectManager(gextras.InternObject(m)).GetObjectPath()
-}
-
-func (i dBusObjectManagerClient) Init(cancellable Cancellable) error {
-	return WrapInitable(gextras.InternObject(i)).Init(cancellable)
-}
-
-func (m dBusObjectManagerClient) Connection() DBusConnection {
+// Connection gets the BusConnection used by @manager.
+func (m *DBusObjectManagerClientClass) Connection() DBusConnection {
 	var _arg0 *C.GDBusObjectManagerClient // out
 	var _cret *C.GDBusConnection          // in
 
@@ -351,7 +209,8 @@ func (m dBusObjectManagerClient) Connection() DBusConnection {
 	return _dBusConnection
 }
 
-func (m dBusObjectManagerClient) Flags() DBusObjectManagerClientFlags {
+// Flags gets the flags that @manager was constructed with.
+func (m *DBusObjectManagerClientClass) Flags() DBusObjectManagerClientFlags {
 	var _arg0 *C.GDBusObjectManagerClient     // out
 	var _cret C.GDBusObjectManagerClientFlags // in
 
@@ -366,7 +225,9 @@ func (m dBusObjectManagerClient) Flags() DBusObjectManagerClientFlags {
 	return _dBusObjectManagerClientFlags
 }
 
-func (m dBusObjectManagerClient) Name() string {
+// Name gets the name that @manager is for, or nil if not a message bus
+// connection.
+func (m *DBusObjectManagerClientClass) Name() string {
 	var _arg0 *C.GDBusObjectManagerClient // out
 	var _cret *C.gchar                    // in
 
@@ -381,7 +242,10 @@ func (m dBusObjectManagerClient) Name() string {
 	return _utf8
 }
 
-func (m dBusObjectManagerClient) NameOwner() string {
+// NameOwner: the unique name that owns the name that @manager is for or nil if
+// no-one currently owns that name. You can connect to the #GObject::notify
+// signal to track changes to the BusObjectManagerClient:name-owner property.
+func (m *DBusObjectManagerClientClass) NameOwner() string {
 	var _arg0 *C.GDBusObjectManagerClient // out
 	var _cret *C.gchar                    // in
 

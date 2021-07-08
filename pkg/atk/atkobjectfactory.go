@@ -22,7 +22,7 @@ func init() {
 	})
 }
 
-// ObjectFactoryOverrider contains methods that are overridable .
+// ObjectFactoryOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
@@ -54,26 +54,28 @@ type ObjectFactory interface {
 	Invalidate()
 }
 
-// objectFactory implements the ObjectFactory interface.
-type objectFactory struct {
+// ObjectFactoryClass implements the ObjectFactory interface.
+type ObjectFactoryClass struct {
 	*externglib.Object
 }
 
-var _ ObjectFactory = (*objectFactory)(nil)
+var _ ObjectFactory = (*ObjectFactoryClass)(nil)
 
-// WrapObjectFactory wraps a GObject to a type that implements
-// interface ObjectFactory. It is primarily used internally.
-func WrapObjectFactory(obj *externglib.Object) ObjectFactory {
-	return objectFactory{obj}
+func wrapObjectFactory(obj *externglib.Object) ObjectFactory {
+	return &ObjectFactoryClass{
+		Object: obj,
+	}
 }
 
 func marshalObjectFactory(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapObjectFactory(obj), nil
+	return wrapObjectFactory(obj), nil
 }
 
-func (f objectFactory) CreateAccessible(obj gextras.Objector) Object {
+// CreateAccessible provides an Object that implements an accessibility
+// interface on behalf of @obj
+func (f *ObjectFactoryClass) CreateAccessible(obj gextras.Objector) Object {
 	var _arg0 *C.AtkObjectFactory // out
 	var _arg1 *C.GObject          // out
 	var _cret *C.AtkObject        // in
@@ -90,7 +92,9 @@ func (f objectFactory) CreateAccessible(obj gextras.Objector) Object {
 	return _object
 }
 
-func (f objectFactory) AccessibleType() externglib.Type {
+// AccessibleType gets the GType of the accessible which is created by the
+// factory.
+func (f *ObjectFactoryClass) AccessibleType() externglib.Type {
 	var _arg0 *C.AtkObjectFactory // out
 	var _cret C.GType             // in
 
@@ -105,7 +109,11 @@ func (f objectFactory) AccessibleType() externglib.Type {
 	return _gType
 }
 
-func (f objectFactory) Invalidate() {
+// Invalidate: inform @factory that it is no longer being used to create
+// accessibles. When called, @factory may need to inform Objects which it has
+// created that they need to be re-instantiated. Note: primarily used for
+// runtime replacement of ObjectFactorys in object registries.
+func (f *ObjectFactoryClass) Invalidate() {
 	var _arg0 *C.AtkObjectFactory // out
 
 	_arg0 = (*C.AtkObjectFactory)(unsafe.Pointer(f.Native()))

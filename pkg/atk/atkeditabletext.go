@@ -5,6 +5,7 @@ package atk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -21,7 +22,7 @@ func init() {
 	})
 }
 
-// EditableTextOverrider contains methods that are overridable .
+// EditableTextOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
@@ -69,26 +70,28 @@ type EditableText interface {
 	SetTextContents(_string string)
 }
 
-// editableText implements the EditableText interface.
-type editableText struct {
+// EditableTextInterface implements the EditableText interface.
+type EditableTextInterface struct {
 	*externglib.Object
 }
 
-var _ EditableText = (*editableText)(nil)
+var _ EditableText = (*EditableTextInterface)(nil)
 
-// WrapEditableText wraps a GObject to a type that implements
-// interface EditableText. It is primarily used internally.
-func WrapEditableText(obj *externglib.Object) EditableText {
-	return editableText{obj}
+func wrapEditableText(obj *externglib.Object) EditableText {
+	return &EditableTextInterface{
+		Object: obj,
+	}
 }
 
 func marshalEditableText(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapEditableText(obj), nil
+	return wrapEditableText(obj), nil
 }
 
-func (t editableText) CopyText(startPos int, endPos int) {
+// CopyText: copy text from @start_pos up to, but not including @end_pos to the
+// clipboard.
+func (t *EditableTextInterface) CopyText(startPos int, endPos int) {
 	var _arg0 *C.AtkEditableText // out
 	var _arg1 C.gint             // out
 	var _arg2 C.gint             // out
@@ -100,7 +103,9 @@ func (t editableText) CopyText(startPos int, endPos int) {
 	C.atk_editable_text_copy_text(_arg0, _arg1, _arg2)
 }
 
-func (t editableText) CutText(startPos int, endPos int) {
+// CutText: copy text from @start_pos up to, but not including @end_pos to the
+// clipboard and then delete from the widget.
+func (t *EditableTextInterface) CutText(startPos int, endPos int) {
 	var _arg0 *C.AtkEditableText // out
 	var _arg1 C.gint             // out
 	var _arg2 C.gint             // out
@@ -112,7 +117,8 @@ func (t editableText) CutText(startPos int, endPos int) {
 	C.atk_editable_text_cut_text(_arg0, _arg1, _arg2)
 }
 
-func (t editableText) DeleteText(startPos int, endPos int) {
+// DeleteText: delete text @start_pos up to, but not including @end_pos.
+func (t *EditableTextInterface) DeleteText(startPos int, endPos int) {
 	var _arg0 *C.AtkEditableText // out
 	var _arg1 C.gint             // out
 	var _arg2 C.gint             // out
@@ -124,7 +130,8 @@ func (t editableText) DeleteText(startPos int, endPos int) {
 	C.atk_editable_text_delete_text(_arg0, _arg1, _arg2)
 }
 
-func (t editableText) InsertText(_string string, length int, position *int) {
+// InsertText: insert text at a given position.
+func (t *EditableTextInterface) InsertText(_string string, length int, position *int) {
 	var _arg0 *C.AtkEditableText // out
 	var _arg1 *C.gchar           // out
 	var _arg2 C.gint             // out
@@ -139,7 +146,8 @@ func (t editableText) InsertText(_string string, length int, position *int) {
 	C.atk_editable_text_insert_text(_arg0, _arg1, _arg2, _arg3)
 }
 
-func (t editableText) PasteText(position int) {
+// PasteText: paste text from clipboard to specified @position.
+func (t *EditableTextInterface) PasteText(position int) {
 	var _arg0 *C.AtkEditableText // out
 	var _arg1 C.gint             // out
 
@@ -149,7 +157,8 @@ func (t editableText) PasteText(position int) {
 	C.atk_editable_text_paste_text(_arg0, _arg1)
 }
 
-func (t editableText) SetTextContents(_string string) {
+// SetTextContents: set text contents of @text.
+func (t *EditableTextInterface) SetTextContents(_string string) {
 	var _arg0 *C.AtkEditableText // out
 	var _arg1 *C.gchar           // out
 

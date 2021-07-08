@@ -6,7 +6,6 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -39,40 +38,6 @@ func WrapTextAppearance(ptr unsafe.Pointer) *TextAppearance {
 // Native returns the underlying C source pointer.
 func (t *TextAppearance) Native() unsafe.Pointer {
 	return unsafe.Pointer(&t.native)
-}
-
-// BgColor: background Color.
-func (t *TextAppearance) BgColor() gdk.Color {
-	var v gdk.Color // out
-	{
-		var refTmpIn *C.GdkColor
-		var refTmpOut *gdk.Color
-
-		in0 := &t.native.bg_color
-		refTmpIn = in0
-
-		refTmpOut = (*gdk.Color)(unsafe.Pointer(refTmpIn))
-
-		v = *refTmpOut
-	}
-	return v
-}
-
-// FgColor: foreground Color.
-func (t *TextAppearance) FgColor() gdk.Color {
-	var v gdk.Color // out
-	{
-		var refTmpIn *C.GdkColor
-		var refTmpOut *gdk.Color
-
-		in0 := &t.native.fg_color
-		refTmpIn = in0
-
-		refTmpOut = (*gdk.Color)(unsafe.Pointer(refTmpIn))
-
-		v = *refTmpOut
-	}
-	return v
 }
 
 // Rise: super/subscript rise, can be negative.
@@ -121,23 +86,6 @@ func NewTextAttributes() *TextAttributes {
 // Native returns the underlying C source pointer.
 func (t *TextAttributes) Native() unsafe.Pointer {
 	return unsafe.Pointer(&t.native)
-}
-
-// Appearance for text.
-func (t *TextAttributes) Appearance() TextAppearance {
-	var v TextAppearance // out
-	{
-		var refTmpIn *C.GtkTextAppearance
-		var refTmpOut *TextAppearance
-
-		in0 := &t.native.appearance
-		refTmpIn = in0
-
-		refTmpOut = (*TextAppearance)(unsafe.Pointer(refTmpIn))
-
-		v = *refTmpOut
-	}
-	return v
 }
 
 // Justification for text.

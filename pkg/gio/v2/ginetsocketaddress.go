@@ -5,8 +5,6 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
-	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -37,79 +35,7 @@ func init() {
 // InetSocketAddress: IPv4 or IPv6 socket address; that is, the combination of a
 // Address and a port number.
 type InetSocketAddress interface {
-	SocketAddress
-
-	// AsSocketAddress casts the class to the SocketAddress interface.
-	AsSocketAddress() SocketAddress
-	// AsSocketConnectable casts the class to the SocketConnectable interface.
-	AsSocketConnectable() SocketConnectable
-
-	// GetFamily gets the socket family type of @address.
-	//
-	// This method is inherited from SocketAddress
-	GetFamily() SocketFamily
-	// GetNativeSize gets the size of @address's native struct sockaddr. You can
-	// use this to allocate memory to pass to g_socket_address_to_native().
-	//
-	// This method is inherited from SocketAddress
-	GetNativeSize() int
-	// ToNative converts a Address to a native struct sockaddr, which can be
-	// passed to low-level functions like connect() or bind().
-	//
-	// If not enough space is available, a G_IO_ERROR_NO_SPACE error is
-	// returned. If the address type is not known on the system then a
-	// G_IO_ERROR_NOT_SUPPORTED error is returned.
-	//
-	// This method is inherited from SocketAddress
-	ToNative(dest interface{}, destlen uint) error
-	// Enumerate creates a AddressEnumerator for @connectable.
-	//
-	// This method is inherited from SocketConnectable
-	Enumerate() SocketAddressEnumerator
-	// ProxyEnumerate creates a AddressEnumerator for @connectable that will
-	// return a Address for each of its addresses that you must connect to via a
-	// proxy.
-	//
-	// If @connectable does not implement
-	// g_socket_connectable_proxy_enumerate(), this will fall back to calling
-	// g_socket_connectable_enumerate().
-	//
-	// This method is inherited from SocketConnectable
-	ProxyEnumerate() SocketAddressEnumerator
-	// ToString: format a Connectable as a string. This is a human-readable
-	// format for use in debugging output, and is not a stable serialization
-	// format. It is not suitable for use in user interfaces as it exposes too
-	// much information for a user.
-	//
-	// If the Connectable implementation does not support string formatting, the
-	// implementation’s type name will be returned as a fallback.
-	//
-	// This method is inherited from SocketConnectable
-	ToString() string
-	// Enumerate creates a AddressEnumerator for @connectable.
-	//
-	// This method is inherited from SocketConnectable
-	Enumerate() SocketAddressEnumerator
-	// ProxyEnumerate creates a AddressEnumerator for @connectable that will
-	// return a Address for each of its addresses that you must connect to via a
-	// proxy.
-	//
-	// If @connectable does not implement
-	// g_socket_connectable_proxy_enumerate(), this will fall back to calling
-	// g_socket_connectable_enumerate().
-	//
-	// This method is inherited from SocketConnectable
-	ProxyEnumerate() SocketAddressEnumerator
-	// ToString: format a Connectable as a string. This is a human-readable
-	// format for use in debugging output, and is not a stable serialization
-	// format. It is not suitable for use in user interfaces as it exposes too
-	// much information for a user.
-	//
-	// If the Connectable implementation does not support string formatting, the
-	// implementation’s type name will be returned as a fallback.
-	//
-	// This method is inherited from SocketConnectable
-	ToString() string
+	gextras.Objector
 
 	// Address gets @address's Address.
 	Address() InetAddress
@@ -123,23 +49,34 @@ type InetSocketAddress interface {
 	ScopeID() uint32
 }
 
-// inetSocketAddress implements the InetSocketAddress interface.
-type inetSocketAddress struct {
+// InetSocketAddressClass implements the InetSocketAddress interface.
+type InetSocketAddressClass struct {
 	*externglib.Object
+	SocketAddressClass
+	SocketConnectableInterface
 }
 
-var _ InetSocketAddress = (*inetSocketAddress)(nil)
+var _ InetSocketAddress = (*InetSocketAddressClass)(nil)
 
-// WrapInetSocketAddress wraps a GObject to a type that implements
-// interface InetSocketAddress. It is primarily used internally.
-func WrapInetSocketAddress(obj *externglib.Object) InetSocketAddress {
-	return inetSocketAddress{obj}
+func wrapInetSocketAddress(obj *externglib.Object) InetSocketAddress {
+	return &InetSocketAddressClass{
+		Object: obj,
+		SocketAddressClass: SocketAddressClass{
+			Object: obj,
+			SocketConnectableInterface: SocketConnectableInterface{
+				Object: obj,
+			},
+		},
+		SocketConnectableInterface: SocketConnectableInterface{
+			Object: obj,
+		},
+	}
 }
 
 func marshalInetSocketAddress(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapInetSocketAddress(obj), nil
+	return wrapInetSocketAddress(obj), nil
 }
 
 // NewInetSocketAddress creates a new SocketAddress for @address and @port.
@@ -183,51 +120,8 @@ func NewInetSocketAddressFromString(address string, port uint) InetSocketAddress
 	return _inetSocketAddress
 }
 
-func (i inetSocketAddress) AsSocketAddress() SocketAddress {
-	return WrapSocketAddress(gextras.InternObject(i))
-}
-
-func (i inetSocketAddress) AsSocketConnectable() SocketConnectable {
-	return WrapSocketConnectable(gextras.InternObject(i))
-}
-
-func (a inetSocketAddress) GetFamily() SocketFamily {
-	return WrapSocketAddress(gextras.InternObject(a)).GetFamily()
-}
-
-func (a inetSocketAddress) GetNativeSize() int {
-	return WrapSocketAddress(gextras.InternObject(a)).GetNativeSize()
-}
-
-func (a inetSocketAddress) ToNative(dest interface{}, destlen uint) error {
-	return WrapSocketAddress(gextras.InternObject(a)).ToNative(dest, destlen)
-}
-
-func (c inetSocketAddress) Enumerate() SocketAddressEnumerator {
-	return WrapSocketConnectable(gextras.InternObject(c)).Enumerate()
-}
-
-func (c inetSocketAddress) ProxyEnumerate() SocketAddressEnumerator {
-	return WrapSocketConnectable(gextras.InternObject(c)).ProxyEnumerate()
-}
-
-func (c inetSocketAddress) ToString() string {
-	return WrapSocketConnectable(gextras.InternObject(c)).ToString()
-}
-
-func (c inetSocketAddress) Enumerate() SocketAddressEnumerator {
-	return WrapSocketConnectable(gextras.InternObject(c)).Enumerate()
-}
-
-func (c inetSocketAddress) ProxyEnumerate() SocketAddressEnumerator {
-	return WrapSocketConnectable(gextras.InternObject(c)).ProxyEnumerate()
-}
-
-func (c inetSocketAddress) ToString() string {
-	return WrapSocketConnectable(gextras.InternObject(c)).ToString()
-}
-
-func (a inetSocketAddress) Address() InetAddress {
+// Address gets @address's Address.
+func (a *InetSocketAddressClass) Address() InetAddress {
 	var _arg0 *C.GInetSocketAddress // out
 	var _cret *C.GInetAddress       // in
 
@@ -242,7 +136,9 @@ func (a inetSocketAddress) Address() InetAddress {
 	return _inetAddress
 }
 
-func (a inetSocketAddress) Flowinfo() uint32 {
+// Flowinfo gets the `sin6_flowinfo` field from @address, which must be an IPv6
+// address.
+func (a *InetSocketAddressClass) Flowinfo() uint32 {
 	var _arg0 *C.GInetSocketAddress // out
 	var _cret C.guint32             // in
 
@@ -257,7 +153,8 @@ func (a inetSocketAddress) Flowinfo() uint32 {
 	return _guint32
 }
 
-func (a inetSocketAddress) Port() uint16 {
+// Port gets @address's port.
+func (a *InetSocketAddressClass) Port() uint16 {
 	var _arg0 *C.GInetSocketAddress // out
 	var _cret C.guint16             // in
 
@@ -272,7 +169,9 @@ func (a inetSocketAddress) Port() uint16 {
 	return _guint16
 }
 
-func (a inetSocketAddress) ScopeID() uint32 {
+// ScopeID gets the `sin6_scope_id` field from @address, which must be an IPv6
+// address.
+func (a *InetSocketAddressClass) ScopeID() uint32 {
 	var _arg0 *C.GInetSocketAddress // out
 	var _cret C.guint32             // in
 

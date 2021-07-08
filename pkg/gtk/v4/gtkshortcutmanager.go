@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -21,7 +22,7 @@ func init() {
 	})
 }
 
-// ShortcutManagerOverrider contains methods that are overridable .
+// ShortcutManagerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
@@ -44,23 +45,27 @@ type ShortcutManagerOverrider interface {
 // GTK_SHORTCUT_SCOPE_MANAGED.
 type ShortcutManager interface {
 	gextras.Objector
+
+	privateShortcutManagerInterface()
 }
 
-// shortcutManager implements the ShortcutManager interface.
-type shortcutManager struct {
+// ShortcutManagerInterface implements the ShortcutManager interface.
+type ShortcutManagerInterface struct {
 	*externglib.Object
 }
 
-var _ ShortcutManager = (*shortcutManager)(nil)
+var _ ShortcutManager = (*ShortcutManagerInterface)(nil)
 
-// WrapShortcutManager wraps a GObject to a type that implements
-// interface ShortcutManager. It is primarily used internally.
-func WrapShortcutManager(obj *externglib.Object) ShortcutManager {
-	return shortcutManager{obj}
+func wrapShortcutManager(obj *externglib.Object) ShortcutManager {
+	return &ShortcutManagerInterface{
+		Object: obj,
+	}
 }
 
 func marshalShortcutManager(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapShortcutManager(obj), nil
+	return wrapShortcutManager(obj), nil
 }
+
+func (*ShortcutManagerInterface) privateShortcutManagerInterface() {}

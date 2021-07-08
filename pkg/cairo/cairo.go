@@ -204,7 +204,7 @@ func marshalLineJoin(p uintptr) (interface{}, error) {
 type TextClusterFlags int
 
 const (
-	TextClusterFlagBackward TextClusterFlags = 1
+	TextClusterFlagsBackward TextClusterFlags = 1
 )
 
 func marshalTextClusterFlags(p uintptr) (interface{}, error) {
@@ -291,10 +291,10 @@ func marshalFontType(p uintptr) (interface{}, error) {
 type PathDataType int
 
 const (
-	PathMoveTo PathDataType = iota
-	PathLineTo
-	PathCurveTo
-	PathClosePath
+	PathDataTypeMoveTo PathDataType = iota
+	PathDataTypeLineTo
+	PathDataTypeCurveTo
+	PathDataTypeClosePath
 )
 
 func marshalPathDataType(p uintptr) (interface{}, error) {

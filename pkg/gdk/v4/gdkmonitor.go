@@ -59,12 +59,6 @@ type Monitor interface {
 	Connector() string
 	// Display gets the display that this monitor belongs to.
 	Display() Display
-	// Geometry retrieves the size and position of the monitor within the
-	// display coordinate space.
-	//
-	// The returned geometry is in ”application pixels”, not in ”device pixels”
-	// (see [method@Gdk.Monitor.get_scale_factor]).
-	Geometry() Rectangle
 	// HeightMm gets the height in millimeters of the monitor.
 	HeightMm() int
 	// Manufacturer gets the name or PNP ID of the monitor's manufacturer.
@@ -104,26 +98,27 @@ type Monitor interface {
 	IsValid() bool
 }
 
-// monitor implements the Monitor interface.
-type monitor struct {
+// MonitorClass implements the Monitor interface.
+type MonitorClass struct {
 	*externglib.Object
 }
 
-var _ Monitor = (*monitor)(nil)
+var _ Monitor = (*MonitorClass)(nil)
 
-// WrapMonitor wraps a GObject to a type that implements
-// interface Monitor. It is primarily used internally.
-func WrapMonitor(obj *externglib.Object) Monitor {
-	return monitor{obj}
+func wrapMonitor(obj *externglib.Object) Monitor {
+	return &MonitorClass{
+		Object: obj,
+	}
 }
 
 func marshalMonitor(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapMonitor(obj), nil
+	return wrapMonitor(obj), nil
 }
 
-func (m monitor) Connector() string {
+// Connector gets the name of the monitor's connector, if available.
+func (m *MonitorClass) Connector() string {
 	var _arg0 *C.GdkMonitor // out
 	var _cret *C.char       // in
 
@@ -138,7 +133,8 @@ func (m monitor) Connector() string {
 	return _utf8
 }
 
-func (m monitor) Display() Display {
+// Display gets the display that this monitor belongs to.
+func (m *MonitorClass) Display() Display {
 	var _arg0 *C.GdkMonitor // out
 	var _cret *C.GdkDisplay // in
 
@@ -153,32 +149,8 @@ func (m monitor) Display() Display {
 	return _display
 }
 
-func (m monitor) Geometry() Rectangle {
-	var _arg0 *C.GdkMonitor  // out
-	var _arg1 C.GdkRectangle // in
-
-	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
-
-	C.gdk_monitor_get_geometry(_arg0, &_arg1)
-
-	var _geometry Rectangle // out
-
-	{
-		var refTmpIn *C.GdkRectangle
-		var refTmpOut *Rectangle
-
-		in0 := &_arg1
-		refTmpIn = in0
-
-		refTmpOut = (*Rectangle)(unsafe.Pointer(refTmpIn))
-
-		_geometry = *refTmpOut
-	}
-
-	return _geometry
-}
-
-func (m monitor) HeightMm() int {
+// HeightMm gets the height in millimeters of the monitor.
+func (m *MonitorClass) HeightMm() int {
 	var _arg0 *C.GdkMonitor // out
 	var _cret C.int         // in
 
@@ -193,7 +165,13 @@ func (m monitor) HeightMm() int {
 	return _gint
 }
 
-func (m monitor) Manufacturer() string {
+// Manufacturer gets the name or PNP ID of the monitor's manufacturer.
+//
+// Note that this value might also vary depending on actual display backend.
+//
+// The PNP ID registry is located at https://uefi.org/pnp_id_list
+// (https://uefi.org/pnp_id_list).
+func (m *MonitorClass) Manufacturer() string {
 	var _arg0 *C.GdkMonitor // out
 	var _cret *C.char       // in
 
@@ -208,7 +186,8 @@ func (m monitor) Manufacturer() string {
 	return _utf8
 }
 
-func (m monitor) Model() string {
+// Model gets the string identifying the monitor model, if available.
+func (m *MonitorClass) Model() string {
 	var _arg0 *C.GdkMonitor // out
 	var _cret *C.char       // in
 
@@ -223,7 +202,10 @@ func (m monitor) Model() string {
 	return _utf8
 }
 
-func (m monitor) RefreshRate() int {
+// RefreshRate gets the refresh rate of the monitor, if available.
+//
+// The value is in milli-Hertz, so a refresh rate of 60Hz is returned as 60000.
+func (m *MonitorClass) RefreshRate() int {
 	var _arg0 *C.GdkMonitor // out
 	var _cret C.int         // in
 
@@ -238,7 +220,16 @@ func (m monitor) RefreshRate() int {
 	return _gint
 }
 
-func (m monitor) ScaleFactor() int {
+// ScaleFactor gets the internal scale factor that maps from monitor coordinates
+// to device pixels.
+//
+// On traditional systems this is 1, but on very high density outputs it can be
+// a higher value (often 2).
+//
+// This can be used if you want to create pixel based data for a particular
+// monitor, but most of the time you’re drawing to a surface where it is better
+// to use [method@Gdk.Surface.get_scale_factor] instead.
+func (m *MonitorClass) ScaleFactor() int {
 	var _arg0 *C.GdkMonitor // out
 	var _cret C.int         // in
 
@@ -253,7 +244,9 @@ func (m monitor) ScaleFactor() int {
 	return _gint
 }
 
-func (m monitor) SubpixelLayout() SubpixelLayout {
+// SubpixelLayout gets information about the layout of red, green and blue
+// primaries for pixels.
+func (m *MonitorClass) SubpixelLayout() SubpixelLayout {
 	var _arg0 *C.GdkMonitor       // out
 	var _cret C.GdkSubpixelLayout // in
 
@@ -268,7 +261,8 @@ func (m monitor) SubpixelLayout() SubpixelLayout {
 	return _subpixelLayout
 }
 
-func (m monitor) WidthMm() int {
+// WidthMm gets the width in millimeters of the monitor.
+func (m *MonitorClass) WidthMm() int {
 	var _arg0 *C.GdkMonitor // out
 	var _cret C.int         // in
 
@@ -283,7 +277,12 @@ func (m monitor) WidthMm() int {
 	return _gint
 }
 
-func (m monitor) IsValid() bool {
+// IsValid returns true if the @monitor object corresponds to a physical
+// monitor.
+//
+// The @monitor becomes invalid when the physical monitor is unplugged or
+// removed.
+func (m *MonitorClass) IsValid() bool {
 	var _arg0 *C.GdkMonitor // out
 	var _cret C.gboolean    // in
 

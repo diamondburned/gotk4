@@ -24,18 +24,6 @@ func init() {
 	})
 }
 
-// ScrollableOverrider contains methods that are overridable .
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
-type ScrollableOverrider interface {
-	// Border returns the size of a non-scrolling border around the outside of
-	// the scrollable. An example for this would be treeview headers. GTK+ can
-	// use this information to display overlayed graphics, like the overshoot
-	// indication, at the right position.
-	Border() (Border, bool)
-}
-
 // Scrollable is an interface that is implemented by widgets with native
 // scrolling ability.
 //
@@ -64,11 +52,6 @@ type ScrollableOverrider interface {
 type Scrollable interface {
 	gextras.Objector
 
-	// Border returns the size of a non-scrolling border around the outside of
-	// the scrollable. An example for this would be treeview headers. GTK+ can
-	// use this information to display overlayed graphics, like the overshoot
-	// indication, at the right position.
-	Border() (Border, bool)
 	// HAdjustment retrieves the Adjustment used for horizontal scrolling.
 	HAdjustment() Adjustment
 	// HscrollPolicy gets the horizontal ScrollablePolicy.
@@ -91,56 +74,27 @@ type Scrollable interface {
 	SetVscrollPolicy(policy ScrollablePolicy)
 }
 
-// scrollable implements the Scrollable interface.
-type scrollable struct {
+// ScrollableInterface implements the Scrollable interface.
+type ScrollableInterface struct {
 	*externglib.Object
 }
 
-var _ Scrollable = (*scrollable)(nil)
+var _ Scrollable = (*ScrollableInterface)(nil)
 
-// WrapScrollable wraps a GObject to a type that implements
-// interface Scrollable. It is primarily used internally.
-func WrapScrollable(obj *externglib.Object) Scrollable {
-	return scrollable{obj}
+func wrapScrollable(obj *externglib.Object) Scrollable {
+	return &ScrollableInterface{
+		Object: obj,
+	}
 }
 
 func marshalScrollable(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapScrollable(obj), nil
+	return wrapScrollable(obj), nil
 }
 
-func (s scrollable) Border() (Border, bool) {
-	var _arg0 *C.GtkScrollable // out
-	var _arg1 C.GtkBorder      // in
-	var _cret C.gboolean       // in
-
-	_arg0 = (*C.GtkScrollable)(unsafe.Pointer(s.Native()))
-
-	_cret = C.gtk_scrollable_get_border(_arg0, &_arg1)
-
-	var _border Border // out
-	var _ok bool       // out
-
-	{
-		var refTmpIn *C.GtkBorder
-		var refTmpOut *Border
-
-		in0 := &_arg1
-		refTmpIn = in0
-
-		refTmpOut = (*Border)(unsafe.Pointer(refTmpIn))
-
-		_border = *refTmpOut
-	}
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _border, _ok
-}
-
-func (s scrollable) HAdjustment() Adjustment {
+// HAdjustment retrieves the Adjustment used for horizontal scrolling.
+func (s *ScrollableInterface) HAdjustment() Adjustment {
 	var _arg0 *C.GtkScrollable // out
 	var _cret *C.GtkAdjustment // in
 
@@ -155,7 +109,8 @@ func (s scrollable) HAdjustment() Adjustment {
 	return _adjustment
 }
 
-func (s scrollable) HscrollPolicy() ScrollablePolicy {
+// HscrollPolicy gets the horizontal ScrollablePolicy.
+func (s *ScrollableInterface) HscrollPolicy() ScrollablePolicy {
 	var _arg0 *C.GtkScrollable      // out
 	var _cret C.GtkScrollablePolicy // in
 
@@ -170,7 +125,8 @@ func (s scrollable) HscrollPolicy() ScrollablePolicy {
 	return _scrollablePolicy
 }
 
-func (s scrollable) VAdjustment() Adjustment {
+// VAdjustment retrieves the Adjustment used for vertical scrolling.
+func (s *ScrollableInterface) VAdjustment() Adjustment {
 	var _arg0 *C.GtkScrollable // out
 	var _cret *C.GtkAdjustment // in
 
@@ -185,7 +141,8 @@ func (s scrollable) VAdjustment() Adjustment {
 	return _adjustment
 }
 
-func (s scrollable) VscrollPolicy() ScrollablePolicy {
+// VscrollPolicy gets the vertical ScrollablePolicy.
+func (s *ScrollableInterface) VscrollPolicy() ScrollablePolicy {
 	var _arg0 *C.GtkScrollable      // out
 	var _cret C.GtkScrollablePolicy // in
 
@@ -200,7 +157,8 @@ func (s scrollable) VscrollPolicy() ScrollablePolicy {
 	return _scrollablePolicy
 }
 
-func (s scrollable) SetHAdjustment(hadjustment Adjustment) {
+// SetHAdjustment sets the horizontal adjustment of the Scrollable.
+func (s *ScrollableInterface) SetHAdjustment(hadjustment Adjustment) {
 	var _arg0 *C.GtkScrollable // out
 	var _arg1 *C.GtkAdjustment // out
 
@@ -210,7 +168,9 @@ func (s scrollable) SetHAdjustment(hadjustment Adjustment) {
 	C.gtk_scrollable_set_hadjustment(_arg0, _arg1)
 }
 
-func (s scrollable) SetHscrollPolicy(policy ScrollablePolicy) {
+// SetHscrollPolicy sets the ScrollablePolicy to determine whether horizontal
+// scrolling should start below the minimum width or below the natural width.
+func (s *ScrollableInterface) SetHscrollPolicy(policy ScrollablePolicy) {
 	var _arg0 *C.GtkScrollable      // out
 	var _arg1 C.GtkScrollablePolicy // out
 
@@ -220,7 +180,8 @@ func (s scrollable) SetHscrollPolicy(policy ScrollablePolicy) {
 	C.gtk_scrollable_set_hscroll_policy(_arg0, _arg1)
 }
 
-func (s scrollable) SetVAdjustment(vadjustment Adjustment) {
+// SetVAdjustment sets the vertical adjustment of the Scrollable.
+func (s *ScrollableInterface) SetVAdjustment(vadjustment Adjustment) {
 	var _arg0 *C.GtkScrollable // out
 	var _arg1 *C.GtkAdjustment // out
 
@@ -230,7 +191,9 @@ func (s scrollable) SetVAdjustment(vadjustment Adjustment) {
 	C.gtk_scrollable_set_vadjustment(_arg0, _arg1)
 }
 
-func (s scrollable) SetVscrollPolicy(policy ScrollablePolicy) {
+// SetVscrollPolicy sets the ScrollablePolicy to determine whether vertical
+// scrolling should start below the minimum height or below the natural height.
+func (s *ScrollableInterface) SetVscrollPolicy(policy ScrollablePolicy) {
 	var _arg0 *C.GtkScrollable      // out
 	var _arg1 C.GtkScrollablePolicy // out
 

@@ -132,13 +132,13 @@ type ConverterResult int
 
 const (
 	// Error: there was an error during conversion.
-	ConverterError ConverterResult = iota
+	ConverterResultError ConverterResult = iota
 	// Converted: some data was consumed or produced
-	ConverterConverted
+	ConverterResultConverted
 	// Finished: the conversion is finished
-	ConverterFinished
+	ConverterResultFinished
 	// Flushed: flushing is finished
-	ConverterFlushed
+	ConverterResultFlushed
 )
 
 func marshalConverterResult(p uintptr) (interface{}, error) {
@@ -604,112 +604,112 @@ type IOErrorEnum int
 const (
 	// Failed: generic error condition for when an operation fails and no more
 	// specific OErrorEnum value is defined.
-	IOErrorFailed IOErrorEnum = 0
+	IOErrorEnumFailed IOErrorEnum = 0
 	// NotFound: file not found.
-	IOErrorNotFound IOErrorEnum = 1
+	IOErrorEnumNotFound IOErrorEnum = 1
 	// Exists: file already exists.
-	IOErrorExists IOErrorEnum = 2
+	IOErrorEnumExists IOErrorEnum = 2
 	// IsDirectory: file is a directory.
-	IOErrorIsDirectory IOErrorEnum = 3
+	IOErrorEnumIsDirectory IOErrorEnum = 3
 	// NotDirectory: file is not a directory.
-	IOErrorNotDirectory IOErrorEnum = 4
+	IOErrorEnumNotDirectory IOErrorEnum = 4
 	// NotEmpty: file is a directory that isn't empty.
-	IOErrorNotEmpty IOErrorEnum = 5
+	IOErrorEnumNotEmpty IOErrorEnum = 5
 	// NotRegularFile: file is not a regular file.
-	IOErrorNotRegularFile IOErrorEnum = 6
+	IOErrorEnumNotRegularFile IOErrorEnum = 6
 	// NotSymbolicLink: file is not a symbolic link.
-	IOErrorNotSymbolicLink IOErrorEnum = 7
+	IOErrorEnumNotSymbolicLink IOErrorEnum = 7
 	// NotMountableFile: file cannot be mounted.
-	IOErrorNotMountableFile IOErrorEnum = 8
+	IOErrorEnumNotMountableFile IOErrorEnum = 8
 	// FilenameTooLong: filename is too many characters.
-	IOErrorFilenameTooLong IOErrorEnum = 9
+	IOErrorEnumFilenameTooLong IOErrorEnum = 9
 	// InvalidFilename: filename is invalid or contains invalid characters.
-	IOErrorInvalidFilename IOErrorEnum = 10
+	IOErrorEnumInvalidFilename IOErrorEnum = 10
 	// TooManyLinks: file contains too many symbolic links.
-	IOErrorTooManyLinks IOErrorEnum = 11
+	IOErrorEnumTooManyLinks IOErrorEnum = 11
 	// NoSpace: no space left on drive.
-	IOErrorNoSpace IOErrorEnum = 12
+	IOErrorEnumNoSpace IOErrorEnum = 12
 	// InvalidArgument: invalid argument.
-	IOErrorInvalidArgument IOErrorEnum = 13
+	IOErrorEnumInvalidArgument IOErrorEnum = 13
 	// PermissionDenied: permission denied.
-	IOErrorPermissionDenied IOErrorEnum = 14
+	IOErrorEnumPermissionDenied IOErrorEnum = 14
 	// NotSupported: operation (or one of its parameters) not supported
-	IOErrorNotSupported IOErrorEnum = 15
+	IOErrorEnumNotSupported IOErrorEnum = 15
 	// NotMounted: file isn't mounted.
-	IOErrorNotMounted IOErrorEnum = 16
+	IOErrorEnumNotMounted IOErrorEnum = 16
 	// AlreadyMounted: file is already mounted.
-	IOErrorAlreadyMounted IOErrorEnum = 17
+	IOErrorEnumAlreadyMounted IOErrorEnum = 17
 	// Closed: file was closed.
-	IOErrorClosed IOErrorEnum = 18
+	IOErrorEnumClosed IOErrorEnum = 18
 	// Cancelled: operation was cancelled. See #GCancellable.
-	IOErrorCancelled IOErrorEnum = 19
+	IOErrorEnumCancelled IOErrorEnum = 19
 	// Pending operations are still pending.
-	IOErrorPending IOErrorEnum = 20
+	IOErrorEnumPending IOErrorEnum = 20
 	// ReadOnly: file is read only.
-	IOErrorReadOnly IOErrorEnum = 21
+	IOErrorEnumReadOnly IOErrorEnum = 21
 	// CantCreateBackup: backup couldn't be created.
-	IOErrorCantCreateBackup IOErrorEnum = 22
+	IOErrorEnumCantCreateBackup IOErrorEnum = 22
 	// WrongEtag file's Entity Tag was incorrect.
-	IOErrorWrongEtag IOErrorEnum = 23
+	IOErrorEnumWrongEtag IOErrorEnum = 23
 	// TimedOut: operation timed out.
-	IOErrorTimedOut IOErrorEnum = 24
+	IOErrorEnumTimedOut IOErrorEnum = 24
 	// WouldRecurse: operation would be recursive.
-	IOErrorWouldRecurse IOErrorEnum = 25
+	IOErrorEnumWouldRecurse IOErrorEnum = 25
 	// Busy: file is busy.
-	IOErrorBusy IOErrorEnum = 26
+	IOErrorEnumBusy IOErrorEnum = 26
 	// WouldBlock: operation would block.
-	IOErrorWouldBlock IOErrorEnum = 27
+	IOErrorEnumWouldBlock IOErrorEnum = 27
 	// HostNotFound: host couldn't be found (remote operations).
-	IOErrorHostNotFound IOErrorEnum = 28
+	IOErrorEnumHostNotFound IOErrorEnum = 28
 	// WouldMerge: operation would merge files.
-	IOErrorWouldMerge IOErrorEnum = 29
+	IOErrorEnumWouldMerge IOErrorEnum = 29
 	// FailedHandled: operation failed and a helper program has already
 	// interacted with the user. Do not display any error dialog.
-	IOErrorFailedHandled IOErrorEnum = 30
+	IOErrorEnumFailedHandled IOErrorEnum = 30
 	// TooManyOpenFiles: the current process has too many files open and can't
 	// open any more. Duplicate descriptors do count toward this limit. Since
 	// 2.20
-	IOErrorTooManyOpenFiles IOErrorEnum = 31
+	IOErrorEnumTooManyOpenFiles IOErrorEnum = 31
 	// NotInitialized: the object has not been initialized. Since 2.22
-	IOErrorNotInitialized IOErrorEnum = 32
+	IOErrorEnumNotInitialized IOErrorEnum = 32
 	// AddressInUse: the requested address is already in use. Since 2.22
-	IOErrorAddressInUse IOErrorEnum = 33
+	IOErrorEnumAddressInUse IOErrorEnum = 33
 	// PartialInput: need more input to finish operation. Since 2.24
-	IOErrorPartialInput IOErrorEnum = 34
+	IOErrorEnumPartialInput IOErrorEnum = 34
 	// InvalidData: the input data was invalid. Since 2.24
-	IOErrorInvalidData IOErrorEnum = 35
+	IOErrorEnumInvalidData IOErrorEnum = 35
 	// DBusError: remote object generated an error that doesn't correspond to a
 	// locally registered #GError error domain. Use
 	// g_dbus_error_get_remote_error() to extract the D-Bus error name and
 	// g_dbus_error_strip_remote_error() to fix up the message so it matches
 	// what was received on the wire. Since 2.26.
-	IOErrorDBusError IOErrorEnum = 36
+	IOErrorEnumDBusError IOErrorEnum = 36
 	// HostUnreachable: host unreachable. Since 2.26
-	IOErrorHostUnreachable IOErrorEnum = 37
+	IOErrorEnumHostUnreachable IOErrorEnum = 37
 	// NetworkUnreachable: network unreachable. Since 2.26
-	IOErrorNetworkUnreachable IOErrorEnum = 38
+	IOErrorEnumNetworkUnreachable IOErrorEnum = 38
 	// ConnectionRefused: connection refused. Since 2.26
-	IOErrorConnectionRefused IOErrorEnum = 39
+	IOErrorEnumConnectionRefused IOErrorEnum = 39
 	// ProxyFailed: connection to proxy server failed. Since 2.26
-	IOErrorProxyFailed IOErrorEnum = 40
+	IOErrorEnumProxyFailed IOErrorEnum = 40
 	// ProxyAuthFailed: proxy authentication failed. Since 2.26
-	IOErrorProxyAuthFailed IOErrorEnum = 41
+	IOErrorEnumProxyAuthFailed IOErrorEnum = 41
 	// ProxyNeedAuth: proxy server needs authentication. Since 2.26
-	IOErrorProxyNeedAuth IOErrorEnum = 42
+	IOErrorEnumProxyNeedAuth IOErrorEnum = 42
 	// ProxyNotAllowed: proxy connection is not allowed by ruleset. Since 2.26
-	IOErrorProxyNotAllowed IOErrorEnum = 43
+	IOErrorEnumProxyNotAllowed IOErrorEnum = 43
 	// BrokenPipe: broken pipe. Since 2.36
-	IOErrorBrokenPipe IOErrorEnum = 44
+	IOErrorEnumBrokenPipe IOErrorEnum = 44
 	// ConnectionClosed: connection closed by peer. Note that this is the same
 	// code as G_IO_ERROR_BROKEN_PIPE; before 2.44 some "connection closed"
 	// errors returned G_IO_ERROR_BROKEN_PIPE, but others returned
 	// G_IO_ERROR_FAILED. Now they should all return the same value, which has
 	// this more logical name. Since 2.44.
-	IOErrorConnectionClosed IOErrorEnum = 44
+	IOErrorEnumConnectionClosed IOErrorEnum = 44
 	// NotConnected: transport endpoint is not connected. Since 2.44
-	IOErrorNotConnected IOErrorEnum = 45
+	IOErrorEnumNotConnected IOErrorEnum = 45
 	// MessageTooLarge: message too large. Since 2.48.
-	IOErrorMessageTooLarge IOErrorEnum = 46
+	IOErrorEnumMessageTooLarge IOErrorEnum = 46
 )
 
 func marshalIOErrorEnum(p uintptr) (interface{}, error) {
@@ -721,11 +721,11 @@ type IOModuleScopeFlags int
 
 const (
 	// None: no module scan flags
-	IOModuleScopeNone IOModuleScopeFlags = iota
+	IOModuleScopeFlagsNone IOModuleScopeFlags = iota
 	// BlockDuplicates: when using this scope to load or scan modules,
 	// automatically block a modules which has the same base basename as
 	// previously loaded module.
-	IOModuleScopeBlockDuplicates
+	IOModuleScopeFlagsBlockDuplicates
 )
 
 func marshalIOModuleScopeFlags(p uintptr) (interface{}, error) {
@@ -766,11 +766,11 @@ type MountOperationResult int
 const (
 	// Handled: the request was fulfilled and the user specified data is now
 	// available
-	MountOperationHandled MountOperationResult = iota
+	MountOperationResultHandled MountOperationResult = iota
 	// Aborted: the user requested the mount operation to be aborted
-	MountOperationAborted
+	MountOperationResultAborted
 	// Unhandled: the request was unhandled (i.e. not implemented)
-	MountOperationUnhandled
+	MountOperationResultUnhandled
 )
 
 func marshalMountOperationResult(p uintptr) (interface{}, error) {
@@ -921,15 +921,15 @@ type ResolverRecordType int
 
 const (
 	// Srv: look up DNS SRV records for a domain
-	ResolverRecordSrv ResolverRecordType = 1
+	ResolverRecordTypeSrv ResolverRecordType = 1
 	// Mx: look up DNS MX records for a domain
-	ResolverRecordMx ResolverRecordType = 2
+	ResolverRecordTypeMx ResolverRecordType = 2
 	// Txt: look up DNS TXT records for a name
-	ResolverRecordTxt ResolverRecordType = 3
+	ResolverRecordTypeTxt ResolverRecordType = 3
 	// Soa: look up DNS SOA records for a zone
-	ResolverRecordSoa ResolverRecordType = 4
+	ResolverRecordTypeSoa ResolverRecordType = 4
 	// Ns: look up DNS NS records for a domain
-	ResolverRecordNs ResolverRecordType = 5
+	ResolverRecordTypeNs ResolverRecordType = 5
 )
 
 func marshalResolverRecordType(p uintptr) (interface{}, error) {
@@ -959,25 +959,25 @@ type SocketClientEvent int
 
 const (
 	// Resolving: the client is doing a DNS lookup.
-	SocketClientResolving SocketClientEvent = iota
+	SocketClientEventResolving SocketClientEvent = iota
 	// Resolved: the client has completed a DNS lookup.
-	SocketClientResolved
+	SocketClientEventResolved
 	// Connecting: the client is connecting to a remote host (either a proxy or
 	// the destination server).
-	SocketClientConnecting
+	SocketClientEventConnecting
 	// Connected: the client has connected to a remote host.
-	SocketClientConnected
+	SocketClientEventConnected
 	// ProxyNegotiating: the client is negotiating with a proxy to connect to
 	// the destination server.
-	SocketClientProxyNegotiating
+	SocketClientEventProxyNegotiating
 	// ProxyNegotiated: the client has negotiated with the proxy server.
-	SocketClientProxyNegotiated
+	SocketClientEventProxyNegotiated
 	// TLSHandshaking: the client is performing a TLS handshake.
-	SocketClientTLSHandshaking
+	SocketClientEventTLSHandshaking
 	// TLSHandshaked: the client has performed a TLS handshake.
-	SocketClientTLSHandshaked
+	SocketClientEventTLSHandshaked
 	// Complete: the client is done with a particular Connectable.
-	SocketClientComplete
+	SocketClientEventComplete
 )
 
 func marshalSocketClientEvent(p uintptr) (interface{}, error) {
@@ -1011,13 +1011,13 @@ type SocketListenerEvent int
 
 const (
 	// Binding: the listener is about to bind a socket.
-	SocketListenerBinding SocketListenerEvent = iota
+	SocketListenerEventBinding SocketListenerEvent = iota
 	// Bound: the listener has bound a socket.
-	SocketListenerBound
+	SocketListenerEventBound
 	// Listening: the listener is about to start listening on this socket.
-	SocketListenerListening
+	SocketListenerEventListening
 	// Listened: the listener is now listening on this socket.
-	SocketListenerListened
+	SocketListenerEventListened
 )
 
 func marshalSocketListenerEvent(p uintptr) (interface{}, error) {
@@ -1075,11 +1075,11 @@ type TLSAuthenticationMode int
 
 const (
 	// None: client authentication not required
-	TLSAuthenticationNone TLSAuthenticationMode = iota
+	TLSAuthenticationModeNone TLSAuthenticationMode = iota
 	// Requested: client authentication is requested
-	TLSAuthenticationRequested
+	TLSAuthenticationModeRequested
 	// Required: client authentication is required
-	TLSAuthenticationRequired
+	TLSAuthenticationModeRequired
 )
 
 func marshalTLSAuthenticationMode(p uintptr) (interface{}, error) {
@@ -1093,7 +1093,7 @@ type TLSCertificateRequestFlags int
 
 const (
 	// None: no flags
-	TLSCertificateRequestNone TLSCertificateRequestFlags = iota
+	TLSCertificateRequestFlagsNone TLSCertificateRequestFlags = iota
 )
 
 func marshalTLSCertificateRequestFlags(p uintptr) (interface{}, error) {
@@ -1138,10 +1138,10 @@ type TLSChannelBindingType int
 const (
 	// Unique: `tls-unique` (https://tools.ietf.org/html/rfc5929#section-3)
 	// binding type
-	TLSChannelBindingTLSUnique TLSChannelBindingType = iota
+	TLSChannelBindingTypeUnique TLSChannelBindingType = iota
 	// ServerEndPoint: `tls-server-end-point`
 	// (https://tools.ietf.org/html/rfc5929#section-4) binding type
-	TLSChannelBindingTLSServerEndPoint
+	TLSChannelBindingTypeServerEndPoint
 )
 
 func marshalTLSChannelBindingType(p uintptr) (interface{}, error) {
@@ -1156,9 +1156,9 @@ type TLSDatabaseLookupFlags int
 
 const (
 	// None: no lookup flags
-	TLSDatabaseLookupNone TLSDatabaseLookupFlags = iota
+	TLSDatabaseLookupFlagsNone TLSDatabaseLookupFlags = iota
 	// Keypair: restrict lookup to certificates that have a private key.
-	TLSDatabaseLookupKeypair
+	TLSDatabaseLookupFlagsKeypair
 )
 
 func marshalTLSDatabaseLookupFlags(p uintptr) (interface{}, error) {
@@ -1205,12 +1205,12 @@ type TLSInteractionResult int
 
 const (
 	// Unhandled: the interaction was unhandled (i.e. not implemented).
-	TLSInteractionUnhandled TLSInteractionResult = iota
+	TLSInteractionResultUnhandled TLSInteractionResult = iota
 	// Handled: the interaction completed, and resulting data is available.
-	TLSInteractionHandled
+	TLSInteractionResultHandled
 	// Failed: the interaction has failed, or was cancelled. and the operation
 	// should be aborted.
-	TLSInteractionFailed
+	TLSInteractionResultFailed
 )
 
 func marshalTLSInteractionResult(p uintptr) (interface{}, error) {
@@ -1225,11 +1225,11 @@ type TLSRehandshakeMode int
 
 const (
 	// Never: never allow rehandshaking
-	TLSRehandshakeNever TLSRehandshakeMode = iota
+	TLSRehandshakeModeNever TLSRehandshakeMode = iota
 	// Safely: allow safe rehandshaking only
-	TLSRehandshakeSafely
+	TLSRehandshakeModeSafely
 	// Unsafely: allow unsafe rehandshaking
-	TLSRehandshakeUnsafely
+	TLSRehandshakeModeUnsafely
 )
 
 func marshalTLSRehandshakeMode(p uintptr) (interface{}, error) {
@@ -1252,16 +1252,16 @@ type UnixSocketAddressType int
 
 const (
 	// Invalid: invalid
-	UnixSocketAddressInvalid UnixSocketAddressType = iota
+	UnixSocketAddressTypeInvalid UnixSocketAddressType = iota
 	// Anonymous: anonymous
-	UnixSocketAddressAnonymous
+	UnixSocketAddressTypeAnonymous
 	// Path: filesystem path
-	UnixSocketAddressPath
+	UnixSocketAddressTypePath
 	// Abstract name
-	UnixSocketAddressAbstract
+	UnixSocketAddressTypeAbstract
 	// AbstractPadded: abstract name, 0-padded to the full length of a unix
 	// socket name
-	UnixSocketAddressAbstractPadded
+	UnixSocketAddressTypeAbstractPadded
 )
 
 func marshalUnixSocketAddressType(p uintptr) (interface{}, error) {

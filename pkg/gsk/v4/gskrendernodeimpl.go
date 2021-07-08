@@ -7,7 +7,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/cairo"
-	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	"github.com/diamondburned/gotk4/pkg/graphene"
@@ -55,53 +54,7 @@ func init() {
 // BlendNode: render node applying a blending function between its two child
 // nodes.
 type BlendNode interface {
-	RenderNode
-
-	// AsRenderNode casts the class to the RenderNode interface.
-	AsRenderNode() RenderNode
-
-	// Draw the contents of @node to the given cairo context.
-	//
-	// Typically, you'll use this function to implement fallback rendering of
-	// `GskRenderNode`s on an intermediate Cairo context, instead of using the
-	// drawing context associated to a `GdkSurface`'s rendering buffer.
-	//
-	// For advanced nodes that cannot be supported using Cairo, in particular
-	// for nodes doing 3D operations, this function may fail.
-	//
-	// This method is inherited from RenderNode
-	Draw(cr *cairo.Context)
-	// GetBounds retrieves the boundaries of the @node.
-	//
-	// The node will not draw outside of its boundaries.
-	//
-	// This method is inherited from RenderNode
-	GetBounds() graphene.Rect
-	// GetNodeType returns the type of the @node.
-	//
-	// This method is inherited from RenderNode
-	GetNodeType() RenderNodeType
-	// Ref acquires a reference on the given `GskRenderNode`.
-	//
-	// This method is inherited from RenderNode
-	ref() RenderNode
-	// Unref releases a reference on the given `GskRenderNode`.
-	//
-	// If the reference was the last, the resources associated to the @node are
-	// freed.
-	//
-	// This method is inherited from RenderNode
-	unref()
-	// WriteToFile: this function is equivalent to calling
-	// gsk_render_node_serialize() followed by g_file_set_contents().
-	//
-	// See those two functions for details on the arguments.
-	//
-	// It is mostly intended for use inside a debugger to quickly dump a render
-	// node to a file for later inspection.
-	//
-	// This method is inherited from RenderNode
-	WriteToFile(filename string) error
+	gextras.Objector
 
 	// BlendMode retrieves the blend mode used by @node.
 	BlendMode() BlendMode
@@ -111,23 +64,25 @@ type BlendNode interface {
 	TopChild() RenderNode
 }
 
-// blendNode implements the BlendNode interface.
-type blendNode struct {
-	*externglib.Object
+// BlendNodeClass implements the BlendNode interface.
+type BlendNodeClass struct {
+	RenderNodeClass
 }
 
-var _ BlendNode = (*blendNode)(nil)
+var _ BlendNode = (*BlendNodeClass)(nil)
 
-// WrapBlendNode wraps a GObject to a type that implements
-// interface BlendNode. It is primarily used internally.
-func WrapBlendNode(obj *externglib.Object) BlendNode {
-	return blendNode{obj}
+func wrapBlendNode(obj *externglib.Object) BlendNode {
+	return &BlendNodeClass{
+		RenderNodeClass: RenderNodeClass{
+			Object: obj,
+		},
+	}
 }
 
 func marshalBlendNode(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapBlendNode(obj), nil
+	return wrapBlendNode(obj), nil
 }
 
 // NewBlendNode creates a `GskRenderNode` that will use @blend_mode to blend the
@@ -151,35 +106,8 @@ func NewBlendNode(bottom RenderNode, top RenderNode, blendMode BlendMode) BlendN
 	return _blendNode
 }
 
-func (b blendNode) AsRenderNode() RenderNode {
-	return WrapRenderNode(gextras.InternObject(b))
-}
-
-func (n blendNode) Draw(cr *cairo.Context) {
-	WrapRenderNode(gextras.InternObject(n)).Draw(cr)
-}
-
-func (n blendNode) GetBounds() graphene.Rect {
-	return WrapRenderNode(gextras.InternObject(n)).GetBounds()
-}
-
-func (n blendNode) GetNodeType() RenderNodeType {
-	return WrapRenderNode(gextras.InternObject(n)).GetNodeType()
-}
-
-func (n blendNode) ref() RenderNode {
-	return WrapRenderNode(gextras.InternObject(n)).ref()
-}
-
-func (n blendNode) unref() {
-	WrapRenderNode(gextras.InternObject(n)).unref()
-}
-
-func (n blendNode) WriteToFile(filename string) error {
-	return WrapRenderNode(gextras.InternObject(n)).WriteToFile(filename)
-}
-
-func (n blendNode) BlendMode() BlendMode {
+// BlendMode retrieves the blend mode used by @node.
+func (n *BlendNodeClass) BlendMode() BlendMode {
 	var _arg0 *C.GskRenderNode // out
 	var _cret C.GskBlendMode   // in
 
@@ -194,7 +122,8 @@ func (n blendNode) BlendMode() BlendMode {
 	return _blendMode
 }
 
-func (n blendNode) BottomChild() RenderNode {
+// BottomChild retrieves the bottom `GskRenderNode` child of the @node.
+func (n *BlendNodeClass) BottomChild() RenderNode {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GskRenderNode // in
 
@@ -209,7 +138,8 @@ func (n blendNode) BottomChild() RenderNode {
 	return _renderNode
 }
 
-func (n blendNode) TopChild() RenderNode {
+// TopChild retrieves the top `GskRenderNode` child of the @node.
+func (n *BlendNodeClass) TopChild() RenderNode {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GskRenderNode // in
 
@@ -226,53 +156,7 @@ func (n blendNode) TopChild() RenderNode {
 
 // BlurNode: render node applying a blur effect to its single child.
 type BlurNode interface {
-	RenderNode
-
-	// AsRenderNode casts the class to the RenderNode interface.
-	AsRenderNode() RenderNode
-
-	// Draw the contents of @node to the given cairo context.
-	//
-	// Typically, you'll use this function to implement fallback rendering of
-	// `GskRenderNode`s on an intermediate Cairo context, instead of using the
-	// drawing context associated to a `GdkSurface`'s rendering buffer.
-	//
-	// For advanced nodes that cannot be supported using Cairo, in particular
-	// for nodes doing 3D operations, this function may fail.
-	//
-	// This method is inherited from RenderNode
-	Draw(cr *cairo.Context)
-	// GetBounds retrieves the boundaries of the @node.
-	//
-	// The node will not draw outside of its boundaries.
-	//
-	// This method is inherited from RenderNode
-	GetBounds() graphene.Rect
-	// GetNodeType returns the type of the @node.
-	//
-	// This method is inherited from RenderNode
-	GetNodeType() RenderNodeType
-	// Ref acquires a reference on the given `GskRenderNode`.
-	//
-	// This method is inherited from RenderNode
-	ref() RenderNode
-	// Unref releases a reference on the given `GskRenderNode`.
-	//
-	// If the reference was the last, the resources associated to the @node are
-	// freed.
-	//
-	// This method is inherited from RenderNode
-	unref()
-	// WriteToFile: this function is equivalent to calling
-	// gsk_render_node_serialize() followed by g_file_set_contents().
-	//
-	// See those two functions for details on the arguments.
-	//
-	// It is mostly intended for use inside a debugger to quickly dump a render
-	// node to a file for later inspection.
-	//
-	// This method is inherited from RenderNode
-	WriteToFile(filename string) error
+	gextras.Objector
 
 	// Child retrieves the child `GskRenderNode` of the blur @node.
 	Child() RenderNode
@@ -280,23 +164,25 @@ type BlurNode interface {
 	Radius() float32
 }
 
-// blurNode implements the BlurNode interface.
-type blurNode struct {
-	*externglib.Object
+// BlurNodeClass implements the BlurNode interface.
+type BlurNodeClass struct {
+	RenderNodeClass
 }
 
-var _ BlurNode = (*blurNode)(nil)
+var _ BlurNode = (*BlurNodeClass)(nil)
 
-// WrapBlurNode wraps a GObject to a type that implements
-// interface BlurNode. It is primarily used internally.
-func WrapBlurNode(obj *externglib.Object) BlurNode {
-	return blurNode{obj}
+func wrapBlurNode(obj *externglib.Object) BlurNode {
+	return &BlurNodeClass{
+		RenderNodeClass: RenderNodeClass{
+			Object: obj,
+		},
+	}
 }
 
 func marshalBlurNode(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapBlurNode(obj), nil
+	return wrapBlurNode(obj), nil
 }
 
 // NewBlurNode creates a render node that blurs the child.
@@ -317,35 +203,8 @@ func NewBlurNode(child RenderNode, radius float32) BlurNode {
 	return _blurNode
 }
 
-func (b blurNode) AsRenderNode() RenderNode {
-	return WrapRenderNode(gextras.InternObject(b))
-}
-
-func (n blurNode) Draw(cr *cairo.Context) {
-	WrapRenderNode(gextras.InternObject(n)).Draw(cr)
-}
-
-func (n blurNode) GetBounds() graphene.Rect {
-	return WrapRenderNode(gextras.InternObject(n)).GetBounds()
-}
-
-func (n blurNode) GetNodeType() RenderNodeType {
-	return WrapRenderNode(gextras.InternObject(n)).GetNodeType()
-}
-
-func (n blurNode) ref() RenderNode {
-	return WrapRenderNode(gextras.InternObject(n)).ref()
-}
-
-func (n blurNode) unref() {
-	WrapRenderNode(gextras.InternObject(n)).unref()
-}
-
-func (n blurNode) WriteToFile(filename string) error {
-	return WrapRenderNode(gextras.InternObject(n)).WriteToFile(filename)
-}
-
-func (n blurNode) Child() RenderNode {
+// Child retrieves the child `GskRenderNode` of the blur @node.
+func (n *BlurNodeClass) Child() RenderNode {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GskRenderNode // in
 
@@ -360,7 +219,8 @@ func (n blurNode) Child() RenderNode {
 	return _renderNode
 }
 
-func (n blurNode) Radius() float32 {
+// Radius retrieves the blur radius of the @node.
+func (n *BlurNodeClass) Radius() float32 {
 	var _arg0 *C.GskRenderNode // out
 	var _cret C.float          // in
 
@@ -377,53 +237,7 @@ func (n blurNode) Radius() float32 {
 
 // BorderNode: render node for a border.
 type BorderNode interface {
-	RenderNode
-
-	// AsRenderNode casts the class to the RenderNode interface.
-	AsRenderNode() RenderNode
-
-	// Draw the contents of @node to the given cairo context.
-	//
-	// Typically, you'll use this function to implement fallback rendering of
-	// `GskRenderNode`s on an intermediate Cairo context, instead of using the
-	// drawing context associated to a `GdkSurface`'s rendering buffer.
-	//
-	// For advanced nodes that cannot be supported using Cairo, in particular
-	// for nodes doing 3D operations, this function may fail.
-	//
-	// This method is inherited from RenderNode
-	Draw(cr *cairo.Context)
-	// GetBounds retrieves the boundaries of the @node.
-	//
-	// The node will not draw outside of its boundaries.
-	//
-	// This method is inherited from RenderNode
-	GetBounds() graphene.Rect
-	// GetNodeType returns the type of the @node.
-	//
-	// This method is inherited from RenderNode
-	GetNodeType() RenderNodeType
-	// Ref acquires a reference on the given `GskRenderNode`.
-	//
-	// This method is inherited from RenderNode
-	ref() RenderNode
-	// Unref releases a reference on the given `GskRenderNode`.
-	//
-	// If the reference was the last, the resources associated to the @node are
-	// freed.
-	//
-	// This method is inherited from RenderNode
-	unref()
-	// WriteToFile: this function is equivalent to calling
-	// gsk_render_node_serialize() followed by g_file_set_contents().
-	//
-	// See those two functions for details on the arguments.
-	//
-	// It is mostly intended for use inside a debugger to quickly dump a render
-	// node to a file for later inspection.
-	//
-	// This method is inherited from RenderNode
-	WriteToFile(filename string) error
+	gextras.Objector
 
 	// Colors retrieves the colors of the border.
 	Colors() *gdk.RGBA
@@ -433,77 +247,29 @@ type BorderNode interface {
 	Widths() [4]float32
 }
 
-// borderNode implements the BorderNode interface.
-type borderNode struct {
-	*externglib.Object
+// BorderNodeClass implements the BorderNode interface.
+type BorderNodeClass struct {
+	RenderNodeClass
 }
 
-var _ BorderNode = (*borderNode)(nil)
+var _ BorderNode = (*BorderNodeClass)(nil)
 
-// WrapBorderNode wraps a GObject to a type that implements
-// interface BorderNode. It is primarily used internally.
-func WrapBorderNode(obj *externglib.Object) BorderNode {
-	return borderNode{obj}
+func wrapBorderNode(obj *externglib.Object) BorderNode {
+	return &BorderNodeClass{
+		RenderNodeClass: RenderNodeClass{
+			Object: obj,
+		},
+	}
 }
 
 func marshalBorderNode(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapBorderNode(obj), nil
+	return wrapBorderNode(obj), nil
 }
 
-// NewBorderNode creates a `GskRenderNode` that will stroke a border rectangle
-// inside the given @outline.
-//
-// The 4 sides of the border can have different widths and colors.
-func NewBorderNode(outline *RoundedRect, borderWidth [4]float32, borderColor [4]gdk.RGBA) BorderNode {
-	var _arg1 *C.GskRoundedRect // out
-	var _arg2 *C.float
-	var _arg3 *C.GdkRGBA
-	var _cret *C.GskRenderNode // in
-
-	_arg1 = (*C.GskRoundedRect)(unsafe.Pointer(outline))
-	_arg2 = (*C.float)(unsafe.Pointer(&borderWidth))
-	_arg3 = (*C.GdkRGBA)(unsafe.Pointer(&borderColor))
-
-	_cret = C.gsk_border_node_new(_arg1, _arg2, _arg3)
-
-	var _borderNode BorderNode // out
-
-	_borderNode = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(BorderNode)
-
-	return _borderNode
-}
-
-func (b borderNode) AsRenderNode() RenderNode {
-	return WrapRenderNode(gextras.InternObject(b))
-}
-
-func (n borderNode) Draw(cr *cairo.Context) {
-	WrapRenderNode(gextras.InternObject(n)).Draw(cr)
-}
-
-func (n borderNode) GetBounds() graphene.Rect {
-	return WrapRenderNode(gextras.InternObject(n)).GetBounds()
-}
-
-func (n borderNode) GetNodeType() RenderNodeType {
-	return WrapRenderNode(gextras.InternObject(n)).GetNodeType()
-}
-
-func (n borderNode) ref() RenderNode {
-	return WrapRenderNode(gextras.InternObject(n)).ref()
-}
-
-func (n borderNode) unref() {
-	WrapRenderNode(gextras.InternObject(n)).unref()
-}
-
-func (n borderNode) WriteToFile(filename string) error {
-	return WrapRenderNode(gextras.InternObject(n)).WriteToFile(filename)
-}
-
-func (n borderNode) Colors() *gdk.RGBA {
+// Colors retrieves the colors of the border.
+func (n *BorderNodeClass) Colors() *gdk.RGBA {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GdkRGBA       // in
 
@@ -518,7 +284,8 @@ func (n borderNode) Colors() *gdk.RGBA {
 	return _rgbA
 }
 
-func (n borderNode) Outline() *RoundedRect {
+// Outline retrieves the outline of the border.
+func (n *BorderNodeClass) Outline() *RoundedRect {
 	var _arg0 *C.GskRenderNode  // out
 	var _cret *C.GskRoundedRect // in
 
@@ -533,7 +300,8 @@ func (n borderNode) Outline() *RoundedRect {
 	return _roundedRect
 }
 
-func (n borderNode) Widths() [4]float32 {
+// Widths retrieves the stroke widths of the border.
+func (n *BorderNodeClass) Widths() [4]float32 {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.float
 
@@ -550,53 +318,7 @@ func (n borderNode) Widths() [4]float32 {
 
 // CairoNode: render node for a Cairo surface.
 type CairoNode interface {
-	RenderNode
-
-	// AsRenderNode casts the class to the RenderNode interface.
-	AsRenderNode() RenderNode
-
-	// Draw the contents of @node to the given cairo context.
-	//
-	// Typically, you'll use this function to implement fallback rendering of
-	// `GskRenderNode`s on an intermediate Cairo context, instead of using the
-	// drawing context associated to a `GdkSurface`'s rendering buffer.
-	//
-	// For advanced nodes that cannot be supported using Cairo, in particular
-	// for nodes doing 3D operations, this function may fail.
-	//
-	// This method is inherited from RenderNode
-	Draw(cr *cairo.Context)
-	// GetBounds retrieves the boundaries of the @node.
-	//
-	// The node will not draw outside of its boundaries.
-	//
-	// This method is inherited from RenderNode
-	GetBounds() graphene.Rect
-	// GetNodeType returns the type of the @node.
-	//
-	// This method is inherited from RenderNode
-	GetNodeType() RenderNodeType
-	// Ref acquires a reference on the given `GskRenderNode`.
-	//
-	// This method is inherited from RenderNode
-	ref() RenderNode
-	// Unref releases a reference on the given `GskRenderNode`.
-	//
-	// If the reference was the last, the resources associated to the @node are
-	// freed.
-	//
-	// This method is inherited from RenderNode
-	unref()
-	// WriteToFile: this function is equivalent to calling
-	// gsk_render_node_serialize() followed by g_file_set_contents().
-	//
-	// See those two functions for details on the arguments.
-	//
-	// It is mostly intended for use inside a debugger to quickly dump a render
-	// node to a file for later inspection.
-	//
-	// This method is inherited from RenderNode
-	WriteToFile(filename string) error
+	gextras.Objector
 
 	// DrawContext creates a Cairo context for drawing using the surface
 	// associated to the render node.
@@ -608,23 +330,25 @@ type CairoNode interface {
 	Surface() *cairo.Surface
 }
 
-// cairoNode implements the CairoNode interface.
-type cairoNode struct {
-	*externglib.Object
+// CairoNodeClass implements the CairoNode interface.
+type CairoNodeClass struct {
+	RenderNodeClass
 }
 
-var _ CairoNode = (*cairoNode)(nil)
+var _ CairoNode = (*CairoNodeClass)(nil)
 
-// WrapCairoNode wraps a GObject to a type that implements
-// interface CairoNode. It is primarily used internally.
-func WrapCairoNode(obj *externglib.Object) CairoNode {
-	return cairoNode{obj}
+func wrapCairoNode(obj *externglib.Object) CairoNode {
+	return &CairoNodeClass{
+		RenderNodeClass: RenderNodeClass{
+			Object: obj,
+		},
+	}
 }
 
 func marshalCairoNode(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapCairoNode(obj), nil
+	return wrapCairoNode(obj), nil
 }
 
 // NewCairoNode creates a `GskRenderNode` that will render a cairo surface into
@@ -647,35 +371,12 @@ func NewCairoNode(bounds *graphene.Rect) CairoNode {
 	return _cairoNode
 }
 
-func (c cairoNode) AsRenderNode() RenderNode {
-	return WrapRenderNode(gextras.InternObject(c))
-}
-
-func (n cairoNode) Draw(cr *cairo.Context) {
-	WrapRenderNode(gextras.InternObject(n)).Draw(cr)
-}
-
-func (n cairoNode) GetBounds() graphene.Rect {
-	return WrapRenderNode(gextras.InternObject(n)).GetBounds()
-}
-
-func (n cairoNode) GetNodeType() RenderNodeType {
-	return WrapRenderNode(gextras.InternObject(n)).GetNodeType()
-}
-
-func (n cairoNode) ref() RenderNode {
-	return WrapRenderNode(gextras.InternObject(n)).ref()
-}
-
-func (n cairoNode) unref() {
-	WrapRenderNode(gextras.InternObject(n)).unref()
-}
-
-func (n cairoNode) WriteToFile(filename string) error {
-	return WrapRenderNode(gextras.InternObject(n)).WriteToFile(filename)
-}
-
-func (n cairoNode) DrawContext() *cairo.Context {
+// DrawContext creates a Cairo context for drawing using the surface associated
+// to the render node.
+//
+// If no surface exists yet, a surface will be created optimized for rendering
+// to @renderer.
+func (n *CairoNodeClass) DrawContext() *cairo.Context {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.cairo_t       // in
 
@@ -693,7 +394,8 @@ func (n cairoNode) DrawContext() *cairo.Context {
 	return _context
 }
 
-func (n cairoNode) Surface() *cairo.Surface {
+// Surface retrieves the Cairo surface used by the render node.
+func (n *CairoNodeClass) Surface() *cairo.Surface {
 	var _arg0 *C.GskRenderNode   // out
 	var _cret *C.cairo_surface_t // in
 
@@ -710,53 +412,7 @@ func (n cairoNode) Surface() *cairo.Surface {
 
 // ClipNode: render node applying a rectangular clip to its single child node.
 type ClipNode interface {
-	RenderNode
-
-	// AsRenderNode casts the class to the RenderNode interface.
-	AsRenderNode() RenderNode
-
-	// Draw the contents of @node to the given cairo context.
-	//
-	// Typically, you'll use this function to implement fallback rendering of
-	// `GskRenderNode`s on an intermediate Cairo context, instead of using the
-	// drawing context associated to a `GdkSurface`'s rendering buffer.
-	//
-	// For advanced nodes that cannot be supported using Cairo, in particular
-	// for nodes doing 3D operations, this function may fail.
-	//
-	// This method is inherited from RenderNode
-	Draw(cr *cairo.Context)
-	// GetBounds retrieves the boundaries of the @node.
-	//
-	// The node will not draw outside of its boundaries.
-	//
-	// This method is inherited from RenderNode
-	GetBounds() graphene.Rect
-	// GetNodeType returns the type of the @node.
-	//
-	// This method is inherited from RenderNode
-	GetNodeType() RenderNodeType
-	// Ref acquires a reference on the given `GskRenderNode`.
-	//
-	// This method is inherited from RenderNode
-	ref() RenderNode
-	// Unref releases a reference on the given `GskRenderNode`.
-	//
-	// If the reference was the last, the resources associated to the @node are
-	// freed.
-	//
-	// This method is inherited from RenderNode
-	unref()
-	// WriteToFile: this function is equivalent to calling
-	// gsk_render_node_serialize() followed by g_file_set_contents().
-	//
-	// See those two functions for details on the arguments.
-	//
-	// It is mostly intended for use inside a debugger to quickly dump a render
-	// node to a file for later inspection.
-	//
-	// This method is inherited from RenderNode
-	WriteToFile(filename string) error
+	gextras.Objector
 
 	// Child gets the child node that is getting clipped by the given @node.
 	Child() RenderNode
@@ -764,23 +420,25 @@ type ClipNode interface {
 	Clip() *graphene.Rect
 }
 
-// clipNode implements the ClipNode interface.
-type clipNode struct {
-	*externglib.Object
+// ClipNodeClass implements the ClipNode interface.
+type ClipNodeClass struct {
+	RenderNodeClass
 }
 
-var _ ClipNode = (*clipNode)(nil)
+var _ ClipNode = (*ClipNodeClass)(nil)
 
-// WrapClipNode wraps a GObject to a type that implements
-// interface ClipNode. It is primarily used internally.
-func WrapClipNode(obj *externglib.Object) ClipNode {
-	return clipNode{obj}
+func wrapClipNode(obj *externglib.Object) ClipNode {
+	return &ClipNodeClass{
+		RenderNodeClass: RenderNodeClass{
+			Object: obj,
+		},
+	}
 }
 
 func marshalClipNode(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapClipNode(obj), nil
+	return wrapClipNode(obj), nil
 }
 
 // NewClipNode creates a `GskRenderNode` that will clip the @child to the area
@@ -802,35 +460,8 @@ func NewClipNode(child RenderNode, clip *graphene.Rect) ClipNode {
 	return _clipNode
 }
 
-func (c clipNode) AsRenderNode() RenderNode {
-	return WrapRenderNode(gextras.InternObject(c))
-}
-
-func (n clipNode) Draw(cr *cairo.Context) {
-	WrapRenderNode(gextras.InternObject(n)).Draw(cr)
-}
-
-func (n clipNode) GetBounds() graphene.Rect {
-	return WrapRenderNode(gextras.InternObject(n)).GetBounds()
-}
-
-func (n clipNode) GetNodeType() RenderNodeType {
-	return WrapRenderNode(gextras.InternObject(n)).GetNodeType()
-}
-
-func (n clipNode) ref() RenderNode {
-	return WrapRenderNode(gextras.InternObject(n)).ref()
-}
-
-func (n clipNode) unref() {
-	WrapRenderNode(gextras.InternObject(n)).unref()
-}
-
-func (n clipNode) WriteToFile(filename string) error {
-	return WrapRenderNode(gextras.InternObject(n)).WriteToFile(filename)
-}
-
-func (n clipNode) Child() RenderNode {
+// Child gets the child node that is getting clipped by the given @node.
+func (n *ClipNodeClass) Child() RenderNode {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GskRenderNode // in
 
@@ -845,7 +476,8 @@ func (n clipNode) Child() RenderNode {
 	return _renderNode
 }
 
-func (n clipNode) Clip() *graphene.Rect {
+// Clip retrieves the clip rectangle for @node.
+func (n *ClipNodeClass) Clip() *graphene.Rect {
 	var _arg0 *C.GskRenderNode   // out
 	var _cret *C.graphene_rect_t // in
 
@@ -863,53 +495,7 @@ func (n clipNode) Clip() *graphene.Rect {
 // ColorMatrixNode: render node controlling the color matrix of its single child
 // node.
 type ColorMatrixNode interface {
-	RenderNode
-
-	// AsRenderNode casts the class to the RenderNode interface.
-	AsRenderNode() RenderNode
-
-	// Draw the contents of @node to the given cairo context.
-	//
-	// Typically, you'll use this function to implement fallback rendering of
-	// `GskRenderNode`s on an intermediate Cairo context, instead of using the
-	// drawing context associated to a `GdkSurface`'s rendering buffer.
-	//
-	// For advanced nodes that cannot be supported using Cairo, in particular
-	// for nodes doing 3D operations, this function may fail.
-	//
-	// This method is inherited from RenderNode
-	Draw(cr *cairo.Context)
-	// GetBounds retrieves the boundaries of the @node.
-	//
-	// The node will not draw outside of its boundaries.
-	//
-	// This method is inherited from RenderNode
-	GetBounds() graphene.Rect
-	// GetNodeType returns the type of the @node.
-	//
-	// This method is inherited from RenderNode
-	GetNodeType() RenderNodeType
-	// Ref acquires a reference on the given `GskRenderNode`.
-	//
-	// This method is inherited from RenderNode
-	ref() RenderNode
-	// Unref releases a reference on the given `GskRenderNode`.
-	//
-	// If the reference was the last, the resources associated to the @node are
-	// freed.
-	//
-	// This method is inherited from RenderNode
-	unref()
-	// WriteToFile: this function is equivalent to calling
-	// gsk_render_node_serialize() followed by g_file_set_contents().
-	//
-	// See those two functions for details on the arguments.
-	//
-	// It is mostly intended for use inside a debugger to quickly dump a render
-	// node to a file for later inspection.
-	//
-	// This method is inherited from RenderNode
-	WriteToFile(filename string) error
+	gextras.Objector
 
 	// Child gets the child node that is getting its colors modified by the
 	// given @node.
@@ -920,23 +506,25 @@ type ColorMatrixNode interface {
 	ColorOffset() *graphene.Vec4
 }
 
-// colorMatrixNode implements the ColorMatrixNode interface.
-type colorMatrixNode struct {
-	*externglib.Object
+// ColorMatrixNodeClass implements the ColorMatrixNode interface.
+type ColorMatrixNodeClass struct {
+	RenderNodeClass
 }
 
-var _ ColorMatrixNode = (*colorMatrixNode)(nil)
+var _ ColorMatrixNode = (*ColorMatrixNodeClass)(nil)
 
-// WrapColorMatrixNode wraps a GObject to a type that implements
-// interface ColorMatrixNode. It is primarily used internally.
-func WrapColorMatrixNode(obj *externglib.Object) ColorMatrixNode {
-	return colorMatrixNode{obj}
+func wrapColorMatrixNode(obj *externglib.Object) ColorMatrixNode {
+	return &ColorMatrixNodeClass{
+		RenderNodeClass: RenderNodeClass{
+			Object: obj,
+		},
+	}
 }
 
 func marshalColorMatrixNode(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapColorMatrixNode(obj), nil
+	return wrapColorMatrixNode(obj), nil
 }
 
 // NewColorMatrixNode creates a `GskRenderNode` that will drawn the @child with
@@ -966,35 +554,9 @@ func NewColorMatrixNode(child RenderNode, colorMatrix *graphene.Matrix, colorOff
 	return _colorMatrixNode
 }
 
-func (c colorMatrixNode) AsRenderNode() RenderNode {
-	return WrapRenderNode(gextras.InternObject(c))
-}
-
-func (n colorMatrixNode) Draw(cr *cairo.Context) {
-	WrapRenderNode(gextras.InternObject(n)).Draw(cr)
-}
-
-func (n colorMatrixNode) GetBounds() graphene.Rect {
-	return WrapRenderNode(gextras.InternObject(n)).GetBounds()
-}
-
-func (n colorMatrixNode) GetNodeType() RenderNodeType {
-	return WrapRenderNode(gextras.InternObject(n)).GetNodeType()
-}
-
-func (n colorMatrixNode) ref() RenderNode {
-	return WrapRenderNode(gextras.InternObject(n)).ref()
-}
-
-func (n colorMatrixNode) unref() {
-	WrapRenderNode(gextras.InternObject(n)).unref()
-}
-
-func (n colorMatrixNode) WriteToFile(filename string) error {
-	return WrapRenderNode(gextras.InternObject(n)).WriteToFile(filename)
-}
-
-func (n colorMatrixNode) Child() RenderNode {
+// Child gets the child node that is getting its colors modified by the given
+// @node.
+func (n *ColorMatrixNodeClass) Child() RenderNode {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GskRenderNode // in
 
@@ -1009,7 +571,8 @@ func (n colorMatrixNode) Child() RenderNode {
 	return _renderNode
 }
 
-func (n colorMatrixNode) ColorMatrix() *graphene.Matrix {
+// ColorMatrix retrieves the color matrix used by the @node.
+func (n *ColorMatrixNodeClass) ColorMatrix() *graphene.Matrix {
 	var _arg0 *C.GskRenderNode     // out
 	var _cret *C.graphene_matrix_t // in
 
@@ -1024,7 +587,8 @@ func (n colorMatrixNode) ColorMatrix() *graphene.Matrix {
 	return _matrix
 }
 
-func (n colorMatrixNode) ColorOffset() *graphene.Vec4 {
+// ColorOffset retrieves the color offset used by the @node.
+func (n *ColorMatrixNodeClass) ColorOffset() *graphene.Vec4 {
 	var _arg0 *C.GskRenderNode   // out
 	var _cret *C.graphene_vec4_t // in
 
@@ -1041,75 +605,31 @@ func (n colorMatrixNode) ColorOffset() *graphene.Vec4 {
 
 // ColorNode: render node for a solid color.
 type ColorNode interface {
-	RenderNode
-
-	// AsRenderNode casts the class to the RenderNode interface.
-	AsRenderNode() RenderNode
-
-	// Draw the contents of @node to the given cairo context.
-	//
-	// Typically, you'll use this function to implement fallback rendering of
-	// `GskRenderNode`s on an intermediate Cairo context, instead of using the
-	// drawing context associated to a `GdkSurface`'s rendering buffer.
-	//
-	// For advanced nodes that cannot be supported using Cairo, in particular
-	// for nodes doing 3D operations, this function may fail.
-	//
-	// This method is inherited from RenderNode
-	Draw(cr *cairo.Context)
-	// GetBounds retrieves the boundaries of the @node.
-	//
-	// The node will not draw outside of its boundaries.
-	//
-	// This method is inherited from RenderNode
-	GetBounds() graphene.Rect
-	// GetNodeType returns the type of the @node.
-	//
-	// This method is inherited from RenderNode
-	GetNodeType() RenderNodeType
-	// Ref acquires a reference on the given `GskRenderNode`.
-	//
-	// This method is inherited from RenderNode
-	ref() RenderNode
-	// Unref releases a reference on the given `GskRenderNode`.
-	//
-	// If the reference was the last, the resources associated to the @node are
-	// freed.
-	//
-	// This method is inherited from RenderNode
-	unref()
-	// WriteToFile: this function is equivalent to calling
-	// gsk_render_node_serialize() followed by g_file_set_contents().
-	//
-	// See those two functions for details on the arguments.
-	//
-	// It is mostly intended for use inside a debugger to quickly dump a render
-	// node to a file for later inspection.
-	//
-	// This method is inherited from RenderNode
-	WriteToFile(filename string) error
+	gextras.Objector
 
 	// Color retrieves the color of the given @node.
 	Color() *gdk.RGBA
 }
 
-// colorNode implements the ColorNode interface.
-type colorNode struct {
-	*externglib.Object
+// ColorNodeClass implements the ColorNode interface.
+type ColorNodeClass struct {
+	RenderNodeClass
 }
 
-var _ ColorNode = (*colorNode)(nil)
+var _ ColorNode = (*ColorNodeClass)(nil)
 
-// WrapColorNode wraps a GObject to a type that implements
-// interface ColorNode. It is primarily used internally.
-func WrapColorNode(obj *externglib.Object) ColorNode {
-	return colorNode{obj}
+func wrapColorNode(obj *externglib.Object) ColorNode {
+	return &ColorNodeClass{
+		RenderNodeClass: RenderNodeClass{
+			Object: obj,
+		},
+	}
 }
 
 func marshalColorNode(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapColorNode(obj), nil
+	return wrapColorNode(obj), nil
 }
 
 // NewColorNode creates a `GskRenderNode` that will render the color specified
@@ -1131,35 +651,8 @@ func NewColorNode(rgba *gdk.RGBA, bounds *graphene.Rect) ColorNode {
 	return _colorNode
 }
 
-func (c colorNode) AsRenderNode() RenderNode {
-	return WrapRenderNode(gextras.InternObject(c))
-}
-
-func (n colorNode) Draw(cr *cairo.Context) {
-	WrapRenderNode(gextras.InternObject(n)).Draw(cr)
-}
-
-func (n colorNode) GetBounds() graphene.Rect {
-	return WrapRenderNode(gextras.InternObject(n)).GetBounds()
-}
-
-func (n colorNode) GetNodeType() RenderNodeType {
-	return WrapRenderNode(gextras.InternObject(n)).GetNodeType()
-}
-
-func (n colorNode) ref() RenderNode {
-	return WrapRenderNode(gextras.InternObject(n)).ref()
-}
-
-func (n colorNode) unref() {
-	WrapRenderNode(gextras.InternObject(n)).unref()
-}
-
-func (n colorNode) WriteToFile(filename string) error {
-	return WrapRenderNode(gextras.InternObject(n)).WriteToFile(filename)
-}
-
-func (n colorNode) Color() *gdk.RGBA {
+// Color retrieves the color of the given @node.
+func (n *ColorNodeClass) Color() *gdk.RGBA {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GdkRGBA       // in
 
@@ -1176,53 +669,7 @@ func (n colorNode) Color() *gdk.RGBA {
 
 // ConicGradientNode: render node for a conic gradient.
 type ConicGradientNode interface {
-	RenderNode
-
-	// AsRenderNode casts the class to the RenderNode interface.
-	AsRenderNode() RenderNode
-
-	// Draw the contents of @node to the given cairo context.
-	//
-	// Typically, you'll use this function to implement fallback rendering of
-	// `GskRenderNode`s on an intermediate Cairo context, instead of using the
-	// drawing context associated to a `GdkSurface`'s rendering buffer.
-	//
-	// For advanced nodes that cannot be supported using Cairo, in particular
-	// for nodes doing 3D operations, this function may fail.
-	//
-	// This method is inherited from RenderNode
-	Draw(cr *cairo.Context)
-	// GetBounds retrieves the boundaries of the @node.
-	//
-	// The node will not draw outside of its boundaries.
-	//
-	// This method is inherited from RenderNode
-	GetBounds() graphene.Rect
-	// GetNodeType returns the type of the @node.
-	//
-	// This method is inherited from RenderNode
-	GetNodeType() RenderNodeType
-	// Ref acquires a reference on the given `GskRenderNode`.
-	//
-	// This method is inherited from RenderNode
-	ref() RenderNode
-	// Unref releases a reference on the given `GskRenderNode`.
-	//
-	// If the reference was the last, the resources associated to the @node are
-	// freed.
-	//
-	// This method is inherited from RenderNode
-	unref()
-	// WriteToFile: this function is equivalent to calling
-	// gsk_render_node_serialize() followed by g_file_set_contents().
-	//
-	// See those two functions for details on the arguments.
-	//
-	// It is mostly intended for use inside a debugger to quickly dump a render
-	// node to a file for later inspection.
-	//
-	// This method is inherited from RenderNode
-	WriteToFile(filename string) error
+	gextras.Objector
 
 	// Angle retrieves the angle for the gradient in radians, normalized in [0,
 	// 2 * PI].
@@ -1240,82 +687,35 @@ type ConicGradientNode interface {
 	Rotation() float32
 }
 
-// conicGradientNode implements the ConicGradientNode interface.
-type conicGradientNode struct {
-	*externglib.Object
+// ConicGradientNodeClass implements the ConicGradientNode interface.
+type ConicGradientNodeClass struct {
+	RenderNodeClass
 }
 
-var _ ConicGradientNode = (*conicGradientNode)(nil)
+var _ ConicGradientNode = (*ConicGradientNodeClass)(nil)
 
-// WrapConicGradientNode wraps a GObject to a type that implements
-// interface ConicGradientNode. It is primarily used internally.
-func WrapConicGradientNode(obj *externglib.Object) ConicGradientNode {
-	return conicGradientNode{obj}
+func wrapConicGradientNode(obj *externglib.Object) ConicGradientNode {
+	return &ConicGradientNodeClass{
+		RenderNodeClass: RenderNodeClass{
+			Object: obj,
+		},
+	}
 }
 
 func marshalConicGradientNode(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapConicGradientNode(obj), nil
+	return wrapConicGradientNode(obj), nil
 }
 
-// NewConicGradientNode creates a `GskRenderNode` that draws a conic gradient.
+// Angle retrieves the angle for the gradient in radians, normalized in [0, 2 *
+// PI].
 //
-// The conic gradient starts around @center in the direction of @rotation. A
-// rotation of 0 means that the gradient points up. Color stops are then added
-// clockwise.
-func NewConicGradientNode(bounds *graphene.Rect, center *graphene.Point, rotation float32, colorStops []ColorStop) ConicGradientNode {
-	var _arg1 *C.graphene_rect_t  // out
-	var _arg2 *C.graphene_point_t // out
-	var _arg3 C.float             // out
-	var _arg4 *C.GskColorStop
-	var _arg5 C.gsize
-	var _cret *C.GskRenderNode // in
-
-	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(bounds))
-	_arg2 = (*C.graphene_point_t)(unsafe.Pointer(center))
-	_arg3 = C.float(rotation)
-	_arg5 = C.gsize(len(colorStops))
-	_arg4 = (*C.GskColorStop)(unsafe.Pointer(&colorStops[0]))
-
-	_cret = C.gsk_conic_gradient_node_new(_arg1, _arg2, _arg3, _arg4, _arg5)
-
-	var _conicGradientNode ConicGradientNode // out
-
-	_conicGradientNode = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(ConicGradientNode)
-
-	return _conicGradientNode
-}
-
-func (c conicGradientNode) AsRenderNode() RenderNode {
-	return WrapRenderNode(gextras.InternObject(c))
-}
-
-func (n conicGradientNode) Draw(cr *cairo.Context) {
-	WrapRenderNode(gextras.InternObject(n)).Draw(cr)
-}
-
-func (n conicGradientNode) GetBounds() graphene.Rect {
-	return WrapRenderNode(gextras.InternObject(n)).GetBounds()
-}
-
-func (n conicGradientNode) GetNodeType() RenderNodeType {
-	return WrapRenderNode(gextras.InternObject(n)).GetNodeType()
-}
-
-func (n conicGradientNode) ref() RenderNode {
-	return WrapRenderNode(gextras.InternObject(n)).ref()
-}
-
-func (n conicGradientNode) unref() {
-	WrapRenderNode(gextras.InternObject(n)).unref()
-}
-
-func (n conicGradientNode) WriteToFile(filename string) error {
-	return WrapRenderNode(gextras.InternObject(n)).WriteToFile(filename)
-}
-
-func (n conicGradientNode) Angle() float32 {
+// The angle is starting at the top and going clockwise, as expressed in the css
+// specification:
+//
+//    angle = 90 - gsk_conic_gradient_node_get_rotation()
+func (n *ConicGradientNodeClass) Angle() float32 {
 	var _arg0 *C.GskRenderNode // out
 	var _cret C.float          // in
 
@@ -1330,7 +730,8 @@ func (n conicGradientNode) Angle() float32 {
 	return _gfloat
 }
 
-func (n conicGradientNode) Center() *graphene.Point {
+// Center retrieves the center pointer for the gradient.
+func (n *ConicGradientNodeClass) Center() *graphene.Point {
 	var _arg0 *C.GskRenderNode    // out
 	var _cret *C.graphene_point_t // in
 
@@ -1345,7 +746,8 @@ func (n conicGradientNode) Center() *graphene.Point {
 	return _point
 }
 
-func (n conicGradientNode) NColorStops() uint {
+// NColorStops retrieves the number of color stops in the gradient.
+func (n *ConicGradientNodeClass) NColorStops() uint {
 	var _arg0 *C.GskRenderNode // out
 	var _cret C.gsize          // in
 
@@ -1360,7 +762,8 @@ func (n conicGradientNode) NColorStops() uint {
 	return _gsize
 }
 
-func (n conicGradientNode) Rotation() float32 {
+// Rotation retrieves the rotation for the gradient in degrees.
+func (n *ConicGradientNodeClass) Rotation() float32 {
 	var _arg0 *C.GskRenderNode // out
 	var _cret C.float          // in
 
@@ -1377,53 +780,7 @@ func (n conicGradientNode) Rotation() float32 {
 
 // ContainerNode: render node that can contain other render nodes.
 type ContainerNode interface {
-	RenderNode
-
-	// AsRenderNode casts the class to the RenderNode interface.
-	AsRenderNode() RenderNode
-
-	// Draw the contents of @node to the given cairo context.
-	//
-	// Typically, you'll use this function to implement fallback rendering of
-	// `GskRenderNode`s on an intermediate Cairo context, instead of using the
-	// drawing context associated to a `GdkSurface`'s rendering buffer.
-	//
-	// For advanced nodes that cannot be supported using Cairo, in particular
-	// for nodes doing 3D operations, this function may fail.
-	//
-	// This method is inherited from RenderNode
-	Draw(cr *cairo.Context)
-	// GetBounds retrieves the boundaries of the @node.
-	//
-	// The node will not draw outside of its boundaries.
-	//
-	// This method is inherited from RenderNode
-	GetBounds() graphene.Rect
-	// GetNodeType returns the type of the @node.
-	//
-	// This method is inherited from RenderNode
-	GetNodeType() RenderNodeType
-	// Ref acquires a reference on the given `GskRenderNode`.
-	//
-	// This method is inherited from RenderNode
-	ref() RenderNode
-	// Unref releases a reference on the given `GskRenderNode`.
-	//
-	// If the reference was the last, the resources associated to the @node are
-	// freed.
-	//
-	// This method is inherited from RenderNode
-	unref()
-	// WriteToFile: this function is equivalent to calling
-	// gsk_render_node_serialize() followed by g_file_set_contents().
-	//
-	// See those two functions for details on the arguments.
-	//
-	// It is mostly intended for use inside a debugger to quickly dump a render
-	// node to a file for later inspection.
-	//
-	// This method is inherited from RenderNode
-	WriteToFile(filename string) error
+	gextras.Objector
 
 	// Child gets one of the children of @container.
 	Child(idx uint) RenderNode
@@ -1431,23 +788,25 @@ type ContainerNode interface {
 	NChildren() uint
 }
 
-// containerNode implements the ContainerNode interface.
-type containerNode struct {
-	*externglib.Object
+// ContainerNodeClass implements the ContainerNode interface.
+type ContainerNodeClass struct {
+	RenderNodeClass
 }
 
-var _ ContainerNode = (*containerNode)(nil)
+var _ ContainerNode = (*ContainerNodeClass)(nil)
 
-// WrapContainerNode wraps a GObject to a type that implements
-// interface ContainerNode. It is primarily used internally.
-func WrapContainerNode(obj *externglib.Object) ContainerNode {
-	return containerNode{obj}
+func wrapContainerNode(obj *externglib.Object) ContainerNode {
+	return &ContainerNodeClass{
+		RenderNodeClass: RenderNodeClass{
+			Object: obj,
+		},
+	}
 }
 
 func marshalContainerNode(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapContainerNode(obj), nil
+	return wrapContainerNode(obj), nil
 }
 
 // NewContainerNode creates a new `GskRenderNode` instance for holding the given
@@ -1478,35 +837,8 @@ func NewContainerNode(children []RenderNode) ContainerNode {
 	return _containerNode
 }
 
-func (c containerNode) AsRenderNode() RenderNode {
-	return WrapRenderNode(gextras.InternObject(c))
-}
-
-func (n containerNode) Draw(cr *cairo.Context) {
-	WrapRenderNode(gextras.InternObject(n)).Draw(cr)
-}
-
-func (n containerNode) GetBounds() graphene.Rect {
-	return WrapRenderNode(gextras.InternObject(n)).GetBounds()
-}
-
-func (n containerNode) GetNodeType() RenderNodeType {
-	return WrapRenderNode(gextras.InternObject(n)).GetNodeType()
-}
-
-func (n containerNode) ref() RenderNode {
-	return WrapRenderNode(gextras.InternObject(n)).ref()
-}
-
-func (n containerNode) unref() {
-	WrapRenderNode(gextras.InternObject(n)).unref()
-}
-
-func (n containerNode) WriteToFile(filename string) error {
-	return WrapRenderNode(gextras.InternObject(n)).WriteToFile(filename)
-}
-
-func (n containerNode) Child(idx uint) RenderNode {
+// Child gets one of the children of @container.
+func (n *ContainerNodeClass) Child(idx uint) RenderNode {
 	var _arg0 *C.GskRenderNode // out
 	var _arg1 C.guint          // out
 	var _cret *C.GskRenderNode // in
@@ -1523,7 +855,8 @@ func (n containerNode) Child(idx uint) RenderNode {
 	return _renderNode
 }
 
-func (n containerNode) NChildren() uint {
+// NChildren retrieves the number of direct children of @node.
+func (n *ContainerNodeClass) NChildren() uint {
 	var _arg0 *C.GskRenderNode // out
 	var _cret C.guint          // in
 
@@ -1540,53 +873,7 @@ func (n containerNode) NChildren() uint {
 
 // CrossFadeNode: render node cross fading between two child nodes.
 type CrossFadeNode interface {
-	RenderNode
-
-	// AsRenderNode casts the class to the RenderNode interface.
-	AsRenderNode() RenderNode
-
-	// Draw the contents of @node to the given cairo context.
-	//
-	// Typically, you'll use this function to implement fallback rendering of
-	// `GskRenderNode`s on an intermediate Cairo context, instead of using the
-	// drawing context associated to a `GdkSurface`'s rendering buffer.
-	//
-	// For advanced nodes that cannot be supported using Cairo, in particular
-	// for nodes doing 3D operations, this function may fail.
-	//
-	// This method is inherited from RenderNode
-	Draw(cr *cairo.Context)
-	// GetBounds retrieves the boundaries of the @node.
-	//
-	// The node will not draw outside of its boundaries.
-	//
-	// This method is inherited from RenderNode
-	GetBounds() graphene.Rect
-	// GetNodeType returns the type of the @node.
-	//
-	// This method is inherited from RenderNode
-	GetNodeType() RenderNodeType
-	// Ref acquires a reference on the given `GskRenderNode`.
-	//
-	// This method is inherited from RenderNode
-	ref() RenderNode
-	// Unref releases a reference on the given `GskRenderNode`.
-	//
-	// If the reference was the last, the resources associated to the @node are
-	// freed.
-	//
-	// This method is inherited from RenderNode
-	unref()
-	// WriteToFile: this function is equivalent to calling
-	// gsk_render_node_serialize() followed by g_file_set_contents().
-	//
-	// See those two functions for details on the arguments.
-	//
-	// It is mostly intended for use inside a debugger to quickly dump a render
-	// node to a file for later inspection.
-	//
-	// This method is inherited from RenderNode
-	WriteToFile(filename string) error
+	gextras.Objector
 
 	// EndChild retrieves the child `GskRenderNode` at the end of the
 	// cross-fade.
@@ -1598,23 +885,25 @@ type CrossFadeNode interface {
 	StartChild() RenderNode
 }
 
-// crossFadeNode implements the CrossFadeNode interface.
-type crossFadeNode struct {
-	*externglib.Object
+// CrossFadeNodeClass implements the CrossFadeNode interface.
+type CrossFadeNodeClass struct {
+	RenderNodeClass
 }
 
-var _ CrossFadeNode = (*crossFadeNode)(nil)
+var _ CrossFadeNode = (*CrossFadeNodeClass)(nil)
 
-// WrapCrossFadeNode wraps a GObject to a type that implements
-// interface CrossFadeNode. It is primarily used internally.
-func WrapCrossFadeNode(obj *externglib.Object) CrossFadeNode {
-	return crossFadeNode{obj}
+func wrapCrossFadeNode(obj *externglib.Object) CrossFadeNode {
+	return &CrossFadeNodeClass{
+		RenderNodeClass: RenderNodeClass{
+			Object: obj,
+		},
+	}
 }
 
 func marshalCrossFadeNode(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapCrossFadeNode(obj), nil
+	return wrapCrossFadeNode(obj), nil
 }
 
 // NewCrossFadeNode creates a `GskRenderNode` that will do a cross-fade between
@@ -1638,35 +927,8 @@ func NewCrossFadeNode(start RenderNode, end RenderNode, progress float32) CrossF
 	return _crossFadeNode
 }
 
-func (c crossFadeNode) AsRenderNode() RenderNode {
-	return WrapRenderNode(gextras.InternObject(c))
-}
-
-func (n crossFadeNode) Draw(cr *cairo.Context) {
-	WrapRenderNode(gextras.InternObject(n)).Draw(cr)
-}
-
-func (n crossFadeNode) GetBounds() graphene.Rect {
-	return WrapRenderNode(gextras.InternObject(n)).GetBounds()
-}
-
-func (n crossFadeNode) GetNodeType() RenderNodeType {
-	return WrapRenderNode(gextras.InternObject(n)).GetNodeType()
-}
-
-func (n crossFadeNode) ref() RenderNode {
-	return WrapRenderNode(gextras.InternObject(n)).ref()
-}
-
-func (n crossFadeNode) unref() {
-	WrapRenderNode(gextras.InternObject(n)).unref()
-}
-
-func (n crossFadeNode) WriteToFile(filename string) error {
-	return WrapRenderNode(gextras.InternObject(n)).WriteToFile(filename)
-}
-
-func (n crossFadeNode) EndChild() RenderNode {
+// EndChild retrieves the child `GskRenderNode` at the end of the cross-fade.
+func (n *CrossFadeNodeClass) EndChild() RenderNode {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GskRenderNode // in
 
@@ -1681,7 +943,8 @@ func (n crossFadeNode) EndChild() RenderNode {
 	return _renderNode
 }
 
-func (n crossFadeNode) Progress() float32 {
+// Progress retrieves the progress value of the cross fade.
+func (n *CrossFadeNodeClass) Progress() float32 {
 	var _arg0 *C.GskRenderNode // out
 	var _cret C.float          // in
 
@@ -1696,7 +959,9 @@ func (n crossFadeNode) Progress() float32 {
 	return _gfloat
 }
 
-func (n crossFadeNode) StartChild() RenderNode {
+// StartChild retrieves the child `GskRenderNode` at the beginning of the
+// cross-fade.
+func (n *CrossFadeNodeClass) StartChild() RenderNode {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GskRenderNode // in
 
@@ -1714,53 +979,7 @@ func (n crossFadeNode) StartChild() RenderNode {
 // DebugNode: render node that emits a debugging message when drawing its child
 // node.
 type DebugNode interface {
-	RenderNode
-
-	// AsRenderNode casts the class to the RenderNode interface.
-	AsRenderNode() RenderNode
-
-	// Draw the contents of @node to the given cairo context.
-	//
-	// Typically, you'll use this function to implement fallback rendering of
-	// `GskRenderNode`s on an intermediate Cairo context, instead of using the
-	// drawing context associated to a `GdkSurface`'s rendering buffer.
-	//
-	// For advanced nodes that cannot be supported using Cairo, in particular
-	// for nodes doing 3D operations, this function may fail.
-	//
-	// This method is inherited from RenderNode
-	Draw(cr *cairo.Context)
-	// GetBounds retrieves the boundaries of the @node.
-	//
-	// The node will not draw outside of its boundaries.
-	//
-	// This method is inherited from RenderNode
-	GetBounds() graphene.Rect
-	// GetNodeType returns the type of the @node.
-	//
-	// This method is inherited from RenderNode
-	GetNodeType() RenderNodeType
-	// Ref acquires a reference on the given `GskRenderNode`.
-	//
-	// This method is inherited from RenderNode
-	ref() RenderNode
-	// Unref releases a reference on the given `GskRenderNode`.
-	//
-	// If the reference was the last, the resources associated to the @node are
-	// freed.
-	//
-	// This method is inherited from RenderNode
-	unref()
-	// WriteToFile: this function is equivalent to calling
-	// gsk_render_node_serialize() followed by g_file_set_contents().
-	//
-	// See those two functions for details on the arguments.
-	//
-	// It is mostly intended for use inside a debugger to quickly dump a render
-	// node to a file for later inspection.
-	//
-	// This method is inherited from RenderNode
-	WriteToFile(filename string) error
+	gextras.Objector
 
 	// Child gets the child node that is getting drawn by the given @node.
 	Child() RenderNode
@@ -1768,23 +987,25 @@ type DebugNode interface {
 	Message() string
 }
 
-// debugNode implements the DebugNode interface.
-type debugNode struct {
-	*externglib.Object
+// DebugNodeClass implements the DebugNode interface.
+type DebugNodeClass struct {
+	RenderNodeClass
 }
 
-var _ DebugNode = (*debugNode)(nil)
+var _ DebugNode = (*DebugNodeClass)(nil)
 
-// WrapDebugNode wraps a GObject to a type that implements
-// interface DebugNode. It is primarily used internally.
-func WrapDebugNode(obj *externglib.Object) DebugNode {
-	return debugNode{obj}
+func wrapDebugNode(obj *externglib.Object) DebugNode {
+	return &DebugNodeClass{
+		RenderNodeClass: RenderNodeClass{
+			Object: obj,
+		},
+	}
 }
 
 func marshalDebugNode(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapDebugNode(obj), nil
+	return wrapDebugNode(obj), nil
 }
 
 // NewDebugNode creates a `GskRenderNode` that will add debug information about
@@ -1808,35 +1029,8 @@ func NewDebugNode(child RenderNode, message string) DebugNode {
 	return _debugNode
 }
 
-func (d debugNode) AsRenderNode() RenderNode {
-	return WrapRenderNode(gextras.InternObject(d))
-}
-
-func (n debugNode) Draw(cr *cairo.Context) {
-	WrapRenderNode(gextras.InternObject(n)).Draw(cr)
-}
-
-func (n debugNode) GetBounds() graphene.Rect {
-	return WrapRenderNode(gextras.InternObject(n)).GetBounds()
-}
-
-func (n debugNode) GetNodeType() RenderNodeType {
-	return WrapRenderNode(gextras.InternObject(n)).GetNodeType()
-}
-
-func (n debugNode) ref() RenderNode {
-	return WrapRenderNode(gextras.InternObject(n)).ref()
-}
-
-func (n debugNode) unref() {
-	WrapRenderNode(gextras.InternObject(n)).unref()
-}
-
-func (n debugNode) WriteToFile(filename string) error {
-	return WrapRenderNode(gextras.InternObject(n)).WriteToFile(filename)
-}
-
-func (n debugNode) Child() RenderNode {
+// Child gets the child node that is getting drawn by the given @node.
+func (n *DebugNodeClass) Child() RenderNode {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GskRenderNode // in
 
@@ -1851,7 +1045,8 @@ func (n debugNode) Child() RenderNode {
 	return _renderNode
 }
 
-func (n debugNode) Message() string {
+// Message gets the debug message that was set on this node
+func (n *DebugNodeClass) Message() string {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.char          // in
 
@@ -1868,53 +1063,7 @@ func (n debugNode) Message() string {
 
 // GLShaderNode: render node using a GL shader when drawing its children nodes.
 type GLShaderNode interface {
-	RenderNode
-
-	// AsRenderNode casts the class to the RenderNode interface.
-	AsRenderNode() RenderNode
-
-	// Draw the contents of @node to the given cairo context.
-	//
-	// Typically, you'll use this function to implement fallback rendering of
-	// `GskRenderNode`s on an intermediate Cairo context, instead of using the
-	// drawing context associated to a `GdkSurface`'s rendering buffer.
-	//
-	// For advanced nodes that cannot be supported using Cairo, in particular
-	// for nodes doing 3D operations, this function may fail.
-	//
-	// This method is inherited from RenderNode
-	Draw(cr *cairo.Context)
-	// GetBounds retrieves the boundaries of the @node.
-	//
-	// The node will not draw outside of its boundaries.
-	//
-	// This method is inherited from RenderNode
-	GetBounds() graphene.Rect
-	// GetNodeType returns the type of the @node.
-	//
-	// This method is inherited from RenderNode
-	GetNodeType() RenderNodeType
-	// Ref acquires a reference on the given `GskRenderNode`.
-	//
-	// This method is inherited from RenderNode
-	ref() RenderNode
-	// Unref releases a reference on the given `GskRenderNode`.
-	//
-	// If the reference was the last, the resources associated to the @node are
-	// freed.
-	//
-	// This method is inherited from RenderNode
-	unref()
-	// WriteToFile: this function is equivalent to calling
-	// gsk_render_node_serialize() followed by g_file_set_contents().
-	//
-	// See those two functions for details on the arguments.
-	//
-	// It is mostly intended for use inside a debugger to quickly dump a render
-	// node to a file for later inspection.
-	//
-	// This method is inherited from RenderNode
-	WriteToFile(filename string) error
+	gextras.Objector
 
 	// Child gets one of the children.
 	Child(idx uint) RenderNode
@@ -1924,54 +1073,29 @@ type GLShaderNode interface {
 	Shader() GLShader
 }
 
-// glShaderNode implements the GLShaderNode interface.
-type glShaderNode struct {
-	*externglib.Object
+// GLShaderNodeClass implements the GLShaderNode interface.
+type GLShaderNodeClass struct {
+	RenderNodeClass
 }
 
-var _ GLShaderNode = (*glShaderNode)(nil)
+var _ GLShaderNode = (*GLShaderNodeClass)(nil)
 
-// WrapGLShaderNode wraps a GObject to a type that implements
-// interface GLShaderNode. It is primarily used internally.
-func WrapGLShaderNode(obj *externglib.Object) GLShaderNode {
-	return glShaderNode{obj}
+func wrapGLShaderNode(obj *externglib.Object) GLShaderNode {
+	return &GLShaderNodeClass{
+		RenderNodeClass: RenderNodeClass{
+			Object: obj,
+		},
+	}
 }
 
 func marshalGLShaderNode(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapGLShaderNode(obj), nil
+	return wrapGLShaderNode(obj), nil
 }
 
-func (g glShaderNode) AsRenderNode() RenderNode {
-	return WrapRenderNode(gextras.InternObject(g))
-}
-
-func (n glShaderNode) Draw(cr *cairo.Context) {
-	WrapRenderNode(gextras.InternObject(n)).Draw(cr)
-}
-
-func (n glShaderNode) GetBounds() graphene.Rect {
-	return WrapRenderNode(gextras.InternObject(n)).GetBounds()
-}
-
-func (n glShaderNode) GetNodeType() RenderNodeType {
-	return WrapRenderNode(gextras.InternObject(n)).GetNodeType()
-}
-
-func (n glShaderNode) ref() RenderNode {
-	return WrapRenderNode(gextras.InternObject(n)).ref()
-}
-
-func (n glShaderNode) unref() {
-	WrapRenderNode(gextras.InternObject(n)).unref()
-}
-
-func (n glShaderNode) WriteToFile(filename string) error {
-	return WrapRenderNode(gextras.InternObject(n)).WriteToFile(filename)
-}
-
-func (n glShaderNode) Child(idx uint) RenderNode {
+// Child gets one of the children.
+func (n *GLShaderNodeClass) Child(idx uint) RenderNode {
 	var _arg0 *C.GskRenderNode // out
 	var _arg1 C.guint          // out
 	var _cret *C.GskRenderNode // in
@@ -1988,7 +1112,8 @@ func (n glShaderNode) Child(idx uint) RenderNode {
 	return _renderNode
 }
 
-func (n glShaderNode) NChildren() uint {
+// NChildren returns the number of children
+func (n *GLShaderNodeClass) NChildren() uint {
 	var _arg0 *C.GskRenderNode // out
 	var _cret C.guint          // in
 
@@ -2003,7 +1128,8 @@ func (n glShaderNode) NChildren() uint {
 	return _guint
 }
 
-func (n glShaderNode) Shader() GLShader {
+// Shader gets shader code for the node.
+func (n *GLShaderNodeClass) Shader() GLShader {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GskGLShader   // in
 
@@ -2020,53 +1146,7 @@ func (n glShaderNode) Shader() GLShader {
 
 // InsetShadowNode: render node for an inset shadow.
 type InsetShadowNode interface {
-	RenderNode
-
-	// AsRenderNode casts the class to the RenderNode interface.
-	AsRenderNode() RenderNode
-
-	// Draw the contents of @node to the given cairo context.
-	//
-	// Typically, you'll use this function to implement fallback rendering of
-	// `GskRenderNode`s on an intermediate Cairo context, instead of using the
-	// drawing context associated to a `GdkSurface`'s rendering buffer.
-	//
-	// For advanced nodes that cannot be supported using Cairo, in particular
-	// for nodes doing 3D operations, this function may fail.
-	//
-	// This method is inherited from RenderNode
-	Draw(cr *cairo.Context)
-	// GetBounds retrieves the boundaries of the @node.
-	//
-	// The node will not draw outside of its boundaries.
-	//
-	// This method is inherited from RenderNode
-	GetBounds() graphene.Rect
-	// GetNodeType returns the type of the @node.
-	//
-	// This method is inherited from RenderNode
-	GetNodeType() RenderNodeType
-	// Ref acquires a reference on the given `GskRenderNode`.
-	//
-	// This method is inherited from RenderNode
-	ref() RenderNode
-	// Unref releases a reference on the given `GskRenderNode`.
-	//
-	// If the reference was the last, the resources associated to the @node are
-	// freed.
-	//
-	// This method is inherited from RenderNode
-	unref()
-	// WriteToFile: this function is equivalent to calling
-	// gsk_render_node_serialize() followed by g_file_set_contents().
-	//
-	// See those two functions for details on the arguments.
-	//
-	// It is mostly intended for use inside a debugger to quickly dump a render
-	// node to a file for later inspection.
-	//
-	// This method is inherited from RenderNode
-	WriteToFile(filename string) error
+	gextras.Objector
 
 	// BlurRadius retrieves the blur radius to apply to the shadow.
 	BlurRadius() float32
@@ -2082,23 +1162,25 @@ type InsetShadowNode interface {
 	Spread() float32
 }
 
-// insetShadowNode implements the InsetShadowNode interface.
-type insetShadowNode struct {
-	*externglib.Object
+// InsetShadowNodeClass implements the InsetShadowNode interface.
+type InsetShadowNodeClass struct {
+	RenderNodeClass
 }
 
-var _ InsetShadowNode = (*insetShadowNode)(nil)
+var _ InsetShadowNode = (*InsetShadowNodeClass)(nil)
 
-// WrapInsetShadowNode wraps a GObject to a type that implements
-// interface InsetShadowNode. It is primarily used internally.
-func WrapInsetShadowNode(obj *externglib.Object) InsetShadowNode {
-	return insetShadowNode{obj}
+func wrapInsetShadowNode(obj *externglib.Object) InsetShadowNode {
+	return &InsetShadowNodeClass{
+		RenderNodeClass: RenderNodeClass{
+			Object: obj,
+		},
+	}
 }
 
 func marshalInsetShadowNode(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapInsetShadowNode(obj), nil
+	return wrapInsetShadowNode(obj), nil
 }
 
 // NewInsetShadowNode creates a `GskRenderNode` that will render an inset shadow
@@ -2128,35 +1210,8 @@ func NewInsetShadowNode(outline *RoundedRect, color *gdk.RGBA, dx float32, dy fl
 	return _insetShadowNode
 }
 
-func (i insetShadowNode) AsRenderNode() RenderNode {
-	return WrapRenderNode(gextras.InternObject(i))
-}
-
-func (n insetShadowNode) Draw(cr *cairo.Context) {
-	WrapRenderNode(gextras.InternObject(n)).Draw(cr)
-}
-
-func (n insetShadowNode) GetBounds() graphene.Rect {
-	return WrapRenderNode(gextras.InternObject(n)).GetBounds()
-}
-
-func (n insetShadowNode) GetNodeType() RenderNodeType {
-	return WrapRenderNode(gextras.InternObject(n)).GetNodeType()
-}
-
-func (n insetShadowNode) ref() RenderNode {
-	return WrapRenderNode(gextras.InternObject(n)).ref()
-}
-
-func (n insetShadowNode) unref() {
-	WrapRenderNode(gextras.InternObject(n)).unref()
-}
-
-func (n insetShadowNode) WriteToFile(filename string) error {
-	return WrapRenderNode(gextras.InternObject(n)).WriteToFile(filename)
-}
-
-func (n insetShadowNode) BlurRadius() float32 {
+// BlurRadius retrieves the blur radius to apply to the shadow.
+func (n *InsetShadowNodeClass) BlurRadius() float32 {
 	var _arg0 *C.GskRenderNode // out
 	var _cret C.float          // in
 
@@ -2171,7 +1226,8 @@ func (n insetShadowNode) BlurRadius() float32 {
 	return _gfloat
 }
 
-func (n insetShadowNode) Color() *gdk.RGBA {
+// Color retrieves the color of the inset shadow.
+func (n *InsetShadowNodeClass) Color() *gdk.RGBA {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GdkRGBA       // in
 
@@ -2186,7 +1242,8 @@ func (n insetShadowNode) Color() *gdk.RGBA {
 	return _rgbA
 }
 
-func (n insetShadowNode) Dx() float32 {
+// Dx retrieves the horizontal offset of the inset shadow.
+func (n *InsetShadowNodeClass) Dx() float32 {
 	var _arg0 *C.GskRenderNode // out
 	var _cret C.float          // in
 
@@ -2201,7 +1258,8 @@ func (n insetShadowNode) Dx() float32 {
 	return _gfloat
 }
 
-func (n insetShadowNode) Dy() float32 {
+// Dy retrieves the vertical offset of the inset shadow.
+func (n *InsetShadowNodeClass) Dy() float32 {
 	var _arg0 *C.GskRenderNode // out
 	var _cret C.float          // in
 
@@ -2216,7 +1274,8 @@ func (n insetShadowNode) Dy() float32 {
 	return _gfloat
 }
 
-func (n insetShadowNode) Outline() *RoundedRect {
+// Outline retrieves the outline rectangle of the inset shadow.
+func (n *InsetShadowNodeClass) Outline() *RoundedRect {
 	var _arg0 *C.GskRenderNode  // out
 	var _cret *C.GskRoundedRect // in
 
@@ -2231,7 +1290,8 @@ func (n insetShadowNode) Outline() *RoundedRect {
 	return _roundedRect
 }
 
-func (n insetShadowNode) Spread() float32 {
+// Spread retrieves how much the shadow spreads inwards.
+func (n *InsetShadowNodeClass) Spread() float32 {
 	var _arg0 *C.GskRenderNode // out
 	var _cret C.float          // in
 
@@ -2248,53 +1308,7 @@ func (n insetShadowNode) Spread() float32 {
 
 // LinearGradientNode: render node for a linear gradient.
 type LinearGradientNode interface {
-	RenderNode
-
-	// AsRenderNode casts the class to the RenderNode interface.
-	AsRenderNode() RenderNode
-
-	// Draw the contents of @node to the given cairo context.
-	//
-	// Typically, you'll use this function to implement fallback rendering of
-	// `GskRenderNode`s on an intermediate Cairo context, instead of using the
-	// drawing context associated to a `GdkSurface`'s rendering buffer.
-	//
-	// For advanced nodes that cannot be supported using Cairo, in particular
-	// for nodes doing 3D operations, this function may fail.
-	//
-	// This method is inherited from RenderNode
-	Draw(cr *cairo.Context)
-	// GetBounds retrieves the boundaries of the @node.
-	//
-	// The node will not draw outside of its boundaries.
-	//
-	// This method is inherited from RenderNode
-	GetBounds() graphene.Rect
-	// GetNodeType returns the type of the @node.
-	//
-	// This method is inherited from RenderNode
-	GetNodeType() RenderNodeType
-	// Ref acquires a reference on the given `GskRenderNode`.
-	//
-	// This method is inherited from RenderNode
-	ref() RenderNode
-	// Unref releases a reference on the given `GskRenderNode`.
-	//
-	// If the reference was the last, the resources associated to the @node are
-	// freed.
-	//
-	// This method is inherited from RenderNode
-	unref()
-	// WriteToFile: this function is equivalent to calling
-	// gsk_render_node_serialize() followed by g_file_set_contents().
-	//
-	// See those two functions for details on the arguments.
-	//
-	// It is mostly intended for use inside a debugger to quickly dump a render
-	// node to a file for later inspection.
-	//
-	// This method is inherited from RenderNode
-	WriteToFile(filename string) error
+	gextras.Objector
 
 	// End retrieves the final point of the linear gradient.
 	End() *graphene.Point
@@ -2304,80 +1318,29 @@ type LinearGradientNode interface {
 	Start() *graphene.Point
 }
 
-// linearGradientNode implements the LinearGradientNode interface.
-type linearGradientNode struct {
-	*externglib.Object
+// LinearGradientNodeClass implements the LinearGradientNode interface.
+type LinearGradientNodeClass struct {
+	RenderNodeClass
 }
 
-var _ LinearGradientNode = (*linearGradientNode)(nil)
+var _ LinearGradientNode = (*LinearGradientNodeClass)(nil)
 
-// WrapLinearGradientNode wraps a GObject to a type that implements
-// interface LinearGradientNode. It is primarily used internally.
-func WrapLinearGradientNode(obj *externglib.Object) LinearGradientNode {
-	return linearGradientNode{obj}
+func wrapLinearGradientNode(obj *externglib.Object) LinearGradientNode {
+	return &LinearGradientNodeClass{
+		RenderNodeClass: RenderNodeClass{
+			Object: obj,
+		},
+	}
 }
 
 func marshalLinearGradientNode(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapLinearGradientNode(obj), nil
+	return wrapLinearGradientNode(obj), nil
 }
 
-// NewLinearGradientNode creates a `GskRenderNode` that will create a linear
-// gradient from the given points and color stops, and render that into the area
-// given by @bounds.
-func NewLinearGradientNode(bounds *graphene.Rect, start *graphene.Point, end *graphene.Point, colorStops []ColorStop) LinearGradientNode {
-	var _arg1 *C.graphene_rect_t  // out
-	var _arg2 *C.graphene_point_t // out
-	var _arg3 *C.graphene_point_t // out
-	var _arg4 *C.GskColorStop
-	var _arg5 C.gsize
-	var _cret *C.GskRenderNode // in
-
-	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(bounds))
-	_arg2 = (*C.graphene_point_t)(unsafe.Pointer(start))
-	_arg3 = (*C.graphene_point_t)(unsafe.Pointer(end))
-	_arg5 = C.gsize(len(colorStops))
-	_arg4 = (*C.GskColorStop)(unsafe.Pointer(&colorStops[0]))
-
-	_cret = C.gsk_linear_gradient_node_new(_arg1, _arg2, _arg3, _arg4, _arg5)
-
-	var _linearGradientNode LinearGradientNode // out
-
-	_linearGradientNode = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(LinearGradientNode)
-
-	return _linearGradientNode
-}
-
-func (l linearGradientNode) AsRenderNode() RenderNode {
-	return WrapRenderNode(gextras.InternObject(l))
-}
-
-func (n linearGradientNode) Draw(cr *cairo.Context) {
-	WrapRenderNode(gextras.InternObject(n)).Draw(cr)
-}
-
-func (n linearGradientNode) GetBounds() graphene.Rect {
-	return WrapRenderNode(gextras.InternObject(n)).GetBounds()
-}
-
-func (n linearGradientNode) GetNodeType() RenderNodeType {
-	return WrapRenderNode(gextras.InternObject(n)).GetNodeType()
-}
-
-func (n linearGradientNode) ref() RenderNode {
-	return WrapRenderNode(gextras.InternObject(n)).ref()
-}
-
-func (n linearGradientNode) unref() {
-	WrapRenderNode(gextras.InternObject(n)).unref()
-}
-
-func (n linearGradientNode) WriteToFile(filename string) error {
-	return WrapRenderNode(gextras.InternObject(n)).WriteToFile(filename)
-}
-
-func (n linearGradientNode) End() *graphene.Point {
+// End retrieves the final point of the linear gradient.
+func (n *LinearGradientNodeClass) End() *graphene.Point {
 	var _arg0 *C.GskRenderNode    // out
 	var _cret *C.graphene_point_t // in
 
@@ -2392,7 +1355,8 @@ func (n linearGradientNode) End() *graphene.Point {
 	return _point
 }
 
-func (n linearGradientNode) NColorStops() uint {
+// NColorStops retrieves the number of color stops in the gradient.
+func (n *LinearGradientNodeClass) NColorStops() uint {
 	var _arg0 *C.GskRenderNode // out
 	var _cret C.gsize          // in
 
@@ -2407,7 +1371,8 @@ func (n linearGradientNode) NColorStops() uint {
 	return _gsize
 }
 
-func (n linearGradientNode) Start() *graphene.Point {
+// Start retrieves the initial point of the linear gradient.
+func (n *LinearGradientNodeClass) Start() *graphene.Point {
 	var _arg0 *C.GskRenderNode    // out
 	var _cret *C.graphene_point_t // in
 
@@ -2424,53 +1389,7 @@ func (n linearGradientNode) Start() *graphene.Point {
 
 // OpacityNode: render node controlling the opacity of its single child node.
 type OpacityNode interface {
-	RenderNode
-
-	// AsRenderNode casts the class to the RenderNode interface.
-	AsRenderNode() RenderNode
-
-	// Draw the contents of @node to the given cairo context.
-	//
-	// Typically, you'll use this function to implement fallback rendering of
-	// `GskRenderNode`s on an intermediate Cairo context, instead of using the
-	// drawing context associated to a `GdkSurface`'s rendering buffer.
-	//
-	// For advanced nodes that cannot be supported using Cairo, in particular
-	// for nodes doing 3D operations, this function may fail.
-	//
-	// This method is inherited from RenderNode
-	Draw(cr *cairo.Context)
-	// GetBounds retrieves the boundaries of the @node.
-	//
-	// The node will not draw outside of its boundaries.
-	//
-	// This method is inherited from RenderNode
-	GetBounds() graphene.Rect
-	// GetNodeType returns the type of the @node.
-	//
-	// This method is inherited from RenderNode
-	GetNodeType() RenderNodeType
-	// Ref acquires a reference on the given `GskRenderNode`.
-	//
-	// This method is inherited from RenderNode
-	ref() RenderNode
-	// Unref releases a reference on the given `GskRenderNode`.
-	//
-	// If the reference was the last, the resources associated to the @node are
-	// freed.
-	//
-	// This method is inherited from RenderNode
-	unref()
-	// WriteToFile: this function is equivalent to calling
-	// gsk_render_node_serialize() followed by g_file_set_contents().
-	//
-	// See those two functions for details on the arguments.
-	//
-	// It is mostly intended for use inside a debugger to quickly dump a render
-	// node to a file for later inspection.
-	//
-	// This method is inherited from RenderNode
-	WriteToFile(filename string) error
+	gextras.Objector
 
 	// Child gets the child node that is getting opacityed by the given @node.
 	Child() RenderNode
@@ -2478,23 +1397,25 @@ type OpacityNode interface {
 	Opacity() float32
 }
 
-// opacityNode implements the OpacityNode interface.
-type opacityNode struct {
-	*externglib.Object
+// OpacityNodeClass implements the OpacityNode interface.
+type OpacityNodeClass struct {
+	RenderNodeClass
 }
 
-var _ OpacityNode = (*opacityNode)(nil)
+var _ OpacityNode = (*OpacityNodeClass)(nil)
 
-// WrapOpacityNode wraps a GObject to a type that implements
-// interface OpacityNode. It is primarily used internally.
-func WrapOpacityNode(obj *externglib.Object) OpacityNode {
-	return opacityNode{obj}
+func wrapOpacityNode(obj *externglib.Object) OpacityNode {
+	return &OpacityNodeClass{
+		RenderNodeClass: RenderNodeClass{
+			Object: obj,
+		},
+	}
 }
 
 func marshalOpacityNode(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapOpacityNode(obj), nil
+	return wrapOpacityNode(obj), nil
 }
 
 // NewOpacityNode creates a `GskRenderNode` that will drawn the @child with
@@ -2516,35 +1437,8 @@ func NewOpacityNode(child RenderNode, opacity float32) OpacityNode {
 	return _opacityNode
 }
 
-func (o opacityNode) AsRenderNode() RenderNode {
-	return WrapRenderNode(gextras.InternObject(o))
-}
-
-func (n opacityNode) Draw(cr *cairo.Context) {
-	WrapRenderNode(gextras.InternObject(n)).Draw(cr)
-}
-
-func (n opacityNode) GetBounds() graphene.Rect {
-	return WrapRenderNode(gextras.InternObject(n)).GetBounds()
-}
-
-func (n opacityNode) GetNodeType() RenderNodeType {
-	return WrapRenderNode(gextras.InternObject(n)).GetNodeType()
-}
-
-func (n opacityNode) ref() RenderNode {
-	return WrapRenderNode(gextras.InternObject(n)).ref()
-}
-
-func (n opacityNode) unref() {
-	WrapRenderNode(gextras.InternObject(n)).unref()
-}
-
-func (n opacityNode) WriteToFile(filename string) error {
-	return WrapRenderNode(gextras.InternObject(n)).WriteToFile(filename)
-}
-
-func (n opacityNode) Child() RenderNode {
+// Child gets the child node that is getting opacityed by the given @node.
+func (n *OpacityNodeClass) Child() RenderNode {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GskRenderNode // in
 
@@ -2559,7 +1453,8 @@ func (n opacityNode) Child() RenderNode {
 	return _renderNode
 }
 
-func (n opacityNode) Opacity() float32 {
+// Opacity gets the transparency factor for an opacity node.
+func (n *OpacityNodeClass) Opacity() float32 {
 	var _arg0 *C.GskRenderNode // out
 	var _cret C.float          // in
 
@@ -2576,53 +1471,7 @@ func (n opacityNode) Opacity() float32 {
 
 // OutsetShadowNode: render node for an outset shadow.
 type OutsetShadowNode interface {
-	RenderNode
-
-	// AsRenderNode casts the class to the RenderNode interface.
-	AsRenderNode() RenderNode
-
-	// Draw the contents of @node to the given cairo context.
-	//
-	// Typically, you'll use this function to implement fallback rendering of
-	// `GskRenderNode`s on an intermediate Cairo context, instead of using the
-	// drawing context associated to a `GdkSurface`'s rendering buffer.
-	//
-	// For advanced nodes that cannot be supported using Cairo, in particular
-	// for nodes doing 3D operations, this function may fail.
-	//
-	// This method is inherited from RenderNode
-	Draw(cr *cairo.Context)
-	// GetBounds retrieves the boundaries of the @node.
-	//
-	// The node will not draw outside of its boundaries.
-	//
-	// This method is inherited from RenderNode
-	GetBounds() graphene.Rect
-	// GetNodeType returns the type of the @node.
-	//
-	// This method is inherited from RenderNode
-	GetNodeType() RenderNodeType
-	// Ref acquires a reference on the given `GskRenderNode`.
-	//
-	// This method is inherited from RenderNode
-	ref() RenderNode
-	// Unref releases a reference on the given `GskRenderNode`.
-	//
-	// If the reference was the last, the resources associated to the @node are
-	// freed.
-	//
-	// This method is inherited from RenderNode
-	unref()
-	// WriteToFile: this function is equivalent to calling
-	// gsk_render_node_serialize() followed by g_file_set_contents().
-	//
-	// See those two functions for details on the arguments.
-	//
-	// It is mostly intended for use inside a debugger to quickly dump a render
-	// node to a file for later inspection.
-	//
-	// This method is inherited from RenderNode
-	WriteToFile(filename string) error
+	gextras.Objector
 
 	// BlurRadius retrieves the blur radius of the shadow.
 	BlurRadius() float32
@@ -2638,23 +1487,25 @@ type OutsetShadowNode interface {
 	Spread() float32
 }
 
-// outsetShadowNode implements the OutsetShadowNode interface.
-type outsetShadowNode struct {
-	*externglib.Object
+// OutsetShadowNodeClass implements the OutsetShadowNode interface.
+type OutsetShadowNodeClass struct {
+	RenderNodeClass
 }
 
-var _ OutsetShadowNode = (*outsetShadowNode)(nil)
+var _ OutsetShadowNode = (*OutsetShadowNodeClass)(nil)
 
-// WrapOutsetShadowNode wraps a GObject to a type that implements
-// interface OutsetShadowNode. It is primarily used internally.
-func WrapOutsetShadowNode(obj *externglib.Object) OutsetShadowNode {
-	return outsetShadowNode{obj}
+func wrapOutsetShadowNode(obj *externglib.Object) OutsetShadowNode {
+	return &OutsetShadowNodeClass{
+		RenderNodeClass: RenderNodeClass{
+			Object: obj,
+		},
+	}
 }
 
 func marshalOutsetShadowNode(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapOutsetShadowNode(obj), nil
+	return wrapOutsetShadowNode(obj), nil
 }
 
 // NewOutsetShadowNode creates a `GskRenderNode` that will render an outset
@@ -2684,35 +1535,8 @@ func NewOutsetShadowNode(outline *RoundedRect, color *gdk.RGBA, dx float32, dy f
 	return _outsetShadowNode
 }
 
-func (o outsetShadowNode) AsRenderNode() RenderNode {
-	return WrapRenderNode(gextras.InternObject(o))
-}
-
-func (n outsetShadowNode) Draw(cr *cairo.Context) {
-	WrapRenderNode(gextras.InternObject(n)).Draw(cr)
-}
-
-func (n outsetShadowNode) GetBounds() graphene.Rect {
-	return WrapRenderNode(gextras.InternObject(n)).GetBounds()
-}
-
-func (n outsetShadowNode) GetNodeType() RenderNodeType {
-	return WrapRenderNode(gextras.InternObject(n)).GetNodeType()
-}
-
-func (n outsetShadowNode) ref() RenderNode {
-	return WrapRenderNode(gextras.InternObject(n)).ref()
-}
-
-func (n outsetShadowNode) unref() {
-	WrapRenderNode(gextras.InternObject(n)).unref()
-}
-
-func (n outsetShadowNode) WriteToFile(filename string) error {
-	return WrapRenderNode(gextras.InternObject(n)).WriteToFile(filename)
-}
-
-func (n outsetShadowNode) BlurRadius() float32 {
+// BlurRadius retrieves the blur radius of the shadow.
+func (n *OutsetShadowNodeClass) BlurRadius() float32 {
 	var _arg0 *C.GskRenderNode // out
 	var _cret C.float          // in
 
@@ -2727,7 +1551,8 @@ func (n outsetShadowNode) BlurRadius() float32 {
 	return _gfloat
 }
 
-func (n outsetShadowNode) Color() *gdk.RGBA {
+// Color retrieves the color of the outset shadow.
+func (n *OutsetShadowNodeClass) Color() *gdk.RGBA {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GdkRGBA       // in
 
@@ -2742,7 +1567,8 @@ func (n outsetShadowNode) Color() *gdk.RGBA {
 	return _rgbA
 }
 
-func (n outsetShadowNode) Dx() float32 {
+// Dx retrieves the horizontal offset of the outset shadow.
+func (n *OutsetShadowNodeClass) Dx() float32 {
 	var _arg0 *C.GskRenderNode // out
 	var _cret C.float          // in
 
@@ -2757,7 +1583,8 @@ func (n outsetShadowNode) Dx() float32 {
 	return _gfloat
 }
 
-func (n outsetShadowNode) Dy() float32 {
+// Dy retrieves the vertical offset of the outset shadow.
+func (n *OutsetShadowNodeClass) Dy() float32 {
 	var _arg0 *C.GskRenderNode // out
 	var _cret C.float          // in
 
@@ -2772,7 +1599,8 @@ func (n outsetShadowNode) Dy() float32 {
 	return _gfloat
 }
 
-func (n outsetShadowNode) Outline() *RoundedRect {
+// Outline retrieves the outline rectangle of the outset shadow.
+func (n *OutsetShadowNodeClass) Outline() *RoundedRect {
 	var _arg0 *C.GskRenderNode  // out
 	var _cret *C.GskRoundedRect // in
 
@@ -2787,7 +1615,8 @@ func (n outsetShadowNode) Outline() *RoundedRect {
 	return _roundedRect
 }
 
-func (n outsetShadowNode) Spread() float32 {
+// Spread retrieves how much the shadow spreads outwards.
+func (n *OutsetShadowNodeClass) Spread() float32 {
 	var _arg0 *C.GskRenderNode // out
 	var _cret C.float          // in
 
@@ -2804,53 +1633,7 @@ func (n outsetShadowNode) Spread() float32 {
 
 // RadialGradientNode: render node for a radial gradient.
 type RadialGradientNode interface {
-	RenderNode
-
-	// AsRenderNode casts the class to the RenderNode interface.
-	AsRenderNode() RenderNode
-
-	// Draw the contents of @node to the given cairo context.
-	//
-	// Typically, you'll use this function to implement fallback rendering of
-	// `GskRenderNode`s on an intermediate Cairo context, instead of using the
-	// drawing context associated to a `GdkSurface`'s rendering buffer.
-	//
-	// For advanced nodes that cannot be supported using Cairo, in particular
-	// for nodes doing 3D operations, this function may fail.
-	//
-	// This method is inherited from RenderNode
-	Draw(cr *cairo.Context)
-	// GetBounds retrieves the boundaries of the @node.
-	//
-	// The node will not draw outside of its boundaries.
-	//
-	// This method is inherited from RenderNode
-	GetBounds() graphene.Rect
-	// GetNodeType returns the type of the @node.
-	//
-	// This method is inherited from RenderNode
-	GetNodeType() RenderNodeType
-	// Ref acquires a reference on the given `GskRenderNode`.
-	//
-	// This method is inherited from RenderNode
-	ref() RenderNode
-	// Unref releases a reference on the given `GskRenderNode`.
-	//
-	// If the reference was the last, the resources associated to the @node are
-	// freed.
-	//
-	// This method is inherited from RenderNode
-	unref()
-	// WriteToFile: this function is equivalent to calling
-	// gsk_render_node_serialize() followed by g_file_set_contents().
-	//
-	// See those two functions for details on the arguments.
-	//
-	// It is mostly intended for use inside a debugger to quickly dump a render
-	// node to a file for later inspection.
-	//
-	// This method is inherited from RenderNode
-	WriteToFile(filename string) error
+	gextras.Objector
 
 	// Center retrieves the center pointer for the gradient.
 	Center() *graphene.Point
@@ -2866,88 +1649,29 @@ type RadialGradientNode interface {
 	Vradius() float32
 }
 
-// radialGradientNode implements the RadialGradientNode interface.
-type radialGradientNode struct {
-	*externglib.Object
+// RadialGradientNodeClass implements the RadialGradientNode interface.
+type RadialGradientNodeClass struct {
+	RenderNodeClass
 }
 
-var _ RadialGradientNode = (*radialGradientNode)(nil)
+var _ RadialGradientNode = (*RadialGradientNodeClass)(nil)
 
-// WrapRadialGradientNode wraps a GObject to a type that implements
-// interface RadialGradientNode. It is primarily used internally.
-func WrapRadialGradientNode(obj *externglib.Object) RadialGradientNode {
-	return radialGradientNode{obj}
+func wrapRadialGradientNode(obj *externglib.Object) RadialGradientNode {
+	return &RadialGradientNodeClass{
+		RenderNodeClass: RenderNodeClass{
+			Object: obj,
+		},
+	}
 }
 
 func marshalRadialGradientNode(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapRadialGradientNode(obj), nil
+	return wrapRadialGradientNode(obj), nil
 }
 
-// NewRadialGradientNode creates a `GskRenderNode` that draws a radial gradient.
-//
-// The radial gradient starts around @center. The size of the gradient is
-// dictated by @hradius in horizontal orientation and by @vradius in vertial
-// orientation.
-func NewRadialGradientNode(bounds *graphene.Rect, center *graphene.Point, hradius float32, vradius float32, start float32, end float32, colorStops []ColorStop) RadialGradientNode {
-	var _arg1 *C.graphene_rect_t  // out
-	var _arg2 *C.graphene_point_t // out
-	var _arg3 C.float             // out
-	var _arg4 C.float             // out
-	var _arg5 C.float             // out
-	var _arg6 C.float             // out
-	var _arg7 *C.GskColorStop
-	var _arg8 C.gsize
-	var _cret *C.GskRenderNode // in
-
-	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(bounds))
-	_arg2 = (*C.graphene_point_t)(unsafe.Pointer(center))
-	_arg3 = C.float(hradius)
-	_arg4 = C.float(vradius)
-	_arg5 = C.float(start)
-	_arg6 = C.float(end)
-	_arg8 = C.gsize(len(colorStops))
-	_arg7 = (*C.GskColorStop)(unsafe.Pointer(&colorStops[0]))
-
-	_cret = C.gsk_radial_gradient_node_new(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8)
-
-	var _radialGradientNode RadialGradientNode // out
-
-	_radialGradientNode = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(RadialGradientNode)
-
-	return _radialGradientNode
-}
-
-func (r radialGradientNode) AsRenderNode() RenderNode {
-	return WrapRenderNode(gextras.InternObject(r))
-}
-
-func (n radialGradientNode) Draw(cr *cairo.Context) {
-	WrapRenderNode(gextras.InternObject(n)).Draw(cr)
-}
-
-func (n radialGradientNode) GetBounds() graphene.Rect {
-	return WrapRenderNode(gextras.InternObject(n)).GetBounds()
-}
-
-func (n radialGradientNode) GetNodeType() RenderNodeType {
-	return WrapRenderNode(gextras.InternObject(n)).GetNodeType()
-}
-
-func (n radialGradientNode) ref() RenderNode {
-	return WrapRenderNode(gextras.InternObject(n)).ref()
-}
-
-func (n radialGradientNode) unref() {
-	WrapRenderNode(gextras.InternObject(n)).unref()
-}
-
-func (n radialGradientNode) WriteToFile(filename string) error {
-	return WrapRenderNode(gextras.InternObject(n)).WriteToFile(filename)
-}
-
-func (n radialGradientNode) Center() *graphene.Point {
+// Center retrieves the center pointer for the gradient.
+func (n *RadialGradientNodeClass) Center() *graphene.Point {
 	var _arg0 *C.GskRenderNode    // out
 	var _cret *C.graphene_point_t // in
 
@@ -2962,7 +1686,8 @@ func (n radialGradientNode) Center() *graphene.Point {
 	return _point
 }
 
-func (n radialGradientNode) End() float32 {
+// End retrieves the end value for the gradient.
+func (n *RadialGradientNodeClass) End() float32 {
 	var _arg0 *C.GskRenderNode // out
 	var _cret C.float          // in
 
@@ -2977,7 +1702,8 @@ func (n radialGradientNode) End() float32 {
 	return _gfloat
 }
 
-func (n radialGradientNode) Hradius() float32 {
+// Hradius retrieves the horizonal radius for the gradient.
+func (n *RadialGradientNodeClass) Hradius() float32 {
 	var _arg0 *C.GskRenderNode // out
 	var _cret C.float          // in
 
@@ -2992,7 +1718,8 @@ func (n radialGradientNode) Hradius() float32 {
 	return _gfloat
 }
 
-func (n radialGradientNode) NColorStops() uint {
+// NColorStops retrieves the number of color stops in the gradient.
+func (n *RadialGradientNodeClass) NColorStops() uint {
 	var _arg0 *C.GskRenderNode // out
 	var _cret C.gsize          // in
 
@@ -3007,7 +1734,8 @@ func (n radialGradientNode) NColorStops() uint {
 	return _gsize
 }
 
-func (n radialGradientNode) Start() float32 {
+// Start retrieves the start value for the gradient.
+func (n *RadialGradientNodeClass) Start() float32 {
 	var _arg0 *C.GskRenderNode // out
 	var _cret C.float          // in
 
@@ -3022,7 +1750,8 @@ func (n radialGradientNode) Start() float32 {
 	return _gfloat
 }
 
-func (n radialGradientNode) Vradius() float32 {
+// Vradius retrieves the vertical radius for the gradient.
+func (n *RadialGradientNodeClass) Vradius() float32 {
 	var _arg0 *C.GskRenderNode // out
 	var _cret C.float          // in
 
@@ -3039,53 +1768,7 @@ func (n radialGradientNode) Vradius() float32 {
 
 // RepeatNode: render node repeating its single child node.
 type RepeatNode interface {
-	RenderNode
-
-	// AsRenderNode casts the class to the RenderNode interface.
-	AsRenderNode() RenderNode
-
-	// Draw the contents of @node to the given cairo context.
-	//
-	// Typically, you'll use this function to implement fallback rendering of
-	// `GskRenderNode`s on an intermediate Cairo context, instead of using the
-	// drawing context associated to a `GdkSurface`'s rendering buffer.
-	//
-	// For advanced nodes that cannot be supported using Cairo, in particular
-	// for nodes doing 3D operations, this function may fail.
-	//
-	// This method is inherited from RenderNode
-	Draw(cr *cairo.Context)
-	// GetBounds retrieves the boundaries of the @node.
-	//
-	// The node will not draw outside of its boundaries.
-	//
-	// This method is inherited from RenderNode
-	GetBounds() graphene.Rect
-	// GetNodeType returns the type of the @node.
-	//
-	// This method is inherited from RenderNode
-	GetNodeType() RenderNodeType
-	// Ref acquires a reference on the given `GskRenderNode`.
-	//
-	// This method is inherited from RenderNode
-	ref() RenderNode
-	// Unref releases a reference on the given `GskRenderNode`.
-	//
-	// If the reference was the last, the resources associated to the @node are
-	// freed.
-	//
-	// This method is inherited from RenderNode
-	unref()
-	// WriteToFile: this function is equivalent to calling
-	// gsk_render_node_serialize() followed by g_file_set_contents().
-	//
-	// See those two functions for details on the arguments.
-	//
-	// It is mostly intended for use inside a debugger to quickly dump a render
-	// node to a file for later inspection.
-	//
-	// This method is inherited from RenderNode
-	WriteToFile(filename string) error
+	gextras.Objector
 
 	// Child retrieves the child of @node.
 	Child() RenderNode
@@ -3093,23 +1776,25 @@ type RepeatNode interface {
 	ChildBounds() *graphene.Rect
 }
 
-// repeatNode implements the RepeatNode interface.
-type repeatNode struct {
-	*externglib.Object
+// RepeatNodeClass implements the RepeatNode interface.
+type RepeatNodeClass struct {
+	RenderNodeClass
 }
 
-var _ RepeatNode = (*repeatNode)(nil)
+var _ RepeatNode = (*RepeatNodeClass)(nil)
 
-// WrapRepeatNode wraps a GObject to a type that implements
-// interface RepeatNode. It is primarily used internally.
-func WrapRepeatNode(obj *externglib.Object) RepeatNode {
-	return repeatNode{obj}
+func wrapRepeatNode(obj *externglib.Object) RepeatNode {
+	return &RepeatNodeClass{
+		RenderNodeClass: RenderNodeClass{
+			Object: obj,
+		},
+	}
 }
 
 func marshalRepeatNode(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapRepeatNode(obj), nil
+	return wrapRepeatNode(obj), nil
 }
 
 // NewRepeatNode creates a `GskRenderNode` that will repeat the drawing of
@@ -3133,35 +1818,8 @@ func NewRepeatNode(bounds *graphene.Rect, child RenderNode, childBounds *graphen
 	return _repeatNode
 }
 
-func (r repeatNode) AsRenderNode() RenderNode {
-	return WrapRenderNode(gextras.InternObject(r))
-}
-
-func (n repeatNode) Draw(cr *cairo.Context) {
-	WrapRenderNode(gextras.InternObject(n)).Draw(cr)
-}
-
-func (n repeatNode) GetBounds() graphene.Rect {
-	return WrapRenderNode(gextras.InternObject(n)).GetBounds()
-}
-
-func (n repeatNode) GetNodeType() RenderNodeType {
-	return WrapRenderNode(gextras.InternObject(n)).GetNodeType()
-}
-
-func (n repeatNode) ref() RenderNode {
-	return WrapRenderNode(gextras.InternObject(n)).ref()
-}
-
-func (n repeatNode) unref() {
-	WrapRenderNode(gextras.InternObject(n)).unref()
-}
-
-func (n repeatNode) WriteToFile(filename string) error {
-	return WrapRenderNode(gextras.InternObject(n)).WriteToFile(filename)
-}
-
-func (n repeatNode) Child() RenderNode {
+// Child retrieves the child of @node.
+func (n *RepeatNodeClass) Child() RenderNode {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GskRenderNode // in
 
@@ -3176,7 +1834,8 @@ func (n repeatNode) Child() RenderNode {
 	return _renderNode
 }
 
-func (n repeatNode) ChildBounds() *graphene.Rect {
+// ChildBounds retrieves the bounding rectangle of the child of @node.
+func (n *RepeatNodeClass) ChildBounds() *graphene.Rect {
 	var _arg0 *C.GskRenderNode   // out
 	var _cret *C.graphene_rect_t // in
 
@@ -3193,311 +1852,68 @@ func (n repeatNode) ChildBounds() *graphene.Rect {
 
 // RepeatingLinearGradientNode: render node for a repeating linear gradient.
 type RepeatingLinearGradientNode interface {
-	RenderNode
+	gextras.Objector
 
-	// AsRenderNode casts the class to the RenderNode interface.
-	AsRenderNode() RenderNode
-
-	// Draw the contents of @node to the given cairo context.
-	//
-	// Typically, you'll use this function to implement fallback rendering of
-	// `GskRenderNode`s on an intermediate Cairo context, instead of using the
-	// drawing context associated to a `GdkSurface`'s rendering buffer.
-	//
-	// For advanced nodes that cannot be supported using Cairo, in particular
-	// for nodes doing 3D operations, this function may fail.
-	//
-	// This method is inherited from RenderNode
-	Draw(cr *cairo.Context)
-	// GetBounds retrieves the boundaries of the @node.
-	//
-	// The node will not draw outside of its boundaries.
-	//
-	// This method is inherited from RenderNode
-	GetBounds() graphene.Rect
-	// GetNodeType returns the type of the @node.
-	//
-	// This method is inherited from RenderNode
-	GetNodeType() RenderNodeType
-	// Ref acquires a reference on the given `GskRenderNode`.
-	//
-	// This method is inherited from RenderNode
-	ref() RenderNode
-	// Unref releases a reference on the given `GskRenderNode`.
-	//
-	// If the reference was the last, the resources associated to the @node are
-	// freed.
-	//
-	// This method is inherited from RenderNode
-	unref()
-	// WriteToFile: this function is equivalent to calling
-	// gsk_render_node_serialize() followed by g_file_set_contents().
-	//
-	// See those two functions for details on the arguments.
-	//
-	// It is mostly intended for use inside a debugger to quickly dump a render
-	// node to a file for later inspection.
-	//
-	// This method is inherited from RenderNode
-	WriteToFile(filename string) error
+	privateRepeatingLinearGradientNodeClass()
 }
 
-// repeatingLinearGradientNode implements the RepeatingLinearGradientNode interface.
-type repeatingLinearGradientNode struct {
-	*externglib.Object
+// RepeatingLinearGradientNodeClass implements the RepeatingLinearGradientNode interface.
+type RepeatingLinearGradientNodeClass struct {
+	RenderNodeClass
 }
 
-var _ RepeatingLinearGradientNode = (*repeatingLinearGradientNode)(nil)
+var _ RepeatingLinearGradientNode = (*RepeatingLinearGradientNodeClass)(nil)
 
-// WrapRepeatingLinearGradientNode wraps a GObject to a type that implements
-// interface RepeatingLinearGradientNode. It is primarily used internally.
-func WrapRepeatingLinearGradientNode(obj *externglib.Object) RepeatingLinearGradientNode {
-	return repeatingLinearGradientNode{obj}
+func wrapRepeatingLinearGradientNode(obj *externglib.Object) RepeatingLinearGradientNode {
+	return &RepeatingLinearGradientNodeClass{
+		RenderNodeClass: RenderNodeClass{
+			Object: obj,
+		},
+	}
 }
 
 func marshalRepeatingLinearGradientNode(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapRepeatingLinearGradientNode(obj), nil
+	return wrapRepeatingLinearGradientNode(obj), nil
 }
 
-// NewRepeatingLinearGradientNode creates a `GskRenderNode` that will create a
-// repeating linear gradient from the given points and color stops, and render
-// that into the area given by @bounds.
-func NewRepeatingLinearGradientNode(bounds *graphene.Rect, start *graphene.Point, end *graphene.Point, colorStops []ColorStop) RepeatingLinearGradientNode {
-	var _arg1 *C.graphene_rect_t  // out
-	var _arg2 *C.graphene_point_t // out
-	var _arg3 *C.graphene_point_t // out
-	var _arg4 *C.GskColorStop
-	var _arg5 C.gsize
-	var _cret *C.GskRenderNode // in
-
-	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(bounds))
-	_arg2 = (*C.graphene_point_t)(unsafe.Pointer(start))
-	_arg3 = (*C.graphene_point_t)(unsafe.Pointer(end))
-	_arg5 = C.gsize(len(colorStops))
-	_arg4 = (*C.GskColorStop)(unsafe.Pointer(&colorStops[0]))
-
-	_cret = C.gsk_repeating_linear_gradient_node_new(_arg1, _arg2, _arg3, _arg4, _arg5)
-
-	var _repeatingLinearGradientNode RepeatingLinearGradientNode // out
-
-	_repeatingLinearGradientNode = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(RepeatingLinearGradientNode)
-
-	return _repeatingLinearGradientNode
-}
-
-func (r repeatingLinearGradientNode) AsRenderNode() RenderNode {
-	return WrapRenderNode(gextras.InternObject(r))
-}
-
-func (n repeatingLinearGradientNode) Draw(cr *cairo.Context) {
-	WrapRenderNode(gextras.InternObject(n)).Draw(cr)
-}
-
-func (n repeatingLinearGradientNode) GetBounds() graphene.Rect {
-	return WrapRenderNode(gextras.InternObject(n)).GetBounds()
-}
-
-func (n repeatingLinearGradientNode) GetNodeType() RenderNodeType {
-	return WrapRenderNode(gextras.InternObject(n)).GetNodeType()
-}
-
-func (n repeatingLinearGradientNode) ref() RenderNode {
-	return WrapRenderNode(gextras.InternObject(n)).ref()
-}
-
-func (n repeatingLinearGradientNode) unref() {
-	WrapRenderNode(gextras.InternObject(n)).unref()
-}
-
-func (n repeatingLinearGradientNode) WriteToFile(filename string) error {
-	return WrapRenderNode(gextras.InternObject(n)).WriteToFile(filename)
-}
+func (*RepeatingLinearGradientNodeClass) privateRepeatingLinearGradientNodeClass() {}
 
 // RepeatingRadialGradientNode: render node for a repeating radial gradient.
 type RepeatingRadialGradientNode interface {
-	RenderNode
+	gextras.Objector
 
-	// AsRenderNode casts the class to the RenderNode interface.
-	AsRenderNode() RenderNode
-
-	// Draw the contents of @node to the given cairo context.
-	//
-	// Typically, you'll use this function to implement fallback rendering of
-	// `GskRenderNode`s on an intermediate Cairo context, instead of using the
-	// drawing context associated to a `GdkSurface`'s rendering buffer.
-	//
-	// For advanced nodes that cannot be supported using Cairo, in particular
-	// for nodes doing 3D operations, this function may fail.
-	//
-	// This method is inherited from RenderNode
-	Draw(cr *cairo.Context)
-	// GetBounds retrieves the boundaries of the @node.
-	//
-	// The node will not draw outside of its boundaries.
-	//
-	// This method is inherited from RenderNode
-	GetBounds() graphene.Rect
-	// GetNodeType returns the type of the @node.
-	//
-	// This method is inherited from RenderNode
-	GetNodeType() RenderNodeType
-	// Ref acquires a reference on the given `GskRenderNode`.
-	//
-	// This method is inherited from RenderNode
-	ref() RenderNode
-	// Unref releases a reference on the given `GskRenderNode`.
-	//
-	// If the reference was the last, the resources associated to the @node are
-	// freed.
-	//
-	// This method is inherited from RenderNode
-	unref()
-	// WriteToFile: this function is equivalent to calling
-	// gsk_render_node_serialize() followed by g_file_set_contents().
-	//
-	// See those two functions for details on the arguments.
-	//
-	// It is mostly intended for use inside a debugger to quickly dump a render
-	// node to a file for later inspection.
-	//
-	// This method is inherited from RenderNode
-	WriteToFile(filename string) error
+	privateRepeatingRadialGradientNodeClass()
 }
 
-// repeatingRadialGradientNode implements the RepeatingRadialGradientNode interface.
-type repeatingRadialGradientNode struct {
-	*externglib.Object
+// RepeatingRadialGradientNodeClass implements the RepeatingRadialGradientNode interface.
+type RepeatingRadialGradientNodeClass struct {
+	RenderNodeClass
 }
 
-var _ RepeatingRadialGradientNode = (*repeatingRadialGradientNode)(nil)
+var _ RepeatingRadialGradientNode = (*RepeatingRadialGradientNodeClass)(nil)
 
-// WrapRepeatingRadialGradientNode wraps a GObject to a type that implements
-// interface RepeatingRadialGradientNode. It is primarily used internally.
-func WrapRepeatingRadialGradientNode(obj *externglib.Object) RepeatingRadialGradientNode {
-	return repeatingRadialGradientNode{obj}
+func wrapRepeatingRadialGradientNode(obj *externglib.Object) RepeatingRadialGradientNode {
+	return &RepeatingRadialGradientNodeClass{
+		RenderNodeClass: RenderNodeClass{
+			Object: obj,
+		},
+	}
 }
 
 func marshalRepeatingRadialGradientNode(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapRepeatingRadialGradientNode(obj), nil
+	return wrapRepeatingRadialGradientNode(obj), nil
 }
 
-// NewRepeatingRadialGradientNode creates a `GskRenderNode` that draws a
-// repeating radial gradient.
-//
-// The radial gradient starts around @center. The size of the gradient is
-// dictated by @hradius in horizontal orientation and by @vradius in vertial
-// orientation.
-func NewRepeatingRadialGradientNode(bounds *graphene.Rect, center *graphene.Point, hradius float32, vradius float32, start float32, end float32, colorStops []ColorStop) RepeatingRadialGradientNode {
-	var _arg1 *C.graphene_rect_t  // out
-	var _arg2 *C.graphene_point_t // out
-	var _arg3 C.float             // out
-	var _arg4 C.float             // out
-	var _arg5 C.float             // out
-	var _arg6 C.float             // out
-	var _arg7 *C.GskColorStop
-	var _arg8 C.gsize
-	var _cret *C.GskRenderNode // in
-
-	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(bounds))
-	_arg2 = (*C.graphene_point_t)(unsafe.Pointer(center))
-	_arg3 = C.float(hradius)
-	_arg4 = C.float(vradius)
-	_arg5 = C.float(start)
-	_arg6 = C.float(end)
-	_arg8 = C.gsize(len(colorStops))
-	_arg7 = (*C.GskColorStop)(unsafe.Pointer(&colorStops[0]))
-
-	_cret = C.gsk_repeating_radial_gradient_node_new(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8)
-
-	var _repeatingRadialGradientNode RepeatingRadialGradientNode // out
-
-	_repeatingRadialGradientNode = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(RepeatingRadialGradientNode)
-
-	return _repeatingRadialGradientNode
-}
-
-func (r repeatingRadialGradientNode) AsRenderNode() RenderNode {
-	return WrapRenderNode(gextras.InternObject(r))
-}
-
-func (n repeatingRadialGradientNode) Draw(cr *cairo.Context) {
-	WrapRenderNode(gextras.InternObject(n)).Draw(cr)
-}
-
-func (n repeatingRadialGradientNode) GetBounds() graphene.Rect {
-	return WrapRenderNode(gextras.InternObject(n)).GetBounds()
-}
-
-func (n repeatingRadialGradientNode) GetNodeType() RenderNodeType {
-	return WrapRenderNode(gextras.InternObject(n)).GetNodeType()
-}
-
-func (n repeatingRadialGradientNode) ref() RenderNode {
-	return WrapRenderNode(gextras.InternObject(n)).ref()
-}
-
-func (n repeatingRadialGradientNode) unref() {
-	WrapRenderNode(gextras.InternObject(n)).unref()
-}
-
-func (n repeatingRadialGradientNode) WriteToFile(filename string) error {
-	return WrapRenderNode(gextras.InternObject(n)).WriteToFile(filename)
-}
+func (*RepeatingRadialGradientNodeClass) privateRepeatingRadialGradientNodeClass() {}
 
 // RoundedClipNode: render node applying a rounded rectangle clip to its single
 // child.
 type RoundedClipNode interface {
-	RenderNode
-
-	// AsRenderNode casts the class to the RenderNode interface.
-	AsRenderNode() RenderNode
-
-	// Draw the contents of @node to the given cairo context.
-	//
-	// Typically, you'll use this function to implement fallback rendering of
-	// `GskRenderNode`s on an intermediate Cairo context, instead of using the
-	// drawing context associated to a `GdkSurface`'s rendering buffer.
-	//
-	// For advanced nodes that cannot be supported using Cairo, in particular
-	// for nodes doing 3D operations, this function may fail.
-	//
-	// This method is inherited from RenderNode
-	Draw(cr *cairo.Context)
-	// GetBounds retrieves the boundaries of the @node.
-	//
-	// The node will not draw outside of its boundaries.
-	//
-	// This method is inherited from RenderNode
-	GetBounds() graphene.Rect
-	// GetNodeType returns the type of the @node.
-	//
-	// This method is inherited from RenderNode
-	GetNodeType() RenderNodeType
-	// Ref acquires a reference on the given `GskRenderNode`.
-	//
-	// This method is inherited from RenderNode
-	ref() RenderNode
-	// Unref releases a reference on the given `GskRenderNode`.
-	//
-	// If the reference was the last, the resources associated to the @node are
-	// freed.
-	//
-	// This method is inherited from RenderNode
-	unref()
-	// WriteToFile: this function is equivalent to calling
-	// gsk_render_node_serialize() followed by g_file_set_contents().
-	//
-	// See those two functions for details on the arguments.
-	//
-	// It is mostly intended for use inside a debugger to quickly dump a render
-	// node to a file for later inspection.
-	//
-	// This method is inherited from RenderNode
-	WriteToFile(filename string) error
+	gextras.Objector
 
 	// Child gets the child node that is getting clipped by the given @node.
 	Child() RenderNode
@@ -3506,23 +1922,25 @@ type RoundedClipNode interface {
 	Clip() *RoundedRect
 }
 
-// roundedClipNode implements the RoundedClipNode interface.
-type roundedClipNode struct {
-	*externglib.Object
+// RoundedClipNodeClass implements the RoundedClipNode interface.
+type RoundedClipNodeClass struct {
+	RenderNodeClass
 }
 
-var _ RoundedClipNode = (*roundedClipNode)(nil)
+var _ RoundedClipNode = (*RoundedClipNodeClass)(nil)
 
-// WrapRoundedClipNode wraps a GObject to a type that implements
-// interface RoundedClipNode. It is primarily used internally.
-func WrapRoundedClipNode(obj *externglib.Object) RoundedClipNode {
-	return roundedClipNode{obj}
+func wrapRoundedClipNode(obj *externglib.Object) RoundedClipNode {
+	return &RoundedClipNodeClass{
+		RenderNodeClass: RenderNodeClass{
+			Object: obj,
+		},
+	}
 }
 
 func marshalRoundedClipNode(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapRoundedClipNode(obj), nil
+	return wrapRoundedClipNode(obj), nil
 }
 
 // NewRoundedClipNode creates a `GskRenderNode` that will clip the @child to the
@@ -3544,35 +1962,8 @@ func NewRoundedClipNode(child RenderNode, clip *RoundedRect) RoundedClipNode {
 	return _roundedClipNode
 }
 
-func (r roundedClipNode) AsRenderNode() RenderNode {
-	return WrapRenderNode(gextras.InternObject(r))
-}
-
-func (n roundedClipNode) Draw(cr *cairo.Context) {
-	WrapRenderNode(gextras.InternObject(n)).Draw(cr)
-}
-
-func (n roundedClipNode) GetBounds() graphene.Rect {
-	return WrapRenderNode(gextras.InternObject(n)).GetBounds()
-}
-
-func (n roundedClipNode) GetNodeType() RenderNodeType {
-	return WrapRenderNode(gextras.InternObject(n)).GetNodeType()
-}
-
-func (n roundedClipNode) ref() RenderNode {
-	return WrapRenderNode(gextras.InternObject(n)).ref()
-}
-
-func (n roundedClipNode) unref() {
-	WrapRenderNode(gextras.InternObject(n)).unref()
-}
-
-func (n roundedClipNode) WriteToFile(filename string) error {
-	return WrapRenderNode(gextras.InternObject(n)).WriteToFile(filename)
-}
-
-func (n roundedClipNode) Child() RenderNode {
+// Child gets the child node that is getting clipped by the given @node.
+func (n *RoundedClipNodeClass) Child() RenderNode {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GskRenderNode // in
 
@@ -3587,7 +1978,8 @@ func (n roundedClipNode) Child() RenderNode {
 	return _renderNode
 }
 
-func (n roundedClipNode) Clip() *RoundedRect {
+// Clip retrieves the rounded rectangle used to clip the contents of the @node.
+func (n *RoundedClipNodeClass) Clip() *RoundedRect {
 	var _arg0 *C.GskRenderNode  // out
 	var _cret *C.GskRoundedRect // in
 
@@ -3605,53 +1997,7 @@ func (n roundedClipNode) Clip() *RoundedRect {
 // ShadowNode: render node drawing one or more shadows behind its single child
 // node.
 type ShadowNode interface {
-	RenderNode
-
-	// AsRenderNode casts the class to the RenderNode interface.
-	AsRenderNode() RenderNode
-
-	// Draw the contents of @node to the given cairo context.
-	//
-	// Typically, you'll use this function to implement fallback rendering of
-	// `GskRenderNode`s on an intermediate Cairo context, instead of using the
-	// drawing context associated to a `GdkSurface`'s rendering buffer.
-	//
-	// For advanced nodes that cannot be supported using Cairo, in particular
-	// for nodes doing 3D operations, this function may fail.
-	//
-	// This method is inherited from RenderNode
-	Draw(cr *cairo.Context)
-	// GetBounds retrieves the boundaries of the @node.
-	//
-	// The node will not draw outside of its boundaries.
-	//
-	// This method is inherited from RenderNode
-	GetBounds() graphene.Rect
-	// GetNodeType returns the type of the @node.
-	//
-	// This method is inherited from RenderNode
-	GetNodeType() RenderNodeType
-	// Ref acquires a reference on the given `GskRenderNode`.
-	//
-	// This method is inherited from RenderNode
-	ref() RenderNode
-	// Unref releases a reference on the given `GskRenderNode`.
-	//
-	// If the reference was the last, the resources associated to the @node are
-	// freed.
-	//
-	// This method is inherited from RenderNode
-	unref()
-	// WriteToFile: this function is equivalent to calling
-	// gsk_render_node_serialize() followed by g_file_set_contents().
-	//
-	// See those two functions for details on the arguments.
-	//
-	// It is mostly intended for use inside a debugger to quickly dump a render
-	// node to a file for later inspection.
-	//
-	// This method is inherited from RenderNode
-	WriteToFile(filename string) error
+	gextras.Objector
 
 	// Child retrieves the child `GskRenderNode` of the shadow @node.
 	Child() RenderNode
@@ -3661,75 +2007,29 @@ type ShadowNode interface {
 	Shadow(i uint) *Shadow
 }
 
-// shadowNode implements the ShadowNode interface.
-type shadowNode struct {
-	*externglib.Object
+// ShadowNodeClass implements the ShadowNode interface.
+type ShadowNodeClass struct {
+	RenderNodeClass
 }
 
-var _ ShadowNode = (*shadowNode)(nil)
+var _ ShadowNode = (*ShadowNodeClass)(nil)
 
-// WrapShadowNode wraps a GObject to a type that implements
-// interface ShadowNode. It is primarily used internally.
-func WrapShadowNode(obj *externglib.Object) ShadowNode {
-	return shadowNode{obj}
+func wrapShadowNode(obj *externglib.Object) ShadowNode {
+	return &ShadowNodeClass{
+		RenderNodeClass: RenderNodeClass{
+			Object: obj,
+		},
+	}
 }
 
 func marshalShadowNode(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapShadowNode(obj), nil
+	return wrapShadowNode(obj), nil
 }
 
-// NewShadowNode creates a `GskRenderNode` that will draw a @child with the
-// given @shadows below it.
-func NewShadowNode(child RenderNode, shadows []Shadow) ShadowNode {
-	var _arg1 *C.GskRenderNode // out
-	var _arg2 *C.GskShadow
-	var _arg3 C.gsize
-	var _cret *C.GskRenderNode // in
-
-	_arg1 = (*C.GskRenderNode)(unsafe.Pointer(child.Native()))
-	_arg3 = C.gsize(len(shadows))
-	_arg2 = (*C.GskShadow)(unsafe.Pointer(&shadows[0]))
-
-	_cret = C.gsk_shadow_node_new(_arg1, _arg2, _arg3)
-
-	var _shadowNode ShadowNode // out
-
-	_shadowNode = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(ShadowNode)
-
-	return _shadowNode
-}
-
-func (s shadowNode) AsRenderNode() RenderNode {
-	return WrapRenderNode(gextras.InternObject(s))
-}
-
-func (n shadowNode) Draw(cr *cairo.Context) {
-	WrapRenderNode(gextras.InternObject(n)).Draw(cr)
-}
-
-func (n shadowNode) GetBounds() graphene.Rect {
-	return WrapRenderNode(gextras.InternObject(n)).GetBounds()
-}
-
-func (n shadowNode) GetNodeType() RenderNodeType {
-	return WrapRenderNode(gextras.InternObject(n)).GetNodeType()
-}
-
-func (n shadowNode) ref() RenderNode {
-	return WrapRenderNode(gextras.InternObject(n)).ref()
-}
-
-func (n shadowNode) unref() {
-	WrapRenderNode(gextras.InternObject(n)).unref()
-}
-
-func (n shadowNode) WriteToFile(filename string) error {
-	return WrapRenderNode(gextras.InternObject(n)).WriteToFile(filename)
-}
-
-func (n shadowNode) Child() RenderNode {
+// Child retrieves the child `GskRenderNode` of the shadow @node.
+func (n *ShadowNodeClass) Child() RenderNode {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GskRenderNode // in
 
@@ -3744,7 +2044,8 @@ func (n shadowNode) Child() RenderNode {
 	return _renderNode
 }
 
-func (n shadowNode) NShadows() uint {
+// NShadows retrieves the number of shadows in the @node.
+func (n *ShadowNodeClass) NShadows() uint {
 	var _arg0 *C.GskRenderNode // out
 	var _cret C.gsize          // in
 
@@ -3759,7 +2060,8 @@ func (n shadowNode) NShadows() uint {
 	return _gsize
 }
 
-func (n shadowNode) Shadow(i uint) *Shadow {
+// Shadow retrieves the shadow data at the given index @i.
+func (n *ShadowNodeClass) Shadow(i uint) *Shadow {
 	var _arg0 *C.GskRenderNode // out
 	var _arg1 C.gsize          // out
 	var _cret *C.GskShadow     // in
@@ -3778,53 +2080,7 @@ func (n shadowNode) Shadow(i uint) *Shadow {
 
 // TextNode: render node drawing a set of glyphs.
 type TextNode interface {
-	RenderNode
-
-	// AsRenderNode casts the class to the RenderNode interface.
-	AsRenderNode() RenderNode
-
-	// Draw the contents of @node to the given cairo context.
-	//
-	// Typically, you'll use this function to implement fallback rendering of
-	// `GskRenderNode`s on an intermediate Cairo context, instead of using the
-	// drawing context associated to a `GdkSurface`'s rendering buffer.
-	//
-	// For advanced nodes that cannot be supported using Cairo, in particular
-	// for nodes doing 3D operations, this function may fail.
-	//
-	// This method is inherited from RenderNode
-	Draw(cr *cairo.Context)
-	// GetBounds retrieves the boundaries of the @node.
-	//
-	// The node will not draw outside of its boundaries.
-	//
-	// This method is inherited from RenderNode
-	GetBounds() graphene.Rect
-	// GetNodeType returns the type of the @node.
-	//
-	// This method is inherited from RenderNode
-	GetNodeType() RenderNodeType
-	// Ref acquires a reference on the given `GskRenderNode`.
-	//
-	// This method is inherited from RenderNode
-	ref() RenderNode
-	// Unref releases a reference on the given `GskRenderNode`.
-	//
-	// If the reference was the last, the resources associated to the @node are
-	// freed.
-	//
-	// This method is inherited from RenderNode
-	unref()
-	// WriteToFile: this function is equivalent to calling
-	// gsk_render_node_serialize() followed by g_file_set_contents().
-	//
-	// See those two functions for details on the arguments.
-	//
-	// It is mostly intended for use inside a debugger to quickly dump a render
-	// node to a file for later inspection.
-	//
-	// This method is inherited from RenderNode
-	WriteToFile(filename string) error
+	gextras.Objector
 
 	// Color retrieves the color used by the text @node.
 	Color() *gdk.RGBA
@@ -3838,23 +2094,25 @@ type TextNode interface {
 	HasColorGlyphs() bool
 }
 
-// textNode implements the TextNode interface.
-type textNode struct {
-	*externglib.Object
+// TextNodeClass implements the TextNode interface.
+type TextNodeClass struct {
+	RenderNodeClass
 }
 
-var _ TextNode = (*textNode)(nil)
+var _ TextNode = (*TextNodeClass)(nil)
 
-// WrapTextNode wraps a GObject to a type that implements
-// interface TextNode. It is primarily used internally.
-func WrapTextNode(obj *externglib.Object) TextNode {
-	return textNode{obj}
+func wrapTextNode(obj *externglib.Object) TextNode {
+	return &TextNodeClass{
+		RenderNodeClass: RenderNodeClass{
+			Object: obj,
+		},
+	}
 }
 
 func marshalTextNode(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapTextNode(obj), nil
+	return wrapTextNode(obj), nil
 }
 
 // NewTextNode creates a render node that renders the given glyphs.
@@ -3881,35 +2139,8 @@ func NewTextNode(font pango.Font, glyphs *pango.GlyphString, color *gdk.RGBA, of
 	return _textNode
 }
 
-func (t textNode) AsRenderNode() RenderNode {
-	return WrapRenderNode(gextras.InternObject(t))
-}
-
-func (n textNode) Draw(cr *cairo.Context) {
-	WrapRenderNode(gextras.InternObject(n)).Draw(cr)
-}
-
-func (n textNode) GetBounds() graphene.Rect {
-	return WrapRenderNode(gextras.InternObject(n)).GetBounds()
-}
-
-func (n textNode) GetNodeType() RenderNodeType {
-	return WrapRenderNode(gextras.InternObject(n)).GetNodeType()
-}
-
-func (n textNode) ref() RenderNode {
-	return WrapRenderNode(gextras.InternObject(n)).ref()
-}
-
-func (n textNode) unref() {
-	WrapRenderNode(gextras.InternObject(n)).unref()
-}
-
-func (n textNode) WriteToFile(filename string) error {
-	return WrapRenderNode(gextras.InternObject(n)).WriteToFile(filename)
-}
-
-func (n textNode) Color() *gdk.RGBA {
+// Color retrieves the color used by the text @node.
+func (n *TextNodeClass) Color() *gdk.RGBA {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GdkRGBA       // in
 
@@ -3924,7 +2155,8 @@ func (n textNode) Color() *gdk.RGBA {
 	return _rgbA
 }
 
-func (n textNode) Font() pango.Font {
+// Font returns the font used by the text @node.
+func (n *TextNodeClass) Font() pango.Font {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.PangoFont     // in
 
@@ -3939,7 +2171,8 @@ func (n textNode) Font() pango.Font {
 	return _font
 }
 
-func (n textNode) NumGlyphs() uint {
+// NumGlyphs retrieves the number of glyphs in the text node.
+func (n *TextNodeClass) NumGlyphs() uint {
 	var _arg0 *C.GskRenderNode // out
 	var _cret C.guint          // in
 
@@ -3954,7 +2187,8 @@ func (n textNode) NumGlyphs() uint {
 	return _guint
 }
 
-func (n textNode) Offset() *graphene.Point {
+// Offset retrieves the offset applied to the text.
+func (n *TextNodeClass) Offset() *graphene.Point {
 	var _arg0 *C.GskRenderNode    // out
 	var _cret *C.graphene_point_t // in
 
@@ -3969,7 +2203,8 @@ func (n textNode) Offset() *graphene.Point {
 	return _point
 }
 
-func (n textNode) HasColorGlyphs() bool {
+// HasColorGlyphs checks whether the text @node has color glyphs.
+func (n *TextNodeClass) HasColorGlyphs() bool {
 	var _arg0 *C.GskRenderNode // out
 	var _cret C.gboolean       // in
 
@@ -3988,76 +2223,32 @@ func (n textNode) HasColorGlyphs() bool {
 
 // TextureNode: render node for a Texture.
 type TextureNode interface {
-	RenderNode
-
-	// AsRenderNode casts the class to the RenderNode interface.
-	AsRenderNode() RenderNode
-
-	// Draw the contents of @node to the given cairo context.
-	//
-	// Typically, you'll use this function to implement fallback rendering of
-	// `GskRenderNode`s on an intermediate Cairo context, instead of using the
-	// drawing context associated to a `GdkSurface`'s rendering buffer.
-	//
-	// For advanced nodes that cannot be supported using Cairo, in particular
-	// for nodes doing 3D operations, this function may fail.
-	//
-	// This method is inherited from RenderNode
-	Draw(cr *cairo.Context)
-	// GetBounds retrieves the boundaries of the @node.
-	//
-	// The node will not draw outside of its boundaries.
-	//
-	// This method is inherited from RenderNode
-	GetBounds() graphene.Rect
-	// GetNodeType returns the type of the @node.
-	//
-	// This method is inherited from RenderNode
-	GetNodeType() RenderNodeType
-	// Ref acquires a reference on the given `GskRenderNode`.
-	//
-	// This method is inherited from RenderNode
-	ref() RenderNode
-	// Unref releases a reference on the given `GskRenderNode`.
-	//
-	// If the reference was the last, the resources associated to the @node are
-	// freed.
-	//
-	// This method is inherited from RenderNode
-	unref()
-	// WriteToFile: this function is equivalent to calling
-	// gsk_render_node_serialize() followed by g_file_set_contents().
-	//
-	// See those two functions for details on the arguments.
-	//
-	// It is mostly intended for use inside a debugger to quickly dump a render
-	// node to a file for later inspection.
-	//
-	// This method is inherited from RenderNode
-	WriteToFile(filename string) error
+	gextras.Objector
 
 	// Texture retrieves the `GdkTexture` used when creating this
 	// `GskRenderNode`.
 	Texture() gdk.Texture
 }
 
-// textureNode implements the TextureNode interface.
-type textureNode struct {
-	*externglib.Object
+// TextureNodeClass implements the TextureNode interface.
+type TextureNodeClass struct {
+	RenderNodeClass
 }
 
-var _ TextureNode = (*textureNode)(nil)
+var _ TextureNode = (*TextureNodeClass)(nil)
 
-// WrapTextureNode wraps a GObject to a type that implements
-// interface TextureNode. It is primarily used internally.
-func WrapTextureNode(obj *externglib.Object) TextureNode {
-	return textureNode{obj}
+func wrapTextureNode(obj *externglib.Object) TextureNode {
+	return &TextureNodeClass{
+		RenderNodeClass: RenderNodeClass{
+			Object: obj,
+		},
+	}
 }
 
 func marshalTextureNode(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapTextureNode(obj), nil
+	return wrapTextureNode(obj), nil
 }
 
 // NewTextureNode creates a `GskRenderNode` that will render the given @texture
@@ -4079,35 +2270,8 @@ func NewTextureNode(texture gdk.Texture, bounds *graphene.Rect) TextureNode {
 	return _textureNode
 }
 
-func (t textureNode) AsRenderNode() RenderNode {
-	return WrapRenderNode(gextras.InternObject(t))
-}
-
-func (n textureNode) Draw(cr *cairo.Context) {
-	WrapRenderNode(gextras.InternObject(n)).Draw(cr)
-}
-
-func (n textureNode) GetBounds() graphene.Rect {
-	return WrapRenderNode(gextras.InternObject(n)).GetBounds()
-}
-
-func (n textureNode) GetNodeType() RenderNodeType {
-	return WrapRenderNode(gextras.InternObject(n)).GetNodeType()
-}
-
-func (n textureNode) ref() RenderNode {
-	return WrapRenderNode(gextras.InternObject(n)).ref()
-}
-
-func (n textureNode) unref() {
-	WrapRenderNode(gextras.InternObject(n)).unref()
-}
-
-func (n textureNode) WriteToFile(filename string) error {
-	return WrapRenderNode(gextras.InternObject(n)).WriteToFile(filename)
-}
-
-func (n textureNode) Texture() gdk.Texture {
+// Texture retrieves the `GdkTexture` used when creating this `GskRenderNode`.
+func (n *TextureNodeClass) Texture() gdk.Texture {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GdkTexture    // in
 
@@ -4125,53 +2289,7 @@ func (n textureNode) Texture() gdk.Texture {
 // TransformNode: render node applying a `GskTransform` to its single child
 // node.
 type TransformNode interface {
-	RenderNode
-
-	// AsRenderNode casts the class to the RenderNode interface.
-	AsRenderNode() RenderNode
-
-	// Draw the contents of @node to the given cairo context.
-	//
-	// Typically, you'll use this function to implement fallback rendering of
-	// `GskRenderNode`s on an intermediate Cairo context, instead of using the
-	// drawing context associated to a `GdkSurface`'s rendering buffer.
-	//
-	// For advanced nodes that cannot be supported using Cairo, in particular
-	// for nodes doing 3D operations, this function may fail.
-	//
-	// This method is inherited from RenderNode
-	Draw(cr *cairo.Context)
-	// GetBounds retrieves the boundaries of the @node.
-	//
-	// The node will not draw outside of its boundaries.
-	//
-	// This method is inherited from RenderNode
-	GetBounds() graphene.Rect
-	// GetNodeType returns the type of the @node.
-	//
-	// This method is inherited from RenderNode
-	GetNodeType() RenderNodeType
-	// Ref acquires a reference on the given `GskRenderNode`.
-	//
-	// This method is inherited from RenderNode
-	ref() RenderNode
-	// Unref releases a reference on the given `GskRenderNode`.
-	//
-	// If the reference was the last, the resources associated to the @node are
-	// freed.
-	//
-	// This method is inherited from RenderNode
-	unref()
-	// WriteToFile: this function is equivalent to calling
-	// gsk_render_node_serialize() followed by g_file_set_contents().
-	//
-	// See those two functions for details on the arguments.
-	//
-	// It is mostly intended for use inside a debugger to quickly dump a render
-	// node to a file for later inspection.
-	//
-	// This method is inherited from RenderNode
-	WriteToFile(filename string) error
+	gextras.Objector
 
 	// Child gets the child node that is getting transformed by the given @node.
 	Child() RenderNode
@@ -4179,23 +2297,25 @@ type TransformNode interface {
 	Transform() *Transform
 }
 
-// transformNode implements the TransformNode interface.
-type transformNode struct {
-	*externglib.Object
+// TransformNodeClass implements the TransformNode interface.
+type TransformNodeClass struct {
+	RenderNodeClass
 }
 
-var _ TransformNode = (*transformNode)(nil)
+var _ TransformNode = (*TransformNodeClass)(nil)
 
-// WrapTransformNode wraps a GObject to a type that implements
-// interface TransformNode. It is primarily used internally.
-func WrapTransformNode(obj *externglib.Object) TransformNode {
-	return transformNode{obj}
+func wrapTransformNode(obj *externglib.Object) TransformNode {
+	return &TransformNodeClass{
+		RenderNodeClass: RenderNodeClass{
+			Object: obj,
+		},
+	}
 }
 
 func marshalTransformNode(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapTransformNode(obj), nil
+	return wrapTransformNode(obj), nil
 }
 
 // NewTransformNode creates a `GskRenderNode` that will transform the given
@@ -4217,35 +2337,8 @@ func NewTransformNode(child RenderNode, transform *Transform) TransformNode {
 	return _transformNode
 }
 
-func (t transformNode) AsRenderNode() RenderNode {
-	return WrapRenderNode(gextras.InternObject(t))
-}
-
-func (n transformNode) Draw(cr *cairo.Context) {
-	WrapRenderNode(gextras.InternObject(n)).Draw(cr)
-}
-
-func (n transformNode) GetBounds() graphene.Rect {
-	return WrapRenderNode(gextras.InternObject(n)).GetBounds()
-}
-
-func (n transformNode) GetNodeType() RenderNodeType {
-	return WrapRenderNode(gextras.InternObject(n)).GetNodeType()
-}
-
-func (n transformNode) ref() RenderNode {
-	return WrapRenderNode(gextras.InternObject(n)).ref()
-}
-
-func (n transformNode) unref() {
-	WrapRenderNode(gextras.InternObject(n)).unref()
-}
-
-func (n transformNode) WriteToFile(filename string) error {
-	return WrapRenderNode(gextras.InternObject(n)).WriteToFile(filename)
-}
-
-func (n transformNode) Child() RenderNode {
+// Child gets the child node that is getting transformed by the given @node.
+func (n *TransformNodeClass) Child() RenderNode {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GskRenderNode // in
 
@@ -4260,7 +2353,8 @@ func (n transformNode) Child() RenderNode {
 	return _renderNode
 }
 
-func (n transformNode) Transform() *Transform {
+// Transform retrieves the `GskTransform` used by the @node.
+func (n *TransformNodeClass) Transform() *Transform {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GskTransform  // in
 

@@ -47,23 +47,23 @@ type WindowGroup interface {
 	RemoveWindow(window Window)
 }
 
-// windowGroup implements the WindowGroup interface.
-type windowGroup struct {
+// WindowGroupClass implements the WindowGroup interface.
+type WindowGroupClass struct {
 	*externglib.Object
 }
 
-var _ WindowGroup = (*windowGroup)(nil)
+var _ WindowGroup = (*WindowGroupClass)(nil)
 
-// WrapWindowGroup wraps a GObject to a type that implements
-// interface WindowGroup. It is primarily used internally.
-func WrapWindowGroup(obj *externglib.Object) WindowGroup {
-	return windowGroup{obj}
+func wrapWindowGroup(obj *externglib.Object) WindowGroup {
+	return &WindowGroupClass{
+		Object: obj,
+	}
 }
 
 func marshalWindowGroup(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapWindowGroup(obj), nil
+	return wrapWindowGroup(obj), nil
 }
 
 // NewWindowGroup creates a new `GtkWindowGroup` object.
@@ -81,7 +81,8 @@ func NewWindowGroup() WindowGroup {
 	return _windowGroup
 }
 
-func (w windowGroup) AddWindow(window Window) {
+// AddWindow adds a window to a `GtkWindowGroup`.
+func (w *WindowGroupClass) AddWindow(window Window) {
 	var _arg0 *C.GtkWindowGroup // out
 	var _arg1 *C.GtkWindow      // out
 
@@ -91,7 +92,8 @@ func (w windowGroup) AddWindow(window Window) {
 	C.gtk_window_group_add_window(_arg0, _arg1)
 }
 
-func (w windowGroup) RemoveWindow(window Window) {
+// RemoveWindow removes a window from a `GtkWindowGroup`.
+func (w *WindowGroupClass) RemoveWindow(window Window) {
 	var _arg0 *C.GtkWindowGroup // out
 	var _arg1 *C.GtkWindow      // out
 

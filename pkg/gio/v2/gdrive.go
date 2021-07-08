@@ -36,7 +36,7 @@ func init() {
 	})
 }
 
-// DriveOverrider contains methods that are overridable .
+// DriveOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
@@ -242,26 +242,27 @@ type Drive interface {
 	StopFinish(result AsyncResult) error
 }
 
-// drive implements the Drive interface.
-type drive struct {
+// DriveInterface implements the Drive interface.
+type DriveInterface struct {
 	*externglib.Object
 }
 
-var _ Drive = (*drive)(nil)
+var _ Drive = (*DriveInterface)(nil)
 
-// WrapDrive wraps a GObject to a type that implements
-// interface Drive. It is primarily used internally.
-func WrapDrive(obj *externglib.Object) Drive {
-	return drive{obj}
+func wrapDrive(obj *externglib.Object) Drive {
+	return &DriveInterface{
+		Object: obj,
+	}
 }
 
 func marshalDrive(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapDrive(obj), nil
+	return wrapDrive(obj), nil
 }
 
-func (d drive) CanEject() bool {
+// CanEject checks if a drive can be ejected.
+func (d *DriveInterface) CanEject() bool {
 	var _arg0 *C.GDrive  // out
 	var _cret C.gboolean // in
 
@@ -278,7 +279,8 @@ func (d drive) CanEject() bool {
 	return _ok
 }
 
-func (d drive) CanPollForMedia() bool {
+// CanPollForMedia checks if a drive can be polled for media changes.
+func (d *DriveInterface) CanPollForMedia() bool {
 	var _arg0 *C.GDrive  // out
 	var _cret C.gboolean // in
 
@@ -295,7 +297,8 @@ func (d drive) CanPollForMedia() bool {
 	return _ok
 }
 
-func (d drive) CanStart() bool {
+// CanStart checks if a drive can be started.
+func (d *DriveInterface) CanStart() bool {
 	var _arg0 *C.GDrive  // out
 	var _cret C.gboolean // in
 
@@ -312,7 +315,8 @@ func (d drive) CanStart() bool {
 	return _ok
 }
 
-func (d drive) CanStartDegraded() bool {
+// CanStartDegraded checks if a drive can be started degraded.
+func (d *DriveInterface) CanStartDegraded() bool {
 	var _arg0 *C.GDrive  // out
 	var _cret C.gboolean // in
 
@@ -329,7 +333,8 @@ func (d drive) CanStartDegraded() bool {
 	return _ok
 }
 
-func (d drive) CanStop() bool {
+// CanStop checks if a drive can be stopped.
+func (d *DriveInterface) CanStop() bool {
 	var _arg0 *C.GDrive  // out
 	var _cret C.gboolean // in
 
@@ -346,7 +351,13 @@ func (d drive) CanStop() bool {
 	return _ok
 }
 
-func (d drive) Eject(flags MountUnmountFlags, cancellable Cancellable, callback AsyncReadyCallback) {
+// Eject: asynchronously ejects a drive.
+//
+// When the operation is finished, @callback will be called. You can then call
+// g_drive_eject_finish() to obtain the result of the operation.
+//
+// Deprecated: since version 2.22.
+func (d *DriveInterface) Eject(flags MountUnmountFlags, cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GDrive             // out
 	var _arg1 C.GMountUnmountFlags  // out
 	var _arg2 *C.GCancellable       // out
@@ -362,7 +373,10 @@ func (d drive) Eject(flags MountUnmountFlags, cancellable Cancellable, callback 
 	C.g_drive_eject(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
-func (d drive) EjectFinish(result AsyncResult) error {
+// EjectFinish finishes ejecting a drive.
+//
+// Deprecated: since version 2.22.
+func (d *DriveInterface) EjectFinish(result AsyncResult) error {
 	var _arg0 *C.GDrive       // out
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
@@ -379,7 +393,10 @@ func (d drive) EjectFinish(result AsyncResult) error {
 	return _goerr
 }
 
-func (d drive) EjectWithOperation(flags MountUnmountFlags, mountOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback) {
+// EjectWithOperation ejects a drive. This is an asynchronous operation, and is
+// finished by calling g_drive_eject_with_operation_finish() with the @drive and
+// Result data returned in the @callback.
+func (d *DriveInterface) EjectWithOperation(flags MountUnmountFlags, mountOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GDrive             // out
 	var _arg1 C.GMountUnmountFlags  // out
 	var _arg2 *C.GMountOperation    // out
@@ -397,7 +414,10 @@ func (d drive) EjectWithOperation(flags MountUnmountFlags, mountOperation MountO
 	C.g_drive_eject_with_operation(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
 
-func (d drive) EjectWithOperationFinish(result AsyncResult) error {
+// EjectWithOperationFinish finishes ejecting a drive. If any errors occurred
+// during the operation, @error will be set to contain the errors and false will
+// be returned.
+func (d *DriveInterface) EjectWithOperationFinish(result AsyncResult) error {
 	var _arg0 *C.GDrive       // out
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
@@ -414,7 +434,9 @@ func (d drive) EjectWithOperationFinish(result AsyncResult) error {
 	return _goerr
 }
 
-func (d drive) EnumerateIdentifiers() []string {
+// EnumerateIdentifiers gets the kinds of identifiers that @drive has. Use
+// g_drive_get_identifier() to obtain the identifiers themselves.
+func (d *DriveInterface) EnumerateIdentifiers() []string {
 	var _arg0 *C.GDrive // out
 	var _cret **C.char
 
@@ -442,7 +464,8 @@ func (d drive) EnumerateIdentifiers() []string {
 	return _utf8s
 }
 
-func (d drive) Icon() Icon {
+// Icon gets the icon for @drive.
+func (d *DriveInterface) Icon() Icon {
 	var _arg0 *C.GDrive // out
 	var _cret *C.GIcon  // in
 
@@ -457,7 +480,9 @@ func (d drive) Icon() Icon {
 	return _icon
 }
 
-func (d drive) Identifier(kind string) string {
+// Identifier gets the identifier of the given kind for @drive. The only
+// identifier currently available is DRIVE_IDENTIFIER_KIND_UNIX_DEVICE.
+func (d *DriveInterface) Identifier(kind string) string {
 	var _arg0 *C.GDrive // out
 	var _arg1 *C.char   // out
 	var _cret *C.char   // in
@@ -476,7 +501,8 @@ func (d drive) Identifier(kind string) string {
 	return _utf8
 }
 
-func (d drive) Name() string {
+// Name gets the name of @drive.
+func (d *DriveInterface) Name() string {
 	var _arg0 *C.GDrive // out
 	var _cret *C.char   // in
 
@@ -492,7 +518,8 @@ func (d drive) Name() string {
 	return _utf8
 }
 
-func (d drive) SortKey() string {
+// SortKey gets the sort key for @drive, if any.
+func (d *DriveInterface) SortKey() string {
 	var _arg0 *C.GDrive // out
 	var _cret *C.gchar  // in
 
@@ -507,7 +534,8 @@ func (d drive) SortKey() string {
 	return _utf8
 }
 
-func (d drive) StartStopType() DriveStartStopType {
+// StartStopType gets a hint about how a drive can be started/stopped.
+func (d *DriveInterface) StartStopType() DriveStartStopType {
 	var _arg0 *C.GDrive             // out
 	var _cret C.GDriveStartStopType // in
 
@@ -522,7 +550,8 @@ func (d drive) StartStopType() DriveStartStopType {
 	return _driveStartStopType
 }
 
-func (d drive) SymbolicIcon() Icon {
+// SymbolicIcon gets the icon for @drive.
+func (d *DriveInterface) SymbolicIcon() Icon {
 	var _arg0 *C.GDrive // out
 	var _cret *C.GIcon  // in
 
@@ -537,7 +566,10 @@ func (d drive) SymbolicIcon() Icon {
 	return _icon
 }
 
-func (d drive) HasMedia() bool {
+// HasMedia checks if the @drive has media. Note that the OS may not be polling
+// the drive for media changes; see g_drive_is_media_check_automatic() for more
+// details.
+func (d *DriveInterface) HasMedia() bool {
 	var _arg0 *C.GDrive  // out
 	var _cret C.gboolean // in
 
@@ -554,7 +586,8 @@ func (d drive) HasMedia() bool {
 	return _ok
 }
 
-func (d drive) HasVolumes() bool {
+// HasVolumes: check if @drive has any mountable volumes.
+func (d *DriveInterface) HasVolumes() bool {
 	var _arg0 *C.GDrive  // out
 	var _cret C.gboolean // in
 
@@ -571,7 +604,9 @@ func (d drive) HasVolumes() bool {
 	return _ok
 }
 
-func (d drive) IsMediaCheckAutomatic() bool {
+// IsMediaCheckAutomatic checks if @drive is capable of automatically detecting
+// media changes.
+func (d *DriveInterface) IsMediaCheckAutomatic() bool {
 	var _arg0 *C.GDrive  // out
 	var _cret C.gboolean // in
 
@@ -588,7 +623,8 @@ func (d drive) IsMediaCheckAutomatic() bool {
 	return _ok
 }
 
-func (d drive) IsMediaRemovable() bool {
+// IsMediaRemovable checks if the @drive supports removable media.
+func (d *DriveInterface) IsMediaRemovable() bool {
 	var _arg0 *C.GDrive  // out
 	var _cret C.gboolean // in
 
@@ -605,7 +641,9 @@ func (d drive) IsMediaRemovable() bool {
 	return _ok
 }
 
-func (d drive) IsRemovable() bool {
+// IsRemovable checks if the #GDrive and/or its media is considered removable by
+// the user. See g_drive_is_media_removable().
+func (d *DriveInterface) IsRemovable() bool {
 	var _arg0 *C.GDrive  // out
 	var _cret C.gboolean // in
 
@@ -622,7 +660,12 @@ func (d drive) IsRemovable() bool {
 	return _ok
 }
 
-func (d drive) PollForMedia(cancellable Cancellable, callback AsyncReadyCallback) {
+// PollForMedia: asynchronously polls @drive to see if media has been inserted
+// or removed.
+//
+// When the operation is finished, @callback will be called. You can then call
+// g_drive_poll_for_media_finish() to obtain the result of the operation.
+func (d *DriveInterface) PollForMedia(cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GDrive             // out
 	var _arg1 *C.GCancellable       // out
 	var _arg2 C.GAsyncReadyCallback // out
@@ -636,7 +679,9 @@ func (d drive) PollForMedia(cancellable Cancellable, callback AsyncReadyCallback
 	C.g_drive_poll_for_media(_arg0, _arg1, _arg2, _arg3)
 }
 
-func (d drive) PollForMediaFinish(result AsyncResult) error {
+// PollForMediaFinish finishes an operation started with
+// g_drive_poll_for_media() on a drive.
+func (d *DriveInterface) PollForMediaFinish(result AsyncResult) error {
 	var _arg0 *C.GDrive       // out
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
@@ -653,7 +698,11 @@ func (d drive) PollForMediaFinish(result AsyncResult) error {
 	return _goerr
 }
 
-func (d drive) Start(flags DriveStartFlags, mountOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback) {
+// Start: asynchronously starts a drive.
+//
+// When the operation is finished, @callback will be called. You can then call
+// g_drive_start_finish() to obtain the result of the operation.
+func (d *DriveInterface) Start(flags DriveStartFlags, mountOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GDrive             // out
 	var _arg1 C.GDriveStartFlags    // out
 	var _arg2 *C.GMountOperation    // out
@@ -671,7 +720,8 @@ func (d drive) Start(flags DriveStartFlags, mountOperation MountOperation, cance
 	C.g_drive_start(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
 
-func (d drive) StartFinish(result AsyncResult) error {
+// StartFinish finishes starting a drive.
+func (d *DriveInterface) StartFinish(result AsyncResult) error {
 	var _arg0 *C.GDrive       // out
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
@@ -688,7 +738,11 @@ func (d drive) StartFinish(result AsyncResult) error {
 	return _goerr
 }
 
-func (d drive) Stop(flags MountUnmountFlags, mountOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback) {
+// Stop: asynchronously stops a drive.
+//
+// When the operation is finished, @callback will be called. You can then call
+// g_drive_stop_finish() to obtain the result of the operation.
+func (d *DriveInterface) Stop(flags MountUnmountFlags, mountOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GDrive             // out
 	var _arg1 C.GMountUnmountFlags  // out
 	var _arg2 *C.GMountOperation    // out
@@ -706,7 +760,8 @@ func (d drive) Stop(flags MountUnmountFlags, mountOperation MountOperation, canc
 	C.g_drive_stop(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
 
-func (d drive) StopFinish(result AsyncResult) error {
+// StopFinish finishes stopping a drive.
+func (d *DriveInterface) StopFinish(result AsyncResult) error {
 	var _arg0 *C.GDrive       // out
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in

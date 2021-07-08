@@ -2,8 +2,7 @@
 package typeconv
 
 import (
-	"fmt"
-	"strings"
+	"log"
 
 	"github.com/diamondburned/gotk4/gir"
 	"github.com/diamondburned/gotk4/gir/girgen/file"
@@ -96,7 +95,7 @@ func NewConverter(fgen types.FileGenerator, values []ConversionValue) *Converter
 
 	for i := range conv.results {
 		// Fill up the results list after transforming the values.
-		conv.results[i] = newValueConverted(&conv, &values[i])
+		conv.results[i] = newValueConverted(&values[i])
 	}
 
 	return &conv
@@ -228,6 +227,7 @@ func (conv *Converter) convert(result *ValueConverted) bool {
 			return false
 		}
 	default:
+		log.Panicf("unknown conversion direction %d", result.Direction)
 		return false
 	}
 
@@ -280,7 +280,7 @@ func (conv *Converter) convertType(
 	attrs.AnyType = typ
 	attrs.TransferOwnership.TransferOwnership = owner
 
-	result := newValueConverted(conv, &ConversionValue{
+	result := newValueConverted(&ConversionValue{
 		InName:         in,
 		OutName:        out,
 		Direction:      of.Direction,
@@ -328,8 +328,6 @@ func (conv *Converter) convertParam(at int) *ValueConverted {
 	return nil
 }
 
-const convertRefTmp = "refTmp"
-
 // TODO: realistically, the difference between the expected poiner and what C
 // wants is only 1. We can work around this.
 //
@@ -340,123 +338,6 @@ const convertRefTmp = "refTmp"
 // TODO: there's a way to guess the pointer offset without switch-casing on
 // every type. We can do this with IsPrimitive and IsClass fairly easily. We
 // will have to account for Go type edge cases, however.
-
-// convertRef generates weird code that references and dereferences values as
-// needed, then call the conversion routine on it again. This shold only be used
-// in type conversions, not array conversions.
-//
-// WARNING: the caller MUST call this AFTER value.resolveType!
-func (conv *Converter) convertRef(value *ValueConverted, wantC, wantGo int) bool {
-	// ensure we're working with types only.
-	if value.AnyType.Type == nil {
-		return false
-	}
-
-	value.p.Descend()
-	defer value.p.Ascend()
-
-	// Make a copy of value so we can directly plug it back in.
-	refValue := *value
-
-	var (
-		// positive needs dereferencing, negative needs referencing
-		inDiff  int
-		outDiff int
-	)
-
-	// Account for pointer types.
-	if types.IsGpointer(value.Resolved.CType) {
-		if wantC > 0 {
-			wantC--
-		} else {
-			wantGo++
-		}
-	}
-
-	// Prefer the implementation Go type instead of the public type.
-	goType := value.Resolved.ImplType(value.NeedsNamespace)
-
-	// Change the pointer types into what the converter wants.
-	switch value.Direction {
-	case ConvertCToGo:
-		refValue.InType, inDiff = forceGoPtr(refValue.InType, wantC)
-		refValue.OutType, outDiff = forceGoPtr(goType, wantGo)
-	case ConvertGoToC:
-		refValue.InType, inDiff = forceGoPtr(goType, wantGo)
-		refValue.OutType, outDiff = forceGoPtr(refValue.OutType, wantC)
-	}
-
-	refValue.InName = convertRefTmp + "In"
-	refValue.OutName = convertRefTmp + "Out"
-
-	refValue.p.Linef("var %s %s", refValue.InName, refValue.InType)
-	refValue.p.Linef("var %s %s", refValue.OutName, refValue.OutType)
-	refValue.p.EmptyLine()
-
-	if inDiff > 0 {
-		// Dereferencing can be a one-liner.
-		refValue.p.Linef("%s = %s%s", refValue.InName, strings.Repeat("*", inDiff), value.InName)
-	} else {
-		// Use the original input value as name for the first variable to be
-		// referenced.
-		current := value.InName
-		for i := 0; i < -inDiff; i++ {
-			refValue.p.Linef("in%d := &%s", i, current)
-			current = fmt.Sprintf("in%d", i)
-		}
-		// Copy the temporary variable into the refValue input.
-		refValue.p.Linef("%s = %s", refValue.InName, current)
-	}
-
-	refValue.p.EmptyLine()
-
-	var ok bool
-	switch value.Direction {
-	case ConvertCToGo:
-		ok = conv.cgoConverter(&refValue)
-	case ConvertGoToC:
-		ok = conv.gocConverter(&refValue)
-	}
-	if !ok {
-		return false
-	}
-
-	refValue.p.EmptyLine()
-
-	// outDiff is the opposite for some reason, so negate it before using.
-	if outDiff = -outDiff; outDiff > 0 {
-		// Dereferencing can be a one-liner.
-		refValue.p.Linef("%s = %s%s", value.OutName, strings.Repeat("*", outDiff), refValue.OutName)
-	} else {
-		// Use the new output value as name for the first variable to be
-		// referenced.
-		current := refValue.OutName
-		nilable := -outDiff > 0 || (refValue.Resolved.IsContainerBuiltin())
-		closing := 0
-
-		for i := 0; i < -outDiff; i++ {
-			if nilable {
-				// Type can nil, so add a check.
-				refValue.p.Linef("if %s != nil {", current)
-				closing++
-			}
-			refValue.p.Linef("out%d := &%s", i, current)
-			current = fmt.Sprintf("out%d", i)
-		}
-
-		// Copy the temporary variable into the original output.
-		refValue.p.Linef("%s = %s", value.OutName, current)
-		refValue.p.Linef(strings.Repeat("}", closing))
-	}
-
-	file.ApplyHeader(value, &refValue)
-	return true
-}
-
-func forceGoPtr(goType string, want int) (string, int) {
-	current := strings.Count(goType, "*")
-	return strings.Repeat("*", want) + strings.ReplaceAll(goType, "*", ""), current - want
-}
 
 func (conv *Converter) Logln(lvl logger.Level, v ...interface{}) {
 	if conv.logger == nil {

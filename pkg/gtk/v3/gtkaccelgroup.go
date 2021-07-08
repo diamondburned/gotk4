@@ -340,23 +340,23 @@ type AccelGroup interface {
 	Unlock()
 }
 
-// accelGroup implements the AccelGroup interface.
-type accelGroup struct {
+// AccelGroupClass implements the AccelGroup interface.
+type AccelGroupClass struct {
 	*externglib.Object
 }
 
-var _ AccelGroup = (*accelGroup)(nil)
+var _ AccelGroup = (*AccelGroupClass)(nil)
 
-// WrapAccelGroup wraps a GObject to a type that implements
-// interface AccelGroup. It is primarily used internally.
-func WrapAccelGroup(obj *externglib.Object) AccelGroup {
-	return accelGroup{obj}
+func wrapAccelGroup(obj *externglib.Object) AccelGroup {
+	return &AccelGroupClass{
+		Object: obj,
+	}
 }
 
 func marshalAccelGroup(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapAccelGroup(obj), nil
+	return wrapAccelGroup(obj), nil
 }
 
 // NewAccelGroup creates a new AccelGroup.
@@ -372,7 +372,9 @@ func NewAccelGroup() AccelGroup {
 	return _accelGroup
 }
 
-func (a accelGroup) DisconnectKey(accelKey uint, accelMods gdk.ModifierType) bool {
+// DisconnectKey removes an accelerator previously installed through
+// gtk_accel_group_connect().
+func (a *AccelGroupClass) DisconnectKey(accelKey uint, accelMods gdk.ModifierType) bool {
 	var _arg0 *C.GtkAccelGroup  // out
 	var _arg1 C.guint           // out
 	var _arg2 C.GdkModifierType // out
@@ -393,7 +395,9 @@ func (a accelGroup) DisconnectKey(accelKey uint, accelMods gdk.ModifierType) boo
 	return _ok
 }
 
-func (a accelGroup) IsLocked() bool {
+// IsLocked locks are added and removed using gtk_accel_group_lock() and
+// gtk_accel_group_unlock().
+func (a *AccelGroupClass) IsLocked() bool {
 	var _arg0 *C.GtkAccelGroup // out
 	var _cret C.gboolean       // in
 
@@ -410,7 +414,9 @@ func (a accelGroup) IsLocked() bool {
 	return _ok
 }
 
-func (a accelGroup) ModifierMask() gdk.ModifierType {
+// ModifierMask gets a ModifierType representing the mask for this @accel_group.
+// For example, K_CONTROL_MASK, K_SHIFT_MASK, etc.
+func (a *AccelGroupClass) ModifierMask() gdk.ModifierType {
 	var _arg0 *C.GtkAccelGroup  // out
 	var _cret C.GdkModifierType // in
 
@@ -425,7 +431,15 @@ func (a accelGroup) ModifierMask() gdk.ModifierType {
 	return _modifierType
 }
 
-func (a accelGroup) Lock() {
+// Lock locks the given accelerator group.
+//
+// Locking an acelerator group prevents the accelerators contained within it to
+// be changed during runtime. Refer to gtk_accel_map_change_entry() about
+// runtime accelerator changes.
+//
+// If called more than once, @accel_group remains locked until
+// gtk_accel_group_unlock() has been called an equivalent number of times.
+func (a *AccelGroupClass) Lock() {
 	var _arg0 *C.GtkAccelGroup // out
 
 	_arg0 = (*C.GtkAccelGroup)(unsafe.Pointer(a.Native()))
@@ -433,7 +447,8 @@ func (a accelGroup) Lock() {
 	C.gtk_accel_group_lock(_arg0)
 }
 
-func (a accelGroup) Unlock() {
+// Unlock undoes the last call to gtk_accel_group_lock() on this @accel_group.
+func (a *AccelGroupClass) Unlock() {
 	var _arg0 *C.GtkAccelGroup // out
 
 	_arg0 = (*C.GtkAccelGroup)(unsafe.Pointer(a.Native()))

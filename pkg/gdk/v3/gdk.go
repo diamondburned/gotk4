@@ -27,11 +27,11 @@ func init() {
 type Status int
 
 const (
-	Ok         Status = 0
-	Error      Status = -1
-	ErrorParam Status = -2
-	ErrorFile  Status = -3
-	ErrorMem   Status = -4
+	StatusOk         Status = 0
+	StatusError      Status = -1
+	StatusErrorParam Status = -2
+	StatusErrorFile  Status = -3
+	StatusErrorMem   Status = -4
 )
 
 func marshalStatus(p uintptr) (interface{}, error) {
@@ -58,26 +58,35 @@ type DeviceTool interface {
 	ToolType() DeviceToolType
 }
 
-// deviceTool implements the DeviceTool interface.
-type deviceTool struct {
+// DeviceToolClass implements the DeviceTool interface.
+type DeviceToolClass struct {
 	*externglib.Object
 }
 
-var _ DeviceTool = (*deviceTool)(nil)
+var _ DeviceTool = (*DeviceToolClass)(nil)
 
-// WrapDeviceTool wraps a GObject to a type that implements
-// interface DeviceTool. It is primarily used internally.
-func WrapDeviceTool(obj *externglib.Object) DeviceTool {
-	return deviceTool{obj}
+func wrapDeviceTool(obj *externglib.Object) DeviceTool {
+	return &DeviceToolClass{
+		Object: obj,
+	}
 }
 
 func marshalDeviceTool(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapDeviceTool(obj), nil
+	return wrapDeviceTool(obj), nil
 }
 
-func (t deviceTool) HardwareID() uint64 {
+// HardwareID gets the hardware ID of this tool, or 0 if it's not known. When
+// non-zero, the identificator is unique for the given tool model, meaning that
+// two identical tools will share the same @hardware_id, but will have different
+// serial numbers (see gdk_device_tool_get_serial()).
+//
+// This is a more concrete (and device specific) method to identify a DeviceTool
+// than gdk_device_tool_get_tool_type(), as a tablet may support multiple
+// devices with the same DeviceToolType, but having different hardware
+// identificators.
+func (t *DeviceToolClass) HardwareID() uint64 {
 	var _arg0 *C.GdkDeviceTool // out
 	var _cret C.guint64        // in
 
@@ -92,7 +101,9 @@ func (t deviceTool) HardwareID() uint64 {
 	return _guint64
 }
 
-func (t deviceTool) Serial() uint64 {
+// Serial gets the serial of this tool, this value can be used to identify a
+// physical tool (eg. a tablet pen) across program executions.
+func (t *DeviceToolClass) Serial() uint64 {
 	var _arg0 *C.GdkDeviceTool // out
 	var _cret C.guint64        // in
 
@@ -107,7 +118,8 @@ func (t deviceTool) Serial() uint64 {
 	return _guint64
 }
 
-func (t deviceTool) ToolType() DeviceToolType {
+// ToolType gets the DeviceToolType of the tool.
+func (t *DeviceToolClass) ToolType() DeviceToolType {
 	var _arg0 *C.GdkDeviceTool    // out
 	var _cret C.GdkDeviceToolType // in
 
@@ -171,26 +183,28 @@ type DragContext interface {
 	SetHotspot(hotX int, hotY int)
 }
 
-// dragContext implements the DragContext interface.
-type dragContext struct {
+// DragContextClass implements the DragContext interface.
+type DragContextClass struct {
 	*externglib.Object
 }
 
-var _ DragContext = (*dragContext)(nil)
+var _ DragContext = (*DragContextClass)(nil)
 
-// WrapDragContext wraps a GObject to a type that implements
-// interface DragContext. It is primarily used internally.
-func WrapDragContext(obj *externglib.Object) DragContext {
-	return dragContext{obj}
+func wrapDragContext(obj *externglib.Object) DragContext {
+	return &DragContextClass{
+		Object: obj,
+	}
 }
 
 func marshalDragContext(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapDragContext(obj), nil
+	return wrapDragContext(obj), nil
 }
 
-func (c dragContext) Actions() DragAction {
+// Actions determines the bitmask of actions proposed by the source if
+// gdk_drag_context_get_suggested_action() returns GDK_ACTION_ASK.
+func (c *DragContextClass) Actions() DragAction {
 	var _arg0 *C.GdkDragContext // out
 	var _cret C.GdkDragAction   // in
 
@@ -205,7 +219,8 @@ func (c dragContext) Actions() DragAction {
 	return _dragAction
 }
 
-func (c dragContext) DestWindow() Window {
+// DestWindow returns the destination window for the DND operation.
+func (c *DragContextClass) DestWindow() Window {
 	var _arg0 *C.GdkDragContext // out
 	var _cret *C.GdkWindow      // in
 
@@ -220,7 +235,8 @@ func (c dragContext) DestWindow() Window {
 	return _window
 }
 
-func (c dragContext) Device() Device {
+// Device returns the Device associated to the drag context.
+func (c *DragContextClass) Device() Device {
 	var _arg0 *C.GdkDragContext // out
 	var _cret *C.GdkDevice      // in
 
@@ -235,7 +251,12 @@ func (c dragContext) Device() Device {
 	return _device
 }
 
-func (c dragContext) DragWindow() Window {
+// DragWindow returns the window on which the drag icon should be rendered
+// during the drag operation. Note that the window may not be available until
+// the drag operation has begun. GDK will move the window in accordance with the
+// ongoing drag operation. The window is owned by @context and will be destroyed
+// when the drag operation is over.
+func (c *DragContextClass) DragWindow() Window {
 	var _arg0 *C.GdkDragContext // out
 	var _cret *C.GdkWindow      // in
 
@@ -250,7 +271,8 @@ func (c dragContext) DragWindow() Window {
 	return _window
 }
 
-func (c dragContext) Protocol() DragProtocol {
+// Protocol returns the drag protocol that is used by this context.
+func (c *DragContextClass) Protocol() DragProtocol {
 	var _arg0 *C.GdkDragContext // out
 	var _cret C.GdkDragProtocol // in
 
@@ -265,7 +287,8 @@ func (c dragContext) Protocol() DragProtocol {
 	return _dragProtocol
 }
 
-func (c dragContext) SelectedAction() DragAction {
+// SelectedAction determines the action chosen by the drag destination.
+func (c *DragContextClass) SelectedAction() DragAction {
 	var _arg0 *C.GdkDragContext // out
 	var _cret C.GdkDragAction   // in
 
@@ -280,7 +303,8 @@ func (c dragContext) SelectedAction() DragAction {
 	return _dragAction
 }
 
-func (c dragContext) SourceWindow() Window {
+// SourceWindow returns the Window where the DND operation started.
+func (c *DragContextClass) SourceWindow() Window {
 	var _arg0 *C.GdkDragContext // out
 	var _cret *C.GdkWindow      // in
 
@@ -295,7 +319,8 @@ func (c dragContext) SourceWindow() Window {
 	return _window
 }
 
-func (c dragContext) SuggestedAction() DragAction {
+// SuggestedAction determines the suggested drag action of the context.
+func (c *DragContextClass) SuggestedAction() DragAction {
 	var _arg0 *C.GdkDragContext // out
 	var _cret C.GdkDragAction   // in
 
@@ -310,7 +335,21 @@ func (c dragContext) SuggestedAction() DragAction {
 	return _dragAction
 }
 
-func (c dragContext) ManageDnd(ipcWindow Window, actions DragAction) bool {
+// ManageDnd requests the drag and drop operation to be managed by @context.
+// When a drag and drop operation becomes managed, the DragContext will
+// internally handle all input and source-side EventDND events as required by
+// the windowing system.
+//
+// Once the drag and drop operation is managed, the drag context will emit the
+// following signals: - The DragContext::action-changed signal whenever the
+// final action to be performed by the drag and drop operation changes. - The
+// DragContext::drop-performed signal after the user performs the drag and drop
+// gesture (typically by releasing the mouse button). - The
+// DragContext::dnd-finished signal after the drag and drop operation concludes
+// (after all Selection transfers happen). - The DragContext::cancel signal if
+// the drag and drop operation is finished but doesn't happen over an accepting
+// destination, or is cancelled through other means.
+func (c *DragContextClass) ManageDnd(ipcWindow Window, actions DragAction) bool {
 	var _arg0 *C.GdkDragContext // out
 	var _arg1 *C.GdkWindow      // out
 	var _arg2 C.GdkDragAction   // out
@@ -331,7 +370,9 @@ func (c dragContext) ManageDnd(ipcWindow Window, actions DragAction) bool {
 	return _ok
 }
 
-func (c dragContext) SetDevice(device Device) {
+// SetDevice associates a Device to @context, so all Drag and Drop events for
+// @context are emitted as if they came from this device.
+func (c *DragContextClass) SetDevice(device Device) {
 	var _arg0 *C.GdkDragContext // out
 	var _arg1 *C.GdkDevice      // out
 
@@ -341,7 +382,10 @@ func (c dragContext) SetDevice(device Device) {
 	C.gdk_drag_context_set_device(_arg0, _arg1)
 }
 
-func (c dragContext) SetHotspot(hotX int, hotY int) {
+// SetHotspot sets the position of the drag window that will be kept under the
+// cursor hotspot. Initially, the hotspot is at the top left corner of the drag
+// window.
+func (c *DragContextClass) SetHotspot(hotX int, hotY int) {
 	var _arg0 *C.GdkDragContext // out
 	var _arg1 C.gint            // out
 	var _arg2 C.gint            // out

@@ -31,33 +31,33 @@ type ScrollType int
 const (
 	// TopLeft: scroll the object vertically and horizontally to bring its top
 	// left corner to the top left corner of the window.
-	ScrollTopLeft ScrollType = iota
+	ScrollTypeTopLeft ScrollType = iota
 	// BottomRight: scroll the object vertically and horizontally to bring its
 	// bottom right corner to the bottom right corner of the window.
-	ScrollBottomRight
+	ScrollTypeBottomRight
 	// TopEdge: scroll the object vertically to bring its top edge to the top
 	// edge of the window.
-	ScrollTopEdge
+	ScrollTypeTopEdge
 	// BottomEdge: scroll the object vertically to bring its bottom edge to the
 	// bottom edge of the window.
-	ScrollBottomEdge
+	ScrollTypeBottomEdge
 	// LeftEdge: scroll the object vertically and horizontally to bring its left
 	// edge to the left edge of the window.
-	ScrollLeftEdge
+	ScrollTypeLeftEdge
 	// RightEdge: scroll the object vertically and horizontally to bring its
 	// right edge to the right edge of the window.
-	ScrollRightEdge
+	ScrollTypeRightEdge
 	// Anywhere: scroll the object vertically and horizontally so that as much
 	// as possible of the object becomes visible. The exact placement is
 	// determined by the application.
-	ScrollAnywhere
+	ScrollTypeAnywhere
 )
 
 func marshalScrollType(p uintptr) (interface{}, error) {
 	return ScrollType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// ComponentOverrider contains methods that are overridable .
+// ComponentOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
@@ -212,26 +212,31 @@ type Component interface {
 	SetSize(width int, height int) bool
 }
 
-// component implements the Component interface.
-type component struct {
+// ComponentInterface implements the Component interface.
+type ComponentInterface struct {
 	*externglib.Object
 }
 
-var _ Component = (*component)(nil)
+var _ Component = (*ComponentInterface)(nil)
 
-// WrapComponent wraps a GObject to a type that implements
-// interface Component. It is primarily used internally.
-func WrapComponent(obj *externglib.Object) Component {
-	return component{obj}
+func wrapComponent(obj *externglib.Object) Component {
+	return &ComponentInterface{
+		Object: obj,
+	}
 }
 
 func marshalComponent(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapComponent(obj), nil
+	return wrapComponent(obj), nil
 }
 
-func (c component) Contains(x int, y int, coordType CoordType) bool {
+// Contains checks whether the specified point is within the extent of the
+// @component.
+//
+// Toolkit implementor note: ATK provides a default implementation for this
+// virtual method. In general there are little reason to re-implement it.
+func (c *ComponentInterface) Contains(x int, y int, coordType CoordType) bool {
 	var _arg0 *C.AtkComponent // out
 	var _arg1 C.gint          // out
 	var _arg2 C.gint          // out
@@ -254,7 +259,9 @@ func (c component) Contains(x int, y int, coordType CoordType) bool {
 	return _ok
 }
 
-func (c component) Alpha() float64 {
+// Alpha returns the alpha value (i.e. the opacity) for this @component, on a
+// scale from 0 (fully transparent) to 1.0 (fully opaque).
+func (c *ComponentInterface) Alpha() float64 {
 	var _arg0 *C.AtkComponent // out
 	var _cret C.gdouble       // in
 
@@ -269,7 +276,11 @@ func (c component) Alpha() float64 {
 	return _gdouble
 }
 
-func (c component) Extents(coordType CoordType) (x int, y int, width int, height int) {
+// Extents gets the rectangle which gives the extent of the @component.
+//
+// If the extent can not be obtained (e.g. a non-embedded plug or missing
+// support), all of x, y, width, height are set to -1.
+func (c *ComponentInterface) Extents(coordType CoordType) (x int, y int, width int, height int) {
 	var _arg0 *C.AtkComponent // out
 	var _arg1 C.gint          // in
 	var _arg2 C.gint          // in
@@ -295,7 +306,8 @@ func (c component) Extents(coordType CoordType) (x int, y int, width int, height
 	return _x, _y, _width, _height
 }
 
-func (c component) Layer() Layer {
+// Layer gets the layer of the component.
+func (c *ComponentInterface) Layer() Layer {
 	var _arg0 *C.AtkComponent // out
 	var _cret C.AtkLayer      // in
 
@@ -310,7 +322,10 @@ func (c component) Layer() Layer {
 	return _layer
 }
 
-func (c component) MDIZOrder() int {
+// MDIZOrder gets the zorder of the component. The value G_MININT will be
+// returned if the layer of the component is not ATK_LAYER_MDI or
+// ATK_LAYER_WINDOW.
+func (c *ComponentInterface) MDIZOrder() int {
 	var _arg0 *C.AtkComponent // out
 	var _cret C.gint          // in
 
@@ -325,7 +340,14 @@ func (c component) MDIZOrder() int {
 	return _gint
 }
 
-func (c component) Position(coordType CoordType) (x int, y int) {
+// Position gets the position of @component in the form of a point specifying
+// @component's top-left corner.
+//
+// If the position can not be obtained (e.g. a non-embedded plug or missing
+// support), x and y are set to -1.
+//
+// Deprecated.
+func (c *ComponentInterface) Position(coordType CoordType) (x int, y int) {
 	var _arg0 *C.AtkComponent // out
 	var _arg1 C.gint          // in
 	var _arg2 C.gint          // in
@@ -345,7 +367,13 @@ func (c component) Position(coordType CoordType) (x int, y int) {
 	return _x, _y
 }
 
-func (c component) Size() (width int, height int) {
+// Size gets the size of the @component in terms of width and height.
+//
+// If the size can not be obtained (e.g. a non-embedded plug or missing
+// support), width and height are set to -1.
+//
+// Deprecated.
+func (c *ComponentInterface) Size() (width int, height int) {
 	var _arg0 *C.AtkComponent // out
 	var _arg1 C.gint          // in
 	var _arg2 C.gint          // in
@@ -363,7 +391,8 @@ func (c component) Size() (width int, height int) {
 	return _width, _height
 }
 
-func (c component) GrabFocus() bool {
+// GrabFocus grabs focus for this @component.
+func (c *ComponentInterface) GrabFocus() bool {
 	var _arg0 *C.AtkComponent // out
 	var _cret C.gboolean      // in
 
@@ -380,7 +409,9 @@ func (c component) GrabFocus() bool {
 	return _ok
 }
 
-func (c component) RefAccessibleAtPoint(x int, y int, coordType CoordType) Object {
+// RefAccessibleAtPoint gets a reference to the accessible child, if one exists,
+// at the coordinate point specified by @x and @y.
+func (c *ComponentInterface) RefAccessibleAtPoint(x int, y int, coordType CoordType) Object {
 	var _arg0 *C.AtkComponent // out
 	var _arg1 C.gint          // out
 	var _arg2 C.gint          // out
@@ -401,7 +432,12 @@ func (c component) RefAccessibleAtPoint(x int, y int, coordType CoordType) Objec
 	return _object
 }
 
-func (c component) RemoveFocusHandler(handlerId uint) {
+// RemoveFocusHandler: remove the handler specified by @handler_id from the list
+// of functions to be executed when this object receives focus events (in or
+// out).
+//
+// Deprecated: since version 2.9.4.
+func (c *ComponentInterface) RemoveFocusHandler(handlerId uint) {
 	var _arg0 *C.AtkComponent // out
 	var _arg1 C.guint         // out
 
@@ -411,7 +447,13 @@ func (c component) RemoveFocusHandler(handlerId uint) {
 	C.atk_component_remove_focus_handler(_arg0, _arg1)
 }
 
-func (c component) ScrollTo(typ ScrollType) bool {
+// ScrollTo makes @component visible on the screen by scrolling all necessary
+// parents.
+//
+// Contrary to atk_component_set_position, this does not actually move
+// @component in its parent, this only makes the parents scroll so that the
+// object shows up on the screen, given its current position within the parents.
+func (c *ComponentInterface) ScrollTo(typ ScrollType) bool {
 	var _arg0 *C.AtkComponent // out
 	var _arg1 C.AtkScrollType // out
 	var _cret C.gboolean      // in
@@ -430,7 +472,9 @@ func (c component) ScrollTo(typ ScrollType) bool {
 	return _ok
 }
 
-func (c component) ScrollToPoint(coords CoordType, x int, y int) bool {
+// ScrollToPoint: move the top-left of @component to a given position of the
+// screen by scrolling all necessary parents.
+func (c *ComponentInterface) ScrollToPoint(coords CoordType, x int, y int) bool {
 	var _arg0 *C.AtkComponent // out
 	var _arg1 C.AtkCoordType  // out
 	var _arg2 C.gint          // out
@@ -453,7 +497,8 @@ func (c component) ScrollToPoint(coords CoordType, x int, y int) bool {
 	return _ok
 }
 
-func (c component) SetExtents(x int, y int, width int, height int, coordType CoordType) bool {
+// SetExtents sets the extents of @component.
+func (c *ComponentInterface) SetExtents(x int, y int, width int, height int, coordType CoordType) bool {
 	var _arg0 *C.AtkComponent // out
 	var _arg1 C.gint          // out
 	var _arg2 C.gint          // out
@@ -480,7 +525,11 @@ func (c component) SetExtents(x int, y int, width int, height int, coordType Coo
 	return _ok
 }
 
-func (c component) SetPosition(x int, y int, coordType CoordType) bool {
+// SetPosition sets the position of @component.
+//
+// Contrary to atk_component_scroll_to, this does not trigger any scrolling,
+// this just moves @component in its parent.
+func (c *ComponentInterface) SetPosition(x int, y int, coordType CoordType) bool {
 	var _arg0 *C.AtkComponent // out
 	var _arg1 C.gint          // out
 	var _arg2 C.gint          // out
@@ -503,7 +552,8 @@ func (c component) SetPosition(x int, y int, coordType CoordType) bool {
 	return _ok
 }
 
-func (c component) SetSize(width int, height int) bool {
+// SetSize: set the size of the @component in terms of width and height.
+func (c *ComponentInterface) SetSize(width int, height int) bool {
 	var _arg0 *C.AtkComponent // out
 	var _arg1 C.gint          // out
 	var _arg2 C.gint          // out

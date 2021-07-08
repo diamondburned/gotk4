@@ -7,6 +7,7 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -35,7 +36,7 @@ func init() {
 	})
 }
 
-// ProxyResolverOverrider contains methods that are overridable .
+// ProxyResolverOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
@@ -102,26 +103,29 @@ type ProxyResolver interface {
 	LookupFinish(result AsyncResult) ([]string, error)
 }
 
-// proxyResolver implements the ProxyResolver interface.
-type proxyResolver struct {
+// ProxyResolverInterface implements the ProxyResolver interface.
+type ProxyResolverInterface struct {
 	*externglib.Object
 }
 
-var _ ProxyResolver = (*proxyResolver)(nil)
+var _ ProxyResolver = (*ProxyResolverInterface)(nil)
 
-// WrapProxyResolver wraps a GObject to a type that implements
-// interface ProxyResolver. It is primarily used internally.
-func WrapProxyResolver(obj *externglib.Object) ProxyResolver {
-	return proxyResolver{obj}
+func wrapProxyResolver(obj *externglib.Object) ProxyResolver {
+	return &ProxyResolverInterface{
+		Object: obj,
+	}
 }
 
 func marshalProxyResolver(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapProxyResolver(obj), nil
+	return wrapProxyResolver(obj), nil
 }
 
-func (r proxyResolver) IsSupported() bool {
+// IsSupported checks if @resolver can be used on this system. (This is used
+// internally; g_proxy_resolver_get_default() will only return a proxy resolver
+// that returns true for this method.)
+func (r *ProxyResolverInterface) IsSupported() bool {
 	var _arg0 *C.GProxyResolver // out
 	var _cret C.gboolean        // in
 
@@ -138,7 +142,19 @@ func (r proxyResolver) IsSupported() bool {
 	return _ok
 }
 
-func (r proxyResolver) Lookup(uri string, cancellable Cancellable) ([]string, error) {
+// Lookup looks into the system proxy configuration to determine what proxy, if
+// any, to use to connect to @uri. The returned proxy URIs are of the form
+// `<protocol>://[user[:password]@]host:port` or `direct://`, where <protocol>
+// could be http, rtsp, socks or other proxying protocol.
+//
+// If you don't know what network protocol is being used on the socket, you
+// should use `none` as the URI protocol. In this case, the resolver might still
+// return a generic proxy type (such as SOCKS), but would not return
+// protocol-specific proxy types (such as http).
+//
+// `direct://` is used when no proxy is needed. Direct connection should not be
+// attempted unless it is part of the returned array of proxies.
+func (r *ProxyResolverInterface) Lookup(uri string, cancellable Cancellable) ([]string, error) {
 	var _arg0 *C.GProxyResolver // out
 	var _arg1 *C.gchar          // out
 	var _arg2 *C.GCancellable   // out
@@ -174,7 +190,9 @@ func (r proxyResolver) Lookup(uri string, cancellable Cancellable) ([]string, er
 	return _utf8s, _goerr
 }
 
-func (r proxyResolver) LookupAsync(uri string, cancellable Cancellable, callback AsyncReadyCallback) {
+// LookupAsync asynchronous lookup of proxy. See g_proxy_resolver_lookup() for
+// more details.
+func (r *ProxyResolverInterface) LookupAsync(uri string, cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GProxyResolver     // out
 	var _arg1 *C.gchar              // out
 	var _arg2 *C.GCancellable       // out
@@ -191,7 +209,10 @@ func (r proxyResolver) LookupAsync(uri string, cancellable Cancellable, callback
 	C.g_proxy_resolver_lookup_async(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
-func (r proxyResolver) LookupFinish(result AsyncResult) ([]string, error) {
+// LookupFinish: call this function to obtain the array of proxy URIs when
+// g_proxy_resolver_lookup_async() is complete. See g_proxy_resolver_lookup()
+// for more details.
+func (r *ProxyResolverInterface) LookupFinish(result AsyncResult) ([]string, error) {
 	var _arg0 *C.GProxyResolver // out
 	var _arg1 *C.GAsyncResult   // out
 	var _cret **C.gchar

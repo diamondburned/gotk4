@@ -86,73 +86,7 @@ func init() {
 // state during a Drag-and-Drop operation (e.g. switching tabs), you can use
 // [class@Gtk.DropControllerMotion].
 type DropTarget interface {
-	EventController
-
-	// AsEventController casts the class to the EventController interface.
-	AsEventController() EventController
-
-	// GetCurrentEvent returns the event that is currently being handled by the
-	// controller, and nil at other times.
-	//
-	// This method is inherited from EventController
-	GetCurrentEvent() gdk.Event
-	// GetCurrentEventDevice returns the device of the event that is currently
-	// being handled by the controller, and nil otherwise.
-	//
-	// This method is inherited from EventController
-	GetCurrentEventDevice() gdk.Device
-	// GetCurrentEventState returns the modifier state of the event that is
-	// currently being handled by the controller, and 0 otherwise.
-	//
-	// This method is inherited from EventController
-	GetCurrentEventState() gdk.ModifierType
-	// GetCurrentEventTime returns the timestamp of the event that is currently
-	// being handled by the controller, and 0 otherwise.
-	//
-	// This method is inherited from EventController
-	GetCurrentEventTime() uint32
-	// GetName gets the name of @controller.
-	//
-	// This method is inherited from EventController
-	GetName() string
-	// GetPropagationLimit gets the propagation limit of the event controller.
-	//
-	// This method is inherited from EventController
-	GetPropagationLimit() PropagationLimit
-	// GetPropagationPhase gets the propagation phase at which @controller
-	// handles events.
-	//
-	// This method is inherited from EventController
-	GetPropagationPhase() PropagationPhase
-	// GetWidget returns the Widget this controller relates to.
-	//
-	// This method is inherited from EventController
-	GetWidget() Widget
-	// Reset resets the @controller to a clean state.
-	//
-	// This method is inherited from EventController
-	Reset()
-	// SetName sets a name on the controller that can be used for debugging.
-	//
-	// This method is inherited from EventController
-	SetName(name string)
-	// SetPropagationLimit sets the event propagation limit on the event
-	// controller.
-	//
-	// If the limit is set to GTK_LIMIT_SAME_NATIVE, the controller won't handle
-	// events that are targeted at widgets on a different surface, such as
-	// popovers.
-	//
-	// This method is inherited from EventController
-	SetPropagationLimit(limit PropagationLimit)
-	// SetPropagationPhase sets the propagation phase at which a controller
-	// handles events.
-	//
-	// If @phase is GTK_PHASE_NONE, no automatic event handling will be
-	// performed, but other additional gesture maintenance will.
-	//
-	// This method is inherited from EventController
-	SetPropagationPhase(phase PropagationPhase)
+	gextras.Objector
 
 	// Actions gets the actions that this drop target supports.
 	Actions() gdk.DragAction
@@ -184,23 +118,25 @@ type DropTarget interface {
 	SetPreload(preload bool)
 }
 
-// dropTarget implements the DropTarget interface.
-type dropTarget struct {
-	*externglib.Object
+// DropTargetClass implements the DropTarget interface.
+type DropTargetClass struct {
+	EventControllerClass
 }
 
-var _ DropTarget = (*dropTarget)(nil)
+var _ DropTarget = (*DropTargetClass)(nil)
 
-// WrapDropTarget wraps a GObject to a type that implements
-// interface DropTarget. It is primarily used internally.
-func WrapDropTarget(obj *externglib.Object) DropTarget {
-	return dropTarget{obj}
+func wrapDropTarget(obj *externglib.Object) DropTarget {
+	return &DropTargetClass{
+		EventControllerClass: EventControllerClass{
+			Object: obj,
+		},
+	}
 }
 
 func marshalDropTarget(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapDropTarget(obj), nil
+	return wrapDropTarget(obj), nil
 }
 
 // NewDropTarget creates a new `GtkDropTarget` object.
@@ -224,59 +160,8 @@ func NewDropTarget(typ externglib.Type, actions gdk.DragAction) DropTarget {
 	return _dropTarget
 }
 
-func (d dropTarget) AsEventController() EventController {
-	return WrapEventController(gextras.InternObject(d))
-}
-
-func (c dropTarget) GetCurrentEvent() gdk.Event {
-	return WrapEventController(gextras.InternObject(c)).GetCurrentEvent()
-}
-
-func (c dropTarget) GetCurrentEventDevice() gdk.Device {
-	return WrapEventController(gextras.InternObject(c)).GetCurrentEventDevice()
-}
-
-func (c dropTarget) GetCurrentEventState() gdk.ModifierType {
-	return WrapEventController(gextras.InternObject(c)).GetCurrentEventState()
-}
-
-func (c dropTarget) GetCurrentEventTime() uint32 {
-	return WrapEventController(gextras.InternObject(c)).GetCurrentEventTime()
-}
-
-func (c dropTarget) GetName() string {
-	return WrapEventController(gextras.InternObject(c)).GetName()
-}
-
-func (c dropTarget) GetPropagationLimit() PropagationLimit {
-	return WrapEventController(gextras.InternObject(c)).GetPropagationLimit()
-}
-
-func (c dropTarget) GetPropagationPhase() PropagationPhase {
-	return WrapEventController(gextras.InternObject(c)).GetPropagationPhase()
-}
-
-func (c dropTarget) GetWidget() Widget {
-	return WrapEventController(gextras.InternObject(c)).GetWidget()
-}
-
-func (c dropTarget) Reset() {
-	WrapEventController(gextras.InternObject(c)).Reset()
-}
-
-func (c dropTarget) SetName(name string) {
-	WrapEventController(gextras.InternObject(c)).SetName(name)
-}
-
-func (c dropTarget) SetPropagationLimit(limit PropagationLimit) {
-	WrapEventController(gextras.InternObject(c)).SetPropagationLimit(limit)
-}
-
-func (c dropTarget) SetPropagationPhase(phase PropagationPhase) {
-	WrapEventController(gextras.InternObject(c)).SetPropagationPhase(phase)
-}
-
-func (s dropTarget) Actions() gdk.DragAction {
+// Actions gets the actions that this drop target supports.
+func (s *DropTargetClass) Actions() gdk.DragAction {
 	var _arg0 *C.GtkDropTarget // out
 	var _cret C.GdkDragAction  // in
 
@@ -291,7 +176,10 @@ func (s dropTarget) Actions() gdk.DragAction {
 	return _dragAction
 }
 
-func (s dropTarget) Drop() gdk.Drop {
+// Drop gets the currently handled drop operation.
+//
+// If no drop operation is going on, nil is returned.
+func (s *DropTargetClass) Drop() gdk.Drop {
 	var _arg0 *C.GtkDropTarget // out
 	var _cret *C.GdkDrop       // in
 
@@ -306,7 +194,10 @@ func (s dropTarget) Drop() gdk.Drop {
 	return _drop
 }
 
-func (s dropTarget) Formats() *gdk.ContentFormats {
+// Formats gets the data formats that this drop target accepts.
+//
+// If the result is nil, all formats are expected to be supported.
+func (s *DropTargetClass) Formats() *gdk.ContentFormats {
 	var _arg0 *C.GtkDropTarget     // out
 	var _cret *C.GdkContentFormats // in
 
@@ -325,7 +216,8 @@ func (s dropTarget) Formats() *gdk.ContentFormats {
 	return _contentFormats
 }
 
-func (s dropTarget) Preload() bool {
+// Preload gets whether data should be preloaded on hover.
+func (s *DropTargetClass) Preload() bool {
 	var _arg0 *C.GtkDropTarget // out
 	var _cret C.gboolean       // in
 
@@ -342,7 +234,8 @@ func (s dropTarget) Preload() bool {
 	return _ok
 }
 
-func (s dropTarget) Value() externglib.Value {
+// Value gets the current drop data, as a `GValue`.
+func (s *DropTargetClass) Value() externglib.Value {
 	var _arg0 *C.GtkDropTarget // out
 	var _cret *C.GValue        // in
 
@@ -357,7 +250,14 @@ func (s dropTarget) Value() externglib.Value {
 	return _value
 }
 
-func (s dropTarget) Reject() {
+// Reject rejects the ongoing drop operation.
+//
+// If no drop operation is ongoing, i.e when [property@Gtk.DropTarget:drop] is
+// nil, this function does nothing.
+//
+// This function should be used when delaying the decision on whether to accept
+// a drag or not until after reading the data.
+func (s *DropTargetClass) Reject() {
 	var _arg0 *C.GtkDropTarget // out
 
 	_arg0 = (*C.GtkDropTarget)(unsafe.Pointer(s.Native()))
@@ -365,7 +265,8 @@ func (s dropTarget) Reject() {
 	C.gtk_drop_target_reject(_arg0)
 }
 
-func (s dropTarget) SetActions(actions gdk.DragAction) {
+// SetActions sets the actions that this drop target supports.
+func (s *DropTargetClass) SetActions(actions gdk.DragAction) {
 	var _arg0 *C.GtkDropTarget // out
 	var _arg1 C.GdkDragAction  // out
 
@@ -375,7 +276,8 @@ func (s dropTarget) SetActions(actions gdk.DragAction) {
 	C.gtk_drop_target_set_actions(_arg0, _arg1)
 }
 
-func (s dropTarget) SetGTypes(types []externglib.Type) {
+// SetGTypes sets the supported `GTypes` for this drop target.
+func (s *DropTargetClass) SetGTypes(types []externglib.Type) {
 	var _arg0 *C.GtkDropTarget // out
 	var _arg1 *C.GType
 	var _arg2 C.gsize
@@ -394,7 +296,8 @@ func (s dropTarget) SetGTypes(types []externglib.Type) {
 	C.gtk_drop_target_set_gtypes(_arg0, _arg1, _arg2)
 }
 
-func (s dropTarget) SetPreload(preload bool) {
+// SetPreload sets whether data should be preloaded on hover.
+func (s *DropTargetClass) SetPreload(preload bool) {
 	var _arg0 *C.GtkDropTarget // out
 	var _arg1 C.gboolean       // out
 

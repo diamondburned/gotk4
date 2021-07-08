@@ -27,48 +27,7 @@ func init() {
 // To obtain the numbers to compare, this sorter evaluates a
 // [class@Gtk.Expression].
 type NumericSorter interface {
-	Sorter
-
-	// AsSorter casts the class to the Sorter interface.
-	AsSorter() Sorter
-
-	// Changed emits the [signal@Gtk.Sorter::changed] signal to notify all users
-	// of the sorter that it has changed.
-	//
-	// Users of the sorter should then update the sort order via
-	// gtk_sorter_compare().
-	//
-	// Depending on the @change parameter, it may be possible to update the sort
-	// order without a full resorting. Refer to the [enum@Gtk.SorterChange]
-	// documentation for details.
-	//
-	// This function is intended for implementors of `GtkSorter` subclasses and
-	// should not be called from other functions.
-	//
-	// This method is inherited from Sorter
-	Changed(change SorterChange)
-	// Compare compares two given items according to the sort order implemented
-	// by the sorter.
-	//
-	// Sorters implement a partial order:
-	//
-	// * It is reflexive, ie a = a * It is antisymmetric, ie if a < b and b < a,
-	// then a = b * It is transitive, ie given any 3 items with a ≤ b and b ≤ c,
-	// then a ≤ c
-	//
-	// The sorter may signal it conforms to additional constraints via the
-	// return value of [method@Gtk.Sorter.get_order].
-	//
-	// This method is inherited from Sorter
-	Compare(item1 gextras.Objector, item2 gextras.Objector) Ordering
-	// GetOrder gets the order that @self conforms to.
-	//
-	// See [enum@Gtk.SorterOrder] for details of the possible return values.
-	//
-	// This function is intended to allow optimizations.
-	//
-	// This method is inherited from Sorter
-	GetOrder() SorterOrder
+	gextras.Objector
 
 	// Expression gets the expression that is evaluated to obtain numbers from
 	// items.
@@ -88,23 +47,25 @@ type NumericSorter interface {
 	SetSortOrder(sortOrder SortType)
 }
 
-// numericSorter implements the NumericSorter interface.
-type numericSorter struct {
-	*externglib.Object
+// NumericSorterClass implements the NumericSorter interface.
+type NumericSorterClass struct {
+	SorterClass
 }
 
-var _ NumericSorter = (*numericSorter)(nil)
+var _ NumericSorter = (*NumericSorterClass)(nil)
 
-// WrapNumericSorter wraps a GObject to a type that implements
-// interface NumericSorter. It is primarily used internally.
-func WrapNumericSorter(obj *externglib.Object) NumericSorter {
-	return numericSorter{obj}
+func wrapNumericSorter(obj *externglib.Object) NumericSorter {
+	return &NumericSorterClass{
+		SorterClass: SorterClass{
+			Object: obj,
+		},
+	}
 }
 
 func marshalNumericSorter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapNumericSorter(obj), nil
+	return wrapNumericSorter(obj), nil
 }
 
 // NewNumericSorter creates a new numeric sorter using the given @expression.
@@ -126,23 +87,9 @@ func NewNumericSorter(expression Expression) NumericSorter {
 	return _numericSorter
 }
 
-func (n numericSorter) AsSorter() Sorter {
-	return WrapSorter(gextras.InternObject(n))
-}
-
-func (s numericSorter) Changed(change SorterChange) {
-	WrapSorter(gextras.InternObject(s)).Changed(change)
-}
-
-func (s numericSorter) Compare(item1 gextras.Objector, item2 gextras.Objector) Ordering {
-	return WrapSorter(gextras.InternObject(s)).Compare(item1, item2)
-}
-
-func (s numericSorter) GetOrder() SorterOrder {
-	return WrapSorter(gextras.InternObject(s)).GetOrder()
-}
-
-func (s numericSorter) Expression() Expression {
+// Expression gets the expression that is evaluated to obtain numbers from
+// items.
+func (s *NumericSorterClass) Expression() Expression {
 	var _arg0 *C.GtkNumericSorter // out
 	var _cret *C.GtkExpression    // in
 
@@ -157,7 +104,8 @@ func (s numericSorter) Expression() Expression {
 	return _expression
 }
 
-func (s numericSorter) SortOrder() SortType {
+// SortOrder gets whether this sorter will sort smaller numbers first.
+func (s *NumericSorterClass) SortOrder() SortType {
 	var _arg0 *C.GtkNumericSorter // out
 	var _cret C.GtkSortType       // in
 
@@ -172,7 +120,15 @@ func (s numericSorter) SortOrder() SortType {
 	return _sortType
 }
 
-func (s numericSorter) SetExpression(expression Expression) {
+// SetExpression sets the expression that is evaluated to obtain numbers from
+// items.
+//
+// Unless an expression is set on @self, the sorter will always compare items as
+// invalid.
+//
+// The expression must have a return type that can be compared numerically, such
+// as G_TYPE_INT or G_TYPE_DOUBLE.
+func (s *NumericSorterClass) SetExpression(expression Expression) {
 	var _arg0 *C.GtkNumericSorter // out
 	var _arg1 *C.GtkExpression    // out
 
@@ -182,7 +138,8 @@ func (s numericSorter) SetExpression(expression Expression) {
 	C.gtk_numeric_sorter_set_expression(_arg0, _arg1)
 }
 
-func (s numericSorter) SetSortOrder(sortOrder SortType) {
+// SetSortOrder sets whether to sort smaller numbers before larger ones.
+func (s *NumericSorterClass) SetSortOrder(sortOrder SortType) {
 	var _arg0 *C.GtkNumericSorter // out
 	var _arg1 C.GtkSortType       // out
 

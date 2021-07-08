@@ -32,7 +32,7 @@ func init() {
 	})
 }
 
-// InetAddressOverrider contains methods that are overridable .
+// InetAddressOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
@@ -88,23 +88,23 @@ type InetAddress interface {
 	String() string
 }
 
-// inetAddress implements the InetAddress interface.
-type inetAddress struct {
+// InetAddressClass implements the InetAddress interface.
+type InetAddressClass struct {
 	*externglib.Object
 }
 
-var _ InetAddress = (*inetAddress)(nil)
+var _ InetAddress = (*InetAddressClass)(nil)
 
-// WrapInetAddress wraps a GObject to a type that implements
-// interface InetAddress. It is primarily used internally.
-func WrapInetAddress(obj *externglib.Object) InetAddress {
-	return inetAddress{obj}
+func wrapInetAddress(obj *externglib.Object) InetAddress {
+	return &InetAddressClass{
+		Object: obj,
+	}
 }
 
 func marshalInetAddress(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapInetAddress(obj), nil
+	return wrapInetAddress(obj), nil
 }
 
 // NewInetAddressAny creates a Address for the "any" address (unassigned/"don't
@@ -159,7 +159,8 @@ func NewInetAddressLoopback(family SocketFamily) InetAddress {
 	return _inetAddress
 }
 
-func (a inetAddress) Equal(otherAddress InetAddress) bool {
+// Equal checks if two Address instances are equal, e.g. the same address.
+func (a *InetAddressClass) Equal(otherAddress InetAddress) bool {
 	var _arg0 *C.GInetAddress // out
 	var _arg1 *C.GInetAddress // out
 	var _cret C.gboolean      // in
@@ -178,7 +179,8 @@ func (a inetAddress) Equal(otherAddress InetAddress) bool {
 	return _ok
 }
 
-func (a inetAddress) Family() SocketFamily {
+// Family gets @address's family
+func (a *InetAddressClass) Family() SocketFamily {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.GSocketFamily // in
 
@@ -193,7 +195,8 @@ func (a inetAddress) Family() SocketFamily {
 	return _socketFamily
 }
 
-func (a inetAddress) IsAny() bool {
+// IsAny tests whether @address is the "any" address for its family.
+func (a *InetAddressClass) IsAny() bool {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.gboolean      // in
 
@@ -210,7 +213,9 @@ func (a inetAddress) IsAny() bool {
 	return _ok
 }
 
-func (a inetAddress) IsLinkLocal() bool {
+// IsLinkLocal tests whether @address is a link-local address (that is, if it
+// identifies a host on a local network that is not connected to the Internet).
+func (a *InetAddressClass) IsLinkLocal() bool {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.gboolean      // in
 
@@ -227,7 +232,8 @@ func (a inetAddress) IsLinkLocal() bool {
 	return _ok
 }
 
-func (a inetAddress) IsLoopback() bool {
+// IsLoopback tests whether @address is the loopback address for its family.
+func (a *InetAddressClass) IsLoopback() bool {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.gboolean      // in
 
@@ -244,7 +250,8 @@ func (a inetAddress) IsLoopback() bool {
 	return _ok
 }
 
-func (a inetAddress) IsMcGlobal() bool {
+// IsMcGlobal tests whether @address is a global multicast address.
+func (a *InetAddressClass) IsMcGlobal() bool {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.gboolean      // in
 
@@ -261,7 +268,8 @@ func (a inetAddress) IsMcGlobal() bool {
 	return _ok
 }
 
-func (a inetAddress) IsMcLinkLocal() bool {
+// IsMcLinkLocal tests whether @address is a link-local multicast address.
+func (a *InetAddressClass) IsMcLinkLocal() bool {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.gboolean      // in
 
@@ -278,7 +286,8 @@ func (a inetAddress) IsMcLinkLocal() bool {
 	return _ok
 }
 
-func (a inetAddress) IsMcNodeLocal() bool {
+// IsMcNodeLocal tests whether @address is a node-local multicast address.
+func (a *InetAddressClass) IsMcNodeLocal() bool {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.gboolean      // in
 
@@ -295,7 +304,9 @@ func (a inetAddress) IsMcNodeLocal() bool {
 	return _ok
 }
 
-func (a inetAddress) IsMcOrgLocal() bool {
+// IsMcOrgLocal tests whether @address is an organization-local multicast
+// address.
+func (a *InetAddressClass) IsMcOrgLocal() bool {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.gboolean      // in
 
@@ -312,7 +323,8 @@ func (a inetAddress) IsMcOrgLocal() bool {
 	return _ok
 }
 
-func (a inetAddress) IsMcSiteLocal() bool {
+// IsMcSiteLocal tests whether @address is a site-local multicast address.
+func (a *InetAddressClass) IsMcSiteLocal() bool {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.gboolean      // in
 
@@ -329,7 +341,8 @@ func (a inetAddress) IsMcSiteLocal() bool {
 	return _ok
 }
 
-func (a inetAddress) IsMulticast() bool {
+// IsMulticast tests whether @address is a multicast address.
+func (a *InetAddressClass) IsMulticast() bool {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.gboolean      // in
 
@@ -346,7 +359,11 @@ func (a inetAddress) IsMulticast() bool {
 	return _ok
 }
 
-func (a inetAddress) IsSiteLocal() bool {
+// IsSiteLocal tests whether @address is a site-local address such as 10.0.0.1
+// (that is, the address identifies a host on a local network that can not be
+// reached directly from the Internet, but which may have outgoing Internet
+// connectivity via a NAT or firewall).
+func (a *InetAddressClass) IsSiteLocal() bool {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.gboolean      // in
 
@@ -363,7 +380,9 @@ func (a inetAddress) IsSiteLocal() bool {
 	return _ok
 }
 
-func (a inetAddress) NativeSize() uint {
+// NativeSize gets the size of the native raw binary address for @address. This
+// is the size of the data that you get from g_inet_address_to_bytes().
+func (a *InetAddressClass) NativeSize() uint {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.gsize         // in
 
@@ -378,7 +397,8 @@ func (a inetAddress) NativeSize() uint {
 	return _gsize
 }
 
-func (a inetAddress) String() string {
+// String converts @address to string form.
+func (a *InetAddressClass) String() string {
 	var _arg0 *C.GInetAddress // out
 	var _cret *C.gchar        // in
 

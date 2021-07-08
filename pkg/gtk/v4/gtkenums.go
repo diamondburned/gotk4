@@ -110,13 +110,13 @@ type AccessibleInvalidState int
 
 const (
 	// False: there are no detected errors in the value
-	AccessibleInvalidFalse AccessibleInvalidState = iota
+	AccessibleInvalidStateFalse AccessibleInvalidState = iota
 	// True: the value entered by the user has failed validation
-	AccessibleInvalidTrue
+	AccessibleInvalidStateTrue
 	// Grammar: grammatical error was detected
-	AccessibleInvalidGrammar
+	AccessibleInvalidStateGrammar
 	// Spelling error was detected
-	AccessibleInvalidSpelling
+	AccessibleInvalidStateSpelling
 )
 
 func marshalAccessibleInvalidState(p uintptr) (interface{}, error) {
@@ -568,15 +568,15 @@ type ArrowType int
 
 const (
 	// Up represents an upward pointing arrow.
-	ArrowUp ArrowType = iota
+	ArrowTypeUp ArrowType = iota
 	// Down represents a downward pointing arrow.
-	ArrowDown
+	ArrowTypeDown
 	// Left represents a left pointing arrow.
-	ArrowLeft
+	ArrowTypeLeft
 	// Right represents a right pointing arrow.
-	ArrowRight
+	ArrowTypeRight
 	// None: no arrow.
-	ArrowNone
+	ArrowTypeNone
 )
 
 func marshalArrowType(p uintptr) (interface{}, error) {
@@ -717,17 +717,17 @@ type ConstraintVflParserError int
 
 const (
 	// Symbol: invalid or unknown symbol
-	ConstraintVflParserErrorInvalidSymbol ConstraintVflParserError = iota
+	ConstraintVflParserErrorSymbol ConstraintVflParserError = iota
 	// Attribute: invalid or unknown attribute
-	ConstraintVflParserErrorInvalidAttribute
+	ConstraintVflParserErrorAttribute
 	// View: invalid or unknown view
-	ConstraintVflParserErrorInvalidView
+	ConstraintVflParserErrorView
 	// Metric: invalid or unknown metric
-	ConstraintVflParserErrorInvalidMetric
+	ConstraintVflParserErrorMetric
 	// Priority: invalid or unknown priority
-	ConstraintVflParserErrorInvalidPriority
+	ConstraintVflParserErrorPriority
 	// Relation: invalid or unknown relation
-	ConstraintVflParserErrorInvalidRelation
+	ConstraintVflParserErrorRelation
 )
 
 func marshalConstraintVflParserError(p uintptr) (interface{}, error) {
@@ -739,26 +739,26 @@ type DeleteType int
 
 const (
 	// Chars: delete characters.
-	DeleteChars DeleteType = iota
+	DeleteTypeChars DeleteType = iota
 	// WordEnds: delete only the portion of the word to the left/right of cursor
 	// if we’re in the middle of a word.
-	DeleteWordEnds
+	DeleteTypeWordEnds
 	// Words: delete words.
-	DeleteWords
+	DeleteTypeWords
 	// DisplayLines: delete display-lines. Display-lines refers to the visible
 	// lines, with respect to the current line breaks. As opposed to paragraphs,
 	// which are defined by line breaks in the input.
-	DeleteDisplayLines
+	DeleteTypeDisplayLines
 	// DisplayLineEnds: delete only the portion of the display-line to the
 	// left/right of cursor.
-	DeleteDisplayLineEnds
+	DeleteTypeDisplayLineEnds
 	// ParagraphEnds: delete to the end of the paragraph. Like C-k in Emacs (or
 	// its reverse).
-	DeleteParagraphEnds
+	DeleteTypeParagraphEnds
 	// Paragraphs: delete entire line. Like C-k in pico.
-	DeleteParagraphs
+	DeleteTypeParagraphs
 	// Whitespace: delete only whitespace. Like M-\ in Emacs.
-	DeleteWhitespace
+	DeleteTypeWhitespace
 )
 
 func marshalDeleteType(p uintptr) (interface{}, error) {
@@ -770,17 +770,17 @@ type DirectionType int
 
 const (
 	// TabForward: move forward.
-	DirTabForward DirectionType = iota
+	DirectionTypeTabForward DirectionType = iota
 	// TabBackward: move backward.
-	DirTabBackward
+	DirectionTypeTabBackward
 	// Up: move up.
-	DirUp
+	DirectionTypeUp
 	// Down: move down.
-	DirDown
+	DirectionTypeDown
 	// Left: move left.
-	DirLeft
+	DirectionTypeLeft
 	// Right: move right.
-	DirRight
+	DirectionTypeRight
 )
 
 func marshalDirectionType(p uintptr) (interface{}, error) {
@@ -793,11 +793,11 @@ type EventSequenceState int
 
 const (
 	// None: the sequence is handled, but not grabbed.
-	EventSequenceNone EventSequenceState = iota
+	EventSequenceStateNone EventSequenceState = iota
 	// Claimed: the sequence is handled and grabbed.
-	EventSequenceClaimed
+	EventSequenceStateClaimed
 	// Denied: the sequence is denied.
-	EventSequenceDenied
+	EventSequenceStateDenied
 )
 
 func marshalEventSequenceState(p uintptr) (interface{}, error) {
@@ -880,13 +880,13 @@ type Justification int
 
 const (
 	// Left: the text is placed at the left edge of the label.
-	JustifyLeft Justification = iota
+	JustificationLeft Justification = iota
 	// Right: the text is placed at the right edge of the label.
-	JustifyRight
+	JustificationRight
 	// Center: the text is placed in the center of the label.
-	JustifyCenter
+	JustificationCenter
 	// Fill: the text is placed is distributed across the label.
-	JustifyFill
+	JustificationFill
 )
 
 func marshalJustification(p uintptr) (interface{}, error) {
@@ -915,15 +915,15 @@ type MessageType int
 
 const (
 	// Info: informational message
-	MessageInfo MessageType = iota
+	MessageTypeInfo MessageType = iota
 	// Warning: non-fatal warning message
-	MessageWarning
+	MessageTypeWarning
 	// Question: question requiring a choice
-	MessageQuestion
+	MessageTypeQuestion
 	// Error: fatal error message
-	MessageError
+	MessageTypeError
 	// Other: none of the above
-	MessageOther
+	MessageTypeOther
 )
 
 func marshalMessageType(p uintptr) (interface{}, error) {
@@ -936,25 +936,25 @@ type MovementStep int
 
 const (
 	// LogicalPositions: move forward or back by graphemes
-	MovementLogicalPositions MovementStep = iota
+	MovementStepLogicalPositions MovementStep = iota
 	// VisualPositions: move left or right by graphemes
-	MovementVisualPositions
+	MovementStepVisualPositions
 	// Words: move forward or back by words
-	MovementWords
+	MovementStepWords
 	// DisplayLines: move up or down lines (wrapped lines)
-	MovementDisplayLines
+	MovementStepDisplayLines
 	// DisplayLineEnds: move to either end of a line
-	MovementDisplayLineEnds
+	MovementStepDisplayLineEnds
 	// Paragraphs: move up or down paragraphs (newline-ended lines)
-	MovementParagraphs
+	MovementStepParagraphs
 	// ParagraphEnds: move to either end of a paragraph
-	MovementParagraphEnds
+	MovementStepParagraphEnds
 	// Pages: move by pages
-	MovementPages
+	MovementStepPages
 	// BufferEnds: move to ends of the buffer
-	MovementBufferEnds
+	MovementStepBufferEnds
 	// HorizontalPages: move horizontally by pages
-	MovementHorizontalPages
+	MovementStepHorizontalPages
 )
 
 func marshalMovementStep(p uintptr) (interface{}, error) {
@@ -967,21 +967,21 @@ type NumberUpLayout int
 
 const (
 	// Lrtb: ! (layout-lrtb.png)
-	NumberUpLayoutLeftToRightTopToBottom NumberUpLayout = iota
+	NumberUpLayoutLrtb NumberUpLayout = iota
 	// Lrbt: ! (layout-lrbt.png)
-	NumberUpLayoutLeftToRightBottomToTop
+	NumberUpLayoutLrbt
 	// Rltb: ! (layout-rltb.png)
-	NumberUpLayoutRightToLeftTopToBottom
+	NumberUpLayoutRltb
 	// Rlbt: ! (layout-rlbt.png)
-	NumberUpLayoutRightToLeftBottomToTop
+	NumberUpLayoutRlbt
 	// Tblr: ! (layout-tblr.png)
-	NumberUpLayoutTopToBottomLeftToRight
+	NumberUpLayoutTblr
 	// Tbrl: ! (layout-tbrl.png)
-	NumberUpLayoutTopToBottomRightToLeft
+	NumberUpLayoutTbrl
 	// Btlr: ! (layout-btlr.png)
-	NumberUpLayoutBottomToTopLeftToRight
+	NumberUpLayoutBtlr
 	// Btrl: ! (layout-btrl.png)
-	NumberUpLayoutBottomToTopRightToLeft
+	NumberUpLayoutBtrl
 )
 
 func marshalNumberUpLayout(p uintptr) (interface{}, error) {
@@ -1051,9 +1051,9 @@ type PackType int
 
 const (
 	// Start: the child is packed into the start of the widget
-	PackStart PackType = iota
+	PackTypeStart PackType = iota
 	// End: the child is packed into the end of the widget
-	PackEnd
+	PackTypeEnd
 )
 
 func marshalPackType(p uintptr) (interface{}, error) {
@@ -1120,13 +1120,13 @@ type PositionType int
 
 const (
 	// Left: the feature is at the left edge.
-	PosLeft PositionType = iota
+	PositionTypeLeft PositionType = iota
 	// Right: the feature is at the right edge.
-	PosRight
+	PositionTypeRight
 	// Top: the feature is at the top edge.
-	PosTop
+	PositionTypeTop
 	// Bottom: the feature is at the bottom edge.
-	PosBottom
+	PositionTypeBottom
 )
 
 func marshalPositionType(p uintptr) (interface{}, error) {
@@ -1191,11 +1191,11 @@ type PropagationLimit int
 
 const (
 	// None events are handled regardless of what their target is.
-	LimitNone PropagationLimit = iota
+	PropagationLimitNone PropagationLimit = iota
 	// SameNative events are only handled if their target is in the same Native
 	// as the event controllers widget. Note that some event types have two
 	// targets (origin and destination).
-	LimitSameNative
+	PropagationLimitSameNative
 )
 
 func marshalPropagationLimit(p uintptr) (interface{}, error) {
@@ -1208,20 +1208,20 @@ type PropagationPhase int
 
 const (
 	// None events are not delivered.
-	PhaseNone PropagationPhase = iota
+	PropagationPhaseNone PropagationPhase = iota
 	// Capture events are delivered in the capture phase. The capture phase
 	// happens before the bubble phase, runs from the toplevel down to the event
 	// widget. This option should only be used on containers that might possibly
 	// handle events before their children do.
-	PhaseCapture
+	PropagationPhaseCapture
 	// Bubble events are delivered in the bubble phase. The bubble phase happens
 	// after the capture phase, and before the default handlers are run. This
 	// phase runs from the event widget, up to the toplevel.
-	PhaseBubble
+	PropagationPhaseBubble
 	// Target events are delivered in the default widget event handlers, note
 	// that widget implementations must chain up on button, motion, touch and
 	// grab broken handlers for controllers in this phase to be run.
-	PhaseTarget
+	PropagationPhaseTarget
 )
 
 func marshalPropagationPhase(p uintptr) (interface{}, error) {
@@ -1233,17 +1233,17 @@ type ScrollStep int
 
 const (
 	// Steps: scroll in steps.
-	ScrollSteps ScrollStep = iota
+	ScrollStepSteps ScrollStep = iota
 	// Pages: scroll by pages.
-	ScrollPages
+	ScrollStepPages
 	// Ends: scroll to ends.
-	ScrollEnds
+	ScrollStepEnds
 	// HorizontalSteps: scroll in horizontal steps.
-	ScrollHorizontalSteps
+	ScrollStepHorizontalSteps
 	// HorizontalPages: scroll by horizontal pages.
-	ScrollHorizontalPages
+	ScrollStepHorizontalPages
 	// HorizontalEnds: scroll to the horizontal ends.
-	ScrollHorizontalEnds
+	ScrollStepHorizontalEnds
 )
 
 func marshalScrollStep(p uintptr) (interface{}, error) {
@@ -1255,37 +1255,37 @@ type ScrollType int
 
 const (
 	// None: no scrolling.
-	ScrollNone ScrollType = iota
+	ScrollTypeNone ScrollType = iota
 	// Jump: jump to new location.
-	ScrollJump
+	ScrollTypeJump
 	// StepBackward: step backward.
-	ScrollStepBackward
+	ScrollTypeStepBackward
 	// StepForward: step forward.
-	ScrollStepForward
+	ScrollTypeStepForward
 	// PageBackward: page backward.
-	ScrollPageBackward
+	ScrollTypePageBackward
 	// PageForward: page forward.
-	ScrollPageForward
+	ScrollTypePageForward
 	// StepUp: step up.
-	ScrollStepUp
+	ScrollTypeStepUp
 	// StepDown: step down.
-	ScrollStepDown
+	ScrollTypeStepDown
 	// PageUp: page up.
-	ScrollPageUp
+	ScrollTypePageUp
 	// PageDown: page down.
-	ScrollPageDown
+	ScrollTypePageDown
 	// StepLeft: step to the left.
-	ScrollStepLeft
+	ScrollTypeStepLeft
 	// StepRight: step to the right.
-	ScrollStepRight
+	ScrollTypeStepRight
 	// PageLeft: page to the left.
-	ScrollPageLeft
+	ScrollTypePageLeft
 	// PageRight: page to the right.
-	ScrollPageRight
+	ScrollTypePageRight
 	// Start: scroll to start.
-	ScrollStart
+	ScrollTypeStart
 	// End: scroll to end.
-	ScrollEnd
+	ScrollTypeEnd
 )
 
 func marshalScrollType(p uintptr) (interface{}, error) {
@@ -1298,9 +1298,9 @@ type ScrollablePolicy int
 
 const (
 	// Minimum: scrollable adjustments are based on the minimum size
-	ScrollMinimum ScrollablePolicy = iota
+	ScrollablePolicyMinimum ScrollablePolicy = iota
 	// Natural: scrollable adjustments are based on the natural size
-	ScrollNatural
+	ScrollablePolicyNatural
 )
 
 func marshalScrollablePolicy(p uintptr) (interface{}, error) {
@@ -1312,20 +1312,20 @@ type SelectionMode int
 
 const (
 	// None: no selection is possible.
-	SelectionNone SelectionMode = iota
+	SelectionModeNone SelectionMode = iota
 	// Single: zero or one element may be selected.
-	SelectionSingle
+	SelectionModeSingle
 	// Browse: exactly one element is selected. In some circumstances, such as
 	// initially or during a search operation, it’s possible for no element to
 	// be selected with GTK_SELECTION_BROWSE. What is really enforced is that
 	// the user can’t deselect a currently selected element except by selecting
 	// another element.
-	SelectionBrowse
+	SelectionModeBrowse
 	// Multiple: any number of elements may be selected. The Ctrl key may be
 	// used to enlarge the selection, and Shift key to select between the focus
 	// and the child pointed to. Some widgets may also allow Click-drag to
 	// select a range of elements.
-	SelectionMultiple
+	SelectionModeMultiple
 )
 
 func marshalSelectionMode(p uintptr) (interface{}, error) {
@@ -1338,11 +1338,11 @@ type SensitivityType int
 
 const (
 	// Auto: the control is made insensitive if no action can be triggered
-	SensitivityAuto SensitivityType = iota
+	SensitivityTypeAuto SensitivityType = iota
 	// On: the control is always sensitive
-	SensitivityOn
+	SensitivityTypeOn
 	// Off: the control is always insensitive
-	SensitivityOff
+	SensitivityTypeOff
 )
 
 func marshalSensitivityType(p uintptr) (interface{}, error) {
@@ -1373,13 +1373,13 @@ type SizeGroupMode int
 
 const (
 	// None: group has no effect
-	SizeGroupNone SizeGroupMode = iota
+	SizeGroupModeNone SizeGroupMode = iota
 	// Horizontal: group affects horizontal requisition
-	SizeGroupHorizontal
+	SizeGroupModeHorizontal
 	// Vertical: group affects vertical requisition
-	SizeGroupVertical
+	SizeGroupModeVertical
 	// Both: group affects both horizontal and vertical requisition
-	SizeGroupBoth
+	SizeGroupModeBoth
 )
 
 func marshalSizeGroupMode(p uintptr) (interface{}, error) {
@@ -1392,11 +1392,11 @@ type SizeRequestMode int
 
 const (
 	// HeightForWidth: prefer height-for-width geometry management
-	SizeRequestHeightForWidth SizeRequestMode = iota
+	SizeRequestModeHeightForWidth SizeRequestMode = iota
 	// WidthForHeight: prefer width-for-height geometry management
-	SizeRequestWidthForHeight
+	SizeRequestModeWidthForHeight
 	// ConstantSize: don’t trade height-for-width or width-for-height
-	SizeRequestConstantSize
+	SizeRequestModeConstantSize
 )
 
 func marshalSizeRequestMode(p uintptr) (interface{}, error) {
@@ -1408,9 +1408,9 @@ type SortType int
 
 const (
 	// Ascending: sorting is in ascending order.
-	SortAscending SortType = iota
+	SortTypeAscending SortType = iota
 	// Descending: sorting is in descending order.
-	SortDescending
+	SortTypeDescending
 )
 
 func marshalSortType(p uintptr) (interface{}, error) {
@@ -1454,11 +1454,11 @@ type TextDirection int
 
 const (
 	// None: no direction.
-	TextDirNone TextDirection = iota
+	TextDirectionNone TextDirection = iota
 	// LTR: left to right text direction.
-	TextDirLTR
+	TextDirectionLTR
 	// RTL: right to left text direction.
-	TextDirRTL
+	TextDirectionRTL
 )
 
 func marshalTextDirection(p uintptr) (interface{}, error) {
@@ -1506,16 +1506,16 @@ type WrapMode int
 
 const (
 	// None: do not wrap lines; just make the text area wider
-	WrapNone WrapMode = iota
+	WrapModeNone WrapMode = iota
 	// Char: wrap text, breaking lines anywhere the cursor can appear (between
 	// characters, usually - if you want to be technical, between graphemes, see
 	// pango_get_log_attrs())
-	WrapChar
+	WrapModeChar
 	// Word: wrap text, breaking lines in between words
-	WrapWord
+	WrapModeWord
 	// WordChar: wrap text, breaking lines in between words, or if that is not
 	// enough, also between graphemes
-	WrapWordChar
+	WrapModeWordChar
 )
 
 func marshalWrapMode(p uintptr) (interface{}, error) {

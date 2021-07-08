@@ -77,26 +77,27 @@ type DeviceTool interface {
 	ToolType() DeviceToolType
 }
 
-// deviceTool implements the DeviceTool interface.
-type deviceTool struct {
+// DeviceToolClass implements the DeviceTool interface.
+type DeviceToolClass struct {
 	*externglib.Object
 }
 
-var _ DeviceTool = (*deviceTool)(nil)
+var _ DeviceTool = (*DeviceToolClass)(nil)
 
-// WrapDeviceTool wraps a GObject to a type that implements
-// interface DeviceTool. It is primarily used internally.
-func WrapDeviceTool(obj *externglib.Object) DeviceTool {
-	return deviceTool{obj}
+func wrapDeviceTool(obj *externglib.Object) DeviceTool {
+	return &DeviceToolClass{
+		Object: obj,
+	}
 }
 
 func marshalDeviceTool(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapDeviceTool(obj), nil
+	return wrapDeviceTool(obj), nil
 }
 
-func (t deviceTool) Axes() AxisFlags {
+// Axes gets the axes of the tool.
+func (t *DeviceToolClass) Axes() AxisFlags {
 	var _arg0 *C.GdkDeviceTool // out
 	var _cret C.GdkAxisFlags   // in
 
@@ -111,7 +112,17 @@ func (t deviceTool) Axes() AxisFlags {
 	return _axisFlags
 }
 
-func (t deviceTool) HardwareID() uint64 {
+// HardwareID gets the hardware ID of this tool, or 0 if it's not known.
+//
+// When non-zero, the identificator is unique for the given tool model, meaning
+// that two identical tools will share the same @hardware_id, but will have
+// different serial numbers (see [method@Gdk.DeviceTool.get_serial]).
+//
+// This is a more concrete (and device specific) method to identify a
+// `GdkDeviceTool` than [method@Gdk.DeviceTool.get_tool_type], as a tablet may
+// support multiple devices with the same `GdkDeviceToolType`, but different
+// hardware identificators.
+func (t *DeviceToolClass) HardwareID() uint64 {
 	var _arg0 *C.GdkDeviceTool // out
 	var _cret C.guint64        // in
 
@@ -126,7 +137,11 @@ func (t deviceTool) HardwareID() uint64 {
 	return _guint64
 }
 
-func (t deviceTool) Serial() uint64 {
+// Serial gets the serial number of this tool.
+//
+// This value can be used to identify a physical tool (eg. a tablet pen) across
+// program executions.
+func (t *DeviceToolClass) Serial() uint64 {
 	var _arg0 *C.GdkDeviceTool // out
 	var _cret C.guint64        // in
 
@@ -141,7 +156,8 @@ func (t deviceTool) Serial() uint64 {
 	return _guint64
 }
 
-func (t deviceTool) ToolType() DeviceToolType {
+// ToolType gets the `GdkDeviceToolType` of the tool.
+func (t *DeviceToolClass) ToolType() DeviceToolType {
 	var _arg0 *C.GdkDeviceTool    // out
 	var _cret C.GdkDeviceToolType // in
 

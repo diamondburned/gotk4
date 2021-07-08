@@ -32,7 +32,7 @@ func init() {
 	})
 }
 
-// SocketConnectableOverrider contains methods that are overridable .
+// SocketConnectableOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
@@ -134,26 +134,27 @@ type SocketConnectable interface {
 	String() string
 }
 
-// socketConnectable implements the SocketConnectable interface.
-type socketConnectable struct {
+// SocketConnectableInterface implements the SocketConnectable interface.
+type SocketConnectableInterface struct {
 	*externglib.Object
 }
 
-var _ SocketConnectable = (*socketConnectable)(nil)
+var _ SocketConnectable = (*SocketConnectableInterface)(nil)
 
-// WrapSocketConnectable wraps a GObject to a type that implements
-// interface SocketConnectable. It is primarily used internally.
-func WrapSocketConnectable(obj *externglib.Object) SocketConnectable {
-	return socketConnectable{obj}
+func wrapSocketConnectable(obj *externglib.Object) SocketConnectable {
+	return &SocketConnectableInterface{
+		Object: obj,
+	}
 }
 
 func marshalSocketConnectable(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapSocketConnectable(obj), nil
+	return wrapSocketConnectable(obj), nil
 }
 
-func (c socketConnectable) Enumerate() SocketAddressEnumerator {
+// Enumerate creates a AddressEnumerator for @connectable.
+func (c *SocketConnectableInterface) Enumerate() SocketAddressEnumerator {
 	var _arg0 *C.GSocketConnectable       // out
 	var _cret *C.GSocketAddressEnumerator // in
 
@@ -168,7 +169,12 @@ func (c socketConnectable) Enumerate() SocketAddressEnumerator {
 	return _socketAddressEnumerator
 }
 
-func (c socketConnectable) ProxyEnumerate() SocketAddressEnumerator {
+// ProxyEnumerate creates a AddressEnumerator for @connectable that will return
+// a Address for each of its addresses that you must connect to via a proxy.
+//
+// If @connectable does not implement g_socket_connectable_proxy_enumerate(),
+// this will fall back to calling g_socket_connectable_enumerate().
+func (c *SocketConnectableInterface) ProxyEnumerate() SocketAddressEnumerator {
 	var _arg0 *C.GSocketConnectable       // out
 	var _cret *C.GSocketAddressEnumerator // in
 
@@ -183,7 +189,14 @@ func (c socketConnectable) ProxyEnumerate() SocketAddressEnumerator {
 	return _socketAddressEnumerator
 }
 
-func (c socketConnectable) String() string {
+// String: format a Connectable as a string. This is a human-readable format for
+// use in debugging output, and is not a stable serialization format. It is not
+// suitable for use in user interfaces as it exposes too much information for a
+// user.
+//
+// If the Connectable implementation does not support string formatting, the
+// implementation’s type name will be returned as a fallback.
+func (c *SocketConnectableInterface) String() string {
 	var _arg0 *C.GSocketConnectable // out
 	var _cret *C.gchar              // in
 

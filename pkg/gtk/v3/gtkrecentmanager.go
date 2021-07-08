@@ -54,7 +54,7 @@ func marshalRecentManagerError(p uintptr) (interface{}, error) {
 	return RecentManagerError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// RecentManagerOverrider contains methods that are overridable .
+// RecentManagerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
@@ -155,23 +155,23 @@ type RecentManager interface {
 	RemoveItem(uri string) error
 }
 
-// recentManager implements the RecentManager interface.
-type recentManager struct {
+// RecentManagerClass implements the RecentManager interface.
+type RecentManagerClass struct {
 	*externglib.Object
 }
 
-var _ RecentManager = (*recentManager)(nil)
+var _ RecentManager = (*RecentManagerClass)(nil)
 
-// WrapRecentManager wraps a GObject to a type that implements
-// interface RecentManager. It is primarily used internally.
-func WrapRecentManager(obj *externglib.Object) RecentManager {
-	return recentManager{obj}
+func wrapRecentManager(obj *externglib.Object) RecentManager {
+	return &RecentManagerClass{
+		Object: obj,
+	}
 }
 
 func marshalRecentManager(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapRecentManager(obj), nil
+	return wrapRecentManager(obj), nil
 }
 
 // NewRecentManager creates a new recent manager object. Recent manager objects
@@ -193,7 +193,23 @@ func NewRecentManager() RecentManager {
 	return _recentManager
 }
 
-func (m recentManager) AddFull(uri string, recentData *RecentData) bool {
+// AddFull adds a new resource, pointed by @uri, into the recently used
+// resources list, using the metadata specified inside the RecentData-struct
+// passed in @recent_data.
+//
+// The passed URI will be used to identify this resource inside the list.
+//
+// In order to register the new recently used resource, metadata about the
+// resource must be passed as well as the URI; the metadata is stored in a
+// RecentData-struct, which must contain the MIME type of the resource pointed
+// by the URI; the name of the application that is registering the item, and a
+// command line to be used when launching the item.
+//
+// Optionally, a RecentData-struct might contain a UTF-8 string to be used when
+// viewing the item instead of the last component of the URI; a short
+// description of the item; whether the item should be considered private - that
+// is, should be displayed only by the applications that have registered it.
+func (m *RecentManagerClass) AddFull(uri string, recentData *RecentData) bool {
 	var _arg0 *C.GtkRecentManager // out
 	var _arg1 *C.gchar            // out
 	var _arg2 *C.GtkRecentData    // out
@@ -215,7 +231,16 @@ func (m recentManager) AddFull(uri string, recentData *RecentData) bool {
 	return _ok
 }
 
-func (m recentManager) AddItem(uri string) bool {
+// AddItem adds a new resource, pointed by @uri, into the recently used
+// resources list.
+//
+// This function automatically retrieves some of the needed metadata and setting
+// other metadata to common default values; it then feeds the data to
+// gtk_recent_manager_add_full().
+//
+// See gtk_recent_manager_add_full() if you want to explicitly define the
+// metadata for the resource pointed by @uri.
+func (m *RecentManagerClass) AddItem(uri string) bool {
 	var _arg0 *C.GtkRecentManager // out
 	var _arg1 *C.gchar            // out
 	var _cret C.gboolean          // in
@@ -235,7 +260,9 @@ func (m recentManager) AddItem(uri string) bool {
 	return _ok
 }
 
-func (m recentManager) HasItem(uri string) bool {
+// HasItem checks whether there is a recently used resource registered with @uri
+// inside the recent manager.
+func (m *RecentManagerClass) HasItem(uri string) bool {
 	var _arg0 *C.GtkRecentManager // out
 	var _arg1 *C.gchar            // out
 	var _cret C.gboolean          // in
@@ -255,7 +282,10 @@ func (m recentManager) HasItem(uri string) bool {
 	return _ok
 }
 
-func (m recentManager) LookupItem(uri string) (*RecentInfo, error) {
+// LookupItem searches for a URI inside the recently used resources list, and
+// returns a RecentInfo-struct containing informations about the resource like
+// its MIME type, or its display name.
+func (m *RecentManagerClass) LookupItem(uri string) (*RecentInfo, error) {
 	var _arg0 *C.GtkRecentManager // out
 	var _arg1 *C.gchar            // out
 	var _cret *C.GtkRecentInfo    // in
@@ -280,7 +310,12 @@ func (m recentManager) LookupItem(uri string) (*RecentInfo, error) {
 	return _recentInfo, _goerr
 }
 
-func (m recentManager) MoveItem(uri string, newUri string) error {
+// MoveItem changes the location of a recently used resource from @uri to
+// @new_uri.
+//
+// Please note that this function will not affect the resource pointed by the
+// URIs, but only the URI used in the recently used resources list.
+func (m *RecentManagerClass) MoveItem(uri string, newUri string) error {
 	var _arg0 *C.GtkRecentManager // out
 	var _arg1 *C.gchar            // out
 	var _arg2 *C.gchar            // out
@@ -301,7 +336,8 @@ func (m recentManager) MoveItem(uri string, newUri string) error {
 	return _goerr
 }
 
-func (m recentManager) PurgeItems() (int, error) {
+// PurgeItems purges every item from the recently used resources list.
+func (m *RecentManagerClass) PurgeItems() (int, error) {
 	var _arg0 *C.GtkRecentManager // out
 	var _cret C.gint              // in
 	var _cerr *C.GError           // in
@@ -319,7 +355,9 @@ func (m recentManager) PurgeItems() (int, error) {
 	return _gint, _goerr
 }
 
-func (m recentManager) RemoveItem(uri string) error {
+// RemoveItem removes a resource pointed by @uri from the recently used
+// resources list handled by a recent manager.
+func (m *RecentManagerClass) RemoveItem(uri string) error {
 	var _arg0 *C.GtkRecentManager // out
 	var _arg1 *C.gchar            // out
 	var _cerr *C.GError           // in

@@ -6,7 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -29,168 +28,7 @@ func init() {
 // gestures, whenever the distance between both tracked sequences changes, the
 // GestureZoom::scale-changed signal is emitted to report the scale factor.
 type GestureZoom interface {
-	Gesture
-
-	// AsGesture casts the class to the Gesture interface.
-	AsGesture() Gesture
-
-	// GetBoundingBox: if there are touch sequences being currently handled by
-	// @gesture, this function returns true and fills in @rect with the bounding
-	// box containing all active touches. Otherwise, false will be returned.
-	//
-	// Note: This function will yield unexpected results on touchpad gestures.
-	// Since there is no correlation between physical and pixel distances, these
-	// will look as if constrained in an infinitely small area, @rect width and
-	// height will thus be 0 regardless of the number of touchpoints.
-	//
-	// This method is inherited from Gesture
-	GetBoundingBox() (gdk.Rectangle, bool)
-	// GetBoundingBoxCenter: if there are touch sequences being currently
-	// handled by @gesture, this function returns true and fills in @x and @y
-	// with the center of the bounding box containing all active touches.
-	// Otherwise, false will be returned.
-	//
-	// This method is inherited from Gesture
-	GetBoundingBoxCenter() (x float64, y float64, ok bool)
-	// GetDevice returns the master Device that is currently operating on
-	// @gesture, or nil if the gesture is not being interacted.
-	//
-	// This method is inherited from Gesture
-	GetDevice() gdk.Device
-	// GetLastUpdatedSequence returns the EventSequence that was last updated on
-	// @gesture.
-	//
-	// This method is inherited from Gesture
-	GetLastUpdatedSequence() *gdk.EventSequence
-	// GetPoint: if @sequence is currently being interpreted by @gesture, this
-	// function returns true and fills in @x and @y with the last coordinates
-	// stored for that event sequence. The coordinates are always relative to
-	// the widget allocation.
-	//
-	// This method is inherited from Gesture
-	GetPoint(sequence *gdk.EventSequence) (x float64, y float64, ok bool)
-	// GetSequenceState returns the @sequence state, as seen by @gesture.
-	//
-	// This method is inherited from Gesture
-	GetSequenceState(sequence *gdk.EventSequence) EventSequenceState
-	// GetWindow returns the user-defined window that receives the events
-	// handled by @gesture. See gtk_gesture_set_window() for more information.
-	//
-	// This method is inherited from Gesture
-	GetWindow() gdk.Window
-	// Group adds @gesture to the same group than @group_gesture. Gestures are
-	// by default isolated in their own groups.
-	//
-	// When gestures are grouped, the state of EventSequences is kept in sync
-	// for all of those, so calling gtk_gesture_set_sequence_state(), on one
-	// will transfer the same value to the others.
-	//
-	// Groups also perform an "implicit grabbing" of sequences, if a
-	// EventSequence state is set to K_EVENT_SEQUENCE_CLAIMED on one group,
-	// every other gesture group attached to the same Widget will switch the
-	// state for that sequence to K_EVENT_SEQUENCE_DENIED.
-	//
-	// This method is inherited from Gesture
-	Group(gesture Gesture)
-	// HandlesSequence returns true if @gesture is currently handling events
-	// corresponding to @sequence.
-	//
-	// This method is inherited from Gesture
-	HandlesSequence(sequence *gdk.EventSequence) bool
-	// IsActive returns true if the gesture is currently active. A gesture is
-	// active meanwhile there are touch sequences interacting with it.
-	//
-	// This method is inherited from Gesture
-	IsActive() bool
-	// IsGroupedWith returns true if both gestures pertain to the same group.
-	//
-	// This method is inherited from Gesture
-	IsGroupedWith(other Gesture) bool
-	// IsRecognized returns true if the gesture is currently recognized. A
-	// gesture is recognized if there are as many interacting touch sequences as
-	// required by @gesture, and Gesture::check returned true for the sequences
-	// being currently interpreted.
-	//
-	// This method is inherited from Gesture
-	IsRecognized() bool
-	// SetSequenceState sets the state of @sequence in @gesture. Sequences start
-	// in state K_EVENT_SEQUENCE_NONE, and whenever they change state, they can
-	// never go back to that state. Likewise, sequences in state
-	// K_EVENT_SEQUENCE_DENIED cannot turn back to a not denied state. With
-	// these rules, the lifetime of an event sequence is constrained to the next
-	// four:
-	//
-	// * None * None → Denied * None → Claimed * None → Claimed → Denied
-	//
-	// Note: Due to event handling ordering, it may be unsafe to set the state
-	// on another gesture within a Gesture::begin signal handler, as the
-	// callback might be executed before the other gesture knows about the
-	// sequence. A safe way to perform this could be:
-	//
-	//    static void
-	//    first_gesture_begin_cb (GtkGesture       *first_gesture,
-	//                            GdkEventSequence *sequence,
-	//                            gpointer          user_data)
-	//    {
-	//      gtk_gesture_set_sequence_state (first_gesture, sequence, GTK_EVENT_SEQUENCE_CLAIMED);
-	//      gtk_gesture_set_sequence_state (second_gesture, sequence, GTK_EVENT_SEQUENCE_DENIED);
-	//    }
-	//
-	//    static void
-	//    second_gesture_begin_cb (GtkGesture       *second_gesture,
-	//                             GdkEventSequence *sequence,
-	//                             gpointer          user_data)
-	//    {
-	//      if (gtk_gesture_get_sequence_state (first_gesture, sequence) == GTK_EVENT_SEQUENCE_CLAIMED)
-	//        gtk_gesture_set_sequence_state (second_gesture, sequence, GTK_EVENT_SEQUENCE_DENIED);
-	//    }
-	//
-	// If both gestures are in the same group, just set the state on the gesture
-	// emitting the event, the sequence will be already be initialized to the
-	// group's global state when the second gesture processes the event.
-	//
-	// This method is inherited from Gesture
-	SetSequenceState(sequence *gdk.EventSequence, state EventSequenceState) bool
-	// SetState sets the state of all sequences that @gesture is currently
-	// interacting with. See gtk_gesture_set_sequence_state() for more details
-	// on sequence states.
-	//
-	// This method is inherited from Gesture
-	SetState(state EventSequenceState) bool
-	// SetWindow sets a specific window to receive events about, so @gesture
-	// will effectively handle only events targeting @window, or a child of it.
-	// @window must pertain to gtk_event_controller_get_widget().
-	//
-	// This method is inherited from Gesture
-	SetWindow(window gdk.Window)
-	// Ungroup separates @gesture into an isolated group.
-	//
-	// This method is inherited from Gesture
-	Ungroup()
-	// GetPropagationPhase gets the propagation phase at which @controller
-	// handles events.
-	//
-	// This method is inherited from EventController
-	GetPropagationPhase() PropagationPhase
-	// GetWidget returns the Widget this controller relates to.
-	//
-	// This method is inherited from EventController
-	GetWidget() Widget
-	// Reset resets the @controller to a clean state. Every interaction the
-	// controller did through EventController::handle-event will be dropped at
-	// this point.
-	//
-	// This method is inherited from EventController
-	Reset()
-	// SetPropagationPhase sets the propagation phase at which a controller
-	// handles events.
-	//
-	// If @phase is GTK_PHASE_NONE, no automatic event handling will be
-	// performed, but other additional gesture maintenance will. In that phase,
-	// the events can be managed by calling gtk_event_controller_handle_event().
-	//
-	// This method is inherited from EventController
-	SetPropagationPhase(phase PropagationPhase)
+	gextras.Objector
 
 	// ScaleDelta: if @gesture is active, this function returns the zooming
 	// difference since the gesture was recognized (hence the starting point is
@@ -198,23 +36,27 @@ type GestureZoom interface {
 	ScaleDelta() float64
 }
 
-// gestureZoom implements the GestureZoom interface.
-type gestureZoom struct {
-	*externglib.Object
+// GestureZoomClass implements the GestureZoom interface.
+type GestureZoomClass struct {
+	GestureClass
 }
 
-var _ GestureZoom = (*gestureZoom)(nil)
+var _ GestureZoom = (*GestureZoomClass)(nil)
 
-// WrapGestureZoom wraps a GObject to a type that implements
-// interface GestureZoom. It is primarily used internally.
-func WrapGestureZoom(obj *externglib.Object) GestureZoom {
-	return gestureZoom{obj}
+func wrapGestureZoom(obj *externglib.Object) GestureZoom {
+	return &GestureZoomClass{
+		GestureClass: GestureClass{
+			EventControllerClass: EventControllerClass{
+				Object: obj,
+			},
+		},
+	}
 }
 
 func marshalGestureZoom(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapGestureZoom(obj), nil
+	return wrapGestureZoom(obj), nil
 }
 
 // NewGestureZoom returns a newly created Gesture that recognizes zoom in/out
@@ -234,91 +76,10 @@ func NewGestureZoom(widget Widget) GestureZoom {
 	return _gestureZoom
 }
 
-func (g gestureZoom) AsGesture() Gesture {
-	return WrapGesture(gextras.InternObject(g))
-}
-
-func (g gestureZoom) GetBoundingBox() (gdk.Rectangle, bool) {
-	return WrapGesture(gextras.InternObject(g)).GetBoundingBox()
-}
-
-func (g gestureZoom) GetBoundingBoxCenter() (x float64, y float64, ok bool) {
-	return WrapGesture(gextras.InternObject(g)).GetBoundingBoxCenter()
-}
-
-func (g gestureZoom) GetDevice() gdk.Device {
-	return WrapGesture(gextras.InternObject(g)).GetDevice()
-}
-
-func (g gestureZoom) GetLastUpdatedSequence() *gdk.EventSequence {
-	return WrapGesture(gextras.InternObject(g)).GetLastUpdatedSequence()
-}
-
-func (g gestureZoom) GetPoint(sequence *gdk.EventSequence) (x float64, y float64, ok bool) {
-	return WrapGesture(gextras.InternObject(g)).GetPoint(sequence)
-}
-
-func (g gestureZoom) GetSequenceState(sequence *gdk.EventSequence) EventSequenceState {
-	return WrapGesture(gextras.InternObject(g)).GetSequenceState(sequence)
-}
-
-func (g gestureZoom) GetWindow() gdk.Window {
-	return WrapGesture(gextras.InternObject(g)).GetWindow()
-}
-
-func (g gestureZoom) Group(gesture Gesture) {
-	WrapGesture(gextras.InternObject(g)).Group(gesture)
-}
-
-func (g gestureZoom) HandlesSequence(sequence *gdk.EventSequence) bool {
-	return WrapGesture(gextras.InternObject(g)).HandlesSequence(sequence)
-}
-
-func (g gestureZoom) IsActive() bool {
-	return WrapGesture(gextras.InternObject(g)).IsActive()
-}
-
-func (g gestureZoom) IsGroupedWith(other Gesture) bool {
-	return WrapGesture(gextras.InternObject(g)).IsGroupedWith(other)
-}
-
-func (g gestureZoom) IsRecognized() bool {
-	return WrapGesture(gextras.InternObject(g)).IsRecognized()
-}
-
-func (g gestureZoom) SetSequenceState(sequence *gdk.EventSequence, state EventSequenceState) bool {
-	return WrapGesture(gextras.InternObject(g)).SetSequenceState(sequence, state)
-}
-
-func (g gestureZoom) SetState(state EventSequenceState) bool {
-	return WrapGesture(gextras.InternObject(g)).SetState(state)
-}
-
-func (g gestureZoom) SetWindow(window gdk.Window) {
-	WrapGesture(gextras.InternObject(g)).SetWindow(window)
-}
-
-func (g gestureZoom) Ungroup() {
-	WrapGesture(gextras.InternObject(g)).Ungroup()
-}
-
-func (c gestureZoom) GetPropagationPhase() PropagationPhase {
-	return WrapEventController(gextras.InternObject(c)).GetPropagationPhase()
-}
-
-func (c gestureZoom) GetWidget() Widget {
-	return WrapEventController(gextras.InternObject(c)).GetWidget()
-}
-
-func (c gestureZoom) Reset() {
-	WrapEventController(gextras.InternObject(c)).Reset()
-}
-
-func (c gestureZoom) SetPropagationPhase(phase PropagationPhase) {
-	WrapEventController(gextras.InternObject(c)).SetPropagationPhase(phase)
-}
-
-func (g gestureZoom) ScaleDelta() float64 {
+// ScaleDelta: if @gesture is active, this function returns the zooming
+// difference since the gesture was recognized (hence the starting point is
+// considered 1:1). If @gesture is not active, 1 is returned.
+func (g *GestureZoomClass) ScaleDelta() float64 {
 	var _arg0 *C.GtkGestureZoom // out
 	var _cret C.gdouble         // in
 

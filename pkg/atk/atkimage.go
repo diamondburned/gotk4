@@ -5,6 +5,7 @@ package atk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -21,7 +22,7 @@ func init() {
 	})
 }
 
-// ImageOverrider contains methods that are overridable .
+// ImageOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
@@ -82,26 +83,27 @@ type Image interface {
 	SetImageDescription(description string) bool
 }
 
-// image implements the Image interface.
-type image struct {
+// ImageInterface implements the Image interface.
+type ImageInterface struct {
 	*externglib.Object
 }
 
-var _ Image = (*image)(nil)
+var _ Image = (*ImageInterface)(nil)
 
-// WrapImage wraps a GObject to a type that implements
-// interface Image. It is primarily used internally.
-func WrapImage(obj *externglib.Object) Image {
-	return image{obj}
+func wrapImage(obj *externglib.Object) Image {
+	return &ImageInterface{
+		Object: obj,
+	}
 }
 
 func marshalImage(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapImage(obj), nil
+	return wrapImage(obj), nil
 }
 
-func (i image) ImageDescription() string {
+// ImageDescription: get a textual description of this image.
+func (i *ImageInterface) ImageDescription() string {
 	var _arg0 *C.AtkImage // out
 	var _cret *C.gchar    // in
 
@@ -116,7 +118,8 @@ func (i image) ImageDescription() string {
 	return _utf8
 }
 
-func (i image) ImageLocale() string {
+// ImageLocale retrieves the locale identifier associated to the Image.
+func (i *ImageInterface) ImageLocale() string {
 	var _arg0 *C.AtkImage // out
 	var _cret *C.gchar    // in
 
@@ -131,7 +134,12 @@ func (i image) ImageLocale() string {
 	return _utf8
 }
 
-func (i image) ImagePosition(coordType CoordType) (x int, y int) {
+// ImagePosition gets the position of the image in the form of a point
+// specifying the images top-left corner.
+//
+// If the position can not be obtained (e.g. missing support), x and y are set
+// to -1.
+func (i *ImageInterface) ImagePosition(coordType CoordType) (x int, y int) {
 	var _arg0 *C.AtkImage    // out
 	var _arg1 C.gint         // in
 	var _arg2 C.gint         // in
@@ -151,7 +159,13 @@ func (i image) ImagePosition(coordType CoordType) (x int, y int) {
 	return _x, _y
 }
 
-func (i image) ImageSize() (width int, height int) {
+// ImageSize: get the width and height in pixels for the specified image. The
+// values of @width and @height are returned as -1 if the values cannot be
+// obtained (for instance, if the object is not onscreen).
+//
+// If the size can not be obtained (e.g. missing support), x and y are set to
+// -1.
+func (i *ImageInterface) ImageSize() (width int, height int) {
 	var _arg0 *C.AtkImage // out
 	var _arg1 C.gint      // in
 	var _arg2 C.gint      // in
@@ -169,7 +183,8 @@ func (i image) ImageSize() (width int, height int) {
 	return _width, _height
 }
 
-func (i image) SetImageDescription(description string) bool {
+// SetImageDescription sets the textual description for this image.
+func (i *ImageInterface) SetImageDescription(description string) bool {
 	var _arg0 *C.AtkImage // out
 	var _arg1 *C.gchar    // out
 	var _cret C.gboolean  // in

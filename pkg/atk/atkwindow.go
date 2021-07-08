@@ -5,7 +5,6 @@ package atk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -28,256 +27,28 @@ func init() {
 type Window interface {
 	gextras.Objector
 
-	// AsObject casts the class to the Object interface.
-	AsObject() Object
-
-	// AddRelationship adds a relationship of the specified type with the
-	// specified target.
-	//
-	// This method is inherited from Object
-	AddRelationship(relationship RelationType, target Object) bool
-	// GetAccessibleID gets the accessible id of the accessible.
-	//
-	// This method is inherited from Object
-	GetAccessibleID() string
-	// GetDescription gets the accessible description of the accessible.
-	//
-	// This method is inherited from Object
-	GetDescription() string
-	// GetIndexInParent gets the 0-based index of this accessible in its parent;
-	// returns -1 if the accessible does not have an accessible parent.
-	//
-	// This method is inherited from Object
-	GetIndexInParent() int
-	// GetLayer gets the layer of the accessible.
-	//
-	// Deprecated.
-	//
-	// This method is inherited from Object
-	GetLayer() Layer
-	// GetMDIZOrder gets the zorder of the accessible. The value G_MININT will
-	// be returned if the layer of the accessible is not ATK_LAYER_MDI.
-	//
-	// Deprecated.
-	//
-	// This method is inherited from Object
-	GetMDIZOrder() int
-	// GetNAccessibleChildren gets the number of accessible children of the
-	// accessible.
-	//
-	// This method is inherited from Object
-	GetNAccessibleChildren() int
-	// GetName gets the accessible name of the accessible.
-	//
-	// This method is inherited from Object
-	GetName() string
-	// GetObjectLocale gets a UTF-8 string indicating the POSIX-style
-	// LC_MESSAGES locale of @accessible.
-	//
-	// This method is inherited from Object
-	GetObjectLocale() string
-	// GetParent gets the accessible parent of the accessible. By default this
-	// is the one assigned with atk_object_set_parent(), but it is assumed that
-	// ATK implementors have ways to get the parent of the object without the
-	// need of assigning it manually with atk_object_set_parent(), and will
-	// return it with this method.
-	//
-	// If you are only interested on the parent assigned with
-	// atk_object_set_parent(), use atk_object_peek_parent().
-	//
-	// This method is inherited from Object
-	GetParent() Object
-	// GetRole gets the role of the accessible.
-	//
-	// This method is inherited from Object
-	GetRole() Role
-	// Initialize: this function is called when implementing subclasses of
-	// Object. It does initialization required for the new object. It is
-	// intended that this function should called only in the ..._new() functions
-	// used to create an instance of a subclass of Object
-	//
-	// This method is inherited from Object
-	Initialize(data interface{})
-	// PeekParent gets the accessible parent of the accessible, if it has been
-	// manually assigned with atk_object_set_parent. Otherwise, this function
-	// returns nil.
-	//
-	// This method is intended as an utility for ATK implementors, and not to be
-	// exposed to accessible tools. See atk_object_get_parent() for further
-	// reference.
-	//
-	// This method is inherited from Object
-	PeekParent() Object
-	// RefAccessibleChild gets a reference to the specified accessible child of
-	// the object. The accessible children are 0-based so the first accessible
-	// child is at index 0, the second at index 1 and so on.
-	//
-	// This method is inherited from Object
-	RefAccessibleChild(i int) Object
-	// RefRelationSet gets the RelationSet associated with the object.
-	//
-	// This method is inherited from Object
-	RefRelationSet() RelationSet
-	// RefStateSet gets a reference to the state set of the accessible; the
-	// caller must unreference it when it is no longer needed.
-	//
-	// This method is inherited from Object
-	RefStateSet() StateSet
-	// RemovePropertyChangeHandler removes a property change handler.
-	//
-	// Deprecated: since version 2.12.
-	//
-	// This method is inherited from Object
-	RemovePropertyChangeHandler(handlerId uint)
-	// RemoveRelationship removes a relationship of the specified type with the
-	// specified target.
-	//
-	// This method is inherited from Object
-	RemoveRelationship(relationship RelationType, target Object) bool
-	// SetAccessibleID sets the accessible ID of the accessible. This is not
-	// meant to be presented to the user, but to be an ID which is stable over
-	// application development. Typically, this is the gtkbuilder ID. Such an ID
-	// will be available for instance to identify a given well-known accessible
-	// object for tailored screen reading, or for automatic regression testing.
-	//
-	// This method is inherited from Object
-	SetAccessibleID(name string)
-	// SetDescription sets the accessible description of the accessible. You
-	// can't set the description to NULL. This is reserved for the initial
-	// value. In this aspect NULL is similar to ATK_ROLE_UNKNOWN. If you want to
-	// set the name to a empty value you can use "".
-	//
-	// This method is inherited from Object
-	SetDescription(description string)
-	// SetName sets the accessible name of the accessible. You can't set the
-	// name to NULL. This is reserved for the initial value. In this aspect NULL
-	// is similar to ATK_ROLE_UNKNOWN. If you want to set the name to a empty
-	// value you can use "".
-	//
-	// This method is inherited from Object
-	SetName(name string)
-	// SetParent sets the accessible parent of the accessible. @parent can be
-	// NULL.
-	//
-	// This method is inherited from Object
-	SetParent(parent Object)
-	// SetRole sets the role of the accessible.
-	//
-	// This method is inherited from Object
-	SetRole(role Role)
+	privateWindowInterface()
 }
 
-// window implements the Window interface.
-type window struct {
-	*externglib.Object
+// WindowInterface implements the Window interface.
+type WindowInterface struct {
+	ObjectClass
 }
 
-var _ Window = (*window)(nil)
+var _ Window = (*WindowInterface)(nil)
 
-// WrapWindow wraps a GObject to a type that implements
-// interface Window. It is primarily used internally.
-func WrapWindow(obj *externglib.Object) Window {
-	return window{obj}
+func wrapWindow(obj *externglib.Object) Window {
+	return &WindowInterface{
+		ObjectClass: ObjectClass{
+			Object: obj,
+		},
+	}
 }
 
 func marshalWindow(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapWindow(obj), nil
+	return wrapWindow(obj), nil
 }
 
-func (w window) AsObject() Object {
-	return WrapObject(gextras.InternObject(w))
-}
-
-func (o window) AddRelationship(relationship RelationType, target Object) bool {
-	return WrapObject(gextras.InternObject(o)).AddRelationship(relationship, target)
-}
-
-func (a window) GetAccessibleID() string {
-	return WrapObject(gextras.InternObject(a)).GetAccessibleID()
-}
-
-func (a window) GetDescription() string {
-	return WrapObject(gextras.InternObject(a)).GetDescription()
-}
-
-func (a window) GetIndexInParent() int {
-	return WrapObject(gextras.InternObject(a)).GetIndexInParent()
-}
-
-func (a window) GetLayer() Layer {
-	return WrapObject(gextras.InternObject(a)).GetLayer()
-}
-
-func (a window) GetMDIZOrder() int {
-	return WrapObject(gextras.InternObject(a)).GetMDIZOrder()
-}
-
-func (a window) GetNAccessibleChildren() int {
-	return WrapObject(gextras.InternObject(a)).GetNAccessibleChildren()
-}
-
-func (a window) GetName() string {
-	return WrapObject(gextras.InternObject(a)).GetName()
-}
-
-func (a window) GetObjectLocale() string {
-	return WrapObject(gextras.InternObject(a)).GetObjectLocale()
-}
-
-func (a window) GetParent() Object {
-	return WrapObject(gextras.InternObject(a)).GetParent()
-}
-
-func (a window) GetRole() Role {
-	return WrapObject(gextras.InternObject(a)).GetRole()
-}
-
-func (a window) Initialize(data interface{}) {
-	WrapObject(gextras.InternObject(a)).Initialize(data)
-}
-
-func (a window) PeekParent() Object {
-	return WrapObject(gextras.InternObject(a)).PeekParent()
-}
-
-func (a window) RefAccessibleChild(i int) Object {
-	return WrapObject(gextras.InternObject(a)).RefAccessibleChild(i)
-}
-
-func (a window) RefRelationSet() RelationSet {
-	return WrapObject(gextras.InternObject(a)).RefRelationSet()
-}
-
-func (a window) RefStateSet() StateSet {
-	return WrapObject(gextras.InternObject(a)).RefStateSet()
-}
-
-func (a window) RemovePropertyChangeHandler(handlerId uint) {
-	WrapObject(gextras.InternObject(a)).RemovePropertyChangeHandler(handlerId)
-}
-
-func (o window) RemoveRelationship(relationship RelationType, target Object) bool {
-	return WrapObject(gextras.InternObject(o)).RemoveRelationship(relationship, target)
-}
-
-func (a window) SetAccessibleID(name string) {
-	WrapObject(gextras.InternObject(a)).SetAccessibleID(name)
-}
-
-func (a window) SetDescription(description string) {
-	WrapObject(gextras.InternObject(a)).SetDescription(description)
-}
-
-func (a window) SetName(name string) {
-	WrapObject(gextras.InternObject(a)).SetName(name)
-}
-
-func (a window) SetParent(parent Object) {
-	WrapObject(gextras.InternObject(a)).SetParent(parent)
-}
-
-func (a window) SetRole(role Role) {
-	WrapObject(gextras.InternObject(a)).SetRole(role)
-}
+func (*WindowInterface) privateWindowInterface() {}

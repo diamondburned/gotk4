@@ -189,37 +189,6 @@ func (p *Point) InitFromVec2(src *Vec2) *Point {
 	return _point
 }
 
-// Interpolate: linearly interpolates the coordinates of @a and @b using the
-// given @factor.
-func (a *Point) Interpolate(b *Point, factor float64) Point {
-	var _arg0 *C.graphene_point_t // out
-	var _arg1 *C.graphene_point_t // out
-	var _arg2 C.double            // out
-	var _arg3 C.graphene_point_t  // in
-
-	_arg0 = (*C.graphene_point_t)(unsafe.Pointer(a))
-	_arg1 = (*C.graphene_point_t)(unsafe.Pointer(b))
-	_arg2 = C.double(factor)
-
-	C.graphene_point_interpolate(_arg0, _arg1, _arg2, &_arg3)
-
-	var _res Point // out
-
-	{
-		var refTmpIn *C.graphene_point_t
-		var refTmpOut *Point
-
-		in0 := &_arg3
-		refTmpIn = in0
-
-		refTmpOut = (*Point)(unsafe.Pointer(refTmpIn))
-
-		_res = *refTmpOut
-	}
-
-	return _res
-}
-
 // Near checks whether the two points @a and @b are within the threshold of
 // @epsilon.
 func (a *Point) Near(b *Point, epsilon float32) bool {
@@ -241,31 +210,4 @@ func (a *Point) Near(b *Point, epsilon float32) bool {
 	}
 
 	return _ok
-}
-
-// ToVec2 stores the coordinates of the given #graphene_point_t into a
-// #graphene_vec2_t.
-func (p *Point) ToVec2() Vec2 {
-	var _arg0 *C.graphene_point_t // out
-	var _arg1 C.graphene_vec2_t   // in
-
-	_arg0 = (*C.graphene_point_t)(unsafe.Pointer(p))
-
-	C.graphene_point_to_vec2(_arg0, &_arg1)
-
-	var _v Vec2 // out
-
-	{
-		var refTmpIn *C.graphene_vec2_t
-		var refTmpOut *Vec2
-
-		in0 := &_arg1
-		refTmpIn = in0
-
-		refTmpOut = (*Vec2)(unsafe.Pointer(refTmpIn))
-
-		_v = *refTmpOut
-	}
-
-	return _v
 }

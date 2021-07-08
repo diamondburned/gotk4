@@ -3,11 +3,8 @@
 package gtk
 
 import (
-	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
-	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
@@ -52,7 +49,7 @@ func marshalApplicationInhibitFlags(p uintptr) (interface{}, error) {
 	return ApplicationInhibitFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// ApplicationOverrider contains methods that are overridable .
+// ApplicationOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
@@ -139,877 +136,7 @@ type ApplicationOverrider interface {
 // Getting Started with GTK+: Basics
 // (https://developer.gnome.org/gtk3/stable/gtk-getting-started.html#id-1.2.3.3)
 type Application interface {
-	gio.Application
-
-	// AsApplication casts the class to the gio.Application interface.
-	AsApplication() gio.Application
-	// AsActionGroup casts the class to the gio.ActionGroup interface.
-	AsActionGroup() gio.ActionGroup
-
-	// Activate activates the application.
-	//
-	// In essence, this results in the #GApplication::activate signal being
-	// emitted in the primary instance.
-	//
-	// The application must be registered before calling this function.
-	//
-	// This method is inherited from gio.Application
-	Activate()
-	// AddMainOption: add an option to be handled by @application.
-	//
-	// Calling this function is the equivalent of calling
-	// g_application_add_main_option_entries() with a single Entry that has its
-	// arg_data member set to nil.
-	//
-	// The parsed arguments will be packed into a Dict which is passed to
-	// #GApplication::handle-local-options. If
-	// G_APPLICATION_HANDLES_COMMAND_LINE is set, then it will also be sent to
-	// the primary instance. See g_application_add_main_option_entries() for
-	// more details.
-	//
-	// See Entry for more documentation of the arguments.
-	//
-	// This method is inherited from gio.Application
-	AddMainOption(longName string, shortName byte, flags glib.OptionFlags, arg glib.OptionArg, description string, argDescription string)
-	// AddMainOptionEntries adds main option entries to be handled by
-	// @application.
-	//
-	// This function is comparable to g_option_context_add_main_entries().
-	//
-	// After the commandline arguments are parsed, the
-	// #GApplication::handle-local-options signal will be emitted. At this
-	// point, the application can inspect the values pointed to by @arg_data in
-	// the given Entrys.
-	//
-	// Unlike Context, #GApplication supports giving a nil @arg_data for a
-	// non-callback Entry. This results in the argument in question being packed
-	// into a Dict which is also passed to #GApplication::handle-local-options,
-	// where it can be inspected and modified. If
-	// G_APPLICATION_HANDLES_COMMAND_LINE is set, then the resulting dictionary
-	// is sent to the primary instance, where
-	// g_application_command_line_get_options_dict() will return it. This
-	// "packing" is done according to the type of the argument -- booleans for
-	// normal flags, strings for strings, bytestrings for filenames, etc. The
-	// packing only occurs if the flag is given (ie: we do not pack a "false"
-	// #GVariant in the case that a flag is missing).
-	//
-	// In general, it is recommended that all commandline arguments are parsed
-	// locally. The options dictionary should then be used to transmit the
-	// result of the parsing to the primary instance, where
-	// g_variant_dict_lookup() can be used. For local options, it is possible to
-	// either use @arg_data in the usual way, or to consult (and potentially
-	// remove) the option from the options dictionary.
-	//
-	// This function is new in GLib 2.40. Before then, the only real choice was
-	// to send all of the commandline arguments (options and all) to the primary
-	// instance for handling. #GApplication ignored them completely on the local
-	// side. Calling this function "opts in" to the new behaviour, and in
-	// particular, means that unrecognised options will be treated as errors.
-	// Unrecognised options have never been ignored when
-	// G_APPLICATION_HANDLES_COMMAND_LINE is unset.
-	//
-	// If #GApplication::handle-local-options needs to see the list of
-	// filenames, then the use of G_OPTION_REMAINING is recommended. If
-	// @arg_data is nil then G_OPTION_REMAINING can be used as a key into the
-	// options dictionary. If you do use G_OPTION_REMAINING then you need to
-	// handle these arguments for yourself because once they are consumed, they
-	// will no longer be visible to the default handling (which treats them as
-	// filenames to be opened).
-	//
-	// It is important to use the proper GVariant format when retrieving the
-	// options with g_variant_dict_lookup(): - for G_OPTION_ARG_NONE, use `b` -
-	// for G_OPTION_ARG_STRING, use `&s` - for G_OPTION_ARG_INT, use `i` - for
-	// G_OPTION_ARG_INT64, use `x` - for G_OPTION_ARG_DOUBLE, use `d` - for
-	// G_OPTION_ARG_FILENAME, use `^&ay` - for G_OPTION_ARG_STRING_ARRAY, use
-	// `^a&s` - for G_OPTION_ARG_FILENAME_ARRAY, use `^a&ay`
-	//
-	// This method is inherited from gio.Application
-	AddMainOptionEntries(entries []glib.OptionEntry)
-	// AddOptionGroup adds a Group to the commandline handling of @application.
-	//
-	// This function is comparable to g_option_context_add_group().
-	//
-	// Unlike g_application_add_main_option_entries(), this function does not
-	// deal with nil @arg_data and never transmits options to the primary
-	// instance.
-	//
-	// The reason for that is because, by the time the options arrive at the
-	// primary instance, it is typically too late to do anything with them.
-	// Taking the GTK option group as an example: GTK will already have been
-	// initialised by the time the #GApplication::command-line handler runs. In
-	// the case that this is not the first-running instance of the application,
-	// the existing instance may already have been running for a very long time.
-	//
-	// This means that the options from Group are only really usable in the case
-	// that the instance of the application being run is the first instance.
-	// Passing options like `--display=` or `--gdk-debug=` on future runs will
-	// have no effect on the existing primary instance.
-	//
-	// Calling this function will cause the options in the supplied option group
-	// to be parsed, but it does not cause you to be "opted in" to the new
-	// functionality whereby unrecognised options are rejected even if
-	// G_APPLICATION_HANDLES_COMMAND_LINE was given.
-	//
-	// This method is inherited from gio.Application
-	AddOptionGroup(group *glib.OptionGroup)
-	// BindBusyProperty marks @application as busy (see
-	// g_application_mark_busy()) while @property on @object is true.
-	//
-	// The binding holds a reference to @application while it is active, but not
-	// to @object. Instead, the binding is destroyed when @object is finalized.
-	//
-	// This method is inherited from gio.Application
-	BindBusyProperty(object gextras.Objector, property string)
-	// GetApplicationID gets the unique identifier for @application.
-	//
-	// This method is inherited from gio.Application
-	GetApplicationID() string
-	// GetDBusConnection gets the BusConnection being used by the application,
-	// or nil.
-	//
-	// If #GApplication is using its D-Bus backend then this function will
-	// return the BusConnection being used for uniqueness and communication with
-	// the desktop environment and other instances of the application.
-	//
-	// If #GApplication is not using D-Bus then this function will return nil.
-	// This includes the situation where the D-Bus backend would normally be in
-	// use but we were unable to connect to the bus.
-	//
-	// This function must not be called before the application has been
-	// registered. See g_application_get_is_registered().
-	//
-	// This method is inherited from gio.Application
-	GetDBusConnection() gio.DBusConnection
-	// GetDBusObjectPath gets the D-Bus object path being used by the
-	// application, or nil.
-	//
-	// If #GApplication is using its D-Bus backend then this function will
-	// return the D-Bus object path that #GApplication is using. If the
-	// application is the primary instance then there is an object published at
-	// this path. If the application is not the primary instance then the result
-	// of this function is undefined.
-	//
-	// If #GApplication is not using D-Bus then this function will return nil.
-	// This includes the situation where the D-Bus backend would normally be in
-	// use but we were unable to connect to the bus.
-	//
-	// This function must not be called before the application has been
-	// registered. See g_application_get_is_registered().
-	//
-	// This method is inherited from gio.Application
-	GetDBusObjectPath() string
-	// GetFlags gets the flags for @application.
-	//
-	// See Flags.
-	//
-	// This method is inherited from gio.Application
-	GetFlags() gio.ApplicationFlags
-	// GetInactivityTimeout gets the current inactivity timeout for the
-	// application.
-	//
-	// This is the amount of time (in milliseconds) after the last call to
-	// g_application_release() before the application stops running.
-	//
-	// This method is inherited from gio.Application
-	GetInactivityTimeout() uint
-	// GetIsBusy gets the application's current busy state, as set through
-	// g_application_mark_busy() or g_application_bind_busy_property().
-	//
-	// This method is inherited from gio.Application
-	GetIsBusy() bool
-	// GetIsRegistered checks if @application is registered.
-	//
-	// An application is registered if g_application_register() has been
-	// successfully called.
-	//
-	// This method is inherited from gio.Application
-	GetIsRegistered() bool
-	// GetIsRemote checks if @application is remote.
-	//
-	// If @application is remote then it means that another instance of
-	// application already exists (the 'primary' instance). Calls to perform
-	// actions on @application will result in the actions being performed by the
-	// primary instance.
-	//
-	// The value of this property cannot be accessed before
-	// g_application_register() has been called. See
-	// g_application_get_is_registered().
-	//
-	// This method is inherited from gio.Application
-	GetIsRemote() bool
-	// GetResourceBasePath gets the resource base path of @application.
-	//
-	// See g_application_set_resource_base_path() for more information.
-	//
-	// This method is inherited from gio.Application
-	GetResourceBasePath() string
-	// Hold increases the use count of @application.
-	//
-	// Use this function to indicate that the application has a reason to
-	// continue to run. For example, g_application_hold() is called by GTK+ when
-	// a toplevel window is on the screen.
-	//
-	// To cancel the hold, call g_application_release().
-	//
-	// This method is inherited from gio.Application
-	Hold()
-	// MarkBusy increases the busy count of @application.
-	//
-	// Use this function to indicate that the application is busy, for instance
-	// while a long running operation is pending.
-	//
-	// The busy state will be exposed to other processes, so a session shell
-	// will use that information to indicate the state to the user (e.g. with a
-	// spinner).
-	//
-	// To cancel the busy indication, use g_application_unmark_busy().
-	//
-	// This method is inherited from gio.Application
-	MarkBusy()
-	// Quit: immediately quits the application.
-	//
-	// Upon return to the mainloop, g_application_run() will return, calling
-	// only the 'shutdown' function before doing so.
-	//
-	// The hold count is ignored. Take care if your code has called
-	// g_application_hold() on the application and is therefore still expecting
-	// it to exist. (Note that you may have called g_application_hold()
-	// indirectly, for example through gtk_application_add_window().)
-	//
-	// The result of calling g_application_run() again after it returns is
-	// unspecified.
-	//
-	// This method is inherited from gio.Application
-	Quit()
-	// Register attempts registration of the application.
-	//
-	// This is the point at which the application discovers if it is the primary
-	// instance or merely acting as a remote for an already-existing primary
-	// instance. This is implemented by attempting to acquire the application
-	// identifier as a unique bus name on the session bus using GDBus.
-	//
-	// If there is no application ID or if G_APPLICATION_NON_UNIQUE was given,
-	// then this process will always become the primary instance.
-	//
-	// Due to the internal architecture of GDBus, method calls can be dispatched
-	// at any time (even if a main loop is not running). For this reason, you
-	// must ensure that any object paths that you wish to register are
-	// registered before calling this function.
-	//
-	// If the application has already been registered then true is returned with
-	// no work performed.
-	//
-	// The #GApplication::startup signal is emitted if registration succeeds and
-	// @application is the primary instance (including the non-unique case).
-	//
-	// In the event of an error (such as @cancellable being cancelled, or a
-	// failure to connect to the session bus), false is returned and @error is
-	// set appropriately.
-	//
-	// Note: the return value of this function is not an indicator that this
-	// instance is or is not the primary instance of the application. See
-	// g_application_get_is_remote() for that.
-	//
-	// This method is inherited from gio.Application
-	Register(cancellable gio.Cancellable) error
-	// Release: decrease the use count of @application.
-	//
-	// When the use count reaches zero, the application will stop running.
-	//
-	// Never call this function except to cancel the effect of a previous call
-	// to g_application_hold().
-	//
-	// This method is inherited from gio.Application
-	Release()
-	// Run runs the application.
-	//
-	// This function is intended to be run from main() and its return value is
-	// intended to be returned by main(). Although you are expected to pass the
-	// @argc, @argv parameters from main() to this function, it is possible to
-	// pass nil if @argv is not available or commandline handling is not
-	// required. Note that on Windows, @argc and @argv are ignored, and
-	// g_win32_get_command_line() is called internally (for proper support of
-	// Unicode commandline arguments).
-	//
-	// #GApplication will attempt to parse the commandline arguments. You can
-	// add commandline flags to the list of recognised options by way of
-	// g_application_add_main_option_entries(). After this, the
-	// #GApplication::handle-local-options signal is emitted, from which the
-	// application can inspect the values of its Entrys.
-	//
-	// #GApplication::handle-local-options is a good place to handle options
-	// such as `--version`, where an immediate reply from the local process is
-	// desired (instead of communicating with an already-running instance). A
-	// #GApplication::handle-local-options handler can stop further processing
-	// by returning a non-negative value, which then becomes the exit status of
-	// the process.
-	//
-	// What happens next depends on the flags: if
-	// G_APPLICATION_HANDLES_COMMAND_LINE was specified then the remaining
-	// commandline arguments are sent to the primary instance, where a
-	// #GApplication::command-line signal is emitted. Otherwise, the remaining
-	// commandline arguments are assumed to be a list of files. If there are no
-	// files listed, the application is activated via the
-	// #GApplication::activate signal. If there are one or more files, and
-	// G_APPLICATION_HANDLES_OPEN was specified then the files are opened via
-	// the #GApplication::open signal.
-	//
-	// If you are interested in doing more complicated local handling of the
-	// commandline then you should implement your own #GApplication subclass and
-	// override local_command_line(). In this case, you most likely want to
-	// return true from your local_command_line() implementation to suppress the
-	// default handling. See
-	// [gapplication-example-cmdline2.c][gapplication-example-cmdline2] for an
-	// example.
-	//
-	// If, after the above is done, the use count of the application is zero
-	// then the exit status is returned immediately. If the use count is
-	// non-zero then the default main context is iterated until the use count
-	// falls to zero, at which point 0 is returned.
-	//
-	// If the G_APPLICATION_IS_SERVICE flag is set, then the service will run
-	// for as much as 10 seconds with a use count of zero while waiting for the
-	// message that caused the activation to arrive. After that, if the use
-	// count falls to zero the application will exit immediately, except in the
-	// case that g_application_set_inactivity_timeout() is in use.
-	//
-	// This function sets the prgname (g_set_prgname()), if not already set, to
-	// the basename of argv[0].
-	//
-	// Much like g_main_loop_run(), this function will acquire the main context
-	// for the duration that the application is running.
-	//
-	// Since 2.40, applications that are not explicitly flagged as services or
-	// launchers (ie: neither G_APPLICATION_IS_SERVICE or
-	// G_APPLICATION_IS_LAUNCHER are given as flags) will check (from the
-	// default handler for local_command_line) if "--gapplication-service" was
-	// given in the command line. If this flag is present then normal
-	// commandline processing is interrupted and the G_APPLICATION_IS_SERVICE
-	// flag is set. This provides a "compromise" solution whereby running an
-	// application directly from the commandline will invoke it in the normal
-	// way (which can be useful for debugging) while still allowing applications
-	// to be D-Bus activated in service mode. The D-Bus service file should
-	// invoke the executable with "--gapplication-service" as the sole
-	// commandline argument. This approach is suitable for use by most graphical
-	// applications but should not be used from applications like editors that
-	// need precise control over when processes invoked via the commandline will
-	// exit and what their exit status will be.
-	//
-	// This method is inherited from gio.Application
-	Run(argv []string) int
-	// SendNotification sends a notification on behalf of @application to the
-	// desktop shell. There is no guarantee that the notification is displayed
-	// immediately, or even at all.
-	//
-	// Notifications may persist after the application exits. It will be
-	// D-Bus-activated when the notification or one of its actions is activated.
-	//
-	// Modifying @notification after this call has no effect. However, the
-	// object can be reused for a later call to this function.
-	//
-	// @id may be any string that uniquely identifies the event for the
-	// application. It does not need to be in any special format. For example,
-	// "new-message" might be appropriate for a notification about new messages.
-	//
-	// If a previous notification was sent with the same @id, it will be
-	// replaced with @notification and shown again as if it was a new
-	// notification. This works even for notifications sent from a previous
-	// execution of the application, as long as @id is the same string.
-	//
-	// @id may be nil, but it is impossible to replace or withdraw notifications
-	// without an id.
-	//
-	// If @notification is no longer relevant, it can be withdrawn with
-	// g_application_withdraw_notification().
-	//
-	// This method is inherited from gio.Application
-	SendNotification(id string, notification gio.Notification)
-	// SetActionGroup: this used to be how actions were associated with a
-	// #GApplication. Now there is Map for that.
-	//
-	// Deprecated: since version 2.32.
-	//
-	// This method is inherited from gio.Application
-	SetActionGroup(actionGroup gio.ActionGroup)
-	// SetApplicationID sets the unique identifier for @application.
-	//
-	// The application id can only be modified if @application has not yet been
-	// registered.
-	//
-	// If non-nil, the application id must be valid. See
-	// g_application_id_is_valid().
-	//
-	// This method is inherited from gio.Application
-	SetApplicationID(applicationId string)
-	// SetDefault sets or unsets the default application for the process, as
-	// returned by g_application_get_default().
-	//
-	// This function does not take its own reference on @application. If
-	// @application is destroyed then the default application will revert back
-	// to nil.
-	//
-	// This method is inherited from gio.Application
-	SetDefault()
-	// SetFlags sets the flags for @application.
-	//
-	// The flags can only be modified if @application has not yet been
-	// registered.
-	//
-	// See Flags.
-	//
-	// This method is inherited from gio.Application
-	SetFlags(flags gio.ApplicationFlags)
-	// SetInactivityTimeout sets the current inactivity timeout for the
-	// application.
-	//
-	// This is the amount of time (in milliseconds) after the last call to
-	// g_application_release() before the application stops running.
-	//
-	// This call has no side effects of its own. The value set here is only used
-	// for next time g_application_release() drops the use count to zero. Any
-	// timeouts currently in progress are not impacted.
-	//
-	// This method is inherited from gio.Application
-	SetInactivityTimeout(inactivityTimeout uint)
-	// SetOptionContextDescription adds a description to the @application option
-	// context.
-	//
-	// See g_option_context_set_description() for more information.
-	//
-	// This method is inherited from gio.Application
-	SetOptionContextDescription(description string)
-	// SetOptionContextParameterString sets the parameter string to be used by
-	// the commandline handling of @application.
-	//
-	// This function registers the argument to be passed to
-	// g_option_context_new() when the internal Context of @application is
-	// created.
-	//
-	// See g_option_context_new() for more information about @parameter_string.
-	//
-	// This method is inherited from gio.Application
-	SetOptionContextParameterString(parameterString string)
-	// SetOptionContextSummary adds a summary to the @application option
-	// context.
-	//
-	// See g_option_context_set_summary() for more information.
-	//
-	// This method is inherited from gio.Application
-	SetOptionContextSummary(summary string)
-	// SetResourceBasePath sets (or unsets) the base resource path of
-	// @application.
-	//
-	// The path is used to automatically load various [application
-	// resources][gresource] such as menu layouts and action descriptions. The
-	// various types of resources will be found at fixed names relative to the
-	// given base path.
-	//
-	// By default, the resource base path is determined from the application ID
-	// by prefixing '/' and replacing each '.' with '/'. This is done at the
-	// time that the #GApplication object is constructed. Changes to the
-	// application ID after that point will not have an impact on the resource
-	// base path.
-	//
-	// As an example, if the application has an ID of "org.example.app" then the
-	// default resource base path will be "/org/example/app". If this is a
-	// Application (and you have not manually changed the path) then Gtk will
-	// then search for the menus of the application at
-	// "/org/example/app/gtk/menus.ui".
-	//
-	// See #GResource for more information about adding resources to your
-	// application.
-	//
-	// You can disable automatic resource loading functionality by setting the
-	// path to nil.
-	//
-	// Changing the resource base path once the application is running is not
-	// recommended. The point at which the resource path is consulted for
-	// forming paths for various purposes is unspecified. When writing a
-	// sub-class of #GApplication you should either set the
-	// #GApplication:resource-base-path property at construction time, or call
-	// this function during the instance initialization. Alternatively, you can
-	// call this function in the Class.startup virtual function, before chaining
-	// up to the parent implementation.
-	//
-	// This method is inherited from gio.Application
-	SetResourceBasePath(resourcePath string)
-	// UnbindBusyProperty destroys a binding between @property and the busy
-	// state of @application that was previously created with
-	// g_application_bind_busy_property().
-	//
-	// This method is inherited from gio.Application
-	UnbindBusyProperty(object gextras.Objector, property string)
-	// UnmarkBusy decreases the busy count of @application.
-	//
-	// When the busy count reaches zero, the new state will be propagated to
-	// other processes.
-	//
-	// This function must only be called to cancel the effect of a previous call
-	// to g_application_mark_busy().
-	//
-	// This method is inherited from gio.Application
-	UnmarkBusy()
-	// WithdrawNotification withdraws a notification that was sent with
-	// g_application_send_notification().
-	//
-	// This call does nothing if a notification with @id doesn't exist or the
-	// notification was never sent.
-	//
-	// This function works even for notifications sent in previous executions of
-	// this application, as long @id is the same as it was for the sent
-	// notification.
-	//
-	// Note that notifications are dismissed when the user clicks on one of the
-	// buttons in a notification or triggers its default action, so there is no
-	// need to explicitly withdraw the notification in that case.
-	//
-	// This method is inherited from gio.Application
-	WithdrawNotification(id string)
-	// AddAction adds an action object to the action group. Note that this
-	// function does not set up the accel path of the action, which can lead to
-	// problems if a user tries to modify the accelerator of a menuitem
-	// associated with the action. Therefore you must either set the accel path
-	// yourself with gtk_action_set_accel_path(), or use
-	// `gtk_action_group_add_action_with_accel (..., NULL)`.
-	//
-	// Deprecated: since version 3.10.
-	//
-	// This method is inherited from ActionGroup
-	AddAction(action Action)
-	// AddActionWithAccel adds an action object to the action group and sets up
-	// the accelerator.
-	//
-	// If @accelerator is nil, attempts to use the accelerator associated with
-	// the stock_id of the action.
-	//
-	// Accel paths are set to `<Actions>/group-name/action-name`.
-	//
-	// Deprecated: since version 3.10.
-	//
-	// This method is inherited from ActionGroup
-	AddActionWithAccel(action Action, accelerator string)
-	// GetAccelGroup gets the accelerator group.
-	//
-	// Deprecated: since version 3.10.
-	//
-	// This method is inherited from ActionGroup
-	GetAccelGroup() AccelGroup
-	// GetAction looks up an action in the action group by name.
-	//
-	// Deprecated: since version 3.10.
-	//
-	// This method is inherited from ActionGroup
-	GetAction(actionName string) Action
-	// GetName gets the name of the action group.
-	//
-	// Deprecated: since version 3.10.
-	//
-	// This method is inherited from ActionGroup
-	GetName() string
-	// GetSensitive returns true if the group is sensitive. The constituent
-	// actions can only be logically sensitive (see gtk_action_is_sensitive())
-	// if they are sensitive (see gtk_action_get_sensitive()) and their group is
-	// sensitive.
-	//
-	// Deprecated: since version 3.10.
-	//
-	// This method is inherited from ActionGroup
-	GetSensitive() bool
-	// GetVisible returns true if the group is visible. The constituent actions
-	// can only be logically visible (see gtk_action_is_visible()) if they are
-	// visible (see gtk_action_get_visible()) and their group is visible.
-	//
-	// Deprecated: since version 3.10.
-	//
-	// This method is inherited from ActionGroup
-	GetVisible() bool
-	// RemoveAction removes an action object from the action group.
-	//
-	// Deprecated: since version 3.10.
-	//
-	// This method is inherited from ActionGroup
-	RemoveAction(action Action)
-	// SetAccelGroup sets the accelerator group to be used by every action in
-	// this group.
-	//
-	// Deprecated: since version 3.10.
-	//
-	// This method is inherited from ActionGroup
-	SetAccelGroup(accelGroup AccelGroup)
-	// SetSensitive changes the sensitivity of @action_group
-	//
-	// Deprecated: since version 3.10.
-	//
-	// This method is inherited from ActionGroup
-	SetSensitive(sensitive bool)
-	// SetTranslationDomain sets the translation domain and uses g_dgettext()
-	// for translating the @label and @tooltip of ActionEntrys added by
-	// gtk_action_group_add_actions().
-	//
-	// If you’re not using gettext() for localization, see
-	// gtk_action_group_set_translate_func().
-	//
-	// Deprecated: since version 3.10.
-	//
-	// This method is inherited from ActionGroup
-	SetTranslationDomain(domain string)
-	// SetVisible changes the visible of @action_group.
-	//
-	// Deprecated: since version 3.10.
-	//
-	// This method is inherited from ActionGroup
-	SetVisible(visible bool)
-	// TranslateString translates a string using the function set with
-	// gtk_action_group_set_translate_func(). This is mainly intended for
-	// language bindings.
-	//
-	// Deprecated: since version 3.10.
-	//
-	// This method is inherited from ActionGroup
-	TranslateString(_string string) string
-	// AddChild adds a child to @buildable. @type is an optional string
-	// describing how the child should be added.
-	//
-	// This method is inherited from Buildable
-	AddChild(builder Builder, child gextras.Objector, typ string)
-	// ConstructChild constructs a child of @buildable with the name @name.
-	//
-	// Builder calls this function if a “constructor” has been specified in the
-	// UI definition.
-	//
-	// This method is inherited from Buildable
-	ConstructChild(builder Builder, name string) gextras.Objector
-	// CustomFinished: this is similar to gtk_buildable_parser_finished() but is
-	// called once for each custom tag handled by the @buildable.
-	//
-	// This method is inherited from Buildable
-	CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{})
-	// CustomTagEnd: this is called at the end of each custom element handled by
-	// the buildable.
-	//
-	// This method is inherited from Buildable
-	CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data interface{})
-	// CustomTagStart: this is called for each unknown element under <child>.
-	//
-	// This method is inherited from Buildable
-	CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool)
-	// GetInternalChild: get the internal child called @childname of the
-	// @buildable object.
-	//
-	// This method is inherited from Buildable
-	GetInternalChild(builder Builder, childname string) gextras.Objector
-	// GetName gets the name of the @buildable object.
-	//
-	// Builder sets the name based on the [GtkBuilder UI definition][BUILDER-UI]
-	// used to construct the @buildable.
-	//
-	// This method is inherited from Buildable
-	GetName() string
-	// ParserFinished: called when the builder finishes the parsing of a
-	// [GtkBuilder UI definition][BUILDER-UI]. Note that this will be called
-	// once for each time gtk_builder_add_from_file() or
-	// gtk_builder_add_from_string() is called on a builder.
-	//
-	// This method is inherited from Buildable
-	ParserFinished(builder Builder)
-	// SetBuildableProperty sets the property name @name to @value on the
-	// @buildable object.
-	//
-	// This method is inherited from Buildable
-	SetBuildableProperty(builder Builder, name string, value externglib.Value)
-	// SetName sets the name of the @buildable object.
-	//
-	// This method is inherited from Buildable
-	SetName(name string)
-	// ActionAdded emits the Group::action-added signal on @action_group.
-	//
-	// This function should only be called by Group implementations.
-	//
-	// This method is inherited from gio.ActionGroup
-	ActionAdded(actionName string)
-	// ActionEnabledChanged emits the Group::action-enabled-changed signal on
-	// @action_group.
-	//
-	// This function should only be called by Group implementations.
-	//
-	// This method is inherited from gio.ActionGroup
-	ActionEnabledChanged(actionName string, enabled bool)
-	// ActionRemoved emits the Group::action-removed signal on @action_group.
-	//
-	// This function should only be called by Group implementations.
-	//
-	// This method is inherited from gio.ActionGroup
-	ActionRemoved(actionName string)
-	// ActionStateChanged emits the Group::action-state-changed signal on
-	// @action_group.
-	//
-	// This function should only be called by Group implementations.
-	//
-	// This method is inherited from gio.ActionGroup
-	ActionStateChanged(actionName string, state *glib.Variant)
-	// ActivateAction: activate the named action within @action_group.
-	//
-	// If the action is expecting a parameter, then the correct type of
-	// parameter must be given as @parameter. If the action is expecting no
-	// parameters then @parameter must be nil. See
-	// g_action_group_get_action_parameter_type().
-	//
-	// If the Group implementation supports asynchronous remote activation over
-	// D-Bus, this call may return before the relevant D-Bus traffic has been
-	// sent, or any replies have been received. In order to block on such
-	// asynchronous activation calls, g_dbus_connection_flush() should be called
-	// prior to the code, which depends on the result of the action activation.
-	// Without flushing the D-Bus connection, there is no guarantee that the
-	// action would have been activated.
-	//
-	// The following code which runs in a remote app instance, shows an example
-	// of a "quit" action being activated on the primary app instance over
-	// D-Bus. Here g_dbus_connection_flush() is called before `exit()`. Without
-	// g_dbus_connection_flush(), the "quit" action may fail to be activated on
-	// the primary instance.
-	//
-	//    // call "quit" action on primary instance
-	//    g_action_group_activate_action (G_ACTION_GROUP (app), "quit", NULL);
-	//
-	//    // make sure the action is activated now
-	//    g_dbus_connection_flush (...);
-	//
-	//    g_debug ("application has been terminated. exiting.");
-	//
-	//    exit (0);
-	//
-	// This method is inherited from gio.ActionGroup
-	ActivateAction(actionName string, parameter *glib.Variant)
-	// ChangeActionState: request for the state of the named action within
-	// @action_group to be changed to @value.
-	//
-	// The action must be stateful and @value must be of the correct type. See
-	// g_action_group_get_action_state_type().
-	//
-	// This call merely requests a change. The action may refuse to change its
-	// state or may change its state to something other than @value. See
-	// g_action_group_get_action_state_hint().
-	//
-	// If the @value GVariant is floating, it is consumed.
-	//
-	// This method is inherited from gio.ActionGroup
-	ChangeActionState(actionName string, value *glib.Variant)
-	// GetActionEnabled checks if the named action within @action_group is
-	// currently enabled.
-	//
-	// An action must be enabled in order to be activated or in order to have
-	// its state changed from outside callers.
-	//
-	// This method is inherited from gio.ActionGroup
-	GetActionEnabled(actionName string) bool
-	// GetActionParameterType queries the type of the parameter that must be
-	// given when activating the named action within @action_group.
-	//
-	// When activating the action using g_action_group_activate_action(), the
-	// #GVariant given to that function must be of the type returned by this
-	// function.
-	//
-	// In the case that this function returns nil, you must not give any
-	// #GVariant, but nil instead.
-	//
-	// The parameter type of a particular action will never change but it is
-	// possible for an action to be removed and for a new action to be added
-	// with the same name but a different parameter type.
-	//
-	// This method is inherited from gio.ActionGroup
-	GetActionParameterType(actionName string) *glib.VariantType
-	// GetActionState queries the current state of the named action within
-	// @action_group.
-	//
-	// If the action is not stateful then nil will be returned. If the action is
-	// stateful then the type of the return value is the type given by
-	// g_action_group_get_action_state_type().
-	//
-	// The return value (if non-nil) should be freed with g_variant_unref() when
-	// it is no longer required.
-	//
-	// This method is inherited from gio.ActionGroup
-	GetActionState(actionName string) *glib.Variant
-	// GetActionStateHint requests a hint about the valid range of values for
-	// the state of the named action within @action_group.
-	//
-	// If nil is returned it either means that the action is not stateful or
-	// that there is no hint about the valid range of values for the state of
-	// the action.
-	//
-	// If a #GVariant array is returned then each item in the array is a
-	// possible value for the state. If a #GVariant pair (ie: two-tuple) is
-	// returned then the tuple specifies the inclusive lower and upper bound of
-	// valid values for the state.
-	//
-	// In any case, the information is merely a hint. It may be possible to have
-	// a state value outside of the hinted range and setting a value within the
-	// range may fail.
-	//
-	// The return value (if non-nil) should be freed with g_variant_unref() when
-	// it is no longer required.
-	//
-	// This method is inherited from gio.ActionGroup
-	GetActionStateHint(actionName string) *glib.Variant
-	// GetActionStateType queries the type of the state of the named action
-	// within @action_group.
-	//
-	// If the action is stateful then this function returns the Type of the
-	// state. All calls to g_action_group_change_action_state() must give a
-	// #GVariant of this type and g_action_group_get_action_state() will return
-	// a #GVariant of the same type.
-	//
-	// If the action is not stateful then this function will return nil. In that
-	// case, g_action_group_get_action_state() will return nil and you must not
-	// call g_action_group_change_action_state().
-	//
-	// The state type of a particular action will never change but it is
-	// possible for an action to be removed and for a new action to be added
-	// with the same name but a different state type.
-	//
-	// This method is inherited from gio.ActionGroup
-	GetActionStateType(actionName string) *glib.VariantType
-	// HasAction checks if the named action exists within @action_group.
-	//
-	// This method is inherited from gio.ActionGroup
-	HasAction(actionName string) bool
-	// ListActions lists the actions contained within @action_group.
-	//
-	// The caller is responsible for freeing the list with g_strfreev() when it
-	// is no longer required.
-	//
-	// This method is inherited from gio.ActionGroup
-	ListActions() []string
-	// QueryAction queries all aspects of the named action within an
-	// @action_group.
-	//
-	// This function acquires the information available from
-	// g_action_group_has_action(), g_action_group_get_action_enabled(),
-	// g_action_group_get_action_parameter_type(),
-	// g_action_group_get_action_state_type(),
-	// g_action_group_get_action_state_hint() and
-	// g_action_group_get_action_state() with a single function call.
-	//
-	// This provides two main benefits.
-	//
-	// The first is the improvement in efficiency that comes with not having to
-	// perform repeated lookups of the action in order to discover different
-	// things about it. The second is that implementing Group can now be done by
-	// only overriding this one virtual function.
-	//
-	// The interface provides a default implementation of this function that
-	// calls the individual functions, as required, to fetch the information.
-	// The interface also provides default implementations of those functions
-	// that call this function. All implementations, therefore, must override
-	// either this function or all of the others.
-	//
-	// If the action exists, true is returned and any of the requested fields
-	// (as indicated by having a non-nil reference passed in) are filled. If the
-	// action doesn't exist, false is returned and the fields may or may not
-	// have been modified.
-	//
-	// This method is inherited from gio.ActionGroup
-	QueryAction(actionName string) (enabled bool, parameterType *glib.VariantType, stateType *glib.VariantType, stateHint *glib.Variant, state *glib.Variant, ok bool)
+	gextras.Objector
 
 	// AddAccelerator installs an accelerator that will cause the named action
 	// to be activated when the key combination specificed by @accelerator is
@@ -1213,23 +340,37 @@ type Application interface {
 	Uninhibit(cookie uint)
 }
 
-// application implements the Application interface.
-type application struct {
+// ApplicationClass implements the Application interface.
+type ApplicationClass struct {
 	*externglib.Object
+	gio.ApplicationClass
+	gio.ActionGroupInterface
 }
 
-var _ Application = (*application)(nil)
+var _ Application = (*ApplicationClass)(nil)
 
-// WrapApplication wraps a GObject to a type that implements
-// interface Application. It is primarily used internally.
-func WrapApplication(obj *externglib.Object) Application {
-	return application{obj}
+func wrapApplication(obj *externglib.Object) Application {
+	return &ApplicationClass{
+		Object: obj,
+		ApplicationClass: gio.ApplicationClass{
+			Object: obj,
+			ActionGroupClass: ActionGroupClass{
+				Object: obj,
+				BuildableInterface: BuildableInterface{
+					Object: obj,
+				},
+			},
+		},
+		ActionGroupInterface: gio.ActionGroupInterface{
+			Object: obj,
+		},
+	}
 }
 
 func marshalApplication(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapApplication(obj), nil
+	return wrapApplication(obj), nil
 }
 
 // NewApplication creates a new Application instance.
@@ -1272,295 +413,23 @@ func NewApplication(applicationId string, flags gio.ApplicationFlags) Applicatio
 	return _application
 }
 
-func (a application) AsApplication() gio.Application {
-	return gio.WrapApplication(gextras.InternObject(a))
-}
-
-func (a application) AsActionGroup() gio.ActionGroup {
-	return gio.WrapActionGroup(gextras.InternObject(a))
-}
-
-func (a application) Activate() {
-	gio.WrapApplication(gextras.InternObject(a)).Activate()
-}
-
-func (a application) AddMainOption(longName string, shortName byte, flags glib.OptionFlags, arg glib.OptionArg, description string, argDescription string) {
-	gio.WrapApplication(gextras.InternObject(a)).AddMainOption(longName, shortName, flags, arg, description, argDescription)
-}
-
-func (a application) AddMainOptionEntries(entries []glib.OptionEntry) {
-	gio.WrapApplication(gextras.InternObject(a)).AddMainOptionEntries(entries)
-}
-
-func (a application) AddOptionGroup(group *glib.OptionGroup) {
-	gio.WrapApplication(gextras.InternObject(a)).AddOptionGroup(group)
-}
-
-func (a application) BindBusyProperty(object gextras.Objector, property string) {
-	gio.WrapApplication(gextras.InternObject(a)).BindBusyProperty(object, property)
-}
-
-func (a application) GetApplicationID() string {
-	return gio.WrapApplication(gextras.InternObject(a)).GetApplicationID()
-}
-
-func (a application) GetDBusConnection() gio.DBusConnection {
-	return gio.WrapApplication(gextras.InternObject(a)).GetDBusConnection()
-}
-
-func (a application) GetDBusObjectPath() string {
-	return gio.WrapApplication(gextras.InternObject(a)).GetDBusObjectPath()
-}
-
-func (a application) GetFlags() gio.ApplicationFlags {
-	return gio.WrapApplication(gextras.InternObject(a)).GetFlags()
-}
-
-func (a application) GetInactivityTimeout() uint {
-	return gio.WrapApplication(gextras.InternObject(a)).GetInactivityTimeout()
-}
-
-func (a application) GetIsBusy() bool {
-	return gio.WrapApplication(gextras.InternObject(a)).GetIsBusy()
-}
-
-func (a application) GetIsRegistered() bool {
-	return gio.WrapApplication(gextras.InternObject(a)).GetIsRegistered()
-}
-
-func (a application) GetIsRemote() bool {
-	return gio.WrapApplication(gextras.InternObject(a)).GetIsRemote()
-}
-
-func (a application) GetResourceBasePath() string {
-	return gio.WrapApplication(gextras.InternObject(a)).GetResourceBasePath()
-}
-
-func (a application) Hold() {
-	gio.WrapApplication(gextras.InternObject(a)).Hold()
-}
-
-func (a application) MarkBusy() {
-	gio.WrapApplication(gextras.InternObject(a)).MarkBusy()
-}
-
-func (a application) Quit() {
-	gio.WrapApplication(gextras.InternObject(a)).Quit()
-}
-
-func (a application) Register(cancellable gio.Cancellable) error {
-	return gio.WrapApplication(gextras.InternObject(a)).Register(cancellable)
-}
-
-func (a application) Release() {
-	gio.WrapApplication(gextras.InternObject(a)).Release()
-}
-
-func (a application) Run(argv []string) int {
-	return gio.WrapApplication(gextras.InternObject(a)).Run(argv)
-}
-
-func (a application) SendNotification(id string, notification gio.Notification) {
-	gio.WrapApplication(gextras.InternObject(a)).SendNotification(id, notification)
-}
-
-func (a application) SetActionGroup(actionGroup gio.ActionGroup) {
-	gio.WrapApplication(gextras.InternObject(a)).SetActionGroup(actionGroup)
-}
-
-func (a application) SetApplicationID(applicationId string) {
-	gio.WrapApplication(gextras.InternObject(a)).SetApplicationID(applicationId)
-}
-
-func (a application) SetDefault() {
-	gio.WrapApplication(gextras.InternObject(a)).SetDefault()
-}
-
-func (a application) SetFlags(flags gio.ApplicationFlags) {
-	gio.WrapApplication(gextras.InternObject(a)).SetFlags(flags)
-}
-
-func (a application) SetInactivityTimeout(inactivityTimeout uint) {
-	gio.WrapApplication(gextras.InternObject(a)).SetInactivityTimeout(inactivityTimeout)
-}
-
-func (a application) SetOptionContextDescription(description string) {
-	gio.WrapApplication(gextras.InternObject(a)).SetOptionContextDescription(description)
-}
-
-func (a application) SetOptionContextParameterString(parameterString string) {
-	gio.WrapApplication(gextras.InternObject(a)).SetOptionContextParameterString(parameterString)
-}
-
-func (a application) SetOptionContextSummary(summary string) {
-	gio.WrapApplication(gextras.InternObject(a)).SetOptionContextSummary(summary)
-}
-
-func (a application) SetResourceBasePath(resourcePath string) {
-	gio.WrapApplication(gextras.InternObject(a)).SetResourceBasePath(resourcePath)
-}
-
-func (a application) UnbindBusyProperty(object gextras.Objector, property string) {
-	gio.WrapApplication(gextras.InternObject(a)).UnbindBusyProperty(object, property)
-}
-
-func (a application) UnmarkBusy() {
-	gio.WrapApplication(gextras.InternObject(a)).UnmarkBusy()
-}
-
-func (a application) WithdrawNotification(id string) {
-	gio.WrapApplication(gextras.InternObject(a)).WithdrawNotification(id)
-}
-
-func (a application) AddAction(action Action) {
-	WrapActionGroup(gextras.InternObject(a)).AddAction(action)
-}
-
-func (a application) AddActionWithAccel(action Action, accelerator string) {
-	WrapActionGroup(gextras.InternObject(a)).AddActionWithAccel(action, accelerator)
-}
-
-func (a application) GetAccelGroup() AccelGroup {
-	return WrapActionGroup(gextras.InternObject(a)).GetAccelGroup()
-}
-
-func (a application) GetAction(actionName string) Action {
-	return WrapActionGroup(gextras.InternObject(a)).GetAction(actionName)
-}
-
-func (a application) GetName() string {
-	return WrapActionGroup(gextras.InternObject(a)).GetName()
-}
-
-func (a application) GetSensitive() bool {
-	return WrapActionGroup(gextras.InternObject(a)).GetSensitive()
-}
-
-func (a application) GetVisible() bool {
-	return WrapActionGroup(gextras.InternObject(a)).GetVisible()
-}
-
-func (a application) RemoveAction(action Action) {
-	WrapActionGroup(gextras.InternObject(a)).RemoveAction(action)
-}
-
-func (a application) SetAccelGroup(accelGroup AccelGroup) {
-	WrapActionGroup(gextras.InternObject(a)).SetAccelGroup(accelGroup)
-}
-
-func (a application) SetSensitive(sensitive bool) {
-	WrapActionGroup(gextras.InternObject(a)).SetSensitive(sensitive)
-}
-
-func (a application) SetTranslationDomain(domain string) {
-	WrapActionGroup(gextras.InternObject(a)).SetTranslationDomain(domain)
-}
-
-func (a application) SetVisible(visible bool) {
-	WrapActionGroup(gextras.InternObject(a)).SetVisible(visible)
-}
-
-func (a application) TranslateString(_string string) string {
-	return WrapActionGroup(gextras.InternObject(a)).TranslateString(_string)
-}
-
-func (b application) AddChild(builder Builder, child gextras.Objector, typ string) {
-	WrapBuildable(gextras.InternObject(b)).AddChild(builder, child, typ)
-}
-
-func (b application) ConstructChild(builder Builder, name string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).ConstructChild(builder, name)
-}
-
-func (b application) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomFinished(builder, child, tagname, data)
-}
-
-func (b application) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	WrapBuildable(gextras.InternObject(b)).CustomTagEnd(builder, child, tagname, data)
-}
-
-func (b application) CustomTagStart(builder Builder, child gextras.Objector, tagname string) (glib.MarkupParser, interface{}, bool) {
-	return WrapBuildable(gextras.InternObject(b)).CustomTagStart(builder, child, tagname)
-}
-
-func (b application) GetInternalChild(builder Builder, childname string) gextras.Objector {
-	return WrapBuildable(gextras.InternObject(b)).GetInternalChild(builder, childname)
-}
-
-func (b application) GetName() string {
-	return WrapBuildable(gextras.InternObject(b)).GetName()
-}
-
-func (b application) ParserFinished(builder Builder) {
-	WrapBuildable(gextras.InternObject(b)).ParserFinished(builder)
-}
-
-func (b application) SetBuildableProperty(builder Builder, name string, value externglib.Value) {
-	WrapBuildable(gextras.InternObject(b)).SetBuildableProperty(builder, name, value)
-}
-
-func (b application) SetName(name string) {
-	WrapBuildable(gextras.InternObject(b)).SetName(name)
-}
-
-func (a application) ActionAdded(actionName string) {
-	gio.WrapActionGroup(gextras.InternObject(a)).ActionAdded(actionName)
-}
-
-func (a application) ActionEnabledChanged(actionName string, enabled bool) {
-	gio.WrapActionGroup(gextras.InternObject(a)).ActionEnabledChanged(actionName, enabled)
-}
-
-func (a application) ActionRemoved(actionName string) {
-	gio.WrapActionGroup(gextras.InternObject(a)).ActionRemoved(actionName)
-}
-
-func (a application) ActionStateChanged(actionName string, state *glib.Variant) {
-	gio.WrapActionGroup(gextras.InternObject(a)).ActionStateChanged(actionName, state)
-}
-
-func (a application) ActivateAction(actionName string, parameter *glib.Variant) {
-	gio.WrapActionGroup(gextras.InternObject(a)).ActivateAction(actionName, parameter)
-}
-
-func (a application) ChangeActionState(actionName string, value *glib.Variant) {
-	gio.WrapActionGroup(gextras.InternObject(a)).ChangeActionState(actionName, value)
-}
-
-func (a application) GetActionEnabled(actionName string) bool {
-	return gio.WrapActionGroup(gextras.InternObject(a)).GetActionEnabled(actionName)
-}
-
-func (a application) GetActionParameterType(actionName string) *glib.VariantType {
-	return gio.WrapActionGroup(gextras.InternObject(a)).GetActionParameterType(actionName)
-}
-
-func (a application) GetActionState(actionName string) *glib.Variant {
-	return gio.WrapActionGroup(gextras.InternObject(a)).GetActionState(actionName)
-}
-
-func (a application) GetActionStateHint(actionName string) *glib.Variant {
-	return gio.WrapActionGroup(gextras.InternObject(a)).GetActionStateHint(actionName)
-}
-
-func (a application) GetActionStateType(actionName string) *glib.VariantType {
-	return gio.WrapActionGroup(gextras.InternObject(a)).GetActionStateType(actionName)
-}
-
-func (a application) HasAction(actionName string) bool {
-	return gio.WrapActionGroup(gextras.InternObject(a)).HasAction(actionName)
-}
-
-func (a application) ListActions() []string {
-	return gio.WrapActionGroup(gextras.InternObject(a)).ListActions()
-}
-
-func (a application) QueryAction(actionName string) (enabled bool, parameterType *glib.VariantType, stateType *glib.VariantType, stateHint *glib.Variant, state *glib.Variant, ok bool) {
-	return gio.WrapActionGroup(gextras.InternObject(a)).QueryAction(actionName)
-}
-
-func (a application) AddAccelerator(accelerator string, actionName string, parameter *glib.Variant) {
+// AddAccelerator installs an accelerator that will cause the named action to be
+// activated when the key combination specificed by @accelerator is pressed.
+//
+// @accelerator must be a string that can be parsed by gtk_accelerator_parse(),
+// e.g. "<Primary>q" or “<Control><Alt>p”.
+//
+// @action_name must be the name of an action as it would be used in the app
+// menu, i.e. actions that have been added to the application are referred to
+// with an “app.” prefix, and window-specific actions with a “win.” prefix.
+//
+// GtkApplication also extracts accelerators out of “accel” attributes in the
+// Models passed to gtk_application_set_app_menu() and
+// gtk_application_set_menubar(), which is usually more convenient than calling
+// this function for each accelerator.
+//
+// Deprecated: since version 3.14.
+func (a *ApplicationClass) AddAccelerator(accelerator string, actionName string, parameter *glib.Variant) {
 	var _arg0 *C.GtkApplication // out
 	var _arg1 *C.gchar          // out
 	var _arg2 *C.gchar          // out
@@ -1576,7 +445,21 @@ func (a application) AddAccelerator(accelerator string, actionName string, param
 	C.gtk_application_add_accelerator(_arg0, _arg1, _arg2, _arg3)
 }
 
-func (a application) AddWindow(window Window) {
+// AddWindow adds a window to @application.
+//
+// This call can only happen after the @application has started; typically, you
+// should add new application windows in response to the emission of the
+// #GApplication::activate signal.
+//
+// This call is equivalent to setting the Window:application property of @window
+// to @application.
+//
+// Normally, the connection between the application and the window will remain
+// until the window is destroyed, but you can explicitly remove it with
+// gtk_application_remove_window().
+//
+// GTK+ will keep the @application running as long as it has any windows.
+func (a *ApplicationClass) AddWindow(window Window) {
 	var _arg0 *C.GtkApplication // out
 	var _arg1 *C.GtkWindow      // out
 
@@ -1586,7 +469,9 @@ func (a application) AddWindow(window Window) {
 	C.gtk_application_add_window(_arg0, _arg1)
 }
 
-func (a application) AccelsForAction(detailedActionName string) []string {
+// AccelsForAction gets the accelerators that are currently associated with the
+// given action.
+func (a *ApplicationClass) AccelsForAction(detailedActionName string) []string {
 	var _arg0 *C.GtkApplication // out
 	var _arg1 *C.gchar          // out
 	var _cret **C.gchar
@@ -1617,7 +502,21 @@ func (a application) AccelsForAction(detailedActionName string) []string {
 	return _utf8s
 }
 
-func (a application) ActionsForAccel(accel string) []string {
+// ActionsForAccel returns the list of actions (possibly empty) that @accel maps
+// to. Each item in the list is a detailed action name in the usual form.
+//
+// This might be useful to discover if an accel already exists in order to
+// prevent installation of a conflicting accelerator (from an accelerator editor
+// or a plugin system, for example). Note that having more than one action per
+// accelerator may not be a bad thing and might make sense in cases where the
+// actions never appear in the same context.
+//
+// In case there are no actions for a given accelerator, an empty array is
+// returned. nil is never returned.
+//
+// It is a programmer error to pass an invalid accelerator string. If you are
+// unsure, check it with gtk_accelerator_parse() first.
+func (a *ApplicationClass) ActionsForAccel(accel string) []string {
 	var _arg0 *C.GtkApplication // out
 	var _arg1 *C.gchar          // out
 	var _cret **C.gchar
@@ -1648,7 +547,13 @@ func (a application) ActionsForAccel(accel string) []string {
 	return _utf8s
 }
 
-func (a application) ActiveWindow() Window {
+// ActiveWindow gets the “active” window for the application.
+//
+// The active window is the one that was most recently focused (within the
+// application). This window may not have the focus at the moment if another
+// application has it — this is just the most recently-focused window within
+// this application.
+func (a *ApplicationClass) ActiveWindow() Window {
 	var _arg0 *C.GtkApplication // out
 	var _cret *C.GtkWindow      // in
 
@@ -1663,7 +568,9 @@ func (a application) ActiveWindow() Window {
 	return _window
 }
 
-func (a application) AppMenu() gio.MenuModel {
+// AppMenu returns the menu model that has been set with
+// gtk_application_set_app_menu().
+func (a *ApplicationClass) AppMenu() gio.MenuModel {
 	var _arg0 *C.GtkApplication // out
 	var _cret *C.GMenuModel     // in
 
@@ -1678,7 +585,9 @@ func (a application) AppMenu() gio.MenuModel {
 	return _menuModel
 }
 
-func (a application) MenuByID(id string) gio.Menu {
+// MenuByID gets a menu from automatically loaded resources. See [Automatic
+// resources][automatic-resources] for more information.
+func (a *ApplicationClass) MenuByID(id string) gio.Menu {
 	var _arg0 *C.GtkApplication // out
 	var _arg1 *C.gchar          // out
 	var _cret *C.GMenu          // in
@@ -1696,7 +605,9 @@ func (a application) MenuByID(id string) gio.Menu {
 	return _menu
 }
 
-func (a application) Menubar() gio.MenuModel {
+// Menubar returns the menu model that has been set with
+// gtk_application_set_menubar().
+func (a *ApplicationClass) Menubar() gio.MenuModel {
 	var _arg0 *C.GtkApplication // out
 	var _cret *C.GMenuModel     // in
 
@@ -1711,7 +622,11 @@ func (a application) Menubar() gio.MenuModel {
 	return _menuModel
 }
 
-func (a application) WindowByID(id uint) Window {
+// WindowByID returns the ApplicationWindow with the given ID.
+//
+// The ID of a ApplicationWindow can be retrieved with
+// gtk_application_window_get_id().
+func (a *ApplicationClass) WindowByID(id uint) Window {
 	var _arg0 *C.GtkApplication // out
 	var _arg1 C.guint           // out
 	var _cret *C.GtkWindow      // in
@@ -1728,7 +643,27 @@ func (a application) WindowByID(id uint) Window {
 	return _window
 }
 
-func (a application) Inhibit(window Window, flags ApplicationInhibitFlags, reason string) uint {
+// Inhibit: inform the session manager that certain types of actions should be
+// inhibited. This is not guaranteed to work on all platforms and for all types
+// of actions.
+//
+// Applications should invoke this method when they begin an operation that
+// should not be interrupted, such as creating a CD or DVD. The types of actions
+// that may be blocked are specified by the @flags parameter. When the
+// application completes the operation it should call
+// gtk_application_uninhibit() to remove the inhibitor. Note that an application
+// can have multiple inhibitors, and all of them must be individually removed.
+// Inhibitors are also cleared when the application exits.
+//
+// Applications should not expect that they will always be able to block the
+// action. In most cases, users will be given the option to force the action to
+// take place.
+//
+// Reasons should be short and to the point.
+//
+// If @window is given, the session manager may point the user to this window to
+// find out more about why the action is inhibited.
+func (a *ApplicationClass) Inhibit(window Window, flags ApplicationInhibitFlags, reason string) uint {
 	var _arg0 *C.GtkApplication            // out
 	var _arg1 *C.GtkWindow                 // out
 	var _arg2 C.GtkApplicationInhibitFlags // out
@@ -1750,7 +685,12 @@ func (a application) Inhibit(window Window, flags ApplicationInhibitFlags, reaso
 	return _guint
 }
 
-func (a application) IsInhibited(flags ApplicationInhibitFlags) bool {
+// IsInhibited determines if any of the actions specified in @flags are
+// currently inhibited (possibly by another application).
+//
+// Note that this information may not be available (for example when the
+// application is running in a sandbox).
+func (a *ApplicationClass) IsInhibited(flags ApplicationInhibitFlags) bool {
 	var _arg0 *C.GtkApplication            // out
 	var _arg1 C.GtkApplicationInhibitFlags // out
 	var _cret C.gboolean                   // in
@@ -1769,7 +709,9 @@ func (a application) IsInhibited(flags ApplicationInhibitFlags) bool {
 	return _ok
 }
 
-func (a application) ListActionDescriptions() []string {
+// ListActionDescriptions lists the detailed action names which have associated
+// accelerators. See gtk_application_set_accels_for_action().
+func (a *ApplicationClass) ListActionDescriptions() []string {
 	var _arg0 *C.GtkApplication // out
 	var _cret **C.gchar
 
@@ -1797,7 +739,37 @@ func (a application) ListActionDescriptions() []string {
 	return _utf8s
 }
 
-func (a application) PrefersAppMenu() bool {
+// PrefersAppMenu determines if the desktop environment in which the application
+// is running would prefer an application menu be shown.
+//
+// If this function returns true then the application should call
+// gtk_application_set_app_menu() with the contents of an application menu,
+// which will be shown by the desktop environment. If it returns false then you
+// should consider using an alternate approach, such as a menubar.
+//
+// The value returned by this function is purely advisory and you are free to
+// ignore it. If you call gtk_application_set_app_menu() even if the desktop
+// environment doesn't support app menus, then a fallback will be provided.
+//
+// Applications are similarly free not to set an app menu even if the desktop
+// environment wants to show one. In that case, a fallback will also be created
+// by the desktop environment (GNOME, for example, uses a menu with only a
+// "Quit" item in it).
+//
+// The value returned by this function never changes. Once it returns a
+// particular value, it is guaranteed to always return the same value.
+//
+// You may only call this function after the application has been registered and
+// after the base startup handler has run. You're most likely to want to use
+// this from your own startup handler. It may also make sense to consult this
+// function while constructing UI (in activate, open or an action activation
+// handler) in order to determine if you should show a gear menu or not.
+//
+// This function will return false on Mac OS and a default app menu will be
+// created automatically with the "usual" contents of that menu typical to most
+// Mac OS applications. If you call gtk_application_set_app_menu() anyway, then
+// this menu will be replaced with your own.
+func (a *ApplicationClass) PrefersAppMenu() bool {
 	var _arg0 *C.GtkApplication // out
 	var _cret C.gboolean        // in
 
@@ -1814,7 +786,11 @@ func (a application) PrefersAppMenu() bool {
 	return _ok
 }
 
-func (a application) RemoveAccelerator(actionName string, parameter *glib.Variant) {
+// RemoveAccelerator removes an accelerator that has been previously added with
+// gtk_application_add_accelerator().
+//
+// Deprecated: since version 3.14.
+func (a *ApplicationClass) RemoveAccelerator(actionName string, parameter *glib.Variant) {
 	var _arg0 *C.GtkApplication // out
 	var _arg1 *C.gchar          // out
 	var _arg2 *C.GVariant       // out
@@ -1827,7 +803,13 @@ func (a application) RemoveAccelerator(actionName string, parameter *glib.Varian
 	C.gtk_application_remove_accelerator(_arg0, _arg1, _arg2)
 }
 
-func (a application) RemoveWindow(window Window) {
+// RemoveWindow: remove a window from @application.
+//
+// If @window belongs to @application then this call is equivalent to setting
+// the Window:application property of @window to nil.
+//
+// The application may stop running as a result of a call to this function.
+func (a *ApplicationClass) RemoveWindow(window Window) {
 	var _arg0 *C.GtkApplication // out
 	var _arg1 *C.GtkWindow      // out
 
@@ -1837,7 +819,16 @@ func (a application) RemoveWindow(window Window) {
 	C.gtk_application_remove_window(_arg0, _arg1)
 }
 
-func (a application) SetAccelsForAction(detailedActionName string, accels []string) {
+// SetAccelsForAction sets zero or more keyboard accelerators that will trigger
+// the given action. The first item in @accels will be the primary accelerator,
+// which may be displayed in the UI.
+//
+// To remove all accelerators for an action, use an empty, zero-terminated array
+// for @accels.
+//
+// For the @detailed_action_name, see g_action_parse_detailed_name() and
+// g_action_print_detailed_name().
+func (a *ApplicationClass) SetAccelsForAction(detailedActionName string, accels []string) {
 	var _arg0 *C.GtkApplication // out
 	var _arg1 *C.gchar          // out
 	var _arg2 **C.gchar
@@ -1858,7 +849,22 @@ func (a application) SetAccelsForAction(detailedActionName string, accels []stri
 	C.gtk_application_set_accels_for_action(_arg0, _arg1, _arg2)
 }
 
-func (a application) SetAppMenu(appMenu gio.MenuModel) {
+// SetAppMenu sets or unsets the application menu for @application.
+//
+// This can only be done in the primary instance of the application, after it
+// has been registered. #GApplication::startup is a good place to call this.
+//
+// The application menu is a single menu containing items that typically impact
+// the application as a whole, rather than acting on a specific window or
+// document. For example, you would expect to see “Preferences” or “Quit” in an
+// application menu, but not “Save” or “Print”.
+//
+// If supported, the application menu will be rendered by the desktop
+// environment.
+//
+// Use the base Map interface to add actions, to respond to the user selecting
+// these menu items.
+func (a *ApplicationClass) SetAppMenu(appMenu gio.MenuModel) {
 	var _arg0 *C.GtkApplication // out
 	var _arg1 *C.GMenuModel     // out
 
@@ -1868,7 +874,24 @@ func (a application) SetAppMenu(appMenu gio.MenuModel) {
 	C.gtk_application_set_app_menu(_arg0, _arg1)
 }
 
-func (a application) SetMenubar(menubar gio.MenuModel) {
+// SetMenubar sets or unsets the menubar for windows of @application.
+//
+// This is a menubar in the traditional sense.
+//
+// This can only be done in the primary instance of the application, after it
+// has been registered. #GApplication::startup is a good place to call this.
+//
+// Depending on the desktop environment, this may appear at the top of each
+// window, or at the top of the screen. In some environments, if both the
+// application menu and the menubar are set, the application menu will be
+// presented as if it were the first item of the menubar. Other environments
+// treat the two as completely separate — for example, the application menu may
+// be rendered by the desktop shell while the menubar (if set) remains in each
+// individual window.
+//
+// Use the base Map interface to add actions, to respond to the user selecting
+// these menu items.
+func (a *ApplicationClass) SetMenubar(menubar gio.MenuModel) {
 	var _arg0 *C.GtkApplication // out
 	var _arg1 *C.GMenuModel     // out
 
@@ -1878,7 +901,10 @@ func (a application) SetMenubar(menubar gio.MenuModel) {
 	C.gtk_application_set_menubar(_arg0, _arg1)
 }
 
-func (a application) Uninhibit(cookie uint) {
+// Uninhibit removes an inhibitor that has been established with
+// gtk_application_inhibit(). Inhibitors are also cleared when the application
+// exits.
+func (a *ApplicationClass) Uninhibit(cookie uint) {
 	var _arg0 *C.GtkApplication // out
 	var _arg1 C.guint           // out
 

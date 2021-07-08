@@ -111,85 +111,8 @@ func init() {
 // - If the gesture has GTK_PHASE_NONE, ensuring events of type
 // GDK_TOUCHPAD_SWIPE and GDK_TOUCHPAD_PINCH are handled by the `GtkGesture`
 type Gesture interface {
-	EventController
+	gextras.Objector
 
-	// AsEventController casts the class to the EventController interface.
-	AsEventController() EventController
-
-	// GetCurrentEvent returns the event that is currently being handled by the
-	// controller, and nil at other times.
-	//
-	// This method is inherited from EventController
-	GetCurrentEvent() gdk.Event
-	// GetCurrentEventDevice returns the device of the event that is currently
-	// being handled by the controller, and nil otherwise.
-	//
-	// This method is inherited from EventController
-	GetCurrentEventDevice() gdk.Device
-	// GetCurrentEventState returns the modifier state of the event that is
-	// currently being handled by the controller, and 0 otherwise.
-	//
-	// This method is inherited from EventController
-	GetCurrentEventState() gdk.ModifierType
-	// GetCurrentEventTime returns the timestamp of the event that is currently
-	// being handled by the controller, and 0 otherwise.
-	//
-	// This method is inherited from EventController
-	GetCurrentEventTime() uint32
-	// GetName gets the name of @controller.
-	//
-	// This method is inherited from EventController
-	GetName() string
-	// GetPropagationLimit gets the propagation limit of the event controller.
-	//
-	// This method is inherited from EventController
-	GetPropagationLimit() PropagationLimit
-	// GetPropagationPhase gets the propagation phase at which @controller
-	// handles events.
-	//
-	// This method is inherited from EventController
-	GetPropagationPhase() PropagationPhase
-	// GetWidget returns the Widget this controller relates to.
-	//
-	// This method is inherited from EventController
-	GetWidget() Widget
-	// Reset resets the @controller to a clean state.
-	//
-	// This method is inherited from EventController
-	Reset()
-	// SetName sets a name on the controller that can be used for debugging.
-	//
-	// This method is inherited from EventController
-	SetName(name string)
-	// SetPropagationLimit sets the event propagation limit on the event
-	// controller.
-	//
-	// If the limit is set to GTK_LIMIT_SAME_NATIVE, the controller won't handle
-	// events that are targeted at widgets on a different surface, such as
-	// popovers.
-	//
-	// This method is inherited from EventController
-	SetPropagationLimit(limit PropagationLimit)
-	// SetPropagationPhase sets the propagation phase at which a controller
-	// handles events.
-	//
-	// If @phase is GTK_PHASE_NONE, no automatic event handling will be
-	// performed, but other additional gesture maintenance will.
-	//
-	// This method is inherited from EventController
-	SetPropagationPhase(phase PropagationPhase)
-
-	// BoundingBox: if there are touch sequences being currently handled by
-	// @gesture, returns true and fills in @rect with the bounding box
-	// containing all active touches.
-	//
-	// Otherwise, false will be returned.
-	//
-	// Note: This function will yield unexpected results on touchpad gestures.
-	// Since there is no correlation between physical and pixel distances, these
-	// will look as if constrained in an infinitely small area, @rect width and
-	// height will thus be 0 regardless of the number of touchpoints.
-	BoundingBox() (gdk.Rectangle, bool)
 	// BoundingBoxCenter: if there are touch sequences being currently handled
 	// by @gesture, returns true and fills in @x and @y with the center of the
 	// bounding box containing all active touches.
@@ -290,108 +213,33 @@ type Gesture interface {
 	Ungroup()
 }
 
-// gesture implements the Gesture interface.
-type gesture struct {
-	*externglib.Object
+// GestureClass implements the Gesture interface.
+type GestureClass struct {
+	EventControllerClass
 }
 
-var _ Gesture = (*gesture)(nil)
+var _ Gesture = (*GestureClass)(nil)
 
-// WrapGesture wraps a GObject to a type that implements
-// interface Gesture. It is primarily used internally.
-func WrapGesture(obj *externglib.Object) Gesture {
-	return gesture{obj}
+func wrapGesture(obj *externglib.Object) Gesture {
+	return &GestureClass{
+		EventControllerClass: EventControllerClass{
+			Object: obj,
+		},
+	}
 }
 
 func marshalGesture(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapGesture(obj), nil
+	return wrapGesture(obj), nil
 }
 
-func (g gesture) AsEventController() EventController {
-	return WrapEventController(gextras.InternObject(g))
-}
-
-func (c gesture) GetCurrentEvent() gdk.Event {
-	return WrapEventController(gextras.InternObject(c)).GetCurrentEvent()
-}
-
-func (c gesture) GetCurrentEventDevice() gdk.Device {
-	return WrapEventController(gextras.InternObject(c)).GetCurrentEventDevice()
-}
-
-func (c gesture) GetCurrentEventState() gdk.ModifierType {
-	return WrapEventController(gextras.InternObject(c)).GetCurrentEventState()
-}
-
-func (c gesture) GetCurrentEventTime() uint32 {
-	return WrapEventController(gextras.InternObject(c)).GetCurrentEventTime()
-}
-
-func (c gesture) GetName() string {
-	return WrapEventController(gextras.InternObject(c)).GetName()
-}
-
-func (c gesture) GetPropagationLimit() PropagationLimit {
-	return WrapEventController(gextras.InternObject(c)).GetPropagationLimit()
-}
-
-func (c gesture) GetPropagationPhase() PropagationPhase {
-	return WrapEventController(gextras.InternObject(c)).GetPropagationPhase()
-}
-
-func (c gesture) GetWidget() Widget {
-	return WrapEventController(gextras.InternObject(c)).GetWidget()
-}
-
-func (c gesture) Reset() {
-	WrapEventController(gextras.InternObject(c)).Reset()
-}
-
-func (c gesture) SetName(name string) {
-	WrapEventController(gextras.InternObject(c)).SetName(name)
-}
-
-func (c gesture) SetPropagationLimit(limit PropagationLimit) {
-	WrapEventController(gextras.InternObject(c)).SetPropagationLimit(limit)
-}
-
-func (c gesture) SetPropagationPhase(phase PropagationPhase) {
-	WrapEventController(gextras.InternObject(c)).SetPropagationPhase(phase)
-}
-
-func (g gesture) BoundingBox() (gdk.Rectangle, bool) {
-	var _arg0 *C.GtkGesture  // out
-	var _arg1 C.GdkRectangle // in
-	var _cret C.gboolean     // in
-
-	_arg0 = (*C.GtkGesture)(unsafe.Pointer(g.Native()))
-
-	_cret = C.gtk_gesture_get_bounding_box(_arg0, &_arg1)
-
-	var _rect gdk.Rectangle // out
-	var _ok bool            // out
-
-	{
-		var refTmpIn *C.GdkRectangle
-		var refTmpOut *gdk.Rectangle
-
-		in0 := &_arg1
-		refTmpIn = in0
-
-		refTmpOut = (*gdk.Rectangle)(unsafe.Pointer(refTmpIn))
-
-		_rect = *refTmpOut
-	}
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _rect, _ok
-}
-
-func (g gesture) BoundingBoxCenter() (x float64, y float64, ok bool) {
+// BoundingBoxCenter: if there are touch sequences being currently handled by
+// @gesture, returns true and fills in @x and @y with the center of the bounding
+// box containing all active touches.
+//
+// Otherwise, false will be returned.
+func (g *GestureClass) BoundingBoxCenter() (x float64, y float64, ok bool) {
 	var _arg0 *C.GtkGesture // out
 	var _arg1 C.double      // in
 	var _arg2 C.double      // in
@@ -414,7 +262,11 @@ func (g gesture) BoundingBoxCenter() (x float64, y float64, ok bool) {
 	return _x, _y, _ok
 }
 
-func (g gesture) Device() gdk.Device {
+// Device returns the logical `GdkDevice` that is currently operating on
+// @gesture.
+//
+// This returns nil if the gesture is not being interacted.
+func (g *GestureClass) Device() gdk.Device {
 	var _arg0 *C.GtkGesture // out
 	var _cret *C.GdkDevice  // in
 
@@ -429,7 +281,12 @@ func (g gesture) Device() gdk.Device {
 	return _device
 }
 
-func (g gesture) LastEvent(sequence *gdk.EventSequence) gdk.Event {
+// LastEvent returns the last event that was processed for @sequence.
+//
+// Note that the returned pointer is only valid as long as the @sequence is
+// still interpreted by the @gesture. If in doubt, you should make a copy of the
+// event.
+func (g *GestureClass) LastEvent(sequence *gdk.EventSequence) gdk.Event {
 	var _arg0 *C.GtkGesture       // out
 	var _arg1 *C.GdkEventSequence // out
 	var _cret *C.GdkEvent         // in
@@ -446,7 +303,9 @@ func (g gesture) LastEvent(sequence *gdk.EventSequence) gdk.Event {
 	return _event
 }
 
-func (g gesture) LastUpdatedSequence() *gdk.EventSequence {
+// LastUpdatedSequence returns the `GdkEventSequence` that was last updated on
+// @gesture.
+func (g *GestureClass) LastUpdatedSequence() *gdk.EventSequence {
 	var _arg0 *C.GtkGesture       // out
 	var _cret *C.GdkEventSequence // in
 
@@ -461,7 +320,12 @@ func (g gesture) LastUpdatedSequence() *gdk.EventSequence {
 	return _eventSequence
 }
 
-func (g gesture) Point(sequence *gdk.EventSequence) (x float64, y float64, ok bool) {
+// Point: if @sequence is currently being interpreted by @gesture, returns true
+// and fills in @x and @y with the last coordinates stored for that event
+// sequence.
+//
+// The coordinates are always relative to the widget allocation.
+func (g *GestureClass) Point(sequence *gdk.EventSequence) (x float64, y float64, ok bool) {
 	var _arg0 *C.GtkGesture       // out
 	var _arg1 *C.GdkEventSequence // out
 	var _arg2 C.double            // in
@@ -486,7 +350,8 @@ func (g gesture) Point(sequence *gdk.EventSequence) (x float64, y float64, ok bo
 	return _x, _y, _ok
 }
 
-func (g gesture) SequenceState(sequence *gdk.EventSequence) EventSequenceState {
+// SequenceState returns the @sequence state, as seen by @gesture.
+func (g *GestureClass) SequenceState(sequence *gdk.EventSequence) EventSequenceState {
 	var _arg0 *C.GtkGesture           // out
 	var _arg1 *C.GdkEventSequence     // out
 	var _cret C.GtkEventSequenceState // in
@@ -503,7 +368,22 @@ func (g gesture) SequenceState(sequence *gdk.EventSequence) EventSequenceState {
 	return _eventSequenceState
 }
 
-func (g gesture) Group(gesture Gesture) {
+// Group adds @gesture to the same group than @group_gesture.
+//
+// Gestures are by default isolated in their own groups.
+//
+// Both gestures must have been added to the same widget before they can be
+// grouped.
+//
+// When gestures are grouped, the state of `GdkEventSequences` is kept in sync
+// for all of those, so calling [method@Gtk.Gesture.set_sequence_state], on one
+// will transfer the same value to the others.
+//
+// Groups also perform an "implicit grabbing" of sequences, if a
+// `GdkEventSequence` state is set to GTK_EVENT_SEQUENCE_CLAIMED on one group,
+// every other gesture group attached to the same `GtkWidget` will switch the
+// state for that sequence to GTK_EVENT_SEQUENCE_DENIED.
+func (g *GestureClass) Group(gesture Gesture) {
 	var _arg0 *C.GtkGesture // out
 	var _arg1 *C.GtkGesture // out
 
@@ -513,7 +393,9 @@ func (g gesture) Group(gesture Gesture) {
 	C.gtk_gesture_group(_arg0, _arg1)
 }
 
-func (g gesture) HandlesSequence(sequence *gdk.EventSequence) bool {
+// HandlesSequence returns true if @gesture is currently handling events
+// corresponding to @sequence.
+func (g *GestureClass) HandlesSequence(sequence *gdk.EventSequence) bool {
 	var _arg0 *C.GtkGesture       // out
 	var _arg1 *C.GdkEventSequence // out
 	var _cret C.gboolean          // in
@@ -532,7 +414,10 @@ func (g gesture) HandlesSequence(sequence *gdk.EventSequence) bool {
 	return _ok
 }
 
-func (g gesture) IsActive() bool {
+// IsActive returns true if the gesture is currently active.
+//
+// A gesture is active while there are touch sequences interacting with it.
+func (g *GestureClass) IsActive() bool {
 	var _arg0 *C.GtkGesture // out
 	var _cret C.gboolean    // in
 
@@ -549,7 +434,8 @@ func (g gesture) IsActive() bool {
 	return _ok
 }
 
-func (g gesture) IsGroupedWith(other Gesture) bool {
+// IsGroupedWith returns true if both gestures pertain to the same group.
+func (g *GestureClass) IsGroupedWith(other Gesture) bool {
 	var _arg0 *C.GtkGesture // out
 	var _arg1 *C.GtkGesture // out
 	var _cret C.gboolean    // in
@@ -568,7 +454,11 @@ func (g gesture) IsGroupedWith(other Gesture) bool {
 	return _ok
 }
 
-func (g gesture) IsRecognized() bool {
+// IsRecognized returns true if the gesture is currently recognized.
+//
+// A gesture is recognized if there are as many interacting touch sequences as
+// required by @gesture.
+func (g *GestureClass) IsRecognized() bool {
 	var _arg0 *C.GtkGesture // out
 	var _cret C.gboolean    // in
 
@@ -585,7 +475,36 @@ func (g gesture) IsRecognized() bool {
 	return _ok
 }
 
-func (g gesture) SetSequenceState(sequence *gdk.EventSequence, state EventSequenceState) bool {
+// SetSequenceState sets the state of @sequence in @gesture.
+//
+// Sequences start in state GTK_EVENT_SEQUENCE_NONE, and whenever they change
+// state, they can never go back to that state. Likewise, sequences in state
+// GTK_EVENT_SEQUENCE_DENIED cannot turn back to a not denied state. With these
+// rules, the lifetime of an event sequence is constrained to the next four:
+//
+// * None * None → Denied * None → Claimed * None → Claimed → Denied
+//
+// Note: Due to event handling ordering, it may be unsafe to set the state on
+// another gesture within a [signal@Gtk.Gesture::begin] signal handler, as the
+// callback might be executed before the other gesture knows about the sequence.
+// A safe way to perform this could be:
+//
+// “`c static void first_gesture_begin_cb (GtkGesture *first_gesture,
+// GdkEventSequence *sequence, gpointer user_data) {
+// gtk_gesture_set_sequence_state (first_gesture, sequence,
+// GTK_EVENT_SEQUENCE_CLAIMED); gtk_gesture_set_sequence_state (second_gesture,
+// sequence, GTK_EVENT_SEQUENCE_DENIED); }
+//
+// static void second_gesture_begin_cb (GtkGesture *second_gesture,
+// GdkEventSequence *sequence, gpointer user_data) { if
+// (gtk_gesture_get_sequence_state (first_gesture, sequence) ==
+// GTK_EVENT_SEQUENCE_CLAIMED) gtk_gesture_set_sequence_state (second_gesture,
+// sequence, GTK_EVENT_SEQUENCE_DENIED); } “`
+//
+// If both gestures are in the same group, just set the state on the gesture
+// emitting the event, the sequence will be already be initialized to the
+// group's global state when the second gesture processes the event.
+func (g *GestureClass) SetSequenceState(sequence *gdk.EventSequence, state EventSequenceState) bool {
 	var _arg0 *C.GtkGesture           // out
 	var _arg1 *C.GdkEventSequence     // out
 	var _arg2 C.GtkEventSequenceState // out
@@ -606,7 +525,12 @@ func (g gesture) SetSequenceState(sequence *gdk.EventSequence, state EventSequen
 	return _ok
 }
 
-func (g gesture) SetState(state EventSequenceState) bool {
+// SetState sets the state of all sequences that @gesture is currently
+// interacting with.
+//
+// See [method@Gtk.Gesture.set_sequence_state] for more details on sequence
+// states.
+func (g *GestureClass) SetState(state EventSequenceState) bool {
 	var _arg0 *C.GtkGesture           // out
 	var _arg1 C.GtkEventSequenceState // out
 	var _cret C.gboolean              // in
@@ -625,7 +549,8 @@ func (g gesture) SetState(state EventSequenceState) bool {
 	return _ok
 }
 
-func (g gesture) Ungroup() {
+// Ungroup separates @gesture into an isolated group.
+func (g *GestureClass) Ungroup() {
 	var _arg0 *C.GtkGesture // out
 
 	_arg0 = (*C.GtkGesture)(unsafe.Pointer(g.Native()))

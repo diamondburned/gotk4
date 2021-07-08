@@ -91,39 +91,6 @@ func CairoDrawFromGL(cr *cairo.Context, window Window, source int, sourceType in
 	C.gdk_cairo_draw_from_gl(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9)
 }
 
-// CairoGetClipRectangle: this is a convenience function around
-// cairo_clip_extents(). It rounds the clip extents to integer coordinates and
-// returns a boolean indicating if a clip area exists.
-func CairoGetClipRectangle(cr *cairo.Context) (Rectangle, bool) {
-	var _arg1 *C.cairo_t     // out
-	var _arg2 C.GdkRectangle // in
-	var _cret C.gboolean     // in
-
-	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr))
-
-	_cret = C.gdk_cairo_get_clip_rectangle(_arg1, &_arg2)
-
-	var _rect Rectangle // out
-	var _ok bool        // out
-
-	{
-		var refTmpIn *C.GdkRectangle
-		var refTmpOut *Rectangle
-
-		in0 := &_arg2
-		refTmpIn = in0
-
-		refTmpOut = (*Rectangle)(unsafe.Pointer(refTmpIn))
-
-		_rect = *refTmpOut
-	}
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _rect, _ok
-}
-
 // CairoGetDrawingContext retrieves the DrawingContext that created the Cairo
 // context @cr.
 func CairoGetDrawingContext(cr *cairo.Context) DrawingContext {

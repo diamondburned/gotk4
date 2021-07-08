@@ -70,7 +70,7 @@ func marshalFilterMatch(p uintptr) (interface{}, error) {
 	return FilterMatch(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// FilterOverrider contains methods that are overridable .
+// FilterOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
@@ -130,26 +130,35 @@ type Filter interface {
 	Match(item gextras.Objector) bool
 }
 
-// filter implements the Filter interface.
-type filter struct {
+// FilterClass implements the Filter interface.
+type FilterClass struct {
 	*externglib.Object
 }
 
-var _ Filter = (*filter)(nil)
+var _ Filter = (*FilterClass)(nil)
 
-// WrapFilter wraps a GObject to a type that implements
-// interface Filter. It is primarily used internally.
-func WrapFilter(obj *externglib.Object) Filter {
-	return filter{obj}
+func wrapFilter(obj *externglib.Object) Filter {
+	return &FilterClass{
+		Object: obj,
+	}
 }
 
 func marshalFilter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapFilter(obj), nil
+	return wrapFilter(obj), nil
 }
 
-func (s filter) Changed(change FilterChange) {
+// Changed emits the Filter::changed signal to notify all users of the filter
+// that the filter changed. Users of the filter should then check items again
+// via gtk_filter_match().
+//
+// Depending on the @change parameter, not all items need to be changed, but
+// only some. Refer to the FilterChange documentation for details.
+//
+// This function is intended for implementors of Filter subclasses and should
+// not be called from other functions.
+func (s *FilterClass) Changed(change FilterChange) {
 	var _arg0 *C.GtkFilter      // out
 	var _arg1 C.GtkFilterChange // out
 
@@ -159,7 +168,14 @@ func (s filter) Changed(change FilterChange) {
 	C.gtk_filter_changed(_arg0, _arg1)
 }
 
-func (s filter) Strictness() FilterMatch {
+// Strictness gets the known strictness of @filters. If the strictness is not
+// known, GTK_FILTER_MATCH_SOME is returned.
+//
+// This value may change after emission of the Filter::changed signal.
+//
+// This function is meant purely for optimization purposes, filters can choose
+// to omit implementing it, but FilterListModel uses it.
+func (s *FilterClass) Strictness() FilterMatch {
 	var _arg0 *C.GtkFilter     // out
 	var _cret C.GtkFilterMatch // in
 
@@ -174,7 +190,8 @@ func (s filter) Strictness() FilterMatch {
 	return _filterMatch
 }
 
-func (s filter) Match(item gextras.Objector) bool {
+// Match checks if the given @item is matched by the filter or not.
+func (s *FilterClass) Match(item gextras.Objector) bool {
 	var _arg0 *C.GtkFilter // out
 	var _arg1 C.gpointer   // out
 	var _cret C.gboolean   // in

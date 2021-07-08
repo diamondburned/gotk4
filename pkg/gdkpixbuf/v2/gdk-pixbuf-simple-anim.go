@@ -6,7 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -25,77 +24,7 @@ func init() {
 
 // PixbufSimpleAnim: opaque struct representing a simple animation.
 type PixbufSimpleAnim interface {
-	PixbufAnimation
-
-	// AsPixbufAnimation casts the class to the PixbufAnimation interface.
-	AsPixbufAnimation() PixbufAnimation
-
-	// GetHeight queries the height of the bounding box of a pixbuf animation.
-	//
-	// This method is inherited from PixbufAnimation
-	GetHeight() int
-	// GetIter: get an iterator for displaying an animation.
-	//
-	// The iterator provides the frames that should be displayed at a given
-	// time.
-	//
-	// @start_time would normally come from g_get_current_time(), and marks the
-	// beginning of animation playback. After creating an iterator, you should
-	// immediately display the pixbuf returned by
-	// gdk_pixbuf_animation_iter_get_pixbuf(). Then, you should install a
-	// timeout (with g_timeout_add()) or by some other mechanism ensure that
-	// you'll update the image after gdk_pixbuf_animation_iter_get_delay_time()
-	// milliseconds. Each time the image is updated, you should reinstall the
-	// timeout with the new, possibly-changed delay time.
-	//
-	// As a shortcut, if @start_time is `NULL`, the result of
-	// g_get_current_time() will be used automatically.
-	//
-	// To update the image (i.e. possibly change the result of
-	// gdk_pixbuf_animation_iter_get_pixbuf() to a new frame of the animation),
-	// call gdk_pixbuf_animation_iter_advance().
-	//
-	// If you're using PixbufLoader, in addition to updating the image after the
-	// delay time, you should also update it whenever you receive the
-	// area_updated signal and
-	// gdk_pixbuf_animation_iter_on_currently_loading_frame() returns `TRUE`. In
-	// this case, the frame currently being fed into the loader has received new
-	// data, so needs to be refreshed. The delay time for a frame may also be
-	// modified after an area_updated signal, for example if the delay time for
-	// a frame is encoded in the data after the frame itself. So your timeout
-	// should be reinstalled after any area_updated signal.
-	//
-	// A delay time of -1 is possible, indicating "infinite".
-	//
-	// This method is inherited from PixbufAnimation
-	GetIter(startTime *glib.TimeVal) PixbufAnimationIter
-	// GetStaticImage retrieves a static image for the animation.
-	//
-	// If an animation is really just a plain image (has only one frame), this
-	// function returns that image.
-	//
-	// If the animation is an animation, this function returns a reasonable
-	// image to use as a static unanimated image, which might be the first
-	// frame, or something more sophisticated depending on the file format.
-	//
-	// If an animation hasn't loaded any frames yet, this function will return
-	// `NULL`.
-	//
-	// This method is inherited from PixbufAnimation
-	GetStaticImage() Pixbuf
-	// GetWidth queries the width of the bounding box of a pixbuf animation.
-	//
-	// This method is inherited from PixbufAnimation
-	GetWidth() int
-	// IsStaticImage checks whether the animation is a static image.
-	//
-	// If you load a file with gdk_pixbuf_animation_new_from_file() and it turns
-	// out to be a plain, unanimated image, then this function will return
-	// `TRUE`. Use gdk_pixbuf_animation_get_static_image() to retrieve the
-	// image.
-	//
-	// This method is inherited from PixbufAnimation
-	IsStaticImage() bool
+	gextras.Objector
 
 	// AddFrame adds a new frame to @animation. The @pixbuf must have the
 	// dimensions specified when the animation was constructed.
@@ -108,23 +37,25 @@ type PixbufSimpleAnim interface {
 	SetLoop(loop bool)
 }
 
-// pixbufSimpleAnim implements the PixbufSimpleAnim interface.
-type pixbufSimpleAnim struct {
-	*externglib.Object
+// PixbufSimpleAnimClass implements the PixbufSimpleAnim interface.
+type PixbufSimpleAnimClass struct {
+	PixbufAnimationClass
 }
 
-var _ PixbufSimpleAnim = (*pixbufSimpleAnim)(nil)
+var _ PixbufSimpleAnim = (*PixbufSimpleAnimClass)(nil)
 
-// WrapPixbufSimpleAnim wraps a GObject to a type that implements
-// interface PixbufSimpleAnim. It is primarily used internally.
-func WrapPixbufSimpleAnim(obj *externglib.Object) PixbufSimpleAnim {
-	return pixbufSimpleAnim{obj}
+func wrapPixbufSimpleAnim(obj *externglib.Object) PixbufSimpleAnim {
+	return &PixbufSimpleAnimClass{
+		PixbufAnimationClass: PixbufAnimationClass{
+			Object: obj,
+		},
+	}
 }
 
 func marshalPixbufSimpleAnim(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapPixbufSimpleAnim(obj), nil
+	return wrapPixbufSimpleAnim(obj), nil
 }
 
 // NewPixbufSimpleAnim creates a new, empty animation.
@@ -147,31 +78,9 @@ func NewPixbufSimpleAnim(width int, height int, rate float32) PixbufSimpleAnim {
 	return _pixbufSimpleAnim
 }
 
-func (p pixbufSimpleAnim) AsPixbufAnimation() PixbufAnimation {
-	return WrapPixbufAnimation(gextras.InternObject(p))
-}
-
-func (a pixbufSimpleAnim) GetHeight() int {
-	return WrapPixbufAnimation(gextras.InternObject(a)).GetHeight()
-}
-
-func (a pixbufSimpleAnim) GetIter(startTime *glib.TimeVal) PixbufAnimationIter {
-	return WrapPixbufAnimation(gextras.InternObject(a)).GetIter(startTime)
-}
-
-func (a pixbufSimpleAnim) GetStaticImage() Pixbuf {
-	return WrapPixbufAnimation(gextras.InternObject(a)).GetStaticImage()
-}
-
-func (a pixbufSimpleAnim) GetWidth() int {
-	return WrapPixbufAnimation(gextras.InternObject(a)).GetWidth()
-}
-
-func (a pixbufSimpleAnim) IsStaticImage() bool {
-	return WrapPixbufAnimation(gextras.InternObject(a)).IsStaticImage()
-}
-
-func (a pixbufSimpleAnim) AddFrame(pixbuf Pixbuf) {
+// AddFrame adds a new frame to @animation. The @pixbuf must have the dimensions
+// specified when the animation was constructed.
+func (a *PixbufSimpleAnimClass) AddFrame(pixbuf Pixbuf) {
 	var _arg0 *C.GdkPixbufSimpleAnim // out
 	var _arg1 *C.GdkPixbuf           // out
 
@@ -181,7 +90,9 @@ func (a pixbufSimpleAnim) AddFrame(pixbuf Pixbuf) {
 	C.gdk_pixbuf_simple_anim_add_frame(_arg0, _arg1)
 }
 
-func (a pixbufSimpleAnim) Loop() bool {
+// Loop gets whether @animation should loop indefinitely when it reaches the
+// end.
+func (a *PixbufSimpleAnimClass) Loop() bool {
 	var _arg0 *C.GdkPixbufSimpleAnim // out
 	var _cret C.gboolean             // in
 
@@ -198,7 +109,9 @@ func (a pixbufSimpleAnim) Loop() bool {
 	return _ok
 }
 
-func (a pixbufSimpleAnim) SetLoop(loop bool) {
+// SetLoop sets whether @animation should loop indefinitely when it reaches the
+// end.
+func (a *PixbufSimpleAnimClass) SetLoop(loop bool) {
 	var _arg0 *C.GdkPixbufSimpleAnim // out
 	var _arg1 C.gboolean             // out
 

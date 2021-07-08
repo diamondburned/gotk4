@@ -42,26 +42,27 @@ type LayoutChild interface {
 	LayoutManager() LayoutManager
 }
 
-// layoutChild implements the LayoutChild interface.
-type layoutChild struct {
+// LayoutChildClass implements the LayoutChild interface.
+type LayoutChildClass struct {
 	*externglib.Object
 }
 
-var _ LayoutChild = (*layoutChild)(nil)
+var _ LayoutChild = (*LayoutChildClass)(nil)
 
-// WrapLayoutChild wraps a GObject to a type that implements
-// interface LayoutChild. It is primarily used internally.
-func WrapLayoutChild(obj *externglib.Object) LayoutChild {
-	return layoutChild{obj}
+func wrapLayoutChild(obj *externglib.Object) LayoutChild {
+	return &LayoutChildClass{
+		Object: obj,
+	}
 }
 
 func marshalLayoutChild(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapLayoutChild(obj), nil
+	return wrapLayoutChild(obj), nil
 }
 
-func (l layoutChild) ChildWidget() Widget {
+// ChildWidget retrieves the `GtkWidget` associated to the given @layout_child.
+func (l *LayoutChildClass) ChildWidget() Widget {
 	var _arg0 *C.GtkLayoutChild // out
 	var _cret *C.GtkWidget      // in
 
@@ -76,7 +77,9 @@ func (l layoutChild) ChildWidget() Widget {
 	return _widget
 }
 
-func (l layoutChild) LayoutManager() LayoutManager {
+// LayoutManager retrieves the `GtkLayoutManager` instance that created the
+// given @layout_child.
+func (l *LayoutChildClass) LayoutManager() LayoutManager {
 	var _arg0 *C.GtkLayoutChild   // out
 	var _cret *C.GtkLayoutManager // in
 

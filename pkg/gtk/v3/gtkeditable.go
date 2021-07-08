@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -23,7 +24,7 @@ func init() {
 	})
 }
 
-// EditableOverrider contains methods that are overridable .
+// EditableOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
@@ -174,26 +175,28 @@ type Editable interface {
 	SetPosition(position int)
 }
 
-// editable implements the Editable interface.
-type editable struct {
+// EditableInterface implements the Editable interface.
+type EditableInterface struct {
 	*externglib.Object
 }
 
-var _ Editable = (*editable)(nil)
+var _ Editable = (*EditableInterface)(nil)
 
-// WrapEditable wraps a GObject to a type that implements
-// interface Editable. It is primarily used internally.
-func WrapEditable(obj *externglib.Object) Editable {
-	return editable{obj}
+func wrapEditable(obj *externglib.Object) Editable {
+	return &EditableInterface{
+		Object: obj,
+	}
 }
 
 func marshalEditable(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapEditable(obj), nil
+	return wrapEditable(obj), nil
 }
 
-func (e editable) CopyClipboard() {
+// CopyClipboard copies the contents of the currently selected content in the
+// editable and puts it on the clipboard.
+func (e *EditableInterface) CopyClipboard() {
 	var _arg0 *C.GtkEditable // out
 
 	_arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))
@@ -201,7 +204,9 @@ func (e editable) CopyClipboard() {
 	C.gtk_editable_copy_clipboard(_arg0)
 }
 
-func (e editable) CutClipboard() {
+// CutClipboard removes the contents of the currently selected content in the
+// editable and puts it on the clipboard.
+func (e *EditableInterface) CutClipboard() {
 	var _arg0 *C.GtkEditable // out
 
 	_arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))
@@ -209,7 +214,9 @@ func (e editable) CutClipboard() {
 	C.gtk_editable_cut_clipboard(_arg0)
 }
 
-func (e editable) DeleteSelection() {
+// DeleteSelection deletes the currently selected text of the editable. This
+// call doesn’t do anything if there is no selected text.
+func (e *EditableInterface) DeleteSelection() {
 	var _arg0 *C.GtkEditable // out
 
 	_arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))
@@ -217,7 +224,13 @@ func (e editable) DeleteSelection() {
 	C.gtk_editable_delete_selection(_arg0)
 }
 
-func (e editable) DeleteText(startPos int, endPos int) {
+// DeleteText deletes a sequence of characters. The characters that are deleted
+// are those characters at positions from @start_pos up to, but not including
+// @end_pos. If @end_pos is negative, then the characters deleted are those from
+// @start_pos to the end of the text.
+//
+// Note that the positions are specified in characters, not bytes.
+func (e *EditableInterface) DeleteText(startPos int, endPos int) {
 	var _arg0 *C.GtkEditable // out
 	var _arg1 C.gint         // out
 	var _arg2 C.gint         // out
@@ -229,7 +242,13 @@ func (e editable) DeleteText(startPos int, endPos int) {
 	C.gtk_editable_delete_text(_arg0, _arg1, _arg2)
 }
 
-func (e editable) Chars(startPos int, endPos int) string {
+// Chars retrieves a sequence of characters. The characters that are retrieved
+// are those characters at positions from @start_pos up to, but not including
+// @end_pos. If @end_pos is negative, then the characters retrieved are those
+// characters from @start_pos to the end of the text.
+//
+// Note that positions are specified in characters, not bytes.
+func (e *EditableInterface) Chars(startPos int, endPos int) string {
 	var _arg0 *C.GtkEditable // out
 	var _arg1 C.gint         // out
 	var _arg2 C.gint         // out
@@ -249,7 +268,9 @@ func (e editable) Chars(startPos int, endPos int) string {
 	return _utf8
 }
 
-func (e editable) Editable() bool {
+// Editable retrieves whether @editable is editable. See
+// gtk_editable_set_editable().
+func (e *EditableInterface) Editable() bool {
 	var _arg0 *C.GtkEditable // out
 	var _cret C.gboolean     // in
 
@@ -266,7 +287,11 @@ func (e editable) Editable() bool {
 	return _ok
 }
 
-func (e editable) Position() int {
+// Position retrieves the current position of the cursor relative to the start
+// of the content of the editable.
+//
+// Note that this position is in characters, not in bytes.
+func (e *EditableInterface) Position() int {
 	var _arg0 *C.GtkEditable // out
 	var _cret C.gint         // in
 
@@ -281,7 +306,12 @@ func (e editable) Position() int {
 	return _gint
 }
 
-func (e editable) SelectionBounds() (startPos int, endPos int, ok bool) {
+// SelectionBounds retrieves the selection bound of the editable. start_pos will
+// be filled with the start of the selection and @end_pos with end. If no text
+// was selected both will be identical and false will be returned.
+//
+// Note that positions are specified in characters, not bytes.
+func (e *EditableInterface) SelectionBounds() (startPos int, endPos int, ok bool) {
 	var _arg0 *C.GtkEditable // out
 	var _arg1 C.gint         // in
 	var _arg2 C.gint         // in
@@ -304,7 +334,9 @@ func (e editable) SelectionBounds() (startPos int, endPos int, ok bool) {
 	return _startPos, _endPos, _ok
 }
 
-func (e editable) PasteClipboard() {
+// PasteClipboard pastes the content of the clipboard to the current position of
+// the cursor in the editable.
+func (e *EditableInterface) PasteClipboard() {
 	var _arg0 *C.GtkEditable // out
 
 	_arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))
@@ -312,7 +344,13 @@ func (e editable) PasteClipboard() {
 	C.gtk_editable_paste_clipboard(_arg0)
 }
 
-func (e editable) SelectRegion(startPos int, endPos int) {
+// SelectRegion selects a region of text. The characters that are selected are
+// those characters at positions from @start_pos up to, but not including
+// @end_pos. If @end_pos is negative, then the characters selected are those
+// characters from @start_pos to the end of the text.
+//
+// Note that positions are specified in characters, not bytes.
+func (e *EditableInterface) SelectRegion(startPos int, endPos int) {
 	var _arg0 *C.GtkEditable // out
 	var _arg1 C.gint         // out
 	var _arg2 C.gint         // out
@@ -324,7 +362,9 @@ func (e editable) SelectRegion(startPos int, endPos int) {
 	C.gtk_editable_select_region(_arg0, _arg1, _arg2)
 }
 
-func (e editable) SetEditable(isEditable bool) {
+// SetEditable determines if the user can edit the text in the editable widget
+// or not.
+func (e *EditableInterface) SetEditable(isEditable bool) {
 	var _arg0 *C.GtkEditable // out
 	var _arg1 C.gboolean     // out
 
@@ -336,7 +376,14 @@ func (e editable) SetEditable(isEditable bool) {
 	C.gtk_editable_set_editable(_arg0, _arg1)
 }
 
-func (e editable) SetPosition(position int) {
+// SetPosition sets the cursor position in the editable to the given value.
+//
+// The cursor is displayed before the character with the given (base 0) index in
+// the contents of the editable. The value must be less than or equal to the
+// number of characters in the editable. A value of -1 indicates that the
+// position should be set after the last character of the editable. Note that
+// @position is in characters, not in bytes.
+func (e *EditableInterface) SetPosition(position int) {
 	var _arg0 *C.GtkEditable // out
 	var _arg1 C.gint         // out
 

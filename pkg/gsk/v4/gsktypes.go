@@ -368,34 +368,6 @@ func (s *Transform) ToAffine() (outScaleX float32, outScaleY float32, outDx floa
 	return _outScaleX, _outScaleY, _outDx, _outDy
 }
 
-// ToMatrix computes the actual value of @self and stores it in @out_matrix.
-//
-// The previous value of @out_matrix will be ignored.
-func (s *Transform) ToMatrix() graphene.Matrix {
-	var _arg0 *C.GskTransform     // out
-	var _arg1 C.graphene_matrix_t // in
-
-	_arg0 = (*C.GskTransform)(unsafe.Pointer(s))
-
-	C.gsk_transform_to_matrix(_arg0, &_arg1)
-
-	var _outMatrix graphene.Matrix // out
-
-	{
-		var refTmpIn *C.graphene_matrix_t
-		var refTmpOut *graphene.Matrix
-
-		in0 := &_arg1
-		refTmpIn = in0
-
-		refTmpOut = (*graphene.Matrix)(unsafe.Pointer(refTmpIn))
-
-		_outMatrix = *refTmpOut
-	}
-
-	return _outMatrix
-}
-
 // String converts a matrix into a string that is suitable for printing.
 //
 // The resulting string can be parsed with [func@Gsk.Transform.parse].
@@ -459,66 +431,6 @@ func (n *Transform) Transform(other *Transform) *Transform {
 	})
 
 	return _transform
-}
-
-// TransformBounds transforms a `graphene_rect_t` using the given transform
-// @self.
-//
-// The result is the bounding box containing the coplanar quad.
-func (s *Transform) TransformBounds(rect *graphene.Rect) graphene.Rect {
-	var _arg0 *C.GskTransform    // out
-	var _arg1 *C.graphene_rect_t // out
-	var _arg2 C.graphene_rect_t  // in
-
-	_arg0 = (*C.GskTransform)(unsafe.Pointer(s))
-	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(rect))
-
-	C.gsk_transform_transform_bounds(_arg0, _arg1, &_arg2)
-
-	var _outRect graphene.Rect // out
-
-	{
-		var refTmpIn *C.graphene_rect_t
-		var refTmpOut *graphene.Rect
-
-		in0 := &_arg2
-		refTmpIn = in0
-
-		refTmpOut = (*graphene.Rect)(unsafe.Pointer(refTmpIn))
-
-		_outRect = *refTmpOut
-	}
-
-	return _outRect
-}
-
-// TransformPoint transforms a `graphene_point_t` using the given transform
-// @self.
-func (s *Transform) TransformPoint(point *graphene.Point) graphene.Point {
-	var _arg0 *C.GskTransform     // out
-	var _arg1 *C.graphene_point_t // out
-	var _arg2 C.graphene_point_t  // in
-
-	_arg0 = (*C.GskTransform)(unsafe.Pointer(s))
-	_arg1 = (*C.graphene_point_t)(unsafe.Pointer(point))
-
-	C.gsk_transform_transform_point(_arg0, _arg1, &_arg2)
-
-	var _outPoint graphene.Point // out
-
-	{
-		var refTmpIn *C.graphene_point_t
-		var refTmpOut *graphene.Point
-
-		in0 := &_arg2
-		refTmpIn = in0
-
-		refTmpOut = (*graphene.Point)(unsafe.Pointer(refTmpIn))
-
-		_outPoint = *refTmpOut
-	}
-
-	return _outPoint
 }
 
 // Translate translates @next in 2-dimensional space by @point.

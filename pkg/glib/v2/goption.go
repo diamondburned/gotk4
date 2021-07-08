@@ -220,21 +220,6 @@ func (o *OptionGroup) Native() unsafe.Pointer {
 	return unsafe.Pointer(&o.native)
 }
 
-// AddEntries adds the options specified in @entries to @group.
-func (g *OptionGroup) AddEntries(entries []OptionEntry) {
-	var _arg0 *C.GOptionGroup // out
-	var _arg1 *C.GOptionEntry
-
-	_arg0 = (*C.GOptionGroup)(unsafe.Pointer(g))
-	{
-		var zero OptionEntry
-		entries = append(entries, zero)
-	}
-	_arg1 = (*C.GOptionEntry)(unsafe.Pointer(&entries[0]))
-
-	C.g_option_group_add_entries(_arg0, _arg1)
-}
-
 // Free frees a Group. Note that you must not free groups which have been added
 // to a Context.
 //

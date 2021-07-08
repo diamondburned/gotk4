@@ -363,21 +363,38 @@ func (typ *Resolved) ptr(sub1 bool) string {
 	return strings.Repeat("*", int(ptr))
 }
 
+// Name returns the type name without the namespace or pointer.
+func (typ *Resolved) Name() string {
+	if typ.Builtin != nil {
+		parts := strings.Split(*typ.Builtin, ".")
+		return strings.ReplaceAll(parts[len(parts)-1], "*", "")
+	}
+
+	name := strcases.PascalToGo(typ.Extern.Name())
+	switch typ.Extern.Type.(type) {
+	case *gir.Class:
+		name += "Class"
+	case *gir.Interface:
+		name += "Interface"
+	}
+
+	return name
+}
+
 // ImplType returns the implementation type. This is only different to
 // PublicType as far as classes go: the returned type is the unexported
 // implementation type.
 func (typ *Resolved) ImplType(needsNamespace bool) string {
 	if typ.Builtin != nil {
+		// Always use a pointer for Object.
+		if typ.IsExternGLib("Object") && typ.Ptr == 0 {
+			return "*" + *typ.Builtin
+		}
+
 		return typ.ptr(false) + *typ.Builtin
 	}
 
-	name := typ.Extern.Name()
-	name = strcases.PascalToGo(name)
-
-	switch typ.Extern.Type.(type) {
-	case *gir.Class, *gir.Interface:
-		name = strcases.UnexportPascal(name)
-	}
+	name := typ.Name()
 
 	if !needsNamespace {
 		return typ.ptr(false) + name
@@ -448,7 +465,7 @@ func (typ *Resolved) CGoType() string {
 // UnsupportedCTypes is the list of unsupported C types, either because it is
 // not yet supported or will never be supported due to redundancy or else.
 var UnsupportedCTypes = []string{
-	"tm*", // requires time.h
+	"tm", // requires time.h
 	"va_list",
 }
 

@@ -76,26 +76,27 @@ type MapListModel interface {
 	HasMap() bool
 }
 
-// mapListModel implements the MapListModel interface.
-type mapListModel struct {
+// MapListModelClass implements the MapListModel interface.
+type MapListModelClass struct {
 	*externglib.Object
 }
 
-var _ MapListModel = (*mapListModel)(nil)
+var _ MapListModel = (*MapListModelClass)(nil)
 
-// WrapMapListModel wraps a GObject to a type that implements
-// interface MapListModel. It is primarily used internally.
-func WrapMapListModel(obj *externglib.Object) MapListModel {
-	return mapListModel{obj}
+func wrapMapListModel(obj *externglib.Object) MapListModel {
+	return &MapListModelClass{
+		Object: obj,
+	}
 }
 
 func marshalMapListModel(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapMapListModel(obj), nil
+	return wrapMapListModel(obj), nil
 }
 
-func (s mapListModel) HasMap() bool {
+// HasMap checks if a map function is currently set on @self.
+func (s *MapListModelClass) HasMap() bool {
 	var _arg0 *C.GtkMapListModel // out
 	var _cret C.gboolean         // in
 

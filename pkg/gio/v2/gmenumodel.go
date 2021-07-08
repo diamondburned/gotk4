@@ -36,7 +36,7 @@ func init() {
 	})
 }
 
-// MenuAttributeIterOverrider contains methods that are overridable .
+// MenuAttributeIterOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
@@ -98,26 +98,30 @@ type MenuAttributeIter interface {
 	Next() bool
 }
 
-// menuAttributeIter implements the MenuAttributeIter interface.
-type menuAttributeIter struct {
+// MenuAttributeIterClass implements the MenuAttributeIter interface.
+type MenuAttributeIterClass struct {
 	*externglib.Object
 }
 
-var _ MenuAttributeIter = (*menuAttributeIter)(nil)
+var _ MenuAttributeIter = (*MenuAttributeIterClass)(nil)
 
-// WrapMenuAttributeIter wraps a GObject to a type that implements
-// interface MenuAttributeIter. It is primarily used internally.
-func WrapMenuAttributeIter(obj *externglib.Object) MenuAttributeIter {
-	return menuAttributeIter{obj}
+func wrapMenuAttributeIter(obj *externglib.Object) MenuAttributeIter {
+	return &MenuAttributeIterClass{
+		Object: obj,
+	}
 }
 
 func marshalMenuAttributeIter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapMenuAttributeIter(obj), nil
+	return wrapMenuAttributeIter(obj), nil
 }
 
-func (i menuAttributeIter) Name() string {
+// Name gets the name of the attribute at the current iterator position, as a
+// string.
+//
+// The iterator is not advanced.
+func (i *MenuAttributeIterClass) Name() string {
 	var _arg0 *C.GMenuAttributeIter // out
 	var _cret *C.gchar              // in
 
@@ -132,7 +136,21 @@ func (i menuAttributeIter) Name() string {
 	return _utf8
 }
 
-func (i menuAttributeIter) GetNext() (string, *glib.Variant, bool) {
+// GetNext: this function combines g_menu_attribute_iter_next() with
+// g_menu_attribute_iter_get_name() and g_menu_attribute_iter_get_value().
+//
+// First the iterator is advanced to the next (possibly first) attribute. If
+// that fails, then false is returned and there are no other effects.
+//
+// If successful, @name and @value are set to the name and value of the
+// attribute that has just been advanced to. At this point,
+// g_menu_attribute_iter_get_name() and g_menu_attribute_iter_get_value() will
+// return the same values again.
+//
+// The value returned in @name remains valid for as long as the iterator remains
+// at the current position. The value returned in @value must be unreffed using
+// g_variant_unref() when it is no longer in use.
+func (i *MenuAttributeIterClass) GetNext() (string, *glib.Variant, bool) {
 	var _arg0 *C.GMenuAttributeIter // out
 	var _arg1 *C.gchar              // in
 	var _arg2 *C.GVariant           // in
@@ -159,7 +177,10 @@ func (i menuAttributeIter) GetNext() (string, *glib.Variant, bool) {
 	return _outName, _value, _ok
 }
 
-func (i menuAttributeIter) Value() *glib.Variant {
+// Value gets the value of the attribute at the current iterator position.
+//
+// The iterator is not advanced.
+func (i *MenuAttributeIterClass) Value() *glib.Variant {
 	var _arg0 *C.GMenuAttributeIter // out
 	var _cret *C.GVariant           // in
 
@@ -178,7 +199,13 @@ func (i menuAttributeIter) Value() *glib.Variant {
 	return _variant
 }
 
-func (i menuAttributeIter) Next() bool {
+// Next attempts to advance the iterator to the next (possibly first) attribute.
+//
+// true is returned on success, or false if there are no more attributes.
+//
+// You must call this function when you first acquire the iterator to advance it
+// to the first attribute (and determine if the first attribute exists at all).
+func (i *MenuAttributeIterClass) Next() bool {
 	var _arg0 *C.GMenuAttributeIter // out
 	var _cret C.gboolean            // in
 
@@ -195,7 +222,7 @@ func (i menuAttributeIter) Next() bool {
 	return _ok
 }
 
-// MenuLinkIterOverrider contains methods that are overridable .
+// MenuLinkIterOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
@@ -255,26 +282,29 @@ type MenuLinkIter interface {
 	Next() bool
 }
 
-// menuLinkIter implements the MenuLinkIter interface.
-type menuLinkIter struct {
+// MenuLinkIterClass implements the MenuLinkIter interface.
+type MenuLinkIterClass struct {
 	*externglib.Object
 }
 
-var _ MenuLinkIter = (*menuLinkIter)(nil)
+var _ MenuLinkIter = (*MenuLinkIterClass)(nil)
 
-// WrapMenuLinkIter wraps a GObject to a type that implements
-// interface MenuLinkIter. It is primarily used internally.
-func WrapMenuLinkIter(obj *externglib.Object) MenuLinkIter {
-	return menuLinkIter{obj}
+func wrapMenuLinkIter(obj *externglib.Object) MenuLinkIter {
+	return &MenuLinkIterClass{
+		Object: obj,
+	}
 }
 
 func marshalMenuLinkIter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapMenuLinkIter(obj), nil
+	return wrapMenuLinkIter(obj), nil
 }
 
-func (i menuLinkIter) Name() string {
+// Name gets the name of the link at the current iterator position.
+//
+// The iterator is not advanced.
+func (i *MenuLinkIterClass) Name() string {
 	var _arg0 *C.GMenuLinkIter // out
 	var _cret *C.gchar         // in
 
@@ -289,7 +319,20 @@ func (i menuLinkIter) Name() string {
 	return _utf8
 }
 
-func (i menuLinkIter) GetNext() (string, MenuModel, bool) {
+// GetNext: this function combines g_menu_link_iter_next() with
+// g_menu_link_iter_get_name() and g_menu_link_iter_get_value().
+//
+// First the iterator is advanced to the next (possibly first) link. If that
+// fails, then false is returned and there are no other effects.
+//
+// If successful, @out_link and @value are set to the name and Model of the link
+// that has just been advanced to. At this point, g_menu_link_iter_get_name()
+// and g_menu_link_iter_get_value() will return the same values again.
+//
+// The value returned in @out_link remains valid for as long as the iterator
+// remains at the current position. The value returned in @value must be
+// unreffed using g_object_unref() when it is no longer in use.
+func (i *MenuLinkIterClass) GetNext() (string, MenuModel, bool) {
 	var _arg0 *C.GMenuLinkIter // out
 	var _arg1 *C.gchar         // in
 	var _arg2 *C.GMenuModel    // in
@@ -312,7 +355,10 @@ func (i menuLinkIter) GetNext() (string, MenuModel, bool) {
 	return _outLink, _value, _ok
 }
 
-func (i menuLinkIter) Value() MenuModel {
+// Value gets the linked Model at the current iterator position.
+//
+// The iterator is not advanced.
+func (i *MenuLinkIterClass) Value() MenuModel {
 	var _arg0 *C.GMenuLinkIter // out
 	var _cret *C.GMenuModel    // in
 
@@ -327,7 +373,13 @@ func (i menuLinkIter) Value() MenuModel {
 	return _menuModel
 }
 
-func (i menuLinkIter) Next() bool {
+// Next attempts to advance the iterator to the next (possibly first) link.
+//
+// true is returned on success, or false if there are no more links.
+//
+// You must call this function when you first acquire the iterator to advance it
+// to the first link (and determine if the first link exists at all).
+func (i *MenuLinkIterClass) Next() bool {
 	var _arg0 *C.GMenuLinkIter // out
 	var _cret C.gboolean       // in
 
@@ -344,7 +396,7 @@ func (i menuLinkIter) Next() bool {
 	return _ok
 }
 
-// MenuModelOverrider contains methods that are overridable .
+// MenuModelOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
@@ -558,26 +610,37 @@ type MenuModel interface {
 	IterateItemLinks(itemIndex int) MenuLinkIter
 }
 
-// menuModel implements the MenuModel interface.
-type menuModel struct {
+// MenuModelClass implements the MenuModel interface.
+type MenuModelClass struct {
 	*externglib.Object
 }
 
-var _ MenuModel = (*menuModel)(nil)
+var _ MenuModel = (*MenuModelClass)(nil)
 
-// WrapMenuModel wraps a GObject to a type that implements
-// interface MenuModel. It is primarily used internally.
-func WrapMenuModel(obj *externglib.Object) MenuModel {
-	return menuModel{obj}
+func wrapMenuModel(obj *externglib.Object) MenuModel {
+	return &MenuModelClass{
+		Object: obj,
+	}
 }
 
 func marshalMenuModel(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapMenuModel(obj), nil
+	return wrapMenuModel(obj), nil
 }
 
-func (m menuModel) ItemAttributeValue(itemIndex int, attribute string, expectedType *glib.VariantType) *glib.Variant {
+// ItemAttributeValue queries the item at position @item_index in @model for the
+// attribute specified by @attribute.
+//
+// If @expected_type is non-nil then it specifies the expected type of the
+// attribute. If it is nil then any type will be accepted.
+//
+// If the attribute exists and matches @expected_type (or if the expected type
+// is unspecified) then the value is returned.
+//
+// If the attribute does not exist, or does not match the expected type then nil
+// is returned.
+func (m *MenuModelClass) ItemAttributeValue(itemIndex int, attribute string, expectedType *glib.VariantType) *glib.Variant {
 	var _arg0 *C.GMenuModel   // out
 	var _arg1 C.gint          // out
 	var _arg2 *C.gchar        // out
@@ -603,7 +666,12 @@ func (m menuModel) ItemAttributeValue(itemIndex int, attribute string, expectedT
 	return _variant
 }
 
-func (m menuModel) ItemLink(itemIndex int, link string) MenuModel {
+// ItemLink queries the item at position @item_index in @model for the link
+// specified by @link.
+//
+// If the link exists, the linked Model is returned. If the link does not exist,
+// nil is returned.
+func (m *MenuModelClass) ItemLink(itemIndex int, link string) MenuModel {
 	var _arg0 *C.GMenuModel // out
 	var _arg1 C.gint        // out
 	var _arg2 *C.gchar      // out
@@ -623,7 +691,8 @@ func (m menuModel) ItemLink(itemIndex int, link string) MenuModel {
 	return _menuModel
 }
 
-func (m menuModel) NItems() int {
+// NItems: query the number of items in @model.
+func (m *MenuModelClass) NItems() int {
 	var _arg0 *C.GMenuModel // out
 	var _cret C.gint        // in
 
@@ -638,7 +707,11 @@ func (m menuModel) NItems() int {
 	return _gint
 }
 
-func (m menuModel) IsMutable() bool {
+// IsMutable queries if @model is mutable.
+//
+// An immutable Model will never emit the Model::items-changed signal. Consumers
+// of the model may make optimisations accordingly.
+func (m *MenuModelClass) IsMutable() bool {
 	var _arg0 *C.GMenuModel // out
 	var _cret C.gboolean    // in
 
@@ -655,7 +728,22 @@ func (m menuModel) IsMutable() bool {
 	return _ok
 }
 
-func (m menuModel) ItemsChanged(position int, removed int, added int) {
+// ItemsChanged requests emission of the Model::items-changed signal on @model.
+//
+// This function should never be called except by Model subclasses. Any other
+// calls to this function will very likely lead to a violation of the interface
+// of the model.
+//
+// The implementation should update its internal representation of the menu
+// before emitting the signal. The implementation should further expect to
+// receive queries about the new state of the menu (and particularly added menu
+// items) while signal handlers are running.
+//
+// The implementation must dispatch this call directly from a mainloop entry and
+// not in response to calls -- particularly those from the Model API. Said
+// another way: the menu must not change while user code is running without
+// returning to the mainloop.
+func (m *MenuModelClass) ItemsChanged(position int, removed int, added int) {
 	var _arg0 *C.GMenuModel // out
 	var _arg1 C.gint        // out
 	var _arg2 C.gint        // out
@@ -669,7 +757,11 @@ func (m menuModel) ItemsChanged(position int, removed int, added int) {
 	C.g_menu_model_items_changed(_arg0, _arg1, _arg2, _arg3)
 }
 
-func (m menuModel) IterateItemAttributes(itemIndex int) MenuAttributeIter {
+// IterateItemAttributes creates a AttributeIter to iterate over the attributes
+// of the item at position @item_index in @model.
+//
+// You must free the iterator with g_object_unref() when you are done.
+func (m *MenuModelClass) IterateItemAttributes(itemIndex int) MenuAttributeIter {
 	var _arg0 *C.GMenuModel         // out
 	var _arg1 C.gint                // out
 	var _cret *C.GMenuAttributeIter // in
@@ -686,7 +778,11 @@ func (m menuModel) IterateItemAttributes(itemIndex int) MenuAttributeIter {
 	return _menuAttributeIter
 }
 
-func (m menuModel) IterateItemLinks(itemIndex int) MenuLinkIter {
+// IterateItemLinks creates a LinkIter to iterate over the links of the item at
+// position @item_index in @model.
+//
+// You must free the iterator with g_object_unref() when you are done.
+func (m *MenuModelClass) IterateItemLinks(itemIndex int) MenuLinkIter {
 	var _arg0 *C.GMenuModel    // out
 	var _arg1 C.gint           // out
 	var _cret *C.GMenuLinkIter // in

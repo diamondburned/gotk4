@@ -58,46 +58,7 @@ func init() {
 // </mime-types> <patterns> <pattern>*.txt</pattern> <pattern>*.png</pattern>
 // </patterns> </object> “`
 type FileFilter interface {
-	Filter
-
-	// AsFilter casts the class to the Filter interface.
-	AsFilter() Filter
-	// AsBuildable casts the class to the Buildable interface.
-	AsBuildable() Buildable
-
-	// Changed emits the Filter::changed signal to notify all users of the
-	// filter that the filter changed. Users of the filter should then check
-	// items again via gtk_filter_match().
-	//
-	// Depending on the @change parameter, not all items need to be changed, but
-	// only some. Refer to the FilterChange documentation for details.
-	//
-	// This function is intended for implementors of Filter subclasses and
-	// should not be called from other functions.
-	//
-	// This method is inherited from Filter
-	Changed(change FilterChange)
-	// GetStrictness gets the known strictness of @filters. If the strictness is
-	// not known, GTK_FILTER_MATCH_SOME is returned.
-	//
-	// This value may change after emission of the Filter::changed signal.
-	//
-	// This function is meant purely for optimization purposes, filters can
-	// choose to omit implementing it, but FilterListModel uses it.
-	//
-	// This method is inherited from Filter
-	GetStrictness() FilterMatch
-	// Match checks if the given @item is matched by the filter or not.
-	//
-	// This method is inherited from Filter
-	Match(item gextras.Objector) bool
-	// GetBuildableID gets the ID of the @buildable object.
-	//
-	// `GtkBuilder` sets the name based on the ID attribute of the <object> tag
-	// used to construct the @buildable.
-	//
-	// This method is inherited from Buildable
-	GetBuildableID() string
+	gextras.Objector
 
 	// AddMIMEType adds a rule allowing a given mime type to @filter.
 	AddMIMEType(mimeType string)
@@ -128,23 +89,31 @@ type FileFilter interface {
 	ToGVariant() *glib.Variant
 }
 
-// fileFilter implements the FileFilter interface.
-type fileFilter struct {
+// FileFilterClass implements the FileFilter interface.
+type FileFilterClass struct {
 	*externglib.Object
+	FilterClass
+	BuildableInterface
 }
 
-var _ FileFilter = (*fileFilter)(nil)
+var _ FileFilter = (*FileFilterClass)(nil)
 
-// WrapFileFilter wraps a GObject to a type that implements
-// interface FileFilter. It is primarily used internally.
-func WrapFileFilter(obj *externglib.Object) FileFilter {
-	return fileFilter{obj}
+func wrapFileFilter(obj *externglib.Object) FileFilter {
+	return &FileFilterClass{
+		Object: obj,
+		FilterClass: FilterClass{
+			Object: obj,
+		},
+		BuildableInterface: BuildableInterface{
+			Object: obj,
+		},
+	}
 }
 
 func marshalFileFilter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapFileFilter(obj), nil
+	return wrapFileFilter(obj), nil
 }
 
 // NewFileFilter creates a new `GtkFileFilter` with no rules added to it.
@@ -187,31 +156,8 @@ func NewFileFilterFromGVariant(variant *glib.Variant) FileFilter {
 	return _fileFilter
 }
 
-func (f fileFilter) AsFilter() Filter {
-	return WrapFilter(gextras.InternObject(f))
-}
-
-func (f fileFilter) AsBuildable() Buildable {
-	return WrapBuildable(gextras.InternObject(f))
-}
-
-func (s fileFilter) Changed(change FilterChange) {
-	WrapFilter(gextras.InternObject(s)).Changed(change)
-}
-
-func (s fileFilter) GetStrictness() FilterMatch {
-	return WrapFilter(gextras.InternObject(s)).GetStrictness()
-}
-
-func (s fileFilter) Match(item gextras.Objector) bool {
-	return WrapFilter(gextras.InternObject(s)).Match(item)
-}
-
-func (b fileFilter) GetBuildableID() string {
-	return WrapBuildable(gextras.InternObject(b)).GetBuildableID()
-}
-
-func (f fileFilter) AddMIMEType(mimeType string) {
+// AddMIMEType adds a rule allowing a given mime type to @filter.
+func (f *FileFilterClass) AddMIMEType(mimeType string) {
 	var _arg0 *C.GtkFileFilter // out
 	var _arg1 *C.char          // out
 
@@ -222,7 +168,8 @@ func (f fileFilter) AddMIMEType(mimeType string) {
 	C.gtk_file_filter_add_mime_type(_arg0, _arg1)
 }
 
-func (f fileFilter) AddPattern(pattern string) {
+// AddPattern adds a rule allowing a shell style glob to a filter.
+func (f *FileFilterClass) AddPattern(pattern string) {
 	var _arg0 *C.GtkFileFilter // out
 	var _arg1 *C.char          // out
 
@@ -233,7 +180,12 @@ func (f fileFilter) AddPattern(pattern string) {
 	C.gtk_file_filter_add_pattern(_arg0, _arg1)
 }
 
-func (f fileFilter) AddPixbufFormats() {
+// AddPixbufFormats adds a rule allowing image files in the formats supported by
+// GdkPixbuf.
+//
+// This is equivalent to calling [method@Gtk.FileFilter.add_mime_type] for all
+// the supported mime types.
+func (f *FileFilterClass) AddPixbufFormats() {
 	var _arg0 *C.GtkFileFilter // out
 
 	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(f.Native()))
@@ -241,7 +193,12 @@ func (f fileFilter) AddPixbufFormats() {
 	C.gtk_file_filter_add_pixbuf_formats(_arg0)
 }
 
-func (f fileFilter) Attributes() []string {
+// Attributes gets the attributes that need to be filled in for the `GFileInfo`
+// passed to this filter.
+//
+// This function will not typically be used by applications; it is intended
+// principally for use in the implementation of `GtkFileChooser`.
+func (f *FileFilterClass) Attributes() []string {
 	var _arg0 *C.GtkFileFilter // out
 	var _cret **C.char
 
@@ -268,7 +225,10 @@ func (f fileFilter) Attributes() []string {
 	return _utf8s
 }
 
-func (f fileFilter) Name() string {
+// Name gets the human-readable name for the filter.
+//
+// See [method@Gtk.FileFilter.set_name].
+func (f *FileFilterClass) Name() string {
 	var _arg0 *C.GtkFileFilter // out
 	var _cret *C.char          // in
 
@@ -283,7 +243,11 @@ func (f fileFilter) Name() string {
 	return _utf8
 }
 
-func (f fileFilter) SetName(name string) {
+// SetName sets a human-readable name of the filter.
+//
+// This is the string that will be displayed in the file chooser if there is a
+// selectable list of filters.
+func (f *FileFilterClass) SetName(name string) {
 	var _arg0 *C.GtkFileFilter // out
 	var _arg1 *C.char          // out
 
@@ -294,7 +258,8 @@ func (f fileFilter) SetName(name string) {
 	C.gtk_file_filter_set_name(_arg0, _arg1)
 }
 
-func (f fileFilter) ToGVariant() *glib.Variant {
+// ToGVariant: serialize a file filter to an `a{sv}` variant.
+func (f *FileFilterClass) ToGVariant() *glib.Variant {
 	var _arg0 *C.GtkFileFilter // out
 	var _cret *C.GVariant      // in
 

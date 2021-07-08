@@ -36,7 +36,7 @@ func init() {
 	})
 }
 
-// PermissionOverrider contains methods that are overridable .
+// PermissionOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
@@ -191,26 +191,41 @@ type Permission interface {
 	ReleaseFinish(result AsyncResult) error
 }
 
-// permission implements the Permission interface.
-type permission struct {
+// PermissionClass implements the Permission interface.
+type PermissionClass struct {
 	*externglib.Object
 }
 
-var _ Permission = (*permission)(nil)
+var _ Permission = (*PermissionClass)(nil)
 
-// WrapPermission wraps a GObject to a type that implements
-// interface Permission. It is primarily used internally.
-func WrapPermission(obj *externglib.Object) Permission {
-	return permission{obj}
+func wrapPermission(obj *externglib.Object) Permission {
+	return &PermissionClass{
+		Object: obj,
+	}
 }
 
 func marshalPermission(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapPermission(obj), nil
+	return wrapPermission(obj), nil
 }
 
-func (p permission) Acquire(cancellable Cancellable) error {
+// Acquire attempts to acquire the permission represented by @permission.
+//
+// The precise method by which this happens depends on the permission and the
+// underlying authentication mechanism. A simple example is that a dialog may
+// appear asking the user to enter their password.
+//
+// You should check with g_permission_get_can_acquire() before calling this
+// function.
+//
+// If the permission is acquired then true is returned. Otherwise, false is
+// returned and @error is set appropriately.
+//
+// This call is blocking, likely for a very long time (in the case that user
+// interaction is required). See g_permission_acquire_async() for the
+// non-blocking version.
+func (p *PermissionClass) Acquire(cancellable Cancellable) error {
 	var _arg0 *C.GPermission  // out
 	var _arg1 *C.GCancellable // out
 	var _cerr *C.GError       // in
@@ -227,7 +242,10 @@ func (p permission) Acquire(cancellable Cancellable) error {
 	return _goerr
 }
 
-func (p permission) AcquireAsync(cancellable Cancellable, callback AsyncReadyCallback) {
+// AcquireAsync attempts to acquire the permission represented by @permission.
+//
+// This is the first half of the asynchronous version of g_permission_acquire().
+func (p *PermissionClass) AcquireAsync(cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GPermission        // out
 	var _arg1 *C.GCancellable       // out
 	var _arg2 C.GAsyncReadyCallback // out
@@ -241,7 +259,12 @@ func (p permission) AcquireAsync(cancellable Cancellable, callback AsyncReadyCal
 	C.g_permission_acquire_async(_arg0, _arg1, _arg2, _arg3)
 }
 
-func (p permission) AcquireFinish(result AsyncResult) error {
+// AcquireFinish collects the result of attempting to acquire the permission
+// represented by @permission.
+//
+// This is the second half of the asynchronous version of
+// g_permission_acquire().
+func (p *PermissionClass) AcquireFinish(result AsyncResult) error {
 	var _arg0 *C.GPermission  // out
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
@@ -258,7 +281,10 @@ func (p permission) AcquireFinish(result AsyncResult) error {
 	return _goerr
 }
 
-func (p permission) Allowed() bool {
+// Allowed gets the value of the 'allowed' property. This property is true if
+// the caller currently has permission to perform the action that @permission
+// represents the permission to perform.
+func (p *PermissionClass) Allowed() bool {
 	var _arg0 *C.GPermission // out
 	var _cret C.gboolean     // in
 
@@ -275,7 +301,10 @@ func (p permission) Allowed() bool {
 	return _ok
 }
 
-func (p permission) CanAcquire() bool {
+// CanAcquire gets the value of the 'can-acquire' property. This property is
+// true if it is generally possible to acquire the permission by calling
+// g_permission_acquire().
+func (p *PermissionClass) CanAcquire() bool {
 	var _arg0 *C.GPermission // out
 	var _cret C.gboolean     // in
 
@@ -292,7 +321,10 @@ func (p permission) CanAcquire() bool {
 	return _ok
 }
 
-func (p permission) CanRelease() bool {
+// CanRelease gets the value of the 'can-release' property. This property is
+// true if it is generally possible to release the permission by calling
+// g_permission_release().
+func (p *PermissionClass) CanRelease() bool {
 	var _arg0 *C.GPermission // out
 	var _cret C.gboolean     // in
 
@@ -309,7 +341,12 @@ func (p permission) CanRelease() bool {
 	return _ok
 }
 
-func (p permission) ImplUpdate(allowed bool, canAcquire bool, canRelease bool) {
+// ImplUpdate: this function is called by the #GPermission implementation to
+// update the properties of the permission. You should never call this function
+// except from a #GPermission implementation.
+//
+// GObject notify signals are generated, as appropriate.
+func (p *PermissionClass) ImplUpdate(allowed bool, canAcquire bool, canRelease bool) {
 	var _arg0 *C.GPermission // out
 	var _arg1 C.gboolean     // out
 	var _arg2 C.gboolean     // out
@@ -329,7 +366,22 @@ func (p permission) ImplUpdate(allowed bool, canAcquire bool, canRelease bool) {
 	C.g_permission_impl_update(_arg0, _arg1, _arg2, _arg3)
 }
 
-func (p permission) Release(cancellable Cancellable) error {
+// Release attempts to release the permission represented by @permission.
+//
+// The precise method by which this happens depends on the permission and the
+// underlying authentication mechanism. In most cases the permission will be
+// dropped immediately without further action.
+//
+// You should check with g_permission_get_can_release() before calling this
+// function.
+//
+// If the permission is released then true is returned. Otherwise, false is
+// returned and @error is set appropriately.
+//
+// This call is blocking, likely for a very long time (in the case that user
+// interaction is required). See g_permission_release_async() for the
+// non-blocking version.
+func (p *PermissionClass) Release(cancellable Cancellable) error {
 	var _arg0 *C.GPermission  // out
 	var _arg1 *C.GCancellable // out
 	var _cerr *C.GError       // in
@@ -346,7 +398,10 @@ func (p permission) Release(cancellable Cancellable) error {
 	return _goerr
 }
 
-func (p permission) ReleaseAsync(cancellable Cancellable, callback AsyncReadyCallback) {
+// ReleaseAsync attempts to release the permission represented by @permission.
+//
+// This is the first half of the asynchronous version of g_permission_release().
+func (p *PermissionClass) ReleaseAsync(cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GPermission        // out
 	var _arg1 *C.GCancellable       // out
 	var _arg2 C.GAsyncReadyCallback // out
@@ -360,7 +415,12 @@ func (p permission) ReleaseAsync(cancellable Cancellable, callback AsyncReadyCal
 	C.g_permission_release_async(_arg0, _arg1, _arg2, _arg3)
 }
 
-func (p permission) ReleaseFinish(result AsyncResult) error {
+// ReleaseFinish collects the result of attempting to release the permission
+// represented by @permission.
+//
+// This is the second half of the asynchronous version of
+// g_permission_release().
+func (p *PermissionClass) ReleaseFinish(result AsyncResult) error {
 	var _arg0 *C.GPermission  // out
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in

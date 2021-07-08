@@ -144,26 +144,35 @@ type DeviceManager interface {
 	Display() Display
 }
 
-// deviceManager implements the DeviceManager interface.
-type deviceManager struct {
+// DeviceManagerClass implements the DeviceManager interface.
+type DeviceManagerClass struct {
 	*externglib.Object
 }
 
-var _ DeviceManager = (*deviceManager)(nil)
+var _ DeviceManager = (*DeviceManagerClass)(nil)
 
-// WrapDeviceManager wraps a GObject to a type that implements
-// interface DeviceManager. It is primarily used internally.
-func WrapDeviceManager(obj *externglib.Object) DeviceManager {
-	return deviceManager{obj}
+func wrapDeviceManager(obj *externglib.Object) DeviceManager {
+	return &DeviceManagerClass{
+		Object: obj,
+	}
 }
 
 func marshalDeviceManager(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapDeviceManager(obj), nil
+	return wrapDeviceManager(obj), nil
 }
 
-func (d deviceManager) ClientPointer() Device {
+// ClientPointer returns the client pointer, that is, the master pointer that
+// acts as the core pointer for this application. In X11, window managers may
+// change this depending on the interaction pattern under the presence of
+// several pointers.
+//
+// You should use this function seldomly, only in code that isn’t triggered by a
+// Event and there aren’t other means to get a meaningful Device to operate on.
+//
+// Deprecated: since version 3.20.
+func (d *DeviceManagerClass) ClientPointer() Device {
 	var _arg0 *C.GdkDeviceManager // out
 	var _cret *C.GdkDevice        // in
 
@@ -178,7 +187,8 @@ func (d deviceManager) ClientPointer() Device {
 	return _device
 }
 
-func (d deviceManager) Display() Display {
+// Display gets the Display associated to @device_manager.
+func (d *DeviceManagerClass) Display() Display {
 	var _arg0 *C.GdkDeviceManager // out
 	var _cret *C.GdkDisplay       // in
 

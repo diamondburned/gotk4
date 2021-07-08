@@ -7,7 +7,6 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
 	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -86,42 +85,6 @@ func RenderBackground(context StyleContext, cr *cairo.Context, x float64, y floa
 	_arg6 = C.gdouble(height)
 
 	C.gtk_render_background(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
-}
-
-// RenderBackgroundGetClip returns the area that will be affected (i.e. drawn
-// to) when calling gtk_render_background() for the given @context and
-// rectangle.
-func RenderBackgroundGetClip(context StyleContext, x float64, y float64, width float64, height float64) gdk.Rectangle {
-	var _arg1 *C.GtkStyleContext // out
-	var _arg2 C.gdouble          // out
-	var _arg3 C.gdouble          // out
-	var _arg4 C.gdouble          // out
-	var _arg5 C.gdouble          // out
-	var _arg6 C.GdkRectangle     // in
-
-	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
-	_arg2 = C.gdouble(x)
-	_arg3 = C.gdouble(y)
-	_arg4 = C.gdouble(width)
-	_arg5 = C.gdouble(height)
-
-	C.gtk_render_background_get_clip(_arg1, _arg2, _arg3, _arg4, _arg5, &_arg6)
-
-	var _outClip gdk.Rectangle // out
-
-	{
-		var refTmpIn *C.GdkRectangle
-		var refTmpOut *gdk.Rectangle
-
-		in0 := &_arg6
-		refTmpIn = in0
-
-		refTmpOut = (*gdk.Rectangle)(unsafe.Pointer(refTmpIn))
-
-		_outClip = *refTmpOut
-	}
-
-	return _outClip
 }
 
 // RenderCheck renders a checkmark (as in a CheckButton).

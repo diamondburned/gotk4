@@ -32,7 +32,7 @@ func init() {
 	})
 }
 
-// VolumeMonitorOverrider contains methods that are overridable .
+// VolumeMonitorOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
@@ -76,26 +76,27 @@ type VolumeMonitor interface {
 	VolumeForUUID(uuid string) Volume
 }
 
-// volumeMonitor implements the VolumeMonitor interface.
-type volumeMonitor struct {
+// VolumeMonitorClass implements the VolumeMonitor interface.
+type VolumeMonitorClass struct {
 	*externglib.Object
 }
 
-var _ VolumeMonitor = (*volumeMonitor)(nil)
+var _ VolumeMonitor = (*VolumeMonitorClass)(nil)
 
-// WrapVolumeMonitor wraps a GObject to a type that implements
-// interface VolumeMonitor. It is primarily used internally.
-func WrapVolumeMonitor(obj *externglib.Object) VolumeMonitor {
-	return volumeMonitor{obj}
+func wrapVolumeMonitor(obj *externglib.Object) VolumeMonitor {
+	return &VolumeMonitorClass{
+		Object: obj,
+	}
 }
 
 func marshalVolumeMonitor(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapVolumeMonitor(obj), nil
+	return wrapVolumeMonitor(obj), nil
 }
 
-func (v volumeMonitor) MountForUUID(uuid string) Mount {
+// MountForUUID finds a #GMount object by its UUID (see g_mount_get_uuid())
+func (v *VolumeMonitorClass) MountForUUID(uuid string) Mount {
 	var _arg0 *C.GVolumeMonitor // out
 	var _arg1 *C.char           // out
 	var _cret *C.GMount         // in
@@ -113,7 +114,8 @@ func (v volumeMonitor) MountForUUID(uuid string) Mount {
 	return _mount
 }
 
-func (v volumeMonitor) VolumeForUUID(uuid string) Volume {
+// VolumeForUUID finds a #GVolume object by its UUID (see g_volume_get_uuid())
+func (v *VolumeMonitorClass) VolumeForUUID(uuid string) Volume {
 	var _arg0 *C.GVolumeMonitor // out
 	var _arg1 *C.char           // out
 	var _cret *C.GVolume        // in

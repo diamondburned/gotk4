@@ -39,23 +39,23 @@ type TextChildAnchor interface {
 	Deleted() bool
 }
 
-// textChildAnchor implements the TextChildAnchor interface.
-type textChildAnchor struct {
+// TextChildAnchorClass implements the TextChildAnchor interface.
+type TextChildAnchorClass struct {
 	*externglib.Object
 }
 
-var _ TextChildAnchor = (*textChildAnchor)(nil)
+var _ TextChildAnchor = (*TextChildAnchorClass)(nil)
 
-// WrapTextChildAnchor wraps a GObject to a type that implements
-// interface TextChildAnchor. It is primarily used internally.
-func WrapTextChildAnchor(obj *externglib.Object) TextChildAnchor {
-	return textChildAnchor{obj}
+func wrapTextChildAnchor(obj *externglib.Object) TextChildAnchor {
+	return &TextChildAnchorClass{
+		Object: obj,
+	}
 }
 
 func marshalTextChildAnchor(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapTextChildAnchor(obj), nil
+	return wrapTextChildAnchor(obj), nil
 }
 
 // NewTextChildAnchor creates a new `GtkTextChildAnchor`.
@@ -76,7 +76,13 @@ func NewTextChildAnchor() TextChildAnchor {
 	return _textChildAnchor
 }
 
-func (a textChildAnchor) Deleted() bool {
+// Deleted determines whether a child anchor has been deleted from the buffer.
+//
+// Keep in mind that the child anchor will be unreferenced when removed from the
+// buffer, so you need to hold your own reference (with g_object_ref()) if you
+// plan to use this function — otherwise all deleted child anchors will also be
+// finalized.
+func (a *TextChildAnchorClass) Deleted() bool {
 	var _arg0 *C.GtkTextChildAnchor // out
 	var _cret C.gboolean            // in
 

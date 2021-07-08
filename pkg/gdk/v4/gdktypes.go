@@ -39,31 +39,31 @@ type AxisUse int
 
 const (
 	// Ignore: the axis is ignored.
-	AxisIgnore AxisUse = iota
+	AxisUseIgnore AxisUse = iota
 	// X: the axis is used as the x axis.
-	AxisX
+	AxisUseX
 	// Y: the axis is used as the y axis.
-	AxisY
+	AxisUseY
 	// DeltaX: the axis is used as the scroll x delta
-	AxisDeltaX
+	AxisUseDeltaX
 	// DeltaY: the axis is used as the scroll y delta
-	AxisDeltaY
+	AxisUseDeltaY
 	// Pressure: the axis is used for pressure information.
-	AxisPressure
+	AxisUsePressure
 	// Xtilt: the axis is used for x tilt information.
-	AxisXtilt
+	AxisUseXtilt
 	// Ytilt: the axis is used for y tilt information.
-	AxisYtilt
+	AxisUseYtilt
 	// Wheel: the axis is used for wheel information.
-	AxisWheel
+	AxisUseWheel
 	// Distance: the axis is used for pen/tablet distance information
-	AxisDistance
+	AxisUseDistance
 	// Rotation: the axis is used for pen rotation information
-	AxisRotation
+	AxisUseRotation
 	// Slider: the axis is used for pen slider information
-	AxisSlider
+	AxisUseSlider
 	// Last: constant equal to the numerically highest axis value.
-	AxisLast
+	AxisUseLast
 )
 
 func marshalAxisUse(p uintptr) (interface{}, error) {
@@ -747,78 +747,4 @@ func (r *Rectangle) Equal(rect2 *Rectangle) bool {
 	}
 
 	return _ok
-}
-
-// Intersect calculates the intersection of two rectangles.
-//
-// It is allowed for @dest to be the same as either @src1 or @src2. If the
-// rectangles do not intersect, @dest’s width and height is set to 0 and its x
-// and y values are undefined. If you are only interested in whether the
-// rectangles intersect, but not in the intersecting area itself, pass nil for
-// @dest.
-func (s *Rectangle) Intersect(src2 *Rectangle) (Rectangle, bool) {
-	var _arg0 *C.GdkRectangle // out
-	var _arg1 *C.GdkRectangle // out
-	var _arg2 C.GdkRectangle  // in
-	var _cret C.gboolean      // in
-
-	_arg0 = (*C.GdkRectangle)(unsafe.Pointer(s))
-	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(src2))
-
-	_cret = C.gdk_rectangle_intersect(_arg0, _arg1, &_arg2)
-
-	var _dest Rectangle // out
-	var _ok bool        // out
-
-	{
-		var refTmpIn *C.GdkRectangle
-		var refTmpOut *Rectangle
-
-		in0 := &_arg2
-		refTmpIn = in0
-
-		refTmpOut = (*Rectangle)(unsafe.Pointer(refTmpIn))
-
-		_dest = *refTmpOut
-	}
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _dest, _ok
-}
-
-// Union calculates the union of two rectangles.
-//
-// The union of rectangles @src1 and @src2 is the smallest rectangle which
-// includes both @src1 and @src2 within it. It is allowed for @dest to be the
-// same as either @src1 or @src2.
-//
-// Note that this function does not ignore 'empty' rectangles (ie. with zero
-// width or height).
-func (s *Rectangle) Union(src2 *Rectangle) Rectangle {
-	var _arg0 *C.GdkRectangle // out
-	var _arg1 *C.GdkRectangle // out
-	var _arg2 C.GdkRectangle  // in
-
-	_arg0 = (*C.GdkRectangle)(unsafe.Pointer(s))
-	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(src2))
-
-	C.gdk_rectangle_union(_arg0, _arg1, &_arg2)
-
-	var _dest Rectangle // out
-
-	{
-		var refTmpIn *C.GdkRectangle
-		var refTmpOut *Rectangle
-
-		in0 := &_arg2
-		refTmpIn = in0
-
-		refTmpOut = (*Rectangle)(unsafe.Pointer(refTmpIn))
-
-		_dest = *refTmpOut
-	}
-
-	return _dest
 }

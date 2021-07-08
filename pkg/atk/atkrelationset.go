@@ -62,23 +62,23 @@ type RelationSet interface {
 	Remove(relation Relation)
 }
 
-// relationSet implements the RelationSet interface.
-type relationSet struct {
+// RelationSetClass implements the RelationSet interface.
+type RelationSetClass struct {
 	*externglib.Object
 }
 
-var _ RelationSet = (*relationSet)(nil)
+var _ RelationSet = (*RelationSetClass)(nil)
 
-// WrapRelationSet wraps a GObject to a type that implements
-// interface RelationSet. It is primarily used internally.
-func WrapRelationSet(obj *externglib.Object) RelationSet {
-	return relationSet{obj}
+func wrapRelationSet(obj *externglib.Object) RelationSet {
+	return &RelationSetClass{
+		Object: obj,
+	}
 }
 
 func marshalRelationSet(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapRelationSet(obj), nil
+	return wrapRelationSet(obj), nil
 }
 
 // NewRelationSet creates a new empty relation set.
@@ -94,7 +94,11 @@ func NewRelationSet() RelationSet {
 	return _relationSet
 }
 
-func (s relationSet) Add(relation Relation) {
+// Add a new relation to the current relation set if it is not already present.
+// This function ref's the AtkRelation so the caller of this function should
+// unref it to ensure that it will be destroyed when the AtkRelationSet is
+// destroyed.
+func (s *RelationSetClass) Add(relation Relation) {
 	var _arg0 *C.AtkRelationSet // out
 	var _arg1 *C.AtkRelation    // out
 
@@ -104,7 +108,11 @@ func (s relationSet) Add(relation Relation) {
 	C.atk_relation_set_add(_arg0, _arg1)
 }
 
-func (s relationSet) AddRelationByType(relationship RelationType, target Object) {
+// AddRelationByType: add a new relation of the specified type with the
+// specified target to the current relation set if the relation set does not
+// contain a relation of that type. If it is does contain a relation of that
+// typea the target is added to the relation.
+func (s *RelationSetClass) AddRelationByType(relationship RelationType, target Object) {
 	var _arg0 *C.AtkRelationSet // out
 	var _arg1 C.AtkRelationType // out
 	var _arg2 *C.AtkObject      // out
@@ -116,7 +124,9 @@ func (s relationSet) AddRelationByType(relationship RelationType, target Object)
 	C.atk_relation_set_add_relation_by_type(_arg0, _arg1, _arg2)
 }
 
-func (s relationSet) Contains(relationship RelationType) bool {
+// Contains determines whether the relation set contains a relation that matches
+// the specified type.
+func (s *RelationSetClass) Contains(relationship RelationType) bool {
 	var _arg0 *C.AtkRelationSet // out
 	var _arg1 C.AtkRelationType // out
 	var _cret C.gboolean        // in
@@ -135,7 +145,9 @@ func (s relationSet) Contains(relationship RelationType) bool {
 	return _ok
 }
 
-func (s relationSet) ContainsTarget(relationship RelationType, target Object) bool {
+// ContainsTarget determines whether the relation set contains a relation that
+// matches the specified pair formed by type @relationship and object @target.
+func (s *RelationSetClass) ContainsTarget(relationship RelationType, target Object) bool {
 	var _arg0 *C.AtkRelationSet // out
 	var _arg1 C.AtkRelationType // out
 	var _arg2 *C.AtkObject      // out
@@ -156,7 +168,8 @@ func (s relationSet) ContainsTarget(relationship RelationType, target Object) bo
 	return _ok
 }
 
-func (s relationSet) NRelations() int {
+// NRelations determines the number of relations in a relation set.
+func (s *RelationSetClass) NRelations() int {
 	var _arg0 *C.AtkRelationSet // out
 	var _cret C.gint            // in
 
@@ -171,7 +184,9 @@ func (s relationSet) NRelations() int {
 	return _gint
 }
 
-func (s relationSet) Relation(i int) Relation {
+// Relation determines the relation at the specified position in the relation
+// set.
+func (s *RelationSetClass) Relation(i int) Relation {
 	var _arg0 *C.AtkRelationSet // out
 	var _arg1 C.gint            // out
 	var _cret *C.AtkRelation    // in
@@ -188,7 +203,8 @@ func (s relationSet) Relation(i int) Relation {
 	return _relation
 }
 
-func (s relationSet) RelationByType(relationship RelationType) Relation {
+// RelationByType finds a relation that matches the specified type.
+func (s *RelationSetClass) RelationByType(relationship RelationType) Relation {
 	var _arg0 *C.AtkRelationSet // out
 	var _arg1 C.AtkRelationType // out
 	var _cret *C.AtkRelation    // in
@@ -205,7 +221,9 @@ func (s relationSet) RelationByType(relationship RelationType) Relation {
 	return _relation
 }
 
-func (s relationSet) Remove(relation Relation) {
+// Remove removes a relation from the relation set. This function unref's the
+// Relation so it will be deleted unless there is another reference to it.
+func (s *RelationSetClass) Remove(relation Relation) {
 	var _arg0 *C.AtkRelationSet // out
 	var _arg1 *C.AtkRelation    // out
 

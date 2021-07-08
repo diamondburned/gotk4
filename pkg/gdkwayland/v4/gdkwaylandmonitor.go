@@ -29,145 +29,30 @@ func init() {
 // to the Wayland `wl_output` object with
 // [method@GdkWayland.WaylandMonitor.get_wl_output].
 type WaylandMonitor interface {
-	gdk.Monitor
+	gextras.Objector
 
-	// AsMonitor casts the class to the gdk.Monitor interface.
-	AsMonitor() gdk.Monitor
-
-	// GetConnector gets the name of the monitor's connector, if available.
-	//
-	// This method is inherited from gdk.Monitor
-	GetConnector() string
-	// GetDisplay gets the display that this monitor belongs to.
-	//
-	// This method is inherited from gdk.Monitor
-	GetDisplay() gdk.Display
-	// GetGeometry retrieves the size and position of the monitor within the
-	// display coordinate space.
-	//
-	// The returned geometry is in ”application pixels”, not in ”device pixels”
-	// (see [method@Gdk.Monitor.get_scale_factor]).
-	//
-	// This method is inherited from gdk.Monitor
-	GetGeometry() gdk.Rectangle
-	// GetHeightMm gets the height in millimeters of the monitor.
-	//
-	// This method is inherited from gdk.Monitor
-	GetHeightMm() int
-	// GetManufacturer gets the name or PNP ID of the monitor's manufacturer.
-	//
-	// Note that this value might also vary depending on actual display backend.
-	//
-	// The PNP ID registry is located at https://uefi.org/pnp_id_list
-	// (https://uefi.org/pnp_id_list).
-	//
-	// This method is inherited from gdk.Monitor
-	GetManufacturer() string
-	// GetModel gets the string identifying the monitor model, if available.
-	//
-	// This method is inherited from gdk.Monitor
-	GetModel() string
-	// GetRefreshRate gets the refresh rate of the monitor, if available.
-	//
-	// The value is in milli-Hertz, so a refresh rate of 60Hz is returned as
-	// 60000.
-	//
-	// This method is inherited from gdk.Monitor
-	GetRefreshRate() int
-	// GetScaleFactor gets the internal scale factor that maps from monitor
-	// coordinates to device pixels.
-	//
-	// On traditional systems this is 1, but on very high density outputs it can
-	// be a higher value (often 2).
-	//
-	// This can be used if you want to create pixel based data for a particular
-	// monitor, but most of the time you’re drawing to a surface where it is
-	// better to use [method@Gdk.Surface.get_scale_factor] instead.
-	//
-	// This method is inherited from gdk.Monitor
-	GetScaleFactor() int
-	// GetSubpixelLayout gets information about the layout of red, green and
-	// blue primaries for pixels.
-	//
-	// This method is inherited from gdk.Monitor
-	GetSubpixelLayout() gdk.SubpixelLayout
-	// GetWidthMm gets the width in millimeters of the monitor.
-	//
-	// This method is inherited from gdk.Monitor
-	GetWidthMm() int
-	// IsValid returns true if the @monitor object corresponds to a physical
-	// monitor.
-	//
-	// The @monitor becomes invalid when the physical monitor is unplugged or
-	// removed.
-	//
-	// This method is inherited from gdk.Monitor
-	IsValid() bool
+	privateWaylandMonitorClass()
 }
 
-// waylandMonitor implements the WaylandMonitor interface.
-type waylandMonitor struct {
-	*externglib.Object
+// WaylandMonitorClass implements the WaylandMonitor interface.
+type WaylandMonitorClass struct {
+	gdk.MonitorClass
 }
 
-var _ WaylandMonitor = (*waylandMonitor)(nil)
+var _ WaylandMonitor = (*WaylandMonitorClass)(nil)
 
-// WrapWaylandMonitor wraps a GObject to a type that implements
-// interface WaylandMonitor. It is primarily used internally.
-func WrapWaylandMonitor(obj *externglib.Object) WaylandMonitor {
-	return waylandMonitor{obj}
+func wrapWaylandMonitor(obj *externglib.Object) WaylandMonitor {
+	return &WaylandMonitorClass{
+		MonitorClass: gdk.MonitorClass{
+			Object: obj,
+		},
+	}
 }
 
 func marshalWaylandMonitor(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapWaylandMonitor(obj), nil
+	return wrapWaylandMonitor(obj), nil
 }
 
-func (w waylandMonitor) AsMonitor() gdk.Monitor {
-	return gdk.WrapMonitor(gextras.InternObject(w))
-}
-
-func (m waylandMonitor) GetConnector() string {
-	return gdk.WrapMonitor(gextras.InternObject(m)).GetConnector()
-}
-
-func (m waylandMonitor) GetDisplay() gdk.Display {
-	return gdk.WrapMonitor(gextras.InternObject(m)).GetDisplay()
-}
-
-func (m waylandMonitor) GetGeometry() gdk.Rectangle {
-	return gdk.WrapMonitor(gextras.InternObject(m)).GetGeometry()
-}
-
-func (m waylandMonitor) GetHeightMm() int {
-	return gdk.WrapMonitor(gextras.InternObject(m)).GetHeightMm()
-}
-
-func (m waylandMonitor) GetManufacturer() string {
-	return gdk.WrapMonitor(gextras.InternObject(m)).GetManufacturer()
-}
-
-func (m waylandMonitor) GetModel() string {
-	return gdk.WrapMonitor(gextras.InternObject(m)).GetModel()
-}
-
-func (m waylandMonitor) GetRefreshRate() int {
-	return gdk.WrapMonitor(gextras.InternObject(m)).GetRefreshRate()
-}
-
-func (m waylandMonitor) GetScaleFactor() int {
-	return gdk.WrapMonitor(gextras.InternObject(m)).GetScaleFactor()
-}
-
-func (m waylandMonitor) GetSubpixelLayout() gdk.SubpixelLayout {
-	return gdk.WrapMonitor(gextras.InternObject(m)).GetSubpixelLayout()
-}
-
-func (m waylandMonitor) GetWidthMm() int {
-	return gdk.WrapMonitor(gextras.InternObject(m)).GetWidthMm()
-}
-
-func (m waylandMonitor) IsValid() bool {
-	return gdk.WrapMonitor(gextras.InternObject(m)).IsValid()
-}
+func (*WaylandMonitorClass) privateWaylandMonitorClass() {}

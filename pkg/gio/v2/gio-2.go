@@ -73,179 +73,69 @@ func init() {
 // rescanning the list on every change is pointless and expensive.
 type AppInfoMonitor interface {
 	gextras.Objector
+
+	privateAppInfoMonitorClass()
 }
 
-// appInfoMonitor implements the AppInfoMonitor interface.
-type appInfoMonitor struct {
+// AppInfoMonitorClass implements the AppInfoMonitor interface.
+type AppInfoMonitorClass struct {
 	*externglib.Object
 }
 
-var _ AppInfoMonitor = (*appInfoMonitor)(nil)
+var _ AppInfoMonitor = (*AppInfoMonitorClass)(nil)
 
-// WrapAppInfoMonitor wraps a GObject to a type that implements
-// interface AppInfoMonitor. It is primarily used internally.
-func WrapAppInfoMonitor(obj *externglib.Object) AppInfoMonitor {
-	return appInfoMonitor{obj}
+func wrapAppInfoMonitor(obj *externglib.Object) AppInfoMonitor {
+	return &AppInfoMonitorClass{
+		Object: obj,
+	}
 }
 
 func marshalAppInfoMonitor(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapAppInfoMonitor(obj), nil
+	return wrapAppInfoMonitor(obj), nil
 }
+
+func (*AppInfoMonitorClass) privateAppInfoMonitorClass() {}
 
 // BytesIcon specifies an image held in memory in a common format (usually png)
 // to be used as icon.
 type BytesIcon interface {
 	gextras.Objector
 
-	// AsIcon casts the class to the Icon interface.
-	AsIcon() Icon
-	// AsLoadableIcon casts the class to the LoadableIcon interface.
-	AsLoadableIcon() LoadableIcon
-
-	// Equal checks if two icons are equal.
-	//
-	// This method is inherited from Icon
-	Equal(icon2 Icon) bool
-	// Serialize serializes a #GIcon into a #GVariant. An equivalent #GIcon can
-	// be retrieved back by calling g_icon_deserialize() on the returned value.
-	// As serialization will avoid using raw icon data when possible, it only
-	// makes sense to transfer the #GVariant between processes on the same
-	// machine, (as opposed to over the network), and within the same file
-	// system namespace.
-	//
-	// This method is inherited from Icon
-	Serialize() *glib.Variant
-	// ToString generates a textual representation of @icon that can be used for
-	// serialization such as when passing @icon to a different process or saving
-	// it to persistent storage. Use g_icon_new_for_string() to get @icon back
-	// from the returned string.
-	//
-	// The encoding of the returned string is proprietary to #GIcon except in
-	// the following two cases
-	//
-	// - If @icon is a Icon, the returned string is a native path (such as
-	// `/path/to/my icon.png`) without escaping if the #GFile for @icon is a
-	// native file. If the file is not native, the returned string is the result
-	// of g_file_get_uri() (such as `sftp://path/to/my20icon.png`).
-	//
-	// - If @icon is a Icon with exactly one name and no fallbacks, the encoding
-	// is simply the name (such as `network-server`).
-	//
-	// This method is inherited from Icon
-	ToString() string
-	// Load loads a loadable icon. For the asynchronous version of this
-	// function, see g_loadable_icon_load_async().
-	//
-	// This method is inherited from LoadableIcon
-	Load(size int, cancellable Cancellable) (string, InputStream, error)
-	// LoadAsync loads an icon asynchronously. To finish this function, see
-	// g_loadable_icon_load_finish(). For the synchronous, blocking version of
-	// this function, see g_loadable_icon_load().
-	//
-	// This method is inherited from LoadableIcon
-	LoadAsync(size int, cancellable Cancellable, callback AsyncReadyCallback)
-	// LoadFinish finishes an asynchronous icon load started in
-	// g_loadable_icon_load_async().
-	//
-	// This method is inherited from LoadableIcon
-	LoadFinish(res AsyncResult) (string, InputStream, error)
-	// Equal checks if two icons are equal.
-	//
-	// This method is inherited from Icon
-	Equal(icon2 Icon) bool
-	// Serialize serializes a #GIcon into a #GVariant. An equivalent #GIcon can
-	// be retrieved back by calling g_icon_deserialize() on the returned value.
-	// As serialization will avoid using raw icon data when possible, it only
-	// makes sense to transfer the #GVariant between processes on the same
-	// machine, (as opposed to over the network), and within the same file
-	// system namespace.
-	//
-	// This method is inherited from Icon
-	Serialize() *glib.Variant
-	// ToString generates a textual representation of @icon that can be used for
-	// serialization such as when passing @icon to a different process or saving
-	// it to persistent storage. Use g_icon_new_for_string() to get @icon back
-	// from the returned string.
-	//
-	// The encoding of the returned string is proprietary to #GIcon except in
-	// the following two cases
-	//
-	// - If @icon is a Icon, the returned string is a native path (such as
-	// `/path/to/my icon.png`) without escaping if the #GFile for @icon is a
-	// native file. If the file is not native, the returned string is the result
-	// of g_file_get_uri() (such as `sftp://path/to/my20icon.png`).
-	//
-	// - If @icon is a Icon with exactly one name and no fallbacks, the encoding
-	// is simply the name (such as `network-server`).
-	//
-	// This method is inherited from Icon
-	ToString() string
+	privateBytesIconClass()
 }
 
-// bytesIcon implements the BytesIcon interface.
-type bytesIcon struct {
+// BytesIconClass implements the BytesIcon interface.
+type BytesIconClass struct {
 	*externglib.Object
+	IconInterface
+	LoadableIconInterface
 }
 
-var _ BytesIcon = (*bytesIcon)(nil)
+var _ BytesIcon = (*BytesIconClass)(nil)
 
-// WrapBytesIcon wraps a GObject to a type that implements
-// interface BytesIcon. It is primarily used internally.
-func WrapBytesIcon(obj *externglib.Object) BytesIcon {
-	return bytesIcon{obj}
+func wrapBytesIcon(obj *externglib.Object) BytesIcon {
+	return &BytesIconClass{
+		Object: obj,
+		IconInterface: IconInterface{
+			Object: obj,
+		},
+		LoadableIconInterface: LoadableIconInterface{
+			IconInterface: IconInterface{
+				Object: obj,
+			},
+		},
+	}
 }
 
 func marshalBytesIcon(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapBytesIcon(obj), nil
+	return wrapBytesIcon(obj), nil
 }
 
-func (b bytesIcon) AsIcon() Icon {
-	return WrapIcon(gextras.InternObject(b))
-}
-
-func (b bytesIcon) AsLoadableIcon() LoadableIcon {
-	return WrapLoadableIcon(gextras.InternObject(b))
-}
-
-func (i bytesIcon) Equal(icon2 Icon) bool {
-	return WrapIcon(gextras.InternObject(i)).Equal(icon2)
-}
-
-func (i bytesIcon) Serialize() *glib.Variant {
-	return WrapIcon(gextras.InternObject(i)).Serialize()
-}
-
-func (i bytesIcon) ToString() string {
-	return WrapIcon(gextras.InternObject(i)).ToString()
-}
-
-func (i bytesIcon) Load(size int, cancellable Cancellable) (string, InputStream, error) {
-	return WrapLoadableIcon(gextras.InternObject(i)).Load(size, cancellable)
-}
-
-func (i bytesIcon) LoadAsync(size int, cancellable Cancellable, callback AsyncReadyCallback) {
-	WrapLoadableIcon(gextras.InternObject(i)).LoadAsync(size, cancellable, callback)
-}
-
-func (i bytesIcon) LoadFinish(res AsyncResult) (string, InputStream, error) {
-	return WrapLoadableIcon(gextras.InternObject(i)).LoadFinish(res)
-}
-
-func (i bytesIcon) Equal(icon2 Icon) bool {
-	return WrapIcon(gextras.InternObject(i)).Equal(icon2)
-}
-
-func (i bytesIcon) Serialize() *glib.Variant {
-	return WrapIcon(gextras.InternObject(i)).Serialize()
-}
-
-func (i bytesIcon) ToString() string {
-	return WrapIcon(gextras.InternObject(i)).ToString()
-}
+func (*BytesIconClass) privateBytesIconClass() {}
 
 // DBusActionGroup is an implementation of the Group interface that can be used
 // as a proxy for an action group that is exported over D-Bus with
@@ -253,561 +143,39 @@ func (i bytesIcon) ToString() string {
 type DBusActionGroup interface {
 	gextras.Objector
 
-	// AsActionGroup casts the class to the ActionGroup interface.
-	AsActionGroup() ActionGroup
-	// AsRemoteActionGroup casts the class to the RemoteActionGroup interface.
-	AsRemoteActionGroup() RemoteActionGroup
-
-	// ActionAdded emits the Group::action-added signal on @action_group.
-	//
-	// This function should only be called by Group implementations.
-	//
-	// This method is inherited from ActionGroup
-	ActionAdded(actionName string)
-	// ActionEnabledChanged emits the Group::action-enabled-changed signal on
-	// @action_group.
-	//
-	// This function should only be called by Group implementations.
-	//
-	// This method is inherited from ActionGroup
-	ActionEnabledChanged(actionName string, enabled bool)
-	// ActionRemoved emits the Group::action-removed signal on @action_group.
-	//
-	// This function should only be called by Group implementations.
-	//
-	// This method is inherited from ActionGroup
-	ActionRemoved(actionName string)
-	// ActionStateChanged emits the Group::action-state-changed signal on
-	// @action_group.
-	//
-	// This function should only be called by Group implementations.
-	//
-	// This method is inherited from ActionGroup
-	ActionStateChanged(actionName string, state *glib.Variant)
-	// ActivateAction: activate the named action within @action_group.
-	//
-	// If the action is expecting a parameter, then the correct type of
-	// parameter must be given as @parameter. If the action is expecting no
-	// parameters then @parameter must be nil. See
-	// g_action_group_get_action_parameter_type().
-	//
-	// If the Group implementation supports asynchronous remote activation over
-	// D-Bus, this call may return before the relevant D-Bus traffic has been
-	// sent, or any replies have been received. In order to block on such
-	// asynchronous activation calls, g_dbus_connection_flush() should be called
-	// prior to the code, which depends on the result of the action activation.
-	// Without flushing the D-Bus connection, there is no guarantee that the
-	// action would have been activated.
-	//
-	// The following code which runs in a remote app instance, shows an example
-	// of a "quit" action being activated on the primary app instance over
-	// D-Bus. Here g_dbus_connection_flush() is called before `exit()`. Without
-	// g_dbus_connection_flush(), the "quit" action may fail to be activated on
-	// the primary instance.
-	//
-	//    // call "quit" action on primary instance
-	//    g_action_group_activate_action (G_ACTION_GROUP (app), "quit", NULL);
-	//
-	//    // make sure the action is activated now
-	//    g_dbus_connection_flush (...);
-	//
-	//    g_debug ("application has been terminated. exiting.");
-	//
-	//    exit (0);
-	//
-	// This method is inherited from ActionGroup
-	ActivateAction(actionName string, parameter *glib.Variant)
-	// ChangeActionState: request for the state of the named action within
-	// @action_group to be changed to @value.
-	//
-	// The action must be stateful and @value must be of the correct type. See
-	// g_action_group_get_action_state_type().
-	//
-	// This call merely requests a change. The action may refuse to change its
-	// state or may change its state to something other than @value. See
-	// g_action_group_get_action_state_hint().
-	//
-	// If the @value GVariant is floating, it is consumed.
-	//
-	// This method is inherited from ActionGroup
-	ChangeActionState(actionName string, value *glib.Variant)
-	// GetActionEnabled checks if the named action within @action_group is
-	// currently enabled.
-	//
-	// An action must be enabled in order to be activated or in order to have
-	// its state changed from outside callers.
-	//
-	// This method is inherited from ActionGroup
-	GetActionEnabled(actionName string) bool
-	// GetActionParameterType queries the type of the parameter that must be
-	// given when activating the named action within @action_group.
-	//
-	// When activating the action using g_action_group_activate_action(), the
-	// #GVariant given to that function must be of the type returned by this
-	// function.
-	//
-	// In the case that this function returns nil, you must not give any
-	// #GVariant, but nil instead.
-	//
-	// The parameter type of a particular action will never change but it is
-	// possible for an action to be removed and for a new action to be added
-	// with the same name but a different parameter type.
-	//
-	// This method is inherited from ActionGroup
-	GetActionParameterType(actionName string) *glib.VariantType
-	// GetActionState queries the current state of the named action within
-	// @action_group.
-	//
-	// If the action is not stateful then nil will be returned. If the action is
-	// stateful then the type of the return value is the type given by
-	// g_action_group_get_action_state_type().
-	//
-	// The return value (if non-nil) should be freed with g_variant_unref() when
-	// it is no longer required.
-	//
-	// This method is inherited from ActionGroup
-	GetActionState(actionName string) *glib.Variant
-	// GetActionStateHint requests a hint about the valid range of values for
-	// the state of the named action within @action_group.
-	//
-	// If nil is returned it either means that the action is not stateful or
-	// that there is no hint about the valid range of values for the state of
-	// the action.
-	//
-	// If a #GVariant array is returned then each item in the array is a
-	// possible value for the state. If a #GVariant pair (ie: two-tuple) is
-	// returned then the tuple specifies the inclusive lower and upper bound of
-	// valid values for the state.
-	//
-	// In any case, the information is merely a hint. It may be possible to have
-	// a state value outside of the hinted range and setting a value within the
-	// range may fail.
-	//
-	// The return value (if non-nil) should be freed with g_variant_unref() when
-	// it is no longer required.
-	//
-	// This method is inherited from ActionGroup
-	GetActionStateHint(actionName string) *glib.Variant
-	// GetActionStateType queries the type of the state of the named action
-	// within @action_group.
-	//
-	// If the action is stateful then this function returns the Type of the
-	// state. All calls to g_action_group_change_action_state() must give a
-	// #GVariant of this type and g_action_group_get_action_state() will return
-	// a #GVariant of the same type.
-	//
-	// If the action is not stateful then this function will return nil. In that
-	// case, g_action_group_get_action_state() will return nil and you must not
-	// call g_action_group_change_action_state().
-	//
-	// The state type of a particular action will never change but it is
-	// possible for an action to be removed and for a new action to be added
-	// with the same name but a different state type.
-	//
-	// This method is inherited from ActionGroup
-	GetActionStateType(actionName string) *glib.VariantType
-	// HasAction checks if the named action exists within @action_group.
-	//
-	// This method is inherited from ActionGroup
-	HasAction(actionName string) bool
-	// ListActions lists the actions contained within @action_group.
-	//
-	// The caller is responsible for freeing the list with g_strfreev() when it
-	// is no longer required.
-	//
-	// This method is inherited from ActionGroup
-	ListActions() []string
-	// QueryAction queries all aspects of the named action within an
-	// @action_group.
-	//
-	// This function acquires the information available from
-	// g_action_group_has_action(), g_action_group_get_action_enabled(),
-	// g_action_group_get_action_parameter_type(),
-	// g_action_group_get_action_state_type(),
-	// g_action_group_get_action_state_hint() and
-	// g_action_group_get_action_state() with a single function call.
-	//
-	// This provides two main benefits.
-	//
-	// The first is the improvement in efficiency that comes with not having to
-	// perform repeated lookups of the action in order to discover different
-	// things about it. The second is that implementing Group can now be done by
-	// only overriding this one virtual function.
-	//
-	// The interface provides a default implementation of this function that
-	// calls the individual functions, as required, to fetch the information.
-	// The interface also provides default implementations of those functions
-	// that call this function. All implementations, therefore, must override
-	// either this function or all of the others.
-	//
-	// If the action exists, true is returned and any of the requested fields
-	// (as indicated by having a non-nil reference passed in) are filled. If the
-	// action doesn't exist, false is returned and the fields may or may not
-	// have been modified.
-	//
-	// This method is inherited from ActionGroup
-	QueryAction(actionName string) (enabled bool, parameterType *glib.VariantType, stateType *glib.VariantType, stateHint *glib.Variant, state *glib.Variant, ok bool)
-	// ActivateActionFull activates the remote action.
-	//
-	// This is the same as g_action_group_activate_action() except that it
-	// allows for provision of "platform data" to be sent along with the
-	// activation request. This typically contains details such as the user
-	// interaction timestamp or startup notification information.
-	//
-	// @platform_data must be non-nil and must have the type
-	// G_VARIANT_TYPE_VARDICT. If it is floating, it will be consumed.
-	//
-	// This method is inherited from RemoteActionGroup
-	ActivateActionFull(actionName string, parameter *glib.Variant, platformData *glib.Variant)
-	// ChangeActionStateFull changes the state of a remote action.
-	//
-	// This is the same as g_action_group_change_action_state() except that it
-	// allows for provision of "platform data" to be sent along with the state
-	// change request. This typically contains details such as the user
-	// interaction timestamp or startup notification information.
-	//
-	// @platform_data must be non-nil and must have the type
-	// G_VARIANT_TYPE_VARDICT. If it is floating, it will be consumed.
-	//
-	// This method is inherited from RemoteActionGroup
-	ChangeActionStateFull(actionName string, value *glib.Variant, platformData *glib.Variant)
-	// ActionAdded emits the Group::action-added signal on @action_group.
-	//
-	// This function should only be called by Group implementations.
-	//
-	// This method is inherited from ActionGroup
-	ActionAdded(actionName string)
-	// ActionEnabledChanged emits the Group::action-enabled-changed signal on
-	// @action_group.
-	//
-	// This function should only be called by Group implementations.
-	//
-	// This method is inherited from ActionGroup
-	ActionEnabledChanged(actionName string, enabled bool)
-	// ActionRemoved emits the Group::action-removed signal on @action_group.
-	//
-	// This function should only be called by Group implementations.
-	//
-	// This method is inherited from ActionGroup
-	ActionRemoved(actionName string)
-	// ActionStateChanged emits the Group::action-state-changed signal on
-	// @action_group.
-	//
-	// This function should only be called by Group implementations.
-	//
-	// This method is inherited from ActionGroup
-	ActionStateChanged(actionName string, state *glib.Variant)
-	// ActivateAction: activate the named action within @action_group.
-	//
-	// If the action is expecting a parameter, then the correct type of
-	// parameter must be given as @parameter. If the action is expecting no
-	// parameters then @parameter must be nil. See
-	// g_action_group_get_action_parameter_type().
-	//
-	// If the Group implementation supports asynchronous remote activation over
-	// D-Bus, this call may return before the relevant D-Bus traffic has been
-	// sent, or any replies have been received. In order to block on such
-	// asynchronous activation calls, g_dbus_connection_flush() should be called
-	// prior to the code, which depends on the result of the action activation.
-	// Without flushing the D-Bus connection, there is no guarantee that the
-	// action would have been activated.
-	//
-	// The following code which runs in a remote app instance, shows an example
-	// of a "quit" action being activated on the primary app instance over
-	// D-Bus. Here g_dbus_connection_flush() is called before `exit()`. Without
-	// g_dbus_connection_flush(), the "quit" action may fail to be activated on
-	// the primary instance.
-	//
-	//    // call "quit" action on primary instance
-	//    g_action_group_activate_action (G_ACTION_GROUP (app), "quit", NULL);
-	//
-	//    // make sure the action is activated now
-	//    g_dbus_connection_flush (...);
-	//
-	//    g_debug ("application has been terminated. exiting.");
-	//
-	//    exit (0);
-	//
-	// This method is inherited from ActionGroup
-	ActivateAction(actionName string, parameter *glib.Variant)
-	// ChangeActionState: request for the state of the named action within
-	// @action_group to be changed to @value.
-	//
-	// The action must be stateful and @value must be of the correct type. See
-	// g_action_group_get_action_state_type().
-	//
-	// This call merely requests a change. The action may refuse to change its
-	// state or may change its state to something other than @value. See
-	// g_action_group_get_action_state_hint().
-	//
-	// If the @value GVariant is floating, it is consumed.
-	//
-	// This method is inherited from ActionGroup
-	ChangeActionState(actionName string, value *glib.Variant)
-	// GetActionEnabled checks if the named action within @action_group is
-	// currently enabled.
-	//
-	// An action must be enabled in order to be activated or in order to have
-	// its state changed from outside callers.
-	//
-	// This method is inherited from ActionGroup
-	GetActionEnabled(actionName string) bool
-	// GetActionParameterType queries the type of the parameter that must be
-	// given when activating the named action within @action_group.
-	//
-	// When activating the action using g_action_group_activate_action(), the
-	// #GVariant given to that function must be of the type returned by this
-	// function.
-	//
-	// In the case that this function returns nil, you must not give any
-	// #GVariant, but nil instead.
-	//
-	// The parameter type of a particular action will never change but it is
-	// possible for an action to be removed and for a new action to be added
-	// with the same name but a different parameter type.
-	//
-	// This method is inherited from ActionGroup
-	GetActionParameterType(actionName string) *glib.VariantType
-	// GetActionState queries the current state of the named action within
-	// @action_group.
-	//
-	// If the action is not stateful then nil will be returned. If the action is
-	// stateful then the type of the return value is the type given by
-	// g_action_group_get_action_state_type().
-	//
-	// The return value (if non-nil) should be freed with g_variant_unref() when
-	// it is no longer required.
-	//
-	// This method is inherited from ActionGroup
-	GetActionState(actionName string) *glib.Variant
-	// GetActionStateHint requests a hint about the valid range of values for
-	// the state of the named action within @action_group.
-	//
-	// If nil is returned it either means that the action is not stateful or
-	// that there is no hint about the valid range of values for the state of
-	// the action.
-	//
-	// If a #GVariant array is returned then each item in the array is a
-	// possible value for the state. If a #GVariant pair (ie: two-tuple) is
-	// returned then the tuple specifies the inclusive lower and upper bound of
-	// valid values for the state.
-	//
-	// In any case, the information is merely a hint. It may be possible to have
-	// a state value outside of the hinted range and setting a value within the
-	// range may fail.
-	//
-	// The return value (if non-nil) should be freed with g_variant_unref() when
-	// it is no longer required.
-	//
-	// This method is inherited from ActionGroup
-	GetActionStateHint(actionName string) *glib.Variant
-	// GetActionStateType queries the type of the state of the named action
-	// within @action_group.
-	//
-	// If the action is stateful then this function returns the Type of the
-	// state. All calls to g_action_group_change_action_state() must give a
-	// #GVariant of this type and g_action_group_get_action_state() will return
-	// a #GVariant of the same type.
-	//
-	// If the action is not stateful then this function will return nil. In that
-	// case, g_action_group_get_action_state() will return nil and you must not
-	// call g_action_group_change_action_state().
-	//
-	// The state type of a particular action will never change but it is
-	// possible for an action to be removed and for a new action to be added
-	// with the same name but a different state type.
-	//
-	// This method is inherited from ActionGroup
-	GetActionStateType(actionName string) *glib.VariantType
-	// HasAction checks if the named action exists within @action_group.
-	//
-	// This method is inherited from ActionGroup
-	HasAction(actionName string) bool
-	// ListActions lists the actions contained within @action_group.
-	//
-	// The caller is responsible for freeing the list with g_strfreev() when it
-	// is no longer required.
-	//
-	// This method is inherited from ActionGroup
-	ListActions() []string
-	// QueryAction queries all aspects of the named action within an
-	// @action_group.
-	//
-	// This function acquires the information available from
-	// g_action_group_has_action(), g_action_group_get_action_enabled(),
-	// g_action_group_get_action_parameter_type(),
-	// g_action_group_get_action_state_type(),
-	// g_action_group_get_action_state_hint() and
-	// g_action_group_get_action_state() with a single function call.
-	//
-	// This provides two main benefits.
-	//
-	// The first is the improvement in efficiency that comes with not having to
-	// perform repeated lookups of the action in order to discover different
-	// things about it. The second is that implementing Group can now be done by
-	// only overriding this one virtual function.
-	//
-	// The interface provides a default implementation of this function that
-	// calls the individual functions, as required, to fetch the information.
-	// The interface also provides default implementations of those functions
-	// that call this function. All implementations, therefore, must override
-	// either this function or all of the others.
-	//
-	// If the action exists, true is returned and any of the requested fields
-	// (as indicated by having a non-nil reference passed in) are filled. If the
-	// action doesn't exist, false is returned and the fields may or may not
-	// have been modified.
-	//
-	// This method is inherited from ActionGroup
-	QueryAction(actionName string) (enabled bool, parameterType *glib.VariantType, stateType *glib.VariantType, stateHint *glib.Variant, state *glib.Variant, ok bool)
+	privateDBusActionGroupClass()
 }
 
-// dBusActionGroup implements the DBusActionGroup interface.
-type dBusActionGroup struct {
+// DBusActionGroupClass implements the DBusActionGroup interface.
+type DBusActionGroupClass struct {
 	*externglib.Object
+	ActionGroupInterface
+	RemoteActionGroupInterface
 }
 
-var _ DBusActionGroup = (*dBusActionGroup)(nil)
+var _ DBusActionGroup = (*DBusActionGroupClass)(nil)
 
-// WrapDBusActionGroup wraps a GObject to a type that implements
-// interface DBusActionGroup. It is primarily used internally.
-func WrapDBusActionGroup(obj *externglib.Object) DBusActionGroup {
-	return dBusActionGroup{obj}
+func wrapDBusActionGroup(obj *externglib.Object) DBusActionGroup {
+	return &DBusActionGroupClass{
+		Object: obj,
+		ActionGroupInterface: ActionGroupInterface{
+			Object: obj,
+		},
+		RemoteActionGroupInterface: RemoteActionGroupInterface{
+			ActionGroupInterface: ActionGroupInterface{
+				Object: obj,
+			},
+		},
+	}
 }
 
 func marshalDBusActionGroup(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapDBusActionGroup(obj), nil
+	return wrapDBusActionGroup(obj), nil
 }
 
-func (d dBusActionGroup) AsActionGroup() ActionGroup {
-	return WrapActionGroup(gextras.InternObject(d))
-}
-
-func (d dBusActionGroup) AsRemoteActionGroup() RemoteActionGroup {
-	return WrapRemoteActionGroup(gextras.InternObject(d))
-}
-
-func (a dBusActionGroup) ActionAdded(actionName string) {
-	WrapActionGroup(gextras.InternObject(a)).ActionAdded(actionName)
-}
-
-func (a dBusActionGroup) ActionEnabledChanged(actionName string, enabled bool) {
-	WrapActionGroup(gextras.InternObject(a)).ActionEnabledChanged(actionName, enabled)
-}
-
-func (a dBusActionGroup) ActionRemoved(actionName string) {
-	WrapActionGroup(gextras.InternObject(a)).ActionRemoved(actionName)
-}
-
-func (a dBusActionGroup) ActionStateChanged(actionName string, state *glib.Variant) {
-	WrapActionGroup(gextras.InternObject(a)).ActionStateChanged(actionName, state)
-}
-
-func (a dBusActionGroup) ActivateAction(actionName string, parameter *glib.Variant) {
-	WrapActionGroup(gextras.InternObject(a)).ActivateAction(actionName, parameter)
-}
-
-func (a dBusActionGroup) ChangeActionState(actionName string, value *glib.Variant) {
-	WrapActionGroup(gextras.InternObject(a)).ChangeActionState(actionName, value)
-}
-
-func (a dBusActionGroup) GetActionEnabled(actionName string) bool {
-	return WrapActionGroup(gextras.InternObject(a)).GetActionEnabled(actionName)
-}
-
-func (a dBusActionGroup) GetActionParameterType(actionName string) *glib.VariantType {
-	return WrapActionGroup(gextras.InternObject(a)).GetActionParameterType(actionName)
-}
-
-func (a dBusActionGroup) GetActionState(actionName string) *glib.Variant {
-	return WrapActionGroup(gextras.InternObject(a)).GetActionState(actionName)
-}
-
-func (a dBusActionGroup) GetActionStateHint(actionName string) *glib.Variant {
-	return WrapActionGroup(gextras.InternObject(a)).GetActionStateHint(actionName)
-}
-
-func (a dBusActionGroup) GetActionStateType(actionName string) *glib.VariantType {
-	return WrapActionGroup(gextras.InternObject(a)).GetActionStateType(actionName)
-}
-
-func (a dBusActionGroup) HasAction(actionName string) bool {
-	return WrapActionGroup(gextras.InternObject(a)).HasAction(actionName)
-}
-
-func (a dBusActionGroup) ListActions() []string {
-	return WrapActionGroup(gextras.InternObject(a)).ListActions()
-}
-
-func (a dBusActionGroup) QueryAction(actionName string) (enabled bool, parameterType *glib.VariantType, stateType *glib.VariantType, stateHint *glib.Variant, state *glib.Variant, ok bool) {
-	return WrapActionGroup(gextras.InternObject(a)).QueryAction(actionName)
-}
-
-func (r dBusActionGroup) ActivateActionFull(actionName string, parameter *glib.Variant, platformData *glib.Variant) {
-	WrapRemoteActionGroup(gextras.InternObject(r)).ActivateActionFull(actionName, parameter, platformData)
-}
-
-func (r dBusActionGroup) ChangeActionStateFull(actionName string, value *glib.Variant, platformData *glib.Variant) {
-	WrapRemoteActionGroup(gextras.InternObject(r)).ChangeActionStateFull(actionName, value, platformData)
-}
-
-func (a dBusActionGroup) ActionAdded(actionName string) {
-	WrapActionGroup(gextras.InternObject(a)).ActionAdded(actionName)
-}
-
-func (a dBusActionGroup) ActionEnabledChanged(actionName string, enabled bool) {
-	WrapActionGroup(gextras.InternObject(a)).ActionEnabledChanged(actionName, enabled)
-}
-
-func (a dBusActionGroup) ActionRemoved(actionName string) {
-	WrapActionGroup(gextras.InternObject(a)).ActionRemoved(actionName)
-}
-
-func (a dBusActionGroup) ActionStateChanged(actionName string, state *glib.Variant) {
-	WrapActionGroup(gextras.InternObject(a)).ActionStateChanged(actionName, state)
-}
-
-func (a dBusActionGroup) ActivateAction(actionName string, parameter *glib.Variant) {
-	WrapActionGroup(gextras.InternObject(a)).ActivateAction(actionName, parameter)
-}
-
-func (a dBusActionGroup) ChangeActionState(actionName string, value *glib.Variant) {
-	WrapActionGroup(gextras.InternObject(a)).ChangeActionState(actionName, value)
-}
-
-func (a dBusActionGroup) GetActionEnabled(actionName string) bool {
-	return WrapActionGroup(gextras.InternObject(a)).GetActionEnabled(actionName)
-}
-
-func (a dBusActionGroup) GetActionParameterType(actionName string) *glib.VariantType {
-	return WrapActionGroup(gextras.InternObject(a)).GetActionParameterType(actionName)
-}
-
-func (a dBusActionGroup) GetActionState(actionName string) *glib.Variant {
-	return WrapActionGroup(gextras.InternObject(a)).GetActionState(actionName)
-}
-
-func (a dBusActionGroup) GetActionStateHint(actionName string) *glib.Variant {
-	return WrapActionGroup(gextras.InternObject(a)).GetActionStateHint(actionName)
-}
-
-func (a dBusActionGroup) GetActionStateType(actionName string) *glib.VariantType {
-	return WrapActionGroup(gextras.InternObject(a)).GetActionStateType(actionName)
-}
-
-func (a dBusActionGroup) HasAction(actionName string) bool {
-	return WrapActionGroup(gextras.InternObject(a)).HasAction(actionName)
-}
-
-func (a dBusActionGroup) ListActions() []string {
-	return WrapActionGroup(gextras.InternObject(a)).ListActions()
-}
-
-func (a dBusActionGroup) QueryAction(actionName string) (enabled bool, parameterType *glib.VariantType, stateType *glib.VariantType, stateHint *glib.Variant, state *glib.Variant, ok bool) {
-	return WrapActionGroup(gextras.InternObject(a)).QueryAction(actionName)
-}
+func (*DBusActionGroupClass) privateDBusActionGroupClass() {}
 
 // DBusAuthObserver: the BusAuthObserver type provides a mechanism for
 // participating in how a BusServer (or a BusConnection) authenticates remote
@@ -854,23 +222,23 @@ type DBusAuthObserver interface {
 	AuthorizeAuthenticatedPeer(stream IOStream, credentials Credentials) bool
 }
 
-// dBusAuthObserver implements the DBusAuthObserver interface.
-type dBusAuthObserver struct {
+// DBusAuthObserverClass implements the DBusAuthObserver interface.
+type DBusAuthObserverClass struct {
 	*externglib.Object
 }
 
-var _ DBusAuthObserver = (*dBusAuthObserver)(nil)
+var _ DBusAuthObserver = (*DBusAuthObserverClass)(nil)
 
-// WrapDBusAuthObserver wraps a GObject to a type that implements
-// interface DBusAuthObserver. It is primarily used internally.
-func WrapDBusAuthObserver(obj *externglib.Object) DBusAuthObserver {
-	return dBusAuthObserver{obj}
+func wrapDBusAuthObserver(obj *externglib.Object) DBusAuthObserver {
+	return &DBusAuthObserverClass{
+		Object: obj,
+	}
 }
 
 func marshalDBusAuthObserver(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapDBusAuthObserver(obj), nil
+	return wrapDBusAuthObserver(obj), nil
 }
 
 // NewDBusAuthObserver creates a new BusAuthObserver object.
@@ -886,7 +254,9 @@ func NewDBusAuthObserver() DBusAuthObserver {
 	return _dBusAuthObserver
 }
 
-func (o dBusAuthObserver) AllowMechanism(mechanism string) bool {
+// AllowMechanism emits the BusAuthObserver::allow-mechanism signal on
+// @observer.
+func (o *DBusAuthObserverClass) AllowMechanism(mechanism string) bool {
 	var _arg0 *C.GDBusAuthObserver // out
 	var _arg1 *C.gchar             // out
 	var _cret C.gboolean           // in
@@ -906,7 +276,9 @@ func (o dBusAuthObserver) AllowMechanism(mechanism string) bool {
 	return _ok
 }
 
-func (o dBusAuthObserver) AuthorizeAuthenticatedPeer(stream IOStream, credentials Credentials) bool {
+// AuthorizeAuthenticatedPeer emits the
+// BusAuthObserver::authorize-authenticated-peer signal on @observer.
+func (o *DBusAuthObserverClass) AuthorizeAuthenticatedPeer(stream IOStream, credentials Credentials) bool {
 	var _arg0 *C.GDBusAuthObserver // out
 	var _arg1 *C.GIOStream         // out
 	var _arg2 *C.GCredentials      // out
@@ -980,102 +352,6 @@ func (o dBusAuthObserver) AuthorizeAuthenticatedPeer(stream IOStream, credential
 // (https://git.gnome.org/browse/glib/tree/gio/tests/gdbus-example-export.c)
 type DBusConnection interface {
 	gextras.Objector
-
-	// AsAsyncInitable casts the class to the AsyncInitable interface.
-	AsAsyncInitable() AsyncInitable
-	// AsInitable casts the class to the Initable interface.
-	AsInitable() Initable
-
-	// InitAsync starts asynchronous initialization of the object implementing
-	// the interface. This must be done before any real use of the object after
-	// initial construction. If the object also implements #GInitable you can
-	// optionally call g_initable_init() instead.
-	//
-	// This method is intended for language bindings. If writing in C,
-	// g_async_initable_new_async() should typically be used instead.
-	//
-	// When the initialization is finished, @callback will be called. You can
-	// then call g_async_initable_init_finish() to get the result of the
-	// initialization.
-	//
-	// Implementations may also support cancellation. If @cancellable is not
-	// nil, then initialization can be cancelled by triggering the cancellable
-	// object from another thread. If the operation was cancelled, the error
-	// G_IO_ERROR_CANCELLED will be returned. If @cancellable is not nil, and
-	// the object doesn't support cancellable initialization, the error
-	// G_IO_ERROR_NOT_SUPPORTED will be returned.
-	//
-	// As with #GInitable, if the object is not initialized, or initialization
-	// returns with an error, then all operations on the object except
-	// g_object_ref() and g_object_unref() are considered to be invalid, and
-	// have undefined behaviour. They will often fail with g_critical() or
-	// g_warning(), but this must not be relied on.
-	//
-	// Callers should not assume that a class which implements Initable can be
-	// initialized multiple times; for more information, see g_initable_init().
-	// If a class explicitly supports being initialized multiple times,
-	// implementation requires yielding all subsequent calls to init_async() on
-	// the results of the first call.
-	//
-	// For classes that also support the #GInitable interface, the default
-	// implementation of this method will run the g_initable_init() function in
-	// a thread, so if you want to support asynchronous initialization via
-	// threads, just implement the Initable interface without overriding any
-	// interface methods.
-	//
-	// This method is inherited from AsyncInitable
-	InitAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
-	// InitFinish finishes asynchronous initialization and returns the result.
-	// See g_async_initable_init_async().
-	//
-	// This method is inherited from AsyncInitable
-	InitFinish(res AsyncResult) error
-	// NewFinish finishes the async construction for the various
-	// g_async_initable_new calls, returning the created object or nil on error.
-	//
-	// This method is inherited from AsyncInitable
-	NewFinish(res AsyncResult) (gextras.Objector, error)
-	// Init initializes the object implementing the interface.
-	//
-	// This method is intended for language bindings. If writing in C,
-	// g_initable_new() should typically be used instead.
-	//
-	// The object must be initialized before any real use after initial
-	// construction, either with this function or g_async_initable_init_async().
-	//
-	// Implementations may also support cancellation. If @cancellable is not
-	// nil, then initialization can be cancelled by triggering the cancellable
-	// object from another thread. If the operation was cancelled, the error
-	// G_IO_ERROR_CANCELLED will be returned. If @cancellable is not nil and the
-	// object doesn't support cancellable initialization the error
-	// G_IO_ERROR_NOT_SUPPORTED will be returned.
-	//
-	// If the object is not initialized, or initialization returns with an
-	// error, then all operations on the object except g_object_ref() and
-	// g_object_unref() are considered to be invalid, and have undefined
-	// behaviour. See the [introduction][ginitable] for more details.
-	//
-	// Callers should not assume that a class which implements #GInitable can be
-	// initialized multiple times, unless the class explicitly documents itself
-	// as supporting this. Generally, a class’ implementation of init() can
-	// assume (and assert) that it will only be called once. Previously, this
-	// documentation recommended all #GInitable implementations should be
-	// idempotent; that recommendation was relaxed in GLib 2.54.
-	//
-	// If a class explicitly supports being initialized multiple times, it is
-	// recommended that the method is idempotent: multiple calls with the same
-	// arguments should return the same results. Only the first call initializes
-	// the object; further calls return the result of the first call.
-	//
-	// One reason why a class might need to support idempotent initialization is
-	// if it is designed to be used via the singleton pattern, with a
-	// Class.constructor that sometimes returns an existing instance. In this
-	// pattern, a caller would expect to be able to call g_initable_init() on
-	// the result of g_object_new(), regardless of whether it is in fact a new
-	// instance.
-	//
-	// This method is inherited from Initable
-	Init(cancellable Cancellable) error
 
 	// Call: asynchronously invokes the @method_name method on the
 	// @interface_name D-Bus interface on the remote object at @object_path
@@ -1475,23 +751,31 @@ type DBusConnection interface {
 	UnregisterSubtree(registrationId uint) bool
 }
 
-// dBusConnection implements the DBusConnection interface.
-type dBusConnection struct {
+// DBusConnectionClass implements the DBusConnection interface.
+type DBusConnectionClass struct {
 	*externglib.Object
+	AsyncInitableInterface
+	InitableInterface
 }
 
-var _ DBusConnection = (*dBusConnection)(nil)
+var _ DBusConnection = (*DBusConnectionClass)(nil)
 
-// WrapDBusConnection wraps a GObject to a type that implements
-// interface DBusConnection. It is primarily used internally.
-func WrapDBusConnection(obj *externglib.Object) DBusConnection {
-	return dBusConnection{obj}
+func wrapDBusConnection(obj *externglib.Object) DBusConnection {
+	return &DBusConnectionClass{
+		Object: obj,
+		AsyncInitableInterface: AsyncInitableInterface{
+			Object: obj,
+		},
+		InitableInterface: InitableInterface{
+			Object: obj,
+		},
+	}
 }
 
 func marshalDBusConnection(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapDBusConnection(obj), nil
+	return wrapDBusConnection(obj), nil
 }
 
 // NewDBusConnectionFinish finishes an operation started with
@@ -1615,31 +899,48 @@ func NewDBusConnectionSync(stream IOStream, guid string, flags DBusConnectionFla
 	return _dBusConnection, _goerr
 }
 
-func (d dBusConnection) AsAsyncInitable() AsyncInitable {
-	return WrapAsyncInitable(gextras.InternObject(d))
-}
-
-func (d dBusConnection) AsInitable() Initable {
-	return WrapInitable(gextras.InternObject(d))
-}
-
-func (i dBusConnection) InitAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
-	WrapAsyncInitable(gextras.InternObject(i)).InitAsync(ioPriority, cancellable, callback)
-}
-
-func (i dBusConnection) InitFinish(res AsyncResult) error {
-	return WrapAsyncInitable(gextras.InternObject(i)).InitFinish(res)
-}
-
-func (i dBusConnection) NewFinish(res AsyncResult) (gextras.Objector, error) {
-	return WrapAsyncInitable(gextras.InternObject(i)).NewFinish(res)
-}
-
-func (i dBusConnection) Init(cancellable Cancellable) error {
-	return WrapInitable(gextras.InternObject(i)).Init(cancellable)
-}
-
-func (c dBusConnection) Call(busName string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, cancellable Cancellable, callback AsyncReadyCallback) {
+// Call: asynchronously invokes the @method_name method on the @interface_name
+// D-Bus interface on the remote object at @object_path owned by @bus_name.
+//
+// If @connection is closed then the operation will fail with G_IO_ERROR_CLOSED.
+// If @cancellable is canceled, the operation will fail with
+// G_IO_ERROR_CANCELLED. If @parameters contains a value not compatible with the
+// D-Bus protocol, the operation fails with G_IO_ERROR_INVALID_ARGUMENT.
+//
+// If @reply_type is non-nil then the reply will be checked for having this type
+// and an error will be raised if it does not match. Said another way, if you
+// give a @reply_type then any non-nil return value will be of this type. Unless
+// it’s G_VARIANT_TYPE_UNIT, the @reply_type will be a tuple containing one or
+// more values.
+//
+// If the @parameters #GVariant is floating, it is consumed. This allows
+// convenient 'inline' use of g_variant_new(), e.g.:
+//
+//    g_dbus_connection_call (connection,
+//                            "org.freedesktop.StringThings",
+//                            "/org/freedesktop/StringThings",
+//                            "org.freedesktop.StringThings",
+//                            "TwoStrings",
+//                            g_variant_new ("(ss)",
+//                                           "Thing One",
+//                                           "Thing Two"),
+//                            NULL,
+//                            G_DBUS_CALL_FLAGS_NONE,
+//                            -1,
+//                            NULL,
+//                            (GAsyncReadyCallback) two_strings_done,
+//                            NULL);
+//
+// This is an asynchronous method. When the operation is finished, @callback
+// will be invoked in the [thread-default main
+// context][g-main-context-push-thread-default] of the thread you are calling
+// this method from. You can then call g_dbus_connection_call_finish() to get
+// the result of the operation. See g_dbus_connection_call_sync() for the
+// synchronous version of this function.
+//
+// If @callback is nil then the D-Bus method call message will be sent with the
+// G_DBUS_MESSAGE_FLAGS_NO_REPLY_EXPECTED flag set.
+func (c *DBusConnectionClass) Call(busName string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GDBusConnection     // out
 	var _arg1 *C.gchar               // out
 	var _arg2 *C.gchar               // out
@@ -1673,7 +974,8 @@ func (c dBusConnection) Call(busName string, objectPath string, interfaceName st
 	C.g_dbus_connection_call(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, _arg10, _arg11)
 }
 
-func (c dBusConnection) CallFinish(res AsyncResult) (*glib.Variant, error) {
+// CallFinish finishes an operation started with g_dbus_connection_call().
+func (c *DBusConnectionClass) CallFinish(res AsyncResult) (*glib.Variant, error) {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 *C.GAsyncResult    // out
 	var _cret *C.GVariant        // in
@@ -1697,7 +999,39 @@ func (c dBusConnection) CallFinish(res AsyncResult) (*glib.Variant, error) {
 	return _variant, _goerr
 }
 
-func (c dBusConnection) CallSync(busName string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, cancellable Cancellable) (*glib.Variant, error) {
+// CallSync: synchronously invokes the @method_name method on the
+// @interface_name D-Bus interface on the remote object at @object_path owned by
+// @bus_name.
+//
+// If @connection is closed then the operation will fail with G_IO_ERROR_CLOSED.
+// If @cancellable is canceled, the operation will fail with
+// G_IO_ERROR_CANCELLED. If @parameters contains a value not compatible with the
+// D-Bus protocol, the operation fails with G_IO_ERROR_INVALID_ARGUMENT.
+//
+// If @reply_type is non-nil then the reply will be checked for having this type
+// and an error will be raised if it does not match. Said another way, if you
+// give a @reply_type then any non-nil return value will be of this type.
+//
+// If the @parameters #GVariant is floating, it is consumed. This allows
+// convenient 'inline' use of g_variant_new(), e.g.:
+//
+//    g_dbus_connection_call_sync (connection,
+//                                 "org.freedesktop.StringThings",
+//                                 "/org/freedesktop/StringThings",
+//                                 "org.freedesktop.StringThings",
+//                                 "TwoStrings",
+//                                 g_variant_new ("(ss)",
+//                                                "Thing One",
+//                                                "Thing Two"),
+//                                 NULL,
+//                                 G_DBUS_CALL_FLAGS_NONE,
+//                                 -1,
+//                                 NULL,
+//                                 &error);
+//
+// The calling thread is blocked until a reply is received. See
+// g_dbus_connection_call() for the asynchronous version of this method.
+func (c *DBusConnectionClass) CallSync(busName string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, cancellable Cancellable) (*glib.Variant, error) {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 *C.gchar           // out
 	var _arg2 *C.gchar           // out
@@ -1741,7 +1075,23 @@ func (c dBusConnection) CallSync(busName string, objectPath string, interfaceNam
 	return _variant, _goerr
 }
 
-func (c dBusConnection) CallWithUnixFdList(busName string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, fdList UnixFDList, cancellable Cancellable, callback AsyncReadyCallback) {
+// CallWithUnixFdList: like g_dbus_connection_call() but also takes a FDList
+// object.
+//
+// The file descriptors normally correspond to G_VARIANT_TYPE_HANDLE values in
+// the body of the message. For example, if a message contains two file
+// descriptors, @fd_list would have length 2, and `g_variant_new_handle (0)` and
+// `g_variant_new_handle (1)` would appear somewhere in the body of the message
+// (not necessarily in that order!) to represent the file descriptors at indexes
+// 0 and 1 respectively.
+//
+// When designing D-Bus APIs that are intended to be interoperable, please note
+// that non-GDBus implementations of D-Bus can usually only access file
+// descriptors if they are referenced in this way by a value of type
+// G_VARIANT_TYPE_HANDLE in the body of the message.
+//
+// This method is only available on UNIX.
+func (c *DBusConnectionClass) CallWithUnixFdList(busName string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, fdList UnixFDList, cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GDBusConnection     // out
 	var _arg1 *C.gchar               // out
 	var _arg2 *C.gchar               // out
@@ -1777,7 +1127,19 @@ func (c dBusConnection) CallWithUnixFdList(busName string, objectPath string, in
 	C.g_dbus_connection_call_with_unix_fd_list(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, _arg10, _arg11, _arg12)
 }
 
-func (c dBusConnection) CallWithUnixFdListFinish(res AsyncResult) (UnixFDList, *glib.Variant, error) {
+// CallWithUnixFdListFinish finishes an operation started with
+// g_dbus_connection_call_with_unix_fd_list().
+//
+// The file descriptors normally correspond to G_VARIANT_TYPE_HANDLE values in
+// the body of the message. For example, if g_variant_get_handle() returns 5,
+// that is intended to be a reference to the file descriptor that can be
+// accessed by `g_unix_fd_list_get (*out_fd_list, 5, ...)`.
+//
+// When designing D-Bus APIs that are intended to be interoperable, please note
+// that non-GDBus implementations of D-Bus can usually only access file
+// descriptors if they are referenced in this way by a value of type
+// G_VARIANT_TYPE_HANDLE in the body of the message.
+func (c *DBusConnectionClass) CallWithUnixFdListFinish(res AsyncResult) (UnixFDList, *glib.Variant, error) {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 *C.GUnixFDList     // in
 	var _arg2 *C.GAsyncResult    // out
@@ -1804,7 +1166,12 @@ func (c dBusConnection) CallWithUnixFdListFinish(res AsyncResult) (UnixFDList, *
 	return _outFdList, _variant, _goerr
 }
 
-func (c dBusConnection) CallWithUnixFdListSync(busName string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, fdList UnixFDList, cancellable Cancellable) (UnixFDList, *glib.Variant, error) {
+// CallWithUnixFdListSync: like g_dbus_connection_call_sync() but also takes and
+// returns FDList objects. See g_dbus_connection_call_with_unix_fd_list() and
+// g_dbus_connection_call_with_unix_fd_list_finish() for more details.
+//
+// This method is only available on UNIX.
+func (c *DBusConnectionClass) CallWithUnixFdListSync(busName string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, fdList UnixFDList, cancellable Cancellable) (UnixFDList, *glib.Variant, error) {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 *C.gchar           // out
 	var _arg2 *C.gchar           // out
@@ -1853,7 +1220,28 @@ func (c dBusConnection) CallWithUnixFdListSync(busName string, objectPath string
 	return _outFdList, _variant, _goerr
 }
 
-func (c dBusConnection) Close(cancellable Cancellable, callback AsyncReadyCallback) {
+// Close closes @connection. Note that this never causes the process to exit
+// (this might only happen if the other end of a shared message bus connection
+// disconnects, see BusConnection:exit-on-close).
+//
+// Once the connection is closed, operations such as sending a message will
+// return with the error G_IO_ERROR_CLOSED. Closing a connection will not
+// automatically flush the connection so queued messages may be lost. Use
+// g_dbus_connection_flush() if you need such guarantees.
+//
+// If @connection is already closed, this method fails with G_IO_ERROR_CLOSED.
+//
+// When @connection has been closed, the BusConnection::closed signal is emitted
+// in the [thread-default main context][g-main-context-push-thread-default] of
+// the thread that @connection was constructed in.
+//
+// This is an asynchronous method. When the operation is finished, @callback
+// will be invoked in the [thread-default main
+// context][g-main-context-push-thread-default] of the thread you are calling
+// this method from. You can then call g_dbus_connection_close_finish() to get
+// the result of the operation. See g_dbus_connection_close_sync() for the
+// synchronous version.
+func (c *DBusConnectionClass) Close(cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GDBusConnection    // out
 	var _arg1 *C.GCancellable       // out
 	var _arg2 C.GAsyncReadyCallback // out
@@ -1867,7 +1255,8 @@ func (c dBusConnection) Close(cancellable Cancellable, callback AsyncReadyCallba
 	C.g_dbus_connection_close(_arg0, _arg1, _arg2, _arg3)
 }
 
-func (c dBusConnection) CloseFinish(res AsyncResult) error {
+// CloseFinish finishes an operation started with g_dbus_connection_close().
+func (c *DBusConnectionClass) CloseFinish(res AsyncResult) error {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 *C.GAsyncResult    // out
 	var _cerr *C.GError          // in
@@ -1884,7 +1273,10 @@ func (c dBusConnection) CloseFinish(res AsyncResult) error {
 	return _goerr
 }
 
-func (c dBusConnection) CloseSync(cancellable Cancellable) error {
+// CloseSync: synchronously closes @connection. The calling thread is blocked
+// until this is done. See g_dbus_connection_close() for the asynchronous
+// version of this method and more details about what it does.
+func (c *DBusConnectionClass) CloseSync(cancellable Cancellable) error {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 *C.GCancellable    // out
 	var _cerr *C.GError          // in
@@ -1901,7 +1293,14 @@ func (c dBusConnection) CloseSync(cancellable Cancellable) error {
 	return _goerr
 }
 
-func (c dBusConnection) EmitSignal(destinationBusName string, objectPath string, interfaceName string, signalName string, parameters *glib.Variant) error {
+// EmitSignal emits a signal.
+//
+// If the parameters GVariant is floating, it is consumed.
+//
+// This can only fail if @parameters is not compatible with the D-Bus protocol
+// (G_IO_ERROR_INVALID_ARGUMENT), or if @connection has been closed
+// (G_IO_ERROR_CLOSED).
+func (c *DBusConnectionClass) EmitSignal(destinationBusName string, objectPath string, interfaceName string, signalName string, parameters *glib.Variant) error {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 *C.gchar           // out
 	var _arg2 *C.gchar           // out
@@ -1930,7 +1329,27 @@ func (c dBusConnection) EmitSignal(destinationBusName string, objectPath string,
 	return _goerr
 }
 
-func (c dBusConnection) ExportActionGroup(objectPath string, actionGroup ActionGroup) (uint, error) {
+// ExportActionGroup exports @action_group on @connection at @object_path.
+//
+// The implemented D-Bus API should be considered private. It is subject to
+// change in the future.
+//
+// A given object path can only have one action group exported on it. If this
+// constraint is violated, the export will fail and 0 will be returned (with
+// @error set accordingly).
+//
+// You can unexport the action group using
+// g_dbus_connection_unexport_action_group() with the return value of this
+// function.
+//
+// The thread default main context is taken at the time of this call. All
+// incoming action activations and state change requests are reported from this
+// context. Any changes on the action group that cause it to emit signals must
+// also come from this same context. Since incoming action activations and state
+// change requests are rather likely to cause changes on the action group, this
+// effectively limits a given action group to being exported from only one main
+// context.
+func (c *DBusConnectionClass) ExportActionGroup(objectPath string, actionGroup ActionGroup) (uint, error) {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 *C.gchar           // out
 	var _arg2 *C.GActionGroup    // out
@@ -1953,7 +1372,18 @@ func (c dBusConnection) ExportActionGroup(objectPath string, actionGroup ActionG
 	return _guint, _goerr
 }
 
-func (c dBusConnection) ExportMenuModel(objectPath string, menu MenuModel) (uint, error) {
+// ExportMenuModel exports @menu on @connection at @object_path.
+//
+// The implemented D-Bus API should be considered private. It is subject to
+// change in the future.
+//
+// An object path can only have one menu model exported on it. If this
+// constraint is violated, the export will fail and 0 will be returned (with
+// @error set accordingly).
+//
+// You can unexport the menu model using g_dbus_connection_unexport_menu_model()
+// with the return value of this function.
+func (c *DBusConnectionClass) ExportMenuModel(objectPath string, menu MenuModel) (uint, error) {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 *C.gchar           // out
 	var _arg2 *C.GMenuModel      // out
@@ -1976,7 +1406,20 @@ func (c dBusConnection) ExportMenuModel(objectPath string, menu MenuModel) (uint
 	return _guint, _goerr
 }
 
-func (c dBusConnection) Flush(cancellable Cancellable, callback AsyncReadyCallback) {
+// Flush: asynchronously flushes @connection, that is, writes all queued
+// outgoing message to the transport and then flushes the transport (using
+// g_output_stream_flush_async()). This is useful in programs that wants to emit
+// a D-Bus signal and then exit immediately. Without flushing the connection,
+// there is no guaranteed that the message has been sent to the networking
+// buffers in the OS kernel.
+//
+// This is an asynchronous method. When the operation is finished, @callback
+// will be invoked in the [thread-default main
+// context][g-main-context-push-thread-default] of the thread you are calling
+// this method from. You can then call g_dbus_connection_flush_finish() to get
+// the result of the operation. See g_dbus_connection_flush_sync() for the
+// synchronous version.
+func (c *DBusConnectionClass) Flush(cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GDBusConnection    // out
 	var _arg1 *C.GCancellable       // out
 	var _arg2 C.GAsyncReadyCallback // out
@@ -1990,7 +1433,8 @@ func (c dBusConnection) Flush(cancellable Cancellable, callback AsyncReadyCallba
 	C.g_dbus_connection_flush(_arg0, _arg1, _arg2, _arg3)
 }
 
-func (c dBusConnection) FlushFinish(res AsyncResult) error {
+// FlushFinish finishes an operation started with g_dbus_connection_flush().
+func (c *DBusConnectionClass) FlushFinish(res AsyncResult) error {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 *C.GAsyncResult    // out
 	var _cerr *C.GError          // in
@@ -2007,7 +1451,10 @@ func (c dBusConnection) FlushFinish(res AsyncResult) error {
 	return _goerr
 }
 
-func (c dBusConnection) FlushSync(cancellable Cancellable) error {
+// FlushSync: synchronously flushes @connection. The calling thread is blocked
+// until this is done. See g_dbus_connection_flush() for the asynchronous
+// version of this method and more details about what it does.
+func (c *DBusConnectionClass) FlushSync(cancellable Cancellable) error {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 *C.GCancellable    // out
 	var _cerr *C.GError          // in
@@ -2024,7 +1471,8 @@ func (c dBusConnection) FlushSync(cancellable Cancellable) error {
 	return _goerr
 }
 
-func (c dBusConnection) Capabilities() DBusCapabilityFlags {
+// Capabilities gets the capabilities negotiated with the remote peer
+func (c *DBusConnectionClass) Capabilities() DBusCapabilityFlags {
 	var _arg0 *C.GDBusConnection     // out
 	var _cret C.GDBusCapabilityFlags // in
 
@@ -2039,7 +1487,9 @@ func (c dBusConnection) Capabilities() DBusCapabilityFlags {
 	return _dBusCapabilityFlags
 }
 
-func (c dBusConnection) ExitOnClose() bool {
+// ExitOnClose gets whether the process is terminated when @connection is closed
+// by the remote peer. See BusConnection:exit-on-close for more details.
+func (c *DBusConnectionClass) ExitOnClose() bool {
 	var _arg0 *C.GDBusConnection // out
 	var _cret C.gboolean         // in
 
@@ -2056,7 +1506,8 @@ func (c dBusConnection) ExitOnClose() bool {
 	return _ok
 }
 
-func (c dBusConnection) Flags() DBusConnectionFlags {
+// Flags gets the flags used to construct this connection
+func (c *DBusConnectionClass) Flags() DBusConnectionFlags {
 	var _arg0 *C.GDBusConnection     // out
 	var _cret C.GDBusConnectionFlags // in
 
@@ -2071,7 +1522,9 @@ func (c dBusConnection) Flags() DBusConnectionFlags {
 	return _dBusConnectionFlags
 }
 
-func (c dBusConnection) Guid() string {
+// Guid: the GUID of the peer performing the role of server when authenticating.
+// See BusConnection:guid for more details.
+func (c *DBusConnectionClass) Guid() string {
 	var _arg0 *C.GDBusConnection // out
 	var _cret *C.gchar           // in
 
@@ -2086,7 +1539,12 @@ func (c dBusConnection) Guid() string {
 	return _utf8
 }
 
-func (c dBusConnection) LastSerial() uint32 {
+// LastSerial retrieves the last serial number assigned to a BusMessage on the
+// current thread. This includes messages sent via both low-level API such as
+// g_dbus_connection_send_message() as well as high-level API such as
+// g_dbus_connection_emit_signal(), g_dbus_connection_call() or
+// g_dbus_proxy_call().
+func (c *DBusConnectionClass) LastSerial() uint32 {
 	var _arg0 *C.GDBusConnection // out
 	var _cret C.guint32          // in
 
@@ -2101,7 +1559,15 @@ func (c dBusConnection) LastSerial() uint32 {
 	return _guint32
 }
 
-func (c dBusConnection) PeerCredentials() Credentials {
+// PeerCredentials gets the credentials of the authenticated peer. This will
+// always return nil unless @connection acted as a server (e.g.
+// G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_SERVER was passed) when set up and the
+// client passed credentials as part of the authentication process.
+//
+// In a message bus setup, the message bus is always the server and each
+// application is a client. So this method will always return nil for message
+// bus clients.
+func (c *DBusConnectionClass) PeerCredentials() Credentials {
 	var _arg0 *C.GDBusConnection // out
 	var _cret *C.GCredentials    // in
 
@@ -2116,7 +1582,11 @@ func (c dBusConnection) PeerCredentials() Credentials {
 	return _credentials
 }
 
-func (c dBusConnection) Stream() IOStream {
+// Stream gets the underlying stream used for IO.
+//
+// While the BusConnection is active, it will interact with this stream from a
+// worker thread, so it is not safe to interact with the stream directly.
+func (c *DBusConnectionClass) Stream() IOStream {
 	var _arg0 *C.GDBusConnection // out
 	var _cret *C.GIOStream       // in
 
@@ -2131,7 +1601,10 @@ func (c dBusConnection) Stream() IOStream {
 	return _ioStream
 }
 
-func (c dBusConnection) UniqueName() string {
+// UniqueName gets the unique name of @connection as assigned by the message
+// bus. This can also be used to figure out if @connection is a message bus
+// connection.
+func (c *DBusConnectionClass) UniqueName() string {
 	var _arg0 *C.GDBusConnection // out
 	var _cret *C.gchar           // in
 
@@ -2146,7 +1619,8 @@ func (c dBusConnection) UniqueName() string {
 	return _utf8
 }
 
-func (c dBusConnection) IsClosed() bool {
+// IsClosed gets whether @connection is closed.
+func (c *DBusConnectionClass) IsClosed() bool {
 	var _arg0 *C.GDBusConnection // out
 	var _cret C.gboolean         // in
 
@@ -2163,7 +1637,15 @@ func (c dBusConnection) IsClosed() bool {
 	return _ok
 }
 
-func (c dBusConnection) RemoveFilter(filterId uint) {
+// RemoveFilter removes a filter.
+//
+// Note that since filters run in a different thread, there is a race condition
+// where it is possible that the filter will be running even after calling
+// g_dbus_connection_remove_filter(), so you cannot just free data that the
+// filter might be using. Instead, you should pass a Notify to
+// g_dbus_connection_add_filter(), which will be called when it is guaranteed
+// that the data is no longer needed.
+func (c *DBusConnectionClass) RemoveFilter(filterId uint) {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 C.guint            // out
 
@@ -2173,7 +1655,27 @@ func (c dBusConnection) RemoveFilter(filterId uint) {
 	C.g_dbus_connection_remove_filter(_arg0, _arg1)
 }
 
-func (c dBusConnection) SendMessage(message DBusMessage, flags DBusSendMessageFlags) (uint32, error) {
+// SendMessage: asynchronously sends @message to the peer represented by
+// @connection.
+//
+// Unless @flags contain the G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL flag, the
+// serial number will be assigned by @connection and set on @message via
+// g_dbus_message_set_serial(). If @out_serial is not nil, then the serial
+// number used will be written to this location prior to submitting the message
+// to the underlying transport. While it has a `volatile` qualifier, this is a
+// historical artifact and the argument passed to it should not be `volatile`.
+//
+// If @connection is closed then the operation will fail with G_IO_ERROR_CLOSED.
+// If @message is not well-formed, the operation fails with
+// G_IO_ERROR_INVALID_ARGUMENT.
+//
+// See this [server][gdbus-server] and [client][gdbus-unix-fd-client] for an
+// example of how to use this low-level API to send and receive UNIX file
+// descriptors.
+//
+// Note that @message must be unlocked, unless @flags contain the
+// G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL flag.
+func (c *DBusConnectionClass) SendMessage(message DBusMessage, flags DBusSendMessageFlags) (uint32, error) {
 	var _arg0 *C.GDBusConnection      // out
 	var _arg1 *C.GDBusMessage         // out
 	var _arg2 C.GDBusSendMessageFlags // out
@@ -2195,7 +1697,36 @@ func (c dBusConnection) SendMessage(message DBusMessage, flags DBusSendMessageFl
 	return _outSerial, _goerr
 }
 
-func (c dBusConnection) SendMessageWithReply(message DBusMessage, flags DBusSendMessageFlags, timeoutMsec int, cancellable Cancellable, callback AsyncReadyCallback) uint32 {
+// SendMessageWithReply: asynchronously sends @message to the peer represented
+// by @connection.
+//
+// Unless @flags contain the G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL flag, the
+// serial number will be assigned by @connection and set on @message via
+// g_dbus_message_set_serial(). If @out_serial is not nil, then the serial
+// number used will be written to this location prior to submitting the message
+// to the underlying transport. While it has a `volatile` qualifier, this is a
+// historical artifact and the argument passed to it should not be `volatile`.
+//
+// If @connection is closed then the operation will fail with G_IO_ERROR_CLOSED.
+// If @cancellable is canceled, the operation will fail with
+// G_IO_ERROR_CANCELLED. If @message is not well-formed, the operation fails
+// with G_IO_ERROR_INVALID_ARGUMENT.
+//
+// This is an asynchronous method. When the operation is finished, @callback
+// will be invoked in the [thread-default main
+// context][g-main-context-push-thread-default] of the thread you are calling
+// this method from. You can then call
+// g_dbus_connection_send_message_with_reply_finish() to get the result of the
+// operation. See g_dbus_connection_send_message_with_reply_sync() for the
+// synchronous version.
+//
+// Note that @message must be unlocked, unless @flags contain the
+// G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL flag.
+//
+// See this [server][gdbus-server] and [client][gdbus-unix-fd-client] for an
+// example of how to use this low-level API to send and receive UNIX file
+// descriptors.
+func (c *DBusConnectionClass) SendMessageWithReply(message DBusMessage, flags DBusSendMessageFlags, timeoutMsec int, cancellable Cancellable, callback AsyncReadyCallback) uint32 {
 	var _arg0 *C.GDBusConnection      // out
 	var _arg1 *C.GDBusMessage         // out
 	var _arg2 C.GDBusSendMessageFlags // out
@@ -2222,7 +1753,18 @@ func (c dBusConnection) SendMessageWithReply(message DBusMessage, flags DBusSend
 	return _outSerial
 }
 
-func (c dBusConnection) SendMessageWithReplyFinish(res AsyncResult) (DBusMessage, error) {
+// SendMessageWithReplyFinish finishes an operation started with
+// g_dbus_connection_send_message_with_reply().
+//
+// Note that @error is only set if a local in-process error occurred. That is to
+// say that the returned BusMessage object may be of type
+// G_DBUS_MESSAGE_TYPE_ERROR. Use g_dbus_message_to_gerror() to transcode this
+// to a #GError.
+//
+// See this [server][gdbus-server] and [client][gdbus-unix-fd-client] for an
+// example of how to use this low-level API to send and receive UNIX file
+// descriptors.
+func (c *DBusConnectionClass) SendMessageWithReplyFinish(res AsyncResult) (DBusMessage, error) {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 *C.GAsyncResult    // out
 	var _cret *C.GDBusMessage    // in
@@ -2242,7 +1784,36 @@ func (c dBusConnection) SendMessageWithReplyFinish(res AsyncResult) (DBusMessage
 	return _dBusMessage, _goerr
 }
 
-func (c dBusConnection) SendMessageWithReplySync(message DBusMessage, flags DBusSendMessageFlags, timeoutMsec int, cancellable Cancellable) (uint32, DBusMessage, error) {
+// SendMessageWithReplySync: synchronously sends @message to the peer
+// represented by @connection and blocks the calling thread until a reply is
+// received or the timeout is reached. See
+// g_dbus_connection_send_message_with_reply() for the asynchronous version of
+// this method.
+//
+// Unless @flags contain the G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL flag, the
+// serial number will be assigned by @connection and set on @message via
+// g_dbus_message_set_serial(). If @out_serial is not nil, then the serial
+// number used will be written to this location prior to submitting the message
+// to the underlying transport. While it has a `volatile` qualifier, this is a
+// historical artifact and the argument passed to it should not be `volatile`.
+//
+// If @connection is closed then the operation will fail with G_IO_ERROR_CLOSED.
+// If @cancellable is canceled, the operation will fail with
+// G_IO_ERROR_CANCELLED. If @message is not well-formed, the operation fails
+// with G_IO_ERROR_INVALID_ARGUMENT.
+//
+// Note that @error is only set if a local in-process error occurred. That is to
+// say that the returned BusMessage object may be of type
+// G_DBUS_MESSAGE_TYPE_ERROR. Use g_dbus_message_to_gerror() to transcode this
+// to a #GError.
+//
+// See this [server][gdbus-server] and [client][gdbus-unix-fd-client] for an
+// example of how to use this low-level API to send and receive UNIX file
+// descriptors.
+//
+// Note that @message must be unlocked, unless @flags contain the
+// G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL flag.
+func (c *DBusConnectionClass) SendMessageWithReplySync(message DBusMessage, flags DBusSendMessageFlags, timeoutMsec int, cancellable Cancellable) (uint32, DBusMessage, error) {
 	var _arg0 *C.GDBusConnection      // out
 	var _arg1 *C.GDBusMessage         // out
 	var _arg2 C.GDBusSendMessageFlags // out
@@ -2271,7 +1842,16 @@ func (c dBusConnection) SendMessageWithReplySync(message DBusMessage, flags DBus
 	return _outSerial, _dBusMessage, _goerr
 }
 
-func (c dBusConnection) SetExitOnClose(exitOnClose bool) {
+// SetExitOnClose sets whether the process should be terminated when @connection
+// is closed by the remote peer. See BusConnection:exit-on-close for more
+// details.
+//
+// Note that this function should be used with care. Most modern UNIX desktops
+// tie the notion of a user session with the session bus, and expect all of a
+// user's applications to quit when their bus connection goes away. If you are
+// setting @exit_on_close to false for the shared session bus connection, you
+// should make sure that your application exits when the user session ends.
+func (c *DBusConnectionClass) SetExitOnClose(exitOnClose bool) {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 C.gboolean         // out
 
@@ -2283,7 +1863,15 @@ func (c dBusConnection) SetExitOnClose(exitOnClose bool) {
 	C.g_dbus_connection_set_exit_on_close(_arg0, _arg1)
 }
 
-func (c dBusConnection) SignalUnsubscribe(subscriptionId uint) {
+// SignalUnsubscribe unsubscribes from signals.
+//
+// Note that there may still be D-Bus traffic to process (relating to this
+// signal subscription) in the current thread-default Context after this
+// function has returned. You should continue to iterate the Context until the
+// Notify function passed to g_dbus_connection_signal_subscribe() is called, in
+// order to avoid memory leaks through callbacks queued on the Context after
+// it’s stopped being iterated.
+func (c *DBusConnectionClass) SignalUnsubscribe(subscriptionId uint) {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 C.guint            // out
 
@@ -2293,7 +1881,11 @@ func (c dBusConnection) SignalUnsubscribe(subscriptionId uint) {
 	C.g_dbus_connection_signal_unsubscribe(_arg0, _arg1)
 }
 
-func (c dBusConnection) StartMessageProcessing() {
+// StartMessageProcessing: if @connection was created with
+// G_DBUS_CONNECTION_FLAGS_DELAY_MESSAGE_PROCESSING, this method starts
+// processing messages. Does nothing on if @connection wasn't created with this
+// flag or if the method has already been called.
+func (c *DBusConnectionClass) StartMessageProcessing() {
 	var _arg0 *C.GDBusConnection // out
 
 	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(c.Native()))
@@ -2301,7 +1893,13 @@ func (c dBusConnection) StartMessageProcessing() {
 	C.g_dbus_connection_start_message_processing(_arg0)
 }
 
-func (c dBusConnection) UnexportActionGroup(exportId uint) {
+// UnexportActionGroup reverses the effect of a previous call to
+// g_dbus_connection_export_action_group().
+//
+// It is an error to call this function with an ID that wasn't returned from
+// g_dbus_connection_export_action_group() or to call it with the same ID more
+// than once.
+func (c *DBusConnectionClass) UnexportActionGroup(exportId uint) {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 C.guint            // out
 
@@ -2311,7 +1909,13 @@ func (c dBusConnection) UnexportActionGroup(exportId uint) {
 	C.g_dbus_connection_unexport_action_group(_arg0, _arg1)
 }
 
-func (c dBusConnection) UnexportMenuModel(exportId uint) {
+// UnexportMenuModel reverses the effect of a previous call to
+// g_dbus_connection_export_menu_model().
+//
+// It is an error to call this function with an ID that wasn't returned from
+// g_dbus_connection_export_menu_model() or to call it with the same ID more
+// than once.
+func (c *DBusConnectionClass) UnexportMenuModel(exportId uint) {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 C.guint            // out
 
@@ -2321,7 +1925,8 @@ func (c dBusConnection) UnexportMenuModel(exportId uint) {
 	C.g_dbus_connection_unexport_menu_model(_arg0, _arg1)
 }
 
-func (c dBusConnection) UnregisterObject(registrationId uint) bool {
+// UnregisterObject unregisters an object.
+func (c *DBusConnectionClass) UnregisterObject(registrationId uint) bool {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 C.guint            // out
 	var _cret C.gboolean         // in
@@ -2340,7 +1945,8 @@ func (c dBusConnection) UnregisterObject(registrationId uint) bool {
 	return _ok
 }
 
-func (c dBusConnection) UnregisterSubtree(registrationId uint) bool {
+// UnregisterSubtree unregisters a subtree.
+func (c *DBusConnectionClass) UnregisterSubtree(registrationId uint) bool {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 C.guint            // out
 	var _cret C.gboolean         // in
@@ -2363,129 +1969,33 @@ func (c dBusConnection) UnregisterSubtree(registrationId uint) bool {
 // menu model that is exported over D-Bus with
 // g_dbus_connection_export_menu_model().
 type DBusMenuModel interface {
-	MenuModel
+	gextras.Objector
 
-	// AsMenuModel casts the class to the MenuModel interface.
-	AsMenuModel() MenuModel
-
-	// GetItemAttributeValue queries the item at position @item_index in @model
-	// for the attribute specified by @attribute.
-	//
-	// If @expected_type is non-nil then it specifies the expected type of the
-	// attribute. If it is nil then any type will be accepted.
-	//
-	// If the attribute exists and matches @expected_type (or if the expected
-	// type is unspecified) then the value is returned.
-	//
-	// If the attribute does not exist, or does not match the expected type then
-	// nil is returned.
-	//
-	// This method is inherited from MenuModel
-	GetItemAttributeValue(itemIndex int, attribute string, expectedType *glib.VariantType) *glib.Variant
-	// GetItemLink queries the item at position @item_index in @model for the
-	// link specified by @link.
-	//
-	// If the link exists, the linked Model is returned. If the link does not
-	// exist, nil is returned.
-	//
-	// This method is inherited from MenuModel
-	GetItemLink(itemIndex int, link string) MenuModel
-	// GetNItems: query the number of items in @model.
-	//
-	// This method is inherited from MenuModel
-	GetNItems() int
-	// IsMutable queries if @model is mutable.
-	//
-	// An immutable Model will never emit the Model::items-changed signal.
-	// Consumers of the model may make optimisations accordingly.
-	//
-	// This method is inherited from MenuModel
-	IsMutable() bool
-	// ItemsChanged requests emission of the Model::items-changed signal on
-	// @model.
-	//
-	// This function should never be called except by Model subclasses. Any
-	// other calls to this function will very likely lead to a violation of the
-	// interface of the model.
-	//
-	// The implementation should update its internal representation of the menu
-	// before emitting the signal. The implementation should further expect to
-	// receive queries about the new state of the menu (and particularly added
-	// menu items) while signal handlers are running.
-	//
-	// The implementation must dispatch this call directly from a mainloop entry
-	// and not in response to calls -- particularly those from the Model API.
-	// Said another way: the menu must not change while user code is running
-	// without returning to the mainloop.
-	//
-	// This method is inherited from MenuModel
-	ItemsChanged(position int, removed int, added int)
-	// IterateItemAttributes creates a AttributeIter to iterate over the
-	// attributes of the item at position @item_index in @model.
-	//
-	// You must free the iterator with g_object_unref() when you are done.
-	//
-	// This method is inherited from MenuModel
-	IterateItemAttributes(itemIndex int) MenuAttributeIter
-	// IterateItemLinks creates a LinkIter to iterate over the links of the item
-	// at position @item_index in @model.
-	//
-	// You must free the iterator with g_object_unref() when you are done.
-	//
-	// This method is inherited from MenuModel
-	IterateItemLinks(itemIndex int) MenuLinkIter
+	privateDBusMenuModelClass()
 }
 
-// dBusMenuModel implements the DBusMenuModel interface.
-type dBusMenuModel struct {
-	*externglib.Object
+// DBusMenuModelClass implements the DBusMenuModel interface.
+type DBusMenuModelClass struct {
+	MenuModelClass
 }
 
-var _ DBusMenuModel = (*dBusMenuModel)(nil)
+var _ DBusMenuModel = (*DBusMenuModelClass)(nil)
 
-// WrapDBusMenuModel wraps a GObject to a type that implements
-// interface DBusMenuModel. It is primarily used internally.
-func WrapDBusMenuModel(obj *externglib.Object) DBusMenuModel {
-	return dBusMenuModel{obj}
+func wrapDBusMenuModel(obj *externglib.Object) DBusMenuModel {
+	return &DBusMenuModelClass{
+		MenuModelClass: MenuModelClass{
+			Object: obj,
+		},
+	}
 }
 
 func marshalDBusMenuModel(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapDBusMenuModel(obj), nil
+	return wrapDBusMenuModel(obj), nil
 }
 
-func (d dBusMenuModel) AsMenuModel() MenuModel {
-	return WrapMenuModel(gextras.InternObject(d))
-}
-
-func (m dBusMenuModel) GetItemAttributeValue(itemIndex int, attribute string, expectedType *glib.VariantType) *glib.Variant {
-	return WrapMenuModel(gextras.InternObject(m)).GetItemAttributeValue(itemIndex, attribute, expectedType)
-}
-
-func (m dBusMenuModel) GetItemLink(itemIndex int, link string) MenuModel {
-	return WrapMenuModel(gextras.InternObject(m)).GetItemLink(itemIndex, link)
-}
-
-func (m dBusMenuModel) GetNItems() int {
-	return WrapMenuModel(gextras.InternObject(m)).GetNItems()
-}
-
-func (m dBusMenuModel) IsMutable() bool {
-	return WrapMenuModel(gextras.InternObject(m)).IsMutable()
-}
-
-func (m dBusMenuModel) ItemsChanged(position int, removed int, added int) {
-	WrapMenuModel(gextras.InternObject(m)).ItemsChanged(position, removed, added)
-}
-
-func (m dBusMenuModel) IterateItemAttributes(itemIndex int) MenuAttributeIter {
-	return WrapMenuModel(gextras.InternObject(m)).IterateItemAttributes(itemIndex)
-}
-
-func (m dBusMenuModel) IterateItemLinks(itemIndex int) MenuLinkIter {
-	return WrapMenuModel(gextras.InternObject(m)).IterateItemLinks(itemIndex)
-}
+func (*DBusMenuModelClass) privateDBusMenuModelClass() {}
 
 // DBusMessage: type for representing D-Bus messages that can be sent or
 // received on a BusConnection.
@@ -2664,23 +2174,23 @@ type DBusMessage interface {
 	ToGerror() error
 }
 
-// dBusMessage implements the DBusMessage interface.
-type dBusMessage struct {
+// DBusMessageClass implements the DBusMessage interface.
+type DBusMessageClass struct {
 	*externglib.Object
 }
 
-var _ DBusMessage = (*dBusMessage)(nil)
+var _ DBusMessage = (*DBusMessageClass)(nil)
 
-// WrapDBusMessage wraps a GObject to a type that implements
-// interface DBusMessage. It is primarily used internally.
-func WrapDBusMessage(obj *externglib.Object) DBusMessage {
-	return dBusMessage{obj}
+func wrapDBusMessage(obj *externglib.Object) DBusMessage {
+	return &DBusMessageClass{
+		Object: obj,
+	}
 }
 
 func marshalDBusMessage(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapDBusMessage(obj), nil
+	return wrapDBusMessage(obj), nil
 }
 
 // NewDBusMessage creates a new empty BusMessage.
@@ -2773,7 +2283,12 @@ func NewDBusMessageSignal(path string, interface_ string, signal string) DBusMes
 	return _dBusMessage
 }
 
-func (m dBusMessage) Copy() (DBusMessage, error) {
+// Copy copies @message. The copy is a deep copy and the returned BusMessage is
+// completely identical except that it is guaranteed to not be locked.
+//
+// This operation can fail if e.g. @message contains file descriptors and the
+// per-process or system-wide open files limit is reached.
+func (m *DBusMessageClass) Copy() (DBusMessage, error) {
 	var _arg0 *C.GDBusMessage // out
 	var _cret *C.GDBusMessage // in
 	var _cerr *C.GError       // in
@@ -2791,7 +2306,8 @@ func (m dBusMessage) Copy() (DBusMessage, error) {
 	return _dBusMessage, _goerr
 }
 
-func (m dBusMessage) Arg0() string {
+// Arg0: convenience to get the first item in the body of @message.
+func (m *DBusMessageClass) Arg0() string {
 	var _arg0 *C.GDBusMessage // out
 	var _cret *C.gchar        // in
 
@@ -2806,7 +2322,8 @@ func (m dBusMessage) Arg0() string {
 	return _utf8
 }
 
-func (m dBusMessage) Body() *glib.Variant {
+// Body gets the body of a message.
+func (m *DBusMessageClass) Body() *glib.Variant {
 	var _arg0 *C.GDBusMessage // out
 	var _cret *C.GVariant     // in
 
@@ -2825,7 +2342,8 @@ func (m dBusMessage) Body() *glib.Variant {
 	return _variant
 }
 
-func (m dBusMessage) ByteOrder() DBusMessageByteOrder {
+// ByteOrder gets the byte order of @message.
+func (m *DBusMessageClass) ByteOrder() DBusMessageByteOrder {
 	var _arg0 *C.GDBusMessage         // out
 	var _cret C.GDBusMessageByteOrder // in
 
@@ -2840,7 +2358,9 @@ func (m dBusMessage) ByteOrder() DBusMessageByteOrder {
 	return _dBusMessageByteOrder
 }
 
-func (m dBusMessage) Destination() string {
+// Destination: convenience getter for the
+// G_DBUS_MESSAGE_HEADER_FIELD_DESTINATION header field.
+func (m *DBusMessageClass) Destination() string {
 	var _arg0 *C.GDBusMessage // out
 	var _cret *C.gchar        // in
 
@@ -2855,7 +2375,9 @@ func (m dBusMessage) Destination() string {
 	return _utf8
 }
 
-func (m dBusMessage) ErrorName() string {
+// ErrorName: convenience getter for the G_DBUS_MESSAGE_HEADER_FIELD_ERROR_NAME
+// header field.
+func (m *DBusMessageClass) ErrorName() string {
 	var _arg0 *C.GDBusMessage // out
 	var _cret *C.gchar        // in
 
@@ -2870,7 +2392,8 @@ func (m dBusMessage) ErrorName() string {
 	return _utf8
 }
 
-func (m dBusMessage) Flags() DBusMessageFlags {
+// Flags gets the flags for @message.
+func (m *DBusMessageClass) Flags() DBusMessageFlags {
 	var _arg0 *C.GDBusMessage     // out
 	var _cret C.GDBusMessageFlags // in
 
@@ -2885,7 +2408,11 @@ func (m dBusMessage) Flags() DBusMessageFlags {
 	return _dBusMessageFlags
 }
 
-func (m dBusMessage) Header(headerField DBusMessageHeaderField) *glib.Variant {
+// Header gets a header field on @message.
+//
+// The caller is responsible for checking the type of the returned #GVariant
+// matches what is expected.
+func (m *DBusMessageClass) Header(headerField DBusMessageHeaderField) *glib.Variant {
 	var _arg0 *C.GDBusMessage           // out
 	var _arg1 C.GDBusMessageHeaderField // out
 	var _cret *C.GVariant               // in
@@ -2906,7 +2433,8 @@ func (m dBusMessage) Header(headerField DBusMessageHeaderField) *glib.Variant {
 	return _variant
 }
 
-func (m dBusMessage) HeaderFields() []byte {
+// HeaderFields gets an array of all header fields on @message that are set.
+func (m *DBusMessageClass) HeaderFields() []byte {
 	var _arg0 *C.GDBusMessage // out
 	var _cret *C.guchar
 
@@ -2933,7 +2461,9 @@ func (m dBusMessage) HeaderFields() []byte {
 	return _guint8s
 }
 
-func (m dBusMessage) Interface() string {
+// Interface: convenience getter for the G_DBUS_MESSAGE_HEADER_FIELD_INTERFACE
+// header field.
+func (m *DBusMessageClass) Interface() string {
 	var _arg0 *C.GDBusMessage // out
 	var _cret *C.gchar        // in
 
@@ -2948,7 +2478,10 @@ func (m dBusMessage) Interface() string {
 	return _utf8
 }
 
-func (m dBusMessage) Locked() bool {
+// Locked checks whether @message is locked. To monitor changes to this value,
+// conncet to the #GObject::notify signal to listen for changes on the
+// BusMessage:locked property.
+func (m *DBusMessageClass) Locked() bool {
 	var _arg0 *C.GDBusMessage // out
 	var _cret C.gboolean      // in
 
@@ -2965,7 +2498,9 @@ func (m dBusMessage) Locked() bool {
 	return _ok
 }
 
-func (m dBusMessage) Member() string {
+// Member: convenience getter for the G_DBUS_MESSAGE_HEADER_FIELD_MEMBER header
+// field.
+func (m *DBusMessageClass) Member() string {
 	var _arg0 *C.GDBusMessage // out
 	var _cret *C.gchar        // in
 
@@ -2980,7 +2515,8 @@ func (m dBusMessage) Member() string {
 	return _utf8
 }
 
-func (m dBusMessage) MessageType() DBusMessageType {
+// MessageType gets the type of @message.
+func (m *DBusMessageClass) MessageType() DBusMessageType {
 	var _arg0 *C.GDBusMessage    // out
 	var _cret C.GDBusMessageType // in
 
@@ -2995,7 +2531,9 @@ func (m dBusMessage) MessageType() DBusMessageType {
 	return _dBusMessageType
 }
 
-func (m dBusMessage) NumUnixFds() uint32 {
+// NumUnixFds: convenience getter for the
+// G_DBUS_MESSAGE_HEADER_FIELD_NUM_UNIX_FDS header field.
+func (m *DBusMessageClass) NumUnixFds() uint32 {
 	var _arg0 *C.GDBusMessage // out
 	var _cret C.guint32       // in
 
@@ -3010,7 +2548,9 @@ func (m dBusMessage) NumUnixFds() uint32 {
 	return _guint32
 }
 
-func (m dBusMessage) Path() string {
+// Path: convenience getter for the G_DBUS_MESSAGE_HEADER_FIELD_PATH header
+// field.
+func (m *DBusMessageClass) Path() string {
 	var _arg0 *C.GDBusMessage // out
 	var _cret *C.gchar        // in
 
@@ -3025,7 +2565,9 @@ func (m dBusMessage) Path() string {
 	return _utf8
 }
 
-func (m dBusMessage) ReplySerial() uint32 {
+// ReplySerial: convenience getter for the
+// G_DBUS_MESSAGE_HEADER_FIELD_REPLY_SERIAL header field.
+func (m *DBusMessageClass) ReplySerial() uint32 {
 	var _arg0 *C.GDBusMessage // out
 	var _cret C.guint32       // in
 
@@ -3040,7 +2582,9 @@ func (m dBusMessage) ReplySerial() uint32 {
 	return _guint32
 }
 
-func (m dBusMessage) Sender() string {
+// Sender: convenience getter for the G_DBUS_MESSAGE_HEADER_FIELD_SENDER header
+// field.
+func (m *DBusMessageClass) Sender() string {
 	var _arg0 *C.GDBusMessage // out
 	var _cret *C.gchar        // in
 
@@ -3055,7 +2599,8 @@ func (m dBusMessage) Sender() string {
 	return _utf8
 }
 
-func (m dBusMessage) Serial() uint32 {
+// Serial gets the serial for @message.
+func (m *DBusMessageClass) Serial() uint32 {
 	var _arg0 *C.GDBusMessage // out
 	var _cret C.guint32       // in
 
@@ -3070,7 +2615,9 @@ func (m dBusMessage) Serial() uint32 {
 	return _guint32
 }
 
-func (m dBusMessage) Signature() string {
+// Signature: convenience getter for the G_DBUS_MESSAGE_HEADER_FIELD_SIGNATURE
+// header field.
+func (m *DBusMessageClass) Signature() string {
 	var _arg0 *C.GDBusMessage // out
 	var _cret *C.gchar        // in
 
@@ -3085,7 +2632,15 @@ func (m dBusMessage) Signature() string {
 	return _utf8
 }
 
-func (m dBusMessage) UnixFdList() UnixFDList {
+// UnixFdList gets the UNIX file descriptors associated with @message, if any.
+//
+// This method is only available on UNIX.
+//
+// The file descriptors normally correspond to G_VARIANT_TYPE_HANDLE values in
+// the body of the message. For example, if g_variant_get_handle() returns 5,
+// that is intended to be a reference to the file descriptor that can be
+// accessed by `g_unix_fd_list_get (list, 5, ...)`.
+func (m *DBusMessageClass) UnixFdList() UnixFDList {
 	var _arg0 *C.GDBusMessage // out
 	var _cret *C.GUnixFDList  // in
 
@@ -3100,7 +2655,8 @@ func (m dBusMessage) UnixFdList() UnixFDList {
 	return _unixFDList
 }
 
-func (m dBusMessage) Lock() {
+// Lock: if @message is locked, does nothing. Otherwise locks the message.
+func (m *DBusMessageClass) Lock() {
 	var _arg0 *C.GDBusMessage // out
 
 	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(m.Native()))
@@ -3108,7 +2664,9 @@ func (m dBusMessage) Lock() {
 	C.g_dbus_message_lock(_arg0)
 }
 
-func (m dBusMessage) NewMethodErrorLiteral(errorName string, errorMessage string) DBusMessage {
+// NewMethodErrorLiteral creates a new BusMessage that is an error reply to
+// @method_call_message.
+func (m *DBusMessageClass) NewMethodErrorLiteral(errorName string, errorMessage string) DBusMessage {
 	var _arg0 *C.GDBusMessage // out
 	var _arg1 *C.gchar        // out
 	var _arg2 *C.gchar        // out
@@ -3129,7 +2687,9 @@ func (m dBusMessage) NewMethodErrorLiteral(errorName string, errorMessage string
 	return _dBusMessage
 }
 
-func (m dBusMessage) NewMethodReply() DBusMessage {
+// NewMethodReply creates a new BusMessage that is a reply to
+// @method_call_message.
+func (m *DBusMessageClass) NewMethodReply() DBusMessage {
 	var _arg0 *C.GDBusMessage // out
 	var _cret *C.GDBusMessage // in
 
@@ -3144,7 +2704,38 @@ func (m dBusMessage) NewMethodReply() DBusMessage {
 	return _dBusMessage
 }
 
-func (m dBusMessage) Print(indent uint) string {
+// Print produces a human-readable multi-line description of @message.
+//
+// The contents of the description has no ABI guarantees, the contents and
+// formatting is subject to change at any time. Typical output looks something
+// like this:
+//
+//    Flags:   none
+//    Version: 0
+//    Serial:  4
+//    Headers:
+//      path -> objectpath '/org/gtk/GDBus/TestObject'
+//      interface -> 'org.gtk.GDBus.TestInterface'
+//      member -> 'GimmeStdout'
+//      destination -> ':1.146'
+//    Body: ()
+//    UNIX File Descriptors:
+//      (none)
+//
+// or
+//
+//    Flags:   no-reply-expected
+//    Version: 0
+//    Serial:  477
+//    Headers:
+//      reply-serial -> uint32 4
+//      destination -> ':1.159'
+//      sender -> ':1.146'
+//      num-unix-fds -> uint32 1
+//    Body: ()
+//    UNIX File Descriptors:
+//      fd 12: dev=0:10,mode=020620,ino=5,uid=500,gid=5,rdev=136:2,size=0,atime=1273085037,mtime=1273085851,ctime=1272982635
+func (m *DBusMessageClass) Print(indent uint) string {
 	var _arg0 *C.GDBusMessage // out
 	var _arg1 C.guint         // out
 	var _cret *C.gchar        // in
@@ -3162,7 +2753,12 @@ func (m dBusMessage) Print(indent uint) string {
 	return _utf8
 }
 
-func (m dBusMessage) SetBody(body *glib.Variant) {
+// SetBody sets the body @message. As a side-effect the
+// G_DBUS_MESSAGE_HEADER_FIELD_SIGNATURE header field is set to the type string
+// of @body (or cleared if @body is nil).
+//
+// If @body is floating, @message assumes ownership of @body.
+func (m *DBusMessageClass) SetBody(body *glib.Variant) {
 	var _arg0 *C.GDBusMessage // out
 	var _arg1 *C.GVariant     // out
 
@@ -3172,7 +2768,8 @@ func (m dBusMessage) SetBody(body *glib.Variant) {
 	C.g_dbus_message_set_body(_arg0, _arg1)
 }
 
-func (m dBusMessage) SetByteOrder(byteOrder DBusMessageByteOrder) {
+// SetByteOrder sets the byte order of @message.
+func (m *DBusMessageClass) SetByteOrder(byteOrder DBusMessageByteOrder) {
 	var _arg0 *C.GDBusMessage         // out
 	var _arg1 C.GDBusMessageByteOrder // out
 
@@ -3182,7 +2779,9 @@ func (m dBusMessage) SetByteOrder(byteOrder DBusMessageByteOrder) {
 	C.g_dbus_message_set_byte_order(_arg0, _arg1)
 }
 
-func (m dBusMessage) SetDestination(value string) {
+// SetDestination: convenience setter for the
+// G_DBUS_MESSAGE_HEADER_FIELD_DESTINATION header field.
+func (m *DBusMessageClass) SetDestination(value string) {
 	var _arg0 *C.GDBusMessage // out
 	var _arg1 *C.gchar        // out
 
@@ -3193,7 +2792,9 @@ func (m dBusMessage) SetDestination(value string) {
 	C.g_dbus_message_set_destination(_arg0, _arg1)
 }
 
-func (m dBusMessage) SetErrorName(value string) {
+// SetErrorName: convenience setter for the
+// G_DBUS_MESSAGE_HEADER_FIELD_ERROR_NAME header field.
+func (m *DBusMessageClass) SetErrorName(value string) {
 	var _arg0 *C.GDBusMessage // out
 	var _arg1 *C.gchar        // out
 
@@ -3204,7 +2805,8 @@ func (m dBusMessage) SetErrorName(value string) {
 	C.g_dbus_message_set_error_name(_arg0, _arg1)
 }
 
-func (m dBusMessage) SetFlags(flags DBusMessageFlags) {
+// SetFlags sets the flags to set on @message.
+func (m *DBusMessageClass) SetFlags(flags DBusMessageFlags) {
 	var _arg0 *C.GDBusMessage     // out
 	var _arg1 C.GDBusMessageFlags // out
 
@@ -3214,7 +2816,10 @@ func (m dBusMessage) SetFlags(flags DBusMessageFlags) {
 	C.g_dbus_message_set_flags(_arg0, _arg1)
 }
 
-func (m dBusMessage) SetHeader(headerField DBusMessageHeaderField, value *glib.Variant) {
+// SetHeader sets a header field on @message.
+//
+// If @value is floating, @message assumes ownership of @value.
+func (m *DBusMessageClass) SetHeader(headerField DBusMessageHeaderField, value *glib.Variant) {
 	var _arg0 *C.GDBusMessage           // out
 	var _arg1 C.GDBusMessageHeaderField // out
 	var _arg2 *C.GVariant               // out
@@ -3226,7 +2831,9 @@ func (m dBusMessage) SetHeader(headerField DBusMessageHeaderField, value *glib.V
 	C.g_dbus_message_set_header(_arg0, _arg1, _arg2)
 }
 
-func (m dBusMessage) SetInterface(value string) {
+// SetInterface: convenience setter for the
+// G_DBUS_MESSAGE_HEADER_FIELD_INTERFACE header field.
+func (m *DBusMessageClass) SetInterface(value string) {
 	var _arg0 *C.GDBusMessage // out
 	var _arg1 *C.gchar        // out
 
@@ -3237,7 +2844,9 @@ func (m dBusMessage) SetInterface(value string) {
 	C.g_dbus_message_set_interface(_arg0, _arg1)
 }
 
-func (m dBusMessage) SetMember(value string) {
+// SetMember: convenience setter for the G_DBUS_MESSAGE_HEADER_FIELD_MEMBER
+// header field.
+func (m *DBusMessageClass) SetMember(value string) {
 	var _arg0 *C.GDBusMessage // out
 	var _arg1 *C.gchar        // out
 
@@ -3248,7 +2857,8 @@ func (m dBusMessage) SetMember(value string) {
 	C.g_dbus_message_set_member(_arg0, _arg1)
 }
 
-func (m dBusMessage) SetMessageType(typ DBusMessageType) {
+// SetMessageType sets @message to be of @type.
+func (m *DBusMessageClass) SetMessageType(typ DBusMessageType) {
 	var _arg0 *C.GDBusMessage    // out
 	var _arg1 C.GDBusMessageType // out
 
@@ -3258,7 +2868,9 @@ func (m dBusMessage) SetMessageType(typ DBusMessageType) {
 	C.g_dbus_message_set_message_type(_arg0, _arg1)
 }
 
-func (m dBusMessage) SetNumUnixFds(value uint32) {
+// SetNumUnixFds: convenience setter for the
+// G_DBUS_MESSAGE_HEADER_FIELD_NUM_UNIX_FDS header field.
+func (m *DBusMessageClass) SetNumUnixFds(value uint32) {
 	var _arg0 *C.GDBusMessage // out
 	var _arg1 C.guint32       // out
 
@@ -3268,7 +2880,9 @@ func (m dBusMessage) SetNumUnixFds(value uint32) {
 	C.g_dbus_message_set_num_unix_fds(_arg0, _arg1)
 }
 
-func (m dBusMessage) SetPath(value string) {
+// SetPath: convenience setter for the G_DBUS_MESSAGE_HEADER_FIELD_PATH header
+// field.
+func (m *DBusMessageClass) SetPath(value string) {
 	var _arg0 *C.GDBusMessage // out
 	var _arg1 *C.gchar        // out
 
@@ -3279,7 +2893,9 @@ func (m dBusMessage) SetPath(value string) {
 	C.g_dbus_message_set_path(_arg0, _arg1)
 }
 
-func (m dBusMessage) SetReplySerial(value uint32) {
+// SetReplySerial: convenience setter for the
+// G_DBUS_MESSAGE_HEADER_FIELD_REPLY_SERIAL header field.
+func (m *DBusMessageClass) SetReplySerial(value uint32) {
 	var _arg0 *C.GDBusMessage // out
 	var _arg1 C.guint32       // out
 
@@ -3289,7 +2905,9 @@ func (m dBusMessage) SetReplySerial(value uint32) {
 	C.g_dbus_message_set_reply_serial(_arg0, _arg1)
 }
 
-func (m dBusMessage) SetSender(value string) {
+// SetSender: convenience setter for the G_DBUS_MESSAGE_HEADER_FIELD_SENDER
+// header field.
+func (m *DBusMessageClass) SetSender(value string) {
 	var _arg0 *C.GDBusMessage // out
 	var _arg1 *C.gchar        // out
 
@@ -3300,7 +2918,8 @@ func (m dBusMessage) SetSender(value string) {
 	C.g_dbus_message_set_sender(_arg0, _arg1)
 }
 
-func (m dBusMessage) SetSerial(serial uint32) {
+// SetSerial sets the serial for @message.
+func (m *DBusMessageClass) SetSerial(serial uint32) {
 	var _arg0 *C.GDBusMessage // out
 	var _arg1 C.guint32       // out
 
@@ -3310,7 +2929,9 @@ func (m dBusMessage) SetSerial(serial uint32) {
 	C.g_dbus_message_set_serial(_arg0, _arg1)
 }
 
-func (m dBusMessage) SetSignature(value string) {
+// SetSignature: convenience setter for the
+// G_DBUS_MESSAGE_HEADER_FIELD_SIGNATURE header field.
+func (m *DBusMessageClass) SetSignature(value string) {
 	var _arg0 *C.GDBusMessage // out
 	var _arg1 *C.gchar        // out
 
@@ -3321,7 +2942,17 @@ func (m dBusMessage) SetSignature(value string) {
 	C.g_dbus_message_set_signature(_arg0, _arg1)
 }
 
-func (m dBusMessage) SetUnixFdList(fdList UnixFDList) {
+// SetUnixFdList sets the UNIX file descriptors associated with @message. As a
+// side-effect the G_DBUS_MESSAGE_HEADER_FIELD_NUM_UNIX_FDS header field is set
+// to the number of fds in @fd_list (or cleared if @fd_list is nil).
+//
+// This method is only available on UNIX.
+//
+// When designing D-Bus APIs that are intended to be interoperable, please note
+// that non-GDBus implementations of D-Bus can usually only access file
+// descriptors if they are referenced by a value of type G_VARIANT_TYPE_HANDLE
+// in the body of the message.
+func (m *DBusMessageClass) SetUnixFdList(fdList UnixFDList) {
 	var _arg0 *C.GDBusMessage // out
 	var _arg1 *C.GUnixFDList  // out
 
@@ -3331,7 +2962,14 @@ func (m dBusMessage) SetUnixFdList(fdList UnixFDList) {
 	C.g_dbus_message_set_unix_fd_list(_arg0, _arg1)
 }
 
-func (m dBusMessage) ToGerror() error {
+// ToGerror: if @message is not of type G_DBUS_MESSAGE_TYPE_ERROR does nothing
+// and returns false.
+//
+// Otherwise this method encodes the error in @message as a #GError using
+// g_dbus_error_set_dbus_error() using the information in the
+// G_DBUS_MESSAGE_HEADER_FIELD_ERROR_NAME header field of @message as well as
+// the first string item in @message's body.
+func (m *DBusMessageClass) ToGerror() error {
 	var _arg0 *C.GDBusMessage // out
 	var _cerr *C.GError       // in
 
@@ -3455,26 +3093,27 @@ type DBusMethodInvocation interface {
 	ReturnValueWithUnixFdList(parameters *glib.Variant, fdList UnixFDList)
 }
 
-// dBusMethodInvocation implements the DBusMethodInvocation interface.
-type dBusMethodInvocation struct {
+// DBusMethodInvocationClass implements the DBusMethodInvocation interface.
+type DBusMethodInvocationClass struct {
 	*externglib.Object
 }
 
-var _ DBusMethodInvocation = (*dBusMethodInvocation)(nil)
+var _ DBusMethodInvocation = (*DBusMethodInvocationClass)(nil)
 
-// WrapDBusMethodInvocation wraps a GObject to a type that implements
-// interface DBusMethodInvocation. It is primarily used internally.
-func WrapDBusMethodInvocation(obj *externglib.Object) DBusMethodInvocation {
-	return dBusMethodInvocation{obj}
+func wrapDBusMethodInvocation(obj *externglib.Object) DBusMethodInvocation {
+	return &DBusMethodInvocationClass{
+		Object: obj,
+	}
 }
 
 func marshalDBusMethodInvocation(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapDBusMethodInvocation(obj), nil
+	return wrapDBusMethodInvocation(obj), nil
 }
 
-func (i dBusMethodInvocation) Connection() DBusConnection {
+// Connection gets the BusConnection the method was invoked on.
+func (i *DBusMethodInvocationClass) Connection() DBusConnection {
 	var _arg0 *C.GDBusMethodInvocation // out
 	var _cret *C.GDBusConnection       // in
 
@@ -3489,7 +3128,12 @@ func (i dBusMethodInvocation) Connection() DBusConnection {
 	return _dBusConnection
 }
 
-func (i dBusMethodInvocation) InterfaceName() string {
+// InterfaceName gets the name of the D-Bus interface the method was invoked on.
+//
+// If this method call is a property Get, Set or GetAll call that has been
+// redirected to the method call handler then "org.freedesktop.DBus.Properties"
+// will be returned. See BusInterfaceVTable for more information.
+func (i *DBusMethodInvocationClass) InterfaceName() string {
 	var _arg0 *C.GDBusMethodInvocation // out
 	var _cret *C.gchar                 // in
 
@@ -3504,7 +3148,14 @@ func (i dBusMethodInvocation) InterfaceName() string {
 	return _utf8
 }
 
-func (i dBusMethodInvocation) Message() DBusMessage {
+// Message gets the BusMessage for the method invocation. This is useful if you
+// need to use low-level protocol features, such as UNIX file descriptor
+// passing, that cannot be properly expressed in the #GVariant API.
+//
+// See this [server][gdbus-server] and [client][gdbus-unix-fd-client] for an
+// example of how to use this low-level API to send and receive UNIX file
+// descriptors.
+func (i *DBusMethodInvocationClass) Message() DBusMessage {
 	var _arg0 *C.GDBusMethodInvocation // out
 	var _cret *C.GDBusMessage          // in
 
@@ -3519,7 +3170,13 @@ func (i dBusMethodInvocation) Message() DBusMessage {
 	return _dBusMessage
 }
 
-func (i dBusMethodInvocation) MethodInfo() *DBusMethodInfo {
+// MethodInfo gets information about the method call, if any.
+//
+// If this method invocation is a property Get, Set or GetAll call that has been
+// redirected to the method call handler then nil will be returned. See
+// g_dbus_method_invocation_get_property_info() and BusInterfaceVTable for more
+// information.
+func (i *DBusMethodInvocationClass) MethodInfo() *DBusMethodInfo {
 	var _arg0 *C.GDBusMethodInvocation // out
 	var _cret *C.GDBusMethodInfo       // in
 
@@ -3538,7 +3195,8 @@ func (i dBusMethodInvocation) MethodInfo() *DBusMethodInfo {
 	return _dBusMethodInfo
 }
 
-func (i dBusMethodInvocation) MethodName() string {
+// MethodName gets the name of the method that was invoked.
+func (i *DBusMethodInvocationClass) MethodName() string {
 	var _arg0 *C.GDBusMethodInvocation // out
 	var _cret *C.gchar                 // in
 
@@ -3553,7 +3211,8 @@ func (i dBusMethodInvocation) MethodName() string {
 	return _utf8
 }
 
-func (i dBusMethodInvocation) ObjectPath() string {
+// ObjectPath gets the object path the method was invoked on.
+func (i *DBusMethodInvocationClass) ObjectPath() string {
 	var _arg0 *C.GDBusMethodInvocation // out
 	var _cret *C.gchar                 // in
 
@@ -3568,7 +3227,10 @@ func (i dBusMethodInvocation) ObjectPath() string {
 	return _utf8
 }
 
-func (i dBusMethodInvocation) Parameters() *glib.Variant {
+// Parameters gets the parameters of the method invocation. If there are no
+// input parameters then this will return a GVariant with 0 children rather than
+// NULL.
+func (i *DBusMethodInvocationClass) Parameters() *glib.Variant {
 	var _arg0 *C.GDBusMethodInvocation // out
 	var _cret *C.GVariant              // in
 
@@ -3587,7 +3249,18 @@ func (i dBusMethodInvocation) Parameters() *glib.Variant {
 	return _variant
 }
 
-func (i dBusMethodInvocation) PropertyInfo() *DBusPropertyInfo {
+// PropertyInfo gets information about the property that this method call is
+// for, if any.
+//
+// This will only be set in the case of an invocation in response to a property
+// Get or Set call that has been directed to the method call handler for an
+// object on account of its property_get() or property_set() vtable pointers
+// being unset.
+//
+// See BusInterfaceVTable for more information.
+//
+// If the call was GetAll, nil will be returned.
+func (i *DBusMethodInvocationClass) PropertyInfo() *DBusPropertyInfo {
 	var _arg0 *C.GDBusMethodInvocation // out
 	var _cret *C.GDBusPropertyInfo     // in
 
@@ -3606,7 +3279,8 @@ func (i dBusMethodInvocation) PropertyInfo() *DBusPropertyInfo {
 	return _dBusPropertyInfo
 }
 
-func (i dBusMethodInvocation) Sender() string {
+// Sender gets the bus name that invoked the method.
+func (i *DBusMethodInvocationClass) Sender() string {
 	var _arg0 *C.GDBusMethodInvocation // out
 	var _cret *C.gchar                 // in
 
@@ -3621,7 +3295,11 @@ func (i dBusMethodInvocation) Sender() string {
 	return _utf8
 }
 
-func (i dBusMethodInvocation) ReturnDBusError(errorName string, errorMessage string) {
+// ReturnDBusError finishes handling a D-Bus method call by returning an error.
+//
+// This method will take ownership of @invocation. See BusInterfaceVTable for
+// more information about the ownership of @invocation.
+func (i *DBusMethodInvocationClass) ReturnDBusError(errorName string, errorMessage string) {
 	var _arg0 *C.GDBusMethodInvocation // out
 	var _arg1 *C.gchar                 // out
 	var _arg2 *C.gchar                 // out
@@ -3635,7 +3313,12 @@ func (i dBusMethodInvocation) ReturnDBusError(errorName string, errorMessage str
 	C.g_dbus_method_invocation_return_dbus_error(_arg0, _arg1, _arg2)
 }
 
-func (i dBusMethodInvocation) ReturnGerror(err error) {
+// ReturnGerror: like g_dbus_method_invocation_return_error() but takes a
+// #GError instead of the error domain, error code and message.
+//
+// This method will take ownership of @invocation. See BusInterfaceVTable for
+// more information about the ownership of @invocation.
+func (i *DBusMethodInvocationClass) ReturnGerror(err error) {
 	var _arg0 *C.GDBusMethodInvocation // out
 	var _arg1 *C.GError                // out
 
@@ -3648,7 +3331,35 @@ func (i dBusMethodInvocation) ReturnGerror(err error) {
 	C.g_dbus_method_invocation_return_gerror(_arg0, _arg1)
 }
 
-func (i dBusMethodInvocation) ReturnValue(parameters *glib.Variant) {
+// ReturnValue finishes handling a D-Bus method call by returning @parameters.
+// If the @parameters GVariant is floating, it is consumed.
+//
+// It is an error if @parameters is not of the right format: it must be a tuple
+// containing the out-parameters of the D-Bus method. Even if the method has a
+// single out-parameter, it must be contained in a tuple. If the method has no
+// out-parameters, @parameters may be nil or an empty tuple.
+//
+//    GDBusMethodInvocation *invocation = some_invocation;
+//    g_autofree gchar *result_string = NULL;
+//    g_autoptr (GError) error = NULL;
+//
+//    result_string = calculate_result (&error);
+//
+//    if (error != NULL)
+//      g_dbus_method_invocation_return_gerror (invocation, error);
+//    else
+//      g_dbus_method_invocation_return_value (invocation,
+//                                             g_variant_new ("(s)", result_string));
+//
+//    // Do not free @invocation here; returning a value does that
+//
+// This method will take ownership of @invocation. See BusInterfaceVTable for
+// more information about the ownership of @invocation.
+//
+// Since 2.48, if the method call requested for a reply not to be sent then this
+// call will sink @parameters and free @invocation, but otherwise do nothing (as
+// per the recommendations of the D-Bus specification).
+func (i *DBusMethodInvocationClass) ReturnValue(parameters *glib.Variant) {
 	var _arg0 *C.GDBusMethodInvocation // out
 	var _arg1 *C.GVariant              // out
 
@@ -3658,7 +3369,14 @@ func (i dBusMethodInvocation) ReturnValue(parameters *glib.Variant) {
 	C.g_dbus_method_invocation_return_value(_arg0, _arg1)
 }
 
-func (i dBusMethodInvocation) ReturnValueWithUnixFdList(parameters *glib.Variant, fdList UnixFDList) {
+// ReturnValueWithUnixFdList: like g_dbus_method_invocation_return_value() but
+// also takes a FDList.
+//
+// This method is only available on UNIX.
+//
+// This method will take ownership of @invocation. See BusInterfaceVTable for
+// more information about the ownership of @invocation.
+func (i *DBusMethodInvocationClass) ReturnValueWithUnixFdList(parameters *glib.Variant, fdList UnixFDList) {
 	var _arg0 *C.GDBusMethodInvocation // out
 	var _arg1 *C.GVariant              // out
 	var _arg2 *C.GUnixFDList           // out
@@ -3692,51 +3410,6 @@ func (i dBusMethodInvocation) ReturnValueWithUnixFdList(parameters *glib.Variant
 type DBusServer interface {
 	gextras.Objector
 
-	// AsInitable casts the class to the Initable interface.
-	AsInitable() Initable
-
-	// Init initializes the object implementing the interface.
-	//
-	// This method is intended for language bindings. If writing in C,
-	// g_initable_new() should typically be used instead.
-	//
-	// The object must be initialized before any real use after initial
-	// construction, either with this function or g_async_initable_init_async().
-	//
-	// Implementations may also support cancellation. If @cancellable is not
-	// nil, then initialization can be cancelled by triggering the cancellable
-	// object from another thread. If the operation was cancelled, the error
-	// G_IO_ERROR_CANCELLED will be returned. If @cancellable is not nil and the
-	// object doesn't support cancellable initialization the error
-	// G_IO_ERROR_NOT_SUPPORTED will be returned.
-	//
-	// If the object is not initialized, or initialization returns with an
-	// error, then all operations on the object except g_object_ref() and
-	// g_object_unref() are considered to be invalid, and have undefined
-	// behaviour. See the [introduction][ginitable] for more details.
-	//
-	// Callers should not assume that a class which implements #GInitable can be
-	// initialized multiple times, unless the class explicitly documents itself
-	// as supporting this. Generally, a class’ implementation of init() can
-	// assume (and assert) that it will only be called once. Previously, this
-	// documentation recommended all #GInitable implementations should be
-	// idempotent; that recommendation was relaxed in GLib 2.54.
-	//
-	// If a class explicitly supports being initialized multiple times, it is
-	// recommended that the method is idempotent: multiple calls with the same
-	// arguments should return the same results. Only the first call initializes
-	// the object; further calls return the result of the first call.
-	//
-	// One reason why a class might need to support idempotent initialization is
-	// if it is designed to be used via the singleton pattern, with a
-	// Class.constructor that sometimes returns an existing instance. In this
-	// pattern, a caller would expect to be able to call g_initable_init() on
-	// the result of g_object_new(), regardless of whether it is in fact a new
-	// instance.
-	//
-	// This method is inherited from Initable
-	Init(cancellable Cancellable) error
-
 	// ClientAddress gets a D-Bus address
 	// (https://dbus.freedesktop.org/doc/dbus-specification.html#addresses)
 	// string that can be used by clients to connect to @server.
@@ -3753,23 +3426,27 @@ type DBusServer interface {
 	Stop()
 }
 
-// dBusServer implements the DBusServer interface.
-type dBusServer struct {
+// DBusServerClass implements the DBusServer interface.
+type DBusServerClass struct {
 	*externglib.Object
+	InitableInterface
 }
 
-var _ DBusServer = (*dBusServer)(nil)
+var _ DBusServer = (*DBusServerClass)(nil)
 
-// WrapDBusServer wraps a GObject to a type that implements
-// interface DBusServer. It is primarily used internally.
-func WrapDBusServer(obj *externglib.Object) DBusServer {
-	return dBusServer{obj}
+func wrapDBusServer(obj *externglib.Object) DBusServer {
+	return &DBusServerClass{
+		Object: obj,
+		InitableInterface: InitableInterface{
+			Object: obj,
+		},
+	}
 }
 
 func marshalDBusServer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapDBusServer(obj), nil
+	return wrapDBusServer(obj), nil
 }
 
 // NewDBusServerSync creates a new D-Bus server that listens on the first
@@ -3820,15 +3497,10 @@ func NewDBusServerSync(address string, flags DBusServerFlags, guid string, obser
 	return _dBusServer, _goerr
 }
 
-func (d dBusServer) AsInitable() Initable {
-	return WrapInitable(gextras.InternObject(d))
-}
-
-func (i dBusServer) Init(cancellable Cancellable) error {
-	return WrapInitable(gextras.InternObject(i)).Init(cancellable)
-}
-
-func (s dBusServer) ClientAddress() string {
+// ClientAddress gets a D-Bus address
+// (https://dbus.freedesktop.org/doc/dbus-specification.html#addresses) string
+// that can be used by clients to connect to @server.
+func (s *DBusServerClass) ClientAddress() string {
 	var _arg0 *C.GDBusServer // out
 	var _cret *C.gchar       // in
 
@@ -3843,7 +3515,8 @@ func (s dBusServer) ClientAddress() string {
 	return _utf8
 }
 
-func (s dBusServer) Flags() DBusServerFlags {
+// Flags gets the flags for @server.
+func (s *DBusServerClass) Flags() DBusServerFlags {
 	var _arg0 *C.GDBusServer     // out
 	var _cret C.GDBusServerFlags // in
 
@@ -3858,7 +3531,8 @@ func (s dBusServer) Flags() DBusServerFlags {
 	return _dBusServerFlags
 }
 
-func (s dBusServer) Guid() string {
+// Guid gets the GUID for @server.
+func (s *DBusServerClass) Guid() string {
 	var _arg0 *C.GDBusServer // out
 	var _cret *C.gchar       // in
 
@@ -3873,7 +3547,8 @@ func (s dBusServer) Guid() string {
 	return _utf8
 }
 
-func (s dBusServer) IsActive() bool {
+// IsActive gets whether @server is active.
+func (s *DBusServerClass) IsActive() bool {
 	var _arg0 *C.GDBusServer // out
 	var _cret C.gboolean     // in
 
@@ -3890,7 +3565,8 @@ func (s dBusServer) IsActive() bool {
 	return _ok
 }
 
-func (s dBusServer) Start() {
+// Start starts @server.
+func (s *DBusServerClass) Start() {
 	var _arg0 *C.GDBusServer // out
 
 	_arg0 = (*C.GDBusServer)(unsafe.Pointer(s.Native()))
@@ -3898,7 +3574,8 @@ func (s dBusServer) Start() {
 	C.g_dbus_server_start(_arg0)
 }
 
-func (s dBusServer) Stop() {
+// Stop stops @server.
+func (s *DBusServerClass) Stop() {
 	var _arg0 *C.GDBusServer // out
 
 	_arg0 = (*C.GDBusServer)(unsafe.Pointer(s.Native()))
@@ -3914,77 +3591,7 @@ func (s dBusServer) Stop() {
 // g_menu_insert(). To add a section, use g_menu_insert_section(). To add a
 // submenu, use g_menu_insert_submenu().
 type Menu interface {
-	MenuModel
-
-	// AsMenuModel casts the class to the MenuModel interface.
-	AsMenuModel() MenuModel
-
-	// GetItemAttributeValue queries the item at position @item_index in @model
-	// for the attribute specified by @attribute.
-	//
-	// If @expected_type is non-nil then it specifies the expected type of the
-	// attribute. If it is nil then any type will be accepted.
-	//
-	// If the attribute exists and matches @expected_type (or if the expected
-	// type is unspecified) then the value is returned.
-	//
-	// If the attribute does not exist, or does not match the expected type then
-	// nil is returned.
-	//
-	// This method is inherited from MenuModel
-	GetItemAttributeValue(itemIndex int, attribute string, expectedType *glib.VariantType) *glib.Variant
-	// GetItemLink queries the item at position @item_index in @model for the
-	// link specified by @link.
-	//
-	// If the link exists, the linked Model is returned. If the link does not
-	// exist, nil is returned.
-	//
-	// This method is inherited from MenuModel
-	GetItemLink(itemIndex int, link string) MenuModel
-	// GetNItems: query the number of items in @model.
-	//
-	// This method is inherited from MenuModel
-	GetNItems() int
-	// IsMutable queries if @model is mutable.
-	//
-	// An immutable Model will never emit the Model::items-changed signal.
-	// Consumers of the model may make optimisations accordingly.
-	//
-	// This method is inherited from MenuModel
-	IsMutable() bool
-	// ItemsChanged requests emission of the Model::items-changed signal on
-	// @model.
-	//
-	// This function should never be called except by Model subclasses. Any
-	// other calls to this function will very likely lead to a violation of the
-	// interface of the model.
-	//
-	// The implementation should update its internal representation of the menu
-	// before emitting the signal. The implementation should further expect to
-	// receive queries about the new state of the menu (and particularly added
-	// menu items) while signal handlers are running.
-	//
-	// The implementation must dispatch this call directly from a mainloop entry
-	// and not in response to calls -- particularly those from the Model API.
-	// Said another way: the menu must not change while user code is running
-	// without returning to the mainloop.
-	//
-	// This method is inherited from MenuModel
-	ItemsChanged(position int, removed int, added int)
-	// IterateItemAttributes creates a AttributeIter to iterate over the
-	// attributes of the item at position @item_index in @model.
-	//
-	// You must free the iterator with g_object_unref() when you are done.
-	//
-	// This method is inherited from MenuModel
-	IterateItemAttributes(itemIndex int) MenuAttributeIter
-	// IterateItemLinks creates a LinkIter to iterate over the links of the item
-	// at position @item_index in @model.
-	//
-	// You must free the iterator with g_object_unref() when you are done.
-	//
-	// This method is inherited from MenuModel
-	IterateItemLinks(itemIndex int) MenuLinkIter
+	gextras.Objector
 
 	// Append: convenience function for appending a normal menu item to the end
 	// of @menu. Combine g_menu_item_new() and g_menu_insert_item() for a more
@@ -4070,23 +3677,25 @@ type Menu interface {
 	RemoveAll()
 }
 
-// menu implements the Menu interface.
-type menu struct {
-	*externglib.Object
+// MenuClass implements the Menu interface.
+type MenuClass struct {
+	MenuModelClass
 }
 
-var _ Menu = (*menu)(nil)
+var _ Menu = (*MenuClass)(nil)
 
-// WrapMenu wraps a GObject to a type that implements
-// interface Menu. It is primarily used internally.
-func WrapMenu(obj *externglib.Object) Menu {
-	return menu{obj}
+func wrapMenu(obj *externglib.Object) Menu {
+	return &MenuClass{
+		MenuModelClass: MenuModelClass{
+			Object: obj,
+		},
+	}
 }
 
 func marshalMenu(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapMenu(obj), nil
+	return wrapMenu(obj), nil
 }
 
 // NewMenu creates a new #GMenu.
@@ -4104,39 +3713,10 @@ func NewMenu() Menu {
 	return _menu
 }
 
-func (m menu) AsMenuModel() MenuModel {
-	return WrapMenuModel(gextras.InternObject(m))
-}
-
-func (m menu) GetItemAttributeValue(itemIndex int, attribute string, expectedType *glib.VariantType) *glib.Variant {
-	return WrapMenuModel(gextras.InternObject(m)).GetItemAttributeValue(itemIndex, attribute, expectedType)
-}
-
-func (m menu) GetItemLink(itemIndex int, link string) MenuModel {
-	return WrapMenuModel(gextras.InternObject(m)).GetItemLink(itemIndex, link)
-}
-
-func (m menu) GetNItems() int {
-	return WrapMenuModel(gextras.InternObject(m)).GetNItems()
-}
-
-func (m menu) IsMutable() bool {
-	return WrapMenuModel(gextras.InternObject(m)).IsMutable()
-}
-
-func (m menu) ItemsChanged(position int, removed int, added int) {
-	WrapMenuModel(gextras.InternObject(m)).ItemsChanged(position, removed, added)
-}
-
-func (m menu) IterateItemAttributes(itemIndex int) MenuAttributeIter {
-	return WrapMenuModel(gextras.InternObject(m)).IterateItemAttributes(itemIndex)
-}
-
-func (m menu) IterateItemLinks(itemIndex int) MenuLinkIter {
-	return WrapMenuModel(gextras.InternObject(m)).IterateItemLinks(itemIndex)
-}
-
-func (m menu) Append(label string, detailedAction string) {
+// Append: convenience function for appending a normal menu item to the end of
+// @menu. Combine g_menu_item_new() and g_menu_insert_item() for a more flexible
+// alternative.
+func (m *MenuClass) Append(label string, detailedAction string) {
 	var _arg0 *C.GMenu // out
 	var _arg1 *C.gchar // out
 	var _arg2 *C.gchar // out
@@ -4150,7 +3730,10 @@ func (m menu) Append(label string, detailedAction string) {
 	C.g_menu_append(_arg0, _arg1, _arg2)
 }
 
-func (m menu) AppendItem(item MenuItem) {
+// AppendItem appends @item to the end of @menu.
+//
+// See g_menu_insert_item() for more information.
+func (m *MenuClass) AppendItem(item MenuItem) {
 	var _arg0 *C.GMenu     // out
 	var _arg1 *C.GMenuItem // out
 
@@ -4160,7 +3743,10 @@ func (m menu) AppendItem(item MenuItem) {
 	C.g_menu_append_item(_arg0, _arg1)
 }
 
-func (m menu) AppendSection(label string, section MenuModel) {
+// AppendSection: convenience function for appending a section menu item to the
+// end of @menu. Combine g_menu_item_new_section() and g_menu_insert_item() for
+// a more flexible alternative.
+func (m *MenuClass) AppendSection(label string, section MenuModel) {
 	var _arg0 *C.GMenu      // out
 	var _arg1 *C.gchar      // out
 	var _arg2 *C.GMenuModel // out
@@ -4173,7 +3759,10 @@ func (m menu) AppendSection(label string, section MenuModel) {
 	C.g_menu_append_section(_arg0, _arg1, _arg2)
 }
 
-func (m menu) AppendSubmenu(label string, submenu MenuModel) {
+// AppendSubmenu: convenience function for appending a submenu menu item to the
+// end of @menu. Combine g_menu_item_new_submenu() and g_menu_insert_item() for
+// a more flexible alternative.
+func (m *MenuClass) AppendSubmenu(label string, submenu MenuModel) {
 	var _arg0 *C.GMenu      // out
 	var _arg1 *C.gchar      // out
 	var _arg2 *C.GMenuModel // out
@@ -4186,7 +3775,14 @@ func (m menu) AppendSubmenu(label string, submenu MenuModel) {
 	C.g_menu_append_submenu(_arg0, _arg1, _arg2)
 }
 
-func (m menu) Freeze() {
+// Freeze marks @menu as frozen.
+//
+// After the menu is frozen, it is an error to attempt to make any changes to
+// it. In effect this means that the #GMenu API must no longer be used.
+//
+// This function causes g_menu_model_is_mutable() to begin returning false,
+// which has some positive performance implications.
+func (m *MenuClass) Freeze() {
 	var _arg0 *C.GMenu // out
 
 	_arg0 = (*C.GMenu)(unsafe.Pointer(m.Native()))
@@ -4194,7 +3790,10 @@ func (m menu) Freeze() {
 	C.g_menu_freeze(_arg0)
 }
 
-func (m menu) Insert(position int, label string, detailedAction string) {
+// Insert: convenience function for inserting a normal menu item into @menu.
+// Combine g_menu_item_new() and g_menu_insert_item() for a more flexible
+// alternative.
+func (m *MenuClass) Insert(position int, label string, detailedAction string) {
 	var _arg0 *C.GMenu // out
 	var _arg1 C.gint   // out
 	var _arg2 *C.gchar // out
@@ -4210,7 +3809,23 @@ func (m menu) Insert(position int, label string, detailedAction string) {
 	C.g_menu_insert(_arg0, _arg1, _arg2, _arg3)
 }
 
-func (m menu) InsertItem(position int, item MenuItem) {
+// InsertItem inserts @item into @menu.
+//
+// The "insertion" is actually done by copying all of the attribute and link
+// values of @item and using them to form a new item within @menu. As such,
+// @item itself is not really inserted, but rather, a menu item that is exactly
+// the same as the one presently described by @item.
+//
+// This means that @item is essentially useless after the insertion occurs. Any
+// changes you make to it are ignored unless it is inserted again (at which
+// point its updated values will be copied).
+//
+// You should probably just free @item once you're done.
+//
+// There are many convenience functions to take care of common cases. See
+// g_menu_insert(), g_menu_insert_section() and g_menu_insert_submenu() as well
+// as "prepend" and "append" variants of each of these functions.
+func (m *MenuClass) InsertItem(position int, item MenuItem) {
 	var _arg0 *C.GMenu     // out
 	var _arg1 C.gint       // out
 	var _arg2 *C.GMenuItem // out
@@ -4222,7 +3837,10 @@ func (m menu) InsertItem(position int, item MenuItem) {
 	C.g_menu_insert_item(_arg0, _arg1, _arg2)
 }
 
-func (m menu) InsertSection(position int, label string, section MenuModel) {
+// InsertSection: convenience function for inserting a section menu item into
+// @menu. Combine g_menu_item_new_section() and g_menu_insert_item() for a more
+// flexible alternative.
+func (m *MenuClass) InsertSection(position int, label string, section MenuModel) {
 	var _arg0 *C.GMenu      // out
 	var _arg1 C.gint        // out
 	var _arg2 *C.gchar      // out
@@ -4237,7 +3855,10 @@ func (m menu) InsertSection(position int, label string, section MenuModel) {
 	C.g_menu_insert_section(_arg0, _arg1, _arg2, _arg3)
 }
 
-func (m menu) InsertSubmenu(position int, label string, submenu MenuModel) {
+// InsertSubmenu: convenience function for inserting a submenu menu item into
+// @menu. Combine g_menu_item_new_submenu() and g_menu_insert_item() for a more
+// flexible alternative.
+func (m *MenuClass) InsertSubmenu(position int, label string, submenu MenuModel) {
 	var _arg0 *C.GMenu      // out
 	var _arg1 C.gint        // out
 	var _arg2 *C.gchar      // out
@@ -4252,7 +3873,10 @@ func (m menu) InsertSubmenu(position int, label string, submenu MenuModel) {
 	C.g_menu_insert_submenu(_arg0, _arg1, _arg2, _arg3)
 }
 
-func (m menu) Prepend(label string, detailedAction string) {
+// Prepend: convenience function for prepending a normal menu item to the start
+// of @menu. Combine g_menu_item_new() and g_menu_insert_item() for a more
+// flexible alternative.
+func (m *MenuClass) Prepend(label string, detailedAction string) {
 	var _arg0 *C.GMenu // out
 	var _arg1 *C.gchar // out
 	var _arg2 *C.gchar // out
@@ -4266,7 +3890,10 @@ func (m menu) Prepend(label string, detailedAction string) {
 	C.g_menu_prepend(_arg0, _arg1, _arg2)
 }
 
-func (m menu) PrependItem(item MenuItem) {
+// PrependItem prepends @item to the start of @menu.
+//
+// See g_menu_insert_item() for more information.
+func (m *MenuClass) PrependItem(item MenuItem) {
 	var _arg0 *C.GMenu     // out
 	var _arg1 *C.GMenuItem // out
 
@@ -4276,7 +3903,10 @@ func (m menu) PrependItem(item MenuItem) {
 	C.g_menu_prepend_item(_arg0, _arg1)
 }
 
-func (m menu) PrependSection(label string, section MenuModel) {
+// PrependSection: convenience function for prepending a section menu item to
+// the start of @menu. Combine g_menu_item_new_section() and
+// g_menu_insert_item() for a more flexible alternative.
+func (m *MenuClass) PrependSection(label string, section MenuModel) {
 	var _arg0 *C.GMenu      // out
 	var _arg1 *C.gchar      // out
 	var _arg2 *C.GMenuModel // out
@@ -4289,7 +3919,10 @@ func (m menu) PrependSection(label string, section MenuModel) {
 	C.g_menu_prepend_section(_arg0, _arg1, _arg2)
 }
 
-func (m menu) PrependSubmenu(label string, submenu MenuModel) {
+// PrependSubmenu: convenience function for prepending a submenu menu item to
+// the start of @menu. Combine g_menu_item_new_submenu() and
+// g_menu_insert_item() for a more flexible alternative.
+func (m *MenuClass) PrependSubmenu(label string, submenu MenuModel) {
 	var _arg0 *C.GMenu      // out
 	var _arg1 *C.gchar      // out
 	var _arg2 *C.GMenuModel // out
@@ -4302,7 +3935,17 @@ func (m menu) PrependSubmenu(label string, submenu MenuModel) {
 	C.g_menu_prepend_submenu(_arg0, _arg1, _arg2)
 }
 
-func (m menu) Remove(position int) {
+// Remove removes an item from the menu.
+//
+// @position gives the index of the item to remove.
+//
+// It is an error if position is not in range the range from 0 to one less than
+// the number of items in the menu.
+//
+// It is not possible to remove items by identity since items are added to the
+// menu simply by copying their links and attributes (ie: identity of the item
+// itself is not preserved).
+func (m *MenuClass) Remove(position int) {
 	var _arg0 *C.GMenu // out
 	var _arg1 C.gint   // out
 
@@ -4312,7 +3955,8 @@ func (m menu) Remove(position int) {
 	C.g_menu_remove(_arg0, _arg1)
 }
 
-func (m menu) RemoveAll() {
+// RemoveAll removes all items in the menu.
+func (m *MenuClass) RemoveAll() {
 	var _arg0 *C.GMenu // out
 
 	_arg0 = (*C.GMenu)(unsafe.Pointer(m.Native()))
@@ -4448,23 +4092,23 @@ type MenuItem interface {
 	SetSubmenu(submenu MenuModel)
 }
 
-// menuItem implements the MenuItem interface.
-type menuItem struct {
+// MenuItemClass implements the MenuItem interface.
+type MenuItemClass struct {
 	*externglib.Object
 }
 
-var _ MenuItem = (*menuItem)(nil)
+var _ MenuItem = (*MenuItemClass)(nil)
 
-// WrapMenuItem wraps a GObject to a type that implements
-// interface MenuItem. It is primarily used internally.
-func WrapMenuItem(obj *externglib.Object) MenuItem {
-	return menuItem{obj}
+func wrapMenuItem(obj *externglib.Object) MenuItem {
+	return &MenuItemClass{
+		Object: obj,
+	}
 }
 
 func marshalMenuItem(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapMenuItem(obj), nil
+	return wrapMenuItem(obj), nil
 }
 
 // NewMenuItem creates a new Item.
@@ -4612,7 +4256,11 @@ func NewMenuItemSubmenu(label string, submenu MenuModel) MenuItem {
 	return _menuItem
 }
 
-func (m menuItem) AttributeValue(attribute string, expectedType *glib.VariantType) *glib.Variant {
+// AttributeValue queries the named @attribute on @menu_item.
+//
+// If @expected_type is specified and the attribute does not have this type, nil
+// is returned. nil is also returned if the attribute simply does not exist.
+func (m *MenuItemClass) AttributeValue(attribute string, expectedType *glib.VariantType) *glib.Variant {
 	var _arg0 *C.GMenuItem    // out
 	var _arg1 *C.gchar        // out
 	var _arg2 *C.GVariantType // out
@@ -4636,7 +4284,8 @@ func (m menuItem) AttributeValue(attribute string, expectedType *glib.VariantTyp
 	return _variant
 }
 
-func (m menuItem) Link(link string) MenuModel {
+// Link queries the named @link on @menu_item.
+func (m *MenuItemClass) Link(link string) MenuModel {
 	var _arg0 *C.GMenuItem  // out
 	var _arg1 *C.gchar      // out
 	var _cret *C.GMenuModel // in
@@ -4654,7 +4303,42 @@ func (m menuItem) Link(link string) MenuModel {
 	return _menuModel
 }
 
-func (m menuItem) SetActionAndTargetValue(action string, targetValue *glib.Variant) {
+// SetActionAndTargetValue sets or unsets the "action" and "target" attributes
+// of @menu_item.
+//
+// If @action is nil then both the "action" and "target" attributes are unset
+// (and @target_value is ignored).
+//
+// If @action is non-nil then the "action" attribute is set. The "target"
+// attribute is then set to the value of @target_value if it is non-nil or unset
+// otherwise.
+//
+// Normal menu items (ie: not submenu, section or other custom item types) are
+// expected to have the "action" attribute set to identify the action that they
+// are associated with. The state type of the action help to determine the
+// disposition of the menu item. See #GAction and Group for an overview of
+// actions.
+//
+// In general, clicking on the menu item will result in activation of the named
+// action with the "target" attribute given as the parameter to the action
+// invocation. If the "target" attribute is not set then the action is invoked
+// with no parameter.
+//
+// If the action has no state then the menu item is usually drawn as a plain
+// menu item (ie: with no additional decoration).
+//
+// If the action has a boolean state then the menu item is usually drawn as a
+// toggle menu item (ie: with a checkmark or equivalent indication). The item
+// should be marked as 'toggled' or 'checked' when the boolean state is true.
+//
+// If the action has a string state then the menu item is usually drawn as a
+// radio menu item (ie: with a radio bullet or equivalent indication). The item
+// should be marked as 'selected' when the string state is equal to the value of
+// the @target property.
+//
+// See g_menu_item_set_action_and_target() or g_menu_item_set_detailed_action()
+// for two equivalent calls that are probably more convenient for most uses.
+func (m *MenuItemClass) SetActionAndTargetValue(action string, targetValue *glib.Variant) {
 	var _arg0 *C.GMenuItem // out
 	var _arg1 *C.gchar     // out
 	var _arg2 *C.GVariant  // out
@@ -4667,7 +4351,24 @@ func (m menuItem) SetActionAndTargetValue(action string, targetValue *glib.Varia
 	C.g_menu_item_set_action_and_target_value(_arg0, _arg1, _arg2)
 }
 
-func (m menuItem) SetAttributeValue(attribute string, value *glib.Variant) {
+// SetAttributeValue sets or unsets an attribute on @menu_item.
+//
+// The attribute to set or unset is specified by @attribute. This can be one of
+// the standard attribute names G_MENU_ATTRIBUTE_LABEL, G_MENU_ATTRIBUTE_ACTION,
+// G_MENU_ATTRIBUTE_TARGET, or a custom attribute name. Attribute names are
+// restricted to lowercase characters, numbers and '-'. Furthermore, the names
+// must begin with a lowercase character, must not end with a '-', and must not
+// contain consecutive dashes.
+//
+// must consist only of lowercase ASCII characters, digits and '-'.
+//
+// If @value is non-nil then it is used as the new value for the attribute. If
+// @value is nil then the attribute is unset. If the @value #GVariant is
+// floating, it is consumed.
+//
+// See also g_menu_item_set_attribute() for a more convenient way to do the
+// same.
+func (m *MenuItemClass) SetAttributeValue(attribute string, value *glib.Variant) {
 	var _arg0 *C.GMenuItem // out
 	var _arg1 *C.gchar     // out
 	var _arg2 *C.GVariant  // out
@@ -4680,7 +4381,19 @@ func (m menuItem) SetAttributeValue(attribute string, value *glib.Variant) {
 	C.g_menu_item_set_attribute_value(_arg0, _arg1, _arg2)
 }
 
-func (m menuItem) SetDetailedAction(detailedAction string) {
+// SetDetailedAction sets the "action" and possibly the "target" attribute of
+// @menu_item.
+//
+// The format of @detailed_action is the same format parsed by
+// g_action_parse_detailed_name().
+//
+// See g_menu_item_set_action_and_target() or
+// g_menu_item_set_action_and_target_value() for more flexible (but slightly
+// less convenient) alternatives.
+//
+// See also g_menu_item_set_action_and_target_value() for a description of the
+// semantics of the action and target attributes.
+func (m *MenuItemClass) SetDetailedAction(detailedAction string) {
 	var _arg0 *C.GMenuItem // out
 	var _arg1 *C.gchar     // out
 
@@ -4691,7 +4404,17 @@ func (m menuItem) SetDetailedAction(detailedAction string) {
 	C.g_menu_item_set_detailed_action(_arg0, _arg1)
 }
 
-func (m menuItem) SetIcon(icon Icon) {
+// SetIcon sets (or unsets) the icon on @menu_item.
+//
+// This call is the same as calling g_icon_serialize() and using the result as
+// the value to g_menu_item_set_attribute_value() for G_MENU_ATTRIBUTE_ICON.
+//
+// This API is only intended for use with "noun" menu items; things like
+// bookmarks or applications in an "Open With" menu. Don't use it on menu items
+// corresponding to verbs (eg: stock icons for 'Save' or 'Quit').
+//
+// If @icon is nil then the icon is unset.
+func (m *MenuItemClass) SetIcon(icon Icon) {
 	var _arg0 *C.GMenuItem // out
 	var _arg1 *C.GIcon     // out
 
@@ -4701,7 +4424,11 @@ func (m menuItem) SetIcon(icon Icon) {
 	C.g_menu_item_set_icon(_arg0, _arg1)
 }
 
-func (m menuItem) SetLabel(label string) {
+// SetLabel sets or unsets the "label" attribute of @menu_item.
+//
+// If @label is non-nil it is used as the label for the menu item. If it is nil
+// then the label attribute is unset.
+func (m *MenuItemClass) SetLabel(label string) {
 	var _arg0 *C.GMenuItem // out
 	var _arg1 *C.gchar     // out
 
@@ -4712,7 +4439,17 @@ func (m menuItem) SetLabel(label string) {
 	C.g_menu_item_set_label(_arg0, _arg1)
 }
 
-func (m menuItem) SetLink(link string, model MenuModel) {
+// SetLink creates a link from @menu_item to @model if non-nil, or unsets it.
+//
+// Links are used to establish a relationship between a particular menu item and
+// another menu. For example, G_MENU_LINK_SUBMENU is used to associate a submenu
+// with a particular menu item, and G_MENU_LINK_SECTION is used to create a
+// section. Other types of link can be used, but there is no guarantee that
+// clients will be able to make sense of them. Link types are restricted to
+// lowercase characters, numbers and '-'. Furthermore, the names must begin with
+// a lowercase character, must not end with a '-', and must not contain
+// consecutive dashes.
+func (m *MenuItemClass) SetLink(link string, model MenuModel) {
 	var _arg0 *C.GMenuItem  // out
 	var _arg1 *C.gchar      // out
 	var _arg2 *C.GMenuModel // out
@@ -4725,7 +4462,13 @@ func (m menuItem) SetLink(link string, model MenuModel) {
 	C.g_menu_item_set_link(_arg0, _arg1, _arg2)
 }
 
-func (m menuItem) SetSection(section MenuModel) {
+// SetSection sets or unsets the "section" link of @menu_item to @section.
+//
+// The effect of having one menu appear as a section of another is exactly as it
+// sounds: the items from @section become a direct part of the menu that
+// @menu_item is added to. See g_menu_item_new_section() for more information
+// about what it means for a menu item to be a section.
+func (m *MenuItemClass) SetSection(section MenuModel) {
 	var _arg0 *C.GMenuItem  // out
 	var _arg1 *C.GMenuModel // out
 
@@ -4735,7 +4478,13 @@ func (m menuItem) SetSection(section MenuModel) {
 	C.g_menu_item_set_section(_arg0, _arg1)
 }
 
-func (m menuItem) SetSubmenu(submenu MenuModel) {
+// SetSubmenu sets or unsets the "submenu" link of @menu_item to @submenu.
+//
+// If @submenu is non-nil, it is linked to. If it is nil then the link is unset.
+//
+// The effect of having one menu appear as a submenu of another is exactly as it
+// sounds.
+func (m *MenuItemClass) SetSubmenu(submenu MenuModel) {
 	var _arg0 *C.GMenuItem  // out
 	var _arg1 *C.GMenuModel // out
 
@@ -4821,23 +4570,23 @@ type Notification interface {
 	SetUrgent(urgent bool)
 }
 
-// notification implements the Notification interface.
-type notification struct {
+// NotificationClass implements the Notification interface.
+type NotificationClass struct {
 	*externglib.Object
 }
 
-var _ Notification = (*notification)(nil)
+var _ Notification = (*NotificationClass)(nil)
 
-// WrapNotification wraps a GObject to a type that implements
-// interface Notification. It is primarily used internally.
-func WrapNotification(obj *externglib.Object) Notification {
-	return notification{obj}
+func wrapNotification(obj *externglib.Object) Notification {
+	return &NotificationClass{
+		Object: obj,
+	}
 }
 
 func marshalNotification(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapNotification(obj), nil
+	return wrapNotification(obj), nil
 }
 
 // NewNotification creates a new #GNotification with @title as its title.
@@ -4861,7 +4610,14 @@ func NewNotification(title string) Notification {
 	return _notification
 }
 
-func (n notification) AddButton(label string, detailedAction string) {
+// AddButton adds a button to @notification that activates the action in
+// @detailed_action when clicked. That action must be an application-wide action
+// (starting with "app."). If @detailed_action contains a target, the action
+// will be activated with that target as its parameter.
+//
+// See g_action_parse_detailed_name() for a description of the format for
+// @detailed_action.
+func (n *NotificationClass) AddButton(label string, detailedAction string) {
 	var _arg0 *C.GNotification // out
 	var _arg1 *C.gchar         // out
 	var _arg2 *C.gchar         // out
@@ -4875,7 +4631,13 @@ func (n notification) AddButton(label string, detailedAction string) {
 	C.g_notification_add_button(_arg0, _arg1, _arg2)
 }
 
-func (n notification) AddButtonWithTargetValue(label string, action string, target *glib.Variant) {
+// AddButtonWithTargetValue adds a button to @notification that activates
+// @action when clicked. @action must be an application-wide action (it must
+// start with "app.").
+//
+// If @target is non-nil, @action will be activated with @target as its
+// parameter.
+func (n *NotificationClass) AddButtonWithTargetValue(label string, action string, target *glib.Variant) {
 	var _arg0 *C.GNotification // out
 	var _arg1 *C.gchar         // out
 	var _arg2 *C.gchar         // out
@@ -4891,7 +4653,8 @@ func (n notification) AddButtonWithTargetValue(label string, action string, targ
 	C.g_notification_add_button_with_target_value(_arg0, _arg1, _arg2, _arg3)
 }
 
-func (n notification) SetBody(body string) {
+// SetBody sets the body of @notification to @body.
+func (n *NotificationClass) SetBody(body string) {
 	var _arg0 *C.GNotification // out
 	var _arg1 *C.gchar         // out
 
@@ -4902,7 +4665,19 @@ func (n notification) SetBody(body string) {
 	C.g_notification_set_body(_arg0, _arg1)
 }
 
-func (n notification) SetDefaultAction(detailedAction string) {
+// SetDefaultAction sets the default action of @notification to
+// @detailed_action. This action is activated when the notification is clicked
+// on.
+//
+// The action in @detailed_action must be an application-wide action (it must
+// start with "app."). If @detailed_action contains a target, the given action
+// will be activated with that target as its parameter. See
+// g_action_parse_detailed_name() for a description of the format for
+// @detailed_action.
+//
+// When no default action is set, the application that the notification was sent
+// on is activated.
+func (n *NotificationClass) SetDefaultAction(detailedAction string) {
 	var _arg0 *C.GNotification // out
 	var _arg1 *C.gchar         // out
 
@@ -4913,7 +4688,16 @@ func (n notification) SetDefaultAction(detailedAction string) {
 	C.g_notification_set_default_action(_arg0, _arg1)
 }
 
-func (n notification) SetDefaultActionAndTargetValue(action string, target *glib.Variant) {
+// SetDefaultActionAndTargetValue sets the default action of @notification to
+// @action. This action is activated when the notification is clicked on. It
+// must be an application-wide action (start with "app.").
+//
+// If @target is non-nil, @action will be activated with @target as its
+// parameter.
+//
+// When no default action is set, the application that the notification was sent
+// on is activated.
+func (n *NotificationClass) SetDefaultActionAndTargetValue(action string, target *glib.Variant) {
 	var _arg0 *C.GNotification // out
 	var _arg1 *C.gchar         // out
 	var _arg2 *C.GVariant      // out
@@ -4926,7 +4710,8 @@ func (n notification) SetDefaultActionAndTargetValue(action string, target *glib
 	C.g_notification_set_default_action_and_target_value(_arg0, _arg1, _arg2)
 }
 
-func (n notification) SetIcon(icon Icon) {
+// SetIcon sets the icon of @notification to @icon.
+func (n *NotificationClass) SetIcon(icon Icon) {
 	var _arg0 *C.GNotification // out
 	var _arg1 *C.GIcon         // out
 
@@ -4936,7 +4721,9 @@ func (n notification) SetIcon(icon Icon) {
 	C.g_notification_set_icon(_arg0, _arg1)
 }
 
-func (n notification) SetPriority(priority NotificationPriority) {
+// SetPriority sets the priority of @notification to @priority. See Priority for
+// possible values.
+func (n *NotificationClass) SetPriority(priority NotificationPriority) {
 	var _arg0 *C.GNotification        // out
 	var _arg1 C.GNotificationPriority // out
 
@@ -4946,7 +4733,8 @@ func (n notification) SetPriority(priority NotificationPriority) {
 	C.g_notification_set_priority(_arg0, _arg1)
 }
 
-func (n notification) SetTitle(title string) {
+// SetTitle sets the title of @notification to @title.
+func (n *NotificationClass) SetTitle(title string) {
 	var _arg0 *C.GNotification // out
 	var _arg1 *C.gchar         // out
 
@@ -4957,7 +4745,10 @@ func (n notification) SetTitle(title string) {
 	C.g_notification_set_title(_arg0, _arg1)
 }
 
-func (n notification) SetUrgent(urgent bool) {
+// SetUrgent: deprecated in favor of g_notification_set_priority().
+//
+// Deprecated: since version 2.42.
+func (n *NotificationClass) SetUrgent(urgent bool) {
 	var _arg0 *C.GNotification // out
 	var _arg1 C.gboolean       // out
 
@@ -5020,119 +4811,30 @@ func (n notification) SetUrgent(urgent bool) {
 type PropertyAction interface {
 	gextras.Objector
 
-	// AsAction casts the class to the Action interface.
-	AsAction() Action
-
-	// Activate activates the action.
-	//
-	// @parameter must be the correct type of parameter for the action (ie: the
-	// parameter type given at construction time). If the parameter type was nil
-	// then @parameter must also be nil.
-	//
-	// If the @parameter GVariant is floating, it is consumed.
-	//
-	// This method is inherited from Action
-	Activate(parameter *glib.Variant)
-	// ChangeState: request for the state of @action to be changed to @value.
-	//
-	// The action must be stateful and @value must be of the correct type. See
-	// g_action_get_state_type().
-	//
-	// This call merely requests a change. The action may refuse to change its
-	// state or may change its state to something other than @value. See
-	// g_action_get_state_hint().
-	//
-	// If the @value GVariant is floating, it is consumed.
-	//
-	// This method is inherited from Action
-	ChangeState(value *glib.Variant)
-	// GetEnabled checks if @action is currently enabled.
-	//
-	// An action must be enabled in order to be activated or in order to have
-	// its state changed from outside callers.
-	//
-	// This method is inherited from Action
-	GetEnabled() bool
-	// GetName queries the name of @action.
-	//
-	// This method is inherited from Action
-	GetName() string
-	// GetParameterType queries the type of the parameter that must be given
-	// when activating @action.
-	//
-	// When activating the action using g_action_activate(), the #GVariant given
-	// to that function must be of the type returned by this function.
-	//
-	// In the case that this function returns nil, you must not give any
-	// #GVariant, but nil instead.
-	//
-	// This method is inherited from Action
-	GetParameterType() *glib.VariantType
-	// GetState queries the current state of @action.
-	//
-	// If the action is not stateful then nil will be returned. If the action is
-	// stateful then the type of the return value is the type given by
-	// g_action_get_state_type().
-	//
-	// The return value (if non-nil) should be freed with g_variant_unref() when
-	// it is no longer required.
-	//
-	// This method is inherited from Action
-	GetState() *glib.Variant
-	// GetStateHint requests a hint about the valid range of values for the
-	// state of @action.
-	//
-	// If nil is returned it either means that the action is not stateful or
-	// that there is no hint about the valid range of values for the state of
-	// the action.
-	//
-	// If a #GVariant array is returned then each item in the array is a
-	// possible value for the state. If a #GVariant pair (ie: two-tuple) is
-	// returned then the tuple specifies the inclusive lower and upper bound of
-	// valid values for the state.
-	//
-	// In any case, the information is merely a hint. It may be possible to have
-	// a state value outside of the hinted range and setting a value within the
-	// range may fail.
-	//
-	// The return value (if non-nil) should be freed with g_variant_unref() when
-	// it is no longer required.
-	//
-	// This method is inherited from Action
-	GetStateHint() *glib.Variant
-	// GetStateType queries the type of the state of @action.
-	//
-	// If the action is stateful (e.g. created with
-	// g_simple_action_new_stateful()) then this function returns the Type of
-	// the state. This is the type of the initial value given as the state. All
-	// calls to g_action_change_state() must give a #GVariant of this type and
-	// g_action_get_state() will return a #GVariant of the same type.
-	//
-	// If the action is not stateful (e.g. created with g_simple_action_new())
-	// then this function will return nil. In that case, g_action_get_state()
-	// will return nil and you must not call g_action_change_state().
-	//
-	// This method is inherited from Action
-	GetStateType() *glib.VariantType
+	privatePropertyActionClass()
 }
 
-// propertyAction implements the PropertyAction interface.
-type propertyAction struct {
+// PropertyActionClass implements the PropertyAction interface.
+type PropertyActionClass struct {
 	*externglib.Object
+	ActionInterface
 }
 
-var _ PropertyAction = (*propertyAction)(nil)
+var _ PropertyAction = (*PropertyActionClass)(nil)
 
-// WrapPropertyAction wraps a GObject to a type that implements
-// interface PropertyAction. It is primarily used internally.
-func WrapPropertyAction(obj *externglib.Object) PropertyAction {
-	return propertyAction{obj}
+func wrapPropertyAction(obj *externglib.Object) PropertyAction {
+	return &PropertyActionClass{
+		Object: obj,
+		ActionInterface: ActionInterface{
+			Object: obj,
+		},
+	}
 }
 
 func marshalPropertyAction(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapPropertyAction(obj), nil
+	return wrapPropertyAction(obj), nil
 }
 
 // NewPropertyAction creates a #GAction corresponding to the value of property
@@ -5164,41 +4866,7 @@ func NewPropertyAction(name string, object gextras.Objector, propertyName string
 	return _propertyAction
 }
 
-func (p propertyAction) AsAction() Action {
-	return WrapAction(gextras.InternObject(p))
-}
-
-func (a propertyAction) Activate(parameter *glib.Variant) {
-	WrapAction(gextras.InternObject(a)).Activate(parameter)
-}
-
-func (a propertyAction) ChangeState(value *glib.Variant) {
-	WrapAction(gextras.InternObject(a)).ChangeState(value)
-}
-
-func (a propertyAction) GetEnabled() bool {
-	return WrapAction(gextras.InternObject(a)).GetEnabled()
-}
-
-func (a propertyAction) GetName() string {
-	return WrapAction(gextras.InternObject(a)).GetName()
-}
-
-func (a propertyAction) GetParameterType() *glib.VariantType {
-	return WrapAction(gextras.InternObject(a)).GetParameterType()
-}
-
-func (a propertyAction) GetState() *glib.Variant {
-	return WrapAction(gextras.InternObject(a)).GetState()
-}
-
-func (a propertyAction) GetStateHint() *glib.Variant {
-	return WrapAction(gextras.InternObject(a)).GetStateHint()
-}
-
-func (a propertyAction) GetStateType() *glib.VariantType {
-	return WrapAction(gextras.InternObject(a)).GetStateType()
-}
+func (*PropertyActionClass) privatePropertyActionClass() {}
 
 // SimpleAction is the obvious simple implementation of the #GAction interface.
 // This is the easiest way to create an action for purposes of adding it to a
@@ -5207,101 +4875,6 @@ func (a propertyAction) GetStateType() *glib.VariantType {
 // See also Action.
 type SimpleAction interface {
 	gextras.Objector
-
-	// AsAction casts the class to the Action interface.
-	AsAction() Action
-
-	// Activate activates the action.
-	//
-	// @parameter must be the correct type of parameter for the action (ie: the
-	// parameter type given at construction time). If the parameter type was nil
-	// then @parameter must also be nil.
-	//
-	// If the @parameter GVariant is floating, it is consumed.
-	//
-	// This method is inherited from Action
-	Activate(parameter *glib.Variant)
-	// ChangeState: request for the state of @action to be changed to @value.
-	//
-	// The action must be stateful and @value must be of the correct type. See
-	// g_action_get_state_type().
-	//
-	// This call merely requests a change. The action may refuse to change its
-	// state or may change its state to something other than @value. See
-	// g_action_get_state_hint().
-	//
-	// If the @value GVariant is floating, it is consumed.
-	//
-	// This method is inherited from Action
-	ChangeState(value *glib.Variant)
-	// GetEnabled checks if @action is currently enabled.
-	//
-	// An action must be enabled in order to be activated or in order to have
-	// its state changed from outside callers.
-	//
-	// This method is inherited from Action
-	GetEnabled() bool
-	// GetName queries the name of @action.
-	//
-	// This method is inherited from Action
-	GetName() string
-	// GetParameterType queries the type of the parameter that must be given
-	// when activating @action.
-	//
-	// When activating the action using g_action_activate(), the #GVariant given
-	// to that function must be of the type returned by this function.
-	//
-	// In the case that this function returns nil, you must not give any
-	// #GVariant, but nil instead.
-	//
-	// This method is inherited from Action
-	GetParameterType() *glib.VariantType
-	// GetState queries the current state of @action.
-	//
-	// If the action is not stateful then nil will be returned. If the action is
-	// stateful then the type of the return value is the type given by
-	// g_action_get_state_type().
-	//
-	// The return value (if non-nil) should be freed with g_variant_unref() when
-	// it is no longer required.
-	//
-	// This method is inherited from Action
-	GetState() *glib.Variant
-	// GetStateHint requests a hint about the valid range of values for the
-	// state of @action.
-	//
-	// If nil is returned it either means that the action is not stateful or
-	// that there is no hint about the valid range of values for the state of
-	// the action.
-	//
-	// If a #GVariant array is returned then each item in the array is a
-	// possible value for the state. If a #GVariant pair (ie: two-tuple) is
-	// returned then the tuple specifies the inclusive lower and upper bound of
-	// valid values for the state.
-	//
-	// In any case, the information is merely a hint. It may be possible to have
-	// a state value outside of the hinted range and setting a value within the
-	// range may fail.
-	//
-	// The return value (if non-nil) should be freed with g_variant_unref() when
-	// it is no longer required.
-	//
-	// This method is inherited from Action
-	GetStateHint() *glib.Variant
-	// GetStateType queries the type of the state of @action.
-	//
-	// If the action is stateful (e.g. created with
-	// g_simple_action_new_stateful()) then this function returns the Type of
-	// the state. This is the type of the initial value given as the state. All
-	// calls to g_action_change_state() must give a #GVariant of this type and
-	// g_action_get_state() will return a #GVariant of the same type.
-	//
-	// If the action is not stateful (e.g. created with g_simple_action_new())
-	// then this function will return nil. In that case, g_action_get_state()
-	// will return nil and you must not call g_action_change_state().
-	//
-	// This method is inherited from Action
-	GetStateType() *glib.VariantType
 
 	// SetEnabled sets the action as enabled or not.
 	//
@@ -5328,23 +4901,27 @@ type SimpleAction interface {
 	SetStateHint(stateHint *glib.Variant)
 }
 
-// simpleAction implements the SimpleAction interface.
-type simpleAction struct {
+// SimpleActionClass implements the SimpleAction interface.
+type SimpleActionClass struct {
 	*externglib.Object
+	ActionInterface
 }
 
-var _ SimpleAction = (*simpleAction)(nil)
+var _ SimpleAction = (*SimpleActionClass)(nil)
 
-// WrapSimpleAction wraps a GObject to a type that implements
-// interface SimpleAction. It is primarily used internally.
-func WrapSimpleAction(obj *externglib.Object) SimpleAction {
-	return simpleAction{obj}
+func wrapSimpleAction(obj *externglib.Object) SimpleAction {
+	return &SimpleActionClass{
+		Object: obj,
+		ActionInterface: ActionInterface{
+			Object: obj,
+		},
+	}
 }
 
 func marshalSimpleAction(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapSimpleAction(obj), nil
+	return wrapSimpleAction(obj), nil
 }
 
 // NewSimpleAction creates a new action.
@@ -5394,43 +4971,14 @@ func NewSimpleActionStateful(name string, parameterType *glib.VariantType, state
 	return _simpleAction
 }
 
-func (s simpleAction) AsAction() Action {
-	return WrapAction(gextras.InternObject(s))
-}
-
-func (a simpleAction) Activate(parameter *glib.Variant) {
-	WrapAction(gextras.InternObject(a)).Activate(parameter)
-}
-
-func (a simpleAction) ChangeState(value *glib.Variant) {
-	WrapAction(gextras.InternObject(a)).ChangeState(value)
-}
-
-func (a simpleAction) GetEnabled() bool {
-	return WrapAction(gextras.InternObject(a)).GetEnabled()
-}
-
-func (a simpleAction) GetName() string {
-	return WrapAction(gextras.InternObject(a)).GetName()
-}
-
-func (a simpleAction) GetParameterType() *glib.VariantType {
-	return WrapAction(gextras.InternObject(a)).GetParameterType()
-}
-
-func (a simpleAction) GetState() *glib.Variant {
-	return WrapAction(gextras.InternObject(a)).GetState()
-}
-
-func (a simpleAction) GetStateHint() *glib.Variant {
-	return WrapAction(gextras.InternObject(a)).GetStateHint()
-}
-
-func (a simpleAction) GetStateType() *glib.VariantType {
-	return WrapAction(gextras.InternObject(a)).GetStateType()
-}
-
-func (s simpleAction) SetEnabled(enabled bool) {
+// SetEnabled sets the action as enabled or not.
+//
+// An action must be enabled in order to be activated or in order to have its
+// state changed from outside callers.
+//
+// This should only be called by the implementor of the action. Users of the
+// action should not attempt to modify its enabled flag.
+func (s *SimpleActionClass) SetEnabled(enabled bool) {
 	var _arg0 *C.GSimpleAction // out
 	var _arg1 C.gboolean       // out
 
@@ -5442,7 +4990,16 @@ func (s simpleAction) SetEnabled(enabled bool) {
 	C.g_simple_action_set_enabled(_arg0, _arg1)
 }
 
-func (s simpleAction) SetState(value *glib.Variant) {
+// SetState sets the state of the action.
+//
+// This directly updates the 'state' property to the given value.
+//
+// This should only be called by the implementor of the action. Users of the
+// action should not attempt to directly modify the 'state' property. Instead,
+// they should call g_action_change_state() to request the change.
+//
+// If the @value GVariant is floating, it is consumed.
+func (s *SimpleActionClass) SetState(value *glib.Variant) {
 	var _arg0 *C.GSimpleAction // out
 	var _arg1 *C.GVariant      // out
 
@@ -5452,7 +5009,10 @@ func (s simpleAction) SetState(value *glib.Variant) {
 	C.g_simple_action_set_state(_arg0, _arg1)
 }
 
-func (s simpleAction) SetStateHint(stateHint *glib.Variant) {
+// SetStateHint sets the state hint for the action.
+//
+// See g_action_get_state_hint() for more information about action state hints.
+func (s *SimpleActionClass) SetStateHint(stateHint *glib.Variant) {
 	var _arg0 *C.GSimpleAction // out
 	var _arg1 *C.GVariant      // out
 
@@ -5470,119 +5030,30 @@ func (s simpleAction) SetStateHint(stateHint *glib.Variant) {
 // g_unix_input_stream_new() or g_win32_input_stream_new(), and you want to take
 // advantage of the methods provided by OStream.
 type SimpleIOStream interface {
-	IOStream
+	gextras.Objector
 
-	// AsIOStream casts the class to the IOStream interface.
-	AsIOStream() IOStream
-
-	// ClearPending clears the pending flag on @stream.
-	//
-	// This method is inherited from IOStream
-	ClearPending()
-	// Close closes the stream, releasing resources related to it. This will
-	// also close the individual input and output streams, if they are not
-	// already closed.
-	//
-	// Once the stream is closed, all other operations will return
-	// G_IO_ERROR_CLOSED. Closing a stream multiple times will not return an
-	// error.
-	//
-	// Closing a stream will automatically flush any outstanding buffers in the
-	// stream.
-	//
-	// Streams will be automatically closed when the last reference is dropped,
-	// but you might want to call this function to make sure resources are
-	// released as early as possible.
-	//
-	// Some streams might keep the backing store of the stream (e.g. a file
-	// descriptor) open after the stream is closed. See the documentation for
-	// the individual stream for details.
-	//
-	// On failure the first error that happened will be reported, but the close
-	// operation will finish as much as possible. A stream that failed to close
-	// will still return G_IO_ERROR_CLOSED for all operations. Still, it is
-	// important to check and report the error to the user, otherwise there
-	// might be a loss of data as all data might not be written.
-	//
-	// If @cancellable is not NULL, then the operation can be cancelled by
-	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	// Cancelling a close will still leave the stream closed, but some streams
-	// can use a faster close that doesn't block to e.g. check errors.
-	//
-	// The default implementation of this method just calls close on the
-	// individual input/output streams.
-	//
-	// This method is inherited from IOStream
-	Close(cancellable Cancellable) error
-	// CloseAsync requests an asynchronous close of the stream, releasing
-	// resources related to it. When the operation is finished @callback will be
-	// called. You can then call g_io_stream_close_finish() to get the result of
-	// the operation.
-	//
-	// For behaviour details see g_io_stream_close().
-	//
-	// The asynchronous methods have a default fallback that uses threads to
-	// implement asynchronicity, so they are optional for inheriting classes.
-	// However, if you override one you must override all.
-	//
-	// This method is inherited from IOStream
-	CloseAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
-	// CloseFinish closes a stream.
-	//
-	// This method is inherited from IOStream
-	CloseFinish(result AsyncResult) error
-	// GetInputStream gets the input stream for this object. This is used for
-	// reading.
-	//
-	// This method is inherited from IOStream
-	GetInputStream() InputStream
-	// GetOutputStream gets the output stream for this object. This is used for
-	// writing.
-	//
-	// This method is inherited from IOStream
-	GetOutputStream() OutputStream
-	// HasPending checks if a stream has pending actions.
-	//
-	// This method is inherited from IOStream
-	HasPending() bool
-	// IsClosed checks if a stream is closed.
-	//
-	// This method is inherited from IOStream
-	IsClosed() bool
-	// SetPending sets @stream to have actions pending. If the pending flag is
-	// already set or @stream is closed, it will return false and set @error.
-	//
-	// This method is inherited from IOStream
-	SetPending() error
-	// SpliceAsync: asynchronously splice the output stream of @stream1 to the
-	// input stream of @stream2, and splice the output stream of @stream2 to the
-	// input stream of @stream1.
-	//
-	// When the operation is finished @callback will be called. You can then
-	// call g_io_stream_splice_finish() to get the result of the operation.
-	//
-	// This method is inherited from IOStream
-	SpliceAsync(stream2 IOStream, flags IOStreamSpliceFlags, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
+	privateSimpleIOStreamClass()
 }
 
-// simpleIOStream implements the SimpleIOStream interface.
-type simpleIOStream struct {
-	*externglib.Object
+// SimpleIOStreamClass implements the SimpleIOStream interface.
+type SimpleIOStreamClass struct {
+	IOStreamClass
 }
 
-var _ SimpleIOStream = (*simpleIOStream)(nil)
+var _ SimpleIOStream = (*SimpleIOStreamClass)(nil)
 
-// WrapSimpleIOStream wraps a GObject to a type that implements
-// interface SimpleIOStream. It is primarily used internally.
-func WrapSimpleIOStream(obj *externglib.Object) SimpleIOStream {
-	return simpleIOStream{obj}
+func wrapSimpleIOStream(obj *externglib.Object) SimpleIOStream {
+	return &SimpleIOStreamClass{
+		IOStreamClass: IOStreamClass{
+			Object: obj,
+		},
+	}
 }
 
 func marshalSimpleIOStream(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapSimpleIOStream(obj), nil
+	return wrapSimpleIOStream(obj), nil
 }
 
 // NewSimpleIOStream creates a new IOStream wrapping @input_stream and
@@ -5604,49 +5075,7 @@ func NewSimpleIOStream(inputStream InputStream, outputStream OutputStream) Simpl
 	return _simpleIOStream
 }
 
-func (s simpleIOStream) AsIOStream() IOStream {
-	return WrapIOStream(gextras.InternObject(s))
-}
-
-func (s simpleIOStream) ClearPending() {
-	WrapIOStream(gextras.InternObject(s)).ClearPending()
-}
-
-func (s simpleIOStream) Close(cancellable Cancellable) error {
-	return WrapIOStream(gextras.InternObject(s)).Close(cancellable)
-}
-
-func (s simpleIOStream) CloseAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
-	WrapIOStream(gextras.InternObject(s)).CloseAsync(ioPriority, cancellable, callback)
-}
-
-func (s simpleIOStream) CloseFinish(result AsyncResult) error {
-	return WrapIOStream(gextras.InternObject(s)).CloseFinish(result)
-}
-
-func (s simpleIOStream) GetInputStream() InputStream {
-	return WrapIOStream(gextras.InternObject(s)).GetInputStream()
-}
-
-func (s simpleIOStream) GetOutputStream() OutputStream {
-	return WrapIOStream(gextras.InternObject(s)).GetOutputStream()
-}
-
-func (s simpleIOStream) HasPending() bool {
-	return WrapIOStream(gextras.InternObject(s)).HasPending()
-}
-
-func (s simpleIOStream) IsClosed() bool {
-	return WrapIOStream(gextras.InternObject(s)).IsClosed()
-}
-
-func (s simpleIOStream) SetPending() error {
-	return WrapIOStream(gextras.InternObject(s)).SetPending()
-}
-
-func (s simpleIOStream) SpliceAsync(stream2 IOStream, flags IOStreamSpliceFlags, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
-	WrapIOStream(gextras.InternObject(s)).SpliceAsync(stream2, flags, ioPriority, cancellable, callback)
-}
+func (*SimpleIOStreamClass) privateSimpleIOStreamClass() {}
 
 // SimplePermission is a trivial implementation of #GPermission that represents
 // a permission that is either always or never allowed. The value is given at
@@ -5654,124 +5083,30 @@ func (s simpleIOStream) SpliceAsync(stream2 IOStream, flags IOStreamSpliceFlags,
 //
 // Calling request or release will result in errors.
 type SimplePermission interface {
-	Permission
+	gextras.Objector
 
-	// AsPermission casts the class to the Permission interface.
-	AsPermission() Permission
-
-	// Acquire attempts to acquire the permission represented by @permission.
-	//
-	// The precise method by which this happens depends on the permission and
-	// the underlying authentication mechanism. A simple example is that a
-	// dialog may appear asking the user to enter their password.
-	//
-	// You should check with g_permission_get_can_acquire() before calling this
-	// function.
-	//
-	// If the permission is acquired then true is returned. Otherwise, false is
-	// returned and @error is set appropriately.
-	//
-	// This call is blocking, likely for a very long time (in the case that user
-	// interaction is required). See g_permission_acquire_async() for the
-	// non-blocking version.
-	//
-	// This method is inherited from Permission
-	Acquire(cancellable Cancellable) error
-	// AcquireAsync attempts to acquire the permission represented by
-	// @permission.
-	//
-	// This is the first half of the asynchronous version of
-	// g_permission_acquire().
-	//
-	// This method is inherited from Permission
-	AcquireAsync(cancellable Cancellable, callback AsyncReadyCallback)
-	// AcquireFinish collects the result of attempting to acquire the permission
-	// represented by @permission.
-	//
-	// This is the second half of the asynchronous version of
-	// g_permission_acquire().
-	//
-	// This method is inherited from Permission
-	AcquireFinish(result AsyncResult) error
-	// GetAllowed gets the value of the 'allowed' property. This property is
-	// true if the caller currently has permission to perform the action that
-	// @permission represents the permission to perform.
-	//
-	// This method is inherited from Permission
-	GetAllowed() bool
-	// GetCanAcquire gets the value of the 'can-acquire' property. This property
-	// is true if it is generally possible to acquire the permission by calling
-	// g_permission_acquire().
-	//
-	// This method is inherited from Permission
-	GetCanAcquire() bool
-	// GetCanRelease gets the value of the 'can-release' property. This property
-	// is true if it is generally possible to release the permission by calling
-	// g_permission_release().
-	//
-	// This method is inherited from Permission
-	GetCanRelease() bool
-	// ImplUpdate: this function is called by the #GPermission implementation to
-	// update the properties of the permission. You should never call this
-	// function except from a #GPermission implementation.
-	//
-	// GObject notify signals are generated, as appropriate.
-	//
-	// This method is inherited from Permission
-	ImplUpdate(allowed bool, canAcquire bool, canRelease bool)
-	// Release attempts to release the permission represented by @permission.
-	//
-	// The precise method by which this happens depends on the permission and
-	// the underlying authentication mechanism. In most cases the permission
-	// will be dropped immediately without further action.
-	//
-	// You should check with g_permission_get_can_release() before calling this
-	// function.
-	//
-	// If the permission is released then true is returned. Otherwise, false is
-	// returned and @error is set appropriately.
-	//
-	// This call is blocking, likely for a very long time (in the case that user
-	// interaction is required). See g_permission_release_async() for the
-	// non-blocking version.
-	//
-	// This method is inherited from Permission
-	Release(cancellable Cancellable) error
-	// ReleaseAsync attempts to release the permission represented by
-	// @permission.
-	//
-	// This is the first half of the asynchronous version of
-	// g_permission_release().
-	//
-	// This method is inherited from Permission
-	ReleaseAsync(cancellable Cancellable, callback AsyncReadyCallback)
-	// ReleaseFinish collects the result of attempting to release the permission
-	// represented by @permission.
-	//
-	// This is the second half of the asynchronous version of
-	// g_permission_release().
-	//
-	// This method is inherited from Permission
-	ReleaseFinish(result AsyncResult) error
+	privateSimplePermissionClass()
 }
 
-// simplePermission implements the SimplePermission interface.
-type simplePermission struct {
-	*externglib.Object
+// SimplePermissionClass implements the SimplePermission interface.
+type SimplePermissionClass struct {
+	PermissionClass
 }
 
-var _ SimplePermission = (*simplePermission)(nil)
+var _ SimplePermission = (*SimplePermissionClass)(nil)
 
-// WrapSimplePermission wraps a GObject to a type that implements
-// interface SimplePermission. It is primarily used internally.
-func WrapSimplePermission(obj *externglib.Object) SimplePermission {
-	return simplePermission{obj}
+func wrapSimplePermission(obj *externglib.Object) SimplePermission {
+	return &SimplePermissionClass{
+		PermissionClass: PermissionClass{
+			Object: obj,
+		},
+	}
 }
 
 func marshalSimplePermission(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapSimplePermission(obj), nil
+	return wrapSimplePermission(obj), nil
 }
 
 // NewSimplePermission creates a new #GPermission instance that represents an
@@ -5793,49 +5128,7 @@ func NewSimplePermission(allowed bool) SimplePermission {
 	return _simplePermission
 }
 
-func (s simplePermission) AsPermission() Permission {
-	return WrapPermission(gextras.InternObject(s))
-}
-
-func (p simplePermission) Acquire(cancellable Cancellable) error {
-	return WrapPermission(gextras.InternObject(p)).Acquire(cancellable)
-}
-
-func (p simplePermission) AcquireAsync(cancellable Cancellable, callback AsyncReadyCallback) {
-	WrapPermission(gextras.InternObject(p)).AcquireAsync(cancellable, callback)
-}
-
-func (p simplePermission) AcquireFinish(result AsyncResult) error {
-	return WrapPermission(gextras.InternObject(p)).AcquireFinish(result)
-}
-
-func (p simplePermission) GetAllowed() bool {
-	return WrapPermission(gextras.InternObject(p)).GetAllowed()
-}
-
-func (p simplePermission) GetCanAcquire() bool {
-	return WrapPermission(gextras.InternObject(p)).GetCanAcquire()
-}
-
-func (p simplePermission) GetCanRelease() bool {
-	return WrapPermission(gextras.InternObject(p)).GetCanRelease()
-}
-
-func (p simplePermission) ImplUpdate(allowed bool, canAcquire bool, canRelease bool) {
-	WrapPermission(gextras.InternObject(p)).ImplUpdate(allowed, canAcquire, canRelease)
-}
-
-func (p simplePermission) Release(cancellable Cancellable) error {
-	return WrapPermission(gextras.InternObject(p)).Release(cancellable)
-}
-
-func (p simplePermission) ReleaseAsync(cancellable Cancellable, callback AsyncReadyCallback) {
-	WrapPermission(gextras.InternObject(p)).ReleaseAsync(cancellable, callback)
-}
-
-func (p simplePermission) ReleaseFinish(result AsyncResult) error {
-	return WrapPermission(gextras.InternObject(p)).ReleaseFinish(result)
-}
+func (*SimplePermissionClass) privateSimplePermissionClass() {}
 
 // Subprocess allows the creation of and interaction with child processes.
 //
@@ -5887,51 +5180,6 @@ func (p simplePermission) ReleaseFinish(result AsyncResult) error {
 // WIFEXITED-style POSIX macros).
 type Subprocess interface {
 	gextras.Objector
-
-	// AsInitable casts the class to the Initable interface.
-	AsInitable() Initable
-
-	// Init initializes the object implementing the interface.
-	//
-	// This method is intended for language bindings. If writing in C,
-	// g_initable_new() should typically be used instead.
-	//
-	// The object must be initialized before any real use after initial
-	// construction, either with this function or g_async_initable_init_async().
-	//
-	// Implementations may also support cancellation. If @cancellable is not
-	// nil, then initialization can be cancelled by triggering the cancellable
-	// object from another thread. If the operation was cancelled, the error
-	// G_IO_ERROR_CANCELLED will be returned. If @cancellable is not nil and the
-	// object doesn't support cancellable initialization the error
-	// G_IO_ERROR_NOT_SUPPORTED will be returned.
-	//
-	// If the object is not initialized, or initialization returns with an
-	// error, then all operations on the object except g_object_ref() and
-	// g_object_unref() are considered to be invalid, and have undefined
-	// behaviour. See the [introduction][ginitable] for more details.
-	//
-	// Callers should not assume that a class which implements #GInitable can be
-	// initialized multiple times, unless the class explicitly documents itself
-	// as supporting this. Generally, a class’ implementation of init() can
-	// assume (and assert) that it will only be called once. Previously, this
-	// documentation recommended all #GInitable implementations should be
-	// idempotent; that recommendation was relaxed in GLib 2.54.
-	//
-	// If a class explicitly supports being initialized multiple times, it is
-	// recommended that the method is idempotent: multiple calls with the same
-	// arguments should return the same results. Only the first call initializes
-	// the object; further calls return the result of the first call.
-	//
-	// One reason why a class might need to support idempotent initialization is
-	// if it is designed to be used via the singleton pattern, with a
-	// Class.constructor that sometimes returns an existing instance. In this
-	// pattern, a caller would expect to be able to call g_initable_init() on
-	// the result of g_object_new(), regardless of whether it is in fact a new
-	// instance.
-	//
-	// This method is inherited from Initable
-	Init(cancellable Cancellable) error
 
 	// CommunicateUTF8: like g_subprocess_communicate(), but validates the
 	// output of the process as UTF-8, and returns it as a regular NUL
@@ -6067,23 +5315,27 @@ type Subprocess interface {
 	WaitFinish(result AsyncResult) error
 }
 
-// subprocess implements the Subprocess interface.
-type subprocess struct {
+// SubprocessClass implements the Subprocess interface.
+type SubprocessClass struct {
 	*externglib.Object
+	InitableInterface
 }
 
-var _ Subprocess = (*subprocess)(nil)
+var _ Subprocess = (*SubprocessClass)(nil)
 
-// WrapSubprocess wraps a GObject to a type that implements
-// interface Subprocess. It is primarily used internally.
-func WrapSubprocess(obj *externglib.Object) Subprocess {
-	return subprocess{obj}
+func wrapSubprocess(obj *externglib.Object) Subprocess {
+	return &SubprocessClass{
+		Object: obj,
+		InitableInterface: InitableInterface{
+			Object: obj,
+		},
+	}
 }
 
 func marshalSubprocess(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapSubprocess(obj), nil
+	return wrapSubprocess(obj), nil
 }
 
 // NewSubprocessV: create a new process with the given flags and argument list.
@@ -6117,15 +5369,12 @@ func NewSubprocessV(argv []string, flags SubprocessFlags) (Subprocess, error) {
 	return _subprocess, _goerr
 }
 
-func (s subprocess) AsInitable() Initable {
-	return WrapInitable(gextras.InternObject(s))
-}
-
-func (i subprocess) Init(cancellable Cancellable) error {
-	return WrapInitable(gextras.InternObject(i)).Init(cancellable)
-}
-
-func (s subprocess) CommunicateUTF8(stdinBuf string, cancellable Cancellable) (stdoutBuf string, stderrBuf string, goerr error) {
+// CommunicateUTF8: like g_subprocess_communicate(), but validates the output of
+// the process as UTF-8, and returns it as a regular NUL terminated string.
+//
+// On error, @stdout_buf and @stderr_buf will be set to undefined values and
+// should not be used.
+func (s *SubprocessClass) CommunicateUTF8(stdinBuf string, cancellable Cancellable) (stdoutBuf string, stderrBuf string, goerr error) {
 	var _arg0 *C.GSubprocess  // out
 	var _arg1 *C.char         // out
 	var _arg2 *C.GCancellable // out
@@ -6153,7 +5402,9 @@ func (s subprocess) CommunicateUTF8(stdinBuf string, cancellable Cancellable) (s
 	return _stdoutBuf, _stderrBuf, _goerr
 }
 
-func (s subprocess) CommunicateUTF8Async(stdinBuf string, cancellable Cancellable, callback AsyncReadyCallback) {
+// CommunicateUTF8Async asynchronous version of g_subprocess_communicate_utf8().
+// Complete invocation with g_subprocess_communicate_utf8_finish().
+func (s *SubprocessClass) CommunicateUTF8Async(stdinBuf string, cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GSubprocess        // out
 	var _arg1 *C.char               // out
 	var _arg2 *C.GCancellable       // out
@@ -6170,7 +5421,9 @@ func (s subprocess) CommunicateUTF8Async(stdinBuf string, cancellable Cancellabl
 	C.g_subprocess_communicate_utf8_async(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
-func (s subprocess) CommunicateUTF8Finish(result AsyncResult) (stdoutBuf string, stderrBuf string, goerr error) {
+// CommunicateUTF8Finish: complete an invocation of
+// g_subprocess_communicate_utf8_async().
+func (s *SubprocessClass) CommunicateUTF8Finish(result AsyncResult) (stdoutBuf string, stderrBuf string, goerr error) {
 	var _arg0 *C.GSubprocess  // out
 	var _arg1 *C.GAsyncResult // out
 	var _arg2 *C.char         // in
@@ -6195,7 +5448,14 @@ func (s subprocess) CommunicateUTF8Finish(result AsyncResult) (stdoutBuf string,
 	return _stdoutBuf, _stderrBuf, _goerr
 }
 
-func (s subprocess) ForceExit() {
+// ForceExit: use an operating-system specific method to attempt an immediate,
+// forceful termination of the process. There is no mechanism to determine
+// whether or not the request itself was successful; however, you can use
+// g_subprocess_wait() to monitor the status of the process after calling this
+// function.
+//
+// On Unix, this function sends SIGKILL.
+func (s *SubprocessClass) ForceExit() {
 	var _arg0 *C.GSubprocess // out
 
 	_arg0 = (*C.GSubprocess)(unsafe.Pointer(s.Native()))
@@ -6203,7 +5463,15 @@ func (s subprocess) ForceExit() {
 	C.g_subprocess_force_exit(_arg0)
 }
 
-func (s subprocess) ExitStatus() int {
+// ExitStatus: check the exit status of the subprocess, given that it exited
+// normally. This is the value passed to the exit() system call or the return
+// value from main.
+//
+// This is equivalent to the system WEXITSTATUS macro.
+//
+// It is an error to call this function before g_subprocess_wait() and unless
+// g_subprocess_get_if_exited() returned true.
+func (s *SubprocessClass) ExitStatus() int {
 	var _arg0 *C.GSubprocess // out
 	var _cret C.gint         // in
 
@@ -6218,7 +5486,10 @@ func (s subprocess) ExitStatus() int {
 	return _gint
 }
 
-func (s subprocess) Identifier() string {
+// Identifier: on UNIX, returns the process ID as a decimal string. On Windows,
+// returns the result of GetProcessId() also as a string. If the subprocess has
+// terminated, this will return nil.
+func (s *SubprocessClass) Identifier() string {
 	var _arg0 *C.GSubprocess // out
 	var _cret *C.gchar       // in
 
@@ -6233,7 +5504,13 @@ func (s subprocess) Identifier() string {
 	return _utf8
 }
 
-func (s subprocess) IfExited() bool {
+// IfExited: check if the given subprocess exited normally (ie: by way of exit()
+// or return from main()).
+//
+// This is equivalent to the system WIFEXITED macro.
+//
+// It is an error to call this function before g_subprocess_wait() has returned.
+func (s *SubprocessClass) IfExited() bool {
 	var _arg0 *C.GSubprocess // out
 	var _cret C.gboolean     // in
 
@@ -6250,7 +5527,12 @@ func (s subprocess) IfExited() bool {
 	return _ok
 }
 
-func (s subprocess) IfSignaled() bool {
+// IfSignaled: check if the given subprocess terminated in response to a signal.
+//
+// This is equivalent to the system WIFSIGNALED macro.
+//
+// It is an error to call this function before g_subprocess_wait() has returned.
+func (s *SubprocessClass) IfSignaled() bool {
 	var _arg0 *C.GSubprocess // out
 	var _cret C.gboolean     // in
 
@@ -6267,7 +5549,17 @@ func (s subprocess) IfSignaled() bool {
 	return _ok
 }
 
-func (s subprocess) Status() int {
+// Status gets the raw status code of the process, as from waitpid().
+//
+// This value has no particular meaning, but it can be used with the macros
+// defined by the system headers such as WIFEXITED. It can also be used with
+// g_spawn_check_exit_status().
+//
+// It is more likely that you want to use g_subprocess_get_if_exited() followed
+// by g_subprocess_get_exit_status().
+//
+// It is an error to call this function before g_subprocess_wait() has returned.
+func (s *SubprocessClass) Status() int {
 	var _arg0 *C.GSubprocess // out
 	var _cret C.gint         // in
 
@@ -6282,7 +5574,12 @@ func (s subprocess) Status() int {
 	return _gint
 }
 
-func (s subprocess) StderrPipe() InputStream {
+// StderrPipe gets the Stream from which to read the stderr output of
+// @subprocess.
+//
+// The process must have been created with G_SUBPROCESS_FLAGS_STDERR_PIPE,
+// otherwise nil will be returned.
+func (s *SubprocessClass) StderrPipe() InputStream {
 	var _arg0 *C.GSubprocess  // out
 	var _cret *C.GInputStream // in
 
@@ -6297,7 +5594,12 @@ func (s subprocess) StderrPipe() InputStream {
 	return _inputStream
 }
 
-func (s subprocess) StdinPipe() OutputStream {
+// StdinPipe gets the Stream that you can write to in order to give data to the
+// stdin of @subprocess.
+//
+// The process must have been created with G_SUBPROCESS_FLAGS_STDIN_PIPE and not
+// G_SUBPROCESS_FLAGS_STDIN_INHERIT, otherwise nil will be returned.
+func (s *SubprocessClass) StdinPipe() OutputStream {
 	var _arg0 *C.GSubprocess   // out
 	var _cret *C.GOutputStream // in
 
@@ -6312,7 +5614,12 @@ func (s subprocess) StdinPipe() OutputStream {
 	return _outputStream
 }
 
-func (s subprocess) StdoutPipe() InputStream {
+// StdoutPipe gets the Stream from which to read the stdout output of
+// @subprocess.
+//
+// The process must have been created with G_SUBPROCESS_FLAGS_STDOUT_PIPE,
+// otherwise nil will be returned.
+func (s *SubprocessClass) StdoutPipe() InputStream {
 	var _arg0 *C.GSubprocess  // out
 	var _cret *C.GInputStream // in
 
@@ -6327,7 +5634,12 @@ func (s subprocess) StdoutPipe() InputStream {
 	return _inputStream
 }
 
-func (s subprocess) Successful() bool {
+// Successful checks if the process was "successful". A process is considered
+// successful if it exited cleanly with an exit status of 0, either by way of
+// the exit() system call or return from main().
+//
+// It is an error to call this function before g_subprocess_wait() has returned.
+func (s *SubprocessClass) Successful() bool {
 	var _arg0 *C.GSubprocess // out
 	var _cret C.gboolean     // in
 
@@ -6344,7 +5656,14 @@ func (s subprocess) Successful() bool {
 	return _ok
 }
 
-func (s subprocess) TermSig() int {
+// TermSig: get the signal number that caused the subprocess to terminate, given
+// that it terminated due to a signal.
+//
+// This is equivalent to the system WTERMSIG macro.
+//
+// It is an error to call this function before g_subprocess_wait() and unless
+// g_subprocess_get_if_signaled() returned true.
+func (s *SubprocessClass) TermSig() int {
 	var _arg0 *C.GSubprocess // out
 	var _cret C.gint         // in
 
@@ -6359,7 +5678,14 @@ func (s subprocess) TermSig() int {
 	return _gint
 }
 
-func (s subprocess) SendSignal(signalNum int) {
+// SendSignal sends the UNIX signal @signal_num to the subprocess, if it is
+// still running.
+//
+// This API is race-free. If the subprocess has terminated, it will not be
+// signalled.
+//
+// This API is not available on Windows.
+func (s *SubprocessClass) SendSignal(signalNum int) {
 	var _arg0 *C.GSubprocess // out
 	var _arg1 C.gint         // out
 
@@ -6369,7 +5695,17 @@ func (s subprocess) SendSignal(signalNum int) {
 	C.g_subprocess_send_signal(_arg0, _arg1)
 }
 
-func (s subprocess) Wait(cancellable Cancellable) error {
+// Wait: synchronously wait for the subprocess to terminate.
+//
+// After the process terminates you can query its exit status with functions
+// such as g_subprocess_get_if_exited() and g_subprocess_get_exit_status().
+//
+// This function does not fail in the case of the subprocess having abnormal
+// termination. See g_subprocess_wait_check() for that.
+//
+// Cancelling @cancellable doesn't kill the subprocess. Call
+// g_subprocess_force_exit() if it is desirable.
+func (s *SubprocessClass) Wait(cancellable Cancellable) error {
 	var _arg0 *C.GSubprocess  // out
 	var _arg1 *C.GCancellable // out
 	var _cerr *C.GError       // in
@@ -6386,7 +5722,10 @@ func (s subprocess) Wait(cancellable Cancellable) error {
 	return _goerr
 }
 
-func (s subprocess) WaitAsync(cancellable Cancellable, callback AsyncReadyCallback) {
+// WaitAsync: wait for the subprocess to terminate.
+//
+// This is the asynchronous version of g_subprocess_wait().
+func (s *SubprocessClass) WaitAsync(cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GSubprocess        // out
 	var _arg1 *C.GCancellable       // out
 	var _arg2 C.GAsyncReadyCallback // out
@@ -6400,7 +5739,8 @@ func (s subprocess) WaitAsync(cancellable Cancellable, callback AsyncReadyCallba
 	C.g_subprocess_wait_async(_arg0, _arg1, _arg2, _arg3)
 }
 
-func (s subprocess) WaitCheck(cancellable Cancellable) error {
+// WaitCheck combines g_subprocess_wait() with g_spawn_check_exit_status().
+func (s *SubprocessClass) WaitCheck(cancellable Cancellable) error {
 	var _arg0 *C.GSubprocess  // out
 	var _arg1 *C.GCancellable // out
 	var _cerr *C.GError       // in
@@ -6417,7 +5757,11 @@ func (s subprocess) WaitCheck(cancellable Cancellable) error {
 	return _goerr
 }
 
-func (s subprocess) WaitCheckAsync(cancellable Cancellable, callback AsyncReadyCallback) {
+// WaitCheckAsync combines g_subprocess_wait_async() with
+// g_spawn_check_exit_status().
+//
+// This is the asynchronous version of g_subprocess_wait_check().
+func (s *SubprocessClass) WaitCheckAsync(cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GSubprocess        // out
 	var _arg1 *C.GCancellable       // out
 	var _arg2 C.GAsyncReadyCallback // out
@@ -6431,7 +5775,9 @@ func (s subprocess) WaitCheckAsync(cancellable Cancellable, callback AsyncReadyC
 	C.g_subprocess_wait_check_async(_arg0, _arg1, _arg2, _arg3)
 }
 
-func (s subprocess) WaitCheckFinish(result AsyncResult) error {
+// WaitCheckFinish collects the result of a previous call to
+// g_subprocess_wait_check_async().
+func (s *SubprocessClass) WaitCheckFinish(result AsyncResult) error {
 	var _arg0 *C.GSubprocess  // out
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
@@ -6448,7 +5794,9 @@ func (s subprocess) WaitCheckFinish(result AsyncResult) error {
 	return _goerr
 }
 
-func (s subprocess) WaitFinish(result AsyncResult) error {
+// WaitFinish collects the result of a previous call to
+// g_subprocess_wait_async().
+func (s *SubprocessClass) WaitFinish(result AsyncResult) error {
 	var _arg0 *C.GSubprocess  // out
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
@@ -6659,23 +6007,23 @@ type SubprocessLauncher interface {
 	Unsetenv(variable string)
 }
 
-// subprocessLauncher implements the SubprocessLauncher interface.
-type subprocessLauncher struct {
+// SubprocessLauncherClass implements the SubprocessLauncher interface.
+type SubprocessLauncherClass struct {
 	*externglib.Object
 }
 
-var _ SubprocessLauncher = (*subprocessLauncher)(nil)
+var _ SubprocessLauncher = (*SubprocessLauncherClass)(nil)
 
-// WrapSubprocessLauncher wraps a GObject to a type that implements
-// interface SubprocessLauncher. It is primarily used internally.
-func WrapSubprocessLauncher(obj *externglib.Object) SubprocessLauncher {
-	return subprocessLauncher{obj}
+func wrapSubprocessLauncher(obj *externglib.Object) SubprocessLauncher {
+	return &SubprocessLauncherClass{
+		Object: obj,
+	}
 }
 
 func marshalSubprocessLauncher(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapSubprocessLauncher(obj), nil
+	return wrapSubprocessLauncher(obj), nil
 }
 
 // NewSubprocessLauncher creates a new Launcher.
@@ -6698,7 +6046,17 @@ func NewSubprocessLauncher(flags SubprocessFlags) SubprocessLauncher {
 	return _subprocessLauncher
 }
 
-func (s subprocessLauncher) Close() {
+// Close closes all the file descriptors previously passed to the object with
+// g_subprocess_launcher_take_fd(), g_subprocess_launcher_take_stderr_fd(), etc.
+//
+// After calling this method, any subsequent calls to
+// g_subprocess_launcher_spawn() or g_subprocess_launcher_spawnv() will return
+// G_IO_ERROR_CLOSED. This method is idempotent if called more than once.
+//
+// This function is called automatically when the Launcher is disposed, but is
+// provided separately so that garbage collected language bindings can call it
+// earlier to guarantee when FDs are closed.
+func (s *SubprocessLauncherClass) Close() {
 	var _arg0 *C.GSubprocessLauncher // out
 
 	_arg0 = (*C.GSubprocessLauncher)(unsafe.Pointer(s.Native()))
@@ -6706,7 +6064,12 @@ func (s subprocessLauncher) Close() {
 	C.g_subprocess_launcher_close(_arg0)
 }
 
-func (s subprocessLauncher) env(variable string) string {
+// Env returns the value of the environment variable @variable in the
+// environment of processes launched from this launcher.
+//
+// On UNIX, the returned string can be an arbitrary byte string. On Windows, it
+// will be UTF-8.
+func (s *SubprocessLauncherClass) env(variable string) string {
 	var _arg0 *C.GSubprocessLauncher // out
 	var _arg1 *C.gchar               // out
 	var _cret *C.gchar               // in
@@ -6724,7 +6087,12 @@ func (s subprocessLauncher) env(variable string) string {
 	return _filename
 }
 
-func (s subprocessLauncher) SetCwd(cwd string) {
+// SetCwd sets the current working directory that processes will be launched
+// with.
+//
+// By default processes are launched with the current working directory of the
+// launching process at the time of launch.
+func (s *SubprocessLauncherClass) SetCwd(cwd string) {
 	var _arg0 *C.GSubprocessLauncher // out
 	var _arg1 *C.gchar               // out
 
@@ -6735,7 +6103,26 @@ func (s subprocessLauncher) SetCwd(cwd string) {
 	C.g_subprocess_launcher_set_cwd(_arg0, _arg1)
 }
 
-func (s subprocessLauncher) SetEnviron(env []string) {
+// SetEnviron: replace the entire environment of processes launched from this
+// launcher with the given 'environ' variable.
+//
+// Typically you will build this variable by using g_listenv() to copy the
+// process 'environ' and using the functions g_environ_setenv(),
+// g_environ_unsetenv(), etc.
+//
+// As an alternative, you can use g_subprocess_launcher_setenv(),
+// g_subprocess_launcher_unsetenv(), etc.
+//
+// Pass an empty array to set an empty environment. Pass nil to inherit the
+// parent process’ environment. As of GLib 2.54, the parent process’ environment
+// will be copied when g_subprocess_launcher_set_environ() is called.
+// Previously, it was copied when the subprocess was executed. This means the
+// copied environment may now be modified (using g_subprocess_launcher_setenv(),
+// etc.) before launching the subprocess.
+//
+// On UNIX, all strings in this array can be arbitrary byte strings. On Windows,
+// they should be in UTF-8.
+func (s *SubprocessLauncherClass) SetEnviron(env []string) {
 	var _arg0 *C.GSubprocessLauncher // out
 	var _arg1 **C.gchar
 
@@ -6753,7 +6140,18 @@ func (s subprocessLauncher) SetEnviron(env []string) {
 	C.g_subprocess_launcher_set_environ(_arg0, _arg1)
 }
 
-func (s subprocessLauncher) SetFlags(flags SubprocessFlags) {
+// SetFlags sets the flags on the launcher.
+//
+// The default flags are G_SUBPROCESS_FLAGS_NONE.
+//
+// You may not set flags that specify conflicting options for how to handle a
+// particular stdio stream (eg: specifying both G_SUBPROCESS_FLAGS_STDIN_PIPE
+// and G_SUBPROCESS_FLAGS_STDIN_INHERIT).
+//
+// You may also not set a flag that conflicts with a previous call to a function
+// like g_subprocess_launcher_set_stdin_file_path() or
+// g_subprocess_launcher_take_stdout_fd().
+func (s *SubprocessLauncherClass) SetFlags(flags SubprocessFlags) {
 	var _arg0 *C.GSubprocessLauncher // out
 	var _arg1 C.GSubprocessFlags     // out
 
@@ -6763,7 +6161,22 @@ func (s subprocessLauncher) SetFlags(flags SubprocessFlags) {
 	C.g_subprocess_launcher_set_flags(_arg0, _arg1)
 }
 
-func (s subprocessLauncher) SetStderrFilePath(path string) {
+// SetStderrFilePath sets the file path to use as the stderr for spawned
+// processes.
+//
+// If @path is nil then any previously given path is unset.
+//
+// The file will be created or truncated when the process is spawned, as would
+// be the case if using '2>' at the shell.
+//
+// If you want to send both stdout and stderr to the same file then use
+// G_SUBPROCESS_FLAGS_STDERR_MERGE.
+//
+// You may not set a stderr file path if a stderr fd is already set or if the
+// launcher flags contain any flags directing stderr elsewhere.
+//
+// This feature is only available on UNIX.
+func (s *SubprocessLauncherClass) SetStderrFilePath(path string) {
 	var _arg0 *C.GSubprocessLauncher // out
 	var _arg1 *C.gchar               // out
 
@@ -6774,7 +6187,18 @@ func (s subprocessLauncher) SetStderrFilePath(path string) {
 	C.g_subprocess_launcher_set_stderr_file_path(_arg0, _arg1)
 }
 
-func (s subprocessLauncher) SetStdinFilePath(path string) {
+// SetStdinFilePath sets the file path to use as the stdin for spawned
+// processes.
+//
+// If @path is nil then any previously given path is unset.
+//
+// The file must exist or spawning the process will fail.
+//
+// You may not set a stdin file path if a stdin fd is already set or if the
+// launcher flags contain any flags directing stdin elsewhere.
+//
+// This feature is only available on UNIX.
+func (s *SubprocessLauncherClass) SetStdinFilePath(path string) {
 	var _arg0 *C.GSubprocessLauncher // out
 	var _arg1 *C.gchar               // out
 
@@ -6785,7 +6209,19 @@ func (s subprocessLauncher) SetStdinFilePath(path string) {
 	C.g_subprocess_launcher_set_stdin_file_path(_arg0, _arg1)
 }
 
-func (s subprocessLauncher) SetStdoutFilePath(path string) {
+// SetStdoutFilePath sets the file path to use as the stdout for spawned
+// processes.
+//
+// If @path is nil then any previously given path is unset.
+//
+// The file will be created or truncated when the process is spawned, as would
+// be the case if using '>' at the shell.
+//
+// You may not set a stdout file path if a stdout fd is already set or if the
+// launcher flags contain any flags directing stdout elsewhere.
+//
+// This feature is only available on UNIX.
+func (s *SubprocessLauncherClass) SetStdoutFilePath(path string) {
 	var _arg0 *C.GSubprocessLauncher // out
 	var _arg1 *C.gchar               // out
 
@@ -6796,7 +6232,13 @@ func (s subprocessLauncher) SetStdoutFilePath(path string) {
 	C.g_subprocess_launcher_set_stdout_file_path(_arg0, _arg1)
 }
 
-func (s subprocessLauncher) Setenv(variable string, value string, overwrite bool) {
+// Setenv sets the environment variable @variable in the environment of
+// processes launched from this launcher.
+//
+// On UNIX, both the variable's name and value can be arbitrary byte strings,
+// except that the variable's name cannot contain '='. On Windows, they should
+// be in UTF-8.
+func (s *SubprocessLauncherClass) Setenv(variable string, value string, overwrite bool) {
 	var _arg0 *C.GSubprocessLauncher // out
 	var _arg1 *C.gchar               // out
 	var _arg2 *C.gchar               // out
@@ -6814,7 +6256,8 @@ func (s subprocessLauncher) Setenv(variable string, value string, overwrite bool
 	C.g_subprocess_launcher_setenv(_arg0, _arg1, _arg2, _arg3)
 }
 
-func (s subprocessLauncher) Spawnv(argv []string) (Subprocess, error) {
+// Spawnv creates a #GSubprocess given a provided array of arguments.
+func (s *SubprocessLauncherClass) Spawnv(argv []string) (Subprocess, error) {
 	var _arg0 *C.GSubprocessLauncher // out
 	var _arg1 **C.gchar
 	var _cret *C.GSubprocess // in
@@ -6842,7 +6285,19 @@ func (s subprocessLauncher) Spawnv(argv []string) (Subprocess, error) {
 	return _subprocess, _goerr
 }
 
-func (s subprocessLauncher) TakeFd(sourceFd int, targetFd int) {
+// TakeFd: transfer an arbitrary file descriptor from parent process to the
+// child. This function takes ownership of the @source_fd; it will be closed in
+// the parent when @self is freed.
+//
+// By default, all file descriptors from the parent will be closed. This
+// function allows you to create (for example) a custom `pipe()` or
+// `socketpair()` before launching the process, and choose the target descriptor
+// in the child.
+//
+// An example use case is GNUPG, which has a command line argument
+// `--passphrase-fd` providing a file descriptor number where it expects the
+// passphrase to be written.
+func (s *SubprocessLauncherClass) TakeFd(sourceFd int, targetFd int) {
 	var _arg0 *C.GSubprocessLauncher // out
 	var _arg1 C.gint                 // out
 	var _arg2 C.gint                 // out
@@ -6854,7 +6309,23 @@ func (s subprocessLauncher) TakeFd(sourceFd int, targetFd int) {
 	C.g_subprocess_launcher_take_fd(_arg0, _arg1, _arg2)
 }
 
-func (s subprocessLauncher) TakeStderrFd(fd int) {
+// TakeStderrFd sets the file descriptor to use as the stderr for spawned
+// processes.
+//
+// If @fd is -1 then any previously given fd is unset.
+//
+// Note that the default behaviour is to pass stderr through to the stderr of
+// the parent process.
+//
+// The passed @fd belongs to the Launcher. It will be automatically closed when
+// the launcher is finalized. The file descriptor will also be closed on the
+// child side when executing the spawned process.
+//
+// You may not set a stderr fd if a stderr file path is already set or if the
+// launcher flags contain any flags directing stderr elsewhere.
+//
+// This feature is only available on UNIX.
+func (s *SubprocessLauncherClass) TakeStderrFd(fd int) {
 	var _arg0 *C.GSubprocessLauncher // out
 	var _arg1 C.gint                 // out
 
@@ -6864,7 +6335,25 @@ func (s subprocessLauncher) TakeStderrFd(fd int) {
 	C.g_subprocess_launcher_take_stderr_fd(_arg0, _arg1)
 }
 
-func (s subprocessLauncher) TakeStdinFd(fd int) {
+// TakeStdinFd sets the file descriptor to use as the stdin for spawned
+// processes.
+//
+// If @fd is -1 then any previously given fd is unset.
+//
+// Note that if your intention is to have the stdin of the calling process
+// inherited by the child then G_SUBPROCESS_FLAGS_STDIN_INHERIT is a better way
+// to go about doing that.
+//
+// The passed @fd is noted but will not be touched in the current process. It is
+// therefore necessary that it be kept open by the caller until the subprocess
+// is spawned. The file descriptor will also not be explicitly closed on the
+// child side, so it must be marked O_CLOEXEC if that's what you want.
+//
+// You may not set a stdin fd if a stdin file path is already set or if the
+// launcher flags contain any flags directing stdin elsewhere.
+//
+// This feature is only available on UNIX.
+func (s *SubprocessLauncherClass) TakeStdinFd(fd int) {
 	var _arg0 *C.GSubprocessLauncher // out
 	var _arg1 C.gint                 // out
 
@@ -6874,7 +6363,24 @@ func (s subprocessLauncher) TakeStdinFd(fd int) {
 	C.g_subprocess_launcher_take_stdin_fd(_arg0, _arg1)
 }
 
-func (s subprocessLauncher) TakeStdoutFd(fd int) {
+// TakeStdoutFd sets the file descriptor to use as the stdout for spawned
+// processes.
+//
+// If @fd is -1 then any previously given fd is unset.
+//
+// Note that the default behaviour is to pass stdout through to the stdout of
+// the parent process.
+//
+// The passed @fd is noted but will not be touched in the current process. It is
+// therefore necessary that it be kept open by the caller until the subprocess
+// is spawned. The file descriptor will also not be explicitly closed on the
+// child side, so it must be marked O_CLOEXEC if that's what you want.
+//
+// You may not set a stdout fd if a stdout file path is already set or if the
+// launcher flags contain any flags directing stdout elsewhere.
+//
+// This feature is only available on UNIX.
+func (s *SubprocessLauncherClass) TakeStdoutFd(fd int) {
 	var _arg0 *C.GSubprocessLauncher // out
 	var _arg1 C.gint                 // out
 
@@ -6884,7 +6390,12 @@ func (s subprocessLauncher) TakeStdoutFd(fd int) {
 	C.g_subprocess_launcher_take_stdout_fd(_arg0, _arg1)
 }
 
-func (s subprocessLauncher) Unsetenv(variable string) {
+// Unsetenv removes the environment variable @variable from the environment of
+// processes launched from this launcher.
+//
+// On UNIX, the variable's name can be an arbitrary byte string not containing
+// '='. On Windows, it should be in UTF-8.
+func (s *SubprocessLauncherClass) Unsetenv(variable string) {
 	var _arg0 *C.GSubprocessLauncher // out
 	var _arg1 *C.gchar               // out
 
@@ -7003,23 +6514,23 @@ type TestDBus interface {
 	Up()
 }
 
-// testDBus implements the TestDBus interface.
-type testDBus struct {
+// TestDBusClass implements the TestDBus interface.
+type TestDBusClass struct {
 	*externglib.Object
 }
 
-var _ TestDBus = (*testDBus)(nil)
+var _ TestDBus = (*TestDBusClass)(nil)
 
-// WrapTestDBus wraps a GObject to a type that implements
-// interface TestDBus. It is primarily used internally.
-func WrapTestDBus(obj *externglib.Object) TestDBus {
-	return testDBus{obj}
+func wrapTestDBus(obj *externglib.Object) TestDBus {
+	return &TestDBusClass{
+		Object: obj,
+	}
 }
 
 func marshalTestDBus(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapTestDBus(obj), nil
+	return wrapTestDBus(obj), nil
 }
 
 // NewTestDBus: create a new DBus object.
@@ -7038,7 +6549,9 @@ func NewTestDBus(flags TestDBusFlags) TestDBus {
 	return _testDBus
 }
 
-func (s testDBus) AddServiceDir(path string) {
+// AddServiceDir: add a path where dbus-daemon will look up .service files. This
+// can't be called after g_test_dbus_up().
+func (s *TestDBusClass) AddServiceDir(path string) {
 	var _arg0 *C.GTestDBus // out
 	var _arg1 *C.gchar     // out
 
@@ -7049,7 +6562,12 @@ func (s testDBus) AddServiceDir(path string) {
 	C.g_test_dbus_add_service_dir(_arg0, _arg1)
 }
 
-func (s testDBus) Down() {
+// Down: stop the session bus started by g_test_dbus_up().
+//
+// This will wait for the singleton returned by g_bus_get() or g_bus_get_sync()
+// to be destroyed. This is done to ensure that the next unit test won't get a
+// leaked singleton from this test.
+func (s *TestDBusClass) Down() {
 	var _arg0 *C.GTestDBus // out
 
 	_arg0 = (*C.GTestDBus)(unsafe.Pointer(s.Native()))
@@ -7057,7 +6575,10 @@ func (s testDBus) Down() {
 	C.g_test_dbus_down(_arg0)
 }
 
-func (s testDBus) BusAddress() string {
+// BusAddress: get the address on which dbus-daemon is running. If
+// g_test_dbus_up() has not been called yet, nil is returned. This can be used
+// with g_dbus_connection_new_for_address().
+func (s *TestDBusClass) BusAddress() string {
 	var _arg0 *C.GTestDBus // out
 	var _cret *C.gchar     // in
 
@@ -7072,7 +6593,8 @@ func (s testDBus) BusAddress() string {
 	return _utf8
 }
 
-func (s testDBus) Flags() TestDBusFlags {
+// Flags: get the flags of the DBus object.
+func (s *TestDBusClass) Flags() TestDBusFlags {
 	var _arg0 *C.GTestDBus     // out
 	var _cret C.GTestDBusFlags // in
 
@@ -7087,7 +6609,13 @@ func (s testDBus) Flags() TestDBusFlags {
 	return _testDBusFlags
 }
 
-func (s testDBus) Stop() {
+// Stop the session bus started by g_test_dbus_up().
+//
+// Unlike g_test_dbus_down(), this won't verify the BusConnection singleton
+// returned by g_bus_get() or g_bus_get_sync() is destroyed. Unit tests wanting
+// to verify behaviour after the session bus has been stopped can use this
+// function but should still call g_test_dbus_down() when done.
+func (s *TestDBusClass) Stop() {
 	var _arg0 *C.GTestDBus // out
 
 	_arg0 = (*C.GTestDBus)(unsafe.Pointer(s.Native()))
@@ -7095,7 +6623,15 @@ func (s testDBus) Stop() {
 	C.g_test_dbus_stop(_arg0)
 }
 
-func (s testDBus) Up() {
+// Up: start a dbus-daemon instance and set DBUS_SESSION_BUS_ADDRESS. After this
+// call, it is safe for unit tests to start sending messages on the session bus.
+//
+// If this function is called from setup callback of g_test_add(),
+// g_test_dbus_down() must be called in its teardown callback.
+//
+// If this function is called from unit test's main(), then g_test_dbus_down()
+// must be called after g_test_run().
+func (s *TestDBusClass) Up() {
 	var _arg0 *C.GTestDBus // out
 
 	_arg0 = (*C.GTestDBus)(unsafe.Pointer(s.Native()))

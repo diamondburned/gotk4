@@ -98,26 +98,27 @@ type DirectoryList interface {
 	SetMonitored(monitored bool)
 }
 
-// directoryList implements the DirectoryList interface.
-type directoryList struct {
+// DirectoryListClass implements the DirectoryList interface.
+type DirectoryListClass struct {
 	*externglib.Object
 }
 
-var _ DirectoryList = (*directoryList)(nil)
+var _ DirectoryList = (*DirectoryListClass)(nil)
 
-// WrapDirectoryList wraps a GObject to a type that implements
-// interface DirectoryList. It is primarily used internally.
-func WrapDirectoryList(obj *externglib.Object) DirectoryList {
-	return directoryList{obj}
+func wrapDirectoryList(obj *externglib.Object) DirectoryList {
+	return &DirectoryListClass{
+		Object: obj,
+	}
 }
 
 func marshalDirectoryList(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapDirectoryList(obj), nil
+	return wrapDirectoryList(obj), nil
 }
 
-func (s directoryList) Attributes() string {
+// Attributes gets the attributes queried on the children.
+func (s *DirectoryListClass) Attributes() string {
 	var _arg0 *C.GtkDirectoryList // out
 	var _cret *C.char             // in
 
@@ -132,7 +133,15 @@ func (s directoryList) Attributes() string {
 	return _utf8
 }
 
-func (s directoryList) Error() error {
+// Error gets the loading error, if any.
+//
+// If an error occurs during the loading process, the loading process will
+// finish and this property allows querying the error that happened. This error
+// will persist until a file is loaded again.
+//
+// An error being set does not mean that no files were loaded, and all
+// successfully queried files will remain in the list.
+func (s *DirectoryListClass) Error() error {
 	var _arg0 *C.GtkDirectoryList // out
 	var _cret *C.GError           // in
 
@@ -147,7 +156,8 @@ func (s directoryList) Error() error {
 	return _err
 }
 
-func (s directoryList) IOPriority() int {
+// IOPriority gets the IO priority set via gtk_directory_list_set_io_priority().
+func (s *DirectoryListClass) IOPriority() int {
 	var _arg0 *C.GtkDirectoryList // out
 	var _cret C.int               // in
 
@@ -162,7 +172,9 @@ func (s directoryList) IOPriority() int {
 	return _gint
 }
 
-func (s directoryList) Monitored() bool {
+// Monitored returns whether the directory list is monitoring the directory for
+// changes.
+func (s *DirectoryListClass) Monitored() bool {
 	var _arg0 *C.GtkDirectoryList // out
 	var _cret C.gboolean          // in
 
@@ -179,7 +191,11 @@ func (s directoryList) Monitored() bool {
 	return _ok
 }
 
-func (s directoryList) IsLoading() bool {
+// IsLoading returns true if the children enumeration is currently in progress.
+//
+// Files will be added to @self from time to time while loading is going on. The
+// order in which are added is undefined and may change in between runs.
+func (s *DirectoryListClass) IsLoading() bool {
 	var _arg0 *C.GtkDirectoryList // out
 	var _cret C.gboolean          // in
 
@@ -196,7 +212,12 @@ func (s directoryList) IsLoading() bool {
 	return _ok
 }
 
-func (s directoryList) SetAttributes(attributes string) {
+// SetAttributes sets the @attributes to be enumerated and starts the
+// enumeration.
+//
+// If @attributes is nil, no attributes will be queried, but a list of
+// `GFileInfo`s will still be created.
+func (s *DirectoryListClass) SetAttributes(attributes string) {
 	var _arg0 *C.GtkDirectoryList // out
 	var _arg1 *C.char             // out
 
@@ -207,7 +228,16 @@ func (s directoryList) SetAttributes(attributes string) {
 	C.gtk_directory_list_set_attributes(_arg0, _arg1)
 }
 
-func (s directoryList) SetIOPriority(ioPriority int) {
+// SetIOPriority sets the IO priority to use while loading directories.
+//
+// Setting the priority while @self is loading will reprioritize the ongoing
+// load as soon as possible.
+//
+// The default IO priority is G_PRIORITY_DEFAULT, which is higher than the GTK
+// redraw priority. If you are loading a lot of directories in parallel,
+// lowering it to something like G_PRIORITY_DEFAULT_IDLE may increase
+// responsiveness.
+func (s *DirectoryListClass) SetIOPriority(ioPriority int) {
 	var _arg0 *C.GtkDirectoryList // out
 	var _arg1 C.int               // out
 
@@ -217,7 +247,14 @@ func (s directoryList) SetIOPriority(ioPriority int) {
 	C.gtk_directory_list_set_io_priority(_arg0, _arg1)
 }
 
-func (s directoryList) SetMonitored(monitored bool) {
+// SetMonitored sets whether the directory list will monitor the directory for
+// changes. If monitoring is enabled, the ::items-changed signal will be emitted
+// when the directory contents change.
+//
+// When monitoring is turned on after the initial creation of the directory
+// list, the directory is reloaded to avoid missing files that appeared between
+// the initial loading and when monitoring was turned on.
+func (s *DirectoryListClass) SetMonitored(monitored bool) {
 	var _arg0 *C.GtkDirectoryList // out
 	var _arg1 C.gboolean          // out
 

@@ -61,26 +61,28 @@ type Registry interface {
 	SetFactoryType(typ externglib.Type, factoryType externglib.Type)
 }
 
-// registry implements the Registry interface.
-type registry struct {
+// RegistryClass implements the Registry interface.
+type RegistryClass struct {
 	*externglib.Object
 }
 
-var _ Registry = (*registry)(nil)
+var _ Registry = (*RegistryClass)(nil)
 
-// WrapRegistry wraps a GObject to a type that implements
-// interface Registry. It is primarily used internally.
-func WrapRegistry(obj *externglib.Object) Registry {
-	return registry{obj}
+func wrapRegistry(obj *externglib.Object) Registry {
+	return &RegistryClass{
+		Object: obj,
+	}
 }
 
 func marshalRegistry(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapRegistry(obj), nil
+	return wrapRegistry(obj), nil
 }
 
-func (r registry) Factory(typ externglib.Type) ObjectFactory {
+// Factory gets an ObjectFactory appropriate for creating Objects appropriate
+// for @type.
+func (r *RegistryClass) Factory(typ externglib.Type) ObjectFactory {
 	var _arg0 *C.AtkRegistry      // out
 	var _arg1 C.GType             // out
 	var _cret *C.AtkObjectFactory // in
@@ -97,7 +99,9 @@ func (r registry) Factory(typ externglib.Type) ObjectFactory {
 	return _objectFactory
 }
 
-func (r registry) FactoryType(typ externglib.Type) externglib.Type {
+// FactoryType provides a #GType indicating the ObjectFactory subclass
+// associated with @type.
+func (r *RegistryClass) FactoryType(typ externglib.Type) externglib.Type {
 	var _arg0 *C.AtkRegistry // out
 	var _arg1 C.GType        // out
 	var _cret C.GType        // in
@@ -114,7 +118,10 @@ func (r registry) FactoryType(typ externglib.Type) externglib.Type {
 	return _gType
 }
 
-func (r registry) SetFactoryType(typ externglib.Type, factoryType externglib.Type) {
+// SetFactoryType: associate an ObjectFactory subclass with a #GType. Note: The
+// associated @factory_type will thereafter be responsible for the creation of
+// new Object implementations for instances appropriate for @type.
+func (r *RegistryClass) SetFactoryType(typ externglib.Type, factoryType externglib.Type) {
 	var _arg0 *C.AtkRegistry // out
 	var _arg1 C.GType        // out
 	var _arg2 C.GType        // out

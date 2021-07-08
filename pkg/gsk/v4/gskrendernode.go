@@ -9,8 +9,6 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/gdk/v4"
-	"github.com/diamondburned/gotk4/pkg/graphene"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -75,10 +73,6 @@ type RenderNode interface {
 	// For advanced nodes that cannot be supported using Cairo, in particular
 	// for nodes doing 3D operations, this function may fail.
 	Draw(cr *cairo.Context)
-	// Bounds retrieves the boundaries of the @node.
-	//
-	// The node will not draw outside of its boundaries.
-	Bounds() graphene.Rect
 	// NodeType returns the type of the @node.
 	NodeType() RenderNodeType
 	// Ref acquires a reference on the given `GskRenderNode`.
@@ -98,26 +92,34 @@ type RenderNode interface {
 	WriteToFile(filename string) error
 }
 
-// renderNode implements the RenderNode interface.
-type renderNode struct {
+// RenderNodeClass implements the RenderNode interface.
+type RenderNodeClass struct {
 	*externglib.Object
 }
 
-var _ RenderNode = (*renderNode)(nil)
+var _ RenderNode = (*RenderNodeClass)(nil)
 
-// WrapRenderNode wraps a GObject to a type that implements
-// interface RenderNode. It is primarily used internally.
-func WrapRenderNode(obj *externglib.Object) RenderNode {
-	return renderNode{obj}
+func wrapRenderNode(obj *externglib.Object) RenderNode {
+	return &RenderNodeClass{
+		Object: obj,
+	}
 }
 
 func marshalRenderNode(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapRenderNode(obj), nil
+	return wrapRenderNode(obj), nil
 }
 
-func (n renderNode) Draw(cr *cairo.Context) {
+// Draw the contents of @node to the given cairo context.
+//
+// Typically, you'll use this function to implement fallback rendering of
+// `GskRenderNode`s on an intermediate Cairo context, instead of using the
+// drawing context associated to a `GdkSurface`'s rendering buffer.
+//
+// For advanced nodes that cannot be supported using Cairo, in particular for
+// nodes doing 3D operations, this function may fail.
+func (n *RenderNodeClass) Draw(cr *cairo.Context) {
 	var _arg0 *C.GskRenderNode // out
 	var _arg1 *C.cairo_t       // out
 
@@ -127,32 +129,8 @@ func (n renderNode) Draw(cr *cairo.Context) {
 	C.gsk_render_node_draw(_arg0, _arg1)
 }
 
-func (n renderNode) Bounds() graphene.Rect {
-	var _arg0 *C.GskRenderNode  // out
-	var _arg1 C.graphene_rect_t // in
-
-	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(n.Native()))
-
-	C.gsk_render_node_get_bounds(_arg0, &_arg1)
-
-	var _bounds graphene.Rect // out
-
-	{
-		var refTmpIn *C.graphene_rect_t
-		var refTmpOut *graphene.Rect
-
-		in0 := &_arg1
-		refTmpIn = in0
-
-		refTmpOut = (*graphene.Rect)(unsafe.Pointer(refTmpIn))
-
-		_bounds = *refTmpOut
-	}
-
-	return _bounds
-}
-
-func (n renderNode) NodeType() RenderNodeType {
+// NodeType returns the type of the @node.
+func (n *RenderNodeClass) NodeType() RenderNodeType {
 	var _arg0 *C.GskRenderNode    // out
 	var _cret C.GskRenderNodeType // in
 
@@ -167,7 +145,8 @@ func (n renderNode) NodeType() RenderNodeType {
 	return _renderNodeType
 }
 
-func (n renderNode) ref() RenderNode {
+// Ref acquires a reference on the given `GskRenderNode`.
+func (n *RenderNodeClass) ref() RenderNode {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GskRenderNode // in
 
@@ -182,7 +161,11 @@ func (n renderNode) ref() RenderNode {
 	return _renderNode
 }
 
-func (n renderNode) unref() {
+// Unref releases a reference on the given `GskRenderNode`.
+//
+// If the reference was the last, the resources associated to the @node are
+// freed.
+func (n *RenderNodeClass) unref() {
 	var _arg0 *C.GskRenderNode // out
 
 	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(n.Native()))
@@ -190,7 +173,14 @@ func (n renderNode) unref() {
 	C.gsk_render_node_unref(_arg0)
 }
 
-func (n renderNode) WriteToFile(filename string) error {
+// WriteToFile: this function is equivalent to calling
+// gsk_render_node_serialize() followed by g_file_set_contents().
+//
+// See those two functions for details on the arguments.
+//
+// It is mostly intended for use inside a debugger to quickly dump a render node
+// to a file for later inspection.
+func (n *RenderNodeClass) WriteToFile(filename string) error {
 	var _arg0 *C.GskRenderNode // out
 	var _arg1 *C.char          // out
 	var _cerr *C.GError        // in
@@ -228,23 +218,6 @@ func (c *ColorStop) Native() unsafe.Pointer {
 func (c *ColorStop) Offset() float32 {
 	var v float32 // out
 	v = float32(c.native.offset)
-	return v
-}
-
-// Color: the color at the given offset
-func (c *ColorStop) Color() gdk.RGBA {
-	var v gdk.RGBA // out
-	{
-		var refTmpIn *C.GdkRGBA
-		var refTmpOut *gdk.RGBA
-
-		in0 := &c.native.color
-		refTmpIn = in0
-
-		refTmpOut = (*gdk.RGBA)(unsafe.Pointer(refTmpIn))
-
-		v = *refTmpOut
-	}
 	return v
 }
 
@@ -313,23 +286,6 @@ func WrapShadow(ptr unsafe.Pointer) *Shadow {
 // Native returns the underlying C source pointer.
 func (s *Shadow) Native() unsafe.Pointer {
 	return unsafe.Pointer(&s.native)
-}
-
-// Color: the color of the shadow
-func (s *Shadow) Color() gdk.RGBA {
-	var v gdk.RGBA // out
-	{
-		var refTmpIn *C.GdkRGBA
-		var refTmpOut *gdk.RGBA
-
-		in0 := &s.native.color
-		refTmpIn = in0
-
-		refTmpOut = (*gdk.RGBA)(unsafe.Pointer(refTmpIn))
-
-		v = *refTmpOut
-	}
-	return v
 }
 
 // Dx: the horizontal offset of the shadow

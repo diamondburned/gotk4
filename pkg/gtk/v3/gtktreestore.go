@@ -332,7 +332,6 @@ func (t *TreeStoreClass) InsertWithValuesv(parent *TreeIter, position int, colum
 	var _arg4 *C.gint
 	var _arg6 C.gint
 	var _arg5 *C.GValue
-	var _arg6 C.gint
 
 	_arg0 = (*C.GtkTreeStore)(unsafe.Pointer(t.Native()))
 	_arg2 = (*C.GtkTreeIter)(unsafe.Pointer(parent))
@@ -548,7 +547,6 @@ func (t *TreeStoreClass) SetValuesv(iter *TreeIter, columns []int, values []exte
 	var _arg2 *C.gint
 	var _arg4 C.gint
 	var _arg3 *C.GValue
-	var _arg4 C.gint
 
 	_arg0 = (*C.GtkTreeStore)(unsafe.Pointer(t.Native()))
 	_arg1 = (*C.GtkTreeIter)(unsafe.Pointer(iter))

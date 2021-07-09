@@ -177,6 +177,8 @@ func (conv *Converter) ConvertAll() []ValueConverted {
 		if result.Skip {
 			continue
 		}
+
+		result.finalize()
 		file.ApplyHeader(conv, &conv.results[i])
 		results = append(results, result)
 	}
@@ -200,12 +202,13 @@ func (conv *Converter) Convert(i int) *ValueConverted {
 		return nil
 	}
 
+	result.finalize()
 	file.ApplyHeader(conv, result)
 	return result
 }
 
 func (conv *Converter) convert(result *ValueConverted) bool {
-	if result.p == nil {
+	if result.isDone() {
 		// result is already finalized, skip.
 		return true
 	}
@@ -237,7 +240,7 @@ func (conv *Converter) convert(result *ValueConverted) bool {
 		}
 	}
 
-	result.finalize()
+	result.flush()
 	return true
 }
 

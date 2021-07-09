@@ -65,6 +65,8 @@ var filters = []FilterMatcher{
 	AbsoluteFilter("GdkPixbuf.PixbufNonAnim"),
 	AbsoluteFilter("GdkPixbuf.PixbufModulePattern"),
 	AbsoluteFilter("C.gdk_pixbuf_non_anim_get_type"),
+	AbsoluteFilter("C.GdkPixbufModule"),
+	AbsoluteFilter("C.gdk_window_destroy_notify"),
 
 	FileFilter("garray.h"),
 	FileFilter("gasyncqueue.h"),

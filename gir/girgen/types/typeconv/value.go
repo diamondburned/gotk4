@@ -245,7 +245,8 @@ type ValueConverted struct {
 	outDecl *pen.PaperString
 	header  file.Header
 
-	fail bool
+	fail  bool
+	final bool
 }
 
 // ValueName contains the different names to use during and after conversion.
@@ -279,15 +280,31 @@ func newValueConverted(value *ConversionValue) ValueConverted {
 // Header returns the header of the current value.
 func (value *ValueConverted) Header() *file.Header { return &value.header }
 
-func (value *ValueConverted) finalize() {
+func (value *ValueConverted) isDone() bool { return value.final }
+
+// finalize finalizes the value and returns true, or false is returned if the
+// value is already finalized.
+func (value *ValueConverted) finalize() bool {
+	if value.final {
+		return false
+	}
+
+	value.flush()
+
+	// Allow GC to collect the internal buffers.
+	value.inDecl = nil
+	value.outDecl = nil
+	value.p = nil
+
+	value.final = true
+	return true
+}
+
+// flush commits the writers.
+func (value *ValueConverted) flush() {
 	value.In.Declare = value.inDecl.String()
 	value.Out.Declare = value.outDecl.String()
 	value.Conversion = value.p.String()
-
-	// // Allow GC to collect the internal buffers.
-	// value.inDecl = nil
-	// value.outDecl = nil
-	// value.p = nil
 }
 
 func (value *ValueConverted) logln(conv *Converter, lvl logger.Level, v ...interface{}) {

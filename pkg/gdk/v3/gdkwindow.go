@@ -574,7 +574,6 @@ type Window interface {
 	// count reaches zero. You must call this function yourself before that
 	// happens.
 	Destroy()
-	DestroyNotify()
 	// EnableSynchronizedConfigure does nothing, present only for compatiblity.
 	//
 	// Deprecated: since version 3.8.
@@ -1756,14 +1755,6 @@ func (w *WindowClass) Destroy() {
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
 	C.gdk_window_destroy(_arg0)
-}
-
-func (w *WindowClass) DestroyNotify() {
-	var _arg0 *C.GdkWindow // out
-
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
-
-	C.gdk_window_destroy_notify(_arg0)
 }
 
 // EnableSynchronizedConfigure does nothing, present only for compatiblity.

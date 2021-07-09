@@ -107,8 +107,11 @@ func (conv *Converter) cgoArrayConverter(value *ValueConverted) bool {
 			return false
 		}
 
-		value.inDecl.Linef("var %s %s // in", length.InName, length.In.Type)
-		// Length has no outDecl.
+		// Multiple arrays may use the same length value.
+		if length.finalize() {
+			value.inDecl.Linef("var %s %s // in", length.InName, length.In.Type)
+			// Length has no outDecl.
+		}
 
 		// If we're owning the new data, then we will directly use the backing
 		// array, but we can only do this if the underlying type is a primitive,

@@ -63,8 +63,12 @@ func (conv *Converter) gocArrayConverter(value *ValueConverted) bool {
 			return false
 		}
 
+		// Multiple arrays may use the same length value.
+		if length.finalize() {
+			value.outDecl.Linef("var %s %s", length.OutName, length.Out.Type)
+		}
+
 		// Length has no input, as it's from the slice.
-		value.outDecl.Linef("var %s %s", length.OutName, length.Out.Type)
 		value.p.Linef("%s = %s(len(%s))", length.Out.Set, length.Out.Type, value.InName)
 	}
 

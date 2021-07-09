@@ -305,7 +305,6 @@ func (l *ListStoreClass) InsertWithValuesv(position int, columns []int, values [
 	var _arg3 *C.gint
 	var _arg5 C.gint
 	var _arg4 *C.GValue
-	var _arg5 C.gint
 
 	_arg0 = (*C.GtkListStore)(unsafe.Pointer(l.Native()))
 	_arg2 = C.gint(position)
@@ -488,7 +487,6 @@ func (l *ListStoreClass) SetValuesv(iter *TreeIter, columns []int, values []exte
 	var _arg2 *C.gint
 	var _arg4 C.gint
 	var _arg3 *C.GValue
-	var _arg4 C.gint
 
 	_arg0 = (*C.GtkListStore)(unsafe.Pointer(l.Native()))
 	_arg1 = (*C.GtkTreeIter)(unsafe.Pointer(iter))

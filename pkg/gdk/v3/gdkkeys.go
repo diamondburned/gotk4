@@ -294,7 +294,6 @@ func (k *KeymapClass) EntriesForKeycode(hardwareKeycode uint) ([]KeymapKey, []ui
 	var _arg2 *C.GdkKeymapKey
 	var _arg4 C.gint // in
 	var _arg3 *C.guint
-	var _arg4 C.gint     // in
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(k.Native()))

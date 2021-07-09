@@ -117,6 +117,10 @@ func (g *Generator) UseFromNamespace(cattrs *gir.CallableAttrs, n *gir.Namespace
 	if !cattrs.IsIntrospectable() {
 		return false
 	}
+	// Double-check that the C identifier is allowed.
+	if cattrs.CIdentifier != "" && types.FilterCType(g.gen, cattrs.CIdentifier) {
+		return false
+	}
 
 	for _, name := range IgnoredNames {
 		if name == g.Name {

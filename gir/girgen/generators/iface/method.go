@@ -5,6 +5,7 @@ import (
 	"github.com/diamondburned/gotk4/gir/girgen/file"
 	"github.com/diamondburned/gotk4/gir/girgen/generators/callable"
 	"github.com/diamondburned/gotk4/gir/girgen/logger"
+	"github.com/diamondburned/gotk4/gir/girgen/types"
 )
 
 type Method struct {
@@ -59,6 +60,11 @@ func (m *Methods) setMethods(g *Generator, methods []gir.Method) {
 	m.reset(len(methods))
 
 	for i := range methods {
+		if types.FilterMethod(g.gen, g.Name, &methods[i]) {
+			g.cgen.Logln(logger.Debug, "filtered method", methods[i].CIdentifier)
+			continue
+		}
+
 		if !g.cgen.UseFromNamespace(&methods[i].CallableAttrs, g.source) {
 			g.cgen.Logln(logger.Debug, "setMethods skipped", methods[i].CIdentifier)
 			continue

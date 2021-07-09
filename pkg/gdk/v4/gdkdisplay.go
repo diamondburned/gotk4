@@ -489,7 +489,6 @@ func (d *DisplayClass) MapKeycode(keycode uint) ([]KeymapKey, []uint, bool) {
 	var _arg2 *C.GdkKeymapKey
 	var _arg4 C.int // in
 	var _arg3 *C.guint
-	var _arg4 C.int      // in
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))

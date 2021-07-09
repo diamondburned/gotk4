@@ -347,7 +347,7 @@ func (i *TextIter) BackwardToTagToggle(tag TextTag) bool {
 	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkTextIter)(unsafe.Pointer(i))
-	_arg1 = (*C.GtkTextTag)(unsafe.Pointer((&tag).Native()))
+	_arg1 = (*C.GtkTextTag)(unsafe.Pointer(tag.Native()))
 
 	_cret = C.gtk_text_iter_backward_to_tag_toggle(_arg0, _arg1)
 
@@ -716,7 +716,7 @@ func (i *TextIter) EndsTag(tag TextTag) bool {
 	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkTextIter)(unsafe.Pointer(i))
-	_arg1 = (*C.GtkTextTag)(unsafe.Pointer((&tag).Native()))
+	_arg1 = (*C.GtkTextTag)(unsafe.Pointer(tag.Native()))
 
 	_cret = C.gtk_text_iter_ends_tag(_arg0, _arg1)
 
@@ -1055,7 +1055,7 @@ func (i *TextIter) ForwardToTagToggle(tag TextTag) bool {
 	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkTextIter)(unsafe.Pointer(i))
-	_arg1 = (*C.GtkTextTag)(unsafe.Pointer((&tag).Native()))
+	_arg1 = (*C.GtkTextTag)(unsafe.Pointer(tag.Native()))
 
 	_cret = C.gtk_text_iter_forward_to_tag_toggle(_arg0, _arg1)
 
@@ -1274,8 +1274,7 @@ func (i *TextIter) Buffer() *TextBufferClass {
 
 	var _textBuffer *TextBufferClass // out
 
-	_textBuffer = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*TextBufferClass)
+	_textBuffer = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*TextBufferClass)
 
 	return _textBuffer
 }
@@ -1351,8 +1350,7 @@ func (i *TextIter) ChildAnchor() *TextChildAnchorClass {
 
 	var _textChildAnchor *TextChildAnchorClass // out
 
-	_textChildAnchor = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*TextChildAnchorClass)
+	_textChildAnchor = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*TextChildAnchorClass)
 
 	return _textChildAnchor
 }
@@ -1599,7 +1597,7 @@ func (i *TextIter) HasTag(tag TextTag) bool {
 	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkTextIter)(unsafe.Pointer(i))
-	_arg1 = (*C.GtkTextTag)(unsafe.Pointer((&tag).Native()))
+	_arg1 = (*C.GtkTextTag)(unsafe.Pointer(tag.Native()))
 
 	_cret = C.gtk_text_iter_has_tag(_arg0, _arg1)
 
@@ -1907,7 +1905,7 @@ func (i *TextIter) StartsTag(tag TextTag) bool {
 	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkTextIter)(unsafe.Pointer(i))
-	_arg1 = (*C.GtkTextTag)(unsafe.Pointer((&tag).Native()))
+	_arg1 = (*C.GtkTextTag)(unsafe.Pointer(tag.Native()))
 
 	_cret = C.gtk_text_iter_starts_tag(_arg0, _arg1)
 
@@ -1952,7 +1950,7 @@ func (i *TextIter) TogglesTag(tag TextTag) bool {
 	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkTextIter)(unsafe.Pointer(i))
-	_arg1 = (*C.GtkTextTag)(unsafe.Pointer((&tag).Native()))
+	_arg1 = (*C.GtkTextTag)(unsafe.Pointer(tag.Native()))
 
 	_cret = C.gtk_text_iter_toggles_tag(_arg0, _arg1)
 

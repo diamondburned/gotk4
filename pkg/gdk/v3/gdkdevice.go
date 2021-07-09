@@ -255,14 +255,13 @@ func (d *DeviceClass) AssociatedDevice() *DeviceClass {
 	var _arg0 *C.GdkDevice // out
 	var _cret *C.GdkDevice // in
 
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer((&d).Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
 
 	_cret = C.gdk_device_get_associated_device(_arg0)
 
 	var _ret *DeviceClass // out
 
-	_ret = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*DeviceClass)
+	_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*DeviceClass)
 
 	return _ret
 }
@@ -272,7 +271,7 @@ func (d *DeviceClass) Axes() AxisFlags {
 	var _arg0 *C.GdkDevice   // out
 	var _cret C.GdkAxisFlags // in
 
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer((&d).Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
 
 	_cret = C.gdk_device_get_axes(_arg0)
 
@@ -289,7 +288,7 @@ func (d *DeviceClass) AxisUse(index_ uint) AxisUse {
 	var _arg1 C.guint      // out
 	var _cret C.GdkAxisUse // in
 
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer((&d).Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
 	_arg1 = C.guint(index_)
 
 	_cret = C.gdk_device_get_axis_use(_arg0, _arg1)
@@ -306,7 +305,7 @@ func (d *DeviceClass) DeviceType() DeviceType {
 	var _arg0 *C.GdkDevice    // out
 	var _cret C.GdkDeviceType // in
 
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer((&d).Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
 
 	_cret = C.gdk_device_get_device_type(_arg0)
 
@@ -322,14 +321,13 @@ func (d *DeviceClass) Display() *DisplayClass {
 	var _arg0 *C.GdkDevice  // out
 	var _cret *C.GdkDisplay // in
 
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer((&d).Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
 
 	_cret = C.gdk_device_get_display(_arg0)
 
 	var _display *DisplayClass // out
 
-	_display = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*DisplayClass)
+	_display = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*DisplayClass)
 
 	return _display
 }
@@ -340,7 +338,7 @@ func (d *DeviceClass) HasCursor() bool {
 	var _arg0 *C.GdkDevice // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer((&d).Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
 
 	_cret = C.gdk_device_get_has_cursor(_arg0)
 
@@ -362,7 +360,7 @@ func (d *DeviceClass) Key(index_ uint) (uint, ModifierType, bool) {
 	var _arg3 C.GdkModifierType // in
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer((&d).Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
 	_arg1 = C.guint(index_)
 
 	_cret = C.gdk_device_get_key(_arg0, _arg1, &_arg2, &_arg3)
@@ -389,14 +387,13 @@ func (d *DeviceClass) LastEventWindow() *WindowClass {
 	var _arg0 *C.GdkDevice // out
 	var _cret *C.GdkWindow // in
 
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer((&d).Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
 
 	_cret = C.gdk_device_get_last_event_window(_arg0)
 
 	var _window *WindowClass // out
 
-	_window = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*WindowClass)
+	_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WindowClass)
 
 	return _window
 }
@@ -406,7 +403,7 @@ func (d *DeviceClass) Mode() InputMode {
 	var _arg0 *C.GdkDevice   // out
 	var _cret C.GdkInputMode // in
 
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer((&d).Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
 
 	_cret = C.gdk_device_get_mode(_arg0)
 
@@ -422,7 +419,7 @@ func (d *DeviceClass) NAxes() int {
 	var _arg0 *C.GdkDevice // out
 	var _cret C.gint       // in
 
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer((&d).Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
 
 	_cret = C.gdk_device_get_n_axes(_arg0)
 
@@ -438,7 +435,7 @@ func (d *DeviceClass) NKeys() int {
 	var _arg0 *C.GdkDevice // out
 	var _cret C.gint       // in
 
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer((&d).Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
 
 	_cret = C.gdk_device_get_n_keys(_arg0)
 
@@ -454,7 +451,7 @@ func (d *DeviceClass) Name() string {
 	var _arg0 *C.GdkDevice // out
 	var _cret *C.gchar     // in
 
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer((&d).Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
 
 	_cret = C.gdk_device_get_name(_arg0)
 
@@ -475,7 +472,7 @@ func (d *DeviceClass) Position() (screen *ScreenClass, x int, y int) {
 	var _arg2 C.gint       // in
 	var _arg3 C.gint       // in
 
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer((&d).Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
 
 	C.gdk_device_get_position(_arg0, &_arg1, &_arg2, &_arg3)
 
@@ -483,8 +480,7 @@ func (d *DeviceClass) Position() (screen *ScreenClass, x int, y int) {
 	var _x int               // out
 	var _y int               // out
 
-	_screen = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_arg1))).(*ScreenClass)
+	_screen = (gextras.CastObject(externglib.Take(unsafe.Pointer(_arg1)))).(*ScreenClass)
 	_x = int(_arg2)
 	_y = int(_arg3)
 
@@ -501,7 +497,7 @@ func (d *DeviceClass) PositionDouble() (screen *ScreenClass, x float64, y float6
 	var _arg2 C.gdouble    // in
 	var _arg3 C.gdouble    // in
 
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer((&d).Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
 
 	C.gdk_device_get_position_double(_arg0, &_arg1, &_arg2, &_arg3)
 
@@ -509,8 +505,7 @@ func (d *DeviceClass) PositionDouble() (screen *ScreenClass, x float64, y float6
 	var _x float64           // out
 	var _y float64           // out
 
-	_screen = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_arg1))).(*ScreenClass)
+	_screen = (gextras.CastObject(externglib.Take(unsafe.Pointer(_arg1)))).(*ScreenClass)
 	_x = float64(_arg2)
 	_y = float64(_arg3)
 
@@ -524,7 +519,7 @@ func (d *DeviceClass) ProductID() string {
 	var _arg0 *C.GdkDevice // out
 	var _cret *C.gchar     // in
 
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer((&d).Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
 
 	_cret = C.gdk_device_get_product_id(_arg0)
 
@@ -540,14 +535,13 @@ func (d *DeviceClass) Seat() *SeatClass {
 	var _arg0 *C.GdkDevice // out
 	var _cret *C.GdkSeat   // in
 
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer((&d).Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
 
 	_cret = C.gdk_device_get_seat(_arg0)
 
 	var _seat *SeatClass // out
 
-	_seat = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*SeatClass)
+	_seat = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*SeatClass)
 
 	return _seat
 }
@@ -557,7 +551,7 @@ func (d *DeviceClass) Source() InputSource {
 	var _arg0 *C.GdkDevice     // out
 	var _cret C.GdkInputSource // in
 
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer((&d).Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
 
 	_cret = C.gdk_device_get_source(_arg0)
 
@@ -596,7 +590,7 @@ func (d *DeviceClass) VendorID() string {
 	var _arg0 *C.GdkDevice // out
 	var _cret *C.gchar     // in
 
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer((&d).Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
 
 	_cret = C.gdk_device_get_vendor_id(_arg0)
 
@@ -621,7 +615,7 @@ func (d *DeviceClass) WindowAtPosition() (winX int, winY int, window *WindowClas
 	var _arg2 C.gint       // in
 	var _cret *C.GdkWindow // in
 
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer((&d).Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
 
 	_cret = C.gdk_device_get_window_at_position(_arg0, &_arg1, &_arg2)
 
@@ -631,8 +625,7 @@ func (d *DeviceClass) WindowAtPosition() (winX int, winY int, window *WindowClas
 
 	_winX = int(_arg1)
 	_winY = int(_arg2)
-	_window = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*WindowClass)
+	_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WindowClass)
 
 	return _winX, _winY, _window
 }
@@ -651,7 +644,7 @@ func (d *DeviceClass) WindowAtPositionDouble() (winX float64, winY float64, wind
 	var _arg2 C.gdouble    // in
 	var _cret *C.GdkWindow // in
 
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer((&d).Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
 
 	_cret = C.gdk_device_get_window_at_position_double(_arg0, &_arg1, &_arg2)
 
@@ -661,8 +654,7 @@ func (d *DeviceClass) WindowAtPositionDouble() (winX float64, winY float64, wind
 
 	_winX = float64(_arg1)
 	_winY = float64(_arg2)
-	_window = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*WindowClass)
+	_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WindowClass)
 
 	return _winX, _winY, _window
 }
@@ -674,7 +666,7 @@ func (d *DeviceClass) Ungrab(time_ uint32) {
 	var _arg0 *C.GdkDevice // out
 	var _arg1 C.guint32    // out
 
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer((&d).Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
 	_arg1 = C.guint32(time_)
 
 	C.gdk_device_ungrab(_arg0, _arg1)
@@ -694,8 +686,8 @@ func (d *DeviceClass) Warp(screen Screen, x int, y int) {
 	var _arg2 C.gint       // out
 	var _arg3 C.gint       // out
 
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer((&d).Native()))
-	_arg1 = (*C.GdkScreen)(unsafe.Pointer((&screen).Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
+	_arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
 	_arg2 = C.gint(x)
 	_arg3 = C.gint(y)
 

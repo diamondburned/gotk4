@@ -86,8 +86,7 @@ func NewCenterLayout() *CenterLayoutClass {
 
 	var _centerLayout *CenterLayoutClass // out
 
-	_centerLayout = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*CenterLayoutClass)
+	_centerLayout = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*CenterLayoutClass)
 
 	return _centerLayout
 }
@@ -97,7 +96,7 @@ func (s *CenterLayoutClass) BaselinePosition() BaselinePosition {
 	var _arg0 *C.GtkCenterLayout    // out
 	var _cret C.GtkBaselinePosition // in
 
-	_arg0 = (*C.GtkCenterLayout)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkCenterLayout)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gtk_center_layout_get_baseline_position(_arg0)
 
@@ -113,14 +112,13 @@ func (s *CenterLayoutClass) CenterWidget() *WidgetClass {
 	var _arg0 *C.GtkCenterLayout // out
 	var _cret *C.GtkWidget       // in
 
-	_arg0 = (*C.GtkCenterLayout)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkCenterLayout)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gtk_center_layout_get_center_widget(_arg0)
 
 	var _widget *WidgetClass // out
 
-	_widget = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*WidgetClass)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WidgetClass)
 
 	return _widget
 }
@@ -130,14 +128,13 @@ func (s *CenterLayoutClass) EndWidget() *WidgetClass {
 	var _arg0 *C.GtkCenterLayout // out
 	var _cret *C.GtkWidget       // in
 
-	_arg0 = (*C.GtkCenterLayout)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkCenterLayout)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gtk_center_layout_get_end_widget(_arg0)
 
 	var _widget *WidgetClass // out
 
-	_widget = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*WidgetClass)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WidgetClass)
 
 	return _widget
 }
@@ -147,7 +144,7 @@ func (s *CenterLayoutClass) Orientation() Orientation {
 	var _arg0 *C.GtkCenterLayout // out
 	var _cret C.GtkOrientation   // in
 
-	_arg0 = (*C.GtkCenterLayout)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkCenterLayout)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gtk_center_layout_get_orientation(_arg0)
 
@@ -163,14 +160,13 @@ func (s *CenterLayoutClass) StartWidget() *WidgetClass {
 	var _arg0 *C.GtkCenterLayout // out
 	var _cret *C.GtkWidget       // in
 
-	_arg0 = (*C.GtkCenterLayout)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkCenterLayout)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gtk_center_layout_get_start_widget(_arg0)
 
 	var _widget *WidgetClass // out
 
-	_widget = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*WidgetClass)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WidgetClass)
 
 	return _widget
 }
@@ -182,8 +178,8 @@ func (s *CenterLayoutClass) SetCenterWidget(widget Widget) {
 	var _arg0 *C.GtkCenterLayout // out
 	var _arg1 *C.GtkWidget       // out
 
-	_arg0 = (*C.GtkCenterLayout)(unsafe.Pointer((&s).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&widget).Native()))
+	_arg0 = (*C.GtkCenterLayout)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.gtk_center_layout_set_center_widget(_arg0, _arg1)
 }
@@ -195,8 +191,8 @@ func (s *CenterLayoutClass) SetEndWidget(widget Widget) {
 	var _arg0 *C.GtkCenterLayout // out
 	var _arg1 *C.GtkWidget       // out
 
-	_arg0 = (*C.GtkCenterLayout)(unsafe.Pointer((&s).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&widget).Native()))
+	_arg0 = (*C.GtkCenterLayout)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.gtk_center_layout_set_end_widget(_arg0, _arg1)
 }
@@ -208,8 +204,8 @@ func (s *CenterLayoutClass) SetStartWidget(widget Widget) {
 	var _arg0 *C.GtkCenterLayout // out
 	var _arg1 *C.GtkWidget       // out
 
-	_arg0 = (*C.GtkCenterLayout)(unsafe.Pointer((&s).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&widget).Native()))
+	_arg0 = (*C.GtkCenterLayout)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.gtk_center_layout_set_start_widget(_arg0, _arg1)
 }

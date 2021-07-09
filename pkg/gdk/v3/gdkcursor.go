@@ -280,7 +280,7 @@ func NewCursorFromName(display Display, name string) *CursorClass {
 	var _arg2 *C.gchar      // out
 	var _cret *C.GdkCursor  // in
 
-	_arg1 = (*C.GdkDisplay)(unsafe.Pointer((&display).Native()))
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 	_arg2 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg2))
 
@@ -288,8 +288,7 @@ func NewCursorFromName(display Display, name string) *CursorClass {
 
 	var _cursor *CursorClass // out
 
-	_cursor = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*CursorClass)
+	_cursor = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*CursorClass)
 
 	return _cursor
 }
@@ -316,8 +315,8 @@ func NewCursorFromPixbuf(display Display, pixbuf gdkpixbuf.Pixbuf, x int, y int)
 	var _arg4 C.gint        // out
 	var _cret *C.GdkCursor  // in
 
-	_arg1 = (*C.GdkDisplay)(unsafe.Pointer((&display).Native()))
-	_arg2 = (*C.GdkPixbuf)(unsafe.Pointer((&pixbuf).Native()))
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg2 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 	_arg3 = C.gint(x)
 	_arg4 = C.gint(y)
 
@@ -325,8 +324,7 @@ func NewCursorFromPixbuf(display Display, pixbuf gdkpixbuf.Pixbuf, x int, y int)
 
 	var _cursor *CursorClass // out
 
-	_cursor = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*CursorClass)
+	_cursor = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*CursorClass)
 
 	return _cursor
 }
@@ -349,7 +347,7 @@ func NewCursorFromSurface(display Display, surface *cairo.Surface, x float64, y 
 	var _arg4 C.gdouble          // out
 	var _cret *C.GdkCursor       // in
 
-	_arg1 = (*C.GdkDisplay)(unsafe.Pointer((&display).Native()))
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 	_arg2 = (*C.cairo_surface_t)(unsafe.Pointer(surface))
 	_arg3 = C.gdouble(x)
 	_arg4 = C.gdouble(y)
@@ -358,8 +356,7 @@ func NewCursorFromSurface(display Display, surface *cairo.Surface, x float64, y 
 
 	var _cursor *CursorClass // out
 
-	_cursor = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*CursorClass)
+	_cursor = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*CursorClass)
 
 	return _cursor
 }
@@ -369,7 +366,7 @@ func (c *CursorClass) CursorType() CursorType {
 	var _arg0 *C.GdkCursor    // out
 	var _cret C.GdkCursorType // in
 
-	_arg0 = (*C.GdkCursor)(unsafe.Pointer((&c).Native()))
+	_arg0 = (*C.GdkCursor)(unsafe.Pointer(c.Native()))
 
 	_cret = C.gdk_cursor_get_cursor_type(_arg0)
 
@@ -385,14 +382,13 @@ func (c *CursorClass) Display() *DisplayClass {
 	var _arg0 *C.GdkCursor  // out
 	var _cret *C.GdkDisplay // in
 
-	_arg0 = (*C.GdkCursor)(unsafe.Pointer((&c).Native()))
+	_arg0 = (*C.GdkCursor)(unsafe.Pointer(c.Native()))
 
 	_cret = C.gdk_cursor_get_display(_arg0)
 
 	var _display *DisplayClass // out
 
-	_display = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*DisplayClass)
+	_display = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*DisplayClass)
 
 	return _display
 }
@@ -406,14 +402,13 @@ func (c *CursorClass) Image() *gdkpixbuf.PixbufClass {
 	var _arg0 *C.GdkCursor // out
 	var _cret *C.GdkPixbuf // in
 
-	_arg0 = (*C.GdkCursor)(unsafe.Pointer((&c).Native()))
+	_arg0 = (*C.GdkCursor)(unsafe.Pointer(c.Native()))
 
 	_cret = C.gdk_cursor_get_image(_arg0)
 
 	var _pixbuf *gdkpixbuf.PixbufClass // out
 
-	_pixbuf = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*gdkpixbuf.PixbufClass)
+	_pixbuf = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*gdkpixbuf.PixbufClass)
 
 	return _pixbuf
 }
@@ -430,7 +425,7 @@ func (c *CursorClass) Surface() (xHot float64, yHot float64, surface *cairo.Surf
 	var _arg2 C.gdouble          // in
 	var _cret *C.cairo_surface_t // in
 
-	_arg0 = (*C.GdkCursor)(unsafe.Pointer((&c).Native()))
+	_arg0 = (*C.GdkCursor)(unsafe.Pointer(c.Native()))
 
 	_cret = C.gdk_cursor_get_surface(_arg0, &_arg1, &_arg2)
 
@@ -455,14 +450,13 @@ func (c *CursorClass) ref() *CursorClass {
 	var _arg0 *C.GdkCursor // out
 	var _cret *C.GdkCursor // in
 
-	_arg0 = (*C.GdkCursor)(unsafe.Pointer((&c).Native()))
+	_arg0 = (*C.GdkCursor)(unsafe.Pointer(c.Native()))
 
 	_cret = C.gdk_cursor_ref(_arg0)
 
 	var _ret *CursorClass // out
 
-	_ret = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*CursorClass)
+	_ret = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*CursorClass)
 
 	return _ret
 }
@@ -474,7 +468,7 @@ func (c *CursorClass) ref() *CursorClass {
 func (c *CursorClass) unref() {
 	var _arg0 *C.GdkCursor // out
 
-	_arg0 = (*C.GdkCursor)(unsafe.Pointer((&c).Native()))
+	_arg0 = (*C.GdkCursor)(unsafe.Pointer(c.Native()))
 
 	C.gdk_cursor_unref(_arg0)
 }

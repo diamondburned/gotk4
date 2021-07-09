@@ -168,7 +168,7 @@ func KeyboardGrab(window Window, ownerEvents bool, time_ uint32) GrabStatus {
 	var _arg3 C.guint32       // out
 	var _cret C.GdkGrabStatus // in
 
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer((&window).Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 	if ownerEvents {
 		_arg2 = C.TRUE
 	}

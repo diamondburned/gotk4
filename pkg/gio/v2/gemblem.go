@@ -74,14 +74,13 @@ func NewEmblem(icon Icon) *EmblemClass {
 	var _arg1 *C.GIcon   // out
 	var _cret *C.GEmblem // in
 
-	_arg1 = (*C.GIcon)(unsafe.Pointer((&icon).Native()))
+	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
 
 	_cret = C.g_emblem_new(_arg1)
 
 	var _emblem *EmblemClass // out
 
-	_emblem = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*EmblemClass)
+	_emblem = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*EmblemClass)
 
 	return _emblem
 }
@@ -91,14 +90,13 @@ func (e *EmblemClass) Icon() *IconInterface {
 	var _arg0 *C.GEmblem // out
 	var _cret *C.GIcon   // in
 
-	_arg0 = (*C.GEmblem)(unsafe.Pointer((&e).Native()))
+	_arg0 = (*C.GEmblem)(unsafe.Pointer(e.Native()))
 
 	_cret = C.g_emblem_get_icon(_arg0)
 
 	var _icon *IconInterface // out
 
-	_icon = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*IconInterface)
+	_icon = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*IconInterface)
 
 	return _icon
 }
@@ -108,7 +106,7 @@ func (e *EmblemClass) Origin() EmblemOrigin {
 	var _arg0 *C.GEmblem      // out
 	var _cret C.GEmblemOrigin // in
 
-	_arg0 = (*C.GEmblem)(unsafe.Pointer((&e).Native()))
+	_arg0 = (*C.GEmblem)(unsafe.Pointer(e.Native()))
 
 	_cret = C.g_emblem_get_origin(_arg0)
 

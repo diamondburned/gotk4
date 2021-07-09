@@ -117,7 +117,7 @@ func (s *SeekableInterface) CanSeek() bool {
 	var _arg0 *C.GSeekable // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GSeekable)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GSeekable)(unsafe.Pointer(s.Native()))
 
 	_cret = C.g_seekable_can_seek(_arg0)
 
@@ -136,7 +136,7 @@ func (s *SeekableInterface) CanTruncate() bool {
 	var _arg0 *C.GSeekable // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GSeekable)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GSeekable)(unsafe.Pointer(s.Native()))
 
 	_cret = C.g_seekable_can_truncate(_arg0)
 
@@ -154,7 +154,7 @@ func (s *SeekableInterface) Tell() int64 {
 	var _arg0 *C.GSeekable // out
 	var _cret C.goffset    // in
 
-	_arg0 = (*C.GSeekable)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GSeekable)(unsafe.Pointer(s.Native()))
 
 	_cret = C.g_seekable_tell(_arg0)
 
@@ -180,9 +180,9 @@ func (s *SeekableInterface) Truncate(offset int64, cancellable Cancellable) erro
 	var _arg2 *C.GCancellable // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GSeekable)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GSeekable)(unsafe.Pointer(s.Native()))
 	_arg1 = C.goffset(offset)
-	_arg2 = (*C.GCancellable)(unsafe.Pointer((&cancellable).Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	C.g_seekable_truncate(_arg0, _arg1, _arg2, &_cerr)
 

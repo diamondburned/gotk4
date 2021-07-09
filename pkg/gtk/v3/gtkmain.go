@@ -37,8 +37,7 @@ func gotk4_KeySnoopFunc(arg0 *C.GtkWidget, arg1 *C.GdkEventKey, arg2 C.gpointer)
 	var event *gdk.EventKey     // out
 	var funcData interface{}    // out
 
-	grabWidget = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(arg0))).(*WidgetClass)
+	grabWidget = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*WidgetClass)
 	event = (*gdk.EventKey)(unsafe.Pointer(arg1))
 	funcData = box.Get(uintptr(arg2))
 
@@ -96,8 +95,8 @@ func DeviceGrabAdd(widget Widget, device gdk.Device, blockOthers bool) {
 	var _arg2 *C.GdkDevice // out
 	var _arg3 C.gboolean   // out
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&widget).Native()))
-	_arg2 = (*C.GdkDevice)(unsafe.Pointer((&device).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg2 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
 	if blockOthers {
 		_arg3 = C.TRUE
 	}
@@ -112,8 +111,8 @@ func DeviceGrabRemove(widget Widget, device gdk.Device) {
 	var _arg1 *C.GtkWidget // out
 	var _arg2 *C.GdkDevice // out
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&widget).Native()))
-	_arg2 = (*C.GdkDevice)(unsafe.Pointer((&device).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg2 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
 
 	C.gtk_device_grab_remove(_arg1, _arg2)
 }
@@ -196,8 +195,7 @@ func GetCurrentEventDevice() *gdk.DeviceClass {
 
 	var _device *gdk.DeviceClass // out
 
-	_device = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*gdk.DeviceClass)
+	_device = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.DeviceClass)
 
 	return _device
 }
@@ -391,8 +389,7 @@ func GrabGetCurrent() *WidgetClass {
 
 	var _widget *WidgetClass // out
 
-	_widget = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*WidgetClass)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WidgetClass)
 
 	return _widget
 }

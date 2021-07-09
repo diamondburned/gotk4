@@ -68,7 +68,7 @@ func NewIconSetFromPixbuf(pixbuf gdkpixbuf.Pixbuf) *IconSet {
 	var _arg1 *C.GdkPixbuf  // out
 	var _cret *C.GtkIconSet // in
 
-	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer((&pixbuf).Native()))
+	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 
 	_cret = C.gtk_icon_set_new_from_pixbuf(_arg1)
 
@@ -205,15 +205,14 @@ func (i *IconSet) RenderIconPixbuf(context StyleContext, size int) *gdkpixbuf.Pi
 	var _cret *C.GdkPixbuf       // in
 
 	_arg0 = (*C.GtkIconSet)(unsafe.Pointer(i))
-	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer((&context).Native()))
+	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 	_arg2 = C.GtkIconSize(size)
 
 	_cret = C.gtk_icon_set_render_icon_pixbuf(_arg0, _arg1, _arg2)
 
 	var _pixbuf *gdkpixbuf.PixbufClass // out
 
-	_pixbuf = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*gdkpixbuf.PixbufClass)
+	_pixbuf = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*gdkpixbuf.PixbufClass)
 
 	return _pixbuf
 }
@@ -235,10 +234,10 @@ func (i *IconSet) RenderIconSurface(context StyleContext, size int, scale int, f
 	var _cret *C.cairo_surface_t // in
 
 	_arg0 = (*C.GtkIconSet)(unsafe.Pointer(i))
-	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer((&context).Native()))
+	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 	_arg2 = C.GtkIconSize(size)
 	_arg3 = C.int(scale)
-	_arg4 = (*C.GdkWindow)(unsafe.Pointer((&forWindow).Native()))
+	_arg4 = (*C.GdkWindow)(unsafe.Pointer(forWindow.Native()))
 
 	_cret = C.gtk_icon_set_render_icon_surface(_arg0, _arg1, _arg2, _arg3, _arg4)
 
@@ -430,8 +429,7 @@ func (s *IconSource) Pixbuf() *gdkpixbuf.PixbufClass {
 
 	var _pixbuf *gdkpixbuf.PixbufClass // out
 
-	_pixbuf = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*gdkpixbuf.PixbufClass)
+	_pixbuf = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdkpixbuf.PixbufClass)
 
 	return _pixbuf
 }
@@ -575,7 +573,7 @@ func (s *IconSource) SetPixbuf(pixbuf gdkpixbuf.Pixbuf) {
 	var _arg1 *C.GdkPixbuf     // out
 
 	_arg0 = (*C.GtkIconSource)(unsafe.Pointer(s))
-	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer((&pixbuf).Native()))
+	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 
 	C.gtk_icon_source_set_pixbuf(_arg0, _arg1)
 }
@@ -708,8 +706,7 @@ func (s *SelectionData) Display() *gdk.DisplayClass {
 
 	var _display *gdk.DisplayClass // out
 
-	_display = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*gdk.DisplayClass)
+	_display = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.DisplayClass)
 
 	return _display
 }
@@ -757,8 +754,7 @@ func (s *SelectionData) Pixbuf() *gdkpixbuf.PixbufClass {
 
 	var _pixbuf *gdkpixbuf.PixbufClass // out
 
-	_pixbuf = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*gdkpixbuf.PixbufClass)
+	_pixbuf = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*gdkpixbuf.PixbufClass)
 
 	return _pixbuf
 }
@@ -817,7 +813,7 @@ func (s *SelectionData) SetPixbuf(pixbuf gdkpixbuf.Pixbuf) bool {
 	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GtkSelectionData)(unsafe.Pointer(s))
-	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer((&pixbuf).Native()))
+	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 
 	_cret = C.gtk_selection_data_set_pixbuf(_arg0, _arg1)
 
@@ -915,7 +911,7 @@ func (s *SelectionData) TargetsIncludeRichText(buffer TextBuffer) bool {
 	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GtkSelectionData)(unsafe.Pointer(s))
-	_arg1 = (*C.GtkTextBuffer)(unsafe.Pointer((&buffer).Native()))
+	_arg1 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
 
 	_cret = C.gtk_selection_data_targets_include_rich_text(_arg0, _arg1)
 
@@ -1043,7 +1039,7 @@ func (p *WidgetPath) AppendForWidget(widget Widget) int {
 	var _cret C.gint           // in
 
 	_arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(p))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&widget).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_path_append_for_widget(_arg0, _arg1)
 

@@ -95,8 +95,7 @@ func NewNetworkAddress(hostname string, port uint16) *NetworkAddressClass {
 
 	var _networkAddress *NetworkAddressClass // out
 
-	_networkAddress = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*NetworkAddressClass)
+	_networkAddress = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*NetworkAddressClass)
 
 	return _networkAddress
 }
@@ -122,8 +121,7 @@ func NewNetworkAddressLoopback(port uint16) *NetworkAddressClass {
 
 	var _networkAddress *NetworkAddressClass // out
 
-	_networkAddress = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*NetworkAddressClass)
+	_networkAddress = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*NetworkAddressClass)
 
 	return _networkAddress
 }
@@ -134,7 +132,7 @@ func (a *NetworkAddressClass) Hostname() string {
 	var _arg0 *C.GNetworkAddress // out
 	var _cret *C.gchar           // in
 
-	_arg0 = (*C.GNetworkAddress)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.GNetworkAddress)(unsafe.Pointer(a.Native()))
 
 	_cret = C.g_network_address_get_hostname(_arg0)
 
@@ -150,7 +148,7 @@ func (a *NetworkAddressClass) Port() uint16 {
 	var _arg0 *C.GNetworkAddress // out
 	var _cret C.guint16          // in
 
-	_arg0 = (*C.GNetworkAddress)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.GNetworkAddress)(unsafe.Pointer(a.Native()))
 
 	_cret = C.g_network_address_get_port(_arg0)
 
@@ -166,7 +164,7 @@ func (a *NetworkAddressClass) Scheme() string {
 	var _arg0 *C.GNetworkAddress // out
 	var _cret *C.gchar           // in
 
-	_arg0 = (*C.GNetworkAddress)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.GNetworkAddress)(unsafe.Pointer(a.Native()))
 
 	_cret = C.g_network_address_get_scheme(_arg0)
 

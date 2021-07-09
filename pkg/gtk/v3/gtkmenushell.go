@@ -208,8 +208,8 @@ func (m *MenuShellClass) ActivateItem(menuItem Widget, forceDeactivate bool) {
 	var _arg1 *C.GtkWidget    // out
 	var _arg2 C.gboolean      // out
 
-	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer((&m).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&menuItem).Native()))
+	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer(m.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(menuItem.Native()))
 	if forceDeactivate {
 		_arg2 = C.TRUE
 	}
@@ -222,8 +222,8 @@ func (m *MenuShellClass) Append(child MenuItem) {
 	var _arg0 *C.GtkMenuShell // out
 	var _arg1 *C.GtkWidget    // out
 
-	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer((&m).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&child).Native()))
+	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer(m.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_menu_shell_append(_arg0, _arg1)
 }
@@ -262,8 +262,8 @@ func (m *MenuShellClass) BindModel(model gio.MenuModel, actionNamespace string, 
 	var _arg2 *C.gchar        // out
 	var _arg3 C.gboolean      // out
 
-	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer((&m).Native()))
-	_arg1 = (*C.GMenuModel)(unsafe.Pointer((&model).Native()))
+	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer(m.Native()))
+	_arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
 	_arg2 = (*C.gchar)(C.CString(actionNamespace))
 	defer C.free(unsafe.Pointer(_arg2))
 	if withSeparators {
@@ -277,7 +277,7 @@ func (m *MenuShellClass) BindModel(model gio.MenuModel, actionNamespace string, 
 func (m *MenuShellClass) Cancel() {
 	var _arg0 *C.GtkMenuShell // out
 
-	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer((&m).Native()))
+	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer(m.Native()))
 
 	C.gtk_menu_shell_cancel(_arg0)
 }
@@ -288,7 +288,7 @@ func (m *MenuShellClass) Cancel() {
 func (m *MenuShellClass) Deactivate() {
 	var _arg0 *C.GtkMenuShell // out
 
-	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer((&m).Native()))
+	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer(m.Native()))
 
 	C.gtk_menu_shell_deactivate(_arg0)
 }
@@ -297,7 +297,7 @@ func (m *MenuShellClass) Deactivate() {
 func (m *MenuShellClass) Deselect() {
 	var _arg0 *C.GtkMenuShell // out
 
-	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer((&m).Native()))
+	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer(m.Native()))
 
 	C.gtk_menu_shell_deselect(_arg0)
 }
@@ -310,14 +310,13 @@ func (m *MenuShellClass) ParentShell() *WidgetClass {
 	var _arg0 *C.GtkMenuShell // out
 	var _cret *C.GtkWidget    // in
 
-	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer((&m).Native()))
+	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer(m.Native()))
 
 	_cret = C.gtk_menu_shell_get_parent_shell(_arg0)
 
 	var _widget *WidgetClass // out
 
-	_widget = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*WidgetClass)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WidgetClass)
 
 	return _widget
 }
@@ -327,14 +326,13 @@ func (m *MenuShellClass) SelectedItem() *WidgetClass {
 	var _arg0 *C.GtkMenuShell // out
 	var _cret *C.GtkWidget    // in
 
-	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer((&m).Native()))
+	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer(m.Native()))
 
 	_cret = C.gtk_menu_shell_get_selected_item(_arg0)
 
 	var _widget *WidgetClass // out
 
-	_widget = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*WidgetClass)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WidgetClass)
 
 	return _widget
 }
@@ -345,7 +343,7 @@ func (m *MenuShellClass) TakeFocus() bool {
 	var _arg0 *C.GtkMenuShell // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer((&m).Native()))
+	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer(m.Native()))
 
 	_cret = C.gtk_menu_shell_get_take_focus(_arg0)
 
@@ -365,8 +363,8 @@ func (m *MenuShellClass) Insert(child Widget, position int) {
 	var _arg1 *C.GtkWidget    // out
 	var _arg2 C.gint          // out
 
-	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer((&m).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&child).Native()))
+	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer(m.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 	_arg2 = C.gint(position)
 
 	C.gtk_menu_shell_insert(_arg0, _arg1, _arg2)
@@ -377,8 +375,8 @@ func (m *MenuShellClass) Prepend(child Widget) {
 	var _arg0 *C.GtkMenuShell // out
 	var _arg1 *C.GtkWidget    // out
 
-	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer((&m).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&child).Native()))
+	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer(m.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_menu_shell_prepend(_arg0, _arg1)
 }
@@ -389,7 +387,7 @@ func (m *MenuShellClass) SelectFirst(searchSensitive bool) {
 	var _arg0 *C.GtkMenuShell // out
 	var _arg1 C.gboolean      // out
 
-	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer((&m).Native()))
+	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer(m.Native()))
 	if searchSensitive {
 		_arg1 = C.TRUE
 	}
@@ -402,8 +400,8 @@ func (m *MenuShellClass) SelectItem(menuItem Widget) {
 	var _arg0 *C.GtkMenuShell // out
 	var _arg1 *C.GtkWidget    // out
 
-	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer((&m).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&menuItem).Native()))
+	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer(m.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(menuItem.Native()))
 
 	C.gtk_menu_shell_select_item(_arg0, _arg1)
 }
@@ -436,7 +434,7 @@ func (m *MenuShellClass) SetTakeFocus(takeFocus bool) {
 	var _arg0 *C.GtkMenuShell // out
 	var _arg1 C.gboolean      // out
 
-	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer((&m).Native()))
+	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer(m.Native()))
 	if takeFocus {
 		_arg1 = C.TRUE
 	}

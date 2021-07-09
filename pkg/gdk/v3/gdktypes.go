@@ -560,3 +560,53 @@ func (r *Rectangle) Equal(rect2 *Rectangle) bool {
 
 	return _ok
 }
+
+// Intersect calculates the intersection of two rectangles. It is allowed for
+// @dest to be the same as either @src1 or @src2. If the rectangles do not
+// intersect, @dest’s width and height is set to 0 and its x and y values are
+// undefined. If you are only interested in whether the rectangles intersect,
+// but not in the intersecting area itself, pass nil for @dest.
+func (s *Rectangle) Intersect(src2 *Rectangle) (Rectangle, bool) {
+	var _arg0 *C.GdkRectangle // out
+	var _arg1 *C.GdkRectangle // out
+	var _arg2 C.GdkRectangle  // in
+	var _cret C.gboolean      // in
+
+	_arg0 = (*C.GdkRectangle)(unsafe.Pointer(s))
+	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(src2))
+
+	_cret = C.gdk_rectangle_intersect(_arg0, _arg1, &_arg2)
+
+	var _dest Rectangle // out
+	var _ok bool        // out
+
+	_dest = *(*Rectangle)(unsafe.Pointer((&_arg2)))
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _dest, _ok
+}
+
+// Union calculates the union of two rectangles. The union of rectangles @src1
+// and @src2 is the smallest rectangle which includes both @src1 and @src2
+// within it. It is allowed for @dest to be the same as either @src1 or @src2.
+//
+// Note that this function does not ignore 'empty' rectangles (ie. with zero
+// width or height).
+func (s *Rectangle) Union(src2 *Rectangle) Rectangle {
+	var _arg0 *C.GdkRectangle // out
+	var _arg1 *C.GdkRectangle // out
+	var _arg2 C.GdkRectangle  // in
+
+	_arg0 = (*C.GdkRectangle)(unsafe.Pointer(s))
+	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(src2))
+
+	C.gdk_rectangle_union(_arg0, _arg1, &_arg2)
+
+	var _dest Rectangle // out
+
+	_dest = *(*Rectangle)(unsafe.Pointer((&_arg2)))
+
+	return _dest
+}

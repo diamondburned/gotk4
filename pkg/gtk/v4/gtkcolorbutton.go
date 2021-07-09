@@ -112,8 +112,7 @@ func NewColorButton() *ColorButtonClass {
 
 	var _colorButton *ColorButtonClass // out
 
-	_colorButton = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*ColorButtonClass)
+	_colorButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ColorButtonClass)
 
 	return _colorButton
 }
@@ -129,8 +128,7 @@ func NewColorButtonWithRGBA(rgba *gdk.RGBA) *ColorButtonClass {
 
 	var _colorButton *ColorButtonClass // out
 
-	_colorButton = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*ColorButtonClass)
+	_colorButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ColorButtonClass)
 
 	return _colorButton
 }
@@ -140,7 +138,7 @@ func (b *ColorButtonClass) Modal() bool {
 	var _arg0 *C.GtkColorButton // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GtkColorButton)(unsafe.Pointer((&b).Native()))
+	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(b.Native()))
 
 	_cret = C.gtk_color_button_get_modal(_arg0)
 
@@ -158,7 +156,7 @@ func (b *ColorButtonClass) Title() string {
 	var _arg0 *C.GtkColorButton // out
 	var _cret *C.char           // in
 
-	_arg0 = (*C.GtkColorButton)(unsafe.Pointer((&b).Native()))
+	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(b.Native()))
 
 	_cret = C.gtk_color_button_get_title(_arg0)
 
@@ -174,7 +172,7 @@ func (b *ColorButtonClass) SetModal(modal bool) {
 	var _arg0 *C.GtkColorButton // out
 	var _arg1 C.gboolean        // out
 
-	_arg0 = (*C.GtkColorButton)(unsafe.Pointer((&b).Native()))
+	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(b.Native()))
 	if modal {
 		_arg1 = C.TRUE
 	}
@@ -187,7 +185,7 @@ func (b *ColorButtonClass) SetTitle(title string) {
 	var _arg0 *C.GtkColorButton // out
 	var _arg1 *C.char           // out
 
-	_arg0 = (*C.GtkColorButton)(unsafe.Pointer((&b).Native()))
+	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.char)(C.CString(title))
 	defer C.free(unsafe.Pointer(_arg1))
 

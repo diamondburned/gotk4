@@ -112,15 +112,14 @@ func NewViewport(hadjustment Adjustment, vadjustment Adjustment) *ViewportClass 
 	var _arg2 *C.GtkAdjustment // out
 	var _cret *C.GtkWidget     // in
 
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer((&hadjustment).Native()))
-	_arg2 = (*C.GtkAdjustment)(unsafe.Pointer((&vadjustment).Native()))
+	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(hadjustment.Native()))
+	_arg2 = (*C.GtkAdjustment)(unsafe.Pointer(vadjustment.Native()))
 
 	_cret = C.gtk_viewport_new(_arg1, _arg2)
 
 	var _viewport *ViewportClass // out
 
-	_viewport = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*ViewportClass)
+	_viewport = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ViewportClass)
 
 	return _viewport
 }
@@ -130,14 +129,13 @@ func (v *ViewportClass) Child() *WidgetClass {
 	var _arg0 *C.GtkViewport // out
 	var _cret *C.GtkWidget   // in
 
-	_arg0 = (*C.GtkViewport)(unsafe.Pointer((&v).Native()))
+	_arg0 = (*C.GtkViewport)(unsafe.Pointer(v.Native()))
 
 	_cret = C.gtk_viewport_get_child(_arg0)
 
 	var _widget *WidgetClass // out
 
-	_widget = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*WidgetClass)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WidgetClass)
 
 	return _widget
 }
@@ -148,7 +146,7 @@ func (v *ViewportClass) ScrollToFocus() bool {
 	var _arg0 *C.GtkViewport // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkViewport)(unsafe.Pointer((&v).Native()))
+	_arg0 = (*C.GtkViewport)(unsafe.Pointer(v.Native()))
 
 	_cret = C.gtk_viewport_get_scroll_to_focus(_arg0)
 
@@ -166,8 +164,8 @@ func (v *ViewportClass) SetChild(child Widget) {
 	var _arg0 *C.GtkViewport // out
 	var _arg1 *C.GtkWidget   // out
 
-	_arg0 = (*C.GtkViewport)(unsafe.Pointer((&v).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&child).Native()))
+	_arg0 = (*C.GtkViewport)(unsafe.Pointer(v.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_viewport_set_child(_arg0, _arg1)
 }
@@ -178,7 +176,7 @@ func (v *ViewportClass) SetScrollToFocus(scrollToFocus bool) {
 	var _arg0 *C.GtkViewport // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.GtkViewport)(unsafe.Pointer((&v).Native()))
+	_arg0 = (*C.GtkViewport)(unsafe.Pointer(v.Native()))
 	if scrollToFocus {
 		_arg1 = C.TRUE
 	}

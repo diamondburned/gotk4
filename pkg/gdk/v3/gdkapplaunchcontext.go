@@ -113,8 +113,7 @@ func NewAppLaunchContext() *AppLaunchContextClass {
 
 	var _appLaunchContext *AppLaunchContextClass // out
 
-	_appLaunchContext = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*AppLaunchContextClass)
+	_appLaunchContext = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*AppLaunchContextClass)
 
 	return _appLaunchContext
 }
@@ -130,7 +129,7 @@ func (c *AppLaunchContextClass) SetDesktop(desktop int) {
 	var _arg0 *C.GdkAppLaunchContext // out
 	var _arg1 C.gint                 // out
 
-	_arg0 = (*C.GdkAppLaunchContext)(unsafe.Pointer((&c).Native()))
+	_arg0 = (*C.GdkAppLaunchContext)(unsafe.Pointer(c.Native()))
 	_arg1 = C.gint(desktop)
 
 	C.gdk_app_launch_context_set_desktop(_arg0, _arg1)
@@ -144,8 +143,8 @@ func (c *AppLaunchContextClass) SetDisplay(display Display) {
 	var _arg0 *C.GdkAppLaunchContext // out
 	var _arg1 *C.GdkDisplay          // out
 
-	_arg0 = (*C.GdkAppLaunchContext)(unsafe.Pointer((&c).Native()))
-	_arg1 = (*C.GdkDisplay)(unsafe.Pointer((&display).Native()))
+	_arg0 = (*C.GdkAppLaunchContext)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	C.gdk_app_launch_context_set_display(_arg0, _arg1)
 }
@@ -162,7 +161,7 @@ func (c *AppLaunchContextClass) SetIconName(iconName string) {
 	var _arg0 *C.GdkAppLaunchContext // out
 	var _arg1 *C.char                // out
 
-	_arg0 = (*C.GdkAppLaunchContext)(unsafe.Pointer((&c).Native()))
+	_arg0 = (*C.GdkAppLaunchContext)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.char)(C.CString(iconName))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -178,8 +177,8 @@ func (c *AppLaunchContextClass) SetScreen(screen Screen) {
 	var _arg0 *C.GdkAppLaunchContext // out
 	var _arg1 *C.GdkScreen           // out
 
-	_arg0 = (*C.GdkAppLaunchContext)(unsafe.Pointer((&c).Native()))
-	_arg1 = (*C.GdkScreen)(unsafe.Pointer((&screen).Native()))
+	_arg0 = (*C.GdkAppLaunchContext)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
 
 	C.gdk_app_launch_context_set_screen(_arg0, _arg1)
 }
@@ -194,7 +193,7 @@ func (c *AppLaunchContextClass) SetTimestamp(timestamp uint32) {
 	var _arg0 *C.GdkAppLaunchContext // out
 	var _arg1 C.guint32              // out
 
-	_arg0 = (*C.GdkAppLaunchContext)(unsafe.Pointer((&c).Native()))
+	_arg0 = (*C.GdkAppLaunchContext)(unsafe.Pointer(c.Native()))
 	_arg1 = C.guint32(timestamp)
 
 	C.gdk_app_launch_context_set_timestamp(_arg0, _arg1)

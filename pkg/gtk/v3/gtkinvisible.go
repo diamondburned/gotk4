@@ -77,8 +77,7 @@ func NewInvisible() *InvisibleClass {
 
 	var _invisible *InvisibleClass // out
 
-	_invisible = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*InvisibleClass)
+	_invisible = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*InvisibleClass)
 
 	return _invisible
 }
@@ -88,14 +87,13 @@ func NewInvisibleForScreen(screen gdk.Screen) *InvisibleClass {
 	var _arg1 *C.GdkScreen // out
 	var _cret *C.GtkWidget // in
 
-	_arg1 = (*C.GdkScreen)(unsafe.Pointer((&screen).Native()))
+	_arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
 
 	_cret = C.gtk_invisible_new_for_screen(_arg1)
 
 	var _invisible *InvisibleClass // out
 
-	_invisible = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*InvisibleClass)
+	_invisible = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*InvisibleClass)
 
 	return _invisible
 }
@@ -105,14 +103,13 @@ func (i *InvisibleClass) Screen() *gdk.ScreenClass {
 	var _arg0 *C.GtkInvisible // out
 	var _cret *C.GdkScreen    // in
 
-	_arg0 = (*C.GtkInvisible)(unsafe.Pointer((&i).Native()))
+	_arg0 = (*C.GtkInvisible)(unsafe.Pointer(i.Native()))
 
 	_cret = C.gtk_invisible_get_screen(_arg0)
 
 	var _screen *gdk.ScreenClass // out
 
-	_screen = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*gdk.ScreenClass)
+	_screen = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.ScreenClass)
 
 	return _screen
 }
@@ -122,8 +119,8 @@ func (i *InvisibleClass) SetScreen(screen gdk.Screen) {
 	var _arg0 *C.GtkInvisible // out
 	var _arg1 *C.GdkScreen    // out
 
-	_arg0 = (*C.GtkInvisible)(unsafe.Pointer((&i).Native()))
-	_arg1 = (*C.GdkScreen)(unsafe.Pointer((&screen).Native()))
+	_arg0 = (*C.GtkInvisible)(unsafe.Pointer(i.Native()))
+	_arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
 
 	C.gtk_invisible_set_screen(_arg0, _arg1)
 }

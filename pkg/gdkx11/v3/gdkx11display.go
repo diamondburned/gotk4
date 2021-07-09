@@ -40,7 +40,7 @@ func X11RegisterStandardEventType(display X11Display, eventBase int, nEvents int
 	var _arg2 C.gint        // out
 	var _arg3 C.gint        // out
 
-	_arg1 = (*C.GdkDisplay)(unsafe.Pointer((&display).Native()))
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 	_arg2 = C.gint(eventBase)
 	_arg3 = C.gint(nEvents)
 
@@ -172,7 +172,7 @@ func (d *X11DisplayClass) ErrorTrapPop() int {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.gint        // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&d).Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
 	_cret = C.gdk_x11_display_error_trap_pop(_arg0)
 
@@ -192,7 +192,7 @@ func (d *X11DisplayClass) ErrorTrapPop() int {
 func (d *X11DisplayClass) ErrorTrapPopIgnored() {
 	var _arg0 *C.GdkDisplay // out
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&d).Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
 	C.gdk_x11_display_error_trap_pop_ignored(_arg0)
 }
@@ -207,7 +207,7 @@ func (d *X11DisplayClass) ErrorTrapPopIgnored() {
 func (d *X11DisplayClass) ErrorTrapPush() {
 	var _arg0 *C.GdkDisplay // out
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&d).Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
 	C.gdk_x11_display_error_trap_push(_arg0)
 }
@@ -217,7 +217,7 @@ func (d *X11DisplayClass) StartupNotificationID() string {
 	var _arg0 *C.GdkDisplay // out
 	var _cret *C.gchar      // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&d).Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
 	_cret = C.gdk_x11_display_get_startup_notification_id(_arg0)
 
@@ -235,7 +235,7 @@ func (d *X11DisplayClass) UserTime() uint32 {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.guint32     // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&d).Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
 	_cret = C.gdk_x11_display_get_user_time(_arg0)
 
@@ -253,7 +253,7 @@ func (d *X11DisplayClass) UserTime() uint32 {
 func (d *X11DisplayClass) Grab() {
 	var _arg0 *C.GdkDisplay // out
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&d).Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
 	C.gdk_x11_display_grab(_arg0)
 }
@@ -272,7 +272,7 @@ func (d *X11DisplayClass) SetCursorTheme(theme string, size int) {
 	var _arg1 *C.gchar      // out
 	var _arg2 C.gint        // out
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&d).Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 	_arg1 = (*C.gchar)(C.CString(theme))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint(size)
@@ -297,7 +297,7 @@ func (d *X11DisplayClass) SetStartupNotificationID(startupId string) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.gchar      // out
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&d).Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 	_arg1 = (*C.gchar)(C.CString(startupId))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -315,7 +315,7 @@ func (d *X11DisplayClass) SetWindowScale(scale int) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 C.gint        // out
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&d).Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 	_arg1 = C.gint(scale)
 
 	C.gdk_x11_display_set_window_scale(_arg0, _arg1)
@@ -325,7 +325,7 @@ func (d *X11DisplayClass) SetWindowScale(scale int) {
 func (d *X11DisplayClass) Ungrab() {
 	var _arg0 *C.GdkDisplay // out
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&d).Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
 	C.gdk_x11_display_ungrab(_arg0)
 }

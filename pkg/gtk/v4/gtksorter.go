@@ -72,6 +72,18 @@ func marshalSorterOrder(p uintptr) (interface{}, error) {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type SorterOverrider interface {
+	// Compare compares two given items according to the sort order implemented
+	// by the sorter.
+	//
+	// Sorters implement a partial order:
+	//
+	// * It is reflexive, ie a = a * It is antisymmetric, ie if a < b and b < a,
+	// then a = b * It is transitive, ie given any 3 items with a ≤ b and b ≤ c,
+	// then a ≤ c
+	//
+	// The sorter may signal it conforms to additional constraints via the
+	// return value of [method@Gtk.Sorter.get_order].
+	Compare(item1 gextras.Objector, item2 gextras.Objector) Ordering
 	// Order gets the order that @self conforms to.
 	//
 	// See [enum@Gtk.SorterOrder] for details of the possible return values.
@@ -102,6 +114,18 @@ type SorterOverrider interface {
 type Sorter interface {
 	gextras.Objector
 
+	// Compare compares two given items according to the sort order implemented
+	// by the sorter.
+	//
+	// Sorters implement a partial order:
+	//
+	// * It is reflexive, ie a = a * It is antisymmetric, ie if a < b and b < a,
+	// then a = b * It is transitive, ie given any 3 items with a ≤ b and b ≤ c,
+	// then a ≤ c
+	//
+	// The sorter may signal it conforms to additional constraints via the
+	// return value of [method@Gtk.Sorter.get_order].
+	Compare(item1 gextras.Objector, item2 gextras.Objector) Ordering
 	// Order gets the order that @self conforms to.
 	//
 	// See [enum@Gtk.SorterOrder] for details of the possible return values.
@@ -129,6 +153,36 @@ func marshalSorter(p uintptr) (interface{}, error) {
 	return wrapSorter(obj), nil
 }
 
+// Compare compares two given items according to the sort order implemented by
+// the sorter.
+//
+// Sorters implement a partial order:
+//
+// * It is reflexive, ie a = a * It is antisymmetric, ie if a < b and b < a,
+// then a = b * It is transitive, ie given any 3 items with a ≤ b and b ≤ c,
+// then a ≤ c
+//
+// The sorter may signal it conforms to additional constraints via the return
+// value of [method@Gtk.Sorter.get_order].
+func (s *SorterClass) Compare(item1 gextras.Objector, item2 gextras.Objector) Ordering {
+	var _arg0 *C.GtkSorter  // out
+	var _arg1 C.gpointer    // out
+	var _arg2 C.gpointer    // out
+	var _cret C.GtkOrdering // in
+
+	_arg0 = (*C.GtkSorter)(unsafe.Pointer(s.Native()))
+	_arg1 = (C.gpointer)(unsafe.Pointer(item1.Native()))
+	_arg2 = (C.gpointer)(unsafe.Pointer(item2.Native()))
+
+	_cret = C.gtk_sorter_compare(_arg0, _arg1, _arg2)
+
+	var _ordering Ordering // out
+
+	_ordering = (Ordering)(_cret)
+
+	return _ordering
+}
+
 // Order gets the order that @self conforms to.
 //
 // See [enum@Gtk.SorterOrder] for details of the possible return values.
@@ -138,7 +192,7 @@ func (s *SorterClass) Order() SorterOrder {
 	var _arg0 *C.GtkSorter     // out
 	var _cret C.GtkSorterOrder // in
 
-	_arg0 = (*C.GtkSorter)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkSorter)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gtk_sorter_get_order(_arg0)
 

@@ -591,6 +591,36 @@ func GetUserRuntimeDir() string {
 	return _filename
 }
 
+// ParseDebugString parses a string containing debugging options into a guint
+// containing bit flags. This is used within GDK and GTK+ to parse the debug
+// options passed on the command line or through environment variables.
+//
+// If @string is equal to "all", all flags are set. Any flags specified along
+// with "all" in @string are inverted; thus, "all,foo,bar" or "foo,bar,all" sets
+// all flags except those corresponding to "foo" and "bar".
+//
+// If @string is equal to "help", all the available keys in @keys are printed
+// out to standard error.
+func ParseDebugString(_string string, keys []DebugKey) uint {
+	var _arg1 *C.gchar // out
+	var _arg2 *C.GDebugKey
+	var _arg3 C.guint
+	var _cret C.guint // in
+
+	_arg1 = (*C.gchar)(C.CString(_string))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg3 = C.guint(len(keys))
+	_arg2 = (*C.GDebugKey)(unsafe.Pointer(&keys[0]))
+
+	_cret = C.g_parse_debug_string(_arg1, _arg2, _arg3)
+
+	var _guint uint // out
+
+	_guint = uint(_cret)
+
+	return _guint
+}
+
 // ReloadUserSpecialDirsCache resets the cache used for
 // g_get_user_special_dir(), so that the latest on-disk version is used. Call
 // this only if you just changed the data on disk yourself.

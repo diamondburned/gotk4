@@ -952,6 +952,41 @@ func (v *Variant) Classify() VariantClass {
 	return _variantClass
 }
 
+// Compare compares @one and @two.
+//
+// The types of @one and @two are #gconstpointer only to allow use of this
+// function with #GTree, Array, etc. They must each be a #GVariant.
+//
+// Comparison is only defined for basic types (ie: booleans, numbers, strings).
+// For booleans, false is less than true. Numbers are ordered in the usual way.
+// Strings are in ASCII lexographical order.
+//
+// It is a programmer error to attempt to compare container values or two values
+// that have types that are not exactly equal. For example, you cannot compare a
+// 32-bit signed integer with a 32-bit unsigned integer. Also note that this
+// function is not particularly well-behaved when it comes to comparison of
+// doubles; in particular, the handling of incomparable values (ie: NaN) is
+// undefined.
+//
+// If you only require an equality comparison, g_variant_equal() is more
+// general.
+func (o *Variant) Compare(two *Variant) int {
+	var _arg0 C.gconstpointer // out
+	var _arg1 C.gconstpointer // out
+	var _cret C.gint          // in
+
+	_arg0 = (C.gconstpointer)(unsafe.Pointer(o))
+	_arg1 = (C.gconstpointer)(unsafe.Pointer(two))
+
+	_cret = C.g_variant_compare(_arg0, _arg1)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
 // DupString: similar to g_variant_get_string() except that instead of returning
 // a constant string, the string is duplicated.
 //
@@ -975,6 +1010,29 @@ func (v *Variant) DupString() (uint, string) {
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _length, _utf8
+}
+
+// Equal checks if @one and @two have the same type and value.
+//
+// The types of @one and @two are #gconstpointer only to allow use of this
+// function with Table. They must each be a #GVariant.
+func (o *Variant) Equal(two *Variant) bool {
+	var _arg0 C.gconstpointer // out
+	var _arg1 C.gconstpointer // out
+	var _cret C.gboolean      // in
+
+	_arg0 = (C.gconstpointer)(unsafe.Pointer(o))
+	_arg1 = (C.gconstpointer)(unsafe.Pointer(two))
+
+	_cret = C.g_variant_equal(_arg0, _arg1)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
 }
 
 // Boolean returns the boolean value of @value.
@@ -1476,6 +1534,30 @@ func (v *Variant) Variant() *Variant {
 	})
 
 	return _variant
+}
+
+// Hash generates a hash value for a #GVariant instance.
+//
+// The output of this function is guaranteed to be the same for a given value
+// only per-process. It may change between different processor architectures or
+// even different versions of GLib. Do not use this function as a basis for
+// building protocols or file formats.
+//
+// The type of @value is #gconstpointer only to allow use of this function with
+// Table. @value must be a #GVariant.
+func (v *Variant) Hash() uint {
+	var _arg0 C.gconstpointer // out
+	var _cret C.guint         // in
+
+	_arg0 = (C.gconstpointer)(unsafe.Pointer(v))
+
+	_cret = C.g_variant_hash(_arg0)
+
+	var _guint uint // out
+
+	_guint = uint(_cret)
+
+	return _guint
 }
 
 // IsContainer checks if @value is a container.

@@ -133,8 +133,7 @@ func NewSearchEntry() *SearchEntryClass {
 
 	var _searchEntry *SearchEntryClass // out
 
-	_searchEntry = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*SearchEntryClass)
+	_searchEntry = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*SearchEntryClass)
 
 	return _searchEntry
 }

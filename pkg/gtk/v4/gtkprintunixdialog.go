@@ -331,14 +331,13 @@ func NewPrintUnixDialog(title string, parent Window) *PrintUnixDialogClass {
 
 	_arg1 = (*C.char)(C.CString(title))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GtkWindow)(unsafe.Pointer((&parent).Native()))
+	_arg2 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
 
 	_cret = C.gtk_print_unix_dialog_new(_arg1, _arg2)
 
 	var _printUnixDialog *PrintUnixDialogClass // out
 
-	_printUnixDialog = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*PrintUnixDialogClass)
+	_printUnixDialog = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*PrintUnixDialogClass)
 
 	return _printUnixDialog
 }
@@ -349,9 +348,9 @@ func (d *PrintUnixDialogClass) AddCustomTab(child Widget, tabLabel Widget) {
 	var _arg1 *C.GtkWidget          // out
 	var _arg2 *C.GtkWidget          // out
 
-	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer((&d).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&child).Native()))
-	_arg2 = (*C.GtkWidget)(unsafe.Pointer((&tabLabel).Native()))
+	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(d.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg2 = (*C.GtkWidget)(unsafe.Pointer(tabLabel.Native()))
 
 	C.gtk_print_unix_dialog_add_custom_tab(_arg0, _arg1, _arg2)
 }
@@ -361,7 +360,7 @@ func (d *PrintUnixDialogClass) CurrentPage() int {
 	var _arg0 *C.GtkPrintUnixDialog // out
 	var _cret C.int                 // in
 
-	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer((&d).Native()))
+	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(d.Native()))
 
 	_cret = C.gtk_print_unix_dialog_get_current_page(_arg0)
 
@@ -377,7 +376,7 @@ func (d *PrintUnixDialogClass) EmbedPageSetup() bool {
 	var _arg0 *C.GtkPrintUnixDialog // out
 	var _cret C.gboolean            // in
 
-	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer((&d).Native()))
+	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(d.Native()))
 
 	_cret = C.gtk_print_unix_dialog_get_embed_page_setup(_arg0)
 
@@ -395,7 +394,7 @@ func (d *PrintUnixDialogClass) HasSelection() bool {
 	var _arg0 *C.GtkPrintUnixDialog // out
 	var _cret C.gboolean            // in
 
-	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer((&d).Native()))
+	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(d.Native()))
 
 	_cret = C.gtk_print_unix_dialog_get_has_selection(_arg0)
 
@@ -414,7 +413,7 @@ func (d *PrintUnixDialogClass) ManualCapabilities() PrintCapabilities {
 	var _arg0 *C.GtkPrintUnixDialog  // out
 	var _cret C.GtkPrintCapabilities // in
 
-	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer((&d).Native()))
+	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(d.Native()))
 
 	_cret = C.gtk_print_unix_dialog_get_manual_capabilities(_arg0)
 
@@ -430,14 +429,13 @@ func (d *PrintUnixDialogClass) PageSetup() *PageSetupClass {
 	var _arg0 *C.GtkPrintUnixDialog // out
 	var _cret *C.GtkPageSetup       // in
 
-	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer((&d).Native()))
+	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(d.Native()))
 
 	_cret = C.gtk_print_unix_dialog_get_page_setup(_arg0)
 
 	var _pageSetup *PageSetupClass // out
 
-	_pageSetup = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*PageSetupClass)
+	_pageSetup = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*PageSetupClass)
 
 	return _pageSetup
 }
@@ -447,7 +445,7 @@ func (d *PrintUnixDialogClass) PageSetupSet() bool {
 	var _arg0 *C.GtkPrintUnixDialog // out
 	var _cret C.gboolean            // in
 
-	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer((&d).Native()))
+	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(d.Native()))
 
 	_cret = C.gtk_print_unix_dialog_get_page_setup_set(_arg0)
 
@@ -465,14 +463,13 @@ func (d *PrintUnixDialogClass) SelectedPrinter() *PrinterClass {
 	var _arg0 *C.GtkPrintUnixDialog // out
 	var _cret *C.GtkPrinter         // in
 
-	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer((&d).Native()))
+	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(d.Native()))
 
 	_cret = C.gtk_print_unix_dialog_get_selected_printer(_arg0)
 
 	var _printer *PrinterClass // out
 
-	_printer = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*PrinterClass)
+	_printer = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*PrinterClass)
 
 	return _printer
 }
@@ -486,14 +483,13 @@ func (d *PrintUnixDialogClass) Settings() *PrintSettingsClass {
 	var _arg0 *C.GtkPrintUnixDialog // out
 	var _cret *C.GtkPrintSettings   // in
 
-	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer((&d).Native()))
+	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(d.Native()))
 
 	_cret = C.gtk_print_unix_dialog_get_settings(_arg0)
 
 	var _printSettings *PrintSettingsClass // out
 
-	_printSettings = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*PrintSettingsClass)
+	_printSettings = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*PrintSettingsClass)
 
 	return _printSettings
 }
@@ -504,7 +500,7 @@ func (d *PrintUnixDialogClass) SupportSelection() bool {
 	var _arg0 *C.GtkPrintUnixDialog // out
 	var _cret C.gboolean            // in
 
-	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer((&d).Native()))
+	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(d.Native()))
 
 	_cret = C.gtk_print_unix_dialog_get_support_selection(_arg0)
 
@@ -525,7 +521,7 @@ func (d *PrintUnixDialogClass) SetCurrentPage(currentPage int) {
 	var _arg0 *C.GtkPrintUnixDialog // out
 	var _arg1 C.int                 // out
 
-	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer((&d).Native()))
+	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(d.Native()))
 	_arg1 = C.int(currentPage)
 
 	C.gtk_print_unix_dialog_set_current_page(_arg0, _arg1)
@@ -537,7 +533,7 @@ func (d *PrintUnixDialogClass) SetEmbedPageSetup(embed bool) {
 	var _arg0 *C.GtkPrintUnixDialog // out
 	var _arg1 C.gboolean            // out
 
-	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer((&d).Native()))
+	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(d.Native()))
 	if embed {
 		_arg1 = C.TRUE
 	}
@@ -550,7 +546,7 @@ func (d *PrintUnixDialogClass) SetHasSelection(hasSelection bool) {
 	var _arg0 *C.GtkPrintUnixDialog // out
 	var _arg1 C.gboolean            // out
 
-	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer((&d).Native()))
+	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(d.Native()))
 	if hasSelection {
 		_arg1 = C.TRUE
 	}
@@ -563,8 +559,8 @@ func (d *PrintUnixDialogClass) SetPageSetup(pageSetup PageSetup) {
 	var _arg0 *C.GtkPrintUnixDialog // out
 	var _arg1 *C.GtkPageSetup       // out
 
-	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer((&d).Native()))
-	_arg1 = (*C.GtkPageSetup)(unsafe.Pointer((&pageSetup).Native()))
+	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(d.Native()))
+	_arg1 = (*C.GtkPageSetup)(unsafe.Pointer(pageSetup.Native()))
 
 	C.gtk_print_unix_dialog_set_page_setup(_arg0, _arg1)
 }
@@ -577,8 +573,8 @@ func (d *PrintUnixDialogClass) SetSettings(settings PrintSettings) {
 	var _arg0 *C.GtkPrintUnixDialog // out
 	var _arg1 *C.GtkPrintSettings   // out
 
-	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer((&d).Native()))
-	_arg1 = (*C.GtkPrintSettings)(unsafe.Pointer((&settings).Native()))
+	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(d.Native()))
+	_arg1 = (*C.GtkPrintSettings)(unsafe.Pointer(settings.Native()))
 
 	C.gtk_print_unix_dialog_set_settings(_arg0, _arg1)
 }
@@ -589,7 +585,7 @@ func (d *PrintUnixDialogClass) SetSupportSelection(supportSelection bool) {
 	var _arg0 *C.GtkPrintUnixDialog // out
 	var _arg1 C.gboolean            // out
 
-	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer((&d).Native()))
+	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(d.Native()))
 	if supportSelection {
 		_arg1 = C.TRUE
 	}

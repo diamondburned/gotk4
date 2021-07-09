@@ -93,8 +93,7 @@ func NewMenuBar() *MenuBarClass {
 
 	var _menuBar *MenuBarClass // out
 
-	_menuBar = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*MenuBarClass)
+	_menuBar = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*MenuBarClass)
 
 	return _menuBar
 }
@@ -109,14 +108,13 @@ func NewMenuBarFromModel(model gio.MenuModel) *MenuBarClass {
 	var _arg1 *C.GMenuModel // out
 	var _cret *C.GtkWidget  // in
 
-	_arg1 = (*C.GMenuModel)(unsafe.Pointer((&model).Native()))
+	_arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
 
 	_cret = C.gtk_menu_bar_new_from_model(_arg1)
 
 	var _menuBar *MenuBarClass // out
 
-	_menuBar = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*MenuBarClass)
+	_menuBar = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*MenuBarClass)
 
 	return _menuBar
 }
@@ -127,7 +125,7 @@ func (m *MenuBarClass) ChildPackDirection() PackDirection {
 	var _arg0 *C.GtkMenuBar      // out
 	var _cret C.GtkPackDirection // in
 
-	_arg0 = (*C.GtkMenuBar)(unsafe.Pointer((&m).Native()))
+	_arg0 = (*C.GtkMenuBar)(unsafe.Pointer(m.Native()))
 
 	_cret = C.gtk_menu_bar_get_child_pack_direction(_arg0)
 
@@ -144,7 +142,7 @@ func (m *MenuBarClass) PackDirection() PackDirection {
 	var _arg0 *C.GtkMenuBar      // out
 	var _cret C.GtkPackDirection // in
 
-	_arg0 = (*C.GtkMenuBar)(unsafe.Pointer((&m).Native()))
+	_arg0 = (*C.GtkMenuBar)(unsafe.Pointer(m.Native()))
 
 	_cret = C.gtk_menu_bar_get_pack_direction(_arg0)
 

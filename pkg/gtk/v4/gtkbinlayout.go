@@ -64,8 +64,7 @@ func NewBinLayout() *BinLayoutClass {
 
 	var _binLayout *BinLayoutClass // out
 
-	_binLayout = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*BinLayoutClass)
+	_binLayout = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*BinLayoutClass)
 
 	return _binLayout
 }

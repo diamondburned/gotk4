@@ -135,8 +135,8 @@ func (m *LayoutManagerClass) Allocate(widget Widget, width int, height int, base
 	var _arg3 C.int               // out
 	var _arg4 C.int               // out
 
-	_arg0 = (*C.GtkLayoutManager)(unsafe.Pointer((&m).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&widget).Native()))
+	_arg0 = (*C.GtkLayoutManager)(unsafe.Pointer(m.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg2 = C.int(width)
 	_arg3 = C.int(height)
 	_arg4 = C.int(baseline)
@@ -157,15 +157,14 @@ func (m *LayoutManagerClass) LayoutChild(child Widget) *LayoutChildClass {
 	var _arg1 *C.GtkWidget        // out
 	var _cret *C.GtkLayoutChild   // in
 
-	_arg0 = (*C.GtkLayoutManager)(unsafe.Pointer((&m).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&child).Native()))
+	_arg0 = (*C.GtkLayoutManager)(unsafe.Pointer(m.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	_cret = C.gtk_layout_manager_get_layout_child(_arg0, _arg1)
 
 	var _layoutChild *LayoutChildClass // out
 
-	_layoutChild = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*LayoutChildClass)
+	_layoutChild = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*LayoutChildClass)
 
 	return _layoutChild
 }
@@ -175,7 +174,7 @@ func (m *LayoutManagerClass) RequestMode() SizeRequestMode {
 	var _arg0 *C.GtkLayoutManager  // out
 	var _cret C.GtkSizeRequestMode // in
 
-	_arg0 = (*C.GtkLayoutManager)(unsafe.Pointer((&m).Native()))
+	_arg0 = (*C.GtkLayoutManager)(unsafe.Pointer(m.Native()))
 
 	_cret = C.gtk_layout_manager_get_request_mode(_arg0)
 
@@ -191,14 +190,13 @@ func (m *LayoutManagerClass) Widget() *WidgetClass {
 	var _arg0 *C.GtkLayoutManager // out
 	var _cret *C.GtkWidget        // in
 
-	_arg0 = (*C.GtkLayoutManager)(unsafe.Pointer((&m).Native()))
+	_arg0 = (*C.GtkLayoutManager)(unsafe.Pointer(m.Native()))
 
 	_cret = C.gtk_layout_manager_get_widget(_arg0)
 
 	var _widget *WidgetClass // out
 
-	_widget = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*WidgetClass)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WidgetClass)
 
 	return _widget
 }
@@ -210,7 +208,7 @@ func (m *LayoutManagerClass) Widget() *WidgetClass {
 func (m *LayoutManagerClass) LayoutChanged() {
 	var _arg0 *C.GtkLayoutManager // out
 
-	_arg0 = (*C.GtkLayoutManager)(unsafe.Pointer((&m).Native()))
+	_arg0 = (*C.GtkLayoutManager)(unsafe.Pointer(m.Native()))
 
 	C.gtk_layout_manager_layout_changed(_arg0)
 }

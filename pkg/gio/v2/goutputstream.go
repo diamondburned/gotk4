@@ -133,8 +133,63 @@ type OutputStreamOverrider interface {
 	//
 	// On error -1 is returned and @error is set accordingly.
 	WriteFn(buffer []byte, cancellable Cancellable) (int, error)
+	// WritevAsync: request an asynchronous write of the bytes contained in
+	// @n_vectors @vectors into the stream. When the operation is finished
+	// @callback will be called. You can then call
+	// g_output_stream_writev_finish() to get the result of the operation.
+	//
+	// During an async request no other sync and async calls are allowed, and
+	// will result in G_IO_ERROR_PENDING errors.
+	//
+	// On success, the number of bytes written will be passed to the @callback.
+	// It is not an error if this is not the same as the requested size, as it
+	// can happen e.g. on a partial I/O error, but generally we try to write as
+	// many bytes as requested.
+	//
+	// You are guaranteed that this method will never fail with
+	// G_IO_ERROR_WOULD_BLOCK — if @stream can't accept more data, the method
+	// will just wait until this changes.
+	//
+	// Any outstanding I/O request with higher priority (lower numerical value)
+	// will be executed before an outstanding request with lower priority.
+	// Default priority is G_PRIORITY_DEFAULT.
+	//
+	// The asynchronous methods have a default fallback that uses threads to
+	// implement asynchronicity, so they are optional for inheriting classes.
+	// However, if you override one you must override all.
+	//
+	// For the synchronous, blocking version of this function, see
+	// g_output_stream_writev().
+	//
+	// Note that no copy of @vectors will be made, so it must stay valid until
+	// @callback is called.
+	WritevAsync(vectors []OutputVector, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// WritevFinish finishes a stream writev operation.
 	WritevFinish(result AsyncResult) (uint, error)
+	// WritevFn tries to write the bytes contained in the @n_vectors @vectors
+	// into the stream. Will block during the operation.
+	//
+	// If @n_vectors is 0 or the sum of all bytes in @vectors is 0, returns 0
+	// and does nothing.
+	//
+	// On success, the number of bytes written to the stream is returned. It is
+	// not an error if this is not the same as the requested size, as it can
+	// happen e.g. on a partial I/O error, or if there is not enough storage in
+	// the stream. All writes block until at least one byte is written or an
+	// error occurs; 0 is never returned (unless @n_vectors is 0 or the sum of
+	// all bytes in @vectors is 0).
+	//
+	// If @cancellable is not nil, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned. If an
+	// operation was partially finished when the operation was cancelled the
+	// partial result will be returned, without an error.
+	//
+	// Some implementations of g_output_stream_writev() may have limitations on
+	// the aggregate buffer size, and will return G_IO_ERROR_INVALID_ARGUMENT if
+	// these are exceeded. For example, when writing to a local file on UNIX
+	// platforms, the aggregate buffer size must not exceed G_MAXSSIZE bytes.
+	WritevFn(vectors []OutputVector, cancellable Cancellable) (uint, error)
 }
 
 // OutputStream has functions to write to a stream (g_output_stream_write()), to
@@ -333,6 +388,69 @@ type OutputStream interface {
 	WriteBytesFinish(result AsyncResult) (int, error)
 	// WriteFinish finishes a stream write operation.
 	WriteFinish(result AsyncResult) (int, error)
+	// Writev tries to write the bytes contained in the @n_vectors @vectors into
+	// the stream. Will block during the operation.
+	//
+	// If @n_vectors is 0 or the sum of all bytes in @vectors is 0, returns 0
+	// and does nothing.
+	//
+	// On success, the number of bytes written to the stream is returned. It is
+	// not an error if this is not the same as the requested size, as it can
+	// happen e.g. on a partial I/O error, or if there is not enough storage in
+	// the stream. All writes block until at least one byte is written or an
+	// error occurs; 0 is never returned (unless @n_vectors is 0 or the sum of
+	// all bytes in @vectors is 0).
+	//
+	// If @cancellable is not nil, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned. If an
+	// operation was partially finished when the operation was cancelled the
+	// partial result will be returned, without an error.
+	//
+	// Some implementations of g_output_stream_writev() may have limitations on
+	// the aggregate buffer size, and will return G_IO_ERROR_INVALID_ARGUMENT if
+	// these are exceeded. For example, when writing to a local file on UNIX
+	// platforms, the aggregate buffer size must not exceed G_MAXSSIZE bytes.
+	Writev(vectors []OutputVector, cancellable Cancellable) (uint, error)
+	// WritevAll tries to write the bytes contained in the @n_vectors @vectors
+	// into the stream. Will block during the operation.
+	//
+	// This function is similar to g_output_stream_writev(), except it tries to
+	// write as many bytes as requested, only stopping on an error.
+	//
+	// On a successful write of all @n_vectors vectors, true is returned, and
+	// @bytes_written is set to the sum of all the sizes of @vectors.
+	//
+	// If there is an error during the operation false is returned and @error is
+	// set to indicate the error status.
+	//
+	// As a special exception to the normal conventions for functions that use
+	// #GError, if this function returns false (and sets @error) then
+	// @bytes_written will be set to the number of bytes that were successfully
+	// written before the error was encountered. This functionality is only
+	// available from C. If you need it from another language then you must
+	// write your own loop around g_output_stream_write().
+	//
+	// The content of the individual elements of @vectors might be changed by
+	// this function.
+	WritevAll(vectors []OutputVector, cancellable Cancellable) (uint, error)
+	// WritevAllAsync: request an asynchronous write of the bytes contained in
+	// the @n_vectors @vectors into the stream. When the operation is finished
+	// @callback will be called. You can then call
+	// g_output_stream_writev_all_finish() to get the result of the operation.
+	//
+	// This is the asynchronous version of g_output_stream_writev_all().
+	//
+	// Call g_output_stream_writev_all_finish() to collect the result.
+	//
+	// Any outstanding I/O request with higher priority (lower numerical value)
+	// will be executed before an outstanding request with lower priority.
+	// Default priority is G_PRIORITY_DEFAULT.
+	//
+	// Note that no copy of @vectors will be made, so it must stay valid until
+	// @callback is called. The content of the individual elements of @vectors
+	// might be changed by this function.
+	WritevAllAsync(vectors []OutputVector, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// WritevAllFinish finishes an asynchronous stream write operation started
 	// with g_output_stream_writev_all_async().
 	//
@@ -343,6 +461,37 @@ type OutputStream interface {
 	// available from C. If you need it from another language then you must
 	// write your own loop around g_output_stream_writev_async().
 	WritevAllFinish(result AsyncResult) (uint, error)
+	// WritevAsync: request an asynchronous write of the bytes contained in
+	// @n_vectors @vectors into the stream. When the operation is finished
+	// @callback will be called. You can then call
+	// g_output_stream_writev_finish() to get the result of the operation.
+	//
+	// During an async request no other sync and async calls are allowed, and
+	// will result in G_IO_ERROR_PENDING errors.
+	//
+	// On success, the number of bytes written will be passed to the @callback.
+	// It is not an error if this is not the same as the requested size, as it
+	// can happen e.g. on a partial I/O error, but generally we try to write as
+	// many bytes as requested.
+	//
+	// You are guaranteed that this method will never fail with
+	// G_IO_ERROR_WOULD_BLOCK — if @stream can't accept more data, the method
+	// will just wait until this changes.
+	//
+	// Any outstanding I/O request with higher priority (lower numerical value)
+	// will be executed before an outstanding request with lower priority.
+	// Default priority is G_PRIORITY_DEFAULT.
+	//
+	// The asynchronous methods have a default fallback that uses threads to
+	// implement asynchronicity, so they are optional for inheriting classes.
+	// However, if you override one you must override all.
+	//
+	// For the synchronous, blocking version of this function, see
+	// g_output_stream_writev().
+	//
+	// Note that no copy of @vectors will be made, so it must stay valid until
+	// @callback is called.
+	WritevAsync(vectors []OutputVector, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// WritevFinish finishes a stream writev operation.
 	WritevFinish(result AsyncResult) (uint, error)
 }
@@ -370,7 +519,7 @@ func marshalOutputStream(p uintptr) (interface{}, error) {
 func (s *OutputStreamClass) ClearPending() {
 	var _arg0 *C.GOutputStream // out
 
-	_arg0 = (*C.GOutputStream)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
 
 	C.g_output_stream_clear_pending(_arg0)
 }
@@ -408,8 +557,8 @@ func (s *OutputStreamClass) Close(cancellable Cancellable) error {
 	var _arg1 *C.GCancellable  // out
 	var _cerr *C.GError        // in
 
-	_arg0 = (*C.GOutputStream)(unsafe.Pointer((&s).Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer((&cancellable).Native()))
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	C.g_output_stream_close(_arg0, _arg1, &_cerr)
 
@@ -437,9 +586,9 @@ func (s *OutputStreamClass) CloseAsync(ioPriority int, cancellable Cancellable, 
 	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
-	_arg0 = (*C.GOutputStream)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
 	_arg1 = C.int(ioPriority)
-	_arg2 = (*C.GCancellable)(unsafe.Pointer((&cancellable).Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg4 = C.gpointer(box.Assign(callback))
 
@@ -452,8 +601,8 @@ func (s *OutputStreamClass) CloseFinish(result AsyncResult) error {
 	var _arg1 *C.GAsyncResult  // out
 	var _cerr *C.GError        // in
 
-	_arg0 = (*C.GOutputStream)(unsafe.Pointer((&s).Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((&result).Native()))
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_output_stream_close_finish(_arg0, _arg1, &_cerr)
 
@@ -478,8 +627,8 @@ func (s *OutputStreamClass) Flush(cancellable Cancellable) error {
 	var _arg1 *C.GCancellable  // out
 	var _cerr *C.GError        // in
 
-	_arg0 = (*C.GOutputStream)(unsafe.Pointer((&s).Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer((&cancellable).Native()))
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	C.g_output_stream_flush(_arg0, _arg1, &_cerr)
 
@@ -502,9 +651,9 @@ func (s *OutputStreamClass) FlushAsync(ioPriority int, cancellable Cancellable, 
 	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
-	_arg0 = (*C.GOutputStream)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
 	_arg1 = C.int(ioPriority)
-	_arg2 = (*C.GCancellable)(unsafe.Pointer((&cancellable).Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg4 = C.gpointer(box.Assign(callback))
 
@@ -517,8 +666,8 @@ func (s *OutputStreamClass) FlushFinish(result AsyncResult) error {
 	var _arg1 *C.GAsyncResult  // out
 	var _cerr *C.GError        // in
 
-	_arg0 = (*C.GOutputStream)(unsafe.Pointer((&s).Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((&result).Native()))
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_output_stream_flush_finish(_arg0, _arg1, &_cerr)
 
@@ -534,7 +683,7 @@ func (s *OutputStreamClass) HasPending() bool {
 	var _arg0 *C.GOutputStream // out
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.GOutputStream)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
 
 	_cret = C.g_output_stream_has_pending(_arg0)
 
@@ -552,7 +701,7 @@ func (s *OutputStreamClass) IsClosed() bool {
 	var _arg0 *C.GOutputStream // out
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.GOutputStream)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
 
 	_cret = C.g_output_stream_is_closed(_arg0)
 
@@ -572,7 +721,7 @@ func (s *OutputStreamClass) IsClosing() bool {
 	var _arg0 *C.GOutputStream // out
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.GOutputStream)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
 
 	_cret = C.g_output_stream_is_closing(_arg0)
 
@@ -591,7 +740,7 @@ func (s *OutputStreamClass) SetPending() error {
 	var _arg0 *C.GOutputStream // out
 	var _cerr *C.GError        // in
 
-	_arg0 = (*C.GOutputStream)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
 
 	C.g_output_stream_set_pending(_arg0, &_cerr)
 
@@ -609,8 +758,8 @@ func (s *OutputStreamClass) SpliceFinish(result AsyncResult) (int, error) {
 	var _cret C.gssize         // in
 	var _cerr *C.GError        // in
 
-	_arg0 = (*C.GOutputStream)(unsafe.Pointer((&s).Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((&result).Native()))
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_output_stream_splice_finish(_arg0, _arg1, &_cerr)
 
@@ -650,10 +799,10 @@ func (s *OutputStreamClass) Write(buffer []byte, cancellable Cancellable) (int, 
 	var _cret C.gssize        // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GOutputStream)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
 	_arg2 = C.gsize(len(buffer))
 	_arg1 = (*C.void)(unsafe.Pointer(&buffer[0]))
-	_arg3 = (*C.GCancellable)(unsafe.Pointer((&cancellable).Native()))
+	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_output_stream_write(_arg0, unsafe.Pointer(_arg1), _arg2, _arg3, &_cerr)
 
@@ -692,10 +841,10 @@ func (s *OutputStreamClass) WriteAll(buffer []byte, cancellable Cancellable) (ui
 	var _arg4 *C.GCancellable // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GOutputStream)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
 	_arg2 = C.gsize(len(buffer))
 	_arg1 = (*C.void)(unsafe.Pointer(&buffer[0]))
-	_arg4 = (*C.GCancellable)(unsafe.Pointer((&cancellable).Native()))
+	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	C.g_output_stream_write_all(_arg0, unsafe.Pointer(_arg1), _arg2, &_arg3, _arg4, &_cerr)
 
@@ -732,11 +881,11 @@ func (s *OutputStreamClass) WriteAllAsync(buffer []byte, ioPriority int, cancell
 	var _arg5 C.GAsyncReadyCallback // out
 	var _arg6 C.gpointer
 
-	_arg0 = (*C.GOutputStream)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
 	_arg2 = C.gsize(len(buffer))
 	_arg1 = (*C.void)(unsafe.Pointer(&buffer[0]))
 	_arg3 = C.int(ioPriority)
-	_arg4 = (*C.GCancellable)(unsafe.Pointer((&cancellable).Native()))
+	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg5 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg6 = C.gpointer(box.Assign(callback))
 
@@ -758,8 +907,8 @@ func (s *OutputStreamClass) WriteAllFinish(result AsyncResult) (uint, error) {
 	var _arg2 C.gsize          // in
 	var _cerr *C.GError        // in
 
-	_arg0 = (*C.GOutputStream)(unsafe.Pointer((&s).Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((&result).Native()))
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_output_stream_write_all_finish(_arg0, _arg1, &_arg2, &_cerr)
 
@@ -815,11 +964,11 @@ func (s *OutputStreamClass) WriteAsync(buffer []byte, ioPriority int, cancellabl
 	var _arg5 C.GAsyncReadyCallback // out
 	var _arg6 C.gpointer
 
-	_arg0 = (*C.GOutputStream)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
 	_arg2 = C.gsize(len(buffer))
 	_arg1 = (*C.void)(unsafe.Pointer(&buffer[0]))
 	_arg3 = C.int(ioPriority)
-	_arg4 = (*C.GCancellable)(unsafe.Pointer((&cancellable).Native()))
+	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg5 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg6 = C.gpointer(box.Assign(callback))
 
@@ -833,8 +982,8 @@ func (s *OutputStreamClass) WriteBytesFinish(result AsyncResult) (int, error) {
 	var _cret C.gssize         // in
 	var _cerr *C.GError        // in
 
-	_arg0 = (*C.GOutputStream)(unsafe.Pointer((&s).Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((&result).Native()))
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_output_stream_write_bytes_finish(_arg0, _arg1, &_cerr)
 
@@ -854,8 +1003,8 @@ func (s *OutputStreamClass) WriteFinish(result AsyncResult) (int, error) {
 	var _cret C.gssize         // in
 	var _cerr *C.GError        // in
 
-	_arg0 = (*C.GOutputStream)(unsafe.Pointer((&s).Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((&result).Native()))
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_output_stream_write_finish(_arg0, _arg1, &_cerr)
 
@@ -866,6 +1015,134 @@ func (s *OutputStreamClass) WriteFinish(result AsyncResult) (int, error) {
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _gssize, _goerr
+}
+
+// Writev tries to write the bytes contained in the @n_vectors @vectors into the
+// stream. Will block during the operation.
+//
+// If @n_vectors is 0 or the sum of all bytes in @vectors is 0, returns 0 and
+// does nothing.
+//
+// On success, the number of bytes written to the stream is returned. It is not
+// an error if this is not the same as the requested size, as it can happen e.g.
+// on a partial I/O error, or if there is not enough storage in the stream. All
+// writes block until at least one byte is written or an error occurs; 0 is
+// never returned (unless @n_vectors is 0 or the sum of all bytes in @vectors is
+// 0).
+//
+// If @cancellable is not nil, then the operation can be cancelled by triggering
+// the cancellable object from another thread. If the operation was cancelled,
+// the error G_IO_ERROR_CANCELLED will be returned. If an operation was
+// partially finished when the operation was cancelled the partial result will
+// be returned, without an error.
+//
+// Some implementations of g_output_stream_writev() may have limitations on the
+// aggregate buffer size, and will return G_IO_ERROR_INVALID_ARGUMENT if these
+// are exceeded. For example, when writing to a local file on UNIX platforms,
+// the aggregate buffer size must not exceed G_MAXSSIZE bytes.
+func (s *OutputStreamClass) Writev(vectors []OutputVector, cancellable Cancellable) (uint, error) {
+	var _arg0 *C.GOutputStream // out
+	var _arg1 *C.GOutputVector
+	var _arg2 C.gsize
+	var _arg3 C.gsize         // in
+	var _arg4 *C.GCancellable // out
+	var _cerr *C.GError       // in
+
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
+	_arg2 = C.gsize(len(vectors))
+	_arg1 = (*C.GOutputVector)(unsafe.Pointer(&vectors[0]))
+	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+
+	C.g_output_stream_writev(_arg0, _arg1, _arg2, &_arg3, _arg4, &_cerr)
+
+	var _bytesWritten uint // out
+	var _goerr error       // out
+
+	_bytesWritten = uint(_arg3)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _bytesWritten, _goerr
+}
+
+// WritevAll tries to write the bytes contained in the @n_vectors @vectors into
+// the stream. Will block during the operation.
+//
+// This function is similar to g_output_stream_writev(), except it tries to
+// write as many bytes as requested, only stopping on an error.
+//
+// On a successful write of all @n_vectors vectors, true is returned, and
+// @bytes_written is set to the sum of all the sizes of @vectors.
+//
+// If there is an error during the operation false is returned and @error is set
+// to indicate the error status.
+//
+// As a special exception to the normal conventions for functions that use
+// #GError, if this function returns false (and sets @error) then @bytes_written
+// will be set to the number of bytes that were successfully written before the
+// error was encountered. This functionality is only available from C. If you
+// need it from another language then you must write your own loop around
+// g_output_stream_write().
+//
+// The content of the individual elements of @vectors might be changed by this
+// function.
+func (s *OutputStreamClass) WritevAll(vectors []OutputVector, cancellable Cancellable) (uint, error) {
+	var _arg0 *C.GOutputStream // out
+	var _arg1 *C.GOutputVector
+	var _arg2 C.gsize
+	var _arg3 C.gsize         // in
+	var _arg4 *C.GCancellable // out
+	var _cerr *C.GError       // in
+
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
+	_arg2 = C.gsize(len(vectors))
+	_arg1 = (*C.GOutputVector)(unsafe.Pointer(&vectors[0]))
+	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+
+	C.g_output_stream_writev_all(_arg0, _arg1, _arg2, &_arg3, _arg4, &_cerr)
+
+	var _bytesWritten uint // out
+	var _goerr error       // out
+
+	_bytesWritten = uint(_arg3)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _bytesWritten, _goerr
+}
+
+// WritevAllAsync: request an asynchronous write of the bytes contained in the
+// @n_vectors @vectors into the stream. When the operation is finished @callback
+// will be called. You can then call g_output_stream_writev_all_finish() to get
+// the result of the operation.
+//
+// This is the asynchronous version of g_output_stream_writev_all().
+//
+// Call g_output_stream_writev_all_finish() to collect the result.
+//
+// Any outstanding I/O request with higher priority (lower numerical value) will
+// be executed before an outstanding request with lower priority. Default
+// priority is G_PRIORITY_DEFAULT.
+//
+// Note that no copy of @vectors will be made, so it must stay valid until
+// @callback is called. The content of the individual elements of @vectors might
+// be changed by this function.
+func (s *OutputStreamClass) WritevAllAsync(vectors []OutputVector, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+	var _arg0 *C.GOutputStream // out
+	var _arg1 *C.GOutputVector
+	var _arg2 C.gsize
+	var _arg3 C.int                 // out
+	var _arg4 *C.GCancellable       // out
+	var _arg5 C.GAsyncReadyCallback // out
+	var _arg6 C.gpointer
+
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
+	_arg2 = C.gsize(len(vectors))
+	_arg1 = (*C.GOutputVector)(unsafe.Pointer(&vectors[0]))
+	_arg3 = C.int(ioPriority)
+	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg5 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg6 = C.gpointer(box.Assign(callback))
+
+	C.g_output_stream_writev_all_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }
 
 // WritevAllFinish finishes an asynchronous stream write operation started with
@@ -883,8 +1160,8 @@ func (s *OutputStreamClass) WritevAllFinish(result AsyncResult) (uint, error) {
 	var _arg2 C.gsize          // in
 	var _cerr *C.GError        // in
 
-	_arg0 = (*C.GOutputStream)(unsafe.Pointer((&s).Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((&result).Native()))
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_output_stream_writev_all_finish(_arg0, _arg1, &_arg2, &_cerr)
 
@@ -897,6 +1174,56 @@ func (s *OutputStreamClass) WritevAllFinish(result AsyncResult) (uint, error) {
 	return _bytesWritten, _goerr
 }
 
+// WritevAsync: request an asynchronous write of the bytes contained in
+// @n_vectors @vectors into the stream. When the operation is finished @callback
+// will be called. You can then call g_output_stream_writev_finish() to get the
+// result of the operation.
+//
+// During an async request no other sync and async calls are allowed, and will
+// result in G_IO_ERROR_PENDING errors.
+//
+// On success, the number of bytes written will be passed to the @callback. It
+// is not an error if this is not the same as the requested size, as it can
+// happen e.g. on a partial I/O error, but generally we try to write as many
+// bytes as requested.
+//
+// You are guaranteed that this method will never fail with
+// G_IO_ERROR_WOULD_BLOCK — if @stream can't accept more data, the method will
+// just wait until this changes.
+//
+// Any outstanding I/O request with higher priority (lower numerical value) will
+// be executed before an outstanding request with lower priority. Default
+// priority is G_PRIORITY_DEFAULT.
+//
+// The asynchronous methods have a default fallback that uses threads to
+// implement asynchronicity, so they are optional for inheriting classes.
+// However, if you override one you must override all.
+//
+// For the synchronous, blocking version of this function, see
+// g_output_stream_writev().
+//
+// Note that no copy of @vectors will be made, so it must stay valid until
+// @callback is called.
+func (s *OutputStreamClass) WritevAsync(vectors []OutputVector, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+	var _arg0 *C.GOutputStream // out
+	var _arg1 *C.GOutputVector
+	var _arg2 C.gsize
+	var _arg3 C.int                 // out
+	var _arg4 *C.GCancellable       // out
+	var _arg5 C.GAsyncReadyCallback // out
+	var _arg6 C.gpointer
+
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
+	_arg2 = C.gsize(len(vectors))
+	_arg1 = (*C.GOutputVector)(unsafe.Pointer(&vectors[0]))
+	_arg3 = C.int(ioPriority)
+	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg5 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg6 = C.gpointer(box.Assign(callback))
+
+	C.g_output_stream_writev_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+}
+
 // WritevFinish finishes a stream writev operation.
 func (s *OutputStreamClass) WritevFinish(result AsyncResult) (uint, error) {
 	var _arg0 *C.GOutputStream // out
@@ -904,8 +1231,8 @@ func (s *OutputStreamClass) WritevFinish(result AsyncResult) (uint, error) {
 	var _arg2 C.gsize          // in
 	var _cerr *C.GError        // in
 
-	_arg0 = (*C.GOutputStream)(unsafe.Pointer((&s).Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((&result).Native()))
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_output_stream_writev_finish(_arg0, _arg1, &_arg2, &_cerr)
 

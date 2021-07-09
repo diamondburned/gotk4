@@ -67,8 +67,7 @@ func NewCellRendererProgress() *CellRendererProgressClass {
 
 	var _cellRendererProgress *CellRendererProgressClass // out
 
-	_cellRendererProgress = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*CellRendererProgressClass)
+	_cellRendererProgress = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*CellRendererProgressClass)
 
 	return _cellRendererProgress
 }

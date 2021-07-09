@@ -37,12 +37,14 @@ type BuildableOverrider interface {
 	// CustomTagEnd: called at the end of each custom element handled by the
 	// buildable.
 	CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data interface{})
+	// CustomTagStart: called for each unknown element under `<child>`.
+	CustomTagStart(builder Builder, child gextras.Objector, tagname string) (BuildableParser, interface{}, bool)
 	ID() string
 	// InternalChild retrieves the internal child called @childname of the
 	// @buildable object.
 	InternalChild(builder Builder, childname string) *externglib.Object
 	ParserFinished(builder Builder)
-	SetBuildableProperty(builder Builder, name string, value externglib.Value)
+	SetBuildableProperty(builder Builder, name string, value *externglib.Value)
 	SetID(id string)
 }
 
@@ -96,7 +98,7 @@ func (b *BuildableInterface) BuildableID() string {
 	var _arg0 *C.GtkBuildable // out
 	var _cret *C.char         // in
 
-	_arg0 = (*C.GtkBuildable)(unsafe.Pointer((&b).Native()))
+	_arg0 = (*C.GtkBuildable)(unsafe.Pointer(b.Native()))
 
 	_cret = C.gtk_buildable_get_buildable_id(_arg0)
 

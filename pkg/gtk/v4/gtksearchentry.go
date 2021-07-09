@@ -156,8 +156,7 @@ func NewSearchEntry() *SearchEntryClass {
 
 	var _searchEntry *SearchEntryClass // out
 
-	_searchEntry = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*SearchEntryClass)
+	_searchEntry = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*SearchEntryClass)
 
 	return _searchEntry
 }
@@ -167,14 +166,13 @@ func (e *SearchEntryClass) KeyCaptureWidget() *WidgetClass {
 	var _arg0 *C.GtkSearchEntry // out
 	var _cret *C.GtkWidget      // in
 
-	_arg0 = (*C.GtkSearchEntry)(unsafe.Pointer((&e).Native()))
+	_arg0 = (*C.GtkSearchEntry)(unsafe.Pointer(e.Native()))
 
 	_cret = C.gtk_search_entry_get_key_capture_widget(_arg0)
 
 	var _widget *WidgetClass // out
 
-	_widget = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*WidgetClass)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WidgetClass)
 
 	return _widget
 }
@@ -197,8 +195,8 @@ func (e *SearchEntryClass) SetKeyCaptureWidget(widget Widget) {
 	var _arg0 *C.GtkSearchEntry // out
 	var _arg1 *C.GtkWidget      // out
 
-	_arg0 = (*C.GtkSearchEntry)(unsafe.Pointer((&e).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&widget).Native()))
+	_arg0 = (*C.GtkSearchEntry)(unsafe.Pointer(e.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.gtk_search_entry_set_key_capture_widget(_arg0, _arg1)
 }

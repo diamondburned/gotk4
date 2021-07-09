@@ -98,8 +98,7 @@ func NewVButtonBox() *VButtonBoxClass {
 
 	var _vButtonBox *VButtonBoxClass // out
 
-	_vButtonBox = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*VButtonBoxClass)
+	_vButtonBox = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*VButtonBoxClass)
 
 	return _vButtonBox
 }

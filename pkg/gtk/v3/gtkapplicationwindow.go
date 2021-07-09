@@ -197,14 +197,13 @@ func NewApplicationWindow(application Application) *ApplicationWindowClass {
 	var _arg1 *C.GtkApplication // out
 	var _cret *C.GtkWidget      // in
 
-	_arg1 = (*C.GtkApplication)(unsafe.Pointer((&application).Native()))
+	_arg1 = (*C.GtkApplication)(unsafe.Pointer(application.Native()))
 
 	_cret = C.gtk_application_window_new(_arg1)
 
 	var _applicationWindow *ApplicationWindowClass // out
 
-	_applicationWindow = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*ApplicationWindowClass)
+	_applicationWindow = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ApplicationWindowClass)
 
 	return _applicationWindow
 }
@@ -215,14 +214,13 @@ func (w *ApplicationWindowClass) HelpOverlay() *ShortcutsWindowClass {
 	var _arg0 *C.GtkApplicationWindow // out
 	var _cret *C.GtkShortcutsWindow   // in
 
-	_arg0 = (*C.GtkApplicationWindow)(unsafe.Pointer((&w).Native()))
+	_arg0 = (*C.GtkApplicationWindow)(unsafe.Pointer(w.Native()))
 
 	_cret = C.gtk_application_window_get_help_overlay(_arg0)
 
 	var _shortcutsWindow *ShortcutsWindowClass // out
 
-	_shortcutsWindow = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*ShortcutsWindowClass)
+	_shortcutsWindow = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ShortcutsWindowClass)
 
 	return _shortcutsWindow
 }
@@ -233,7 +231,7 @@ func (w *ApplicationWindowClass) ID() uint {
 	var _arg0 *C.GtkApplicationWindow // out
 	var _cret C.guint                 // in
 
-	_arg0 = (*C.GtkApplicationWindow)(unsafe.Pointer((&w).Native()))
+	_arg0 = (*C.GtkApplicationWindow)(unsafe.Pointer(w.Native()))
 
 	_cret = C.gtk_application_window_get_id(_arg0)
 
@@ -250,7 +248,7 @@ func (w *ApplicationWindowClass) ShowMenubar() bool {
 	var _arg0 *C.GtkApplicationWindow // out
 	var _cret C.gboolean              // in
 
-	_arg0 = (*C.GtkApplicationWindow)(unsafe.Pointer((&w).Native()))
+	_arg0 = (*C.GtkApplicationWindow)(unsafe.Pointer(w.Native()))
 
 	_cret = C.gtk_application_window_get_show_menubar(_arg0)
 
@@ -271,8 +269,8 @@ func (w *ApplicationWindowClass) SetHelpOverlay(helpOverlay ShortcutsWindow) {
 	var _arg0 *C.GtkApplicationWindow // out
 	var _arg1 *C.GtkShortcutsWindow   // out
 
-	_arg0 = (*C.GtkApplicationWindow)(unsafe.Pointer((&w).Native()))
-	_arg1 = (*C.GtkShortcutsWindow)(unsafe.Pointer((&helpOverlay).Native()))
+	_arg0 = (*C.GtkApplicationWindow)(unsafe.Pointer(w.Native()))
+	_arg1 = (*C.GtkShortcutsWindow)(unsafe.Pointer(helpOverlay.Native()))
 
 	C.gtk_application_window_set_help_overlay(_arg0, _arg1)
 }
@@ -283,7 +281,7 @@ func (w *ApplicationWindowClass) SetShowMenubar(showMenubar bool) {
 	var _arg0 *C.GtkApplicationWindow // out
 	var _arg1 C.gboolean              // out
 
-	_arg0 = (*C.GtkApplicationWindow)(unsafe.Pointer((&w).Native()))
+	_arg0 = (*C.GtkApplicationWindow)(unsafe.Pointer(w.Native()))
 	if showMenubar {
 		_arg1 = C.TRUE
 	}

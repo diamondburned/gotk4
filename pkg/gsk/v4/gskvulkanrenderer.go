@@ -57,8 +57,7 @@ func NewVulkanRenderer() *VulkanRendererClass {
 
 	var _vulkanRenderer *VulkanRendererClass // out
 
-	_vulkanRenderer = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*VulkanRendererClass)
+	_vulkanRenderer = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*VulkanRendererClass)
 
 	return _vulkanRenderer
 }

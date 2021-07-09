@@ -81,6 +81,19 @@ type Screen interface {
 	//
 	// Deprecated: since version 3.22.
 	MonitorAtWindow(window Window) int
+	// MonitorGeometry retrieves the Rectangle representing the size and
+	// position of the individual monitor within the entire screen area. The
+	// returned geometry is in ”application pixels”, not in ”device pixels” (see
+	// gdk_screen_get_monitor_scale_factor()).
+	//
+	// Monitor numbers start at 0. To obtain the number of monitors of @screen,
+	// use gdk_screen_get_n_monitors().
+	//
+	// Note that the size of the entire screen area can be retrieved via
+	// gdk_screen_get_width() and gdk_screen_get_height().
+	//
+	// Deprecated: since version 3.22.
+	MonitorGeometry(monitorNum int) Rectangle
 	// MonitorHeightMm gets the height in millimeters of the specified monitor.
 	//
 	// Deprecated: since version 3.22.
@@ -107,6 +120,24 @@ type Screen interface {
 	//
 	// Deprecated: since version 3.22.
 	MonitorWidthMm(monitorNum int) int
+	// MonitorWorkarea retrieves the Rectangle representing the size and
+	// position of the “work area” on a monitor within the entire screen area.
+	// The returned geometry is in ”application pixels”, not in ”device pixels”
+	// (see gdk_screen_get_monitor_scale_factor()).
+	//
+	// The work area should be considered when positioning menus and similar
+	// popups, to avoid placing them below panels, docks or other desktop
+	// components.
+	//
+	// Note that not all backends may have a concept of workarea. This function
+	// will return the monitor geometry if a workarea is not available, or does
+	// not apply.
+	//
+	// Monitor numbers start at 0. To obtain the number of monitors of @screen,
+	// use gdk_screen_get_n_monitors().
+	//
+	// Deprecated: since version 3.22.
+	MonitorWorkarea(monitorNum int) Rectangle
 	// NMonitors returns the number of monitors which @screen consists of.
 	//
 	// Deprecated: since version 3.22.
@@ -149,7 +180,7 @@ type Screen interface {
 	// the Screen @screen.
 	//
 	// FIXME needs a list of valid settings here, or a link to more information.
-	Setting(name string, value externglib.Value) bool
+	Setting(name string, value *externglib.Value) bool
 	// SystemVisual: get the system’s default visual for @screen. This is the
 	// visual for the root window of the display. The return value should not be
 	// freed.
@@ -229,14 +260,13 @@ func (s *ScreenClass) ActiveWindow() *WindowClass {
 	var _arg0 *C.GdkScreen // out
 	var _cret *C.GdkWindow // in
 
-	_arg0 = (*C.GdkScreen)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gdk_screen_get_active_window(_arg0)
 
 	var _window *WindowClass // out
 
-	_window = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*WindowClass)
+	_window = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*WindowClass)
 
 	return _window
 }
@@ -246,14 +276,13 @@ func (s *ScreenClass) Display() *DisplayClass {
 	var _arg0 *C.GdkScreen  // out
 	var _cret *C.GdkDisplay // in
 
-	_arg0 = (*C.GdkScreen)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gdk_screen_get_display(_arg0)
 
 	var _display *DisplayClass // out
 
-	_display = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*DisplayClass)
+	_display = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*DisplayClass)
 
 	return _display
 }
@@ -264,7 +293,7 @@ func (s *ScreenClass) FontOptions() *cairo.FontOptions {
 	var _arg0 *C.GdkScreen            // out
 	var _cret *C.cairo_font_options_t // in
 
-	_arg0 = (*C.GdkScreen)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gdk_screen_get_font_options(_arg0)
 
@@ -284,7 +313,7 @@ func (s *ScreenClass) Height() int {
 	var _arg0 *C.GdkScreen // out
 	var _cret C.gint       // in
 
-	_arg0 = (*C.GdkScreen)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gdk_screen_get_height(_arg0)
 
@@ -306,7 +335,7 @@ func (s *ScreenClass) HeightMm() int {
 	var _arg0 *C.GdkScreen // out
 	var _cret C.gint       // in
 
-	_arg0 = (*C.GdkScreen)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gdk_screen_get_height_mm(_arg0)
 
@@ -327,7 +356,7 @@ func (s *ScreenClass) MonitorAtPoint(x int, y int) int {
 	var _arg2 C.gint       // out
 	var _cret C.gint       // in
 
-	_arg0 = (*C.GdkScreen)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
 	_arg1 = C.gint(x)
 	_arg2 = C.gint(y)
 
@@ -349,8 +378,8 @@ func (s *ScreenClass) MonitorAtWindow(window Window) int {
 	var _arg1 *C.GdkWindow // out
 	var _cret C.gint       // in
 
-	_arg0 = (*C.GdkScreen)(unsafe.Pointer((&s).Native()))
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer((&window).Native()))
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	_cret = C.gdk_screen_get_monitor_at_window(_arg0, _arg1)
 
@@ -361,6 +390,35 @@ func (s *ScreenClass) MonitorAtWindow(window Window) int {
 	return _gint
 }
 
+// MonitorGeometry retrieves the Rectangle representing the size and position of
+// the individual monitor within the entire screen area. The returned geometry
+// is in ”application pixels”, not in ”device pixels” (see
+// gdk_screen_get_monitor_scale_factor()).
+//
+// Monitor numbers start at 0. To obtain the number of monitors of @screen, use
+// gdk_screen_get_n_monitors().
+//
+// Note that the size of the entire screen area can be retrieved via
+// gdk_screen_get_width() and gdk_screen_get_height().
+//
+// Deprecated: since version 3.22.
+func (s *ScreenClass) MonitorGeometry(monitorNum int) Rectangle {
+	var _arg0 *C.GdkScreen   // out
+	var _arg1 C.gint         // out
+	var _arg2 C.GdkRectangle // in
+
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
+	_arg1 = C.gint(monitorNum)
+
+	C.gdk_screen_get_monitor_geometry(_arg0, _arg1, &_arg2)
+
+	var _dest Rectangle // out
+
+	_dest = *(*Rectangle)(unsafe.Pointer((&_arg2)))
+
+	return _dest
+}
+
 // MonitorHeightMm gets the height in millimeters of the specified monitor.
 //
 // Deprecated: since version 3.22.
@@ -369,7 +427,7 @@ func (s *ScreenClass) MonitorHeightMm(monitorNum int) int {
 	var _arg1 C.gint       // out
 	var _cret C.gint       // in
 
-	_arg0 = (*C.GdkScreen)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
 	_arg1 = C.gint(monitorNum)
 
 	_cret = C.gdk_screen_get_monitor_height_mm(_arg0, _arg1)
@@ -391,7 +449,7 @@ func (s *ScreenClass) MonitorPlugName(monitorNum int) string {
 	var _arg1 C.gint       // out
 	var _cret *C.gchar     // in
 
-	_arg0 = (*C.GdkScreen)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
 	_arg1 = C.gint(monitorNum)
 
 	_cret = C.gdk_screen_get_monitor_plug_name(_arg0, _arg1)
@@ -418,7 +476,7 @@ func (s *ScreenClass) MonitorScaleFactor(monitorNum int) int {
 	var _arg1 C.gint       // out
 	var _cret C.gint       // in
 
-	_arg0 = (*C.GdkScreen)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
 	_arg1 = C.gint(monitorNum)
 
 	_cret = C.gdk_screen_get_monitor_scale_factor(_arg0, _arg1)
@@ -439,7 +497,7 @@ func (s *ScreenClass) MonitorWidthMm(monitorNum int) int {
 	var _arg1 C.gint       // out
 	var _cret C.gint       // in
 
-	_arg0 = (*C.GdkScreen)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
 	_arg1 = C.gint(monitorNum)
 
 	_cret = C.gdk_screen_get_monitor_width_mm(_arg0, _arg1)
@@ -451,6 +509,39 @@ func (s *ScreenClass) MonitorWidthMm(monitorNum int) int {
 	return _gint
 }
 
+// MonitorWorkarea retrieves the Rectangle representing the size and position of
+// the “work area” on a monitor within the entire screen area. The returned
+// geometry is in ”application pixels”, not in ”device pixels” (see
+// gdk_screen_get_monitor_scale_factor()).
+//
+// The work area should be considered when positioning menus and similar popups,
+// to avoid placing them below panels, docks or other desktop components.
+//
+// Note that not all backends may have a concept of workarea. This function will
+// return the monitor geometry if a workarea is not available, or does not
+// apply.
+//
+// Monitor numbers start at 0. To obtain the number of monitors of @screen, use
+// gdk_screen_get_n_monitors().
+//
+// Deprecated: since version 3.22.
+func (s *ScreenClass) MonitorWorkarea(monitorNum int) Rectangle {
+	var _arg0 *C.GdkScreen   // out
+	var _arg1 C.gint         // out
+	var _arg2 C.GdkRectangle // in
+
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
+	_arg1 = C.gint(monitorNum)
+
+	C.gdk_screen_get_monitor_workarea(_arg0, _arg1, &_arg2)
+
+	var _dest Rectangle // out
+
+	_dest = *(*Rectangle)(unsafe.Pointer((&_arg2)))
+
+	return _dest
+}
+
 // NMonitors returns the number of monitors which @screen consists of.
 //
 // Deprecated: since version 3.22.
@@ -458,7 +549,7 @@ func (s *ScreenClass) NMonitors() int {
 	var _arg0 *C.GdkScreen // out
 	var _cret C.gint       // in
 
-	_arg0 = (*C.GdkScreen)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gdk_screen_get_n_monitors(_arg0)
 
@@ -477,7 +568,7 @@ func (s *ScreenClass) Number() int {
 	var _arg0 *C.GdkScreen // out
 	var _cret C.gint       // in
 
-	_arg0 = (*C.GdkScreen)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gdk_screen_get_number(_arg0)
 
@@ -502,7 +593,7 @@ func (s *ScreenClass) PrimaryMonitor() int {
 	var _arg0 *C.GdkScreen // out
 	var _cret C.gint       // in
 
-	_arg0 = (*C.GdkScreen)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gdk_screen_get_primary_monitor(_arg0)
 
@@ -519,7 +610,7 @@ func (s *ScreenClass) Resolution() float64 {
 	var _arg0 *C.GdkScreen // out
 	var _cret C.gdouble    // in
 
-	_arg0 = (*C.GdkScreen)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gdk_screen_get_resolution(_arg0)
 
@@ -546,14 +637,13 @@ func (s *ScreenClass) RGBAVisual() *VisualClass {
 	var _arg0 *C.GdkScreen // out
 	var _cret *C.GdkVisual // in
 
-	_arg0 = (*C.GdkScreen)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gdk_screen_get_rgba_visual(_arg0)
 
 	var _visual *VisualClass // out
 
-	_visual = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*VisualClass)
+	_visual = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*VisualClass)
 
 	return _visual
 }
@@ -563,14 +653,13 @@ func (s *ScreenClass) RootWindow() *WindowClass {
 	var _arg0 *C.GdkScreen // out
 	var _cret *C.GdkWindow // in
 
-	_arg0 = (*C.GdkScreen)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gdk_screen_get_root_window(_arg0)
 
 	var _window *WindowClass // out
 
-	_window = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*WindowClass)
+	_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WindowClass)
 
 	return _window
 }
@@ -579,16 +668,16 @@ func (s *ScreenClass) RootWindow() *WindowClass {
 // Screen @screen.
 //
 // FIXME needs a list of valid settings here, or a link to more information.
-func (s *ScreenClass) Setting(name string, value externglib.Value) bool {
+func (s *ScreenClass) Setting(name string, value *externglib.Value) bool {
 	var _arg0 *C.GdkScreen // out
 	var _arg1 *C.gchar     // out
 	var _arg2 *C.GValue    // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GdkScreen)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GValue)(unsafe.Pointer(&(&value).GValue))
+	_arg2 = (*C.GValue)(unsafe.Pointer(&value.GValue))
 
 	_cret = C.gdk_screen_get_setting(_arg0, _arg1, _arg2)
 
@@ -607,14 +696,13 @@ func (s *ScreenClass) SystemVisual() *VisualClass {
 	var _arg0 *C.GdkScreen // out
 	var _cret *C.GdkVisual // in
 
-	_arg0 = (*C.GdkScreen)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gdk_screen_get_system_visual(_arg0)
 
 	var _visual *VisualClass // out
 
-	_visual = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*VisualClass)
+	_visual = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*VisualClass)
 
 	return _visual
 }
@@ -628,7 +716,7 @@ func (s *ScreenClass) Width() int {
 	var _arg0 *C.GdkScreen // out
 	var _cret C.gint       // in
 
-	_arg0 = (*C.GdkScreen)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gdk_screen_get_width(_arg0)
 
@@ -650,7 +738,7 @@ func (s *ScreenClass) WidthMm() int {
 	var _arg0 *C.GdkScreen // out
 	var _cret C.gint       // in
 
-	_arg0 = (*C.GdkScreen)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gdk_screen_get_width_mm(_arg0)
 
@@ -670,7 +758,7 @@ func (s *ScreenClass) IsComposited() bool {
 	var _arg0 *C.GdkScreen // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GdkScreen)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gdk_screen_is_composited(_arg0)
 
@@ -691,7 +779,7 @@ func (s *ScreenClass) MakeDisplayName() string {
 	var _arg0 *C.GdkScreen // out
 	var _cret *C.gchar     // in
 
-	_arg0 = (*C.GdkScreen)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gdk_screen_make_display_name(_arg0)
 
@@ -711,7 +799,7 @@ func (s *ScreenClass) SetFontOptions(options *cairo.FontOptions) {
 	var _arg0 *C.GdkScreen            // out
 	var _arg1 *C.cairo_font_options_t // out
 
-	_arg0 = (*C.GdkScreen)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.cairo_font_options_t)(unsafe.Pointer(options))
 
 	C.gdk_screen_set_font_options(_arg0, _arg1)
@@ -725,7 +813,7 @@ func (s *ScreenClass) SetResolution(dpi float64) {
 	var _arg0 *C.GdkScreen // out
 	var _arg1 C.gdouble    // out
 
-	_arg0 = (*C.GdkScreen)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
 	_arg1 = C.gdouble(dpi)
 
 	C.gdk_screen_set_resolution(_arg0, _arg1)

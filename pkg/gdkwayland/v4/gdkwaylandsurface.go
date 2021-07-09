@@ -36,8 +36,7 @@ func gotk4_WaylandToplevelExported(arg0 *C.GdkToplevel, arg1 *C.char, arg2 C.gpo
 	var handle string                  // out
 	var userData interface{}           // out
 
-	toplevel = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(arg0))).(*WaylandToplevelClass)
+	toplevel = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*WaylandToplevelClass)
 	handle = C.GoString(arg1)
 	userData = box.Get(uintptr(arg2))
 

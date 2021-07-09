@@ -165,8 +165,7 @@ func NewPixbufLoader() *PixbufLoaderClass {
 
 	var _pixbufLoader *PixbufLoaderClass // out
 
-	_pixbufLoader = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*PixbufLoaderClass)
+	_pixbufLoader = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*PixbufLoaderClass)
 
 	return _pixbufLoader
 }
@@ -197,8 +196,7 @@ func NewPixbufLoaderWithMIMEType(mimeType string) (*PixbufLoaderClass, error) {
 	var _pixbufLoader *PixbufLoaderClass // out
 	var _goerr error                     // out
 
-	_pixbufLoader = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*PixbufLoaderClass)
+	_pixbufLoader = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*PixbufLoaderClass)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _pixbufLoader, _goerr
@@ -230,8 +228,7 @@ func NewPixbufLoaderWithType(imageType string) (*PixbufLoaderClass, error) {
 	var _pixbufLoader *PixbufLoaderClass // out
 	var _goerr error                     // out
 
-	_pixbufLoader = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*PixbufLoaderClass)
+	_pixbufLoader = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*PixbufLoaderClass)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _pixbufLoader, _goerr
@@ -256,7 +253,7 @@ func (l *PixbufLoaderClass) Close() error {
 	var _arg0 *C.GdkPixbufLoader // out
 	var _cerr *C.GError          // in
 
-	_arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer((&l).Native()))
+	_arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer(l.Native()))
 
 	C.gdk_pixbuf_loader_close(_arg0, &_cerr)
 
@@ -280,14 +277,13 @@ func (l *PixbufLoaderClass) Animation() *PixbufAnimationClass {
 	var _arg0 *C.GdkPixbufLoader    // out
 	var _cret *C.GdkPixbufAnimation // in
 
-	_arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer((&l).Native()))
+	_arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer(l.Native()))
 
 	_cret = C.gdk_pixbuf_loader_get_animation(_arg0)
 
 	var _pixbufAnimation *PixbufAnimationClass // out
 
-	_pixbufAnimation = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*PixbufAnimationClass)
+	_pixbufAnimation = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*PixbufAnimationClass)
 
 	return _pixbufAnimation
 }
@@ -311,14 +307,13 @@ func (l *PixbufLoaderClass) Pixbuf() *PixbufClass {
 	var _arg0 *C.GdkPixbufLoader // out
 	var _cret *C.GdkPixbuf       // in
 
-	_arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer((&l).Native()))
+	_arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer(l.Native()))
 
 	_cret = C.gdk_pixbuf_loader_get_pixbuf(_arg0)
 
 	var _pixbuf *PixbufClass // out
 
-	_pixbuf = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*PixbufClass)
+	_pixbuf = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*PixbufClass)
 
 	return _pixbuf
 }
@@ -336,7 +331,7 @@ func (l *PixbufLoaderClass) SetSize(width int, height int) {
 	var _arg1 C.int              // out
 	var _arg2 C.int              // out
 
-	_arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer((&l).Native()))
+	_arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer(l.Native()))
 	_arg1 = C.int(width)
 	_arg2 = C.int(height)
 
@@ -350,7 +345,7 @@ func (l *PixbufLoaderClass) Write(buf []byte) error {
 	var _arg2 C.gsize
 	var _cerr *C.GError // in
 
-	_arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer((&l).Native()))
+	_arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer(l.Native()))
 	_arg2 = C.gsize(len(buf))
 	_arg1 = (*C.guchar)(unsafe.Pointer(&buf[0]))
 

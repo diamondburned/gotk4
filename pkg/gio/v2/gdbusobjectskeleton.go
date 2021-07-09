@@ -107,8 +107,7 @@ func NewDBusObjectSkeleton(objectPath string) *DBusObjectSkeletonClass {
 
 	var _dBusObjectSkeleton *DBusObjectSkeletonClass // out
 
-	_dBusObjectSkeleton = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*DBusObjectSkeletonClass)
+	_dBusObjectSkeleton = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*DBusObjectSkeletonClass)
 
 	return _dBusObjectSkeleton
 }
@@ -124,8 +123,8 @@ func (o *DBusObjectSkeletonClass) AddInterface(interface_ DBusInterfaceSkeleton)
 	var _arg0 *C.GDBusObjectSkeleton    // out
 	var _arg1 *C.GDBusInterfaceSkeleton // out
 
-	_arg0 = (*C.GDBusObjectSkeleton)(unsafe.Pointer((&o).Native()))
-	_arg1 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer((&interface_).Native()))
+	_arg0 = (*C.GDBusObjectSkeleton)(unsafe.Pointer(o.Native()))
+	_arg1 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(interface_.Native()))
 
 	C.g_dbus_object_skeleton_add_interface(_arg0, _arg1)
 }
@@ -135,7 +134,7 @@ func (o *DBusObjectSkeletonClass) AddInterface(interface_ DBusInterfaceSkeleton)
 func (o *DBusObjectSkeletonClass) Flush() {
 	var _arg0 *C.GDBusObjectSkeleton // out
 
-	_arg0 = (*C.GDBusObjectSkeleton)(unsafe.Pointer((&o).Native()))
+	_arg0 = (*C.GDBusObjectSkeleton)(unsafe.Pointer(o.Native()))
 
 	C.g_dbus_object_skeleton_flush(_arg0)
 }
@@ -145,8 +144,8 @@ func (o *DBusObjectSkeletonClass) RemoveInterface(interface_ DBusInterfaceSkelet
 	var _arg0 *C.GDBusObjectSkeleton    // out
 	var _arg1 *C.GDBusInterfaceSkeleton // out
 
-	_arg0 = (*C.GDBusObjectSkeleton)(unsafe.Pointer((&o).Native()))
-	_arg1 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer((&interface_).Native()))
+	_arg0 = (*C.GDBusObjectSkeleton)(unsafe.Pointer(o.Native()))
+	_arg1 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(interface_.Native()))
 
 	C.g_dbus_object_skeleton_remove_interface(_arg0, _arg1)
 }
@@ -160,7 +159,7 @@ func (o *DBusObjectSkeletonClass) RemoveInterfaceByName(interfaceName string) {
 	var _arg0 *C.GDBusObjectSkeleton // out
 	var _arg1 *C.gchar               // out
 
-	_arg0 = (*C.GDBusObjectSkeleton)(unsafe.Pointer((&o).Native()))
+	_arg0 = (*C.GDBusObjectSkeleton)(unsafe.Pointer(o.Native()))
 	_arg1 = (*C.gchar)(C.CString(interfaceName))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -172,7 +171,7 @@ func (o *DBusObjectSkeletonClass) SetObjectPath(objectPath string) {
 	var _arg0 *C.GDBusObjectSkeleton // out
 	var _arg1 *C.gchar               // out
 
-	_arg0 = (*C.GDBusObjectSkeleton)(unsafe.Pointer((&o).Native()))
+	_arg0 = (*C.GDBusObjectSkeleton)(unsafe.Pointer(o.Native()))
 	_arg1 = (*C.gchar)(C.CString(objectPath))
 	defer C.free(unsafe.Pointer(_arg1))
 

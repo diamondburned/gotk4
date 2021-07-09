@@ -144,16 +144,15 @@ func (e *SocketAddressEnumeratorClass) Next(cancellable Cancellable) (*SocketAdd
 	var _cret *C.GSocketAddress           // in
 	var _cerr *C.GError                   // in
 
-	_arg0 = (*C.GSocketAddressEnumerator)(unsafe.Pointer((&e).Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer((&cancellable).Native()))
+	_arg0 = (*C.GSocketAddressEnumerator)(unsafe.Pointer(e.Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_socket_address_enumerator_next(_arg0, _arg1, &_cerr)
 
 	var _socketAddress *SocketAddressClass // out
 	var _goerr error                       // out
 
-	_socketAddress = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*SocketAddressClass)
+	_socketAddress = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*SocketAddressClass)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _socketAddress, _goerr
@@ -171,8 +170,8 @@ func (e *SocketAddressEnumeratorClass) NextAsync(cancellable Cancellable, callba
 	var _arg2 C.GAsyncReadyCallback       // out
 	var _arg3 C.gpointer
 
-	_arg0 = (*C.GSocketAddressEnumerator)(unsafe.Pointer((&e).Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer((&cancellable).Native()))
+	_arg0 = (*C.GSocketAddressEnumerator)(unsafe.Pointer(e.Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg3 = C.gpointer(box.Assign(callback))
 
@@ -188,16 +187,15 @@ func (e *SocketAddressEnumeratorClass) NextFinish(result AsyncResult) (*SocketAd
 	var _cret *C.GSocketAddress           // in
 	var _cerr *C.GError                   // in
 
-	_arg0 = (*C.GSocketAddressEnumerator)(unsafe.Pointer((&e).Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((&result).Native()))
+	_arg0 = (*C.GSocketAddressEnumerator)(unsafe.Pointer(e.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_socket_address_enumerator_next_finish(_arg0, _arg1, &_cerr)
 
 	var _socketAddress *SocketAddressClass // out
 	var _goerr error                       // out
 
-	_socketAddress = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*SocketAddressClass)
+	_socketAddress = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*SocketAddressClass)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _socketAddress, _goerr

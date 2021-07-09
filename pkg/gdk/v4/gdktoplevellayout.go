@@ -145,8 +145,7 @@ func (l *ToplevelLayout) FullscreenMonitor() *MonitorClass {
 
 	var _monitor *MonitorClass // out
 
-	_monitor = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*MonitorClass)
+	_monitor = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*MonitorClass)
 
 	return _monitor
 }
@@ -226,7 +225,7 @@ func (l *ToplevelLayout) SetFullscreen(fullscreen bool, monitor Monitor) {
 	if fullscreen {
 		_arg1 = C.TRUE
 	}
-	_arg2 = (*C.GdkMonitor)(unsafe.Pointer((&monitor).Native()))
+	_arg2 = (*C.GdkMonitor)(unsafe.Pointer(monitor.Native()))
 
 	C.gdk_toplevel_layout_set_fullscreen(_arg0, _arg1, _arg2)
 }

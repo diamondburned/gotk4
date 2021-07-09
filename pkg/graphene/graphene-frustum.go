@@ -112,6 +112,22 @@ func (f *Frustum) free() {
 	C.graphene_frustum_free(_arg0)
 }
 
+// Planes retrieves the planes that define the given #graphene_frustum_t.
+func (f *Frustum) Planes() [6]Plane {
+	var _arg0 *C.graphene_frustum_t // out
+	var _arg1 [6]C.graphene_plane_t
+
+	_arg0 = (*C.graphene_frustum_t)(unsafe.Pointer(f))
+
+	C.graphene_frustum_get_planes(_arg0, &_arg1[0])
+
+	var _planes [6]Plane
+
+	_planes = *(*[6]Plane)(unsafe.Pointer(&_arg1))
+
+	return _planes
+}
+
 // Init initializes the given #graphene_frustum_t using the provided clipping
 // planes.
 func (f *Frustum) Init(p0 *Plane, p1 *Plane, p2 *Plane, p3 *Plane, p4 *Plane, p5 *Plane) *Frustum {

@@ -78,8 +78,7 @@ func NewUnixCredentialsMessage() *UnixCredentialsMessageClass {
 
 	var _unixCredentialsMessage *UnixCredentialsMessageClass // out
 
-	_unixCredentialsMessage = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*UnixCredentialsMessageClass)
+	_unixCredentialsMessage = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*UnixCredentialsMessageClass)
 
 	return _unixCredentialsMessage
 }
@@ -90,14 +89,13 @@ func NewUnixCredentialsMessageWithCredentials(credentials Credentials) *UnixCred
 	var _arg1 *C.GCredentials          // out
 	var _cret *C.GSocketControlMessage // in
 
-	_arg1 = (*C.GCredentials)(unsafe.Pointer((&credentials).Native()))
+	_arg1 = (*C.GCredentials)(unsafe.Pointer(credentials.Native()))
 
 	_cret = C.g_unix_credentials_message_new_with_credentials(_arg1)
 
 	var _unixCredentialsMessage *UnixCredentialsMessageClass // out
 
-	_unixCredentialsMessage = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*UnixCredentialsMessageClass)
+	_unixCredentialsMessage = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*UnixCredentialsMessageClass)
 
 	return _unixCredentialsMessage
 }
@@ -107,14 +105,13 @@ func (m *UnixCredentialsMessageClass) Credentials() *CredentialsClass {
 	var _arg0 *C.GUnixCredentialsMessage // out
 	var _cret *C.GCredentials            // in
 
-	_arg0 = (*C.GUnixCredentialsMessage)(unsafe.Pointer((&m).Native()))
+	_arg0 = (*C.GUnixCredentialsMessage)(unsafe.Pointer(m.Native()))
 
 	_cret = C.g_unix_credentials_message_get_credentials(_arg0)
 
 	var _credentials *CredentialsClass // out
 
-	_credentials = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*CredentialsClass)
+	_credentials = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*CredentialsClass)
 
 	return _credentials
 }

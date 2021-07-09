@@ -31,6 +31,8 @@ func init() {
 // yet, so the interface currently has no use.
 type ColorChooserOverrider interface {
 	ColorActivated(color *gdk.RGBA)
+	// RGBA gets the currently-selected color.
+	RGBA() gdk.RGBA
 	// SetRGBA sets the color.
 	SetRGBA(color *gdk.RGBA)
 }
@@ -44,6 +46,8 @@ type ColorChooserOverrider interface {
 type ColorChooser interface {
 	gextras.Objector
 
+	// RGBA gets the currently-selected color.
+	RGBA() gdk.RGBA
 	// UseAlpha returns whether the color chooser shows the alpha channel.
 	UseAlpha() bool
 	// SetRGBA sets the color.
@@ -72,12 +76,28 @@ func marshalColorChooser(p uintptr) (interface{}, error) {
 	return wrapColorChooser(obj), nil
 }
 
+// RGBA gets the currently-selected color.
+func (c *ColorChooserInterface) RGBA() gdk.RGBA {
+	var _arg0 *C.GtkColorChooser // out
+	var _arg1 C.GdkRGBA          // in
+
+	_arg0 = (*C.GtkColorChooser)(unsafe.Pointer(c.Native()))
+
+	C.gtk_color_chooser_get_rgba(_arg0, &_arg1)
+
+	var _color gdk.RGBA // out
+
+	_color = *(*gdk.RGBA)(unsafe.Pointer((&_arg1)))
+
+	return _color
+}
+
 // UseAlpha returns whether the color chooser shows the alpha channel.
 func (c *ColorChooserInterface) UseAlpha() bool {
 	var _arg0 *C.GtkColorChooser // out
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.GtkColorChooser)(unsafe.Pointer((&c).Native()))
+	_arg0 = (*C.GtkColorChooser)(unsafe.Pointer(c.Native()))
 
 	_cret = C.gtk_color_chooser_get_use_alpha(_arg0)
 
@@ -95,7 +115,7 @@ func (c *ColorChooserInterface) SetRGBA(color *gdk.RGBA) {
 	var _arg0 *C.GtkColorChooser // out
 	var _arg1 *C.GdkRGBA         // out
 
-	_arg0 = (*C.GtkColorChooser)(unsafe.Pointer((&c).Native()))
+	_arg0 = (*C.GtkColorChooser)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GdkRGBA)(unsafe.Pointer(color))
 
 	C.gtk_color_chooser_set_rgba(_arg0, _arg1)
@@ -107,7 +127,7 @@ func (c *ColorChooserInterface) SetUseAlpha(useAlpha bool) {
 	var _arg0 *C.GtkColorChooser // out
 	var _arg1 C.gboolean         // out
 
-	_arg0 = (*C.GtkColorChooser)(unsafe.Pointer((&c).Native()))
+	_arg0 = (*C.GtkColorChooser)(unsafe.Pointer(c.Native()))
 	if useAlpha {
 		_arg1 = C.TRUE
 	}

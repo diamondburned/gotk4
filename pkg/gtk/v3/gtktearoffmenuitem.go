@@ -126,8 +126,7 @@ func NewTearoffMenuItem() *TearoffMenuItemClass {
 
 	var _tearoffMenuItem *TearoffMenuItemClass // out
 
-	_tearoffMenuItem = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*TearoffMenuItemClass)
+	_tearoffMenuItem = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*TearoffMenuItemClass)
 
 	return _tearoffMenuItem
 }

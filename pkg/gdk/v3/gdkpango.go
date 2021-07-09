@@ -36,8 +36,7 @@ func PangoContextGet() *pango.ContextClass {
 
 	var _context *pango.ContextClass // out
 
-	_context = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*pango.ContextClass)
+	_context = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*pango.ContextClass)
 
 	return _context
 }
@@ -59,14 +58,13 @@ func PangoContextGetForDisplay(display Display) *pango.ContextClass {
 	var _arg1 *C.GdkDisplay   // out
 	var _cret *C.PangoContext // in
 
-	_arg1 = (*C.GdkDisplay)(unsafe.Pointer((&display).Native()))
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	_cret = C.gdk_pango_context_get_for_display(_arg1)
 
 	var _context *pango.ContextClass // out
 
-	_context = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*pango.ContextClass)
+	_context = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*pango.ContextClass)
 
 	return _context
 }
@@ -88,14 +86,13 @@ func PangoContextGetForScreen(screen Screen) *pango.ContextClass {
 	var _arg1 *C.GdkScreen    // out
 	var _cret *C.PangoContext // in
 
-	_arg1 = (*C.GdkScreen)(unsafe.Pointer((&screen).Native()))
+	_arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
 
 	_cret = C.gdk_pango_context_get_for_screen(_arg1)
 
 	var _context *pango.ContextClass // out
 
-	_context = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*pango.ContextClass)
+	_context = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*pango.ContextClass)
 
 	return _context
 }

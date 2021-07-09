@@ -105,7 +105,7 @@ func (p *TLSPasswordClass) Description() string {
 	var _arg0 *C.GTlsPassword // out
 	var _cret *C.gchar        // in
 
-	_arg0 = (*C.GTlsPassword)(unsafe.Pointer((&p).Native()))
+	_arg0 = (*C.GTlsPassword)(unsafe.Pointer(p.Native()))
 
 	_cret = C.g_tls_password_get_description(_arg0)
 
@@ -121,7 +121,7 @@ func (p *TLSPasswordClass) Flags() TLSPasswordFlags {
 	var _arg0 *C.GTlsPassword     // out
 	var _cret C.GTlsPasswordFlags // in
 
-	_arg0 = (*C.GTlsPassword)(unsafe.Pointer((&p).Native()))
+	_arg0 = (*C.GTlsPassword)(unsafe.Pointer(p.Native()))
 
 	_cret = C.g_tls_password_get_flags(_arg0)
 
@@ -141,7 +141,7 @@ func (p *TLSPasswordClass) Value(length *uint) *byte {
 	var _arg1 *C.gsize        // out
 	var _cret *C.guchar       // in
 
-	_arg0 = (*C.GTlsPassword)(unsafe.Pointer((&p).Native()))
+	_arg0 = (*C.GTlsPassword)(unsafe.Pointer(p.Native()))
 	_arg1 = (*C.gsize)(unsafe.Pointer(length))
 
 	_cret = C.g_tls_password_get_value(_arg0, _arg1)
@@ -160,7 +160,7 @@ func (p *TLSPasswordClass) Warning() string {
 	var _arg0 *C.GTlsPassword // out
 	var _cret *C.gchar        // in
 
-	_arg0 = (*C.GTlsPassword)(unsafe.Pointer((&p).Native()))
+	_arg0 = (*C.GTlsPassword)(unsafe.Pointer(p.Native()))
 
 	_cret = C.g_tls_password_get_warning(_arg0)
 
@@ -177,7 +177,7 @@ func (p *TLSPasswordClass) SetDescription(description string) {
 	var _arg0 *C.GTlsPassword // out
 	var _arg1 *C.gchar        // out
 
-	_arg0 = (*C.GTlsPassword)(unsafe.Pointer((&p).Native()))
+	_arg0 = (*C.GTlsPassword)(unsafe.Pointer(p.Native()))
 	_arg1 = (*C.gchar)(C.CString(description))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -196,7 +196,7 @@ func (p *TLSPasswordClass) SetValue(value []byte) {
 	var _arg1 *C.guchar
 	var _arg2 C.gssize
 
-	_arg0 = (*C.GTlsPassword)(unsafe.Pointer((&p).Native()))
+	_arg0 = (*C.GTlsPassword)(unsafe.Pointer(p.Native()))
 	_arg2 = C.gssize(len(value))
 	_arg1 = (*C.guchar)(unsafe.Pointer(&value[0]))
 
@@ -210,7 +210,7 @@ func (p *TLSPasswordClass) SetWarning(warning string) {
 	var _arg0 *C.GTlsPassword // out
 	var _arg1 *C.gchar        // out
 
-	_arg0 = (*C.GTlsPassword)(unsafe.Pointer((&p).Native()))
+	_arg0 = (*C.GTlsPassword)(unsafe.Pointer(p.Native()))
 	_arg1 = (*C.gchar)(C.CString(warning))
 	defer C.free(unsafe.Pointer(_arg1))
 

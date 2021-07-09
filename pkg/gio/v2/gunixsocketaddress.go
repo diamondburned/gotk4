@@ -112,8 +112,7 @@ func NewUnixSocketAddress(path string) *UnixSocketAddressClass {
 
 	var _unixSocketAddress *UnixSocketAddressClass // out
 
-	_unixSocketAddress = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*UnixSocketAddressClass)
+	_unixSocketAddress = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*UnixSocketAddressClass)
 
 	return _unixSocketAddress
 }
@@ -134,8 +133,7 @@ func NewUnixSocketAddressAbstract(path []byte) *UnixSocketAddressClass {
 
 	var _unixSocketAddress *UnixSocketAddressClass // out
 
-	_unixSocketAddress = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*UnixSocketAddressClass)
+	_unixSocketAddress = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*UnixSocketAddressClass)
 
 	return _unixSocketAddress
 }
@@ -145,7 +143,7 @@ func (a *UnixSocketAddressClass) AddressType() UnixSocketAddressType {
 	var _arg0 *C.GUnixSocketAddress    // out
 	var _cret C.GUnixSocketAddressType // in
 
-	_arg0 = (*C.GUnixSocketAddress)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.GUnixSocketAddress)(unsafe.Pointer(a.Native()))
 
 	_cret = C.g_unix_socket_address_get_address_type(_arg0)
 
@@ -163,7 +161,7 @@ func (a *UnixSocketAddressClass) IsAbstract() bool {
 	var _arg0 *C.GUnixSocketAddress // out
 	var _cret C.gboolean            // in
 
-	_arg0 = (*C.GUnixSocketAddress)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.GUnixSocketAddress)(unsafe.Pointer(a.Native()))
 
 	_cret = C.g_unix_socket_address_get_is_abstract(_arg0)
 
@@ -185,7 +183,7 @@ func (a *UnixSocketAddressClass) Path() string {
 	var _arg0 *C.GUnixSocketAddress // out
 	var _cret *C.char               // in
 
-	_arg0 = (*C.GUnixSocketAddress)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.GUnixSocketAddress)(unsafe.Pointer(a.Native()))
 
 	_cret = C.g_unix_socket_address_get_path(_arg0)
 
@@ -203,7 +201,7 @@ func (a *UnixSocketAddressClass) PathLen() uint {
 	var _arg0 *C.GUnixSocketAddress // out
 	var _cret C.gsize               // in
 
-	_arg0 = (*C.GUnixSocketAddress)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.GUnixSocketAddress)(unsafe.Pointer(a.Native()))
 
 	_cret = C.g_unix_socket_address_get_path_len(_arg0)
 

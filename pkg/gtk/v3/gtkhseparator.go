@@ -93,8 +93,7 @@ func NewHSeparator() *HSeparatorClass {
 
 	var _hSeparator *HSeparatorClass // out
 
-	_hSeparator = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*HSeparatorClass)
+	_hSeparator = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*HSeparatorClass)
 
 	return _hSeparator
 }

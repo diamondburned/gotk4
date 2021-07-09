@@ -140,8 +140,7 @@ func ContentTypeGetIcon(typ string) *IconInterface {
 
 	var _icon *IconInterface // out
 
-	_icon = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*IconInterface)
+	_icon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*IconInterface)
 
 	return _icon
 }
@@ -203,8 +202,7 @@ func ContentTypeGetSymbolicIcon(typ string) *IconInterface {
 
 	var _icon *IconInterface // out
 
-	_icon = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*IconInterface)
+	_icon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*IconInterface)
 
 	return _icon
 }
@@ -255,7 +253,7 @@ func ContentTypeGuessForTree(root File) []string {
 	var _arg1 *C.GFile // out
 	var _cret **C.gchar
 
-	_arg1 = (*C.GFile)(unsafe.Pointer((&root).Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer(root.Native()))
 
 	_cret = C.g_content_type_guess_for_tree(_arg1)
 

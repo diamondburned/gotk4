@@ -61,8 +61,7 @@ func NewNoOpObjectFactory() *NoOpObjectFactoryClass {
 
 	var _noOpObjectFactory *NoOpObjectFactoryClass // out
 
-	_noOpObjectFactory = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*NoOpObjectFactoryClass)
+	_noOpObjectFactory = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*NoOpObjectFactoryClass)
 
 	return _noOpObjectFactory
 }

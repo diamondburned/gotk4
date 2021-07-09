@@ -26,7 +26,11 @@ func init() {
 type X11Monitor interface {
 	gextras.Objector
 
-	privateX11MonitorClass()
+	// Workarea retrieves the size and position of the “work area” on a monitor
+	// within the display coordinate space. The returned geometry is in
+	// ”application pixels”, not in ”device pixels” (see
+	// gdk_monitor_get_scale_factor()).
+	Workarea() gdk.Rectangle
 }
 
 // X11MonitorClass implements the X11Monitor interface.
@@ -50,4 +54,20 @@ func marshalX11Monitor(p uintptr) (interface{}, error) {
 	return wrapX11Monitor(obj), nil
 }
 
-func (*X11MonitorClass) privateX11MonitorClass() {}
+// Workarea retrieves the size and position of the “work area” on a monitor
+// within the display coordinate space. The returned geometry is in ”application
+// pixels”, not in ”device pixels” (see gdk_monitor_get_scale_factor()).
+func (m *X11MonitorClass) Workarea() gdk.Rectangle {
+	var _arg0 *C.GdkMonitor  // out
+	var _arg1 C.GdkRectangle // in
+
+	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
+
+	C.gdk_x11_monitor_get_workarea(_arg0, &_arg1)
+
+	var _workarea gdk.Rectangle // out
+
+	_workarea = *(*gdk.Rectangle)(unsafe.Pointer((&_arg1)))
+
+	return _workarea
+}

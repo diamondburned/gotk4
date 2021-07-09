@@ -372,6 +372,36 @@ func (c *MainContext) AddPoll(fd *PollFD, priority int) {
 	C.g_main_context_add_poll(_arg0, _arg1, _arg2)
 }
 
+// Check passes the results of polling back to the main loop. You should be
+// careful to pass @fds and its length @n_fds as received from
+// g_main_context_query(), as this functions relies on assumptions on how @fds
+// is filled.
+//
+// You must have successfully acquired the context with g_main_context_acquire()
+// before you may call this function.
+func (c *MainContext) Check(maxPriority int, fds []PollFD) bool {
+	var _arg0 *C.GMainContext // out
+	var _arg1 C.gint          // out
+	var _arg2 *C.GPollFD
+	var _arg3 C.gint
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.GMainContext)(unsafe.Pointer(c))
+	_arg1 = C.gint(maxPriority)
+	_arg3 = C.gint(len(fds))
+	_arg2 = (*C.GPollFD)(unsafe.Pointer(&fds[0]))
+
+	_cret = C.g_main_context_check(_arg0, _arg1, _arg2, _arg3)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
 // Dispatch dispatches all pending sources.
 //
 // You must have successfully acquired the context with g_main_context_acquire()

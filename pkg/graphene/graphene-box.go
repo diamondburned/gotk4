@@ -121,6 +121,64 @@ func (a *Box) Equal(b *Box) bool {
 	return _ok
 }
 
+// Expand expands the dimensions of @box to include the coordinates at @point.
+func (b *Box) Expand(point *Point3D) Box {
+	var _arg0 *C.graphene_box_t     // out
+	var _arg1 *C.graphene_point3d_t // out
+	var _arg2 C.graphene_box_t      // in
+
+	_arg0 = (*C.graphene_box_t)(unsafe.Pointer(b))
+	_arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(point))
+
+	C.graphene_box_expand(_arg0, _arg1, &_arg2)
+
+	var _res Box // out
+
+	_res = *(*Box)(unsafe.Pointer((&_arg2)))
+
+	return _res
+}
+
+// ExpandScalar expands the dimensions of @box by the given @scalar value.
+//
+// If @scalar is positive, the #graphene_box_t will grow; if @scalar is
+// negative, the #graphene_box_t will shrink.
+func (b *Box) ExpandScalar(scalar float32) Box {
+	var _arg0 *C.graphene_box_t // out
+	var _arg1 C.float           // out
+	var _arg2 C.graphene_box_t  // in
+
+	_arg0 = (*C.graphene_box_t)(unsafe.Pointer(b))
+	_arg1 = C.float(scalar)
+
+	C.graphene_box_expand_scalar(_arg0, _arg1, &_arg2)
+
+	var _res Box // out
+
+	_res = *(*Box)(unsafe.Pointer((&_arg2)))
+
+	return _res
+}
+
+// ExpandVec3 expands the dimensions of @box to include the coordinates of the
+// given vector.
+func (b *Box) ExpandVec3(vec *Vec3) Box {
+	var _arg0 *C.graphene_box_t  // out
+	var _arg1 *C.graphene_vec3_t // out
+	var _arg2 C.graphene_box_t   // in
+
+	_arg0 = (*C.graphene_box_t)(unsafe.Pointer(b))
+	_arg1 = (*C.graphene_vec3_t)(unsafe.Pointer(vec))
+
+	C.graphene_box_expand_vec3(_arg0, _arg1, &_arg2)
+
+	var _res Box // out
+
+	_res = *(*Box)(unsafe.Pointer((&_arg2)))
+
+	return _res
+}
+
 // Free frees the resources allocated by graphene_box_alloc().
 func (b *Box) free() {
 	var _arg0 *C.graphene_box_t // out
@@ -128,6 +186,39 @@ func (b *Box) free() {
 	_arg0 = (*C.graphene_box_t)(unsafe.Pointer(b))
 
 	C.graphene_box_free(_arg0)
+}
+
+// BoundingSphere computes the bounding #graphene_sphere_t capable of containing
+// the given #graphene_box_t.
+func (b *Box) BoundingSphere() Sphere {
+	var _arg0 *C.graphene_box_t   // out
+	var _arg1 C.graphene_sphere_t // in
+
+	_arg0 = (*C.graphene_box_t)(unsafe.Pointer(b))
+
+	C.graphene_box_get_bounding_sphere(_arg0, &_arg1)
+
+	var _sphere Sphere // out
+
+	_sphere = *(*Sphere)(unsafe.Pointer((&_arg1)))
+
+	return _sphere
+}
+
+// Center retrieves the coordinates of the center of a #graphene_box_t.
+func (b *Box) Center() Point3D {
+	var _arg0 *C.graphene_box_t    // out
+	var _arg1 C.graphene_point3d_t // in
+
+	_arg0 = (*C.graphene_box_t)(unsafe.Pointer(b))
+
+	C.graphene_box_get_center(_arg0, &_arg1)
+
+	var _center Point3D // out
+
+	_center = *(*Point3D)(unsafe.Pointer((&_arg1)))
+
+	return _center
 }
 
 // Depth retrieves the size of the @box on the Z axis.
@@ -160,6 +251,73 @@ func (b *Box) Height() float32 {
 	_gfloat = float32(_cret)
 
 	return _gfloat
+}
+
+// Max retrieves the coordinates of the maximum point of the given
+// #graphene_box_t.
+func (b *Box) Max() Point3D {
+	var _arg0 *C.graphene_box_t    // out
+	var _arg1 C.graphene_point3d_t // in
+
+	_arg0 = (*C.graphene_box_t)(unsafe.Pointer(b))
+
+	C.graphene_box_get_max(_arg0, &_arg1)
+
+	var _max Point3D // out
+
+	_max = *(*Point3D)(unsafe.Pointer((&_arg1)))
+
+	return _max
+}
+
+// Min retrieves the coordinates of the minimum point of the given
+// #graphene_box_t.
+func (b *Box) Min() Point3D {
+	var _arg0 *C.graphene_box_t    // out
+	var _arg1 C.graphene_point3d_t // in
+
+	_arg0 = (*C.graphene_box_t)(unsafe.Pointer(b))
+
+	C.graphene_box_get_min(_arg0, &_arg1)
+
+	var _min Point3D // out
+
+	_min = *(*Point3D)(unsafe.Pointer((&_arg1)))
+
+	return _min
+}
+
+// Size retrieves the size of the box on all three axes, and stores it into the
+// given @size vector.
+func (b *Box) Size() Vec3 {
+	var _arg0 *C.graphene_box_t // out
+	var _arg1 C.graphene_vec3_t // in
+
+	_arg0 = (*C.graphene_box_t)(unsafe.Pointer(b))
+
+	C.graphene_box_get_size(_arg0, &_arg1)
+
+	var _size Vec3 // out
+
+	_size = *(*Vec3)(unsafe.Pointer((&_arg1)))
+
+	return _size
+}
+
+// Vertices computes the vertices of the given #graphene_box_t.
+func (b *Box) Vertices() [8]Vec3 {
+	var _arg0 *C.graphene_box_t // out
+	var _arg1 [8]C.graphene_vec3_t
+
+	_arg0 = (*C.graphene_box_t)(unsafe.Pointer(b))
+
+	C.graphene_box_get_vertices(_arg0, &_arg1[0])
+
+	var _vertices [8]Vec3
+
+	_vertices = *(*[8]Vec3)(unsafe.Pointer(&_arg1))
+
+	return _vertices
 }
 
 // Width retrieves the size of the @box on the X axis.
@@ -217,6 +375,29 @@ func (b *Box) InitFromBox(src *Box) *Box {
 	return _ret
 }
 
+// InitFromPoints initializes the given #graphene_box_t with the given array of
+// vertices.
+//
+// If @n_points is 0, the returned box is initialized with graphene_box_empty().
+func (b *Box) InitFromPoints(points []Point3D) *Box {
+	var _arg0 *C.graphene_box_t // out
+	var _arg2 *C.graphene_point3d_t
+	var _arg1 C.uint
+	var _cret *C.graphene_box_t // in
+
+	_arg0 = (*C.graphene_box_t)(unsafe.Pointer(b))
+	_arg1 = C.uint(len(points))
+	_arg2 = (*C.graphene_point3d_t)(unsafe.Pointer(&points[0]))
+
+	_cret = C.graphene_box_init_from_points(_arg0, _arg1, _arg2)
+
+	var _ret *Box // out
+
+	_ret = (*Box)(unsafe.Pointer(_cret))
+
+	return _ret
+}
+
 // InitFromVec3 initializes the given #graphene_box_t with two vertices stored
 // inside #graphene_vec3_t.
 func (b *Box) InitFromVec3(min *Vec3, max *Vec3) *Box {
@@ -236,4 +417,72 @@ func (b *Box) InitFromVec3(min *Vec3, max *Vec3) *Box {
 	_ret = (*Box)(unsafe.Pointer(_cret))
 
 	return _ret
+}
+
+// InitFromVectors initializes the given #graphene_box_t with the given array of
+// vertices.
+//
+// If @n_vectors is 0, the returned box is initialized with
+// graphene_box_empty().
+func (b *Box) InitFromVectors(vectors []Vec3) *Box {
+	var _arg0 *C.graphene_box_t // out
+	var _arg2 *C.graphene_vec3_t
+	var _arg1 C.uint
+	var _cret *C.graphene_box_t // in
+
+	_arg0 = (*C.graphene_box_t)(unsafe.Pointer(b))
+	_arg1 = C.uint(len(vectors))
+	_arg2 = (*C.graphene_vec3_t)(unsafe.Pointer(&vectors[0]))
+
+	_cret = C.graphene_box_init_from_vectors(_arg0, _arg1, _arg2)
+
+	var _ret *Box // out
+
+	_ret = (*Box)(unsafe.Pointer(_cret))
+
+	return _ret
+}
+
+// Intersection intersects the two given #graphene_box_t.
+//
+// If the two boxes do not intersect, @res will contain a degenerate box
+// initialized with graphene_box_empty().
+func (a *Box) Intersection(b *Box) (Box, bool) {
+	var _arg0 *C.graphene_box_t // out
+	var _arg1 *C.graphene_box_t // out
+	var _arg2 C.graphene_box_t  // in
+	var _cret C._Bool           // in
+
+	_arg0 = (*C.graphene_box_t)(unsafe.Pointer(a))
+	_arg1 = (*C.graphene_box_t)(unsafe.Pointer(b))
+
+	_cret = C.graphene_box_intersection(_arg0, _arg1, &_arg2)
+
+	var _res Box // out
+	var _ok bool // out
+
+	_res = *(*Box)(unsafe.Pointer((&_arg2)))
+	if _cret {
+		_ok = true
+	}
+
+	return _res, _ok
+}
+
+// Union unions the two given #graphene_box_t.
+func (a *Box) Union(b *Box) Box {
+	var _arg0 *C.graphene_box_t // out
+	var _arg1 *C.graphene_box_t // out
+	var _arg2 C.graphene_box_t  // in
+
+	_arg0 = (*C.graphene_box_t)(unsafe.Pointer(a))
+	_arg1 = (*C.graphene_box_t)(unsafe.Pointer(b))
+
+	C.graphene_box_union(_arg0, _arg1, &_arg2)
+
+	var _res Box // out
+
+	_res = *(*Box)(unsafe.Pointer((&_arg2)))
+
+	return _res
 }

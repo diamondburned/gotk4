@@ -200,8 +200,7 @@ func NewPixbufAnimationFromFile(filename string) (*PixbufAnimationClass, error) 
 	var _pixbufAnimation *PixbufAnimationClass // out
 	var _goerr error                           // out
 
-	_pixbufAnimation = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*PixbufAnimationClass)
+	_pixbufAnimation = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*PixbufAnimationClass)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _pixbufAnimation, _goerr
@@ -225,8 +224,7 @@ func NewPixbufAnimationFromResource(resourcePath string) (*PixbufAnimationClass,
 	var _pixbufAnimation *PixbufAnimationClass // out
 	var _goerr error                           // out
 
-	_pixbufAnimation = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*PixbufAnimationClass)
+	_pixbufAnimation = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*PixbufAnimationClass)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _pixbufAnimation, _goerr
@@ -251,16 +249,15 @@ func NewPixbufAnimationFromStream(stream gio.InputStream, cancellable gio.Cancel
 	var _cret *C.GdkPixbufAnimation // in
 	var _cerr *C.GError             // in
 
-	_arg1 = (*C.GInputStream)(unsafe.Pointer((&stream).Native()))
-	_arg2 = (*C.GCancellable)(unsafe.Pointer((&cancellable).Native()))
+	_arg1 = (*C.GInputStream)(unsafe.Pointer(stream.Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.gdk_pixbuf_animation_new_from_stream(_arg1, _arg2, &_cerr)
 
 	var _pixbufAnimation *PixbufAnimationClass // out
 	var _goerr error                           // out
 
-	_pixbufAnimation = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*PixbufAnimationClass)
+	_pixbufAnimation = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*PixbufAnimationClass)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _pixbufAnimation, _goerr
@@ -271,7 +268,7 @@ func (a *PixbufAnimationClass) Height() int {
 	var _arg0 *C.GdkPixbufAnimation // out
 	var _cret C.int                 // in
 
-	_arg0 = (*C.GdkPixbufAnimation)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.GdkPixbufAnimation)(unsafe.Pointer(a.Native()))
 
 	_cret = C.gdk_pixbuf_animation_get_height(_arg0)
 
@@ -317,15 +314,14 @@ func (a *PixbufAnimationClass) Iter(startTime *glib.TimeVal) *PixbufAnimationIte
 	var _arg1 *C.GTimeVal               // out
 	var _cret *C.GdkPixbufAnimationIter // in
 
-	_arg0 = (*C.GdkPixbufAnimation)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.GdkPixbufAnimation)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.GTimeVal)(unsafe.Pointer(startTime))
 
 	_cret = C.gdk_pixbuf_animation_get_iter(_arg0, _arg1)
 
 	var _pixbufAnimationIter *PixbufAnimationIterClass // out
 
-	_pixbufAnimationIter = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*PixbufAnimationIterClass)
+	_pixbufAnimationIter = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*PixbufAnimationIterClass)
 
 	return _pixbufAnimationIter
 }
@@ -345,14 +341,13 @@ func (a *PixbufAnimationClass) StaticImage() *PixbufClass {
 	var _arg0 *C.GdkPixbufAnimation // out
 	var _cret *C.GdkPixbuf          // in
 
-	_arg0 = (*C.GdkPixbufAnimation)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.GdkPixbufAnimation)(unsafe.Pointer(a.Native()))
 
 	_cret = C.gdk_pixbuf_animation_get_static_image(_arg0)
 
 	var _pixbuf *PixbufClass // out
 
-	_pixbuf = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*PixbufClass)
+	_pixbuf = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*PixbufClass)
 
 	return _pixbuf
 }
@@ -362,7 +357,7 @@ func (a *PixbufAnimationClass) Width() int {
 	var _arg0 *C.GdkPixbufAnimation // out
 	var _cret C.int                 // in
 
-	_arg0 = (*C.GdkPixbufAnimation)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.GdkPixbufAnimation)(unsafe.Pointer(a.Native()))
 
 	_cret = C.gdk_pixbuf_animation_get_width(_arg0)
 
@@ -382,7 +377,7 @@ func (a *PixbufAnimationClass) IsStaticImage() bool {
 	var _arg0 *C.GdkPixbufAnimation // out
 	var _cret C.gboolean            // in
 
-	_arg0 = (*C.GdkPixbufAnimation)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.GdkPixbufAnimation)(unsafe.Pointer(a.Native()))
 
 	_cret = C.gdk_pixbuf_animation_is_static_image(_arg0)
 
@@ -560,7 +555,7 @@ func (i *PixbufAnimationIterClass) Advance(currentTime *glib.TimeVal) bool {
 	var _arg1 *C.GTimeVal               // out
 	var _cret C.gboolean                // in
 
-	_arg0 = (*C.GdkPixbufAnimationIter)(unsafe.Pointer((&i).Native()))
+	_arg0 = (*C.GdkPixbufAnimationIter)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.GTimeVal)(unsafe.Pointer(currentTime))
 
 	_cret = C.gdk_pixbuf_animation_iter_advance(_arg0, _arg1)
@@ -587,7 +582,7 @@ func (i *PixbufAnimationIterClass) DelayTime() int {
 	var _arg0 *C.GdkPixbufAnimationIter // out
 	var _cret C.int                     // in
 
-	_arg0 = (*C.GdkPixbufAnimationIter)(unsafe.Pointer((&i).Native()))
+	_arg0 = (*C.GdkPixbufAnimationIter)(unsafe.Pointer(i.Native()))
 
 	_cret = C.gdk_pixbuf_animation_iter_get_delay_time(_arg0)
 
@@ -617,14 +612,13 @@ func (i *PixbufAnimationIterClass) Pixbuf() *PixbufClass {
 	var _arg0 *C.GdkPixbufAnimationIter // out
 	var _cret *C.GdkPixbuf              // in
 
-	_arg0 = (*C.GdkPixbufAnimationIter)(unsafe.Pointer((&i).Native()))
+	_arg0 = (*C.GdkPixbufAnimationIter)(unsafe.Pointer(i.Native()))
 
 	_cret = C.gdk_pixbuf_animation_iter_get_pixbuf(_arg0)
 
 	var _pixbuf *PixbufClass // out
 
-	_pixbuf = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*PixbufClass)
+	_pixbuf = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*PixbufClass)
 
 	return _pixbuf
 }
@@ -639,7 +633,7 @@ func (i *PixbufAnimationIterClass) OnCurrentlyLoadingFrame() bool {
 	var _arg0 *C.GdkPixbufAnimationIter // out
 	var _cret C.gboolean                // in
 
-	_arg0 = (*C.GdkPixbufAnimationIter)(unsafe.Pointer((&i).Native()))
+	_arg0 = (*C.GdkPixbufAnimationIter)(unsafe.Pointer(i.Native()))
 
 	_cret = C.gdk_pixbuf_animation_iter_on_currently_loading_frame(_arg0)
 

@@ -275,7 +275,7 @@ type Container interface {
 	CheckResize()
 	// ChildGetProperty gets the value of a child property for @child and
 	// @container.
-	ChildGetProperty(child Widget, propertyName string, value externglib.Value)
+	ChildGetProperty(child Widget, propertyName string, value *externglib.Value)
 	// ChildNotify emits a Widget::child-notify signal for the [child
 	// property][child-properties] @child_property on the child.
 	//
@@ -284,7 +284,7 @@ type Container interface {
 	// Also see gtk_widget_child_notify().
 	ChildNotify(child Widget, childProperty string)
 	// ChildSetProperty sets a child property for @child and @container.
-	ChildSetProperty(child Widget, propertyName string, value externglib.Value)
+	ChildSetProperty(child Widget, propertyName string, value *externglib.Value)
 	// ChildType returns the type of the children supported by the container.
 	//
 	// Note that this may return G_TYPE_NONE to indicate that no more children
@@ -457,8 +457,8 @@ func (c *ContainerClass) Add(widget Widget) {
 	var _arg0 *C.GtkContainer // out
 	var _arg1 *C.GtkWidget    // out
 
-	_arg0 = (*C.GtkContainer)(unsafe.Pointer((&c).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&widget).Native()))
+	_arg0 = (*C.GtkContainer)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.gtk_container_add(_arg0, _arg1)
 }
@@ -466,24 +466,24 @@ func (c *ContainerClass) Add(widget Widget) {
 func (c *ContainerClass) CheckResize() {
 	var _arg0 *C.GtkContainer // out
 
-	_arg0 = (*C.GtkContainer)(unsafe.Pointer((&c).Native()))
+	_arg0 = (*C.GtkContainer)(unsafe.Pointer(c.Native()))
 
 	C.gtk_container_check_resize(_arg0)
 }
 
 // ChildGetProperty gets the value of a child property for @child and
 // @container.
-func (c *ContainerClass) ChildGetProperty(child Widget, propertyName string, value externglib.Value) {
+func (c *ContainerClass) ChildGetProperty(child Widget, propertyName string, value *externglib.Value) {
 	var _arg0 *C.GtkContainer // out
 	var _arg1 *C.GtkWidget    // out
 	var _arg2 *C.gchar        // out
 	var _arg3 *C.GValue       // out
 
-	_arg0 = (*C.GtkContainer)(unsafe.Pointer((&c).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&child).Native()))
+	_arg0 = (*C.GtkContainer)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 	_arg2 = (*C.gchar)(C.CString(propertyName))
 	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (*C.GValue)(unsafe.Pointer(&(&value).GValue))
+	_arg3 = (*C.GValue)(unsafe.Pointer(&value.GValue))
 
 	C.gtk_container_child_get_property(_arg0, _arg1, _arg2, _arg3)
 }
@@ -499,8 +499,8 @@ func (c *ContainerClass) ChildNotify(child Widget, childProperty string) {
 	var _arg1 *C.GtkWidget    // out
 	var _arg2 *C.gchar        // out
 
-	_arg0 = (*C.GtkContainer)(unsafe.Pointer((&c).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&child).Native()))
+	_arg0 = (*C.GtkContainer)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 	_arg2 = (*C.gchar)(C.CString(childProperty))
 	defer C.free(unsafe.Pointer(_arg2))
 
@@ -508,17 +508,17 @@ func (c *ContainerClass) ChildNotify(child Widget, childProperty string) {
 }
 
 // ChildSetProperty sets a child property for @child and @container.
-func (c *ContainerClass) ChildSetProperty(child Widget, propertyName string, value externglib.Value) {
+func (c *ContainerClass) ChildSetProperty(child Widget, propertyName string, value *externglib.Value) {
 	var _arg0 *C.GtkContainer // out
 	var _arg1 *C.GtkWidget    // out
 	var _arg2 *C.gchar        // out
 	var _arg3 *C.GValue       // out
 
-	_arg0 = (*C.GtkContainer)(unsafe.Pointer((&c).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&child).Native()))
+	_arg0 = (*C.GtkContainer)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 	_arg2 = (*C.gchar)(C.CString(propertyName))
 	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (*C.GValue)(unsafe.Pointer(&(&value).GValue))
+	_arg3 = (*C.GValue)(unsafe.Pointer(&value.GValue))
 
 	C.gtk_container_child_set_property(_arg0, _arg1, _arg2, _arg3)
 }
@@ -531,7 +531,7 @@ func (c *ContainerClass) ChildType() externglib.Type {
 	var _arg0 *C.GtkContainer // out
 	var _cret C.GType         // in
 
-	_arg0 = (*C.GtkContainer)(unsafe.Pointer((&c).Native()))
+	_arg0 = (*C.GtkContainer)(unsafe.Pointer(c.Native()))
 
 	_cret = C.gtk_container_child_type(_arg0)
 
@@ -554,7 +554,7 @@ func (c *ContainerClass) Forall(callback Callback) {
 	var _arg1 C.GtkCallback   // out
 	var _arg2 C.gpointer
 
-	_arg0 = (*C.GtkContainer)(unsafe.Pointer((&c).Native()))
+	_arg0 = (*C.GtkContainer)(unsafe.Pointer(c.Native()))
 	_arg1 = (*[0]byte)(C.gotk4_Callback)
 	_arg2 = C.gpointer(box.Assign(callback))
 
@@ -576,7 +576,7 @@ func (c *ContainerClass) Foreach(callback Callback) {
 	var _arg1 C.GtkCallback   // out
 	var _arg2 C.gpointer
 
-	_arg0 = (*C.GtkContainer)(unsafe.Pointer((&c).Native()))
+	_arg0 = (*C.GtkContainer)(unsafe.Pointer(c.Native()))
 	_arg1 = (*[0]byte)(C.gotk4_Callback)
 	_arg2 = C.gpointer(box.Assign(callback))
 
@@ -589,7 +589,7 @@ func (c *ContainerClass) BorderWidth() uint {
 	var _arg0 *C.GtkContainer // out
 	var _cret C.guint         // in
 
-	_arg0 = (*C.GtkContainer)(unsafe.Pointer((&c).Native()))
+	_arg0 = (*C.GtkContainer)(unsafe.Pointer(c.Native()))
 
 	_cret = C.gtk_container_get_border_width(_arg0)
 
@@ -607,14 +607,13 @@ func (c *ContainerClass) FocusChild() *WidgetClass {
 	var _arg0 *C.GtkContainer // out
 	var _cret *C.GtkWidget    // in
 
-	_arg0 = (*C.GtkContainer)(unsafe.Pointer((&c).Native()))
+	_arg0 = (*C.GtkContainer)(unsafe.Pointer(c.Native()))
 
 	_cret = C.gtk_container_get_focus_child(_arg0)
 
 	var _widget *WidgetClass // out
 
-	_widget = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*WidgetClass)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WidgetClass)
 
 	return _widget
 }
@@ -625,14 +624,13 @@ func (c *ContainerClass) FocusHAdjustment() *AdjustmentClass {
 	var _arg0 *C.GtkContainer  // out
 	var _cret *C.GtkAdjustment // in
 
-	_arg0 = (*C.GtkContainer)(unsafe.Pointer((&c).Native()))
+	_arg0 = (*C.GtkContainer)(unsafe.Pointer(c.Native()))
 
 	_cret = C.gtk_container_get_focus_hadjustment(_arg0)
 
 	var _adjustment *AdjustmentClass // out
 
-	_adjustment = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*AdjustmentClass)
+	_adjustment = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*AdjustmentClass)
 
 	return _adjustment
 }
@@ -643,14 +641,13 @@ func (c *ContainerClass) FocusVAdjustment() *AdjustmentClass {
 	var _arg0 *C.GtkContainer  // out
 	var _cret *C.GtkAdjustment // in
 
-	_arg0 = (*C.GtkContainer)(unsafe.Pointer((&c).Native()))
+	_arg0 = (*C.GtkContainer)(unsafe.Pointer(c.Native()))
 
 	_cret = C.gtk_container_get_focus_vadjustment(_arg0)
 
 	var _adjustment *AdjustmentClass // out
 
-	_adjustment = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*AdjustmentClass)
+	_adjustment = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*AdjustmentClass)
 
 	return _adjustment
 }
@@ -662,8 +659,8 @@ func (c *ContainerClass) PathForChild(child Widget) *WidgetPath {
 	var _arg1 *C.GtkWidget     // out
 	var _cret *C.GtkWidgetPath // in
 
-	_arg0 = (*C.GtkContainer)(unsafe.Pointer((&c).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&child).Native()))
+	_arg0 = (*C.GtkContainer)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	_cret = C.gtk_container_get_path_for_child(_arg0, _arg1)
 
@@ -686,7 +683,7 @@ func (c *ContainerClass) ResizeMode() ResizeMode {
 	var _arg0 *C.GtkContainer // out
 	var _cret C.GtkResizeMode // in
 
-	_arg0 = (*C.GtkContainer)(unsafe.Pointer((&c).Native()))
+	_arg0 = (*C.GtkContainer)(unsafe.Pointer(c.Native()))
 
 	_cret = C.gtk_container_get_resize_mode(_arg0)
 
@@ -717,8 +714,8 @@ func (c *ContainerClass) PropagateDraw(child Widget, cr *cairo.Context) {
 	var _arg1 *C.GtkWidget    // out
 	var _arg2 *C.cairo_t      // out
 
-	_arg0 = (*C.GtkContainer)(unsafe.Pointer((&c).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&child).Native()))
+	_arg0 = (*C.GtkContainer)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr))
 
 	C.gtk_container_propagate_draw(_arg0, _arg1, _arg2)
@@ -736,8 +733,8 @@ func (c *ContainerClass) Remove(widget Widget) {
 	var _arg0 *C.GtkContainer // out
 	var _arg1 *C.GtkWidget    // out
 
-	_arg0 = (*C.GtkContainer)(unsafe.Pointer((&c).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&widget).Native()))
+	_arg0 = (*C.GtkContainer)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.gtk_container_remove(_arg0, _arg1)
 }
@@ -746,7 +743,7 @@ func (c *ContainerClass) Remove(widget Widget) {
 func (c *ContainerClass) ResizeChildren() {
 	var _arg0 *C.GtkContainer // out
 
-	_arg0 = (*C.GtkContainer)(unsafe.Pointer((&c).Native()))
+	_arg0 = (*C.GtkContainer)(unsafe.Pointer(c.Native()))
 
 	C.gtk_container_resize_children(_arg0)
 }
@@ -763,7 +760,7 @@ func (c *ContainerClass) SetBorderWidth(borderWidth uint) {
 	var _arg0 *C.GtkContainer // out
 	var _arg1 C.guint         // out
 
-	_arg0 = (*C.GtkContainer)(unsafe.Pointer((&c).Native()))
+	_arg0 = (*C.GtkContainer)(unsafe.Pointer(c.Native()))
 	_arg1 = C.guint(borderWidth)
 
 	C.gtk_container_set_border_width(_arg0, _arg1)
@@ -782,8 +779,8 @@ func (c *ContainerClass) SetFocusChild(child Widget) {
 	var _arg0 *C.GtkContainer // out
 	var _arg1 *C.GtkWidget    // out
 
-	_arg0 = (*C.GtkContainer)(unsafe.Pointer((&c).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&child).Native()))
+	_arg0 = (*C.GtkContainer)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_container_set_focus_child(_arg0, _arg1)
 }
@@ -801,8 +798,8 @@ func (c *ContainerClass) SetFocusHAdjustment(adjustment Adjustment) {
 	var _arg0 *C.GtkContainer  // out
 	var _arg1 *C.GtkAdjustment // out
 
-	_arg0 = (*C.GtkContainer)(unsafe.Pointer((&c).Native()))
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer((&adjustment).Native()))
+	_arg0 = (*C.GtkContainer)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
 
 	C.gtk_container_set_focus_hadjustment(_arg0, _arg1)
 }
@@ -820,8 +817,8 @@ func (c *ContainerClass) SetFocusVAdjustment(adjustment Adjustment) {
 	var _arg0 *C.GtkContainer  // out
 	var _arg1 *C.GtkAdjustment // out
 
-	_arg0 = (*C.GtkContainer)(unsafe.Pointer((&c).Native()))
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer((&adjustment).Native()))
+	_arg0 = (*C.GtkContainer)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
 
 	C.gtk_container_set_focus_vadjustment(_arg0, _arg1)
 }
@@ -837,7 +834,7 @@ func (c *ContainerClass) SetReallocateRedraws(needsRedraws bool) {
 	var _arg0 *C.GtkContainer // out
 	var _arg1 C.gboolean      // out
 
-	_arg0 = (*C.GtkContainer)(unsafe.Pointer((&c).Native()))
+	_arg0 = (*C.GtkContainer)(unsafe.Pointer(c.Native()))
 	if needsRedraws {
 		_arg1 = C.TRUE
 	}
@@ -852,7 +849,7 @@ func (c *ContainerClass) SetReallocateRedraws(needsRedraws bool) {
 func (c *ContainerClass) UnsetFocusChain() {
 	var _arg0 *C.GtkContainer // out
 
-	_arg0 = (*C.GtkContainer)(unsafe.Pointer((&c).Native()))
+	_arg0 = (*C.GtkContainer)(unsafe.Pointer(c.Native()))
 
 	C.gtk_container_unset_focus_chain(_arg0)
 }

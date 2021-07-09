@@ -69,8 +69,7 @@ func NewGestureClick() *GestureClickClass {
 
 	var _gestureClick *GestureClickClass // out
 
-	_gestureClick = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*GestureClickClass)
+	_gestureClick = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*GestureClickClass)
 
 	return _gestureClick
 }

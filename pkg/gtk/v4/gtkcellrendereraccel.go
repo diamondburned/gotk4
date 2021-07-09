@@ -82,8 +82,7 @@ func NewCellRendererAccel() *CellRendererAccelClass {
 
 	var _cellRendererAccel *CellRendererAccelClass // out
 
-	_cellRendererAccel = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*CellRendererAccelClass)
+	_cellRendererAccel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*CellRendererAccelClass)
 
 	return _cellRendererAccel
 }

@@ -370,12 +370,14 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 	case "GObject.Value":
 		// https://pkg.go.dev/github.com/gotk3/gotk3/glib#Type
 		value.header.NeedsGLibObject()
-		value.p.LineTmpl(value, "<.Out.Set>=<.OutCast 1>(unsafe.Pointer(&<.InNamePtr 1>.GValue))")
+		value.p.LineTmpl(value,
+			"<.Out.Set> = <.OutCast 1>(unsafe.Pointer(&<.InNamePtr 1>.GValue))")
 		return true
 
 	case "GObject.Object", "GObject.InitiallyUnowned":
 		value.header.Import("unsafe")
-		value.p.LineTmpl(value, "<.Out.Set>=<.OutCast 1>(unsafe.Pointer(<.InNamePtr 1>.Native()))")
+		value.p.LineTmpl(value,
+			"<.Out.Set> = <.OutCast 1>(unsafe.Pointer(<.InNamePtrPubl 1>.Native()))")
 		return true
 	}
 
@@ -391,7 +393,7 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 	case *gir.Class, *gir.Interface:
 		value.header.Import("unsafe")
 		value.p.LineTmpl(value,
-			"<.Out.Set> = <.OutCast 1>(unsafe.Pointer(<.InNamePtr 1>.Native()))",
+			"<.Out.Set> = <.OutCast 1>(unsafe.Pointer(<.InNamePtrPubl 1>.Native()))",
 		)
 		return true
 

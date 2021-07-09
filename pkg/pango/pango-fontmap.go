@@ -137,7 +137,7 @@ func marshalFontMap(p uintptr) (interface{}, error) {
 func (f *FontMapClass) Changed() {
 	var _arg0 *C.PangoFontMap // out
 
-	_arg0 = (*C.PangoFontMap)(unsafe.Pointer((&f).Native()))
+	_arg0 = (*C.PangoFontMap)(unsafe.Pointer(f.Native()))
 
 	C.pango_font_map_changed(_arg0)
 }
@@ -154,14 +154,13 @@ func (f *FontMapClass) CreateContext() *ContextClass {
 	var _arg0 *C.PangoFontMap // out
 	var _cret *C.PangoContext // in
 
-	_arg0 = (*C.PangoFontMap)(unsafe.Pointer((&f).Native()))
+	_arg0 = (*C.PangoFontMap)(unsafe.Pointer(f.Native()))
 
 	_cret = C.pango_font_map_create_context(_arg0)
 
 	var _context *ContextClass // out
 
-	_context = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*ContextClass)
+	_context = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*ContextClass)
 
 	return _context
 }
@@ -172,7 +171,7 @@ func (f *FontMapClass) Family(name string) *FontFamilyClass {
 	var _arg1 *C.char            // out
 	var _cret *C.PangoFontFamily // in
 
-	_arg0 = (*C.PangoFontMap)(unsafe.Pointer((&f).Native()))
+	_arg0 = (*C.PangoFontMap)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.char)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -180,8 +179,7 @@ func (f *FontMapClass) Family(name string) *FontFamilyClass {
 
 	var _fontFamily *FontFamilyClass // out
 
-	_fontFamily = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*FontFamilyClass)
+	_fontFamily = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*FontFamilyClass)
 
 	return _fontFamily
 }
@@ -202,7 +200,7 @@ func (f *FontMapClass) Serial() uint {
 	var _arg0 *C.PangoFontMap // out
 	var _cret C.guint         // in
 
-	_arg0 = (*C.PangoFontMap)(unsafe.Pointer((&f).Native()))
+	_arg0 = (*C.PangoFontMap)(unsafe.Pointer(f.Native()))
 
 	_cret = C.pango_font_map_get_serial(_arg0)
 
@@ -219,7 +217,7 @@ func (f *FontMapClass) ListFamilies() []*FontFamilyClass {
 	var _arg1 **C.PangoFontFamily
 	var _arg2 C.int // in
 
-	_arg0 = (*C.PangoFontMap)(unsafe.Pointer((&f).Native()))
+	_arg0 = (*C.PangoFontMap)(unsafe.Pointer(f.Native()))
 
 	C.pango_font_map_list_families(_arg0, &_arg1, &_arg2)
 
@@ -230,8 +228,7 @@ func (f *FontMapClass) ListFamilies() []*FontFamilyClass {
 		src := unsafe.Slice(_arg1, _arg2)
 		_families = make([]*FontFamilyClass, _arg2)
 		for i := 0; i < int(_arg2); i++ {
-			_families[i] = gextras.CastObject(
-				externglib.Take(unsafe.Pointer(src[i]))).(*FontFamilyClass)
+			_families[i] = (gextras.CastObject(externglib.Take(unsafe.Pointer(src[i])))).(*FontFamilyClass)
 		}
 	}
 
@@ -245,16 +242,15 @@ func (f *FontMapClass) LoadFont(context Context, desc *FontDescription) *FontCla
 	var _arg2 *C.PangoFontDescription // out
 	var _cret *C.PangoFont            // in
 
-	_arg0 = (*C.PangoFontMap)(unsafe.Pointer((&f).Native()))
-	_arg1 = (*C.PangoContext)(unsafe.Pointer((&context).Native()))
+	_arg0 = (*C.PangoFontMap)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
 	_arg2 = (*C.PangoFontDescription)(unsafe.Pointer(desc))
 
 	_cret = C.pango_font_map_load_font(_arg0, _arg1, _arg2)
 
 	var _font *FontClass // out
 
-	_font = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*FontClass)
+	_font = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*FontClass)
 
 	return _font
 }
@@ -268,8 +264,8 @@ func (f *FontMapClass) LoadFontset(context Context, desc *FontDescription, langu
 	var _arg3 *C.PangoLanguage        // out
 	var _cret *C.PangoFontset         // in
 
-	_arg0 = (*C.PangoFontMap)(unsafe.Pointer((&f).Native()))
-	_arg1 = (*C.PangoContext)(unsafe.Pointer((&context).Native()))
+	_arg0 = (*C.PangoFontMap)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
 	_arg2 = (*C.PangoFontDescription)(unsafe.Pointer(desc))
 	_arg3 = (*C.PangoLanguage)(unsafe.Pointer(language))
 
@@ -277,8 +273,7 @@ func (f *FontMapClass) LoadFontset(context Context, desc *FontDescription, langu
 
 	var _fontset *FontsetClass // out
 
-	_fontset = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*FontsetClass)
+	_fontset = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*FontsetClass)
 
 	return _fontset
 }

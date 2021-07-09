@@ -71,7 +71,7 @@ func marshalGLTexture(p uintptr) (interface{}, error) {
 func (s *GLTextureClass) Release() {
 	var _arg0 *C.GdkGLTexture // out
 
-	_arg0 = (*C.GdkGLTexture)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GdkGLTexture)(unsafe.Pointer(s.Native()))
 
 	C.gdk_gl_texture_release(_arg0)
 }

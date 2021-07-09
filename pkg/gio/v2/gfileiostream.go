@@ -165,7 +165,7 @@ func (s *FileIOStreamClass) Etag() string {
 	var _arg0 *C.GFileIOStream // out
 	var _cret *C.char          // in
 
-	_arg0 = (*C.GFileIOStream)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GFileIOStream)(unsafe.Pointer(s.Native()))
 
 	_cret = C.g_file_io_stream_get_etag(_arg0)
 
@@ -199,18 +199,17 @@ func (s *FileIOStreamClass) QueryInfo(attributes string, cancellable Cancellable
 	var _cret *C.GFileInfo     // in
 	var _cerr *C.GError        // in
 
-	_arg0 = (*C.GFileIOStream)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GFileIOStream)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.char)(C.CString(attributes))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GCancellable)(unsafe.Pointer((&cancellable).Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_file_io_stream_query_info(_arg0, _arg1, _arg2, &_cerr)
 
 	var _fileInfo *FileInfoClass // out
 	var _goerr error             // out
 
-	_fileInfo = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*FileInfoClass)
+	_fileInfo = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*FileInfoClass)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _fileInfo, _goerr
@@ -230,11 +229,11 @@ func (s *FileIOStreamClass) QueryInfoAsync(attributes string, ioPriority int, ca
 	var _arg4 C.GAsyncReadyCallback // out
 	var _arg5 C.gpointer
 
-	_arg0 = (*C.GFileIOStream)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GFileIOStream)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.char)(C.CString(attributes))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(ioPriority)
-	_arg3 = (*C.GCancellable)(unsafe.Pointer((&cancellable).Native()))
+	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg5 = C.gpointer(box.Assign(callback))
 
@@ -249,16 +248,15 @@ func (s *FileIOStreamClass) QueryInfoFinish(result AsyncResult) (*FileInfoClass,
 	var _cret *C.GFileInfo     // in
 	var _cerr *C.GError        // in
 
-	_arg0 = (*C.GFileIOStream)(unsafe.Pointer((&s).Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((&result).Native()))
+	_arg0 = (*C.GFileIOStream)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_file_io_stream_query_info_finish(_arg0, _arg1, &_cerr)
 
 	var _fileInfo *FileInfoClass // out
 	var _goerr error             // out
 
-	_fileInfo = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*FileInfoClass)
+	_fileInfo = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*FileInfoClass)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _fileInfo, _goerr

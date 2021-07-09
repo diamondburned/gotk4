@@ -111,8 +111,7 @@ func NewGridLayout() *GridLayoutClass {
 
 	var _gridLayout *GridLayoutClass // out
 
-	_gridLayout = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*GridLayoutClass)
+	_gridLayout = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*GridLayoutClass)
 
 	return _gridLayout
 }
@@ -122,7 +121,7 @@ func (g *GridLayoutClass) BaselineRow() int {
 	var _arg0 *C.GtkGridLayout // out
 	var _cret C.int            // in
 
-	_arg0 = (*C.GtkGridLayout)(unsafe.Pointer((&g).Native()))
+	_arg0 = (*C.GtkGridLayout)(unsafe.Pointer(g.Native()))
 
 	_cret = C.gtk_grid_layout_get_baseline_row(_arg0)
 
@@ -139,7 +138,7 @@ func (g *GridLayoutClass) ColumnHomogeneous() bool {
 	var _arg0 *C.GtkGridLayout // out
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.GtkGridLayout)(unsafe.Pointer((&g).Native()))
+	_arg0 = (*C.GtkGridLayout)(unsafe.Pointer(g.Native()))
 
 	_cret = C.gtk_grid_layout_get_column_homogeneous(_arg0)
 
@@ -158,7 +157,7 @@ func (g *GridLayoutClass) ColumnSpacing() uint {
 	var _arg0 *C.GtkGridLayout // out
 	var _cret C.guint          // in
 
-	_arg0 = (*C.GtkGridLayout)(unsafe.Pointer((&g).Native()))
+	_arg0 = (*C.GtkGridLayout)(unsafe.Pointer(g.Native()))
 
 	_cret = C.gtk_grid_layout_get_column_spacing(_arg0)
 
@@ -179,7 +178,7 @@ func (g *GridLayoutClass) RowBaselinePosition(row int) BaselinePosition {
 	var _arg1 C.int                 // out
 	var _cret C.GtkBaselinePosition // in
 
-	_arg0 = (*C.GtkGridLayout)(unsafe.Pointer((&g).Native()))
+	_arg0 = (*C.GtkGridLayout)(unsafe.Pointer(g.Native()))
 	_arg1 = C.int(row)
 
 	_cret = C.gtk_grid_layout_get_row_baseline_position(_arg0, _arg1)
@@ -196,7 +195,7 @@ func (g *GridLayoutClass) RowHomogeneous() bool {
 	var _arg0 *C.GtkGridLayout // out
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.GtkGridLayout)(unsafe.Pointer((&g).Native()))
+	_arg0 = (*C.GtkGridLayout)(unsafe.Pointer(g.Native()))
 
 	_cret = C.gtk_grid_layout_get_row_homogeneous(_arg0)
 
@@ -214,7 +213,7 @@ func (g *GridLayoutClass) RowSpacing() uint {
 	var _arg0 *C.GtkGridLayout // out
 	var _cret C.guint          // in
 
-	_arg0 = (*C.GtkGridLayout)(unsafe.Pointer((&g).Native()))
+	_arg0 = (*C.GtkGridLayout)(unsafe.Pointer(g.Native()))
 
 	_cret = C.gtk_grid_layout_get_row_spacing(_arg0)
 
@@ -234,7 +233,7 @@ func (g *GridLayoutClass) SetBaselineRow(row int) {
 	var _arg0 *C.GtkGridLayout // out
 	var _arg1 C.int            // out
 
-	_arg0 = (*C.GtkGridLayout)(unsafe.Pointer((&g).Native()))
+	_arg0 = (*C.GtkGridLayout)(unsafe.Pointer(g.Native()))
 	_arg1 = C.int(row)
 
 	C.gtk_grid_layout_set_baseline_row(_arg0, _arg1)
@@ -246,7 +245,7 @@ func (g *GridLayoutClass) SetColumnHomogeneous(homogeneous bool) {
 	var _arg0 *C.GtkGridLayout // out
 	var _arg1 C.gboolean       // out
 
-	_arg0 = (*C.GtkGridLayout)(unsafe.Pointer((&g).Native()))
+	_arg0 = (*C.GtkGridLayout)(unsafe.Pointer(g.Native()))
 	if homogeneous {
 		_arg1 = C.TRUE
 	}
@@ -260,7 +259,7 @@ func (g *GridLayoutClass) SetColumnSpacing(spacing uint) {
 	var _arg0 *C.GtkGridLayout // out
 	var _arg1 C.guint          // out
 
-	_arg0 = (*C.GtkGridLayout)(unsafe.Pointer((&g).Native()))
+	_arg0 = (*C.GtkGridLayout)(unsafe.Pointer(g.Native()))
 	_arg1 = C.guint(spacing)
 
 	C.gtk_grid_layout_set_column_spacing(_arg0, _arg1)
@@ -271,7 +270,7 @@ func (g *GridLayoutClass) SetRowHomogeneous(homogeneous bool) {
 	var _arg0 *C.GtkGridLayout // out
 	var _arg1 C.gboolean       // out
 
-	_arg0 = (*C.GtkGridLayout)(unsafe.Pointer((&g).Native()))
+	_arg0 = (*C.GtkGridLayout)(unsafe.Pointer(g.Native()))
 	if homogeneous {
 		_arg1 = C.TRUE
 	}
@@ -284,7 +283,7 @@ func (g *GridLayoutClass) SetRowSpacing(spacing uint) {
 	var _arg0 *C.GtkGridLayout // out
 	var _arg1 C.guint          // out
 
-	_arg0 = (*C.GtkGridLayout)(unsafe.Pointer((&g).Native()))
+	_arg0 = (*C.GtkGridLayout)(unsafe.Pointer(g.Native()))
 	_arg1 = C.guint(spacing)
 
 	C.gtk_grid_layout_set_row_spacing(_arg0, _arg1)
@@ -339,7 +338,7 @@ func (c *GridLayoutChildClass) Column() int {
 	var _arg0 *C.GtkGridLayoutChild // out
 	var _cret C.int                 // in
 
-	_arg0 = (*C.GtkGridLayoutChild)(unsafe.Pointer((&c).Native()))
+	_arg0 = (*C.GtkGridLayoutChild)(unsafe.Pointer(c.Native()))
 
 	_cret = C.gtk_grid_layout_child_get_column(_arg0)
 
@@ -355,7 +354,7 @@ func (c *GridLayoutChildClass) ColumnSpan() int {
 	var _arg0 *C.GtkGridLayoutChild // out
 	var _cret C.int                 // in
 
-	_arg0 = (*C.GtkGridLayoutChild)(unsafe.Pointer((&c).Native()))
+	_arg0 = (*C.GtkGridLayoutChild)(unsafe.Pointer(c.Native()))
 
 	_cret = C.gtk_grid_layout_child_get_column_span(_arg0)
 
@@ -371,7 +370,7 @@ func (c *GridLayoutChildClass) Row() int {
 	var _arg0 *C.GtkGridLayoutChild // out
 	var _cret C.int                 // in
 
-	_arg0 = (*C.GtkGridLayoutChild)(unsafe.Pointer((&c).Native()))
+	_arg0 = (*C.GtkGridLayoutChild)(unsafe.Pointer(c.Native()))
 
 	_cret = C.gtk_grid_layout_child_get_row(_arg0)
 
@@ -387,7 +386,7 @@ func (c *GridLayoutChildClass) RowSpan() int {
 	var _arg0 *C.GtkGridLayoutChild // out
 	var _cret C.int                 // in
 
-	_arg0 = (*C.GtkGridLayoutChild)(unsafe.Pointer((&c).Native()))
+	_arg0 = (*C.GtkGridLayoutChild)(unsafe.Pointer(c.Native()))
 
 	_cret = C.gtk_grid_layout_child_get_row_span(_arg0)
 
@@ -403,7 +402,7 @@ func (c *GridLayoutChildClass) SetColumn(column int) {
 	var _arg0 *C.GtkGridLayoutChild // out
 	var _arg1 C.int                 // out
 
-	_arg0 = (*C.GtkGridLayoutChild)(unsafe.Pointer((&c).Native()))
+	_arg0 = (*C.GtkGridLayoutChild)(unsafe.Pointer(c.Native()))
 	_arg1 = C.int(column)
 
 	C.gtk_grid_layout_child_set_column(_arg0, _arg1)
@@ -414,7 +413,7 @@ func (c *GridLayoutChildClass) SetColumnSpan(span int) {
 	var _arg0 *C.GtkGridLayoutChild // out
 	var _arg1 C.int                 // out
 
-	_arg0 = (*C.GtkGridLayoutChild)(unsafe.Pointer((&c).Native()))
+	_arg0 = (*C.GtkGridLayoutChild)(unsafe.Pointer(c.Native()))
 	_arg1 = C.int(span)
 
 	C.gtk_grid_layout_child_set_column_span(_arg0, _arg1)
@@ -425,7 +424,7 @@ func (c *GridLayoutChildClass) SetRow(row int) {
 	var _arg0 *C.GtkGridLayoutChild // out
 	var _arg1 C.int                 // out
 
-	_arg0 = (*C.GtkGridLayoutChild)(unsafe.Pointer((&c).Native()))
+	_arg0 = (*C.GtkGridLayoutChild)(unsafe.Pointer(c.Native()))
 	_arg1 = C.int(row)
 
 	C.gtk_grid_layout_child_set_row(_arg0, _arg1)
@@ -436,7 +435,7 @@ func (c *GridLayoutChildClass) SetRowSpan(span int) {
 	var _arg0 *C.GtkGridLayoutChild // out
 	var _arg1 C.int                 // out
 
-	_arg0 = (*C.GtkGridLayoutChild)(unsafe.Pointer((&c).Native()))
+	_arg0 = (*C.GtkGridLayoutChild)(unsafe.Pointer(c.Native()))
 	_arg1 = C.int(span)
 
 	C.gtk_grid_layout_child_set_row_span(_arg0, _arg1)

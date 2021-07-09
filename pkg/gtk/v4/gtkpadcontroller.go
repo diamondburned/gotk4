@@ -82,7 +82,12 @@ func marshalPadActionType(p uintptr) (interface{}, error) {
 type PadController interface {
 	gextras.Objector
 
-	privatePadControllerClass()
+	// SetActionEntries: convenience function to add a group of action entries
+	// on @controller.
+	//
+	// See [struct@Gtk.PadActionEntry] and
+	// [method@Gtk.PadController.set_action].
+	SetActionEntries(entries []PadActionEntry)
 }
 
 // PadControllerClass implements the PadController interface.
@@ -106,7 +111,21 @@ func marshalPadController(p uintptr) (interface{}, error) {
 	return wrapPadController(obj), nil
 }
 
-func (*PadControllerClass) privatePadControllerClass() {}
+// SetActionEntries: convenience function to add a group of action entries on
+// @controller.
+//
+// See [struct@Gtk.PadActionEntry] and [method@Gtk.PadController.set_action].
+func (c *PadControllerClass) SetActionEntries(entries []PadActionEntry) {
+	var _arg0 *C.GtkPadController // out
+	var _arg1 *C.GtkPadActionEntry
+	var _arg2 C.int
+
+	_arg0 = (*C.GtkPadController)(unsafe.Pointer(c.Native()))
+	_arg2 = C.int(len(entries))
+	_arg1 = (*C.GtkPadActionEntry)(unsafe.Pointer(&entries[0]))
+
+	C.gtk_pad_controller_set_action_entries(_arg0, _arg1, _arg2)
+}
 
 // PadActionEntry: struct defining a pad action entry.
 type PadActionEntry struct {

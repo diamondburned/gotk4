@@ -720,6 +720,20 @@ func (a *AttrColor) Native() unsafe.Pointer {
 	return unsafe.Pointer(&a.native)
 }
 
+// Attr: the common portion of the attribute
+func (a *AttrColor) Attr() Attribute {
+	var v Attribute // out
+	v = *(*Attribute)(unsafe.Pointer((&a.native.attr)))
+	return v
+}
+
+// Color: the `PangoColor` which is the value of the attribute
+func (a *AttrColor) Color() Color {
+	var v Color // out
+	v = *(*Color)(unsafe.Pointer((&a.native.color)))
+	return v
+}
+
 // AttrFloat: the `PangoAttrFloat` structure is used to represent attributes
 // with a float or double value.
 type AttrFloat struct {
@@ -735,6 +749,13 @@ func WrapAttrFloat(ptr unsafe.Pointer) *AttrFloat {
 // Native returns the underlying C source pointer.
 func (a *AttrFloat) Native() unsafe.Pointer {
 	return unsafe.Pointer(&a.native)
+}
+
+// Attr: the common portion of the attribute
+func (a *AttrFloat) Attr() Attribute {
+	var v Attribute // out
+	v = *(*Attribute)(unsafe.Pointer((&a.native.attr)))
+	return v
 }
 
 // Value: the value of the attribute
@@ -761,6 +782,13 @@ func (a *AttrFontDesc) Native() unsafe.Pointer {
 	return unsafe.Pointer(&a.native)
 }
 
+// Attr: the common portion of the attribute
+func (a *AttrFontDesc) Attr() Attribute {
+	var v Attribute // out
+	v = *(*Attribute)(unsafe.Pointer((&a.native.attr)))
+	return v
+}
+
 // Desc: the font description which is the value of this attribute
 func (a *AttrFontDesc) Desc() *FontDescription {
 	var v *FontDescription // out
@@ -785,6 +813,13 @@ func (a *AttrFontFeatures) Native() unsafe.Pointer {
 	return unsafe.Pointer(&a.native)
 }
 
+// Attr: the common portion of the attribute
+func (a *AttrFontFeatures) Attr() Attribute {
+	var v Attribute // out
+	v = *(*Attribute)(unsafe.Pointer((&a.native.attr)))
+	return v
+}
+
 // Features: the featues, as a string in CSS syntax
 func (a *AttrFontFeatures) Features() string {
 	var v string // out
@@ -807,6 +842,13 @@ func WrapAttrInt(ptr unsafe.Pointer) *AttrInt {
 // Native returns the underlying C source pointer.
 func (a *AttrInt) Native() unsafe.Pointer {
 	return unsafe.Pointer(&a.native)
+}
+
+// Attr: the common portion of the attribute
+func (a *AttrInt) Attr() Attribute {
+	var v Attribute // out
+	v = *(*Attribute)(unsafe.Pointer((&a.native.attr)))
+	return v
 }
 
 // Value: the value of the attribute
@@ -927,6 +969,13 @@ func WrapAttrLanguage(ptr unsafe.Pointer) *AttrLanguage {
 // Native returns the underlying C source pointer.
 func (a *AttrLanguage) Native() unsafe.Pointer {
 	return unsafe.Pointer(&a.native)
+}
+
+// Attr: the common portion of the attribute
+func (a *AttrLanguage) Attr() Attribute {
+	var v Attribute // out
+	v = *(*Attribute)(unsafe.Pointer((&a.native.attr)))
+	return v
 }
 
 // Value: the `PangoLanguage` which is the value of the attribute
@@ -1217,6 +1266,27 @@ func (a *AttrShape) Native() unsafe.Pointer {
 	return unsafe.Pointer(&a.native)
 }
 
+// Attr: the common portion of the attribute
+func (a *AttrShape) Attr() Attribute {
+	var v Attribute // out
+	v = *(*Attribute)(unsafe.Pointer((&a.native.attr)))
+	return v
+}
+
+// InkRect: the ink rectangle to restrict to
+func (a *AttrShape) InkRect() Rectangle {
+	var v Rectangle // out
+	v = *(*Rectangle)(unsafe.Pointer((&a.native.ink_rect)))
+	return v
+}
+
+// LogicalRect: the logical rectangle to restrict to
+func (a *AttrShape) LogicalRect() Rectangle {
+	var v Rectangle // out
+	v = *(*Rectangle)(unsafe.Pointer((&a.native.logical_rect)))
+	return v
+}
+
 // Data: user data set (see [type_func@Pango.AttrShape.new_with_data])
 func (a *AttrShape) Data() interface{} {
 	var v interface{} // out
@@ -1239,6 +1309,13 @@ func WrapAttrSize(ptr unsafe.Pointer) *AttrSize {
 // Native returns the underlying C source pointer.
 func (a *AttrSize) Native() unsafe.Pointer {
 	return unsafe.Pointer(&a.native)
+}
+
+// Attr: the common portion of the attribute
+func (a *AttrSize) Attr() Attribute {
+	var v Attribute // out
+	v = *(*Attribute)(unsafe.Pointer((&a.native.attr)))
+	return v
 }
 
 // Size: size of font, in units of 1/PANGO_SCALE of a point (for
@@ -1264,6 +1341,13 @@ func WrapAttrString(ptr unsafe.Pointer) *AttrString {
 // Native returns the underlying C source pointer.
 func (a *AttrString) Native() unsafe.Pointer {
 	return unsafe.Pointer(&a.native)
+}
+
+// Attr: the common portion of the attribute
+func (a *AttrString) Attr() Attribute {
+	var v Attribute // out
+	v = *(*Attribute)(unsafe.Pointer((&a.native.attr)))
+	return v
 }
 
 // Value: the string which is the value of the attribute

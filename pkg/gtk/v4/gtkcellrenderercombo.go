@@ -76,8 +76,7 @@ func NewCellRendererCombo() *CellRendererComboClass {
 
 	var _cellRendererCombo *CellRendererComboClass // out
 
-	_cellRendererCombo = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*CellRendererComboClass)
+	_cellRendererCombo = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*CellRendererComboClass)
 
 	return _cellRendererCombo
 }

@@ -100,8 +100,7 @@ func NewStyleProperties() *StylePropertiesClass {
 
 	var _styleProperties *StylePropertiesClass // out
 
-	_styleProperties = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*StylePropertiesClass)
+	_styleProperties = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*StylePropertiesClass)
 
 	return _styleProperties
 }
@@ -112,7 +111,7 @@ func NewStyleProperties() *StylePropertiesClass {
 func (p *StylePropertiesClass) Clear() {
 	var _arg0 *C.GtkStyleProperties // out
 
-	_arg0 = (*C.GtkStyleProperties)(unsafe.Pointer((&p).Native()))
+	_arg0 = (*C.GtkStyleProperties)(unsafe.Pointer(p.Native()))
 
 	C.gtk_style_properties_clear(_arg0)
 }
@@ -125,7 +124,7 @@ func (p *StylePropertiesClass) LookupColor(name string) *SymbolicColor {
 	var _arg1 *C.gchar              // out
 	var _cret *C.GtkSymbolicColor   // in
 
-	_arg0 = (*C.GtkStyleProperties)(unsafe.Pointer((&p).Native()))
+	_arg0 = (*C.GtkStyleProperties)(unsafe.Pointer(p.Native()))
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -151,7 +150,7 @@ func (p *StylePropertiesClass) MapColor(name string, color *SymbolicColor) {
 	var _arg1 *C.gchar              // out
 	var _arg2 *C.GtkSymbolicColor   // out
 
-	_arg0 = (*C.GtkStyleProperties)(unsafe.Pointer((&p).Native()))
+	_arg0 = (*C.GtkStyleProperties)(unsafe.Pointer(p.Native()))
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GtkSymbolicColor)(unsafe.Pointer(color))
@@ -169,8 +168,8 @@ func (p *StylePropertiesClass) Merge(propsToMerge StyleProperties, replace bool)
 	var _arg1 *C.GtkStyleProperties // out
 	var _arg2 C.gboolean            // out
 
-	_arg0 = (*C.GtkStyleProperties)(unsafe.Pointer((&p).Native()))
-	_arg1 = (*C.GtkStyleProperties)(unsafe.Pointer((&propsToMerge).Native()))
+	_arg0 = (*C.GtkStyleProperties)(unsafe.Pointer(p.Native()))
+	_arg1 = (*C.GtkStyleProperties)(unsafe.Pointer(propsToMerge.Native()))
 	if replace {
 		_arg2 = C.TRUE
 	}
@@ -318,7 +317,7 @@ func (g *Gradient) Resolve(props StyleProperties) (*cairo.Pattern, bool) {
 	var _cret C.gboolean            // in
 
 	_arg0 = (*C.GtkGradient)(unsafe.Pointer(g))
-	_arg1 = (*C.GtkStyleProperties)(unsafe.Pointer((&props).Native()))
+	_arg1 = (*C.GtkStyleProperties)(unsafe.Pointer(props.Native()))
 
 	_cret = C.gtk_gradient_resolve(_arg0, _arg1, &_arg2)
 
@@ -342,7 +341,7 @@ func (g *Gradient) ResolveForContext(context StyleContext) *cairo.Pattern {
 	var _cret *C.cairo_pattern_t // in
 
 	_arg0 = (*C.GtkGradient)(unsafe.Pointer(g))
-	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer((&context).Native()))
+	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gtk_gradient_resolve_for_context(_arg0, _arg1)
 
@@ -572,6 +571,37 @@ func (c *SymbolicColor) ref() *SymbolicColor {
 	})
 
 	return _symbolicColor
+}
+
+// Resolve: if @color is resolvable, @resolved_color will be filled in with the
+// resolved color, and true will be returned. Generally, if @color can’t be
+// resolved, it is due to it being defined on top of a named color that doesn’t
+// exist in @props.
+//
+// When @props is nil, resolving of named colors will fail, so if your @color is
+// or references such a color, this function will return false.
+//
+// Deprecated: since version 3.8.
+func (c *SymbolicColor) Resolve(props StyleProperties) (gdk.RGBA, bool) {
+	var _arg0 *C.GtkSymbolicColor   // out
+	var _arg1 *C.GtkStyleProperties // out
+	var _arg2 C.GdkRGBA             // in
+	var _cret C.gboolean            // in
+
+	_arg0 = (*C.GtkSymbolicColor)(unsafe.Pointer(c))
+	_arg1 = (*C.GtkStyleProperties)(unsafe.Pointer(props.Native()))
+
+	_cret = C.gtk_symbolic_color_resolve(_arg0, _arg1, &_arg2)
+
+	var _resolvedColor gdk.RGBA // out
+	var _ok bool                // out
+
+	_resolvedColor = *(*gdk.RGBA)(unsafe.Pointer((&_arg2)))
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _resolvedColor, _ok
 }
 
 // String converts the given @color to a string representation. This is useful

@@ -68,8 +68,7 @@ func NewTextChildAnchor() *TextChildAnchorClass {
 
 	var _textChildAnchor *TextChildAnchorClass // out
 
-	_textChildAnchor = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*TextChildAnchorClass)
+	_textChildAnchor = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*TextChildAnchorClass)
 
 	return _textChildAnchor
 }
@@ -83,7 +82,7 @@ func (a *TextChildAnchorClass) Deleted() bool {
 	var _arg0 *C.GtkTextChildAnchor // out
 	var _cret C.gboolean            // in
 
-	_arg0 = (*C.GtkTextChildAnchor)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.GtkTextChildAnchor)(unsafe.Pointer(a.Native()))
 
 	_cret = C.gtk_text_child_anchor_get_deleted(_arg0)
 

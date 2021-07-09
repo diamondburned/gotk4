@@ -182,8 +182,8 @@ func (c *TLSClientConnectionInterface) CopySessionState(source TLSClientConnecti
 	var _arg0 *C.GTlsClientConnection // out
 	var _arg1 *C.GTlsClientConnection // out
 
-	_arg0 = (*C.GTlsClientConnection)(unsafe.Pointer((&c).Native()))
-	_arg1 = (*C.GTlsClientConnection)(unsafe.Pointer((&source).Native()))
+	_arg0 = (*C.GTlsClientConnection)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.GTlsClientConnection)(unsafe.Pointer(source.Native()))
 
 	C.g_tls_client_connection_copy_session_state(_arg0, _arg1)
 }
@@ -193,14 +193,13 @@ func (c *TLSClientConnectionInterface) ServerIdentity() *SocketConnectableInterf
 	var _arg0 *C.GTlsClientConnection // out
 	var _cret *C.GSocketConnectable   // in
 
-	_arg0 = (*C.GTlsClientConnection)(unsafe.Pointer((&c).Native()))
+	_arg0 = (*C.GTlsClientConnection)(unsafe.Pointer(c.Native()))
 
 	_cret = C.g_tls_client_connection_get_server_identity(_arg0)
 
 	var _socketConnectable *SocketConnectableInterface // out
 
-	_socketConnectable = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*SocketConnectableInterface)
+	_socketConnectable = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*SocketConnectableInterface)
 
 	return _socketConnectable
 }
@@ -213,7 +212,7 @@ func (c *TLSClientConnectionInterface) UseSSL3() bool {
 	var _arg0 *C.GTlsClientConnection // out
 	var _cret C.gboolean              // in
 
-	_arg0 = (*C.GTlsClientConnection)(unsafe.Pointer((&c).Native()))
+	_arg0 = (*C.GTlsClientConnection)(unsafe.Pointer(c.Native()))
 
 	_cret = C.g_tls_client_connection_get_use_ssl3(_arg0)
 
@@ -231,7 +230,7 @@ func (c *TLSClientConnectionInterface) ValidationFlags() TLSCertificateFlags {
 	var _arg0 *C.GTlsClientConnection // out
 	var _cret C.GTlsCertificateFlags  // in
 
-	_arg0 = (*C.GTlsClientConnection)(unsafe.Pointer((&c).Native()))
+	_arg0 = (*C.GTlsClientConnection)(unsafe.Pointer(c.Native()))
 
 	_cret = C.g_tls_client_connection_get_validation_flags(_arg0)
 
@@ -250,8 +249,8 @@ func (c *TLSClientConnectionInterface) SetServerIdentity(identity SocketConnecta
 	var _arg0 *C.GTlsClientConnection // out
 	var _arg1 *C.GSocketConnectable   // out
 
-	_arg0 = (*C.GTlsClientConnection)(unsafe.Pointer((&c).Native()))
-	_arg1 = (*C.GSocketConnectable)(unsafe.Pointer((&identity).Native()))
+	_arg0 = (*C.GTlsClientConnection)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.GSocketConnectable)(unsafe.Pointer(identity.Native()))
 
 	C.g_tls_client_connection_set_server_identity(_arg0, _arg1)
 }
@@ -271,7 +270,7 @@ func (c *TLSClientConnectionInterface) SetUseSSL3(useSsl3 bool) {
 	var _arg0 *C.GTlsClientConnection // out
 	var _arg1 C.gboolean              // out
 
-	_arg0 = (*C.GTlsClientConnection)(unsafe.Pointer((&c).Native()))
+	_arg0 = (*C.GTlsClientConnection)(unsafe.Pointer(c.Native()))
 	if useSsl3 {
 		_arg1 = C.TRUE
 	}

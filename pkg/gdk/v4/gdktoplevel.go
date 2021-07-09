@@ -265,8 +265,8 @@ func (t *ToplevelInterface) BeginMove(device Device, button int, x float64, y fl
 	var _arg4 C.double       // out
 	var _arg5 C.guint32      // out
 
-	_arg0 = (*C.GdkToplevel)(unsafe.Pointer((&t).Native()))
-	_arg1 = (*C.GdkDevice)(unsafe.Pointer((&device).Native()))
+	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(t.Native()))
+	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
 	_arg2 = C.int(button)
 	_arg3 = C.double(x)
 	_arg4 = C.double(y)
@@ -283,7 +283,7 @@ func (t *ToplevelInterface) Focus(timestamp uint32) {
 	var _arg0 *C.GdkToplevel // out
 	var _arg1 C.guint32      // out
 
-	_arg0 = (*C.GdkToplevel)(unsafe.Pointer((&t).Native()))
+	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(t.Native()))
 	_arg1 = C.guint32(timestamp)
 
 	C.gdk_toplevel_focus(_arg0, _arg1)
@@ -295,7 +295,7 @@ func (t *ToplevelInterface) State() ToplevelState {
 	var _arg0 *C.GdkToplevel     // out
 	var _cret C.GdkToplevelState // in
 
-	_arg0 = (*C.GdkToplevel)(unsafe.Pointer((&t).Native()))
+	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(t.Native()))
 
 	_cret = C.gdk_toplevel_get_state(_arg0)
 
@@ -331,8 +331,8 @@ func (t *ToplevelInterface) InhibitSystemShortcuts(event Event) {
 	var _arg0 *C.GdkToplevel // out
 	var _arg1 *C.GdkEvent    // out
 
-	_arg0 = (*C.GdkToplevel)(unsafe.Pointer((&t).Native()))
-	_arg1 = (*C.GdkEvent)(unsafe.Pointer((&event).Native()))
+	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(t.Native()))
+	_arg1 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
 
 	C.gdk_toplevel_inhibit_system_shortcuts(_arg0, _arg1)
 }
@@ -344,7 +344,7 @@ func (t *ToplevelInterface) Lower() bool {
 	var _arg0 *C.GdkToplevel // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GdkToplevel)(unsafe.Pointer((&t).Native()))
+	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(t.Native()))
 
 	_cret = C.gdk_toplevel_lower(_arg0)
 
@@ -364,7 +364,7 @@ func (t *ToplevelInterface) Minimize() bool {
 	var _arg0 *C.GdkToplevel // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GdkToplevel)(unsafe.Pointer((&t).Native()))
+	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(t.Native()))
 
 	_cret = C.gdk_toplevel_minimize(_arg0)
 
@@ -391,7 +391,7 @@ func (t *ToplevelInterface) Present(layout *ToplevelLayout) {
 	var _arg0 *C.GdkToplevel       // out
 	var _arg1 *C.GdkToplevelLayout // out
 
-	_arg0 = (*C.GdkToplevel)(unsafe.Pointer((&t).Native()))
+	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(t.Native()))
 	_arg1 = (*C.GdkToplevelLayout)(unsafe.Pointer(layout))
 
 	C.gdk_toplevel_present(_arg0, _arg1)
@@ -404,7 +404,7 @@ func (t *ToplevelInterface) Present(layout *ToplevelLayout) {
 func (t *ToplevelInterface) RestoreSystemShortcuts() {
 	var _arg0 *C.GdkToplevel // out
 
-	_arg0 = (*C.GdkToplevel)(unsafe.Pointer((&t).Native()))
+	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(t.Native()))
 
 	C.gdk_toplevel_restore_system_shortcuts(_arg0)
 }
@@ -418,7 +418,7 @@ func (t *ToplevelInterface) SetDecorated(decorated bool) {
 	var _arg0 *C.GdkToplevel // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.GdkToplevel)(unsafe.Pointer((&t).Native()))
+	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(t.Native()))
 	if decorated {
 		_arg1 = C.TRUE
 	}
@@ -434,7 +434,7 @@ func (t *ToplevelInterface) SetDeletable(deletable bool) {
 	var _arg0 *C.GdkToplevel // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.GdkToplevel)(unsafe.Pointer((&t).Native()))
+	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(t.Native()))
 	if deletable {
 		_arg1 = C.TRUE
 	}
@@ -454,7 +454,7 @@ func (t *ToplevelInterface) SetModal(modal bool) {
 	var _arg0 *C.GdkToplevel // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.GdkToplevel)(unsafe.Pointer((&t).Native()))
+	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(t.Native()))
 	if modal {
 		_arg1 = C.TRUE
 	}
@@ -470,7 +470,7 @@ func (t *ToplevelInterface) SetStartupID(startupId string) {
 	var _arg0 *C.GdkToplevel // out
 	var _arg1 *C.char        // out
 
-	_arg0 = (*C.GdkToplevel)(unsafe.Pointer((&t).Native()))
+	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(t.Native()))
 	_arg1 = (*C.char)(C.CString(startupId))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -484,7 +484,7 @@ func (t *ToplevelInterface) SetTitle(title string) {
 	var _arg0 *C.GdkToplevel // out
 	var _arg1 *C.char        // out
 
-	_arg0 = (*C.GdkToplevel)(unsafe.Pointer((&t).Native()))
+	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(t.Native()))
 	_arg1 = (*C.char)(C.CString(title))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -504,8 +504,8 @@ func (t *ToplevelInterface) SetTransientFor(parent Surface) {
 	var _arg0 *C.GdkToplevel // out
 	var _arg1 *C.GdkSurface  // out
 
-	_arg0 = (*C.GdkToplevel)(unsafe.Pointer((&t).Native()))
-	_arg1 = (*C.GdkSurface)(unsafe.Pointer((&parent).Native()))
+	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(t.Native()))
+	_arg1 = (*C.GdkSurface)(unsafe.Pointer(parent.Native()))
 
 	C.gdk_toplevel_set_transient_for(_arg0, _arg1)
 }
@@ -521,8 +521,8 @@ func (t *ToplevelInterface) ShowWindowMenu(event Event) bool {
 	var _arg1 *C.GdkEvent    // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GdkToplevel)(unsafe.Pointer((&t).Native()))
-	_arg1 = (*C.GdkEvent)(unsafe.Pointer((&event).Native()))
+	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(t.Native()))
+	_arg1 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
 
 	_cret = C.gdk_toplevel_show_window_menu(_arg0, _arg1)
 
@@ -541,7 +541,7 @@ func (t *ToplevelInterface) SupportsEdgeConstraints() bool {
 	var _arg0 *C.GdkToplevel // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GdkToplevel)(unsafe.Pointer((&t).Native()))
+	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(t.Native()))
 
 	_cret = C.gdk_toplevel_supports_edge_constraints(_arg0)
 

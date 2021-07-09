@@ -139,8 +139,7 @@ func NewPasswordEntry() *PasswordEntryClass {
 
 	var _passwordEntry *PasswordEntryClass // out
 
-	_passwordEntry = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*PasswordEntryClass)
+	_passwordEntry = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*PasswordEntryClass)
 
 	return _passwordEntry
 }
@@ -150,14 +149,13 @@ func (e *PasswordEntryClass) ExtraMenu() *gio.MenuModelClass {
 	var _arg0 *C.GtkPasswordEntry // out
 	var _cret *C.GMenuModel       // in
 
-	_arg0 = (*C.GtkPasswordEntry)(unsafe.Pointer((&e).Native()))
+	_arg0 = (*C.GtkPasswordEntry)(unsafe.Pointer(e.Native()))
 
 	_cret = C.gtk_password_entry_get_extra_menu(_arg0)
 
 	var _menuModel *gio.MenuModelClass // out
 
-	_menuModel = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*gio.MenuModelClass)
+	_menuModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gio.MenuModelClass)
 
 	return _menuModel
 }
@@ -168,7 +166,7 @@ func (e *PasswordEntryClass) ShowPeekIcon() bool {
 	var _arg0 *C.GtkPasswordEntry // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkPasswordEntry)(unsafe.Pointer((&e).Native()))
+	_arg0 = (*C.GtkPasswordEntry)(unsafe.Pointer(e.Native()))
 
 	_cret = C.gtk_password_entry_get_show_peek_icon(_arg0)
 
@@ -187,8 +185,8 @@ func (e *PasswordEntryClass) SetExtraMenu(model gio.MenuModel) {
 	var _arg0 *C.GtkPasswordEntry // out
 	var _arg1 *C.GMenuModel       // out
 
-	_arg0 = (*C.GtkPasswordEntry)(unsafe.Pointer((&e).Native()))
-	_arg1 = (*C.GMenuModel)(unsafe.Pointer((&model).Native()))
+	_arg0 = (*C.GtkPasswordEntry)(unsafe.Pointer(e.Native()))
+	_arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
 
 	C.gtk_password_entry_set_extra_menu(_arg0, _arg1)
 }
@@ -201,7 +199,7 @@ func (e *PasswordEntryClass) SetShowPeekIcon(showPeekIcon bool) {
 	var _arg0 *C.GtkPasswordEntry // out
 	var _arg1 C.gboolean          // out
 
-	_arg0 = (*C.GtkPasswordEntry)(unsafe.Pointer((&e).Native()))
+	_arg0 = (*C.GtkPasswordEntry)(unsafe.Pointer(e.Native()))
 	if showPeekIcon {
 		_arg1 = C.TRUE
 	}

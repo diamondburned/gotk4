@@ -96,14 +96,13 @@ func NewVScrollbar(adjustment Adjustment) *VScrollbarClass {
 	var _arg1 *C.GtkAdjustment // out
 	var _cret *C.GtkWidget     // in
 
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer((&adjustment).Native()))
+	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
 
 	_cret = C.gtk_vscrollbar_new(_arg1)
 
 	var _vScrollbar *VScrollbarClass // out
 
-	_vScrollbar = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*VScrollbarClass)
+	_vScrollbar = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*VScrollbarClass)
 
 	return _vScrollbar
 }

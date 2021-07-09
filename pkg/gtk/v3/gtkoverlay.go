@@ -129,8 +129,7 @@ func NewOverlay() *OverlayClass {
 
 	var _overlay *OverlayClass // out
 
-	_overlay = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*OverlayClass)
+	_overlay = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*OverlayClass)
 
 	return _overlay
 }
@@ -146,8 +145,8 @@ func (o *OverlayClass) AddOverlay(widget Widget) {
 	var _arg0 *C.GtkOverlay // out
 	var _arg1 *C.GtkWidget  // out
 
-	_arg0 = (*C.GtkOverlay)(unsafe.Pointer((&o).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&widget).Native()))
+	_arg0 = (*C.GtkOverlay)(unsafe.Pointer(o.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.gtk_overlay_add_overlay(_arg0, _arg1)
 }
@@ -159,8 +158,8 @@ func (o *OverlayClass) OverlayPassThrough(widget Widget) bool {
 	var _arg1 *C.GtkWidget  // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GtkOverlay)(unsafe.Pointer((&o).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&widget).Native()))
+	_arg0 = (*C.GtkOverlay)(unsafe.Pointer(o.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_overlay_get_overlay_pass_through(_arg0, _arg1)
 
@@ -185,8 +184,8 @@ func (o *OverlayClass) ReorderOverlay(child Widget, index_ int) {
 	var _arg1 *C.GtkWidget  // out
 	var _arg2 C.int         // out
 
-	_arg0 = (*C.GtkOverlay)(unsafe.Pointer((&o).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&child).Native()))
+	_arg0 = (*C.GtkOverlay)(unsafe.Pointer(o.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 	_arg2 = C.int(index_)
 
 	C.gtk_overlay_reorder_overlay(_arg0, _arg1, _arg2)
@@ -199,8 +198,8 @@ func (o *OverlayClass) SetOverlayPassThrough(widget Widget, passThrough bool) {
 	var _arg1 *C.GtkWidget  // out
 	var _arg2 C.gboolean    // out
 
-	_arg0 = (*C.GtkOverlay)(unsafe.Pointer((&o).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&widget).Native()))
+	_arg0 = (*C.GtkOverlay)(unsafe.Pointer(o.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	if passThrough {
 		_arg2 = C.TRUE
 	}

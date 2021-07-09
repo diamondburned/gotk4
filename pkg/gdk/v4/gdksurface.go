@@ -213,7 +213,7 @@ func NewSurfacePopup(parent Surface, autohide bool) *SurfaceClass {
 	var _arg2 C.gboolean    // out
 	var _cret *C.GdkSurface // in
 
-	_arg1 = (*C.GdkSurface)(unsafe.Pointer((&parent).Native()))
+	_arg1 = (*C.GdkSurface)(unsafe.Pointer(parent.Native()))
 	if autohide {
 		_arg2 = C.TRUE
 	}
@@ -222,8 +222,7 @@ func NewSurfacePopup(parent Surface, autohide bool) *SurfaceClass {
 
 	var _surface *SurfaceClass // out
 
-	_surface = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*SurfaceClass)
+	_surface = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*SurfaceClass)
 
 	return _surface
 }
@@ -233,14 +232,13 @@ func NewSurfaceToplevel(display Display) *SurfaceClass {
 	var _arg1 *C.GdkDisplay // out
 	var _cret *C.GdkSurface // in
 
-	_arg1 = (*C.GdkDisplay)(unsafe.Pointer((&display).Native()))
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	_cret = C.gdk_surface_new_toplevel(_arg1)
 
 	var _surface *SurfaceClass // out
 
-	_surface = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*SurfaceClass)
+	_surface = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*SurfaceClass)
 
 	return _surface
 }
@@ -252,7 +250,7 @@ func NewSurfaceToplevel(display Display) *SurfaceClass {
 func (s *SurfaceClass) Beep() {
 	var _arg0 *C.GdkSurface // out
 
-	_arg0 = (*C.GdkSurface)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 
 	C.gdk_surface_beep(_arg0)
 }
@@ -262,14 +260,13 @@ func (s *SurfaceClass) CreateCairoContext() *CairoContextClass {
 	var _arg0 *C.GdkSurface      // out
 	var _cret *C.GdkCairoContext // in
 
-	_arg0 = (*C.GdkSurface)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gdk_surface_create_cairo_context(_arg0)
 
 	var _cairoContext *CairoContextClass // out
 
-	_cairoContext = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*CairoContextClass)
+	_cairoContext = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*CairoContextClass)
 
 	return _cairoContext
 }
@@ -285,15 +282,14 @@ func (s *SurfaceClass) CreateGLContext() (*GLContextClass, error) {
 	var _cret *C.GdkGLContext // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GdkSurface)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gdk_surface_create_gl_context(_arg0, &_cerr)
 
 	var _glContext *GLContextClass // out
 	var _goerr error               // out
 
-	_glContext = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*GLContextClass)
+	_glContext = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*GLContextClass)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _glContext, _goerr
@@ -308,15 +304,14 @@ func (s *SurfaceClass) CreateVulkanContext() (*VulkanContextClass, error) {
 	var _cret *C.GdkVulkanContext // in
 	var _cerr *C.GError           // in
 
-	_arg0 = (*C.GdkSurface)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gdk_surface_create_vulkan_context(_arg0, &_cerr)
 
 	var _vulkanContext *VulkanContextClass // out
 	var _goerr error                       // out
 
-	_vulkanContext = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*VulkanContextClass)
+	_vulkanContext = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*VulkanContextClass)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _vulkanContext, _goerr
@@ -333,7 +328,7 @@ func (s *SurfaceClass) CreateVulkanContext() (*VulkanContextClass, error) {
 func (s *SurfaceClass) Destroy() {
 	var _arg0 *C.GdkSurface // out
 
-	_arg0 = (*C.GdkSurface)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 
 	C.gdk_surface_destroy(_arg0)
 }
@@ -347,14 +342,13 @@ func (s *SurfaceClass) Cursor() *CursorClass {
 	var _arg0 *C.GdkSurface // out
 	var _cret *C.GdkCursor  // in
 
-	_arg0 = (*C.GdkSurface)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gdk_surface_get_cursor(_arg0)
 
 	var _cursor *CursorClass // out
 
-	_cursor = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*CursorClass)
+	_cursor = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*CursorClass)
 
 	return _cursor
 }
@@ -369,15 +363,14 @@ func (s *SurfaceClass) DeviceCursor(device Device) *CursorClass {
 	var _arg1 *C.GdkDevice  // out
 	var _cret *C.GdkCursor  // in
 
-	_arg0 = (*C.GdkSurface)(unsafe.Pointer((&s).Native()))
-	_arg1 = (*C.GdkDevice)(unsafe.Pointer((&device).Native()))
+	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
 
 	_cret = C.gdk_surface_get_device_cursor(_arg0, _arg1)
 
 	var _cursor *CursorClass // out
 
-	_cursor = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*CursorClass)
+	_cursor = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*CursorClass)
 
 	return _cursor
 }
@@ -394,8 +387,8 @@ func (s *SurfaceClass) DevicePosition(device Device) (x float64, y float64, mask
 	var _arg4 C.GdkModifierType // in
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GdkSurface)(unsafe.Pointer((&s).Native()))
-	_arg1 = (*C.GdkDevice)(unsafe.Pointer((&device).Native()))
+	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
 
 	_cret = C.gdk_surface_get_device_position(_arg0, _arg1, &_arg2, &_arg3, &_arg4)
 
@@ -419,14 +412,13 @@ func (s *SurfaceClass) Display() *DisplayClass {
 	var _arg0 *C.GdkSurface // out
 	var _cret *C.GdkDisplay // in
 
-	_arg0 = (*C.GdkSurface)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gdk_surface_get_display(_arg0)
 
 	var _display *DisplayClass // out
 
-	_display = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*DisplayClass)
+	_display = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*DisplayClass)
 
 	return _display
 }
@@ -439,14 +431,13 @@ func (s *SurfaceClass) FrameClock() *FrameClockClass {
 	var _arg0 *C.GdkSurface    // out
 	var _cret *C.GdkFrameClock // in
 
-	_arg0 = (*C.GdkSurface)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gdk_surface_get_frame_clock(_arg0)
 
 	var _frameClock *FrameClockClass // out
 
-	_frameClock = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*FrameClockClass)
+	_frameClock = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*FrameClockClass)
 
 	return _frameClock
 }
@@ -459,7 +450,7 @@ func (s *SurfaceClass) Height() int {
 	var _arg0 *C.GdkSurface // out
 	var _cret C.int         // in
 
-	_arg0 = (*C.GdkSurface)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gdk_surface_get_height(_arg0)
 
@@ -478,7 +469,7 @@ func (s *SurfaceClass) Mapped() bool {
 	var _arg0 *C.GdkSurface // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GdkSurface)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gdk_surface_get_mapped(_arg0)
 
@@ -506,7 +497,7 @@ func (s *SurfaceClass) ScaleFactor() int {
 	var _arg0 *C.GdkSurface // out
 	var _cret C.int         // in
 
-	_arg0 = (*C.GdkSurface)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gdk_surface_get_scale_factor(_arg0)
 
@@ -525,7 +516,7 @@ func (s *SurfaceClass) Width() int {
 	var _arg0 *C.GdkSurface // out
 	var _cret C.int         // in
 
-	_arg0 = (*C.GdkSurface)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gdk_surface_get_width(_arg0)
 
@@ -544,7 +535,7 @@ func (s *SurfaceClass) Width() int {
 func (s *SurfaceClass) Hide() {
 	var _arg0 *C.GdkSurface // out
 
-	_arg0 = (*C.GdkSurface)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 
 	C.gdk_surface_hide(_arg0)
 }
@@ -554,7 +545,7 @@ func (s *SurfaceClass) IsDestroyed() bool {
 	var _arg0 *C.GdkSurface // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GdkSurface)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gdk_surface_is_destroyed(_arg0)
 
@@ -575,7 +566,7 @@ func (s *SurfaceClass) IsDestroyed() bool {
 func (s *SurfaceClass) QueueRender() {
 	var _arg0 *C.GdkSurface // out
 
-	_arg0 = (*C.GdkSurface)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 
 	C.gdk_surface_queue_render(_arg0)
 }
@@ -586,7 +577,7 @@ func (s *SurfaceClass) QueueRender() {
 func (s *SurfaceClass) RequestLayout() {
 	var _arg0 *C.GdkSurface // out
 
-	_arg0 = (*C.GdkSurface)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 
 	C.gdk_surface_request_layout(_arg0)
 }
@@ -603,8 +594,8 @@ func (s *SurfaceClass) SetCursor(cursor Cursor) {
 	var _arg0 *C.GdkSurface // out
 	var _arg1 *C.GdkCursor  // out
 
-	_arg0 = (*C.GdkSurface)(unsafe.Pointer((&s).Native()))
-	_arg1 = (*C.GdkCursor)(unsafe.Pointer((&cursor).Native()))
+	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GdkCursor)(unsafe.Pointer(cursor.Native()))
 
 	C.gdk_surface_set_cursor(_arg0, _arg1)
 }
@@ -622,9 +613,9 @@ func (s *SurfaceClass) SetDeviceCursor(device Device, cursor Cursor) {
 	var _arg1 *C.GdkDevice  // out
 	var _arg2 *C.GdkCursor  // out
 
-	_arg0 = (*C.GdkSurface)(unsafe.Pointer((&s).Native()))
-	_arg1 = (*C.GdkDevice)(unsafe.Pointer((&device).Native()))
-	_arg2 = (*C.GdkCursor)(unsafe.Pointer((&cursor).Native()))
+	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
+	_arg2 = (*C.GdkCursor)(unsafe.Pointer(cursor.Native()))
 
 	C.gdk_surface_set_device_cursor(_arg0, _arg1, _arg2)
 }
@@ -646,7 +637,7 @@ func (s *SurfaceClass) SetInputRegion(region *cairo.Region) {
 	var _arg0 *C.GdkSurface     // out
 	var _arg1 *C.cairo_region_t // out
 
-	_arg0 = (*C.GdkSurface)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region))
 
 	C.gdk_surface_set_input_region(_arg0, _arg1)
@@ -670,7 +661,7 @@ func (s *SurfaceClass) SetOpaqueRegion(region *cairo.Region) {
 	var _arg0 *C.GdkSurface     // out
 	var _arg1 *C.cairo_region_t // out
 
-	_arg0 = (*C.GdkSurface)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region))
 
 	C.gdk_surface_set_opaque_region(_arg0, _arg1)

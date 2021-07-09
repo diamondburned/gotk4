@@ -96,14 +96,13 @@ func NewHScale(adjustment Adjustment) *HScaleClass {
 	var _arg1 *C.GtkAdjustment // out
 	var _cret *C.GtkWidget     // in
 
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer((&adjustment).Native()))
+	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
 
 	_cret = C.gtk_hscale_new(_arg1)
 
 	var _hScale *HScaleClass // out
 
-	_hScale = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*HScaleClass)
+	_hScale = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*HScaleClass)
 
 	return _hScale
 }
@@ -132,8 +131,7 @@ func NewHScaleWithRange(min float64, max float64, step float64) *HScaleClass {
 
 	var _hScale *HScaleClass // out
 
-	_hScale = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*HScaleClass)
+	_hScale = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*HScaleClass)
 
 	return _hScale
 }

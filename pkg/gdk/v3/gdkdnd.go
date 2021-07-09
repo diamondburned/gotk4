@@ -104,7 +104,7 @@ func DragAbort(context DragContext, time_ uint32) {
 	var _arg1 *C.GdkDragContext // out
 	var _arg2 C.guint32         // out
 
-	_arg1 = (*C.GdkDragContext)(unsafe.Pointer((&context).Native()))
+	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
 	_arg2 = C.guint32(time_)
 
 	C.gdk_drag_abort(_arg1, _arg2)
@@ -120,7 +120,7 @@ func DragDrop(context DragContext, time_ uint32) {
 	var _arg1 *C.GdkDragContext // out
 	var _arg2 C.guint32         // out
 
-	_arg1 = (*C.GdkDragContext)(unsafe.Pointer((&context).Native()))
+	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
 	_arg2 = C.guint32(time_)
 
 	C.gdk_drag_drop(_arg1, _arg2)
@@ -139,7 +139,7 @@ func DragDropDone(context DragContext, success bool) {
 	var _arg1 *C.GdkDragContext // out
 	var _arg2 C.gboolean        // out
 
-	_arg1 = (*C.GdkDragContext)(unsafe.Pointer((&context).Native()))
+	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
 	if success {
 		_arg2 = C.TRUE
 	}
@@ -154,7 +154,7 @@ func DragDropSucceeded(context DragContext) bool {
 	var _arg1 *C.GdkDragContext // out
 	var _cret C.gboolean        // in
 
-	_arg1 = (*C.GdkDragContext)(unsafe.Pointer((&context).Native()))
+	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gdk_drag_drop_succeeded(_arg1)
 
@@ -181,9 +181,9 @@ func DragFindWindowForScreen(context DragContext, dragWindow Window, screen Scre
 	var _arg6 *C.GdkWindow      // in
 	var _arg7 C.GdkDragProtocol // in
 
-	_arg1 = (*C.GdkDragContext)(unsafe.Pointer((&context).Native()))
-	_arg2 = (*C.GdkWindow)(unsafe.Pointer((&dragWindow).Native()))
-	_arg3 = (*C.GdkScreen)(unsafe.Pointer((&screen).Native()))
+	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
+	_arg2 = (*C.GdkWindow)(unsafe.Pointer(dragWindow.Native()))
+	_arg3 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
 	_arg4 = C.gint(xRoot)
 	_arg5 = C.gint(yRoot)
 
@@ -192,8 +192,7 @@ func DragFindWindowForScreen(context DragContext, dragWindow Window, screen Scre
 	var _destWindow *WindowClass // out
 	var _protocol DragProtocol   // out
 
-	_destWindow = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_arg6))).(*WindowClass)
+	_destWindow = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_arg6)))).(*WindowClass)
 	_protocol = (DragProtocol)(_arg7)
 
 	return _destWindow, _protocol
@@ -207,7 +206,7 @@ func DropFinish(context DragContext, success bool, time_ uint32) {
 	var _arg2 C.gboolean        // out
 	var _arg3 C.guint32         // out
 
-	_arg1 = (*C.GdkDragContext)(unsafe.Pointer((&context).Native()))
+	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
 	if success {
 		_arg2 = C.TRUE
 	}
@@ -225,7 +224,7 @@ func DropReply(context DragContext, accepted bool, time_ uint32) {
 	var _arg2 C.gboolean        // out
 	var _arg3 C.guint32         // out
 
-	_arg1 = (*C.GdkDragContext)(unsafe.Pointer((&context).Native()))
+	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
 	if accepted {
 		_arg2 = C.TRUE
 	}

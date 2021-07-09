@@ -118,8 +118,7 @@ func NewSeparatorMenuItem() *SeparatorMenuItemClass {
 
 	var _separatorMenuItem *SeparatorMenuItemClass // out
 
-	_separatorMenuItem = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*SeparatorMenuItemClass)
+	_separatorMenuItem = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*SeparatorMenuItemClass)
 
 	return _separatorMenuItem
 }

@@ -149,8 +149,7 @@ func NewEmojiChooser() *EmojiChooserClass {
 
 	var _emojiChooser *EmojiChooserClass // out
 
-	_emojiChooser = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*EmojiChooserClass)
+	_emojiChooser = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*EmojiChooserClass)
 
 	return _emojiChooser
 }

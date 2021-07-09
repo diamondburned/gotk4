@@ -150,8 +150,7 @@ func NewScaleButton(min float64, max float64, step float64, icons []string) *Sca
 
 	var _scaleButton *ScaleButtonClass // out
 
-	_scaleButton = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*ScaleButtonClass)
+	_scaleButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ScaleButtonClass)
 
 	return _scaleButton
 }
@@ -164,14 +163,13 @@ func (b *ScaleButtonClass) Adjustment() *AdjustmentClass {
 	var _arg0 *C.GtkScaleButton // out
 	var _cret *C.GtkAdjustment  // in
 
-	_arg0 = (*C.GtkScaleButton)(unsafe.Pointer((&b).Native()))
+	_arg0 = (*C.GtkScaleButton)(unsafe.Pointer(b.Native()))
 
 	_cret = C.gtk_scale_button_get_adjustment(_arg0)
 
 	var _adjustment *AdjustmentClass // out
 
-	_adjustment = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*AdjustmentClass)
+	_adjustment = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*AdjustmentClass)
 
 	return _adjustment
 }
@@ -181,14 +179,13 @@ func (b *ScaleButtonClass) MinusButton() *ButtonClass {
 	var _arg0 *C.GtkScaleButton // out
 	var _cret *C.GtkWidget      // in
 
-	_arg0 = (*C.GtkScaleButton)(unsafe.Pointer((&b).Native()))
+	_arg0 = (*C.GtkScaleButton)(unsafe.Pointer(b.Native()))
 
 	_cret = C.gtk_scale_button_get_minus_button(_arg0)
 
 	var _ret *ButtonClass // out
 
-	_ret = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*ButtonClass)
+	_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ButtonClass)
 
 	return _ret
 }
@@ -198,14 +195,13 @@ func (b *ScaleButtonClass) PlusButton() *ButtonClass {
 	var _arg0 *C.GtkScaleButton // out
 	var _cret *C.GtkWidget      // in
 
-	_arg0 = (*C.GtkScaleButton)(unsafe.Pointer((&b).Native()))
+	_arg0 = (*C.GtkScaleButton)(unsafe.Pointer(b.Native()))
 
 	_cret = C.gtk_scale_button_get_plus_button(_arg0)
 
 	var _ret *ButtonClass // out
 
-	_ret = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*ButtonClass)
+	_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ButtonClass)
 
 	return _ret
 }
@@ -215,14 +211,13 @@ func (b *ScaleButtonClass) Popup() *WidgetClass {
 	var _arg0 *C.GtkScaleButton // out
 	var _cret *C.GtkWidget      // in
 
-	_arg0 = (*C.GtkScaleButton)(unsafe.Pointer((&b).Native()))
+	_arg0 = (*C.GtkScaleButton)(unsafe.Pointer(b.Native()))
 
 	_cret = C.gtk_scale_button_get_popup(_arg0)
 
 	var _widget *WidgetClass // out
 
-	_widget = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*WidgetClass)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WidgetClass)
 
 	return _widget
 }
@@ -232,7 +227,7 @@ func (b *ScaleButtonClass) Value() float64 {
 	var _arg0 *C.GtkScaleButton // out
 	var _cret C.double          // in
 
-	_arg0 = (*C.GtkScaleButton)(unsafe.Pointer((&b).Native()))
+	_arg0 = (*C.GtkScaleButton)(unsafe.Pointer(b.Native()))
 
 	_cret = C.gtk_scale_button_get_value(_arg0)
 
@@ -251,8 +246,8 @@ func (b *ScaleButtonClass) SetAdjustment(adjustment Adjustment) {
 	var _arg0 *C.GtkScaleButton // out
 	var _arg1 *C.GtkAdjustment  // out
 
-	_arg0 = (*C.GtkScaleButton)(unsafe.Pointer((&b).Native()))
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer((&adjustment).Native()))
+	_arg0 = (*C.GtkScaleButton)(unsafe.Pointer(b.Native()))
+	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
 
 	C.gtk_scale_button_set_adjustment(_arg0, _arg1)
 }
@@ -262,7 +257,7 @@ func (b *ScaleButtonClass) SetIcons(icons []string) {
 	var _arg0 *C.GtkScaleButton // out
 	var _arg1 **C.char
 
-	_arg0 = (*C.GtkScaleButton)(unsafe.Pointer((&b).Native()))
+	_arg0 = (*C.GtkScaleButton)(unsafe.Pointer(b.Native()))
 	_arg1 = (**C.char)(C.malloc(C.ulong(len(icons)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
 	defer C.free(unsafe.Pointer(_arg1))
 	{
@@ -287,7 +282,7 @@ func (b *ScaleButtonClass) SetValue(value float64) {
 	var _arg0 *C.GtkScaleButton // out
 	var _arg1 C.double          // out
 
-	_arg0 = (*C.GtkScaleButton)(unsafe.Pointer((&b).Native()))
+	_arg0 = (*C.GtkScaleButton)(unsafe.Pointer(b.Native()))
 	_arg1 = C.double(value)
 
 	C.gtk_scale_button_set_value(_arg0, _arg1)

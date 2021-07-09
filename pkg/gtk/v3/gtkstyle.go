@@ -7,6 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -82,8 +83,18 @@ type Style interface {
 	//
 	// Deprecated: since version 3.0.
 	Detach()
+	// StyleProperty queries the value of a style property corresponding to a
+	// widget class is in the given style.
+	StyleProperty(widgetType externglib.Type, propertyName string) externglib.Value
 	// HasContext returns whether @style has an associated StyleContext.
 	HasContext() bool
+	// LookupColor looks up @color_name in the style’s logical color mappings,
+	// filling in @color and returning true if found, otherwise returning false.
+	// Do not cache the found mapping, because it depends on the Style and might
+	// change when a theme switch occurs.
+	//
+	// Deprecated: since version 3.0.
+	LookupColor(colorName string) (gdk.Color, bool)
 	// LookupIconSet looks up @stock_id in the icon factories associated with
 	// @style and the default icon factory, returning an icon set if found,
 	// otherwise nil.
@@ -121,8 +132,7 @@ func NewStyle() *StyleClass {
 
 	var _style *StyleClass // out
 
-	_style = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*StyleClass)
+	_style = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*StyleClass)
 
 	return _style
 }
@@ -134,14 +144,13 @@ func (s *StyleClass) Copy() *StyleClass {
 	var _arg0 *C.GtkStyle // out
 	var _cret *C.GtkStyle // in
 
-	_arg0 = (*C.GtkStyle)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkStyle)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gtk_style_copy(_arg0)
 
 	var _ret *StyleClass // out
 
-	_ret = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*StyleClass)
+	_ret = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*StyleClass)
 
 	return _ret
 }
@@ -153,9 +162,31 @@ func (s *StyleClass) Copy() *StyleClass {
 func (s *StyleClass) Detach() {
 	var _arg0 *C.GtkStyle // out
 
-	_arg0 = (*C.GtkStyle)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkStyle)(unsafe.Pointer(s.Native()))
 
 	C.gtk_style_detach(_arg0)
+}
+
+// StyleProperty queries the value of a style property corresponding to a widget
+// class is in the given style.
+func (s *StyleClass) StyleProperty(widgetType externglib.Type, propertyName string) externglib.Value {
+	var _arg0 *C.GtkStyle // out
+	var _arg1 C.GType     // out
+	var _arg2 *C.gchar    // out
+	var _arg3 C.GValue    // in
+
+	_arg0 = (*C.GtkStyle)(unsafe.Pointer(s.Native()))
+	_arg1 = (C.GType)(widgetType)
+	_arg2 = (*C.gchar)(C.CString(propertyName))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	C.gtk_style_get_style_property(_arg0, _arg1, _arg2, &_arg3)
+
+	var _value externglib.Value // out
+
+	_value = *externglib.ValueFromNative(unsafe.Pointer((&_arg3)))
+
+	return _value
 }
 
 // HasContext returns whether @style has an associated StyleContext.
@@ -163,7 +194,7 @@ func (s *StyleClass) HasContext() bool {
 	var _arg0 *C.GtkStyle // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.GtkStyle)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkStyle)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gtk_style_has_context(_arg0)
 
@@ -176,6 +207,35 @@ func (s *StyleClass) HasContext() bool {
 	return _ok
 }
 
+// LookupColor looks up @color_name in the style’s logical color mappings,
+// filling in @color and returning true if found, otherwise returning false. Do
+// not cache the found mapping, because it depends on the Style and might change
+// when a theme switch occurs.
+//
+// Deprecated: since version 3.0.
+func (s *StyleClass) LookupColor(colorName string) (gdk.Color, bool) {
+	var _arg0 *C.GtkStyle // out
+	var _arg1 *C.gchar    // out
+	var _arg2 C.GdkColor  // in
+	var _cret C.gboolean  // in
+
+	_arg0 = (*C.GtkStyle)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.gchar)(C.CString(colorName))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.gtk_style_lookup_color(_arg0, _arg1, &_arg2)
+
+	var _color gdk.Color // out
+	var _ok bool         // out
+
+	_color = *(*gdk.Color)(unsafe.Pointer((&_arg2)))
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _color, _ok
+}
+
 // LookupIconSet looks up @stock_id in the icon factories associated with @style
 // and the default icon factory, returning an icon set if found, otherwise nil.
 //
@@ -185,7 +245,7 @@ func (s *StyleClass) LookupIconSet(stockId string) *IconSet {
 	var _arg1 *C.gchar      // out
 	var _cret *C.GtkIconSet // in
 
-	_arg0 = (*C.GtkStyle)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkStyle)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(stockId))
 	defer C.free(unsafe.Pointer(_arg1))
 

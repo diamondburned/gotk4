@@ -122,7 +122,11 @@ func EnsureNamespace(nsp *gir.NamespaceFindResult, girType string) string {
 }
 
 func countPtrs(typ gir.Type, result *gir.TypeFindResult) uint8 {
-	return uint8(strings.Count(typ.CType, "*"))
+	ptr := uint8(strings.Count(typ.CType, "*"))
+	if IsGpointer(typ.CType) {
+		ptr++
+	}
+	return ptr
 }
 
 var objectorMethods = map[string]struct{}{

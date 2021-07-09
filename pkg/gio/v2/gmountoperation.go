@@ -135,8 +135,7 @@ func NewMountOperation() *MountOperationClass {
 
 	var _mountOperation *MountOperationClass // out
 
-	_mountOperation = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*MountOperationClass)
+	_mountOperation = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*MountOperationClass)
 
 	return _mountOperation
 }
@@ -147,7 +146,7 @@ func (o *MountOperationClass) Anonymous() bool {
 	var _arg0 *C.GMountOperation // out
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.GMountOperation)(unsafe.Pointer((&o).Native()))
+	_arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
 
 	_cret = C.g_mount_operation_get_anonymous(_arg0)
 
@@ -165,7 +164,7 @@ func (o *MountOperationClass) Choice() int {
 	var _arg0 *C.GMountOperation // out
 	var _cret C.int              // in
 
-	_arg0 = (*C.GMountOperation)(unsafe.Pointer((&o).Native()))
+	_arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
 
 	_cret = C.g_mount_operation_get_choice(_arg0)
 
@@ -181,7 +180,7 @@ func (o *MountOperationClass) Domain() string {
 	var _arg0 *C.GMountOperation // out
 	var _cret *C.char            // in
 
-	_arg0 = (*C.GMountOperation)(unsafe.Pointer((&o).Native()))
+	_arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
 
 	_cret = C.g_mount_operation_get_domain(_arg0)
 
@@ -198,7 +197,7 @@ func (o *MountOperationClass) IsTcryptHiddenVolume() bool {
 	var _arg0 *C.GMountOperation // out
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.GMountOperation)(unsafe.Pointer((&o).Native()))
+	_arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
 
 	_cret = C.g_mount_operation_get_is_tcrypt_hidden_volume(_arg0)
 
@@ -217,7 +216,7 @@ func (o *MountOperationClass) IsTcryptSystemVolume() bool {
 	var _arg0 *C.GMountOperation // out
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.GMountOperation)(unsafe.Pointer((&o).Native()))
+	_arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
 
 	_cret = C.g_mount_operation_get_is_tcrypt_system_volume(_arg0)
 
@@ -235,7 +234,7 @@ func (o *MountOperationClass) Password() string {
 	var _arg0 *C.GMountOperation // out
 	var _cret *C.char            // in
 
-	_arg0 = (*C.GMountOperation)(unsafe.Pointer((&o).Native()))
+	_arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
 
 	_cret = C.g_mount_operation_get_password(_arg0)
 
@@ -251,7 +250,7 @@ func (o *MountOperationClass) PasswordSave() PasswordSave {
 	var _arg0 *C.GMountOperation // out
 	var _cret C.GPasswordSave    // in
 
-	_arg0 = (*C.GMountOperation)(unsafe.Pointer((&o).Native()))
+	_arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
 
 	_cret = C.g_mount_operation_get_password_save(_arg0)
 
@@ -267,7 +266,7 @@ func (o *MountOperationClass) Pim() uint {
 	var _arg0 *C.GMountOperation // out
 	var _cret C.guint            // in
 
-	_arg0 = (*C.GMountOperation)(unsafe.Pointer((&o).Native()))
+	_arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
 
 	_cret = C.g_mount_operation_get_pim(_arg0)
 
@@ -283,7 +282,7 @@ func (o *MountOperationClass) Username() string {
 	var _arg0 *C.GMountOperation // out
 	var _cret *C.char            // in
 
-	_arg0 = (*C.GMountOperation)(unsafe.Pointer((&o).Native()))
+	_arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
 
 	_cret = C.g_mount_operation_get_username(_arg0)
 
@@ -300,7 +299,7 @@ func (o *MountOperationClass) SetAnonymous(anonymous bool) {
 	var _arg0 *C.GMountOperation // out
 	var _arg1 C.gboolean         // out
 
-	_arg0 = (*C.GMountOperation)(unsafe.Pointer((&o).Native()))
+	_arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
 	if anonymous {
 		_arg1 = C.TRUE
 	}
@@ -313,7 +312,7 @@ func (o *MountOperationClass) SetChoice(choice int) {
 	var _arg0 *C.GMountOperation // out
 	var _arg1 C.int              // out
 
-	_arg0 = (*C.GMountOperation)(unsafe.Pointer((&o).Native()))
+	_arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
 	_arg1 = C.int(choice)
 
 	C.g_mount_operation_set_choice(_arg0, _arg1)
@@ -324,7 +323,7 @@ func (o *MountOperationClass) SetDomain(domain string) {
 	var _arg0 *C.GMountOperation // out
 	var _arg1 *C.char            // out
 
-	_arg0 = (*C.GMountOperation)(unsafe.Pointer((&o).Native()))
+	_arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
 	_arg1 = (*C.char)(C.CString(domain))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -337,7 +336,7 @@ func (o *MountOperationClass) SetIsTcryptHiddenVolume(hiddenVolume bool) {
 	var _arg0 *C.GMountOperation // out
 	var _arg1 C.gboolean         // out
 
-	_arg0 = (*C.GMountOperation)(unsafe.Pointer((&o).Native()))
+	_arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
 	if hiddenVolume {
 		_arg1 = C.TRUE
 	}
@@ -351,7 +350,7 @@ func (o *MountOperationClass) SetIsTcryptSystemVolume(systemVolume bool) {
 	var _arg0 *C.GMountOperation // out
 	var _arg1 C.gboolean         // out
 
-	_arg0 = (*C.GMountOperation)(unsafe.Pointer((&o).Native()))
+	_arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
 	if systemVolume {
 		_arg1 = C.TRUE
 	}
@@ -364,7 +363,7 @@ func (o *MountOperationClass) SetPassword(password string) {
 	var _arg0 *C.GMountOperation // out
 	var _arg1 *C.char            // out
 
-	_arg0 = (*C.GMountOperation)(unsafe.Pointer((&o).Native()))
+	_arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
 	_arg1 = (*C.char)(C.CString(password))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -376,7 +375,7 @@ func (o *MountOperationClass) SetPim(pim uint) {
 	var _arg0 *C.GMountOperation // out
 	var _arg1 C.guint            // out
 
-	_arg0 = (*C.GMountOperation)(unsafe.Pointer((&o).Native()))
+	_arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
 	_arg1 = C.guint(pim)
 
 	C.g_mount_operation_set_pim(_arg0, _arg1)
@@ -387,7 +386,7 @@ func (o *MountOperationClass) SetUsername(username string) {
 	var _arg0 *C.GMountOperation // out
 	var _arg1 *C.char            // out
 
-	_arg0 = (*C.GMountOperation)(unsafe.Pointer((&o).Native()))
+	_arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
 	_arg1 = (*C.char)(C.CString(username))
 	defer C.free(unsafe.Pointer(_arg1))
 

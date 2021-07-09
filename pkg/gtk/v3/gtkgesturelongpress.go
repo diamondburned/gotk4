@@ -67,14 +67,13 @@ func NewGestureLongPress(widget Widget) *GestureLongPressClass {
 	var _arg1 *C.GtkWidget  // out
 	var _cret *C.GtkGesture // in
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&widget).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_gesture_long_press_new(_arg1)
 
 	var _gestureLongPress *GestureLongPressClass // out
 
-	_gestureLongPress = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*GestureLongPressClass)
+	_gestureLongPress = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*GestureLongPressClass)
 
 	return _gestureLongPress
 }

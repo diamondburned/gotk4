@@ -88,7 +88,7 @@ func (m *FileMonitorClass) Cancel() bool {
 	var _arg0 *C.GFileMonitor // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GFileMonitor)(unsafe.Pointer((&m).Native()))
+	_arg0 = (*C.GFileMonitor)(unsafe.Pointer(m.Native()))
 
 	_cret = C.g_file_monitor_cancel(_arg0)
 
@@ -106,7 +106,7 @@ func (m *FileMonitorClass) IsCancelled() bool {
 	var _arg0 *C.GFileMonitor // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GFileMonitor)(unsafe.Pointer((&m).Native()))
+	_arg0 = (*C.GFileMonitor)(unsafe.Pointer(m.Native()))
 
 	_cret = C.g_file_monitor_is_cancelled(_arg0)
 
@@ -125,7 +125,7 @@ func (m *FileMonitorClass) SetRateLimit(limitMsecs int) {
 	var _arg0 *C.GFileMonitor // out
 	var _arg1 C.gint          // out
 
-	_arg0 = (*C.GFileMonitor)(unsafe.Pointer((&m).Native()))
+	_arg0 = (*C.GFileMonitor)(unsafe.Pointer(m.Native()))
 	_arg1 = C.gint(limitMsecs)
 
 	C.g_file_monitor_set_rate_limit(_arg0, _arg1)

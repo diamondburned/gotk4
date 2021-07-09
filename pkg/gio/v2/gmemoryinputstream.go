@@ -83,8 +83,7 @@ func NewMemoryInputStream() *MemoryInputStreamClass {
 
 	var _memoryInputStream *MemoryInputStreamClass // out
 
-	_memoryInputStream = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*MemoryInputStreamClass)
+	_memoryInputStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*MemoryInputStreamClass)
 
 	return _memoryInputStream
 }

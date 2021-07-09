@@ -94,8 +94,7 @@ func NewVPaned() *VPanedClass {
 
 	var _vPaned *VPanedClass // out
 
-	_vPaned = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*VPanedClass)
+	_vPaned = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*VPanedClass)
 
 	return _vPaned
 }

@@ -179,7 +179,7 @@ func marshalRenderer(p uintptr) (interface{}, error) {
 func (r *RendererClass) Activate() {
 	var _arg0 *C.PangoRenderer // out
 
-	_arg0 = (*C.PangoRenderer)(unsafe.Pointer((&r).Native()))
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(r.Native()))
 
 	C.pango_renderer_activate(_arg0)
 }
@@ -190,7 +190,7 @@ func (r *RendererClass) Activate() {
 func (r *RendererClass) Deactivate() {
 	var _arg0 *C.PangoRenderer // out
 
-	_arg0 = (*C.PangoRenderer)(unsafe.Pointer((&r).Native()))
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(r.Native()))
 
 	C.pango_renderer_deactivate(_arg0)
 }
@@ -210,7 +210,7 @@ func (r *RendererClass) DrawErrorUnderline(x int, y int, width int, height int) 
 	var _arg3 C.int            // out
 	var _arg4 C.int            // out
 
-	_arg0 = (*C.PangoRenderer)(unsafe.Pointer((&r).Native()))
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(r.Native()))
 	_arg1 = C.int(x)
 	_arg2 = C.int(y)
 	_arg3 = C.int(width)
@@ -239,7 +239,7 @@ func (r *RendererClass) DrawGlyphItem(text string, glyphItem *GlyphItem, x int, 
 	var _arg3 C.int             // out
 	var _arg4 C.int             // out
 
-	_arg0 = (*C.PangoRenderer)(unsafe.Pointer((&r).Native()))
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(r.Native()))
 	_arg1 = (*C.char)(C.CString(text))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.PangoGlyphItem)(unsafe.Pointer(glyphItem))
@@ -257,8 +257,8 @@ func (r *RendererClass) DrawGlyphs(font Font, glyphs *GlyphString, x int, y int)
 	var _arg3 C.int               // out
 	var _arg4 C.int               // out
 
-	_arg0 = (*C.PangoRenderer)(unsafe.Pointer((&r).Native()))
-	_arg1 = (*C.PangoFont)(unsafe.Pointer((&font).Native()))
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(r.Native()))
+	_arg1 = (*C.PangoFont)(unsafe.Pointer(font.Native()))
 	_arg2 = (*C.PangoGlyphString)(unsafe.Pointer(glyphs))
 	_arg3 = C.int(x)
 	_arg4 = C.int(y)
@@ -273,8 +273,8 @@ func (r *RendererClass) DrawLayout(layout Layout, x int, y int) {
 	var _arg2 C.int            // out
 	var _arg3 C.int            // out
 
-	_arg0 = (*C.PangoRenderer)(unsafe.Pointer((&r).Native()))
-	_arg1 = (*C.PangoLayout)(unsafe.Pointer((&layout).Native()))
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(r.Native()))
+	_arg1 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
 	_arg2 = C.int(x)
 	_arg3 = C.int(y)
 
@@ -291,14 +291,13 @@ func (r *RendererClass) Layout() *LayoutClass {
 	var _arg0 *C.PangoRenderer // out
 	var _cret *C.PangoLayout   // in
 
-	_arg0 = (*C.PangoRenderer)(unsafe.Pointer((&r).Native()))
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(r.Native()))
 
 	_cret = C.pango_renderer_get_layout(_arg0)
 
 	var _layout *LayoutClass // out
 
-	_layout = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*LayoutClass)
+	_layout = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*LayoutClass)
 
 	return _layout
 }
@@ -310,7 +309,7 @@ func (r *RendererClass) Matrix() *Matrix {
 	var _arg0 *C.PangoRenderer // out
 	var _cret *C.PangoMatrix   // in
 
-	_arg0 = (*C.PangoRenderer)(unsafe.Pointer((&r).Native()))
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(r.Native()))
 
 	_cret = C.pango_renderer_get_matrix(_arg0)
 
@@ -326,7 +325,7 @@ func (r *RendererClass) SetMatrix(matrix *Matrix) {
 	var _arg0 *C.PangoRenderer // out
 	var _arg1 *C.PangoMatrix   // out
 
-	_arg0 = (*C.PangoRenderer)(unsafe.Pointer((&r).Native()))
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(r.Native()))
 	_arg1 = (*C.PangoMatrix)(unsafe.Pointer(matrix))
 
 	C.pango_renderer_set_matrix(_arg0, _arg1)

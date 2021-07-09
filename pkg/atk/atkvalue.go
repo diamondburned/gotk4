@@ -57,11 +57,30 @@ func marshalValueType(p uintptr) (interface{}, error) {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type ValueOverrider interface {
+	// CurrentValue gets the value of this object.
+	//
+	// Deprecated.
+	CurrentValue() externglib.Value
 	// Increment gets the minimum increment by which the value of this object
 	// may be changed. If zero, the minimum increment is undefined, which may
 	// mean that it is limited only by the floating point precision of the
 	// platform.
 	Increment() float64
+	// MaximumValue gets the maximum value of this object.
+	//
+	// Deprecated.
+	MaximumValue() externglib.Value
+	// MinimumIncrement gets the minimum increment by which the value of this
+	// object may be changed. If zero, the minimum increment is undefined, which
+	// may mean that it is limited only by the floating point precision of the
+	// platform.
+	//
+	// Deprecated.
+	MinimumIncrement() externglib.Value
+	// MinimumValue gets the minimum value of this object.
+	//
+	// Deprecated.
+	MinimumValue() externglib.Value
 	// Range gets the range of this object.
 	Range() *Range
 	// ValueAndText gets the current value and the human readable text
@@ -71,7 +90,7 @@ type ValueOverrider interface {
 	// SetCurrentValue sets the value of this object.
 	//
 	// Deprecated.
-	SetCurrentValue(value externglib.Value) bool
+	SetCurrentValue(value *externglib.Value) bool
 	// SetValue sets the value of this object.
 	//
 	// This method is intended to provide a way to change the value of the
@@ -182,11 +201,30 @@ type ValueOverrider interface {
 type Value interface {
 	gextras.Objector
 
+	// CurrentValue gets the value of this object.
+	//
+	// Deprecated.
+	CurrentValue() externglib.Value
 	// Increment gets the minimum increment by which the value of this object
 	// may be changed. If zero, the minimum increment is undefined, which may
 	// mean that it is limited only by the floating point precision of the
 	// platform.
 	Increment() float64
+	// MaximumValue gets the maximum value of this object.
+	//
+	// Deprecated.
+	MaximumValue() externglib.Value
+	// MinimumIncrement gets the minimum increment by which the value of this
+	// object may be changed. If zero, the minimum increment is undefined, which
+	// may mean that it is limited only by the floating point precision of the
+	// platform.
+	//
+	// Deprecated.
+	MinimumIncrement() externglib.Value
+	// MinimumValue gets the minimum value of this object.
+	//
+	// Deprecated.
+	MinimumValue() externglib.Value
 	// Range gets the range of this object.
 	Range() *Range
 	// ValueAndText gets the current value and the human readable text
@@ -196,7 +234,7 @@ type Value interface {
 	// SetCurrentValue sets the value of this object.
 	//
 	// Deprecated.
-	SetCurrentValue(value externglib.Value) bool
+	SetCurrentValue(value *externglib.Value) bool
 	// SetValue sets the value of this object.
 	//
 	// This method is intended to provide a way to change the value of the
@@ -232,6 +270,24 @@ func marshalValue(p uintptr) (interface{}, error) {
 	return wrapValue(obj), nil
 }
 
+// CurrentValue gets the value of this object.
+//
+// Deprecated.
+func (o *ValueInterface) CurrentValue() externglib.Value {
+	var _arg0 *C.AtkValue // out
+	var _arg1 C.GValue    // in
+
+	_arg0 = (*C.AtkValue)(unsafe.Pointer(o.Native()))
+
+	C.atk_value_get_current_value(_arg0, &_arg1)
+
+	var _value externglib.Value // out
+
+	_value = *externglib.ValueFromNative(unsafe.Pointer((&_arg1)))
+
+	return _value
+}
+
 // Increment gets the minimum increment by which the value of this object may be
 // changed. If zero, the minimum increment is undefined, which may mean that it
 // is limited only by the floating point precision of the platform.
@@ -239,7 +295,7 @@ func (o *ValueInterface) Increment() float64 {
 	var _arg0 *C.AtkValue // out
 	var _cret C.gdouble   // in
 
-	_arg0 = (*C.AtkValue)(unsafe.Pointer((&o).Native()))
+	_arg0 = (*C.AtkValue)(unsafe.Pointer(o.Native()))
 
 	_cret = C.atk_value_get_increment(_arg0)
 
@@ -250,12 +306,68 @@ func (o *ValueInterface) Increment() float64 {
 	return _gdouble
 }
 
+// MaximumValue gets the maximum value of this object.
+//
+// Deprecated.
+func (o *ValueInterface) MaximumValue() externglib.Value {
+	var _arg0 *C.AtkValue // out
+	var _arg1 C.GValue    // in
+
+	_arg0 = (*C.AtkValue)(unsafe.Pointer(o.Native()))
+
+	C.atk_value_get_maximum_value(_arg0, &_arg1)
+
+	var _value externglib.Value // out
+
+	_value = *externglib.ValueFromNative(unsafe.Pointer((&_arg1)))
+
+	return _value
+}
+
+// MinimumIncrement gets the minimum increment by which the value of this object
+// may be changed. If zero, the minimum increment is undefined, which may mean
+// that it is limited only by the floating point precision of the platform.
+//
+// Deprecated.
+func (o *ValueInterface) MinimumIncrement() externglib.Value {
+	var _arg0 *C.AtkValue // out
+	var _arg1 C.GValue    // in
+
+	_arg0 = (*C.AtkValue)(unsafe.Pointer(o.Native()))
+
+	C.atk_value_get_minimum_increment(_arg0, &_arg1)
+
+	var _value externglib.Value // out
+
+	_value = *externglib.ValueFromNative(unsafe.Pointer((&_arg1)))
+
+	return _value
+}
+
+// MinimumValue gets the minimum value of this object.
+//
+// Deprecated.
+func (o *ValueInterface) MinimumValue() externglib.Value {
+	var _arg0 *C.AtkValue // out
+	var _arg1 C.GValue    // in
+
+	_arg0 = (*C.AtkValue)(unsafe.Pointer(o.Native()))
+
+	C.atk_value_get_minimum_value(_arg0, &_arg1)
+
+	var _value externglib.Value // out
+
+	_value = *externglib.ValueFromNative(unsafe.Pointer((&_arg1)))
+
+	return _value
+}
+
 // Range gets the range of this object.
 func (o *ValueInterface) Range() *Range {
 	var _arg0 *C.AtkValue // out
 	var _cret *C.AtkRange // in
 
-	_arg0 = (*C.AtkValue)(unsafe.Pointer((&o).Native()))
+	_arg0 = (*C.AtkValue)(unsafe.Pointer(o.Native()))
 
 	_cret = C.atk_value_get_range(_arg0)
 
@@ -277,7 +389,7 @@ func (o *ValueInterface) ValueAndText() (float64, string) {
 	var _arg1 C.gdouble   // in
 	var _arg2 *C.gchar    // in
 
-	_arg0 = (*C.AtkValue)(unsafe.Pointer((&o).Native()))
+	_arg0 = (*C.AtkValue)(unsafe.Pointer(o.Native()))
 
 	C.atk_value_get_value_and_text(_arg0, &_arg1, &_arg2)
 
@@ -294,13 +406,13 @@ func (o *ValueInterface) ValueAndText() (float64, string) {
 // SetCurrentValue sets the value of this object.
 //
 // Deprecated.
-func (o *ValueInterface) SetCurrentValue(value externglib.Value) bool {
+func (o *ValueInterface) SetCurrentValue(value *externglib.Value) bool {
 	var _arg0 *C.AtkValue // out
 	var _arg1 *C.GValue   // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.AtkValue)(unsafe.Pointer((&o).Native()))
-	_arg1 = (*C.GValue)(unsafe.Pointer(&(&value).GValue))
+	_arg0 = (*C.AtkValue)(unsafe.Pointer(o.Native()))
+	_arg1 = (*C.GValue)(unsafe.Pointer(&value.GValue))
 
 	_cret = C.atk_value_set_current_value(_arg0, _arg1)
 
@@ -329,7 +441,7 @@ func (o *ValueInterface) SetValue(newValue float64) {
 	var _arg0 *C.AtkValue // out
 	var _arg1 C.gdouble   // out
 
-	_arg0 = (*C.AtkValue)(unsafe.Pointer((&o).Native()))
+	_arg0 = (*C.AtkValue)(unsafe.Pointer(o.Native()))
 	_arg1 = C.gdouble(newValue)
 
 	C.atk_value_set_value(_arg0, _arg1)

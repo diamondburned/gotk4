@@ -74,14 +74,13 @@ func NewNumericSorter(expression Expression) *NumericSorterClass {
 	var _arg1 *C.GtkExpression    // out
 	var _cret *C.GtkNumericSorter // in
 
-	_arg1 = (*C.GtkExpression)(unsafe.Pointer((&expression).Native()))
+	_arg1 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
 
 	_cret = C.gtk_numeric_sorter_new(_arg1)
 
 	var _numericSorter *NumericSorterClass // out
 
-	_numericSorter = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*NumericSorterClass)
+	_numericSorter = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*NumericSorterClass)
 
 	return _numericSorter
 }
@@ -92,14 +91,13 @@ func (s *NumericSorterClass) Expression() *ExpressionClass {
 	var _arg0 *C.GtkNumericSorter // out
 	var _cret *C.GtkExpression    // in
 
-	_arg0 = (*C.GtkNumericSorter)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkNumericSorter)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gtk_numeric_sorter_get_expression(_arg0)
 
 	var _expression *ExpressionClass // out
 
-	_expression = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*ExpressionClass)
+	_expression = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ExpressionClass)
 
 	return _expression
 }
@@ -109,7 +107,7 @@ func (s *NumericSorterClass) SortOrder() SortType {
 	var _arg0 *C.GtkNumericSorter // out
 	var _cret C.GtkSortType       // in
 
-	_arg0 = (*C.GtkNumericSorter)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkNumericSorter)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gtk_numeric_sorter_get_sort_order(_arg0)
 
@@ -132,8 +130,8 @@ func (s *NumericSorterClass) SetExpression(expression Expression) {
 	var _arg0 *C.GtkNumericSorter // out
 	var _arg1 *C.GtkExpression    // out
 
-	_arg0 = (*C.GtkNumericSorter)(unsafe.Pointer((&s).Native()))
-	_arg1 = (*C.GtkExpression)(unsafe.Pointer((&expression).Native()))
+	_arg0 = (*C.GtkNumericSorter)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
 
 	C.gtk_numeric_sorter_set_expression(_arg0, _arg1)
 }

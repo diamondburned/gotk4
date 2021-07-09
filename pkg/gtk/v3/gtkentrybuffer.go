@@ -153,8 +153,7 @@ func NewEntryBuffer(initialChars string, nInitialChars int) *EntryBufferClass {
 
 	var _entryBuffer *EntryBufferClass // out
 
-	_entryBuffer = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*EntryBufferClass)
+	_entryBuffer = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*EntryBufferClass)
 
 	return _entryBuffer
 }
@@ -173,7 +172,7 @@ func (b *EntryBufferClass) DeleteText(position uint, nChars int) uint {
 	var _arg2 C.gint            // out
 	var _cret C.guint           // in
 
-	_arg0 = (*C.GtkEntryBuffer)(unsafe.Pointer((&b).Native()))
+	_arg0 = (*C.GtkEntryBuffer)(unsafe.Pointer(b.Native()))
 	_arg1 = C.guint(position)
 	_arg2 = C.gint(nChars)
 
@@ -192,7 +191,7 @@ func (b *EntryBufferClass) EmitDeletedText(position uint, nChars uint) {
 	var _arg1 C.guint           // out
 	var _arg2 C.guint           // out
 
-	_arg0 = (*C.GtkEntryBuffer)(unsafe.Pointer((&b).Native()))
+	_arg0 = (*C.GtkEntryBuffer)(unsafe.Pointer(b.Native()))
 	_arg1 = C.guint(position)
 	_arg2 = C.guint(nChars)
 
@@ -206,7 +205,7 @@ func (b *EntryBufferClass) EmitInsertedText(position uint, chars string, nChars 
 	var _arg2 *C.gchar          // out
 	var _arg3 C.guint           // out
 
-	_arg0 = (*C.GtkEntryBuffer)(unsafe.Pointer((&b).Native()))
+	_arg0 = (*C.GtkEntryBuffer)(unsafe.Pointer(b.Native()))
 	_arg1 = C.guint(position)
 	_arg2 = (*C.gchar)(C.CString(chars))
 	defer C.free(unsafe.Pointer(_arg2))
@@ -221,7 +220,7 @@ func (b *EntryBufferClass) Bytes() uint {
 	var _arg0 *C.GtkEntryBuffer // out
 	var _cret C.gsize           // in
 
-	_arg0 = (*C.GtkEntryBuffer)(unsafe.Pointer((&b).Native()))
+	_arg0 = (*C.GtkEntryBuffer)(unsafe.Pointer(b.Native()))
 
 	_cret = C.gtk_entry_buffer_get_bytes(_arg0)
 
@@ -237,7 +236,7 @@ func (b *EntryBufferClass) Length() uint {
 	var _arg0 *C.GtkEntryBuffer // out
 	var _cret C.guint           // in
 
-	_arg0 = (*C.GtkEntryBuffer)(unsafe.Pointer((&b).Native()))
+	_arg0 = (*C.GtkEntryBuffer)(unsafe.Pointer(b.Native()))
 
 	_cret = C.gtk_entry_buffer_get_length(_arg0)
 
@@ -254,7 +253,7 @@ func (b *EntryBufferClass) MaxLength() int {
 	var _arg0 *C.GtkEntryBuffer // out
 	var _cret C.gint            // in
 
-	_arg0 = (*C.GtkEntryBuffer)(unsafe.Pointer((&b).Native()))
+	_arg0 = (*C.GtkEntryBuffer)(unsafe.Pointer(b.Native()))
 
 	_cret = C.gtk_entry_buffer_get_max_length(_arg0)
 
@@ -273,7 +272,7 @@ func (b *EntryBufferClass) Text() string {
 	var _arg0 *C.GtkEntryBuffer // out
 	var _cret *C.gchar          // in
 
-	_arg0 = (*C.GtkEntryBuffer)(unsafe.Pointer((&b).Native()))
+	_arg0 = (*C.GtkEntryBuffer)(unsafe.Pointer(b.Native()))
 
 	_cret = C.gtk_entry_buffer_get_text(_arg0)
 
@@ -299,7 +298,7 @@ func (b *EntryBufferClass) InsertText(position uint, chars string, nChars int) u
 	var _arg3 C.gint            // out
 	var _cret C.guint           // in
 
-	_arg0 = (*C.GtkEntryBuffer)(unsafe.Pointer((&b).Native()))
+	_arg0 = (*C.GtkEntryBuffer)(unsafe.Pointer(b.Native()))
 	_arg1 = C.guint(position)
 	_arg2 = (*C.gchar)(C.CString(chars))
 	defer C.free(unsafe.Pointer(_arg2))
@@ -321,7 +320,7 @@ func (b *EntryBufferClass) SetMaxLength(maxLength int) {
 	var _arg0 *C.GtkEntryBuffer // out
 	var _arg1 C.gint            // out
 
-	_arg0 = (*C.GtkEntryBuffer)(unsafe.Pointer((&b).Native()))
+	_arg0 = (*C.GtkEntryBuffer)(unsafe.Pointer(b.Native()))
 	_arg1 = C.gint(maxLength)
 
 	C.gtk_entry_buffer_set_max_length(_arg0, _arg1)
@@ -338,7 +337,7 @@ func (b *EntryBufferClass) SetText(chars string, nChars int) {
 	var _arg1 *C.gchar          // out
 	var _arg2 C.gint            // out
 
-	_arg0 = (*C.GtkEntryBuffer)(unsafe.Pointer((&b).Native()))
+	_arg0 = (*C.GtkEntryBuffer)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.gchar)(C.CString(chars))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint(nChars)

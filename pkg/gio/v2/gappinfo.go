@@ -270,7 +270,7 @@ func (a *AppInfoInterface) AddSupportsType(contentType string) error {
 	var _arg1 *C.char     // out
 	var _cerr *C.GError   // in
 
-	_arg0 = (*C.GAppInfo)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.GAppInfo)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.char)(C.CString(contentType))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -289,7 +289,7 @@ func (a *AppInfoInterface) CanDelete() bool {
 	var _arg0 *C.GAppInfo // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.GAppInfo)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.GAppInfo)(unsafe.Pointer(a.Native()))
 
 	_cret = C.g_app_info_can_delete(_arg0)
 
@@ -308,7 +308,7 @@ func (a *AppInfoInterface) CanRemoveSupportsType() bool {
 	var _arg0 *C.GAppInfo // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.GAppInfo)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.GAppInfo)(unsafe.Pointer(a.Native()))
 
 	_cret = C.g_app_info_can_remove_supports_type(_arg0)
 
@@ -330,7 +330,7 @@ func (a *AppInfoInterface) Delete() bool {
 	var _arg0 *C.GAppInfo // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.GAppInfo)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.GAppInfo)(unsafe.Pointer(a.Native()))
 
 	_cret = C.g_app_info_delete(_arg0)
 
@@ -348,14 +348,13 @@ func (a *AppInfoInterface) Dup() *AppInfoInterface {
 	var _arg0 *C.GAppInfo // out
 	var _cret *C.GAppInfo // in
 
-	_arg0 = (*C.GAppInfo)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.GAppInfo)(unsafe.Pointer(a.Native()))
 
 	_cret = C.g_app_info_dup(_arg0)
 
 	var _appInfo *AppInfoInterface // out
 
-	_appInfo = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*AppInfoInterface)
+	_appInfo = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*AppInfoInterface)
 
 	return _appInfo
 }
@@ -370,8 +369,8 @@ func (a *AppInfoInterface) Equal(appinfo2 AppInfo) bool {
 	var _arg1 *C.GAppInfo // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.GAppInfo)(unsafe.Pointer((&a).Native()))
-	_arg1 = (*C.GAppInfo)(unsafe.Pointer((&appinfo2).Native()))
+	_arg0 = (*C.GAppInfo)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.GAppInfo)(unsafe.Pointer(appinfo2.Native()))
 
 	_cret = C.g_app_info_equal(_arg0, _arg1)
 
@@ -389,7 +388,7 @@ func (a *AppInfoInterface) Commandline() string {
 	var _arg0 *C.GAppInfo // out
 	var _cret *C.char     // in
 
-	_arg0 = (*C.GAppInfo)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.GAppInfo)(unsafe.Pointer(a.Native()))
 
 	_cret = C.g_app_info_get_commandline(_arg0)
 
@@ -405,7 +404,7 @@ func (a *AppInfoInterface) Description() string {
 	var _arg0 *C.GAppInfo // out
 	var _cret *C.char     // in
 
-	_arg0 = (*C.GAppInfo)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.GAppInfo)(unsafe.Pointer(a.Native()))
 
 	_cret = C.g_app_info_get_description(_arg0)
 
@@ -422,7 +421,7 @@ func (a *AppInfoInterface) DisplayName() string {
 	var _arg0 *C.GAppInfo // out
 	var _cret *C.char     // in
 
-	_arg0 = (*C.GAppInfo)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.GAppInfo)(unsafe.Pointer(a.Native()))
 
 	_cret = C.g_app_info_get_display_name(_arg0)
 
@@ -438,7 +437,7 @@ func (a *AppInfoInterface) Executable() string {
 	var _arg0 *C.GAppInfo // out
 	var _cret *C.char     // in
 
-	_arg0 = (*C.GAppInfo)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.GAppInfo)(unsafe.Pointer(a.Native()))
 
 	_cret = C.g_app_info_get_executable(_arg0)
 
@@ -454,14 +453,13 @@ func (a *AppInfoInterface) Icon() *IconInterface {
 	var _arg0 *C.GAppInfo // out
 	var _cret *C.GIcon    // in
 
-	_arg0 = (*C.GAppInfo)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.GAppInfo)(unsafe.Pointer(a.Native()))
 
 	_cret = C.g_app_info_get_icon(_arg0)
 
 	var _icon *IconInterface // out
 
-	_icon = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*IconInterface)
+	_icon = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*IconInterface)
 
 	return _icon
 }
@@ -476,7 +474,7 @@ func (a *AppInfoInterface) ID() string {
 	var _arg0 *C.GAppInfo // out
 	var _cret *C.char     // in
 
-	_arg0 = (*C.GAppInfo)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.GAppInfo)(unsafe.Pointer(a.Native()))
 
 	_cret = C.g_app_info_get_id(_arg0)
 
@@ -492,7 +490,7 @@ func (a *AppInfoInterface) Name() string {
 	var _arg0 *C.GAppInfo // out
 	var _cret *C.char     // in
 
-	_arg0 = (*C.GAppInfo)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.GAppInfo)(unsafe.Pointer(a.Native()))
 
 	_cret = C.g_app_info_get_name(_arg0)
 
@@ -512,7 +510,7 @@ func (a *AppInfoInterface) SupportedTypes() []string {
 	var _arg0 *C.GAppInfo // out
 	var _cret **C.char
 
-	_arg0 = (*C.GAppInfo)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.GAppInfo)(unsafe.Pointer(a.Native()))
 
 	_cret = C.g_app_info_get_supported_types(_arg0)
 
@@ -541,8 +539,8 @@ func (a *AppInfoInterface) LaunchUrisFinish(result AsyncResult) error {
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GAppInfo)(unsafe.Pointer((&a).Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((&result).Native()))
+	_arg0 = (*C.GAppInfo)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_app_info_launch_uris_finish(_arg0, _arg1, &_cerr)
 
@@ -559,7 +557,7 @@ func (a *AppInfoInterface) RemoveSupportsType(contentType string) error {
 	var _arg1 *C.char     // out
 	var _cerr *C.GError   // in
 
-	_arg0 = (*C.GAppInfo)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.GAppInfo)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.char)(C.CString(contentType))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -579,7 +577,7 @@ func (a *AppInfoInterface) SetAsDefaultForExtension(extension string) error {
 	var _arg1 *C.char     // out
 	var _cerr *C.GError   // in
 
-	_arg0 = (*C.GAppInfo)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.GAppInfo)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.char)(C.CString(extension))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -599,7 +597,7 @@ func (a *AppInfoInterface) SetAsDefaultForType(contentType string) error {
 	var _arg1 *C.char     // out
 	var _cerr *C.GError   // in
 
-	_arg0 = (*C.GAppInfo)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.GAppInfo)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.char)(C.CString(contentType))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -621,7 +619,7 @@ func (a *AppInfoInterface) SetAsLastUsedForType(contentType string) error {
 	var _arg1 *C.char     // out
 	var _cerr *C.GError   // in
 
-	_arg0 = (*C.GAppInfo)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.GAppInfo)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.char)(C.CString(contentType))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -640,7 +638,7 @@ func (a *AppInfoInterface) ShouldShow() bool {
 	var _arg0 *C.GAppInfo // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.GAppInfo)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.GAppInfo)(unsafe.Pointer(a.Native()))
 
 	_cret = C.g_app_info_should_show(_arg0)
 
@@ -658,7 +656,7 @@ func (a *AppInfoInterface) SupportsFiles() bool {
 	var _arg0 *C.GAppInfo // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.GAppInfo)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.GAppInfo)(unsafe.Pointer(a.Native()))
 
 	_cret = C.g_app_info_supports_files(_arg0)
 
@@ -677,7 +675,7 @@ func (a *AppInfoInterface) SupportsUris() bool {
 	var _arg0 *C.GAppInfo // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.GAppInfo)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.GAppInfo)(unsafe.Pointer(a.Native()))
 
 	_cret = C.g_app_info_supports_uris(_arg0)
 
@@ -754,8 +752,7 @@ func NewAppLaunchContext() *AppLaunchContextClass {
 
 	var _appLaunchContext *AppLaunchContextClass // out
 
-	_appLaunchContext = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*AppLaunchContextClass)
+	_appLaunchContext = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*AppLaunchContextClass)
 
 	return _appLaunchContext
 }
@@ -767,7 +764,7 @@ func (c *AppLaunchContextClass) Environment() []string {
 	var _arg0 *C.GAppLaunchContext // out
 	var _cret **C.char
 
-	_arg0 = (*C.GAppLaunchContext)(unsafe.Pointer((&c).Native()))
+	_arg0 = (*C.GAppLaunchContext)(unsafe.Pointer(c.Native()))
 
 	_cret = C.g_app_launch_context_get_environment(_arg0)
 
@@ -798,7 +795,7 @@ func (c *AppLaunchContextClass) LaunchFailed(startupNotifyId string) {
 	var _arg0 *C.GAppLaunchContext // out
 	var _arg1 *C.char              // out
 
-	_arg0 = (*C.GAppLaunchContext)(unsafe.Pointer((&c).Native()))
+	_arg0 = (*C.GAppLaunchContext)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.char)(C.CString(startupNotifyId))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -812,7 +809,7 @@ func (c *AppLaunchContextClass) Setenv(variable string, value string) {
 	var _arg1 *C.char              // out
 	var _arg2 *C.char              // out
 
-	_arg0 = (*C.GAppLaunchContext)(unsafe.Pointer((&c).Native()))
+	_arg0 = (*C.GAppLaunchContext)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.char)(C.CString(variable))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.char)(C.CString(value))
@@ -827,7 +824,7 @@ func (c *AppLaunchContextClass) Unsetenv(variable string) {
 	var _arg0 *C.GAppLaunchContext // out
 	var _arg1 *C.char              // out
 
-	_arg0 = (*C.GAppLaunchContext)(unsafe.Pointer((&c).Native()))
+	_arg0 = (*C.GAppLaunchContext)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.char)(C.CString(variable))
 	defer C.free(unsafe.Pointer(_arg1))
 

@@ -116,7 +116,7 @@ func (m *SocketControlMessageClass) Level() int {
 	var _arg0 *C.GSocketControlMessage // out
 	var _cret C.int                    // in
 
-	_arg0 = (*C.GSocketControlMessage)(unsafe.Pointer((&m).Native()))
+	_arg0 = (*C.GSocketControlMessage)(unsafe.Pointer(m.Native()))
 
 	_cret = C.g_socket_control_message_get_level(_arg0)
 
@@ -133,7 +133,7 @@ func (m *SocketControlMessageClass) MsgType() int {
 	var _arg0 *C.GSocketControlMessage // out
 	var _cret C.int                    // in
 
-	_arg0 = (*C.GSocketControlMessage)(unsafe.Pointer((&m).Native()))
+	_arg0 = (*C.GSocketControlMessage)(unsafe.Pointer(m.Native()))
 
 	_cret = C.g_socket_control_message_get_msg_type(_arg0)
 
@@ -150,7 +150,7 @@ func (m *SocketControlMessageClass) Size() uint {
 	var _arg0 *C.GSocketControlMessage // out
 	var _cret C.gsize                  // in
 
-	_arg0 = (*C.GSocketControlMessage)(unsafe.Pointer((&m).Native()))
+	_arg0 = (*C.GSocketControlMessage)(unsafe.Pointer(m.Native()))
 
 	_cret = C.g_socket_control_message_get_size(_arg0)
 
@@ -169,7 +169,7 @@ func (m *SocketControlMessageClass) Serialize(data interface{}) {
 	var _arg0 *C.GSocketControlMessage // out
 	var _arg1 C.gpointer               // out
 
-	_arg0 = (*C.GSocketControlMessage)(unsafe.Pointer((&m).Native()))
+	_arg0 = (*C.GSocketControlMessage)(unsafe.Pointer(m.Native()))
 	_arg1 = (C.gpointer)(box.Assign(data))
 
 	C.g_socket_control_message_serialize(_arg0, _arg1)

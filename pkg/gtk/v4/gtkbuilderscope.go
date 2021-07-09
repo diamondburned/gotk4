@@ -149,8 +149,7 @@ func NewBuilderCScope() *BuilderCScopeClass {
 
 	var _builderCScope *BuilderCScopeClass // out
 
-	_builderCScope = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*BuilderCScopeClass)
+	_builderCScope = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*BuilderCScopeClass)
 
 	return _builderCScope
 }

@@ -88,8 +88,7 @@ func NewVSeparator() *VSeparatorClass {
 
 	var _vSeparator *VSeparatorClass // out
 
-	_vSeparator = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*VSeparatorClass)
+	_vSeparator = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*VSeparatorClass)
 
 	return _vSeparator
 }

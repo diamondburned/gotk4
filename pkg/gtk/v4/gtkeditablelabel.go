@@ -131,8 +131,7 @@ func NewEditableLabel(str string) *EditableLabelClass {
 
 	var _editableLabel *EditableLabelClass // out
 
-	_editableLabel = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*EditableLabelClass)
+	_editableLabel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*EditableLabelClass)
 
 	return _editableLabel
 }
@@ -142,7 +141,7 @@ func (s *EditableLabelClass) Editing() bool {
 	var _arg0 *C.GtkEditableLabel // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkEditableLabel)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkEditableLabel)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gtk_editable_label_get_editing(_arg0)
 
@@ -159,7 +158,7 @@ func (s *EditableLabelClass) Editing() bool {
 func (s *EditableLabelClass) StartEditing() {
 	var _arg0 *C.GtkEditableLabel // out
 
-	_arg0 = (*C.GtkEditableLabel)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkEditableLabel)(unsafe.Pointer(s.Native()))
 
 	C.gtk_editable_label_start_editing(_arg0)
 }
@@ -174,7 +173,7 @@ func (s *EditableLabelClass) StopEditing(commit bool) {
 	var _arg0 *C.GtkEditableLabel // out
 	var _arg1 C.gboolean          // out
 
-	_arg0 = (*C.GtkEditableLabel)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkEditableLabel)(unsafe.Pointer(s.Native()))
 	if commit {
 		_arg1 = C.TRUE
 	}

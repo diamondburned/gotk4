@@ -90,14 +90,13 @@ func (i *DBusInterfaceInterface) DupObject() *DBusObjectInterface {
 	var _arg0 *C.GDBusInterface // out
 	var _cret *C.GDBusObject    // in
 
-	_arg0 = (*C.GDBusInterface)(unsafe.Pointer((&i).Native()))
+	_arg0 = (*C.GDBusInterface)(unsafe.Pointer(i.Native()))
 
 	_cret = C.g_dbus_interface_dup_object(_arg0)
 
 	var _dBusObject *DBusObjectInterface // out
 
-	_dBusObject = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*DBusObjectInterface)
+	_dBusObject = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*DBusObjectInterface)
 
 	return _dBusObject
 }
@@ -108,7 +107,7 @@ func (i *DBusInterfaceInterface) Info() *DBusInterfaceInfo {
 	var _arg0 *C.GDBusInterface     // out
 	var _cret *C.GDBusInterfaceInfo // in
 
-	_arg0 = (*C.GDBusInterface)(unsafe.Pointer((&i).Native()))
+	_arg0 = (*C.GDBusInterface)(unsafe.Pointer(i.Native()))
 
 	_cret = C.g_dbus_interface_get_info(_arg0)
 
@@ -130,8 +129,8 @@ func (i *DBusInterfaceInterface) SetObject(object DBusObject) {
 	var _arg0 *C.GDBusInterface // out
 	var _arg1 *C.GDBusObject    // out
 
-	_arg0 = (*C.GDBusInterface)(unsafe.Pointer((&i).Native()))
-	_arg1 = (*C.GDBusObject)(unsafe.Pointer((&object).Native()))
+	_arg0 = (*C.GDBusInterface)(unsafe.Pointer(i.Native()))
+	_arg1 = (*C.GDBusObject)(unsafe.Pointer(object.Native()))
 
 	C.g_dbus_interface_set_object(_arg0, _arg1)
 }

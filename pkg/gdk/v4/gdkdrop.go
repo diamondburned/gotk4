@@ -106,7 +106,7 @@ func (s *DropClass) Actions() DragAction {
 	var _arg0 *C.GdkDrop      // out
 	var _cret C.GdkDragAction // in
 
-	_arg0 = (*C.GdkDrop)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GdkDrop)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gdk_drop_get_actions(_arg0)
 
@@ -122,14 +122,13 @@ func (s *DropClass) Device() *DeviceClass {
 	var _arg0 *C.GdkDrop   // out
 	var _cret *C.GdkDevice // in
 
-	_arg0 = (*C.GdkDrop)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GdkDrop)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gdk_drop_get_device(_arg0)
 
 	var _device *DeviceClass // out
 
-	_device = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*DeviceClass)
+	_device = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*DeviceClass)
 
 	return _device
 }
@@ -139,14 +138,13 @@ func (s *DropClass) Display() *DisplayClass {
 	var _arg0 *C.GdkDrop    // out
 	var _cret *C.GdkDisplay // in
 
-	_arg0 = (*C.GdkDrop)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GdkDrop)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gdk_drop_get_display(_arg0)
 
 	var _display *DisplayClass // out
 
-	_display = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*DisplayClass)
+	_display = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*DisplayClass)
 
 	return _display
 }
@@ -159,14 +157,13 @@ func (s *DropClass) Drag() *DragClass {
 	var _arg0 *C.GdkDrop // out
 	var _cret *C.GdkDrag // in
 
-	_arg0 = (*C.GdkDrop)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GdkDrop)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gdk_drop_get_drag(_arg0)
 
 	var _drag *DragClass // out
 
-	_drag = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*DragClass)
+	_drag = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*DragClass)
 
 	return _drag
 }
@@ -177,7 +174,7 @@ func (s *DropClass) Formats() *ContentFormats {
 	var _arg0 *C.GdkDrop           // out
 	var _cret *C.GdkContentFormats // in
 
-	_arg0 = (*C.GdkDrop)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GdkDrop)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gdk_drop_get_formats(_arg0)
 
@@ -197,14 +194,13 @@ func (s *DropClass) Surface() *SurfaceClass {
 	var _arg0 *C.GdkDrop    // out
 	var _cret *C.GdkSurface // in
 
-	_arg0 = (*C.GdkDrop)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GdkDrop)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gdk_drop_get_surface(_arg0)
 
 	var _surface *SurfaceClass // out
 
-	_surface = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*SurfaceClass)
+	_surface = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*SurfaceClass)
 
 	return _surface
 }

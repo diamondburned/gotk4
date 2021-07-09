@@ -66,8 +66,7 @@ func NewCairoRenderer() *CairoRendererClass {
 
 	var _cairoRenderer *CairoRendererClass // out
 
-	_cairoRenderer = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*CairoRendererClass)
+	_cairoRenderer = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*CairoRendererClass)
 
 	return _cairoRenderer
 }

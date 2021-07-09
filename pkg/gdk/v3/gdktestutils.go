@@ -20,7 +20,7 @@ import "C"
 func TestRenderSync(window Window) {
 	var _arg1 *C.GdkWindow // out
 
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer((&window).Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	C.gdk_test_render_sync(_arg1)
 }

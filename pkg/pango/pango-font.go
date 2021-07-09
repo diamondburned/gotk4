@@ -263,7 +263,7 @@ func (f *FontClass) Describe() *FontDescription {
 	var _arg0 *C.PangoFont            // out
 	var _cret *C.PangoFontDescription // in
 
-	_arg0 = (*C.PangoFont)(unsafe.Pointer((&f).Native()))
+	_arg0 = (*C.PangoFont)(unsafe.Pointer(f.Native()))
 
 	_cret = C.pango_font_describe(_arg0)
 
@@ -285,7 +285,7 @@ func (f *FontClass) DescribeWithAbsoluteSize() *FontDescription {
 	var _arg0 *C.PangoFont            // out
 	var _cret *C.PangoFontDescription // in
 
-	_arg0 = (*C.PangoFont)(unsafe.Pointer((&f).Native()))
+	_arg0 = (*C.PangoFont)(unsafe.Pointer(f.Native()))
 
 	_cret = C.pango_font_describe_with_absolute_size(_arg0)
 
@@ -305,15 +305,14 @@ func (f *FontClass) Coverage(language *Language) *CoverageClass {
 	var _arg1 *C.PangoLanguage // out
 	var _cret *C.PangoCoverage // in
 
-	_arg0 = (*C.PangoFont)(unsafe.Pointer((&f).Native()))
+	_arg0 = (*C.PangoFont)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.PangoLanguage)(unsafe.Pointer(language))
 
 	_cret = C.pango_font_get_coverage(_arg0, _arg1)
 
 	var _coverage *CoverageClass // out
 
-	_coverage = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*CoverageClass)
+	_coverage = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*CoverageClass)
 
 	return _coverage
 }
@@ -323,14 +322,13 @@ func (f *FontClass) Face() *FontFaceClass {
 	var _arg0 *C.PangoFont     // out
 	var _cret *C.PangoFontFace // in
 
-	_arg0 = (*C.PangoFont)(unsafe.Pointer((&f).Native()))
+	_arg0 = (*C.PangoFont)(unsafe.Pointer(f.Native()))
 
 	_cret = C.pango_font_get_face(_arg0)
 
 	var _fontFace *FontFaceClass // out
 
-	_fontFace = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*FontFaceClass)
+	_fontFace = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*FontFaceClass)
 
 	return _fontFace
 }
@@ -349,14 +347,13 @@ func (f *FontClass) FontMap() *FontMapClass {
 	var _arg0 *C.PangoFont    // out
 	var _cret *C.PangoFontMap // in
 
-	_arg0 = (*C.PangoFont)(unsafe.Pointer((&f).Native()))
+	_arg0 = (*C.PangoFont)(unsafe.Pointer(f.Native()))
 
 	_cret = C.pango_font_get_font_map(_arg0)
 
 	var _fontMap *FontMapClass // out
 
-	_fontMap = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*FontMapClass)
+	_fontMap = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*FontMapClass)
 
 	return _fontMap
 }
@@ -374,7 +371,7 @@ func (f *FontClass) Metrics(language *Language) *FontMetrics {
 	var _arg1 *C.PangoLanguage    // out
 	var _cret *C.PangoFontMetrics // in
 
-	_arg0 = (*C.PangoFont)(unsafe.Pointer((&f).Native()))
+	_arg0 = (*C.PangoFont)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.PangoLanguage)(unsafe.Pointer(language))
 
 	_cret = C.pango_font_get_metrics(_arg0, _arg1)
@@ -398,7 +395,7 @@ func (f *FontClass) HasChar(wc uint32) bool {
 	var _arg1 C.gunichar   // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.PangoFont)(unsafe.Pointer((&f).Native()))
+	_arg0 = (*C.PangoFont)(unsafe.Pointer(f.Native()))
 	_arg1 = C.gunichar(wc)
 
 	_cret = C.pango_font_has_char(_arg0, _arg1)
@@ -494,7 +491,7 @@ func (f *FontFaceClass) Describe() *FontDescription {
 	var _arg0 *C.PangoFontFace        // out
 	var _cret *C.PangoFontDescription // in
 
-	_arg0 = (*C.PangoFontFace)(unsafe.Pointer((&f).Native()))
+	_arg0 = (*C.PangoFontFace)(unsafe.Pointer(f.Native()))
 
 	_cret = C.pango_font_face_describe(_arg0)
 
@@ -515,7 +512,7 @@ func (f *FontFaceClass) FaceName() string {
 	var _arg0 *C.PangoFontFace // out
 	var _cret *C.char          // in
 
-	_arg0 = (*C.PangoFontFace)(unsafe.Pointer((&f).Native()))
+	_arg0 = (*C.PangoFontFace)(unsafe.Pointer(f.Native()))
 
 	_cret = C.pango_font_face_get_face_name(_arg0)
 
@@ -531,14 +528,13 @@ func (f *FontFaceClass) Family() *FontFamilyClass {
 	var _arg0 *C.PangoFontFace   // out
 	var _cret *C.PangoFontFamily // in
 
-	_arg0 = (*C.PangoFontFace)(unsafe.Pointer((&f).Native()))
+	_arg0 = (*C.PangoFontFace)(unsafe.Pointer(f.Native()))
 
 	_cret = C.pango_font_face_get_family(_arg0)
 
 	var _fontFamily *FontFamilyClass // out
 
-	_fontFamily = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*FontFamilyClass)
+	_fontFamily = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*FontFamilyClass)
 
 	return _fontFamily
 }
@@ -550,7 +546,7 @@ func (f *FontFaceClass) IsSynthesized() bool {
 	var _arg0 *C.PangoFontFace // out
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.PangoFontFace)(unsafe.Pointer((&f).Native()))
+	_arg0 = (*C.PangoFontFace)(unsafe.Pointer(f.Native()))
 
 	_cret = C.pango_font_face_is_synthesized(_arg0)
 
@@ -574,7 +570,7 @@ func (f *FontFaceClass) ListSizes() []int {
 	var _arg1 *C.int
 	var _arg2 C.int // in
 
-	_arg0 = (*C.PangoFontFace)(unsafe.Pointer((&f).Native()))
+	_arg0 = (*C.PangoFontFace)(unsafe.Pointer(f.Native()))
 
 	C.pango_font_face_list_sizes(_arg0, &_arg1, &_arg2)
 
@@ -690,7 +686,7 @@ func (f *FontFamilyClass) Face(name string) *FontFaceClass {
 	var _arg1 *C.char            // out
 	var _cret *C.PangoFontFace   // in
 
-	_arg0 = (*C.PangoFontFamily)(unsafe.Pointer((&f).Native()))
+	_arg0 = (*C.PangoFontFamily)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.char)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -698,8 +694,7 @@ func (f *FontFamilyClass) Face(name string) *FontFaceClass {
 
 	var _fontFace *FontFaceClass // out
 
-	_fontFace = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*FontFaceClass)
+	_fontFace = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*FontFaceClass)
 
 	return _fontFace
 }
@@ -712,7 +707,7 @@ func (f *FontFamilyClass) Name() string {
 	var _arg0 *C.PangoFontFamily // out
 	var _cret *C.char            // in
 
-	_arg0 = (*C.PangoFontFamily)(unsafe.Pointer((&f).Native()))
+	_arg0 = (*C.PangoFontFamily)(unsafe.Pointer(f.Native()))
 
 	_cret = C.pango_font_family_get_name(_arg0)
 
@@ -740,7 +735,7 @@ func (f *FontFamilyClass) IsMonospace() bool {
 	var _arg0 *C.PangoFontFamily // out
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.PangoFontFamily)(unsafe.Pointer((&f).Native()))
+	_arg0 = (*C.PangoFontFamily)(unsafe.Pointer(f.Native()))
 
 	_cret = C.pango_font_family_is_monospace(_arg0)
 
@@ -759,7 +754,7 @@ func (f *FontFamilyClass) IsVariable() bool {
 	var _arg0 *C.PangoFontFamily // out
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.PangoFontFamily)(unsafe.Pointer((&f).Native()))
+	_arg0 = (*C.PangoFontFamily)(unsafe.Pointer(f.Native()))
 
 	_cret = C.pango_font_family_is_variable(_arg0)
 
@@ -781,7 +776,7 @@ func (f *FontFamilyClass) ListFaces() []*FontFaceClass {
 	var _arg1 **C.PangoFontFace
 	var _arg2 C.int // in
 
-	_arg0 = (*C.PangoFontFamily)(unsafe.Pointer((&f).Native()))
+	_arg0 = (*C.PangoFontFamily)(unsafe.Pointer(f.Native()))
 
 	C.pango_font_family_list_faces(_arg0, &_arg1, &_arg2)
 
@@ -792,8 +787,7 @@ func (f *FontFamilyClass) ListFaces() []*FontFaceClass {
 		src := unsafe.Slice(_arg1, _arg2)
 		_faces = make([]*FontFaceClass, _arg2)
 		for i := 0; i < int(_arg2); i++ {
-			_faces[i] = gextras.CastObject(
-				externglib.Take(unsafe.Pointer(src[i]))).(*FontFaceClass)
+			_faces[i] = (gextras.CastObject(externglib.Take(unsafe.Pointer(src[i])))).(*FontFaceClass)
 		}
 	}
 

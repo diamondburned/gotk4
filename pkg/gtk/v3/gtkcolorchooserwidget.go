@@ -111,8 +111,7 @@ func NewColorChooserWidget() *ColorChooserWidgetClass {
 
 	var _colorChooserWidget *ColorChooserWidgetClass // out
 
-	_colorChooserWidget = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*ColorChooserWidgetClass)
+	_colorChooserWidget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ColorChooserWidgetClass)
 
 	return _colorChooserWidget
 }

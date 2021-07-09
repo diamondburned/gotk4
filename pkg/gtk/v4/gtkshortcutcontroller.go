@@ -113,8 +113,7 @@ func NewShortcutController() *ShortcutControllerClass {
 
 	var _shortcutController *ShortcutControllerClass // out
 
-	_shortcutController = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*ShortcutControllerClass)
+	_shortcutController = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*ShortcutControllerClass)
 
 	return _shortcutController
 }
@@ -127,8 +126,8 @@ func (s *ShortcutControllerClass) AddShortcut(shortcut Shortcut) {
 	var _arg0 *C.GtkShortcutController // out
 	var _arg1 *C.GtkShortcut           // out
 
-	_arg0 = (*C.GtkShortcutController)(unsafe.Pointer((&s).Native()))
-	_arg1 = (*C.GtkShortcut)(unsafe.Pointer((&shortcut).Native()))
+	_arg0 = (*C.GtkShortcutController)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GtkShortcut)(unsafe.Pointer(shortcut.Native()))
 
 	C.gtk_shortcut_controller_add_shortcut(_arg0, _arg1)
 }
@@ -139,7 +138,7 @@ func (s *ShortcutControllerClass) MnemonicsModifiers() gdk.ModifierType {
 	var _arg0 *C.GtkShortcutController // out
 	var _cret C.GdkModifierType        // in
 
-	_arg0 = (*C.GtkShortcutController)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkShortcutController)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gtk_shortcut_controller_get_mnemonics_modifiers(_arg0)
 
@@ -156,7 +155,7 @@ func (s *ShortcutControllerClass) Scope() ShortcutScope {
 	var _arg0 *C.GtkShortcutController // out
 	var _cret C.GtkShortcutScope       // in
 
-	_arg0 = (*C.GtkShortcutController)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkShortcutController)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gtk_shortcut_controller_get_scope(_arg0)
 
@@ -175,8 +174,8 @@ func (s *ShortcutControllerClass) RemoveShortcut(shortcut Shortcut) {
 	var _arg0 *C.GtkShortcutController // out
 	var _arg1 *C.GtkShortcut           // out
 
-	_arg0 = (*C.GtkShortcutController)(unsafe.Pointer((&s).Native()))
-	_arg1 = (*C.GtkShortcut)(unsafe.Pointer((&shortcut).Native()))
+	_arg0 = (*C.GtkShortcutController)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GtkShortcut)(unsafe.Pointer(shortcut.Native()))
 
 	C.gtk_shortcut_controller_remove_shortcut(_arg0, _arg1)
 }

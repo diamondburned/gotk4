@@ -163,12 +163,11 @@ func (g *Generator) renderBlock() bool {
 		if g.Parameters.InstanceParameter != nil {
 			instanceParam = true
 
-			callableValues = append(callableValues, typeconv.NewValue(
+			callableValues = append(callableValues, typeconv.NewReceiverValue(
 				strcases.FirstLetter(g.Parameters.InstanceParameter.Name),
 				"_arg0",
-				-1,
 				typeconv.ConvertGoToC,
-				g.Parameters.InstanceParameter.ParameterAttrs,
+				g.Parameters.InstanceParameter,
 			))
 		}
 
@@ -194,7 +193,7 @@ func (g *Generator) renderBlock() bool {
 				return false
 			}
 
-			value := typeconv.NewValue(in, out, i, dir, param.ParameterAttrs)
+			value := typeconv.NewValue(in, out, i, dir, param)
 			callableValues = append(callableValues, value)
 		}
 	}

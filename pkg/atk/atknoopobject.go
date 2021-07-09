@@ -112,14 +112,13 @@ func NewNoOpObject(obj gextras.Objector) *NoOpObjectClass {
 	var _arg1 *C.GObject   // out
 	var _cret *C.AtkObject // in
 
-	_arg1 = (*C.GObject)(unsafe.Pointer((&obj).Native()))
+	_arg1 = (*C.GObject)(unsafe.Pointer(obj.Native()))
 
 	_cret = C.atk_no_op_object_new(_arg1)
 
 	var _noOpObject *NoOpObjectClass // out
 
-	_noOpObject = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*NoOpObjectClass)
+	_noOpObject = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*NoOpObjectClass)
 
 	return _noOpObject
 }

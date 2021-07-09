@@ -90,8 +90,7 @@ func NewThemedIcon(iconname string) *ThemedIconClass {
 
 	var _themedIcon *ThemedIconClass // out
 
-	_themedIcon = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*ThemedIconClass)
+	_themedIcon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*ThemedIconClass)
 
 	return _themedIcon
 }
@@ -117,8 +116,7 @@ func NewThemedIconFromNames(iconnames []string) *ThemedIconClass {
 
 	var _themedIcon *ThemedIconClass // out
 
-	_themedIcon = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*ThemedIconClass)
+	_themedIcon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*ThemedIconClass)
 
 	return _themedIcon
 }
@@ -149,8 +147,7 @@ func NewThemedIconWithDefaultFallbacks(iconname string) *ThemedIconClass {
 
 	var _themedIcon *ThemedIconClass // out
 
-	_themedIcon = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*ThemedIconClass)
+	_themedIcon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*ThemedIconClass)
 
 	return _themedIcon
 }
@@ -163,7 +160,7 @@ func (i *ThemedIconClass) AppendName(iconname string) {
 	var _arg0 *C.GThemedIcon // out
 	var _arg1 *C.char        // out
 
-	_arg0 = (*C.GThemedIcon)(unsafe.Pointer((&i).Native()))
+	_arg0 = (*C.GThemedIcon)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.char)(C.CString(iconname))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -175,7 +172,7 @@ func (i *ThemedIconClass) Names() []string {
 	var _arg0 *C.GThemedIcon // out
 	var _cret **C.gchar
 
-	_arg0 = (*C.GThemedIcon)(unsafe.Pointer((&i).Native()))
+	_arg0 = (*C.GThemedIcon)(unsafe.Pointer(i.Native()))
 
 	_cret = C.g_themed_icon_get_names(_arg0)
 
@@ -206,7 +203,7 @@ func (i *ThemedIconClass) PrependName(iconname string) {
 	var _arg0 *C.GThemedIcon // out
 	var _arg1 *C.char        // out
 
-	_arg0 = (*C.GThemedIcon)(unsafe.Pointer((&i).Native()))
+	_arg0 = (*C.GThemedIcon)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.char)(C.CString(iconname))
 	defer C.free(unsafe.Pointer(_arg1))
 

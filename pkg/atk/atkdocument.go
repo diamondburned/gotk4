@@ -121,7 +121,7 @@ func (d *DocumentInterface) AttributeValue(attributeName string) string {
 	var _arg1 *C.gchar       // out
 	var _cret *C.gchar       // in
 
-	_arg0 = (*C.AtkDocument)(unsafe.Pointer((&d).Native()))
+	_arg0 = (*C.AtkDocument)(unsafe.Pointer(d.Native()))
 	_arg1 = (*C.gchar)(C.CString(attributeName))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -139,7 +139,7 @@ func (d *DocumentInterface) CurrentPageNumber() int {
 	var _arg0 *C.AtkDocument // out
 	var _cret C.gint         // in
 
-	_arg0 = (*C.AtkDocument)(unsafe.Pointer((&d).Native()))
+	_arg0 = (*C.AtkDocument)(unsafe.Pointer(d.Native()))
 
 	_cret = C.atk_document_get_current_page_number(_arg0)
 
@@ -159,7 +159,7 @@ func (d *DocumentInterface) Document() interface{} {
 	var _arg0 *C.AtkDocument // out
 	var _cret C.gpointer     // in
 
-	_arg0 = (*C.AtkDocument)(unsafe.Pointer((&d).Native()))
+	_arg0 = (*C.AtkDocument)(unsafe.Pointer(d.Native()))
 
 	_cret = C.atk_document_get_document(_arg0)
 
@@ -177,7 +177,7 @@ func (d *DocumentInterface) DocumentType() string {
 	var _arg0 *C.AtkDocument // out
 	var _cret *C.gchar       // in
 
-	_arg0 = (*C.AtkDocument)(unsafe.Pointer((&d).Native()))
+	_arg0 = (*C.AtkDocument)(unsafe.Pointer(d.Native()))
 
 	_cret = C.atk_document_get_document_type(_arg0)
 
@@ -198,7 +198,7 @@ func (d *DocumentInterface) Locale() string {
 	var _arg0 *C.AtkDocument // out
 	var _cret *C.gchar       // in
 
-	_arg0 = (*C.AtkDocument)(unsafe.Pointer((&d).Native()))
+	_arg0 = (*C.AtkDocument)(unsafe.Pointer(d.Native()))
 
 	_cret = C.atk_document_get_locale(_arg0)
 
@@ -214,7 +214,7 @@ func (d *DocumentInterface) PageCount() int {
 	var _arg0 *C.AtkDocument // out
 	var _cret C.gint         // in
 
-	_arg0 = (*C.AtkDocument)(unsafe.Pointer((&d).Native()))
+	_arg0 = (*C.AtkDocument)(unsafe.Pointer(d.Native()))
 
 	_cret = C.atk_document_get_page_count(_arg0)
 
@@ -233,7 +233,7 @@ func (d *DocumentInterface) SetAttributeValue(attributeName string, attributeVal
 	var _arg2 *C.gchar       // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.AtkDocument)(unsafe.Pointer((&d).Native()))
+	_arg0 = (*C.AtkDocument)(unsafe.Pointer(d.Native()))
 	_arg1 = (*C.gchar)(C.CString(attributeName))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(C.CString(attributeValue))

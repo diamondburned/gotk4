@@ -111,8 +111,7 @@ func NewStackSwitcher() *StackSwitcherClass {
 
 	var _stackSwitcher *StackSwitcherClass // out
 
-	_stackSwitcher = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*StackSwitcherClass)
+	_stackSwitcher = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*StackSwitcherClass)
 
 	return _stackSwitcher
 }
@@ -122,14 +121,13 @@ func (s *StackSwitcherClass) Stack() *StackClass {
 	var _arg0 *C.GtkStackSwitcher // out
 	var _cret *C.GtkStack         // in
 
-	_arg0 = (*C.GtkStackSwitcher)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkStackSwitcher)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gtk_stack_switcher_get_stack(_arg0)
 
 	var _stack *StackClass // out
 
-	_stack = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*StackClass)
+	_stack = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*StackClass)
 
 	return _stack
 }
@@ -139,8 +137,8 @@ func (s *StackSwitcherClass) SetStack(stack Stack) {
 	var _arg0 *C.GtkStackSwitcher // out
 	var _arg1 *C.GtkStack         // out
 
-	_arg0 = (*C.GtkStackSwitcher)(unsafe.Pointer((&s).Native()))
-	_arg1 = (*C.GtkStack)(unsafe.Pointer((&stack).Native()))
+	_arg0 = (*C.GtkStackSwitcher)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GtkStack)(unsafe.Pointer(stack.Native()))
 
 	C.gtk_stack_switcher_set_stack(_arg0, _arg1)
 }

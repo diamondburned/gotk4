@@ -24,6 +24,18 @@ func init() {
 	})
 }
 
+// ScrollableOverrider contains methods that are overridable.
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type ScrollableOverrider interface {
+	// Border returns the size of a non-scrolling border around the outside of
+	// the scrollable. An example for this would be treeview headers. GTK+ can
+	// use this information to display overlayed graphics, like the overshoot
+	// indication, at the right position.
+	Border() (Border, bool)
+}
+
 // Scrollable is an interface that is implemented by widgets with native
 // scrolling ability.
 //
@@ -52,6 +64,11 @@ func init() {
 type Scrollable interface {
 	gextras.Objector
 
+	// Border returns the size of a non-scrolling border around the outside of
+	// the scrollable. An example for this would be treeview headers. GTK+ can
+	// use this information to display overlayed graphics, like the overshoot
+	// indication, at the right position.
+	Border() (Border, bool)
 	// HAdjustment retrieves the Adjustment used for horizontal scrolling.
 	HAdjustment() *AdjustmentClass
 	// HscrollPolicy gets the horizontal ScrollablePolicy.
@@ -85,19 +102,42 @@ func marshalScrollable(p uintptr) (interface{}, error) {
 	return wrapScrollable(obj), nil
 }
 
+// Border returns the size of a non-scrolling border around the outside of the
+// scrollable. An example for this would be treeview headers. GTK+ can use this
+// information to display overlayed graphics, like the overshoot indication, at
+// the right position.
+func (s *ScrollableInterface) Border() (Border, bool) {
+	var _arg0 *C.GtkScrollable // out
+	var _arg1 C.GtkBorder      // in
+	var _cret C.gboolean       // in
+
+	_arg0 = (*C.GtkScrollable)(unsafe.Pointer(s.Native()))
+
+	_cret = C.gtk_scrollable_get_border(_arg0, &_arg1)
+
+	var _border Border // out
+	var _ok bool       // out
+
+	_border = *(*Border)(unsafe.Pointer((&_arg1)))
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _border, _ok
+}
+
 // HAdjustment retrieves the Adjustment used for horizontal scrolling.
 func (s *ScrollableInterface) HAdjustment() *AdjustmentClass {
 	var _arg0 *C.GtkScrollable // out
 	var _cret *C.GtkAdjustment // in
 
-	_arg0 = (*C.GtkScrollable)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkScrollable)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gtk_scrollable_get_hadjustment(_arg0)
 
 	var _adjustment *AdjustmentClass // out
 
-	_adjustment = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*AdjustmentClass)
+	_adjustment = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*AdjustmentClass)
 
 	return _adjustment
 }
@@ -107,7 +147,7 @@ func (s *ScrollableInterface) HscrollPolicy() ScrollablePolicy {
 	var _arg0 *C.GtkScrollable      // out
 	var _cret C.GtkScrollablePolicy // in
 
-	_arg0 = (*C.GtkScrollable)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkScrollable)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gtk_scrollable_get_hscroll_policy(_arg0)
 
@@ -123,14 +163,13 @@ func (s *ScrollableInterface) VAdjustment() *AdjustmentClass {
 	var _arg0 *C.GtkScrollable // out
 	var _cret *C.GtkAdjustment // in
 
-	_arg0 = (*C.GtkScrollable)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkScrollable)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gtk_scrollable_get_vadjustment(_arg0)
 
 	var _adjustment *AdjustmentClass // out
 
-	_adjustment = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*AdjustmentClass)
+	_adjustment = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*AdjustmentClass)
 
 	return _adjustment
 }
@@ -140,7 +179,7 @@ func (s *ScrollableInterface) VscrollPolicy() ScrollablePolicy {
 	var _arg0 *C.GtkScrollable      // out
 	var _cret C.GtkScrollablePolicy // in
 
-	_arg0 = (*C.GtkScrollable)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkScrollable)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gtk_scrollable_get_vscroll_policy(_arg0)
 
@@ -156,8 +195,8 @@ func (s *ScrollableInterface) SetHAdjustment(hadjustment Adjustment) {
 	var _arg0 *C.GtkScrollable // out
 	var _arg1 *C.GtkAdjustment // out
 
-	_arg0 = (*C.GtkScrollable)(unsafe.Pointer((&s).Native()))
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer((&hadjustment).Native()))
+	_arg0 = (*C.GtkScrollable)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(hadjustment.Native()))
 
 	C.gtk_scrollable_set_hadjustment(_arg0, _arg1)
 }
@@ -167,8 +206,8 @@ func (s *ScrollableInterface) SetVAdjustment(vadjustment Adjustment) {
 	var _arg0 *C.GtkScrollable // out
 	var _arg1 *C.GtkAdjustment // out
 
-	_arg0 = (*C.GtkScrollable)(unsafe.Pointer((&s).Native()))
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer((&vadjustment).Native()))
+	_arg0 = (*C.GtkScrollable)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(vadjustment.Native()))
 
 	C.gtk_scrollable_set_vadjustment(_arg0, _arg1)
 }

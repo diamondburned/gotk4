@@ -101,8 +101,7 @@ func NewRecentChooserWidget() *RecentChooserWidgetClass {
 
 	var _recentChooserWidget *RecentChooserWidgetClass // out
 
-	_recentChooserWidget = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*RecentChooserWidgetClass)
+	_recentChooserWidget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*RecentChooserWidgetClass)
 
 	return _recentChooserWidget
 }
@@ -116,14 +115,13 @@ func NewRecentChooserWidgetForManager(manager RecentManager) *RecentChooserWidge
 	var _arg1 *C.GtkRecentManager // out
 	var _cret *C.GtkWidget        // in
 
-	_arg1 = (*C.GtkRecentManager)(unsafe.Pointer((&manager).Native()))
+	_arg1 = (*C.GtkRecentManager)(unsafe.Pointer(manager.Native()))
 
 	_cret = C.gtk_recent_chooser_widget_new_for_manager(_arg1)
 
 	var _recentChooserWidget *RecentChooserWidgetClass // out
 
-	_recentChooserWidget = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*RecentChooserWidgetClass)
+	_recentChooserWidget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*RecentChooserWidgetClass)
 
 	return _recentChooserWidget
 }

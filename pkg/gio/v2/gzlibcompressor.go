@@ -77,14 +77,13 @@ func (c *ZlibCompressorClass) FileInfo() *FileInfoClass {
 	var _arg0 *C.GZlibCompressor // out
 	var _cret *C.GFileInfo       // in
 
-	_arg0 = (*C.GZlibCompressor)(unsafe.Pointer((&c).Native()))
+	_arg0 = (*C.GZlibCompressor)(unsafe.Pointer(c.Native()))
 
 	_cret = C.g_zlib_compressor_get_file_info(_arg0)
 
 	var _fileInfo *FileInfoClass // out
 
-	_fileInfo = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*FileInfoClass)
+	_fileInfo = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*FileInfoClass)
 
 	return _fileInfo
 }
@@ -101,8 +100,8 @@ func (c *ZlibCompressorClass) SetFileInfo(fileInfo FileInfo) {
 	var _arg0 *C.GZlibCompressor // out
 	var _arg1 *C.GFileInfo       // out
 
-	_arg0 = (*C.GZlibCompressor)(unsafe.Pointer((&c).Native()))
-	_arg1 = (*C.GFileInfo)(unsafe.Pointer((&fileInfo).Native()))
+	_arg0 = (*C.GZlibCompressor)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.GFileInfo)(unsafe.Pointer(fileInfo.Native()))
 
 	C.g_zlib_compressor_set_file_info(_arg0, _arg1)
 }

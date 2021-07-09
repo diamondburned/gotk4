@@ -128,6 +128,39 @@ func (s *Sphere) free() {
 	C.graphene_sphere_free(_arg0)
 }
 
+// BoundingBox computes the bounding box capable of containing the given
+// #graphene_sphere_t.
+func (s *Sphere) BoundingBox() Box {
+	var _arg0 *C.graphene_sphere_t // out
+	var _arg1 C.graphene_box_t     // in
+
+	_arg0 = (*C.graphene_sphere_t)(unsafe.Pointer(s))
+
+	C.graphene_sphere_get_bounding_box(_arg0, &_arg1)
+
+	var _box Box // out
+
+	_box = *(*Box)(unsafe.Pointer((&_arg1)))
+
+	return _box
+}
+
+// Center retrieves the coordinates of the center of a #graphene_sphere_t.
+func (s *Sphere) Center() Point3D {
+	var _arg0 *C.graphene_sphere_t // out
+	var _arg1 C.graphene_point3d_t // in
+
+	_arg0 = (*C.graphene_sphere_t)(unsafe.Pointer(s))
+
+	C.graphene_sphere_get_center(_arg0, &_arg1)
+
+	var _center Point3D // out
+
+	_center = *(*Point3D)(unsafe.Pointer((&_arg1)))
+
+	return _center
+}
+
 // Radius retrieves the radius of a #graphene_sphere_t.
 func (s *Sphere) Radius() float32 {
 	var _arg0 *C.graphene_sphere_t // out
@@ -165,6 +198,58 @@ func (s *Sphere) Init(center *Point3D, radius float32) *Sphere {
 	return _sphere
 }
 
+// InitFromPoints initializes the given #graphene_sphere_t using the given array
+// of 3D coordinates so that the sphere includes them.
+//
+// The center of the sphere can either be specified, or will be center of the 3D
+// volume that encompasses all @points.
+func (s *Sphere) InitFromPoints(points []Point3D, center *Point3D) *Sphere {
+	var _arg0 *C.graphene_sphere_t // out
+	var _arg2 *C.graphene_point3d_t
+	var _arg1 C.uint
+	var _arg3 *C.graphene_point3d_t // out
+	var _cret *C.graphene_sphere_t  // in
+
+	_arg0 = (*C.graphene_sphere_t)(unsafe.Pointer(s))
+	_arg1 = C.uint(len(points))
+	_arg2 = (*C.graphene_point3d_t)(unsafe.Pointer(&points[0]))
+	_arg3 = (*C.graphene_point3d_t)(unsafe.Pointer(center))
+
+	_cret = C.graphene_sphere_init_from_points(_arg0, _arg1, _arg2, _arg3)
+
+	var _sphere *Sphere // out
+
+	_sphere = (*Sphere)(unsafe.Pointer(_cret))
+
+	return _sphere
+}
+
+// InitFromVectors initializes the given #graphene_sphere_t using the given
+// array of 3D coordinates so that the sphere includes them.
+//
+// The center of the sphere can either be specified, or will be center of the 3D
+// volume that encompasses all @vectors.
+func (s *Sphere) InitFromVectors(vectors []Vec3, center *Point3D) *Sphere {
+	var _arg0 *C.graphene_sphere_t // out
+	var _arg2 *C.graphene_vec3_t
+	var _arg1 C.uint
+	var _arg3 *C.graphene_point3d_t // out
+	var _cret *C.graphene_sphere_t  // in
+
+	_arg0 = (*C.graphene_sphere_t)(unsafe.Pointer(s))
+	_arg1 = C.uint(len(vectors))
+	_arg2 = (*C.graphene_vec3_t)(unsafe.Pointer(&vectors[0]))
+	_arg3 = (*C.graphene_point3d_t)(unsafe.Pointer(center))
+
+	_cret = C.graphene_sphere_init_from_vectors(_arg0, _arg1, _arg2, _arg3)
+
+	var _sphere *Sphere // out
+
+	_sphere = (*Sphere)(unsafe.Pointer(_cret))
+
+	return _sphere
+}
+
 // IsEmpty checks whether the sphere has a zero radius.
 func (s *Sphere) IsEmpty() bool {
 	var _arg0 *C.graphene_sphere_t // out
@@ -181,4 +266,23 @@ func (s *Sphere) IsEmpty() bool {
 	}
 
 	return _ok
+}
+
+// Translate translates the center of the given #graphene_sphere_t using the
+// @point coordinates as the delta of the translation.
+func (s *Sphere) Translate(point *Point3D) Sphere {
+	var _arg0 *C.graphene_sphere_t  // out
+	var _arg1 *C.graphene_point3d_t // out
+	var _arg2 C.graphene_sphere_t   // in
+
+	_arg0 = (*C.graphene_sphere_t)(unsafe.Pointer(s))
+	_arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(point))
+
+	C.graphene_sphere_translate(_arg0, _arg1, &_arg2)
+
+	var _res Sphere // out
+
+	_res = *(*Sphere)(unsafe.Pointer((&_arg2)))
+
+	return _res
 }

@@ -126,6 +126,23 @@ func (p *Plane) Constant() float32 {
 	return _gfloat
 }
 
+// Normal retrieves the normal vector pointing towards the origin of the given
+// #graphene_plane_t.
+func (p *Plane) Normal() Vec3 {
+	var _arg0 *C.graphene_plane_t // out
+	var _arg1 C.graphene_vec3_t   // in
+
+	_arg0 = (*C.graphene_plane_t)(unsafe.Pointer(p))
+
+	C.graphene_plane_get_normal(_arg0, &_arg1)
+
+	var _normal Vec3 // out
+
+	_normal = *(*Vec3)(unsafe.Pointer((&_arg1)))
+
+	return _normal
+}
+
 // Init initializes the given #graphene_plane_t using the given @normal vector
 // and @constant values.
 func (p *Plane) Init(normal *Vec3, constant float32) *Plane {
@@ -230,4 +247,64 @@ func (p *Plane) InitFromVec4(src *Vec4) *Plane {
 	_plane = (*Plane)(unsafe.Pointer(_cret))
 
 	return _plane
+}
+
+// Negate negates the normal vector and constant of a #graphene_plane_t,
+// effectively mirroring the plane across the origin.
+func (p *Plane) Negate() Plane {
+	var _arg0 *C.graphene_plane_t // out
+	var _arg1 C.graphene_plane_t  // in
+
+	_arg0 = (*C.graphene_plane_t)(unsafe.Pointer(p))
+
+	C.graphene_plane_negate(_arg0, &_arg1)
+
+	var _res Plane // out
+
+	_res = *(*Plane)(unsafe.Pointer((&_arg1)))
+
+	return _res
+}
+
+// Normalize normalizes the vector of the given #graphene_plane_t, and adjusts
+// the constant accordingly.
+func (p *Plane) Normalize() Plane {
+	var _arg0 *C.graphene_plane_t // out
+	var _arg1 C.graphene_plane_t  // in
+
+	_arg0 = (*C.graphene_plane_t)(unsafe.Pointer(p))
+
+	C.graphene_plane_normalize(_arg0, &_arg1)
+
+	var _res Plane // out
+
+	_res = *(*Plane)(unsafe.Pointer((&_arg1)))
+
+	return _res
+}
+
+// Transform transforms a #graphene_plane_t @p using the given @matrix and
+// @normal_matrix.
+//
+// If @normal_matrix is nil, a transformation matrix for the plane normal will
+// be computed from @matrix. If you are transforming multiple planes using the
+// same @matrix it's recommended to compute the normal matrix beforehand to
+// avoid incurring in the cost of recomputing it every time.
+func (p *Plane) Transform(matrix *Matrix, normalMatrix *Matrix) Plane {
+	var _arg0 *C.graphene_plane_t  // out
+	var _arg1 *C.graphene_matrix_t // out
+	var _arg2 *C.graphene_matrix_t // out
+	var _arg3 C.graphene_plane_t   // in
+
+	_arg0 = (*C.graphene_plane_t)(unsafe.Pointer(p))
+	_arg1 = (*C.graphene_matrix_t)(unsafe.Pointer(matrix))
+	_arg2 = (*C.graphene_matrix_t)(unsafe.Pointer(normalMatrix))
+
+	C.graphene_plane_transform(_arg0, _arg1, _arg2, &_arg3)
+
+	var _res Plane // out
+
+	_res = *(*Plane)(unsafe.Pointer((&_arg3)))
+
+	return _res
 }

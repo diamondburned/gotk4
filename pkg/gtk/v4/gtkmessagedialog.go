@@ -324,14 +324,13 @@ func (m *MessageDialogClass) MessageArea() *WidgetClass {
 	var _arg0 *C.GtkMessageDialog // out
 	var _cret *C.GtkWidget        // in
 
-	_arg0 = (*C.GtkMessageDialog)(unsafe.Pointer((&m).Native()))
+	_arg0 = (*C.GtkMessageDialog)(unsafe.Pointer(m.Native()))
 
 	_cret = C.gtk_message_dialog_get_message_area(_arg0)
 
 	var _widget *WidgetClass // out
 
-	_widget = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*WidgetClass)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WidgetClass)
 
 	return _widget
 }
@@ -341,7 +340,7 @@ func (m *MessageDialogClass) SetMarkup(str string) {
 	var _arg0 *C.GtkMessageDialog // out
 	var _arg1 *C.char             // out
 
-	_arg0 = (*C.GtkMessageDialog)(unsafe.Pointer((&m).Native()))
+	_arg0 = (*C.GtkMessageDialog)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.char)(C.CString(str))
 	defer C.free(unsafe.Pointer(_arg1))
 

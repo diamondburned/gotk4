@@ -3,6 +3,7 @@
 package gdk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -196,6 +197,22 @@ type Keymap interface {
 	CapsLockState() bool
 	// Direction returns the direction of effective layout of the keymap.
 	Direction() pango.Direction
+	// EntriesForKeycode returns the keyvals bound to @hardware_keycode. The Nth
+	// KeymapKey in @keys is bound to the Nth keyval in @keyvals. Free the
+	// returned arrays with g_free(). When a keycode is pressed by the user, the
+	// keyval from this list of entries is selected by considering the effective
+	// keyboard group and level. See gdk_keymap_translate_keyboard_state().
+	EntriesForKeycode(hardwareKeycode uint) ([]KeymapKey, []uint, bool)
+	// EntriesForKeyval obtains a list of keycode/group/level combinations that
+	// will generate @keyval. Groups and levels are two kinds of keyboard mode;
+	// in general, the level determines whether the top or bottom symbol on a
+	// key is used, and the group determines whether the left or right symbol is
+	// used. On US keyboards, the shift key changes the keyboard level, and
+	// there are no groups. A group switch key might convert a keyboard between
+	// Hebrew to English modes, for example. EventKey contains a group field
+	// that indicates the active keyboard group. The level is computed from the
+	// modifier mask. The returned array should be freed with g_free().
+	EntriesForKeyval(keyval uint) ([]KeymapKey, bool)
 	// ModifierState returns the current modifier state.
 	ModifierState() uint
 	// NumLockState returns whether the Num Lock modifer is locked.
@@ -237,7 +254,7 @@ func (k *KeymapClass) CapsLockState() bool {
 	var _arg0 *C.GdkKeymap // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GdkKeymap)(unsafe.Pointer((&k).Native()))
+	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(k.Native()))
 
 	_cret = C.gdk_keymap_get_caps_lock_state(_arg0)
 
@@ -255,7 +272,7 @@ func (k *KeymapClass) Direction() pango.Direction {
 	var _arg0 *C.GdkKeymap     // out
 	var _cret C.PangoDirection // in
 
-	_arg0 = (*C.GdkKeymap)(unsafe.Pointer((&k).Native()))
+	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(k.Native()))
 
 	_cret = C.gdk_keymap_get_direction(_arg0)
 
@@ -266,12 +283,85 @@ func (k *KeymapClass) Direction() pango.Direction {
 	return _direction
 }
 
+// EntriesForKeycode returns the keyvals bound to @hardware_keycode. The Nth
+// KeymapKey in @keys is bound to the Nth keyval in @keyvals. Free the returned
+// arrays with g_free(). When a keycode is pressed by the user, the keyval from
+// this list of entries is selected by considering the effective keyboard group
+// and level. See gdk_keymap_translate_keyboard_state().
+func (k *KeymapClass) EntriesForKeycode(hardwareKeycode uint) ([]KeymapKey, []uint, bool) {
+	var _arg0 *C.GdkKeymap // out
+	var _arg1 C.guint      // out
+	var _arg2 *C.GdkKeymapKey
+	var _arg4 C.gint // in
+	var _arg3 *C.guint
+	var _arg4 C.gint     // in
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(k.Native()))
+	_arg1 = C.guint(hardwareKeycode)
+
+	_cret = C.gdk_keymap_get_entries_for_keycode(_arg0, _arg1, &_arg2, &_arg3, &_arg4)
+
+	var _keys []KeymapKey
+	var _keyvals []uint
+	var _ok bool // out
+
+	_keys = unsafe.Slice((*KeymapKey)(unsafe.Pointer(_arg2)), _arg4)
+	runtime.SetFinalizer(&_keys, func(v *[]KeymapKey) {
+		C.free(unsafe.Pointer(&(*v)[0]))
+	})
+	_keyvals = unsafe.Slice((*uint)(unsafe.Pointer(_arg3)), _arg4)
+	runtime.SetFinalizer(&_keyvals, func(v *[]uint) {
+		C.free(unsafe.Pointer(&(*v)[0]))
+	})
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _keys, _keyvals, _ok
+}
+
+// EntriesForKeyval obtains a list of keycode/group/level combinations that will
+// generate @keyval. Groups and levels are two kinds of keyboard mode; in
+// general, the level determines whether the top or bottom symbol on a key is
+// used, and the group determines whether the left or right symbol is used. On
+// US keyboards, the shift key changes the keyboard level, and there are no
+// groups. A group switch key might convert a keyboard between Hebrew to English
+// modes, for example. EventKey contains a group field that indicates the active
+// keyboard group. The level is computed from the modifier mask. The returned
+// array should be freed with g_free().
+func (k *KeymapClass) EntriesForKeyval(keyval uint) ([]KeymapKey, bool) {
+	var _arg0 *C.GdkKeymap // out
+	var _arg1 C.guint      // out
+	var _arg2 *C.GdkKeymapKey
+	var _arg3 C.gint     // in
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(k.Native()))
+	_arg1 = C.guint(keyval)
+
+	_cret = C.gdk_keymap_get_entries_for_keyval(_arg0, _arg1, &_arg2, &_arg3)
+
+	var _keys []KeymapKey
+	var _ok bool // out
+
+	_keys = unsafe.Slice((*KeymapKey)(unsafe.Pointer(_arg2)), _arg3)
+	runtime.SetFinalizer(&_keys, func(v *[]KeymapKey) {
+		C.free(unsafe.Pointer(&(*v)[0]))
+	})
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _keys, _ok
+}
+
 // ModifierState returns the current modifier state.
 func (k *KeymapClass) ModifierState() uint {
 	var _arg0 *C.GdkKeymap // out
 	var _cret C.guint      // in
 
-	_arg0 = (*C.GdkKeymap)(unsafe.Pointer((&k).Native()))
+	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(k.Native()))
 
 	_cret = C.gdk_keymap_get_modifier_state(_arg0)
 
@@ -287,7 +377,7 @@ func (k *KeymapClass) NumLockState() bool {
 	var _arg0 *C.GdkKeymap // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GdkKeymap)(unsafe.Pointer((&k).Native()))
+	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(k.Native()))
 
 	_cret = C.gdk_keymap_get_num_lock_state(_arg0)
 
@@ -305,7 +395,7 @@ func (k *KeymapClass) ScrollLockState() bool {
 	var _arg0 *C.GdkKeymap // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GdkKeymap)(unsafe.Pointer((&k).Native()))
+	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(k.Native()))
 
 	_cret = C.gdk_keymap_get_scroll_lock_state(_arg0)
 
@@ -324,7 +414,7 @@ func (k *KeymapClass) HaveBidiLayouts() bool {
 	var _arg0 *C.GdkKeymap // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GdkKeymap)(unsafe.Pointer((&k).Native()))
+	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(k.Native()))
 
 	_cret = C.gdk_keymap_have_bidi_layouts(_arg0)
 
@@ -346,7 +436,7 @@ func (k *KeymapClass) LookupKey(key *KeymapKey) uint {
 	var _arg1 *C.GdkKeymapKey // out
 	var _cret C.guint         // in
 
-	_arg0 = (*C.GdkKeymap)(unsafe.Pointer((&k).Native()))
+	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(k.Native()))
 	_arg1 = (*C.GdkKeymapKey)(unsafe.Pointer(key))
 
 	_cret = C.gdk_keymap_lookup_key(_arg0, _arg1)

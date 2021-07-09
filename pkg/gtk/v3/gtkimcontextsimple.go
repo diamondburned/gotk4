@@ -77,8 +77,7 @@ func NewIMContextSimple() *IMContextSimpleClass {
 
 	var _imContextSimple *IMContextSimpleClass // out
 
-	_imContextSimple = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*IMContextSimpleClass)
+	_imContextSimple = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*IMContextSimpleClass)
 
 	return _imContextSimple
 }
@@ -88,7 +87,7 @@ func (c *IMContextSimpleClass) AddComposeFile(composeFile string) {
 	var _arg0 *C.GtkIMContextSimple // out
 	var _arg1 *C.gchar              // out
 
-	_arg0 = (*C.GtkIMContextSimple)(unsafe.Pointer((&c).Native()))
+	_arg0 = (*C.GtkIMContextSimple)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.gchar)(C.CString(composeFile))
 	defer C.free(unsafe.Pointer(_arg1))
 

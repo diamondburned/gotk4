@@ -161,8 +161,7 @@ func NewDropDownFromStrings(strings []string) *DropDownClass {
 
 	var _dropDown *DropDownClass // out
 
-	_dropDown = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*DropDownClass)
+	_dropDown = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*DropDownClass)
 
 	return _dropDown
 }
@@ -172,7 +171,7 @@ func (s *DropDownClass) EnableSearch() bool {
 	var _arg0 *C.GtkDropDown // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkDropDown)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gtk_drop_down_get_enable_search(_arg0)
 
@@ -192,14 +191,13 @@ func (s *DropDownClass) Expression() *ExpressionClass {
 	var _arg0 *C.GtkDropDown   // out
 	var _cret *C.GtkExpression // in
 
-	_arg0 = (*C.GtkDropDown)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gtk_drop_down_get_expression(_arg0)
 
 	var _expression *ExpressionClass // out
 
-	_expression = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*ExpressionClass)
+	_expression = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ExpressionClass)
 
 	return _expression
 }
@@ -213,14 +211,13 @@ func (s *DropDownClass) Factory() *ListItemFactoryClass {
 	var _arg0 *C.GtkDropDown        // out
 	var _cret *C.GtkListItemFactory // in
 
-	_arg0 = (*C.GtkDropDown)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gtk_drop_down_get_factory(_arg0)
 
 	var _listItemFactory *ListItemFactoryClass // out
 
-	_listItemFactory = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*ListItemFactoryClass)
+	_listItemFactory = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ListItemFactoryClass)
 
 	return _listItemFactory
 }
@@ -231,14 +228,13 @@ func (s *DropDownClass) ListFactory() *ListItemFactoryClass {
 	var _arg0 *C.GtkDropDown        // out
 	var _cret *C.GtkListItemFactory // in
 
-	_arg0 = (*C.GtkDropDown)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gtk_drop_down_get_list_factory(_arg0)
 
 	var _listItemFactory *ListItemFactoryClass // out
 
-	_listItemFactory = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*ListItemFactoryClass)
+	_listItemFactory = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ListItemFactoryClass)
 
 	return _listItemFactory
 }
@@ -248,7 +244,7 @@ func (s *DropDownClass) Selected() uint {
 	var _arg0 *C.GtkDropDown // out
 	var _cret C.guint        // in
 
-	_arg0 = (*C.GtkDropDown)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gtk_drop_down_get_selected(_arg0)
 
@@ -264,14 +260,13 @@ func (s *DropDownClass) SelectedItem() *externglib.Object {
 	var _arg0 *C.GtkDropDown // out
 	var _cret C.gpointer     // in
 
-	_arg0 = (*C.GtkDropDown)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gtk_drop_down_get_selected_item(_arg0)
 
 	var _object *externglib.Object // out
 
-	_object = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(&_cret))).(*externglib.Object)
+	_object = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*externglib.Object)
 
 	return _object
 }
@@ -284,7 +279,7 @@ func (s *DropDownClass) SetEnableSearch(enableSearch bool) {
 	var _arg0 *C.GtkDropDown // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.GtkDropDown)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(s.Native()))
 	if enableSearch {
 		_arg1 = C.TRUE
 	}
@@ -301,8 +296,8 @@ func (s *DropDownClass) SetExpression(expression Expression) {
 	var _arg0 *C.GtkDropDown   // out
 	var _arg1 *C.GtkExpression // out
 
-	_arg0 = (*C.GtkDropDown)(unsafe.Pointer((&s).Native()))
-	_arg1 = (*C.GtkExpression)(unsafe.Pointer((&expression).Native()))
+	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
 
 	C.gtk_drop_down_set_expression(_arg0, _arg1)
 }
@@ -312,8 +307,8 @@ func (s *DropDownClass) SetFactory(factory ListItemFactory) {
 	var _arg0 *C.GtkDropDown        // out
 	var _arg1 *C.GtkListItemFactory // out
 
-	_arg0 = (*C.GtkDropDown)(unsafe.Pointer((&s).Native()))
-	_arg1 = (*C.GtkListItemFactory)(unsafe.Pointer((&factory).Native()))
+	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GtkListItemFactory)(unsafe.Pointer(factory.Native()))
 
 	C.gtk_drop_down_set_factory(_arg0, _arg1)
 }
@@ -324,8 +319,8 @@ func (s *DropDownClass) SetListFactory(factory ListItemFactory) {
 	var _arg0 *C.GtkDropDown        // out
 	var _arg1 *C.GtkListItemFactory // out
 
-	_arg0 = (*C.GtkDropDown)(unsafe.Pointer((&s).Native()))
-	_arg1 = (*C.GtkListItemFactory)(unsafe.Pointer((&factory).Native()))
+	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GtkListItemFactory)(unsafe.Pointer(factory.Native()))
 
 	C.gtk_drop_down_set_list_factory(_arg0, _arg1)
 }
@@ -335,7 +330,7 @@ func (s *DropDownClass) SetSelected(position uint) {
 	var _arg0 *C.GtkDropDown // out
 	var _arg1 C.guint        // out
 
-	_arg0 = (*C.GtkDropDown)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(s.Native()))
 	_arg1 = C.guint(position)
 
 	C.gtk_drop_down_set_selected(_arg0, _arg1)

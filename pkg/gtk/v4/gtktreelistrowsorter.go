@@ -75,14 +75,13 @@ func NewTreeListRowSorter(sorter Sorter) *TreeListRowSorterClass {
 	var _arg1 *C.GtkSorter            // out
 	var _cret *C.GtkTreeListRowSorter // in
 
-	_arg1 = (*C.GtkSorter)(unsafe.Pointer((&sorter).Native()))
+	_arg1 = (*C.GtkSorter)(unsafe.Pointer(sorter.Native()))
 
 	_cret = C.gtk_tree_list_row_sorter_new(_arg1)
 
 	var _treeListRowSorter *TreeListRowSorterClass // out
 
-	_treeListRowSorter = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*TreeListRowSorterClass)
+	_treeListRowSorter = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*TreeListRowSorterClass)
 
 	return _treeListRowSorter
 }
@@ -92,14 +91,13 @@ func (s *TreeListRowSorterClass) Sorter() *SorterClass {
 	var _arg0 *C.GtkTreeListRowSorter // out
 	var _cret *C.GtkSorter            // in
 
-	_arg0 = (*C.GtkTreeListRowSorter)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkTreeListRowSorter)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gtk_tree_list_row_sorter_get_sorter(_arg0)
 
 	var _sorter *SorterClass // out
 
-	_sorter = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*SorterClass)
+	_sorter = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*SorterClass)
 
 	return _sorter
 }
@@ -112,8 +110,8 @@ func (s *TreeListRowSorterClass) SetSorter(sorter Sorter) {
 	var _arg0 *C.GtkTreeListRowSorter // out
 	var _arg1 *C.GtkSorter            // out
 
-	_arg0 = (*C.GtkTreeListRowSorter)(unsafe.Pointer((&s).Native()))
-	_arg1 = (*C.GtkSorter)(unsafe.Pointer((&sorter).Native()))
+	_arg0 = (*C.GtkTreeListRowSorter)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GtkSorter)(unsafe.Pointer(sorter.Native()))
 
 	C.gtk_tree_list_row_sorter_set_sorter(_arg0, _arg1)
 }

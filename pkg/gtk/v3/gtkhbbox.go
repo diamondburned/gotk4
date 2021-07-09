@@ -98,8 +98,7 @@ func NewHButtonBox() *HButtonBoxClass {
 
 	var _hButtonBox *HButtonBoxClass // out
 
-	_hButtonBox = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*HButtonBoxClass)
+	_hButtonBox = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*HButtonBoxClass)
 
 	return _hButtonBox
 }

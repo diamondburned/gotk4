@@ -179,8 +179,7 @@ func NewImageMenuItem() *ImageMenuItemClass {
 
 	var _imageMenuItem *ImageMenuItemClass // out
 
-	_imageMenuItem = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*ImageMenuItemClass)
+	_imageMenuItem = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ImageMenuItemClass)
 
 	return _imageMenuItem
 }
@@ -203,14 +202,13 @@ func NewImageMenuItemFromStock(stockId string, accelGroup AccelGroup) *ImageMenu
 
 	_arg1 = (*C.gchar)(C.CString(stockId))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GtkAccelGroup)(unsafe.Pointer((&accelGroup).Native()))
+	_arg2 = (*C.GtkAccelGroup)(unsafe.Pointer(accelGroup.Native()))
 
 	_cret = C.gtk_image_menu_item_new_from_stock(_arg1, _arg2)
 
 	var _imageMenuItem *ImageMenuItemClass // out
 
-	_imageMenuItem = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*ImageMenuItemClass)
+	_imageMenuItem = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ImageMenuItemClass)
 
 	return _imageMenuItem
 }
@@ -229,8 +227,7 @@ func NewImageMenuItemWithLabel(label string) *ImageMenuItemClass {
 
 	var _imageMenuItem *ImageMenuItemClass // out
 
-	_imageMenuItem = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*ImageMenuItemClass)
+	_imageMenuItem = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ImageMenuItemClass)
 
 	return _imageMenuItem
 }
@@ -251,8 +248,7 @@ func NewImageMenuItemWithMnemonic(label string) *ImageMenuItemClass {
 
 	var _imageMenuItem *ImageMenuItemClass // out
 
-	_imageMenuItem = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*ImageMenuItemClass)
+	_imageMenuItem = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ImageMenuItemClass)
 
 	return _imageMenuItem
 }
@@ -265,7 +261,7 @@ func (i *ImageMenuItemClass) AlwaysShowImage() bool {
 	var _arg0 *C.GtkImageMenuItem // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkImageMenuItem)(unsafe.Pointer((&i).Native()))
+	_arg0 = (*C.GtkImageMenuItem)(unsafe.Pointer(i.Native()))
 
 	_cret = C.gtk_image_menu_item_get_always_show_image(_arg0)
 
@@ -286,14 +282,13 @@ func (i *ImageMenuItemClass) Image() *WidgetClass {
 	var _arg0 *C.GtkImageMenuItem // out
 	var _cret *C.GtkWidget        // in
 
-	_arg0 = (*C.GtkImageMenuItem)(unsafe.Pointer((&i).Native()))
+	_arg0 = (*C.GtkImageMenuItem)(unsafe.Pointer(i.Native()))
 
 	_cret = C.gtk_image_menu_item_get_image(_arg0)
 
 	var _widget *WidgetClass // out
 
-	_widget = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*WidgetClass)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WidgetClass)
 
 	return _widget
 }
@@ -306,7 +301,7 @@ func (i *ImageMenuItemClass) UseStock() bool {
 	var _arg0 *C.GtkImageMenuItem // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkImageMenuItem)(unsafe.Pointer((&i).Native()))
+	_arg0 = (*C.GtkImageMenuItem)(unsafe.Pointer(i.Native()))
 
 	_cret = C.gtk_image_menu_item_get_use_stock(_arg0)
 
@@ -332,8 +327,8 @@ func (i *ImageMenuItemClass) SetAccelGroup(accelGroup AccelGroup) {
 	var _arg0 *C.GtkImageMenuItem // out
 	var _arg1 *C.GtkAccelGroup    // out
 
-	_arg0 = (*C.GtkImageMenuItem)(unsafe.Pointer((&i).Native()))
-	_arg1 = (*C.GtkAccelGroup)(unsafe.Pointer((&accelGroup).Native()))
+	_arg0 = (*C.GtkImageMenuItem)(unsafe.Pointer(i.Native()))
+	_arg1 = (*C.GtkAccelGroup)(unsafe.Pointer(accelGroup.Native()))
 
 	C.gtk_image_menu_item_set_accel_group(_arg0, _arg1)
 }
@@ -349,7 +344,7 @@ func (i *ImageMenuItemClass) SetAlwaysShowImage(alwaysShow bool) {
 	var _arg0 *C.GtkImageMenuItem // out
 	var _arg1 C.gboolean          // out
 
-	_arg0 = (*C.GtkImageMenuItem)(unsafe.Pointer((&i).Native()))
+	_arg0 = (*C.GtkImageMenuItem)(unsafe.Pointer(i.Native()))
 	if alwaysShow {
 		_arg1 = C.TRUE
 	}
@@ -366,8 +361,8 @@ func (i *ImageMenuItemClass) SetImage(image Widget) {
 	var _arg0 *C.GtkImageMenuItem // out
 	var _arg1 *C.GtkWidget        // out
 
-	_arg0 = (*C.GtkImageMenuItem)(unsafe.Pointer((&i).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&image).Native()))
+	_arg0 = (*C.GtkImageMenuItem)(unsafe.Pointer(i.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(image.Native()))
 
 	C.gtk_image_menu_item_set_image(_arg0, _arg1)
 }
@@ -380,7 +375,7 @@ func (i *ImageMenuItemClass) SetUseStock(useStock bool) {
 	var _arg0 *C.GtkImageMenuItem // out
 	var _arg1 C.gboolean          // out
 
-	_arg0 = (*C.GtkImageMenuItem)(unsafe.Pointer((&i).Native()))
+	_arg0 = (*C.GtkImageMenuItem)(unsafe.Pointer(i.Native()))
 	if useStock {
 		_arg1 = C.TRUE
 	}

@@ -86,14 +86,13 @@ func (i *HyperlinkImplInterface) Hyperlink() *HyperlinkClass {
 	var _arg0 *C.AtkHyperlinkImpl // out
 	var _cret *C.AtkHyperlink     // in
 
-	_arg0 = (*C.AtkHyperlinkImpl)(unsafe.Pointer((&i).Native()))
+	_arg0 = (*C.AtkHyperlinkImpl)(unsafe.Pointer(i.Native()))
 
 	_cret = C.atk_hyperlink_impl_get_hyperlink(_arg0)
 
 	var _hyperlink *HyperlinkClass // out
 
-	_hyperlink = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*HyperlinkClass)
+	_hyperlink = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*HyperlinkClass)
 
 	return _hyperlink
 }

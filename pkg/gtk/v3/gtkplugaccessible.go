@@ -63,7 +63,7 @@ func (p *PlugAccessibleClass) ID() string {
 	var _arg0 *C.GtkPlugAccessible // out
 	var _cret *C.gchar             // in
 
-	_arg0 = (*C.GtkPlugAccessible)(unsafe.Pointer((&p).Native()))
+	_arg0 = (*C.GtkPlugAccessible)(unsafe.Pointer(p.Native()))
 
 	_cret = C.gtk_plug_accessible_get_id(_arg0)
 

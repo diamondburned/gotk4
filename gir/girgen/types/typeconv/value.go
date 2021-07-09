@@ -67,6 +67,11 @@ type ConversionValue struct {
 	// or length.
 	ParameterIndex ConversionValueIndex
 
+	// PreferPublic, if true, will resolve the Go type into a public type
+	// instead of the implementation one. This is useful for function
+	// parameters.
+	PreferPublic bool
+
 	// ManualCast, if true, will make GObject conversions from C to Go use the
 	// return type given instead of using the value wrapper.
 	ManualCast bool
@@ -74,20 +79,35 @@ type ConversionValue struct {
 
 // NewValue creates a new ConversionValue from the given parameter attributes.
 func NewValue(
-	in, out string, i int, dir ConversionDirection, param gir.ParameterAttrs) ConversionValue {
+	in, out string, i int, dir ConversionDirection, param gir.Parameter) ConversionValue {
 
 	value := ConversionValue{
 		InName:         in,
 		OutName:        out,
 		Direction:      dir,
 		ParameterIndex: UnknownValueIndex,
-		ParameterAttrs: param,
+		ParameterAttrs: param.ParameterAttrs,
+		PreferPublic:   true,
 	}
 	if i > -1 {
 		value.ParameterIndex = ConversionValueIndex(i)
 	}
 
 	return value
+}
+
+// NewReceiverValue creates a new ConversionValue specifically for the method
+// receiver.
+func NewReceiverValue(
+	in, out string, dir ConversionDirection, param *gir.InstanceParameter) ConversionValue {
+
+	return ConversionValue{
+		InName:         in,
+		OutName:        out,
+		Direction:      dir,
+		ParameterIndex: UnknownValueIndex,
+		ParameterAttrs: param.ParameterAttrs,
+	}
 }
 
 // NewReturnValue creates a new ConversionValue from the given return attribute.
@@ -310,7 +330,7 @@ func (value *ValueConverted) resolveType(conv *Converter) bool {
 	}
 
 	// If this is the output parameter, then the pointer count should be less.
-	// This only affects the Go 1	ype.
+	// This only affects the Go type.
 	if value.ParameterIsOutput() && value.Resolved.Ptr > 0 {
 		value.Resolved.Ptr--
 	}
@@ -326,7 +346,11 @@ func (value *ValueConverted) resolveType(conv *Converter) bool {
 	} else {
 		value.Out.Type = cgoType
 		// Go input should always be the public (interface) type.
-		value.In.Type = value.Resolved.PublicType(value.NeedsNamespace)
+		if value.PreferPublic {
+			value.In.Type = value.Resolved.PublicType(value.NeedsNamespace)
+		} else {
+			value.In.Type = value.Resolved.ImplType(value.NeedsNamespace)
+		}
 	}
 
 	if value.ParameterIsOutput() {
@@ -397,10 +421,9 @@ func (value *ValueConverted) cgoSetObject(conv *Converter) bool {
 	}
 
 	value.header.ImportCore("gextras")
-	value.p.LineTmpl(m, `
-		<.Value.Out.Set> = < .Value.OutPtr 1 ->gextras.CastObject(
-			externglib.<.Func>(unsafe.Pointer(<.Value.InPtr 1><.Value.InName>))).(<.Value.Out.Type>)
-	`)
+	value.p.LineTmpl(m,
+		"<.Value.Out.Set> = (< .Value.OutPtr 1 ->gextras.CastObject(externglib.<.Func>("+
+			"unsafe.Pointer(<.Value.InPtr 1><.Value.InName>)))).(<.Value.Out.Type>)")
 
 	return true
 }
@@ -479,31 +502,15 @@ func (value *ValueConverted) isPtr(wantC int) bool {
 	// need to verify the Go pointer, but the conversiron routine will.
 }
 
-// func (value *ValueConverted) ref(wantIn, wantOut int) (in, out string, ok bool) {
-// 	hasIn := strings.Count(value.In.Type, "*")
-// 	hasOut := strings.Count(value.Out.Type, "*")
+// InNamePtrPubl adds in an edge case if the value being inputted is possibly a
+// Go interface.
+func (value *ValueConverted) InNamePtrPubl(want int) string {
+	if want > 0 && value.PreferPublic {
+		want--
+	}
 
-// 	if difference(hasIn, wantIn) > 1 || difference(hasOut, wantOut) > 1 {
-// 		return "", "", false
-// 	}
-
-// 	switch {
-// 	case hasIn < wantIn:
-// 		in = "&"
-// 	case hasIn > wantIn:
-// 		in = "*"
-// 	}
-
-// 	switch {
-// 	case hasOut < wantOut:
-// 		out = "*"
-// 	case hasOut > wantOut:
-// 		return "", "", false
-// 	}
-
-// 	ok = true
-// 	return
-// }
+	return value.InNamePtr(want)
+}
 
 // InNamePtr returns the name with the pointer prefixed using InPtr.
 func (value *ValueConverted) InNamePtr(want int) string {
@@ -515,6 +522,10 @@ func (value *ValueConverted) InNamePtr(want int) string {
 }
 
 func (value *ValueConverted) InPtr(want int) string {
+	if value.Direction == ConvertCToGo && types.IsGpointer(value.Resolved.CType) && want > 0 {
+		want--
+	}
+
 	has := strings.Count(value.In.Type, "*")
 	return value._ptr(has, want)
 }
@@ -527,8 +538,12 @@ func (value *ValueConverted) OutCast(want int) string {
 }
 
 func (value *ValueConverted) OutPtr(want int) string {
+	if value.Direction == ConvertGoToC && types.IsGpointer(value.Resolved.CType) && want > 0 {
+		want--
+	}
+
 	has := strings.Count(value.Out.Type, "*")
-	ptr := value._ptr(has, want)
+	ptr := value._ptr(want, has)
 	if ptr == "&" {
 		// Refuse to reference the value we converted, since that requires a
 		// temporary variable.

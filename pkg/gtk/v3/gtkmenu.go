@@ -66,8 +66,7 @@ func gotk4_MenuPositionFunc(arg0 *C.GtkMenu, arg1 *C.gint, arg2 *C.gint, arg3 *C
 	var y *int               // out
 	var userData interface{} // out
 
-	menu = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(arg0))).(*MenuClass)
+	menu = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*MenuClass)
 	x = (*int)(unsafe.Pointer(arg1))
 	y = (*int)(unsafe.Pointer(arg2))
 	userData = box.Get(uintptr(arg4))
@@ -293,8 +292,7 @@ func NewMenu() *MenuClass {
 
 	var _menu *MenuClass // out
 
-	_menu = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*MenuClass)
+	_menu = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*MenuClass)
 
 	return _menu
 }
@@ -313,14 +311,13 @@ func NewMenuFromModel(model gio.MenuModel) *MenuClass {
 	var _arg1 *C.GMenuModel // out
 	var _cret *C.GtkWidget  // in
 
-	_arg1 = (*C.GMenuModel)(unsafe.Pointer((&model).Native()))
+	_arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
 
 	_cret = C.gtk_menu_new_from_model(_arg1)
 
 	var _menu *MenuClass // out
 
-	_menu = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*MenuClass)
+	_menu = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*MenuClass)
 
 	return _menu
 }
@@ -340,8 +337,8 @@ func (m *MenuClass) Attach(child Widget, leftAttach uint, rightAttach uint, topA
 	var _arg4 C.guint      // out
 	var _arg5 C.guint      // out
 
-	_arg0 = (*C.GtkMenu)(unsafe.Pointer((&m).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&child).Native()))
+	_arg0 = (*C.GtkMenu)(unsafe.Pointer(m.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 	_arg2 = C.guint(leftAttach)
 	_arg3 = C.guint(rightAttach)
 	_arg4 = C.guint(topAttach)
@@ -356,7 +353,7 @@ func (m *MenuClass) Attach(child Widget, leftAttach uint, rightAttach uint, topA
 func (m *MenuClass) Detach() {
 	var _arg0 *C.GtkMenu // out
 
-	_arg0 = (*C.GtkMenu)(unsafe.Pointer((&m).Native()))
+	_arg0 = (*C.GtkMenu)(unsafe.Pointer(m.Native()))
 
 	C.gtk_menu_detach(_arg0)
 }
@@ -367,14 +364,13 @@ func (m *MenuClass) AccelGroup() *AccelGroupClass {
 	var _arg0 *C.GtkMenu       // out
 	var _cret *C.GtkAccelGroup // in
 
-	_arg0 = (*C.GtkMenu)(unsafe.Pointer((&m).Native()))
+	_arg0 = (*C.GtkMenu)(unsafe.Pointer(m.Native()))
 
 	_cret = C.gtk_menu_get_accel_group(_arg0)
 
 	var _accelGroup *AccelGroupClass // out
 
-	_accelGroup = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*AccelGroupClass)
+	_accelGroup = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*AccelGroupClass)
 
 	return _accelGroup
 }
@@ -384,7 +380,7 @@ func (m *MenuClass) AccelPath() string {
 	var _arg0 *C.GtkMenu // out
 	var _cret *C.gchar   // in
 
-	_arg0 = (*C.GtkMenu)(unsafe.Pointer((&m).Native()))
+	_arg0 = (*C.GtkMenu)(unsafe.Pointer(m.Native()))
 
 	_cret = C.gtk_menu_get_accel_path(_arg0)
 
@@ -401,14 +397,13 @@ func (m *MenuClass) Active() *WidgetClass {
 	var _arg0 *C.GtkMenu   // out
 	var _cret *C.GtkWidget // in
 
-	_arg0 = (*C.GtkMenu)(unsafe.Pointer((&m).Native()))
+	_arg0 = (*C.GtkMenu)(unsafe.Pointer(m.Native()))
 
 	_cret = C.gtk_menu_get_active(_arg0)
 
 	var _widget *WidgetClass // out
 
-	_widget = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*WidgetClass)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WidgetClass)
 
 	return _widget
 }
@@ -418,14 +413,13 @@ func (m *MenuClass) AttachWidget() *WidgetClass {
 	var _arg0 *C.GtkMenu   // out
 	var _cret *C.GtkWidget // in
 
-	_arg0 = (*C.GtkMenu)(unsafe.Pointer((&m).Native()))
+	_arg0 = (*C.GtkMenu)(unsafe.Pointer(m.Native()))
 
 	_cret = C.gtk_menu_get_attach_widget(_arg0)
 
 	var _widget *WidgetClass // out
 
-	_widget = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*WidgetClass)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WidgetClass)
 
 	return _widget
 }
@@ -435,7 +429,7 @@ func (m *MenuClass) Monitor() int {
 	var _arg0 *C.GtkMenu // out
 	var _cret C.gint     // in
 
-	_arg0 = (*C.GtkMenu)(unsafe.Pointer((&m).Native()))
+	_arg0 = (*C.GtkMenu)(unsafe.Pointer(m.Native()))
 
 	_cret = C.gtk_menu_get_monitor(_arg0)
 
@@ -452,7 +446,7 @@ func (m *MenuClass) ReserveToggleSize() bool {
 	var _arg0 *C.GtkMenu // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkMenu)(unsafe.Pointer((&m).Native()))
+	_arg0 = (*C.GtkMenu)(unsafe.Pointer(m.Native()))
 
 	_cret = C.gtk_menu_get_reserve_toggle_size(_arg0)
 
@@ -473,7 +467,7 @@ func (m *MenuClass) TearoffState() bool {
 	var _arg0 *C.GtkMenu // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkMenu)(unsafe.Pointer((&m).Native()))
+	_arg0 = (*C.GtkMenu)(unsafe.Pointer(m.Native()))
 
 	_cret = C.gtk_menu_get_tearoff_state(_arg0)
 
@@ -493,7 +487,7 @@ func (m *MenuClass) Title() string {
 	var _arg0 *C.GtkMenu // out
 	var _cret *C.gchar   // in
 
-	_arg0 = (*C.GtkMenu)(unsafe.Pointer((&m).Native()))
+	_arg0 = (*C.GtkMenu)(unsafe.Pointer(m.Native()))
 
 	_cret = C.gtk_menu_get_title(_arg0)
 
@@ -509,8 +503,8 @@ func (m *MenuClass) PlaceOnMonitor(monitor gdk.Monitor) {
 	var _arg0 *C.GtkMenu    // out
 	var _arg1 *C.GdkMonitor // out
 
-	_arg0 = (*C.GtkMenu)(unsafe.Pointer((&m).Native()))
-	_arg1 = (*C.GdkMonitor)(unsafe.Pointer((&monitor).Native()))
+	_arg0 = (*C.GtkMenu)(unsafe.Pointer(m.Native()))
+	_arg1 = (*C.GdkMonitor)(unsafe.Pointer(monitor.Native()))
 
 	C.gtk_menu_place_on_monitor(_arg0, _arg1)
 }
@@ -519,7 +513,7 @@ func (m *MenuClass) PlaceOnMonitor(monitor gdk.Monitor) {
 func (m *MenuClass) Popdown() {
 	var _arg0 *C.GtkMenu // out
 
-	_arg0 = (*C.GtkMenu)(unsafe.Pointer((&m).Native()))
+	_arg0 = (*C.GtkMenu)(unsafe.Pointer(m.Native()))
 
 	C.gtk_menu_popdown(_arg0)
 }
@@ -555,9 +549,9 @@ func (m *MenuClass) Popup(parentMenuShell Widget, parentMenuItem Widget, fn Menu
 	var _arg5 C.guint   // out
 	var _arg6 C.guint32 // out
 
-	_arg0 = (*C.GtkMenu)(unsafe.Pointer((&m).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&parentMenuShell).Native()))
-	_arg2 = (*C.GtkWidget)(unsafe.Pointer((&parentMenuItem).Native()))
+	_arg0 = (*C.GtkMenu)(unsafe.Pointer(m.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(parentMenuShell.Native()))
+	_arg2 = (*C.GtkWidget)(unsafe.Pointer(parentMenuItem.Native()))
 	_arg3 = (*[0]byte)(C.gotk4_MenuPositionFunc)
 	_arg4 = C.gpointer(box.Assign(fn))
 	_arg5 = C.guint(button)
@@ -572,8 +566,8 @@ func (m *MenuClass) ReorderChild(child Widget, position int) {
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.gint       // out
 
-	_arg0 = (*C.GtkMenu)(unsafe.Pointer((&m).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&child).Native()))
+	_arg0 = (*C.GtkMenu)(unsafe.Pointer(m.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 	_arg2 = C.gint(position)
 
 	C.gtk_menu_reorder_child(_arg0, _arg1, _arg2)
@@ -583,7 +577,7 @@ func (m *MenuClass) ReorderChild(child Widget, position int) {
 func (m *MenuClass) Reposition() {
 	var _arg0 *C.GtkMenu // out
 
-	_arg0 = (*C.GtkMenu)(unsafe.Pointer((&m).Native()))
+	_arg0 = (*C.GtkMenu)(unsafe.Pointer(m.Native()))
 
 	C.gtk_menu_reposition(_arg0)
 }
@@ -596,8 +590,8 @@ func (m *MenuClass) SetAccelGroup(accelGroup AccelGroup) {
 	var _arg0 *C.GtkMenu       // out
 	var _arg1 *C.GtkAccelGroup // out
 
-	_arg0 = (*C.GtkMenu)(unsafe.Pointer((&m).Native()))
-	_arg1 = (*C.GtkAccelGroup)(unsafe.Pointer((&accelGroup).Native()))
+	_arg0 = (*C.GtkMenu)(unsafe.Pointer(m.Native()))
+	_arg1 = (*C.GtkAccelGroup)(unsafe.Pointer(accelGroup.Native()))
 
 	C.gtk_menu_set_accel_group(_arg0, _arg1)
 }
@@ -627,7 +621,7 @@ func (m *MenuClass) SetAccelPath(accelPath string) {
 	var _arg0 *C.GtkMenu // out
 	var _arg1 *C.gchar   // out
 
-	_arg0 = (*C.GtkMenu)(unsafe.Pointer((&m).Native()))
+	_arg0 = (*C.GtkMenu)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.gchar)(C.CString(accelPath))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -640,7 +634,7 @@ func (m *MenuClass) SetActive(index uint) {
 	var _arg0 *C.GtkMenu // out
 	var _arg1 C.guint    // out
 
-	_arg0 = (*C.GtkMenu)(unsafe.Pointer((&m).Native()))
+	_arg0 = (*C.GtkMenu)(unsafe.Pointer(m.Native()))
 	_arg1 = C.guint(index)
 
 	C.gtk_menu_set_active(_arg0, _arg1)
@@ -658,7 +652,7 @@ func (m *MenuClass) SetMonitor(monitorNum int) {
 	var _arg0 *C.GtkMenu // out
 	var _arg1 C.gint     // out
 
-	_arg0 = (*C.GtkMenu)(unsafe.Pointer((&m).Native()))
+	_arg0 = (*C.GtkMenu)(unsafe.Pointer(m.Native()))
 	_arg1 = C.gint(monitorNum)
 
 	C.gtk_menu_set_monitor(_arg0, _arg1)
@@ -670,7 +664,7 @@ func (m *MenuClass) SetReserveToggleSize(reserveToggleSize bool) {
 	var _arg0 *C.GtkMenu // out
 	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkMenu)(unsafe.Pointer((&m).Native()))
+	_arg0 = (*C.GtkMenu)(unsafe.Pointer(m.Native()))
 	if reserveToggleSize {
 		_arg1 = C.TRUE
 	}
@@ -683,8 +677,8 @@ func (m *MenuClass) SetScreen(screen gdk.Screen) {
 	var _arg0 *C.GtkMenu   // out
 	var _arg1 *C.GdkScreen // out
 
-	_arg0 = (*C.GtkMenu)(unsafe.Pointer((&m).Native()))
-	_arg1 = (*C.GdkScreen)(unsafe.Pointer((&screen).Native()))
+	_arg0 = (*C.GtkMenu)(unsafe.Pointer(m.Native()))
+	_arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
 
 	C.gtk_menu_set_screen(_arg0, _arg1)
 }
@@ -699,7 +693,7 @@ func (m *MenuClass) SetTearoffState(tornOff bool) {
 	var _arg0 *C.GtkMenu // out
 	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkMenu)(unsafe.Pointer((&m).Native()))
+	_arg0 = (*C.GtkMenu)(unsafe.Pointer(m.Native()))
 	if tornOff {
 		_arg1 = C.TRUE
 	}
@@ -718,7 +712,7 @@ func (m *MenuClass) SetTitle(title string) {
 	var _arg0 *C.GtkMenu // out
 	var _arg1 *C.gchar   // out
 
-	_arg0 = (*C.GtkMenu)(unsafe.Pointer((&m).Native()))
+	_arg0 = (*C.GtkMenu)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.gchar)(C.CString(title))
 	defer C.free(unsafe.Pointer(_arg1))
 

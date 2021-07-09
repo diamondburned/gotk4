@@ -44,6 +44,32 @@ func FindParagraphBoundary(text string, length int) (paragraphDelimiterIndex int
 	return _paragraphDelimiterIndex, _nextParagraphStart
 }
 
+// GetLogAttrs computes a `PangoLogAttr` for each character in @text.
+//
+// The @log_attrs array must have one `PangoLogAttr` for each position in @text;
+// if @text contains N characters, it has N+1 positions, including the last
+// position at the end of the text. @text should be an entire paragraph; logical
+// attributes can't be computed without context (for example you need to see
+// spaces on either side of a word to know the word is a word).
+func GetLogAttrs(text string, length int, level int, language *Language, logAttrs []LogAttr) {
+	var _arg1 *C.char          // out
+	var _arg2 C.int            // out
+	var _arg3 C.int            // out
+	var _arg4 *C.PangoLanguage // out
+	var _arg5 *C.PangoLogAttr
+	var _arg6 C.int
+
+	_arg1 = (*C.char)(C.CString(text))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.int(length)
+	_arg3 = C.int(level)
+	_arg4 = (*C.PangoLanguage)(unsafe.Pointer(language))
+	_arg6 = C.int(len(logAttrs))
+	_arg5 = (*C.PangoLogAttr)(unsafe.Pointer(&logAttrs[0]))
+
+	C.pango_get_log_attrs(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+}
+
 // LogAttr: the `PangoLogAttr` structure stores information about the attributes
 // of a single character.
 type LogAttr struct {

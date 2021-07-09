@@ -98,8 +98,7 @@ func NewColorSelectionDialog(title string) *ColorSelectionDialogClass {
 
 	var _colorSelectionDialog *ColorSelectionDialogClass // out
 
-	_colorSelectionDialog = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*ColorSelectionDialogClass)
+	_colorSelectionDialog = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ColorSelectionDialogClass)
 
 	return _colorSelectionDialog
 }
@@ -109,14 +108,13 @@ func (c *ColorSelectionDialogClass) ColorSelection() *WidgetClass {
 	var _arg0 *C.GtkColorSelectionDialog // out
 	var _cret *C.GtkWidget               // in
 
-	_arg0 = (*C.GtkColorSelectionDialog)(unsafe.Pointer((&c).Native()))
+	_arg0 = (*C.GtkColorSelectionDialog)(unsafe.Pointer(c.Native()))
 
 	_cret = C.gtk_color_selection_dialog_get_color_selection(_arg0)
 
 	var _widget *WidgetClass // out
 
-	_widget = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*WidgetClass)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WidgetClass)
 
 	return _widget
 }

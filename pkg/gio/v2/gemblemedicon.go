@@ -79,15 +79,14 @@ func NewEmblemedIcon(icon Icon, emblem Emblem) *EmblemedIconClass {
 	var _arg2 *C.GEmblem // out
 	var _cret *C.GIcon   // in
 
-	_arg1 = (*C.GIcon)(unsafe.Pointer((&icon).Native()))
-	_arg2 = (*C.GEmblem)(unsafe.Pointer((&emblem).Native()))
+	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
+	_arg2 = (*C.GEmblem)(unsafe.Pointer(emblem.Native()))
 
 	_cret = C.g_emblemed_icon_new(_arg1, _arg2)
 
 	var _emblemedIcon *EmblemedIconClass // out
 
-	_emblemedIcon = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*EmblemedIconClass)
+	_emblemedIcon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*EmblemedIconClass)
 
 	return _emblemedIcon
 }
@@ -97,8 +96,8 @@ func (e *EmblemedIconClass) AddEmblem(emblem Emblem) {
 	var _arg0 *C.GEmblemedIcon // out
 	var _arg1 *C.GEmblem       // out
 
-	_arg0 = (*C.GEmblemedIcon)(unsafe.Pointer((&e).Native()))
-	_arg1 = (*C.GEmblem)(unsafe.Pointer((&emblem).Native()))
+	_arg0 = (*C.GEmblemedIcon)(unsafe.Pointer(e.Native()))
+	_arg1 = (*C.GEmblem)(unsafe.Pointer(emblem.Native()))
 
 	C.g_emblemed_icon_add_emblem(_arg0, _arg1)
 }
@@ -107,7 +106,7 @@ func (e *EmblemedIconClass) AddEmblem(emblem Emblem) {
 func (e *EmblemedIconClass) ClearEmblems() {
 	var _arg0 *C.GEmblemedIcon // out
 
-	_arg0 = (*C.GEmblemedIcon)(unsafe.Pointer((&e).Native()))
+	_arg0 = (*C.GEmblemedIcon)(unsafe.Pointer(e.Native()))
 
 	C.g_emblemed_icon_clear_emblems(_arg0)
 }
@@ -117,14 +116,13 @@ func (e *EmblemedIconClass) Icon() *IconInterface {
 	var _arg0 *C.GEmblemedIcon // out
 	var _cret *C.GIcon         // in
 
-	_arg0 = (*C.GEmblemedIcon)(unsafe.Pointer((&e).Native()))
+	_arg0 = (*C.GEmblemedIcon)(unsafe.Pointer(e.Native()))
 
 	_cret = C.g_emblemed_icon_get_icon(_arg0)
 
 	var _icon *IconInterface // out
 
-	_icon = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*IconInterface)
+	_icon = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*IconInterface)
 
 	return _icon
 }

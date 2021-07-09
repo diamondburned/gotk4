@@ -81,6 +81,24 @@ type PollableOutputStreamOverrider interface {
 	// transports like D/TLS require that you re-send the same @buffer and
 	// @count in the next write call.
 	WriteNonblocking(buffer []byte) (int, error)
+	// WritevNonblocking attempts to write the bytes contained in the @n_vectors
+	// @vectors to @stream, as with g_output_stream_writev(). If @stream is not
+	// currently writable, this will immediately return
+	// %@G_POLLABLE_RETURN_WOULD_BLOCK, and you can use
+	// g_pollable_output_stream_create_source() to create a #GSource that will
+	// be triggered when @stream is writable. @error will *not* be set in that
+	// case.
+	//
+	// Note that since this method never blocks, you cannot actually use
+	// @cancellable to cancel it. However, it will return an error if
+	// @cancellable has already been cancelled when you call, which may happen
+	// if you call this method after a source triggers due to having been
+	// cancelled.
+	//
+	// Also note that if G_POLLABLE_RETURN_WOULD_BLOCK is returned some
+	// underlying transports like D/TLS require that you re-send the same
+	// @vectors and @n_vectors in the next write call.
+	WritevNonblocking(vectors []OutputVector) (uint, PollableReturn, error)
 }
 
 // PollableOutputStream is implemented by Streams that can be polled for
@@ -130,6 +148,24 @@ type PollableOutputStream interface {
 	// transports like D/TLS require that you re-send the same @buffer and
 	// @count in the next write call.
 	WriteNonblocking(buffer []byte, cancellable Cancellable) (int, error)
+	// WritevNonblocking attempts to write the bytes contained in the @n_vectors
+	// @vectors to @stream, as with g_output_stream_writev(). If @stream is not
+	// currently writable, this will immediately return
+	// %@G_POLLABLE_RETURN_WOULD_BLOCK, and you can use
+	// g_pollable_output_stream_create_source() to create a #GSource that will
+	// be triggered when @stream is writable. @error will *not* be set in that
+	// case.
+	//
+	// Note that since this method never blocks, you cannot actually use
+	// @cancellable to cancel it. However, it will return an error if
+	// @cancellable has already been cancelled when you call, which may happen
+	// if you call this method after a source triggers due to having been
+	// cancelled.
+	//
+	// Also note that if G_POLLABLE_RETURN_WOULD_BLOCK is returned some
+	// underlying transports like D/TLS require that you re-send the same
+	// @vectors and @n_vectors in the next write call.
+	WritevNonblocking(vectors []OutputVector, cancellable Cancellable) (uint, PollableReturn, error)
 }
 
 // PollableOutputStreamInterface implements the PollableOutputStream interface.
@@ -164,7 +200,7 @@ func (s *PollableOutputStreamInterface) CanPoll() bool {
 	var _arg0 *C.GPollableOutputStream // out
 	var _cret C.gboolean               // in
 
-	_arg0 = (*C.GPollableOutputStream)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GPollableOutputStream)(unsafe.Pointer(s.Native()))
 
 	_cret = C.g_pollable_output_stream_can_poll(_arg0)
 
@@ -190,8 +226,8 @@ func (s *PollableOutputStreamInterface) CreateSource(cancellable Cancellable) *g
 	var _arg1 *C.GCancellable          // out
 	var _cret *C.GSource               // in
 
-	_arg0 = (*C.GPollableOutputStream)(unsafe.Pointer((&s).Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer((&cancellable).Native()))
+	_arg0 = (*C.GPollableOutputStream)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_pollable_output_stream_create_source(_arg0, _arg1)
 
@@ -217,7 +253,7 @@ func (s *PollableOutputStreamInterface) IsWritable() bool {
 	var _arg0 *C.GPollableOutputStream // out
 	var _cret C.gboolean               // in
 
-	_arg0 = (*C.GPollableOutputStream)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GPollableOutputStream)(unsafe.Pointer(s.Native()))
 
 	_cret = C.g_pollable_output_stream_is_writable(_arg0)
 
@@ -252,10 +288,10 @@ func (s *PollableOutputStreamInterface) WriteNonblocking(buffer []byte, cancella
 	var _cret C.gssize        // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GPollableOutputStream)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GPollableOutputStream)(unsafe.Pointer(s.Native()))
 	_arg2 = C.gsize(len(buffer))
 	_arg1 = (*C.void)(unsafe.Pointer(&buffer[0]))
-	_arg3 = (*C.GCancellable)(unsafe.Pointer((&cancellable).Native()))
+	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_pollable_output_stream_write_nonblocking(_arg0, unsafe.Pointer(_arg1), _arg2, _arg3, &_cerr)
 
@@ -266,4 +302,46 @@ func (s *PollableOutputStreamInterface) WriteNonblocking(buffer []byte, cancella
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _gssize, _goerr
+}
+
+// WritevNonblocking attempts to write the bytes contained in the @n_vectors
+// @vectors to @stream, as with g_output_stream_writev(). If @stream is not
+// currently writable, this will immediately return
+// %@G_POLLABLE_RETURN_WOULD_BLOCK, and you can use
+// g_pollable_output_stream_create_source() to create a #GSource that will be
+// triggered when @stream is writable. @error will *not* be set in that case.
+//
+// Note that since this method never blocks, you cannot actually use
+// @cancellable to cancel it. However, it will return an error if @cancellable
+// has already been cancelled when you call, which may happen if you call this
+// method after a source triggers due to having been cancelled.
+//
+// Also note that if G_POLLABLE_RETURN_WOULD_BLOCK is returned some underlying
+// transports like D/TLS require that you re-send the same @vectors and
+// @n_vectors in the next write call.
+func (s *PollableOutputStreamInterface) WritevNonblocking(vectors []OutputVector, cancellable Cancellable) (uint, PollableReturn, error) {
+	var _arg0 *C.GPollableOutputStream // out
+	var _arg1 *C.GOutputVector
+	var _arg2 C.gsize
+	var _arg3 C.gsize           // in
+	var _arg4 *C.GCancellable   // out
+	var _cret C.GPollableReturn // in
+	var _cerr *C.GError         // in
+
+	_arg0 = (*C.GPollableOutputStream)(unsafe.Pointer(s.Native()))
+	_arg2 = C.gsize(len(vectors))
+	_arg1 = (*C.GOutputVector)(unsafe.Pointer(&vectors[0]))
+	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+
+	_cret = C.g_pollable_output_stream_writev_nonblocking(_arg0, _arg1, _arg2, &_arg3, _arg4, &_cerr)
+
+	var _bytesWritten uint             // out
+	var _pollableReturn PollableReturn // out
+	var _goerr error                   // out
+
+	_bytesWritten = uint(_arg3)
+	_pollableReturn = (PollableReturn)(_cret)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _bytesWritten, _pollableReturn, _goerr
 }

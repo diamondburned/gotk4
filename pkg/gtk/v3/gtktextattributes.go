@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -38,6 +39,20 @@ func WrapTextAppearance(ptr unsafe.Pointer) *TextAppearance {
 // Native returns the underlying C source pointer.
 func (t *TextAppearance) Native() unsafe.Pointer {
 	return unsafe.Pointer(&t.native)
+}
+
+// BgColor: background Color.
+func (t *TextAppearance) BgColor() gdk.Color {
+	var v gdk.Color // out
+	v = *(*gdk.Color)(unsafe.Pointer((&t.native.bg_color)))
+	return v
+}
+
+// FgColor: foreground Color.
+func (t *TextAppearance) FgColor() gdk.Color {
+	var v gdk.Color // out
+	v = *(*gdk.Color)(unsafe.Pointer((&t.native.fg_color)))
+	return v
 }
 
 // Rise: super/subscript rise, can be negative.
@@ -86,6 +101,13 @@ func NewTextAttributes() *TextAttributes {
 // Native returns the underlying C source pointer.
 func (t *TextAttributes) Native() unsafe.Pointer {
 	return unsafe.Pointer(&t.native)
+}
+
+// Appearance for text.
+func (t *TextAttributes) Appearance() TextAppearance {
+	var v TextAppearance // out
+	v = *(*TextAppearance)(unsafe.Pointer((&t.native.appearance)))
+	return v
 }
 
 // Justification for text.

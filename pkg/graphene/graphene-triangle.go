@@ -124,6 +124,200 @@ func (t *Triangle) Area() float32 {
 	return _gfloat
 }
 
+// Barycoords computes the barycentric coordinates
+// (http://en.wikipedia.org/wiki/Barycentric_coordinate_system) of the given
+// point @p.
+//
+// The point @p must lie on the same plane as the triangle @t; if the point is
+// not coplanar, the result of this function is undefined.
+//
+// If we place the origin in the coordinates of the triangle's A point, the
+// barycentric coordinates are `u`, which is on the AC vector; and `v` which is
+// on the AB vector:
+//
+// ! (triangle-barycentric.png)
+//
+// The returned #graphene_vec2_t contains the following values, in order:
+//
+//    - `res.x = u`
+//    - `res.y = v`
+func (t *Triangle) Barycoords(p *Point3D) (Vec2, bool) {
+	var _arg0 *C.graphene_triangle_t // out
+	var _arg1 *C.graphene_point3d_t  // out
+	var _arg2 C.graphene_vec2_t      // in
+	var _cret C._Bool                // in
+
+	_arg0 = (*C.graphene_triangle_t)(unsafe.Pointer(t))
+	_arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(p))
+
+	_cret = C.graphene_triangle_get_barycoords(_arg0, _arg1, &_arg2)
+
+	var _res Vec2 // out
+	var _ok bool  // out
+
+	_res = *(*Vec2)(unsafe.Pointer((&_arg2)))
+	if _cret {
+		_ok = true
+	}
+
+	return _res, _ok
+}
+
+// BoundingBox computes the bounding box of the given #graphene_triangle_t.
+func (t *Triangle) BoundingBox() Box {
+	var _arg0 *C.graphene_triangle_t // out
+	var _arg1 C.graphene_box_t       // in
+
+	_arg0 = (*C.graphene_triangle_t)(unsafe.Pointer(t))
+
+	C.graphene_triangle_get_bounding_box(_arg0, &_arg1)
+
+	var _res Box // out
+
+	_res = *(*Box)(unsafe.Pointer((&_arg1)))
+
+	return _res
+}
+
+// Midpoint computes the coordinates of the midpoint of the given
+// #graphene_triangle_t.
+//
+// The midpoint G is the centroid
+// (https://en.wikipedia.org/wiki/Centroid#Triangle_centroid) of the triangle,
+// i.e. the intersection of its medians.
+func (t *Triangle) Midpoint() Point3D {
+	var _arg0 *C.graphene_triangle_t // out
+	var _arg1 C.graphene_point3d_t   // in
+
+	_arg0 = (*C.graphene_triangle_t)(unsafe.Pointer(t))
+
+	C.graphene_triangle_get_midpoint(_arg0, &_arg1)
+
+	var _res Point3D // out
+
+	_res = *(*Point3D)(unsafe.Pointer((&_arg1)))
+
+	return _res
+}
+
+// Normal computes the normal vector of the given #graphene_triangle_t.
+func (t *Triangle) Normal() Vec3 {
+	var _arg0 *C.graphene_triangle_t // out
+	var _arg1 C.graphene_vec3_t      // in
+
+	_arg0 = (*C.graphene_triangle_t)(unsafe.Pointer(t))
+
+	C.graphene_triangle_get_normal(_arg0, &_arg1)
+
+	var _res Vec3 // out
+
+	_res = *(*Vec3)(unsafe.Pointer((&_arg1)))
+
+	return _res
+}
+
+// Plane computes the plane based on the vertices of the given
+// #graphene_triangle_t.
+func (t *Triangle) Plane() Plane {
+	var _arg0 *C.graphene_triangle_t // out
+	var _arg1 C.graphene_plane_t     // in
+
+	_arg0 = (*C.graphene_triangle_t)(unsafe.Pointer(t))
+
+	C.graphene_triangle_get_plane(_arg0, &_arg1)
+
+	var _res Plane // out
+
+	_res = *(*Plane)(unsafe.Pointer((&_arg1)))
+
+	return _res
+}
+
+// Points retrieves the three vertices of the given #graphene_triangle_t and
+// returns their coordinates as #graphene_point3d_t.
+func (t *Triangle) Points() (a Point3D, b Point3D, c Point3D) {
+	var _arg0 *C.graphene_triangle_t // out
+	var _arg1 C.graphene_point3d_t   // in
+	var _arg2 C.graphene_point3d_t   // in
+	var _arg3 C.graphene_point3d_t   // in
+
+	_arg0 = (*C.graphene_triangle_t)(unsafe.Pointer(t))
+
+	C.graphene_triangle_get_points(_arg0, &_arg1, &_arg2, &_arg3)
+
+	var _a Point3D // out
+	var _b Point3D // out
+	var _c Point3D // out
+
+	_a = *(*Point3D)(unsafe.Pointer((&_arg1)))
+	_b = *(*Point3D)(unsafe.Pointer((&_arg2)))
+	_c = *(*Point3D)(unsafe.Pointer((&_arg3)))
+
+	return _a, _b, _c
+}
+
+// Uv computes the UV coordinates of the given point @p.
+//
+// The point @p must lie on the same plane as the triangle @t; if the point is
+// not coplanar, the result of this function is undefined. If @p is nil, the
+// point will be set in (0, 0, 0).
+//
+// The UV coordinates will be placed in the @res vector:
+//
+//    - `res.x = u`
+//    - `res.y = v`
+//
+// See also: graphene_triangle_get_barycoords()
+func (t *Triangle) Uv(p *Point3D, uvA *Vec2, uvB *Vec2, uvC *Vec2) (Vec2, bool) {
+	var _arg0 *C.graphene_triangle_t // out
+	var _arg1 *C.graphene_point3d_t  // out
+	var _arg2 *C.graphene_vec2_t     // out
+	var _arg3 *C.graphene_vec2_t     // out
+	var _arg4 *C.graphene_vec2_t     // out
+	var _arg5 C.graphene_vec2_t      // in
+	var _cret C._Bool                // in
+
+	_arg0 = (*C.graphene_triangle_t)(unsafe.Pointer(t))
+	_arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(p))
+	_arg2 = (*C.graphene_vec2_t)(unsafe.Pointer(uvA))
+	_arg3 = (*C.graphene_vec2_t)(unsafe.Pointer(uvB))
+	_arg4 = (*C.graphene_vec2_t)(unsafe.Pointer(uvC))
+
+	_cret = C.graphene_triangle_get_uv(_arg0, _arg1, _arg2, _arg3, _arg4, &_arg5)
+
+	var _res Vec2 // out
+	var _ok bool  // out
+
+	_res = *(*Vec2)(unsafe.Pointer((&_arg5)))
+	if _cret {
+		_ok = true
+	}
+
+	return _res, _ok
+}
+
+// Vertices retrieves the three vertices of the given #graphene_triangle_t.
+func (t *Triangle) Vertices() (a Vec3, b Vec3, c Vec3) {
+	var _arg0 *C.graphene_triangle_t // out
+	var _arg1 C.graphene_vec3_t      // in
+	var _arg2 C.graphene_vec3_t      // in
+	var _arg3 C.graphene_vec3_t      // in
+
+	_arg0 = (*C.graphene_triangle_t)(unsafe.Pointer(t))
+
+	C.graphene_triangle_get_vertices(_arg0, &_arg1, &_arg2, &_arg3)
+
+	var _a Vec3 // out
+	var _b Vec3 // out
+	var _c Vec3 // out
+
+	_a = *(*Vec3)(unsafe.Pointer((&_arg1)))
+	_b = *(*Vec3)(unsafe.Pointer((&_arg2)))
+	_c = *(*Vec3)(unsafe.Pointer((&_arg3)))
+
+	return _a, _b, _c
+}
+
 // InitFromFloat initializes a #graphene_triangle_t using the three given arrays
 // of floating point values, each representing the coordinates of a point in 3D
 // space.

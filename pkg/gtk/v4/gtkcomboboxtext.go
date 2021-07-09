@@ -222,8 +222,7 @@ func NewComboBoxText() *ComboBoxTextClass {
 
 	var _comboBoxText *ComboBoxTextClass // out
 
-	_comboBoxText = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*ComboBoxTextClass)
+	_comboBoxText = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ComboBoxTextClass)
 
 	return _comboBoxText
 }
@@ -236,8 +235,7 @@ func NewComboBoxTextWithEntry() *ComboBoxTextClass {
 
 	var _comboBoxText *ComboBoxTextClass // out
 
-	_comboBoxText = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*ComboBoxTextClass)
+	_comboBoxText = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ComboBoxTextClass)
 
 	return _comboBoxText
 }
@@ -253,7 +251,7 @@ func (c *ComboBoxTextClass) Append(id string, text string) {
 	var _arg1 *C.char            // out
 	var _arg2 *C.char            // out
 
-	_arg0 = (*C.GtkComboBoxText)(unsafe.Pointer((&c).Native()))
+	_arg0 = (*C.GtkComboBoxText)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.char)(C.CString(id))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.char)(C.CString(text))
@@ -270,7 +268,7 @@ func (c *ComboBoxTextClass) AppendText(text string) {
 	var _arg0 *C.GtkComboBoxText // out
 	var _arg1 *C.char            // out
 
-	_arg0 = (*C.GtkComboBoxText)(unsafe.Pointer((&c).Native()))
+	_arg0 = (*C.GtkComboBoxText)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.char)(C.CString(text))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -286,7 +284,7 @@ func (c *ComboBoxTextClass) ActiveText() string {
 	var _arg0 *C.GtkComboBoxText // out
 	var _cret *C.char            // in
 
-	_arg0 = (*C.GtkComboBoxText)(unsafe.Pointer((&c).Native()))
+	_arg0 = (*C.GtkComboBoxText)(unsafe.Pointer(c.Native()))
 
 	_cret = C.gtk_combo_box_text_get_active_text(_arg0)
 
@@ -311,7 +309,7 @@ func (c *ComboBoxTextClass) Insert(position int, id string, text string) {
 	var _arg2 *C.char            // out
 	var _arg3 *C.char            // out
 
-	_arg0 = (*C.GtkComboBoxText)(unsafe.Pointer((&c).Native()))
+	_arg0 = (*C.GtkComboBoxText)(unsafe.Pointer(c.Native()))
 	_arg1 = C.int(position)
 	_arg2 = (*C.char)(C.CString(id))
 	defer C.free(unsafe.Pointer(_arg2))
@@ -333,7 +331,7 @@ func (c *ComboBoxTextClass) InsertText(position int, text string) {
 	var _arg1 C.int              // out
 	var _arg2 *C.char            // out
 
-	_arg0 = (*C.GtkComboBoxText)(unsafe.Pointer((&c).Native()))
+	_arg0 = (*C.GtkComboBoxText)(unsafe.Pointer(c.Native()))
 	_arg1 = C.int(position)
 	_arg2 = (*C.char)(C.CString(text))
 	defer C.free(unsafe.Pointer(_arg2))
@@ -352,7 +350,7 @@ func (c *ComboBoxTextClass) Prepend(id string, text string) {
 	var _arg1 *C.char            // out
 	var _arg2 *C.char            // out
 
-	_arg0 = (*C.GtkComboBoxText)(unsafe.Pointer((&c).Native()))
+	_arg0 = (*C.GtkComboBoxText)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.char)(C.CString(id))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.char)(C.CString(text))
@@ -369,7 +367,7 @@ func (c *ComboBoxTextClass) PrependText(text string) {
 	var _arg0 *C.GtkComboBoxText // out
 	var _arg1 *C.char            // out
 
-	_arg0 = (*C.GtkComboBoxText)(unsafe.Pointer((&c).Native()))
+	_arg0 = (*C.GtkComboBoxText)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.char)(C.CString(text))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -381,7 +379,7 @@ func (c *ComboBoxTextClass) Remove(position int) {
 	var _arg0 *C.GtkComboBoxText // out
 	var _arg1 C.int              // out
 
-	_arg0 = (*C.GtkComboBoxText)(unsafe.Pointer((&c).Native()))
+	_arg0 = (*C.GtkComboBoxText)(unsafe.Pointer(c.Native()))
 	_arg1 = C.int(position)
 
 	C.gtk_combo_box_text_remove(_arg0, _arg1)
@@ -391,7 +389,7 @@ func (c *ComboBoxTextClass) Remove(position int) {
 func (c *ComboBoxTextClass) RemoveAll() {
 	var _arg0 *C.GtkComboBoxText // out
 
-	_arg0 = (*C.GtkComboBoxText)(unsafe.Pointer((&c).Native()))
+	_arg0 = (*C.GtkComboBoxText)(unsafe.Pointer(c.Native()))
 
 	C.gtk_combo_box_text_remove_all(_arg0)
 }

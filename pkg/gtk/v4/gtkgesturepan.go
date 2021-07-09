@@ -76,7 +76,7 @@ func (g *GesturePanClass) Orientation() Orientation {
 	var _arg0 *C.GtkGesturePan // out
 	var _cret C.GtkOrientation // in
 
-	_arg0 = (*C.GtkGesturePan)(unsafe.Pointer((&g).Native()))
+	_arg0 = (*C.GtkGesturePan)(unsafe.Pointer(g.Native()))
 
 	_cret = C.gtk_gesture_pan_get_orientation(_arg0)
 

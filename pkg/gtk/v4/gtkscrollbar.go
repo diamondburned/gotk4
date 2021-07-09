@@ -123,14 +123,13 @@ func (s *ScrollbarClass) Adjustment() *AdjustmentClass {
 	var _arg0 *C.GtkScrollbar  // out
 	var _cret *C.GtkAdjustment // in
 
-	_arg0 = (*C.GtkScrollbar)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkScrollbar)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gtk_scrollbar_get_adjustment(_arg0)
 
 	var _adjustment *AdjustmentClass // out
 
-	_adjustment = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*AdjustmentClass)
+	_adjustment = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*AdjustmentClass)
 
 	return _adjustment
 }
@@ -140,8 +139,8 @@ func (s *ScrollbarClass) SetAdjustment(adjustment Adjustment) {
 	var _arg0 *C.GtkScrollbar  // out
 	var _arg1 *C.GtkAdjustment // out
 
-	_arg0 = (*C.GtkScrollbar)(unsafe.Pointer((&s).Native()))
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer((&adjustment).Native()))
+	_arg0 = (*C.GtkScrollbar)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
 
 	C.gtk_scrollbar_set_adjustment(_arg0, _arg1)
 }

@@ -176,14 +176,13 @@ func (d *DeviceManagerClass) ClientPointer() *DeviceClass {
 	var _arg0 *C.GdkDeviceManager // out
 	var _cret *C.GdkDevice        // in
 
-	_arg0 = (*C.GdkDeviceManager)(unsafe.Pointer((&d).Native()))
+	_arg0 = (*C.GdkDeviceManager)(unsafe.Pointer(d.Native()))
 
 	_cret = C.gdk_device_manager_get_client_pointer(_arg0)
 
 	var _device *DeviceClass // out
 
-	_device = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*DeviceClass)
+	_device = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*DeviceClass)
 
 	return _device
 }
@@ -193,14 +192,13 @@ func (d *DeviceManagerClass) Display() *DisplayClass {
 	var _arg0 *C.GdkDeviceManager // out
 	var _cret *C.GdkDisplay       // in
 
-	_arg0 = (*C.GdkDeviceManager)(unsafe.Pointer((&d).Native()))
+	_arg0 = (*C.GdkDeviceManager)(unsafe.Pointer(d.Native()))
 
 	_cret = C.gdk_device_manager_get_display(_arg0)
 
 	var _display *DisplayClass // out
 
-	_display = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*DisplayClass)
+	_display = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*DisplayClass)
 
 	return _display
 }

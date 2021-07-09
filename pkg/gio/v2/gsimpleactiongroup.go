@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -37,6 +38,11 @@ func init() {
 type SimpleActionGroup interface {
 	gextras.Objector
 
+	// AddEntries: convenience function for creating multiple Action instances
+	// and adding them to the action group.
+	//
+	// Deprecated: since version 2.38.
+	AddEntries(entries []ActionEntry, userData interface{})
 	// Insert adds an action to the action group.
 	//
 	// If the action group already contains an action with the same name as
@@ -95,10 +101,27 @@ func NewSimpleActionGroup() *SimpleActionGroupClass {
 
 	var _simpleActionGroup *SimpleActionGroupClass // out
 
-	_simpleActionGroup = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*SimpleActionGroupClass)
+	_simpleActionGroup = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*SimpleActionGroupClass)
 
 	return _simpleActionGroup
+}
+
+// AddEntries: convenience function for creating multiple Action instances and
+// adding them to the action group.
+//
+// Deprecated: since version 2.38.
+func (s *SimpleActionGroupClass) AddEntries(entries []ActionEntry, userData interface{}) {
+	var _arg0 *C.GSimpleActionGroup // out
+	var _arg1 *C.GActionEntry
+	var _arg2 C.gint
+	var _arg3 C.gpointer // out
+
+	_arg0 = (*C.GSimpleActionGroup)(unsafe.Pointer(s.Native()))
+	_arg2 = C.gint(len(entries))
+	_arg1 = (*C.GActionEntry)(unsafe.Pointer(&entries[0]))
+	_arg3 = (C.gpointer)(box.Assign(userData))
+
+	C.g_simple_action_group_add_entries(_arg0, _arg1, _arg2, _arg3)
 }
 
 // Insert adds an action to the action group.
@@ -113,8 +136,8 @@ func (s *SimpleActionGroupClass) Insert(action Action) {
 	var _arg0 *C.GSimpleActionGroup // out
 	var _arg1 *C.GAction            // out
 
-	_arg0 = (*C.GSimpleActionGroup)(unsafe.Pointer((&s).Native()))
-	_arg1 = (*C.GAction)(unsafe.Pointer((&action).Native()))
+	_arg0 = (*C.GSimpleActionGroup)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GAction)(unsafe.Pointer(action.Native()))
 
 	C.g_simple_action_group_insert(_arg0, _arg1)
 }
@@ -129,7 +152,7 @@ func (s *SimpleActionGroupClass) Lookup(actionName string) *ActionInterface {
 	var _arg1 *C.gchar              // out
 	var _cret *C.GAction            // in
 
-	_arg0 = (*C.GSimpleActionGroup)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GSimpleActionGroup)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(actionName))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -137,8 +160,7 @@ func (s *SimpleActionGroupClass) Lookup(actionName string) *ActionInterface {
 
 	var _action *ActionInterface // out
 
-	_action = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*ActionInterface)
+	_action = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ActionInterface)
 
 	return _action
 }
@@ -152,7 +174,7 @@ func (s *SimpleActionGroupClass) Remove(actionName string) {
 	var _arg0 *C.GSimpleActionGroup // out
 	var _arg1 *C.gchar              // out
 
-	_arg0 = (*C.GSimpleActionGroup)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GSimpleActionGroup)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(actionName))
 	defer C.free(unsafe.Pointer(_arg1))
 

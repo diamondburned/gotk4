@@ -85,7 +85,7 @@ func (o *DBusObjectInterface) Interface(interfaceName string) *DBusInterfaceInte
 	var _arg1 *C.gchar          // out
 	var _cret *C.GDBusInterface // in
 
-	_arg0 = (*C.GDBusObject)(unsafe.Pointer((&o).Native()))
+	_arg0 = (*C.GDBusObject)(unsafe.Pointer(o.Native()))
 	_arg1 = (*C.gchar)(C.CString(interfaceName))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -93,8 +93,7 @@ func (o *DBusObjectInterface) Interface(interfaceName string) *DBusInterfaceInte
 
 	var _dBusInterface *DBusInterfaceInterface // out
 
-	_dBusInterface = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*DBusInterfaceInterface)
+	_dBusInterface = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*DBusInterfaceInterface)
 
 	return _dBusInterface
 }
@@ -104,7 +103,7 @@ func (o *DBusObjectInterface) ObjectPath() string {
 	var _arg0 *C.GDBusObject // out
 	var _cret *C.gchar       // in
 
-	_arg0 = (*C.GDBusObject)(unsafe.Pointer((&o).Native()))
+	_arg0 = (*C.GDBusObject)(unsafe.Pointer(o.Native()))
 
 	_cret = C.g_dbus_object_get_object_path(_arg0)
 

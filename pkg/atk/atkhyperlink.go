@@ -138,7 +138,7 @@ func (l *HyperlinkClass) EndIndex() int {
 	var _arg0 *C.AtkHyperlink // out
 	var _cret C.gint          // in
 
-	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer((&l).Native()))
+	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer(l.Native()))
 
 	_cret = C.atk_hyperlink_get_end_index(_arg0)
 
@@ -154,7 +154,7 @@ func (l *HyperlinkClass) NAnchors() int {
 	var _arg0 *C.AtkHyperlink // out
 	var _cret C.gint          // in
 
-	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer((&l).Native()))
+	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer(l.Native()))
 
 	_cret = C.atk_hyperlink_get_n_anchors(_arg0)
 
@@ -175,15 +175,14 @@ func (l *HyperlinkClass) GetObject(i int) *ObjectClass {
 	var _arg1 C.gint          // out
 	var _cret *C.AtkObject    // in
 
-	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer((&l).Native()))
+	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer(l.Native()))
 	_arg1 = C.gint(i)
 
 	_cret = C.atk_hyperlink_get_object(_arg0, _arg1)
 
 	var _object *ObjectClass // out
 
-	_object = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*ObjectClass)
+	_object = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ObjectClass)
 
 	return _object
 }
@@ -194,7 +193,7 @@ func (l *HyperlinkClass) StartIndex() int {
 	var _arg0 *C.AtkHyperlink // out
 	var _cret C.gint          // in
 
-	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer((&l).Native()))
+	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer(l.Native()))
 
 	_cret = C.atk_hyperlink_get_start_index(_arg0)
 
@@ -213,7 +212,7 @@ func (l *HyperlinkClass) URI(i int) string {
 	var _arg1 C.gint          // out
 	var _cret *C.gchar        // in
 
-	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer((&l).Native()))
+	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer(l.Native()))
 	_arg1 = C.gint(i)
 
 	_cret = C.atk_hyperlink_get_uri(_arg0, _arg1)
@@ -233,7 +232,7 @@ func (l *HyperlinkClass) IsInline() bool {
 	var _arg0 *C.AtkHyperlink // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer((&l).Native()))
+	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer(l.Native()))
 
 	_cret = C.atk_hyperlink_is_inline(_arg0)
 
@@ -253,7 +252,7 @@ func (l *HyperlinkClass) IsSelectedLink() bool {
 	var _arg0 *C.AtkHyperlink // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer((&l).Native()))
+	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer(l.Native()))
 
 	_cret = C.atk_hyperlink_is_selected_link(_arg0)
 
@@ -273,7 +272,7 @@ func (l *HyperlinkClass) IsValid() bool {
 	var _arg0 *C.AtkHyperlink // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer((&l).Native()))
+	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer(l.Native()))
 
 	_cret = C.atk_hyperlink_is_valid(_arg0)
 

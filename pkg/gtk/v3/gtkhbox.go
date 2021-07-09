@@ -113,8 +113,7 @@ func NewHBox(homogeneous bool, spacing int) *HBoxClass {
 
 	var _hBox *HBoxClass // out
 
-	_hBox = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*HBoxClass)
+	_hBox = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*HBoxClass)
 
 	return _hBox
 }

@@ -81,8 +81,7 @@ func NewAnyFilter() *AnyFilterClass {
 
 	var _anyFilter *AnyFilterClass // out
 
-	_anyFilter = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*AnyFilterClass)
+	_anyFilter = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*AnyFilterClass)
 
 	return _anyFilter
 }
@@ -146,8 +145,7 @@ func NewEveryFilter() *EveryFilterClass {
 
 	var _everyFilter *EveryFilterClass // out
 
-	_everyFilter = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*EveryFilterClass)
+	_everyFilter = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*EveryFilterClass)
 
 	return _everyFilter
 }
@@ -201,8 +199,8 @@ func (s *MultiFilterClass) Append(filter Filter) {
 	var _arg0 *C.GtkMultiFilter // out
 	var _arg1 *C.GtkFilter      // out
 
-	_arg0 = (*C.GtkMultiFilter)(unsafe.Pointer((&s).Native()))
-	_arg1 = (*C.GtkFilter)(unsafe.Pointer((&filter).Native()))
+	_arg0 = (*C.GtkMultiFilter)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GtkFilter)(unsafe.Pointer(filter.Native()))
 
 	C.gtk_multi_filter_append(_arg0, _arg1)
 }
@@ -216,7 +214,7 @@ func (s *MultiFilterClass) Remove(position uint) {
 	var _arg0 *C.GtkMultiFilter // out
 	var _arg1 C.guint           // out
 
-	_arg0 = (*C.GtkMultiFilter)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkMultiFilter)(unsafe.Pointer(s.Native()))
 	_arg1 = C.guint(position)
 
 	C.gtk_multi_filter_remove(_arg0, _arg1)

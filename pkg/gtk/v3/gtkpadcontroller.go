@@ -86,7 +86,10 @@ func marshalPadActionType(p uintptr) (interface{}, error) {
 type PadController interface {
 	gextras.Objector
 
-	privatePadControllerClass()
+	// SetActionEntries: this is a convenience function to add a group of action
+	// entries on @controller. See PadActionEntry and
+	// gtk_pad_controller_set_action().
+	SetActionEntries(entries []PadActionEntry)
 }
 
 // PadControllerClass implements the PadController interface.
@@ -125,21 +128,33 @@ func NewPadController(window Window, group gio.ActionGroup, pad gdk.Device) *Pad
 	var _arg3 *C.GdkDevice        // out
 	var _cret *C.GtkPadController // in
 
-	_arg1 = (*C.GtkWindow)(unsafe.Pointer((&window).Native()))
-	_arg2 = (*C.GActionGroup)(unsafe.Pointer((&group).Native()))
-	_arg3 = (*C.GdkDevice)(unsafe.Pointer((&pad).Native()))
+	_arg1 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
+	_arg2 = (*C.GActionGroup)(unsafe.Pointer(group.Native()))
+	_arg3 = (*C.GdkDevice)(unsafe.Pointer(pad.Native()))
 
 	_cret = C.gtk_pad_controller_new(_arg1, _arg2, _arg3)
 
 	var _padController *PadControllerClass // out
 
-	_padController = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*PadControllerClass)
+	_padController = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*PadControllerClass)
 
 	return _padController
 }
 
-func (*PadControllerClass) privatePadControllerClass() {}
+// SetActionEntries: this is a convenience function to add a group of action
+// entries on @controller. See PadActionEntry and
+// gtk_pad_controller_set_action().
+func (c *PadControllerClass) SetActionEntries(entries []PadActionEntry) {
+	var _arg0 *C.GtkPadController // out
+	var _arg1 *C.GtkPadActionEntry
+	var _arg2 C.gint
+
+	_arg0 = (*C.GtkPadController)(unsafe.Pointer(c.Native()))
+	_arg2 = C.gint(len(entries))
+	_arg1 = (*C.GtkPadActionEntry)(unsafe.Pointer(&entries[0]))
+
+	C.gtk_pad_controller_set_action_entries(_arg0, _arg1, _arg2)
+}
 
 // PadActionEntry: struct defining a pad action entry.
 type PadActionEntry struct {

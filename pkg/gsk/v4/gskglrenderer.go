@@ -59,8 +59,7 @@ func NewGLRenderer() *GLRendererClass {
 
 	var _glRenderer *GLRendererClass // out
 
-	_glRenderer = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*GLRendererClass)
+	_glRenderer = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*GLRendererClass)
 
 	return _glRenderer
 }

@@ -234,8 +234,7 @@ func NewButton() *ButtonClass {
 
 	var _button *ButtonClass // out
 
-	_button = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*ButtonClass)
+	_button = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ButtonClass)
 
 	return _button
 }
@@ -262,8 +261,7 @@ func NewButtonFromIconName(iconName string, size int) *ButtonClass {
 
 	var _button *ButtonClass // out
 
-	_button = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*ButtonClass)
+	_button = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ButtonClass)
 
 	return _button
 }
@@ -287,8 +285,7 @@ func NewButtonFromStock(stockId string) *ButtonClass {
 
 	var _button *ButtonClass // out
 
-	_button = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*ButtonClass)
+	_button = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ButtonClass)
 
 	return _button
 }
@@ -306,8 +303,7 @@ func NewButtonWithLabel(label string) *ButtonClass {
 
 	var _button *ButtonClass // out
 
-	_button = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*ButtonClass)
+	_button = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ButtonClass)
 
 	return _button
 }
@@ -328,8 +324,7 @@ func NewButtonWithMnemonic(label string) *ButtonClass {
 
 	var _button *ButtonClass // out
 
-	_button = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*ButtonClass)
+	_button = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ButtonClass)
 
 	return _button
 }
@@ -338,7 +333,7 @@ func NewButtonWithMnemonic(label string) *ButtonClass {
 func (b *ButtonClass) Clicked() {
 	var _arg0 *C.GtkButton // out
 
-	_arg0 = (*C.GtkButton)(unsafe.Pointer((&b).Native()))
+	_arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
 
 	C.gtk_button_clicked(_arg0)
 }
@@ -349,7 +344,7 @@ func (b *ButtonClass) Clicked() {
 func (b *ButtonClass) Enter() {
 	var _arg0 *C.GtkButton // out
 
-	_arg0 = (*C.GtkButton)(unsafe.Pointer((&b).Native()))
+	_arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
 
 	C.gtk_button_enter(_arg0)
 }
@@ -362,7 +357,7 @@ func (b *ButtonClass) Alignment() (xalign float32, yalign float32) {
 	var _arg1 C.gfloat     // in
 	var _arg2 C.gfloat     // in
 
-	_arg0 = (*C.GtkButton)(unsafe.Pointer((&b).Native()))
+	_arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
 
 	C.gtk_button_get_alignment(_arg0, &_arg1, &_arg2)
 
@@ -381,7 +376,7 @@ func (b *ButtonClass) AlwaysShowImage() bool {
 	var _arg0 *C.GtkButton // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkButton)(unsafe.Pointer((&b).Native()))
+	_arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
 
 	_cret = C.gtk_button_get_always_show_image(_arg0)
 
@@ -400,14 +395,13 @@ func (b *ButtonClass) EventWindow() *gdk.WindowClass {
 	var _arg0 *C.GtkButton // out
 	var _cret *C.GdkWindow // in
 
-	_arg0 = (*C.GtkButton)(unsafe.Pointer((&b).Native()))
+	_arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
 
 	_cret = C.gtk_button_get_event_window(_arg0)
 
 	var _window *gdk.WindowClass // out
 
-	_window = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*gdk.WindowClass)
+	_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.WindowClass)
 
 	return _window
 }
@@ -420,7 +414,7 @@ func (b *ButtonClass) FocusOnClick() bool {
 	var _arg0 *C.GtkButton // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkButton)(unsafe.Pointer((&b).Native()))
+	_arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
 
 	_cret = C.gtk_button_get_focus_on_click(_arg0)
 
@@ -440,14 +434,13 @@ func (b *ButtonClass) Image() *WidgetClass {
 	var _arg0 *C.GtkButton // out
 	var _cret *C.GtkWidget // in
 
-	_arg0 = (*C.GtkButton)(unsafe.Pointer((&b).Native()))
+	_arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
 
 	_cret = C.gtk_button_get_image(_arg0)
 
 	var _widget *WidgetClass // out
 
-	_widget = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*WidgetClass)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WidgetClass)
 
 	return _widget
 }
@@ -458,7 +451,7 @@ func (b *ButtonClass) ImagePosition() PositionType {
 	var _arg0 *C.GtkButton      // out
 	var _cret C.GtkPositionType // in
 
-	_arg0 = (*C.GtkButton)(unsafe.Pointer((&b).Native()))
+	_arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
 
 	_cret = C.gtk_button_get_image_position(_arg0)
 
@@ -477,7 +470,7 @@ func (b *ButtonClass) Label() string {
 	var _arg0 *C.GtkButton // out
 	var _cret *C.gchar     // in
 
-	_arg0 = (*C.GtkButton)(unsafe.Pointer((&b).Native()))
+	_arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
 
 	_cret = C.gtk_button_get_label(_arg0)
 
@@ -493,7 +486,7 @@ func (b *ButtonClass) Relief() ReliefStyle {
 	var _arg0 *C.GtkButton     // out
 	var _cret C.GtkReliefStyle // in
 
-	_arg0 = (*C.GtkButton)(unsafe.Pointer((&b).Native()))
+	_arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
 
 	_cret = C.gtk_button_get_relief(_arg0)
 
@@ -511,7 +504,7 @@ func (b *ButtonClass) UseStock() bool {
 	var _arg0 *C.GtkButton // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkButton)(unsafe.Pointer((&b).Native()))
+	_arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
 
 	_cret = C.gtk_button_get_use_stock(_arg0)
 
@@ -530,7 +523,7 @@ func (b *ButtonClass) UseUnderline() bool {
 	var _arg0 *C.GtkButton // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkButton)(unsafe.Pointer((&b).Native()))
+	_arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
 
 	_cret = C.gtk_button_get_use_underline(_arg0)
 
@@ -549,7 +542,7 @@ func (b *ButtonClass) UseUnderline() bool {
 func (b *ButtonClass) Leave() {
 	var _arg0 *C.GtkButton // out
 
-	_arg0 = (*C.GtkButton)(unsafe.Pointer((&b).Native()))
+	_arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
 
 	C.gtk_button_leave(_arg0)
 }
@@ -560,7 +553,7 @@ func (b *ButtonClass) Leave() {
 func (b *ButtonClass) Pressed() {
 	var _arg0 *C.GtkButton // out
 
-	_arg0 = (*C.GtkButton)(unsafe.Pointer((&b).Native()))
+	_arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
 
 	C.gtk_button_pressed(_arg0)
 }
@@ -571,7 +564,7 @@ func (b *ButtonClass) Pressed() {
 func (b *ButtonClass) Released() {
 	var _arg0 *C.GtkButton // out
 
-	_arg0 = (*C.GtkButton)(unsafe.Pointer((&b).Native()))
+	_arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
 
 	C.gtk_button_released(_arg0)
 }
@@ -585,7 +578,7 @@ func (b *ButtonClass) SetAlignment(xalign float32, yalign float32) {
 	var _arg1 C.gfloat     // out
 	var _arg2 C.gfloat     // out
 
-	_arg0 = (*C.GtkButton)(unsafe.Pointer((&b).Native()))
+	_arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
 	_arg1 = C.gfloat(xalign)
 	_arg2 = C.gfloat(yalign)
 
@@ -601,7 +594,7 @@ func (b *ButtonClass) SetAlwaysShowImage(alwaysShow bool) {
 	var _arg0 *C.GtkButton // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.GtkButton)(unsafe.Pointer((&b).Native()))
+	_arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
 	if alwaysShow {
 		_arg1 = C.TRUE
 	}
@@ -619,7 +612,7 @@ func (b *ButtonClass) SetFocusOnClick(focusOnClick bool) {
 	var _arg0 *C.GtkButton // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.GtkButton)(unsafe.Pointer((&b).Native()))
+	_arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
 	if focusOnClick {
 		_arg1 = C.TRUE
 	}
@@ -634,8 +627,8 @@ func (b *ButtonClass) SetImage(image Widget) {
 	var _arg0 *C.GtkButton // out
 	var _arg1 *C.GtkWidget // out
 
-	_arg0 = (*C.GtkButton)(unsafe.Pointer((&b).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&image).Native()))
+	_arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(image.Native()))
 
 	C.gtk_button_set_image(_arg0, _arg1)
 }
@@ -648,7 +641,7 @@ func (b *ButtonClass) SetLabel(label string) {
 	var _arg0 *C.GtkButton // out
 	var _arg1 *C.gchar     // out
 
-	_arg0 = (*C.GtkButton)(unsafe.Pointer((&b).Native()))
+	_arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.gchar)(C.CString(label))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -663,7 +656,7 @@ func (b *ButtonClass) SetUseStock(useStock bool) {
 	var _arg0 *C.GtkButton // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.GtkButton)(unsafe.Pointer((&b).Native()))
+	_arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
 	if useStock {
 		_arg1 = C.TRUE
 	}
@@ -677,7 +670,7 @@ func (b *ButtonClass) SetUseUnderline(useUnderline bool) {
 	var _arg0 *C.GtkButton // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.GtkButton)(unsafe.Pointer((&b).Native()))
+	_arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
 	if useUnderline {
 		_arg1 = C.TRUE
 	}

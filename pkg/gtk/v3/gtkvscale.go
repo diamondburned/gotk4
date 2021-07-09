@@ -96,14 +96,13 @@ func NewVScale(adjustment Adjustment) *VScaleClass {
 	var _arg1 *C.GtkAdjustment // out
 	var _cret *C.GtkWidget     // in
 
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer((&adjustment).Native()))
+	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
 
 	_cret = C.gtk_vscale_new(_arg1)
 
 	var _vScale *VScaleClass // out
 
-	_vScale = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*VScaleClass)
+	_vScale = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*VScaleClass)
 
 	return _vScale
 }
@@ -132,8 +131,7 @@ func NewVScaleWithRange(min float64, max float64, step float64) *VScaleClass {
 
 	var _vScale *VScaleClass // out
 
-	_vScale = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*VScaleClass)
+	_vScale = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*VScaleClass)
 
 	return _vScale
 }

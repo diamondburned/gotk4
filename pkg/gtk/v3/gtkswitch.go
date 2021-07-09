@@ -116,8 +116,7 @@ func NewSwitch() *SwitchClass {
 
 	var __switch *SwitchClass // out
 
-	__switch = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*SwitchClass)
+	__switch = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*SwitchClass)
 
 	return __switch
 }
@@ -127,7 +126,7 @@ func (s *SwitchClass) Active() bool {
 	var _arg0 *C.GtkSwitch // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkSwitch)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkSwitch)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gtk_switch_get_active(_arg0)
 
@@ -145,7 +144,7 @@ func (s *SwitchClass) State() bool {
 	var _arg0 *C.GtkSwitch // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkSwitch)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkSwitch)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gtk_switch_get_state(_arg0)
 
@@ -163,7 +162,7 @@ func (s *SwitchClass) SetActive(isActive bool) {
 	var _arg0 *C.GtkSwitch // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.GtkSwitch)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkSwitch)(unsafe.Pointer(s.Native()))
 	if isActive {
 		_arg1 = C.TRUE
 	}
@@ -182,7 +181,7 @@ func (s *SwitchClass) SetState(state bool) {
 	var _arg0 *C.GtkSwitch // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.GtkSwitch)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkSwitch)(unsafe.Pointer(s.Native()))
 	if state {
 		_arg1 = C.TRUE
 	}

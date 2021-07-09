@@ -152,8 +152,7 @@ func NewCheckButton() *CheckButtonClass {
 
 	var _checkButton *CheckButtonClass // out
 
-	_checkButton = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*CheckButtonClass)
+	_checkButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*CheckButtonClass)
 
 	return _checkButton
 }
@@ -171,8 +170,7 @@ func NewCheckButtonWithLabel(label string) *CheckButtonClass {
 
 	var _checkButton *CheckButtonClass // out
 
-	_checkButton = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*CheckButtonClass)
+	_checkButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*CheckButtonClass)
 
 	return _checkButton
 }
@@ -191,8 +189,7 @@ func NewCheckButtonWithMnemonic(label string) *CheckButtonClass {
 
 	var _checkButton *CheckButtonClass // out
 
-	_checkButton = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*CheckButtonClass)
+	_checkButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*CheckButtonClass)
 
 	return _checkButton
 }

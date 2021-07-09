@@ -75,14 +75,13 @@ func NewWidgetPaintable(widget Widget) *WidgetPaintableClass {
 	var _arg1 *C.GtkWidget    // out
 	var _cret *C.GdkPaintable // in
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&widget).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_paintable_new(_arg1)
 
 	var _widgetPaintable *WidgetPaintableClass // out
 
-	_widgetPaintable = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*WidgetPaintableClass)
+	_widgetPaintable = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*WidgetPaintableClass)
 
 	return _widgetPaintable
 }
@@ -92,14 +91,13 @@ func (s *WidgetPaintableClass) Widget() *WidgetClass {
 	var _arg0 *C.GtkWidgetPaintable // out
 	var _cret *C.GtkWidget          // in
 
-	_arg0 = (*C.GtkWidgetPaintable)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkWidgetPaintable)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gtk_widget_paintable_get_widget(_arg0)
 
 	var _widget *WidgetClass // out
 
-	_widget = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*WidgetClass)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WidgetClass)
 
 	return _widget
 }
@@ -109,8 +107,8 @@ func (s *WidgetPaintableClass) SetWidget(widget Widget) {
 	var _arg0 *C.GtkWidgetPaintable // out
 	var _arg1 *C.GtkWidget          // out
 
-	_arg0 = (*C.GtkWidgetPaintable)(unsafe.Pointer((&s).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&widget).Native()))
+	_arg0 = (*C.GtkWidgetPaintable)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.gtk_widget_paintable_set_widget(_arg0, _arg1)
 }

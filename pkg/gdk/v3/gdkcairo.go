@@ -37,7 +37,7 @@ func CairoCreate(window Window) *cairo.Context {
 	var _arg1 *C.GdkWindow // out
 	var _cret *C.cairo_t   // in
 
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer((&window).Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	_cret = C.gdk_cairo_create(_arg1)
 
@@ -79,7 +79,7 @@ func CairoDrawFromGL(cr *cairo.Context, window Window, source int, sourceType in
 	var _arg9 C.int        // out
 
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr))
-	_arg2 = (*C.GdkWindow)(unsafe.Pointer((&window).Native()))
+	_arg2 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 	_arg3 = C.int(source)
 	_arg4 = C.int(sourceType)
 	_arg5 = C.int(bufferScale)
@@ -89,6 +89,29 @@ func CairoDrawFromGL(cr *cairo.Context, window Window, source int, sourceType in
 	_arg9 = C.int(height)
 
 	C.gdk_cairo_draw_from_gl(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9)
+}
+
+// CairoGetClipRectangle: this is a convenience function around
+// cairo_clip_extents(). It rounds the clip extents to integer coordinates and
+// returns a boolean indicating if a clip area exists.
+func CairoGetClipRectangle(cr *cairo.Context) (Rectangle, bool) {
+	var _arg1 *C.cairo_t     // out
+	var _arg2 C.GdkRectangle // in
+	var _cret C.gboolean     // in
+
+	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr))
+
+	_cret = C.gdk_cairo_get_clip_rectangle(_arg1, &_arg2)
+
+	var _rect Rectangle // out
+	var _ok bool        // out
+
+	_rect = *(*Rectangle)(unsafe.Pointer((&_arg2)))
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _rect, _ok
 }
 
 // CairoGetDrawingContext retrieves the DrawingContext that created the Cairo
@@ -103,8 +126,7 @@ func CairoGetDrawingContext(cr *cairo.Context) *DrawingContextClass {
 
 	var _drawingContext *DrawingContextClass // out
 
-	_drawingContext = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*DrawingContextClass)
+	_drawingContext = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*DrawingContextClass)
 
 	return _drawingContext
 }
@@ -178,7 +200,7 @@ func CairoSetSourcePixbuf(cr *cairo.Context, pixbuf gdkpixbuf.Pixbuf, pixbufX fl
 	var _arg4 C.gdouble    // out
 
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr))
-	_arg2 = (*C.GdkPixbuf)(unsafe.Pointer((&pixbuf).Native()))
+	_arg2 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 	_arg3 = C.gdouble(pixbufX)
 	_arg4 = C.gdouble(pixbufY)
 
@@ -211,7 +233,7 @@ func CairoSetSourceWindow(cr *cairo.Context, window Window, x float64, y float64
 	var _arg4 C.gdouble    // out
 
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr))
-	_arg2 = (*C.GdkWindow)(unsafe.Pointer((&window).Native()))
+	_arg2 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 	_arg3 = C.gdouble(x)
 	_arg4 = C.gdouble(y)
 
@@ -226,9 +248,9 @@ func CairoSurfaceCreateFromPixbuf(pixbuf gdkpixbuf.Pixbuf, scale int, forWindow 
 	var _arg3 *C.GdkWindow       // out
 	var _cret *C.cairo_surface_t // in
 
-	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer((&pixbuf).Native()))
+	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 	_arg2 = C.int(scale)
-	_arg3 = (*C.GdkWindow)(unsafe.Pointer((&forWindow).Native()))
+	_arg3 = (*C.GdkWindow)(unsafe.Pointer(forWindow.Native()))
 
 	_cret = C.gdk_cairo_surface_create_from_pixbuf(_arg1, _arg2, _arg3)
 

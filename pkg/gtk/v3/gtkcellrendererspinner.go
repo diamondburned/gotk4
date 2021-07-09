@@ -69,8 +69,7 @@ func NewCellRendererSpinner() *CellRendererSpinnerClass {
 
 	var _cellRendererSpinner *CellRendererSpinnerClass // out
 
-	_cellRendererSpinner = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*CellRendererSpinnerClass)
+	_cellRendererSpinner = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*CellRendererSpinnerClass)
 
 	return _cellRendererSpinner
 }

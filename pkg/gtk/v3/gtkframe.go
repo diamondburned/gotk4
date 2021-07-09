@@ -145,8 +145,7 @@ func NewFrame(label string) *FrameClass {
 
 	var _frame *FrameClass // out
 
-	_frame = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*FrameClass)
+	_frame = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*FrameClass)
 
 	return _frame
 }
@@ -158,7 +157,7 @@ func (f *FrameClass) Label() string {
 	var _arg0 *C.GtkFrame // out
 	var _cret *C.gchar    // in
 
-	_arg0 = (*C.GtkFrame)(unsafe.Pointer((&f).Native()))
+	_arg0 = (*C.GtkFrame)(unsafe.Pointer(f.Native()))
 
 	_cret = C.gtk_frame_get_label(_arg0)
 
@@ -176,7 +175,7 @@ func (f *FrameClass) LabelAlign() (xalign float32, yalign float32) {
 	var _arg1 C.gfloat    // in
 	var _arg2 C.gfloat    // in
 
-	_arg0 = (*C.GtkFrame)(unsafe.Pointer((&f).Native()))
+	_arg0 = (*C.GtkFrame)(unsafe.Pointer(f.Native()))
 
 	C.gtk_frame_get_label_align(_arg0, &_arg1, &_arg2)
 
@@ -195,14 +194,13 @@ func (f *FrameClass) LabelWidget() *WidgetClass {
 	var _arg0 *C.GtkFrame  // out
 	var _cret *C.GtkWidget // in
 
-	_arg0 = (*C.GtkFrame)(unsafe.Pointer((&f).Native()))
+	_arg0 = (*C.GtkFrame)(unsafe.Pointer(f.Native()))
 
 	_cret = C.gtk_frame_get_label_widget(_arg0)
 
 	var _widget *WidgetClass // out
 
-	_widget = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*WidgetClass)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WidgetClass)
 
 	return _widget
 }
@@ -213,7 +211,7 @@ func (f *FrameClass) ShadowType() ShadowType {
 	var _arg0 *C.GtkFrame     // out
 	var _cret C.GtkShadowType // in
 
-	_arg0 = (*C.GtkFrame)(unsafe.Pointer((&f).Native()))
+	_arg0 = (*C.GtkFrame)(unsafe.Pointer(f.Native()))
 
 	_cret = C.gtk_frame_get_shadow_type(_arg0)
 
@@ -230,7 +228,7 @@ func (f *FrameClass) SetLabel(label string) {
 	var _arg0 *C.GtkFrame // out
 	var _arg1 *C.gchar    // out
 
-	_arg0 = (*C.GtkFrame)(unsafe.Pointer((&f).Native()))
+	_arg0 = (*C.GtkFrame)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.gchar)(C.CString(label))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -244,7 +242,7 @@ func (f *FrameClass) SetLabelAlign(xalign float32, yalign float32) {
 	var _arg1 C.gfloat    // out
 	var _arg2 C.gfloat    // out
 
-	_arg0 = (*C.GtkFrame)(unsafe.Pointer((&f).Native()))
+	_arg0 = (*C.GtkFrame)(unsafe.Pointer(f.Native()))
 	_arg1 = C.gfloat(xalign)
 	_arg2 = C.gfloat(yalign)
 
@@ -257,8 +255,8 @@ func (f *FrameClass) SetLabelWidget(labelWidget Widget) {
 	var _arg0 *C.GtkFrame  // out
 	var _arg1 *C.GtkWidget // out
 
-	_arg0 = (*C.GtkFrame)(unsafe.Pointer((&f).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&labelWidget).Native()))
+	_arg0 = (*C.GtkFrame)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(labelWidget.Native()))
 
 	C.gtk_frame_set_label_widget(_arg0, _arg1)
 }

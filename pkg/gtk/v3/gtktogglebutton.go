@@ -215,8 +215,7 @@ func NewToggleButton() *ToggleButtonClass {
 
 	var _toggleButton *ToggleButtonClass // out
 
-	_toggleButton = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*ToggleButtonClass)
+	_toggleButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ToggleButtonClass)
 
 	return _toggleButton
 }
@@ -233,8 +232,7 @@ func NewToggleButtonWithLabel(label string) *ToggleButtonClass {
 
 	var _toggleButton *ToggleButtonClass // out
 
-	_toggleButton = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*ToggleButtonClass)
+	_toggleButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ToggleButtonClass)
 
 	return _toggleButton
 }
@@ -253,8 +251,7 @@ func NewToggleButtonWithMnemonic(label string) *ToggleButtonClass {
 
 	var _toggleButton *ToggleButtonClass // out
 
-	_toggleButton = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*ToggleButtonClass)
+	_toggleButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ToggleButtonClass)
 
 	return _toggleButton
 }
@@ -265,7 +262,7 @@ func (t *ToggleButtonClass) Active() bool {
 	var _arg0 *C.GtkToggleButton // out
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer((&t).Native()))
+	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer(t.Native()))
 
 	_cret = C.gtk_toggle_button_get_active(_arg0)
 
@@ -283,7 +280,7 @@ func (t *ToggleButtonClass) Inconsistent() bool {
 	var _arg0 *C.GtkToggleButton // out
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer((&t).Native()))
+	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer(t.Native()))
 
 	_cret = C.gtk_toggle_button_get_inconsistent(_arg0)
 
@@ -302,7 +299,7 @@ func (t *ToggleButtonClass) Mode() bool {
 	var _arg0 *C.GtkToggleButton // out
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer((&t).Native()))
+	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer(t.Native()))
 
 	_cret = C.gtk_toggle_button_get_mode(_arg0)
 
@@ -323,7 +320,7 @@ func (t *ToggleButtonClass) SetActive(isActive bool) {
 	var _arg0 *C.GtkToggleButton // out
 	var _arg1 C.gboolean         // out
 
-	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer((&t).Native()))
+	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer(t.Native()))
 	if isActive {
 		_arg1 = C.TRUE
 	}
@@ -343,7 +340,7 @@ func (t *ToggleButtonClass) SetInconsistent(setting bool) {
 	var _arg0 *C.GtkToggleButton // out
 	var _arg1 C.gboolean         // out
 
-	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer((&t).Native()))
+	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer(t.Native()))
 	if setting {
 		_arg1 = C.TRUE
 	}
@@ -365,7 +362,7 @@ func (t *ToggleButtonClass) SetMode(drawIndicator bool) {
 	var _arg0 *C.GtkToggleButton // out
 	var _arg1 C.gboolean         // out
 
-	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer((&t).Native()))
+	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer(t.Native()))
 	if drawIndicator {
 		_arg1 = C.TRUE
 	}
@@ -378,7 +375,7 @@ func (t *ToggleButtonClass) SetMode(drawIndicator bool) {
 func (t *ToggleButtonClass) Toggled() {
 	var _arg0 *C.GtkToggleButton // out
 
-	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer((&t).Native()))
+	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer(t.Native()))
 
 	C.gtk_toggle_button_toggled(_arg0)
 }

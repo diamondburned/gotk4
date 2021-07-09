@@ -135,8 +135,7 @@ func NewDragSource() *DragSourceClass {
 
 	var _dragSource *DragSourceClass // out
 
-	_dragSource = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*DragSourceClass)
+	_dragSource = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*DragSourceClass)
 
 	return _dragSource
 }
@@ -145,7 +144,7 @@ func NewDragSource() *DragSourceClass {
 func (s *DragSourceClass) DragCancel() {
 	var _arg0 *C.GtkDragSource // out
 
-	_arg0 = (*C.GtkDragSource)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkDragSource)(unsafe.Pointer(s.Native()))
 
 	C.gtk_drag_source_drag_cancel(_arg0)
 }
@@ -155,7 +154,7 @@ func (s *DragSourceClass) Actions() gdk.DragAction {
 	var _arg0 *C.GtkDragSource // out
 	var _cret C.GdkDragAction  // in
 
-	_arg0 = (*C.GtkDragSource)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkDragSource)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gtk_drag_source_get_actions(_arg0)
 
@@ -171,14 +170,13 @@ func (s *DragSourceClass) Content() *gdk.ContentProviderClass {
 	var _arg0 *C.GtkDragSource      // out
 	var _cret *C.GdkContentProvider // in
 
-	_arg0 = (*C.GtkDragSource)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkDragSource)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gtk_drag_source_get_content(_arg0)
 
 	var _contentProvider *gdk.ContentProviderClass // out
 
-	_contentProvider = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*gdk.ContentProviderClass)
+	_contentProvider = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.ContentProviderClass)
 
 	return _contentProvider
 }
@@ -188,14 +186,13 @@ func (s *DragSourceClass) Drag() *gdk.DragClass {
 	var _arg0 *C.GtkDragSource // out
 	var _cret *C.GdkDrag       // in
 
-	_arg0 = (*C.GtkDragSource)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkDragSource)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gtk_drag_source_get_drag(_arg0)
 
 	var _drag *gdk.DragClass // out
 
-	_drag = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*gdk.DragClass)
+	_drag = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.DragClass)
 
 	return _drag
 }
@@ -214,8 +211,8 @@ func (s *DragSourceClass) SetContent(content gdk.ContentProvider) {
 	var _arg0 *C.GtkDragSource      // out
 	var _arg1 *C.GdkContentProvider // out
 
-	_arg0 = (*C.GtkDragSource)(unsafe.Pointer((&s).Native()))
-	_arg1 = (*C.GdkContentProvider)(unsafe.Pointer((&content).Native()))
+	_arg0 = (*C.GtkDragSource)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GdkContentProvider)(unsafe.Pointer(content.Native()))
 
 	C.gtk_drag_source_set_content(_arg0, _arg1)
 }

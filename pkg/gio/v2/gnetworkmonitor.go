@@ -182,9 +182,9 @@ func (m *NetworkMonitorInterface) CanReach(connectable SocketConnectable, cancel
 	var _arg2 *C.GCancellable       // out
 	var _cerr *C.GError             // in
 
-	_arg0 = (*C.GNetworkMonitor)(unsafe.Pointer((&m).Native()))
-	_arg1 = (*C.GSocketConnectable)(unsafe.Pointer((&connectable).Native()))
-	_arg2 = (*C.GCancellable)(unsafe.Pointer((&cancellable).Native()))
+	_arg0 = (*C.GNetworkMonitor)(unsafe.Pointer(m.Native()))
+	_arg1 = (*C.GSocketConnectable)(unsafe.Pointer(connectable.Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	C.g_network_monitor_can_reach(_arg0, _arg1, _arg2, &_cerr)
 
@@ -210,9 +210,9 @@ func (m *NetworkMonitorInterface) CanReachAsync(connectable SocketConnectable, c
 	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
-	_arg0 = (*C.GNetworkMonitor)(unsafe.Pointer((&m).Native()))
-	_arg1 = (*C.GSocketConnectable)(unsafe.Pointer((&connectable).Native()))
-	_arg2 = (*C.GCancellable)(unsafe.Pointer((&cancellable).Native()))
+	_arg0 = (*C.GNetworkMonitor)(unsafe.Pointer(m.Native()))
+	_arg1 = (*C.GSocketConnectable)(unsafe.Pointer(connectable.Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg4 = C.gpointer(box.Assign(callback))
 
@@ -226,8 +226,8 @@ func (m *NetworkMonitorInterface) CanReachFinish(result AsyncResult) error {
 	var _arg1 *C.GAsyncResult    // out
 	var _cerr *C.GError          // in
 
-	_arg0 = (*C.GNetworkMonitor)(unsafe.Pointer((&m).Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((&result).Native()))
+	_arg0 = (*C.GNetworkMonitor)(unsafe.Pointer(m.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_network_monitor_can_reach_finish(_arg0, _arg1, &_cerr)
 
@@ -261,7 +261,7 @@ func (m *NetworkMonitorInterface) Connectivity() NetworkConnectivity {
 	var _arg0 *C.GNetworkMonitor     // out
 	var _cret C.GNetworkConnectivity // in
 
-	_arg0 = (*C.GNetworkMonitor)(unsafe.Pointer((&m).Native()))
+	_arg0 = (*C.GNetworkMonitor)(unsafe.Pointer(m.Native()))
 
 	_cret = C.g_network_monitor_get_connectivity(_arg0)
 
@@ -280,7 +280,7 @@ func (m *NetworkMonitorInterface) NetworkAvailable() bool {
 	var _arg0 *C.GNetworkMonitor // out
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.GNetworkMonitor)(unsafe.Pointer((&m).Native()))
+	_arg0 = (*C.GNetworkMonitor)(unsafe.Pointer(m.Native()))
 
 	_cret = C.g_network_monitor_get_network_available(_arg0)
 
@@ -299,7 +299,7 @@ func (m *NetworkMonitorInterface) NetworkMetered() bool {
 	var _arg0 *C.GNetworkMonitor // out
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.GNetworkMonitor)(unsafe.Pointer((&m).Native()))
+	_arg0 = (*C.GNetworkMonitor)(unsafe.Pointer(m.Native()))
 
 	_cret = C.g_network_monitor_get_network_metered(_arg0)
 

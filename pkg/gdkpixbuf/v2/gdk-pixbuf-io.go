@@ -49,10 +49,8 @@ func gotk4_PixbufModulePreparedFunc(arg0 *C.GdkPixbuf, arg1 *C.GdkPixbufAnimatio
 	var anim *PixbufAnimationClass // out
 	var userData interface{}       // out
 
-	pixbuf = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(arg0))).(*PixbufClass)
-	anim = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(arg1))).(*PixbufAnimationClass)
+	pixbuf = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*PixbufClass)
+	anim = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(*PixbufAnimationClass)
 	userData = box.Get(uintptr(arg2))
 
 	fn := v.(PixbufModulePreparedFunc)
@@ -114,8 +112,7 @@ func gotk4_PixbufModuleUpdatedFunc(arg0 *C.GdkPixbuf, arg1 C.int, arg2 C.int, ar
 	var height int           // out
 	var userData interface{} // out
 
-	pixbuf = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(arg0))).(*PixbufClass)
+	pixbuf = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*PixbufClass)
 	x = int(arg1)
 	y = int(arg2)
 	width = int(arg3)

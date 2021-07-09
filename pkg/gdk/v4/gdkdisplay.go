@@ -3,6 +3,7 @@
 package gdk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -86,7 +87,7 @@ type Display interface {
 	PrimaryClipboard() *ClipboardClass
 	// Setting retrieves a desktop-wide setting such as double-click time for
 	// the @display.
-	Setting(name string, value externglib.Value) bool
+	Setting(name string, value *externglib.Value) bool
 	// StartupNotificationID gets the startup notification ID for a Wayland
 	// display, or nil if no ID has been defined.
 	StartupNotificationID() string
@@ -114,6 +115,32 @@ type Display interface {
 	//
 	// On modern displays, this value is always true.
 	IsRGBA() bool
+	// MapKeycode returns the keyvals bound to @keycode.
+	//
+	// The Nth `GdkKeymapKey` in @keys is bound to the Nth keyval in @keyvals.
+	//
+	// When a keycode is pressed by the user, the keyval from this list of
+	// entries is selected by considering the effective keyboard group and
+	// level.
+	//
+	// Free the returned arrays with g_free().
+	MapKeycode(keycode uint) ([]KeymapKey, []uint, bool)
+	// MapKeyval obtains a list of keycode/group/level combinations that will
+	// generate @keyval.
+	//
+	// Groups and levels are two kinds of keyboard mode; in general, the level
+	// determines whether the top or bottom symbol on a key is used, and the
+	// group determines whether the left or right symbol is used.
+	//
+	// On US keyboards, the shift key changes the keyboard level, and there are
+	// no groups. A group switch key might convert a keyboard between Hebrew to
+	// English modes, for example.
+	//
+	// `GdkEventKey` contains a group field that indicates the active keyboard
+	// group. The level is computed from the modifier mask.
+	//
+	// The returned array should be freed with g_free().
+	MapKeyval(keyval uint) ([]KeymapKey, bool)
 	// NotifyStartupComplete indicates to the GUI environment that the
 	// application has finished loading, using a given identifier.
 	//
@@ -172,7 +199,7 @@ func marshalDisplay(p uintptr) (interface{}, error) {
 func (d *DisplayClass) Beep() {
 	var _arg0 *C.GdkDisplay // out
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&d).Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
 	C.gdk_display_beep(_arg0)
 }
@@ -183,7 +210,7 @@ func (d *DisplayClass) Beep() {
 func (d *DisplayClass) Close() {
 	var _arg0 *C.GdkDisplay // out
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&d).Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
 	C.gdk_display_close(_arg0)
 }
@@ -195,8 +222,8 @@ func (d *DisplayClass) DeviceIsGrabbed(device Device) bool {
 	var _arg1 *C.GdkDevice  // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&d).Native()))
-	_arg1 = (*C.GdkDevice)(unsafe.Pointer((&device).Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
 
 	_cret = C.gdk_display_device_is_grabbed(_arg0, _arg1)
 
@@ -222,7 +249,7 @@ func (d *DisplayClass) DeviceIsGrabbed(device Device) bool {
 func (d *DisplayClass) Flush() {
 	var _arg0 *C.GdkDisplay // out
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&d).Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
 	C.gdk_display_flush(_arg0)
 }
@@ -233,14 +260,13 @@ func (d *DisplayClass) AppLaunchContext() *AppLaunchContextClass {
 	var _arg0 *C.GdkDisplay          // out
 	var _cret *C.GdkAppLaunchContext // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&d).Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
 	_cret = C.gdk_display_get_app_launch_context(_arg0)
 
 	var _appLaunchContext *AppLaunchContextClass // out
 
-	_appLaunchContext = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*AppLaunchContextClass)
+	_appLaunchContext = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*AppLaunchContextClass)
 
 	return _appLaunchContext
 }
@@ -250,14 +276,13 @@ func (d *DisplayClass) Clipboard() *ClipboardClass {
 	var _arg0 *C.GdkDisplay   // out
 	var _cret *C.GdkClipboard // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&d).Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
 	_cret = C.gdk_display_get_clipboard(_arg0)
 
 	var _clipboard *ClipboardClass // out
 
-	_clipboard = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*ClipboardClass)
+	_clipboard = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ClipboardClass)
 
 	return _clipboard
 }
@@ -270,14 +295,13 @@ func (d *DisplayClass) DefaultSeat() *SeatClass {
 	var _arg0 *C.GdkDisplay // out
 	var _cret *C.GdkSeat    // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&d).Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
 	_cret = C.gdk_display_get_default_seat(_arg0)
 
 	var _seat *SeatClass // out
 
-	_seat = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*SeatClass)
+	_seat = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*SeatClass)
 
 	return _seat
 }
@@ -291,15 +315,14 @@ func (d *DisplayClass) MonitorAtSurface(surface Surface) *MonitorClass {
 	var _arg1 *C.GdkSurface // out
 	var _cret *C.GdkMonitor // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&d).Native()))
-	_arg1 = (*C.GdkSurface)(unsafe.Pointer((&surface).Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg1 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
 
 	_cret = C.gdk_display_get_monitor_at_surface(_arg0, _arg1)
 
 	var _monitor *MonitorClass // out
 
-	_monitor = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*MonitorClass)
+	_monitor = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*MonitorClass)
 
 	return _monitor
 }
@@ -309,7 +332,7 @@ func (d *DisplayClass) Name() string {
 	var _arg0 *C.GdkDisplay // out
 	var _cret *C.char       // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&d).Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
 	_cret = C.gdk_display_get_name(_arg0)
 
@@ -328,30 +351,29 @@ func (d *DisplayClass) PrimaryClipboard() *ClipboardClass {
 	var _arg0 *C.GdkDisplay   // out
 	var _cret *C.GdkClipboard // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&d).Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
 	_cret = C.gdk_display_get_primary_clipboard(_arg0)
 
 	var _clipboard *ClipboardClass // out
 
-	_clipboard = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*ClipboardClass)
+	_clipboard = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ClipboardClass)
 
 	return _clipboard
 }
 
 // Setting retrieves a desktop-wide setting such as double-click time for the
 // @display.
-func (d *DisplayClass) Setting(name string, value externglib.Value) bool {
+func (d *DisplayClass) Setting(name string, value *externglib.Value) bool {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.char       // out
 	var _arg2 *C.GValue     // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&d).Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 	_arg1 = (*C.char)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GValue)(unsafe.Pointer(&(&value).GValue))
+	_arg2 = (*C.GValue)(unsafe.Pointer(&value.GValue))
 
 	_cret = C.gdk_display_get_setting(_arg0, _arg1, _arg2)
 
@@ -370,7 +392,7 @@ func (d *DisplayClass) StartupNotificationID() string {
 	var _arg0 *C.GdkDisplay // out
 	var _cret *C.char       // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&d).Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
 	_cret = C.gdk_display_get_startup_notification_id(_arg0)
 
@@ -386,7 +408,7 @@ func (d *DisplayClass) IsClosed() bool {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&d).Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
 	_cret = C.gdk_display_is_closed(_arg0)
 
@@ -413,7 +435,7 @@ func (d *DisplayClass) IsComposited() bool {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&d).Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
 	_cret = C.gdk_display_is_composited(_arg0)
 
@@ -440,7 +462,7 @@ func (d *DisplayClass) IsRGBA() bool {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&d).Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
 	_cret = C.gdk_display_is_rgba(_arg0)
 
@@ -451,6 +473,88 @@ func (d *DisplayClass) IsRGBA() bool {
 	}
 
 	return _ok
+}
+
+// MapKeycode returns the keyvals bound to @keycode.
+//
+// The Nth `GdkKeymapKey` in @keys is bound to the Nth keyval in @keyvals.
+//
+// When a keycode is pressed by the user, the keyval from this list of entries
+// is selected by considering the effective keyboard group and level.
+//
+// Free the returned arrays with g_free().
+func (d *DisplayClass) MapKeycode(keycode uint) ([]KeymapKey, []uint, bool) {
+	var _arg0 *C.GdkDisplay // out
+	var _arg1 C.guint       // out
+	var _arg2 *C.GdkKeymapKey
+	var _arg4 C.int // in
+	var _arg3 *C.guint
+	var _arg4 C.int      // in
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg1 = C.guint(keycode)
+
+	_cret = C.gdk_display_map_keycode(_arg0, _arg1, &_arg2, &_arg3, &_arg4)
+
+	var _keys []KeymapKey
+	var _keyvals []uint
+	var _ok bool // out
+
+	_keys = unsafe.Slice((*KeymapKey)(unsafe.Pointer(_arg2)), _arg4)
+	runtime.SetFinalizer(&_keys, func(v *[]KeymapKey) {
+		C.free(unsafe.Pointer(&(*v)[0]))
+	})
+	_keyvals = unsafe.Slice((*uint)(unsafe.Pointer(_arg3)), _arg4)
+	runtime.SetFinalizer(&_keyvals, func(v *[]uint) {
+		C.free(unsafe.Pointer(&(*v)[0]))
+	})
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _keys, _keyvals, _ok
+}
+
+// MapKeyval obtains a list of keycode/group/level combinations that will
+// generate @keyval.
+//
+// Groups and levels are two kinds of keyboard mode; in general, the level
+// determines whether the top or bottom symbol on a key is used, and the group
+// determines whether the left or right symbol is used.
+//
+// On US keyboards, the shift key changes the keyboard level, and there are no
+// groups. A group switch key might convert a keyboard between Hebrew to English
+// modes, for example.
+//
+// `GdkEventKey` contains a group field that indicates the active keyboard
+// group. The level is computed from the modifier mask.
+//
+// The returned array should be freed with g_free().
+func (d *DisplayClass) MapKeyval(keyval uint) ([]KeymapKey, bool) {
+	var _arg0 *C.GdkDisplay // out
+	var _arg1 C.guint       // out
+	var _arg2 *C.GdkKeymapKey
+	var _arg3 C.int      // in
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg1 = C.guint(keyval)
+
+	_cret = C.gdk_display_map_keyval(_arg0, _arg1, &_arg2, &_arg3)
+
+	var _keys []KeymapKey
+	var _ok bool // out
+
+	_keys = unsafe.Slice((*KeymapKey)(unsafe.Pointer(_arg2)), _arg3)
+	runtime.SetFinalizer(&_keys, func(v *[]KeymapKey) {
+		C.free(unsafe.Pointer(&(*v)[0]))
+	})
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _keys, _ok
 }
 
 // NotifyStartupComplete indicates to the GUI environment that the application
@@ -464,7 +568,7 @@ func (d *DisplayClass) NotifyStartupComplete(startupId string) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.char       // out
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&d).Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 	_arg1 = (*C.char)(C.CString(startupId))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -480,8 +584,8 @@ func (d *DisplayClass) PutEvent(event Event) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.GdkEvent   // out
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&d).Native()))
-	_arg1 = (*C.GdkEvent)(unsafe.Pointer((&event).Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg1 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
 
 	C.gdk_display_put_event(_arg0, _arg1)
 }
@@ -496,7 +600,7 @@ func (d *DisplayClass) SupportsInputShapes() bool {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&d).Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
 	_cret = C.gdk_display_supports_input_shapes(_arg0)
 
@@ -522,7 +626,7 @@ func (d *DisplayClass) SupportsInputShapes() bool {
 func (d *DisplayClass) Sync() {
 	var _arg0 *C.GdkDisplay // out
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&d).Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
 	C.gdk_display_sync(_arg0)
 }

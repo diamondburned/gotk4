@@ -144,8 +144,7 @@ func NewDrawingArea() *DrawingAreaClass {
 
 	var _drawingArea *DrawingAreaClass // out
 
-	_drawingArea = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*DrawingAreaClass)
+	_drawingArea = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*DrawingAreaClass)
 
 	return _drawingArea
 }

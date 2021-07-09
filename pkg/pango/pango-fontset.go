@@ -42,10 +42,8 @@ func gotk4_FontsetForeachFunc(arg0 *C.PangoFontset, arg1 *C.PangoFont, arg2 C.gp
 	var font *FontClass       // out
 	var userData interface{}  // out
 
-	fontset = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(arg0))).(*FontsetClass)
-	font = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(arg1))).(*FontClass)
+	fontset = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*FontsetClass)
+	font = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(*FontClass)
 	userData = box.Get(uintptr(arg2))
 
 	fn := v.(FontsetForeachFunc)
@@ -126,7 +124,7 @@ func (f *FontsetClass) Foreach(fn FontsetForeachFunc) {
 	var _arg1 C.PangoFontsetForeachFunc // out
 	var _arg2 C.gpointer
 
-	_arg0 = (*C.PangoFontset)(unsafe.Pointer((&f).Native()))
+	_arg0 = (*C.PangoFontset)(unsafe.Pointer(f.Native()))
 	_arg1 = (*[0]byte)(C.gotk4_FontsetForeachFunc)
 	_arg2 = C.gpointer(box.Assign(fn))
 
@@ -140,15 +138,14 @@ func (f *FontsetClass) Font(wc uint) *FontClass {
 	var _arg1 C.guint         // out
 	var _cret *C.PangoFont    // in
 
-	_arg0 = (*C.PangoFontset)(unsafe.Pointer((&f).Native()))
+	_arg0 = (*C.PangoFontset)(unsafe.Pointer(f.Native()))
 	_arg1 = C.guint(wc)
 
 	_cret = C.pango_fontset_get_font(_arg0, _arg1)
 
 	var _font *FontClass // out
 
-	_font = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*FontClass)
+	_font = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*FontClass)
 
 	return _font
 }
@@ -158,7 +155,7 @@ func (f *FontsetClass) Metrics() *FontMetrics {
 	var _arg0 *C.PangoFontset     // out
 	var _cret *C.PangoFontMetrics // in
 
-	_arg0 = (*C.PangoFontset)(unsafe.Pointer((&f).Native()))
+	_arg0 = (*C.PangoFontset)(unsafe.Pointer(f.Native()))
 
 	_cret = C.pango_fontset_get_metrics(_arg0)
 
@@ -219,8 +216,7 @@ func NewFontsetSimple(language *Language) *FontsetSimpleClass {
 
 	var _fontsetSimple *FontsetSimpleClass // out
 
-	_fontsetSimple = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*FontsetSimpleClass)
+	_fontsetSimple = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*FontsetSimpleClass)
 
 	return _fontsetSimple
 }
@@ -230,8 +226,8 @@ func (f *FontsetSimpleClass) Append(font Font) {
 	var _arg0 *C.PangoFontsetSimple // out
 	var _arg1 *C.PangoFont          // out
 
-	_arg0 = (*C.PangoFontsetSimple)(unsafe.Pointer((&f).Native()))
-	_arg1 = (*C.PangoFont)(unsafe.Pointer((&font).Native()))
+	_arg0 = (*C.PangoFontsetSimple)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.PangoFont)(unsafe.Pointer(font.Native()))
 
 	C.pango_fontset_simple_append(_arg0, _arg1)
 }
@@ -241,7 +237,7 @@ func (f *FontsetSimpleClass) Size() int {
 	var _arg0 *C.PangoFontsetSimple // out
 	var _cret C.int                 // in
 
-	_arg0 = (*C.PangoFontsetSimple)(unsafe.Pointer((&f).Native()))
+	_arg0 = (*C.PangoFontsetSimple)(unsafe.Pointer(f.Native()))
 
 	_cret = C.pango_fontset_simple_size(_arg0)
 

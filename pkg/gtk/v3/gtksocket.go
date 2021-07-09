@@ -132,8 +132,7 @@ func NewSocket() *SocketClass {
 
 	var _socket *SocketClass // out
 
-	_socket = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*SocketClass)
+	_socket = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*SocketClass)
 
 	return _socket
 }
@@ -144,14 +143,13 @@ func (s *SocketClass) PlugWindow() *gdk.WindowClass {
 	var _arg0 *C.GtkSocket // out
 	var _cret *C.GdkWindow // in
 
-	_arg0 = (*C.GtkSocket)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkSocket)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gtk_socket_get_plug_window(_arg0)
 
 	var _window *gdk.WindowClass // out
 
-	_window = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*gdk.WindowClass)
+	_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.WindowClass)
 
 	return _window
 }

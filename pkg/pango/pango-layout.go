@@ -148,6 +148,15 @@ type Layout interface {
 	CharacterCount() int
 	// Context retrieves the `PangoContext` used for this layout.
 	Context() *ContextClass
+	// CursorPos: given an index within a layout, determines the positions that
+	// of the strong and weak cursors if the insertion point is at that index.
+	//
+	// The position of each cursor is stored as a zero-width rectangle. The
+	// strong cursor location is the location where characters of the
+	// directionality equal to the base direction of the layout are inserted.
+	// The weak cursor location is the location where characters of the
+	// directionality opposite to the base direction of the layout are inserted.
+	CursorPos(index_ int) (strongPos Rectangle, weakPos Rectangle)
 	// Direction gets the text direction at the given character position in
 	// @layout.
 	Direction(index int) Direction
@@ -158,6 +167,17 @@ type Layout interface {
 	// Use [method@Pango.Layout.is_ellipsized] to query whether any paragraphs
 	// were actually ellipsized.
 	Ellipsize() EllipsizeMode
+	// Extents computes the logical and ink extents of @layout.
+	//
+	// Logical extents are usually what you want for positioning things. Note
+	// that both extents may have non-zero x and y. You may want to use those to
+	// offset where you render the layout. Not doing that is a very typical bug
+	// that shows up as right-to-left layouts not being correctly positioned in
+	// a layout with a set width.
+	//
+	// The extents are given in layout coordinates and in Pango units; layout
+	// coordinates begin at the top left corner of the layout.
+	Extents() (inkRect Rectangle, logicalRect Rectangle)
 	// FontDescription gets the font description for the layout, if any.
 	FontDescription() *FontDescription
 	// Height gets the height of layout used for ellipsization.
@@ -180,6 +200,17 @@ type Layout interface {
 	//
 	// See [method@Pango.Layout.set_line_spacing].
 	LineSpacing() float32
+	// LogAttrs retrieves an array of logical attributes for each character in
+	// the @layout.
+	LogAttrs() []LogAttr
+	// PixelExtents computes the logical and ink extents of @layout in device
+	// units.
+	//
+	// This function just calls [method@Pango.Layout.get_extents] followed by
+	// two [func@extents_to_pixels] calls, rounding @ink_rect and @logical_rect
+	// such that the rounded rectangles fully contain the unrounded one (that
+	// is, passes them as first argument to `pango_extents_to_pixels()`).
+	PixelExtents() (inkRect Rectangle, logicalRect Rectangle)
 	// PixelSize determines the logical width and height of a `PangoLayout` in
 	// device units.
 	//
@@ -241,6 +272,14 @@ type Layout interface {
 	//
 	// The X position is measured from the left edge of the line.
 	IndexToLineX(index_ int, trailing bool) (line int, xPos int)
+	// IndexToPos converts from an index within a `PangoLayout` to the onscreen
+	// position corresponding to the grapheme at that index.
+	//
+	// The return value is represented as rectangle. Note that `pos->x` is
+	// always the leading edge of the grapheme and `pos->x + pos->width` the
+	// trailing edge of the grapheme. If the directionality of the grapheme is
+	// right-to-left, then `pos->width` will be negative.
+	IndexToPos(index_ int) Rectangle
 	// IsEllipsized queries whether the layout had to ellipsize any paragraphs.
 	//
 	// This returns true if the ellipsization mode for @layout is not
@@ -455,14 +494,13 @@ func NewLayout(context Context) *LayoutClass {
 	var _arg1 *C.PangoContext // out
 	var _cret *C.PangoLayout  // in
 
-	_arg1 = (*C.PangoContext)(unsafe.Pointer((&context).Native()))
+	_arg1 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.pango_layout_new(_arg1)
 
 	var _layout *LayoutClass // out
 
-	_layout = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*LayoutClass)
+	_layout = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*LayoutClass)
 
 	return _layout
 }
@@ -475,7 +513,7 @@ func NewLayout(context Context) *LayoutClass {
 func (l *LayoutClass) ContextChanged() {
 	var _arg0 *C.PangoLayout // out
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer((&l).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 
 	C.pango_layout_context_changed(_arg0)
 }
@@ -488,14 +526,13 @@ func (s *LayoutClass) Copy() *LayoutClass {
 	var _arg0 *C.PangoLayout // out
 	var _cret *C.PangoLayout // in
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(s.Native()))
 
 	_cret = C.pango_layout_copy(_arg0)
 
 	var _layout *LayoutClass // out
 
-	_layout = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*LayoutClass)
+	_layout = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*LayoutClass)
 
 	return _layout
 }
@@ -506,7 +543,7 @@ func (l *LayoutClass) Alignment() Alignment {
 	var _arg0 *C.PangoLayout   // out
 	var _cret C.PangoAlignment // in
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer((&l).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 
 	_cret = C.pango_layout_get_alignment(_arg0)
 
@@ -522,7 +559,7 @@ func (l *LayoutClass) Attributes() *AttrList {
 	var _arg0 *C.PangoLayout   // out
 	var _cret *C.PangoAttrList // in
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer((&l).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 
 	_cret = C.pango_layout_get_attributes(_arg0)
 
@@ -545,7 +582,7 @@ func (l *LayoutClass) AutoDir() bool {
 	var _arg0 *C.PangoLayout // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer((&l).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 
 	_cret = C.pango_layout_get_auto_dir(_arg0)
 
@@ -563,7 +600,7 @@ func (l *LayoutClass) Baseline() int {
 	var _arg0 *C.PangoLayout // out
 	var _cret C.int          // in
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer((&l).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 
 	_cret = C.pango_layout_get_baseline(_arg0)
 
@@ -580,7 +617,7 @@ func (l *LayoutClass) CharacterCount() int {
 	var _arg0 *C.PangoLayout // out
 	var _cret C.gint         // in
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer((&l).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 
 	_cret = C.pango_layout_get_character_count(_arg0)
 
@@ -596,16 +633,43 @@ func (l *LayoutClass) Context() *ContextClass {
 	var _arg0 *C.PangoLayout  // out
 	var _cret *C.PangoContext // in
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer((&l).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 
 	_cret = C.pango_layout_get_context(_arg0)
 
 	var _context *ContextClass // out
 
-	_context = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*ContextClass)
+	_context = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ContextClass)
 
 	return _context
+}
+
+// CursorPos: given an index within a layout, determines the positions that of
+// the strong and weak cursors if the insertion point is at that index.
+//
+// The position of each cursor is stored as a zero-width rectangle. The strong
+// cursor location is the location where characters of the directionality equal
+// to the base direction of the layout are inserted. The weak cursor location is
+// the location where characters of the directionality opposite to the base
+// direction of the layout are inserted.
+func (l *LayoutClass) CursorPos(index_ int) (strongPos Rectangle, weakPos Rectangle) {
+	var _arg0 *C.PangoLayout   // out
+	var _arg1 C.int            // out
+	var _arg2 C.PangoRectangle // in
+	var _arg3 C.PangoRectangle // in
+
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
+	_arg1 = C.int(index_)
+
+	C.pango_layout_get_cursor_pos(_arg0, _arg1, &_arg2, &_arg3)
+
+	var _strongPos Rectangle // out
+	var _weakPos Rectangle   // out
+
+	_strongPos = *(*Rectangle)(unsafe.Pointer((&_arg2)))
+	_weakPos = *(*Rectangle)(unsafe.Pointer((&_arg3)))
+
+	return _strongPos, _weakPos
 }
 
 // Direction gets the text direction at the given character position in @layout.
@@ -614,7 +678,7 @@ func (l *LayoutClass) Direction(index int) Direction {
 	var _arg1 C.int            // out
 	var _cret C.PangoDirection // in
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer((&l).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 	_arg1 = C.int(index)
 
 	_cret = C.pango_layout_get_direction(_arg0, _arg1)
@@ -636,7 +700,7 @@ func (l *LayoutClass) Ellipsize() EllipsizeMode {
 	var _arg0 *C.PangoLayout       // out
 	var _cret C.PangoEllipsizeMode // in
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer((&l).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 
 	_cret = C.pango_layout_get_ellipsize(_arg0)
 
@@ -647,12 +711,40 @@ func (l *LayoutClass) Ellipsize() EllipsizeMode {
 	return _ellipsizeMode
 }
 
+// Extents computes the logical and ink extents of @layout.
+//
+// Logical extents are usually what you want for positioning things. Note that
+// both extents may have non-zero x and y. You may want to use those to offset
+// where you render the layout. Not doing that is a very typical bug that shows
+// up as right-to-left layouts not being correctly positioned in a layout with a
+// set width.
+//
+// The extents are given in layout coordinates and in Pango units; layout
+// coordinates begin at the top left corner of the layout.
+func (l *LayoutClass) Extents() (inkRect Rectangle, logicalRect Rectangle) {
+	var _arg0 *C.PangoLayout   // out
+	var _arg1 C.PangoRectangle // in
+	var _arg2 C.PangoRectangle // in
+
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
+
+	C.pango_layout_get_extents(_arg0, &_arg1, &_arg2)
+
+	var _inkRect Rectangle     // out
+	var _logicalRect Rectangle // out
+
+	_inkRect = *(*Rectangle)(unsafe.Pointer((&_arg1)))
+	_logicalRect = *(*Rectangle)(unsafe.Pointer((&_arg2)))
+
+	return _inkRect, _logicalRect
+}
+
 // FontDescription gets the font description for the layout, if any.
 func (l *LayoutClass) FontDescription() *FontDescription {
 	var _arg0 *C.PangoLayout          // out
 	var _cret *C.PangoFontDescription // in
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer((&l).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 
 	_cret = C.pango_layout_get_font_description(_arg0)
 
@@ -670,7 +762,7 @@ func (l *LayoutClass) Height() int {
 	var _arg0 *C.PangoLayout // out
 	var _cret C.int          // in
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer((&l).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 
 	_cret = C.pango_layout_get_height(_arg0)
 
@@ -688,7 +780,7 @@ func (l *LayoutClass) Indent() int {
 	var _arg0 *C.PangoLayout // out
 	var _cret C.int          // in
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer((&l).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 
 	_cret = C.pango_layout_get_indent(_arg0)
 
@@ -704,7 +796,7 @@ func (l *LayoutClass) Iter() *LayoutIter {
 	var _arg0 *C.PangoLayout     // out
 	var _cret *C.PangoLayoutIter // in
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer((&l).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 
 	_cret = C.pango_layout_get_iter(_arg0)
 
@@ -724,7 +816,7 @@ func (l *LayoutClass) Justify() bool {
 	var _arg0 *C.PangoLayout // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer((&l).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 
 	_cret = C.pango_layout_get_justify(_arg0)
 
@@ -742,7 +834,7 @@ func (l *LayoutClass) LineCount() int {
 	var _arg0 *C.PangoLayout // out
 	var _cret C.int          // in
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer((&l).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 
 	_cret = C.pango_layout_get_line_count(_arg0)
 
@@ -760,7 +852,7 @@ func (l *LayoutClass) LineSpacing() float32 {
 	var _arg0 *C.PangoLayout // out
 	var _cret C.float        // in
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer((&l).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 
 	_cret = C.pango_layout_get_line_spacing(_arg0)
 
@@ -769,6 +861,51 @@ func (l *LayoutClass) LineSpacing() float32 {
 	_gfloat = float32(_cret)
 
 	return _gfloat
+}
+
+// LogAttrs retrieves an array of logical attributes for each character in the
+// @layout.
+func (l *LayoutClass) LogAttrs() []LogAttr {
+	var _arg0 *C.PangoLayout // out
+	var _arg1 *C.PangoLogAttr
+	var _arg2 C.gint // in
+
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
+
+	C.pango_layout_get_log_attrs(_arg0, &_arg1, &_arg2)
+
+	var _attrs []LogAttr
+
+	_attrs = unsafe.Slice((*LogAttr)(unsafe.Pointer(_arg1)), _arg2)
+	runtime.SetFinalizer(&_attrs, func(v *[]LogAttr) {
+		C.free(unsafe.Pointer(&(*v)[0]))
+	})
+
+	return _attrs
+}
+
+// PixelExtents computes the logical and ink extents of @layout in device units.
+//
+// This function just calls [method@Pango.Layout.get_extents] followed by two
+// [func@extents_to_pixels] calls, rounding @ink_rect and @logical_rect such
+// that the rounded rectangles fully contain the unrounded one (that is, passes
+// them as first argument to `pango_extents_to_pixels()`).
+func (l *LayoutClass) PixelExtents() (inkRect Rectangle, logicalRect Rectangle) {
+	var _arg0 *C.PangoLayout   // out
+	var _arg1 C.PangoRectangle // in
+	var _arg2 C.PangoRectangle // in
+
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
+
+	C.pango_layout_get_pixel_extents(_arg0, &_arg1, &_arg2)
+
+	var _inkRect Rectangle     // out
+	var _logicalRect Rectangle // out
+
+	_inkRect = *(*Rectangle)(unsafe.Pointer((&_arg1)))
+	_logicalRect = *(*Rectangle)(unsafe.Pointer((&_arg2)))
+
+	return _inkRect, _logicalRect
 }
 
 // PixelSize determines the logical width and height of a `PangoLayout` in
@@ -782,7 +919,7 @@ func (l *LayoutClass) PixelSize() (width int, height int) {
 	var _arg1 C.int          // in
 	var _arg2 C.int          // in
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer((&l).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 
 	C.pango_layout_get_pixel_size(_arg0, &_arg1, &_arg2)
 
@@ -810,7 +947,7 @@ func (l *LayoutClass) Serial() uint {
 	var _arg0 *C.PangoLayout // out
 	var _cret C.guint        // in
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer((&l).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 
 	_cret = C.pango_layout_get_serial(_arg0)
 
@@ -828,7 +965,7 @@ func (l *LayoutClass) SingleParagraphMode() bool {
 	var _arg0 *C.PangoLayout // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer((&l).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 
 	_cret = C.pango_layout_get_single_paragraph_mode(_arg0)
 
@@ -851,7 +988,7 @@ func (l *LayoutClass) Size() (width int, height int) {
 	var _arg1 C.int          // in
 	var _arg2 C.int          // in
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer((&l).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 
 	C.pango_layout_get_size(_arg0, &_arg1, &_arg2)
 
@@ -869,7 +1006,7 @@ func (l *LayoutClass) Spacing() int {
 	var _arg0 *C.PangoLayout // out
 	var _cret C.int          // in
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer((&l).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 
 	_cret = C.pango_layout_get_spacing(_arg0)
 
@@ -890,7 +1027,7 @@ func (l *LayoutClass) Tabs() *TabArray {
 	var _arg0 *C.PangoLayout   // out
 	var _cret *C.PangoTabArray // in
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer((&l).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 
 	_cret = C.pango_layout_get_tabs(_arg0)
 
@@ -910,7 +1047,7 @@ func (l *LayoutClass) Text() string {
 	var _arg0 *C.PangoLayout // out
 	var _cret *C.char        // in
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer((&l).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 
 	_cret = C.pango_layout_get_text(_arg0)
 
@@ -931,7 +1068,7 @@ func (l *LayoutClass) UnknownGlyphsCount() int {
 	var _arg0 *C.PangoLayout // out
 	var _cret C.int          // in
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer((&l).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 
 	_cret = C.pango_layout_get_unknown_glyphs_count(_arg0)
 
@@ -947,7 +1084,7 @@ func (l *LayoutClass) Width() int {
 	var _arg0 *C.PangoLayout // out
 	var _cret C.int          // in
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer((&l).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 
 	_cret = C.pango_layout_get_width(_arg0)
 
@@ -966,7 +1103,7 @@ func (l *LayoutClass) Wrap() WrapMode {
 	var _arg0 *C.PangoLayout  // out
 	var _cret C.PangoWrapMode // in
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer((&l).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 
 	_cret = C.pango_layout_get_wrap(_arg0)
 
@@ -988,7 +1125,7 @@ func (l *LayoutClass) IndexToLineX(index_ int, trailing bool) (line int, xPos in
 	var _arg3 C.int          // in
 	var _arg4 C.int          // in
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer((&l).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 	_arg1 = C.int(index_)
 	if trailing {
 		_arg2 = C.TRUE
@@ -1005,6 +1142,30 @@ func (l *LayoutClass) IndexToLineX(index_ int, trailing bool) (line int, xPos in
 	return _line, _xPos
 }
 
+// IndexToPos converts from an index within a `PangoLayout` to the onscreen
+// position corresponding to the grapheme at that index.
+//
+// The return value is represented as rectangle. Note that `pos->x` is always
+// the leading edge of the grapheme and `pos->x + pos->width` the trailing edge
+// of the grapheme. If the directionality of the grapheme is right-to-left, then
+// `pos->width` will be negative.
+func (l *LayoutClass) IndexToPos(index_ int) Rectangle {
+	var _arg0 *C.PangoLayout   // out
+	var _arg1 C.int            // out
+	var _arg2 C.PangoRectangle // in
+
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
+	_arg1 = C.int(index_)
+
+	C.pango_layout_index_to_pos(_arg0, _arg1, &_arg2)
+
+	var _pos Rectangle // out
+
+	_pos = *(*Rectangle)(unsafe.Pointer((&_arg2)))
+
+	return _pos
+}
+
 // IsEllipsized queries whether the layout had to ellipsize any paragraphs.
 //
 // This returns true if the ellipsization mode for @layout is not
@@ -1014,7 +1175,7 @@ func (l *LayoutClass) IsEllipsized() bool {
 	var _arg0 *C.PangoLayout // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer((&l).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 
 	_cret = C.pango_layout_is_ellipsized(_arg0)
 
@@ -1036,7 +1197,7 @@ func (l *LayoutClass) IsWrapped() bool {
 	var _arg0 *C.PangoLayout // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer((&l).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 
 	_cret = C.pango_layout_is_wrapped(_arg0)
 
@@ -1073,7 +1234,7 @@ func (l *LayoutClass) MoveCursorVisually(strong bool, oldIndex int, oldTrailing 
 	var _arg5 C.int          // in
 	var _arg6 C.int          // in
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer((&l).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 	if strong {
 		_arg1 = C.TRUE
 	}
@@ -1098,7 +1259,7 @@ func (l *LayoutClass) SetAttributes(attrs *AttrList) {
 	var _arg0 *C.PangoLayout   // out
 	var _arg1 *C.PangoAttrList // out
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer((&l).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 	_arg1 = (*C.PangoAttrList)(unsafe.Pointer(attrs))
 
 	C.pango_layout_set_attributes(_arg0, _arg1)
@@ -1124,7 +1285,7 @@ func (l *LayoutClass) SetAutoDir(autoDir bool) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer((&l).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 	if autoDir {
 		_arg1 = C.TRUE
 	}
@@ -1140,7 +1301,7 @@ func (l *LayoutClass) SetFontDescription(desc *FontDescription) {
 	var _arg0 *C.PangoLayout          // out
 	var _arg1 *C.PangoFontDescription // out
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer((&l).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 	_arg1 = (*C.PangoFontDescription)(unsafe.Pointer(desc))
 
 	C.pango_layout_set_font_description(_arg0, _arg1)
@@ -1173,7 +1334,7 @@ func (l *LayoutClass) SetHeight(height int) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 C.int          // out
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer((&l).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 	_arg1 = C.int(height)
 
 	C.pango_layout_set_height(_arg0, _arg1)
@@ -1191,7 +1352,7 @@ func (l *LayoutClass) SetIndent(indent int) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 C.int          // out
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer((&l).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 	_arg1 = C.int(indent)
 
 	C.pango_layout_set_indent(_arg0, _arg1)
@@ -1210,7 +1371,7 @@ func (l *LayoutClass) SetJustify(justify bool) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer((&l).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 	if justify {
 		_arg1 = C.TRUE
 	}
@@ -1235,7 +1396,7 @@ func (l *LayoutClass) SetLineSpacing(factor float32) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 C.float        // out
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer((&l).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 	_arg1 = C.float(factor)
 
 	C.pango_layout_set_line_spacing(_arg0, _arg1)
@@ -1253,7 +1414,7 @@ func (l *LayoutClass) SetMarkup(markup string, length int) {
 	var _arg1 *C.char        // out
 	var _arg2 C.int          // out
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer((&l).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 	_arg1 = (*C.char)(C.CString(markup))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(length)
@@ -1280,7 +1441,7 @@ func (l *LayoutClass) SetMarkupWithAccel(markup string, length int, accelMarker 
 	var _arg3 C.gunichar     // out
 	var _arg4 C.gunichar     // in
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer((&l).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 	_arg1 = (*C.char)(C.CString(markup))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(length)
@@ -1305,7 +1466,7 @@ func (l *LayoutClass) SetSingleParagraphMode(setting bool) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer((&l).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 	if setting {
 		_arg1 = C.TRUE
 	}
@@ -1329,7 +1490,7 @@ func (l *LayoutClass) SetSpacing(spacing int) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 C.int          // out
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer((&l).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 	_arg1 = C.int(spacing)
 
 	C.pango_layout_set_spacing(_arg0, _arg1)
@@ -1344,7 +1505,7 @@ func (l *LayoutClass) SetTabs(tabs *TabArray) {
 	var _arg0 *C.PangoLayout   // out
 	var _arg1 *C.PangoTabArray // out
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer((&l).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 	_arg1 = (*C.PangoTabArray)(unsafe.Pointer(tabs))
 
 	C.pango_layout_set_tabs(_arg0, _arg1)
@@ -1364,7 +1525,7 @@ func (l *LayoutClass) SetText(text string, length int) {
 	var _arg1 *C.char        // out
 	var _arg2 C.int          // out
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer((&l).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 	_arg1 = (*C.char)(C.CString(text))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(length)
@@ -1380,7 +1541,7 @@ func (l *LayoutClass) SetWidth(width int) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 C.int          // out
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer((&l).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 	_arg1 = C.int(width)
 
 	C.pango_layout_set_width(_arg0, _arg1)
@@ -1403,7 +1564,7 @@ func (l *LayoutClass) XYToIndex(x int, y int) (index_ int, trailing int, ok bool
 	var _arg4 C.int          // in
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer((&l).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 	_arg1 = C.int(x)
 	_arg2 = C.int(y)
 
@@ -1511,6 +1672,45 @@ func (i *LayoutIter) Baseline() int {
 	return _gint
 }
 
+// CharExtents gets the extents of the current character, in layout coordinates
+// (origin is the top left of the entire layout). Only logical extents can
+// sensibly be obtained for characters; ink extents make sense only down to the
+// level of clusters.
+func (i *LayoutIter) CharExtents() Rectangle {
+	var _arg0 *C.PangoLayoutIter // out
+	var _arg1 C.PangoRectangle   // in
+
+	_arg0 = (*C.PangoLayoutIter)(unsafe.Pointer(i))
+
+	C.pango_layout_iter_get_char_extents(_arg0, &_arg1)
+
+	var _logicalRect Rectangle // out
+
+	_logicalRect = *(*Rectangle)(unsafe.Pointer((&_arg1)))
+
+	return _logicalRect
+}
+
+// ClusterExtents gets the extents of the current cluster, in layout coordinates
+// (origin is the top left of the entire layout).
+func (i *LayoutIter) ClusterExtents() (inkRect Rectangle, logicalRect Rectangle) {
+	var _arg0 *C.PangoLayoutIter // out
+	var _arg1 C.PangoRectangle   // in
+	var _arg2 C.PangoRectangle   // in
+
+	_arg0 = (*C.PangoLayoutIter)(unsafe.Pointer(i))
+
+	C.pango_layout_iter_get_cluster_extents(_arg0, &_arg1, &_arg2)
+
+	var _inkRect Rectangle     // out
+	var _logicalRect Rectangle // out
+
+	_inkRect = *(*Rectangle)(unsafe.Pointer((&_arg1)))
+	_logicalRect = *(*Rectangle)(unsafe.Pointer((&_arg2)))
+
+	return _inkRect, _logicalRect
+}
+
 // Index gets the current byte index. Note that iterating forward by char moves
 // in visual order, not logical order, so indexes may not be sequential. Also,
 // the index may be equal to the length of the text in the layout, if on the nil
@@ -1541,10 +1741,53 @@ func (i *LayoutIter) Layout() *LayoutClass {
 
 	var _layout *LayoutClass // out
 
-	_layout = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*LayoutClass)
+	_layout = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*LayoutClass)
 
 	return _layout
+}
+
+// LayoutExtents obtains the extents of the `PangoLayout` being iterated over.
+// @ink_rect or @logical_rect can be nil if you aren't interested in them.
+func (i *LayoutIter) LayoutExtents() (inkRect Rectangle, logicalRect Rectangle) {
+	var _arg0 *C.PangoLayoutIter // out
+	var _arg1 C.PangoRectangle   // in
+	var _arg2 C.PangoRectangle   // in
+
+	_arg0 = (*C.PangoLayoutIter)(unsafe.Pointer(i))
+
+	C.pango_layout_iter_get_layout_extents(_arg0, &_arg1, &_arg2)
+
+	var _inkRect Rectangle     // out
+	var _logicalRect Rectangle // out
+
+	_inkRect = *(*Rectangle)(unsafe.Pointer((&_arg1)))
+	_logicalRect = *(*Rectangle)(unsafe.Pointer((&_arg2)))
+
+	return _inkRect, _logicalRect
+}
+
+// LineExtents obtains the extents of the current line. @ink_rect or
+// @logical_rect can be nil if you aren't interested in them. Extents are in
+// layout coordinates (origin is the top-left corner of the entire
+// `PangoLayout`). Thus the extents returned by this function will be the same
+// width/height but not at the same x/y as the extents returned from
+// [method@Pango.LayoutLine.get_extents].
+func (i *LayoutIter) LineExtents() (inkRect Rectangle, logicalRect Rectangle) {
+	var _arg0 *C.PangoLayoutIter // out
+	var _arg1 C.PangoRectangle   // in
+	var _arg2 C.PangoRectangle   // in
+
+	_arg0 = (*C.PangoLayoutIter)(unsafe.Pointer(i))
+
+	C.pango_layout_iter_get_line_extents(_arg0, &_arg1, &_arg2)
+
+	var _inkRect Rectangle     // out
+	var _logicalRect Rectangle // out
+
+	_inkRect = *(*Rectangle)(unsafe.Pointer((&_arg1)))
+	_logicalRect = *(*Rectangle)(unsafe.Pointer((&_arg2)))
+
+	return _inkRect, _logicalRect
 }
 
 // LineYrange divides the vertical space in the `PangoLayout` being iterated
@@ -1572,6 +1815,26 @@ func (i *LayoutIter) LineYrange() (y0 int, y1 int) {
 	_y1 = int(_arg2)
 
 	return _y0, _y1
+}
+
+// RunExtents gets the extents of the current run in layout coordinates (origin
+// is the top left of the entire layout).
+func (i *LayoutIter) RunExtents() (inkRect Rectangle, logicalRect Rectangle) {
+	var _arg0 *C.PangoLayoutIter // out
+	var _arg1 C.PangoRectangle   // in
+	var _arg2 C.PangoRectangle   // in
+
+	_arg0 = (*C.PangoLayoutIter)(unsafe.Pointer(i))
+
+	C.pango_layout_iter_get_run_extents(_arg0, &_arg1, &_arg2)
+
+	var _inkRect Rectangle     // out
+	var _logicalRect Rectangle // out
+
+	_inkRect = *(*Rectangle)(unsafe.Pointer((&_arg1)))
+	_logicalRect = *(*Rectangle)(unsafe.Pointer((&_arg2)))
+
+	return _inkRect, _logicalRect
 }
 
 // NextChar moves @iter forward to the next character in visual order. If @iter

@@ -103,8 +103,7 @@ func NewFontChooserWidget() *FontChooserWidgetClass {
 
 	var _fontChooserWidget *FontChooserWidgetClass // out
 
-	_fontChooserWidget = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*FontChooserWidgetClass)
+	_fontChooserWidget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*FontChooserWidgetClass)
 
 	return _fontChooserWidget
 }

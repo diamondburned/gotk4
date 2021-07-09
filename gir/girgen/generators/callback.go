@@ -217,7 +217,7 @@ func (g *CallbackGenerator) renderBlock() bool {
 			return false
 		}
 
-		value := typeconv.NewValue(in, out, i, dir, param.ParameterAttrs)
+		value := typeconv.NewValue(in, out, i, dir, param)
 		callbackValues = append(callbackValues, value)
 	}
 

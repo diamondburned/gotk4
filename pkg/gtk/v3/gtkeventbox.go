@@ -128,8 +128,7 @@ func NewEventBox() *EventBoxClass {
 
 	var _eventBox *EventBoxClass // out
 
-	_eventBox = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*EventBoxClass)
+	_eventBox = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*EventBoxClass)
 
 	return _eventBox
 }
@@ -140,7 +139,7 @@ func (e *EventBoxClass) AboveChild() bool {
 	var _arg0 *C.GtkEventBox // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkEventBox)(unsafe.Pointer((&e).Native()))
+	_arg0 = (*C.GtkEventBox)(unsafe.Pointer(e.Native()))
 
 	_cret = C.gtk_event_box_get_above_child(_arg0)
 
@@ -159,7 +158,7 @@ func (e *EventBoxClass) VisibleWindow() bool {
 	var _arg0 *C.GtkEventBox // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkEventBox)(unsafe.Pointer((&e).Native()))
+	_arg0 = (*C.GtkEventBox)(unsafe.Pointer(e.Native()))
 
 	_cret = C.gtk_event_box_get_visible_window(_arg0)
 
@@ -183,7 +182,7 @@ func (e *EventBoxClass) SetAboveChild(aboveChild bool) {
 	var _arg0 *C.GtkEventBox // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.GtkEventBox)(unsafe.Pointer((&e).Native()))
+	_arg0 = (*C.GtkEventBox)(unsafe.Pointer(e.Native()))
 	if aboveChild {
 		_arg1 = C.TRUE
 	}
@@ -223,7 +222,7 @@ func (e *EventBoxClass) SetVisibleWindow(visibleWindow bool) {
 	var _arg0 *C.GtkEventBox // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.GtkEventBox)(unsafe.Pointer((&e).Native()))
+	_arg0 = (*C.GtkEventBox)(unsafe.Pointer(e.Native()))
 	if visibleWindow {
 		_arg1 = C.TRUE
 	}

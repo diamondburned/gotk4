@@ -175,9 +175,9 @@ func (r *ResolverClass) LookupByAddress(address InetAddress, cancellable Cancell
 	var _cret *C.gchar        // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GResolver)(unsafe.Pointer((&r).Native()))
-	_arg1 = (*C.GInetAddress)(unsafe.Pointer((&address).Native()))
-	_arg2 = (*C.GCancellable)(unsafe.Pointer((&cancellable).Native()))
+	_arg0 = (*C.GResolver)(unsafe.Pointer(r.Native()))
+	_arg1 = (*C.GInetAddress)(unsafe.Pointer(address.Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_resolver_lookup_by_address(_arg0, _arg1, _arg2, &_cerr)
 
@@ -201,9 +201,9 @@ func (r *ResolverClass) LookupByAddressAsync(address InetAddress, cancellable Ca
 	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
-	_arg0 = (*C.GResolver)(unsafe.Pointer((&r).Native()))
-	_arg1 = (*C.GInetAddress)(unsafe.Pointer((&address).Native()))
-	_arg2 = (*C.GCancellable)(unsafe.Pointer((&cancellable).Native()))
+	_arg0 = (*C.GResolver)(unsafe.Pointer(r.Native()))
+	_arg1 = (*C.GInetAddress)(unsafe.Pointer(address.Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg4 = C.gpointer(box.Assign(callback))
 
@@ -222,8 +222,8 @@ func (r *ResolverClass) LookupByAddressFinish(result AsyncResult) (string, error
 	var _cret *C.gchar        // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GResolver)(unsafe.Pointer((&r).Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((&result).Native()))
+	_arg0 = (*C.GResolver)(unsafe.Pointer(r.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_resolver_lookup_by_address_finish(_arg0, _arg1, &_cerr)
 
@@ -248,10 +248,10 @@ func (r *ResolverClass) LookupByNameAsync(hostname string, cancellable Cancellab
 	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
-	_arg0 = (*C.GResolver)(unsafe.Pointer((&r).Native()))
+	_arg0 = (*C.GResolver)(unsafe.Pointer(r.Native()))
 	_arg1 = (*C.gchar)(C.CString(hostname))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GCancellable)(unsafe.Pointer((&cancellable).Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg4 = C.gpointer(box.Assign(callback))
 
@@ -271,14 +271,14 @@ func (r *ResolverClass) LookupServiceAsync(service string, protocol string, doma
 	var _arg5 C.GAsyncReadyCallback // out
 	var _arg6 C.gpointer
 
-	_arg0 = (*C.GResolver)(unsafe.Pointer((&r).Native()))
+	_arg0 = (*C.GResolver)(unsafe.Pointer(r.Native()))
 	_arg1 = (*C.gchar)(C.CString(service))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(C.CString(protocol))
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.gchar)(C.CString(domain))
 	defer C.free(unsafe.Pointer(_arg3))
-	_arg4 = (*C.GCancellable)(unsafe.Pointer((&cancellable).Native()))
+	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg5 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg6 = C.gpointer(box.Assign(callback))
 
@@ -297,7 +297,7 @@ func (r *ResolverClass) LookupServiceAsync(service string, protocol string, doma
 func (r *ResolverClass) SetDefault() {
 	var _arg0 *C.GResolver // out
 
-	_arg0 = (*C.GResolver)(unsafe.Pointer((&r).Native()))
+	_arg0 = (*C.GResolver)(unsafe.Pointer(r.Native()))
 
 	C.g_resolver_set_default(_arg0)
 }

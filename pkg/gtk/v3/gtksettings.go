@@ -99,7 +99,7 @@ func (s *SettingsClass) ResetProperty(name string) {
 	var _arg0 *C.GtkSettings // out
 	var _arg1 *C.gchar       // out
 
-	_arg0 = (*C.GtkSettings)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -113,7 +113,7 @@ func (s *SettingsClass) SetDoubleProperty(name string, vDouble float64, origin s
 	var _arg2 C.gdouble      // out
 	var _arg3 *C.gchar       // out
 
-	_arg0 = (*C.GtkSettings)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gdouble(vDouble)
@@ -130,7 +130,7 @@ func (s *SettingsClass) SetLongProperty(name string, vLong int32, origin string)
 	var _arg2 C.glong        // out
 	var _arg3 *C.gchar       // out
 
-	_arg0 = (*C.GtkSettings)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.glong(vLong)
@@ -147,7 +147,7 @@ func (s *SettingsClass) SetStringProperty(name string, vString string, origin st
 	var _arg2 *C.gchar       // out
 	var _arg3 *C.gchar       // out
 
-	_arg0 = (*C.GtkSettings)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(C.CString(vString))

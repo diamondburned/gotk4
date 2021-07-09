@@ -78,7 +78,7 @@ func (f *FileDescriptorBasedInterface) Fd() int {
 	var _arg0 *C.GFileDescriptorBased // out
 	var _cret C.int                   // in
 
-	_arg0 = (*C.GFileDescriptorBased)(unsafe.Pointer((&f).Native()))
+	_arg0 = (*C.GFileDescriptorBased)(unsafe.Pointer(f.Native()))
 
 	_cret = C.g_file_descriptor_based_get_fd(_arg0)
 

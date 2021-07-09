@@ -576,8 +576,7 @@ func NewWindow() *WindowClass {
 
 	var _window *WindowClass // out
 
-	_window = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*WindowClass)
+	_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WindowClass)
 
 	return _window
 }
@@ -591,7 +590,7 @@ func NewWindow() *WindowClass {
 func (w *WindowClass) Close() {
 	var _arg0 *C.GtkWindow // out
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer((&w).Native()))
+	_arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 
 	C.gtk_window_close(_arg0)
 }
@@ -600,7 +599,7 @@ func (w *WindowClass) Close() {
 func (w *WindowClass) Destroy() {
 	var _arg0 *C.GtkWindow // out
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer((&w).Native()))
+	_arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 
 	C.gtk_window_destroy(_arg0)
 }
@@ -617,7 +616,7 @@ func (w *WindowClass) Destroy() {
 func (w *WindowClass) Fullscreen() {
 	var _arg0 *C.GtkWindow // out
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer((&w).Native()))
+	_arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 
 	C.gtk_window_fullscreen(_arg0)
 }
@@ -635,8 +634,8 @@ func (w *WindowClass) FullscreenOnMonitor(monitor gdk.Monitor) {
 	var _arg0 *C.GtkWindow  // out
 	var _arg1 *C.GdkMonitor // out
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer((&w).Native()))
-	_arg1 = (*C.GdkMonitor)(unsafe.Pointer((&monitor).Native()))
+	_arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
+	_arg1 = (*C.GdkMonitor)(unsafe.Pointer(monitor.Native()))
 
 	C.gtk_window_fullscreen_on_monitor(_arg0, _arg1)
 }
@@ -646,14 +645,13 @@ func (w *WindowClass) Application() *ApplicationClass {
 	var _arg0 *C.GtkWindow      // out
 	var _cret *C.GtkApplication // in
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer((&w).Native()))
+	_arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 
 	_cret = C.gtk_window_get_application(_arg0)
 
 	var _application *ApplicationClass // out
 
-	_application = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*ApplicationClass)
+	_application = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ApplicationClass)
 
 	return _application
 }
@@ -663,14 +661,13 @@ func (w *WindowClass) Child() *WidgetClass {
 	var _arg0 *C.GtkWindow // out
 	var _cret *C.GtkWidget // in
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer((&w).Native()))
+	_arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 
 	_cret = C.gtk_window_get_child(_arg0)
 
 	var _widget *WidgetClass // out
 
-	_widget = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*WidgetClass)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WidgetClass)
 
 	return _widget
 }
@@ -680,7 +677,7 @@ func (w *WindowClass) Decorated() bool {
 	var _arg0 *C.GtkWindow // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer((&w).Native()))
+	_arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 
 	_cret = C.gtk_window_get_decorated(_arg0)
 
@@ -703,7 +700,7 @@ func (w *WindowClass) DefaultSize() (width int, height int) {
 	var _arg1 C.int        // in
 	var _arg2 C.int        // in
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer((&w).Native()))
+	_arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 
 	C.gtk_window_get_default_size(_arg0, &_arg1, &_arg2)
 
@@ -721,14 +718,13 @@ func (w *WindowClass) DefaultWidget() *WidgetClass {
 	var _arg0 *C.GtkWindow // out
 	var _cret *C.GtkWidget // in
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer((&w).Native()))
+	_arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 
 	_cret = C.gtk_window_get_default_widget(_arg0)
 
 	var _widget *WidgetClass // out
 
-	_widget = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*WidgetClass)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WidgetClass)
 
 	return _widget
 }
@@ -738,7 +734,7 @@ func (w *WindowClass) Deletable() bool {
 	var _arg0 *C.GtkWindow // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer((&w).Native()))
+	_arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 
 	_cret = C.gtk_window_get_deletable(_arg0)
 
@@ -757,7 +753,7 @@ func (w *WindowClass) DestroyWithParent() bool {
 	var _arg0 *C.GtkWindow // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer((&w).Native()))
+	_arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 
 	_cret = C.gtk_window_get_destroy_with_parent(_arg0)
 
@@ -779,14 +775,13 @@ func (w *WindowClass) Focus() *WidgetClass {
 	var _arg0 *C.GtkWindow // out
 	var _cret *C.GtkWidget // in
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer((&w).Native()))
+	_arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 
 	_cret = C.gtk_window_get_focus(_arg0)
 
 	var _widget *WidgetClass // out
 
-	_widget = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*WidgetClass)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WidgetClass)
 
 	return _widget
 }
@@ -796,7 +791,7 @@ func (w *WindowClass) FocusVisible() bool {
 	var _arg0 *C.GtkWindow // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer((&w).Native()))
+	_arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 
 	_cret = C.gtk_window_get_focus_visible(_arg0)
 
@@ -816,14 +811,13 @@ func (w *WindowClass) Group() *WindowGroupClass {
 	var _arg0 *C.GtkWindow      // out
 	var _cret *C.GtkWindowGroup // in
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer((&w).Native()))
+	_arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 
 	_cret = C.gtk_window_get_group(_arg0)
 
 	var _windowGroup *WindowGroupClass // out
 
-	_windowGroup = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*WindowGroupClass)
+	_windowGroup = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WindowGroupClass)
 
 	return _windowGroup
 }
@@ -834,7 +828,7 @@ func (w *WindowClass) HandleMenubarAccel() bool {
 	var _arg0 *C.GtkWindow // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer((&w).Native()))
+	_arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 
 	_cret = C.gtk_window_get_handle_menubar_accel(_arg0)
 
@@ -853,7 +847,7 @@ func (w *WindowClass) HideOnClose() bool {
 	var _arg0 *C.GtkWindow // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer((&w).Native()))
+	_arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 
 	_cret = C.gtk_window_get_hide_on_close(_arg0)
 
@@ -871,7 +865,7 @@ func (w *WindowClass) IconName() string {
 	var _arg0 *C.GtkWindow // out
 	var _cret *C.char      // in
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer((&w).Native()))
+	_arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 
 	_cret = C.gtk_window_get_icon_name(_arg0)
 
@@ -887,7 +881,7 @@ func (w *WindowClass) MnemonicsVisible() bool {
 	var _arg0 *C.GtkWindow // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer((&w).Native()))
+	_arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 
 	_cret = C.gtk_window_get_mnemonics_visible(_arg0)
 
@@ -905,7 +899,7 @@ func (w *WindowClass) Modal() bool {
 	var _arg0 *C.GtkWindow // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer((&w).Native()))
+	_arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 
 	_cret = C.gtk_window_get_modal(_arg0)
 
@@ -923,7 +917,7 @@ func (w *WindowClass) Resizable() bool {
 	var _arg0 *C.GtkWindow // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer((&w).Native()))
+	_arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 
 	_cret = C.gtk_window_get_resizable(_arg0)
 
@@ -941,7 +935,7 @@ func (w *WindowClass) Title() string {
 	var _arg0 *C.GtkWindow // out
 	var _cret *C.char      // in
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer((&w).Native()))
+	_arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 
 	_cret = C.gtk_window_get_title(_arg0)
 
@@ -958,14 +952,13 @@ func (w *WindowClass) Titlebar() *WidgetClass {
 	var _arg0 *C.GtkWindow // out
 	var _cret *C.GtkWidget // in
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer((&w).Native()))
+	_arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 
 	_cret = C.gtk_window_get_titlebar(_arg0)
 
 	var _widget *WidgetClass // out
 
-	_widget = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*WidgetClass)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WidgetClass)
 
 	return _widget
 }
@@ -975,14 +968,13 @@ func (w *WindowClass) TransientFor() *WindowClass {
 	var _arg0 *C.GtkWindow // out
 	var _cret *C.GtkWindow // in
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer((&w).Native()))
+	_arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 
 	_cret = C.gtk_window_get_transient_for(_arg0)
 
 	var _ret *WindowClass // out
 
-	_ret = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*WindowClass)
+	_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WindowClass)
 
 	return _ret
 }
@@ -992,7 +984,7 @@ func (w *WindowClass) HasGroup() bool {
 	var _arg0 *C.GtkWindow // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer((&w).Native()))
+	_arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 
 	_cret = C.gtk_window_has_group(_arg0)
 
@@ -1016,7 +1008,7 @@ func (w *WindowClass) IsActive() bool {
 	var _arg0 *C.GtkWindow // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer((&w).Native()))
+	_arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 
 	_cret = C.gtk_window_is_active(_arg0)
 
@@ -1043,7 +1035,7 @@ func (w *WindowClass) IsFullscreen() bool {
 	var _arg0 *C.GtkWindow // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer((&w).Native()))
+	_arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 
 	_cret = C.gtk_window_is_fullscreen(_arg0)
 
@@ -1069,7 +1061,7 @@ func (w *WindowClass) IsMaximized() bool {
 	var _arg0 *C.GtkWindow // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer((&w).Native()))
+	_arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 
 	_cret = C.gtk_window_is_maximized(_arg0)
 
@@ -1097,7 +1089,7 @@ func (w *WindowClass) IsMaximized() bool {
 func (w *WindowClass) Maximize() {
 	var _arg0 *C.GtkWindow // out
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer((&w).Native()))
+	_arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 
 	C.gtk_window_maximize(_arg0)
 }
@@ -1118,7 +1110,7 @@ func (w *WindowClass) Maximize() {
 func (w *WindowClass) Minimize() {
 	var _arg0 *C.GtkWindow // out
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer((&w).Native()))
+	_arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 
 	C.gtk_window_minimize(_arg0)
 }
@@ -1131,7 +1123,7 @@ func (w *WindowClass) Minimize() {
 func (w *WindowClass) Present() {
 	var _arg0 *C.GtkWindow // out
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer((&w).Native()))
+	_arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 
 	C.gtk_window_present(_arg0)
 }
@@ -1158,7 +1150,7 @@ func (w *WindowClass) PresentWithTime(timestamp uint32) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 C.guint32    // out
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer((&w).Native()))
+	_arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 	_arg1 = C.guint32(timestamp)
 
 	C.gtk_window_present_with_time(_arg0, _arg1)
@@ -1181,8 +1173,8 @@ func (w *WindowClass) SetApplication(application Application) {
 	var _arg0 *C.GtkWindow      // out
 	var _arg1 *C.GtkApplication // out
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer((&w).Native()))
-	_arg1 = (*C.GtkApplication)(unsafe.Pointer((&application).Native()))
+	_arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
+	_arg1 = (*C.GtkApplication)(unsafe.Pointer(application.Native()))
 
 	C.gtk_window_set_application(_arg0, _arg1)
 }
@@ -1192,8 +1184,8 @@ func (w *WindowClass) SetChild(child Widget) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 *C.GtkWidget // out
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer((&w).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&child).Native()))
+	_arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_window_set_child(_arg0, _arg1)
 }
@@ -1214,7 +1206,7 @@ func (w *WindowClass) SetDecorated(setting bool) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer((&w).Native()))
+	_arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 	if setting {
 		_arg1 = C.TRUE
 	}
@@ -1251,7 +1243,7 @@ func (w *WindowClass) SetDefaultSize(width int, height int) {
 	var _arg1 C.int        // out
 	var _arg2 C.int        // out
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer((&w).Native()))
+	_arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 	_arg1 = C.int(width)
 	_arg2 = C.int(height)
 
@@ -1266,8 +1258,8 @@ func (w *WindowClass) SetDefaultWidget(defaultWidget Widget) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 *C.GtkWidget // out
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer((&w).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&defaultWidget).Native()))
+	_arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(defaultWidget.Native()))
 
 	C.gtk_window_set_default_widget(_arg0, _arg1)
 }
@@ -1287,7 +1279,7 @@ func (w *WindowClass) SetDeletable(setting bool) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer((&w).Native()))
+	_arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 	if setting {
 		_arg1 = C.TRUE
 	}
@@ -1304,7 +1296,7 @@ func (w *WindowClass) SetDestroyWithParent(setting bool) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer((&w).Native()))
+	_arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 	if setting {
 		_arg1 = C.TRUE
 	}
@@ -1320,8 +1312,8 @@ func (w *WindowClass) SetDisplay(display gdk.Display) {
 	var _arg0 *C.GtkWindow  // out
 	var _arg1 *C.GdkDisplay // out
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer((&w).Native()))
-	_arg1 = (*C.GdkDisplay)(unsafe.Pointer((&display).Native()))
+	_arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	C.gtk_window_set_display(_arg0, _arg1)
 }
@@ -1337,8 +1329,8 @@ func (w *WindowClass) SetFocus(focus Widget) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 *C.GtkWidget // out
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer((&w).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&focus).Native()))
+	_arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(focus.Native()))
 
 	C.gtk_window_set_focus(_arg0, _arg1)
 }
@@ -1348,7 +1340,7 @@ func (w *WindowClass) SetFocusVisible(setting bool) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer((&w).Native()))
+	_arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 	if setting {
 		_arg1 = C.TRUE
 	}
@@ -1362,7 +1354,7 @@ func (w *WindowClass) SetHandleMenubarAccel(handleMenubarAccel bool) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer((&w).Native()))
+	_arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 	if handleMenubarAccel {
 		_arg1 = C.TRUE
 	}
@@ -1376,7 +1368,7 @@ func (w *WindowClass) SetHideOnClose(setting bool) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer((&w).Native()))
+	_arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 	if setting {
 		_arg1 = C.TRUE
 	}
@@ -1395,7 +1387,7 @@ func (w *WindowClass) SetIconName(name string) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 *C.char      // out
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer((&w).Native()))
+	_arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 	_arg1 = (*C.char)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -1407,7 +1399,7 @@ func (w *WindowClass) SetMnemonicsVisible(setting bool) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer((&w).Native()))
+	_arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 	if setting {
 		_arg1 = C.TRUE
 	}
@@ -1426,7 +1418,7 @@ func (w *WindowClass) SetModal(modal bool) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer((&w).Native()))
+	_arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 	if modal {
 		_arg1 = C.TRUE
 	}
@@ -1441,7 +1433,7 @@ func (w *WindowClass) SetResizable(resizable bool) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer((&w).Native()))
+	_arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 	if resizable {
 		_arg1 = C.TRUE
 	}
@@ -1465,7 +1457,7 @@ func (w *WindowClass) SetStartupID(startupId string) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 *C.char      // out
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer((&w).Native()))
+	_arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 	_arg1 = (*C.char)(C.CString(startupId))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -1486,7 +1478,7 @@ func (w *WindowClass) SetTitle(title string) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 *C.char      // out
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer((&w).Native()))
+	_arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 	_arg1 = (*C.char)(C.CString(title))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -1507,8 +1499,8 @@ func (w *WindowClass) SetTitlebar(titlebar Widget) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 *C.GtkWidget // out
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer((&w).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&titlebar).Native()))
+	_arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(titlebar.Native()))
 
 	C.gtk_window_set_titlebar(_arg0, _arg1)
 }
@@ -1528,8 +1520,8 @@ func (w *WindowClass) SetTransientFor(parent Window) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 *C.GtkWindow // out
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer((&w).Native()))
-	_arg1 = (*C.GtkWindow)(unsafe.Pointer((&parent).Native()))
+	_arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
+	_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
 
 	C.gtk_window_set_transient_for(_arg0, _arg1)
 }
@@ -1549,7 +1541,7 @@ func (w *WindowClass) SetTransientFor(parent Window) {
 func (w *WindowClass) Unfullscreen() {
 	var _arg0 *C.GtkWindow // out
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer((&w).Native()))
+	_arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 
 	C.gtk_window_unfullscreen(_arg0)
 }
@@ -1566,7 +1558,7 @@ func (w *WindowClass) Unfullscreen() {
 func (w *WindowClass) Unmaximize() {
 	var _arg0 *C.GtkWindow // out
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer((&w).Native()))
+	_arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 
 	C.gtk_window_unmaximize(_arg0)
 }
@@ -1584,7 +1576,7 @@ func (w *WindowClass) Unmaximize() {
 func (w *WindowClass) Unminimize() {
 	var _arg0 *C.GtkWindow // out
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer((&w).Native()))
+	_arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 
 	C.gtk_window_unminimize(_arg0)
 }

@@ -116,7 +116,7 @@ func (c *EventControllerScrollClass) Flags() EventControllerScrollFlags {
 	var _arg0 *C.GtkEventControllerScroll     // out
 	var _cret C.GtkEventControllerScrollFlags // in
 
-	_arg0 = (*C.GtkEventControllerScroll)(unsafe.Pointer((&c).Native()))
+	_arg0 = (*C.GtkEventControllerScroll)(unsafe.Pointer(c.Native()))
 
 	_cret = C.gtk_event_controller_scroll_get_flags(_arg0)
 

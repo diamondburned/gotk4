@@ -153,8 +153,7 @@ func NewHeaderBar() *HeaderBarClass {
 
 	var _headerBar *HeaderBarClass // out
 
-	_headerBar = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*HeaderBarClass)
+	_headerBar = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*HeaderBarClass)
 
 	return _headerBar
 }
@@ -165,14 +164,13 @@ func (b *HeaderBarClass) CustomTitle() *WidgetClass {
 	var _arg0 *C.GtkHeaderBar // out
 	var _cret *C.GtkWidget    // in
 
-	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer((&b).Native()))
+	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(b.Native()))
 
 	_cret = C.gtk_header_bar_get_custom_title(_arg0)
 
 	var _widget *WidgetClass // out
 
-	_widget = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*WidgetClass)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WidgetClass)
 
 	return _widget
 }
@@ -183,7 +181,7 @@ func (b *HeaderBarClass) DecorationLayout() string {
 	var _arg0 *C.GtkHeaderBar // out
 	var _cret *C.gchar        // in
 
-	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer((&b).Native()))
+	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(b.Native()))
 
 	_cret = C.gtk_header_bar_get_decoration_layout(_arg0)
 
@@ -200,7 +198,7 @@ func (b *HeaderBarClass) HasSubtitle() bool {
 	var _arg0 *C.GtkHeaderBar // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer((&b).Native()))
+	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(b.Native()))
 
 	_cret = C.gtk_header_bar_get_has_subtitle(_arg0)
 
@@ -219,7 +217,7 @@ func (b *HeaderBarClass) ShowCloseButton() bool {
 	var _arg0 *C.GtkHeaderBar // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer((&b).Native()))
+	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(b.Native()))
 
 	_cret = C.gtk_header_bar_get_show_close_button(_arg0)
 
@@ -238,7 +236,7 @@ func (b *HeaderBarClass) Subtitle() string {
 	var _arg0 *C.GtkHeaderBar // out
 	var _cret *C.gchar        // in
 
-	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer((&b).Native()))
+	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(b.Native()))
 
 	_cret = C.gtk_header_bar_get_subtitle(_arg0)
 
@@ -254,7 +252,7 @@ func (b *HeaderBarClass) Title() string {
 	var _arg0 *C.GtkHeaderBar // out
 	var _cret *C.gchar        // in
 
-	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer((&b).Native()))
+	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(b.Native()))
 
 	_cret = C.gtk_header_bar_get_title(_arg0)
 
@@ -270,8 +268,8 @@ func (b *HeaderBarClass) PackEnd(child Widget) {
 	var _arg0 *C.GtkHeaderBar // out
 	var _arg1 *C.GtkWidget    // out
 
-	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer((&b).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&child).Native()))
+	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(b.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_header_bar_pack_end(_arg0, _arg1)
 }
@@ -282,8 +280,8 @@ func (b *HeaderBarClass) PackStart(child Widget) {
 	var _arg0 *C.GtkHeaderBar // out
 	var _arg1 *C.GtkWidget    // out
 
-	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer((&b).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&child).Native()))
+	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(b.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_header_bar_pack_start(_arg0, _arg1)
 }
@@ -301,8 +299,8 @@ func (b *HeaderBarClass) SetCustomTitle(titleWidget Widget) {
 	var _arg0 *C.GtkHeaderBar // out
 	var _arg1 *C.GtkWidget    // out
 
-	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer((&b).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&titleWidget).Native()))
+	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(b.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(titleWidget.Native()))
 
 	C.gtk_header_bar_set_custom_title(_arg0, _arg1)
 }
@@ -326,7 +324,7 @@ func (b *HeaderBarClass) SetDecorationLayout(layout string) {
 	var _arg0 *C.GtkHeaderBar // out
 	var _arg1 *C.gchar        // out
 
-	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer((&b).Native()))
+	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.gchar)(C.CString(layout))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -339,7 +337,7 @@ func (b *HeaderBarClass) SetHasSubtitle(setting bool) {
 	var _arg0 *C.GtkHeaderBar // out
 	var _arg1 C.gboolean      // out
 
-	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer((&b).Native()))
+	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(b.Native()))
 	if setting {
 		_arg1 = C.TRUE
 	}
@@ -353,7 +351,7 @@ func (b *HeaderBarClass) SetShowCloseButton(setting bool) {
 	var _arg0 *C.GtkHeaderBar // out
 	var _arg1 C.gboolean      // out
 
-	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer((&b).Native()))
+	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(b.Native()))
 	if setting {
 		_arg1 = C.TRUE
 	}
@@ -371,7 +369,7 @@ func (b *HeaderBarClass) SetSubtitle(subtitle string) {
 	var _arg0 *C.GtkHeaderBar // out
 	var _arg1 *C.gchar        // out
 
-	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer((&b).Native()))
+	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.gchar)(C.CString(subtitle))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -385,7 +383,7 @@ func (b *HeaderBarClass) SetTitle(title string) {
 	var _arg0 *C.GtkHeaderBar // out
 	var _arg1 *C.gchar        // out
 
-	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer((&b).Native()))
+	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.gchar)(C.CString(title))
 	defer C.free(unsafe.Pointer(_arg1))
 

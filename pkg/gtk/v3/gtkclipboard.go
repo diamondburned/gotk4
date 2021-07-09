@@ -46,10 +46,8 @@ func gotk4_ClipboardImageReceivedFunc(arg0 *C.GtkClipboard, arg1 *C.GdkPixbuf, a
 	var pixbuf *gdkpixbuf.PixbufClass // out
 	var data interface{}              // out
 
-	clipboard = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(arg0))).(*ClipboardClass)
-	pixbuf = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(arg1))).(*gdkpixbuf.PixbufClass)
+	clipboard = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*ClipboardClass)
+	pixbuf = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(*gdkpixbuf.PixbufClass)
 	data = box.Get(uintptr(arg2))
 
 	fn := v.(ClipboardImageReceivedFunc)
@@ -71,8 +69,7 @@ func gotk4_ClipboardReceivedFunc(arg0 *C.GtkClipboard, arg1 *C.GtkSelectionData,
 	var selectionData *SelectionData // out
 	var data interface{}             // out
 
-	clipboard = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(arg0))).(*ClipboardClass)
+	clipboard = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*ClipboardClass)
 	selectionData = (*SelectionData)(unsafe.Pointer(arg1))
 	data = box.Get(uintptr(arg2))
 
@@ -95,8 +92,7 @@ func gotk4_ClipboardTextReceivedFunc(arg0 *C.GtkClipboard, arg1 *C.gchar, arg2 C
 	var text string               // out
 	var data interface{}          // out
 
-	clipboard = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(arg0))).(*ClipboardClass)
+	clipboard = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*ClipboardClass)
 	text = C.GoString(arg1)
 	data = box.Get(uintptr(arg2))
 
@@ -119,8 +115,7 @@ func gotk4_ClipboardURIReceivedFunc(arg0 *C.GtkClipboard, arg1 **C.gchar, arg2 C
 	var uris []string
 	var data interface{} // out
 
-	clipboard = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(arg0))).(*ClipboardClass)
+	clipboard = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*ClipboardClass)
 	{
 		var i int
 		var z *C.gchar
@@ -231,6 +226,13 @@ type Clipboard interface {
 	// various reasons, in particular if the clipboard was empty or if the
 	// contents of the clipboard could not be converted into URI form.
 	RequestUris(callback ClipboardURIReceivedFunc)
+	// SetCanStore hints that the clipboard data should be stored somewhere when
+	// the application exits or when gtk_clipboard_store () is called.
+	//
+	// This value is reset when the clipboard owner changes. Where the clipboard
+	// data is stored is platform dependent, see gdk_display_store_clipboard ()
+	// for more information.
+	SetCanStore(targets []TargetEntry)
 	// SetImage sets the contents of the clipboard to the given Pixbuf. GTK+
 	// will take responsibility for responding for requests for the image, and
 	// for converting the image into the requested format.
@@ -325,7 +327,7 @@ func marshalClipboard(p uintptr) (interface{}, error) {
 func (c *ClipboardClass) Clear() {
 	var _arg0 *C.GtkClipboard // out
 
-	_arg0 = (*C.GtkClipboard)(unsafe.Pointer((&c).Native()))
+	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(c.Native()))
 
 	C.gtk_clipboard_clear(_arg0)
 }
@@ -335,14 +337,13 @@ func (c *ClipboardClass) Display() *gdk.DisplayClass {
 	var _arg0 *C.GtkClipboard // out
 	var _cret *C.GdkDisplay   // in
 
-	_arg0 = (*C.GtkClipboard)(unsafe.Pointer((&c).Native()))
+	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(c.Native()))
 
 	_cret = C.gtk_clipboard_get_display(_arg0)
 
 	var _display *gdk.DisplayClass // out
 
-	_display = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*gdk.DisplayClass)
+	_display = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.DisplayClass)
 
 	return _display
 }
@@ -355,14 +356,13 @@ func (c *ClipboardClass) Owner() *externglib.Object {
 	var _arg0 *C.GtkClipboard // out
 	var _cret *C.GObject      // in
 
-	_arg0 = (*C.GtkClipboard)(unsafe.Pointer((&c).Native()))
+	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(c.Native()))
 
 	_cret = C.gtk_clipboard_get_owner(_arg0)
 
 	var _object *externglib.Object // out
 
-	_object = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*externglib.Object)
+	_object = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*externglib.Object)
 
 	return _object
 }
@@ -380,7 +380,7 @@ func (c *ClipboardClass) RequestImage(callback ClipboardImageReceivedFunc) {
 	var _arg1 C.GtkClipboardImageReceivedFunc // out
 	var _arg2 C.gpointer
 
-	_arg0 = (*C.GtkClipboard)(unsafe.Pointer((&c).Native()))
+	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(c.Native()))
 	_arg1 = (*[0]byte)(C.gotk4_ClipboardImageReceivedFunc)
 	_arg2 = C.gpointer(box.Assign(callback))
 
@@ -400,7 +400,7 @@ func (c *ClipboardClass) RequestText(callback ClipboardTextReceivedFunc) {
 	var _arg1 C.GtkClipboardTextReceivedFunc // out
 	var _arg2 C.gpointer
 
-	_arg0 = (*C.GtkClipboard)(unsafe.Pointer((&c).Native()))
+	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(c.Native()))
 	_arg1 = (*[0]byte)(C.gotk4_ClipboardTextReceivedFunc)
 	_arg2 = C.gpointer(box.Assign(callback))
 
@@ -419,11 +419,29 @@ func (c *ClipboardClass) RequestUris(callback ClipboardURIReceivedFunc) {
 	var _arg1 C.GtkClipboardURIReceivedFunc // out
 	var _arg2 C.gpointer
 
-	_arg0 = (*C.GtkClipboard)(unsafe.Pointer((&c).Native()))
+	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(c.Native()))
 	_arg1 = (*[0]byte)(C.gotk4_ClipboardURIReceivedFunc)
 	_arg2 = C.gpointer(box.Assign(callback))
 
 	C.gtk_clipboard_request_uris(_arg0, _arg1, _arg2)
+}
+
+// SetCanStore hints that the clipboard data should be stored somewhere when the
+// application exits or when gtk_clipboard_store () is called.
+//
+// This value is reset when the clipboard owner changes. Where the clipboard
+// data is stored is platform dependent, see gdk_display_store_clipboard () for
+// more information.
+func (c *ClipboardClass) SetCanStore(targets []TargetEntry) {
+	var _arg0 *C.GtkClipboard // out
+	var _arg1 *C.GtkTargetEntry
+	var _arg2 C.gint
+
+	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(c.Native()))
+	_arg2 = C.gint(len(targets))
+	_arg1 = (*C.GtkTargetEntry)(unsafe.Pointer(&targets[0]))
+
+	C.gtk_clipboard_set_can_store(_arg0, _arg1, _arg2)
 }
 
 // SetImage sets the contents of the clipboard to the given Pixbuf. GTK+ will
@@ -433,8 +451,8 @@ func (c *ClipboardClass) SetImage(pixbuf gdkpixbuf.Pixbuf) {
 	var _arg0 *C.GtkClipboard // out
 	var _arg1 *C.GdkPixbuf    // out
 
-	_arg0 = (*C.GtkClipboard)(unsafe.Pointer((&c).Native()))
-	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer((&pixbuf).Native()))
+	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 
 	C.gtk_clipboard_set_image(_arg0, _arg1)
 }
@@ -447,7 +465,7 @@ func (c *ClipboardClass) SetText(text string, len int) {
 	var _arg1 *C.gchar        // out
 	var _arg2 C.gint          // out
 
-	_arg0 = (*C.GtkClipboard)(unsafe.Pointer((&c).Native()))
+	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.gchar)(C.CString(text))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint(len)
@@ -460,7 +478,7 @@ func (c *ClipboardClass) SetText(text string, len int) {
 func (c *ClipboardClass) Store() {
 	var _arg0 *C.GtkClipboard // out
 
-	_arg0 = (*C.GtkClipboard)(unsafe.Pointer((&c).Native()))
+	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(c.Native()))
 
 	C.gtk_clipboard_store(_arg0)
 }
@@ -472,14 +490,13 @@ func (c *ClipboardClass) WaitForImage() *gdkpixbuf.PixbufClass {
 	var _arg0 *C.GtkClipboard // out
 	var _cret *C.GdkPixbuf    // in
 
-	_arg0 = (*C.GtkClipboard)(unsafe.Pointer((&c).Native()))
+	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(c.Native()))
 
 	_cret = C.gtk_clipboard_wait_for_image(_arg0)
 
 	var _pixbuf *gdkpixbuf.PixbufClass // out
 
-	_pixbuf = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*gdkpixbuf.PixbufClass)
+	_pixbuf = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*gdkpixbuf.PixbufClass)
 
 	return _pixbuf
 }
@@ -492,7 +509,7 @@ func (c *ClipboardClass) WaitForText() string {
 	var _arg0 *C.GtkClipboard // out
 	var _cret *C.gchar        // in
 
-	_arg0 = (*C.GtkClipboard)(unsafe.Pointer((&c).Native()))
+	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(c.Native()))
 
 	_cret = C.gtk_clipboard_wait_for_text(_arg0)
 
@@ -511,7 +528,7 @@ func (c *ClipboardClass) WaitForUris() []string {
 	var _arg0 *C.GtkClipboard // out
 	var _cret **C.gchar
 
-	_arg0 = (*C.GtkClipboard)(unsafe.Pointer((&c).Native()))
+	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(c.Native()))
 
 	_cret = C.gtk_clipboard_wait_for_uris(_arg0)
 
@@ -547,7 +564,7 @@ func (c *ClipboardClass) WaitIsImageAvailable() bool {
 	var _arg0 *C.GtkClipboard // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GtkClipboard)(unsafe.Pointer((&c).Native()))
+	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(c.Native()))
 
 	_cret = C.gtk_clipboard_wait_is_image_available(_arg0)
 
@@ -574,8 +591,8 @@ func (c *ClipboardClass) WaitIsRichTextAvailable(buffer TextBuffer) bool {
 	var _arg1 *C.GtkTextBuffer // out
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.GtkClipboard)(unsafe.Pointer((&c).Native()))
-	_arg1 = (*C.GtkTextBuffer)(unsafe.Pointer((&buffer).Native()))
+	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
 
 	_cret = C.gtk_clipboard_wait_is_rich_text_available(_arg0, _arg1)
 
@@ -599,7 +616,7 @@ func (c *ClipboardClass) WaitIsTextAvailable() bool {
 	var _arg0 *C.GtkClipboard // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GtkClipboard)(unsafe.Pointer((&c).Native()))
+	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(c.Native()))
 
 	_cret = C.gtk_clipboard_wait_is_text_available(_arg0)
 
@@ -624,7 +641,7 @@ func (c *ClipboardClass) WaitIsUrisAvailable() bool {
 	var _arg0 *C.GtkClipboard // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GtkClipboard)(unsafe.Pointer((&c).Native()))
+	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(c.Native()))
 
 	_cret = C.gtk_clipboard_wait_is_uris_available(_arg0)
 

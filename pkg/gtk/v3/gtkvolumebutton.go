@@ -138,8 +138,7 @@ func NewVolumeButton() *VolumeButtonClass {
 
 	var _volumeButton *VolumeButtonClass // out
 
-	_volumeButton = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*VolumeButtonClass)
+	_volumeButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*VolumeButtonClass)
 
 	return _volumeButton
 }

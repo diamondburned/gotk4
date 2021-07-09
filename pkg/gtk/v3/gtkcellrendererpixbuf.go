@@ -75,8 +75,7 @@ func NewCellRendererPixbuf() *CellRendererPixbufClass {
 
 	var _cellRendererPixbuf *CellRendererPixbufClass // out
 
-	_cellRendererPixbuf = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*CellRendererPixbufClass)
+	_cellRendererPixbuf = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*CellRendererPixbufClass)
 
 	return _cellRendererPixbuf
 }

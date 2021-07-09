@@ -88,7 +88,7 @@ func (s *SeatClass) Capabilities() SeatCapabilities {
 	var _arg0 *C.GdkSeat            // out
 	var _cret C.GdkSeatCapabilities // in
 
-	_arg0 = (*C.GdkSeat)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GdkSeat)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gdk_seat_get_capabilities(_arg0)
 
@@ -104,14 +104,13 @@ func (s *SeatClass) Display() *DisplayClass {
 	var _arg0 *C.GdkSeat    // out
 	var _cret *C.GdkDisplay // in
 
-	_arg0 = (*C.GdkSeat)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GdkSeat)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gdk_seat_get_display(_arg0)
 
 	var _display *DisplayClass // out
 
-	_display = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*DisplayClass)
+	_display = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*DisplayClass)
 
 	return _display
 }
@@ -121,14 +120,13 @@ func (s *SeatClass) Keyboard() *DeviceClass {
 	var _arg0 *C.GdkSeat   // out
 	var _cret *C.GdkDevice // in
 
-	_arg0 = (*C.GdkSeat)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GdkSeat)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gdk_seat_get_keyboard(_arg0)
 
 	var _device *DeviceClass // out
 
-	_device = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*DeviceClass)
+	_device = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*DeviceClass)
 
 	return _device
 }
@@ -138,14 +136,13 @@ func (s *SeatClass) Pointer() *DeviceClass {
 	var _arg0 *C.GdkSeat   // out
 	var _cret *C.GdkDevice // in
 
-	_arg0 = (*C.GdkSeat)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GdkSeat)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gdk_seat_get_pointer(_arg0)
 
 	var _device *DeviceClass // out
 
-	_device = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*DeviceClass)
+	_device = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*DeviceClass)
 
 	return _device
 }

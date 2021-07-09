@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -29,6 +30,20 @@ func init() {
 type GestureStylus interface {
 	gextras.Objector
 
+	// Backlog returns the accumulated backlog of tracking information.
+	//
+	// By default, GTK will limit rate of input events. On stylus input where
+	// accuracy of strokes is paramount, this function returns the accumulated
+	// coordinate/timing state before the emission of the current
+	// [Gtk.GestureStylus::motion] signal.
+	//
+	// This function may only be called within a
+	// [signal@Gtk.GestureStylus::motion] signal handler, the state given in
+	// this signal and obtainable through [method@Gtk.GestureStylus.get_axis]
+	// express the latest (most up-to-date) state in motion history.
+	//
+	// The @backlog is provided in chronological order.
+	Backlog() ([]gdk.TimeCoord, bool)
 	// DeviceTool returns the `GdkDeviceTool` currently driving input through
 	// this gesture.
 	//
@@ -72,10 +87,46 @@ func NewGestureStylus() *GestureStylusClass {
 
 	var _gestureStylus *GestureStylusClass // out
 
-	_gestureStylus = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*GestureStylusClass)
+	_gestureStylus = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*GestureStylusClass)
 
 	return _gestureStylus
+}
+
+// Backlog returns the accumulated backlog of tracking information.
+//
+// By default, GTK will limit rate of input events. On stylus input where
+// accuracy of strokes is paramount, this function returns the accumulated
+// coordinate/timing state before the emission of the current
+// [Gtk.GestureStylus::motion] signal.
+//
+// This function may only be called within a [signal@Gtk.GestureStylus::motion]
+// signal handler, the state given in this signal and obtainable through
+// [method@Gtk.GestureStylus.get_axis] express the latest (most up-to-date)
+// state in motion history.
+//
+// The @backlog is provided in chronological order.
+func (g *GestureStylusClass) Backlog() ([]gdk.TimeCoord, bool) {
+	var _arg0 *C.GtkGestureStylus // out
+	var _arg1 *C.GdkTimeCoord
+	var _arg2 C.guint    // in
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.GtkGestureStylus)(unsafe.Pointer(g.Native()))
+
+	_cret = C.gtk_gesture_stylus_get_backlog(_arg0, &_arg1, &_arg2)
+
+	var _backlog []gdk.TimeCoord
+	var _ok bool // out
+
+	_backlog = unsafe.Slice((*gdk.TimeCoord)(unsafe.Pointer(_arg1)), _arg2)
+	runtime.SetFinalizer(&_backlog, func(v *[]gdk.TimeCoord) {
+		C.free(unsafe.Pointer(&(*v)[0]))
+	})
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _backlog, _ok
 }
 
 // DeviceTool returns the `GdkDeviceTool` currently driving input through this
@@ -89,14 +140,13 @@ func (g *GestureStylusClass) DeviceTool() *gdk.DeviceToolClass {
 	var _arg0 *C.GtkGestureStylus // out
 	var _cret *C.GdkDeviceTool    // in
 
-	_arg0 = (*C.GtkGestureStylus)(unsafe.Pointer((&g).Native()))
+	_arg0 = (*C.GtkGestureStylus)(unsafe.Pointer(g.Native()))
 
 	_cret = C.gtk_gesture_stylus_get_device_tool(_arg0)
 
 	var _deviceTool *gdk.DeviceToolClass // out
 
-	_deviceTool = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*gdk.DeviceToolClass)
+	_deviceTool = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.DeviceToolClass)
 
 	return _deviceTool
 }

@@ -41,8 +41,7 @@ func gotk4_BusAcquiredCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 C.gp
 	var name string                     // out
 	var userData interface{}            // out
 
-	connection = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(arg0))).(*DBusConnectionClass)
+	connection = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*DBusConnectionClass)
 	name = C.GoString(arg1)
 	userData = box.Get(uintptr(arg2))
 
@@ -64,8 +63,7 @@ func gotk4_BusNameAcquiredCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 
 	var name string                     // out
 	var userData interface{}            // out
 
-	connection = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(arg0))).(*DBusConnectionClass)
+	connection = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*DBusConnectionClass)
 	name = C.GoString(arg1)
 	userData = box.Get(uintptr(arg2))
 
@@ -88,8 +86,7 @@ func gotk4_BusNameLostCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 C.gp
 	var name string                     // out
 	var userData interface{}            // out
 
-	connection = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(arg0))).(*DBusConnectionClass)
+	connection = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*DBusConnectionClass)
 	name = C.GoString(arg1)
 	userData = box.Get(uintptr(arg2))
 

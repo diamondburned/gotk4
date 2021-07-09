@@ -151,7 +151,7 @@ func (t *WaylandToplevelClass) SetApplicationID(applicationId string) {
 	var _arg0 *C.GdkToplevel // out
 	var _arg1 *C.char        // out
 
-	_arg0 = (*C.GdkToplevel)(unsafe.Pointer((&t).Native()))
+	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(t.Native()))
 	_arg1 = (*C.char)(C.CString(applicationId))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -171,7 +171,7 @@ func (t *WaylandToplevelClass) SetTransientForExported(parentHandleStr string) b
 	var _arg1 *C.char        // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GdkToplevel)(unsafe.Pointer((&t).Native()))
+	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(t.Native()))
 	_arg1 = (*C.char)(C.CString(parentHandleStr))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -197,7 +197,7 @@ func (t *WaylandToplevelClass) SetTransientForExported(parentHandleStr string) b
 func (t *WaylandToplevelClass) UnexportHandle() {
 	var _arg0 *C.GdkToplevel // out
 
-	_arg0 = (*C.GdkToplevel)(unsafe.Pointer((&t).Native()))
+	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(t.Native()))
 
 	C.gdk_wayland_toplevel_unexport_handle(_arg0)
 }

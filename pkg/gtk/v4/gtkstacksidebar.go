@@ -102,8 +102,7 @@ func NewStackSidebar() *StackSidebarClass {
 
 	var _stackSidebar *StackSidebarClass // out
 
-	_stackSidebar = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*StackSidebarClass)
+	_stackSidebar = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*StackSidebarClass)
 
 	return _stackSidebar
 }
@@ -113,14 +112,13 @@ func (s *StackSidebarClass) Stack() *StackClass {
 	var _arg0 *C.GtkStackSidebar // out
 	var _cret *C.GtkStack        // in
 
-	_arg0 = (*C.GtkStackSidebar)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkStackSidebar)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gtk_stack_sidebar_get_stack(_arg0)
 
 	var _stack *StackClass // out
 
-	_stack = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*StackClass)
+	_stack = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*StackClass)
 
 	return _stack
 }
@@ -133,8 +131,8 @@ func (s *StackSidebarClass) SetStack(stack Stack) {
 	var _arg0 *C.GtkStackSidebar // out
 	var _arg1 *C.GtkStack        // out
 
-	_arg0 = (*C.GtkStackSidebar)(unsafe.Pointer((&s).Native()))
-	_arg1 = (*C.GtkStack)(unsafe.Pointer((&stack).Native()))
+	_arg0 = (*C.GtkStackSidebar)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GtkStack)(unsafe.Pointer(stack.Native()))
 
 	C.gtk_stack_sidebar_set_stack(_arg0, _arg1)
 }

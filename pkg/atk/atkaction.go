@@ -171,7 +171,7 @@ func (a *ActionInterface) DoAction(i int) bool {
 	var _arg1 C.gint       // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.AtkAction)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.AtkAction)(unsafe.Pointer(a.Native()))
 	_arg1 = C.gint(i)
 
 	_cret = C.atk_action_do_action(_arg0, _arg1)
@@ -191,7 +191,7 @@ func (a *ActionInterface) Description(i int) string {
 	var _arg1 C.gint       // out
 	var _cret *C.gchar     // in
 
-	_arg0 = (*C.AtkAction)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.AtkAction)(unsafe.Pointer(a.Native()))
 	_arg1 = C.gint(i)
 
 	_cret = C.atk_action_get_description(_arg0, _arg1)
@@ -228,7 +228,7 @@ func (a *ActionInterface) Keybinding(i int) string {
 	var _arg1 C.gint       // out
 	var _cret *C.gchar     // in
 
-	_arg0 = (*C.AtkAction)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.AtkAction)(unsafe.Pointer(a.Native()))
 	_arg1 = C.gint(i)
 
 	_cret = C.atk_action_get_keybinding(_arg0, _arg1)
@@ -247,7 +247,7 @@ func (a *ActionInterface) LocalizedName(i int) string {
 	var _arg1 C.gint       // out
 	var _cret *C.gchar     // in
 
-	_arg0 = (*C.AtkAction)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.AtkAction)(unsafe.Pointer(a.Native()))
 	_arg1 = C.gint(i)
 
 	_cret = C.atk_action_get_localized_name(_arg0, _arg1)
@@ -266,7 +266,7 @@ func (a *ActionInterface) NActions() int {
 	var _arg0 *C.AtkAction // out
 	var _cret C.gint       // in
 
-	_arg0 = (*C.AtkAction)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.AtkAction)(unsafe.Pointer(a.Native()))
 
 	_cret = C.atk_action_get_n_actions(_arg0)
 
@@ -294,7 +294,7 @@ func (a *ActionInterface) Name(i int) string {
 	var _arg1 C.gint       // out
 	var _cret *C.gchar     // in
 
-	_arg0 = (*C.AtkAction)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.AtkAction)(unsafe.Pointer(a.Native()))
 	_arg1 = C.gint(i)
 
 	_cret = C.atk_action_get_name(_arg0, _arg1)
@@ -313,7 +313,7 @@ func (a *ActionInterface) SetDescription(i int, desc string) bool {
 	var _arg2 *C.gchar     // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.AtkAction)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.AtkAction)(unsafe.Pointer(a.Native()))
 	_arg1 = C.gint(i)
 	_arg2 = (*C.gchar)(C.CString(desc))
 	defer C.free(unsafe.Pointer(_arg2))

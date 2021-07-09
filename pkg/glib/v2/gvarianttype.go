@@ -332,6 +332,35 @@ func (t *VariantType) Element() *VariantType {
 	return _variantType
 }
 
+// Equal compares @type1 and @type2 for equality.
+//
+// Only returns true if the types are exactly equal. Even if one type is an
+// indefinite type and the other is a subtype of it, false will be returned if
+// they are not exactly equal. If you want to check for subtypes, use
+// g_variant_type_is_subtype_of().
+//
+// The argument types of @type1 and @type2 are only #gconstpointer to allow use
+// with Table without function pointer casting. For both arguments, a valid Type
+// must be provided.
+func (t *VariantType) Equal(type2 *VariantType) bool {
+	var _arg0 C.gconstpointer // out
+	var _arg1 C.gconstpointer // out
+	var _cret C.gboolean      // in
+
+	_arg0 = (C.gconstpointer)(unsafe.Pointer(t))
+	_arg1 = (C.gconstpointer)(unsafe.Pointer(type2))
+
+	_cret = C.g_variant_type_equal(_arg0, _arg1)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
 // First determines the first item type of a tuple or dictionary entry type.
 //
 // This function may only be used with tuple or dictionary entry types, but must
@@ -388,6 +417,25 @@ func (t *VariantType) StringLength() uint {
 	_gsize = uint(_cret)
 
 	return _gsize
+}
+
+// Hash hashes @type.
+//
+// The argument type of @type is only #gconstpointer to allow use with Table
+// without function pointer casting. A valid Type must be provided.
+func (t *VariantType) Hash() uint {
+	var _arg0 C.gconstpointer // out
+	var _cret C.guint         // in
+
+	_arg0 = (C.gconstpointer)(unsafe.Pointer(t))
+
+	_cret = C.g_variant_type_hash(_arg0)
+
+	var _guint uint // out
+
+	_guint = uint(_cret)
+
+	return _guint
 }
 
 // IsArray determines if the given @type is an array type. This is true if the

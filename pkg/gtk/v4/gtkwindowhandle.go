@@ -97,8 +97,7 @@ func NewWindowHandle() *WindowHandleClass {
 
 	var _windowHandle *WindowHandleClass // out
 
-	_windowHandle = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*WindowHandleClass)
+	_windowHandle = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WindowHandleClass)
 
 	return _windowHandle
 }
@@ -108,14 +107,13 @@ func (s *WindowHandleClass) Child() *WidgetClass {
 	var _arg0 *C.GtkWindowHandle // out
 	var _cret *C.GtkWidget       // in
 
-	_arg0 = (*C.GtkWindowHandle)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkWindowHandle)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gtk_window_handle_get_child(_arg0)
 
 	var _widget *WidgetClass // out
 
-	_widget = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*WidgetClass)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WidgetClass)
 
 	return _widget
 }
@@ -125,8 +123,8 @@ func (s *WindowHandleClass) SetChild(child Widget) {
 	var _arg0 *C.GtkWindowHandle // out
 	var _arg1 *C.GtkWidget       // out
 
-	_arg0 = (*C.GtkWindowHandle)(unsafe.Pointer((&s).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&child).Native()))
+	_arg0 = (*C.GtkWindowHandle)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_window_handle_set_child(_arg0, _arg1)
 }

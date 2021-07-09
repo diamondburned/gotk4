@@ -68,7 +68,7 @@ type ApplicationOverrider interface {
 	//
 	// The application must be registered before calling this function and it
 	// must have the G_APPLICATION_HANDLES_OPEN flag set.
-	Open(files []File, hint string)
+	Open(files []*FileInterface, hint string)
 	QuitMainloop()
 	RunMainloop()
 	Shutdown()
@@ -193,6 +193,58 @@ type Application interface {
 	//
 	// The application must be registered before calling this function.
 	Activate()
+	// AddMainOptionEntries adds main option entries to be handled by
+	// @application.
+	//
+	// This function is comparable to g_option_context_add_main_entries().
+	//
+	// After the commandline arguments are parsed, the
+	// #GApplication::handle-local-options signal will be emitted. At this
+	// point, the application can inspect the values pointed to by @arg_data in
+	// the given Entrys.
+	//
+	// Unlike Context, #GApplication supports giving a nil @arg_data for a
+	// non-callback Entry. This results in the argument in question being packed
+	// into a Dict which is also passed to #GApplication::handle-local-options,
+	// where it can be inspected and modified. If
+	// G_APPLICATION_HANDLES_COMMAND_LINE is set, then the resulting dictionary
+	// is sent to the primary instance, where
+	// g_application_command_line_get_options_dict() will return it. This
+	// "packing" is done according to the type of the argument -- booleans for
+	// normal flags, strings for strings, bytestrings for filenames, etc. The
+	// packing only occurs if the flag is given (ie: we do not pack a "false"
+	// #GVariant in the case that a flag is missing).
+	//
+	// In general, it is recommended that all commandline arguments are parsed
+	// locally. The options dictionary should then be used to transmit the
+	// result of the parsing to the primary instance, where
+	// g_variant_dict_lookup() can be used. For local options, it is possible to
+	// either use @arg_data in the usual way, or to consult (and potentially
+	// remove) the option from the options dictionary.
+	//
+	// This function is new in GLib 2.40. Before then, the only real choice was
+	// to send all of the commandline arguments (options and all) to the primary
+	// instance for handling. #GApplication ignored them completely on the local
+	// side. Calling this function "opts in" to the new behaviour, and in
+	// particular, means that unrecognised options will be treated as errors.
+	// Unrecognised options have never been ignored when
+	// G_APPLICATION_HANDLES_COMMAND_LINE is unset.
+	//
+	// If #GApplication::handle-local-options needs to see the list of
+	// filenames, then the use of G_OPTION_REMAINING is recommended. If
+	// @arg_data is nil then G_OPTION_REMAINING can be used as a key into the
+	// options dictionary. If you do use G_OPTION_REMAINING then you need to
+	// handle these arguments for yourself because once they are consumed, they
+	// will no longer be visible to the default handling (which treats them as
+	// filenames to be opened).
+	//
+	// It is important to use the proper GVariant format when retrieving the
+	// options with g_variant_dict_lookup(): - for G_OPTION_ARG_NONE, use `b` -
+	// for G_OPTION_ARG_STRING, use `&s` - for G_OPTION_ARG_INT, use `i` - for
+	// G_OPTION_ARG_INT64, use `x` - for G_OPTION_ARG_DOUBLE, use `d` - for
+	// G_OPTION_ARG_FILENAME, use `^&ay` - for G_OPTION_ARG_STRING_ARRAY, use
+	// `^a&s` - for G_OPTION_ARG_FILENAME_ARRAY, use `^a&ay`
+	AddMainOptionEntries(entries []glib.OptionEntry)
 	// AddOptionGroup adds a Group to the commandline handling of @application.
 	//
 	// This function is comparable to g_option_context_add_group().
@@ -218,6 +270,12 @@ type Application interface {
 	// functionality whereby unrecognised options are rejected even if
 	// G_APPLICATION_HANDLES_COMMAND_LINE was given.
 	AddOptionGroup(group *glib.OptionGroup)
+	// BindBusyProperty marks @application as busy (see
+	// g_application_mark_busy()) while @property on @object is true.
+	//
+	// The binding holds a reference to @application while it is active, but not
+	// to @object. Instead, the binding is destroyed when @object is finalized.
+	BindBusyProperty(object gextras.Objector, property string)
 	// ApplicationID gets the unique identifier for @application.
 	ApplicationID() string
 	// DBusConnection gets the BusConnection being used by the application, or
@@ -316,7 +374,7 @@ type Application interface {
 	//
 	// The application must be registered before calling this function and it
 	// must have the G_APPLICATION_HANDLES_OPEN flag set.
-	Open(files []File, hint string)
+	Open(files []*FileInterface, hint string)
 	// Quit: immediately quits the application.
 	//
 	// Upon return to the mainloop, g_application_run() will return, calling
@@ -549,6 +607,10 @@ type Application interface {
 	// call this function in the Class.startup virtual function, before chaining
 	// up to the parent implementation.
 	SetResourceBasePath(resourcePath string)
+	// UnbindBusyProperty destroys a binding between @property and the busy
+	// state of @application that was previously created with
+	// g_application_bind_busy_property().
+	UnbindBusyProperty(object gextras.Objector, property string)
 	// UnmarkBusy decreases the busy count of @application.
 	//
 	// When the busy count reaches zero, the new state will be propagated to
@@ -609,9 +671,71 @@ func marshalApplication(p uintptr) (interface{}, error) {
 func (a *ApplicationClass) Activate() {
 	var _arg0 *C.GApplication // out
 
-	_arg0 = (*C.GApplication)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
 
 	C.g_application_activate(_arg0)
+}
+
+// AddMainOptionEntries adds main option entries to be handled by @application.
+//
+// This function is comparable to g_option_context_add_main_entries().
+//
+// After the commandline arguments are parsed, the
+// #GApplication::handle-local-options signal will be emitted. At this point,
+// the application can inspect the values pointed to by @arg_data in the given
+// Entrys.
+//
+// Unlike Context, #GApplication supports giving a nil @arg_data for a
+// non-callback Entry. This results in the argument in question being packed
+// into a Dict which is also passed to #GApplication::handle-local-options,
+// where it can be inspected and modified. If G_APPLICATION_HANDLES_COMMAND_LINE
+// is set, then the resulting dictionary is sent to the primary instance, where
+// g_application_command_line_get_options_dict() will return it. This "packing"
+// is done according to the type of the argument -- booleans for normal flags,
+// strings for strings, bytestrings for filenames, etc. The packing only occurs
+// if the flag is given (ie: we do not pack a "false" #GVariant in the case that
+// a flag is missing).
+//
+// In general, it is recommended that all commandline arguments are parsed
+// locally. The options dictionary should then be used to transmit the result of
+// the parsing to the primary instance, where g_variant_dict_lookup() can be
+// used. For local options, it is possible to either use @arg_data in the usual
+// way, or to consult (and potentially remove) the option from the options
+// dictionary.
+//
+// This function is new in GLib 2.40. Before then, the only real choice was to
+// send all of the commandline arguments (options and all) to the primary
+// instance for handling. #GApplication ignored them completely on the local
+// side. Calling this function "opts in" to the new behaviour, and in
+// particular, means that unrecognised options will be treated as errors.
+// Unrecognised options have never been ignored when
+// G_APPLICATION_HANDLES_COMMAND_LINE is unset.
+//
+// If #GApplication::handle-local-options needs to see the list of filenames,
+// then the use of G_OPTION_REMAINING is recommended. If @arg_data is nil then
+// G_OPTION_REMAINING can be used as a key into the options dictionary. If you
+// do use G_OPTION_REMAINING then you need to handle these arguments for
+// yourself because once they are consumed, they will no longer be visible to
+// the default handling (which treats them as filenames to be opened).
+//
+// It is important to use the proper GVariant format when retrieving the options
+// with g_variant_dict_lookup(): - for G_OPTION_ARG_NONE, use `b` - for
+// G_OPTION_ARG_STRING, use `&s` - for G_OPTION_ARG_INT, use `i` - for
+// G_OPTION_ARG_INT64, use `x` - for G_OPTION_ARG_DOUBLE, use `d` - for
+// G_OPTION_ARG_FILENAME, use `^&ay` - for G_OPTION_ARG_STRING_ARRAY, use `^a&s`
+// - for G_OPTION_ARG_FILENAME_ARRAY, use `^a&ay`
+func (a *ApplicationClass) AddMainOptionEntries(entries []glib.OptionEntry) {
+	var _arg0 *C.GApplication // out
+	var _arg1 *C.GOptionEntry
+
+	_arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
+	{
+		var zero glib.OptionEntry
+		entries = append(entries, zero)
+	}
+	_arg1 = (*C.GOptionEntry)(unsafe.Pointer(&entries[0]))
+
+	C.g_application_add_main_option_entries(_arg0, _arg1)
 }
 
 // AddOptionGroup adds a Group to the commandline handling of @application.
@@ -641,10 +765,28 @@ func (a *ApplicationClass) AddOptionGroup(group *glib.OptionGroup) {
 	var _arg0 *C.GApplication // out
 	var _arg1 *C.GOptionGroup // out
 
-	_arg0 = (*C.GApplication)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.GOptionGroup)(unsafe.Pointer(group))
 
 	C.g_application_add_option_group(_arg0, _arg1)
+}
+
+// BindBusyProperty marks @application as busy (see g_application_mark_busy())
+// while @property on @object is true.
+//
+// The binding holds a reference to @application while it is active, but not to
+// @object. Instead, the binding is destroyed when @object is finalized.
+func (a *ApplicationClass) BindBusyProperty(object gextras.Objector, property string) {
+	var _arg0 *C.GApplication // out
+	var _arg1 C.gpointer      // out
+	var _arg2 *C.gchar        // out
+
+	_arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
+	_arg1 = (C.gpointer)(unsafe.Pointer(object.Native()))
+	_arg2 = (*C.gchar)(C.CString(property))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	C.g_application_bind_busy_property(_arg0, _arg1, _arg2)
 }
 
 // ApplicationID gets the unique identifier for @application.
@@ -652,7 +794,7 @@ func (a *ApplicationClass) ApplicationID() string {
 	var _arg0 *C.GApplication // out
 	var _cret *C.gchar        // in
 
-	_arg0 = (*C.GApplication)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
 
 	_cret = C.g_application_get_application_id(_arg0)
 
@@ -679,14 +821,13 @@ func (a *ApplicationClass) DBusConnection() *DBusConnectionClass {
 	var _arg0 *C.GApplication    // out
 	var _cret *C.GDBusConnection // in
 
-	_arg0 = (*C.GApplication)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
 
 	_cret = C.g_application_get_dbus_connection(_arg0)
 
 	var _dBusConnection *DBusConnectionClass // out
 
-	_dBusConnection = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*DBusConnectionClass)
+	_dBusConnection = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*DBusConnectionClass)
 
 	return _dBusConnection
 }
@@ -710,7 +851,7 @@ func (a *ApplicationClass) DBusObjectPath() string {
 	var _arg0 *C.GApplication // out
 	var _cret *C.gchar        // in
 
-	_arg0 = (*C.GApplication)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
 
 	_cret = C.g_application_get_dbus_object_path(_arg0)
 
@@ -728,7 +869,7 @@ func (a *ApplicationClass) Flags() ApplicationFlags {
 	var _arg0 *C.GApplication     // out
 	var _cret C.GApplicationFlags // in
 
-	_arg0 = (*C.GApplication)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
 
 	_cret = C.g_application_get_flags(_arg0)
 
@@ -747,7 +888,7 @@ func (a *ApplicationClass) InactivityTimeout() uint {
 	var _arg0 *C.GApplication // out
 	var _cret C.guint         // in
 
-	_arg0 = (*C.GApplication)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
 
 	_cret = C.g_application_get_inactivity_timeout(_arg0)
 
@@ -764,7 +905,7 @@ func (a *ApplicationClass) IsBusy() bool {
 	var _arg0 *C.GApplication // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GApplication)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
 
 	_cret = C.g_application_get_is_busy(_arg0)
 
@@ -785,7 +926,7 @@ func (a *ApplicationClass) IsRegistered() bool {
 	var _arg0 *C.GApplication // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GApplication)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
 
 	_cret = C.g_application_get_is_registered(_arg0)
 
@@ -811,7 +952,7 @@ func (a *ApplicationClass) IsRemote() bool {
 	var _arg0 *C.GApplication // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GApplication)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
 
 	_cret = C.g_application_get_is_remote(_arg0)
 
@@ -831,7 +972,7 @@ func (a *ApplicationClass) ResourceBasePath() string {
 	var _arg0 *C.GApplication // out
 	var _cret *C.gchar        // in
 
-	_arg0 = (*C.GApplication)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
 
 	_cret = C.g_application_get_resource_base_path(_arg0)
 
@@ -852,7 +993,7 @@ func (a *ApplicationClass) ResourceBasePath() string {
 func (a *ApplicationClass) Hold() {
 	var _arg0 *C.GApplication // out
 
-	_arg0 = (*C.GApplication)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
 
 	C.g_application_hold(_arg0)
 }
@@ -869,7 +1010,7 @@ func (a *ApplicationClass) Hold() {
 func (a *ApplicationClass) MarkBusy() {
 	var _arg0 *C.GApplication // out
 
-	_arg0 = (*C.GApplication)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
 
 	C.g_application_mark_busy(_arg0)
 }
@@ -888,20 +1029,20 @@ func (a *ApplicationClass) MarkBusy() {
 //
 // The application must be registered before calling this function and it must
 // have the G_APPLICATION_HANDLES_OPEN flag set.
-func (a *ApplicationClass) Open(files []File, hint string) {
+func (a *ApplicationClass) Open(files []*FileInterface, hint string) {
 	var _arg0 *C.GApplication // out
 	var _arg1 **C.GFile
 	var _arg2 C.gint
 	var _arg3 *C.gchar // out
 
-	_arg0 = (*C.GApplication)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
 	_arg2 = C.gint(len(files))
 	_arg1 = (**C.GFile)(C.malloc(C.ulong(len(files)) * C.ulong(unsafe.Sizeof(uint(0)))))
 	defer C.free(unsafe.Pointer(_arg1))
 	{
 		out := unsafe.Slice(_arg1, len(files))
 		for i := range files {
-			out[i] = (*C.GFile)(unsafe.Pointer((&files[i]).Native()))
+			out[i] = (*C.GFile)(unsafe.Pointer(files[i].Native()))
 		}
 	}
 	_arg3 = (*C.gchar)(C.CString(hint))
@@ -925,7 +1066,7 @@ func (a *ApplicationClass) Open(files []File, hint string) {
 func (a *ApplicationClass) Quit() {
 	var _arg0 *C.GApplication // out
 
-	_arg0 = (*C.GApplication)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
 
 	C.g_application_quit(_arg0)
 }
@@ -963,8 +1104,8 @@ func (a *ApplicationClass) Register(cancellable Cancellable) error {
 	var _arg1 *C.GCancellable // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GApplication)(unsafe.Pointer((&a).Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer((&cancellable).Native()))
+	_arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	C.g_application_register(_arg0, _arg1, &_cerr)
 
@@ -984,7 +1125,7 @@ func (a *ApplicationClass) Register(cancellable Cancellable) error {
 func (a *ApplicationClass) Release() {
 	var _arg0 *C.GApplication // out
 
-	_arg0 = (*C.GApplication)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
 
 	C.g_application_release(_arg0)
 }
@@ -1065,7 +1206,7 @@ func (a *ApplicationClass) Run(argv []string) int {
 	var _arg1 C.int
 	var _cret C.int // in
 
-	_arg0 = (*C.GApplication)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
 	_arg1 = C.int(len(argv))
 	_arg2 = (**C.char)(C.malloc(C.ulong(len(argv)) * C.ulong(unsafe.Sizeof(uint(0)))))
 	defer C.free(unsafe.Pointer(_arg2))
@@ -1115,10 +1256,10 @@ func (a *ApplicationClass) SendNotification(id string, notification Notification
 	var _arg1 *C.gchar         // out
 	var _arg2 *C.GNotification // out
 
-	_arg0 = (*C.GApplication)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.gchar)(C.CString(id))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GNotification)(unsafe.Pointer((&notification).Native()))
+	_arg2 = (*C.GNotification)(unsafe.Pointer(notification.Native()))
 
 	C.g_application_send_notification(_arg0, _arg1, _arg2)
 }
@@ -1131,8 +1272,8 @@ func (a *ApplicationClass) SetActionGroup(actionGroup ActionGroup) {
 	var _arg0 *C.GApplication // out
 	var _arg1 *C.GActionGroup // out
 
-	_arg0 = (*C.GApplication)(unsafe.Pointer((&a).Native()))
-	_arg1 = (*C.GActionGroup)(unsafe.Pointer((&actionGroup).Native()))
+	_arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.GActionGroup)(unsafe.Pointer(actionGroup.Native()))
 
 	C.g_application_set_action_group(_arg0, _arg1)
 }
@@ -1148,7 +1289,7 @@ func (a *ApplicationClass) SetApplicationID(applicationId string) {
 	var _arg0 *C.GApplication // out
 	var _arg1 *C.gchar        // out
 
-	_arg0 = (*C.GApplication)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.gchar)(C.CString(applicationId))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -1164,7 +1305,7 @@ func (a *ApplicationClass) SetApplicationID(applicationId string) {
 func (a *ApplicationClass) SetDefault() {
 	var _arg0 *C.GApplication // out
 
-	_arg0 = (*C.GApplication)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
 
 	C.g_application_set_default(_arg0)
 }
@@ -1181,7 +1322,7 @@ func (a *ApplicationClass) SetInactivityTimeout(inactivityTimeout uint) {
 	var _arg0 *C.GApplication // out
 	var _arg1 C.guint         // out
 
-	_arg0 = (*C.GApplication)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
 	_arg1 = C.guint(inactivityTimeout)
 
 	C.g_application_set_inactivity_timeout(_arg0, _arg1)
@@ -1195,7 +1336,7 @@ func (a *ApplicationClass) SetOptionContextDescription(description string) {
 	var _arg0 *C.GApplication // out
 	var _arg1 *C.gchar        // out
 
-	_arg0 = (*C.GApplication)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.gchar)(C.CString(description))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -1213,7 +1354,7 @@ func (a *ApplicationClass) SetOptionContextParameterString(parameterString strin
 	var _arg0 *C.GApplication // out
 	var _arg1 *C.gchar        // out
 
-	_arg0 = (*C.GApplication)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.gchar)(C.CString(parameterString))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -1227,7 +1368,7 @@ func (a *ApplicationClass) SetOptionContextSummary(summary string) {
 	var _arg0 *C.GApplication // out
 	var _arg1 *C.gchar        // out
 
-	_arg0 = (*C.GApplication)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.gchar)(C.CString(summary))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -1269,11 +1410,27 @@ func (a *ApplicationClass) SetResourceBasePath(resourcePath string) {
 	var _arg0 *C.GApplication // out
 	var _arg1 *C.gchar        // out
 
-	_arg0 = (*C.GApplication)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.gchar)(C.CString(resourcePath))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_application_set_resource_base_path(_arg0, _arg1)
+}
+
+// UnbindBusyProperty destroys a binding between @property and the busy state of
+// @application that was previously created with
+// g_application_bind_busy_property().
+func (a *ApplicationClass) UnbindBusyProperty(object gextras.Objector, property string) {
+	var _arg0 *C.GApplication // out
+	var _arg1 C.gpointer      // out
+	var _arg2 *C.gchar        // out
+
+	_arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
+	_arg1 = (C.gpointer)(unsafe.Pointer(object.Native()))
+	_arg2 = (*C.gchar)(C.CString(property))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	C.g_application_unbind_busy_property(_arg0, _arg1, _arg2)
 }
 
 // UnmarkBusy decreases the busy count of @application.
@@ -1286,7 +1443,7 @@ func (a *ApplicationClass) SetResourceBasePath(resourcePath string) {
 func (a *ApplicationClass) UnmarkBusy() {
 	var _arg0 *C.GApplication // out
 
-	_arg0 = (*C.GApplication)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
 
 	C.g_application_unmark_busy(_arg0)
 }
@@ -1308,7 +1465,7 @@ func (a *ApplicationClass) WithdrawNotification(id string) {
 	var _arg0 *C.GApplication // out
 	var _arg1 *C.gchar        // out
 
-	_arg0 = (*C.GApplication)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.gchar)(C.CString(id))
 	defer C.free(unsafe.Pointer(_arg1))
 

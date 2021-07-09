@@ -9,6 +9,8 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdk/v4"
+	"github.com/diamondburned/gotk4/pkg/graphene"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -75,6 +77,10 @@ type RenderNode interface {
 	// For advanced nodes that cannot be supported using Cairo, in particular
 	// for nodes doing 3D operations, this function may fail.
 	Draw(cr *cairo.Context)
+	// Bounds retrieves the boundaries of the @node.
+	//
+	// The node will not draw outside of its boundaries.
+	Bounds() graphene.Rect
 	// NodeType returns the type of the @node.
 	NodeType() RenderNodeType
 	// Ref acquires a reference on the given `GskRenderNode`.
@@ -125,10 +131,28 @@ func (n *RenderNodeClass) Draw(cr *cairo.Context) {
 	var _arg0 *C.GskRenderNode // out
 	var _arg1 *C.cairo_t       // out
 
-	_arg0 = (*C.GskRenderNode)(unsafe.Pointer((&n).Native()))
+	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(n.Native()))
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr))
 
 	C.gsk_render_node_draw(_arg0, _arg1)
+}
+
+// Bounds retrieves the boundaries of the @node.
+//
+// The node will not draw outside of its boundaries.
+func (n *RenderNodeClass) Bounds() graphene.Rect {
+	var _arg0 *C.GskRenderNode  // out
+	var _arg1 C.graphene_rect_t // in
+
+	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(n.Native()))
+
+	C.gsk_render_node_get_bounds(_arg0, &_arg1)
+
+	var _bounds graphene.Rect // out
+
+	_bounds = *(*graphene.Rect)(unsafe.Pointer((&_arg1)))
+
+	return _bounds
 }
 
 // NodeType returns the type of the @node.
@@ -136,7 +160,7 @@ func (n *RenderNodeClass) NodeType() RenderNodeType {
 	var _arg0 *C.GskRenderNode    // out
 	var _cret C.GskRenderNodeType // in
 
-	_arg0 = (*C.GskRenderNode)(unsafe.Pointer((&n).Native()))
+	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(n.Native()))
 
 	_cret = C.gsk_render_node_get_node_type(_arg0)
 
@@ -152,14 +176,13 @@ func (n *RenderNodeClass) ref() *RenderNodeClass {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GskRenderNode // in
 
-	_arg0 = (*C.GskRenderNode)(unsafe.Pointer((&n).Native()))
+	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(n.Native()))
 
 	_cret = C.gsk_render_node_ref(_arg0)
 
 	var _renderNode *RenderNodeClass // out
 
-	_renderNode = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*RenderNodeClass)
+	_renderNode = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*RenderNodeClass)
 
 	return _renderNode
 }
@@ -171,7 +194,7 @@ func (n *RenderNodeClass) ref() *RenderNodeClass {
 func (n *RenderNodeClass) unref() {
 	var _arg0 *C.GskRenderNode // out
 
-	_arg0 = (*C.GskRenderNode)(unsafe.Pointer((&n).Native()))
+	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(n.Native()))
 
 	C.gsk_render_node_unref(_arg0)
 }
@@ -188,7 +211,7 @@ func (n *RenderNodeClass) WriteToFile(filename string) error {
 	var _arg1 *C.char          // out
 	var _cerr *C.GError        // in
 
-	_arg0 = (*C.GskRenderNode)(unsafe.Pointer((&n).Native()))
+	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(n.Native()))
 	_arg1 = (*C.char)(C.CString(filename))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -221,6 +244,13 @@ func (c *ColorStop) Native() unsafe.Pointer {
 func (c *ColorStop) Offset() float32 {
 	var v float32 // out
 	v = float32(c.native.offset)
+	return v
+}
+
+// Color: the color at the given offset
+func (c *ColorStop) Color() gdk.RGBA {
+	var v gdk.RGBA // out
+	v = *(*gdk.RGBA)(unsafe.Pointer((&c.native.color)))
 	return v
 }
 
@@ -289,6 +319,13 @@ func WrapShadow(ptr unsafe.Pointer) *Shadow {
 // Native returns the underlying C source pointer.
 func (s *Shadow) Native() unsafe.Pointer {
 	return unsafe.Pointer(&s.native)
+}
+
+// Color: the color of the shadow
+func (s *Shadow) Color() gdk.RGBA {
+	var v gdk.RGBA // out
+	v = *(*gdk.RGBA)(unsafe.Pointer((&s.native.color)))
+	return v
 }
 
 // Dx: the horizontal offset of the shadow

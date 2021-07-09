@@ -123,8 +123,7 @@ func NewAlignment(xalign float32, yalign float32, xscale float32, yscale float32
 
 	var _alignment *AlignmentClass // out
 
-	_alignment = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*AlignmentClass)
+	_alignment = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*AlignmentClass)
 
 	return _alignment
 }
@@ -140,7 +139,7 @@ func (a *AlignmentClass) Padding() (paddingTop uint, paddingBottom uint, padding
 	var _arg3 C.guint         // in
 	var _arg4 C.guint         // in
 
-	_arg0 = (*C.GtkAlignment)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.GtkAlignment)(unsafe.Pointer(a.Native()))
 
 	C.gtk_alignment_get_padding(_arg0, &_arg1, &_arg2, &_arg3, &_arg4)
 
@@ -167,7 +166,7 @@ func (a *AlignmentClass) Set(xalign float32, yalign float32, xscale float32, ysc
 	var _arg3 C.gfloat        // out
 	var _arg4 C.gfloat        // out
 
-	_arg0 = (*C.GtkAlignment)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.GtkAlignment)(unsafe.Pointer(a.Native()))
 	_arg1 = C.gfloat(xalign)
 	_arg2 = C.gfloat(yalign)
 	_arg3 = C.gfloat(xscale)
@@ -188,7 +187,7 @@ func (a *AlignmentClass) SetPadding(paddingTop uint, paddingBottom uint, padding
 	var _arg3 C.guint         // out
 	var _arg4 C.guint         // out
 
-	_arg0 = (*C.GtkAlignment)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.GtkAlignment)(unsafe.Pointer(a.Native()))
 	_arg1 = C.guint(paddingTop)
 	_arg2 = C.guint(paddingBottom)
 	_arg3 = C.guint(paddingLeft)

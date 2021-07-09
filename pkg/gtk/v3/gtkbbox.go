@@ -139,8 +139,8 @@ func (w *ButtonBoxClass) ChildNonHomogeneous(child Widget) bool {
 	var _arg1 *C.GtkWidget    // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GtkButtonBox)(unsafe.Pointer((&w).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&child).Native()))
+	_arg0 = (*C.GtkButtonBox)(unsafe.Pointer(w.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	_cret = C.gtk_button_box_get_child_non_homogeneous(_arg0, _arg1)
 
@@ -160,8 +160,8 @@ func (w *ButtonBoxClass) ChildSecondary(child Widget) bool {
 	var _arg1 *C.GtkWidget    // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GtkButtonBox)(unsafe.Pointer((&w).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&child).Native()))
+	_arg0 = (*C.GtkButtonBox)(unsafe.Pointer(w.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	_cret = C.gtk_button_box_get_child_secondary(_arg0, _arg1)
 
@@ -180,7 +180,7 @@ func (w *ButtonBoxClass) Layout() ButtonBoxStyle {
 	var _arg0 *C.GtkButtonBox     // out
 	var _cret C.GtkButtonBoxStyle // in
 
-	_arg0 = (*C.GtkButtonBox)(unsafe.Pointer((&w).Native()))
+	_arg0 = (*C.GtkButtonBox)(unsafe.Pointer(w.Native()))
 
 	_cret = C.gtk_button_box_get_layout(_arg0)
 
@@ -198,8 +198,8 @@ func (w *ButtonBoxClass) SetChildNonHomogeneous(child Widget, nonHomogeneous boo
 	var _arg1 *C.GtkWidget    // out
 	var _arg2 C.gboolean      // out
 
-	_arg0 = (*C.GtkButtonBox)(unsafe.Pointer((&w).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&child).Native()))
+	_arg0 = (*C.GtkButtonBox)(unsafe.Pointer(w.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 	if nonHomogeneous {
 		_arg2 = C.TRUE
 	}
@@ -223,8 +223,8 @@ func (w *ButtonBoxClass) SetChildSecondary(child Widget, isSecondary bool) {
 	var _arg1 *C.GtkWidget    // out
 	var _arg2 C.gboolean      // out
 
-	_arg0 = (*C.GtkButtonBox)(unsafe.Pointer((&w).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&child).Native()))
+	_arg0 = (*C.GtkButtonBox)(unsafe.Pointer(w.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 	if isSecondary {
 		_arg2 = C.TRUE
 	}

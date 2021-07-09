@@ -140,8 +140,7 @@ func NewCenterBox() *CenterBoxClass {
 
 	var _centerBox *CenterBoxClass // out
 
-	_centerBox = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*CenterBoxClass)
+	_centerBox = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*CenterBoxClass)
 
 	return _centerBox
 }
@@ -152,7 +151,7 @@ func (s *CenterBoxClass) BaselinePosition() BaselinePosition {
 	var _arg0 *C.GtkCenterBox       // out
 	var _cret C.GtkBaselinePosition // in
 
-	_arg0 = (*C.GtkCenterBox)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkCenterBox)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gtk_center_box_get_baseline_position(_arg0)
 
@@ -168,14 +167,13 @@ func (s *CenterBoxClass) CenterWidget() *WidgetClass {
 	var _arg0 *C.GtkCenterBox // out
 	var _cret *C.GtkWidget    // in
 
-	_arg0 = (*C.GtkCenterBox)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkCenterBox)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gtk_center_box_get_center_widget(_arg0)
 
 	var _widget *WidgetClass // out
 
-	_widget = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*WidgetClass)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WidgetClass)
 
 	return _widget
 }
@@ -185,14 +183,13 @@ func (s *CenterBoxClass) EndWidget() *WidgetClass {
 	var _arg0 *C.GtkCenterBox // out
 	var _cret *C.GtkWidget    // in
 
-	_arg0 = (*C.GtkCenterBox)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkCenterBox)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gtk_center_box_get_end_widget(_arg0)
 
 	var _widget *WidgetClass // out
 
-	_widget = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*WidgetClass)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WidgetClass)
 
 	return _widget
 }
@@ -202,14 +199,13 @@ func (s *CenterBoxClass) StartWidget() *WidgetClass {
 	var _arg0 *C.GtkCenterBox // out
 	var _cret *C.GtkWidget    // in
 
-	_arg0 = (*C.GtkCenterBox)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkCenterBox)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gtk_center_box_get_start_widget(_arg0)
 
 	var _widget *WidgetClass // out
 
-	_widget = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*WidgetClass)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WidgetClass)
 
 	return _widget
 }
@@ -221,8 +217,8 @@ func (s *CenterBoxClass) SetCenterWidget(child Widget) {
 	var _arg0 *C.GtkCenterBox // out
 	var _arg1 *C.GtkWidget    // out
 
-	_arg0 = (*C.GtkCenterBox)(unsafe.Pointer((&s).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&child).Native()))
+	_arg0 = (*C.GtkCenterBox)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_center_box_set_center_widget(_arg0, _arg1)
 }
@@ -234,8 +230,8 @@ func (s *CenterBoxClass) SetEndWidget(child Widget) {
 	var _arg0 *C.GtkCenterBox // out
 	var _arg1 *C.GtkWidget    // out
 
-	_arg0 = (*C.GtkCenterBox)(unsafe.Pointer((&s).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&child).Native()))
+	_arg0 = (*C.GtkCenterBox)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_center_box_set_end_widget(_arg0, _arg1)
 }
@@ -247,8 +243,8 @@ func (s *CenterBoxClass) SetStartWidget(child Widget) {
 	var _arg0 *C.GtkCenterBox // out
 	var _arg1 *C.GtkWidget    // out
 
-	_arg0 = (*C.GtkCenterBox)(unsafe.Pointer((&s).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&child).Native()))
+	_arg0 = (*C.GtkCenterBox)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_center_box_set_start_widget(_arg0, _arg1)
 }

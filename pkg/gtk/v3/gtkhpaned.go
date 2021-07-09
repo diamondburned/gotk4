@@ -94,8 +94,7 @@ func NewHPaned() *HPanedClass {
 
 	var _hPaned *HPanedClass // out
 
-	_hPaned = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*HPanedClass)
+	_hPaned = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*HPanedClass)
 
 	return _hPaned
 }

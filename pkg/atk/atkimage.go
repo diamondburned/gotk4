@@ -95,7 +95,7 @@ func (i *ImageInterface) ImageDescription() string {
 	var _arg0 *C.AtkImage // out
 	var _cret *C.gchar    // in
 
-	_arg0 = (*C.AtkImage)(unsafe.Pointer((&i).Native()))
+	_arg0 = (*C.AtkImage)(unsafe.Pointer(i.Native()))
 
 	_cret = C.atk_image_get_image_description(_arg0)
 
@@ -111,7 +111,7 @@ func (i *ImageInterface) ImageLocale() string {
 	var _arg0 *C.AtkImage // out
 	var _cret *C.gchar    // in
 
-	_arg0 = (*C.AtkImage)(unsafe.Pointer((&i).Native()))
+	_arg0 = (*C.AtkImage)(unsafe.Pointer(i.Native()))
 
 	_cret = C.atk_image_get_image_locale(_arg0)
 
@@ -133,7 +133,7 @@ func (i *ImageInterface) ImageSize() (width int, height int) {
 	var _arg1 C.gint      // in
 	var _arg2 C.gint      // in
 
-	_arg0 = (*C.AtkImage)(unsafe.Pointer((&i).Native()))
+	_arg0 = (*C.AtkImage)(unsafe.Pointer(i.Native()))
 
 	C.atk_image_get_image_size(_arg0, &_arg1, &_arg2)
 
@@ -152,7 +152,7 @@ func (i *ImageInterface) SetImageDescription(description string) bool {
 	var _arg1 *C.gchar    // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.AtkImage)(unsafe.Pointer((&i).Native()))
+	_arg0 = (*C.AtkImage)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.gchar)(C.CString(description))
 	defer C.free(unsafe.Pointer(_arg1))
 

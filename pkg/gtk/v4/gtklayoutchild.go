@@ -66,14 +66,13 @@ func (l *LayoutChildClass) ChildWidget() *WidgetClass {
 	var _arg0 *C.GtkLayoutChild // out
 	var _cret *C.GtkWidget      // in
 
-	_arg0 = (*C.GtkLayoutChild)(unsafe.Pointer((&l).Native()))
+	_arg0 = (*C.GtkLayoutChild)(unsafe.Pointer(l.Native()))
 
 	_cret = C.gtk_layout_child_get_child_widget(_arg0)
 
 	var _widget *WidgetClass // out
 
-	_widget = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*WidgetClass)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WidgetClass)
 
 	return _widget
 }
@@ -84,14 +83,13 @@ func (l *LayoutChildClass) LayoutManager() *LayoutManagerClass {
 	var _arg0 *C.GtkLayoutChild   // out
 	var _cret *C.GtkLayoutManager // in
 
-	_arg0 = (*C.GtkLayoutChild)(unsafe.Pointer((&l).Native()))
+	_arg0 = (*C.GtkLayoutChild)(unsafe.Pointer(l.Native()))
 
 	_cret = C.gtk_layout_child_get_layout_manager(_arg0)
 
 	var _layoutManager *LayoutManagerClass // out
 
-	_layoutManager = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*LayoutManagerClass)
+	_layoutManager = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*LayoutManagerClass)
 
 	return _layoutManager
 }

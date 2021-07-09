@@ -101,7 +101,7 @@ func (v *VolumeMonitorClass) MountForUUID(uuid string) *MountInterface {
 	var _arg1 *C.char           // out
 	var _cret *C.GMount         // in
 
-	_arg0 = (*C.GVolumeMonitor)(unsafe.Pointer((&v).Native()))
+	_arg0 = (*C.GVolumeMonitor)(unsafe.Pointer(v.Native()))
 	_arg1 = (*C.char)(C.CString(uuid))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -109,8 +109,7 @@ func (v *VolumeMonitorClass) MountForUUID(uuid string) *MountInterface {
 
 	var _mount *MountInterface // out
 
-	_mount = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*MountInterface)
+	_mount = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*MountInterface)
 
 	return _mount
 }
@@ -121,7 +120,7 @@ func (v *VolumeMonitorClass) VolumeForUUID(uuid string) *VolumeInterface {
 	var _arg1 *C.char           // out
 	var _cret *C.GVolume        // in
 
-	_arg0 = (*C.GVolumeMonitor)(unsafe.Pointer((&v).Native()))
+	_arg0 = (*C.GVolumeMonitor)(unsafe.Pointer(v.Native()))
 	_arg1 = (*C.char)(C.CString(uuid))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -129,8 +128,7 @@ func (v *VolumeMonitorClass) VolumeForUUID(uuid string) *VolumeInterface {
 
 	var _volume *VolumeInterface // out
 
-	_volume = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*VolumeInterface)
+	_volume = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*VolumeInterface)
 
 	return _volume
 }

@@ -109,8 +109,7 @@ func NewSocket() *SocketClass {
 
 	var _socket *SocketClass // out
 
-	_socket = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*SocketClass)
+	_socket = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*SocketClass)
 
 	return _socket
 }
@@ -127,7 +126,7 @@ func (o *SocketClass) Embed(plugId string) {
 	var _arg0 *C.AtkSocket // out
 	var _arg1 *C.gchar     // out
 
-	_arg0 = (*C.AtkSocket)(unsafe.Pointer((&o).Native()))
+	_arg0 = (*C.AtkSocket)(unsafe.Pointer(o.Native()))
 	_arg1 = (*C.gchar)(C.CString(plugId))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -139,7 +138,7 @@ func (o *SocketClass) IsOccupied() bool {
 	var _arg0 *C.AtkSocket // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.AtkSocket)(unsafe.Pointer((&o).Native()))
+	_arg0 = (*C.AtkSocket)(unsafe.Pointer(o.Native()))
 
 	_cret = C.atk_socket_is_occupied(_arg0)
 

@@ -176,8 +176,7 @@ func NewIconFactory() *IconFactoryClass {
 
 	var _iconFactory *IconFactoryClass // out
 
-	_iconFactory = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*IconFactoryClass)
+	_iconFactory = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*IconFactoryClass)
 
 	return _iconFactory
 }
@@ -198,7 +197,7 @@ func (f *IconFactoryClass) Add(stockId string, iconSet *IconSet) {
 	var _arg1 *C.gchar          // out
 	var _arg2 *C.GtkIconSet     // out
 
-	_arg0 = (*C.GtkIconFactory)(unsafe.Pointer((&f).Native()))
+	_arg0 = (*C.GtkIconFactory)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.gchar)(C.CString(stockId))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GtkIconSet)(unsafe.Pointer(iconSet))
@@ -216,7 +215,7 @@ func (f *IconFactoryClass) Add(stockId string, iconSet *IconSet) {
 func (f *IconFactoryClass) AddDefault() {
 	var _arg0 *C.GtkIconFactory // out
 
-	_arg0 = (*C.GtkIconFactory)(unsafe.Pointer((&f).Native()))
+	_arg0 = (*C.GtkIconFactory)(unsafe.Pointer(f.Native()))
 
 	C.gtk_icon_factory_add_default(_arg0)
 }
@@ -233,7 +232,7 @@ func (f *IconFactoryClass) Lookup(stockId string) *IconSet {
 	var _arg1 *C.gchar          // out
 	var _cret *C.GtkIconSet     // in
 
-	_arg0 = (*C.GtkIconFactory)(unsafe.Pointer((&f).Native()))
+	_arg0 = (*C.GtkIconFactory)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.gchar)(C.CString(stockId))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -258,7 +257,7 @@ func (f *IconFactoryClass) Lookup(stockId string) *IconSet {
 func (f *IconFactoryClass) RemoveDefault() {
 	var _arg0 *C.GtkIconFactory // out
 
-	_arg0 = (*C.GtkIconFactory)(unsafe.Pointer((&f).Native()))
+	_arg0 = (*C.GtkIconFactory)(unsafe.Pointer(f.Native()))
 
 	C.gtk_icon_factory_remove_default(_arg0)
 }

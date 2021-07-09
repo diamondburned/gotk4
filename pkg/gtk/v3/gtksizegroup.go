@@ -151,8 +151,8 @@ func (s *SizeGroupClass) AddWidget(widget Widget) {
 	var _arg0 *C.GtkSizeGroup // out
 	var _arg1 *C.GtkWidget    // out
 
-	_arg0 = (*C.GtkSizeGroup)(unsafe.Pointer((&s).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&widget).Native()))
+	_arg0 = (*C.GtkSizeGroup)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.gtk_size_group_add_widget(_arg0, _arg1)
 }
@@ -165,7 +165,7 @@ func (s *SizeGroupClass) IgnoreHidden() bool {
 	var _arg0 *C.GtkSizeGroup // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GtkSizeGroup)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkSizeGroup)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gtk_size_group_get_ignore_hidden(_arg0)
 
@@ -183,7 +183,7 @@ func (s *SizeGroupClass) Mode() SizeGroupMode {
 	var _arg0 *C.GtkSizeGroup    // out
 	var _cret C.GtkSizeGroupMode // in
 
-	_arg0 = (*C.GtkSizeGroup)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkSizeGroup)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gtk_size_group_get_mode(_arg0)
 
@@ -199,8 +199,8 @@ func (s *SizeGroupClass) RemoveWidget(widget Widget) {
 	var _arg0 *C.GtkSizeGroup // out
 	var _arg1 *C.GtkWidget    // out
 
-	_arg0 = (*C.GtkSizeGroup)(unsafe.Pointer((&s).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&widget).Native()))
+	_arg0 = (*C.GtkSizeGroup)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.gtk_size_group_remove_widget(_arg0, _arg1)
 }
@@ -213,7 +213,7 @@ func (s *SizeGroupClass) SetIgnoreHidden(ignoreHidden bool) {
 	var _arg0 *C.GtkSizeGroup // out
 	var _arg1 C.gboolean      // out
 
-	_arg0 = (*C.GtkSizeGroup)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkSizeGroup)(unsafe.Pointer(s.Native()))
 	if ignoreHidden {
 		_arg1 = C.TRUE
 	}

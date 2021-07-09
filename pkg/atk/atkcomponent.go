@@ -157,7 +157,7 @@ func (c *ComponentInterface) Alpha() float64 {
 	var _arg0 *C.AtkComponent // out
 	var _cret C.gdouble       // in
 
-	_arg0 = (*C.AtkComponent)(unsafe.Pointer((&c).Native()))
+	_arg0 = (*C.AtkComponent)(unsafe.Pointer(c.Native()))
 
 	_cret = C.atk_component_get_alpha(_arg0)
 
@@ -173,7 +173,7 @@ func (c *ComponentInterface) Layer() Layer {
 	var _arg0 *C.AtkComponent // out
 	var _cret C.AtkLayer      // in
 
-	_arg0 = (*C.AtkComponent)(unsafe.Pointer((&c).Native()))
+	_arg0 = (*C.AtkComponent)(unsafe.Pointer(c.Native()))
 
 	_cret = C.atk_component_get_layer(_arg0)
 
@@ -191,7 +191,7 @@ func (c *ComponentInterface) MDIZOrder() int {
 	var _arg0 *C.AtkComponent // out
 	var _cret C.gint          // in
 
-	_arg0 = (*C.AtkComponent)(unsafe.Pointer((&c).Native()))
+	_arg0 = (*C.AtkComponent)(unsafe.Pointer(c.Native()))
 
 	_cret = C.atk_component_get_mdi_zorder(_arg0)
 
@@ -213,7 +213,7 @@ func (c *ComponentInterface) Size() (width int, height int) {
 	var _arg1 C.gint          // in
 	var _arg2 C.gint          // in
 
-	_arg0 = (*C.AtkComponent)(unsafe.Pointer((&c).Native()))
+	_arg0 = (*C.AtkComponent)(unsafe.Pointer(c.Native()))
 
 	C.atk_component_get_size(_arg0, &_arg1, &_arg2)
 
@@ -231,7 +231,7 @@ func (c *ComponentInterface) GrabFocus() bool {
 	var _arg0 *C.AtkComponent // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.AtkComponent)(unsafe.Pointer((&c).Native()))
+	_arg0 = (*C.AtkComponent)(unsafe.Pointer(c.Native()))
 
 	_cret = C.atk_component_grab_focus(_arg0)
 
@@ -253,7 +253,7 @@ func (c *ComponentInterface) RemoveFocusHandler(handlerId uint) {
 	var _arg0 *C.AtkComponent // out
 	var _arg1 C.guint         // out
 
-	_arg0 = (*C.AtkComponent)(unsafe.Pointer((&c).Native()))
+	_arg0 = (*C.AtkComponent)(unsafe.Pointer(c.Native()))
 	_arg1 = C.guint(handlerId)
 
 	C.atk_component_remove_focus_handler(_arg0, _arg1)
@@ -266,7 +266,7 @@ func (c *ComponentInterface) SetSize(width int, height int) bool {
 	var _arg2 C.gint          // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.AtkComponent)(unsafe.Pointer((&c).Native()))
+	_arg0 = (*C.AtkComponent)(unsafe.Pointer(c.Native()))
 	_arg1 = C.gint(width)
 	_arg2 = C.gint(height)
 

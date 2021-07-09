@@ -75,8 +75,7 @@ func NewDropControllerMotion() *DropControllerMotionClass {
 
 	var _dropControllerMotion *DropControllerMotionClass // out
 
-	_dropControllerMotion = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*DropControllerMotionClass)
+	_dropControllerMotion = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*DropControllerMotionClass)
 
 	return _dropControllerMotion
 }
@@ -87,7 +86,7 @@ func (s *DropControllerMotionClass) ContainsPointer() bool {
 	var _arg0 *C.GtkDropControllerMotion // out
 	var _cret C.gboolean                 // in
 
-	_arg0 = (*C.GtkDropControllerMotion)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkDropControllerMotion)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gtk_drop_controller_motion_contains_pointer(_arg0)
 
@@ -106,14 +105,13 @@ func (s *DropControllerMotionClass) Drop() *gdk.DropClass {
 	var _arg0 *C.GtkDropControllerMotion // out
 	var _cret *C.GdkDrop                 // in
 
-	_arg0 = (*C.GtkDropControllerMotion)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkDropControllerMotion)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gtk_drop_controller_motion_get_drop(_arg0)
 
 	var _drop *gdk.DropClass // out
 
-	_drop = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*gdk.DropClass)
+	_drop = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.DropClass)
 
 	return _drop
 }
@@ -124,7 +122,7 @@ func (s *DropControllerMotionClass) IsPointer() bool {
 	var _arg0 *C.GtkDropControllerMotion // out
 	var _cret C.gboolean                 // in
 
-	_arg0 = (*C.GtkDropControllerMotion)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkDropControllerMotion)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gtk_drop_controller_motion_is_pointer(_arg0)
 

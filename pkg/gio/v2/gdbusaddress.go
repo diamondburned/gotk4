@@ -71,7 +71,7 @@ func DBusAddressGetStream(address string, cancellable Cancellable, callback Asyn
 
 	_arg1 = (*C.gchar)(C.CString(address))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GCancellable)(unsafe.Pointer((&cancellable).Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg4 = C.gpointer(box.Assign(callback))
 
@@ -89,7 +89,7 @@ func DBusAddressGetStreamFinish(res AsyncResult) (string, *IOStreamClass, error)
 	var _cret *C.GIOStream    // in
 	var _cerr *C.GError       // in
 
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((&res).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_dbus_address_get_stream_finish(_arg1, &_arg2, &_cerr)
 
@@ -99,8 +99,7 @@ func DBusAddressGetStreamFinish(res AsyncResult) (string, *IOStreamClass, error)
 
 	_outGuid = C.GoString(_arg2)
 	defer C.free(unsafe.Pointer(_arg2))
-	_ioStream = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*IOStreamClass)
+	_ioStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*IOStreamClass)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _outGuid, _ioStream, _goerr
@@ -126,7 +125,7 @@ func DBusAddressGetStreamSync(address string, cancellable Cancellable) (string, 
 
 	_arg1 = (*C.gchar)(C.CString(address))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg3 = (*C.GCancellable)(unsafe.Pointer((&cancellable).Native()))
+	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_dbus_address_get_stream_sync(_arg1, &_arg2, _arg3, &_cerr)
 
@@ -136,8 +135,7 @@ func DBusAddressGetStreamSync(address string, cancellable Cancellable) (string, 
 
 	_outGuid = C.GoString(_arg2)
 	defer C.free(unsafe.Pointer(_arg2))
-	_ioStream = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*IOStreamClass)
+	_ioStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*IOStreamClass)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _outGuid, _ioStream, _goerr

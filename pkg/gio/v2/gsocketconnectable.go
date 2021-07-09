@@ -158,14 +158,13 @@ func (c *SocketConnectableInterface) Enumerate() *SocketAddressEnumeratorClass {
 	var _arg0 *C.GSocketConnectable       // out
 	var _cret *C.GSocketAddressEnumerator // in
 
-	_arg0 = (*C.GSocketConnectable)(unsafe.Pointer((&c).Native()))
+	_arg0 = (*C.GSocketConnectable)(unsafe.Pointer(c.Native()))
 
 	_cret = C.g_socket_connectable_enumerate(_arg0)
 
 	var _socketAddressEnumerator *SocketAddressEnumeratorClass // out
 
-	_socketAddressEnumerator = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*SocketAddressEnumeratorClass)
+	_socketAddressEnumerator = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*SocketAddressEnumeratorClass)
 
 	return _socketAddressEnumerator
 }
@@ -179,14 +178,13 @@ func (c *SocketConnectableInterface) ProxyEnumerate() *SocketAddressEnumeratorCl
 	var _arg0 *C.GSocketConnectable       // out
 	var _cret *C.GSocketAddressEnumerator // in
 
-	_arg0 = (*C.GSocketConnectable)(unsafe.Pointer((&c).Native()))
+	_arg0 = (*C.GSocketConnectable)(unsafe.Pointer(c.Native()))
 
 	_cret = C.g_socket_connectable_proxy_enumerate(_arg0)
 
 	var _socketAddressEnumerator *SocketAddressEnumeratorClass // out
 
-	_socketAddressEnumerator = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*SocketAddressEnumeratorClass)
+	_socketAddressEnumerator = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*SocketAddressEnumeratorClass)
 
 	return _socketAddressEnumerator
 }
@@ -202,7 +200,7 @@ func (c *SocketConnectableInterface) String() string {
 	var _arg0 *C.GSocketConnectable // out
 	var _cret *C.gchar              // in
 
-	_arg0 = (*C.GSocketConnectable)(unsafe.Pointer((&c).Native()))
+	_arg0 = (*C.GSocketConnectable)(unsafe.Pointer(c.Native()))
 
 	_cret = C.g_socket_connectable_to_string(_arg0)
 

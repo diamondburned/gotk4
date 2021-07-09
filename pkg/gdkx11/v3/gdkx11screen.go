@@ -84,7 +84,7 @@ func (s *X11ScreenClass) CurrentDesktop() uint32 {
 	var _arg0 *C.GdkScreen // out
 	var _cret C.guint32    // in
 
-	_arg0 = (*C.GdkScreen)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gdk_x11_screen_get_current_desktop(_arg0)
 
@@ -103,7 +103,7 @@ func (s *X11ScreenClass) NumberOfDesktops() uint32 {
 	var _arg0 *C.GdkScreen // out
 	var _cret C.guint32    // in
 
-	_arg0 = (*C.GdkScreen)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gdk_x11_screen_get_number_of_desktops(_arg0)
 
@@ -119,7 +119,7 @@ func (s *X11ScreenClass) ScreenNumber() int {
 	var _arg0 *C.GdkScreen // out
 	var _cret C.int        // in
 
-	_arg0 = (*C.GdkScreen)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gdk_x11_screen_get_screen_number(_arg0)
 
@@ -135,7 +135,7 @@ func (s *X11ScreenClass) WindowManagerName() string {
 	var _arg0 *C.GdkScreen // out
 	var _cret *C.char      // in
 
-	_arg0 = (*C.GdkScreen)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gdk_x11_screen_get_window_manager_name(_arg0)
 

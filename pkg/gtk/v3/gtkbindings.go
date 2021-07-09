@@ -26,7 +26,7 @@ func BindingsActivateEvent(object gextras.Objector, event *gdk.EventKey) bool {
 	var _arg2 *C.GdkEventKey // out
 	var _cret C.gboolean     // in
 
-	_arg1 = (*C.GObject)(unsafe.Pointer((&object).Native()))
+	_arg1 = (*C.GObject)(unsafe.Pointer(object.Native()))
 	_arg2 = (*C.GdkEventKey)(unsafe.Pointer(event))
 
 	_cret = C.gtk_bindings_activate_event(_arg1, _arg2)

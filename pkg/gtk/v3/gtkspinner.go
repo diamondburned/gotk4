@@ -83,8 +83,7 @@ func NewSpinner() *SpinnerClass {
 
 	var _spinner *SpinnerClass // out
 
-	_spinner = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*SpinnerClass)
+	_spinner = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*SpinnerClass)
 
 	return _spinner
 }
@@ -93,7 +92,7 @@ func NewSpinner() *SpinnerClass {
 func (s *SpinnerClass) Start() {
 	var _arg0 *C.GtkSpinner // out
 
-	_arg0 = (*C.GtkSpinner)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkSpinner)(unsafe.Pointer(s.Native()))
 
 	C.gtk_spinner_start(_arg0)
 }
@@ -102,7 +101,7 @@ func (s *SpinnerClass) Start() {
 func (s *SpinnerClass) Stop() {
 	var _arg0 *C.GtkSpinner // out
 
-	_arg0 = (*C.GtkSpinner)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkSpinner)(unsafe.Pointer(s.Native()))
 
 	C.gtk_spinner_stop(_arg0)
 }

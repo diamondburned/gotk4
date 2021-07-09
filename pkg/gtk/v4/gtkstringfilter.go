@@ -105,14 +105,13 @@ func NewStringFilter(expression Expression) *StringFilterClass {
 	var _arg1 *C.GtkExpression   // out
 	var _cret *C.GtkStringFilter // in
 
-	_arg1 = (*C.GtkExpression)(unsafe.Pointer((&expression).Native()))
+	_arg1 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
 
 	_cret = C.gtk_string_filter_new(_arg1)
 
 	var _stringFilter *StringFilterClass // out
 
-	_stringFilter = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*StringFilterClass)
+	_stringFilter = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*StringFilterClass)
 
 	return _stringFilter
 }
@@ -123,14 +122,13 @@ func (s *StringFilterClass) Expression() *ExpressionClass {
 	var _arg0 *C.GtkStringFilter // out
 	var _cret *C.GtkExpression   // in
 
-	_arg0 = (*C.GtkStringFilter)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkStringFilter)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gtk_string_filter_get_expression(_arg0)
 
 	var _expression *ExpressionClass // out
 
-	_expression = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*ExpressionClass)
+	_expression = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ExpressionClass)
 
 	return _expression
 }
@@ -140,7 +138,7 @@ func (s *StringFilterClass) IgnoreCase() bool {
 	var _arg0 *C.GtkStringFilter // out
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.GtkStringFilter)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkStringFilter)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gtk_string_filter_get_ignore_case(_arg0)
 
@@ -158,7 +156,7 @@ func (s *StringFilterClass) MatchMode() StringFilterMatchMode {
 	var _arg0 *C.GtkStringFilter         // out
 	var _cret C.GtkStringFilterMatchMode // in
 
-	_arg0 = (*C.GtkStringFilter)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkStringFilter)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gtk_string_filter_get_match_mode(_arg0)
 
@@ -174,7 +172,7 @@ func (s *StringFilterClass) Search() string {
 	var _arg0 *C.GtkStringFilter // out
 	var _cret *C.char            // in
 
-	_arg0 = (*C.GtkStringFilter)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkStringFilter)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gtk_string_filter_get_search(_arg0)
 
@@ -193,8 +191,8 @@ func (s *StringFilterClass) SetExpression(expression Expression) {
 	var _arg0 *C.GtkStringFilter // out
 	var _arg1 *C.GtkExpression   // out
 
-	_arg0 = (*C.GtkStringFilter)(unsafe.Pointer((&s).Native()))
-	_arg1 = (*C.GtkExpression)(unsafe.Pointer((&expression).Native()))
+	_arg0 = (*C.GtkStringFilter)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
 
 	C.gtk_string_filter_set_expression(_arg0, _arg1)
 }
@@ -204,7 +202,7 @@ func (s *StringFilterClass) SetIgnoreCase(ignoreCase bool) {
 	var _arg0 *C.GtkStringFilter // out
 	var _arg1 C.gboolean         // out
 
-	_arg0 = (*C.GtkStringFilter)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkStringFilter)(unsafe.Pointer(s.Native()))
 	if ignoreCase {
 		_arg1 = C.TRUE
 	}
@@ -217,7 +215,7 @@ func (s *StringFilterClass) SetSearch(search string) {
 	var _arg0 *C.GtkStringFilter // out
 	var _arg1 *C.char            // out
 
-	_arg0 = (*C.GtkStringFilter)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkStringFilter)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.char)(C.CString(search))
 	defer C.free(unsafe.Pointer(_arg1))
 

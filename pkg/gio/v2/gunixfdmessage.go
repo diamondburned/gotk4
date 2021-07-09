@@ -93,8 +93,7 @@ func NewUnixFDMessage() *UnixFDMessageClass {
 
 	var _unixFDMessage *UnixFDMessageClass // out
 
-	_unixFDMessage = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*UnixFDMessageClass)
+	_unixFDMessage = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*UnixFDMessageClass)
 
 	return _unixFDMessage
 }
@@ -104,14 +103,13 @@ func NewUnixFDMessageWithFdList(fdList UnixFDList) *UnixFDMessageClass {
 	var _arg1 *C.GUnixFDList           // out
 	var _cret *C.GSocketControlMessage // in
 
-	_arg1 = (*C.GUnixFDList)(unsafe.Pointer((&fdList).Native()))
+	_arg1 = (*C.GUnixFDList)(unsafe.Pointer(fdList.Native()))
 
 	_cret = C.g_unix_fd_message_new_with_fd_list(_arg1)
 
 	var _unixFDMessage *UnixFDMessageClass // out
 
-	_unixFDMessage = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*UnixFDMessageClass)
+	_unixFDMessage = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*UnixFDMessageClass)
 
 	return _unixFDMessage
 }
@@ -129,7 +127,7 @@ func (m *UnixFDMessageClass) AppendFd(fd int) error {
 	var _arg1 C.gint            // out
 	var _cerr *C.GError         // in
 
-	_arg0 = (*C.GUnixFDMessage)(unsafe.Pointer((&m).Native()))
+	_arg0 = (*C.GUnixFDMessage)(unsafe.Pointer(m.Native()))
 	_arg1 = C.gint(fd)
 
 	C.g_unix_fd_message_append_fd(_arg0, _arg1, &_cerr)
@@ -148,14 +146,13 @@ func (m *UnixFDMessageClass) FdList() *UnixFDListClass {
 	var _arg0 *C.GUnixFDMessage // out
 	var _cret *C.GUnixFDList    // in
 
-	_arg0 = (*C.GUnixFDMessage)(unsafe.Pointer((&m).Native()))
+	_arg0 = (*C.GUnixFDMessage)(unsafe.Pointer(m.Native()))
 
 	_cret = C.g_unix_fd_message_get_fd_list(_arg0)
 
 	var _unixFDList *UnixFDListClass // out
 
-	_unixFDList = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*UnixFDListClass)
+	_unixFDList = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*UnixFDListClass)
 
 	return _unixFDList
 }

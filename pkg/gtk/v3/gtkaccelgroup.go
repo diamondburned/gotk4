@@ -198,8 +198,7 @@ func NewAccelGroup() *AccelGroupClass {
 
 	var _accelGroup *AccelGroupClass // out
 
-	_accelGroup = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*AccelGroupClass)
+	_accelGroup = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*AccelGroupClass)
 
 	return _accelGroup
 }
@@ -210,7 +209,7 @@ func (a *AccelGroupClass) IsLocked() bool {
 	var _arg0 *C.GtkAccelGroup // out
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.GtkAccelGroup)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.GtkAccelGroup)(unsafe.Pointer(a.Native()))
 
 	_cret = C.gtk_accel_group_get_is_locked(_arg0)
 
@@ -229,7 +228,7 @@ func (a *AccelGroupClass) ModifierMask() gdk.ModifierType {
 	var _arg0 *C.GtkAccelGroup  // out
 	var _cret C.GdkModifierType // in
 
-	_arg0 = (*C.GtkAccelGroup)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.GtkAccelGroup)(unsafe.Pointer(a.Native()))
 
 	_cret = C.gtk_accel_group_get_modifier_mask(_arg0)
 
@@ -251,7 +250,7 @@ func (a *AccelGroupClass) ModifierMask() gdk.ModifierType {
 func (a *AccelGroupClass) Lock() {
 	var _arg0 *C.GtkAccelGroup // out
 
-	_arg0 = (*C.GtkAccelGroup)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.GtkAccelGroup)(unsafe.Pointer(a.Native()))
 
 	C.gtk_accel_group_lock(_arg0)
 }
@@ -260,7 +259,7 @@ func (a *AccelGroupClass) Lock() {
 func (a *AccelGroupClass) Unlock() {
 	var _arg0 *C.GtkAccelGroup // out
 
-	_arg0 = (*C.GtkAccelGroup)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.GtkAccelGroup)(unsafe.Pointer(a.Native()))
 
 	C.gtk_accel_group_unlock(_arg0)
 }

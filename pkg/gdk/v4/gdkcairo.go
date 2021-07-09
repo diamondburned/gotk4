@@ -45,7 +45,7 @@ func CairoDrawFromGL(cr *cairo.Context, surface Surface, source int, sourceType 
 	var _arg9 C.int         // out
 
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr))
-	_arg2 = (*C.GdkSurface)(unsafe.Pointer((&surface).Native()))
+	_arg2 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
 	_arg3 = C.int(source)
 	_arg4 = C.int(sourceType)
 	_arg5 = C.int(bufferScale)
@@ -113,7 +113,7 @@ func CairoSetSourcePixbuf(cr *cairo.Context, pixbuf gdkpixbuf.Pixbuf, pixbufX fl
 	var _arg4 C.double     // out
 
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr))
-	_arg2 = (*C.GdkPixbuf)(unsafe.Pointer((&pixbuf).Native()))
+	_arg2 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 	_arg3 = C.double(pixbufX)
 	_arg4 = C.double(pixbufY)
 

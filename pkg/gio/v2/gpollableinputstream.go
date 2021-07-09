@@ -156,7 +156,7 @@ func (s *PollableInputStreamInterface) CanPoll() bool {
 	var _arg0 *C.GPollableInputStream // out
 	var _cret C.gboolean              // in
 
-	_arg0 = (*C.GPollableInputStream)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GPollableInputStream)(unsafe.Pointer(s.Native()))
 
 	_cret = C.g_pollable_input_stream_can_poll(_arg0)
 
@@ -182,8 +182,8 @@ func (s *PollableInputStreamInterface) CreateSource(cancellable Cancellable) *gl
 	var _arg1 *C.GCancellable         // out
 	var _cret *C.GSource              // in
 
-	_arg0 = (*C.GPollableInputStream)(unsafe.Pointer((&s).Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer((&cancellable).Native()))
+	_arg0 = (*C.GPollableInputStream)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_pollable_input_stream_create_source(_arg0, _arg1)
 
@@ -209,7 +209,7 @@ func (s *PollableInputStreamInterface) IsReadable() bool {
 	var _arg0 *C.GPollableInputStream // out
 	var _cret C.gboolean              // in
 
-	_arg0 = (*C.GPollableInputStream)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GPollableInputStream)(unsafe.Pointer(s.Native()))
 
 	_cret = C.g_pollable_input_stream_is_readable(_arg0)
 
@@ -240,10 +240,10 @@ func (s *PollableInputStreamInterface) ReadNonblocking(buffer []byte, cancellabl
 	var _cret C.gssize        // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GPollableInputStream)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GPollableInputStream)(unsafe.Pointer(s.Native()))
 	_arg2 = C.gsize(len(buffer))
 	_arg1 = (*C.void)(unsafe.Pointer(&buffer[0]))
-	_arg3 = (*C.GCancellable)(unsafe.Pointer((&cancellable).Native()))
+	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_pollable_input_stream_read_nonblocking(_arg0, unsafe.Pointer(_arg1), _arg2, _arg3, &_cerr)
 

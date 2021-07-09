@@ -62,6 +62,22 @@ func (q *Quad) Native() unsafe.Pointer {
 	return unsafe.Pointer(&q.native)
 }
 
+// Bounds computes the bounding rectangle of @q and places it into @r.
+func (q *Quad) Bounds() Rect {
+	var _arg0 *C.graphene_quad_t // out
+	var _arg1 C.graphene_rect_t  // in
+
+	_arg0 = (*C.graphene_quad_t)(unsafe.Pointer(q))
+
+	C.graphene_quad_bounds(_arg0, &_arg1)
+
+	var _r Rect // out
+
+	_r = *(*Rect)(unsafe.Pointer((&_arg1)))
+
+	return _r
+}
+
 // Contains checks if the given #graphene_quad_t contains the given
 // #graphene_point_t.
 func (q *Quad) Contains(p *Point) bool {
@@ -126,6 +142,24 @@ func (q *Quad) Init(p1 *Point, p2 *Point, p3 *Point, p4 *Point) *Quad {
 	_arg4 = (*C.graphene_point_t)(unsafe.Pointer(p4))
 
 	_cret = C.graphene_quad_init(_arg0, _arg1, _arg2, _arg3, _arg4)
+
+	var _quad *Quad // out
+
+	_quad = (*Quad)(unsafe.Pointer(_cret))
+
+	return _quad
+}
+
+// InitFromPoints initializes a #graphene_quad_t using an array of points.
+func (q *Quad) InitFromPoints(points [4]Point) *Quad {
+	var _arg0 *C.graphene_quad_t // out
+	var _arg1 *C.graphene_point_t
+	var _cret *C.graphene_quad_t // in
+
+	_arg0 = (*C.graphene_quad_t)(unsafe.Pointer(q))
+	_arg1 = (*C.graphene_point_t)(unsafe.Pointer(&points))
+
+	_cret = C.graphene_quad_init_from_points(_arg0, _arg1)
 
 	var _quad *Quad // out
 

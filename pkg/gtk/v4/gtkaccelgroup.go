@@ -91,7 +91,7 @@ func AcceleratorParseWithKeycode(accelerator string, display gdk.Display) (uint,
 
 	_arg1 = (*C.char)(C.CString(accelerator))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GdkDisplay)(unsafe.Pointer((&display).Native()))
+	_arg2 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	_cret = C.gtk_accelerator_parse_with_keycode(_arg1, _arg2, &_arg3, &_arg4, &_arg5)
 

@@ -77,8 +77,7 @@ func NewGestureSwipe() *GestureSwipeClass {
 
 	var _gestureSwipe *GestureSwipeClass // out
 
-	_gestureSwipe = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*GestureSwipeClass)
+	_gestureSwipe = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*GestureSwipeClass)
 
 	return _gestureSwipe
 }
@@ -94,7 +93,7 @@ func (g *GestureSwipeClass) Velocity() (velocityX float64, velocityY float64, ok
 	var _arg2 C.double           // in
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.GtkGestureSwipe)(unsafe.Pointer((&g).Native()))
+	_arg0 = (*C.GtkGestureSwipe)(unsafe.Pointer(g.Native()))
 
 	_cret = C.gtk_gesture_swipe_get_velocity(_arg0, &_arg1, &_arg2)
 

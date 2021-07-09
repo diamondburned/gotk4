@@ -94,7 +94,7 @@ func gotk4_KeySnoopFunc(arg0 *C.AtkKeyEventStruct, arg1 C.gpointer) (cret C.gint
 func FocusTrackerNotify(object Object) {
 	var _arg1 *C.AtkObject // out
 
-	_arg1 = (*C.AtkObject)(unsafe.Pointer((&object).Native()))
+	_arg1 = (*C.AtkObject)(unsafe.Pointer(object.Native()))
 
 	C.atk_focus_tracker_notify(_arg1)
 }
@@ -107,8 +107,7 @@ func GetFocusObject() *ObjectClass {
 
 	var _object *ObjectClass // out
 
-	_object = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*ObjectClass)
+	_object = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ObjectClass)
 
 	return _object
 }
@@ -121,8 +120,7 @@ func GetRoot() *ObjectClass {
 
 	var _object *ObjectClass // out
 
-	_object = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*ObjectClass)
+	_object = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ObjectClass)
 
 	return _object
 }

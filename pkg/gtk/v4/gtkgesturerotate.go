@@ -69,8 +69,7 @@ func NewGestureRotate() *GestureRotateClass {
 
 	var _gestureRotate *GestureRotateClass // out
 
-	_gestureRotate = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*GestureRotateClass)
+	_gestureRotate = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*GestureRotateClass)
 
 	return _gestureRotate
 }
@@ -84,7 +83,7 @@ func (g *GestureRotateClass) AngleDelta() float64 {
 	var _arg0 *C.GtkGestureRotate // out
 	var _cret C.double            // in
 
-	_arg0 = (*C.GtkGestureRotate)(unsafe.Pointer((&g).Native()))
+	_arg0 = (*C.GtkGestureRotate)(unsafe.Pointer(g.Native()))
 
 	_cret = C.gtk_gesture_rotate_get_angle_delta(_arg0)
 

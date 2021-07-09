@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -229,7 +230,7 @@ func RCFindPixmapInPath(settings Settings, scanner *glib.Scanner, pixmapFile str
 	var _arg3 *C.gchar       // out
 	var _cret *C.gchar       // in
 
-	_arg1 = (*C.GtkSettings)(unsafe.Pointer((&settings).Native()))
+	_arg1 = (*C.GtkSettings)(unsafe.Pointer(settings.Native()))
 	_arg2 = (*C.GScanner)(unsafe.Pointer(scanner))
 	_arg3 = (*C.gchar)(C.CString(pixmapFile))
 	defer C.free(unsafe.Pointer(_arg3))
@@ -337,14 +338,13 @@ func RCGetStyle(widget Widget) *StyleClass {
 	var _arg1 *C.GtkWidget // out
 	var _cret *C.GtkStyle  // in
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&widget).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_rc_get_style(_arg1)
 
 	var _style *StyleClass // out
 
-	_style = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*StyleClass)
+	_style = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*StyleClass)
 
 	return _style
 }
@@ -371,7 +371,7 @@ func RCGetStyleByPaths(settings Settings, widgetPath string, classPath string, t
 	var _arg4 C.GType        // out
 	var _cret *C.GtkStyle    // in
 
-	_arg1 = (*C.GtkSettings)(unsafe.Pointer((&settings).Native()))
+	_arg1 = (*C.GtkSettings)(unsafe.Pointer(settings.Native()))
 	_arg2 = (*C.char)(C.CString(widgetPath))
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.char)(C.CString(classPath))
@@ -382,8 +382,7 @@ func RCGetStyleByPaths(settings Settings, widgetPath string, classPath string, t
 
 	var _style *StyleClass // out
 
-	_style = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*StyleClass)
+	_style = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*StyleClass)
 
 	return _style
 }
@@ -415,6 +414,55 @@ func RCParse(filename string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_rc_parse(_arg1)
+}
+
+// RCParseColor parses a color in the format expected in a RC file.
+//
+// Note that theme engines should use gtk_rc_parse_color_full() in order to
+// support symbolic colors.
+//
+// Deprecated: since version 3.0.
+func RCParseColor(scanner *glib.Scanner) (gdk.Color, uint) {
+	var _arg1 *C.GScanner // out
+	var _arg2 C.GdkColor  // in
+	var _cret C.guint     // in
+
+	_arg1 = (*C.GScanner)(unsafe.Pointer(scanner))
+
+	_cret = C.gtk_rc_parse_color(_arg1, &_arg2)
+
+	var _color gdk.Color // out
+	var _guint uint      // out
+
+	_color = *(*gdk.Color)(unsafe.Pointer((&_arg2)))
+	_guint = uint(_cret)
+
+	return _color, _guint
+}
+
+// RCParseColorFull parses a color in the format expected in a RC file. If
+// @style is not nil, it will be consulted to resolve references to symbolic
+// colors.
+//
+// Deprecated: since version 3.0.
+func RCParseColorFull(scanner *glib.Scanner, style RCStyle) (gdk.Color, uint) {
+	var _arg1 *C.GScanner   // out
+	var _arg2 *C.GtkRcStyle // out
+	var _arg3 C.GdkColor    // in
+	var _cret C.guint       // in
+
+	_arg1 = (*C.GScanner)(unsafe.Pointer(scanner))
+	_arg2 = (*C.GtkRcStyle)(unsafe.Pointer(style.Native()))
+
+	_cret = C.gtk_rc_parse_color_full(_arg1, _arg2, &_arg3)
+
+	var _color gdk.Color // out
+	var _guint uint      // out
+
+	_color = *(*gdk.Color)(unsafe.Pointer((&_arg3)))
+	_guint = uint(_cret)
+
+	return _color, _guint
 }
 
 // RCParseState parses a StateType variable from the format expected in a RC
@@ -480,7 +528,7 @@ func RCReparseAllForSettings(settings Settings, forceLoad bool) bool {
 	var _arg2 C.gboolean     // out
 	var _cret C.gboolean     // in
 
-	_arg1 = (*C.GtkSettings)(unsafe.Pointer((&settings).Native()))
+	_arg1 = (*C.GtkSettings)(unsafe.Pointer(settings.Native()))
 	if forceLoad {
 		_arg2 = C.TRUE
 	}
@@ -509,7 +557,7 @@ func RCReparseAllForSettings(settings Settings, forceLoad bool) bool {
 func RCResetStyles(settings Settings) {
 	var _arg1 *C.GtkSettings // out
 
-	_arg1 = (*C.GtkSettings)(unsafe.Pointer((&settings).Native()))
+	_arg1 = (*C.GtkSettings)(unsafe.Pointer(settings.Native()))
 
 	C.gtk_rc_reset_styles(_arg1)
 }
@@ -586,8 +634,7 @@ func NewRCStyle() *RCStyleClass {
 
 	var _rcStyle *RCStyleClass // out
 
-	_rcStyle = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*RCStyleClass)
+	_rcStyle = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*RCStyleClass)
 
 	return _rcStyle
 }
@@ -600,14 +647,13 @@ func (o *RCStyleClass) Copy() *RCStyleClass {
 	var _arg0 *C.GtkRcStyle // out
 	var _cret *C.GtkRcStyle // in
 
-	_arg0 = (*C.GtkRcStyle)(unsafe.Pointer((&o).Native()))
+	_arg0 = (*C.GtkRcStyle)(unsafe.Pointer(o.Native()))
 
 	_cret = C.gtk_rc_style_copy(_arg0)
 
 	var _rcStyle *RCStyleClass // out
 
-	_rcStyle = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*RCStyleClass)
+	_rcStyle = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*RCStyleClass)
 
 	return _rcStyle
 }

@@ -325,8 +325,7 @@ func UnixMountGuessIcon(mountEntry *UnixMountEntry) *IconInterface {
 
 	var _icon *IconInterface // out
 
-	_icon = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*IconInterface)
+	_icon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*IconInterface)
 
 	return _icon
 }
@@ -379,8 +378,7 @@ func UnixMountGuessSymbolicIcon(mountEntry *UnixMountEntry) *IconInterface {
 
 	var _icon *IconInterface // out
 
-	_icon = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*IconInterface)
+	_icon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*IconInterface)
 
 	return _icon
 }
@@ -510,8 +508,7 @@ func NewUnixMountMonitor() *UnixMountMonitorClass {
 
 	var _unixMountMonitor *UnixMountMonitorClass // out
 
-	_unixMountMonitor = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*UnixMountMonitorClass)
+	_unixMountMonitor = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*UnixMountMonitorClass)
 
 	return _unixMountMonitor
 }
@@ -528,7 +525,7 @@ func (m *UnixMountMonitorClass) SetRateLimit(limitMsec int) {
 	var _arg0 *C.GUnixMountMonitor // out
 	var _arg1 C.int                // out
 
-	_arg0 = (*C.GUnixMountMonitor)(unsafe.Pointer((&m).Native()))
+	_arg0 = (*C.GUnixMountMonitor)(unsafe.Pointer(m.Native()))
 	_arg1 = C.int(limitMsec)
 
 	C.g_unix_mount_monitor_set_rate_limit(_arg0, _arg1)
@@ -717,8 +714,7 @@ func (m *UnixMountPoint) GuessIcon() *IconInterface {
 
 	var _icon *IconInterface // out
 
-	_icon = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*IconInterface)
+	_icon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*IconInterface)
 
 	return _icon
 }
@@ -752,8 +748,7 @@ func (m *UnixMountPoint) GuessSymbolicIcon() *IconInterface {
 
 	var _icon *IconInterface // out
 
-	_icon = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*IconInterface)
+	_icon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*IconInterface)
 
 	return _icon
 }

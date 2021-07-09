@@ -86,8 +86,7 @@ func NewCellRendererText() *CellRendererTextClass {
 
 	var _cellRendererText *CellRendererTextClass // out
 
-	_cellRendererText = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*CellRendererTextClass)
+	_cellRendererText = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*CellRendererTextClass)
 
 	return _cellRendererText
 }
@@ -103,7 +102,7 @@ func (r *CellRendererTextClass) SetFixedHeightFromFont(numberOfRows int) {
 	var _arg0 *C.GtkCellRendererText // out
 	var _arg1 C.int                  // out
 
-	_arg0 = (*C.GtkCellRendererText)(unsafe.Pointer((&r).Native()))
+	_arg0 = (*C.GtkCellRendererText)(unsafe.Pointer(r.Native()))
 	_arg1 = C.int(numberOfRows)
 
 	C.gtk_cell_renderer_text_set_fixed_height_from_font(_arg0, _arg1)

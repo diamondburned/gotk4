@@ -47,8 +47,7 @@ func gotk4_DBusInterfaceGetPropertyFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, 
 	var propertyName string             // out
 	var userData interface{}            // out
 
-	connection = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(arg0))).(*DBusConnectionClass)
+	connection = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*DBusConnectionClass)
 	sender = C.GoString(arg1)
 	objectPath = C.GoString(arg2)
 	interfaceName = C.GoString(arg3)
@@ -84,8 +83,7 @@ func gotk4_DBusInterfaceMethodCallFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, a
 	var invocation *DBusMethodInvocationClass // out
 	var userData interface{}                  // out
 
-	connection = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(arg0))).(*DBusConnectionClass)
+	connection = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*DBusConnectionClass)
 	sender = C.GoString(arg1)
 	objectPath = C.GoString(arg2)
 	interfaceName = C.GoString(arg3)
@@ -95,8 +93,7 @@ func gotk4_DBusInterfaceMethodCallFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, a
 	runtime.SetFinalizer(parameters, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
 	})
-	invocation = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(arg6))).(*DBusMethodInvocationClass)
+	invocation = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(arg6)))).(*DBusMethodInvocationClass)
 	userData = box.Get(uintptr(arg7))
 
 	fn := v.(DBusInterfaceMethodCallFunc)
@@ -122,8 +119,7 @@ func gotk4_DBusInterfaceSetPropertyFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, 
 	var value *glib.Variant             // out
 	var userData interface{}            // out
 
-	connection = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(arg0))).(*DBusConnectionClass)
+	connection = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*DBusConnectionClass)
 	sender = C.GoString(arg1)
 	objectPath = C.GoString(arg2)
 	interfaceName = C.GoString(arg3)
@@ -205,7 +201,7 @@ func gotk4_DBusInterfaceSetPropertyFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, 
 // with @connection), then a warning is logged to standard error. Applications
 // can check this ahead of time using g_dbus_message_to_blob() passing a
 // BusCapabilityFlags value obtained from @connection.
-type DBusMessageFilterFunction func(connection *DBusConnectionClass, message *DBusMessageClass, incoming bool, userData interface{}) (dBusMessage DBusMessage)
+type DBusMessageFilterFunction func(connection *DBusConnectionClass, message *DBusMessageClass, incoming bool, userData interface{}) (dBusMessage *DBusMessageClass)
 
 //export gotk4_DBusMessageFilterFunction
 func gotk4_DBusMessageFilterFunction(arg0 *C.GDBusConnection, arg1 *C.GDBusMessage, arg2 C.gboolean, arg3 C.gpointer) (cret *C.GDBusMessage) {
@@ -219,10 +215,8 @@ func gotk4_DBusMessageFilterFunction(arg0 *C.GDBusConnection, arg1 *C.GDBusMessa
 	var incoming bool                   // out
 	var userData interface{}            // out
 
-	connection = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(arg0))).(*DBusConnectionClass)
-	message = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(arg1))).(*DBusMessageClass)
+	connection = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*DBusConnectionClass)
+	message = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(arg1)))).(*DBusMessageClass)
 	if arg2 != 0 {
 		incoming = true
 	}
@@ -231,7 +225,7 @@ func gotk4_DBusMessageFilterFunction(arg0 *C.GDBusConnection, arg1 *C.GDBusMessa
 	fn := v.(DBusMessageFilterFunction)
 	dBusMessage := fn(connection, message, incoming, userData)
 
-	cret = (*C.GDBusMessage)(unsafe.Pointer((&dBusMessage).Native()))
+	cret = (*C.GDBusMessage)(unsafe.Pointer(dBusMessage.Native()))
 
 	return cret
 }
@@ -255,8 +249,7 @@ func gotk4_DBusSignalCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gc
 	var parameters *glib.Variant        // out
 	var userData interface{}            // out
 
-	connection = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(arg0))).(*DBusConnectionClass)
+	connection = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*DBusConnectionClass)
 	senderName = C.GoString(arg1)
 	objectPath = C.GoString(arg2)
 	interfaceName = C.GoString(arg3)
@@ -293,8 +286,7 @@ func gotk4_DBusSubtreeDispatchFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 
 	var node string                     // out
 	var userData interface{}            // out
 
-	connection = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(arg0))).(*DBusConnectionClass)
+	connection = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*DBusConnectionClass)
 	sender = C.GoString(arg1)
 	objectPath = C.GoString(arg2)
 	interfaceName = C.GoString(arg3)
@@ -336,8 +328,7 @@ func gotk4_DBusSubtreeEnumerateFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2
 	var objectPath string               // out
 	var userData interface{}            // out
 
-	connection = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(arg0))).(*DBusConnectionClass)
+	connection = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*DBusConnectionClass)
 	sender = C.GoString(arg1)
 	objectPath = C.GoString(arg2)
 	userData = box.Get(uintptr(arg3))
@@ -389,8 +380,7 @@ func gotk4_DBusSubtreeIntrospectFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg
 	var node string                     // out
 	var userData interface{}            // out
 
-	connection = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(arg0))).(*DBusConnectionClass)
+	connection = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*DBusConnectionClass)
 	sender = C.GoString(arg1)
 	objectPath = C.GoString(arg2)
 	node = C.GoString(arg3)
@@ -424,15 +414,14 @@ func BusGetFinish(res AsyncResult) (*DBusConnectionClass, error) {
 	var _cret *C.GDBusConnection // in
 	var _cerr *C.GError          // in
 
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((&res).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_bus_get_finish(_arg1, &_cerr)
 
 	var _dBusConnection *DBusConnectionClass // out
 	var _goerr error                         // out
 
-	_dBusConnection = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*DBusConnectionClass)
+	_dBusConnection = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*DBusConnectionClass)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _dBusConnection, _goerr

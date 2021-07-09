@@ -129,7 +129,7 @@ func (d *DragClass) DropDone(success bool) {
 	var _arg0 *C.GdkDrag // out
 	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GdkDrag)(unsafe.Pointer((&d).Native()))
+	_arg0 = (*C.GdkDrag)(unsafe.Pointer(d.Native()))
 	if success {
 		_arg1 = C.TRUE
 	}
@@ -142,7 +142,7 @@ func (d *DragClass) Actions() DragAction {
 	var _arg0 *C.GdkDrag      // out
 	var _cret C.GdkDragAction // in
 
-	_arg0 = (*C.GdkDrag)(unsafe.Pointer((&d).Native()))
+	_arg0 = (*C.GdkDrag)(unsafe.Pointer(d.Native()))
 
 	_cret = C.gdk_drag_get_actions(_arg0)
 
@@ -158,14 +158,13 @@ func (d *DragClass) Content() *ContentProviderClass {
 	var _arg0 *C.GdkDrag            // out
 	var _cret *C.GdkContentProvider // in
 
-	_arg0 = (*C.GdkDrag)(unsafe.Pointer((&d).Native()))
+	_arg0 = (*C.GdkDrag)(unsafe.Pointer(d.Native()))
 
 	_cret = C.gdk_drag_get_content(_arg0)
 
 	var _contentProvider *ContentProviderClass // out
 
-	_contentProvider = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*ContentProviderClass)
+	_contentProvider = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ContentProviderClass)
 
 	return _contentProvider
 }
@@ -175,14 +174,13 @@ func (d *DragClass) Device() *DeviceClass {
 	var _arg0 *C.GdkDrag   // out
 	var _cret *C.GdkDevice // in
 
-	_arg0 = (*C.GdkDrag)(unsafe.Pointer((&d).Native()))
+	_arg0 = (*C.GdkDrag)(unsafe.Pointer(d.Native()))
 
 	_cret = C.gdk_drag_get_device(_arg0)
 
 	var _device *DeviceClass // out
 
-	_device = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*DeviceClass)
+	_device = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*DeviceClass)
 
 	return _device
 }
@@ -192,14 +190,13 @@ func (d *DragClass) Display() *DisplayClass {
 	var _arg0 *C.GdkDrag    // out
 	var _cret *C.GdkDisplay // in
 
-	_arg0 = (*C.GdkDrag)(unsafe.Pointer((&d).Native()))
+	_arg0 = (*C.GdkDrag)(unsafe.Pointer(d.Native()))
 
 	_cret = C.gdk_drag_get_display(_arg0)
 
 	var _display *DisplayClass // out
 
-	_display = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*DisplayClass)
+	_display = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*DisplayClass)
 
 	return _display
 }
@@ -215,14 +212,13 @@ func (d *DragClass) DragSurface() *SurfaceClass {
 	var _arg0 *C.GdkDrag    // out
 	var _cret *C.GdkSurface // in
 
-	_arg0 = (*C.GdkDrag)(unsafe.Pointer((&d).Native()))
+	_arg0 = (*C.GdkDrag)(unsafe.Pointer(d.Native()))
 
 	_cret = C.gdk_drag_get_drag_surface(_arg0)
 
 	var _surface *SurfaceClass // out
 
-	_surface = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*SurfaceClass)
+	_surface = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*SurfaceClass)
 
 	return _surface
 }
@@ -232,7 +228,7 @@ func (d *DragClass) Formats() *ContentFormats {
 	var _arg0 *C.GdkDrag           // out
 	var _cret *C.GdkContentFormats // in
 
-	_arg0 = (*C.GdkDrag)(unsafe.Pointer((&d).Native()))
+	_arg0 = (*C.GdkDrag)(unsafe.Pointer(d.Native()))
 
 	_cret = C.gdk_drag_get_formats(_arg0)
 
@@ -252,7 +248,7 @@ func (d *DragClass) SelectedAction() DragAction {
 	var _arg0 *C.GdkDrag      // out
 	var _cret C.GdkDragAction // in
 
-	_arg0 = (*C.GdkDrag)(unsafe.Pointer((&d).Native()))
+	_arg0 = (*C.GdkDrag)(unsafe.Pointer(d.Native()))
 
 	_cret = C.gdk_drag_get_selected_action(_arg0)
 
@@ -268,14 +264,13 @@ func (d *DragClass) Surface() *SurfaceClass {
 	var _arg0 *C.GdkDrag    // out
 	var _cret *C.GdkSurface // in
 
-	_arg0 = (*C.GdkDrag)(unsafe.Pointer((&d).Native()))
+	_arg0 = (*C.GdkDrag)(unsafe.Pointer(d.Native()))
 
 	_cret = C.gdk_drag_get_surface(_arg0)
 
 	var _surface *SurfaceClass // out
 
-	_surface = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*SurfaceClass)
+	_surface = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*SurfaceClass)
 
 	return _surface
 }
@@ -289,7 +284,7 @@ func (d *DragClass) SetHotspot(hotX int, hotY int) {
 	var _arg1 C.int      // out
 	var _arg2 C.int      // out
 
-	_arg0 = (*C.GdkDrag)(unsafe.Pointer((&d).Native()))
+	_arg0 = (*C.GdkDrag)(unsafe.Pointer(d.Native()))
 	_arg1 = C.int(hotX)
 	_arg2 = C.int(hotY)
 

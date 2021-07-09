@@ -28,7 +28,7 @@ func X11GetServerTime(window X11Window) uint32 {
 	var _arg1 *C.GdkWindow // out
 	var _cret C.guint32    // in
 
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer((&window).Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	_cret = C.gdk_x11_get_server_time(_arg1)
 
@@ -129,7 +129,7 @@ func (w *X11WindowClass) Desktop() uint32 {
 	var _arg0 *C.GdkWindow // out
 	var _cret C.guint32    // in
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
 	_cret = C.gdk_x11_window_get_desktop(_arg0)
 
@@ -148,7 +148,7 @@ func (w *X11WindowClass) Desktop() uint32 {
 func (w *X11WindowClass) MoveToCurrentDesktop() {
 	var _arg0 *C.GdkWindow // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
 	C.gdk_x11_window_move_to_current_desktop(_arg0)
 }
@@ -161,7 +161,7 @@ func (w *X11WindowClass) MoveToDesktop(desktop uint32) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 C.guint32    // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	_arg1 = C.guint32(desktop)
 
 	C.gdk_x11_window_move_to_desktop(_arg0, _arg1)
@@ -178,7 +178,7 @@ func (w *X11WindowClass) SetFrameExtents(left int, right int, top int, bottom in
 	var _arg3 C.int        // out
 	var _arg4 C.int        // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	_arg1 = C.int(left)
 	_arg2 = C.int(right)
 	_arg3 = C.int(top)
@@ -197,7 +197,7 @@ func (w *X11WindowClass) SetFrameSyncEnabled(frameSyncEnabled bool) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	if frameSyncEnabled {
 		_arg1 = C.TRUE
 	}
@@ -215,7 +215,7 @@ func (w *X11WindowClass) SetHideTitlebarWhenMaximized(hideTitlebarWhenMaximized 
 	var _arg0 *C.GdkWindow // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	if hideTitlebarWhenMaximized {
 		_arg1 = C.TRUE
 	}
@@ -235,7 +235,7 @@ func (w *X11WindowClass) SetThemeVariant(variant string) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 *C.char      // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	_arg1 = (*C.char)(C.CString(variant))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -256,7 +256,7 @@ func (w *X11WindowClass) SetUserTime(timestamp uint32) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 C.guint32    // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	_arg1 = C.guint32(timestamp)
 
 	C.gdk_x11_window_set_user_time(_arg0, _arg1)
@@ -270,7 +270,7 @@ func (w *X11WindowClass) SetUTF8Property(name string, value string) {
 	var _arg1 *C.gchar     // out
 	var _arg2 *C.gchar     // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(C.CString(value))

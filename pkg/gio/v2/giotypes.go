@@ -56,10 +56,8 @@ func gotk4_AsyncReadyCallback(arg0 *C.GObject, arg1 *C.GAsyncResult, arg2 C.gpoi
 	var res *AsyncResultInterface       // out
 	var userData interface{}            // out
 
-	sourceObject = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(arg0))).(*externglib.Object)
-	res = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(arg1))).(*AsyncResultInterface)
+	sourceObject = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*externglib.Object)
+	res = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(*AsyncResultInterface)
 	userData = box.Get(uintptr(arg2))
 
 	fn := v.(AsyncReadyCallback)
@@ -80,8 +78,7 @@ func gotk4_CancellableSourceFunc(arg0 *C.GCancellable, arg1 C.gpointer) (cret C.
 	var cancellable *CancellableClass // out
 	var userData interface{}          // out
 
-	cancellable = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(arg0))).(*CancellableClass)
+	cancellable = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*CancellableClass)
 	userData = box.Get(uintptr(arg1))
 
 	fn := v.(CancellableSourceFunc)
@@ -114,8 +111,7 @@ func gotk4_DBusProxyTypeFunc(arg0 *C.GDBusObjectManagerClient, arg1 *C.gchar, ar
 	var interfaceName string                  // out
 	var userData interface{}                  // out
 
-	manager = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(arg0))).(*DBusObjectManagerClientClass)
+	manager = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*DBusObjectManagerClientClass)
 	objectPath = C.GoString(arg1)
 	interfaceName = C.GoString(arg2)
 	userData = box.Get(uintptr(arg3))
@@ -143,8 +139,7 @@ func gotk4_DatagramBasedSourceFunc(arg0 *C.GDatagramBased, arg1 C.GIOCondition, 
 	var condition glib.IOCondition            // out
 	var userData interface{}                  // out
 
-	datagramBased = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(arg0))).(*DatagramBasedInterface)
+	datagramBased = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*DatagramBasedInterface)
 	condition = (glib.IOCondition)(arg1)
 	userData = box.Get(uintptr(arg2))
 
@@ -283,8 +278,7 @@ func gotk4_PollableSourceFunc(arg0 *C.GObject, arg1 C.gpointer) (cret C.gboolean
 	var pollableStream *externglib.Object // out
 	var userData interface{}              // out
 
-	pollableStream = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(arg0))).(*externglib.Object)
+	pollableStream = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*externglib.Object)
 	userData = box.Get(uintptr(arg1))
 
 	fn := v.(PollableSourceFunc)
@@ -312,8 +306,7 @@ func gotk4_SocketSourceFunc(arg0 *C.GSocket, arg1 C.GIOCondition, arg2 C.gpointe
 	var condition glib.IOCondition // out
 	var userData interface{}       // out
 
-	socket = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(arg0))).(*SocketClass)
+	socket = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*SocketClass)
 	condition = (glib.IOCondition)(arg1)
 	userData = box.Get(uintptr(arg2))
 
@@ -568,14 +561,6 @@ func (i *InputMessage) Native() unsafe.Pointer {
 	return unsafe.Pointer(&i.native)
 }
 
-// Address: return location for a Address, or nil
-func (i *InputMessage) Address() **SocketAddressClass {
-	var v **SocketAddressClass // out
-	v = *gextras.CastObject(
-		externglib.Take(unsafe.Pointer(*i.native.address))).(**SocketAddressClass)
-	return v
-}
-
 // NumVectors: the number of input vectors pointed to by @vectors
 func (i *InputMessage) NumVectors() uint {
 	var v uint // out
@@ -662,8 +647,7 @@ func (o *OutputMessage) Native() unsafe.Pointer {
 // Address or nil
 func (o *OutputMessage) Address() *SocketAddressClass {
 	var v *SocketAddressClass // out
-	v = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(o.native.address))).(*SocketAddressClass)
+	v = (gextras.CastObject(externglib.Take(unsafe.Pointer(o.native.address)))).(*SocketAddressClass)
 	return v
 }
 

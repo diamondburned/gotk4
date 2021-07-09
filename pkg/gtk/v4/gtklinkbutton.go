@@ -169,8 +169,7 @@ func NewLinkButton(uri string) *LinkButtonClass {
 
 	var _linkButton *LinkButtonClass // out
 
-	_linkButton = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*LinkButtonClass)
+	_linkButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*LinkButtonClass)
 
 	return _linkButton
 }
@@ -190,8 +189,7 @@ func NewLinkButtonWithLabel(uri string, label string) *LinkButtonClass {
 
 	var _linkButton *LinkButtonClass // out
 
-	_linkButton = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*LinkButtonClass)
+	_linkButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*LinkButtonClass)
 
 	return _linkButton
 }
@@ -201,7 +199,7 @@ func (l *LinkButtonClass) URI() string {
 	var _arg0 *C.GtkLinkButton // out
 	var _cret *C.char          // in
 
-	_arg0 = (*C.GtkLinkButton)(unsafe.Pointer((&l).Native()))
+	_arg0 = (*C.GtkLinkButton)(unsafe.Pointer(l.Native()))
 
 	_cret = C.gtk_link_button_get_uri(_arg0)
 
@@ -222,7 +220,7 @@ func (l *LinkButtonClass) Visited() bool {
 	var _arg0 *C.GtkLinkButton // out
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.GtkLinkButton)(unsafe.Pointer((&l).Native()))
+	_arg0 = (*C.GtkLinkButton)(unsafe.Pointer(l.Native()))
 
 	_cret = C.gtk_link_button_get_visited(_arg0)
 
@@ -242,7 +240,7 @@ func (l *LinkButtonClass) SetURI(uri string) {
 	var _arg0 *C.GtkLinkButton // out
 	var _arg1 *C.char          // out
 
-	_arg0 = (*C.GtkLinkButton)(unsafe.Pointer((&l).Native()))
+	_arg0 = (*C.GtkLinkButton)(unsafe.Pointer(l.Native()))
 	_arg1 = (*C.char)(C.CString(uri))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -256,7 +254,7 @@ func (l *LinkButtonClass) SetVisited(visited bool) {
 	var _arg0 *C.GtkLinkButton // out
 	var _arg1 C.gboolean       // out
 
-	_arg0 = (*C.GtkLinkButton)(unsafe.Pointer((&l).Native()))
+	_arg0 = (*C.GtkLinkButton)(unsafe.Pointer(l.Native()))
 	if visited {
 		_arg1 = C.TRUE
 	}

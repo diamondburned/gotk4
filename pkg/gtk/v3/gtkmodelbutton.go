@@ -196,8 +196,7 @@ func NewModelButton() *ModelButtonClass {
 
 	var _modelButton *ModelButtonClass // out
 
-	_modelButton = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*ModelButtonClass)
+	_modelButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ModelButtonClass)
 
 	return _modelButton
 }

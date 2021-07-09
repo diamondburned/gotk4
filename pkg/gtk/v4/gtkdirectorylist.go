@@ -122,7 +122,7 @@ func (s *DirectoryListClass) Attributes() string {
 	var _arg0 *C.GtkDirectoryList // out
 	var _cret *C.char             // in
 
-	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gtk_directory_list_get_attributes(_arg0)
 
@@ -145,7 +145,7 @@ func (s *DirectoryListClass) Error() error {
 	var _arg0 *C.GtkDirectoryList // out
 	var _cret *C.GError           // in
 
-	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gtk_directory_list_get_error(_arg0)
 
@@ -161,7 +161,7 @@ func (s *DirectoryListClass) IOPriority() int {
 	var _arg0 *C.GtkDirectoryList // out
 	var _cret C.int               // in
 
-	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gtk_directory_list_get_io_priority(_arg0)
 
@@ -178,7 +178,7 @@ func (s *DirectoryListClass) Monitored() bool {
 	var _arg0 *C.GtkDirectoryList // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gtk_directory_list_get_monitored(_arg0)
 
@@ -199,7 +199,7 @@ func (s *DirectoryListClass) IsLoading() bool {
 	var _arg0 *C.GtkDirectoryList // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gtk_directory_list_is_loading(_arg0)
 
@@ -221,7 +221,7 @@ func (s *DirectoryListClass) SetAttributes(attributes string) {
 	var _arg0 *C.GtkDirectoryList // out
 	var _arg1 *C.char             // out
 
-	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.char)(C.CString(attributes))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -241,7 +241,7 @@ func (s *DirectoryListClass) SetIOPriority(ioPriority int) {
 	var _arg0 *C.GtkDirectoryList // out
 	var _arg1 C.int               // out
 
-	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(s.Native()))
 	_arg1 = C.int(ioPriority)
 
 	C.gtk_directory_list_set_io_priority(_arg0, _arg1)
@@ -258,7 +258,7 @@ func (s *DirectoryListClass) SetMonitored(monitored bool) {
 	var _arg0 *C.GtkDirectoryList // out
 	var _arg1 C.gboolean          // out
 
-	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(s.Native()))
 	if monitored {
 		_arg1 = C.TRUE
 	}

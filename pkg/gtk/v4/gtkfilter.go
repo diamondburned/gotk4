@@ -83,6 +83,8 @@ type FilterOverrider interface {
 	// This function is meant purely for optimization purposes, filters can
 	// choose to omit implementing it, but FilterListModel uses it.
 	Strictness() FilterMatch
+	// Match checks if the given @item is matched by the filter or not.
+	Match(item gextras.Objector) bool
 }
 
 // Filter: `GtkFilter` object describes the filtering to be performed by a
@@ -114,6 +116,8 @@ type Filter interface {
 	// This function is meant purely for optimization purposes, filters can
 	// choose to omit implementing it, but FilterListModel uses it.
 	Strictness() FilterMatch
+	// Match checks if the given @item is matched by the filter or not.
+	Match(item gextras.Objector) bool
 }
 
 // FilterClass implements the Filter interface.
@@ -146,7 +150,7 @@ func (s *FilterClass) Strictness() FilterMatch {
 	var _arg0 *C.GtkFilter     // out
 	var _cret C.GtkFilterMatch // in
 
-	_arg0 = (*C.GtkFilter)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkFilter)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gtk_filter_get_strictness(_arg0)
 
@@ -155,4 +159,24 @@ func (s *FilterClass) Strictness() FilterMatch {
 	_filterMatch = (FilterMatch)(_cret)
 
 	return _filterMatch
+}
+
+// Match checks if the given @item is matched by the filter or not.
+func (s *FilterClass) Match(item gextras.Objector) bool {
+	var _arg0 *C.GtkFilter // out
+	var _arg1 C.gpointer   // out
+	var _cret C.gboolean   // in
+
+	_arg0 = (*C.GtkFilter)(unsafe.Pointer(s.Native()))
+	_arg1 = (C.gpointer)(unsafe.Pointer(item.Native()))
+
+	_cret = C.gtk_filter_match(_arg0, _arg1)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
 }

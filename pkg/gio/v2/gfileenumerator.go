@@ -264,8 +264,8 @@ func (e *FileEnumeratorClass) Close(cancellable Cancellable) error {
 	var _arg1 *C.GCancellable    // out
 	var _cerr *C.GError          // in
 
-	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer((&e).Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer((&cancellable).Native()))
+	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(e.Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	C.g_file_enumerator_close(_arg0, _arg1, &_cerr)
 
@@ -289,9 +289,9 @@ func (e *FileEnumeratorClass) CloseAsync(ioPriority int, cancellable Cancellable
 	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
-	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer((&e).Native()))
+	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(e.Native()))
 	_arg1 = C.int(ioPriority)
-	_arg2 = (*C.GCancellable)(unsafe.Pointer((&cancellable).Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg4 = C.gpointer(box.Assign(callback))
 
@@ -314,8 +314,8 @@ func (e *FileEnumeratorClass) CloseFinish(result AsyncResult) error {
 	var _arg1 *C.GAsyncResult    // out
 	var _cerr *C.GError          // in
 
-	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer((&e).Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((&result).Native()))
+	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(e.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_file_enumerator_close_finish(_arg0, _arg1, &_cerr)
 
@@ -340,15 +340,14 @@ func (e *FileEnumeratorClass) Child(info FileInfo) *FileInterface {
 	var _arg1 *C.GFileInfo       // out
 	var _cret *C.GFile           // in
 
-	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer((&e).Native()))
-	_arg1 = (*C.GFileInfo)(unsafe.Pointer((&info).Native()))
+	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(e.Native()))
+	_arg1 = (*C.GFileInfo)(unsafe.Pointer(info.Native()))
 
 	_cret = C.g_file_enumerator_get_child(_arg0, _arg1)
 
 	var _file *FileInterface // out
 
-	_file = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*FileInterface)
+	_file = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*FileInterface)
 
 	return _file
 }
@@ -358,14 +357,13 @@ func (e *FileEnumeratorClass) Container() *FileInterface {
 	var _arg0 *C.GFileEnumerator // out
 	var _cret *C.GFile           // in
 
-	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer((&e).Native()))
+	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(e.Native()))
 
 	_cret = C.g_file_enumerator_get_container(_arg0)
 
 	var _file *FileInterface // out
 
-	_file = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*FileInterface)
+	_file = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*FileInterface)
 
 	return _file
 }
@@ -375,7 +373,7 @@ func (e *FileEnumeratorClass) HasPending() bool {
 	var _arg0 *C.GFileEnumerator // out
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer((&e).Native()))
+	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(e.Native()))
 
 	_cret = C.g_file_enumerator_has_pending(_arg0)
 
@@ -393,7 +391,7 @@ func (e *FileEnumeratorClass) IsClosed() bool {
 	var _arg0 *C.GFileEnumerator // out
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer((&e).Native()))
+	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(e.Native()))
 
 	_cret = C.g_file_enumerator_is_closed(_arg0)
 
@@ -446,8 +444,8 @@ func (d *FileEnumeratorClass) Iterate(cancellable Cancellable) (*FileInfoClass, 
 	var _arg3 *C.GCancellable    // out
 	var _cerr *C.GError          // in
 
-	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer((&d).Native()))
-	_arg3 = (*C.GCancellable)(unsafe.Pointer((&cancellable).Native()))
+	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(d.Native()))
+	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	C.g_file_enumerator_iterate(_arg0, &_arg1, &_arg2, _arg3, &_cerr)
 
@@ -455,10 +453,8 @@ func (d *FileEnumeratorClass) Iterate(cancellable Cancellable) (*FileInfoClass, 
 	var _outChild *FileInterface // out
 	var _goerr error             // out
 
-	_outInfo = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_arg1))).(*FileInfoClass)
-	_outChild = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_arg2))).(*FileInterface)
+	_outInfo = (gextras.CastObject(externglib.Take(unsafe.Pointer(_arg1)))).(*FileInfoClass)
+	_outChild = (gextras.CastObject(externglib.Take(unsafe.Pointer(_arg2)))).(*FileInterface)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _outInfo, _outChild, _goerr
@@ -480,16 +476,15 @@ func (e *FileEnumeratorClass) NextFile(cancellable Cancellable) (*FileInfoClass,
 	var _cret *C.GFileInfo       // in
 	var _cerr *C.GError          // in
 
-	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer((&e).Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer((&cancellable).Native()))
+	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(e.Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_file_enumerator_next_file(_arg0, _arg1, &_cerr)
 
 	var _fileInfo *FileInfoClass // out
 	var _goerr error             // out
 
-	_fileInfo = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*FileInfoClass)
+	_fileInfo = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*FileInfoClass)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _fileInfo, _goerr
@@ -522,10 +517,10 @@ func (e *FileEnumeratorClass) NextFilesAsync(numFiles int, ioPriority int, cance
 	var _arg4 C.GAsyncReadyCallback // out
 	var _arg5 C.gpointer
 
-	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer((&e).Native()))
+	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(e.Native()))
 	_arg1 = C.int(numFiles)
 	_arg2 = C.int(ioPriority)
-	_arg3 = (*C.GCancellable)(unsafe.Pointer((&cancellable).Native()))
+	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg5 = C.gpointer(box.Assign(callback))
 
@@ -537,7 +532,7 @@ func (e *FileEnumeratorClass) SetPending(pending bool) {
 	var _arg0 *C.GFileEnumerator // out
 	var _arg1 C.gboolean         // out
 
-	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer((&e).Native()))
+	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(e.Native()))
 	if pending {
 		_arg1 = C.TRUE
 	}

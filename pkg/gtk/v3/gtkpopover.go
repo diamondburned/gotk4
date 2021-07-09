@@ -126,6 +126,10 @@ type Popover interface {
 	// Modal returns whether the popover is modal, see gtk_popover_set_modal to
 	// see the implications of this.
 	Modal() bool
+	// PointingTo: if a rectangle to point to has been set, this function will
+	// return true and fill in @rect with such rectangle, otherwise it will
+	// return false and fill in @rect with the attached widget coordinates.
+	PointingTo() (gdk.Rectangle, bool)
 	// Position returns the preferred position of @popover.
 	Position() PositionType
 	// RelativeTo returns the widget @popover is currently attached to
@@ -219,14 +223,13 @@ func NewPopover(relativeTo Widget) *PopoverClass {
 	var _arg1 *C.GtkWidget // out
 	var _cret *C.GtkWidget // in
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&relativeTo).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(relativeTo.Native()))
 
 	_cret = C.gtk_popover_new(_arg1)
 
 	var _popover *PopoverClass // out
 
-	_popover = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*PopoverClass)
+	_popover = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*PopoverClass)
 
 	return _popover
 }
@@ -245,15 +248,14 @@ func NewPopoverFromModel(relativeTo Widget, model gio.MenuModel) *PopoverClass {
 	var _arg2 *C.GMenuModel // out
 	var _cret *C.GtkWidget  // in
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&relativeTo).Native()))
-	_arg2 = (*C.GMenuModel)(unsafe.Pointer((&model).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(relativeTo.Native()))
+	_arg2 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
 
 	_cret = C.gtk_popover_new_from_model(_arg1, _arg2)
 
 	var _popover *PopoverClass // out
 
-	_popover = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*PopoverClass)
+	_popover = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*PopoverClass)
 
 	return _popover
 }
@@ -283,8 +285,8 @@ func (p *PopoverClass) BindModel(model gio.MenuModel, actionNamespace string) {
 	var _arg1 *C.GMenuModel // out
 	var _arg2 *C.gchar      // out
 
-	_arg0 = (*C.GtkPopover)(unsafe.Pointer((&p).Native()))
-	_arg1 = (*C.GMenuModel)(unsafe.Pointer((&model).Native()))
+	_arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
+	_arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
 	_arg2 = (*C.gchar)(C.CString(actionNamespace))
 	defer C.free(unsafe.Pointer(_arg2))
 
@@ -297,7 +299,7 @@ func (p *PopoverClass) ConstrainTo() PopoverConstraint {
 	var _arg0 *C.GtkPopover          // out
 	var _cret C.GtkPopoverConstraint // in
 
-	_arg0 = (*C.GtkPopover)(unsafe.Pointer((&p).Native()))
+	_arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
 
 	_cret = C.gtk_popover_get_constrain_to(_arg0)
 
@@ -314,14 +316,13 @@ func (p *PopoverClass) DefaultWidget() *WidgetClass {
 	var _arg0 *C.GtkPopover // out
 	var _cret *C.GtkWidget  // in
 
-	_arg0 = (*C.GtkPopover)(unsafe.Pointer((&p).Native()))
+	_arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
 
 	_cret = C.gtk_popover_get_default_widget(_arg0)
 
 	var _widget *WidgetClass // out
 
-	_widget = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*WidgetClass)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WidgetClass)
 
 	return _widget
 }
@@ -332,7 +333,7 @@ func (p *PopoverClass) Modal() bool {
 	var _arg0 *C.GtkPopover // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GtkPopover)(unsafe.Pointer((&p).Native()))
+	_arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
 
 	_cret = C.gtk_popover_get_modal(_arg0)
 
@@ -345,12 +346,35 @@ func (p *PopoverClass) Modal() bool {
 	return _ok
 }
 
+// PointingTo: if a rectangle to point to has been set, this function will
+// return true and fill in @rect with such rectangle, otherwise it will return
+// false and fill in @rect with the attached widget coordinates.
+func (p *PopoverClass) PointingTo() (gdk.Rectangle, bool) {
+	var _arg0 *C.GtkPopover  // out
+	var _arg1 C.GdkRectangle // in
+	var _cret C.gboolean     // in
+
+	_arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
+
+	_cret = C.gtk_popover_get_pointing_to(_arg0, &_arg1)
+
+	var _rect gdk.Rectangle // out
+	var _ok bool            // out
+
+	_rect = *(*gdk.Rectangle)(unsafe.Pointer((&_arg1)))
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _rect, _ok
+}
+
 // Position returns the preferred position of @popover.
 func (p *PopoverClass) Position() PositionType {
 	var _arg0 *C.GtkPopover     // out
 	var _cret C.GtkPositionType // in
 
-	_arg0 = (*C.GtkPopover)(unsafe.Pointer((&p).Native()))
+	_arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
 
 	_cret = C.gtk_popover_get_position(_arg0)
 
@@ -366,14 +390,13 @@ func (p *PopoverClass) RelativeTo() *WidgetClass {
 	var _arg0 *C.GtkPopover // out
 	var _cret *C.GtkWidget  // in
 
-	_arg0 = (*C.GtkPopover)(unsafe.Pointer((&p).Native()))
+	_arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
 
 	_cret = C.gtk_popover_get_relative_to(_arg0)
 
 	var _widget *WidgetClass // out
 
-	_widget = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*WidgetClass)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WidgetClass)
 
 	return _widget
 }
@@ -386,7 +409,7 @@ func (p *PopoverClass) TransitionsEnabled() bool {
 	var _arg0 *C.GtkPopover // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GtkPopover)(unsafe.Pointer((&p).Native()))
+	_arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
 
 	_cret = C.gtk_popover_get_transitions_enabled(_arg0)
 
@@ -405,7 +428,7 @@ func (p *PopoverClass) TransitionsEnabled() bool {
 func (p *PopoverClass) Popdown() {
 	var _arg0 *C.GtkPopover // out
 
-	_arg0 = (*C.GtkPopover)(unsafe.Pointer((&p).Native()))
+	_arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
 
 	C.gtk_popover_popdown(_arg0)
 }
@@ -416,7 +439,7 @@ func (p *PopoverClass) Popdown() {
 func (p *PopoverClass) Popup() {
 	var _arg0 *C.GtkPopover // out
 
-	_arg0 = (*C.GtkPopover)(unsafe.Pointer((&p).Native()))
+	_arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
 
 	C.gtk_popover_popup(_arg0)
 }
@@ -428,8 +451,8 @@ func (p *PopoverClass) SetDefaultWidget(widget Widget) {
 	var _arg0 *C.GtkPopover // out
 	var _arg1 *C.GtkWidget  // out
 
-	_arg0 = (*C.GtkPopover)(unsafe.Pointer((&p).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&widget).Native()))
+	_arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.gtk_popover_set_default_widget(_arg0, _arg1)
 }
@@ -442,7 +465,7 @@ func (p *PopoverClass) SetModal(modal bool) {
 	var _arg0 *C.GtkPopover // out
 	var _arg1 C.gboolean    // out
 
-	_arg0 = (*C.GtkPopover)(unsafe.Pointer((&p).Native()))
+	_arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
 	if modal {
 		_arg1 = C.TRUE
 	}
@@ -457,7 +480,7 @@ func (p *PopoverClass) SetPointingTo(rect *gdk.Rectangle) {
 	var _arg0 *C.GtkPopover   // out
 	var _arg1 *C.GdkRectangle // out
 
-	_arg0 = (*C.GtkPopover)(unsafe.Pointer((&p).Native()))
+	_arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
 	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(rect))
 
 	C.gtk_popover_set_pointing_to(_arg0, _arg1)
@@ -474,8 +497,8 @@ func (p *PopoverClass) SetRelativeTo(relativeTo Widget) {
 	var _arg0 *C.GtkPopover // out
 	var _arg1 *C.GtkWidget  // out
 
-	_arg0 = (*C.GtkPopover)(unsafe.Pointer((&p).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&relativeTo).Native()))
+	_arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(relativeTo.Native()))
 
 	C.gtk_popover_set_relative_to(_arg0, _arg1)
 }
@@ -488,7 +511,7 @@ func (p *PopoverClass) SetTransitionsEnabled(transitionsEnabled bool) {
 	var _arg0 *C.GtkPopover // out
 	var _arg1 C.gboolean    // out
 
-	_arg0 = (*C.GtkPopover)(unsafe.Pointer((&p).Native()))
+	_arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
 	if transitionsEnabled {
 		_arg1 = C.TRUE
 	}

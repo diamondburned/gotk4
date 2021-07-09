@@ -119,8 +119,7 @@ func NewVBox(homogeneous bool, spacing int) *VBoxClass {
 
 	var _vBox *VBoxClass // out
 
-	_vBox = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*VBoxClass)
+	_vBox = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*VBoxClass)
 
 	return _vBox
 }

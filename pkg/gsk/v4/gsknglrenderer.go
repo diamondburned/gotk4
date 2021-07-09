@@ -57,8 +57,7 @@ func NewNglRenderer() *NglRendererClass {
 
 	var _nglRenderer *NglRendererClass // out
 
-	_nglRenderer = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*NglRendererClass)
+	_nglRenderer = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*NglRendererClass)
 
 	return _nglRenderer
 }

@@ -148,8 +148,8 @@ func (s *TLSDatabaseClass) CreateCertificateHandle(certificate TLSCertificate) s
 	var _arg1 *C.GTlsCertificate // out
 	var _cret *C.gchar           // in
 
-	_arg0 = (*C.GTlsDatabase)(unsafe.Pointer((&s).Native()))
-	_arg1 = (*C.GTlsCertificate)(unsafe.Pointer((&certificate).Native()))
+	_arg0 = (*C.GTlsDatabase)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GTlsCertificate)(unsafe.Pointer(certificate.Native()))
 
 	_cret = C.g_tls_database_create_certificate_handle(_arg0, _arg1)
 
@@ -173,16 +173,15 @@ func (s *TLSDatabaseClass) LookupCertificateForHandleFinish(result AsyncResult) 
 	var _cret *C.GTlsCertificate // in
 	var _cerr *C.GError          // in
 
-	_arg0 = (*C.GTlsDatabase)(unsafe.Pointer((&s).Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((&result).Native()))
+	_arg0 = (*C.GTlsDatabase)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_tls_database_lookup_certificate_for_handle_finish(_arg0, _arg1, &_cerr)
 
 	var _tlsCertificate *TLSCertificateClass // out
 	var _goerr error                         // out
 
-	_tlsCertificate = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*TLSCertificateClass)
+	_tlsCertificate = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*TLSCertificateClass)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _tlsCertificate, _goerr
@@ -197,16 +196,15 @@ func (s *TLSDatabaseClass) LookupCertificateIssuerFinish(result AsyncResult) (*T
 	var _cret *C.GTlsCertificate // in
 	var _cerr *C.GError          // in
 
-	_arg0 = (*C.GTlsDatabase)(unsafe.Pointer((&s).Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((&result).Native()))
+	_arg0 = (*C.GTlsDatabase)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_tls_database_lookup_certificate_issuer_finish(_arg0, _arg1, &_cerr)
 
 	var _tlsCertificate *TLSCertificateClass // out
 	var _goerr error                         // out
 
-	_tlsCertificate = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*TLSCertificateClass)
+	_tlsCertificate = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*TLSCertificateClass)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _tlsCertificate, _goerr
@@ -228,8 +226,8 @@ func (s *TLSDatabaseClass) VerifyChainFinish(result AsyncResult) (TLSCertificate
 	var _cret C.GTlsCertificateFlags // in
 	var _cerr *C.GError              // in
 
-	_arg0 = (*C.GTlsDatabase)(unsafe.Pointer((&s).Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((&result).Native()))
+	_arg0 = (*C.GTlsDatabase)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_tls_database_verify_chain_finish(_arg0, _arg1, &_cerr)
 

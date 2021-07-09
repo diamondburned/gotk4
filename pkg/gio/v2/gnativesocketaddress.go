@@ -83,8 +83,7 @@ func NewNativeSocketAddress(native interface{}, len uint) *NativeSocketAddressCl
 
 	var _nativeSocketAddress *NativeSocketAddressClass // out
 
-	_nativeSocketAddress = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*NativeSocketAddressClass)
+	_nativeSocketAddress = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*NativeSocketAddressClass)
 
 	return _nativeSocketAddress
 }

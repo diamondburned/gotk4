@@ -119,12 +119,12 @@ func DBusGenerateGuid() string {
 //
 // See the g_dbus_gvariant_to_gvalue() function for how to convert a #GVariant
 // to a #GValue.
-func DBusGValueToGVariant(gvalue externglib.Value, typ *glib.VariantType) *glib.Variant {
+func DBusGValueToGVariant(gvalue *externglib.Value, typ *glib.VariantType) *glib.Variant {
 	var _arg1 *C.GValue       // out
 	var _arg2 *C.GVariantType // out
 	var _cret *C.GVariant     // in
 
-	_arg1 = (*C.GValue)(unsafe.Pointer(&(&gvalue).GValue))
+	_arg1 = (*C.GValue)(unsafe.Pointer(&gvalue.GValue))
 	_arg2 = (*C.GVariantType)(unsafe.Pointer(typ))
 
 	_cret = C.g_dbus_gvalue_to_gvariant(_arg1, _arg2)
@@ -138,6 +138,32 @@ func DBusGValueToGVariant(gvalue externglib.Value, typ *glib.VariantType) *glib.
 	})
 
 	return _variant
+}
+
+// DBusGVariantToGValue converts a #GVariant to a #GValue. If @value is
+// floating, it is consumed.
+//
+// The rules specified in the g_dbus_gvalue_to_gvariant() function are used -
+// this function is essentially its reverse form. So, a #GVariant containing any
+// basic or string array type will be converted to a #GValue containing a basic
+// value or string array. Any other #GVariant (handle, variant, tuple, dict
+// entry) will be converted to a #GValue containing that #GVariant.
+//
+// The conversion never fails - a valid #GValue is always returned in
+// @out_gvalue.
+func DBusGVariantToGValue(value *glib.Variant) externglib.Value {
+	var _arg1 *C.GVariant // out
+	var _arg2 C.GValue    // in
+
+	_arg1 = (*C.GVariant)(unsafe.Pointer(value))
+
+	C.g_dbus_gvariant_to_gvalue(_arg1, &_arg2)
+
+	var _outGvalue externglib.Value // out
+
+	_outGvalue = *externglib.ValueFromNative(unsafe.Pointer((&_arg2)))
+
+	return _outGvalue
 }
 
 // DBusIsGuid checks if @string is a D-Bus GUID.

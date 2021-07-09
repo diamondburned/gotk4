@@ -62,7 +62,7 @@ func ContextGetFontOptions(context pango.Context) *cairo.FontOptions {
 	var _arg1 *C.PangoContext         // out
 	var _cret *C.cairo_font_options_t // in
 
-	_arg1 = (*C.PangoContext)(unsafe.Pointer((&context).Native()))
+	_arg1 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.pango_cairo_context_get_font_options(_arg1)
 
@@ -79,7 +79,7 @@ func ContextGetResolution(context pango.Context) float64 {
 	var _arg1 *C.PangoContext // out
 	var _cret C.double        // in
 
-	_arg1 = (*C.PangoContext)(unsafe.Pointer((&context).Native()))
+	_arg1 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.pango_cairo_context_get_resolution(_arg1)
 
@@ -99,7 +99,7 @@ func ContextSetFontOptions(context pango.Context, options *cairo.FontOptions) {
 	var _arg1 *C.PangoContext         // out
 	var _arg2 *C.cairo_font_options_t // out
 
-	_arg1 = (*C.PangoContext)(unsafe.Pointer((&context).Native()))
+	_arg1 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
 	_arg2 = (*C.cairo_font_options_t)(unsafe.Pointer(options))
 
 	C.pango_cairo_context_set_font_options(_arg1, _arg2)
@@ -114,7 +114,7 @@ func ContextSetResolution(context pango.Context, dpi float64) {
 	var _arg1 *C.PangoContext // out
 	var _arg2 C.double        // out
 
-	_arg1 = (*C.PangoContext)(unsafe.Pointer((&context).Native()))
+	_arg1 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
 	_arg2 = C.double(dpi)
 
 	C.pango_cairo_context_set_resolution(_arg1, _arg2)
@@ -140,8 +140,7 @@ func CreateContext(cr *cairo.Context) *pango.ContextClass {
 
 	var _context *pango.ContextClass // out
 
-	_context = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*pango.ContextClass)
+	_context = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*pango.ContextClass)
 
 	return _context
 }
@@ -168,8 +167,7 @@ func CreateLayout(cr *cairo.Context) *pango.LayoutClass {
 
 	var _layout *pango.LayoutClass // out
 
-	_layout = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*pango.LayoutClass)
+	_layout = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*pango.LayoutClass)
 
 	return _layout
 }
@@ -207,7 +205,7 @@ func GlyphStringPath(cr *cairo.Context, font pango.Font, glyphs *pango.GlyphStri
 	var _arg3 *C.PangoGlyphString // out
 
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr))
-	_arg2 = (*C.PangoFont)(unsafe.Pointer((&font).Native()))
+	_arg2 = (*C.PangoFont)(unsafe.Pointer(font.Native()))
 	_arg3 = (*C.PangoGlyphString)(unsafe.Pointer(glyphs))
 
 	C.pango_cairo_glyph_string_path(_arg1, _arg2, _arg3)
@@ -223,7 +221,7 @@ func LayoutPath(cr *cairo.Context, layout pango.Layout) {
 	var _arg2 *C.PangoLayout // out
 
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr))
-	_arg2 = (*C.PangoLayout)(unsafe.Pointer((&layout).Native()))
+	_arg2 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
 
 	C.pango_cairo_layout_path(_arg1, _arg2)
 }
@@ -284,7 +282,7 @@ func ShowGlyphString(cr *cairo.Context, font pango.Font, glyphs *pango.GlyphStri
 	var _arg3 *C.PangoGlyphString // out
 
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr))
-	_arg2 = (*C.PangoFont)(unsafe.Pointer((&font).Native()))
+	_arg2 = (*C.PangoFont)(unsafe.Pointer(font.Native()))
 	_arg3 = (*C.PangoGlyphString)(unsafe.Pointer(glyphs))
 
 	C.pango_cairo_show_glyph_string(_arg1, _arg2, _arg3)
@@ -299,7 +297,7 @@ func ShowLayout(cr *cairo.Context, layout pango.Layout) {
 	var _arg2 *C.PangoLayout // out
 
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr))
-	_arg2 = (*C.PangoLayout)(unsafe.Pointer((&layout).Native()))
+	_arg2 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
 
 	C.pango_cairo_show_layout(_arg1, _arg2)
 }
@@ -314,7 +312,7 @@ func UpdateContext(cr *cairo.Context, context pango.Context) {
 	var _arg2 *C.PangoContext // out
 
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr))
-	_arg2 = (*C.PangoContext)(unsafe.Pointer((&context).Native()))
+	_arg2 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
 
 	C.pango_cairo_update_context(_arg1, _arg2)
 }
@@ -327,7 +325,7 @@ func UpdateLayout(cr *cairo.Context, layout pango.Layout) {
 	var _arg2 *C.PangoLayout // out
 
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr))
-	_arg2 = (*C.PangoLayout)(unsafe.Pointer((&layout).Native()))
+	_arg2 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
 
 	C.pango_cairo_update_layout(_arg1, _arg2)
 }
@@ -371,7 +369,7 @@ func (f *FontInterface) ScaledFont() *cairo.ScaledFont {
 	var _arg0 *C.PangoCairoFont      // out
 	var _cret *C.cairo_scaled_font_t // in
 
-	_arg0 = (*C.PangoCairoFont)(unsafe.Pointer((&f).Native()))
+	_arg0 = (*C.PangoCairoFont)(unsafe.Pointer(f.Native()))
 
 	_cret = C.pango_cairo_font_get_scaled_font(_arg0)
 
@@ -445,7 +443,7 @@ func (f *FontMapInterface) FontType() cairo.FontType {
 	var _arg0 *C.PangoCairoFontMap // out
 	var _cret C.cairo_font_type_t  // in
 
-	_arg0 = (*C.PangoCairoFontMap)(unsafe.Pointer((&f).Native()))
+	_arg0 = (*C.PangoCairoFontMap)(unsafe.Pointer(f.Native()))
 
 	_cret = C.pango_cairo_font_map_get_font_type(_arg0)
 
@@ -463,7 +461,7 @@ func (f *FontMapInterface) Resolution() float64 {
 	var _arg0 *C.PangoCairoFontMap // out
 	var _cret C.double             // in
 
-	_arg0 = (*C.PangoCairoFontMap)(unsafe.Pointer((&f).Native()))
+	_arg0 = (*C.PangoCairoFontMap)(unsafe.Pointer(f.Native()))
 
 	_cret = C.pango_cairo_font_map_get_resolution(_arg0)
 
@@ -491,7 +489,7 @@ func (f *FontMapInterface) Resolution() float64 {
 func (f *FontMapInterface) SetDefault() {
 	var _arg0 *C.PangoCairoFontMap // out
 
-	_arg0 = (*C.PangoCairoFontMap)(unsafe.Pointer((&f).Native()))
+	_arg0 = (*C.PangoCairoFontMap)(unsafe.Pointer(f.Native()))
 
 	C.pango_cairo_font_map_set_default(_arg0)
 }
@@ -505,7 +503,7 @@ func (f *FontMapInterface) SetResolution(dpi float64) {
 	var _arg0 *C.PangoCairoFontMap // out
 	var _arg1 C.double             // out
 
-	_arg0 = (*C.PangoCairoFontMap)(unsafe.Pointer((&f).Native()))
+	_arg0 = (*C.PangoCairoFontMap)(unsafe.Pointer(f.Native()))
 	_arg1 = C.double(dpi)
 
 	C.pango_cairo_font_map_set_resolution(_arg0, _arg1)

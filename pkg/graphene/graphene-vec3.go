@@ -63,6 +63,62 @@ func (v *Vec3) Native() unsafe.Pointer {
 	return unsafe.Pointer(&v.native)
 }
 
+// Add adds each component of the two given vectors.
+func (a *Vec3) Add(b *Vec3) Vec3 {
+	var _arg0 *C.graphene_vec3_t // out
+	var _arg1 *C.graphene_vec3_t // out
+	var _arg2 C.graphene_vec3_t  // in
+
+	_arg0 = (*C.graphene_vec3_t)(unsafe.Pointer(a))
+	_arg1 = (*C.graphene_vec3_t)(unsafe.Pointer(b))
+
+	C.graphene_vec3_add(_arg0, _arg1, &_arg2)
+
+	var _res Vec3 // out
+
+	_res = *(*Vec3)(unsafe.Pointer((&_arg2)))
+
+	return _res
+}
+
+// Cross computes the cross product of the two given vectors.
+func (a *Vec3) Cross(b *Vec3) Vec3 {
+	var _arg0 *C.graphene_vec3_t // out
+	var _arg1 *C.graphene_vec3_t // out
+	var _arg2 C.graphene_vec3_t  // in
+
+	_arg0 = (*C.graphene_vec3_t)(unsafe.Pointer(a))
+	_arg1 = (*C.graphene_vec3_t)(unsafe.Pointer(b))
+
+	C.graphene_vec3_cross(_arg0, _arg1, &_arg2)
+
+	var _res Vec3 // out
+
+	_res = *(*Vec3)(unsafe.Pointer((&_arg2)))
+
+	return _res
+}
+
+// Divide divides each component of the first operand @a by the corresponding
+// component of the second operand @b, and places the results into the vector
+// @res.
+func (a *Vec3) Divide(b *Vec3) Vec3 {
+	var _arg0 *C.graphene_vec3_t // out
+	var _arg1 *C.graphene_vec3_t // out
+	var _arg2 C.graphene_vec3_t  // in
+
+	_arg0 = (*C.graphene_vec3_t)(unsafe.Pointer(a))
+	_arg1 = (*C.graphene_vec3_t)(unsafe.Pointer(b))
+
+	C.graphene_vec3_divide(_arg0, _arg1, &_arg2)
+
+	var _res Vec3 // out
+
+	_res = *(*Vec3)(unsafe.Pointer((&_arg2)))
+
+	return _res
+}
+
 // Dot computes the dot product of the two given vectors.
 func (a *Vec3) Dot(b *Vec3) float32 {
 	var _arg0 *C.graphene_vec3_t // out
@@ -124,6 +180,93 @@ func (v *Vec3) X() float32 {
 	_gfloat = float32(_cret)
 
 	return _gfloat
+}
+
+// XY creates a #graphene_vec2_t that contains the first and second components
+// of the given #graphene_vec3_t.
+func (v *Vec3) XY() Vec2 {
+	var _arg0 *C.graphene_vec3_t // out
+	var _arg1 C.graphene_vec2_t  // in
+
+	_arg0 = (*C.graphene_vec3_t)(unsafe.Pointer(v))
+
+	C.graphene_vec3_get_xy(_arg0, &_arg1)
+
+	var _res Vec2 // out
+
+	_res = *(*Vec2)(unsafe.Pointer((&_arg1)))
+
+	return _res
+}
+
+// XY0 creates a #graphene_vec3_t that contains the first two components of the
+// given #graphene_vec3_t, and the third component set to 0.
+func (v *Vec3) XY0() Vec3 {
+	var _arg0 *C.graphene_vec3_t // out
+	var _arg1 C.graphene_vec3_t  // in
+
+	_arg0 = (*C.graphene_vec3_t)(unsafe.Pointer(v))
+
+	C.graphene_vec3_get_xy0(_arg0, &_arg1)
+
+	var _res Vec3 // out
+
+	_res = *(*Vec3)(unsafe.Pointer((&_arg1)))
+
+	return _res
+}
+
+// XYZ0 converts a #graphene_vec3_t in a #graphene_vec4_t using 0.0 as the value
+// for the fourth component of the resulting vector.
+func (v *Vec3) XYZ0() Vec4 {
+	var _arg0 *C.graphene_vec3_t // out
+	var _arg1 C.graphene_vec4_t  // in
+
+	_arg0 = (*C.graphene_vec3_t)(unsafe.Pointer(v))
+
+	C.graphene_vec3_get_xyz0(_arg0, &_arg1)
+
+	var _res Vec4 // out
+
+	_res = *(*Vec4)(unsafe.Pointer((&_arg1)))
+
+	return _res
+}
+
+// XYZ1 converts a #graphene_vec3_t in a #graphene_vec4_t using 1.0 as the value
+// for the fourth component of the resulting vector.
+func (v *Vec3) XYZ1() Vec4 {
+	var _arg0 *C.graphene_vec3_t // out
+	var _arg1 C.graphene_vec4_t  // in
+
+	_arg0 = (*C.graphene_vec3_t)(unsafe.Pointer(v))
+
+	C.graphene_vec3_get_xyz1(_arg0, &_arg1)
+
+	var _res Vec4 // out
+
+	_res = *(*Vec4)(unsafe.Pointer((&_arg1)))
+
+	return _res
+}
+
+// Xyzw converts a #graphene_vec3_t in a #graphene_vec4_t using @w as the value
+// of the fourth component of the resulting vector.
+func (v *Vec3) Xyzw(w float32) Vec4 {
+	var _arg0 *C.graphene_vec3_t // out
+	var _arg1 C.float            // out
+	var _arg2 C.graphene_vec4_t  // in
+
+	_arg0 = (*C.graphene_vec3_t)(unsafe.Pointer(v))
+	_arg1 = C.float(w)
+
+	C.graphene_vec3_get_xyzw(_arg0, _arg1, &_arg2)
+
+	var _res Vec4 // out
+
+	_res = *(*Vec4)(unsafe.Pointer((&_arg2)))
+
+	return _res
 }
 
 // Y retrieves the second component of the given vector @v.
@@ -219,6 +362,26 @@ func (v *Vec3) InitFromVec3(src *Vec3) *Vec3 {
 	return _vec3
 }
 
+// Interpolate: linearly interpolates @v1 and @v2 using the given @factor.
+func (v *Vec3) Interpolate(v2 *Vec3, factor float64) Vec3 {
+	var _arg0 *C.graphene_vec3_t // out
+	var _arg1 *C.graphene_vec3_t // out
+	var _arg2 C.double           // out
+	var _arg3 C.graphene_vec3_t  // in
+
+	_arg0 = (*C.graphene_vec3_t)(unsafe.Pointer(v))
+	_arg1 = (*C.graphene_vec3_t)(unsafe.Pointer(v2))
+	_arg2 = C.double(factor)
+
+	C.graphene_vec3_interpolate(_arg0, _arg1, _arg2, &_arg3)
+
+	var _res Vec3 // out
+
+	_res = *(*Vec3)(unsafe.Pointer((&_arg3)))
+
+	return _res
+}
+
 // Length retrieves the length of the given vector @v.
 func (v *Vec3) Length() float32 {
 	var _arg0 *C.graphene_vec3_t // out
@@ -233,6 +396,62 @@ func (v *Vec3) Length() float32 {
 	_gfloat = float32(_cret)
 
 	return _gfloat
+}
+
+// Max compares each component of the two given vectors and creates a vector
+// that contains the maximum values.
+func (a *Vec3) Max(b *Vec3) Vec3 {
+	var _arg0 *C.graphene_vec3_t // out
+	var _arg1 *C.graphene_vec3_t // out
+	var _arg2 C.graphene_vec3_t  // in
+
+	_arg0 = (*C.graphene_vec3_t)(unsafe.Pointer(a))
+	_arg1 = (*C.graphene_vec3_t)(unsafe.Pointer(b))
+
+	C.graphene_vec3_max(_arg0, _arg1, &_arg2)
+
+	var _res Vec3 // out
+
+	_res = *(*Vec3)(unsafe.Pointer((&_arg2)))
+
+	return _res
+}
+
+// Min compares each component of the two given vectors and creates a vector
+// that contains the minimum values.
+func (a *Vec3) Min(b *Vec3) Vec3 {
+	var _arg0 *C.graphene_vec3_t // out
+	var _arg1 *C.graphene_vec3_t // out
+	var _arg2 C.graphene_vec3_t  // in
+
+	_arg0 = (*C.graphene_vec3_t)(unsafe.Pointer(a))
+	_arg1 = (*C.graphene_vec3_t)(unsafe.Pointer(b))
+
+	C.graphene_vec3_min(_arg0, _arg1, &_arg2)
+
+	var _res Vec3 // out
+
+	_res = *(*Vec3)(unsafe.Pointer((&_arg2)))
+
+	return _res
+}
+
+// Multiply multiplies each component of the two given vectors.
+func (a *Vec3) Multiply(b *Vec3) Vec3 {
+	var _arg0 *C.graphene_vec3_t // out
+	var _arg1 *C.graphene_vec3_t // out
+	var _arg2 C.graphene_vec3_t  // in
+
+	_arg0 = (*C.graphene_vec3_t)(unsafe.Pointer(a))
+	_arg1 = (*C.graphene_vec3_t)(unsafe.Pointer(b))
+
+	C.graphene_vec3_multiply(_arg0, _arg1, &_arg2)
+
+	var _res Vec3 // out
+
+	_res = *(*Vec3)(unsafe.Pointer((&_arg2)))
+
+	return _res
 }
 
 // Near compares the two given #graphene_vec3_t vectors and checks whether their
@@ -256,6 +475,77 @@ func (v *Vec3) Near(v2 *Vec3, epsilon float32) bool {
 	}
 
 	return _ok
+}
+
+// Negate negates the given #graphene_vec3_t.
+func (v *Vec3) Negate() Vec3 {
+	var _arg0 *C.graphene_vec3_t // out
+	var _arg1 C.graphene_vec3_t  // in
+
+	_arg0 = (*C.graphene_vec3_t)(unsafe.Pointer(v))
+
+	C.graphene_vec3_negate(_arg0, &_arg1)
+
+	var _res Vec3 // out
+
+	_res = *(*Vec3)(unsafe.Pointer((&_arg1)))
+
+	return _res
+}
+
+// Normalize normalizes the given #graphene_vec3_t.
+func (v *Vec3) Normalize() Vec3 {
+	var _arg0 *C.graphene_vec3_t // out
+	var _arg1 C.graphene_vec3_t  // in
+
+	_arg0 = (*C.graphene_vec3_t)(unsafe.Pointer(v))
+
+	C.graphene_vec3_normalize(_arg0, &_arg1)
+
+	var _res Vec3 // out
+
+	_res = *(*Vec3)(unsafe.Pointer((&_arg1)))
+
+	return _res
+}
+
+// Scale multiplies all components of the given vector with the given scalar
+// @factor.
+func (v *Vec3) Scale(factor float32) Vec3 {
+	var _arg0 *C.graphene_vec3_t // out
+	var _arg1 C.float            // out
+	var _arg2 C.graphene_vec3_t  // in
+
+	_arg0 = (*C.graphene_vec3_t)(unsafe.Pointer(v))
+	_arg1 = C.float(factor)
+
+	C.graphene_vec3_scale(_arg0, _arg1, &_arg2)
+
+	var _res Vec3 // out
+
+	_res = *(*Vec3)(unsafe.Pointer((&_arg2)))
+
+	return _res
+}
+
+// Subtract subtracts from each component of the first operand @a the
+// corresponding component of the second operand @b and places each result into
+// the components of @res.
+func (a *Vec3) Subtract(b *Vec3) Vec3 {
+	var _arg0 *C.graphene_vec3_t // out
+	var _arg1 *C.graphene_vec3_t // out
+	var _arg2 C.graphene_vec3_t  // in
+
+	_arg0 = (*C.graphene_vec3_t)(unsafe.Pointer(a))
+	_arg1 = (*C.graphene_vec3_t)(unsafe.Pointer(b))
+
+	C.graphene_vec3_subtract(_arg0, _arg1, &_arg2)
+
+	var _res Vec3 // out
+
+	_res = *(*Vec3)(unsafe.Pointer((&_arg2)))
+
+	return _res
 }
 
 // ToFloat copies the components of a #graphene_vec3_t into the given array.

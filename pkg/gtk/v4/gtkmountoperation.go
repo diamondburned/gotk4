@@ -82,14 +82,13 @@ func NewMountOperation(parent Window) *MountOperationClass {
 	var _arg1 *C.GtkWindow       // out
 	var _cret *C.GMountOperation // in
 
-	_arg1 = (*C.GtkWindow)(unsafe.Pointer((&parent).Native()))
+	_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
 
 	_cret = C.gtk_mount_operation_new(_arg1)
 
 	var _mountOperation *MountOperationClass // out
 
-	_mountOperation = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*MountOperationClass)
+	_mountOperation = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*MountOperationClass)
 
 	return _mountOperation
 }
@@ -100,14 +99,13 @@ func (o *MountOperationClass) Display() *gdk.DisplayClass {
 	var _arg0 *C.GtkMountOperation // out
 	var _cret *C.GdkDisplay        // in
 
-	_arg0 = (*C.GtkMountOperation)(unsafe.Pointer((&o).Native()))
+	_arg0 = (*C.GtkMountOperation)(unsafe.Pointer(o.Native()))
 
 	_cret = C.gtk_mount_operation_get_display(_arg0)
 
 	var _display *gdk.DisplayClass // out
 
-	_display = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*gdk.DisplayClass)
+	_display = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.DisplayClass)
 
 	return _display
 }
@@ -117,14 +115,13 @@ func (o *MountOperationClass) Parent() *WindowClass {
 	var _arg0 *C.GtkMountOperation // out
 	var _cret *C.GtkWindow         // in
 
-	_arg0 = (*C.GtkMountOperation)(unsafe.Pointer((&o).Native()))
+	_arg0 = (*C.GtkMountOperation)(unsafe.Pointer(o.Native()))
 
 	_cret = C.gtk_mount_operation_get_parent(_arg0)
 
 	var _window *WindowClass // out
 
-	_window = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*WindowClass)
+	_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WindowClass)
 
 	return _window
 }
@@ -135,7 +132,7 @@ func (o *MountOperationClass) IsShowing() bool {
 	var _arg0 *C.GtkMountOperation // out
 	var _cret C.gboolean           // in
 
-	_arg0 = (*C.GtkMountOperation)(unsafe.Pointer((&o).Native()))
+	_arg0 = (*C.GtkMountOperation)(unsafe.Pointer(o.Native()))
 
 	_cret = C.gtk_mount_operation_is_showing(_arg0)
 
@@ -153,8 +150,8 @@ func (o *MountOperationClass) SetDisplay(display gdk.Display) {
 	var _arg0 *C.GtkMountOperation // out
 	var _arg1 *C.GdkDisplay        // out
 
-	_arg0 = (*C.GtkMountOperation)(unsafe.Pointer((&o).Native()))
-	_arg1 = (*C.GdkDisplay)(unsafe.Pointer((&display).Native()))
+	_arg0 = (*C.GtkMountOperation)(unsafe.Pointer(o.Native()))
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	C.gtk_mount_operation_set_display(_arg0, _arg1)
 }
@@ -165,8 +162,8 @@ func (o *MountOperationClass) SetParent(parent Window) {
 	var _arg0 *C.GtkMountOperation // out
 	var _arg1 *C.GtkWindow         // out
 
-	_arg0 = (*C.GtkMountOperation)(unsafe.Pointer((&o).Native()))
-	_arg1 = (*C.GtkWindow)(unsafe.Pointer((&parent).Native()))
+	_arg0 = (*C.GtkMountOperation)(unsafe.Pointer(o.Native()))
+	_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
 
 	C.gtk_mount_operation_set_parent(_arg0, _arg1)
 }

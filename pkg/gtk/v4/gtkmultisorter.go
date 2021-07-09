@@ -81,8 +81,7 @@ func NewMultiSorter() *MultiSorterClass {
 
 	var _multiSorter *MultiSorterClass // out
 
-	_multiSorter = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*MultiSorterClass)
+	_multiSorter = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*MultiSorterClass)
 
 	return _multiSorter
 }
@@ -95,8 +94,8 @@ func (s *MultiSorterClass) Append(sorter Sorter) {
 	var _arg0 *C.GtkMultiSorter // out
 	var _arg1 *C.GtkSorter      // out
 
-	_arg0 = (*C.GtkMultiSorter)(unsafe.Pointer((&s).Native()))
-	_arg1 = (*C.GtkSorter)(unsafe.Pointer((&sorter).Native()))
+	_arg0 = (*C.GtkMultiSorter)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GtkSorter)(unsafe.Pointer(sorter.Native()))
 
 	C.gtk_multi_sorter_append(_arg0, _arg1)
 }
@@ -109,7 +108,7 @@ func (s *MultiSorterClass) Remove(position uint) {
 	var _arg0 *C.GtkMultiSorter // out
 	var _arg1 C.guint           // out
 
-	_arg0 = (*C.GtkMultiSorter)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkMultiSorter)(unsafe.Pointer(s.Native()))
 	_arg1 = C.guint(position)
 
 	C.gtk_multi_sorter_remove(_arg0, _arg1)

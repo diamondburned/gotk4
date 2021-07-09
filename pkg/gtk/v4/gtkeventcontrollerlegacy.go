@@ -62,8 +62,7 @@ func NewEventControllerLegacy() *EventControllerLegacyClass {
 
 	var _eventControllerLegacy *EventControllerLegacyClass // out
 
-	_eventControllerLegacy = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*EventControllerLegacyClass)
+	_eventControllerLegacy = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*EventControllerLegacyClass)
 
 	return _eventControllerLegacy
 }

@@ -368,6 +368,24 @@ func (s *Transform) ToAffine() (outScaleX float32, outScaleY float32, outDx floa
 	return _outScaleX, _outScaleY, _outDx, _outDy
 }
 
+// ToMatrix computes the actual value of @self and stores it in @out_matrix.
+//
+// The previous value of @out_matrix will be ignored.
+func (s *Transform) ToMatrix() graphene.Matrix {
+	var _arg0 *C.GskTransform     // out
+	var _arg1 C.graphene_matrix_t // in
+
+	_arg0 = (*C.GskTransform)(unsafe.Pointer(s))
+
+	C.gsk_transform_to_matrix(_arg0, &_arg1)
+
+	var _outMatrix graphene.Matrix // out
+
+	_outMatrix = *(*graphene.Matrix)(unsafe.Pointer((&_arg1)))
+
+	return _outMatrix
+}
+
 // String converts a matrix into a string that is suitable for printing.
 //
 // The resulting string can be parsed with [func@Gsk.Transform.parse].
@@ -431,6 +449,46 @@ func (n *Transform) Transform(other *Transform) *Transform {
 	})
 
 	return _transform
+}
+
+// TransformBounds transforms a `graphene_rect_t` using the given transform
+// @self.
+//
+// The result is the bounding box containing the coplanar quad.
+func (s *Transform) TransformBounds(rect *graphene.Rect) graphene.Rect {
+	var _arg0 *C.GskTransform    // out
+	var _arg1 *C.graphene_rect_t // out
+	var _arg2 C.graphene_rect_t  // in
+
+	_arg0 = (*C.GskTransform)(unsafe.Pointer(s))
+	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(rect))
+
+	C.gsk_transform_transform_bounds(_arg0, _arg1, &_arg2)
+
+	var _outRect graphene.Rect // out
+
+	_outRect = *(*graphene.Rect)(unsafe.Pointer((&_arg2)))
+
+	return _outRect
+}
+
+// TransformPoint transforms a `graphene_point_t` using the given transform
+// @self.
+func (s *Transform) TransformPoint(point *graphene.Point) graphene.Point {
+	var _arg0 *C.GskTransform     // out
+	var _arg1 *C.graphene_point_t // out
+	var _arg2 C.graphene_point_t  // in
+
+	_arg0 = (*C.GskTransform)(unsafe.Pointer(s))
+	_arg1 = (*C.graphene_point_t)(unsafe.Pointer(point))
+
+	C.gsk_transform_transform_point(_arg0, _arg1, &_arg2)
+
+	var _outPoint graphene.Point // out
+
+	_outPoint = *(*graphene.Point)(unsafe.Pointer((&_arg2)))
+
+	return _outPoint
 }
 
 // Translate translates @next in 2-dimensional space by @point.

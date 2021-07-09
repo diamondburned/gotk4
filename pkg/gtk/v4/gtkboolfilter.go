@@ -67,14 +67,13 @@ func NewBoolFilter(expression Expression) *BoolFilterClass {
 	var _arg1 *C.GtkExpression // out
 	var _cret *C.GtkBoolFilter // in
 
-	_arg1 = (*C.GtkExpression)(unsafe.Pointer((&expression).Native()))
+	_arg1 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
 
 	_cret = C.gtk_bool_filter_new(_arg1)
 
 	var _boolFilter *BoolFilterClass // out
 
-	_boolFilter = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*BoolFilterClass)
+	_boolFilter = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*BoolFilterClass)
 
 	return _boolFilter
 }
@@ -85,14 +84,13 @@ func (s *BoolFilterClass) Expression() *ExpressionClass {
 	var _arg0 *C.GtkBoolFilter // out
 	var _cret *C.GtkExpression // in
 
-	_arg0 = (*C.GtkBoolFilter)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkBoolFilter)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gtk_bool_filter_get_expression(_arg0)
 
 	var _expression *ExpressionClass // out
 
-	_expression = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*ExpressionClass)
+	_expression = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ExpressionClass)
 
 	return _expression
 }
@@ -102,7 +100,7 @@ func (s *BoolFilterClass) Invert() bool {
 	var _arg0 *C.GtkBoolFilter // out
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.GtkBoolFilter)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkBoolFilter)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gtk_bool_filter_get_invert(_arg0)
 
@@ -123,8 +121,8 @@ func (s *BoolFilterClass) SetExpression(expression Expression) {
 	var _arg0 *C.GtkBoolFilter // out
 	var _arg1 *C.GtkExpression // out
 
-	_arg0 = (*C.GtkBoolFilter)(unsafe.Pointer((&s).Native()))
-	_arg1 = (*C.GtkExpression)(unsafe.Pointer((&expression).Native()))
+	_arg0 = (*C.GtkBoolFilter)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
 
 	C.gtk_bool_filter_set_expression(_arg0, _arg1)
 }
@@ -134,7 +132,7 @@ func (s *BoolFilterClass) SetInvert(invert bool) {
 	var _arg0 *C.GtkBoolFilter // out
 	var _arg1 C.gboolean       // out
 
-	_arg0 = (*C.GtkBoolFilter)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkBoolFilter)(unsafe.Pointer(s.Native()))
 	if invert {
 		_arg1 = C.TRUE
 	}

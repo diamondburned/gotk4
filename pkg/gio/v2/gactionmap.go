@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -72,6 +73,42 @@ type ActionMap interface {
 	//
 	// The action map takes its own reference on @action.
 	AddAction(action Action)
+	// AddActionEntries: convenience function for creating multiple Action
+	// instances and adding them to a Map.
+	//
+	// Each action is constructed as per one Entry.
+	//
+	//    static void
+	//    activate_quit (GSimpleAction *simple,
+	//                   GVariant      *parameter,
+	//                   gpointer       user_data)
+	//    {
+	//      exit (0);
+	//    }
+	//
+	//    static void
+	//    activate_print_string (GSimpleAction *simple,
+	//                           GVariant      *parameter,
+	//                           gpointer       user_data)
+	//    {
+	//      g_print ("s\n", g_variant_get_string (parameter, NULL));
+	//    }
+	//
+	//    static GActionGroup *
+	//    create_action_group (void)
+	//    {
+	//      const GActionEntry entries[] = {
+	//        { "quit",         activate_quit              },
+	//        { "print-string", activate_print_string, "s" }
+	//      };
+	//      GSimpleActionGroup *group;
+	//
+	//      group = g_simple_action_group_new ();
+	//      g_action_map_add_action_entries (G_ACTION_MAP (group), entries, G_N_ELEMENTS (entries), NULL);
+	//
+	//      return G_ACTION_GROUP (group);
+	//    }
+	AddActionEntries(entries []ActionEntry, userData interface{})
 	// LookupAction looks up the action with the name @action_name in
 	// @action_map.
 	//
@@ -112,10 +149,59 @@ func (a *ActionMapInterface) AddAction(action Action) {
 	var _arg0 *C.GActionMap // out
 	var _arg1 *C.GAction    // out
 
-	_arg0 = (*C.GActionMap)(unsafe.Pointer((&a).Native()))
-	_arg1 = (*C.GAction)(unsafe.Pointer((&action).Native()))
+	_arg0 = (*C.GActionMap)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.GAction)(unsafe.Pointer(action.Native()))
 
 	C.g_action_map_add_action(_arg0, _arg1)
+}
+
+// AddActionEntries: convenience function for creating multiple Action instances
+// and adding them to a Map.
+//
+// Each action is constructed as per one Entry.
+//
+//    static void
+//    activate_quit (GSimpleAction *simple,
+//                   GVariant      *parameter,
+//                   gpointer       user_data)
+//    {
+//      exit (0);
+//    }
+//
+//    static void
+//    activate_print_string (GSimpleAction *simple,
+//                           GVariant      *parameter,
+//                           gpointer       user_data)
+//    {
+//      g_print ("s\n", g_variant_get_string (parameter, NULL));
+//    }
+//
+//    static GActionGroup *
+//    create_action_group (void)
+//    {
+//      const GActionEntry entries[] = {
+//        { "quit",         activate_quit              },
+//        { "print-string", activate_print_string, "s" }
+//      };
+//      GSimpleActionGroup *group;
+//
+//      group = g_simple_action_group_new ();
+//      g_action_map_add_action_entries (G_ACTION_MAP (group), entries, G_N_ELEMENTS (entries), NULL);
+//
+//      return G_ACTION_GROUP (group);
+//    }
+func (a *ActionMapInterface) AddActionEntries(entries []ActionEntry, userData interface{}) {
+	var _arg0 *C.GActionMap // out
+	var _arg1 *C.GActionEntry
+	var _arg2 C.gint
+	var _arg3 C.gpointer // out
+
+	_arg0 = (*C.GActionMap)(unsafe.Pointer(a.Native()))
+	_arg2 = C.gint(len(entries))
+	_arg1 = (*C.GActionEntry)(unsafe.Pointer(&entries[0]))
+	_arg3 = (C.gpointer)(box.Assign(userData))
+
+	C.g_action_map_add_action_entries(_arg0, _arg1, _arg2, _arg3)
 }
 
 // LookupAction looks up the action with the name @action_name in @action_map.
@@ -126,7 +212,7 @@ func (a *ActionMapInterface) LookupAction(actionName string) *ActionInterface {
 	var _arg1 *C.gchar      // out
 	var _cret *C.GAction    // in
 
-	_arg0 = (*C.GActionMap)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.GActionMap)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.gchar)(C.CString(actionName))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -134,8 +220,7 @@ func (a *ActionMapInterface) LookupAction(actionName string) *ActionInterface {
 
 	var _action *ActionInterface // out
 
-	_action = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*ActionInterface)
+	_action = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ActionInterface)
 
 	return _action
 }
@@ -147,7 +232,7 @@ func (a *ActionMapInterface) RemoveAction(actionName string) {
 	var _arg0 *C.GActionMap // out
 	var _arg1 *C.gchar      // out
 
-	_arg0 = (*C.GActionMap)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.GActionMap)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.gchar)(C.CString(actionName))
 	defer C.free(unsafe.Pointer(_arg1))
 

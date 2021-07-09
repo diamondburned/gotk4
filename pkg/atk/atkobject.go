@@ -734,7 +734,7 @@ func (a *ObjectClass) AccessibleID() string {
 	var _arg0 *C.AtkObject // out
 	var _cret *C.gchar     // in
 
-	_arg0 = (*C.AtkObject)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(a.Native()))
 
 	_cret = C.atk_object_get_accessible_id(_arg0)
 
@@ -750,7 +750,7 @@ func (a *ObjectClass) Description() string {
 	var _arg0 *C.AtkObject // out
 	var _cret *C.gchar     // in
 
-	_arg0 = (*C.AtkObject)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(a.Native()))
 
 	_cret = C.atk_object_get_description(_arg0)
 
@@ -767,7 +767,7 @@ func (a *ObjectClass) IndexInParent() int {
 	var _arg0 *C.AtkObject // out
 	var _cret C.gint       // in
 
-	_arg0 = (*C.AtkObject)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(a.Native()))
 
 	_cret = C.atk_object_get_index_in_parent(_arg0)
 
@@ -785,7 +785,7 @@ func (a *ObjectClass) Layer() Layer {
 	var _arg0 *C.AtkObject // out
 	var _cret C.AtkLayer   // in
 
-	_arg0 = (*C.AtkObject)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(a.Native()))
 
 	_cret = C.atk_object_get_layer(_arg0)
 
@@ -804,7 +804,7 @@ func (a *ObjectClass) MDIZOrder() int {
 	var _arg0 *C.AtkObject // out
 	var _cret C.gint       // in
 
-	_arg0 = (*C.AtkObject)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(a.Native()))
 
 	_cret = C.atk_object_get_mdi_zorder(_arg0)
 
@@ -820,7 +820,7 @@ func (a *ObjectClass) NAccessibleChildren() int {
 	var _arg0 *C.AtkObject // out
 	var _cret C.gint       // in
 
-	_arg0 = (*C.AtkObject)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(a.Native()))
 
 	_cret = C.atk_object_get_n_accessible_children(_arg0)
 
@@ -836,7 +836,7 @@ func (a *ObjectClass) Name() string {
 	var _arg0 *C.AtkObject // out
 	var _cret *C.gchar     // in
 
-	_arg0 = (*C.AtkObject)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(a.Native()))
 
 	_cret = C.atk_object_get_name(_arg0)
 
@@ -853,7 +853,7 @@ func (a *ObjectClass) ObjectLocale() string {
 	var _arg0 *C.AtkObject // out
 	var _cret *C.gchar     // in
 
-	_arg0 = (*C.AtkObject)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(a.Native()))
 
 	_cret = C.atk_object_get_object_locale(_arg0)
 
@@ -876,14 +876,13 @@ func (a *ObjectClass) Parent() *ObjectClass {
 	var _arg0 *C.AtkObject // out
 	var _cret *C.AtkObject // in
 
-	_arg0 = (*C.AtkObject)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(a.Native()))
 
 	_cret = C.atk_object_get_parent(_arg0)
 
 	var _object *ObjectClass // out
 
-	_object = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*ObjectClass)
+	_object = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ObjectClass)
 
 	return _object
 }
@@ -893,7 +892,7 @@ func (a *ObjectClass) Role() Role {
 	var _arg0 *C.AtkObject // out
 	var _cret C.AtkRole    // in
 
-	_arg0 = (*C.AtkObject)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(a.Native()))
 
 	_cret = C.atk_object_get_role(_arg0)
 
@@ -912,7 +911,7 @@ func (a *ObjectClass) Initialize(data interface{}) {
 	var _arg0 *C.AtkObject // out
 	var _arg1 C.gpointer   // out
 
-	_arg0 = (*C.AtkObject)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(a.Native()))
 	_arg1 = (C.gpointer)(box.Assign(data))
 
 	C.atk_object_initialize(_arg0, _arg1)
@@ -929,14 +928,13 @@ func (a *ObjectClass) PeekParent() *ObjectClass {
 	var _arg0 *C.AtkObject // out
 	var _cret *C.AtkObject // in
 
-	_arg0 = (*C.AtkObject)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(a.Native()))
 
 	_cret = C.atk_object_peek_parent(_arg0)
 
 	var _object *ObjectClass // out
 
-	_object = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*ObjectClass)
+	_object = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ObjectClass)
 
 	return _object
 }
@@ -949,15 +947,14 @@ func (a *ObjectClass) RefAccessibleChild(i int) *ObjectClass {
 	var _arg1 C.gint       // out
 	var _cret *C.AtkObject // in
 
-	_arg0 = (*C.AtkObject)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(a.Native()))
 	_arg1 = C.gint(i)
 
 	_cret = C.atk_object_ref_accessible_child(_arg0, _arg1)
 
 	var _object *ObjectClass // out
 
-	_object = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*ObjectClass)
+	_object = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*ObjectClass)
 
 	return _object
 }
@@ -967,14 +964,13 @@ func (a *ObjectClass) RefRelationSet() *RelationSetClass {
 	var _arg0 *C.AtkObject      // out
 	var _cret *C.AtkRelationSet // in
 
-	_arg0 = (*C.AtkObject)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(a.Native()))
 
 	_cret = C.atk_object_ref_relation_set(_arg0)
 
 	var _relationSet *RelationSetClass // out
 
-	_relationSet = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*RelationSetClass)
+	_relationSet = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*RelationSetClass)
 
 	return _relationSet
 }
@@ -985,14 +981,13 @@ func (a *ObjectClass) RefStateSet() *StateSetClass {
 	var _arg0 *C.AtkObject   // out
 	var _cret *C.AtkStateSet // in
 
-	_arg0 = (*C.AtkObject)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(a.Native()))
 
 	_cret = C.atk_object_ref_state_set(_arg0)
 
 	var _stateSet *StateSetClass // out
 
-	_stateSet = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*StateSetClass)
+	_stateSet = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*StateSetClass)
 
 	return _stateSet
 }
@@ -1004,7 +999,7 @@ func (a *ObjectClass) RemovePropertyChangeHandler(handlerId uint) {
 	var _arg0 *C.AtkObject // out
 	var _arg1 C.guint      // out
 
-	_arg0 = (*C.AtkObject)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(a.Native()))
 	_arg1 = C.guint(handlerId)
 
 	C.atk_object_remove_property_change_handler(_arg0, _arg1)
@@ -1019,7 +1014,7 @@ func (a *ObjectClass) SetAccessibleID(name string) {
 	var _arg0 *C.AtkObject // out
 	var _arg1 *C.gchar     // out
 
-	_arg0 = (*C.AtkObject)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -1034,7 +1029,7 @@ func (a *ObjectClass) SetDescription(description string) {
 	var _arg0 *C.AtkObject // out
 	var _arg1 *C.gchar     // out
 
-	_arg0 = (*C.AtkObject)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.gchar)(C.CString(description))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -1049,7 +1044,7 @@ func (a *ObjectClass) SetName(name string) {
 	var _arg0 *C.AtkObject // out
 	var _arg1 *C.gchar     // out
 
-	_arg0 = (*C.AtkObject)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -1061,8 +1056,8 @@ func (a *ObjectClass) SetParent(parent Object) {
 	var _arg0 *C.AtkObject // out
 	var _arg1 *C.AtkObject // out
 
-	_arg0 = (*C.AtkObject)(unsafe.Pointer((&a).Native()))
-	_arg1 = (*C.AtkObject)(unsafe.Pointer((&parent).Native()))
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.AtkObject)(unsafe.Pointer(parent.Native()))
 
 	C.atk_object_set_parent(_arg0, _arg1)
 }

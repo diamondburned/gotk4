@@ -86,8 +86,7 @@ func NewCellRendererToggle() *CellRendererToggleClass {
 
 	var _cellRendererToggle *CellRendererToggleClass // out
 
-	_cellRendererToggle = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*CellRendererToggleClass)
+	_cellRendererToggle = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*CellRendererToggleClass)
 
 	return _cellRendererToggle
 }
@@ -98,7 +97,7 @@ func (t *CellRendererToggleClass) Activatable() bool {
 	var _arg0 *C.GtkCellRendererToggle // out
 	var _cret C.gboolean               // in
 
-	_arg0 = (*C.GtkCellRendererToggle)(unsafe.Pointer((&t).Native()))
+	_arg0 = (*C.GtkCellRendererToggle)(unsafe.Pointer(t.Native()))
 
 	_cret = C.gtk_cell_renderer_toggle_get_activatable(_arg0)
 
@@ -117,7 +116,7 @@ func (t *CellRendererToggleClass) Active() bool {
 	var _arg0 *C.GtkCellRendererToggle // out
 	var _cret C.gboolean               // in
 
-	_arg0 = (*C.GtkCellRendererToggle)(unsafe.Pointer((&t).Native()))
+	_arg0 = (*C.GtkCellRendererToggle)(unsafe.Pointer(t.Native()))
 
 	_cret = C.gtk_cell_renderer_toggle_get_active(_arg0)
 
@@ -135,7 +134,7 @@ func (t *CellRendererToggleClass) Radio() bool {
 	var _arg0 *C.GtkCellRendererToggle // out
 	var _cret C.gboolean               // in
 
-	_arg0 = (*C.GtkCellRendererToggle)(unsafe.Pointer((&t).Native()))
+	_arg0 = (*C.GtkCellRendererToggle)(unsafe.Pointer(t.Native()))
 
 	_cret = C.gtk_cell_renderer_toggle_get_radio(_arg0)
 
@@ -153,7 +152,7 @@ func (t *CellRendererToggleClass) SetActivatable(setting bool) {
 	var _arg0 *C.GtkCellRendererToggle // out
 	var _arg1 C.gboolean               // out
 
-	_arg0 = (*C.GtkCellRendererToggle)(unsafe.Pointer((&t).Native()))
+	_arg0 = (*C.GtkCellRendererToggle)(unsafe.Pointer(t.Native()))
 	if setting {
 		_arg1 = C.TRUE
 	}
@@ -166,7 +165,7 @@ func (t *CellRendererToggleClass) SetActive(setting bool) {
 	var _arg0 *C.GtkCellRendererToggle // out
 	var _arg1 C.gboolean               // out
 
-	_arg0 = (*C.GtkCellRendererToggle)(unsafe.Pointer((&t).Native()))
+	_arg0 = (*C.GtkCellRendererToggle)(unsafe.Pointer(t.Native()))
 	if setting {
 		_arg1 = C.TRUE
 	}
@@ -184,7 +183,7 @@ func (t *CellRendererToggleClass) SetRadio(radio bool) {
 	var _arg0 *C.GtkCellRendererToggle // out
 	var _arg1 C.gboolean               // out
 
-	_arg0 = (*C.GtkCellRendererToggle)(unsafe.Pointer((&t).Native()))
+	_arg0 = (*C.GtkCellRendererToggle)(unsafe.Pointer(t.Native()))
 	if radio {
 		_arg1 = C.TRUE
 	}

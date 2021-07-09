@@ -42,8 +42,7 @@ func gotk4_BusNameAppearedCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 
 	var nameOwner string                // out
 	var userData interface{}            // out
 
-	connection = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(arg0))).(*DBusConnectionClass)
+	connection = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*DBusConnectionClass)
 	name = C.GoString(arg1)
 	nameOwner = C.GoString(arg2)
 	userData = box.Get(uintptr(arg3))
@@ -70,8 +69,7 @@ func gotk4_BusNameVanishedCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 
 	var name string                     // out
 	var userData interface{}            // out
 
-	connection = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(arg0))).(*DBusConnectionClass)
+	connection = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*DBusConnectionClass)
 	name = C.GoString(arg1)
 	userData = box.Get(uintptr(arg2))
 

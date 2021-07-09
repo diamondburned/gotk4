@@ -74,14 +74,13 @@ func NewFileIcon(file File) *FileIconClass {
 	var _arg1 *C.GFile // out
 	var _cret *C.GIcon // in
 
-	_arg1 = (*C.GFile)(unsafe.Pointer((&file).Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
 	_cret = C.g_file_icon_new(_arg1)
 
 	var _fileIcon *FileIconClass // out
 
-	_fileIcon = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*FileIconClass)
+	_fileIcon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*FileIconClass)
 
 	return _fileIcon
 }
@@ -91,14 +90,13 @@ func (i *FileIconClass) File() *FileInterface {
 	var _arg0 *C.GFileIcon // out
 	var _cret *C.GFile     // in
 
-	_arg0 = (*C.GFileIcon)(unsafe.Pointer((&i).Native()))
+	_arg0 = (*C.GFileIcon)(unsafe.Pointer(i.Native()))
 
 	_cret = C.g_file_icon_get_file(_arg0)
 
 	var _file *FileInterface // out
 
-	_file = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*FileInterface)
+	_file = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*FileInterface)
 
 	return _file
 }

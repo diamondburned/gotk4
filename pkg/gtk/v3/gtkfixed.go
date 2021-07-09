@@ -114,8 +114,7 @@ func NewFixed() *FixedClass {
 
 	var _fixed *FixedClass // out
 
-	_fixed = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*FixedClass)
+	_fixed = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*FixedClass)
 
 	return _fixed
 }
@@ -127,8 +126,8 @@ func (f *FixedClass) Move(widget Widget, x int, y int) {
 	var _arg2 C.gint       // out
 	var _arg3 C.gint       // out
 
-	_arg0 = (*C.GtkFixed)(unsafe.Pointer((&f).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&widget).Native()))
+	_arg0 = (*C.GtkFixed)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg2 = C.gint(x)
 	_arg3 = C.gint(y)
 
@@ -142,8 +141,8 @@ func (f *FixedClass) Put(widget Widget, x int, y int) {
 	var _arg2 C.gint       // out
 	var _arg3 C.gint       // out
 
-	_arg0 = (*C.GtkFixed)(unsafe.Pointer((&f).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&widget).Native()))
+	_arg0 = (*C.GtkFixed)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg2 = C.gint(x)
 	_arg3 = C.gint(y)
 
@@ -167,8 +166,7 @@ func (f *FixedChild) Native() unsafe.Pointer {
 
 func (f *FixedChild) Widget() *WidgetClass {
 	var v *WidgetClass // out
-	v = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(f.native.widget))).(*WidgetClass)
+	v = (gextras.CastObject(externglib.Take(unsafe.Pointer(f.native.widget)))).(*WidgetClass)
 	return v
 }
 

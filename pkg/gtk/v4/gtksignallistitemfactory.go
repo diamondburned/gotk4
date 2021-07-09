@@ -100,8 +100,7 @@ func NewSignalListItemFactory() *SignalListItemFactoryClass {
 
 	var _signalListItemFactory *SignalListItemFactoryClass // out
 
-	_signalListItemFactory = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*SignalListItemFactoryClass)
+	_signalListItemFactory = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*SignalListItemFactoryClass)
 
 	return _signalListItemFactory
 }

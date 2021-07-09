@@ -42,8 +42,7 @@ func gotk4_TreeSelectionForeachFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreePath, a
 	var iter *TreeIter            // out
 	var data interface{}          // out
 
-	model = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(arg0))).(*TreeModelInterface)
+	model = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*TreeModelInterface)
 	path = (*TreePath)(unsafe.Pointer(arg1))
 	iter = (*TreeIter)(unsafe.Pointer(arg2))
 	data = box.Get(uintptr(arg3))
@@ -73,10 +72,8 @@ func gotk4_TreeSelectionFunc(arg0 *C.GtkTreeSelection, arg1 *C.GtkTreeModel, arg
 	var pathCurrentlySelected bool    // out
 	var data interface{}              // out
 
-	selection = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(arg0))).(*TreeSelectionClass)
-	model = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(arg1))).(*TreeModelInterface)
+	selection = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*TreeSelectionClass)
+	model = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(*TreeModelInterface)
 	path = (*TreePath)(unsafe.Pointer(arg2))
 	if arg3 != 0 {
 		pathCurrentlySelected = true
@@ -125,6 +122,12 @@ type TreeSelection interface {
 	// Mode gets the selection mode for @selection. See
 	// gtk_tree_selection_set_mode().
 	Mode() SelectionMode
+	// Selected sets @iter to the currently selected node if @selection is set
+	// to K_SELECTION_SINGLE or K_SELECTION_BROWSE. @iter may be NULL if you
+	// just want to test if @selection has any selected nodes. @model is filled
+	// with the current model as a convenience. This function will not work if
+	// you use @selection is K_SELECTION_MULTIPLE.
+	Selected() (*TreeModelInterface, TreeIter, bool)
 	// TreeView returns the tree view associated with @selection.
 	TreeView() *TreeViewClass
 	// IterIsSelected returns true if the row at @iter is currently selected.
@@ -182,7 +185,7 @@ func (s *TreeSelectionClass) CountSelectedRows() int {
 	var _arg0 *C.GtkTreeSelection // out
 	var _cret C.int               // in
 
-	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gtk_tree_selection_count_selected_rows(_arg0)
 
@@ -199,7 +202,7 @@ func (s *TreeSelectionClass) Mode() SelectionMode {
 	var _arg0 *C.GtkTreeSelection // out
 	var _cret C.GtkSelectionMode  // in
 
-	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gtk_tree_selection_get_mode(_arg0)
 
@@ -210,19 +213,46 @@ func (s *TreeSelectionClass) Mode() SelectionMode {
 	return _selectionMode
 }
 
+// Selected sets @iter to the currently selected node if @selection is set to
+// K_SELECTION_SINGLE or K_SELECTION_BROWSE. @iter may be NULL if you just want
+// to test if @selection has any selected nodes. @model is filled with the
+// current model as a convenience. This function will not work if you use
+// @selection is K_SELECTION_MULTIPLE.
+func (s *TreeSelectionClass) Selected() (*TreeModelInterface, TreeIter, bool) {
+	var _arg0 *C.GtkTreeSelection // out
+	var _arg1 *C.GtkTreeModel     // in
+	var _arg2 C.GtkTreeIter       // in
+	var _cret C.gboolean          // in
+
+	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(s.Native()))
+
+	_cret = C.gtk_tree_selection_get_selected(_arg0, &_arg1, &_arg2)
+
+	var _model *TreeModelInterface // out
+	var _iter TreeIter             // out
+	var _ok bool                   // out
+
+	_model = (gextras.CastObject(externglib.Take(unsafe.Pointer(_arg1)))).(*TreeModelInterface)
+	_iter = *(*TreeIter)(unsafe.Pointer((&_arg2)))
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _model, _iter, _ok
+}
+
 // TreeView returns the tree view associated with @selection.
 func (s *TreeSelectionClass) TreeView() *TreeViewClass {
 	var _arg0 *C.GtkTreeSelection // out
 	var _cret *C.GtkTreeView      // in
 
-	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gtk_tree_selection_get_tree_view(_arg0)
 
 	var _treeView *TreeViewClass // out
 
-	_treeView = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*TreeViewClass)
+	_treeView = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*TreeViewClass)
 
 	return _treeView
 }
@@ -233,7 +263,7 @@ func (s *TreeSelectionClass) IterIsSelected(iter *TreeIter) bool {
 	var _arg1 *C.GtkTreeIter      // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GtkTreeIter)(unsafe.Pointer(iter))
 
 	_cret = C.gtk_tree_selection_iter_is_selected(_arg0, _arg1)
@@ -254,7 +284,7 @@ func (s *TreeSelectionClass) PathIsSelected(path *TreePath) bool {
 	var _arg1 *C.GtkTreePath      // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(path))
 
 	_cret = C.gtk_tree_selection_path_is_selected(_arg0, _arg1)
@@ -273,7 +303,7 @@ func (s *TreeSelectionClass) PathIsSelected(path *TreePath) bool {
 func (s *TreeSelectionClass) SelectAll() {
 	var _arg0 *C.GtkTreeSelection // out
 
-	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(s.Native()))
 
 	C.gtk_tree_selection_select_all(_arg0)
 }
@@ -283,7 +313,7 @@ func (s *TreeSelectionClass) SelectIter(iter *TreeIter) {
 	var _arg0 *C.GtkTreeSelection // out
 	var _arg1 *C.GtkTreeIter      // out
 
-	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GtkTreeIter)(unsafe.Pointer(iter))
 
 	C.gtk_tree_selection_select_iter(_arg0, _arg1)
@@ -294,7 +324,7 @@ func (s *TreeSelectionClass) SelectPath(path *TreePath) {
 	var _arg0 *C.GtkTreeSelection // out
 	var _arg1 *C.GtkTreePath      // out
 
-	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(path))
 
 	C.gtk_tree_selection_select_path(_arg0, _arg1)
@@ -307,7 +337,7 @@ func (s *TreeSelectionClass) SelectRange(startPath *TreePath, endPath *TreePath)
 	var _arg1 *C.GtkTreePath      // out
 	var _arg2 *C.GtkTreePath      // out
 
-	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(startPath))
 	_arg2 = (*C.GtkTreePath)(unsafe.Pointer(endPath))
 
@@ -322,7 +352,7 @@ func (s *TreeSelectionClass) SelectedForeach(fn TreeSelectionForeachFunc) {
 	var _arg1 C.GtkTreeSelectionForeachFunc // out
 	var _arg2 C.gpointer
 
-	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(s.Native()))
 	_arg1 = (*[0]byte)(C.gotk4_TreeSelectionForeachFunc)
 	_arg2 = C.gpointer(box.Assign(fn))
 
@@ -333,7 +363,7 @@ func (s *TreeSelectionClass) SelectedForeach(fn TreeSelectionForeachFunc) {
 func (s *TreeSelectionClass) UnselectAll() {
 	var _arg0 *C.GtkTreeSelection // out
 
-	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(s.Native()))
 
 	C.gtk_tree_selection_unselect_all(_arg0)
 }
@@ -343,7 +373,7 @@ func (s *TreeSelectionClass) UnselectIter(iter *TreeIter) {
 	var _arg0 *C.GtkTreeSelection // out
 	var _arg1 *C.GtkTreeIter      // out
 
-	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GtkTreeIter)(unsafe.Pointer(iter))
 
 	C.gtk_tree_selection_unselect_iter(_arg0, _arg1)
@@ -354,7 +384,7 @@ func (s *TreeSelectionClass) UnselectPath(path *TreePath) {
 	var _arg0 *C.GtkTreeSelection // out
 	var _arg1 *C.GtkTreePath      // out
 
-	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(path))
 
 	C.gtk_tree_selection_unselect_path(_arg0, _arg1)
@@ -367,7 +397,7 @@ func (s *TreeSelectionClass) UnselectRange(startPath *TreePath, endPath *TreePat
 	var _arg1 *C.GtkTreePath      // out
 	var _arg2 *C.GtkTreePath      // out
 
-	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(startPath))
 	_arg2 = (*C.GtkTreePath)(unsafe.Pointer(endPath))
 

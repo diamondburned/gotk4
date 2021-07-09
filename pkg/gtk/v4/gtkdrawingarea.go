@@ -44,8 +44,7 @@ func gotk4_DrawingAreaDrawFunc(arg0 *C.GtkDrawingArea, arg1 *C.cairo_t, arg2 C.i
 	var height int                    // out
 	var userData interface{}          // out
 
-	drawingArea = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(arg0))).(*DrawingAreaClass)
+	drawingArea = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*DrawingAreaClass)
 	cr = (*cairo.Context)(unsafe.Pointer(arg1))
 	width = int(arg2)
 	height = int(arg3)
@@ -213,8 +212,7 @@ func NewDrawingArea() *DrawingAreaClass {
 
 	var _drawingArea *DrawingAreaClass // out
 
-	_drawingArea = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*DrawingAreaClass)
+	_drawingArea = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*DrawingAreaClass)
 
 	return _drawingArea
 }
@@ -224,7 +222,7 @@ func (s *DrawingAreaClass) ContentHeight() int {
 	var _arg0 *C.GtkDrawingArea // out
 	var _cret C.int             // in
 
-	_arg0 = (*C.GtkDrawingArea)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkDrawingArea)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gtk_drawing_area_get_content_height(_arg0)
 
@@ -240,7 +238,7 @@ func (s *DrawingAreaClass) ContentWidth() int {
 	var _arg0 *C.GtkDrawingArea // out
 	var _cret C.int             // in
 
-	_arg0 = (*C.GtkDrawingArea)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkDrawingArea)(unsafe.Pointer(s.Native()))
 
 	_cret = C.gtk_drawing_area_get_content_width(_arg0)
 
@@ -263,7 +261,7 @@ func (s *DrawingAreaClass) SetContentHeight(height int) {
 	var _arg0 *C.GtkDrawingArea // out
 	var _arg1 C.int             // out
 
-	_arg0 = (*C.GtkDrawingArea)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkDrawingArea)(unsafe.Pointer(s.Native()))
 	_arg1 = C.int(height)
 
 	C.gtk_drawing_area_set_content_height(_arg0, _arg1)
@@ -281,7 +279,7 @@ func (s *DrawingAreaClass) SetContentWidth(width int) {
 	var _arg0 *C.GtkDrawingArea // out
 	var _arg1 C.int             // out
 
-	_arg0 = (*C.GtkDrawingArea)(unsafe.Pointer((&s).Native()))
+	_arg0 = (*C.GtkDrawingArea)(unsafe.Pointer(s.Native()))
 	_arg1 = C.int(width)
 
 	C.gtk_drawing_area_set_content_width(_arg0, _arg1)

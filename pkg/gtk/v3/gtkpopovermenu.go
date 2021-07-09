@@ -161,8 +161,7 @@ func NewPopoverMenu() *PopoverMenuClass {
 
 	var _popoverMenu *PopoverMenuClass // out
 
-	_popoverMenu = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*PopoverMenuClass)
+	_popoverMenu = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*PopoverMenuClass)
 
 	return _popoverMenu
 }
@@ -178,7 +177,7 @@ func (p *PopoverMenuClass) OpenSubmenu(name string) {
 	var _arg0 *C.GtkPopoverMenu // out
 	var _arg1 *C.gchar          // out
 
-	_arg0 = (*C.GtkPopoverMenu)(unsafe.Pointer((&p).Native()))
+	_arg0 = (*C.GtkPopoverMenu)(unsafe.Pointer(p.Native()))
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
 

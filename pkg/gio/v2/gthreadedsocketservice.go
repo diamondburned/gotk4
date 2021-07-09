@@ -94,8 +94,7 @@ func NewThreadedSocketService(maxThreads int) *ThreadedSocketServiceClass {
 
 	var _threadedSocketService *ThreadedSocketServiceClass // out
 
-	_threadedSocketService = gextras.CastObject(
-		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*ThreadedSocketServiceClass)
+	_threadedSocketService = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*ThreadedSocketServiceClass)
 
 	return _threadedSocketService
 }

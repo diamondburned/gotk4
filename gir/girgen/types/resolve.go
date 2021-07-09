@@ -79,8 +79,8 @@ func builtinType(imp, typ string, girType gir.Type) *Resolved {
 
 // externGLibType returns an external GLib type from gotk3.
 func externGLibType(goType string, typ gir.Type, ctyp string) *Resolved {
-	if typ.CType != "" {
-		ctyp = typ.CType
+	if typ.CType == "" {
+		typ.CType = ctyp
 	}
 
 	implImport := ResolvedImport{
@@ -104,29 +104,29 @@ func externGLibType(goType string, typ gir.Type, ctyp string) *Resolved {
 		ImplImport: implImport,
 		PublImport: publImport,
 		GType:      typ.Name,
-		CType:      ctyp,
-		Ptr:        uint8(dereferenceOffset(int(countPtrs(typ, nil)), goType)),
+		CType:      typ.CType,
+		Ptr:        countPtrs(typ, nil),
 	}
 }
 
-// dereferenceOffset subtracts 1 from ptrs if the ctype does not have a pointer.
-// It is better explained with an example:
-//
-// If the C type is *GObject, then this wouldn't subtract anything, but if the C
-// type is a gpointer, then we'd be subtracting 1. This code is similar to the
-// one in TypeResolver.
-func dereferenceOffset(ptrs int, typ string) int {
-	if ptrs == 0 {
-		return ptrs
-	}
+//// dereferenceOffset subtracts 1 from ptrs if the ctype does not have a pointer.
+//// It is better explained with an example:
+////
+//// If the C type is *GObject, then this wouldn't subtract anything, but if the C
+//// type is a gpointer, then we'd be subtracting 1. This code is similar to the
+//// one in TypeResolver.
+//func dereferenceOffset(ptrs int, typ string) int {
+//	if ptrs == 0 {
+//		return ptrs
+//	}
 
-	count := strings.Count(typ, "*")
-	if count > 1 {
-		count = 1
-	}
+//	count := strings.Count(typ, "*")
+//	if count > 1 {
+//		count = 1
+//	}
 
-	return ptrs - (1 - count)
-}
+//	return ptrs - (1 - count)
+//}
 
 // typeFromResult creates a resolved type from the given type result.
 func typeFromResult(gen FileGenerator, typ gir.Type, result *gir.TypeFindResult) *Resolved {

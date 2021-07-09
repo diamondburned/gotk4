@@ -374,8 +374,7 @@ func NewAssistant() *AssistantClass {
 
 	var _assistant *AssistantClass // out
 
-	_assistant = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*AssistantClass)
+	_assistant = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*AssistantClass)
 
 	return _assistant
 }
@@ -385,8 +384,8 @@ func (a *AssistantClass) AddActionWidget(child Widget) {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 *C.GtkWidget    // out
 
-	_arg0 = (*C.GtkAssistant)(unsafe.Pointer((&a).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&child).Native()))
+	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_assistant_add_action_widget(_arg0, _arg1)
 }
@@ -397,8 +396,8 @@ func (a *AssistantClass) AppendPage(page Widget) int {
 	var _arg1 *C.GtkWidget    // out
 	var _cret C.int           // in
 
-	_arg0 = (*C.GtkAssistant)(unsafe.Pointer((&a).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&page).Native()))
+	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(page.Native()))
 
 	_cret = C.gtk_assistant_append_page(_arg0, _arg1)
 
@@ -421,7 +420,7 @@ func (a *AssistantClass) AppendPage(page Widget) int {
 func (a *AssistantClass) Commit() {
 	var _arg0 *C.GtkAssistant // out
 
-	_arg0 = (*C.GtkAssistant)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(a.Native()))
 
 	C.gtk_assistant_commit(_arg0)
 }
@@ -431,7 +430,7 @@ func (a *AssistantClass) CurrentPage() int {
 	var _arg0 *C.GtkAssistant // out
 	var _cret C.int           // in
 
-	_arg0 = (*C.GtkAssistant)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(a.Native()))
 
 	_cret = C.gtk_assistant_get_current_page(_arg0)
 
@@ -447,7 +446,7 @@ func (a *AssistantClass) NPages() int {
 	var _arg0 *C.GtkAssistant // out
 	var _cret C.int           // in
 
-	_arg0 = (*C.GtkAssistant)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(a.Native()))
 
 	_cret = C.gtk_assistant_get_n_pages(_arg0)
 
@@ -464,15 +463,14 @@ func (a *AssistantClass) NthPage(pageNum int) *WidgetClass {
 	var _arg1 C.int           // out
 	var _cret *C.GtkWidget    // in
 
-	_arg0 = (*C.GtkAssistant)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(a.Native()))
 	_arg1 = C.int(pageNum)
 
 	_cret = C.gtk_assistant_get_nth_page(_arg0, _arg1)
 
 	var _widget *WidgetClass // out
 
-	_widget = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*WidgetClass)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WidgetClass)
 
 	return _widget
 }
@@ -483,15 +481,14 @@ func (a *AssistantClass) Page(child Widget) *AssistantPageClass {
 	var _arg1 *C.GtkWidget        // out
 	var _cret *C.GtkAssistantPage // in
 
-	_arg0 = (*C.GtkAssistant)(unsafe.Pointer((&a).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&child).Native()))
+	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	_cret = C.gtk_assistant_get_page(_arg0, _arg1)
 
 	var _assistantPage *AssistantPageClass // out
 
-	_assistantPage = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*AssistantPageClass)
+	_assistantPage = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*AssistantPageClass)
 
 	return _assistantPage
 }
@@ -502,8 +499,8 @@ func (a *AssistantClass) PageComplete(page Widget) bool {
 	var _arg1 *C.GtkWidget    // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GtkAssistant)(unsafe.Pointer((&a).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&page).Native()))
+	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(page.Native()))
 
 	_cret = C.gtk_assistant_get_page_complete(_arg0, _arg1)
 
@@ -522,8 +519,8 @@ func (a *AssistantClass) PageTitle(page Widget) string {
 	var _arg1 *C.GtkWidget    // out
 	var _cret *C.char         // in
 
-	_arg0 = (*C.GtkAssistant)(unsafe.Pointer((&a).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&page).Native()))
+	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(page.Native()))
 
 	_cret = C.gtk_assistant_get_page_title(_arg0, _arg1)
 
@@ -540,8 +537,8 @@ func (a *AssistantClass) PageType(page Widget) AssistantPageType {
 	var _arg1 *C.GtkWidget           // out
 	var _cret C.GtkAssistantPageType // in
 
-	_arg0 = (*C.GtkAssistant)(unsafe.Pointer((&a).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&page).Native()))
+	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(page.Native()))
 
 	_cret = C.gtk_assistant_get_page_type(_arg0, _arg1)
 
@@ -559,8 +556,8 @@ func (a *AssistantClass) InsertPage(page Widget, position int) int {
 	var _arg2 C.int           // out
 	var _cret C.int           // in
 
-	_arg0 = (*C.GtkAssistant)(unsafe.Pointer((&a).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&page).Native()))
+	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(page.Native()))
 	_arg2 = C.int(position)
 
 	_cret = C.gtk_assistant_insert_page(_arg0, _arg1, _arg2)
@@ -581,7 +578,7 @@ func (a *AssistantClass) InsertPage(page Widget, position int) int {
 func (a *AssistantClass) NextPage() {
 	var _arg0 *C.GtkAssistant // out
 
-	_arg0 = (*C.GtkAssistant)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(a.Native()))
 
 	C.gtk_assistant_next_page(_arg0)
 }
@@ -592,8 +589,8 @@ func (a *AssistantClass) PrependPage(page Widget) int {
 	var _arg1 *C.GtkWidget    // out
 	var _cret C.int           // in
 
-	_arg0 = (*C.GtkAssistant)(unsafe.Pointer((&a).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&page).Native()))
+	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(page.Native()))
 
 	_cret = C.gtk_assistant_prepend_page(_arg0, _arg1)
 
@@ -614,7 +611,7 @@ func (a *AssistantClass) PrependPage(page Widget) int {
 func (a *AssistantClass) PreviousPage() {
 	var _arg0 *C.GtkAssistant // out
 
-	_arg0 = (*C.GtkAssistant)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(a.Native()))
 
 	C.gtk_assistant_previous_page(_arg0)
 }
@@ -624,8 +621,8 @@ func (a *AssistantClass) RemoveActionWidget(child Widget) {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 *C.GtkWidget    // out
 
-	_arg0 = (*C.GtkAssistant)(unsafe.Pointer((&a).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&child).Native()))
+	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_assistant_remove_action_widget(_arg0, _arg1)
 }
@@ -635,7 +632,7 @@ func (a *AssistantClass) RemovePage(pageNum int) {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 C.int           // out
 
-	_arg0 = (*C.GtkAssistant)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(a.Native()))
 	_arg1 = C.int(pageNum)
 
 	C.gtk_assistant_remove_page(_arg0, _arg1)
@@ -649,7 +646,7 @@ func (a *AssistantClass) SetCurrentPage(pageNum int) {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 C.int           // out
 
-	_arg0 = (*C.GtkAssistant)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(a.Native()))
 	_arg1 = C.int(pageNum)
 
 	C.gtk_assistant_set_current_page(_arg0, _arg1)
@@ -664,8 +661,8 @@ func (a *AssistantClass) SetPageComplete(page Widget, complete bool) {
 	var _arg1 *C.GtkWidget    // out
 	var _arg2 C.gboolean      // out
 
-	_arg0 = (*C.GtkAssistant)(unsafe.Pointer((&a).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&page).Native()))
+	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(page.Native()))
 	if complete {
 		_arg2 = C.TRUE
 	}
@@ -682,8 +679,8 @@ func (a *AssistantClass) SetPageTitle(page Widget, title string) {
 	var _arg1 *C.GtkWidget    // out
 	var _arg2 *C.char         // out
 
-	_arg0 = (*C.GtkAssistant)(unsafe.Pointer((&a).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&page).Native()))
+	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(page.Native()))
 	_arg2 = (*C.char)(C.CString(title))
 	defer C.free(unsafe.Pointer(_arg2))
 
@@ -702,7 +699,7 @@ func (a *AssistantClass) SetPageTitle(page Widget, title string) {
 func (a *AssistantClass) UpdateButtonsState() {
 	var _arg0 *C.GtkAssistant // out
 
-	_arg0 = (*C.GtkAssistant)(unsafe.Pointer((&a).Native()))
+	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(a.Native()))
 
 	C.gtk_assistant_update_buttons_state(_arg0)
 }
@@ -740,14 +737,13 @@ func (p *AssistantPageClass) Child() *WidgetClass {
 	var _arg0 *C.GtkAssistantPage // out
 	var _cret *C.GtkWidget        // in
 
-	_arg0 = (*C.GtkAssistantPage)(unsafe.Pointer((&p).Native()))
+	_arg0 = (*C.GtkAssistantPage)(unsafe.Pointer(p.Native()))
 
 	_cret = C.gtk_assistant_page_get_child(_arg0)
 
 	var _widget *WidgetClass // out
 
-	_widget = gextras.CastObject(
-		externglib.Take(unsafe.Pointer(_cret))).(*WidgetClass)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WidgetClass)
 
 	return _widget
 }
